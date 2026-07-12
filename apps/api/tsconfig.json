@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "vitest/globals"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES2023",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "strictPropertyInitialization": false
+  },
+  "include": ["src", "prisma.config.ts", "vitest.config.ts"],
+  "exclude": ["node_modules", "dist", "src/generated"]
+}

@@ -1,0 +1,19 @@
+{
+  "home": {
+    "title": "Zwadj",
+    "tagline": "Trouvez et réservez votre salle de mariage en Algérie.",
+    "apiStatus": "État de l'API : {status}"
+  },
+  "pro": {
+    "title": "Zwadj Pro",
+    "cta": "Commencer"
+  },
+  "auth": {
+    "emails": {
+      "verifySubject": "Confirmez votre adresse email — Zwadj",
+      "verifyBody": "Bonjour,\n\nBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :\n{link}\n\nCe lien expire dans {ttlHours} heures.\n\nSi vous n'êtes pas à l'origine de cette inscription, ignorez cet email.",
+      "resetSubject": "Réinitialisation de votre mot de passe — Zwadj",
+      "resetBody": "Bonjour,\n\nPour choisir un nouveau mot de passe, ouvrez ce lien :\n{link}\n\nCe lien expire dans {ttlMinutes} minutes.\n\nSi vous n'avez pas demandé cette réinitialisation, ignorez cet email : votre mot de passe reste inchangé."
+    }
+  }
+}

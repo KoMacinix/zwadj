@@ -1,0 +1,16 @@
+# PostgreSQL 18 — requis : le schéma utilise la fonction native uuidv7()
+# (décision validée : génération d'ID par défaut côté BDD, PG 18+).
+services:
+  db:
+    image: postgres:18
+    container_name: zwadj-db
+    environment:
+      POSTGRES_USER: zwadj
+      POSTGRES_PASSWORD: zwadj
+      POSTGRES_DB: zwadj
+    ports:
+      - "5432:5432"
+    volumes:
+      - zwadj_pgdata:/var/lib/postgresql/data
+volumes:
+  zwadj_pgdata:

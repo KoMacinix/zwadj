@@ -1,0 +1,35 @@
+{
+  "name": "@zwadj/client",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@zwadj/i18n": "workspace:*",
+    "@zwadj/types": "workspace:*",
+    "@zwadj/ui": "workspace:*",
+    "next": "^15.3.4",
+    "next-intl": "^4.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "@zwadj/config": "workspace:*",
+    "eslint": "^9.30.0",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}

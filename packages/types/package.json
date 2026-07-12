@@ -1,0 +1,19 @@
+{
+  "name": "@zwadj/types",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@zwadj/config": "workspace:*",
+    "eslint": "^9.30.0",
+    "typescript": "^5.8.0"
+  },
+  "dependencies": {
+    "zod": "^3.25.0"
+  }
+}
