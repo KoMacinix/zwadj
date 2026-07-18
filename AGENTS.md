@@ -13,9 +13,14 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 - **Pas d'apps/admin au MVP.** Validation/publication des salles via endpoints admin protégés + accès direct DB (DBeaver) en interne.
 
 ## Palette & design tokens
-- Direction actuelle : neutre (zinc) + accent framboise `#C81E63`. Police : Readex Pro.
+- **Palette double, une par app** (pivot décidé après la tranche Auth — remplace l'ancien accent unique) :
+  - **Client** (`apps/client`, `theme.css`) : `--accent: #da3642`, `--accent-strong: #b32c36` (hover/actif), `--accent-soft: #fdeef0` (fond décoratif clair, jamais du texte dessus), `--on-accent: #ffffff`. Ramp de support pour les tranches marketing : `--rose-pale: #fdeef0`, `--sage: #f5a7b0`, `--star: #ebb04a`.
+  - **Pro** (`apps/pro`, `theme.css`) : `--accent: #211c1b`, `--accent-strong: #0d0a09`, `--accent-soft: #f1efee`, `--on-accent: #ffffff`.
+  - Zinc reste la base neutre partagée (`--bg`, `--ink`, `--line`, etc.) dans `packages/ui/styles.css`, qui ne définit plus AUCUNE valeur d'accent — chaque app pose son bloc accent dans son propre `theme.css`, importé après `packages/ui/styles.css`.
+- **Contrainte AA vérifiée, à respecter strictement** : `#DA3642` passe le contraste AA (4.58:1) sur fond blanc pur uniquement — **jamais** comme couleur de texte sur `--bg-2`/`--bg-3` (cartes, sections, ratio 4.32:1 = échec). Sur ces fonds, utiliser `--ink`/`--ink-2` pour le texte, `--accent` réservé aux boutons pleins (fond accent + texte blanc) et aux éléments non-textuels.
+- Police : Readex Pro, **auto-hébergée via `@fontsource`** — jamais d'import Google Fonts (`fonts.googleapis.com`), même si un document de référence plus ancien l'utilise ainsi.
 - **Ignorer toute mention de "gold/cream/Cormorant Garamond/Manrope"** dans d'anciens documents — obsolète, pivot déjà effectué.
-- Toute variable de token nommée `--gold*` doit être renommée `--accent*` lors de l'extraction — ne pas propager l'ancien nom.
+- Toute variable de token nommée `--gold*` doit être renommée `--accent*` lors de l'extraction — ne pas propager l'ancien nom. Idem pour toute référence à l'ancien `#C81E63` (framboise) ou `#E8495F` (corail intermédiaire, jamais passé en prod) : périmés, remplacés par les valeurs ci-dessus.
 
 ## Architecture
 - Couches : Controller → Service/Use-case → Repository → DB. Adapters (ports) pour tout SDK externe (paiement, email, stockage).

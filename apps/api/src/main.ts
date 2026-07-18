@@ -1,13 +1,10 @@
 import "reflect-metadata";
-import cookieParser from "cookie-parser";
 import { NestFactory } from "@nestjs/core";
-
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger } from "nestjs-pino";
 import { AppModule } from "./app.module";
-import { AllExceptionsFilter } from "./common/filters/all-exceptions.filter";
-import { ZodValidationPipe } from "./common/pipes/zod-validation.pipe";
+import { configureApp } from "./app.setup";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -15,21 +12,11 @@ async function bootstrap(): Promise<void> {
   // Logging structuré (pino)
   app.useLogger(app.get(Logger));
 
-  // Cookies (D2) : le refresh token transite en cookie httpOnly — parser requis.
+  // Préfixe /api/v1, cookies (D2), pipe Zod global, filtre d'exceptions —
+  // partagés avec les tests d'intégration via app.setup.ts.
   // NOTE prod : derrière un reverse proxy, activer trust proxy pour que le
   // rate-limiting voie la vraie IP (X-Forwarded-For) — Phase 13/déploiement.
-  app.use(cookieParser());
-
-  // Préfixe global — toutes les routes sous /api/v1 (backlog Phase 4)
-  app.setGlobalPrefix("api/v1");
-
-  // Pipe de validation global — Zod (AGENTS.md), pass-through tant qu'aucun
-  // schéma n'est attaché ; les routes des tranches suivantes fourniront leurs
-  // schémas (`@Body(new ZodValidationPipe(schema))`).
-  app.useGlobalPipes(new ZodValidationPipe());
-
-  // Filtre d'exceptions global — réponses d'erreur normalisées
-  app.useGlobalFilters(new AllExceptionsFilter());
+  configureApp(app);
 
   // CORS restreint aux fronts connus (env CORS_ORIGINS)
   const config = app.get(ConfigService);
@@ -40,6 +27,7 @@ async function bootstrap(): Promise<void> {
     .setTitle("Zwadj API")
     .setDescription("API de la marketplace Zwadj (MVP) — documentation générée automatiquement.")
     .setVersion("0.1.0")
+    .addBearerAuth() // routes marquées @ApiBearerAuth (ex. GET /auth/me) — bouton « Authorize »
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("api/docs", app, document);

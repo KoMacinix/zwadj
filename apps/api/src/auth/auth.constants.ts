@@ -8,5 +8,9 @@ export const AUTH = {
   /** Nom du cookie httpOnly portant le refresh token (D2). */
   REFRESH_COOKIE_NAME: "zwadj_rt",
   /** Le cookie refresh n'est envoyé que sur les routes auth (D2 : path restreint). */
-  REFRESH_COOKIE_PATH: "/api/v1/auth"
+  REFRESH_COOKIE_PATH: "/api/v1/auth",
+  /** Chemin (côté fronts) de la page de vérification email — Lots 5/6 l'implémentent. */
+  VERIFY_EMAIL_PATH: "/auth/verification-email",
+  /** Chemin (côté fronts) de la page de réinitialisation — Lots 5/6 l'implémentent. */
+  RESET_PASSWORD_PATH: "/auth/reinitialisation"
 } as const;

@@ -42,8 +42,12 @@ pnpm --filter @zwadj/api prisma:migrate
 #   ⚠ Si un drift est signalé ou un reset proposé : répondre NON et remonter la
 #   sortie complète — ne pas laisser Prisma régénérer quoi que ce soit.
 
-# 6. Tests (4 tests, 3 apps, depuis la racine)
+# 6. Tests unitaires (3 apps, depuis la racine)
 pnpm test
+
+# 6bis. Tests d'INTÉGRATION auth (base zwadj_test recréée à chaque run —
+#       nécessite le PostgreSQL du docker compose démarré)
+pnpm test:int
 
 # 7. Lancement des trois apps
 pnpm dev

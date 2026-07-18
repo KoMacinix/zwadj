@@ -11,13 +11,17 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@fontsource/readex-pro": "^5.2.11",
+    "@zwadj/api-client": "workspace:^",
     "@zwadj/i18n": "workspace:*",
     "@zwadj/types": "workspace:*",
     "@zwadj/ui": "workspace:*",
     "i18next": "^25.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-i18next": "^15.5.0"
+    "react-i18next": "^15.5.0",
+    "react-router": "^7",
+    "zod": "^3.25.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.0",

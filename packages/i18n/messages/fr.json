@@ -14,6 +14,154 @@
       "verifyBody": "Bonjour,\n\nBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :\n{link}\n\nCe lien expire dans {ttlHours} heures.\n\nSi vous n'êtes pas à l'origine de cette inscription, ignorez cet email.",
       "resetSubject": "Réinitialisation de votre mot de passe — Zwadj",
       "resetBody": "Bonjour,\n\nPour choisir un nouveau mot de passe, ouvrez ce lien :\n{link}\n\nCe lien expire dans {ttlMinutes} minutes.\n\nSi vous n'avez pas demandé cette réinitialisation, ignorez cet email : votre mot de passe reste inchangé."
+    },
+    "errors": {
+      "emailAlreadyUsed": "Un compte existe déjà avec cette adresse email.",
+      "tokenInvalidOrExpired": "Ce lien est invalide ou a expiré. Demandez un nouvel email.",
+      "invalidCredentials": "Email ou mot de passe incorrect.",
+      "emailNotVerified": "Vérifiez votre adresse email avant de vous connecter.",
+      "unauthenticated": "Connexion requise pour continuer.",
+      "forbidden": "Vous n'avez pas les droits nécessaires pour cette action."
+    },
+    "validation": {
+      "emailRequired": "L'adresse email est requise.",
+      "emailInvalid": "Adresse email invalide.",
+      "passwordRequired": "Le mot de passe est requis.",
+      "passwordTooShort": "8 caractères minimum.",
+      "passwordTooLong": "128 caractères maximum.",
+      "passwordNeedsLetter": "Ajoutez au moins une lettre.",
+      "passwordNeedsDigit": "Ajoutez au moins un chiffre.",
+      "phoneRequired": "Le numéro de téléphone est requis.",
+      "phoneInvalid": "Numéro invalide — format attendu : +213XXXXXXXXX.",
+      "businessNameRequired": "Le nom de l'établissement est requis.",
+      "businessNameTooShort": "2 caractères minimum.",
+      "businessNameTooLong": "150 caractères maximum.",
+      "tokenRequired": "Ce lien est invalide.",
+      "tokenInvalid": "Ce lien est invalide.",
+      "passwordMismatch": "Les mots de passe ne correspondent pas.",
+      "acceptRequired": "Vous devez accepter les CGU pour continuer."
+    },
+    "ui": {
+      "header": {
+        "login": "Connexion",
+        "signup": "Inscription",
+        "logout": "Déconnexion",
+        "account": "Mon compte"
+      },
+      "banner": {
+        "unverified": "Vérifiez votre adresse email pour profiter de toutes les fonctionnalités.",
+        "resend": "Renvoyer l'email",
+        "resent": "Email envoyé — pensez à vérifier vos spams."
+      },
+      "shell": {
+        "loginTitle": "Bon retour parmi nous.",
+        "loginSubtitle": "Retrouvez vos réservations, vos favoris et reprenez là où vous étiez.",
+        "signupTitle": "Le jour J commence ici.",
+        "signupSubtitle": "Créez votre compte pour réserver des salles et organiser votre mariage en toute sérénité.",
+        "forgotTitle": "Ça arrive à tout le monde.",
+        "forgotSubtitle": "Indiquez votre email : nous vous envoyons un lien pour réinitialiser votre mot de passe.",
+        "resetTitle": "Un nouveau départ.",
+        "resetSubtitle": "Choisissez un nouveau mot de passe pour sécuriser votre compte.",
+        "verifyTitle": "Encore un instant.",
+        "verifySubtitle": "Nous confirmons votre adresse email.",
+        "bullet1": "Acompte sécurisé — CIB · Edahabia via Chargily",
+        "bullet2": "Demande de réservation sans engagement : la salle confirme",
+        "bullet3": "Service bilingue français · arabe",
+        "tagline": "Salles de mariage en Algérie"
+      },
+      "login": {
+        "title": "Connexion",
+        "email": "Email",
+        "password": "Mot de passe",
+        "forgot": "Mot de passe oublié ?",
+        "submit": "Se connecter",
+        "submitting": "Connexion…",
+        "noAccount": "Pas encore de compte ?",
+        "goSignup": "Créer un compte",
+        "remember": "Se souvenir de moi"
+      },
+      "signup": {
+        "title": "Inscription",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "password": "Mot de passe",
+        "confirm": "Confirmer le mot de passe",
+        "passwordHint": "8 caractères minimum, avec une lettre et un chiffre.",
+        "acceptPrefix": "J'accepte les ",
+        "terms": "CGU",
+        "acceptMiddle": " et la ",
+        "privacy": "politique de confidentialité",
+        "acceptSuffix": ".",
+        "submit": "Créer mon compte",
+        "submitting": "Création…",
+        "hasAccount": "Déjà un compte ?",
+        "goLogin": "Se connecter",
+        "proHint": "Vous gérez une salle ? L'espace Pro arrive avec l'application dédiée."
+      },
+      "forgot": {
+        "title": "Mot de passe oublié",
+        "email": "Email",
+        "submit": "Envoyer le lien",
+        "submitting": "Envoi…",
+        "back": "Retour à la connexion",
+        "sentTitle": "Vérifiez votre boîte mail",
+        "sentBody": "Si un compte existe pour {email}, un lien de réinitialisation vient d'être envoyé. Il expire dans 30 minutes.",
+        "resendLink": "Renvoyer le lien"
+      },
+      "reset": {
+        "title": "Nouveau mot de passe",
+        "password": "Nouveau mot de passe",
+        "confirm": "Confirmer le mot de passe",
+        "submit": "Enregistrer le mot de passe",
+        "submitting": "Enregistrement…",
+        "successTitle": "Mot de passe mis à jour",
+        "successBody": "Par sécurité, vos sessions ouvertes ont été déconnectées. Connectez-vous avec votre nouveau mot de passe.",
+        "goLogin": "Se connecter",
+        "missingToken": "Ce lien est incomplet ou invalide.",
+        "requestNew": "Demander un nouveau lien"
+      },
+      "verify": {
+        "checking": "Vérification en cours…",
+        "successTitle": "Adresse confirmée",
+        "successBody": "Votre adresse email est vérifiée. Bienvenue sur Zwadj !",
+        "goHome": "Aller à l'accueil",
+        "goLogin": "Se connecter",
+        "errorTitle": "Lien invalide ou expiré",
+        "errorBody": "Ce lien de vérification n'est plus valable. Demandez-en un nouveau ci-dessous.",
+        "resend": "Renvoyer l'email de vérification",
+        "resendEmailLabel": "Email",
+        "resent": "Si un compte existe pour cette adresse, un nouvel email vient d'être envoyé."
+      },
+      "showPw": "Afficher",
+      "hidePw": "Masquer",
+      "genericError": "Une erreur est survenue. Réessayez dans un instant.",
+      "rateLimited": "Trop de tentatives. Patientez quelques minutes puis réessayez.",
+      "pro": {
+        "loginSubtitle": "Gérez vos demandes de réservation, votre calendrier et vos salles.",
+        "signupTitle": "Votre salle mérite d'être vue.",
+        "signupSubtitle": "Créez votre compte professionnel et recevez des demandes de réservation qualifiées.",
+        "bullet1": "Commission sur le prix de base uniquement — jamais sur vos services",
+        "bullet2": "Rien n'est réservé sans vous : chaque demande attend votre confirmation",
+        "bullet3": "Interface bilingue français · arabe",
+        "businessName": "Nom de l'établissement",
+        "phone": "Téléphone",
+        "phoneHint": "Format international : +213 suivi de 8 à 9 chiffres.",
+        "checkEmailTitle": "Vérifiez votre boîte mail",
+        "checkEmailBody": "Votre compte professionnel est créé. Un lien de vérification vient d'être envoyé à {email} — activez votre espace, puis connectez-vous.",
+        "resendCta": "Renvoyer l'email de vérification",
+        "notVerifiedHint": "Votre espace s'active en cliquant le lien reçu par email.",
+        "wrongRoleTitle": "Espace réservé aux professionnels",
+        "wrongRoleBody": "Ce compte est un compte client. Créez un compte professionnel pour gérer une salle.",
+        "dashboardTitle": "Tableau de bord",
+        "dashboardSoon": "Votre espace de gestion arrive ici : demandes de réservation, calendrier, salles — prochaines tranches du MVP.",
+        "language": "Langue"
+      }
     }
+  },
+  "legal": {
+    "cgu": "Conditions générales d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "comingSoon": "Bientôt disponible — le document complet sera publié avant le lancement."
   }
 }

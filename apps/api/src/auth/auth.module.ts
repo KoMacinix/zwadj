@@ -1,13 +1,35 @@
 import { Module } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { JwtModule, type JwtSignOptions } from "@nestjs/jwt";
+import { AuthController } from "./auth.controller";
+import { AuthEmailsService } from "./auth-emails.service";
+import { AuthService } from "./auth.service";
+import { JwtAuthGuard } from "./jwt-auth.guard";
 import { PasswordService } from "./password.service";
+import { RolesGuard } from "./roles.guard";
 import { TokenService } from "./token.service";
 
-/**
- * Lot 0 : fondations seulement — services injectables, aucun endpoint.
- * Le contrôleur /auth, AuthService et le câblage JwtModule arrivent au Lot 1/2.
- */
 @Module({
-  providers: [PasswordService, TokenService],
-  exports: [PasswordService, TokenService]
+  imports: [
+    // Câblage @nestjs/jwt (Lot 2, D4) : HS256, secret + TTL depuis l'ENV
+    // VALIDÉ (jamais process.env direct). Signature et vérification partagent
+    // cette unique config — impossible de les désynchroniser.
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.getOrThrow<string>("JWT_ACCESS_SECRET"),
+        signOptions: {
+          // La regex du schéma env (^\d+(s|m|h|d)$) garantit un format valide ;
+          // le type `StringValue` de la lib n'est juste pas inférable depuis string.
+          expiresIn: config.getOrThrow<string>("JWT_ACCESS_TTL") as JwtSignOptions["expiresIn"]
+        }
+      })
+    })
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, AuthEmailsService, PasswordService, TokenService, JwtAuthGuard, RolesGuard],
+  // JwtModule exporté : les APP_GUARD déclarés dans app.module (contexte racine)
+  // doivent pouvoir résoudre JwtService.
+  exports: [PasswordService, TokenService, JwtModule]
 })
 export class AuthModule {}

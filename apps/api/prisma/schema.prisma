@@ -222,6 +222,10 @@ model RefreshToken {
   tokenHash String    @unique @map("token_hash")
   expiresAt DateTime  @map("expires_at") @db.Timestamptz(6)
   revokedAt DateTime? @map("revoked_at") @db.Timestamptz(6)
+  /// Lot 7 (D27) — false = « se souvenir de moi » décoché : le cookie posé est
+  /// un cookie de SESSION ; le flag est copié à chaque rotation pour que le
+  /// serveur re-pose le même mode. La révocation globale l'IGNORE (voulu).
+  persistent Boolean  @default(true)
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -3,6 +3,8 @@ import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { LoggerModule } from "nestjs-pino";
 import { AuthModule } from "./auth/auth.module";
+import { JwtAuthGuard } from "./auth/jwt-auth.guard";
+import { RolesGuard } from "./auth/roles.guard";
 import { EmailModule } from "./common/email/email.module";
 import { ConfigModule } from "./config/config.module";
 import { HealthModule } from "./health/health.module";
@@ -13,7 +15,7 @@ import { PrismaModule } from "./prisma/prisma.module";
     ConfigModule,
     LoggerModule.forRoot({
       pinoHttp: {
-        level: process.env.NODE_ENV === "production" ? "info" : "debug",
+        level: process.env.LOG_LEVEL ?? (process.env.NODE_ENV === "production" ? "info" : "debug"),
         transport:
           process.env.NODE_ENV === "production" ? undefined : { target: "pino-pretty", options: { singleLine: true } },
         redact: ["req.headers.authorization", "req.headers.cookie"]
@@ -32,6 +34,15 @@ import { PrismaModule } from "./prisma/prisma.module";
     AuthModule,
     HealthModule
   ],
-  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }]
+  providers: [
+    // Guards GLOBAUX — l'ordre d'enregistrement EST l'ordre d'exécution (D6) :
+    // 1. Throttler : le rate-limiting s'applique aussi aux routes publiques
+    //    (login/register sont précisément les plus attaquées) ;
+    // 2. JwtAuthGuard : fermé par défaut, @Public() pour ouvrir ;
+    // 3. RolesGuard : lit request.user posé par le guard précédent.
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard }
+  ]
 })
 export class AppModule {}

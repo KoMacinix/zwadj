@@ -2,6 +2,7 @@
 // utilisée par l'API (Lot 1+) et par les formulaires des deux fronts (Lots 5/6).
 import {
   loginSchema,
+  registerSchema,
   passwordSchema,
   registerClientSchema,
   registerProSchema,
@@ -72,5 +73,22 @@ describe("Schémas Zod auth (@zwadj/types)", () => {
     expect(resetPasswordSchema.safeParse({ token: "t".repeat(43), password: "Motdepasse1" }).success).toBe(true);
     expect(resetPasswordSchema.safeParse({ token: "court", password: "Motdepasse1" }).success).toBe(false);
     expect(resetPasswordSchema.safeParse({ token: "t".repeat(43), password: "faible" }).success).toBe(false);
+  });
+
+  it("registerSchema (union) : discrimine CLIENT/PRO, refuse ADMIN et l'absence de rôle", () => {
+    expect(registerSchema.safeParse({ role: "CLIENT", email: "a@b.dz", password: "Motdepasse1" }).success).toBe(true);
+    expect(
+      registerSchema.safeParse({
+        role: "PRO",
+        email: "p@b.dz",
+        password: "Motdepasse1",
+        businessName: "Salle X",
+        phone: "+213551234567"
+      }).success
+    ).toBe(true);
+    // Un PRO sans ses champs métier est rejeté PAR LA BRANCHE PRO de l'union
+    expect(registerSchema.safeParse({ role: "PRO", email: "p@b.dz", password: "Motdepasse1" }).success).toBe(false);
+    expect(registerSchema.safeParse({ role: "ADMIN", email: "r@b.dz", password: "Motdepasse1" }).success).toBe(false);
+    expect(registerSchema.safeParse({ email: "a@b.dz", password: "Motdepasse1" }).success).toBe(false);
   });
 });

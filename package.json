@@ -2,14 +2,17 @@
   "name": "zwadj",
   "private": true,
   "packageManager": "pnpm@10.34.4",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "dev": "pnpm --parallel -r run dev",
+    "dev": "pnpm --filter @zwadj/types run build && pnpm --parallel -r run dev",
     "build": "pnpm -r run build",
     "lint": "pnpm -r run lint",
     "typecheck": "pnpm -r run typecheck",
     "test": "pnpm -r run test",
     "db:up": "docker compose up -d",
-    "db:down": "docker compose down"
+    "db:down": "docker compose down",
+    "test:int": "pnpm --filter @zwadj/api test:int"
   }
 }

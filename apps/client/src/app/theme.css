@@ -1,0 +1,15 @@
+/* Zwadj CLIENT — accent chaleureux/corail (Lot 7/D26, AGENTS.md).
+   Importé APRÈS @zwadj/ui/styles.css (qui ne définit AUCUN accent).
+   AA : #DA3642 passe le contraste texte sur BLANC PUR uniquement — jamais en
+   texte sur --bg-2/--accent-soft (réservé aux boutons pleins + non-textuel). */
+:root {
+  --accent: #da3642;
+  --accent-strong: #b32c36;
+  --accent-soft: #fdeef0; /* = --rose-pale, recalibrée pour #DA3642 */
+  --on-accent: #ffffff;
+
+  /* Ramp de support (design.tsx via AGENTS.md) — pour les tranches marketing */
+  --rose-pale: #fdeef0;
+  --sage: #f5a7b0;
+  --star: #ebb04a;
+}

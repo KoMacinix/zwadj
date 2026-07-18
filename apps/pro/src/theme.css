@@ -1,0 +1,9 @@
+/* Zwadj PRO — accent neutre/sombre (Lot 7/D26, AGENTS.md).
+   Importé APRÈS @zwadj/ui/styles.css. #211C1B est quasi-noir : il passe le
+   contraste AA en texte sur tous les fonds clairs de la base zinc. */
+:root {
+  --accent: #211c1b;
+  --accent-strong: #0d0a09;
+  --accent-soft: #f1efee;
+  --on-accent: #ffffff;
+}

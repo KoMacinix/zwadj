@@ -41,7 +41,31 @@ export const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
+/**
+ * Variables SANS filet en production (finding Lot 0) : leurs défauts sont des
+ * valeurs de dev (localhost, cookie non Secure) — les laisser s'appliquer
+ * silencieusement en prod serait un incident (liens d'emails cassés, refresh
+ * token sur HTTP). Le contrôle porte sur les valeurs BRUTES : une fois le
+ * `.default()` Zod appliqué, l'absence n'est plus détectable.
+ * `JWT_ACCESS_SECRET` n'est pas listé : il n'a jamais eu de défaut, le schéma
+ * l'exige déjà partout.
+ */
+const PROD_REQUIRED_EXPLICIT = ["CLIENT_URL", "PRO_URL", "AUTH_COOKIE_SECURE"] as const;
+
 export function validateEnv(config: Record<string, unknown>): Env {
+  if (config.NODE_ENV === "production") {
+    const missing = PROD_REQUIRED_EXPLICIT.filter((key) => {
+      const value = config[key];
+      return value === undefined || value === null || value === "";
+    });
+    if (missing.length > 0) {
+      throw new Error(
+        `Variables d'environnement à définir EXPLICITEMENT en production (aucun défaut appliqué) :\n` +
+          missing.map((k) => `  - ${k}`).join("\n")
+      );
+    }
+  }
+
   const parsed = envSchema.safeParse(config);
   if (!parsed.success) {
     const details = parsed.error.issues.map((i) => `  - ${i.path.join(".")}: ${i.message}`).join("\n");
