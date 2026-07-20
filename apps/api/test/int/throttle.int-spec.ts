@@ -7,6 +7,7 @@ process.env.THROTTLE_REFRESH_LIMIT = "30";
 process.env.THROTTLE_LOGOUT_LIMIT = "10";
 process.env.THROTTLE_FORGOT_LIMIT = "3";
 process.env.THROTTLE_RESET_LIMIT = "10";
+process.env.THROTTLE_GOOGLE_LIMIT = "5"; // Lot 8
 process.env.THROTTLE_AUTH_TTL_MS = "900000";
 
 import request from "supertest";
@@ -89,5 +90,16 @@ describe("Rate limiting /auth (limites réelles)", () => {
     }
     const blocked = await request(server).post("/api/v1/auth/reset-password").send(payload);
     expect(blocked.status).toBe(429);
+  });
+
+  it("google (Lot 8) : 5 tentatives passent (ici 401, table vide), la 6e est rejetée en 429 — budget register", async () => {
+    const server = ctx.app.getHttpServer();
+    const payload = { idToken: "jamais-vu" };
+    for (let i = 1; i <= 5; i++) {
+      expect((await request(server).post("/api/v1/auth/google").send(payload)).status).toBe(401);
+    }
+    const blocked = await request(server).post("/api/v1/auth/google").send(payload);
+    expect(blocked.status).toBe(429);
+    expect(blocked.headers["retry-after"]).toBeDefined();
   });
 });

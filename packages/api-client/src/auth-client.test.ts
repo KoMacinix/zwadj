@@ -64,6 +64,24 @@ describe("createAuthClient — enveloppe d'erreur", () => {
 });
 
 describe("createAuthClient — session & refresh", () => {
+  it("googleAuth (Lot 9) : POST du body { idToken, locale } tel quel, token stocké comme login()", async () => {
+    const { impl, calls } = makeFetch({
+      "POST /auth/google": () => ({ status: 200, body: { accessToken: "jwt-g", user: USER } }),
+      "GET /auth/me": () => ({ status: 200, body: USER })
+    });
+    const client = createAuthClient(BASE, impl);
+
+    await client.googleAuth({ idToken: "gis-id-token", locale: "ar" });
+    // Le body porte la locale COURANTE du front (arbitrage Lot 8 — le défaut
+    // `fr` côté API n'est qu'un filet) et l'ID token intact.
+    expect(JSON.parse(String(calls[0]?.init?.body))).toEqual({ idToken: "gis-id-token", locale: "ar" });
+    expect(client.getAccessToken()).toBe("jwt-g");
+
+    await client.me();
+    const me = calls.find((c) => c.url.endsWith("/auth/me"));
+    expect((me?.init?.headers as Record<string, string>).Authorization).toBe("Bearer jwt-g");
+  });
+
   it("login stocke l'access token en mémoire ; /me part avec le Bearer et credentials include", async () => {
     const { impl, calls } = makeFetch({
       "POST /auth/login": () => ({ status: 200, body: { accessToken: "jwt-1", user: USER } }),

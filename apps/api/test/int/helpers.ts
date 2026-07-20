@@ -3,6 +3,7 @@ import { Test } from "@nestjs/testing";
 import request, { type Response } from "supertest";
 import { AppModule } from "../../src/app.module";
 import { configureApp } from "../../src/app.setup";
+import { GOOGLE_TOKEN_VERIFIER, GoogleTokenInvalidError, type GoogleIdTokenPayload } from "../../src/auth/google.types";
 import { EMAIL_SENDER, type SendEmailInput } from "../../src/common/email/email.types";
 import { PrismaService } from "../../src/prisma/prisma.service";
 
@@ -11,14 +12,21 @@ export interface TestContext {
   prisma: PrismaService;
   /** Emails « envoyés » pendant le test — capturés au niveau du port EMAIL_SENDER. */
   emails: SendEmailInput[];
+  /** Lot 8 : table idToken → payload du FAUX vérificateur Google. Les specs y
+   *  déposent leurs tokens ; tout token ABSENT est rejeté comme invalide —
+   *  Google n'est jamais joint depuis la suite (la vérification réelle avec
+   *  un vrai GOOGLE_CLIENT_ID relève de la validation locale). */
+  googleTokens: Map<string, GoogleIdTokenPayload>;
 }
 
 /** App de test = AppModule réel + configureApp (mêmes pipes/préfixe que la prod),
- *  seul le port email est remplacé par une capture en mémoire.
+ *  seuls les ports externes sont remplacés : email → capture en mémoire,
+ *  vérificateur Google → table locale (Lot 8).
  *  `controllers` (Lot 2) : sondes montées EN PLUS pour prouver les guards
  *  globaux sur des routes qui n'existent pas encore dans le domaine (RBAC). */
 export async function createTestApp(options?: { controllers?: Type<unknown>[] }): Promise<TestContext> {
   const emails: SendEmailInput[] = [];
+  const googleTokens = new Map<string, GoogleIdTokenPayload>();
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
     controllers: options?.controllers ?? []
@@ -29,12 +37,20 @@ export async function createTestApp(options?: { controllers?: Type<unknown>[] })
         emails.push(input);
       }
     })
+    .overrideProvider(GOOGLE_TOKEN_VERIFIER)
+    .useValue({
+      verify: async (idToken: string): Promise<GoogleIdTokenPayload> => {
+        const payload = googleTokens.get(idToken);
+        if (!payload) throw new GoogleTokenInvalidError();
+        return payload;
+      }
+    })
     .compile();
 
   const app = moduleRef.createNestApplication({ logger: false });
   configureApp(app);
   await app.init();
-  return { app, prisma: app.get(PrismaService), emails };
+  return { app, prisma: app.get(PrismaService), emails, googleTokens };
 }
 
 /** Vide toutes les tables entre les tests (identifiants issus de pg_tables —

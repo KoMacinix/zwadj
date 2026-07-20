@@ -7,6 +7,7 @@ import { Link, useRouter } from "../../i18n/navigation";
 import { useAuth } from "../../lib/auth/auth-context";
 import { validate, type FieldErrors } from "../../lib/auth/form-validation";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
+import { GoogleSignIn } from "./google-signin";
 
 export function LoginForm() {
   const t = useTranslations("auth.ui");
@@ -52,7 +53,7 @@ export function LoginForm() {
         <FormError message={formError} />
 
         <Field label={t("login.email")} required error={tval(fieldErrors.email)}>
-          {({ id, describedBy, invalid }) => (
+          {({ id, describedBy, invalid, required }) => (
             <input
               id={id}
               type="email"
@@ -62,6 +63,7 @@ export function LoginForm() {
               placeholder="amina@email.dz"
               aria-describedby={describedBy}
               aria-invalid={invalid || undefined}
+              required={required}
               dir="ltr"
             />
           )}
@@ -94,6 +96,9 @@ export function LoginForm() {
         <button type="submit" className="btn btn-accent" disabled={submitting}>
           {submitting ? t("login.submitting") : t("login.submit")}
         </button>
+
+        {/* Lot 9 — bouton GIS officiel (D29), auto-masqué sans NEXT_PUBLIC_GOOGLE_CLIENT_ID */}
+        <GoogleSignIn />
 
         <p className="form-foot">
           {t("login.noAccount")}{" "}

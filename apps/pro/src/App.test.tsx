@@ -14,6 +14,7 @@ function makeClient(overrides: Partial<AuthClient> = {}): AuthClient {
   return {
     bootstrap: vi.fn().mockResolvedValue(null),
     login: vi.fn(),
+    googleAuth: vi.fn(),
     register: vi.fn(),
     logout: vi.fn(),
     me: vi.fn(),
@@ -75,7 +76,11 @@ describe("Connexion PRO — D22 (403 EMAIL_NOT_VERIFIED)", () => {
     });
     renderAt("/auth/connexion", client);
 
-    fireEvent.change(await screen.findByLabelText("Email"), { target: { value: "contact@salle.dz" } });
+    const emailInput = await screen.findByLabelText("Email");
+    // Verrou D32 (correctif 7.1) : l'astérisque visuel est aria-hidden — c'est
+    // l'attribut natif `required` sur l'input réel qui informe le lecteur d'écran.
+    expect(emailInput).toBeRequired();
+    fireEvent.change(emailInput, { target: { value: "contact@salle.dz" } });
     fireEvent.change(screen.getByLabelText("Mot de passe"), { target: { value: "Motdepasse1" } });
     fireEvent.click(screen.getByRole("button", { name: "Se connecter" }));
 

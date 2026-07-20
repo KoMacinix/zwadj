@@ -35,7 +35,13 @@ export const envSchema = z.object({
     .default("false")
     .transform((v) => v === "true" || v === "1"),
   /** Expéditeur affiché par la primitive email. */
-  EMAIL_FROM: z.string().default("Zwadj <no-reply@zwadj.dz>")
+  EMAIL_FROM: z.string().default("Zwadj <no-reply@zwadj.dz>"),
+  /** OAuth Google (Lot 8) : audience de vérification des ID tokens GIS
+   *  (client ID « Web » du projet Google Cloud). ABSENTE hors production :
+   *  l'API boote, /auth/google répond 503 GOOGLE_AUTH_DISABLED — un poste de
+   *  dev sans projet Google Cloud reste pleinement fonctionnel. Exigée
+   *  EXPLICITEMENT en production (PROD_REQUIRED_EXPLICIT ci-dessous). */
+  GOOGLE_CLIENT_ID: z.string().min(1).optional()
   // Chargily : clés ajoutées ici à la tranche Paiement (Phase 7) — placeholder volontaire.
 });
 
@@ -49,8 +55,12 @@ export type Env = z.infer<typeof envSchema>;
  * `.default()` Zod appliqué, l'absence n'est plus détectable.
  * `JWT_ACCESS_SECRET` n'est pas listé : il n'a jamais eu de défaut, le schéma
  * l'exige déjà partout.
+ * `GOOGLE_CLIENT_ID` (Lot 8) est un cas voisin : pas de défaut, mais son
+ * ABSENCE est tolérée hors prod (503 sur /auth/google). En prod, le bouton
+ * Google est visible côté Client — une absence silencieuse serait un incident
+ * visible, donc même traitement fail-fast au boot.
  */
-const PROD_REQUIRED_EXPLICIT = ["CLIENT_URL", "PRO_URL", "AUTH_COOKIE_SECURE"] as const;
+const PROD_REQUIRED_EXPLICIT = ["CLIENT_URL", "PRO_URL", "AUTH_COOKIE_SECURE", "GOOGLE_CLIENT_ID"] as const;
 
 export function validateEnv(config: Record<string, unknown>): Env {
   if (config.NODE_ENV === "production") {

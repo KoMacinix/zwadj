@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import request from "supertest";
 import { createTestApp, extractToken, refreshCookieOf, registerUser, truncateAll, type TestContext } from "./helpers";
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 const NEW_PASSWORD = "NouveauMdp2";
 
 describe("POST /api/v1/auth/reset-password (intégration — D15/D16/D17)", () => {

@@ -107,7 +107,7 @@ export function RegisterPage() {
         <FormError message={formError} />
 
         <Field label={t("auth.ui.pro.businessName")} required error={tval(fieldErrors.businessName)}>
-          {({ id, describedBy, invalid }) => (
+          {({ id, describedBy, invalid, required }) => (
             <input
               id={id}
               type="text"
@@ -117,12 +117,13 @@ export function RegisterPage() {
               placeholder="Salle El Ryad"
               aria-describedby={describedBy}
               aria-invalid={invalid || undefined}
+              required={required}
             />
           )}
         </Field>
 
         <Field label={t("auth.ui.pro.phone")} required error={tval(fieldErrors.phone)} hint={t("auth.ui.pro.phoneHint")}>
-          {({ id, describedBy, invalid }) => (
+          {({ id, describedBy, invalid, required }) => (
             <input
               id={id}
               type="tel"
@@ -132,13 +133,14 @@ export function RegisterPage() {
               placeholder="+213551234567"
               aria-describedby={describedBy}
               aria-invalid={invalid || undefined}
+              required={required}
               dir="ltr"
             />
           )}
         </Field>
 
         <Field label={t("auth.ui.signup.email")} required error={tval(fieldErrors.email)}>
-          {({ id, describedBy, invalid }) => (
+          {({ id, describedBy, invalid, required }) => (
             <input
               id={id}
               type="email"
@@ -148,6 +150,7 @@ export function RegisterPage() {
               placeholder="contact@salle.dz"
               aria-describedby={describedBy}
               aria-invalid={invalid || undefined}
+              required={required}
               dir="ltr"
             />
           )}

@@ -9,6 +9,7 @@ import { Link, useRouter } from "../../i18n/navigation";
 import { useAuth } from "../../lib/auth/auth-context";
 import { issuesToFieldErrors, validate, type FieldErrors } from "../../lib/auth/form-validation";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
+import { GoogleSignIn } from "./google-signin";
 
 // Le schéma API (source de vérité) + deux contrôles PUREMENT front :
 // confirmation et acceptation CGU — l'API ne les reçoit pas (contrat Lot 1).
@@ -30,7 +31,15 @@ export function RegisterForm() {
   const router = useRouter();
   const apiErrorMessage = useApiErrorMessage();
 
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "", confirm: "", accept: false });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirm: "",
+    accept: false
+  });
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -44,8 +53,10 @@ export function RegisterForm() {
     setFormError(null);
     const checked = validate(registerFormSchema, {
       ...form,
-      firstName: form.firstName.trim() || undefined, // optionnels côté contrat
-      lastName: form.lastName.trim() || undefined,
+      // 7.2 : prénom/nom désormais REQUIS par le contrat (le schéma trim et
+      // renvoie firstNameRequired/lastNameRequired si vide) ; le téléphone,
+      // lui, est optionnel : champ laissé vide → omis, jamais envoyé en "".
+      phone: form.phone.trim() || undefined,
       locale
     });
     if (checked.errors) {
@@ -63,6 +74,7 @@ export function RegisterForm() {
         password: data.password,
         firstName: data.firstName,
         lastName: data.lastName,
+        phone: data.phone,
         locale: data.locale
       });
       router.push("/"); // session CLIENT ouverte non vérifiée : bandeau D1 visible
@@ -84,8 +96,8 @@ export function RegisterForm() {
         <FormError message={formError} />
 
         <div className="field-row">
-          <Field label={t("signup.firstName")}>
-            {({ id }) => (
+          <Field label={t("signup.firstName")} required error={tval(fieldErrors.firstName)}>
+            {({ id, describedBy, invalid, required }) => (
               <input
                 id={id}
                 type="text"
@@ -93,11 +105,14 @@ export function RegisterForm() {
                 onChange={(e) => set("firstName", e.target.value)}
                 autoComplete="given-name"
                 placeholder="Amina"
+                aria-describedby={describedBy}
+                aria-invalid={invalid || undefined}
+                required={required}
               />
             )}
           </Field>
-          <Field label={t("signup.lastName")}>
-            {({ id }) => (
+          <Field label={t("signup.lastName")} required error={tval(fieldErrors.lastName)}>
+            {({ id, describedBy, invalid, required }) => (
               <input
                 id={id}
                 type="text"
@@ -105,13 +120,16 @@ export function RegisterForm() {
                 onChange={(e) => set("lastName", e.target.value)}
                 autoComplete="family-name"
                 placeholder="Boudiaf"
+                aria-describedby={describedBy}
+                aria-invalid={invalid || undefined}
+                required={required}
               />
             )}
           </Field>
         </div>
 
         <Field label={t("signup.email")} required error={tval(fieldErrors.email)}>
-          {({ id, describedBy, invalid }) => (
+          {({ id, describedBy, invalid, required }) => (
             <input
               id={id}
               type="email"
@@ -119,6 +137,26 @@ export function RegisterForm() {
               onChange={(e) => set("email", e.target.value)}
               autoComplete="email"
               placeholder="amina@email.dz"
+              aria-describedby={describedBy}
+              aria-invalid={invalid || undefined}
+              required={required}
+              dir="ltr"
+            />
+          )}
+        </Field>
+
+        {/* 7.2 : téléphone OPTIONNEL — pas de `required`, donc pas d'astérisque
+           (Field) ni d'attribut natif. Libellé + hint : réutilise pro.phone /
+           pro.phoneHint (déjà FR/AR, formulation neutre) — zéro clé nouvelle. */}
+        <Field label={t("pro.phone")} hint={t("pro.phoneHint")} error={tval(fieldErrors.phone)}>
+          {({ id, describedBy, invalid }) => (
+            <input
+              id={id}
+              type="tel"
+              value={form.phone}
+              onChange={(e) => set("phone", e.target.value)}
+              autoComplete="tel"
+              placeholder="+213551234567"
               aria-describedby={describedBy}
               aria-invalid={invalid || undefined}
               dir="ltr"
@@ -168,15 +206,17 @@ export function RegisterForm() {
           {submitting ? t("signup.submitting") : t("signup.submit")}
         </button>
 
+        {/* Lot 9 — bouton GIS officiel (D29), auto-masqué sans NEXT_PUBLIC_GOOGLE_CLIENT_ID */}
+        <GoogleSignIn />
+
         <p className="form-foot">
           {t("signup.hasAccount")}{" "}
           <Link href="/auth/connexion" className="link-accent">
             {t("signup.goLogin")}
           </Link>
         </p>
-        <p className="field-hint" style={{ textAlign: "center" }}>
-          {t("signup.proHint")}
-        </p>
+        {/* 7.2 : proHint (« l'espace Pro arrive… », périmé depuis le Lot 6)
+           retiré — supplanté par le lien shell.proCta du panneau. Clé conservée. */}
       </form>
     </AuthShell>
   );

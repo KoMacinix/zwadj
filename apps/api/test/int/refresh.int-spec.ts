@@ -9,7 +9,7 @@ import {
   type TestContext
 } from "./helpers";
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 
 describe("POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12)", () => {
   let ctx: TestContext;

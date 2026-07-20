@@ -7,12 +7,14 @@ import {
   ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiServiceUnavailableResponse,
   ApiTags,
   ApiUnauthorizedResponse
 } from "@nestjs/swagger";
 import { Throttle } from "@nestjs/throttler";
 import {
   forgotPasswordSchema,
+  googleAuthSchema,
   loginSchema,
   registerSchema,
   resendVerificationSchema,
@@ -20,6 +22,8 @@ import {
   opaqueTokenSchema,
   type ForgotPasswordInput,
   type ForgotPasswordResponse,
+  type GoogleAuthInput,
+  type GoogleAuthResponse,
   type LoginInput,
   type LoginResponse,
   type LogoutResponse,
@@ -95,6 +99,29 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ): Promise<LoginResponse> {
     const { response, refreshCookie } = await this.auth.login(body);
+    res.cookie(AUTH.REFRESH_COOKIE_NAME, refreshCookie.value, this.refreshCookieOptions(refreshCookie));
+    return response;
+  }
+
+  @Public()
+  @Post("google")
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: AUTH_THROTTLE.google })
+  @ApiOperation({
+    summary: "Connexion/création via Google (Lot 8) — ID token GIS vérifié côté API, cookie TOUJOURS persistant (D30)"
+  })
+  @ApiOkResponse({
+    description: "{ accessToken, user } + Set-Cookie zwadj_rt — 200 même à la création (sémantique « se connecter »)"
+  })
+  @ApiUnauthorizedResponse({ description: "GOOGLE_TOKEN_INVALID (signature/audience/expiration/forme — indistincts)" })
+  @ApiForbiddenResponse({ description: "GOOGLE_EMAIL_NOT_VERIFIED | GOOGLE_ACCOUNT_NOT_CLIENT (PRO/ADMIN → espace Pro)" })
+  @ApiConflictResponse({ description: "GOOGLE_ACCOUNT_CONFLICT (identité Google déjà liée ailleurs — cas limite)" })
+  @ApiServiceUnavailableResponse({ description: "GOOGLE_AUTH_DISABLED (GOOGLE_CLIENT_ID absente de l'env)" })
+  async google(
+    @Body(new ZodValidationPipe(googleAuthSchema)) body: GoogleAuthInput,
+    @Res({ passthrough: true }) res: Response
+  ): Promise<GoogleAuthResponse> {
+    const { response, refreshCookie } = await this.auth.googleAuth(body);
     res.cookie(AUTH.REFRESH_COOKIE_NAME, refreshCookie.value, this.refreshCookieOptions(refreshCookie));
     return response;
   }

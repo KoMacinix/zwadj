@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import request from "supertest";
 import { createTestApp, extractToken, registerUser, truncateAll, type TestContext } from "./helpers";
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 const PRO = {
   role: "PRO",
   email: "salle@example.dz",

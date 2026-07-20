@@ -61,7 +61,7 @@ export function ForgotPage() {
           <h1>{t("auth.ui.forgot.title")}</h1>
           <FormError message={formError} />
           <Field label={t("auth.ui.forgot.email")} required error={tval(fieldErrors.email)}>
-            {({ id, describedBy, invalid }) => (
+            {({ id, describedBy, invalid, required }) => (
               <input
                 id={id}
                 type="email"
@@ -71,6 +71,7 @@ export function ForgotPage() {
                 placeholder="contact@salle.dz"
                 aria-describedby={describedBy}
                 aria-invalid={invalid || undefined}
+                required={required}
                 dir="ltr"
               />
             )}

@@ -11,6 +11,11 @@ import { Link } from "../../i18n/navigation";
 import { ZwadjLogo } from "@zwadj/ui";
 import { ApiError, NetworkError } from "../../lib/auth/auth-client";
 
+/** Cible du lien « Accès entreprises » (7.2) : connexion de la SPA Pro.
+ *  Même motif de repli que NEXT_PUBLIC_API_URL (lib/api.ts). Exportée depuis
+ *  le Lot 9 : l'erreur Google « compte Professionnel » pointe le même endroit. */
+export const PRO_URL = process.env.NEXT_PUBLIC_PRO_URL ?? "http://localhost:5173";
+
 export function AuthShell({
   mode,
   tabs = false,
@@ -28,7 +33,8 @@ export function AuthShell({
         <aside className="auth-decor">
           <div style={{ position: "relative" }}>
             <div style={{ marginBlockEnd: 24 }}>
-              <ZwadjLogo large iconSize={30} tagline={t("shell.tagline")} />
+              {/* 7.2 : sous-légende retirée (clé shell.tagline conservée, plus utilisée ici) */}
+              <ZwadjLogo large iconSize={30} />
             </div>
             <h2 className="auth-title">{t(`shell.${mode}Title`)}</h2>
             <p className="auth-subtitle">{t(`shell.${mode}Subtitle`)}</p>
@@ -55,6 +61,15 @@ export function AuthShell({
             </nav>
           )}
           {children}
+          {/* 7.2 : passerelle vers l'espace Pro — pied du panneau formulaire
+             (placement proposé, à valider par Ko). Origine EXTERNE (SPA Vite,
+             pas de préfixe locale) → <a> natif, jamais le Link next-intl. */}
+          <p className="form-foot" style={{ marginBlockStart: 20 }}>
+            {t("shell.proPrompt")}{" "}
+            <a href={`${PRO_URL}/auth/connexion`} className="link-accent">
+              {t("shell.proCta")}
+            </a>
+          </p>
         </section>
       </div>
     </main>
@@ -70,12 +85,13 @@ export function Field({
   children
 }: {
   label: string;
-  /** Astérisque --accent après le label (Lot 7, motif AuthField du design). */
+  /** Astérisque --accent après le label (Lot 7) + propagé via le sac de props
+      pour poser l'attribut natif `required` sur l'input réel (D32). */
   required?: boolean;
   error?: string;
   hint?: string;
   trailing?: ReactNode;
-  children: (props: { id: string; describedBy?: string; invalid: boolean }) => ReactNode;
+  children: (props: { id: string; describedBy?: string; invalid: boolean; required: boolean }) => ReactNode;
 }) {
   const id = useId();
   const errorId = `${id}-err`;
@@ -94,7 +110,7 @@ export function Field({
         </span>
         {trailing}
       </div>
-      {children({ id, describedBy: error ? errorId : undefined, invalid: Boolean(error) })}
+      {children({ id, describedBy: error ? errorId : undefined, invalid: Boolean(error), required })}
       {error ? (
         <p className="field-error" id={errorId} role="alert">
           {error}
@@ -147,6 +163,7 @@ export function PasswordField({
           autoComplete={autoComplete}
           aria-describedby={describedBy}
           aria-invalid={invalid || undefined}
+          required={required}
           dir="ltr"
         />
       )}

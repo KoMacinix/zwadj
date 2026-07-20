@@ -35,12 +35,24 @@ export const dzPhoneSchema = z
 
 export const localeSchema = z.enum(["fr", "ar"]).default("fr");
 
-/** Inscription CLIENT (D3 : le pro a son propre schéma, champs métier en plus). */
+/** Inscription CLIENT (D3 : le pro a son propre schéma, champs métier en plus).
+ *  Correctif 7.2 : prénom/nom OBLIGATOIRES (messages = clés i18n, comme toute
+ *  règle requise de ce fichier) ; téléphone OPTIONNEL, même format +213 que le
+ *  pro quand il est fourni (User.phone nullable — aucune migration). */
 export const registerClientSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
-  firstName: z.string().trim().min(1).max(100).optional(),
-  lastName: z.string().trim().min(1).max(100).optional(),
+  firstName: z
+    .string({ required_error: "auth.validation.firstNameRequired" })
+    .trim()
+    .min(1, "auth.validation.firstNameRequired")
+    .max(100, "auth.validation.firstNameTooLong"),
+  lastName: z
+    .string({ required_error: "auth.validation.lastNameRequired" })
+    .trim()
+    .min(1, "auth.validation.lastNameRequired")
+    .max(100, "auth.validation.lastNameTooLong"),
+  phone: dzPhoneSchema.optional(),
   locale: localeSchema
 });
 export type RegisterClientInput = z.infer<typeof registerClientSchema>;
@@ -85,6 +97,18 @@ export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 export const resendVerificationSchema = z.object({ email: emailSchema });
 export type ResendVerificationInput = z.infer<typeof resendVerificationSchema>;
 
+/** POST /auth/google (Lot 8) : ID token Google Identity Services, vérifié
+ *  côté API (`google-auth-library`, audience = GOOGLE_CLIENT_ID). `locale` =
+ *  locale COURANTE du front, utilisée UNIQUEMENT à la création d'un compte
+ *  (un compte existant garde la sienne) — même défaut `fr` que l'inscription. */
+export const googleAuthSchema = z.object({
+  idToken: z.string({ required_error: "auth.validation.tokenRequired" }).min(1, "auth.validation.tokenRequired"),
+  locale: localeSchema
+});
+// z.INPUT (patron loginSchema) : locale porte un .default("fr") — optionnelle
+// pour l'appelant, matérialisée au .parse() (ValidationPipe côté API).
+export type GoogleAuthInput = z.input<typeof googleAuthSchema>;
+
 /** Codes d'erreur métier auth (stables, consommés par les fronts). */
 export const AuthErrorCode = {
   EMAIL_ALREADY_USED: "EMAIL_ALREADY_USED",
@@ -92,7 +116,13 @@ export const AuthErrorCode = {
   EMAIL_NOT_VERIFIED: "EMAIL_NOT_VERIFIED", // D1 : bloquant pour PRO/ADMIN uniquement
   TOKEN_INVALID_OR_EXPIRED: "TOKEN_INVALID_OR_EXPIRED",
   UNAUTHENTICATED: "UNAUTHENTICATED", // JWT absent/invalide/expiré (JwtAuthGuard global, Lot 2)
-  FORBIDDEN: "FORBIDDEN" // rôle insuffisant (RolesGuard, Lot 2)
+  FORBIDDEN: "FORBIDDEN", // rôle insuffisant (RolesGuard, Lot 2)
+  // ── OAuth Google (Lot 8) ──────────────────────────────────────────────────
+  GOOGLE_TOKEN_INVALID: "GOOGLE_TOKEN_INVALID", // signature/audience/expiration/forme — indistincts (pas d'oracle)
+  GOOGLE_EMAIL_NOT_VERIFIED: "GOOGLE_EMAIL_NOT_VERIFIED", // email_verified=false côté Google : jamais de compte sur un email non prouvé
+  GOOGLE_ACCOUNT_NOT_CLIENT: "GOOGLE_ACCOUNT_NOT_CLIENT", // email lié à un compte PRO/ADMIN → « connectez-vous via l'espace Pro » (Lot 9)
+  GOOGLE_ACCOUNT_CONFLICT: "GOOGLE_ACCOUNT_CONFLICT", // identité Google déjà liée ailleurs / différente — cas limite, pas d'auto-réparation
+  GOOGLE_AUTH_DISABLED: "GOOGLE_AUTH_DISABLED" // GOOGLE_CLIENT_ID absent de l'env (503) — dev sans projet Google Cloud
 } as const;
 export type AuthErrorCode = (typeof AuthErrorCode)[keyof typeof AuthErrorCode];
 
@@ -154,6 +184,11 @@ export type MeResponse = AuthUserDTO;
 /** POST /auth/refresh (D12) — même forme que le login : le front n'a qu'UN
  *  chemin d'hydratation de session (boot d'app = refresh, mêmes données). */
 export type RefreshResponse = LoginResponse;
+/** POST /auth/google (Lot 8) — même forme que le login (D12) : accessToken en
+ *  mémoire JS, refresh en cookie httpOnly TOUJOURS persistant (D30). 200 même
+ *  quand le compte vient d'être créé : la sémantique est « se connecter avec
+ *  Google », pas « s'inscrire ». */
+export type GoogleAuthResponse = LoginResponse;
 /** POST /auth/logout — constante, idempotente : un logout n'échoue jamais. */
 export interface LogoutResponse {
   status: "ok";

@@ -34,5 +34,9 @@ export const AUTH_THROTTLE = {
   forgot: { limit: num("THROTTLE_FORGOT_LIMIT", 3), ttl: TTL },
   /** Reset password (Lot 4) : 10 / 15 min / IP — porte un coût argon2 (hash
    *  du nouveau mot de passe), même budget que login. */
-  reset: { limit: num("THROTTLE_RESET_LIMIT", 10), ttl: TTL }
+  reset: { limit: num("THROTTLE_RESET_LIMIT", 10), ttl: TTL },
+  /** Google (Lot 8) : 5 / 15 min / IP — la route peut CRÉER un compte, même
+   *  budget que register (cadrage OAuth : « ordre de grandeur register »).
+   *  Un utilisateur légitime ne la sollicite qu'une fois par session. */
+  google: { limit: num("THROTTLE_GOOGLE_LIMIT", 5), ttl: TTL }
 } as const;

@@ -2,7 +2,9 @@ import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
+  Inject,
   Injectable,
+  ServiceUnavailableException,
   UnauthorizedException
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -12,6 +14,7 @@ import {
   AuthErrorCode,
   type AuthUserDTO,
   type ForgotPasswordResponse,
+  type GoogleAuthInput,
   type LoginInput,
   type LoginResponse,
   type MeResponse,
@@ -26,6 +29,13 @@ import { PrismaService } from "../prisma/prisma.service";
 import { AUTH } from "./auth.constants";
 import { AuthEmailsService } from "./auth-emails.service";
 import type { AccessTokenPayload } from "./auth.types";
+import {
+  GOOGLE_TOKEN_VERIFIER,
+  GoogleAuthDisabledError,
+  GoogleTokenInvalidError,
+  type GoogleIdTokenPayload,
+  type GoogleTokenVerifier
+} from "./google.types";
 import { PasswordService } from "./password.service";
 import { TokenService } from "./token.service";
 
@@ -42,6 +52,13 @@ const AUTH_USER_SELECT = {
 } as const;
 
 type AuthUserRow = Prisma.UserGetPayload<{ select: typeof AUTH_USER_SELECT }>;
+
+/** Lot 8 : la matrice /auth/google a besoin EN PLUS du lien Google existant
+ *  (googleSub) pour distinguer liaison / connexion / conflit. Jamais exposé
+ *  dans le DTO — consommé uniquement par la logique interne. */
+const GOOGLE_AUTH_SELECT = { ...AUTH_USER_SELECT, googleSub: true } as const;
+
+type GoogleAuthUserRow = Prisma.UserGetPayload<{ select: typeof GOOGLE_AUTH_SELECT }>;
 
 /** Sortie de login() : le corps de réponse + ce qu'il faut au contrôleur pour
  *  poser le cookie refresh (la valeur BRUTE ne sort jamais autrement, D2). */
@@ -70,7 +87,10 @@ export class AuthService {
     private readonly emails: AuthEmailsService,
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
-    private readonly logger: PinoLogger
+    private readonly logger: PinoLogger,
+    // Lot 8 : port de vérification d'ID token Google (Symbol — l'interface TS
+    // n'existe pas à l'exécution, patron EMAIL_SENDER).
+    @Inject(GOOGLE_TOKEN_VERIFIER) private readonly googleVerifier: GoogleTokenVerifier
   ) {
     this.logger.setContext("Auth");
   }
@@ -92,7 +112,9 @@ export class AuthService {
             role: input.role,
             locale: input.locale,
             ...(input.role === "CLIENT"
-              ? { firstName: input.firstName ?? null, lastName: input.lastName ?? null }
+              ? // 7.2 : noms garantis non vides par registerClientSchema ; phone
+                // optionnel → null explicite (User.phone nullable, pas de migration)
+                { firstName: input.firstName, lastName: input.lastName, phone: input.phone ?? null }
               : {})
           },
           select: { id: true, email: true, role: true, locale: true }
@@ -192,9 +214,12 @@ export class AuthService {
     });
 
     // D5 — ORDRE CONTRACTUEL des contrôles :
-    // 1) email inconnu → coût argon2 factice payé quand même (anti-timing),
-    //    puis le MÊME 401 que pour un mauvais mot de passe (anti-énumération) ;
-    if (!user) {
+    // 1) email inconnu OU compte Google-only sans mot de passe (Lot 8 :
+    //    passwordHash null, IMPOSSIBLE via register) → coût argon2 factice
+    //    payé quand même (anti-timing), puis le MÊME 401 que pour un mauvais
+    //    mot de passe — l'existence du compte ET son mode d'authentification
+    //    restent indistinguables (anti-énumération, D5 étendu) ;
+    if (!user || user.passwordHash === null) {
       await this.passwords.verifyAgainstDummy(input.password);
       throw this.invalidCredentials();
     }
@@ -213,21 +238,25 @@ export class AuthService {
       });
     }
 
-    // D4 — access token : claims minimales { sub, role }, TTL court (env).
-    const payload: AccessTokenPayload = { sub: user.id, role: user.role };
-    const accessToken = await this.jwt.signAsync(payload);
-
-    // D7 — refresh token opaque : émis au login, hash SHA-256 seul en base.
-    // Sa consommation (rotation, /auth/refresh, /auth/logout, détection de
-    // réutilisation) est le périmètre du Lot 3.
-    const refreshRaw = this.tokens.generate();
-    const ttlDays = this.config.getOrThrow<number>("REFRESH_TOKEN_TTL_DAYS");
-    const expiresAt = new Date(Date.now() + ttlDays * 86_400_000);
     // LoginInput est z.input : rememberMe est optionnel au niveau du TYPE. Le
     // ValidationPipe applique le default(true) à l'exécution, mais on le
     // re-matérialise ici pour rester correct même si un appelant interne passe
     // un input non parsé (D27).
-    const persistent = input.rememberMe ?? true;
+    return this.issueSession(user, input.rememberMe ?? true);
+  }
+
+  /** Émission de session (login + Google, Lot 8) : access JWT (D4 — claims
+   *  minimales { sub, role }, TTL court env) + refresh opaque persisté (D7 —
+   *  hash SHA-256 seul en base, la valeur BRUTE ne sort que vers le cookie).
+   *  refresh() garde sa PROPRE émission : elle est transactionnelle avec la
+   *  rotation D9, ce helper ne l'est pas. */
+  private async issueSession(user: AuthUserRow, persistent: boolean): Promise<LoginResult> {
+    const payload: AccessTokenPayload = { sub: user.id, role: user.role };
+    const accessToken = await this.jwt.signAsync(payload);
+
+    const refreshRaw = this.tokens.generate();
+    const ttlDays = this.config.getOrThrow<number>("REFRESH_TOKEN_TTL_DAYS");
+    const expiresAt = new Date(Date.now() + ttlDays * 86_400_000);
     await this.prisma.refreshToken.create({
       data: { userId: user.id, tokenHash: this.tokens.hash(refreshRaw), expiresAt, persistent }
     });
@@ -236,6 +265,137 @@ export class AuthService {
       response: { accessToken, user: this.toAuthUserDTO(user) },
       refreshCookie: { value: refreshRaw, expiresAt, persistent }
     };
+  }
+
+  // ── Google (Lot 8 — cadrage OAuth : GIS ID token direct, D30 persistant) ──
+  async googleAuth(input: GoogleAuthInput): Promise<LoginResult> {
+    let payload: GoogleIdTokenPayload;
+    try {
+      payload = await this.googleVerifier.verify(input.idToken);
+    } catch (e) {
+      // GOOGLE_CLIENT_ID absente (dev sans projet Google Cloud) : la
+      // fonctionnalité est ÉTEINTE, pas cassée — 503 explicite.
+      if (e instanceof GoogleAuthDisabledError) {
+        throw new ServiceUnavailableException({
+          code: AuthErrorCode.GOOGLE_AUTH_DISABLED,
+          message: "auth.errors.googleAuthDisabled"
+        });
+      }
+      // Signature/audience/expiration/forme : UN seul 401, pas d'oracle.
+      if (e instanceof GoogleTokenInvalidError) {
+        throw new UnauthorizedException({
+          code: AuthErrorCode.GOOGLE_TOKEN_INVALID,
+          message: "auth.errors.googleTokenInvalid"
+        });
+      }
+      throw e;
+    }
+
+    // Cadrage OAuth — email_verified OBLIGATOIRE : jamais de création NI de
+    // liaison sur un email que Google lui-même ne considère pas prouvé.
+    if (!payload.emailVerified) {
+      throw new ForbiddenException({
+        code: AuthErrorCode.GOOGLE_EMAIL_NOT_VERIFIED,
+        message: "auth.errors.googleEmailNotVerified"
+      });
+    }
+
+    const existing = await this.prisma.user.findUnique({
+      where: { email: payload.email },
+      select: GOOGLE_AUTH_SELECT
+    });
+    if (existing) return this.loginExistingGoogleUser(existing, payload);
+
+    // Email introuvable → création CLIENT. Patron register : JAMAIS de
+    // pré-check + create séparés — P2002 est la source de vérité de la course.
+    try {
+      const created = await this.prisma.user.create({
+        data: {
+          email: payload.email,
+          passwordHash: null, // compte Google-only : login classique → 401 (D5 étendu)
+          role: "CLIENT", // cadrage OAuth : la création Google ne produit JAMAIS un PRO/ADMIN
+          locale: input.locale ?? "fr", // z.input : default re-matérialisé (patron rememberMe/D27)
+          firstName: payload.givenName,
+          lastName: payload.familyName,
+          googleSub: payload.sub,
+          emailVerifiedAt: new Date() // Google a déjà vérifié CET email (email_verified=true)
+        },
+        select: AUTH_USER_SELECT
+      });
+      // D30 — cookie TOUJOURS persistant sur le flux Google.
+      return await this.issueSession(created, true);
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+        // Course : un register/googleAuth concurrent a créé cet email entre le
+        // findUnique et le create → relire, puis appliquer la MÊME matrice.
+        const raced = await this.prisma.user.findUnique({
+          where: { email: payload.email },
+          select: GOOGLE_AUTH_SELECT
+        });
+        if (raced) return this.loginExistingGoogleUser(raced, payload);
+        // P2002 sans ligne sur CET email = collision users_google_sub_key :
+        // cette identité Google est déjà liée à un AUTRE email Zwadj (email
+        // changé côté Google). Pas d'auto-réparation — cas limite assumé,
+        // alternative « lookup par sub d'abord » proposée au rapport (D33 ?).
+        throw this.googleAccountConflict();
+      }
+      throw e;
+    }
+  }
+
+  /** Matrice « email trouvé » du cadrage OAuth (Lot 8). */
+  private async loginExistingGoogleUser(
+    user: GoogleAuthUserRow,
+    payload: GoogleIdTokenPayload
+  ): Promise<LoginResult> {
+    // Branche 2 — PRO/ADMIN : JAMAIS connectables via Google (mot de passe
+    // seul). Le front (Lot 9) affiche « connectez-vous via l'espace Pro ».
+    // Pas d'oracle créé ici : le détenteur du token Google prouve déjà qu'il
+    // contrôle CET email — il n'apprend rien qu'il ne pouvait savoir.
+    if (user.role !== "CLIENT") {
+      throw new ForbiddenException({
+        code: AuthErrorCode.GOOGLE_ACCOUNT_NOT_CLIENT,
+        message: "auth.errors.googleAccountNotClient"
+      });
+    }
+    // Garde-fou : l'email correspond mais le compte est lié à une AUTRE
+    // identité Google (sub ≠) — email recyclé côté Google. Pas d'écrasement
+    // silencieux du lien existant.
+    if (user.googleSub !== null && user.googleSub !== payload.sub) {
+      throw this.googleAccountConflict();
+    }
+
+    // Branche 1 — CLIENT : connexion, avec liaison au premier login Google
+    // (googleSub posé) et backfill emailVerifiedAt si null — MÊME base de
+    // confiance que la création : Google a vérifié CET email exact.
+    const data: { googleSub?: string; emailVerifiedAt?: Date } = {};
+    if (user.googleSub === null) data.googleSub = payload.sub;
+    if (user.emailVerifiedAt === null) data.emailVerifiedAt = new Date();
+
+    let row: AuthUserRow = user;
+    if (data.googleSub !== undefined || data.emailVerifiedAt !== undefined) {
+      try {
+        row = await this.prisma.user.update({ where: { id: user.id }, data, select: AUTH_USER_SELECT });
+      } catch (e) {
+        // users_google_sub_key : ce sub vient d'être lié à un autre compte
+        // (course) — même refus que le garde-fou ci-dessus.
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+          throw this.googleAccountConflict();
+        }
+        throw e;
+      }
+    }
+
+    // D30 — cookie TOUJOURS persistant sur le flux Google.
+    return this.issueSession(row, true);
+  }
+
+  /** 409 unique des cas limites de liaison Google — indistincts volontairement. */
+  private googleAccountConflict(): ConflictException {
+    return new ConflictException({
+      code: AuthErrorCode.GOOGLE_ACCOUNT_CONFLICT,
+      message: "auth.errors.googleAccountConflict"
+    });
   }
 
   // ── /auth/me : données FRAÎCHES depuis la base, jamais un décodage du JWT ──

@@ -4,6 +4,8 @@ import { JwtModule, type JwtSignOptions } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
 import { AuthEmailsService } from "./auth-emails.service";
 import { AuthService } from "./auth.service";
+import { GoogleAuthLibraryVerifier } from "./google-verifier";
+import { GOOGLE_TOKEN_VERIFIER } from "./google.types";
 import { JwtAuthGuard } from "./jwt-auth.guard";
 import { PasswordService } from "./password.service";
 import { RolesGuard } from "./roles.guard";
@@ -27,7 +29,18 @@ import { TokenService } from "./token.service";
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthEmailsService, PasswordService, TokenService, JwtAuthGuard, RolesGuard],
+  providers: [
+    AuthService,
+    AuthEmailsService,
+    PasswordService,
+    TokenService,
+    JwtAuthGuard,
+    RolesGuard,
+    // Lot 8 : port → adapter réel google-auth-library. Les tests d'intégration
+    // substituent une table idToken → payload via overrideProvider (patron
+    // EMAIL_SENDER) — Google n'est jamais joint depuis la suite de tests.
+    { provide: GOOGLE_TOKEN_VERIFIER, useClass: GoogleAuthLibraryVerifier }
+  ],
   // JwtModule exporté : les APP_GUARD déclarés dans app.module (contexte racine)
   // doivent pouvoir résoudre JwtService.
   exports: [PasswordService, TokenService, JwtModule]

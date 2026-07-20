@@ -89,12 +89,13 @@ export function Field({
   children
 }: {
   label: string;
-  /** Astérisque --accent après le label (Lot 7, motif AuthField du design). */
+  /** Astérisque --accent après le label (Lot 7) + propagé via le sac de props
+      pour poser l'attribut natif `required` sur l'input réel (D32). */
   required?: boolean;
   error?: string;
   hint?: string;
   trailing?: ReactNode;
-  children: (props: { id: string; describedBy?: string; invalid: boolean }) => ReactNode;
+  children: (props: { id: string; describedBy?: string; invalid: boolean; required: boolean }) => ReactNode;
 }) {
   const id = useId();
   const errorId = `${id}-err`;
@@ -113,7 +114,7 @@ export function Field({
         </span>
         {trailing}
       </div>
-      {children({ id, describedBy: error ? errorId : undefined, invalid: Boolean(error) })}
+      {children({ id, describedBy: error ? errorId : undefined, invalid: Boolean(error), required })}
       {error ? (
         <p className="field-error" id={errorId} role="alert">
           {error}
@@ -165,6 +166,7 @@ export function PasswordField({
           autoComplete={autoComplete}
           aria-describedby={describedBy}
           aria-invalid={invalid || undefined}
+          required={required}
           dir="ltr"
         />
       )}

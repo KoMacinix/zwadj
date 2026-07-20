@@ -8,7 +8,7 @@ import {
   type TestContext
 } from "./helpers";
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 const PRO = {
   role: "PRO",
   email: "salle@example.dz",
@@ -61,7 +61,7 @@ describe("GET /api/v1/auth/me (intégration — JwtAuthGuard réel + lecture fra
       locale: "fr",
       emailVerified: false,
       firstName: "Aya",
-      lastName: null,
+      lastName: "Boudiaf",
       proProfile: null
     });
     expect(res.body).not.toHaveProperty("passwordHash");

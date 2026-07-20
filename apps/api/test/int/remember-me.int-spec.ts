@@ -7,7 +7,7 @@
 import request from "supertest";
 import { createTestApp, refreshCookieOf, registerUser, truncateAll, type TestContext } from "./helpers";
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 
 describe("POST /api/v1/auth/login + refresh (intégration — rememberMe / persistent, D27)", () => {
   let ctx: TestContext;

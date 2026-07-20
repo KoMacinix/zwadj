@@ -9,7 +9,7 @@ import {
   type TestContext
 } from "./helpers";
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 const PRO = {
   role: "PRO",
   email: "salle@example.dz",

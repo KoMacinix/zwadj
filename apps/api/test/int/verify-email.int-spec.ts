@@ -17,7 +17,7 @@ describe("GET /api/v1/auth/verify-email/:token (intégration)", () => {
   async function registerAndGetToken(email = "aya@example.dz"): Promise<string> {
     await request(ctx.app.getHttpServer())
       .post("/api/v1/auth/register")
-      .send({ role: "CLIENT", email, password: "Motdepasse1" });
+      .send({ role: "CLIENT", email, password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" });
     return extractToken(ctx.emails.at(-1)!.text);
   }
 

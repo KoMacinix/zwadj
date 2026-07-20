@@ -509,3 +509,35 @@ button {
   text-align: center;
   margin-block-start: 6px;
 }
+
+/* ── Bloc Google (Lot 9) — le BOUTON lui-même est rendu par GIS (D29 : jamais
+   custom-stylé, pas de hover-lift ni de tokens dessus), on ne style que son
+   environnement : séparateur « ou / أو » et emplacement centré. ───────────── */
+.google-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.or-sep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+}
+
+.or-sep::before,
+.or-sep::after {
+  content: "";
+  flex: 1;
+  border-block-start: 1px solid var(--line);
+}
+
+.google-btn-slot {
+  display: flex;
+  justify-content: center;
+  /* Hauteur du bouton GIS « large » réservée : pas de saut de mise en page
+     entre l'arrivée du script et le rendu du bouton. */
+  min-block-size: 40px;
+}

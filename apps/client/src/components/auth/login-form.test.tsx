@@ -26,6 +26,7 @@ function makeClient(overrides: Partial<AuthClient> = {}): AuthClient {
   return {
     bootstrap: vi.fn().mockResolvedValue(null),
     login: vi.fn(),
+    googleAuth: vi.fn(),
     register: vi.fn(),
     logout: vi.fn(),
     me: vi.fn(),
@@ -65,6 +66,10 @@ describe("LoginForm (fr)", () => {
   it("soumission vide : erreurs de validation partagées, AUCUN appel API", async () => {
     const client = makeClient();
     renderLogin(client);
+
+    // Verrou D32 (correctif 7.1) : l'astérisque visuel est aria-hidden — c'est
+    // l'attribut natif `required` sur l'input réel qui informe le lecteur d'écran.
+    expect(screen.getByLabelText("Email")).toBeRequired();
 
     fireEvent.click(screen.getByRole("button", { name: "Se connecter" }));
 

@@ -64,9 +64,10 @@ export function ForgotForm() {
           <FormError message={formError} />
           <Field
             label={t("forgot.email")}
+            required
             error={fieldErrors.email ? tv(fieldErrors.email.replace("auth.validation.", "")) : undefined}
           >
-            {({ id, describedBy, invalid }) => (
+            {({ id, describedBy, invalid, required }) => (
               <input
                 id={id}
                 type="email"
@@ -76,6 +77,7 @@ export function ForgotForm() {
                 placeholder="amina@email.dz"
                 aria-describedby={describedBy}
                 aria-invalid={invalid || undefined}
+                required={required}
                 dir="ltr"
               />
             )}

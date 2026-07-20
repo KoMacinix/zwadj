@@ -80,7 +80,7 @@ export function LoginPage() {
           ))}
 
         <Field label={t("auth.ui.login.email")} required error={tval(fieldErrors.email)}>
-          {({ id, describedBy, invalid }) => (
+          {({ id, describedBy, invalid, required }) => (
             <input
               id={id}
               type="email"
@@ -90,6 +90,7 @@ export function LoginPage() {
               placeholder="contact@salle.dz"
               aria-describedby={describedBy}
               aria-invalid={invalid || undefined}
+              required={required}
               dir="ltr"
             />
           )}

@@ -184,13 +184,14 @@ enum NotificationStatus {
 model User {
   id           String     @id @default(dbgenerated("uuidv7()")) @db.Uuid
   email        String     @unique // backlog 3.8 : index unique User.email
-  passwordHash String     @map("password_hash")
+  passwordHash String?    @map("password_hash") // Lot 8 : null = compte créé via Google (jamais via register)
   role         UserRole   @default(CLIENT)
   locale       Locale     @default(fr)
   status       UserStatus @default(ACTIVE)
   firstName    String?    @map("first_name")
   lastName     String?    @map("last_name")
   phone        String? // normalisé E.164 +213 côté app (backlog 23.9 / libphonenumber)
+  googleSub    String?    @unique @map("google_sub") // Lot 8 : claim `sub` du token Google (identité stable), unique quand présent
 
   emailVerifiedAt DateTime? @map("email_verified_at") @db.Timestamptz(6)
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)

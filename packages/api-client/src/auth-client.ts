@@ -9,6 +9,8 @@
 import type {
   AuthUserDTO,
   ForgotPasswordResponse,
+  GoogleAuthInput,
+  GoogleAuthResponse,
   LoginInput,
   LoginResponse,
   LogoutResponse,
@@ -72,6 +74,10 @@ async function toApiError(res: Response): Promise<ApiError> {
 export interface AuthClient {
   bootstrap(): Promise<AuthUserDTO | null>;
   login(input: LoginInput): Promise<LoginResponse>;
+  /** Lot 9 — POST /auth/google (ID token GIS + locale courante du front).
+   *  Consommé par le Client UNIQUEMENT (cadrage OAuth : bouton absent du Pro) ;
+   *  vit ici pour partager le stockage mémoire du token (D2) avec login(). */
+  googleAuth(input: GoogleAuthInput): Promise<GoogleAuthResponse>;
   register(input: RegisterInput): Promise<RegisterResponse>;
   logout(): Promise<LogoutResponse>;
   me(): Promise<MeResponse>;
@@ -158,6 +164,14 @@ export function createAuthClient(
 
     async login(input) {
       const session = await raw<LoginResponse>("/auth/login", { method: "POST", body: input });
+      accessToken = session.accessToken;
+      return session;
+    },
+
+    async googleAuth(input) {
+      // 200 même à la création (arbitrage Lot 8) : une seule forme de réponse,
+      // donc un seul chemin d'hydratation — identique à login().
+      const session = await raw<GoogleAuthResponse>("/auth/google", { method: "POST", body: input });
       accessToken = session.accessToken;
       return session;
     },

@@ -4,7 +4,7 @@
 // React. Trois états : loading (boot silencieux en cours), anonymous,
 // authenticated. Le bandeau D1 lit `user.emailVerified` ici.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import type { AuthUserDTO, LoginInput, RegisterInput } from "@zwadj/types";
+import type { AuthUserDTO, GoogleAuthInput, LoginInput, RegisterInput } from "@zwadj/types";
 import { createAuthClient, type AuthClient } from "./auth-client";
 
 export type AuthStatus = "loading" | "anonymous" | "authenticated";
@@ -16,6 +16,10 @@ export interface AuthContextValue {
    *  avec l'app pro — l'injection de test couvre AUSSI les flux anonymes). */
   api: AuthClient;
   login(input: LoginInput): Promise<AuthUserDTO>;
+  /** Connexion/création via Google (Lot 9) : même hydratation que login —
+   *  l'API renvoie 200 { accessToken, user } dans TOUS les cas (arbitrage
+   *  Lot 8), y compris à la création. Cookie toujours persistant (D30). */
+  loginWithGoogle(input: GoogleAuthInput): Promise<AuthUserDTO>;
   /** Inscription CLIENT puis connexion enchaînée (D1 : un CLIENT non vérifié
    *  peut ouvrir sa session — le bandeau prend le relais). */
   registerClient(input: RegisterInput & { role: "CLIENT" }): Promise<AuthUserDTO>;
@@ -64,6 +68,16 @@ export function AuthProvider({
     [api]
   );
 
+  const loginWithGoogle = useCallback(
+    async (input: GoogleAuthInput) => {
+      const session = await api.googleAuth(input);
+      setUser(session.user);
+      setStatus("authenticated");
+      return session.user;
+    },
+    [api]
+  );
+
   const registerClient = useCallback(
     async (input: RegisterInput & { role: "CLIENT" }) => {
       await api.register(input);
@@ -96,8 +110,8 @@ export function AuthProvider({
   }, [api]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ status, user, api, login, registerClient, logout, resendVerification, refreshUser }),
-    [status, user, api, login, registerClient, logout, resendVerification, refreshUser]
+    () => ({ status, user, api, login, loginWithGoogle, registerClient, logout, resendVerification, refreshUser }),
+    [status, user, api, login, loginWithGoogle, registerClient, logout, resendVerification, refreshUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

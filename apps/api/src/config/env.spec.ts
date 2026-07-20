@@ -34,13 +34,14 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
   });
 
   // ── Garde production (finding Lot 0) : plus de défaut silencieux en prod ──
-  describe("NODE_ENV=production : CLIENT_URL / PRO_URL / AUTH_COOKIE_SECURE exigées explicitement", () => {
+  describe("NODE_ENV=production : CLIENT_URL / PRO_URL / AUTH_COOKIE_SECURE / GOOGLE_CLIENT_ID exigées explicitement", () => {
     const prodEnv = {
       ...baseEnv,
       NODE_ENV: "production",
       CLIENT_URL: "https://zwadj.dz",
       PRO_URL: "https://pro.zwadj.dz",
-      AUTH_COOKIE_SECURE: "true"
+      AUTH_COOKIE_SECURE: "true",
+      GOOGLE_CLIENT_ID: "1234567890-abc.apps.googleusercontent.com" // Lot 8
     };
     const omit = (obj: Record<string, unknown>, key: string): Record<string, unknown> => {
       const copy = { ...obj };
@@ -48,11 +49,11 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
       return copy;
     };
 
-    it("boote quand les trois sont fournies", () => {
+    it("boote quand les quatre sont fournies", () => {
       expect(validateEnv(prodEnv).AUTH_COOKIE_SECURE).toBe(true);
     });
 
-    it.each(["CLIENT_URL", "PRO_URL", "AUTH_COOKIE_SECURE"] as const)(
+    it.each(["CLIENT_URL", "PRO_URL", "AUTH_COOKIE_SECURE", "GOOGLE_CLIENT_ID"] as const)(
       "refuse de booter sans %s en nommant la variable",
       (key) => {
         expect(() => validateEnv(omit(prodEnv, key))).toThrow(new RegExp(key));
@@ -65,7 +66,7 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
 
     it("liste TOUTES les manquantes d'un coup (pas une découverte au compte-gouttes)", () => {
       expect(() => validateEnv({ ...baseEnv, NODE_ENV: "production" })).toThrow(
-        /CLIENT_URL[\s\S]*PRO_URL[\s\S]*AUTH_COOKIE_SECURE/
+        /CLIENT_URL[\s\S]*PRO_URL[\s\S]*AUTH_COOKIE_SECURE[\s\S]*GOOGLE_CLIENT_ID/
       );
     });
 
@@ -73,6 +74,11 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
       const env = validateEnv({ ...baseEnv, NODE_ENV: "development" });
       expect(env.CLIENT_URL).toBe("http://localhost:3000");
       expect(env.AUTH_COOKIE_SECURE).toBe(false);
+    });
+
+    it("GOOGLE_CLIENT_ID hors prod : ABSENTE = toléré (undefined), l'API boote — /auth/google répondra 503 (Lot 8)", () => {
+      const env = validateEnv({ ...baseEnv, NODE_ENV: "development" });
+      expect(env.GOOGLE_CLIENT_ID).toBeUndefined();
     });
 
     it("JWT_ACCESS_SECRET : comportement inchangé (déjà requis partout, jamais de défaut)", () => {

@@ -16,3 +16,4 @@ process.env.THROTTLE_REFRESH_LIMIT = "10000";
 process.env.THROTTLE_LOGOUT_LIMIT = "10000";
 process.env.THROTTLE_FORGOT_LIMIT = "10000";
 process.env.THROTTLE_RESET_LIMIT = "10000";
+process.env.THROTTLE_GOOGLE_LIMIT = "10000"; // Lot 8

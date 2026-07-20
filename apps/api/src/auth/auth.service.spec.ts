@@ -26,7 +26,8 @@ type UserRow = {
   firstName: string | null;
   lastName: string | null;
   proProfile: { businessName: string; phone: string } | null;
-  passwordHash: string;
+  // Lot 8 : null = compte Google-only (créé via /auth/google, jamais via register).
+  passwordHash: string | null;
 };
 
 function makeUser(overrides: Partial<UserRow>): UserRow {
@@ -75,6 +76,10 @@ function makeService(user: UserRow | null, passwordOk: boolean) {
   const jwt = new JwtService({ secret: "unit-test-secret-0123456789-0123456789", signOptions: { expiresIn: "15m" } });
   const config = { getOrThrow: vi.fn().mockReturnValue(30) };
   const logger = { setContext: vi.fn(), error: vi.fn(), warn: vi.fn(), info: vi.fn() };
+  // Lot 8 : le login N'APPELLE JAMAIS le vérificateur Google — un reject
+  // systématique le prouverait bruyamment (la matrice googleAuth a son propre
+  // spec dédié, google-auth.spec.ts, avec un faux configurable).
+  const googleVerifier = { verify: vi.fn().mockRejectedValue(new Error("vérificateur Google non attendu ici")) };
 
   const service = new AuthService(
     prisma as unknown as PrismaService,
@@ -83,9 +88,10 @@ function makeService(user: UserRow | null, passwordOk: boolean) {
     emails as unknown as AuthEmailsService,
     jwt,
     config as unknown as ConfigService,
-    logger as unknown as PinoLogger
+    logger as unknown as PinoLogger,
+    googleVerifier
   );
-  return { service, prisma, passwords, logger, emails };
+  return { service, prisma, passwords, logger, emails, googleVerifier };
 }
 
 const CREDENTIALS = { email: "aya@example.dz", password: "Motdepasse1", rememberMe: true };
@@ -121,6 +127,25 @@ describe("AuthService.login — matrice D1 × D5", () => {
       code: "INVALID_CREDENTIALS",
       message: "auth.errors.invalidCredentials"
     });
+  });
+
+  it("compte Google-only (passwordHash null) : coût factice payé, 401 au corps identique (D5 étendu, Lot 8)", async () => {
+    const { service, passwords, prisma } = makeService(makeUser({ passwordHash: null }), true);
+    let caught: UnauthorizedException | undefined;
+    try {
+      await service.login(CREDENTIALS);
+    } catch (e) {
+      caught = e as UnauthorizedException;
+    }
+
+    expect(caught).toBeInstanceOf(UnauthorizedException);
+    expect(caught!.getResponse()).toEqual({ code: "INVALID_CREDENTIALS", message: "auth.errors.invalidCredentials" });
+    // Hash absent : verify() réel JAMAIS invoqué — le factice égalise le
+    // timing avec « email inconnu » ; ni l'existence du compte ni son mode
+    // d'authentification ne transparaissent.
+    expect(passwords.verifyAgainstDummy).toHaveBeenCalledTimes(1);
+    expect(passwords.verify).not.toHaveBeenCalled();
+    expect(prisma.refreshToken.create).not.toHaveBeenCalled();
   });
 
   it("PRO non vérifié : 403 EMAIL_NOT_VERIFIED — évalué APRÈS le mot de passe (D5), aucun token émis", async () => {

@@ -27,15 +27,54 @@ describe("Schémas Zod auth (@zwadj/types)", () => {
   });
 
   it("registerClient : normalise l'email (trim + minuscules) et défaute locale=fr", () => {
-    const r = registerClientSchema.parse({ email: "  Aya@Example.DZ ", password: "Motdepasse1" });
+    const r = registerClientSchema.parse({
+      email: "  Aya@Example.DZ ",
+      password: "Motdepasse1",
+      firstName: "Aya",
+      lastName: "Boudiaf"
+    });
     expect(r.email).toBe("aya@example.dz");
     expect(r.locale).toBe("fr");
   });
 
   it("registerClient : rejette un email invalide avec la clé i18n", () => {
-    const r = registerClientSchema.safeParse({ email: "pas-un-email", password: "Motdepasse1" });
+    const r = registerClientSchema.safeParse({
+      email: "pas-un-email",
+      password: "Motdepasse1",
+      firstName: "Aya",
+      lastName: "Boudiaf"
+    });
     expect(r.success).toBe(false);
     if (!r.success) expect(r.error.issues[0]?.message).toBe("auth.validation.emailInvalid");
+  });
+
+  it("registerClient (7.2) : prénom/nom REQUIS (clés i18n), téléphone optionnel au format +213", () => {
+    const base = { email: "aya@example.dz", password: "Motdepasse1" };
+
+    const sansNoms = registerClientSchema.safeParse(base);
+    expect(sansNoms.success).toBe(false);
+    if (!sansNoms.success) {
+      const messages = sansNoms.error.issues.map((i) => i.message);
+      expect(messages).toContain("auth.validation.firstNameRequired");
+      expect(messages).toContain("auth.validation.lastNameRequired");
+    }
+
+    // Vide-après-trim = manquant (même clé que l'absence, jamais le défaut Zod)
+    const nomsBlancs = registerClientSchema.safeParse({ ...base, firstName: "  ", lastName: "  " });
+    expect(nomsBlancs.success).toBe(false);
+    if (!nomsBlancs.success) {
+      expect(nomsBlancs.error.issues.map((i) => i.message)).toContain("auth.validation.firstNameRequired");
+    }
+
+    const noms = { ...base, firstName: "Aya", lastName: "Boudiaf" };
+    expect(registerClientSchema.safeParse(noms).success).toBe(true); // téléphone omis : OK
+    expect(registerClientSchema.safeParse({ ...noms, phone: "+213551234567" }).success).toBe(true);
+
+    const telInvalide = registerClientSchema.safeParse({ ...noms, phone: "0551234567" });
+    expect(telInvalide.success).toBe(false);
+    if (!telInvalide.success) {
+      expect(telInvalide.error.issues[0]?.message).toBe("auth.validation.phoneInvalid");
+    }
   });
 
   it("registerPro (D3) : exige businessName et téléphone +213", () => {
@@ -76,7 +115,17 @@ describe("Schémas Zod auth (@zwadj/types)", () => {
   });
 
   it("registerSchema (union) : discrimine CLIENT/PRO, refuse ADMIN et l'absence de rôle", () => {
-    expect(registerSchema.safeParse({ role: "CLIENT", email: "a@b.dz", password: "Motdepasse1" }).success).toBe(true);
+    expect(
+      registerSchema.safeParse({
+        role: "CLIENT",
+        email: "a@b.dz",
+        password: "Motdepasse1",
+        firstName: "Aya",
+        lastName: "Boudiaf"
+      }).success
+    ).toBe(true);
+    // 7.2 : un CLIENT sans prénom/nom est rejeté PAR LA BRANCHE CLIENT de l'union
+    expect(registerSchema.safeParse({ role: "CLIENT", email: "a@b.dz", password: "Motdepasse1" }).success).toBe(false);
     expect(
       registerSchema.safeParse({
         role: "PRO",

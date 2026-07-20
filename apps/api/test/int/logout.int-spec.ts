@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import request from "supertest";
 import { createTestApp, refreshCookieOf, registerUser, truncateAll, type TestContext } from "./helpers";
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 
 describe("POST /api/v1/auth/logout (intégration — D11 idempotent)", () => {
   let ctx: TestContext;

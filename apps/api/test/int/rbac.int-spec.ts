@@ -23,7 +23,7 @@ class RbacProbeController {
   }
 }
 
-const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1" };
+const CLIENT = { role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" };
 
 describe("RolesGuard global (intégration — sonde @Roles)", () => {
   let ctx: TestContext;

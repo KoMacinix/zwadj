@@ -21,7 +21,12 @@
       "invalidCredentials": "Email ou mot de passe incorrect.",
       "emailNotVerified": "Vérifiez votre adresse email avant de vous connecter.",
       "unauthenticated": "Connexion requise pour continuer.",
-      "forbidden": "Vous n'avez pas les droits nécessaires pour cette action."
+      "forbidden": "Vous n'avez pas les droits nécessaires pour cette action.",
+      "googleTokenInvalid": "La connexion avec Google a échoué. Veuillez réessayer.",
+      "googleEmailNotVerified": "Votre adresse email n'est pas vérifiée auprès de Google. Vérifiez-la dans votre compte Google, puis réessayez.",
+      "googleAccountNotClient": "Cet email est associé à un compte Professionnel. Veuillez vous connecter via l'espace Pro avec votre mot de passe.",
+      "googleAccountConflict": "Ce compte Google est déjà associé à un autre compte Zwadj. Contactez-nous si le problème persiste.",
+      "googleAuthDisabled": "La connexion avec Google est momentanément indisponible. Utilisez votre email et votre mot de passe."
     },
     "validation": {
       "emailRequired": "L'adresse email est requise.",
@@ -39,7 +44,11 @@
       "tokenRequired": "Ce lien est invalide.",
       "tokenInvalid": "Ce lien est invalide.",
       "passwordMismatch": "Les mots de passe ne correspondent pas.",
-      "acceptRequired": "Vous devez accepter les CGU pour continuer."
+      "acceptRequired": "Vous devez accepter les CGU pour continuer.",
+      "firstNameRequired": "Le prénom est requis.",
+      "firstNameTooLong": "100 caractères maximum.",
+      "lastNameRequired": "Le nom est requis.",
+      "lastNameTooLong": "100 caractères maximum."
     },
     "ui": {
       "header": {
@@ -67,7 +76,9 @@
         "bullet1": "Acompte sécurisé — CIB · Edahabia via Chargily",
         "bullet2": "Demande de réservation sans engagement : la salle confirme",
         "bullet3": "Service bilingue français · arabe",
-        "tagline": "Salles de mariage en Algérie"
+        "tagline": "Salles de mariage en Algérie",
+        "proPrompt": "Vous êtes un professionnel ?",
+        "proCta": "Accès entreprises"
       },
       "login": {
         "title": "Connexion",
@@ -156,6 +167,10 @@
         "dashboardTitle": "Tableau de bord",
         "dashboardSoon": "Votre espace de gestion arrive ici : demandes de réservation, calendrier, salles — prochaines tranches du MVP.",
         "language": "Langue"
+      },
+      "google": {
+        "separator": "ou",
+        "proCta": "Ouvrir l'espace Pro"
       }
     }
   },

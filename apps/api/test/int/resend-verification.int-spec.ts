@@ -27,7 +27,7 @@ describe("POST /api/v1/auth/resend-verification (intégration, anti-énumératio
     const server = ctx.app.getHttpServer();
     await request(server)
       .post("/api/v1/auth/register")
-      .send({ role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1" });
+      .send({ role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" });
     const oldToken = extractToken(ctx.emails[0]!.text);
 
     const res = await request(server).post("/api/v1/auth/resend-verification").send({ email: "aya@example.dz" });
@@ -45,7 +45,7 @@ describe("POST /api/v1/auth/resend-verification (intégration, anti-énumératio
     const server = ctx.app.getHttpServer();
     await request(server)
       .post("/api/v1/auth/register")
-      .send({ role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1" });
+      .send({ role: "CLIENT", email: "aya@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "Boudiaf" });
     const token = extractToken(ctx.emails[0]!.text);
     await request(server).get(`/api/v1/auth/verify-email/${token}`);
     ctx.emails.length = 0;
