@@ -8,7 +8,10 @@ import { RolesGuard } from "./auth/roles.guard";
 import { EmailModule } from "./common/email/email.module";
 import { ConfigModule } from "./config/config.module";
 import { HealthModule } from "./health/health.module";
+import { MediaModule } from "./media/media.module";
 import { PrismaModule } from "./prisma/prisma.module";
+import { ReferentialsModule } from "./referentials/referentials.module";
+import { VenuesModule } from "./venues/venues.module";
 
 @Module({
   imports: [
@@ -32,7 +35,10 @@ import { PrismaModule } from "./prisma/prisma.module";
     PrismaModule,
     EmailModule,
     AuthModule,
-    HealthModule
+    HealthModule,
+    MediaModule,
+    ReferentialsModule,
+    VenuesModule
   ],
   providers: [
     // Guards GLOBAUX — l'ordre d'enregistrement EST l'ordre d'exécution (D6) :

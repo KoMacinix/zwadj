@@ -6,7 +6,10 @@ import { defineConfig, env } from "prisma/config";
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
-    path: "prisma/migrations"
+    path: "prisma/migrations",
+    // Lot A1 : Prisma 7 ne lit plus package.json#prisma — la commande de seed
+    // vit ici. tsx exécute le TS directement, aucun build préalable requis.
+    seed: "tsx prisma/seed.ts"
   },
   datasource: {
     url: env("DATABASE_URL")

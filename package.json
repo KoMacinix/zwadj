@@ -13,6 +13,8 @@
     "test": "pnpm -r run test",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "test:int": "pnpm --filter @zwadj/api test:int"
+    "db:seed": "pnpm --filter @zwadj/api db:seed",
+    "test:int": "pnpm --filter @zwadj/api test:int",
+    "zip": "git archive --format=zip HEAD -o projet-propre.zip"
   }
 }

@@ -74,6 +74,16 @@ enum VenuePublicationStatus {
   PUBLISHED
 }
 
+// D33 (Flux A, Lot A2) : visibilité pilotée par le PRO — libre-service,
+// réversible, ORTHOGONALE à publicationStatus (modération one-way) et à
+// deletedAt (fin de vie). Règles de lecture publique (A3) : liste = ACTIVE
+// seul ; détail = ACTIVE + TEMPORARILY_UNAVAILABLE (bandeau) ; HIDDEN = 404.
+enum VenueAvailabilityStatus {
+  ACTIVE
+  HIDDEN
+  TEMPORARILY_UNAVAILABLE
+}
+
 // AGENTS.md "Modèle de réservation" — mode de la salle
 enum BookingMode {
   SINGLE_SLOT // 1 réservation / jour : la réservation bloque la journée entière
@@ -289,7 +299,12 @@ model ProProfile {
 // backlog 3.3 — Wilaya (référentiel ; les 58 wilayas sont seedées, 3.8)
 model Wilaya {
   id     String @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  code   Int    @unique // code officiel 1–58
+  // Code officiel. Le seed (Lot A1) s'arrête VOLONTAIREMENT aux 58 wilayas
+  // historiques : la loi n° 26-06 du 04/04/2026 en crée 11 de plus (codes
+  // 59–69, Hauts Plateaux/Sud, transition administrative jusqu'au 31/12/2026)
+  // SANS renuméroter les 58 existantes. Décision produit Ko datée du Lot A1,
+  // pas un fait figé — élargir = de simples lignes de seed, zéro migration.
+  code   Int    @unique
   nameFr String @map("name_fr")
   nameAr String @map("name_ar")
 
@@ -310,7 +325,11 @@ model City {
   wilaya Wilaya  @relation(fields: [wilayaId], references: [id], onDelete: Restrict)
   venues Venue[]
 
-  @@index([wilayaId])
+  // Clé naturelle du seed (Lot A1, migration city_natural_key) : l'upsert
+  // idempotent s'appuie dessus, et deux villes homonymes dans une même wilaya
+  // deviennent impossibles EN BASE. Couvre wilayaId par préfixe gauche —
+  // l'ancien @@index([wilayaId]) simple est retiré (redondant).
+  @@unique([wilayaId, nameFr])
   @@map("cities")
 }
 
@@ -325,7 +344,7 @@ model Venue {
   id                String                 @id @default(dbgenerated("uuidv7()")) @db.Uuid
   ownerId           String                 @map("owner_id") @db.Uuid
   cityId            String                 @map("city_id") @db.Uuid
-  slug              String                 @unique // SEO : /salle/{slug}, stable, 301 si changement
+  slug              String                 @unique // SEO : /salle/{slug} — FIGÉ à la création (arbitrage Flux A : jamais modifié, pas de 301)
   nameFr            String                 @map("name_fr")
   nameAr            String                 @map("name_ar")
   taglineFr         String?                @map("tagline_fr")
@@ -341,9 +360,20 @@ model Venue {
   capacityMax       Int                    @map("capacity_max")
   basePriceCents    Int                    @map("base_price_cents") // prix de base ; PricingRule le module par date
   bookingMode       BookingMode            @default(SINGLE_SLOT) @map("booking_mode")
+  // D33 (Lot A2) : bascule libre-service du PRO, réversible — jamais touchée
+  // par la modération. Colonne "status" (pas de @map nécessaire).
+  status            VenueAvailabilityStatus @default(ACTIVE)
   publicationStatus VenuePublicationStatus @default(DRAFT) @map("publication_status")
   commissionRateBps Int                    @default(100) @map("commission_rate_bps") // CHECK SQL : 100–500
+  // D35 (Lot A3) : % du prix de base (MÊME base que la commission), réglé par
+  // l'admin SEUL. Défaut 0 = pas de cashback tant que non réglé (A3-③).
+  // Garantie mécanique « jamais sur les fonds Zwadj » : CHECK SQL 0 ≤ x ≤ commission_rate_bps.
+  cashbackRateBps   Int                    @default(0) @map("cashback_rate_bps")
   rejectionReason   String?                @map("rejection_reason") // Phase 12 : rejet admin → draft + raison
+  // Soft delete (Lot A2) : fin de vie côté pro — JAMAIS de DELETE SQL sur
+  // venues, l'historique réservations/commissions doit y survivre. Filtré
+  // (IS NULL) par toutes les lectures pro et publiques.
+  deletedAt         DateTime?              @map("deleted_at") @db.Timestamptz(6)
   createdAt         DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt         DateTime               @updatedAt @map("updated_at") @db.Timestamptz(6)
 
