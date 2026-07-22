@@ -36,11 +36,18 @@ pnpm --filter @zwadj/api prisma:generate
 
 # 5. Migrations — première exécution réelle de migrate dev
 pnpm --filter @zwadj/api prisma:migrate
-#   Attendu : applique 20260707000000_init puis 20260707000001_booking_constraints,
-#   crée la table _prisma_migrations, et déclare la base "in sync" SANS proposer
-#   de migration supplémentaire ni de reset.
+#   Attendu : applique les migrations committées dans l'ordre (…_init →
+#   …_city_natural_key), crée la table _prisma_migrations si besoin, RÉGÉNÈRE
+#   le client Prisma (src/generated), et déclare la base "in sync" SANS
+#   proposer de migration supplémentaire ni de reset.
 #   ⚠ Si un drift est signalé ou un reset proposé : répondre NON et remonter la
 #   sortie complète — ne pas laisser Prisma régénérer quoi que ce soit.
+
+# 5bis. Seed des référentiels (Lot A1 — 58 wilayas, 23 communes d'Alger,
+#       23 équipements). IDEMPOTENT : ré-exécutable à volonté, converge vers
+#       les fichiers apps/api/prisma/seed-data/ sans jamais dupliquer.
+pnpm db:seed
+#   Attendu : « Seed OK — 58 wilayas, 23 villes, 23 équipements (idempotent). »
 
 # 6. Tests unitaires (3 apps, depuis la racine)
 pnpm test
@@ -52,6 +59,8 @@ pnpm test:int
 # 7. Lancement des trois apps
 pnpm dev
 #   API     http://localhost:3001/api/v1/health   → {"status":"ok","db":"up",...}
+#   Référentiels (après 5bis) : /api/v1/wilayas (58, la 16 avec 23 villes)
+#                               /api/v1/amenities (23)
 #   Swagger http://localhost:3001/api/docs
 #   Client  http://localhost:3000/fr   et   http://localhost:3000/ar (dir="rtl")
 #   Pro     http://localhost:5173

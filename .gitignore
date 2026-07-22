@@ -10,3 +10,5 @@ coverage/
 apps/api/src/generated/
 .DS_Store
 Client OAuth.json
+# Flux A (Lot A0) : médias déposés par l'adapter disque local
+apps/api/var/

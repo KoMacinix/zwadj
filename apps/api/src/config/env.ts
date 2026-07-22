@@ -41,7 +41,14 @@ export const envSchema = z.object({
    *  l'API boote, /auth/google répond 503 GOOGLE_AUTH_DISABLED — un poste de
    *  dev sans projet Google Cloud reste pleinement fonctionnel. Exigée
    *  EXPLICITEMENT en production (PROD_REQUIRED_EXPLICIT ci-dessous). */
-  GOOGLE_CLIENT_ID: z.string().min(1).optional()
+  GOOGLE_CLIENT_ID: z.string().min(1).optional(),
+  /** Flux A (Lot A0) — racine DISQUE des médias (adapter dev/local du port
+   *  MEDIA_STORAGE), résolue relativement au cwd de l'API. L'adapter
+   *  S3-compatible de prod est différé (cadrage Flux A : bloque le
+   *  déploiement, pas le code) — quand il arrivera, son driver et ses
+   *  identifiants rejoindront PROD_REQUIRED_EXPLICIT ; d'ici là, aucune
+   *  variable média n'est exigée au boot. */
+  MEDIA_DISK_ROOT: z.string().min(1).default("var/media")
   // Chargily : clés ajoutées ici à la tranche Paiement (Phase 7) — placeholder volontaire.
 });
 

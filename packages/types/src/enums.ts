@@ -33,5 +33,14 @@ export type ServicePricingType = (typeof ServicePricingType)[keyof typeof Servic
 export const VenuePublicationStatus = { DRAFT: "DRAFT", PENDING: "PENDING", PUBLISHED: "PUBLISHED" } as const;
 export type VenuePublicationStatus = (typeof VenuePublicationStatus)[keyof typeof VenuePublicationStatus];
 
+// D33 (Flux A, Lot A2) : visibilité libre-service du PRO, réversible,
+// orthogonale à VenuePublicationStatus (modération) et au soft delete.
+export const VenueAvailabilityStatus = {
+  ACTIVE: "ACTIVE",
+  HIDDEN: "HIDDEN",
+  TEMPORARILY_UNAVAILABLE: "TEMPORARILY_UNAVAILABLE"
+} as const;
+export type VenueAvailabilityStatus = (typeof VenueAvailabilityStatus)[keyof typeof VenueAvailabilityStatus];
+
 export const VisitStatus = { CONFIRMED: "CONFIRMED", CANCELLED: "CANCELLED" } as const;
 export type VisitStatus = (typeof VisitStatus)[keyof typeof VisitStatus];
