@@ -36,6 +36,9 @@ function venueRow(overrides: Record<string, unknown> = {}) {
     publicationStatus: "DRAFT",
     status: "ACTIVE",
     amenities: [], // relation VenueAmenity (ids seuls) — A3-①
+    photos: [], // relations médias (Lot A4) — salles neuves sans média
+    photos360: [],
+    photo360Links: [],
     createdAt: new Date("2026-07-20T10:00:00.000Z"),
     updatedAt: new Date("2026-07-20T10:00:00.000Z"),
     ...overrides
@@ -51,6 +54,13 @@ const CREATE_INPUT: VenueCreateInput = {
   basePriceCents: 18_000_000
 };
 
+const fakeStorage = {
+  put: vi.fn(),
+  get: vi.fn(),
+  delete: vi.fn(),
+  publicUrl: (key: string) => `/api/v1/media/${key}`
+} as unknown as import("../media/media.types").MediaStorage;
+
 function buildService() {
   const prisma = {
     proProfile: { findUnique: vi.fn() },
@@ -58,7 +68,7 @@ function buildService() {
     amenity: { count: vi.fn() },
     venue: { create: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), update: vi.fn() }
   };
-  return { service: new VenuesService(prisma as unknown as PrismaService), prisma };
+  return { service: new VenuesService(prisma as unknown as PrismaService, fakeStorage), prisma };
 }
 
 function isNotFoundVenue(error: unknown): boolean {
@@ -220,6 +230,10 @@ describe("VenuesService — forme du DTO pro (allow-list)", () => {
         "publicationStatus",
         "status",
         "amenityIds",
+        "photos",
+        "photos360",
+        "links360",
+        "viewer360",
         "createdAt",
         "updatedAt"
       ].sort()

@@ -159,6 +159,10 @@ describe("POST /venues — création", () => {
         "publicationStatus",
         "status",
         "amenityIds",
+        "photos", // Lot A4 — médias sur le DTO pro
+        "photos360",
+        "links360",
+        "viewer360",
         "createdAt",
         "updatedAt"
       ].sort()

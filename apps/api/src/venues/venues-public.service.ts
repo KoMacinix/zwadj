@@ -5,7 +5,7 @@
 // Aucun taux ne peut sortir d'ici : les SELECT ne les contiennent pas.
 // Sémantique des filtres : VALEUR inconnue (cityId, clé d'amenity) ⇒ résultat
 // vide, pas une erreur — seul le FORMAT invalide fait un 400 (Zod).
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import {
   VenueAvailabilityStatus,
   VenueErrorCode,
@@ -16,9 +16,13 @@ import {
   type VenueSummaryDTO
 } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
+import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
+import { buildViewer360Data } from "./viewer360";
 
-/** Colonnes des cartes de la liste (VenueSummaryDTO) — ni taux, ni GPS. */
+/** Colonnes des cartes de la liste (VenueSummaryDTO) — ni taux, ni GPS.
+ *  A4-② : la couverture est tirée en SQL (take: 1 imbriqué — jamais les 30
+ *  photos pour une carte) + _count pour le signal « complétude ». */
 const VENUE_SUMMARY_SELECT = {
   id: true,
   slug: true,
@@ -33,7 +37,15 @@ const VENUE_SUMMARY_SELECT = {
   capacityMax: true,
   basePriceCents: true,
   bookingMode: true,
-  publicationStatus: true
+  publicationStatus: true,
+  // Couverture = PREMIÈRE photo par sortOrder (règle A4 verrouillée) — le
+  // réordonnancement pro fait office de sélecteur de couverture.
+  photos: {
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }] as Prisma.VenuePhotoOrderByWithRelationInput[],
+    take: 1,
+    select: { thumbKey: true }
+  },
+  _count: { select: { photos: true } }
 } as const;
 
 /** Colonnes du détail public (VenuePublicDTO) + ville et référentiel amenities. */
@@ -57,7 +69,21 @@ const VENUE_PUBLIC_SELECT = {
   bookingMode: true,
   status: true,
   city: { select: { id: true, nameFr: true, nameAr: true } },
-  amenities: { select: { amenity: { select: { id: true, key: true, nameFr: true, nameAr: true, icon: true } } } }
+  amenities: { select: { amenity: { select: { id: true, key: true, nameFr: true, nameAr: true, icon: true } } } },
+  // Lot A4 — galerie ordonnée + tour lié. PAS de thumbKey sur les scènes ici :
+  // Viewer360Data est lean, 1:1 Pannellum (arbitrage A4-①).
+  photos: {
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }] as Prisma.VenuePhotoOrderByWithRelationInput[],
+    select: { id: true, storageKey: true, thumbKey: true, width: true, height: true, altFr: true, altAr: true }
+  },
+  photos360: {
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360OrderByWithRelationInput[],
+    select: { id: true, storageKey: true, createdAt: true }
+  },
+  photo360Links: {
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360LinkOrderByWithRelationInput[],
+    select: { photoAId: true, photoBId: true, yawA: true, pitchA: true, yawB: true, pitchB: true }
+  }
 } as const;
 
 type VenueSummaryRow = Prisma.VenueGetPayload<{ select: typeof VENUE_SUMMARY_SELECT }>;
@@ -75,7 +101,13 @@ const PUBLIC_BASE_WHERE = {
 
 @Injectable()
 export class VenuesPublicService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(MEDIA_STORAGE) private readonly storage: MediaStorage
+  ) {}
+
+  /** Clé → URL publique, recalculée à chaque lecture (port A0). */
+  private readonly urlOf = (key: string): string => this.storage.publicUrl(key);
 
   async list(query: VenueListQueryInput): Promise<VenueListResponse> {
     const amenityKeys = [...new Set((query.amenities ?? "").split(",").filter((k) => k.length > 0))];
@@ -169,7 +201,9 @@ export class VenuesPublicService {
       capacityMax: row.capacityMax,
       basePriceCents: row.basePriceCents,
       bookingMode: row.bookingMode,
-      publicationStatus: row.publicationStatus
+      publicationStatus: row.publicationStatus,
+      coverThumbUrl: row.photos[0] === undefined ? null : this.urlOf(row.photos[0].thumbKey),
+      photoCount: row._count.photos
     };
   }
 
@@ -196,7 +230,17 @@ export class VenuesPublicService {
       city: row.city,
       amenities: row.amenities
         .map((link) => link.amenity)
-        .sort((a, b) => a.nameFr.localeCompare(b.nameFr, "fr"))
+        .sort((a, b) => a.nameFr.localeCompare(b.nameFr, "fr")),
+      photos: row.photos.map((p) => ({
+        id: p.id,
+        url: this.urlOf(p.storageKey),
+        thumbUrl: this.urlOf(p.thumbKey),
+        width: p.width,
+        height: p.height,
+        altFr: p.altFr,
+        altAr: p.altAr
+      })),
+      viewer360: buildViewer360Data(row.photos360, row.photo360Links, this.urlOf)
     };
   }
 }

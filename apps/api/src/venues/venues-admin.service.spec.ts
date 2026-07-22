@@ -32,6 +32,9 @@ function adminRow(overrides: Record<string, unknown> = {}) {
     publicationStatus: "DRAFT",
     status: "ACTIVE",
     amenities: [],
+    photos: [],
+    photos360: [],
+    photo360Links: [],
     createdAt: new Date("2026-07-20T10:00:00.000Z"),
     updatedAt: new Date("2026-07-20T10:00:00.000Z"),
     commissionRateBps: 100,
@@ -40,9 +43,16 @@ function adminRow(overrides: Record<string, unknown> = {}) {
   };
 }
 
+const fakeStorage = {
+  put: vi.fn(),
+  get: vi.fn(),
+  delete: vi.fn(),
+  publicUrl: (key: string) => `/api/v1/media/${key}`
+} as unknown as import("../media/media.types").MediaStorage;
+
 function buildService() {
   const prisma = { venue: { findFirst: vi.fn(), update: vi.fn() } };
-  return { service: new VenuesAdminService(prisma as unknown as PrismaService), prisma };
+  return { service: new VenuesAdminService(prisma as unknown as PrismaService, fakeStorage), prisma };
 }
 
 describe("VenuesAdminService.publish", () => {
