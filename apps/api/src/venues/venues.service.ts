@@ -6,12 +6,14 @@
 //    vivante » : inexistante, supprimée, id malformé, salle d'un autre pro —
 //    anti-énumération, même doctrine que /media/:key ;
 // 3) soft delete uniquement (deletedAt) — jamais de DELETE SQL sur venues.
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { randomBytes } from "node:crypto";
 import { VenueErrorCode, type VenueCreateInput, type VenueProDTO, type VenueUpdateInput } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
+import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
 import { slugify } from "./slug";
+import { buildViewer360Data } from "./viewer360";
 
 /** Allow-list des colonnes exposées au pro — l'ABSENCE de commission_rate_bps,
  *  cashback_rate_bps (D35) et rejection_reason ici est la garantie « jamais
@@ -40,7 +42,30 @@ export const VENUE_PRO_SELECT = {
   createdAt: true,
   updatedAt: true,
   // A3-① : ids d'équipements (le référentiel complet ne voyage que côté public)
-  amenities: { select: { amenityId: true } }
+  amenities: { select: { amenityId: true } },
+  // Lot A4 : médias — ordres DÉTERMINISTES partout (tiebreak id, discipline A3).
+  photos: {
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }] as Prisma.VenuePhotoOrderByWithRelationInput[],
+    select: {
+      id: true,
+      storageKey: true,
+      thumbKey: true,
+      width: true,
+      height: true,
+      sortOrder: true,
+      altFr: true,
+      altAr: true,
+      createdAt: true
+    }
+  },
+  photos360: {
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360OrderByWithRelationInput[],
+    select: { id: true, storageKey: true, thumbKey: true, capturedAt: true, createdAt: true }
+  },
+  photo360Links: {
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360LinkOrderByWithRelationInput[],
+    select: { id: true, photoAId: true, photoBId: true, yawA: true, pitchA: true, yawB: true, pitchB: true }
+  }
 } as const;
 
 export type VenueProRow = Prisma.VenueGetPayload<{ select: typeof VENUE_PRO_SELECT }>;
@@ -56,7 +81,14 @@ function isUniqueViolation(error: unknown): boolean {
 
 @Injectable()
 export class VenuesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(MEDIA_STORAGE) private readonly storage: MediaStorage
+  ) {}
+
+  /** Résolution clé → URL publique à la LECTURE (port A0) : la bascule
+   *  disque → S3/CDN ne réécrira aucune ligne, seuls les publicUrl changent. */
+  private readonly urlOf = (key: string): string => this.storage.publicUrl(key);
 
   // ── Création ───────────────────────────────────────────────────────────────
 
@@ -91,7 +123,7 @@ export class VenuesService {
           },
           select: VENUE_PRO_SELECT
         });
-        return toVenueProDTO(row);
+        return toVenueProDTO(row, this.urlOf);
       } catch (error) {
         if (!isUniqueViolation(error)) throw error;
         // Slug pris (par n'importe quel pro) → candidat suivant.
@@ -109,11 +141,11 @@ export class VenuesService {
       orderBy: { updatedAt: "desc" }, // la plus récemment touchée en tête (UI Pro, A5)
       select: VENUE_PRO_SELECT
     });
-    return rows.map((row) => toVenueProDTO(row));
+    return rows.map((row) => toVenueProDTO(row, this.urlOf));
   }
 
   async getMine(userId: string, venueId: string): Promise<VenueProDTO> {
-    return toVenueProDTO(await this.ownedLivingVenue(userId, venueId));
+    return toVenueProDTO(await this.ownedLivingVenue(userId, venueId), this.urlOf);
   }
 
   // ── Mise à jour partielle (arbitrage A2-③) ─────────────────────────────────
@@ -154,7 +186,7 @@ export class VenuesService {
       },
       select: VENUE_PRO_SELECT
     });
-    return toVenueProDTO(row);
+    return toVenueProDTO(row, this.urlOf);
   }
 
   // ── Soft delete ────────────────────────────────────────────────────────────
@@ -170,18 +202,48 @@ export class VenuesService {
 
   // ── Internes ───────────────────────────────────────────────────────────────
 
-  /** LA requête d'ownership : id + vivante + à moi, en un seul WHERE — tout
-   *  échec est le même 404 (rien à apprendre pour un énumérateur). */
-  private async ownedLivingVenue(userId: string, venueId: string): Promise<VenueProRow> {
-    // Un id hors motif UUID ferait un P2023 côté driver (colonne uuid) :
-    // court-circuit en 404 identique, sans toucher la base.
+  /** L'UNIQUE définition du WHERE d'ownership (A4-④) : id + vivante + à moi.
+   *  Volontairement SANS gate sur `status` D33 — un pro gère les médias d'une
+   *  salle HIDDEN/TEMPORARILY_UNAVAILABLE (c'est souvent pour ça qu'elle est
+   *  masquée). Toute divergence (un 403 quelque part…) rouvrirait un trou
+   *  d'énumération : la doctrine ne doit jamais exister en double. */
+  private ownershipWhere(userId: string, venueId: string): { id: string; deletedAt: null; owner: { userId: string } } {
+    return { id: venueId, deletedAt: null, owner: { userId } };
+  }
+
+  /** Un id hors motif UUID ferait un P2023 côté driver (colonne uuid) :
+   *  court-circuit en 404 identique, sans toucher la base. */
+  private assertUuidShapeOr404(venueId: string): void {
     if (!UUID_PATTERN.test(venueId)) this.throwNotFound();
+  }
+
+  /** LA requête d'ownership : tout échec est le même 404 (rien à apprendre
+   *  pour un énumérateur). */
+  private async ownedLivingVenue(userId: string, venueId: string): Promise<VenueProRow> {
+    this.assertUuidShapeOr404(venueId);
     const row = await this.prisma.venue.findFirst({
-      where: { id: venueId, deletedAt: null, owner: { userId } },
+      where: this.ownershipWhere(userId, venueId),
       select: VENUE_PRO_SELECT
     });
     if (!row) this.throwNotFound();
     return row;
+  }
+
+  /**
+   * A4-④ — variante ID-ONLY, PUBLIQUE, pour le module média : même WHERE,
+   * même court-circuit UUID, même 404 indistinct (VENUE_NOT_FOUND), mais un
+   * `select: { id }` bien plus léger que VENUE_PRO_SELECT (qui embarque
+   * désormais photos/scènes/liaisons). Réutilisation OBLIGATOIRE par tout
+   * futur consommateur d'ownership — jamais de réimplémentation.
+   */
+  async assertOwnedLivingVenueId(userId: string, venueId: string): Promise<string> {
+    this.assertUuidShapeOr404(venueId);
+    const row = await this.prisma.venue.findFirst({
+      where: this.ownershipWhere(userId, venueId),
+      select: { id: true }
+    });
+    if (!row) this.throwNotFound();
+    return row.id;
   }
 
   private throwNotFound(): never {
@@ -221,8 +283,10 @@ export class VenuesService {
   }
 }
 
-/** Mapper partagé pro/admin (l'admin y ADJOINT les deux taux, Lot A3). */
-export function toVenueProDTO(row: VenueProRow): VenueProDTO {
+/** Mapper partagé pro/admin (l'admin y ADJOINT les deux taux, Lot A3).
+ *  A4 : reçoit le résolveur clé → URL publique du port MEDIA_STORAGE — les
+ *  URL ne sont JAMAIS stockées, toujours recalculées à la lecture. */
+export function toVenueProDTO(row: VenueProRow, urlOf: (key: string) => string): VenueProDTO {
   return {
     id: row.id,
     slug: row.slug,
@@ -246,6 +310,35 @@ export function toVenueProDTO(row: VenueProRow): VenueProDTO {
     publicationStatus: row.publicationStatus,
     status: row.status,
     amenityIds: row.amenities.map((a) => a.amenityId).sort(),
+    photos: row.photos.map((p) => ({
+      id: p.id,
+      url: urlOf(p.storageKey),
+      thumbUrl: urlOf(p.thumbKey),
+      width: p.width,
+      height: p.height,
+      sortOrder: p.sortOrder,
+      altFr: p.altFr,
+      altAr: p.altAr,
+      createdAt: p.createdAt.toISOString()
+    })),
+    photos360: row.photos360.map((s) => ({
+      id: s.id,
+      url: urlOf(s.storageKey),
+      // thumbUrl sur le DTO PRO seulement (A4-①) — jamais dans Viewer360Data.
+      thumbUrl: urlOf(s.thumbKey),
+      capturedAt: s.capturedAt === null ? null : s.capturedAt.toISOString(),
+      createdAt: s.createdAt.toISOString()
+    })),
+    links360: row.photo360Links.map((l) => ({
+      id: l.id,
+      photoAId: l.photoAId,
+      photoBId: l.photoBId,
+      yawA: l.yawA,
+      pitchA: l.pitchA,
+      yawB: l.yawB,
+      pitchB: l.pitchB
+    })),
+    viewer360: buildViewer360Data(row.photos360, row.photo360Links, urlOf),
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString()
   };

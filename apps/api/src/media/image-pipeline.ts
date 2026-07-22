@@ -7,13 +7,19 @@
 //   2. la sortie est TOUJOURS ré-encodée (webp) : les métadonnées EXIF —
 //      position GPS du domicile d'un pro incluse — ne survivent JAMAIS.
 import sharp, { type Metadata, type OutputInfo } from "sharp";
-import { ACCEPTED_IMAGE_FORMATS, VENUE_PHOTO_LIMITS, VENUE_PHOTO_360_LIMITS } from "@zwadj/types";
+import {
+  ACCEPTED_IMAGE_FORMATS,
+  VENUE_PHOTO_LIMITS,
+  VENUE_PHOTO_360_LIMITS,
+  type MediaErrorCode
+} from "@zwadj/types";
 
-export type MediaValidationCode =
-  | "MEDIA_UNSUPPORTED_FORMAT"
-  | "MEDIA_TOO_LARGE"
-  | "MEDIA_TOO_SMALL"
-  | "MEDIA_BAD_ASPECT_RATIO";
+/** Sous-ensemble VALIDATION du MediaErrorCode partagé (A4-⑤) — dérivé par
+ *  Extract : impossible de dériver du référentiel sans erreur de compilation. */
+export type MediaValidationCode = Extract<
+  MediaErrorCode,
+  "MEDIA_UNSUPPORTED_FORMAT" | "MEDIA_TOO_LARGE" | "MEDIA_TOO_SMALL" | "MEDIA_BAD_ASPECT_RATIO"
+>;
 
 /** Refus de validation : le Lot A4 le mappera sur un 400 avec code stable. */
 export class MediaValidationError extends Error {

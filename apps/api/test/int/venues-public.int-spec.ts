@@ -141,7 +141,9 @@ describe("GET /venues — matrice de visibilité D33 (liste = ACTIVE seul)", () 
         "capacityMax",
         "basePriceCents",
         "bookingMode",
-        "publicationStatus"
+        "publicationStatus",
+        "coverThumbUrl", // Lot A4 — couverture (thumb de la 1ʳᵉ photo)
+        "photoCount" // Lot A4 — signal « complétude »
       ].sort()
     );
     for (const forbidden of ["commissionRateBps", "cashbackRateBps", "lat", "lng"]) {

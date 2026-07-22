@@ -4,7 +4,7 @@
 // 404 indistincts (inexistante / supprimée / id malformé), doctrine A2.
 // VENUE_ADMIN_SELECT = allow-list pro + les deux taux : la SEULE surface de
 // l'API où commission_rate_bps et cashback_rate_bps quittent la base.
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import {
   VenueErrorCode,
   VenuePublicationStatus,
@@ -12,6 +12,7 @@ import {
   type VenueRatesUpdateInput
 } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
+import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
 import { toVenueProDTO, VENUE_PRO_SELECT } from "./venues.service";
 
@@ -27,7 +28,13 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
 
 @Injectable()
 export class VenuesAdminService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(MEDIA_STORAGE) private readonly storage: MediaStorage
+  ) {}
+
+  /** A4 : même résolution clé → URL que le service pro (mapper partagé). */
+  private readonly urlOf = (key: string): string => this.storage.publicUrl(key);
 
   /**
    * Publication ONE-WAY (arbitrage A3-④) : DRAFT → PUBLISHED directement
@@ -91,7 +98,7 @@ export class VenuesAdminService {
 
   private toDTO(row: VenueAdminRow): VenueAdminDTO {
     return {
-      ...toVenueProDTO(row),
+      ...toVenueProDTO(row, this.urlOf),
       commissionRateBps: row.commissionRateBps,
       cashbackRateBps: row.cashbackRateBps
     };

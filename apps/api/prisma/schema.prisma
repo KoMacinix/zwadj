@@ -380,7 +380,8 @@ model Venue {
   owner              ProProfile          @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   city               City                @relation(fields: [cityId], references: [id], onDelete: Restrict)
   photos             VenuePhoto[]
-  photo360           VenuePhoto360?
+  photos360          VenuePhoto360[]
+  photo360Links      VenuePhoto360Link[]
   amenities          VenueAmenity[]
   slotTemplates      SlotTemplate[]
   pricingRules       PricingRule[]
@@ -402,15 +403,24 @@ model Venue {
   @@map("venues")
 }
 
-// backlog 3.3 — VenuePhoto (url, ordre, alt FR/AR — pipeline resize en 6.1)
+// Lot A4 — VenuePhoto : le pipeline A0 produit TOUJOURS { large, thumb } ; la
+// base stocke les CLÉS du port MEDIA_STORAGE, jamais une URL figée — les URL
+// publiques sont recalculées à la lecture via publicUrl(), donc l'adapter
+// S3/CDN de prod changera les URL sans réécrire une seule ligne. width/height
+// = dimensions du large (A8 : next/image, anti-CLS), déjà produites par le
+// pipeline (coût nul). L'ordre d'affichage = sort_order ; règle A4 verrouillée :
+// couverture publique = PREMIÈRE photo par sort_order.
 model VenuePhoto {
-  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  venueId   String   @map("venue_id") @db.Uuid
-  url       String
-  sortOrder Int      @default(0) @map("sort_order")
-  altFr     String?  @map("alt_fr")
-  altAr     String?  @map("alt_ar")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id         String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  venueId    String   @map("venue_id") @db.Uuid
+  storageKey String   @map("storage_key")
+  thumbKey   String   @map("thumb_key")
+  width      Int
+  height     Int
+  sortOrder  Int      @default(0) @map("sort_order")
+  altFr      String?  @map("alt_fr")
+  altAr      String?  @map("alt_ar")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   venue Venue @relation(fields: [venueId], references: [id], onDelete: Cascade)
 
@@ -418,19 +428,58 @@ model VenuePhoto {
   @@map("venue_photos")
 }
 
-// backlog 3.3 — VenuePhoto360 : UNE photo équirectangulaire par salle au MVP
-// (décision assumptions : capture Zwadj à l'onboarding, viewer léger, pas de
-// tour Matterport). venueId @unique matérialise le "one per venue".
+// D34 (Lot A4, supersède l'ancienne contrainte « une seule photo ») — une
+// ligne = UNE scène équirectangulaire du tour ; venue_id n'est plus @unique.
+// thumb_key : bande de scènes de l'éditeur A6b — exposée sur le DTO PRO
+// seulement, jamais dans Viewer360Data (payload public 1:1 Pannellum).
+// Une contrainte UNIQUE (id, venue_id) est posée en SQL manuel : cible des FK
+// composites des liaisons (renfort D34 n°1).
 model VenuePhoto360 {
   id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  venueId    String    @unique @map("venue_id") @db.Uuid
-  url        String // ratio 2:1 validé à l'upload (6.1)
+  venueId    String    @map("venue_id") @db.Uuid
+  storageKey String    @map("storage_key")
+  thumbKey   String    @map("thumb_key")
   capturedAt DateTime? @map("captured_at") @db.Timestamptz(6)
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  venue Venue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  venue  Venue               @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  linksA VenuePhoto360Link[] @relation("LinkPhotoA")
+  linksB VenuePhoto360Link[] @relation("LinkPhotoB")
 
+  @@index([venueId])
   @@map("venue_photos_360")
+}
+
+// D34 — une ligne = UNE liaison bidirectionnelle entre deux scènes de la MÊME
+// salle, avec la position du hotspot propre à CHAQUE sens (yawA/pitchA sur la
+// scène A, yawB/pitchB sur la scène B — les deux positions physiques
+// diffèrent). Le graphe (boucle, chaîne…) n'est que l'ensemble des liaisons :
+// rien n'est codé en dur, le <Viewer360 /> est strictement piloté par les
+// données. Renforts en SQL manuel (patron commission_rate_bps) :
+// 1. venue_id dénormalisé + FK COMPOSITES (photo_x_id, venue_id) →
+//    (id, venue_id) : une liaison inter-salles est impossible EN BASE ;
+// 2. CHECK photo_a_id <> photo_b_id (pas d'auto-liaison) ;
+// 3. index unique LEAST/GREATEST : le doublon inversé (A,B)/(B,A) est refusé.
+// Bornes yaw ∈ [-180,180] / pitch ∈ [-90,90] : CHECKs SQL + Zod partagé.
+model VenuePhoto360Link {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  venueId   String   @map("venue_id") @db.Uuid
+  photoAId  String   @map("photo_a_id") @db.Uuid
+  photoBId  String   @map("photo_b_id") @db.Uuid
+  yawA      Float    @map("yaw_a")
+  pitchA    Float    @map("pitch_a")
+  yawB      Float    @map("yaw_b")
+  pitchB    Float    @map("pitch_b")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  venue  Venue         @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  photoA VenuePhoto360 @relation("LinkPhotoA", fields: [photoAId], references: [id], onDelete: Cascade)
+  photoB VenuePhoto360 @relation("LinkPhotoB", fields: [photoBId], references: [id], onDelete: Cascade)
+
+  @@index([venueId])
+  @@index([photoAId])
+  @@index([photoBId])
+  @@map("venue_photo_360_links")
 }
 
 // backlog 3.3 — Amenity (référentiel seedé, 3.8) + jointure VenueAmenity

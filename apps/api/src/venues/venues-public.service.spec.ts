@@ -8,13 +8,20 @@ import type { VenueListQueryInput } from "@zwadj/types";
 import type { PrismaService } from "../prisma/prisma.service";
 import { VenuesPublicService } from "./venues-public.service";
 
+const fakeStorage = {
+  put: vi.fn(),
+  get: vi.fn(),
+  delete: vi.fn(),
+  publicUrl: (key: string) => `/api/v1/media/${key}`
+} as unknown as import("../media/media.types").MediaStorage;
+
 function buildService() {
   const prisma = {
     venue: { findMany: vi.fn().mockResolvedValue([]), count: vi.fn().mockResolvedValue(0), findFirst: vi.fn() },
     // Les mocks renvoient des promesses ordinaires : $transaction = Promise.all.
     $transaction: vi.fn((ops: Promise<unknown>[]) => Promise.all(ops))
   };
-  return { service: new VenuesPublicService(prisma as unknown as PrismaService), prisma };
+  return { service: new VenuesPublicService(prisma as unknown as PrismaService, fakeStorage), prisma };
 }
 
 const QUERY_DEFAULTS: VenueListQueryInput = { sort: "recent", page: 1, pageSize: 12 };

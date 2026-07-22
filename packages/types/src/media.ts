@@ -25,6 +25,37 @@ export const VENUE_PHOTO_LIMITS = {
   }
 } as const;
 
+/**
+ * Plafonds PAR SALLE (arbitrage A4-⑥, jamais de non-plafonné) : l'upload est
+ * un chemin authentifié mais abusable — ré-encodage sharp (CPU) + 2 objets
+ * stockés par fichier, sur adapter disque local au MVP. Valeurs de DÉPART, à
+ * caler par l'équipe terrain/SEO ; relever = changer une constante, jamais une
+ * migration. Bonus : protège l'UX magazine (~5 photos) et garde le signal
+ * « complétude » interprétable.
+ */
+export const VENUE_MEDIA_CAPS = {
+  photosPerVenue: 30,
+  scenes360PerVenue: 12
+} as const;
+
+/**
+ * Codes d'erreur MÉDIA (namespace i18n media.errors.*) — codes PIPELINE
+ * (format/taille/ratio) + plafonds, réutilisables hors du domaine salle.
+ * Les codes RELATIONNELS (photo introuvable dans MA salle, ordre périmé…)
+ * restent venue-scopés dans VenueErrorCode (arbitrage A4-⑤).
+ */
+export const MediaErrorCode = {
+  /** Requête multipart sans fichier (ou champ mal nommé). */
+  MEDIA_FILE_REQUIRED: "MEDIA_FILE_REQUIRED",
+  MEDIA_UNSUPPORTED_FORMAT: "MEDIA_UNSUPPORTED_FORMAT",
+  MEDIA_TOO_LARGE: "MEDIA_TOO_LARGE",
+  MEDIA_TOO_SMALL: "MEDIA_TOO_SMALL",
+  MEDIA_BAD_ASPECT_RATIO: "MEDIA_BAD_ASPECT_RATIO",
+  MEDIA_PHOTO_LIMIT_REACHED: "MEDIA_PHOTO_LIMIT_REACHED",
+  MEDIA_SCENE_LIMIT_REACHED: "MEDIA_SCENE_LIMIT_REACHED"
+} as const;
+export type MediaErrorCode = (typeof MediaErrorCode)[keyof typeof MediaErrorCode];
+
 /** Photos 360° équirectangulaires (scènes du tour). */
 export const VENUE_PHOTO_360_LIMITS = {
   maxBytes: 25 * 1024 * 1024, // 25 Mo par fichier source

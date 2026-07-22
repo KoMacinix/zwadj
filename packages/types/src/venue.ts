@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { BookingMode, VenueAvailabilityStatus, type VenuePublicationStatus } from "./enums";
+import { VENUE_MEDIA_CAPS } from "./media";
 import type { AmenityDTO } from "./referentials";
 
 /** Résumé d'une salle pour les listes/recherche — aligné sur le modèle Prisma `Venue`. */
@@ -19,6 +20,13 @@ export interface VenueSummaryDTO {
   basePriceCents: number;
   bookingMode: BookingMode;
   publicationStatus: VenuePublicationStatus;
+  /** Lot A4 — règle verrouillée : couverture = PREMIÈRE photo par sortOrder
+   *  (thumb 480). Sert les cartes A7, les OG tags (9.9) et schema.org (23.8) ;
+   *  le réordonnancement des photos fait donc office de sélecteur de
+   *  couverture. `null` : salle sans photo. */
+  coverThumbUrl: string | null;
+  /** Lot A4 — signal « complétude » (le tri recommandé du 23.8 le consommera). */
+  photoCount: number;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -161,7 +169,19 @@ export const VenueErrorCode = {
   /** A3-① : un id d'équipement absent du référentiel Amenity (écriture pro). */
   AMENITY_NOT_FOUND: "AMENITY_NOT_FOUND",
   /** D35 : fusion PATCH ∪ stocké, cashbackRateBps > commissionRateBps. */
-  CASHBACK_EXCEEDS_COMMISSION: "CASHBACK_EXCEEDS_COMMISSION"
+  CASHBACK_EXCEEDS_COMMISSION: "CASHBACK_EXCEEDS_COMMISSION",
+  /** Lot A4 — 404 INDISTINCTS « dans MA salle vivante », même doctrine que
+   *  VENUE_NOT_FOUND : inexistante, id malformé, ou média d'une autre salle. */
+  PHOTO_NOT_FOUND: "PHOTO_NOT_FOUND",
+  SCENE_NOT_FOUND: "SCENE_NOT_FOUND",
+  LINK_NOT_FOUND: "LINK_NOT_FOUND",
+  /** Lot A4 — réordonnancement : l'ensemble envoyé ≠ l'ensemble stocké
+   *  (photo supprimée dans un autre onglet…). Côté A6a : « rafraîchissez puis
+   *  réessayez », jamais un échec muet. */
+  PHOTO_ORDER_MISMATCH: "PHOTO_ORDER_MISMATCH",
+  /** Lot A4 — la paire (A,B) existe déjà, y compris inversée (B,A) — index
+   *  unique LEAST/GREATEST (renfort D34 n°3). */
+  LINK_ALREADY_EXISTS: "LINK_ALREADY_EXISTS"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -199,10 +219,176 @@ export interface VenueProDTO {
   status: VenueAvailabilityStatus;
   /** A3-① : ids d'équipements, triés — remplacés en bloc via PATCH amenityIds. */
   amenityIds: string[];
+  /** Lot A4 — photos triées par sortOrder (l'ordre du tableau = l'affichage). */
+  photos: VenuePhotoDTO[];
+  /** Lot A4 — scènes du tour, triées par (createdAt, id), AVEC vignettes
+   *  (bande de scènes A6b — le public n'en reçoit pas, arbitrage A4-①). */
+  photos360: VenuePhoto360SceneDTO[];
+  /** Lot A4 — liaisons du tour (éditeur A6b). */
+  links360: VenuePhoto360LinkDTO[];
+  /** Lot A4 — même contrat que le public : aperçu Pannellum direct en A6b,
+   *  la règle de scène d'ouverture n'est JAMAIS réimplémentée côté front. */
+  viewer360: Viewer360Data | null;
   /** ISO 8601. */
   createdAt: string;
   updatedAt: string;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lot A4 — Médias (photos + tour 360° multi-scènes, D34).
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Photo d'une salle, vue PRO (A6a) — contrat des endpoints /venues/:id/photos. */
+export interface VenuePhotoDTO {
+  id: string;
+  /** URL publique de la variante large (webp ≤ 1920) — recalculée à la lecture
+   *  depuis la clé de stockage (port A0), jamais figée en base. */
+  url: string;
+  /** URL publique de la vignette (webp ≤ 480) — grilles, couverture. */
+  thumbUrl: string;
+  /** Dimensions du large — A8 : next/image, anti-CLS (Core Web Vitals). */
+  width: number;
+  height: number;
+  sortOrder: number;
+  altFr: string | null;
+  altAr: string | null;
+  /** ISO 8601. */
+  createdAt: string;
+}
+
+/** Scène 360°, vue PRO (A6a/A6b). thumbUrl vit ICI et pas dans Viewer360Data :
+ *  Pannellum ne consomme pas de vignette de scène — le payload public reste
+ *  lean (cible Android bas de gamme, backlog 24.6). Promotion future côté
+ *  public = un ajout d'une ligne, la colonne existe. */
+export interface VenuePhoto360SceneDTO {
+  id: string;
+  url: string;
+  /** Bande de scènes de l'éditeur A6b (640×320). */
+  thumbUrl: string;
+  capturedAt: string | null;
+  createdAt: string;
+}
+
+/** Liaison bidirectionnelle entre deux scènes (D34), vue PRO — la position du
+ *  hotspot est propre à CHAQUE sens (les deux positions physiques diffèrent). */
+export interface VenuePhoto360LinkDTO {
+  id: string;
+  photoAId: string;
+  photoBId: string;
+  /** Degrés — yaw ∈ [-180, 180], pitch ∈ [-90, 90] (coordonnées Pannellum,
+   *  produites par mouseEventToCoords() dans l'éditeur A6b). */
+  yawA: number;
+  pitchA: number;
+  yawB: number;
+  pitchB: number;
+}
+
+/** Contrat du composant <Viewer360 /> — strictement 1:1 Pannellum, STRICTEMENT
+ *  piloté par les données (rien de codé en dur : un tour en boucle ou en
+ *  chaîne n'est qu'un graphe de liaisons). Volontairement lean : pas de
+ *  vignettes ici (arbitrage A4-①). */
+export interface Viewer360Scene {
+  id: string;
+  url: string;
+}
+export interface Viewer360Link {
+  photoAId: string;
+  photoBId: string;
+  yawA: number;
+  pitchA: number;
+  yawB: number;
+  pitchB: number;
+}
+export interface Viewer360Data {
+  /** Scène d'ouverture (D34) : la plus ancienne par (createdAt, id) — le
+   *  tiebreak id rend le choix DÉTERMINISTE même sur créations groupées au
+   *  même timestamp (même discipline que la pagination A3). */
+  initialSceneId: string;
+  scenes: Viewer360Scene[];
+  links: Viewer360Link[];
+}
+
+/** Photo publique (galerie A8) : l'ordre du tableau EST l'ordre d'affichage.
+ *  altFr/altAr absents ⇒ A8 retombe sur le nom de la salle (WCAG AA — semé
+ *  ici, codé en A8). */
+export interface VenuePublicPhotoDTO {
+  id: string;
+  url: string;
+  thumbUrl: string;
+  width: number;
+  height: number;
+  altFr: string | null;
+  altAr: string | null;
+}
+
+/** PATCH /venues/:id/photos/:photoId — métadonnées seulement (alt FR/AR),
+ *  `null` = effacement explicite (patron A2). */
+export const venuePhotoAltUpdateSchema = z
+  .object({
+    altFr: optionalText(300, "venue.validation.altTooLong").nullable().optional(),
+    altAr: optionalText(300, "venue.validation.altTooLong").nullable().optional()
+  })
+  .strict("venue.validation.unknownKey")
+  .refine((v) => Object.keys(v).length > 0, { message: "venue.validation.emptyUpdate" });
+export type VenuePhotoAltUpdateInput = z.infer<typeof venuePhotoAltUpdateSchema>;
+
+/** PATCH /venues/:id/photos/order — ENSEMBLE ordonné COMPLET (arbitrage A4-③) :
+ *  transaction unique, 400 PHOTO_ORDER_MISMATCH si l'ensemble ne correspond
+ *  pas exactement au stocké. Un sortOrder par-photo pourrait produire deux
+ *  photos au même rang en concurrence — l'ensemble atomique l'interdit par
+ *  construction. Les doublons sont refusés dès la validation. */
+export const venuePhotoOrderSchema = z
+  .object({
+    photoIds: z
+      .array(z.string().uuid("venue.validation.photoIdInvalid"), {
+        required_error: "venue.validation.orderRequired",
+        invalid_type_error: "venue.validation.orderRequired"
+      })
+      .min(1, "venue.validation.orderEmpty")
+      .max(VENUE_MEDIA_CAPS.photosPerVenue, "venue.validation.orderTooMany")
+  })
+  .strict("venue.validation.unknownKey")
+  .superRefine((v, ctx) => {
+    if (new Set(v.photoIds).size !== v.photoIds.length) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["photoIds"], message: "venue.validation.orderDuplicate" });
+    }
+  });
+export type VenuePhotoOrderInput = z.infer<typeof venuePhotoOrderSchema>;
+
+const yawSchema = (requiredKey: string) =>
+  z
+    .number({ required_error: requiredKey, invalid_type_error: "venue.validation.hotspotRange" })
+    .min(-180, "venue.validation.hotspotRange")
+    .max(180, "venue.validation.hotspotRange");
+const pitchSchema = (requiredKey: string) =>
+  z
+    .number({ required_error: requiredKey, invalid_type_error: "venue.validation.hotspotRange" })
+    .min(-90, "venue.validation.hotspotRange")
+    .max(90, "venue.validation.hotspotRange");
+
+/** POST /venues/:id/photo-360-links — une liaison bidirectionnelle (D34), les
+ *  DEUX positions de hotspot exigées d'emblée (l'éditeur A6b fait
+ *  clic-pour-placer sur chaque sens avant d'envoyer). */
+export const venue360LinkCreateSchema = z
+  .object({
+    photoAId: z
+      .string({ required_error: "venue.validation.linkPhotosRequired" })
+      .uuid("venue.validation.photoIdInvalid"),
+    photoBId: z
+      .string({ required_error: "venue.validation.linkPhotosRequired" })
+      .uuid("venue.validation.photoIdInvalid"),
+    yawA: yawSchema("venue.validation.hotspotRequired"),
+    pitchA: pitchSchema("venue.validation.hotspotRequired"),
+    yawB: yawSchema("venue.validation.hotspotRequired"),
+    pitchB: pitchSchema("venue.validation.hotspotRequired")
+  })
+  .strict("venue.validation.unknownKey")
+  .superRefine((v, ctx) => {
+    if (v.photoAId === v.photoBId) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["photoBId"], message: "venue.validation.linkSamePhoto" });
+    }
+  });
+export type Venue360LinkCreateInput = z.infer<typeof venue360LinkCreateSchema>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Lot A3 — Publication & lecture publique.
@@ -350,4 +536,9 @@ export interface VenuePublicDTO {
   city: VenuePublicCityDTO;
   /** Référentiel complet (clé stable + libellés + icône), trié par nameFr. */
   amenities: AmenityDTO[];
+  /** Lot A4 — galerie (ordre du tableau = sortOrder ; couverture = 1ʳᵉ). */
+  photos: VenuePublicPhotoDTO[];
+  /** Lot A4 — tour 360° lié (D34), `null` si la salle n'a aucune scène.
+   *  Chargé au geste utilisateur côté A8, jamais automatiquement. */
+  viewer360: Viewer360Data | null;
 }

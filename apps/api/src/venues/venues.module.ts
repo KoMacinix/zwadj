@@ -1,7 +1,12 @@
-// Module Venue (Flux A). Trois surfaces, trois contrôleurs (Lots A2 + A3) :
-// pro (CRUD, ownership), admin (publication + taux D35), public (lecture D33).
-// Les médias (A4) s'y ajouteront sans toucher à ces trois-là.
+// Module Venue (Flux A). Quatre contrôleurs (Lots A2 + A3 + A4) :
+// pro (CRUD, ownership), admin (publication + taux D35), public (lecture D33),
+// médias (photos + tour 360° D34). MediaModule importé pour le port
+// MEDIA_STORAGE : uploads (écriture d'objets) ET lectures (publicUrl recalculée
+// dans chaque mapper — les clés seules vivent en base).
 import { Module } from "@nestjs/common";
+import { MediaModule } from "../media/media.module";
+import { VenueMediaController } from "./venue-media.controller";
+import { VenueMediaService } from "./venue-media.service";
 import { VenuesAdminController } from "./venues-admin.controller";
 import { VenuesAdminService } from "./venues-admin.service";
 import { VenuesPublicController } from "./venues-public.controller";
@@ -10,8 +15,9 @@ import { VenuesController } from "./venues.controller";
 import { VenuesService } from "./venues.service";
 
 @Module({
-  controllers: [VenuesController, VenuesAdminController, VenuesPublicController],
-  providers: [VenuesService, VenuesAdminService, VenuesPublicService],
+  imports: [MediaModule],
+  controllers: [VenuesController, VenueMediaController, VenuesAdminController, VenuesPublicController],
+  providers: [VenuesService, VenueMediaService, VenuesAdminService, VenuesPublicService],
   exports: [VenuesService]
 })
 export class VenuesModule {}
