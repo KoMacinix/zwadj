@@ -25,6 +25,9 @@ vi.mock("../../i18n/navigation", () => ({
 function makeClient(overrides: Partial<AuthClient> = {}): AuthClient {
   return {
     bootstrap: vi.fn().mockResolvedValue(null),
+    // Lot A5 : l'interface AuthClient a gagné `authedRequest` (primitive
+    // authentifiée partagée avec le domaine venue) — mise à jour de contrat.
+    authedRequest: vi.fn(),
     login: vi.fn(),
     googleAuth: vi.fn(),
     register: vi.fn(),

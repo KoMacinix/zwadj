@@ -9,6 +9,8 @@ coverage/
 .env.*.local
 apps/api/src/generated/
 .DS_Store
-Client OAuth.json
 # Flux A (Lot A0) : médias déposés par l'adapter disque local
 apps/api/var/
+
+# Archives de livraison (git archive) — jamais versionnées
+*.zip

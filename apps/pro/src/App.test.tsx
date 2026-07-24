@@ -1,9 +1,14 @@
-// Tests de la tranche auth Pro (fr) : garde D24, refus de rôle D23, dashboard,
+// Tests de la coquille Pro (fr) : garde D24, refus de rôle D23, accueil,
 // 403 EMAIL_NOT_VERIFIED avec renvoi (D22), inscription → « vérifiez votre
 // email » sans auto-login (D21). Client API injecté, MemoryRouter en jsdom.
+//
+// Lot A5 — deux mises à jour de CONTRAT (arbitrage 2) : l'interface AuthClient
+// gagne `authedRequest`, et `/` ne rend plus le tableau de bord placeholder
+// mais la liste des salles.
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { vi } from "vitest";
+import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
 import { ApiError, type AuthClient } from "./lib/auth-client";
 import { initI18n } from "./i18n";
 import { AppProviders, AppRoutes } from "./App";
@@ -22,7 +27,29 @@ function makeClient(overrides: Partial<AuthClient> = {}): AuthClient {
     resendVerification: vi.fn().mockResolvedValue({ status: "ok" }),
     forgotPassword: vi.fn(),
     resetPassword: vi.fn(),
+    // Lot A5 : primitive authentifiée générique (le client venue est bâti
+    // dessus — c'est ce qui lui fait partager le mutex de refresh).
+    authedRequest: vi.fn(),
     getAccessToken: () => null,
+    ...overrides
+  };
+}
+
+function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
+  return {
+    listMine: vi.fn().mockResolvedValue([]),
+    getMine: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    softDelete: vi.fn().mockResolvedValue(undefined),
+    ...overrides
+  };
+}
+
+function makeReferentials(overrides: Partial<ReferentialsClient> = {}): ReferentialsClient {
+  return {
+    listWilayas: vi.fn().mockResolvedValue([]),
+    listAmenities: vi.fn().mockResolvedValue([]),
     ...overrides
   };
 }
@@ -38,10 +65,10 @@ const PRO_USER = {
   proProfile: { businessName: "Salle El Ryad", phone: "+213551234567" }
 };
 
-function renderAt(path: string, client: AuthClient) {
+function renderAt(path: string, client: AuthClient, venues?: VenueProClient, referentials?: ReferentialsClient) {
   return render(
     <MemoryRouter initialEntries={[path]}>
-      <AppProviders client={client}>
+      <AppProviders client={client} venues={venues} referentials={referentials}>
         <AppRoutes />
       </AppProviders>
     </MemoryRouter>
@@ -62,9 +89,17 @@ describe("Coquille protégée (D23/D24)", () => {
     expect(await screen.findByRole("heading", { name: "Espace réservé aux professionnels" })).toBeInTheDocument();
   });
 
-  it("session PRO sur / : tableau de bord avec le nom de l'établissement", async () => {
-    renderAt("/", makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) }));
-    expect(await screen.findByRole("heading", { name: "Tableau de bord" })).toBeInTheDocument();
+  // Lot A5 : `/` EST la liste des salles. On ne se contente pas de retirer
+  // l'assertion périmée — on prouve que la coquille rend bien la liste pour un
+  // PRO (client venue injecté → aucune salle → état vide attendu).
+  it("session PRO sur / : la coquille rend la LISTE des salles (état vide) + le nom de l'établissement", async () => {
+    const venues = makeVenues({ listMine: vi.fn().mockResolvedValue([]) });
+    renderAt("/", makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) }), venues, makeReferentials());
+
+    expect(await screen.findByRole("heading", { name: "Mes salles" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Aucune salle pour le moment" })).toBeInTheDocument();
+    expect(venues.listMine).toHaveBeenCalled();
+    // L'en-tête extrait (pro-header) reste au-dessus de la liste.
     expect(screen.getByText("Salle El Ryad")).toBeInTheDocument();
   });
 });
