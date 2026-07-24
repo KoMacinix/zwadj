@@ -56,7 +56,9 @@ interface ErrorEnvelope {
   message?: { code?: string; message?: string; issues?: ApiIssue[] };
 }
 
-async function toApiError(res: Response): Promise<ApiError> {
+/** Exporté (Lot A5) : le client venue réutilise CE parseur — la doctrine
+ *  `ApiError` (code métier + clé i18n + issues) ne doit exister qu'ici. */
+export async function toApiError(res: Response): Promise<ApiError> {
   let body: ErrorEnvelope = {};
   try {
     body = (await res.json()) as ErrorEnvelope;
@@ -69,6 +71,14 @@ async function toApiError(res: Response): Promise<ApiError> {
     body.message?.message,
     body.message?.issues ?? []
   );
+}
+
+/** Init d'une requête authentifiée générique (Lot A5). Volontairement pauvre :
+ *  ni `bearer` (toujours vrai ici) ni headers libres — la primitive reste une
+ *  primitive, pas un second client HTTP. */
+export interface AuthedRequestInit {
+  method?: string;
+  body?: unknown;
 }
 
 export interface AuthClient {
@@ -85,6 +95,14 @@ export interface AuthClient {
   resendVerification(email: string): Promise<ResendVerificationResponse>;
   forgotPassword(email: string): Promise<ForgotPasswordResponse>;
   resetPassword(token: string, password: string): Promise<ResetPasswordResponse>;
+  /**
+   * Lot A5 (§8, option a) — primitive authentifiée GÉNÉRIQUE, ouverte aux
+   * autres domaines (venue aujourd'hui, réservations demain). Délègue au
+   * `authed<T>` privé : MÊME token mémoire (D2), MÊME mutex single-flight —
+   * N appels 401 concurrents ⇒ UN `POST /auth/refresh` et UN rejeu, jamais de
+   * boucle. C'est ce qui évite une 3ᵉ voie à `fetch` nu authentifié.
+   */
+  authedRequest<T>(path: string, init?: AuthedRequestInit): Promise<T>;
   getAccessToken(): string | null;
 }
 
@@ -116,6 +134,10 @@ export function createAuthClient(
       throw new NetworkError();
     }
     if (!res.ok) throw await toApiError(res);
+    // 204 sans corps (Lot A5 : DELETE /venues/:id) — rien à parser. Tolérance
+    // VOLONTAIREMENT limitée à ce cas : toute autre réponse doit porter du JSON,
+    // un corps vide inattendu reste une erreur (et non un `undefined` silencieux).
+    if (res.status === 204) return undefined as T;
     return (await res.json()) as T;
   }
 
@@ -190,6 +212,8 @@ export function createAuthClient(
     forgotPassword: (email) => raw<ForgotPasswordResponse>("/auth/forgot-password", { method: "POST", body: { email } }),
     resetPassword: (token, password) =>
       raw<ResetPasswordResponse>("/auth/reset-password", { method: "POST", body: { token, password } }),
+
+    authedRequest: <T,>(path: string, init?: AuthedRequestInit) => authed<T>(path, init),
 
     getAccessToken: () => accessToken
   };

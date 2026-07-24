@@ -376,7 +376,12 @@ button {
   text-transform: uppercase;
 }
 
-.field input {
+/* Lot A5 : `select` et `textarea` rejoignent `input` — la tranche auth n'avait
+   que des champs texte, le formulaire de salle introduit les deux autres. Même
+   primitive `.field`, donc même rendu, même focus, même état invalide. */
+.field input,
+.field select,
+.field textarea {
   font: inherit;
   color: var(--ink);
   background: var(--surface);
@@ -387,18 +392,33 @@ button {
   inline-size: 100%;
 }
 
-.field input::placeholder {
+.field textarea {
+  min-block-size: 84px;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
   color: var(--ink-mute);
 }
 
-.field input:focus-visible {
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: -1px;
   border-color: var(--accent);
 }
 
-.field input[aria-invalid="true"] {
+.field input[aria-invalid="true"],
+.field select[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
   border-color: var(--danger);
+}
+
+.field select[disabled] {
+  color: var(--ink-mute);
+  cursor: not-allowed;
 }
 
 .req {
@@ -475,6 +495,21 @@ button {
 .btn-accent:hover:not([disabled]) {
   background: var(--accent-strong);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+/* Action DESTRUCTIVE (correctif A — Lot A5) : sert le bouton `destructive` du
+   ConfirmDialog ET le « Supprimer » des cartes de la liste Pro. Sans cette
+   classe, les deux retombaient en `.btn` nu (invisible comme danger).
+   Modèle .btn-accent, mais sur le token d'état --danger (jamais l'accent :
+   supprimer n'est pas l'action principale d'un écran). */
+.btn-danger {
+  background: var(--danger);
+  color: var(--on-accent);
+}
+
+.btn-danger:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--danger) 84%, #000);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--danger) 26%, transparent);
 }
 
 .btn-ghost {
@@ -574,4 +609,73 @@ button {
   color: var(--ink-2);
   text-align: center;
   margin-block-start: 6px;
+}
+
+/* ── Dialogue de confirmation (Lot A5 — ConfirmDialog, @zwadj/ui) ─────────────
+   Rendu dans un PORTAIL sur <body> (§7) : l'overlay `position: fixed` ne peut
+   donc pas être piégé par un ancêtre `transform`/`overflow`.
+   RTL : propriétés LOGIQUES uniquement — `inset`, `padding-inline`,
+   `text-align: start`, et `justify-content: flex-end` qui suit déjà l'axe
+   d'écriture en flexbox. Aucun conditionnel dir= n'est nécessaire. */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+
+.dialog-panel {
+  inline-size: 100%;
+  max-inline-size: 420px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-modal);
+  padding-block: 22px;
+  padding-inline: 22px;
+  text-align: start;
+}
+
+.dialog-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.dialog-desc {
+  margin: 0 0 20px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Champ numerique + unite affichee a cote (prix). Flex simple : en RTL la
+   direction du document place naturellement l'unite du cote inline-end,
+   sans positionnement absolu ni propriete physique. */
+.input-affix {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-affix > input {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.input-affix-unit {
+  flex: none;
+  font-size: 13px;
+  color: var(--ink-2);
+  white-space: nowrap;
 }

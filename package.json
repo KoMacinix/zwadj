@@ -15,6 +15,6 @@
     "db:down": "docker compose down",
     "db:seed": "pnpm --filter @zwadj/api db:seed",
     "test:int": "pnpm --filter @zwadj/api test:int",
-    "zip": "git archive --format=zip HEAD -o projet-propre.zip"
+    "zip": "git archive --format=zip HEAD -o zwadj.zip"
   }
 }

@@ -256,6 +256,94 @@
       "photoNotFound": "Cette photo est introuvable.",
       "photoOrderMismatch": "L'ordre envoyé ne correspond plus aux photos de la salle — rafraîchissez la page puis réessayez.",
       "sceneNotFound": "Cette scène 360° est introuvable."
+    },
+    "ui": {
+      "list": {
+        "title": "Mes salles",
+        "new": "Nouvelle salle",
+        "loading": "Chargement de vos salles…",
+        "loadError": "Impossible de charger vos salles.",
+        "retry": "Réessayer",
+        "capacity": "{min} à {max} invités",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "noPhoto": "Aucune photo",
+        "empty": {
+          "title": "Aucune salle pour le moment",
+          "body": "Créez votre première salle pour commencer à recevoir des demandes.",
+          "cta": "Créer une salle"
+        }
+      },
+      "publication": {
+        "label": "Publication",
+        "draft": "En attente de publication par Zwadj",
+        "pending": "En cours de validation",
+        "published": "Publiée"
+      },
+      "status": {
+        "label": "Visibilité",
+        "active": "Visible",
+        "hidden": "Masquée",
+        "temporarilyUnavailable": "Temporairement indisponible",
+        "hint": "Modifiable à tout moment, sans nouvelle validation.",
+        "updateError": "Le changement de visibilité a échoué. Réessayez."
+      },
+      "form": {
+        "createTitle": "Nouvelle salle",
+        "editTitle": "Modifier la salle",
+        "back": "Retour à mes salles",
+        "sectionInfo": "Informations",
+        "sectionLocation": "Emplacement",
+        "sectionCapacityPrice": "Capacité et tarif",
+        "sectionAmenities": "Équipements",
+        "city": "Commune",
+        "cityPlaceholder": "Choisissez une commune",
+        "nameFr": "Nom (français)",
+        "nameAr": "Nom (arabe)",
+        "taglineFr": "Accroche (français)",
+        "taglineAr": "Accroche (arabe)",
+        "descriptionFr": "Description (français)",
+        "descriptionAr": "Description (arabe)",
+        "districtFr": "Quartier (français)",
+        "districtAr": "Quartier (arabe)",
+        "address": "Adresse",
+        "lat": "Latitude",
+        "lng": "Longitude",
+        "coordsHint": "Coordonnées optionnelles, à renseigner ensemble.",
+        "capacityMin": "Capacité minimale",
+        "capacityMax": "Capacité maximale",
+        "basePrice": "Prix de base (DA)",
+        "priceHint": "En dinars entiers, sans centimes.",
+        "priceCurrency": "DA",
+        "bookingMode": "Mode de réservation",
+        "bookingModeSingle": "Un seul créneau par jour",
+        "bookingModeMulti": "Plusieurs créneaux par jour",
+        "amenitiesHint": "Cochez tous les équipements proposés.",
+        "amenitiesAfterCreate": "Vous pourrez ajouter les équipements après la création de la salle.",
+        "slug": "Adresse de la page",
+        "slugHint": "Définie à la création, non modifiable.",
+        "create": "Créer la salle",
+        "creating": "Création…",
+        "save": "Enregistrer",
+        "saving": "Enregistrement…",
+        "saved": "Modifications enregistrées.",
+        "noChanges": "Aucune modification à enregistrer.",
+        "loadError": "Impossible de charger cette salle.",
+        "referentialsLoading": "Chargement des communes…",
+        "referentialsError": "Impossible de charger les communes et les équipements. Réessayez."
+      },
+      "notFound": {
+        "title": "Salle introuvable",
+        "body": "Cette salle n'existe pas ou n'est plus disponible.",
+        "back": "Retour à mes salles"
+      },
+      "delete": {
+        "title": "Supprimer cette salle ?",
+        "body": "Cette action est définitive. La salle ne sera plus accessible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler",
+        "error": "La suppression a échoué. Réessayez."
+      }
     }
   }
 }
