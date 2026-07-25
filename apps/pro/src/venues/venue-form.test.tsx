@@ -1,8 +1,8 @@
 // Tests des FORMULAIRES de salle (Lot A5). Les pièges de la tranche, un par un :
 //  - prix : rejet décimal STRICT, sans troncature, et AUCUN appel API ;
 //  - rejeu de `validate()` : erreurs Zod → clés i18n sur les bons champs ;
-//  - mapping des codes métier (CITY_NOT_FOUND, AMENITY_NOT_FOUND) ;
-//  - CAPACITY_RANGE_INVALID en édition PARTIELLE (invisible en local) ;
+//  - mapping des codes métier (CITY_NOT_FOUND, AMENITY_NOT_FOUND) : un 400 que
+//    le `validate()` local ne PEUT pas anticiper doit atterrir sur son champ ;
 //  - VENUE_NOT_FOUND → état « introuvable » indistinct ;
 //  - référentiels (ajout B) : chargement, échec + retry, submit bloqué ;
 //  - sélecteur de ville : seules les wilayas peuplées produisent un optgroup.
@@ -76,7 +76,6 @@ const VENUE: VenueProDTO = {
   address: null,
   lat: null,
   lng: null,
-  capacityMin: 100,
   capacityMax: 400,
   basePriceCents: 15_000_000,
   bookingMode: "SINGLE_SLOT",
@@ -157,9 +156,8 @@ async function fillRequired(price = "150000") {
   fireEvent.change(await screen.findByLabelText("Nom (français)"), { target: { value: "Salle El Ryad" } });
   fireEvent.change(screen.getByLabelText("Nom (arabe)"), { target: { value: "قاعة الرياض" } });
   fireEvent.change(screen.getByLabelText("Commune"), { target: { value: CITY_ID } });
-  fireEvent.change(screen.getByLabelText("Capacité minimale"), { target: { value: "100" } });
   fireEvent.change(screen.getByLabelText("Capacité maximale"), { target: { value: "400" } });
-  fireEvent.change(screen.getByLabelText("Prix de base (DA)"), { target: { value: price } });
+  fireEvent.change(screen.getByLabelText("Prix de base"), { target: { value: price } });
 }
 
 describe("Prix — rejet décimal strict (invariant argent)", () => {
@@ -334,24 +332,6 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { capacityMax: 500 }));
   });
 
-  it("CAPACITY_RANGE_INVALID sur une édition PARTIELLE : le 400 est mappé sur le champ capacité", async () => {
-    // Le pro ne modifie QUE la capacité max : le validate() local ne peut pas
-    // voir l'incohérence (capacityMin est en base) — seul l'API la révèle.
-    const venues = makeVenues({
-      update: vi.fn().mockRejectedValue(new ApiError(400, "CAPACITY_RANGE_INVALID", "venue.errors.capacityRange"))
-    });
-    renderEdit(venues);
-    await screen.findByDisplayValue("Salle El Ryad");
-
-    fireEvent.change(screen.getByLabelText("Capacité maximale"), { target: { value: "50" } });
-    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
-
-    expect(
-      await screen.findByText("La capacité minimale ne peut pas dépasser la capacité maximale.")
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText("Capacité maximale")).toHaveAttribute("aria-invalid", "true");
-  });
-
   it("équipements : remplacement d'ENSEMBLE complet, jamais un delta", async () => {
     const venues = makeVenues();
     renderEdit(venues);
@@ -416,7 +396,7 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
 
 describe("Constructeurs de payload (unitaire, hors rendu)", () => {
   it("création : les textes optionnels vides sont OMIS, jamais envoyés en chaîne vide", () => {
-    const values = { ...emptyVenueForm(), cityId: CITY_ID, nameFr: "Salle", nameAr: "قاعة", capacityMin: "10", capacityMax: "20", basePrice: "1000" };
+    const values = { ...emptyVenueForm(), cityId: CITY_ID, nameFr: "Salle", nameAr: "قاعة", capacityMax: "20", basePrice: "1000" };
     const built = buildCreateInput(values);
 
     expect(built.errors).toBeNull();
@@ -425,7 +405,7 @@ describe("Constructeurs de payload (unitaire, hors rendu)", () => {
   });
 
   it("création : lat sans lng → erreur de PAIRE, pas d'envoi mutilé", () => {
-    const values = { ...emptyVenueForm(), cityId: CITY_ID, nameFr: "Salle", nameAr: "قاعة", capacityMin: "10", capacityMax: "20", basePrice: "1000", lat: "36.7" };
+    const values = { ...emptyVenueForm(), cityId: CITY_ID, nameFr: "Salle", nameAr: "قاعة", capacityMax: "20", basePrice: "1000", lat: "36.7" };
     const built = buildCreateInput(values);
 
     expect(built.errors).toEqual(expect.objectContaining({ lng: "venue.validation.coordsPair" }));
@@ -476,14 +456,31 @@ describe("Prix — affichage groupé + unité (lisibilité de la saisie)", () =>
     await fillRequired("150000");
 
     // ce que le pro VOIT (espace insécable), sans toucher à la valeur stockée
-    expect(screen.getByLabelText("Prix de base (DA)")).toHaveValue("150\u00A0000");
-    // unité affichée à côté du champ pendant la saisie
-    expect(screen.getByText("DA")).toBeInTheDocument();
+    expect(screen.getByLabelText("Prix de base")).toHaveValue("150\u00A0000");
+    // unité affichée à côté du champ, purement décorative
+    expect(screen.getByText("DA")).toHaveAttribute("aria-hidden", "true");
 
     fireEvent.click(screen.getByRole("button", { name: "Créer la salle" }));
 
     await waitFor(() => expect(venues.create).toHaveBeenCalled());
     const payload = vi.mocked(venues.create).mock.calls[0]?.[0] as { basePriceCents?: number } | undefined;
     expect(payload?.basePriceCents).toBe(15_000_000);
+  });
+
+  it("D43 — l'unité a quitté le LIBELLÉ : une description masquée la porte, et aucun id décrit n'est orphelin", async () => {
+    // Retirer « (DA) » du libellé supprimerait la seule mention de l'unité
+    // perçue par un lecteur d'écran ; supprimer l'aide visible laisserait un
+    // `aria-describedby` pointant dans le vide. Les deux sont testés ici.
+    renderCreate(makeVenues());
+    await fillRequired("150000");
+
+    const input = screen.getByLabelText("Prix de base");
+    const ids = (input.getAttribute("aria-describedby") ?? "").split(" ").filter((id) => id !== "");
+
+    expect(ids.length).toBeGreaterThan(0);
+    expect(ids.every((id) => document.getElementById(id) !== null)).toBe(true);
+    expect(ids.map((id) => document.getElementById(id)?.textContent)).toContain(
+      "Montant en dinars algériens, nombre entier"
+    );
   });
 });

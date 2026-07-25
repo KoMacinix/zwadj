@@ -68,7 +68,7 @@ describe("createVenueProClient — câblage des routes (topologie A2)", () => {
 
     await venues.listMine();
     await venues.getMine("v1");
-    await venues.create({ cityId: "c1", nameFr: "Salle El Ryad", nameAr: "قاعة الرياض", capacityMin: 100, capacityMax: 400, basePriceCents: 15_000_000 });
+    await venues.create({ cityId: "c1", nameFr: "Salle El Ryad", nameAr: "قاعة الرياض", capacityMax: 400, basePriceCents: 15_000_000 });
     await venues.update("v1", { status: "HIDDEN" });
 
     const paths = calls.map((c) => `${c.init?.method ?? "GET"} ${c.url.replace(`${BASE}/api/v1`, "")}`);

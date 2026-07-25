@@ -29,7 +29,6 @@ function venueRow(overrides: Record<string, unknown> = {}) {
     address: null,
     lat: new Prisma.Decimal("36.745300"),
     lng: new Prisma.Decimal("3.031900"),
-    capacityMin: 100,
     capacityMax: 450,
     basePriceCents: 18_000_000,
     bookingMode: "SINGLE_SLOT",
@@ -49,7 +48,6 @@ const CREATE_INPUT: VenueCreateInput = {
   cityId: CITY_ID,
   nameFr: "Salle El Ferdous",
   nameAr: "قاعة الفردوس",
-  capacityMin: 100,
   capacityMax: 450,
   basePriceCents: 18_000_000
 };
@@ -99,18 +97,7 @@ describe("VenuesService — 404 indistincts", () => {
   });
 });
 
-describe("VenuesService.update — fusion des capacités contre l'existant", () => {
-  it("{ capacityMin: 500 } seul contre un max stocké de 450 : 400 CAPACITY_RANGE_INVALID, update jamais appelé", async () => {
-    const { service, prisma } = buildService();
-    prisma.venue.findFirst.mockResolvedValue(venueRow());
-
-    await expect(service.update(USER_ID, VENUE_ID, { capacityMin: 500 })).rejects.toSatisfy(
-      (e: unknown) =>
-        e instanceof BadRequestException && (e.getResponse() as { code?: string }).code === "CAPACITY_RANGE_INVALID"
-    );
-    expect(prisma.venue.update).not.toHaveBeenCalled();
-  });
-
+describe("VenuesService.update — mise à jour PARTIELLE réelle", () => {
   it("mise à jour partielle sans cityId : la ville n'est PAS re-vérifiée ; { status } seul passe tel quel", async () => {
     const { service, prisma } = buildService();
     prisma.venue.findFirst.mockResolvedValue(venueRow());
@@ -223,7 +210,6 @@ describe("VenuesService — forme du DTO pro (allow-list)", () => {
         "address",
         "lat",
         "lng",
-        "capacityMin",
         "capacityMax",
         "basePriceCents",
         "bookingMode",

@@ -63,7 +63,6 @@ async function makeVenue(
     deletedAt?: Date | null;
     cityId?: string;
     basePriceCents?: number;
-    capacityMin?: number;
     capacityMax?: number;
     amenityIds?: string[];
     updatedAt?: Date;
@@ -79,7 +78,6 @@ async function makeVenue(
       nameAr: `قاعة ${seq}`,
       taglineFr: "Belle salle",
       taglineAr: "قاعة جميلة",
-      capacityMin: over.capacityMin ?? 100,
       capacityMax: over.capacityMax ?? 450,
       basePriceCents: over.basePriceCents ?? 18_000_000,
       publicationStatus: (over.publicationStatus ?? "PUBLISHED") as never,
@@ -137,7 +135,6 @@ describe("GET /venues — matrice de visibilité D33 (liste = ACTIVE seul)", () 
         "taglineAr",
         "districtFr",
         "districtAr",
-        "capacityMin",
         "capacityMax",
         "basePriceCents",
         "bookingMode",
@@ -155,17 +152,16 @@ describe("GET /venues — matrice de visibilité D33 (liste = ACTIVE seul)", () 
 describe("GET /venues — filtres, tris, pagination", () => {
   it("ville, invités (bornes), fourchette de prix, amenities en ET (toutes requises)", async () => {
     const ids = await seedFixtures();
-    // Cible : Hydra, capacité 100–450, prix 18M, parking+wifi.
+    // Cible : Hydra, jusqu'à 450 invités, prix 18M, parking+wifi.
     const target = await makeVenue(ids, {
       slug: "cible",
       cityId: ids.cityHydra,
       basePriceCents: 18_000_000,
-      capacityMin: 100,
       capacityMax: 450,
       amenityIds: [ids.parking, ids.wifi]
     });
     await makeVenue(ids, { slug: "autre-ville", cityId: ids.cityCheraga, amenityIds: [ids.parking, ids.wifi] });
-    await makeVenue(ids, { slug: "trop-petite", cityId: ids.cityHydra, capacityMin: 10, capacityMax: 80, amenityIds: [ids.parking, ids.wifi] });
+    await makeVenue(ids, { slug: "trop-petite", cityId: ids.cityHydra, capacityMax: 80, amenityIds: [ids.parking, ids.wifi] });
     await makeVenue(ids, { slug: "trop-chere", cityId: ids.cityHydra, basePriceCents: 90_000_000, amenityIds: [ids.parking, ids.wifi] });
     await makeVenue(ids, { slug: "un-seul-amenity", cityId: ids.cityHydra, amenityIds: [ids.parking] });
 

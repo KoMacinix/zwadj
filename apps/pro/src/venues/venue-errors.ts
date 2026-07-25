@@ -1,18 +1,16 @@
 // Traduction des erreurs métier venue en erreurs de CHAMP (Lot A5).
 //
 // Sans ça, un 400 légitime finirait en bandeau générique alors que le pro doit
-// voir QUEL champ corriger. Cas le plus retors, explicitement couvert :
-// `CAPACITY_RANGE_INVALID` en édition partielle — si le pro ne modifie qu'un
-// des deux champs de capacité, le `validate()` local ne PEUT pas voir
-// l'incohérence (l'autre valeur est en base), donc seul le 400 de l'API la
-// révèle : il doit atterrir sur le champ, jamais être avalé.
+// voir QUEL champ corriger. Cas type : `CITY_NOT_FOUND` ou `AMENITY_NOT_FOUND`
+// — le `validate()` local ne peut pas juger l'existence d'un référentiel, seul
+// le 400 de l'API la révèle : il doit atterrir sur le champ, jamais être avalé.
+// (`CAPACITY_RANGE_INVALID` a disparu avec capacityMin, D36 / Lot A9.)
 import { ApiError, type FieldErrors } from "@zwadj/api-client";
 import { issuesToFieldErrors } from "@zwadj/api-client";
 
 /** code métier → { champ du formulaire, clé i18n de repli }. */
 const FIELD_BY_CODE: Record<string, { field: string; fallbackKey: string }> = {
   CITY_NOT_FOUND: { field: "cityId", fallbackKey: "venue.errors.cityNotFound" },
-  CAPACITY_RANGE_INVALID: { field: "capacityMax", fallbackKey: "venue.errors.capacityRange" },
   AMENITY_NOT_FOUND: { field: "amenityIds", fallbackKey: "venue.errors.amenityNotFound" }
 };
 

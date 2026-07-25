@@ -47,7 +47,6 @@ async function proWithVenue(): Promise<{ proToken: string; venue: VenueProDTO }>
       cityId: city.id,
       nameFr: "Salle El Ferdous",
       nameAr: "قاعة الفردوس",
-      capacityMin: 100,
       capacityMax: 450,
       basePriceCents: 18_000_000
     });

@@ -14,7 +14,7 @@ export interface VenueSummaryDTO {
   taglineAr: string | null;
   districtFr: string | null;
   districtAr: string | null;
-  capacityMin: number;
+  /** D36 (A9) : plus de minimum — « jusqu'à N invités ». */
   capacityMax: number;
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
@@ -59,8 +59,8 @@ const capacitySchema = (requiredKey: string) =>
   z
     .number({ required_error: requiredKey, invalid_type_error: "venue.validation.capacityInteger" })
     .int("venue.validation.capacityInteger")
-    .min(1, "venue.validation.capacityMin")
-    .max(10_000, "venue.validation.capacityMax");
+    .min(1, "venue.validation.capacityTooSmall")
+    .max(10_000, "venue.validation.capacityTooLarge");
 
 /** Arbitrage Ko (A2-②) : simple `> 0`, aucun plancher métier pour l'instant. */
 const basePriceSchema = z
@@ -95,7 +95,6 @@ export const venueCreateSchema = z
     address: optionalText(300, "venue.validation.addressTooLong").optional(),
     lat: latSchema.optional(),
     lng: lngSchema.optional(),
-    capacityMin: capacitySchema("venue.validation.capacityMinRequired"),
     capacityMax: capacitySchema("venue.validation.capacityMaxRequired"),
     basePriceCents: basePriceSchema,
     /** Omis ⇒ défaut Prisma SINGLE_SLOT (cadrage : « défaut single »). */
@@ -103,9 +102,6 @@ export const venueCreateSchema = z
   })
   .strict("venue.validation.unknownKey")
   .superRefine((v, ctx) => {
-    if (v.capacityMin > v.capacityMax) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["capacityMax"], message: "venue.validation.capacityRange" });
-    }
     if ((v.lat === undefined) !== (v.lng === undefined)) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["lng"], message: "venue.validation.coordsPair" });
     }
@@ -116,8 +112,8 @@ export type VenueCreateInput = z.infer<typeof venueCreateSchema>;
  * Mise à jour PARTIELLE réelle (arbitrage A2-③) : TOUT est optionnel — un
  * corps `{ "status": "HIDDEN" }` seul est valide, jamais besoin de renvoyer
  * l'objet complet. `null` sur un champ nullable = effacement explicite.
- * La cohérence capacityMin ≤ capacityMax quand UN SEUL des deux est fourni se
- * juge côté service, contre la valeur stockée (CAPACITY_RANGE_INVALID).
+ * D36 (A9) : plus aucune cohérence croisée de capacité à juger — il n'y a
+ * qu'une capacité, ses bornes sont dans le schéma.
  */
 export const venueUpdateSchema = z
   .object({
@@ -133,7 +129,6 @@ export const venueUpdateSchema = z
     address: optionalText(300, "venue.validation.addressTooLong").nullable().optional(),
     lat: latSchema.nullable().optional(),
     lng: lngSchema.nullable().optional(),
-    capacityMin: capacitySchema("venue.validation.capacityMinRequired").optional(),
     capacityMax: capacitySchema("venue.validation.capacityMaxRequired").optional(),
     basePriceCents: basePriceSchema.optional(),
     bookingMode: bookingModeSchema.optional(),
@@ -145,9 +140,6 @@ export const venueUpdateSchema = z
   })
   .strict("venue.validation.unknownKey")
   .superRefine((v, ctx) => {
-    if (v.capacityMin !== undefined && v.capacityMax !== undefined && v.capacityMin > v.capacityMax) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["capacityMax"], message: "venue.validation.capacityRange" });
-    }
     // Paire lat/lng : fournis ensemble, effacés ensemble.
     const latGiven = v.lat !== undefined;
     const lngGiven = v.lng !== undefined;
@@ -164,8 +156,6 @@ export const VenueErrorCode = {
    *  pro — anti-énumération, même doctrine que /media/:key. */
   VENUE_NOT_FOUND: "VENUE_NOT_FOUND",
   CITY_NOT_FOUND: "CITY_NOT_FOUND",
-  /** Fusion PATCH ∪ stocké : capacityMin > capacityMax. */
-  CAPACITY_RANGE_INVALID: "CAPACITY_RANGE_INVALID",
   /** A3-① : un id d'équipement absent du référentiel Amenity (écriture pro). */
   AMENITY_NOT_FOUND: "AMENITY_NOT_FOUND",
   /** D35 : fusion PATCH ∪ stocké, cashbackRateBps > commissionRateBps. */
@@ -208,7 +198,7 @@ export interface VenueProDTO {
   address: string | null;
   lat: number | null;
   lng: number | null;
-  capacityMin: number;
+  /** D36 (A9) : plus de minimum — « jusqu'à N invités ». */
   capacityMax: number;
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
@@ -444,7 +434,7 @@ export type VenueListSort = (typeof VENUE_LIST_SORTS)[number];
 export const venueListQuerySchema = z
   .object({
     cityId: z.string().uuid("venue.validation.cityInvalid").optional(),
-    /** Nombre d'invités ⇒ capacityMin ≤ guests ≤ capacityMax. */
+    /** D36 (A9) : nombre d'invités ⇒ guests ≤ capacityMax, rien d'autre. */
     guests: z.coerce
       .number({ invalid_type_error: "venue.validation.guestsInvalid" })
       .int("venue.validation.guestsInvalid")
@@ -527,7 +517,7 @@ export interface VenuePublicDTO {
   address: string | null;
   lat: number | null;
   lng: number | null;
-  capacityMin: number;
+  /** D36 (A9) : plus de minimum — « jusqu'à N invités ». */
   capacityMax: number;
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;

@@ -193,7 +193,7 @@ export function VenueListPage() {
                       <p style={{ margin: 0, fontSize: 13, color: "var(--ink-2)" }}>{isAr ? city.nameAr : city.nameFr}</p>
                     ) : null}
                     <p style={{ margin: 0, fontSize: 13, color: "var(--ink-2)" }}>
-                      {t("venue.ui.list.capacity", { min: venue.capacityMin, max: venue.capacityMax })}
+                      {t("venue.ui.list.capacity", { max: venue.capacityMax })}
                     </p>
                     <p style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>{formatDZD(venue.basePriceCents, locale)}</p>
 

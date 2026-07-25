@@ -40,7 +40,6 @@ const VENUE: VenueProDTO = {
   address: null,
   lat: null,
   lng: null,
-  capacityMin: 100,
   capacityMax: 400,
   basePriceCents: 15_000_000,
   bookingMode: "SINGLE_SLOT",
@@ -119,7 +118,7 @@ describe("Liste des salles — rendu des cartes", () => {
 
     expect(await screen.findByRole("heading", { name: "Salle El Ryad" })).toBeInTheDocument();
     expect(screen.getByText("Bab Ezzouar")).toBeInTheDocument();
-    expect(screen.getByText("100 à 400 invités")).toBeInTheDocument();
+    expect(screen.getByText("Jusqu'à 400 invités")).toBeInTheDocument();
     // formatDZD prend des centimes : 15 000 000 centimes = 150 000 DA.
     expect(screen.getByText(/150\s*000/)).toBeInTheDocument();
     // Sans photo : le bloc placeholder, et AUCUNE gestion de média.

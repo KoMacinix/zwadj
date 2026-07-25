@@ -33,7 +33,6 @@ const VENUE_SUMMARY_SELECT = {
   taglineAr: true,
   districtFr: true,
   districtAr: true,
-  capacityMin: true,
   capacityMax: true,
   basePriceCents: true,
   bookingMode: true,
@@ -63,7 +62,6 @@ const VENUE_PUBLIC_SELECT = {
   address: true,
   lat: true,
   lng: true,
-  capacityMin: true,
   capacityMax: true,
   basePriceCents: true,
   bookingMode: true,
@@ -116,10 +114,10 @@ export class VenuesPublicService {
       ...PUBLIC_BASE_WHERE,
       status: VenueAvailabilityStatus.ACTIVE, // D33 liste : ACTIVE seul
       ...(query.cityId === undefined ? {} : { cityId: query.cityId }),
-      // guests ⇒ la salle peut accueillir : capacityMin ≤ guests ≤ capacityMax
-      ...(query.guests === undefined
-        ? {}
-        : { capacityMin: { lte: query.guests }, capacityMax: { gte: query.guests } }),
+      // D36 (A9) : la salle peut accueillir ⇒ guests ≤ capacityMax. Le
+      // minimum a disparu : personne ne le remplissait, il excluait des
+      // salles à tort.
+      ...(query.guests === undefined ? {} : { capacityMax: { gte: query.guests } }),
       ...(query.minPriceCents === undefined && query.maxPriceCents === undefined
         ? {}
         : {
@@ -197,7 +195,6 @@ export class VenuesPublicService {
       taglineAr: row.taglineAr,
       districtFr: row.districtFr,
       districtAr: row.districtAr,
-      capacityMin: row.capacityMin,
       capacityMax: row.capacityMax,
       basePriceCents: row.basePriceCents,
       bookingMode: row.bookingMode,
@@ -222,7 +219,6 @@ export class VenuesPublicService {
       address: row.address,
       lat: row.lat === null ? null : row.lat.toNumber(),
       lng: row.lng === null ? null : row.lng.toNumber(),
-      capacityMin: row.capacityMin,
       capacityMax: row.capacityMax,
       basePriceCents: row.basePriceCents,
       bookingMode: row.bookingMode,

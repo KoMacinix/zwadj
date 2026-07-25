@@ -62,7 +62,6 @@ function payload(cityId: string, overrides: Record<string, unknown> = {}) {
     address: "12 rue des Frères Boudjemaa",
     lat: 36.7453,
     lng: 3.0319,
-    capacityMin: 100,
     capacityMax: 450,
     basePriceCents: 18_000_000, // 180 000 DA — argent en centimes entiers
     ...overrides
@@ -152,7 +151,6 @@ describe("POST /venues — création", () => {
         "address",
         "lat",
         "lng",
-        "capacityMin",
         "capacityMax",
         "basePriceCents",
         "bookingMode",
@@ -199,7 +197,8 @@ describe("POST /venues — création", () => {
       return (res.body.message as { issues: { path: string; message: string }[] }).issues.map((i) => i.path);
     };
 
-    expect(await issuePaths({ capacityMin: 500 })).toContain("capacityMax"); // 500 > 450
+    expect(await issuePaths({ capacityMax: 0 })).toContain("capacityMax"); // borne basse (≥ 1)
+    expect(await issuePaths({ capacityMin: 100 })).toEqual([""]); // D36 : clé INCONNUE désormais
     expect(await issuePaths({ basePriceCents: 0 })).toContain("basePriceCents");
     expect(await issuePaths({ commissionRateBps: 500 })).toEqual([""]); // .strict() → clé inconnue
     expect(await issuePaths({ lng: undefined })).toContain("lng"); // paire incomplète
@@ -303,19 +302,18 @@ describe("PATCH /venues/:id — mise à jour PARTIELLE réelle (A2-③) et D33",
     expect(badMove.body.message.code).toBe("CITY_NOT_FOUND");
   });
 
-  it("capacités fusionnées avec l'existant : min seul > max stocké → 400 CAPACITY_RANGE_INVALID ; les deux → 200", async () => {
+  it("D36 — capacityMin n'est plus un champ : PATCH le refuse comme clé inconnue ; { capacityMax } seul → 200", async () => {
     const { cityA } = await seedGeo();
     const token = await proSession(PRO_A);
     const venue = await createVenue(token, cityA); // max stocké : 450
 
+    // La suppression est RÉELLE : ce n'est plus une incohérence de capacités
+    // (400 CAPACITY_RANGE_INVALID, code disparu), c'est un champ non autorisé
+    // arrêté par le `.strict()` du schéma partagé.
     const bad = await api().patch(`/api/v1/venues/${venue.id}`).set(auth(token)).send({ capacityMin: 500 });
     expect(bad.status).toBe(400);
-    expect(bad.body.message).toEqual({ code: "CAPACITY_RANGE_INVALID", message: "venue.errors.capacityRange" });
 
-    const ok = await api()
-      .patch(`/api/v1/venues/${venue.id}`)
-      .set(auth(token))
-      .send({ capacityMin: 500, capacityMax: 600 });
+    const ok = await api().patch(`/api/v1/venues/${venue.id}`).set(auth(token)).send({ capacityMax: 600 });
     expect(ok.status).toBe(200);
     expect((ok.body as VenueProDTO).capacityMax).toBe(600);
   });
