@@ -356,7 +356,9 @@ model Venue {
   address           String?
   lat               Decimal?               @db.Decimal(9, 6) // pin-drop manuel (23.9), nullable en attendant
   lng               Decimal?               @db.Decimal(9, 6)
-  capacityMin       Int                    @map("capacity_min")
+  // D36 (Lot A9) : capacity_min SUPPRIMÉE — donnée jamais remplie qui mentait
+  // au filtre de recherche. capacityMax porte seule l'information utile
+  // (« jusqu'à N invités »). CHECK SQL survivant : capacity_max > 0.
   capacityMax       Int                    @map("capacity_max")
   basePriceCents    Int                    @map("base_price_cents") // prix de base ; PricingRule le module par date
   bookingMode       BookingMode            @default(SINGLE_SLOT) @map("booking_mode")

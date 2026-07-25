@@ -6,7 +6,7 @@
 // fait au submit, et elle est FAILLIBLE — c'est là que vit le rejet décimal
 // strict du prix. Garder la valeur brute évite l'altération silencieuse d'un
 // `parseInt("150000.5") → 150000`.
-import { useLayoutEffect, useRef } from "react";
+import { useId, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BookingMode,
@@ -83,7 +83,6 @@ export interface VenueFormValues {
   address: string;
   lat: string;
   lng: string;
-  capacityMin: string;
   capacityMax: string;
   /** DA ENTIERS saisis par le pro (jamais des centimes, jamais un float). */
   basePrice: string;
@@ -106,7 +105,6 @@ export function emptyVenueForm(): VenueFormValues {
     address: "",
     lat: "",
     lng: "",
-    capacityMin: "",
     capacityMax: "",
     basePrice: "",
     bookingMode: BookingMode.SINGLE_SLOT,
@@ -131,7 +129,6 @@ export function venueToForm(venue: VenueProDTO): VenueFormValues {
     address: venue.address ?? "",
     lat: venue.lat === null ? "" : String(venue.lat),
     lng: venue.lng === null ? "" : String(venue.lng),
-    capacityMin: String(venue.capacityMin),
     capacityMax: String(venue.capacityMax),
     basePrice: String(venue.basePriceCents / 100),
     bookingMode: venue.bookingMode,
@@ -208,7 +205,6 @@ export function buildCreateInput(
   put("districtFr", trimmedText(values.districtFr));
   put("districtAr", trimmedText(values.districtAr));
   put("address", trimmedText(values.address));
-  put("capacityMin", numericField(values.capacityMin));
   put("capacityMax", numericField(values.capacityMax));
   put("bookingMode", values.bookingMode);
 
@@ -236,10 +232,9 @@ export type VenueUpdateDiff =
 
 /**
  * PATCH PAR DIFF (§9) : on n'envoie QUE les champs réellement modifiés.
- * Conséquence voulue : si le pro ne touche qu'une seule capacité, le corps ne
- * porte que celle-là — le serveur la croise avec la valeur stockée et renvoie
- * un `CAPACITY_RANGE_INVALID` RÉEL, qu'on mappe alors sur le champ.
- * `null` = effacement explicite sur les champs nullables.
+ * `null` = effacement explicite sur les champs nullables. Le serveur peut
+ * toujours refuser un corps partiel valide en local (référentiel inconnu) —
+ * `venueFieldErrors` ramène alors le 400 sur le bon champ.
  */
 export function buildUpdateDiff(values: VenueFormValues, venue: VenueProDTO): VenueUpdateDiff {
   const price = parseIntegerPrice(values.basePrice);
@@ -282,9 +277,7 @@ export function buildUpdateDiff(values: VenueFormValues, venue: VenueProDTO): Ve
     }
   }
 
-  const capacityMin = numericField(values.capacityMin);
   const capacityMax = numericField(values.capacityMax);
-  if (capacityMin !== venue.capacityMin) diff.capacityMin = capacityMin;
   if (capacityMax !== venue.capacityMax) diff.capacityMax = capacityMax;
 
   if (!price.ok || price.cents !== venue.basePriceCents) diff.basePriceCents = price.ok ? price.cents : undefined;
@@ -356,7 +349,12 @@ export function PublicationBadge({ status }: { status: VenuePublicationStatus })
 /** Champ prix : affiche « 1 000 000 DA » pendant la frappe tout en STOCKANT
  *  les chiffres bruts. Le curseur est repositionne apres le meme chiffre
  *  qu'avant reformatage, sinon il saute en fin de champ des qu'un separateur
- *  s'insere. */
+ *  s'insere.
+ *
+ *  D43 — l'unite est COLLEE au chiffre par ALIGNEMENT, jamais par mesure :
+ *  une seule boite (le conteneur porte la bordure), l'input pousse ses
+ *  chiffres vers l'unite via `text-align: end`. Rien a re-mesurer a la
+ *  frappe, au chargement differe de Readex Pro, au zoom ni en RTL. */
 function PriceInput({
   value,
   onValueChange,
@@ -364,7 +362,8 @@ function PriceInput({
   describedBy,
   invalid,
   required,
-  currency
+  currency,
+  unitHint
 }: {
   value: string;
   onValueChange: (next: string) => void;
@@ -373,9 +372,15 @@ function PriceInput({
   invalid: boolean;
   required: boolean;
   currency: string;
+  /** D43 — description MASQUEE visuellement : depuis que « (DA) » a quitte le
+   *  libelle, c'est la SEULE mention de l'unite percue par un lecteur
+   *  d'ecran. Elle re-heberge aussi la contrainte « nombre entier ». */
+  unitHint: string;
 }) {
   const ref = useRef<HTMLInputElement>(null);
   const pendingDigits = useRef<number | null>(null);
+  const reactId = useId();
+  const hintId = `${reactId}-unit`;
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -387,32 +392,47 @@ function PriceInput({
   });
 
   return (
-    <div className="input-affix">
-      <input
-        id={id}
-        ref={ref}
-        // `text` + inputMode : un `type="number"` accepterait « 150000.5 »
-        // et laisserait le navigateur normaliser la valeur dans notre dos.
-        type="text"
-        inputMode="numeric"
-        value={formatPriceForDisplay(value)}
-        onChange={(e) => {
-          const displayed = e.target.value;
-          const caret = e.target.selectionStart ?? displayed.length;
-          pendingDigits.current = countDigits(displayed.slice(0, caret));
-          onValueChange(stripGroupSeparators(displayed));
-        }}
-        aria-describedby={describedBy}
-        aria-invalid={invalid || undefined}
-        required={required}
-        dir="ltr"
-      />
-      {/* Unite decorative : le libelle du champ porte deja « (DA) » pour les
-          lecteurs d'ecran, la repeter ici serait du bruit. */}
-      <span className="input-affix-unit" aria-hidden="true">
-        {currency}
+    <>
+      {/* L'etat invalide est porte par la BOITE : l'input n'a plus de bordure
+          a colorer, et un `:has()` serait une dependance inutile sur la cible
+          Android bas de gamme (24.6). */}
+      <div className={invalid ? "input-affix is-invalid" : "input-affix"}>
+        <input
+          id={id}
+          ref={ref}
+          // `text` + inputMode : un `type="number"` accepterait « 150000.5 »
+          // et laisserait le navigateur normaliser la valeur dans notre dos.
+          type="text"
+          inputMode="numeric"
+          value={formatPriceForDisplay(value)}
+          onChange={(e) => {
+            const displayed = e.target.value;
+            const caret = e.target.selectionStart ?? displayed.length;
+            pendingDigits.current = countDigits(displayed.slice(0, caret));
+            onValueChange(stripGroupSeparators(displayed));
+          }}
+          // L'erreur D'ABORD, l'unite ensuite : un lecteur d'ecran annonce la
+          // cause du refus avant le format attendu.
+          aria-describedby={describedBy === undefined ? hintId : `${describedBy} ${hintId}`}
+          aria-invalid={invalid || undefined}
+          required={required}
+          // D43 — PAS de `dir="ltr"` ici : l'alignement des chiffres doit
+          // suivre la direction du champ. Force en LTR, `text-align: end`
+          // collerait les chiffres au bord DROIT en RTL, c'est-a-dire a
+          // l'OPPOSE de l'unite. Chiffres et espace insecable (U+00A0, classe
+          // bidi CS) forment un seul run LTR : « 150 000 » se lit correctement
+          // dans les deux langues.
+        />
+        {/* Unite purement decorative : elle est deja annoncee par `unitHint`,
+            la relire serait du bruit. */}
+        <span className="input-affix-unit" aria-hidden="true">
+          {currency}
+        </span>
+      </div>
+      <span id={hintId} className="sr-only">
+        {unitHint}
       </span>
-    </div>
+    </>
   );
 }
 
@@ -771,21 +791,6 @@ export function VenueFormFields({
       <SectionTitle>{t("venue.ui.form.sectionCapacityPrice")}</SectionTitle>
 
       <div className="field-row">
-        <Field label={t("venue.ui.form.capacityMin")} required error={tval(errors.capacityMin)}>
-          {({ id, describedBy, invalid, required }) => (
-            <input
-              id={id}
-              type="text"
-              inputMode="numeric"
-              value={values.capacityMin}
-              onChange={(e) => onChange({ capacityMin: e.target.value })}
-              aria-describedby={describedBy}
-              aria-invalid={invalid || undefined}
-              required={required}
-              dir="ltr"
-            />
-          )}
-        </Field>
         <Field label={t("venue.ui.form.capacityMax")} required error={tval(errors.capacityMax)}>
           {({ id, describedBy, invalid, required }) => (
             <input
@@ -801,26 +806,23 @@ export function VenueFormFields({
             />
           )}
         </Field>
+        {/* D36 : capacite min supprimee — le prix remonte dans la rangee,
+            sinon la capacite resterait seule sur une grille a 2 colonnes. */}
+        <Field label={t("venue.ui.form.basePrice")} required error={tval(errors.basePriceCents)}>
+          {({ id, describedBy, invalid, required }) => (
+            <PriceInput
+              id={id}
+              value={values.basePrice}
+              onValueChange={(next) => onChange({ basePrice: next })}
+              describedBy={describedBy}
+              invalid={invalid}
+              required={required}
+              currency={t("venue.ui.form.priceCurrency")}
+              unitHint={t("venue.ui.form.priceUnitHint")}
+            />
+          )}
+        </Field>
       </div>
-
-      <Field
-        label={t("venue.ui.form.basePrice")}
-        required
-        error={tval(errors.basePriceCents)}
-        hint={t("venue.ui.form.priceHint")}
-      >
-        {({ id, describedBy, invalid, required }) => (
-          <PriceInput
-            id={id}
-            value={values.basePrice}
-            onValueChange={(next) => onChange({ basePrice: next })}
-            describedBy={describedBy}
-            invalid={invalid}
-            required={required}
-            currency={t("venue.ui.form.priceCurrency")}
-          />
-        )}
-      </Field>
 
       <Field label={t("venue.ui.form.bookingMode")} error={tval(errors.bookingMode)}>
         {({ id, describedBy, invalid }) => (

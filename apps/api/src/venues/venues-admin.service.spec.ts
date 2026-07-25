@@ -25,7 +25,6 @@ function adminRow(overrides: Record<string, unknown> = {}) {
     address: null,
     lat: null,
     lng: null,
-    capacityMin: 100,
     capacityMax: 450,
     basePriceCents: 18_000_000,
     bookingMode: "SINGLE_SLOT",

@@ -65,7 +65,6 @@ describe("VenuesPublicService.list — WHERE D33 + filtres", () => {
           deletedAt: null,
           status: "ACTIVE",
           cityId: "018f0000-0000-7000-8000-00000000cccc",
-          capacityMin: { lte: 250 },
           capacityMax: { gte: 250 },
           basePriceCents: { gte: 10_000_000, lte: 30_000_000 },
           AND: [

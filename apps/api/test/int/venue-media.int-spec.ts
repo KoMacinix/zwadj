@@ -56,7 +56,7 @@ async function createVenue(token: string, cityId: string, nameFr = "Salle El Fer
   const res = await api()
     .post("/api/v1/venues")
     .set(auth(token))
-    .send({ cityId, nameFr, nameAr: "قاعة الفردوس", capacityMin: 100, capacityMax: 450, basePriceCents: 18_000_000 });
+    .send({ cityId, nameFr, nameAr: "قاعة الفردوس", capacityMax: 450, basePriceCents: 18_000_000 });
   if (res.status !== 201) throw new Error(`création de test a échoué (${res.status}) : ${JSON.stringify(res.body)}`);
   return res.body as VenueProDTO;
 }

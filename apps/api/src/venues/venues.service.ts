@@ -33,7 +33,6 @@ export const VENUE_PRO_SELECT = {
   address: true,
   lat: true,
   lng: true,
-  capacityMin: true,
   capacityMax: true,
   basePriceCents: true,
   bookingMode: true,
@@ -114,7 +113,6 @@ export class VenuesService {
             address: input.address,
             lat: input.lat,
             lng: input.lng,
-            capacityMin: input.capacityMin,
             capacityMax: input.capacityMax,
             basePriceCents: input.basePriceCents,
             bookingMode: input.bookingMode
@@ -153,16 +151,8 @@ export class VenuesService {
   async update(userId: string, venueId: string, input: VenueUpdateInput): Promise<VenueProDTO> {
     const current = await this.ownedLivingVenue(userId, venueId);
 
-    // Capacités croisées APRÈS fusion avec l'existant : `{ capacityMin: 500 }`
-    // seul doit être refusé si le max stocké est 450.
-    const capacityMin = input.capacityMin ?? current.capacityMin;
-    const capacityMax = input.capacityMax ?? current.capacityMax;
-    if (capacityMin > capacityMax) {
-      throw new BadRequestException({
-        code: VenueErrorCode.CAPACITY_RANGE_INVALID,
-        message: "venue.errors.capacityRange"
-      });
-    }
+    // D36 (A9) : plus de cohérence croisée de capacité à juger ici — il n'y a
+    // qu'une capacité, ses bornes (1–10 000) sont portées par le schéma Zod.
 
     if (input.cityId !== undefined) await this.assertCityExists(input.cityId);
 
@@ -303,7 +293,6 @@ export function toVenueProDTO(row: VenueProRow, urlOf: (key: string) => string):
     // Decimal(9,6) → number : coordonnées ≠ argent (invariant entiers N/A).
     lat: row.lat === null ? null : row.lat.toNumber(),
     lng: row.lng === null ? null : row.lng.toNumber(),
-    capacityMin: row.capacityMin,
     capacityMax: row.capacityMax,
     basePriceCents: row.basePriceCents,
     bookingMode: row.bookingMode,

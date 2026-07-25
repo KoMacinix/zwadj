@@ -93,8 +93,8 @@ export function EditVenuePage() {
         setState({ kind: "notFound" });
         return;
       }
-      // CAPACITY_RANGE_INVALID arrive ICI quand une seule capacité a bougé :
-      // le validate() local ne pouvait pas le voir (l'autre valeur est en base).
+      // Les 400 que le validate() local ne POUVAIT pas voir (existence d'un
+      // référentiel : commune, équipements) atterrissent ici, sur leur champ.
       const mapped = venueFieldErrors(err);
       if (mapped) setFieldErrors(mapped);
       else setFormError(apiErrorMessage(err));

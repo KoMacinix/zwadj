@@ -72,6 +72,21 @@ button {
   outline-offset: 2px;
 }
 
+/* Texte reserve aux technologies d'assistance : retire du flux VISUEL sans
+   jamais quitter l'arbre d'accessibilite (`display: none` le supprimerait des
+   deux, et la description de l'unite ne serait plus annoncee nulle part). */
+.sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -659,18 +674,57 @@ button {
   justify-content: flex-end;
 }
 
-/* Champ numerique + unite affichee a cote (prix). Flex simple : en RTL la
-   direction du document place naturellement l'unite du cote inline-end,
-   sans positionnement absolu ni propriete physique. */
+/* Champ numerique + unite COLLEE au chiffre (D43). UNE SEULE BOITE : le
+   conteneur porte bordure et fond, l'input est neutralise dedans et pousse
+   ses chiffres vers l'unite par `text-align: end`. L'ecart entre le dernier
+   chiffre et « DA » est donc une valeur d'espacement CONSTANTE, quel que soit
+   le nombre de chiffres saisis : aucun calcul, aucune mesure de police, rien
+   a re-mesurer a la frappe, au zoom ou au chargement differe de Readex Pro.
+   En RTL, la direction du document inverse l'ordre visuel et `end` suit —
+   l'unite reste a l'inline-end, aucune propriete physique nulle part. */
 .input-affix {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding-block: 11px;
+  padding-inline: 13px;
 }
 
-.input-affix > input {
+/* L'anneau de focus DEMENAGE sur la boite, pour qu'elle se lise comme UN seul
+   controle. Neutraliser l'outline de l'input sans le reposer ici serait une
+   perte pure d'indicateur de focus. */
+.input-affix:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+/* L'etat invalide suit la bordure, donc la boite. Classe posee par le
+   composant plutot qu'un `:has()` : pas de pari sur la cible Android bas de
+   gamme (24.6). */
+.input-affix.is-invalid {
+  border-color: var(--danger);
+}
+
+/* Neutralisation de `.field input` par SPECIFICITE (0,2,1 > 0,1,1), pas par
+   ordre des regles : la boite porte deja bordure, fond et rembourrage. */
+.field .input-affix > input {
   flex: 1;
   min-inline-size: 0;
+  text-align: end;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  inline-size: auto;
+}
+
+.field .input-affix > input:focus-visible {
+  outline: none;
+  border-color: transparent;
 }
 
 .input-affix-unit {
@@ -678,4 +732,8 @@ button {
   font-size: 13px;
   color: var(--ink-2);
   white-space: nowrap;
+  /* Purement decorative : un clic doit atteindre l'input, jamais selectionner
+     « DA ». Elle est deja annoncee par la description masquee du champ. */
+  pointer-events: none;
+  user-select: none;
 }
