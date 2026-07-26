@@ -27,6 +27,15 @@ export interface AuthContextValue {
   resendVerification(): Promise<void>;
   /** Recharge l'utilisateur depuis /me (ex. après vérification d'email). */
   refreshUser(): Promise<void>;
+  /**
+   * Lot A11b — pose un DTO déjà obtenu, sans aller-retour.
+   *
+   * `refreshUser()` existait déjà et reste la voie quand l'API ne renvoie pas
+   * le profil (changement de mot de passe → `{ status: "ok" }`). Mais le PATCH
+   * du profil, lui, renvoie l'`AuthUserDTO` complet : le relire serait une
+   * requête pour une donnée qu'on tient déjà en main.
+   */
+  applyUser(user: AuthUserDTO): void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -101,6 +110,10 @@ export function AuthProvider({
     await api.resendVerification(user.email);
   }, [api, user]);
 
+  const applyUser = useCallback((next: AuthUserDTO) => {
+    setUser(next);
+  }, []);
+
   const refreshUser = useCallback(async () => {
     const fresh = await api.me().catch(() => null);
     if (fresh) {
@@ -110,8 +123,19 @@ export function AuthProvider({
   }, [api]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ status, user, api, login, loginWithGoogle, registerClient, logout, resendVerification, refreshUser }),
-    [status, user, api, login, loginWithGoogle, registerClient, logout, resendVerification, refreshUser]
+    () => ({
+      status,
+      user,
+      api,
+      login,
+      loginWithGoogle,
+      registerClient,
+      logout,
+      resendVerification,
+      refreshUser,
+      applyUser
+    }),
+    [status, user, api, login, loginWithGoogle, registerClient, logout, resendVerification, refreshUser, applyUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

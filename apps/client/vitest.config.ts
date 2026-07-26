@@ -13,6 +13,12 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
+    // next-intl est publie en ESM et importe `next/navigation` SANS extension.
+    // Hors de Vite, la resolution ESM de Node echoue ("Did you mean
+    // next/navigation.js ?"). L'inliner le fait passer par le resolveur de
+    // Vite, qui gere l'extension. Necessaire des qu'un test monte un composant
+    // qui touche `src/i18n/navigation` (Link/useRouter localises).
+    server: { deps: { inline: ["next-intl"] } },
     setupFiles: ["./src/test-setup.ts"],
     globals: true
   }
