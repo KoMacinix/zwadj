@@ -13,4 +13,5 @@ export {
   type ReferentialsClient,
   type VenueProClient
 } from "./venue-client";
+export { createAccountClient, type AccountClient } from "./account-client";
 export { validate, issuesToFieldErrors, type FieldErrors } from "./form-validation";
