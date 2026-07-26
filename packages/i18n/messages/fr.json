@@ -22,43 +22,7 @@
       "deletionNotPending": "Cette demande a déjà été traitée."
     },
     "ui": {
-      "title": "Configuration du compte",
-      "save": "Enregistrer",
       "cancel": "Annuler",
-      "menu": {
-        "trigger": "Mon compte",
-        "settings": "Configuration du compte"
-      },
-      "errors": {
-        "generic": "Une erreur est survenue. Réessayez.",
-        "network": "Connexion impossible. Vérifiez votre réseau puis réessayez."
-      },
-      "profile": {
-        "title": "Profil",
-        "businessName": "Nom de l'établissement",
-        "phone": "Téléphone",
-        "phone2": "Second téléphone (facultatif)",
-        "saved": "Profil enregistré."
-      },
-      "email": {
-        "title": "Adresse email",
-        "current": "Adresse actuelle : {email}",
-        "newEmail": "Nouvelle adresse email",
-        "submit": "Envoyer le lien de confirmation",
-        "sent": "Un lien de confirmation a été envoyé à {email}. Votre adresse actuelle reste active jusqu'à ce que vous l'ouvriez."
-      },
-      "password": {
-        "titleChange": "Modifier le mot de passe",
-        "titleDefine": "Définir un mot de passe",
-        "defineHint": "Votre compte utilise Google pour se connecter. Vous pouvez ajouter un mot de passe pour disposer d'une seconde façon d'accéder à votre compte.",
-        "current": "Mot de passe actuel",
-        "next": "Nouveau mot de passe",
-        "confirm": "Confirmer le mot de passe",
-        "submitChange": "Modifier le mot de passe",
-        "submitDefine": "Définir le mot de passe",
-        "changed": "Mot de passe modifié. Vos autres appareils ont été déconnectés.",
-        "defined": "Mot de passe défini. Vous pouvez désormais vous connecter soit avec Google, soit avec votre email et ce mot de passe."
-      },
       "deletion": {
         "title": "Supprimer mon compte",
         "consequences": "La suppression désactive votre compte et efface vos données personnelles. Elle est validée manuellement par Zwadj : votre compte reste utilisable jusque-là.",
@@ -73,7 +37,47 @@
         "rejected": "Votre demande de suppression n'a pas été retenue. Votre compte reste actif.",
         "rejectedWithNote": "Votre demande de suppression n'a pas été retenue : {note}",
         "loadFailed": "Impossible de vérifier l'état de votre demande. Rechargez la page."
-      }
+      },
+      "email": {
+        "title": "Adresse email",
+        "current": "Adresse actuelle : {email}",
+        "newEmail": "Nouvelle adresse email",
+        "submit": "Envoyer le lien de confirmation",
+        "sent": "Un lien de confirmation a été envoyé à {email}. Votre adresse actuelle reste active jusqu'à ce que vous l'ouvriez."
+      },
+      "errors": {
+        "generic": "Une erreur est survenue. Réessayez.",
+        "network": "Connexion impossible. Vérifiez votre réseau puis réessayez."
+      },
+      "menu": {
+        "trigger": "Mon compte",
+        "settings": "Configuration du compte"
+      },
+      "password": {
+        "titleChange": "Modifier le mot de passe",
+        "titleDefine": "Définir un mot de passe",
+        "defineHint": "Votre compte utilise Google pour se connecter. Vous pouvez ajouter un mot de passe pour disposer d'une seconde façon d'accéder à votre compte.",
+        "current": "Mot de passe actuel",
+        "next": "Nouveau mot de passe",
+        "confirm": "Confirmer le mot de passe",
+        "submitChange": "Modifier le mot de passe",
+        "submitDefine": "Définir le mot de passe",
+        "changed": "Mot de passe modifié. Vos autres appareils ont été déconnectés.",
+        "defined": "Mot de passe défini. Vous pouvez désormais vous connecter soit avec Google, soit avec votre email et ce mot de passe."
+      },
+      "profile": {
+        "businessName": "Nom de l'établissement",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "phone": "Téléphone",
+        "phone2": "Second téléphone (facultatif)",
+        "phoneOptional": "Téléphone (facultatif)",
+        "saved": "Profil enregistré.",
+        "title": "Profil"
+      },
+      "save": "Enregistrer",
+      "signedOut": "Connectez-vous pour accéder à la configuration de votre compte.",
+      "title": "Configuration du compte"
     },
     "validation": {
       "businessNameRequired": "Le nom de l'établissement est requis.",

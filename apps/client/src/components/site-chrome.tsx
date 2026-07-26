@@ -3,15 +3,21 @@
 // En-tête minimal de la tranche auth : marque + état de session. La vraie
 // navigation (Salles/Prestataires/… + « Bientôt disponible ») appartient à la
 // tranche Accueil — hors périmètre Lot 5, ne pas élargir.
-import { ZwadjLogo } from "@zwadj/ui";
+//
+// Lot A11b : une fois connecté, le prénom en clair et le bouton « Se
+// déconnecter » cèdent la place au ROND À INITIALES et à son menu — même
+// composant que le Pro, SANS « Ajouter une salle » (un client n'a pas de salle).
+import { AccountMenu, ZwadjLogo, type AccountMenuItem } from "@zwadj/ui";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "../i18n/navigation";
+import { Link, useRouter } from "../i18n/navigation";
 import { useAuth } from "../lib/auth/auth-context";
 
 export function SiteHeader() {
   const t = useTranslations("auth.ui.header");
+  const tAccount = useTranslations("account.ui.menu");
   const { status, user, logout } = useAuth();
+  const router = useRouter();
 
   return (
     <header className="site-header">
@@ -20,14 +26,19 @@ export function SiteHeader() {
       </Link>
       <div className="header-auth">
         {status === "authenticated" && user ? (
-          <>
-            <span className="header-user" title={user.email}>
-              {user.firstName ?? user.email}
-            </span>
-            <button type="button" className="btn btn-ghost" onClick={() => void logout()}>
-              {t("logout")}
-            </button>
-          </>
+          <AccountMenu
+            // Prénom + nom quand les deux existent ; sinon ce qu'on a. Le
+            // composant retombe seul sur l'e-mail si tout est vide.
+            displayName={[user.firstName, user.lastName].filter(Boolean).join(" ") || null}
+            email={user.email}
+            triggerLabel={tAccount("trigger")}
+            items={
+              [
+                { key: "settings", label: tAccount("settings"), onSelect: () => router.push("/compte") },
+                { key: "logout", label: t("logout"), onSelect: () => void logout(), destructive: true }
+              ] satisfies AccountMenuItem[]
+            }
+          />
         ) : status === "anonymous" ? (
           <>
             <Link href="/auth/connexion" className="btn btn-ghost">
