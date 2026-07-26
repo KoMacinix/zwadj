@@ -17,6 +17,7 @@ import { RegisterPage } from "./auth/register-page";
 import { ForgotPage, ResetPage, VerifyEmailPage } from "./auth/recovery-pages";
 import { RequireProSession } from "./auth/require-pro";
 import { VenueProvider } from "./venues/venue-client-context";
+import { AccountSettingsPage } from "./account/account-settings-page";
 import { VenueListPage } from "./venues/venue-list-page";
 import { CreateVenuePage } from "./venues/create-venue-page";
 import { EditVenuePage } from "./venues/edit-venue-page";
@@ -57,6 +58,14 @@ export function AppRoutes() {
         element={
           <RequireProSession>
             <VenueListPage />
+          </RequireProSession>
+        }
+      />
+      <Route
+        path="/compte"
+        element={
+          <RequireProSession>
+            <AccountSettingsPage />
           </RequireProSession>
         }
       />

@@ -96,10 +96,11 @@ export function VenueListPage() {
           }}
         >
           <h1 style={{ fontWeight: 500, fontSize: 24, margin: 0 }}>{t("venue.ui.list.title")}</h1>
-          {/* Aligné inline-end : correct en RTL sans conditionnel. */}
-          <Link to="/salles/nouvelle" className="btn btn-accent">
-            {t("venue.ui.list.new")}
-          </Link>
+          {/* A11a — « Nouvelle salle » est DÉPLACÉ dans le menu de compte : il
+              n'existe plus qu'à un seul endroit. Le lien de l'état VIDE, plus
+              bas, est conservé : c'est l'appel à l'action d'un premier usage,
+              pas un doublon de navigation — un pro sans aucune salle ne doit
+              pas avoir à deviner qu'il faut ouvrir un menu. */}
         </div>
 
         {actionError ? (

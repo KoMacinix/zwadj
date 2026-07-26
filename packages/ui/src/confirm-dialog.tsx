@@ -10,11 +10,16 @@
 // non-portalisé peut être rogné par l'`overflow` d'un ancêtre. Pour un
 // composant voulu « réutilisable partout », le portail est le patron robuste.
 // `react-dom` est déjà peer des deux apps → zéro nouvelle dépendance.
-import { useEffect, useId, useRef } from "react";
+//
+// Lot A11a : la mécanique clavier/focus a été EXTRAITE dans `useDismissLayer`
+// et est désormais partagée avec le menu de compte — un seul piège de focus
+// dans le dépôt, pas trois. Le comportement visible est inchangé (les tests
+// A5 de ce composant sont le filet de régression du refactor) : Escape ferme,
+// Tab boucle, le focus va sur ANNULER à l'ouverture et revient au déclencheur
+// à la fermeture, le défilement d'arrière-plan est bloqué.
+import { useId, useRef } from "react";
 import { createPortal } from "react-dom";
-
-/** Sélecteur des éléments focalisables du panneau (piège de focus). */
-const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+import { useDismissLayer } from "./use-dismiss-layer";
 
 export interface ConfirmDialogProps {
   open: boolean;
@@ -44,54 +49,16 @@ export function ConfirmDialog({
   const titleId = `${baseId}-title`;
   const descriptionId = `${baseId}-desc`;
 
-  // Ouverture : on capture le DÉCLENCHEUR (activeElement) et l'état du scroll,
-  // on donne le focus à ANNULER (une frappe Entrée accidentelle ne doit jamais
-  // confirmer une action destructive). Le cleanup rend les deux — c'est la
-  // restitution de focus exigée par §7, valable à la fermeture COMME au
-  // démontage.
-  useEffect(() => {
-    if (!open) return;
-    const trigger = document.activeElement as HTMLElement | null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    cancelRef.current?.focus();
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      trigger?.focus?.();
-    };
-  }, [open]);
-
-  // Escape ferme ; Tab/Shift+Tab boucle à l'intérieur du panneau.
-  useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onCancel();
-        return;
-      }
-      if (event.key !== "Tab") return;
-      const panel = panelRef.current;
-      if (!panel) return;
-      const focusables = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-        (element) => !element.hasAttribute("disabled")
-      );
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (!first || !last) return;
-      const active = document.activeElement;
-      const outside = !panel.contains(active);
-      if (event.shiftKey && (active === first || outside)) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && (active === last || outside)) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open, onCancel]);
+  // `initialFocusRef` = ANNULER, et non le premier focalisable : une frappe
+  // Entrée accidentelle ne doit jamais confirmer une action destructive.
+  // `lockScroll` : c'est un dialogue MODAL, l'arrière-plan ne défile pas.
+  useDismissLayer({
+    open,
+    panelRef,
+    onDismiss: onCancel,
+    initialFocusRef: cancelRef,
+    lockScroll: true
+  });
 
   if (!open) return null;
 

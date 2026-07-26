@@ -21,17 +21,72 @@
       "deletionNotFound": "Aucune demande de suppression en attente.",
       "deletionNotPending": "Cette demande a déjà été traitée."
     },
+    "ui": {
+      "title": "Configuration du compte",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "menu": {
+        "trigger": "Mon compte",
+        "settings": "Configuration du compte"
+      },
+      "errors": {
+        "generic": "Une erreur est survenue. Réessayez.",
+        "network": "Connexion impossible. Vérifiez votre réseau puis réessayez."
+      },
+      "profile": {
+        "title": "Profil",
+        "businessName": "Nom de l'établissement",
+        "phone": "Téléphone",
+        "phone2": "Second téléphone (facultatif)",
+        "saved": "Profil enregistré."
+      },
+      "email": {
+        "title": "Adresse email",
+        "current": "Adresse actuelle : {email}",
+        "newEmail": "Nouvelle adresse email",
+        "submit": "Envoyer le lien de confirmation",
+        "sent": "Un lien de confirmation a été envoyé à {email}. Votre adresse actuelle reste active jusqu'à ce que vous l'ouvriez."
+      },
+      "password": {
+        "titleChange": "Modifier le mot de passe",
+        "titleDefine": "Définir un mot de passe",
+        "defineHint": "Votre compte utilise Google pour se connecter. Vous pouvez ajouter un mot de passe pour disposer d'une seconde façon d'accéder à votre compte.",
+        "current": "Mot de passe actuel",
+        "next": "Nouveau mot de passe",
+        "confirm": "Confirmer le mot de passe",
+        "submitChange": "Modifier le mot de passe",
+        "submitDefine": "Définir le mot de passe",
+        "changed": "Mot de passe modifié. Vos autres appareils ont été déconnectés.",
+        "defined": "Mot de passe défini. Vous pouvez désormais vous connecter soit avec Google, soit avec votre email et ce mot de passe."
+      },
+      "deletion": {
+        "title": "Supprimer mon compte",
+        "consequences": "La suppression désactive votre compte et efface vos données personnelles. Elle est validée manuellement par Zwadj : votre compte reste utilisable jusque-là.",
+        "archiveNote": "Vos salles ne sont pas perdues : elles sont conservées en archive et pourront être récupérées sur demande auprès de Zwadj.",
+        "reason": "Motif (facultatif)",
+        "submit": "Demander la suppression",
+        "confirmTitle": "Envoyer la demande de suppression ?",
+        "confirmBody": "Votre demande sera examinée par Zwadj. Votre compte continue de fonctionner jusqu'à sa validation.",
+        "confirmCta": "Envoyer la demande",
+        "pending": "Demande envoyée le {date}. Elle sera validée par Zwadj ; votre compte reste utilisable en attendant.",
+        "cancel": "Annuler ma demande",
+        "rejected": "Votre demande de suppression n'a pas été retenue. Votre compte reste actif.",
+        "rejectedWithNote": "Votre demande de suppression n'a pas été retenue : {note}",
+        "loadFailed": "Impossible de vérifier l'état de votre demande. Rechargez la page."
+      }
+    },
     "validation": {
+      "businessNameRequired": "Le nom de l'établissement est requis.",
+      "businessNameTooLong": "Le nom de l'établissement ne peut pas dépasser 150 caractères.",
+      "businessNameTooShort": "Le nom de l'établissement doit contenir au moins 2 caractères.",
+      "currentPasswordRequired": "Saisissez votre mot de passe actuel.",
+      "decisionNoteTooLong": "Le motif ne peut pas dépasser 1000 caractères.",
       "emptyPatch": "Aucune modification à enregistrer.",
       "firstNameRequired": "Le prénom est requis.",
       "lastNameRequired": "Le nom est requis.",
       "nameTooLong": "Ce champ ne peut pas dépasser 100 caractères.",
-      "businessNameRequired": "Le nom de l'établissement est requis.",
-      "businessNameTooShort": "Le nom de l'établissement doit contenir au moins 2 caractères.",
-      "businessNameTooLong": "Le nom de l'établissement ne peut pas dépasser 150 caractères.",
-      "currentPasswordRequired": "Saisissez votre mot de passe actuel.",
-      "reasonTooLong": "Le motif ne peut pas dépasser 1000 caractères.",
-      "decisionNoteTooLong": "Le motif ne peut pas dépasser 1000 caractères."
+      "passwordMismatch": "Les deux mots de passe ne correspondent pas.",
+      "reasonTooLong": "Le motif ne peut pas dépasser 1000 caractères."
     }
   },
   "auth": {

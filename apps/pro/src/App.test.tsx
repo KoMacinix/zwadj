@@ -103,8 +103,11 @@ describe("Coquille protégée (D23/D24)", () => {
     expect(await screen.findByRole("heading", { name: "Mes salles" })).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "Aucune salle pour le moment" })).toBeInTheDocument();
     expect(venues.listMine).toHaveBeenCalled();
-    // L'en-tête extrait (pro-header) reste au-dessus de la liste.
-    expect(screen.getByText("Salle El Ryad")).toBeInTheDocument();
+    // L'en-tête extrait (pro-header) reste au-dessus de la liste. A11a : le nom
+    // en clair a cédé la place au rond à initiales — on assert le déclencheur du
+    // menu et les initiales dérivées du businessName, pas le nom affiché.
+    expect(screen.getByRole("button", { name: "Mon compte" })).toBeInTheDocument();
+    expect(screen.getByText("SE")).toBeInTheDocument();
   });
 });
 
