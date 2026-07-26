@@ -13,7 +13,6 @@ import type { Prisma } from "../generated/prisma/client";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
 import { slugify } from "./slug";
-import { buildViewer360Data } from "./viewer360";
 
 /** Allow-list des colonnes exposées au pro — l'ABSENCE de commission_rate_bps,
  *  cashback_rate_bps (D35) et rejection_reason ici est la garantie « jamais
@@ -38,6 +37,8 @@ export const VENUE_PRO_SELECT = {
   bookingMode: true,
   publicationStatus: true,
   status: true,
+  // D45 (A6a) : identifiant Matterport — remplace les scènes/liaisons de D34.
+  matterportModelId: true,
   createdAt: true,
   updatedAt: true,
   // A3-① : ids d'équipements (le référentiel complet ne voyage que côté public)
@@ -56,14 +57,6 @@ export const VENUE_PRO_SELECT = {
       altAr: true,
       createdAt: true
     }
-  },
-  photos360: {
-    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360OrderByWithRelationInput[],
-    select: { id: true, storageKey: true, thumbKey: true, capturedAt: true, createdAt: true }
-  },
-  photo360Links: {
-    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360LinkOrderByWithRelationInput[],
-    select: { id: true, photoAId: true, photoBId: true, yawA: true, pitchA: true, yawB: true, pitchB: true }
   }
 } as const;
 
@@ -310,24 +303,7 @@ export function toVenueProDTO(row: VenueProRow, urlOf: (key: string) => string):
       altAr: p.altAr,
       createdAt: p.createdAt.toISOString()
     })),
-    photos360: row.photos360.map((s) => ({
-      id: s.id,
-      url: urlOf(s.storageKey),
-      // thumbUrl sur le DTO PRO seulement (A4-①) — jamais dans Viewer360Data.
-      thumbUrl: urlOf(s.thumbKey),
-      capturedAt: s.capturedAt === null ? null : s.capturedAt.toISOString(),
-      createdAt: s.createdAt.toISOString()
-    })),
-    links360: row.photo360Links.map((l) => ({
-      id: l.id,
-      photoAId: l.photoAId,
-      photoBId: l.photoBId,
-      yawA: l.yawA,
-      pitchA: l.pitchA,
-      yawB: l.yawB,
-      pitchB: l.pitchB
-    })),
-    viewer360: buildViewer360Data(row.photos360, row.photo360Links, urlOf),
+    matterportModelId: row.matterportModelId,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString()
   };

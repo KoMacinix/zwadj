@@ -1,11 +1,16 @@
 // Spec des schémas Zod médias (Lot A4) — messages = CLÉS i18n (contrat des
-// fronts), refus structurels : doublons d'ordre, auto-liaison, bornes des
-// hotspots (yaw ±180, pitch ±90), corps vide, clés inconnues (.strict).
+// fronts), refus structurels : doublons d'ordre, corps vide, clés inconnues
+// (.strict). Lot A6a (D45) : les liaisons/hotspots 360° ont disparu, remplacés
+// par la normalisation d'une saisie Matterport (parseMatterportInput).
 import { describe, expect, it } from "vitest";
-import { venue360LinkCreateSchema, venuePhotoAltUpdateSchema, venuePhotoOrderSchema } from "@zwadj/types";
+import {
+  parseMatterportInput,
+  venuePhotoAltUpdateSchema,
+  venuePhotoOrderSchema,
+  venueVirtualTourUpdateSchema
+} from "@zwadj/types";
 
 const ID_A = "018f0000-0000-7000-8000-000000000001";
-const ID_B = "018f0000-0000-7000-8000-000000000002";
 
 function messages(result: { success: boolean; error?: { issues: { message: string }[] } }): string[] {
   return result.success ? [] : (result.error?.issues.map((i) => i.message) ?? []);
@@ -43,25 +48,69 @@ describe("venuePhotoOrderSchema — ensemble complet (A4-③)", () => {
   });
 });
 
-describe("venue360LinkCreateSchema — D34", () => {
-  const valid = { photoAId: ID_A, photoBId: ID_B, yawA: -180, pitchA: 90, yawB: 179.5, pitchB: -89.9 };
-
-  it("liaison valide aux bornes exactes ; auto-liaison (A = B) → linkSamePhoto", () => {
-    expect(venue360LinkCreateSchema.safeParse(valid).success).toBe(true);
-    expect(messages(venue360LinkCreateSchema.safeParse({ ...valid, photoBId: ID_A }))).toContain(
-      "venue.validation.linkSamePhoto"
-    );
+describe("venueVirtualTourUpdateSchema — D45", () => {
+  it("chaîne vide ACCEPTÉE (c'est le signal de désactivation, pas une erreur)", () => {
+    expect(venueVirtualTourUpdateSchema.safeParse({ matterportInput: "" }).success).toBe(true);
   });
 
-  it("hors bornes (yaw 180.1, pitch -91) → hotspotRange ; hotspot manquant → hotspotRequired", () => {
-    expect(messages(venue360LinkCreateSchema.safeParse({ ...valid, yawB: 180.1 }))).toContain(
-      "venue.validation.hotspotRange"
+  it("501 caractères → matterportTooLong ; clé inconnue → unknownKey ; champ absent → matterportRequired", () => {
+    expect(messages(venueVirtualTourUpdateSchema.safeParse({ matterportInput: "a".repeat(501) }))).toContain(
+      "venue.validation.matterportTooLong"
     );
-    expect(messages(venue360LinkCreateSchema.safeParse({ ...valid, pitchA: -91 }))).toContain(
-      "venue.validation.hotspotRange"
+    expect(messages(venueVirtualTourUpdateSchema.safeParse({ matterportModelId: "abc123" }))).toContain(
+      "venue.validation.unknownKey"
     );
-    const sansPitchB: Partial<typeof valid> = { ...valid };
-    delete sansPitchB.pitchB;
-    expect(messages(venue360LinkCreateSchema.safeParse(sansPitchB))).toContain("venue.validation.hotspotRequired");
+    expect(messages(venueVirtualTourUpdateSchema.safeParse({}))).toContain("venue.validation.matterportRequired");
+  });
+
+  // Le schéma ne juge QUE la forme « chaîne bornée » : un lien invalide passe
+  // Zod et se fait refuser au service, avec le code INVALID_MATTERPORT_LINK.
+  // Sans cette séparation, le pro recevrait un 400 de validation générique.
+  it("un lien invalide passe le SCHÉMA — le fond se juge au service", () => {
+    expect(venueVirtualTourUpdateSchema.safeParse({ matterportInput: "https://exemple.dz/x" }).success).toBe(true);
+  });
+});
+
+describe("parseMatterportInput — D45", () => {
+  const ID = "SxQL3iGyoDo";
+
+  it("ID brut valide : rendu tel quel", () => {
+    expect(parseMatterportInput(ID)).toBe(ID);
+    expect(parseMatterportInput(`  ${ID}  `)).toBe(ID); // trim
+  });
+
+  it("URL de partage Matterport : l'ID est EXTRAIT du paramètre m", () => {
+    expect(parseMatterportInput(`https://my.matterport.com/show/?m=${ID}`)).toBe(ID);
+    // Sous-domaine quelconque, paramètres additionnels, casse de l'hôte.
+    expect(parseMatterportInput(`https://MY.Matterport.COM/show/?m=${ID}&play=1`)).toBe(ID);
+    expect(parseMatterportInput(`https://matterport.com/show/?m=${ID}`)).toBe(ID);
+  });
+
+  it("chaîne vide (ou blancs seuls) : signal de DÉSACTIVATION, distinct du rejet", () => {
+    expect(parseMatterportInput("")).toBe("");
+    expect(parseMatterportInput("   ")).toBe("");
+  });
+
+  it("rejets : domaine étranger, URL sans m, m malformé, schéma non http, garbage", () => {
+    // Un domaine qui CONTIENT le mot mais n'est pas un sous-domaine : le test
+    // doit porter sur le suffixe « .matterport.com », jamais sur includes().
+    expect(parseMatterportInput(`https://matterport.com.attaquant.dz/show/?m=${ID}`)).toBeNull();
+    expect(parseMatterportInput(`https://my.matterport.com.evil.dz/?m=${ID}`)).toBeNull();
+    expect(parseMatterportInput(`https://exemple.dz/show/?m=${ID}`)).toBeNull();
+    expect(parseMatterportInput("https://my.matterport.com/show/")).toBeNull();
+    expect(parseMatterportInput("https://my.matterport.com/show/?m=trop-court!")).toBeNull();
+    // `new URL()` accepte mailto:/javascript: — d'où le filtre de protocole.
+    expect(parseMatterportInput(`mailto:${ID}`)).toBeNull();
+    expect(parseMatterportInput(`javascript:alert(1)`)).toBeNull();
+    expect(parseMatterportInput("pas un id du tout")).toBeNull();
+  });
+
+  it("bornes du format : 6 et 24 passent, 5 et 25 sont refusés", () => {
+    expect(parseMatterportInput("a".repeat(6))).toBe("a".repeat(6));
+    expect(parseMatterportInput("a".repeat(24))).toBe("a".repeat(24));
+    expect(parseMatterportInput("a".repeat(5))).toBeNull();
+    expect(parseMatterportInput("a".repeat(25))).toBeNull();
+    // Même borne appliquée à l'ID extrait d'une URL, pas seulement à l'ID brut.
+    expect(parseMatterportInput(`https://my.matterport.com/show/?m=${"a".repeat(25)}`)).toBeNull();
   });
 });

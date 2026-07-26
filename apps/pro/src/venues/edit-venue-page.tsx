@@ -1,7 +1,8 @@
-// Édition d'une salle, PAR ID (le slug est public-only, §4). C'est l'écran
-// qu'A6a étendra : la couture média est laissée nette et commentée, sans une
-// ligne de rendu média (les champs `photos`/`photos360`/`links360`/`viewer360`
-// du DTO sont volontairement ignorés ici).
+// Édition d'une salle, PAR ID (le slug est public-only, §4).
+// Lot A6a / D45 : la visite virtuelle est branchée ici, en SECTION AUTONOME
+// (endpoint séparé, corps différent du PATCH général). Le volet PHOTOS de A6a
+// (upload, ordre ↑/↓, alt FR/AR) reste à coder : la couture est laissée nette,
+// le champ `photos` du DTO est encore volontairement ignoré.
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router";
@@ -21,6 +22,7 @@ import {
   venueToForm,
   type VenueFormValues
 } from "./venue-form";
+import { VirtualTourSection } from "./virtual-tour-section";
 
 type LoadState =
   | { kind: "loading" }
@@ -234,12 +236,27 @@ export function EditVenuePage() {
               }
             />
 
-            {/* A6a : médias (photos, ordre ↑/↓, alt, scènes 360°, éditeur de liaisons) — ne rien coder ici */}
+            {/* A6a : volet PHOTOS (upload, ordre ↑/↓, alt FR/AR) — ne rien coder ici */}
 
             <button type="submit" className="btn btn-accent" disabled={saving || referentials.status !== "ready"}>
               {saving ? t("venue.ui.form.saving") : t("venue.ui.form.save")}
             </button>
           </form>
+
+          {/* HORS du <form> : cette section a son propre endpoint et son propre
+              bouton — imbriquer un submit dans un autre est invalide en HTML et
+              ferait partir les deux requêtes sur une touche Entrée. */}
+          <VirtualTourSection
+            venueId={state.venue.id}
+            modelId={state.venue.matterportModelId}
+            onApplied={(matterportModelId) =>
+              setState((current) =>
+                current.kind === "ready"
+                  ? { ...current, venue: { ...current.venue, matterportModelId } }
+                  : current
+              )
+            }
+          />
         </div>
 
         <div style={{ marginBlockStart: 18 }}>

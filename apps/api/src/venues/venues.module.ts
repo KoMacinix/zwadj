@@ -1,8 +1,9 @@
 // Module Venue (Flux A). Quatre contrôleurs (Lots A2 + A3 + A4) :
 // pro (CRUD, ownership), admin (publication + taux D35), public (lecture D33),
-// médias (photos + tour 360° D34). MediaModule importé pour le port
-// MEDIA_STORAGE : uploads (écriture d'objets) ET lectures (publicUrl recalculée
-// dans chaque mapper — les clés seules vivent en base).
+// médias (photos ; la visite virtuelle Matterport est une colonne, D45).
+// MediaModule importé pour le port MEDIA_STORAGE : uploads (écriture d'objets)
+// ET lectures (publicUrl recalculée dans chaque mapper — les clés seules
+// vivent en base).
 import { Module } from "@nestjs/common";
 import { MediaModule } from "../media/media.module";
 import { VenueMediaController } from "./venue-media.controller";

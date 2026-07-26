@@ -42,6 +42,7 @@ function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
     create: vi.fn(),
     update: vi.fn(),
     softDelete: vi.fn().mockResolvedValue(undefined),
+    updateVirtualTour: vi.fn(),
     ...overrides
   };
 }

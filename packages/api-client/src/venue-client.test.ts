@@ -97,6 +97,24 @@ describe("createVenueProClient — câblage des routes (topologie A2)", () => {
     await expect(venues.softDelete("v1")).resolves.toBeUndefined();
   });
 
+  // D45 (A6a) : endpoint SÉPARÉ, corps = la saisie BRUTE du pro. Test à part et
+  // non greffé sur le test de câblage : celui-ci cherche « le premier PATCH »,
+  // un second PATCH y rendrait son assertion muette.
+  it("PATCH /venues/:id/virtual-tour : la saisie brute part telle quelle, la réponse est l'ID canonique", async () => {
+    const { venues, calls } = await connectedPair({
+      "PATCH /venues/v1/virtual-tour": () => ({ status: 200, body: { matterportModelId: "SxQL3iGyoDo" } })
+    });
+
+    await expect(
+      venues.updateVirtualTour("v1", { matterportInput: "https://my.matterport.com/show/?m=SxQL3iGyoDo" })
+    ).resolves.toEqual({ matterportModelId: "SxQL3iGyoDo" });
+
+    const call = calls.find((c) => c.url.endsWith("/virtual-tour"));
+    expect(JSON.parse(String(call?.init?.body))).toEqual({
+      matterportInput: "https://my.matterport.com/show/?m=SxQL3iGyoDo"
+    });
+  });
+
   it("404 indistinct : ApiError { code VENUE_NOT_FOUND } remontée telle quelle", async () => {
     const { venues } = await connectedPair({
       "GET /pro/venues/inconnue": () => ({

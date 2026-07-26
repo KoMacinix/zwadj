@@ -1,4 +1,6 @@
-// Lot A4 — endpoints PRO des médias d'une salle. Topologie : écritures sur
+// Lot A4 — endpoints PRO des médias d'une salle. Lot A6a / D45 : les quatre
+// routes de scènes et de liaisons 360° sont remplacées par un seul
+// PATCH venues/:id/virtual-tour (identifiant Matterport). Topologie : écritures sur
 // /venues/:id/... (même famille que POST/PATCH/DELETE /venues d'A2) ; les
 // lectures passent par les trois surfaces enrichies (GET /pro/venues/:id,
 // GET /venues, GET /venues/:slug) — aucun GET média dédié.
@@ -43,17 +45,15 @@ import type { Response } from "express";
 import {
   MediaErrorCode,
   UserRole,
-  VENUE_PHOTO_360_LIMITS,
   VENUE_PHOTO_LIMITS,
-  venue360LinkCreateSchema,
   venuePhotoAltUpdateSchema,
   venuePhotoOrderSchema,
-  type Venue360LinkCreateInput,
-  type VenuePhoto360LinkDTO,
-  type VenuePhoto360SceneDTO,
+  venueVirtualTourUpdateSchema,
   type VenuePhotoAltUpdateInput,
   type VenuePhotoDTO,
-  type VenuePhotoOrderInput
+  type VenuePhotoOrderInput,
+  type VenueVirtualTourDTO,
+  type VenueVirtualTourUpdateInput
 } from "@zwadj/types";
 import { CurrentUser, Roles } from "../auth/auth.decorators";
 import type { AuthenticatedUser } from "../auth/auth.types";
@@ -150,64 +150,24 @@ export class VenueMediaController {
     return this.media.deletePhoto(user.userId, id, photoId);
   }
 
-  // ── Scènes 360° ────────────────────────────────────────────────────────────
+  // ── Visite virtuelle (D45) ─────────────────────────────────────────────────
 
-  @Post("venues/:id/photos-360")
-  @UseInterceptors(FileInterceptor("file", { limits: { fileSize: VENUE_PHOTO_360_LIMITS.maxBytes } }))
-  @UseFilters(UploadTooLargeFilter)
-  @ApiConsumes("multipart/form-data")
-  @ApiOperation({ summary: "Ajoute une scène 360° équirectangulaire (D34 : multi-scènes, plafond 12)" })
-  @ApiCreatedResponse({ description: "VenuePhoto360SceneDTO (thumb 640×320 pour la bande de scènes A6b)." })
+  @Patch("venues/:id/virtual-tour")
+  @ApiOperation({
+    summary: "Rattache (ou détache) le modèle Matterport de la salle — ID brut ou URL de partage"
+  })
+  @ApiOkResponse({
+    description: "VenueVirtualTourDTO. Chaîne vide ⇒ matterportModelId null (visite désactivée)."
+  })
   @ApiNotFoundResponse({ description: "404 indistinct (salle)." })
-  async addScene(
+  updateVirtualTour(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
-    @UploadedFile() file?: UploadedImageFile
-  ): Promise<VenuePhoto360SceneDTO> {
-    return this.media.add360Scene(user.userId, id, this.requireFile(file));
+    @Body(new ZodValidationPipe(venueVirtualTourUpdateSchema)) body: VenueVirtualTourUpdateInput
+  ): Promise<VenueVirtualTourDTO> {
+    return this.media.updateVirtualTour(user.userId, id, body);
   }
 
-  @Delete("venues/:id/photos-360/:sceneId")
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: "Supprime une scène — ses liaisons tombent en CASCADE (FK)" })
-  @ApiNoContentResponse({ description: "204." })
-  @ApiNotFoundResponse({ description: "404 indistinct : salle OU scène (SCENE_NOT_FOUND)." })
-  removeScene(
-    @CurrentUser() user: AuthenticatedUser,
-    @Param("id") id: string,
-    @Param("sceneId") sceneId: string
-  ): Promise<void> {
-    return this.media.delete360Scene(user.userId, id, sceneId);
-  }
-
-  // ── Liaisons (D34) ─────────────────────────────────────────────────────────
-
-  @Post("venues/:id/photo-360-links")
-  @ApiOperation({ summary: "Lie deux scènes (bidirectionnel, hotspot par sens) — doublon inversé refusé" })
-  @ApiCreatedResponse({ description: "VenuePhoto360LinkDTO. 409 LINK_ALREADY_EXISTS si la paire (même inversée) existe." })
-  @ApiNotFoundResponse({ description: "404 indistinct : salle OU scène hors de cette salle (SCENE_NOT_FOUND)." })
-  createLink(
-    @CurrentUser() user: AuthenticatedUser,
-    @Param("id") id: string,
-    @Body(new ZodValidationPipe(venue360LinkCreateSchema)) body: Venue360LinkCreateInput
-  ): Promise<VenuePhoto360LinkDTO> {
-    return this.media.createLink(user.userId, id, body);
-  }
-
-  @Delete("venues/:id/photo-360-links/:linkId")
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: "Supprime une liaison" })
-  @ApiNoContentResponse({ description: "204." })
-  @ApiNotFoundResponse({ description: "404 indistinct : salle OU liaison (LINK_NOT_FOUND)." })
-  removeLink(
-    @CurrentUser() user: AuthenticatedUser,
-    @Param("id") id: string,
-    @Param("linkId") linkId: string
-  ): Promise<void> {
-    return this.media.deleteLink(user.userId, id, linkId);
-  }
-
-  // ── Interne ────────────────────────────────────────────────────────────────
 
   /** Multipart sans fichier (champ absent ou mal nommé) → 400 MEDIA_FILE_REQUIRED. */
   private requireFile(file?: UploadedImageFile): Buffer {

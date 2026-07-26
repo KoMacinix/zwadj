@@ -21,6 +21,8 @@ import type {
   VenueCreateInput,
   VenueProDTO,
   VenueUpdateInput,
+  VenueVirtualTourDTO,
+  VenueVirtualTourUpdateInput,
   WilayaDTO
 } from "@zwadj/types";
 import { NetworkError, toApiError } from "./auth-client";
@@ -44,6 +46,10 @@ export interface VenueProClient {
   update(id: string, input: VenueUpdateInput): Promise<VenueProDTO>;
   /** 204 sans corps (soft delete) : toute opération ultérieure → 404 indistinct. */
   softDelete(id: string): Promise<void>;
+  /** D45 — rattache/détache le modèle Matterport. Endpoint SÉPARÉ du PATCH
+   *  général : la saisie est brute (ID ou URL) et le serveur la normalise, donc
+   *  le corps ne ressemble pas au champ stocké. Chaîne vide = désactivation. */
+  updateVirtualTour(id: string, input: VenueVirtualTourUpdateInput): Promise<VenueVirtualTourDTO>;
 }
 
 export function createVenueProClient(request: AuthedRequest): VenueProClient {
@@ -54,7 +60,12 @@ export function createVenueProClient(request: AuthedRequest): VenueProClient {
     update: (id, input) => request<VenueProDTO>(`/venues/${encodeURIComponent(id)}`, { method: "PATCH", body: input }),
     async softDelete(id) {
       await request<void>(`/venues/${encodeURIComponent(id)}`, { method: "DELETE" });
-    }
+    },
+    updateVirtualTour: (id, input) =>
+      request<VenueVirtualTourDTO>(`/venues/${encodeURIComponent(id)}/virtual-tour`, {
+        method: "PATCH",
+        body: input
+      })
   };
 }
 
