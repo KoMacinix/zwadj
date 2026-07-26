@@ -170,8 +170,18 @@ export interface AuthUserDTO {
   emailVerified: boolean;
   firstName: string | null;
   lastName: string | null;
-  /** Renseigné pour un PRO uniquement (D3) — null pour CLIENT/ADMIN. */
-  proProfile: { businessName: string; phone: string } | null;
+  /** Lot A10 — le CLIENT n'a pas de `ProProfile` : son téléphone vit sur
+   *  `User`. A11 en a besoin pour l'écran de profil côté Client. */
+  phone: string | null;
+  /** Lot A10 / D42 — dérivé de `passwordHash != null`. PILOTE l'écran mot de
+   *  passe : `false` ⇒ « Définir un mot de passe », deux champs, AUCUN champ
+   *  « ancien mot de passe » (il n'existe pas — le demander est un cul-de-sac). */
+  hasPassword: boolean;
+  /** Lot A10 — dérivé de `googleSub != null`. Un compte peut porter les DEUX. */
+  hasGoogle: boolean;
+  /** Renseigné pour un PRO uniquement (D3) — null pour CLIENT/ADMIN.
+   *  `phone2` (D38) : seconde ligne, beaucoup de salles en ont deux. */
+  proProfile: { businessName: string; phone: string; phone2: string | null } | null;
 }
 /** POST /auth/login — l'access token va en mémoire JS ; le refresh token, lui,
  *  n'apparaît JAMAIS dans le corps : cookie httpOnly `zwadj_rt` (D2). */

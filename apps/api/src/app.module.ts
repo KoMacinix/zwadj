@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { LoggerModule } from "nestjs-pino";
+import { AccountModule } from "./account/account.module";
 import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { RolesGuard } from "./auth/roles.guard";
@@ -35,6 +36,7 @@ import { VenuesModule } from "./venues/venues.module";
     PrismaModule,
     EmailModule,
     AuthModule,
+    AccountModule,
     HealthModule,
     MediaModule,
     ReferentialsModule,

@@ -3,6 +3,18 @@
 export const UserRole = { CLIENT: "CLIENT", PRO: "PRO", ADMIN: "ADMIN" } as const;
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
+export const UserStatus = { ACTIVE: "ACTIVE", SUSPENDED: "SUSPENDED", ANONYMIZED: "ANONYMIZED" } as const;
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
+
+/** Lot A10 / D37 — cycle de vie d'une demande de suppression de compte. */
+export const AccountDeletionStatus = {
+  PENDING: "PENDING",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED",
+  CANCELLED: "CANCELLED"
+} as const;
+export type AccountDeletionStatus = (typeof AccountDeletionStatus)[keyof typeof AccountDeletionStatus];
+
 export const Locale = { fr: "fr", ar: "ar" } as const;
 export type Locale = (typeof Locale)[keyof typeof Locale];
 

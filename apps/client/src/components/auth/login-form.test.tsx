@@ -50,6 +50,10 @@ const USER = {
   emailVerified: false,
   firstName: "Aya",
   lastName: null,
+  // A10 : les 4 champs D42 du contrat AuthUserDTO.
+  phone: null,
+  hasPassword: true,
+  hasGoogle: false,
   proProfile: null
 };
 

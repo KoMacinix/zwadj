@@ -28,7 +28,11 @@ type Row = {
   emailVerifiedAt: Date | null;
   firstName: string | null;
   lastName: string | null;
-  proProfile: { businessName: string; phone: string } | null;
+  // A10 : le select commun porte désormais status/phone/passwordHash (D42, §2.0).
+  status: "ACTIVE" | "SUSPENDED" | "ANONYMIZED";
+  phone: string | null;
+  passwordHash: string | null;
+  proProfile: { businessName: string; phone: string; phone2: string | null } | null;
   googleSub: string | null;
 };
 
@@ -49,6 +53,9 @@ function makeRow(overrides: Partial<Row> = {}): Row {
     emailVerifiedAt: new Date("2026-01-01T00:00:00Z"),
     firstName: "Aya",
     lastName: "Boudiaf",
+    status: "ACTIVE",
+    phone: null,
+    passwordHash: null,
     proProfile: null,
     googleSub: "google-sub-123",
     ...overrides

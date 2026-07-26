@@ -4,5 +4,6 @@ export * from "./venue";
 export * from "./booking";
 export * from "./api";
 export * from "./auth";
+export * from "./account";
 export * from "./media";
 export * from "./referentials";

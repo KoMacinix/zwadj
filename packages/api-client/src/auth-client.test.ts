@@ -22,7 +22,9 @@ function makeFetch(routes: Record<string, Route>) {
   return { impl: impl as unknown as typeof fetch, calls };
 }
 
-const USER = { id: "u1", email: "aya@example.dz", role: "CLIENT", locale: "fr", emailVerified: false, firstName: "Aya", lastName: null, proProfile: null };
+// A10 : les 4 champs D42 (phone, hasPassword, hasGoogle, proProfile.phone2)
+// font partie du contrat AuthUserDTO — ce mock manuel doit les porter.
+const USER = { id: "u1", email: "aya@example.dz", role: "CLIENT", locale: "fr", emailVerified: false, firstName: "Aya", lastName: null, phone: null, hasPassword: true, hasGoogle: false, proProfile: null };
 const businessError = (code: string, key: string) => ({ statusCode: 401, message: { code, message: key }, path: "/x", timestamp: "t" });
 
 describe("createAuthClient — enveloppe d'erreur", () => {

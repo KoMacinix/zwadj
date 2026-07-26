@@ -12,5 +12,11 @@ export const AUTH = {
   /** Chemin (côté fronts) de la page de vérification email — Lots 5/6 l'implémentent. */
   VERIFY_EMAIL_PATH: "/auth/verification-email",
   /** Chemin (côté fronts) de la page de réinitialisation — Lots 5/6 l'implémentent. */
-  RESET_PASSWORD_PATH: "/auth/reinitialisation"
+  RESET_PASSWORD_PATH: "/auth/reinitialisation",
+  /** TTL du token de changement d'e-mail (A10) — aligné sur la vérification
+   *  initiale : c'est la même preuve de possession d'une boîte mail. */
+  EMAIL_CHANGE_TTL_HOURS: 48,
+  /** Chemin (côté fronts) de la page de confirmation de changement d'e-mail —
+   *  A11 l'implémente. Le lien part À LA NOUVELLE adresse. */
+  CONFIRM_EMAIL_CHANGE_PATH: "/auth/confirmation-email"
 } as const;

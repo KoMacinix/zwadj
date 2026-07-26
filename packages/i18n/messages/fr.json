@@ -1,4 +1,39 @@
 {
+  "account": {
+    "emails": {
+      "changeEmailSubject": "Confirmez votre nouvelle adresse email — Zwadj",
+      "changeEmailBody": "Bonjour,\n\nVous avez demandé à utiliser cette adresse pour votre compte Zwadj. Pour confirmer, ouvrez ce lien :\n{link}\n\nCe lien expire dans {ttlHours} heures. Tant que vous ne l'avez pas ouvert, votre ancienne adresse reste celle de votre compte.\n\nSi vous n'êtes pas à l'origine de cette demande, ignorez cet email.",
+      "deletionApprovedSubject": "Votre demande de suppression de compte — Zwadj",
+      "deletionApprovedBody": "Bonjour,\n\nVotre demande de suppression de compte a été validée. Votre compte est désormais désactivé et vos données personnelles ont été effacées.\n\nMerci de la confiance que vous nous avez accordée.\n\nL'équipe Zwadj",
+      "deletionApprovedWithVenuesBody": "Bonjour,\n\nVotre demande de suppression de compte a été validée. Votre compte est désormais désactivé et vos données personnelles ont été effacées.\n\nVos {count} salle(s) ne sont pas perdues : elles sont conservées en archive. Si vous changez d'avis, écrivez-nous et nous pourrons les rattacher à un nouveau compte.\n\nMerci de la confiance que vous nous avez accordée.\n\nL'équipe Zwadj",
+      "deletionRejectedSubject": "Votre demande de suppression de compte — Zwadj",
+      "deletionRejectedBody": "Bonjour,\n\nVotre demande de suppression de compte n'a pas été retenue. Votre compte reste actif et vous pouvez continuer à l'utiliser normalement.\n\nSi vous souhaitez en savoir plus, répondez à cet email.\n\nL'équipe Zwadj",
+      "deletionRejectedWithNoteBody": "Bonjour,\n\nVotre demande de suppression de compte n'a pas été retenue, pour la raison suivante :\n\n{note}\n\nVotre compte reste actif et vous pouvez continuer à l'utiliser normalement. Si vous souhaitez en savoir plus, répondez à cet email.\n\nL'équipe Zwadj"
+    },
+    "errors": {
+      "notActive": "Ce compte n'est plus actif. Contactez-nous si vous pensez qu'il s'agit d'une erreur.",
+      "profileFieldNotAllowed": "Ce champ ne fait pas partie de votre profil.",
+      "proPhoneRequired": "Un numéro de téléphone est obligatoire pour un compte professionnel.",
+      "currentPasswordRequired": "Saisissez votre mot de passe actuel.",
+      "currentPasswordInvalid": "Le mot de passe actuel est incorrect.",
+      "emailUnchanged": "Cette adresse est déjà celle de votre compte.",
+      "deletionAlreadyPending": "Une demande de suppression est déjà en cours pour ce compte.",
+      "deletionNotFound": "Aucune demande de suppression en attente.",
+      "deletionNotPending": "Cette demande a déjà été traitée."
+    },
+    "validation": {
+      "emptyPatch": "Aucune modification à enregistrer.",
+      "firstNameRequired": "Le prénom est requis.",
+      "lastNameRequired": "Le nom est requis.",
+      "nameTooLong": "Ce champ ne peut pas dépasser 100 caractères.",
+      "businessNameRequired": "Le nom de l'établissement est requis.",
+      "businessNameTooShort": "Le nom de l'établissement doit contenir au moins 2 caractères.",
+      "businessNameTooLong": "Le nom de l'établissement ne peut pas dépasser 150 caractères.",
+      "currentPasswordRequired": "Saisissez votre mot de passe actuel.",
+      "reasonTooLong": "Le motif ne peut pas dépasser 1000 caractères.",
+      "decisionNoteTooLong": "Le motif ne peut pas dépasser 1000 caractères."
+    }
+  },
   "auth": {
     "emails": {
       "verifySubject": "Confirmez votre adresse email — Zwadj",
@@ -164,6 +199,9 @@
         "proCta": "Ouvrir l'espace Pro"
       }
     }
+  },
+  "common": {
+    "loading": "Chargement…"
   },
   "home": {
     "title": "Zwadj",
