@@ -163,15 +163,20 @@ export const VenueErrorCode = {
   /** Lot A4 — 404 INDISTINCTS « dans MA salle vivante », même doctrine que
    *  VENUE_NOT_FOUND : inexistante, id malformé, ou média d'une autre salle. */
   PHOTO_NOT_FOUND: "PHOTO_NOT_FOUND",
-  SCENE_NOT_FOUND: "SCENE_NOT_FOUND",
-  LINK_NOT_FOUND: "LINK_NOT_FOUND",
   /** Lot A4 — réordonnancement : l'ensemble envoyé ≠ l'ensemble stocké
    *  (photo supprimée dans un autre onglet…). Côté A6a : « rafraîchissez puis
    *  réessayez », jamais un échec muet. */
   PHOTO_ORDER_MISMATCH: "PHOTO_ORDER_MISMATCH",
-  /** Lot A4 — la paire (A,B) existe déjà, y compris inversée (B,A) — index
-   *  unique LEAST/GREATEST (renfort D34 n°3). */
-  LINK_ALREADY_EXISTS: "LINK_ALREADY_EXISTS"
+  /** D45 (A6a) — PATCH /venues/:id/virtual-tour : saisie ni ID Matterport
+   *  valide, ni URL de partage Matterport exploitable. 400, jamais un échec
+   *  muet — même doctrine que PHOTO_ORDER_MISMATCH. */
+  INVALID_MATTERPORT_LINK: "INVALID_MATTERPORT_LINK",
+  /** D45 (A6a) — 409 : ce modèle Matterport est DÉJÀ rattaché à une autre
+   *  salle (unicité SQL de venues.matterport_model_id). Le compte Matterport
+   *  étant unique pour tout Zwadj, le copier-coller d'une même URL sur deux
+   *  salles est l'accident le plus probable. On ne révèle pas quelle salle :
+   *  elle peut ne pas appartenir à ce pro. */
+  MATTERPORT_ALREADY_LINKED: "MATTERPORT_ALREADY_LINKED"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -211,21 +216,19 @@ export interface VenueProDTO {
   amenityIds: string[];
   /** Lot A4 — photos triées par sortOrder (l'ordre du tableau = l'affichage). */
   photos: VenuePhotoDTO[];
-  /** Lot A4 — scènes du tour, triées par (createdAt, id), AVEC vignettes
-   *  (bande de scènes A6b — le public n'en reçoit pas, arbitrage A4-①). */
-  photos360: VenuePhoto360SceneDTO[];
-  /** Lot A4 — liaisons du tour (éditeur A6b). */
-  links360: VenuePhoto360LinkDTO[];
-  /** Lot A4 — même contrat que le public : aperçu Pannellum direct en A6b,
-   *  la règle de scène d'ouverture n'est JAMAIS réimplémentée côté front. */
-  viewer360: Viewer360Data | null;
+  /** D45 (A6a) — identifiant du modèle Matterport, `null` si la salle n'a pas
+   *  de scan. Même valeur canonique que le DTO public : le pro saisit une URL
+   *  de partage ou un ID brut, le serveur ne stocke que l'ID. */
+  matterportModelId: string | null;
   /** ISO 8601. */
   createdAt: string;
   updatedAt: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Lot A4 — Médias (photos + tour 360° multi-scènes, D34).
+// Lot A4 — Médias (photos). Le tour 360° multi-scènes de D34 a été remplacé
+// par un simple identifiant Matterport au Lot A6a (D45) : plus de scènes, plus
+// de liaisons, plus de contrat Pannellum côté types.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Photo d'une salle, vue PRO (A6a) — contrat des endpoints /venues/:id/photos. */
@@ -244,58 +247,6 @@ export interface VenuePhotoDTO {
   altAr: string | null;
   /** ISO 8601. */
   createdAt: string;
-}
-
-/** Scène 360°, vue PRO (A6a/A6b). thumbUrl vit ICI et pas dans Viewer360Data :
- *  Pannellum ne consomme pas de vignette de scène — le payload public reste
- *  lean (cible Android bas de gamme, backlog 24.6). Promotion future côté
- *  public = un ajout d'une ligne, la colonne existe. */
-export interface VenuePhoto360SceneDTO {
-  id: string;
-  url: string;
-  /** Bande de scènes de l'éditeur A6b (640×320). */
-  thumbUrl: string;
-  capturedAt: string | null;
-  createdAt: string;
-}
-
-/** Liaison bidirectionnelle entre deux scènes (D34), vue PRO — la position du
- *  hotspot est propre à CHAQUE sens (les deux positions physiques diffèrent). */
-export interface VenuePhoto360LinkDTO {
-  id: string;
-  photoAId: string;
-  photoBId: string;
-  /** Degrés — yaw ∈ [-180, 180], pitch ∈ [-90, 90] (coordonnées Pannellum,
-   *  produites par mouseEventToCoords() dans l'éditeur A6b). */
-  yawA: number;
-  pitchA: number;
-  yawB: number;
-  pitchB: number;
-}
-
-/** Contrat du composant <Viewer360 /> — strictement 1:1 Pannellum, STRICTEMENT
- *  piloté par les données (rien de codé en dur : un tour en boucle ou en
- *  chaîne n'est qu'un graphe de liaisons). Volontairement lean : pas de
- *  vignettes ici (arbitrage A4-①). */
-export interface Viewer360Scene {
-  id: string;
-  url: string;
-}
-export interface Viewer360Link {
-  photoAId: string;
-  photoBId: string;
-  yawA: number;
-  pitchA: number;
-  yawB: number;
-  pitchB: number;
-}
-export interface Viewer360Data {
-  /** Scène d'ouverture (D34) : la plus ancienne par (createdAt, id) — le
-   *  tiebreak id rend le choix DÉTERMINISTE même sur créations groupées au
-   *  même timestamp (même discipline que la pagination A3). */
-  initialSceneId: string;
-  scenes: Viewer360Scene[];
-  links: Viewer360Link[];
 }
 
 /** Photo publique (galerie A8) : l'ordre du tableau EST l'ordre d'affichage.
@@ -345,40 +296,76 @@ export const venuePhotoOrderSchema = z
   });
 export type VenuePhotoOrderInput = z.infer<typeof venuePhotoOrderSchema>;
 
-const yawSchema = (requiredKey: string) =>
-  z
-    .number({ required_error: requiredKey, invalid_type_error: "venue.validation.hotspotRange" })
-    .min(-180, "venue.validation.hotspotRange")
-    .max(180, "venue.validation.hotspotRange");
-const pitchSchema = (requiredKey: string) =>
-  z
-    .number({ required_error: requiredKey, invalid_type_error: "venue.validation.hotspotRange" })
-    .min(-90, "venue.validation.hotspotRange")
-    .max(90, "venue.validation.hotspotRange");
+/** D45 — un ID de modèle Matterport tel qu'il apparaît dans le paramètre `m`
+ *  d'une URL de partage. Format seulement : aucune vérification d'existence
+ *  côté Matterport (pas de dépendance réseau sur un chemin d'écriture). */
+export const MATTERPORT_ID_PATTERN = /^[A-Za-z0-9]{6,24}$/;
 
-/** POST /venues/:id/photo-360-links — une liaison bidirectionnelle (D34), les
- *  DEUX positions de hotspot exigées d'emblée (l'éditeur A6b fait
- *  clic-pour-placer sur chaque sens avant d'envoyer). */
-export const venue360LinkCreateSchema = z
+/**
+ * Normalise la saisie du pro en ID canonique. Trois retours DISTINCTS, jamais
+ * confondus par l'appelant :
+ *   - `""`   → désactivation explicite (matterportModelId = null)
+ *   - `null` → saisie invalide (400 INVALID_MATTERPORT_LINK)
+ *   - autre  → ID canonique à stocker
+ * Accepte l'ID brut ET l'URL de partage complète : le pro copiera presque
+ * toujours l'URL depuis son tableau de bord Matterport.
+ */
+export function parseMatterportInput(raw: string): string | null {
+  const input = raw.trim();
+  if (input.length === 0) return "";
+
+  // ⚠ PAS de `new URL()` ici : ce paquet compile avec lib ES2022 SEULE (ni DOM,
+  // ni @types/node — cf. packages/config/tsconfig/base.json), le global n'existe
+  // donc pas à la compilation. Découpage manuel, volontairement littéral.
+  const asUrl = /^https?:\/\/([^/?#]+)/i.exec(input);
+  if (asUrl) {
+    // Authority → hôte seul : on retire un éventuel userinfo (`user@host`, le
+    // classique https://my.matterport.com@evil.dz) puis le port.
+    const authority = asUrl[1] ?? "";
+    const host = authority
+      .replace(/^[^@]*@/, "")
+      .replace(/:\d+$/, "")
+      .toLowerCase();
+    // Suffixe strict : `matterport.com.autre.dz` ne passe pas (un `includes`
+    // l'aurait laissé passer).
+    if (host !== "matterport.com" && !host.endsWith(".matterport.com")) return null;
+
+    const param = /[?&]m=([^&#]*)/.exec(input);
+    if (!param) return null;
+    // Pas de decodeURIComponent : il peut LEVER sur un `%` orphelin, et le
+    // format visé est strictement alphanumérique — toute séquence encodée
+    // échoue de toute façon au motif. Le rejet est donc déjà le bon.
+    return MATTERPORT_ID_PATTERN.test(param[1] ?? "") ? (param[1] ?? null) : null;
+  }
+
+  // Tout autre schéma (mailto:, javascript:, ftp:…) est REFUSÉ, jamais retenté
+  // comme un identifiant brut.
+  if (/^[a-z][a-z0-9+.-]*:/i.test(input)) return null;
+
+  return MATTERPORT_ID_PATTERN.test(input) ? input : null;
+}
+
+/** PATCH /venues/:id/virtual-tour (D45). Le schéma Zod ne juge QUE la forme
+ *  « chaîne bornée » : la validation de fond est parseMatterportInput, côté
+ *  service, pour que le code d'erreur soit INVALID_MATTERPORT_LINK et non un
+ *  400 de validation générique. Chaîne vide = désactivation, donc pas de
+ *  `.min(1)` ici. */
+export const venueVirtualTourUpdateSchema = z
   .object({
-    photoAId: z
-      .string({ required_error: "venue.validation.linkPhotosRequired" })
-      .uuid("venue.validation.photoIdInvalid"),
-    photoBId: z
-      .string({ required_error: "venue.validation.linkPhotosRequired" })
-      .uuid("venue.validation.photoIdInvalid"),
-    yawA: yawSchema("venue.validation.hotspotRequired"),
-    pitchA: pitchSchema("venue.validation.hotspotRequired"),
-    yawB: yawSchema("venue.validation.hotspotRequired"),
-    pitchB: pitchSchema("venue.validation.hotspotRequired")
+    matterportInput: z
+      .string({
+        required_error: "venue.validation.matterportRequired",
+        invalid_type_error: "venue.validation.matterportRequired"
+      })
+      .max(500, "venue.validation.matterportTooLong")
   })
-  .strict("venue.validation.unknownKey")
-  .superRefine((v, ctx) => {
-    if (v.photoAId === v.photoBId) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["photoBId"], message: "venue.validation.linkSamePhoto" });
-    }
-  });
-export type Venue360LinkCreateInput = z.infer<typeof venue360LinkCreateSchema>;
+  .strict("venue.validation.unknownKey");
+export type VenueVirtualTourUpdateInput = z.infer<typeof venueVirtualTourUpdateSchema>;
+
+/** Réponse de PATCH /venues/:id/virtual-tour — sous-ensemble du DTO pro. */
+export interface VenueVirtualTourDTO {
+  matterportModelId: string | null;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Lot A3 — Publication & lecture publique.
@@ -528,7 +515,8 @@ export interface VenuePublicDTO {
   amenities: AmenityDTO[];
   /** Lot A4 — galerie (ordre du tableau = sortOrder ; couverture = 1ʳᵉ). */
   photos: VenuePublicPhotoDTO[];
-  /** Lot A4 — tour 360° lié (D34), `null` si la salle n'a aucune scène.
-   *  Chargé au geste utilisateur côté A8, jamais automatiquement. */
-  viewer360: Viewer360Data | null;
+  /** D45 (A6a) — identifiant du modèle Matterport, `null` si la salle n'a pas
+   *  de scan. A8 monte l'iframe AU GESTE UTILISATEUR, jamais automatiquement
+   *  (tiers, coût réseau — cible Android bas de gamme, backlog 24.6). */
+  matterportModelId: string | null;
 }

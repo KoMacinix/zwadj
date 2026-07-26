@@ -7,18 +7,13 @@
 //   2. la sortie est TOUJOURS ré-encodée (webp) : les métadonnées EXIF —
 //      position GPS du domicile d'un pro incluse — ne survivent JAMAIS.
 import sharp, { type Metadata, type OutputInfo } from "sharp";
-import {
-  ACCEPTED_IMAGE_FORMATS,
-  VENUE_PHOTO_LIMITS,
-  VENUE_PHOTO_360_LIMITS,
-  type MediaErrorCode
-} from "@zwadj/types";
+import { ACCEPTED_IMAGE_FORMATS, VENUE_PHOTO_LIMITS, type MediaErrorCode } from "@zwadj/types";
 
 /** Sous-ensemble VALIDATION du MediaErrorCode partagé (A4-⑤) — dérivé par
  *  Extract : impossible de dériver du référentiel sans erreur de compilation. */
 export type MediaValidationCode = Extract<
   MediaErrorCode,
-  "MEDIA_UNSUPPORTED_FORMAT" | "MEDIA_TOO_LARGE" | "MEDIA_TOO_SMALL" | "MEDIA_BAD_ASPECT_RATIO"
+  "MEDIA_UNSUPPORTED_FORMAT" | "MEDIA_TOO_LARGE" | "MEDIA_TOO_SMALL"
 >;
 
 /** Refus de validation : le Lot A4 le mappera sur un 400 avec code stable. */
@@ -107,37 +102,6 @@ export async function processVenuePhoto(input: Buffer): Promise<ProcessedImagePa
       .rotate()
       .resize({ width: variants.thumb.maxEdge, height: variants.thumb.maxEdge, fit: "inside", withoutEnlargement: true })
       .webp({ quality: variants.thumb.quality })
-      .toBuffer({ resolveWithObject: true })
-  );
-  return { large, thumb };
-}
-
-/** Scène 360° équirectangulaire → { large 2:1 ≤ 8192 de large, thumb 640×320 }. */
-export async function processVenuePhoto360(input: Buffer): Promise<ProcessedImagePair> {
-  const limits = VENUE_PHOTO_360_LIMITS;
-  const src = await sniff(input, limits.maxBytes);
-  const ratio = src.height > 0 ? src.width / src.height : 0;
-  if (Math.abs(ratio - limits.aspectRatio) > limits.aspectRatio * limits.aspectRatioTolerance) {
-    throw new MediaValidationError(
-      "MEDIA_BAD_ASPECT_RATIO",
-      `Ratio ${ratio.toFixed(3)} hors 2:1 ±${limits.aspectRatioTolerance * 100} % (équirectangulaire exigé)`
-    );
-  }
-  if (src.width < limits.minWidth) {
-    throw new MediaValidationError("MEDIA_TOO_SMALL", `Largeur ${src.width} < minimum ${limits.minWidth}`);
-  }
-  const large = pack(
-    await sharp(input)
-      .rotate()
-      .resize({ width: limits.maxOutputWidth, withoutEnlargement: true })
-      .webp({ quality: limits.quality })
-      .toBuffer({ resolveWithObject: true })
-  );
-  const thumb = pack(
-    await sharp(input)
-      .rotate()
-      .resize({ width: limits.thumb.width, height: limits.thumb.height, fit: "cover" })
-      .webp({ quality: limits.thumb.quality })
       .toBuffer({ resolveWithObject: true })
   );
   return { large, thumb };

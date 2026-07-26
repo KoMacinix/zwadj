@@ -1,9 +1,10 @@
 // Spec unitaire de VenueMediaService (Lot A4), Prisma/storage/pipeline réels
 // remplacés — branches PURES : plafonds → 400, erreurs pipeline → 400 avec clé
 // i18n, COMPENSATION D'ORPHELIN (put ok, INSERT KO → delete des deux objets +
-// erreur d'origine relancée), mismatch de réordonnancement, 409 sur paire de
-// liaison existante. Le vrai pipeline sharp et les vraies contraintes SQL
-// vivent en intégration (venue-media.int-spec).
+// erreur d'origine relancée), mismatch de réordonnancement, et pour A6a (D45)
+// les trois issues de updateVirtualTour (set / clear / 409 d'unicité). Le vrai
+// pipeline sharp et les vraies contraintes SQL vivent en intégration
+// (venue-media.int-spec).
 import { BadRequestException, ConflictException } from "@nestjs/common";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { PrismaService } from "../prisma/prisma.service";
@@ -15,7 +16,7 @@ import { VenueMediaService } from "./venue-media.service";
 // ou MediaValidationError) — les mocks sont réassignés par cas de test.
 vi.mock("../media/image-pipeline", async (importOriginal) => {
   const original = await importOriginal<typeof import("../media/image-pipeline")>();
-  return { ...original, processVenuePhoto: vi.fn(), processVenuePhoto360: vi.fn() };
+  return { ...original, processVenuePhoto: vi.fn() };
 });
 import { MediaValidationError, processVenuePhoto } from "../media/image-pipeline";
 
@@ -40,8 +41,7 @@ function build() {
       update: vi.fn(),
       delete: vi.fn()
     },
-    venuePhoto360: { count: vi.fn(), create: vi.fn(), findFirst: vi.fn(), delete: vi.fn() },
-    venuePhoto360Link: { create: vi.fn(), deleteMany: vi.fn() },
+    venue: { update: vi.fn() },
     $transaction: vi.fn()
   };
   const storage = { put: vi.fn(), get: vi.fn(), delete: vi.fn(), publicUrl: (k: string) => `/api/v1/media/${k}` };
@@ -175,33 +175,67 @@ describe("VenueMediaService.reorderPhotos — ensemble complet atomique (A4-③)
   });
 });
 
-describe("VenueMediaService.createLink — D34", () => {
-  it("scène absente OU d'une autre salle → 404 indistinct SCENE_NOT_FOUND (count ≠ 2)", async () => {
+describe("VenueMediaService.updateVirtualTour — D45", () => {
+  it("URL de partage : c'est l'ID CANONIQUE qui est écrit, jamais l'URL brute", async () => {
     const ctx = build();
-    ctx.prisma.venuePhoto360.count.mockResolvedValue(1);
+    ctx.prisma.venue.update.mockResolvedValue({ matterportModelId: "SxQL3iGyoDo" });
+
     await expect(
-      ctx.service.createLink(USER_ID, VENUE_ID, {
-        photoAId: PHOTO_1,
-        photoBId: PHOTO_2,
-        yawA: 0,
-        pitchA: 0,
-        yawB: 0,
-        pitchB: 0
+      ctx.service.updateVirtualTour(USER_ID, VENUE_ID, {
+        matterportInput: "https://my.matterport.com/show/?m=SxQL3iGyoDo"
       })
-    ).rejects.toMatchObject({ response: { code: "SCENE_NOT_FOUND" } });
-    expect(ctx.prisma.venuePhoto360Link.create).not.toHaveBeenCalled();
+    ).resolves.toEqual({ matterportModelId: "SxQL3iGyoDo" });
+
+    expect(ctx.prisma.venue.update).toHaveBeenCalledWith({
+      where: { id: VENUE_ID },
+      data: { matterportModelId: "SxQL3iGyoDo" },
+      select: { matterportModelId: true }
+    });
   });
 
-  it("P2002 (index unique LEAST/GREATEST — paire inversée incluse) → 409 LINK_ALREADY_EXISTS", async () => {
+  it("chaîne vide → écrit NULL (désactivation), pas une chaîne vide en base", async () => {
     const ctx = build();
-    ctx.prisma.venuePhoto360.count.mockResolvedValue(2);
-    ctx.prisma.venuePhoto360Link.create.mockRejectedValue({ code: "P2002" });
+    ctx.prisma.venue.update.mockResolvedValue({ matterportModelId: null });
+
+    await expect(ctx.service.updateVirtualTour(USER_ID, VENUE_ID, { matterportInput: "  " })).resolves.toEqual({
+      matterportModelId: null
+    });
+    expect(ctx.prisma.venue.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: { matterportModelId: null } })
+    );
+  });
+
+  it("saisie invalide → 400 INVALID_MATTERPORT_LINK, AUCUNE écriture", async () => {
+    const ctx = build();
+    const error = await ctx.service
+      .updateVirtualTour(USER_ID, VENUE_ID, { matterportInput: "https://exemple.dz/?m=abcdef" })
+      .catch((e: unknown) => e);
+
+    expect(error).toBeInstanceOf(BadRequestException);
+    expect(code(error)).toBe("INVALID_MATTERPORT_LINK");
+    expect(ctx.prisma.venue.update).not.toHaveBeenCalled();
+  });
+
+  // L'ownership passe AVANT le parse : une salle étrangère ne doit pas pouvoir
+  // se faire distinguer d'un lien mal formé (404 indistinct, doctrine A2).
+  it("ownership évaluée AVANT le parse : salle étrangère ⇒ 404, jamais un 400 de format", async () => {
+    const ctx = build();
+    ctx.venues.assertOwnedLivingVenueId.mockRejectedValue(new Error("404"));
+    await expect(
+      ctx.service.updateVirtualTour(USER_ID, VENUE_ID, { matterportInput: "garbage!!" })
+    ).rejects.toThrow("404");
+    expect(ctx.prisma.venue.update).not.toHaveBeenCalled();
+  });
+
+  it("P2002 (unicité de matterport_model_id) → 409 MATTERPORT_ALREADY_LINKED", async () => {
+    const ctx = build();
+    ctx.prisma.venue.update.mockRejectedValue({ code: "P2002" });
 
     const error = await ctx.service
-      .createLink(USER_ID, VENUE_ID, { photoAId: PHOTO_2, photoBId: PHOTO_1, yawA: 1, pitchA: 2, yawB: 3, pitchB: 4 })
+      .updateVirtualTour(USER_ID, VENUE_ID, { matterportInput: "SxQL3iGyoDo" })
       .catch((e: unknown) => e);
 
     expect(error).toBeInstanceOf(ConflictException);
-    expect(code(error)).toBe("LINK_ALREADY_EXISTS");
+    expect(code(error)).toBe("MATTERPORT_ALREADY_LINKED");
   });
 });

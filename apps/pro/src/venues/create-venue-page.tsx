@@ -82,8 +82,10 @@ export function CreateVenuePage() {
               referentialsLoading={referentials.status === "loading"}
             />
 
-            {/* §3.3 — pas de champ équipements à la création : on le DIT. */}
+            {/* §3.3 — pas de champ équipements à la création : on le DIT.
+                D45 : idem pour la visite virtuelle, son endpoint exige un id. */}
             <p className="field-hint">{t("venue.ui.form.amenitiesAfterCreate")}</p>
+            <p className="field-hint">{t("venue.ui.form.virtualTourAfterCreate")}</p>
 
             <button type="submit" className="btn btn-accent" disabled={submitting || referentials.status !== "ready"}>
               {submitting ? t("venue.ui.form.creating") : t("venue.ui.form.create")}

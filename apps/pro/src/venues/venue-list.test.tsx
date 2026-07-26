@@ -51,9 +51,7 @@ const VENUE: VenueProDTO = {
   status: "ACTIVE",
   amenityIds: [],
   photos: [],
-  photos360: [],
-  links360: [],
-  viewer360: null,
+  matterportModelId: null,
   createdAt: "2026-01-05T10:00:00.000Z",
   updatedAt: "2026-01-06T10:00:00.000Z"
 };
@@ -94,6 +92,7 @@ function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
       Promise.resolve({ ...VENUE, ...patch })
     ),
     softDelete: vi.fn().mockResolvedValue(undefined),
+    updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null }),
     ...overrides
   };
 }

@@ -1,9 +1,13 @@
 // Intégration Lot A4 — médias des salles sur base PostgreSQL réelle + VRAI
 // pipeline sharp + VRAI adapter disque (racine jetable, setup-env). Ce qui ne
-// se prouve QU'ICI : le webp ré-encodé servi par GET /media/:key, les renforts
-// SQL D34 (FK composites, CHECK, index LEAST/GREATEST), la cascade des
-// liaisons à la suppression d'une scène, l'ordre de déclaration des routes
-// (« order » AVANT :photoId), et les trois surfaces de lecture enrichies.
+// se prouve QU'ICI : le webp ré-encodé servi par GET /media/:key, l'ordre de
+// déclaration des routes (« order » AVANT :photoId), et les trois surfaces de
+// lecture enrichies.
+//
+// Lot A6a / D45 : les scènes 360°, leurs liaisons et les trois renforts SQL de
+// D34 ont été SUPPRIMÉS avec leurs tables. Ce qui les remplace et se prouve
+// ici : PATCH /venues/:id/virtual-tour, l'unicité SQL de matterport_model_id,
+// et une NON-RÉGRESSION explicite du volet VenuePhoto après la migration.
 import sharp from "sharp";
 import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
@@ -69,14 +73,12 @@ const jpeg = (width: number, height: number): Promise<Buffer> =>
 
 let PHOTO_OK: Buffer; // 1200×900 ≥ 800×600
 let PHOTO_TOO_SMALL: Buffer; // 400×300
-let SCENE_OK: Buffer; // 4096×2048 = 2:1 exact
-let SCENE_BAD_RATIO: Buffer; // ≈1,46:1, hors ±2 %
 const NOT_AN_IMAGE = Buffer.from("ceci n'est pas une image, c'est du texte");
 
 const uploadPhoto = (token: string, venueId: string, file: Buffer) =>
   api().post(`/api/v1/venues/${venueId}/photos`).set(auth(token)).attach("file", file, "photo.jpg");
-const uploadScene = (token: string, venueId: string, file: Buffer) =>
-  api().post(`/api/v1/venues/${venueId}/photos-360`).set(auth(token)).attach("file", file, "scene.jpg");
+const setTour = (token: string, venueId: string, matterportInput: string) =>
+  api().patch(`/api/v1/venues/${venueId}/virtual-tour`).set(auth(token)).send({ matterportInput });
 
 /** Clé de stockage depuis l'URL publique relative (/api/v1/media/<clé>). */
 const keyOf = (url: string): string => url.slice(url.lastIndexOf("/") + 1);
@@ -99,12 +101,7 @@ async function stuffPhotos(venueId: string, count: number, offset = 0): Promise<
 
 beforeAll(async () => {
   ctx = await createTestApp();
-  [PHOTO_OK, PHOTO_TOO_SMALL, SCENE_OK, SCENE_BAD_RATIO] = await Promise.all([
-    jpeg(1200, 900),
-    jpeg(400, 300),
-    jpeg(4096, 2048),
-    jpeg(3000, 2048)
-  ]);
+  [PHOTO_OK, PHOTO_TOO_SMALL] = await Promise.all([jpeg(1200, 900), jpeg(400, 300)]);
 }, 120_000);
 
 afterAll(async () => {
@@ -258,97 +255,107 @@ describe("PATCH photos/order + PATCH photos/:photoId + DELETE", () => {
   });
 });
 
-describe("Scènes 360° + liaisons (D34)", () => {
-  it("upload scène 2:1 → 201 ; ratio faux → 400 MEDIA_BAD_ASPECT_RATIO ; plafond 12 → 400", async () => {
+describe("PATCH /venues/:id/virtual-tour — D45", () => {
+  it("URL de partage ⇒ ID canonique stocké ; chaîne vide ⇒ null ; l'ID brut donne le même résultat", async () => {
     const token = await proSession(PRO_A);
     const venue = await createVenue(token, await seedCity());
 
-    await uploadScene(token, venue.id, SCENE_OK).expect(201);
-    const bad = await uploadScene(token, venue.id, SCENE_BAD_RATIO).expect(400);
-    expect(bad.body.message).toEqual({ code: "MEDIA_BAD_ASPECT_RATIO", message: "media.errors.badAspectRatio" });
+    const set = await setTour(token, venue.id, "https://my.matterport.com/show/?m=SxQL3iGyoDo").expect(200);
+    expect(set.body).toEqual({ matterportModelId: "SxQL3iGyoDo" });
+    // Ce qui compte : la BASE porte l'ID, pas l'URL brute saisie.
+    const stored = await ctx.prisma.venue.findUniqueOrThrow({
+      where: { id: venue.id },
+      select: { matterportModelId: true }
+    });
+    expect(stored.matterportModelId).toBe("SxQL3iGyoDo");
 
-    for (let i = 0; i < 11; i += 1) {
-      await ctx.prisma.venuePhoto360.create({
-        data: { venueId: venue.id, storageKey: `vs-bourrage-${i}.webp`, thumbKey: `vs-bourrage-${i}-thumb.webp` }
-      });
-    }
-    const over = await uploadScene(token, venue.id, SCENE_OK).expect(400); // 13ᵉ
-    expect(over.body.message).toEqual({ code: "MEDIA_SCENE_LIMIT_REACHED", message: "media.errors.sceneLimitReached" });
+    // Désactivation : NULL en base, jamais une chaîne vide.
+    await setTour(token, venue.id, "   ").expect(200).expect({ matterportModelId: null });
+    expect(
+      (await ctx.prisma.venue.findUniqueOrThrow({ where: { id: venue.id }, select: { matterportModelId: true } }))
+        .matterportModelId
+    ).toBeNull();
+
+    // ID brut : même issue que l'URL.
+    await setTour(token, venue.id, "SxQL3iGyoDo").expect(200).expect({ matterportModelId: "SxQL3iGyoDo" });
   });
 
-  it("liaison : A=B → 400 Zod ; paire inversée → 409 LINK_ALREADY_EXISTS ; scène d'une AUTRE salle → 404 SCENE_NOT_FOUND", async () => {
+  it("format invalide → 400 INVALID_MATTERPORT_LINK, la valeur précédente INTACTE", async () => {
+    const token = await proSession(PRO_A);
+    const venue = await createVenue(token, await seedCity());
+    await setTour(token, venue.id, "SxQL3iGyoDo").expect(200);
+
+    const bad = await setTour(token, venue.id, "https://exemple.dz/show/?m=SxQL3iGyoDo").expect(400);
+    expect(bad.body.message).toMatchObject({ code: "INVALID_MATTERPORT_LINK" });
+
+    expect(
+      (await ctx.prisma.venue.findUniqueOrThrow({ where: { id: venue.id }, select: { matterportModelId: true } }))
+        .matterportModelId
+    ).toBe("SxQL3iGyoDo"); // un refus n'efface rien
+  });
+
+  it("unicité EN BASE : le même modèle sur une seconde salle → 409 MATTERPORT_ALREADY_LINKED", async () => {
     const token = await proSession(PRO_A);
     const cityId = await seedCity();
-    const venue = await createVenue(token, cityId);
-    const autre = await createVenue(token, cityId, "Autre Salle");
-    const s1 = (await uploadScene(token, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    const s2 = (await uploadScene(token, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    const sx = (await uploadScene(token, autre.id, SCENE_OK).expect(201)).body as { id: string };
-    const coords = { yawA: 10, pitchA: -5, yawB: -170, pitchB: 3 };
+    const a = await createVenue(token, cityId, "Salle Une");
+    const b = await createVenue(token, cityId, "Salle Deux");
 
-    const same = await api()
-      .post(`/api/v1/venues/${venue.id}/photo-360-links`)
-      .set(auth(token))
-      .send({ photoAId: s1.id, photoBId: s1.id, ...coords })
-      .expect(400);
-    expect(JSON.stringify(same.body.message)).toContain("venue.validation.linkSamePhoto");
+    await setTour(token, a.id, "SxQL3iGyoDo").expect(200);
+    const conflict = await setTour(token, b.id, "https://my.matterport.com/show/?m=SxQL3iGyoDo").expect(409);
+    expect(conflict.body.message).toMatchObject({ code: "MATTERPORT_ALREADY_LINKED" });
 
-    await api()
-      .post(`/api/v1/venues/${venue.id}/photo-360-links`)
-      .set(auth(token))
-      .send({ photoAId: s1.id, photoBId: s2.id, ...coords })
-      .expect(201);
-    const reversed = await api()
-      .post(`/api/v1/venues/${venue.id}/photo-360-links`)
-      .set(auth(token))
-      .send({ photoAId: s2.id, photoBId: s1.id, ...coords })
-      .expect(409); // index LEAST/GREATEST : la paire inversée EST la même liaison
-    expect(reversed.body.message).toEqual({ code: "LINK_ALREADY_EXISTS", message: "venue.errors.linkAlreadyExists" });
-
-    const foreign = await api()
-      .post(`/api/v1/venues/${venue.id}/photo-360-links`)
-      .set(auth(token))
-      .send({ photoAId: s1.id, photoBId: sx.id, ...coords })
-      .expect(404);
-    expect(foreign.body.message).toEqual({ code: "SCENE_NOT_FOUND", message: "venue.errors.sceneNotFound" });
+    // Deux salles SANS scan cohabitent : Postgres autorise plusieurs NULL dans
+    // un index unique — sinon la 2ᵉ salle sans visite serait rejetée.
+    const c = await createVenue(token, cityId, "Salle Trois");
+    expect(c.matterportModelId).toBeNull();
+    expect(b.matterportModelId).toBeNull();
   });
 
-  it("DELETE scène : ses liaisons tombent en CASCADE et ses objets disparaissent ; DELETE liaison seule → 204 puis 404", async () => {
+  it("ownership 404 indistinct : la salle d'un autre pro est « introuvable », jamais un 400 de format", async () => {
+    const tokenA = await proSession(PRO_A);
+    const venue = await createVenue(tokenA, await seedCity());
+    const tokenB = await proSession(PRO_B);
+
+    // Saisie volontairement INVALIDE : si le parse passait avant l'ownership,
+    // la réponse serait 400 et distinguerait « salle existante » de « inexistante ».
+    await setTour(tokenB, venue.id, "garbage!!!").expect(404);
+    await setTour(tokenB, "pas-un-uuid", "SxQL3iGyoDo").expect(404);
+  });
+
+  it("D33 : aucune gate sur `status` — un pro règle la visite d'une salle HIDDEN", async () => {
     const token = await proSession(PRO_A);
     const venue = await createVenue(token, await seedCity());
-    const s1 = (await uploadScene(token, venue.id, SCENE_OK).expect(201)).body as { id: string; url: string; thumbUrl: string };
-    const s2 = (await uploadScene(token, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    const link = (
-      await api()
-        .post(`/api/v1/venues/${venue.id}/photo-360-links`)
-        .set(auth(token))
-        .send({ photoAId: s1.id, photoBId: s2.id, yawA: 0, pitchA: 0, yawB: 0, pitchB: 0 })
-        .expect(201)
-    ).body as { id: string };
+    await api().patch(`/api/v1/venues/${venue.id}`).set(auth(token)).send({ status: "HIDDEN" }).expect(200);
+    await setTour(token, venue.id, "SxQL3iGyoDo").expect(200);
+  });
 
-    await api().delete(`/api/v1/venues/${venue.id}/photos-360/${s1.id}`).set(auth(token)).expect(204);
-    expect(await ctx.prisma.venuePhoto360Link.count()).toBe(0); // cascade FK
-    await api().get(s1.url).expect(404);
-    await api().get(s1.thumbUrl).expect(404);
+  it("NON-RÉGRESSION après migration : upload, réordonnancement et DELETE de VenuePhoto intacts", async () => {
+    const token = await proSession(PRO_A);
+    const venue = await createVenue(token, await seedCity());
+    const p1 = (await uploadPhoto(token, venue.id, PHOTO_OK).expect(201)).body as VenuePhotoDTO;
+    const p2 = (await uploadPhoto(token, venue.id, PHOTO_OK).expect(201)).body as VenuePhotoDTO;
+    expect([p1.sortOrder, p2.sortOrder]).toEqual([0, 1]);
 
-    const gone = await api().delete(`/api/v1/venues/${venue.id}/photo-360-links/${link.id}`).set(auth(token)).expect(404);
-    expect(gone.body.message).toEqual({ code: "LINK_NOT_FOUND", message: "venue.errors.linkNotFound" });
+    await api()
+      .patch(`/api/v1/venues/${venue.id}/photos/order`)
+      .set(auth(token))
+      .send({ photoIds: [p2.id, p1.id] })
+      .expect(200);
+    const pro = (await api().get(`/api/v1/pro/venues/${venue.id}`).set(auth(token)).expect(200)).body as VenueProDTO;
+    expect(pro.photos.map((p) => p.id)).toEqual([p2.id, p1.id]);
+
+    await api().delete(`/api/v1/venues/${venue.id}/photos/${p1.id}`).set(auth(token)).expect(204);
+    await api().get(keyOf(p1.url) ? `/api/v1/media/${keyOf(p1.url)}` : "").expect(404);
   });
 });
 
 describe("Les trois surfaces de lecture (A4-②)", () => {
-  it("GET /venues : coverThumbUrl = thumb de la 1ʳᵉ photo par sortOrder + photoCount ; GET /venues/:slug : galerie ordonnée + viewer360 ; détail pro : scènes AVEC vignettes", async () => {
+  it("GET /venues : coverThumbUrl = thumb de la 1ʳᵉ photo par sortOrder + photoCount ; GET /venues/:slug : galerie ordonnée + matterportModelId ; détail pro : mêmes données", async () => {
     const proToken = await proSession(PRO_A);
     const venue = await createVenue(proToken, await seedCity());
     const p1 = (await uploadPhoto(proToken, venue.id, PHOTO_OK).expect(201)).body as VenuePhotoDTO;
     const p2 = (await uploadPhoto(proToken, venue.id, PHOTO_OK).expect(201)).body as VenuePhotoDTO;
-    const s1 = (await uploadScene(proToken, venue.id, SCENE_OK).expect(201)).body as { id: string; url: string };
-    const s2 = (await uploadScene(proToken, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    await api()
-      .post(`/api/v1/venues/${venue.id}/photo-360-links`)
-      .set(auth(proToken))
-      .send({ photoAId: s1.id, photoBId: s2.id, yawA: 15, pitchA: -2, yawB: -160, pitchB: 4 })
-      .expect(201);
+    await setTour(proToken, venue.id, "https://my.matterport.com/show/?m=SxQL3iGyoDo").expect(200);
     // p2 passe en tête : elle devient la couverture (règle A4 verrouillée).
     await api().patch(`/api/v1/venues/${venue.id}/photos/order`).set(auth(proToken)).send({ photoIds: [p2.id, p1.id] }).expect(200);
 
@@ -361,44 +368,23 @@ describe("Les trois surfaces de lecture (A4-②)", () => {
     expect(card?.photoCount).toBe(2);
     expect(card?.coverThumbUrl).toBe(p2.thumbUrl);
     await api().get(card?.coverThumbUrl ?? "").expect(200);
+    // La liste NE porte PAS la visite : le résumé reste lean (Android bas de gamme).
+    expect(card).not.toHaveProperty("matterportModelId");
 
-    // 2. Détail public : galerie dans l'ordre + tour lean (pas de thumbUrl de scène).
+    // 2. Détail public : galerie dans l'ordre + l'ID Matterport, rien de plus.
     const pub = (await api().get(`/api/v1/venues/${venue.slug}`).expect(200)).body as VenuePublicDTO;
     expect(pub.photos.map((p) => p.id)).toEqual([p2.id, p1.id]);
     expect(pub.photos[0]?.width).toBe(1200);
-    expect(pub.viewer360?.initialSceneId).toBe(s1.id); // 1ʳᵉ scène créée ouvre le tour
-    expect(pub.viewer360?.scenes.map((s) => s.id)).toEqual([s1.id, s2.id]);
-    expect(pub.viewer360?.scenes[0]).toEqual({ id: s1.id, url: s1.url }); // lean 1:1 Pannellum
-    expect(pub.viewer360?.links).toEqual([
-      { photoAId: s1.id, photoBId: s2.id, yawA: 15, pitchA: -2, yawB: -160, pitchB: 4 }
-    ]);
+    expect(pub.matterportModelId).toBe("SxQL3iGyoDo");
 
-    // 3. Détail pro : mêmes données + vignettes de scènes (A6b) + liens avec id.
+    // 3. Détail pro : même valeur canonique que le public.
     const pro = (await api().get(`/api/v1/pro/venues/${venue.id}`).set(auth(proToken)).expect(200))
       .body as VenueProDTO;
-    expect(pro.photos360.map((s) => s.id)).toEqual([s1.id, s2.id]);
-    expect(pro.photos360[0]?.thumbUrl).toMatch(/vs-.*-thumb\.webp$/);
-    expect(pro.links360[0]?.id).toBeDefined();
-    expect(pro.viewer360?.initialSceneId).toBe(s1.id);
+    expect(pro.matterportModelId).toBe("SxQL3iGyoDo");
+    expect(pro.photos.map((p) => p.id)).toEqual([p2.id, p1.id]);
   });
 
-  it("tiebreak D34 prouvé en base : createdAt forcés ÉGAUX → initialSceneId = min(id) (uuidv7 ≈ plus ancienne)", async () => {
-    const proToken = await proSession(PRO_A);
-    const venue = await createVenue(proToken, await seedCity());
-    const s1 = (await uploadScene(proToken, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    const s2 = (await uploadScene(proToken, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    const sameInstant = new Date("2026-07-22T10:00:00.000Z");
-    await ctx.prisma.venuePhoto360.updateMany({ where: { venueId: venue.id }, data: { createdAt: sameInstant } });
-
-    const adminToken = await adminSession();
-    await api().post(`/api/v1/admin/venues/${venue.id}/publish`).set(auth(adminToken)).expect(200);
-
-    const pub = (await api().get(`/api/v1/venues/${venue.slug}`).expect(200)).body as VenuePublicDTO;
-    const expected = [s1.id, s2.id].sort()[0];
-    expect(pub.viewer360?.initialSceneId).toBe(expected);
-  });
-
-  it("salle sans média : coverThumbUrl null, photoCount 0, photos [], viewer360 null — jamais un tour vide", async () => {
+  it("salle sans média : coverThumbUrl null, photoCount 0, photos [], matterportModelId null", async () => {
     const proToken = await proSession(PRO_A);
     const venue = await createVenue(proToken, await seedCity());
     const adminToken = await adminSession();
@@ -410,37 +396,59 @@ describe("Les trois surfaces de lecture (A4-②)", () => {
 
     const pub = (await api().get(`/api/v1/venues/${venue.slug}`).expect(200)).body as VenuePublicDTO;
     expect(pub.photos).toEqual([]);
-    expect(pub.viewer360).toBeNull();
+    expect(pub.matterportModelId).toBeNull();
   });
 });
 
-describe("Renforts SQL D34 (prouvés au niveau Postgres, sous l'application)", () => {
-  it("FK composite : un INSERT direct de liaison inter-salles est refusé PAR LA BASE", async () => {
-    const proToken = await proSession(PRO_A);
-    const cityId = await seedCity();
-    const venue = await createVenue(proToken, cityId);
-    const autre = await createVenue(proToken, cityId, "Autre Salle");
-    const s1 = (await uploadScene(proToken, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    const sx = (await uploadScene(proToken, autre.id, SCENE_OK).expect(201)).body as { id: string };
+describe("D45 en base : la migration n'a laissé AUCUN résidu, et n'a touché à rien d'autre", () => {
+  it("les deux tables 360° et TOUS leurs objets SQL manuels ont disparu", async () => {
+    const tables = await ctx.prisma.$queryRaw<{ tablename: string }[]>`
+      SELECT tablename FROM pg_tables
+      WHERE schemaname = 'public' AND tablename IN ('venue_photos_360', 'venue_photo_360_links')`;
+    expect(tables).toEqual([]);
 
-    await expect(
-      ctx.prisma.$executeRawUnsafe(
-        `INSERT INTO venue_photo_360_links (venue_id, photo_a_id, photo_b_id, yaw_a, pitch_a, yaw_b, pitch_b)
-         VALUES ('${venue.id}', '${s1.id}', '${sx.id}', 0, 0, 0, 0)`
-      )
-    ).rejects.toThrow(); // FK composite (photo_b_id, venue_id) viole
+    // Les renforts D34 étaient posés en SQL MANUEL : Prisma ne les connaît pas,
+    // seul un DROP TABLE correct les emporte. On le prouve nommément plutôt que
+    // de faire confiance au SQL généré (leçon A9).
+    const residus = await ctx.prisma.$queryRaw<{ conname: string }[]>`
+      SELECT conname FROM pg_constraint WHERE conname LIKE '%photo_360%' OR conname LIKE '%photos_360%'`;
+    expect(residus).toEqual([]);
+    const index = await ctx.prisma.$queryRaw<{ indexname: string }[]>`
+      SELECT indexname FROM pg_indexes WHERE schemaname = 'public' AND indexname LIKE '%360%'`;
+    expect(index).toEqual([]);
   });
 
-  it("CHECK bornes : un yaw de 500° est refusé PAR LA BASE (filet sous Zod)", async () => {
-    const proToken = await proSession(PRO_A);
-    const venue = await createVenue(proToken, await seedCity());
-    const s1 = (await uploadScene(proToken, venue.id, SCENE_OK).expect(201)).body as { id: string };
-    const s2 = (await uploadScene(proToken, venue.id, SCENE_OK).expect(201)).body as { id: string };
+  it("les contraintes manuelles des AUTRES tables sont intactes (aucun dommage collatéral)", async () => {
+    const rows = await ctx.prisma.$queryRaw<{ conname: string }[]>`
+      SELECT conname FROM pg_constraint
+      WHERE conname IN (
+        'venues_capacity_valid',
+        'venues_cashback_rate_range',
+        'venues_commission_rate_range',
+        'venues_base_price_positive',
+        'bookings_no_overlap_accepted_confirmed'
+      )`;
+    const noms = rows.map((r) => r.conname).sort();
+    expect(noms).toContain("venues_capacity_valid");
+    expect(noms).toContain("venues_cashback_rate_range");
+    expect(noms).toContain("venues_commission_rate_range");
+    expect(noms).toContain("venues_base_price_positive");
+    // L'EXCLUDE gist anti-double-réservation : la garantie la plus chère du
+    // schéma, et la plus facile à emporter par accident.
+    expect(noms).toContain("bookings_no_overlap_accepted_confirmed");
+  });
 
+  it("unicité de matterport_model_id garantie PAR LA BASE, pas seulement par le service", async () => {
+    const token = await proSession(PRO_A);
+    const cityId = await seedCity();
+    const a = await createVenue(token, cityId, "Salle Une");
+    const b = await createVenue(token, cityId, "Salle Deux");
+    await setTour(token, a.id, "SxQL3iGyoDo").expect(200);
+
+    // Écriture DIRECTE, sous l'application : c'est l'index unique qui refuse.
     await expect(
       ctx.prisma.$executeRawUnsafe(
-        `INSERT INTO venue_photo_360_links (venue_id, photo_a_id, photo_b_id, yaw_a, pitch_a, yaw_b, pitch_b)
-         VALUES ('${venue.id}', '${s1.id}', '${s2.id}', 500, 0, 0, 0)`
+        `UPDATE venues SET matterport_model_id = 'SxQL3iGyoDo' WHERE id = '${b.id}'`
       )
     ).rejects.toThrow();
   });

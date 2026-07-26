@@ -18,7 +18,6 @@ import {
 import type { Prisma } from "../generated/prisma/client";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
-import { buildViewer360Data } from "./viewer360";
 
 /** Colonnes des cartes de la liste (VenueSummaryDTO) — ni taux, ni GPS.
  *  A4-② : la couverture est tirée en SQL (take: 1 imbriqué — jamais les 30
@@ -66,21 +65,14 @@ const VENUE_PUBLIC_SELECT = {
   basePriceCents: true,
   bookingMode: true,
   status: true,
+  // D45 (A6a) : A8 monte l'iframe Matterport au geste utilisateur.
+  matterportModelId: true,
   city: { select: { id: true, nameFr: true, nameAr: true } },
   amenities: { select: { amenity: { select: { id: true, key: true, nameFr: true, nameAr: true, icon: true } } } },
-  // Lot A4 — galerie ordonnée + tour lié. PAS de thumbKey sur les scènes ici :
-  // Viewer360Data est lean, 1:1 Pannellum (arbitrage A4-①).
+  // Lot A4 — galerie ordonnée (l'ordre du tableau EST l'ordre d'affichage).
   photos: {
     orderBy: [{ sortOrder: "asc" }, { id: "asc" }] as Prisma.VenuePhotoOrderByWithRelationInput[],
     select: { id: true, storageKey: true, thumbKey: true, width: true, height: true, altFr: true, altAr: true }
-  },
-  photos360: {
-    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360OrderByWithRelationInput[],
-    select: { id: true, storageKey: true, createdAt: true }
-  },
-  photo360Links: {
-    orderBy: [{ createdAt: "asc" }, { id: "asc" }] as Prisma.VenuePhoto360LinkOrderByWithRelationInput[],
-    select: { photoAId: true, photoBId: true, yawA: true, pitchA: true, yawB: true, pitchB: true }
   }
 } as const;
 
@@ -236,7 +228,7 @@ export class VenuesPublicService {
         altFr: p.altFr,
         altAr: p.altAr
       })),
-      viewer360: buildViewer360Data(row.photos360, row.photo360Links, this.urlOf)
+      matterportModelId: row.matterportModelId
     };
   }
 }

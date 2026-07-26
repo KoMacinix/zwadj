@@ -87,9 +87,7 @@ const VENUE: VenueProDTO = {
   status: "ACTIVE",
   amenityIds: [],
   photos: [],
-  photos360: [],
-  links360: [],
-  viewer360: null,
+  matterportModelId: null,
   createdAt: "2026-01-05T10:00:00.000Z",
   updatedAt: "2026-01-06T10:00:00.000Z"
 };
@@ -118,6 +116,7 @@ function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
     create: vi.fn().mockResolvedValue({ ...VENUE, id: "v-new" }),
     update: vi.fn().mockResolvedValue(VENUE),
     softDelete: vi.fn().mockResolvedValue(undefined),
+    updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null }),
     ...overrides
   };
 }
@@ -370,7 +369,7 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { status: "TEMPORARILY_UNAVAILABLE" }));
   });
 
-  it("AUCUN média rendu : la couture A6a reste vide (ni photo, ni scène 360°)", async () => {
+  it("AUCUNE photo rendue : le volet photos de A6a n'est pas encore codé", async () => {
     const venues = makeVenues({
       getMine: vi.fn().mockResolvedValue({
         ...VENUE,
@@ -392,9 +391,80 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     const { container } = renderEdit(venues);
     await screen.findByDisplayValue("Salle El Ryad");
 
-    // A5 ignore photos/photos360/links360/viewer360 sur CET écran.
+    // Le champ `photos` du DTO reste ignoré tant que le volet n'est pas livré.
     expect(container.querySelector("img")).toBeNull();
-    expect(screen.queryByText(/360/)).not.toBeInTheDocument();
+  });
+
+  // ── D45 — section visite virtuelle ─────────────────────────────────────────
+
+  it("saisie d'une URL de partage : le corps porte la SAISIE BRUTE, l'écran affiche l'ID canonique", async () => {
+    const venues = makeVenues({
+      updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: "SxQL3iGyoDo" })
+    });
+    renderEdit(venues);
+
+    const champ = await screen.findByLabelText("Lien Matterport");
+    fireEvent.change(champ, { target: { value: "https://my.matterport.com/show/?m=SxQL3iGyoDo" } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer la visite" }));
+
+    await waitFor(() =>
+      expect(venues.updateVirtualTour).toHaveBeenCalledWith("v1", {
+        matterportInput: "https://my.matterport.com/show/?m=SxQL3iGyoDo"
+      })
+    );
+    // Le champ se recale sur la valeur CANONIQUE renvoyée par le serveur.
+    await screen.findByDisplayValue("SxQL3iGyoDo");
+    await screen.findByText("Visite virtuelle enregistrée.");
+  });
+
+  it("format invalide au blur : message inline, AUCUN appel API tant qu'on n'enregistre pas", async () => {
+    const venues = makeVenues();
+    renderEdit(venues);
+
+    const champ = await screen.findByLabelText("Lien Matterport");
+    fireEvent.change(champ, { target: { value: "https://exemple.dz/show/?m=SxQL3iGyoDo" } });
+    fireEvent.blur(champ);
+
+    await screen.findByText(/Lien Matterport non reconnu/);
+    expect(venues.updateVirtualTour).not.toHaveBeenCalled();
+  });
+
+  it("salle SANS visite : ni bouton de retrait, ni lien externe (rien à retirer)", async () => {
+    renderEdit(makeVenues());
+    await screen.findByLabelText("Lien Matterport");
+    expect(screen.queryByRole("button", { name: "Retirer la visite" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Ouvrir la visite dans un nouvel onglet" })).not.toBeInTheDocument();
+  });
+
+  it("« Retirer la visite » envoie une chaîne vide ; le lien externe est RECONSTRUIT depuis l'ID", async () => {
+    const avecVisite = makeVenues({
+      getMine: vi.fn().mockResolvedValue({ ...VENUE, matterportModelId: "SxQL3iGyoDo" }),
+      updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null })
+    });
+    renderEdit(avecVisite);
+
+    const lien = await screen.findByRole("link", { name: "Ouvrir la visite dans un nouvel onglet" });
+    // L'URL est RECONSTRUITE par nous depuis l'ID, jamais la saisie du pro.
+    expect(lien).toHaveAttribute("href", "https://my.matterport.com/show/?m=SxQL3iGyoDo");
+    expect(lien).toHaveAttribute("rel", expect.stringContaining("noopener"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Retirer la visite" }));
+    await waitFor(() => expect(avecVisite.updateVirtualTour).toHaveBeenCalledWith("v1", { matterportInput: "" }));
+    await screen.findByText("Visite virtuelle retirée.");
+  });
+
+  it("409 MATTERPORT_ALREADY_LINKED : message métier traduit, pas l'erreur générique", async () => {
+    const venues = makeVenues({
+      updateVirtualTour: vi
+        .fn()
+        .mockRejectedValue(new ApiError(409, "MATTERPORT_ALREADY_LINKED", "venue.errors.matterportAlreadyLinked"))
+    });
+    renderEdit(venues);
+
+    fireEvent.change(await screen.findByLabelText("Lien Matterport"), { target: { value: "SxQL3iGyoDo" } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer la visite" }));
+
+    await screen.findByText("Cette visite virtuelle est déjà rattachée à une autre salle.");
   });
 });
 

@@ -1,4 +1,6 @@
-// Lot A4 — écritures médias d'une salle (photos + scènes/liaisons 360°).
+// Lot A4 — écritures médias d'une salle (photos).
+// Lot A6a / D45 — les scènes et liaisons 360° ont disparu (Matterport les
+// remplace) ; la visite virtuelle est un simple PATCH de colonne.
 // Quatre règles structurelles :
 // 1. OWNERSHIP : chaque opération commence par
 //    VenuesService.assertOwnedLivingVenueId (A4-④) — même WHERE, même
@@ -20,20 +22,15 @@ import {
   MediaErrorCode,
   VENUE_MEDIA_CAPS,
   VenueErrorCode,
-  type Venue360LinkCreateInput,
-  type VenuePhoto360LinkDTO,
-  type VenuePhoto360SceneDTO,
+  parseMatterportInput,
   type VenuePhotoAltUpdateInput,
   type VenuePhotoDTO,
-  type VenuePhotoOrderInput
+  type VenuePhotoOrderInput,
+  type VenueVirtualTourDTO,
+  type VenueVirtualTourUpdateInput
 } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
-import {
-  MediaValidationError,
-  processVenuePhoto,
-  processVenuePhoto360,
-  type ProcessedImagePair
-} from "../media/image-pipeline";
+import { MediaValidationError, processVenuePhoto, type ProcessedImagePair } from "../media/image-pipeline";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
 import { VenuesService } from "./venues.service";
@@ -51,26 +48,6 @@ const PHOTO_SELECT = {
 } as const;
 type PhotoRow = Prisma.VenuePhotoGetPayload<{ select: typeof PHOTO_SELECT }>;
 
-const SCENE_SELECT = {
-  id: true,
-  storageKey: true,
-  thumbKey: true,
-  capturedAt: true,
-  createdAt: true
-} as const;
-type SceneRow = Prisma.VenuePhoto360GetPayload<{ select: typeof SCENE_SELECT }>;
-
-const LINK_SELECT = {
-  id: true,
-  photoAId: true,
-  photoBId: true,
-  yawA: true,
-  pitchA: true,
-  yawB: true,
-  pitchB: true
-} as const;
-type LinkRow = Prisma.VenuePhoto360LinkGetPayload<{ select: typeof LINK_SELECT }>;
-
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Codes pipeline → clés i18n media.errors.* (A4-⑤) — exhaustif par type. */
@@ -79,14 +56,14 @@ const MEDIA_ERROR_MESSAGES: Record<MediaErrorCode, string> = {
   MEDIA_UNSUPPORTED_FORMAT: "media.errors.unsupportedFormat",
   MEDIA_TOO_LARGE: "media.errors.tooLarge",
   MEDIA_TOO_SMALL: "media.errors.tooSmall",
-  MEDIA_BAD_ASPECT_RATIO: "media.errors.badAspectRatio",
-  MEDIA_PHOTO_LIMIT_REACHED: "media.errors.photoLimitReached",
-  MEDIA_SCENE_LIMIT_REACHED: "media.errors.sceneLimitReached"
+  MEDIA_PHOTO_LIMIT_REACHED: "media.errors.photoLimitReached"
 };
 
-/** P2002 (unicité) sans dépendre de la classe générée — patron A2. Couvre
- *  aussi l'index unique LEAST/GREATEST posé en SQL manuel (renfort D34 n°3) :
- *  Postgres 23505 est remonté en P2002 quelle que soit l'origine de l'index. */
+/** P2002 (unicité) sans dépendre de la classe générée — patron A2. Sert ici
+ *  l'unicité de venues.matterport_model_id (D45) : deux salles ne peuvent pas
+ *  pointer le même scan. Cas réaliste, pas théorique — le compte Matterport est
+ *  UNIQUE pour tout Zwadj, un copier-coller d'URL entre deux salles est le
+ *  premier accident attendu. */
 function isUniqueViolation(error: unknown): boolean {
   return typeof error === "object" && error !== null && (error as { code?: unknown }).code === "P2002";
 }
@@ -197,88 +174,56 @@ export class VenueMediaService {
     await this.cleanupKeys({ large: current.storageKey, thumb: current.thumbKey });
   }
 
-  // ── Scènes 360° ────────────────────────────────────────────────────────────
+  // ── Visite virtuelle (D45) ─────────────────────────────────────────────────
 
-  async add360Scene(userId: string, venueId: string, file: Buffer): Promise<VenuePhoto360SceneDTO> {
+  /**
+   * PATCH /venues/:id/virtual-tour. Le corps porte la saisie BRUTE du pro (ID
+   * ou URL de partage) ; le serveur ne stocke que l'ID canonique.
+   * `parseMatterportInput` distingue trois cas, jamais confondus : chaîne vide
+   * = désactivation demandée, `null` = saisie invalide (400), sinon l'ID.
+   * Revalidation serveur systématique : le même parse tourne côté Pro pour le
+   * retour immédiat, il n'a aucune autorité.
+   */
+  async updateVirtualTour(
+    userId: string,
+    venueId: string,
+    input: VenueVirtualTourUpdateInput
+  ): Promise<VenueVirtualTourDTO> {
     const id = await this.venues.assertOwnedLivingVenueId(userId, venueId);
 
-    const count = await this.prisma.venuePhoto360.count({ where: { venueId: id } });
-    if (count >= VENUE_MEDIA_CAPS.scenes360PerVenue) {
-      this.throwMedia(MediaErrorCode.MEDIA_SCENE_LIMIT_REACHED);
-    }
-
-    const pair = await this.processOr400(() => processVenuePhoto360(file));
-    const keys = this.freshKeys("vs");
-    await this.putPair(keys, pair);
-    try {
-      const row = await this.prisma.venuePhoto360.create({
-        data: { venueId: id, storageKey: keys.large, thumbKey: keys.thumb },
-        select: SCENE_SELECT
+    const parsed = parseMatterportInput(input.matterportInput);
+    if (parsed === null) {
+      throw new BadRequestException({
+        code: VenueErrorCode.INVALID_MATTERPORT_LINK,
+        message: "venue.validation.matterportInvalid"
       });
-      return this.toSceneDTO(row);
-    } catch (error) {
-      await this.cleanupKeys(keys); // même compensation d'orphelin que la photo
-      throw error;
     }
-  }
-
-  async delete360Scene(userId: string, venueId: string, sceneId: string): Promise<void> {
-    const id = await this.venues.assertOwnedLivingVenueId(userId, venueId);
-    if (!UUID_PATTERN.test(sceneId)) this.throwSceneNotFound();
-    const current = await this.prisma.venuePhoto360.findFirst({
-      where: { id: sceneId, venueId: id },
-      select: { id: true, storageKey: true, thumbKey: true }
-    });
-    if (!current) this.throwSceneNotFound();
-    // Les liaisons de la scène tombent par CASCADE (FK) dans le même geste.
-    await this.prisma.venuePhoto360.delete({ where: { id: current.id }, select: { id: true } });
-    await this.cleanupKeys({ large: current.storageKey, thumb: current.thumbKey });
-  }
-
-  // ── Liaisons du tour (D34) ─────────────────────────────────────────────────
-
-  async createLink(userId: string, venueId: string, input: Venue360LinkCreateInput): Promise<VenuePhoto360LinkDTO> {
-    const id = await this.venues.assertOwnedLivingVenueId(userId, venueId);
-    // Les deux extrémités doivent être des scènes de CETTE salle — sinon 404
-    // indistinct SCENE_NOT_FOUND (autre salle = inexistante, doctrine A2).
-    // photoAId ≠ photoBId est déjà garanti par Zod (linkSamePhoto).
-    const found = await this.prisma.venuePhoto360.count({
-      where: { venueId: id, id: { in: [input.photoAId, input.photoBId] } }
-    });
-    if (found !== 2) this.throwSceneNotFound();
+    const matterportModelId = parsed === "" ? null : parsed;
 
     try {
-      const row = await this.prisma.venuePhoto360Link.create({
-        data: { venueId: id, ...input },
-        select: LINK_SELECT
+      const row = await this.prisma.venue.update({
+        where: { id },
+        data: { matterportModelId },
+        select: { matterportModelId: true }
       });
-      return this.toLinkDTO(row);
+      return { matterportModelId: row.matterportModelId };
     } catch (error) {
-      // Index unique LEAST/GREATEST (renfort D34 n°3) : la paire existe déjà,
-      // y compris inversée (B,A) → 409 explicite, jamais l'erreur Postgres brute.
+      // Unicité de la colonne : ce scan est déjà rattaché à une AUTRE salle.
+      // 409 explicite — on ne dit pas laquelle (elle peut ne pas être à ce pro).
       if (isUniqueViolation(error)) {
         throw new ConflictException({
-          code: VenueErrorCode.LINK_ALREADY_EXISTS,
-          message: "venue.errors.linkAlreadyExists"
+          code: VenueErrorCode.MATTERPORT_ALREADY_LINKED,
+          message: "venue.errors.matterportAlreadyLinked"
         });
       }
       throw error;
     }
   }
 
-  async deleteLink(userId: string, venueId: string, linkId: string): Promise<void> {
-    const id = await this.venues.assertOwnedLivingVenueId(userId, venueId);
-    if (!UUID_PATTERN.test(linkId)) this.throwLinkNotFound();
-    // venue_id dénormalisé (renfort D34 n°1) : le scope se juge en un WHERE.
-    const { count } = await this.prisma.venuePhoto360Link.deleteMany({ where: { id: linkId, venueId: id } });
-    if (count === 0) this.throwLinkNotFound();
-  }
-
-  // ── Internes ───────────────────────────────────────────────────────────────
 
   /** Clés serveur (jamais dérivées du nom de fichier utilisateur — contrat
    *  A0) : conformes à MEDIA_KEY_PATTERN par construction. */
-  private freshKeys(prefix: "vp" | "vs"): { large: string; thumb: string } {
+  private freshKeys(prefix: "vp"): { large: string; thumb: string } {
     const base = `${prefix}-${randomUUID()}`;
     return { large: `${base}.webp`, thumb: `${base}-thumb.webp` };
   }
@@ -318,14 +263,6 @@ export class VenueMediaService {
     throw new NotFoundException({ code: VenueErrorCode.PHOTO_NOT_FOUND, message: "venue.errors.photoNotFound" });
   }
 
-  private throwSceneNotFound(): never {
-    throw new NotFoundException({ code: VenueErrorCode.SCENE_NOT_FOUND, message: "venue.errors.sceneNotFound" });
-  }
-
-  private throwLinkNotFound(): never {
-    throw new NotFoundException({ code: VenueErrorCode.LINK_NOT_FOUND, message: "venue.errors.linkNotFound" });
-  }
-
   private toPhotoDTO(row: PhotoRow): VenuePhotoDTO {
     return {
       id: row.id,
@@ -340,25 +277,4 @@ export class VenueMediaService {
     };
   }
 
-  private toSceneDTO(row: SceneRow): VenuePhoto360SceneDTO {
-    return {
-      id: row.id,
-      url: this.urlOf(row.storageKey),
-      thumbUrl: this.urlOf(row.thumbKey),
-      capturedAt: row.capturedAt === null ? null : row.capturedAt.toISOString(),
-      createdAt: row.createdAt.toISOString()
-    };
-  }
-
-  private toLinkDTO(row: LinkRow): VenuePhoto360LinkDTO {
-    return {
-      id: row.id,
-      photoAId: row.photoAId,
-      photoBId: row.photoBId,
-      yawA: row.yawA,
-      pitchA: row.pitchA,
-      yawB: row.yawB,
-      pitchB: row.pitchB
-    };
-  }
 }
