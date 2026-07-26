@@ -35,6 +35,15 @@ export const AUTH_THROTTLE = {
   /** Reset password (Lot 4) : 10 / 15 min / IP — porte un coût argon2 (hash
    *  du nouveau mot de passe), même budget que login. */
   reset: { limit: num("THROTTLE_RESET_LIMIT", 10), ttl: TTL },
+  /** Changement de mot de passe (A10) : 10 / 15 min / IP — même budget que
+   *  login et reset, pour les mêmes raisons : la route VÉRIFIE un mot de passe
+   *  (cible de force brute) et en HACHE un autre (coût argon2). Sans ça elle
+   *  retomberait sur le défaut global de 100/min, sans commune mesure. */
+  changePassword: { limit: num("THROTTLE_CHANGE_PASSWORD_LIMIT", 10), ttl: TTL },
+  /** Changement d'e-mail (A10) : 3 / 15 min / IP — la route ENVOIE un e-mail à
+   *  une adresse choisie par l'appelant ; même budget que forgot/resend, qui
+   *  ont exactement ce pouvoir. */
+  changeEmail: { limit: num("THROTTLE_CHANGE_EMAIL_LIMIT", 3), ttl: TTL },
   /** Google (Lot 8) : 5 / 15 min / IP — la route peut CRÉER un compte, même
    *  budget que register (cadrage OAuth : « ordre de grandeur register »).
    *  Un utilisateur légitime ne la sollicite qu'une fois par session. */

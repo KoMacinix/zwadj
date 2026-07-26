@@ -22,7 +22,11 @@ const PRO_USER = {
   emailVerified: true,
   firstName: null,
   lastName: null,
-  proProfile: { businessName: "Salle El Ryad", phone: "+213551234567" }
+  // A10 : les 4 champs D42 du contrat AuthUserDTO.
+  phone: null,
+  hasPassword: true,
+  hasGoogle: false,
+  proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null }
 };
 
 const VENUE: VenueProDTO = {

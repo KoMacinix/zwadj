@@ -737,3 +737,76 @@ button {
   pointer-events: none;
   user-select: none;
 }
+
+/* ── Loader de marque (Lot A12, D44) ───────────────────────────────────────
+   DEUX animations sur DEUX elements distincts, et c'est ce qui rend le bloc
+   `prefers-reduced-motion` ci-dessous possible :
+     - le CONTENEUR fait un fondu retarde  → anti-flash sur les navigations
+       rapides (rien ne clignote si le chargement dure moins de 200 ms) ;
+     - le TRACE fait courir le serpent.
+   Ce bloc est place en FIN de feuille a dessein : sa regle de mouvement reduit
+   doit passer APRES la regle globale du haut de fichier. */
+.brand-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-block: 48px;
+  /* Part invisible : c'est le fondu qui revele. Voir le bloc de mouvement
+     reduit — couper l'animation SANS reposer l'opacite laisserait un loader
+     definitivement invisible. */
+  opacity: 0;
+  animation: brand-loader-in 220ms ease-out 200ms forwards;
+}
+
+.brand-loader-icon {
+  /* `currentColor` sur le trace : chaque app herite de SON accent D26 (Client
+     #DA3642, Pro #211C1B) sans un seul hex dans le composant.
+     Le logo ne se miroite JAMAIS en RTL : aucune transformation ici. */
+  color: var(--accent);
+}
+
+.brand-loader-icon path {
+  /* `pathLength="1"` cote SVG ⇒ 30 % de trace visible, 70 % de vide. Seul
+     parametre reglable a l'oeil (plage raisonnable 0.22–0.35). */
+  stroke-dasharray: 0.3 0.7;
+  animation: brand-loader-trace 1.8s linear infinite;
+}
+
+@keyframes brand-loader-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* La periode du motif vaut EXACTEMENT 1 (0.3 + 0.7) : le raccord de boucle est
+   invisible, il n'y a pas de saut a la reprise. Filet si `pathLength` se
+   comportait mal sur un navigateur cible : longueur reelle du trace
+   = 2 × 2π × 7 = 87.965 ⇒ `stroke-dasharray: 26.39 61.57` et `0 → -87.965`. */
+@keyframes brand-loader-trace {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+
+/* Mouvement reduit — l'ORDRE et l'EXPLICITE comptent : une erreur ici rend le
+   loader INVISIBLE pour exactement la population qu'on protege. On ne se
+   repose PAS sur la regle globale `animation-duration: 0.01ms` du haut de
+   fichier : sur une animation `infinite` elle ne supprime rien, elle fait
+   tourner la boucle a vide. */
+@media (prefers-reduced-motion: reduce) {
+  .brand-loader {
+    opacity: 1;
+    animation: none;
+  }
+
+  .brand-loader-icon path {
+    animation: none;
+    /* Logo ENTIER, statique — pas un fragment de trace fige. */
+    stroke-dasharray: none;
+  }
+}

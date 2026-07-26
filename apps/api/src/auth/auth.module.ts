@@ -43,6 +43,9 @@ import { TokenService } from "./token.service";
   ],
   // JwtModule exporté : les APP_GUARD déclarés dans app.module (contexte racine)
   // doivent pouvoir résoudre JwtService.
-  exports: [PasswordService, TokenService, JwtModule]
+  // AuthService exporté (A10) : AccountModule répond aux mutations de profil
+  // avec un AuthUserDTO relu par me(), pour que le front n'ait qu'UN format de
+  // session à connaître (D12) plutôt qu'un DTO de profil parallèle.
+  exports: [AuthService, PasswordService, TokenService, JwtModule]
 })
 export class AuthModule {}

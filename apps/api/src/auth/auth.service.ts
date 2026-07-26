@@ -39,26 +39,45 @@ import {
 import { PasswordService } from "./password.service";
 import { TokenService } from "./token.service";
 
-/** Colonnes exposées par login/me — le hash n'en fait JAMAIS partie. */
+/**
+ * Colonnes LUES par login/me/refresh/google.
+ *
+ * ⚠ Lot A10 — `passwordHash` et `googleSub` sont désormais SÉLECTIONNÉS, ce
+ * qui change la lecture de l'ancien commentaire « le hash n'en fait jamais
+ * partie ». La règle exacte est, et reste : le hash n'est jamais EXPOSÉ. D42
+ * impose au DTO deux booléens (`hasPassword`, `hasGoogle`) qui ne peuvent se
+ * dériver que de ces colonnes — Prisma ne sait pas calculer un booléen dans un
+ * `select`. `toAuthUserDTO()` construit sa sortie champ par champ (jamais un
+ * spread de la ligne) : le hash ne peut pas fuir par inadvertance, et
+ * `me.int-spec.ts` l'assert explicitement.
+ *
+ * `status` (§2.0) est lu ici pour que les CINQ chemins d'authentification
+ * puissent le consulter sans requête supplémentaire.
+ */
 const AUTH_USER_SELECT = {
   id: true,
   email: true,
   role: true,
   locale: true,
+  status: true,
   emailVerifiedAt: true,
   firstName: true,
   lastName: true,
-  proProfile: { select: { businessName: true, phone: true } }
+  phone: true,
+  passwordHash: true,
+  googleSub: true,
+  proProfile: { select: { businessName: true, phone: true, phone2: true } }
 } as const;
 
 type AuthUserRow = Prisma.UserGetPayload<{ select: typeof AUTH_USER_SELECT }>;
 
-/** Lot 8 : la matrice /auth/google a besoin EN PLUS du lien Google existant
- *  (googleSub) pour distinguer liaison / connexion / conflit. Jamais exposé
- *  dans le DTO — consommé uniquement par la logique interne. */
-const GOOGLE_AUTH_SELECT = { ...AUTH_USER_SELECT, googleSub: true } as const;
+/** Lot 8 : la matrice /auth/google s'appuie sur le lien Google existant
+ *  (googleSub) pour distinguer liaison / connexion / conflit. Depuis A10 il
+ *  fait partie du select commun — l'alias est conservé pour que les
+ *  signatures de la matrice restent lisibles. */
+const GOOGLE_AUTH_SELECT = AUTH_USER_SELECT;
 
-type GoogleAuthUserRow = Prisma.UserGetPayload<{ select: typeof GOOGLE_AUTH_SELECT }>;
+type GoogleAuthUserRow = AuthUserRow;
 
 /** Sortie de login() : le corps de réponse + ce qu'il faut au contrôleur pour
  *  poser le cookie refresh (la valeur BRUTE ne sort jamais autrement, D2). */
@@ -183,10 +202,12 @@ export class AuthService {
   async resendVerification(email: string): Promise<ResendVerificationResponse> {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      select: { id: true, email: true, role: true, locale: true, emailVerifiedAt: true }
+      select: { id: true, email: true, role: true, locale: true, status: true, emailVerifiedAt: true }
     });
 
-    if (user && !user.emailVerifiedAt) {
+    // §2.0 (A10) — même règle que forgot-password : réponse constante, mais un
+    // compte non ACTIVE ne déclenche ni token ni envoi.
+    if (user && user.status === "ACTIVE" && !user.emailVerifiedAt) {
       const rawToken = this.tokens.generate();
       const expiresAt = new Date(Date.now() + AUTH.EMAIL_VERIFICATION_TTL_HOURS * 3_600_000);
 
@@ -210,7 +231,7 @@ export class AuthService {
   async login(input: LoginInput): Promise<LoginResult> {
     const user = await this.prisma.user.findUnique({
       where: { email: input.email },
-      select: { ...AUTH_USER_SELECT, passwordHash: true }
+      select: AUTH_USER_SELECT
     });
 
     // D5 — ORDRE CONTRACTUEL des contrôles :
@@ -225,6 +246,15 @@ export class AuthService {
     }
     // 2) mauvais mot de passe → 401 au corps strictement identique ;
     if (!(await this.passwords.verify(user.passwordHash, input.password))) {
+      throw this.invalidCredentials();
+    }
+    // 2bis) §2.0 (A10) — compte non ACTIVE (suspendu / anonymisé) : MÊME 401
+    //    que des identifiants faux. Placé APRÈS la vérification du mot de
+    //    passe, jamais avant : un refus anticipé économiserait le coût argon2
+    //    et la latence trahirait le statut malgré un corps identique (D5).
+    //    Placé AVANT D1 : un compte anonymisé ne doit pas s'entendre répondre
+    //    « vérifiez votre e-mail », ce serait une impasse.
+    if (user.status !== "ACTIVE") {
       throw this.invalidCredentials();
     }
     // 3) D1 évalué SEULEMENT après mot de passe validé — sinon le 403 devient
@@ -348,6 +378,20 @@ export class AuthService {
     user: GoogleAuthUserRow,
     payload: GoogleIdTokenPayload
   ): Promise<LoginResult> {
+    // §2.0 (A10) — compte non ACTIVE : refusé AVANT toute autre branche, et
+    // avec un code DÉJÀ EXISTANT du chemin Google. `GOOGLE_ACCOUNT_CONFLICT`
+    // est le seau assumé des cas limites de ce chemin (« 409 unique des cas
+    // limites — indistincts volontairement ») et son message finit sur
+    // « contactez-nous », qui est l'action juste ici. Le seul autre refus
+    // réutilisable, GOOGLE_ACCOUNT_NOT_CLIENT, enverrait un CLIENT suspendu
+    // vers l'espace Pro : une impasse.
+    //
+    // Placé avant le test de rôle pour que la règle soit uniforme : un compte
+    // non ACTIVE reçoit la MÊME réponse quel que soit son rôle.
+    if (user.status !== "ACTIVE") {
+      throw this.googleAccountConflict();
+    }
+
     // Branche 2 — PRO/ADMIN : JAMAIS connectables via Google (mot de passe
     // seul). Le front (Lot 9) affiche « connectez-vous via l'espace Pro ».
     // Pas d'oracle créé ici : le détenteur du token Google prouve déjà qu'il
@@ -403,7 +447,13 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { id: userId }, select: AUTH_USER_SELECT });
     // JWT encore valide mais compte disparu (suppression/anonymisation) :
     // l'identité n'existe plus → 401, même code que le guard.
-    if (!user) throw this.unauthenticated();
+    //
+    // §2.0 (A10) — le test `status` REND VRAI ce que ce commentaire promettait
+    // déjà : une anonymisation ne SUPPRIME pas la ligne (commissions et
+    // historique doivent survivre), donc `!user` ne se déclenchait jamais dans
+    // ce cas et /auth/me aurait continué à servir un profil anonymisé jusqu'à
+    // l'expiration de l'access token.
+    if (!user || user.status !== "ACTIVE") throw this.unauthenticated();
     return this.toAuthUserDTO(user);
   }
 
@@ -435,7 +485,12 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { id: row.userId }, select: AUTH_USER_SELECT });
     // Défensif : la FK onDelete: Cascade rend ce cas théorique (user supprimé
     // ⇒ ses lignes refresh_tokens n'existent plus) — course résiduelle près.
-    if (!user) throw this.unauthenticated();
+    //
+    // §2.0 (A10) — `status` : ceinture ET bretelles. L'exécution d'une
+    // suppression révoque déjà TOUS les refresh tokens, mais une SUSPENSION
+    // manuelle en base (DBeaver, D4) n'en révoque aucun : sans ce test, un
+    // compte suspendu se re-délivrerait des access tokens indéfiniment.
+    if (!user || user.status !== "ACTIVE") throw this.unauthenticated();
 
     // D9 — rotation : consommer l'ancien ET créer le neuf atomiquement.
     // Le updateMany conditionné à revokedAt IS NULL est un check-and-set : si
@@ -499,6 +554,11 @@ export class AuthService {
     });
   }
 
+  /**
+   * Ligne BDD → DTO. Construit champ par champ, JAMAIS par spread : c'est ce
+   * qui garantit que `passwordHash` (désormais sélectionné, A10) ne peut pas
+   * sortir. Les deux colonnes sensibles ne produisent que des BOOLÉENS.
+   */
   private toAuthUserDTO(user: AuthUserRow): AuthUserDTO {
     return {
       id: user.id,
@@ -508,8 +568,18 @@ export class AuthService {
       emailVerified: user.emailVerifiedAt !== null,
       firstName: user.firstName,
       lastName: user.lastName,
+      phone: user.phone,
+      // D42 — pilote l'écran mot de passe côté A11 : un compte Google-only
+      // doit se voir proposer de DÉFINIR un mot de passe, pas d'en changer un
+      // qui n'existe pas.
+      hasPassword: user.passwordHash !== null,
+      hasGoogle: user.googleSub !== null,
       proProfile: user.proProfile
-        ? { businessName: user.proProfile.businessName, phone: user.proProfile.phone }
+        ? {
+            businessName: user.proProfile.businessName,
+            phone: user.proProfile.phone,
+            phone2: user.proProfile.phone2
+          }
         : null
     };
   }
@@ -526,14 +596,19 @@ export class AuthService {
   async forgotPassword(email: string): Promise<ForgotPasswordResponse> {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      select: { id: true, email: true, role: true, locale: true }
+      select: { id: true, email: true, role: true, locale: true, status: true }
     });
 
     // Volontairement AUCUNE condition sur emailVerifiedAt : reset et
     // vérification sont deux flux distincts — un PRO non vérifié qui a perdu
     // son mot de passe doit pouvoir le récupérer (il restera bloqué au login
     // par D1 tant qu'il n'a pas vérifié, mais c'est l'affaire de l'AUTRE flux).
-    if (user) {
+    //
+    // §2.0 (A10) — compte non ACTIVE : la réponse reste STRICTEMENT la même
+    // (202 constant), mais aucun token n'est émis et aucun e-mail ne part.
+    // Sans ce test, une suppression validée n'empêcherait pas un lien de reset
+    // d'arriver dans une boîte encore vivante entre-temps.
+    if (user && user.status === "ACTIVE") {
       const rawToken = this.tokens.generate();
       const expiresAt = new Date(Date.now() + AUTH.PASSWORD_RESET_TTL_MINUTES * 60_000);
 
@@ -557,12 +632,17 @@ export class AuthService {
     const now = new Date();
     const token = await this.prisma.passwordResetToken.findFirst({
       where: { tokenHash: this.tokens.hash(rawToken), usedAt: null, expiresAt: { gt: now } },
-      select: { id: true, userId: true }
+      select: { id: true, userId: true, user: { select: { status: true } } }
     });
 
     // D16 — un seul code pour inconnu/expiré/déjà utilisé : pas d'oracle
     // (même patron que verify-email).
-    if (!token) {
+    //
+    // §2.0 (A10) — un compte non ACTIVE tombe dans CE MÊME code, et pas dans
+    // celui du login : ce chemin raisonne en TOKEN, pas en identifiants. Un
+    // lien émis avant la suspension cesse ainsi d'être exploitable, sans
+    // introduire un vocabulaire d'erreur étranger au flux.
+    if (!token || token.user.status !== "ACTIVE") {
       throw new BadRequestException({
         code: AuthErrorCode.TOKEN_INVALID_OR_EXPIRED,
         message: "auth.errors.tokenInvalidOrExpired"

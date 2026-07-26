@@ -62,6 +62,16 @@ enum UserStatus {
   ANONYMIZED // Phase 14 : effacement loi 18-07 = anonymisation, pas suppression
 }
 
+/// Lot A10 / D37 — une suppression de compte est une DEMANDE, validée
+/// manuellement par l'admin Zwadj. PENDING est le seul état réversible
+/// (l'utilisateur peut annuler) — c'est ce qui rend D37 tenable.
+enum AccountDeletionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
 enum Locale {
   fr
   ar
@@ -221,6 +231,11 @@ model User {
   cashbackVerifications   CashbackClaim[]          @relation("CashbackVerifier")
   moderatedReviews        ReviewModeration[]       @relation("ReviewModerator")
   availabilityBlocks      AvailabilityBlock[]      @relation("BlockCreator")
+  emailChangeTokens       EmailChangeToken[]
+  deletionRequests        AccountDeletionRequest[] @relation("DeletionRequester")
+  /// L'admin qui tranche est un User : Prisma exige les DEUX côtés de la
+  /// relation, même quand un seul sens est interrogé.
+  deletionDecisions       AccountDeletionRequest[] @relation("DeletionDecider")
 
   @@map("users")
 }
@@ -275,6 +290,72 @@ model PasswordResetToken {
   @@map("password_reset_tokens")
 }
 
+/// Lot A10 — changement d'e-mail : l'ancienne adresse RESTE l'identifiant tant
+/// que la nouvelle n'a pas été prouvée. Le lien part À LA NOUVELLE adresse ;
+/// une faute de frappe ne peut donc pas verrouiller quelqu'un dehors.
+/// Même mécanique que les deux tables de tokens ci-dessus (opaque 256 bits,
+/// SHA-256 seul en base, usage unique, TTL) — `newEmail` est le seul ajout.
+model EmailChangeToken {
+  id        String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  newEmail  String    @map("new_email")
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(6)
+  usedAt    DateTime? @map("used_at") @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("email_change_tokens")
+}
+
+/// D37 (A10) — un compte ne se supprime pas soi-même : il DEMANDE, et l'admin
+/// Zwadj tranche. Un compte pro porte des commissions dues et un historique de
+/// réservations qui doivent survivre : l'exécution est une anonymisation,
+/// JAMAIS un DELETE SQL (même doctrine que `Venue.deletedAt`).
+/// Une seule demande PENDING par compte, garantie EN BASE par un index unique
+/// PARTIEL posé en SQL manuel dans la migration (patron commission_rate_bps).
+model AccountDeletionRequest {
+  id     String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId String                @map("user_id") @db.Uuid
+  status AccountDeletionStatus @default(PENDING)
+  reason String?
+  /// SHA-256 de l'e-mail RÉELLEMENT détruit, posé À L'EXÉCUTION. Aucune PII en
+  /// clair, mais une réclamation ultérieure depuis la même adresse reste
+  /// vérifiable — sans lui, la promesse « vous pourrez récupérer vos salles »
+  /// n'est pas outillée.
+  emailHash    String?   @map("email_hash")
+  requestedAt  DateTime  @default(now()) @map("requested_at") @db.Timestamptz(6)
+  decidedAt    DateTime? @map("decided_at") @db.Timestamptz(6)
+  decidedById  String?   @map("decided_by_id") @db.Uuid
+  decisionNote String?   @map("decision_note")
+
+  user      User                           @relation("DeletionRequester", fields: [userId], references: [id], onDelete: Cascade)
+  decidedBy User?                          @relation("DeletionDecider", fields: [decidedById], references: [id], onDelete: SetNull)
+  archivedVenues AccountDeletionArchivedVenue[]
+
+  @@index([userId])
+  @@index([status, requestedAt])
+  @@map("account_deletion_requests")
+}
+
+/// D41 — table FILLE, pas un tableau scalaire Postgres : le schéma n'en utilise
+/// aucun, on ne crée pas ce précédent pour une trace, et la FK vers `Venue`
+/// garantit qu'elle ne peut pas pendre dans le vide.
+model AccountDeletionArchivedVenue {
+  requestId  String   @map("request_id") @db.Uuid
+  venueId    String   @map("venue_id") @db.Uuid
+  archivedAt DateTime @default(now()) @map("archived_at") @db.Timestamptz(6)
+
+  request AccountDeletionRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  venue   Venue                  @relation(fields: [venueId], references: [id], onDelete: Cascade)
+
+  @@id([requestId, venueId])
+  @@index([venueId])
+  @@map("account_deletion_archived_venues")
+}
+
 // backlog 3.2 — ProProfile (lie l'utilisateur à son activité ; KYC = P1, les
 // champs d'immatriculation restent optionnels au MVP)
 model ProProfile {
@@ -282,6 +363,9 @@ model ProProfile {
   userId             String   @unique @map("user_id") @db.Uuid
   businessName       String   @map("business_name")
   phone              String // contact pro, normalisé +213
+  /// D38 (A10) — seconde ligne, NULLABLE : beaucoup de salles opèrent avec
+  /// deux numéros, mais un seul reste obligatoire.
+  phone2             String?  @map("phone2")
   registrationNumber String?  @map("registration_number") // RC/NIF — KYC P1
   createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -396,6 +480,10 @@ model Venue {
   visitBookings      VisitBooking[]
   reviews            Review[]
   favorites          Favorite[]
+  /// D41 (A10) — trace des salles archivées PAR une suppression de compte.
+  /// Sans elle, une restauration ne saurait pas distinguer ces salles de
+  /// celles que le pro avait lui-même supprimées des mois plus tôt.
+  deletionArchives   AccountDeletionArchivedVenue[]
 
   @@index([cityId])
   @@index([publicationStatus, cityId]) // recherche publique : published + ville

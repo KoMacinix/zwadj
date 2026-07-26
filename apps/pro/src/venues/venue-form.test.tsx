@@ -37,7 +37,11 @@ const PRO_USER = {
   emailVerified: true,
   firstName: null,
   lastName: null,
-  proProfile: { businessName: "Salle El Ryad", phone: "+213551234567" }
+  // A10 : les 4 champs D42 du contrat AuthUserDTO.
+  phone: null,
+  hasPassword: true,
+  hasGoogle: false,
+  proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null }
 };
 
 const CITY_ID = "6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f";

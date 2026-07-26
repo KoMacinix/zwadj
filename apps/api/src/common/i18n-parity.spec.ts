@@ -47,8 +47,8 @@ describe("Parité i18n FR/AR (invariant produit)", () => {
     expect(empty).toEqual([]);
   });
 
-  it("les namespaces attendus existent des deux côtés (dont media.*, Lot A4)", () => {
-    for (const ns of ["auth.", "venue.", "media."]) {
+  it("les namespaces attendus existent des deux côtés (dont account.*, Lot A10)", () => {
+    for (const ns of ["auth.", "venue.", "media.", "common.", "account."]) {
       expect([...fr.keys()].some((k) => k.startsWith(ns))).toBe(true);
       expect([...ar.keys()].some((k) => k.startsWith(ns))).toBe(true);
     }

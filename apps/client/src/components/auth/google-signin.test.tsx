@@ -53,6 +53,10 @@ const USER = {
   emailVerified: true,
   firstName: "Aya",
   lastName: "Boudiaf",
+  // A10 : les 4 champs D42. hasGoogle=true — ce compte VIENT du flux Google.
+  phone: null,
+  hasPassword: false,
+  hasGoogle: true,
   proProfile: null
 };
 

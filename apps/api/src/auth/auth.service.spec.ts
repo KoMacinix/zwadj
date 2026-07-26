@@ -25,7 +25,12 @@ type UserRow = {
   emailVerifiedAt: Date | null;
   firstName: string | null;
   lastName: string | null;
-  proProfile: { businessName: string; phone: string } | null;
+  // A10 : lus par AUTH_USER_SELECT — `status` garde les 5 chemins d'auth
+  // (§2.0), `phone`/`googleSub` alimentent le DTO (D42).
+  status: "ACTIVE" | "SUSPENDED" | "ANONYMIZED";
+  phone: string | null;
+  googleSub: string | null;
+  proProfile: { businessName: string; phone: string; phone2: string | null } | null;
   // Lot 8 : null = compte Google-only (créé via /auth/google, jamais via register).
   passwordHash: string | null;
 };
@@ -39,6 +44,9 @@ function makeUser(overrides: Partial<UserRow>): UserRow {
     emailVerifiedAt: null,
     firstName: "Aya",
     lastName: null,
+    status: "ACTIVE",
+    phone: null,
+    googleSub: null,
     proProfile: null,
     passwordHash: "$argon2id$fake",
     ...overrides
@@ -150,7 +158,7 @@ describe("AuthService.login — matrice D1 × D5", () => {
 
   it("PRO non vérifié : 403 EMAIL_NOT_VERIFIED — évalué APRÈS le mot de passe (D5), aucun token émis", async () => {
     const { service, passwords, prisma } = makeService(
-      makeUser({ role: "PRO", proProfile: { businessName: "Salle El Ryad", phone: "+213551234567" } }),
+      makeUser({ role: "PRO", proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null } }),
       true
     );
     const attempt = service.login(CREDENTIALS);
@@ -185,12 +193,12 @@ describe("AuthService.login — matrice D1 × D5", () => {
     const user = makeUser({
       role: "PRO",
       emailVerifiedAt: new Date(),
-      proProfile: { businessName: "Salle El Ryad", phone: "+213551234567" }
+      proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null }
     });
     const { service } = makeService(user, true);
     const { response } = await service.login(CREDENTIALS);
 
-    expect(response.user.proProfile).toEqual({ businessName: "Salle El Ryad", phone: "+213551234567" });
+    expect(response.user.proProfile).toEqual({ businessName: "Salle El Ryad", phone: "+213551234567", phone2: null });
 
     const claims = JSON.parse(Buffer.from(response.accessToken.split(".")[1]!, "base64url").toString());
     expect(claims.sub).toBe(user.id);
@@ -447,7 +455,8 @@ describe("AuthService.resetPassword — D15 × D16 × D17", () => {
     const { service, prisma, passwords } = makeService(makeUser({}), false);
     prisma.passwordResetToken.findFirst.mockResolvedValue({
       id: "00000000-0000-7000-8000-0000000000bb",
-      userId: "00000000-0000-7000-8000-000000000001"
+      userId: "00000000-0000-7000-8000-000000000001",
+      user: { status: "ACTIVE" }
     });
 
     const res = await service.resetPassword(RAW_RESET, "NouveauMdp1");
@@ -472,7 +481,7 @@ describe("AuthService.resetPassword — D15 × D16 × D17", () => {
   it("le hash argon2 est calculé AVANT la transaction (pas de tx ouverte pendant le CPU)", async () => {
     const order: string[] = [];
     const { service, prisma, passwords } = makeService(makeUser({}), false);
-    prisma.passwordResetToken.findFirst.mockResolvedValue({ id: "t", userId: "u" });
+    prisma.passwordResetToken.findFirst.mockResolvedValue({ id: "t", userId: "u", user: { status: "ACTIVE" } });
     passwords.hash.mockImplementation(async () => {
       order.push("hash");
       return "$argon2id$x";
