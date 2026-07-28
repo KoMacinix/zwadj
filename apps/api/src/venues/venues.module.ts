@@ -12,13 +12,31 @@ import { VenuesAdminController } from "./venues-admin.controller";
 import { VenuesAdminService } from "./venues-admin.service";
 import { VenuesPublicController } from "./venues-public.controller";
 import { VenuesPublicService } from "./venues-public.service";
+import { PricingRulesController } from "./pricing-rules.controller";
+import { PricingRulesService } from "./pricing-rules.service";
+import { SlotTemplatesController } from "./slot-templates.controller";
+import { SlotTemplatesService } from "./slot-templates.service";
 import { VenuesController } from "./venues.controller";
 import { VenuesService } from "./venues.service";
 
 @Module({
   imports: [MediaModule],
-  controllers: [VenuesController, VenueMediaController, VenuesAdminController, VenuesPublicController],
-  providers: [VenuesService, VenueMediaService, VenuesAdminService, VenuesPublicService],
+  controllers: [
+    VenuesController,
+    VenueMediaController,
+    SlotTemplatesController,
+    PricingRulesController,
+    VenuesAdminController,
+    VenuesPublicController
+  ],
+  providers: [
+    VenuesService,
+    VenueMediaService,
+    SlotTemplatesService,
+    PricingRulesService,
+    VenuesAdminService,
+    VenuesPublicService
+  ],
   exports: [VenuesService]
 })
 export class VenuesModule {}

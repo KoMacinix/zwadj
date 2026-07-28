@@ -475,6 +475,14 @@ button {
 }
 
 /* ── Boutons ─────────────────────────────────────────────────────────────── */
+/* Lot UI-P1 — `.btn` NU était invisible : le reset global plus haut retire
+   `background`, `border` et `padding` de tout <button>, et `.btn` ne rendait
+   que la police et l'espacement. « Enregistrer la visite » ou « Enregistrer le
+   texte alternatif » s'affichaient donc comme du texte gras, pas comme des
+   boutons. `.btn` porte désormais le NIVEAU SECONDAIRE (surface + filet) et
+   les variantes le recouvrent entièrement (fond ET filet).
+   Sans risque pour l'app client : elle n'utilise jamais `.btn` seule — toutes
+   ses occurrences portent déjà `-accent`, `-ghost` ou `-danger` (vérifié). */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -487,8 +495,13 @@ button {
   padding-block: 13px;
   padding-inline: 22px;
   text-decoration: none;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
   transition:
     background 0.15s ease,
+    border-color 0.15s ease,
     opacity 0.15s ease,
     transform 0.15s ease,
     box-shadow 0.15s ease;
@@ -502,13 +515,21 @@ button {
   box-shadow: 0 8px 20px color-mix(in srgb, var(--ink) 12%, transparent);
 }
 
+/* Le filet ne se renforce QUE sur le niveau secondaire : les variantes pleines
+   posent leur propre `border-color`, cette règle ne doit pas la leur reprendre. */
+.btn:hover:not([disabled]):not(.btn-accent):not(.btn-danger) {
+  border-color: var(--ink-2);
+}
+
 .btn-accent {
   background: var(--accent);
+  border-color: var(--accent);
   color: var(--on-accent);
 }
 
 .btn-accent:hover:not([disabled]) {
   background: var(--accent-strong);
+  border-color: var(--accent-strong);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 26%, transparent);
 }
 
@@ -519,15 +540,19 @@ button {
    supprimer n'est pas l'action principale d'un écran). */
 .btn-danger {
   background: var(--danger);
+  border-color: var(--danger);
   color: var(--on-accent);
 }
 
 .btn-danger:hover:not([disabled]) {
   background: color-mix(in srgb, var(--danger) 84%, #000);
+  border-color: color-mix(in srgb, var(--danger) 84%, #000);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--danger) 26%, transparent);
 }
 
+/* Secondaire COMPACT, sans surface : le niveau le plus discret. */
 .btn-ghost {
+  background: transparent;
   border: 1px solid var(--line);
   color: var(--ink);
   padding-block: 8px;
@@ -550,11 +575,18 @@ button {
   text-underline-offset: 3px;
 }
 
+/* Lot UI-P1 — le retour porte désormais une FLÈCHE. Elle est dessinée vers
+   l'inline-start (gauche en FR) et RETOURNÉE en arabe : en RTL, « revenir »
+   pointe à droite. Un `scaleX(-1)` piloté par `dir` est la seule façon de ne
+   pas avoir à choisir un caractère par langue — et `dir` est bien posé sur
+   <html> par les deux apps. Le poids 500 sort le lien du corps de texte : il
+   se lisait comme une phrase, pas comme une commande. */
 .backlink {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 12.5px;
+  font-weight: 500;
   color: var(--ink-2);
   text-decoration: none;
   margin-block-end: 18px;
@@ -562,6 +594,16 @@ button {
 
 .backlink:hover {
   color: var(--ink);
+}
+
+.backlink svg,
+.btn svg {
+  flex-shrink: 0;
+}
+
+[dir="rtl"] .backlink svg,
+[dir="rtl"] .btn svg[data-mirror-rtl] {
+  transform: scaleX(-1);
 }
 
 /* ── Alertes & états ─────────────────────────────────────────────────────── */

@@ -56,3 +56,9 @@ export type VenueAvailabilityStatus = (typeof VenueAvailabilityStatus)[keyof typ
 
 export const VisitStatus = { CONFIRMED: "CONFIRMED", CANCELLED: "CANCELLED" } as const;
 export type VisitStatus = (typeof VisitStatus)[keyof typeof VisitStatus];
+
+/** D46 (B2) — types de règle de prix, du plus SPÉCIFIQUE au moins spécifique.
+ *  Cet ordre EST la règle de résolution : une seule règle gagne, jamais un
+ *  cumul (des prix absolus ne se composent pas). */
+export const PRICING_RULE_TYPES = ["HOLIDAY", "WEEKDAY", "SEASON"] as const;
+export type PricingRuleType = (typeof PRICING_RULE_TYPES)[number];

@@ -51,6 +51,16 @@ async function proWithVenue(): Promise<{ proToken: string; venue: VenueProDTO }>
       basePriceCents: 18_000_000
     });
   if (res.status !== 201) throw new Error(`seed pro venue: ${res.status} ${JSON.stringify(res.body)}`);
+
+  // D46 (B1) — toute salle destinée à être PUBLIÉE doit avoir au moins un
+  // créneau actif : la garde de publication le refuse sinon. Une soirée
+  // 20h → 02h (1200 → 1560) FRANCHIT MINUIT — cas normal d'un mariage
+  // algérien, autorisé par slot_templates_minutes_valid.
+  const seededSlot = await api()
+    .post(`/api/v1/venues/${(res.body as VenueProDTO).id}/slot-templates`)
+    .set(authH(proToken))
+    .send({ nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560, basePriceCents: 18_000_000 });
+  if (seededSlot.status !== 201) throw new Error(`seed slot: ${seededSlot.status} ${JSON.stringify(seededSlot.body)}`);
   return { proToken, venue: res.body as VenueProDTO };
 }
 

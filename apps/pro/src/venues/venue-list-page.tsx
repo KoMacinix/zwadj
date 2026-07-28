@@ -9,6 +9,7 @@ import { formatDZD } from "@zwadj/i18n";
 import type { VenueAvailabilityStatus, VenueProDTO } from "@zwadj/types";
 import { ProHeader } from "../shell/pro-header";
 import { useApiErrorMessage } from "../auth/auth-ui";
+import { mediaSrc } from "../lib/media-url";
 import { useReferentialsData, useVenues } from "./venue-client-context";
 import { PublicationBadge, StatusSelect } from "./venue-form";
 
@@ -168,7 +169,7 @@ export function VenueListPage() {
                       gestion de média ici : ni upload, ni ordre, ni alt — A6a. */}
                   {cover ? (
                     <img
-                      src={cover}
+                      src={mediaSrc(cover)}
                       alt=""
                       style={{ inlineSize: "100%", blockSize: 150, objectFit: "cover", display: "block" }}
                     />

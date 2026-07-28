@@ -6,6 +6,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
+import { ArrowBackIcon } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import { ProHeader } from "../shell/pro-header";
 import { FormError, useApiErrorMessage } from "../auth/auth-ui";
@@ -57,6 +58,7 @@ export function CreateVenuePage() {
       <ProHeader />
       <main style={{ padding: 20, maxInlineSize: 720, marginInline: "auto" }}>
         <Link to="/" className="backlink">
+          <ArrowBackIcon />
           {t("venue.ui.form.back")}
         </Link>
 
@@ -83,13 +85,23 @@ export function CreateVenuePage() {
             />
 
             {/* §3.3 — pas de champ équipements à la création : on le DIT.
-                D45 : idem pour la visite virtuelle, son endpoint exige un id. */}
+                D45 : idem pour la visite virtuelle, son endpoint exige un id.
+                A6a-P : idem pour les photos, leur endpoint aussi. */}
             <p className="field-hint">{t("venue.ui.form.amenitiesAfterCreate")}</p>
             <p className="field-hint">{t("venue.ui.form.virtualTourAfterCreate")}</p>
+            <p className="field-hint">{t("venue.ui.photos.afterCreate")}</p>
 
-            <button type="submit" className="btn btn-accent" disabled={submitting || referentials.status !== "ready"}>
-              {submitting ? t("venue.ui.form.creating") : t("venue.ui.form.create")}
-            </button>
+            {/* Lot UI-P1 — la sortie de page vit à côté de l'action
+                principale : ici le formulaire EST la page. */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+              <button type="submit" className="btn btn-accent" disabled={submitting || referentials.status !== "ready"}>
+                {submitting ? t("venue.ui.form.creating") : t("venue.ui.form.create")}
+              </button>
+              <Link to="/" className="btn">
+                <ArrowBackIcon />
+                {t("venue.ui.form.back")}
+              </Link>
+            </div>
           </form>
         </div>
       </main>

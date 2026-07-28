@@ -32,6 +32,7 @@ function adminRow(overrides: Record<string, unknown> = {}) {
     status: "ACTIVE",
     amenities: [],
     photos: [],
+    slotTemplates: [],
     matterportModelId: null,
     createdAt: new Date("2026-07-20T10:00:00.000Z"),
     updatedAt: new Date("2026-07-20T10:00:00.000Z"),
@@ -49,7 +50,12 @@ const fakeStorage = {
 } as unknown as import("../media/media.types").MediaStorage;
 
 function buildService() {
-  const prisma = { venue: { findFirst: vi.fn(), update: vi.fn() } };
+  // D46 (B1) — la publication compte désormais les créneaux ACTIFS : sans ce
+  // double, la garde ferait échouer tous les scénarios de publication.
+  const prisma = {
+    venue: { findFirst: vi.fn(), update: vi.fn() },
+    slotTemplate: { count: vi.fn().mockResolvedValue(1) }
+  };
   return { service: new VenuesAdminService(prisma as unknown as PrismaService, fakeStorage), prisma };
 }
 

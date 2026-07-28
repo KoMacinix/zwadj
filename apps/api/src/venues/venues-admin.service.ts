@@ -4,7 +4,7 @@
 // 404 indistincts (inexistante / supprimée / id malformé), doctrine A2.
 // VENUE_ADMIN_SELECT = allow-list pro + les deux taux : la SEULE surface de
 // l'API où commission_rate_bps et cashback_rate_bps quittent la base.
-import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import {
   VenueErrorCode,
   VenuePublicationStatus,
@@ -46,6 +46,20 @@ export class VenuesAdminService {
   async publish(venueId: string): Promise<VenueAdminDTO> {
     const current = await this.livingVenue(venueId);
     if (current.publicationStatus === VenuePublicationStatus.PUBLISHED) return this.toDTO(current);
+
+    // D46 (B1) — garde de publication : sans créneau actif, la salle serait
+    // publiée mais absente du calendrier et non réservable. Le refus est ici,
+    // au dernier point de contrôle, plutôt qu'en amont : le pro construit son
+    // brouillon dans l'ordre qu'il veut.
+    const activeSlots = await this.prisma.slotTemplate.count({
+      where: { venueId: current.id, isActive: true }
+    });
+    if (activeSlots === 0) {
+      throw new ConflictException({
+        code: VenueErrorCode.SLOT_TEMPLATE_REQUIRED,
+        message: "venue.errors.slotRequired"
+      });
+    }
 
     const row = await this.prisma.venue.update({
       where: { id: current.id },

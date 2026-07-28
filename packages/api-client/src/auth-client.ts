@@ -75,7 +75,12 @@ export async function toApiError(res: Response): Promise<ApiError> {
 
 /** Init d'une requête authentifiée générique (Lot A5). Volontairement pauvre :
  *  ni `bearer` (toujours vrai ici) ni headers libres — la primitive reste une
- *  primitive, pas un second client HTTP. */
+ *  primitive, pas un second client HTTP.
+ *
+ *  Lot A6a-P : `body` reste `unknown` — AUCUN élargissement de type n'est
+ *  nécessaire pour le multipart, `FormData` y entre déjà. La seule chose qui
+ *  change est le RUNTIME de `raw()` : un `FormData` passe tel quel, sans
+ *  `JSON.stringify` ni `Content-Type` (le navigateur pose la boundary). */
 export interface AuthedRequestInit {
   method?: string;
   body?: unknown;
@@ -119,16 +124,24 @@ export function createAuthClient(
   let refreshInFlight: Promise<string | null> | null = null;
 
   async function raw<T>(path: string, init: { method?: string; body?: unknown; bearer?: boolean } = {}): Promise<T> {
+    // A6a-P — PASSE-PLAT multipart : un FormData part tel quel et SANS
+    // Content-Type. Le poser à la main casse le multipart (la boundary est
+    // générée par le navigateur et doit figurer dans l'en-tête). `typeof` en
+    // garde : ce fichier tourne aussi côté Node (SSR du client Next).
+    const isFormData = typeof FormData !== "undefined" && init.body instanceof FormData;
     let res: Response;
     try {
       res = await fetchImpl(`${baseUrl}/api/v1${path}`, {
         method: init.method ?? "GET",
         credentials: "include",
         headers: {
-          ...(init.body !== undefined ? { "Content-Type": "application/json" } : {}),
+          ...(init.body !== undefined && !isFormData ? { "Content-Type": "application/json" } : {}),
           ...(init.bearer && accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
         },
-        body: init.body !== undefined ? JSON.stringify(init.body) : undefined
+        // Le rejeu après 401 réutilise CETTE MÊME instance : un FormData n'est
+        // pas consommé par fetch (le corps est sérialisé à chaque envoi), il
+        // reste donc ré-émissible — contrairement à un ReadableStream.
+        body: init.body === undefined ? undefined : isFormData ? (init.body as FormData) : JSON.stringify(init.body)
       });
     } catch {
       throw new NetworkError();

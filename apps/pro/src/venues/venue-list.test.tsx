@@ -30,6 +30,7 @@ const PRO_USER = {
 };
 
 const VENUE: VenueProDTO = {
+  slotTemplates: [],
   id: "v1",
   slug: "salle-el-ryad",
   cityId: "city-bab-ezzouar",
@@ -93,6 +94,11 @@ function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
     ),
     softDelete: vi.fn().mockResolvedValue(undefined),
     updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null }),
+    // A6a-P — les 4 méthodes photos du contrat VenueProClient.
+    addPhoto: vi.fn(),
+    reorderPhotos: vi.fn(),
+    updatePhotoAlt: vi.fn(),
+    deletePhoto: vi.fn().mockResolvedValue(undefined),
     ...overrides
   };
 }
