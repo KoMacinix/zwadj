@@ -335,7 +335,17 @@
       "statusInvalid": "Le statut de visibilité est invalide.",
       "taglineTooLong": "L'accroche est trop longue (180 caractères maximum).",
       "textEmpty": "Ce champ ne peut pas être vide.",
-      "unknownKey": "Un champ non autorisé a été fourni."
+      "unknownKey": "Un champ non autorisé a été fourni.",
+      "slotNameTooLong": "Le nom du créneau est trop long (60 caractères maximum).",
+      "slotOutOfDay": "L'horaire doit être compris dans la journée.",
+      "slotEndBeforeStart": "La fin doit être postérieure au début.",
+      "pricePositive": "Le prix doit être supérieur à zéro.",
+      "ruleLabelTooLong": "Le libellé est trop long (60 caractères maximum).",
+      "monthRange": "Le mois doit être compris entre 1 et 12.",
+      "dayRange": "Le jour doit être compris entre 0 (dimanche) et 6 (samedi).",
+      "priorityRange": "La priorité doit être comprise entre 0 et 100.",
+      "seasonBoundsRequired": "Une règle de saison doit avoir un mois de début et un mois de fin.",
+      "weekdaysRequired": "Une règle de jour doit cocher au moins un jour."
     },
     "errors": {
       "amenityNotFound": "Un des équipements sélectionnés est introuvable.",
@@ -344,7 +354,13 @@
       "matterportAlreadyLinked": "Cette visite virtuelle est déjà rattachée à une autre salle.",
       "notFound": "Cette salle est introuvable.",
       "photoNotFound": "Cette photo est introuvable.",
-      "photoOrderMismatch": "L'ordre envoyé ne correspond plus aux photos de la salle — rafraîchissez la page puis réessayez."
+      "photoOrderMismatch": "L'ordre envoyé ne correspond plus aux photos de la salle — rafraîchissez la page puis réessayez.",
+      "slotNotFound": "Ce créneau est introuvable.",
+      "slotOverlap": "Ce créneau en chevauche un autre. Deux créneaux ne peuvent pas se recouvrir.",
+      "slotSingleMode": "Cette salle n'accepte qu'une seule fête par jour : elle ne peut avoir qu'un créneau actif.",
+      "slotInUse": "Ce créneau est utilisé par une réservation ou un devis : désactivez-le plutôt que de le supprimer.",
+      "slotRequired": "Une salle publiée doit garder au moins un créneau actif.",
+      "pricingRuleNotFound": "Cette règle de prix est introuvable."
     },
     "ui": {
       "list": {
@@ -442,7 +458,108 @@
         "confirm": "Supprimer",
         "cancel": "Annuler",
         "error": "La suppression a échoué. Réessayez."
+      },
+      "photos": {
+        "section": "Photos",
+        "hint": "La première photo est la couverture publique. Utilisez les flèches pour changer l'ordre.",
+        "afterCreate": "Vous pourrez ajouter des photos après la création de la salle.",
+        "empty": "Aucune photo pour le moment.",
+        "add": "Ajouter des photos",
+        "inputLabel": "Fichiers image à envoyer",
+        "uploading": "Envoi en cours…",
+        "remainingSlots": "Places restantes : {count}",
+        "limitReached": "Plafond de photos atteint pour cette salle.",
+        "tooMany": "Trop de fichiers sélectionnés : aucun n'a été envoyé.",
+        "uploadFailed": "Fichiers non envoyés :",
+        "cover": "Couverture",
+        "moveEarlier": "Avancer dans l'ordre",
+        "moveLater": "Reculer dans l'ordre",
+        "orderError": "L'ordre n'a pas pu être enregistré — rafraîchissez la page puis réessayez.",
+        "refreshError": "La galerie n'a pas pu être rechargée — rafraîchissez la page.",
+        "altToggle": "Texte alternatif",
+        "altFr": "Texte alternatif (français)",
+        "altAr": "Texte alternatif (arabe)",
+        "altHint": "Décrit l'image pour les lecteurs d'écran et le référencement. 300 caractères maximum ; laissez vide pour effacer.",
+        "altSave": "Enregistrer le texte alternatif",
+        "altSaving": "Enregistrement…",
+        "altSaved": "Texte alternatif enregistré.",
+        "delete": "Supprimer la photo",
+        "deleteTitle": "Supprimer cette photo ?",
+        "deleteBody": "Cette photo sera définitivement retirée de la galerie. Cette action est irréversible.",
+        "deleteConfirm": "Supprimer",
+        "deleteCancel": "Annuler"
       }
     }
+  },
+  "search": {
+    "title": "Salles de mariage",
+    "intro": "Comparez les salles disponibles et envoyez votre demande de réservation.",
+    "filters": {
+      "legend": "Affiner la recherche",
+      "city": "Commune",
+      "cityAll": "Toutes les communes",
+      "guests": "Nombre d'invités",
+      "guestsPlaceholder": "ex. 300",
+      "minPrice": "Prix minimum (DA)",
+      "maxPrice": "Prix maximum (DA)",
+      "amenities": "Équipements",
+      "submit": "Afficher les résultats",
+      "reset": "Réinitialiser les filtres"
+    },
+    "sort": {
+      "label": "Trier par",
+      "recent": "Plus récentes",
+      "price_asc": "Prix croissant",
+      "price_desc": "Prix décroissant"
+    },
+    "results": {
+      "count": "{count} salles",
+      "countOne": "1 salle",
+      "emptyTitle": "Aucune salle ne correspond à ces critères",
+      "emptyBody": "Élargissez la recherche : moins d'équipements, une fourchette de prix plus large, ou toutes les communes.",
+      "errorTitle": "La recherche est momentanément indisponible",
+      "errorBody": "Réessayez dans un instant."
+    },
+    "card": {
+      "capacity": "Jusqu'à {max} invités",
+      "from": "À partir de",
+      "noPhoto": "Photo à venir"
+    },
+    "map": {
+      "title": "Carte",
+      "soon": "Carte à venir"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {page}",
+      "current": "Page {page}, page courante"
+    }
+  },
+  "venueDetail": {
+    "backToSearch": "Retour aux salles",
+    "unavailableTitle": "Salle temporairement indisponible",
+    "unavailableBody": "Cette salle n'accepte pas de nouvelle demande pour le moment. Vous pouvez la consulter et revenir plus tard.",
+    "capacity": "Jusqu'à {max} invités",
+    "priceFrom": "À partir de",
+    "priceNote": "Prix indicatif de base. Le prix définitif dépend de la date et des prestations choisies.",
+    "description": "Description",
+    "amenities": "Équipements",
+    "amenitiesNone": "Aucun équipement renseigné pour le moment.",
+    "location": "Emplacement",
+    "photos": "Photos",
+    "photosNone": "Cette salle n'a pas encore publié de photos.",
+    "photoOpen": "Ouvrir la photo en grand",
+    "tour": "Visite virtuelle",
+    "tourLoad": "Lancer la visite virtuelle",
+    "tourNotice": "La visite est hébergée par Matterport et ne se charge qu'à votre demande : elle consomme des données.",
+    "tourFrame": "Visite virtuelle de la salle",
+    "tourOpen": "Ouvrir dans un nouvel onglet",
+    "bookingCta": "Demander une réservation",
+    "visitCta": "Réserver une visite",
+    "ctaSoon": "Les demandes de réservation et de visite ouvriront prochainement.",
+    "bookingModeSingle": "Un seul créneau par jour",
+    "bookingModeMulti": "Plusieurs créneaux par jour"
   }
 }

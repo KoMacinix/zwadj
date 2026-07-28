@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useSearchParams } from "react-router";
 import { z } from "zod";
+import { ArrowBackIcon } from "@zwadj/ui";
 import { forgotPasswordSchema, resetPasswordSchema } from "@zwadj/types";
 import { ApiError } from "../lib/auth-client";
 import { issuesToFieldErrors, validate, type FieldErrors } from "@zwadj/api-client";
@@ -43,6 +44,7 @@ export function ForgotPage() {
   return (
     <ProAuthShell title={t("auth.ui.shell.forgotTitle")} subtitle={t("auth.ui.shell.forgotSubtitle")}>
       <Link to="/auth/connexion" className="backlink">
+        <ArrowBackIcon />
         ← {t("auth.ui.forgot.back")}
       </Link>
       {sent ? (
@@ -158,6 +160,7 @@ export function ResetPage() {
   return (
     <ProAuthShell title={t("auth.ui.shell.resetTitle")} subtitle={t("auth.ui.shell.resetSubtitle")}>
       <Link to="/auth/connexion" className="backlink">
+        <ArrowBackIcon />
         ← {t("auth.ui.forgot.back")}
       </Link>
       <form className="form" onSubmit={(e) => void submit(e)} noValidate>

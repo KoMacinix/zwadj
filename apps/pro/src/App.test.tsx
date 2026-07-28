@@ -43,6 +43,11 @@ function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
     update: vi.fn(),
     softDelete: vi.fn().mockResolvedValue(undefined),
     updateVirtualTour: vi.fn(),
+    // A6a-P — les 4 méthodes photos du contrat VenueProClient.
+    addPhoto: vi.fn(),
+    reorderPhotos: vi.fn(),
+    updatePhotoAlt: vi.fn(),
+    deletePhoto: vi.fn().mockResolvedValue(undefined),
     ...overrides
   };
 }

@@ -19,6 +19,9 @@
 import type {
   AmenityDTO,
   VenueCreateInput,
+  VenuePhotoAltUpdateInput,
+  VenuePhotoDTO,
+  VenuePhotoOrderInput,
   VenueProDTO,
   VenueUpdateInput,
   VenueVirtualTourDTO,
@@ -50,6 +53,21 @@ export interface VenueProClient {
    *  général : la saisie est brute (ID ou URL) et le serveur la normalise, donc
    *  le corps ne ressemble pas au champ stocké. Chaîne vide = désactivation. */
   updateVirtualTour(id: string, input: VenueVirtualTourUpdateInput): Promise<VenueVirtualTourDTO>;
+
+  // ── Photos (A4 côté API, A6a-P côté UI) ────────────────────────────────────
+  // `File`/`FormData` vivent ICI et nulle part ailleurs : `packages/types`
+  // compile en `lib: ["ES2022"]` seule, sans DOM — ces types n'y existent pas.
+
+  /** multipart, champ « file ». Retour : LA photo créée, en fin de galerie
+   *  (`sortOrder = max+1` garanti serveur — on ne recalcule rien). */
+  addPhoto(id: string, file: File): Promise<VenuePhotoDTO>;
+  /** ENSEMBLE ordonné COMPLET (A4-③), jamais un delta. Retour : la galerie
+   *  entière dans le nouvel ordre — à substituer EN BLOC à l'état local. */
+  reorderPhotos(id: string, input: VenuePhotoOrderInput): Promise<VenuePhotoDTO[]>;
+  /** altFr/altAr, `null` = effacement explicite. Retour : la photo à jour. */
+  updatePhotoAlt(id: string, photoId: string, input: VenuePhotoAltUpdateInput): Promise<VenuePhotoDTO>;
+  /** 204 sans corps : l'appelant n'a RIEN à réconcilier localement, il refetch. */
+  deletePhoto(id: string, photoId: string): Promise<void>;
 }
 
 export function createVenueProClient(request: AuthedRequest): VenueProClient {
@@ -65,7 +83,30 @@ export function createVenueProClient(request: AuthedRequest): VenueProClient {
       request<VenueVirtualTourDTO>(`/venues/${encodeURIComponent(id)}/virtual-tour`, {
         method: "PATCH",
         body: input
-      })
+      }),
+
+    addPhoto(id, file) {
+      const form = new FormData();
+      // Le nom du champ est le contrat du FileInterceptor("file") côté API :
+      // un autre nom donne 400 MEDIA_FILE_REQUIRED, pas une erreur de type.
+      form.append("file", file);
+      return request<VenuePhotoDTO>(`/venues/${encodeURIComponent(id)}/photos`, { method: "POST", body: form });
+    },
+
+    reorderPhotos: (id, input) =>
+      request<VenuePhotoDTO[]>(`/venues/${encodeURIComponent(id)}/photos/order`, { method: "PATCH", body: input }),
+
+    updatePhotoAlt: (id, photoId, input) =>
+      request<VenuePhotoDTO>(
+        `/venues/${encodeURIComponent(id)}/photos/${encodeURIComponent(photoId)}`,
+        { method: "PATCH", body: input }
+      ),
+
+    async deletePhoto(id, photoId) {
+      await request<void>(`/venues/${encodeURIComponent(id)}/photos/${encodeURIComponent(photoId)}`, {
+        method: "DELETE"
+      });
+    }
   };
 }
 

@@ -12,6 +12,8 @@ import { VenueErrorCode, type VenueCreateInput, type VenueProDTO, type VenueUpda
 import type { Prisma } from "../generated/prisma/client";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
+import { RULE_SELECT } from "./pricing-rules.service";
+import { toSlotTemplateDTO } from "./slot-templates.service";
 import { slugify } from "./slug";
 
 /** Allow-list des colonnes exposées au pro — l'ABSENCE de commission_rate_bps,
@@ -56,6 +58,31 @@ export const VENUE_PRO_SELECT = {
       altFr: true,
       altAr: true,
       createdAt: true
+    }
+  },
+  // D46 (B1) — les créneaux voyagent DANS le DTO pro, comme les photos : aucun
+  // GET dédié, un seul aller-retour pour peupler l'écran d'édition.
+  slotTemplates: {
+    orderBy: [{ startMinutes: "asc" }, { id: "asc" }] as Prisma.SlotTemplateOrderByWithRelationInput[],
+    select: {
+      id: true,
+      nameFr: true,
+      nameAr: true,
+      startMinutes: true,
+      endMinutes: true,
+      basePriceCents: true,
+      isActive: true,
+      createdAt: true,
+      // D46 (B2) — les règles voyagent avec leur créneau : un créneau sans ses
+      // variantes est un prix sans son contexte.
+      pricingRules: {
+        orderBy: [
+          { ruleType: "asc" },
+          { priority: "desc" },
+          { createdAt: "desc" }
+        ] as Prisma.PricingRuleOrderByWithRelationInput[],
+        select: RULE_SELECT
+      }
     }
   }
 } as const;
@@ -303,6 +330,7 @@ export function toVenueProDTO(row: VenueProRow, urlOf: (key: string) => string):
       altAr: p.altAr,
       createdAt: p.createdAt.toISOString()
     })),
+    slotTemplates: row.slotTemplates.map(toSlotTemplateDTO),
     matterportModelId: row.matterportModelId,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString()

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PRICING_RULE_TYPES, type PricingRuleType } from "./enums";
 import { BookingMode, VenueAvailabilityStatus, type VenuePublicationStatus } from "./enums";
 import { VENUE_MEDIA_CAPS } from "./media";
 import type { AmenityDTO } from "./referentials";
@@ -151,6 +152,154 @@ export const venueUpdateSchema = z
 export type VenueUpdateInput = z.infer<typeof venueUpdateSchema>;
 
 /** Codes d'erreur métier venues (stables, consommés par les fronts). */
+/** Bornes d'un créneau, en MINUTES depuis minuit du jour de DÉBUT. Un entier
+ *  plutôt qu'une heure : pas de fuseau, pas d'heure d'été, chevauchement
+ *  trivial à calculer.
+ *
+ *  La fin peut DÉPASSER 1440 : une soirée de mariage algérienne finit après
+ *  minuit, et c'est le cas NORMAL, pas l'exception — 20h → 02h s'écrit
+ *  1200 → 1560. Ces bornes reprennent exactement le CHECK
+ *  `slot_templates_minutes_valid` posé en 20260707000001 : début dans la
+ *  journée, fin strictement après le début et au plus 48 h. */
+export const SLOT_START_MAX = 1439;
+export const SLOT_END_MAX = 2880;
+
+/** D46 — le prix appartient au CRÉNEAU, plus à la salle. `Venue.basePriceCents`
+ *  n'est plus qu'un DÉRIVÉ : le minimum des créneaux actifs, recalculé par
+ *  l'API dans la même transaction (la recherche publique filtre et trie
+ *  dessus, cf. A3/A7). */
+export interface SlotTemplateDTO {
+  id: string;
+  nameFr: string;
+  nameAr: string;
+  startMinutes: number;
+  endMinutes: number;
+  basePriceCents: number;
+  isActive: boolean;
+  createdAt: string;
+  /** D46 (B2) — variantes de prix du créneau, les plus spécifiques d'abord
+   *  (HOLIDAY, WEEKDAY, SEASON), puis priorité décroissante. Elles voyagent
+   *  ICI : un créneau sans ses règles est un prix sans son contexte. */
+  pricingRules: PricingRuleDTO[];
+}
+
+const slotFields = {
+  nameFr: z.string().trim().min(1, "venue.validation.textEmpty").max(60, "venue.validation.slotNameTooLong"),
+  nameAr: z.string().trim().min(1, "venue.validation.textEmpty").max(60, "venue.validation.slotNameTooLong"),
+  startMinutes: z
+    .number()
+    .int()
+    .min(0, "venue.validation.slotOutOfDay")
+    .max(SLOT_START_MAX, "venue.validation.slotOutOfDay"),
+  endMinutes: z.number().int().min(1, "venue.validation.slotOutOfDay").max(SLOT_END_MAX, "venue.validation.slotOutOfDay"),
+  /** Strictement positif : un créneau gratuit n'est pas un prix, c'est un
+   *  oubli de saisie — et il deviendrait le minimum, donc le « à partir de »
+   *  public de la salle. */
+  basePriceCents: z.number().int().positive("venue.validation.pricePositive")
+};
+
+/** Le début doit précéder la fin. Franchir minuit est LÉGAL et attendu : la
+ *  fin s'exprime alors au-delà de 1440 (02h du lendemain = 1560). */
+function assertOrdered(value: { startMinutes: number; endMinutes: number }, ctx: z.RefinementCtx): void {
+  if (value.startMinutes >= value.endMinutes) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endMinutes"], message: "venue.validation.slotEndBeforeStart" });
+  }
+}
+
+export const slotTemplateCreateSchema = z.object(slotFields).strict().superRefine(assertOrdered);
+export type SlotTemplateCreateInput = z.infer<typeof slotTemplateCreateSchema>;
+
+/** PATCH partiel (patron A2). `isActive` vit ici : c'est le RETRAIT d'un
+ *  créneau sans casser l'historique, par opposition au DELETE dur. */
+export const slotTemplateUpdateSchema = z
+  .object({ ...slotFields, isActive: z.boolean() })
+  .partial()
+  .strict()
+  .refine((value) => Object.keys(value).length > 0, { message: "venue.validation.emptyUpdate" })
+  .superRefine((value, ctx) => {
+    if (value.startMinutes !== undefined && value.endMinutes !== undefined) {
+      assertOrdered({ startMinutes: value.startMinutes, endMinutes: value.endMinutes }, ctx);
+    }
+  });
+export type SlotTemplateUpdateInput = z.infer<typeof slotTemplateUpdateSchema>;
+
+/** D46 (B2) — variante de prix d'un CRÉNEAU. `priceCents` est ABSOLU : les
+ *  règles ne se composent pas, une seule gagne (HOLIDAY > WEEKDAY > SEASON,
+ *  puis priorité, puis la plus récente). */
+export interface PricingRuleDTO {
+  id: string;
+  slotTemplateId: string;
+  ruleType: PricingRuleType;
+  label: string | null;
+  priceCents: number;
+  startMonth: number | null;
+  endMonth: number | null;
+  daysOfWeek: number[];
+  priority: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+const pricingRuleFields = {
+  ruleType: z.enum(PRICING_RULE_TYPES),
+  label: z.string().trim().min(1, "venue.validation.textEmpty").max(60, "venue.validation.ruleLabelTooLong").nullable(),
+  priceCents: z.number().int().positive("venue.validation.pricePositive"),
+  /** Mois INCLUS, 1–12. La fenêtre peut enjamber décembre (11 → 2). */
+  startMonth: z.number().int().min(1, "venue.validation.monthRange").max(12, "venue.validation.monthRange").nullable(),
+  endMonth: z.number().int().min(1, "venue.validation.monthRange").max(12, "venue.validation.monthRange").nullable(),
+  /** 0 = dimanche … 6 = samedi. Le week-end algérien est [5, 6], mais rien
+   *  n'est codé en dur : c'est le pro qui coche. */
+  daysOfWeek: z.array(z.number().int().min(0, "venue.validation.dayRange").max(6, "venue.validation.dayRange")),
+  priority: z.number().int().min(0, "venue.validation.priorityRange").max(100, "venue.validation.priorityRange")
+};
+
+/** Les champs REQUIS dépendent du type. Une saison sans bornes serait
+ *  inapplicable (le moteur l'ignore), un week-end sans jours aussi : les
+ *  refuser à l'écriture évite au pro de saisir une règle morte et de croire
+ *  ensuite à un bug de tarification. */
+function assertRuleShape(
+  value: { ruleType?: PricingRuleType; startMonth?: number | null; endMonth?: number | null; daysOfWeek?: number[] },
+  ctx: z.RefinementCtx
+): void {
+  if (value.ruleType === "SEASON" && (value.startMonth == null || value.endMonth == null)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["startMonth"], message: "venue.validation.seasonBoundsRequired" });
+  }
+  if (value.ruleType === "WEEKDAY" && (value.daysOfWeek === undefined || value.daysOfWeek.length === 0)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["daysOfWeek"], message: "venue.validation.weekdaysRequired" });
+  }
+}
+
+export const pricingRuleCreateSchema = z
+  .object({
+    ...pricingRuleFields,
+    label: pricingRuleFields.label.default(null),
+    startMonth: pricingRuleFields.startMonth.default(null),
+    endMonth: pricingRuleFields.endMonth.default(null),
+    daysOfWeek: pricingRuleFields.daysOfWeek.default([]),
+    priority: pricingRuleFields.priority.default(0)
+  })
+  .strict()
+  .superRefine(assertRuleShape);
+export type PricingRuleCreateInput = z.infer<typeof pricingRuleCreateSchema>;
+
+/** PATCH partiel (patron A2). Le TYPE n'est pas modifiable : changer le type
+ *  d'une règle en place laisserait ses bornes de saison sur une règle férié.
+ *  Le pro supprime et recrée. */
+export const pricingRuleUpdateSchema = z
+  .object({
+    label: pricingRuleFields.label,
+    priceCents: pricingRuleFields.priceCents,
+    startMonth: pricingRuleFields.startMonth,
+    endMonth: pricingRuleFields.endMonth,
+    daysOfWeek: pricingRuleFields.daysOfWeek,
+    priority: pricingRuleFields.priority,
+    isActive: z.boolean()
+  })
+  .partial()
+  .strict()
+  .refine((value) => Object.keys(value).length > 0, { message: "venue.validation.emptyUpdate" });
+export type PricingRuleUpdateInput = z.infer<typeof pricingRuleUpdateSchema>;
+
 export const VenueErrorCode = {
   /** 404 INDISTINCT : inexistante, supprimée, id malformé ou salle d'un autre
    *  pro — anti-énumération, même doctrine que /media/:key. */
@@ -176,7 +325,29 @@ export const VenueErrorCode = {
    *  étant unique pour tout Zwadj, le copier-coller d'une même URL sur deux
    *  salles est l'accident le plus probable. On ne révèle pas quelle salle :
    *  elle peut ne pas appartenir à ce pro. */
-  MATTERPORT_ALREADY_LINKED: "MATTERPORT_ALREADY_LINKED"
+  MATTERPORT_ALREADY_LINKED: "MATTERPORT_ALREADY_LINKED",
+  /** D46 (B1) — 404 INDISTINCT « dans MA salle vivante », même doctrine que
+   *  PHOTO_NOT_FOUND : créneau inexistant, id malformé, ou créneau d'une autre
+   *  salle. */
+  SLOT_TEMPLATE_NOT_FOUND: "SLOT_TEMPLATE_NOT_FOUND",
+  /** D46 (B1) — 409 : chevauchement avec un autre créneau ACTIF de la salle.
+   *  Deux créneaux qui se recouvrent rendent la disponibilité indécidable —
+   *  quel créneau la réservation bloque-t-elle ? */
+  SLOT_TEMPLATE_OVERLAP: "SLOT_TEMPLATE_OVERLAP",
+  /** D46 (B1) — 409 : `SINGLE_SLOT` impose EXACTEMENT un créneau actif. En
+   *  autoriser deux créerait un état où le client choisit un créneau sans
+   *  effet, la réservation bloquant de toute façon la journée entière. */
+  SLOT_TEMPLATE_SINGLE_MODE: "SLOT_TEMPLATE_SINGLE_MODE",
+  /** D46 (B1) — 409 : suppression DURE d'un créneau déjà référencé par un
+   *  devis ou une réservation. Ce qui a été vendu ne se réécrit pas : le
+   *  retrait passe par `isActive: false`. */
+  SLOT_TEMPLATE_IN_USE: "SLOT_TEMPLATE_IN_USE",
+  /** D46 (B1) — 409 : l'opération laisserait une salle PUBLIÉE sans aucun
+   *  créneau actif, donc invisible au calendrier et non réservable. Vaut aussi
+   *  comme garde à la publication admin. */
+  SLOT_TEMPLATE_REQUIRED: "SLOT_TEMPLATE_REQUIRED",
+  /** D46 (B2) — 404 INDISTINCT « dans MON créneau, dans MA salle ». */
+  PRICING_RULE_NOT_FOUND: "PRICING_RULE_NOT_FOUND"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -216,6 +387,10 @@ export interface VenueProDTO {
   amenityIds: string[];
   /** Lot A4 — photos triées par sortOrder (l'ordre du tableau = l'affichage). */
   photos: VenuePhotoDTO[];
+  /** D46 (B1) — créneaux de fête, triés par heure de début puis id. Ils
+   *  arrivent ICI comme les photos : aucun GET dédié, un seul aller-retour
+   *  pour peupler l'écran d'édition. */
+  slotTemplates: SlotTemplateDTO[];
   /** D45 (A6a) — identifiant du modèle Matterport, `null` si la salle n'a pas
    *  de scan. Même valeur canonique que le DTO public : le pro saisit une URL
    *  de partage ou un ID brut, le serveur ne stocke que l'ID. */

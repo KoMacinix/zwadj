@@ -239,3 +239,83 @@ describe("createReferentialsClient — endpoints PUBLICS", () => {
     await expect(offline.listAmenities()).rejects.toBeInstanceOf(NetworkError);
   });
 });
+
+describe("createVenueProClient — photos (A6a-P) : multipart en PASSE-PLAT", () => {
+  const PHOTO = {
+    id: "p1",
+    url: "https://cdn.test/p1.webp",
+    thumbUrl: "https://cdn.test/p1-thumb.webp",
+    width: 1920,
+    height: 1080,
+    sortOrder: 0,
+    altFr: null,
+    altAr: null,
+    createdAt: "2026-01-05T10:00:00.000Z"
+  };
+
+  it("addPhoto : le body passé à fetch est L'INSTANCE FormData, et AUCUN Content-Type n'est posé", async () => {
+    const { venues, calls } = await connectedPair({
+      "POST /venues/v1/photos": () => ({ status: 201, body: PHOTO })
+    });
+
+    const file = new File(["binaire"], "salle.jpg", { type: "image/jpeg" });
+    await expect(venues.addPhoto("v1", file)).resolves.toEqual(PHOTO);
+
+    const call = calls.find((c) => c.url.endsWith("/photos"));
+    expect(call?.init?.body).toBeInstanceOf(FormData);
+    // Le champ DOIT s'appeler « file » : c'est le contrat du FileInterceptor.
+    expect((call?.init?.body as FormData).get("file")).toBe(file);
+    // La boundary est posée par le navigateur ; la fixer à la main casse le
+    // multipart. On vérifie donc l'ABSENCE de l'en-tête, pas sa valeur.
+    const headers = call?.init?.headers as Record<string, string>;
+    expect(headers["Content-Type"]).toBeUndefined();
+    expect(headers.Authorization).toBe("Bearer jwt-vieux");
+  });
+
+  it("ASSERTION INVERSE — un corps objet reste du JSON.stringify + Content-Type (chemin de TOUS les autres appels)", async () => {
+    const { venues, calls } = await connectedPair({
+      "PATCH /venues/v1/photos/order": () => ({ status: 200, body: [PHOTO] }),
+      "PATCH /venues/v1/photos/p1": () => ({ status: 200, body: { ...PHOTO, altFr: "Vue de la salle" } })
+    });
+
+    await expect(venues.reorderPhotos("v1", { photoIds: ["p1"] })).resolves.toEqual([PHOTO]);
+    await venues.updatePhotoAlt("v1", "p1", { altFr: "Vue de la salle", altAr: null });
+
+    for (const call of calls.filter((c) => c.init?.method === "PATCH")) {
+      const headers = call.init?.headers as Record<string, string>;
+      expect(headers["Content-Type"]).toBe("application/json");
+      expect(typeof call.init?.body).toBe("string");
+    }
+    const order = calls.find((c) => c.url.endsWith("/photos/order"));
+    expect(JSON.parse(String(order?.init?.body))).toEqual({ photoIds: ["p1"] });
+    const alt = calls.find((c) => c.url.endsWith("/photos/p1"));
+    // Les DEUX champs partent toujours, `null` = effacement explicite.
+    expect(JSON.parse(String(alt?.init?.body))).toEqual({ altFr: "Vue de la salle", altAr: null });
+  });
+
+  it("deletePhoto : 204 sans corps, résolu sans erreur de parsing", async () => {
+    const { venues } = await connectedPair({ "DELETE /venues/v1/photos/p1": () => ({ status: 204 }) });
+    await expect(venues.deletePhoto("v1", "p1")).resolves.toBeUndefined();
+  });
+
+  it("rejeu après 401 : le MÊME FormData est ré-émis (un multipart n'est pas consommé par fetch)", async () => {
+    let first = true;
+    const { venues, calls } = await connectedPair({
+      "POST /venues/v1/photos": () => {
+        if (first) {
+          first = false;
+          return unauthenticated();
+        }
+        return { status: 201, body: PHOTO };
+      },
+      "POST /auth/refresh": () => ({ status: 200, body: { accessToken: "jwt-neuf", user: USER } })
+    });
+
+    await expect(venues.addPhoto("v1", new File(["b"], "a.jpg", { type: "image/jpeg" }))).resolves.toEqual(PHOTO);
+
+    const uploads = calls.filter((c) => c.url.endsWith("/photos"));
+    expect(uploads).toHaveLength(2);
+    expect(uploads[0]?.init?.body).toBe(uploads[1]?.init?.body);
+    expect((uploads[1]?.init?.headers as Record<string, string>).Authorization).toBe("Bearer jwt-neuf");
+  });
+});

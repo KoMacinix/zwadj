@@ -9,6 +9,7 @@ import { issuesToFieldErrors, validate, type FieldErrors } from "../../lib/auth/
 import { ApiError } from "../../lib/auth/auth-client";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
 import { z } from "zod";
+import { ArrowBackIcon } from "@zwadj/ui";
 
 export function ForgotForm() {
   const t = useTranslations("auth.ui");
@@ -45,6 +46,7 @@ export function ForgotForm() {
   return (
     <AuthShell mode="forgot">
       <Link href="/auth/connexion" className="backlink">
+        <ArrowBackIcon />
         ← {t("forgot.back")}
       </Link>
       {sent ? (
@@ -165,6 +167,7 @@ export function ResetForm({ token }: { token: string | null }) {
   return (
     <AuthShell mode="reset">
       <Link href="/auth/connexion" className="backlink">
+        <ArrowBackIcon />
         ← {t("forgot.back")}
       </Link>
       <form className="form" onSubmit={(e) => void submit(e)} noValidate>
