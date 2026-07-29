@@ -18,6 +18,7 @@ import type { VenuePublicDTO } from "@zwadj/types";
 import { ArrowBackIcon } from "@zwadj/ui";
 import { Link } from "../../i18n/navigation";
 import { mediaSrc } from "../../lib/media-url";
+import { AvailabilityCalendar } from "./availability-calendar";
 import { MatterportEmbed } from "./matterport-embed";
 
 const SECTION_TITLE = {
@@ -138,6 +139,10 @@ export function VenueDetailView({ venue }: { venue: VenuePublicDTO }) {
           </ul>
         )}
       </section>
+
+      {/* B5 — calendrier de disponibilité. Composant CLIENT : il navigue de
+          mois en mois, la fiche autour de lui reste rendue au serveur. */}
+      <AvailabilityCalendar slug={venue.slug} />
 
       {venue.matterportModelId ? <MatterportEmbed modelId={venue.matterportModelId} /> : null}
 

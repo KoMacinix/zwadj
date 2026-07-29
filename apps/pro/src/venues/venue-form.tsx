@@ -355,7 +355,11 @@ export function PublicationBadge({ status }: { status: VenuePublicationStatus })
  *  une seule boite (le conteneur porte la bordure), l'input pousse ses
  *  chiffres vers l'unite via `text-align: end`. Rien a re-mesurer a la
  *  frappe, au chargement differe de Readex Pro, au zoom ni en RTL. */
-function PriceInput({
+/** EXPORTÉ (B4b) : la section des créneaux saisit AUSSI un prix. Une seconde
+ *  implémentation dériverait de D40 (groupement + curseur) et de D43
+ *  (unité collée par alignement) — deux comportements payés cher, qui ne
+ *  doivent exister qu'à un seul endroit. */
+export function PriceInput({
   value,
   onValueChange,
   id,

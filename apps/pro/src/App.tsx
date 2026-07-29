@@ -20,6 +20,7 @@ import { VenueProvider } from "./venues/venue-client-context";
 import { AccountSettingsPage } from "./account/account-settings-page";
 import { VenueListPage } from "./venues/venue-list-page";
 import { CreateVenuePage } from "./venues/create-venue-page";
+import { VenueCalendarPage } from "./venues/venue-calendar-page";
 import { EditVenuePage } from "./venues/edit-venue-page";
 
 export function AppProviders({
@@ -84,6 +85,17 @@ export function AppRoutes() {
         element={
           <RequireProSession>
             <EditVenuePage />
+          </RequireProSession>
+        }
+      />
+      {/* B6 — calendrier de la salle, en LECTURE seule. Placé APRÈS /salles/:id
+          n'a pas d'importance ici (les chemins ne se recouvrent pas), mais on
+          garde l'ordre statique→paramétré du fichier. */}
+      <Route
+        path="/salles/:id/calendrier"
+        element={
+          <RequireProSession>
+            <VenueCalendarPage />
           </RequireProSession>
         }
       />

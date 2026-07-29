@@ -81,10 +81,22 @@ type VenuePublicRow = Prisma.VenueGetPayload<{ select: typeof VENUE_PUBLIC_SELEC
 
 /** Forme produite par slugify + suffixes de collision — tout le reste est 404
  *  AVANT la base (même court-circuit que l'uuid côté pro, A2). */
-const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** EXPORTÉ (B3) : l'endpoint de disponibilité résout la MÊME salle par le
+ *  même slug. Un second motif, même identique aujourd'hui, finirait par
+ *  diverger — et un 404 de calendrier sur une page qui, elle, s'affiche est un
+ *  bug muet. */
+export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /** Prédicat commun D33 (le détail élargit ensuite les status admis). */
-const PUBLIC_BASE_WHERE = {
+/** D33 — status admis par le DÉTAIL public, et donc par la disponibilité :
+ *  TEMPORARILY_UNAVAILABLE reste consultable (bandeau A8). EXPORTÉ pour que la
+ *  page détail et son calendrier ne puissent pas répondre différemment. */
+export const PUBLIC_DETAIL_STATUSES = [
+  VenueAvailabilityStatus.ACTIVE,
+  VenueAvailabilityStatus.TEMPORARILY_UNAVAILABLE
+] as const;
+
+export const PUBLIC_BASE_WHERE = {
   publicationStatus: VenuePublicationStatus.PUBLISHED,
   deletedAt: null
 } as const;
@@ -150,7 +162,7 @@ export class VenuesPublicService {
         slug,
         ...PUBLIC_BASE_WHERE,
         // D33 détail : TEMPORARILY_UNAVAILABLE reste visible (bandeau A8).
-        status: { in: [VenueAvailabilityStatus.ACTIVE, VenueAvailabilityStatus.TEMPORARILY_UNAVAILABLE] }
+        status: { in: [...PUBLIC_DETAIL_STATUSES] }
       },
       select: VENUE_PUBLIC_SELECT
     });

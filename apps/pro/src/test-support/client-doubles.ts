@@ -1,0 +1,106 @@
+// Doubles de test partagés de l'app Pro.
+//
+// ── Pourquoi ce fichier existe ───────────────────────────────────────────────
+// `VenueProClient` était recopié à l'identique dans SEPT fichiers de test.
+// Chaque extension du contrat les cassait tous les sept — c'est arrivé en B1
+// (« 3 fixtures, 2 doubles Prisma et 3 assertions »), puis en B4a avec les neuf
+// méthodes créneaux/règles/blocages. Le coût n'était pas la correction, mais le
+// fait qu'elle se répète et qu'on finisse par la faire sans la lire.
+//
+// Ici, une seule définition. Ajouter une méthode au contrat casse UN endroit,
+// et le typage dit lequel.
+//
+// ⚠ Les mocks sont créés à CHAQUE appel de fabrique, jamais partagés entre
+// tests : un `vi.fn()` de portée module garderait ses appels d'un test à
+// l'autre et rendrait les compteurs faux dans l'ordre d'exécution seulement —
+// le genre d'échec qui n'apparaît qu'en CI.
+import { vi } from "vitest";
+import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
+import type { AmenityDTO, VenueProDTO, WilayaDTO } from "@zwadj/types";
+import type { AuthClient } from "../lib/auth-client";
+
+export interface AuthenticatedProUser {
+  id: string;
+  email: string;
+  role: "PRO";
+  emailVerified: boolean;
+  phone: string;
+  hasPassword: boolean;
+  hasGoogle: boolean;
+  proProfile: { businessName: string; phone: string; phone2: string | null };
+}
+
+export const PRO_USER: AuthenticatedProUser = {
+  id: "u1",
+  email: "contact@salle.dz",
+  role: "PRO",
+  emailVerified: true,
+  phone: "+213550000009",
+  hasPassword: true,
+  hasGoogle: false,
+  proProfile: { businessName: "Salles Pro", phone: "+213550000009", phone2: null }
+};
+
+/** Double d'authentification. `bootstrap` résout un PRO connecté par défaut :
+ *  c'est l'état de départ de tous les écrans d'édition. */
+export function makeAuthDouble(overrides: Partial<AuthClient> = {}): AuthClient {
+  return {
+    bootstrap: vi.fn().mockResolvedValue(PRO_USER),
+    login: vi.fn(),
+    googleAuth: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
+    me: vi.fn(),
+    verifyEmail: vi.fn(),
+    resendVerification: vi.fn(),
+    forgotPassword: vi.fn(),
+    resetPassword: vi.fn(),
+    authedRequest: vi.fn(),
+    getAccessToken: () => "jwt",
+    ...overrides
+  } as AuthClient;
+}
+
+export function makeReferentialsDouble(
+  wilayas: WilayaDTO[] = [],
+  amenities: AmenityDTO[] = []
+): ReferentialsClient {
+  return {
+    listWilayas: vi.fn().mockResolvedValue(wilayas),
+    listAmenities: vi.fn().mockResolvedValue(amenities)
+  };
+}
+
+/** Double du client venue PRO — la SEULE définition du dépôt.
+ *
+ *  Les méthodes qui rendent 204 résolvent `undefined` (un `vi.fn()` nu rendrait
+ *  `undefined` aussi, mais l'intention resterait muette). Les lectures rendent
+ *  une valeur vide plutôt que `undefined`, sinon chaque écran devrait se
+ *  défendre d'un `null` que l'API ne produit jamais. */
+export function makeVenueClientDouble(
+  venue: VenueProDTO | null = null,
+  overrides: Partial<VenueProClient> = {}
+): VenueProClient {
+  return {
+    listMine: vi.fn().mockResolvedValue(venue ? [venue] : []),
+    getMine: vi.fn().mockResolvedValue(venue),
+    create: vi.fn(),
+    update: vi.fn(),
+    softDelete: vi.fn().mockResolvedValue(undefined),
+    updateVirtualTour: vi.fn(),
+    addPhoto: vi.fn(),
+    reorderPhotos: vi.fn(),
+    updatePhotoAlt: vi.fn(),
+    deletePhoto: vi.fn().mockResolvedValue(undefined),
+    createSlotTemplate: vi.fn(),
+    updateSlotTemplate: vi.fn(),
+    deleteSlotTemplate: vi.fn().mockResolvedValue(undefined),
+    createPricingRule: vi.fn(),
+    updatePricingRule: vi.fn(),
+    deletePricingRule: vi.fn().mockResolvedValue(undefined),
+    listAvailabilityBlocks: vi.fn().mockResolvedValue([]),
+    createAvailabilityBlock: vi.fn(),
+    deleteAvailabilityBlock: vi.fn().mockResolvedValue(undefined),
+    ...overrides
+  };
+}

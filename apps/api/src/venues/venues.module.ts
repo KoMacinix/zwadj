@@ -1,10 +1,14 @@
-// Module Venue (Flux A). Quatre contrôleurs (Lots A2 + A3 + A4) :
+// Module Venue (Flux A + B). Six contrôleurs (Lots A2 + A3 + A4 + B3) :
 // pro (CRUD, ownership), admin (publication + taux D35), public (lecture D33),
 // médias (photos ; la visite virtuelle Matterport est une colonne, D45).
 // MediaModule importé pour le port MEDIA_STORAGE : uploads (écriture d'objets)
 // ET lectures (publicUrl recalculée dans chaque mapper — les clés seules
 // vivent en base).
 import { Module } from "@nestjs/common";
+import { AvailabilityBlocksController } from "./availability-blocks.controller";
+import { AvailabilityBlocksService } from "./availability-blocks.service";
+import { AvailabilityController } from "./availability.controller";
+import { AvailabilityService } from "./availability.service";
 import { MediaModule } from "../media/media.module";
 import { VenueMediaController } from "./venue-media.controller";
 import { VenueMediaService } from "./venue-media.service";
@@ -27,7 +31,9 @@ import { VenuesService } from "./venues.service";
     SlotTemplatesController,
     PricingRulesController,
     VenuesAdminController,
-    VenuesPublicController
+    VenuesPublicController,
+    AvailabilityController,
+    AvailabilityBlocksController
   ],
   providers: [
     VenuesService,
@@ -35,7 +41,9 @@ import { VenuesService } from "./venues.service";
     SlotTemplatesService,
     PricingRulesService,
     VenuesAdminService,
-    VenuesPublicService
+    VenuesPublicService,
+    AvailabilityService,
+    AvailabilityBlocksService
   ],
   exports: [VenuesService]
 })

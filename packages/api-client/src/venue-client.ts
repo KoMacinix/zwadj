@@ -18,6 +18,15 @@
 // client auth — la doctrine d'erreur ne doit exister qu'à un seul endroit.
 import type {
   AmenityDTO,
+  AvailabilityBlockCreateInput,
+  AvailabilityBlockDTO,
+  AvailabilityWindowQueryInput,
+  PricingRuleCreateInput,
+  PricingRuleDTO,
+  PricingRuleUpdateInput,
+  SlotTemplateCreateInput,
+  SlotTemplateDTO,
+  SlotTemplateUpdateInput,
   VenueCreateInput,
   VenuePhotoAltUpdateInput,
   VenuePhotoDTO,
@@ -68,6 +77,56 @@ export interface VenueProClient {
   updatePhotoAlt(id: string, photoId: string, input: VenuePhotoAltUpdateInput): Promise<VenuePhotoDTO>;
   /** 204 sans corps : l'appelant n'a RIEN à réconcilier localement, il refetch. */
   deletePhoto(id: string, photoId: string): Promise<void>;
+
+  // ── Créneaux de fête (B1) ─────────────────────────────────────────────────
+  // ⚠ Toute écriture de créneau RECALCULE `Venue.basePriceCents` (dérivé D46,
+  // minimum des créneaux actifs et de leurs règles actives) dans la MÊME
+  // transaction. Le DTO rendu ne porte QUE le créneau : un appelant qui affiche
+  // aussi le « à partir de » de la salle doit refetch, jamais recalculer —
+  // deux formules concurrentes du même minimum finiraient par diverger.
+
+  /** Retour : LE créneau créé. 409 possibles : SLOT_TEMPLATE_OVERLAP,
+   *  SLOT_TEMPLATE_SINGLE_MODE. */
+  createSlotTemplate(id: string, input: SlotTemplateCreateInput): Promise<SlotTemplateDTO>;
+  /** PATCH partiel. `isActive: false` = RETRAIT sans casser l'historique —
+   *  c'est la voie normale, la suppression dure ne l'est pas. */
+  updateSlotTemplate(id: string, slotId: string, input: SlotTemplateUpdateInput): Promise<SlotTemplateDTO>;
+  /** Suppression DURE. 409 `SLOT_TEMPLATE_IN_USE` si un devis ou une
+   *  réservation le référence : ce qui a été vendu ne se réécrit pas. */
+  deleteSlotTemplate(id: string, slotId: string): Promise<void>;
+
+  // ── Règles de prix (B2) ───────────────────────────────────────────────────
+  // Les règles voyagent DANS `SlotTemplateDTO.pricingRules` en lecture : il n'y
+  // a pas d'endpoint de liste, et il n'en faut pas — un créneau sans ses règles
+  // est un prix sans son contexte.
+
+  /** Le TYPE n'est pas modifiable ensuite : changer le type en place laisserait
+   *  des bornes de saison sur une règle férié. On supprime et on recrée. */
+  createPricingRule(id: string, slotId: string, input: PricingRuleCreateInput): Promise<PricingRuleDTO>;
+  updatePricingRule(
+    id: string,
+    slotId: string,
+    ruleId: string,
+    input: PricingRuleUpdateInput
+  ): Promise<PricingRuleDTO>;
+  deletePricingRule(id: string, slotId: string, ruleId: string): Promise<void>;
+
+  // ── Blocages de disponibilité (B3, D51) ───────────────────────────────────
+
+  /** LECTURE pro, donc préfixe /pro (topologie A2). Fenêtre obligatoire, mêmes
+   *  bornes que l'endpoint public : dates civiles, 92 jours rendus au plus.
+   *  Rend les blocages qui RECOUVRENT la fenêtre, pas seulement ceux qui y
+   *  commencent — un blocage de six mois doit apparaître. */
+  listAvailabilityBlocks(id: string, window: AvailabilityWindowQueryInput): Promise<AvailabilityBlockDTO[]>;
+  /** D51 — `startsAt`/`endsAt` en date-heure civile LOCALE `YYYY-MM-DDTHH:mm`,
+   *  SANS décalage : l'API applique UTC+1 elle-même. Envoyer un ISO offsetté
+   *  créerait un blocage aux mauvaises heures d'Alger. Le DTO rendu porte le
+   *  MÊME repère civil — rien à reconvertir ici.
+   *  409 `AVAILABILITY_BLOCK_CONFLICT` si la plage recouvre une réservation
+   *  ACCEPTED/CONFIRMED ; une demande PENDING, elle, ne s'y oppose pas. */
+  createAvailabilityBlock(id: string, input: AvailabilityBlockCreateInput): Promise<AvailabilityBlockDTO>;
+  /** 204 sans corps. Autorisé même sur une plage passée. */
+  deleteAvailabilityBlock(id: string, blockId: string): Promise<void>;
 }
 
 export function createVenueProClient(request: AuthedRequest): VenueProClient {
@@ -106,6 +165,64 @@ export function createVenueProClient(request: AuthedRequest): VenueProClient {
       await request<void>(`/venues/${encodeURIComponent(id)}/photos/${encodeURIComponent(photoId)}`, {
         method: "DELETE"
       });
+    },
+
+    createSlotTemplate: (id, input) =>
+      request<SlotTemplateDTO>(`/venues/${encodeURIComponent(id)}/slot-templates`, { method: "POST", body: input }),
+
+    updateSlotTemplate: (id, slotId, input) =>
+      request<SlotTemplateDTO>(
+        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}`,
+        { method: "PATCH", body: input }
+      ),
+
+    async deleteSlotTemplate(id, slotId) {
+      await request<void>(`/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}`, {
+        method: "DELETE"
+      });
+    },
+
+    createPricingRule: (id, slotId, input) =>
+      request<PricingRuleDTO>(
+        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}/pricing-rules`,
+        { method: "POST", body: input }
+      ),
+
+    updatePricingRule: (id, slotId, ruleId, input) =>
+      request<PricingRuleDTO>(
+        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}` +
+          `/pricing-rules/${encodeURIComponent(ruleId)}`,
+        { method: "PATCH", body: input }
+      ),
+
+    async deletePricingRule(id, slotId, ruleId) {
+      await request<void>(
+        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}` +
+          `/pricing-rules/${encodeURIComponent(ruleId)}`,
+        { method: "DELETE" }
+      );
+    },
+
+    listAvailabilityBlocks: (id, window) =>
+      // `URLSearchParams` encode les deux bornes : un `from` non encodé
+      // passerait tel quel et l'API répondrait 400 sur une forme qu'on croit
+      // avoir envoyée correctement.
+      request<AvailabilityBlockDTO[]>(
+        `/pro/venues/${encodeURIComponent(id)}/availability-blocks?` +
+          new URLSearchParams({ from: window.from, to: window.to }).toString()
+      ),
+
+    createAvailabilityBlock: (id, input) =>
+      request<AvailabilityBlockDTO>(`/venues/${encodeURIComponent(id)}/availability-blocks`, {
+        method: "POST",
+        body: input
+      }),
+
+    async deleteAvailabilityBlock(id, blockId) {
+      await request<void>(
+        `/venues/${encodeURIComponent(id)}/availability-blocks/${encodeURIComponent(blockId)}`,
+        { method: "DELETE" }
+      );
     }
   };
 }

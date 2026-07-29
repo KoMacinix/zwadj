@@ -1,8 +1,10 @@
 "use client";
 
-// En-tête minimal de la tranche auth : marque + état de session. La vraie
-// navigation (Salles/Prestataires/… + « Bientôt disponible ») appartient à la
-// tranche Accueil — hors périmètre Lot 5, ne pas élargir.
+// En-tête du site : marque + NAVIGATION + état de session.
+//
+// Lot UI-N1 — la navigation principale, jusqu'ici renvoyée à « la tranche
+// Accueil », est enfin là : sans elle il fallait taper `/fr/salles` à la main.
+// Elle vit dans `site-nav.tsx` ; cet en-tête ne fait que la placer.
 //
 // Lot A11b : une fois connecté, le prénom en clair et le bouton « Se
 // déconnecter » cèdent la place au ROND À INITIALES et à son menu — même
@@ -12,6 +14,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "../i18n/navigation";
 import { useAuth } from "../lib/auth/auth-context";
+import { SiteNav } from "./site-nav";
 
 export function SiteHeader() {
   const t = useTranslations("auth.ui.header");
@@ -24,6 +27,7 @@ export function SiteHeader() {
       <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
         <ZwadjLogo iconSize={22} />
       </Link>
+      <SiteNav />
       <div className="header-auth">
         {status === "authenticated" && user ? (
           <AccountMenu
