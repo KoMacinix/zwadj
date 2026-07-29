@@ -12,6 +12,7 @@ import { vi } from "vitest";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
 import type { AmenityDTO, VenueProDTO, WilayaDTO } from "@zwadj/types";
 import { ApiError, NetworkError, type AuthClient } from "../lib/auth-client";
+import { makeVenueClientDouble } from "../test-support/client-doubles";
 import { initI18n } from "../i18n";
 import { AppProviders } from "../App";
 import { CreateVenuePage } from "./create-venue-page";
@@ -111,20 +112,11 @@ function makeAuth(): AuthClient {
 }
 
 function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
-  return {
-    listMine: vi.fn().mockResolvedValue([]),
-    getMine: vi.fn().mockResolvedValue(VENUE),
+  return makeVenueClientDouble(VENUE, {
     create: vi.fn().mockResolvedValue({ ...VENUE, id: "v-new" }),
     update: vi.fn().mockResolvedValue(VENUE),
-    softDelete: vi.fn().mockResolvedValue(undefined),
-    updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null }),
-    // A6a-P — les 4 méthodes photos du contrat VenueProClient.
-    addPhoto: vi.fn(),
-    reorderPhotos: vi.fn(),
-    updatePhotoAlt: vi.fn(),
-    deletePhoto: vi.fn().mockResolvedValue(undefined),
     ...overrides
-  };
+  });
 }
 
 function makeReferentials(overrides: Partial<ReferentialsClient> = {}): ReferentialsClient {

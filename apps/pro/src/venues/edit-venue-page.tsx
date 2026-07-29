@@ -24,6 +24,8 @@ import {
   type VenueFormValues
 } from "./venue-form";
 import { PhotosSection } from "./photos-section";
+import { SlotsSection } from "./slots-section";
+import { BlocksSection } from "./blocks-section";
 import { VirtualTourSection } from "./virtual-tour-section";
 
 type LoadState =
@@ -252,6 +254,15 @@ export function EditVenuePage() {
               `key`, pour ne pas la remonter au milieu d'une file d'upload
               quand un enregistrement du formulaire principal renouvelle
               l'objet `venue`. */}
+          {/* B4b — créneaux et prix. Même doctrine que les photos :
+              `initialSlots` est consommé UNE FOIS, pas de `key`, et la section
+              ne rappelle jamais `load()`. */}
+          <SlotsSection venueId={state.venue.id} initialSlots={state.venue.slotTemplates} />
+
+          {/* B4d — blocages. Seul volet qui CHARGE ses données : les
+              blocages ne voyagent pas dans le DTO, ils sont sans borne. */}
+          <BlocksSection venueId={state.venue.id} />
+
           <PhotosSection venueId={state.venue.id} initialPhotos={state.venue.photos} />
 
           <VirtualTourSection
@@ -272,6 +283,10 @@ export function EditVenuePage() {
             suivent, avec leurs propres boutons). Le lien discret du haut reste,
             il sert la navigation ; celui-ci clôt la tâche. */}
         <div style={{ marginBlockStart: 18, display: "flex", flexWrap: "wrap", gap: 10 }}>
+          {/* B6 — accès au calendrier de la salle, en lecture. */}
+          <Link to={`/salles/${state.venue.id}/calendrier`} className="btn">
+            {t("venue.ui.calendar.title")}
+          </Link>
           <Link to="/" className="btn">
             <ArrowBackIcon />
             {t("venue.ui.form.back")}

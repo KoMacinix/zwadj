@@ -319,3 +319,149 @@ describe("createVenueProClient — photos (A6a-P) : multipart en PASSE-PLAT", ()
     expect((uploads[1]?.init?.headers as Record<string, string>).Authorization).toBe("Bearer jwt-neuf");
   });
 });
+
+
+// ── Lot B4a — créneaux (B1), règles de prix (B2), blocages (B3/D51) ──────────
+// Ces neuf méthodes n'existaient pas : B1, B2 et B3 avaient livré leurs
+// endpoints sans aucune contrepartie côté client. Ce qui se prouve ici est le
+// CÂBLAGE (chemins imbriqués, encodage) et, pour les blocages, le fait que le
+// client NE CONVERTIT RIEN — D51 confie le fuseau à l'API seule.
+describe("createVenueProClient — créneaux et règles de prix (B1/B2)", () => {
+  it("les six routes sont imbriquées sous /venues/:id, jamais sous /pro (ce sont des ÉCRITURES)", async () => {
+    const SLOT = { id: "s1", nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560 };
+    const RULE = { id: "r1", slotTemplateId: "s1", ruleType: "SEASON", priceCents: 30_000_000 };
+    const { venues, calls } = await connectedPair({
+      "POST /venues/v1/slot-templates": () => ({ status: 201, body: SLOT }),
+      "PATCH /venues/v1/slot-templates/s1": () => ({ status: 200, body: SLOT }),
+      "DELETE /venues/v1/slot-templates/s1": () => ({ status: 204 }),
+      "POST /venues/v1/slot-templates/s1/pricing-rules": () => ({ status: 201, body: RULE }),
+      "PATCH /venues/v1/slot-templates/s1/pricing-rules/r1": () => ({ status: 200, body: RULE }),
+      "DELETE /venues/v1/slot-templates/s1/pricing-rules/r1": () => ({ status: 204 })
+    });
+
+    await venues.createSlotTemplate("v1", {
+      nameFr: "Soirée",
+      nameAr: "سهرة",
+      startMinutes: 1200,
+      endMinutes: 1560,
+      basePriceCents: 20_000_000
+    });
+    await venues.updateSlotTemplate("v1", "s1", { isActive: false });
+    await venues.deleteSlotTemplate("v1", "s1");
+    // Tous les champs sont REQUIS (nullables, pas optionnels) : une règle muette
+    // se saisirait sans erreur puis ne s'appliquerait jamais — B2 l'interdit.
+    await venues.createPricingRule("v1", "s1", {
+      ruleType: "SEASON",
+      label: "Haute saison",
+      priceCents: 30_000_000,
+      startMonth: 6,
+      endMonth: 9,
+      daysOfWeek: [],
+      priority: 10
+    });
+    await venues.updatePricingRule("v1", "s1", "r1", { priceCents: 31_000_000 });
+    await venues.deletePricingRule("v1", "s1", "r1");
+
+    expect(calls.slice(1).map((c) => `${c.init?.method} ${c.url.replace(`${BASE}/api/v1`, "")}`)).toEqual([
+      "POST /venues/v1/slot-templates",
+      "PATCH /venues/v1/slot-templates/s1",
+      "DELETE /venues/v1/slot-templates/s1",
+      "POST /venues/v1/slot-templates/s1/pricing-rules",
+      "PATCH /venues/v1/slot-templates/s1/pricing-rules/r1",
+      "DELETE /venues/v1/slot-templates/s1/pricing-rules/r1"
+    ]);
+  });
+
+  it("le RETRAIT d'un créneau est un PATCH isActive:false, pas un DELETE", async () => {
+    const { venues, calls } = await connectedPair({
+      "PATCH /venues/v1/slot-templates/s1": () => ({ status: 200, body: { id: "s1", isActive: false } })
+    });
+    await venues.updateSlotTemplate("v1", "s1", { isActive: false });
+    const patch = calls.find((c) => c.init?.method === "PATCH");
+    expect(JSON.parse(String(patch?.init?.body))).toEqual({ isActive: false });
+  });
+
+  it("409 SLOT_TEMPLATE_IN_USE remonte en ApiError, code intact", async () => {
+    const { venues } = await connectedPair({
+      "DELETE /venues/v1/slot-templates/s1": () => ({
+        status: 409,
+        body: { message: { code: "SLOT_TEMPLATE_IN_USE", message: "venue.errors.slotInUse" } }
+      })
+    });
+    await expect(venues.deleteSlotTemplate("v1", "s1")).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe("createVenueProClient — blocages de disponibilité (B3, D51)", () => {
+  const BLOCK = {
+    id: "b1",
+    startsAt: "2027-08-14T08:00",
+    endsAt: "2027-08-14T18:00",
+    reason: "Travaux",
+    createdAt: "2026-07-28T10:00:00.000Z"
+  };
+
+  it("la LECTURE porte le préfixe /pro, les ÉCRITURES sont nues — topologie A2", async () => {
+    const { venues, calls } = await connectedPair({
+      "GET /pro/venues/v1/availability-blocks?from=2027-08-01&to=2027-08-31": () => ({ status: 200, body: [BLOCK] }),
+      "POST /venues/v1/availability-blocks": () => ({ status: 201, body: BLOCK }),
+      "DELETE /venues/v1/availability-blocks/b1": () => ({ status: 204 })
+    });
+
+    await venues.listAvailabilityBlocks("v1", { from: "2027-08-01", to: "2027-08-31" });
+    await venues.createAvailabilityBlock("v1", { startsAt: "2027-08-14T08:00", endsAt: "2027-08-14T18:00" });
+    await venues.deleteAvailabilityBlock("v1", "b1");
+
+    expect(calls.slice(1).map((c) => `${c.init?.method ?? "GET"} ${c.url.replace(`${BASE}/api/v1`, "")}`)).toEqual([
+      "GET /pro/venues/v1/availability-blocks?from=2027-08-01&to=2027-08-31",
+      "POST /venues/v1/availability-blocks",
+      "DELETE /venues/v1/availability-blocks/b1"
+    ]);
+  });
+
+  it("D51 — le client NE CONVERTIT RIEN : la date-heure civile part telle quelle, sans offset", async () => {
+    const { venues, calls } = await connectedPair({
+      "POST /venues/v1/availability-blocks": () => ({ status: 201, body: BLOCK })
+    });
+    await venues.createAvailabilityBlock("v1", {
+      startsAt: "2027-08-14T08:00",
+      endsAt: "2027-08-14T18:00",
+      reason: "Travaux"
+    });
+    const post = calls.find((c) => c.url.endsWith("/availability-blocks"));
+    const body = JSON.parse(String(post?.init?.body));
+    // Ni "Z", ni "+01:00", ni millisecondes : le fuseau appartient à l'API.
+    expect(body.startsAt).toBe("2027-08-14T08:00");
+    expect(body.endsAt).toBe("2027-08-14T18:00");
+    expect(JSON.stringify(body)).not.toMatch(/[Zz]"|\+01:00/);
+  });
+
+  it("D51 — le DTO relu garde le MÊME repère civil, le client ne le retouche pas", async () => {
+    const { venues } = await connectedPair({
+      "POST /venues/v1/availability-blocks": () => ({ status: 201, body: BLOCK })
+    });
+    const dto = await venues.createAvailabilityBlock("v1", {
+      startsAt: "2027-08-14T08:00",
+      endsAt: "2027-08-14T18:00"
+    });
+    expect(dto.startsAt).toBe("2027-08-14T08:00");
+    expect(dto.endsAt).toBe("2027-08-14T18:00");
+  });
+
+  it("409 AVAILABILITY_BLOCK_CONFLICT remonte en ApiError", async () => {
+    const { venues } = await connectedPair({
+      "POST /venues/v1/availability-blocks": () => ({
+        status: 409,
+        body: { message: { code: "AVAILABILITY_BLOCK_CONFLICT", message: "venue.errors.blockConflict" } }
+      })
+    });
+    await expect(
+      venues.createAvailabilityBlock("v1", { startsAt: "2027-08-14T08:00", endsAt: "2027-08-14T18:00" })
+    ).rejects.toBeInstanceOf(ApiError);
+  });
+
+  it("DELETE : 204 sans corps résolu sans erreur de parsing", async () => {
+    const { venues } = await connectedPair({ "DELETE /venues/v1/availability-blocks/b1": () => ({ status: 204 }) });
+    await expect(venues.deleteAvailabilityBlock("v1", "b1")).resolves.toBeUndefined();
+  });
+});

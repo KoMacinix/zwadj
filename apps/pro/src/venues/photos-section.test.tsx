@@ -21,6 +21,7 @@ import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
 import { ApiError } from "@zwadj/api-client";
 import type { AmenityDTO, VenuePhotoDTO, VenueProDTO, WilayaDTO } from "@zwadj/types";
 import type { AuthClient } from "../lib/auth-client";
+import { makeVenueClientDouble } from "../test-support/client-doubles";
 import { initI18n } from "../i18n";
 import { AppProviders } from "../App";
 import { EditVenuePage } from "./edit-venue-page";
@@ -119,19 +120,7 @@ function makeAuth(): AuthClient {
 }
 
 function makeVenues(photos: VenuePhotoDTO[], overrides: Partial<VenueProClient> = {}): VenueProClient {
-  return {
-    listMine: vi.fn().mockResolvedValue([]),
-    getMine: vi.fn().mockResolvedValue(venueWith(photos)),
-    create: vi.fn(),
-    update: vi.fn(),
-    softDelete: vi.fn().mockResolvedValue(undefined),
-    updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null }),
-    addPhoto: vi.fn(),
-    reorderPhotos: vi.fn(),
-    updatePhotoAlt: vi.fn(),
-    deletePhoto: vi.fn().mockResolvedValue(undefined),
-    ...overrides
-  };
+  return makeVenueClientDouble(venueWith(photos), overrides);
 }
 
 function makeReferentials(): ReferentialsClient {

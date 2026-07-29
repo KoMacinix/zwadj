@@ -10,6 +10,7 @@ import { MemoryRouter } from "react-router";
 import { vi } from "vitest";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
 import { ApiError, type AuthClient } from "./lib/auth-client";
+import { makeVenueClientDouble } from "./test-support/client-doubles";
 import { initI18n } from "./i18n";
 import { AppProviders, AppRoutes } from "./App";
 
@@ -36,20 +37,7 @@ function makeClient(overrides: Partial<AuthClient> = {}): AuthClient {
 }
 
 function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
-  return {
-    listMine: vi.fn().mockResolvedValue([]),
-    getMine: vi.fn(),
-    create: vi.fn(),
-    update: vi.fn(),
-    softDelete: vi.fn().mockResolvedValue(undefined),
-    updateVirtualTour: vi.fn(),
-    // A6a-P — les 4 méthodes photos du contrat VenueProClient.
-    addPhoto: vi.fn(),
-    reorderPhotos: vi.fn(),
-    updatePhotoAlt: vi.fn(),
-    deletePhoto: vi.fn().mockResolvedValue(undefined),
-    ...overrides
-  };
+  return makeVenueClientDouble(null, overrides);
 }
 
 function makeReferentials(overrides: Partial<ReferentialsClient> = {}): ReferentialsClient {

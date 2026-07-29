@@ -1,5 +1,6 @@
 import type {
   AmenityDTO,
+  VenueAvailabilityResponse,
   ApiHealthResponse,
   VenueListResponse,
   VenuePublicDTO,
@@ -87,6 +88,35 @@ export async function getVenueBySlug(slug: string): Promise<VenuePublicDTO | nul
     });
     if (!res.ok) return null;
     return (await res.json()) as VenuePublicDTO;
+  } catch {
+    return null;
+  }
+}
+
+// ── Lot B5 — calendrier de disponibilité ─────────────────────────────────────
+
+/** Disponibilité et prix d'une salle sur une fenêtre de dates civiles.
+ *
+ *  Appelée depuis le NAVIGATEUR (le calendrier navigue de mois en mois), donc
+ *  `cache: "no-store"` : une disponibilité mise en cache annoncerait une case
+ *  libre qui ne l'est plus, ce qui est exactement la surprise que D46 interdit.
+ *
+ *  ⚠ Les bornes RENDUES peuvent différer des bornes demandées : l'API écrête
+ *  le passé et l'horizon 18 mois (D49) au lieu de refuser. L'appelant doit lire
+ *  `from`/`to` de la réponse, jamais présumer les siennes. */
+export async function getVenueAvailability(
+  slug: string,
+  from: string,
+  to: string
+): Promise<VenueAvailabilityResponse | null> {
+  try {
+    const query = new URLSearchParams({ from, to });
+    const res = await fetch(
+      `${API_URL}/api/v1/venues/${encodeURIComponent(slug)}/availability?${query.toString()}`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) return null;
+    return (await res.json()) as VenueAvailabilityResponse;
   } catch {
     return null;
   }

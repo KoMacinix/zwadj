@@ -260,7 +260,22 @@
     }
   },
   "common": {
-    "loading": "Chargement…"
+    "loading": "Chargement…",
+    "nav": {
+      "label": "Navigation principale",
+      "home": "Accueil",
+      "venues": "Salles",
+      "providers": "Prestataires",
+      "inspirations": "Inspirations",
+      "tools": "Mes outils",
+      "community": "Communauté",
+      "soon": "Bientôt",
+      "soonHint": "Cette rubrique arrive bientôt."
+    },
+    "time": {
+      "hours": "Heures",
+      "minutes": "Minutes"
+    }
   },
   "home": {
     "title": "Zwadj",
@@ -340,6 +355,11 @@
       "slotOutOfDay": "L'horaire doit être compris dans la journée.",
       "slotEndBeforeStart": "La fin doit être postérieure au début.",
       "pricePositive": "Le prix doit être supérieur à zéro.",
+      "dateFormat": "Cette date n'existe pas. Utilisez le format AAAA-MM-JJ.",
+      "dateRange": "La date de fin doit être postérieure à la date de début.",
+      "windowTooWide": "La période demandée est trop longue ({count} jours maximum).",
+      "blockEndBeforeStart": "La fin du blocage doit être postérieure à son début.",
+      "reasonTooLong": "Le motif est trop long (300 caractères maximum).",
       "ruleLabelTooLong": "Le libellé est trop long (60 caractères maximum).",
       "monthRange": "Le mois doit être compris entre 1 et 12.",
       "dayRange": "Le jour doit être compris entre 0 (dimanche) et 6 (samedi).",
@@ -360,6 +380,8 @@
       "slotSingleMode": "Cette salle n'accepte qu'une seule fête par jour : elle ne peut avoir qu'un créneau actif.",
       "slotInUse": "Ce créneau est utilisé par une réservation ou un devis : désactivez-le plutôt que de le supprimer.",
       "slotRequired": "Une salle publiée doit garder au moins un créneau actif.",
+      "blockNotFound": "Ce blocage est introuvable.",
+      "blockConflict": "Cette période contient une réservation confirmée : elle ne peut pas être bloquée.",
       "pricingRuleNotFound": "Cette règle de prix est introuvable."
     },
     "ui": {
@@ -488,6 +510,93 @@
         "deleteBody": "Cette photo sera définitivement retirée de la galerie. Cette action est irréversible.",
         "deleteConfirm": "Supprimer",
         "deleteCancel": "Annuler"
+      },
+      "slots": {
+        "section": "Créneaux et prix",
+        "hint": "Chaque créneau porte son propre prix. Une salle publiée doit garder au moins un créneau actif.",
+        "empty": "Aucun créneau pour l'instant.",
+        "add": "Ajouter un créneau",
+        "edit": "Modifier",
+        "save": "Enregistrer",
+        "create": "Créer le créneau",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "activate": "Réactiver",
+        "deactivate": "Retirer",
+        "inactive": "Retiré",
+        "nameFr": "Nom du créneau (français)",
+        "nameAr": "Nom du créneau (arabe)",
+        "start": "Heure de début",
+        "end": "Heure de fin",
+        "endsSameDay": "Le créneau se termine le jour même.",
+        "endsNextDay": "Le créneau se termine le lendemain — c'est le cas normal d'une soirée.",
+        "nextDay": "(lendemain)",
+        "price": "Prix du créneau",
+        "priceHint": "Montant en dinars algériens, nombre entier.",
+        "currency": "DA",
+        "ruleCount": "{count} variante(s) de prix",
+        "derivedPriceNotice": "Le « à partir de » de la salle est recalculé automatiquement à partir des créneaux actifs. Rechargez la page pour le voir à jour.",
+        "confirmTitle": "Supprimer ce créneau ?",
+        "confirmMessage": "« {name} » sera supprimé définitivement. Un créneau déjà réservé ne peut pas être supprimé : retirez-le plutôt."
+      },
+      "rules": {
+        "title": "Variantes de prix",
+        "toggle": "Variantes de prix",
+        "resolutionOrder": "Une seule variante s'applique, jamais plusieurs cumulées : jour férié d'abord, puis jour de la semaine, puis saison. À égalité, la priorité la plus haute gagne.",
+        "empty": "Aucune variante : ce créneau est facturé à son prix de base.",
+        "add": "Ajouter une variante",
+        "create": "Créer la variante",
+        "type": "S'applique à",
+        "typeHoliday": "Jours fériés",
+        "typeWeekday": "Certains jours de la semaine",
+        "typeSeason": "Une saison",
+        "typeLocked": "Le type d'une variante ne se modifie pas : supprimez-la et recréez-la si besoin.",
+        "label": "Libellé (facultatif)",
+        "fromMonth": "De",
+        "toMonth": "À",
+        "covers": "Mois couverts :",
+        "days": "Jours concernés",
+        "price": "Prix appliqué",
+        "priority": "Priorité",
+        "confirmTitle": "Supprimer cette variante ?",
+        "confirmMessage": "Le créneau reviendra à son prix de base sur la période concernée."
+      },
+      "blocks": {
+        "section": "Périodes bloquées",
+        "hint": "Fermez votre salle pour des congés ou des travaux. Une période contenant une réservation confirmée ne peut pas être bloquée.",
+        "window": "Périodes affichées : du {from} au {to}.",
+        "loading": "Chargement des périodes bloquées…",
+        "empty": "Aucune période bloquée sur cette fenêtre.",
+        "add": "Bloquer une période",
+        "create": "Bloquer",
+        "lift": "Lever le blocage",
+        "allDay": "Journées entières",
+        "from": "Du",
+        "to": "Au",
+        "startTime": "Heure de début",
+        "endTime": "Heure de fin",
+        "endInclusive": "Le dernier jour saisi est inclus dans le blocage.",
+        "range": "du {from} au {to}",
+        "reason": "Motif (facultatif)",
+        "confirmTitle": "Lever ce blocage ?",
+        "confirmMessage": "La période redeviendra réservable immédiatement."
+      },
+      "calendar": {
+        "title": "Calendrier de la salle",
+        "readOnly": "Vue de lecture. Les blocages se posent depuis la fiche de la salle, les prix depuis les créneaux.",
+        "backToVenue": "Retour à la salle",
+        "previous": "Mois précédent",
+        "next": "Mois suivant",
+        "caption": "Calendrier de {month}",
+        "loading": "Chargement du calendrier…",
+        "error": "Le calendrier n'a pas pu être chargé. Réessayez dans un instant.",
+        "dayDetail": "Créneaux du {date}",
+        "status": {
+          "AVAILABLE": "Disponible",
+          "REQUESTED": "Demande en cours",
+          "BOOKED": "Réservé",
+          "BLOCKED": "Bloqué"
+        }
       }
     }
   },
@@ -560,6 +669,22 @@
     "visitCta": "Réserver une visite",
     "ctaSoon": "Les demandes de réservation et de visite ouvriront prochainement.",
     "bookingModeSingle": "Un seul créneau par jour",
-    "bookingModeMulti": "Plusieurs créneaux par jour"
+    "bookingModeMulti": "Plusieurs créneaux par jour",
+    "calendar": {
+      "title": "Disponibilités et prix",
+      "previous": "Mois précédent",
+      "next": "Mois suivant",
+      "caption": "Calendrier de {month}",
+      "loading": "Chargement du calendrier…",
+      "error": "Le calendrier n'a pas pu être chargé. Réessayez dans un instant.",
+      "holiday": "Jour férié",
+      "slotsFor": "Créneaux du {date}",
+      "status": {
+        "AVAILABLE": "Disponible",
+        "REQUESTED": "Demande en cours",
+        "BOOKED": "Réservé",
+        "BLOCKED": "Indisponible"
+      }
+    }
   }
 }

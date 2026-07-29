@@ -13,3 +13,193 @@
   --sage: #f5a7b0;
   --star: #ebb04a;
 }
+
+/* ── Navigation principale (Lot UI-N1) ──────────────────────────────────────
+   Mobile-first : sur téléphone l'en-tête passe en COLONNE et la barre défile
+   horizontalement. Pas de menu burger — il coûterait un état, un piège de
+   focus et une gestion d'Échap, pour six entrées dont quatre sont inactives.
+   Le défilement, lui, ne peut pas casser.
+   Aucune propriété directionnelle en `left/right` : tout est en logique
+   (`inline`), sinon l'arabe RTL décale la barre du mauvais côté. */
+.site-header {
+  flex-wrap: wrap;
+}
+
+.site-nav {
+  order: 3;
+  flex-basis: 100%;
+  overflow-x: auto;
+  /* Masque la barre de défilement sans empêcher le geste. */
+  scrollbar-width: none;
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.site-nav-list {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-block: 8px;
+  padding-inline: 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--ink-2, inherit);
+  font-size: 15px;
+}
+
+.site-nav-link:hover {
+  background: var(--accent-soft);
+}
+
+.site-nav-link.is-active {
+  color: var(--accent-strong);
+  font-weight: 600;
+  background: var(--accent-soft);
+}
+
+/* Rubrique annoncée mais pas construite : visiblement inerte, et le curseur
+   ne suggère pas un clic qui n'arrivera pas. */
+.site-nav-link.is-soon {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.site-nav-soon {
+  font-size: 11px;
+  padding-block: 1px;
+  padding-inline: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+
+/* À partir de la tablette, la barre reprend sa place sur la ligne de l'en-tête. */
+@media (min-width: 720px) {
+  .site-header {
+    flex-wrap: nowrap;
+  }
+
+  .site-nav {
+    order: 0;
+    flex-basis: auto;
+    flex: 1;
+    margin-inline-start: 12px;
+  }
+}
+
+/* ── Calendrier de disponibilité (Lot B5) ───────────────────────────────────
+   Grille en <table> : ce SONT des données tabulaires (7 colonnes de jours),
+   et un lecteur d'écran y navigue par en-têtes. Une grille de <div> perdrait
+   cette lecture.
+   Toutes les propriétés sont logiques : en arabe la grille doit se remplir de
+   droite à gauche, ce que `dir="rtl"` fait seul sur un tableau. */
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block: 12px;
+}
+
+.cal-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.cal-grid th {
+  padding-block: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2, inherit);
+}
+
+.cal-cell {
+  padding: 2px;
+  vertical-align: top;
+}
+
+/* Vendredi-samedi : le week-end algérien, et le PIC de la demande en salle
+   des fêtes — mis en avant, pas grisé comme un jour creux. */
+.cal-cell.is-weekend .cal-day {
+  background: var(--accent-soft);
+}
+
+.cal-day {
+  inline-size: 100%;
+  min-block-size: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+  font: inherit;
+}
+
+.cal-day:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.cal-day.is-selected {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.cal-num {
+  font-weight: 600;
+}
+
+.cal-price {
+  font-size: 11px;
+  color: var(--ink-2, inherit);
+}
+
+.cal-holiday {
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 999px;
+  background: var(--star);
+}
+
+.cal-pad {
+  padding: 2px;
+}
+
+.cal-slots ul {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.cal-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-block: 10px;
+  border-block-end: 1px solid var(--line);
+}
+
+.cal-slot.is-booked,
+.cal-slot.is-blocked {
+  opacity: 0.55;
+}
+
+.cal-status {
+  font-size: 12px;
+}

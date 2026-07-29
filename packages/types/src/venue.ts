@@ -347,7 +347,15 @@ export const VenueErrorCode = {
    *  comme garde à la publication admin. */
   SLOT_TEMPLATE_REQUIRED: "SLOT_TEMPLATE_REQUIRED",
   /** D46 (B2) — 404 INDISTINCT « dans MON créneau, dans MA salle ». */
-  PRICING_RULE_NOT_FOUND: "PRICING_RULE_NOT_FOUND"
+  PRICING_RULE_NOT_FOUND: "PRICING_RULE_NOT_FOUND",
+  /** D51 (B3) — 404 INDISTINCT « dans MA salle vivante » : blocage inexistant,
+   *  id malformé, ou blocage d'une autre salle. */
+  AVAILABILITY_BLOCK_NOT_FOUND: "AVAILABILITY_BLOCK_NOT_FOUND",
+  /** D51 (B3) — 409 : la plage recouvre une réservation ACCEPTED/CONFIRMED.
+   *  Aucune contrainte SQL ne peut porter ce conflit — une EXCLUDE ne traverse
+   *  pas deux tables — d'où une vérification applicative sous verrou. Une
+   *  demande PENDING, elle, ne s'y oppose pas : elle ne verrouille rien. */
+  AVAILABILITY_BLOCK_CONFLICT: "AVAILABILITY_BLOCK_CONFLICT"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -694,4 +702,182 @@ export interface VenuePublicDTO {
    *  de scan. A8 monte l'iframe AU GESTE UTILISATEUR, jamais automatiquement
    *  (tiers, coût réseau — cible Android bas de gamme, backlog 24.6). */
   matterportModelId: string | null;
+}
+
+/* ══════════════════════════ Lot B3 — disponibilité ═══════════════════════════
+ * D48 (fuseau) · D49 (bornes) · D50 (contrat public) · D51 (blocages pro)
+ */
+
+/** D48 — l'Algérie est à UTC+1 toute l'année : aucune heure d'été depuis 1981.
+ *  Cette constante est le SEUL endroit du dépôt où ce fait est écrit. Le fuseau
+ *  se décide à la frontière HTTP et nulle part ailleurs — ni colonne, ni
+ *  variable d'environnement : un fuseau configurable est un fuseau qui finit
+ *  faux, et les moteurs (disponibilité, prix) restent purs en ne manipulant que
+ *  des instants. */
+export const ALGERIA_UTC_OFFSET_MINUTES = 60;
+
+/** D46 — on ne réserve pas au-delà de 18 mois. Constante partagée, jamais une
+ *  colonne : c'est une règle commerciale unique, pas un réglage par salle. */
+export const BOOKING_HORIZON_MONTHS = 18;
+
+/** Nombre maximal de jours RENDUS par une fenêtre, bornes incluses. 92 est le
+ *  plus long trimestre civil (juillet + août + septembre), soit exactement le
+ *  trois-mois qu'un calendrier affiche d'un coup. */
+export const AVAILABILITY_MAX_WINDOW_DAYS = 92;
+
+/** État d'un créneau à une date donnée. BLOCKED prime sur tout (le pro a fermé),
+ *  BOOKED sur REQUESTED (une demande ne verrouille rien). */
+export const SLOT_AVAILABILITY_STATUSES = ["AVAILABLE", "REQUESTED", "BOOKED", "BLOCKED"] as const;
+export type SlotAvailabilityStatus = (typeof SLOT_AVAILABILITY_STATUSES)[number];
+
+const CIVIL_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const CIVIL_DATETIME_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+/** `2026-02-31` passe la regex et n'existe pas : une expression régulière ne
+ *  valide pas un calendrier. On valide par ALLER-RETOUR — la date reconstruite
+ *  doit rendre les mêmes composantes. */
+export function isRealCivilDate(value: string): boolean {
+  if (!CIVIL_DATE_PATTERN.test(value)) return false;
+  const year = Number(value.slice(0, 4));
+  const month = Number(value.slice(5, 7));
+  const day = Number(value.slice(8, 10));
+  const probe = new Date(Date.UTC(year, month - 1, day));
+  return probe.getUTCFullYear() === year && probe.getUTCMonth() === month - 1 && probe.getUTCDate() === day;
+}
+
+/** D51 — date-heure civile LOCALE, sans décalage. Accepter un ISO offsetté
+ *  laisserait un navigateur étranger créer un blocage aux mauvaises heures
+ *  d'Alger, ce que D48 interdit précisément. */
+export function isRealCivilDateTime(value: string): boolean {
+  if (!CIVIL_DATETIME_PATTERN.test(value)) return false;
+  if (!isRealCivilDate(value.slice(0, 10))) return false;
+  return Number(value.slice(11, 13)) <= 23 && Number(value.slice(14, 16)) <= 59;
+}
+
+/** Fenêtre [from, to], bornes INCLUSES. Partagée par la disponibilité publique
+ *  et la liste pro des blocages : une seconde règle de fenêtre serait une
+ *  seconde chose à faire diverger.
+ *
+ *  D49 — ce schéma ne refuse QUE ce qui est déterministe : forme, date
+ *  irréelle, ordre, largeur. Le passé et l'horizon, eux, dépendent de l'instant
+ *  de la requête et sont ÉCRÊTÉS côté service, jamais rejetés : un navigateur
+ *  au Canada ne calcule pas le même « aujourd'hui » qu'Alger, et un 400 sur
+ *  cette frontière serait intermittent et incompréhensible. */
+export const availabilityWindowQuerySchema = z
+  .object({
+    from: z.string().refine(isRealCivilDate, "venue.validation.dateFormat"),
+    to: z.string().refine(isRealCivilDate, "venue.validation.dateFormat")
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    const from = Date.parse(`${value.from}T00:00:00Z`);
+    const to = Date.parse(`${value.to}T00:00:00Z`);
+    if (to < from) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["to"], message: "venue.validation.dateRange" });
+      return;
+    }
+    if ((to - from) / 86_400_000 + 1 > AVAILABILITY_MAX_WINDOW_DAYS) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["to"], message: "venue.validation.windowTooWide" });
+    }
+  });
+export type AvailabilityWindowQueryInput = z.infer<typeof availabilityWindowQuerySchema>;
+
+/** D50 — métadonnées d'un créneau, servies UNE fois par réponse. Les répéter
+ *  dans chacun des 92 jours multiplierait la charge utile sans rien apprendre. */
+export interface VenueAvailabilitySlotDTO {
+  id: string;
+  nameFr: string;
+  nameAr: string;
+  startMinutes: number;
+  /** Peut dépasser 1440 : franchir minuit est le cas NORMAL (20h → 02h = 1560). */
+  endMinutes: number;
+}
+
+/** D50 — pas de `ruleId` : le moteur le produit pour l'UI pro de B4, mais un
+ *  identifiant de règle n'apprend rien à un client et exposerait la cardinalité
+ *  de la grille tarifaire du pro. */
+export interface VenueAvailabilityDaySlotDTO {
+  slotTemplateId: string;
+  status: SlotAvailabilityStatus;
+  priceCents: number;
+}
+
+export interface VenueAvailabilityDayDTO {
+  /** Date CIVILE locale, `YYYY-MM-DD`. */
+  date: string;
+  isHoliday: boolean;
+  /** Même cardinalité et même ordre que `slots`, et répète quand même
+   *  `slotTemplateId` : le contrat reste auto-descriptif, donc immunisé contre
+   *  un bug d'ordre côté client. */
+  slots: VenueAvailabilityDaySlotDTO[];
+}
+
+export interface VenueAvailabilityResponse {
+  venueId: string;
+  slug: string;
+  bookingMode: BookingMode;
+  /** D49 — bornes EFFECTIVES après écrêtage, jamais celles demandées. */
+  from: string;
+  to: string;
+  /** Créneaux ACTIFS de la salle, triés comme partout ailleurs (heure, puis id). */
+  slots: VenueAvailabilitySlotDTO[];
+  days: VenueAvailabilityDayDTO[];
+}
+
+/** D51 — SYMÉTRIE : le pro relit exactement le repère civil local qu'il a
+ *  écrit. Renvoyer de l'UTC forcerait le front pro à reconvertir, donc à
+ *  héberger une seconde décision de fuseau. `createdAt` fait exception : c'est
+ *  une métadonnée d'audit, pas une heure d'événement. */
+export interface AvailabilityBlockDTO {
+  id: string;
+  startsAt: string;
+  endsAt: string;
+  reason: string | null;
+  createdAt: string;
+}
+
+export const availabilityBlockCreateSchema = z
+  .object({
+    startsAt: z.string().refine(isRealCivilDateTime, "venue.validation.dateFormat"),
+    endsAt: z.string().refine(isRealCivilDateTime, "venue.validation.dateFormat"),
+    reason: optionalText(300, "venue.validation.reasonTooLong").nullish()
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    // Format à largeur fixe : la comparaison lexicographique est exacte, et
+    // évite de reconvertir en instants pour un simple test d'ordre.
+    if (value.endsAt <= value.startsAt) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endsAt"], message: "venue.validation.blockEndBeforeStart" });
+    }
+  });
+export type AvailabilityBlockCreateInput = z.infer<typeof availabilityBlockCreateSchema>;
+
+/** D57 — l'Algérie utilise EXCLUSIVEMENT le format 24 h. Pas d'AM/PM, nulle
+ *  part : ni dans un écran, ni dans un e-mail, ni dans un SMS.
+ *
+ *  Cette fonction est le SEUL formateur d'heure murale de la plateforme.
+ *  `Intl.DateTimeFormat` est écarté ici : selon la locale et le moteur, il
+ *  bascule en AM/PM sans prévenir (`en-US` le fait, et un navigateur configuré
+ *  en anglais est courant). Une concaténation ne peut pas dériver.
+ *
+ *  ⚠ `<input type="time">` reste rendu par le NAVIGATEUR, dans SA locale : un
+ *  navigateur en anglais y affichera un sélecteur AM/PM, et rien en HTML ne
+ *  permet de l'en empêcher. La valeur transmise, elle, est toujours `HH:mm` sur
+ *  24 h — le contrat est donc sauf, seul le widget natif varie. Tout affichage
+ *  d'heure fait par NOUS passe par ici.
+ *
+ *  Accepte des minutes absolues pouvant dépasser 1440 (créneau franchissant
+ *  minuit, D52) et rend l'heure MURALE correspondante : 1560 → "02:00". */
+export function formatWallClock(minutes: number): string {
+  const wall = ((Math.trunc(minutes) % 1440) + 1440) % 1440;
+  const h = Math.floor(wall / 60);
+  const m = wall % 60;
+  return `${h < 10 ? "0" : ""}${h}:${m < 10 ? "0" : ""}${m}`;
+}
+
+/** Plage horaire d'un créneau en 24 h. Le séparateur est un tiret demi-cadratin
+ *  entouré d'espaces insécables : en RTL, un tiret nu se réordonne
+ *  visuellement et « 20:00–02:00 » se lit à l'envers. */
+export function formatSlotRange(startMinutes: number, endMinutes: number): string {
+  return `${formatWallClock(startMinutes)}\u00a0–\u00a0${formatWallClock(endMinutes)}`;
 }
