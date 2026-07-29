@@ -365,7 +365,9 @@
       "dayRange": "Le jour doit être compris entre 0 (dimanche) et 6 (samedi).",
       "priorityRange": "La priorité doit être comprise entre 0 et 100.",
       "seasonBoundsRequired": "Une règle de saison doit avoir un mois de début et un mois de fin.",
-      "weekdaysRequired": "Une règle de jour doit cocher au moins un jour."
+      "weekdaysRequired": "Une règle de jour doit cocher au moins un jour.",
+      "visitDayInvalid": "Le jour doit être compris entre dimanche et samedi.",
+      "visitOutOfDay": "L'horaire doit tenir dans la journée. Une visite ne se prolonge pas après minuit."
     },
     "errors": {
       "amenityNotFound": "Un des équipements sélectionnés est introuvable.",
@@ -382,7 +384,9 @@
       "slotRequired": "Une salle publiée doit garder au moins un créneau actif.",
       "blockNotFound": "Ce blocage est introuvable.",
       "blockConflict": "Cette période contient une réservation confirmée : elle ne peut pas être bloquée.",
-      "pricingRuleNotFound": "Cette règle de prix est introuvable."
+      "pricingRuleNotFound": "Cette règle de prix est introuvable.",
+      "visitNotFound": "Cette plage de visite est introuvable.",
+      "visitOverlap": "Cette plage en chevauche une autre le même jour. Deux plages de visite ne peuvent pas se recouvrir."
     },
     "ui": {
       "list": {

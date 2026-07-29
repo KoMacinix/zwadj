@@ -187,7 +187,10 @@ enum ModerationStatus {
 }
 
 enum NotificationChannel {
-  EMAIL // SMS différé post-MVP (assumptions backlog)
+  EMAIL
+  /// D60 — transport WhatsApp : c'est ce que les pros algériens utilisent
+  /// réellement pour leur activité, pas le SMS opérateur.
+  SMS
 }
 
 enum NotificationStatus {
@@ -367,6 +370,12 @@ model ProProfile {
   /// deux numéros, mais un seul reste obligatoire.
   phone2             String?  @map("phone2")
   registrationNumber String?  @map("registration_number") // RC/NIF — KYC P1
+  /// D60 — canaux de notification choisis par le pro. DEUX booléens et non un
+  /// enum { EMAIL, SMS, BOTH } : un enum explose dès le troisième canal.
+  /// `CHECK pro_profiles_one_channel_required` interdit de tout couper — un pro
+  /// sans canal ne verrait plus jamais une demande arriver.
+  notifyByEmail      Boolean  @default(true) @map("notify_by_email")
+  notifyBySms        Boolean  @default(false) @map("notify_by_sms")
   createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -800,6 +809,10 @@ model VisitBooking {
   @@index([venueId, scheduledAt])
   @@index([clientId])
   @@map("visit_bookings")
+  /// D59 (supersède D47) — un créneau CONFIRMÉ est EXCLUSIF. Index unique
+  /// PARTIEL posé en SQL manuel (`visit_bookings_no_double_confirmed`) : Prisma
+  /// n'exprime pas le `WHERE status = 'CONFIRMED'`, et ce filtre est ce qui
+  /// permet à une visite annulée de LIBÉRER son créneau.
 }
 
 // =============================================================================

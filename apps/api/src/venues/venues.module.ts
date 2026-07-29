@@ -8,6 +8,10 @@ import { Module } from "@nestjs/common";
 import { AvailabilityBlocksController } from "./availability-blocks.controller";
 import { AvailabilityBlocksService } from "./availability-blocks.service";
 import { AvailabilityController } from "./availability.controller";
+import { VisitSlotsController } from "./visit-slots.controller";
+import { VisitSlotsService } from "./visit-slots.service";
+import { VisitAvailabilitiesController } from "./visit-availabilities.controller";
+import { VisitAvailabilitiesService } from "./visit-availabilities.service";
 import { AvailabilityService } from "./availability.service";
 import { MediaModule } from "../media/media.module";
 import { VenueMediaController } from "./venue-media.controller";
@@ -33,7 +37,9 @@ import { VenuesService } from "./venues.service";
     VenuesAdminController,
     VenuesPublicController,
     AvailabilityController,
-    AvailabilityBlocksController
+    AvailabilityBlocksController,
+    VisitAvailabilitiesController,
+    VisitSlotsController
   ],
   providers: [
     VenuesService,
@@ -43,7 +49,9 @@ import { VenuesService } from "./venues.service";
     VenuesAdminService,
     VenuesPublicService,
     AvailabilityService,
-    AvailabilityBlocksService
+    AvailabilityBlocksService,
+    VisitAvailabilitiesService,
+    VisitSlotsService
   ],
   exports: [VenuesService]
 })
