@@ -355,7 +355,13 @@ export const VenueErrorCode = {
    *  Aucune contrainte SQL ne peut porter ce conflit — une EXCLUDE ne traverse
    *  pas deux tables — d'où une vérification applicative sous verrou. Une
    *  demande PENDING, elle, ne s'y oppose pas : elle ne verrouille rien. */
-  AVAILABILITY_BLOCK_CONFLICT: "AVAILABILITY_BLOCK_CONFLICT"
+  AVAILABILITY_BLOCK_CONFLICT: "AVAILABILITY_BLOCK_CONFLICT",
+  /** D47 (C1) — 404 INDISTINCT « dans MA salle ». */
+  VISIT_AVAILABILITY_NOT_FOUND: "VISIT_AVAILABILITY_NOT_FOUND",
+  /** D47 (C1) — 409 : deux plages de visite du MÊME jour se chevauchent.
+   *  Refusé parce que C2 découpera ces plages en créneaux : deux plages qui se
+   *  recouvrent produiraient le même créneau deux fois. */
+  VISIT_AVAILABILITY_OVERLAP: "VISIT_AVAILABILITY_OVERLAP"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -881,3 +887,133 @@ export function formatWallClock(minutes: number): string {
 export function formatSlotRange(startMinutes: number, endMinutes: number): string {
   return `${formatWallClock(startMinutes)}\u00a0–\u00a0${formatWallClock(endMinutes)}`;
 }
+
+
+/* ═══════════════════════ Flux C — Visites (D47) ══════════════════════════════
+ * Les visites ne sont PAS des réservations de fête et ne partagent AUCUNE
+ * structure avec elles : ni `SlotTemplate`, ni `PricingRule`, ni contrainte
+ * d'exclusion. Un pro déclare ici QUAND il fait visiter, pas ce qu'il vend.
+ */
+
+/** Plage HEBDOMADAIRE de visite : « le dimanche de 09:00 à 17:00 ». Elle se
+ *  répète chaque semaine — ce n'est pas une date.
+ *
+ *  ⚠ `endMinutes` est plafonné à 1440 par le CHECK
+ *  `visit_availabilities_minutes_valid`, contrairement aux créneaux de fête
+ *  (2880, D52). Ce n'est pas un oubli : une visite est un rendez-vous de
+ *  journée ou de soirée — 18:00→21:00 est le cas réel le plus tardif —, jamais
+ *  une nuit à cheval sur deux jours. Le schéma fait autorité (D55). */
+export interface VisitAvailabilityDTO {
+  id: string;
+  /** 0 = dimanche … 6 = samedi (D56, numérotation JS et contrat API). */
+  dayOfWeek: number;
+  startMinutes: number;
+  endMinutes: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+const visitWindowShape = {
+  dayOfWeek: z.number().int().min(0, "venue.validation.visitDayInvalid").max(6, "venue.validation.visitDayInvalid"),
+  startMinutes: z
+    .number()
+    .int()
+    .min(0, "venue.validation.visitOutOfDay")
+    .max(1439, "venue.validation.visitOutOfDay"),
+  endMinutes: z.number().int().min(1, "venue.validation.visitOutOfDay").max(1440, "venue.validation.visitOutOfDay")
+};
+
+/** Une plage doit se terminer APRÈS son début, et dans la même journée. */
+const endsAfterStart = (value: { startMinutes?: number; endMinutes?: number }, ctx: z.RefinementCtx): void => {
+  if (
+    value.startMinutes !== undefined &&
+    value.endMinutes !== undefined &&
+    value.endMinutes <= value.startMinutes
+  ) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endMinutes"], message: "venue.validation.slotEndBeforeStart" });
+  }
+};
+
+export const visitAvailabilityCreateSchema = z.object(visitWindowShape).strict().superRefine(endsAfterStart);
+export type VisitAvailabilityCreateInput = z.infer<typeof visitAvailabilityCreateSchema>;
+
+/** PATCH partiel `.strict()`, même patron que les créneaux de fête.
+ *  `isActive: false` = plage SUSPENDUE sans la perdre : un pro qui arrête les
+ *  visites du vendredi pendant le ramadan la réactivera après. */
+export const visitAvailabilityUpdateSchema = z
+  .object({ ...visitWindowShape, isActive: z.boolean() })
+  .partial()
+  .strict()
+  .superRefine((value, ctx) => {
+    if (Object.keys(value).length === 0) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: [], message: "venue.validation.emptyUpdate" });
+    }
+    endsAfterStart(value, ctx);
+  });
+export type VisitAvailabilityUpdateInput = z.infer<typeof visitAvailabilityUpdateSchema>;
+
+
+/** D58 — une visite dure 30 minutes, pour TOUTE la plateforme.
+ *
+ *  Constante partagée, jamais une colonne : une durée par salle donnerait à
+ *  chaque pro un réglage de plus à comprendre pour un gain nul, et rendrait
+ *  incomparables les créneaux de deux salles voisines. Si un jour la durée doit
+ *  varier, elle variera ici pour tout le monde — et ce sera une décision
+ *  produit, pas un champ de formulaire.
+ *
+ *  Conséquence directe du découpage : une plage ne rend que des créneaux
+ *  ENTIERS. Une plage 09:00→09:20 ne produit AUCUN créneau, elle n'en produit
+ *  pas un de 20 minutes. */
+export const VISIT_DURATION_MINUTES = 30;
+
+/** Créneau de visite CONCRET, à une date donnée — contrairement à
+ *  `VisitAvailabilityDTO` qui décrit une règle hebdomadaire. */
+export interface VisitSlotDTO {
+  /** Date civile locale `YYYY-MM-DD`. */
+  date: string;
+  /** Minutes depuis minuit, début du rendez-vous. */
+  startMinutes: number;
+  /** D59 (supersède D47) — un créneau pris est EXCLUSIF : personne d'autre ne
+   *  peut le prendre. Il reste RENDU, marqué `taken`, plutôt que retiré de la
+   *  liste : voir qu'un horaire est occupé aide à en choisir un autre, alors
+   *  qu'une liste qui se contracte silencieusement donne l'impression que la
+   *  salle ne fait pas de visites ce jour-là.
+   *  Garanti en base par l'index unique partiel
+   *  `visit_bookings_no_double_confirmed`, pas seulement par le service. */
+  taken: boolean;
+}
+
+export interface VenueVisitSlotsResponse {
+  venueId: string;
+  slug: string;
+  /** Bornes EFFECTIVES après écrêtage (D49), jamais celles demandées. */
+  from: string;
+  to: string;
+  durationMinutes: number;
+  slots: VisitSlotDTO[];
+}
+
+
+/** D60 — le pro choisit ses canaux de notification. DEUX drapeaux et non un
+ *  enum { EMAIL, SMS, BOTH } : un enum explose dès le troisième canal
+ *  (EMAIL_PUSH, SMS_PUSH, EMAIL_SMS_PUSH…), deux drapeaux se combinent.
+ *
+ *  Le transport SMS est **WhatsApp** : c'est ce que les pros algériens
+ *  utilisent réellement pour leur activité, pas le SMS opérateur. Le numéro
+ *  destinataire est `ProProfile.phone`, déjà normalisé en +213.
+ *
+ *  ⚠ Tout couper est INTERDIT (`CHECK pro_profiles_one_channel_required`) : un
+ *  pro sans canal ne verrait plus jamais une demande de visite arriver. */
+export interface ProNotificationChannelsDTO {
+  notifyByEmail: boolean;
+  notifyBySms: boolean;
+}
+
+export const proNotificationChannelsSchema = z
+  .object({ notifyByEmail: z.boolean(), notifyBySms: z.boolean() })
+  .strict()
+  .refine((v) => v.notifyByEmail || v.notifyBySms, {
+    path: ["notifyByEmail"],
+    message: "account.validation.oneChannelRequired"
+  });
+export type ProNotificationChannelsInput = z.infer<typeof proNotificationChannelsSchema>;
