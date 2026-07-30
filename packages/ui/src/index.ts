@@ -4,4 +4,12 @@ export { Button, type ButtonProps } from "./button";
 export { ConfirmDialog, type ConfirmDialogProps } from "./confirm-dialog";
 export { ArrowBackIcon } from "./icons";
 export { ZwadjLogo, ZwadjLogoIcon } from "./logo";
+export { ThemeToggle, type ThemeToggleProps } from "./theme-toggle";
+export {
+  applyStoredTheme,
+  currentTheme,
+  THEME_BOOT_SCRIPT,
+  THEME_STORAGE_KEY,
+  type ExplicitTheme
+} from "../theme-storage";
 export { useDismissLayer, type DismissLayerOptions } from "./use-dismiss-layer";

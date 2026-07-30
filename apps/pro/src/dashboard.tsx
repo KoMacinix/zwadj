@@ -2,7 +2,7 @@
 // en-tête sont livrés par la tranche auth ; le contenu (demandes, calendrier,
 // salles) arrive avec les tranches suivantes du MVP.
 import { useTranslation } from "react-i18next";
-import { ZwadjLogo } from "@zwadj/ui";
+import { ThemeToggle, ZwadjLogo } from "@zwadj/ui";
 import { useAuth } from "./auth/auth-context";
 import { LangToggle } from "./auth/auth-ui";
 
@@ -18,6 +18,7 @@ export function Dashboard() {
           <span className="header-user" title={user?.email}>
             {user?.proProfile?.businessName ?? user?.email}
           </span>
+          <ThemeToggle label={t("auth.ui.pro.theme")} />
           <LangToggle />
           <button type="button" className="btn btn-ghost" onClick={() => void logout()}>
             {t("auth.ui.header.logout")}

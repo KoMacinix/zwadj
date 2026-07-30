@@ -507,6 +507,10 @@ model Venue {
   @@index([ownerId])
   @@index([basePriceCents]) // filtre budget
   @@index([capacityMax]) // filtre capacité
+  /// A13a — DOIT rester déclaré ici : l'index existe en base depuis la migration
+  /// `venue_styles_and_ceremony_type`, et tout index créé en SQL sans son
+  /// pendant Prisma est une DÉRIVE que `migrate dev` propose de supprimer.
+  @@index([ceremonyType])
   @@map("venues")
 }
 
@@ -639,6 +643,14 @@ model SlotTemplate {
   pricingRules PricingRule[]
 
   @@index([venueId])
+  /// B2 — cible de la FK COMPOSITE `pricing_rules_slot_belongs_to_venue`, qui
+  /// interdit qu'une règle de prix pointe le créneau d'une AUTRE salle. La
+  /// contrainte existait en base depuis A4, sans déclaration ici : Prisma la
+  /// voyait donc comme un objet inconnu et proposait de la supprimer — ce qui
+  /// emportait la FK avec elle. Le nom généré par Prisma
+  /// (`slot_templates_id_venue_id_key`) est exactement celui déjà en base :
+  /// déclarer ne recrée rien, cela cesse seulement de mentir.
+  @@unique([id, venueId])
   @@map("slot_templates")
 }
 

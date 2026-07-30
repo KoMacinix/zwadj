@@ -8,18 +8,11 @@
 // `login-form.test.tsx`), et ajouter une dépendance pour un clic serait payer
 // cher un `click()`.
 import { fireEvent, render, screen } from "@testing-library/react";
-import { NextIntlClientProvider } from "next-intl";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { THEME_STORAGE_KEY, ThemeToggle } from "./theme-toggle";
-
-const messages = { common: { theme: { toggle: "Changer de thème" } } };
+import { THEME_STORAGE_KEY, ThemeToggle } from "@zwadj/ui";
 
 function mount() {
-  return render(
-    <NextIntlClientProvider locale="fr" messages={messages}>
-      <ThemeToggle />
-    </NextIntlClientProvider>
-  );
+  return render(<ThemeToggle label="Changer de thème" />);
 }
 
 /** Simule la préférence SYSTÈME, que jsdom ne fournit pas. */
