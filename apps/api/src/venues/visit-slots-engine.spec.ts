@@ -59,7 +59,7 @@ describe("Découpage — jour de la semaine", () => {
 });
 
 describe("Découpage — rendez-vous déjà pris (D47)", () => {
-  it("un créneau pris est SIGNALÉ, pas retiré : le chevauchement est toléré", () => {
+  it("un créneau pris est SIGNALÉ, pas retiré — il reste visible pour aider à en choisir un autre (D59)", () => {
     const slots = run([MATIN], [600]);
     expect(slots).toHaveLength(6);
     expect(slots.find((s) => s.startMinutes === 600)?.taken).toBe(true);

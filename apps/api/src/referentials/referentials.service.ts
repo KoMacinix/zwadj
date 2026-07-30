@@ -1,7 +1,7 @@
 // Lectures des référentiels (Flux A, Lot A1). Aucune écriture ici : le
 // contenu vient du seed (prisma/seed.ts), jamais d'un endpoint.
 import { Injectable } from "@nestjs/common";
-import type { AmenityDTO, WilayaDTO } from "@zwadj/types";
+import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
@@ -37,5 +37,19 @@ export class ReferentialsService {
   async listAmenities(): Promise<AmenityDTO[]> {
     const amenities = await this.prisma.amenity.findMany({ orderBy: { nameFr: "asc" } });
     return amenities.map((a) => ({ id: a.id, key: a.key, nameFr: a.nameFr, nameAr: a.nameAr, icon: a.icon }));
+  }
+
+  /** D65 (A13) — tri par `sortOrder` puis `key` : l'ordre des puces est
+   *  ÉDITORIAL et doit être le même dans les deux langues. Trier par `nameFr`
+   *  comme les équipements donnerait un ordre arabe arbitraire. */
+  async listVenueStyles(): Promise<VenueStyleDTO[]> {
+    const styles = await this.prisma.venueStyle.findMany({ orderBy: [{ sortOrder: "asc" }, { key: "asc" }] });
+    return styles.map((s) => ({
+      id: s.id,
+      key: s.key,
+      nameFr: s.nameFr,
+      nameAr: s.nameAr,
+      sortOrder: s.sortOrder
+    }));
   }
 }

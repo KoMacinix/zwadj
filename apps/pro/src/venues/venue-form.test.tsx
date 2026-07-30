@@ -88,6 +88,8 @@ const VENUE: VenueProDTO = {
   publicationStatus: "DRAFT",
   status: "ACTIVE",
   amenityIds: [],
+  styleIds: [],
+  ceremonyType: null,
   photos: [],
   matterportModelId: null,
   createdAt: "2026-01-05T10:00:00.000Z",

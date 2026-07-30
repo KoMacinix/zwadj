@@ -13,7 +13,8 @@ import {
   type VenueListQueryInput,
   type VenueListResponse,
   type VenuePublicDTO,
-  type VenueSummaryDTO
+  type VenueSummaryDTO,
+  CEREMONY_TYPE_MATCHES
 } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
@@ -35,6 +36,7 @@ const VENUE_SUMMARY_SELECT = {
   capacityMax: true,
   basePriceCents: true,
   bookingMode: true,
+  ceremonyType: true,
   publicationStatus: true,
   // Couverture = PREMIÈRE photo par sortOrder (règle A4 verrouillée) — le
   // réordonnancement pro fait office de sélecteur de couverture.
@@ -68,7 +70,14 @@ const VENUE_PUBLIC_SELECT = {
   // D45 (A6a) : A8 monte l'iframe Matterport au geste utilisateur.
   matterportModelId: true,
   city: { select: { id: true, nameFr: true, nameAr: true } },
+  ceremonyType: true,
   amenities: { select: { amenity: { select: { id: true, key: true, nameFr: true, nameAr: true, icon: true } } } },
+  // D65 (A13) — tri fait EN BASE par l'ordre éditorial : le mapping n'a plus à
+  // décider, et il ne peut donc plus décider autrement que le référentiel.
+  styles: {
+    orderBy: [{ style: { sortOrder: "asc" } }, { styleId: "asc" }] as Prisma.VenueStyleLinkOrderByWithRelationInput[],
+    select: { style: { select: { id: true, key: true, nameFr: true, nameAr: true, sortOrder: true } } }
+  },
   // Lot A4 — galerie ordonnée (l'ordre du tableau EST l'ordre d'affichage).
   photos: {
     orderBy: [{ sortOrder: "asc" }, { id: "asc" }] as Prisma.VenuePhotoOrderByWithRelationInput[],
@@ -113,6 +122,7 @@ export class VenuesPublicService {
 
   async list(query: VenueListQueryInput): Promise<VenueListResponse> {
     const amenityKeys = [...new Set((query.amenities ?? "").split(",").filter((k) => k.length > 0))];
+    const styleKeys = [...new Set((query.styles ?? "").split(",").filter((k) => k.length > 0))];
 
     const where: Prisma.VenueWhereInput = {
       ...PUBLIC_BASE_WHERE,
@@ -130,6 +140,29 @@ export class VenuesPublicService {
               ...(query.maxPriceCents === undefined ? {} : { lte: query.maxPriceCents })
             }
           }),
+      // D68 (A13) — les deux poignées du curseur de capacité portent sur la MÊME
+      // colonne : `guests` en est le plancher (D36 inchangé), `maxCapacity` le
+      // plafond. Fusionnées en un seul objet, sinon la seconde écraserait la
+      // première dans le littéral.
+      ...(query.guests === undefined && query.maxCapacity === undefined
+        ? {}
+        : {
+            capacityMax: {
+              ...(query.guests === undefined ? {} : { gte: query.guests }),
+              ...(query.maxCapacity === undefined ? {} : { lte: query.maxCapacity })
+            }
+          }),
+      // D66 (A13) — filtre INCLUSIF, jamais une égalité : une salle MIXED répond
+      // à une demande `indoor` comme à une demande `outdoor`. `in` porte la
+      // table de correspondance de @zwadj/types — une seule règle, partagée.
+      ...(query.ceremonyType === undefined
+        ? {}
+        : { ceremonyType: { in: CEREMONY_TYPE_MATCHES[query.ceremonyType] } }),
+      // D65 (A13) — sémantique OU, à la différence des équipements juste en
+      // dessous : cocher Jardin ET Bord de mer demande les deux listes, pas leur
+      // intersection (presque toujours vide). Un style est un goût, un
+      // équipement est une exigence.
+      ...(styleKeys.length === 0 ? {} : { styles: { some: { style: { key: { in: styleKeys } } } } }),
       // Sémantique ET : la salle doit posséder CHAQUE clé demandée.
       ...(amenityKeys.length === 0
         ? {}
@@ -202,6 +235,7 @@ export class VenuesPublicService {
       capacityMax: row.capacityMax,
       basePriceCents: row.basePriceCents,
       bookingMode: row.bookingMode,
+      ceremonyType: row.ceremonyType,
       publicationStatus: row.publicationStatus,
       coverThumbUrl: row.photos[0] === undefined ? null : this.urlOf(row.photos[0].thumbKey),
       photoCount: row._count.photos
@@ -231,6 +265,9 @@ export class VenuesPublicService {
       amenities: row.amenities
         .map((link) => link.amenity)
         .sort((a, b) => a.nameFr.localeCompare(b.nameFr, "fr")),
+      ceremonyType: row.ceremonyType,
+      // Déjà trié par la requête (ordre éditorial) — aucun second tri ici.
+      styles: row.styles.map((link) => link.style),
       photos: row.photos.map((p) => ({
         id: p.id,
         url: this.urlOf(p.storageKey),

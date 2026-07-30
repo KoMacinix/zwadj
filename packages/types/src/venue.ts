@@ -1,6 +1,11 @@
 import { z } from "zod";
+// D61 (C3) — le téléphone de contact d'un rendez-vous de visite réutilise la
+// SEULE définition du format algérien, celle de la tranche auth. En recopier la
+// regex ici créerait deux vérités sur le même format (patron déjà en place dans
+// `account.ts`).
+import { dzPhoneSchema } from "./auth";
 import { PRICING_RULE_TYPES, type PricingRuleType } from "./enums";
-import { BookingMode, VenueAvailabilityStatus, type VenuePublicationStatus } from "./enums";
+import { BookingMode, CeremonyType, VenueAvailabilityStatus, type VenuePublicationStatus, type VisitStatus } from "./enums";
 import { VENUE_MEDIA_CAPS } from "./media";
 import type { AmenityDTO } from "./referentials";
 
@@ -20,6 +25,8 @@ export interface VenueSummaryDTO {
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
   bookingMode: BookingMode;
+  /** D66 (A13) — `null` : la salle ne l'a pas encore déclaré. */
+  ceremonyType: CeremonyType | null;
   publicationStatus: VenuePublicationStatus;
   /** Lot A4 — règle verrouillée : couverture = PREMIÈRE photo par sortOrder
    *  (thumb 480). Sert les cartes A7, les OG tags (9.9) et schema.org (23.8) ;
@@ -137,7 +144,18 @@ export const venueUpdateSchema = z
     status: availabilityStatusSchema.optional(),
     /** A3-① : REMPLACEMENT de l'ensemble des équipements (ids du référentiel
      *  Amenity). Doublons dédupliqués côté service ; id inconnu → 400. */
-    amenityIds: z.array(z.string().uuid("venue.validation.amenityInvalid")).max(50, "venue.validation.amenitiesTooMany").optional()
+    amenityIds: z.array(z.string().uuid("venue.validation.amenityInvalid")).max(50, "venue.validation.amenitiesTooMany").optional(),
+    /** D65 (A13) — REMPLACEMENT de l'ensemble des styles (ids du référentiel
+     *  VenueStyle), même contrat qu'`amenityIds` : tableau vide = plus aucun
+     *  style, absent = inchangé. */
+    styleIds: z.array(z.string().uuid("venue.validation.styleInvalid")).max(20, "venue.validation.stylesTooMany").optional(),
+    /** D66 (A13) — `null` efface explicitement (la salle ne le déclare plus). */
+    ceremonyType: z
+      .enum([CeremonyType.INDOOR, CeremonyType.OUTDOOR, CeremonyType.MIXED], {
+        errorMap: () => ({ message: "venue.validation.ceremonyTypeInvalid" })
+      })
+      .nullable()
+      .optional()
   })
   .strict("venue.validation.unknownKey")
   .superRefine((v, ctx) => {
@@ -361,7 +379,35 @@ export const VenueErrorCode = {
   /** D47 (C1) — 409 : deux plages de visite du MÊME jour se chevauchent.
    *  Refusé parce que C2 découpera ces plages en créneaux : deux plages qui se
    *  recouvrent produiraient le même créneau deux fois. */
-  VISIT_AVAILABILITY_OVERLAP: "VISIT_AVAILABILITY_OVERLAP"
+  VISIT_AVAILABILITY_OVERLAP: "VISIT_AVAILABILITY_OVERLAP",
+  /** D65 (A13) — 400 : un id de style absent du référentiel. Comme pour les
+   *  équipements, on refuse AVANT l'écriture plutôt que de laisser remonter une
+   *  violation de clé étrangère en 500. */
+  VENUE_STYLE_NOT_FOUND: "VENUE_STYLE_NOT_FOUND",
+  /** D61 (C3) — 409 : ce créneau n'EXISTE pas. Hors de toute plage active,
+   *  plage suspendue, créneau déjà passé (filtré à la MINUTE), ou date au-delà
+   *  de l'horizon de 18 mois. Distinct de VISIT_SLOT_TAKEN : « il n'y a rien à
+   *  cette heure-là » et « quelqu'un vient de le prendre » demandent deux
+   *  phrases différentes au client. */
+  VISIT_SLOT_UNAVAILABLE: "VISIT_SLOT_UNAVAILABLE",
+  /** D59/D61 (C3) — 409 : le créneau est DÉJÀ PRIS. Ce code ne peut sortir que
+   *  de la traduction du `P2002` de `visit_bookings_no_double_confirmed` :
+   *  l'exclusivité appartient à la base, jamais à une vérification applicative
+   *  qui laisserait une fenêtre entre le test et l'insertion. */
+  VISIT_SLOT_TAKEN: "VISIT_SLOT_TAKEN",
+  /** D62 (C3) — 409 : ce client a déjà un rendez-vous CONFIRMÉ à venir dans
+   *  CETTE salle. Garde anti-nuisance née de D59 : sous la tolérance au
+   *  chevauchement, réserver seize créneaux ne gênait personne ; sous
+   *  l'exclusivité, cela tue la journée du pro. Une autre salle, ou un
+   *  rendez-vous déjà passé, ne bloquent rien. */
+  VISIT_ALREADY_BOOKED: "VISIT_ALREADY_BOOKED",
+  /** D62 (C3) — 404 INDISTINCT « parmi MES rendez-vous » : id malformé,
+   *  inexistant, ou rendez-vous d'un autre client. */
+  VISIT_BOOKING_NOT_FOUND: "VISIT_BOOKING_NOT_FOUND",
+  /** D62 (C3) — 409 : on n'annule pas un rendez-vous déjà passé. « Le client a
+   *  annulé » et « le client n'est pas venu » ne sont pas le même fait, et
+   *  écraser l'un par l'autre trompe le pro. */
+  VISIT_BOOKING_PAST: "VISIT_BOOKING_PAST"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -399,6 +445,10 @@ export interface VenueProDTO {
   status: VenueAvailabilityStatus;
   /** A3-① : ids d'équipements, triés — remplacés en bloc via PATCH amenityIds. */
   amenityIds: string[];
+  /** D65 (A13) — ids de styles, triés ; remplacés en bloc via PATCH styleIds. */
+  styleIds: string[];
+  /** D66 (A13) — `null` : la salle ne l'a pas encore déclaré. */
+  ceremonyType: CeremonyType | null;
   /** Lot A4 — photos triées par sortOrder (l'ordre du tableau = l'affichage). */
   photos: VenuePhotoDTO[];
   /** D46 (B1) — créneaux de fête, triés par heure de début puis id. Ils
@@ -599,6 +649,39 @@ export type VenueRatesUpdateInput = z.infer<typeof venueRatesUpdateSchema>;
 export const VENUE_LIST_SORTS = ["recent", "price_asc", "price_desc"] as const;
 export type VenueListSort = (typeof VENUE_LIST_SORTS)[number];
 
+/* ════════ Flux A, Lot A13 — styles & type de cérémonie (D65, D66) ═══════════ */
+
+/** D65 — un style tel que le référentiel le publie. Même forme qu'`AmenityDTO` :
+ *  la `key` est ce que les filtres transportent, les libellés ne servent qu'à
+ *  l'affichage. Pas d'`icon` : le design rend les styles en PUCES de texte, et
+ *  un champ que personne ne lit finit par mentir. */
+export interface VenueStyleDTO {
+  id: string;
+  key: string;
+  nameFr: string;
+  nameAr: string;
+  sortOrder: number;
+}
+
+/** D66 — les trois valeurs, en minuscules dans l'URL (`?ceremonyType=outdoor`)
+ *  comme le reste des paramètres de recherche, converties côté service. */
+export const CEREMONY_TYPE_FILTERS = ["indoor", "outdoor", "mixed"] as const;
+export type CeremonyTypeFilter = (typeof CEREMONY_TYPE_FILTERS)[number];
+
+/** Filtre → valeurs de base RETENUES. Une seule table pour la règle, sinon
+ *  l'API et l'écran finiraient par ne plus dire la même chose.
+ *
+ *  ⚠ ASYMÉTRIE VOULUE : « je veux l'extérieur » accepte une salle MIXTE (elle
+ *  propose l'extérieur), mais « je veux mixte » n'accepte QUE mixte — là, la
+ *  demande porte sur les deux possibilités à la fois. Filtrer par égalité
+ *  cacherait toutes les salles mixtes à qui cherche un mariage en extérieur :
+ *  exactement la mauvaise réponse. */
+export const CEREMONY_TYPE_MATCHES: Record<CeremonyTypeFilter, CeremonyType[]> = {
+  indoor: [CeremonyType.INDOOR, CeremonyType.MIXED],
+  outdoor: [CeremonyType.OUTDOOR, CeremonyType.MIXED],
+  mixed: [CeremonyType.MIXED]
+};
+
 /**
  * Querystring de GET /venues (liste publique). VOLONTAIREMENT non-strict :
  * les clés inconnues (utm_*, fbclid…) sont ignorées, jamais un 400 — une URL
@@ -627,6 +710,26 @@ export const venueListQuerySchema = z
       .int("venue.validation.priceFilterInvalid")
       .min(0, "venue.validation.priceFilterInvalid")
       .optional(),
+    /** D68 (A13) — plafond de capacité de la SALLE, en regard de `guests` qui en
+     *  est le plancher. Deux noms pour deux rôles : `guests` dit « j'ai tant
+     *  d'invités » (donc capacityMax ≥ guests, D36 inchangé), `maxCapacity` dit
+     *  « pas plus grand que ça » — une fête de 80 personnes dans une salle de
+     *  800 sonne vide et coûte plus cher. */
+    maxCapacity: z.coerce
+      .number({ invalid_type_error: "venue.validation.guestsInvalid" })
+      .int("venue.validation.guestsInvalid")
+      .min(1, "venue.validation.guestsInvalid")
+      .max(10_000, "venue.validation.guestsInvalid")
+      .optional(),
+    /** D65 — clés de styles séparées par des virgules, sémantique **OU**. */
+    styles: z
+      .string()
+      .regex(/^[a-z0-9-]+(?:,[a-z0-9-]+)*$/, "venue.validation.stylesFilterInvalid")
+      .optional(),
+    /** D66 — filtre INCLUSIF, voir CEREMONY_TYPE_MATCHES. */
+    ceremonyType: z
+      .enum(CEREMONY_TYPE_FILTERS, { errorMap: () => ({ message: "venue.validation.ceremonyTypeInvalid" }) })
+      .optional(),
     /** Clés d'amenities séparées par des virgules — sémantique ET (toutes). */
     amenities: z
       .string()
@@ -644,6 +747,11 @@ export const venueListQuerySchema = z
   .superRefine((v, ctx) => {
     if (v.minPriceCents !== undefined && v.maxPriceCents !== undefined && v.minPriceCents > v.maxPriceCents) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["maxPriceCents"], message: "venue.validation.priceRangeInvalid" });
+    }
+    // D68 — deux poignées d'un même curseur : la basse ne peut pas dépasser la
+    // haute. Une plage inversée ne rend rien ET n'a rien à afficher.
+    if (v.guests !== undefined && v.maxCapacity !== undefined && v.guests > v.maxCapacity) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["maxCapacity"], message: "venue.validation.capacityRangeInvalid" });
     }
   });
 export type VenueListQueryInput = z.infer<typeof venueListQuerySchema>;
@@ -702,6 +810,10 @@ export interface VenuePublicDTO {
   city: VenuePublicCityDTO;
   /** Référentiel complet (clé stable + libellés + icône), trié par nameFr. */
   amenities: AmenityDTO[];
+  /** D65 (A13) — styles de la salle, triés par `sortOrder` (ordre éditorial). */
+  styles: VenueStyleDTO[];
+  /** D66 (A13) — `null` : la salle ne l'a pas encore déclaré. */
+  ceremonyType: CeremonyType | null;
   /** Lot A4 — galerie (ordre du tableau = sortOrder ; couverture = 1ʳᵉ). */
   photos: VenuePublicPhotoDTO[];
   /** D45 (A6a) — identifiant du modèle Matterport, `null` si la salle n'a pas
@@ -1017,3 +1129,62 @@ export const proNotificationChannelsSchema = z
     message: "account.validation.oneChannelRequired"
   });
 export type ProNotificationChannelsInput = z.infer<typeof proNotificationChannelsSchema>;
+
+
+/* ═════════════ Flux C, Lot C3 — prise de rendez-vous (D61, D62) ══════════════ */
+
+/** D61 — le client renvoie le créneau qu'il a CHOISI, dans le repère où il l'a
+ *  reçu : une date civile et des minutes depuis minuit. **Jamais un instant
+ *  ISO** — accepter un horodatage offsetté laisserait le navigateur choisir le
+ *  fuseau, ce que D48 interdit précisément ; la conversion en instant se fait
+ *  côté serveur, une seule fois, avec le décalage d'Alger et lui seul.
+ *
+ *  `phone` est OPTIONNEL (décision de Ko) : exiger un numéro à l'étape du
+ *  rendez-vous coûterait des rendez-vous, et le pro dispose toujours de
+ *  l'e-mail du client. Le numéro du PRO, lui, est structurellement obligatoire
+ *  — c'est le destinataire WhatsApp de D60.
+ *
+ *  ⚠ `startMinutes` est borné à la JOURNÉE (0–1439), pas à « 1440 − 30 » : ce
+ *  schéma dit seulement « une minute réelle du jour ». Savoir si un créneau
+ *  EXISTE appartient au découpage des plages (`computeVisitSlots`), et une
+ *  borne ne se valide jamais deux fois (D55). */
+export const visitBookingCreateSchema = z
+  .object({
+    date: z.string().refine(isRealCivilDate, "venue.validation.dateFormat"),
+    startMinutes: z
+      .number()
+      .int()
+      .min(0, "venue.validation.visitOutOfDay")
+      .max(1439, "venue.validation.visitOutOfDay"),
+    phone: dzPhoneSchema.optional()
+  })
+  .strict();
+export type VisitBookingCreateInput = z.infer<typeof visitBookingCreateSchema>;
+
+/** Rendez-vous de visite tel que le client le relit.
+ *
+ *  ⚠ Pas de `durationMinutes` : `VISIT_DURATION_MINUTES` est une constante
+ *  partagée que le front importe (D58). La répéter sur chaque ligne serait une
+ *  occasion de divergence pour une valeur que la plateforme connaît déjà.
+ *
+ *  `date` et `startMinutes` sont REDÉRIVÉS de `scheduledAt` par l'arithmétique
+ *  civile du serveur (symétrie D51) : le client relit exactement le repère
+ *  qu'il a envoyé, et n'héberge aucune seconde décision de fuseau. */
+export interface VisitBookingDTO {
+  id: string;
+  venueId: string;
+  venueSlug: string;
+  venueNameFr: string;
+  venueNameAr: string;
+  /** Date civile locale `YYYY-MM-DD`. */
+  date: string;
+  startMinutes: number;
+  /** Instant absolu, pour tout tri ou comparaison — jamais pour l'affichage. */
+  scheduledAt: string;
+  status: VisitStatus;
+  /** D61 — SNAPSHOT du contact au moment du rendez-vous. `null` quand ni le
+   *  corps ni le profil ne portaient de numéro. */
+  contactPhone: string | null;
+  cancelledAt: string | null;
+  createdAt: string;
+}

@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "../i18n/navigation";
 import { useAuth } from "../lib/auth/auth-context";
 import { SiteNav } from "./site-nav";
+import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
   const t = useTranslations("auth.ui.header");
@@ -29,6 +30,7 @@ export function SiteHeader() {
       </Link>
       <SiteNav />
       <div className="header-auth">
+        <ThemeToggle />
         {status === "authenticated" && user ? (
           <AccountMenu
             // Prénom + nom quand les deux existent ; sinon ce qu'on a. Le

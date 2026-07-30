@@ -138,6 +138,7 @@ describe("GET /venues — matrice de visibilité D33 (liste = ACTIVE seul)", () 
         "capacityMax",
         "basePriceCents",
         "bookingMode",
+        "ceremonyType", // Lot A13 — D66, la carte l'affiche en pastille
         "publicationStatus",
         "coverThumbUrl", // Lot A4 — couverture (thumb de la 1ʳᵉ photo)
         "photoCount" // Lot A4 — signal « complétude »

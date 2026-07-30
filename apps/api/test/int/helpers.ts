@@ -5,6 +5,7 @@ import { AppModule } from "../../src/app.module";
 import { configureApp } from "../../src/app.setup";
 import { GOOGLE_TOKEN_VERIFIER, GoogleTokenInvalidError, type GoogleIdTokenPayload } from "../../src/auth/google.types";
 import { EMAIL_SENDER, type SendEmailInput } from "../../src/common/email/email.types";
+import { WHATSAPP_SENDER, type SendWhatsAppInput } from "../../src/common/whatsapp/whatsapp.types";
 import { PrismaService } from "../../src/prisma/prisma.service";
 
 export interface TestContext {
@@ -12,6 +13,12 @@ export interface TestContext {
   prisma: PrismaService;
   /** Emails « envoyés » pendant le test — capturés au niveau du port EMAIL_SENDER. */
   emails: SendEmailInput[];
+  /** Lot C3 (D63) — messages WhatsApp « envoyés », capturés au port WHATSAPP_SENDER. */
+  whatsapps: SendWhatsAppInput[];
+  /** Lot C3 (D63) — bascules d'ÉCHEC des deux ports. D63 exige qu'un envoi tombé
+   *  n'annule PAS un rendez-vous confirmé : ce chemin ne se prouve qu'avec un
+   *  envoyeur qui LÈVE, et il doit pouvoir être rallumé au milieu d'un spec. */
+  senders: { failEmail: boolean; failWhatsApp: boolean };
   /** Lot 8 : table idToken → payload du FAUX vérificateur Google. Les specs y
    *  déposent leurs tokens ; tout token ABSENT est rejeté comme invalide —
    *  Google n'est jamais joint depuis la suite (la vérification réelle avec
@@ -26,6 +33,8 @@ export interface TestContext {
  *  globaux sur des routes qui n'existent pas encore dans le domaine (RBAC). */
 export async function createTestApp(options?: { controllers?: Type<unknown>[] }): Promise<TestContext> {
   const emails: SendEmailInput[] = [];
+  const whatsapps: SendWhatsAppInput[] = [];
+  const senders = { failEmail: false, failWhatsApp: false };
   const googleTokens = new Map<string, GoogleIdTokenPayload>();
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
@@ -34,7 +43,15 @@ export async function createTestApp(options?: { controllers?: Type<unknown>[] })
     .overrideProvider(EMAIL_SENDER)
     .useValue({
       send: async (input: SendEmailInput) => {
+        if (senders.failEmail) throw new Error("panne de transport e-mail (test)");
         emails.push(input);
+      }
+    })
+    .overrideProvider(WHATSAPP_SENDER)
+    .useValue({
+      send: async (input: SendWhatsAppInput) => {
+        if (senders.failWhatsApp) throw new Error("panne de transport WhatsApp (test)");
+        whatsapps.push(input);
       }
     })
     .overrideProvider(GOOGLE_TOKEN_VERIFIER)
@@ -50,7 +67,7 @@ export async function createTestApp(options?: { controllers?: Type<unknown>[] })
   const app = moduleRef.createNestApplication({ logger: false });
   configureApp(app);
   await app.init();
-  return { app, prisma: app.get(PrismaService), emails, googleTokens };
+  return { app, prisma: app.get(PrismaService), emails, whatsapps, senders, googleTokens };
 }
 
 /** Vide toutes les tables entre les tests (identifiants issus de pg_tables —

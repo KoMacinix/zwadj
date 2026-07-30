@@ -7,6 +7,7 @@ import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { RolesGuard } from "./auth/roles.guard";
 import { EmailModule } from "./common/email/email.module";
+import { WhatsAppModule } from "./common/whatsapp/whatsapp.module";
 import { ConfigModule } from "./config/config.module";
 import { HealthModule } from "./health/health.module";
 import { MediaModule } from "./media/media.module";
@@ -35,6 +36,9 @@ import { VenuesModule } from "./venues/venues.module";
     }),
     PrismaModule,
     EmailModule,
+    // D63 (C3) — port WhatsApp, symétrique d'EmailModule : adaptateur de dev
+    // aujourd'hui, transport réel plus tard sans qu'un appelant change.
+    WhatsAppModule,
     AuthModule,
     AccountModule,
     HealthModule,

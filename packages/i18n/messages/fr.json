@@ -275,6 +275,9 @@
     "time": {
       "hours": "Heures",
       "minutes": "Minutes"
+    },
+    "theme": {
+      "toggle": "Changer de thème"
     }
   },
   "home": {
@@ -367,7 +370,12 @@
       "seasonBoundsRequired": "Une règle de saison doit avoir un mois de début et un mois de fin.",
       "weekdaysRequired": "Une règle de jour doit cocher au moins un jour.",
       "visitDayInvalid": "Le jour doit être compris entre dimanche et samedi.",
-      "visitOutOfDay": "L'horaire doit tenir dans la journée. Une visite ne se prolonge pas après minuit."
+      "visitOutOfDay": "L'horaire doit tenir dans la journée. Une visite ne se prolonge pas après minuit.",
+      "styleInvalid": "Identifiant de style invalide.",
+      "stylesTooMany": "Trop de styles sélectionnés.",
+      "stylesFilterInvalid": "Filtre de styles invalide.",
+      "ceremonyTypeInvalid": "Type de mariage invalide.",
+      "capacityRangeInvalid": "Le nombre minimum d'invités dépasse le maximum."
     },
     "errors": {
       "amenityNotFound": "Un des équipements sélectionnés est introuvable.",
@@ -386,7 +394,13 @@
       "blockConflict": "Cette période contient une réservation confirmée : elle ne peut pas être bloquée.",
       "pricingRuleNotFound": "Cette règle de prix est introuvable.",
       "visitNotFound": "Cette plage de visite est introuvable.",
-      "visitOverlap": "Cette plage en chevauche une autre le même jour. Deux plages de visite ne peuvent pas se recouvrir."
+      "visitOverlap": "Cette plage en chevauche une autre le même jour. Deux plages de visite ne peuvent pas se recouvrir.",
+      "visitSlotUnavailable": "Ce créneau n'est plus proposé pour cette date. Choisissez-en un autre dans le calendrier.",
+      "visitSlotTaken": "Ce créneau vient d'être réservé par quelqu'un d'autre. Choisissez-en un autre.",
+      "visitAlreadyBooked": "Vous avez déjà un rendez-vous de visite à venir dans cette salle. Annulez-le pour en choisir un autre.",
+      "visitBookingNotFound": "Ce rendez-vous est introuvable.",
+      "visitBookingPast": "Ce rendez-vous est déjà passé : il ne peut plus être annulé.",
+      "styleNotFound": "Ce style n'existe pas."
     },
     "ui": {
       "list": {
@@ -602,6 +616,11 @@
           "BLOCKED": "Bloqué"
         }
       }
+    },
+    "ceremonyType": {
+      "indoor": "Intérieur",
+      "outdoor": "Extérieur",
+      "mixed": "Mixte"
     }
   },
   "search": {
@@ -689,6 +708,20 @@
         "BOOKED": "Réservé",
         "BLOCKED": "Indisponible"
       }
+    }
+  },
+  "visit": {
+    "emails": {
+      "proBookedSubject": "Nouveau rendez-vous de visite — {venue}",
+      "proBookedBody": "Bonjour,\n\n{client} souhaite visiter {venue}.\n\nQuand : {date} à {time} (30 minutes)\nPour rappeler : {contact}\n\nLe rendez-vous est déjà confirmé — vous n'avez rien à valider. Si l'horaire ne vous convient pas, contactez le client ou annulez depuis votre espace.",
+      "proCancelledSubject": "Rendez-vous de visite annulé — {venue}",
+      "proCancelledBody": "Bonjour,\n\n{client} a annulé son rendez-vous de visite à {venue}.\n\nCréneau libéré : {date} à {time}\n\nIl redevient disponible pour un autre client.",
+      "clientConfirmedSubject": "Votre visite est confirmée — {venue}",
+      "clientConfirmedBody": "Bonjour,\n\nVotre rendez-vous de visite est confirmé.\n\nSalle : {venue}\nQuand : {date} à {time} (30 minutes)\n\nPensez à prévenir la salle si vous ne pouvez plus venir : vous pouvez annuler depuis « Mes rendez-vous »."
+    },
+    "whatsapp": {
+      "proBooked": "Zwadj — nouveau rendez-vous de visite à {venue} : {date} à {time} (30 min), demandé par {client}. Pour rappeler : {contact}. Déjà confirmé, rien à valider.",
+      "proCancelled": "Zwadj — {client} a annulé sa visite à {venue} du {date} à {time}. Le créneau est de nouveau libre."
     }
   }
 }

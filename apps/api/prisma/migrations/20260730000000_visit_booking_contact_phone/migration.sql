@@ -1,0 +1,17 @@
+-- =============================================================================
+-- Flux C, Lot C3 — D61 : téléphone de contact SNAPSHOTÉ sur le rendez-vous
+-- =============================================================================
+--
+-- Le pro rappelle sur le numéro donné AU MOMENT du rendez-vous, pas sur celui
+-- que le client aurait changé depuis : même patron de snapshot que
+-- `bookings.contact_phone`.
+--
+-- NULLABLE, décision de Ko : le téléphone du PRO est structurellement
+-- obligatoire (c'est le destinataire WhatsApp de D60), celui du CLIENT ne l'est
+-- pas. Exiger un numéro à l'étape du rendez-vous coûterait des rendez-vous, et
+-- le pro dispose toujours de l'e-mail du client.
+--
+-- Aucun CHECK de format : `dzPhoneSchema` valide déjà +213 à l'entrée, et ni
+-- `pro_profiles.phone` ni `bookings.contact_phone` n'en portent. Une borne ne se
+-- valide jamais deux fois (D55).
+ALTER TABLE "visit_bookings" ADD COLUMN "contact_phone" TEXT;

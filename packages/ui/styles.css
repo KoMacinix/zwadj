@@ -35,6 +35,78 @@
   --shadow-modal: 0 32px 80px rgba(24, 24, 27, 0.16);
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   MODE SOMBRE (Lot UI-D1 — D64). Valeurs reprises du design de référence.
+
+   Les hex sombres sont déclarés UNE SEULE FOIS ci-dessous, puis simplement
+   REMAPPÉS par les deux règles qui les activent. La liste de remappage, elle,
+   est écrite deux fois par nécessité : une media query ne peut pas partager
+   son sélecteur avec une règle hors media query, et le choix EXPLICITE doit
+   fonctionner même sous un système en mode clair. Ce qui compte est qu'une
+   couleur ne se change jamais qu'à un seul endroit.
+
+   Deux déclencheurs, par ordre de priorité :
+     1. `[data-theme]` sur <html> = choix explicite de la personne ;
+     2. `prefers-color-scheme` = préférence du système, à défaut de choix.
+   Le `:not([data-theme="light"])` est ce qui permet de RESTER en clair sous un
+   système sombre — sans lui, le choix explicite serait ignoré.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --dark-bg: #111111;
+  --dark-surface: #1c1c1c;
+  --dark-bg-2: #252525;
+  --dark-ink: #f0f0f0;
+  --dark-ink-2: #ababab;
+  --dark-ink-mute: #777777;
+  --dark-line: #333333;
+  /* Les tons « soft » clairs (#fef2f2, #f0fdf4) sont des voiles blancs : sur
+     fond sombre ils éblouissent. Leurs équivalents sont des teintes PROFONDES
+     de la même couleur, pas les mêmes valeurs assombries. */
+  --dark-danger: #f0736b;
+  --dark-danger-soft: #2a1512;
+  --dark-success: #5cbb7d;
+  --dark-success-soft: #12241a;
+  --dark-shadow-modal: 0 32px 80px rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--dark-bg);
+    --surface: var(--dark-surface);
+    --bg-2: var(--dark-bg-2);
+    --ink: var(--dark-ink);
+    --ink-2: var(--dark-ink-2);
+    --ink-mute: var(--dark-ink-mute);
+    --line: var(--dark-line);
+    --danger: var(--dark-danger);
+    --danger-soft: var(--dark-danger-soft);
+    --success: var(--dark-success);
+    --success-soft: var(--dark-success-soft);
+    --shadow-modal: var(--dark-shadow-modal);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --bg-2: var(--dark-bg-2);
+  --ink: var(--dark-ink);
+  --ink-2: var(--dark-ink-2);
+  --ink-mute: var(--dark-ink-mute);
+  --line: var(--dark-line);
+  --danger: var(--dark-danger);
+  --danger-soft: var(--dark-danger-soft);
+  --success: var(--dark-success);
+  --success-soft: var(--dark-success-soft);
+  --shadow-modal: var(--dark-shadow-modal);
+  /* `color-scheme` fait suivre ce que le CSS ne peint pas : barres de
+     défilement, listes natives, autofill. Sans lui, un <select> reste blanc
+     au milieu d'une page sombre. */
+  color-scheme: dark;
+}
+
 *,
 *::before,
 *::after {

@@ -57,6 +57,8 @@ function venue(over: Partial<VenuePublicDTO> = {}): VenuePublicDTO {
     status: "ACTIVE",
     city: { id: "c1", nameFr: "Bab Ezzouar", nameAr: "باب الزوار" },
     amenities: [{ id: "a1", key: "wifi", nameFr: "Wifi", nameAr: "واي فاي", icon: "wifi" }],
+    styles: [],
+    ceremonyType: null,
     photos: [photo(1), photo(2)],
     matterportModelId: "SxQL3iGyoDo",
     ...over
