@@ -187,7 +187,10 @@ enum ModerationStatus {
 }
 
 enum NotificationChannel {
-  EMAIL // SMS différé post-MVP (assumptions backlog)
+  EMAIL
+  /// D60 — transport WhatsApp : c'est ce que les pros algériens utilisent
+  /// réellement pour leur activité, pas le SMS opérateur.
+  SMS
 }
 
 enum NotificationStatus {
@@ -367,6 +370,12 @@ model ProProfile {
   /// deux numéros, mais un seul reste obligatoire.
   phone2             String?  @map("phone2")
   registrationNumber String?  @map("registration_number") // RC/NIF — KYC P1
+  /// D60 — canaux de notification choisis par le pro. DEUX booléens et non un
+  /// enum { EMAIL, SMS, BOTH } : un enum explose dès le troisième canal.
+  /// `CHECK pro_profiles_one_channel_required` interdit de tout couper — un pro
+  /// sans canal ne verrait plus jamais une demande arriver.
+  notifyByEmail      Boolean  @default(true) @map("notify_by_email")
+  notifyBySms        Boolean  @default(false) @map("notify_by_sms")
   createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -572,13 +581,18 @@ model SlotTemplate {
   nameAr       String   @map("name_ar")
   startMinutes Int      @map("start_minutes")
   endMinutes   Int      @map("end_minutes")
+  // D46 (B1) — le prix appartient au CRÉNEAU. Venue.basePriceCents n'est plus
+  // qu'un dérivé : le minimum des créneaux actifs, recalculé dans la MÊME
+  // transaction (la recherche publique A3/A7 filtre et trie dessus).
+  basePriceCents Int    @map("base_price_cents")
   isActive     Boolean  @default(true) @map("is_active") // retrait sans casser l'historique
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  venue    Venue     @relation(fields: [venueId], references: [id], onDelete: Cascade)
-  bookings Booking[]
-  quotes   Quote[]
+  venue        Venue         @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  bookings     Booking[]
+  quotes       Quote[]
+  pricingRules PricingRule[]
 
   @@index([venueId])
   @@map("slot_templates")
@@ -616,23 +630,32 @@ model AvailabilityBlock {
 //   HOLIDAY → aucun champ : s'applique quand la date ∈ table holidays
 // En cas de règles multiples applicables : la plus haute `priority` gagne
 // (pas de cumul) — à confirmer, cf. questions ouvertes.
+// D46 (B2) — la règle appartient à un CRÉNEAU et porte un PRIX ABSOLU.
+// `venueId` est CONSERVÉ, dénormalisé : il permet l'agrégat du « à partir de »
+// public sans jointure, et une FK composite garantit qu'une règle ne peut pas
+// pointer le créneau d'une AUTRE salle (même patron que les renforts SQL A4).
 model PricingRule {
-  id            String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  venueId       String          @map("venue_id") @db.Uuid
-  ruleType      PricingRuleType @map("rule_type")
-  label         String? // libellé pro ("Haute saison été")
-  multiplierBps Int             @map("multiplier_bps")
-  startMonth    Int?            @map("start_month")
-  endMonth      Int?            @map("end_month")
-  daysOfWeek    Int[]           @map("days_of_week")
-  priority      Int             @default(0)
-  isActive      Boolean         @default(true) @map("is_active")
-  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id             String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  venueId        String          @map("venue_id") @db.Uuid
+  slotTemplateId String          @map("slot_template_id") @db.Uuid
+  ruleType       PricingRuleType @map("rule_type")
+  label          String? // libellé pro ("Haute saison été")
+  // Prix ABSOLU, plus un multiplicateur : c'est ce qui rend la résolution
+  // « une seule règle gagne » — des prix absolus ne se composent pas.
+  priceCents     Int             @map("price_cents")
+  startMonth     Int?            @map("start_month")
+  endMonth       Int?            @map("end_month")
+  daysOfWeek     Int[]           @map("days_of_week")
+  priority       Int             @default(0)
+  isActive       Boolean         @default(true) @map("is_active")
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  venue Venue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  venue        Venue        @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  slotTemplate SlotTemplate @relation(fields: [slotTemplateId], references: [id], onDelete: Cascade)
 
   @@index([venueId])
+  @@index([slotTemplateId])
   @@map("pricing_rules")
 }
 
@@ -786,6 +809,10 @@ model VisitBooking {
   @@index([venueId, scheduledAt])
   @@index([clientId])
   @@map("visit_bookings")
+  /// D59 (supersède D47) — un créneau CONFIRMÉ est EXCLUSIF. Index unique
+  /// PARTIEL posé en SQL manuel (`visit_bookings_no_double_confirmed`) : Prisma
+  /// n'exprime pas le `WHERE status = 'CONFIRMED'`, et ce filtre est ce qui
+  /// permet à une visite annulée de LIBÉRER son créneau.
 }
 
 // =============================================================================

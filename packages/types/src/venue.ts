@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PRICING_RULE_TYPES, type PricingRuleType } from "./enums";
 import { BookingMode, VenueAvailabilityStatus, type VenuePublicationStatus } from "./enums";
 import { VENUE_MEDIA_CAPS } from "./media";
 import type { AmenityDTO } from "./referentials";
@@ -151,6 +152,154 @@ export const venueUpdateSchema = z
 export type VenueUpdateInput = z.infer<typeof venueUpdateSchema>;
 
 /** Codes d'erreur métier venues (stables, consommés par les fronts). */
+/** Bornes d'un créneau, en MINUTES depuis minuit du jour de DÉBUT. Un entier
+ *  plutôt qu'une heure : pas de fuseau, pas d'heure d'été, chevauchement
+ *  trivial à calculer.
+ *
+ *  La fin peut DÉPASSER 1440 : une soirée de mariage algérienne finit après
+ *  minuit, et c'est le cas NORMAL, pas l'exception — 20h → 02h s'écrit
+ *  1200 → 1560. Ces bornes reprennent exactement le CHECK
+ *  `slot_templates_minutes_valid` posé en 20260707000001 : début dans la
+ *  journée, fin strictement après le début et au plus 48 h. */
+export const SLOT_START_MAX = 1439;
+export const SLOT_END_MAX = 2880;
+
+/** D46 — le prix appartient au CRÉNEAU, plus à la salle. `Venue.basePriceCents`
+ *  n'est plus qu'un DÉRIVÉ : le minimum des créneaux actifs, recalculé par
+ *  l'API dans la même transaction (la recherche publique filtre et trie
+ *  dessus, cf. A3/A7). */
+export interface SlotTemplateDTO {
+  id: string;
+  nameFr: string;
+  nameAr: string;
+  startMinutes: number;
+  endMinutes: number;
+  basePriceCents: number;
+  isActive: boolean;
+  createdAt: string;
+  /** D46 (B2) — variantes de prix du créneau, les plus spécifiques d'abord
+   *  (HOLIDAY, WEEKDAY, SEASON), puis priorité décroissante. Elles voyagent
+   *  ICI : un créneau sans ses règles est un prix sans son contexte. */
+  pricingRules: PricingRuleDTO[];
+}
+
+const slotFields = {
+  nameFr: z.string().trim().min(1, "venue.validation.textEmpty").max(60, "venue.validation.slotNameTooLong"),
+  nameAr: z.string().trim().min(1, "venue.validation.textEmpty").max(60, "venue.validation.slotNameTooLong"),
+  startMinutes: z
+    .number()
+    .int()
+    .min(0, "venue.validation.slotOutOfDay")
+    .max(SLOT_START_MAX, "venue.validation.slotOutOfDay"),
+  endMinutes: z.number().int().min(1, "venue.validation.slotOutOfDay").max(SLOT_END_MAX, "venue.validation.slotOutOfDay"),
+  /** Strictement positif : un créneau gratuit n'est pas un prix, c'est un
+   *  oubli de saisie — et il deviendrait le minimum, donc le « à partir de »
+   *  public de la salle. */
+  basePriceCents: z.number().int().positive("venue.validation.pricePositive")
+};
+
+/** Le début doit précéder la fin. Franchir minuit est LÉGAL et attendu : la
+ *  fin s'exprime alors au-delà de 1440 (02h du lendemain = 1560). */
+function assertOrdered(value: { startMinutes: number; endMinutes: number }, ctx: z.RefinementCtx): void {
+  if (value.startMinutes >= value.endMinutes) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endMinutes"], message: "venue.validation.slotEndBeforeStart" });
+  }
+}
+
+export const slotTemplateCreateSchema = z.object(slotFields).strict().superRefine(assertOrdered);
+export type SlotTemplateCreateInput = z.infer<typeof slotTemplateCreateSchema>;
+
+/** PATCH partiel (patron A2). `isActive` vit ici : c'est le RETRAIT d'un
+ *  créneau sans casser l'historique, par opposition au DELETE dur. */
+export const slotTemplateUpdateSchema = z
+  .object({ ...slotFields, isActive: z.boolean() })
+  .partial()
+  .strict()
+  .refine((value) => Object.keys(value).length > 0, { message: "venue.validation.emptyUpdate" })
+  .superRefine((value, ctx) => {
+    if (value.startMinutes !== undefined && value.endMinutes !== undefined) {
+      assertOrdered({ startMinutes: value.startMinutes, endMinutes: value.endMinutes }, ctx);
+    }
+  });
+export type SlotTemplateUpdateInput = z.infer<typeof slotTemplateUpdateSchema>;
+
+/** D46 (B2) — variante de prix d'un CRÉNEAU. `priceCents` est ABSOLU : les
+ *  règles ne se composent pas, une seule gagne (HOLIDAY > WEEKDAY > SEASON,
+ *  puis priorité, puis la plus récente). */
+export interface PricingRuleDTO {
+  id: string;
+  slotTemplateId: string;
+  ruleType: PricingRuleType;
+  label: string | null;
+  priceCents: number;
+  startMonth: number | null;
+  endMonth: number | null;
+  daysOfWeek: number[];
+  priority: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+const pricingRuleFields = {
+  ruleType: z.enum(PRICING_RULE_TYPES),
+  label: z.string().trim().min(1, "venue.validation.textEmpty").max(60, "venue.validation.ruleLabelTooLong").nullable(),
+  priceCents: z.number().int().positive("venue.validation.pricePositive"),
+  /** Mois INCLUS, 1–12. La fenêtre peut enjamber décembre (11 → 2). */
+  startMonth: z.number().int().min(1, "venue.validation.monthRange").max(12, "venue.validation.monthRange").nullable(),
+  endMonth: z.number().int().min(1, "venue.validation.monthRange").max(12, "venue.validation.monthRange").nullable(),
+  /** 0 = dimanche … 6 = samedi. Le week-end algérien est [5, 6], mais rien
+   *  n'est codé en dur : c'est le pro qui coche. */
+  daysOfWeek: z.array(z.number().int().min(0, "venue.validation.dayRange").max(6, "venue.validation.dayRange")),
+  priority: z.number().int().min(0, "venue.validation.priorityRange").max(100, "venue.validation.priorityRange")
+};
+
+/** Les champs REQUIS dépendent du type. Une saison sans bornes serait
+ *  inapplicable (le moteur l'ignore), un week-end sans jours aussi : les
+ *  refuser à l'écriture évite au pro de saisir une règle morte et de croire
+ *  ensuite à un bug de tarification. */
+function assertRuleShape(
+  value: { ruleType?: PricingRuleType; startMonth?: number | null; endMonth?: number | null; daysOfWeek?: number[] },
+  ctx: z.RefinementCtx
+): void {
+  if (value.ruleType === "SEASON" && (value.startMonth == null || value.endMonth == null)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["startMonth"], message: "venue.validation.seasonBoundsRequired" });
+  }
+  if (value.ruleType === "WEEKDAY" && (value.daysOfWeek === undefined || value.daysOfWeek.length === 0)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["daysOfWeek"], message: "venue.validation.weekdaysRequired" });
+  }
+}
+
+export const pricingRuleCreateSchema = z
+  .object({
+    ...pricingRuleFields,
+    label: pricingRuleFields.label.default(null),
+    startMonth: pricingRuleFields.startMonth.default(null),
+    endMonth: pricingRuleFields.endMonth.default(null),
+    daysOfWeek: pricingRuleFields.daysOfWeek.default([]),
+    priority: pricingRuleFields.priority.default(0)
+  })
+  .strict()
+  .superRefine(assertRuleShape);
+export type PricingRuleCreateInput = z.infer<typeof pricingRuleCreateSchema>;
+
+/** PATCH partiel (patron A2). Le TYPE n'est pas modifiable : changer le type
+ *  d'une règle en place laisserait ses bornes de saison sur une règle férié.
+ *  Le pro supprime et recrée. */
+export const pricingRuleUpdateSchema = z
+  .object({
+    label: pricingRuleFields.label,
+    priceCents: pricingRuleFields.priceCents,
+    startMonth: pricingRuleFields.startMonth,
+    endMonth: pricingRuleFields.endMonth,
+    daysOfWeek: pricingRuleFields.daysOfWeek,
+    priority: pricingRuleFields.priority,
+    isActive: z.boolean()
+  })
+  .partial()
+  .strict()
+  .refine((value) => Object.keys(value).length > 0, { message: "venue.validation.emptyUpdate" });
+export type PricingRuleUpdateInput = z.infer<typeof pricingRuleUpdateSchema>;
+
 export const VenueErrorCode = {
   /** 404 INDISTINCT : inexistante, supprimée, id malformé ou salle d'un autre
    *  pro — anti-énumération, même doctrine que /media/:key. */
@@ -176,7 +325,43 @@ export const VenueErrorCode = {
    *  étant unique pour tout Zwadj, le copier-coller d'une même URL sur deux
    *  salles est l'accident le plus probable. On ne révèle pas quelle salle :
    *  elle peut ne pas appartenir à ce pro. */
-  MATTERPORT_ALREADY_LINKED: "MATTERPORT_ALREADY_LINKED"
+  MATTERPORT_ALREADY_LINKED: "MATTERPORT_ALREADY_LINKED",
+  /** D46 (B1) — 404 INDISTINCT « dans MA salle vivante », même doctrine que
+   *  PHOTO_NOT_FOUND : créneau inexistant, id malformé, ou créneau d'une autre
+   *  salle. */
+  SLOT_TEMPLATE_NOT_FOUND: "SLOT_TEMPLATE_NOT_FOUND",
+  /** D46 (B1) — 409 : chevauchement avec un autre créneau ACTIF de la salle.
+   *  Deux créneaux qui se recouvrent rendent la disponibilité indécidable —
+   *  quel créneau la réservation bloque-t-elle ? */
+  SLOT_TEMPLATE_OVERLAP: "SLOT_TEMPLATE_OVERLAP",
+  /** D46 (B1) — 409 : `SINGLE_SLOT` impose EXACTEMENT un créneau actif. En
+   *  autoriser deux créerait un état où le client choisit un créneau sans
+   *  effet, la réservation bloquant de toute façon la journée entière. */
+  SLOT_TEMPLATE_SINGLE_MODE: "SLOT_TEMPLATE_SINGLE_MODE",
+  /** D46 (B1) — 409 : suppression DURE d'un créneau déjà référencé par un
+   *  devis ou une réservation. Ce qui a été vendu ne se réécrit pas : le
+   *  retrait passe par `isActive: false`. */
+  SLOT_TEMPLATE_IN_USE: "SLOT_TEMPLATE_IN_USE",
+  /** D46 (B1) — 409 : l'opération laisserait une salle PUBLIÉE sans aucun
+   *  créneau actif, donc invisible au calendrier et non réservable. Vaut aussi
+   *  comme garde à la publication admin. */
+  SLOT_TEMPLATE_REQUIRED: "SLOT_TEMPLATE_REQUIRED",
+  /** D46 (B2) — 404 INDISTINCT « dans MON créneau, dans MA salle ». */
+  PRICING_RULE_NOT_FOUND: "PRICING_RULE_NOT_FOUND",
+  /** D51 (B3) — 404 INDISTINCT « dans MA salle vivante » : blocage inexistant,
+   *  id malformé, ou blocage d'une autre salle. */
+  AVAILABILITY_BLOCK_NOT_FOUND: "AVAILABILITY_BLOCK_NOT_FOUND",
+  /** D51 (B3) — 409 : la plage recouvre une réservation ACCEPTED/CONFIRMED.
+   *  Aucune contrainte SQL ne peut porter ce conflit — une EXCLUDE ne traverse
+   *  pas deux tables — d'où une vérification applicative sous verrou. Une
+   *  demande PENDING, elle, ne s'y oppose pas : elle ne verrouille rien. */
+  AVAILABILITY_BLOCK_CONFLICT: "AVAILABILITY_BLOCK_CONFLICT",
+  /** D47 (C1) — 404 INDISTINCT « dans MA salle ». */
+  VISIT_AVAILABILITY_NOT_FOUND: "VISIT_AVAILABILITY_NOT_FOUND",
+  /** D47 (C1) — 409 : deux plages de visite du MÊME jour se chevauchent.
+   *  Refusé parce que C2 découpera ces plages en créneaux : deux plages qui se
+   *  recouvrent produiraient le même créneau deux fois. */
+  VISIT_AVAILABILITY_OVERLAP: "VISIT_AVAILABILITY_OVERLAP"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -216,6 +401,10 @@ export interface VenueProDTO {
   amenityIds: string[];
   /** Lot A4 — photos triées par sortOrder (l'ordre du tableau = l'affichage). */
   photos: VenuePhotoDTO[];
+  /** D46 (B1) — créneaux de fête, triés par heure de début puis id. Ils
+   *  arrivent ICI comme les photos : aucun GET dédié, un seul aller-retour
+   *  pour peupler l'écran d'édition. */
+  slotTemplates: SlotTemplateDTO[];
   /** D45 (A6a) — identifiant du modèle Matterport, `null` si la salle n'a pas
    *  de scan. Même valeur canonique que le DTO public : le pro saisit une URL
    *  de partage ou un ID brut, le serveur ne stocke que l'ID. */
@@ -520,3 +709,311 @@ export interface VenuePublicDTO {
    *  (tiers, coût réseau — cible Android bas de gamme, backlog 24.6). */
   matterportModelId: string | null;
 }
+
+/* ══════════════════════════ Lot B3 — disponibilité ═══════════════════════════
+ * D48 (fuseau) · D49 (bornes) · D50 (contrat public) · D51 (blocages pro)
+ */
+
+/** D48 — l'Algérie est à UTC+1 toute l'année : aucune heure d'été depuis 1981.
+ *  Cette constante est le SEUL endroit du dépôt où ce fait est écrit. Le fuseau
+ *  se décide à la frontière HTTP et nulle part ailleurs — ni colonne, ni
+ *  variable d'environnement : un fuseau configurable est un fuseau qui finit
+ *  faux, et les moteurs (disponibilité, prix) restent purs en ne manipulant que
+ *  des instants. */
+export const ALGERIA_UTC_OFFSET_MINUTES = 60;
+
+/** D46 — on ne réserve pas au-delà de 18 mois. Constante partagée, jamais une
+ *  colonne : c'est une règle commerciale unique, pas un réglage par salle. */
+export const BOOKING_HORIZON_MONTHS = 18;
+
+/** Nombre maximal de jours RENDUS par une fenêtre, bornes incluses. 92 est le
+ *  plus long trimestre civil (juillet + août + septembre), soit exactement le
+ *  trois-mois qu'un calendrier affiche d'un coup. */
+export const AVAILABILITY_MAX_WINDOW_DAYS = 92;
+
+/** État d'un créneau à une date donnée. BLOCKED prime sur tout (le pro a fermé),
+ *  BOOKED sur REQUESTED (une demande ne verrouille rien). */
+export const SLOT_AVAILABILITY_STATUSES = ["AVAILABLE", "REQUESTED", "BOOKED", "BLOCKED"] as const;
+export type SlotAvailabilityStatus = (typeof SLOT_AVAILABILITY_STATUSES)[number];
+
+const CIVIL_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const CIVIL_DATETIME_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+/** `2026-02-31` passe la regex et n'existe pas : une expression régulière ne
+ *  valide pas un calendrier. On valide par ALLER-RETOUR — la date reconstruite
+ *  doit rendre les mêmes composantes. */
+export function isRealCivilDate(value: string): boolean {
+  if (!CIVIL_DATE_PATTERN.test(value)) return false;
+  const year = Number(value.slice(0, 4));
+  const month = Number(value.slice(5, 7));
+  const day = Number(value.slice(8, 10));
+  const probe = new Date(Date.UTC(year, month - 1, day));
+  return probe.getUTCFullYear() === year && probe.getUTCMonth() === month - 1 && probe.getUTCDate() === day;
+}
+
+/** D51 — date-heure civile LOCALE, sans décalage. Accepter un ISO offsetté
+ *  laisserait un navigateur étranger créer un blocage aux mauvaises heures
+ *  d'Alger, ce que D48 interdit précisément. */
+export function isRealCivilDateTime(value: string): boolean {
+  if (!CIVIL_DATETIME_PATTERN.test(value)) return false;
+  if (!isRealCivilDate(value.slice(0, 10))) return false;
+  return Number(value.slice(11, 13)) <= 23 && Number(value.slice(14, 16)) <= 59;
+}
+
+/** Fenêtre [from, to], bornes INCLUSES. Partagée par la disponibilité publique
+ *  et la liste pro des blocages : une seconde règle de fenêtre serait une
+ *  seconde chose à faire diverger.
+ *
+ *  D49 — ce schéma ne refuse QUE ce qui est déterministe : forme, date
+ *  irréelle, ordre, largeur. Le passé et l'horizon, eux, dépendent de l'instant
+ *  de la requête et sont ÉCRÊTÉS côté service, jamais rejetés : un navigateur
+ *  au Canada ne calcule pas le même « aujourd'hui » qu'Alger, et un 400 sur
+ *  cette frontière serait intermittent et incompréhensible. */
+export const availabilityWindowQuerySchema = z
+  .object({
+    from: z.string().refine(isRealCivilDate, "venue.validation.dateFormat"),
+    to: z.string().refine(isRealCivilDate, "venue.validation.dateFormat")
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    const from = Date.parse(`${value.from}T00:00:00Z`);
+    const to = Date.parse(`${value.to}T00:00:00Z`);
+    if (to < from) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["to"], message: "venue.validation.dateRange" });
+      return;
+    }
+    if ((to - from) / 86_400_000 + 1 > AVAILABILITY_MAX_WINDOW_DAYS) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["to"], message: "venue.validation.windowTooWide" });
+    }
+  });
+export type AvailabilityWindowQueryInput = z.infer<typeof availabilityWindowQuerySchema>;
+
+/** D50 — métadonnées d'un créneau, servies UNE fois par réponse. Les répéter
+ *  dans chacun des 92 jours multiplierait la charge utile sans rien apprendre. */
+export interface VenueAvailabilitySlotDTO {
+  id: string;
+  nameFr: string;
+  nameAr: string;
+  startMinutes: number;
+  /** Peut dépasser 1440 : franchir minuit est le cas NORMAL (20h → 02h = 1560). */
+  endMinutes: number;
+}
+
+/** D50 — pas de `ruleId` : le moteur le produit pour l'UI pro de B4, mais un
+ *  identifiant de règle n'apprend rien à un client et exposerait la cardinalité
+ *  de la grille tarifaire du pro. */
+export interface VenueAvailabilityDaySlotDTO {
+  slotTemplateId: string;
+  status: SlotAvailabilityStatus;
+  priceCents: number;
+}
+
+export interface VenueAvailabilityDayDTO {
+  /** Date CIVILE locale, `YYYY-MM-DD`. */
+  date: string;
+  isHoliday: boolean;
+  /** Même cardinalité et même ordre que `slots`, et répète quand même
+   *  `slotTemplateId` : le contrat reste auto-descriptif, donc immunisé contre
+   *  un bug d'ordre côté client. */
+  slots: VenueAvailabilityDaySlotDTO[];
+}
+
+export interface VenueAvailabilityResponse {
+  venueId: string;
+  slug: string;
+  bookingMode: BookingMode;
+  /** D49 — bornes EFFECTIVES après écrêtage, jamais celles demandées. */
+  from: string;
+  to: string;
+  /** Créneaux ACTIFS de la salle, triés comme partout ailleurs (heure, puis id). */
+  slots: VenueAvailabilitySlotDTO[];
+  days: VenueAvailabilityDayDTO[];
+}
+
+/** D51 — SYMÉTRIE : le pro relit exactement le repère civil local qu'il a
+ *  écrit. Renvoyer de l'UTC forcerait le front pro à reconvertir, donc à
+ *  héberger une seconde décision de fuseau. `createdAt` fait exception : c'est
+ *  une métadonnée d'audit, pas une heure d'événement. */
+export interface AvailabilityBlockDTO {
+  id: string;
+  startsAt: string;
+  endsAt: string;
+  reason: string | null;
+  createdAt: string;
+}
+
+export const availabilityBlockCreateSchema = z
+  .object({
+    startsAt: z.string().refine(isRealCivilDateTime, "venue.validation.dateFormat"),
+    endsAt: z.string().refine(isRealCivilDateTime, "venue.validation.dateFormat"),
+    reason: optionalText(300, "venue.validation.reasonTooLong").nullish()
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    // Format à largeur fixe : la comparaison lexicographique est exacte, et
+    // évite de reconvertir en instants pour un simple test d'ordre.
+    if (value.endsAt <= value.startsAt) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endsAt"], message: "venue.validation.blockEndBeforeStart" });
+    }
+  });
+export type AvailabilityBlockCreateInput = z.infer<typeof availabilityBlockCreateSchema>;
+
+/** D57 — l'Algérie utilise EXCLUSIVEMENT le format 24 h. Pas d'AM/PM, nulle
+ *  part : ni dans un écran, ni dans un e-mail, ni dans un SMS.
+ *
+ *  Cette fonction est le SEUL formateur d'heure murale de la plateforme.
+ *  `Intl.DateTimeFormat` est écarté ici : selon la locale et le moteur, il
+ *  bascule en AM/PM sans prévenir (`en-US` le fait, et un navigateur configuré
+ *  en anglais est courant). Une concaténation ne peut pas dériver.
+ *
+ *  ⚠ `<input type="time">` reste rendu par le NAVIGATEUR, dans SA locale : un
+ *  navigateur en anglais y affichera un sélecteur AM/PM, et rien en HTML ne
+ *  permet de l'en empêcher. La valeur transmise, elle, est toujours `HH:mm` sur
+ *  24 h — le contrat est donc sauf, seul le widget natif varie. Tout affichage
+ *  d'heure fait par NOUS passe par ici.
+ *
+ *  Accepte des minutes absolues pouvant dépasser 1440 (créneau franchissant
+ *  minuit, D52) et rend l'heure MURALE correspondante : 1560 → "02:00". */
+export function formatWallClock(minutes: number): string {
+  const wall = ((Math.trunc(minutes) % 1440) + 1440) % 1440;
+  const h = Math.floor(wall / 60);
+  const m = wall % 60;
+  return `${h < 10 ? "0" : ""}${h}:${m < 10 ? "0" : ""}${m}`;
+}
+
+/** Plage horaire d'un créneau en 24 h. Le séparateur est un tiret demi-cadratin
+ *  entouré d'espaces insécables : en RTL, un tiret nu se réordonne
+ *  visuellement et « 20:00–02:00 » se lit à l'envers. */
+export function formatSlotRange(startMinutes: number, endMinutes: number): string {
+  return `${formatWallClock(startMinutes)}\u00a0–\u00a0${formatWallClock(endMinutes)}`;
+}
+
+
+/* ═══════════════════════ Flux C — Visites (D47) ══════════════════════════════
+ * Les visites ne sont PAS des réservations de fête et ne partagent AUCUNE
+ * structure avec elles : ni `SlotTemplate`, ni `PricingRule`, ni contrainte
+ * d'exclusion. Un pro déclare ici QUAND il fait visiter, pas ce qu'il vend.
+ */
+
+/** Plage HEBDOMADAIRE de visite : « le dimanche de 09:00 à 17:00 ». Elle se
+ *  répète chaque semaine — ce n'est pas une date.
+ *
+ *  ⚠ `endMinutes` est plafonné à 1440 par le CHECK
+ *  `visit_availabilities_minutes_valid`, contrairement aux créneaux de fête
+ *  (2880, D52). Ce n'est pas un oubli : une visite est un rendez-vous de
+ *  journée ou de soirée — 18:00→21:00 est le cas réel le plus tardif —, jamais
+ *  une nuit à cheval sur deux jours. Le schéma fait autorité (D55). */
+export interface VisitAvailabilityDTO {
+  id: string;
+  /** 0 = dimanche … 6 = samedi (D56, numérotation JS et contrat API). */
+  dayOfWeek: number;
+  startMinutes: number;
+  endMinutes: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+const visitWindowShape = {
+  dayOfWeek: z.number().int().min(0, "venue.validation.visitDayInvalid").max(6, "venue.validation.visitDayInvalid"),
+  startMinutes: z
+    .number()
+    .int()
+    .min(0, "venue.validation.visitOutOfDay")
+    .max(1439, "venue.validation.visitOutOfDay"),
+  endMinutes: z.number().int().min(1, "venue.validation.visitOutOfDay").max(1440, "venue.validation.visitOutOfDay")
+};
+
+/** Une plage doit se terminer APRÈS son début, et dans la même journée. */
+const endsAfterStart = (value: { startMinutes?: number; endMinutes?: number }, ctx: z.RefinementCtx): void => {
+  if (
+    value.startMinutes !== undefined &&
+    value.endMinutes !== undefined &&
+    value.endMinutes <= value.startMinutes
+  ) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endMinutes"], message: "venue.validation.slotEndBeforeStart" });
+  }
+};
+
+export const visitAvailabilityCreateSchema = z.object(visitWindowShape).strict().superRefine(endsAfterStart);
+export type VisitAvailabilityCreateInput = z.infer<typeof visitAvailabilityCreateSchema>;
+
+/** PATCH partiel `.strict()`, même patron que les créneaux de fête.
+ *  `isActive: false` = plage SUSPENDUE sans la perdre : un pro qui arrête les
+ *  visites du vendredi pendant le ramadan la réactivera après. */
+export const visitAvailabilityUpdateSchema = z
+  .object({ ...visitWindowShape, isActive: z.boolean() })
+  .partial()
+  .strict()
+  .superRefine((value, ctx) => {
+    if (Object.keys(value).length === 0) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: [], message: "venue.validation.emptyUpdate" });
+    }
+    endsAfterStart(value, ctx);
+  });
+export type VisitAvailabilityUpdateInput = z.infer<typeof visitAvailabilityUpdateSchema>;
+
+
+/** D58 — une visite dure 30 minutes, pour TOUTE la plateforme.
+ *
+ *  Constante partagée, jamais une colonne : une durée par salle donnerait à
+ *  chaque pro un réglage de plus à comprendre pour un gain nul, et rendrait
+ *  incomparables les créneaux de deux salles voisines. Si un jour la durée doit
+ *  varier, elle variera ici pour tout le monde — et ce sera une décision
+ *  produit, pas un champ de formulaire.
+ *
+ *  Conséquence directe du découpage : une plage ne rend que des créneaux
+ *  ENTIERS. Une plage 09:00→09:20 ne produit AUCUN créneau, elle n'en produit
+ *  pas un de 20 minutes. */
+export const VISIT_DURATION_MINUTES = 30;
+
+/** Créneau de visite CONCRET, à une date donnée — contrairement à
+ *  `VisitAvailabilityDTO` qui décrit une règle hebdomadaire. */
+export interface VisitSlotDTO {
+  /** Date civile locale `YYYY-MM-DD`. */
+  date: string;
+  /** Minutes depuis minuit, début du rendez-vous. */
+  startMinutes: number;
+  /** D59 (supersède D47) — un créneau pris est EXCLUSIF : personne d'autre ne
+   *  peut le prendre. Il reste RENDU, marqué `taken`, plutôt que retiré de la
+   *  liste : voir qu'un horaire est occupé aide à en choisir un autre, alors
+   *  qu'une liste qui se contracte silencieusement donne l'impression que la
+   *  salle ne fait pas de visites ce jour-là.
+   *  Garanti en base par l'index unique partiel
+   *  `visit_bookings_no_double_confirmed`, pas seulement par le service. */
+  taken: boolean;
+}
+
+export interface VenueVisitSlotsResponse {
+  venueId: string;
+  slug: string;
+  /** Bornes EFFECTIVES après écrêtage (D49), jamais celles demandées. */
+  from: string;
+  to: string;
+  durationMinutes: number;
+  slots: VisitSlotDTO[];
+}
+
+
+/** D60 — le pro choisit ses canaux de notification. DEUX drapeaux et non un
+ *  enum { EMAIL, SMS, BOTH } : un enum explose dès le troisième canal
+ *  (EMAIL_PUSH, SMS_PUSH, EMAIL_SMS_PUSH…), deux drapeaux se combinent.
+ *
+ *  Le transport SMS est **WhatsApp** : c'est ce que les pros algériens
+ *  utilisent réellement pour leur activité, pas le SMS opérateur. Le numéro
+ *  destinataire est `ProProfile.phone`, déjà normalisé en +213.
+ *
+ *  ⚠ Tout couper est INTERDIT (`CHECK pro_profiles_one_channel_required`) : un
+ *  pro sans canal ne verrait plus jamais une demande de visite arriver. */
+export interface ProNotificationChannelsDTO {
+  notifyByEmail: boolean;
+  notifyBySms: boolean;
+}
+
+export const proNotificationChannelsSchema = z
+  .object({ notifyByEmail: z.boolean(), notifyBySms: z.boolean() })
+  .strict()
+  .refine((v) => v.notifyByEmail || v.notifyBySms, {
+    path: ["notifyByEmail"],
+    message: "account.validation.oneChannelRequired"
+  });
+export type ProNotificationChannelsInput = z.infer<typeof proNotificationChannelsSchema>;

@@ -12,6 +12,7 @@ import { vi } from "vitest";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
 import type { AmenityDTO, VenueProDTO, WilayaDTO } from "@zwadj/types";
 import { ApiError, NetworkError, type AuthClient } from "../lib/auth-client";
+import { makeVenueClientDouble } from "../test-support/client-doubles";
 import { initI18n } from "../i18n";
 import { AppProviders } from "../App";
 import { CreateVenuePage } from "./create-venue-page";
@@ -66,6 +67,7 @@ const AMENITIES: AmenityDTO[] = [
 ];
 
 const VENUE: VenueProDTO = {
+  slotTemplates: [],
   id: "v1",
   slug: "salle-el-ryad",
   cityId: CITY_ID,
@@ -110,15 +112,11 @@ function makeAuth(): AuthClient {
 }
 
 function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
-  return {
-    listMine: vi.fn().mockResolvedValue([]),
-    getMine: vi.fn().mockResolvedValue(VENUE),
+  return makeVenueClientDouble(VENUE, {
     create: vi.fn().mockResolvedValue({ ...VENUE, id: "v-new" }),
     update: vi.fn().mockResolvedValue(VENUE),
-    softDelete: vi.fn().mockResolvedValue(undefined),
-    updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null }),
     ...overrides
-  };
+  });
 }
 
 function makeReferentials(overrides: Partial<ReferentialsClient> = {}): ReferentialsClient {
@@ -369,7 +367,11 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { status: "TEMPORARILY_UNAVAILABLE" }));
   });
 
-  it("AUCUNE photo rendue : le volet photos de A6a n'est pas encore codé", async () => {
+  // A6a-P — INVERSE du test précédent (« AUCUNE photo rendue »), périmé par la
+  // livraison du volet photos et remplacé ici. Le comportement du volet est
+  // couvert par `photos-section.test.tsx` ; ce test-ci ne vérifie que la
+  // COUTURE : le `photos` du DTO n'est plus ignoré par l'écran d'édition.
+  it("le champ `photos` du DTO est rendu : la vignette de couverture apparaît", async () => {
     const venues = makeVenues({
       getMine: vi.fn().mockResolvedValue({
         ...VENUE,
@@ -391,8 +393,13 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     const { container } = renderEdit(venues);
     await screen.findByDisplayValue("Salle El Ryad");
 
-    // Le champ `photos` du DTO reste ignoré tant que le volet n'est pas livré.
-    expect(container.querySelector("img")).toBeNull();
+    const img = container.querySelector("img");
+    expect(img).not.toBeNull();
+    expect(img).toHaveAttribute("src", "https://cdn.test/p1-thumb.webp");
+    // Anti-CLS : le ratio du LARGE est posé en attributs sur la vignette.
+    expect(img).toHaveAttribute("width", "1920");
+    expect(img).toHaveAttribute("height", "1080");
+    expect(screen.getByText("Couverture")).toBeInTheDocument();
   });
 
   // ── D45 — section visite virtuelle ─────────────────────────────────────────
@@ -556,5 +563,40 @@ describe("Prix — affichage groupé + unité (lisibilité de la saisie)", () =>
     expect(ids.map((id) => document.getElementById(id)?.textContent)).toContain(
       "Montant en dinars algériens, nombre entier"
     );
+  });
+});
+
+// ── Lot UI-P1 — sortie de page ─────────────────────────────────────────────
+// Le lien discret du haut se lisait comme une phrase, pas comme une commande,
+// et l'écran ne proposait AUCUNE sortie visible une fois le formulaire rempli.
+describe("Sortie de page (Lot UI-P1)", () => {
+  it("édition : le retour du haut porte une flèche, et un vrai bouton de retour clôt la page", async () => {
+    const { container } = renderEdit(makeVenues());
+    await screen.findByDisplayValue("Salle El Ryad");
+
+    const discret = container.querySelector("a.backlink");
+    expect(discret).not.toBeNull();
+    // La flèche : dessinée vers l'inline-start, retournée en RTL par la CSS
+    // via cet attribut — sans lui, « revenir » pointerait à gauche en arabe.
+    expect(discret?.querySelector("svg[data-mirror-rtl]")).not.toBeNull();
+
+    // Le bouton de sortie est un `.btn` (niveau secondaire visible), pas un
+    // `.backlink`, et il vit APRÈS le formulaire : l'écran d'édition ne
+    // s'arrête pas au submit (photos et visite virtuelle suivent).
+    const sortie = screen.getAllByRole("link", { name: /Retour à mes salles/ }).find((a) => a.classList.contains("btn"));
+    expect(sortie).toBeDefined();
+    expect(sortie).toHaveAttribute("href", "/");
+    const form = container.querySelector("form");
+    expect(form?.contains(sortie as Node)).toBe(false);
+  });
+
+  it("création : le bouton de retour est à côté de l'action principale", async () => {
+    renderCreate(makeVenues());
+    await screen.findByLabelText(/Nom \(français\)/);
+
+    const sortie = screen.getAllByRole("link", { name: /Retour à mes salles/ }).find((a) => a.classList.contains("btn"));
+    expect(sortie).toBeDefined();
+    expect(sortie).toHaveAttribute("href", "/");
+    expect(sortie?.querySelector("svg[data-mirror-rtl]")).not.toBeNull();
   });
 });

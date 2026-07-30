@@ -62,6 +62,16 @@ async function createVenue(token: string, cityId: string, nameFr = "Salle El Fer
     .set(auth(token))
     .send({ cityId, nameFr, nameAr: "قاعة الفردوس", capacityMax: 450, basePriceCents: 18_000_000 });
   if (res.status !== 201) throw new Error(`création de test a échoué (${res.status}) : ${JSON.stringify(res.body)}`);
+
+  // D46 (B1) — toute salle destinée à être PUBLIÉE doit avoir au moins un
+  // créneau actif : la garde de publication le refuse sinon. Une soirée
+  // 20h → 02h (1200 → 1560) FRANCHIT MINUIT — cas normal d'un mariage
+  // algérien, autorisé par slot_templates_minutes_valid.
+  const seededSlot = await api()
+    .post(`/api/v1/venues/${(res.body as VenueProDTO).id}/slot-templates`)
+    .set(auth(token))
+    .send({ nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560, basePriceCents: 18_000_000 });
+  if (seededSlot.status !== 201) throw new Error(`seed slot: ${seededSlot.status} ${JSON.stringify(seededSlot.body)}`);
   return res.body as VenueProDTO;
 }
 

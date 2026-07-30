@@ -1,12 +1,13 @@
 // Édition d'une salle, PAR ID (le slug est public-only, §4).
 // Lot A6a / D45 : la visite virtuelle est branchée ici, en SECTION AUTONOME
-// (endpoint séparé, corps différent du PATCH général). Le volet PHOTOS de A6a
-// (upload, ordre ↑/↓, alt FR/AR) reste à coder : la couture est laissée nette,
-// le champ `photos` du DTO est encore volontairement ignoré.
+// (endpoint séparé, corps différent du PATCH général). Lot A6a-P : le volet
+// PHOTOS l'est aussi, au même endroit et pour la même raison — quatre endpoints
+// à lui, donc ses propres boutons, HORS du <form>. Il possède son état et ne
+// rappelle jamais `load()` : cf. l'en-tête de `photos-section.tsx`.
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router";
-import { ConfirmDialog } from "@zwadj/ui";
+import { ArrowBackIcon, ConfirmDialog } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import type { VenueProDTO } from "@zwadj/types";
 import { ProHeader } from "../shell/pro-header";
@@ -22,6 +23,9 @@ import {
   venueToForm,
   type VenueFormValues
 } from "./venue-form";
+import { PhotosSection } from "./photos-section";
+import { SlotsSection } from "./slots-section";
+import { BlocksSection } from "./blocks-section";
 import { VirtualTourSection } from "./virtual-tour-section";
 
 type LoadState =
@@ -136,6 +140,7 @@ export function EditVenuePage() {
             <h1>{t("venue.ui.notFound.title")}</h1>
             <p>{t("venue.ui.notFound.body")}</p>
             <Link to="/" className="btn btn-accent">
+              <ArrowBackIcon />
               {t("venue.ui.notFound.back")}
             </Link>
           </div>
@@ -169,6 +174,7 @@ export function EditVenuePage() {
       <ProHeader />
       <main style={{ padding: 20, maxInlineSize: 720, marginInline: "auto" }}>
         <Link to="/" className="backlink">
+          <ArrowBackIcon />
           {t("venue.ui.form.back")}
         </Link>
 
@@ -236,16 +242,29 @@ export function EditVenuePage() {
               }
             />
 
-            {/* A6a : volet PHOTOS (upload, ordre ↑/↓, alt FR/AR) — ne rien coder ici */}
-
             <button type="submit" className="btn btn-accent" disabled={saving || referentials.status !== "ready"}>
               {saving ? t("venue.ui.form.saving") : t("venue.ui.form.save")}
             </button>
           </form>
 
-          {/* HORS du <form> : cette section a son propre endpoint et son propre
-              bouton — imbriquer un submit dans un autre est invalide en HTML et
-              ferait partir les deux requêtes sur une touche Entrée. */}
+          {/* HORS du <form> : ces sections ont leurs propres endpoints et leurs
+              propres boutons — imbriquer un submit dans un autre est invalide
+              en HTML et ferait partir les deux requêtes sur une touche Entrée.
+              `initialPhotos` est consommé UNE FOIS par la section : pas de
+              `key`, pour ne pas la remonter au milieu d'une file d'upload
+              quand un enregistrement du formulaire principal renouvelle
+              l'objet `venue`. */}
+          {/* B4b — créneaux et prix. Même doctrine que les photos :
+              `initialSlots` est consommé UNE FOIS, pas de `key`, et la section
+              ne rappelle jamais `load()`. */}
+          <SlotsSection venueId={state.venue.id} initialSlots={state.venue.slotTemplates} />
+
+          {/* B4d — blocages. Seul volet qui CHARGE ses données : les
+              blocages ne voyagent pas dans le DTO, ils sont sans borne. */}
+          <BlocksSection venueId={state.venue.id} />
+
+          <PhotosSection venueId={state.venue.id} initialPhotos={state.venue.photos} />
+
           <VirtualTourSection
             venueId={state.venue.id}
             modelId={state.venue.matterportModelId}
@@ -259,7 +278,19 @@ export function EditVenuePage() {
           />
         </div>
 
-        <div style={{ marginBlockStart: 18 }}>
+        {/* Lot UI-P1 — sortie de page EXPLICITE, à la toute fin : l'écran
+            d'édition ne s'arrête pas au formulaire (photos et visite virtuelle
+            suivent, avec leurs propres boutons). Le lien discret du haut reste,
+            il sert la navigation ; celui-ci clôt la tâche. */}
+        <div style={{ marginBlockStart: 18, display: "flex", flexWrap: "wrap", gap: 10 }}>
+          {/* B6 — accès au calendrier de la salle, en lecture. */}
+          <Link to={`/salles/${state.venue.id}/calendrier`} className="btn">
+            {t("venue.ui.calendar.title")}
+          </Link>
+          <Link to="/" className="btn">
+            <ArrowBackIcon />
+            {t("venue.ui.form.back")}
+          </Link>
           <button type="button" className="btn btn-danger" onClick={() => setConfirmingDelete(true)}>
             {t("venue.ui.list.delete")}
           </button>

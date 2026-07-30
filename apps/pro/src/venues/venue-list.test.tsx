@@ -8,6 +8,7 @@ import { vi } from "vitest";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
 import type { VenueProDTO, WilayaDTO } from "@zwadj/types";
 import { ApiError, type AuthClient } from "../lib/auth-client";
+import { makeVenueClientDouble } from "../test-support/client-doubles";
 import { initI18n } from "../i18n";
 import { AppProviders } from "../App";
 import { VenueListPage } from "./venue-list-page";
@@ -30,6 +31,7 @@ const PRO_USER = {
 };
 
 const VENUE: VenueProDTO = {
+  slotTemplates: [],
   id: "v1",
   slug: "salle-el-ryad",
   cityId: "city-bab-ezzouar",
@@ -84,17 +86,14 @@ function makeAuth(): AuthClient {
 }
 
 function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
-  return {
-    listMine: vi.fn().mockResolvedValue([VENUE]),
-    getMine: vi.fn(),
-    create: vi.fn(),
-    update: vi.fn().mockImplementation((_id: string, patch: Record<string, unknown>) =>
-      Promise.resolve({ ...VENUE, ...patch })
-    ),
-    softDelete: vi.fn().mockResolvedValue(undefined),
-    updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null }),
+  return makeVenueClientDouble(VENUE, {
+    update: vi
+      .fn()
+      .mockImplementation((_id: string, patch: Record<string, unknown>) =>
+        Promise.resolve({ ...VENUE, ...patch })
+      ),
     ...overrides
-  };
+  });
 }
 
 function makeReferentials(overrides: Partial<ReferentialsClient> = {}): ReferentialsClient {

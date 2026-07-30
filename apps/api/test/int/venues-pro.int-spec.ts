@@ -158,6 +158,7 @@ describe("POST /venues — création", () => {
         "status",
         "amenityIds",
         "photos", // Lot A4 — médias sur le DTO pro
+        "slotTemplates", // Lot B1 — D46, créneaux sur le DTO pro
         "matterportModelId", // Lot A6a — D45
         "createdAt",
         "updatedAt"
