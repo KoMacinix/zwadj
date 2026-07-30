@@ -35,6 +35,8 @@ function venueRow(overrides: Record<string, unknown> = {}) {
     publicationStatus: "DRAFT",
     status: "ACTIVE",
     amenities: [], // relation VenueAmenity (ids seuls) — A3-①
+    styles: [], // relation VenueStyleLink (ids seuls) — A13/D65
+    ceremonyType: null, // D66 — non déclaré par cette salle
     photos: [], // relations médias (Lot A4) — salles neuves sans média
     slotTemplates: [], // D46 (B1) — créneaux, même patron que les photos
     matterportModelId: null,
@@ -216,6 +218,8 @@ describe("VenuesService — forme du DTO pro (allow-list)", () => {
         "publicationStatus",
         "status",
         "amenityIds",
+        "styleIds",
+        "ceremonyType",
         "photos",
         "slotTemplates",
         "matterportModelId",

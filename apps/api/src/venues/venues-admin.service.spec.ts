@@ -31,6 +31,8 @@ function adminRow(overrides: Record<string, unknown> = {}) {
     publicationStatus: "DRAFT",
     status: "ACTIVE",
     amenities: [],
+    styles: [], // relation VenueStyleLink (ids seuls) — A13/D65
+    ceremonyType: null, // D66 — non déclaré par cette salle
     photos: [],
     slotTemplates: [],
     matterportModelId: null,

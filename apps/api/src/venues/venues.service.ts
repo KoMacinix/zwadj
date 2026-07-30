@@ -44,7 +44,9 @@ export const VENUE_PRO_SELECT = {
   createdAt: true,
   updatedAt: true,
   // A3-① : ids d'équipements (le référentiel complet ne voyage que côté public)
+  ceremonyType: true,
   amenities: { select: { amenityId: true } },
+  styles: { select: { styleId: true } },
   // Lot A4 : médias — ordres DÉTERMINISTES partout (tiebreak id, discipline A3).
   photos: {
     orderBy: [{ sortOrder: "asc" }, { id: "asc" }] as Prisma.VenuePhotoOrderByWithRelationInput[],
@@ -179,9 +181,14 @@ export class VenuesService {
     // A3-① : amenityIds = REMPLACEMENT d'ensemble (dédupliqué), validé contre
     // le référentiel, écrit en imbriqué dans le MÊME update (atomique, et
     // @updatedAt bouge — changer ses équipements est bien « toucher » la salle).
-    const { amenityIds, ...fields } = input;
+    const { amenityIds, styleIds, ...fields } = input;
     const uniqueAmenityIds = amenityIds === undefined ? undefined : [...new Set(amenityIds)];
     if (uniqueAmenityIds !== undefined) await this.assertAmenitiesExist(uniqueAmenityIds);
+    // D65 (A13) — mêmes règles que les équipements : remplacement d'ensemble,
+    // dédupliqué, validé contre le référentiel AVANT l'update. Un id inconnu
+    // doit répondre 400, pas une violation de clé étrangère en 500.
+    const uniqueStyleIds = styleIds === undefined ? undefined : [...new Set(styleIds)];
+    if (uniqueStyleIds !== undefined) await this.assertStylesExist(uniqueStyleIds);
 
     const row = await this.prisma.venue.update({
       where: { id: current.id },
@@ -192,7 +199,10 @@ export class VenuesService {
         ...fields,
         ...(uniqueAmenityIds === undefined
           ? {}
-          : { amenities: { deleteMany: {}, create: uniqueAmenityIds.map((amenityId) => ({ amenityId })) } })
+          : { amenities: { deleteMany: {}, create: uniqueAmenityIds.map((amenityId) => ({ amenityId })) } }),
+        ...(uniqueStyleIds === undefined
+          ? {}
+          : { styles: { deleteMany: {}, create: uniqueStyleIds.map((styleId) => ({ styleId })) } })
       },
       select: VENUE_PRO_SELECT
     });
@@ -277,6 +287,14 @@ export class VenuesService {
 
   /** A3-① : tous les ids doivent exister dans le référentiel Amenity — une
    *  liste vide est légitime (effacement de la sélection). */
+  private async assertStylesExist(styleIds: string[]): Promise<void> {
+    if (styleIds.length === 0) return;
+    const found = await this.prisma.venueStyle.count({ where: { id: { in: styleIds } } });
+    if (found !== styleIds.length) {
+      throw new BadRequestException({ code: VenueErrorCode.VENUE_STYLE_NOT_FOUND, message: "venue.errors.styleNotFound" });
+    }
+  }
+
   private async assertAmenitiesExist(amenityIds: string[]): Promise<void> {
     if (amenityIds.length === 0) return;
     const found = await this.prisma.amenity.count({ where: { id: { in: amenityIds } } });
@@ -319,6 +337,10 @@ export function toVenueProDTO(row: VenueProRow, urlOf: (key: string) => string):
     publicationStatus: row.publicationStatus,
     status: row.status,
     amenityIds: row.amenities.map((a) => a.amenityId).sort(),
+    // Triés : le formulaire pro compare des tableaux pour savoir s'il est sale.
+    // Sans tri, l'ordre d'insertion en base ferait croire à une modification.
+    styleIds: row.styles.map((s) => s.styleId).sort(),
+    ceremonyType: row.ceremonyType,
     photos: row.photos.map((p) => ({
       id: p.id,
       url: urlOf(p.storageKey),

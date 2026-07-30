@@ -29,10 +29,14 @@ beforeEach(async () => {
 });
 
 describe("prisma/seed.ts — référentiels (Lot A1)", () => {
-  it("base vide → comptes exacts décidés : 58 wilayas / 23 villes (Alger seule) / 23 équipements", async () => {
+  it("base vide → comptes exacts décidés : 58 wilayas / 23 villes (Alger seule) / 23 équipements / 4 styles", async () => {
     const summary = await seed(ctx.prisma);
 
-    expect(summary).toEqual({ wilayas: 58, cities: 23, amenities: 23 });
+    // A13/D65 : le référentiel de styles rejoint les trois autres. Le compte est
+    // ÉNUMÉRÉ ici volontairement — un référentiel qui grossit sans que personne
+    // ne le décide est exactement ce que cette assertion attrape.
+    expect(summary).toEqual({ wilayas: 58, cities: 23, amenities: 23, venueStyles: 4 });
+    expect(await ctx.prisma.venueStyle.count()).toBe(4);
     expect(await ctx.prisma.wilaya.count()).toBe(58);
     expect(await ctx.prisma.city.count()).toBe(23);
     expect(await ctx.prisma.amenity.count()).toBe(23);

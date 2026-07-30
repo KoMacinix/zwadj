@@ -57,6 +57,8 @@ function venueWith(slotTemplates: SlotTemplateDTO[]): VenueProDTO {
     publicationStatus: "DRAFT",
     status: "ACTIVE",
     amenityIds: [],
+    styleIds: [],
+    ceremonyType: null,
     photos: [],
     slotTemplates,
     matterportModelId: null,

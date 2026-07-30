@@ -481,7 +481,11 @@ model Venue {
   owner              ProProfile          @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   city               City                @relation(fields: [cityId], references: [id], onDelete: Restrict)
   photos             VenuePhoto[]
+  /// D66 (A13) — NULLABLE : les salles antérieures à ce lot n'en ont pas, et un
+  /// défaut mentirait sur une donnée jamais saisie.
+  ceremonyType       CeremonyType?          @map("ceremony_type")
   amenities          VenueAmenity[]
+  styles             VenueStyleLink[]
   slotTemplates      SlotTemplate[]
   pricingRules       PricingRule[]
   services           Service[]
@@ -538,6 +542,46 @@ model VenuePhoto {
 // tient désormais dans Venue.matterportModelId.
 
 // backlog 3.3 — Amenity (référentiel seedé, 3.8) + jointure VenueAmenity
+/// D66 (A13) — type de cérémonie. Une ENUM et non un référentiel : intérieur /
+/// extérieur / mixte est exhaustif par construction, il ne s'étend pas.
+/// ⚠ Le filtre public n'est PAS une égalité : une salle MIXED répond aussi à une
+/// demande INDOOR et à une demande OUTDOOR (voir venues-public.service.ts).
+enum CeremonyType {
+  INDOOR
+  OUTDOOR
+  MIXED
+}
+
+/// D65 (A13) — référentiel de styles, calqué trait pour trait sur `Amenity` :
+/// ajouter un style ne doit pas demander une migration, et les libellés FR/AR
+/// vivent avec la donnée. Le filtre public transporte `key`, jamais le libellé.
+model VenueStyle {
+  id        String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  key       String @unique
+  nameFr    String @map("name_fr")
+  nameAr    String @map("name_ar")
+  /// Ordre ÉDITORIAL des puces, identique dans les deux langues — un tri par
+  /// libellé donnerait deux ordres différents selon la locale.
+  sortOrder Int    @default(0) @map("sort_order")
+
+  venues VenueStyleLink[]
+
+  @@map("venue_styles")
+}
+
+/// Jointure pure → PK composite, comme `VenueAmenity`.
+model VenueStyleLink {
+  venueId String @map("venue_id") @db.Uuid
+  styleId String @map("style_id") @db.Uuid
+
+  venue Venue      @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  style VenueStyle @relation(fields: [styleId], references: [id], onDelete: Cascade)
+
+  @@id([venueId, styleId])
+  @@index([styleId])
+  @@map("venue_style_links")
+}
+
 model Amenity {
   id     String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
   key    String  @unique // ex: "parking", "piscine" — clé stable pour les icônes
@@ -768,8 +812,11 @@ model ServiceTier {
 
 // =============================================================================
 // VISITES — backlog 3.5 (système ENTIÈREMENT séparé des réservations de fête :
-// aucune FK vers SlotTemplate/Booking, aucune contrainte d'exclusion,
-// auto-confirmation à la création — décision AGENTS.md)
+// aucune FK vers SlotTemplate/Booking, auto-confirmation à la création —
+// décision AGENTS.md). ⚠ D59 (C2b) a RENVERSÉ D47 : un rendez-vous CONFIRMÉ est
+// EXCLUSIF, garanti par l'index unique PARTIEL
+// `visit_bookings_no_double_confirmed`. Les deux systèmes restent séparés, mais
+// aucun des deux ne tolère le double-booking.
 // =============================================================================
 
 // backlog 3.5 — VisitAvailability : fenêtres hebdomadaires dédiées aux visites
@@ -792,16 +839,23 @@ model VisitAvailability {
 }
 
 // backlog 3.5 — VisitBooking : créée directement CONFIRMED (aucune approbation
-// pro). Le pro est notifié (8.4) et peut annuler / contacter le client (6.4).
-// Chevauchements tolérés par conception → pas de contrainte d'exclusion.
+// pro). Le pro est notifié (D60) et peut annuler / contacter le client (6.4).
+// ⚠ D59 supersède D47 : les chevauchements NE sont PLUS tolérés — voir l'index
+// unique partiel documenté dans le modèle.
 model VisitBooking {
-  id          String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  venueId     String      @map("venue_id") @db.Uuid
-  clientId    String      @map("client_id") @db.Uuid
-  scheduledAt DateTime    @map("scheduled_at") @db.Timestamptz(6)
-  status      VisitStatus @default(CONFIRMED)
-  cancelledAt DateTime?   @map("cancelled_at") @db.Timestamptz(6)
-  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  id           String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  venueId      String      @map("venue_id") @db.Uuid
+  clientId     String      @map("client_id") @db.Uuid
+  scheduledAt  DateTime    @map("scheduled_at") @db.Timestamptz(6)
+  status       VisitStatus @default(CONFIRMED)
+  /// D61 (C3) — SNAPSHOT du contact au moment du rendez-vous, même patron que
+  /// `Booking.contactPhone` : le pro rappelle sur le numéro qui lui a été donné,
+  /// pas sur celui que le client aurait changé depuis. NULLABLE : le téléphone du
+  /// CLIENT est optionnel (celui du PRO, destinataire WhatsApp de D60, ne l'est
+  /// pas). Résolution : corps de la demande, puis `User.phone`, puis null.
+  contactPhone String?     @map("contact_phone")
+  cancelledAt  DateTime?   @map("cancelled_at") @db.Timestamptz(6)
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
 
   venue  Venue @relation(fields: [venueId], references: [id], onDelete: Restrict)
   client User  @relation(fields: [clientId], references: [id], onDelete: Restrict)

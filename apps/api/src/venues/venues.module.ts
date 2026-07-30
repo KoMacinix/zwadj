@@ -8,6 +8,9 @@ import { Module } from "@nestjs/common";
 import { AvailabilityBlocksController } from "./availability-blocks.controller";
 import { AvailabilityBlocksService } from "./availability-blocks.service";
 import { AvailabilityController } from "./availability.controller";
+import { VisitBookingsController } from "./visit-bookings.controller";
+import { VisitBookingsService } from "./visit-bookings.service";
+import { VisitNotificationsService } from "./visit-notifications.service";
 import { VisitSlotsController } from "./visit-slots.controller";
 import { VisitSlotsService } from "./visit-slots.service";
 import { VisitAvailabilitiesController } from "./visit-availabilities.controller";
@@ -39,7 +42,8 @@ import { VenuesService } from "./venues.service";
     AvailabilityController,
     AvailabilityBlocksController,
     VisitAvailabilitiesController,
-    VisitSlotsController
+    VisitSlotsController,
+    VisitBookingsController
   ],
   providers: [
     VenuesService,
@@ -51,7 +55,9 @@ import { VenuesService } from "./venues.service";
     AvailabilityService,
     AvailabilityBlocksService,
     VisitAvailabilitiesService,
-    VisitSlotsService
+    VisitSlotsService,
+    VisitBookingsService,
+    VisitNotificationsService
   ],
   exports: [VenuesService]
 })

@@ -14,6 +14,110 @@
   --star: #ebb04a;
 }
 
+/* ── Accent en MODE SOMBRE (Lot UI-D1 — D64) ────────────────────────────────
+   #DA3642 sur #111111 tombe à 3,4:1 : illisible en texte, terne en bouton.
+   L'accent sombre est donc ÉCLAIRCI (#E07A84, repris du design), et il gagne
+   au passage ce que le clair n'a pas — 5,91:1 sur --surface : en sombre,
+   l'accent EST utilisable comme couleur de texte.
+
+   ⚠ CORRECTION ASSUMÉE DU DESIGN : le design garde `--on-accent: #fff` en
+   sombre, ce qui donne 2,88:1 sur #E07A84 — ÉCHEC AA sur chaque bouton plein.
+   L'encre d'un bouton accent sombre est donc SOMBRE (#111111 → 6,55:1).
+   Un accent qui s'éclaircit inverse la couleur du texte qu'il porte : c'est
+   contre-intuitif, et c'est arithmétique.
+
+   `--accent-strong` (survol/actif) s'ÉCLAIRCIT en sombre au lieu de foncer :
+   sur fond noir, « plus present » veut dire plus clair. */
+:root {
+  --dark-accent: #e07a84;
+  --dark-accent-strong: #ec9ba4;
+  /* Pendant sombre de --accent-soft : un voile PROFOND, pas un rose pâle. */
+  --dark-accent-soft: #2a1416;
+  --dark-on-accent: #111111;
+  --dark-rose-pale: #2a1416;
+  --dark-sage: #b07078;
+  --dark-star: #e6a93c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --accent: var(--dark-accent);
+    --accent-strong: var(--dark-accent-strong);
+    --accent-soft: var(--dark-accent-soft);
+    --on-accent: var(--dark-on-accent);
+    --rose-pale: var(--dark-rose-pale);
+    --sage: var(--dark-sage);
+    --star: var(--dark-star);
+  }
+}
+
+:root[data-theme="dark"] {
+  --accent: var(--dark-accent);
+  --accent-strong: var(--dark-accent-strong);
+  --accent-soft: var(--dark-accent-soft);
+  --on-accent: var(--dark-on-accent);
+  --rose-pale: var(--dark-rose-pale);
+  --sage: var(--dark-sage);
+  --star: var(--dark-star);
+}
+
+/* ── Bascule de thème (Lot UI-D1) ───────────────────────────────────────────
+   L'icône est choisie par le CSS, pas par du JS : les deux sont dans le DOM,
+   la règle de thème n'en montre qu'une. Rien à recalculer à l'hydratation,
+   donc aucun scintillement et aucun écart serveur/client. Le nom accessible,
+   lui, ne dépend PAS du CSS — il dit « changer de thème », vrai dans les deux
+   sens (voir `theme-toggle.tsx`). */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 34px;
+  block-size: 34px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
+    display: block;
+  }
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+
+/* Un système sombre + choix EXPLICITE du clair : la lune doit revenir. La
+   règle ci-dessus ne suffit pas, celle de la media query non plus — c'est ce
+   couple qui rend le choix explicite réellement souverain. */
+:root[data-theme="light"] .theme-toggle .icon-moon {
+  display: block;
+}
+
+:root[data-theme="light"] .theme-toggle .icon-sun {
+  display: none;
+}
+
 /* ── Navigation principale (Lot UI-N1) ──────────────────────────────────────
    Mobile-first : sur téléphone l'en-tête passe en COLONNE et la barre défile
    horizontalement. Pas de menu burger — il coûterait un état, un piège de
@@ -45,27 +149,41 @@
   list-style: none;
 }
 
+/* Onglet : capitales espacées + SOULIGNEMENT de l'onglet actif, repris du
+   design de référence (la pilule à fond teinté qui servait jusqu'ici n'y
+   figure pas). `margin-block-end: -1px` fait mordre le trait de 2 px sur la
+   bordure de 1 px de l'en-tête : sans ce décalage, deux lignes se superposent
+   et l'onglet paraît flotter au-dessus de sa barre.
+   `border-block-end` et non `border-bottom` : le bloc reste en bas en RTL,
+   mais le dépôt n'écrit aucune propriété physique — la règle n'admet pas
+   d'exception « celle-ci est sans risque ». */
 .site-nav-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding-block: 8px;
-  padding-inline: 10px;
-  border-radius: 8px;
+  padding-block: 14px;
+  padding-inline: 18px;
   white-space: nowrap;
   text-decoration: none;
   color: var(--ink-2, inherit);
-  font-size: 15px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-block-end: 2px solid transparent;
+  margin-block-end: -1px;
+  transition: color 0.2s, border-color 0.2s;
 }
 
+/* Le survol se dit par la COULEUR : un fond teinté rendrait l'onglet actif et
+   l'onglet survolé presque identiques, et le soulignement ne se verrait plus. */
 .site-nav-link:hover {
-  background: var(--accent-soft);
+  color: var(--ink);
 }
 
 .site-nav-link.is-active {
-  color: var(--accent-strong);
+  color: var(--accent);
   font-weight: 600;
-  background: var(--accent-soft);
+  border-block-end-color: var(--accent);
 }
 
 /* Rubrique annoncée mais pas construite : visiblement inerte, et le curseur
