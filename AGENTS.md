@@ -80,3 +80,31 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).
 - Ne pas coder les chemins d'argent sans tests + demande de revue.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
+
+## Migrations — `prisma migrate dev` est INTERDIT
+
+Le schéma repose sur des garanties SQL écrites à la main que Prisma ne sait pas
+exprimer, donc ne voit pas, donc propose de SUPPRIMER à chaque `migrate dev` :
+
+- `bookings_no_overlap_accepted_confirmed` (EXCLUDE GiST) — l'anti-double-booking ;
+- `visit_bookings_no_double_confirmed` (unique PARTIEL, D59) — l'exclusivité des visites ;
+- `pricing_rules_slot_belongs_to_venue` (FK COMPOSITE, B2) — une règle de prix ne peut
+  pas pointer le créneau d'une autre salle ;
+- `payments_one_paid_per_booking`, `cashback_one_active_per_booking`,
+  `account_deletion_requests_one_pending`, `venues_public_list_idx` (uniques et index PARTIELS) ;
+- `bookings_venue_timerange_gist`, `availability_blocks_venue_timerange_gist` (GiST) ;
+- tous les `CHECK`.
+
+Une seule exécution de `migrate dev` a déjà détruit la FK composite B2 en base de
+développement. La migration générée échoue en cours de route (elle émet
+`DROP INDEX` sur un index qui porte une contrainte), et ce qu'elle a supprimé
+AVANT l'échec n'est pas rendu.
+
+**Procédure : la migration s'écrit à la MAIN** dans
+`apps/api/prisma/migrations/<horodatage>_<nom>/migration.sql`, puis
+`pnpm --filter @zwadj/api run prisma:migrate` (= `migrate deploy`, qui applique
+sans jamais générer). Tout objet créé en SQL doit recevoir sa déclaration Prisma
+quand elle existe (`@@index`, `@@unique`) — sinon c'est une dérive permanente.
+Ce qui n'est pas exprimable (EXCLUDE, partiels, CHECK, FK composite) reste
+invisible à Prisma : c'est précisément pourquoi `migrate dev` ne doit jamais
+tourner.

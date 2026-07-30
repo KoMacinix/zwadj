@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import { AuthProvider } from "../../lib/auth/auth-context";
 import { SiteHeader, UnverifiedBanner } from "../../components/site-chrome";
-import { THEME_STORAGE_KEY } from "../../components/theme-toggle";
+import { THEME_BOOT_SCRIPT } from "@zwadj/ui/theme-storage";
 // Readex Pro AUTO-HÉBERGÉE (@fontsource) : latin + arabe via unicode-range,
 // vendorée par npm — le build ne dépend pas de Google Fonts (CI reproductible,
 // et pertinent pour un public algérien : zéro requête tierce).
@@ -28,7 +28,6 @@ import "../theme.css";
 // l'attribut avant que le navigateur ne peigne quoi que ce soit. Le `try`
 // couvre le stockage bloqué (navigation privée), où l'absence d'attribut
 // renvoie simplement à la préférence système.
-const THEME_SCRIPT = `try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}`;
 export default async function LocaleLayout({
   children,
   params
@@ -48,7 +47,7 @@ export default async function LocaleLayout({
     // exactement l'effet recherché.
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <SiteHeader />

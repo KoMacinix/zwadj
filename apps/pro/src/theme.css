@@ -6,6 +6,68 @@
   --accent-strong: #0d0a09;
   --accent-soft: #f1efee;
   --on-accent: #ffffff;
+
+  /* Remplissages des quatre états du calendrier (Lot B6), en variables depuis
+     UI-D2 : écrits en dur dans les règles, ils restaient pâles en sombre et la
+     grille virait au blanc éblouissant au milieu d'une page noire. */
+  --cal-available: #ffffff;
+  --cal-requested: #fff4d6;
+  --cal-booked: #d8e9d8;
+  --cal-blocked: #e6e3e1;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MODE SOMBRE — PRO (Lot UI-D2, correction de D64)
+
+   ⚠ RÉGRESSION CORRIGÉE ICI. D64 a posé les neutres sombres dans
+   `@zwadj/ui/styles.css`, que le PRO importe aussi : sa page devenait donc
+   sombre, mais ses accents restaient ceux du clair. Résultat, le bouton
+   principal peignait #211C1B — quasi-noir — sur un fond #111111 : invisible.
+   Poser des tokens partagés sans traiter TOUS leurs consommateurs, c'est
+   livrer la moitié d'un changement.
+
+   L'accent pro est monochrome (charbon). En sombre il ne s'éclaircit pas :
+   il S'INVERSE. Le bouton devient clair sur page sombre, et l'encre qu'il
+   porte redevient sombre — sinon il n'existe plus.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --dark-pro-accent: #ebe7e5;
+  --dark-pro-accent-strong: #ffffff;
+  /* Pendant sombre du voile #F1EFEE : une teinte PROFONDE, pas un blanc cassé. */
+  --dark-pro-accent-soft: #24201f;
+  --dark-pro-on-accent: #141110;
+  /* Les quatre états gardent leur TEINTE (ambre, vert, gris) mais passent en
+     versions profondes : c'est la teinte qui porte le sens, pas la clarté —
+     et le mot qui double la couleur (B6) reste lisible sur chacune. */
+  --dark-cal-available: #1c1c1c;
+  --dark-cal-requested: #3a2f10;
+  --dark-cal-booked: #17301c;
+  --dark-cal-blocked: #2b2724;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --accent: var(--dark-pro-accent);
+    --accent-strong: var(--dark-pro-accent-strong);
+    --accent-soft: var(--dark-pro-accent-soft);
+    --on-accent: var(--dark-pro-on-accent);
+    --cal-available: var(--dark-cal-available);
+    --cal-requested: var(--dark-cal-requested);
+    --cal-booked: var(--dark-cal-booked);
+    --cal-blocked: var(--dark-cal-blocked);
+  }
+}
+
+:root[data-theme="dark"] {
+  --accent: var(--dark-pro-accent);
+  --accent-strong: var(--dark-pro-accent-strong);
+  --accent-soft: var(--dark-pro-accent-soft);
+  --on-accent: var(--dark-pro-on-accent);
+  --cal-available: var(--dark-cal-available);
+  --cal-requested: var(--dark-cal-requested);
+  --cal-booked: var(--dark-cal-booked);
+  --cal-blocked: var(--dark-cal-blocked);
 }
 
 /* ── Calendrier de la salle (Lot B6) ────────────────────────────────────────
@@ -25,10 +87,10 @@
 .cal-day.is-selected { outline: 2px solid var(--accent); outline-offset: -2px; }
 /* Quatre états, quatre remplissages — TOUJOURS doublés d'un mot : la couleur
    seule exclurait un pro daltoniste, et ce sont ses réservations. */
-.cal-chip.is-available, .cal-day.is-available { background: #ffffff; }
-.cal-chip.is-requested, .cal-day.is-requested { background: #fff4d6; }
-.cal-chip.is-booked, .cal-day.is-booked { background: #d8e9d8; }
-.cal-chip.is-blocked, .cal-day.is-blocked { background: #e6e3e1; }
+.cal-chip.is-available, .cal-day.is-available { background: var(--cal-available); }
+.cal-chip.is-requested, .cal-day.is-requested { background: var(--cal-requested); }
+.cal-chip.is-booked, .cal-day.is-booked { background: var(--cal-booked); }
+.cal-chip.is-blocked, .cal-day.is-blocked { background: var(--cal-blocked); }
 .cal-pad { padding: 2px; }
 .cal-slots ul { list-style: none; margin: 8px 0 0; padding: 0; }
 .cal-slot { display: flex; align-items: center; justify-content: space-between; gap: 10px;
