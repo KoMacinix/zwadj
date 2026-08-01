@@ -1121,6 +1121,37 @@ export interface ProNotificationChannelsDTO {
   notifyBySms: boolean;
 }
 
+/* ── Lot C3b — les rendez-vous vus par le PRO ────────────────────────────────
+ *
+ *  ⚠ D70 — la fenêtre de lecture des rendez-vous n'est PAS écrêtée au présent,
+ *  contrairement à celle des disponibilités (D49). Une disponibilité passée
+ *  n'est rien ; un rendez-vous passé est une information — qui est venu, qui ne
+ *  s'est pas présenté. Écrêter effacerait l'historique du pro à chaque requête.
+ *  Le schéma de fenêtre (`availabilityWindowQuerySchema`) est réutilisé tel quel
+ *  pour la forme et la largeur maximale ; c'est l'ÉCRÊTAGE qui ne s'applique
+ *  pas, pas la validation. */
+
+/** Rendez-vous vu par le pro. Il porte le CONTACT du client — c'est toute la
+ *  raison d'être de cette lecture : rappeler avant la visite, ou prévenir en
+ *  cas d'empêchement. Le téléphone peut manquer (D61 le rend facultatif) ;
+ *  l'e-mail, jamais. */
+export interface ProVisitBookingDTO {
+  id: string;
+  /** Repère civil d'Alger `YYYY-MM-DD`, redérivé de `scheduledAt` (symétrie
+   *  D51). `string` et non un type dédié : `packages/types` n'en expose pas —
+   *  la forme est garantie par `isRealCivilDate` à la frontière. */
+  date: string;
+  startMinutes: number;
+  scheduledAt: string;
+  status: VisitStatus;
+  clientFirstName: string | null;
+  clientLastName: string | null;
+  clientEmail: string;
+  contactPhone: string | null;
+  cancelledAt: string | null;
+  createdAt: string;
+}
+
 export const proNotificationChannelsSchema = z
   .object({ notifyByEmail: z.boolean(), notifyBySms: z.boolean() })
   .strict()

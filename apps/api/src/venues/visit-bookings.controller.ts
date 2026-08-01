@@ -9,7 +9,7 @@
 // vient de `/venues/:slug/visit-slots`), la lecture de MES rendez-vous vit sous
 // `/me` comme le reste du compte, et l'annulation porte l'id du rendez-vous —
 // elle n'a pas besoin de la salle pour se désigner.
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -20,7 +20,15 @@ import {
   ApiOperation,
   ApiTags
 } from "@nestjs/swagger";
-import { UserRole, visitBookingCreateSchema, type VisitBookingCreateInput, type VisitBookingDTO } from "@zwadj/types";
+import {
+  availabilityWindowQuerySchema,
+  UserRole,
+  visitBookingCreateSchema,
+  type AvailabilityWindowQueryInput,
+  type ProVisitBookingDTO,
+  type VisitBookingCreateInput,
+  type VisitBookingDTO
+} from "@zwadj/types";
 import { CurrentUser, Roles } from "../auth/auth.decorators";
 import type { AuthenticatedUser } from "../auth/auth.types";
 import { ZodValidationPipe } from "../common/pipes/zod-validation.pipe";
@@ -86,5 +94,43 @@ export class VisitBookingsController {
   @ApiNotFoundResponse({ description: "404 indistinct : VISIT_BOOKING_NOT_FOUND (inconnu, malformé, ou d'un autre client)." })
   cancel(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<void> {
     return this.bookings.cancel(user.userId, id);
+  }
+
+  /** C3b — les rendez-vous d'une salle, pour son pro.
+   *
+   *  ⚠ Fenêtre NON écrêtée (D70) : le passé est l'historique du pro. Le schéma
+   *  `availabilityWindowQuerySchema` est réutilisé pour la forme et la largeur
+   *  maximale ; c'est l'écrêtage de D49 qui ne s'applique pas ici, pas la
+   *  validation. */
+  @Get("pro/venues/:id/visit-bookings")
+  @Roles(UserRole.PRO)
+  @ApiOperation({
+    summary: "Rendez-vous de visite d'une salle (pro)",
+    description:
+      "Fenêtre civile `from`/`to` (Alger), annulés inclus et marqués. 404 indistinct si la salle n'est pas la sienne."
+  })
+  listForVenue(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param("id") id: string,
+    @Query(new ZodValidationPipe(availabilityWindowQuerySchema)) window: AvailabilityWindowQueryInput
+  ): Promise<ProVisitBookingDTO[]> {
+    return this.bookings.listForVenue(user.userId, id, window);
+  }
+
+  /** C3b — annulation par le pro. Le CLIENT est prévenu (D63). */
+  @Delete("pro/venues/:id/visit-bookings/:bookingId")
+  @Roles(UserRole.PRO)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: "Annuler un rendez-vous (pro)",
+    description:
+      "Annulation DOUCE : le créneau est libéré, la ligne reste. Idempotent, 409 sur un rendez-vous passé."
+  })
+  cancelAsPro(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param("id") id: string,
+    @Param("bookingId") bookingId: string
+  ): Promise<void> {
+    return this.bookings.cancelAsPro(user.userId, id, bookingId);
   }
 }

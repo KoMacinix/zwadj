@@ -14,9 +14,34 @@
 //     fonctionner sans JS (SEO + Android bas de gamme, backlog 24.6). La forme
 //     répétée est donc la CANONIQUE ; la jointure se fait au dernier moment,
 //     à l'appel de l'API.
-import { VENUE_LIST_SORTS, type VenueListSort } from "@zwadj/types";
+import { CEREMONY_TYPE_FILTERS, VENUE_LIST_SORTS, type CeremonyTypeFilter, type VenueListSort } from "@zwadj/types";
 
 export const PAGE_SIZE = 12;
+
+/* ── Bornes des curseurs (Lot A13b — D69) ────────────────────────────────────
+   Déclarées ICI et pas dans la vue : le parseur DOIT connaître les mêmes
+   valeurs pour reconnaître qu'une poignée est au bout de sa course. Deux
+   copies, c'est un jour où le curseur affiche « 500+ » pendant que l'API reçoit
+   un plafond de 500.
+
+   ⚠ RÈGLE D69 — une poignée EN BUTÉE ne filtre pas. Un curseur exprime un
+   RÉTRÉCISSEMENT : à pleine largeur il ne rétrécit rien, donc le paramètre est
+   OMIS. Sans cette règle, le panneau au repos exclurait déjà des salles — celle
+   de 1 200 places disparaîtrait d'une recherche que personne n'a touchée, et
+   « 500+ » afficherait moins de résultats que « 500 ».
+
+   Le sentinelle est la borne elle-même, pas une valeur magique : `maxCapacity`
+   à 500 SIGNIFIE « 500 ou plus ». C'est ce que le libellé annonce, et cela
+   survit à l'absence de JavaScript — un `input[type=range]` soumet toujours sa
+   valeur, il n'a aucun moyen de se taire. */
+export const CAPACITY_FLOOR = 20;
+export const CAPACITY_CEILING = 500;
+export const CAPACITY_STEP = 10;
+
+/** En DINARS, comme le reste de l'URL publique (les centimes vivent côté API). */
+export const BUDGET_FLOOR = 0;
+export const BUDGET_CEILING = 1_500_000;
+export const BUDGET_STEP = 50_000;
 
 /** Ce que porte l'URL, déjà nettoyé. Les champs texte restent des chaînes :
  *  ils réalimentent les `<input>` à l'identique, y compris quand la saisie est
@@ -26,7 +51,13 @@ export interface SearchState {
   guests: string;
   minPrice: string;
   maxPrice: string;
+  /** Plafond de capacité (D68). `""` = pas de plafond. */
+  maxCapacity: string;
   amenities: string[];
+  /** Clés de styles, sémantique OU (D65). */
+  styles: string[];
+  /** `""` | `"indoor"` | `"outdoor"` | `"mixed"` — filtre INCLUSIF (D66). */
+  ceremonyType: string;
   sort: VenueListSort;
   page: number;
 }
@@ -44,6 +75,24 @@ function positiveInteger(value: string): string {
   return /^\d+$/.test(value) && Number(value) > 0 ? String(Number(value)) : "";
 }
 
+/** Remet deux bornes dans l'ordre. Une borne absente n'est pas « zéro » : elle
+ *  ne participe pas à la comparaison. */
+function ordered(low: string, high: string): [string, string] {
+  if (low === "" || high === "") return [low, high];
+  return Number(low) <= Number(high) ? [low, high] : [high, low];
+}
+
+/** Poignée basse au plancher = aucun minimum demandé (D69). */
+function atFloor(value: string, floor: number): string {
+  return value === "" || Number(value) <= floor ? "" : value;
+}
+
+/** Poignée haute en butée = aucun maximum demandé (D69). Le `>=` couvre une URL
+ *  bricolée à la main au-delà de la borne : elle veut dire « tout », pas « rien ». */
+function atCeiling(value: string, ceiling: number): string {
+  return value === "" || Number(value) >= ceiling ? "" : value;
+}
+
 export function parseSearchParams(raw: RawSearchParams): SearchState {
   const amenitiesRaw = raw.amenities;
   const amenities = (Array.isArray(amenitiesRaw) ? amenitiesRaw : amenitiesRaw ? [amenitiesRaw] : [])
@@ -53,17 +102,45 @@ export function parseSearchParams(raw: RawSearchParams): SearchState {
     .map((value) => value.trim())
     .filter((value) => /^[a-z0-9-]+$/.test(value));
 
+  const stylesRaw = raw.styles;
+  const styles = (Array.isArray(stylesRaw) ? stylesRaw : stylesRaw ? [stylesRaw] : [])
+    .flatMap((value) => value.split(","))
+    .map((value) => value.trim())
+    .filter((value) => /^[a-z0-9-]+$/.test(value));
+
+  const ceremonyRaw = first(raw.ceremonyType);
+
+  // D69 — sans JavaScript, rien n'empêche de traîner la poignée basse au-dessus
+  // de la haute : les deux `input` sont indépendants. On REDRESSE ici plutôt que
+  // de laisser partir une plage inversée, que l'API refuserait en 400 (D68) —
+  // un 400 sur une page publique indexée est un accident, et le visiteur n'a
+  // rien fait d'illégitime, il a juste croisé deux poignées.
+  const [guests, maxCapacity] = ordered(
+    atFloor(positiveInteger(first(raw.guests)), CAPACITY_FLOOR),
+    atCeiling(positiveInteger(first(raw.maxCapacity)), CAPACITY_CEILING)
+  );
+  const [minPrice, maxPrice] = ordered(
+    atFloor(positiveInteger(first(raw.minPrice)), BUDGET_FLOOR),
+    atCeiling(positiveInteger(first(raw.maxPrice)), BUDGET_CEILING)
+  );
+
   const sortRaw = first(raw.sort) as VenueListSort;
   const pageRaw = Number(first(raw.page));
 
   return {
     cityId: first(raw.cityId),
-    guests: positiveInteger(first(raw.guests)),
-    minPrice: positiveInteger(first(raw.minPrice)),
-    maxPrice: positiveInteger(first(raw.maxPrice)),
+    // D69 — une poignée en butée est effacée DÈS LA LECTURE de l'URL : l'état
+    // ne porte que ce qui filtre réellement, donc `toApiQuery` et
+    // `toPublicQuery` n'ont pas chacune à se souvenir de la règle.
+    guests,
+    maxCapacity,
+    minPrice,
+    maxPrice,
     // Dédoublonné : cocher deux fois la même clé ne doit pas produire deux
     // conditions ET identiques dans la requête.
     amenities: [...new Set(amenities)].sort(),
+    styles: [...new Set(styles)].sort(),
+    ceremonyType: CEREMONY_TYPE_FILTERS.includes(ceremonyRaw as CeremonyTypeFilter) ? ceremonyRaw : "",
     sort: VENUE_LIST_SORTS.includes(sortRaw) ? sortRaw : "recent",
     page: Number.isInteger(pageRaw) && pageRaw >= 1 ? pageRaw : 1
   };
@@ -77,7 +154,10 @@ export function toApiQuery(state: SearchState): URLSearchParams {
   // Dinars → centimes. Le seul endroit du front où cette multiplication existe.
   if (state.minPrice) query.set("minPriceCents", String(Number(state.minPrice) * 100));
   if (state.maxPrice) query.set("maxPriceCents", String(Number(state.maxPrice) * 100));
+  if (state.maxCapacity) query.set("maxCapacity", state.maxCapacity);
   if (state.amenities.length > 0) query.set("amenities", state.amenities.join(","));
+  if (state.styles.length > 0) query.set("styles", state.styles.join(","));
+  if (state.ceremonyType) query.set("ceremonyType", state.ceremonyType);
   query.set("sort", state.sort);
   query.set("page", String(state.page));
   query.set("pageSize", String(PAGE_SIZE));
@@ -94,7 +174,10 @@ export function toPublicQuery(state: SearchState, page = state.page): string {
   if (state.guests) query.set("guests", state.guests);
   if (state.minPrice) query.set("minPrice", state.minPrice);
   if (state.maxPrice) query.set("maxPrice", state.maxPrice);
+  if (state.maxCapacity) query.set("maxCapacity", state.maxCapacity);
   for (const amenity of state.amenities) query.append("amenities", amenity);
+  for (const style of state.styles) query.append("styles", style);
+  if (state.ceremonyType) query.set("ceremonyType", state.ceremonyType);
   if (state.sort !== "recent") query.set("sort", state.sort);
   if (page > 1) query.set("page", String(page));
   const serialized = query.toString();

@@ -16,7 +16,7 @@
 // le genre d'échec qui n'apparaît qu'en CI.
 import { vi } from "vitest";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
-import type { AmenityDTO, VenueProDTO, WilayaDTO } from "@zwadj/types";
+import type { AmenityDTO, VenueProDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import type { AuthClient } from "../lib/auth-client";
 
 export interface AuthenticatedProUser {
@@ -63,11 +63,13 @@ export function makeAuthDouble(overrides: Partial<AuthClient> = {}): AuthClient 
 
 export function makeReferentialsDouble(
   wilayas: WilayaDTO[] = [],
-  amenities: AmenityDTO[] = []
+  amenities: AmenityDTO[] = [],
+  venueStyles: VenueStyleDTO[] = []
 ): ReferentialsClient {
   return {
     listWilayas: vi.fn().mockResolvedValue(wilayas),
-    listAmenities: vi.fn().mockResolvedValue(amenities)
+    listAmenities: vi.fn().mockResolvedValue(amenities),
+    listVenueStyles: vi.fn().mockResolvedValue(venueStyles)
   };
 }
 
@@ -100,7 +102,9 @@ export function makeVenueClientDouble(
     deletePricingRule: vi.fn().mockResolvedValue(undefined),
     listAvailabilityBlocks: vi.fn().mockResolvedValue([]),
     createAvailabilityBlock: vi.fn(),
-    deleteAvailabilityBlock: vi.fn().mockResolvedValue(undefined),
+    deleteAvailabilityBlock: vi.fn(),
+    listVisitBookings: vi.fn().mockResolvedValue([]),
+    cancelVisitBooking: vi.fn().mockResolvedValue(undefined).mockResolvedValue(undefined),
     ...overrides
   };
 }

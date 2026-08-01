@@ -490,7 +490,12 @@
         "noChanges": "لا توجد تعديلات للحفظ.",
         "loadError": "تعذّر تحميل هذه القاعة.",
         "referentialsLoading": "جارٍ تحميل البلديات…",
-        "referentialsError": "تعذّر تحميل البلديات والتجهيزات. أعد المحاولة."
+        "referentialsError": "تعذّر تحميل البلديات والتجهيزات. أعد المحاولة.",
+        "sectionStyles": "الطراز ونوع الزفاف",
+        "stylesHint": "تُستعمل هذه المعلومات في عوامل تصفية البحث العمومي.",
+        "ceremonyType": "نوع الزفاف",
+        "ceremonyTypeHint": "اتركه فارغًا ما دمت لم تقرر بعد.",
+        "ceremonyTypeNone": "غير محدد"
       },
       "notFound": {
         "title": "القاعة غير موجودة",
@@ -620,6 +625,13 @@
           "BOOKED": "محجوز",
           "BLOCKED": "محجوب"
         }
+      },
+      "visits": {
+        "title": "مواعيد الزيارة",
+        "loading": "جارٍ تحميل المواعيد…",
+        "empty": "لا يوجد أي موعد في الأشهر الثلاثة القادمة.",
+        "cancel": "إلغاء",
+        "cancelled": "أُلغي"
       }
     },
     "ceremonyType": {
@@ -635,13 +647,16 @@
       "legend": "تدقيق البحث",
       "city": "البلدية",
       "cityAll": "كل البلديات",
-      "guests": "عدد المدعوين",
-      "guestsPlaceholder": "مثال: 300",
-      "minPrice": "السعر الأدنى (دج)",
-      "maxPrice": "السعر الأقصى (دج)",
       "amenities": "التجهيزات",
       "submit": "عرض النتائج",
-      "reset": "إعادة ضبط عوامل التصفية"
+      "reset": "إعادة ضبط عوامل التصفية",
+      "capacity": "السعة",
+      "capacityValue": "{count} مدعو",
+      "capacityCeiling": "{count}+ مدعو",
+      "budget": "الميزانية",
+      "budgetCeiling": "{amount} فأكثر",
+      "styles": "الطراز",
+      "ceremonyType": "نوع الزفاف"
     },
     "sort": {
       "label": "ترتيب حسب",
@@ -722,7 +737,9 @@
       "proCancelledSubject": "إلغاء موعد زيارة — {venue}",
       "proCancelledBody": "مرحباً،\n\n{client} ألغى موعد زيارته لـ {venue}.\n\nالموعد المُحرَّر: {date} على {time}\n\nأصبح متاحاً من جديد لعميل آخر.",
       "clientConfirmedSubject": "تم تأكيد زيارتك — {venue}",
-      "clientConfirmedBody": "مرحباً،\n\nتم تأكيد موعد زيارتك.\n\nالقاعة: {venue}\nالموعد: {date} على {time} (30 دقيقة)\n\nأخبر القاعة إن تعذّر عليك الحضور: يمكنك الإلغاء من «مواعيدي»."
+      "clientConfirmedBody": "مرحباً،\n\nتم تأكيد موعد زيارتك.\n\nالقاعة: {venue}\nالموعد: {date} على {time} (30 دقيقة)\n\nأخبر القاعة إن تعذّر عليك الحضور: يمكنك الإلغاء من «مواعيدي».",
+      "clientCancelledSubject": "تم إلغاء الزيارة — {venue}",
+      "clientCancelledBody": "مرحبًا {client}،\n\nألغى مسيّر {venue} زيارتكم ليوم {date} على {time}.\n\nيمكنكم اختيار موعد آخر من صفحة القاعة أو الاتصال به مباشرة.\n\nفريق زواج"
     },
     "whatsapp": {
       "proBooked": "زواج — موعد زيارة جديد في {venue}: {date} على {time} (30 د)، من {client}. للاتصال: {contact}. مؤكَّد مسبقاً، لا شيء للتأكيد.",

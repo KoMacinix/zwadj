@@ -128,6 +128,63 @@ describe("VisitNotificationsService — canaux du pro (D60)", () => {
   });
 });
 
+describe("VisitNotificationsService — annulation par le PRO (C3b)", () => {
+  it("c'est le CLIENT qui est prévenu, par e-mail, quels que soient les canaux du pro", async () => {
+    const { service, prisma, emailSend, whatsAppSend } = build();
+    // Pro réglé sur WhatsApp SEUL : ses préférences (D60) gouvernent ce qu'IL
+    // reçoit, pas ce que reçoit le client. Le confondre enverrait l'annulation
+    // au numéro du pro et laisserait le client venir pour rien.
+    await service.notifyClientCancelledByPro(
+      makeInput({ pro: { ...makeInput().pro, notifyByEmail: false, notifyBySms: true } })
+    );
+
+    expect(whatsAppSend).not.toHaveBeenCalled();
+    expect(emailSend).toHaveBeenCalledTimes(1);
+    expect(emailSend.mock.calls[0]![0].to).toBe(makeInput().client.email);
+    expect(prisma.created[0]).toMatchObject({
+      userId: "cli-1",
+      channel: "EMAIL",
+      type: "visit.cancelledByPro",
+      status: "QUEUED"
+    });
+    expect(prisma.updated[0]?.data).toMatchObject({ status: "SENT" });
+  });
+
+  it("langue du CLIENT, pas du pro : un client en `ar` reçoit le corps arabe", async () => {
+    const { service, emailSend } = build();
+    const base = makeInput();
+    await service.notifyClientCancelledByPro({
+      ...base,
+      pro: { ...base.pro, locale: "fr" },
+      client: { ...base.client, locale: "ar" }
+    });
+
+    expect(emailSend.mock.calls[0]![0].subject).toMatch(/[\u0600-\u06FF]/);
+  });
+
+  it("envoi en ÉCHEC : la ligne passe FAILED et rien ne remonte — l'annulation reste faite", async () => {
+    const { service, prisma, emailSend } = build();
+    emailSend.mockRejectedValueOnce(new Error("smtp down"));
+
+    // Ne lève pas : le rendez-vous est annulé en base avant l'envoi, et une
+    // exception ici ne le dé-annulerait pas — elle rendrait juste 500 sur une
+    // opération réussie.
+    await expect(service.notifyClientCancelledByPro(makeInput())).resolves.toBeUndefined();
+    expect(prisma.updated[0]?.data).toMatchObject({ status: "FAILED" });
+  });
+
+  it("le gabarit se rend sans variable manquante — `renderTemplate` lève sur un trou", async () => {
+    const { service, emailSend } = build();
+    await service.notifyClientCancelledByPro(makeInput());
+
+    const body = emailSend.mock.calls[0]![0].text;
+    // Le défaut réel attrapé en intégration : `{clientName}` au lieu de
+    // `{client}` faisait lever le rendu, donc partir la ligne en FAILED.
+    expect(body).not.toMatch(/\{[a-zA-Z]+\}/);
+    expect(body).toContain("20:30");
+  });
+});
+
 describe("VisitNotificationsService — contenu", () => {
   it("l'heure est en 24 h (formatWallClock) : « 20:30 », jamais « 8:30 PM » (D57)", async () => {
     const { service, emailSend } = build();

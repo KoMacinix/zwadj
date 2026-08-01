@@ -102,6 +102,7 @@ function makeReferentials(overrides: Partial<ReferentialsClient> = {}): Referent
   return {
     listWilayas: vi.fn().mockResolvedValue(WILAYAS),
     listAmenities: vi.fn().mockResolvedValue([]),
+    listVenueStyles: vi.fn().mockResolvedValue([]),
     ...overrides
   };
 }

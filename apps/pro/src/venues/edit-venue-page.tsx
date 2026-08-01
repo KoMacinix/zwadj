@@ -16,6 +16,7 @@ import { useReferentialsData, useVenues } from "./venue-client-context";
 import { isVenueNotFound, venueFieldErrors } from "./venue-errors";
 import {
   AmenitiesPicker,
+  StylesPicker,
   PublicationBadge,
   StatusSelect,
   VenueFormFields,
@@ -238,6 +239,21 @@ export function EditVenuePage() {
                   amenityIds: checked
                     ? [...values.amenityIds, amenityId]
                     : values.amenityIds.filter((current) => current !== amenityId)
+                })
+              }
+            />
+
+            <StylesPicker
+              venueStyles={referentials.venueStyles}
+              selectedStyles={values.styleIds}
+              loading={referentials.status === "loading"}
+              ceremonyType={values.ceremonyType}
+              onCeremonyType={(ceremonyType) => patch({ ceremonyType })}
+              onToggleStyle={(styleId, checked) =>
+                patch({
+                  styleIds: checked
+                    ? [...values.styleIds, styleId]
+                    : values.styleIds.filter((current) => current !== styleId)
                 })
               }
             />

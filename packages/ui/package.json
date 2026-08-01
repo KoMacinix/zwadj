@@ -20,5 +20,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "typescript": "^5.8.0"
+  },
+  "dependencies": {
+    "lucide-react": "^0.563.0"
   }
 }

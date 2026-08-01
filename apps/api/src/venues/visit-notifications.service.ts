@@ -4,6 +4,9 @@
 //   visit.booked     → au PRO,    sur les canaux qu'il a choisis (D60)
 //   visit.cancelled  → au PRO,    mêmes canaux
 //   visit.confirmed  → au CLIENT, e-mail (il n'a pas de canaux à régler)
+//   visit.cancelledByPro → au CLIENT, e-mail : il a bloqué son samedi pour
+//                      cette visite, l'apprendre en arrivant sur place serait
+//                      la pire façon.
 //
 // ── Deux interdits absolus (D63) ─────────────────────────────────────────────
 // 1. JAMAIS appelé dans un `$transaction` : un envoi lent tiendrait un verrou.
@@ -135,6 +138,22 @@ export class VisitNotificationsService {
 
   /** Écrit la ligne, envoie, résout. Ne lève JAMAIS — y compris si c'est
    *  l'écriture de la trace qui échoue. */
+  /** C3b — le PRO a annulé : c'est le CLIENT qu'on prévient, sur son e-mail.
+   *  Il n'a pas de canaux à régler (D60 ne concerne que le pro) et son e-mail
+   *  est le seul contact garanti — son téléphone, lui, peut manquer (D61). */
+  async notifyClientCancelledByPro(input: VisitNotificationInput): Promise<void> {
+    const vars = this.templateVars(input, input.client.locale);
+    const m = MESSAGES[input.client.locale].visit;
+
+    await this.dispatch("visit.cancelledByPro", "EMAIL", input, input.client.userId, () =>
+      this.email.send({
+        to: input.client.email,
+        subject: renderTemplate(m.emails.clientCancelledSubject, vars),
+        text: renderTemplate(m.emails.clientCancelledBody, vars)
+      })
+    );
+  }
+
   private async dispatch(
     type: string,
     channel: Channel,

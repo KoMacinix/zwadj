@@ -29,11 +29,12 @@ export function LocaleSwitch() {
       className="locale-switch"
       href={{ pathname, query }}
       locale={other}
-      // `hrefLang` dit aux moteurs ce qu'est cette page ; `aria-label` dit à un
-      // lecteur d'écran ce que fait le lien. L'étiquette visible, elle, est
-      // écrite DANS la langue de destination — « العربية » se lit en arabe,
-      // pas « Arabe » en français : c'est ce que cherche un arabophone qui
-      // tombe sur une page en français.
+      // `hrefLang` dit aux moteurs ce qu'est la page visée ; `aria-label` dit à
+      // un lecteur d'écran ce que fait le lien. L'étiquette visible, elle, est
+      // écrite DANS la langue de destination — « العربية » se lit en arabe, pas
+      // « Arabe » en français : c'est ce que cherche un arabophone tombé sur une
+      // page en français. `lang` est ce qui empêche une synthèse vocale
+      // française de buter dessus.
       hrefLang={other}
       aria-label={t(other === "ar" ? "toArabic" : "toFrench")}
       lang={other}

@@ -6,10 +6,10 @@
 // faite de LIENS porteurs des filtres, et le fait que le formulaire soit un
 // vrai `<form method="get">` — c'est lui qui rend la page utilisable sans
 // JavaScript, ce qu'aucun test de rendu ne montrerait autrement.
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
-import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO } from "@zwadj/types";
+import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import { parseSearchParams } from "../../lib/search-query";
 import { SearchView } from "./search-view";
 
@@ -38,6 +38,11 @@ const WILAYAS: WilayaDTO[] = [
 const AMENITIES: AmenityDTO[] = [
   { id: "a1", key: "wifi", nameFr: "Wifi", nameAr: "واي فاي", icon: "wifi" },
   { id: "a2", key: "parking", nameFr: "Parking", nameAr: "موقف سيارات", icon: "parking" }
+];
+
+const STYLES: VenueStyleDTO[] = [
+  { id: "s1", key: "royal", nameFr: "Royal", nameAr: "ملكي", sortOrder: 1 },
+  { id: "s2", key: "jardin", nameFr: "Jardin", nameAr: "حديقة", sortOrder: 2 }
 ];
 
 function venue(n: number, over: Partial<VenueSummaryDTO> = {}): VenueSummaryDTO {
@@ -77,6 +82,7 @@ function renderView(
         results={results([venue(1)])}
         wilayas={WILAYAS}
         amenities={AMENITIES}
+        styles={STYLES}
         {...over}
       />
     </NextIntlClientProvider>
@@ -144,27 +150,88 @@ describe("Recherche — filtres sans JavaScript", () => {
     expect(form).not.toHaveAttribute("action");
   });
 
-  it("les champs sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche", () => {
+  it("les contrôles sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche", () => {
     renderView({}, "fr", {
       cityId: CITY_ID,
       guests: "250",
+      maxCapacity: "400",
       minPrice: "100000",
       maxPrice: "400000",
       amenities: ["wifi"],
+      styles: ["jardin"],
+      ceremonyType: "outdoor",
       sort: "price_asc"
     });
     expect(screen.getByLabelText("Commune")).toHaveValue(CITY_ID);
-    expect(screen.getByLabelText("Nombre d'invités")).toHaveValue(250);
-    expect(screen.getByLabelText("Prix minimum (DA)")).toHaveValue(100000);
-    expect(screen.getByLabelText("Prix maximum (DA)")).toHaveValue(400000);
     expect(screen.getByLabelText("Trier par")).toHaveValue("price_asc");
+
+    const sliders = screen.getAllByRole("slider");
+    expect(sliders.map((s) => (s as HTMLInputElement).value)).toEqual(["250", "400", "100000", "400000"]);
+
     expect(screen.getByRole("checkbox", { name: "Wifi" })).toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Parking" })).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Jardin" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Royal" })).not.toBeChecked();
+    expect(screen.getByRole("radio", { name: "Extérieur" })).toBeChecked();
+    expect(screen.getByRole("radio", { name: "Intérieur" })).not.toBeChecked();
+  });
+
+  it("D69 — poignées EN BUTÉE quand l'URL est nue : le panneau au repos ne filtre rien", () => {
+    renderView();
+    // 20 / 500 / 0 / 1 500 000 : les bornes elles-mêmes. L'état, lui, est vide —
+    // c'est ce qui garantit qu'aucun paramètre ne partira à l'API.
+    expect(screen.getAllByRole("slider").map((s) => (s as HTMLInputElement).value)).toEqual([
+      "20",
+      "500",
+      "0",
+      "1500000"
+    ]);
+  });
+
+  it("la butée haute s'annonce « et plus » — sinon « 500 » se lirait comme un plafond", () => {
+    renderView();
+    expect(screen.getByText(/500\+ invités/)).toBeInTheDocument();
+  });
+
+  it("les puces de style sont des CASES (plusieurs à la fois, D65), le type est un RADIO (choix unique, D66)", () => {
+    renderView();
+    for (const key of ["Royal", "Jardin"]) {
+      expect(screen.getByRole("checkbox", { name: key })).toHaveAttribute("name", "styles");
+    }
+    for (const label of ["Intérieur", "Extérieur", "Mixte"]) {
+      expect(screen.getByRole("radio", { name: label })).toHaveAttribute("name", "ceremonyType");
+    }
+  });
+
+  it("UI-D3 — recliquer une puce de type la DÉCOCHE : sans elle, un groupe de radios ne se vide jamais", () => {
+    renderView({}, "fr", { ceremonyType: "mixed" });
+    const mixte = screen.getByRole("radio", { name: "Mixte" });
+    expect(mixte).toBeChecked();
+
+    fireEvent.click(mixte);
+    expect(mixte).not.toBeChecked();
+  });
+
+  it("UI-D3 — trois types exactement, « Tous » n'existe plus", () => {
+    renderView();
+    expect(screen.getAllByRole("radio")).toHaveLength(3);
+    expect(screen.queryByRole("radio", { name: "Tous" })).toBeNull();
+  });
+
+  it("référentiel de styles VIDE : le bloc disparaît, la recherche reste utilisable", () => {
+    renderView({ styles: [] });
+    expect(screen.queryByRole("checkbox", { name: "Royal" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Afficher les résultats" })).toBeInTheDocument();
   });
 
   it("les équipements partagent le même `name` : c'est l'encodage natif que le navigateur sait produire seul", () => {
     renderView();
-    for (const box of screen.getAllByRole("checkbox")) expect(box).toHaveAttribute("name", "amenities");
+    // Portée aux SERVICES : depuis A13b, les puces de style sont aussi des cases
+    // à cocher, sous un autre `name`. Compter toutes les cases confondrait les
+    // deux groupes et ce test ne prouverait plus rien.
+    for (const box of screen.getAllByRole("checkbox", { name: /Wifi|Parking/ })) {
+      expect(box).toHaveAttribute("name", "amenities");
+    }
   });
 
   it("le tri vit DANS le formulaire : sans JS, le bouton de soumission le valide comme les autres champs", () => {

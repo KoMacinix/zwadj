@@ -44,6 +44,7 @@ function makeReferentials(overrides: Partial<ReferentialsClient> = {}): Referent
   return {
     listWilayas: vi.fn().mockResolvedValue([]),
     listAmenities: vi.fn().mockResolvedValue([]),
+    listVenueStyles: vi.fn().mockResolvedValue([]),
     ...overrides
   };
 }
@@ -77,6 +78,11 @@ describe("Coquille protégée (D23/D24)", () => {
   it("anonyme sur / : redirigé vers la page de connexion", async () => {
     renderAt("/", makeClient());
     expect(await screen.findByRole("heading", { name: "Connexion" })).toBeInTheDocument();
+  });
+
+  it("UI-D2 — la bascule de thème est présente sur l'écran de CONNEXION, pas seulement après login", async () => {
+    renderAt("/", makeClient());
+    expect(await screen.findByRole("button", { name: "Changer de thème" })).toBeInTheDocument();
   });
 
   it("session CLIENT sur / : refus explicite « espace réservé aux professionnels »", async () => {

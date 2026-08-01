@@ -128,7 +128,8 @@ function makeVenues(photos: VenuePhotoDTO[], overrides: Partial<VenueProClient> 
 function makeReferentials(): ReferentialsClient {
   return {
     listWilayas: vi.fn().mockResolvedValue(WILAYAS),
-    listAmenities: vi.fn().mockResolvedValue(AMENITIES)
+    listAmenities: vi.fn().mockResolvedValue(AMENITIES),
+    listVenueStyles: vi.fn().mockResolvedValue([])
   };
 }
 

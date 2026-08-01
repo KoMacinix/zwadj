@@ -24,6 +24,8 @@ import {
   AuthErrorCode,
   BOOKING_HORIZON_MONTHS,
   VenueErrorCode,
+  type AvailabilityWindowQueryInput,
+  type ProVisitBookingDTO,
   type VisitBookingCreateInput,
   type VisitBookingDTO
 } from "@zwadj/types";
@@ -43,6 +45,7 @@ import { PUBLIC_BASE_WHERE, PUBLIC_DETAIL_STATUSES, SLUG_PATTERN } from "./venue
 import { VisitNotificationsService, type VisitNotificationInput } from "./visit-notifications.service";
 
 const MINUTE_MS = 60_000;
+const DAY_MS = 86_400_000;
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -211,6 +214,139 @@ export class VisitBookingsService {
       select: BOOKING_SELECT
     });
     return rows.map((row) => this.toDTO(row));
+  }
+
+  /** C3b — les rendez-vous d'UNE salle, pour son pro.
+   *
+   *  ⚠ D70 — la fenêtre n'est PAS écrêtée au présent. `clampWindow` (D49) sert
+   *  aux DISPONIBILITÉS : proposer un créneau passé n'a aucun sens. Ici le passé
+   *  est l'historique du pro — qui est venu, qui ne s'est pas présenté — et
+   *  l'écrêter le lui retirerait à chaque requête.
+   *
+   *  Annulés INCLUS : un rendez-vous qui disparaît sans un mot ressemble à un
+   *  bug, et le pro qui a bloqué son après-midi doit voir qu'il est libéré. */
+  async listForVenue(userId: string, venueId: string, window: AvailabilityWindowQueryInput): Promise<ProVisitBookingDTO[]> {
+    await this.ownedVenue(userId, venueId);
+
+    const from = parseCivilDate(window.from);
+    const to = parseCivilDate(window.to);
+    if (!from || !to) this.throwSlotUnavailable();
+
+    // Bornes en INSTANTS : début du premier jour inclus, début du lendemain du
+    // dernier jour exclu. Comparer des dates civiles à un `timestamptz` en base
+    // ferait dépendre le résultat du fuseau de la session PostgreSQL.
+    const fromMs = civilDayStartMs(from);
+    const toMs = civilDayStartMs(to) + DAY_MS;
+
+    const rows = await this.prisma.visitBooking.findMany({
+      where: { venueId, scheduledAt: { gte: new Date(fromMs), lt: new Date(toMs) } },
+      orderBy: [{ scheduledAt: "asc" }, { id: "asc" }],
+      select: {
+        id: true,
+        scheduledAt: true,
+        status: true,
+        contactPhone: true,
+        cancelledAt: true,
+        createdAt: true,
+        client: { select: { email: true, firstName: true, lastName: true } }
+      }
+    });
+
+    return rows.map((row) => {
+      const { date, startMinutes } = this.civilOf(row.scheduledAt);
+      return {
+        id: row.id,
+        // `formatCivilDate` et non le repère brut : le DTO transporte une chaîne
+        // `YYYY-MM-DD`, jamais la structure interne du moteur de dates.
+        date: formatCivilDate(date),
+        startMinutes,
+        scheduledAt: row.scheduledAt.toISOString(),
+        status: row.status === "CANCELLED" ? "CANCELLED" : "CONFIRMED",
+        clientFirstName: row.client.firstName,
+        clientLastName: row.client.lastName,
+        clientEmail: row.client.email,
+        contactPhone: row.contactPhone,
+        cancelledAt: row.cancelledAt?.toISOString() ?? null,
+        createdAt: row.createdAt.toISOString()
+      } satisfies ProVisitBookingDTO;
+    });
+  }
+
+  /** C3b — annulation par le PRO. Mêmes règles que D62 côté client (douce,
+   *  idempotente, refusée sur le passé), mais c'est le CLIENT qu'on prévient :
+   *  il a bloqué son samedi pour cette visite.
+   *
+   *  ⚠ La propriété se vérifie sur la SALLE, et le rendez-vous se cherche
+   *  ensuite DANS cette salle. Chercher le rendez-vous d'abord permettrait à un
+   *  pro de découvrir, par la différence entre 404 et 403, qu'un identifiant
+   *  existe ailleurs. */
+  async cancelAsPro(userId: string, venueId: string, bookingId: string): Promise<void> {
+    await this.ownedVenue(userId, venueId);
+
+    const row = UUID_PATTERN.test(bookingId)
+      ? await this.prisma.visitBooking.findFirst({
+          where: { id: bookingId, venueId },
+          select: {
+            ...BOOKING_SELECT,
+            venue: {
+              select: {
+                slug: true,
+                nameFr: true,
+                nameAr: true,
+                owner: {
+                  select: {
+                    phone: true,
+                    notifyByEmail: true,
+                    notifyBySms: true,
+                    user: { select: { id: true, email: true, locale: true } }
+                  }
+                }
+              }
+            },
+            client: { select: { id: true, email: true, locale: true, firstName: true, lastName: true } }
+          }
+        })
+      : null;
+
+    if (!row) {
+      throw new NotFoundException({
+        code: VenueErrorCode.VISIT_BOOKING_NOT_FOUND,
+        message: "venue.errors.visitBookingNotFound"
+      });
+    }
+
+    if (row.status === "CANCELLED") return;
+
+    const nowMs = Date.now();
+    if (row.scheduledAt.getTime() < nowMs) {
+      throw new ConflictException({
+        code: VenueErrorCode.VISIT_BOOKING_PAST,
+        message: "venue.errors.visitBookingPast"
+      });
+    }
+
+    await this.prisma.visitBooking.update({
+      where: { id: row.id },
+      data: { status: "CANCELLED", cancelledAt: new Date(nowMs) }
+    });
+
+    const { date, startMinutes } = this.civilOf(row.scheduledAt);
+    await this.notifications.notifyClientCancelledByPro(
+      this.notificationInput(row, { id: row.venueId, ...row.venue }, row.client, row.contactPhone, date, startMinutes)
+    );
+  }
+
+  /** 404 INDISTINCT sur une salle qui n'est pas la sienne — anti-énumération. */
+  private async ownedVenue(userId: string, venueId: string): Promise<void> {
+    const venue = UUID_PATTERN.test(venueId)
+      ? await this.prisma.venue.findFirst({
+          where: { id: venueId, deletedAt: null, owner: { userId } },
+          select: { id: true }
+        })
+      : null;
+    if (!venue) {
+      throw new NotFoundException({ code: VenueErrorCode.VENUE_NOT_FOUND, message: "venue.errors.notFound" });
+    }
   }
 
   /** D62 — annulation DOUCE : c'est le filtre `WHERE status = 'CONFIRMED'` de

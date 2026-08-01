@@ -24,6 +24,7 @@
 // Toutes les heures en 24 h, via le formateur partagé.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
+import { VisitsSection } from "./visits-section";
 import { useTranslation } from "react-i18next";
 import { formatSlotRange, type VenueAvailabilityDayDTO, type VenueAvailabilityResponse } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
@@ -254,6 +255,10 @@ export function VenueCalendarPage() {
           </ul>
         </section>
       )}
+
+      {/* C3b — les rendez-vous de visite vivent à côté du calendrier : c'est le
+          même écran mental pour le pro, « qu'est-ce qui se passe dans ma salle ». */}
+      {id ? <VisitsSection venueId={id} /> : null}
     </main>
   );
 }

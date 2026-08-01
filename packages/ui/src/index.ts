@@ -4,6 +4,7 @@ export { Button, type ButtonProps } from "./button";
 export { ConfirmDialog, type ConfirmDialogProps } from "./confirm-dialog";
 export { ArrowBackIcon } from "./icons";
 export { ZwadjLogo, ZwadjLogoIcon } from "./logo";
+export { AmenityIcon } from "./amenity-icon";
 export { ThemeToggle, type ThemeToggleProps } from "./theme-toggle";
 export {
   applyStoredTheme,

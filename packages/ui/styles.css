@@ -45,11 +45,11 @@
    fonctionner même sous un système en mode clair. Ce qui compte est qu'une
    couleur ne se change jamais qu'à un seul endroit.
 
-   Deux déclencheurs, par ordre de priorité :
-     1. `[data-theme]` sur <html> = choix explicite de la personne ;
-     2. `prefers-color-scheme` = préférence du système, à défaut de choix.
-   Le `:not([data-theme="light"])` est ce qui permet de RESTER en clair sous un
-   système sombre — sans lui, le choix explicite serait ignoré.
+   ⚠ UN SEUL déclencheur : `[data-theme="dark"]` sur <html>, posé par la bascule.
+   La préférence système (`prefers-color-scheme`) a été RETIRÉE en UI-D3 : Zwadj
+   s'ouvre en CLAIR, en français comme en arabe. Le design de référence est
+   pensé en clair ; ouvrir en sombre chez qui a un système sombre montrait un
+   rendu que personne n'a dessiné. Le sombre reste offert, il n'est plus subi.
    ══════════════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -68,24 +68,6 @@
   --dark-success: #5cbb7d;
   --dark-success-soft: #12241a;
   --dark-shadow-modal: 0 32px 80px rgba(0, 0, 0, 0.55);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: var(--dark-bg);
-    --surface: var(--dark-surface);
-    --bg-2: var(--dark-bg-2);
-    --ink: var(--dark-ink);
-    --ink-2: var(--dark-ink-2);
-    --ink-mute: var(--dark-ink-mute);
-    --line: var(--dark-line);
-    --danger: var(--dark-danger);
-    --danger-soft: var(--dark-danger-soft);
-    --success: var(--dark-success);
-    --success-soft: var(--dark-success-soft);
-    --shadow-modal: var(--dark-shadow-modal);
-    color-scheme: dark;
-  }
 }
 
 :root[data-theme="dark"] {
@@ -1085,10 +1067,13 @@ button {
   justify-content: center;
   inline-size: 34px;
   block-size: 34px;
-  border: 1px solid var(--line);
+  /* Rond, comme le dessin retenu (UI-D4). La bordure reste `--ink-mute` et non
+     `--line` : sur le dégradé clair du panneau pro, un gris trop pâle rendait
+     le bouton invisible — il était dans la page, personne ne le voyait. */
+  border: 1px solid var(--ink-mute);
   border-radius: 999px;
   background: var(--surface);
-  color: var(--ink-2);
+  color: var(--ink);
   cursor: pointer;
 }
 
@@ -1099,16 +1084,6 @@ button {
 
 .theme-toggle .icon-sun {
   display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
-    display: none;
-  }
-
-  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
-    display: block;
-  }
 }
 
 :root[data-theme="dark"] .theme-toggle .icon-moon {

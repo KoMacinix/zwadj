@@ -39,18 +39,6 @@
   --dark-star: #e6a93c;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --accent: var(--dark-accent);
-    --accent-strong: var(--dark-accent-strong);
-    --accent-soft: var(--dark-accent-soft);
-    --on-accent: var(--dark-on-accent);
-    --rose-pale: var(--dark-rose-pale);
-    --sage: var(--dark-sage);
-    --star: var(--dark-star);
-  }
-}
-
 :root[data-theme="dark"] {
   --accent: var(--dark-accent);
   --accent-strong: var(--dark-accent-strong);
@@ -80,4 +68,252 @@
 .locale-switch:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PANNEAU DE FILTRES (Lot A13b) — repris du design de référence.
+   ══════════════════════════════════════════════════════════════════════════ */
+.filters {
+  display: grid;
+  gap: 22px;
+  align-content: start;
+  padding: 20px;
+  background: var(--bg-2);
+  border-radius: var(--radius);
+}
+
+.filters-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.filters-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.filters-reset {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.filter-block {
+  display: grid;
+  gap: 10px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0; /* un <fieldset> refuse de rétrécir sans cela */
+}
+
+.filter-label {
+  padding: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* ── Curseur à deux poignées ────────────────────────────────────────────────
+   Deux `input[type=range]` NATIFS empilés. Les pistes natives sont masquées et
+   remplacées par une piste unique dessinée en dessous ; seules les poignées
+   restent cliquables, sinon celle du dessus intercepterait tous les clics
+   destinés à l'autre. */
+.range {
+  position: relative;
+  block-size: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.range-track,
+.range-fill {
+  position: absolute;
+  block-size: 3px;
+  border-radius: 999px;
+}
+
+.range-track {
+  inset-inline: 0;
+  background: var(--line);
+}
+
+.range-fill {
+  background: var(--accent);
+}
+
+.range input[type="range"] {
+  position: absolute;
+  inset-inline: 0;
+  inline-size: 100%;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  pointer-events: none; /* la piste ne prend rien… */
+}
+
+.range input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto; /* …seule la poignée répond */
+  appearance: none;
+  inline-size: 16px;
+  block-size: 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  cursor: pointer;
+}
+
+.range input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  inline-size: 16px;
+  block-size: 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  cursor: pointer;
+}
+
+.range input[type="range"]:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.range-value {
+  margin: 0;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+/* ── Puces (styles, type de mariage) ────────────────────────────────────────
+   La case ou le bouton radio reste dans le DOM, focalisable au clavier, et
+   c'est lui qui porte l'état — `:checked` peint le `<span>` frère. Un `<div>`
+   cliquable aurait exigé de réinventer la sélection, le focus et le clavier. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.chip input:checked + span {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Le focus clavier doit se voir : l'input étant invisible, l'anneau se dessine
+   sur le libellé. Sans cette règle, naviguer les puces au clavier ne montre
+   plus rien du tout. */
+.chip input:focus-visible + span {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.service-list {
+  display: grid;
+  gap: 10px;
+}
+
+.service-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Les listes du panneau (commune, tri) : `.filter-block` n'est pas `.field`,
+   elles sortaient donc SANS style, avec le rendu natif du navigateur. Même
+   traitement que les champs de `@zwadj/ui`, sans dupliquer la primitive.
+
+   ⚠ `appearance` reste NATIVE : dessiner soi-même le chevron oblige à le
+   positionner en propriété physique (`background-position`), que RTL n'inverse
+   pas. La flèche du navigateur, elle, passe à gauche toute seule en arabe. */
+.filter-block select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding-block: 10px;
+  padding-inline: 12px;
+  inline-size: 100%;
+}
+
+.filter-block select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+/* ── Bascule de langue (dessin retenu, UI-D4) ───────────────────────────────
+   Une pastille unique portant la langue de DESTINATION. Deux segments FR|AR
+   avaient été essayés : ils occupent plus de place pour dire la même chose, et
+   le segment courant n'est cliquable nulle part. */
+.locale-switch {
+  display: inline-flex;
+  align-items: center;
+  block-size: 34px;
+  padding-inline: 14px;
+  border: 1px solid var(--ink-mute);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.locale-switch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Grille de la recherche (UI-D4) ─────────────────────────────────────────
+   Filtres à gauche, résultats à droite. Sous 900 px la barre latérale repasse
+   au-dessus : à cette largeur, deux colonnes donneraient 140 px par salle. */
+.search-layout {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  margin-block-start: 20px;
+}
+
+@media (min-width: 900px) {
+  .search-layout {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+
+  /* La barre suit la lecture : à 280 px de large, la liste des équipements
+     dépasse souvent la hauteur de l'écran. */
+  .search-layout > .filters {
+    position: sticky;
+    inset-block-start: 16px;
+    max-block-size: calc(100vh - 32px);
+    overflow-y: auto;
+  }
 }

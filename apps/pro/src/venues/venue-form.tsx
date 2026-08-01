@@ -1,3 +1,4 @@
+import { AmenityIcon } from "@zwadj/ui";
 // Corps de formulaire PARTAGÉ création/édition (Lot A5) + les briques que la
 // liste réutilise (statut D33, badge de publication).
 //
@@ -10,6 +11,7 @@ import { useId, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BookingMode,
+  CeremonyType,
   VenueAvailabilityStatus,
   VenuePublicationStatus,
   venueCreateSchema,
@@ -18,11 +20,11 @@ import {
   type VenueCreateInput,
   type VenueProDTO,
   type VenueUpdateInput,
+  type VenueStyleDTO,
   type WilayaDTO
 } from "@zwadj/types";
 import { validate, type FieldErrors } from "@zwadj/api-client";
 import { Field, useValidationMessage } from "../auth/auth-ui";
-import { AmenityIcon } from "./amenity-icon";
 
 /** Clé de l'erreur de prix — cf. `parseIntegerPrice`. */
 const PRICE_ERROR_KEY = "venue.validation.basePriceInteger";
@@ -89,6 +91,11 @@ export interface VenueFormValues {
   bookingMode: BookingMode;
   status: VenueAvailabilityStatus;
   amenityIds: string[];
+  /** Styles (D65), remplacement d'ENSEMBLE comme les équipements. */
+  styleIds: string[];
+  /** `""` = non déclaré. D66 rend la colonne nullable exprès : une salle dont
+   *  le pro n'a rien dit ne doit pas se faire passer pour « Intérieur ». */
+  ceremonyType: string;
 }
 
 export function emptyVenueForm(): VenueFormValues {
@@ -109,7 +116,9 @@ export function emptyVenueForm(): VenueFormValues {
     basePrice: "",
     bookingMode: BookingMode.SINGLE_SLOT,
     status: VenueAvailabilityStatus.ACTIVE,
-    amenityIds: []
+    amenityIds: [],
+    styleIds: [],
+    ceremonyType: ""
   };
 }
 
@@ -133,7 +142,9 @@ export function venueToForm(venue: VenueProDTO): VenueFormValues {
     basePrice: String(venue.basePriceCents / 100),
     bookingMode: venue.bookingMode,
     status: venue.status,
-    amenityIds: [...venue.amenityIds]
+    amenityIds: [...venue.amenityIds],
+    styleIds: [...venue.styleIds],
+    ceremonyType: venue.ceremonyType ?? ""
   };
 }
 
@@ -290,6 +301,18 @@ export function buildUpdateDiff(values: VenueFormValues, venue: VenueProDTO): Ve
   const amenitiesChanged =
     nextAmenities.length !== currentAmenities.length || nextAmenities.some((id, i) => id !== currentAmenities[i]);
   if (amenitiesChanged) diff.amenityIds = nextAmenities;
+
+  // Même règle d'ensemble pour les styles (D65).
+  const nextStyles = [...values.styleIds].sort();
+  const currentStyles = [...venue.styleIds].sort();
+  const stylesChanged =
+    nextStyles.length !== currentStyles.length || nextStyles.some((id, i) => id !== currentStyles[i]);
+  if (stylesChanged) diff.styleIds = nextStyles;
+
+  // ⚠ `""` doit repartir en `null`, pas être omis : omettre voudrait dire « ne
+  // change rien », alors que le pro vient d'effacer sa déclaration.
+  const nextCeremony = values.ceremonyType === "" ? null : (values.ceremonyType as CeremonyType);
+  if (nextCeremony !== (venue.ceremonyType ?? null)) diff.ceremonyType = nextCeremony;
 
   if (!price.ok) {
     const checked = validate(venueUpdateSchema, diff);
@@ -526,6 +549,75 @@ function CitySelect({
         </select>
       )}
     </Field>
+  );
+}
+
+/** Styles (D65) et type de mariage (D66) — Lot A13c.
+ *
+ *  ⚠ Ces deux champs alimentent des FILTRES de la recherche publique. Tant
+ *  qu'ils n'étaient pas saisissables ici, les puces du client filtraient sur du
+ *  vide : l'API les acceptait, l'écran les affichait, aucune salle n'en portait.
+ *
+ *  Le type est un `select` avec une option VIDE explicite : D66 rend la colonne
+ *  nullable pour que « non déclaré » reste distinct de « Intérieur », et le pro
+ *  doit pouvoir revenir en arrière après avoir choisi. */
+export function StylesPicker({
+  venueStyles,
+  selectedStyles,
+  onToggleStyle,
+  ceremonyType,
+  onCeremonyType,
+  loading
+}: {
+  venueStyles: VenueStyleDTO[];
+  selectedStyles: string[];
+  onToggleStyle: (id: string, checked: boolean) => void;
+  ceremonyType: string;
+  onCeremonyType: (value: string) => void;
+  loading: boolean;
+}) {
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language === "ar";
+  const chosen = new Set(selectedStyles);
+
+  return (
+    <fieldset style={{ border: "none", margin: 0, padding: 0 }}>
+      <legend style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--ink-2)" }}>
+        {t("venue.ui.form.sectionStyles")}
+      </legend>
+      <p className="field-hint" style={{ marginBlock: "4px 10px" }}>
+        {loading ? t("venue.ui.form.referentialsLoading") : t("venue.ui.form.stylesHint")}
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: 8 }}>
+        {venueStyles.map((style) => (
+          <label key={style.id} className="checkline">
+            <input
+              type="checkbox"
+              checked={chosen.has(style.id)}
+              onChange={(e) => onToggleStyle(style.id, e.target.checked)}
+            />
+            <span>{isAr ? style.nameAr : style.nameFr}</span>
+          </label>
+        ))}
+      </div>
+
+      <div style={{ marginBlockStart: 14, maxInlineSize: 320 }}>
+        {/* `Field` passe l'`id` et les attributs d'accessibilité à son enfant :
+            c'est ce qui relie le <label> au <select> sans le répéter à la main. */}
+        <Field label={t("venue.ui.form.ceremonyType")} hint={t("venue.ui.form.ceremonyTypeHint")}>
+          {({ id, describedBy }) => (
+            <select id={id} aria-describedby={describedBy} value={ceremonyType} onChange={(e) => onCeremonyType(e.target.value)}>
+              <option value="">{t("venue.ui.form.ceremonyTypeNone")}</option>
+              {Object.values(CeremonyType).map((type) => (
+                <option key={type} value={type}>
+                  {t(`venue.ceremonyType.${type.toLowerCase()}`)}
+                </option>
+              ))}
+            </select>
+          )}
+        </Field>
+      </div>
+    </fieldset>
   );
 }
 

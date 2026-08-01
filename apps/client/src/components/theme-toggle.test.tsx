@@ -39,7 +39,7 @@ afterEach(() => {
 });
 
 describe("ThemeToggle — D64", () => {
-  it("système en clair, aucun choix : le clic passe en sombre et le retient", () => {
+  it("aucun choix : le clic passe en sombre et le retient", () => {
     mount();
     fireEvent.click(screen.getByRole("button", { name: "Changer de thème" }));
 
@@ -60,12 +60,15 @@ describe("ThemeToggle — D64", () => {
     expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe("light");
   });
 
-  it("système en SOMBRE sans choix : le premier clic ÉCLAIRCIT (pas deux clics)", () => {
+  it("UI-D3 — système en SOMBRE : la page reste CLAIRE, le premier clic ASSOMBRIT", () => {
     systemPrefersDark(true);
     mount();
     fireEvent.click(screen.getByRole("button", { name: "Changer de thème" }));
 
-    expect(document.documentElement.dataset.theme).toBe("light");
+    // Zwadj s'ouvre en clair quoi qu'en dise le système : la bascule part donc
+    // du clair, même ici. Consulter `matchMedia` pendant que le CSS ne le fait
+    // plus demanderait deux clics pour un seul changement visible.
+    expect(document.documentElement.dataset.theme).toBe("dark");
   });
 
   it("repart de l'attribut déjà posé par le script d'avant-peinture", () => {

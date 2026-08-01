@@ -335,6 +335,10 @@ importers:
         version: 5.9.3
 
   packages/ui:
+    dependencies:
+      lucide-react:
+        specifier: ^0.563.0
+        version: 0.563.0(react@19.2.7)
     devDependencies:
       '@types/react':
         specifier: ^19.0.0

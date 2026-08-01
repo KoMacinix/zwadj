@@ -18,19 +18,21 @@ export const THEME_STORAGE_KEY = "zwadj-theme";
  *  thème : c'est « suis le système », et cela ne se stocke pas. */
 export type ExplicitTheme = "light" | "dark";
 
-/** Thème effectif à cet instant : l'attribut s'il existe, sinon ce que demande
- *  le système. Exporté pour que les tests raisonnent sur la même règle que la
- *  bascule, au lieu d'en redéclarer une seconde. */
+/** Thème effectif à cet instant : l'attribut s'il existe, sinon CLAIR.
+ *
+ *  ⚠ UI-D3 — la préférence système n'est plus consultée, ici ni en CSS. Zwadj
+ *  s'ouvre en clair et le sombre est un choix explicite. Si cette fonction
+ *  interrogeait encore `matchMedia` pendant que le CSS ne le fait plus, le
+ *  premier clic d'une personne sous système sombre poserait `light` sur une
+ *  page DÉJÀ claire : rien ne bougerait, et il faudrait cliquer deux fois. */
 export function currentTheme(): ExplicitTheme {
-  const explicit = document.documentElement.dataset.theme;
-  if (explicit === "dark" || explicit === "light") return explicit;
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
 /** Script SYNCHRONE à injecter avant peinture par une app qui rend son HTML
- *  (client Next). C'est la seule façon d'éviter l'éclair blanc : le CSS ne sait
- *  pas lire `localStorage`, et attendre l'hydratation, c'est afficher la page
- *  en clair puis la voir basculer sous les yeux du visiteur. */
+ *  (client Next). Seule façon d'éviter que la page s'affiche en clair puis
+ *  bascule sous les yeux de qui a CHOISI le sombre : le CSS ne sait pas lire
+ *  `localStorage`, et attendre l'hydratation de React, c'est arriver trop tard. */
 export const THEME_BOOT_SCRIPT = `try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}`;
 
 /** Équivalent impératif, pour une app montée par Vite qui n'a pas de HTML rendu

@@ -9,9 +9,12 @@ describe("parseSearchParams", () => {
     expect(parseSearchParams({})).toEqual({
       cityId: "",
       guests: "",
+      maxCapacity: "",
       minPrice: "",
       maxPrice: "",
       amenities: [],
+      styles: [],
+      ceremonyType: "",
       sort: "recent",
       page: 1
     });
@@ -42,6 +45,43 @@ describe("parseSearchParams", () => {
   });
 });
 
+  it("D69 — une poignée EN BUTÉE n'est pas un filtre : elle est effacée dès la lecture", () => {
+    const state = parseSearchParams({
+      guests: "20",
+      maxCapacity: "500",
+      minPrice: "0",
+      maxPrice: "1500000"
+    });
+    // Les quatre valeurs sont les bornes exactes du panneau : au repos, il ne
+    // filtre rien. Les garder exclurait la salle de 1 200 places d'une recherche
+    // que personne n'a touchée.
+    expect([state.guests, state.maxCapacity, state.minPrice, state.maxPrice]).toEqual(["", "", "", ""]);
+  });
+
+  it("une valeur AU-DELÀ de la butée veut dire « tout », pas « rien »", () => {
+    const state = parseSearchParams({ maxCapacity: "9000", maxPrice: "99000000" });
+    expect([state.maxCapacity, state.maxPrice]).toEqual(["", ""]);
+  });
+
+  it("une poignée à l'INTÉRIEUR de la course filtre normalement", () => {
+    const state = parseSearchParams({ guests: "120", maxCapacity: "300" });
+    expect([state.guests, state.maxCapacity]).toEqual(["120", "300"]);
+  });
+
+  it("plage INVERSÉE : redressée, jamais transmise — l'API la refuserait en 400 (D68)", () => {
+    const state = parseSearchParams({ guests: "400", maxCapacity: "100" });
+    expect([state.guests, state.maxCapacity]).toEqual(["100", "400"]);
+
+    const prices = parseSearchParams({ minPrice: "900000", maxPrice: "200000" });
+    expect([prices.minPrice, prices.maxPrice]).toEqual(["200000", "900000"]);
+  });
+
+  it("un type de cérémonie inconnu est ignoré, les styles suivent la règle des amenities", () => {
+    const state = parseSearchParams({ ceremonyType: "chateau", styles: ["jardin", "jardin", "Royal!"] });
+    expect(state.ceremonyType).toBe("");
+    expect(state.styles).toEqual(["jardin"]);
+  });
+
 describe("toApiQuery", () => {
   it("convertit les DINARS de l'URL en CENTIMES pour l'API", () => {
     const query = toApiQuery(parseSearchParams({ minPrice: "100000", maxPrice: "400000" }));
@@ -68,6 +108,13 @@ describe("toApiQuery", () => {
     expect(query.has("guests")).toBe(false);
   });
 });
+
+  it("transporte le plafond de capacité, les styles joints et le type de cérémonie", () => {
+    const query = toApiQuery(parseSearchParams({ maxCapacity: "300", styles: ["jardin", "royal"], ceremonyType: "outdoor" }));
+    expect(query.get("maxCapacity")).toBe("300");
+    expect(query.get("styles")).toBe("jardin,royal");
+    expect(query.get("ceremonyType")).toBe("outdoor");
+  });
 
 describe("toPublicQuery", () => {
   it("omet les valeurs par défaut : l'URL nue et `?sort=recent&page=1` seraient du contenu dupliqué", () => {

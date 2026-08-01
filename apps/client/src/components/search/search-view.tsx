@@ -13,12 +13,24 @@
 //
 // Cible Android bas de gamme sur réseau lent (backlog 24.6) : ne rien exiger
 // de JavaScript ici est une décision de performance, pas un scrupule.
+import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
-import type { AmenityDTO, VenueListResponse, WilayaDTO } from "@zwadj/types";
+import { CEREMONY_TYPE_FILTERS, type AmenityDTO, type VenueListResponse, type VenueStyleDTO, type WilayaDTO } from "@zwadj/types";
+import { AmenityIcon } from "@zwadj/ui";
 import { Link } from "../../i18n/navigation";
 import { mediaSrc } from "../../lib/media-url";
-import { pageWindow, toPublicQuery, type SearchState } from "../../lib/search-query";
+import {
+  BUDGET_CEILING,
+  BUDGET_FLOOR,
+  BUDGET_STEP,
+  CAPACITY_CEILING,
+  CAPACITY_FLOOR,
+  CAPACITY_STEP,
+  pageWindow,
+  toPublicQuery,
+  type SearchState
+} from "../../lib/search-query";
 
 export interface SearchViewProps {
   state: SearchState;
@@ -27,9 +39,12 @@ export interface SearchViewProps {
   results: VenueListResponse | null;
   wilayas: WilayaDTO[];
   amenities: AmenityDTO[];
+  /** Référentiel des styles (D65). Vide si l'API n'a pas répondu : le panneau
+   *  perd ses puces, la recherche continue. */
+  styles: VenueStyleDTO[];
 }
 
-export function SearchView({ state, results, wilayas, amenities }: SearchViewProps) {
+export function SearchView({ state, results, wilayas, amenities, styles }: SearchViewProps) {
   const t = useTranslations("search");
   const locale = useLocale();
   const ar = locale === "ar";
@@ -41,8 +56,17 @@ export function SearchView({ state, results, wilayas, amenities }: SearchViewPro
       <h1>{t("title")}</h1>
       <p style={{ color: "var(--ink-2)" }}>{t("intro")}</p>
 
-      <div style={{ display: "grid", gap: 20, gridTemplateColumns: "minmax(0, 1fr)" }}>
-        <SearchFilters state={state} wilayas={wilayas} amenities={amenities} ar={ar} />
+      {/* UI-D4 — DEUX colonnes : filtres à gauche, résultats à droite, comme le
+          design. Empilés, les filtres repoussaient les salles sous la ligne de
+          flottaison et la page s'ouvrait sur un formulaire au lieu de s'ouvrir
+          sur des salles.
+
+          `minmax(0, 1fr)` sur la colonne des résultats et non `1fr` : sans le
+          minimum à zéro, une grille imbriquée refuse de rétrécir sous la largeur
+          de son contenu et déborde. La bascule à une colonne se fait en CSS
+          (`.search-layout`), pas par un point de rupture en JavaScript. */}
+      <div className="search-layout">
+        <SearchFilters state={state} wilayas={wilayas} amenities={amenities} styles={styles} ar={ar} />
 
         <section>
           {results === null ? (
@@ -212,14 +236,20 @@ function SearchFilters({
   state,
   wilayas,
   amenities,
+  styles,
   ar
 }: {
   state: SearchState;
   wilayas: WilayaDTO[];
   amenities: AmenityDTO[];
+  styles: VenueStyleDTO[];
   ar: boolean;
 }) {
   const t = useTranslations("search");
+  const tCeremony = useTranslations("venue.ceremonyType");
+  // Contrôlé : c'est la seule façon de DÉCOCHER une radio au clic. Sans JS, les
+  // `checked` initiaux suffisent et le formulaire se soumet normalement.
+  const [ceremony, setCeremony] = useState(state.ceremonyType);
 
   return (
     // `method="get"` : la NAVIGATION est faite par le navigateur. Aucune
@@ -227,115 +257,243 @@ function SearchFilters({
     // Conséquence voulue : soumettre REMPLACE toute la querystring, ce qui
     // remet la pagination à la page 1 — changer de filtre en restant page 7
     // n'aurait aucun sens.
-    <form method="get" className="form" style={{ display: "grid", gap: 12 }}>
-      <fieldset style={{ border: "1px solid var(--line)", borderRadius: "var(--radius)", padding: 14 }}>
-        <legend style={{ fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--ink-mute)" }}>
-          {t("filters.legend")}
-        </legend>
+    <form method="get" className="filters">
+      <div className="filters-head">
+        <h2 className="filters-title">{t("filters.legend")}</h2>
+        <Link href="/salles" className="filters-reset">
+          {t("filters.reset")}
+        </Link>
+      </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
-          <div className="field">
-            <div className="field-head">
-              <label htmlFor="f-city">{t("filters.city")}</label>
-            </div>
-            <select id="f-city" name="cityId" defaultValue={state.cityId}>
-              <option value="">{t("filters.cityAll")}</option>
-              {wilayas.map((wilaya) => (
-                <optgroup key={wilaya.id} label={ar ? wilaya.nameAr : wilaya.nameFr}>
-                  {wilaya.cities.map((city) => (
-                    <option key={city.id} value={city.id}>
-                      {ar ? city.nameAr : city.nameFr}
-                    </option>
-                  ))}
-                </optgroup>
+      <div className="filter-block">
+        <label className="filter-label" htmlFor="f-city">
+          {t("filters.city")}
+        </label>
+        <select id="f-city" name="cityId" defaultValue={state.cityId}>
+          <option value="">{t("filters.cityAll")}</option>
+          {wilayas.map((wilaya) => (
+            <optgroup key={wilaya.id} label={ar ? wilaya.nameAr : wilaya.nameFr}>
+              {wilaya.cities.map((city) => (
+                <option key={city.id} value={city.id}>
+                  {ar ? city.nameAr : city.nameFr}
+                </option>
               ))}
-            </select>
+            </optgroup>
+          ))}
+        </select>
+      </div>
+
+      <RangeFilter
+        legend={t("filters.capacity")}
+        lowName="guests"
+        highName="maxCapacity"
+        min={CAPACITY_FLOOR}
+        max={CAPACITY_CEILING}
+        step={CAPACITY_STEP}
+        lowValue={state.guests}
+        highValue={state.maxCapacity}
+        format={(value) => t("filters.capacityValue", { count: value })}
+        formatCeiling={() => t("filters.capacityCeiling", { count: CAPACITY_CEILING })}
+      />
+
+      <RangeFilter
+        legend={t("filters.budget")}
+        lowName="minPrice"
+        highName="maxPrice"
+        min={BUDGET_FLOOR}
+        max={BUDGET_CEILING}
+        step={BUDGET_STEP}
+        lowValue={state.minPrice}
+        highValue={state.maxPrice}
+        format={(value) => formatDZD(value * 100, ar ? "ar" : "fr")}
+        formatCeiling={() => t("filters.budgetCeiling", { amount: formatDZD(BUDGET_CEILING * 100, ar ? "ar" : "fr") })}
+      />
+
+      {styles.length > 0 ? (
+        <fieldset className="filter-block chips-block">
+          <legend className="filter-label">{t("filters.styles")}</legend>
+          <div className="chips">
+            {styles.map((style) => (
+              // Puces = cases à cocher DÉGUISÉES, pas des boutons : sémantique OU
+              // (D65), plusieurs styles cochés à la fois, et l'encodage natif d'un
+              // formulaire sans JavaScript.
+              <label key={style.id} className="chip">
+                <input
+                  type="checkbox"
+                  name="styles"
+                  value={style.key}
+                  defaultChecked={state.styles.includes(style.key)}
+                />
+                <span>{ar ? style.nameAr : style.nameFr}</span>
+              </label>
+            ))}
           </div>
+        </fieldset>
+      ) : null}
 
-          <div className="field">
-            <div className="field-head">
-              <label htmlFor="f-guests">{t("filters.guests")}</label>
-            </div>
-            <input
-              id="f-guests"
-              name="guests"
-              type="number"
-              min={1}
-              inputMode="numeric"
-              placeholder={t("filters.guestsPlaceholder")}
-              defaultValue={state.guests}
-            />
-          </div>
+      <fieldset className="filter-block chips-block">
+        <legend className="filter-label">{t("filters.ceremonyType")}</legend>
+        <div className="chips">
+          {/* Boutons RADIO et non cases : le type est un choix UNIQUE (D66), et
+              « Mixte » n'est pas « Intérieur + Extérieur » cochés ensemble — il
+              demande une salle qui offre les deux.
 
-          {/* Le libellé porte l'unité : l'URL et le champ sont en DINARS, la
-              conversion en centimes vit dans `search-query.ts` et nulle part
-              ailleurs. */}
-          <div className="field">
-            <div className="field-head">
-              <label htmlFor="f-min">{t("filters.minPrice")}</label>
-            </div>
-            <input id="f-min" name="minPrice" type="number" min={0} inputMode="numeric" defaultValue={state.minPrice} />
-          </div>
-
-          <div className="field">
-            <div className="field-head">
-              <label htmlFor="f-max">{t("filters.maxPrice")}</label>
-            </div>
-            <input id="f-max" name="maxPrice" type="number" min={0} inputMode="numeric" defaultValue={state.maxPrice} />
-          </div>
-
-          <div className="field">
-            <div className="field-head">
-              <label htmlFor="f-sort">{t("sort.label")}</label>
-            </div>
-            <select
-              id="f-sort"
-              name="sort"
-              defaultValue={state.sort}
-              // Confort JS : le tri s'applique au changement. Sans JS, le même
-              // bouton « Afficher les résultats » le valide — d'où un `select`
-              // DANS le formulaire plutôt qu'un contrôle isolé.
-              onChange={(e) => e.currentTarget.form?.requestSubmit()}
-            >
-              <option value="recent">{t("sort.recent")}</option>
-              <option value="price_asc">{t("sort.price_asc")}</option>
-              <option value="price_desc">{t("sort.price_desc")}</option>
-            </select>
-          </div>
-        </div>
-
-        {amenities.length > 0 ? (
-          <fieldset style={{ border: 0, padding: 0, margin: "12px 0 0" }}>
-            <legend style={{ fontSize: 13, fontWeight: 600, padding: 0 }}>{t("filters.amenities")}</legend>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBlockStart: 6 }}>
-              {amenities.map((amenity) => (
-                <label key={amenity.id} className="checkline" style={{ gap: 6 }}>
-                  {/* Cases RÉPÉTÉES sous le même nom : c'est l'encodage natif
-                      d'un formulaire HTML, et la seule forme qu'un navigateur
-                      sait produire sans JS. La jointure par virgules attendue
-                      par l'API se fait à l'appel, pas dans l'URL. */}
-                  <input
-                    type="checkbox"
-                    name="amenities"
-                    value={amenity.key}
-                    defaultChecked={state.amenities.includes(amenity.key)}
-                  />
-                  <span>{ar ? amenity.nameAr : amenity.nameFr}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-        ) : null}
-
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBlockStart: 14 }}>
-          <button type="submit" className="btn btn-accent">
-            {t("filters.submit")}
-          </button>
-          <Link href="/salles" className="btn">
-            {t("filters.reset")}
-          </Link>
+              ⚠ Trois puces, pas de « Tous » : un groupe de radios ne se décoche
+              pas tout seul, alors chaque puce se DÉCOCHE au clic quand elle est
+              déjà choisie. Sans JavaScript ce geste n'existe pas — c'est
+              « Réinitialiser », en haut du panneau, qui rend le filtre vide. */}
+          {CEREMONY_TYPE_FILTERS.map((type) => (
+            <label key={type} className="chip">
+              <input
+                type="radio"
+                name="ceremonyType"
+                value={type}
+                checked={ceremony === type}
+                onChange={() => setCeremony(type)}
+                onClick={() => {
+                  if (ceremony === type) setCeremony("");
+                }}
+              />
+              <span>{tCeremony(type)}</span>
+            </label>
+          ))}
         </div>
       </fieldset>
+
+      {amenities.length > 0 ? (
+        <fieldset className="filter-block">
+          <legend className="filter-label">{t("filters.amenities")}</legend>
+          <div className="service-list">
+            {amenities.map((amenity) => (
+              <label key={amenity.id} className="service-row">
+                {/* Cases RÉPÉTÉES sous le même nom : c'est l'encodage natif d'un
+                    formulaire HTML, et la seule forme qu'un navigateur sait
+                    produire sans JS. La jointure par virgules attendue par l'API
+                    se fait à l'appel, pas dans l'URL. */}
+                <input
+                  type="checkbox"
+                  name="amenities"
+                  value={amenity.key}
+                  defaultChecked={state.amenities.includes(amenity.key)}
+                />
+                {/* Même map d'icônes que l'écran pro (déplacée en `@zwadj/ui` en
+                    UI-D3) : deux copies auraient divergé au premier équipement
+                    ajouté, et le client aurait affiché une icône générique là où
+                    le pro en montre une juste. */}
+                <AmenityIcon icon={amenity.icon} />
+                <span>{ar ? amenity.nameAr : amenity.nameFr}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ) : null}
+
+      <div className="filter-block">
+        <label className="filter-label" htmlFor="f-sort">
+          {t("sort.label")}
+        </label>
+        <select
+          id="f-sort"
+          name="sort"
+          defaultValue={state.sort}
+          // Confort JS : le tri s'applique au changement. Sans JS, le même
+          // bouton « Afficher les résultats » le valide — d'où un `select`
+          // DANS le formulaire plutôt qu'un contrôle isolé.
+          onChange={(e) => e.currentTarget.form?.requestSubmit()}
+        >
+          <option value="recent">{t("sort.recent")}</option>
+          <option value="price_asc">{t("sort.price_asc")}</option>
+          <option value="price_desc">{t("sort.price_desc")}</option>
+        </select>
+      </div>
+
+      <button type="submit" className="btn btn-accent">
+        {t("filters.submit")}
+      </button>
     </form>
+  );
+}
+
+/** Curseur à DEUX poignées, sur deux `input[type=range]` superposés.
+ *
+ *  ⚠ Sans JavaScript, les deux poignées restent utilisables et le formulaire
+ *  soumet : c'est tout l'intérêt de deux contrôles NATIFS plutôt qu'un widget
+ *  reconstruit. Ce que le JS ajoute, c'est le libellé vivant et le calage des
+ *  poignées l'une contre l'autre. Une plage inversée saisie sans JS est
+ *  redressée côté serveur par `parseSearchParams` — elle n'atteint jamais l'API,
+ *  qui la refuserait en 400 (D68).
+ *
+ *  ⚠ Les valeurs affichées viennent de l'ÉTAT local, mais les valeurs SOUMISES
+ *  sont celles des `input` eux-mêmes : aucun champ caché à tenir synchronisé. */
+function RangeFilter({
+  legend,
+  lowName,
+  highName,
+  min,
+  max,
+  step,
+  lowValue,
+  highValue,
+  format,
+  formatCeiling
+}: {
+  legend: string;
+  lowName: string;
+  highName: string;
+  min: number;
+  max: number;
+  step: number;
+  lowValue: string;
+  highValue: string;
+  format: (value: number) => string;
+  formatCeiling: () => string;
+}) {
+  // `""` dans l'état veut dire « poignée en butée » (D69) : c'est la butée qui
+  // la réaffiche, pas une valeur par défaut arbitraire.
+  const [low, setLow] = useState(lowValue === "" ? min : Number(lowValue));
+  const [high, setHigh] = useState(highValue === "" ? max : Number(highValue));
+
+  const pct = (value: number) => ((value - min) / (max - min)) * 100;
+
+  return (
+    <fieldset className="filter-block">
+      <legend className="filter-label">{legend}</legend>
+      <div className="range">
+        <div className="range-track" />
+        <div
+          className="range-fill"
+          // Propriétés LOGIQUES : en RTL la piste se remplit depuis la droite,
+          // comme les poignées natives qui s'inversent avec `dir`.
+          style={{ insetInlineStart: `${pct(low)}%`, inlineSize: `${pct(high) - pct(low)}%` }}
+        />
+        <input
+          type="range"
+          name={lowName}
+          aria-label={`${legend} — ${format(low)}`}
+          min={min}
+          max={max}
+          step={step}
+          value={low}
+          onChange={(e) => setLow(Math.min(Number(e.currentTarget.value), high - step))}
+        />
+        <input
+          type="range"
+          name={highName}
+          aria-label={`${legend} — ${high >= max ? formatCeiling() : format(high)}`}
+          min={min}
+          max={max}
+          step={step}
+          value={high}
+          onChange={(e) => setHigh(Math.max(Number(e.currentTarget.value), low + step))}
+        />
+      </div>
+      {/* PAS de `role="status"` : la valeur est déjà annoncée par l'`aria-label`
+          de chaque poignée, et une région vive se ferait entendre à chaque
+          pixel de glissement. Elle entrerait de surcroît en concurrence avec le
+          compteur de résultats, seule région vive légitime de cette page. */}
+      <p className="range-value">
+        {format(low)} — {high >= max ? formatCeiling() : format(high)}
+      </p>
+    </fieldset>
   );
 }
