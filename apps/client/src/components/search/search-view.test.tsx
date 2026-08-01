@@ -6,10 +6,20 @@
 // faite de LIENS porteurs des filtres, et le fait que le formulaire soit un
 // vrai `<form method="get">` — c'est lui qui rend la page utilisable sans
 // JavaScript, ce qu'aucun test de rendu ne montrerait autrement.
+//
+// Lot UI-D5 — deux contrats NEUFS s'ajoutent, et ce sont les deux endroits où
+// le remaniement visuel pouvait casser du fonctionnel en silence :
+//   - le tri a QUITTÉ le `<form>` pour la barre de résultats ; c'est son
+//     attribut `form` qui le lui rattache encore. Un test de présence dans
+//     l'arbre DOM ne prouve donc plus rien — celui qui suit assert le
+//     RATTACHEMENT, pas la position ;
+//   - le repli sur des salles fictives ne doit JAMAIS s'activer par défaut ni
+//     masquer l'état d'erreur d'une API muette.
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
 import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
+import { PREVIEW_VENUES } from "../../lib/preview-venues";
 import { parseSearchParams } from "../../lib/search-query";
 import { SearchView } from "./search-view";
 
@@ -94,10 +104,12 @@ describe("Recherche — états", () => {
     renderView();
     // Scopé à la liste : « Bab Ezzouar » figure AUSSI dans le sélecteur de
     // commune du panneau de filtres.
-    const liste = within(screen.getByRole("list", { name: "Salles de mariage" }));
+    const liste = within(screen.getByRole("list", { name: "Salles à Alger" }));
     expect(liste.getByRole("heading", { name: "Salle 1" })).toBeInTheDocument();
-    expect(liste.getByText("Bab Ezzouar")).toBeInTheDocument();
-    expect(liste.getByText("Jusqu'à 300 invités")).toBeInTheDocument();
+    // UI-D5 — capacité ET commune tiennent désormais sur UNE ligne, séparées
+    // par un point médian (design de référence). Les chercher séparément
+    // échouerait, alors que la page les affiche bien toutes les deux.
+    expect(liste.getByText("Jusqu'à 300 invités · Bab Ezzouar")).toBeInTheDocument();
     expect(liste.getByText(/200/)).toBeInTheDocument();
   });
 
@@ -114,9 +126,14 @@ describe("Recherche — états", () => {
 
   it("le compteur s'accorde au singulier", () => {
     renderView({ results: results([venue(1)], 1) });
-    expect(screen.getByRole("status")).toHaveTextContent("1 salle");
+    expect(screen.getByRole("status")).toHaveTextContent("1 salle trouvée");
     renderView({ results: results([venue(1), venue(2)], 37) });
-    expect(screen.getAllByRole("status")[1]).toHaveTextContent("37 salles");
+    expect(screen.getAllByRole("status")[1]).toHaveTextContent("37 salles trouvées");
+  });
+
+  it("UI-D5 — le NOMBRE est isolé dans son propre élément : c'est lui que le design accentue", () => {
+    const { container } = renderView({ results: results([venue(1), venue(2)], 37) });
+    expect(container.querySelector(".results-count-n")).toHaveTextContent("37");
   });
 });
 
@@ -234,9 +251,25 @@ describe("Recherche — filtres sans JavaScript", () => {
     }
   });
 
-  it("le tri vit DANS le formulaire : sans JS, le bouton de soumission le valide comme les autres champs", () => {
+  it("UI-D5 — le tri a quitté le formulaire dans l'ARBRE mais lui APPARTIENT toujours (attribut `form`)", () => {
     const { container } = renderView();
-    expect(container.querySelector("form")?.contains(screen.getByLabelText("Trier par"))).toBe(true);
+    const form = container.querySelector("form");
+    const sort = screen.getByLabelText("Trier par") as HTMLSelectElement;
+
+    // Il n'est PLUS descendant : c'est le déplacement voulu par le design.
+    expect(form?.contains(sort)).toBe(false);
+    // …mais il reste soumis avec lui, sinon le tri cesse de marcher sans JS.
+    expect(sort).toHaveAttribute("form", "search-filters");
+    expect(form).toHaveAttribute("id", "search-filters");
+    expect(sort.form).toBe(form);
+  });
+
+  it("UI-D5 — l'étiquette dit « Recommandé », la VALEUR soumise reste `recent` (contrat A3 non rouvert)", () => {
+    renderView();
+    const sort = screen.getByLabelText("Trier par") as HTMLSelectElement;
+    const recommande = within(sort).getByRole("option", { name: "Recommandé" }) as HTMLOptionElement;
+    expect(recommande.value).toBe("recent");
+    expect(within(sort).queryByRole("option", { name: /récent/i })).toBeNull();
   });
 });
 
@@ -267,10 +300,10 @@ describe("Recherche — pagination", () => {
 describe("Recherche — bilingue", () => {
   it("en arabe : libellés, noms de salle et de commune passent en AR", () => {
     renderView({}, "ar");
-    expect(screen.getByRole("heading", { name: "قاعات الأفراح", level: 1 })).toBeInTheDocument();
-    const liste = within(screen.getByRole("list", { name: "قاعات الأفراح" }));
+    expect(screen.getByRole("heading", { name: "قاعات في الجزائر", level: 1 })).toBeInTheDocument();
+    const liste = within(screen.getByRole("list", { name: "قاعات في الجزائر" }));
     expect(liste.getByRole("heading", { name: "قاعة 1" })).toBeInTheDocument();
-    expect(liste.getByText("باب الزوار")).toBeInTheDocument();
+    expect(liste.getByText(/باب الزوار/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "عرض النتائج" })).toBeInTheDocument();
   });
 
@@ -280,9 +313,61 @@ describe("Recherche — bilingue", () => {
   });
 });
 
-describe("Recherche — carte", () => {
+describe("Recherche — bascule grille / carte (UI-D5)", () => {
+  it("la grille est l'affichage par DÉFAUT — le cartouche de carte ne squatte plus le bas de page", () => {
+    renderView();
+    expect(screen.getByRole("list", { name: "Salles à Alger" })).toBeInTheDocument();
+    expect(screen.queryByText("Carte à venir")).toBeNull();
+  });
+
   it("le report post-MVP est DIT, pas laissé en blanc (décision produit n°2)", () => {
     renderView();
+    fireEvent.click(screen.getByRole("button", { name: "Carte" }));
     expect(screen.getByText("Carte à venir")).toBeInTheDocument();
+    // La grille cède la place : deux affichages, pas un empilement.
+    expect(screen.queryByRole("list", { name: "Salles à Alger" })).toBeNull();
+  });
+
+  it("l'état de la bascule est ANNONCÉ : `aria-pressed`, que la seule couleur de fond ne dit pas", () => {
+    renderView();
+    expect(screen.getByRole("button", { name: "Grille" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Carte" })).toHaveAttribute("aria-pressed", "false");
+  });
+});
+
+describe("Recherche — données de démonstration (UI-D5)", () => {
+  it("ÉTEINT par défaut : sans `previewVenues`, un résultat vide reste un résultat vide", () => {
+    renderView({ results: results([], 0) });
+    expect(screen.getByText("Aucune salle ne correspond à ces critères")).toBeInTheDocument();
+    expect(screen.queryByText(/Données de démonstration/)).toBeNull();
+  });
+
+  it("allumé + recherche vide : la GRILLE se remplit, et le bandeau dit que ces salles sont fausses", () => {
+    renderView({ results: results([], 0), previewVenues: PREVIEW_VENUES });
+    expect(screen.getByText(/Données de démonstration/)).toBeInTheDocument();
+    const liste = within(screen.getByRole("list", { name: "Salles à Alger" }));
+    expect(liste.getByRole("heading", { name: "Salle El Aurassi Royale" })).toBeInTheDocument();
+    expect(screen.queryByText("Aucune salle ne correspond à ces critères")).toBeNull();
+  });
+
+  it("allumé mais recherche PLEINE : les vraies salles gagnent, aucun bandeau", () => {
+    renderView({ results: results([venue(1)]), previewVenues: PREVIEW_VENUES });
+    expect(screen.queryByText(/Données de démonstration/)).toBeNull();
+    expect(screen.getByRole("heading", { name: "Salle 1" })).toBeInTheDocument();
+  });
+
+  it("les salles de démonstration portent la note du design", () => {
+    renderView({ results: results([], 0), previewVenues: PREVIEW_VENUES });
+    expect(screen.getByText("4,92")).toBeInTheDocument();
+    expect(screen.getByText("(142)")).toBeInTheDocument();
+  });
+
+  it("une salle RÉELLE n'invente PAS de note : le DTO n'en porte pas encore (Flux B)", () => {
+    // ⚠ Scopé au conteneur : `render` empile dans `document.body` et le
+    // nettoyage n'a lieu qu'entre les tests — un `document.querySelectorAll`
+    // recompterait les cartes d'un rendu précédent.
+    const { container } = renderView({ results: results([venue(1)]) });
+    expect(container.querySelectorAll(".venue-card-rating")).toHaveLength(0);
+    expect(container.querySelectorAll(".venue-card")).toHaveLength(1);
   });
 });
