@@ -75,11 +75,16 @@
    ══════════════════════════════════════════════════════════════════════════ */
 .filters {
   display: grid;
-  gap: 22px;
+  gap: 26px;
   align-content: start;
-  padding: 20px;
+  padding-block: 28px;
+  padding-inline: 24px;
   background: var(--bg-2);
-  border-radius: var(--radius);
+  /* ⚠ UI-D5 — plus de `border-radius` ni de `padding` uniforme : ce n'était pas
+     un panneau flottant dans le design, c'est la COLONNE de gauche, à fleur de
+     bord d'écran. Un rayon de coin ici rouvre un liseré de fond sur trois côtés
+     et redonne l'air de carte qu'on retire. */
+  border-block-end: 1px solid var(--line);
 }
 
 .filters-head {
@@ -93,6 +98,7 @@
   margin: 0;
   font-size: 22px;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .filters-reset {
@@ -114,9 +120,9 @@
 
 .filter-label {
   padding: 0;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-2);
 }
@@ -211,11 +217,13 @@
 
 .chip span {
   display: inline-block;
-  padding: 8px 16px;
+  padding-block: 8px;
+  padding-inline: 16px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
-  font-size: 14px;
+  font-size: 12px;
+  letter-spacing: 0.03em;
   cursor: pointer;
 }
 
@@ -292,28 +300,442 @@
   color: var(--accent);
 }
 
-/* ── Grille de la recherche (UI-D4) ─────────────────────────────────────────
-   Filtres à gauche, résultats à droite. Sous 900 px la barre latérale repasse
-   au-dessus : à cette largeur, deux colonnes donneraient 140 px par salle. */
-.search-layout {
+/* ══════════════════════════════════════════════════════════════════════════
+   PAGE « SALLES » (Lot UI-D5) — alignée sur le design de référence.
+
+   Remplace la grille centrée d'UI-D4. Ce qui change et pourquoi :
+
+   ① **Pleine largeur.** Le design pose la barre latérale À FLEUR de bord
+      d'écran ; un conteneur centré à 1100 px l'en éloignait de plusieurs
+      centaines de pixels sur un écran large. Le confort de lecture est repris
+      par le rembourrage de la colonne de résultats, pas par une largeur
+      maximale du document.
+
+   ② **La colonne de résultats est sur `--surface` (BLANC PUR), pas `--bg`.**
+      Ce n'est pas une préférence : `#DA3642` en TEXTE ne passe AA que sur blanc
+      pur (4,58:1) — sur `--bg` (#fafafa) il tombe à 4,39:1, sous le seuil. Le
+      prix et le compteur de résultats étant accentués dans le design, la
+      colonne DOIT être blanche pour qu'ils soient lisibles. En sombre,
+      `--accent` sur `--surface` donne 5,91:1 (acquis en UI-D1).
+      ⚠ Conséquence : ne jamais reposer un fond `--bg-2`/`--bg-3` sur
+      `.search-results` sans en retirer d'abord les textes accentués.
+
+   ③ **La barre latérale occupe toute la hauteur du volet**, avec son propre
+      défilement. `100dvh` et non `100vh` : sur mobile, la barre d'adresse de
+      Safari/Chrome mange une portion de `vh` et le bas du panneau devient
+      inatteignable. `100vh` est gardé en repli pour les moteurs anciens.
+   ══════════════════════════════════════════════════════════════════════════ */
+.search-shell {
   display: grid;
-  gap: 24px;
-  align-items: start;
   grid-template-columns: minmax(0, 1fr);
-  margin-block-start: 20px;
+  align-items: start;
+  background: var(--surface);
+}
+
+.search-results {
+  min-inline-size: 0; /* sans quoi une grille imbriquée refuse de rétrécir */
+  padding-block: 24px;
+  padding-inline: 20px;
 }
 
 @media (min-width: 900px) {
-  .search-layout {
-    grid-template-columns: 280px minmax(0, 1fr);
+  .search-shell {
+    grid-template-columns: 320px minmax(0, 1fr);
   }
 
-  /* La barre suit la lecture : à 280 px de large, la liste des équipements
-     dépasse souvent la hauteur de l'écran. */
-  .search-layout > .filters {
-    position: sticky;
-    inset-block-start: 16px;
-    max-block-size: calc(100vh - 32px);
-    overflow-y: auto;
+  .search-results {
+    padding-block: 32px;
+    padding-inline: 48px;
   }
+
+  .search-shell > .filters {
+    position: sticky;
+    inset-block-start: 0;
+    block-size: 100vh;
+    block-size: 100dvh;
+    overflow-y: auto;
+    /* Le filet passe du bas au côté : en pile c'est un séparateur horizontal,
+       en colonnes c'est la limite entre les deux volets. Propriété LOGIQUE :
+       en arabe la barre est à droite et le filet la suit. */
+    border-block-end: 0;
+    border-inline-end: 1px solid var(--line);
+  }
+}
+
+/* ── Barre de résultats : titre + compteur à gauche, outils à droite ──────── */
+.results-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-block-end: 24px;
+}
+
+.results-heading {
+  min-inline-size: 0;
+}
+
+.results-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.results-count {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* Accent en TEXTE : légitime ici et seulement ici, parce que `.search-results`
+   est sur blanc pur (voir ② en tête de bloc). */
+.results-count-n {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.results-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ⚠ `appearance` reste NATIVE, comme les listes du panneau : dessiner soi-même
+   le chevron oblige à le positionner en propriété physique
+   (`background-position`), que RTL n'inverse pas. La flèche du navigateur, elle,
+   passe à gauche toute seule en arabe. */
+.sort-select {
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding-block: 9px;
+  padding-inline: 12px;
+}
+
+.sort-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+/* ── Bascule grille / carte ──────────────────────────────────────────────── */
+.view-switch {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.view-switch-btn {
+  display: grid;
+  place-items: center;
+  padding-block: 9px;
+  padding-inline: 13px;
+  color: var(--ink-2);
+  background: var(--surface);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.view-switch-btn:hover {
+  color: var(--ink);
+}
+
+/* Fond accent + encre `--on-accent` : c'est un bouton PLEIN, jamais du texte
+   accentué sur un fond clair — la contrainte AA d'AGENTS.md porte sur le
+   second cas, pas sur le premier. */
+.view-switch-btn.is-active {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.view-switch-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+/* ── Cartouche de la carte (post-MVP) ────────────────────────────────────── */
+.map-panel {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  min-block-size: 420px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  color: var(--ink-mute);
+  text-align: center;
+}
+
+.map-panel-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.map-panel-body {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ── Bandeau des données de démonstration ────────────────────────────────── */
+.preview-note {
+  margin: 0 0 18px;
+  padding-block: 10px;
+  padding-inline: 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  /* Encre NORMALE et non accent : `--accent-soft` est un fond décoratif clair,
+     sur lequel AGENTS.md interdit explicitement le texte accentué. */
+  color: var(--ink);
+  font-size: 13px;
+}
+
+/* ── Grille des salles ───────────────────────────────────────────────────────
+   Colonnes EXPLICITES par palier, pas `auto-fill` : le design en veut quatre
+   sur grand écran, et `auto-fill` en donne cinq dès que la colonne dépasse un
+   multiple de la largeur minimale — la carte rétrécit alors sous la taille où
+   son pied (capacité · commune | prix) tient encore sur deux lignes. */
+.venue-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (min-width: 560px) {
+  .venue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .venue-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1400px) {
+  .venue-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ── Carte de salle ──────────────────────────────────────────────────────────
+   Ni bordure ni fond : dans le design, la carte EST son image, le texte pose
+   dessous à même la page. Le cadre gris de la version A7 fabriquait une boîte
+   là où le design n'en a pas. */
+.venue-card {
+  position: relative; /* ancre le bouton favori, hors du lien */
+}
+
+.venue-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.venue-card-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.venue-card-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.venue-card-media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.venue-card-link:hover .venue-card-media img {
+  transform: scale(1.04);
+}
+
+/* Liseré accentué en retrait, repris du design. En `::after` et non en bordure
+   sur l'image : une bordure décalerait le cadrage de la photo au survol. */
+.venue-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.venue-card-link:hover .venue-card-media::after,
+.venue-card-link:focus-visible .venue-card-media::after {
+  opacity: 1;
+}
+
+/* D44 — le mouvement est un CONFORT, jamais une condition de lecture : sous
+   `reduce`, la photo ne bouge plus et le liseré apparaît sans transition. */
+@media (prefers-reduced-motion: reduce) {
+  .venue-card-media img,
+  .venue-card-media::after,
+  .venue-card-dots {
+    transition: none;
+  }
+
+  .venue-card-link:hover .venue-card-media img {
+    transform: none;
+  }
+}
+
+.venue-card-nophoto {
+  display: grid;
+  place-items: center;
+  block-size: 100%;
+  color: var(--ink-mute);
+  font-size: 12px;
+}
+
+.venue-card-badge {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  padding-block: 5px;
+  padding-inline: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.venue-card-fav {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  inline-size: 34px;
+  block-size: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 2px 8px rgba(24, 24, 27, 0.14);
+  opacity: 0.92;
+}
+
+/* Rubrique annoncée, pas construite : le curseur ne promet pas un clic qui
+   n'arrivera pas (même doctrine que « Bientôt » dans la navigation). */
+.venue-card-fav[disabled] {
+  cursor: default;
+}
+
+.venue-card-dots {
+  position: absolute;
+  inset-block-end: 12px;
+  inset-inline: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.venue-card-link:hover .venue-card-dots {
+  opacity: 1;
+}
+
+.venue-card-dot {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.venue-card-dot.is-first {
+  background: var(--accent);
+}
+
+.venue-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.venue-card-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.venue-card-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.venue-card-reviews {
+  color: var(--ink-mute);
+}
+
+.venue-card-tagline {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--ink-mute);
+}
+
+.venue-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 10px;
+  margin-block-start: 10px;
+}
+
+.venue-card-meta {
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--ink-mute);
+}
+
+/* Voir ② en tête de bloc : accent en texte, sur blanc pur uniquement. */
+.venue-card-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.venue-card-from {
+  margin-inline-end: 6px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
 }

@@ -2,7 +2,7 @@ export { AccountMenu, initialsOf, type AccountMenuItem, type AccountMenuProps } 
 export { BrandLoader, BrandLoaderIcon, BRAND_LOADER_PATH, type BrandLoaderProps } from "./brand-loader";
 export { Button, type ButtonProps } from "./button";
 export { ConfirmDialog, type ConfirmDialogProps } from "./confirm-dialog";
-export { ArrowBackIcon } from "./icons";
+export { ArrowBackIcon, GridViewIcon, HeartIcon, MapViewIcon, StarIcon } from "./icons";
 export { ZwadjLogo, ZwadjLogoIcon } from "./logo";
 export { AmenityIcon } from "./amenity-icon";
 export { ThemeToggle, type ThemeToggleProps } from "./theme-toggle";

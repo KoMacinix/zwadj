@@ -1,25 +1,52 @@
 "use client";
 
-// Lot A7 — vue de la recherche. Composant CLIENT, mais rendu côté serveur : il
-// ne fait aucun `fetch`, il reçoit tout en props. Le « use client » sert
-// uniquement au confort JS (soumission du tri au changement) — sans lui, la
-// page reste ENTIÈREMENT fonctionnelle :
+// Lot A7 — vue de la recherche, remaniée au Lot UI-D5 sur le design de
+// référence. Composant CLIENT, mais rendu côté serveur : il ne fait aucun
+// `fetch`, il reçoit tout en props. Le « use client » sert uniquement au
+// confort JS (soumission du tri au changement, bascule grille/carte) — sans
+// lui, la page reste ENTIÈREMENT fonctionnelle :
 //
 //   - les filtres sont un vrai `<form method="get">`, le navigateur navigue ;
-//   - le tri est dans ce même formulaire, validé par le même bouton ;
+//   - le tri appartient toujours à ce formulaire et se valide avec lui ;
 //   - la pagination est faite de LIENS, pas d'un « charger plus » — un bouton
 //     JS ne produit aucune URL indexable, et cette page existe pour le
 //     référencement.
 //
 // Cible Android bas de gamme sur réseau lent (backlog 24.6) : ne rien exiger
 // de JavaScript ici est une décision de performance, pas un scrupule.
+//
+// ── Ce que UI-D5 a changé, et pourquoi ──────────────────────────────────────
+//  - **Le tri a QUITTÉ le panneau** pour la barre de résultats, à droite, comme
+//    le design. Il n'a PAS quitté le formulaire pour autant : l'attribut HTML
+//    `form="search-filters"` rattache un contrôle à un formulaire dont il n'est
+//    pas descendant. C'est ce qui permet de le placer où le design le veut sans
+//    reperdre la soumission sans JavaScript. Son libellé passe en `.sr-only` —
+//    le design n'en montre pas, un lecteur d'écran en a besoin.
+//  - **`Recommandé` est une ÉTIQUETTE, pas une valeur.** `VENUE_LIST_SORTS` n'a
+//    pas de tri recommandé et n'aurait aucun signal à consommer avant le Flux B
+//    (notes, taux d'acceptation). La valeur soumise reste `recent` : le contrat
+//    A3, sa requête SQL et ses tests d'intégration ne sont pas rouverts. Le jour
+//    où le signal existera, la valeur changera sous l'étiquette.
+//  - **La bascule grille/carte est un `useState`, pas un paramètre d'URL.** Elle
+//    ne gouverne qu'un cartouche « Carte à venir » : aucun contenu indexable
+//    n'en dépend, donc rien à mettre dans l'URL. Le jour où la carte existe,
+//    elle passera par `toPublicQuery` comme le reste.
+//  - **Le cartouche de carte a quitté le bas de page** : il n'y est pas dans le
+//    design, et il annonçait un report sous des résultats qui n'en parlaient
+//    pas. Il EST maintenant la vue carte.
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { formatDZD } from "@zwadj/i18n";
+import { formatDZD, formatRating } from "@zwadj/i18n";
 import { CEREMONY_TYPE_FILTERS, type AmenityDTO, type VenueListResponse, type VenueStyleDTO, type WilayaDTO } from "@zwadj/types";
-import { AmenityIcon } from "@zwadj/ui";
+import { AmenityIcon, GridViewIcon, HeartIcon, MapViewIcon, StarIcon } from "@zwadj/ui";
 import { Link } from "../../i18n/navigation";
 import { mediaSrc } from "../../lib/media-url";
+// ⚠ `import type` et NON un import de valeur : le type est effacé à la
+// compilation, la DONNÉE ne l'est pas. Importer `PREVIEW_VENUES` ici la
+// ferait entrer dans le bundle NAVIGATEUR — le `tree-shaking` ne peut pas la
+// retirer, puisque son usage dépend d'une prop évaluée à l'exécution. Six
+// salles inventées partaient ainsi chez chaque visiteur en production.
+import type { VenueCardData } from "../../lib/preview-venues";
 import {
   BUDGET_CEILING,
   BUDGET_FLOOR,
@@ -32,6 +59,12 @@ import {
   type SearchState
 } from "../../lib/search-query";
 
+/** Le tri vit hors du `<form>` mais lui APPARTIENT (attribut HTML `form`).
+ *  L'identifiant est donc partagé entre les deux, et déclaré une seule fois. */
+const FILTERS_FORM_ID = "search-filters";
+
+type ResultView = "grid" | "map";
+
 export interface SearchViewProps {
   state: SearchState;
   /** `null` = l'API n'a pas répondu. Distinct d'un résultat vide : on ne dit
@@ -42,193 +75,283 @@ export interface SearchViewProps {
   /** Référentiel des styles (D65). Vide si l'API n'a pas répondu : le panneau
    *  perd ses puces, la recherche continue. */
   styles: VenueStyleDTO[];
+  /** UI-D5 — salles FICTIVES à afficher quand la recherche ne rend rien.
+   *
+   *  ⚠ C'est la DONNÉE qui est passée, pas un drapeau : la vue est un composant
+   *  CLIENT, et tout ce qu'elle importe part dans le bundle du navigateur.
+   *  Fournie par la page serveur en développement seulement. Par défaut `null` :
+   *  une consommation oubliée ne peut pas faire fuiter de fausses salles. */
+  previewVenues?: readonly VenueCardData[] | null;
 }
 
-export function SearchView({ state, results, wilayas, amenities, styles }: SearchViewProps) {
+export function SearchView({ state, results, wilayas, amenities, styles, previewVenues = null }: SearchViewProps) {
   const t = useTranslations("search");
   const locale = useLocale();
   const ar = locale === "ar";
+  const [view, setView] = useState<ResultView>("grid");
 
   const totalPages = results ? Math.max(1, Math.ceil(results.total / results.pageSize)) : 1;
 
+  // Le repli de démonstration ne MASQUE rien : il ne s'active que là où la page
+  // n'avait de toute façon aucune salle à montrer.
+  const showPreview = previewVenues !== null && previewVenues.length > 0 && (results === null || results.items.length === 0);
+  const items: readonly VenueCardData[] = showPreview ? (previewVenues as readonly VenueCardData[]) : (results?.items ?? []);
+  const total = showPreview ? items.length : (results?.total ?? 0);
+
   return (
-    <main style={{ padding: 20, maxInlineSize: 1100, marginInline: "auto" }}>
-      <h1>{t("title")}</h1>
-      <p style={{ color: "var(--ink-2)" }}>{t("intro")}</p>
+    // UI-D5 — la grille est PLEINE LARGEUR : la barre latérale du design est à
+    // fleur de bord d'écran, ce qu'un conteneur centré à 1100 px rendait
+    // impossible. Le confort de lecture est repris par le rembourrage de la
+    // colonne de résultats, pas par une largeur maximale du document.
+    <main className="search-shell">
+      <SearchFilters state={state} wilayas={wilayas} amenities={amenities} styles={styles} ar={ar} />
 
-      {/* UI-D4 — DEUX colonnes : filtres à gauche, résultats à droite, comme le
-          design. Empilés, les filtres repoussaient les salles sous la ligne de
-          flottaison et la page s'ouvrait sur un formulaire au lieu de s'ouvrir
-          sur des salles.
-
-          `minmax(0, 1fr)` sur la colonne des résultats et non `1fr` : sans le
-          minimum à zéro, une grille imbriquée refuse de rétrécir sous la largeur
-          de son contenu et déborde. La bascule à une colonne se fait en CSS
-          (`.search-layout`), pas par un point de rupture en JavaScript. */}
-      <div className="search-layout">
-        <SearchFilters state={state} wilayas={wilayas} amenities={amenities} styles={styles} ar={ar} />
-
-        <section>
-          {results === null ? (
-            <div className="state-panel" role="alert">
-              <h2>{t("results.errorTitle")}</h2>
-              <p>{t("results.errorBody")}</p>
-            </div>
-          ) : results.items.length === 0 ? (
-            <div className="state-panel">
-              <h2>{t("results.emptyTitle")}</h2>
-              <p>{t("results.emptyBody")}</p>
-            </div>
-          ) : (
-            <>
-              <p role="status" style={{ color: "var(--ink-2)", fontSize: 13 }}>
-                {results.total === 1 ? t("results.countOne") : t("results.count", { count: results.total })}
+      <section className="search-results">
+        <div className="results-head">
+          <div className="results-heading">
+            <h1 className="results-title">{t("title")}</h1>
+            {items.length > 0 ? (
+              // Le nombre est ACCENTUÉ, le reste en encre secondaire (design).
+              // D'où `t.rich` et une balise `<n>` dans le message : découper la
+              // phrase en deux clés obligerait chaque langue à placer le nombre
+              // au même endroit, ce que l'arabe ne fait pas toujours.
+              <p role="status" className="results-count">
+                {total === 1
+                  ? t.rich("results.countOne", { n: (chunks) => <span className="results-count-n">{chunks}</span> })
+                  : t.rich("results.count", {
+                      count: total,
+                      n: (chunks) => <span className="results-count-n">{chunks}</span>
+                    })}
               </p>
+            ) : null}
+          </div>
 
-              {/* Liste NOMMÉE : le nom de commune apparaît aussi dans le
-                  sélecteur de filtre — sans nom, ni un lecteur d'écran ni un
-                  test ne distinguent les deux régions. Réutilise le titre,
-                  aucune clé neuve. */}
-              <ul
-                aria-label={t("title")}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-                  gap: 16,
-                  listStyle: "none",
-                  padding: 0,
-                  margin: "12px 0 0"
-                }}
-              >
-                {results.items.map((venue) => (
-                  <li
-                    key={venue.id}
-                    style={{
-                      border: "1px solid var(--line)",
-                      borderRadius: "var(--radius)",
-                      background: "var(--surface)",
-                      overflow: "hidden"
-                    }}
-                  >
-                    {/* La destination du détail est A8 : le lien existe déjà,
-                        il pointe la route par SLUG (décision Flux A). */}
-                    <Link href={`/salles/${venue.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
-                      {venue.coverThumbUrl ? (
-                        // `<img>` nu, PAS `next/image` : la vignette est déjà
-                        // générée à la bonne taille par le pipeline du Lot A4.
-                        // La repasser dans l'optimiseur ajouterait une
-                        // configuration `remotePatterns`, un proxy en dev et un
-                        // deuxième ré-encodage, pour zéro gain.
-                        <img
-                          src={mediaSrc(venue.coverThumbUrl)}
-                          alt=""
-                          loading="lazy"
-                          width={480}
-                          height={320}
-                          style={{ inlineSize: "100%", blockSize: "auto", display: "block", background: "var(--bg-2)" }}
-                        />
-                      ) : (
-                        <div
-                          style={{
-                            aspectRatio: "3 / 2",
-                            display: "grid",
-                            placeItems: "center",
-                            background: "var(--bg-2)",
-                            color: "var(--ink-mute)",
-                            fontSize: 12
-                          }}
+          <div className="results-tools">
+            {/* Libellé masqué VISUELLEMENT, pas retiré : le design ne montre
+                qu'une liste, un lecteur d'écran a besoin de savoir ce qu'elle
+                trie. `.sr-only` vient de `@zwadj/ui` (Lot A9). */}
+            <label className="sr-only" htmlFor="f-sort">
+              {t("sort.label")}
+            </label>
+            <select
+              id="f-sort"
+              name="sort"
+              // ⚠ C'est CET attribut qui garde la page utilisable sans
+              // JavaScript alors que le contrôle a quitté le `<form>`.
+              form={FILTERS_FORM_ID}
+              className="sort-select"
+              defaultValue={state.sort}
+              // Confort JS : le tri s'applique au changement. Sans JS, le bouton
+              // « Afficher les résultats » du panneau le valide comme avant.
+              onChange={(e) => e.currentTarget.form?.requestSubmit()}
+            >
+              {/* ⚠ La VALEUR reste `recent` — voir l'en-tête de fichier. */}
+              <option value="recent">{t("sort.recommended")}</option>
+              <option value="price_asc">{t("sort.price_asc")}</option>
+              <option value="price_desc">{t("sort.price_desc")}</option>
+            </select>
+
+            <div className="view-switch" role="group" aria-label={t("view.label")}>
+              {(["grid", "map"] as const).map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={view === id ? "view-switch-btn is-active" : "view-switch-btn"}
+                  // `aria-pressed` et non `aria-current` : ce sont deux bascules
+                  // d'affichage, pas deux emplacements dans une navigation.
+                  aria-pressed={view === id}
+                  onClick={() => setView(id)}
+                >
+                  {id === "grid" ? <GridViewIcon /> : <MapViewIcon />}
+                  <span className="sr-only">{t(`view.${id}`)}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {view === "map" ? (
+          // Décision produit n°2 : la carte est reportée post-MVP, et on le DIT
+          // plutôt que de laisser un vide.
+          <div className="map-panel">
+            <h2 className="map-panel-title">{t("map.title")}</h2>
+            <p className="map-panel-body">{t("map.soon")}</p>
+          </div>
+        ) : results === null && !showPreview ? (
+          <div className="state-panel" role="alert">
+            <h2>{t("results.errorTitle")}</h2>
+            <p>{t("results.errorBody")}</p>
+          </div>
+        ) : items.length === 0 ? (
+          <div className="state-panel">
+            <h2>{t("results.emptyTitle")}</h2>
+            <p>{t("results.emptyBody")}</p>
+          </div>
+        ) : (
+          <>
+            {/* Des salles inventées qu'on ne distingue pas des vraies sont un
+                piège à démonstrations : le bandeau est la contrepartie du
+                repli, pas une politesse. */}
+            {showPreview ? <p className="preview-note">{t("preview.notice")}</p> : null}
+
+            {/* Liste NOMMÉE : le nom de commune apparaît aussi dans le
+                sélecteur de filtre — sans nom, ni un lecteur d'écran ni un
+                test ne distinguent les deux régions. Réutilise le titre,
+                aucune clé neuve. */}
+            <ul aria-label={t("title")} className="venue-grid">
+              {items.map((venue) => (
+                <VenueCard key={venue.id} venue={venue} ar={ar} />
+              ))}
+            </ul>
+
+            {!showPreview && totalPages > 1 ? (
+              <nav aria-label={t("pagination.label")} style={{ marginBlockStart: 28 }}>
+                <ul style={{ display: "flex", flexWrap: "wrap", gap: 6, listStyle: "none", padding: 0, margin: 0 }}>
+                  {state.page > 1 ? (
+                    <li>
+                      <Link href={`/salles${toPublicQuery(state, state.page - 1)}`} className="btn btn-ghost">
+                        {t("pagination.previous")}
+                      </Link>
+                    </li>
+                  ) : null}
+
+                  {pageWindow(state.page, totalPages).map((page, index) =>
+                    page === null ? (
+                      <li key={`gap-${index}`} aria-hidden="true" style={{ padding: "8px 4px", color: "var(--ink-mute)" }}>
+                        …
+                      </li>
+                    ) : (
+                      <li key={page}>
+                        <Link
+                          href={`/salles${toPublicQuery(state, page)}`}
+                          className={page === state.page ? "btn btn-accent" : "btn btn-ghost"}
+                          aria-label={
+                            page === state.page ? t("pagination.current", { page }) : t("pagination.page", { page })
+                          }
+                          aria-current={page === state.page ? "page" : undefined}
                         >
-                          {t("card.noPhoto")}
-                        </div>
-                      )}
-
-                      <div style={{ padding: 12, display: "flex", flexDirection: "column", gap: 4 }}>
-                        <h2 style={{ fontSize: 16, margin: 0 }}>{ar ? venue.nameAr : venue.nameFr}</h2>
-                        {(ar ? venue.districtAr : venue.districtFr) ? (
-                          <p style={{ margin: 0, fontSize: 13, color: "var(--ink-2)" }}>
-                            {ar ? venue.districtAr : venue.districtFr}
-                          </p>
-                        ) : null}
-                        <p style={{ margin: 0, fontSize: 13, color: "var(--ink-2)" }}>
-                          {t("card.capacity", { max: venue.capacityMax })}
-                        </p>
-                        <p style={{ margin: "4px 0 0", fontWeight: 600 }}>
-                          <span style={{ fontWeight: 400, fontSize: 12, color: "var(--ink-2)" }}>
-                            {t("card.from")}{" "}
-                          </span>
-                          {formatDZD(venue.basePriceCents)}
-                        </p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
-              {totalPages > 1 ? (
-                <nav aria-label={t("pagination.label")} style={{ marginBlockStart: 20 }}>
-                  <ul style={{ display: "flex", flexWrap: "wrap", gap: 6, listStyle: "none", padding: 0, margin: 0 }}>
-                    {state.page > 1 ? (
-                      <li>
-                        <Link href={`/salles${toPublicQuery(state, state.page - 1)}`} className="btn btn-ghost">
-                          {t("pagination.previous")}
+                          {page}
                         </Link>
                       </li>
-                    ) : null}
+                    )
+                  )}
 
-                    {pageWindow(state.page, totalPages).map((page, index) =>
-                      page === null ? (
-                        <li key={`gap-${index}`} aria-hidden="true" style={{ padding: "8px 4px", color: "var(--ink-mute)" }}>
-                          …
-                        </li>
-                      ) : (
-                        <li key={page}>
-                          <Link
-                            href={`/salles${toPublicQuery(state, page)}`}
-                            className={page === state.page ? "btn btn-accent" : "btn btn-ghost"}
-                            aria-label={
-                              page === state.page ? t("pagination.current", { page }) : t("pagination.page", { page })
-                            }
-                            aria-current={page === state.page ? "page" : undefined}
-                          >
-                            {page}
-                          </Link>
-                        </li>
-                      )
-                    )}
+                  {state.page < totalPages ? (
+                    <li>
+                      <Link href={`/salles${toPublicQuery(state, state.page + 1)}`} className="btn btn-ghost">
+                        {t("pagination.next")}
+                      </Link>
+                    </li>
+                  ) : null}
+                </ul>
+              </nav>
+            ) : null}
+          </>
+        )}
+      </section>
+    </main>
+  );
+}
 
-                    {state.page < totalPages ? (
-                      <li>
-                        <Link href={`/salles${toPublicQuery(state, state.page + 1)}`} className="btn btn-ghost">
-                          {t("pagination.next")}
-                        </Link>
-                      </li>
-                    ) : null}
-                  </ul>
-                </nav>
-              ) : null}
-            </>
+/** Carte de salle du design de référence.
+ *
+ *  ⚠ Note, nombre d'avis et pastille sont CONDITIONNELS : `VenueSummaryDTO` ne
+ *  les porte pas (les avis relèvent du Flux B), seules les salles de
+ *  démonstration en ont aujourd'hui. Une salle réelle sort donc sans étoile —
+ *  c'est voulu, une note inventée serait pire qu'une note absente.
+ *
+ *  ⚠ La capacité s'affiche « Jusqu'à N invités », là où le design montre
+ *  « 150-600 invités » : D36 (Lot A9) a SUPPRIMÉ `capacityMin` du schéma, de
+ *  l'API et du formulaire Pro. Rétablir la fourchette est une réouverture de
+ *  D36, pas un ajustement d'affichage.
+ *
+ *  ⚠ Le cœur n'est PAS dans le lien : imbriquer un bouton dans une ancre est
+ *  invalide et casse le clavier. Il est frère du lien, calé en absolu. */
+function VenueCard({ venue, ar }: { venue: VenueCardData; ar: boolean }) {
+  const t = useTranslations("search");
+  const name = ar ? venue.nameAr : venue.nameFr;
+  const tagline = ar ? venue.taglineAr : venue.taglineFr;
+  const district = ar ? venue.districtAr : venue.districtFr;
+  const lang = ar ? "ar" : "fr";
+  const rating = venue.ratingAvg;
+  const reviews = venue.reviewCount;
+
+  return (
+    <li className="venue-card">
+      {/* La destination du détail est A8 : le lien pointe la route par SLUG
+          (décision Flux A). */}
+      <Link href={`/salles/${venue.slug}`} className="venue-card-link">
+        <div className="venue-card-media">
+          {venue.coverThumbUrl ? (
+            // `<img>` nu, PAS `next/image` : la vignette est déjà générée à la
+            // bonne taille par le pipeline du Lot A4. La repasser dans
+            // l'optimiseur ajouterait une configuration `remotePatterns`, un
+            // proxy en dev et un deuxième ré-encodage, pour zéro gain.
+            <img src={mediaSrc(venue.coverThumbUrl)} alt="" loading="lazy" width={480} height={360} />
+          ) : (
+            <div className="venue-card-nophoto">{t("card.noPhoto")}</div>
           )}
 
-          {/* Décision produit n°2 : la carte est reportée post-MVP, et on le DIT
-              plutôt que de laisser un vide. */}
-          <div
-            style={{
-              marginBlockStart: 24,
-              border: "1px dashed var(--line)",
-              borderRadius: "var(--radius)",
-              padding: 24,
-              textAlign: "center",
-              color: "var(--ink-mute)"
-            }}
-          >
-            <h2 style={{ fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", margin: 0 }}>
-              {t("map.title")}
-            </h2>
-            <p style={{ margin: "6px 0 0", fontSize: 13 }}>{t("map.soon")}</p>
+          {venue.badge ? <span className="venue-card-badge">{t(`badge.${venue.badge}`)}</span> : null}
+
+          {/* Points DÉCORATIFS : ils disent « cette salle a plusieurs photos »,
+              ils ne les font pas défiler — le DTO de liste ne porte que la
+              couverture. Un point cliquable qui ne change rien serait pire. */}
+          {venue.photoCount > 1 ? (
+            <span className="venue-card-dots" aria-hidden="true">
+              {Array.from({ length: Math.min(venue.photoCount, 4) }, (_, i) => (
+                <span key={i} className={i === 0 ? "venue-card-dot is-first" : "venue-card-dot"} />
+              ))}
+            </span>
+          ) : null}
+        </div>
+
+        <div className="venue-card-body">
+          <div className="venue-card-head">
+            <h2 className="venue-card-name">{name}</h2>
+            {rating !== undefined && reviews !== undefined ? (
+              <span className="venue-card-rating">
+                <StarIcon />
+                <span>{formatRating(rating, lang)}</span>
+                <span className="venue-card-reviews">({reviews})</span>
+                {/* L'étoile est décorative : sans ce doublon, un lecteur
+                    d'écran annonce « 4,92 (142) » sans dire de quoi il parle. */}
+                <span className="sr-only">
+                  {t("card.rating", { rating: formatRating(rating, lang), count: reviews })}
+                </span>
+              </span>
+            ) : null}
           </div>
-        </section>
-      </div>
-    </main>
+
+          {tagline ? <p className="venue-card-tagline">{tagline}</p> : null}
+
+          <div className="venue-card-foot">
+            <span className="venue-card-meta">
+              {t("card.capacity", { max: venue.capacityMax })}
+              {district ? ` · ${district}` : ""}
+            </span>
+            <span className="venue-card-price">
+              <span className="venue-card-from">{t("card.from")}</span>
+              {formatDZD(venue.basePriceCents, lang)}
+            </span>
+          </div>
+        </div>
+      </Link>
+
+      {/* Favoris : rubrique annoncée, pas construite — même doctrine que la
+          navigation (UI-N1). `disabled` la sort de l'ordre de tabulation, le
+          titre dit pourquoi. Un cœur qui accepte le clic sans rien enregistrer
+          ferait croire à une salle sauvegardée. */}
+      <button
+        type="button"
+        className="venue-card-fav"
+        disabled
+        aria-label={t("card.favourite")}
+        title={t("card.favourite")}
+      >
+        <HeartIcon />
+      </button>
+    </li>
   );
 }
 
@@ -257,7 +380,9 @@ function SearchFilters({
     // Conséquence voulue : soumettre REMPLACE toute la querystring, ce qui
     // remet la pagination à la page 1 — changer de filtre en restant page 7
     // n'aurait aucun sens.
-    <form method="get" className="filters">
+    // ⚠ `id` OBLIGATOIRE : le tri vit dans la barre de résultats et se rattache
+    // ici par son attribut `form`. Le retirer casse le filtrage sans JS.
+    <form method="get" id={FILTERS_FORM_ID} className="filters">
       <div className="filters-head">
         <h2 className="filters-title">{t("filters.legend")}</h2>
         <Link href="/salles" className="filters-reset">
@@ -388,25 +513,9 @@ function SearchFilters({
         </fieldset>
       ) : null}
 
-      <div className="filter-block">
-        <label className="filter-label" htmlFor="f-sort">
-          {t("sort.label")}
-        </label>
-        <select
-          id="f-sort"
-          name="sort"
-          defaultValue={state.sort}
-          // Confort JS : le tri s'applique au changement. Sans JS, le même
-          // bouton « Afficher les résultats » le valide — d'où un `select`
-          // DANS le formulaire plutôt qu'un contrôle isolé.
-          onChange={(e) => e.currentTarget.form?.requestSubmit()}
-        >
-          <option value="recent">{t("sort.recent")}</option>
-          <option value="price_asc">{t("sort.price_asc")}</option>
-          <option value="price_desc">{t("sort.price_desc")}</option>
-        </select>
-      </div>
-
+      {/* ⚠ Le tri N'EST PLUS ICI (UI-D5) — il est dans la barre de résultats et
+          rattaché à ce formulaire par `form="search-filters"`. Le bouton
+          ci-dessous le valide donc toujours, JavaScript ou non. */}
       <button type="submit" className="btn btn-accent">
         {t("filters.submit")}
       </button>

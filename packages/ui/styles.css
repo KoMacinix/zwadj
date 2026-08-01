@@ -198,19 +198,22 @@ button {
 .brand-lockup {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px; /* Augmenté (anciennement 10px) */
   color: var(--ink);
   text-decoration: none;
+  font-size: 1.2rem; /* AJOUT : Augmente proportionnellement tout le bloc */
 }
 
 .brand-lockup svg {
   flex-shrink: 0;
+  width: 2.00em; /* AJOUT : Permet au SVG de grandir avec le texte */
+  height: 2.00em;
 }
 
 .brand-word {
   font-weight: 500;
   letter-spacing: 0.25em;
-  font-size: 15px;
+  font-size: 18px; /* Augmenté (anciennement 15px) */
   line-height: 1.1;
 }
 
@@ -221,14 +224,16 @@ button {
 
 .brand-tagline {
   display: block;
-  font-size: 10.5px;
+  font-size: 9.5px;
   color: var(--ink-2);
-  letter-spacing: 0.02em;
-  margin-block-start: 2px;
+  letter-spacing: 0.30em;
+  margin-block-start: -2px;     /* Fait monter le texte (valeur négative ou proche de 0) */
+  font-weight: 300;             /* Rend le style de la lettre plus fin (Light) */
 }
 
+/* Version large (Large) */
 .brand-lockup--lg .brand-word {
-  font-size: 19px;
+  font-size: 23px; /* Augmenté (anciennement 19px) */
 }
 
 /* ── Bandeau « email non vérifié » (D1) ──────────────────────────────────── */
@@ -1105,15 +1110,31 @@ button {
   display: none;
 }
 
-/* ── Navigation principale (Lot UI-N1) ──────────────────────────────────────
-   Mobile-first : sur téléphone l'en-tête passe en COLONNE et la barre défile
-   horizontalement. Pas de menu burger — il coûterait un état, un piège de
-   focus et une gestion d'Échap, pour six entrées dont quatre sont inactives.
-   Le défilement, lui, ne peut pas casser.
+/* ── Navigation principale (Lot UI-N1, remaniée UI-D5) ──────────────────────
+   Pas de menu burger — il coûterait un état, un piège de focus et une gestion
+   d'Échap, pour six entrées dont quatre sont inactives. Le défilement
+   horizontal, lui, ne peut pas casser.
    Aucune propriété directionnelle en `left/right` : tout est en logique
-   (`inline`), sinon l'arabe RTL décale la barre du mauvais côté. */
+   (`inline`), sinon l'arabe RTL décale la barre du mauvais côté.
+
+   ⚠ UI-D5 — la nav occupe MAINTENANT une deuxième ligne à TOUTE largeur, plus
+   seulement sous 720 px. Le design de référence pose le logo seul sur sa ligne
+   et les onglets sous lui ; la règle `@media (min-width: 720px)` qui remettait
+   la barre en ligne a donc été retirée, pas neutralisée. */
 .site-header {
   flex-wrap: wrap;
+}
+
+/* Variante EMPILÉE — portée par l'en-tête du site CLIENT uniquement
+   (`site-chrome.tsx`). Elle n'est pas fondue dans `.site-header` parce que les
+   deux en-têtes Pro partagent ce sélecteur et perdraient leur marge basse :
+   `padding-block-end: 0` n'a de sens que sous une barre d'onglets qui pose sa
+   propre hauteur. `row-gap: 0` fait mordre le soulignement de l'onglet actif
+   sur la bordure de l'en-tête — sans lui, l'onglet flotte 16 px au-dessus de
+   son trait. */
+.site-header--stacked {
+  row-gap: 0;
+  padding-block-end: 0;
 }
 
 .site-nav {
@@ -1186,20 +1207,6 @@ button {
   padding-inline: 5px;
   border-radius: 999px;
   border: 1px solid var(--line);
-}
-
-/* À partir de la tablette, la barre reprend sa place sur la ligne de l'en-tête. */
-@media (min-width: 720px) {
-  .site-header {
-    flex-wrap: nowrap;
-  }
-
-  .site-nav {
-    order: 0;
-    flex-basis: auto;
-    flex: 1;
-    margin-inline-start: 12px;
-  }
 }
 
 /* ── Calendrier de disponibilité (Lot B5) ───────────────────────────────────

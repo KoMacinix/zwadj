@@ -261,6 +261,9 @@
     }
   },
   "common": {
+    "brand": {
+      "tagline": "ALGÉRIE"
+    },
     "loading": "Chargement…",
     "nav": {
       "label": "Navigation principale",
@@ -641,15 +644,15 @@
     }
   },
   "search": {
-    "title": "Salles de mariage",
+    "title": "Salles à Alger",
     "intro": "Comparez les salles disponibles et envoyez votre demande de réservation.",
     "filters": {
-      "legend": "Affiner la recherche",
+      "legend": "Filtres",
       "city": "Commune",
       "cityAll": "Toutes les communes",
       "amenities": "Équipements",
       "submit": "Afficher les résultats",
-      "reset": "Réinitialiser les filtres",
+      "reset": "Réinitialiser",
       "capacity": "Capacité",
       "capacityValue": "{count} invités",
       "capacityCeiling": "{count}+ invités",
@@ -660,13 +663,13 @@
     },
     "sort": {
       "label": "Trier par",
-      "recent": "Plus récentes",
+      "recommended": "Recommandé",
       "price_asc": "Prix croissant",
       "price_desc": "Prix décroissant"
     },
     "results": {
-      "count": "{count} salles",
-      "countOne": "1 salle",
+      "count": "<n>{count}</n> salles trouvées",
+      "countOne": "<n>1</n> salle trouvée",
       "emptyTitle": "Aucune salle ne correspond à ces critères",
       "emptyBody": "Élargissez la recherche : moins d'équipements, une fourchette de prix plus large, ou toutes les communes.",
       "errorTitle": "La recherche est momentanément indisponible",
@@ -675,7 +678,22 @@
     "card": {
       "capacity": "Jusqu'à {max} invités",
       "from": "À partir de",
-      "noPhoto": "Photo à venir"
+      "noPhoto": "Photo à venir",
+      "rating": "Note de {rating} sur 5 pour {count} avis",
+      "favourite": "Ajouter aux favoris — bientôt"
+    },
+    "badge": {
+      "favourite": "Coup de cœur",
+      "new": "Nouveau",
+      "premium": "Premium"
+    },
+    "view": {
+      "label": "Affichage",
+      "grid": "Grille",
+      "map": "Carte"
+    },
+    "preview": {
+      "notice": "Données de démonstration — la recherche n'a rien renvoyé. Ces salles n'existent pas et ne sont jamais servies en production."
     },
     "map": {
       "title": "Carte",

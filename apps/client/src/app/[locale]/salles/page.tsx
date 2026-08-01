@@ -7,6 +7,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SearchView } from "../../../components/search/search-view";
+import { PREVIEW_VENUES } from "../../../lib/preview-venues";
 import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../lib/api";
 import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../lib/search-query";
 
@@ -50,5 +51,29 @@ export default async function VenuesSearchPage({
     getVenueStyles()
   ]);
 
-  return <SearchView state={state} results={results} wilayas={wilayas} amenities={amenities} styles={styles} />;
+  return (
+    <SearchView
+      state={state}
+      results={results}
+      wilayas={wilayas}
+      amenities={amenities}
+      styles={styles}
+      // UI-D5 — le repli sur des salles FICTIVES se décide ICI, et nulle part
+      // ailleurs. `NODE_ENV` est posé par Next lui-même (`dev` → development,
+      // `build`/`start` → production) : aucune variable à configurer, donc
+      // aucune à oublier — ni pour voir la grille en local, ni pour l'éteindre
+      // en production. Une variable `NEXT_PUBLIC_*` aurait fait l'inverse des
+      // deux : à poser pour voir, à retirer pour ne pas mentir.
+      //
+      // ⚠ La DONNÉE est passée depuis CETTE page, qui est un composant SERVEUR,
+      // et jamais importée par la vue, qui est un composant CLIENT. Constaté à
+      // l'exécution, pas en relecture : avec l'import côté vue, `next build`
+      // embarquait les six salles inventées dans le chunk NAVIGATEUR de
+      // `/salles`. Le `tree-shaking` ne pouvait rien en retirer — leur usage
+      // dépend d'une prop évaluée à l'exécution, donc le bundler doit les
+      // garder. Ici, le ternaire est résolu au rendu serveur : en production,
+      // c'est `null` qui part dans la charge utile.
+      previewVenues={process.env.NODE_ENV !== "production" ? PREVIEW_VENUES : null}
+    />
+  );
 }
