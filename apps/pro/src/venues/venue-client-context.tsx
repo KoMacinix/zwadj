@@ -12,7 +12,7 @@ import {
   type ReferentialsClient,
   type VenueProClient
 } from "@zwadj/api-client";
-import type { AmenityDTO, WilayaDTO } from "@zwadj/types";
+import type { AmenityDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import { useAuth } from "../auth/auth-context";
 
 interface VenueClients {
@@ -65,13 +65,18 @@ export interface ReferentialsData {
   status: "loading" | "ready" | "error";
   wilayas: WilayaDTO[];
   amenities: AmenityDTO[];
+  /** Styles de salle (D65). Chargés avec les autres : le formulaire les affiche
+   *  au même moment que les équipements, un troisième aller-retour en cascade
+   *  ne ferait qu'ajouter une attente. */
+  venueStyles: VenueStyleDTO[];
   /** cityId → libellés, pour afficher la commune sans re-parcourir l'arbre. */
   cityById: Map<string, { nameFr: string; nameAr: string }>;
   reload: () => void;
 }
 
 /**
- * Charge wilayas + amenities en parallèle (ajout B — correctif bloquant B).
+ * Charge wilayas + amenities + styles en parallèle (ajout B — correctif
+ * bloquant B ; styles ajoutés en A13c).
  * Deux politiques d'usage, une seule mécanique :
  *  - formulaires : `status === "error"` ⇒ bandeau + retry et submit BLOQUÉ
  *    (sans commune, pas de `cityId` : le select serait vide et muet) ;
@@ -83,16 +88,18 @@ export function useReferentialsData(): ReferentialsData {
   const [status, setStatus] = useState<ReferentialsData["status"]>("loading");
   const [wilayas, setWilayas] = useState<WilayaDTO[]>([]);
   const [amenities, setAmenities] = useState<AmenityDTO[]>([]);
+  const [venueStyles, setVenueStyles] = useState<VenueStyleDTO[]>([]);
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
     setStatus("loading");
-    void Promise.all([referentials.listWilayas(), referentials.listAmenities()])
-      .then(([loadedWilayas, loadedAmenities]) => {
+    void Promise.all([referentials.listWilayas(), referentials.listAmenities(), referentials.listVenueStyles()])
+      .then(([loadedWilayas, loadedAmenities, loadedStyles]) => {
         if (cancelled) return;
         setWilayas(loadedWilayas);
         setAmenities(loadedAmenities);
+        setVenueStyles(loadedStyles);
         setStatus("ready");
       })
       .catch(() => {
@@ -113,5 +120,5 @@ export function useReferentialsData(): ReferentialsData {
 
   const reload = useCallback(() => setAttempt((n) => n + 1), []);
 
-  return { status, wilayas, amenities, cityById, reload };
+  return { status, wilayas, amenities, venueStyles, cityById, reload };
 }

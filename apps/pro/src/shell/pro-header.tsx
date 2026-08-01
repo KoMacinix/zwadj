@@ -10,7 +10,7 @@
 // deux chemins pour la même action.
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import { AccountMenu, ZwadjLogo, type AccountMenuItem } from "@zwadj/ui";
+import { AccountMenu, ThemeToggle, ZwadjLogo, type AccountMenuItem } from "@zwadj/ui";
 import { useAuth } from "../auth/auth-context";
 import { LangToggle } from "../auth/auth-ui";
 
@@ -29,6 +29,11 @@ export function ProHeader() {
     <header className="site-header">
       <ZwadjLogo iconSize={22} suffix="PRO" />
       <div className="header-auth">
+        {/* UI-D4 — thème ET langue sur TOUTES les pages pro. Elles ne vivaient
+            que dans la coquille d'authentification et dans `dashboard.tsx`, qui
+            n'est plus routé : une fois connecté, le pro n'avait plus aucun des
+            deux. */}
+        <ThemeToggle label={t("auth.ui.pro.theme")} />
         <LangToggle />
         {/* Le menu n'a de sens qu'authentifié — l'en-tête est déjà sous
             RequireProSession, mais la garde évite un rond « ? » si le contexte

@@ -490,7 +490,12 @@
         "noChanges": "Aucune modification à enregistrer.",
         "loadError": "Impossible de charger cette salle.",
         "referentialsLoading": "Chargement des communes…",
-        "referentialsError": "Impossible de charger les communes et les équipements. Réessayez."
+        "referentialsError": "Impossible de charger les communes et les équipements. Réessayez.",
+        "sectionStyles": "Style et type de mariage",
+        "stylesHint": "Ces informations alimentent les filtres de la recherche publique.",
+        "ceremonyType": "Type de mariage",
+        "ceremonyTypeHint": "Laissez vide tant que vous ne l'avez pas décidé.",
+        "ceremonyTypeNone": "Non précisé"
       },
       "notFound": {
         "title": "Salle introuvable",
@@ -620,6 +625,13 @@
           "BOOKED": "Réservé",
           "BLOCKED": "Bloqué"
         }
+      },
+      "visits": {
+        "title": "Rendez-vous de visite",
+        "loading": "Chargement des rendez-vous…",
+        "empty": "Aucun rendez-vous dans les trois prochains mois.",
+        "cancel": "Annuler",
+        "cancelled": "Annulé"
       }
     },
     "ceremonyType": {
@@ -635,13 +647,16 @@
       "legend": "Affiner la recherche",
       "city": "Commune",
       "cityAll": "Toutes les communes",
-      "guests": "Nombre d'invités",
-      "guestsPlaceholder": "ex. 300",
-      "minPrice": "Prix minimum (DA)",
-      "maxPrice": "Prix maximum (DA)",
       "amenities": "Équipements",
       "submit": "Afficher les résultats",
-      "reset": "Réinitialiser les filtres"
+      "reset": "Réinitialiser les filtres",
+      "capacity": "Capacité",
+      "capacityValue": "{count} invités",
+      "capacityCeiling": "{count}+ invités",
+      "budget": "Budget",
+      "budgetCeiling": "{amount} et plus",
+      "styles": "Style",
+      "ceremonyType": "Type de mariage"
     },
     "sort": {
       "label": "Trier par",
@@ -722,7 +737,9 @@
       "proCancelledSubject": "Rendez-vous de visite annulé — {venue}",
       "proCancelledBody": "Bonjour,\n\n{client} a annulé son rendez-vous de visite à {venue}.\n\nCréneau libéré : {date} à {time}\n\nIl redevient disponible pour un autre client.",
       "clientConfirmedSubject": "Votre visite est confirmée — {venue}",
-      "clientConfirmedBody": "Bonjour,\n\nVotre rendez-vous de visite est confirmé.\n\nSalle : {venue}\nQuand : {date} à {time} (30 minutes)\n\nPensez à prévenir la salle si vous ne pouvez plus venir : vous pouvez annuler depuis « Mes rendez-vous »."
+      "clientConfirmedBody": "Bonjour,\n\nVotre rendez-vous de visite est confirmé.\n\nSalle : {venue}\nQuand : {date} à {time} (30 minutes)\n\nPensez à prévenir la salle si vous ne pouvez plus venir : vous pouvez annuler depuis « Mes rendez-vous ».",
+      "clientCancelledSubject": "Visite annulée — {venue}",
+      "clientCancelledBody": "Bonjour {client},\n\nLe gestionnaire de {venue} a annulé votre visite du {date} à {time}.\n\nVous pouvez choisir un autre créneau depuis la page de la salle, ou le contacter directement.\n\nL'équipe Zwadj"
     },
     "whatsapp": {
       "proBooked": "Zwadj — nouveau rendez-vous de visite à {venue} : {date} à {time} (30 min), demandé par {client}. Pour rappeler : {contact}. Déjà confirmé, rien à valider.",

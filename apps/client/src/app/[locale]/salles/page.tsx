@@ -7,7 +7,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SearchView } from "../../../components/search/search-view";
-import { getAmenities, getWilayas, searchVenues } from "../../../lib/api";
+import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../lib/api";
 import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../lib/search-query";
 
 // Rendu à la demande, EXPLICITE. La page l'est déjà de fait — elle attend
@@ -40,14 +40,15 @@ export default async function VenuesSearchPage({
   await params;
   const state = parseSearchParams(await searchParams);
 
-  // Les référentiels ne dépendent pas des résultats : trois requêtes en
-  // PARALLÈLE, pas trois allers-retours en cascade. Sur réseau lent, c'est la
+  // Les référentiels ne dépendent pas des résultats : quatre requêtes en
+  // PARALLÈLE, pas quatre allers-retours en cascade. Sur réseau lent, c'est la
   // différence entre une page et trois attentes.
-  const [results, wilayas, amenities] = await Promise.all([
+  const [results, wilayas, amenities, styles] = await Promise.all([
     searchVenues(toApiQuery(state)),
     getWilayas(),
-    getAmenities()
+    getAmenities(),
+    getVenueStyles()
   ]);
 
-  return <SearchView state={state} results={results} wilayas={wilayas} amenities={amenities} />;
+  return <SearchView state={state} results={results} wilayas={wilayas} amenities={amenities} styles={styles} />;
 }

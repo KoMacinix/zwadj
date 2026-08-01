@@ -14,7 +14,7 @@
 //   - qu'un envoi qui TOMBE laisse le rendez-vous confirmé (D63).
 import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import type { VenueProDTO, VisitBookingDTO } from "@zwadj/types";
+import type { ProVisitBookingDTO, VenueProDTO, VisitBookingDTO } from "@zwadj/types";
 import { createTestApp, loginAs, registerUser, truncateAll, verifyLastRegistered, type TestContext } from "./helpers";
 
 let ctx: TestContext;
@@ -448,5 +448,98 @@ describe("Repère civil (D48, D51)", () => {
 
     const stored = await ctx.prisma.visitBooking.findUniqueOrThrow({ where: { id: dto.id } });
     expect(stored.scheduledAt.toISOString()).toBe("2027-08-15T08:20:00.000Z");
+  });
+});
+
+describe("C3b — les rendez-vous vus et annulés par le PRO", () => {
+  it("le pro lit les rendez-vous de SA salle, triés, annulés inclus et marqués", async () => {
+    const f = await setup();
+    await book(f.clientToken, f.venueA.slug, { date: DIMANCHE, startMinutes: SLOT_1 }).expect(201);
+    const second = await book(f.client2Token, f.venueA.slug, { date: DIMANCHE, startMinutes: SLOT_2 }).expect(201);
+    await api()
+      .delete(`/api/v1/visit-bookings/${(second.body as VisitBookingDTO).id}`)
+      .set(authH(f.client2Token))
+      .expect(204);
+
+    const res = await api()
+      .get(`/api/v1/pro/venues/${f.venueA.id}/visit-bookings`)
+      .query({ from: DIMANCHE, to: DIMANCHE })
+      .set(authH(f.proToken))
+      .expect(200);
+
+    const rows = res.body as ProVisitBookingDTO[];
+    expect(rows.map((r) => r.startMinutes)).toEqual([SLOT_1, SLOT_2]);
+    // L'annulé reste VISIBLE : sa disparition silencieuse ressemblerait à un bug,
+    // et le pro doit voir que son créneau est de nouveau libre.
+    expect(rows[1]?.status).toBe("CANCELLED");
+    expect(rows[1]?.cancelledAt).not.toBeNull();
+    // Le CONTACT est la raison d'être de cette lecture : le pro rappelle.
+    expect(rows[0]?.clientEmail).toBe(CLIENT.email);
+    expect(rows[0]?.clientFirstName).toBe(CLIENT.firstName);
+  });
+
+  it("la fenêtre isole la salle ET les dates : rien de la salle voisine, rien du lundi", async () => {
+    const f = await setup();
+    await book(f.clientToken, f.venueA.slug, { date: DIMANCHE, startMinutes: SLOT_1 }).expect(201);
+    await book(f.clientToken, f.venueB.slug, { date: DIMANCHE, startMinutes: SLOT_1 }).expect(201);
+
+    const res = await api()
+      .get(`/api/v1/pro/venues/${f.venueA.id}/visit-bookings`)
+      .query({ from: LUNDI, to: LUNDI })
+      .set(authH(f.proToken))
+      .expect(200);
+
+    expect(res.body).toEqual([]);
+  });
+
+  it("un CLIENT est REFUSÉ sur la route pro — le @Roles de méthode remplace celui de la classe", async () => {
+    const f = await setup();
+    await api()
+      .get(`/api/v1/pro/venues/${f.venueA.id}/visit-bookings`)
+      .query({ from: DIMANCHE, to: DIMANCHE })
+      .set(authH(f.clientToken))
+      .expect(403);
+  });
+
+  it("le pro annule : le créneau est LIBÉRÉ et le client reçoit un e-mail", async () => {
+    const f = await setup();
+    const created = await book(f.clientToken, f.venueA.slug, { date: DIMANCHE, startMinutes: SLOT_1 }).expect(201);
+
+    await api()
+      .delete(`/api/v1/pro/venues/${f.venueA.id}/visit-bookings/${(created.body as VisitBookingDTO).id}`)
+      .set(authH(f.proToken))
+      .expect(204);
+
+    // Le créneau redevient réservable : c'est le filtre partiel de D59 qui le rend.
+    await book(f.client2Token, f.venueA.slug, { date: DIMANCHE, startMinutes: SLOT_1 }).expect(201);
+
+    const rows = await ctx.prisma.notification.findMany({ where: { type: "visit.cancelledByPro" } });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.status).toBe("SENT");
+    expect(rows[0]?.channel).toBe("EMAIL");
+  });
+
+  it("annuler DEUX fois est idempotent : la date d'annulation ne bouge plus", async () => {
+    const f = await setup();
+    const created = await book(f.clientToken, f.venueA.slug, { date: DIMANCHE, startMinutes: SLOT_1 }).expect(201);
+    const url = `/api/v1/pro/venues/${f.venueA.id}/visit-bookings/${(created.body as VisitBookingDTO).id}`;
+
+    await api().delete(url).set(authH(f.proToken)).expect(204);
+    const first = await ctx.prisma.visitBooking.findFirstOrThrow({ where: { venueId: f.venueA.id } });
+    await api().delete(url).set(authH(f.proToken)).expect(204);
+    const second = await ctx.prisma.visitBooking.findFirstOrThrow({ where: { venueId: f.venueA.id } });
+
+    expect(second.cancelledAt?.toISOString()).toBe(first.cancelledAt?.toISOString());
+  });
+
+  it("404 INDISTINCT : salle inconnue, id malformé — un pro ne découvre pas ce qui existe ailleurs", async () => {
+    const f = await setup();
+    for (const id of ["11111111-2222-4333-8444-555555555555", "pas-un-uuid"]) {
+      await api()
+        .get(`/api/v1/pro/venues/${id}/visit-bookings`)
+        .query({ from: DIMANCHE, to: DIMANCHE })
+        .set(authH(f.proToken))
+        .expect(404);
+    }
   });
 });

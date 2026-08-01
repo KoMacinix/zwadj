@@ -35,7 +35,9 @@ import type {
   VenueUpdateInput,
   VenueVirtualTourDTO,
   VenueVirtualTourUpdateInput,
-  WilayaDTO
+  WilayaDTO,
+  VenueStyleDTO,
+  ProVisitBookingDTO
 } from "@zwadj/types";
 import { NetworkError, toApiError } from "./auth-client";
 
@@ -118,6 +120,11 @@ export interface VenueProClient {
    *  Rend les blocages qui RECOUVRENT la fenêtre, pas seulement ceux qui y
    *  commencent — un blocage de six mois doit apparaître. */
   listAvailabilityBlocks(id: string, window: AvailabilityWindowQueryInput): Promise<AvailabilityBlockDTO[]>;
+  /** C3b — rendez-vous de visite d'une salle. Fenêtre NON écrêtée (D70) : le
+   *  passé est l'historique du pro. */
+  listVisitBookings(id: string, window: AvailabilityWindowQueryInput): Promise<ProVisitBookingDTO[]>;
+  /** C3b — annulation par le pro. Le client est prévenu par e-mail. */
+  cancelVisitBooking(id: string, bookingId: string): Promise<void>;
   /** D51 — `startsAt`/`endsAt` en date-heure civile LOCALE `YYYY-MM-DDTHH:mm`,
    *  SANS décalage : l'API applique UTC+1 elle-même. Envoyer un ISO offsetté
    *  créerait un blocage aux mauvaises heures d'Alger. Le DTO rendu porte le
@@ -212,6 +219,19 @@ export function createVenueProClient(request: AuthedRequest): VenueProClient {
           new URLSearchParams({ from: window.from, to: window.to }).toString()
       ),
 
+    // C3b — même encodage que la fenêtre des blocages, même raison.
+    listVisitBookings: (id, window) =>
+      request<ProVisitBookingDTO[]>(
+        `/pro/venues/${encodeURIComponent(id)}/visit-bookings?` +
+          new URLSearchParams({ from: window.from, to: window.to }).toString()
+      ),
+
+    cancelVisitBooking: (id, bookingId) =>
+      request<void>(
+        `/pro/venues/${encodeURIComponent(id)}/visit-bookings/${encodeURIComponent(bookingId)}`,
+        { method: "DELETE" }
+      ),
+
     createAvailabilityBlock: (id, input) =>
       request<AvailabilityBlockDTO>(`/venues/${encodeURIComponent(id)}/availability-blocks`, {
         method: "POST",
@@ -233,6 +253,8 @@ export interface ReferentialsClient {
   listWilayas(): Promise<WilayaDTO[]>;
   /** 23 équipements : `key` stable + libellés data + nom d'icône lucide. */
   listAmenities(): Promise<AmenityDTO[]>;
+  /** Styles de salle (D65) : `key` stable + libellés data, triés `sortOrder`. */
+  listVenueStyles(): Promise<VenueStyleDTO[]>;
 }
 
 export function createReferentialsClient(
@@ -254,6 +276,7 @@ export function createReferentialsClient(
 
   return {
     listWilayas: () => publicGet<WilayaDTO[]>("/wilayas"),
-    listAmenities: () => publicGet<AmenityDTO[]>("/amenities")
+    listAmenities: () => publicGet<AmenityDTO[]>("/amenities"),
+    listVenueStyles: () => publicGet<VenueStyleDTO[]>("/venue-styles")
   };
 }

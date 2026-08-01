@@ -46,19 +46,6 @@
   --dark-cal-blocked: #2b2724;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --accent: var(--dark-pro-accent);
-    --accent-strong: var(--dark-pro-accent-strong);
-    --accent-soft: var(--dark-pro-accent-soft);
-    --on-accent: var(--dark-pro-on-accent);
-    --cal-available: var(--dark-cal-available);
-    --cal-requested: var(--dark-cal-requested);
-    --cal-booked: var(--dark-cal-booked);
-    --cal-blocked: var(--dark-cal-blocked);
-  }
-}
-
 :root[data-theme="dark"] {
   --accent: var(--dark-pro-accent);
   --accent-strong: var(--dark-pro-accent-strong);

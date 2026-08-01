@@ -66,6 +66,16 @@ const AMENITIES: AmenityDTO[] = [
   { id: "2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e", key: "kosha", nameFr: "Kosha", nameAr: "كوشة العروسين", icon: null }
 ];
 
+// ⚠ UUID RÉELS : `venueUpdateSchema` valide `styleIds` en UUID. Une fixture en
+// « st-1 » échouait la validation AVANT tout appel réseau, et le test se serait
+// lu comme « le formulaire n'envoie rien » alors qu'il refusait la fixture.
+const STYLE_ROYAL = "2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e";
+const STYLE_JARDIN = "3c4d5e6f-7a8b-4c9d-8e1f-2a3b4c5d6e7f";
+const STYLES = [
+  { id: STYLE_ROYAL, key: "royal", nameFr: "Royal", nameAr: "ملكي", sortOrder: 1 },
+  { id: STYLE_JARDIN, key: "jardin", nameFr: "Jardin", nameAr: "حديقة", sortOrder: 2 }
+];
+
 const VENUE: VenueProDTO = {
   slotTemplates: [],
   id: "v1",
@@ -125,6 +135,7 @@ function makeReferentials(overrides: Partial<ReferentialsClient> = {}): Referent
   return {
     listWilayas: vi.fn().mockResolvedValue(WILAYAS),
     listAmenities: vi.fn().mockResolvedValue(AMENITIES),
+    listVenueStyles: vi.fn().mockResolvedValue(STYLES),
     ...overrides
   };
 }
@@ -344,6 +355,49 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
 
     await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { amenityIds: [AMENITY_ID] }));
+  });
+
+  it("A13c — styles : remplacement d'ENSEMBLE, comme les équipements (D65)", async () => {
+    const venues = makeVenues();
+    renderEdit(venues);
+
+    fireEvent.click(await screen.findByRole("checkbox", { name: "Jardin" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+
+    await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { styleIds: [STYLE_JARDIN] }));
+  });
+
+  it("A13c — le type de mariage part tel quel quand le pro le déclare (D66)", async () => {
+    const venues = makeVenues();
+    renderEdit(venues);
+
+    fireEvent.change(await screen.findByLabelText("Type de mariage"), { target: { value: "OUTDOOR" } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+
+    await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { ceremonyType: "OUTDOOR" }));
+  });
+
+  it("A13c — EFFACER le type envoie `null`, jamais rien : omettre voudrait dire « ne change pas »", async () => {
+    const venues = makeVenueClientDouble(
+      { ...VENUE, ceremonyType: "MIXED" },
+      { update: vi.fn().mockResolvedValue(VENUE) }
+    );
+    renderEdit(venues);
+
+    const select = await screen.findByLabelText("Type de mariage");
+    expect(select).toHaveValue("MIXED");
+    fireEvent.change(select, { target: { value: "" } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+
+    await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { ceremonyType: null }));
+  });
+
+  it("A13c — « Non précisé » existe : D66 rend la colonne nullable pour que le non-dit reste distinct d'« Intérieur »", async () => {
+    renderEdit(makeVenues());
+    const select = await screen.findByLabelText("Type de mariage");
+
+    expect(select).toHaveValue("");
+    expect(screen.getByRole("option", { name: "Non précisé" })).toBeInTheDocument();
   });
 
   it("AMENITY_NOT_FOUND → message porté par la section Équipements", async () => {

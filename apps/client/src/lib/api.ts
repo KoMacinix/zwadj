@@ -4,6 +4,7 @@ import type {
   ApiHealthResponse,
   VenueListResponse,
   VenuePublicDTO,
+  VenueStyleDTO,
   WilayaDTO
 } from "@zwadj/types";
 
@@ -63,6 +64,19 @@ export async function getAmenities(): Promise<AmenityDTO[]> {
     const res = await fetch(`${API_URL}/api/v1/amenities`, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     return (await res.json()) as AmenityDTO[];
+  } catch {
+    return [];
+  }
+}
+
+/** Référentiel des styles (D65). Même contrat que les équipements : un tableau
+ *  vide en cas d'échec, jamais une exception — le panneau de filtres perd des
+ *  puces, la recherche continue de fonctionner. */
+export async function getVenueStyles(): Promise<VenueStyleDTO[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/v1/venue-styles`, { next: { revalidate: 3600 } });
+    if (!res.ok) return [];
+    return (await res.json()) as VenueStyleDTO[];
   } catch {
     return [];
   }
