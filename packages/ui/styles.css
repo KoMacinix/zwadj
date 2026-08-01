@@ -226,8 +226,11 @@ button {
   display: block;
   font-size: 9.5px;
   color: var(--ink-2);
-  letter-spacing: 0.30em;
+  letter-spacing: 0.40em;
+  
+  /* LES MODIFICATIONS : */
   margin-block-start: -2px;     /* Fait monter le texte (valeur négative ou proche de 0) */
+  text-transform: uppercase;   /* Force le texte en MAJUSCULES */
   font-weight: 300;             /* Rend le style de la lettre plus fin (Light) */
 }
 
