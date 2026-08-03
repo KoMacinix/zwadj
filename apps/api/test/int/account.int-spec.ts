@@ -115,7 +115,9 @@ describe("PATCH /me/profile", () => {
     expect((ok.body as AuthUserDTO).proProfile).toEqual({
       businessName: "Salle El Ferdous",
       phone: "+213551234567",
-      phone2: "+213770000001"
+      phone2: "+213770000001",
+      notifyByEmail: true,
+      notifyBySms: false
     });
 
     const clientToken = await clientSession();

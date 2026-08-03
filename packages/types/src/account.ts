@@ -36,10 +36,24 @@ export const profileUpdateSchema = z
       .max(150, "account.validation.businessNameTooLong")
       .optional(),
     phone: dzPhoneSchema.nullable().optional(),
-    phone2: dzPhoneSchema.nullable().optional()
+    phone2: dzPhoneSchema.nullable().optional(),
+    /** D60 (F1) — canaux de notification du PRO. Deux booléens et non un enum
+     *  `{ EMAIL, SMS, BOTH }` : un enum explose dès le troisième canal. */
+    notifyByEmail: z.boolean().optional(),
+    notifyBySms: z.boolean().optional()
   })
   .strict()
-  .refine((v) => Object.keys(v).length > 0, { message: "account.validation.emptyPatch" });
+  .refine((v) => Object.keys(v).length > 0, { message: "account.validation.emptyPatch" })
+  // ⚠ La garde ne peut PAS être complète ici, et c'est assumé. Le PATCH est
+  //   partiel : couper l'e-mail sans parler du SMS peut couper les DEUX si le
+  //   SMS était déjà à false. Zod ne voit pas l'état en base. Le service relit
+  //   donc la ligne — même raisonnement que les taux D35 — et le
+  //   `CHECK pro_profiles_one_channel_required` reste le dernier mot.
+  //   Ce refine n'attrape que le cas ÉVIDENT : les deux coupés d'un coup.
+  .refine((v) => v.notifyByEmail !== false || v.notifyBySms !== false, {
+    path: ["notifyBySms"],
+    message: "account.validation.channelRequired"
+  });
 export type ProfileUpdateInput = z.infer<typeof profileUpdateSchema>;
 
 /**

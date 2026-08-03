@@ -7,6 +7,7 @@ import { dzPhoneSchema } from "./auth";
 import { PRICING_RULE_TYPES, type PricingRuleType } from "./enums";
 import { BookingMode, CeremonyType, VenueAvailabilityStatus, type VenuePublicationStatus, type VisitStatus } from "./enums";
 import { VENUE_MEDIA_CAPS } from "./media";
+import type { ServiceDTO } from "./service";
 import type { AmenityDTO } from "./referentials";
 
 /** Résumé d'une salle pour les listes/recherche — aligné sur le modèle Prisma `Venue`. */
@@ -89,6 +90,33 @@ const availabilityStatusSchema = z.enum(
   { errorMap: () => ({ message: "venue.validation.statusInvalid" }) }
 );
 
+// ─────────────────────────────────────────────────────────────────────────────
+// D81 — Politique d'acompte, PAR SALLE : pourcentage OU montant fixe.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Bornes du taux d'acompte, en points de base. 500 = 5 %, 10000 = 100 %.
+ *
+ *  Le plancher n'est pas décoratif : un acompte de 0 % voudrait dire « on
+ *  confirme sans rien encaisser », ce qui n'est plus du request-to-book mais un
+ *  autre parcours. Le plafond autorise le paiement intégral en ligne, qui est un
+ *  choix légitime pour une petite salle. */
+export const DEPOSIT_RATE_BPS_MIN = 500;
+export const DEPOSIT_RATE_BPS_MAX = 10000;
+
+/** Valeur de reprise des salles existantes : les 30 % implicites d'avant D81,
+ *  ceux que le design annonce partout. */
+export const DEPOSIT_RATE_BPS_DEFAULT = 3000;
+
+/** Politique d'acompte d'une salle. EXACTEMENT un des deux champs est non nul —
+ *  invariant tenu par le `CHECK` SQL, par Zod, et par ce type.
+ *
+ *  Deux champs plutôt qu'un couple `type` + `valeur` : mélanger des centimes et
+ *  des points de base dans une même colonne est exactement ce que D46 refuse.
+ *  Chacun garde son unité et ses bornes. */
+export type DepositPolicy =
+  | { depositRateBps: number; depositAmountCents: null }
+  | { depositRateBps: null; depositAmountCents: number };
+
 export const venueCreateSchema = z
   .object({
     cityId: z.string({ required_error: "venue.validation.cityRequired" }).uuid("venue.validation.cityInvalid"),
@@ -155,6 +183,23 @@ export const venueUpdateSchema = z
         errorMap: () => ({ message: "venue.validation.ceremonyTypeInvalid" })
       })
       .nullable()
+      .optional(),
+    /** D81 — politique d'acompte. PAIRE INDISSOCIABLE, exactement un des deux
+     *  non nul : le couple se fournit ensemble, comme lat/lng juste au-dessous.
+     *  Décidable par Zod seul, donc AUCUNE lecture croisée en base — contrairement
+     *  aux taux D35, où le partiel réel obligeait le service à relire l'autre. */
+    depositRateBps: z
+      .number({ invalid_type_error: "venue.validation.depositInteger" })
+      .int("venue.validation.depositInteger")
+      .min(DEPOSIT_RATE_BPS_MIN, "venue.validation.depositRateRange")
+      .max(DEPOSIT_RATE_BPS_MAX, "venue.validation.depositRateRange")
+      .nullable()
+      .optional(),
+    depositAmountCents: z
+      .number({ invalid_type_error: "venue.validation.depositInteger" })
+      .int("venue.validation.depositInteger")
+      .positive("venue.validation.depositAmountRange")
+      .nullable()
       .optional()
   })
   .strict("venue.validation.unknownKey")
@@ -164,6 +209,17 @@ export const venueUpdateSchema = z
     const lngGiven = v.lng !== undefined;
     if (latGiven !== lngGiven || (latGiven && lngGiven && (v.lat === null) !== (v.lng === null))) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["lng"], message: "venue.validation.coordsPair" });
+    }
+
+    // D81 — la paire d'acompte se fournit ENTIÈRE, et exactement un des deux
+    // champs est non nul. Une salle sans politique n'existe pas : la migration
+    // en donne une à tout le monde, et ce PATCH ne sait pas la retirer.
+    const rateGiven = v.depositRateBps !== undefined;
+    const amountGiven = v.depositAmountCents !== undefined;
+    if (rateGiven !== amountGiven) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["depositAmountCents"], message: "venue.validation.depositPair" });
+    } else if (rateGiven && amountGiven && (v.depositRateBps === null) === (v.depositAmountCents === null)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["depositAmountCents"], message: "venue.validation.depositExclusive" });
     }
   })
   .refine((v) => Object.keys(v).length > 0, { message: "venue.validation.emptyUpdate" });
@@ -439,6 +495,11 @@ export interface VenueProDTO {
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
   bookingMode: BookingMode;
+  /** D81 (E1a) — politique d'acompte de la salle. EXACTEMENT un des deux est
+   *  non nul. Le pro la règle lui-même, contrairement à commission/cashback qui
+   *  restent admin : c'est SON argent d'avance, pas la marge de la plateforme. */
+  depositRateBps: number | null;
+  depositAmountCents: number | null;
   /** Lecture seule pour le pro — la publication est un acte admin (A3). */
   publicationStatus: VenuePublicationStatus;
   /** D33 — libre-service via PATCH. */
@@ -806,6 +867,11 @@ export interface VenuePublicDTO {
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
   bookingMode: BookingMode;
+  /** D81 (E1a) — exposée AVANT la demande, et pas seulement au récapitulatif :
+   *  l'acompte est la première question que se pose un client, et la découvrir
+   *  à la dernière étape est la meilleure façon de le faire abandonner. */
+  depositRateBps: number | null;
+  depositAmountCents: number | null;
   status: VenueAvailabilityStatus;
   city: VenuePublicCityDTO;
   /** Référentiel complet (clé stable + libellés + icône), trié par nameFr. */
@@ -820,6 +886,15 @@ export interface VenuePublicDTO {
    *  de scan. A8 monte l'iframe AU GESTE UTILISATEUR, jamais automatiquement
    *  (tiers, coût réseau — cible Android bas de gamme, backlog 24.6). */
   matterportModelId: string | null;
+  /** E2d — catalogue de prestations, ACTIVES seulement, triées par `sortOrder`.
+   *
+   *  Le pro voit aussi les retirées ; le public, jamais : une prestation qu'on
+   *  ne peut plus commander n'a rien à faire sur une fiche.
+   *
+   *  Exposé sur le DÉTAIL et non sur la liste : un catalogue n'aide pas à
+   *  choisir entre deux salles dans une grille, et l'y charger alourdirait
+   *  chaque carte pour rien (cible Android bas de gamme). */
+  services: ServiceDTO[];
 }
 
 /* ══════════════════════════ Lot B3 — disponibilité ═══════════════════════════
@@ -837,6 +912,8 @@ export const ALGERIA_UTC_OFFSET_MINUTES = 60;
 /** D46 — on ne réserve pas au-delà de 18 mois. Constante partagée, jamais une
  *  colonne : c'est une règle commerciale unique, pas un réglage par salle. */
 export const BOOKING_HORIZON_MONTHS = 18;
+
+
 
 /** Nombre maximal de jours RENDUS par une fenêtre, bornes incluses. 92 est le
  *  plus long trimestre civil (juillet + août + septembre), soit exactement le

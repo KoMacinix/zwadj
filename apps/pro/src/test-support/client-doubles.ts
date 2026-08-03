@@ -15,7 +15,7 @@
 // l'autre et rendrait les compteurs faux dans l'ordre d'exécution seulement —
 // le genre d'échec qui n'apparaît qu'en CI.
 import { vi } from "vitest";
-import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
+import type { BookingsProClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
 import type { AmenityDTO, VenueProDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import type { AuthClient } from "../lib/auth-client";
 
@@ -105,6 +105,43 @@ export function makeVenueClientDouble(
     deleteAvailabilityBlock: vi.fn(),
     listVisitBookings: vi.fn().mockResolvedValue([]),
     cancelVisitBooking: vi.fn().mockResolvedValue(undefined).mockResolvedValue(undefined),
+    ...overrides
+  };
+}
+
+/** Double des demandes de réservation (E1b). Même règle que les autres : mocks
+ *  créés à CHAQUE appel, jamais partagés entre tests. */
+export function makeBookingsProDouble(overrides: Partial<BookingsProClient> = {}): BookingsProClient {
+  return {
+    listForVenue: vi.fn().mockResolvedValue([]),
+    accept: vi.fn(),
+    decline: vi.fn(),
+    cancel: vi.fn(),
+    ...overrides
+  };
+}
+
+/** Double du catalogue (E2c). */
+export function makeServicesDouble(overrides: Partial<ServicesClient> = {}): ServicesClient {
+  return {
+    listForVenue: vi.fn().mockResolvedValue([]),
+    create: vi.fn(),
+    update: vi.fn(),
+    remove: vi.fn(),
+    ...overrides
+  };
+}
+
+/** Double des devis (E2e). */
+export function makeQuotesDouble(overrides: Partial<QuotesClient> = {}): QuotesClient {
+  return {
+    listForVenue: vi.fn().mockResolvedValue([]),
+    conversion: vi.fn().mockResolvedValue({ sent: 0, accepted: 0, declined: 0, expired: 0 }),
+    create: vi.fn(),
+    send: vi.fn(),
+    revise: vi.fn(),
+    convert: vi.fn(),
+    decline: vi.fn(),
     ...overrides
   };
 }

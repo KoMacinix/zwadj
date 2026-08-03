@@ -224,6 +224,8 @@ describe("VenuesService — forme du DTO pro (allow-list)", () => {
         "slotTemplates",
         "matterportModelId",
         "createdAt",
+      "depositAmountCents",
+      "depositRateBps",
         "updatedAt"
       ].sort()
     );

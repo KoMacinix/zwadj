@@ -95,6 +95,8 @@ const VENUE: VenueProDTO = {
   capacityMax: 400,
   basePriceCents: 15_000_000,
   bookingMode: "SINGLE_SLOT",
+  depositRateBps: 3000,
+  depositAmountCents: null,
   publicationStatus: "DRAFT",
   status: "ACTIVE",
   amenityIds: [],

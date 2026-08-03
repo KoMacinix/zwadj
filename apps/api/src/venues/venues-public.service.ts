@@ -19,6 +19,7 @@ import {
 import type { Prisma } from "../generated/prisma/client";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
+import { SERVICE_SELECT, toServiceDTO } from "./services.service";
 
 /** Colonnes des cartes de la liste (VenueSummaryDTO) — ni taux, ni GPS.
  *  A4-② : la couverture est tirée en SQL (take: 1 imbriqué — jamais les 30
@@ -66,6 +67,10 @@ const VENUE_PUBLIC_SELECT = {
   capacityMax: true,
   basePriceCents: true,
   bookingMode: true,
+  depositRateBps: true,
+  depositAmountCents: true,
+  // E2d — ACTIVES seulement, dans l'ordre où le pro les a rangées.
+  services: { where: { isActive: true }, orderBy: [{ sortOrder: "asc" }, { id: "asc" }], select: SERVICE_SELECT },
   status: true,
   // D45 (A6a) : A8 monte l'iframe Matterport au geste utilisateur.
   matterportModelId: true,
@@ -83,7 +88,9 @@ const VENUE_PUBLIC_SELECT = {
     orderBy: [{ sortOrder: "asc" }, { id: "asc" }] as Prisma.VenuePhotoOrderByWithRelationInput[],
     select: { id: true, storageKey: true, thumbKey: true, width: true, height: true, altFr: true, altAr: true }
   }
-} as const;
+} satisfies Prisma.VenueSelect; // `satisfies` et non `as const` : ce SELECT porte
+// un `orderBy` en TABLEAU, et `as const` le rendrait readonly — les types
+// générés par Prisma le refusent. `satisfies` valide sans élargir les `true`.
 
 type VenueSummaryRow = Prisma.VenueGetPayload<{ select: typeof VENUE_SUMMARY_SELECT }>;
 type VenuePublicRow = Prisma.VenueGetPayload<{ select: typeof VENUE_PUBLIC_SELECT }>;
@@ -260,6 +267,8 @@ export class VenuesPublicService {
       capacityMax: row.capacityMax,
       basePriceCents: row.basePriceCents,
       bookingMode: row.bookingMode,
+      depositRateBps: row.depositRateBps,
+      depositAmountCents: row.depositAmountCents,
       status: row.status,
       city: row.city,
       amenities: row.amenities
@@ -277,7 +286,8 @@ export class VenuesPublicService {
         altFr: p.altFr,
         altAr: p.altAr
       })),
-      matterportModelId: row.matterportModelId
+      matterportModelId: row.matterportModelId,
+      services: row.services.map(toServiceDTO)
     };
   }
 }

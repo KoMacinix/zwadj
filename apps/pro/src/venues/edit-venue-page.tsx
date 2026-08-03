@@ -27,6 +27,8 @@ import {
 import { PhotosSection } from "./photos-section";
 import { SlotsSection } from "./slots-section";
 import { BlocksSection } from "./blocks-section";
+import { DepositSection } from "./deposit-section";
+import { ServicesSection } from "./services-section";
 import { VirtualTourSection } from "./virtual-tour-section";
 
 type LoadState =
@@ -274,6 +276,23 @@ export function EditVenuePage() {
               `initialSlots` est consommé UNE FOIS, pas de `key`, et la section
               ne rappelle jamais `load()`. */}
           <SlotsSection venueId={state.venue.id} initialSlots={state.venue.slotTemplates} />
+
+          {/* E2c — les prestations avant l'acompte : on décrit ce qu'on vend
+              avant de décider ce qu'on encaisse d'avance. */}
+          <ServicesSection venueId={state.venue.id} />
+
+          {/* E1b / D81 — l'acompte suit immédiatement les créneaux et leurs prix :
+              c'est la même conversation commerciale, et le pro qui vient de fixer
+              un tarif est exactement celui qui doit décider ce qu'il encaisse
+              d'avance. */}
+          <DepositSection
+            venue={state.venue}
+            onApplied={(deposit) =>
+              setState((current) =>
+                current.kind === "ready" ? { ...current, venue: { ...current.venue, ...deposit } } : current
+              )
+            }
+          />
 
           {/* B4d — blocages. Seul volet qui CHARGE ses données : les
               blocages ne voyagent pas dans le DTO, ils sont sans borne. */}

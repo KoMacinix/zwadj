@@ -24,6 +24,8 @@
 // Toutes les heures en 24 h, via le formateur partagé.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
+import { BookingRequestsSection } from "./booking-requests-section";
+import { QuotesSection } from "./quotes-section";
 import { VisitsSection } from "./visits-section";
 import { useTranslation } from "react-i18next";
 import { formatSlotRange, type VenueAvailabilityDayDTO, type VenueAvailabilityResponse } from "@zwadj/types";
@@ -258,6 +260,14 @@ export function VenueCalendarPage() {
 
       {/* C3b — les rendez-vous de visite vivent à côté du calendrier : c'est le
           même écran mental pour le pro, « qu'est-ce qui se passe dans ma salle ». */}
+      {/* E1b — les DEMANDES avant les visites : une demande non traitée expire,
+          un rendez-vous de visite non lu ne coûte qu'une surprise. L'ordre suit
+          l'urgence, pas la chronologie des lots. */}
+      {id ? <BookingRequestsSection venueId={id} /> : null}
+
+      {/* E2e — les devis APRÈS les demandes : une demande en attente expire,
+          un devis attend qu'on le relance. L'ordre suit l'urgence. */}
+      {id ? <QuotesSection venueId={id} /> : null}
       {id ? <VisitsSection venueId={id} /> : null}
     </main>
   );

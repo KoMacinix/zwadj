@@ -118,7 +118,7 @@ const PRO_USER: AuthUserDTO = {
   phone: null,
   hasPassword: true,
   hasGoogle: false,
-  proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null }
+  proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null, notifyByEmail: true, notifyBySms: false }
 };
 
 function makeClient(overrides: Partial<AccountClient> = {}): AccountClient {
@@ -293,7 +293,7 @@ describe("écran profil", () => {
     const client = makeClient();
     renderPage(client, {
       ...PRO_USER,
-      proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: "+213770000001" }
+      proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: "+213770000001", notifyByEmail: true, notifyBySms: false }
     });
 
     fireEvent.change(await screen.findByLabelText("Second téléphone (facultatif)"), { target: { value: "" } });
@@ -303,8 +303,46 @@ describe("écran profil", () => {
       expect(client.updateProfile).toHaveBeenCalledWith({
         businessName: "Salle El Ryad",
         phone: "+213551234567",
-        phone2: null
+        phone2: null, notifyByEmail: true, notifyBySms: false
       })
+    );
+  });
+});
+
+describe("Canaux de notification — D60", () => {
+  const bothOn: AuthUserDTO = {
+    ...PRO_USER,
+    proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null, notifyByEmail: true, notifyBySms: true }
+  };
+
+  it("les deux cases reflètent l'état du compte", async () => {
+    renderPage(makeClient(), bothOn);
+    expect(await screen.findByLabelText("Par e-mail")).toBeChecked();
+    expect(screen.getByLabelText("Par WhatsApp")).toBeChecked();
+  });
+
+  it("décocher LES DEUX annonce le refus AVANT d'envoyer", async () => {
+    renderPage(makeClient());
+    // Le SMS est déjà décoché sur PRO_USER : couper l'e-mail coupe tout.
+    fireEvent.click(await screen.findByLabelText("Par e-mail"));
+    expect(screen.getByText(/^Gardez au moins un canal/)).toBeInTheDocument();
+  });
+
+  it("garder UN seul canal reste permis", async () => {
+    renderPage(makeClient(), bothOn);
+    fireEvent.click(await screen.findByLabelText("Par e-mail"));
+    expect(screen.queryByText(/^Gardez au moins un canal/)).toBeNull();
+  });
+
+  it("les canaux partent avec le profil, jamais dans un appel séparé", async () => {
+    const client = makeClient();
+    renderPage(client, bothOn);
+    fireEvent.click(await screen.findByLabelText("Par WhatsApp"));
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+    await waitFor(() =>
+      expect(client.updateProfile).toHaveBeenCalledWith(
+        expect.objectContaining({ notifyByEmail: true, notifyBySms: false })
+      )
     );
   });
 });

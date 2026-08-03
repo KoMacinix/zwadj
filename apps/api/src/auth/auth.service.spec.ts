@@ -30,7 +30,7 @@ type UserRow = {
   status: "ACTIVE" | "SUSPENDED" | "ANONYMIZED";
   phone: string | null;
   googleSub: string | null;
-  proProfile: { businessName: string; phone: string; phone2: string | null } | null;
+  proProfile: { businessName: string; phone: string; phone2: string | null; notifyByEmail: boolean; notifyBySms: boolean } | null;
   // Lot 8 : null = compte Google-only (créé via /auth/google, jamais via register).
   passwordHash: string | null;
 };
@@ -158,7 +158,7 @@ describe("AuthService.login — matrice D1 × D5", () => {
 
   it("PRO non vérifié : 403 EMAIL_NOT_VERIFIED — évalué APRÈS le mot de passe (D5), aucun token émis", async () => {
     const { service, passwords, prisma } = makeService(
-      makeUser({ role: "PRO", proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null } }),
+      makeUser({ role: "PRO", proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null, notifyByEmail: true, notifyBySms: false } }),
       true
     );
     const attempt = service.login(CREDENTIALS);
@@ -193,12 +193,20 @@ describe("AuthService.login — matrice D1 × D5", () => {
     const user = makeUser({
       role: "PRO",
       emailVerifiedAt: new Date(),
-      proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null }
+      proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null, notifyByEmail: true, notifyBySms: false }
     });
     const { service } = makeService(user, true);
     const { response } = await service.login(CREDENTIALS);
 
-    expect(response.user.proProfile).toEqual({ businessName: "Salle El Ryad", phone: "+213551234567", phone2: null });
+    // D60 (F1) — les canaux voyagent AVEC la session : sans eux, l'écran de
+    // réglage ne saurait pas quoi cocher au montage.
+    expect(response.user.proProfile).toEqual({
+      businessName: "Salle El Ryad",
+      phone: "+213551234567",
+      phone2: null,
+      notifyByEmail: true,
+      notifyBySms: false
+    });
 
     const claims = JSON.parse(Buffer.from(response.accessToken.split(".")[1]!, "base64url").toString());
     expect(claims.sub).toBe(user.id);

@@ -25,6 +25,22 @@ import { Link } from "../../i18n/navigation";
  *  reprogramme plus souvent qu'il ne se tient. */
 const WINDOW_DAYS = 30;
 
+/** Codes que `POST /venues/:slug/visit-bookings` peut rendre (C3), et RIEN
+ *  d'autre. Table EXPLICITE, jamais une dérivation mécanique du code vers la
+ *  clé : le jour où l'API ajoute un code, on veut un message générique honnête
+ *  plutôt qu'un `t()` qui lève sur une clé absente. Même doctrine que les
+ *  icônes — imports nommés, aucune résolution dynamique.
+ *
+ *  ⚠ Défaut réparé ici : le panneau posait la CLÉ dans l'état d'erreur puis la
+ *  rendait telle quelle. Le visiteur lisait `venue.errors.VISIT_SLOT_TAKEN`.
+ *  Invisible jusqu'ici parce que le panneau n'était monté nulle part. */
+const VISIT_ERROR_KEYS: Record<string, string> = {
+  VISIT_SLOT_UNAVAILABLE: "visitSlotUnavailable",
+  VISIT_SLOT_TAKEN: "visitSlotTaken",
+  VISIT_ALREADY_BOOKED: "visitAlreadyBooked",
+  VENUE_NOT_FOUND: "notFound"
+};
+
 /** Date civile d'Alger (UTC+1 toute l'année, D48) — décaler puis lire en UTC
  *  donne le jour local sans dépendre du fuseau de la machine du visiteur. */
 function civilDate(ms: number): string {
@@ -33,6 +49,7 @@ function civilDate(ms: number): string {
 
 export function VisitBookingPanel({ slug, client }: { slug: string; client?: VisitBookingsClient }) {
   const t = useTranslations("venueDetail.visit");
+  const tError = useTranslations("venue.errors");
   const { status, api } = useAuth();
   const bookings = useMemo(() => client ?? createVisitBookingsClient(api.authedRequest), [client, api]);
 
@@ -78,7 +95,10 @@ export function VisitBookingPanel({ slug, client }: { slug: string; client?: Vis
       setConfirmed(true);
     } catch (cause) {
       const code = (cause as { code?: string }).code;
-      setError(code === undefined ? t("errorGeneric") : `venue.errors.${code}`);
+      // `noUncheckedIndexedAccess` rend bien `string | undefined` ici : un code
+      // inconnu retombe sur le message générique, il ne fait pas lever `t()`.
+      const key = code === undefined ? undefined : VISIT_ERROR_KEYS[code];
+      setError(key === undefined ? t("errorGeneric") : tError(key));
       // Un créneau pris entre-temps : la liste affichée est périmée.
       await load();
       setChosen(null);

@@ -87,7 +87,14 @@ describe("GET /api/v1/auth/me (intégration — JwtAuthGuard réel + lecture fra
     const res = await me(token);
 
     expect(res.status).toBe(200);
-    expect(res.body.proProfile).toEqual({ businessName: "Salle El Ryad", phone: "+213551234567", phone2: null });
+    // D60 (F1) — les canaux voyagent avec la session.
+    expect(res.body.proProfile).toEqual({
+      businessName: "Salle El Ryad",
+      phone: "+213551234567",
+      phone2: null,
+      notifyByEmail: true,
+      notifyBySms: false
+    });
   });
 
   it("compte supprimé après émission du token : 401 (l'identité n'existe plus)", async () => {

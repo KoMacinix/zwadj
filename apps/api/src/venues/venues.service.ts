@@ -37,6 +37,8 @@ export const VENUE_PRO_SELECT = {
   capacityMax: true,
   basePriceCents: true,
   bookingMode: true,
+  depositRateBps: true,
+  depositAmountCents: true,
   publicationStatus: true,
   status: true,
   // D45 (A6a) : identifiant Matterport — remplace les scènes/liaisons de D34.
@@ -334,6 +336,8 @@ export function toVenueProDTO(row: VenueProRow, urlOf: (key: string) => string):
     capacityMax: row.capacityMax,
     basePriceCents: row.basePriceCents,
     bookingMode: row.bookingMode,
+    depositRateBps: row.depositRateBps,
+    depositAmountCents: row.depositAmountCents,
     publicationStatus: row.publicationStatus,
     status: row.status,
     amenityIds: row.amenities.map((a) => a.amenityId).sort(),
