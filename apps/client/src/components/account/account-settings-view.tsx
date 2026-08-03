@@ -23,6 +23,8 @@ import { validate, type FieldErrors } from "../../lib/auth/form-validation";
 import { Field } from "../auth/auth-ui";
 import { ApiError, NetworkError } from "../../lib/auth/auth-client";
 import { Link } from "../../i18n/navigation";
+import { BookingsSection } from "./bookings-section";
+import { VisitBookingsSection } from "./visit-bookings-section";
 
 function useSubmitError() {
   const t = useTranslations();
@@ -486,6 +488,15 @@ export function AccountSettingsView({ client }: { client?: AccountClient }) {
   return (
     <main className="account-main">
       <h1>{t("account.ui.title")}</h1>
+      {/* C5b — « Mes rendez-vous » en PREMIER : c'est du contenu, tout le reste
+          de la page est du réglage. Elle porte sa propre garde de forme et son
+          propre message d'erreur ; une section qui échoue doit échouer SEULE,
+          sans emporter le profil, l'e-mail et le mot de passe. */}
+      {/* E1b — « Mes réservations » AVANT les rendez-vous de visite : une demande
+          en attente est ce que le client vient vérifier ; une visite est déjà
+          confirmée et n'appelle aucune action. */}
+      <BookingsSection />
+      <VisitBookingsSection />
       <ProfileSection client={accountClient} />
       <EmailSection client={accountClient} />
       <PasswordSection client={accountClient} />

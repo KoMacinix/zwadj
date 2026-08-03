@@ -5,6 +5,7 @@ import type {
   VenueListResponse,
   VenuePublicDTO,
   VenueStyleDTO,
+  VenueVisitSlotsResponse,
   WilayaDTO
 } from "@zwadj/types";
 
@@ -131,6 +132,39 @@ export async function getVenueAvailability(
     );
     if (!res.ok) return null;
     return (await res.json()) as VenueAvailabilityResponse;
+  } catch {
+    return null;
+  }
+}
+
+// ── Lot C5 — créneaux de visite ──────────────────────────────────────
+
+/** Créneaux de visite CONCRETS d'une salle sur une fenêtre de dates civiles.
+ *
+ *  Route ANONYME (D58/C2) : la liste s'affiche sans compte, seule la
+ *  RÉSERVATION exige la session. Exiger de se connecter pour *regarder*
+ *  ferait fuir avant de montrer.
+ *
+ *  Appelée depuis le NAVIGATEUR, donc `cache: "no-store"` — même raison qu'en
+ *  B5 : un créneau mis en cache serait annoncé libre alors qu'il vient d'être
+ *  pris, et la demande partirait pour échouer en 409.
+ *
+ *  ⚠ Les bornes RENDUES peuvent différer des bornes demandées (écrêtage du
+ *  passé et de l'horizon) : lire `from`/`to` de la réponse, jamais présumer
+ *  les siennes. */
+export async function getVisitSlots(
+  slug: string,
+  from: string,
+  to: string
+): Promise<VenueVisitSlotsResponse | null> {
+  try {
+    const query = new URLSearchParams({ from, to });
+    const res = await fetch(
+      `${API_URL}/api/v1/venues/${encodeURIComponent(slug)}/visit-slots?${query.toString()}`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) return null;
+    return (await res.json()) as VenueVisitSlotsResponse;
   } catch {
     return null;
   }

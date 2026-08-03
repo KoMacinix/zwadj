@@ -181,7 +181,16 @@ export interface AuthUserDTO {
   hasGoogle: boolean;
   /** Renseigné pour un PRO uniquement (D3) — null pour CLIENT/ADMIN.
    *  `phone2` (D38) : seconde ligne, beaucoup de salles en ont deux. */
-  proProfile: { businessName: string; phone: string; phone2: string | null } | null;
+  proProfile: {
+    businessName: string;
+    phone: string;
+    phone2: string | null;
+    /** D60 (F1) — canaux choisis. Au moins un des deux est vrai, garanti par
+     *  `CHECK pro_profiles_one_channel_required` : un pro sans canal ne verrait
+     *  plus jamais une demande arriver. */
+    notifyByEmail: boolean;
+    notifyBySms: boolean;
+  } | null;
 }
 /** POST /auth/login — l'access token va en mémoire JS ; le refresh token, lui,
  *  n'apparaît JAMAIS dans le corps : cookie httpOnly `zwadj_rt` (D2). */

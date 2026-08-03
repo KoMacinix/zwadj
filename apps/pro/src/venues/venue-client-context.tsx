@@ -7,8 +7,14 @@
 // refresh. Les référentiels sont publics → client autonome sur l'URL Vite.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
+  createBookingsProClient,
+  createQuotesClient,
+  createServicesClient,
   createReferentialsClient,
   createVenueProClient,
+  type BookingsProClient,
+  type QuotesClient,
+  type ServicesClient,
   type ReferentialsClient,
   type VenueProClient
 } from "@zwadj/api-client";
@@ -18,6 +24,14 @@ import { useAuth } from "../auth/auth-context";
 interface VenueClients {
   venues: VenueProClient;
   referentials: ReferentialsClient;
+  /** E1b — les demandes vivent sur `/pro/bookings/…`, hors de la topologie
+   *  `/pro/venues`. Un client séparé plutôt qu'un gonflement de `VenueProClient` :
+   *  ce sont deux sujets, et ils n'évolueront pas ensemble. */
+  bookingsPro: BookingsProClient;
+  /** E2c — le catalogue vit sur `/services`, hors de la topologie `/pro/venues`. */
+  services: ServicesClient;
+  /** E2e — les devis vivent sur `/quotes`, hors de `/pro/venues`. */
+  quotes: QuotesClient;
 }
 
 const VenueClientsContext = createContext<VenueClients | null>(null);
@@ -25,12 +39,18 @@ const VenueClientsContext = createContext<VenueClients | null>(null);
 export function VenueProvider({
   children,
   venues,
-  referentials
+  referentials,
+  bookingsPro,
+  servicesClient,
+  quotesClient
 }: {
   children: React.ReactNode;
   /** Injectables pour les tests de composants. */
   venues?: VenueProClient;
   referentials?: ReferentialsClient;
+  bookingsPro?: BookingsProClient;
+  servicesClient?: ServicesClient;
+  quotesClient?: QuotesClient;
 }) {
   const { api } = useAuth();
 
@@ -38,9 +58,12 @@ export function VenueProvider({
     () => ({
       venues: venues ?? createVenueProClient(api.authedRequest),
       referentials:
-        referentials ?? createReferentialsClient(import.meta.env.VITE_API_URL ?? "http://localhost:3001")
+        referentials ?? createReferentialsClient(import.meta.env.VITE_API_URL ?? "http://localhost:3001"),
+      bookingsPro: bookingsPro ?? createBookingsProClient(api.authedRequest),
+      services: servicesClient ?? createServicesClient(api.authedRequest),
+      quotes: quotesClient ?? createQuotesClient(api.authedRequest)
     }),
-    [api, venues, referentials]
+    [api, venues, referentials, bookingsPro, servicesClient, quotesClient]
   );
 
   return <VenueClientsContext.Provider value={value}>{children}</VenueClientsContext.Provider>;
@@ -54,6 +77,18 @@ function useVenueClients(): VenueClients {
 
 export function useVenues(): VenueProClient {
   return useVenueClients().venues;
+}
+
+export function useQuotes(): QuotesClient {
+  return useVenueClients().quotes;
+}
+
+export function useServices(): ServicesClient {
+  return useVenueClients().services;
+}
+
+export function useBookingsPro(): BookingsProClient {
+  return useVenueClients().bookingsPro;
 }
 
 export function useReferentials(): ReferentialsClient {

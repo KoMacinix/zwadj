@@ -139,6 +139,20 @@ enum PricingRuleType {
   HOLIDAY
 }
 
+// E2b — cycle de vie du DEVIS. PAS d'EXPIRED : un statut que rien ne fait
+// basculer devient un mensonge en base (leçon D80). Un devis dont `validUntil`
+// est passé EST expiré — la condition est déterministe, donc dérivée à la
+// lecture.
+// SUPERSEDED n'est pas DECLINED : « remplacé par une version plus récente » et
+// « explicitement refusé » n'appellent pas la même réponse devant un litige.
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  DECLINED
+  SUPERSEDED
+}
+
 // backlog 3.5 — visites auto-confirmées, annulables
 enum VisitStatus {
   CONFIRMED
@@ -470,6 +484,14 @@ model Venue {
   // l'admin SEUL. Défaut 0 = pas de cashback tant que non réglé (A3-③).
   // Garantie mécanique « jamais sur les fonds Zwadj » : CHECK SQL 0 ≤ x ≤ commission_rate_bps.
   cashbackRateBps   Int                    @default(0) @map("cashback_rate_bps")
+
+  // D81 (E1a) — politique d'acompte PAR SALLE : pourcentage OU montant fixe,
+  // exactement un des deux (CHECK SQL `venues_deposit_policy_exclusive`). Deux
+  // colonnes plutôt qu'un couple type+valeur : des centimes et des points de
+  // base dans une même colonne, c'est ce que D46 refuse. Reprise des salles
+  // existantes à 3000 bps = les 30 % implicites d'avant.
+  depositRateBps     Int?                  @default(3000) @map("deposit_rate_bps") // CHECK SQL : 500–10000, DEFAULT 3000
+  depositAmountCents Int?                  @map("deposit_amount_cents") // CHECK SQL : > 0
   rejectionReason   String?                @map("rejection_reason") // Phase 12 : rejet admin → draft + raison
   // Soft delete (Lot A2) : fin de vie côté pro — JAMAIS de DELETE SQL sur
   // venues, l'historique réservations/commissions doit y survivre. Filtré
@@ -905,13 +927,34 @@ model Quote {
   validUntil         DateTime? @map("valid_until") @db.Timestamptz(6)
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
+  // E2b — cycle de vie et chaîne de versions.
+  //
+  // `chainId` est DÉNORMALISÉ (= son propre id pour la v1, hérité ensuite) et
+  // c'est LUI qui porte les index partiels « au plus un actif par chaîne ». Une
+  // chaîne reliée seulement par `parentQuoteId` ne se parcourt que par
+  // récursion, et un index unique ne s'appuie pas sur une CTE récursive.
+  //
+  // ⚠ Les index `quotes_one_accepted_per_chain` / `quotes_one_sent_per_chain`
+  //   sont PARTIELS, donc NON différables : la transaction d'acceptation doit
+  //   rétrograder l'ancienne active AVANT d'activer la nouvelle.
+  status         QuoteStatus @default(DRAFT)
+  version        Int         @default(1)
+  chainId        String      @map("chain_id") @db.Uuid
+  parentQuoteId  String?     @map("parent_quote_id") @db.Uuid
+  sentAt         DateTime?   @map("sent_at") @db.Timestamptz(6)
+  acceptedAt     DateTime?   @map("accepted_at") @db.Timestamptz(6)
+
   venue        Venue         @relation(fields: [venueId], references: [id], onDelete: Restrict)
   client       User?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
   slotTemplate SlotTemplate? @relation(fields: [slotTemplateId], references: [id], onDelete: SetNull)
   booking      Booking?
+  parentQuote  Quote?        @relation("QuoteVersions", fields: [parentQuoteId], references: [id], onDelete: SetNull)
+  revisions    Quote[]       @relation("QuoteVersions")
 
+  @@unique([chainId, version], map: "quotes_chain_version_unique")
   @@index([venueId])
   @@index([clientId])
+  @@index([venueId, status, createdAt], map: "quotes_venue_status_created_idx")
   @@map("quotes")
 }
 
@@ -961,6 +1004,11 @@ model Booking {
   contactEmail     String? @map("contact_email")
 
   idempotencyKey String? @unique @map("idempotency_key") // invariant : POST /bookings idempotent
+
+  // D79 (E1a) — « 02 · Message à la salle (optionnel) ». Plafonné à 1000
+  // caractères par Zod SEULEMENT : un CHECK ferait une seconde vérité sur la
+  // même borne, ce que D55 interdit.
+  clientMessage String? @map("client_message")
 
   // Jalons du cycle de vie (state machine 6.3 ; transitions gardées en code)
   expiresAt          DateTime? @map("expires_at") @db.Timestamptz(6) // pending → expired si pro muet (job pg-boss)

@@ -19,7 +19,8 @@
       "emailUnchanged": "Cette adresse est déjà celle de votre compte.",
       "deletionAlreadyPending": "Une demande de suppression est déjà en cours pour ce compte.",
       "deletionNotFound": "Aucune demande de suppression en attente.",
-      "deletionNotPending": "Cette demande a déjà été traitée."
+      "deletionNotPending": "Cette demande a déjà été traitée.",
+      "channelRequired": "Gardez au moins un canal de notification : sans e-mail ni SMS, vous ne verrez plus les demandes arriver."
     },
     "ui": {
       "cancel": "Annuler",
@@ -73,11 +74,41 @@
         "phone2": "Second téléphone (facultatif)",
         "phoneOptional": "Téléphone (facultatif)",
         "saved": "Profil enregistré.",
-        "title": "Profil"
+        "title": "Profil",
+        "channels": "Notifications",
+        "channelsHint": "Comment la salle vous prévient d'une nouvelle demande. Au moins un canal est requis : une demande que vous ne voyez pas expire toute seule.",
+        "channelEmail": "Par e-mail",
+        "channelSms": "Par WhatsApp"
       },
       "save": "Enregistrer",
       "signedOut": "Connectez-vous pour accéder à la configuration de votre compte.",
-      "title": "Configuration du compte"
+      "title": "Configuration du compte",
+      "visits": {
+        "title": "Mes rendez-vous de visite",
+        "loading": "Chargement de vos rendez-vous…",
+        "empty": "Aucun rendez-vous de visite pour le moment. Ouvrez la page d'une salle pour choisir un créneau.",
+        "past": "Passé",
+        "cancelled": "Annulé",
+        "cancel": "Annuler",
+        "loadError": "Vos rendez-vous n'ont pas pu être chargés. Rafraîchissez la page puis réessayez.",
+        "cancelError": "L'annulation n'a pas abouti. Rafraîchissez la page puis réessayez."
+      },
+      "bookings": {
+        "title": "Mes réservations",
+        "loading": "Chargement de vos réservations…",
+        "empty": "Aucune demande de réservation. Ouvrez la page d'une salle pour en envoyer une.",
+        "deposit": "acompte {amount}",
+        "cancel": "Annuler",
+        "cancelReasonPrompt": "Cette réservation est acceptée par la salle. Indiquez la raison de votre annulation :",
+        "loadError": "Vos réservations n'ont pas pu être chargées. Rafraîchissez la page puis réessayez.",
+        "cancelError": "L'annulation n'a pas abouti. Rafraîchissez la page puis réessayez.",
+        "st_PENDING": "En attente de réponse de la salle",
+        "st_ACCEPTED": "Acceptée — acompte à régler",
+        "st_CONFIRMED": "Confirmée",
+        "st_DECLINED": "Refusée par la salle",
+        "st_CANCELLED": "Annulée",
+        "st_EXPIRED": "Expirée"
+      }
     },
     "validation": {
       "businessNameRequired": "Le nom de l'établissement est requis.",
@@ -90,7 +121,8 @@
       "lastNameRequired": "Le nom est requis.",
       "nameTooLong": "Ce champ ne peut pas dépasser 100 caractères.",
       "passwordMismatch": "Les deux mots de passe ne correspondent pas.",
-      "reasonTooLong": "Le motif ne peut pas dépasser 1000 caractères."
+      "reasonTooLong": "Le motif ne peut pas dépasser 1000 caractères.",
+      "channelRequired": "Gardez au moins un canal de notification : sans e-mail ni SMS, vous ne verrez plus les demandes arriver."
     }
   },
   "auth": {
@@ -260,6 +292,47 @@
       }
     }
   },
+  "booking": {
+    "wholeDay": "la journée entière",
+    "emails": {
+      "proRequestedSubject": "Nouvelle demande de réservation — {venue}",
+      "proRequestedBody": "Bonjour,\n\n{client} demande à réserver {venue}.\n\nQuand : {date} — {slot}\nInvités : {guests}\nMontant : {total} DA (acompte {deposit} DA)\nPour rappeler : {contact}\n\nRien n'est bloqué tant que vous n'avez pas accepté : d'autres demandes peuvent porter sur la même date. Répondez depuis votre espace pro.\n\n— Zwadj",
+      "clientAcceptedSubject": "{venue} a accepté votre demande",
+      "clientAcceptedBody": "Bonjour,\n\nBonne nouvelle : {venue} a accepté votre demande pour le {date} ({slot}).\n\nMontant : {total} DA\nAcompte à régler : {deposit} DA\n\nLa date vous est réservée. La salle vous contactera pour le règlement de l'acompte.\n\n— Zwadj",
+      "clientDeclinedSubject": "{venue} n'a pas pu retenir votre demande",
+      "clientDeclinedBody": "Bonjour,\n\n{venue} n'a pas pu retenir votre demande pour le {date} ({slot}).\n\n{reason}\n\nLa date reste libre ailleurs : d'autres salles peuvent l'accueillir.\n\n— Zwadj"
+    },
+    "whatsapp": {
+      "proRequested": "Zwadj — nouvelle demande pour {venue} : {date}, {slot}, {guests} invités. {client} ({contact}). Rien n'est bloqué tant que vous n'avez pas accepté."
+    },
+    "errors": {
+      "notFound": "Cette demande est introuvable.",
+      "slotUnavailable": "Ce créneau n'est plus proposé pour cette date. Choisissez-en un autre.",
+      "slotTaken": "Cette date vient d'être prise pour une autre réservation.",
+      "blockedPeriod": "Cette période est bloquée dans votre calendrier. Levez le blocage pour accepter.",
+      "priceChanged": "Le tarif de cette date a changé depuis l'affichage. Vérifiez le nouveau montant avant d'envoyer.",
+      "statusConflict": "Cette demande a changé d'état entre-temps.",
+      "cancelReasonRequired": "Cette demande est déjà acceptée : indiquez la raison de l'annulation.",
+      "guestsExceedCapacity": "Cette salle ne peut pas accueillir autant d'invités."
+    },
+    "validation": {
+      "dateFormat": "Date invalide.",
+      "slotInvalid": "Créneau invalide.",
+      "guestsInteger": "Le nombre d'invités doit être un entier.",
+      "guestsRange": "Le nombre d'invités doit être d'au moins 1.",
+      "paymentMethodInvalid": "Mode de paiement invalide.",
+      "contactRequired": "Ce champ est obligatoire.",
+      "contactTooLong": "Ce champ est trop long (80 caractères maximum).",
+      "emailInvalid": "Adresse e-mail invalide.",
+      "emailTooLong": "Adresse e-mail trop longue.",
+      "messageTooLong": "Message trop long (1 000 caractères maximum).",
+      "expectedAmount": "Montant attendu invalide.",
+      "reasonRequired": "La raison est obligatoire.",
+      "reasonTooLong": "Raison trop longue (500 caractères maximum).",
+      "unknownKey": "Champ inconnu.",
+      "tooManyServices": "Vingt prestations au maximum par demande."
+    }
+  },
   "common": {
     "brand": {
       "tagline": "ALGÉRIE"
@@ -310,6 +383,47 @@
   "pro": {
     "title": "Zwadj Pro",
     "cta": "Commencer"
+  },
+  "quote": {
+    "errors": {
+      "notFound": "Ce devis est introuvable.",
+      "statusConflict": "Ce devis a changé d'état entre-temps.",
+      "expired": "Ce devis a dépassé sa date de validité. Créez-en une nouvelle version.",
+      "alreadyConverted": "Ce devis a déjà donné lieu à une demande de réservation. Créez une nouvelle version pour repartir sur d'autres bases."
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire.",
+      "tooLong": "Ce champ est trop long.",
+      "dateFormat": "Date invalide.",
+      "idInvalid": "Identifiant invalide.",
+      "guestsRange": "Le nombre d'invités doit être d'au moins 1.",
+      "tooManyServices": "Vingt prestations au maximum par devis.",
+      "emailInvalid": "Adresse e-mail invalide.",
+      "paymentMethodInvalid": "Mode de paiement invalide.",
+      "unknownKey": "Champ inconnu."
+    }
+  },
+  "service": {
+    "errors": {
+      "notFound": "Cette prestation est introuvable.",
+      "tooMany": "Votre catalogue est complet (40 prestations).",
+      "inUse": "Cette prestation figure déjà sur des réservations : elle ne peut plus être supprimée. Retirez-la de la vente pour ne plus la proposer — vous pourrez la remettre quand vous voudrez.",
+      "SERVICE_UNAVAILABLE": "Cette prestation n'est plus proposée par la salle.",
+      "SERVICE_TIER_MISMATCH": "L'option choisie ne correspond pas à cette prestation.",
+      "SERVICE_QUANTITY_OUT_OF_RANGE": "La quantité demandée n'est pas acceptée pour cette prestation."
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire.",
+      "tooLong": "Ce champ est trop long.",
+      "priceInteger": "Le prix doit être un entier.",
+      "priceNegative": "Le prix ne peut pas être négatif.",
+      "unitRange": "La quantité maximale doit être supérieure ou égale à la minimale.",
+      "tiersRequired": "Ajoutez au moins une option de prix.",
+      "tiersTooMany": "Dix options de prix au maximum.",
+      "idInvalid": "Identifiant invalide.",
+      "quantityRange": "La quantité doit être d'au moins 1.",
+      "unknownKey": "Champ inconnu."
+    }
   },
   "venue": {
     "validation": {
@@ -383,7 +497,12 @@
       "stylesTooMany": "Trop de styles sélectionnés.",
       "stylesFilterInvalid": "Filtre de styles invalide.",
       "ceremonyTypeInvalid": "Type de mariage invalide.",
-      "capacityRangeInvalid": "Le nombre minimum d'invités dépasse le maximum."
+      "capacityRangeInvalid": "Le nombre minimum d'invités dépasse le maximum.",
+      "depositInteger": "L'acompte doit être un entier.",
+      "depositRateRange": "Le taux d'acompte doit être compris entre 5 % et 100 %.",
+      "depositAmountRange": "Le montant de l'acompte doit être supérieur à zéro.",
+      "depositPair": "Le taux et le montant d'acompte se renseignent ensemble.",
+      "depositExclusive": "Choisissez un pourcentage OU un montant fixe, pas les deux."
     },
     "errors": {
       "amenityNotFound": "Un des équipements sélectionnés est introuvable.",
@@ -635,6 +754,109 @@
         "empty": "Aucun rendez-vous dans les trois prochains mois.",
         "cancel": "Annuler",
         "cancelled": "Annulé"
+      },
+      "deposit": {
+        "title": "Acompte",
+        "intro": "Ce que le client règle d'avance pour bloquer sa date. Vous choisissez un pourcentage du prix, ou un montant fixe identique quelle que soit la date.",
+        "mode": "Type d'acompte",
+        "modeRate": "Pourcentage",
+        "modeAmount": "Montant fixe",
+        "rateLabel": "Pourcentage du prix (%)",
+        "amountLabel": "Montant de l'acompte",
+        "amountHint": "Montant en dinars, nombre entier.",
+        "clampNotice": "Si une date coûte moins que ce montant, l'acompte demandé sera ramené au prix de la date : on ne réclame jamais plus que le total.",
+        "save": "Enregistrer l'acompte",
+        "saving": "Enregistrement…",
+        "saved": "Acompte enregistré."
+      },
+      "requests": {
+        "title": "Demandes de réservation",
+        "hint": "Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.",
+        "loading": "Chargement des demandes…",
+        "empty": "Aucune demande pour le moment.",
+        "status": "Statut : {status}",
+        "st_PENDING": "En attente",
+        "st_ACCEPTED": "Acceptée",
+        "st_CONFIRMED": "Confirmée",
+        "st_DECLINED": "Refusée",
+        "st_CANCELLED": "Annulée",
+        "st_EXPIRED": "Expirée",
+        "guests": "{count} invités",
+        "deposit": "acompte {amount}",
+        "conflict": "{count} autre(s) demande(s) portent sur la même période. Accepter celle-ci les rendra impossibles à accepter.",
+        "accept": "Accepter",
+        "decline": "Refuser",
+        "cancel": "Annuler la réservation",
+        "cancelReason": "Annulée par la salle",
+        "lockedNotice": "Cette date est bloquée pour cette réservation jusqu'à ce que vous l'annuliez."
+      },
+      "services": {
+        "title": "Prestations",
+        "hint": "Ce que vous vendez en plus de la salle. Le type de tarification est DÉFINITIF : pour en changer, supprimez et recréez.",
+        "loading": "Chargement du catalogue…",
+        "empty": "Aucune prestation pour le moment.",
+        "retired": "Retirée de la vente",
+        "retire": "Retirer de la vente",
+        "restore": "Remettre en vente",
+        "delete": "Supprimer",
+        "addTitle": "Ajouter une prestation",
+        "type": "Tarification",
+        "typeHint": "Choix définitif. Il détermine comment le prix est calculé sur chaque devis.",
+        "typeFixed": "Forfait — un prix, quel que soit le nombre d'invités",
+        "typePerGuest": "Par invité — multiplié par le nombre d'invités",
+        "typePerUnit": "À l'unité — le client choisit une quantité",
+        "typeTiered": "Par formule — plusieurs options au choix",
+        "nameFr": "Nom (français)",
+        "nameAr": "Nom (arabe)",
+        "price": "Prix",
+        "priceUnitHint": "Montant en dinars, nombre entier.",
+        "perGuestWarning": "⚠ Ce montant sera MULTIPLIÉ par le nombre d'invités. Pour 250 invités, 2 000 DA donnent 500 000 DA.",
+        "unitFr": "Unité (français)",
+        "unitAr": "Unité (arabe)",
+        "unitHint": "Ce que le client compte : table, heure, chaise…",
+        "tierFr": "Première formule (français)",
+        "tierAr": "Première formule (arabe)",
+        "tierHint": "Une formule au minimum. Vous en ajouterez d'autres ensuite.",
+        "add": "Ajouter la prestation",
+        "perGuest": "{amount} par invité",
+        "perUnit": "{amount} par {unit}"
+      },
+      "quotes": {
+        "title": "Devis",
+        "hint": "Un devis se prépare en brouillon, s'envoie, se révise autant que nécessaire. Il ne devient « accepté » qu'une fois l'acompte encaissé.",
+        "loading": "Chargement des devis…",
+        "empty": "Aucun devis pour le moment.",
+        "stats": "{sent} envoyés · {accepted} aboutis · {declined} refusés · {expired} expirés",
+        "version": "Version {n}",
+        "deposit": "acompte {amount}",
+        "st_DRAFT": "Brouillon",
+        "st_SENT": "Envoyé",
+        "st_ACCEPTED": "Accepté",
+        "st_DECLINED": "Refusé",
+        "st_SUPERSEDED": "Remplacé par une version plus récente",
+        "st_EXPIRED": "Expiré",
+        "send": "Envoyer",
+        "revise": "Créer une version avec le formulaire ci-dessous",
+        "decline": "Marquer refusé",
+        "convert": "Créer la demande de réservation",
+        "confirmConvert": "Créer la demande",
+        "converted": "Une demande de réservation a été créée à partir de ce devis. Elle attend votre acceptation de la date, puis l'acompte.",
+        "contactHint": "Coordonnées du client : elles sont obligatoires sur une réservation, et le devis ne les porte pas.",
+        "firstName": "Prénom du client",
+        "lastName": "Nom du client",
+        "phone": "Téléphone du client",
+        "email": "E-mail du client",
+        "history": "{n} version(s) précédente(s)",
+        "newTitle": "Nouveau devis",
+        "newHint": "Le montant est calculé par le serveur : il apparaîtra sur le devis créé.",
+        "eventDate": "Date de l'événement",
+        "slot": "Créneau",
+        "slotPlaceholder": "Choisir un créneau",
+        "guests": "Nombre d'invités",
+        "services": "Prestations",
+        "validUntil": "Valable jusqu'au",
+        "validUntilHint": "Facultatif. Passée cette date, le devis ne peut plus être converti.",
+        "create": "Créer le devis"
       }
     },
     "ceremonyType": {
@@ -726,9 +948,20 @@
     "tourNotice": "La visite est hébergée par Matterport et ne se charge qu'à votre demande : elle consomme des données.",
     "tourFrame": "Visite virtuelle de la salle",
     "tourOpen": "Ouvrir dans un nouvel onglet",
-    "bookingCta": "Demander une réservation",
-    "visitCta": "Réserver une visite",
-    "ctaSoon": "Les demandes de réservation et de visite ouvriront prochainement.",
+    "visit": {
+      "title": "Réserver une visite",
+      "intro": "Une visite dure {minutes} minutes. Choisissez l'un des créneaux proposés par la salle.",
+      "loading": "Chargement des créneaux…",
+      "none": "Cette salle ne propose aucun créneau de visite pour le moment.",
+      "taken": "pris",
+      "phoneLabel": "Téléphone (facultatif)",
+      "phoneHint": "Il sert à la salle pour vous joindre. Sans numéro, elle vous écrira par e-mail.",
+      "submit": "Confirmer le rendez-vous",
+      "confirmed": "Votre rendez-vous est confirmé. La salle vient d'en être prévenue.",
+      "seeMine": "Voir mes rendez-vous",
+      "loginToBook": "Se connecter pour réserver",
+      "errorGeneric": "Le rendez-vous n'a pas pu être enregistré. Réessayez dans un instant."
+    },
     "bookingModeSingle": "Un seul créneau par jour",
     "bookingModeMulti": "Plusieurs créneaux par jour",
     "calendar": {
@@ -746,7 +979,34 @@
         "BOOKED": "Réservé",
         "BLOCKED": "Indisponible"
       }
-    }
+    },
+    "booking": {
+      "title": "Demander cette salle",
+      "intro": "Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.",
+      "loading": "Chargement des dates…",
+      "none": "Cette salle ne propose aucune date pour le moment.",
+      "taken": "prise",
+      "total": "Prix : {amount}",
+      "deposit": "Acompte : {amount}",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "guests": "Nombre d'invités",
+      "message": "Message à la salle (facultatif)",
+      "submit": "Envoyer ma demande",
+      "sent": "Votre demande est partie.",
+      "sentHint": "Ce n'est pas encore confirmé : la salle doit l'accepter. Vous suivrez la réponse depuis votre compte.",
+      "seeMine": "Voir mes réservations",
+      "loginToBook": "Se connecter pour demander",
+      "errorGeneric": "Votre demande n'a pas pu être envoyée. Réessayez dans un instant.",
+      "servicesTitle": "Prestations en plus",
+      "perGuest": "{amount} par invité",
+      "perUnit": "{amount} par {unit}",
+      "tier": "Formule",
+      "quantity": "Quantité"
+    },
+    "bookingHint": "Envoyez votre demande ci-dessous : la salle vous répond, rien n'est débité maintenant."
   },
   "visit": {
     "emails": {

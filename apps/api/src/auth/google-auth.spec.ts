@@ -32,7 +32,7 @@ type Row = {
   status: "ACTIVE" | "SUSPENDED" | "ANONYMIZED";
   phone: string | null;
   passwordHash: string | null;
-  proProfile: { businessName: string; phone: string; phone2: string | null } | null;
+  proProfile: { businessName: string; phone: string; phone2: string | null; notifyByEmail: boolean; notifyBySms: boolean } | null;
   googleSub: string | null;
 };
 

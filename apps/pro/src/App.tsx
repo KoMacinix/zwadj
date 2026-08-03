@@ -11,7 +11,7 @@
 import { Navigate, Route, Routes, BrowserRouter } from "react-router";
 import { AuthProvider } from "./auth/auth-context";
 import type { AuthClient } from "./lib/auth-client";
-import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
+import type { BookingsProClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
 import { LoginPage } from "./auth/login-page";
 import { RegisterPage } from "./auth/register-page";
 import { ForgotPage, ResetPage, VerifyEmailPage } from "./auth/recovery-pages";
@@ -27,19 +27,25 @@ export function AppProviders({
   children,
   client,
   venues,
-  referentials
+  referentials,
+  bookingsPro,
+  servicesClient,
+  quotesClient
 }: {
   children: React.ReactNode;
   client?: AuthClient;
   /** Injectables pour les tests (comme `client` pour l'auth). */
   venues?: VenueProClient;
   referentials?: ReferentialsClient;
+  bookingsPro?: BookingsProClient;
+  servicesClient?: ServicesClient;
+  quotesClient?: QuotesClient;
 }) {
   return (
     <AuthProvider client={client}>
       {/* Sous AuthProvider : le client venue se construit sur
           `api.authedRequest` et partage donc le mutex de refresh (§8). */}
-      <VenueProvider venues={venues} referentials={referentials}>
+      <VenueProvider venues={venues} referentials={referentials} bookingsPro={bookingsPro} servicesClient={servicesClient} quotesClient={quotesClient}>
         {children}
       </VenueProvider>
     </AuthProvider>

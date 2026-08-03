@@ -163,6 +163,8 @@ describe("POST /venues — création", () => {
         "slotTemplates", // Lot B1 — D46, créneaux sur le DTO pro
         "matterportModelId", // Lot A6a — D45
         "createdAt",
+        "depositAmountCents",
+        "depositRateBps",
         "updatedAt"
       ].sort()
     );

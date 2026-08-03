@@ -53,4 +53,49 @@ describe("Parité i18n FR/AR (invariant produit)", () => {
       expect([...ar.keys()].some((k) => k.startsWith(ns))).toBe(true);
     }
   });
+
+  // ── Ajouts du lot de RÉCONCILIATION ────────────────────────────────────────
+  // Cette porte a laissé passer la disparition de 20 clés. Elle ne compare que
+  // FR à AR : une suppression SYMÉTRIQUE la laisse verte, et c'est exactement
+  // ce qu'un zip construit sur une base ancienne produit. Les deux tests qui
+  // suivent regardent enfin les clés elles-mêmes.
+
+  it("le TOTAL ne RECULE pas — une suppression symétrique laisse la parité verte", () => {
+    // Repère MESURÉ au lot de réconciliation. À relever DÉLIBÉRÉMENT quand un
+    // lot ajoute des clés ; le voir baisser signifie qu'un lot en a effacé.
+    expect(fr.size).toBeGreaterThanOrEqual(843);
+  });
+
+  it("les surfaces C5/C5b sont COMPLÈTES — elles ont déjà été effacées une fois", () => {
+    // Un plancher sur le total ne voit pas 5 clés retirées et 5 ajoutées.
+    // Ces deux namespaces-là portent des écrans entiers : on les fige au nom.
+    const under = (ns: string) =>
+      [...fr.keys()].filter((k) => k.startsWith(ns)).map((k) => k.slice(ns.length)).sort();
+
+    expect(under("account.ui.visits.")).toEqual([
+      "cancel",
+      "cancelError",
+      "cancelled",
+      "empty",
+      "loadError",
+      "loading",
+      "past",
+      "title"
+    ]);
+
+    expect(under("venueDetail.visit.")).toEqual([
+      "confirmed",
+      "errorGeneric",
+      "intro",
+      "loading",
+      "loginToBook",
+      "none",
+      "phoneHint",
+      "phoneLabel",
+      "seeMine",
+      "submit",
+      "taken",
+      "title"
+    ]);
+  });
 });

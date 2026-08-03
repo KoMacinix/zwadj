@@ -66,7 +66,7 @@ const AUTH_USER_SELECT = {
   phone: true,
   passwordHash: true,
   googleSub: true,
-  proProfile: { select: { businessName: true, phone: true, phone2: true } }
+  proProfile: { select: { businessName: true, phone: true, phone2: true, notifyByEmail: true, notifyBySms: true } }
 } as const;
 
 type AuthUserRow = Prisma.UserGetPayload<{ select: typeof AUTH_USER_SELECT }>;
@@ -578,7 +578,9 @@ export class AuthService {
         ? {
             businessName: user.proProfile.businessName,
             phone: user.proProfile.phone,
-            phone2: user.proProfile.phone2
+            phone2: user.proProfile.phone2,
+            notifyByEmail: user.proProfile.notifyByEmail,
+            notifyBySms: user.proProfile.notifyBySms
           }
         : null
     };

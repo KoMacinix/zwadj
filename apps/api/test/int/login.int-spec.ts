@@ -103,7 +103,14 @@ describe("POST /api/v1/auth/login (intégration, base réelle)", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.user.emailVerified).toBe(true);
-    expect(res.body.user.proProfile).toEqual({ businessName: "Salle El Ryad", phone: "+213551234567", phone2: null });
+    // D60 (F1) — les canaux voyagent avec la session dès la connexion.
+    expect(res.body.user.proProfile).toEqual({
+      businessName: "Salle El Ryad",
+      phone: "+213551234567",
+      phone2: null,
+      notifyByEmail: true,
+      notifyBySms: false
+    });
   });
 
   it("ADMIN non vérifié : bloqué comme un PRO (D1 — seul CLIENT est exempté)", async () => {
