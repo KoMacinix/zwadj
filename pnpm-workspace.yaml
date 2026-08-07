@@ -1,6 +1,10 @@
 packages:
   - "apps/*"
   - "packages/*"
+  # T1 (D118) — suite e2e Playwright. Paquet à part et NON inclus dans
+  # `pnpm -r run test` : elle se lance à la demande (`pnpm test:e2e`), pas à
+  # chaque cycle. Voir e2e/README.md.
+  - "e2e"
 
 # pnpm 10 : autoriser explicitement les scripts postinstall nécessaires
 # (sinon installation interactive `pnpm approve-builds` à chaque poste).

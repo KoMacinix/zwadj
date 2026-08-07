@@ -7,6 +7,7 @@ import { AuthService } from "./auth.service";
 import type { AuthEmailsService } from "./auth-emails.service";
 import type { PasswordService } from "./password.service";
 import { TokenService } from "./token.service";
+import { AUTH } from "./auth.constants";
 
 /**
  * Matrice de décision du LOGIN (D1 × D5) en unitaire avec mocks : les specs
@@ -59,7 +60,10 @@ function makeService(user: UserRow | null, passwordOk: boolean) {
     refreshToken: {
       create: vi.fn().mockResolvedValue({}),
       findUnique: vi.fn().mockResolvedValue(null),
-      updateMany: vi.fn().mockResolvedValue({ count: 1 })
+      updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+      // D116 — `graceResult` compte les héritiers vivants de la rotation. Par
+      // défaut il y en a un : le successeur que le gagnant vient de créer.
+      count: vi.fn().mockResolvedValue(1)
     },
     passwordResetToken: {
       findFirst: vi.fn().mockResolvedValue(null),
@@ -270,12 +274,16 @@ describe("AuthService.me — lecture fraîche", () => {
 
 const tokens = new TokenService();
 
-function refreshRow(overrides: Partial<{ revokedAt: Date | null; expiresAt: Date }> = {}) {
+function refreshRow(overrides: Partial<{ revokedAt: Date | null; rotatedAt: Date | null; expiresAt: Date }> = {}) {
   return {
     id: "00000000-0000-7000-8000-0000000000aa",
     userId: "00000000-0000-7000-8000-000000000001",
     tokenHash: "0".repeat(64),
     revokedAt: null as Date | null,
+    // D116 — `null` par DÉFAUT : sans rotation horodatée, aucune grâce. Le
+    // défaut du helper est donc le comportement STRICT d'avant D116, et chaque
+    // test qui veut la grâce doit la demander explicitement.
+    rotatedAt: null as Date | null,
     expiresAt: new Date(Date.now() + 10 * 86_400_000),
     createdAt: new Date(),
     ...overrides
@@ -335,16 +343,88 @@ describe("AuthService.refresh — matrice D9 × D10", () => {
     expect(prisma.refreshToken.updateMany).not.toHaveBeenCalled();
   });
 
-  it("course perdue (double soumission) : le check-and-set échoue → traité en réutilisation", async () => {
+  it("course perdue HORS grâce : le check-and-set échoue et la ligne n'est pas rotée → réutilisation", async () => {
+    // ⚠ D116 a déplacé la frontière. Ce cas-ci reste une réutilisation parce
+    // que la relecture ne trouve AUCUN `rotatedAt` : la ligne a été révoquée
+    // par autre chose qu'une rotation (déconnexion, suspension, vol détecté).
     const { service, prisma } = makeService(makeUser({}), false);
     prisma.refreshToken.findUnique.mockResolvedValue(refreshRow());
     prisma.refreshToken.updateMany
-      .mockResolvedValueOnce({ count: 0 }) // la rotation concurrente a déjà consommé le token
+      .mockResolvedValueOnce({ count: 0 }) // un concurrent a déjà consommé le token
       .mockResolvedValue({ count: 2 }); // puis la révocation globale
 
     await expect(service.refresh(RAW)).rejects.toThrow(UnauthorizedException);
     expect(prisma.refreshToken.create).not.toHaveBeenCalled();
     expect(prisma.refreshToken.updateMany).toHaveBeenCalledTimes(2); // check-and-set PUIS révocation globale
+  });
+
+  it("D116 — course perdue DANS la grâce : accès rendu, AUCUN successeur créé, AUCUNE révocation globale", async () => {
+    // Le cas des deux onglets, vu du service. Le check-and-set perd, la
+    // relecture montre une rotation d'il y a une seconde.
+    //
+    // ⚠ CE QUE LE PERDANT NE REÇOIT PAS : un successeur. Émettre un jeton de
+    // plus laisserait un FRÈRE vivant — le pot à cookies du navigateur n'en
+    // garde qu'un, l'autre survivrait 30 jours sans porteur, et la déconnexion
+    // ne le toucherait pas (D11 ne révoque que le jeton présenté).
+    const { service, prisma, logger } = makeService(makeUser({ emailVerifiedAt: new Date() }), false);
+    prisma.refreshToken.findUnique
+      .mockResolvedValueOnce(refreshRow()) // lecture initiale : ligne encore vive
+      .mockResolvedValue(refreshRow({ revokedAt: new Date(), rotatedAt: new Date(Date.now() - 1_000) }));
+    prisma.refreshToken.updateMany.mockResolvedValue({ count: 0 }); // le concurrent a gagné
+
+    const { response, refreshCookie } = await service.refresh(RAW);
+
+    // La session est utilisable : c'est tout ce que l'onglet perdant attendait.
+    expect(response.accessToken.split(".")).toHaveLength(3);
+    expect(response.user.email).toBe("aya@example.dz");
+    // Et RIEN n'a été écrit.
+    expect(refreshCookie).toBeUndefined();
+    expect(prisma.refreshToken.create).not.toHaveBeenCalled();
+    // La signature de la révocation globale : un updateMany par userId. Il ne
+    // doit pas exister ici — c'est TOUT l'objet de D116.
+    expect(prisma.refreshToken.updateMany).toHaveBeenCalledTimes(1);
+    expect(logger.warn).not.toHaveBeenCalled();
+  });
+
+  it("D116 — grâce SANS héritier vivant (déconnexion entre-temps) : 401, et surtout aucune révocation globale", async () => {
+    // Le trou que la variante sans re-rotation devait fermer aussi : se
+    // déconnecter puis rejouer un jeton roté il y a 2 secondes ne doit pas
+    // rouvrir l'accès qu'on vient explicitement de fermer.
+    const { service, prisma, logger } = makeService(makeUser({ emailVerifiedAt: new Date() }), false);
+    prisma.refreshToken.findUnique.mockResolvedValue(
+      refreshRow({ revokedAt: new Date(), rotatedAt: new Date(Date.now() - 2_000) })
+    );
+    prisma.refreshToken.count.mockResolvedValue(0); // plus aucun héritier vivant
+
+    await expect(service.refresh(RAW)).rejects.toThrow(UnauthorizedException);
+    expect(prisma.refreshToken.create).not.toHaveBeenCalled();
+    // Fermer sa session n'est pas un vol : pas de révocation en masse, pas
+    // d'alerte dans les journaux.
+    expect(prisma.refreshToken.updateMany).not.toHaveBeenCalled();
+    expect(logger.warn).not.toHaveBeenCalled();
+  });
+
+  it("D116 — la grâce ne s'applique QU'À une rotation : une déconnexion récente reste mortelle", async () => {
+    // `revokedAt` récent MAIS `rotatedAt` nul = le geste n'était pas une
+    // rotation. C'est la raison d'être de la colonne.
+    const { service, prisma } = makeService(makeUser({}), false);
+    prisma.refreshToken.findUnique.mockResolvedValue(refreshRow({ revokedAt: new Date(), rotatedAt: null }));
+
+    await expect(service.refresh(RAW)).rejects.toThrow(UnauthorizedException);
+    expect(prisma.refreshToken.create).not.toHaveBeenCalled();
+  });
+
+  it("D116 — une rotation VIEILLE de plus que la fenêtre redevient un signal de vol", async () => {
+    const { service, prisma, logger } = makeService(makeUser({}), false);
+    prisma.refreshToken.findUnique.mockResolvedValue(
+      refreshRow({ revokedAt: new Date(), rotatedAt: new Date(Date.now() - AUTH.REFRESH_ROTATION_GRACE_MS - 1_000) })
+    );
+
+    await expect(service.refresh(RAW)).rejects.toThrow(UnauthorizedException);
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.objectContaining({ reason: "refresh_token_reuse" }),
+      expect.any(String)
+    );
   });
 
   it("nominal (D9) : consomme l'ancien, crée le neuf (30 j pleins), répond au format login (D12)", async () => {
@@ -354,18 +434,24 @@ describe("AuthService.refresh — matrice D9 × D10", () => {
 
     const { response, refreshCookie } = await service.refresh(RAW);
 
-    // check-and-set sur LA ligne présentée, conditionné à revokedAt IS NULL
+    // check-and-set sur LA ligne présentée, conditionné à revokedAt IS NULL.
+    // D116 — `rotatedAt` est posé EN MÊME TEMPS que `revokedAt` : c'est ce qui
+    // marque la ligne comme « consommée par rotation » et lui ouvre la fenêtre
+    // de grâce. Une déconnexion, elle, ne pose que `revokedAt`.
     expect(prisma.refreshToken.updateMany).toHaveBeenCalledWith({
       where: { id: "00000000-0000-7000-8000-0000000000aa", revokedAt: null },
-      data: { revokedAt: expect.any(Date) }
+      data: { revokedAt: expect.any(Date), rotatedAt: expect.any(Date) }
     });
+    // D116 — le cookie est OPTIONNEL dans le type de retour ; sur la rotation
+    // nominale il est OBLIGATOIRE, et c'est ce que cette ligne verrouille.
+    expect(refreshCookie).toBeDefined();
     const created = prisma.refreshToken.create.mock.calls[0]![0] as {
       data: { tokenHash: string; expiresAt: Date };
     };
-    expect(created.data.tokenHash).toBe(tokens.hash(refreshCookie.value));
-    expect(refreshCookie.value).not.toBe(RAW); // rotation réelle, pas une prolongation
+    expect(created.data.tokenHash).toBe(tokens.hash(refreshCookie!.value));
+    expect(refreshCookie!.value).not.toBe(RAW); // rotation réelle, pas une prolongation
     // fenêtre glissante : ~30 j pleins depuis MAINTENANT (config mocké = 30)
-    expect(refreshCookie.expiresAt.getTime() - Date.now()).toBeGreaterThan(29.9 * 86_400_000);
+    expect(refreshCookie!.expiresAt.getTime() - Date.now()).toBeGreaterThan(29.9 * 86_400_000);
     // D12 : même forme que le login
     expect(response.user.email).toBe("aya@example.dz");
     expect(response.accessToken.split(".")).toHaveLength(3);

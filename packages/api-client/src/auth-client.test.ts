@@ -151,6 +151,104 @@ describe("createAuthClient — session & refresh", () => {
     expect(calls.filter((c) => c.url.endsWith("/auth/refresh"))).toHaveLength(1);
   });
 
+  // ── D115 — LE TROU QUI A LAISSÉ PASSER LE DOUBLE REFRESH AU DÉMARRAGE ──────
+  //
+  // Le test ci-dessus prouvait le single-flight du chemin « rejeu après 401 ».
+  // Il était vert, et il l'est resté pendant que `bootstrap()` appelait `raw()`
+  // en direct, hors mutex. Une porte qui couvre UN des deux chemins d'une même
+  // primitive ne couvre pas la primitive.
+  //
+  // Ce que coûtait le défaut : `StrictMode` monte l'effet de bootstrap deux
+  // fois ; l'API voit deux rotations concurrentes du même cookie, tranche en
+  // faveur de la réutilisation (D10) et appelle `revokeAllSessions` — toutes
+  // les sessions de l'utilisateur, sur tous ses appareils.
+
+  it("D115 — deux bootstrap() concurrents (double montage StrictMode) = UN SEUL POST /auth/refresh", async () => {
+    let refreshCount = 0;
+    const { impl, calls } = makeFetch({
+      "POST /auth/refresh": async () => {
+        refreshCount += 1;
+        await new Promise((r) => setTimeout(r, 20)); // laisse le second montage arriver AVANT la résolution
+        return { status: 200, body: { accessToken: "jwt-boot", user: USER } };
+      }
+    });
+    const client = createAuthClient(BASE, impl);
+
+    const [a, b] = await Promise.all([client.bootstrap(), client.bootstrap()]);
+
+    expect(refreshCount).toBe(1);
+    expect(calls.filter((c) => c.url.endsWith("/auth/refresh"))).toHaveLength(1);
+    // Les DEUX appelants reçoivent la session : fusionner ne doit pas en servir
+    // un et laisser l'autre à `null` — sinon un des deux montages se croit
+    // anonyme et affiche l'écran de connexion à un utilisateur connecté.
+    expect(a?.email).toBe("aya@example.dz");
+    expect(b?.email).toBe("aya@example.dz");
+    expect(client.getAccessToken()).toBe("jwt-boot");
+  });
+
+  it("D115 — bootstrap() et un rejeu 401 concurrents partagent LE MÊME refresh", async () => {
+    // Le cas réel : l'app boote pendant qu'un appel authentifié parti d'un
+    // écran déjà monté se prend un 401. Deux chemins, un seul cookie.
+    let refreshCount = 0;
+    const { impl } = makeFetch({
+      "GET /auth/me": (init) => {
+        const auth = (init?.headers as Record<string, string>).Authorization ?? "none";
+        return auth === "Bearer jwt-neuf" ? { status: 200, body: USER } : { status: 401, body: businessError("UNAUTHENTICATED", "k") };
+      },
+      "POST /auth/refresh": async () => {
+        refreshCount += 1;
+        await new Promise((r) => setTimeout(r, 20));
+        return { status: 200, body: { accessToken: "jwt-neuf", user: USER } };
+      }
+    });
+    const client = createAuthClient(BASE, impl);
+
+    const [booted, me] = await Promise.all([client.bootstrap(), client.me()]);
+
+    expect(refreshCount).toBe(1);
+    expect(booted?.email).toBe("aya@example.dz");
+    expect(me.email).toBe("aya@example.dz");
+  });
+
+  it("D115 — le mutex se REND : deux bootstrap SÉQUENTIELS refont bien un refresh chacun", async () => {
+    // Garde-fou du correctif lui-même. `refreshInFlight` est remis à `null` au
+    // règlement ; s'il restait accroché, une session expirée plus tard ne se
+    // renouvellerait jamais et l'app se figerait sur un token mort.
+    let refreshCount = 0;
+    const { impl } = makeFetch({
+      "POST /auth/refresh": () => {
+        refreshCount += 1;
+        return { status: 200, body: { accessToken: `jwt-${refreshCount}`, user: USER } };
+      }
+    });
+    const client = createAuthClient(BASE, impl);
+
+    await client.bootstrap();
+    await client.bootstrap();
+
+    expect(refreshCount).toBe(2);
+    expect(client.getAccessToken()).toBe("jwt-2");
+  });
+
+  it("D115 — un bootstrap qui ÉCHOUE ne colle pas le mutex : le login suivant repart proprement", async () => {
+    let refreshCount = 0;
+    const { impl } = makeFetch({
+      "POST /auth/refresh": () => {
+        refreshCount += 1;
+        return { status: 401, body: businessError("UNAUTHENTICATED", "k") };
+      },
+      "POST /auth/login": () => ({ status: 200, body: { accessToken: "jwt-apres-login", user: USER } })
+    });
+    const client = createAuthClient(BASE, impl);
+
+    await expect(Promise.all([client.bootstrap(), client.bootstrap()])).resolves.toEqual([null, null]);
+    expect(refreshCount).toBe(1); // l'échec aussi se fusionne
+    expect(client.getAccessToken()).toBeNull();
+
+    await client.login({ email: "aya@example.dz", password: "Motdepasse1" });
+    expect(client.getAccessToken()).toBe("jwt-apres-login");
+  });
+
   it("bootstrap : cookie valide → user + token ; sinon null sans lever", async () => {
     const ok = makeFetch({ "POST /auth/refresh": () => ({ status: 200, body: { accessToken: "jwt-boot", user: USER } }) });
     const restored = await createAuthClient(BASE, ok.impl).bootstrap();

@@ -857,7 +857,8 @@
         "validUntil": "Valable jusqu'au",
         "validUntilHint": "Facultatif. Passée cette date, le devis ne peut plus être converti.",
         "create": "Créer le devis"
-      }
+      },
+      "sectionFailed": "Cette section n'a pas pu s'afficher. Rechargez la page ; le reste de l'écran reste utilisable."
     },
     "ceremonyType": {
       "indoor": "Intérieur",

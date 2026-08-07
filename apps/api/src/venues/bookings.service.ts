@@ -391,7 +391,6 @@ export class BookingsService {
    *  endroit du lot où la base peut dire non. */
   async accept(userId: string, bookingId: string): Promise<BookingDTO> {
     const { row, venue } = await this.ownedBooking(userId, bookingId);
-    this.assertStatus(row, [BookingStatus.PENDING]);
 
     const acceptedAt = new Date();
     const paymentDueAt = new Date(
@@ -400,9 +399,27 @@ export class BookingsService {
 
     const updated = await this.prisma.$transaction(async (tx) => {
       // Verrou de sérialisation par SALLE. Le même que prend la création d'un
-      // blocage (D51) : c'est ce qui rend le contrôle ci-dessous fiable malgré
-      // deux écritures concurrentes sur deux tables différentes.
+      // blocage (D51) : c'est ce qui rend les contrôles ci-dessous fiables
+      // malgré deux écritures concurrentes sur deux tables différentes.
       await tx.$queryRaw`SELECT id FROM venues WHERE id = ${row.venueId}::uuid FOR UPDATE`;
+
+      // D117 — LE STATUT SE LIT ICI, ET NULLE PART AILLEURS.
+      //
+      // Il se lisait AVANT la transaction, sur la ligne rapportée par
+      // `ownedBooking` : deux acceptations concurrentes de la MÊME demande le
+      // trouvaient toutes les deux à PENDING et passaient toutes les deux.
+      // L'`EXCLUDE` ne les arrête pas — une ligne ne chevauche pas elle-même —
+      // donc la seconde réécrivait `acceptedAt`/`paymentDueAt` et RENOTIFIAIT
+      // le client. Le double accept SÉQUENTIEL rendait bien 409, ce qui a
+      // masqué le trou : c'est le cas concurrent, et lui seul, qui passait.
+      //
+      // Une seule autorité par question (D78) : le contrôle d'avant
+      // transaction est SUPPRIMÉ, pas doublé.
+      const fresh = await tx.booking.findUniqueOrThrow({
+        where: { id: row.id },
+        select: { status: true }
+      });
+      this.assertStatus(fresh, [BookingStatus.PENDING]);
 
       // Conflit avec un BLOCAGE. Une EXCLUDE ne traverse pas deux tables : ce
       // contrôle-là DOIT être applicatif, et il est correct parce qu'il est
@@ -450,12 +467,11 @@ export class BookingsService {
    *  téléphone, dans une seconde langue, produit « ... » comme motif. */
   async decline(userId: string, bookingId: string, input: BookingDeclineInput): Promise<BookingDTO> {
     const { row, venue } = await this.ownedBooking(userId, bookingId);
-    this.assertStatus(row, [BookingStatus.PENDING]);
 
-    const updated = await this.prisma.booking.update({
-      where: { id: row.id },
-      data: { status: BookingStatus.DECLINED, declinedAt: new Date(), declineReason: input.reason ?? null },
-      select: BOOKING_SELECT
+    const updated = await this.transitionStatus(row.id, [BookingStatus.PENDING], {
+      status: BookingStatus.DECLINED,
+      declinedAt: new Date(),
+      declineReason: input.reason ?? null
     });
 
     await this.notifications.notifyClientDeclined(await this.notificationFor(updated, venue, input.reason ?? null));
@@ -466,16 +482,11 @@ export class BookingsService {
    *  libérer un créneau verrouillé, tant que le lot Paiement n'existe pas (D80). */
   async cancelAsPro(userId: string, bookingId: string, input: BookingCancelInput): Promise<BookingDTO> {
     const { row, venue } = await this.ownedBooking(userId, bookingId);
-    this.assertStatus(row, [BookingStatus.ACCEPTED]);
 
-    const updated = await this.prisma.booking.update({
-      where: { id: row.id },
-      data: {
-        status: BookingStatus.CANCELLED,
-        cancelledAt: new Date(),
-        cancellationReason: input.reason ?? null
-      },
-      select: BOOKING_SELECT
+    const updated = await this.transitionStatus(row.id, [BookingStatus.ACCEPTED], {
+      status: BookingStatus.CANCELLED,
+      cancelledAt: new Date(),
+      cancellationReason: input.reason ?? null
     });
 
     await this.notifications.notifyClientDeclined(await this.notificationFor(updated, venue, input.reason ?? null));
@@ -507,14 +518,10 @@ export class BookingsService {
       });
     }
 
-    const updated = await this.prisma.booking.update({
-      where: { id: row.id },
-      data: {
-        status: BookingStatus.CANCELLED,
-        cancelledAt: new Date(),
-        cancellationReason: input.reason ?? null
-      },
-      select: BOOKING_SELECT
+    const updated = await this.transitionStatus(row.id, [BookingStatus.PENDING, BookingStatus.ACCEPTED], {
+      status: BookingStatus.CANCELLED,
+      cancelledAt: new Date(),
+      cancellationReason: input.reason ?? null
     });
 
     return this.toDTO(updated);
@@ -571,7 +578,50 @@ export class BookingsService {
   /** Une transition interdite rend le statut RÉEL : l'écran se remet d'aplomb
    *  sans recharger à l'aveugle, et l'utilisateur comprend ce qui s'est passé
    *  entre son affichage et son clic. */
-  private assertStatus(row: BookingRow, allowed: readonly string[]): void {
+
+  /**
+   * D121 — TRANSITION DE STATUT ATOMIQUE, en un seul endroit.
+   *
+   * `decline`, `cancelAsPro` et `cancelAsClient` lisaient le statut hors de
+   * toute transaction puis écrivaient sans condition : deux appels concurrents
+   * passaient tous les deux, réécrivaient la date et envoyaient DEUX fois le
+   * même message au client.
+   *
+   * ⚠ Pas de verrou ici, contrairement à `accept` (D117) : il n'y a aucun
+   * invariant à travers plusieurs lignes ou plusieurs tables. Une seule ligne
+   * change, donc un check-and-set suffit — le `WHERE status IN (...)` fait le
+   * travail que le verrou ferait, sans en payer le prix. C'est le même idiome
+   * que la rotation du refresh token (D9).
+   */
+  private async transitionStatus(
+    id: string,
+    from: readonly BookingStatus[],
+    data: Prisma.BookingUpdateManyMutationInput
+  ): Promise<BookingRow> {
+    return this.prisma.$transaction(async (tx) => {
+      const consumed = await tx.booking.updateMany({ where: { id, status: { in: [...from] } }, data });
+      if (consumed.count === 0) {
+        // Quelqu'un a changé le statut entre notre lecture et notre écriture.
+        // La relecture est l'AUTORITÉ : elle produit le 409 avec le statut réel.
+        const fresh = await tx.booking.findUniqueOrThrow({ where: { id }, select: { status: true } });
+        this.assertStatus(fresh, from);
+        // Inatteignable : si `fresh.status` était permis, le check-and-set
+        // aurait mordu. On ne laisse pas pour autant un chemin sans issue.
+        throw new ConflictException({
+          code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
+          message: "booking.errors.statusConflict",
+          status: fresh.status
+        });
+      }
+      return tx.booking.findUniqueOrThrow({ where: { id }, select: BOOKING_SELECT });
+    });
+  }
+
+  /** ⚠ D117 — prend `{ status }` et non `BookingRow` : les transitions qui
+   *  verrouillent relisent le statut SOUS VERROU avec un `select` minimal.
+   *  Élargir ici évitait de refaire un `BOOKING_SELECT` complet uniquement
+   *  pour relire une colonne. */
+  private assertStatus(row: { status: string }, allowed: readonly string[]): void {
     if (!allowed.includes(row.status)) {
       throw new ConflictException({
         code: BookingErrorCode.BOOKING_STATUS_CONFLICT,

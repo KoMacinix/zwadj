@@ -156,10 +156,34 @@ export class QuotesService {
    *  précédemment active de la chaîne se fait remplacer. */
   async send(userId: string, quoteId: string): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
-    this.assertStatus(current, [QuoteStatus.DRAFT]);
 
     const row = await this.prisma.$transaction(async (tx) => {
       await this.lockChain(tx, current.chainId);
+
+      // D117 — LE STATUT SE LIT SOUS LE VERROU DE CHAÎNE, jamais avant.
+      //
+      // ⚠ Contrairement à `accept()`, AUCUN défaut n'a été reproduit ici : le
+      // code d'avant rendait déjà 201 + 409 sur deux envois concurrents du même
+      // brouillon, parce que la seconde requête voyait déjà SENT dans son
+      // `ownedQuote()`. Mais cette sérialisation venait de l'ordonnancement du
+      // pool de connexions — pas d'une garantie. Une seconde instance d'API la
+      // ferait disparaître, et les index partiels `quotes_one_*_per_chain` ne
+      // rattraperaient rien : il n'y a qu'UNE ligne, elle ne se dédouble pas, et
+      // `supersedeActive` s'exclut elle-même par `exceptId`. Le second envoi
+      // réécrirait `sentAt` sur un devis déjà parti.
+      //
+      // On rend donc STRUCTUREL ce qui n'était qu'OBSERVÉ, au même endroit et
+      // par le même moyen que pour `accept()` — une seule autorité (D78).
+      //
+      // ⚠ Deux envois de brouillons DIFFÉRENTS de la même chaîne étaient déjà
+      // corrects par construction (le verrou les sérialise, le second supersède
+      // le premier). Ce chemin-là ne change pas.
+      const fresh = await tx.quote.findUniqueOrThrow({
+        where: { id: current.id },
+        select: { status: true }
+      });
+      this.assertStatus(fresh, [QuoteStatus.DRAFT]);
+
       await this.supersedeActive(tx, current.chainId, current.id);
       return tx.quote.update({
         where: { id: current.id },
@@ -252,7 +276,18 @@ export class QuotesService {
     const window = computeBookingWindow(date, venue.bookingMode === "SINGLE_SLOT" || slot === null ? null : slot);
 
     const lines = (current.lines ?? []) as unknown as ResolvedLine[];
-    await this.prisma.booking.create({
+    // D121 — LA BASE EST L'AUTORITÉ, ET SA RÉPONSE DOIT ÊTRE TRADUITE.
+    //
+    // La garde `current.booking !== null` juste au-dessus est lue HORS
+    // transaction : deux conversions concurrentes la passent toutes les deux.
+    // `bookings.quote_id` est UNIQUE, donc la base arrête bien la seconde — mais
+    // la violation remontait telle quelle en **500**, alors que le même refus,
+    // vu une milliseconde plus tôt, rend un 409 lisible. Un utilisateur ne
+    // devrait pas recevoir deux erreurs différentes pour un seul empêchement.
+    //
+    // ⚠ On ne remplace PAS la garde applicative : elle évite d'écrire pour rien
+    // dans le cas courant. On traduit ce qu'elle ne peut pas voir.
+    await this.createBookingForQuote({
       data: {
         venueId: current.venueId,
         clientId: current.clientId,
@@ -289,8 +324,7 @@ export class QuotesService {
             lineTotalCents: line.lineTotalCents
           }))
         }
-      },
-      select: { id: true }
+      }
     });
 
     // Le devis ne bouge PAS. Il attend l'acompte.
@@ -302,11 +336,25 @@ export class QuotesService {
    *  dit non à ce devis-là. */
   async decline(userId: string, quoteId: string): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
-    this.assertStatus(current, [QuoteStatus.SENT]);
-    const row = await this.prisma.quote.update({
-      where: { id: current.id },
-      data: { status: QuoteStatus.DECLINED },
-      select: QUOTE_SELECT
+
+    // D121 — check-and-set, même famille que `decline`/`cancel` côté demandes.
+    // Le contrôle lu hors transaction laissait passer DEUX refus concurrents :
+    // 201 les deux fois, sur un devis déjà refusé.
+    const row = await this.prisma.$transaction(async (tx) => {
+      const consumed = await tx.quote.updateMany({
+        where: { id: current.id, status: QuoteStatus.SENT },
+        data: { status: QuoteStatus.DECLINED }
+      });
+      if (consumed.count === 0) {
+        const fresh = await tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: { status: true } });
+        this.assertStatus(fresh, [QuoteStatus.SENT]);
+        throw new ConflictException({
+          code: QuoteErrorCode.QUOTE_STATUS_CONFLICT,
+          message: "quote.errors.statusConflict",
+          status: fresh.status
+        });
+      }
+      return tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: QUOTE_SELECT });
     });
     return this.toDTO(row, Date.now());
   }
@@ -405,7 +453,29 @@ export class QuotesService {
     return row;
   }
 
-  private assertStatus(row: QuoteRow, allowed: readonly string[]): void {
+
+  /**
+   * D121 — crée la demande issue d'un devis et TRADUIT la violation d'unicité
+   * de `bookings.quote_id` en conflit métier. Un seul endroit : la garde
+   * applicative et la garde de la base doivent rendre le MÊME code.
+   */
+  private async createBookingForQuote(args: { data: Prisma.BookingUncheckedCreateInput }): Promise<void> {
+    try {
+      await this.prisma.booking.create({ data: args.data, select: { id: true } });
+    } catch (error) {
+      if (typeof error === "object" && error !== null && (error as { code?: unknown }).code === "P2002") {
+        throw new ConflictException({
+          code: QuoteErrorCode.QUOTE_ALREADY_CONVERTED,
+          message: "quote.errors.alreadyConverted"
+        });
+      }
+      throw error;
+    }
+  }
+
+  /** ⚠ D117 — `{ status }` et non `QuoteRow` : `send()` relit le statut sous le
+   *  verrou de chaîne avec un `select` minimal, pas un `QUOTE_SELECT` complet. */
+  private assertStatus(row: { status: string }, allowed: readonly string[]): void {
     if (!allowed.includes(row.status)) {
       throw new ConflictException({
         code: QuoteErrorCode.QUOTE_STATUS_CONFLICT,

@@ -173,7 +173,13 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ): Promise<RefreshResponse> {
     const { response, refreshCookie } = await this.auth.refresh(this.refreshCookieFrom(req));
-    res.cookie(AUTH.REFRESH_COOKIE_NAME, refreshCookie.value, this.refreshCookieOptions(refreshCookie));
+    // D116 — cookie ABSENT sur un rejeu gracié : le navigateur porte déjà le
+    // jeton frais issu de la rotation gagnante. En poser un ici reviendrait à
+    // écraser le seul jeton encore vivant par un doublon, et à en laisser un
+    // valide 30 jours derrière soi.
+    if (refreshCookie) {
+      res.cookie(AUTH.REFRESH_COOKIE_NAME, refreshCookie.value, this.refreshCookieOptions(refreshCookie));
+    }
     return response;
   }
 

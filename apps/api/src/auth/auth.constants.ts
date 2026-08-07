@@ -18,5 +18,22 @@ export const AUTH = {
   EMAIL_CHANGE_TTL_HOURS: 48,
   /** Chemin (côté fronts) de la page de confirmation de changement d'e-mail —
    *  A11 l'implémente. Le lien part À LA NOUVELLE adresse. */
-  CONFIRM_EMAIL_CHANGE_PATH: "/auth/confirmation-email"
+  CONFIRM_EMAIL_CHANGE_PATH: "/auth/confirmation-email",
+  /**
+   * D116 — FENÊTRE DE GRÂCE À LA ROTATION DU REFRESH TOKEN.
+   *
+   * Un token consommé par ROTATION (et par elle seule) reste rejouable pendant
+   * cette durée : la présentation concurrente du même cookie n'est alors plus
+   * traitée en réutilisation (D10), elle produit une rotation de plus.
+   *
+   * ⚠ Ne s'applique JAMAIS à une révocation explicite — déconnexion (D11),
+   * suspension, ou révocation en masse après vol détecté. Ces lignes-là portent
+   * `revoked_at` SANS `rotated_at`, et restent mortes à l'instant même.
+   *
+   * 30 s : très au-dessus du besoin réel (deux onglets rechargés se croisent en
+   * quelques millisecondes), assez pour couvrir une réponse perdue puis
+   * retentée à la main sur un réseau mobile. Négligeable devant les 30 jours du
+   * token.
+   */
+  REFRESH_ROTATION_GRACE_MS: 30_000
 } as const;

@@ -77,7 +77,10 @@ export function BlocksSection({ venueId }: { venueId: string }) {
     void (async () => {
       try {
         const rows = await venues.listAvailabilityBlocks(venueId, window);
-        if (!cancelled) setBlocks(rows);
+        // D120 — GARDE DE FORME, voir `visits-section`. Ici le rendu lit aussi
+        // `.endsWith()` sur des champs de chaque ligne : un tableau d'éléments
+        // amputés casse tout autant qu'une non-liste.
+        if (!cancelled) setBlocks(Array.isArray(rows) ? rows : []);
       } catch (cause) {
         if (cancelled) return;
         setError(toMessageRef.current(cause));

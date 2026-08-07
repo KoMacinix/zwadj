@@ -334,6 +334,134 @@ describe("Acceptation — l'exclusivité appartient à la BASE (D78)", () => {
   });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// D117 — CONCURRENCE RÉELLE. Deux requêtes EN VOL EN MÊME TEMPS.
+//
+// Aucun test du dépôt ne faisait ça avant : les deux specs qui portaient le mot
+// « concurrent » enchaînaient deux appels l'un APRÈS l'autre. Le double clic du
+// pro, lui, part deux fois avant que la première réponse revienne — et c'est
+// exactement le trou : le double accept SÉQUENTIEL rendait déjà 409, ce qui
+// donnait l'illusion d'une couverture.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("Acceptation CONCURRENTE (D117)", () => {
+  it("deux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500", async () => {
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    ctx.emails.length = 0;
+
+    const accept = () => api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken));
+    const [first, second] = await Promise.all([accept(), accept()]);
+
+    const codes = [first.status, second.status].sort((x, y) => x - y);
+    expect(codes).toEqual([201, 409]);
+
+    // « Conflit PROPRE » : le code métier, pas une fuite d'erreur Prisma.
+    const loser = first.status === 409 ? first : second;
+    expect(loser.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(loser.body.message.status).toBe("ACCEPTED");
+
+    // La demande n'a été acceptée qu'UNE fois : sans la relecture sous verrou,
+    // la seconde écrasait `acceptedAt` et `paymentDueAt`.
+    const row = await ctx.prisma.booking.findUniqueOrThrow({ where: { id: a.id } });
+    expect(row.status).toBe("ACCEPTED");
+
+    // Et le client n'a été prévenu qu'UNE fois. C'est le symptôme visible du
+    // défaut : deux emails « votre date est confirmée » pour une seule date.
+    expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(1);
+    const notifications = await ctx.prisma.notification.findMany({ where: { type: "booking.accepted" } });
+    expect(notifications).toHaveLength(1);
+  });
+
+  it("deux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN", async () => {
+    // Garde-fou du correctif lui-même : déplacer le contrôle de statut ne doit
+    // pas avoir déplacé l'autorité de l'EXCLUSIVITÉ, qui reste la BASE (D78).
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    const b = (await post(f.client2Token, f.venue.slug, body(f, { contactEmail: "yacine@example.dz" })).expect(201))
+      .body as BookingDTO;
+
+    const [first, second] = await Promise.all([
+      api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)),
+      api().post(`/api/v1/pro/bookings/${b.id}/accept`).set(authH(f.proToken))
+    ]);
+
+    const codes = [first.status, second.status].sort((x, y) => x - y);
+    expect(codes).toEqual([201, 409]);
+    const loser = first.status === 409 ? first : second;
+    expect(loser.body.message.code).toBe("BOOKING_SLOT_TAKEN");
+
+    const accepted = await ctx.prisma.booking.findMany({ where: { venueId: f.venue.id, status: "ACCEPTED" } });
+    expect(accepted).toHaveLength(1);
+  });
+
+  // ── D121 — LES TRANSITIONS SŒURS ────────────────────────────────────────
+  //
+  // D117 avait délibérément laissé `decline` et les annulations hors périmètre.
+  // Elles portent le MÊME motif : `assertStatus` lu hors de toute transaction,
+  // puis un `update` inconditionnel. Enjeu plus faible — aucun verrou de créneau
+  // en jeu — mais la conséquence visible est la même : la date est réécrite et
+  // le client reçoit DEUX fois le même message.
+
+  it("D121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client", async () => {
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    ctx.emails.length = 0;
+
+    const decline = () =>
+      api().post(`/api/v1/pro/bookings/${a.id}/decline`).set(authH(f.proToken)).send({ reason: "Salle indisponible" });
+    const [first, second] = await Promise.all([decline(), decline()]);
+
+    expect([first.status, second.status].sort((x, y) => x - y)).toEqual([201, 409]);
+    const loser = first.status === 409 ? first : second;
+    expect(loser.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(1);
+  });
+
+  it("D121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit", async () => {
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    await api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).expect(201);
+    ctx.emails.length = 0;
+
+    const cancel = () =>
+      api().post(`/api/v1/pro/bookings/${a.id}/cancel`).set(authH(f.proToken)).send({ reason: "Dégât des eaux" });
+    const [first, second] = await Promise.all([cancel(), cancel()]);
+
+    expect([first.status, second.status].sort((x, y) => x - y)).toEqual([201, 409]);
+    expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(1);
+  });
+
+  it("D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500", async () => {
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+
+    // ⚠ La route exige un CORPS (`bookingCancelSchema`) même quand le motif est
+    // facultatif — sur une demande PENDING, D83 le rend libre, pas absent.
+    // Sans `.send({})`, les deux appels rendaient 400 avant toute concurrence :
+    // le test aurait été « rouge » sans rien mesurer.
+    const cancel = () => api().delete(`/api/v1/bookings/${a.id}`).set(authH(f.clientToken)).send({});
+    const results = await Promise.all([cancel(), cancel()]);
+
+    const detail = results.map((r) => `${r.status} ${JSON.stringify(r.body)}`).join("\n");
+    expect(results.filter((r) => r.status >= 500), detail).toHaveLength(0);
+    expect(results.filter((r) => r.status < 400), detail).toHaveLength(1);
+  });
+
+  it("trois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409", async () => {
+    // Le mutex du navigateur ne protège pas d'un pro qui a trois onglets. La
+    // sérialisation doit venir du verrou serveur, à N quelconque.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+
+    const accept = () => api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken));
+    const results = await Promise.all([accept(), accept(), accept()]);
+
+    expect(results.filter((r) => r.status === 201)).toHaveLength(1);
+    expect(results.filter((r) => r.status === 409)).toHaveLength(2);
+    expect(results.filter((r) => r.status >= 500)).toHaveLength(0);
+  });
+});
+
 describe("SINGLE_SLOT — la journée entière (D77)", () => {
   it("la plage couvre les 24 heures locales, sans règle applicative en plus", async () => {
     const f = await setup("SINGLE_SLOT");
