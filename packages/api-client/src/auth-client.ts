@@ -121,7 +121,9 @@ export function createAuthClient(
   fetchImpl: typeof fetch = (...args) => fetch(...args)
 ): AuthClient {
   let accessToken: string | null = null;
-  let refreshInFlight: Promise<string | null> | null = null;
+  /** Promesse du refresh EN COURS, partagée par TOUS les appelants (D115) :
+   *  le boot d'app comme le rejeu après 401. Remise à `null` au règlement. */
+  let refreshInFlight: Promise<LoginResponse | null> | null = null;
 
   async function raw<T>(path: string, init: { method?: string; body?: unknown; bearer?: boolean } = {}): Promise<T> {
     // A6a-P — PASSE-PLAT multipart : un FormData part tel quel et SANS
@@ -154,14 +156,24 @@ export function createAuthClient(
     return (await res.json()) as T;
   }
 
-  /** SINGLE-FLIGHT : dix appels concurrents = UN seul POST /auth/refresh.
-   *  Indispensable côté front : l'API traite un refresh concurrent du même
-   *  token comme une réutilisation (D10) et révoque tout. */
-  function refreshAccessToken(): Promise<string | null> {
+  /**
+   * SINGLE-FLIGHT : dix appels concurrents = UN seul POST /auth/refresh.
+   * Indispensable côté front : l'API traite un refresh concurrent du même
+   * token comme une réutilisation (D10) et révoque **toutes** les sessions de
+   * l'utilisateur (`revokeAllSessions(…, "concurrent_refresh")`).
+   *
+   * ⚠ D115 — la fonction rend désormais la SESSION, plus seulement le token.
+   * Elle ne rendait que l'`accessToken`, donc `bootstrap()` — qui a besoin de
+   * l'utilisateur — ne pouvait pas s'en servir et appelait `raw()` en direct,
+   * HORS mutex. Le mutex existait et fonctionnait ; il ne couvrait qu'un seul
+   * des deux chemins qui rafraîchissent. Élargir le type de retour est ce qui
+   * rend l'unique chemin possible.
+   */
+  function refreshSession(): Promise<LoginResponse | null> {
     refreshInFlight ??= raw<LoginResponse>("/auth/refresh", { method: "POST" })
       .then((session) => {
         accessToken = session.accessToken;
-        return accessToken;
+        return session;
       })
       .catch(() => {
         accessToken = null;
@@ -181,20 +193,30 @@ export function createAuthClient(
     } catch (e) {
       const expired = e instanceof ApiError && e.status === 401 && e.code === "UNAUTHENTICATED";
       if (!expired) throw e;
-      const renewed = await refreshAccessToken();
+      const renewed = await refreshSession();
       if (!renewed) throw e;
       return raw<T>(path, { ...init, bearer: true });
     }
   }
 
   return {
-    /** Boot d'app : tentative silencieuse de session via le cookie (D12 :
-     *  la réponse du refresh porte déjà l'utilisateur — zéro /me en plus). */
+    /**
+     * Boot d'app : tentative silencieuse de session via le cookie (D12 : la
+     * réponse du refresh porte déjà l'utilisateur — zéro /me en plus).
+     *
+     * ⚠ D115 — passe par `refreshSession()`, jamais par `raw()` en direct.
+     * L'appel direct était la cause du double `POST /auth/refresh` au
+     * démarrage : `StrictMode` monte l'effet deux fois, l'API voyait deux
+     * rotations concurrentes du MÊME cookie, et répondait en révoquant toutes
+     * les sessions de l'utilisateur — sur tous ses appareils.
+     *
+     * Ce que ce mutex NE couvre PAS, et ne peut pas couvrir : deux ONGLETS.
+     * Il est par instance JS ; deux onglets sont deux instances qui présentent
+     * le même cookie. Voir D116.
+     */
     async bootstrap() {
-      const session = await raw<LoginResponse>("/auth/refresh", { method: "POST" }).catch(() => null);
-      if (!session) return null;
-      accessToken = session.accessToken;
-      return session.user;
+      const session = await refreshSession();
+      return session?.user ?? null;
     },
 
     async login(input) {

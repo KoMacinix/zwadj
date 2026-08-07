@@ -40,7 +40,11 @@ export function VisitsSection({ venueId }: { venueId: string }) {
         from: civilDate(nowMs),
         to: civilDate(nowMs + WINDOW_DAYS * 86_400_000)
       });
-      setRows(list);
+      // D120 — GARDE DE FORME. `setRows(list)` nu faisait tomber la section au
+      // rendu suivant (`rows.map is not a function`) sur tout ce qui n'est pas
+      // un tableau : `undefined`, un objet, ou le HTML d'un proxy en 502 dont
+      // le content-type ment. Même motif que les quatre sections déjà gardées.
+      setRows(Array.isArray(list) ? list : []);
       setError(null);
     } catch (cause) {
       setError(toMessageRef.current(cause));

@@ -27,6 +27,7 @@ import { Link, useParams } from "react-router";
 import { BookingRequestsSection } from "./booking-requests-section";
 import { QuotesSection } from "./quotes-section";
 import { VisitsSection } from "./visits-section";
+import { GuardedSection } from "./guarded-section";
 import { useTranslation } from "react-i18next";
 import { formatSlotRange, type VenueAvailabilityDayDTO, type VenueAvailabilityResponse } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
@@ -263,12 +264,24 @@ export function VenueCalendarPage() {
       {/* E1b — les DEMANDES avant les visites : une demande non traitée expire,
           un rendez-vous de visite non lu ne coûte qu'une surprise. L'ordre suit
           l'urgence, pas la chronologie des lots. */}
-      {id ? <BookingRequestsSection venueId={id} /> : null}
+      {id ? (
+        <GuardedSection title={t("venue.ui.requests.title")}>
+          <BookingRequestsSection venueId={id} />
+        </GuardedSection>
+      ) : null}
 
       {/* E2e — les devis APRÈS les demandes : une demande en attente expire,
           un devis attend qu'on le relance. L'ordre suit l'urgence. */}
-      {id ? <QuotesSection venueId={id} /> : null}
-      {id ? <VisitsSection venueId={id} /> : null}
+      {id ? (
+        <GuardedSection title={t("venue.ui.quotes.title")}>
+          <QuotesSection venueId={id} />
+        </GuardedSection>
+      ) : null}
+      {id ? (
+        <GuardedSection title={t("venue.ui.visits.title")}>
+          <VisitsSection venueId={id} />
+        </GuardedSection>
+      ) : null}
     </main>
   );
 }

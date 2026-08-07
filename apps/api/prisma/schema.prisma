@@ -265,6 +265,17 @@ model RefreshToken {
   tokenHash String    @unique @map("token_hash")
   expiresAt DateTime  @map("expires_at") @db.Timestamptz(6)
   revokedAt DateTime? @map("revoked_at") @db.Timestamptz(6)
+  /// D116 — horodatage de la consommation par ROTATION, et par elle seule.
+  /// Une déconnexion ou une révocation après vol posent `revoked_at` SANS
+  /// `rotated_at` : c'est ce qui permet d'accorder une fenêtre de grâce à la
+  /// première sans en accorder aux secondes.
+  /// ⚠ L'index qui l'accompagne est PARTIEL (`WHERE rotated_at IS NOT NULL`) :
+  /// Prisma ne sait pas exprimer le `WHERE`, il vit donc UNIQUEMENT dans la
+  /// migration écrite à la main et reste invisible ici. Ne PAS ajouter un
+  /// `@@index([rotatedAt])` nu pour « faire propre » : ce serait un SECOND
+  /// index, complet celui-là, que rien ne crée en base — une dérive de plus,
+  /// dans l'autre sens.
+  rotatedAt DateTime? @map("rotated_at") @db.Timestamptz(6)
   /// Lot 7 (D27) — false = « se souvenir de moi » décoché : le cookie posé est
   /// un cookie de SESSION ; le flag est copié à chaque rotation pour que le
   /// serveur re-pose le même mode. La révocation globale l'IGNORE (voulu).

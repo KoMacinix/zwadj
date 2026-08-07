@@ -27,6 +27,7 @@ import {
 import { PhotosSection } from "./photos-section";
 import { SlotsSection } from "./slots-section";
 import { BlocksSection } from "./blocks-section";
+import { GuardedSection } from "./guarded-section";
 import { DepositSection } from "./deposit-section";
 import { ServicesSection } from "./services-section";
 import { VirtualTourSection } from "./virtual-tour-section";
@@ -279,7 +280,9 @@ export function EditVenuePage() {
 
           {/* E2c — les prestations avant l'acompte : on décrit ce qu'on vend
               avant de décider ce qu'on encaisse d'avance. */}
-          <ServicesSection venueId={state.venue.id} />
+          <GuardedSection title={t("venue.ui.services.title")}>
+            <ServicesSection venueId={state.venue.id} />
+          </GuardedSection>
 
           {/* E1b / D81 — l'acompte suit immédiatement les créneaux et leurs prix :
               c'est la même conversation commerciale, et le pro qui vient de fixer
@@ -296,7 +299,9 @@ export function EditVenuePage() {
 
           {/* B4d — blocages. Seul volet qui CHARGE ses données : les
               blocages ne voyagent pas dans le DTO, ils sont sans borne. */}
-          <BlocksSection venueId={state.venue.id} />
+          <GuardedSection title={t("venue.ui.blocks.section")}>
+            <BlocksSection venueId={state.venue.id} />
+          </GuardedSection>
 
           <PhotosSection venueId={state.venue.id} initialPhotos={state.venue.photos} />
 

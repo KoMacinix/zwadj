@@ -182,6 +182,104 @@ describe("Au plus UNE version active par chaîne", () => {
   });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// D117 — CONCURRENCE RÉELLE sur l'envoi.
+//
+// ⚠ HONNÊTETÉ SUR CE QUE CES DEUX TESTS PROUVENT — ET NE PROUVENT PAS.
+//
+// Contrairement à `accept()`, AUCUN défaut n'a pu être reproduit ici : sur le
+// code d'avant D117, deux `send()` concurrents rendaient déjà 201 + 409, à
+// l'appel HTTP comme à l'appel DIRECT du service (sonde, trois exécutions).
+// La seconde requête voyait déjà SENT dans son `ownedQuote()`, donc la
+// transaction de la première avait déjà commité.
+//
+// Mais cette sérialisation est un ACCIDENT du runtime — l'ordonnancement du
+// pool de connexions —, pas une garantie : une taille de pool différente ou une
+// SECONDE instance d'API derrière un répartiteur la ferait disparaître. D117
+// déplace donc le contrôle sous le verrou de chaîne pour rendre structurel ce
+// qui n'était qu'observé, et ces deux tests FIGENT l'invariant.
+//
+// ⚠ Le test existant « deux SENT simultanés sur une chaîne sont impossibles »
+// contourne le SERVICE et écrit en base : il prouve l'index partiel, pas la
+// course. Deux `POST /quotes/:id/send` en vol ne touchent qu'UNE ligne — aucun
+// index ne peut les départager, seul le verrou le peut.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("Envoi CONCURRENT (D117)", () => {
+  it("deux envois SIMULTANÉS du MÊME brouillon : 201 + 409, sentAt écrit une seule fois", async () => {
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+
+    const [first, second] = await Promise.all([act(f, q.id, "send"), act(f, q.id, "send")]);
+
+    const codes = [first.status, second.status].sort((x, y) => x - y);
+    expect(codes).toEqual([201, 409]);
+
+    const loser = first.status === 409 ? first : second;
+    expect(loser.body.message.code).toBe("QUOTE_STATUS_CONFLICT");
+    expect(loser.body.message.status).toBe("SENT");
+
+    const winner = first.status === 201 ? first : second;
+    const row = await ctx.prisma.quote.findUniqueOrThrow({ where: { id: q.id } });
+    expect(row.status).toBe("SENT");
+    // `sentAt` est la date que le client voit sur son devis. Sans la relecture
+    // sous verrou, le second envoi l'écrasait par une valeur que personne n'a
+    // reçue.
+    expect(row.sentAt?.toISOString()).toBe((winner.body as QuoteDTO).sentAt);
+  });
+
+  it("D121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500", async () => {
+    // Même famille que `decline`/`cancel` côté demandes : `assertStatus` lu hors
+    // transaction, puis un `update` inconditionnel.
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    await act(f, q.id, "send").expect(201);
+
+    const results = await Promise.all([act(f, q.id, "decline"), act(f, q.id, "decline")]);
+
+    const detail = results.map((r) => `${r.status} ${JSON.stringify(r.body)}`).join("\n");
+    expect(results.filter((r) => r.status >= 500), detail).toHaveLength(0);
+    expect(results.filter((r) => r.status < 400), detail).toHaveLength(1);
+  });
+
+  it("D121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500", async () => {
+    // ⚠ Ici la BASE est déjà l'autorité : `bookings.quote_id` est UNIQUE. La
+    // question n'est donc pas « deux demandes ? » mais « le second appelant
+    // reçoit-il un 409 lisible, ou une violation de contrainte en 500 ? ».
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    await act(f, q.id, "send").expect(201);
+
+    const results = await Promise.all([act(f, q.id, "convert", CONTACT), act(f, q.id, "convert", CONTACT)]);
+
+    const detail = results.map((r) => `${r.status} ${JSON.stringify(r.body)}`).join("\n");
+    expect(results.filter((r) => r.status >= 500), detail).toHaveLength(0);
+    expect(results.filter((r) => r.status < 400), detail).toHaveLength(1);
+
+    const bookings = await ctx.prisma.booking.findMany({ where: { quoteId: q.id } });
+    expect(bookings, detail).toHaveLength(1);
+  });
+
+  it("deux VERSIONS différentes envoyées simultanément : une seule reste active, l'autre SUPERSEDED", async () => {
+    // Garde-fou du correctif : ce chemin-là était DÉJÀ correct (le verrou de
+    // chaîne sérialise, `supersedeActive` rétrograde avant d'activer — D97).
+    // Il doit le rester après le déplacement du contrôle de statut.
+    const f = await setup();
+    const v1 = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    const v2 = (await act(f, v1.id, "revise", { eventDate: EVENT_DATE, slotTemplateId: f.slotId, guests: 300 }).expect(201))
+      .body as QuoteDTO;
+
+    const results = await Promise.all([act(f, v1.id, "send"), act(f, v2.id, "send")]);
+    expect(results.filter((r) => r.status >= 500)).toHaveLength(0);
+
+    const chain = await ctx.prisma.quote.findMany({ where: { chainId: v1.chainId } });
+    // « Actif » = SENT ou ACCEPTED (D98). Au plus un, jamais deux.
+    expect(chain.filter((r) => r.status === "SENT" || r.status === "ACCEPTED")).toHaveLength(1);
+    // Et le perdant est SUPERSEDED, pas DECLINED (D95) — ou resté DRAFT si son
+    // envoi a été refusé avant d'activer. Jamais « refusé ».
+    expect(chain.every((r) => r.status !== "DECLINED")).toBe(true);
+  });
+});
+
 describe("Conversion — D101 : la chaîne complète, dans l'ordre", () => {
   it("un DRAFT ne se convertit pas : personne d'autre que le pro ne l'a vu", async () => {
     const f = await setup();

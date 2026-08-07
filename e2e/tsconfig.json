@@ -1,0 +1,30 @@
+{
+  // ⚠ CJS, PAS ESM — et c'est la correction de FOND, pas un réglage de confort.
+  //
+  // Avec `"type": "module"` dans package.json, Playwright déléguait le
+  // chargement des `.ts` au « strip-only mode » natif de Node. Deux
+  // conséquences, qui n'avaient l'air de rien à voir :
+  //   1. `import { Client } from "pg"` échouait — `pg` est CommonJS, et
+  //      l'analyseur statique de Node n'y détecte pas les exports nommés ;
+  //   2. toute syntaxe TS qui ÉMET du code était refusée — la classe
+  //      `NetworkCounter` et sa propriété de constructeur en tête.
+  //
+  // Corriger l'import de `pg` fichier par fichier aurait laissé (2) intact et
+  // le prochain `enum` ou décorateur serait retombé dessus. En CJS, Playwright
+  // repasse par sa propre transformation : `esModuleInterop` redevient effectif
+  // et toute la syntaxe TS est supportée.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "noEmit": true
+  },
+  "include": ["**/*.ts"]
+}

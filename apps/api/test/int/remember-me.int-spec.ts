@@ -86,6 +86,17 @@ describe("POST /api/v1/auth/login + refresh (intégration — rememberMe / persi
 
     // Consommer A (rotation légitime), puis REJOUER l'ancien A : signal de vol.
     expect((await refreshWith(a.raw)).status).toBe(200);
+
+    // ⚠ D116 — ON VIEILLIT LA ROTATION AVANT DE REJOUER.
+    // Même correction que dans `refresh.int-spec.ts` : depuis la fenêtre de
+    // grâce, un rejeu immédiat rend 200 et c'est VOULU. La détection de vol ne
+    // commence qu'APRÈS la fenêtre — c'est là que ce test doit se placer, sans
+    // quoi il prouve le contraire de ce qu'il annonce.
+    await ctx.prisma.refreshToken.updateMany({
+      where: { rotatedAt: { not: null } },
+      data: { rotatedAt: new Date(Date.now() - 10 * 60_000) }
+    });
+
     expect((await refreshWith(a.raw)).status).toBe(401);
 
     // Condition 2 : la révocation globale ignore le flag — la session B
