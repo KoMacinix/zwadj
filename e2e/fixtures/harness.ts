@@ -156,3 +156,63 @@ export async function settle(page: Page): Promise<void> {
   await page.waitForLoadState("networkidle");
   await page.waitForTimeout(400);
 }
+
+/**
+ * ⚠ COMBIEN DE FOIS UN EFFET DE MONTAGE PART, EN DÉVELOPPEMENT.
+ *
+ * `React.StrictMode` monte DEUX fois — c'est la raison même pour laquelle cette
+ * suite vise les serveurs de dev (voir `playwright.config.ts`). Un effet de
+ * LECTURE part donc deux fois, et c'est correct : React vérifie ainsi qu'il
+ * supporte d'être rejoué.
+ *
+ * ⚠ La première version exigeait 1 sur des lectures — c'est-à-dire exigeait que
+ * StrictMode n'existe pas, dans l'environnement choisi précisément parce qu'il
+ * existe. Exiger 2 n'est pas non plus « tester React » : ce qu'on verrouille,
+ * c'est qu'il n'y en ait pas TROIS. Une cascade — un `setState` qui relance le
+ * chargement — se voit immédiatement ici.
+ *
+ * ⚠ Les effets à EFFET DE BORD restent à 1 : deux montages ne doivent PAS
+ * consommer deux jetons. Le premier vrai run l'a confirmé de la meilleure
+ * façon possible — UN SEUL `POST /auth/refresh` pendant que TOUTES les lectures
+ * partaient en double, dans les deux applications. C'est la preuve de bout en
+ * bout que le mutex de D115 tient sous double montage réel.
+ */
+export const MONTAGES_PAR_RENDU = 2;
+
+/**
+ * Navigation INTERNE à la SPA, sans recharger le document.
+ *
+ * ⚠ POURQUOI PAS `page.goto()` : il recharge TOUJOURS le document. La première
+ * version d'A5 s'en servait pour « naviguer » — elle comparait donc un
+ * démarrage à froid… à un autre démarrage à froid. Les quatre tests passaient
+ * sans rien mesurer.
+ *
+ * ⚠ POURQUOI PAS UN CLIC : il n'existe aucun lien stable entre les routes
+ * protégées du Pro, et viser un libellé traduit rendrait la suite dépendante de
+ * l'i18n. On pousse l'historique et on notifie le routeur, qui écoute
+ * `popstate`.
+ */
+export async function spaNavigate(page: Page, path: string): Promise<void> {
+  await page.evaluate((to) => {
+    window.history.pushState({}, "", to);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  }, path);
+}
+
+/** Pose un témoin sur `window`. */
+export async function markPage(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    (window as unknown as Record<string, unknown>).__zwadjSpaTemoin = true;
+  });
+}
+
+/**
+ * Le témoin a-t-il survécu ? S'il a disparu, un document a été rechargé.
+ *
+ * ⚠ C'est ce qui empêche A5 de redevenir vide en silence : sans cette
+ * vérification, remplacer `spaNavigate` par un `goto` rendrait les tests verts
+ * ET sans objet, exactement comme avant.
+ */
+export async function pageStillAlive(page: Page): Promise<boolean> {
+  return page.evaluate(() => (window as unknown as Record<string, unknown>).__zwadjSpaTemoin === true);
+}

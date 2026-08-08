@@ -13,6 +13,27 @@ const num = (name: string, def: number): number => {
 
 const TTL = num("THROTTLE_AUTH_TTL_MS", 15 * 60_000);
 
+/**
+ * D128 — LIMITEUR PAR DÉFAUT : toutes les routes SAUF `/auth`. 100 / 60 s / IP.
+ *
+ * ⚠ Il vit ICI, et pas dans `app.module.ts` où il était codé en dur, pour qu'il
+ * n'existe qu'UN SEUL levier de test. Deux façons différentes de relâcher la
+ * même classe de protection, c'est deux endroits où se tromper — et un jour,
+ * un seul des deux désactivé en croyant les avoir tous les deux.
+ *
+ * ⚠ EN PRODUCTION RIEN NE CHANGE : `THROTTLE_DEFAULT_*` ne fait volontairement
+ * pas partie du schéma env validé. Rien n'est défini, les valeurs ci-dessous
+ * s'appliquent. Mesuré avant l'élargissement : sur 150 lectures consécutives
+ * d'une route publique, **51 étaient refusées en 429** — une suite e2e qui
+ * grossit se met alors à échouer par grappes, sur des tests qui n'ont aucun
+ * rapport avec ce qu'ils mesurent.
+ */
+export const DEFAULT_THROTTLE = {
+  name: "default",
+  limit: num("THROTTLE_DEFAULT_LIMIT", 100),
+  ttl: num("THROTTLE_DEFAULT_TTL_MS", 60_000)
+};
+
 export const AUTH_THROTTLE = {
   /** Création de compte : 5 / 15 min / IP. */
   register: { limit: num("THROTTLE_REGISTER_LIMIT", 5), ttl: TTL },

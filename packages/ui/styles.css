@@ -28,6 +28,15 @@
   /* États */
   --danger: #dc2626;
   --danger-soft: #fef2f2;
+  /* D129 — ENCRE de l'encart d'alerte, séparée de `--danger`.
+     `--danger` sur `--danger-soft` mesure 4,41:1 : sous le 4,5:1 de l'AA pour
+     du texte de 13 px. Une légende illisible est un désagrément ; une ALERTE
+     illisible est un message perdu.
+     ⚠ On ne déplace PAS `--danger` : il porte aussi le fond de `.btn-danger`,
+     les bordures d'erreur de champ et le texte d'erreur, dans les DEUX apps et
+     les DEUX thèmes. Bouger un token partagé pour un écran, c'est exactement
+     UI-D1 → UI-D2. #b91c1c sur #fef2f2 mesure 5,91:1. */
+  --danger-ink: #b91c1c;
   --success: #15803d;
   --success-soft: #f0fdf4;
 
@@ -80,6 +89,10 @@
   --line: var(--dark-line);
   --danger: var(--dark-danger);
   --danger-soft: var(--dark-danger-soft);
+  /* En sombre, `--dark-danger` sur `--dark-danger-soft` mesure DÉJÀ 6,07:1 :
+     rien à corriger, mais le token doit exister sur les DEUX thèmes — sinon il
+     retombe sur `inherit` en sombre et l'alerte devient pire qu'avant. */
+  --danger-ink: var(--dark-danger);
   --success: var(--dark-success);
   --success-soft: var(--dark-success-soft);
   --shadow-modal: var(--dark-shadow-modal);
@@ -679,7 +692,7 @@ button {
 .alert-error {
   background: var(--danger-soft);
   border: 1px solid color-mix(in srgb, var(--danger) 28%, transparent);
-  color: var(--danger);
+  color: var(--danger-ink); /* D129 — AA sur --danger-soft, voir le token */
 }
 
 .alert-success {

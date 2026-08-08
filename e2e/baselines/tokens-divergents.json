@@ -1,0 +1,9 @@
+[
+  "  --accent — client-dark: #e07a84 | pro-dark: #ebe7e5",
+  "  --accent — client-light: #da3642 | pro-light: #211c1b",
+  "  --accent-soft — client-dark: #2a1416 | pro-dark: #24201f",
+  "  --accent-soft — client-light: #fdeef0 | pro-light: #f1efee",
+  "  --accent-strong — client-dark: #ec9ba4 | pro-dark: #ffffff",
+  "  --accent-strong — client-light: #b32c36 | pro-light: #0d0a09",
+  "  --on-accent — client-dark: #111111 | pro-dark: #141110"
+]
