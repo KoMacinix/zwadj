@@ -55,6 +55,12 @@ const DATABASE_URL = process.env.E2E_DATABASE_URL ?? "postgresql://zwadj:zwadj@l
  * sur un port dédié. Un serveur de dev ou de prod ne les voit jamais.
  */
 const THROTTLE_OFF = {
+  // ⚠ D128 — le limiteur PAR DÉFAUT (100/60 s, TOUTES les routes hors /auth)
+  // était codé en dur dans `app.module.ts` et échappait donc à ce levier.
+  // Mesuré avant élargissement : 51 refus en 429 sur 150 lectures d'une route
+  // publique. Une suite qui grossit échoue alors par grappes, sur des tests
+  // qui n'ont aucun rapport avec ce qu'ils mesurent.
+  THROTTLE_DEFAULT_LIMIT: "1000000",
   THROTTLE_REGISTER_LIMIT: "10000",
   THROTTLE_VERIFY_LIMIT: "10000",
   THROTTLE_RESEND_LIMIT: "10000",
@@ -78,17 +84,51 @@ export default defineConfig({
   retries: 0, // ⚠ VOLONTAIREMENT ZÉRO : un test de concurrence qui passe « à la
   // deuxième tentative » ne prouve rien. Une instabilité ici est un résultat.
   reporter: [["list"], ["html", { open: "never", outputFolder: "playwright-report" }]],
-  timeout: 45_000,
+  /**
+   * ⚠ 45 s SUFFISAIENT À 15 TESTS, PLUS À 33.
+   *
+   * Le premier vrai lancement de T4 a produit un `Test timeout exceeded` sur un
+   * `page.goto` vers `/fr/salles` — pas une assertion, une navigation qui n'a
+   * pas fini. Deux causes cumulées, toutes deux d'environnement :
+   *   1. Next et Vite compilent une route à la PREMIÈRE demande, et deux
+   *      workers peuvent la demander en même temps ;
+   *   2. la suite fait tourner deux navigateurs, deux serveurs de dev, une API
+   *      et PostgreSQL sur la même machine — 5,1 minutes de charge continue.
+   *
+   * Le projet `warmup` paie la compilation en dehors de toute mesure ; ce
+   * plafond-ci couvre ce qui reste : la contention.
+   *
+   * ⚠ Ce n'est PAS une invitation à monter le chiffre à chaque échec. Un
+   * timeout qui revient APRÈS le préchauffage n'est plus de la lenteur — c'est
+   * quelque chose qui bloque, et il faut le lire.
+   */
+  timeout: 90_000,
   expect: { timeout: 7_000 },
 
   use: {
+    // Une navigation qui n'aboutit pas doit échouer AVANT le test entier, sinon
+    // le message dit « timeout » sans dire QUELLE étape n'a pas fini.
+    navigationTimeout: 60_000,
+    actionTimeout: 15_000,
     trace: "retain-on-failure",
     video: "off",
     screenshot: "only-on-failure",
     ...devices["Desktop Chrome"]
   },
 
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    /**
+     * ⚠ PROJET DE PRÉCHAUFFAGE — s'exécute avant tout le reste (D127).
+     *
+     * Il vit dans un PROJET et non dans `globalSetup` parce que `globalSetup`
+     * ne garantit pas que les serveurs soient déjà debout : un préchauffage qui
+     * s'exécute trop tôt échoue en silence et ne préchauffe rien, tout en
+     * donnant l'impression que le problème est traité. Un projet avec
+     * `dependencies` s'exécute forcément après le `webServer`.
+     */
+    { name: "warmup", testMatch: /warmup\.setup\.ts/ },
+    { name: "chromium", use: { ...devices["Desktop Chrome"] }, dependencies: ["warmup"] }
+  ],
 
   /**
    * ⚠ SERVEURS DE DÉVELOPPEMENT, ET C'EST DÉLIBÉRÉ.

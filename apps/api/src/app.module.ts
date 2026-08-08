@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { DEFAULT_THROTTLE } from "./auth/auth.throttle";
 import { LoggerModule } from "nestjs-pino";
 import { AccountModule } from "./account/account.module";
 import { AuthModule } from "./auth/auth.module";
@@ -31,9 +32,10 @@ import { VenuesModule } from "./venues/venues.module";
     // poseront leurs limites strictes par route au Lot 1 (@Throttle).
     // Stockage mémoire : suffisant mono-instance au MVP (multi-instance ⇒
     // storage partagé, décision Phase 13).
-    ThrottlerModule.forRoot({
-      throttlers: [{ name: "default", ttl: 60_000, limit: 100 }]
-    }),
+    // D128 — la limite vient de `auth.throttle.ts`, UN SEUL levier de test pour
+    // toute la famille. Elle était codée en dur ici et échappait donc au
+    // relâchement que les suites appliquent aux routes /auth.
+    ThrottlerModule.forRoot({ throttlers: [DEFAULT_THROTTLE] }),
     PrismaModule,
     EmailModule,
     // D63 (C3) — port WhatsApp, symétrique d'EmailModule : adaptateur de dev

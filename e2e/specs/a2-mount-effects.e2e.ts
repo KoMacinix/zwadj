@@ -1,6 +1,15 @@
 import { expect, test } from "@playwright/test";
 import { CLIENT, PRO } from "../playwright.config";
-import { NetworkCounter, createVerifiedAccount, loginContext, settle } from "../fixtures/harness";
+import {
+  MONTAGES_PAR_RENDU,
+  NetworkCounter,
+  createVerifiedAccount,
+  loginContext,
+  markPage,
+  pageStillAlive,
+  settle,
+  spaNavigate
+} from "../fixtures/harness";
 
 /**
  * A2 — MONTAGES DOUBLES.
@@ -20,9 +29,20 @@ import { NetworkCounter, createVerifiedAccount, loginContext, settle } from "../
  */
 
 /** Écrans Pro à effet de montage, avec l'appel qui doit partir UNE fois. */
+/**
+ * ⚠ CHEMINS RELEVÉS SUR LE ROUTEUR, PLUS ÉCRITS DE MÉMOIRE.
+ *
+ * Le premier vrai run a rendu « attendu 1, reçu 0 » sur trois tests : j'avais
+ * écrit `/api/v1/venues/mine` et `/api/v1/reference/wilayas`, qui n'existent
+ * pas. Un compteur qui observe un endpoint inexistant vaut TOUJOURS zéro — il
+ * ne mesure rien, ni dans un sens ni dans l'autre. Le journal réseau, lui,
+ * montrait `/api/v1/pro/venues` et `/api/v1/wilayas`, bien présents.
+ */
 const PRO_SCREENS: { name: string; path: string; endpoint: string }[] = [
-  { name: "liste des salles", path: "/salles", endpoint: "/api/v1/venues/mine" },
-  { name: "référentiels (contexte salle)", path: "/salles/nouvelle", endpoint: "/api/v1/reference/wilayas" }
+  { name: "liste des salles", path: "/salles", endpoint: "/api/v1/pro/venues" },
+  { name: "référentiel wilayas", path: "/salles/nouvelle", endpoint: "/api/v1/wilayas" },
+  { name: "référentiel équipements", path: "/salles/nouvelle", endpoint: "/api/v1/amenities" },
+  { name: "référentiel styles", path: "/salles/nouvelle", endpoint: "/api/v1/venue-styles" }
 ];
 
 /** Écrans Client à effet de montage. */
@@ -65,7 +85,9 @@ test.describe("A2 — un seul appel par montage", () => {
       await page.goto(`${PRO}${screen.path}`);
       await settle(page);
 
-      expect(net.count(screen.endpoint), `appels observés :\n${net.dump()}`).toBe(1);
+      // ⚠ LECTURE SEULE → un appel PAR MONTAGE, pas « un » tout court.
+      // Ni zéro (l'écran n'afficherait rien), ni trois (cascade).
+      expect(net.count(screen.endpoint), `appels observés :\n${net.dump()}`).toBe(MONTAGES_PAR_RENDU);
       await context.close();
     });
   }
@@ -81,7 +103,7 @@ test.describe("A2 — un seul appel par montage", () => {
       await page.goto(`${CLIENT}${screen.path}`);
       await settle(page);
 
-      expect(net.count(screen.endpoint), `appels observés :\n${net.dump()}`).toBe(1);
+      expect(net.count(screen.endpoint), `appels observés :\n${net.dump()}`).toBe(MONTAGES_PAR_RENDU);
       await context.close();
     });
   }
@@ -97,14 +119,22 @@ test.describe("A2 — un seul appel par montage", () => {
 
     await page.goto(`${PRO}/salles`);
     await settle(page);
+    await markPage(page);
 
     const net = NetworkCounter.watch(page);
-    await page.goto(`${PRO}/compte`);
+    await spaNavigate(page, "/compte");
     await settle(page);
-    await page.goto(`${PRO}/salles`);
+    await spaNavigate(page, "/salles");
     await settle(page);
 
-    expect(net.count("/api/v1/venues/mine"), `appels observés :\n${net.dump()}`).toBe(1);
+    // ⚠ D'ABORD : est-ce RESTÉ une navigation SPA ? `page.goto` recharge le
+    // document et transformerait ce test en deux démarrages à froid — vert, et
+    // vide. Le témoin posé sur `window` tranche avant toute autre assertion.
+    expect(await pageStillAlive(page), "le document a été rechargé : ce n'est plus un aller-retour SPA").toBe(true);
+
+    // Revenir DOIT recharger : un écran qui affiche du périmé est pire qu'un
+    // écran qui rappelle. Ce qu'on interdit, c'est la cascade.
+    expect(net.count("/api/v1/pro/venues"), `appels observés :\n${net.dump()}`).toBe(MONTAGES_PAR_RENDU);
     await context.close();
   });
 });

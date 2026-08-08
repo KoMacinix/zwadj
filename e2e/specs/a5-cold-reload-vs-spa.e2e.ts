@@ -1,6 +1,14 @@
 import { expect, test } from "@playwright/test";
 import { PRO } from "../playwright.config";
-import { NetworkCounter, createVerifiedAccount, loginContext, settle } from "../fixtures/harness";
+import {
+  NetworkCounter,
+  createVerifiedAccount,
+  loginContext,
+  markPage,
+  pageStillAlive,
+  settle,
+  spaNavigate
+} from "../fixtures/harness";
 
 /**
  * A5 — RECHARGEMENT À FROID vs NAVIGATION SPA.
@@ -34,14 +42,52 @@ test.describe("A5 — parité navigation interne / rechargement", () => {
       const context = await browser.newContext();
       await loginContext(context, account);
 
-      // ── Chemin 1 : arrivée par navigation interne (l'app est déjà montée).
+      // ── Chemin 1 : arrivée par navigation INTERNE (l'app est déjà montée).
+      //
+      // ⚠ CES QUATRE TESTS ÉTAIENT VIDES, ET ILS PASSAIENT.
+      // La première version faisait `spaPage.goto(...)` pour « naviguer » — or
+      // `goto` recharge toujours le document. Les deux branches comparées
+      // étaient donc deux démarrages à froid, identiques par construction :
+      // verts garantis, information nulle. Visible dans le journal du premier
+      // vrai run — toute la séquence Vite repartait après le second `goto`.
+      // ⚠ LE DÉPART DOIT DIFFÉRER DE LA CIBLE.
+      //
+      // Partir de `/` pour tester `/` n'est pas une navigation : react-router
+      // voit le même chemin, ne remonte rien, et aucun effet ne se rejoue. Le
+      // témoin survit — normal, aucun document n'a été rechargé — mais le test
+      // compare « ne bouge pas » à un démarrage à froid. C'est le seul des
+      // quatre qui échouait, et c'est exactement pourquoi.
+      const depart = route.path === "/" ? "/compte" : "/";
+      expect(depart, "le départ et la cible sont identiques : la navigation serait un no-op").not.toBe(route.path);
+
       const spaPage = await context.newPage();
-      await spaPage.goto(`${PRO}/`);
+      await spaPage.goto(`${PRO}${depart}`);
       await settle(spaPage);
+      await markPage(spaPage);
+
       const spaNet = NetworkCounter.watch(spaPage);
-      await spaPage.goto(`${PRO}${route.path}`); // navigation client dans la SPA
+      await spaNavigate(spaPage, route.path);
       await settle(spaPage);
+
+      // Le témoin AVANT toute autre assertion : sans lui, rien ne garantit
+      // qu'on n'a pas simplement rechargé, et le test peut redevenir vide sans
+      // que personne ne s'en aperçoive.
+      expect(
+        await pageStillAlive(spaPage),
+        "le document a été rechargé : la branche « SPA » n'en est plus une"
+      ).toBe(true);
+
       const spaFootprint = spaNet.apiFootprint().filter((c) => !c.includes("/auth/refresh"));
+
+      // ⚠ ANTI-VIDE. Deux empreintes vides sont « égales » : sans cette ligne,
+      // une navigation redevenue no-op passerait au vert au lieu d'échouer.
+      // C'est la même précaution que le témoin, pour l'autre façon de ne rien
+      // mesurer.
+      expect(
+        spaFootprint.length,
+        "la navigation interne n'a déclenché AUCUN appel : rien n'a été remonté"
+      ).toBeGreaterThan(0);
+
       const spaUrl = new URL(spaPage.url()).pathname;
       await spaPage.close();
 

@@ -84,6 +84,69 @@ désactivée.
 Volontaire. Un test de concurrence qui passe à la deuxième tentative ne prouve
 rien. Une instabilité ici est un résultat, pas un bruit à masquer.
 
+## Ce que le premier vrai run a appris
+
+Trois corrections, toutes côté TEST — le code produit n'était en cause dans
+aucun des cinq échecs.
+
+**1. Endpoints écrits de mémoire.** `/api/v1/venues/mine` et
+`/api/v1/reference/wilayas` n'existent pas ; ce sont `/api/v1/pro/venues` et
+`/api/v1/wilayas`. Un compteur qui observe un endpoint inexistant vaut toujours
+zéro : il ne mesure rien, ni dans un sens ni dans l'autre.
+
+**2. « Un seul appel » était faux pour les lectures.** Sous `StrictMode` — que
+cette suite active délibérément — un effet de montage part DEUX fois. Exiger 1
+revenait à exiger que StrictMode n'existe pas. L'assertion dépend désormais de
+la nature de l'effet : effet de bord → 1, lecture → `MONTAGES_PAR_RENDU`.
+
+⚠ Au passage, ces échecs ont produit la meilleure preuve de la série : dans le
+journal du run, **un seul `POST /auth/refresh` pendant que toutes les lectures
+partaient en double**, dans les deux applications. Le double montage est bien
+réel, et le mutex de D115 le fusionne — de bout en bout, dans un vrai
+navigateur.
+
+**3. Les quatre tests d'A5 étaient VIDES, et ils passaient.** `page.goto()`
+recharge toujours le document : la branche « navigation SPA » était un second
+démarrage à froid comparé à un démarrage à froid. Corrigé par `spaNavigate`
+(historique + `popstate`), et surtout par un **témoin posé sur `window`** dont
+la survie est assertée en premier — sans quoi le test peut redevenir vide sans
+que personne ne le voie.
+
+Sur 15 tests, le premier run affichait 9 verts. Cinq d'entre eux prouvaient
+quelque chose ; quatre étaient creux.
+
+## Premier lancement de T4 : deux références à générer
+
+B7 et B8 comparent à une référence qui **n'est pas livrée**. Ce n'est pas un
+oubli : je ne peux pas exécuter Playwright dans mon environnement, et écrire des
+valeurs de tokens ou une liste de violations « de mémoire » aurait produit une
+référence fausse — c'est arrivé quatre fois dans cette campagne, et chaque fois
+le rouge ne prouvait rien.
+
+```bash
+UPDATE_TOKEN_BASELINE=1 UPDATE_A11Y_BASELINE=1 pnpm test:e2e
+```
+
+Puis **relire** ce qui a été écrit avant de le valider :
+
+- `e2e/baselines/tokens.json` — valeurs résolues des variables CSS, par app et
+  par thème ;
+- `e2e/baselines/tokens-divergents.json` — tokens qui diffèrent légitimement
+  entre les deux apps (les thèmes sont différents par dessein) ;
+- `e2e/baselines/a11y.json` — **l'inventaire chiffré de la dette
+  d'accessibilité**, ce que D43/D44 n'ont jamais eu.
+
+Ensuite, tout écart échoue. Résorber la dette a11y consiste à retirer des lignes
+de `a11y.json` : le test refuse aussi les violations **corrigées** restées dans
+la référence, pour que la dette ne paraisse pas éternelle.
+
+⚠ **Pourquoi pas de captures d'écran pour B7.** `toHaveScreenshot()` compare des
+pixels : le rendu des polices diffère entre Windows et Linux, les références
+seraient rouges au premier changement de machine, et un diff de pixels dit
+« quelque chose a bougé » sans dire quoi. On compare les valeurs **résolues** des
+variables CSS, lues après cascade dans le vrai navigateur — indépendant de la
+plateforme, et un écart se lit : `--accent: #d81b60 → #c2185b`.
+
 ## Couverture actuelle
 
 | Spec | Points d'inventaire |
@@ -91,6 +154,8 @@ rien. Une instabilité ici est un résultat, pas un bruit à masquer.
 | `a1-session-bootstrap.e2e.ts` | A1 — bootstrap, deux onglets, cookie invalide sans boucle |
 | `a2-mount-effects.e2e.ts` | A2 — un appel par montage (effet de bord + lecture seule) |
 | `a5-cold-reload-vs-spa.e2e.ts` | A5 — parité navigation interne / rechargement |
+| `b7-token-contract.e2e.ts` | B7 — tokens résolus, 2 apps × 2 thèmes |
+| `b8-accessibility.e2e.ts` | B8 — axe-core sur 10 écrans, contraste/ARIA/focus |
 
 Restent à outiller : A3 (réponses malformées), A4 (concurrence sur chemins
 verrouillés — déjà couvert côté intégration par D117), B6 à B10.
