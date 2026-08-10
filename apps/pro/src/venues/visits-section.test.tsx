@@ -8,6 +8,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import type { ProVisitBookingDTO } from "@zwadj/types";
 import type { VenueProClient } from "@zwadj/api-client";
+import { AVAILABILITY_MAX_WINDOW_DAYS } from "@zwadj/types";
 import { initI18n } from "../i18n";
 import { AppProviders } from "../App";
 import { makeAuthDouble, makeVenueClientDouble } from "../test-support/client-doubles";
@@ -53,6 +54,27 @@ function renderSection(venues: VenueProClient) {
 initI18n();
 
 describe("VisitsSection — C3b", () => {
+  it("⚠ la fenêtre demandée tient dans le maximum du schéma — bornes INCLUSES (D55)", async () => {
+    // ⚠ LE BUG QUE CE TEST FIGE. La section demandait `to = aujourd'hui + 92
+    // jours`, alors que `availabilityWindowQuerySchema` compte
+    // `(to - from) / 86400000 + 1 > 92` : la fenêtre valait donc 93 jours et
+    // l'API répondait `venue.validation.windowTooWide`. À l'écran, « Une erreur
+    // est survenue » à chaque chargement des rendez-vous de visite.
+    //
+    // Le test recalcule la largeur avec la FORMULE DU SERVEUR, pas avec la
+    // constante du front : si quelqu'un remet « +92 », il rougit.
+    const listVisitBookings = vi.fn().mockResolvedValue([]);
+    renderSection(makeVenueClientDouble(null, { listVisitBookings }));
+
+    await waitFor(() => expect(listVisitBookings).toHaveBeenCalled());
+    const fenetre = listVisitBookings.mock.calls[0]?.[1] as { from: string; to: string };
+    const largeur =
+      (Date.parse(`${fenetre.to}T00:00:00Z`) - Date.parse(`${fenetre.from}T00:00:00Z`)) / 86_400_000 + 1;
+    expect(largeur).toBeLessThanOrEqual(AVAILABILITY_MAX_WINDOW_DAYS);
+    // Et elle reste UTILE : on ne l'a pas rétrécie pour passer, on l'a corrigée.
+    expect(largeur).toBe(AVAILABILITY_MAX_WINDOW_DAYS);
+  });
+
   it("affiche le CONTACT du client : c'est ce pour quoi le pro ouvre cette liste", async () => {
     renderSection(makeVenueClientDouble(null, { listVisitBookings: vi.fn().mockResolvedValue([AVENIR]) }));
 

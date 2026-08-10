@@ -68,7 +68,7 @@ function makeVenues(overrides: Partial<VenueProClient> = {}): VenueProClient {
 
 function renderEdit(venues: VenueProClient) {
   return render(
-    <MemoryRouter initialEntries={["/salles/v1"]}>
+    <MemoryRouter initialEntries={["/salles/v1?etape=4"]}>
       <AppProviders client={makeAuthDouble()} venues={venues} referentials={makeReferentialsDouble()}>
         <Routes>
           <Route path="/salles/:id" element={<EditVenuePage />} />
@@ -92,7 +92,11 @@ function setTime(scope: ReturnType<typeof within>, field: string, value: string)
 
 
 async function ready() {
-  await screen.findByDisplayValue("Salle El Ryad");
+  // ⚠ UIP-C — l'ancre d'attente ne peut plus être le champ « nom de la salle » :
+  // il vit à l'étape 1, et l'assistant ne monte qu'une étape à la fois. On
+  // attend donc le TITRE de l'étape où cette section vit — le seul repère qui
+  // prouve que le bon écran est prêt.
+  await screen.findByRole("heading", { name: "Réservation", level: 2 });
   await waitFor(() => expect(section().textContent).not.toContain("Chargement"));
   return within(section());
 }

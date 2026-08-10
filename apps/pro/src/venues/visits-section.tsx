@@ -11,16 +11,33 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatSlotRange, VISIT_DURATION_MINUTES, type ProVisitBookingDTO } from "@zwadj/types";
+import { AVAILABILITY_MAX_WINDOW_DAYS } from "@zwadj/types";
+import { algiersCivilDate } from "../lib/algiers-date";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { useVenues } from "./venue-client-context";
 
-const WINDOW_DAYS = 92;
+/** ⚠ CORRECTION — la fenêtre était REFUSÉE par le serveur.
+ *
+ *  `availabilityWindowQuerySchema` compte les jours BORNES INCLUSES :
+ *  `(to - from) / 86400000 + 1 > 92`. Demander `to = aujourd'hui + 92 jours`
+ *  produit donc une fenêtre de 93 jours, et l'API répondait
+ *  `venue.validation.windowTooWide` — « Une erreur est survenue » à l'écran, sur
+ *  chaque chargement des rendez-vous de visite.
+ *
+ *  ⚠ D55, SIXIÈME occurrence de cette famille : la borne a été écrite d'intuition
+ *  (« 92 jours ⇒ +92 ») au lieu d'être dérivée du schéma, qui a autorité. Le
+ *  maximum est désormais IMPORTÉ, et le décalage s'en déduit — le front ne peut
+ *  plus dériver du serveur sans que le type ne bouge.
+ *
+ *  Le « −1 » n'est pas un ajustement empirique : c'est la traduction exacte de
+ *  « bornes incluses ». Du 9 août au 8 novembre, il y a 92 jours ; au 9 novembre,
+ *  93. */
+const WINDOW_DAYS = AVAILABILITY_MAX_WINDOW_DAYS - 1;
 
-function civilDate(ms: number): string {
-  // Alger est à UTC+1 toute l'année (D48) : décaler puis lire en UTC donne la
-  // date civile locale sans dépendre du fuseau de la machine.
-  return new Date(ms + 3_600_000).toISOString().slice(0, 10);
-}
+// UIP-A — `civilDate` vivait ici, en privé. Le compteur « visites du jour » du
+// panneau gauche en a eu besoin à son tour : elle est remontée dans
+// `lib/algiers-date`. Deux copies d'un décalage de fuseau, c'est le jour où
+// l'une est corrigée et pas l'autre.
 
 export function VisitsSection({ venueId }: { venueId: string }) {
   const { t } = useTranslation();
@@ -37,8 +54,8 @@ export function VisitsSection({ venueId }: { venueId: string }) {
     const nowMs = Date.now();
     try {
       const list = await venues.listVisitBookings(venueId, {
-        from: civilDate(nowMs),
-        to: civilDate(nowMs + WINDOW_DAYS * 86_400_000)
+        from: algiersCivilDate(nowMs),
+        to: algiersCivilDate(nowMs + WINDOW_DAYS * 86_400_000)
       });
       // D120 — GARDE DE FORME. `setRows(list)` nu faisait tomber la section au
       // rendu suivant (`rows.map is not a function`) sur tout ce qui n'est pas

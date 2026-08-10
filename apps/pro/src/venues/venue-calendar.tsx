@@ -1,34 +1,38 @@
 // Calendrier d'une salle, côté PRO — Lot B6, D56/D57.
+// EXTRAIT de `venue-calendar-page.tsx` par UIP-A : ce fichier n'est plus une
+// PAGE mais un COMPOSANT qui reçoit sa salle. La page `/salles/:id/calendrier`
+// disparaît ; le calendrier devient l'entrée « Calendrier » du top panel, et
+// les trois sections qui l'accompagnaient partent où elles ont un sens :
+// demandes + visites dans « Demandes », devis au tableau de bord.
 //
 // ── Ce que cet écran est, et ce qu'il n'est pas ──────────────────────────────
-// C'est une vue de LECTURE : le pro voit d'un coup d'œil ce qui est pris, ce
+// C'est une vue de LECTURE : le pro voit d'un coup d'oeil ce qui est pris, ce
 // qui est demandé, ce qu'il a bloqué, et à quel prix chaque créneau se vend ce
 // jour-là. Il n'écrit RIEN. Les blocages se posent dans le volet dédié de
 // l'écran d'édition (B4d), les prix dans le volet créneaux (B4b/B4c) — deux
 // endroits pour écrire la même chose finiraient par diverger.
 //
-// ── Il consomme l'endpoint PUBLIC, et c'est voulu ────────────────────────────
-// `GET /venues/:slug/availability` est la seule source de vérité sur l'état
-// d'un jour : c'est elle qui fait tourner le moteur (B3), applique les règles
-// de prix (B2) et arbitre les quatre statuts. Un endpoint pro parallèle
-// recalculerait la même chose et finirait par répondre autrement — le pro
-// verrait alors autre chose que ses clients, ce qui est le pire des écarts.
+// ── ⚠ CORRECTION : il consomme désormais la route PRO ───────────────────────
+// Il appelait `GET /venues/:slug/availability`, l'endpoint public. Le motif était
+// juste — ne pas dupliquer le moteur — mais la conséquence n'avait jamais été
+// vérifiée sur une salle réelle : cet endpoint exige
+// `publicationStatus = PUBLISHED`. Un pro dont la salle est encore en brouillon
+// recevait donc « Le calendrier n'a pas pu être chargé » sur SON PROPRE
+// calendrier, et depuis la refonte l'écran « Nouvelle réservation » mourait avec.
 //
-// ⚠ Conséquence assumée : cet écran ne montre donc QUE ce qu'un visiteur voit.
-// L'identité des clients, les montants d'acompte et l'historique appartiennent
-// au lot Réservations, pas à celui-ci. La légende du design (« Acompte reçu »)
-// attend ce lot-là.
+// `GET /pro/venues/:id/availability` appelle le MÊME `compute` : mêmes règles de
+// prix, mêmes statuts, même écrêtage. Seule la clause de recherche change — le pro
+// voit donc exactement ce que verront ses clients (D78).
+//
+// Deux bénéfices au passage : plus de `fetch` brut hors du client authentifié, et
+// plus d'aller-retour `getMine` pour un slug dont on n'a plus besoin.
 //
 // ── Semaine algérienne (D56) et 24 h (D57) ───────────────────────────────────
 // Grille du DIMANCHE au SAMEDI, week-end vendredi-samedi en fin de ligne.
 // Toutes les heures en 24 h, via le formateur partagé.
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams } from "react-router";
-import { BookingRequestsSection } from "./booking-requests-section";
-import { QuotesSection } from "./quotes-section";
-import { VisitsSection } from "./visits-section";
-import { GuardedSection } from "./guarded-section";
 import { useTranslation } from "react-i18next";
+import { formatDZD } from "@zwadj/i18n";
 import { formatSlotRange, type VenueAvailabilityDayDTO, type VenueAvailabilityResponse } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { useVenues } from "./venue-client-context";
@@ -65,9 +69,35 @@ function dayStatus(day: VenueAvailabilityDayDTO | undefined): string | null {
   );
 }
 
-export function VenueCalendarPage() {
+/** ⚠ Le même calendrier sert DEUX écrans : la vue « Calendrier » en lecture, et
+ *  le sélecteur de date du parcours « client sur place ». Il devient donc
+ *  PILOTABLE de l'extérieur au lieu d'être recopié — un second calendrier aurait
+ *  été une seconde source de vérité sur « ce jour est-il libre ? », exactement ce
+ *  que D78 interdit. Sans les props de pilotage, il se comporte comme avant.
+ *
+ *  Ce qu'il apporte au parcours, et qu'un `<input type="date">` ne pouvait pas :
+ *  la disponibilité RÉELLE jour par jour, le tarif du jour rendu par le moteur
+ *  (B2/B3), et les créneaux du jour avec leur prix — donc aucune date vendue ne
+ *  peut plus être saisie à la main. */
+export function VenueCalendar({
+  venueId,
+  selectedDate,
+  onSelectDate,
+  selectedSlotId,
+  onSelectSlot,
+  compact = false
+}: {
+  venueId: string;
+  /** Pilotage externe. Absent ⇒ le composant garde sa sélection interne. */
+  selectedDate?: string | null;
+  onSelectDate?: (date: string) => void;
+  selectedSlotId?: string | null;
+  /** Fourni ⇒ les créneaux du jour deviennent cliquables. */
+  onSelectSlot?: (slotTemplateId: string, priceCents: number) => void;
+  /** Masque la phrase « lecture seule », hors de propos dans le parcours. */
+  compact?: boolean;
+}) {
   const { t, i18n } = useTranslation();
-  const { id } = useParams<{ id: string }>();
   const venues = useVenues();
   const toMessage = useApiErrorMessage();
 
@@ -75,52 +105,34 @@ export function VenueCalendarPage() {
   const toMessageRef = useRef(toMessage);
   toMessageRef.current = toMessage;
 
-  const [slug, setSlug] = useState<string | null>(null);
   const [cursor, setCursor] = useState<MonthCursor>(() => currentMonth(nowRef.current));
   const [data, setData] = useState<VenueAvailabilityResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [ownSelected, setOwnSelected] = useState<string | null>(null);
+  /** Contrôlé si le parent fournit la paire date + rappel, sinon interne. */
+  const piloted = onSelectDate !== undefined;
+  const selected = piloted ? (selectedDate ?? null) : ownSelected;
+  const pick = (date: string) => {
+    if (onSelectDate) onSelectDate(date);
+    else setOwnSelected(date);
+  };
 
   const firstMonth = useMemo(() => currentMonth(nowRef.current), []);
   const lastMonth = useMemo(() => shiftMonth(firstMonth, HORIZON_MONTHS), [firstMonth]);
 
-  // Le slug n'est pas dans l'URL pro (qui travaille par id) : on le lit une
-  // fois sur la salle, puis on interroge l'endpoint public.
-  useEffect(() => {
-    if (!id) return;
-    let cancelled = false;
-    void (async () => {
-      try {
-        const venue = await venues.getMine(id);
-        if (!cancelled) setSlug(venue.slug);
-      } catch (cause) {
-        if (!cancelled) {
-          setError(toMessageRef.current(cause));
-          setLoading(false);
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [id, venues]);
 
   useEffect(() => {
-    if (!slug) return;
     let cancelled = false;
     setLoading(true);
-    setSelected(null);
+    if (!piloted) setOwnSelected(null);
     const { from, to } = monthWindow(cursor.year, cursor.month);
     void (async () => {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL ?? "http://localhost:3001"}/api/v1/venues/` +
-            `${encodeURIComponent(slug)}/availability?${new URLSearchParams({ from, to }).toString()}`
-        );
+        const res = await venues.availability(venueId, { from, to });
         if (cancelled) return;
-        setData(res.ok ? ((await res.json()) as VenueAvailabilityResponse) : null);
-        setError(res.ok ? null : t("venue.ui.calendar.error"));
+        setData(res);
+        setError(null);
       } catch {
         if (!cancelled) setError(t("venue.ui.calendar.error"));
       } finally {
@@ -130,7 +142,7 @@ export function VenueCalendarPage() {
     return () => {
       cancelled = true;
     };
-  }, [slug, cursor, t]);
+  }, [venueId, venues, cursor, t, piloted]);
 
   const byDate = useMemo(() => {
     const map = new Map<string, VenueAvailabilityDayDTO>();
@@ -144,14 +156,11 @@ export function VenueCalendarPage() {
   const selectedDay = selected ? byDate.get(selected) : undefined;
 
   return (
-    <main className="page">
-      <div className="page-head">
-        <h1>{t("venue.ui.calendar.title")}</h1>
-        <Link to={`/salles/${id}`} className="btn">
-          {t("venue.ui.calendar.backToVenue")}
-        </Link>
-      </div>
-      <p className="field-hint">{t("venue.ui.calendar.readOnly")}</p>
+    <>
+      {/* ⚠ « Vue en lecture » ne se dit QUE sur l'écran Calendrier. Dans le
+          parcours, le calendrier sert à CHOISIR une date : la phrase y serait
+          fausse, et une phrase fausse en petit gris est encore une phrase fausse. */}
+      {compact ? null : <p className="field-hint">{t("venue.ui.calendar.readOnly")}</p>}
 
       {error && (
         <p className="alert alert-error" role="alert">
@@ -222,7 +231,7 @@ export function VenueCalendarPage() {
                       ]
                         .filter(Boolean)
                         .join(" ")}
-                      onClick={() => setSelected(cell.date)}
+                      onClick={() => pick(cell.date as string)}
                       disabled={!day}
                       aria-pressed={selected === cell.date}
                     >
@@ -245,43 +254,46 @@ export function VenueCalendarPage() {
           <ul>
             {selectedDay.slots.map((entry) => {
               const meta = slotsById.get(entry.slotTemplateId);
-              return (
-                <li key={entry.slotTemplateId} className={`cal-slot ${STATUS_CLASS[entry.status]}`}>
-                  <span>{meta?.nameFr}</span>
-                  {/* D57 — 24 h. Une soirée s'écrit « 20:00 – 02:00 ». */}
-                  {meta && <span className="cal-slot-hours">{formatSlotRange(meta.startMinutes, meta.endMinutes)}</span>}
-                  <span>{new Intl.NumberFormat("fr-DZ").format(entry.priceCents / 100)}</span>
-                  <span className="cal-status">{t(`venue.ui.calendar.status.${entry.status}`)}</span>
-                </li>
-              );
+              const libre = entry.status === "AVAILABLE";
+                const contenu = (
+                  <>
+                    <span>{i18n.language === "ar" ? meta?.nameAr : meta?.nameFr}</span>
+                    {/* D57 — 24 h. Une soirée s'écrit « 20:00 – 02:00 ». */}
+                    {meta && <span className="cal-slot-hours">{formatSlotRange(meta.startMinutes, meta.endMinutes)}</span>}
+                    <span className="cal-slot-price">{formatDZD(entry.priceCents)}</span>
+                    <span className="cal-status">{t(`venue.ui.calendar.status.${entry.status}`)}</span>
+                  </>
+                );
+                // ⚠ Seuls les créneaux LIBRES sont cliquables, et c'est le moteur
+                // qui le dit — pas une règle recopiée ici.
+                return onSelectSlot === undefined ? (
+                  <li key={entry.slotTemplateId} className={`cal-slot ${STATUS_CLASS[entry.status]}`}>
+                    {contenu}
+                  </li>
+                ) : (
+                  <li key={entry.slotTemplateId}>
+                    <button
+                      type="button"
+                      className={[
+                        "cal-slot",
+                        "cal-slot-pick",
+                        STATUS_CLASS[entry.status],
+                        selectedSlotId === entry.slotTemplateId ? "is-picked" : ""
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      disabled={!libre}
+                      aria-pressed={selectedSlotId === entry.slotTemplateId}
+                      onClick={() => onSelectSlot(entry.slotTemplateId, entry.priceCents)}
+                    >
+                      {contenu}
+                    </button>
+                  </li>
+                );
             })}
           </ul>
         </section>
       )}
-
-      {/* C3b — les rendez-vous de visite vivent à côté du calendrier : c'est le
-          même écran mental pour le pro, « qu'est-ce qui se passe dans ma salle ». */}
-      {/* E1b — les DEMANDES avant les visites : une demande non traitée expire,
-          un rendez-vous de visite non lu ne coûte qu'une surprise. L'ordre suit
-          l'urgence, pas la chronologie des lots. */}
-      {id ? (
-        <GuardedSection title={t("venue.ui.requests.title")}>
-          <BookingRequestsSection venueId={id} />
-        </GuardedSection>
-      ) : null}
-
-      {/* E2e — les devis APRÈS les demandes : une demande en attente expire,
-          un devis attend qu'on le relance. L'ordre suit l'urgence. */}
-      {id ? (
-        <GuardedSection title={t("venue.ui.quotes.title")}>
-          <QuotesSection venueId={id} />
-        </GuardedSection>
-      ) : null}
-      {id ? (
-        <GuardedSection title={t("venue.ui.visits.title")}>
-          <VisitsSection venueId={id} />
-        </GuardedSection>
-      ) : null}
-    </main>
+    </>
   );
 }

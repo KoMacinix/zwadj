@@ -88,7 +88,7 @@ describe("Devis pro — D101 : accepter n'est pas une action", () => {
     expect(screen.queryByRole("button", { name: /Créer la demande de réservation/ })).toBeNull();
   });
 
-  it("la conversion exige le contact avant d'être envoyable", async () => {
+  it("la conversion exige nom, prénom et TÉLÉPHONE — plus l'e-mail (D135)", async () => {
     const client = setup([BASE]);
     fireEvent.click(await screen.findByRole("button", { name: /Créer la demande de réservation/ }));
     expect(screen.getByRole("button", { name: "Créer la demande" })).toBeDisabled();
@@ -96,10 +96,17 @@ describe("Devis pro — D101 : accepter n'est pas une action", () => {
     fireEvent.change(screen.getByLabelText("Prénom du client"), { target: { value: "Amina" } });
     fireEvent.change(screen.getByLabelText("Nom du client"), { target: { value: "Bensalem" } });
     fireEvent.change(screen.getByLabelText("Téléphone du client"), { target: { value: "+213550000001" } });
-    fireEvent.change(screen.getByLabelText("E-mail du client"), { target: { value: "amina@example.dz" } });
 
+    // ⚠ Trois champs, et le bouton s'ACTIVE : l'e-mail reste vide. Ce test
+    // mesurait l'inverse jusqu'à D135, parce que la borne Zod était plus stricte
+    // que `bookings.contact_email`, qui est nullable depuis toujours.
     fireEvent.click(screen.getByRole("button", { name: "Créer la demande" }));
     await waitFor(() => expect(client.convert).toHaveBeenCalled());
+
+    // ⚠ Et la CLÉ EST ABSENTE, jamais `""` : `.email()` refuse la chaîne vide.
+    const corps = vi.mocked(client.convert).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+    expect(corps).not.toHaveProperty("contactEmail");
+    expect(corps.contactPhone).toBe("+213550000001");
   });
 });
 

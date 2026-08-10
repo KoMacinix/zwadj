@@ -376,3 +376,86 @@ describe("Disponibilité — visibilité D33", () => {
     expect(body.slots.map((s) => s.id)).toEqual([soiree]);
   });
 });
+
+describe("⚠ Porte PRO — le calendrier de SA salle, publiée ou non", () => {
+  // ⚠ CE QUI NE SE PROUVE QU'ICI, et qui manquait. Le calendrier pro appelait la
+  // route PUBLIQUE, qui filtre sur `publicationStatus = PUBLISHED`. Sur une salle
+  // en brouillon — l'état de TOUTE salle avant sa première publication — le pro
+  // recevait un 404 sur son propre calendrier. Aucun test unitaire ne pouvait le
+  // voir : le filtre vit dans la clause Prisma.
+
+  it("une salle NON PUBLIÉE : 404 en public, 200 pour son pro", async () => {
+    const { token, venue } = await proWithVenue();
+    await api().post(`/api/v1/venues/${venue.id}/slot-templates`).set(authH(token)).send(SOIREE).expect(201);
+
+    const fenetre = "from=2026-09-01&to=2026-09-30";
+
+    // La route publique refuse, et c'est CORRECT : un brouillon n'est pas public.
+    await api().get(`/api/v1/venues/${venue.slug}/availability?${fenetre}`).expect(404);
+
+    // La route pro répond, et c'est l'écart qui compte.
+    const res = await api()
+      .get(`/api/v1/pro/venues/${venue.id}/availability?${fenetre}`)
+      .set(authH(token))
+      .expect(200);
+    const body = res.body as VenueAvailabilityResponse;
+    expect(body.venueId).toBe(venue.id);
+    expect(body.slots.length).toBe(1);
+  });
+
+  it("MÊME moteur : sur une salle publiée, les deux portes rendent la même chose", async () => {
+    const { token, venue } = await publishedVenue();
+    const fenetre = "from=2026-09-01&to=2026-09-30";
+
+    const pub = (await api().get(`/api/v1/venues/${venue.slug}/availability?${fenetre}`).expect(200))
+      .body as VenueAvailabilityResponse;
+    const pro = (
+      await api().get(`/api/v1/pro/venues/${venue.id}/availability?${fenetre}`).set(authH(token)).expect(200)
+    ).body as VenueAvailabilityResponse;
+
+    // ⚠ L'assertion qui garantit qu'on n'a PAS fabriqué un second moteur. Si les
+    // deux réponses divergeaient d'un centime ou d'un statut, le pro verrait
+    // autre chose que ses clients (D78).
+    expect(pro).toEqual(pub);
+  });
+
+  it("la salle d'un AUTRE pro : 404 indistinct, jamais 403", async () => {
+    const { venue } = await publishedVenue();
+    const autre = { ...PRO, email: "autre@example.dz", businessName: "Autre" };
+    await registerUser(ctx, autre);
+    await verifyLastRegistered(ctx);
+    const token = await loginAs(ctx, autre.email, autre.password);
+
+    // 404 et non 403 : un 403 confirmerait l'existence de la salle (doctrine A2/A3).
+    await api()
+      .get(`/api/v1/pro/venues/${venue.id}/availability?from=2026-09-01&to=2026-09-30`)
+      .set(authH(token))
+      .expect(404);
+  });
+
+  it("un CLIENT n'entre pas par la porte pro", async () => {
+    const { venue } = await publishedVenue();
+    await registerUser(ctx, ADMIN);
+    await verifyLastRegistered(ctx);
+    const token = await loginAs(ctx, ADMIN.email, ADMIN.password);
+    await api()
+      .get(`/api/v1/pro/venues/${venue.id}/availability?from=2026-09-01&to=2026-09-30`)
+      .set(authH(token))
+      .expect(403);
+  });
+
+  it("⚠ la fenêtre de 92 jours BORNES INCLUSES passe, 93 est refusée", async () => {
+    const { token, venue } = await publishedVenue();
+    // Du 1er au 31 mars : 92 jours pile (31 + 30 + 31). C'est le cas RÉEL que la
+    // section des visites demandait de travers — elle réclamait 93 jours et
+    // recevait un 400 à chaque chargement.
+    await api()
+      .get(`/api/v1/pro/venues/${venue.id}/availability?from=2027-01-01&to=2027-04-02`)
+      .set(authH(token))
+      .expect(200);
+    await api()
+      .get(`/api/v1/pro/venues/${venue.id}/availability?from=2027-01-01&to=2027-04-03`)
+      .set(authH(token))
+      .expect(400);
+  });
+});

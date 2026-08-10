@@ -49,3 +49,50 @@ export function RequireProSession({ children }: { children: React.ReactNode }) {
 
   return <>{children}</>;
 }
+
+/** Le garde SYMÉTRIQUE : une session ouverte n'a rien à faire sur un formulaire
+ *  d'entrée.
+ *
+ *  ⚠ LE DÉFAUT QU'IL CORRIGE. `RequireProSession` empêchait d'ENTRER sans
+ *  session ; rien n'empêchait d'en SORTIR vers `/auth/connexion` avec une session
+ *  valide. Un pro déjà connecté qui tapait cette adresse voyait le formulaire, et
+ *  pouvait donc se reconnecter par-dessus sa propre session — voire avec un AUTRE
+ *  compte, en échangeant le jeton sous une application déjà montée, dans un état
+ *  que rien ne teste. La session était saine : c'est la porte qui restait ouverte
+ *  dans le mauvais sens.
+ *
+ *  ⚠ ET IL NE S'APPLIQUE PAS À TOUTES LES ROUTES `/auth/*`. Deux d'entre elles
+ *  CONSOMMENT un jeton reçu par e-mail :
+ *    - `/auth/reinitialisation` — un utilisateur connecté peut très bien cliquer
+ *      le lien de réinitialisation qu'il vient de demander ;
+ *    - `/auth/verification-email` — c'est même le cas NOMINAL : on y arrive après
+ *      un changement d'adresse, donc forcément connecté.
+ *  Les rediriger casserait ces deux parcours. Le garde ne couvre que les points
+ *  d'ENTRÉE : connexion, inscription, mot de passe oublié.
+ *
+ *  Pendant le boot, on ne montre NI le formulaire NI le tableau de bord : le même
+ *  loader de marque que le garde d'entrée, avec son anti-flash (A12, D44). Sans
+ *  cela, le formulaire apparaîtrait une fraction de seconde avant de disparaître,
+ *  ce qui se lit comme un bug de déconnexion. */
+export function RedirectIfSession({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+  const { status, user } = useAuth();
+
+  if (status === "loading") {
+    return (
+      <main className="auth-main" aria-busy="true">
+        <BrandLoader label={t("common.loading")} />
+      </main>
+    );
+  }
+
+  // ⚠ Tout rôle, pas seulement PRO. Un CLIENT connecté renvoyé sur « / » y trouve
+  // la carte « mauvais rôle » de `RequireProSession`, avec son bouton de
+  // déconnexion — un message explicite, là où le formulaire de connexion lui
+  // laissait croire qu'il n'était pas connecté du tout.
+  if (status === "authenticated" && user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}

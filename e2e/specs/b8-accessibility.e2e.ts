@@ -57,7 +57,16 @@ const ECRANS: Ecran[] = [
   { nom: "client compte", url: `${CLIENT}/fr/compte`, theme: "light", authentifie: "CLIENT" },
   { nom: "pro connexion (clair)", url: `${PRO}/auth/connexion`, theme: "light" },
   { nom: "pro connexion (sombre)", url: `${PRO}/auth/connexion`, theme: "dark" },
-  { nom: "pro liste des salles", url: `${PRO}/`, theme: "dark", authentifie: "PRO" },
+  // UIP-A — l'écran n'a pas changé, son ADRESSE oui : `/` est devenu le tableau
+  // de bord, la liste est passée à `/salles`. Le nom de la référence est
+  // conservé pour que les signatures déjà gelées restent comparables.
+  { nom: "pro liste des salles", url: `${PRO}/salles`, theme: "dark", authentifie: "PRO" },
+  // ⚠ ÉCRAN NEUF, SANS RÉFÉRENCE. Le test échouera avec « Aucune référence pour
+  // « pro tableau de bord » » jusqu'au premier `UPDATE_A11Y_BASELINE=1`, et
+  // c'est voulu : il refuse de deviner une dette. Le top panel touche AUSSI les
+  // quatre écrans déjà gelés — leurs signatures doivent être RELUES, pas
+  // écrasées à l'aveugle.
+  { nom: "pro tableau de bord", url: `${PRO}/`, theme: "dark", authentifie: "PRO" },
   { nom: "pro nouvelle salle", url: `${PRO}/salles/nouvelle`, theme: "dark", authentifie: "PRO" },
   { nom: "pro compte", url: `${PRO}/compte`, theme: "dark", authentifie: "PRO" }
 ];

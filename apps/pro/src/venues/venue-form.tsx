@@ -694,26 +694,63 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
  * (slug, badge, statut, équipements) sont composés PAR la page d'édition —
  * ce composant reste le tronc commun, pas un couteau suisse à drapeaux.
  */
-export function VenueFormFields({
-  values,
-  onChange,
-  errors,
-  wilayas,
-  referentialsLoading
-}: {
+// ══════════════════════════════════════════════════════════════════════════
+// GROUPES DE CHAMPS — Lot UIP-C.
+//
+// `VenueFormFields` rendait les trois sections d'un bloc, ce qui convenait à une
+// page unique. L'assistant doit les redistribuer par étape, et surtout composer
+// l'ÉTAPE 1 avec des champs venus des TROIS : `POST /venues` exige `nameFr`,
+// `nameAr`, `cityId`, `capacityMax` et `basePriceCents`. La salle ne peut naître
+// qu'une fois ces cinq réunis — c'est la décision (a), et c'est ce qui permet à
+// toutes les étapes suivantes d'écrire sur un id réel.
+//
+// ⚠ Le JSX est DÉPLACÉ, pas réécrit. Aucun libellé, aucune borne, aucun `aria-*`,
+// aucune logique de caret de prix ne change. La découpe a été faite par un script
+// qui VÉRIFIE ses seize ancres avant de couper : un décalage d'une ligne aurait
+// mélangé deux champs en silence, et le typecheck ne l'aurait pas vu.
+//
+// `VenueFormFields` reste exporté et recompose les six groupes dans l'ordre
+// d'origine — ce qui l'utilisait déjà n'a rien à changer.
+// ══════════════════════════════════════════════════════════════════════════
+
+/** Noms FR/AR — requis par la création. */
+/** Erreurs à afficher AVANT tout clic, pour les seuls champs déjà remplis.
+ *
+ *  ⚠ Défaut trouvé en exécutant : « Suivant » désactivé tant que l'étape est
+ *  invalide (exigence du cadrage) supprimait du même coup l'affichage des
+ *  messages, qui n'apparaissaient qu'au submit. Un prix « 150000.5 » laissait
+ *  donc le bouton grisé SANS dire pourquoi — le pro n'avait plus aucun moyen de
+ *  savoir quel champ fâchait.
+ *
+ *  On montre donc les messages des champs NON VIDES, et on laisse les requis
+ *  encore vierges au seul « Suivant » grisé + sa raison écrite : afficher « le
+ *  nom est requis » sur un formulaire qu'on vient d'ouvrir accuse l'utilisateur
+ *  de n'avoir pas encore tapé. */
+export function liveErrors(errors: FieldErrors, values: VenueFormValues): FieldErrors {
+  const rempli: Record<string, boolean> = {
+    nameFr: values.nameFr.trim() !== "",
+    nameAr: values.nameAr.trim() !== "",
+    cityId: values.cityId !== "",
+    capacityMax: values.capacityMax.trim() !== "",
+    basePriceCents: values.basePrice.trim() !== ""
+  };
+  const sortie: FieldErrors = {};
+  for (const [cle, message] of Object.entries(errors)) {
+    if (rempli[cle] !== false) sortie[cle] = message;
+  }
+  return sortie;
+}
+
+export function NameFields({ values, onChange, errors }: {
   values: VenueFormValues;
   onChange: (patch: Partial<VenueFormValues>) => void;
   errors: FieldErrors;
-  wilayas: WilayaDTO[];
-  referentialsLoading: boolean;
 }) {
   const { t } = useTranslation();
   const tval = useValidationMessage();
 
   return (
     <>
-      <SectionTitle>{t("venue.ui.form.sectionInfo")}</SectionTitle>
-
       <Field label={t("venue.ui.form.nameFr")} required error={tval(errors.nameFr)}>
         {({ id, describedBy, invalid, required }) => (
           <input
@@ -743,7 +780,21 @@ export function VenueFormFields({
           />
         )}
       </Field>
+    </>
+  );
+}
 
+/** Accroche et description dans les deux langues. Tout facultatif. */
+export function PresentationFields({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
+
+  return (
+    <>
       <div className="field-row">
         <Field label={t("venue.ui.form.taglineFr")} error={tval(errors.taglineFr)}>
           {({ id, describedBy, invalid }) => (
@@ -800,9 +851,27 @@ export function VenueFormFields({
           />
         )}
       </Field>
+    </>
+  );
+}
 
-      <SectionTitle>{t("venue.ui.form.sectionLocation")}</SectionTitle>
+/** Wilaya — requise par la création (`cityId`). */
+export function CityField({
+  values,
+  onChange,
+  errors,
+  wilayas,
+  referentialsLoading
+}: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+  wilayas: WilayaDTO[];
+  referentialsLoading: boolean;
+}) {
+  const tval = useValidationMessage();
 
+  return (
       <CitySelect
         wilayas={wilayas}
         value={values.cityId}
@@ -810,7 +879,20 @@ export function VenueFormFields({
         error={tval(errors.cityId)}
         loading={referentialsLoading}
       />
+  );
+}
 
+/** Quartier, adresse, coordonnées — facultatifs, lat/lng par PAIRE. */
+export function PlaceFields({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
+
+  return (
+    <>
       <div className="field-row">
         <Field label={t("venue.ui.form.districtFr")} error={tval(errors.districtFr)}>
           {({ id, describedBy, invalid }) => (
@@ -883,9 +965,22 @@ export function VenueFormFields({
           )}
         </Field>
       </div>
+    </>
+  );
+}
 
-      <SectionTitle>{t("venue.ui.form.sectionCapacityPrice")}</SectionTitle>
+/** Capacité et prix de base — requis par la création.
+ *  ⚠ Le prix garde son rejet décimal strict et sa gestion de caret. */
+export function CapacityPriceFields({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
 
+  return (
+    <>
       <div className="field-row">
         <Field label={t("venue.ui.form.capacityMax")} required error={tval(errors.capacityMax)}>
           {({ id, describedBy, invalid, required }) => (
@@ -919,7 +1014,21 @@ export function VenueFormFields({
           )}
         </Field>
       </div>
+    </>
+  );
+}
 
+/** Mode de réservation. Omis à la création ⇒ défaut Prisma SINGLE_SLOT. */
+export function BookingModeField({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
+
+  return (
+    <>
       <Field label={t("venue.ui.form.bookingMode")} error={tval(errors.bookingMode)}>
         {({ id, describedBy, invalid }) => (
           <select
@@ -934,6 +1043,41 @@ export function VenueFormFields({
           </select>
         )}
       </Field>
+    </>
+  );
+}
+
+/** Le formulaire COMPLET, recomposé depuis les six groupes dans l'ordre
+ *  historique. Conservé pour que rien de ce qui l'utilisait n'ait à changer. */
+export function VenueFormFields({
+  values,
+  onChange,
+  errors,
+  wilayas,
+  referentialsLoading
+}: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+  wilayas: WilayaDTO[];
+  referentialsLoading: boolean;
+}) {
+  const { t } = useTranslation();
+  const groupe = { values, onChange, errors };
+
+  return (
+    <>
+      <SectionTitle>{t("venue.ui.form.sectionInfo")}</SectionTitle>
+      <NameFields {...groupe} />
+      <PresentationFields {...groupe} />
+
+      <SectionTitle>{t("venue.ui.form.sectionLocation")}</SectionTitle>
+      <CityField {...groupe} wilayas={wilayas} referentialsLoading={referentialsLoading} />
+      <PlaceFields {...groupe} />
+
+      <SectionTitle>{t("venue.ui.form.sectionCapacityPrice")}</SectionTitle>
+      <CapacityPriceFields {...groupe} />
+      <BookingModeField {...groupe} />
     </>
   );
 }

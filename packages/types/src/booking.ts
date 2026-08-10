@@ -84,13 +84,24 @@ export const bookingCreateSchema = z
     paymentMethod: z.enum([PaymentMethod.ONLINE, PaymentMethod.CASH], {
       errorMap: () => ({ message: "booking.validation.paymentMethodInvalid" })
     }),
-    /** Les QUATRE champs de contact sont obligatoires : `User.firstName`,
+    /** Nom, prénom et TÉLÉPHONE sont obligatoires : `User.firstName`,
      *  `lastName` et `phone` sont tous nullable, le compte ne peut pas les
-     *  fournir de façon fiable. On les demande, on les fige. */
+     *  fournir de façon fiable. On les demande, on les fige.
+     *
+     *  ⚠ L'E-MAIL, LUI, EST FACULTATIF (D135). `bookings.contact_email` est
+     *  `String?` en base ; cette borne-ci était plus stricte que le schéma, et le
+     *  cas qu'elle rejetait n'est pas un cas limite — c'est le client algérien
+     *  sans adresse e-mail. Le téléphone reste le canal sûr : `contact_phone` est
+     *  NOT NULL, et c'est par là que le pro rappelle. */
     contactFirstName: contactNameSchema,
     contactLastName: contactNameSchema,
     contactPhone: dzPhoneSchema,
-    contactEmail: z.string().trim().email("booking.validation.emailInvalid").max(180, "booking.validation.emailTooLong"),
+    contactEmail: z
+      .string()
+      .trim()
+      .email("booking.validation.emailInvalid")
+      .max(180, "booking.validation.emailTooLong")
+      .optional(),
     /** D79 — facultatif, plafonné par Zod SEULEMENT : pas de `CHECK` SQL, D55
      *  interdit de valider deux fois la même borne. */
     clientMessage: z.string().trim().max(1000, "booking.validation.messageTooLong").optional(),

@@ -37,9 +37,14 @@ function stubFetch(payload: unknown = AVAILABILITY) {
   );
 }
 
-function renderPanel(props: Partial<React.ComponentProps<typeof BookingRequestPanel>> = {}) {
+const CLIENT_CONNECTE = { id: "u9", email: "client@example.dz", role: "CLIENT", emailVerified: true };
+
+function renderPanel(
+  props: Partial<React.ComponentProps<typeof BookingRequestPanel>> = {},
+  session: unknown = null
+) {
   const auth = {
-    bootstrap: vi.fn().mockResolvedValue(null),
+    bootstrap: vi.fn().mockResolvedValue(session),
     login: vi.fn(),
     logout: vi.fn(),
     raw: vi.fn()
@@ -143,6 +148,48 @@ const TRAITEUR = {
   maxUnits: null,
   tiers: []
 };
+
+describe("Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non", () => {
+  async function remplir() {
+    fireEvent.click(await screen.findByRole("button", { name: /2027-08-15/ }));
+    fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: "200" } });
+    fireEvent.change(screen.getByPlaceholderText("Prénom"), { target: { value: "Amina" } });
+    fireEvent.change(screen.getByPlaceholderText("Nom"), { target: { value: "Bensalem" } });
+  }
+
+  it("⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps", async () => {
+    stubFetch();
+    const client = renderPanel({}, CLIENT_CONNECTE);
+    await remplir();
+
+    // Le bouton est encore inerte : il manque le TÉLÉPHONE, pas l'e-mail.
+    expect(screen.getByRole("button", { name: "Envoyer ma demande" })).toBeDisabled();
+    fireEvent.change(screen.getByPlaceholderText("Téléphone"), { target: { value: "+213550000001" } });
+    expect(screen.getByRole("button", { name: "Envoyer ma demande" })).toBeEnabled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer ma demande" }));
+    await waitFor(() => expect(client.create).toHaveBeenCalled());
+
+    // ⚠ Clé absente, JAMAIS `""` : `.email()` refuse la chaîne vide, et le
+    // client verrait une erreur de validation là où il n'a rien à déclarer.
+    const corps = vi.mocked(client.create).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+    expect(corps).not.toHaveProperty("contactEmail");
+    expect(corps.contactPhone).toBe("+213550000001");
+  });
+
+  it("avec un e-mail, il est transmis tel quel", async () => {
+    stubFetch();
+    const client = renderPanel({}, CLIENT_CONNECTE);
+    await remplir();
+    fireEvent.change(screen.getByPlaceholderText("Téléphone"), { target: { value: "+213550000001" } });
+    fireEvent.change(screen.getByPlaceholderText("E-mail (facultatif)"), { target: { value: "amina@example.dz" } });
+
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer ma demande" }));
+    await waitFor(() => expect(client.create).toHaveBeenCalled());
+    const corps = vi.mocked(client.create).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+    expect(corps.contactEmail).toBe("amina@example.dz");
+  });
+});
 
 describe("Prestations — E2d", () => {
   it("une salle SANS catalogue n'affiche aucun bloc vide", async () => {

@@ -90,3 +90,753 @@
 .time-select { display: inline-flex; align-items: center; gap: 4px; }
 .time-select select { font-variant-numeric: tabular-nums; }
 .field-label { display: block; font-size: 13px; font-weight: 500; margin-block-end: 4px; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   COQUILLE PRO — top panel, portée, panneau gauche (Lot UIP-A)
+
+   Propriétés LOGIQUES uniquement : la moitié du public de Zwadj lit en arabe,
+   et un `margin-left` fige la mise en page dans un sens de lecture.
+
+   ⚠ AUCUNE COULEUR EN DUR. Le design de référence peint ses états actifs en
+   rgba(213,87,98,…) — le rose CLIENT — alors même qu'il déclare une palette pro
+   séparée. Transposées telles quelles, ces valeurs réintroduiraient le rose
+   dans le pro par-dessous le token (décisions ② et ⑧). Tout passe donc par
+   --accent / --accent-soft, qui s'inversent déjà en sombre.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.pro-nav {
+  border-block-end: 1px solid var(--line);
+  background: var(--bg);
+}
+.pro-nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0 12px;
+  max-inline-size: 1080px;
+  margin-inline: auto;
+}
+.pro-nav-link {
+  display: inline-block;
+  padding: 12px 14px;
+  color: var(--ink-2);
+  text-decoration: none;
+  /* L'état actif est porté par la BORDURE **et** par aria-current (NavLink le
+     pose seul) : la couleur seule exclurait un pro daltonien. */
+  border-block-end: 2px solid transparent;
+  margin-block-end: -1px;
+}
+.pro-nav-link:hover {
+  color: var(--ink);
+}
+.pro-nav-link.is-active {
+  color: var(--ink);
+  font-weight: 500;
+  border-block-end-color: var(--accent);
+}
+.pro-nav-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Sélecteur de salle — n'apparaît qu'à partir de DEUX salles. */
+.pro-scope {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-block-end: 16px;
+}
+
+/* Panneau gauche — tableau de bord UNIQUEMENT (décision ⑨). */
+.pro-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: start;
+  max-inline-size: 1280px;
+  margin-inline: auto;
+}
+.pro-aside {
+  border-inline-end: 1px solid var(--line);
+  min-block-size: 100%;
+  padding: 20px 16px;
+}
+.pro-layout-main {
+  min-inline-size: 0;
+}
+.pro-aside-eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.pro-aside-name {
+  margin: 0 0 20px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.pro-counter {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-block: 10px;
+  border-block-start: 1px solid var(--line);
+}
+.pro-counter-label {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.pro-counter-value {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.pro-counter-muted {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* Une seule colonne dès que le panneau ne tient plus : il passe AU-DESSUS du
+   contenu, jamais en tiroir caché — ses deux compteurs sont la raison d'être
+   de l'écran. */
+@media (max-width: 860px) {
+  .pro-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pro-aside {
+    border-inline-end: none;
+    border-block-end: 1px solid var(--line);
+    min-block-size: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PARCOURS CLIENT SUR PLACE (Lot UIP-B)
+
+   ⚠ `grid-template-areas` et NON un ordre de colonnes implicite. Le design de
+   référence place 01 et 03 à gauche, 02 à droite : dans le DOM cela donne
+   01 → 03 → 02, donc au clavier et au lecteur d'écran aussi. Ici le DOM énumère
+   dans l'ordre des numéros et la grille se charge de la position — la
+   disposition est conservée, le compte à rebours disparaît.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.walkin-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "etape1 etape2"
+    "etape3 etape2";
+  align-items: start;
+  margin-block: 16px;
+}
+.walkin-step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+.walkin-step-n {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.walkin-services {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.walkin-service {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-block: 4px;
+}
+.walkin-total {
+  border-block-start: 1px solid var(--line);
+  margin-block-start: 20px;
+  padding-block-start: 16px;
+}
+.walkin-lines {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+.walkin-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 4px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
+}
+.walkin-amounts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  margin: 0 0 16px;
+}
+.walkin-amounts dt {
+  color: var(--ink-2);
+  font-size: 14px;
+}
+.walkin-amounts dd {
+  margin: 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.walkin-amounts .walkin-grand {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 16px;
+}
+.walkin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 12px 4px;
+}
+
+/* Une colonne dès que deux ne tiennent plus : les étapes s'enchaînent alors
+   exactement dans l'ordre des numéros, ce qui est déjà l'ordre du DOM. */
+@media (max-width: 780px) {
+  .walkin-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "etape1"
+      "etape2"
+      "etape3";
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REFONTE GRAPHIQUE — coquille pro et écran « Nouvelle réservation »
+
+   ⚠ AUCUNE COULEUR EN DUR. La maquette de référence peint ses états en
+   rgba(213,87,98,…) — le rose CLIENT — et ses dates en rouge/orange. Transposées
+   telles quelles, ces valeurs contrediraient la palette pro (décisions ② et ⑧)
+   et rendraient les états du calendrier illisibles. Tout passe par les tokens.
+
+   ⚠ Propriétés LOGIQUES uniquement : la moitié du public lit en arabe.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Top panel : capitales, lettrage espacé, actif souligné ─────────────── */
+.pro-nav-list {
+  max-inline-size: 1560px;
+  padding-inline: 28px;
+  gap: 0;
+}
+.pro-nav-link {
+  padding: 14px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  /* Les capitales viennent de la CSS, jamais des chaînes : l'arabe n'a pas de
+     casse, et une chaîne en majuscules dans le JSON serait illisible. */
+  text-transform: uppercase;
+}
+.pro-nav-link.is-active {
+  border-block-end-width: 2px;
+}
+
+/* ── Panneau gauche ─────────────────────────────────────────────────────── */
+.pro-layout {
+  grid-template-columns: 292px minmax(0, 1fr);
+  max-inline-size: none;
+}
+.pro-aside {
+  padding: 26px 24px 40px;
+  background: var(--bg-2, var(--bg));
+  min-block-size: calc(100vh - 116px);
+}
+.pro-aside-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+.pro-aside-name {
+  font-size: 20px;
+  line-height: 1.25;
+  margin-block-end: 24px;
+}
+.pro-aside-nav ul {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.pro-aside-link {
+  display: block;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  color: var(--ink-2);
+  text-decoration: none;
+  font-size: 14px;
+  border-inline-start: 2px solid transparent;
+}
+.pro-aside-link:hover {
+  color: var(--ink);
+}
+.pro-aside-link.is-active {
+  color: var(--ink);
+  font-weight: 500;
+  border-inline-start-color: var(--accent);
+  background: var(--surface);
+}
+.pro-aside-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Section dépliable « Devis ». L'en-tête est un vrai bouton : l'état est annoncé
+   par `aria-expanded`, pas déduit d'un chevron. */
+.pro-aside-fold {
+  margin-block-start: 20px;
+  border-block-start: 1px solid var(--line);
+}
+.pro-fold-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  gap: 10px;
+  padding: 14px 0 10px;
+  background: none;
+  border: 0;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.pro-fold-head:hover {
+  color: var(--ink);
+}
+.pro-fold-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.pro-fold-chevron {
+  font-size: 14px;
+  line-height: 1;
+}
+.pro-fold-line {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+/* ══ Écran « Nouvelle réservation » ═══════════════════════════════════════ */
+
+.wk-main {
+  padding: 30px 32px 64px;
+  max-inline-size: 1560px;
+}
+.wk-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-block-end: 30px;
+}
+.wk-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-eyebrow-rule {
+  inline-size: 56px;
+  block-size: 1px;
+  background: var(--line);
+}
+.wk-title {
+  margin: 0 0 10px;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.wk-lede {
+  margin: 0;
+  max-inline-size: 62ch;
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.wk-head-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.wk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.wk-btn:hover:not(:disabled) {
+  background: var(--bg-2, var(--bg));
+}
+.wk-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.wk-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.wk-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink, var(--surface));
+}
+.wk-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.25);
+}
+
+/* ── Grille : 01/03 à gauche, 02/total à droite, DOM en 01→02→03 ─────────── */
+.wk-grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-areas:
+    "client date"
+    "devis  date"
+    "devis  total";
+  align-items: start;
+}
+.wk-card {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg-2, var(--surface));
+  padding: 22px 24px 24px;
+}
+.wk-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0 0 20px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.wk-step-n {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+
+.wk-pair {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.wk-field {
+  min-inline-size: 0;
+}
+.wk-label {
+  display: block;
+  margin-block-end: 6px;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-input {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+.wk-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+.wk-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ── Bandeau date sélectionnée / tarif jour ─────────────────────────────── */
+.wk-picked {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 16px;
+  padding: 14px 16px;
+  margin-block-end: 18px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--surface);
+}
+.wk-picked-label {
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-picked-value {
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.wk-end {
+  text-align: end;
+}
+
+/* ── Compteur d'invités ────────────────────────────────────────────────── */
+.wk-guests {
+  margin-block-start: 18px;
+  padding-block-start: 18px;
+  border-block-start: 1px solid var(--line);
+}
+.wk-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wk-step-btn {
+  inline-size: 40px;
+  min-block-size: 40px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.wk-step-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.wk-guests-input {
+  max-inline-size: 110px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Prestations : une case par ligne, l'état coché lisible sans couleur ── */
+.wk-services {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.wk-service {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 14px;
+}
+.wk-service.is-on {
+  border-color: var(--ink);
+  font-weight: 500;
+}
+.wk-service:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.wk-service-name {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+.wk-service-type {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-devis-actions {
+  margin-block-start: 20px;
+}
+
+/* ── Total à facturer ──────────────────────────────────────────────────── */
+.wk-total {
+  border-color: var(--ink);
+}
+.wk-total-head {
+  margin: 0 0 18px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.wk-amounts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 16px;
+  margin: 0 0 14px;
+  font-size: 14px;
+}
+.wk-amounts dt {
+  color: var(--ink-2);
+}
+.wk-amounts dd {
+  margin: 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.wk-lines {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.wk-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 4px;
+}
+.wk-grand {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 16px;
+  border-block-start: 1px solid var(--line);
+}
+.wk-grand strong {
+  font-size: 30px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.wk-deposit {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  margin-block-end: 16px;
+  /* Fond d'accent DOUX dérivé du token, jamais le rose de la maquette. */
+  background: var(--bg-2, var(--bg));
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 14px;
+}
+.wk-deposit strong {
+  font-variant-numeric: tabular-nums;
+}
+.wk-total-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-end: 8px;
+}
+.wk-total-actions .wk-btn {
+  flex: 1 1 auto;
+}
+.wk-alert,
+.wk-notice {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 2px;
+  background: var(--surface);
+  font-size: 14px;
+}
+
+/* ── Créneaux du jour, cliquables dans le parcours ──────────────────────── */
+.cal-slot-pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  inline-size: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.cal-slot-pick:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.cal-slot-pick.is-picked {
+  border-color: var(--ink);
+  border-inline-start-width: 3px;
+  font-weight: 500;
+}
+.cal-slot-pick:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.cal-slot-price {
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Responsive : empiler proprement, sans jamais rogner les cibles ─────── */
+@media (max-width: 1180px) {
+  .wk-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "client"
+      "date"
+      "devis"
+      "total";
+  }
+}
+@media (max-width: 860px) {
+  .wk-main {
+    padding: 22px 18px 48px;
+  }
+  .wk-title {
+    font-size: 30px;
+  }
+  .wk-pair,
+  .wk-services {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pro-aside {
+    min-block-size: 0;
+  }
+}

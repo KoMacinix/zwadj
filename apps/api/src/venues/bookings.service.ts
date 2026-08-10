@@ -295,7 +295,11 @@ export class BookingsService {
         contactFirstName: input.contactFirstName,
         contactLastName: input.contactLastName,
         contactPhone: input.contactPhone,
-        contactEmail: input.contactEmail,
+        // D135 — clé absente ⇒ NULL explicite, comme `clientMessage` juste en
+        // dessous. Laisser passer `undefined` marcherait ici (Prisma l'ignore sur
+        // une colonne nullable) mais dirait « je n'ai pas d'avis » au lieu de
+        // « ce client n'a pas d'e-mail ».
+        contactEmail: input.contactEmail ?? null,
         clientMessage: input.clientMessage ?? null,
         expiresAt,
         // Écriture NESTÉE : les lignes naissent avec la réservation, dans la

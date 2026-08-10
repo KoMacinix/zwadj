@@ -7,7 +7,7 @@
 import { Module } from "@nestjs/common";
 import { AvailabilityBlocksController } from "./availability-blocks.controller";
 import { AvailabilityBlocksService } from "./availability-blocks.service";
-import { AvailabilityController } from "./availability.controller";
+import { AvailabilityController, AvailabilityProController } from "./availability.controller";
 import { BookingNotificationsService } from "./booking-notifications.service";
 import { BookingsController } from "./bookings.controller";
 import { BookingsProController } from "./bookings-pro.controller";
@@ -48,6 +48,9 @@ import { VenuesService } from "./venues.service";
     VenuesAdminController,
     VenuesPublicController,
     AvailabilityController,
+    // ⚠ Leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et
+    // les six portes passent quand même. On le déclare dans le même geste.
+    AvailabilityProController,
     AvailabilityBlocksController,
     VisitAvailabilitiesController,
     VisitSlotsController,

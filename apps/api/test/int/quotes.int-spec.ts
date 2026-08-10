@@ -288,6 +288,37 @@ describe("Conversion — D101 : la chaîne complète, dans l'ordre", () => {
     expect(res.body.message.code).toBe("QUOTE_STATUS_CONFLICT");
   });
 
+  it("⚠ D135 — un client SANS e-mail se convertit : la borne Zod était plus stricte que la base", async () => {
+    // ⚠ Le cas réel que la validation refusait, et il n'a rien d'un cas limite :
+    // c'est le client au comptoir en Algérie, qui donne un numéro et pas une
+    // adresse. `bookings.contact_email` est `String?` depuis toujours ; seule la
+    // borne applicative interdisait de l'omettre, et elle rendait le parcours
+    // « client sur place » inachevable. D55, cinquième occurrence.
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    await act(f, q.id, "send").expect(201);
+
+    const { contactEmail: _omis, ...sansEmail } = CONTACT;
+    const after = (await act(f, q.id, "convert", sansEmail).expect(201)).body as QuoteDTO;
+
+    const booking = await ctx.prisma.booking.findUniqueOrThrow({ where: { id: after.bookingId as string } });
+    expect(booking.contactEmail).toBeNull();
+    // Le TÉLÉPHONE, lui, est bien là : c'est le canal de rappel du pro.
+    expect(booking.contactPhone).toBe("+213550000001");
+  });
+
+  it("⚠ D135 — mais le téléphone reste EXIGÉ : l'assouplir ne l'a pas emporté", async () => {
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    await act(f, q.id, "send").expect(201);
+
+    const { contactPhone: _sansTel, ...sansPhone } = CONTACT;
+    // 400 et non 201 : c'est l'écart qui prouve que la borne n'a bougé que d'un
+    // champ. Sans cette assertion, un `.optional()` posé par erreur sur le
+    // téléphone passerait inaperçu.
+    await act(f, q.id, "convert", sansPhone).expect(400);
+  });
+
   it("convertir crée une demande PENDING, et le devis RESTE SENT", async () => {
     const f = await setup();
     const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
