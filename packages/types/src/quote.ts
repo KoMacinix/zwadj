@@ -96,7 +96,19 @@ export const quoteConvertSchema = z
     contactFirstName: text(80),
     contactLastName: text(80),
     contactPhone: dzPhoneSchema,
-    contactEmail: z.string().trim().email("quote.validation.emailInvalid").max(180),
+    /** ⚠ FACULTATIF — et c'est le SCHÉMA qui le dit, pas une préférence d'écran.
+     *  `bookings.contact_email` est `String?` depuis toujours ; seule cette borne
+     *  était plus stricte que la base. Le cas réel qu'elle rejetait est le cas
+     *  NORMAL en Algérie : un client au comptoir qui n'a pas d'e-mail. Aucun
+     *  parcours ne pouvait alors être conclu.
+     *
+     *  D55, CINQUIÈME occurrence de cette famille : avant d'écrire une
+     *  validation de borne, écrire le cas réel qu'elle doit accepter — si elle le
+     *  rejette, c'est elle qui a tort. Le schéma a autorité sur l'intuition.
+     *
+     *  Le TÉLÉPHONE reste obligatoire, et c'est cohérent : `contact_phone` est
+     *  NOT NULL, et c'est par là que le pro rappelle. */
+    contactEmail: z.string().trim().email("quote.validation.emailInvalid").max(180).optional(),
     paymentMethod: z.enum(["ONLINE", "CASH"], { errorMap: () => ({ message: "quote.validation.paymentMethodInvalid" }) })
   })
   .strict("quote.validation.unknownKey");

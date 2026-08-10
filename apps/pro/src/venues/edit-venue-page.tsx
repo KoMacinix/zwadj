@@ -6,7 +6,7 @@
 // rappelle jamais `load()` : cf. l'en-tête de `photos-section.tsx`.
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import { ArrowBackIcon, ConfirmDialog } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import type { VenueProDTO } from "@zwadj/types";
@@ -16,14 +16,22 @@ import { useReferentialsData, useVenues } from "./venue-client-context";
 import { isVenueNotFound, venueFieldErrors } from "./venue-errors";
 import {
   AmenitiesPicker,
+  BookingModeField,
+  CapacityPriceFields,
+  CityField,
+  NameFields,
+  PlaceFields,
+  PresentationFields,
   StylesPicker,
   PublicationBadge,
   StatusSelect,
-  VenueFormFields,
+  buildCreateInput,
   buildUpdateDiff,
+  liveErrors,
   venueToForm,
   type VenueFormValues
 } from "./venue-form";
+import { VenueWizard, type WizardStep } from "./venue-wizard";
 import { PhotosSection } from "./photos-section";
 import { SlotsSection } from "./slots-section";
 import { BlocksSection } from "./blocks-section";
@@ -56,6 +64,11 @@ export function EditVenuePage() {
   const [notice, setNotice] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  /** ⚠ L'étape vit dans l'URL, pas dans un `useState`. Rechargement, bouton
+   *  « retour » et adressabilité pour la suite a11y viennent alors gratuitement. */
+  const [params, setParams] = useSearchParams();
+  const current = Math.max(1, Math.min(7, Number(params.get("etape") ?? "1") || 1));
+  const goStep = (n: number) => setParams({ etape: String(n) }, { replace: false });
 
   const load = useCallback(() => {
     setState({ kind: "loading" });
@@ -73,8 +86,16 @@ export function EditVenuePage() {
   const patch = (next: Partial<VenueFormValues>) =>
     setValues((current) => (current ? { ...current, ...next } : current));
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  /** Enregistre les champs du formulaire général PUIS avance (ou reste, si
+   *  `next` est nul).
+   *
+   *  ⚠ Un diff VIDE n'est plus une anomalie à signaler. Sur une page unique,
+   *  « aucun changement » répondait à un clic sur « Enregistrer » ; dans un
+   *  assistant, traverser une étape sans rien y toucher est le cas NORMAL —
+   *  afficher un avertissement à chaque « Suivant » apprendrait à ne plus lire
+   *  les messages. On n'envoie toujours rien (corps vide = 400 côté schéma), on
+   *  avance simplement. */
+  const saveAndGo = async (next: number | null) => {
     setFormError(null);
     setNotice(null);
     if (state.kind !== "ready" || !values || referentials.status !== "ready") return;
@@ -85,9 +106,8 @@ export function EditVenuePage() {
       return;
     }
     if (diff.kind === "empty") {
-      // Corps vide = 400 côté schéma : on ne l'envoie pas, on l'explique.
       setFieldErrors({});
-      setNotice(t("venue.ui.form.noChanges"));
+      if (next !== null) goStep(next);
       return;
     }
 
@@ -98,6 +118,7 @@ export function EditVenuePage() {
       setState({ kind: "ready", venue: updated });
       setValues(venueToForm(updated));
       setNotice(t("venue.ui.form.saved"));
+      if (next !== null) goStep(next);
     } catch (err) {
       if (isVenueNotFound(err)) {
         setState({ kind: "notFound" });
@@ -118,7 +139,7 @@ export function EditVenuePage() {
     setConfirmingDelete(false);
     try {
       await venuesApi.softDelete(state.venue.id);
-      void navigate("/");
+      void navigate("/salles");
     } catch {
       setFormError(t("venue.ui.delete.error"));
     }
@@ -143,7 +164,10 @@ export function EditVenuePage() {
           <div className="state-panel">
             <h1>{t("venue.ui.notFound.title")}</h1>
             <p>{t("venue.ui.notFound.body")}</p>
-            <Link to="/" className="btn btn-accent">
+            {/* ⚠ `/salles` : l'écran « salle introuvable » renvoyait sur « / »,
+                devenu le tableau de bord depuis UIP-A. Le troisième lien de ce
+                fichier à corriger — l'audit du zip les a comptés, pas moi. */}
+            <Link to="/salles" className="btn btn-accent">
               <ArrowBackIcon />
               {t("venue.ui.notFound.back")}
             </Link>
@@ -172,149 +196,220 @@ export function EditVenuePage() {
   }
 
   const venue = state.venue;
+  /** ⚠ La validité de l'étape 1 EST le contrat de CRÉATION, même à l'édition :
+   *  ce sont les cinq champs sans lesquels une salle ne peut pas exister. Une
+   *  salle enregistrée les satisfait par construction ; ce test n'est là que pour
+   *  empêcher de les VIDER et d'avancer quand même. D55 — aucune borne nouvelle. */
+  const controle = buildCreateInput(values);
+  const step1Valid = controle.errors === null;
+  const erreursVues = { ...liveErrors(controle.errors ?? {}, values), ...fieldErrors };
+  const groupe = { values, onChange: patch, errors: erreursVues };
+
+  /** ⚠ « Franchissable » ≠ « déjà visitée ». À l'édition, la salle existe donc
+   *  l'étape 1 est satisfaite : toutes les étapes sont ouvertes, et le pro qui
+   *  vient corriger une photo n'a pas à retraverser six écrans. Elles se ferment
+   *  toutes si l'étape 1 cesse d'être valide — avancer sur une salle dont on
+   *  vient d'effacer le prix produirait des PATCH voués au 400. */
+  const ouverte = step1Valid;
+
+  const etapes: WizardStep[] = [
+    {
+      n: 1,
+      title: t("venue.ui.wizard.step1"),
+      valid: step1Valid,
+      reachable: true,
+      body: (
+        <>
+          {/* Slug : figé à la création, généré serveur — lecture seule. */}
+          <Field label={t("venue.ui.form.slug")} hint={t("venue.ui.form.slugHint")}>
+            {({ id: slugId, describedBy }) => (
+              <input id={slugId} type="text" value={venue.slug} readOnly dir="ltr" aria-describedby={describedBy} />
+            )}
+          </Field>
+          <NameFields {...groupe} />
+          <CityField
+            {...groupe}
+            wilayas={referentials.wilayas}
+            referentialsLoading={referentials.status === "loading"}
+          />
+          <CapacityPriceFields {...groupe} />
+        </>
+      )
+    },
+    {
+      n: 2,
+      title: t("venue.ui.wizard.step2"),
+      valid: true,
+      reachable: ouverte,
+      body: <PlaceFields {...groupe} />
+    },
+    {
+      n: 3,
+      title: t("venue.ui.wizard.step3"),
+      valid: true,
+      reachable: ouverte,
+      body: (
+        <>
+          <PresentationFields {...groupe} />
+          <AmenitiesPicker
+            amenities={referentials.amenities}
+            selected={values.amenityIds}
+            loading={referentials.status === "loading"}
+            error={tval(fieldErrors.amenityIds)}
+            onToggle={(amenityId, checked) =>
+              patch({
+                amenityIds: checked
+                  ? [...values.amenityIds, amenityId]
+                  : values.amenityIds.filter((c) => c !== amenityId)
+              })
+            }
+          />
+          <StylesPicker
+            venueStyles={referentials.venueStyles}
+            selectedStyles={values.styleIds}
+            loading={referentials.status === "loading"}
+            ceremonyType={values.ceremonyType}
+            onCeremonyType={(ceremonyType) => patch({ ceremonyType })}
+            onToggleStyle={(styleId, checked) =>
+              patch({
+                styleIds: checked ? [...values.styleIds, styleId] : values.styleIds.filter((c) => c !== styleId)
+              })
+            }
+          />
+        </>
+      )
+    },
+    {
+      n: 4,
+      title: t("venue.ui.wizard.step4"),
+      valid: true,
+      reachable: ouverte,
+      body: (
+        <>
+          <BookingModeField {...groupe} />
+          {/* B4b — `initialSlots` consommé UNE FOIS, pas de `key` : la section ne
+              doit pas se remonter au milieu d'une saisie. */}
+          <SlotsSection venueId={venue.id} initialSlots={venue.slotTemplates} />
+          {/* D81 — l'acompte suit les créneaux et leurs prix : c'est la même
+              conversation commerciale. */}
+          <DepositSection
+            venue={venue}
+            onApplied={(deposit) =>
+              setState((c) => (c.kind === "ready" ? { ...c, venue: { ...c.venue, ...deposit } } : c))
+            }
+          />
+          <GuardedSection title={t("venue.ui.blocks.section")}>
+            <BlocksSection venueId={venue.id} />
+          </GuardedSection>
+        </>
+      )
+    },
+    {
+      n: 5,
+      title: t("venue.ui.wizard.step5"),
+      valid: true,
+      reachable: ouverte,
+      body: (
+        <GuardedSection title={t("venue.ui.services.title")}>
+          <ServicesSection venueId={venue.id} />
+        </GuardedSection>
+      )
+    },
+    {
+      n: 6,
+      title: t("venue.ui.wizard.step6"),
+      valid: true,
+      reachable: ouverte,
+      body: (
+        <>
+          <PhotosSection venueId={venue.id} initialPhotos={venue.photos} />
+          <VirtualTourSection
+            venueId={venue.id}
+            modelId={venue.matterportModelId}
+            onApplied={(matterportModelId) =>
+              setState((c) => (c.kind === "ready" ? { ...c, venue: { ...c.venue, matterportModelId } } : c))
+            }
+          />
+        </>
+      )
+    },
+    {
+      n: 7,
+      title: t("venue.ui.wizard.step7"),
+      valid: true,
+      reachable: ouverte,
+      body: (
+        <>
+          {/* D33 — même contrôle à 3 entrées que sur la liste. */}
+          <Field label={t("venue.ui.status.label")} hint={t("venue.ui.status.hint")} error={tval(fieldErrors.status)}>
+            {({ id: statusId, describedBy }) => (
+              <StatusSelect
+                id={statusId}
+                value={values.status}
+                describedBy={describedBy}
+                onChange={(status) => patch({ status })}
+              />
+            )}
+          </Field>
+          <p className="field-hint">{t("venue.ui.wizard.publishHint")}</p>
+        </>
+      )
+    }
+  ];
 
   return (
     <>
       <ProHeader />
       <main style={{ padding: 20, maxInlineSize: 720, marginInline: "auto" }}>
-        <Link to="/" className="backlink">
+        <Link to="/salles" className="backlink">
           <ArrowBackIcon />
           {t("venue.ui.form.back")}
         </Link>
 
         <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: "var(--radius)", padding: 20 }}>
-          <form className="form" onSubmit={(e) => void submit(e)} noValidate>
-            <h1>{t("venue.ui.form.editTitle")}</h1>
-            <FormError message={formError} />
-            {notice ? (
-              <p className="alert alert-success" role="status">
-                {notice}
-              </p>
-            ) : null}
+          <h1>{t("venue.ui.form.editTitle")}</h1>
+          <FormError message={formError} />
+          {notice ? (
+            <p className="alert alert-success" role="status">
+              {notice}
+            </p>
+          ) : null}
 
-            {referentials.status === "error" ? (
-              <div className="alert alert-error" role="alert">
-                <p style={{ margin: "0 0 8px" }}>{t("venue.ui.form.referentialsError")}</p>
-                <button type="button" className="btn btn-ghost" onClick={referentials.reload}>
-                  {t("venue.ui.list.retry")}
-                </button>
-              </div>
-            ) : null}
-
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
-              <PublicationBadge status={venue.publicationStatus} />
+          {referentials.status === "error" ? (
+            <div className="alert alert-error" role="alert">
+              <p style={{ margin: "0 0 8px" }}>{t("venue.ui.form.referentialsError")}</p>
+              <button type="button" className="btn btn-ghost" onClick={referentials.reload}>
+                {t("venue.ui.list.retry")}
+              </button>
             </div>
+          ) : null}
 
-            {/* Slug : figé à la création, généré serveur — lecture seule. */}
-            <Field label={t("venue.ui.form.slug")} hint={t("venue.ui.form.slugHint")}>
-              {({ id: slugId, describedBy }) => (
-                <input id={slugId} type="text" value={venue.slug} readOnly dir="ltr" aria-describedby={describedBy} />
-              )}
-            </Field>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
+            <PublicationBadge status={venue.publicationStatus} />
+          </div>
 
-            <VenueFormFields
-              values={values}
-              onChange={patch}
-              errors={fieldErrors}
-              wilayas={referentials.wilayas}
-              referentialsLoading={referentials.status === "loading"}
-            />
-
-            {/* D33 — même contrôle à 3 entrées que sur la liste. */}
-            <Field label={t("venue.ui.status.label")} hint={t("venue.ui.status.hint")} error={tval(fieldErrors.status)}>
-              {({ id: statusId, describedBy }) => (
-                <StatusSelect
-                  id={statusId}
-                  value={values.status}
-                  describedBy={describedBy}
-                  onChange={(status) => patch({ status })}
-                />
-              )}
-            </Field>
-
-            <AmenitiesPicker
-              amenities={referentials.amenities}
-              selected={values.amenityIds}
-              loading={referentials.status === "loading"}
-              error={tval(fieldErrors.amenityIds)}
-              onToggle={(amenityId, checked) =>
-                patch({
-                  amenityIds: checked
-                    ? [...values.amenityIds, amenityId]
-                    : values.amenityIds.filter((current) => current !== amenityId)
-                })
-              }
-            />
-
-            <StylesPicker
-              venueStyles={referentials.venueStyles}
-              selectedStyles={values.styleIds}
-              loading={referentials.status === "loading"}
-              ceremonyType={values.ceremonyType}
-              onCeremonyType={(ceremonyType) => patch({ ceremonyType })}
-              onToggleStyle={(styleId, checked) =>
-                patch({
-                  styleIds: checked
-                    ? [...values.styleIds, styleId]
-                    : values.styleIds.filter((current) => current !== styleId)
-                })
-              }
-            />
-
-            <button type="submit" className="btn btn-accent" disabled={saving || referentials.status !== "ready"}>
-              {saving ? t("venue.ui.form.saving") : t("venue.ui.form.save")}
-            </button>
-          </form>
-
-          {/* HORS du <form> : ces sections ont leurs propres endpoints et leurs
-              propres boutons — imbriquer un submit dans un autre est invalide
-              en HTML et ferait partir les deux requêtes sur une touche Entrée.
-              `initialPhotos` est consommé UNE FOIS par la section : pas de
-              `key`, pour ne pas la remonter au milieu d'une file d'upload
-              quand un enregistrement du formulaire principal renouvelle
-              l'objet `venue`. */}
-          {/* B4b — créneaux et prix. Même doctrine que les photos :
-              `initialSlots` est consommé UNE FOIS, pas de `key`, et la section
-              ne rappelle jamais `load()`. */}
-          <SlotsSection venueId={state.venue.id} initialSlots={state.venue.slotTemplates} />
-
-          {/* E2c — les prestations avant l'acompte : on décrit ce qu'on vend
-              avant de décider ce qu'on encaisse d'avance. */}
-          <GuardedSection title={t("venue.ui.services.title")}>
-            <ServicesSection venueId={state.venue.id} />
-          </GuardedSection>
-
-          {/* E1b / D81 — l'acompte suit immédiatement les créneaux et leurs prix :
-              c'est la même conversation commerciale, et le pro qui vient de fixer
-              un tarif est exactement celui qui doit décider ce qu'il encaisse
-              d'avance. */}
-          <DepositSection
-            venue={state.venue}
-            onApplied={(deposit) =>
-              setState((current) =>
-                current.kind === "ready" ? { ...current, venue: { ...current.venue, ...deposit } } : current
-              )
+          {/* ⚠ AUCUN <form> ici, et ce n'est pas une négligence. Les étapes 4 à 7
+              montent des sections qui possèdent DÉJÀ leurs propres boutons et
+              leurs propres endpoints (créneaux, prestations, acompte, blocages,
+              photos, visite virtuelle). Imbriquer un submit dans un autre est
+              invalide en HTML et ferait partir deux requêtes sur une touche
+              Entrée — c'était déjà la raison de les sortir du formulaire sur la
+              page unique. L'assistant remplace le submit par « Suivant », qui
+              enregistre le diff du formulaire général puis avance. */}
+          <VenueWizard
+            steps={etapes}
+            current={current}
+            onGo={(n) => void saveAndGo(n)}
+            onNext={() => void saveAndGo(current === etapes.length ? null : current + 1)}
+            nextLabel={
+              saving
+                ? t("venue.ui.form.saving")
+                : current === etapes.length
+                  ? t("venue.ui.form.save")
+                  : t("venue.ui.wizard.next")
             }
-          />
-
-          {/* B4d — blocages. Seul volet qui CHARGE ses données : les
-              blocages ne voyagent pas dans le DTO, ils sont sans borne. */}
-          <GuardedSection title={t("venue.ui.blocks.section")}>
-            <BlocksSection venueId={state.venue.id} />
-          </GuardedSection>
-
-          <PhotosSection venueId={state.venue.id} initialPhotos={state.venue.photos} />
-
-          <VirtualTourSection
-            venueId={state.venue.id}
-            modelId={state.venue.matterportModelId}
-            onApplied={(matterportModelId) =>
-              setState((current) =>
-                current.kind === "ready"
-                  ? { ...current, venue: { ...current.venue, matterportModelId } }
-                  : current
-              )
-            }
+            busy={saving}
+            invalidHint={t("venue.ui.wizard.step1Invalid")}
           />
         </div>
 
@@ -327,7 +422,10 @@ export function EditVenuePage() {
           <Link to={`/salles/${state.venue.id}/calendrier`} className="btn">
             {t("venue.ui.calendar.title")}
           </Link>
-          <Link to="/" className="btn">
+          {/* ⚠ `/salles` et non `/` : depuis UIP-A, « / » est le tableau de bord.
+              Un lien nommé « Retour à mes salles » qui ouvre autre chose est un
+              mensonge de libellé. */}
+          <Link to="/salles" className="btn">
             <ArrowBackIcon />
             {t("venue.ui.form.back")}
           </Link>

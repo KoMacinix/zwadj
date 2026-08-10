@@ -63,7 +63,25 @@ describe("Parité i18n FR/AR (invariant produit)", () => {
   it("le TOTAL ne RECULE pas — une suppression symétrique laisse la parité verte", () => {
     // Repère MESURÉ au lot de réconciliation. À relever DÉLIBÉRÉMENT quand un
     // lot ajoute des clés ; le voir baisser signifie qu'un lot en a effacé.
-    expect(fr.size).toBeGreaterThanOrEqual(843);
+    // UIP-A : 843 → 868. 26 clés ajoutées (nav, portée, panneau gauche, tableau
+    // de bord, réservations, deux entêtes de « Demandes ») MOINS
+    // `venue.ui.calendar.backToVenue`, dont le lien n'existe plus : la route
+    // `/salles/:id/calendrier` a disparu.
+    // UIP-B : 868 → 910. 42 clés du parcours « client sur place »
+    // (`venue.ui.walkin.*`) : trois étapes, contact, conditions, catalogue,
+    // bloc total, trois envois désactivés, deux issues.
+    // ⚠ Chiffres RELEVÉS sur les fichiers après modification, jamais estimés.
+    // UIP-C : 910 -> 926. 16 clés de l'assistant (`venue.ui.wizard.*`) : barre
+    // de progression, sept titres d'étape, raison d'inactivité, et les deux
+    // phrases qui expliquent ce que l'étape 1 ne demande pas encore.
+    // ⚠ Chiffre RELEVÉ sur les fichiers après modification, jamais estimé.
+    // Refonte graphique : 926 -> 937. Sur-titre, titre, description, bandeau
+    // date/tarif, pas du compteur d'invités, « Modifier le devis », « Total à
+    // facturer », navigation et section dépliable du panneau — moins
+    // `venue.ui.walkin.hint`, remplacée par `lede`.
+    // ⚠ Chiffre RELEVÉ sur les fichiers après modification, jamais déduit du
+    // nombre de clés que je croyais avoir ajoutées.
+    expect(fr.size).toBeGreaterThanOrEqual(937);
   });
 
   it("les surfaces C5/C5b sont COMPLÈTES — elles ont déjà été effacées une fois", () => {

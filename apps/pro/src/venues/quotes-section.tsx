@@ -103,8 +103,9 @@ export function QuotesSection({ venueId }: { venueId: string }) {
   });
 
   const draftComplete = draft.eventDate !== "" && draft.slotTemplateId !== "" && Number(draft.guests) > 0;
+  // D135 — l'e-mail est facultatif ; le téléphone ne l'est pas.
   const contactComplete =
-    contact.firstName.trim() !== "" && contact.lastName.trim() !== "" && contact.phone.trim() !== "" && contact.email.trim() !== "";
+    contact.firstName.trim() !== "" && contact.lastName.trim() !== "" && contact.phone.trim() !== "";
 
   // Les chaînes, la plus récemment créée en tête. Le tri du serveur est
   // chaîne puis version croissante : on regroupe sans le contredire.
@@ -244,7 +245,7 @@ export function QuotesSection({ venueId }: { venueId: string }) {
                             contactFirstName: contact.firstName.trim(),
                             contactLastName: contact.lastName.trim(),
                             contactPhone: contact.phone.trim(),
-                            contactEmail: contact.email.trim(),
+                            ...(contact.email.trim() === "" ? {} : { contactEmail: contact.email.trim() }),
                             paymentMethod: "CASH"
                           });
                           setConverting(null);

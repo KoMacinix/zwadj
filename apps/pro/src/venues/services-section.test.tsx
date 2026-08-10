@@ -11,7 +11,7 @@ import type { ServicesClient } from "@zwadj/api-client";
 import type { ServiceDTO } from "@zwadj/types";
 import { AppProviders } from "../App";
 import { initI18n } from "../i18n";
-import { makeAuthDouble, makeServicesDouble } from "../test-support/client-doubles";
+import { makeAuthDouble, makeVenueClientDouble, makeServicesDouble } from "../test-support/client-doubles";
 import { ServicesSection } from "./services-section";
 
 initI18n();
@@ -40,7 +40,7 @@ function setup(rows: ServiceDTO[], overrides: Partial<ServicesClient> = {}) {
   const client = makeServicesDouble({ listForVenue: vi.fn().mockResolvedValue(rows), ...overrides });
   render(
     <MemoryRouter>
-      <AppProviders client={makeAuthDouble()} servicesClient={client}>
+      <AppProviders client={makeAuthDouble()} venues={makeVenueClientDouble()} servicesClient={client}>
         <ServicesSection venueId="v1" />
       </AppProviders>
     </MemoryRouter>

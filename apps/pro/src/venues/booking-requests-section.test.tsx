@@ -10,7 +10,7 @@ import type { BookingsProClient } from "@zwadj/api-client";
 import type { ProBookingDTO } from "@zwadj/types";
 import { initI18n } from "../i18n";
 import { AppProviders } from "../App";
-import { makeAuthDouble, makeBookingsProDouble } from "../test-support/client-doubles";
+import { makeAuthDouble, makeVenueClientDouble, makeBookingsProDouble } from "../test-support/client-doubles";
 import { BookingRequestsSection } from "./booking-requests-section";
 
 const base: ProBookingDTO = {
@@ -57,7 +57,7 @@ function setup(rows: ProBookingDTO[], overrides: Partial<BookingsProClient> = {}
   });
   render(
     <MemoryRouter>
-      <AppProviders client={makeAuthDouble()} bookingsPro={client}>
+      <AppProviders client={makeAuthDouble()} venues={makeVenueClientDouble()} bookingsPro={client}>
         <BookingRequestsSection venueId="v1" />
       </AppProviders>
     </MemoryRouter>

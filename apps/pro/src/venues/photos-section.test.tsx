@@ -137,7 +137,7 @@ function makeReferentials(): ReferentialsClient {
 
 function renderEdit(venues: VenueProClient) {
   return render(
-    <MemoryRouter initialEntries={["/salles/v1"]}>
+    <MemoryRouter initialEntries={["/salles/v1?etape=6"]}>
       <AppProviders client={makeAuth()} venues={venues} referentials={makeReferentials()}>
         <Routes>
           <Route path="/salles/:id" element={<EditVenuePage />} />
@@ -149,7 +149,11 @@ function renderEdit(venues: VenueProClient) {
 
 /** Attend que la page soit chargée (le volet est monté avec elle). */
 async function ready() {
-  await screen.findByDisplayValue("Salle El Ryad");
+  // ⚠ UIP-C — l'ancre d'attente ne peut plus être le champ « nom de la salle » :
+  // il vit à l'étape 1, et l'assistant ne monte qu'une étape à la fois. On
+  // attend donc le TITRE de l'étape où cette section vit — le seul repère qui
+  // prouve que le bon écran est prêt.
+  await screen.findByRole("heading", { name: "Photos et visite virtuelle", level: 2 });
 }
 
 const fileInput = () => screen.getByLabelText("Fichiers image à envoyer");

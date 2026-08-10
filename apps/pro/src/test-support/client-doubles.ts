@@ -103,6 +103,19 @@ export function makeVenueClientDouble(
     listAvailabilityBlocks: vi.fn().mockResolvedValue([]),
     createAvailabilityBlock: vi.fn(),
     deleteAvailabilityBlock: vi.fn(),
+    // Calendrier pro : réponse VIDE mais BIEN FORMÉE par défaut. Un `vi.fn()`
+    // nu rendrait `undefined`, et le calendrier tomberait dans son `catch` — un
+    // « calendrier indisponible » silencieux dans tous les tests qui montent la
+    // coquille sans s'intéresser au calendrier.
+    availability: vi.fn().mockResolvedValue({
+      venueId: "v1",
+      slug: "salle",
+      bookingMode: "SINGLE_SLOT",
+      from: "2026-08-01",
+      to: "2026-08-31",
+      slots: [],
+      days: []
+    }),
     listVisitBookings: vi.fn().mockResolvedValue([]),
     cancelVisitBooking: vi.fn().mockResolvedValue(undefined).mockResolvedValue(undefined),
     ...overrides

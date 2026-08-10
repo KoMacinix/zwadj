@@ -17,6 +17,7 @@
 // sa base URL. `ApiError`/`NetworkError`/`toApiError` sont RÉUTILISÉS depuis le
 // client auth — la doctrine d'erreur ne doit exister qu'à un seul endroit.
 import type {
+  VenueAvailabilityResponse,
   AmenityDTO,
   AvailabilityBlockCreateInput,
   AvailabilityBlockDTO,
@@ -123,6 +124,11 @@ export interface VenueProClient {
   /** C3b — rendez-vous de visite d'une salle. Fenêtre NON écrêtée (D70) : le
    *  passé est l'historique du pro. */
   listVisitBookings(id: string, window: AvailabilityWindowQueryInput): Promise<ProVisitBookingDTO[]>;
+  /** Calendrier de SA salle. MÊME moteur que la route publique — seule la
+   *  recherche diffère : par id du propriétaire, sans condition de publication.
+   *  ⚠ La route publique par slug exige `publicationStatus = PUBLISHED` : un pro
+   *  dont la salle est en brouillon y recevait un 404 sur son propre calendrier. */
+  availability(id: string, window: AvailabilityWindowQueryInput): Promise<VenueAvailabilityResponse>;
   /** C3b — annulation par le pro. Le client est prévenu par e-mail. */
   cancelVisitBooking(id: string, bookingId: string): Promise<void>;
   /** D51 — `startsAt`/`endsAt` en date-heure civile LOCALE `YYYY-MM-DDTHH:mm`,
@@ -216,6 +222,12 @@ export function createVenueProClient(request: AuthedRequest): VenueProClient {
       // avoir envoyée correctement.
       request<AvailabilityBlockDTO[]>(
         `/pro/venues/${encodeURIComponent(id)}/availability-blocks?` +
+          new URLSearchParams({ from: window.from, to: window.to }).toString()
+      ),
+
+    availability: (id, window) =>
+      request<VenueAvailabilityResponse>(
+        `/pro/venues/${encodeURIComponent(id)}/availability?` +
           new URLSearchParams({ from: window.from, to: window.to }).toString()
       ),
 

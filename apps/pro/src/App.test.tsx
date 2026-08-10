@@ -5,7 +5,7 @@
 // Lot A5 — deux mises à jour de CONTRAT (arbitrage 2) : l'interface AuthClient
 // gagne `authedRequest`, et `/` ne rend plus le tableau de bord placeholder
 // mais la liste des salles.
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { vi } from "vitest";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
@@ -96,18 +96,107 @@ describe("Coquille protégée (D23/D24)", () => {
   // Lot A5 : `/` EST la liste des salles. On ne se contente pas de retirer
   // l'assertion périmée — on prouve que la coquille rend bien la liste pour un
   // PRO (client venue injecté → aucune salle → état vide attendu).
-  it("session PRO sur / : la coquille rend la LISTE des salles (état vide) + le nom de l'établissement", async () => {
+  it("session PRO sur / : l'écran « Nouvelle réservation », plus la liste des salles", async () => {
     const venues = makeVenues({ listMine: vi.fn().mockResolvedValue([]) });
     renderAt("/", makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) }), venues, makeReferentials());
+
+    // ⚠ Le titre a changé avec la refonte : « Tableau de bord » reste le nom de
+    // l'ONGLET, mais le `<h1>` de la page annonce la tâche, pas la rubrique.
+    expect(await screen.findByRole("heading", { level: 1, name: "Nouvelle réservation" })).toBeInTheDocument();
+    // Sans salle, le tableau de bord ne prétend rien : il demande d'en créer une.
+    expect(await screen.findByRole("link", { name: "Créer une salle" })).toBeInTheDocument();
+    // L'en-tête extrait (pro-header) reste au-dessus. A11a : le nom en clair a
+    // cédé la place au rond à initiales — on assert le déclencheur du menu et
+    // les initiales dérivées du businessName, pas le nom affiché.
+    expect(screen.getByRole("button", { name: "Mon compte" })).toBeInTheDocument();
+    expect(screen.getByText("SE")).toBeInTheDocument();
+  });
+
+  it("session PRO sur /salles : la LISTE, sur une route enfin DÉCLARÉE (dette fermée)", async () => {
+    const venues = makeVenues({ listMine: vi.fn().mockResolvedValue([]) });
+    renderAt("/salles", makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) }), venues, makeReferentials());
 
     expect(await screen.findByRole("heading", { name: "Mes salles" })).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "Aucune salle pour le moment" })).toBeInTheDocument();
     expect(venues.listMine).toHaveBeenCalled();
-    // L'en-tête extrait (pro-header) reste au-dessus de la liste. A11a : le nom
-    // en clair a cédé la place au rond à initiales — on assert le déclencheur du
-    // menu et les initiales dérivées du businessName, pas le nom affiché.
-    expect(screen.getByRole("button", { name: "Mon compte" })).toBeInTheDocument();
-    expect(screen.getByText("SE")).toBeInTheDocument();
+  });
+
+  it("le TOP PANEL porte les cinq entrées, et une seule pour les salles", async () => {
+    renderAt("/", makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) }), makeVenues(), makeReferentials());
+
+    const nav = await screen.findByRole("navigation", { name: "Navigation de l'espace professionnel" });
+    const labels = within(nav)
+      .getAllByRole("link")
+      .map((link) => link.textContent);
+    expect(labels).toEqual(["Tableau de bord", "Ma salle", "Demandes", "Calendrier", "Réservations"]);
+  });
+
+  it("l'entrée active est annoncée par aria-current, jamais par la seule couleur", async () => {
+    renderAt("/demandes", makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) }), makeVenues(), makeReferentials());
+
+    const nav = await screen.findByRole("navigation", { name: "Navigation de l'espace professionnel" });
+    const current = within(nav)
+      .getAllByRole("link")
+      .filter((link) => link.getAttribute("aria-current") === "page")
+      .map((link) => link.textContent);
+    // UNE seule entrée active. ⚠ Ce test fige un COMPORTEMENT OBSERVABLE, il ne
+    // prouve pas une garde : sur react-router 7, la racine ne se marque pas
+    // active sur une sous-route même sans `end` (mesuré). Il vaut donc comme
+    // sentinelle si la bibliothèque change d'avis, pas comme preuve du `end`.
+    expect(current).toEqual(["Demandes"]);
+  });
+});
+
+describe("⚠ Portes d'entrée fermées à une session ouverte", () => {
+  // ⚠ LE DÉFAUT QUE CES TESTS FIGENT. `RequireProSession` empêchait d'entrer sans
+  // session ; rien n'empêchait d'en sortir vers `/auth/connexion` AVEC une session
+  // valide. Un pro connecté qui tapait cette adresse voyait le formulaire, et
+  // pouvait se reconnecter par-dessus lui-même — voire avec un autre compte, en
+  // échangeant le jeton sous une application déjà montée.
+
+  it("un PRO connecté sur /auth/connexion est renvoyé au tableau de bord", async () => {
+    const client = makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) });
+    renderAt("/auth/connexion", client, makeVenues(), makeReferentials());
+
+    expect(await screen.findByRole("heading", { level: 1, name: "Nouvelle réservation" })).toBeInTheDocument();
+    // L'écart mesuré : le formulaire a DISPARU. Sans le garde, il s'afficherait
+    // par-dessus une session parfaitement valide.
+    expect(screen.queryByLabelText("Mot de passe")).not.toBeInTheDocument();
+  });
+
+  it("un CLIENT connecté y est renvoyé aussi, et lit le refus EXPLICITE", async () => {
+    const client = makeClient({
+      bootstrap: vi.fn().mockResolvedValue({ ...PRO_USER, role: "CLIENT", proProfile: null })
+    });
+    renderAt("/auth/connexion", client, makeVenues(), makeReferentials());
+
+    // Un formulaire de connexion lui aurait laissé croire qu'il n'était pas
+    // connecté du tout. La carte « mauvais rôle » porte, elle, un bouton de
+    // déconnexion : le seul geste utile.
+    expect(await screen.findByRole("heading", { name: "Espace réservé aux professionnels" })).toBeInTheDocument();
+    expect(screen.queryByLabelText("Mot de passe")).not.toBeInTheDocument();
+  });
+
+  it("l'inscription est fermée elle aussi : on ne crée pas un compte par-dessus le sien", async () => {
+    const client = makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) });
+    renderAt("/auth/inscription", client, makeVenues(), makeReferentials());
+    expect(await screen.findByRole("heading", { level: 1, name: "Nouvelle réservation" })).toBeInTheDocument();
+  });
+
+  it("⚠ la VÉRIFICATION D'E-MAIL reste ouverte — c'est son cas nominal", async () => {
+    // Elle est atteinte APRÈS un changement d'adresse, donc forcément connecté :
+    // la fermer casserait précisément le parcours qu'elle sert. Même raison pour
+    // `/auth/reinitialisation`, qui consomme un jeton reçu par e-mail.
+    const client = makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) });
+    renderAt("/auth/verification-email", client, makeVenues(), makeReferentials());
+
+    expect(await screen.findByRole("heading", { level: 1 })).not.toHaveTextContent("Nouvelle réservation");
+  });
+
+  it("un ANONYME voit toujours le formulaire — aucune régression", async () => {
+    const client = makeClient({ bootstrap: vi.fn().mockResolvedValue(null) });
+    renderAt("/auth/connexion", client);
+    expect(await screen.findByLabelText("Mot de passe")).toBeInTheDocument();
   });
 });
 

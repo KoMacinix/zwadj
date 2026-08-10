@@ -309,7 +309,8 @@ export class QuotesService {
         contactFirstName: input.contactFirstName,
         contactLastName: input.contactLastName,
         contactPhone: input.contactPhone,
-        contactEmail: input.contactEmail,
+        // D135 — absent ⇒ NULL explicite (même règle que côté demande client).
+        contactEmail: input.contactEmail ?? null,
         services: {
           create: lines.map((line) => ({
             serviceId: line.serviceId,

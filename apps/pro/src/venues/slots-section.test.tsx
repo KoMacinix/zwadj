@@ -75,7 +75,7 @@ function makeVenues(slots: SlotTemplateDTO[], overrides: Partial<VenueProClient>
 
 function renderEdit(venues: VenueProClient) {
   return render(
-    <MemoryRouter initialEntries={["/salles/v1"]}>
+    <MemoryRouter initialEntries={["/salles/v1?etape=4"]}>
       <AppProviders client={makeAuthDouble()} venues={venues} referentials={makeReferentialsDouble()}>
         <Routes>
           <Route path="/salles/:id" element={<EditVenuePage />} />
@@ -85,7 +85,9 @@ function renderEdit(venues: VenueProClient) {
   );
 }
 
-const ready = () => screen.findByDisplayValue("Salle El Ryad");
+// ⚠ UIP-C — voir blocks-section : l'ancre est le titre de l'étape, pas un champ
+// de l'étape 1, que l'assistant ne monte plus en même temps.
+const ready = () => screen.findByRole("heading", { name: "Réservation", level: 2 });
 const section = () => screen.getByRole("region", { name: "Créneaux et prix" });
 
 

@@ -182,7 +182,9 @@ export function BookingRequestPanel({
         contactFirstName: firstName.trim(),
         contactLastName: lastName.trim(),
         contactPhone: phone.trim(),
-        contactEmail: email.trim(),
+        // Clé OMISE si vide : `.email()` refuse la chaîne vide, et il n'y a rien
+        // à déclarer quand le client n'a pas d'adresse.
+        ...(email.trim() === "" ? {} : { contactEmail: email.trim() }),
         ...(message.trim() === "" ? {} : { clientMessage: message.trim() }),
         ...(picks.length === 0 ? {} : { services: picks }),
         expectedTotalCents: total ?? chosen.priceCents,
@@ -217,13 +219,15 @@ export function BookingRequestPanel({
     );
   }
 
+  // D135 — l'e-mail n'entre PAS dans la condition : `bookings.contact_email` est
+  // nullable, et beaucoup de clients en Algérie n'en ont pas. Le téléphone reste
+  // exigé, c'est le canal de rappel du pro et il est NOT NULL en base.
   const complete =
     chosen !== null &&
     guests.trim() !== "" &&
     firstName.trim() !== "" &&
     lastName.trim() !== "" &&
-    phone.trim() !== "" &&
-    email.trim() !== "";
+    phone.trim() !== "";
 
   return (
     <section className="card" aria-labelledby="booking-request-heading">

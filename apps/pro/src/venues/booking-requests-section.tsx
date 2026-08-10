@@ -26,7 +26,20 @@ import { useBookingsPro } from "./venue-client-context";
  *  si l'un bouge, l'autre doit bouger — sinon l'écran ment sur la base. */
 const LOCKING = new Set(["ACCEPTED", "CONFIRMED"]);
 
-export function BookingRequestsSection({ venueId }: { venueId: string }) {
+/** UIP-A — la même section sert DEUX entrées du top panel, et la partition est
+ *  stricte :
+ *   - `open`   → « Demandes » : tout ce qui n'est pas verrouillé (en attente,
+ *                refusé, expiré, annulé). Aucune ligne ne disparaît.
+ *   - `locked` → « Réservations » : les dates verrouillées, ACCEPTED+CONFIRMED,
+ *                le même ensemble que le `WHERE` de l'EXCLUDE en base.
+ *   - `all`    → défaut historique, conservé : c'est ce que la section rendait
+ *                avant ce lot, et ses tests le mesurent.
+ *  ⚠ La partition n'est pas cosmétique : elle garantit qu'une réservation ne
+ *  s'annule QUE depuis un écran. Deux chemins pour un geste destructeur, c'est
+ *  un de trop. */
+export type RequestScope = "all" | "open" | "locked";
+
+export function BookingRequestsSection({ venueId, show = "all" }: { venueId: string; show?: RequestScope }) {
   const { t, i18n } = useTranslation();
   const bookings = useBookingsPro();
   const toMessage = useApiErrorMessage();
@@ -77,6 +90,17 @@ export function BookingRequestsSection({ venueId }: { venueId: string }) {
 
   const locale = i18n.language === "ar" ? "ar" : "fr";
 
+  /** Le filtre s'applique à l'AFFICHAGE, jamais à la lecture : l'API rend la
+   *  liste complète et `conflictIds` est calculé dessus. Filtrer côté requête
+   *  demanderait un paramètre que le contrat n'a pas — et UIP-A ne bouge aucun
+   *  contrat d'API. */
+  const visible =
+    rows === null
+      ? null
+      : show === "all"
+        ? rows
+        : rows.filter((row) => (show === "locked" ? LOCKING.has(row.status) : !LOCKING.has(row.status)));
+
   return (
     <section className="card">
       <h2>{t("venue.ui.requests.title")}</h2>
@@ -88,13 +112,13 @@ export function BookingRequestsSection({ venueId }: { venueId: string }) {
         </p>
       ) : null}
 
-      {rows === null ? (
+      {visible === null ? (
         <p className="field-hint">{t("venue.ui.requests.loading")}</p>
-      ) : rows.length === 0 ? (
+      ) : visible.length === 0 ? (
         <p className="field-hint">{t("venue.ui.requests.empty")}</p>
       ) : (
         <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 10 }}>
-          {rows.map((row) => {
+          {visible.map((row) => {
             const pending = row.status === "PENDING";
             const locked = LOCKING.has(row.status);
             const dead = !pending && !locked;
