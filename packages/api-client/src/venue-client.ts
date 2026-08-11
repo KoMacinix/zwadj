@@ -201,17 +201,20 @@ export function createVenueProClient(request: AuthedRequest): VenueProClient {
         { method: "POST", body: input }
       ),
 
+    // ⚠ CHEMIN D'UN SEUL TENANT, et c'est le sujet. Coupé en deux morceaux
+    // concaténés, il échappait au contrat de chemins B6/D122 : l'extracteur ne
+    // capture que le premier littéral, donc comparer produirait un faux
+    // orphelin — il les comptait au lieu de les vérifier. La ligne est longue ;
+    // c'est le prix d'un chemin réellement contrôlé.
     updatePricingRule: (id, slotId, ruleId, input) =>
       request<PricingRuleDTO>(
-        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}` +
-          `/pricing-rules/${encodeURIComponent(ruleId)}`,
+        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}/pricing-rules/${encodeURIComponent(ruleId)}`,
         { method: "PATCH", body: input }
       ),
 
     async deletePricingRule(id, slotId, ruleId) {
       await request<void>(
-        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}` +
-          `/pricing-rules/${encodeURIComponent(ruleId)}`,
+        `/venues/${encodeURIComponent(id)}/slot-templates/${encodeURIComponent(slotId)}/pricing-rules/${encodeURIComponent(ruleId)}`,
         { method: "DELETE" }
       );
     },
@@ -220,22 +223,23 @@ export function createVenueProClient(request: AuthedRequest): VenueProClient {
       // `URLSearchParams` encode les deux bornes : un `from` non encodé
       // passerait tel quel et l'API répondrait 400 sur une forme qu'on croit
       // avoir envoyée correctement.
+      //
+      // ⚠ La chaîne de requête est INTERPOLÉE, plus concaténée : même raison que
+      // `updatePricingRule` ci-dessus. L'URL émise est identique au caractère
+      // près — seule la forme du littéral change, et c'est elle que B6 lit.
       request<AvailabilityBlockDTO[]>(
-        `/pro/venues/${encodeURIComponent(id)}/availability-blocks?` +
-          new URLSearchParams({ from: window.from, to: window.to }).toString()
+        `/pro/venues/${encodeURIComponent(id)}/availability-blocks?${new URLSearchParams({ from: window.from, to: window.to }).toString()}`
       ),
 
     availability: (id, window) =>
       request<VenueAvailabilityResponse>(
-        `/pro/venues/${encodeURIComponent(id)}/availability?` +
-          new URLSearchParams({ from: window.from, to: window.to }).toString()
+        `/pro/venues/${encodeURIComponent(id)}/availability?${new URLSearchParams({ from: window.from, to: window.to }).toString()}`
       ),
 
     // C3b — même encodage que la fenêtre des blocages, même raison.
     listVisitBookings: (id, window) =>
       request<ProVisitBookingDTO[]>(
-        `/pro/venues/${encodeURIComponent(id)}/visit-bookings?` +
-          new URLSearchParams({ from: window.from, to: window.to }).toString()
+        `/pro/venues/${encodeURIComponent(id)}/visit-bookings?${new URLSearchParams({ from: window.from, to: window.to }).toString()}`
       ),
 
     cancelVisitBooking: (id, bookingId) =>

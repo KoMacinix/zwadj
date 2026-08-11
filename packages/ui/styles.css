@@ -522,9 +522,24 @@ button {
   color: var(--danger);
 }
 
+/* ⚠ `--ink-2`, PAS `--ink-mute`, et ce n'est pas un goût de teinte.
+ *
+ * Mesuré : `--ink-mute` donne 2,46 sur `--bg`, 2,56 sur `--surface`, 2,33 sur
+ * `--bg-2` en clair, et 4,22 / 3,81 / 3,42 en sombre. Le seuil AA pour du texte
+ * de 11px est 4,5 : la teinte échouait sur les six fonds, pas sur un cas
+ * limite. Le candidat intermédiaire zinc-500 (#71717a) a été écarté par la
+ * mesure et non par principe — il passe sur `--bg` (4,63) mais retombe à 4,40
+ * sur `--bg-2`, qui est justement le fond du panneau latéral pro et des cartes
+ * `.wk-card` où ces indications s'affichent. `--ink-2` tient partout : 7,03 au
+ * plus bas en clair, 6,68 en sombre.
+ *
+ * Aucun token n'est retouché — la palette pro reste figée (D26). C'est le
+ * choix de teinte de CETTE classe qui change, et il aligne `.field-hint` sur
+ * `.wk-hint`, qui utilise déjà `--ink-2` : la refonte avait tranché de son
+ * côté, l'ancienne classe était restée en arrière. */
 .field-hint {
   font-size: 11px;
-  color: var(--ink-mute);
+  color: var(--ink-2);
 }
 
 .pw-toggle {

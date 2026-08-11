@@ -37,6 +37,17 @@ describe("bookingCreateSchema — ce qu'il doit ACCEPTER", () => {
   it("paiement en espèces : l'Algérie paie surtout comme ça", () => {
     expect(bookingCreateSchema.safeParse({ ...VALID, paymentMethod: "CASH" }).success).toBe(true);
   });
+
+  /** ⚠ LE CAS RÉEL, écrit AVANT la borne (D55). Ce test-ci est la raison d'être
+   *  de D135 : `bookings.contact_email` est `String?` depuis toujours, seule la
+   *  borne Zod était plus stricte que la base, et ce qu'elle rejetait n'était
+   *  pas un cas limite — c'était le client algérien au comptoir, sans adresse
+   *  e-mail. Sans lui, le parcours sur place était inachevable. */
+  it("sans e-mail : le client au comptoir n'en a pas (D135)", () => {
+    const sansEmail: Record<string, unknown> = { ...VALID };
+    delete sansEmail.contactEmail;
+    expect(bookingCreateSchema.safeParse(sansEmail).success).toBe(true);
+  });
 });
 
 describe("bookingCreateSchema — ce qu'il doit REFUSER", () => {
@@ -46,12 +57,25 @@ describe("bookingCreateSchema — ce qu'il doit REFUSER", () => {
     expect(bookingCreateSchema.safeParse(without).success).toBe(false);
   });
 
-  it("les quatre champs de contact sont obligatoires — le profil ne les garantit pas", () => {
-    for (const key of ["contactFirstName", "contactLastName", "contactPhone", "contactEmail"]) {
+  /** TROIS, pas quatre : l'e-mail est sorti de cette liste avec D135, et il est
+   *  prouvé du côté ACCEPTER. Nom, prénom et téléphone restent obligatoires
+   *  parce que `User.firstName`, `lastName` et `phone` sont tous nullable — le
+   *  compte ne peut pas les fournir de façon fiable — et parce que
+   *  `contact_phone` est NOT NULL en base : le téléphone est le canal par lequel
+   *  le pro rappelle. */
+  it("les trois champs de contact obligatoires — le profil ne les garantit pas (D135)", () => {
+    for (const key of ["contactFirstName", "contactLastName", "contactPhone"]) {
       const body: Record<string, unknown> = { ...VALID };
       delete body[key];
       expect(bookingCreateSchema.safeParse(body).success, key).toBe(false);
     }
+  });
+
+  /** ⚠ « Facultatif » veut dire CLÉ OMISE, jamais chaîne vide (D135) : `.email()`
+   *  refuse `""`. Un formulaire qui envoie le champ vide plutôt que de ne pas
+   *  l'envoyer prend un 400 — c'est ici qu'on l'apprend, pas en production. */
+  it("un e-mail VIDE n'est pas un e-mail absent", () => {
+    expect(bookingCreateSchema.safeParse({ ...VALID, contactEmail: "" }).success).toBe(false);
   });
 
   it("un téléphone non +213", () => {

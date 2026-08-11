@@ -181,17 +181,22 @@ describe("B6 — contrat de CHEMINS entre le client et l'API (D122)", () => {
     // serait vert en n'ayant rien comparé.
     expect(collectClientCalls().length).toBeGreaterThan(30);
     expect(collectServerRoutes().length).toBeGreaterThan(60);
-    // ⚠ QUATRE chemins échappent au contrôle : ils sont construits par
-    // concaténation sur plusieurs lignes, le littéral capturé n'en est qu'un
-    // morceau. Les comparer fabriquerait de faux orphelins.
+    // ⚠ PLAFOND À ZÉRO — il valait 4, et un CINQUIÈME est arrivé.
     //
-    // Le nombre est GELÉ, pas ignoré : un cinquième fait échouer ce test tant
-    // que personne ne l'a regardé. Le jour où ces quatre appels seront écrits
-    // d'un seul tenant, ce plafond descendra — et le contrôle les couvrira.
+    // Le gel a fait exactement son travail : `listVisitBookings` s'est ajouté au
+    // même patron et le test l'a dit. Mais passer de 4 à 5 aurait élargi
+    // l'angle mort — un chemin de plus jamais comparé au routeur — alors que le
+    // commentaire précédent annonçait l'inverse : « le jour où ces appels seront
+    // écrits d'un seul tenant, ce plafond descendra ». Ils l'ont été
+    // (`venue-client.ts`), pour un coût de deux lignes longues, et le contrôle
+    // de chemins couvre désormais les cinq.
+    //
+    // Zéro n'est PAS « plus rien à surveiller » : ce test échoue à la première
+    // concaténation réintroduite, et la sortie nomme le fichier fautif.
     expect(
       partiels.length,
-      `chemins concaténés non vérifiés :\n${partiels.join("\n")}`
-    ).toBe(4);
+      `chemins concaténés non vérifiés — les écrire d'un seul tenant :\n${partiels.join("\n")}`
+    ).toBe(0);
   });
 
   it("CHAQUE chemin appelé par @zwadj/api-client existe sur le routeur Nest", () => {
