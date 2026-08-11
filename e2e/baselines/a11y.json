@@ -27,14 +27,10 @@
   "pro connexion (clair)": [],
   "pro connexion (sombre)": [],
   "pro liste des salles": [],
-  "pro tableau de bord": [
-    "color-contrast @ .field-hint"
-  ],
+  "pro tableau de bord": [],
   "pro nouvelle salle": [
     "color-contrast @ h2",
     "color-contrast @ p"
   ],
-  "pro compte": [
-    "color-contrast @ .field-hint"
-  ]
+  "pro compte": []
 }

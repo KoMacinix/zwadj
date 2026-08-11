@@ -22,6 +22,13 @@ const PRO = {
   phone: "+213550000009"
 };
 const ADMIN = { role: "CLIENT", email: "admin@example.dz", password: "Motdepasse1", firstName: "Adm", lastName: "In" };
+/** ⚠ COMPTE DISTINCT DE `ADMIN`, et ce n'est pas de la coquetterie.
+ *  `publishedVenue()` appelle `adminToken()`, qui inscrit `admin@example.dz`
+ *  PUIS le promeut `ADMIN` en base. Réutiliser cette identité pour jouer un
+ *  client donnait un 409 `EMAIL_ALREADY_USED` à la seconde inscription — et
+ *  même sans ce 409, le jeton obtenu aurait porté le rôle ADMIN : le test aurait
+ *  été vert en prouvant l'inverse de son titre. */
+const CLIENT = { role: "CLIENT", email: "cliente@example.dz", password: "Motdepasse1", firstName: "Aya", lastName: "B" };
 
 const api = () => request(ctx.app.getHttpServer());
 const authH = (token: string) => ({ Authorization: `Bearer ${token}` });
@@ -435,9 +442,9 @@ describe("⚠ Porte PRO — le calendrier de SA salle, publiée ou non", () => {
 
   it("un CLIENT n'entre pas par la porte pro", async () => {
     const { venue } = await publishedVenue();
-    await registerUser(ctx, ADMIN);
+    await registerUser(ctx, CLIENT);
     await verifyLastRegistered(ctx);
-    const token = await loginAs(ctx, ADMIN.email, ADMIN.password);
+    const token = await loginAs(ctx, CLIENT.email, CLIENT.password);
     await api()
       .get(`/api/v1/pro/venues/${venue.id}/availability?from=2026-09-01&to=2026-09-30`)
       .set(authH(token))

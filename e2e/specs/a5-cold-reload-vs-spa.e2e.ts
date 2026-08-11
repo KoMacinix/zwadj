@@ -28,11 +28,46 @@ import {
  * sur de la mémoire.
  */
 
+/**
+ * ⚠ APPELS POSSÉDÉS PAR LA COQUILLE, pas par l'écran (UIP-A).
+ *
+ * `ProVenuesProvider` est monté au-dessus de toutes les routes : il charge la
+ * liste des salles au DÉMARRAGE de l'application, et une navigation interne ne
+ * le remonte pas. L'écart apparaît donc sur les quatre routes à la fois, et
+ * toujours dans le même sens : le chemin froid demande cette liste, le chemin
+ * SPA l'a déjà.
+ *
+ * ⚠ CE SENS-LÀ EST BÉNIN, ET C'EST TOUT LE POINT DE CE TEST. Le défaut
+ * qu'A5 chasse est l'inverse : un écran qui marche par navigation interne parce
+ * qu'un autre écran avait chargé sa donnée, et qui casse au premier F5. Un
+ * appel présent À FROID et absent en SPA veut dire « la coquille l'a déjà » ;
+ * un appel présent en SPA et absent à froid voudrait dire « le rechargement ne
+ * le redemande pas », et celui-là reste interdit.
+ *
+ * La liste est GELÉE, pas ignorée : elle est vérifiée présente à froid ci-dessous
+ * — sinon le jour où le provider cesserait de charger, elle deviendrait un
+ * laissez-passer silencieux.
+ */
+const EMPREINTE_COQUILLE = ["GET /api/v1/pro/venues"];
+
+const horsCoquille = (empreinte: string[]) => empreinte.filter((appel) => !EMPREINTE_COQUILLE.includes(appel));
+
+/**
+ * `donneesPropres: false` — l'écran ne demande RIEN en son nom.
+ *
+ * ⚠ Le tableau de bord est dans ce cas, et il faut dire pourquoi plutôt que de
+ * le retirer de la liste : le compte e2e n'a AUCUNE salle, `VenueScope` rend
+ * donc « créez votre première salle » et `WalkinJourney` n'est jamais monté.
+ * L'écran est réel, il est simplement vide de réseau. Le fait est gelé à `[]` :
+ * le jour où le tableau de bord chargera ses devis, ce test échouera et
+ * quelqu'un basculera ce drapeau en connaissance de cause. Le remplir vraiment
+ * demande une salle de fixture — même dette que le calendrier plus bas.
+ */
 const PROTECTED_ROUTES = [
-  { name: "tableau de bord", path: "/" },
-  { name: "mes salles", path: "/salles" },
-  { name: "mon compte", path: "/compte" },
-  { name: "nouvelle salle", path: "/salles/nouvelle" }
+  { name: "tableau de bord", path: "/", donneesPropres: false },
+  { name: "mes salles", path: "/salles", donneesPropres: true },
+  { name: "mon compte", path: "/compte", donneesPropres: true },
+  { name: "nouvelle salle", path: "/salles/nouvelle", donneesPropres: true }
 ];
 
 test.describe("A5 — parité navigation interne / rechargement", () => {
@@ -83,10 +118,21 @@ test.describe("A5 — parité navigation interne / rechargement", () => {
       // une navigation redevenue no-op passerait au vert au lieu d'échouer.
       // C'est la même précaution que le témoin, pour l'autre façon de ne rien
       // mesurer.
-      expect(
-        spaFootprint.length,
-        "la navigation interne n'a déclenché AUCUN appel : rien n'a été remonté"
-      ).toBeGreaterThan(0);
+      //
+      // Sur un écran SANS données propres, l'attente s'inverse et se GÈLE : on
+      // exige explicitement le vide, au lieu de le tolérer en silence.
+      if (route.donneesPropres) {
+        expect(
+          spaFootprint.length,
+          "la navigation interne n'a déclenché AUCUN appel : rien n'a été remonté"
+        ).toBeGreaterThan(0);
+      } else {
+        expect(
+          spaFootprint,
+          `cet écran est déclaré sans données propres, il en demande pourtant :\n${spaFootprint.join("\n")}\n` +
+            "→ basculer `donneesPropres` à true dans la table ci-dessus."
+        ).toEqual([]);
+      }
 
       const spaUrl = new URL(spaPage.url()).pathname;
       await spaPage.close();
@@ -104,10 +150,24 @@ test.describe("A5 — parité navigation interne / rechargement", () => {
       // Même destination : aucune redirection ne doit apparaître à froid.
       expect(coldUrl, "le rechargement à froid n'atterrit pas au même endroit").toBe(spaUrl);
 
-      // Même besoin de données.
-      expect(coldFootprint, `SPA :\n${spaFootprint.join("\n")}\n\nÀ FROID :\n${coldFootprint.join("\n")}`).toEqual(
-        spaFootprint
-      );
+      // ⚠ LA CONSTANTE N'EST PAS UN LAISSEZ-PASSER. Ce qu'on s'apprête à retirer
+      // des deux côtés doit être RÉELLEMENT chargé au démarrage : sans cette
+      // vérification, le jour où la coquille cesserait de lire la liste des
+      // salles, les deux empreintes coïncideraient à nouveau et le test
+      // resterait vert en ayant perdu son objet.
+      for (const appel of EMPREINTE_COQUILLE) {
+        expect(
+          coldFootprint,
+          `« ${appel} » est déclaré possédé par la coquille mais n'est PAS demandé au démarrage :\n` +
+            `${coldFootprint.join("\n")}\n→ relire EMPREINTE_COQUILLE, elle est périmée.`
+        ).toContain(appel);
+      }
+
+      // Même besoin de données, une fois la coquille retirée des deux côtés.
+      expect(
+        horsCoquille(coldFootprint),
+        `SPA :\n${spaFootprint.join("\n")}\n\nÀ FROID :\n${coldFootprint.join("\n")}`
+      ).toEqual(horsCoquille(spaFootprint));
       await context.close();
     });
   }

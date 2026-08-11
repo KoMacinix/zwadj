@@ -183,6 +183,14 @@ test.describe("B8 — accessibilité automatisée (D125)", () => {
 
       // ⚠ L'AUTRE SENS COMPTE AUSSI. Une violation corrigée doit sortir de la
       // référence, sinon la dette semble éternelle et plus personne n'y croit.
+      //
+      // ⚠ MAIS « SORTIE DE LA RÉFÉRENCE » NE VEUT PAS DIRE « CORRIGÉE », et ce
+      // message est trompeur sur ce point : il l'a été une fois. `color-contrast
+      // @ .field-hint` a disparu du tableau de bord parce que D134 y a DÉMONTÉ
+      // `QuotesSection` — l'élément a quitté l'écran, son contraste n'a pas
+      // bougé d'un centième, et la même signature reste gelée sur « pro
+      // compte ». Avant de retirer une ligne : vérifier laquelle des deux
+      // choses s'est produite, et l'écrire.
       const resorbees = connues!.filter((s) => !observees.includes(s));
       expect(
         resorbees,
