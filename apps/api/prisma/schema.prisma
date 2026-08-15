@@ -953,6 +953,15 @@ model Quote {
   chainId        String      @map("chain_id") @db.Uuid
   parentQuoteId  String?     @map("parent_quote_id") @db.Uuid
   sentAt         DateTime?   @map("sent_at") @db.Timestamptz(6)
+  // C1b — PAR QUOI le devis est parti, quand `sentAt` ne dit que QUAND.
+  // `String` et non un énuméré : la liste des canaux est ouverte (impression,
+  // SMS, remise en main propre, accord téléphonique, à venir), et un type
+  // PostgreSQL imposerait une migration par libellé ajouté. Le jeu de valeurs
+  // a une seule autorité, `quoteSentViaSchema` dans `@zwadj/types`. Un CHECK en
+  // base interdit seulement le vide et le blanc.
+  // ⚠ NULL = pas encore remis. Rien ne l'écrit à ce lot : l'entonnoir compte
+  // encore sur `sentAt`, le basculement est le lot suivant.
+  sentVia        String?     @map("sent_via")
   acceptedAt     DateTime?   @map("accepted_at") @db.Timestamptz(6)
 
   venue        Venue         @relation(fields: [venueId], references: [id], onDelete: Restrict)

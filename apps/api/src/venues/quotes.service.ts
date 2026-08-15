@@ -42,7 +42,8 @@ import {
   type QuoteConvertInput,
   type QuoteConversionDTO,
   type QuoteCreateInput,
-  type QuoteDTO
+  type QuoteDTO,
+  type QuoteSentVia
 } from "@zwadj/types";
 import { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
@@ -78,6 +79,7 @@ const QUOTE_SELECT = {
   lines: true,
   validUntil: true,
   sentAt: true,
+  sentVia: true,
   acceptedAt: true,
   createdAt: true,
   booking: { select: { id: true } }
@@ -511,6 +513,8 @@ export class QuotesService {
       lines: row.lines as unknown as QuoteDTO["lines"],
       validUntil,
       sentAt: row.sentAt?.toISOString() ?? null,
+      // C1b — rien ne l'écrit encore ; la colonne existe, le contrat la rend.
+      sentVia: (row.sentVia as QuoteSentVia | null) ?? null,
       acceptedAt: row.acceptedAt?.toISOString() ?? null,
       createdAt: row.createdAt.toISOString(),
       bookingId: row.booking?.id ?? null

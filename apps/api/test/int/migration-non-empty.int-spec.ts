@@ -104,8 +104,11 @@ async function recreerBase(): Promise<void> {
 /**
  * Données RÉALISTES, pas un jeu minimal : une salle publiée, deux clients, des
  * demandes dans plusieurs états, et surtout plusieurs sessions par utilisateur
- * — c'est `refresh_tokens` que la dernière migration touche, et c'est la table
- * qui grossit le plus vite en production.
+ * ⚠ CE SEMIS SUIT LA DERNIÈRE MIGRATION, il n'est pas figé une fois pour toutes.
+ * Il visait `refresh_tokens` quand `20260804120000` fermait la marche ; la
+ * dernière est désormais `20260814120000_quote_sent_via`, donc on sème des
+ * DEVIS. Semer la mauvaise table laisserait le test vert sur une table vide —
+ * exactement le défaut que D123 cherche à empêcher.
  */
 async function semerDonnees(): Promise<void> {
   await sql(`
@@ -131,6 +134,34 @@ async function semerDonnees(): Promise<void> {
            true, now()
     FROM users u CROSS JOIN generate_series(1, 4) AS g(i)
   `);
+
+  // Une salle publiée, puis des devis dans plusieurs états — dont des lignes
+  // `SENT` avec un `sent_at` déjà posé. C'est la configuration où une colonne
+  // ajoutée sans défaut, ou un CHECK trop strict, mordrait.
+  await sql(`
+    INSERT INTO pro_profiles (id, user_id, business_name, phone, created_at, updated_at)
+    SELECT uuidv7(), u.id, 'Salles Réunies', '+213550000001', now(), now()
+    FROM users u WHERE u.role = 'PRO'
+  `);
+  await sql(`
+    INSERT INTO venues (id, owner_id, city_id, slug, name_fr, name_ar, capacity_max,
+                        base_price_cents, publication_status, created_at, updated_at)
+    SELECT uuidv7(), p.id, c.id, 'salle-test', 'Salle test', 'قاعة', 300,
+           150000000, 'PUBLISHED', now(), now()
+    FROM pro_profiles p CROSS JOIN cities c LIMIT 1
+  `);
+  await sql(`
+    INSERT INTO quotes (id, venue_id, status, version, chain_id, event_date, guests,
+                        base_price_cents, services_total_cents, total_cents, deposit_cents,
+                        lines, sent_at, created_at)
+    SELECT uuidv7(), v.id,
+           (CASE WHEN g.i = 1 THEN 'DRAFT' ELSE 'SENT' END)::"QuoteStatus",
+           1, uuidv7(), current_date + g.i, 100,
+           150000000, 0, 150000000, 45000000, '[]'::jsonb,
+           CASE WHEN g.i = 1 THEN NULL ELSE now() - interval '2 days' END,
+           now()
+    FROM venues v CROSS JOIN generate_series(1, 3) AS g(i)
+  `);
 }
 
 beforeAll(async () => {
@@ -148,19 +179,22 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     // DÉJÀ à jour, et le test suivant vérifierait une migration déjà appliquée
     // — vert, et sans objet.
     const colonne = await sql(
-      `SELECT 1 FROM information_schema.columns WHERE table_name = 'refresh_tokens' AND column_name = 'rotated_at'`
+      `SELECT 1 FROM information_schema.columns WHERE table_name = 'quotes' AND column_name = 'sent_via'`
     );
     expect(colonne, "la dernière migration est DÉJÀ appliquée : le test ne prouverait rien").toHaveLength(0);
 
     await semerDonnees();
     const semees = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM refresh_tokens`);
     expect(Number(semees[0]!.n)).toBe(12);
+    const devis = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes`);
+    expect(Number(devis[0]!.n), "sans devis semés, la migration s'appliquerait sur du vide").toBe(3);
   });
 
   it("applique la dernière migration SANS perdre ni abîmer les données", async () => {
     const avant = await sql<{ table_name: string; n: string }>(`
       SELECT 'users' AS table_name, count(*)::text AS n FROM users
       UNION ALL SELECT 'refresh_tokens', count(*)::text FROM refresh_tokens
+      UNION ALL SELECT 'quotes', count(*)::text FROM quotes
       UNION ALL SELECT 'wilayas', count(*)::text FROM wilayas
       UNION ALL SELECT 'cities', count(*)::text FROM cities
       ORDER BY 1
@@ -168,12 +202,16 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     const revoquesAvant = await sql<{ n: string }>(
       `SELECT count(*)::text AS n FROM refresh_tokens WHERE revoked_at IS NOT NULL`
     );
+    const envoyesAvant = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM quotes WHERE sent_at IS NOT NULL`
+    );
 
     await appliquerMigrations([migrationsOrdonnees().at(-1)!]);
 
     const apres = await sql<{ table_name: string; n: string }>(`
       SELECT 'users' AS table_name, count(*)::text AS n FROM users
       UNION ALL SELECT 'refresh_tokens', count(*)::text FROM refresh_tokens
+      UNION ALL SELECT 'quotes', count(*)::text FROM quotes
       UNION ALL SELECT 'wilayas', count(*)::text FROM wilayas
       UNION ALL SELECT 'cities', count(*)::text FROM cities
       ORDER BY 1
@@ -188,32 +226,44 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
       `SELECT count(*)::text AS n FROM refresh_tokens WHERE revoked_at IS NOT NULL`
     );
     expect(revoquesApres).toEqual(revoquesAvant);
+
+    // ⚠ L'ENTONNOIR COMPTE ENCORE SUR `sent_at` À CE LOT. Si la migration y
+    // touchait, l'indicateur du panneau gauche changerait de valeur sans que
+    // personne l'ait décidé. Ce compte doit être exactement le même qu'avant.
+    const envoyesApres = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM quotes WHERE sent_at IS NOT NULL`
+    );
+    expect(envoyesApres).toEqual(envoyesAvant);
   });
 
   it("les objets créés par la migration sont bien là, et conformes à leur intention", async () => {
-    const colonne = await sql<{ is_nullable: string }>(
-      `SELECT is_nullable FROM information_schema.columns
-        WHERE table_name = 'refresh_tokens' AND column_name = 'rotated_at'`
+    const colonne = await sql<{ is_nullable: string; data_type: string }>(
+      `SELECT is_nullable, data_type FROM information_schema.columns
+        WHERE table_name = 'quotes' AND column_name = 'sent_via'`
     );
     expect(colonne).toHaveLength(1);
     // ⚠ NULLABLE, et c'est l'invariant qui rend la migration sûre sur une base
-    // pleine : `NOT NULL` sans défaut aurait échoué sur les 12 lignes semées.
+    // pleine : `NOT NULL` sans défaut aurait échoué sur les 3 devis semés.
     expect(colonne[0]!.is_nullable).toBe("YES");
+    // TEXT et non un type énuméré : la liste des canaux est ouverte, et un
+    // `ALTER TYPE` par libellé ajouté serait une migration de plus à chaque fois.
+    expect(colonne[0]!.data_type).toBe("text");
 
-    // D116 — AUCUNE REPRISE DE DONNÉES : les lignes déjà révoquées gardent
-    // `rotated_at = NULL` et restent traitées en réutilisation stricte.
-    const remplies = await sql<{ n: string }>(
-      `SELECT count(*)::text AS n FROM refresh_tokens WHERE revoked_at IS NOT NULL AND rotated_at IS NOT NULL`
-    );
-    expect(Number(remplies[0]!.n), "la migration a rempli rotated_at sur des lignes anciennes").toBe(0);
+    // AUCUNE REPRISE DE DONNÉES : les devis déjà `SENT` ne reçoivent PAS un
+    // canal inventé. On ne sait pas par quoi ils sont partis, et le deviner
+    // produirait un entonnoir qui a l'air juste (décision 7 de C1).
+    const remplis = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE sent_via IS NOT NULL`);
+    expect(Number(remplis[0]!.n), "la migration a inventé un canal sur des devis anciens").toBe(0);
 
-    // L'index PARTIEL, invisible de Prisma : s'il n'était créé que dans le
-    // schéma et pas en SQL, rien d'autre ne le dirait.
-    const index = await sql<{ indexdef: string }>(
-      `SELECT indexdef FROM pg_indexes WHERE indexname = 'refresh_tokens_rotated_at_idx'`
+    // Le CHECK, invisible de Prisma : sans lui, une chaîne vide passerait pour
+    // un canal et fausserait le dénominateur sans jamais lever d'erreur.
+    const check = await sql<{ conname: string }>(
+      `SELECT conname FROM pg_constraint WHERE conname = 'quotes_sent_via_not_blank'`
     );
-    expect(index).toHaveLength(1);
-    expect(index[0]!.indexdef).toContain("WHERE (rotated_at IS NOT NULL)");
+    expect(check).toHaveLength(1);
+    await expect(
+      sql(`UPDATE quotes SET sent_via = '   ' WHERE sent_at IS NOT NULL`)
+    ).rejects.toThrow();
   });
 
 });

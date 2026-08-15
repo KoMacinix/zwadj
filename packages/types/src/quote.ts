@@ -35,6 +35,38 @@ export type QuoteStatus = (typeof QuoteStatus)[keyof typeof QuoteStatus];
  *  passé EST expiré : la condition est déterministe, donc dérivée à la lecture.
  *  Persister un statut que rien ne fait basculer, c'est réinstaller la dette
  *  que D80 vient de documenter. */
+/**
+ * CANAL DE REMISE DU DEVIS (C1b) — la SEULE autorité sur ce jeu de valeurs.
+ *
+ * Pourquoi une liste fermée mais pas un énuméré PostgreSQL : elle est appelée à
+ * grandir, et un type en base imposerait une migration par libellé ajouté. Ici
+ * une valeur de plus est une ligne, testable et relisible.
+ *
+ * ⚠ LE POINT QUI REND CETTE LISTE JUSTE. Les deux premiers canaux sont des
+ * actes techniques ; les suivants sont des DÉCLARATIONS du pro. Sans eux, un
+ * devis conclu de vive voix — le cas le plus courant au comptoir — n'aurait
+ * aucun canal, donc n'entrerait jamais dans l'entonnoir alors qu'il a produit
+ * une réservation. L'indicateur sous-compterait précisément les affaires
+ * gagnées, ce qui est le pire sens dans lequel se tromper.
+ */
+export const QUOTE_SENT_VIA = {
+  /** Le devis a été imprimé et remis sur papier. */
+  PRINT: "PRINT",
+  /** Le devis a été envoyé par SMS. */
+  SMS: "SMS",
+  /** Montant annoncé au comptoir, sans rien imprimer. */
+  IN_PERSON: "IN_PERSON",
+  /** Convenu par téléphone, hors de la salle. */
+  PHONE: "PHONE"
+} as const;
+
+export type QuoteSentVia = (typeof QUOTE_SENT_VIA)[keyof typeof QUOTE_SENT_VIA];
+
+export const quoteSentViaSchema = z.enum(
+  [QUOTE_SENT_VIA.PRINT, QUOTE_SENT_VIA.SMS, QUOTE_SENT_VIA.IN_PERSON, QUOTE_SENT_VIA.PHONE],
+  { errorMap: () => ({ message: "quote.validation.sentViaInvalid" }) }
+);
+
 export function isQuoteExpired(quote: { status: QuoteStatus; validUntil: string | null }, nowMs: number): boolean {
   if (quote.status !== QuoteStatus.SENT) return false;
   return quote.validUntil !== null && Date.parse(quote.validUntil) <= nowMs;
@@ -134,6 +166,8 @@ export interface QuoteDTO {
   lines: BookingServiceDTO[];
   validUntil: string | null;
   sentAt: string | null;
+  /** C1b — NULL tant que le devis n'a pas été remis. */
+  sentVia: QuoteSentVia | null;
   acceptedAt: string | null;
   createdAt: string;
   /** Renseigné dès que le devis a été converti — c'est la jointure du taux de
