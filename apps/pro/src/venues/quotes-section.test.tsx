@@ -40,7 +40,9 @@ const BASE: QuoteDTO = {
   sentAt: "2026-08-02T10:00:00.000Z",
   acceptedAt: null,
   createdAt: "2026-08-02T09:00:00.000Z",
-  bookingId: null
+  bookingId: null,
+  // C1b — le canal de remise. NULL : aucun code ne l'écrit encore.
+  sentVia: null
 };
 
 function setup(rows: QuoteDTO[], overrides: Partial<QuotesClient> = {}) {

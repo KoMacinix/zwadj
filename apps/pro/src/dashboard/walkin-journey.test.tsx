@@ -89,6 +89,7 @@ function draft(over: Partial<QuoteDTO> = {}): QuoteDTO {
     depositCents: 150_000_000,
     lines: [],
     bookingId: null,
+    sentVia: null,
     ...over
   } as QuoteDTO;
 }
