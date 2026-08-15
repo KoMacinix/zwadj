@@ -162,6 +162,36 @@ describe("Calendrier — navigation bornée", () => {
   });
 });
 
+describe("Calendrier — chevrons de mois (R2c)", () => {
+  /** ⚠ CE QUE LES DEUX CAS CI-DESSUS NE PROUVENT PAS. Ils cherchent le bouton
+   *  par son nom accessible — et ce nom est identique que le libellé soit du
+   *  TEXTE VISIBLE ou un `aria-label`. Ils resteraient donc verts si la
+   *  conversion en flèches n'avait jamais eu lieu. C'est ce cas-ci qui la
+   *  mesure : plus de texte rendu, un glyphe à la place. */
+  it("rend une flèche et non le libellé écrit", async () => {
+    renderCalendar();
+    await waitFor(() => expect(getVenueAvailability).toHaveBeenCalled());
+    const suivant = screen.getByRole("button", { name: "Mois suivant" });
+    expect(suivant.textContent).toBe("");
+    expect(suivant.querySelector("svg")).not.toBeNull();
+  });
+
+  /** ⚠ RTL — en arabe, « suivant » pointe à GAUCHE. Le retournement est fait par
+   *  la feuille de styles, qui cible `[dir="rtl"] .btn svg[data-mirror-rtl]` :
+   *  il faut donc À LA FOIS l'attribut sur le glyphe ET la classe `.btn` sur le
+   *  bouton. Perdre l'un des deux enverrait le visiteur arabophone dans le mois
+   *  opposé à celui qu'il vise, sans aucune erreur visible. */
+  it("les deux chevrons sont miroitables en RTL : attribut ET classe porteuse", async () => {
+    renderCalendar();
+    await waitFor(() => expect(getVenueAvailability).toHaveBeenCalled());
+    for (const nom of ["Mois précédent", "Mois suivant"]) {
+      const bouton = screen.getByRole("button", { name: nom });
+      expect(bouton.classList.contains("btn"), `${nom} : la classe .btn porte la règle RTL`).toBe(true);
+      expect(bouton.querySelector("svg[data-mirror-rtl]"), `${nom} : glyphe non miroitable`).not.toBeNull();
+    }
+  });
+});
+
 describe("Calendrier — API injoignable", () => {
   it("affiche une erreur au lieu de casser la fiche", async () => {
     getVenueAvailability.mockResolvedValue(null);

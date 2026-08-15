@@ -470,7 +470,7 @@
   border: 1px dashed var(--line);
   border-radius: var(--radius);
   background: var(--bg-2);
-  color: var(--ink-mute);
+  color: var(--ink-2);
   text-align: center;
 }
 
@@ -609,7 +609,7 @@
   display: grid;
   place-items: center;
   block-size: 100%;
-  color: var(--ink-mute);
+  color: var(--ink-2);
   font-size: 12px;
 }
 
@@ -698,14 +698,18 @@
   white-space: nowrap;
 }
 
+/* ⚠ `--ink-2` et non `--ink-mute` sur ces libellés : c'étaient les quatre
+   entrées `.venue-card-*` de la référence a11y. La carte n'a AUCUN fond propre,
+   elle repose à même la page : le contraste se lit contre `--bg`, où l'ancienne
+   teinte tombait à 2,46 pour un seuil de 4,5. */
 .venue-card-reviews {
-  color: var(--ink-mute);
+  color: var(--ink-2);
 }
 
 .venue-card-tagline {
   margin: 5px 0 0;
   font-size: 12px;
-  color: var(--ink-mute);
+  color: var(--ink-2);
 }
 
 .venue-card-foot {
@@ -720,7 +724,7 @@
 .venue-card-meta {
   font-size: 11px;
   letter-spacing: 0.03em;
-  color: var(--ink-mute);
+  color: var(--ink-2);
 }
 
 /* Voir ② en tête de bloc : accent en texte, sur blanc pur uniquement. */
@@ -737,5 +741,5 @@
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink-mute);
+  color: var(--ink-2);
 }

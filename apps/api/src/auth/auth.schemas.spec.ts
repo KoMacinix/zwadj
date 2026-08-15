@@ -70,7 +70,18 @@ describe("Schémas Zod auth (@zwadj/types)", () => {
     expect(registerClientSchema.safeParse(noms).success).toBe(true); // téléphone omis : OK
     expect(registerClientSchema.safeParse({ ...noms, phone: "+213551234567" }).success).toBe(true);
 
-    const telInvalide = registerClientSchema.safeParse({ ...noms, phone: "0551234567" });
+    // ⚠ RENVERSEMENT ASSUMÉ (R3) : `0551234567` était REFUSÉ ici, au motif que
+    // le format `+213` était obligatoire. C'est la saisie locale, celle que
+    // n'importe qui tape — le schéma la normalise désormais au lieu de la
+    // rejeter, et c'est la sortie qu'on vérifie, pas seulement le succès.
+    const telLocal = registerClientSchema.safeParse({ ...noms, phone: "0551234567" });
+    expect(telLocal.success).toBe(true);
+    if (telLocal.success) expect(telLocal.data.phone).toBe("+213551234567");
+
+    // Ce qui reste refusé, et qui ne l'était PAS avant : le fixe. Décision
+    // produit « mobile uniquement » — `ProProfile.phone` sert de destination
+    // WhatsApp (D60), et un fixe n'y reçoit rien.
+    const telInvalide = registerClientSchema.safeParse({ ...noms, phone: "+21321234567" });
     expect(telInvalide.success).toBe(false);
     if (!telInvalide.success) {
       expect(telInvalide.error.issues[0]?.message).toBe("auth.validation.phoneInvalid");
@@ -91,7 +102,7 @@ describe("Schémas Zod auth (@zwadj/types)", () => {
       email: "salle@example.dz",
       password: "Motdepasse1",
       businessName: "Salle El Ryad",
-      phone: "0551234567" // pas au format +213
+      phone: "+21321234567" // fixe d'Alger : refusé depuis R3 (mobile uniquement)
     });
     expect(koPhone.success).toBe(false);
 

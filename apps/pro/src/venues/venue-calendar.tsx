@@ -33,6 +33,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDZD } from "@zwadj/i18n";
+import { MonthNextIcon, MonthPrevIcon } from "@zwadj/ui";
 import { formatSlotRange, type VenueAvailabilityDayDTO, type VenueAvailabilityResponse } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { useVenues } from "./venue-client-context";
@@ -169,22 +170,26 @@ export function VenueCalendar({
       )}
 
       <div className="cal-head">
+        {/* Même contrat que côté client : glyphe décoratif, nom accessible
+            porté par `aria-label`. */}
         <button
           type="button"
-          className="btn"
+          className="btn btn-icon"
           onClick={() => setCursor(shiftMonth(cursor, -1))}
           disabled={compareMonths(cursor, firstMonth) <= 0}
+          aria-label={t("venue.ui.calendar.previous")}
         >
-          {t("venue.ui.calendar.previous")}
+          <MonthPrevIcon />
         </button>
         <strong aria-live="polite">{monthLabel(cursor, i18n.language)}</strong>
         <button
           type="button"
-          className="btn"
+          className="btn btn-icon"
           onClick={() => setCursor(shiftMonth(cursor, 1))}
           disabled={compareMonths(cursor, lastMonth) >= 0}
+          aria-label={t("venue.ui.calendar.next")}
         >
-          {t("venue.ui.calendar.next")}
+          <MonthNextIcon />
         </button>
       </div>
 

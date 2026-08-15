@@ -17,6 +17,12 @@
   --bg-2: #f4f4f5;
   --ink: #18181b;
   --ink-2: #52525b;
+  /* ⚠ CE TOKEN N'HABILLE PLUS DE TEXTE D'INFORMATION. Mesuré à 2,46 / 2,56 /
+     2,33 sur `--bg`, `--surface` et `--bg-2` en clair et 4,22 / 3,81 / 3,42 en
+     sombre, il échoue le seuil AA de 4,5 sur les six fonds réels — pas sur un cas
+     limite. `.field-hint` et les métadonnées des cartes du client sont passées à
+     `--ink-2`. Il reste pour le NON-TEXTUEL (bordures, UI-D4) et pour les deux
+     écarts signalés plus bas, chacun avec sa raison. */
   --ink-mute: #a1a1aa;
   --line: #e4e4e7;
 
@@ -487,6 +493,11 @@ button {
   resize: vertical;
 }
 
+/* [ÉCART] Le texte indicatif reste sur `--ink-mute`, contrairement à
+   `.field-hint`. Le foncer à `--ink-2` le rendrait indiscernable d'une valeur
+   déjà saisie : on échangerait un défaut de contraste contre un défaut de sens.
+   Le résoudre demande une teinte intermédiaire dédiée, donc une décision, pas
+   un remplacement. */
 .field input::placeholder,
 .field textarea::placeholder {
   color: var(--ink-mute);
@@ -506,6 +517,9 @@ button {
   border-color: var(--danger);
 }
 
+/* [ÉCART] WCAG 1.4.3 exempte explicitement le texte des composants d'interface
+   INACTIFS : un contrôle désactivé doit se lire comme indisponible. Le laisser
+   pâle est le comportement attendu — ce n'est pas une dette. */
 .field select[disabled] {
   color: var(--ink-mute);
   cursor: not-allowed;
@@ -641,6 +655,18 @@ button {
 }
 
 /* Secondaire COMPACT, sans surface : le niveau le plus discret. */
+/* Bouton réduit à un glyphe (Lot R2c — navigation de mois).
+   ⚠ La cible reste CARRÉE et d'au moins 34px : le rembourrage horizontal de
+   `.btn` est dimensionné pour du texte, et sans cette règle un chevron de 16px
+   donnait une cible tactile plus petite que le minimum utilisable au pouce.
+   C'est le seul apport de cette classe — la couleur, la bordure et le survol
+   restent ceux de `.btn`. */
+.btn-icon {
+  min-inline-size: 34px;
+  min-block-size: 34px;
+  padding-inline: 10px;
+}
+
 .btn-ghost {
   background: transparent;
   border: 1px solid var(--line);

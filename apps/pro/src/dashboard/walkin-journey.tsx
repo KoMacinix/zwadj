@@ -43,6 +43,7 @@ import { useTranslation } from "react-i18next";
 import { formatDZD } from "@zwadj/i18n";
 import type { QuoteDTO, ServiceDTO, VenueProDTO } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
+import { revealAndFocus } from "../lib/reveal";
 import { useBookingsPro, useQuotes, useServices } from "../venues/venue-client-context";
 import { VenueCalendar } from "../venues/venue-calendar";
 
@@ -220,7 +221,27 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   });
 
   /** Premier calcul ⇒ création. Ensuite ⇒ RÉVISION de la même chaîne. */
-  const compute = () =>
+  /** Le bloc du devis, pour y emmener l'utilisateur une fois qu'il existe. */
+  const totalRef = useRef<HTMLElement>(null);
+
+  /** ⚠ UN DRAPEAU, PAS UN EFFET SUR `quote` TOUT COURT. Le devis est aussi
+   *  remplacé par `conclude` (conversion, acceptation) : un effet qui réagirait
+   *  à n'importe quel changement de `quote` referait sauter l'écran à ces
+   *  moments-là, alors que l'utilisateur n'a rien demandé. Seul le clic sur
+   *  « Calculer » lève ce drapeau, et l'effet le rabaisse aussitôt. */
+  const revealPending = useRef(false);
+
+  /** ⚠ POURQUOI UN EFFET ET PAS UN APPEL DIRECT DANS `compute`. Au retour de
+   *  l'appel réseau, `setQuote` n'a pas encore été rendu : le bloc n'existe pas
+   *  dans le DOM et la ref vaut `null`. Il faut le rendu suivant. */
+  useEffect(() => {
+    if (!revealPending.current || quote === null) return;
+    revealPending.current = false;
+    revealAndFocus(totalRef.current);
+  }, [quote]);
+
+  const compute = () => {
+    revealPending.current = true;
     void run(async () => {
       const next =
         chainQuoteId === null
@@ -230,6 +251,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       setChainQuoteId(next.id);
       setStale(false);
     });
+  };
 
   const conclude = (lock: boolean) =>
     void run(async () => {
@@ -450,7 +472,13 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         </Step>
 
         {quote === null ? null : (
-          <section className="wk-card wk-total" style={{ gridArea: "total" }} aria-labelledby="wk-total-head">
+          <section
+            className="wk-card wk-total"
+            style={{ gridArea: "total" }}
+            aria-labelledby="wk-total-head"
+            ref={totalRef}
+            tabIndex={-1}
+          >
             <h2 id="wk-total-head" className="wk-total-head">
               {t("venue.ui.walkin.totalTitle")}
             </h2>

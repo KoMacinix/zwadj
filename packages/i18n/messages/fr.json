@@ -154,7 +154,7 @@
       "passwordNeedsLetter": "Ajoutez au moins une lettre.",
       "passwordNeedsDigit": "Ajoutez au moins un chiffre.",
       "phoneRequired": "Le numéro de téléphone est requis.",
-      "phoneInvalid": "Numéro invalide — format attendu : +213XXXXXXXXX.",
+      "phoneInvalid": "Numéro de mobile invalide — attendu : 0555 12 34 56 (Ooredoo, Mobilis ou Djezzy). Les numéros fixes ne sont pas acceptés.",
       "businessNameRequired": "Le nom de l'établissement est requis.",
       "businessNameTooShort": "2 caractères minimum.",
       "businessNameTooLong": "150 caractères maximum.",

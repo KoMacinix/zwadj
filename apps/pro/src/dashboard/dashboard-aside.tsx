@@ -37,6 +37,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router";
 import type { QuoteConversionDTO, VenueProDTO } from "@zwadj/types";
+import { BookingsIcon, CalendarIcon, RequestsIcon, VenueIcon } from "@zwadj/ui";
 import { algiersToday } from "../lib/algiers-date";
 import { useBookingsPro, useQuotes, useVenues } from "../venues/venue-client-context";
 
@@ -136,13 +137,28 @@ export function DashboardAside({ venue, nowMs }: { venue: VenueProDTO; nowMs?: n
   /** ⚠ Des entrées qui mènent à des écrans EXISTANTS, et rien d'autre. La
    *  maquette propose « Prestations », « Revenus » et « Clients » : les deux
    *  premiers n'ont pas d'écran, le troisième attend UIP-E. Un lien vers une
-   *  page absente apprend surtout que le site ne marche pas. */
+   *  page absente apprend surtout que le site ne marche pas.
+   *
+   *  ⚠ ORDRE VOULU, ET IL S'ÉCARTE DE LA MAQUETTE (R2b). Celle-ci range son
+   *  panneau Calendrier · Réservations · Nouvelle réservation · Clients ·
+   *  Revenus · Salle & profil. L'ordre retenu part de la salle et descend vers
+   *  ce qui est conclu : Ma salle → Demandes → Calendrier → Réservations. Les
+   *  icônes de la maquette sont CONSERVÉES — ce qui change est la séquence, il
+   *  n'y avait aucune raison de perdre l'habillage avec.
+   *
+   *  ⚠ « Compte » A QUITTÉ CE PANNEAU, et n'est pas devenu inaccessible pour
+   *  autant : `pro-header.tsx` le porte dans le menu du compte
+   *  (`account.ui.menu.settings` → `/compte`). Vérifié avant retrait — une
+   *  entrée supprimée d'un menu sans second chemin, c'est une page orpheline.
+   *
+   *  Les libellés restent PORTÉS PAR LE TEXTE : les icônes sont décoratives
+   *  (`aria-hidden` dans `@zwadj/ui`), sinon les quatre onglets deviendraient
+   *  indiscernables à la voix. */
   const entries = [
-    { to: "/calendrier", label: t("venue.ui.nav.calendar") },
-    { to: "/demandes", label: t("venue.ui.nav.requests") },
-    { to: "/reservations", label: t("venue.ui.nav.bookings") },
-    { to: "/salles", label: t("venue.ui.nav.myVenue") },
-    { to: "/compte", label: t("venue.ui.aside.account") }
+    { to: "/salles", label: t("venue.ui.nav.myVenue"), icon: <VenueIcon /> },
+    { to: "/demandes", label: t("venue.ui.nav.requests"), icon: <RequestsIcon /> },
+    { to: "/calendrier", label: t("venue.ui.nav.calendar"), icon: <CalendarIcon /> },
+    { to: "/reservations", label: t("venue.ui.nav.bookings"), icon: <BookingsIcon /> }
   ];
 
   return (
@@ -158,7 +174,8 @@ export function DashboardAside({ venue, nowMs }: { venue: VenueProDTO; nowMs?: n
                 to={entry.to}
                 className={({ isActive }) => (isActive ? "pro-aside-link is-active" : "pro-aside-link")}
               >
-                {entry.label}
+                <span className="pro-aside-icon">{entry.icon}</span>
+                <span>{entry.label}</span>
               </NavLink>
             </li>
           ))}

@@ -243,19 +243,24 @@ describe("Inscription PRO — D21 (pas d'auto-login)", () => {
     expect(client.login).not.toHaveBeenCalled(); // D1 : pas de session PRO non vérifiée
   });
 
-  it("téléphone hors format +213 : erreur de validation partagée, AUCUN appel API", async () => {
+  it("téléphone non joignable : erreur de validation partagée, AUCUN appel API", async () => {
     const client = makeClient();
     renderAt("/auth/inscription", client);
 
     fireEvent.change(await screen.findByLabelText("Nom de l'établissement"), { target: { value: "Salle El Ryad" } });
-    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "0551223344" } });
+    // ⚠ `0551223344` N'EST PLUS UNE ERREUR (R3) : c'est la saisie locale, que le
+    // schéma normalise. Le fixe, lui, reste refusé — décision « mobile
+    // uniquement », parce que ce numéro est la destination WhatsApp du pro.
+    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "021223344" } });
     fireEvent.change(screen.getByLabelText("Email"), { target: { value: "contact@salle.dz" } });
     fireEvent.change(screen.getByLabelText("Mot de passe"), { target: { value: "Motdepasse1" } });
     fireEvent.change(screen.getByLabelText("Confirmer le mot de passe"), { target: { value: "Motdepasse1" } });
     fireEvent.click(screen.getByRole("checkbox"));
     fireEvent.click(screen.getByRole("button", { name: "Créer mon compte" }));
 
-    expect(await screen.findByText(/\+213XXXXXXXXX/)).toBeInTheDocument();
+    // Le message ne dit plus « format attendu : +213XXXXXXXXX » — il ne faut
+    // justement plus demander à l'utilisateur de composer l'indicatif.
+    expect(await screen.findByText(/mobile invalide/i)).toBeInTheDocument();
     expect(client.register).not.toHaveBeenCalled();
   });
 });

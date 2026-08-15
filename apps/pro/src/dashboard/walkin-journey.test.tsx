@@ -240,6 +240,88 @@ describe("Nouvelle réservation — un seul devis, révisé", () => {
   });
 });
 
+describe("Nouvelle réservation — le devis vient à l'utilisateur (R2d)", () => {
+  /** ⚠ LE VRAI DÉFAUT ÉTAIT INVISIBLE À L'ŒIL DU DÉVELOPPEUR. Le devis s'affiche
+   *  PLUS BAS que le bouton : sur un portable, rien ne bouge dans le champ de
+   *  vision et le pro croit que son clic n'a rien fait — il reclique.
+   *
+   *  Et faire défiler ne suffit pas : un défilement visuel ne déplace pas le
+   *  curseur d'un lecteur d'écran. C'est le FOCUS qu'on mesure ici. */
+  it("emmène le focus sur le bloc du devis après le calcul", async () => {
+    setup();
+    await pickDateAndSlot();
+
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText("Total à facturer");
+
+    await waitFor(() => {
+      const actif = document.activeElement as HTMLElement | null;
+      expect(actif?.className).toContain("wk-total");
+    });
+  });
+
+  /** ⚠ « Le focus est arrivé » ne prouve pas « l'écran a suivi » : les deux sont
+   *  découplés par `preventScroll`, justement. jsdom n'implémente pas
+   *  `scrollIntoView` — on le pose donc soi-même pour pouvoir l'observer. */
+  it("fait aussi défiler, en une seule fois", async () => {
+    const scroll = vi.fn();
+    Element.prototype.scrollIntoView = scroll;
+    try {
+      setup();
+      await pickDateAndSlot();
+      fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+      await screen.findByText("Total à facturer");
+      await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
+    } finally {
+      Reflect.deleteProperty(Element.prototype, "scrollIntoView");
+    }
+  });
+
+  /** ⚠ CE CAS EST LA RAISON D'ÊTRE DU DRAPEAU. Sans lui, un effet branché sur
+   *  `quote` referait sauter l'écran à CHAQUE remplacement du devis — donc à la
+   *  conversion et à l'acceptation, où l'utilisateur n'a rien demandé. Ici le
+   *  devis est remplacé sans passer par « Calculer » : rien ne doit bouger. */
+  it("ne rebondit PAS quand le devis change sans que le pro ait recalculé", async () => {
+    const scroll = vi.fn();
+    Element.prototype.scrollIntoView = scroll;
+    try {
+      setup({
+        quotes: {
+          send: vi.fn().mockResolvedValue(draft({ status: "SENT" })),
+          convert: vi.fn().mockResolvedValue(draft({ status: "ACCEPTED", bookingId: "b1" }))
+        }
+      });
+      await pickDateAndSlot();
+      fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+      await screen.findByText("Total à facturer");
+      await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
+
+      // Conclure exige le contact : sans lui le bouton est inerte et le test
+      // ne prouverait rien — il « passerait » sans avoir rien déclenché.
+      fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
+      fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
+      fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
+
+      const conclure = screen.getByRole("button", { name: "Enregistrer sans bloquer" });
+      expect(conclure, "bouton inerte : le cas ne mesurerait rien").toBeEnabled();
+      fireEvent.click(conclure);
+
+      // ⚠ ATTENDRE UN SIGNAL D'ACHÈVEMENT, pas un élément déjà présent. Une
+      // première version guettait « Total à facturer » — qui est là depuis le
+      // calcul : l'assertion tombait AVANT que la conversion soit rendue, et le
+      // cas restait vert même en retirant le drapeau. Mesuré par neutralisation.
+      // Le message de dénouement, lui, n'apparaît qu'une fois `conclude` fini.
+      await screen.findByText("Enregistré en attente. La date n'est pas bloquée et pourra être prise par un autre client.");
+
+      // Le devis a bien été remplacé par la version convertie, et l'écran n'a
+      // pas rebondi pour autant.
+      expect(scroll).toHaveBeenCalledTimes(1);
+    } finally {
+      Reflect.deleteProperty(Element.prototype, "scrollIntoView");
+    }
+  });
+});
+
 describe("Nouvelle réservation — le total ne survit pas à un changement", () => {
   it("⚠ changer le créneau JETTE le total et le dit — un total périmé est un mensonge", async () => {
     setup();
