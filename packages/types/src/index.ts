@@ -6,6 +6,7 @@ export * from "./service";
 export * from "./quote";
 export * from "./api";
 export * from "./auth";
+export * from "./phone";
 export * from "./account";
 export * from "./media";
 export * from "./referentials";

@@ -3,7 +3,19 @@ export { BrandLoader, BrandLoaderIcon, BRAND_LOADER_PATH, type BrandLoaderProps 
 export { Button, type ButtonProps } from "./button";
 export { ConfirmDialog, type ConfirmDialogProps } from "./confirm-dialog";
 export { SectionErrorBoundary, type SectionErrorBoundaryProps } from "./section-error-boundary";
-export { ArrowBackIcon, GridViewIcon, HeartIcon, MapViewIcon, StarIcon } from "./icons";
+export {
+  ArrowBackIcon,
+  BookingsIcon,
+  CalendarIcon,
+  GridViewIcon,
+  HeartIcon,
+  MapViewIcon,
+  MonthNextIcon,
+  MonthPrevIcon,
+  RequestsIcon,
+  StarIcon,
+  VenueIcon
+} from "./icons";
 export { ZwadjLogo, ZwadjLogoIcon } from "./logo";
 export { AmenityIcon } from "./amenity-icon";
 export { ThemeToggle, type ThemeToggleProps } from "./theme-toggle";

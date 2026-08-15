@@ -48,8 +48,14 @@ describe("visitBookingCreateSchema — D61", () => {
     expect(visitBookingCreateSchema.safeParse({ ...valid, startMinutes: 590 }).success).toBe(true);
   });
 
-  it("téléphone hors format +213 → phoneInvalid ; clé inconnue refusée (.strict)", () => {
-    expect(messages(visitBookingCreateSchema.safeParse({ ...valid, phone: "0550000009" }))).toContain(
+  it("téléphone non joignable → phoneInvalid ; clé inconnue refusée (.strict)", () => {
+    // ⚠ `0550000009` n'est PLUS un cas d'erreur (R3) : c'est la saisie locale,
+    // normalisée en `+213550000009`. Le fixe, lui, reste refusé.
+    const local = visitBookingCreateSchema.safeParse({ ...valid, phone: "0550000009" });
+    expect(local.success).toBe(true);
+    if (local.success) expect(local.data.phone).toBe("+213550000009");
+
+    expect(messages(visitBookingCreateSchema.safeParse({ ...valid, phone: "021234567" }))).toContain(
       "auth.validation.phoneInvalid"
     );
     expect(visitBookingCreateSchema.safeParse({ ...valid, note: "4 personnes" }).success).toBe(false);

@@ -14,11 +14,7 @@
     "color-contrast @ .filters-reset",
     "color-contrast @ .is-soon.site-nav-link",
     "color-contrast @ .range-value",
-    "color-contrast @ .site-nav-soon",
-    "color-contrast @ .venue-card-from",
-    "color-contrast @ .venue-card-meta",
-    "color-contrast @ .venue-card-reviews",
-    "color-contrast @ .venue-card-tagline"
+    "color-contrast @ .site-nav-soon"
   ],
   "client compte": [
     "color-contrast @ .is-soon.site-nav-link",

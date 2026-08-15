@@ -154,7 +154,7 @@
       "passwordNeedsLetter": "أضيفوا حرفاً واحداً على الأقل.",
       "passwordNeedsDigit": "أضيفوا رقماً واحداً على الأقل.",
       "phoneRequired": "رقم الهاتف مطلوب.",
-      "phoneInvalid": "رقم غير صالح — الصيغة المطلوبة: +213XXXXXXXXX.",
+      "phoneInvalid": "رقم الهاتف المحمول غير صالح — المتوقع: 0555 12 34 56 (أوريدو أو موبيليس أو جيزي). أرقام الهاتف الثابت غير مقبولة.",
       "businessNameRequired": "اسم القاعة مطلوب.",
       "businessNameTooShort": "حرفان على الأقل.",
       "businessNameTooLong": "150 حرفاً كحد أقصى.",

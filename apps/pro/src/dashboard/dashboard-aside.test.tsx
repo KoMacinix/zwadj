@@ -7,7 +7,7 @@
 // Chaque cas ci-dessous fournit donc des lignes qui NE DOIVENT PAS être comptées
 // en même temps que celles qui doivent l'être — c'est l'écart entre les deux qui
 // prouve que le filtre existe.
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import type { ProBookingDTO, ProVisitBookingDTO } from "@zwadj/types";
@@ -80,6 +80,56 @@ function renderAside(venues = makeVenueClientDouble(), bookingsPro = makeBooking
     </MemoryRouter>
   );
 }
+
+describe("Panneau gauche — les onglets (R2b)", () => {
+  /** ⚠ L'ORDRE est le sujet, pas la présence. Vérifier que les quatre libellés
+   *  existent serait vert avec n'importe quelle permutation — or c'est
+   *  précisément la séquence qui a été décidée, et qui s'écarte de la maquette.
+   *  On lit donc les liens DANS L'ORDRE DU DOM. */
+  it("range les onglets Ma salle → Demandes → Calendrier → Réservations", async () => {
+    renderAside();
+    const nav = await screen.findByRole("navigation", { name: "Navigation de la salle" });
+    const liens = within(nav).getAllByRole("link");
+    expect(liens.map((a) => a.textContent)).toEqual([
+      "Ma salle",
+      "Demandes",
+      "Calendrier",
+      "Réservations"
+    ]);
+  });
+
+  /** ⚠ « Et c'est tout » est une borne, donc elle se mesure. Sans ce cas, une
+   *  cinquième entrée réintroduite passerait inaperçue tant que les quatre
+   *  premières restent dans l'ordre. */
+  it("n'expose AUCUN autre onglet — Compte a quitté le panneau", async () => {
+    renderAside();
+    const nav = await screen.findByRole("navigation", { name: "Navigation de la salle" });
+    expect(within(nav).getAllByRole("link")).toHaveLength(4);
+    expect(within(nav).queryByRole("link", { name: /compte/i })).toBeNull();
+  });
+
+  /** Les icônes sont un HABILLAGE : le nom accessible de chaque onglet doit
+   *  rester EXACTEMENT son libellé, sinon les quatre entrées se mettent à
+   *  s'annoncer « Ma salle bâtiment », « Calendrier calendrier »…
+   *
+   *  ⚠ CE QUE CE CAS NE MESURE PAS, ET POURQUOI IL A ÉTÉ RÉÉCRIT. Il comptait
+   *  d'abord les `svg[aria-hidden="true"]`. Neutralisation faite : retirer notre
+   *  `aria-hidden` explicite laissait le test VERT. Lucide en pose un TOUT SEUL
+   *  dès qu'une icône n'a ni enfant ni prop d'accessibilité — notre attribut est
+   *  donc redondant, et l'assertion ne pouvait pas rougir.
+   *
+   *  Le vrai risque est l'inverse : qu'on AJOUTE un `aria-label` à un glyphe
+   *  pour « bien faire ». Lucide retire alors son `aria-hidden`, l'icône entre
+   *  dans l'arbre d'accessibilité et s'ajoute au nom du lien. C'est cette
+   *  correspondance EXACTE que le cas mesure, et elle rougit sur ce geste-là. */
+  it("les icônes restent décoratives : le nom accessible est le seul libellé", async () => {
+    renderAside();
+    const nav = await screen.findByRole("navigation", { name: "Navigation de la salle" });
+    for (const libelle of ["Ma salle", "Demandes", "Calendrier", "Réservations"]) {
+      expect(within(nav).getByRole("link", { name: libelle })).toBeInTheDocument();
+    }
+  });
+});
 
 describe("Panneau gauche — les deux compteurs (décision ⑦)", () => {
   it("interroge les visites sur la JOURNÉE d'Alger, pas sur une fenêtre glissante", async () => {

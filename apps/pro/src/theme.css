@@ -176,8 +176,9 @@
 .pro-aside-name {
   margin: 0 0 20px;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.35;
+  letter-spacing: -0.02em;
 }
 .pro-counter {
   display: flex;
@@ -371,8 +372,14 @@
   margin: 0 0 20px;
   padding: 0;
 }
+/* Grille et non flex : la colonne d'icônes est FIXE, donc les libellés
+   s'alignent verticalement même quand un glyphe est plus étroit qu'un autre.
+   En flex, chaque ligne se calait sur la largeur de sa propre icône. */
 .pro-aside-link {
-  display: block;
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
   padding: 9px 12px;
   border-radius: var(--radius);
   color: var(--ink-2);
@@ -392,6 +399,13 @@
 .pro-aside-link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
+}
+/* L'icône suit la couleur du libellé (`currentColor` chez lucide) : elle pâlit
+   au repos et fonce à l'état actif, sans règle de couleur propre. */
+.pro-aside-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Section dépliable « Devis ». L'en-tête est un vrai bouton : l'état est annoncé
@@ -466,9 +480,9 @@
 .wk-title {
   margin: 0 0 10px;
   font-size: 40px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.05;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
 }
 .wk-lede {
   margin: 0;
@@ -512,13 +526,26 @@
   opacity: 0.45;
   cursor: not-allowed;
 }
+/* ⚠ `--on-accent`, pas `--accent-ink` : ce dernier n'est défini nulle part dans
+   le dépôt — c'était le repli `var(--surface)` qui portait tout. Il donnait
+   la bonne couleur par coïncidence en clair, et `--on-accent` existe justement
+   pour ça : il S'INVERSE avec l'accent en sombre (UI-D2). */
 .wk-btn-primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--accent-ink, var(--surface));
+  color: var(--on-accent);
 }
-.wk-btn-primary:hover:not(:disabled) {
-  filter: brightness(1.25);
+/* ⚠ LE FOND EST REPOSÉ ICI, ET C'EST TOUT LE CORRECTIF.
+   `.wk-btn:hover:not(:disabled)` pèse (0,3,0) et écrasait `.wk-btn-primary`
+   (0,1,0) sur `background` : au survol le fond passait à `--bg-2` pendant que
+   l'encre restait `--surface`. Mesuré : le contraste tombait de 16,85 à 1,10
+   en clair et 1,11 en sombre — blanc sur blanc, dans les DEUX thèmes.
+   L'ancienne règle ne posait qu'un `filter`, qui ne récupère aucun fond.
+   axe ne l'avait pas vu : il n'évalue pas les états de survol. */
+.wk-btn.wk-btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--on-accent);
 }
 
 /* ── Grille : 01/03 à gauche, 02/total à droite, DOM en 01→02→03 ─────────── */
@@ -538,19 +565,27 @@
   background: var(--bg-2, var(--surface));
   padding: 22px 24px 24px;
 }
+/* La maquette n'utilise PAS une autre famille : `.serif` y est Readex Pro, la
+   même qu'ici. Ce qui manquait, c'est son TRAITEMENT — graisse 500 (600 en
+   mode pro) et crénage -0.02em. La graisse y était déjà ; le crénage, non. */
 .wk-card-head {
   display: flex;
   align-items: baseline;
   gap: 14px;
   margin: 0 0 20px;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
+/* Écart mesuré contre la maquette : `var(--accent)` et 0.2em, contre `--ink-2`
+   et 0.14em ici. ⚠ En mode pro l'accent est un quasi-noir (#211C1B, D26) —
+   la maquette fait pareil de son côté (`data-mode="pro"` y pose #18181B). Le
+   numéro FONCE donc, il ne devient pas rose. */
 .wk-step-n {
   font-size: 11px;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.14em;
-  color: var(--ink-2);
+  letter-spacing: 0.2em;
+  color: var(--accent);
 }
 
 .wk-pair {
@@ -658,6 +693,11 @@
   margin: 0;
   padding: 0;
 }
+/* Sélection des prestations — alignée sur la maquette (Lot R2e).
+   Écarts relevés puis corrigés : bordure sélectionnée `--ink` → `--accent`,
+   aucun fond sélectionné → voile d'accent, libellé 14px → 12px, et un état
+   NON sélectionné qui ne se distinguait pas du tout du sélectionné autrement
+   que par une nuance de bordure quasi identique. */
 .wk-service {
   display: flex;
   align-items: center;
@@ -665,12 +705,18 @@
   padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 2px;
-  background: var(--surface);
+  background: transparent;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
+  color: var(--ink-2);
 }
 .wk-service.is-on {
-  border-color: var(--ink);
+  border-color: var(--accent);
+  /* Même arbitrage qu'au bandeau d'acompte : le voile d'accent, PAS le
+     `rgba(200,30,99,0.06)` écrit en dur de la maquette, qui resterait rose sur
+     une page noire (UI-D2). */
+  background: var(--accent-soft);
+  color: var(--ink);
   font-weight: 500;
 }
 .wk-service:focus-within {
@@ -685,15 +731,61 @@
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  /* ⚠ `--ink-2` et non le `--ink-mute` de la maquette : mesuré à 2,56 sur
+     `--surface`, il échoue le seuil AA de 4,5. Même correction que le lot de
+     contraste précédent. */
   color: var(--ink-2);
+}
+.wk-service.is-on .wk-service-type {
+  color: var(--accent);
+}
+
+/* ⚠ LA CASE RESTE UN VRAI `input[type=checkbox]`, seulement redessiné.
+   La maquette dessine un `<span>` de 16px et gère l'état à la main ; refaire
+   ça ici coûterait le rôle `checkbox`, la commande au clavier, l'annonce
+   « coché / non coché », et exigerait de remettre tout ça en ARIA. Or un test
+   cherche déjà `getByRole("checkbox")`. `appearance: none` donne le dessin
+   voulu en gardant UNE SEULE autorité sur l'état : l'input lui-même. */
+.wk-service input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.wk-service input[type="checkbox"]:checked {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+/* La coche : deux bords d'un carré pivoté. Aucune image, donc elle suit
+   `--on-accent` et s'inverse avec le thème. */
+.wk-service input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 4px;
+  inline-size: 6px;
+  block-size: 3px;
+  border-inline-start: 2px solid var(--on-accent);
+  border-block-end: 2px solid var(--on-accent);
+  transform: rotate(-45deg);
 }
 .wk-devis-actions {
   margin-block-start: 20px;
 }
 
 /* ── Total à facturer ──────────────────────────────────────────────────── */
+/* Maquette : `1px solid var(--accent)`. En pro, accent et encre sont deux
+   quasi-noirs voisins — mais c'est l'ACCENT qui porte le sens « ce bloc
+   conclut », et lui seul s'inverse proprement en sombre. */
 .wk-total {
-  border-color: var(--ink);
+  border-color: var(--accent);
 }
 .wk-total-head {
   margin: 0 0 18px;
@@ -731,19 +823,34 @@
   gap: 12px;
   padding-block: 4px;
 }
+/* Le filet « élégant » de la maquette porte un nom : `.accent-rule`, soit un
+   dégradé d'1px qui s'éteint aux DEUX bouts. Un `border-block-start` ne peut
+   pas le rendre — une bordure est uniforme — d'où le pseudo-élément.
+   `background-image` et non `background` : la règle reste additive si un thème
+   pose une couleur de fond derrière. */
 .wk-grand {
+  position: relative;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
   padding-block: 16px;
-  border-block-start: 1px solid var(--line);
 }
+.wk-grand::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 1px;
+  background-image: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
+}
+/* Maquette : 30px, `var(--accent)`, graisse 500, crénage `.serif` (-0.02em). */
 .wk-grand strong {
   font-size: 30px;
-  font-weight: 400;
+  font-weight: 500;
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 .wk-deposit {
   display: flex;
@@ -752,9 +859,14 @@
   gap: 16px;
   padding: 12px 14px;
   margin-block-end: 16px;
-  /* Fond d'accent DOUX dérivé du token, jamais le rose de la maquette. */
-  background: var(--bg-2, var(--bg));
-  border: 1px solid var(--line);
+  /* ⚠ `--accent-soft`, le VOILE d'accent pro — pas `--bg-2`, qui est un fond
+     neutre et ne dit rien. La maquette teinte bien ce bandeau à l'accent ; ce
+     qu'on ne reprend pas, c'est son `rgba(200,30,99,0.08)` ÉCRIT EN DUR, qui
+     resterait rose sur une page noire. `--accent-soft` s'inverse (#F1EFEE en
+     clair, #24201F en sombre) : c'est exactement la régression qu'UI-D2 a
+     corrigée, on ne la réintroduit pas pour une teinte. */
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-soft);
   border-radius: 2px;
   font-size: 14px;
 }

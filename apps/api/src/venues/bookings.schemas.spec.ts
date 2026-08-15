@@ -34,6 +34,12 @@ describe("bookingCreateSchema — ce qu'il doit ACCEPTER", () => {
     expect(parsed.success).toBe(true);
   });
 
+  it("un téléphone tapé à la locale : il est normalisé, pas rejeté (R3)", () => {
+    const r = bookingCreateSchema.safeParse({ ...VALID, contactPhone: "0550 00 00 01" });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.contactPhone).toBe("+213550000001");
+  });
+
   it("paiement en espèces : l'Algérie paie surtout comme ça", () => {
     expect(bookingCreateSchema.safeParse({ ...VALID, paymentMethod: "CASH" }).success).toBe(true);
   });
@@ -78,8 +84,11 @@ describe("bookingCreateSchema — ce qu'il doit REFUSER", () => {
     expect(bookingCreateSchema.safeParse({ ...VALID, contactEmail: "" }).success).toBe(false);
   });
 
-  it("un téléphone non +213", () => {
-    expect(bookingCreateSchema.safeParse({ ...VALID, contactPhone: "0550000001" }).success).toBe(false);
+  it("un fixe : la réservation exige un mobile joignable (R3)", () => {
+    // `0550000001` — la saisie locale — est désormais ACCEPTÉE et normalisée ;
+    // c'est prouvé du côté ACCEPTER. Ce qui reste refusé, c'est le fixe.
+    expect(bookingCreateSchema.safeParse({ ...VALID, contactPhone: "021234567" }).success).toBe(false);
+    expect(bookingCreateSchema.safeParse({ ...VALID, contactPhone: "+33612345678" }).success).toBe(false);
   });
 
   it("les DEUX montants attendus sont obligatoires (D75)", () => {
