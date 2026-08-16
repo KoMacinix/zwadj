@@ -1,48 +1,62 @@
-// Devis — Flux E, Lot E2b.
+// Devis — Flux E, Lot E2b ; machine à états refondue au lot Q2 (ex-C1c).
 //
-// ── La règle qui gouverne tout le fichier ────────────────────────────────────
-// TOUTE version qui devient ACTIVE remplace la précédente active de sa chaîne.
-// « Active » vaut SENT ou ACCEPTED, et « remplace » vaut SUPERSEDED — jamais
-// DECLINED : personne n'a refusé, c'est le temps qui a passé.
+// ── LA RÈGLE QUI GOUVERNAIT CE FICHIER, ET POURQUOI ELLE TOMBE ───────────────
+// « Toute version qui devient ACTIVE remplace la précédente active de sa
+// chaîne » supposait qu'il existe un état ACTIF. Q2 le supprime : remettre un
+// devis est un PARTAGE (D160), pas une transition. Il n'y a donc plus rien à
+// rétrograder, et `supersedeActive()` a été RETIRÉE plutôt que reciblée.
 //
-// ⚠ L'ORDRE DES ÉCRITURES N'EST PAS UNE PRÉCAUTION, C'EST LE SEUL CHEMIN QUI
-//   PASSE. `quotes_one_accepted_per_chain` et `quotes_one_sent_per_chain` sont
-//   des index PARTIELS, donc NON différables (`DEFERRABLE` ne s'applique qu'aux
-//   contraintes, et `UNIQUE` n'accepte pas de `WHERE`). Ils sont vérifiés à
-//   chaque instruction : activer avant de rétrograder échoue systématiquement.
+// ⚠ C'EST LE PIÈGE N°1 DU LOT, ET IL SE SERAIT REFERMÉ EN SILENCE. La fonction
+//   visait `ACTIVE_STATUSES = [SENT, ACCEPTED]`. `SENT` n'est plus écrit, et
+//   `ACCEPTED` ne l'a JAMAIS été — vérifié dans tout le dépôt : deux lectures,
+//   zéro écriture. Conservée, elle serait devenue un `updateMany` qui ne touche
+//   jamais une ligne : aucune erreur, aucun test rouge, et une protection qu'on
+//   croirait en place. Une garde qui ne mord plus se supprime, elle ne se
+//   commente pas.
 //
-// ⚠ D101 (REMPLACE D100) — l'acceptation d'un devis n'est PAS une action.
-//   Elle est la CONSÉQUENCE d'une chaîne complète, dans cet ordre :
-//     1. devis SENT
-//     2. le client demande une date  → Booking PENDING
-//     3. le pro accepte la date      → Booking ACCEPTED
-//     4. l'acompte est encaissé      → Booking CONFIRMED **et** Quote ACCEPTED
-//   Les deux conditions sont nécessaires, et dans cet ordre : sans acceptation
-//   du pro il n'y a rien à payer, et sans paiement rien n'est conclu. Ce lot ne
-//   fournit donc AUCUN chemin vers `Quote.ACCEPTED` — la bascule appartient au
-//   lot Paiement, dans la MÊME transaction que le passage en CONFIRMED.
+// ⚠ Ce que sa disparition NE laisse PAS à découvert, et ce qui a CHANGÉ depuis.
+//   Les deux index partiels restent en base, mais pour des raisons désormais
+//   OPPOSÉES :
+//     `quotes_one_sent_per_chain`     → INERTE. `SENT` n'est plus écrit.
+//     `quotes_one_accepted_per_chain` → il REDEVIENDRA actif avec E3, qui est
+//        le seul chemin vers `ACCEPTED`. Il garantit qu'une chaîne n'a qu'un
+//        devis accepté. ⚠ Point à traiter EN E3 : deux versions d'une même
+//        chaîne peuvent chacune porter une réservation (`convert()` ne regarde
+//        que le devis visé), donc deux passages en `ACCEPTED` sur une chaîne
+//        violeraient cet index en 500.
+//   ⚠ D165 EST RÉVOQUÉE POUR LE VERSIONNEMENT (décision A) : `chain_id`,
+//   `version` et `parent_quote_id` ne sont PAS des colonnes en sursis. Le
+//   versionnement est CONSERVÉ tel quel — c'est lui qui protège la traçabilité,
+//   et `revise()` continue de créer une version au lieu d'écraser. Aucune garde
+//   en base n'est donc nécessaire : sans écrasement, il n'y a rien à empêcher.
 //
-//   Corollaire : les deux parcours — client en ligne, pro en présentiel — ne se
-//   distinguent que par l'ACTEUR et l'INTERFACE. Mêmes lignes, mêmes statuts,
-//   mêmes transitions. Un pro qui encaisse un acompte en espèces déclenche
-//   exactement la même bascule qu'un paiement Chargily.
+// ── D101 est REMPLACÉE par D159 : les deux parcours sont DISTINCTS ───────────
+//   `Quote` est walk-in SEUL. Le parcours en ligne appelle
+//   `POST /venues/:slug/bookings` et ne crée AUCUN devis — le code ne l'a jamais
+//   fait, c'est la doctrine écrite qui avait quitté le code.
 //
-// ⚠ Et comme partout ailleurs (D78), l'unicité appartient à la BASE. Le service
-//   rétrograde `WHERE chain_id = X AND status = …` — jamais un id précis lu
-//   auparavant — et prend un `SELECT … FOR UPDATE` sur la racine de la chaîne
-//   pour sérialiser les acceptations concurrentes. Le 409 reste le filet ; il
-//   ne se devine pas.
+//   Reste vrai, et inchangé : l'acceptation d'un devis n'est pas une action.
+//   Elle est la conséquence d'une chaîne complète — le pro accepte la date,
+//   PUIS l'acompte est encaissé. Ce lot ne fournit donc AUCUN chemin vers
+//   `Quote.ACCEPTED` ; la bascule appartient à E3, dans la MÊME transaction que
+//   le passage en CONFIRMED.
+//
+// ⚠ Et comme partout ailleurs (D117, D121), un statut qui décide d'une
+//   transition se lit DANS la transaction — par check-and-set conditionné au
+//   statut, jamais par un contrôle lu avant.
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import {
   BookingStatus,
+  QUOTE_LOST_STATUSES,
+  QUOTE_OPEN_STATUSES,
   QuoteErrorCode,
   QuoteStatus,
   ServiceErrorCode,
-  isQuoteExpired,
   type QuoteConvertInput,
   type QuoteConversionDTO,
   type QuoteCreateInput,
   type QuoteDTO,
+  type QuoteDeliverInput,
   type QuoteSentVia
 } from "@zwadj/types";
 import { Prisma } from "../generated/prisma/client";
@@ -57,9 +71,16 @@ import { SERVICE_SELECT } from "./services.service";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** États ACTIFS d'une chaîne. Miroir des deux index partiels : si l'un bouge,
- *  l'autre doit bouger, sinon le service croit une chose et la base une autre. */
-const ACTIVE_STATUSES = [QuoteStatus.SENT, QuoteStatus.ACCEPTED] as const;
+/** ⚠ IMPORTÉE de `@zwadj/types`, jamais recopiée ici. C'est la MÊME liste qui
+ *  décide quels boutons l'app pro affiche : deux copies de « ce devis est-il
+ *  encore ouvert ? » divergeraient, et la divergence serait silencieuse — un
+ *  bouton présent que l'API refuse, ou l'inverse. */
+const OPEN = [...QUOTE_OPEN_STATUSES];
+
+/** ⚠ IMPORTÉE, PAS RECOPIÉE — même raison qu'`OPEN`. Deux statuts, parce que
+ *  `DECLINED` est hérité et que les affaires perdues de l'historique le portent
+ *  toutes. Voir `QUOTE_LOST_STATUSES`. */
+const LOST = [...QUOTE_LOST_STATUSES];
 
 const QUOTE_SELECT = {
   id: true,
@@ -77,7 +98,6 @@ const QUOTE_SELECT = {
   totalCents: true,
   depositCents: true,
   lines: true,
-  validUntil: true,
   sentAt: true,
   sentVia: true,
   acceptedAt: true,
@@ -98,42 +118,60 @@ export class QuotesService {
       orderBy: [{ chainId: "asc" }, { version: "asc" }],
       select: QUOTE_SELECT
     });
-    const nowMs = Date.now();
-    return rows.map((row) => this.toDTO(row, nowMs));
+    return rows.map((row) => this.toDTO(row));
   }
 
-  /** Taux de transformation. C'est la raison d'être n°3 de la table : on compte
-   *  des CHAÎNES, pas des versions — trois révisions d'un même devis sont UNE
-   *  affaire, pas trois. */
+  /**
+   * Taux de transformation. On compte des CHAÎNES, pas des versions — trois
+   * révisions d'un même devis sont UNE affaire, pas trois.
+   *
+   * ⚠ LE DÉNOMINATEUR A CHANGÉ DE DÉFINITION (D162). Il portait sur
+   * `sentAt IS NOT NULL`, c'est-à-dire sur l'horodatage que le clic « Envoyer »
+   * posait — un clic qu'il fallait faire pour débloquer la conversion, et que
+   * les pros faisaient donc SANS rien envoyer. L'entonnoir comptait un geste
+   * technique, pas une remise.
+   *
+   * Il porte désormais sur `sentVia`, qui n'existe que si quelqu'un a déclaré
+   * PAR QUOI le devis est parti. Les quatre canaux incluent `IN_PERSON` et
+   * `PHONE` précisément pour que le devis conclu de vive voix au comptoir — le
+   * cas le plus courant — entre dans l'entonnoir au lieu d'en disparaître.
+   *
+   * ⚠ CONSÉQUENCE ASSUMÉE SUR LES DONNÉES EXISTANTES. Aucune reprise n'a été
+   * faite (D168) : les devis antérieurs à Q1 n'ont pas de canal et sortent donc
+   * du dénominateur. L'entonnoir REPART de zéro. C'est le prix d'un indicateur
+   * qui dit la vérité — inventer un canal sur des lignes anciennes aurait
+   * produit un entonnoir qui a l'air juste, ce qui est exactement le pire.
+   */
   async conversion(userId: string, venueId: string): Promise<QuoteConversionDTO> {
     await this.ownedVenue(userId, venueId);
     const rows = await this.prisma.quote.findMany({
-      where: { venueId, sentAt: { not: null } },
+      where: { venueId, sentVia: { not: null } },
       orderBy: [{ chainId: "asc" }, { version: "desc" }],
-      select: { chainId: true, status: true, validUntil: true, version: true }
+      select: { chainId: true, status: true, version: true }
     });
 
-    const nowMs = Date.now();
     const seen = new Set<string>();
-    const result: QuoteConversionDTO = { sent: 0, accepted: 0, declined: 0, expired: 0 };
+    const result: QuoteConversionDTO = { delivered: 0, accepted: 0, cancelled: 0 };
 
     for (const row of rows) {
       // La version la plus récente de la chaîne décide du sort de l'affaire :
       // le tri `version desc` fait qu'on la rencontre en premier.
       if (seen.has(row.chainId)) continue;
       seen.add(row.chainId);
-      result.sent += 1;
+      result.delivered += 1;
       if (row.status === QuoteStatus.ACCEPTED) result.accepted += 1;
-      else if (row.status === QuoteStatus.DECLINED) result.declined += 1;
-      else if (isQuoteExpired({ status: row.status, validUntil: row.validUntil?.toISOString() ?? null }, nowMs)) {
-        result.expired += 1;
-      }
+      // ⚠ `LOST` ET NON `=== CANCELLED`. C'est LA garde de l'absorption : le
+      // jour du déploiement, toutes les affaires perdues de l'historique sont en
+      // `DECLINED`, et aucune migration ne les basculera (pas de reprise).
+      // Comparer au seul statut neuf afficherait « 0 perdus » sur une salle qui
+      // en a trente — faux, et dans le sens flatteur.
+      else if (LOST.includes(row.status)) result.cancelled += 1;
     }
     return result;
   }
 
-  /** v1 d'une nouvelle chaîne. Naît en DRAFT : un devis se relit avant de
-   *  partir, et un envoi n'est pas rattrapable. */
+  /** v1 d'une nouvelle chaîne. Naît en DRAFT — et y RESTE tant que rien ne la
+   *  ferme : depuis Q2, remettre le devis au client ne change plus son statut. */
   async create(userId: string, venueId: string, input: QuoteCreateInput): Promise<QuoteDTO> {
     await this.ownedVenue(userId, venueId);
     const priced = await this.price(venueId, input);
@@ -151,59 +189,68 @@ export class QuotesService {
       return tx.quote.findUniqueOrThrow({ where: { id: created.id }, select: QUOTE_SELECT });
     });
 
-    return this.toDTO(row, Date.now());
+    return this.toDTO(row);
   }
 
-  /** Envoi. C'est ici que le devis devient ACTIF — donc ici que la version
-   *  précédemment active de la chaîne se fait remplacer. */
-  async send(userId: string, quoteId: string): Promise<QuoteDTO> {
+  /**
+   * REMISE du devis au client — remplace `send()`.
+   *
+   * ⚠ CE QUE CETTE MÉTHODE NE FAIT PLUS, ET C'EST TOUT LE LOT. Elle ne change
+   * AUCUN statut. Le devis reste `DRAFT` : il n'existe plus d'état « remis »
+   * qui conditionnerait la suite. Remettre un devis est un partage, sans effet
+   * sur le prix et sans effet sur ce qui est permis ensuite (D160).
+   *
+   * ⚠ ELLE EST DONC RÉPÉTABLE, DÉLIBÉRÉMENT. Un pro qui imprime puis envoie par
+   * SMS a fait deux remises ; la seconde écrase `sentVia` et `sentAt`. Le
+   * dernier canal gagne, et l'entonnoir compte la chaîne UNE fois de toute
+   * façon. C'est un journal de partage, pas une transition.
+   *
+   * ⚠ CE QUI DISPARAÎT AVEC ELLE, ET POURQUOI CE N'EST PAS UNE RÉGRESSION. La
+   * garde de concurrence de D117 protégeait `sentAt` : « le second envoi
+   * réécrirait la date que le client a sous les yeux sur un devis déjà parti ».
+   * Cette phrase supposait un envoi unique et irréversible. Une remise ne l'est
+   * pas — réécrire `sentAt` est désormais le comportement ATTENDU. La garde
+   * n'est donc pas retirée par négligence : son objet n'existe plus.
+   *
+   * Ce qui RESTE, en revanche, c'est la doctrine : le statut qui autorise
+   * l'écriture est lu DANS la transaction, par check-and-set. Un devis refusé
+   * ou remplacé ne se remet pas au client, même si la fermeture arrive une
+   * milliseconde avant la remise.
+   */
+  async deliver(userId: string, quoteId: string, input: QuoteDeliverInput): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
 
     const row = await this.prisma.$transaction(async (tx) => {
-      await this.lockChain(tx, current.chainId);
-
-      // D117 — LE STATUT SE LIT SOUS LE VERROU DE CHAÎNE, jamais avant.
-      //
-      // ⚠ Contrairement à `accept()`, AUCUN défaut n'a été reproduit ici : le
-      // code d'avant rendait déjà 201 + 409 sur deux envois concurrents du même
-      // brouillon, parce que la seconde requête voyait déjà SENT dans son
-      // `ownedQuote()`. Mais cette sérialisation venait de l'ordonnancement du
-      // pool de connexions — pas d'une garantie. Une seconde instance d'API la
-      // ferait disparaître, et les index partiels `quotes_one_*_per_chain` ne
-      // rattraperaient rien : il n'y a qu'UNE ligne, elle ne se dédouble pas, et
-      // `supersedeActive` s'exclut elle-même par `exceptId`. Le second envoi
-      // réécrirait `sentAt` sur un devis déjà parti.
-      //
-      // On rend donc STRUCTUREL ce qui n'était qu'OBSERVÉ, au même endroit et
-      // par le même moyen que pour `accept()` — une seule autorité (D78).
-      //
-      // ⚠ Deux envois de brouillons DIFFÉRENTS de la même chaîne étaient déjà
-      // corrects par construction (le verrou les sérialise, le second supersède
-      // le premier). Ce chemin-là ne change pas.
-      const fresh = await tx.quote.findUniqueOrThrow({
-        where: { id: current.id },
-        select: { status: true }
+      const consumed = await tx.quote.updateMany({
+        where: { id: current.id, status: { in: OPEN } },
+        data: { sentVia: input.sentVia, sentAt: new Date() }
       });
-      this.assertStatus(fresh, [QuoteStatus.DRAFT]);
-
-      await this.supersedeActive(tx, current.chainId, current.id);
-      return tx.quote.update({
-        where: { id: current.id },
-        data: { status: QuoteStatus.SENT, sentAt: new Date() },
-        select: QUOTE_SELECT
-      });
+      if (consumed.count === 0) {
+        const fresh = await tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: { status: true } });
+        this.assertStatus(fresh, OPEN);
+        throw new ConflictException({
+          code: QuoteErrorCode.QUOTE_STATUS_CONFLICT,
+          message: "quote.errors.statusConflict",
+          status: fresh.status
+        });
+      }
+      return tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: QUOTE_SELECT });
     });
-    return this.toDTO(row, Date.now());
+    return this.toDTO(row);
   }
 
-  /** Révision — la version N+1 de la chaîne, en DRAFT. Elle ne remplace rien
-   *  tant qu'elle n'est pas envoyée : tant que le pro la prépare, le client a
-   *  toujours l'ancienne sous les yeux, et c'est ce qu'il doit avoir. */
+  /** Révision — la version N+1 de la chaîne, en DRAFT.
+   *
+   *  ⚠ Le passage à l'ÉCRASEMENT est Q3, pas ici (D167) : il ouvre le trou de
+   *  D163 — `Booking.quoteId` référence le devis sans recopier les montants,
+   *  donc écraser changerait rétroactivement le montant d'une réservation
+   *  acceptée, et payée une fois E3 en place, sans qu'aucune erreur ne soit
+   *  levée. L'écrasement arrive AVEC sa garde en base, jamais avant. */
   async revise(userId: string, quoteId: string, input: QuoteCreateInput): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
     // Une chaîne close ne se révise plus : ni un refus, ni une acceptation ne se
     // rouvrent par une version de plus.
-    this.assertStatus(current, [QuoteStatus.DRAFT, QuoteStatus.SENT]);
+    this.assertStatus(current, OPEN);
 
     const priced = await this.price(current.venueId, input);
     const row = await this.prisma.$transaction(async (tx) => {
@@ -220,14 +267,21 @@ export class QuotesService {
         select: QUOTE_SELECT
       });
     });
-    return this.toDTO(row, Date.now());
+    return this.toDTO(row);
   }
 
   /** Conversion — le devis devient une DEMANDE de réservation.
    *
-   *  ⚠ La réservation naît en **PENDING**, pas en ACCEPTED (D101). C'est le pro
-   *  qui accepte la date ensuite, par la route de E1a — exactement comme pour
-   *  une demande venue du site. Le devis, lui, RESTE `SENT` : il ne passera
+   *  ⚠ UN BROUILLON SE CONVERTIT DÉSORMAIS, et c'est le cœur de Q2. La règle
+   *  d'avant disait : « sans envoi, personne d'autre que le pro ne l'a vu ».
+   *  Elle décrivait un parcours à distance qui n'existe pas ici — au comptoir,
+   *  le client a le montant sous les yeux pendant que le pro le tape. Exiger un
+   *  clic « Envoyer » avant de conclure ne prouvait donc rien : il rendait le
+   *  clic obligatoire, donc systématique, donc muet.
+   *
+   *  ⚠ La réservation naît en **PENDING**, pas en ACCEPTED. C'est le pro qui
+   *  accepte la date ensuite, par la route de E1a — exactement comme pour une
+   *  demande venue du site. Le devis, lui, ne bouge pas : il ne passera
    *  `ACCEPTED` qu'au moment où l'acompte sera encaissé.
    *
    *  Ce que ça change concrètement : une demande PENDING ne verrouille rien, le
@@ -245,13 +299,7 @@ export class QuotesService {
    */
   async convert(userId: string, quoteId: string, input: QuoteConvertInput): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
-    // Un DRAFT ne se convertit pas : sans envoi, personne d'autre que le pro ne
-    // l'a vu, et il n'y a donc rien que le client ait accepté.
-    this.assertStatus(current, [QuoteStatus.SENT]);
-
-    if (isQuoteExpired({ status: current.status, validUntil: current.validUntil?.toISOString() ?? null }, Date.now())) {
-      throw new ConflictException({ code: QuoteErrorCode.QUOTE_EXPIRED, message: "quote.errors.expired" });
-    }
+    this.assertStatus(current, OPEN);
 
     // `bookings.quote_id` est UNIQUE : sans cette garde, une seconde conversion
     // remonterait en 500 au lieu d'un 409 lisible. La base reste l'autorité —
@@ -332,12 +380,26 @@ export class QuotesService {
 
     // Le devis ne bouge PAS. Il attend l'acompte.
     const row = await this.prisma.quote.findUniqueOrThrow({ where: { id: current.id }, select: QUOTE_SELECT });
-    return this.toDTO(row, Date.now());
+    return this.toDTO(row);
   }
 
-  /** Refus EXPLICITE. À ne pas confondre avec la supersession : ici quelqu'un a
-   *  dit non à ce devis-là. */
-  async decline(userId: string, quoteId: string): Promise<QuoteDTO> {
+  /** CLÔTURE d'un devis qui n'aboutira pas — remplace `decline()` (D161).
+   *
+   *  ⚠ UN SEUL ÉTAT POUR DEUX CAS RÉELS, et c'est le lot Q3a en une phrase. Le
+   *  client a dit non, ou le pro a renoncé : rien dans la suite du parcours ne
+   *  les traite différemment — l'affaire est perdue et le créneau reste libre.
+   *  La nuance avait un sens quand le devis partait à distance et qu'un refus
+   *  était un événement reçu ; au comptoir, c'est la même conversation.
+   *
+   *  ⚠ À ne pas confondre avec `SUPERSEDED`, qui reste distinct : « remplacé par
+   *  une version plus récente » n'est toujours pas « l'affaire est perdue ». Le
+   *  versionnement est CONSERVÉ (décision A), donc cette distinction-là garde
+   *  toute sa valeur — c'est même la seule chose qui protège la traçabilité
+   *  maintenant qu'aucune garde en base n'est posée.
+   *
+   *  ⚠ Les lignes déjà `DECLINED` ne sont PAS reprises. Elles restent lisibles,
+   *  et l'entonnoir les compte avec les `CANCELLED` — voir `conversion()`. */
+  async cancel(userId: string, quoteId: string): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
 
     // D121 — check-and-set, même famille que `decline`/`cancel` côté demandes.
@@ -345,12 +407,12 @@ export class QuotesService {
     // 201 les deux fois, sur un devis déjà refusé.
     const row = await this.prisma.$transaction(async (tx) => {
       const consumed = await tx.quote.updateMany({
-        where: { id: current.id, status: QuoteStatus.SENT },
-        data: { status: QuoteStatus.DECLINED }
+        where: { id: current.id, status: { in: OPEN } },
+        data: { status: QuoteStatus.CANCELLED }
       });
       if (consumed.count === 0) {
         const fresh = await tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: { status: true } });
-        this.assertStatus(fresh, [QuoteStatus.SENT]);
+        this.assertStatus(fresh, OPEN);
         throw new ConflictException({
           code: QuoteErrorCode.QUOTE_STATUS_CONFLICT,
           message: "quote.errors.statusConflict",
@@ -359,24 +421,20 @@ export class QuotesService {
       }
       return tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: QUOTE_SELECT });
     });
-    return this.toDTO(row, Date.now());
+    return this.toDTO(row);
   }
 
   // ───────────────────────────────────────────────────────────────────────────
 
   /** Sérialise les écritures d'une chaîne. Le verrou porte sur la RACINE
-   *  (`chainId`), qui est une vraie ligne : c'est la v1 elle-même. */
+   *  (`chainId`), qui est une vraie ligne : c'est la v1 elle-même.
+   *
+   *  ⚠ CONSERVÉ alors que la supersession a disparu, et pour une raison qui lui
+   *  est propre : `revise()` lit le `MAX(version)` puis écrit `version + 1`, et
+   *  `quotes_chain_version_unique` refuserait la seconde de deux révisions
+   *  simultanées. Le verrou les sérialise. Ce n'est pas un reste. */
   private async lockChain(tx: Prisma.TransactionClient, chainId: string): Promise<void> {
     await tx.$queryRaw`SELECT id FROM quotes WHERE id = ${chainId}::uuid FOR UPDATE`;
-  }
-
-  /** Rétrograde l'active de la chaîne. Vise le STATUT, jamais un id lu avant :
-   *  entre la lecture et l'écriture, la ligne active a pu changer. */
-  private async supersedeActive(tx: Prisma.TransactionClient, chainId: string, exceptId: string): Promise<void> {
-    await tx.quote.updateMany({
-      where: { chainId, id: { not: exceptId }, status: { in: [...ACTIVE_STATUSES] } },
-      data: { status: QuoteStatus.SUPERSEDED }
-    });
   }
 
   private async price(venueId: string, input: QuoteCreateInput) {
@@ -423,6 +481,13 @@ export class QuotesService {
 
     const servicesTotalCents = lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
     const totalCents = basePriceCents + servicesTotalCents;
+    // ⚠ `validUntil` NE FIGURE PLUS ICI (D160), et sa COLONNE a été supprimée au
+    // lot Q4 — après que Q2 et Q3a aient été vérifiés verts sur base réelle.
+    // C'est le premier point de non-retour de la série : toutes les migrations
+    // précédentes laissaient le retour arrière à portée d'une bascule de code.
+    // ⚠ `chain_id`, `version` et `parent_quote_id` NE L'ONT PAS SUIVIE. D165 les
+    // condamnait au même lot ; la décision A les en a retirées — le versionnement
+    // est conservé, donc ces trois colonnes sont ACTIVES.
     return {
       clientId: input.clientId ?? null,
       slotTemplateId: slot.id,
@@ -432,8 +497,7 @@ export class QuotesService {
       servicesTotalCents,
       totalCents,
       depositCents: resolveDepositCents(venue, totalCents),
-      lines: lines as unknown as Prisma.InputJsonValue,
-      validUntil: input.validUntil === undefined ? null : new Date(civilUtcMs(parseCivilDate(input.validUntil) as CivilDate))
+      lines: lines as unknown as Prisma.InputJsonValue
     };
   }
 
@@ -476,8 +540,8 @@ export class QuotesService {
     }
   }
 
-  /** ⚠ D117 — `{ status }` et non `QuoteRow` : `send()` relit le statut sous le
-   *  verrou de chaîne avec un `select` minimal, pas un `QUOTE_SELECT` complet. */
+  /** ⚠ D117 — `{ status }` et non `QuoteRow` : les check-and-set relisent le
+   *  statut avec un `select` minimal, pas un `QUOTE_SELECT` complet. */
   private assertStatus(row: { status: string }, allowed: readonly string[]): void {
     if (!allowed.includes(row.status)) {
       throw new ConflictException({
@@ -492,14 +556,12 @@ export class QuotesService {
     return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };
   }
 
-  private toDTO(row: QuoteRow, nowMs: number): QuoteDTO {
-    const validUntil = row.validUntil?.toISOString() ?? null;
+  private toDTO(row: QuoteRow): QuoteDTO {
     return {
       id: row.id,
       venueId: row.venueId,
       clientId: row.clientId,
       status: row.status,
-      isExpired: isQuoteExpired({ status: row.status, validUntil }, nowMs),
       version: row.version,
       chainId: row.chainId,
       parentQuoteId: row.parentQuoteId,
@@ -511,9 +573,12 @@ export class QuotesService {
       totalCents: row.totalCents,
       depositCents: row.depositCents,
       lines: row.lines as unknown as QuoteDTO["lines"],
-      validUntil,
       sentAt: row.sentAt?.toISOString() ?? null,
-      // C1b — rien ne l'écrit encore ; la colonne existe, le contrat la rend.
+      // ⚠ Le `as` reste nécessaire : la colonne est TEXT en base (liste ouverte,
+      // D168), donc Prisma rend `string | null`. L'autorité sur le jeu de
+      // valeurs est `quoteSentViaSchema`, appliqué à l'ÉCRITURE par la pipe Zod
+      // du contrôleur — jamais à la lecture, où elle ferait tomber une ligne
+      // ancienne au lieu de l'afficher.
       sentVia: (row.sentVia as QuoteSentVia | null) ?? null,
       acceptedAt: row.acceptedAt?.toISOString() ?? null,
       createdAt: row.createdAt.toISOString(),

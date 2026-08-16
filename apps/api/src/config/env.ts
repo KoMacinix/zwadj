@@ -36,6 +36,33 @@ export const envSchema = z.object({
     .transform((v) => v === "true" || v === "1"),
   /** Expéditeur affiché par la primitive email. */
   EMAIL_FROM: z.string().default("Zwadj <no-reply@zwadj.dz>"),
+
+  // ── Paiement (Phase 7, lot E3a) ────────────────────────────────────────────
+  /**
+   * DRAPEAU MAÎTRE DU CHEMIN DE L'ARGENT. Éteint, aucune route de paiement n'est
+   * exposée et aucun webhook n'est accepté.
+   *
+   * ⚠ POURQUOI IL EXISTE AVANT LA MOINDRE LIGNE DE PAIEMENT (D126). Les
+   * sous-lots E3b→E3e se livrent l'un après l'autre, chacun derrière ses six
+   * portes. Sans drapeau, chaque livraison intermédiaire exposerait une moitié
+   * de chemin de règlement en production — une session de paiement sans webhook,
+   * ou un webhook sans bascule de statut. Le drapeau permet de LIVRER sans
+   * ACTIVER, ce qui est la seule façon de découper un chemin monétaire.
+   *
+   * ⚠ DÉFAUT `false`, ET C'EST LE POINT. Un drapeau de paiement dont l'absence
+   * vaut « activé » s'allumerait tout seul le jour d'un déploiement où la
+   * variable manque. Le sens du défaut est ici une décision de sécurité, pas une
+   * commodité : le seul défaut acceptable sur le chemin de l'argent est celui
+   * qui ne fait rien.
+   *
+   * ⚠ Même transformation que `AUTH_COOKIE_SECURE` — relevée sur ce fichier, pas
+   * écrite de mémoire : les variables d'environnement sont des CHAÎNES, et
+   * `Boolean("false")` vaut `true`.
+   */
+  PAYMENTS_ENABLED: z
+    .string()
+    .default("false")
+    .transform((v) => v === "true" || v === "1"),
   /** OAuth Google (Lot 8) : audience de vérification des ID tokens GIS
    *  (client ID « Web » du projet Google Cloud). ABSENTE hors production :
    *  l'API boote, /auth/google répond 503 GOOGLE_AUTH_DISABLED — un poste de
@@ -67,7 +94,18 @@ export type Env = z.infer<typeof envSchema>;
  * Google est visible côté Client — une absence silencieuse serait un incident
  * visible, donc même traitement fail-fast au boot.
  */
-const PROD_REQUIRED_EXPLICIT = ["CLIENT_URL", "PRO_URL", "AUTH_COOKIE_SECURE", "GOOGLE_CLIENT_ID"] as const;
+const PROD_REQUIRED_EXPLICIT = [
+  "CLIENT_URL",
+  "PRO_URL",
+  "AUTH_COOKIE_SECURE",
+  "GOOGLE_CLIENT_ID",
+  // ⚠ EXPLICITE EN PRODUCTION, alors qu'il a déjà un défaut sûr. Le défaut
+  // protège contre l'allumage accidentel ; cette liste-ci protège contre
+  // l'inverse — croire les paiements actifs alors que la variable a été oubliée
+  // au déploiement. Sur le chemin de l'argent, les deux erreurs coûtent, et
+  // aucune ne doit pouvoir se produire en silence.
+  "PAYMENTS_ENABLED"
+] as const;
 
 export function validateEnv(config: Record<string, unknown>): Env {
   if (config.NODE_ENV === "production") {

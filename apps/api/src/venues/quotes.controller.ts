@@ -1,21 +1,28 @@
-// Routes PRO du DEVIS — Flux E, Lot E2b.
+// Routes PRO du DEVIS — Flux E, Lot E2b ; refonte Q2 (ex-C1c).
 //
-// Le devis est piloté par le PRO : c'est lui qui le construit, l'envoie, le
-// révise et enregistre la réponse du client. L'acceptation par le CLIENT
-// lui-même viendra avec les écrans (E2c) ; en Algérie, la négociation se fait
-// largement au téléphone, et un pro qui saisit la réponse de son client est le
-// cas le plus fréquent, pas une béquille.
+// Le devis est piloté par le PRO : c'est lui qui le construit, le REMET, le
+// révise et enregistre la réponse du client. En Algérie, la négociation se fait
+// au comptoir ou au téléphone, et un pro qui saisit la réponse de son client est
+// le cas le plus fréquent, pas une béquille.
+//
+// ⚠ `POST /quotes/:id/send` A DISPARU au profit de `POST /quotes/:id/deliver`,
+// qui exige un CANAL. Le renommage n'est pas cosmétique : « envoyer » décrivait
+// un acte que le système ne faisait pas et que le pro ne faisait pas non plus —
+// il cliquait pour débloquer l'étape suivante. Le nouveau verbe ne débloque
+// rien, il ENREGISTRE ce qui a eu lieu.
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
   quoteConvertSchema,
   quoteCreateSchema,
+  quoteDeliverSchema,
   quoteReviseSchema,
   UserRole,
   type QuoteConvertInput,
   type QuoteConversionDTO,
   type QuoteCreateInput,
-  type QuoteDTO
+  type QuoteDTO,
+  type QuoteDeliverInput
 } from "@zwadj/types";
 import { CurrentUser, Roles } from "../auth/auth.decorators";
 import type { AuthenticatedUser } from "../auth/auth.types";
@@ -33,8 +40,10 @@ export class QuotesController {
     summary: "Tous les devis d'une salle, toutes versions",
     description:
       "Tri par chaîne puis version croissante : l'historique d'une négociation se lit dans l'ordre. " +
-      "`isExpired` est DÉRIVÉ de `validUntil` — aucun statut EXPIRED n'est stocké, un statut que rien ne fait " +
-      "basculer devient un mensonge en base."
+      "⚠ `isExpired` et `validUntil` ont disparu du contrat (D160), et la colonne `valid_until` de la base (Q4) : " +
+      "rien n'engage tant que l'acompte n'est pas payé, donc " +
+      "une date de validité n'y protégeait aucun montant — elle empêchait seulement de conclure une affaire " +
+      "encore vivante. Le prix reste garanti par le versionnement, puis par l'immuabilité en base (Q3)."
   })
   @ApiOkResponse({ description: "QuoteDTO[]" })
   @ApiNotFoundResponse({ description: "404 indistinct." })
@@ -72,18 +81,24 @@ export class QuotesController {
     return this.quotes.create(user.userId, venueId, body);
   }
 
-  @Post("quotes/:id/send")
+  @Post("quotes/:id/deliver")
   @ApiOperation({
-    summary: "Envoie le devis — il devient ACTIF",
+    summary: "Enregistre la REMISE du devis au client, par un canal",
     description:
-      "Remplace la version précédemment active de la chaîne, qui passe SUPERSEDED (jamais DECLINED : personne " +
-      "n'a refusé). Rétrogradation PUIS activation, dans la même transaction : l'index partiel n'est pas " +
-      "différable, l'ordre inverse échouerait."
+      "Ne change AUCUN statut : le devis reste DRAFT (D160). Remettre un devis est un partage, pas une " +
+      "transition — il n'existe plus d'état « remis » qui conditionnerait la conversion. `sentVia` dit PAR QUOI " +
+      "le devis est parti, `sentAt` QUAND, et c'est `sentVia` qui décide de l'entrée dans l'entonnoir (D162). " +
+      "L'appel est RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises, la seconde écrase la première. " +
+      "Les quatre canaux (PRINT, SMS, IN_PERSON, PHONE) sont DÉCLARATIFS : Zwadj n'imprime rien et n'envoie rien."
   })
-  @ApiCreatedResponse({ description: "QuoteDTO en SENT." })
-  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT — statut réel dans la réponse." })
-  send(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<QuoteDTO> {
-    return this.quotes.send(user.userId, id);
+  @ApiCreatedResponse({ description: "QuoteDTO inchangé, `sentVia` et `sentAt` désormais renseignés." })
+  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT — un devis refusé ou remplacé ne se remet pas." })
+  deliver(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param("id") id: string,
+    @Body(new ZodValidationPipe(quoteDeliverSchema)) body: QuoteDeliverInput
+  ): Promise<QuoteDTO> {
+    return this.quotes.deliver(user.userId, id, body);
   }
 
   @Post("quotes/:id/revise")
@@ -92,7 +107,7 @@ export class QuotesController {
     description:
       "Une version est un devis ENTIER, jamais un diff : un diff obligerait à reconstruire l'état pour " +
       "l'afficher, et une reconstruction se trompe un jour. Elle ne remplace rien tant qu'elle n'est pas " +
-      "envoyée — le client garde l'ancienne sous les yeux pendant que le pro prépare la nouvelle."
+      "remise — le client garde l'ancienne sous les yeux pendant que le pro prépare la nouvelle."
   })
   @ApiCreatedResponse({ description: "QuoteDTO, version N+1, en DRAFT." })
   @ApiConflictResponse({ description: "Chaîne close (acceptée, refusée ou remplacée)." })
@@ -108,16 +123,18 @@ export class QuotesController {
   @ApiOperation({
     summary: "Convertit le devis en DEMANDE de réservation",
     description:
-      "⚠ La réservation naît en PENDING, et le devis RESTE `SENT` (D101). L'acceptation du devis n'est pas une " +
+      "⚠ UN BROUILLON SE CONVERTIT (Q2). La règle d'avant exigeait un envoi préalable — « sans envoi, personne " +
+      "d'autre que le pro ne l'a vu » — ce qui décrivait un parcours à distance inexistant : au comptoir, le " +
+      "client a le montant sous les yeux pendant que le pro le tape. " +
+      "⚠ La réservation naît en PENDING, et le devis ne bouge pas. L'acceptation du devis n'est pas une " +
       "action : elle est la conséquence de la chaîne complète — le pro accepte la date, PUIS l'acompte est " +
-      "encaissé. Les deux conditions sont nécessaires, dans cet ordre. La bascule appartient au lot Paiement, " +
-      "dans la même transaction que le passage en CONFIRMED. " +
-      "Un DRAFT ne se convertit pas. Le contact est exigé parce que `bookings.contact_*` est NOT NULL. " +
+      "encaissé. La bascule appartient au lot Paiement, dans la même transaction que le passage en CONFIRMED. " +
+      "Le contact est exigé parce que `bookings.contact_*` est NOT NULL. " +
       "`bookings.quote_id` étant UNIQUE, un devis ne se convertit qu'une fois : une nouvelle négociation passe " +
       "par une nouvelle VERSION."
   })
-  @ApiCreatedResponse({ description: "QuoteDTO inchangé en SENT, `bookingId` désormais renseigné." })
-  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT, QUOTE_EXPIRED, ou QUOTE_ALREADY_CONVERTED." })
+  @ApiCreatedResponse({ description: "QuoteDTO inchangé, `bookingId` désormais renseigné." })
+  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT ou QUOTE_ALREADY_CONVERTED." })
   convert(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
@@ -126,14 +143,21 @@ export class QuotesController {
     return this.quotes.convert(user.userId, id, body);
   }
 
-  @Post("quotes/:id/decline")
+  @Post("quotes/:id/cancel")
   @ApiOperation({
-    summary: "Enregistre un REFUS explicite",
-    description: "À ne pas confondre avec SUPERSEDED : ici quelqu'un a dit non à CE devis, il n'a pas été remplacé."
+    summary: "CLÔT un devis qui n'aboutira pas",
+    description:
+      "⚠ Remplace `POST /quotes/:id/decline` (D161) : un seul état, un seul bouton. Le client a dit non ou le " +
+      "pro a renoncé — rien dans la suite du parcours ne les traite différemment, l'affaire est perdue et le " +
+      "créneau reste libre. La nuance avait un sens quand le devis partait à distance et qu'un refus était un " +
+      "événement reçu ; au comptoir, c'est la même conversation. " +
+      "⚠ À ne pas confondre avec SUPERSEDED, qui RESTE distinct : « remplacé par une version plus récente » " +
+      "n'est pas « l'affaire est perdue ». Le versionnement est conservé (décision A). " +
+      "⚠ Les lignes déjà DECLINED ne sont pas reprises, et l'entonnoir les compte AVEC les CANCELLED."
   })
-  @ApiCreatedResponse({ description: "QuoteDTO en DECLINED." })
+  @ApiCreatedResponse({ description: "QuoteDTO en CANCELLED." })
   @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT." })
-  decline(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<QuoteDTO> {
-    return this.quotes.decline(user.userId, id);
+  cancel(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<QuoteDTO> {
+    return this.quotes.cancel(user.userId, id);
   }
 }

@@ -145,16 +145,22 @@ export function makeServicesDouble(overrides: Partial<ServicesClient> = {}): Ser
   };
 }
 
-/** Double des devis (E2e). */
+/** Double des devis (E2e, contrat Q2).
+ *
+ *  ⚠ `send` a laissé place à `deliver`, et `conversion` a perdu `expired` : le
+ *  typage fait échouer ICI tout test resté sur l'ancien contrat, au lieu de le
+ *  laisser vert en appelant une méthode qui n'existe plus. C'est la raison
+ *  d'être du fichier — le double était recopié dans sept endroits, et chaque
+ *  extension du contrat les cassait tous les sept. */
 export function makeQuotesDouble(overrides: Partial<QuotesClient> = {}): QuotesClient {
   return {
     listForVenue: vi.fn().mockResolvedValue([]),
-    conversion: vi.fn().mockResolvedValue({ sent: 0, accepted: 0, declined: 0, expired: 0 }),
+    conversion: vi.fn().mockResolvedValue({ delivered: 0, accepted: 0, cancelled: 0 }),
     create: vi.fn(),
-    send: vi.fn(),
+    deliver: vi.fn(),
     revise: vi.fn(),
     convert: vi.fn(),
-    decline: vi.fn(),
+    cancel: vi.fn(),
     ...overrides
   };
 }

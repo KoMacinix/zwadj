@@ -105,10 +105,19 @@ async function recreerBase(): Promise<void> {
  * Données RÉALISTES, pas un jeu minimal : une salle publiée, deux clients, des
  * demandes dans plusieurs états, et surtout plusieurs sessions par utilisateur
  * ⚠ CE SEMIS SUIT LA DERNIÈRE MIGRATION, il n'est pas figé une fois pour toutes.
- * Il visait `refresh_tokens` quand `20260804120000` fermait la marche ; la
- * dernière est désormais `20260814120000_quote_sent_via`, donc on sème des
- * DEVIS. Semer la mauvaise table laisserait le test vert sur une table vide —
- * exactement le défaut que D123 cherche à empêcher.
+ * Il visait `refresh_tokens` quand `20260804120000` fermait la marche, puis les
+ * DEVIS pour `20260814120000_quote_sent_via`, puis LES DEUX CAS du tri D166 pour
+ * `20260814140000_quote_delivery_switch`. La dernière est désormais
+ * `20260815120000_quote_drop_valid_until`.
+ * Semer la mauvaise table laisserait le test vert sur une table vide — exactement
+ * le défaut que D123 cherche à empêcher.
+ *
+ * ⚠ LE SEMIS DES DEUX CAS `SENT` EST CONSERVÉ, bien que le tri D166 ne soit plus
+ * la dernière migration. Il s'applique désormais pendant la préparation, et sert
+ * à autre chose : Q4 supprime une COLONNE, et le seul moyen de voir qu'elle ne
+ * l'a pas fait en recréant la table est de compter des lignes qui existaient
+ * avant. Un semis vide rendrait `expect(apres).toEqual(avant)` vrai sur deux
+ * ensembles vides.
  */
 async function semerDonnees(): Promise<void> {
   await sql(`
@@ -162,6 +171,26 @@ async function semerDonnees(): Promise<void> {
            now()
     FROM venues v CROSS JOIN generate_series(1, 3) AS g(i)
   `);
+
+  // ⚠ UN des deux devis `SENT` reçoit une RÉSERVATION, et c'est ce qui rend le
+  // test capable de mesurer quoi que ce soit. Le critère de D166 est
+  // `booking_id IS NULL` : sans une ligne de chaque côté, un `UPDATE` sans
+  // clause `WHERE` — le défaut exact que la migration doit éviter — passerait
+  // parfaitement vert.
+  await sql(`
+    INSERT INTO bookings (id, venue_id, quote_id, source, status, payment_method,
+                          event_date, starts_at, ends_at, guests,
+                          base_price_cents, services_total_cents, total_cents, deposit_cents,
+                          contact_first_name, contact_last_name, contact_phone, created_at, updated_at)
+    SELECT uuidv7(), q.venue_id, q.id, 'WALK_IN', 'PENDING', 'CASH',
+           q.event_date, q.event_date::timestamptz, q.event_date::timestamptz + interval '6 hours', q.guests,
+           q.base_price_cents, q.services_total_cents, q.total_cents, q.deposit_cents,
+           'Amina', 'Bensalem', '+213550000001', now(), now()
+      FROM quotes q
+     WHERE q.status = 'SENT'
+     ORDER BY q.event_date
+     LIMIT 1
+  `);
 }
 
 beforeAll(async () => {
@@ -175,19 +204,48 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     const toutes = migrationsOrdonnees();
     await appliquerMigrations(toutes.slice(0, -1));
 
-    // ⚠ GARDE-FOU : sans lui, une erreur de préparation laisserait une base
-    // DÉJÀ à jour, et le test suivant vérifierait une migration déjà appliquée
-    // — vert, et sans objet.
-    const colonne = await sql(
-      `SELECT 1 FROM information_schema.columns WHERE table_name = 'quotes' AND column_name = 'sent_via'`
-    );
-    expect(colonne, "la dernière migration est DÉJÀ appliquée : le test ne prouverait rien").toHaveLength(0);
-
     await semerDonnees();
     const semees = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM refresh_tokens`);
     expect(Number(semees[0]!.n)).toBe(12);
     const devis = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes`);
     expect(Number(devis[0]!.n), "sans devis semés, la migration s'appliquerait sur du vide").toBe(3);
+
+    // ⚠ GARDE-FOU : sans lui, une erreur de préparation laisserait une base
+    // DÉJÀ à jour, et le test suivant vérifierait une migration déjà appliquée
+    // — vert, et sans objet.
+    //
+    // ⚠ IL A DÛ CHANGER DE SONDE **ET** DE PLACE. De sonde, parce que `sent_via`
+    // est créée par l'AVANT-DERNIÈRE migration : à ce stade elle EXISTE
+    // désormais, et l'ancienne assertion « la colonne est absente » aurait
+    // échoué. La nouvelle migration ne crée AUCUN objet — elle trie des lignes —
+    // donc la sonde porte sur son EFFET. De place, parce qu'un effet sur des
+    // lignes ne se mesure qu'APRÈS le semis : posée avant, elle comptait zéro
+    // sur une base vide et rendait le garde-fou impossible à satisfaire.
+    //
+    // ⚠ ET ELLE EXIGE LES DEUX CAS. `> 0` sur les SENT à trier ne suffirait pas
+    // à prouver que le semis couvre aussi le SENT CONSERVÉ : sans lui, la clause
+    // `NOT EXISTS` de la migration ne serait mesurée que d'un côté.
+    // ⚠ TROISIÈME CHANGEMENT DE SONDE EN QUATRE LOTS, et ce n'est pas un défaut
+    // du harnais : c'est ce qu'il coûte de rester honnête. Chaque sonde doit
+    // décrire ce que fait LA dernière migration, et celle-ci change à chaque
+    // lot. Elle a porté sur l'existence de `sent_via`, puis sur l'EFFET du tri
+    // D166 — qui s'applique désormais pendant la PRÉPARATION, donc ne prouverait
+    // plus rien ici. Q4 supprimant une colonne, la sonde redevient structurelle :
+    // à l'avant-dernière migration, `valid_until` existe ENCORE.
+    const colonne = await sql<{ column_name: string }>(`
+      SELECT column_name FROM information_schema.columns
+       WHERE table_name = 'quotes' AND column_name = 'valid_until'
+    `);
+    expect(
+      colonne,
+      "valid_until déjà absente : la dernière migration est appliquée, le test ne prouverait rien"
+    ).toHaveLength(1);
+
+    // Et le tri D166 a bien eu lieu pendant la préparation : c'est ce qui
+    // garantit que la base sur laquelle Q4 s'applique est un état RÉEL de
+    // production, pas un état intermédiaire fabriqué.
+    const restes = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE status = 'SENT'`);
+    expect(Number(restes[0]!.n), "le tri D166 n'a pas été appliqué à la préparation").toBe(1);
   });
 
   it("applique la dernière migration SANS perdre ni abîmer les données", async () => {
@@ -227,31 +285,88 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     );
     expect(revoquesApres).toEqual(revoquesAvant);
 
-    // ⚠ L'ENTONNOIR COMPTE ENCORE SUR `sent_at` À CE LOT. Si la migration y
-    // touchait, l'indicateur du panneau gauche changerait de valeur sans que
-    // personne l'ait décidé. Ce compte doit être exactement le même qu'avant.
+    // ⚠ L'ENTONNOIR NE DOIT PAS BOUGER. Q4 supprime une colonne sans rapport
+    // avec lui ; si ce compte changeait, c'est que la migration a fait autre
+    // chose que ce qu'elle annonce.
     const envoyesApres = await sql<{ n: string }>(
       `SELECT count(*)::text AS n FROM quotes WHERE sent_at IS NOT NULL`
     );
     expect(envoyesApres).toEqual(envoyesAvant);
   });
 
-  it("les objets créés par la migration sont bien là, et conformes à leur intention", async () => {
+  it("⚠ Q4 — la colonne a disparu, et RIEN d'autre", async () => {
+    const colonne = await sql<{ column_name: string }>(`
+      SELECT column_name FROM information_schema.columns
+       WHERE table_name = 'quotes' AND column_name = 'valid_until'
+    `);
+    expect(colonne, "valid_until survit : le DROP COLUMN n'a pas eu lieu").toHaveLength(0);
+
+    // ⚠ LES DEUX INDEX PARTIELS RESTENT, et l'assertion le fige. D165 les
+    // inscrivait à ce lot ; ils y ont échappé pour deux raisons distinctes.
+    // `quotes_one_sent_per_chain` contraint encore les lignes héritées de D166
+    // et sert de TÉMOIN — le voir tomber signale un `prisma migrate dev` égaré,
+    // lequel emporterait aussi l'anti-double-booking et la FK composite B2.
+    // `quotes_one_accepted_per_chain` va REDEVENIR actif avec E3.
+    const idx = await sql<{ indexname: string }>(`
+      SELECT indexname FROM pg_indexes
+       WHERE indexname IN ('quotes_one_sent_per_chain', 'quotes_one_accepted_per_chain')
+       ORDER BY indexname
+    `);
+    expect(idx.map((r) => r.indexname)).toEqual([
+      "quotes_one_accepted_per_chain",
+      "quotes_one_sent_per_chain"
+    ]);
+
+    // ⚠ ET LE VERSIONNEMENT EST INTACT. D165 condamnait `chain_id`, `version` et
+    // `parent_quote_id` avec `valid_until` ; la DÉCISION A les a retirées de ce
+    // lot. Les voir disparaître signifierait qu'une migration a suivi la
+    // doctrine périmée plutôt que la décision.
+    const versionnement = await sql<{ column_name: string }>(`
+      SELECT column_name FROM information_schema.columns
+       WHERE table_name = 'quotes' AND column_name IN ('chain_id', 'version', 'parent_quote_id')
+       ORDER BY column_name
+    `);
+    expect(versionnement.map((r) => r.column_name)).toEqual(["chain_id", "parent_quote_id", "version"]);
+  });
+
+  it("⚠ D166 — le tri des SENT porte sur la RÉSERVATION, pas sur le statut seul", async () => {
+    // Le semis : 1 DRAFT + 2 SENT, dont UN converti. Après migration, le SENT
+    // sans réservation est redevenu DRAFT ; celui qui en porte une n'a PAS
+    // bougé.
+    //
+    // ⚠ C'EST L'ÉCART ENTRE LES DEUX QUI PROUVE LA CLAUSE `WHERE`. Un
+    // `UPDATE quotes SET status='DRAFT' WHERE status='SENT'` sans le `NOT
+    // EXISTS` rendrait ÉDITABLE un devis qui adosse une réservation vivante —
+    // c'est-à-dire que la migration violerait D163 elle-même, en silence, et
+    // qu'un montant déjà accepté deviendrait modifiable.
+    const restes = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE status = 'SENT'`);
+    expect(Number(restes[0]!.n), "les SENT convertis devaient être conservés").toBe(1);
+
+    const conserve = await sql<{ avec_booking: boolean }>(`
+      SELECT EXISTS (SELECT 1 FROM bookings b WHERE b.quote_id = q.id) AS avec_booking
+        FROM quotes q WHERE q.status = 'SENT'
+    `);
+    expect(conserve[0]!.avec_booking, "le SENT conservé n'est pas celui qui porte une réservation").toBe(true);
+
+    // Et le versant inverse : celui qui n'en portait pas est bien redescendu.
+    const brouillons = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE status = 'DRAFT'`);
+    expect(Number(brouillons[0]!.n), "le SENT sans réservation devait redevenir DRAFT").toBe(2);
+  });
+
+  it("les objets du lot PRÉCÉDENT n'ont pas bougé, et aucun canal n'a été inventé", async () => {
     const colonne = await sql<{ is_nullable: string; data_type: string }>(
       `SELECT is_nullable, data_type FROM information_schema.columns
         WHERE table_name = 'quotes' AND column_name = 'sent_via'`
     );
     expect(colonne).toHaveLength(1);
-    // ⚠ NULLABLE, et c'est l'invariant qui rend la migration sûre sur une base
-    // pleine : `NOT NULL` sans défaut aurait échoué sur les 3 devis semés.
     expect(colonne[0]!.is_nullable).toBe("YES");
-    // TEXT et non un type énuméré : la liste des canaux est ouverte, et un
-    // `ALTER TYPE` par libellé ajouté serait une migration de plus à chaque fois.
     expect(colonne[0]!.data_type).toBe("text");
 
-    // AUCUNE REPRISE DE DONNÉES : les devis déjà `SENT` ne reçoivent PAS un
-    // canal inventé. On ne sait pas par quoi ils sont partis, et le deviner
-    // produirait un entonnoir qui a l'air juste (décision 7 de C1).
+    // ⚠ AUCUNE REPRISE DE DONNÉES, ET C'EST LA DÉCISION LA PLUS VISIBLE DU LOT.
+    // Les devis conservés en `SENT` gardent un canal NUL, donc SORTENT du
+    // nouvel entonnoir (D162 compte sur `sent_via`). L'indicateur repart de
+    // zéro. On ne sait pas par quoi ces devis sont partis, et le deviner
+    // produirait un entonnoir qui a l'air juste — le pire des deux (D168).
     const remplis = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE sent_via IS NOT NULL`);
     expect(Number(remplis[0]!.n), "la migration a inventé un canal sur des devis anciens").toBe(0);
 
@@ -266,4 +381,13 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     ).rejects.toThrow();
   });
 
+  it("⚠ l'index partiel des SENT tient encore — la migration ne l'a pas emporté", async () => {
+    // `quotes_one_sent_per_chain` devient INERTE (plus rien n'écrit SENT) mais
+    // ne tombe qu'en Q4 (D165). Le voir disparaître ici signalerait qu'un
+    // `prisma migrate dev` s'est glissé dans le dépôt.
+    const idx = await sql<{ indexname: string }>(
+      `SELECT indexname FROM pg_indexes WHERE indexname = 'quotes_one_sent_per_chain'`
+    );
+    expect(idx, "index partiel disparu : un migrate dev est passé par là").toHaveLength(1);
+  });
 });

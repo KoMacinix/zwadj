@@ -4,11 +4,22 @@
 // Une RE-PRÉSENTATION du cycle de vie devis E2e, pas un nouveau moteur. Toute la
 // chaîne passe par des routes PRO livrées :
 //
-//   1. `POST /venues/:id/quotes`   → DRAFT, chiffré par le SERVEUR
-//   2. `POST /quotes/:id/revise`   → nouvelle VERSION quand les conditions bougent
-//   3. `POST /quotes/:id/send`     → SENT (la conversion l'exige)
-//   4. `POST /quotes/:id/convert`  → demande PENDING, avec le contact
+//   1. `POST /venues/:id/quotes`    → DRAFT, chiffré par le SERVEUR
+//   2. `POST /quotes/:id/revise`    → nouvelle VERSION quand les conditions bougent
+//   3. `POST /quotes/:id/deliver`   → enregistre PAR QUOI le devis a été remis
+//   4. `POST /quotes/:id/convert`   → demande PENDING, avec le contact
 //   5. `POST /pro/bookings/:id/accept` → ACCEPTED : la date est VERROUILLÉE
+//
+// ── ⚠ L'ÉTAPE 3 A CESSÉ D'ÊTRE UN PASSAGE OBLIGÉ (Q2) ───────────────────────
+// `conclude()` appelait `send()` quand le devis était en DRAFT, parce que la
+// conversion EXIGEAIT le statut SENT. Ce clic n'envoyait rien : il levait un
+// péage. La conversion accepte désormais un brouillon (D160), donc l'appel
+// intermédiaire a été RETIRÉ — le laisser aurait fait échouer les deux issues
+// sur un 404 de route disparue, au clic, en production.
+//
+// La remise, elle, est devenue une DÉCLARATION explicite du pro : quatre
+// boutons, un par canal, qui n'ouvrent ni ne ferment rien. C'est ce qui fait
+// entrer l'affaire dans l'entonnoir (D162).
 //
 // ── ⚠ UN SEUL DEVIS PAR SESSION, RÉVISÉ — jamais un devis par clic ──────────
 // Le premier calcul crée le brouillon ; les suivants appellent `revise`, qui pose
@@ -41,7 +52,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDZD } from "@zwadj/i18n";
-import type { QuoteDTO, ServiceDTO, VenueProDTO } from "@zwadj/types";
+import {
+  QUOTE_SENT_VIA_ORDER,
+  normalizeDzPhone,
+  quoteSentViaNeedsPhone,
+  type QuoteDTO,
+  type QuoteSentVia,
+  type ServiceDTO,
+  type VenueProDTO
+} from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { revealAndFocus } from "../lib/reveal";
 import { useBookingsPro, useQuotes, useServices } from "../venues/venue-client-context";
@@ -256,8 +275,10 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const conclude = (lock: boolean) =>
     void run(async () => {
       if (quote === null) return;
-      const sent = quote.status === "DRAFT" ? await quotes.send(quote.id) : quote;
-      const converted = await quotes.convert(sent.id, {
+      // ⚠ AUCUN appel intermédiaire. Le devis part tel quel : un brouillon se
+      // convertit (D160). Une étape de plus ici serait un aller-retour réseau
+      // dont le seul effet était de satisfaire une garde qui n'existe plus.
+      const converted = await quotes.convert(quote.id, {
         contactFirstName: contact.firstName.trim(),
         contactLastName: contact.lastName.trim(),
         contactPhone: contact.phone.trim(),
@@ -276,6 +297,29 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       // date est libre — ce serait une seconde autorité sur la question (D78).
       if (converted.bookingId !== null) await bookings.accept(converted.bookingId);
       setOutcome({ kind: "locked" });
+    });
+
+  /** ⚠ D160/D158 — LA GARDE DU TÉLÉPHONE, ET SON PÉRIMÈTRE EXACT.
+   *  On ne peut ni envoyer un SMS ni appeler un numéro qu'on n'a pas : ces deux
+   *  canaux-là exigent donc un mobile qui passe la normalisation partagée.
+   *  `PRINT` et `IN_PERSON` ne l'exigent pas — les appliquer à tous
+   *  interdirait de déclarer un devis remis EN MAIN PROPRE à quelqu'un dont on
+   *  n'a pas le numéro, c'est-à-dire le cas que les canaux déclaratifs existent
+   *  pour couvrir.
+   *  ⚠ Et la validité se demande à `normalizeDzPhone`, jamais à une expression
+   *  régulière écrite ici : une seconde autorité sur « ce numéro est-il
+   *  valable » finirait par diverger de la première. */
+  const telOk = normalizeDzPhone(contact.phone) !== null;
+  const canalBloque = (canal: QuoteSentVia) => quoteSentViaNeedsPhone(canal) && !telOk;
+
+  /** ⚠ L'ÉCRAN DIT CE QUE LE SERVEUR A ÉCRIT, il ne le suppose pas. Le devis
+   *  rendu remplace celui en mémoire, donc `sentVia` vient de la base : un 409
+   *  ne produirait aucune annonce de remise. Poser le canal localement avant la
+   *  réponse aurait affiché « Remise enregistrée » sur un appel refusé. */
+  const remettre = (canal: QuoteSentVia) =>
+    void run(async () => {
+      if (quote === null) return;
+      setQuote(await quotes.deliver(quote.id, { sentVia: canal }));
     });
 
   const conclu = outcome !== null;
@@ -514,23 +558,41 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
               <strong>{formatDZD(quote.depositCents)}</strong>
             </div>
 
-            {/* ── Envois : RENDUS ET DÉSACTIVÉS avec la raison écrite (patron A8).
-                   Un bouton qui a l'air de marcher et ne fait rien coûte plus
-                   cher qu'un bouton grisé qui explique. ── */}
-            <div className="wk-total-actions">
-              <button type="button" className="wk-btn" disabled aria-describedby="wk-send-reason">
-                {t("venue.ui.walkin.print")}
-              </button>
-              <button type="button" className="wk-btn" disabled aria-describedby="wk-send-reason">
-                {t("venue.ui.walkin.sendSms")}
-              </button>
-              <button type="button" className="wk-btn" disabled aria-describedby="wk-send-reason">
-                {t("venue.ui.walkin.sendEmail")}
-              </button>
-            </div>
-            <p id="wk-send-reason" className="wk-hint">
-              {t("venue.ui.walkin.sendReason")}
+            {/* ── ⚠ LES QUATRE CANAUX SONT DÉCLARATIFS, ET LE TEXTE LE DIT.
+                   Zwadj n'imprime rien et n'envoie rien : il n'existe ni
+                   générateur de PDF ni transport SMS dans le dépôt. Ces boutons
+                   enregistrent COMMENT le pro a remis le devis avec ses propres
+                   moyens — ils ne prétendent jamais l'avoir fait à sa place.
+                   C'est le patron A8 tenu par l'autre bout : plutôt qu'un bouton
+                   grisé qui explique pourquoi il ne marche pas, un bouton qui
+                   marche et dont le libellé dit exactement ce qu'il fait.
+                   ⚠ « Envoyer par e-mail » a DISPARU : `EMAIL` n'est pas un des
+                   quatre canaux, et rien ne l'enverrait. Un cinquième bouton
+                   inerte au milieu de quatre actifs aurait été le pire des
+                   deux mondes. ── */}
+            <fieldset className="wk-total-actions" style={{ border: 0, padding: 0, margin: "0 0 8px" }}>
+              <legend className="sr-only">{t("venue.ui.walkin.deliverLegend")}</legend>
+              {QUOTE_SENT_VIA_ORDER.map((canal) => (
+                <button
+                  key={canal}
+                  type="button"
+                  className="wk-btn"
+                  disabled={busy || canalBloque(canal)}
+                  aria-describedby={canalBloque(canal) ? "wk-deliver-reason" : undefined}
+                  onClick={() => remettre(canal)}
+                >
+                  {t(`venue.ui.quotes.sv_${canal}`)}
+                </button>
+              ))}
+            </fieldset>
+            <p id="wk-deliver-reason" className="wk-hint">
+              {telOk ? t("venue.ui.walkin.deliverHint") : t("venue.ui.walkin.deliverPhoneRequired")}
             </p>
+            {quote.sentVia === null ? null : (
+              <p className="wk-hint" role="status">
+                {t("venue.ui.walkin.delivered", { channel: t(`venue.ui.quotes.sv_${quote.sentVia}`) })}
+              </p>
+            )}
 
             {contactReady ? null : (
               <p className="wk-hint" role="status">
