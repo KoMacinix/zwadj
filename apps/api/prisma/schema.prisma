@@ -140,16 +140,34 @@ enum PricingRuleType {
 }
 
 // E2b — cycle de vie du DEVIS. PAS d'EXPIRED : un statut que rien ne fait
-// basculer devient un mensonge en base (leçon D80). Un devis dont `validUntil`
-// est passé EST expiré — la condition est déterministe, donc dérivée à la
-// lecture.
-// SUPERSEDED n'est pas DECLINED : « remplacé par une version plus récente » et
-// « explicitement refusé » n'appellent pas la même réponse devant un litige.
+// basculer devient un mensonge en base (leçon D80).
+//
+// ⚠ TROIS VALEURS SONT LEGACY : plus jamais écrites, toujours lues.
+//   DECLINED (Q3a) : absorbé par CANCELLED (D161) — un seul état, un seul
+//            bouton. La nuance « refusé par le client » / « annulé par le pro »
+//            perd sa valeur dès que le devis n'est plus envoyé à distance.
+//            ⚠ AUCUNE reprise : basculer les lignes closes réécrirait
+//            l'histoire pour un gain cosmétique. Elles restent DECLINED, et
+//            l'entonnoir les compte AVEC les CANCELLED — sans quoi le compteur
+//            des affaires perdues retomberait à zéro le jour du déploiement.
+//   Les deux suivantes datent de Q2 :
+//   SENT   : la migration `20260814140000` a ramené en DRAFT les devis SENT
+//            SANS réservation ; ceux qui en portaient une l'ont gardé (D166),
+//            car les rendre éditables aurait violé D163 par la migration
+//            elle-même. Ces lignes existent donc encore.
+//   SUPERSEDED : `supersedeActive()` a été retirée — elle visait [SENT,
+//            ACCEPTED], or SENT n'est plus écrit et ACCEPTED ne l'a jamais été.
+//            Elle serait devenue un no-op silencieux.
+//   Les lignes déjà remplacées gardent leur état : devant un litige, « remplacé
+//   par une version plus récente » n'est toujours pas « explicitement refusé ».
+//   ⚠ Retirer une valeur d'un énuméré PostgreSQL impose de recréer le type ;
+//   c'est l'affaire de Q4, avec les colonnes, pas d'un lot de basculement.
 enum QuoteStatus {
   DRAFT
   SENT
   ACCEPTED
-  DECLINED
+  DECLINED  // ⚠ LEGACY depuis Q3a — absorbé par CANCELLED (D161), voir ci-dessus
+  CANCELLED // le devis est clos sans avoir abouti — refus client OU renoncement pro
   SUPERSEDED
 }
 
@@ -935,7 +953,16 @@ model Quote {
   totalCents         Int       @map("total_cents")
   depositCents       Int       @map("deposit_cents") // 30 % — la remise en ligne −1000 DA s'applique au PAIEMENT, pas ici
   lines              Json // [{serviceId, nameFr, nameAr, pricingType, unitPriceCents, quantity, tierId?, lineTotalCents}]
-  validUntil         DateTime? @map("valid_until") @db.Timestamptz(6)
+  // ⚠ `validUntil` A ÉTÉ SUPPRIMÉE au lot Q4 (`20260815120000`). Neutralisée
+  // depuis Q2 (D160) — rien n'engage tant que l'acompte n'est pas payé, donc une
+  // date de validité sur un document qui n'engage personne ne protégeait aucun
+  // montant. Elle a été retirée seulement APRÈS que Q2 et Q3a aient été vérifiés
+  // verts sur base réelle : c'est le premier point de non-retour de la série,
+  // toutes les migrations précédentes laissaient le retour arrière à portée
+  // d'une bascule de code.
+  // ⚠ `chain_id` / `version` / `parent_quote_id` NE L'ONT PAS SUIVIE. D165 les
+  // inscrivait au même lot ; la décision A les en a retirées — le versionnement
+  // est CONSERVÉ, ces trois colonnes sont ACTIVES et le restent.
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // E2b — cycle de vie et chaîne de versions.
@@ -959,8 +986,14 @@ model Quote {
   // PostgreSQL imposerait une migration par libellé ajouté. Le jeu de valeurs
   // a une seule autorité, `quoteSentViaSchema` dans `@zwadj/types`. Un CHECK en
   // base interdit seulement le vide et le blanc.
-  // ⚠ NULL = pas encore remis. Rien ne l'écrit à ce lot : l'entonnoir compte
-  // encore sur `sentAt`, le basculement est le lot suivant.
+  // ⚠ Q2 — C'EST DÉSORMAIS LUI QUI DÉCIDE DE L'ENTONNOIR. NULL = pas encore
+  // remis. Le dénominateur portait sur `sent_at`, c'est-à-dire sur l'horodatage
+  // que le clic « Envoyer » posait — un clic obligatoire pour débloquer la
+  // conversion, donc systématique, donc muet. `deliver()` écrit les deux
+  // colonnes ; `sent_at` dit QUAND, `sent_via` PAR QUOI, et seul le second
+  // atteste d'une remise réelle.
+  // ⚠ AUCUNE REPRISE sur les lignes antérieures : l'entonnoir repart de zéro
+  // plutôt que d'inventer un canal (D168).
   sentVia        String?     @map("sent_via")
   acceptedAt     DateTime?   @map("accepted_at") @db.Timestamptz(6)
 
@@ -999,7 +1032,12 @@ model Booking {
   id             String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
   venueId        String        @map("venue_id") @db.Uuid
   clientId       String?       @map("client_id") @db.Uuid // NULL pour un walk-in (client non inscrit)
-  quoteId        String?       @unique @map("quote_id") @db.Uuid // NULL pour un walk-in
+  /// ⚠ Le commentaire d'origine disait « NULL pour un walk-in » : c'est
+  /// l'INVERSE. D159 (remplace D101) — `Quote` est walk-in SEUL ; le parcours EN
+  /// LIGNE appelle `POST /venues/:slug/bookings` et ne crée aucun devis, donc
+  /// c'est LUI qui laisse ce champ nul. Le code ne l'a jamais fait autrement,
+  /// c'est la doctrine écrite qui avait quitté le code.
+  quoteId        String?       @unique @map("quote_id") @db.Uuid
   slotTemplateId String?       @map("slot_template_id") @db.Uuid // NULL si plage custom (walk-in)
   source         BookingSource @default(CLIENT)
   status         BookingStatus @default(PENDING)

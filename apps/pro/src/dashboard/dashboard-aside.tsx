@@ -100,7 +100,7 @@ export function DashboardAside({ venue, nowMs }: { venue: VenueProDTO; nowMs?: n
       // existe précisément pour le cas où le réseau ne l'a pas tenu.
       const data: unknown = await quotes.conversion(venue.id);
       // ⚠ D120 — GARDE DE FORME sur un chemin de RENDU. Contrairement aux deux
-      // compteurs, cette valeur part vers le JSX (`conversion.sent`) sans
+      // compteurs, cette valeur part vers le JSX (`conversion.delivered`) sans
       // `try/catch` autour.
       //
       // ⚠ Ce que la mesure a corrigé dans ma propre justification : un champ de
@@ -112,10 +112,17 @@ export function DashboardAside({ venue, nowMs }: { venue: VenueProDTO; nowMs?: n
       // L'écart avec D133 tient donc : la garde se met devant un RENDU, où son
       // absence produit de l'affichage faux, jamais devant un chargeur sous
       // `try/catch`, où elle transformerait un échec honnête en valeur fausse.
+      // ⚠ Q2 — LA LISTE SUIT LE CONTRAT, ET C'EST LE QUATRIÈME PIÈGE DU LOT.
+      // `expired` a disparu du DTO avec `validUntil` (D160/D162). Laissé ici, il
+      // n'aurait JAMAIS été un nombre : la garde serait devenue définitivement
+      // fausse et le panneau aurait affiché « Résumé indisponible » en
+      // permanence — sans erreur, sans test rouge, sur des données parfaitement
+      // saines. Une garde de forme qui refuse la forme correcte est pire qu'une
+      // garde absente : elle est indistinguable d'une panne réseau.
       const complet =
         data !== null &&
         typeof data === "object" &&
-        ["sent", "accepted", "declined", "expired"].every(
+        ["delivered", "accepted", "cancelled"].every(
           (k) => typeof (data as Record<string, unknown>)[k] === "number"
         );
       setConversion(complet ? (data as QuoteConversionDTO) : null);
@@ -211,10 +218,9 @@ export function DashboardAside({ venue, nowMs }: { venue: VenueProDTO; nowMs?: n
           ) : (
             <p className="pro-fold-line">
               {t("venue.ui.quotes.stats", {
-                sent: conversion.sent,
+                delivered: conversion.delivered,
                 accepted: conversion.accepted,
-                declined: conversion.declined,
-                expired: conversion.expired
+                cancelled: conversion.cancelled
               })}
             </p>
           )}

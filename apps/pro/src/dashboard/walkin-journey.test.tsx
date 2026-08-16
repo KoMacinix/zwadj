@@ -89,6 +89,8 @@ function draft(over: Partial<QuoteDTO> = {}): QuoteDTO {
     depositCents: 150_000_000,
     lines: [],
     bookingId: null,
+    // Q2 — un devis neuf n'a pas de canal de remise. C'est ce champ, et non
+    // `sentAt`, qui décide de l'entrée dans l'entonnoir (D162).
     sentVia: null,
     ...over
   } as QuoteDTO;
@@ -287,10 +289,7 @@ describe("Nouvelle réservation — le devis vient à l'utilisateur (R2d)", () =
     Element.prototype.scrollIntoView = scroll;
     try {
       setup({
-        quotes: {
-          send: vi.fn().mockResolvedValue(draft({ status: "SENT" })),
-          convert: vi.fn().mockResolvedValue(draft({ status: "ACCEPTED", bookingId: "b1" }))
-        }
+        quotes: { convert: vi.fn().mockResolvedValue(draft({ status: "ACCEPTED", bookingId: "b1" })) }
       });
       await pickDateAndSlot();
       fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
@@ -351,11 +350,10 @@ describe("Nouvelle réservation — le total ne survit pas à un changement", ()
 });
 
 describe("Nouvelle réservation — les deux issues (décision ⑥)", () => {
-  it("« Bloquer la date » enchaîne send → convert → accept : c'est ACCEPT qui verrouille", async () => {
-    const send = vi.fn().mockResolvedValue(draft({ status: "SENT" }));
-    const convert = vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b9" }));
+  it("« Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille", async () => {
+    const convert = vi.fn().mockResolvedValue(draft({ bookingId: "b9" }));
     const accept = vi.fn().mockResolvedValue({ id: "b9", status: "ACCEPTED" });
-    setup({ quotes: { send, convert }, bookings: { accept } });
+    const { quotes } = setup({ quotes: { convert }, bookings: { accept } });
 
     fillContact();
     await pickDateAndSlot();
@@ -363,7 +361,13 @@ describe("Nouvelle réservation — les deux issues (décision ⑥)", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Bloquer la date" }));
 
     await waitFor(() => expect(accept).toHaveBeenCalledWith("b9"));
-    expect(send).toHaveBeenCalledWith("q1");
+    // ⚠ L'ÉTAPE INTERMÉDIAIRE A DISPARU (Q2), et c'est l'assertion qui compte.
+    // `conclude()` appelait `send()` sur un brouillon parce que la conversion
+    // exigeait `SENT` ; la route n'existe plus, et un appel resté en place
+    // aurait échoué au clic, en production, sur les deux issues. Aucun type,
+    // aucun lint ne l'aurait vu — le double `deliver` accepte n'importe quel
+    // devis.
+    expect(quotes.deliver).not.toHaveBeenCalled();
     expect(convert).toHaveBeenCalledWith("q1", {
       contactFirstName: "Amine",
       contactLastName: "Belkacem",
@@ -373,9 +377,9 @@ describe("Nouvelle réservation — les deux issues (décision ⑥)", () => {
   });
 
   it("⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien", async () => {
-    const convert = vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b9" }));
+    const convert = vi.fn().mockResolvedValue(draft({ bookingId: "b9" }));
     const accept = vi.fn();
-    setup({ quotes: { send: vi.fn().mockResolvedValue(draft({ status: "SENT" })), convert }, bookings: { accept } });
+    setup({ quotes: { convert }, bookings: { accept } });
 
     fillContact();
     await pickDateAndSlot();
@@ -392,10 +396,7 @@ describe("Nouvelle réservation — les deux issues (décision ⑥)", () => {
       Object.assign(new Error("409"), { status: 409, code: "BOOKING_SLOT_TAKEN" })
     );
     setup({
-      quotes: {
-        send: vi.fn().mockResolvedValue(draft({ status: "SENT" })),
-        convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b9" }))
-      },
+      quotes: { convert: vi.fn().mockResolvedValue(draft({ bookingId: "b9" })) },
       bookings: { accept }
     });
 
@@ -412,8 +413,8 @@ describe("Nouvelle réservation — les deux issues (décision ⑥)", () => {
   });
 
   it("⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)", async () => {
-    const convert = vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b9" }));
-    setup({ quotes: { send: vi.fn().mockResolvedValue(draft({ status: "SENT" })), convert } });
+    const convert = vi.fn().mockResolvedValue(draft({ bookingId: "b9" }));
+    setup({ quotes: { convert } });
 
     fillContact();
     await pickDateAndSlot();
@@ -443,19 +444,76 @@ describe("Nouvelle réservation — les deux issues (décision ⑥)", () => {
   });
 });
 
-describe("Nouvelle réservation — les trois envois et le catalogue", () => {
-  it("les envois sont RENDUS, désactivés, et disent pourquoi (patron A8)", async () => {
+describe("Nouvelle réservation — la remise par canal (Q2) et le catalogue", () => {
+  /** ⚠ CES BOUTONS ÉTAIENT INERTES ET NE LE SONT PLUS. Trois d'entre eux
+   *  disaient « en attente du PDF et de la fiche client » ; ils enregistrent
+   *  désormais COMMENT le pro a remis le devis, avec ses propres moyens. Le
+   *  quatrième — « Envoyer par e-mail » — a disparu : `EMAIL` n'est pas un des
+   *  quatre canaux et rien ne l'enverrait. */
+  it("les quatre canaux sont RENDUS et ACTIFS une fois le devis calculé", async () => {
+    setup();
+    fillContact();
+    await pickDateAndSlot();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText("Total à facturer");
+
+    for (const nom of ["Imprimé et remis", "Envoyé par SMS", "Annoncé de vive voix", "Convenu par téléphone"]) {
+      expect(screen.getByRole("button", { name: nom })).toBeEnabled();
+    }
+    // ⚠ Et le cinquième n'est pas revenu par nostalgie du gabarit.
+    expect(screen.queryByRole("button", { name: /e-mail/i })).toBeNull();
+  });
+
+  it("enregistre le canal cliqué sur le devis en cours", async () => {
+    const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT", sentAt: "2026-08-15T09:00:00.000Z" }));
+    setup({ quotes: { deliver } });
+    fillContact();
+    await pickDateAndSlot();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Imprimé et remis" }));
+
+    await waitFor(() => expect(deliver).toHaveBeenCalledWith("q1", { sentVia: "PRINT" }));
+    // ⚠ L'écran DIT ce que le SERVEUR a écrit, il ne le suppose pas : la
+    // confirmation vient du devis rendu, donc un 409 ne produirait aucune
+    // annonce de remise.
+    expect(await screen.findByText("Remise enregistrée : Imprimé et remis")).toBeInTheDocument();
+  });
+
+  /** ⚠ D160 + D158 — LA GARDE DU TÉLÉPHONE, ET SON PÉRIMÈTRE. On ne peut ni
+   *  envoyer un SMS ni appeler un numéro qu'on n'a pas. Mais l'appliquer aux
+   *  quatre canaux interdirait de déclarer un devis remis EN MAIN PROPRE à
+   *  quelqu'un dont on n'a pas le numéro — le cas même que les canaux
+   *  déclaratifs existent pour couvrir. C'est l'ÉCART entre les deux moitiés du
+   *  test qui prouve que la borne est posée là où elle décrit quelque chose. */
+  it("⚠ SMS et téléphone exigent un mobile valide ; imprimer et vive voix, non", async () => {
     setup();
     await pickDateAndSlot();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     await screen.findByText("Total à facturer");
 
-    for (const nom of ["Imprimer le devis", "Envoyer par SMS", "Envoyer par e-mail"]) {
-      expect(screen.getByRole("button", { name: nom })).toBeDisabled();
-    }
-    // La raison est du TEXTE VISIBLE, pas un `title` que ni le tactile ni la voix
-    // ne restituent.
-    expect(screen.getByText(/volontairement inactifs/)).toBeInTheDocument();
+    // Aucun téléphone saisi.
+    expect(screen.getByRole("button", { name: "Envoyé par SMS" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Convenu par téléphone" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Imprimé et remis" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Annoncé de vive voix" })).toBeEnabled();
+    expect(screen.getByText(/demandent un numéro de mobile valide/)).toBeInTheDocument();
+  });
+
+  it("un numéro MAL FORMÉ ne débloque pas davantage qu'un champ vide", async () => {
+    // ⚠ Le cas qui distingue « il y a du texte » de « c'est un mobile
+    // algérien ». Un fixe d'Alger a huit chiffres et passerait un simple test
+    // de non-vacuité : c'est `normalizeDzPhone` qui tranche, pas la longueur.
+    setup();
+    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "021234567" } });
+    await pickDateAndSlot();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText("Total à facturer");
+
+    expect(screen.getByRole("button", { name: "Envoyé par SMS" })).toBeDisabled();
+
+    // Et le même champ, avec un vrai mobile, débloque : l'écart est la mesure.
+    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "0555123456" } });
+    await waitFor(() => expect(screen.getByRole("button", { name: "Envoyé par SMS" })).toBeEnabled());
   });
 
   it("le catalogue affiché est celui de la SALLE — aucune prestation inventée", async () => {

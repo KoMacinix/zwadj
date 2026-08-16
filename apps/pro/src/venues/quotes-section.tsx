@@ -1,32 +1,55 @@
-// Devis — écran PRO, Lot E2e.
+// Devis — écran PRO, Lot E2e ; machine à états refondue au lot Q2 (ex-C1c).
 //
 // ── LE POINT D'ARCHITECTURE DU LOT ──────────────────────────────────────────
 // Cet écran ne contient AUCUN calcul de montant, alors qu'il en affiche
 // partout. Un devis en DRAFT **est** l'estimation à blanc : le pro le crée, le
 // serveur le chiffre et le rend, l'écran l'affiche. S'il ne convient pas, on le
-// révise ; s'il ne part jamais, il ne compte pas dans le taux de transformation.
+// révise ; s'il n'est jamais remis, il ne compte pas dans le taux de
+// transformation.
 //
 // C'est ce qui évite la troisième copie d'arithmétique monétaire côté navigateur
 // — après `previewDeposit` et `lineTotal`. Il n'y avait pas besoin d'inventer une
 // route de devis à blanc : elle existait déjà, elle s'appelle `POST /quotes`.
+//
+// ── ⚠ CE QUE Q2 A DÛ RECONNECTER, ET LE DÉFAUT QU'IL AURAIT PRODUIT ─────────
+// Cet écran testait `latest.status === "SENT"` à TROIS endroits pour décider
+// quels boutons afficher. `SENT` n'étant plus écrit, les trois conditions
+// seraient devenues fausses : convertir, refuser et réviser AURAIENT DISPARU DE
+// L'ÉCRAN — sans erreur, sans test rouge, sans qu'aucune des six portes ne le
+// voie. Un pro se serait retrouvé devant un devis qu'il ne peut plus conclure.
+//
+// La question « ce devis est-il encore ouvert ? » a donc une seule autorité,
+// partagée avec l'API : `isQuoteOpen` de `@zwadj/types`. Trois littéraux
+// recopiés, c'était trois endroits où se tromper — et un jour un seul des trois
+// corrigé.
 //
 // ── Ce que l'écran doit rendre évident ──────────────────────────────────────
 // 1. Qu'une négociation est UNE affaire, même à trois versions. Les devis sont
 //    donc groupés par CHAÎNE, la plus récente en tête, l'historique en dessous.
 // 2. Que « remplacé » n'est pas « refusé ». Les deux statuts sont libellés
 //    différemment, et c'est tout l'intérêt de les avoir séparés.
-// 3. Qu'accepter un devis n'est PAS une action (D101) : le bouton dit
-//    « Créer la demande », pas « Accepter ». Le devis passera ACCEPTED tout seul
-//    quand l'acompte sera encaissé.
+// 3. Qu'accepter un devis n'est PAS une action : le bouton dit « Créer la
+//    demande », pas « Accepter ». Le devis passera ACCEPTED tout seul quand
+//    l'acompte sera encaissé.
+// 4. Que REMETTRE un devis ne le fait pas changer d'état (D160) — le bouton
+//    n'ouvre ni ne ferme rien, il enregistre par quel canal le client l'a reçu.
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDZD } from "@zwadj/i18n";
-import type { QuoteConversionDTO, QuoteDTO, ServiceDTO, VenueProDTO } from "@zwadj/types";
+import {
+  QUOTE_SENT_VIA_ORDER,
+  isQuoteOpen,
+  type QuoteConversionDTO,
+  type QuoteDTO,
+  type QuoteSentVia,
+  type ServiceDTO,
+  type VenueProDTO
+} from "@zwadj/types";
 import { Field, useApiErrorMessage } from "../auth/auth-ui";
 import { useQuotes, useServices, useVenues } from "./venue-client-context";
 
-type Draft = { eventDate: string; slotTemplateId: string; guests: string; picks: string[]; validUntil: string };
-const EMPTY: Draft = { eventDate: "", slotTemplateId: "", guests: "", picks: [], validUntil: "" };
+type Draft = { eventDate: string; slotTemplateId: string; guests: string; picks: string[] };
+const EMPTY: Draft = { eventDate: "", slotTemplateId: "", guests: "", picks: [] };
 
 /** Contact minimal exigé par la conversion : `bookings.contact_*` est NOT NULL
  *  et le devis ne le porte pas. Le pro le saisit au moment où l'affaire se
@@ -50,6 +73,11 @@ export function QuotesSection({ venueId }: { venueId: string }) {
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [converting, setConverting] = useState<string | null>(null);
   const [contact, setContact] = useState<Contact>(NO_CONTACT);
+  /** Canal choisi, PAR DEVIS. ⚠ Aucune valeur par défaut : un canal enregistré
+   *  que personne n'a choisi serait un canal inventé, et c'est très exactement
+   *  ce que D168 a refusé de faire sur les lignes anciennes. Le bouton reste
+   *  inerte tant que le pro n'a pas répondu à la question. */
+  const [channel, setChannel] = useState<Record<string, QuoteSentVia>>({});
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -83,7 +111,7 @@ export function QuotesSection({ venueId }: { venueId: string }) {
     setError(null);
     try {
       await action();
-      // On RECHARGE : envoyer une version en remplace une autre, convertir crée
+      // On RECHARGE : remettre un devis met à jour son canal, convertir crée
       // une demande. Deviner ces conséquences localement, ce serait
       // réimplémenter le serveur dans le navigateur.
       await load();
@@ -98,8 +126,7 @@ export function QuotesSection({ venueId }: { venueId: string }) {
     eventDate: draft.eventDate,
     slotTemplateId: draft.slotTemplateId,
     guests: Number(draft.guests),
-    ...(draft.picks.length === 0 ? {} : { services: draft.picks.map((serviceId) => ({ serviceId })) }),
-    ...(draft.validUntil === "" ? {} : { validUntil: draft.validUntil })
+    ...(draft.picks.length === 0 ? {} : { services: draft.picks.map((serviceId) => ({ serviceId })) })
   });
 
   const draftComplete = draft.eventDate !== "" && draft.slotTemplateId !== "" && Number(draft.guests) > 0;
@@ -120,10 +147,9 @@ export function QuotesSection({ venueId }: { venueId: string }) {
       {stats === null ? null : (
         <p>
           {t("venue.ui.quotes.stats", {
-            sent: stats.sent,
+            delivered: stats.delivered,
             accepted: stats.accepted,
-            declined: stats.declined,
-            expired: stats.expired
+            cancelled: stats.cancelled
           })}
         </p>
       )}
@@ -143,7 +169,11 @@ export function QuotesSection({ venueId }: { venueId: string }) {
           {[...chains.entries()].map(([chainId, versions]) => {
             const latest = versions[versions.length - 1];
             if (latest === undefined) return null;
-            const history = versions.slice(0, -1);
+            // ⚠ UNE SEULE LECTURE DE L'ÉTAT, partagée par les quatre décisions
+            // d'affichage ci-dessous. C'est ce qui fait qu'un futur statut ne
+            // peut plus être oublié dans une condition sur trois.
+            const ouvert = isQuoteOpen(latest.status);
+            const choisi = channel[latest.id];
             return (
               <li key={chainId} style={{ padding: 10, border: "1px solid var(--line)", borderRadius: "var(--radius)" }}>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
@@ -153,34 +183,85 @@ export function QuotesSection({ venueId }: { venueId: string }) {
                   <span className="field-hint">
                     {t("venue.ui.quotes.deposit", { amount: formatDZD(latest.depositCents) })}
                   </span>
-                  <span className="field-hint">
-                    {latest.isExpired ? t("venue.ui.quotes.st_EXPIRED") : t(`venue.ui.quotes.st_${latest.status}`)}
-                  </span>
+                  <span className="field-hint">{t(`venue.ui.quotes.st_${latest.status}`)}</span>
                 </div>
 
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBlockStart: 8 }}>
-                  {latest.status === "DRAFT" ? (
-                    <button type="button" className="btn btn-accent" disabled={busy} onClick={() => void run(() => quotes.send(latest.id))}>
-                      {t("venue.ui.quotes.send")}
-                    </button>
-                  ) : null}
+                {/* ⚠ L'ÉTAT DE REMISE EST ÉCRIT, PAS DEVINÉ. Sans cette ligne, le
+                    pro n'a aucun moyen de savoir si le devis compte déjà dans son
+                    entonnoir — et il remettrait deux fois, ou pas du tout. */}
+                <p className="field-hint">
+                  {latest.sentVia === null
+                    ? t("venue.ui.quotes.notDelivered")
+                    : t("venue.ui.quotes.deliveredVia", { channel: t(`venue.ui.quotes.sv_${latest.sentVia}`) })}
+                </p>
 
-                  {latest.status === "SENT" && !latest.isExpired && latest.bookingId === null ? (
+                {ouvert ? (
+                  <div style={{ display: "grid", gap: 6, marginBlockStart: 8 }}>
+                    <Field label={t("venue.ui.quotes.deliverLabel")} hint={t("venue.ui.quotes.deliverHint")}>
+                      {({ id, describedBy }) => (
+                        <select
+                          id={id}
+                          aria-describedby={describedBy}
+                          value={choisi ?? ""}
+                          onChange={(e) =>
+                            setChannel({ ...channel, [latest.id]: e.target.value as QuoteSentVia })
+                          }
+                        >
+                          <option value="">{t("venue.ui.quotes.deliverPlaceholder")}</option>
+                          {/* ⚠ L'ordre vient du contrat partagé, pas d'ici : deux
+                              écrans qui rangeraient les canaux différemment
+                              feraient hésiter le pro à chaque fois. */}
+                          {QUOTE_SENT_VIA_ORDER.map((canal) => (
+                            <option key={canal} value={canal}>
+                              {t(`venue.ui.quotes.sv_${canal}`)}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </Field>
+                    <div>
+                      <button
+                        type="button"
+                        className="btn"
+                        disabled={busy || choisi === undefined}
+                        onClick={() =>
+                          void run(async () => {
+                            if (choisi === undefined) return;
+                            await quotes.deliver(latest.id, { sentVia: choisi });
+                          })
+                        }
+                      >
+                        {t("venue.ui.quotes.deliver")}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBlockStart: 8 }}>
+                  {/* ⚠ La conversion ne dépend PLUS d'une remise préalable (D160).
+                      Exiger un clic « Envoyer » avant de conclure ne prouvait
+                      rien : au comptoir, le client a le montant sous les yeux
+                      pendant que le pro le tape. */}
+                  {ouvert && latest.bookingId === null ? (
                     <button type="button" className="btn btn-accent" disabled={busy} onClick={() => setConverting(latest.id)}>
                       {/* ⚠ « Créer la demande », JAMAIS « Accepter » : accepter un
                           devis n'est pas une action, c'est la conséquence de
-                          l'encaissement de l'acompte (D101). */}
+                          l'encaissement de l'acompte. */}
                       {t("venue.ui.quotes.convert")}
                     </button>
                   ) : null}
 
-                  {latest.status === "SENT" ? (
-                    <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => void run(() => quotes.decline(latest.id))}>
-                      {t("venue.ui.quotes.decline")}
+                  {/* ⚠ UN SEUL BOUTON POUR DEUX CAS (D161). Il disait « Marquer
+                      refusé », ce qui obligeait le pro à qualifier la réponse du
+                      client alors que rien dans la suite n'en dépend. « Clore »
+                      décrit ce qui se passe vraiment : l'affaire s'arrête. */}
+                  {ouvert ? (
+                    <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => void run(() => quotes.cancel(latest.id))}>
+                      {t("venue.ui.quotes.cancel")}
                     </button>
                   ) : null}
 
-                  {latest.status === "DRAFT" || latest.status === "SENT" ? (
+                  {ouvert ? (
                     <button
                       type="button"
                       className="btn btn-ghost"
@@ -196,21 +277,22 @@ export function QuotesSection({ venueId }: { venueId: string }) {
                   <p className="field-hint">{t("venue.ui.quotes.converted")}</p>
                 )}
 
-                {/* L'historique : ce qui a été remplacé reste lisible. C'est tout
-                    l'intérêt d'avoir séparé SUPERSEDED de DECLINED. */}
-                {history.length === 0 ? null : (
-                  <details style={{ marginBlockStart: 8 }}>
-                    <summary>{t("venue.ui.quotes.history", { n: history.length })}</summary>
-                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                      {history.map((row) => (
-                        <li key={row.id} className="field-hint">
-                          {t("venue.ui.quotes.version", { n: row.version })} — {formatDZD(row.totalCents)} —{" "}
-                          {t(`venue.ui.quotes.st_${row.status}`)}
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                )}
+                {/* ⚠ L'HISTORIQUE A QUITTÉ CET ÉCRAN (décision A), MAIS PAS LA
+                    BASE. C'est tout l'équilibre du choix : le versionnement est
+                    CONSERVÉ — `revise()` crée toujours une version, `chain_id` et
+                    `version` restent actives — parce que c'est lui qui protège la
+                    traçabilité devant un litige. Seul l'AFFICHAGE tombe : trois
+                    versions dépliables encombraient l'écran sans que le pro s'en
+                    serve au quotidien.
+                    ⚠ CONSÉQUENCE À CONNAÎTRE. Les versions antérieures ne sont
+                    plus atteignables depuis AUCUNE interface. Elles sont dans la
+                    réponse de `listForVenue` — donc à un rendu près — mais le
+                    jour où un litige les réclamera, il faudra un écran ou un
+                    export pour les lire. La donnée est sauve ; le chemin pour y
+                    accéder reste à écrire.
+                    Le compteur de versions est conservé sur la ligne : sans lui,
+                    « Version 3 » n'aurait plus rien à quoi se rapporter et le pro
+                    ne saurait pas qu'il a révisé. */}
 
                 {converting === latest.id ? (
                   <div style={{ display: "grid", gap: 6, marginBlockStart: 8 }}>
@@ -323,17 +405,11 @@ export function QuotesSection({ venueId }: { venueId: string }) {
         </fieldset>
       )}
 
-      <Field label={t("venue.ui.quotes.validUntil")} hint={t("venue.ui.quotes.validUntilHint")}>
-        {({ id, describedBy }) => (
-          <input
-            id={id}
-            aria-describedby={describedBy}
-            type="date"
-            value={draft.validUntil}
-            onChange={(e) => setDraft({ ...draft, validUntil: e.target.value })}
-          />
-        )}
-      </Field>
+      {/* ⚠ LE CHAMP « Valable jusqu'au » A DISPARU (D160), et ce n'est pas un
+          oubli de portage. Rien n'engage tant que l'acompte n'est pas payé : une
+          date de validité sur un document qui n'engage personne ne protégeait
+          aucun montant — elle empêchait seulement de conclure une affaire encore
+          vivante, en rendant le devis inconvertible du jour au lendemain. */}
 
       <button
         type="button"

@@ -81,7 +81,18 @@ describe("Parité i18n FR/AR (invariant produit)", () => {
     // `venue.ui.walkin.hint`, remplacée par `lede`.
     // ⚠ Chiffre RELEVÉ sur les fichiers après modification, jamais déduit du
     // nombre de clés que je croyais avoir ajoutées.
-    expect(fr.size).toBeGreaterThanOrEqual(937);
+    // Q2 : 937 -> 943. HUIT clés retirées — `send`, `st_EXPIRED`, `validUntil`,
+    // `validUntilHint`, et les quatre du bloc d'envoi du parcours sur place
+    // (`print`, `sendSms`, `sendEmail`, `sendReason`) — contre QUATORZE
+    // ajoutées : les quatre canaux de remise, le libellé et l'aide du
+    // sélecteur, son texte de choix, le bouton, les deux états de remise, et
+    // les quatre du bloc de remise côté « client sur place ». `stats` est
+    // RÉÉCRITE et non ajoutée : elle perd `{expired}` et renomme `{sent}` en
+    // `{delivered}`.
+    // ⚠ 943 est le nombre COMPTÉ sur les deux fichiers après écriture, pas
+    // 937 - 8 + 15 : `stats` existait déjà, et l'arithmétique de tête aurait
+    // annoncé 944.
+    expect(fr.size).toBeGreaterThanOrEqual(943);
   });
 
   it("les surfaces C5/C5b sont COMPLÈTES — elles ont déjà été effacées une fois", () => {

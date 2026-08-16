@@ -203,10 +203,18 @@ describe("Panneau gauche — les deux compteurs (décision ⑦)", () => {
 
   it("⚠ D120 — un résumé de devis MALFORMÉ ne fait pas tomber le panneau (chemin de RENDU)", async () => {
     // ⚠ L'écart avec les deux compteurs : cette valeur part vers le JSX
-    // (`conversion.sent`) sans `try/catch` autour. Sans garde de forme, un objet
-    // incomplet lève AU RENDU et emporte le panneau entier — nom de la salle et
-    // navigation compris. C'est le cas que D120 vise vraiment.
-    const conversion = vi.fn().mockResolvedValue({ sent: "deux" } as never);
+    // (`conversion.delivered`) sans `try/catch` autour. Sans garde de forme, un
+    // objet mal typé n'écroule pas React — IL L'AFFICHE : le panneau annoncerait
+    // « deux remis · 3 aboutis », c'est-à-dire un indicateur de pilotage qui
+    // raconte n'importe quoi sans jamais signaler d'erreur.
+    //
+    // ⚠ LA FIXTURE A ÉTÉ DURCIE AU PASSAGE, ET C'EST UNE CORRECTION DE TEST
+    // CREUX. Elle valait `{ sent: "deux" }` : l'objet était INCOMPLET autant que
+    // mal typé, donc la garde rougissait sur l'absence des trois autres clés et
+    // le test passait même si la vérification de TYPE disparaissait. Ici les
+    // trois clés du contrat sont présentes et une seule est du mauvais type —
+    // c'est le seul cas qui mesure vraiment le `typeof … === "number"`.
+    const conversion = vi.fn().mockResolvedValue({ delivered: "deux", accepted: 3, cancelled: 1 } as never);
     render(
       <MemoryRouter initialEntries={["/"]}>
         <AppProviders

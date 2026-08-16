@@ -34,14 +34,21 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
   });
 
   // ── Garde production (finding Lot 0) : plus de défaut silencieux en prod ──
-  describe("NODE_ENV=production : CLIENT_URL / PRO_URL / AUTH_COOKIE_SECURE / GOOGLE_CLIENT_ID exigées explicitement", () => {
+  describe("NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une)", () => {
     const prodEnv = {
       ...baseEnv,
       NODE_ENV: "production",
       CLIENT_URL: "https://zwadj.dz",
       PRO_URL: "https://pro.zwadj.dz",
       AUTH_COOKIE_SECURE: "true",
-      GOOGLE_CLIENT_ID: "1234567890-abc.apps.googleusercontent.com" // Lot 8
+      GOOGLE_CLIENT_ID: "1234567890-abc.apps.googleusercontent.com", // Lot 8
+      // ⚠ AJOUTÉE PAR E3a, et son ajout a fait ROUGIR deux tests existants —
+      // « boote quand les quatre sont fournies » et celui de JWT_ACCESS_SECRET,
+      // qui attendait une erreur nommant une AUTRE variable. C'est exactement ce
+      // qu'on veut d'une liste d'exigences de production : l'étendre doit se
+      // voir. Une fixture qu'on aurait complétée sans lire l'échec aurait masqué
+      // le changement.
+      PAYMENTS_ENABLED: "true"
     };
     const omit = (obj: Record<string, unknown>, key: string): Record<string, unknown> => {
       const copy = { ...obj };
@@ -84,5 +91,45 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
     it("JWT_ACCESS_SECRET : comportement inchangé (déjà requis partout, jamais de défaut)", () => {
       expect(() => validateEnv(omit(prodEnv, "JWT_ACCESS_SECRET"))).toThrow(/JWT_ACCESS_SECRET/);
     });
+
+    it("⚠ PAYMENTS_ENABLED est EXPLICITE en production : l'oublier fait REFUSER le boot", () => {
+      // Le défaut `false` protège de l'allumage accidentel ; cette exigence-ci
+      // protège de l'INVERSE — croire les paiements actifs alors que la variable
+      // a été oubliée au déploiement. Sur le chemin de l'argent, les deux
+      // erreurs coûtent, et aucune ne doit pouvoir se produire en silence.
+      expect(() => validateEnv(omit(prodEnv, "PAYMENTS_ENABLED"))).toThrow(/PAYMENTS_ENABLED/);
+    });
+  });
+
+  // ── E3a — le drapeau maître du chemin de l'argent ─────────────────────────
+  describe("PAYMENTS_ENABLED (E3a)", () => {
+    it("⚠ ABSENT ⇒ ÉTEINT. Le seul défaut acceptable sur le chemin de l'argent", () => {
+      // Un drapeau de paiement dont l'absence vaudrait « activé » s'allumerait
+      // tout seul le jour d'un déploiement où la variable manque. Le sens du
+      // défaut est une décision de sécurité, pas une commodité.
+      expect(validateEnv({ ...baseEnv, NODE_ENV: "development" }).PAYMENTS_ENABLED).toBe(false);
+    });
+
+    it('⚠ la chaîne "false" vaut FAUX — `Boolean("false")` vaut vrai', () => {
+      // Le piège des variables d'environnement : ce sont des CHAÎNES. Une
+      // conversion naïve allumerait les paiements sur la valeur qui dit de ne
+      // pas les allumer.
+      expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "false" }).PAYMENTS_ENABLED).toBe(false);
+      expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "0" }).PAYMENTS_ENABLED).toBe(false);
+      // Et l'ÉCART : les deux seules valeurs qui allument.
+      expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "true" }).PAYMENTS_ENABLED).toBe(true);
+      expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "1" }).PAYMENTS_ENABLED).toBe(true);
+    });
+
+    it("⚠ une valeur INATTENDUE n'allume pas — « oui », « yes », « on » restent éteints", () => {
+      // Le cas qui distingue « la variable est renseignée » de « elle dit oui ».
+      for (const valeur of ["oui", "yes", "on", "TRUE", "enabled", " true "]) {
+        expect(
+          validateEnv({ ...baseEnv, PAYMENTS_ENABLED: valeur }).PAYMENTS_ENABLED,
+          `« ${valeur} » ne doit pas allumer les paiements`
+        ).toBe(false);
+      }
+    });
+
   });
 });

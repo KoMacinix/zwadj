@@ -56,13 +56,18 @@ export interface BookingsProClient {
 }
 
 export function createBookingsProClient(request: AuthedRequest): BookingsProClient {
-  const act = (bookingId: string, action: string, body?: unknown) =>
-    request<BookingDTO>(`/pro/bookings/${encodeURIComponent(bookingId)}/${action}`, { method: "POST", body });
-
+  // ⚠ Même correction que dans `quotes-client.ts`, et pour la même raison :
+  // l'action en variable disparaissait dans le joker de
+  // `contract-api-client.int-spec.ts`, qui déclarait alors `/pro/bookings/*/*`.
+  // Ce client-ci n'a subi aucun renommage, mais il était aveuglé pareil — la
+  // garde ne doit pas dépendre du fait qu'on ait eu de la chance.
   return {
     listForVenue: (venueId) => request<ProBookingDTO[]>(`/pro/venues/${encodeURIComponent(venueId)}/bookings`),
-    accept: (bookingId) => act(bookingId, "accept", {}),
-    decline: (bookingId, input) => act(bookingId, "decline", input),
-    cancel: (bookingId, input) => act(bookingId, "cancel", input)
+    accept: (bookingId) =>
+      request<BookingDTO>(`/pro/bookings/${encodeURIComponent(bookingId)}/accept`, { method: "POST", body: {} }),
+    decline: (bookingId, input) =>
+      request<BookingDTO>(`/pro/bookings/${encodeURIComponent(bookingId)}/decline`, { method: "POST", body: input }),
+    cancel: (bookingId, input) =>
+      request<BookingDTO>(`/pro/bookings/${encodeURIComponent(bookingId)}/cancel`, { method: "POST", body: input })
   };
 }

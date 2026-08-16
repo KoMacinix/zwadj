@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { RolesGuard } from "./auth/roles.guard";
 import { EmailModule } from "./common/email/email.module";
+import { PaymentsModule } from "./payments/payments.module";
 import { WhatsAppModule } from "./common/whatsapp/whatsapp.module";
 import { ConfigModule } from "./config/config.module";
 import { HealthModule } from "./health/health.module";
@@ -38,6 +39,13 @@ import { VenuesModule } from "./venues/venues.module";
     ThrottlerModule.forRoot({ throttlers: [DEFAULT_THROTTLE] }),
     PrismaModule,
     EmailModule,
+    // ⚠ ENREGISTRÉ ALORS QU'AUCUNE ROUTE NE L'UTILISE ENCORE (E3b socle), et
+    // c'est le point : Nest résout les providers d'un module IMPORTÉ au
+    // démarrage. Laissé de côté jusqu'à E3c, un câblage fautif ne se serait
+    // découvert qu'au moment de brancher Chargily — c'est-à-dire au pire moment,
+    // sur le chemin de l'argent. Importé, il échoue au boot ou pas du tout.
+    // (`PrismaModule` est `@Global()` — vérifié — donc rien à importer ici.)
+    PaymentsModule,
     // D63 (C3) — port WhatsApp, symétrique d'EmailModule : adaptateur de dev
     // aujourd'hui, transport réel plus tard sans qu'un appelant change.
     WhatsAppModule,
