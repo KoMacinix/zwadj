@@ -60,13 +60,56 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
   d'ajouter l'index — or `payments_one_paid_per_booking` **existait depuis
   juillet 2026**, avec exactement cette définition. **Avant d'affirmer qu'une
   garantie manque, la chercher dans `prisma/migrations/`, pas dans le schéma.**
-- ⚠ **UNE GARDE DU CHEMIN DE L'ARGENT VIT DANS UN MODULE PUR (D187).** D126 exige
-  que toute garde neuve soit neutralisée et les deux mesures portées au rapport.
-  Une garde enfouie dans un service qui importe Prisma n'est **pas exécutable**
-  là où le client n'est pas généré — elle serait livrée non mesurée, sur le
-  chemin où c'est le moins acceptable. Les règles vont dans un module sans
-  dépendance (`payment-intent.ts`, comme `pricing-engine`), le service ne fait
-  que lire et écrire.
+- ⚠ **UNE GARDE DU CHEMIN DE L'ARGENT VIT DANS UN MODULE PUR (D187 — motif
+  RÉÉCRIT par D192).** L'architecture ne bouge pas ; le motif écrit, si. Il
+  disait : « une garde enfouie dans un service qui importe Prisma n'est pas
+  exécutable là où le client n'est pas généré ». **Cette limite d'environnement
+  n'existe plus** (D192) — et une règle adossée à une limite levée cesse d'être
+  une règle, elle devient une habitude que personne ne sait plus défendre.
+  ⚠ Le motif qui TIENT est la vitesse, pas l'exécutabilité : un module sans
+  dépendance se rejoue en millisecondes, sans base, sans client généré, sans
+  amorçage Nest. C'est ce qui permet de le **neutraliser et le rejouer à chaque
+  passage** — une spec de service ne se rejoue qu'aux portes lourdes, donc plus
+  rarement, donc plus tard. Sur le chemin de l'argent, « plus tard » est le
+  défaut. Les règles vont dans un module sans dépendance (`payment-intent.ts`,
+  comme `pricing-engine`), le service ne fait que lire et écrire.
+- ⚠ **CHARGILY COMPTE EN DINARS, PAS EN CENTIMES (D195).** Mesuré : `amount: 5000`
+  affiche « 5 000,00 DA » sur sa page de règlement, et `amount: 1` est refusé par
+  « must be greater than or equal to 50 ». Notre système compte en **centimes**
+  partout ; la conversion vit dans `chargily.gateway.ts` et **nulle part
+  ailleurs**. ⚠ Elle **refuse** un montant qui n'est pas un dinar entier au lieu
+  de l'arrondir : arrondir là serait un second calcul du même montant (D188) et
+  masquerait le défaut amont derrière un paiement qui « marche ». Le facteur 100
+  était silencieux — aucune porte ne l'aurait vu.
+- ⚠ **AUCUNE URL DE RETOUR NE FAIT FOI DU PAIEMENT (D196).** `successUrl` et
+  `failureUrl` disent au fournisseur où renvoyer, rien d'autre. Une redirection
+  de navigateur se rejoue, se forge et se perd : la seule source de vérité est le
+  webhook signé. Les deux pages affichent « vérification en cours » et lisent le
+  statut chez nous.
+- ⚠ **LES PORTES API S'EXÉCUTENT EN BAC À SABLE — NE PLUS LES DÉCLARER AVEUGLES (D192).**
+  Pendant toute la tranche Q + E3, `typecheck`, `test` et `build` de l'API ont
+  été rapportés « non exécutables », et une erreur de type est partie en
+  livraison par ce trou. **Le diagnostic était faux.** `prisma generate` échoue
+  pour deux raisons distinctes, dont une seule est un mur :
+  1. `prisma.config.ts` appelle `env("DATABASE_URL")` et **jette avant de
+     générer** — une URL factice suffit, `generate` ne se connecte à rien ;
+  2. le téléchargement du `schema-engine` rend **403** — contourné par
+     `PRISMA_SCHEMA_ENGINE_BINARY=/bin/true`, le générateur `prisma-client` de
+     Prisma 7 étant en WASM et n'ayant jamais eu besoin de ce binaire.
+
+  ```
+  pnpm install --filter "@zwadj/api..." --ignore-scripts
+  cd apps/api && DATABASE_URL="postgresql://u:p@localhost:5432/zwadj" \
+    PRISMA_SCHEMA_ENGINE_BINARY=/bin/true npx prisma generate
+  ```
+  Après quoi : `typecheck` exit 0, `lint` exit 0, **41 fichiers / 424 tests**,
+  `nest build` exit 0. ⛔ **Reste hors de portée** : tout ce qui exige un
+  PostgreSQL réel — migrations et tests d'intégration. Il n'y a ni serveur ni
+  utilisateur `postgres` dans le bac à sable.
+  ⚠ **La leçon dépasse Prisma** : « non exécutable » est une **mesure**, pas une
+  impression. Un empêchement se relève avec son message d'erreur exact, et se
+  re-teste à chaque tranche — sinon il se recopie de rapport en rapport bien
+  après avoir disparu, et couvre exactement ce qu'il prétendait signaler.
 - ⚠ **UN CHEMIN D'API DONT L'ACTION EST UNE VARIABLE ÉCHAPPE AU TEST DE CONTRAT (D182).**
   `contract-api-client.int-spec.ts` relève les chemins dans les **sources** du
   client et remplace chaque `${…}` par un joker. Le raccourci
@@ -184,10 +227,11 @@ connexion (famille D115).
 | Q3a | `CANCELLED` absorbe `DECLINED`, sans reprise de données | ✅ **livré, intégration VERTE** |
 | ~~Q3b~~ | ~~Immuabilité en base + écrasement de `revise()`~~ | ❌ **ANNULÉ — décision A** |
 | Q4 | Migration : `DROP COLUMN valid_until` | ✅ **livré** — ⚠ non exécuté en bac à sable |
-| Q5 | Verrou exclusif à l'ouverture | ⏳ à faire |
+| Q5 | Verrou exclusif à l'ouverture | ⏸ **REPORTÉ (D193)** — le verrou n'a personne à exclure |
 | E3a | Cadrage paiement + modes de défaillance + drapeau `PAYMENTS_ENABLED` | ✅ livré et mesuré |
 | E3b (socle) | Port de paiement, `Payment` en `PENDING`, décision pure | ✅ livré et mesuré |
-| E3b (Chargily) | Adaptateur, session de règlement | ⛔ **bloqué : compte bac à sable** |
+| E3b (Chargily) | Adaptateur, session de règlement | ✅ **livré et mesuré** — 12/12 gardes neutralisées |
+| E3c | Webhook : signature, déduplication, mise en file (`pg-boss`) | ⏳ prochain |
 
 ⚠ **`C1` est ambigu** : il désigne « Flux C, lot 1 — plages de visite » (livré).
 Les lots de machine à états sont `Q0`→`Q5`. Correspondance en tête de la section

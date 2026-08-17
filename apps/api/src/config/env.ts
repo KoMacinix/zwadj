@@ -75,9 +75,62 @@ export const envSchema = z.object({
    *  déploiement, pas le code) — quand il arrivera, son driver et ses
    *  identifiants rejoindront PROD_REQUIRED_EXPLICIT ; d'ici là, aucune
    *  variable média n'est exigée au boot. */
-  MEDIA_DISK_ROOT: z.string().min(1).default("var/media")
-  // Chargily : clés ajoutées ici à la tranche Paiement (Phase 7) — placeholder volontaire.
-});
+  MEDIA_DISK_ROOT: z.string().min(1).default("var/media"),
+
+  // ── Chargily (Phase 7, lot E3b) ────────────────────────────────────────────
+  /**
+   * Base COMPLÈTE de l'API Chargily, jusqu'à la version incluse.
+   *
+   * ⚠ AUCUN DÉFAUT, ET C'EST LE POINT. Seule la base de TEST a été observée en
+   * bac à sable ; celle de production n'a jamais été capturée. Un défaut pointant
+   * le test ferait qu'une production mal configurée encaisserait dans le vide :
+   * des sessions qui s'ouvrent, un parcours qui semble marcher, et aucun dinar.
+   * C'est le symétrique de `PAYMENTS_ENABLED` — là un drapeau qui s'allume seul,
+   * ici une cible qui se choisit seule. Les deux erreurs coûtent.
+   * Elle se relève du tableau de bord, elle ne se déduit pas de l'URL de test.
+   */
+  CHARGILY_BASE_URL: z.string().url().optional(),
+  /** Clé secrète du marchand. ⚠ Jamais journalisée, jamais renvoyée par une
+   *  route de diagnostic — elle n'apparaît que dans l'en-tête `Authorization`
+   *  construit par `chargily.gateway.ts`. */
+  CHARGILY_SECRET_KEY: z.string().min(1).optional(),
+  /**
+   * Délai d'attente de l'appel sortant, en millisecondes.
+   *
+   * ⚠ C'est un CHOIX, pas une mesure — assumé comme tel et rendu réglable.
+   * Trop court, on abandonne des sessions que Chargily a réellement créées
+   * (mode de défaillance E3a-4, la pire des deux) ; trop long, un fournisseur
+   * lent retient nos requêtes entrantes. La borne basse à 1 s interdit une
+   * valeur qui échouerait à tous les coups.
+   */
+  CHARGILY_TIMEOUT_MS: z.coerce.number().int().min(1_000).max(60_000).default(10_000)
+})
+  /**
+   * ⚠ ACTIVER LES PAIEMENTS SANS FOURNISSEUR EST UNE CONFIGURATION IMPOSSIBLE,
+   * PAS UNE DÉGRADATION.
+   *
+   * `PAYMENTS_ENABLED=true` sans clé ni URL bootait jusqu'ici sur
+   * `UnavailablePaymentGateway` : l'exploitant croyait les paiements ouverts,
+   * l'application répondait 503 à chaque tentative, et rien dans les journaux de
+   * démarrage ne disait pourquoi. Le boot échoue désormais, en nommant la
+   * variable manquante.
+   *
+   * ⚠ Ce contrôle ne vit PAS dans `PROD_REQUIRED_EXPLICIT` : il ne dépend pas de
+   * l'environnement mais du drapeau. Un bac de recette avec les paiements
+   * allumés et sans clé est exactement aussi cassé qu'une production.
+   */
+  .superRefine((env, ctx) => {
+    if (!env.PAYMENTS_ENABLED) return;
+    for (const key of ["CHARGILY_BASE_URL", "CHARGILY_SECRET_KEY"] as const) {
+      if (env[key] === undefined || env[key] === "") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key],
+          message: `${key} est obligatoire quand PAYMENTS_ENABLED vaut true`
+        });
+      }
+    }
+  });
 
 export type Env = z.infer<typeof envSchema>;
 

@@ -380,6 +380,18 @@
       "unsupportedFormat": "صيغة الصورة غير مدعومة (JPEG أو PNG أو WebP)."
     }
   },
+  "payment": {
+    "errors": {
+      "paymentsDisabled": "الدفع عبر الإنترنت غير متاح بعد.",
+      "bookingNotPayable": "لا يمكن دفع هذا الحجز في الوقت الحالي.",
+      "nothingToPay": "لا يوجد مبلغ مستحق على هذا الحجز.",
+      "providerUnavailable": "خدمة الدفع غير متاحة حاليا.",
+      "providerUnreachable": "خدمة الدفع لا تستجيب. أعد المحاولة بعد قليل.",
+      "providerRefused": "رفضت خدمة الدفع هذا الطلب.",
+      "providerMalformed": "رد غير متوقع من خدمة الدفع. لم يتم إتمام الطلب.",
+      "amountNotWholeDinar": "المبلغ المطلوب دفعه غير صالح. اتصل بنا قبل إعادة المحاولة."
+    }
+  },
   "pro": {
     "title": "زواج برو",
     "cta": "ابدأ"

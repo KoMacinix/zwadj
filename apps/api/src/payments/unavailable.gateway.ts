@@ -14,12 +14,17 @@ import type { CheckoutRequest, CheckoutSession, PaymentGateway } from "./payment
  * ⚠ 503 et non 500 : le service est temporairement indisponible, il n'est pas
  * cassé. La distinction compte pour la supervision comme pour le client.
  *
- * Il disparaîtra quand l'adaptateur Chargily existera — c'est-à-dire quand le
- * compte bac à sable sera créé.
+ * ⚠ IL NE DISPARAÎT PAS avec l'adaptateur Chargily, contrairement à ce que ce
+ * commentaire annonçait au socle. Il devient la branche « paiements éteints » de
+ * `payments.module.ts` : `PAYMENTS_ENABLED=false` doit refuser, pas ouvrir une
+ * session. Un drapeau maître sans refus au bout n'est pas un drapeau.
  */
 @Injectable()
 export class UnavailablePaymentGateway implements PaymentGateway {
   createCheckout(_request: CheckoutRequest): Promise<CheckoutSession> {
+    // ⚠ La clé i18n existe désormais des DEUX côtés (E3b/Chargily). Elle était
+    // écrite ici depuis le socle et n'existait dans AUCUN catalogue : la porte
+    // de parité ne compare que FR à AR, et une absence symétrique lui échappe.
     throw new ServiceUnavailableException({
       code: "PAYMENT_PROVIDER_UNAVAILABLE",
       message: "payment.errors.providerUnavailable"
