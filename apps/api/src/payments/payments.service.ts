@@ -13,8 +13,25 @@
 import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
-import { decidePaymentIntent } from "./payment-intent";
+import { decidePaymentIntent, type IntentRefusal } from "./payment-intent";
 import { PAYMENT_GATEWAY, type PaymentGateway } from "./payment.types";
+
+/**
+ * ⚠ POURQUOI UNE TABLE ET NON UNE INTERPOLATION. Le socle écrivait
+ * `` `payment.errors.${decision.code}` ``, ce qui produisait
+ * `payment.errors.PAYMENTS_DISABLED` — alors que TOUT le dépôt nomme ses clés en
+ * `namespace.errors.camelCase` (`booking.errors.slotTaken`, `auth.errors.…`).
+ * Les trois clés n'existaient donc dans AUCUN des deux catalogues, et le test de
+ * parité ne pouvait pas le voir : il compare FR à AR, et une clé absente des
+ * deux côtés est parfaitement symétrique. Une table explicite rend l'oubli
+ * visible au typecheck — `Record<IntentRefusal["code"], string>` refuse de
+ * compiler si un code naît sans message.
+ */
+const REFUSAL_MESSAGE_KEYS: Record<IntentRefusal["code"], string> = {
+  PAYMENTS_DISABLED: "payment.errors.paymentsDisabled",
+  BOOKING_NOT_PAYABLE: "payment.errors.bookingNotPayable",
+  NOTHING_TO_PAY: "payment.errors.nothingToPay"
+};
 
 const PAYMENT_SELECT = {
   id: true,
@@ -62,7 +79,7 @@ export class PaymentsService {
 
     const decision = decidePaymentIntent(booking, paymentsEnabled);
     if (!decision.ok) {
-      throw new ConflictException({ code: decision.code, message: `payment.errors.${decision.code}` });
+      throw new ConflictException({ code: decision.code, message: REFUSAL_MESSAGE_KEYS[decision.code] });
     }
 
     const existant = await this.prisma.payment.findFirst({

@@ -47,11 +47,11 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import {
   BookingStatus,
-  QUOTE_LOST_STATUSES,
   QUOTE_OPEN_STATUSES,
   QuoteErrorCode,
   QuoteStatus,
   ServiceErrorCode,
+  isQuoteLost,
   type QuoteConvertInput,
   type QuoteConversionDTO,
   type QuoteCreateInput,
@@ -76,11 +76,6 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
  *  encore ouvert ? » divergeraient, et la divergence serait silencieuse — un
  *  bouton présent que l'API refuse, ou l'inverse. */
 const OPEN = [...QUOTE_OPEN_STATUSES];
-
-/** ⚠ IMPORTÉE, PAS RECOPIÉE — même raison qu'`OPEN`. Deux statuts, parce que
- *  `DECLINED` est hérité et que les affaires perdues de l'historique le portent
- *  toutes. Voir `QUOTE_LOST_STATUSES`. */
-const LOST = [...QUOTE_LOST_STATUSES];
 
 const QUOTE_SELECT = {
   id: true,
@@ -160,12 +155,12 @@ export class QuotesService {
       seen.add(row.chainId);
       result.delivered += 1;
       if (row.status === QuoteStatus.ACCEPTED) result.accepted += 1;
-      // ⚠ `LOST` ET NON `=== CANCELLED`. C'est LA garde de l'absorption : le
+      // ⚠ `isQuoteLost` ET NON `=== CANCELLED`. C'est LA garde de l'absorption : le
       // jour du déploiement, toutes les affaires perdues de l'historique sont en
       // `DECLINED`, et aucune migration ne les basculera (pas de reprise).
       // Comparer au seul statut neuf afficherait « 0 perdus » sur une salle qui
       // en a trente — faux, et dans le sens flatteur.
-      else if (LOST.includes(row.status)) result.cancelled += 1;
+      else if (isQuoteLost(row.status)) result.cancelled += 1;
     }
     return result;
   }

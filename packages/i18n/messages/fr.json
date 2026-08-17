@@ -380,6 +380,18 @@
       "unsupportedFormat": "Format d'image non pris en charge (JPEG, PNG ou WebP)."
     }
   },
+  "payment": {
+    "errors": {
+      "paymentsDisabled": "Le paiement en ligne n'est pas encore disponible.",
+      "bookingNotPayable": "Cette réservation ne peut pas être payée pour le moment.",
+      "nothingToPay": "Aucun montant n'est dû pour cette réservation.",
+      "providerUnavailable": "Le service de paiement n'est pas disponible actuellement.",
+      "providerUnreachable": "Le service de paiement ne répond pas. Réessayez dans quelques instants.",
+      "providerRefused": "Le service de paiement a refusé cette demande.",
+      "providerMalformed": "Réponse inattendue du service de paiement. La demande n'a pas abouti.",
+      "amountNotWholeDinar": "Le montant à payer est invalide. Contactez-nous avant de réessayer."
+    }
+  },
   "pro": {
     "title": "Zwadj Pro",
     "cta": "Commencer"

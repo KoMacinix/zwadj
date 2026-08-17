@@ -5,6 +5,14 @@ const baseEnv = {
   JWT_ACCESS_SECRET: "s".repeat(40)
 };
 
+// ⚠ E3b : allumer les paiements EXIGE désormais une configuration Chargily.
+// Ces deux valeurs ne sont pas un décor : les fixtures qui allument le drapeau
+// sans elles ont ROUGI à l'ajout de la règle, et c'est ce qu'on attend d'elle.
+const chargilyEnv = {
+  CHARGILY_BASE_URL: "https://pay.chargily.net/test/api/v2",
+  CHARGILY_SECRET_KEY: "test_sk_JETON_DE_TEST_SANS_VALEUR"
+};
+
 describe("validateEnv (schéma Zod des variables d'environnement)", () => {
   it("accepte une config minimale et applique les défauts auth", () => {
     const env = validateEnv(baseEnv);
@@ -48,7 +56,12 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
       // qu'on veut d'une liste d'exigences de production : l'étendre doit se
       // voir. Une fixture qu'on aurait complétée sans lire l'échec aurait masqué
       // le changement.
-      PAYMENTS_ENABLED: "true"
+      // ⚠ ELLE A ROUGI À NOUVEAU À L'ARRIVÉE D'E3b : allumer le drapeau sans
+      // clé Chargily ne boote plus. Fixture complétée APRÈS lecture de l'échec,
+      // jamais avant — une fixture rafistolée sans lire ce qu'elle dit masque
+      // précisément le changement qu'elle aurait dû signaler.
+      PAYMENTS_ENABLED: "true",
+      ...chargilyEnv
     };
     const omit = (obj: Record<string, unknown>, key: string): Record<string, unknown> => {
       const copy = { ...obj };
@@ -116,9 +129,10 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
       // pas les allumer.
       expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "false" }).PAYMENTS_ENABLED).toBe(false);
       expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "0" }).PAYMENTS_ENABLED).toBe(false);
-      // Et l'ÉCART : les deux seules valeurs qui allument.
-      expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "true" }).PAYMENTS_ENABLED).toBe(true);
-      expect(validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "1" }).PAYMENTS_ENABLED).toBe(true);
+      // Et l'ÉCART : les deux seules valeurs qui allument. ⚠ Elles exigent
+      // maintenant la config Chargily — sans quoi le boot échoue (E3b).
+      expect(validateEnv({ ...baseEnv, ...chargilyEnv, PAYMENTS_ENABLED: "true" }).PAYMENTS_ENABLED).toBe(true);
+      expect(validateEnv({ ...baseEnv, ...chargilyEnv, PAYMENTS_ENABLED: "1" }).PAYMENTS_ENABLED).toBe(true);
     });
 
     it("⚠ une valeur INATTENDUE n'allume pas — « oui », « yes », « on » restent éteints", () => {
@@ -131,5 +145,54 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
       }
     });
 
+  });
+
+  // ── Configuration Chargily (E3b) ─────────────────────────────────────────
+  describe("Chargily : la clé et l'URL sont exigées DÈS QUE le drapeau est allumé", () => {
+    it("⚠ drapeau ALLUMÉ sans clé ⇒ le boot ÉCHOUE, en nommant la variable", () => {
+      // Avant cette règle, cette configuration bootait : l'exploitant croyait
+      // les paiements ouverts, chaque tentative rendait 503, et rien au
+      // démarrage ne disait pourquoi. Une panne muette coûte plus qu'un refus
+      // de démarrer.
+      expect(() =>
+        validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "true", CHARGILY_BASE_URL: chargilyEnv.CHARGILY_BASE_URL })
+      ).toThrow(/CHARGILY_SECRET_KEY/);
+    });
+
+    it("⚠ drapeau ALLUMÉ sans URL ⇒ le boot ÉCHOUE aussi", () => {
+      // Et il n'y a AUCUN défaut sur l'URL : seule celle du bac à sable a été
+      // observée. Un défaut pointant le test ferait qu'une production mal
+      // configurée encaisserait dans le vide, sans erreur nulle part.
+      expect(() =>
+        validateEnv({ ...baseEnv, PAYMENTS_ENABLED: "true", CHARGILY_SECRET_KEY: chargilyEnv.CHARGILY_SECRET_KEY })
+      ).toThrow(/CHARGILY_BASE_URL/);
+    });
+
+    it("drapeau ÉTEINT ⇒ ni l'une ni l'autre n'est exigée (poste de dev inchangé)", () => {
+      const env = validateEnv({ ...baseEnv, NODE_ENV: "development" });
+      expect(env.PAYMENTS_ENABLED).toBe(false);
+      expect(env.CHARGILY_SECRET_KEY).toBeUndefined();
+    });
+
+    it("⚠ le contrôle NE DÉPEND PAS de NODE_ENV : une recette allumée sans clé est aussi cassée", () => {
+      // Il ne vit donc pas dans PROD_REQUIRED_EXPLICIT, qui ne regarde que la
+      // production. Le drapeau, lui, s'allume partout.
+      expect(() => validateEnv({ ...baseEnv, NODE_ENV: "development", PAYMENTS_ENABLED: "true" })).toThrow(
+        /CHARGILY/
+      );
+    });
+
+    it("refuse une URL Chargily qui n'en est pas une", () => {
+      expect(() =>
+        validateEnv({ ...baseEnv, ...chargilyEnv, PAYMENTS_ENABLED: "true", CHARGILY_BASE_URL: "pas-une-url" })
+      ).toThrow(/CHARGILY_BASE_URL/);
+    });
+
+    it("délai d'attente : défaut appliqué, bornes tenues", () => {
+      expect(validateEnv({ ...baseEnv, ...chargilyEnv, PAYMENTS_ENABLED: "true" }).CHARGILY_TIMEOUT_MS).toBe(10_000);
+      expect(() =>
+        validateEnv({ ...baseEnv, ...chargilyEnv, PAYMENTS_ENABLED: "true", CHARGILY_TIMEOUT_MS: "10" })
+      ).toThrow(/CHARGILY_TIMEOUT_MS/);
+    });
   });
 });
