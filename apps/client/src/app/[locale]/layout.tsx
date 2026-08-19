@@ -3,6 +3,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import { AuthProvider } from "../../lib/auth/auth-context";
+import { SiteFooter } from "../../components/site-footer";
 import { SiteHeader, UnverifiedBanner } from "../../components/site-chrome";
 import { THEME_BOOT_SCRIPT } from "@zwadj/ui/theme-storage";
 // Readex Pro AUTO-HÉBERGÉE (@fontsource) : latin + arabe via unicode-range,
@@ -53,6 +54,7 @@ export default async function LocaleLayout({
             <SiteHeader />
             <UnverifiedBanner />
             {children}
+            <SiteFooter />
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

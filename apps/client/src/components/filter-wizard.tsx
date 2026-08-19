@@ -1,0 +1,477 @@
+"use client";
+
+// Assistant de filtres — lot Assistant, sur `FilterWizard` de la maquette
+// (`design.zip` mis à jour, `src/imports/App.tsx`, 1551+).
+//
+// ── ⚠ QUATRE QUESTIONS, ET TOUTES FILTRENT ────────────────────────────────
+// La maquette en pose six et JETTE deux réponses : `complete()` transmet
+// `district` et `date`, que son `SearchPage` n'utilise nulle part dans son
+// filtrage. Le contrat public ne porte pas de date (arbitrage Ko : lot suivant,
+// `availableOn`), et son « quartier » devient ici la COMMUNE, qui est le vrai
+// filtre du dépôt (`cityId`).
+// ⚠ Une question dont la réponse est jetée est pire qu'une question absente :
+// le client DÉCLARE une contrainte et reçoit une liste qui la viole en silence.
+//
+// ── ⚠ CET ÉCRAN EXIGE JAVASCRIPT, ET C'EST POURQUOI IL EST À PART ─────────
+// `/salles` reste entièrement fonctionnelle sans JS — filtres en
+// `<form method="get">`, pagination en liens — parce qu'elle vise un Android bas
+// de gamme sur réseau lent et qu'elle existe pour le référencement. L'assistant
+// est un chemin d'entrée CONFORTABLE, jamais le seul.
+//
+// ── ⚠ LE COMPTEUR VIENT DU SERVEUR ───────────────────────────────────────
+// La maquette calcule `liveCount` dans le navigateur en filtrant son tableau.
+// Refaire ça, ce serait réécrire côté client le filtrage que le serveur porte —
+// une seconde autorité sur « quelles salles correspondent », qui divergerait au
+// premier critère ajouté. Ici c'est le `total` d'un `GET /venues?…&pageSize=1`.
+//
+// ── ⚠ LE RÉCAPITULATIF NE SE REPLIE PAS ──────────────────────────────────
+// La maquette refait ici son `editStep(n)` → `setConfirmedUpTo(n - 1)` : corriger
+// la commune ferait disparaître les invités et le budget du récapitulatif. Même
+// arbitrage que côté Pro — les réponses SE DÉDUISENT DES DONNÉES, jamais d'un
+// compteur, donc elles ne peuvent pas se replier.
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDZD } from "@zwadj/i18n";
+import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
+import { useRouter } from "../i18n/navigation";
+import { countVenues } from "../lib/api";
+
+/** ⚠ QUATRE ÉTAPES, dans l'ordre du filtre EXISTANT (`SearchFilters`) : ville,
+ *  capacité, budget, styles, équipements. Rien de réinventé — les deux derniers
+ *  critères tiennent sur un écran, comme dans la maquette. */
+const STEPS = ["city", "guests", "budget", "taste"] as const;
+type Step = (typeof STEPS)[number];
+const STEP_LABEL: Record<Step, string> = {
+  city: "stepCity",
+  guests: "stepGuests",
+  budget: "stepBudget",
+  taste: "stepTaste"
+};
+
+/** Paliers de budget, en CENTIMES — ce sont des VALEURS DE FILTRE, pas des
+ *  calculs. Aucune arithmétique monétaire ne vit dans ce navigateur. */
+const BUDGET_TIERS = [50_000_000, 100_000_000, 200_000_000, 400_000_000] as const;
+
+export interface FilterWizardProps {
+  wilayas: WilayaDTO[];
+  styles: VenueStyleDTO[];
+  amenities: AmenityDTO[];
+}
+
+export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) {
+  const t = useTranslations("wizard");
+  const ar = useLocale() === "ar";
+  const router = useRouter();
+
+  const [step, setStep] = useState<Step>("city");
+  const [cityId, setCityId] = useState("");
+  const [guests, setGuests] = useState("");
+  const [budget, setBudget] = useState("");
+  const [pickedStyles, setPickedStyles] = useState<string[]>([]);
+  const [pickedAmenities, setPickedAmenities] = useState<string[]>([]);
+  /** ⚠ La dernière étape n'a pas de réponse obligatoire : « aucun style, aucun
+   *  équipement » est un choix valable, indiscernable de « pas encore répondu »
+   *  si on se contentait de regarder les listes. Seule étape à porter un drapeau
+   *  — les trois autres se déduisent de leurs données, donc ne peuvent mentir. */
+  const [tasteAnswered, setTasteAnswered] = useState(false);
+  const [count, setCount] = useState<number | null>(null);
+  const [counting, setCounting] = useState(false);
+
+  const answered: Record<Step, boolean> = useMemo(
+    () => ({
+      city: cityId !== "",
+      guests: Number(guests) > 0,
+      budget: budget !== "",
+      taste: tasteAnswered
+    }),
+    [cityId, guests, budget, tasteAnswered]
+  );
+
+  /** Les paramètres du CONTRAT PUBLIC — noms et encodage relevés de
+   *  `venueListQuerySchema`, jamais devinés : `styles` et `amenities` sont des
+   *  clés SÉPARÉES PAR DES VIRGULES, pas des paramètres répétés. */
+  const params = useCallback((): URLSearchParams => {
+    const q = new URLSearchParams();
+    if (cityId !== "") q.set("cityId", cityId);
+    if (Number(guests) > 0) q.set("guests", guests);
+    if (budget !== "") q.set("maxPriceCents", budget);
+    if (pickedStyles.length > 0) q.set("styles", pickedStyles.join(","));
+    if (pickedAmenities.length > 0) q.set("amenities", pickedAmenities.join(","));
+    return q;
+  }, [cityId, guests, budget, pickedStyles, pickedAmenities]);
+
+  // ⚠ Le compteur n'apparaît QU'À la dernière étape — comme dans la maquette.
+  // Avant, il vaudrait le catalogue entier et ne dirait rien au client.
+  useEffect(() => {
+    if (step !== "taste") return;
+    const abort = new AbortController();
+    setCounting(true);
+    countVenues(params(), abort.signal)
+      .then((n) => {
+        if (!abort.signal.aborted) {
+          setCount(n);
+          setCounting(false);
+        }
+      })
+      .catch(() => {
+        /* `countVenues` ne rejette pas : il rend `null`. */
+      });
+    // ⚠ On ANNULE la requête précédente à chaque coche. Sans cela, deux réponses
+    // lentes peuvent arriver dans le désordre et afficher le compte d'un état
+    // que le client a déjà quitté.
+    return () => abort.abort();
+  }, [step, params]);
+
+  const cardRef = useRef<HTMLElement>(null);
+  const moveFocus = useRef(false);
+  useEffect(() => {
+    if (!moveFocus.current) return;
+    moveFocus.current = false;
+    const el = cardRef.current;
+    if (el === null) return;
+    // ⚠ `prefers-reduced-motion` par défaut à `true` quand on ne sait pas : se
+    // tromper vers « pas de défilement animé » ne coûte qu'un peu d'élégance.
+    const doux =
+      typeof window.matchMedia === "function" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // ⚠ `preventScroll` D'ABORD : sans lui, le navigateur défile pour amener le
+    // focus, et le défilement choisi juste après serait un SECOND mouvement
+    // par-dessus le premier — l'écran sauterait puis glisserait.
+    el.focus({ preventScroll: true });
+    // ⚠ APPEL OPTIONNEL : `scrollIntoView` n'existe pas en jsdom, ni dans
+    // certaines WebView anciennes. Relevé sur `apps/pro/src/lib/reveal.ts`, qui
+    // porte la même garde — sans elle, l'étape suivante ne s'affichait pas du
+    // tout en test, et le défaut aurait été le même sur un vieil Android.
+    el.scrollIntoView?.({ behavior: doux ? "smooth" : "auto", block: "nearest" });
+  }, [step]);
+
+  const goTo = (next: Step) => {
+    moveFocus.current = true;
+    setStep(next);
+  };
+
+  /**
+   * Avance : la PREMIÈRE question encore sans réponse APRÈS celle qu'on quitte,
+   * sinon la dernière étape.
+   *
+   * ⚠ « Après celle qu'on quitte », et non « la première du parcours ». Une
+   * première version renvoyait à `STEPS.find(s => !answered[s])` sans borne :
+   * un client qui PASSE toutes les questions — ce que les boutons « Passer »
+   * autorisent explicitement — retombait indéfiniment sur la commune et
+   * n'atteignait JAMAIS les résultats. Défaut réel, pas artefact de test.
+   */
+  const avancer = () => {
+    const depuis = STEPS.indexOf(step) + 1;
+    goTo(STEPS.slice(depuis).find((s) => !answered[s]) ?? "taste");
+  };
+
+  /** ⚠ La séquence se TERMINE sur la page de résultats EXISTANTE. Aucune page
+   *  neuve : les filtres y restent ajustables comme aujourd'hui. */
+  const voirLesSalles = () => {
+    const q = params().toString();
+    router.push(q === "" ? "/salles" : `/salles?${q}`);
+  };
+
+  const toggle = (liste: string[], set: (v: string[]) => void, key: string) =>
+    set(liste.includes(key) ? liste.filter((k) => k !== key) : [...liste, key]);
+
+  const reset = () => {
+    setCityId("");
+    setGuests("");
+    setBudget("");
+    setPickedStyles([]);
+    setPickedAmenities([]);
+    setTasteAnswered(false);
+    setCount(null);
+    goTo("city");
+  };
+
+  const villes = useMemo(
+    () =>
+      wilayas.flatMap((w) =>
+        w.cities.map((c) => ({ id: c.id, wilaya: ar ? w.nameAr : w.nameFr, nom: ar ? c.nameAr : c.nameFr }))
+      ),
+    [wilayas, ar]
+  );
+  const villeChoisie = villes.find((v) => v.id === cityId);
+
+  const resume = (s: Step): string => {
+    switch (s) {
+      case "city":
+        return villeChoisie ? `${villeChoisie.nom} · ${villeChoisie.wilaya}` : t("cityAll");
+      case "guests":
+        return guests;
+      case "budget":
+        return budget === "" ? t("budgetAny") : formatDZD(Number(budget), ar ? "ar" : "fr");
+      case "taste": {
+        const noms = [
+          ...pickedStyles.map((k) => styles.find((x) => x.key === k)).map((x) => (x ? (ar ? x.nameAr : x.nameFr) : "")),
+          ...pickedAmenities
+            .map((k) => amenities.find((x) => x.key === k))
+            .map((x) => (x ? (ar ? x.nameAr : x.nameFr) : ""))
+        ].filter((n) => n !== "");
+        return noms.join(" · ");
+      }
+    }
+  };
+
+  const stepIndex = STEPS.indexOf(step);
+  const question = { city: "qCity", guests: "qGuests", budget: "qBudget", taste: "qTaste" } as const;
+
+  return (
+    <main className="wz">
+      <header className="wz-head">
+        <p className="wz-eyebrow">
+          <span className="wz-ornament" aria-hidden="true" />
+          {t("eyebrow")}
+        </p>
+        <h1 className="wz-title">{t("title")}</h1>
+        <p className="wz-lede">{t("lede")}</p>
+        <button type="button" className="wz-btn wz-head-reset" onClick={reset}>
+          {t("reset")}
+        </button>
+      </header>
+
+      {/* ⚠ Une liste ORDONNÉE : l'ordre, l'étape courante et le total ne doivent
+          pas être seulement visuels. Le rail est latéral par `grid-area`, mais
+          reste le premier élément du DOM. */}
+      <nav className="wz-rail" aria-label={t("railLabel")}>
+        <ol>
+          {STEPS.map((s, i) => {
+            const editable = answered[s] && s !== step;
+            return (
+              <li
+                key={s}
+                className={s === step ? "is-current" : answered[s] ? "is-done" : "is-todo"}
+                aria-current={s === step ? "step" : undefined}
+              >
+                {/* Cliquer le numéro vaut « Modifier » — mais seulement là où
+                    « Modifier » existerait. Une étape sans réponse reste un
+                    `<span>` : rien à désactiver, rien à tabuler. */}
+                {editable ? (
+                  <button
+                    type="button"
+                    className="wz-rail-n wz-rail-btn"
+                    aria-label={t("editAria", { step: t(STEP_LABEL[s]) })}
+                    onClick={() => goTo(s)}
+                  >
+                    {/* ⚠ Glyphe TEXTE, et non une icône importée : `lucide-react` n'est
+                        pas une dépendance de l'app client (vérifié), et on
+                        n'ajoute pas un paquet d'icônes pour une coche. Le nom
+                        accessible du bouton vient de son `aria-label`. */}
+                    <span aria-hidden="true">✓</span>
+                  </button>
+                ) : (
+                  <span className="wz-rail-n" aria-hidden="true">
+                    {i + 1}
+                  </span>
+                )}
+                <span className="wz-rail-label">{t(STEP_LABEL[s])}</span>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+
+      <ul className="wz-recap" aria-label={t("recapLabel")}>
+        {STEPS.filter((s) => s !== step && answered[s]).map((s) => (
+          <li key={s} className="wz-recap-row">
+            <div>
+              <span className="wz-recap-step">{t(STEP_LABEL[s])}</span>
+              <span className="wz-recap-value">{resume(s)}</span>
+            </div>
+            <button
+              type="button"
+              className="wz-btn wz-recap-edit"
+              aria-label={t("editAria", { step: t(STEP_LABEL[s]) })}
+              onClick={() => goTo(s)}
+            >
+              {t("edit")}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <section className="wz-card" ref={cardRef} tabIndex={-1} aria-labelledby="wz-question">
+        <p className="wz-counter">{t("counter", { n: stepIndex + 1, total: STEPS.length })}</p>
+        <h2 id="wz-question" className="wz-question">
+          {t(question[step])}
+        </h2>
+        <p className="wz-hint">{t(`${question[step]}Hint`)}</p>
+
+        {step === "city" ? (
+          <>
+            <label className="wz-label" htmlFor="wz-city">
+              {t("stepCity")}
+            </label>
+            {/* ⚠ Les communes sont GROUPÉES par wilaya. À plat, « Chéraga » et
+                « Cheraga » d'une autre wilaya seraient indiscernables — et le
+                référentiel en compte plusieurs centaines. */}
+            <select id="wz-city" className="wz-input" value={cityId} onChange={(e) => setCityId(e.target.value)}>
+              <option value="">{t("cityAll")}</option>
+              {wilayas.map((w) => (
+                <optgroup key={w.id} label={ar ? w.nameAr : w.nameFr}>
+                  {w.cities.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {ar ? c.nameAr : c.nameFr}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+            <div className="wz-actions">
+              <button type="button" className="wz-btn wz-btn-primary" onClick={avancer}>
+                {cityId === "" ? t("skip") : t("continue")}
+              </button>
+            </div>
+          </>
+        ) : null}
+
+        {step === "guests" ? (
+          <>
+            <label className="wz-label" htmlFor="wz-guests">
+              {t("stepGuests")}
+            </label>
+            <input
+              id="wz-guests"
+              className="wz-input"
+              type="number"
+              min={1}
+              max={10_000}
+              inputMode="numeric"
+              placeholder={t("guestsPlaceholder")}
+              value={guests}
+              onChange={(e) => setGuests(e.target.value.replace(/[^0-9]/g, ""))}
+            />
+            <div className="wz-actions">
+              <button
+                type="button"
+                className="wz-btn wz-btn-primary"
+                disabled={!answered.guests}
+                onClick={avancer}
+              >
+                {t("continue")}
+              </button>
+              <button type="button" className="wz-btn" onClick={avancer}>
+                {t("skip")}
+              </button>
+              {answered.guests ? null : <p className="wz-hint">{t("guestsInvalid")}</p>}
+            </div>
+          </>
+        ) : null}
+
+        {step === "budget" ? (
+          <>
+            <ul className="wz-tiers">
+              {BUDGET_TIERS.map((cents) => (
+                <li key={cents}>
+                  <button
+                    type="button"
+                    className={budget === String(cents) ? "wz-tier is-on" : "wz-tier"}
+                    aria-pressed={budget === String(cents)}
+                    onClick={() => {
+                      setBudget(String(cents));
+                      goTo("taste");
+                    }}
+                  >
+                    {formatDZD(cents, ar ? "ar" : "fr")}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="wz-actions">
+              <button
+                type="button"
+                className="wz-btn"
+                onClick={() => {
+                  setBudget("");
+                  goTo("taste");
+                }}
+              >
+                {t("budgetAny")}
+              </button>
+            </div>
+          </>
+        ) : null}
+
+        {step === "taste" ? (
+          <>
+            <fieldset className="wz-group">
+              <legend className="wz-label">{t("styles")}</legend>
+              {styles.length === 0 ? (
+                <p className="wz-hint">{t("noStyles")}</p>
+              ) : (
+                <ul className="wz-chips">
+                  {styles.map((s) => (
+                    <li key={s.key}>
+                      <button
+                        type="button"
+                        className={pickedStyles.includes(s.key) ? "wz-chip is-on" : "wz-chip"}
+                        aria-pressed={pickedStyles.includes(s.key)}
+                        onClick={() => toggle(pickedStyles, setPickedStyles, s.key)}
+                      >
+                        {ar ? s.nameAr : s.nameFr}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </fieldset>
+
+            <fieldset className="wz-group">
+              <legend className="wz-label">{t("amenities")}</legend>
+              {amenities.length === 0 ? (
+                <p className="wz-hint">{t("noAmenities")}</p>
+              ) : (
+                <ul className="wz-chips">
+                  {amenities.map((a) => (
+                    <li key={a.key}>
+                      <button
+                        type="button"
+                        className={pickedAmenities.includes(a.key) ? "wz-chip is-on" : "wz-chip"}
+                        aria-pressed={pickedAmenities.includes(a.key)}
+                        onClick={() => toggle(pickedAmenities, setPickedAmenities, a.key)}
+                      >
+                        {ar ? a.nameAr : a.nameFr}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </fieldset>
+
+            {/* ⚠ `null` = « je ne sais pas », JAMAIS « zéro salle ». Les deux ne
+                se disent pas pareil : l'un invite à élargir, l'autre est une
+                panne. `aria-live` parce que ce nombre change sans que la page
+                bouge — sinon un lecteur d'écran ne l'annonce jamais. */}
+            <p className="wz-count" role="status" aria-live="polite" aria-busy={counting}>
+              {count === null
+                ? t("countUnknown")
+                : count === 0
+                  ? t("countNone")
+                  : count === 1
+                    ? t("countOne")
+                    : t("count", { count })}
+            </p>
+            {count === 0 ? <p className="wz-hint">{t("countNoneHint")}</p> : null}
+
+            <div className="wz-actions">
+              {/* ⚠ CE BOUTON NAVIGUE TOUJOURS. Il ne renvoie jamais dans le
+                  parcours : « aucun critère » est une réponse valable, et un
+                  client qui a tout passé doit voir le catalogue entier. */}
+              <button
+                type="button"
+                className="wz-btn wz-btn-primary"
+                onClick={() => {
+                  setTasteAnswered(true);
+                  voirLesSalles();
+                }}
+              >
+                {t("see")}
+              </button>
+            </div>
+          </>
+        ) : null}
+      </section>
+    </main>
+  );
+}

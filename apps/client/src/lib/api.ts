@@ -47,6 +47,37 @@ export async function searchVenues(query: URLSearchParams): Promise<VenueListRes
   }
 }
 
+/**
+ * COMBIEN de salles correspondent — le total, pas les salles.
+ *
+ * ⚠ SEULE FONCTION DE CE FICHIER APPELÉE DEPUIS LE NAVIGATEUR, et c'est
+ * délibéré : `/api/v1/venues` est public, non authentifié, et ne porte aucun
+ * état de session. La mise en garde en tête du fichier vise l'authentification —
+ * traîner `@zwadj/api-client` côté serveur ferait fuiter une session entre deux
+ * visiteurs. Ici il n'y a pas de session du tout.
+ *
+ * ⚠ `pageSize=1` : on veut le COMPTE, pas la page. Demander 12 salles pour n'en
+ * lire aucune ferait payer au visiteur — sur un réseau lent — une charge utile
+ * qu'on jette. Le serveur reste l'autorité sur « quelles salles correspondent » :
+ * refiltrer dans le navigateur serait une seconde autorité, qui divergerait au
+ * premier critère ajouté.
+ */
+export async function countVenues(query: URLSearchParams, signal?: AbortSignal): Promise<number | null> {
+  const params = new URLSearchParams(query);
+  params.set("pageSize", "1");
+  params.set("page", "1");
+  try {
+    const res = await fetch(`${API_URL}/api/v1/venues?${params.toString()}`, { cache: "no-store", signal });
+    if (!res.ok) return null;
+    return ((await res.json()) as VenueListResponse).total;
+  } catch {
+    // ⚠ Une annulation passe par ici comme une panne, et c'est sans conséquence :
+    // l'appelant a déjà lancé la requête suivante. `null` = « je ne sais pas »,
+    // jamais « zéro salle » — les deux ne se disent pas pareil à l'écran.
+    return null;
+  }
+}
+
 /** Référentiels : quasi immuables (un seed), donc revalidés à l'heure. Un
  *  échec renvoie une liste VIDE — les filtres disparaissent, les résultats
  *  restent : une panne de référentiel ne doit pas vider la page. */

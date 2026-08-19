@@ -53,6 +53,24 @@ export type VenueCardData = VenueSummaryDTO & VenueCardExtras;
 
 export type PreviewVenue = VenueCardData;
 
+/**
+ * Le jeu de démonstration, ou `null`, selon l'environnement REÇU.
+ *
+ * ⚠ POURQUOI CETTE FONCTION EXISTE MAINTENANT. Le garde-fou n°1 était tenu par
+ * un ternaire écrit dans chaque page serveur — correct, et **impossible à
+ * mesurer** : aucun test ne rend une page serveur Next, donc rien ne rougissait
+ * si le ternaire disparaissait. Le harnais de neutralisation l'a montré : muter
+ * `page.tsx` pour passer le jeu en toutes circonstances laissait 19 tests verts.
+ *
+ * ⚠ ELLE NE VIOLE PAS LE GARDE-FOU N°1. Ce module ne décide toujours pas seul :
+ * l'environnement lui est PASSÉ. Un module de données qui lirait `process.env`
+ * lui-même s'activerait tout seul — c'est cela qui était interdit, pas le fait
+ * de savoir répondre à la question quand on la lui pose.
+ */
+export function previewVenuesFor(nodeEnv: string | undefined): readonly VenueCardData[] | null {
+  return nodeEnv === "production" ? null : PREVIEW_VENUES;
+}
+
 /** Ville d'Alger du seed A1. La valeur importe peu — rien ne la requête —,
  *  mais elle doit être un UUID valide : `cityId` est typé comme tel et un
  *  `"preview"` traînant finirait dans une URL de filtre au premier copier. */

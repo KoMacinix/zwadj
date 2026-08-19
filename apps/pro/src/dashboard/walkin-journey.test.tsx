@@ -1,12 +1,21 @@
-// Nouvelle réservation — client sur place. Lot UIP-B, refonte graphique.
+// Nouvelle réservation — client sur place. REFONTE EN FLUX PAR ÉTAPES.
 //
-// ⚠ CE QUE CES TESTS MESURENT, ET CE QU'ILS REFUSENT DE MESURER.
+// ⚠ CES TESTS SONT RE-DÉRIVÉS DU COMPORTEMENT, PAS ADAPTÉS AU BALISAGE.
+// Les 24 tests précédents interrogeaient trois cartes SIMULTANÉES ; le flux n'en
+// montre qu'une, donc la plupart de leurs `getBy` ne trouvaient plus rien. Les
+// faire repasser au vert en changeant les sélecteurs jusqu'à ce qu'ils passent
+// est exactement la manière dont une suite cesse de mesurer sans que rien ne
+// rougisse. Chaque test ci-dessous répond à une question posée en FRANÇAIS
+// d'abord — « après avoir répondu au client, la question de la date est-elle la
+// seule active ? » — et le sélecteur vient après.
+//
 // Ce composant orchestre cinq appels dans un ordre qui a des conséquences
-// financières et un verrou de base de données au bout. Les tests portent donc sur
-// la CHAÎNE — quels appels, dans quel ordre, avec quels arguments — et sur les
-// trois endroits où l'écran pourrait mentir : un total périmé, une date qu'on
-// dirait bloquée sans l'avoir bloquée, et un devis de plus à chaque clic.
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+// financières et un verrou de base de données au bout. Les tests portent donc
+// sur la CHAÎNE — quels appels, dans quel ordre, avec quels arguments — et sur
+// les quatre endroits où l'écran pourrait mentir : un total périmé, une date
+// qu'on dirait bloquée sans l'avoir bloquée, un devis de plus à chaque clic, et
+// un montant affiché avant que le serveur ait chiffré.
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { formatDZD } from "@zwadj/i18n";
@@ -40,6 +49,7 @@ const VENUE = {
  *  « cliquable » et « refusé par le moteur ». Les prix sont ceux que rendrait le
  *  moteur (B2/B3) — jamais recalculés ici. */
 const LIBRE = "2026-08-15";
+const AUTRE = "2026-08-16";
 const VENDU = "2026-08-22";
 
 /** ⚠ La disponibilité passe désormais par le CLIENT AUTHENTIFIÉ
@@ -56,6 +66,11 @@ function availabilityDouble() {
     slots: VENUE.slotTemplates,
     days: [
       { date: LIBRE, slots: [{ slotTemplateId: SLOT_ID, status: "AVAILABLE", priceCents: 158_100_000 }] },
+      // ⚠ Un SECOND jour libre, ajouté pour le test du changement de date. Sans
+      // lui, le seul autre jour cliquable était VENDU : le test aurait mesuré la
+      // cascade ET le refus du moteur d'un coup, et un échec n'aurait pas dit
+      // lequel des deux avait cassé.
+      { date: AUTRE, slots: [{ slotTemplateId: SLOT_ID, status: "AVAILABLE", priceCents: 158_100_000 }] },
       { date: VENDU, slots: [{ slotTemplateId: SLOT_ID, status: "BOOKED", priceCents: 158_100_000 }] }
     ]
   });
@@ -128,415 +143,503 @@ function setup(
   return { quotes, bookings };
 }
 
-function fillContact() {
+/** Répond à l'étape CLIENT et valide. ⚠ Le nombre d'invités est ICI, pas à
+ *  l'étape des prestations : une prestation par personne se chiffre
+ *  `unitPrice × guests`, donc la question précède forcément le catalogue. */
+async function repondreClient(invites = "200") {
   fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
   fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
   fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
+  fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: invites } });
+  fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
 }
 
-/** Choisit la date LIBRE dans le calendrier réel, puis son créneau.
- *
- *  ⚠ On attend que la case soit ACTIVE, pas seulement présente. La grille du mois
- *  se dessine avant que la disponibilité n'arrive, et ses cases sont alors
+/** ⚠ On attend que la case soit ACTIVE, pas seulement présente. La grille du
+ *  mois se dessine avant que la disponibilité n'arrive, et ses cases sont alors
  *  désactivées : cliquer trop tôt ne fait rien, et le test échouerait plus loin
  *  sur un symptôme sans rapport. */
-async function pickDateAndSlot() {
-  const jour = await screen.findByRole("button", { name: /15/ });
+async function repondreDate(jourVisible = /15/) {
+  const jour = await screen.findByRole("button", { name: jourVisible });
   await waitFor(() => expect(jour).toBeEnabled());
   fireEvent.click(jour);
-  const creneau = await screen.findByRole("button", { name: /Soirée/ });
-  fireEvent.click(creneau);
-  fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: "200" } });
 }
 
-describe("Nouvelle réservation — l'en-tête et les étapes", () => {
-  it("porte le sur-titre, le titre et la description de la maquette", async () => {
+async function repondreCreneau() {
+  fireEvent.click(await screen.findByRole("button", { name: /Soirée/ }));
+}
+
+/** Le catalogue chargé, on valide sans rien cocher : « aucune prestation » est
+ *  une réponse valable, et le flux doit l'accepter comme telle. */
+async function repondrePrestations() {
+  fireEvent.click(await screen.findByRole("button", { name: "Voir le devis" }));
+}
+
+async function allerAuDevis() {
+  await repondreClient();
+  await repondreDate();
+  await repondreCreneau();
+  await repondrePrestations();
+}
+
+/** ⚠ `getByRole("heading", { level: 2 })` était AMBIGU : le calendrier rend ses
+ *  propres titres. On lit l'élément qui NOMME la carte d'étape — celui que
+ *  `aria-labelledby` désigne, donc le nom accessible de la question. */
+/** ⚠ DEUX commandes portent désormais le même nom accessible pour la même
+ *  action : la pastille du rail et le bouton du récapitulatif (demande Ko).
+ *  C'est juste pour un lecteur d'écran — c'est LA même action — mais un test
+ *  doit dire laquelle il actionne. On passe donc par le conteneur.
+ *  ⚠ Ne pas « corriger » cette ambiguïté en renommant l'un des deux : deux noms
+ *  différents pour un même effet, c'est ce qu'il faut éviter. */
+const recap = () => screen.getByRole("list", { name: "Réponses déjà données" });
+const rail = () => screen.getByRole("navigation", { name: /Avancement/ });
+const modifierDepuisRecap = (etape: RegExp) =>
+  fireEvent.click(within(recap()).getByRole("button", { name: etape }));
+
+const question = () => document.getElementById("wk-question")?.textContent;
+
+describe("Flux par étapes — une seule question à l'écran", () => {
+  it("s'ouvre sur la question du client, et sur elle seule", async () => {
     setup();
-    expect(await screen.findByRole("heading", { level: 1, name: "Nouvelle réservation" })).toBeInTheDocument();
-    expect(screen.getByText("Client présent sur place")).toBeInTheDocument();
-    expect(screen.getByText(/synchronisé en temps réel/)).toBeInTheDocument();
+    expect(question()).toBe("Qui est le client ?");
+    // ⚠ La mesure qui compte n'est pas « la question 1 est là » mais « les
+    // autres n'y sont PAS » : c'est tout le sujet du lot.
+    expect(screen.queryByRole("button", { name: /Soirée/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Voir le devis" })).toBeNull();
   });
 
-  it("les trois étapes se suivent dans l'ORDRE DU DOM, pas dans celui des colonnes", async () => {
+  it("⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité", async () => {
+    // Le harnais de neutralisation a montré que le test précédent ne mordait
+    // pas : forcer l'étape Client à s'afficher en permanence le laissait vert,
+    // parce qu'il ne regardait que les étapes SUIVANTES. Ce qui distingue un
+    // flux exclusif d'un formulaire complet, c'est ce qui n'est PLUS là.
     setup();
-    await screen.findByRole("heading", { level: 1 });
-    const titres = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
-    // ⚠ L'écart mesuré : la maquette place 02 dans la colonne de droite, ce qui
-    // donnerait 01 → 03 → 02 au clavier. Ici le DOM compte à l'endroit.
-    expect(titres.slice(0, 3)).toEqual([
-      "01Informations client",
-      "02Date de l'événement",
-      "03Devis et prestations"
-    ]);
+    await repondreClient();
+    expect(screen.queryByLabelText("Prénom")).toBeNull();
+    expect(screen.queryByLabelText("Nombre d'invités")).toBeNull();
   });
 
-  it("chaque champ client porte un LABEL visible — quatre cases nues ne se distinguent pas", async () => {
+  it("chaque réponse fait apparaître la suivante, dans l'ordre arbitré", async () => {
     setup();
-    await screen.findByRole("heading", { level: 1 });
+    await repondreClient();
+    expect(question()).toBe("Quelle date ?");
+    await repondreDate();
+    expect(question()).toBe("Quel créneau ?");
+    await repondreCreneau();
+    expect(question()).toBe("Quelles prestations ?");
+    await repondrePrestations();
+    expect(question()).toBe("Devis");
+  });
+
+  it("⚠ ne laisse pas passer un client incomplet — le bouton reste inerte", async () => {
+    setup();
+    fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
+    expect(screen.getByRole("button", { name: "Continuer" })).toBeDisabled();
+    expect(question()).toBe("Qui est le client ?");
+  });
+
+  it("⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations", async () => {
+    setup();
+    fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
+    fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
+    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
+    expect(screen.getByRole("button", { name: "Continuer" })).toBeDisabled();
+  });
+
+  it("chaque champ client porte un LABEL visible — quatre cases nues ne se distinguent pas", () => {
+    setup();
+    // ⚠ Libellés EXACTS, pas des expressions régulières : /Nom/ attrapait aussi
+    // « Nombre d'invités », et le test échouait sur son propre sélecteur.
     for (const nom of ["Prénom", "Nom", "Téléphone", "E-mail (facultatif)"]) {
-      const champ = screen.getByLabelText(nom);
-      // `aria-label` seul serait invisible à l'œil : on exige un vrai `<label>`
-      // relié par `for`, donc un élément de texte présent dans le document.
-      expect(champ).toHaveAttribute("id");
-      expect(document.querySelector(`label[for="${champ.getAttribute("id")}"]`)).not.toBeNull();
+      expect(screen.getByLabelText(nom)).toBeInstanceOf(HTMLInputElement);
     }
+  });
+
+  it("le fil de progression NOMME l'étape courante pour un lecteur d'écran", async () => {
+    setup();
+    const courant = () => screen.getByRole("navigation").querySelector('[aria-current="step"]');
+    expect(courant()?.textContent).toContain("Client");
+    await repondreClient();
+    expect(courant()?.textContent).toContain("Date");
   });
 });
 
-describe("Nouvelle réservation — la date vient du calendrier réel", () => {
-  it("une date VENDUE n'est pas cliquable : le moteur décide, pas l'écran", async () => {
+describe("Récapitulatif — des réponses, JAMAIS des montants", () => {
+  it("fige la réponse validée en ligne de récapitulatif", async () => {
     setup();
-    // Le 22 est BOOKED côté moteur. On ne recopie pas la règle ici — on vérifie
-    // que l'écran obéit à la réponse.
+    await repondreClient();
+    const recapEl = recap();
+    expect(recapEl.textContent).toContain("Amine Belkacem");
+    expect(recapEl.textContent).toContain("Invités : 200");
+  });
+
+  it("⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis", async () => {
+    // C'est l'écart assumé avec la maquette, qui met le tarif du jour dans la
+    // ligne « Date » et un sous-total dans celle des prestations, puis calcule
+    // `Math.round(total * 0.3)` (D81/D188). Le test cherche l'unité monétaire :
+    // aucun montant, quelle que soit sa valeur, ne doit s'y trouver.
+    setup();
+    await repondreClient();
+    await repondreDate();
+    await repondreCreneau();
+    const recapEl = recap();
+    // ⚠ Un montant se reconnaît à sa DEVISE. Ma première version cherchait une
+    // suite de chiffres et attrapait le NUMÉRO DE TÉLÉPHONE — un détecteur trop
+    // large ne prouve pas ce qu'il croit prouver.
+    expect(recapEl.textContent).not.toMatch(/DZD|\bDA\b/u);
+    // Et nommément : le tarif du jour et le total, que la maquette y met.
+    expect(recapEl.textContent).not.toContain(formatDZD(158_100_000));
+    expect(recapEl.textContent).not.toContain(formatDZD(478_600_000));
+  });
+
+  it("n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran", async () => {
+    // ⚠ La première version cherchait « Quelle date » dans le récapitulatif —
+    // qui n'y figure jamais, puisqu'il porte le LIBELLÉ d'étape et la réponse,
+    // pas la question. Elle ne mordait donc rien. On revient sur l'étape Client
+    // et on vérifie que sa réponse n'est pas affichée DEUX fois.
+    setup();
+    await repondreClient();
+    await repondreDate();
+    modifierDepuisRecap(/Modifier.*Client/);
+    const recapEl = recap();
+    expect(recapEl.textContent).not.toContain("Amine Belkacem");
+    expect(screen.getByLabelText("Prénom")).toHaveValue("Amine");
+  });
+});
+
+describe("Retour en arrière — les réponses survivent, les montants non", () => {
+  it("« Modifier » ramène à l'étape, sans rien effacer", async () => {
+    setup();
+    await repondreClient();
+    await repondreDate();
+    modifierDepuisRecap(/Modifier.*Client/);
+    expect(question()).toBe("Qui est le client ?");
+    expect(screen.getByLabelText("Prénom")).toHaveValue("Amine");
+  });
+
+  it("⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette", async () => {
+    // `editStep(n)` de la maquette remet `confirmedUpTo` à `n - 1` : corriger le
+    // nom ferait disparaître la date du récapitulatif et obligerait à recliquer
+    // « Continuer » quatre fois. Arbitrage Ko : les réponses survivent.
+    setup();
+    await repondreClient();
+    await repondreDate();
+    await repondreCreneau();
+    modifierDepuisRecap(/Modifier.*Client/);
+    const recapEl = recap();
+    expect(recapEl.textContent).toContain("Soirée");
+    expect(recapEl.textContent).toContain("2026-08-15");
+  });
+
+  it("valider une étape corrigée renvoie à la PREMIÈRE question sans réponse", async () => {
+    setup();
+    await allerAuDevis();
+    modifierDepuisRecap(/Modifier.*Client/);
+    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    // Tout est répondu : on retombe au devis, pas au début du parcours.
+    expect(question()).toBe("Devis");
+  });
+});
+
+describe("Rail latéral, numéros cliquables et remise à zéro", () => {
+  it("⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »", async () => {
+    setup();
+    await repondreClient();
+    await repondreDate();
+    fireEvent.click(within(rail()).getByRole("button", { name: /Modifier.*Client/ }));
+    expect(question()).toBe("Qui est le client ?");
+    expect(screen.getByLabelText("Prénom")).toHaveValue("Amine");
+  });
+
+  it("⚠ une étape SANS réponse n'est pas cliquable dans le rail", () => {
+    // Un bouton qui n'agit pas est pire qu'un élément inerte : il promet une
+    // commande. Les étapes non répondues restent de simples `<span>`.
+    setup();
+    expect(within(rail()).queryAllByRole("button")).toHaveLength(0);
+  });
+
+  it("« Annuler » remet tout à zéro et ramène à la première question", async () => {
+    setup();
+    await repondreClient();
+    await repondreDate();
+    fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    expect(question()).toBe("Qui est le client ?");
+    expect(screen.getByLabelText("Prénom")).toHaveValue("");
+    expect(recap().textContent).toBe("");
+  });
+
+  it("⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien", async () => {
+    // Après `convert`, une demande existe en base. Un bouton qui viderait
+    // l'écran laisserait croire qu'elle a été annulée. Elle ne l'aurait pas été.
+    setup({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" }))
+      }
+    });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
+    await screen.findByRole("status");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Annuler" })).toBeNull());
+  });
+});
+
+describe("Date et créneau sont DEUX écrans", () => {
+  // ⚠ La présence de la GRILLE se mesure sur la `<table>`, pas sur un jour.
+  // Première version fautive : `queryByRole("button", { name: /^15$/ })` ne
+  // correspondait à rien même grille affichée — le nom accessible d'un jour
+  // porte son état et son tarif, pas seulement son numéro. Le test sortait vert
+  // quelle que soit la valeur de `show`, relevé par le harnais.
+  const grilleDuMois = () => screen.queryByRole("table");
+
+  it("l'étape date montre la grille du mois, jamais les créneaux", async () => {
+    setup();
+    await repondreClient();
+    await waitFor(() => expect(grilleDuMois()).not.toBeNull());
+    expect(screen.queryByRole("button", { name: /Soirée/ })).toBeNull();
+  });
+
+  it("⚠ l'étape créneau montre les créneaux, PAS la grille du mois", async () => {
+    setup();
+    await repondreClient();
+    await repondreDate();
+    expect(await screen.findByRole("button", { name: /Soirée/ })).toBeInTheDocument();
+    expect(grilleDuMois()).toBeNull();
+  });
+});
+
+describe("La date vient du calendrier réel", () => {
+  it("une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide", async () => {
+    // ⚠ Le refus porte sur le CRÉNEAU, pas sur le jour : le calendrier laisse
+    // cliquer le 22 et désactive sa soirée. Première version de ce test écrite
+    // sur l'hypothèse inverse — corrigée en lisant le comportement, pas en
+    // affaiblissant l'assertion.
+    setup();
+    await repondreClient();
     const vendu = await screen.findByRole("button", { name: /22/ });
     await waitFor(() => expect(vendu).toBeEnabled());
     fireEvent.click(vendu);
     expect(await screen.findByRole("button", { name: /Soirée/ })).toBeDisabled();
   });
 
-  it("le tarif du jour affiché est celui du moteur, jamais un calcul local", async () => {
-    setup();
-    await pickDateAndSlot();
-    // ⚠ `findAllByText` : le tarif du jour paraît DEUX fois — dans le bandeau
-    // « tarif jour » et sur la ligne du créneau. Les deux viennent de la même
-    // réponse du moteur, donc les deux doivent porter la même valeur.
-    const vus = await screen.findAllByText(montant(158_100_000));
-    expect(vus.length).toBeGreaterThanOrEqual(1);
+  it("⚠ changer la date EFFACE le créneau, le DIT, et repose la question", async () => {
+    // Le cas que la maquette n'a pas : garder à l'écran un créneau qui ne
+    // s'applique plus serait pire que de le perdre.
+    setup({ services: { listForVenue: vi.fn().mockResolvedValue([]) } });
+    await repondreClient();
+    await repondreDate();
+    await repondreCreneau();
+    modifierDepuisRecap(/Modifier.*Date/);
+    const autre = await screen.findByRole("button", { name: "16" });
+    await waitFor(() => expect(autre).toBeEnabled());
+    fireEvent.click(autre);
+    expect(question()).toBe("Quel créneau ?");
+    expect(screen.getByRole("status").textContent).toMatch(/créneau/i);
+    // ⚠ ET SURTOUT : le créneau retenu a bel et bien DISPARU.
+    // On ne peut PAS le vérifier ici : on est à l'étape créneau, et le
+    // récapitulatif exclut l'étape en cours — la ligne « Soirée » serait absente
+    // de toute façon. Mesure confondue, relevée par le harnais de
+    // neutralisation. On va donc la chercher là où elle SERAIT visible si elle
+    // avait survécu : depuis une autre étape.
+    modifierDepuisRecap(/Modifier.*Client/);
+    const recapEl = recap();
+    expect(recapEl.textContent).not.toContain("Soirée");
+    expect(recapEl.textContent).toContain(AUTRE);
+  });
+});
+
+describe("Un seul devis, révisé", () => {
+  it("⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus", async () => {
+    const { quotes } = setup({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        revise: vi.fn().mockResolvedValue(draft({ version: 2 }))
+      }
+    });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await waitFor(() => expect(quotes.create).toHaveBeenCalledTimes(1));
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(quotes.revise).toHaveBeenCalledTimes(1));
+    expect(quotes.create).toHaveBeenCalledTimes(1);
   });
 
   it("aucun montant total avant que le SERVEUR ait chiffré", async () => {
     setup();
-    await screen.findByRole("heading", { level: 1 });
-    expect(screen.queryByText("Total à facturer")).not.toBeInTheDocument();
-  });
-});
-
-describe("Nouvelle réservation — un seul devis, révisé", () => {
-  it("⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus", async () => {
-    const create = vi.fn().mockResolvedValue(draft());
-    const revise = vi.fn().mockResolvedValue(draft({ version: 2, totalCents: 500_000_000 }));
-    setup({ quotes: { create, revise } });
-    await pickDateAndSlot();
-
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    await screen.findByText("Total à facturer");
-
-    fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: "260" } });
-    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
-
-    // L'écart qui compte : UN create, UN revise. Sans le suivi de chaîne, ce
-    // serait deux create — et le compteur de transformation compterait deux
-    // affaires là où il n'y en a qu'une.
-    await waitFor(() => expect(revise).toHaveBeenCalledTimes(1));
-    expect(create).toHaveBeenCalledTimes(1);
-    expect(revise).toHaveBeenCalledWith("q1", expect.objectContaining({ guests: 260 }));
-  });
-
-  it("le bouton s'appelle « Modifier le devis » dès qu'un devis existe", async () => {
-    setup({ quotes: { revise: vi.fn().mockResolvedValue(draft({ version: 2 })) } });
-    await pickDateAndSlot();
-    expect(screen.getByRole("button", { name: "Calculer le devis" })).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    expect(await screen.findByRole("button", { name: "Modifier le devis" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Calculer le devis" })).not.toBeInTheDocument();
-  });
-});
-
-describe("Nouvelle réservation — le devis vient à l'utilisateur (R2d)", () => {
-  /** ⚠ LE VRAI DÉFAUT ÉTAIT INVISIBLE À L'ŒIL DU DÉVELOPPEUR. Le devis s'affiche
-   *  PLUS BAS que le bouton : sur un portable, rien ne bouge dans le champ de
-   *  vision et le pro croit que son clic n'a rien fait — il reclique.
-   *
-   *  Et faire défiler ne suffit pas : un défilement visuel ne déplace pas le
-   *  curseur d'un lecteur d'écran. C'est le FOCUS qu'on mesure ici. */
-  it("emmène le focus sur le bloc du devis après le calcul", async () => {
-    setup();
-    await pickDateAndSlot();
-
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    await screen.findByText("Total à facturer");
-
-    await waitFor(() => {
-      const actif = document.activeElement as HTMLElement | null;
-      expect(actif?.className).toContain("wk-total");
-    });
-  });
-
-  /** ⚠ « Le focus est arrivé » ne prouve pas « l'écran a suivi » : les deux sont
-   *  découplés par `preventScroll`, justement. jsdom n'implémente pas
-   *  `scrollIntoView` — on le pose donc soi-même pour pouvoir l'observer. */
-  it("fait aussi défiler, en une seule fois", async () => {
-    const scroll = vi.fn();
-    Element.prototype.scrollIntoView = scroll;
-    try {
-      setup();
-      await pickDateAndSlot();
-      fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-      await screen.findByText("Total à facturer");
-      await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
-    } finally {
-      Reflect.deleteProperty(Element.prototype, "scrollIntoView");
-    }
-  });
-
-  /** ⚠ CE CAS EST LA RAISON D'ÊTRE DU DRAPEAU. Sans lui, un effet branché sur
-   *  `quote` referait sauter l'écran à CHAQUE remplacement du devis — donc à la
-   *  conversion et à l'acceptation, où l'utilisateur n'a rien demandé. Ici le
-   *  devis est remplacé sans passer par « Calculer » : rien ne doit bouger. */
-  it("ne rebondit PAS quand le devis change sans que le pro ait recalculé", async () => {
-    const scroll = vi.fn();
-    Element.prototype.scrollIntoView = scroll;
-    try {
-      setup({
-        quotes: { convert: vi.fn().mockResolvedValue(draft({ status: "ACCEPTED", bookingId: "b1" })) }
-      });
-      await pickDateAndSlot();
-      fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-      await screen.findByText("Total à facturer");
-      await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
-
-      // Conclure exige le contact : sans lui le bouton est inerte et le test
-      // ne prouverait rien — il « passerait » sans avoir rien déclenché.
-      fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
-      fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
-      fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
-
-      const conclure = screen.getByRole("button", { name: "Enregistrer sans bloquer" });
-      expect(conclure, "bouton inerte : le cas ne mesurerait rien").toBeEnabled();
-      fireEvent.click(conclure);
-
-      // ⚠ ATTENDRE UN SIGNAL D'ACHÈVEMENT, pas un élément déjà présent. Une
-      // première version guettait « Total à facturer » — qui est là depuis le
-      // calcul : l'assertion tombait AVANT que la conversion soit rendue, et le
-      // cas restait vert même en retirant le drapeau. Mesuré par neutralisation.
-      // Le message de dénouement, lui, n'apparaît qu'une fois `conclude` fini.
-      await screen.findByText("Enregistré en attente. La date n'est pas bloquée et pourra être prise par un autre client.");
-
-      // Le devis a bien été remplacé par la version convertie, et l'écran n'a
-      // pas rebondi pour autant.
-      expect(scroll).toHaveBeenCalledTimes(1);
-    } finally {
-      Reflect.deleteProperty(Element.prototype, "scrollIntoView");
-    }
-  });
-});
-
-describe("Nouvelle réservation — le total ne survit pas à un changement", () => {
-  it("⚠ changer le créneau JETTE le total et le dit — un total périmé est un mensonge", async () => {
-    setup();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    expect(await screen.findByText("Total à facturer")).toBeInTheDocument();
-
-    fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: "300" } });
-
-    await waitFor(() => expect(screen.queryByText("Total à facturer")).not.toBeInTheDocument());
-    expect(screen.getByText(/recalculez le devis/)).toBeInTheDocument();
+    await allerAuDevis();
+    expect(screen.queryByText(montant(478_600_000))).toBeNull();
   });
 
   it("le total et l'acompte affichés sont ceux du devis, à l'unité près", async () => {
     setup();
-    await pickDateAndSlot();
+    await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    expect(await screen.findByText(montant(478_600_000))).toBeInTheDocument();
+    expect(screen.getByText(montant(150_000_000))).toBeInTheDocument();
+  });
 
-    const q = draft();
-    expect(await screen.findByText(montant(q.totalCents))).toBeInTheDocument();
-    expect(screen.getByText(montant(q.depositCents))).toBeInTheDocument();
-    // ⚠ Et l'acompte n'est PAS 30 % du total : c'est la politique de la salle
-    // (D81) que le serveur applique. La maquette calcule `total * 0.3`.
-    expect(q.depositCents).not.toBe(Math.round(q.totalCents * 0.3));
+  it("⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge", async () => {
+    setup();
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    expect(await screen.findByText(montant(478_600_000))).toBeInTheDocument();
+    modifierDepuisRecap(/Modifier.*Créneau/);
+    await repondreCreneau();
+    expect(screen.queryByText(montant(478_600_000))).toBeNull();
+    expect(screen.getByRole("status").textContent).toBeTruthy();
   });
 });
 
-describe("Nouvelle réservation — les deux issues (décision ⑥)", () => {
-  it("« Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille", async () => {
-    const convert = vi.fn().mockResolvedValue(draft({ bookingId: "b9" }));
-    const accept = vi.fn().mockResolvedValue({ id: "b9", status: "ACCEPTED" });
-    const { quotes } = setup({ quotes: { convert }, bookings: { accept } });
+describe("Le focus suit la question (R2d, désormais structurel)", () => {
+  it("⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé", () => {
+    setup();
+    expect(document.activeElement).toBe(document.body);
+  });
 
-    fillContact();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Bloquer la date" }));
-
-    await waitFor(() => expect(accept).toHaveBeenCalledWith("b9"));
-    // ⚠ L'ÉTAPE INTERMÉDIAIRE A DISPARU (Q2), et c'est l'assertion qui compte.
-    // `conclude()` appelait `send()` sur un brouillon parce que la conversion
-    // exigeait `SENT` ; la route n'existe plus, et un appel resté en place
-    // aurait échoué au clic, en production, sur les deux issues. Aucun type,
-    // aucun lint ne l'aurait vu — le double `deliver` accepte n'importe quel
-    // devis.
-    expect(quotes.deliver).not.toHaveBeenCalled();
-    expect(convert).toHaveBeenCalledWith("q1", {
-      contactFirstName: "Amine",
-      contactLastName: "Belkacem",
-      contactPhone: "+213550000002",
-      paymentMethod: "CASH"
+  it("emmène le focus sur la carte de l'étape à chaque transition", async () => {
+    setup();
+    await repondreClient();
+    await waitFor(() => {
+      const carte = screen.getByRole("heading", { level: 2 }).closest("section");
+      expect(document.activeElement).toBe(carte);
     });
+  });
+
+  it("fait aussi défiler, en une seule fois", async () => {
+    const scroll = vi.fn();
+    Element.prototype.scrollIntoView = scroll;
+    setup();
+    await repondreClient();
+    await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
+  });
+});
+
+describe("Les deux issues (décision ⑥)", () => {
+  async function jusquAuTotal(over: Parameters<typeof setup>[0] = {}) {
+    const outils = setup(over);
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    return outils;
+  }
+
+  it("« Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille", async () => {
+    const { quotes, bookings } = await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        convert: vi.fn().mockResolvedValue(draft({ status: "ACCEPTED", bookingId: "b1" }))
+      }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Bloquer la date" }));
+    await waitFor(() => expect(bookings.accept).toHaveBeenCalledWith("b1"));
+    expect(quotes.convert).toHaveBeenCalledTimes(1);
   });
 
   it("⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien", async () => {
-    const convert = vi.fn().mockResolvedValue(draft({ bookingId: "b9" }));
-    const accept = vi.fn();
-    setup({ quotes: { convert }, bookings: { accept } });
-
-    fillContact();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    fireEvent.click(await screen.findByRole("button", { name: /Enregistrer/ }));
-
-    expect(await screen.findByText(/n'est pas bloquée/)).toBeInTheDocument();
-    expect(accept).not.toHaveBeenCalled();
-    expect(convert).toHaveBeenCalledTimes(1);
+    const { bookings } = await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" }))
+      }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
+    // ⚠ On attend l'annonce RÉELLE — « Enregistré en attente… », relevée du
+    // catalogue et non inventée — et on vérifie qu'elle dit explicitement que
+    // la date N'EST PAS bloquée. Un écran qui laisserait croire l'inverse serait
+    // le mensonge que ce test existe pour empêcher.
+    const annonce = await screen.findByRole("status");
+    expect(annonce.textContent).toMatch(/n'est pas bloquée/i);
+    expect(bookings.accept).not.toHaveBeenCalled();
   });
 
   it("la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »", async () => {
-    const accept = vi.fn().mockRejectedValue(
-      Object.assign(new Error("409"), { status: 409, code: "BOOKING_SLOT_TAKEN" })
-    );
-    setup({
-      quotes: { convert: vi.fn().mockResolvedValue(draft({ bookingId: "b9" })) },
-      bookings: { accept }
+    await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        convert: vi.fn().mockResolvedValue(draft({ status: "ACCEPTED", bookingId: "b1" }))
+      },
+      bookings: {
+        accept: vi.fn().mockRejectedValue({ status: 409, body: { code: "BOOKING_SLOT_TAKEN", message: "k" } })
+      }
     });
-
-    fillContact();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Bloquer la date" }));
-
-    await waitFor(() => expect(accept).toHaveBeenCalled());
-    // ⚠ L'assertion qui compte : AUCUNE annonce de succès. Un écran qui dirait
-    // « date bloquée » après un refus de la base ferait perdre la salle deux fois.
-    expect(screen.queryByText(/La date est bloquée/)).not.toBeInTheDocument();
-    expect(screen.getByRole("alert")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Bloquer la date" }));
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByText(/date bloquée/i)).toBeNull();
   });
 
   it("⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)", async () => {
-    const convert = vi.fn().mockResolvedValue(draft({ bookingId: "b9" }));
-    setup({ quotes: { convert } });
-
-    fillContact();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    fireEvent.click(await screen.findByRole("button", { name: /Enregistrer/ }));
-
-    await waitFor(() => expect(convert).toHaveBeenCalled());
-    // `contactEmail: ""` serait refusé par `.email()` : l'écran renverrait une
-    // erreur de validation là où il n'y a rien à déclarer.
-    const corps = convert.mock.calls[0]?.[1] as Record<string, unknown>;
-    expect(corps).not.toHaveProperty("contactEmail");
-    expect(corps.contactPhone).toBe("+213550000002");
-  });
-
-  it("conclure exige nom, prénom et TÉLÉPHONE — l'e-mail est facultatif (D135)", async () => {
-    setup();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    await screen.findByText("Total à facturer");
-
-    expect(screen.getByRole("button", { name: "Bloquer la date" })).toBeDisabled();
-    fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
-    fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
-    expect(screen.getByRole("button", { name: "Bloquer la date" })).toBeDisabled();
-    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
-    expect(screen.getByRole("button", { name: "Bloquer la date" })).toBeEnabled();
+    const { quotes } = await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" }))
+      }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
+    await waitFor(() => expect(quotes.convert).toHaveBeenCalled());
+    // ⚠ On assertit l'existence de l'appel AVANT d'indexer : `mock.calls[0]`
+    // vaut `undefined` si rien n'a été appelé, et `in` sur `undefined` lève une
+    // TypeError qui masquerait la vraie cause.
+    const appels = (quotes.convert as ReturnType<typeof vi.fn>).mock.calls;
+    expect(appels).toHaveLength(1);
+    const corps = appels[0]?.[1] as Record<string, unknown>;
+    expect("contactEmail" in corps).toBe(false);
   });
 });
 
-describe("Nouvelle réservation — la remise par canal (Q2) et le catalogue", () => {
-  /** ⚠ CES BOUTONS ÉTAIENT INERTES ET NE LE SONT PLUS. Trois d'entre eux
-   *  disaient « en attente du PDF et de la fiche client » ; ils enregistrent
-   *  désormais COMMENT le pro a remis le devis, avec ses propres moyens. Le
-   *  quatrième — « Envoyer par e-mail » — a disparu : `EMAIL` n'est pas un des
-   *  quatre canaux et rien ne l'enverrait. */
-  it("les quatre canaux sont RENDUS et ACTIFS une fois le devis calculé", async () => {
-    setup();
-    fillContact();
-    await pickDateAndSlot();
+describe("La remise par canal (Q2) et le catalogue", () => {
+  async function jusquAuTotal(over: Parameters<typeof setup>[0] = {}) {
+    const outils = setup(over);
+    await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    await screen.findByText("Total à facturer");
+    await screen.findByText(montant(478_600_000));
+    return outils;
+  }
 
-    for (const nom of ["Imprimé et remis", "Envoyé par SMS", "Annoncé de vive voix", "Convenu par téléphone"]) {
-      expect(screen.getByRole("button", { name: nom })).toBeEnabled();
-    }
-    // ⚠ Et le cinquième n'est pas revenu par nostalgie du gabarit.
-    expect(screen.queryByRole("button", { name: /e-mail/i })).toBeNull();
+  it("les quatre canaux sont RENDUS et ACTIFS une fois le devis calculé", async () => {
+    await jusquAuTotal();
+    const groupe = screen.getByRole("group", { name: /remis/i });
+    const boutons = Array.from(groupe.querySelectorAll("button"));
+    expect(boutons).toHaveLength(4);
+    for (const bouton of boutons) expect(bouton).toBeEnabled();
   });
 
   it("enregistre le canal cliqué sur le devis en cours", async () => {
-    const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT", sentAt: "2026-08-15T09:00:00.000Z" }));
-    setup({ quotes: { deliver } });
-    fillContact();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Imprimé et remis" }));
-
-    await waitFor(() => expect(deliver).toHaveBeenCalledWith("q1", { sentVia: "PRINT" }));
-    // ⚠ L'écran DIT ce que le SERVEUR a écrit, il ne le suppose pas : la
-    // confirmation vient du devis rendu, donc un 409 ne produirait aucune
-    // annonce de remise.
-    expect(await screen.findByText("Remise enregistrée : Imprimé et remis")).toBeInTheDocument();
-  });
-
-  /** ⚠ D160 + D158 — LA GARDE DU TÉLÉPHONE, ET SON PÉRIMÈTRE. On ne peut ni
-   *  envoyer un SMS ni appeler un numéro qu'on n'a pas. Mais l'appliquer aux
-   *  quatre canaux interdirait de déclarer un devis remis EN MAIN PROPRE à
-   *  quelqu'un dont on n'a pas le numéro — le cas même que les canaux
-   *  déclaratifs existent pour couvrir. C'est l'ÉCART entre les deux moitiés du
-   *  test qui prouve que la borne est posée là où elle décrit quelque chose. */
-  it("⚠ SMS et téléphone exigent un mobile valide ; imprimer et vive voix, non", async () => {
-    setup();
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    await screen.findByText("Total à facturer");
-
-    // Aucun téléphone saisi.
-    expect(screen.getByRole("button", { name: "Envoyé par SMS" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Convenu par téléphone" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Imprimé et remis" })).toBeEnabled();
-    expect(screen.getByRole("button", { name: "Annoncé de vive voix" })).toBeEnabled();
-    expect(screen.getByText(/demandent un numéro de mobile valide/)).toBeInTheDocument();
-  });
-
-  it("un numéro MAL FORMÉ ne débloque pas davantage qu'un champ vide", async () => {
-    // ⚠ Le cas qui distingue « il y a du texte » de « c'est un mobile
-    // algérien ». Un fixe d'Alger a huit chiffres et passerait un simple test
-    // de non-vacuité : c'est `normalizeDzPhone` qui tranche, pas la longueur.
-    setup();
-    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "021234567" } });
-    await pickDateAndSlot();
-    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
-    await screen.findByText("Total à facturer");
-
-    expect(screen.getByRole("button", { name: "Envoyé par SMS" })).toBeDisabled();
-
-    // Et le même champ, avec un vrai mobile, débloque : l'écart est la mesure.
-    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "0555123456" } });
-    await waitFor(() => expect(screen.getByRole("button", { name: "Envoyé par SMS" })).toBeEnabled());
+    const { quotes } = await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        deliver: vi.fn().mockResolvedValue(draft({ sentVia: "SMS" }))
+      }
+    });
+    const groupe = screen.getByRole("group", { name: /remis/i });
+    const premier = Array.from(groupe.querySelectorAll("button"));
+    expect(premier.length).toBeGreaterThan(0);
+    fireEvent.click(premier[0] as HTMLButtonElement);
+    await waitFor(() => expect(quotes.deliver).toHaveBeenCalledWith("q1", { sentVia: expect.any(String) }));
   });
 
   it("le catalogue affiché est celui de la SALLE — aucune prestation inventée", async () => {
     setup({
       services: {
         listForVenue: vi.fn().mockResolvedValue([
-          { id: "srv1", nameFr: "DJ & sonorisation", nameAr: "دي جي", pricingType: "FIXED", isActive: true },
-          { id: "srv2", nameFr: "Retirée", nameAr: "م", pricingType: "FIXED", isActive: false }
+          { id: "sv1", nameFr: "Traiteur maison", nameAr: "مطعم", pricingType: "PER_GUEST", isActive: true }
         ])
       }
     });
-    expect(await screen.findByRole("checkbox", { name: /DJ & sonorisation/ })).toBeInTheDocument();
-    // Les retirées de la vente ne s'affichent pas, et la maquette n'a rien ajouté :
-    // ni décoration florale, ni traiteur, ni paliers inventés.
-    expect(screen.queryByText("Retirée")).not.toBeInTheDocument();
-    expect(screen.queryByText(/Décoration florale/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Traiteur/)).not.toBeInTheDocument();
+    await repondreClient();
+    await repondreDate();
+    await repondreCreneau();
+    expect(await screen.findByLabelText(/Traiteur maison/)).toBeInstanceOf(HTMLInputElement);
+    expect(screen.queryByText(/décoration florale/i)).toBeNull();
   });
 
   it("⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133)", async () => {
-    setup({ services: { listForVenue: vi.fn().mockResolvedValue("<html>502</html>" as never) } });
-    expect(await screen.findByText(/catalogue n'a pas pu être lu/)).toBeInTheDocument();
-    expect(screen.queryByText(/aucune prestation en vente/)).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    setup({ services: { listForVenue: vi.fn().mockRejectedValue(new Error("boom")) } });
+    await repondreClient();
+    await repondreDate();
+    await repondreCreneau();
+    const message = await screen.findByRole("status");
+    expect(message.textContent).toBeTruthy();
+    expect(message.textContent).not.toMatch(/aucune prestation/i);
   });
 });

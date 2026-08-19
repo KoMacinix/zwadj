@@ -36,11 +36,14 @@
 //    pas. Il EST maintenant la vue carte.
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { formatDZD, formatRating } from "@zwadj/i18n";
+import { formatDZD } from "@zwadj/i18n";
 import { CEREMONY_TYPE_FILTERS, type AmenityDTO, type VenueListResponse, type VenueStyleDTO, type WilayaDTO } from "@zwadj/types";
-import { AmenityIcon, GridViewIcon, HeartIcon, MapViewIcon, StarIcon } from "@zwadj/ui";
+import { AmenityIcon, GridViewIcon, MapViewIcon } from "@zwadj/ui";
 import { Link } from "../../i18n/navigation";
-import { mediaSrc } from "../../lib/media-url";
+// ⚠ La carte a QUITTÉ ce fichier pour `components/venue-card.tsx` : l'accueil
+// rend les mêmes salles, et deux copies auraient divergé à la première
+// correction. Le rendu est inchangé — ses tests n'ont pas bougé.
+import { VenueCard } from "../venue-card";
 // ⚠ `import type` et NON un import de valeur : le type est effacé à la
 // compilation, la DONNÉE ne l'est pas. Importer `PREVIEW_VENUES` ici la
 // ferait entrer dans le bundle NAVIGATEUR — le `tree-shaking` ne peut pas la
@@ -267,94 +270,6 @@ export function SearchView({ state, results, wilayas, amenities, styles, preview
  *
  *  ⚠ Le cœur n'est PAS dans le lien : imbriquer un bouton dans une ancre est
  *  invalide et casse le clavier. Il est frère du lien, calé en absolu. */
-function VenueCard({ venue, ar }: { venue: VenueCardData; ar: boolean }) {
-  const t = useTranslations("search");
-  const name = ar ? venue.nameAr : venue.nameFr;
-  const tagline = ar ? venue.taglineAr : venue.taglineFr;
-  const district = ar ? venue.districtAr : venue.districtFr;
-  const lang = ar ? "ar" : "fr";
-  const rating = venue.ratingAvg;
-  const reviews = venue.reviewCount;
-
-  return (
-    <li className="venue-card">
-      {/* La destination du détail est A8 : le lien pointe la route par SLUG
-          (décision Flux A). */}
-      <Link href={`/salles/${venue.slug}`} className="venue-card-link">
-        <div className="venue-card-media">
-          {venue.coverThumbUrl ? (
-            // `<img>` nu, PAS `next/image` : la vignette est déjà générée à la
-            // bonne taille par le pipeline du Lot A4. La repasser dans
-            // l'optimiseur ajouterait une configuration `remotePatterns`, un
-            // proxy en dev et un deuxième ré-encodage, pour zéro gain.
-            <img src={mediaSrc(venue.coverThumbUrl)} alt="" loading="lazy" width={480} height={360} />
-          ) : (
-            <div className="venue-card-nophoto">{t("card.noPhoto")}</div>
-          )}
-
-          {venue.badge ? <span className="venue-card-badge">{t(`badge.${venue.badge}`)}</span> : null}
-
-          {/* Points DÉCORATIFS : ils disent « cette salle a plusieurs photos »,
-              ils ne les font pas défiler — le DTO de liste ne porte que la
-              couverture. Un point cliquable qui ne change rien serait pire. */}
-          {venue.photoCount > 1 ? (
-            <span className="venue-card-dots" aria-hidden="true">
-              {Array.from({ length: Math.min(venue.photoCount, 4) }, (_, i) => (
-                <span key={i} className={i === 0 ? "venue-card-dot is-first" : "venue-card-dot"} />
-              ))}
-            </span>
-          ) : null}
-        </div>
-
-        <div className="venue-card-body">
-          <div className="venue-card-head">
-            <h2 className="venue-card-name">{name}</h2>
-            {rating !== undefined && reviews !== undefined ? (
-              <span className="venue-card-rating">
-                <StarIcon />
-                <span>{formatRating(rating, lang)}</span>
-                <span className="venue-card-reviews">({reviews})</span>
-                {/* L'étoile est décorative : sans ce doublon, un lecteur
-                    d'écran annonce « 4,92 (142) » sans dire de quoi il parle. */}
-                <span className="sr-only">
-                  {t("card.rating", { rating: formatRating(rating, lang), count: reviews })}
-                </span>
-              </span>
-            ) : null}
-          </div>
-
-          {tagline ? <p className="venue-card-tagline">{tagline}</p> : null}
-
-          <div className="venue-card-foot">
-            <span className="venue-card-meta">
-              {t("card.capacity", { max: venue.capacityMax })}
-              {district ? ` · ${district}` : ""}
-            </span>
-            <span className="venue-card-price">
-              <span className="venue-card-from">{t("card.from")}</span>
-              {formatDZD(venue.basePriceCents, lang)}
-            </span>
-          </div>
-        </div>
-      </Link>
-
-      {/* Favoris : rubrique annoncée, pas construite — même doctrine que la
-          navigation (UI-N1). `disabled` la sort de l'ordre de tabulation, le
-          titre dit pourquoi. Un cœur qui accepte le clic sans rien enregistrer
-          ferait croire à une salle sauvegardée. */}
-      <button
-        type="button"
-        className="venue-card-fav"
-        disabled
-        aria-label={t("card.favourite")}
-        title={t("card.favourite")}
-      >
-        <HeartIcon />
-      </button>
-    </li>
-  );
-}
-
 function SearchFilters({
   state,
   wilayas,

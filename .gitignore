@@ -15,6 +15,13 @@ apps/api/var/
 # Archives de livraison (git archive) — jamais versionnées
 *.zip
 
+# ⚠ Corps de requête jetables tapés à la racine pour un `curl -d @fichier`.
+# `checkout-body.json` a voyagé jusque dans un zip de livraison : rien ne le
+# couvrait, donc il était versionnable. La vraie capture vit désormais dans
+# `apps/api/src/payments/__fixtures__/`, à côté de la réponse qu'elle a produite.
+/*-body.json
+/body.json
+
 # Sorties de Playwright : rapport HTML, captures et traces d'échec. Elles
 # n'étaient couvertes nulle part — donc versionnables, et surtout LINTÉES :
 # `eslint .` y trouvait 2 934 erreurs sur du JavaScript minifié.

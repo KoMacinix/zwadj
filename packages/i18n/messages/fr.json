@@ -361,10 +361,91 @@
       "toFrench": "Afficher cette page en français"
     }
   },
+  "footer": {
+    "navLabel": "Liens légaux",
+    "terms": "Conditions générales",
+    "privacy": "Confidentialité",
+    "copyright": "© {year} Zwadj"
+  },
   "home": {
-    "title": "Zwadj",
-    "tagline": "Trouvez et réservez votre salle de mariage en Algérie.",
-    "apiStatus": "État de l'API : {status}"
+    "affordable": {
+      "eyebrow": "Budget",
+      "title": "Les plus accessibles",
+      "note": "Classées par prix de base croissant, tel que le moteur le calcule."
+    },
+    "districts": {
+      "eyebrow": "Alger",
+      "title": "Les quartiers représentés",
+      "note": "Relevés sur les salles publiées. La recherche par quartier n'existe pas encore.",
+      "empty": "Aucun quartier à afficher : le catalogue est vide."
+    },
+    "eyebrow": "Mariages en Algérie",
+    "how": {
+      "eyebrow": "Comment ça marche",
+      "title": "Quatre étapes, aucune surprise",
+      "s1": "Comparez",
+      "s1b": "Capacité, quartier, prix de base : tout est affiché avant le premier contact.",
+      "s2": "Demandez vos dates",
+      "s2b": "Une demande n'engage à rien et ne bloque rien tant que le gestionnaire ne l'a pas acceptée.",
+      "s3": "Recevez un devis",
+      "s3b": "Le gestionnaire chiffre la salle et les prestations. Le montant vient de lui, pas de nous.",
+      "s4": "Confirmez",
+      "s4b": "La date se bloque à l'acceptation, et pas avant."
+    },
+    "map": {
+      "title": "Carte des salles · Alger",
+      "soon": "Carte à venir"
+    },
+    "pro": {
+      "eyebrow": "Espace gestionnaire",
+      "title": "Vous gérez une salle ?",
+      "lede": "Publiez vos disponibilités, chiffrez vos devis et suivez vos demandes depuis un seul écran.",
+      "cta": "Ouvrir l'espace gestionnaire"
+    },
+    "search": {
+      "assistant": "Répondre à quatre questions guidées",
+      "budget": "Budget maximum",
+      "budgetAny": "Sans limite",
+      "city": "Où",
+      "cityAny": "Toute l'Algérie",
+      "guests": "Invités",
+      "guestsPlaceholder": "Nombre d'invités",
+      "legend": "Rechercher une salle",
+      "submit": "Voir les salles"
+    },
+    "subtitle": "Comparez les salles d'Alger, demandez vos dates, recevez un devis du gestionnaire. Sans intermédiaire et sans engagement.",
+    "title": "La salle de vos noces, choisie sans y courir",
+    "vendors": {
+      "cat": {
+        "caterers": "Traiteurs",
+        "photographers": "Photographes",
+        "videographers": "Vidéastes & drones",
+        "dj": "DJ & animation",
+        "dresses": "Robes de mariée",
+        "suits": "Costumes",
+        "decoration": "Décoration & fleurs",
+        "cars": "Voitures de mariage",
+        "cakes": "Pâtisseries & gâteaux",
+        "beauty": "Coiffure & maquillage",
+        "negafa": "Negafa & henné",
+        "jewellery": "Bijoux & alliances",
+        "planners": "Wedding planners",
+        "invitations": "Faire-part",
+        "honeymoon": "Voyage de noces"
+      },
+      "eyebrow": "Bientôt",
+      "lede": "Traiteurs, photographes, robes, décoration : les mêmes garanties que pour les salles, catégorie par catégorie.",
+      "note": "Ces catégories ne sont pas encore ouvertes. Aucun prestataire n'est référencé et aucune de ces cartes ne mène nulle part.",
+      "soon": "À venir",
+      "title": "Le reste du mariage"
+    },
+    "venues": {
+      "all": "Voir toutes les salles",
+      "empty": "Aucune salle publiée pour l'instant. Le catalogue s'ouvre salle par salle.",
+      "eyebrow": "Le catalogue",
+      "previewNotice": "Données de démonstration — le catalogue est vide. Ces salles n'existent pas et ne sont jamais servies en production.",
+      "title": "Récemment ajoutées"
+    }
   },
   "legal": {
     "cgu": "Conditions générales d'utilisation",
@@ -413,6 +494,70 @@
       "emailInvalid": "Adresse e-mail invalide.",
       "paymentMethodInvalid": "Mode de paiement invalide.",
       "unknownKey": "Champ inconnu."
+    }
+  },
+  "search": {
+    "title": "Salles à Alger",
+    "intro": "Comparez les salles disponibles et envoyez votre demande de réservation.",
+    "filters": {
+      "legend": "Filtres",
+      "city": "Commune",
+      "cityAll": "Toutes les communes",
+      "amenities": "Équipements",
+      "submit": "Afficher les résultats",
+      "reset": "Réinitialiser",
+      "capacity": "Capacité",
+      "capacityValue": "{count} invités",
+      "capacityCeiling": "{count}+ invités",
+      "budget": "Budget",
+      "budgetCeiling": "{amount} et plus",
+      "styles": "Style",
+      "ceremonyType": "Type de mariage"
+    },
+    "sort": {
+      "label": "Trier par",
+      "recommended": "Recommandé",
+      "price_asc": "Prix croissant",
+      "price_desc": "Prix décroissant"
+    },
+    "results": {
+      "count": "<n>{count}</n> salles trouvées",
+      "countOne": "<n>1</n> salle trouvée",
+      "emptyTitle": "Aucune salle ne correspond à ces critères",
+      "emptyBody": "Élargissez la recherche : moins d'équipements, une fourchette de prix plus large, ou toutes les communes.",
+      "errorTitle": "La recherche est momentanément indisponible",
+      "errorBody": "Réessayez dans un instant."
+    },
+    "card": {
+      "capacity": "Jusqu'à {max} invités",
+      "from": "À partir de",
+      "noPhoto": "Photo à venir",
+      "rating": "Note de {rating} sur 5 pour {count} avis",
+      "favourite": "Ajouter aux favoris — bientôt"
+    },
+    "badge": {
+      "favourite": "Coup de cœur",
+      "new": "Nouveau",
+      "premium": "Premium"
+    },
+    "view": {
+      "label": "Affichage",
+      "grid": "Grille",
+      "map": "Carte"
+    },
+    "preview": {
+      "notice": "Données de démonstration — la recherche n'a rien renvoyé. Ces salles n'existent pas et ne sont jamais servies en production."
+    },
+    "map": {
+      "title": "Carte",
+      "soon": "Carte à venir"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {page}",
+      "current": "Page {page}, page courante"
     }
   },
   "service": {
@@ -916,55 +1061,85 @@
         "notConfirmedYet": "Tant que l'encaissement de l'acompte n'est pas en service, une date acceptée reste prise jusqu'à ce que vous l'annuliez vous-même."
       },
       "walkin": {
-        "title": "Nouvelle réservation",
-        "step1": "Informations client",
-        "step2": "Date de l'événement",
-        "step3": "Devis et prestations",
-        "firstName": "Prénom",
-        "lastName": "Nom",
-        "phone": "Téléphone",
-        "phoneHint": "Format international : +213 suivi de 8 à 9 chiffres.",
+        "basePrice": "Location de la salle",
+        "clientNeeded": "Prénom, nom, téléphone et nombre d'invités sont nécessaires pour continuer.",
+        "compute": "Calculer le devis",
+        "computeBlocked": "Renseignez la date, le créneau et le nombre d'invités pour obtenir un montant.",
+        "contactRequired": "Nom, prénom et téléphone du client sont nécessaires pour conclure.",
+        "continue": "Continuer",
+        "dayPrice": "Tarif jour",
+        "deliverHint": "Ces boutons enregistrent comment vous avez remis le devis. Zwadj n'imprime rien et n'envoie rien à votre place.",
+        "deliverLegend": "Remise du devis au client",
+        "deliverPhoneRequired": "SMS et téléphone demandent un numéro de mobile valide dans les informations client.",
+        "delivered": "Remise enregistrée : {channel}",
+        "deposit": "Acompte",
+        "doneLocked": "La date est bloquée. Elle restera prise jusqu'à ce que vous l'annuliez vous-même.",
+        "doneStandby": "Enregistré en attente. La date n'est pas bloquée et pourra être prise par un autre client.",
+        "edit": "Modifier",
+        "editAria": "Modifier l'étape {step}",
+        "editQuote": "Modifier le devis",
         "email": "E-mail (facultatif)",
         "emailHint": "Laissez vide si le client n'en a pas — le téléphone suffit.",
         "eventDate": "Date",
-        "slot": "Créneau",
-        "slotPlaceholder": "Choisir un créneau",
+        "eyebrow": "Client présent sur place",
+        "firstName": "Prénom",
         "guests": "Nombre d'invités",
         "guestsHint": "Jusqu'à {max} invités.",
-        "services": "Vos prestations",
+        "guestsMinus": "Dix invités de moins",
+        "guestsPlus": "Dix invités de plus",
+        "guestsSummary": "Invités : {count}",
+        "lastName": "Nom",
+        "lede": "Créez une réservation pour un client venu sur place. Le calendrier est synchronisé en temps réel.",
+        "loadingServices": "Chargement de vos prestations…",
+        "lockDate": "Bloquer la date",
+        "noAmountsYet": "Aucun montant n'est affiché avant cette étape : ils sont calculés par le serveur, jamais dans le navigateur.",
+        "noDate": "Aucune date choisie",
         "noServices": "Vous n'avez encore aucune prestation en vente pour cette salle.",
+        "noServicesPicked": "Aucune prestation",
+        "outcomeHint": "« Bloquer la date » la rend indisponible immédiatement. « Enregistrer sans bloquer » la laisse libre : un autre client peut la prendre d'ici au paiement.",
+        "phone": "Téléphone",
+        "phoneHint": "Format international : +213 suivi de 8 à 9 chiffres.",
+        "pickedDate": "Sélectionnée",
+        "progressLabel": "Avancement de la réservation",
         "pt_FIXED": "Forfait",
         "pt_PER_GUEST": "Par invité",
         "pt_PER_UNIT": "À l'unité",
         "pt_TIERED": "Par formule",
-        "compute": "Calculer le devis",
-        "computeBlocked": "Renseignez la date, le créneau et le nombre d'invités pour obtenir un montant.",
-        "staleTotal": "Les conditions ont changé : recalculez le devis pour afficher un montant à jour.",
-        "totalTitle": "Total à facturer",
-        "basePrice": "Location de la salle",
-        "servicesTotal": "Prestations",
-        "total": "Total à payer",
-        "deposit": "Acompte",
-        "lockDate": "Bloquer la date",
-        "standby": "Enregistrer sans bloquer",
-        "outcomeHint": "« Bloquer la date » la rend indisponible immédiatement. « Enregistrer sans bloquer » la laisse libre : un autre client peut la prendre d'ici au paiement.",
-        "contactRequired": "Nom, prénom et téléphone du client sont nécessaires pour conclure.",
-        "doneLocked": "La date est bloquée. Elle restera prise jusqu'à ce que vous l'annuliez vous-même.",
-        "doneStandby": "Enregistré en attente. La date n'est pas bloquée et pourra être prise par un autre client.",
-        "loadingServices": "Chargement de vos prestations…",
+        "qClient": "Qui est le client ?",
+        "qClientHint": "Client présent sur place · réservation directe",
+        "qDate": "Quelle date ?",
+        "qDateHint": "Cliquez sur un jour libre pour continuer.",
+        "qQuote": "Devis",
+        "qQuoteHint": "Les montants sont calculés par le serveur.",
+        "qServices": "Quelles prestations ?",
+        "qServicesHint": "Aucune prestation est une réponse valable.",
+        "qSlot": "Quel créneau ?",
+        "qSlotHint": "Cliquez sur un créneau pour continuer.",
+        "recapLabel": "Réponses déjà données",
+        "reset": "Annuler",
+        "resetHint": "Recommence une réservation vierge. Un devis déjà chiffré reste dans vos devis.",
+        "seeQuote": "Voir le devis",
+        "services": "Vos prestations",
         "servicesError": "Votre catalogue n'a pas pu être lu. Vos prestations ne sont pas perdues : réessayez dans un instant.",
-        "eyebrow": "Client présent sur place",
-        "lede": "Créez une réservation pour un client venu sur place. Le calendrier est synchronisé en temps réel.",
-        "pickedDate": "Sélectionnée",
-        "noDate": "Aucune date choisie",
-        "dayPrice": "Tarif jour",
-        "guestsMinus": "Dix invités de moins",
-        "guestsPlus": "Dix invités de plus",
-        "editQuote": "Modifier le devis",
-        "deliverLegend": "Remise du devis au client",
-        "deliverHint": "Ces boutons enregistrent comment vous avez remis le devis. Zwadj n'imprime rien et n'envoie rien à votre place.",
-        "deliverPhoneRequired": "SMS et téléphone demandent un numéro de mobile valide dans les informations client.",
-        "delivered": "Remise enregistrée : {channel}"
+        "servicesPicked": "Prestations retenues : {count}",
+        "servicesTotal": "Prestations",
+        "slot": "Créneau",
+        "slotCleared": "La date a changé : le créneau retenu ne s'applique plus, il est à choisir de nouveau.",
+        "slotPlaceholder": "Choisir un créneau",
+        "staleTotal": "Les conditions ont changé : recalculez le devis pour afficher un montant à jour.",
+        "standby": "Enregistrer sans bloquer",
+        "step1": "Informations client",
+        "step2": "Date de l'événement",
+        "step3": "Devis et prestations",
+        "stepClient": "Client",
+        "stepCounter": "Étape {n} sur {total}",
+        "stepDate": "Date",
+        "stepQuote": "Devis",
+        "stepServices": "Prestations",
+        "stepSlot": "Créneau",
+        "title": "Nouvelle réservation",
+        "total": "Total à payer",
+        "totalTitle": "Total à facturer"
       },
       "wizard": {
         "stepsLabel": "Étapes de configuration de la salle",
@@ -989,70 +1164,6 @@
       "indoor": "Intérieur",
       "outdoor": "Extérieur",
       "mixed": "Mixte"
-    }
-  },
-  "search": {
-    "title": "Salles à Alger",
-    "intro": "Comparez les salles disponibles et envoyez votre demande de réservation.",
-    "filters": {
-      "legend": "Filtres",
-      "city": "Commune",
-      "cityAll": "Toutes les communes",
-      "amenities": "Équipements",
-      "submit": "Afficher les résultats",
-      "reset": "Réinitialiser",
-      "capacity": "Capacité",
-      "capacityValue": "{count} invités",
-      "capacityCeiling": "{count}+ invités",
-      "budget": "Budget",
-      "budgetCeiling": "{amount} et plus",
-      "styles": "Style",
-      "ceremonyType": "Type de mariage"
-    },
-    "sort": {
-      "label": "Trier par",
-      "recommended": "Recommandé",
-      "price_asc": "Prix croissant",
-      "price_desc": "Prix décroissant"
-    },
-    "results": {
-      "count": "<n>{count}</n> salles trouvées",
-      "countOne": "<n>1</n> salle trouvée",
-      "emptyTitle": "Aucune salle ne correspond à ces critères",
-      "emptyBody": "Élargissez la recherche : moins d'équipements, une fourchette de prix plus large, ou toutes les communes.",
-      "errorTitle": "La recherche est momentanément indisponible",
-      "errorBody": "Réessayez dans un instant."
-    },
-    "card": {
-      "capacity": "Jusqu'à {max} invités",
-      "from": "À partir de",
-      "noPhoto": "Photo à venir",
-      "rating": "Note de {rating} sur 5 pour {count} avis",
-      "favourite": "Ajouter aux favoris — bientôt"
-    },
-    "badge": {
-      "favourite": "Coup de cœur",
-      "new": "Nouveau",
-      "premium": "Premium"
-    },
-    "view": {
-      "label": "Affichage",
-      "grid": "Grille",
-      "map": "Carte"
-    },
-    "preview": {
-      "notice": "Données de démonstration — la recherche n'a rien renvoyé. Ces salles n'existent pas et ne sont jamais servies en production."
-    },
-    "map": {
-      "title": "Carte",
-      "soon": "Carte à venir"
-    },
-    "pagination": {
-      "label": "Pagination",
-      "previous": "Précédent",
-      "next": "Suivant",
-      "page": "Page {page}",
-      "current": "Page {page}, page courante"
     }
   },
   "venueDetail": {
@@ -1149,5 +1260,44 @@
       "proBooked": "Zwadj — nouveau rendez-vous de visite à {venue} : {date} à {time} (30 min), demandé par {client}. Pour rappeler : {contact}. Déjà confirmé, rien à valider.",
       "proCancelled": "Zwadj — {client} a annulé sa visite à {venue} du {date} à {time}. Le créneau est de nouveau libre."
     }
+  },
+  "wizard": {
+    "amenities": "Équipements",
+    "budgetAny": "Sans limite",
+    "cityAll": "Toute l'Algérie",
+    "continue": "Continuer",
+    "count": "{count} salles correspondent",
+    "countNone": "Aucune salle ne correspond",
+    "countNoneHint": "Décochez un critère pour élargir, ou continuez : la page de résultats reste modifiable.",
+    "countOne": "1 salle correspond",
+    "countUnknown": "Nombre de salles indisponible pour l'instant.",
+    "counter": "Étape {n} sur {total}",
+    "edit": "Modifier",
+    "editAria": "Modifier l'étape {step}",
+    "eyebrow": "Assistant",
+    "guestsInvalid": "Indiquez un nombre d'invités, ou passez cette question.",
+    "guestsPlaceholder": "Nombre d'invités",
+    "lede": "Quatre questions, puis vos résultats. Vous pourrez tout ajuster ensuite.",
+    "noAmenities": "Aucun équipement publié.",
+    "noStyles": "Aucun style publié.",
+    "qBudget": "Quel budget pour la salle ?",
+    "qBudgetHint": "Prix de base de la salle, hors prestations.",
+    "qCity": "Où célébrez-vous ?",
+    "qCityHint": "Choisissez une commune, ou laissez sur toute l'Algérie.",
+    "qGuests": "Combien d'invités ?",
+    "qGuestsHint": "Une estimation suffit : le filtre garde les salles assez grandes.",
+    "qTaste": "Un style, des équipements ?",
+    "qTasteHint": "Tout est facultatif. Plus vous cochez, moins il reste de salles.",
+    "railLabel": "Avancement de la recherche",
+    "recapLabel": "Réponses déjà données",
+    "reset": "Recommencer",
+    "see": "Voir les salles",
+    "skip": "Passer",
+    "stepBudget": "Budget",
+    "stepCity": "Commune",
+    "stepGuests": "Invités",
+    "stepTaste": "Style et équipements",
+    "styles": "Style",
+    "title": "Trouvons votre salle"
   }
 }

@@ -548,45 +548,280 @@
   color: var(--on-accent);
 }
 
-/* ── Grille : 01/03 à gauche, 02/total à droite, DOM en 01→02→03 ─────────── */
-.wk-grid {
+/* ── FLUX PAR ÉTAPES ──────────────────────────────────────────────────────
+   ⚠ `.wk-grid` A DISPARU, ce n'est pas un oubli. Elle plaçait trois cartes
+   SIMULTANÉES en `grid-template-areas` ; le flux n'en montre qu'une. La garde
+   dont l'objet disparaît se retire par écrit — la laisser aurait fait une règle
+   morte que personne n'ose supprimer six mois plus tard.
+   Idem pour `.wk-picked` (bandeau « date sélectionnée / tarif du jour ») : la
+   ligne de récapitulatif porte désormais la date, et le tarif n'y a pas sa
+   place — arbitrage §5.3, aucun montant avant l'étape Devis. */
+
+/* ── Rail de progression — VERTICAL, entre le panneau gauche et le flux ───
+   ⚠ Il est le PREMIER élément du DOM et la première COLONNE de la grille : la
+   position visuelle est portée par `grid-template-areas`, pas par l'ordre de
+   lecture. Au clavier et à la voix on sait où l'on en est avant de recevoir la
+   question — c'est le même arbitrage que la grille à trois cartes d'avant. */
+.wk-main {
   display: grid;
-  gap: 22px;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 0 34px;
+  /* ⚠ Marges latérales RÉDUITES et flux CENTRÉ (demande Ko) : le contenu
+     occupait un tiers gauche de l'écran, le reste était vide. */
+  grid-template-columns: minmax(0, 168px) minmax(0, 760px);
+  justify-content: center;
   grid-template-areas:
-    "client date"
-    "devis  date"
-    "devis  total";
+    "head head"
+    "rail flow";
   align-items: start;
+  padding-inline: clamp(16px, 4vw, 40px);
 }
+.wk-head {
+  grid-area: head;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+.wk-head-reset {
+  /* ⚠ En haut à DROITE — donc `margin-inline-start: auto`, qui bascule seul en
+     arabe. `margin-left` l'aurait cloué du mauvais côté. */
+  margin-inline-start: auto;
+}
+.wk-rail {
+  grid-area: rail;
+  position: sticky;
+  top: 24px;
+}
+.wk-rail ol {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wk-rail li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  /* ⚠ Le TRAIT entre deux pastilles (demande ⑨) est un pseudo-élément, pas un
+     élément de plus : il n'a rien à dire à un lecteur d'écran. */
+  padding-block-end: 26px;
+  position: relative;
+}
+.wk-rail li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 15px;
+  top: 32px;
+  bottom: 6px;
+  inline-size: 2px;
+  background: var(--line);
+}
+.wk-rail li.is-done:not(:last-child)::before {
+  background: var(--accent);
+}
+.wk-rail-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  z-index: 1;
+}
+.wk-rail li.is-done .wk-rail-n {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.wk-rail li.is-current .wk-rail-n {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+/* ⚠ Cliquer le numéro vaut « Modifier » : c'est un vrai `<button>`, donc il
+   prend le même traitement de focus que les autres commandes. Les étapes sans
+   réponse restent des `<span>` — rien à désactiver, rien à tabuler. */
+.wk-rail-btn {
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+.wk-rail-btn:hover {
+  border-color: var(--ink);
+}
+.wk-rail-label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-rail li.is-current .wk-rail-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+.wk-recap,
+.wk-active,
+.wk-alert,
+.wk-notice {
+  grid-area: flow;
+}
+/* ⚠ Sur écran étroit le rail repasse AU-DESSUS : à 168px de colonne il
+   mangerait la moitié de la largeur utile, et la question active est ce qui
+   compte. Il redevient alors horizontal. */
+@media (max-width: 900px) {
+  .wk-main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "rail"
+      "flow";
+  }
+  .wk-rail {
+    position: static;
+    margin-block-end: 22px;
+  }
+  .wk-rail ol {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+  .wk-rail li {
+    padding-block-end: 0;
+  }
+  .wk-rail li:not(:last-child)::before {
+    display: none;
+  }
+}
+
+/* Récapitulatif croissant. ⚠ La bordure de gauche est en `border-inline-start` :
+   en arabe elle doit passer à droite, et `border-left` l'y aurait clouée. */
+.wk-recap {
+  margin: 0 0 2px;
+  padding: 0;
+  list-style: none;
+}
+.wk-recap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px;
+  margin-block-end: 2px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+  background: var(--surface);
+  animation: wk-recap-in 0.28s ease both;
+}
+.wk-recap-step {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-recap-value {
+  display: block;
+  margin-block-start: 3px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.wk-recap-edit {
+  flex-shrink: 0;
+}
+
+/* Carte de l'étape active : même boîte que `.wk-card`, bordure de départ en
+   `--ink` — c'est la COULEUR de la bordure qui la distingue des confirmées. */
+.wk-active {
+  border-inline-start: 3px solid var(--ink);
+  animation: wk-step-in 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.wk-step-counter {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-question {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.wk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-block-start: 20px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
+}
+.wk-outcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 18px;
+}
+
+/* ⚠ LES DEUX TRANSLATIONS SONT VERTICALES, DONC RIEN À MIROITER EN RTL — et
+   c'est une raison de les garder verticales. Un glissement horizontal écrit en
+   `translateX(-100%)` part du mauvais côté une fois sur deux. */
+@keyframes wk-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes wk-recap-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* ⚠ L'EXPORT FIGMA N'A AUCUN `prefers-reduced-motion` — zéro occurrence dans
+   tout le paquet. Se tromper vers « pas d'animation » coûte un peu d'élégance ;
+   se tromper vers « animation » peut déclencher un vertige chez quelqu'un qui a
+   justement demandé à en être protégé. L'inconfort n'est pas symétrique. */
+@media (prefers-reduced-motion: reduce) {
+  .wk-active,
+  .wk-recap-row {
+    animation: none;
+  }
+}
+
 .wk-card {
   border: 1px solid var(--line);
   border-radius: 2px;
   background: var(--bg-2, var(--surface));
   padding: 22px 24px 24px;
 }
-/* La maquette n'utilise PAS une autre famille : `.serif` y est Readex Pro, la
-   même qu'ici. Ce qui manquait, c'est son TRAITEMENT — graisse 500 (600 en
-   mode pro) et crénage -0.02em. La graisse y était déjà ; le crénage, non. */
-.wk-card-head {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin: 0 0 20px;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-/* Écart mesuré contre la maquette : `var(--accent)` et 0.2em, contre `--ink-2`
-   et 0.14em ici. ⚠ En mode pro l'accent est un quasi-noir (#211C1B, D26) —
-   la maquette fait pareil de son côté (`data-mode="pro"` y pose #18181B). Le
-   numéro FONCE donc, il ne devient pas rose. */
-.wk-step-n {
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.2em;
-  color: var(--accent);
-}
+/* ⚠ `.wk-card-head` et `.wk-step-n` sont RETIRÉES avec le composant `Step`
+   qui les portait : les trois cartes numérotées « 01 / 02 / 03 » n'existent
+   plus. Leur remplaçant est `.wk-question` + `.wk-step-counter`, qui gardent le
+   même traitement typographique (Readex Pro, graisse 600, crénage -0.02em) et
+   la même remarque sur D26 — en mode pro l'accent est un quasi-noir #211C1B,
+   donc le compteur FONCE, il ne devient pas rose. La maquette, elle, écrit
+   `rgba(213,87,98,…)` en dur à cinq endroits de cet écran : c'est l'accent
+   CLIENT, une erreur de reskin confirmée par Ko le 17/08/2026. */
 
 .wk-pair {
   display: grid;
@@ -624,31 +859,6 @@
   font-size: 12px;
   line-height: 1.5;
   color: var(--ink-2);
-}
-
-/* ── Bandeau date sélectionnée / tarif jour ─────────────────────────────── */
-.wk-picked {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 2px 16px;
-  padding: 14px 16px;
-  margin-block-end: 18px;
-  border: 1px solid var(--ink);
-  border-radius: 2px;
-  background: var(--surface);
-}
-.wk-picked-label {
-  font-size: 10px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.wk-picked-value {
-  font-size: 18px;
-  font-variant-numeric: tabular-nums;
-}
-.wk-end {
-  text-align: end;
 }
 
 /* ── Compteur d'invités ────────────────────────────────────────────────── */
@@ -787,20 +997,38 @@
 .wk-total {
   border-color: var(--accent);
 }
+/* ⚠ HIÉRARCHIE EXPLICITE (demande ⑦). Elle allait de 10px à 30px sans palier
+   lisible : la même valeur servait à un intitulé de section et à une ligne de
+   prestation. Quatre rangs, et un seul par rôle :
+     · 12px capitales  → intitulé de bloc
+     · 14px            → intitulés de montants (salle, prestations)
+     · 15px            → lignes du détail (elles se LISENT, elles ne se survolent pas)
+     · 32px            → le total, une seule fois sur l'écran
+   ⚠ Le plancher est à 12px, pas 10 : en arabe, 10px n'est pas « petit ». */
 .wk-total-head {
   margin: 0 0 18px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-2);
-  font-weight: 500;
+  font-weight: 600;
 }
+/* ⚠ SÉPARATEURS ENTRE LES LIGNES (demande ⑥). Sans eux, un intitulé long qui
+   passe à la ligne se lit comme deux postes, et le montant de droite ne se
+   rattache plus visuellement à rien. Le filet est posé sur chaque rangée SAUF
+   la dernière — un trait sous le dernier poste ferait doublon avec celui du
+   total juste dessous. */
 .wk-amounts {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 6px 16px;
-  margin: 0 0 14px;
+  gap: 0 16px;
+  margin: 0 0 6px;
   font-size: 14px;
+}
+.wk-amounts dt,
+.wk-amounts dd {
+  padding-block: 11px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
 }
 .wk-amounts dt {
   color: var(--ink-2);
@@ -809,19 +1037,28 @@
   margin: 0;
   text-align: end;
   font-variant-numeric: tabular-nums;
+  color: var(--ink);
 }
 .wk-lines {
   list-style: none;
-  margin: 0 0 14px;
+  margin: 0 0 6px;
   padding: 0;
-  font-size: 13px;
-  color: var(--ink-2);
+  /* 15px : ces lignes SE LISENT — c'est le détail que le client contestera.
+     Elles étaient à 13px sur `--ink-2`, soit le traitement d'une note de bas de
+     page pour le contenu même du devis. */
+  font-size: 15px;
+  color: var(--ink);
 }
 .wk-lines li {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding-block: 4px;
+  padding-block: 11px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
+  font-variant-numeric: tabular-nums;
+}
+.wk-lines li:last-child {
+  border-block-end: 0;
 }
 /* Le filet « élégant » de la maquette porte un nom : `.accent-rule`, soit un
    dégradé d'1px qui s'éteint aux DEUX bouts. Un `border-block-start` ne peut
@@ -844,13 +1081,23 @@
   block-size: 1px;
   background-image: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
 }
-/* Maquette : 30px, `var(--accent)`, graisse 500, crénage `.serif` (-0.02em). */
+/* ⚠ TOTAL — le seul élément de ce rang sur l'écran (demande ⑧). Son intitulé
+   monte aussi : « Total » en 13px capitales face à un nombre de 32px, c'était
+   un nombre sans étiquette lisible. */
+.wk-grand > span:first-child {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 600;
+}
 .wk-grand strong {
-  font-size: 30px;
-  font-weight: 500;
+  font-size: 32px;
+  font-weight: 600;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 .wk-deposit {
   display: flex;
@@ -927,16 +1174,6 @@
 }
 
 /* ── Responsive : empiler proprement, sans jamais rogner les cibles ─────── */
-@media (max-width: 1180px) {
-  .wk-grid {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "client"
-      "date"
-      "devis"
-      "total";
-  }
-}
 @media (max-width: 860px) {
   .wk-main {
     padding: 22px 18px 48px;

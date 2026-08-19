@@ -7,7 +7,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SearchView } from "../../../components/search/search-view";
-import { PREVIEW_VENUES } from "../../../lib/preview-venues";
+import { previewVenuesFor } from "../../../lib/preview-venues";
 import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../lib/api";
 import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../lib/search-query";
 
@@ -73,7 +73,7 @@ export default async function VenuesSearchPage({
       // dépend d'une prop évaluée à l'exécution, donc le bundler doit les
       // garder. Ici, le ternaire est résolu au rendu serveur : en production,
       // c'est `null` qui part dans la charge utile.
-      previewVenues={process.env.NODE_ENV !== "production" ? PREVIEW_VENUES : null}
+      previewVenues={previewVenuesFor(process.env.NODE_ENV)}
     />
   );
 }

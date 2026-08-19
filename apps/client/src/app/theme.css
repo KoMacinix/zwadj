@@ -743,3 +743,687 @@
   text-transform: uppercase;
   color: var(--ink-2);
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCUEIL — lot Accueil, sur la maquette `HomePage`.
+
+   ⚠ TOKENS DU DÉPÔT, PAS CEUX DE LA MAQUETTE. L'export pose `--accent: #D55762`
+   et écrit `rgba(213,87,98,…)` en dur ; l'accent client du dépôt est `#da3642`
+   (D26). Erreur de reskin confirmée par Ko le 17/08/2026 — même diagnostic que
+   sur l'écran Pro, où la maquette repeignait le pro avec l'accent client.
+
+   ⚠ NI `--ink-mute`, NI CORPS SOUS 12 px. La maquette met des libellés en
+   `fontSize: 9` sur `--ink-mute` : ce token échoue AA, et l'arabe à 9 px n'est
+   pas « petit », il est illisible.
+
+   ⚠ PROPRIÉTÉS LOGIQUES PARTOUT (`padding-inline`, `border-inline-start`,
+   `margin-inline-*`) : cette page se rend aussi en RTL, et un `padding-left`
+   figé y met la marge du mauvais côté.
+   ══════════════════════════════════════════════════════════════════════════ */
+.hm {
+  --hm-gutter: clamp(18px, 5vw, 80px);
+}
+.hm-hero {
+  padding: clamp(40px, 6vw, 64px) var(--hm-gutter) clamp(28px, 4vw, 40px);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+}
+.hm-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.hm-ornament {
+  inline-size: 28px;
+  block-size: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.hm-title {
+  margin: 0 0 16px;
+  font-size: clamp(32px, 6vw, 60px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  max-inline-size: 20ch;
+}
+.hm-lede {
+  margin: 0;
+  max-inline-size: 62ch;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.hm-lede-2 {
+  margin-block-end: 24px;
+}
+
+/* Formulaire du héros. ⚠ `<fieldset>` en grille : c'est un vrai formulaire GET,
+   et la mise en page ne doit pas coûter sa sémantique. */
+.hm-search fieldset {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-items: end;
+  margin: 28px 0 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+}
+.hm-search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-inline-size: 0;
+}
+.hm-search-field label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.hm-search-field input,
+.hm-search-field select {
+  min-block-size: 44px; /* cible tactile : jamais rognée (doctrine UI) */
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+.hm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hm-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+/* ⚠ Le fond ET l'encre changent ensemble. Une règle qui ne poserait que le fond
+   laisserait l'encre de l'état précédent — c'est le défaut mesuré côté Pro, où
+   le contraste tombait à 1,10 au survol : blanc sur blanc, dans les deux
+   thèmes, et axe ne l'avait pas vu (il n'évalue pas les états de survol). */
+.hm-btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+.hm-section {
+  padding: clamp(44px, 7vw, 92px) var(--hm-gutter) 0;
+}
+.hm-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-block-end: 34px;
+}
+.hm-h2 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 48px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.hm-note,
+.hm-empty {
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* Cartouche de carte — même parti que la recherche : on annonce l'absence, on
+   ne pose pas une image figée qui laisserait croire à une carte cassée. */
+/* ⚠ La carte prend la place qu'elle a dans la maquette (demande ②) et se
+   détache du fond (demande ③). Le fond est DÉRIVÉ des tokens — `--accent-soft`
+   sur `--bg-2` — jamais une couleur écrite en dur : elle basculerait en thème
+   sombre, où `--accent-soft` vaut déjà `#2a1416`. */
+.hm-map-soon {
+  display: grid;
+  place-content: center;
+  margin: 22px 0 0;
+  min-block-size: clamp(240px, 34vw, 420px);
+  padding: 32px 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: linear-gradient(160deg, var(--accent-soft) 0%, var(--bg-2) 70%);
+  text-align: center;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.hm-grid {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hm-grid-6 {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.hm-grid-3 {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.hm-grid-5 {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+/* ── Catégories de prestataires : GRISÉES, et non désactivées ─────────────
+   Ce ne sont ni des liens ni des boutons — il n'y a rien à ouvrir, donc rien à
+   désactiver. Le gris ne porte pas le message seul (WCAG 1.4.1) : chaque carte
+   affiche « À venir » en texte, et la section porte une note. */
+.hm-vendor {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg-2);
+  /* ⚠ AUCUN `opacity` sur le bloc entier : il ferait tomber le contraste du
+     texte sous le seuil AA en même temps que le fond, et l'étiquette « À venir »
+     deviendrait le premier élément illisible de la section censée l'annoncer. */
+  color: var(--ink-2);
+}
+/* ⚠ Zone média SANS image : un dégradé dérivé des tokens du site. Il donne à la
+   carte le volume de la maquette sans quinze requêtes vers un tiers. Le décalage
+   d'angle par catégorie suffit à les distinguer sans rien prétendre. */
+.hm-vendor-media {
+  display: block;
+  block-size: 108px;
+  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg) 100%);
+  border-block-end: 1px solid var(--line);
+}
+.hm-vendor-media-photographers { background: linear-gradient(115deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-videographers { background: linear-gradient(155deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-dj { background: linear-gradient(95deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-dresses { background: linear-gradient(175deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-suits { background: linear-gradient(75deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-decoration { background: linear-gradient(195deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-cars { background: linear-gradient(55deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-cakes { background: linear-gradient(215deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-beauty { background: linear-gradient(35deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-negafa { background: linear-gradient(235deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding: 14px 16px 16px;
+}
+.hm-vendor-name {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.hm-vendor-soon {
+  margin-block-start: auto;
+  align-self: flex-start;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Quartiers : puces NON cliquables — aucun filtre par quartier n'existe. */
+.hm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hm-chip {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 14px;
+}
+
+.hm-steps {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hm-step-n {
+  display: block;
+  margin-block-end: 12px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+.hm-step-t {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 500;
+}
+.hm-step-b {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.hm-pro {
+  margin-block-start: clamp(44px, 7vw, 92px);
+  padding-block: clamp(44px, 6vw, 76px);
+  border-block: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.hm-pro .hm-btn-primary {
+  margin-block-start: 4px;
+}
+
+/* Dernière section : on rend la marge basse de la page. */
+.hm > .hm-section:last-child {
+  padding-block-end: clamp(44px, 7vw, 92px);
+}
+
+
+/* ── PIED DE PAGE — strict minimum ────────────────────────────────────────
+   ⚠ Il ne contient que des liens vers des pages qui EXISTENT. Un pied de page
+   est l'endroit où les promesses s'accumulent sans relecture. */
+.site-footer {
+  margin-block-start: clamp(40px, 6vw, 80px);
+  border-block-start: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  padding: 26px clamp(18px, 5vw, 80px);
+}
+.site-footer-brand {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.site-footer nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer nav a {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.site-footer nav a:hover {
+  color: var(--ink);
+}
+.site-footer-legal {
+  /* ⚠ `margin-inline-start` : en arabe la mention passe à gauche toute seule. */
+  margin: 0 0 0 auto;
+  margin-inline-start: auto;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ASSISTANT DE FILTRES — même système que le flux Pro, tokens CLIENT.
+   ⚠ `--accent` du dépôt (#da3642), jamais les `rgba(213,87,98,…)` en dur de la
+   maquette. Propriétés logiques partout : cet écran se rend aussi en RTL.
+   ══════════════════════════════════════════════════════════════════════════ */
+.wz {
+  display: grid;
+  gap: 0 34px;
+  grid-template-columns: minmax(0, 168px) minmax(0, 720px);
+  justify-content: center;
+  grid-template-areas:
+    "head head"
+    "rail flow";
+  align-items: start;
+  padding: clamp(28px, 5vw, 56px) clamp(16px, 4vw, 40px) clamp(48px, 7vw, 88px);
+}
+.wz-head {
+  grid-area: head;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  margin-block-end: 32px;
+}
+.wz-head-reset {
+  margin-inline-start: auto;
+}
+.wz-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  inline-size: 100%;
+}
+.wz-ornament {
+  inline-size: 28px;
+  block-size: 1px;
+  background: currentColor;
+}
+.wz-title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.wz-lede {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+/* Rail — vertical, premier dans le DOM, placé par `grid-area`. */
+.wz-rail {
+  grid-area: rail;
+  position: sticky;
+  top: 24px;
+}
+.wz-rail ol {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wz-rail li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding-block-end: 26px;
+  position: relative;
+}
+.wz-rail li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 15px;
+  top: 32px;
+  bottom: 6px;
+  inline-size: 2px;
+  background: var(--line);
+}
+.wz-rail li.is-done:not(:last-child)::before {
+  background: var(--accent);
+}
+.wz-rail-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  z-index: 1;
+}
+.wz-rail li.is-done .wz-rail-n,
+.wz-rail li.is-current .wz-rail-n {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.wz-rail li.is-current .wz-rail-n {
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.wz-rail-btn {
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+.wz-rail-label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wz-rail li.is-current .wz-rail-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.wz-recap,
+.wz-card {
+  grid-area: flow;
+}
+.wz-recap {
+  margin: 0 0 2px;
+  padding: 0;
+  list-style: none;
+}
+.wz-recap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px;
+  margin-block-end: 2px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+  background: var(--surface);
+  animation: wz-recap-in 0.28s ease both;
+}
+.wz-recap-step {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wz-recap-value {
+  display: block;
+  margin-block-start: 3px;
+  font-size: 14px;
+}
+.wz-card {
+  padding: 26px 24px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--ink);
+  background: var(--bg-2);
+  animation: wz-step-in 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.wz-counter {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wz-question {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.wz-hint {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.wz-label {
+  display: block;
+  margin: 20px 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wz-input {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+.wz-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-block-start: 22px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
+}
+.wz-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.wz-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+/* Fond ET encre ensemble : une règle qui ne poserait que le fond laisserait
+   l'encre de l'état précédent. */
+.wz-btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--on-accent);
+}
+.wz-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.wz-tiers,
+.wz-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.wz-tier,
+.wz-chip {
+  min-block-size: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+/* ⚠ L'état retenu ne repose PAS sur la seule couleur : `aria-pressed` le porte
+   pour la voix, et la bordure épaissit pour l'œil (WCAG 1.4.1). */
+.wz-tier.is-on,
+.wz-chip.is-on {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  border-width: 2px;
+  font-weight: 600;
+}
+.wz-group {
+  margin: 20px 0 0;
+  padding: 0;
+  border: 0;
+}
+.wz-count {
+  margin: 22px 0 0;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
+  font-size: 17px;
+  font-weight: 600;
+}
+.hm-assistant {
+  margin: 14px 0 0;
+  font-size: 14px;
+}
+
+@keyframes wz-step-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wz-recap-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wz-card,
+  .wz-recap-row {
+    animation: none;
+  }
+}
+
+/* ⚠ Même seuil que le flux Pro — et que la maquette elle-même, qui appelle
+   `useIsMobile(900)`. À 168px de colonne, le rail mangerait la moitié de la
+   largeur utile ; la question active est ce qui compte. */
+@media (max-width: 900px) {
+  .wz {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "rail"
+      "flow";
+  }
+  .wz-rail {
+    position: static;
+    margin-block-end: 22px;
+  }
+  .wz-rail ol {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+  .wz-rail li {
+    padding-block-end: 0;
+  }
+  .wz-rail li:not(:last-child)::before {
+    display: none;
+  }
+}

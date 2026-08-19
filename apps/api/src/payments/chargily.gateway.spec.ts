@@ -2,9 +2,13 @@
 //
 // ⚠ AUCUNE VALEUR ATTENDUE N'EST ÉCRITE ICI À LA MAIN. Toutes se RELÈVENT des
 // deux captures réelles du bac à sable versionnées dans `__fixtures__/` :
-//   · `chargily-checkout-created.json`  — POST /checkouts, HTTP 200, mode test,
-//     corps envoyé `{"amount":5000,"currency":"dzd","success_url":"…"}` ;
+//   · `chargily-checkout-request.json`    — le corps RÉELLEMENT envoyé au bac à
+//     sable (le fichier passé à `curl -d @…`) ;
+//   · `chargily-checkout-created.json`    — la réponse à CE corps, HTTP 200 ;
 //   · `chargily-error-amount-below-minimum.json` — même route, `{"amount":1}`.
+// ⚠ La requête est versionnée À CÔTÉ de sa réponse : une capture de réponse
+// seule ne dit pas ce qu'on avait demandé, et c'est justement la comparaison
+// des deux qui a prouvé que `amount` est en DINARS.
 // C'est la règle 2 de D126. Un test qui recopie « 5000 » de mémoire prouve que
 // le test et le code partagent la même croyance, pas qu'ils ont raison.
 import { readFileSync } from "node:fs";

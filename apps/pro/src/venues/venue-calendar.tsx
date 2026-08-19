@@ -86,7 +86,8 @@ export function VenueCalendar({
   onSelectDate,
   selectedSlotId,
   onSelectSlot,
-  compact = false
+  compact = false,
+  show = "all"
 }: {
   venueId: string;
   /** Pilotage externe. Absent ⇒ le composant garde sa sélection interne. */
@@ -97,6 +98,18 @@ export function VenueCalendar({
   onSelectSlot?: (slotTemplateId: string, priceCents: number) => void;
   /** Masque la phrase « lecture seule », hors de propos dans le parcours. */
   compact?: boolean;
+  /**
+   * Ce qui est RENDU — la donnée chargée, elle, ne change pas.
+   *
+   * ⚠ POURQUOI UN PARAMÈTRE DE RENDU PLUTÔT QUE DEUX MONTAGES. Le parcours Pro
+   * pose « quelle date ? » puis « quel créneau ? » sur deux écrans. Rendre deux
+   * `<VenueCalendar>` dans deux branches distinctes en démonterait un pour en
+   * monter l'autre : rechargement de la disponibilité et clignotement de la
+   * grille, au moment précis où le pro vient de cliquer. Une seule instance,
+   * dont on change ce qu'elle MONTRE.
+   * `month` = la grille seule · `slots` = les créneaux du jour seuls.
+   */
+  show?: "all" | "month" | "slots";
 }) {
   const { t, i18n } = useTranslation();
   const venues = useVenues();
@@ -155,6 +168,8 @@ export function VenueCalendar({
   const headers = useMemo(() => weekdayHeaders(i18n.language), [i18n.language]);
   const slotsById = useMemo(() => new Map((data?.slots ?? []).map((s) => [s.id, s])), [data]);
   const selectedDay = selected ? byDate.get(selected) : undefined;
+  const montreMois = show !== "slots";
+  const montreCreneaux = show !== "month";
 
   return (
     <>
@@ -169,6 +184,8 @@ export function VenueCalendar({
         </p>
       )}
 
+      {montreMois ? (
+        <>
       <div className="cal-head">
         {/* Même contrat que côté client : glyphe décoratif, nom accessible
             porté par `aria-label`. */}
@@ -250,10 +267,12 @@ export function VenueCalendar({
           ))}
         </tbody>
       </table>
+        </>
+      ) : null}
 
       {loading && <p className="field-hint">{t("venue.ui.calendar.loading")}</p>}
 
-      {selectedDay && (
+      {selectedDay && montreCreneaux && (
         <section className="cal-slots" aria-label={t("venue.ui.calendar.dayDetail", { date: selectedDay.date })}>
           <h2>{t("venue.ui.calendar.dayDetail", { date: selectedDay.date })}</h2>
           <ul>

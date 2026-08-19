@@ -73,6 +73,36 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
   rarement, donc plus tard. Sur le chemin de l'argent, « plus tard » est le
   défaut. Les règles vont dans un module sans dépendance (`payment-intent.ts`,
   comme `pricing-engine`), le service ne fait que lire et écrire.
+- ⚠ **AUCUNE VALEUR RÉELLE DANS UN FICHIER D'EXEMPLE (D200).** `.gitignore` ne
+  couvre que `.env` — **pas `.env.example`**, qui est SUIVI, poussé, et recopié
+  par chaque poste. Les clés Chargily de test y ont vécu en clair. Un fichier
+  d'exemple documente des NOMS de variables et des FORMATS, jamais des valeurs.
+  ⚠ Corollaire de méthode : **un audit de secrets ne se tronque pas.** Le premier
+  balayage s'était terminé sur un `head -10` rempli de faux positifs et affichait
+  « (fin) » — un audit tronqué se lit exactement comme un audit complet.
+- ⚠ **UNE GARDE QUI VIT DANS UN COMPOSANT SERVEUR NEXT EST INVISIBLE (D205).**
+  Le repli sur des salles fictives était un ternaire dans `page.tsx` : correct, et
+  jamais exécuté par un test — muter la page laissait 19 tests verts et aurait
+  envoyé six salles inventées aux visiteurs. Toute décision de ce genre devient
+  une **fonction pure** qui reçoit son environnement en paramètre
+  (`previewVenuesFor(nodeEnv)`), appelée par la page. Elle ne décide toujours pas
+  seule ; elle devient seulement mesurable.
+- ⚠ **SIX FAÇONS DONT UN TEST NE MESURE RIEN (D209).** Toutes relevées par le
+  harnais de neutralisation, aucune par relecture :
+  1. **mesure confondue** — l'assertion est vraie pour une autre raison que celle
+     qu'on croit (la ligne « créneau » manquait au récapitulatif parce qu'on était
+     À l'étape créneau, pas parce que le créneau avait été effacé) ;
+  2. **mutation auto-neutralisée** — muter un `useMemo` dont les dépendances
+     n'incluent pas la variable mutée ne change rien ;
+  3. **rôle absent** — `queryByRole("link")` sur un `<a>` SANS `href` rend `null`
+     même quand le bloc s'affiche : le test passait sur un écran cassé ;
+  4. **fixture à un seul élément** — `join(";")` et `join(",")` rendent la même
+     chaîne sur une liste d'un élément : le séparateur ne se mesure qu'à deux ;
+  5. **nom accessible plus riche qu'attendu** — le nom d'un jour de calendrier
+     porte son état et son tarif, donc `/^15$/` ne correspond à rien ;
+  6. **valeur monétaire tapée à la main** — `Intl` en `fr-DZ` insère des espaces
+     insécables ÉTROITES (U+202F) ; « 1 000 000 » écrit au clavier ne correspond
+     à rien. La valeur attendue vient du formateur.
 - ⚠ **CHARGILY COMPTE EN DINARS, PAS EN CENTIMES (D195).** Mesuré : `amount: 5000`
   affiche « 5 000,00 DA » sur sa page de règlement, et `amount: 1` est refusé par
   « must be greater than or equal to 50 ». Notre système compte en **centimes**
@@ -231,7 +261,13 @@ connexion (famille D115).
 | E3a | Cadrage paiement + modes de défaillance + drapeau `PAYMENTS_ENABLED` | ✅ livré et mesuré |
 | E3b (socle) | Port de paiement, `Payment` en `PENDING`, décision pure | ✅ livré et mesuré |
 | E3b (Chargily) | Adaptateur, session de règlement | ✅ **livré et mesuré** — 12/12 gardes neutralisées |
-| E3c | Webhook : signature, déduplication, mise en file (`pg-boss`) | ⏳ prochain |
+| E3c | Webhook : signature, déduplication, mise en file (`pg-boss`) | ⏸ **EN PAUSE** (arbitrage Ko, 17/08) |
+| Nettoyage dépôt | Secrets hors `.env.example`, résidus, cohérence env | ✅ livré et mesuré |
+| Flux Pro par étapes | `walkin-journey` en assistant exclusif | ✅ livré — 14/14 gardes |
+| Accueil Client | 8 sections, SSR, sans JavaScript | ✅ livré — 11/11 gardes |
+| Retouches visuelles | Rail vertical, devis, carte, pied de page | ✅ livré et mesuré |
+| Assistant de filtres | 4 étapes → `/salles`, route dédiée | ✅ livré — 9/9 gardes |
+| `availableOn` | Disponibilité partielle, salles grisées | ⏳ **cadré, 4 arbitrages en attente** |
 
 ⚠ **`C1` est ambigu** : il désigne « Flux C, lot 1 — plages de visite » (livré).
 Les lots de machine à états sont `Q0`→`Q5`. Correspondance en tête de la section
