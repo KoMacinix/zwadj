@@ -318,12 +318,28 @@ describe("VenuesPublicService.list — availableOn : ce qui est annoté", () => 
     expect(res.items.map((v) => v.availableOnDate)).toEqual([false]);
   });
 
-  it("⚠ AUCUN CRÉNEAU ACTIF ⇒ `null`, jamais `false` : elle n'est réservable AUCUN jour", async () => {
+  it("⚠ SITUATION B — salle sans AUCUN créneau : EXCLUE par le `where`, pas grisée", async () => {
+    // Correction Ko : D211 confondait deux refus. « Prise ce jour-là » rend
+    // « essayez une autre date » utile ; « jamais réservable » le rend
+    // TROMPEUR. L'exclusion vit dans le `where`, donc `count()` la voit aussi.
     const { service, prisma } = buildService();
-    prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
-    prisma.slotTemplate.findMany.mockResolvedValue([]);
-    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
-    expect(res.items.map((v) => v.availableOnDate)).toEqual([null]);
+    await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+
+    const whereListe = premierAppel<{ where: Record<string, unknown> }>(prisma.venue.findMany, "page").where;
+    expect(whereListe.slotTemplates).toEqual({ some: { isActive: true } });
+
+    // ⚠ LA GARDE QUI COMPTE : le MÊME `where` sert au comptage. Un filtrage
+    // post-requête annoncerait 37 pour 34 salles rendues et laisserait la
+    // dernière page vide.
+    const whereCompte = premierAppel<{ where: Record<string, unknown> }>(prisma.venue.count, "total").where;
+    expect(whereCompte).toEqual(whereListe);
+  });
+
+  it("⚠ SANS `availableOn`, AUCUNE exclusion : la recherche non datée ne retire rien", async () => {
+    const { service, prisma } = buildService();
+    await service.list(QUERY_DEFAULTS);
+    const where = premierAppel<{ where: Record<string, unknown> }>(prisma.venue.findMany, "page").where;
+    expect(where.slotTemplates).toBeUndefined();
   });
 
   it("MULTI_SLOT : un créneau pris, l'autre libre ⇒ `true` — la salle reste disponible", async () => {

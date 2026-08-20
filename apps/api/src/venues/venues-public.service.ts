@@ -146,6 +146,15 @@ export const PUBLIC_BASE_WHERE = {
   deletedAt: null
 } as const;
 
+/** « Créneau qui compte » — actif, donc réservable.
+ *
+ *  ⚠ UNE SEULE DÉFINITION, consommée à DEUX endroits qui doivent s'accorder :
+ *  le `where` qui exclut les salles sans aucun créneau (situation B) et le
+ *  `findMany` qui charge les créneaux à annoter. Deux copies de ce prédicat
+ *  produiraient une salle retenue par le filtre puis annotée sur zéro créneau —
+ *  c'est-à-dire grisée sans raison visible. */
+const ACTIVE_SLOT = { isActive: true } as const;
+
 @Injectable()
 export class VenuesPublicService {
   constructor(
@@ -174,6 +183,26 @@ export class VenuesPublicService {
       // minimum a disparu : personne ne le remplissait, il excluait des
       // salles à tort.
       ...(query.guests === undefined ? {} : { capacityMax: { gte: query.guests } }),
+      // ⚠ SITUATION B — la salle n'a AUCUN créneau actif, nulle part. Elle est
+      // EXCLUE, pas grisée, et seulement quand une date est demandée.
+      //
+      // Deux refus étaient confondus sous un seul grisé (correction Ko) :
+      //  · situation A — libre ailleurs, prise CE jour-là ⇒ `false`, grisée,
+      //    « essayez une autre date » est un conseil UTILE ;
+      //  · situation B — jamais configurée, ou entièrement retirée ⇒ aucune
+      //    date ne marchera JAMAIS. La griser inviterait à réessayer pour rien.
+      //
+      // ⚠ POURQUOI DANS LE `where` ET PAS APRÈS LA PAGE. Un filtrage post-
+      // requête retirerait des lignes après que `count()` les a comptées :
+      // `total` annoncerait 37 pour 34 salles rendues, la dernière page serait
+      // vide et la pagination mentirait. Ici les DEUX requêtes du
+      // `$transaction` partagent le même `where` — l'accord est structurel, il
+      // n'y a rien à resynchroniser.
+      //
+      // ⚠ SANS `availableOn`, RIEN NE CHANGE : ces salles restent visibles. La
+      // recherche non datée ne pose pas la question, elle n'a donc pas à y
+      // répondre en retirant des résultats.
+      ...(annotateOn === null ? {} : { slotTemplates: { some: ACTIVE_SLOT } }),
       ...(query.minPriceCents === undefined && query.maxPriceCents === undefined
         ? {}
         : {
@@ -296,7 +325,7 @@ export class VenuesPublicService {
       // libre »), et un tri ne changerait pas la réponse. En ajouter un ferait
       // croire que l'ordre porte un sens ici.
       this.prisma.slotTemplate.findMany({
-        where: { venueId: { in: venueIds }, isActive: true },
+        where: { venueId: { in: venueIds }, ...ACTIVE_SLOT },
         select: { id: true, venueId: true, startMinutes: true, endMinutes: true }
       }),
       // ⚠ `PENDING` n'est PAS chargé (D101, arbitrage Ko). Ne pas le charger
@@ -343,13 +372,16 @@ export class VenuesPublicService {
 
     for (const row of rows) {
       const slots: SlotForStatus[] = slotsByVenue.get(row.id) ?? [];
-      // ⚠ AUCUN CRÉNEAU ACTIF ⇒ `null`, jamais `false`. Une telle salle n'est
-      // réservable AUCUN jour : la griser dirait « pas ce jour-là », ce qui est
-      // faux par sous-entendu et invite à réessayer une autre date.
-      if (slots.length === 0) {
-        out.set(row.id, null);
-        continue;
-      }
+      // ⚠ `slots` NE PEUT PLUS ÊTRE VIDE ici : le `where` de `list()` a exclu
+      // les salles sans créneau actif (situation B). La branche qui rendait
+      // `null` a donc disparu — une branche morte laissée « au cas où » ferait
+      // croire au prochain lecteur que le cas est encore atteignable.
+      //
+      // ⚠ SAUF COURSE : le pro peut désactiver son dernier créneau ENTRE la
+      // requête de page et celle-ci. `.some()` sur un tableau vide rend alors
+      // `false` — la salle apparaît grisée le temps d'un rafraîchissement.
+      // Issue bénigne et transitoire, préférée à une exception sur un chemin de
+      // lecture public.
       const statuses = computeDaySlotStatuses({
         dayStartMs,
         slots,

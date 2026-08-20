@@ -42,14 +42,20 @@ export interface VenueSummaryDTO {
    *  plutôt que de salle. Filtrer coûterait O(catalogue) là où annoter coûte
    *  O(page).
    *
-   *  ⚠ TROIS VALEURS, ET AUCUNE N'EST « ZÉRO » :
+   *  ⚠ TROIS VALEURS, MAIS UNE SEULE SIGNIFICATION PAR CONTEXTE :
    *   - `true`  : au moins un créneau actif reste AVAILABLE ce jour-là ;
    *   - `false` : tous les créneaux actifs sont pris ou bloqués ⇒ GRISÉE ;
-   *   - `null`  : rien à dire. Deux cas, distingués par `VenueListResponse
-   *     .availableOn` : soit la question n'a pas été posée (l'écho vaut `null`),
-   *     soit elle l'a été et la salle n'a AUCUN créneau actif (l'écho porte la
-   *     date). Une salle sans créneau n'est réservable aucun jour : la griser
-   *     dirait « pas ce jour-là », ce qui est faux par sous-entendu.
+   *   - `null`  : la question n'a pas été posée. UN SEUL cas — l'écho
+   *     `VenueListResponse.availableOn` vaut alors `null` lui aussi.
+   *
+   *  ⚠ ÉCART ASSUMÉ AVEC LA PREMIÈRE VERSION DE D211 (correction Ko).
+   *  Une salle SANS AUCUN CRÉNEAU ACTIF rendait `null`. Elle n'est désormais
+   *  plus rendue du tout quand `availableOn` est demandé : elle est EXCLUE de
+   *  la réponse. D211 confondait deux refus sous un seul état — « prise ce
+   *  jour-là » et « jamais réservable ». Le premier rend « essayez une autre
+   *  date » utile ; le second le rend TROMPEUR, puisque aucune date ne
+   *  marchera. Le contrat ne peut donc plus produire `null` quand l'écho porte
+   *  une date.
    *
    *  ⚠ `PENDING` ne grise PAS (D101, arbitrage Ko) : une demande en attente ne
    *  verrouille rien — deux couples peuvent demander la même date, le pro

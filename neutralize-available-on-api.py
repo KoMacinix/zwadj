@@ -52,12 +52,17 @@ CIBLES = [
         "src/venues/venues-public.service.spec.ts",
     ),
     (
-        "A5. Une salle sans créneau est grisée au lieu d'être muette",
+        # ⚠ CIBLE REMPLACÉE. Elle neutralisait `null` -> `false` sur une branche
+        # qui N'EXISTE PLUS : l'exclusion vit désormais dans le `where`.
+        # Laissée telle quelle, elle a échoué en ERREUR DE SCRIPT — donc
+        # bruyamment, pas en vert. C'est exactement à ça que sert
+        # l'assertion de comptage : une décision inversée périme ses cibles.
+        "A5. L'exclusion des salles sans créneau (situation B) quitte le `where`",
         "apps/api/src/venues/venues-public.service.ts",
-        "        out.set(row.id, null);\r\n        continue;",
-        "        out.set(row.id, false);\r\n        continue;",
+        "      ...(annotateOn === null ? {} : { slotTemplates: { some: ACTIVE_SLOT } }),",
+        "",
         1,
-        "AUCUN CRÉNEAU ACTIF",
+        "SITUATION B",
         "src/venues/venues-public.service.spec.ts",
     ),
     (
@@ -122,6 +127,15 @@ CIBLES = [
         1,
         "404 MÉTIER",
         "src/common/filters/all-exceptions.filter.spec.ts",
+    ),
+    (
+        "A13. L'exclusion mord AUSSI sans date (elle retire trop large)",
+        "apps/api/src/venues/venues-public.service.ts",
+        "      ...(annotateOn === null ? {} : { slotTemplates: { some: ACTIVE_SLOT } }),",
+        "      ...{ slotTemplates: { some: ACTIVE_SLOT } },",
+        1,
+        "SANS `availableOn`, AUCUNE exclusion",
+        "src/venues/venues-public.service.spec.ts",
     ),
 ]
 

@@ -416,9 +416,14 @@ describe("Lot `availableOn` — annotation par date", () => {
     expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(0);
   });
 
-  it("⚠ `null` NE GRISE PAS : « rien à dire » n'est pas « indisponible »", () => {
-    // Salle sans aucun créneau actif. La griser dirait « pas ce jour-là », ce
-    // qui est faux par sous-entendu — elle n'est réservable aucun jour.
+  it("⚠ `null` NE GRISE PAS : il ne signifie plus QUE « question non posée »", () => {
+    // ⚠ Correction Ko. Ce test décrivait auparavant la SITUATION B — salle sans
+    // aucun créneau actif. Cette salle n'arrive plus jusqu'ici : l'API l'exclut
+    // de la réponse dès qu'une date est demandée, parce que la griser
+    // inviterait à essayer une autre date alors qu'AUCUNE ne marchera jamais.
+    // La garde reste en robustesse : si un `null` arrivait quand même sous une
+    // date annotée, il ne doit RIEN griser — « je ne sais pas » n'est pas
+    // « indisponible ».
     const { container } = renderView({
       outcome: ok(results([venue(1, { availableOnDate: null })], 1, 1, LE_2_JUIN))
     });
