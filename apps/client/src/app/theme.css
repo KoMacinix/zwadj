@@ -627,6 +627,72 @@
   text-transform: uppercase;
 }
 
+/* ── Lot `availableOn` — salle sans créneau libre à la date annotée ──────────
+   ⚠ LE GRISÉ N'EST JAMAIS SEUL. `.venue-card-unavailable` porte la mention
+   écrite, et c'est elle qui informe : un contraste abaissé ne dit rien à un
+   lecteur d'écran, et rien du tout à qui ne distingue pas les gris. L'opacité
+   ne descend donc qu'à 0,55 sur le MÉDIA — le texte de la carte garde son
+   contraste AA, sans quoi on aurait échangé une information contre une
+   régression d'accessibilité.
+   ⚠ La carte reste CLIQUABLE : « pas ce jour-là » n'est pas « pas cette
+   salle ». Aucun `pointer-events: none` ici, et c'est délibéré. */
+.venue-card.is-unavailable .venue-card-media {
+  opacity: 0.55;
+  filter: grayscale(0.8);
+}
+.venue-card-unavailable {
+  position: absolute;
+  /* La pastille d'accroche occupe déjà le coin haut : celle-ci prend le BAS,
+     sur toute la largeur — elle est un état, pas une décoration. */
+  inset-block-end: 0;
+  inset-inline: 0;
+  padding-block: 7px;
+  padding-inline: 12px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Bandeau de contexte au-dessus de la grille : sans lui, un visiteur qui
+   reçoit une URL partagée voit des cartes grisées sans savoir pourquoi. */
+.results-annotated {
+  margin: 0 0 16px;
+  padding-block: 10px;
+  padding-inline: 14px;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--bg-2);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* ── Point B — page 404 ─────────────────────────────────────────────────────
+   Réutilise `.state-panel`, déjà porté par les états vides et d'erreur de la
+   recherche : une page d'erreur qui invente sa propre boîte se met à diverger
+   du reste du site à la première retouche. */
+.notfound-panel {
+  max-width: 520px;
+  margin-inline: auto;
+  text-align: center;
+}
+.notfound-code {
+  margin: 0 0 4px;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+.notfound-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-block-start: 20px;
+}
+
 .venue-card-fav {
   position: absolute;
   inset-block-start: 10px;
@@ -1152,117 +1218,25 @@
 }
 
 /* Rail — vertical, premier dans le DOM, placé par `grid-area`. */
+/* ⚠ CHROME DÉPLACÉE dans `@zwadj/ui` (`styles.css`, bloc « parcours par
+   étapes »). Ce qui reste ici est la MISE EN PAGE propre au client.
+   `.wz-rail-n`, `.wz-rail-btn`, `.wz-rail-label`, `.wz-recap` (détail),
+   `.wz-recap-row`, `.wz-recap-step`, `.wz-recap-value` sont RETIRÉES : leurs
+   éléments ne portent plus ces classes. */
 .wz-rail {
   grid-area: rail;
   position: sticky;
   top: 24px;
 }
-.wz-rail ol {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.wz-rail li {
-  display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
-  padding-block-end: 26px;
-  position: relative;
-}
-.wz-rail li:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: 15px;
-  top: 32px;
-  bottom: 6px;
-  inline-size: 2px;
-  background: var(--line);
-}
-.wz-rail li.is-done:not(:last-child)::before {
-  background: var(--accent);
-}
-.wz-rail-n {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 32px;
-  block-size: 32px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--ink-2);
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-  position: relative;
-  z-index: 1;
-}
-.wz-rail li.is-done .wz-rail-n,
-.wz-rail li.is-current .wz-rail-n {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--on-accent);
-}
-.wz-rail li.is-current .wz-rail-n {
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
-.wz-rail-btn {
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-}
-.wz-rail-label {
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.wz-rail li.is-current .wz-rail-label {
-  color: var(--ink);
-  font-weight: 600;
-}
-
 .wz-recap,
-.wz-card {
+.wz-card,
+.wz-connector {
   grid-area: flow;
 }
-.wz-recap {
-  margin: 0 0 2px;
-  padding: 0;
-  list-style: none;
-}
-.wz-recap-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 13px 18px;
-  margin-block-end: 2px;
-  border: 1px solid var(--line);
-  border-inline-start: 3px solid var(--accent);
-  background: var(--surface);
-  animation: wz-recap-in 0.28s ease both;
-}
-.wz-recap-step {
-  display: block;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.wz-recap-value {
-  display: block;
-  margin-block-start: 3px;
-  font-size: 14px;
-}
+/* ⚠ `.wz-card` ne garde que sa zone de grille et son rembourrage propre : la
+   boîte, la bordure de départ et l'animation d'entrée viennent de `.zj-card`. */
 .wz-card {
   padding: 26px 24px;
-  border: 1px solid var(--line);
-  border-inline-start: 3px solid var(--ink);
-  background: var(--bg-2);
-  animation: wz-step-in 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .wz-counter {
   margin: 0 0 6px;
@@ -1385,20 +1359,10 @@
   font-size: 14px;
 }
 
-@keyframes wz-step-in {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: none; }
-}
-@keyframes wz-recap-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .wz-card,
-  .wz-recap-row {
-    animation: none;
-  }
-}
+/* ⚠ `@keyframes wz-step-in`, `@keyframes wz-recap-in` et leur bloc
+   `prefers-reduced-motion` sont RETIRÉS : ils sont dans `@zwadj/ui`, avec en
+   plus la coupure des TRANSITIONS du rail — ce lot vient de les ajouter, et une
+   transition est une animation. */
 
 /* ⚠ Même seuil que le flux Pro — et que la maquette elle-même, qui appelle
    `useIsMobile(900)`. À 168px de colonne, le rail mangerait la moitié de la

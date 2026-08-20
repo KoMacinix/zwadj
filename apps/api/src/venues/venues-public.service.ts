@@ -5,8 +5,9 @@
 // Aucun taux ne peut sortir d'ici : les SELECT ne les contiennent pas.
 // Sémantique des filtres : VALEUR inconnue (cityId, clé d'amenity) ⇒ résultat
 // vide, pas une erreur — seul le FORMAT invalide fait un 400 (Zod).
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import {
+  HARD_BOOKING_STATUSES,
   VenueAvailabilityStatus,
   VenueErrorCode,
   VenuePublicationStatus,
@@ -19,6 +20,15 @@ import {
 import type { Prisma } from "../generated/prisma/client";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
+import { computeDaySlotStatuses, type BookingWindow, type Interval, type SlotForStatus } from "./availability-engine";
+import {
+  civilDayLoadEndMs,
+  civilDayStartMs,
+  civilTodayAt,
+  civilUtcMs,
+  parseCivilDate,
+  type CivilDate
+} from "./availability-time";
 import { SERVICE_SELECT, toServiceDTO } from "./services.service";
 
 /** Colonnes des cartes de la liste (VenueSummaryDTO) — ni taux, ni GPS.
@@ -92,6 +102,25 @@ const VENUE_PUBLIC_SELECT = {
 // un `orderBy` en TABLEAU, et `as const` le rendrait readonly — les types
 // générés par Prisma le refusent. `satisfies` valide sans élargir les `true`.
 
+/** Regroupe des lignes plates par identifiant de salle, en projetant chaque
+ *  ligne au passage. Trois requêtes rendent trois tableaux SANS ordre par
+ *  salle : sans ce regroupement, chaque salle relirait les trois tableaux
+ *  entiers — quadratique dès la deuxième page. */
+function groupBy<Row, Out>(
+  rows: readonly Row[],
+  keyOf: (row: Row) => string,
+  project: (row: Row) => Out
+): Map<string, Out[]> {
+  const out = new Map<string, Out[]>();
+  for (const row of rows) {
+    const key = keyOf(row);
+    const bucket = out.get(key);
+    if (bucket === undefined) out.set(key, [project(row)]);
+    else bucket.push(project(row));
+  }
+  return out;
+}
+
 type VenueSummaryRow = Prisma.VenueGetPayload<{ select: typeof VENUE_SUMMARY_SELECT }>;
 type VenuePublicRow = Prisma.VenueGetPayload<{ select: typeof VENUE_PUBLIC_SELECT }>;
 
@@ -128,6 +157,12 @@ export class VenuesPublicService {
   private readonly urlOf = (key: string): string => this.storage.publicUrl(key);
 
   async list(query: VenueListQueryInput): Promise<VenueListResponse> {
+    // ⚠ AVANT toute requête. Une date passée ne se calcule pas : elle se
+    // refuse. Voir `AVAILABLE_ON_PAST` — écart assumé avec D49, motivé par la
+    // différence entre une FENÊTRE (qui rétrécit) et un POINT (qui se
+    // déplacerait en silence si on l'écrêtait).
+    const annotateOn = query.availableOn === undefined ? null : this.civilDateOrRefusePast(query.availableOn);
+
     const amenityKeys = [...new Set((query.amenities ?? "").split(",").filter((k) => k.length > 0))];
     const styleKeys = [...new Set((query.styles ?? "").split(",").filter((k) => k.length > 0))];
 
@@ -187,12 +222,146 @@ export class VenuesPublicService {
       this.prisma.venue.count({ where })
     ]);
 
+    // ⚠ APRÈS la page, et bornée par les salles de la page : c'est ce qui rend
+    // l'annotation O(page) et non O(catalogue). Le tri, la pagination et le
+    // `total` ne changent PAS — annoter n'est pas filtrer.
+    const availability = annotateOn === null ? new Map<string, boolean | null>() : await this.annotatePage(rows, annotateOn);
+
     return {
-      items: rows.map((row) => this.toSummary(row)),
+      items: rows.map((row) => this.toSummary(row, availability)),
       total,
       page: query.page,
-      pageSize: query.pageSize
+      pageSize: query.pageSize,
+      // ÉCHO : l'appelant ne doit jamais PRÉSUMER la date sur laquelle porte
+      // l'annotation, pas plus qu'il ne présume les bornes de D49.
+      availableOn: query.availableOn ?? null
     };
+  }
+
+  /**
+   * Date civile validée par Zod (forme + existence) → date civile PAS ENCORE
+   * PASSÉE à Alger, ou 400.
+   *
+   * ⚠ C'EST ICI, ET PAS DANS LE SCHÉMA. Le passé dépend de `Date.now()` : mis
+   * dans Zod, il rendrait `venueListQuerySchema` non déterministe pour tous ses
+   * autres appelants — dont les tests, qui deviendraient sensibles à l'heure de
+   * leur exécution. Le service est déjà le seul endroit du dépôt autorisé à
+   * lire l'horloge (D48).
+   *
+   * ⚠ UN SEUL appel à l'horloge. Deux pourraient tomber de part et d'autre de
+   * minuit et faire refuser une date que la requête vient d'accepter.
+   *
+   * ⚠ AUJOURD'HUI EST ACCEPTÉ. Le cas réel à faire passer avant d'écrire la
+   * borne (D55) : un couple qui cherche une salle *pour ce soir*. `<` et non
+   * `<=` — l'inverse refuserait la date la plus demandée de la journée.
+   */
+  private civilDateOrRefusePast(value: string): CivilDate {
+    // Zod a garanti la forme ET l'existence (`isRealCivilDate`) : ce `parse` ne
+    // peut plus rendre `null`. Le `??` n'est donc pas une branche vivante, il
+    // empêche seulement un `as CivilDate` qui mentirait au prochain lecteur.
+    const date = parseCivilDate(value);
+    if (date === null) this.throwAvailableOnPast();
+    if (civilUtcMs(date) < civilUtcMs(civilTodayAt(Date.now()))) this.throwAvailableOnPast();
+    return date;
+  }
+
+  /**
+   * Salle → « reste-t-il un créneau libre ce jour-là ? », pour les salles de LA
+   * PAGE et elles seules.
+   *
+   * ⚠ TROIS REQUÊTES, PAS TROIS PAR SALLE. `venueId: { in: … }` les rend
+   * collectives sans en ajouter une : douze salles coûtent le même nombre
+   * d'allers-retours qu'une seule.
+   *
+   * ⚠ AUCUNE REQUÊTE DE FÉRIÉS. Les fériés ne déplacent que le PRIX, jamais la
+   * disponibilité — et l'annotation ne dit rien d'un prix. La quatrième requête
+   * du calendrier d'une salle n'a pas lieu d'être ici.
+   */
+  private async annotatePage(
+    rows: readonly VenueSummaryRow[],
+    date: CivilDate
+  ): Promise<Map<string, boolean | null>> {
+    const out = new Map<string, boolean | null>();
+    const venueIds = rows.map((row) => row.id);
+    if (venueIds.length === 0) return out;
+
+    const dayStartMs = civilDayStartMs(date);
+    // ⚠ PAS « minuit + 24 h ». Voir `civilDayLoadEndMs` : sans les 48 h, une
+    // réservation de 00h30 le lendemain ne serait pas chargée, et la soirée
+    // 20h→02h — le cas NORMAL d'un mariage algérien — serait annoncée libre.
+    const dayEndMs = civilDayLoadEndMs(date);
+
+    const [slotRows, bookingRows, blockRows] = await Promise.all([
+      // Pas d'`orderBy` : on teste une EXISTENCE (« au moins un créneau
+      // libre »), et un tri ne changerait pas la réponse. En ajouter un ferait
+      // croire que l'ordre porte un sens ici.
+      this.prisma.slotTemplate.findMany({
+        where: { venueId: { in: venueIds }, isActive: true },
+        select: { id: true, venueId: true, startMinutes: true, endMinutes: true }
+      }),
+      // ⚠ `PENDING` n'est PAS chargé (D101, arbitrage Ko). Ne pas le charger
+      // est plus sûr que le filtrer plus loin : un filtre s'oublie au prochain
+      // remaniement, une requête qui ne le demande pas ne peut pas le laisser
+      // passer.
+      this.prisma.booking.findMany({
+        where: {
+          venueId: { in: venueIds },
+          status: { in: [...HARD_BOOKING_STATUSES] },
+          startsAt: { lt: new Date(dayEndMs) },
+          endsAt: { gt: new Date(dayStartMs) }
+        },
+        select: { venueId: true, startsAt: true, endsAt: true, slotTemplateId: true }
+      }),
+      this.prisma.availabilityBlock.findMany({
+        where: {
+          venueId: { in: venueIds },
+          blockedFrom: { lt: new Date(dayEndMs) },
+          blockedUntil: { gt: new Date(dayStartMs) }
+        },
+        select: { venueId: true, blockedFrom: true, blockedUntil: true }
+      })
+    ]);
+
+    const slotsByVenue = groupBy(slotRows, (row) => row.venueId, (row) => ({
+      id: row.id,
+      startMinutes: row.startMinutes,
+      endMinutes: row.endMinutes
+    }));
+    const bookingsByVenue = groupBy(bookingRows, (row) => row.venueId, (row) => ({
+      startMs: row.startsAt.getTime(),
+      endMs: row.endsAt.getTime(),
+      slotTemplateId: row.slotTemplateId,
+      // Toujours `true` : seuls ACCEPTED et CONFIRMED ont été chargés. Écrit en
+      // toutes lettres plutôt que déduit d'un statut qu'on ne sélectionne même
+      // pas — le jour où la requête changerait, cette ligne devrait changer.
+      hard: true
+    }));
+    const blocksByVenue = groupBy(blockRows, (row) => row.venueId, (row) => ({
+      startMs: row.blockedFrom.getTime(),
+      endMs: row.blockedUntil.getTime()
+    }));
+
+    for (const row of rows) {
+      const slots: SlotForStatus[] = slotsByVenue.get(row.id) ?? [];
+      // ⚠ AUCUN CRÉNEAU ACTIF ⇒ `null`, jamais `false`. Une telle salle n'est
+      // réservable AUCUN jour : la griser dirait « pas ce jour-là », ce qui est
+      // faux par sous-entendu et invite à réessayer une autre date.
+      if (slots.length === 0) {
+        out.set(row.id, null);
+        continue;
+      }
+      const statuses = computeDaySlotStatuses({
+        dayStartMs,
+        slots,
+        bookings: (bookingsByVenue.get(row.id) ?? []) as BookingWindow[],
+        blocks: (blocksByVenue.get(row.id) ?? []) as Interval[],
+        // SINGLE_SLOT : une réservation dure sur n'importe quel créneau ferme
+        // la journée entière. Le moteur porte cette règle, pas ce service.
+        singleSlot: row.bookingMode === "SINGLE_SLOT"
+      });
+      out.set(row.id, statuses.some((entry) => entry.status === "AVAILABLE"));
+    }
+    return out;
   }
 
   async bySlug(slug: string): Promise<VenuePublicDTO> {
@@ -228,7 +397,17 @@ export class VenuesPublicService {
     throw new NotFoundException({ code: VenueErrorCode.VENUE_NOT_FOUND, message: "venue.errors.notFound" });
   }
 
-  private toSummary(row: VenueSummaryRow): VenueSummaryDTO {
+  /** 400 EXPLICITE, jamais une page « aucune salle disponible ». La différence
+   *  compte : « personne n'est libre ce jour-là » invite à changer de date,
+   *  « cette date est passée » dit qu'il n'y avait rien à demander. */
+  private throwAvailableOnPast(): never {
+    throw new BadRequestException({
+      code: VenueErrorCode.AVAILABLE_ON_PAST,
+      message: "venue.errors.availableOnPast"
+    });
+  }
+
+  private toSummary(row: VenueSummaryRow, availability: ReadonlyMap<string, boolean | null>): VenueSummaryDTO {
     return {
       id: row.id,
       slug: row.slug,
@@ -245,7 +424,10 @@ export class VenuesPublicService {
       ceremonyType: row.ceremonyType,
       publicationStatus: row.publicationStatus,
       coverThumbUrl: row.photos[0] === undefined ? null : this.urlOf(row.photos[0].thumbKey),
-      photoCount: row._count.photos
+      photoCount: row._count.photos,
+      // `??` et non `.get()` nu : une carte vide (question non posée) doit
+      // rendre `null`, pas `undefined` — le contrat annonce `boolean | null`.
+      availableOnDate: availability.get(row.id) ?? null
     };
   }
 

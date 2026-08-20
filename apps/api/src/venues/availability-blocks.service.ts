@@ -15,13 +15,21 @@
 // relâchement : elle est ici parce qu'aucune contrainte ne peut la porter.
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import {
+  HARD_BOOKING_STATUSES,
   VenueErrorCode,
   type AvailabilityBlockCreateInput,
   type AvailabilityBlockDTO,
   type AvailabilityWindowQueryInput
 } from "@zwadj/types";
 import { PrismaService } from "../prisma/prisma.service";
-import { civilDateTimeToMs, civilDayStartMs, msToCivilDateTime, parseCivilDate, type CivilDate } from "./availability-time";
+import {
+  civilDateTimeToMs,
+  civilDayStartMs,
+  msToCivilDateTime,
+  parseCivilDate,
+  SLOT_END_MAX_MINUTES,
+  type CivilDate
+} from "./availability-time";
 
 const BLOCK_SELECT = {
   id: true,
@@ -32,15 +40,13 @@ const BLOCK_SELECT = {
 } as const;
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-/** Même plafond que la disponibilité publique : un blocage recouvrant un
- *  créneau qui franchit minuit doit apparaître dans la fenêtre du jour. */
-const SLOT_END_MAX_MINUTES = 2880;
+// ⚠ `SLOT_END_MAX_MINUTES` et `HARD_BOOKING_STATUSES` étaient RECOPIÉS ici.
+// Les deux sont désormais partagés (`availability-time.ts` et `@zwadj/types`) :
+// ce fichier, la disponibilité publique et la liste publique bornaient la même
+// fenêtre et testaient les mêmes statuts en trois exemplaires. Seules ces deux
+// -là s'opposent à un blocage — une demande PENDING ne verrouille rien : poser
+// un bloc par-dessus est précisément la façon dont le pro dit non (D101).
 const MINUTE_MS = 60_000;
-
-/** Seules ces deux-là s'opposent à un blocage. Une demande PENDING ne
- *  verrouille rien : poser un bloc par-dessus est précisément la façon dont le
- *  pro dit non. */
-const HARD_BOOKING_STATUSES = ["ACCEPTED", "CONFIRMED"] as const;
 
 interface BlockRow {
   id: string;

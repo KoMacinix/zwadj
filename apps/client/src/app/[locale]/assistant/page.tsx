@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import { getAmenities, getVenueStyles, getWilayas } from "../../../lib/api";
 import { FilterWizard } from "../../../components/filter-wizard";
+import { publicMetadata } from "../../../lib/seo";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  // ⚠ `noindex, follow`. L'assistant ne PORTE aucun contenu : il pose des
+  // questions et redirige vers `/salles`. L'indexer mettrait un formulaire
+  // vide en face d'une requête qui cherchait une salle. `follow` reste vrai —
+  // le chemin vers `/salles` et les fiches passe par ici.
+  return publicMetadata({ locale, canonicalPath: "/assistant", indexable: false });
+}
 
 // Assistant de filtres — composant SERVEUR.
 //

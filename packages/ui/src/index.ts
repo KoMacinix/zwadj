@@ -16,6 +16,15 @@ export {
   StarIcon,
   VenueIcon
 } from "./icons";
+export {
+  JourneyCard,
+  JourneyConnector,
+  JourneyRail,
+  JourneyRecap,
+  type JourneyRecapRow,
+  type JourneyStep,
+  type JourneyStepState
+} from "./journey";
 export { ZwadjLogo, ZwadjLogoIcon } from "./logo";
 export { AmenityIcon } from "./amenity-icon";
 export { ThemeToggle, type ThemeToggleProps } from "./theme-toggle";

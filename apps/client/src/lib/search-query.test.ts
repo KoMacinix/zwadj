@@ -15,6 +15,7 @@ describe("parseSearchParams", () => {
       amenities: [],
       styles: [],
       ceremonyType: "",
+      availableOn: "",
       sort: "recent",
       page: 1
     });
@@ -147,6 +148,50 @@ describe("pageWindow", () => {
     expect(pageWindow(9, 20)).toEqual([1, null, 8, 9, 10, null, 20]);
     expect(pageWindow(1, 20)).toEqual([1, 2, null, 20]);
     expect(pageWindow(20, 20)).toEqual([1, null, 19, 20]);
+  });
+});
+
+// ── Lot `availableOn` ───────────────────────────────────────────────────────
+describe("availableOn — la date d'annotation", () => {
+  it("D55 — LE CAS RÉEL D'ABORD : une vraie date passe intacte, dans les deux sens", () => {
+    // La date de la maquette (« Mar 2 Juin 2026 »). Si la validation la
+    // refusait, ce serait la validation qui aurait tort.
+    const state = parseSearchParams({ availableOn: "2026-06-02" });
+    expect(state.availableOn).toBe("2026-06-02");
+    expect(toApiQuery(state).get("availableOn")).toBe("2026-06-02");
+    expect(toPublicQuery(state)).toContain("availableOn=2026-06-02");
+  });
+
+  it("une date à la BONNE FORME mais IRRÉELLE est abandonnée : février n'a pas de 31", () => {
+    // Le piège que `isRealCivilDate` existe pour attraper. L'envoyer produirait
+    // un 400 sur une page publique indexée.
+    expect(parseSearchParams({ availableOn: "2026-02-31" }).availableOn).toBe("");
+  });
+
+  it("le 29 février d'une année BISSEXTILE est accepté, celui d'une année commune non", () => {
+    expect(parseSearchParams({ availableOn: "2028-02-29" }).availableOn).toBe("2028-02-29");
+    expect(parseSearchParams({ availableOn: "2027-02-29" }).availableOn).toBe("");
+  });
+
+  it("une forme non conforme est abandonnée, jamais réécrite", () => {
+    for (const bad of ["2026-6-2", "02/06/2026", "hier", "2026-06-02T20:00", ""]) {
+      expect(parseSearchParams({ availableOn: bad }).availableOn).toBe("");
+    }
+  });
+
+  it("ABSENTE de l'URL ⇒ ABSENTE des deux querystrings : on ne pose pas une question qu'on n'a pas reçue", () => {
+    const state = parseSearchParams({});
+    expect(toApiQuery(state).has("availableOn")).toBe(false);
+    expect(toPublicQuery(state)).not.toContain("availableOn");
+  });
+
+  it("⚠ AUCUNE notion de « passé » ici : une date de 2020 traverse et part à l'API, seule autorité", () => {
+    // Trancher ici créerait une SECONDE autorité sur « aujourd'hui », qui
+    // divergerait de l'horloge d'Alger dès qu'un navigateur est ailleurs.
+    // C'est l'API qui refuse (400 AVAILABLE_ON_PAST).
+    const state = parseSearchParams({ availableOn: "2020-01-01" });
+    expect(state.availableOn).toBe("2020-01-01");
+    expect(toApiQuery(state).get("availableOn")).toBe("2020-01-01");
   });
 });
 

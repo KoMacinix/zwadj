@@ -14,7 +14,13 @@
 //     fonctionner sans JS (SEO + Android bas de gamme, backlog 24.6). La forme
 //     répétée est donc la CANONIQUE ; la jointure se fait au dernier moment,
 //     à l'appel de l'API.
-import { CEREMONY_TYPE_FILTERS, VENUE_LIST_SORTS, type CeremonyTypeFilter, type VenueListSort } from "@zwadj/types";
+import {
+  CEREMONY_TYPE_FILTERS,
+  isRealCivilDate,
+  VENUE_LIST_SORTS,
+  type CeremonyTypeFilter,
+  type VenueListSort
+} from "@zwadj/types";
 
 export const PAGE_SIZE = 12;
 
@@ -58,6 +64,19 @@ export interface SearchState {
   styles: string[];
   /** `""` | `"indoor"` | `"outdoor"` | `"mixed"` — filtre INCLUSIF (D66). */
   ceremonyType: string;
+  /** Lot `availableOn` — date civile `YYYY-MM-DD`, `""` si absente.
+   *
+   *  ⚠ ANNOTE, NE FILTRE PAS : les salles prises restent dans la page, grisées.
+   *  Le client cherche une salle ; lui en cacher une parce qu'elle est prise le
+   *  2 juin l'empêche de constater qu'elle est libre le 9.
+   *
+   *  ⚠ AUCUNE NOTION DE « PASSÉ » ICI, et c'est structurel. « Hier » dépend de
+   *  l'horloge d'Alger, que ce module ne lit pas et ne doit pas lire : un
+   *  navigateur au Canada ne calcule pas le même « aujourd'hui ». L'API est
+   *  seule autorité et refuse en 400 (`AVAILABLE_ON_PAST`) ; la page rend ce
+   *  refus. Trancher ici créerait une SECONDE autorité, qui dirait « date
+   *  passée » là où Alger dit « c'est aujourd'hui ». */
+  availableOn: string;
   sort: VenueListSort;
   page: number;
 }
@@ -124,6 +143,12 @@ export function parseSearchParams(raw: RawSearchParams): SearchState {
     atCeiling(positiveInteger(first(raw.maxPrice)), BUDGET_CEILING)
   );
 
+  // ⚠ D55 — le cas RÉEL avant la borne : `2026-06-02` doit passer, et
+  // `2026-02-31` doit tomber. La bonne FORME ne fait pas une date : février n'a
+  // pas de 31. `isRealCivilDate` valide par aller-retour, et c'est la MÊME
+  // fonction que le schéma de l'API — pas une seconde règle à faire diverger.
+  const availableOnRaw = first(raw.availableOn);
+
   const sortRaw = first(raw.sort) as VenueListSort;
   const pageRaw = Number(first(raw.page));
 
@@ -141,6 +166,11 @@ export function parseSearchParams(raw: RawSearchParams): SearchState {
     amenities: [...new Set(amenities)].sort(),
     styles: [...new Set(styles)].sort(),
     ceremonyType: CEREMONY_TYPE_FILTERS.includes(ceremonyRaw as CeremonyTypeFilter) ? ceremonyRaw : "",
+    // Une date irréelle est SILENCIEUSEMENT abandonnée, comme les autres
+    // valeurs mal formées de cette fonction : l'envoyer produirait un 400 sur
+    // une page publique indexée, ce qui est un accident (même motif que
+    // `positiveInteger`).
+    availableOn: isRealCivilDate(availableOnRaw) ? availableOnRaw : "",
     sort: VENUE_LIST_SORTS.includes(sortRaw) ? sortRaw : "recent",
     page: Number.isInteger(pageRaw) && pageRaw >= 1 ? pageRaw : 1
   };
@@ -158,6 +188,7 @@ export function toApiQuery(state: SearchState): URLSearchParams {
   if (state.amenities.length > 0) query.set("amenities", state.amenities.join(","));
   if (state.styles.length > 0) query.set("styles", state.styles.join(","));
   if (state.ceremonyType) query.set("ceremonyType", state.ceremonyType);
+  if (state.availableOn) query.set("availableOn", state.availableOn);
   query.set("sort", state.sort);
   query.set("page", String(state.page));
   query.set("pageSize", String(PAGE_SIZE));
@@ -178,6 +209,7 @@ export function toPublicQuery(state: SearchState, page = state.page): string {
   for (const amenity of state.amenities) query.append("amenities", amenity);
   for (const style of state.styles) query.append("styles", style);
   if (state.ceremonyType) query.set("ceremonyType", state.ceremonyType);
+  if (state.availableOn) query.set("availableOn", state.availableOn);
   if (state.sort !== "recent") query.set("sort", state.sort);
   if (page > 1) query.set("page", String(page));
   const serialized = query.toString();

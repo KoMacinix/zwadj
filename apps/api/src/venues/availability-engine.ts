@@ -27,10 +27,19 @@ export type SlotAvailabilityStatus = (typeof SLOT_AVAILABILITY_STATUSES)[number]
 /** Gravité croissante : le plus grave l'emporte quand plusieurs s'appliquent. */
 const SEVERITY: Record<SlotAvailabilityStatus, number> = { AVAILABLE: 0, REQUESTED: 1, BOOKED: 2, BLOCKED: 3 };
 
-export interface SlotForAvailability {
+/** ⚠ SCINDÉ du type complet au lot `availableOn` : ce que le STATUT exige, et
+ *  rien de plus. La liste publique annote « libre ce jour-là » sans avoir
+ *  besoin d'un prix, et ses SELECT ne chargent donc ni `basePriceCents` ni les
+ *  règles. Sans cette scission, l'appelant devrait inventer un prix de zéro
+ *  pour satisfaire le type — un chiffre faux, produit par un moteur pur, que
+ *  le prochain lecteur croirait. */
+export interface SlotForStatus {
   id: string;
   startMinutes: number;
   endMinutes: number;
+}
+
+export interface SlotForAvailability extends SlotForStatus {
   basePriceCents: number;
   rules: readonly PricingRuleLike[];
 }
@@ -88,6 +97,54 @@ export function computeDayAvailability(params: {
 }): SlotAvailability[] {
   const { dayStartMs, day, slots, bookings, blocks, singleSlot } = params;
 
+  // ⚠ LE STATUT N'EST PLUS CALCULÉ ICI. Il vient de `computeDaySlotStatuses`,
+  // partagé avec la liste publique. Deux implémentations du recouvrement, même
+  // identiques au premier jour, finiraient par répondre autrement — et le
+  // client verrait alors une salle grisée dans la grille et libre dans son
+  // calendrier, ou l'inverse. C'est le pire des écarts (D78).
+  return computeDaySlotStatuses({ dayStartMs, slots, bookings, blocks, singleSlot }).map((entry) => {
+    const price = resolveSlotPrice(entry.slot.basePriceCents, entry.slot.rules, day);
+    return {
+      slotTemplateId: entry.slot.id,
+      status: entry.status,
+      priceCents: price.priceCents,
+      ruleId: price.ruleId
+    };
+  });
+}
+
+/** ⚠ L'ENTRÉE PORTE SON CRÉNEAU, elle ne renvoie pas un index.
+ *
+ *  Premier jet : `computeDaySlotStatuses` rendait `{ slotTemplateId, status }`
+ *  et l'appelant relisait `statuses[index]` en parallèle de `slots`. Le
+ *  compilateur l'a refusé (`noUncheckedIndexedAccess`) — et il avait raison sur
+ *  le fond, pas seulement sur la forme : « même cardinalité, même ordre » était
+ *  un invariant écrit en COMMENTAIRE, que rien n'aurait fait rougir le jour où
+ *  un filtrage serait apparu dans le moteur. Renvoyer le créneau LUI-MÊME rend
+ *  l'appariement structurel : il n'y a plus d'invariant à tenir. */
+export interface SlotStatus<S extends SlotForStatus = SlotForStatus> {
+  slot: S;
+  status: SlotAvailabilityStatus;
+}
+
+/**
+ * Statut de chaque créneau pour UN jour, SANS prix — le cœur commun au
+ * calendrier d'une salle (`computeDayAvailability`) et à l'annotation de la
+ * liste publique (`availableOn`).
+ *
+ * `singleSlot` : la salle n'accepte qu'une fête par jour. Une réservation dure
+ * sur n'importe quel créneau ferme donc TOUS les créneaux du jour — sinon le
+ * client choisirait une case que la salle ne peut pas honorer.
+ */
+export function computeDaySlotStatuses<S extends SlotForStatus>(params: {
+  dayStartMs: number;
+  slots: readonly S[];
+  bookings: readonly BookingWindow[];
+  blocks: readonly Interval[];
+  singleSlot: boolean;
+}): SlotStatus<S>[] {
+  const { dayStartMs, slots, bookings, blocks, singleSlot } = params;
+
   const computed = slots.map((slot) => {
     const window: Interval = {
       startMs: dayStartMs + slot.startMinutes * MINUTE_MS,
@@ -106,8 +163,7 @@ export function computeDayAvailability(params: {
       status = worst(status, booking.hard ? "BOOKED" : "REQUESTED");
     }
 
-    const price = resolveSlotPrice(slot.basePriceCents, slot.rules, day);
-    return { slotTemplateId: slot.id, status, priceCents: price.priceCents, ruleId: price.ruleId };
+    return { slot, status };
   });
 
   if (singleSlot && computed.some((entry) => entry.status === "BOOKED")) {

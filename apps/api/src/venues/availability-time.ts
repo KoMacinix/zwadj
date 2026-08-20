@@ -19,6 +19,30 @@ const MINUTE_MS = 60_000;
 const DAY_MS = 86_400_000;
 const OFFSET_MS = ALGERIA_UTC_OFFSET_MINUTES * MINUTE_MS;
 
+/** Plafond du CHECK `slot_templates_minutes_valid` (migration
+ *  `20260707000001_booking_constraints`) : `end_minutes <= 2880`, soit 48 h.
+ *  Rien de plus tardif ne peut recouvrir un créneau du jour considéré.
+ *
+ *  ⚠ REMONTÉ ICI au lot `availableOn`. La constante vivait dans
+ *  `availability.service.ts` ; la liste publique en a besoin pour borner
+ *  exactement la même fenêtre de chargement. La recopier aurait créé deux
+ *  bornes à faire diverger le jour où le CHECK bouge — et l'écart aurait été
+ *  SILENCIEUX : une soirée 20h→02h manquée d'un côté, vue de l'autre. Elle ne
+ *  pouvait pas être importée depuis le service : `availability.service.ts`
+ *  importe déjà `venues-public.service.ts` (`PUBLIC_BASE_WHERE`), le sens
+ *  inverse fermerait le cycle. */
+export const SLOT_END_MAX_MINUTES = 2880;
+
+/** Fin de la fenêtre de CHARGEMENT d'un jour civil : minuit local + 48 h.
+ *  ⚠ Ce n'est PAS la fin du jour. Un filtre `startsAt >= minuit` et
+ *  `endsAt <= minuit + 24h` raterait les deux cas qui comptent — le blocage de
+ *  six mois qui enjambe la journée sans y commencer, et la réservation de
+ *  00h30 le lendemain qui occupe la soirée 20h→02h du jour demandé. Le test de
+ *  recouvrement, lui, reste semi-ouvert et fait seul autorité. */
+export function civilDayLoadEndMs(date: CivilDate): number {
+  return civilDayStartMs(date) + SLOT_END_MAX_MINUTES * MINUTE_MS;
+}
+
 export interface CivilDate {
   year: number;
   /** 1–12. */

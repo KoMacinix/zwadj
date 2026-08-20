@@ -81,6 +81,11 @@ const ALGER_CENTRE = "0198e1c4-1000-7000-8000-00000000a16a";
  *  répétée six fois avec six occasions de se tromper d'un facteur 100. */
 const da = (dinars: number): number => dinars * 100;
 
+// ⚠ `availableOnDate: null` PARTOUT, et jamais `true`. Une salle inventée ne
+// peut rien dire d'une disponibilité réelle ; l'annoncer libre ferait tester le
+// chemin « pas grisée » avec une donnée qui ne vient d'aucun moteur. Le repli
+// de démonstration ne s'active de toute façon que sans résultat, donc sans
+// question de date posée — `null` est la valeur HONNÊTE, pas un remplissage.
 export const PREVIEW_VENUES: readonly PreviewVenue[] = [
   {
     id: "0198e1c4-2000-7000-8000-000000000001",
@@ -99,6 +104,7 @@ export const PREVIEW_VENUES: readonly PreviewVenue[] = [
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
     photoCount: 5,
+    availableOnDate: null,
     ratingAvg: 4.92,
     reviewCount: 142,
     badge: "favourite"
@@ -120,6 +126,7 @@ export const PREVIEW_VENUES: readonly PreviewVenue[] = [
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800&q=80",
     photoCount: 4,
+    availableOnDate: null,
     ratingAvg: 4.87,
     reviewCount: 98
   },
@@ -140,6 +147,7 @@ export const PREVIEW_VENUES: readonly PreviewVenue[] = [
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80",
     photoCount: 4,
+    availableOnDate: null,
     ratingAvg: 4.95,
     reviewCount: 76,
     badge: "new"
@@ -161,6 +169,7 @@ export const PREVIEW_VENUES: readonly PreviewVenue[] = [
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "https://images.unsplash.com/photo-1578730169862-749bbdc763a8?w=800&q=80",
     photoCount: 4,
+    availableOnDate: null,
     ratingAvg: 4.99,
     reviewCount: 54,
     badge: "premium"
@@ -182,6 +191,7 @@ export const PREVIEW_VENUES: readonly PreviewVenue[] = [
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80",
     photoCount: 3,
+    availableOnDate: null,
     ratingAvg: 4.78,
     reviewCount: 211
   },
@@ -202,6 +212,7 @@ export const PREVIEW_VENUES: readonly PreviewVenue[] = [
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80",
     photoCount: 3,
+    availableOnDate: null,
     ratingAvg: 4.84,
     reviewCount: 189
   }

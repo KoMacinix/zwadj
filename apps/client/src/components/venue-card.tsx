@@ -24,11 +24,24 @@ import type { VenueCardData } from "../lib/preview-venues";
 export function VenueCard({
   venue,
   ar,
-  headingLevel = 2
+  headingLevel = 2,
+  unavailableOn = null
 }: {
   venue: VenueCardData;
   ar: boolean;
   headingLevel?: 2 | 3;
+  /** Lot `availableOn` — date `YYYY-MM-DD` à laquelle la salle n'a plus aucun
+   *  créneau libre, `null` sinon (défaut).
+   *
+   *  ⚠ LA CARTE RESTE UN LIEN. Griser dit « pas ce jour-là », pas « pas cette
+   *  salle » : le client doit pouvoir ouvrir la fiche et constater qu'elle est
+   *  libre une semaine plus tard. Un lien désactivé lui ferait croire que la
+   *  salle est hors course.
+   *
+   *  ⚠ La DATE est passée, pas un booléen : c'est elle qui fait la mention
+   *  visible. Un booléen aurait obligé la carte à retrouver la date ailleurs —
+   *  donc à porter une seconde source pour la même information. */
+  unavailableOn?: string | null;
 }) {
   const t = useTranslations("search");
   const Titre = headingLevel === 3 ? "h3" : "h2";
@@ -40,7 +53,7 @@ export function VenueCard({
   const reviews = venue.reviewCount;
 
   return (
-    <li className="venue-card">
+    <li className={unavailableOn === null ? "venue-card" : "venue-card is-unavailable"}>
       {/* La destination du détail est A8 : le lien pointe la route par SLUG
           (décision Flux A). */}
       <Link href={`/salles/${venue.slug}`} className="venue-card-link">
@@ -56,6 +69,14 @@ export function VenueCard({
           )}
 
           {venue.badge ? <span className="venue-card-badge">{t(`badge.${venue.badge}`)}</span> : null}
+
+          {/* ⚠ MENTION TEXTUELLE, pas seulement une opacité. Le grisé ne dit
+              rien à un lecteur d'écran, et rien du tout à qui ne distingue pas
+              les contrastes faibles — l'accessibilité AA est un invariant du
+              dépôt, pas une option de ce lot. */}
+          {unavailableOn === null ? null : (
+            <span className="venue-card-unavailable">{t("availableOn.cardBadge", { date: unavailableOn })}</span>
+          )}
 
           {/* Points DÉCORATIFS : ils disent « cette salle a plusieurs photos »,
               ils ne les font pas défiler — le DTO de liste ne porte que la

@@ -33,6 +33,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
 import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
+import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap } from "@zwadj/ui";
 import { useRouter } from "../i18n/navigation";
 import { countVenues } from "../lib/api";
 
@@ -233,65 +234,44 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
 
       {/* ⚠ Une liste ORDONNÉE : l'ordre, l'étape courante et le total ne doivent
           pas être seulement visuels. Le rail est latéral par `grid-area`, mais
-          reste le premier élément du DOM. */}
-      <nav className="wz-rail" aria-label={t("railLabel")}>
-        <ol>
-          {STEPS.map((s, i) => {
-            const editable = answered[s] && s !== step;
-            return (
-              <li
-                key={s}
-                className={s === step ? "is-current" : answered[s] ? "is-done" : "is-todo"}
-                aria-current={s === step ? "step" : undefined}
-              >
-                {/* Cliquer le numéro vaut « Modifier » — mais seulement là où
-                    « Modifier » existerait. Une étape sans réponse reste un
-                    `<span>` : rien à désactiver, rien à tabuler. */}
-                {editable ? (
-                  <button
-                    type="button"
-                    className="wz-rail-n wz-rail-btn"
-                    aria-label={t("editAria", { step: t(STEP_LABEL[s]) })}
-                    onClick={() => goTo(s)}
-                  >
-                    {/* ⚠ Glyphe TEXTE, et non une icône importée : `lucide-react` n'est
-                        pas une dépendance de l'app client (vérifié), et on
-                        n'ajoute pas un paquet d'icônes pour une coche. Le nom
-                        accessible du bouton vient de son `aria-label`. */}
-                    <span aria-hidden="true">✓</span>
-                  </button>
-                ) : (
-                  <span className="wz-rail-n" aria-hidden="true">
-                    {i + 1}
-                  </span>
-                )}
-                <span className="wz-rail-label">{t(STEP_LABEL[s])}</span>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+          reste le premier élément du DOM.
 
-      <ul className="wz-recap" aria-label={t("recapLabel")}>
-        {STEPS.filter((s) => s !== step && answered[s]).map((s) => (
-          <li key={s} className="wz-recap-row">
-            <div>
-              <span className="wz-recap-step">{t(STEP_LABEL[s])}</span>
-              <span className="wz-recap-value">{resume(s)}</span>
-            </div>
-            <button
-              type="button"
-              className="wz-btn wz-recap-edit"
-              aria-label={t("editAria", { step: t(STEP_LABEL[s]) })}
-              onClick={() => goTo(s)}
-            >
-              {t("edit")}
-            </button>
-          </li>
-        ))}
-      </ul>
+          ⚠ CHROME PARTAGÉE (`@zwadj/ui`). Le Pro et le Client rendaient deux
+          copies du même rail, et elles avaient DÉJÀ divergé : coche `lucide`
+          d'un côté, glyphe texte de l'autre. La `className` ne porte plus que
+          la MISE EN PAGE propre à cette app. */}
+      <JourneyRail
+        className="wz-rail"
+        label={t("railLabel")}
+        steps={STEPS.map((s) => ({
+          id: s,
+          label: t(STEP_LABEL[s]),
+          state: s === step ? "current" : answered[s] ? "done" : "todo",
+          // Cliquer la pastille vaut « Modifier » — seulement là où
+          // « Modifier » existerait.
+          editLabel: answered[s] && s !== step ? t("editAria", { step: t(STEP_LABEL[s]) }) : undefined
+        }))}
+        onEdit={(id) => goTo(id as Step)}
+      />
 
-      <section className="wz-card" ref={cardRef} tabIndex={-1} aria-labelledby="wz-question">
+      <JourneyRecap
+        className="wz-recap"
+        label={t("recapLabel")}
+        editText={t("edit")}
+        rows={STEPS.filter((s) => s !== step && answered[s]).map((s) => ({
+          id: s,
+          step: t(STEP_LABEL[s]),
+          value: resume(s),
+          editLabel: t("editAria", { step: t(STEP_LABEL[s]) })
+        }))}
+        onEdit={(id) => goTo(id as Step)}
+      />
+
+      {/* ⚠ Ne se rend QUE s'il a quelque chose à relier : un trait qui part de
+          rien ne relie rien. */}
+      {STEPS.some((s) => s !== step && answered[s]) ? <JourneyConnector className="wz-connector" /> : null}
+
+      <JourneyCard stepId={step} className="wz-card" labelledBy="wz-question" cardRef={cardRef}>
         <p className="wz-counter">{t("counter", { n: stepIndex + 1, total: STEPS.length })}</p>
         <h2 id="wz-question" className="wz-question">
           {t(question[step])}
@@ -471,7 +451,7 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
             </div>
           </>
         ) : null}
-      </section>
+      </JourneyCard>
     </main>
   );
 }

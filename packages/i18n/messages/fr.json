@@ -359,6 +359,9 @@
     "locale": {
       "toArabic": "Afficher cette page en arabe",
       "toFrench": "Afficher cette page en français"
+    },
+    "errors": {
+      "routeNotFound": "Cette adresse n'existe pas sur le serveur."
     }
   },
   "footer": {
@@ -558,6 +561,13 @@
       "next": "Suivant",
       "page": "Page {page}",
       "current": "Page {page}, page courante"
+    },
+    "availableOn": {
+      "notice": "Disponibilité affichée pour le {date}. Les salles grisées n'ont plus de créneau libre ce jour-là.",
+      "cardBadge": "Complet le {date}",
+      "pastTitle": "Cette date est déjà passée",
+      "pastBody": "La date demandée dans l'adresse est antérieure à aujourd'hui : aucune disponibilité ne peut être calculée pour ce jour.",
+      "pastAction": "Voir les salles sans filtre de date"
     }
   },
   "service": {
@@ -684,7 +694,8 @@
       "visitAlreadyBooked": "Vous avez déjà un rendez-vous de visite à venir dans cette salle. Annulez-le pour en choisir un autre.",
       "visitBookingNotFound": "Ce rendez-vous est introuvable.",
       "visitBookingPast": "Ce rendez-vous est déjà passé : il ne peut plus être annulé.",
-      "styleNotFound": "Ce style n'existe pas."
+      "styleNotFound": "Ce style n'existe pas.",
+      "availableOnPast": "La date demandée est déjà passée : la disponibilité ne peut pas être calculée."
     },
     "ui": {
       "list": {
@@ -1299,5 +1310,11 @@
     "stepTaste": "Style et équipements",
     "styles": "Style",
     "title": "Trouvons votre salle"
+  },
+  "notFound": {
+    "title": "Cette page n'existe pas",
+    "body": "Le lien est peut-être erroné, ou la page a été retirée.",
+    "venues": "Voir les salles",
+    "home": "Retour à l'accueil"
   }
 }

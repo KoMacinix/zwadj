@@ -36,6 +36,25 @@ export interface VenueSummaryDTO {
   coverThumbUrl: string | null;
   /** Lot A4 — signal « complétude » (le tri recommandé du 23.8 le consommera). */
   photoCount: number;
+  /** Lot `availableOn` — la salle a-t-elle ENCORE un créneau libre à la date
+   *  annotée ? ⚠ Ce champ ANNOTE, il ne filtre pas : la salle grisée reste
+   *  DANS la page et reste cliquable — le client peut vouloir changer de date
+   *  plutôt que de salle. Filtrer coûterait O(catalogue) là où annoter coûte
+   *  O(page).
+   *
+   *  ⚠ TROIS VALEURS, ET AUCUNE N'EST « ZÉRO » :
+   *   - `true`  : au moins un créneau actif reste AVAILABLE ce jour-là ;
+   *   - `false` : tous les créneaux actifs sont pris ou bloqués ⇒ GRISÉE ;
+   *   - `null`  : rien à dire. Deux cas, distingués par `VenueListResponse
+   *     .availableOn` : soit la question n'a pas été posée (l'écho vaut `null`),
+   *     soit elle l'a été et la salle n'a AUCUN créneau actif (l'écho porte la
+   *     date). Une salle sans créneau n'est réservable aucun jour : la griser
+   *     dirait « pas ce jour-là », ce qui est faux par sous-entendu.
+   *
+   *  ⚠ `PENDING` ne grise PAS (D101, arbitrage Ko) : une demande en attente ne
+   *  verrouille rien — deux couples peuvent demander la même date, le pro
+   *  tranche. Seul le DUR (`ACCEPTED`/`CONFIRMED`) et les blocages pro grisent. */
+  availableOnDate: boolean | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -463,7 +482,19 @@ export const VenueErrorCode = {
   /** D62 (C3) — 409 : on n'annule pas un rendez-vous déjà passé. « Le client a
    *  annulé » et « le client n'est pas venu » ne sont pas le même fait, et
    *  écraser l'un par l'autre trompe le pro. */
-  VISIT_BOOKING_PAST: "VISIT_BOOKING_PAST"
+  VISIT_BOOKING_PAST: "VISIT_BOOKING_PAST",
+  /** Lot `availableOn` — 400 : la date d'annotation demandée est DÉJÀ PASSÉE à
+   *  Alger. ⚠ ÉCART ASSUMÉ AVEC D49, et c'est la seule raison qui le justifie :
+   *  D49 écrête au lieu de rejeter parce qu'elle borne une FENÊTRE, et une
+   *  fenêtre qui rétrécit reste une réponse à la question posée. `availableOn`
+   *  est un POINT : l'écrêter à aujourd'hui répondrait sur un AUTRE jour que
+   *  celui demandé, en silence, et la grille grisée mentirait. Le sélecteur ne
+   *  propose aucune date passée — ce refus ne peut donc venir que d'un lien
+   *  forgé, d'un appel direct à l'API, ou d'un défaut : tous méritent de le
+   *  savoir. Reste intermittent au voisinage de minuit à Alger, et c'est
+   *  ACCEPTÉ : la veille au soir, la réponse honnête est « cette date est
+   *  passée ». */
+  AVAILABLE_ON_PAST: "AVAILABLE_ON_PAST"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -791,6 +822,16 @@ export const venueListQuerySchema = z
     ceremonyType: z
       .enum(CEREMONY_TYPE_FILTERS, { errorMap: () => ({ message: "venue.validation.ceremonyTypeInvalid" }) })
       .optional(),
+    /** Lot `availableOn` — date civile d'Alger `YYYY-MM-DD`. ANNOTE la page,
+     *  ne la filtre pas : voir `VenueSummaryDTO.availableOnDate`.
+     *
+     *  ⚠ Ce schéma ne refuse ICI que ce qui est DÉTERMINISTE — la forme et la
+     *  date irréelle (`2026-02-31` a la bonne forme et n'existe pas). Le passé
+     *  dépend de l'instant de la requête et de l'horloge d'Alger : il est
+     *  refusé par le SERVICE, seul détenteur de `Date.now()`
+     *  (`AVAILABLE_ON_PAST`). Le mettre ici forcerait Zod à lire une horloge et
+     *  rendrait ce schéma non déterministe pour tous ses autres appelants. */
+    availableOn: z.string().refine(isRealCivilDate, "venue.validation.dateFormat").optional(),
     /** Clés d'amenities séparées par des virgules — sémantique ET (toutes). */
     amenities: z
       .string()
@@ -823,6 +864,12 @@ export interface VenueListResponse {
   total: number;
   page: number;
   pageSize: number;
+  /** Lot `availableOn` — ÉCHO de la date annotée, `null` si la question n'a pas
+   *  été posée. Même raison que les bornes effectives de D49 : sans écho,
+   *  l'appelant devrait PRÉSUMER que la réponse porte sur la date qu'il croit
+   *  avoir envoyée. C'est aussi lui qui désambiguïse les deux `null` de
+   *  `availableOnDate` — question non posée, ou salle sans créneau actif. */
+  availableOn: string | null;
 }
 
 /**

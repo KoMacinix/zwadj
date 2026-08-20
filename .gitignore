@@ -28,3 +28,6 @@ apps/api/var/
 e2e/playwright-report/
 e2e/test-results/
 e2e/blob-report/
+# Sauvegarde temporaire des campagnes de neutralisation — présente UNIQUEMENT
+# si une campagne a été interrompue (elle est relue et purgée au redémarrage).
+.neutralisation-sauvegarde/

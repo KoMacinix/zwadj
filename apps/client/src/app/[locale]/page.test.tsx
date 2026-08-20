@@ -38,12 +38,13 @@ function salle(over: Partial<VenueSummaryDTO> = {}): VenueSummaryDTO {
     publicationStatus: "PUBLISHED",
     coverThumbUrl: null,
     photoCount: 0,
+    availableOnDate: null,
     ...over
   } as VenueSummaryDTO;
 }
 
 function liste(items: VenueSummaryDTO[]): VenueListResponse {
-  return { items, total: items.length, page: 1, pageSize: 6 };
+  return { items, total: items.length, page: 1, pageSize: 6, availableOn: null };
 }
 
 function poser(props: Partial<Parameters<typeof HomeView>[0]> = {}, locale: "fr" | "ar" = "fr") {

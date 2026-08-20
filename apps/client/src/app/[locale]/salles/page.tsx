@@ -10,6 +10,7 @@ import { SearchView } from "../../../components/search/search-view";
 import { previewVenuesFor } from "../../../lib/preview-venues";
 import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../lib/api";
 import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../lib/search-query";
+import { isVariant, publicMetadata } from "../../../lib/seo";
 
 // Rendu à la demande, EXPLICITE. La page l'est déjà de fait — elle attend
 // `searchParams`, une API dynamique de Next 15 — et le manifeste de prérendu le
@@ -25,10 +26,31 @@ import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../li
 // prérendu. La mise en cache de cette page relève d'un lot de performance.
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<RawSearchParams>;
+}): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "search" });
-  return { title: t("title"), description: t("intro") };
+  return {
+    title: t("title"),
+    description: t("intro"),
+    // ⛔ AVANT CE LOT, CETTE PAGE N'AVAIT NI `robots` NI `canonical` — comme
+    // toutes les autres. `availableOn` ouvre 365 URL par combinaison de
+    // filtres, mais la pagination et les filtres existants ouvraient déjà les
+    // leurs, en silence. On introduit donc la RÈGLE (`lib/seo.ts`), pas une
+    // exception pour le seul paramètre du jour.
+    //
+    // ⚠ `searchParams` BRUTS, et non `state` : `parseSearchParams` ÉCRASE ce
+    // qui ne filtre pas (poignée en butée, date irréelle, page 1). Une URL
+    // portant `?maxCapacity=500` deviendrait indexable après normalisation
+    // alors qu'elle est bien une seconde adresse pour la même page — ce que la
+    // règle veut précisément éviter.
+    ...publicMetadata({ locale, canonicalPath: "/salles", indexable: !isVariant(await searchParams) })
+  };
 }
 
 export default async function VenuesSearchPage({
@@ -44,7 +66,7 @@ export default async function VenuesSearchPage({
   // Les référentiels ne dépendent pas des résultats : quatre requêtes en
   // PARALLÈLE, pas quatre allers-retours en cascade. Sur réseau lent, c'est la
   // différence entre une page et trois attentes.
-  const [results, wilayas, amenities, styles] = await Promise.all([
+  const [outcome, wilayas, amenities, styles] = await Promise.all([
     searchVenues(toApiQuery(state)),
     getWilayas(),
     getAmenities(),
@@ -54,7 +76,7 @@ export default async function VenuesSearchPage({
   return (
     <SearchView
       state={state}
-      results={results}
+      outcome={outcome}
       wilayas={wilayas}
       amenities={amenities}
       styles={styles}

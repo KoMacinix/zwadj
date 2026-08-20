@@ -19,6 +19,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
 import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
+import type { SearchOutcome } from "../../lib/api";
 import { PREVIEW_VENUES } from "../../lib/preview-venues";
 import { parseSearchParams } from "../../lib/search-query";
 import { SearchView } from "./search-view";
@@ -72,12 +73,24 @@ function venue(n: number, over: Partial<VenueSummaryDTO> = {}): VenueSummaryDTO 
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "/api/v1/media/cover-1-thumb.webp",
     photoCount: 4,
+    availableOnDate: null,
     ...over
   } as VenueSummaryDTO;
 }
 
-function results(items: VenueSummaryDTO[], total = items.length, page = 1): VenueListResponse {
-  return { items, total, page, pageSize: 12 };
+function results(
+  items: VenueSummaryDTO[],
+  total = items.length,
+  page = 1,
+  availableOn: string | null = null
+): VenueListResponse {
+  return { items, total, page, pageSize: 12, availableOn };
+}
+
+/** Lot `availableOn` — `SearchView` reçoit désormais une ISSUE, pas un
+ *  résultat. `ok(...)` évite d'envelopper à la main dans chaque cas. */
+function ok(data: VenueListResponse): SearchOutcome {
+  return { kind: "ok", data };
 }
 
 function renderView(
@@ -89,7 +102,7 @@ function renderView(
     <NextIntlClientProvider locale={locale} messages={messages[locale]}>
       <SearchView
         state={parseSearchParams(raw)}
-        results={results([venue(1)])}
+        outcome={ok(results([venue(1)]))}
         wilayas={WILAYAS}
         amenities={AMENITIES}
         styles={STYLES}
@@ -114,25 +127,25 @@ describe("Recherche — états", () => {
   });
 
   it("aucun résultat : message d'élargissement, PAS un écran vide", () => {
-    renderView({ results: results([], 0) });
+    renderView({ outcome: ok(results([], 0)) });
     expect(screen.getByText("Aucune salle ne correspond à ces critères")).toBeInTheDocument();
   });
 
   it("API muette : état d'ERREUR distinct du vide — on ne dit pas « aucune salle » quand on n'en sait rien", () => {
-    renderView({ results: null });
+    renderView({ outcome: { kind: "unreachable" } });
     expect(screen.getByRole("alert")).toHaveTextContent("La recherche est momentanément indisponible");
     expect(screen.queryByText("Aucune salle ne correspond à ces critères")).toBeNull();
   });
 
   it("le compteur s'accorde au singulier", () => {
-    renderView({ results: results([venue(1)], 1) });
+    renderView({ outcome: ok(results([venue(1)], 1)) });
     expect(screen.getByRole("status")).toHaveTextContent("1 salle trouvée");
-    renderView({ results: results([venue(1), venue(2)], 37) });
+    renderView({ outcome: ok(results([venue(1), venue(2)], 37)) });
     expect(screen.getAllByRole("status")[1]).toHaveTextContent("37 salles trouvées");
   });
 
   it("UI-D5 — le NOMBRE est isolé dans son propre élément : c'est lui que le design accentue", () => {
-    const { container } = renderView({ results: results([venue(1), venue(2)], 37) });
+    const { container } = renderView({ outcome: ok(results([venue(1), venue(2)], 37)) });
     expect(container.querySelector(".results-count-n")).toHaveTextContent("37");
   });
 });
@@ -146,12 +159,12 @@ describe("Recherche — médias", () => {
   });
 
   it("une URL ABSOLUE (adapter S3/CDN) est laissée intacte", () => {
-    renderView({ results: results([venue(1, { coverThumbUrl: "https://cdn.zwadj.dz/c.webp" })]) });
+    renderView({ outcome: ok(results([venue(1, { coverThumbUrl: "https://cdn.zwadj.dz/c.webp" })])) });
     expect(screen.getByRole("presentation", { hidden: true }).getAttribute("src")).toBe("https://cdn.zwadj.dz/c.webp");
   });
 
   it("salle sans photo : un cartouche explicite, pas une image cassée", () => {
-    renderView({ results: results([venue(1, { coverThumbUrl: null })]) });
+    renderView({ outcome: ok(results([venue(1, { coverThumbUrl: null })])) });
     expect(screen.getByText("Photo à venir")).toBeInTheDocument();
     expect(document.querySelector("img")).toBeNull();
   });
@@ -275,7 +288,7 @@ describe("Recherche — filtres sans JavaScript", () => {
 
 describe("Recherche — pagination", () => {
   it("des LIENS, pas un « charger plus » : un bouton JS ne produit aucune URL indexable", () => {
-    renderView({ results: results([venue(1)], 40, 2) }, "fr", { page: "2", sort: "price_asc" });
+    renderView({ outcome: ok(results([venue(1)], 40, 2)) }, "fr", { page: "2", sort: "price_asc" });
     const nav = screen.getByRole("navigation", { name: "Pagination" });
     const suivant = within(nav).getByRole("link", { name: "Suivant" });
     // Le lien reporte les filtres courants : changer de page ne remet pas la
@@ -285,14 +298,14 @@ describe("Recherche — pagination", () => {
   });
 
   it("la page courante est signalée aux lecteurs d'écran", () => {
-    renderView({ results: results([venue(1)], 40, 2) }, "fr", { page: "2" });
+    renderView({ outcome: ok(results([venue(1)], 40, 2)) }, "fr", { page: "2" });
     const courante = screen.getByRole("link", { current: "page" });
     expect(courante).toHaveTextContent("2");
     expect(courante).toHaveAccessibleName("Page 2, page courante");
   });
 
   it("une seule page : aucune navigation de pagination", () => {
-    renderView({ results: results([venue(1)], 3) });
+    renderView({ outcome: ok(results([venue(1)], 3)) });
     expect(screen.queryByRole("navigation", { name: "Pagination" })).toBeNull();
   });
 });
@@ -337,13 +350,13 @@ describe("Recherche — bascule grille / carte (UI-D5)", () => {
 
 describe("Recherche — données de démonstration (UI-D5)", () => {
   it("ÉTEINT par défaut : sans `previewVenues`, un résultat vide reste un résultat vide", () => {
-    renderView({ results: results([], 0) });
+    renderView({ outcome: ok(results([], 0)) });
     expect(screen.getByText("Aucune salle ne correspond à ces critères")).toBeInTheDocument();
     expect(screen.queryByText(/Données de démonstration/)).toBeNull();
   });
 
   it("allumé + recherche vide : la GRILLE se remplit, et le bandeau dit que ces salles sont fausses", () => {
-    renderView({ results: results([], 0), previewVenues: PREVIEW_VENUES });
+    renderView({ outcome: ok(results([], 0)), previewVenues: PREVIEW_VENUES });
     expect(screen.getByText(/Données de démonstration/)).toBeInTheDocument();
     const liste = within(screen.getByRole("list", { name: "Salles à Alger" }));
     expect(liste.getByRole("heading", { name: "Salle El Aurassi Royale" })).toBeInTheDocument();
@@ -351,13 +364,13 @@ describe("Recherche — données de démonstration (UI-D5)", () => {
   });
 
   it("allumé mais recherche PLEINE : les vraies salles gagnent, aucun bandeau", () => {
-    renderView({ results: results([venue(1)]), previewVenues: PREVIEW_VENUES });
+    renderView({ outcome: ok(results([venue(1)])), previewVenues: PREVIEW_VENUES });
     expect(screen.queryByText(/Données de démonstration/)).toBeNull();
     expect(screen.getByRole("heading", { name: "Salle 1" })).toBeInTheDocument();
   });
 
   it("les salles de démonstration portent la note du design", () => {
-    renderView({ results: results([], 0), previewVenues: PREVIEW_VENUES });
+    renderView({ outcome: ok(results([], 0)), previewVenues: PREVIEW_VENUES });
     expect(screen.getByText("4,92")).toBeInTheDocument();
     expect(screen.getByText("(142)")).toBeInTheDocument();
   });
@@ -366,8 +379,95 @@ describe("Recherche — données de démonstration (UI-D5)", () => {
     // ⚠ Scopé au conteneur : `render` empile dans `document.body` et le
     // nettoyage n'a lieu qu'entre les tests — un `document.querySelectorAll`
     // recompterait les cartes d'un rendu précédent.
-    const { container } = renderView({ results: results([venue(1)]) });
+    const { container } = renderView({ outcome: ok(results([venue(1)])) });
     expect(container.querySelectorAll(".venue-card-rating")).toHaveLength(0);
     expect(container.querySelectorAll(".venue-card")).toHaveLength(1);
+  });
+});
+
+describe("Lot `availableOn` — annotation par date", () => {
+  const LE_2_JUIN = "2026-06-02";
+
+  it("`availableOnDate === false` ⇒ carte GRISÉE, avec une mention ÉCRITE", () => {
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(1);
+    // ⚠ Le grisé seul ne dit RIEN à un lecteur d'écran : la mention est la
+    // partie qui informe, le CSS n'en est que l'écho visuel.
+    expect(screen.getByText(`Complet le ${LE_2_JUIN}`)).toBeInTheDocument();
+  });
+
+  it("⚠ LA CARTE GRISÉE RESTE UN LIEN : « pas ce jour-là » n'est pas « pas cette salle »", () => {
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, LE_2_JUIN))
+    });
+    const carte = container.querySelector(".venue-card.is-unavailable");
+    // ⚠ Le `Link` est MOQUÉ en haut de ce fichier et rend un `<a href>` NU,
+    // sans préfixe de locale. L'attendu se relève du mock, pas de la route.
+    expect(carte?.querySelector("a.venue-card-link")).toHaveAttribute("href", "/salles/salle-1");
+  });
+
+  it("`availableOnDate === true` ⇒ AUCUN grisé, et la salle reste dans la page", () => {
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: true })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelectorAll(".venue-card")).toHaveLength(1);
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(0);
+  });
+
+  it("⚠ `null` NE GRISE PAS : « rien à dire » n'est pas « indisponible »", () => {
+    // Salle sans aucun créneau actif. La griser dirait « pas ce jour-là », ce
+    // qui est faux par sous-entendu — elle n'est réservable aucun jour.
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: null })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(0);
+  });
+
+  it("⚠ QUESTION NON POSÉE ⇒ aucun bandeau, aucun grisé, même avec des `false` en base", () => {
+    // L'écho vaut `null` : quoi qu'annonce l'item, l'écran n'a aucune date à
+    // afficher, donc il ne prétend rien. Sans cette garde, un `false` résiduel
+    // griserait une carte sous une page qui ne parle d'aucune date.
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, null))
+    });
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(0);
+    expect(container.querySelectorAll(".results-annotated")).toHaveLength(0);
+  });
+
+  it("un bandeau DIT sur quelle date porte l'annotation — sinon une URL partagée grise sans expliquer", () => {
+    // ⚠ Scopé par CLASSE et non par `role="status"` : le compteur de résultats
+    // en porte un aussi, et `getByRole` échouerait sur l'ambiguïté — ce qui
+    // aurait été un test rouge pour une raison qui n'est pas celle qu'il vise.
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: true })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelector(".results-annotated")?.textContent ?? "").toContain(LE_2_JUIN);
+  });
+
+  it("⚠ LA DATE AFFICHÉE VIENT DE L'ÉCHO, jamais de l'URL", () => {
+    // L'URL demande le 2 juin, le serveur répond avoir annoté le 9. C'est le 9
+    // qui doit s'afficher : l'inverse écrirait une date à côté d'une annotation
+    // calculée sur une autre (même piège que les bornes effectives de D49).
+    const { container } = renderView(
+      { outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, "2026-06-09")) },
+      "fr",
+      { availableOn: LE_2_JUIN }
+    );
+    const bandeau = container.querySelector(".results-annotated");
+    expect(bandeau?.textContent ?? "").toContain("2026-06-09");
+    expect(bandeau?.textContent ?? "").not.toContain(LE_2_JUIN);
+  });
+
+  it("DATE PASSÉE : message PROPRE, distinct de la panne, avec une sortie qui marche", () => {
+    const { container } = renderView({ outcome: { kind: "past-date" } }, "fr", { availableOn: "2020-01-01", cityId: "c1" });
+    expect(screen.getByRole("alert")).toHaveTextContent("Cette date est déjà passée");
+    // ⚠ Pas « la recherche est momentanément indisponible » : inviter à
+    // réessayer une requête qui ne marchera jamais est un piège à rechargement.
+    expect(screen.queryByText("La recherche est momentanément indisponible")).toBeNull();
+    // La sortie GARDE les autres filtres et ne retire que la date.
+    const sortie = container.querySelector(".state-panel a");
+    expect(sortie).toHaveAttribute("href", "/salles?cityId=c1");
   });
 });

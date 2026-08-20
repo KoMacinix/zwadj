@@ -16,6 +16,7 @@
 // `slot_templates_minutes_valid`) et le test de recouvrement est semi-ouvert.
 import { Injectable, NotFoundException } from "@nestjs/common";
 import {
+  HARD_BOOKING_STATUSES,
   VenueErrorCode,
   type AvailabilityWindowQueryInput,
   type BookingMode,
@@ -35,22 +36,25 @@ import {
   holidayKey,
   parseCivilDate,
   toCalendarDay,
+  SLOT_END_MAX_MINUTES,
   type CivilDate
 } from "./availability-time";
 import { RULE_SELECT } from "./pricing-rules.service";
 import { SLOT_ORDER_BY } from "./slot-templates.service";
 import { PUBLIC_BASE_WHERE, PUBLIC_DETAIL_STATUSES, SLUG_PATTERN } from "./venues-public.service";
 
-/** Plafond du CHECK `slot_templates_minutes_valid` : 48 h. Rien de plus tardif
- *  ne peut recouvrir un créneau du dernier jour de la fenêtre. */
-const SLOT_END_MAX_MINUTES = 2880;
+// ⚠ `SLOT_END_MAX_MINUTES` a DÉMÉNAGÉ dans `availability-time.ts` au lot
+// `availableOn` : la liste publique borne la même fenêtre de chargement, et
+// deux copies de cette borne divergeraient en silence.
 const MINUTE_MS = 60_000;
 
 /** Statuts qui DISENT quelque chose. DECLINED, EXPIRED et CANCELLED libèrent le
  *  créneau : ne pas les charger est plus sûr que les filtrer plus loin. */
 const BLOCKING_BOOKING_STATUSES = ["PENDING", "ACCEPTED", "CONFIRMED"] as const;
-/** Verrou DUR, doublé en base par `bookings_no_overlap_accepted_confirmed`. */
-const HARD_BOOKING_STATUSES = new Set<string>(["ACCEPTED", "CONFIRMED"]);
+/** Verrou DUR, doublé en base par `bookings_no_overlap_accepted_confirmed`.
+ *  ⚠ La LISTE vient de `@zwadj/types` (une seule autorité) ; le `Set` n'est
+ *  qu'une forme d'appel — ce fichier interroge l'appartenance ligne à ligne. */
+const HARD_BOOKING_STATUS_SET = new Set<string>(HARD_BOOKING_STATUSES);
 
 @Injectable()
 export class AvailabilityService {
@@ -191,7 +195,7 @@ export class AvailabilityService {
       // pas encore basculée compte QUAND MÊME : le statut fait foi. Une
       // seconde règle d'expiration lue à la volée finirait par diverger de
       // celle du job, et le client verrait deux vérités selon la page.
-      hard: HARD_BOOKING_STATUSES.has(row.status)
+      hard: HARD_BOOKING_STATUS_SET.has(row.status)
     }));
     const blocks: Interval[] = blockRows.map((row) => ({
       startMs: row.blockedFrom.getTime(),

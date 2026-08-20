@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { searchVenues } from "../../lib/api";
+import { publicMetadata } from "../../lib/seo";
 import { HomeView } from "../../components/home-view";
 import { previewVenuesFor } from "../../lib/preview-venues";
 
@@ -11,16 +13,32 @@ import { previewVenuesFor } from "../../lib/preview-venues";
 // prix aurait réécrit dans le navigateur une capacité que le serveur a déjà —
 // une seconde autorité sur « laquelle est la moins chère ».
 //
-// ⚠ `searchVenues` rend `null` quand l'API est injoignable, et une liste VIDE
-// quand elle répond sans résultat. La vue distingue les deux : « catalogue
-// vide » et « API éteinte » ne se disent pas pareil.
+// ⚠ `searchVenues` rend une ISSUE (lot `availableOn`), et l'accueil n'en
+// distingue que deux : il ne pose aucune question de date, donc `past-date` ne
+// peut pas en sortir. On replie donc tout ce qui n'est pas `ok` sur `null` —
+// « je ne sais pas » —, ce que la vue sait déjà dire autrement qu'un catalogue
+// vide : « catalogue vide » et « API éteinte » ne se disent pas pareil.
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  // La page la plus importante à indexer, et la seule qui ne portait aucune
+  // canonical alors qu'elle est atteignable par au moins trois adresses
+  // (`/`, `/fr`, `/fr/`).
+  return publicMetadata({ locale, canonicalPath: "/", indexable: true });
+}
+
 export default async function HomePage() {
-  const [recent, affordable] = await Promise.all([
+  const [recentOutcome, affordableOutcome] = await Promise.all([
     searchVenues(new URLSearchParams({ sort: "recent", pageSize: "6" })),
     searchVenues(new URLSearchParams({ sort: "price_asc", pageSize: "6" }))
   ]);
+  const recent = recentOutcome.kind === "ok" ? recentOutcome.data : null;
+  const affordable = affordableOutcome.kind === "ok" ? affordableOutcome.data : null;
 
   await getTranslations("home");
 

@@ -643,3 +643,53 @@ describe("La remise par canal (Q2) et le catalogue", () => {
     expect(message.textContent).not.toMatch(/aucune prestation/i);
   });
 });
+
+// ── Point D — chrome de parcours PARTAGÉE (`@zwadj/ui/journey`) ─────────────
+// ⚠ VOLET PRO du même contrôle que `apps/client/.../filter-wizard.test.tsx`.
+// Il est écrit DES DEUX CÔTÉS à dessein : le lot corrige justement le fait que
+// deux implémentations d'un même écran avaient divergé sans que personne ne le
+// voie. Une garde d'un seul côté aurait reproduit le défaut qu'elle surveille.
+describe("Point D — chrome partagée", () => {
+  it("⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation", async () => {
+    // Défaut présent CÔTÉ PRO AUSSI, depuis la première livraison :
+    // `animation: wk-step-in` était déclarée et n'a jamais rejoué, parce que
+    // React réconciliait une `<section>` stable. On mesure l'identité du nœud
+    // DOM — jsdom ne calcule pas les animations, et un test sur la classe CSS
+    // serait resté vert pendant toute la durée du défaut.
+    setup();
+    const avant = document.querySelector(".zj-card");
+    await repondreClient();
+    const apres = document.querySelector(".zj-card");
+    expect(apres).not.toBeNull();
+    expect(apres).not.toBe(avant);
+  });
+
+  it("le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro", () => {
+    // `grid-area` et la position collante restent propres à cet écran : si la
+    // `className` d'app sautait, le rail quitterait sa colonne.
+    setup();
+    expect(rail()).toHaveClass("zj-rail");
+    expect(rail()).toHaveClass("wk-rail");
+  });
+
+  it("le bouton « Modifier » est le composant partagé, identique au client", async () => {
+    setup();
+    await repondreClient();
+    const bouton = within(recap()).getByRole("button", { name: /Modifier/ });
+    expect(bouton).toHaveClass("zj-recap-edit");
+  });
+
+  it("⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite", async () => {
+    setup();
+    expect(document.querySelector(".zj-connector")).toBeNull();
+    await repondreClient();
+    expect(document.querySelector(".zj-connector")).not.toBeNull();
+  });
+
+  it("la coche du rail est une icône, la même que côté client", async () => {
+    setup();
+    await repondreClient();
+    const faite = rail().querySelector("li.is-done .zj-rail-n");
+    expect(faite?.querySelector("svg")).not.toBeNull();
+  });
+});

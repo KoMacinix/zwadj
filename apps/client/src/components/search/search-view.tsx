@@ -37,7 +37,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
-import { CEREMONY_TYPE_FILTERS, type AmenityDTO, type VenueListResponse, type VenueStyleDTO, type WilayaDTO } from "@zwadj/types";
+import { CEREMONY_TYPE_FILTERS, type AmenityDTO, type VenueStyleDTO, type WilayaDTO } from "@zwadj/types";
 import { AmenityIcon, GridViewIcon, MapViewIcon } from "@zwadj/ui";
 import { Link } from "../../i18n/navigation";
 // ⚠ La carte a QUITTÉ ce fichier pour `components/venue-card.tsx` : l'accueil
@@ -50,6 +50,7 @@ import { VenueCard } from "../venue-card";
 // retirer, puisque son usage dépend d'une prop évaluée à l'exécution. Six
 // salles inventées partaient ainsi chez chaque visiteur en production.
 import type { VenueCardData } from "../../lib/preview-venues";
+import type { SearchOutcome } from "../../lib/api";
 import {
   BUDGET_CEILING,
   BUDGET_FLOOR,
@@ -70,9 +71,12 @@ type ResultView = "grid" | "map";
 
 export interface SearchViewProps {
   state: SearchState;
-  /** `null` = l'API n'a pas répondu. Distinct d'un résultat vide : on ne dit
-   *  pas « aucune salle » quand on n'en sait rien. */
-  results: VenueListResponse | null;
+  /** Lot `availableOn` — l'ISSUE de la recherche, pas seulement son résultat.
+   *  `unreachable` ≠ résultat vide : on ne dit pas « aucune salle » quand on
+   *  n'en sait rien. Et `past-date` ≠ `unreachable` : « la recherche est
+   *  momentanément indisponible » invite à réessayer une requête qui ne
+   *  marchera jamais. */
+  outcome: SearchOutcome;
   wilayas: WilayaDTO[];
   amenities: AmenityDTO[];
   /** Référentiel des styles (D65). Vide si l'API n'a pas répondu : le panneau
@@ -87,13 +91,20 @@ export interface SearchViewProps {
   previewVenues?: readonly VenueCardData[] | null;
 }
 
-export function SearchView({ state, results, wilayas, amenities, styles, previewVenues = null }: SearchViewProps) {
+export function SearchView({ state, outcome, wilayas, amenities, styles, previewVenues = null }: SearchViewProps) {
   const t = useTranslations("search");
   const locale = useLocale();
   const ar = locale === "ar";
   const [view, setView] = useState<ResultView>("grid");
 
+  const results = outcome.kind === "ok" ? outcome.data : null;
   const totalPages = results ? Math.max(1, Math.ceil(results.total / results.pageSize)) : 1;
+
+  /** ⚠ La date d'annotation vient de l'ÉCHO de la réponse, jamais de l'état
+   *  local. Sans cela l'écran écrirait « indisponible le 2 juin » à côté d'une
+   *  annotation que le serveur aurait, elle, calculée sur un autre jour — le
+   *  même piège que les bornes effectives de D49. */
+  const annotatedOn = results?.availableOn ?? null;
 
   // Le repli de démonstration ne MASQUE rien : il ne s'active que là où la page
   // n'avait de toute façon aucune salle à montrer.
@@ -180,6 +191,22 @@ export function SearchView({ state, results, wilayas, amenities, styles, preview
             <h2 className="map-panel-title">{t("map.title")}</h2>
             <p className="map-panel-body">{t("map.soon")}</p>
           </div>
+        ) : outcome.kind === "past-date" ? (
+          // ⚠ AVANT la branche de panne, et c'est tout l'intérêt du type
+          // `SearchOutcome` : ce refus n'est pas un incident. Le sélecteur de
+          // date ne propose aucune date passée — arriver ici veut dire lien
+          // forgé, favori d'une saison à l'autre, ou défaut. On le DIT, et on
+          // offre le retour vers la recherche sans date plutôt qu'un
+          // « réessayez » qui ne marchera jamais.
+          <div className="state-panel" role="alert">
+            <h2>{t("availableOn.pastTitle")}</h2>
+            <p>{t("availableOn.pastBody")}</p>
+            <p>
+              <Link href={`/salles${toPublicQuery({ ...state, availableOn: "" })}`} className="btn btn-accent">
+                {t("availableOn.pastAction")}
+              </Link>
+            </p>
+          </div>
         ) : results === null && !showPreview ? (
           <div className="state-panel" role="alert">
             <h2>{t("results.errorTitle")}</h2>
@@ -201,9 +228,28 @@ export function SearchView({ state, results, wilayas, amenities, styles, preview
                 sélecteur de filtre — sans nom, ni un lecteur d'écran ni un
                 test ne distinguent les deux régions. Réutilise le titre,
                 aucune clé neuve. */}
+            {/* Bandeau de contexte : sans lui, un visiteur qui reçoit une URL
+                partagée voit des salles grisées sans savoir POURQUOI. La date
+                est celle de l'écho, pas celle de l'URL. */}
+            {annotatedOn === null ? null : (
+              <p className="results-annotated" role="status">
+                {t("availableOn.notice", { date: annotatedOn })}
+              </p>
+            )}
+
             <ul aria-label={t("title")} className="venue-grid">
               {items.map((venue) => (
-                <VenueCard key={venue.id} venue={venue} ar={ar} />
+                <VenueCard
+                  key={venue.id}
+                  venue={venue}
+                  ar={ar}
+                  // ⚠ `=== false` STRICTEMENT. `availableOnDate` a trois
+                  // valeurs : `null` veut dire « rien à dire » (question non
+                  // posée, ou salle sans créneau actif) et ne doit RIEN griser.
+                  // Un `!venue.availableOnDate` griserait tout le catalogue le
+                  // jour où la question n'est pas posée.
+                  unavailableOn={venue.availableOnDate === false ? annotatedOn : null}
+                />
               ))}
             </ul>
 

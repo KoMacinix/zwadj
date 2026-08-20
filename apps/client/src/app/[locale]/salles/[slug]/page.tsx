@@ -8,6 +8,7 @@
 // depuis le cache — l'ISR utile, sans dépendance au build.
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { publicMetadata } from "../../../../lib/seo";
 import { getTranslations } from "next-intl/server";
 import { VenueDetailView } from "../../../../components/venue/venue-detail-view";
 import { getVenueBySlug } from "../../../../lib/api";
@@ -22,7 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const venue = await getVenueBySlug(slug);
   if (!venue) {
     const t = await getTranslations({ locale, namespace: "venue.ui.notFound" });
-    return { title: t("title") };
+    // ⚠ Une fiche INTROUVABLE ne doit surtout pas être indexée, et ne doit pas
+    // se donner une canonical : elle désignerait une page qui rend un 404.
+    return { title: t("title"), robots: { index: false, follow: false } };
   }
 
   const ar = locale === "ar";
@@ -44,7 +47,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       // L'aperçu de partage a besoin d'une URL ABSOLUE : `mediaSrc` la fabrique
       // déjà pour l'affichage, elle sert ici telle quelle.
       images: cover ? [{ url: mediaSrc(cover.url) }] : undefined
-    }
+    },
+    // ⚠ LA PAGE QUE TOUT LE RESTE EXISTE POUR FAIRE INDEXER. Le `follow: true`
+    // des variantes de `/salles` n'a de valeur que si ce qu'il mène ici est
+    // indexable — et jusqu'à ce lot, cette page n'avait aucune canonical alors
+    // qu'elle est atteignable depuis autant d'URL de recherche qu'il existe de
+    // combinaisons de filtres.
+    ...publicMetadata({ locale, canonicalPath: `/salles/${slug}`, indexable: true })
   };
 }
 

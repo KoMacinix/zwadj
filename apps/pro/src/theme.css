@@ -587,88 +587,24 @@
      arabe. `margin-left` l'aurait cloué du mauvais côté. */
   margin-inline-start: auto;
 }
+/* ⚠ CHROME DÉPLACÉE dans `@zwadj/ui` (`styles.css`, bloc « parcours par
+   étapes »). Ce qui reste ici est la MISE EN PAGE propre au Pro. Le Client
+   portait le même bloc sous `.wz-*`, et les deux avaient déjà divergé — coche
+   icône contre coche texte, `flex-shrink` d'un seul côté, `:hover` manquant.
+   ⚠ `.wk-rail-n`, `.wk-rail-btn`, `.wk-rail-label`, `.wk-recap-row`,
+   `.wk-recap-step`, `.wk-recap-value`, `.wk-recap-edit` et `.wk-step-counter`
+   sont RETIRÉES : leurs éléments ne portent plus ces classes. Une règle dont
+   l'objet a disparu ne se laisse pas « au cas où » — elle devient du bruit que
+   le prochain lecteur croira utile. */
 .wk-rail {
   grid-area: rail;
   position: sticky;
   top: 24px;
 }
-.wk-rail ol {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.wk-connector {
+  grid-area: flow;
 }
-.wk-rail li {
-  display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
-  /* ⚠ Le TRAIT entre deux pastilles (demande ⑨) est un pseudo-élément, pas un
-     élément de plus : il n'a rien à dire à un lecteur d'écran. */
-  padding-block-end: 26px;
-  position: relative;
-}
-.wk-rail li:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: 15px;
-  top: 32px;
-  bottom: 6px;
-  inline-size: 2px;
-  background: var(--line);
-}
-.wk-rail li.is-done:not(:last-child)::before {
-  background: var(--accent);
-}
-.wk-rail-n {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 32px;
-  block-size: 32px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--ink-2);
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-  position: relative;
-  z-index: 1;
-}
-.wk-rail li.is-done .wk-rail-n {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--on-accent);
-}
-.wk-rail li.is-current .wk-rail-n {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--on-accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
-/* ⚠ Cliquer le numéro vaut « Modifier » : c'est un vrai `<button>`, donc il
-   prend le même traitement de focus que les autres commandes. Les étapes sans
-   réponse restent des `<span>` — rien à désactiver, rien à tabuler. */
-.wk-rail-btn {
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-}
-.wk-rail-btn:hover {
-  border-color: var(--ink);
-}
-.wk-rail-label {
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.wk-rail li.is-current .wk-rail-label {
-  color: var(--ink);
-  font-weight: 600;
-}
+
 .wk-recap,
 .wk-active,
 .wk-alert,
@@ -703,55 +639,13 @@
   }
 }
 
-/* Récapitulatif croissant. ⚠ La bordure de gauche est en `border-inline-start` :
-   en arabe elle doit passer à droite, et `border-left` l'y aurait clouée. */
-.wk-recap {
-  margin: 0 0 2px;
-  padding: 0;
-  list-style: none;
-}
-.wk-recap-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 13px 18px;
-  margin-block-end: 2px;
-  border: 1px solid var(--line);
-  border-inline-start: 3px solid var(--accent);
-  background: var(--surface);
-  animation: wk-recap-in 0.28s ease both;
-}
-.wk-recap-step {
-  display: block;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.wk-recap-value {
-  display: block;
-  margin-block-start: 3px;
-  font-size: 14px;
-  color: var(--ink);
-}
-.wk-recap-edit {
-  flex-shrink: 0;
-}
-
-/* Carte de l'étape active : même boîte que `.wk-card`, bordure de départ en
-   `--ink` — c'est la COULEUR de la bordure qui la distingue des confirmées. */
-.wk-active {
-  border-inline-start: 3px solid var(--ink);
-  animation: wk-step-in 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-.wk-step-counter {
-  margin: 0 0 6px;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
+/* ⚠ RETIRÉ AVEC LA CHROME PARTAGÉE : `.wk-recap` (détail), `.wk-recap-row`,
+   `.wk-recap-step`, `.wk-recap-value`, `.wk-recap-edit`, `@keyframes
+   wk-step-in`, `@keyframes wk-recap-in` et leur bloc `prefers-reduced-motion`.
+   Tout est dans `@zwadj/ui/styles.css`, y compris la remarque RTL :
+   `border-inline-start` et non `border-left`, sinon la bordure reste à gauche
+   en arabe. Rien n'est laissé « au cas où » — une règle sans objet est du bruit
+   que le prochain lecteur croira utile. */
 .wk-question {
   margin: 0 0 6px;
   font-size: 26px;
@@ -774,46 +668,6 @@
   margin-block-start: 18px;
 }
 
-/* ⚠ LES DEUX TRANSLATIONS SONT VERTICALES, DONC RIEN À MIROITER EN RTL — et
-   c'est une raison de les garder verticales. Un glissement horizontal écrit en
-   `translateX(-100%)` part du mauvais côté une fois sur deux. */
-@keyframes wk-step-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes wk-recap-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-/* ⚠ L'EXPORT FIGMA N'A AUCUN `prefers-reduced-motion` — zéro occurrence dans
-   tout le paquet. Se tromper vers « pas d'animation » coûte un peu d'élégance ;
-   se tromper vers « animation » peut déclencher un vertige chez quelqu'un qui a
-   justement demandé à en être protégé. L'inconfort n'est pas symétrique. */
-@media (prefers-reduced-motion: reduce) {
-  .wk-active,
-  .wk-recap-row {
-    animation: none;
-  }
-}
-
-.wk-card {
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background: var(--bg-2, var(--surface));
-  padding: 22px 24px 24px;
-}
 /* ⚠ `.wk-card-head` et `.wk-step-n` sont RETIRÉES avec le composant `Step`
    qui les portait : les trois cartes numérotées « 01 / 02 / 03 » n'existent
    plus. Leur remplaçant est `.wk-question` + `.wk-step-counter`, qui gardent le

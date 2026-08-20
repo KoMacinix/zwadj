@@ -1,3 +1,7 @@
+// ⚠ IMPORT DE VALEUR, pas `import type` : `VenueErrorCode` est un objet lu à
+// l'exécution pour reconnaître le refus de l'API. Un `import type` l'effacerait
+// à la compilation et la comparaison sauterait sur `undefined`.
+import { VenueErrorCode } from "@zwadj/types";
 import type {
   AmenityDTO,
   VenueAvailabilityResponse,
@@ -34,16 +38,58 @@ export async function getApiHealth(): Promise<ApiHealthResponse | { status: "unr
 // Tolérance aux pannes, comme `getApiHealth` : une API éteinte doit produire un
 // ÉTAT D'ERREUR rendu, jamais une exception qui casse la page.
 
-/** Résultats de recherche, ou `null` si l'API n'a pas répondu correctement. */
-export async function searchVenues(query: URLSearchParams): Promise<VenueListResponse | null> {
+/**
+ * Résultat de la recherche — TROIS issues, parce qu'elles se disent en trois
+ * phrases différentes à l'écran.
+ *
+ * ⚠ POURQUOI CE TYPE REMPLACE UN `| null`. Le lot `availableOn` a introduit un
+ * refus MÉTIER : une date déjà passée rend 400 `AVAILABLE_ON_PAST`. Replié sur
+ * `null` comme une panne, il se serait affiché « la recherche est momentanément
+ * indisponible » — un message faux, qui invite à réessayer une requête qui ne
+ * marchera jamais. Distinguer coûte un type ; ne pas distinguer coûte un
+ * visiteur qui recharge en boucle.
+ */
+export type SearchOutcome =
+  | { kind: "ok"; data: VenueListResponse }
+  /** La date d'annotation demandée est passée à Alger. L'URL a été forgée, ou
+   *  gardée en favori d'une saison à l'autre — le sélecteur, lui, ne propose
+   *  aucune date passée. */
+  | { kind: "past-date" }
+  /** API éteinte, réseau coupé, réponse illisible : on ne sait rien. */
+  | { kind: "unreachable" };
+
+export async function searchVenues(query: URLSearchParams): Promise<SearchOutcome> {
   try {
     // `no-store` : la publication d'une salle par l'admin doit se voir tout de
     // suite. Le cache de cette page relève d'un futur lot de performance.
     const res = await fetch(`${API_URL}/api/v1/venues?${query.toString()}`, { cache: "no-store" });
-    if (!res.ok) return null;
-    return (await res.json()) as VenueListResponse;
+    if (!res.ok) {
+      // ⚠ On lit le CODE, pas le statut seul. Un 400 peut venir d'ailleurs (un
+      // paramètre bricolé à la main), et il ne se dit pas de la même façon. Le
+      // corps est lu dans son PROPRE `try` : une réponse d'erreur sans JSON
+      // exploitable ne doit pas transformer un refus connu en panne inconnue.
+      if (res.status === 400) {
+        try {
+          // ⚠ LE CODE EST IMBRIQUÉ SOUS `message`, pas à la racine.
+          // `AllExceptionsFilter` enveloppe toute exception en
+          // `{ statusCode, message, path, timestamp }` où `message` porte le
+          // corps de la `HttpException` — donc `{ code, message }` pour nos
+          // erreurs métier. Forme RELEVÉE de `packages/api-client`
+          // (`auth-client.ts` : `body.message?.code`), qui la lit ainsi depuis
+          // le premier lot, et non écrite de mémoire : la lire à la racine
+          // n'aurait JAMAIS reconnu le refus, et l'écran aurait affiché « la
+          // recherche est momentanément indisponible » en production.
+          const body = (await res.json()) as { message?: { code?: string } };
+          if (body.message?.code === VenueErrorCode.AVAILABLE_ON_PAST) return { kind: "past-date" };
+        } catch {
+          /* corps illisible : on retombe sur « on ne sait rien ». */
+        }
+      }
+      return { kind: "unreachable" };
+    }
+    return { kind: "ok", data: (await res.json()) as VenueListResponse };
   } catch {
-    return null;
+    return { kind: "unreachable" };
   }
 }
 

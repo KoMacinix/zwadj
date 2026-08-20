@@ -1372,3 +1372,203 @@ button {
 .cal-status {
   font-size: 12px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Chrome de PARCOURS PAR ÉTAPES (`packages/ui/src/journey.tsx`)
+
+   ⚠ SEULE AUTORITÉ. Le Pro (`.wk-*`) et le Client (`.wz-*`) portaient chacun
+   leur copie de ce bloc, et les deux copies avaient déjà divergé — coche icône
+   contre coche texte, `flex-shrink` présent d'un côté seulement, `:hover`
+   absent d'un côté. Ce qui reste dans les feuilles des applications ne concerne
+   plus que la MISE EN PAGE (`grid-area`, position collante) : la chrome, elle,
+   ne se décide plus qu'ici.
+
+   Les applications gardent leurs jetons : `--accent` est rose côté client et
+   quasi-noir côté pro (D26). Rien n'est écrit en dur ici.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.zj-rail ol {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.zj-rail li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding-block-end: 26px;
+  position: relative;
+}
+/* Trait ENTRE PASTILLES — pseudo-élément : il n'a rien à dire à un lecteur
+   d'écran. À ne pas confondre avec `.zj-connector`, qui relie deux blocs. */
+.zj-rail li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 15px;
+  top: 32px;
+  bottom: 6px;
+  inline-size: 2px;
+  background: var(--line);
+  /* ① ANIMATION BULLE À BULLE — absente des deux applications avant ce lot.
+     Le trait se colore EN MÊME TEMPS que la pastille qu'il quitte, sinon la
+     progression saute au lieu de couler. */
+  transition: background 0.3s ease;
+}
+.zj-rail li.is-done:not(:last-child)::before {
+  background: var(--accent);
+}
+.zj-rail-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  z-index: 1;
+  /* ① Le cœur de l'animation bulle à bulle. `box-shadow` est listé pour que le
+     halo de l'étape courante grandisse au lieu d'apparaître. */
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.zj-rail li.is-done .zj-rail-n,
+.zj-rail li.is-current .zj-rail-n {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.zj-rail li.is-current .zj-rail-n {
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+/* La pastille cliquable est un vrai `<button>` : même traitement de focus que
+   les autres commandes, et un `:hover` qui dit qu'elle est cliquable — il
+   manquait côté client. */
+.zj-rail-btn {
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+.zj-rail-btn:hover {
+  border-color: var(--ink);
+}
+.zj-rail-label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition: color 0.25s ease;
+}
+.zj-rail li.is-current .zj-rail-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.zj-recap {
+  margin: 0 0 2px;
+  padding: 0;
+  list-style: none;
+}
+.zj-recap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px;
+  margin-block-end: 2px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+  background: var(--surface);
+  animation: zj-recap-in 0.28s ease both;
+}
+.zj-recap-step {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.zj-recap-value {
+  display: block;
+  margin-block-start: 3px;
+  font-size: 14px;
+  color: var(--ink);
+}
+/* ⚠ Manquait côté client : sans lui, « Modifier » se comprime dès qu'une
+   valeur récapitulée est longue — au premier nom de quartier un peu bavard. */
+.zj-recap-edit {
+  flex-shrink: 0;
+}
+
+/* ③ TRAIT VERTICAL DE LIAISON entre le dernier récapitulatif et la carte
+   active. Absent des deux applications avant ce lot. */
+.zj-connector {
+  display: block;
+  inline-size: 2px;
+  block-size: 14px;
+  margin-inline-start: 18px;
+  background: var(--accent);
+}
+
+/* ② La carte active. L'animation est enfin JOUÉE : `JourneyCard` remonte le
+   nœud à chaque étape (`key={stepId}`). Elle était déclarée depuis la première
+   livraison et n'avait jamais rejoué. */
+.zj-card {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg-2, var(--surface));
+  padding: 22px 24px 24px;
+  border-inline-start: 3px solid var(--ink);
+  animation: zj-step-in 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Les deux animations restent VERTICALES : un glissement horizontal écrit en
+   `translateX(-100%)` part du mauvais côté une fois sur deux en RTL. */
+@keyframes zj-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes zj-recap-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ⚠ Se tromper vers « pas d'animation » coûte un peu d'élégance ; se tromper
+   vers « animation » peut déclencher un vertige chez quelqu'un qui a justement
+   demandé à en être protégé. L'inconfort n'est pas symétrique.
+   ⚠ Les TRANSITIONS du rail sont coupées elles aussi — ce lot vient de les
+   ajouter, et une transition est une animation. */
+@media (prefers-reduced-motion: reduce) {
+  .zj-card,
+  .zj-recap-row {
+    animation: none;
+  }
+  .zj-rail-n,
+  .zj-rail-label,
+  .zj-rail li::before {
+    transition: none;
+  }
+}

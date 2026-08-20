@@ -14,6 +14,26 @@ import { bookingServiceChoiceSchema } from "./service";
 import { isRealCivilDate } from "./venue";
 
 
+/**
+ * Statuts qui VERROUILLENT réellement un créneau — le verrou DUR, doublé en
+ * base par l'`EXCLUDE` gist `bookings_no_overlap_accepted_confirmed`.
+ *
+ * ⚠ `PENDING` N'EN FAIT PAS PARTIE, et c'est D101 : une demande en attente ne
+ * verrouille rien — deux couples peuvent demander la même date, le pro tranche.
+ * Elle est SIGNALÉE au calendrier d'une salle (`REQUESTED`) parce que la
+ * surprise du concurrent découvert au moment du devis est la pire de toutes ;
+ * elle ne grise RIEN dans la liste publique, où l'annotation dit « pris », pas
+ * « demandé ».
+ *
+ * ⚠ REMONTÉ ICI au lot `availableOn`. Le dépôt en portait DEUX copies —
+ * `availability-blocks.service.ts` (tableau) et `availability.service.ts`
+ * (`Set`) — et la liste publique allait en écrire une troisième. Trois listes
+ * de statuts identiques à écrire une fois, à faire diverger toujours : le jour
+ * où un statut s'ajoute, deux d'entre elles l'auront et la troisième non, sans
+ * qu'aucun test ne rougisse.
+ */
+export const HARD_BOOKING_STATUSES = [BookingStatus.ACCEPTED, BookingStatus.CONFIRMED] as const;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Codes d'erreur (stables, consommés par les deux fronts).
 // ─────────────────────────────────────────────────────────────────────────────

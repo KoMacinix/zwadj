@@ -228,3 +228,71 @@ describe("Arabe", () => {
     expect(document.body.textContent).not.toMatch(/wizard\./u);
   });
 });
+
+// ── Point D — chrome de parcours PARTAGÉE (`@zwadj/ui/journey`) ─────────────
+// ⚠ CE QUI EST MESURÉ ICI : que l'assistant client et l'assistant Pro rendent
+// la MÊME chrome, pas une chrome « inspirée ». Les quatre points de l'exigence
+// Ko, dans l'ordre : rail animé, carte remontée, bouton « Modifier » partagé,
+// trait de liaison.
+describe("Point D — chrome partagée", () => {
+  it("⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation", () => {
+    // LE défaut du lot. `animation: zj-step-in` était déclarée depuis la
+    // première livraison, dans les DEUX applications, et n'a jamais rejoué :
+    // React réconciliait une `<section>` stable, le navigateur n'avait donc
+    // rien à réarmer. On mesure l'IDENTITÉ du nœud DOM, pas le style — jsdom ne
+    // calcule pas les animations, et un test sur la classe CSS aurait été vert
+    // pendant tout le temps où le défaut existait.
+    poser();
+    const avant = document.querySelector(".zj-card");
+    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    const apres = document.querySelector(".zj-card");
+    expect(apres).not.toBeNull();
+    expect(apres).not.toBe(avant);
+  });
+
+  it("la coche du rail est une ICÔNE, la même que côté Pro — plus un glyphe texte", () => {
+    // Le client rendait `✓` en texte, le Pro une icône `lucide`. Deux rendus
+    // pour le même signe, dans deux copies du même écran.
+    poser();
+    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    const faite = rail().querySelector("li.is-done .zj-rail-n");
+    expect(faite?.querySelector("svg")).not.toBeNull();
+    expect(faite?.textContent).toBe("");
+  });
+
+  it("⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite", () => {
+    poser();
+    expect(document.querySelector(".zj-connector")).toBeNull();
+    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    expect(document.querySelector(".zj-connector")).not.toBeNull();
+  });
+
+  it("le trait est DÉCORATIF : il ne dit rien à un lecteur d'écran", () => {
+    poser();
+    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    expect(document.querySelector(".zj-connector")).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("le bouton « Modifier » vient du composant partagé, et ramène bien à l'étape", () => {
+    poser();
+    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    const bouton = within(recap()).getByRole("button", { name: /Modifier/ });
+    expect(bouton).toHaveClass("zj-recap-edit");
+    fireEvent.click(bouton);
+    expect(question()).toBe("Où célébrez-vous ?");
+  });
+
+  it("⚠ la MISE EN PAGE reste à l'application : `.wz-*` cohabite avec `.zj-*`", () => {
+    // La chrome est partagée, pas la grille : `grid-area` et la position
+    // collante restent propres à cet écran. Si la `className` d'app sautait, le
+    // rail se retrouverait dans le flux au lieu de sa colonne.
+    poser();
+    expect(rail()).toHaveClass("zj-rail");
+    expect(rail()).toHaveClass("wz-rail");
+  });
+});

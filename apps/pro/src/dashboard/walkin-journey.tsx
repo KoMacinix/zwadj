@@ -61,10 +61,11 @@
 // pas être saisie à la main.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-// ⚠ Import NOMMÉ, jamais `lucide[nom]` indexé : l'accès dynamique tue le
-// tree-shaking et casse à l'exécution sur un nom inconnu (patron
-// `amenity-icon.tsx`). `CheckIcon` n'existe pas dans `@zwadj/ui` — vérifié.
-import { Check } from "lucide-react";
+// ⚠ `lucide-react` N'EST PLUS IMPORTÉ ICI. La coche du rail vivait dans ce
+// fichier ET, sous forme de glyphe texte `✓`, dans l'assistant client — deux
+// rendus pour le même signe. Elle est désormais dans `@zwadj/ui/journey`, qui
+// dépend déjà de `lucide-react` : les deux applications affichent la MÊME coche
+// sans que le client ait à ajouter le paquet.
 import { formatDZD } from "@zwadj/i18n";
 import {
   QUOTE_SENT_VIA_ORDER,
@@ -75,6 +76,7 @@ import {
   type ServiceDTO,
   type VenueProDTO
 } from "@zwadj/types";
+import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap } from "@zwadj/ui";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { revealAndFocus } from "../lib/reveal";
 import { useBookingsPro, useQuotes, useServices } from "../venues/venue-client-context";
@@ -463,42 +465,23 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
           ⚠ Le fil est LATÉRAL (colonne de gauche) mais il reste le PREMIER
           élément du DOM : au clavier et à la voix, on sait où l'on en est avant
           de recevoir la question. Sa position est affaire de `grid-area`. */}
-      <nav className="wk-rail" aria-label={t("venue.ui.walkin.progressLabel")}>
-        <ol>
-          {STEPS.map((s, i) => {
-            const editable = answered[s] && !conclu && s !== step;
-            return (
-              <li
-                key={s}
-                className={s === step ? "is-current" : answered[s] ? "is-done" : "is-todo"}
-                aria-current={s === step ? "step" : undefined}
-              >
-                {/* ⚠ Cliquer le NUMÉRO vaut « Modifier » (demande Ko), mais
-                    seulement là où « Modifier » existerait : une étape sans
-                    réponse n'a rien à modifier, et un bouton qui n'agit pas est
-                    pire qu'un élément inerte. Les autres restent de simples
-                    `<span>` — rien à désactiver, rien dans l'ordre de
-                    tabulation. */}
-                {editable ? (
-                  <button
-                    type="button"
-                    className="wk-rail-n wk-rail-btn"
-                    aria-label={t("venue.ui.walkin.editAria", { step: t(STEP_LABEL[s]) })}
-                    onClick={() => goTo(s)}
-                  >
-                    {answered[s] ? <Check size={14} strokeWidth={2.5} aria-hidden="true" /> : i + 1}
-                  </button>
-                ) : (
-                  <span className="wk-rail-n" aria-hidden="true">
-                    {answered[s] && s !== step ? <Check size={14} strokeWidth={2.5} aria-hidden="true" /> : i + 1}
-                  </span>
-                )}
-                <span className="wk-rail-label">{t(STEP_LABEL[s])}</span>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+      {/* ⚠ CHROME PARTAGÉE (`@zwadj/ui`). Ce rail était recopié côté client, et
+          les deux copies avaient déjà divergé. La `className` ne porte plus que
+          la mise en page propre au Pro (`grid-area`, position collante). */}
+      <JourneyRail
+        className="wk-rail"
+        label={t("venue.ui.walkin.progressLabel")}
+        steps={STEPS.map((s) => ({
+          id: s,
+          label: t(STEP_LABEL[s]),
+          state: s === step ? "current" : answered[s] ? "done" : "todo",
+          // ⚠ `!conclu` en plus du Client : une fois le devis verrouillé, plus
+          // rien ne se modifie — le rail ne doit pas proposer le contraire.
+          editLabel:
+            answered[s] && !conclu && s !== step ? t("venue.ui.walkin.editAria", { step: t(STEP_LABEL[s]) }) : undefined
+        }))}
+        onEdit={(id) => goTo(id as Step)}
+      />
 
       {error ? (
         <p className="wk-alert" role="alert">
@@ -513,27 +496,25 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       )}
 
       {/* ── Récapitulatif : les réponses déjà données, l'étape courante exclue ── */}
-      <ul className="wk-recap" aria-label={t("venue.ui.walkin.recapLabel")}>
-        {STEPS.filter((s) => s !== "quote" && s !== step && answered[s]).map((s) => (
-          <li key={s} className="wk-recap-row">
-            <div>
-              <span className="wk-recap-step">{t(STEP_LABEL[s])}</span>
-              <span className="wk-recap-value">{resume(s)}</span>
-            </div>
-            <button
-              type="button"
-              className="wk-btn wk-recap-edit"
-              disabled={conclu}
-              aria-label={t("venue.ui.walkin.editAria", { step: t(STEP_LABEL[s]) })}
-              onClick={() => goTo(s)}
-            >
-              {t("venue.ui.walkin.edit")}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <JourneyRecap
+        className="wk-recap"
+        label={t("venue.ui.walkin.recapLabel")}
+        editText={t("venue.ui.walkin.edit")}
+        disabled={conclu}
+        rows={STEPS.filter((s) => s !== "quote" && s !== step && answered[s]).map((s) => ({
+          id: s,
+          step: t(STEP_LABEL[s]),
+          value: resume(s),
+          editLabel: t("venue.ui.walkin.editAria", { step: t(STEP_LABEL[s]) })
+        }))}
+        onEdit={(id) => goTo(id as Step)}
+      />
 
-      <section className="wk-card wk-active" ref={cardRef} tabIndex={-1} aria-labelledby="wk-question">
+      {STEPS.some((s) => s !== "quote" && s !== step && answered[s]) ? (
+        <JourneyConnector className="wk-connector" />
+      ) : null}
+
+      <JourneyCard stepId={step} className="wk-active" labelledBy="wk-question" cardRef={cardRef}>
         <p className="wk-step-counter">
           {t("venue.ui.walkin.stepCounter", { n: stepIndex + 1, total: STEPS.length })}
         </p>
@@ -811,7 +792,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
             )}
           </>
         ) : null}
-      </section>
+      </JourneyCard>
     </>
   );
 }
