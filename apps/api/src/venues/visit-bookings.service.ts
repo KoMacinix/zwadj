@@ -42,7 +42,8 @@ import {
 } from "./availability-time";
 import { computeVisitSlots } from "./visit-slots-engine";
 import { PUBLIC_BASE_WHERE, PUBLIC_DETAIL_STATUSES, SLUG_PATTERN } from "./venues-public.service";
-import { VisitNotificationsService, type VisitNotificationInput } from "./visit-notifications.service";
+import { DomainEvents } from "./domain-events";
+import type { VisitNotificationInput } from "./visit-notifications.service";
 
 const MINUTE_MS = 60_000;
 const DAY_MS = 86_400_000;
@@ -79,7 +80,8 @@ interface BookingRow {
 export class VisitBookingsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly notifications: VisitNotificationsService
+    // ⚠ LE SERVICE NE CONNAÎT PLUS SES DESTINATAIRES : il publie un FAIT.
+    private readonly events: DomainEvents
   ) {}
 
   async create(userId: string, slug: string, input: VisitBookingCreateInput): Promise<VisitBookingDTO> {
@@ -195,8 +197,9 @@ export class VisitBookingsService {
     // D63 — APRÈS le commit, jamais dedans. Le service de notification ne lève
     // pas : un e-mail tombé ne dé-réserve pas un rendez-vous confirmé.
     const payload = this.notificationInput(row, venue, client, contactPhone, date, input.startMinutes);
-    await this.notifications.notifyProBooked(payload);
-    await this.notifications.confirmToClient(payload);
+    // ⚠ UN SEUL ÉVÉNEMENT, DEUX HANDLERS. L'ordre — le pro d'abord, le client
+    // ensuite — est celui de l'abonnement, déclaré dans le module.
+    await this.events.publish("visit.booked", payload);
 
     return this.toDTO(row);
   }
@@ -331,7 +334,8 @@ export class VisitBookingsService {
     });
 
     const { date, startMinutes } = this.civilOf(row.scheduledAt);
-    await this.notifications.notifyClientCancelledByPro(
+    await this.events.publish(
+      "visit.cancelledByPro",
       this.notificationInput(row, { id: row.venueId, ...row.venue }, row.client, row.contactPhone, date, startMinutes)
     );
   }
@@ -405,7 +409,8 @@ export class VisitBookingsService {
     });
 
     const { date, startMinutes } = this.civilOf(row.scheduledAt);
-    await this.notifications.notifyProCancelled(
+    await this.events.publish(
+      "visit.cancelledByClient",
       this.notificationInput(row, { id: row.venueId, ...row.venue }, row.client, row.contactPhone, date, startMinutes)
     );
   }

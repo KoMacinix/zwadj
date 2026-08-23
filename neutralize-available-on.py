@@ -144,8 +144,24 @@ def sauver(chemin: str, contenu: str) -> str:
     return nom
 
 
+def _binaire(nom: str) -> str:
+    """Résout l'exécutable AVANT `subprocess.run`.
+
+    ⚠ Windows : `pnpm` est un `pnpm.cmd`, et `CreateProcess` ne consulte PAS
+    `PATHEXT` — il ne cherche qu'un `.exe`, échoue en `WinError 2`, et la
+    campagne meurt avant d'avoir mesuré quoi que ce soit. `shutil.which`, lui,
+    consulte `PATHEXT` et rend le chemin complet. Sur POSIX il rend le même nom.
+    """
+    return shutil.which(nom) or nom
+
 def run(cmd: list[str]) -> int:
-    return subprocess.run(cmd, capture_output=True, text=True).returncode
+    return subprocess.run(
+        [_binaire(cmd[0]), *cmd[1:]],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    ).returncode
 
 
 def main(depuis: int = 1, jusqua: int = 99) -> int:

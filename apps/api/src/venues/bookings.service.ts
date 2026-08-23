@@ -16,18 +16,32 @@
 // d'écrire. Entre le test et l'écriture reste toujours une fenêtre, et deux pros
 // qui acceptent deux demandes concurrentes sur la même date sont le cas
 // PROBABLE, pas l'exception. Le seul chemin vers `BOOKING_SLOT_TAKEN` est la
-// traduction du `23P01`.
+// traduction du refus d'exclusion.
+//
+// ⚠ DEPUIS LE LOT S5b, CE FICHIER N'OUVRE PLUS DE TRANSACTION. Le verrou de
+// salle, la relecture D117, le contrôle de blocage et la traduction du refus
+// d'exclusion vivent dans `booking-locks.prisma.ts`, derrière le port
+// `BOOKING_LOCKS`. Ce service reçoit un RÉSULTAT DISCRIMINÉ et le traduit en
+// HTTP : les règles ci-dessus n'ont pas changé, elles ont changé de fichier.
 //
 // ⚠ D80 — ce lot s'arrête à ACCEPTED. Aucune route ne mène à CONFIRMED, aucun
 // job n'expire quoi que ce soit. `expiresAt` et `paymentDueAt` sont posés pour
 // le lot Paiement ; en attendant, une demande acceptée verrouille son créneau
 // jusqu'à ce que le pro l'annule. Dette assumée, pas un oubli.
-import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException
+} from "@nestjs/common";
 import {
   AuthErrorCode,
   BOOKING_HORIZON_MONTHS,
   BookingErrorCode,
   BookingStatus,
+  HARD_BOOKING_STATUSES,
   ServiceErrorCode,
   type BookingCancelInput,
   type BookingCreateInput,
@@ -47,8 +61,21 @@ import {
   toCalendarDay,
   type CivilDate
 } from "./availability-time";
-import { BookingNotificationsService, type BookingNotificationInput } from "./booking-notifications.service";
+import type { BookingNotificationInput } from "./booking-notifications.service";
+import {
+  BookingCommand,
+  allowedFrom,
+  decideBookingTransition,
+  targetOf
+} from "./booking-transitions";
+import {
+  BOOKING_LOCKS,
+  BOOKING_SELECT,
+  type BookingLocks,
+  type BookingRow
+} from "./booking-locks.types";
 import { computeBookingWindow } from "./booking-window";
+import { DomainEvents } from "./domain-events";
 import { resolveDepositCents } from "./deposit";
 import { resolveServiceLine, type ResolvedLine } from "./service-pricing";
 import { SERVICE_SELECT } from "./services.service";
@@ -60,14 +87,11 @@ import { PUBLIC_BASE_WHERE, PUBLIC_DETAIL_STATUSES, SLUG_PATTERN } from "./venue
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** Code PostgreSQL `exclusion_violation`. C'est l'EXCLUDE
- *  `bookings_no_overlap_accepted_confirmed` qui parle — le seul chemin vers
- *  `BOOKING_SLOT_TAKEN`. */
-const PG_EXCLUSION_VIOLATION = "23P01";
-
-/** Nom de LA contrainte qui porte l'exclusivité. Le lire permet de ne pas
- *  confondre notre règle avec une autre EXCLUDE future sur la même table. */
-const BOOKING_OVERLAP_CONSTRAINT = "bookings_no_overlap_accepted_confirmed";
+// ⚠ `PG_EXCLUSION_VIOLATION` ET `BOOKING_OVERLAP_CONSTRAINT` SONT PARTIS avec
+// `isExclusionViolation`, dans `booking-locks.prisma.ts` (lot S5b). Un code
+// SQLSTATE et un nom de contrainte n'ont rien à faire dans un service qui ne
+// parle plus à PostgreSQL : les laisser ici aurait été garder l'étiquette après
+// avoir déménagé la boîte.
 
 /** Délai de réponse laissé au pro (D82). Borné par le début de l'événement :
  *  une demande pour dans cinq jours ne doit pas expirer après la fête. */
@@ -79,61 +103,25 @@ const DAY_MS = 86_400_000;
 const HOUR_MS = 3_600_000;
 
 /** Statuts qui VERROUILLENT le créneau. Miroir exact du `WHERE` de l'EXCLUDE :
- *  les deux doivent bouger ensemble, ou l'écran mentirait sur la base. */
-const LOCKING_STATUSES = [BookingStatus.ACCEPTED, BookingStatus.CONFIRMED] as const;
+ *  les deux doivent bouger ensemble, ou l'écran mentirait sur la base.
+ *
+ *  ⚠ La LISTE vient de `@zwadj/types` (une seule autorité, lot S1) ; le nom
+ *  local n'est qu'un alias de lecture. Ce fichier en portait une COPIE
+ *  littérale : le jour où un statut verrouillant s'ajoute, la copie ne l'a pas,
+ *  `locks()` rend `false`, et la projection des conflits cesse d'annoncer une
+ *  date pourtant prise — sans qu'aucun test ne rougisse. */
+const LOCKING_STATUSES = HARD_BOOKING_STATUSES;
 
-const BOOKING_SELECT = {
-  id: true,
-  venueId: true,
-  clientId: true,
-  status: true,
-  paymentMethod: true,
-  eventDate: true,
-  startsAt: true,
-  endsAt: true,
-  slotNameFr: true,
-  slotNameAr: true,
-  guests: true,
-  basePriceCents: true,
-  servicesTotalCents: true,
-  totalCents: true,
-  depositCents: true,
-  clientMessage: true,
-  services: {
-    orderBy: { id: "asc" },
-    select: {
-      id: true,
-      serviceId: true,
-      tierId: true,
-      nameFr: true,
-      nameAr: true,
-      pricingType: true,
-      tierLabelFr: true,
-      tierLabelAr: true,
-      unitPriceCents: true,
-      quantity: true,
-      lineTotalCents: true
-    }
-  },
-  declineReason: true,
-  cancellationReason: true,
-  contactFirstName: true,
-  contactLastName: true,
-  contactPhone: true,
-  contactEmail: true,
-  expiresAt: true,
-  paymentDueAt: true,
-  createdAt: true,
-  venue: { select: { slug: true, nameFr: true, nameAr: true } }
-} as const;
-
-type BookingRow = Prisma.BookingGetPayload<{ select: typeof BOOKING_SELECT }>;
 
 @Injectable()
 export class BookingsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly notifications: BookingNotificationsService
+    @Inject(BOOKING_LOCKS) private readonly verrous: BookingLocks,
+    // ⚠ LE SERVICE NE CONNAÎT PLUS SES DESTINATAIRES. Il publie un FAIT ; qui
+    // en fait quoi est déclaré dans le module. C'est la couture que E3c
+    // remplacera par pg-boss sans toucher à ce fichier (D63 étendu).
+    private readonly events: DomainEvents
   ) {}
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -325,7 +313,7 @@ export class BookingsService {
 
     // D63 — APRÈS l'écriture, jamais dedans, et sans lever : un e-mail tombé ne
     // défait pas une demande enregistrée.
-    await this.notifications.notifyProRequested(this.notificationInput(row, venue, client, null));
+    await this.events.publish("booking.requested", this.notificationInput(row, venue, client, null));
 
     return this.toDTO(row);
   }
@@ -401,69 +389,45 @@ export class BookingsService {
       Math.min(acceptedAt.getTime() + PAYMENT_WINDOW_HOURS * HOUR_MS, row.startsAt.getTime())
     );
 
-    const updated = await this.prisma.$transaction(async (tx) => {
-      // Verrou de sérialisation par SALLE. Le même que prend la création d'un
-      // blocage (D51) : c'est ce qui rend les contrôles ci-dessous fiables
-      // malgré deux écritures concurrentes sur deux tables différentes.
-      await tx.$queryRaw`SELECT id FROM venues WHERE id = ${row.venueId}::uuid FOR UPDATE`;
-
-      // D117 — LE STATUT SE LIT ICI, ET NULLE PART AILLEURS.
-      //
-      // Il se lisait AVANT la transaction, sur la ligne rapportée par
-      // `ownedBooking` : deux acceptations concurrentes de la MÊME demande le
-      // trouvaient toutes les deux à PENDING et passaient toutes les deux.
-      // L'`EXCLUDE` ne les arrête pas — une ligne ne chevauche pas elle-même —
-      // donc la seconde réécrivait `acceptedAt`/`paymentDueAt` et RENOTIFIAIT
-      // le client. Le double accept SÉQUENTIEL rendait bien 409, ce qui a
-      // masqué le trou : c'est le cas concurrent, et lui seul, qui passait.
-      //
-      // Une seule autorité par question (D78) : le contrôle d'avant
-      // transaction est SUPPRIMÉ, pas doublé.
-      const fresh = await tx.booking.findUniqueOrThrow({
-        where: { id: row.id },
-        select: { status: true }
-      });
-      this.assertStatus(fresh, [BookingStatus.PENDING]);
-
-      // Conflit avec un BLOCAGE. Une EXCLUDE ne traverse pas deux tables : ce
-      // contrôle-là DOIT être applicatif, et il est correct parce qu'il est
-      // sous verrou.
-      const block = await tx.availabilityBlock.findFirst({
-        where: {
-          venueId: row.venueId,
-          blockedFrom: { lt: row.endsAt },
-          blockedUntil: { gt: row.startsAt }
-        },
-        select: { id: true }
-      });
-      if (block) {
-        throw new ConflictException({
-          code: BookingErrorCode.BOOKING_BLOCKED_PERIOD,
-          message: "booking.errors.blockedPeriod"
-        });
-      }
-
-      try {
-        return await tx.booking.update({
-          where: { id: row.id },
-          data: { status: BookingStatus.ACCEPTED, acceptedAt, paymentDueAt },
-          select: BOOKING_SELECT
-        });
-      } catch (error) {
-        // SEUL chemin vers BOOKING_SLOT_TAKEN. On ne fait que traduire le refus
-        // de l'EXCLUDE : l'exclusivité appartient à la base, jamais à un
-        // `SELECT` préalable qui laisserait une fenêtre ouverte.
-        if (this.isExclusionViolation(error)) {
-          throw new ConflictException({
-            code: BookingErrorCode.BOOKING_SLOT_TAKEN,
-            message: "booking.errors.slotTaken"
-          });
-        }
-        throw error;
-      }
+    // ⚠ UN SEUL APPEL DE PORT : verrou, relecture D117, contrôle de blocage,
+    // écriture et traduction de l'EXCLUDE forment une séquence indivisible. La
+    // découper en appels séparés rouvrirait la fenêtre que D117 a fermée.
+    const resultat = await this.verrous.acceptUnderVenueLock({
+      bookingId: row.id,
+      venueId: row.venueId,
+      startsAt: row.startsAt,
+      endsAt: row.endsAt,
+      allowedFrom: allowedFrom(BookingCommand.ACCEPT),
+      to: targetOf(BookingCommand.ACCEPT),
+      acceptedAt,
+      paymentDueAt
     });
 
-    await this.notifications.notifyClientAccepted(await this.notificationFor(updated, venue, null));
+    // ⚠ LA TRADUCTION EN HTTP RESTE ICI, et rien qu'ici. Le port constate un
+    // refus de la base et le NOMME ; les codes applicatifs et les clés i18n
+    // n'ont jamais à descendre dans la couche qui parle à PostgreSQL.
+    if (resultat.outcome === "STATUS_CONFLICT") {
+      throw new ConflictException({
+        code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
+        message: "booking.errors.statusConflict",
+        status: resultat.status
+      });
+    }
+    if (resultat.outcome === "BLOCKED_PERIOD") {
+      throw new ConflictException({
+        code: BookingErrorCode.BOOKING_BLOCKED_PERIOD,
+        message: "booking.errors.blockedPeriod"
+      });
+    }
+    if (resultat.outcome === "SLOT_TAKEN") {
+      throw new ConflictException({
+        code: BookingErrorCode.BOOKING_SLOT_TAKEN,
+        message: "booking.errors.slotTaken"
+      });
+    }
+    const updated = resultat.row;
+
+    await this.events.publish("booking.accepted", await this.notificationFor(updated, venue, null));
     return this.toDTO(updated);
   }
 
@@ -472,13 +436,13 @@ export class BookingsService {
   async decline(userId: string, bookingId: string, input: BookingDeclineInput): Promise<BookingDTO> {
     const { row, venue } = await this.ownedBooking(userId, bookingId);
 
-    const updated = await this.transitionStatus(row.id, [BookingStatus.PENDING], {
-      status: BookingStatus.DECLINED,
+    const updated = await this.transitionStatus(row.id, allowedFrom(BookingCommand.DECLINE), {
+      status: targetOf(BookingCommand.DECLINE),
       declinedAt: new Date(),
       declineReason: input.reason ?? null
     });
 
-    await this.notifications.notifyClientDeclined(await this.notificationFor(updated, venue, input.reason ?? null));
+    await this.events.publish("booking.declined", await this.notificationFor(updated, venue, input.reason ?? null));
     return this.toDTO(updated);
   }
 
@@ -487,13 +451,16 @@ export class BookingsService {
   async cancelAsPro(userId: string, bookingId: string, input: BookingCancelInput): Promise<BookingDTO> {
     const { row, venue } = await this.ownedBooking(userId, bookingId);
 
-    const updated = await this.transitionStatus(row.id, [BookingStatus.ACCEPTED], {
-      status: BookingStatus.CANCELLED,
+    const updated = await this.transitionStatus(row.id, allowedFrom(BookingCommand.CANCEL_AS_PRO), {
+      status: targetOf(BookingCommand.CANCEL_AS_PRO),
       cancelledAt: new Date(),
       cancellationReason: input.reason ?? null
     });
 
-    await this.notifications.notifyClientDeclined(await this.notificationFor(updated, venue, input.reason ?? null));
+    // ⚠ MÊME ENVOI QUE `booking.declined` AUJOURD'HUI, événement DISTINCT
+    // quand même : un refus et une annulation pro ne sont pas le même fait.
+    // Le comportement ne change pas ; il devient seulement modifiable.
+    await this.events.publish("booking.cancelledByPro", await this.notificationFor(updated, venue, input.reason ?? null));
     return this.toDTO(updated);
   }
 
@@ -512,18 +479,27 @@ export class BookingsService {
     });
     if (!row) this.throwBookingNotFound();
 
-    this.assertStatus(row, [BookingStatus.PENDING, BookingStatus.ACCEPTED]);
-
-    if (row.status === BookingStatus.ACCEPTED && (input.reason === undefined || input.reason === "")) {
+    // ⚠ UNE SEULE décision, dans l'ORDRE d'origine : le statut d'abord (409),
+    // le motif ensuite (400). La politique rend le verdict, le service le
+    // traduit en HTTP — elle ne connaît ni Nest ni les codes i18n.
+    const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIENT, row.status, input.reason);
+    if (decision.outcome === "STATUS_CONFLICT") {
+      throw new ConflictException({
+        code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
+        message: "booking.errors.statusConflict",
+        status: decision.status
+      });
+    }
+    if (decision.outcome === "REASON_REQUIRED") {
       throw new BadRequestException({
         code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
         message: "booking.errors.cancelReasonRequired",
-        status: row.status
+        status: decision.status
       });
     }
 
-    const updated = await this.transitionStatus(row.id, [BookingStatus.PENDING, BookingStatus.ACCEPTED], {
-      status: BookingStatus.CANCELLED,
+    const updated = await this.transitionStatus(row.id, allowedFrom(BookingCommand.CANCEL_AS_CLIENT), {
+      status: decision.to,
       cancelledAt: new Date(),
       cancellationReason: input.reason ?? null
     });
@@ -602,23 +578,15 @@ export class BookingsService {
     from: readonly BookingStatus[],
     data: Prisma.BookingUpdateManyMutationInput
   ): Promise<BookingRow> {
-    return this.prisma.$transaction(async (tx) => {
-      const consumed = await tx.booking.updateMany({ where: { id, status: { in: [...from] } }, data });
-      if (consumed.count === 0) {
-        // Quelqu'un a changé le statut entre notre lecture et notre écriture.
-        // La relecture est l'AUTORITÉ : elle produit le 409 avec le statut réel.
-        const fresh = await tx.booking.findUniqueOrThrow({ where: { id }, select: { status: true } });
-        this.assertStatus(fresh, from);
-        // Inatteignable : si `fresh.status` était permis, le check-and-set
-        // aurait mordu. On ne laisse pas pour autant un chemin sans issue.
-        throw new ConflictException({
-          code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
-          message: "booking.errors.statusConflict",
-          status: fresh.status
-        });
-      }
-      return tx.booking.findUniqueOrThrow({ where: { id }, select: BOOKING_SELECT });
-    });
+    const resultat = await this.verrous.transition({ bookingId: id, from, data });
+    if (resultat.outcome === "STATUS_CONFLICT") {
+      throw new ConflictException({
+        code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
+        message: "booking.errors.statusConflict",
+        status: resultat.status
+      });
+    }
+    return resultat.row;
   }
 
   /** ⚠ D117 — prend `{ status }` et non `BookingRow` : les transitions qui
@@ -637,29 +605,6 @@ export class BookingsService {
 
   private locks(status: string): boolean {
     return (LOCKING_STATUSES as readonly string[]).includes(status);
-  }
-
-  /** Vrai si la base a refusé pour cause de CHEVAUCHEMENT.
-   *
-   *  ⚠ Forme relevée à l'exécution, pas devinée : sous l'adaptateur pilote, une
-   *  violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`
-   *  mais en `DriverAdapterError`, dont le code PostgreSQL vit dans `cause`.
-   *  On lit donc `cause.code` — stable et documenté — et, à défaut, le NOM de
-   *  la contrainte, qui nous appartient. Jamais le message brut : il est
-   *  traduit selon la locale du serveur PostgreSQL.
-   *
-   *  Le nom en second n'est pas une ceinture de plus : c'est ce qui distingue
-   *  NOTRE règle d'une autre `EXCLUDE` qui apparaîtrait un jour sur la table. */
-  private isExclusionViolation(error: unknown): boolean {
-    const cause = (error as { cause?: { code?: string; message?: string } }).cause;
-    if (cause?.code === PG_EXCLUSION_VIOLATION) {
-      return (cause.message ?? "").includes(BOOKING_OVERLAP_CONSTRAINT);
-    }
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      const meta = error.meta as { code?: string } | undefined;
-      if (meta?.code === PG_EXCLUSION_VIOLATION) return true;
-    }
-    return false;
   }
 
   private async notificationFor(

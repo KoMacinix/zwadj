@@ -291,7 +291,15 @@ describe("Statuts hérités — lisibles, jamais réécrits", () => {
     // été posée, puisqu'il n'y a pas d'écrasement à empêcher.
     const f = await setup();
     const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
-    await ctx.prisma.quote.update({ where: { id: q.id }, data: { status: "SUPERSEDED" } });
+    // ⚠ `sentAt` EST OBLIGATOIRE ICI, et ce n'est pas un détail de fixture.
+    // `quotes_sent_at_coherent` impose « DRAFT, ou bien envoyé ». Un SUPERSEDED
+    // sans `sent_at` est un état que la production ne peut pas produire — un
+    // devis remplacé est forcément passé par une remise. La fixture fabriquait
+    // donc un impossible, et la base avait raison de le refuser (lot R4).
+    await ctx.prisma.quote.update({
+      where: { id: q.id },
+      data: { status: "SUPERSEDED", sentAt: new Date() }
+    });
 
     const list = (await api().get(`/api/v1/pro/venues/${f.venue.id}/quotes`).set(authH(f.token)).expect(200))
       .body as QuoteDTO[];

@@ -122,3 +122,36 @@ describe("Arithmétique monétaire", () => {
     expect(r.ok && r.line.lineTotalCents % 100).toBe(0);
   });
 });
+
+describe("Quantité refusée là où elle n'a pas de sens", () => {
+  it("⚠ un FORFAIT assorti d'une quantité est REFUSÉ — un forfait ne se multiplie pas", () => {
+    // Trou de couverture mesuré par la cible S4-6 : retirer ce refus laissait
+    // la suite verte. Sans lui, un front qui envoie `quantity` ferait payer
+    // trois fois un forfait — sur le chemin de l'argent.
+    const r = resolveServiceLine(fixed, { serviceId: "s1", quantity: 3 }, 250);
+    expect(!r.ok && r.failure.code).toBe("SERVICE_TIER_MISMATCH");
+  });
+
+  it("un PER_GUEST assorti d'une quantité est refusé de la même façon", () => {
+    const r = resolveServiceLine(base, { serviceId: "s1", quantity: 3 }, 250);
+    expect(!r.ok && r.failure.code).toBe("SERVICE_TIER_MISMATCH");
+  });
+});
+
+describe("Type de tarification INCONNU — [ÉCART S4]", () => {
+  it("⚠ un `pricingType` hors énumération est REFUSÉ, il ne se vend plus au prix à l'unité", () => {
+    // La cascade d'origine n'avait pas de branche PER_UNIT : c'était le
+    // retombé. Un type inconnu se vendait donc au prix « à l'unité », en
+    // silence. Le registre le refuse. Le cas est inatteignable par le typage —
+    // d'où le transtypage ici — mais une colonne de base, elle, peut porter
+    // n'importe quoi le jour où l'énumération gagne une valeur.
+    // ⚠ LA FIXTURE PART DE `perUnit`, ET C'EST TOUT L'ENJEU. Sur `base`, le
+    // retombé PER_UNIT échouerait de toute façon (`perUnitPriceCents` nul) et
+    // rendrait le MÊME code de refus : la garde serait verte quoi qu'on fasse.
+    // Mesuré par la cible S4-5, qui la laissait passer.
+    const inconnu = { ...perUnit, pricingType: "PER_MINUTE" } as ServiceRow;
+    const r = resolveServiceLine(inconnu, { serviceId: "s1", quantity: 3 }, 250);
+    expect(r.ok, "le type inconnu s'est vendu au prix à l'unité").toBe(false);
+    expect(!r.ok && r.failure.code).toBe("SERVICE_UNAVAILABLE");
+  });
+});

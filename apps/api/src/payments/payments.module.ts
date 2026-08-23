@@ -2,6 +2,8 @@ import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import type { Env } from "../config/env";
 import { createPaymentGateway } from "./payment-gateway.factory";
+import { PrismaPaymentStore } from "./payment-store.prisma";
+import { PAYMENT_STORE } from "./payment-store.types";
 import { PaymentsService } from "./payments.service";
 import { PAYMENT_GATEWAY, type PaymentGateway } from "./payment.types";
 
@@ -23,6 +25,9 @@ import { PAYMENT_GATEWAY, type PaymentGateway } from "./payment.types";
 @Module({
   providers: [
     PaymentsService,
+    // ⚠ L'ADAPTATEUR EST LE SEUL À CONNAÎTRE PRISMA. Le service reçoit le port,
+    // pas la base — c'est ce qui rend ses gardes exécutables sans schéma.
+    { provide: PAYMENT_STORE, useClass: PrismaPaymentStore },
     {
       provide: PAYMENT_GATEWAY,
       inject: [ConfigService],
@@ -35,6 +40,6 @@ import { PAYMENT_GATEWAY, type PaymentGateway } from "./payment.types";
         })
     }
   ],
-  exports: [PaymentsService, PAYMENT_GATEWAY]
+  exports: [PaymentsService, PAYMENT_GATEWAY, PAYMENT_STORE]
 })
 export class PaymentsModule {}

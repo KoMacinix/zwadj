@@ -94,6 +94,26 @@ CIBLES = [
     ),
 ]
 
+def _binaire(nom: str) -> str:
+    """Résout l'exécutable AVANT `subprocess.run`.
+
+    ⚠ Windows : `pnpm` est un `pnpm.cmd`, et `CreateProcess` ne consulte PAS
+    `PATHEXT` — il ne cherche qu'un `.exe`, échoue en `WinError 2`, et la
+    campagne meurt avant d'avoir mesuré quoi que ce soit. `shutil.which`, lui,
+    consulte `PATHEXT` et rend le chemin complet. Sur POSIX il rend le même nom.
+    """
+    return shutil.which(nom) or nom
+
+def _lancer(cmd: list[str]) -> int:
+    return subprocess.run(
+        [_binaire(cmd[0]), *cmd[1:]],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    ).returncode
+
+
 TESTS = {
     "client": ["pnpm", "--filter", "@zwadj/client", "run", "test", "--", "src/components/filter-wizard.test.tsx", "-t"],
     "pro": ["pnpm", "--filter", "@zwadj/pro", "run", "test", "--", "src/dashboard/walkin-journey.test.tsx", "-t"],
@@ -137,7 +157,7 @@ def main(depuis: int = 1, jusqua: int = 99) -> int:
             # neutralisation dans `@zwadj/ui` qui ne ferait tomber qu'un seul
             # des deux fronts signalerait que l'autre ne mesure rien — c'est
             # exactement l'asymétrie qui avait laissé les deux copies diverger.
-            codes = {app: subprocess.run(TESTS[app] + [filtre], capture_output=True, text=True).returncode for app in apps}
+            codes = {app: _lancer(TESTS[app] + [filtre]) for app in apps}
         finally:
             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
             os.remove(marque)

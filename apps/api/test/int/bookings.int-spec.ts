@@ -187,6 +187,22 @@ describe("POST /venues/:slug/bookings — création", () => {
     expect(rows.length).toBeGreaterThan(0);
   });
 
+  it("⚠ la ligne Notification est RÉSOLUE, pas laissée en QUEUED (S2-bis)", async () => {
+    // Trou de couverture MESURÉ : la garde ci-dessus ne compte que des lignes.
+    // Supprimer la résolution `SENT` du cœur commun la laissait VERTE, alors
+    // que la suite des visites, elle, rougissait — elle asserte le triplet.
+    // Une ligne éternellement QUEUED est une notification qu'un rejeu futur
+    // renverrait à l'infini.
+    const f = await setup();
+    await post(f.clientToken, f.venue.slug, body(f)).expect(201);
+
+    const rows = await ctx.prisma.notification.findMany({ orderBy: { createdAt: "asc" } });
+    // Un seul canal : `notifyByEmail` vaut `true` par défaut, `notifyBySms`
+    // vaut `false` (schema.prisma) — relevé, pas supposé.
+    expect(rows.map((row) => [row.type, row.channel, row.status])).toEqual([["booking.requested", "EMAIL", "SENT"]]);
+    expect(rows[0]?.sentAt).not.toBeNull();
+  });
+
   it("un envoi qui TOMBE laisse la demande enregistrée (D63)", async () => {
     const f = await setup();
     ctx.senders.failEmail = true;
@@ -299,6 +315,31 @@ describe("Acceptation — l'exclusivité appartient à la BASE (D78)", () => {
       .expect(201);
     // Le WHERE partiel de l'EXCLUDE ne regarde plus une ligne CANCELLED.
     await api().post(`/api/v1/pro/bookings/${b.id}/accept`).set(authH(f.proToken)).expect(201);
+  });
+
+  it("⚠ le pro NE PEUT PAS annuler une demande encore PENDING — il la REFUSE (S3)", async () => {
+    // Trou de couverture mesuré par la cible S3-4 : aucun test n'exerçait ce
+    // refus, ni en unitaire ni en base. Ouvrir `cancelAsPro` à PENDING passait
+    // donc inaperçu — alors que les deux chemins écrivent des statuts et des
+    // motifs différents, et que l'entonnoir les compte séparément.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+
+    const res = await api()
+      .post(`/api/v1/pro/bookings/${a.id}/cancel`)
+      .set(authH(f.proToken))
+      .send({ reason: "Dégât des eaux" })
+      .expect(409);
+    expect(res.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+
+    // Et la demande n'a pas bougé : un refus qui laisse une trace serait pire
+    // qu'un refus franc.
+    const apres = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, cancelledAt: true }
+    });
+    expect(apres.status).toBe("PENDING");
+    expect(apres.cancelledAt).toBeNull();
   });
 
   it("un BLOCAGE recouvrant refuse l'acceptation — contrôle applicatif sous verrou", async () => {
@@ -539,6 +580,48 @@ describe("Lectures", () => {
 
     const res = await api().get(`/api/v1/pro/venues/${f.venue.id}/bookings`).set(authH(f.proToken)).expect(200);
     const rows = res.body as ProBookingDTO[];
+    expect(rows.find((r) => r.id === a.id)?.conflictIds).toContain(b.id);
+    expect(rows.find((r) => r.id === b.id)?.conflictIds).toContain(a.id);
+  });
+
+  it("⚠ une réservation ACCEPTÉE dispute ENCORE — `locks()` n'était exercé QUE par des PENDING (S2-bis)", async () => {
+    // Trou de couverture MESURÉ : les deux gardes de conflit ne créaient que
+    // des PENDING, et la projection court-circuite `locks()` sur un PENDING.
+    // Le site que `HARD_BOOKING_STATUSES` alimente n'était donc atteint par
+    // AUCUN test d'intégration.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    const b = (await post(f.client2Token, f.venue.slug, body(f, { contactEmail: "yacine@example.dz" })).expect(201))
+      .body as BookingDTO;
+    await api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).expect(201);
+
+    const res = await api().get(`/api/v1/pro/venues/${f.venue.id}/bookings`).set(authH(f.proToken)).expect(200);
+    const rows = res.body as ProBookingDTO[];
+    expect(rows.find((r) => r.id === a.id)?.status).toBe("ACCEPTED");
+    // Une date prise reste DISPUTÉE tant que la demande rivale vit : c'est ce
+    // qui dit au pro pourquoi il ne peut pas accepter la seconde.
+    expect(rows.find((r) => r.id === a.id)?.conflictIds).toContain(b.id);
+    expect(rows.find((r) => r.id === b.id)?.conflictIds).toContain(a.id);
+  });
+
+  it("⚠ une réservation CONFIRMED dispute ENCORE — le paiement ne la sort pas de la vue (S2-bis)", async () => {
+    // Trou de couverture MESURÉ : AUCUNE réservation `CONFIRMED` n'existait
+    // dans toute la suite d'intégration. L'autorité partagée pouvait perdre
+    // CONFIRMED sans qu'un seul test rougisse — alors que c'est le statut
+    // d'une réservation PAYÉE, celle qu'on peut le moins se permettre de
+    // laisser disparaître d'un écran.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    const b = (await post(f.client2Token, f.venue.slug, body(f, { contactEmail: "yacine@example.dz" })).expect(201))
+      .body as BookingDTO;
+    // E3c n'existe pas encore : rien dans l'application ne pose `CONFIRMED`.
+    // Le statut se sème donc ici, comme `availability.int-spec.ts` sème les
+    // siens. L'EXCLUDE ne s'y oppose pas : une seule ligne verrouillante.
+    await ctx.prisma.booking.update({ where: { id: a.id }, data: { status: "CONFIRMED" } });
+
+    const res = await api().get(`/api/v1/pro/venues/${f.venue.id}/bookings`).set(authH(f.proToken)).expect(200);
+    const rows = res.body as ProBookingDTO[];
+    expect(rows.find((r) => r.id === a.id)?.status).toBe("CONFIRMED");
     expect(rows.find((r) => r.id === a.id)?.conflictIds).toContain(b.id);
     expect(rows.find((r) => r.id === b.id)?.conflictIds).toContain(a.id);
   });

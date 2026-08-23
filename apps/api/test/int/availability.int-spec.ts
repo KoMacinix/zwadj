@@ -202,6 +202,18 @@ describe("Disponibilité — forme de la réponse", () => {
 });
 
 describe("Disponibilité — statuts", () => {
+  it("⚠ une réservation CONFIRMED verrouille AUSSI — le statut d'une réservation payée (S2-bis)", async () => {
+    // Trou de couverture MESURÉ : ce fichier ne semait que `ACCEPTED`,
+    // `PENDING` et `CANCELLED`. Le `WHERE` de chargement du calendrier pouvait
+    // perdre `CONFIRMED` sans rougir — le calendrier aurait alors annoncé
+    // LIBRE un créneau que la base verrouille par son EXCLUDE.
+    const { venue, matin, soiree } = await publishedVenue();
+    await seedBooking(venue.id, at(D1, 20), at(D2, 2), "CONFIRMED", soiree);
+    const body = (await getAvailability(venue.slug, D1, D2).expect(200)).body as VenueAvailabilityResponse;
+    expect(statusOf(body, D1, soiree)).toBe("BOOKED");
+    expect(statusOf(body, D1, matin)).toBe("AVAILABLE");
+  });
+
   it("une réservation ACCEPTED rend BOOKED ; une PENDING rend REQUESTED sans verrouiller", async () => {
     const { venue, matin, soiree } = await publishedVenue();
     await seedBooking(venue.id, at(D1, 20), at(D2, 2), "ACCEPTED", soiree);

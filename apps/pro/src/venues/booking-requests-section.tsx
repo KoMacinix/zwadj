@@ -18,13 +18,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDZD } from "@zwadj/i18n";
-import type { ProBookingDTO } from "@zwadj/types";
+import { HARD_BOOKING_STATUSES, type ProBookingDTO } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { useBookingsPro } from "./venue-client-context";
 
 /** Statuts qui verrouillent la date. Miroir du `WHERE` de l'EXCLUDE côté base :
- *  si l'un bouge, l'autre doit bouger — sinon l'écran ment sur la base. */
-const LOCKING = new Set(["ACCEPTED", "CONFIRMED"]);
+ *  si l'un bouge, l'autre doit bouger — sinon l'écran ment sur la base.
+ *
+ *  ⚠ La LISTE vient de `@zwadj/types` (une seule autorité, lot S1) ; le `Set`
+ *  n'est qu'une forme d'appel — la partition interroge l'appartenance ligne à
+ *  ligne. Cet écran en portait une COPIE littérale, et c'est LUI qui décide de
+ *  quel côté de la partition une ligne tombe : une copie en retard n'affiche
+ *  pas moins, elle affiche la MÊME réservation des deux côtés — donc annulable
+ *  depuis deux écrans. `Set<string>` explicite, car `row.status` est un
+ *  `string` : sans l'annotation, `has()` refuserait de compiler. */
+const LOCKING = new Set<string>(HARD_BOOKING_STATUSES);
 
 /** UIP-A — la même section sert DEUX entrées du top panel, et la partition est
  *  stricte :

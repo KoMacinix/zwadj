@@ -55,23 +55,50 @@ export type LineFailure =
 
 export type LineResult = { ok: true; line: ResolvedLine } | { ok: false; failure: LineFailure };
 
-export function resolveServiceLine(
+type ServiceChoice = { serviceId: string; tierId?: string; quantity?: number };
+
+/** Ce que TOUTE ligne porte, quel que soit le mode de tarification. */
+type LineBase = { serviceId: string; nameFr: string; nameAr: string; pricingType: string };
+
+/** Une stratégie de tarification — lot S4 (audit F3). */
+type ServiceLineResolver = (
   service: ServiceRow,
-  choice: { serviceId: string; tierId?: string; quantity?: number },
-  guests: number
-): LineResult {
-  // Une prestation retirée du catalogue reste choisissable dans un onglet
-  // ouvert depuis une heure. Le refus est donc un cas NORMAL, pas une anomalie.
-  if (!service.isActive) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
+  choice: ServiceChoice,
+  guests: number,
+  base: LineBase
+) => LineResult;
 
-  const base = {
-    serviceId: service.id,
-    nameFr: service.nameFr,
-    nameAr: service.nameAr,
-    pricingType: service.pricingType
-  };
+type NonTieredEntry =
+  | { ok: true; pricing: NonNullable<ServiceRow["pricing"]>; common: LineBase & { tierId: null; tierLabelFr: null; tierLabelAr: null } }
+  | { ok: false; failure: LineFailure };
 
-  if (service.pricingType === ServicePricingType.TIERED) {
+/** Les deux refus communs aux modes NON paliers, dans l'ORDRE d'origine.
+ *
+ *  ⚠ Extraits pour n'exister QU'UNE FOIS : recopiés dans les trois stratégies,
+ *  ils auraient reproduit à l'identique le défaut que S1 vient de fermer sur
+ *  les statuts. TIERED ne les subit pas — un service à paliers se vend depuis
+ *  `tiers`, et n'a aucune raison d'avoir une ligne `pricing`. */
+function enterNonTiered(service: ServiceRow, choice: ServiceChoice, base: LineBase): NonTieredEntry {
+  // Hors TIERED, un palier fourni est une erreur de contrat, pas un détail à
+  // ignorer : l'ignorer masquerait un front qui envoie n'importe quoi.
+  if (choice.tierId !== undefined) return { ok: false, failure: { code: "SERVICE_TIER_MISMATCH" } };
+
+  const pricing = service.pricing;
+  // Un service non-TIERED sans ligne de tarif est le trou que la base ne sait
+  // pas fermer (cf. migration). Il ne devrait pas exister — D89 crée les deux
+  // ensemble — mais s'il existe, il ne se vend pas en silence à zéro dinar.
+  if (pricing === null) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
+
+  return { ok: true, pricing, common: { ...base, tierId: null, tierLabelFr: null, tierLabelAr: null } };
+}
+
+/** Registre des stratégies — EXHAUSTIF sur `ServicePricingType`.
+ *
+ *  ⚠ Aucun arrondi n'est né ici : `roundToDinar` est appelé aux MÊMES deux
+ *  endroits qu'avant, sur les MÊMES produits. Un lot de refactoring qui touche
+ *  au chemin de l'argent ne déplace pas une multiplication. */
+const RESOLVERS: Record<ServicePricingType, ServiceLineResolver> = {
+  [ServicePricingType.TIERED]: (service, choice, _guests, base) => {
     if (choice.tierId === undefined) return { ok: false, failure: { code: "SERVICE_TIER_MISMATCH" } };
     const tier = service.tiers.find((candidate) => candidate.id === choice.tierId && candidate.isActive);
     if (!tier) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
@@ -89,52 +116,73 @@ export function resolveServiceLine(
         lineTotalCents: tier.priceCents
       }
     };
-  }
+  },
 
-  // Hors TIERED, un palier fourni est une erreur de contrat, pas un détail à
-  // ignorer : l'ignorer masquerait un front qui envoie n'importe quoi.
-  if (choice.tierId !== undefined) return { ok: false, failure: { code: "SERVICE_TIER_MISMATCH" } };
-
-  const pricing = service.pricing;
-  // Un service non-TIERED sans ligne de tarif est le trou que la base ne sait
-  // pas fermer (cf. migration). Il ne devrait pas exister — D89 crée les deux
-  // ensemble — mais s'il existe, il ne se vend pas en silence à zéro dinar.
-  if (pricing === null) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
-
-  const common = { ...base, tierId: null, tierLabelFr: null, tierLabelAr: null };
-
-  if (service.pricingType === ServicePricingType.FIXED) {
+  [ServicePricingType.FIXED]: (service, choice, _guests, base) => {
+    const entree = enterNonTiered(service, choice, base);
+    if (!entree.ok) return entree;
     if (choice.quantity !== undefined) return { ok: false, failure: { code: "SERVICE_TIER_MISMATCH" } };
-    const unit = pricing.fixedPriceCents;
+    const unit = entree.pricing.fixedPriceCents;
     if (unit === null) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
-    return { ok: true, line: { ...common, unitPriceCents: unit, quantity: 1, lineTotalCents: unit } };
-  }
+    return { ok: true, line: { ...entree.common, unitPriceCents: unit, quantity: 1, lineTotalCents: unit } };
+  },
 
-  if (service.pricingType === ServicePricingType.PER_GUEST) {
+  [ServicePricingType.PER_GUEST]: (service, choice, guests, base) => {
+    const entree = enterNonTiered(service, choice, base);
+    if (!entree.ok) return entree;
     if (choice.quantity !== undefined) return { ok: false, failure: { code: "SERVICE_TIER_MISMATCH" } };
-    const unit = pricing.perGuestPriceCents;
+    const unit = entree.pricing.perGuestPriceCents;
     if (unit === null) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
     // La quantité EST le nombre d'invités. Elle n'est pas négociable, et elle
     // suit automatiquement toute correction du nombre d'invités.
     return {
       ok: true,
-      line: { ...common, unitPriceCents: unit, quantity: guests, lineTotalCents: roundToDinar(unit * guests) }
+      line: { ...entree.common, unitPriceCents: unit, quantity: guests, lineTotalCents: roundToDinar(unit * guests) }
+    };
+  },
+
+  [ServicePricingType.PER_UNIT]: (service, choice, _guests, base) => {
+    const entree = enterNonTiered(service, choice, base);
+    if (!entree.ok) return entree;
+    const unit = entree.pricing.perUnitPriceCents;
+    if (unit === null) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
+    const quantity = choice.quantity;
+    if (quantity === undefined) return { ok: false, failure: { code: "SERVICE_QUANTITY_OUT_OF_RANGE" } };
+    if (entree.pricing.minUnits !== null && quantity < entree.pricing.minUnits) {
+      return { ok: false, failure: { code: "SERVICE_QUANTITY_OUT_OF_RANGE" } };
+    }
+    if (entree.pricing.maxUnits !== null && quantity > entree.pricing.maxUnits) {
+      return { ok: false, failure: { code: "SERVICE_QUANTITY_OUT_OF_RANGE" } };
+    }
+    return {
+      ok: true,
+      line: { ...entree.common, unitPriceCents: unit, quantity, lineTotalCents: roundToDinar(unit * quantity) }
     };
   }
+};
 
-  // PER_UNIT
-  const unit = pricing.perUnitPriceCents;
-  if (unit === null) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
-  const quantity = choice.quantity;
-  if (quantity === undefined) return { ok: false, failure: { code: "SERVICE_QUANTITY_OUT_OF_RANGE" } };
-  if (pricing.minUnits !== null && quantity < pricing.minUnits) {
-    return { ok: false, failure: { code: "SERVICE_QUANTITY_OUT_OF_RANGE" } };
-  }
-  if (pricing.maxUnits !== null && quantity > pricing.maxUnits) {
-    return { ok: false, failure: { code: "SERVICE_QUANTITY_OUT_OF_RANGE" } };
-  }
-  return {
-    ok: true,
-    line: { ...common, unitPriceCents: unit, quantity, lineTotalCents: roundToDinar(unit * quantity) }
+export function resolveServiceLine(service: ServiceRow, choice: ServiceChoice, guests: number): LineResult {
+  // Une prestation retirée du catalogue reste choisissable dans un onglet
+  // ouvert depuis une heure. Le refus est donc un cas NORMAL, pas une anomalie.
+  if (!service.isActive) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
+
+  const base = {
+    serviceId: service.id,
+    nameFr: service.nameFr,
+    nameAr: service.nameAr,
+    pricingType: service.pricingType
   };
+
+  // ⚠ [ÉCART SIGNALÉ] — UN TYPE INCONNU EST DÉSORMAIS REFUSÉ.
+  // La cascade d'origine n'avait pas de branche `PER_UNIT` : c'était le
+  // RETOMBÉ. Un `pricingType` que le code ignore se vendait donc au prix
+  // « à l'unité », en silence, sur le chemin de l'argent. Conserver ce
+  // comportement aurait voulu dire écrire `?? RESOLVERS.PER_UNIT` — coder
+  // sciemment le piège. Il refuse maintenant, comme toute autre incohérence de
+  // catalogue. Le cas est inatteignable par le typage et par l'énumération de
+  // base ; il est mesuré quand même, et neutralisable (cible S4-5).
+  const resolver = (RESOLVERS as Record<string, ServiceLineResolver | undefined>)[service.pricingType];
+  if (resolver === undefined) return { ok: false, failure: { code: "SERVICE_UNAVAILABLE" } };
+
+  return resolver(service, choice, guests, base);
 }

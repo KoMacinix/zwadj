@@ -11,9 +11,8 @@
 // `Payment` naît `PENDING` et y reste. `PAID`, `Booking CONFIRMED`,
 // `Quote ACCEPTED` et la `Commission` sont E3d, et arriveront ensemble.
 import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { Prisma } from "../generated/prisma/client";
-import { PrismaService } from "../prisma/prisma.service";
 import { decidePaymentIntent, type IntentRefusal } from "./payment-intent";
+import { PAYMENT_STORE, type PaymentStore } from "./payment-store.types";
 import { PAYMENT_GATEWAY, type PaymentGateway } from "./payment.types";
 
 /**
@@ -33,22 +32,10 @@ const REFUSAL_MESSAGE_KEYS: Record<IntentRefusal["code"], string> = {
   NOTHING_TO_PAY: "payment.errors.nothingToPay"
 };
 
-const PAYMENT_SELECT = {
-  id: true,
-  bookingId: true,
-  provider: true,
-  providerCheckoutId: true,
-  amountCents: true,
-  discountAppliedCents: true,
-  currency: true,
-  status: true,
-  createdAt: true
-} satisfies Prisma.PaymentSelect;
-
 @Injectable()
 export class PaymentsService {
   constructor(
-    private readonly prisma: PrismaService,
+    @Inject(PAYMENT_STORE) private readonly store: PaymentStore,
     @Inject(PAYMENT_GATEWAY) private readonly gateway: PaymentGateway
   ) {}
 
@@ -69,12 +56,10 @@ export class PaymentsService {
    * de « plusieurs tentatives ».
    */
   async openIntent(userId: string, bookingId: string, paymentsEnabled: boolean) {
-    const booking = await this.prisma.booking.findFirst({
-      where: { id: bookingId, OR: [{ clientId: userId }, { venue: { owner: { userId } } }] },
-      select: { id: true, status: true, depositCents: true }
-    });
-    // 404 INDISTINCT (D47) : une réservation qui ne nous appartient pas et une
-    // qui n'existe pas rendent la même chose.
+    // ⚠ LE PORT REND `null` DANS LES DEUX CAS — inexistante, ou pas la sienne.
+    // Le service ne PEUT donc pas distinguer, et c'est l'invariant lui-même :
+    // 404 indistinct (D47).
+    const booking = await this.store.findBookingForPayer(userId, bookingId);
     if (!booking) throw new NotFoundException({ code: "BOOKING_NOT_FOUND", message: "booking.errors.notFound" });
 
     const decision = decidePaymentIntent(booking, paymentsEnabled);
@@ -82,20 +67,12 @@ export class PaymentsService {
       throw new ConflictException({ code: decision.code, message: REFUSAL_MESSAGE_KEYS[decision.code] });
     }
 
-    const existant = await this.prisma.payment.findFirst({
-      where: { bookingId: booking.id, status: "PENDING" },
-      select: PAYMENT_SELECT
-    });
-    if (existant) return existant;
-
-    return this.prisma.payment.create({
-      data: {
-        bookingId: booking.id,
-        amountCents: decision.amountCents,
-        discountAppliedCents: decision.discountAppliedCents,
-        status: "PENDING"
-      },
-      select: PAYMENT_SELECT
+    // ⚠ LES MONTANTS VIENNENT DE LA DÉCISION, jamais d'une relecture de la
+    // réservation. Ce sont les seules valeurs monétaires que ce chemin écrit.
+    return this.store.findOrCreatePendingIntent({
+      bookingId: booking.id,
+      amountCents: decision.amountCents,
+      discountAppliedCents: decision.discountAppliedCents
     });
   }
 

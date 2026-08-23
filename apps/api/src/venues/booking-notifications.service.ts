@@ -24,6 +24,7 @@ import frMessages from "@zwadj/i18n/messages/fr.json";
 import { PinoLogger } from "nestjs-pino";
 import { EMAIL_SENDER, type EmailSender } from "../common/email/email.types";
 import { renderTemplate } from "../common/email/render";
+import { dispatchNotification } from "../common/notifications/notification-dispatch";
 import { WHATSAPP_SENDER, type WhatsAppSender } from "../common/whatsapp/whatsapp.types";
 import { PrismaService } from "../prisma/prisma.service";
 
@@ -131,6 +132,11 @@ export class BookingNotificationsService {
     );
   }
 
+  /** Adapte la CHARGE UTILE des réservations au cœur commun (S2). Ce service
+   *  n'a AUCUNE spec unitaire : sa seule mesure est `bookings.int-spec.ts`.
+   *  C'est précisément pourquoi la règle partagée devait sortir d'ici — elle y
+   *  était invisible, et une divergence côté réservation ne se serait vue
+   *  qu'en base réelle, si tant est qu'on l'ait cherchée. */
   private async dispatch(
     type: string,
     channel: Channel,
@@ -138,34 +144,15 @@ export class BookingNotificationsService {
     userId: string,
     send: () => Promise<void>
   ): Promise<void> {
-    try {
-      const row = await this.prisma.notification.create({
-        data: {
-          userId,
-          channel,
-          type,
-          status: "QUEUED",
-          payload: { bookingId: input.bookingId, venueId: input.venueId, eventDate: input.eventDate }
-        },
-        select: { id: true }
-      });
-
-      try {
-        await send();
-        await this.prisma.notification.update({ where: { id: row.id }, data: { status: "SENT", sentAt: new Date() } });
-      } catch (error) {
-        const reason = error instanceof Error ? error.message : String(error);
-        await this.prisma.notification.update({
-          where: { id: row.id },
-          data: { status: "FAILED", error: reason.slice(0, 500) }
-        });
-        this.logger.error({ notificationId: row.id, type, channel }, `Envoi ${channel} échoué : ${reason}`);
-      }
-    } catch (error) {
-      // La trace elle-même n'a pas pu s'écrire. Il reste le log : ce n'est pas
-      // une raison pour renvoyer une erreur sur une demande bel et bien écrite.
-      this.logger.error({ type, channel, userId }, `Notification non journalisée : ${String(error)}`);
-    }
+    await dispatchNotification({
+      prisma: this.prisma,
+      logger: this.logger,
+      type,
+      channel,
+      userId,
+      payload: { bookingId: input.bookingId, venueId: input.venueId, eventDate: input.eventDate },
+      send
+    });
   }
 
   private templateVars(input: BookingNotificationInput, locale: Locale): Record<string, string> {

@@ -47,7 +47,6 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import {
   BookingStatus,
-  QUOTE_OPEN_STATUSES,
   QuoteErrorCode,
   QuoteStatus,
   ServiceErrorCode,
@@ -66,16 +65,21 @@ import { computeBookingWindow } from "./booking-window";
 import { resolveDepositCents } from "./deposit";
 import { resolveSlotPrice } from "./pricing-engine";
 import { RULE_SELECT } from "./pricing-rules.service";
+import {
+  QuoteCommand,
+  quoteAllowedFrom,
+  quoteWrittenStatus
+} from "./quote-transitions";
 import { resolveServiceLine, type ResolvedLine } from "./service-pricing";
 import { SERVICE_SELECT } from "./services.service";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** ⚠ IMPORTÉE de `@zwadj/types`, jamais recopiée ici. C'est la MÊME liste qui
- *  décide quels boutons l'app pro affiche : deux copies de « ce devis est-il
- *  encore ouvert ? » divergeraient, et la divergence serait silencieuse — un
- *  bouton présent que l'API refuse, ou l'inverse. */
-const OPEN = [...QUOTE_OPEN_STATUSES];
+// ⚠ `OPEN` A DISPARU AU LOT S3, et ce n'était pas une copie fautive : elle
+// dérivait déjà de `@zwadj/types`. Ce qui manquait, c'est QUI l'utilise — la
+// même liste gardait quatre commandes sans que rien ne dise laquelle écrit un
+// statut. `quote-transitions.ts` porte désormais le tableau, et l'autorité
+// reste `QUOTE_OPEN_STATUSES` : la politique la référence, elle ne la copie pas.
 
 const QUOTE_SELECT = {
   id: true,
@@ -217,12 +221,12 @@ export class QuotesService {
 
     const row = await this.prisma.$transaction(async (tx) => {
       const consumed = await tx.quote.updateMany({
-        where: { id: current.id, status: { in: OPEN } },
+        where: { id: current.id, status: { in: [...quoteAllowedFrom(QuoteCommand.DELIVER)] } },
         data: { sentVia: input.sentVia, sentAt: new Date() }
       });
       if (consumed.count === 0) {
         const fresh = await tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: { status: true } });
-        this.assertStatus(fresh, OPEN);
+        this.assertStatus(fresh, quoteAllowedFrom(QuoteCommand.DELIVER));
         throw new ConflictException({
           code: QuoteErrorCode.QUOTE_STATUS_CONFLICT,
           message: "quote.errors.statusConflict",
@@ -245,7 +249,7 @@ export class QuotesService {
     const current = await this.ownedQuote(userId, quoteId);
     // Une chaîne close ne se révise plus : ni un refus, ni une acceptation ne se
     // rouvrent par une version de plus.
-    this.assertStatus(current, OPEN);
+    this.assertStatus(current, quoteAllowedFrom(QuoteCommand.REVISE));
 
     const priced = await this.price(current.venueId, input);
     const row = await this.prisma.$transaction(async (tx) => {
@@ -294,7 +298,7 @@ export class QuotesService {
    */
   async convert(userId: string, quoteId: string, input: QuoteConvertInput): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
-    this.assertStatus(current, OPEN);
+    this.assertStatus(current, quoteAllowedFrom(QuoteCommand.CONVERT));
 
     // `bookings.quote_id` est UNIQUE : sans cette garde, une seconde conversion
     // remonterait en 500 au lieu d'un 409 lisible. La base reste l'autorité —
@@ -402,12 +406,12 @@ export class QuotesService {
     // 201 les deux fois, sur un devis déjà refusé.
     const row = await this.prisma.$transaction(async (tx) => {
       const consumed = await tx.quote.updateMany({
-        where: { id: current.id, status: { in: OPEN } },
-        data: { status: QuoteStatus.CANCELLED }
+        where: { id: current.id, status: { in: [...quoteAllowedFrom(QuoteCommand.CANCEL)] } },
+        data: { status: quoteWrittenStatus(QuoteCommand.CANCEL) }
       });
       if (consumed.count === 0) {
         const fresh = await tx.quote.findUniqueOrThrow({ where: { id: current.id }, select: { status: true } });
-        this.assertStatus(fresh, OPEN);
+        this.assertStatus(fresh, quoteAllowedFrom(QuoteCommand.CANCEL));
         throw new ConflictException({
           code: QuoteErrorCode.QUOTE_STATUS_CONFLICT,
           message: "quote.errors.statusConflict",

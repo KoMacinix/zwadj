@@ -9,6 +9,10 @@ import { AvailabilityBlocksController } from "./availability-blocks.controller";
 import { AvailabilityBlocksService } from "./availability-blocks.service";
 import { AvailabilityController, AvailabilityProController } from "./availability.controller";
 import { BookingNotificationsService } from "./booking-notifications.service";
+import { DomainEvents } from "./domain-events";
+import { NotificationSubscriptions } from "./notification-subscriptions";
+import { PrismaBookingLocks } from "./booking-locks.prisma";
+import { BOOKING_LOCKS } from "./booking-locks.types";
 import { BookingsController } from "./bookings.controller";
 import { BookingsProController } from "./bookings-pro.controller";
 import { BookingsService } from "./bookings.service";
@@ -75,6 +79,15 @@ import { VenuesService } from "./venues.service";
     VisitNotificationsService,
     BookingsService,
     BookingNotificationsService,
+    DomainEvents,
+    // ⚠ INSTANCIÉ POUR SON EFFET DE BORD : `onModuleInit` pose la table de
+    // routage. Sans cette ligne, les événements partent dans le vide — et
+    // silencieusement, puisque publier sans abonné ne lève pas.
+    NotificationSubscriptions,
+    // ⚠ L'ADAPTATEUR EST LE SEUL À OUVRIR UNE TRANSACTION sur ce chemin. Le
+    // service reçoit le port : il ne peut plus, même par accident, poser un
+    // verrou ou traduire une erreur PostgreSQL.
+    { provide: BOOKING_LOCKS, useClass: PrismaBookingLocks },
     ServicesService,
     QuotesService
   ],

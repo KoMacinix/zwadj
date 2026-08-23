@@ -232,20 +232,27 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     // D166 — qui s'applique désormais pendant la PRÉPARATION, donc ne prouverait
     // plus rien ici. Q4 supprimant une colonne, la sonde redevient structurelle :
     // à l'avant-dernière migration, `valid_until` existe ENCORE.
-    const colonne = await sql<{ column_name: string }>(`
-      SELECT column_name FROM information_schema.columns
-       WHERE table_name = 'quotes' AND column_name = 'valid_until'
+    // ⚠ QUATRIÈME CHANGEMENT DE SONDE EN CINQ LOTS, et toujours pour la même
+    // raison : la sonde doit décrire ce que fait LA dernière migration, et
+    // celle-ci change à chaque lot. R4 ajoute `CANCELLED` au TYPE — donc à
+    // l'avant-dernière migration, la valeur n'existe PAS encore.
+    const contrainte = await sql<{ def: string }>(`
+      SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint
+       WHERE conname = 'quotes_sent_at_coherent'
     `);
     expect(
-      colonne,
-      "valid_until déjà absente : la dernière migration est appliquée, le test ne prouverait rien"
-    ).toHaveLength(1);
+      contrainte[0]!.def,
+      "le CHECK exempte déjà CANCELLED : la dernière migration est appliquée, le test ne prouverait rien"
+    ).not.toContain("CANCELLED");
 
-    // Et le tri D166 a bien eu lieu pendant la préparation : c'est ce qui
-    // garantit que la base sur laquelle Q4 s'applique est un état RÉEL de
-    // production, pas un état intermédiaire fabriqué.
-    const restes = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE status = 'SENT'`);
-    expect(Number(restes[0]!.n), "le tri D166 n'a pas été appliqué à la préparation").toBe(1);
+    // ⚠ LA SONDE D166 A ÉTÉ RETIRÉE, ET C'EST DÉLIBÉRÉ (lot R4).
+    // Elle exigeait `1` devis `SENT` après le semis, c'est-à-dire l'EFFET du
+    // tri D166 sur les lignes semées. Or ce tri s'applique désormais pendant la
+    // PRÉPARATION — donc sur une base encore VIDE, avant le semis. Il ne peut
+    // plus rien trier, et `2` est la valeur juste. La garde survivait à son
+    // objet : elle ne mesurait plus le tri, elle mesurait un monde disparu.
+    // Le semis des deux cas `SENT` reste, lui : il sert au comptage de lignes
+    // ci-dessous, comme l'annonce déjà le commentaire de `semerDonnees`.
   });
 
   it("applique la dernière migration SANS perdre ni abîmer les données", async () => {
@@ -329,29 +336,52 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     expect(versionnement.map((r) => r.column_name)).toEqual(["chain_id", "parent_quote_id", "version"]);
   });
 
-  it("⚠ D166 — le tri des SENT porte sur la RÉSERVATION, pas sur le statut seul", async () => {
-    // Le semis : 1 DRAFT + 2 SENT, dont UN converti. Après migration, le SENT
-    // sans réservation est redevenu DRAFT ; celui qui en porte une n'a PAS
-    // bougé.
-    //
-    // ⚠ C'EST L'ÉCART ENTRE LES DEUX QUI PROUVE LA CLAUSE `WHERE`. Un
-    // `UPDATE quotes SET status='DRAFT' WHERE status='SENT'` sans le `NOT
-    // EXISTS` rendrait ÉDITABLE un devis qui adosse une réservation vivante —
-    // c'est-à-dire que la migration violerait D163 elle-même, en silence, et
-    // qu'un montant déjà accepté deviendrait modifiable.
-    const restes = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE status = 'SENT'`);
-    expect(Number(restes[0]!.n), "les SENT convertis devaient être conservés").toBe(1);
-
-    const conserve = await sql<{ avec_booking: boolean }>(`
-      SELECT EXISTS (SELECT 1 FROM bookings b WHERE b.quote_id = q.id) AS avec_booking
-        FROM quotes q WHERE q.status = 'SENT'
+  it("⚠ R4 — un BROUILLON JAMAIS REMIS peut être clos : les DEUX défauts sont fermés", async () => {
+    // Deux défauts empilés fermés par deux migrations, et cette garde les
+    // mesure ensemble parce qu'ils se manifestaient par le MÊME 500 :
+    //   1. `CANCELLED` absent du type PostgreSQL (22P02) ;
+    //   2. `quotes_sent_at_coherent` refusant un CANCELLED sans `sent_at`.
+    const labels = await sql<{ labels: string }>(`
+      SELECT string_agg(e.enumlabel, ',' ORDER BY e.enumsortorder) AS labels
+        FROM pg_type t JOIN pg_enum e ON e.enumtypid = t.oid
+       WHERE t.typname = 'QuoteStatus'
     `);
-    expect(conserve[0]!.avec_booking, "le SENT conservé n'est pas celui qui porte une réservation").toBe(true);
+    expect(labels[0]!.labels.split(","), "défaut 1 — le type ignore encore CANCELLED").toContain("CANCELLED");
 
-    // Et le versant inverse : celui qui n'en portait pas est bien redescendu.
-    const brouillons = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes WHERE status = 'DRAFT'`);
-    expect(Number(brouillons[0]!.n), "le SENT sans réservation devait redevenir DRAFT").toBe(2);
+    // ⚠ PRÉSENT NE SUFFIT PAS. On ÉCRIT la valeur, et sur LE cas qui tombait :
+    // le devis semé en DRAFT a `sent_at` NUL — un brouillon jamais remis, ce
+    // que la borne d'origine tenait pour impossible. Écrire sur une ligne
+    // « propre » aurait laissé le second défaut intact et la garde verte.
+    const brouillons = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM quotes WHERE status = 'DRAFT' AND sent_at IS NULL`
+    );
+    expect(Number(brouillons[0]!.n), "sans brouillon NON REMIS semé, cette garde ne mesure rien").toBeGreaterThan(0);
+
+    await sql(`UPDATE quotes SET status = 'CANCELLED' WHERE status = 'DRAFT' AND sent_at IS NULL`);
+    const clos = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM quotes WHERE status = 'CANCELLED' AND sent_at IS NULL`
+    );
+    expect(Number(clos[0]!.n), "défaut 2 — le CHECK refuse encore la clôture d'un brouillon").toBeGreaterThan(0);
   });
+
+  // ⚠ LA GARDE D166 A ÉTÉ RETIRÉE ICI AU LOT R4, PAR ÉCRIT ET NON PAR SOURDINE.
+  //
+  // Elle mesurait l'effet du tri D166 sur des lignes semées : `1` SENT conservé
+  // (celui qui adosse une réservation), `2` redevenus DRAFT. Ce que ce harnais
+  // mesure, c'est la DERNIÈRE migration appliquée à une base non vide — et
+  // D166 a cessé d'être la dernière. Elle s'exécute désormais pendant la
+  // préparation, sur une base encore VIDE : elle ne trie plus rien, et la
+  // garde exigeait un écart que plus aucune migration ne produit.
+  //
+  // Elle a été mise en `skip` un instant pendant ce lot : c'était une erreur.
+  // Une garde en sourdine se lit comme une garde, se compte comme un fichier,
+  // et ne mesure rien — le pire des trois états. L'objet a disparu, la garde
+  // part avec lui.
+  //
+  // ⚠ CE QU'ON PERD, et il faut le dire : plus rien ne vérifie que la clause
+  // `NOT EXISTS` de D166 épargne les devis convertis. Le regagner demanderait
+  // un harnais qui sème AVANT une migration choisie, pas avant la dernière —
+  // autre chose que B9/D123. À inscrire au backlog, pas à improviser ici.
 
   it("les objets du lot PRÉCÉDENT n'ont pas bougé, et aucun canal n'a été inventé", async () => {
     const colonne = await sql<{ is_nullable: string; data_type: string }>(

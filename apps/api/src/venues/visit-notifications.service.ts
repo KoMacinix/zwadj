@@ -29,6 +29,7 @@ import frMessages from "@zwadj/i18n/messages/fr.json";
 import { PinoLogger } from "nestjs-pino";
 import { EMAIL_SENDER, type EmailSender } from "../common/email/email.types";
 import { renderTemplate } from "../common/email/render";
+import { dispatchNotification } from "../common/notifications/notification-dispatch";
 import { WHATSAPP_SENDER, type WhatsAppSender } from "../common/whatsapp/whatsapp.types";
 import { PrismaService } from "../prisma/prisma.service";
 
@@ -154,6 +155,11 @@ export class VisitNotificationsService {
     );
   }
 
+  /** Adapte la CHARGE UTILE des visites au cœur commun (S2). Ce qui reste ici
+   *  est ce qui appartient VRAIMENT aux visites : `visitBookingId` et
+   *  `startMinutes`, que le répartiteur ne lit jamais. La règle « QUEUED, puis
+   *  SENT/FAILED, et jamais de levée » vit maintenant dans un seul fichier —
+   *  elle était écrite deux fois, dont une ici. */
   private async dispatch(
     type: string,
     channel: Channel,
@@ -161,43 +167,20 @@ export class VisitNotificationsService {
     userId: string,
     send: () => Promise<void>
   ): Promise<void> {
-    try {
-      const row = await this.prisma.notification.create({
-        data: {
-          userId,
-          channel,
-          type,
-          status: "QUEUED",
-          payload: {
-            visitBookingId: input.visitBookingId,
-            venueId: input.venueId,
-            date: input.date,
-            startMinutes: input.startMinutes
-          }
-        },
-        select: { id: true }
-      });
-
-      try {
-        await send();
-        await this.prisma.notification.update({
-          where: { id: row.id },
-          data: { status: "SENT", sentAt: new Date() }
-        });
-      } catch (error) {
-        const reason = error instanceof Error ? error.message : String(error);
-        await this.prisma.notification.update({
-          where: { id: row.id },
-          data: { status: "FAILED", error: reason.slice(0, 500) }
-        });
-        this.logger.error({ notificationId: row.id, type, channel }, `Envoi ${channel} échoué : ${reason}`);
-      }
-    } catch (error) {
-      // La trace elle-même n'a pas pu s'écrire (base indisponible). Il reste le
-      // log : ce n'est pas une raison pour renvoyer une erreur au client dont le
-      // rendez-vous, lui, est bel et bien confirmé.
-      this.logger.error({ type, channel, userId }, `Notification non journalisée : ${String(error)}`);
-    }
+    await dispatchNotification({
+      prisma: this.prisma,
+      logger: this.logger,
+      type,
+      channel,
+      userId,
+      payload: {
+        visitBookingId: input.visitBookingId,
+        venueId: input.venueId,
+        date: input.date,
+        startMinutes: input.startMinutes
+      },
+      send
+    });
   }
 
   private templateVars(input: VisitNotificationInput, locale: Locale): Record<string, string> {

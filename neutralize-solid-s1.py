@@ -1,0 +1,201 @@
+#!/usr/bin/env python3
+"""Campagne de neutralisation — lot S1, autorité unique des statuts verrouillants.
+
+⚠ CE QUE CETTE CAMPAGNE PROUVE, ET CE QU'ELLE NE PROUVE PAS.
+S1 ne change aucun comportement : il remplace TROIS copies littérales de la
+paire ACCEPTED/CONFIRMED par une dérivation de `HARD_BOOKING_STATUSES`. Les
+suites sont donc restées vertes de bout en bout — et une suite verte ne
+démontre rien. La seule question qui vaut : les écrans et les requêtes lisent-
+ils VRAIMENT la source partagée, ou continuent-ils d'être justes par accident ?
+On mute donc la SOURCE et on exige que les consommateurs tombent.
+
+Deux mutations et non une, parce qu'elles empruntent des chemins d'échec
+DIFFÉRENTS :
+  S1-1 retire CONFIRMED → l'écran « Réservations » perd une ligne qu'il doit
+       montrer, et le `WHERE` de la liste publique cesse de la charger.
+  S1-2 retire ACCEPTED  → la ligne ACCEPTED bascule du côté « Demandes », là où
+       le test exige justement son ABSENCE. Une garde qui ne vérifierait que la
+       présence resterait verte ici.
+
+⚠ DEUX SITES NE SONT PAS MESURABLES HORS BASE RÉELLE : `locks()` dans
+`bookings.service.ts` (projection des conflits) et le `WHERE` de chargement du
+calendrier dans `availability.service.ts`. Aucune spec unitaire ne les touche —
+ils vivent dans `bookings.int-spec.ts` et `availability.int-spec.ts`. Ces
+mesures sont donc DÉCLARÉES ici, et exécutées par `--int` sur un poste doté du
+PostgreSQL de développement. Les omettre par confort les aurait fait passer
+pour couvertes.
+
+Usage :
+    python3 neutralize-solid-s1.py            # mesures unitaires seules
+    python3 neutralize-solid-s1.py --int      # + mesures d'intégration (base réelle)
+    python3 neutralize-solid-s1.py 1 1        # une plage de cibles
+Depuis : la racine du monorepo.
+"""
+
+import io
+import os
+import shutil
+import subprocess
+import sys
+
+SAUVEGARDE = ".neutralisation-sauvegarde"
+
+# ── Mesures ──────────────────────────────────────────────────────────────────
+# ⚠ AUCUN `-t` : le filtre par nom de test est le piège documenté en D226 —
+# `vitest -t <motif>` SORT EN 0 quand rien ne correspond, et une campagne bâtie
+# dessus rapporte « muette » ce qui n'a simplement jamais tourné. Ici on cible
+# un FICHIER : il tourne, ou la collecte échoue bruyamment.
+MESURES = {
+    "pro": (
+        ["pnpm", "--filter", "@zwadj/pro", "exec", "vitest", "run", "src/venues/request-scope.test.tsx"],
+        "unit",
+    ),
+    "api": (
+        ["pnpm", "--filter", "@zwadj/api", "exec", "vitest", "run", "src/venues/venues-public.service.spec.ts"],
+        "unit",
+    ),
+    # ── Intégration : base réelle requise (docker compose up -d).
+    # Certains postes exigent ALLOW_PG_LT18_POLYFILL=1 — voir AGENTS.md.
+    "int-bookings": (
+        ["pnpm", "--filter", "@zwadj/api", "exec", "vitest", "run", "-c", "vitest.config.int.ts", "test/int/bookings.int-spec.ts"],
+        "int",
+    ),
+    "int-availability": (
+        ["pnpm", "--filter", "@zwadj/api", "exec", "vitest", "run", "-c", "vitest.config.int.ts", "test/int/availability.int-spec.ts"],
+        "int",
+    ),
+}
+
+SOURCE = "packages/types/src/booking.ts"
+LISTE = "[BookingStatus.ACCEPTED, BookingStatus.CONFIRMED] as const"
+
+CIBLES = [
+    (
+        "S1-1. ⚠ L'AUTORITÉ PARTAGÉE PERD `CONFIRMED` — les trois sites doivent le sentir",
+        SOURCE,
+        LISTE,
+        "[BookingStatus.ACCEPTED] as const",
+        1,
+        ["pro", "api", "int-bookings", "int-availability"],
+    ),
+    (
+        "S1-2. L'autorité perd `ACCEPTED` — la ligne verrouillée bascule du mauvais côté",
+        SOURCE,
+        LISTE,
+        "[BookingStatus.CONFIRMED] as const",
+        1,
+        ["pro", "api", "int-bookings", "int-availability"],
+    ),
+]
+
+
+def restaurer_si_interrompu() -> None:
+    """Un `finally` ne s'exécute PAS quand le processus est tué (D223, revu au
+    lot S0 : une campagne coupée par la limite d'exécution a laissé un fichier
+    sciemment cassé dans l'arbre). La sauvegarde disque est le seul filet."""
+    if not os.path.isdir(SAUVEGARDE):
+        return
+    for marque in os.listdir(SAUVEGARDE):
+        chemin = marque.replace("__", "/")
+        contenu = io.open(os.path.join(SAUVEGARDE, marque), encoding="utf-8", newline="").read()
+        io.open(chemin, "w", encoding="utf-8", newline="").write(contenu)
+        print(f"↩ RESTAURÉ après interruption : {chemin}")
+    shutil.rmtree(SAUVEGARDE)
+
+
+def sauver(chemin: str, contenu: str) -> str:
+    os.makedirs(SAUVEGARDE, exist_ok=True)
+    marque = os.path.join(SAUVEGARDE, chemin.replace("/", "__"))
+    io.open(marque, "w", encoding="utf-8", newline="").write(contenu)
+    return marque
+
+
+def _binaire(nom: str) -> str:
+    """Résout l'exécutable AVANT `subprocess.run`.
+
+    ⚠ Windows : `pnpm` est un `pnpm.cmd`, et `CreateProcess` ne consulte PAS
+    `PATHEXT` — il ne cherche qu'un `.exe`, échoue en `WinError 2`, et la
+    campagne meurt avant d'avoir mesuré quoi que ce soit. `shutil.which`, lui,
+    consulte `PATHEXT` et rend le chemin complet. Sur POSIX il rend le même nom.
+    """
+    return shutil.which(nom) or nom
+
+def lancer(nom: str) -> int:
+    commande, _ = MESURES[nom]
+    return subprocess.run(
+        [_binaire(commande[0]), *commande[1:]],
+        capture_output=True,
+        # ⚠ `text=True` seul décode en cp1252 sous Windows : la sortie UTF-8 de
+        # vitest lève une UnicodeDecodeError dans un thread lecteur. On impose
+        # l'encodage et on tolère l'irréductible — on lit un CODE DE RETOUR,
+        # pas le texte.
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    ).returncode
+
+
+def main(argv: list[str]) -> int:
+    avec_int = "--int" in argv
+    rangs = [a for a in argv if a.isdigit()]
+    depuis = int(rangs[0]) if rangs else 1
+    jusqua = int(rangs[1]) if len(rangs) > 1 else 99
+
+    restaurer_si_interrompu()
+
+    actives = [nom for nom, (_, genre) in MESURES.items() if genre == "unit" or avec_int]
+    if not avec_int:
+        print("⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).")
+        print("  Sans elles, `locks()` et le WHERE du calendrier restent NON PROUVÉS.\n")
+
+    # ── Pré-vol : une mesure doit être VERTE avant mutation. Sinon on ne
+    # mesurerait pas la garde mais un rouge préexistant — ou un chemin de
+    # fichier faux, qui rendrait toute la campagne ininterprétable.
+    for nom in actives:
+        if lancer(nom) != 0:
+            print(f"✗ PRÉ-VOL : la mesure « {nom} » est DÉJÀ ROUGE avant toute mutation. Campagne abandonnée.")
+            return 2
+    print(f"✓ Pré-vol : {len(actives)} mesure(s) verte(s) avant mutation — {', '.join(actives)}\n")
+
+    mordu, muettes = 0, []
+    for rang, (libelle, chemin, avant, apres, attendu, mesures) in enumerate(CIBLES, start=1):
+        if not (depuis <= rang <= jusqua):
+            continue
+        source = io.open(chemin, encoding="utf-8", newline="").read()
+        vus = source.count(avant)
+        if vus != attendu:
+            print(f"✗ {libelle}\n   ERREUR DE SCRIPT : {vus} occurrence(s), {attendu} attendue(s) dans {chemin}")
+            return 2
+
+        marque = sauver(chemin, source)
+        io.open(chemin, "w", encoding="utf-8", newline="").write(source.replace(avant, apres))
+        try:
+            # ⚠ La cible doit rougir chez CHAQUE consommateur retenu. Une garde
+            # posée sur du code partagé qui ne ferait tomber qu'un seul front
+            # signale que l'autre ne mesure rien (D226) — c'est exactement
+            # l'asymétrie qui a laissé les trois copies diverger sans bruit.
+            retenues = [m for m in mesures if m in actives]
+            codes = {m: lancer(m) for m in retenues}
+        finally:
+            io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+            os.remove(marque)
+
+        verts = [m for m, code in codes.items() if code == 0]
+        if verts:
+            muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+            print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+        else:
+            mordu += 1
+            print(f"✓ {libelle}  [{', '.join(codes)}]")
+
+    if os.path.isdir(SAUVEGARDE) and not os.listdir(SAUVEGARDE):
+        os.rmdir(SAUVEGARDE)
+
+    print(f"\n{mordu} garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.")
+    for m in muettes:
+        print(f"  muette : {m}")
+    return 0 if not muettes else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

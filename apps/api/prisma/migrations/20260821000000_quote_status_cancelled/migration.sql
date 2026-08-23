@@ -1,0 +1,39 @@
+-- R4 — `CANCELLED` MANQUAIT AU TYPE POSTGRESQL, ET LE REFUS DE DEVIS RENDAIT 500.
+--
+-- Q3a (D161) a introduit `CANCELLED` dans `schema.prisma` et dans le code —
+-- `QuoteStatus.CANCELLED`, `QUOTE_LOST_STATUSES`, la clôture du devis — mais
+-- AUCUNE migration ne l'a jamais ajouté au type PostgreSQL. Le type est resté
+-- celui de `20260802140000_quote_lifecycle` :
+--     ('DRAFT', 'SENT', 'ACCEPTED', 'DECLINED', 'SUPERSEDED')
+--
+-- Conséquence, mesurée et non supposée : chaque `POST /quotes/:id/cancel`
+-- écrivait un `UPDATE … SET status = 'CANCELLED'` que PostgreSQL refusait en
+-- `22P02` — « invalid input value for enum "QuoteStatus": "CANCELLED" ». Le
+-- filtre d'exception de Nest repliait ce refus en 500 générique, ce qui a
+-- masqué la cause : l'écran voyait une panne, pas une valeur illégale.
+-- L'action utilisateur « je clos ce devis » était donc INOPÉRANTE depuis Q3a.
+--
+-- ⚠ CE DÉFAUT EST EXACTEMENT CE QUE LA DOCTRINE ANNONCE. Les migrations sont la
+-- SEULE autorité sur le schéma réel ; `schema.prisma` n'en est qu'un reflet, et
+-- rien ne compare les deux. Un statut ajouté au reflet sans être ajouté à la
+-- base compile, passe le typecheck, passe le lint, et ne tombe qu'au premier
+-- appel réel. Aucune porte du dépôt ne regardait de ce côté — c'est le
+-- diagnostic, pas une excuse.
+--
+-- ⚠ POURQUOI `BEFORE 'SUPERSEDED'` : pour que l'ordre du type suive celui de
+-- `schema.prisma` (DRAFT, SENT, ACCEPTED, DECLINED, CANCELLED, SUPERSEDED).
+-- L'ordre d'une énumération PostgreSQL n'est pas cosmétique — il porte les
+-- comparaisons et les `ORDER BY`. Ajouter en queue aurait créé un écart muet
+-- entre le type et sa déclaration.
+--
+-- ⚠ `ALTER TYPE … ADD VALUE` s'exécute dans une transaction depuis PostgreSQL
+-- 12, à une condition : la valeur neuve ne peut pas être UTILISÉE avant le
+-- commit. Cette migration ne fait donc QUE l'ajouter — aucun `UPDATE`, aucune
+-- comparaison. Y glisser une reprise de données la ferait échouer sous
+-- `migrate deploy`, qui enveloppe chaque migration.
+--
+-- ⚠ AUCUNE REPRISE DE DONNÉES N'EST NÉCESSAIRE, et c'est vérifiable : puisque
+-- la valeur n'existait pas, aucune ligne ne peut la porter. Les devis que les
+-- pros ont cru clore sont restés `DRAFT` — ils sont donc toujours ouverts et
+-- manipulables, ce qui est le bon état de repli.
+ALTER TYPE "QuoteStatus" ADD VALUE IF NOT EXISTS 'CANCELLED' BEFORE 'SUPERSEDED';

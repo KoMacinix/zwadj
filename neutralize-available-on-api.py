@@ -152,6 +152,17 @@ CIBLES = [
 SAUVEGARDE = ".neutralisation-sauvegarde"
 
 
+def _binaire(nom: str) -> str:
+    """Résout l'exécutable AVANT `subprocess.run`.
+
+    ⚠ Windows : `pnpm` est un `pnpm.cmd`, et `CreateProcess` ne consulte PAS
+    `PATHEXT` — il ne cherche qu'un `.exe`, échoue en `WinError 2`, et la
+    campagne meurt avant d'avoir mesuré quoi que ce soit. `shutil.which`, lui,
+    consulte `PATHEXT` et rend le chemin complet. Sur POSIX il rend le même nom.
+    """
+    return shutil.which(nom) or nom
+
+
 def restaurer_si_interrompu() -> None:
     if not os.path.isdir(SAUVEGARDE):
         return
@@ -188,10 +199,15 @@ def main(depuis: int = 1, jusqua: int = 99) -> int:
         io.open(chemin, "w", encoding="utf-8", newline="").write(source.replace(avant, apres))
         try:
             code = subprocess.run(
-                ["./node_modules/.bin/vitest", "run", fichier, "-t", filtre],
+                # ⚠ Chemin POSIX en dur à l'origine : sous Windows le binaire
+                # est `vitest.CMD` dans le même dossier, et `_binaire` le
+                # trouve via PATHEXT. Le repli garde le comportement POSIX.
+                [_binaire("apps/api/node_modules/.bin/vitest"), "run", fichier, "-t", filtre],
                 cwd="apps/api",
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 env=env,
             ).returncode
         finally:

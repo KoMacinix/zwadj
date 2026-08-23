@@ -16,6 +16,7 @@
 // `slot_templates_minutes_valid`) et le test de recouvrement est semi-ouvert.
 import { Injectable, NotFoundException } from "@nestjs/common";
 import {
+  BookingStatus,
   HARD_BOOKING_STATUSES,
   VenueErrorCode,
   type AvailabilityWindowQueryInput,
@@ -49,8 +50,16 @@ import { PUBLIC_BASE_WHERE, PUBLIC_DETAIL_STATUSES, SLUG_PATTERN } from "./venue
 const MINUTE_MS = 60_000;
 
 /** Statuts qui DISENT quelque chose. DECLINED, EXPIRED et CANCELLED libèrent le
- *  créneau : ne pas les charger est plus sûr que les filtrer plus loin. */
-const BLOCKING_BOOKING_STATUSES = ["PENDING", "ACCEPTED", "CONFIRMED"] as const;
+ *  créneau : ne pas les charger est plus sûr que les filtrer plus loin.
+ *
+ *  ⚠ TROISIÈME COPIE trouvée au lot S1, à QUATRE LIGNES de la dérivation
+ *  correcte ci-dessous. Le danger n'est pas la recopie mais l'ASYMÉTRIE : un
+ *  statut verrouillant ajouté demain entrerait dans `HARD_BOOKING_STATUS_SET`
+ *  — donc serait classé `hard` ligne 198 — sans entrer dans ce `WHERE`, si
+ *  bien que la ligne ne serait JAMAIS chargée. Le calendrier annoncerait libre
+ *  un créneau que la base verrouille. `PENDING` reste écrit ici : c'est ce que
+ *  ce fichier AJOUTE au verrou dur, pas une seconde autorité sur celui-ci. */
+const BLOCKING_BOOKING_STATUSES = [BookingStatus.PENDING, ...HARD_BOOKING_STATUSES] as const;
 /** Verrou DUR, doublé en base par `bookings_no_overlap_accepted_confirmed`.
  *  ⚠ La LISTE vient de `@zwadj/types` (une seule autorité) ; le `Set` n'est
  *  qu'une forme d'appel — ce fichier interroge l'appartenance ligne à ligne. */
