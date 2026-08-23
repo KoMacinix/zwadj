@@ -106,8 +106,12 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
 
         {/* ⚠ UN VRAI FORMULAIRE GET, pas un `onSubmit`. Le navigateur navigue
             vers /salles ; sans JavaScript, la recherche fonctionne. Les noms des
-            champs sont ceux du contrat public A3 — `guests`, `maxPriceCents` —
-            donc aucune traduction d'URL à maintenir. */}
+            champs sont ceux de l'URL PUBLIQUE — `guests`, `maxPrice` — donc
+            aucune traduction d'URL à maintenir.
+            ⚠ CORRIGÉ LE 23/08/2026 (D228) : ce champ s'appelait
+            `maxPriceCents`, le nom de l'API. `parseSearchParams` ne lit que
+            `maxPrice`, donc le budget choisi ici était jeté en silence et le
+            visiteur recevait le catalogue entier. */}
         <form className="hm-search" action="/salles" method="get">
           <fieldset>
             <legend className="sr-only">{t("search.legend")}</legend>
@@ -127,14 +131,24 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
 
             <div className="hm-search-field">
               <label htmlFor="hm-budget">{t("search.budget")}</label>
-              {/* ⚠ En CENTIMES, comme le contrat. Les paliers sont des valeurs
-                  de filtre, pas des calculs : aucune arithmétique monétaire. */}
-              <select id="hm-budget" name="maxPriceCents" defaultValue="">
+              {/* ⚠ En DINARS, comme l'URL publique. Les paliers restent des
+                  valeurs de filtre écrites en toutes lettres, pas des calculs :
+                  aucune arithmétique monétaire dans le navigateur.
+                  ⚠ Le libellé et la valeur disent désormais LA MÊME CHOSE —
+                  « 500 000 DA » vaut `500000`. Avant, le libellé annonçait des
+                  dinars et la valeur portait des centimes ; l'écart d'un
+                  facteur 100 entre les deux ne se voyait nulle part.
+                  ⚠ 2 000 000 et 4 000 000 dépassent `BUDGET_CEILING`
+                  (1 500 000) : par D69 ils signifient « pas de plafond ». Ces
+                  deux paliers ne filtrent donc rien, AVANT COMME APRÈS cette
+                  correction. Choisir les paliers offerts est une décision
+                  produit, laissée ouverte — voir CADRAGE_MAXPRICE_D228 §5. */}
+              <select id="hm-budget" name="maxPrice" defaultValue="">
                 <option value="">{t("search.budgetAny")}</option>
-                <option value="50000000">500 000 DA</option>
-                <option value="100000000">1 000 000 DA</option>
-                <option value="200000000">2 000 000 DA</option>
-                <option value="400000000">4 000 000 DA</option>
+                <option value="500000">500 000 DA</option>
+                <option value="1000000">1 000 000 DA</option>
+                <option value="2000000">2 000 000 DA</option>
+                <option value="4000000">4 000 000 DA</option>
               </select>
             </div>
 

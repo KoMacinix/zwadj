@@ -500,7 +500,21 @@ export const VenueErrorCode = {
    *  savoir. Reste intermittent au voisinage de minuit à Alger, et c'est
    *  ACCEPTÉ : la veille au soir, la réponse honnête est « cette date est
    *  passée ». */
-  AVAILABLE_ON_PAST: "AVAILABLE_ON_PAST"
+  AVAILABLE_ON_PAST: "AVAILABLE_ON_PAST",
+
+  /** La date demandée dépasse l'horizon de réservation (D227).
+   *
+   *  ⚠ CODE DISTINCT DE `AVAILABLE_ON_PAST`, ET C'EST TOUT LE POINT. Les
+   *  deux refus sont métier, mais ils n'appellent pas la même action :
+   *  « cette date est passée » dit de regarder DEVANT, « nous n'ouvrons pas
+   *  encore si loin » dit de se RAPPROCHER. Un code unique aurait forcé
+   *  l'écran à en choisir un — faux une fois sur deux.
+   *
+   *  Même motif que `AVAILABLE_ON_PAST` sur le fond : `availableOn` est un
+   *  POINT, et un point hors bornes se REFUSE au lieu de s'écrêter (D213).
+   *  L'horizon est `BOOKING_HORIZON_MONTHS`, le même que celui qui refuse
+   *  une demande de visite — pas une seconde valeur à faire diverger. */
+  AVAILABLE_ON_BEYOND_HORIZON: "AVAILABLE_ON_BEYOND_HORIZON"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 

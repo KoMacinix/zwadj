@@ -567,7 +567,9 @@
       "cardBadge": "Complet le {date}",
       "pastTitle": "Cette date est déjà passée",
       "pastBody": "La date demandée dans l'adresse est antérieure à aujourd'hui : aucune disponibilité ne peut être calculée pour ce jour.",
-      "pastAction": "Voir les salles sans filtre de date"
+      "clearDateAction": "Voir les salles sans filtre de date",
+      "horizonTitle": "Cette date est trop lointaine",
+      "horizonBody": "Les réservations ouvrent jusqu'à 18 mois à l'avance. La date demandée dans l'adresse dépasse cette limite : aucune disponibilité ne peut encore être calculée pour ce jour."
     }
   },
   "service": {
@@ -695,7 +697,8 @@
       "visitBookingNotFound": "Ce rendez-vous est introuvable.",
       "visitBookingPast": "Ce rendez-vous est déjà passé : il ne peut plus être annulé.",
       "styleNotFound": "Ce style n'existe pas.",
-      "availableOnPast": "La date demandée est déjà passée : la disponibilité ne peut pas être calculée."
+      "availableOnPast": "La date demandée est déjà passée : la disponibilité ne peut pas être calculée.",
+      "availableOnBeyondHorizon": "La date demandée dépasse l'horizon de réservation : la disponibilité ne peut pas encore être calculée."
     },
     "ui": {
       "list": {

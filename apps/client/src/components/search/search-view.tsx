@@ -69,6 +69,30 @@ const FILTERS_FORM_ID = "search-filters";
 
 type ResultView = "grid" | "map";
 
+/** Le refus MÉTIER de la date, s'il y en a un — `null` sinon (D227).
+ *
+ *  ⚠ UN `switch` SANS `default`, ET C'EST DÉLIBÉRÉ. Chaque issue de
+ *  `SearchOutcome` y est nommée, donc une CINQUIÈME issue ferait tomber la
+ *  compilation ici (aucun `return` sur ce chemin) au lieu de retomber en
+ *  silence sur `null` et de se présenter à l'écran comme une panne. Un
+ *  `default: return null` rendrait le type inutile.
+ *
+ *  ⚠ UN SEUL PANNEAU, DEUX JEUX DE TEXTES : le refus se dit à deux endroits
+ *  différents du calendrier, mais il offre la MÊME sortie — retirer la date.
+ *  Deux panneaux séparés auraient dupliqué ce lien, et l'un des deux aurait
+ *  fini par diverger. */
+function refusDeDate(outcome: SearchOutcome): "past" | "horizon" | null {
+  switch (outcome.kind) {
+    case "past-date":
+      return "past";
+    case "beyond-horizon":
+      return "horizon";
+    case "ok":
+    case "unreachable":
+      return null;
+  }
+}
+
 export interface SearchViewProps {
   state: SearchState;
   /** Lot `availableOn` — l'ISSUE de la recherche, pas seulement son résultat.
@@ -98,6 +122,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
   const [view, setView] = useState<ResultView>("grid");
 
   const results = outcome.kind === "ok" ? outcome.data : null;
+  const refus = refusDeDate(outcome);
   const totalPages = results ? Math.max(1, Math.ceil(results.total / results.pageSize)) : 1;
 
   /** ⚠ La date d'annotation vient de l'ÉCHO de la réponse, jamais de l'état
@@ -191,19 +216,27 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
             <h2 className="map-panel-title">{t("map.title")}</h2>
             <p className="map-panel-body">{t("map.soon")}</p>
           </div>
-        ) : outcome.kind === "past-date" ? (
+        ) : refus !== null ? (
           // ⚠ AVANT la branche de panne, et c'est tout l'intérêt du type
-          // `SearchOutcome` : ce refus n'est pas un incident. Le sélecteur de
-          // date ne propose aucune date passée — arriver ici veut dire lien
-          // forgé, favori d'une saison à l'autre, ou défaut. On le DIT, et on
-          // offre le retour vers la recherche sans date plutôt qu'un
+          // `SearchOutcome` : ces refus ne sont pas des incidents. On les DIT,
+          // et on offre le retour vers la recherche sans date plutôt qu'un
           // « réessayez » qui ne marchera jamais.
+          //
+          // ⚠ AUCUN SÉLECTEUR DE DATE N'EXISTE ENCORE dans cet écran (vérifié
+          // le 23/08/2026 : pas un seul `type="date"` dans `apps/client`).
+          // `availableOn` ne vient donc QUE d'un lien partagé, d'un favori
+          // gardé d'une saison à l'autre, ou d'un appel direct — raison de
+          // plus pour que le message soit exact plutôt que générique.
+          //
+          // ⚠ DEUX JEUX DE TEXTES, UNE SEULE SORTIE (D227) : « cette date est
+          // passée » invite à regarder devant, « trop lointaine » à se
+          // rapprocher. Le lien, lui, est le même — retirer la date.
           <div className="state-panel" role="alert">
-            <h2>{t("availableOn.pastTitle")}</h2>
-            <p>{t("availableOn.pastBody")}</p>
+            <h2>{t(refus === "past" ? "availableOn.pastTitle" : "availableOn.horizonTitle")}</h2>
+            <p>{t(refus === "past" ? "availableOn.pastBody" : "availableOn.horizonBody")}</p>
             <p>
               <Link href={`/salles${toPublicQuery({ ...state, availableOn: "" })}`} className="btn btn-accent">
-                {t("availableOn.pastAction")}
+                {t("availableOn.clearDateAction")}
               </Link>
             </p>
           </div>

@@ -39,7 +39,7 @@ export async function getApiHealth(): Promise<ApiHealthResponse | { status: "unr
 // ÉTAT D'ERREUR rendu, jamais une exception qui casse la page.
 
 /**
- * Résultat de la recherche — TROIS issues, parce qu'elles se disent en trois
+ * Résultat de la recherche — QUATRE issues, parce qu'elles se disent en quatre
  * phrases différentes à l'écran.
  *
  * ⚠ POURQUOI CE TYPE REMPLACE UN `| null`. Le lot `availableOn` a introduit un
@@ -55,6 +55,17 @@ export type SearchOutcome =
    *  gardée en favori d'une saison à l'autre — le sélecteur, lui, ne propose
    *  aucune date passée. */
   | { kind: "past-date" }
+  /** La date demandée dépasse l'horizon de réservation (D227).
+   *
+   *  ⚠ ISSUE À PLAT, pas un champ sur `past-date`. Le `switch` de l'écran
+   *  reste exhaustif au sens de TypeScript : ajouter une cinquième issue
+   *  fera tomber la compilation là où elle n'est pas traitée, ce qu'un
+   *  drapeau booléen ne ferait pas.
+   *
+   *  ⚠ DISTINCTE DE `past-date` parce que les deux n'appellent pas la même
+   *  action : « regardez devant » contre « rapprochez-vous ». À l'écran, un
+   *  SEUL panneau, deux jeux de textes. */
+  | { kind: "beyond-horizon" }
   /** API éteinte, réseau coupé, réponse illisible : on ne sait rien. */
   | { kind: "unreachable" };
 
@@ -81,6 +92,9 @@ export async function searchVenues(query: URLSearchParams): Promise<SearchOutcom
           // recherche est momentanément indisponible » en production.
           const body = (await res.json()) as { message?: { code?: string } };
           if (body.message?.code === VenueErrorCode.AVAILABLE_ON_PAST) return { kind: "past-date" };
+          if (body.message?.code === VenueErrorCode.AVAILABLE_ON_BEYOND_HORIZON) {
+            return { kind: "beyond-horizon" };
+          }
         } catch {
           /* corps illisible : on retombe sur « on ne sait rien ». */
         }

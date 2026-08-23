@@ -9,6 +9,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { formatDZD, messages } from "@zwadj/i18n";
 import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
 import { FilterWizard } from "./filter-wizard";
+// ⚠ Le parseur RÉEL de la page d'arrivée, pas une copie : c'est la
+// confrontation des deux modules qui manquait, et qui a laissé passer D228.
+import { parseSearchParams } from "../lib/search-query";
 
 const push = vi.fn();
 vi.mock("../i18n/navigation", () => ({
@@ -156,7 +159,11 @@ describe("Le compteur vient du SERVEUR", () => {
     const q = countVenues.mock.calls[0]?.[0] as URLSearchParams;
     expect(q.get("cityId")).toBe("c1");
     expect(q.get("guests")).toBe("250");
+    // ⚠ Ici, `maxPriceCents` est CORRECT : c'est la requête d'API, pas l'URL.
+    // Les deux constructeurs de l'assistant sont mesurés séparément, et c'est
+    // le point de leur séparation (D228).
     expect(q.get("maxPriceCents")).toBe("100000000");
+    expect(q.get("maxPrice")).toBeNull();
   });
 
   it("⚠ « je ne sais pas » ne se dit PAS « zéro salle »", async () => {
@@ -177,17 +184,29 @@ describe("Le compteur vient du SERVEUR", () => {
 });
 
 describe("La séquence finit sur la page de résultats EXISTANTE", () => {
-  it("⚠ construit l'URL avec les noms et l'encodage du contrat public", async () => {
+  it("⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT", async () => {
     poser();
     await repondreTout();
     fireEvent.click(screen.getByRole("button", { name: "Moderne" }));
     fireEvent.click(screen.getByRole("button", { name: "Parking" }));
     fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
+    // ⛔ CE TEST VALIDAIT LE DÉFAUT (D228, famille D219). Il assertait
+    // `maxPriceCents=100000000` — le contrat de l'API — sur une URL PUBLIQUE
+    // que `parseSearchParams` lit en dinars sous le nom `maxPrice`. Vert
+    // depuis la livraison, sur un budget jeté en silence.
     // `styles` et `amenities` sont des clés SÉPARÉES PAR DES VIRGULES — relevé
     // du schéma Zod, jamais deviné.
     expect(push).toHaveBeenCalledWith(
-      "/salles?cityId=c1&guests=250&maxPriceCents=100000000&styles=moderne&amenities=parking"
+      "/salles?cityId=c1&guests=250&maxPrice=1000000&styles=moderne&amenities=parking"
     );
+    // ⚠ L'ALLER-RETOUR, et c'est lui qui compte : la chaîne ci-dessus est
+    // écrite à la main, donc elle peut être fausse des deux côtés à la fois.
+    // On relit l'URL poussée avec le parseur RÉEL de la page d'arrivée.
+    const pousse = push.mock.calls[0]?.[0] as string;
+    const etat = parseSearchParams(Object.fromEntries(new URLSearchParams(pousse.split("?")[1] ?? "")));
+    expect(etat.maxPrice).toBe("1000000");
+    expect(etat.cityId).toBe("c1");
+    expect(etat.guests).toBe("250");
     // ⚠ Avec DEUX valeurs, sinon un séparateur faux passerait inaperçu : un
     // `join(";")` sur une liste d'un élément rend exactement la même chaîne.
     // Le schéma Zod n'accepte que `^[a-z0-9-]+(?:,[a-z0-9-]+)*$` — relevé.
@@ -215,7 +234,9 @@ describe("La séquence finit sur la page de résultats EXISTANTE", () => {
     await repondreTout();
     fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
     const url = push.mock.calls[0]?.[0] as string;
-    const permis = ["cityId", "guests", "maxPriceCents", "styles", "amenities"];
+    // ⚠ `maxPrice` : l'URL publique porte des DINARS (D228). `maxPriceCents`
+    // est le nom de l'API, il n'a rien à faire dans une adresse partagée.
+    const permis = ["cityId", "guests", "maxPrice", "styles", "amenities"];
     for (const [cle] of new URLSearchParams(url.split("?")[1] ?? "")) {
       expect(permis).toContain(cle);
     }

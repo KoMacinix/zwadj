@@ -7,6 +7,7 @@
 // vide, pas une erreur — seul le FORMAT invalide fait un 400 (Zod).
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import {
+  BOOKING_HORIZON_MONTHS,
   HARD_BOOKING_STATUSES,
   VenueAvailabilityStatus,
   VenueErrorCode,
@@ -22,6 +23,7 @@ import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
 import { computeDaySlotStatuses, type BookingWindow, type Interval, type SlotForStatus } from "./availability-engine";
 import {
+  addMonthsCivil,
   civilDayLoadEndMs,
   civilDayStartMs,
   civilTodayAt,
@@ -166,11 +168,17 @@ export class VenuesPublicService {
   private readonly urlOf = (key: string): string => this.storage.publicUrl(key);
 
   async list(query: VenueListQueryInput): Promise<VenueListResponse> {
-    // ⚠ AVANT toute requête. Une date passée ne se calcule pas : elle se
-    // refuse. Voir `AVAILABLE_ON_PAST` — écart assumé avec D49, motivé par la
-    // différence entre une FENÊTRE (qui rétrécit) et un POINT (qui se
-    // déplacerait en silence si on l'écrêtait).
-    const annotateOn = query.availableOn === undefined ? null : this.civilDateOrRefusePast(query.availableOn);
+    // ⚠ AVANT toute requête. Une date hors bornes ne se calcule pas : elle se
+    // refuse. Écart assumé avec D49, motivé par la différence entre une
+    // FENÊTRE (qui rétrécit) et un POINT (qui se déplacerait en silence si on
+    // l'écrêtait) — voir `AVAILABLE_ON_PAST` et `AVAILABLE_ON_BEYOND_HORIZON`.
+    //
+    // ⚠ UNE SEULE LECTURE D'HORLOGE PAR REQUÊTE (D48), et les DEUX bornes en
+    // dérivent. Deux `Date.now()` peuvent tomber de part et d'autre de minuit
+    // à Alger : la borne basse dirait « hier » pendant que la haute compte
+    // depuis « aujourd'hui ».
+    const annotateOn =
+      query.availableOn === undefined ? null : this.civilDateOrRefuse(query.availableOn, Date.now());
 
     const amenityKeys = [...new Set((query.amenities ?? "").split(",").filter((k) => k.length > 0))];
     const styleKeys = [...new Set((query.styles ?? "").split(",").filter((k) => k.length > 0))];
@@ -284,13 +292,26 @@ export class VenuesPublicService {
    * borne (D55) : un couple qui cherche une salle *pour ce soir*. `<` et non
    * `<=` — l'inverse refuserait la date la plus demandée de la journée.
    */
-  private civilDateOrRefusePast(value: string): CivilDate {
+  /** Les DEUX bornes du point demandé, dérivées d'un seul instant (D227). */
+  private civilDateOrRefuse(value: string, nowMs: number): CivilDate {
     // Zod a garanti la forme ET l'existence (`isRealCivilDate`) : ce `parse` ne
     // peut plus rendre `null`. Le `??` n'est donc pas une branche vivante, il
     // empêche seulement un `as CivilDate` qui mentirait au prochain lecteur.
     const date = parseCivilDate(value);
     if (date === null) this.throwAvailableOnPast();
-    if (civilUtcMs(date) < civilUtcMs(civilTodayAt(Date.now()))) this.throwAvailableOnPast();
+
+    const aujourdhui = civilTodayAt(nowMs);
+    if (civilUtcMs(date) < civilUtcMs(aujourdhui)) this.throwAvailableOnPast();
+
+    // D227 — idiome relevé de `visit-bookings.service.ts`, qui refuse déjà un
+    // POINT hors horizon ; `BOOKING_HORIZON_MONTHS` est la MÊME constante, pas
+    // une seconde valeur à faire diverger.
+    // ⚠ Le jour de l'horizon LUI-MÊME est accepté (`>`, pas `>=`), exactement
+    // comme aujourd'hui l'est en bas (`<`, pas `<=`) : les deux bornes sont
+    // INCLUSES, et une salle réservable ce jour-là doit pouvoir être annotée.
+    const horizon = addMonthsCivil(aujourdhui, BOOKING_HORIZON_MONTHS);
+    if (civilUtcMs(date) > civilUtcMs(horizon)) this.throwAvailableOnBeyondHorizon();
+
     return date;
   }
 
@@ -436,6 +457,18 @@ export class VenuesPublicService {
     throw new BadRequestException({
       code: VenueErrorCode.AVAILABLE_ON_PAST,
       message: "venue.errors.availableOnPast"
+    });
+  }
+
+  /** 400 EXPLICITE, et un code DISTINCT du précédent (D227). Les deux refus
+   *  sont métier, mais ils n'appellent pas la même action : « cette date est
+   *  passée » dit de regarder devant, « nous n'ouvrons pas encore si loin »
+   *  dit de se rapprocher. Un code unique aurait forcé l'écran à en choisir
+   *  un — faux une fois sur deux. */
+  private throwAvailableOnBeyondHorizon(): never {
+    throw new BadRequestException({
+      code: VenueErrorCode.AVAILABLE_ON_BEYOND_HORIZON,
+      message: "venue.errors.availableOnBeyondHorizon"
     });
   }
 

@@ -6,19 +6,31 @@
 // français/arabe destiné à l'Algérie, c'est la seule page du parcours qui
 // s'adressait au visiteur dans une langue qu'il n'a pas choisie.
 //
-// ── Où elle s'applique, et où elle NE s'applique PAS ────────────────────────
+// ── Où elle s'applique, et par quoi elle Y EST AMENÉE ───────────────────────
 // Ce fichier vit sous `[locale]` : il est rendu DANS le layout localisé, donc
 // avec l'en-tête, le pied de page, le thème, `lang`/`dir` — et
 // `useTranslations` y fonctionne. Il couvre :
-//   - un chemin inconnu sous une locale valide (`/fr/nimportequoi`) ;
 //   - tout `notFound()` appelé depuis une page du segment, dont la fiche de
-//     salle introuvable (`salles/[slug]`).
+//     salle introuvable (`salles/[slug]`) ;
+//   - un chemin inconnu sous une locale valide (`/fr/nimportequoi`), MAIS
+//     seulement grâce à `[locale]/[...rest]/page.tsx` — voir ci-dessous.
 //
-// ⚠ Il NE couvre PAS un chemin dont la LOCALE elle-même est invalide
-// (`/xx/quoi`), parce que `layout.tsx` y appelle `notFound()` AVANT d'avoir pu
-// établir le fournisseur de traductions : Next remonte alors au `not-found.tsx`
-// RACINE. C'est pour ce cas — et lui seul — que `app/not-found.tsx` existe à
-// côté, et il ne peut pas être traduit puisqu'aucune langue n'a été choisie.
+// ⚠⚠ DÉPENDANCE À UN AUTRE FICHIER, corrigée le 23/08/2026 (D233). Une
+// frontière IMBRIQUÉE ne s'applique qu'à un segment DÉJÀ apparié. Une URL qui
+// n'apparie aucune route n'apparie pas non plus `[locale]` : Next remonte au
+// 404 RACINE. Mesuré avant correction : `/fr/nimportequoi` rendait le 404
+// ANGLAIS par défaut de Next, jamais cette page. C'est l'attrape-tout
+// `[locale]/[...rest]/page.tsx` qui fait apparier `[locale]`, et lui seul.
+// ⛔ SUPPRIMER CET ATTRAPE-TOUT REMET LE DÉFAUT, sans qu'aucun test de rendu
+// ne bouge : celui de ce fichier resterait vert.
+//
+// ⚠ Il NE couvre PAS les chemins qui contournent l'intergiciel — ceux qui
+// contiennent un point (`/wp-login.php`), exclus par le `matcher` de
+// `middleware.ts`. Ceux-là n'obtiennent aucun préfixe de locale et atterrissent
+// sur `app/not-found.tsx`, bilingue en dur faute de langue négociée.
+// ⚠ La raison écrite en D221 (« locale invalide `/xx/quoi` ») était FAUSSE :
+// l'intergiciel redirige `/xx/quoi` vers `/fr/xx/quoi` (307), donc le
+// `hasLocale(...)` du layout ne refuse jamais rien en production.
 //
 // ── Composant CLIENT, pour la même raison que `loading.tsx` ─────────────────
 // `useTranslations` (client) plutôt que `getTranslations` (serveur, async) :

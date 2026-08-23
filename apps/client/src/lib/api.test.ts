@@ -62,6 +62,28 @@ describe("searchVenues — les trois issues", () => {
     expect(await searchVenues(new URLSearchParams({ availableOn: "2020-01-01" }))).toEqual({ kind: "past-date" });
   });
 
+  it("⚠ 400 + `AVAILABLE_ON_BEYOND_HORIZON` ⇒ `beyond-horizon`, PAS `past-date`", async () => {
+    // ⛔ LES DEUX REFUS SONT CONFRONTÉS, pas mesurés chacun dans son coin
+    // (D227). Les confondre afficherait « cette date est déjà passée » à qui a
+    // demandé une date de 2029 : le conseil serait exactement à l'envers.
+    // ⚠ Enveloppe RÉELLE d'`AllExceptionsFilter` : le code est SOUS `message`.
+    stubFetch(
+      reponse(400, {
+        statusCode: 400,
+        message: {
+          code: VenueErrorCode.AVAILABLE_ON_BEYOND_HORIZON,
+          message: "venue.errors.availableOnBeyondHorizon"
+        },
+        path: "/api/v1/venues",
+        timestamp: "2026-06-01T11:00:00.000Z"
+      })
+    );
+    const out = await searchVenues(new URLSearchParams({ availableOn: "2099-06-02" }));
+    expect(out).toEqual({ kind: "beyond-horizon" });
+    expect(out).not.toEqual({ kind: "past-date" });
+    expect(out).not.toEqual({ kind: "unreachable" });
+  });
+
   it("400 d'un AUTRE code ⇒ `unreachable` : on lit le CODE, pas le statut seul", async () => {
     // Un paramètre bricolé à la main peut produire un 400 sans rapport avec la
     // date. Le confondre afficherait « cette date est déjà passée » à qui n'a

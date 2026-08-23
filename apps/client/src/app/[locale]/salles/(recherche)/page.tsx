@@ -6,11 +6,11 @@
 // L'API est celle du Lot A3, inchangée : aucune migration, aucun contrat touché.
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { SearchView } from "../../../components/search/search-view";
-import { previewVenuesFor } from "../../../lib/preview-venues";
-import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../lib/api";
-import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../lib/search-query";
-import { isVariant, publicMetadata } from "../../../lib/seo";
+import { SearchView } from "../../../../components/search/search-view";
+import { previewVenuesFor } from "../../../../lib/preview-venues";
+import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../../lib/api";
+import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../../lib/search-query";
+import { isVariant, publicMetadata } from "../../../../lib/seo";
 
 // Rendu à la demande, EXPLICITE. La page l'est déjà de fait — elle attend
 // `searchParams`, une API dynamique de Next 15 — et le manifeste de prérendu le

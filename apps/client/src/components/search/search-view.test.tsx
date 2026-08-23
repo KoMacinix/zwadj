@@ -475,4 +475,32 @@ describe("Lot `availableOn` — annotation par date", () => {
     const sortie = container.querySelector(".state-panel a");
     expect(sortie).toHaveAttribute("href", "/salles?cityId=c1");
   });
+
+  it("DATE TROP LOINTAINE : l'AUTRE message, et surtout PAS celui de la date passée", () => {
+    // ⛔ LA GARDE DE D227. Les deux refus se disent à l'envers l'un de
+    // l'autre : « regardez devant » contre « rapprochez-vous ». Un code
+    // unique aurait forcé l'écran à en choisir un, faux une fois sur deux —
+    // et une garde qui ne vérifierait que la présence du bon texte
+    // laisserait passer un écran qui affiche LES DEUX.
+    const { container } = renderView({ outcome: { kind: "beyond-horizon" } }, "fr", {
+      availableOn: "2099-06-02",
+      cityId: "c1"
+    });
+    expect(screen.getByRole("alert")).toHaveTextContent("Cette date est trop lointaine");
+    expect(screen.queryByText("Cette date est déjà passée")).toBeNull();
+    expect(screen.queryByText("La recherche est momentanément indisponible")).toBeNull();
+    // ⚠ UN SEUL PANNEAU : deux `state-panel` voudraient dire que la branche
+    // s'est dédoublée au lieu de choisir son jeu de textes.
+    expect(container.querySelectorAll(".state-panel")).toHaveLength(1);
+    // La MÊME sortie que pour la date passée, et elle garde les filtres.
+    expect(container.querySelector(".state-panel a")).toHaveAttribute("href", "/salles?cityId=c1");
+  });
+
+  it("⚠ une PANNE reste une panne : elle n'emprunte aucun des deux messages de date", () => {
+    // Le `switch` de `refusDeDate` nomme les quatre issues ; ce test vérifie
+    // que `unreachable` n'est pas tombée du mauvais côté en chemin.
+    renderView({ outcome: { kind: "unreachable" } }, "fr", { availableOn: "2099-06-02" });
+    expect(screen.queryByText("Cette date est trop lointaine")).toBeNull();
+    expect(screen.queryByText("Cette date est déjà passée")).toBeNull();
+  });
 });

@@ -2,7 +2,13 @@
 // travers le DOM. C'est là que vivent les deux conversions qui coûtent cher si
 // elles se trompent : dinars → centimes (facteur 100) et amenities répétées →
 // liste jointe.
-import { pageWindow, parseSearchParams, toApiQuery, toPublicQuery } from "../lib/search-query";
+import {
+  dinarsFromCents,
+  pageWindow,
+  parseSearchParams,
+  toApiQuery,
+  toPublicQuery
+} from "../lib/search-query";
 
 describe("parseSearchParams", () => {
   it("l'URL nue donne l'état par défaut : tri « recent », page 1, aucun filtre", () => {
@@ -139,6 +145,68 @@ describe("toPublicQuery", () => {
   });
 });
 
+describe("⛔ D228 — le repli `maxPriceCents` → `maxPrice`", () => {
+  // ⚠ CE QUE CE BLOC RATTRAPE. L'URL publique porte des DINARS, l'API des
+  // CENTIMES, et les deux formulaires du front écrivaient le nom de l'API dans
+  // l'URL. `parseSearchParams` ne lisant que `maxPrice`, un visiteur qui
+  // choisissait « 500 000 DA » recevait le catalogue entier — sans message,
+  // sans erreur, sans rien à l'écran qui le dise.
+  // ⛔ DETTE DATÉE AU 19/11/2026 : ce bloc entier se retire avec le repli.
+
+  it("un ancien lien partagé retrouve son plafond, et l'API le reçoit", () => {
+    // L'ALLER-RETOUR COMPLET, pas seulement l'état : c'est ce que l'API reçoit
+    // qui filtre, et c'est là que le facteur 100 se trompe de sens.
+    const state = parseSearchParams({ maxPriceCents: "50000000" });
+    expect(state.maxPrice).toBe("500000");
+    expect(toApiQuery(state).get("maxPriceCents")).toBe("50000000");
+  });
+
+  it("⚠ le repli ne va JAMAIS dans l'autre sens : `maxPrice` gagne toujours", () => {
+    // Sans cette règle, le mauvais nom deviendrait une source normale et la
+    // dette ne se paierait jamais.
+    const state = parseSearchParams({ maxPrice: "300000", maxPriceCents: "50000000" });
+    expect(state.maxPrice).toBe("300000");
+  });
+
+  it("⚠ `?maxPrice=` VIDE coupe le repli — le visiteur vient d'effacer son plafond", () => {
+    // Un `<form method="get">` soumet ses champs vides : « peu importe » s'écrit
+    // exactement comme ça. Replier ici ressusciterait un filtre effacé.
+    const state = parseSearchParams({ maxPrice: "", maxPriceCents: "50000000" });
+    expect(state.maxPrice).toBe("");
+  });
+
+  it("⚠ une valeur MALFORMÉE sous le bon nom se laisse tomber, elle n'est pas remplacée", () => {
+    // La PRÉSENCE décide de la branche, la VALIDITÉ décide de la valeur (D228).
+    const state = parseSearchParams({ maxPrice: "trois-cents-mille", maxPriceCents: "50000000" });
+    expect(state.maxPrice).toBe("");
+  });
+
+  it("⚠ un reste non nul est ABANDONNÉ, jamais arrondi", () => {
+    // `50000001` centimes ne vient d'aucun de nos formulaires : c'est une URL
+    // bricolée. L'arrondir poserait un plafond que personne n'a demandé.
+    expect(parseSearchParams({ maxPriceCents: "50000001" }).maxPrice).toBe("");
+    expect(parseSearchParams({ maxPriceCents: "99" }).maxPrice).toBe("");
+  });
+
+  it("`dinarsFromCents` rend le montant EXACT, ou rien", () => {
+    expect(dinarsFromCents("50000000")).toBe("500000");
+    expect(dinarsFromCents("100")).toBe("1");
+    expect(dinarsFromCents("0")).toBe("0");
+    expect(dinarsFromCents("50000001")).toBe("");
+    expect(dinarsFromCents("-100")).toBe("");
+    expect(dinarsFromCents("1e4")).toBe("");
+    expect(dinarsFromCents("")).toBe("");
+  });
+
+  it("⛔ l'URL publique ne réémet JAMAIS l'ancien nom", () => {
+    // Le repli sert à LIRE le passé, jamais à le reproduire : sinon les liens
+    // au mauvais nom continueraient de naître, et la dette n'aurait pas de fin.
+    const url = toPublicQuery(parseSearchParams({ maxPriceCents: "50000000" }));
+    expect(url).toContain("maxPrice=500000");
+    expect(url).not.toContain("maxPriceCents");
+  });
+});
+
 describe("pageWindow", () => {
   it("montre tout tant que ça tient", () => {
     expect(pageWindow(1, 5)).toEqual([1, 2, 3, 4, 5]);
@@ -205,8 +273,14 @@ describe("page de recherche — rendu à la demande", () => {
     const { readFileSync } = await import("node:fs");
     const { fileURLToPath } = await import("node:url");
     const { dirname, join } = await import("node:path");
+    // ⚠ CHEMIN MIS À JOUR LE 23/08/2026 (D234) — la page a changé de dossier,
+    // pas de comportement. Elle vit désormais sous le groupe de routes
+    // `(recherche)`, invisible dans l'URL, qui borne la frontière Suspense de
+    // `loading.tsx` à la SEULE page de liste : au-dessus de `salles/[slug]`,
+    // cette frontière faisait sortir en 200 le 404 d'une salle dépubliée.
+    // L'assertion, elle, est inchangée.
     const source = readFileSync(
-      join(dirname(fileURLToPath(import.meta.url)), "..", "app", "[locale]", "salles", "page.tsx"),
+      join(dirname(fileURLToPath(import.meta.url)), "..", "app", "[locale]", "salles", "(recherche)", "page.tsx"),
       "utf8"
     );
     expect(source).toContain('export const dynamic = "force-dynamic"');

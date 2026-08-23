@@ -36,6 +36,7 @@ import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
 import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap } from "@zwadj/ui";
 import { useRouter } from "../i18n/navigation";
 import { countVenues } from "../lib/api";
+import { dinarsFromCents } from "../lib/search-query";
 
 /** ⚠ QUATRE ÉTAPES, dans l'ordre du filtre EXISTANT (`SearchFilters`) : ville,
  *  capacité, budget, styles, équipements. Rien de réinventé — les deux derniers
@@ -88,18 +89,54 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
     [cityId, guests, budget, tasteAnswered]
   );
 
-  /** Les paramètres du CONTRAT PUBLIC — noms et encodage relevés de
-   *  `venueListQuerySchema`, jamais devinés : `styles` et `amenities` sont des
-   *  clés SÉPARÉES PAR DES VIRGULES, pas des paramètres répétés. */
-  const params = useCallback((): URLSearchParams => {
-    const q = new URLSearchParams();
-    if (cityId !== "") q.set("cityId", cityId);
-    if (Number(guests) > 0) q.set("guests", guests);
-    if (budget !== "") q.set("maxPriceCents", budget);
-    if (pickedStyles.length > 0) q.set("styles", pickedStyles.join(","));
-    if (pickedAmenities.length > 0) q.set("amenities", pickedAmenities.join(","));
-    return q;
-  }, [cityId, guests, budget, pickedStyles, pickedAmenities]);
+  /* ── DEUX CONTRATS, DONC DEUX CONSTRUCTEURS (D228) ────────────────────────
+     ⚠ CAUSE STRUCTURELLE DU DÉFAUT CORRIGÉ ICI : une seule querystring
+     servait les deux. Elle partait à `countVenues` (API, CENTIMES) *et*
+     dans `router.push("/salles?…")` (URL publique, DINARS). Tant qu'un
+     seul objet sert deux contrats, l'un des deux est faux — et c'était
+     l'URL : le compteur annonçait le bon nombre, puis la page de résultats
+     affichait le catalogue entier. Deux écrans, deux vérités, aucun test
+     pour les confronter. */
+
+  /** UN SEUL assembleur, et une SEULE ligne de différence : l'encodage du
+   *  prix. Deux fonctions recopiées divergeraient sur le jour où un critère
+   *  s'ajoute d'un côté — ce qui est précisément la faute qu'on répare.
+   *
+   *  Noms et encodage des listes relevés de `venueListQuerySchema`, jamais
+   *  devinés : `styles` et `amenities` sont des clés SÉPARÉES PAR DES
+   *  VIRGULES. `parseSearchParams` accepte cette forme jointe.
+   *
+   *  ⚠ La division centimes → dinars vient de `search-query.ts` : ce module
+   *  est le seul du front à connaître le facteur 100, dans les deux sens. */
+  const assembler = useCallback(
+    (prix: "cents" | "dinars"): URLSearchParams => {
+      const q = new URLSearchParams();
+      if (cityId !== "") q.set("cityId", cityId);
+      if (Number(guests) > 0) q.set("guests", guests);
+      if (budget !== "") {
+        if (prix === "cents") {
+          q.set("maxPriceCents", budget);
+        } else {
+          // Un palier non convertible EXACTEMENT est omis plutôt qu'arrondi
+          // (D228) : un plafond arrondi en silence n'a été demandé par
+          // personne. Les paliers du dépôt sont tous des multiples de 100.
+          const dinars = dinarsFromCents(budget);
+          if (dinars !== "") q.set("maxPrice", dinars);
+        }
+      }
+      if (pickedStyles.length > 0) q.set("styles", pickedStyles.join(","));
+      if (pickedAmenities.length > 0) q.set("amenities", pickedAmenities.join(","));
+      return q;
+    },
+    [cityId, guests, budget, pickedStyles, pickedAmenities]
+  );
+
+  /** Pour le compteur — requête d'API, donc CENTIMES. */
+  const apiParams = useCallback(() => assembler("cents"), [assembler]);
+
+  /** Pour `router.push("/salles?…")` — URL publique, donc DINARS, sous le nom
+   *  que `parseSearchParams` lit réellement. */
+  const publicParams = useCallback(() => assembler("dinars"), [assembler]);
 
   // ⚠ Le compteur n'apparaît QU'À la dernière étape — comme dans la maquette.
   // Avant, il vaudrait le catalogue entier et ne dirait rien au client.
@@ -107,7 +144,7 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
     if (step !== "taste") return;
     const abort = new AbortController();
     setCounting(true);
-    countVenues(params(), abort.signal)
+    countVenues(apiParams(), abort.signal)
       .then((n) => {
         if (!abort.signal.aborted) {
           setCount(n);
@@ -121,7 +158,7 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
     // lentes peuvent arriver dans le désordre et afficher le compte d'un état
     // que le client a déjà quitté.
     return () => abort.abort();
-  }, [step, params]);
+  }, [step, apiParams]);
 
   const cardRef = useRef<HTMLElement>(null);
   const moveFocus = useRef(false);
@@ -168,7 +205,7 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
   /** ⚠ La séquence se TERMINE sur la page de résultats EXISTANTE. Aucune page
    *  neuve : les filtres y restent ajustables comme aujourd'hui. */
   const voirLesSalles = () => {
-    const q = params().toString();
+    const q = publicParams().toString();
     router.push(q === "" ? "/salles" : `/salles?${q}`);
   };
 

@@ -112,6 +112,52 @@ function atCeiling(value: string, ceiling: number): string {
   return value === "" || Number(value) >= ceiling ? "" : value;
 }
 
+/* ── REPLI DE TRANSITION `maxPriceCents` → `maxPrice` (D228) ─────────────────
+   ⛔ DETTE DATÉE AU 19/11/2026. Ce bloc a une date de péremption ; passée
+   celle-ci, les liens partagés portant l'ancien nom sont assez vieux pour
+   qu'on cesse de les servir, et tout ce paragraphe se retire.
+
+   ⚠ LE DÉFAUT QU'IL RATTRAPE, mesuré avant correction : l'URL publique porte
+   des DINARS (`maxPrice`), l'API des CENTIMES (`maxPriceCents`) — et les deux
+   formulaires du front écrivaient le nom de l'API dans l'URL. Résultat :
+       ?maxPriceCents=50000000 → state.maxPrice="" → requête API SANS plafond.
+   Un visiteur qui choisit « 500 000 DA » recevait le catalogue entier. */
+
+/** Centimes → dinars. `""` si la valeur ne peut pas être rendue EXACTEMENT.
+ *
+ *  ⚠ SEUL ENDROIT DU FRONT QUI DIVISE PAR 100, en regard du seul endroit qui
+ *  multiplie (`toApiQuery`). Deux copies du facteur, c'est un jour où l'une
+ *  change sans l'autre — et un facteur 100 sur un prix ne se voit pas à
+ *  l'écran, il se voit sur la facture.
+ *
+ *  ⚠ MULTIPLES DE 100 SEULEMENT (D228). Ce sont les seules valeurs que nos
+ *  propres formulaires ont produites. Un reste non nul vient d'une URL
+ *  bricolée : on l'ABANDONNE plutôt que d'inventer un arrondi que personne
+ *  n'a décidé. Un plafond arrondi en silence est un plafond que le visiteur
+ *  n'a pas demandé. */
+export function dinarsFromCents(cents: string): string {
+  if (!/^\d+$/.test(cents)) return "";
+  const value = Number(cents);
+  if (!Number.isSafeInteger(value) || value % 100 !== 0) return "";
+  return String(value / 100);
+}
+
+/** Le plafond porté par l'URL, en dinars.
+ *
+ *  ⚠ LA PRÉSENCE DE LA CLÉ DÉCIDE DE LA BRANCHE, SA VALIDITÉ DÉCIDE DE LA
+ *  VALEUR (D228). `?maxPrice=` VIDE compte comme présent, et c'est le point :
+ *  un `<form method="get">` soumet ses champs vides, donc un visiteur qui
+ *  choisit « peu importe » écrit exactement cela. Replier là-dessus lui
+ *  ressusciterait le plafond qu'il vient d'effacer.
+ *
+ *  ⚠ JAMAIS DANS L'AUTRE SENS : `maxPriceCents` ne corrige jamais un
+ *  `maxPrice` malformé. Sans quoi le mauvais nom deviendrait une source
+ *  normale, et la dette ne se paierait jamais. */
+function maxPriceFromRaw(raw: RawSearchParams): string {
+  if (raw.maxPrice !== undefined) return first(raw.maxPrice);
+  return dinarsFromCents(first(raw.maxPriceCents));
+}
+
 export function parseSearchParams(raw: RawSearchParams): SearchState {
   const amenitiesRaw = raw.amenities;
   const amenities = (Array.isArray(amenitiesRaw) ? amenitiesRaw : amenitiesRaw ? [amenitiesRaw] : [])
@@ -138,9 +184,13 @@ export function parseSearchParams(raw: RawSearchParams): SearchState {
     atFloor(positiveInteger(first(raw.guests)), CAPACITY_FLOOR),
     atCeiling(positiveInteger(first(raw.maxCapacity)), CAPACITY_CEILING)
   );
+  // ⚠ Pas de repli symétrique pour `minPrice` : aucun formulaire du dépôt
+  // n'a jamais émis `minPriceCents` dans une URL (vérifié sur tout
+  // `apps/client`). Un chemin de transition que personne n'emprunte est du
+  // code mort qu'il faudra retirer un jour — on ne l'écrit pas.
   const [minPrice, maxPrice] = ordered(
     atFloor(positiveInteger(first(raw.minPrice)), BUDGET_FLOOR),
-    atCeiling(positiveInteger(first(raw.maxPrice)), BUDGET_CEILING)
+    atCeiling(positiveInteger(maxPriceFromRaw(raw)), BUDGET_CEILING)
   );
 
   // ⚠ D55 — le cas RÉEL avant la borne : `2026-06-02` doit passer, et

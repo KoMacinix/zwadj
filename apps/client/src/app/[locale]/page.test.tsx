@@ -16,6 +16,7 @@ import type { VenueListResponse, VenueSummaryDTO } from "@zwadj/types";
 import { HomeView } from "../../components/home-view";
 import { PREVIEW_VENUES, previewVenuesFor } from "../../lib/preview-venues";
 import { VENDOR_CATEGORIES } from "../../lib/vendor-categories";
+import { parseSearchParams, BUDGET_CEILING } from "../../lib/search-query";
 
 /** ⚠ Une salle RÉELLE : elle n'a ni note, ni avis, ni badge — `VenueSummaryDTO`
  *  ne les porte pas. C'est le point de la carte conditionnelle : une salle
@@ -99,10 +100,41 @@ describe("Accueil — la recherche marche sans JavaScript", () => {
     expect(form).toHaveAttribute("action", "/salles");
   });
 
-  it("les champs portent les NOMS du contrat public — aucune traduction d'URL", () => {
+  it("les champs portent les noms que `/salles` LIT — aucune traduction d'URL", () => {
     poser();
     expect(screen.getByLabelText("Invités")).toHaveAttribute("name", "guests");
-    expect(screen.getByLabelText("Budget maximum")).toHaveAttribute("name", "maxPriceCents");
+    // ⚠ `maxPrice`, PAS `maxPriceCents` (D228). Le champ s'appelait le nom de
+    // l'API, et `parseSearchParams` ne lit que celui de l'URL : le budget
+    // choisi ici était jeté en silence.
+    expect(screen.getByLabelText("Budget maximum")).toHaveAttribute("name", "maxPrice");
+  });
+
+  it("⛔ chaque palier de budget SURVIT à la lecture de l'URL", () => {
+    // ⚠ LA GARDE QUI MANQUAIT. Vérifier le NOM du champ ne suffit pas : avec
+    // le bon nom et des valeurs restées en centimes, `500 000 DA` partirait en
+    // `maxPrice=50000000`, soit un plafond de 50 MILLIONS de dinars — filtre
+    // inopérant, et rigoureusement invisible. On fait donc l'aller-retour
+    // complet : ce que le `<select>` émet, on le relit avec le parseur RÉEL.
+    poser();
+    const select = screen.getByLabelText("Budget maximum") as HTMLSelectElement;
+    const nom = select.getAttribute("name") ?? "";
+    const paliers = [...select.options].filter((o) => o.value !== "");
+    expect(paliers.length).toBeGreaterThan(0);
+
+    for (const option of paliers) {
+      const etat = parseSearchParams({ [nom]: option.value });
+      // Le libellé est la promesse faite au visiteur ; l'état est ce que la
+      // page en fera. Les deux doivent désigner le même montant.
+      const dinarsAffiches = option.textContent?.replace(/[^0-9]/g, "") ?? "";
+      expect(option.value).toBe(dinarsAffiches);
+      // ⚠ Les paliers AU-DESSUS de `BUDGET_CEILING` signifient « pas de
+      // plafond » (D69) : leur état est vide, et c'est attendu. Ce test ne
+      // tranche pas ce point — il empêche seulement qu'un palier SOUS la
+      // butée se fasse effacer par une erreur d'unité.
+      if (Number(option.value) < BUDGET_CEILING) {
+        expect(etat.maxPrice).toBe(option.value);
+      }
+    }
   });
 });
 

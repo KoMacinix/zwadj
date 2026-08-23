@@ -7,6 +7,18 @@ import { describe, expect, it, vi } from "vitest";
 import type { VenueListQueryInput } from "@zwadj/types";
 import type { PrismaService } from "../prisma/prisma.service";
 import { VenuesPublicService } from "./venues-public.service";
+// ⚠ Les MÊMES fonctions que le service, pas une arithmétique de test
+// parallèle : une seconde implémentation des mois civils dériverait sans que
+// rien ne rougisse.
+import { BOOKING_HORIZON_MONTHS } from "@zwadj/types";
+import {
+  addMonthsCivil,
+  civilTodayAt,
+  civilUtcMs,
+  formatCivilDate,
+  parseCivilDate,
+  type CivilDate
+} from "./availability-time";
 
 const fakeStorage = {
   put: vi.fn(),
@@ -163,7 +175,27 @@ function ligne(id: string, bookingMode = "SINGLE_SLOT") {
  *  de mémoire — c'est la même arithmétique que `civilDayStartMs`. */
 const MINUIT_2_JUIN_2026 = Date.UTC(2026, 5, 2) - 60 * 60_000;
 const LE_2_JUIN = "2026-06-02";
-const LOINTAIN = "2099-06-02";
+
+const VEILLE_MIDI_ALGER = MINUIT_2_JUIN_2026 - 12 * 60 * 60_000;
+
+/* ── D227 : `HORIZON = "2099-06-02"` N'EXISTE PLUS ──────────────────────────
+   Cette constante était choisie « très loin » pour n'être jamais passée, quoi
+   qu'il arrive. Depuis D227, « très loin » est précisément ce qui se refuse :
+   elle faisait tomber trois tests qui ne parlaient pas d'horizon du tout.
+
+   ⚠ LES DEUX BORNES SONT DÉRIVÉES, jamais recopiées : de l'horloge FIGÉE de
+   ce fichier et de `BOOKING_HORIZON_MONTHS`, la même constante que le service.
+   Une chaîne écrite à la main ici cesserait de désigner l'horizon au premier
+   changement de la constante, et le test continuerait de passer en mesurant
+   autre chose. */
+const HORIZON = formatCivilDate(addMonthsCivil(civilTodayAt(VEILLE_MIDI_ALGER), BOOKING_HORIZON_MONTHS));
+
+/** Le LENDEMAIN de l'horizon — le premier jour refusé. Dérivé du même point,
+ *  via `civilUtcMs` + un jour, puis reconverti : `+1` sur la chaîne casserait
+ *  sur un 31. */
+const AU_DELA_DE_L_HORIZON = formatCivilDate(
+  civilTodayAt(civilUtcMs(parseCivilDate(HORIZON) as CivilDate) + 86_400_000)
+);
 
 /**
  * ⚠ L'HORLOGE EST FIGÉE, et ce n'est pas du confort.
@@ -177,7 +209,6 @@ const LOINTAIN = "2099-06-02";
  * On se place la VEILLE, à midi heure d'Alger : le 2 juin est donc demain, et
  * les fixtures d'intervalles gardent leur arithmétique lisible.
  */
-const VEILLE_MIDI_ALGER = MINUIT_2_JUIN_2026 - 12 * 60 * 60_000;
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -217,6 +248,62 @@ describe("VenuesPublicService.list — availableOn : refus de la date passée", 
   });
 });
 
+describe("VenuesPublicService.list — availableOn : refus HORS HORIZON (D227)", () => {
+  // ⚠ D55 — LE CAS RÉEL AVANT LA BORNE : le jour de l'horizon LUI-MÊME doit
+  // passer. Écrire la borne d'abord et vérifier ensuite, c'est se donner
+  // raison ; une salle réservable au dernier jour ouvert doit pouvoir être
+  // annotée, sinon la borne est fausse d'un jour et personne ne le voit.
+  it("⚠ LE JOUR DE L'HORIZON EST ACCEPTÉ (`>`, pas `>=`)", async () => {
+    const { service } = buildService();
+    await expect(service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON })).resolves.toBeDefined();
+  });
+
+  it("le LENDEMAIN de l'horizon : 400 AVAILABLE_ON_BEYOND_HORIZON", async () => {
+    const { service, prisma } = buildService();
+    await expect(
+      service.list({ ...QUERY_DEFAULTS, availableOn: AU_DELA_DE_L_HORIZON })
+    ).rejects.toSatisfy(
+      (e: unknown) =>
+        e instanceof BadRequestException &&
+        (e.getResponse() as { code?: string }).code === "AVAILABLE_ON_BEYOND_HORIZON"
+    );
+    // Même exigence que pour la date passée : aucun aller-retour en base.
+    expect(prisma.venue.findMany).not.toHaveBeenCalled();
+    expect(prisma.slotTemplate.findMany).not.toHaveBeenCalled();
+  });
+
+  it("⛔ LES DEUX REFUS NE PORTENT PAS LE MÊME CODE — c'est la décision D227", async () => {
+    // Un code unique aurait forcé l'écran à choisir un message, faux une
+    // fois sur deux : « regardez devant » et « rapprochez-vous » ne se
+    // disent pas pareil. Les deux refus sont donc CONFRONTÉS ici, pas
+    // mesurés chacun dans son coin.
+    const { service } = buildService();
+    const code = async (date: string): Promise<string | undefined> => {
+      try {
+        await service.list({ ...QUERY_DEFAULTS, availableOn: date });
+        return undefined;
+      } catch (e) {
+        return (e as BadRequestException & { getResponse(): { code?: string } }).getResponse().code;
+      }
+    };
+    const passe = await code("2020-01-01");
+    const tropLoin = await code(AU_DELA_DE_L_HORIZON);
+    expect(passe).toBe("AVAILABLE_ON_PAST");
+    expect(tropLoin).toBe("AVAILABLE_ON_BEYOND_HORIZON");
+    expect(passe).not.toBe(tropLoin);
+  });
+
+  it("⚠ l'horizon suit la MÊME constante que la demande de visite", () => {
+    // Deux valeurs d'horizon dans le dépôt, c'est un jour où l'annotation
+    // accepte une date que la demande de visite refuse — le visiteur voit
+    // « libre », puis se fait refuser au moment de demander.
+    expect(HORIZON).toBe(
+      formatCivilDate(addMonthsCivil(civilTodayAt(VEILLE_MIDI_ALGER), BOOKING_HORIZON_MONTHS))
+    );
+    expect(BOOKING_HORIZON_MONTHS).toBeGreaterThan(0);
+  });
+});
+
 describe("VenuesPublicService.list — availableOn : ce qui est chargé", () => {
   it("⚠ SANS `availableOn`, AUCUNE des trois lectures n'a lieu, et l'écho vaut `null`", async () => {
     const { service, prisma } = buildService();
@@ -230,7 +317,7 @@ describe("VenuesPublicService.list — availableOn : ce qui est chargé", () => 
   it("⚠ TROIS REQUÊTES, bornées par `venueId IN` — O(page), pas O(page × salles)", async () => {
     const { service, prisma } = buildService();
     prisma.venue.findMany.mockResolvedValue([ligne("v1"), ligne("v2"), ligne("v3")]);
-    await service.list({ ...QUERY_DEFAULTS, availableOn: LOINTAIN });
+    await service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON });
 
     for (const table of [prisma.slotTemplate, prisma.booking, prisma.availabilityBlock]) {
       expect(table.findMany).toHaveBeenCalledTimes(1);
@@ -242,7 +329,7 @@ describe("VenuesPublicService.list — availableOn : ce qui est chargé", () => 
   it("⚠ `PENDING` N'EST PAS CHARGÉ (D101) : une demande en attente ne grise rien", async () => {
     const { service, prisma } = buildService();
     prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
-    await service.list({ ...QUERY_DEFAULTS, availableOn: LOINTAIN });
+    await service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON });
 
     const { where } = premierAppel<{ where: { status: { in: string[] } } }>(prisma.booking.findMany, "réservations");
     expect(where.status).toEqual({ in: ["ACCEPTED", "CONFIRMED"] });
@@ -267,9 +354,9 @@ describe("VenuesPublicService.list — availableOn : ce qui est chargé", () => 
   it("aucune salle dans la page : aucune requête d'annotation, et pas de `IN ()` vide", async () => {
     const { service, prisma } = buildService();
     prisma.venue.findMany.mockResolvedValue([]);
-    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LOINTAIN });
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON });
     expect(prisma.slotTemplate.findMany).not.toHaveBeenCalled();
-    expect(res.availableOn).toBe(LOINTAIN);
+    expect(res.availableOn).toBe(HORIZON);
   });
 });
 
