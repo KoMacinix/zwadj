@@ -41,41 +41,31 @@
 // Le dossier `app/` n'a pas de layout racine (le seul `<html>` du dépôt est
 // celui de `[locale]/layout.tsx`), donc cette page doit porter les siens.
 import Link from "next/link";
-import { LostWordCloud } from "../components/lost-word-cloud";
 
 const ROOT_NOT_FOUND_CSS = `
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
   body { margin: 0; background: #fafafa; color: #18181b; font-family: system-ui, sans-serif; }
   .root-notfound-main { position: relative; isolation: isolate; min-height: 100dvh; display: grid; place-items: center; overflow: hidden; padding: 32px 20px; }
+  /* Largeur accordee au vide reserve dans le nuage : les deux se deplacent ensemble. */
   .root-notfound-content { position: relative; z-index: 1; width: min(100%, 560px); text-align: center; }
-  .root-notfound-code { margin: 0; font-size: clamp(76px, 14vw, 136px); font-weight: 300; letter-spacing: .04em; line-height: .9; }
-  .root-notfound-title { display: grid; gap: 7px; margin: 24px 0 0; font-size: clamp(24px, 4vw, 34px); font-weight: 600; line-height: 1.25; }
+  .root-notfound-title { display: grid; gap: 7px; margin: 0; font-size: clamp(26px, 4.4vw, 38px); font-weight: 600; line-height: 1.25; }
   .root-notfound-title [lang="ar"] { font-weight: 500; }
   .root-notfound-body { margin: 16px auto 0; max-width: 430px; color: #52525b; font-size: 15px; line-height: 1.65; }
   .root-notfound-ar { margin-top: 4px; }
   .root-notfound-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
   .root-notfound-link { display: inline-flex; min-width: 124px; justify-content: center; padding: 11px 20px; border: 1px solid #e4e4e7; border-radius: 2px; color: #18181b; font-size: 14px; font-weight: 600; text-decoration: none; }
   .root-notfound-link--primary { border-color: #da3642; background: #da3642; color: #fff; }
-  .lost-word-cloud { position: absolute; z-index: -1; inset: 0; overflow: hidden; pointer-events: none; user-select: none; }
-  .lost-word-cloud__svg { width: 100%; height: 100%; }
-  .lost-word-cloud__svg--compact { display: none; }
-  .lost-word-cloud__word { fill: #52525b; font-family: system-ui, sans-serif; opacity: .11; }
-  .lost-word-cloud__word.is-soft { opacity: .085; }
-  .lost-word-cloud__word.is-faint { opacity: .055; }
-  .lost-word-cloud__word.is-accent { fill: #da3642; opacity: .12; }
-  @media (max-width: 620px) {
-    .lost-word-cloud__svg--wide { display: none; }
-    .lost-word-cloud__svg--compact { display: block; }
-  }
+  /* Une seule règle là où il y en avait cinq : plus de canevas, plus de tons. */
+  .lost-word-cloud { position: absolute; z-index: -1; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; opacity: .7; }
   @media (prefers-color-scheme: dark) {
     :root { color-scheme: dark; }
     body { background: #111; color: #f0f0f0; }
     .root-notfound-body { color: #ababab; }
     .root-notfound-link { border-color: #333; color: #f0f0f0; }
     .root-notfound-link--primary { border-color: #e07a84; background: #e07a84; color: #111; }
-    .lost-word-cloud__word { fill: #ababab; }
-    .lost-word-cloud__word.is-accent { fill: #e07a84; }
+    /* Les opacités sont GRAVÉES au niveau du sombre : ici on cesse d'atténuer. */
+    .lost-word-cloud { opacity: 1; }
   }
 `;
 
@@ -85,11 +75,9 @@ export default function RootNotFound() {
       <body>
         <style>{ROOT_NOT_FOUND_CSS}</style>
         <main className="root-notfound-main">
-          <LostWordCloud />
+          {/* Même décor que la 404 localisée, même traitement : `alt=""`. */}
+          <img className="lost-word-cloud" src="/404-nuage.svg" alt="" aria-hidden="true" />
           <section className="root-notfound-content">
-            <p className="root-notfound-code" aria-hidden="true">
-              404
-            </p>
             <h1 className="root-notfound-title">
               <span>Cette page n’existe pas.</span>
               <span lang="ar" dir="rtl">

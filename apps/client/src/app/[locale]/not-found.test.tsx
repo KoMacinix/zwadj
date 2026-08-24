@@ -134,7 +134,7 @@ describe("404 — conventions de routage (ce qui avait réellement cédé)", () 
 });
 
 function poser(locale: "fr" | "ar") {
-  render(
+  return render(
     <NextIntlClientProvider locale={locale} messages={messages[locale]}>
       <LocaleNotFound />
     </NextIntlClientProvider>
@@ -173,12 +173,56 @@ describe("404 localisée — contenu", () => {
     expect(liens[1]).toHaveAttribute("href", "/");
   });
 
-  it("le code 404 est affiché mais MASQUÉ aux lecteurs d'écran", () => {
+  it("⛔ AUCUN « 404 » à l'écran — le code vit dans le statut HTTP", () => {
+    // Demande explicite du 23/08/2026. Le chiffre était affiché en très grand
+    // au-dessus du titre ; il ne disait rien au visiteur que la phrase ne dise
+    // mieux, et il écrasait le nuage de mots qui occupe désormais la page.
+    // ⚠ La garde porte sur le TEXTE RENDU, pas sur une classe : renommer
+    // `.notfound-code` en la gardant à l'écran ne doit pas passer.
     poser("fr");
-    // Il aide un visiteur à décrire son problème au support ; annoncé à voix
-    // haute avant le titre, il n'apprendrait rien.
-    const code = screen.getByText("404");
-    expect(code).toHaveAttribute("aria-hidden", "true");
+    expect(screen.queryByText("404")).toBeNull();
+    expect(document.body.textContent).not.toContain("404");
+  });
+
+  it("⛔ le décor EST là, et il reste DÉCORATIF", () => {
+    // Rien ne le vérifiait : on pouvait retirer le décor des deux pages sans
+    // qu'un seul test bouge. C'est pourtant tout ce que le visiteur voit
+    // d'abord.
+    const { container } = poser("fr");
+    const nuage = container.querySelector("img.lost-word-cloud");
+    expect(nuage).not.toBeNull();
+    // ⚠ `alt=""` est le traitement EXACT d'une image sans valeur
+    // d'information : elle sort de l'arbre d'accessibilité. `alt` absent la
+    // laisserait annoncée par son nom de fichier.
+    expect(nuage).toHaveAttribute("alt", "");
+    expect(nuage).toHaveAttribute("aria-hidden", "true");
+    expect(nuage).toHaveAttribute("src", "/404-nuage.svg");
+  });
+
+  it("⛔ l'image du décor EXISTE, et elle est faite de TRACÉS", () => {
+    // ⚠ LA SEULE GARDE QUI RESTE SUR L'ARTEFACT, et elle porte sur les deux
+    // choses qui peuvent casser en silence :
+    //   — un `src` qui ne pointe sur rien : le fond devient vide, aucune
+    //     erreur, aucun test de rendu ne bouge ;
+    //   — un fichier « optimisé » où les tracés seraient redevenus du
+    //     `<text>` : une image en `<img>` n'accède pas aux polices de la
+    //     page, donc l'arabe s'y afficherait en lettres NON LIÉES. Le défaut
+    //     ne se verrait que sur la moitié arabe du public.
+    const chemin = resolve(APP, "..", "..", "public", "404-nuage.svg");
+    expect(existsSync(chemin)).toBe(true);
+    const svg = readFileSync(chemin, "utf-8");
+    // ⚠ COMMENTAIRES RETIRÉS AVANT DE CHERCHER. Mesuré : le fichier explique
+    // dans son propre en-tête pourquoi il n'utilise pas `<text>` — et la
+    // garde rougissait sur cette phrase. Elle mesurait sa documentation au
+    // lieu de son balisage.
+    const balisage = svg.replace(/<!--[\s\S]*?-->/g, "");
+    expect(balisage).toContain("<path");
+    expect(balisage).not.toContain("<text");
+    expect(svg).toContain('role="presentation"');
+    // Budget de poids : ~188 ko brut, ~27 ko une fois compressé par le
+    // serveur. Au-delà de 400 ko, quelque chose a été régénéré sans les
+    // coordonnées arrondies.
+    expect(svg.length).toBeLessThan(400_000);
   });
 });
 

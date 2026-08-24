@@ -42,6 +42,7 @@ CLIENT = "apps/client"
 RACINE_404 = "apps/client/src/app/not-found.tsx"
 RACINE_404_MORTE = "apps/client/src/app/_not-found.tsx"
 ATTRAPE_TOUT = "apps/client/src/app/[locale]/[...rest]/page.tsx"
+IMAGE = "apps/client/public/404-nuage.svg"
 LOCALISEE = "apps/client/src/app/[locale]/not-found.tsx"
 FALLBACK = "apps/client/src/app/[locale]/salles/(recherche)/loading.tsx"
 FALLBACK_REMONTE = "apps/client/src/app/[locale]/loading.tsx"
@@ -133,13 +134,42 @@ CIBLES = [
         "titre": "la première mène aux salles",
     },
     {
-        "libelle": "C6. Le code « 404 » cesse d'être masqué aux lecteurs d'écran",
+        "libelle": "C6. Le « 404 » revient à l'écran, au-dessus du titre",
+        # ⚠ CIBLE REMPLACÉE LE 23/08/2026. Elle désarmait auparavant le
+        # `aria-hidden` du code « 404 » ; ce code n'existe plus, retiré à la
+        # demande. La garde utile n'est donc plus « il est masqué » mais « il
+        # n'est pas là » — et une cible qui ne trouve plus son ancre arrête la
+        # campagne au lieu de se taire.
         "genre": "remplacer",
         "chemin": LOCALISEE,
-        "avant": '<p className="notfound-code" aria-hidden="true">',
-        "apres": '<p className="notfound-code">',
+        "avant": '      <section className="notfound-content">\r\n        <h1>{t("title")}</h1>',
+        "apres": '      <section className="notfound-content">\r\n        <p>404</p>\r\n        <h1>{t("title")}</h1>',
         "occurrences": 1,
-        "titre": "MASQUÉ aux lecteurs d'écran",
+        "titre": "AUCUN « 404 » à l'écran",
+    },
+    {
+        "libelle": "C6b. Le décor perd son `alt=\"\"` — il redevient annoncé aux lecteurs d'écran",
+        # ⚠ CIBLE RÉORIENTÉE LE 24/08/2026. Elle visait la disparition du
+        # composant `<LostWordCloud />`, remplacé par une image statique. La
+        # faute possible a changé de nature : ce n'est plus « le décor
+        # disparaît », c'est « le décor se met à parler ». Sans `alt`, une
+        # image est annoncée par son NOM DE FICHIER — « quatre cent quatre
+        # tiret nuage point s v g » lu à voix haute avant le message d'erreur.
+        "genre": "remplacer",
+        "chemin": LOCALISEE,
+        "avant": '<img className="lost-word-cloud" src="/404-nuage.svg" alt="" aria-hidden="true" />',
+        "apres": '<img className="lost-word-cloud" src="/404-nuage.svg" />',
+        "occurrences": 1,
+        "titre": "le décor EST là",
+    },
+    {
+        "libelle": "C6c. L'image du décor n'est plus livrée (`src` qui ne pointe sur rien)",
+        # Un fond vide, aucune erreur, aucun test de RENDU qui bouge : c'est
+        # exactement le genre de panne muette que ces harnais existent pour
+        # attraper.
+        "genre": "supprimer",
+        "chemin": IMAGE,
+        "titre": "faite de TRACÉS",
     },
     {
         "libelle": "C7. La ligne arabe de la 404 racine perd sa direction (`dir=\"rtl\"`)",
@@ -321,6 +351,7 @@ ETAT_ATTENDU = [
     (RACINE_404_MORTE, False),
     (ATTRAPE_TOUT, True),
     (LOCALISEE, True),
+    (IMAGE, True),
     (FALLBACK, True),
     (FALLBACK_REMONTE, False),
     (FALLBACK_SALLES, False),

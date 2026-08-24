@@ -676,7 +676,11 @@
 .notfound-main {
   position: relative;
   isolation: isolate;
-  min-block-size: clamp(520px, 72dvh, 760px);
+  /* ⚠ Pas de plafond en pixels : le nuage est un FOND, il doit descendre
+     jusqu'au pied de page quelle que soit la fenêtre. Le `- 190px` retire
+     l'en-tête et le pied, qui occupent déjà la hauteur ; sans lui, la page
+     défilerait d'autant sur toutes les 404. */
+  min-block-size: max(520px, calc(100dvh - 190px));
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -684,6 +688,10 @@
   padding-inline: 20px;
 }
 
+/* ⚠ LARGEUR ACCORDÉE AU VIDE RÉSERVÉ DANS LE NUAGE (56 % du canevas large).
+   Élargir ce bloc sans élargir `videCentral` ferait repasser des mots
+   derrière les boutons — le nuage ne saurait pas qu'on lui a pris de la
+   place. Les deux valeurs se déplacent ENSEMBLE. */
 .notfound-content {
   position: relative;
   z-index: 1;
@@ -691,17 +699,12 @@
   text-align: center;
 }
 
-.notfound-code {
-  margin: 0;
-  font-size: clamp(76px, 12vw, 136px);
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  line-height: 0.9;
-  color: var(--ink);
-}
-
+/* ⚠ `.notfound-code` a été RETIRÉE le 23/08/2026 avec le « 404 » qu'elle
+   habillait : le code est porté par le statut HTTP, là où les machines le
+   lisent. Une règle sans balise est un piège pour le prochain lecteur, qui
+   la croit vivante. */
 .notfound-content h1 {
-  margin: 24px 0 0;
+  margin: 0;
   font-size: clamp(25px, 3.4vw, 34px);
   font-weight: 500;
   line-height: 1.25;
@@ -724,48 +727,37 @@
   margin-block-start: 28px;
 }
 
+/* ⚠ UNE SEULE RÈGLE là où il y en avait six. Le décor est passé d'un composant
+   qui calculait sa disposition à chaque rendu — collisions, largeurs imposées,
+   deux canevas selon l'écran — à UNE IMAGE STATIQUE (24/08/2026).
+   `object-fit: cover` remplace à lui seul la gestion des tailles d'écran : un
+   canevas de 1400×1000 recadré, dont le vide central est calibré pour rester
+   sous le bloc de texte du bureau comme du mobile.
+   ⚠ `opacity: .7` — les opacités sont GRAVÉES dans le fichier au niveau qu'il
+   faut sur fond sombre, parce qu'une image en `<img>` ne connaît pas le thème
+   de la page et ne peut pas s'éclaircir. On atténue donc en clair ; l'inverse
+   serait impossible, `opacity` ne dépasse pas 1. */
 .lost-word-cloud {
   position: absolute;
   z-index: -1;
   inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-}
-
-.lost-word-cloud__svg {
   inline-size: 100%;
   block-size: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.7;
 }
 
-.lost-word-cloud__svg--compact {
-  display: none;
-}
-
-.lost-word-cloud__word {
-  fill: var(--ink-2);
-  font-family: "Readex Pro", system-ui, sans-serif;
-  opacity: 0.11;
-}
-
-.lost-word-cloud__word.is-soft {
-  opacity: 0.085;
-}
-
-.lost-word-cloud__word.is-faint {
-  opacity: 0.055;
-}
-
-.lost-word-cloud__word.is-accent {
-  /* Décor masqué aux lecteurs d'écran : l'accent sert ici de forme, jamais de
-     texte d'information sur le fond hors-blanc. */
-  fill: var(--accent);
-  opacity: 0.12;
+@media (prefers-color-scheme: dark) {
+  .lost-word-cloud {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 620px) {
   .notfound-main {
-    min-block-size: 640px;
+    min-block-size: max(560px, calc(100dvh - 150px));
     padding-block: 44px;
   }
 
@@ -777,13 +769,6 @@
     margin-block-start: 26px;
   }
 
-  .lost-word-cloud__svg--wide {
-    display: none;
-  }
-
-  .lost-word-cloud__svg--compact {
-    display: block;
-  }
 }
 
 .venue-card-fav {
