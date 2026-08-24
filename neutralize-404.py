@@ -145,8 +145,13 @@ CIBLES = [
         "libelle": "C7. La ligne arabe de la 404 racine perd sa direction (`dir=\"rtl\"`)",
         "genre": "remplacer",
         "chemin": RACINE_404,
-        "avant": '<p lang="ar" dir="rtl" style={{ margin: "4px 0 20px" }}>',
-        "apres": '<p lang="ar" style={{ margin: "4px 0 20px" }}>',
+        # ⚠ ANCRE REMISE À JOUR LE 23/08/2026 : le lot visuel (nuage de mots)
+        # a remplacé le `<p>` en style en ligne par un `<span>` dans un titre.
+        # L'ancienne ancre ne trouvait plus rien, et la campagne s'arrêtait
+        # net sur « ERREUR DE SCRIPT » — c'est le comportement voulu, mais il
+        # laissait C8, C9 et C10 non jouées.
+        "avant": '<span lang="ar" dir="rtl">',
+        "apres": '<span lang="ar">',
         "occurrences": 1,
         "titre": "DEUX langues",
     },

@@ -201,9 +201,22 @@ describe("404 racine — bilingue, et sans aucun fournisseur", () => {
     const html = markup();
     expect(html).toContain("Cette page n’existe pas.");
     expect(html).toContain("هذه الصفحة غير موجودة.");
-    // Le passage en arabe porte sa direction : sans `dir="rtl"`, la ponctuation
-    // finale se place du mauvais côté.
-    expect(html).toMatch(/lang="ar"[^>]*dir="rtl"/);
+    // ⛔ TOUS les passages arabes, pas « au moins un ». Mesuré le 23/08/2026 :
+    // quand la page est passée d'un seul `<p lang="ar">` à trois éléments
+    // arabes, l'ancienne assertion (`toMatch` sur la première occurrence)
+    // est restée VERTE alors qu'on lui retirait sa direction — il en restait
+    // deux autres pour la satisfaire. Une garde qui se contente d'un exemple
+    // ne mesure plus rien dès qu'il y en a deux.
+    // Sans `dir="rtl"`, la ponctuation finale se place du mauvais côté.
+    // ⚠ DEUX ATTRIBUTS POUR LA MÊME CHOSE, relevés sur le rendu réel et non
+    // devinés : HTML écrit `dir="rtl"`, SVG écrit `direction="rtl"` (attribut
+    // de présentation). Le nuage décoratif est du `<text>` SVG ; n'accepter
+    // que la forme HTML ferait rougir un balisage parfaitement correct.
+    const arabes = html.match(/<[a-z]+[^>]*\slang="ar"[^>]*>/g) ?? [];
+    expect(arabes.length).toBeGreaterThan(0);
+    for (const balise of arabes) {
+      expect(balise).toMatch(/\sdir="rtl"|\sdirection="rtl"/);
+    }
   });
 
   it("offre une sortie vers CHAQUE racine localisée", () => {

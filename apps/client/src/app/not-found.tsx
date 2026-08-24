@@ -41,38 +41,86 @@
 // Le dossier `app/` n'a pas de layout racine (le seul `<html>` du dépôt est
 // celui de `[locale]/layout.tsx`), donc cette page doit porter les siens.
 import Link from "next/link";
+import { LostWordCloud } from "../components/lost-word-cloud";
+
+const ROOT_NOT_FOUND_CSS = `
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fafafa; color: #18181b; font-family: system-ui, sans-serif; }
+  .root-notfound-main { position: relative; isolation: isolate; min-height: 100dvh; display: grid; place-items: center; overflow: hidden; padding: 32px 20px; }
+  .root-notfound-content { position: relative; z-index: 1; width: min(100%, 560px); text-align: center; }
+  .root-notfound-code { margin: 0; font-size: clamp(76px, 14vw, 136px); font-weight: 300; letter-spacing: .04em; line-height: .9; }
+  .root-notfound-title { display: grid; gap: 7px; margin: 24px 0 0; font-size: clamp(24px, 4vw, 34px); font-weight: 600; line-height: 1.25; }
+  .root-notfound-title [lang="ar"] { font-weight: 500; }
+  .root-notfound-body { margin: 16px auto 0; max-width: 430px; color: #52525b; font-size: 15px; line-height: 1.65; }
+  .root-notfound-ar { margin-top: 4px; }
+  .root-notfound-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
+  .root-notfound-link { display: inline-flex; min-width: 124px; justify-content: center; padding: 11px 20px; border: 1px solid #e4e4e7; border-radius: 2px; color: #18181b; font-size: 14px; font-weight: 600; text-decoration: none; }
+  .root-notfound-link--primary { border-color: #da3642; background: #da3642; color: #fff; }
+  .lost-word-cloud { position: absolute; z-index: -1; inset: 0; overflow: hidden; pointer-events: none; user-select: none; }
+  .lost-word-cloud__svg { width: 100%; height: 100%; }
+  .lost-word-cloud__svg--compact { display: none; }
+  .lost-word-cloud__word { fill: #52525b; font-family: system-ui, sans-serif; opacity: .11; }
+  .lost-word-cloud__word.is-soft { opacity: .085; }
+  .lost-word-cloud__word.is-faint { opacity: .055; }
+  .lost-word-cloud__word.is-accent { fill: #da3642; opacity: .12; }
+  @media (max-width: 620px) {
+    .lost-word-cloud__svg--wide { display: none; }
+    .lost-word-cloud__svg--compact { display: block; }
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { color-scheme: dark; }
+    body { background: #111; color: #f0f0f0; }
+    .root-notfound-body { color: #ababab; }
+    .root-notfound-link { border-color: #333; color: #f0f0f0; }
+    .root-notfound-link--primary { border-color: #e07a84; background: #e07a84; color: #111; }
+    .lost-word-cloud__word { fill: #ababab; }
+    .lost-word-cloud__word.is-accent { fill: #e07a84; }
+  }
+`;
 
 export default function RootNotFound() {
   return (
     <html lang="fr">
-      <body
-        style={{
-          margin: 0,
-          minHeight: "100vh",
-          display: "grid",
-          placeItems: "center",
-          fontFamily: "system-ui, sans-serif",
-          textAlign: "center",
-          padding: 24
-        }}
-      >
-        <div>
-          <p style={{ fontSize: 48, fontWeight: 700, margin: 0 }}>404</p>
-          <p style={{ margin: "8px 0 0" }}>Cette page n’existe pas.</p>
-          <p lang="ar" dir="rtl" style={{ margin: "4px 0 20px" }}>
-            هذه الصفحة غير موجودة.
-          </p>
-          {/* Liens vers les DEUX racines localisées : le visiteur choisit sa
+      <body>
+        <style>{ROOT_NOT_FOUND_CSS}</style>
+        <main className="root-notfound-main">
+          <LostWordCloud />
+          <section className="root-notfound-content">
+            <p className="root-notfound-code" aria-hidden="true">
+              404
+            </p>
+            <h1 className="root-notfound-title">
+              <span>Cette page n’existe pas.</span>
+              <span lang="ar" dir="rtl">
+                هذه الصفحة غير موجودة.
+              </span>
+            </h1>
+            <p className="root-notfound-body">
+              Choisissez votre langue pour retrouver votre chemin.
+            </p>
+            <p className="root-notfound-body root-notfound-ar" lang="ar" dir="rtl">
+              اختاروا اللغة باش ترجعوا للطريق.
+            </p>
+            {/* Liens vers les DEUX racines localisées : le visiteur choisit sa
               langue en choisissant sa sortie.
               ⚠ `next/link`, pas le `Link` de `i18n/navigation` : ce dernier
               préfixerait la locale courante, et il n'y en a pas ici. */}
-          <p style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-            <Link href="/fr">Français</Link>
-            <Link href="/ar" lang="ar">
-              العربية
-            </Link>
-          </p>
-        </div>
+            <nav className="root-notfound-actions" aria-label="Choix de la langue / اختيار اللغة">
+              <Link href="/fr" className="root-notfound-link root-notfound-link--primary">
+                Français
+              </Link>
+              {/* ⚠ `dir="rtl"` MÊME SUR UN MOT SEUL. L'algorithme bidi s'en
+                  sortirait ici, mais la garde de `not-found.test.tsx` exige
+                  que TOUT élément `lang="ar"` de cette page déclare sa
+                  direction : une règle universelle se vérifie, une règle
+                  « sauf quand ça se voit pas » ne se vérifie pas. */}
+              <Link href="/ar" lang="ar" dir="rtl" className="root-notfound-link">
+                العربية
+              </Link>
+            </nav>
+          </section>
+        </main>
       </body>
     </html>
   );

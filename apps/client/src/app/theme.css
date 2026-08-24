@@ -670,27 +670,120 @@
 }
 
 /* ── Point B — page 404 ─────────────────────────────────────────────────────
-   Réutilise `.state-panel`, déjà porté par les états vides et d'erreur de la
-   recherche : une page d'erreur qui invente sa propre boîte se met à diverger
-   du reste du site à la première retouche. */
-.notfound-panel {
-  max-width: 520px;
-  margin-inline: auto;
+   Le nuage est du texte SVG décoratif : aucun bitmap, aucune dépendance, et il
+   reste hors de l'arbre d'accessibilité. Les deux canevas évitent de comprimer
+   les glyphes : un paysage pour le bureau, un portrait pour le mobile. */
+.notfound-main {
+  position: relative;
+  isolation: isolate;
+  min-block-size: clamp(520px, 72dvh, 760px);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding-block: clamp(52px, 8vw, 96px);
+  padding-inline: 20px;
+}
+
+.notfound-content {
+  position: relative;
+  z-index: 1;
+  inline-size: min(100%, 560px);
   text-align: center;
 }
+
 .notfound-code {
-  margin: 0 0 4px;
-  font-size: 56px;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--accent);
+  margin: 0;
+  font-size: clamp(76px, 12vw, 136px);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  line-height: 0.9;
+  color: var(--ink);
 }
+
+.notfound-content h1 {
+  margin: 24px 0 0;
+  font-size: clamp(25px, 3.4vw, 34px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.notfound-body {
+  max-inline-size: 430px;
+  margin: 14px auto 0;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
 .notfound-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-  margin-block-start: 20px;
+  margin-block-start: 28px;
+}
+
+.lost-word-cloud {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lost-word-cloud__svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.lost-word-cloud__svg--compact {
+  display: none;
+}
+
+.lost-word-cloud__word {
+  fill: var(--ink-2);
+  font-family: "Readex Pro", system-ui, sans-serif;
+  opacity: 0.11;
+}
+
+.lost-word-cloud__word.is-soft {
+  opacity: 0.085;
+}
+
+.lost-word-cloud__word.is-faint {
+  opacity: 0.055;
+}
+
+.lost-word-cloud__word.is-accent {
+  /* Décor masqué aux lecteurs d'écran : l'accent sert ici de forme, jamais de
+     texte d'information sur le fond hors-blanc. */
+  fill: var(--accent);
+  opacity: 0.12;
+}
+
+@media (max-width: 620px) {
+  .notfound-main {
+    min-block-size: 640px;
+    padding-block: 44px;
+  }
+
+  .notfound-actions {
+    align-items: stretch;
+    flex-direction: column;
+    inline-size: min(100%, 280px);
+    margin-inline: auto;
+    margin-block-start: 26px;
+  }
+
+  .lost-word-cloud__svg--wide {
+    display: none;
+  }
+
+  .lost-word-cloud__svg--compact {
+    display: block;
+  }
 }
 
 .venue-card-fav {

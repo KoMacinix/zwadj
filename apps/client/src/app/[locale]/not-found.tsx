@@ -39,31 +39,33 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "../../i18n/navigation";
+import { LostWordCloud } from "../../components/lost-word-cloud";
 
 export default function LocaleNotFound() {
   const t = useTranslations("notFound");
   return (
-    <main className="auth-main">
-      <div className="state-panel notfound-panel">
+    <main className="notfound-main">
+      <LostWordCloud />
+      <section className="notfound-content">
         {/* Le code est rendu VISIBLEMENT : un visiteur qui décrit son problème
             au support cite « 404 » bien plus facilement qu'une phrase. */}
         <p className="notfound-code" aria-hidden="true">
           404
         </p>
         <h1>{t("title")}</h1>
-        <p>{t("body")}</p>
+        <p className="notfound-body">{t("body")}</p>
         {/* Deux sorties, pas une : « accueil » sert à qui s'est perdu, « voir
             les salles » sert à qui cherchait une salle et a suivi un lien mort
             — c'est le cas le plus fréquent, une fiche dépubliée. */}
-        <p className="notfound-actions">
+        <div className="notfound-actions">
           <Link href="/salles" className="btn btn-accent">
             {t("venues")}
           </Link>
           <Link href="/" className="btn btn-ghost">
             {t("home")}
           </Link>
-        </p>
-      </div>
+        </div>
+      </section>
     </main>
   );
 }
