@@ -36,6 +36,14 @@ export const BookingStatus = {
 } as const;
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus];
 
+/** D'où vient l'affaire : le client l'a demandée en ligne, ou le pro l'a
+ *  saisie au comptoir. ⚠ Ajouté en S10b-2 : l'énumération existait dans
+ *  `schema.prisma` depuis l'origine mais n'avait jamais été reflétée ici,
+ *  contrairement à ses trois voisines de la même table. Chaque écrivain la
+ *  retapait donc en chaîne littérale. */
+export const BookingSource = { CLIENT: "CLIENT", WALK_IN: "WALK_IN" } as const;
+export type BookingSource = (typeof BookingSource)[keyof typeof BookingSource];
+
 export const PaymentMethod = { ONLINE: "ONLINE", CASH: "CASH" } as const;
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];
 

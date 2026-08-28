@@ -37,6 +37,17 @@ import shutil
 import subprocess
 import sys
 
+# ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
+#   dossier : tous ses chemins sont relatifs au DOSSIER COURANT. Sans cette
+#   garde, un `cd neutralisation` produirait « ERREUR DE SCRIPT : 0
+#   occurrence(s) » — un message qui envoie chercher un défaut de code là où il
+#   n'y a qu'un dossier de travail.
+if not os.path.isfile("pnpm-workspace.yaml"):
+    print("✗ À LANCER DEPUIS LA RACINE DU MONOREPO (pnpm-workspace.yaml introuvable).")
+    print(f"  dossier courant : {os.getcwd()}")
+    print(f"  → python3 neutralisation/{os.path.basename(__file__)}")
+    sys.exit(2)
+
 SAUVEGARDE = ".neutralisation-sauvegarde"
 SERVICE = "apps/api/src/payments/payments.service.ts"
 ADAPTATEUR = "apps/api/src/payments/payment-store.prisma.ts"
@@ -118,8 +129,13 @@ CIBLES = [
     (
         "S5a-8. Le réutilisable est cherché SANS filtre de statut : un FAILED se rejoue",
         ADAPTATEUR,
-        '      where: { bookingId: input.bookingId, status: "PENDING" },',
-        "      where: { bookingId: input.bookingId },",
+        # ⚠ ANCRE ÉLARGIE À LA LIGNE QUI PRÉCÈDE. E3d-1 a ajouté une SECONDE
+        # relecture avec le même `where` — celle du perdant de la course — et
+        # le motif seul est devenu ambigu : la campagne sortait en 2 sur
+        # « 2 occurrence(s), 1 attendue(s) ». C'est la PREMIÈRE lecture, celle
+        # de l'idempotence, que cette cible neutralise.
+        '    const existant = await this.prisma.payment.findFirst({\n      where: { bookingId: input.bookingId, status: "PENDING" },',
+        '    const existant = await this.prisma.payment.findFirst({\n      where: { bookingId: input.bookingId },',
         1,
         ["adaptateur"],
     ),

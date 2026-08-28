@@ -61,8 +61,17 @@ export interface PaymentStore {
    *  alors trois intentions pour une seule affaire, et la réconciliation
    *  devrait deviner laquelle comptait.
    *
-   *  ⚠ CE N'EST PAS ENCORE ATOMIQUE — voir l'adaptateur. Le port est l'endroit
-   *  où ça le deviendra. */
+   *  ⚠ C'EST ATOMIQUE DEPUIS E3d-1, ET ÇA NE TIENT PAS À CE FICHIER.
+   *  L'unicité est portée par un index partiel en base ; un adaptateur qui
+   *  ne s'appuierait pas dessus violerait ce contrat sans qu'aucun type ne
+   *  s'en aperçoive. C'est pourquoi la garde vit en INTÉGRATION, contre une
+   *  vraie base : un test unitaire sur un faux magasin ne peut pas mesurer
+   *  une contrainte qui n'existe que dans PostgreSQL.
+   *
+   *  ⚠ CE QUI N'EST PAS PROMIS : qu'une intention en attente MEURE. Une
+   *  tentative abandonnée est réutilisée indéfiniment — comportement
+   *  d'origine, inchangé. L'expiration attend la durée de vie d'un lien
+   *  Chargily (E3d-2). */
   findOrCreatePendingIntent(input: {
     bookingId: string;
     amountCents: number;

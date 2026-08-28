@@ -36,7 +36,7 @@ import { formatDZD } from "@zwadj/i18n";
 import { MonthNextIcon, MonthPrevIcon } from "@zwadj/ui";
 import { formatSlotRange, type VenueAvailabilityDayDTO, type VenueAvailabilityResponse } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenueAvailability } from "./venue-client-context";
 import {
   compareMonths,
   currentMonth,
@@ -112,7 +112,7 @@ export function VenueCalendar({
   show?: "all" | "month" | "slots";
 }) {
   const { t, i18n } = useTranslation();
-  const venues = useVenues();
+  const venues = useVenueAvailability();
   const toMessage = useApiErrorMessage();
 
   const nowRef = useRef(Date.now());

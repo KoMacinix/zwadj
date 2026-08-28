@@ -36,7 +36,7 @@ import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
 import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap } from "@zwadj/ui";
 import { useRouter } from "../i18n/navigation";
 import { countVenues } from "../lib/api";
-import { dinarsFromCents } from "../lib/search-query";
+import { BUDGET_TIERS, centsFromDinars } from "../lib/search-query";
 
 /** ⚠ QUATRE ÉTAPES, dans l'ordre du filtre EXISTANT (`SearchFilters`) : ville,
  *  capacité, budget, styles, équipements. Rien de réinventé — les deux derniers
@@ -50,9 +50,13 @@ const STEP_LABEL: Record<Step, string> = {
   taste: "stepTaste"
 };
 
-/** Paliers de budget, en CENTIMES — ce sont des VALEURS DE FILTRE, pas des
- *  calculs. Aucune arithmétique monétaire ne vit dans ce navigateur. */
-const BUDGET_TIERS = [50_000_000, 100_000_000, 200_000_000, 400_000_000] as const;
+/* ⛔ LES PALIERS NE SONT PLUS DÉCLARÉS ICI (D254). Cet écran en tenait sa
+   propre copie, en CENTIMES, pendant que l'accueil tenait la sienne en
+   DINARS et que `BUDGET_CEILING` vivait dans un troisième fichier. Trois
+   déclarations du même montant dans deux unités : deux des quatre paliers
+   étaient au-dessus de la butée et ne filtraient rien, sans qu'aucun des
+   trois fichiers puisse s'en apercevoir. `BUDGET_TIERS` vient désormais de
+   `search-query.ts`, en DINARS, et l'état de cette étape aussi. */
 
 export interface FilterWizardProps {
   wilayas: WilayaDTO[];
@@ -114,14 +118,15 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
       if (cityId !== "") q.set("cityId", cityId);
       if (Number(guests) > 0) q.set("guests", guests);
       if (budget !== "") {
+        // ⚠ `budget` est en DINARS depuis D254, comme `BUDGET_TIERS` et comme
+        // l'URL publique. La branche publique le pose TEL QUEL ; seule la
+        // branche d'API convertit, par la seule fonction qui multiplie.
+        // Plus aucune conversion à raté possible : l'état et l'URL partagent
+        // désormais l'unité, et c'est l'API qui est l'exception nommée.
         if (prix === "cents") {
-          q.set("maxPriceCents", budget);
+          q.set("maxPriceCents", String(centsFromDinars(budget)));
         } else {
-          // Un palier non convertible EXACTEMENT est omis plutôt qu'arrondi
-          // (D228) : un plafond arrondi en silence n'a été demandé par
-          // personne. Les paliers du dépôt sont tous des multiples de 100.
-          const dinars = dinarsFromCents(budget);
-          if (dinars !== "") q.set("maxPrice", dinars);
+          q.set("maxPrice", budget);
         }
       }
       if (pickedStyles.length > 0) q.set("styles", pickedStyles.join(","));
@@ -239,7 +244,7 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
       case "guests":
         return guests;
       case "budget":
-        return budget === "" ? t("budgetAny") : formatDZD(Number(budget), ar ? "ar" : "fr");
+        return budget === "" ? t("budgetAny") : formatDZD(centsFromDinars(budget), ar ? "ar" : "fr");
       case "taste": {
         const noms = [
           ...pickedStyles.map((k) => styles.find((x) => x.key === k)).map((x) => (x ? (ar ? x.nameAr : x.nameFr) : "")),
@@ -379,18 +384,18 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
         {step === "budget" ? (
           <>
             <ul className="wz-tiers">
-              {BUDGET_TIERS.map((cents) => (
-                <li key={cents}>
+              {BUDGET_TIERS.map((dinars) => (
+                <li key={dinars}>
                   <button
                     type="button"
-                    className={budget === String(cents) ? "wz-tier is-on" : "wz-tier"}
-                    aria-pressed={budget === String(cents)}
+                    className={budget === String(dinars) ? "wz-tier is-on" : "wz-tier"}
+                    aria-pressed={budget === String(dinars)}
                     onClick={() => {
-                      setBudget(String(cents));
+                      setBudget(String(dinars));
                       goTo("taste");
                     }}
                   >
-                    {formatDZD(cents, ar ? "ar" : "fr")}
+                    {formatDZD(centsFromDinars(dinars), ar ? "ar" : "fr")}
                   </button>
                 </li>
               ))}

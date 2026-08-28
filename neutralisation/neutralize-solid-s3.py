@@ -25,6 +25,11 @@ Usage :
     python3 neutralize-solid-s3.py --int      # + base réelle (la vraie preuve)
     python3 neutralize-solid-s3.py 1 2        # une plage
 Depuis : la racine du monorepo.
+
+Codes de sortie : 0 = toutes les cibles de la plage ont été mesurées et
+mordent · 1 = au moins une garde MUETTE · 2 = erreur de script ou pré-vol
+déjà rouge · ⛔ 3 = CAMPAGNE INCOMPLÈTE, des cibles n'ont lancé AUCUN test
+(D248) — ce résultat ne s'inscrit PAS comme une réussite.
 """
 
 import io
@@ -32,6 +37,17 @@ import os
 import shutil
 import subprocess
 import sys
+
+# ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
+#   dossier : tous ses chemins sont relatifs au DOSSIER COURANT. Sans cette
+#   garde, un `cd neutralisation` produirait « ERREUR DE SCRIPT : 0
+#   occurrence(s) » — un message qui envoie chercher un défaut de code là où il
+#   n'y a qu'un dossier de travail.
+if not os.path.isfile("pnpm-workspace.yaml"):
+    print("✗ À LANCER DEPUIS LA RACINE DU MONOREPO (pnpm-workspace.yaml introuvable).")
+    print(f"  dossier courant : {os.getcwd()}")
+    print(f"  → python3 neutralisation/{os.path.basename(__file__)}")
+    sys.exit(2)
 
 SAUVEGARDE = ".neutralisation-sauvegarde"
 RESERVATIONS = "apps/api/src/venues/booking-transitions.ts"
@@ -159,7 +175,8 @@ def main(argv: list[str]) -> int:
             return 2
     print(f"✓ Pré-vol : {len(actives)} mesure(s) verte(s) — {', '.join(actives)}\n")
 
-    mordu, muettes = 0, []
+    mordu, muettes, non_mesurees = 0, [], []
+    vues = 0
     for rang, (libelle, chemin, avant, apres, attendu, mesures) in enumerate(CIBLES, start=1):
         if not (depuis <= rang <= jusqua):
             continue
@@ -173,10 +190,22 @@ def main(argv: list[str]) -> int:
             print(f"✗ {libelle}\n   ERREUR DE SCRIPT : {vus} occurrence(s), {attendu} attendue(s) dans {chemin}")
             return 2
 
+        # ⛔ D248 — UNE CIBLE SANS MESURE N'A PAS EU LIEU : elle n'est ni
+        # rouge ni verte. Comptée mordue, elle GONFLAIT LE TOTAL. Mesuré sur
+        # S6 : sans `--int`, quatre cibles sur six ne lançaient AUCUN test et
+        # le script annonçait quand même « 6 gardes rouges », code de sortie 0.
+        # On ne mute même pas : muter sans mesurer, c'est toucher l'arbre pour
+        # rien et risquer d'y laisser une trace pour zéro information.
+        retenues = [m for m in mesures if m in actives]
+        if not retenues:
+            non_mesurees.append(f"{libelle} (hors exécution : {', '.join(mesures)})")
+            print(f"⚠ {libelle}\n   NON MESURÉE — {', '.join(mesures)} hors de cette exécution.")
+            continue
+
+        vues += 1
         marque = sauver(chemin, source)
         io.open(chemin, "w", encoding="utf-8", newline="").write(source.replace(avant, apres))
         try:
-            retenues = [m for m in mesures if m in actives]
             codes = {m: lancer(m) for m in retenues}
         finally:
             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
@@ -193,10 +222,19 @@ def main(argv: list[str]) -> int:
     if os.path.isdir(SAUVEGARDE) and not os.listdir(SAUVEGARDE):
         os.rmdir(SAUVEGARDE)
 
-    print(f"\n{mordu} garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.")
+    print(f"\n{mordu} garde(s) mordue(s) sur {vues} cible(s) RÉELLEMENT MESURÉE(S).")
     for m in muettes:
         print(f"  muette : {m}")
-    return 0 if not muettes else 1
+    for m in non_mesurees:
+        print(f"  NON MESURÉE : {m}")
+    # ⛔ CODE 3 = CAMPAGNE INCOMPLÈTE, ni succès ni échec. Un 0 se recopie en
+    # « n/n » dans la continuité ; c'est précisément ainsi qu'une campagne
+    # à deux mesures s'est retrouvée inscrite « 6/6 ».
+    if muettes:
+        return 1
+    if non_mesurees:
+        return 3
+    return 0
 
 
 if __name__ == "__main__":

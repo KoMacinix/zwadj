@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
-"""Campagne de neutralisation — lot S5b, port de la CONCURRENCE (réservation).
+"""Campagne de neutralisation — lot S7, garde des sorties de test.
 
 ⚠ CE QUE CETTE CAMPAGNE PROUVE.
-S5b déplace la transaction d'acceptation et le check-and-set derrière un port.
-Les 424 tests d'intégration sont restés verts, ce qui ne démontre rien : un
-déplacement raté peut très bien laisser passer les cas non concurrents. On
-neutralise donc les cinq règles de concurrence UNE À UNE, dans l'adaptateur, et
-on exige que la base les fasse tomber.
+S7 pose une garde qui fait ÉCHOUER tout fichier de test non exempté produisant
+un `console.error` ou `console.warn`. Les suites sont restées vertes — ce qui
+est le résultat attendu, et ne prouve rien : une garde qui ne serait jamais
+évaluée laisserait exactement la même trace.
 
-⚠ TOUTES LES MESURES SONT EN INTÉGRATION, ET C'EST LA SEULE FAÇON HONNÊTE.
-Un verrou `FOR UPDATE`, une relecture sous transaction et un refus d'`EXCLUDE`
-ne se mesurent pas avec un double : ils se mesurent contre PostgreSQL, avec deux
-requêtes concurrentes. Un double dirait seulement que l'on a écrit ce que l'on a
-écrit.
+Les deux cibles VIDENT la liste d'exemptions. Les sept fichiers déjà bruyants
+doivent alors faire tomber leur suite. Si elles restaient vertes, cela voudrait
+dire que la garde ne s'exécute pas — le pire des cas, puisqu'elle rassurerait
+sans rien mesurer.
 
-⚠ BASE RÉELLE OBLIGATOIRE. Sans elle, cette campagne ne s'exécute pas — elle ne
-« passe » pas, elle n'a pas lieu. Chaque cible prend une minute ou deux : la
-suite complète tourne pour chacune.
+⚠ LA MORSURE PROPREMENT DITE A ÉTÉ MESURÉE À LA MAIN, comme le prescrit la
+directive : un fichier JETABLE émettant un avertissement dans un chemin non
+exempté fait tomber sa suite avec le message de la garde ; le même fichier,
+l'avertissement retiré, repasse au vert. Les deux sens ont été relevés, puis le
+fichier supprimé. On ne peut pas figer cette mesure dans une spec permanente
+sans qu'elle se garde elle-même — la garde ferait tomber le test qui la teste.
 
 Usage :
-    python3 neutralize-solid-s5b.py            # les cinq cibles
-    python3 neutralize-solid-s5b.py 1 2        # une plage
-Depuis : la racine du monorepo, base de développement lancée.
+    python3 neutralize-solid-s7.py            # les deux cibles
+    python3 neutralize-solid-s7.py 1 1        # une plage
+Depuis : la racine du monorepo. Compter quelques minutes : chaque cible relance
+une suite entière.
 """
 
 import io
@@ -30,8 +32,20 @@ import shutil
 import subprocess
 import sys
 
+# ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
+#   dossier : tous ses chemins sont relatifs au DOSSIER COURANT. Sans cette
+#   garde, un `cd neutralisation` produirait « ERREUR DE SCRIPT : 0
+#   occurrence(s) » — un message qui envoie chercher un défaut de code là où il
+#   n'y a qu'un dossier de travail.
+if not os.path.isfile("pnpm-workspace.yaml"):
+    print("✗ À LANCER DEPUIS LA RACINE DU MONOREPO (pnpm-workspace.yaml introuvable).")
+    print(f"  dossier courant : {os.getcwd()}")
+    print(f"  → python3 neutralisation/{os.path.basename(__file__)}")
+    sys.exit(2)
+
 SAUVEGARDE = ".neutralisation-sauvegarde"
-ADAPTATEUR = "apps/api/src/venues/booking-locks.prisma.ts"
+GARDE_CLIENT = "apps/client/src/test-setup.ts"
+GARDE_PRO = "apps/pro/src/test-setup.ts"
 
 
 def _binaire(nom: str) -> str:
@@ -40,52 +54,26 @@ def _binaire(nom: str) -> str:
 
 
 MESURES = {
-    "int-reservations": [
-        "pnpm", "--filter", "@zwadj/api", "exec", "vitest", "run",
-        "-c", "vitest.config.int.ts", "test/int/bookings.int-spec.ts",
-    ],
+    "client": ["pnpm", "--filter", "@zwadj/client", "run", "test"],
+    "pro": ["pnpm", "--filter", "@zwadj/pro", "run", "test"],
 }
 
 CIBLES = [
     (
-        "S5b-1. ⚠ LE VERROU DE SALLE SAUTE — deux acceptations concurrentes ne sont plus sérialisées",
-        ADAPTATEUR,
-        "      await tx.$queryRaw`SELECT id FROM venues WHERE id = ${input.venueId}::uuid FOR UPDATE`;",
-        "      void input.venueId;",
+        "S7-1. ⚠ LA LISTE D'EXEMPTIONS DU CLIENT EST VIDÉE — les 4 fichiers bruyants doivent tomber",
+        GARDE_CLIENT,
+        '  "src/components/venue/venue-detail-view.test.tsx"',
+        '  "src/components/venue/PLUS_EXEMPTE.test.tsx"',
         1,
-        ["int-reservations"],
+        ["client"],
     ),
     (
-        "S5b-2. ⚠ LA RELECTURE D117 NE JUGE PLUS — le statut sous verrou cesse de faire autorité",
-        ADAPTATEUR,
-        "      if (!input.allowedFrom.includes(fresh.status)) {",
-        "      if (false && !input.allowedFrom.includes(fresh.status)) {",
+        "S7-2. ⚠ LA LISTE D'EXEMPTIONS DU PRO EST VIDÉE — les 64 avertissements du parcours doivent tomber",
+        GARDE_PRO,
+        '  "src/dashboard/walkin-journey.test.tsx"',
+        '  "src/dashboard/PLUS_EXEMPTE.test.tsx"',
         1,
-        ["int-reservations"],
-    ),
-    (
-        "S5b-3. Le contrôle de BLOCAGE disparaît — une période bloquée redevient acceptable",
-        ADAPTATEUR,
-        '      if (block) return { outcome: "BLOCKED_PERIOD" };',
-        "      void block;",
-        1,
-        ["int-reservations"],
-    ),
-    (
-        "S5b-4. ⚠ LE REFUS DE L'EXCLUDE N'EST PLUS TRADUIT — 500 au lieu de 409 sur créneau pris",
-        ADAPTATEUR,
-        '        if (isExclusionViolation(error)) return { outcome: "SLOT_TAKEN" };',
-        "        void isExclusionViolation(error);",
-        1,
-        ["int-reservations"],
-    ),
-    (
-        "S5b-5. ⚠ LE CHECK-AND-SET N'EN EST PLUS UN — la transition écrit quel que soit le statut",
-        ADAPTATEUR,
-        "        where: { id: input.bookingId, status: { in: [...input.from] } },",
-        "        where: { id: input.bookingId },",
-        1,
-        ["int-reservations"],
+        ["pro"],
     ),
 ]
 
@@ -138,7 +126,7 @@ def main(argv: list[str]) -> int:
         if not (depuis <= rang <= jusqua):
             continue
         source = io.open(chemin, encoding="utf-8", newline="").read()
-        # ⚠ Fichier en CRLF : un motif multi-lignes DOIT porter \r\n (D224).
+        # ⚠ Fichiers en CRLF : un motif multi-lignes DOIT porter \r\n (D224).
         avant = avant.replace("\n", "\r\n")
         apres = apres.replace("\n", "\r\n")
         vus = source.count(avant)

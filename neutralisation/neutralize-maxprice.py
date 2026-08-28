@@ -28,6 +28,17 @@ import shutil
 import subprocess
 import sys
 
+# ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
+#   dossier : tous ses chemins sont relatifs au DOSSIER COURANT. Sans cette
+#   garde, un `cd neutralisation` produirait « ERREUR DE SCRIPT : 0
+#   occurrence(s) » — un message qui envoie chercher un défaut de code là où il
+#   n'y a qu'un dossier de travail.
+if not os.path.isfile("pnpm-workspace.yaml"):
+    print("✗ À LANCER DEPUIS LA RACINE DU MONOREPO (pnpm-workspace.yaml introuvable).")
+    print(f"  dossier courant : {os.getcwd()}")
+    print(f"  → python3 neutralisation/{os.path.basename(__file__)}")
+    sys.exit(2)
+
 SAUVEGARDE = ".neutralisation-maxprice"
 MANIFESTE = os.path.join(SAUVEGARDE, "manifeste.json")
 
@@ -60,19 +71,16 @@ CIBLES = [
     },
     {
         "libelle": "M2. ⛔ LE FACTEUR 100 : les paliers d'accueil repassent en centimes",
-        # ⚠ La cible qui compte le plus. Avec le BON nom et des valeurs restées
-        # en centimes, « 500 000 DA » part en `maxPrice=50000000` — un plafond de
-        # 50 MILLIONS de dinars, donc aucun filtre, et rien à l'écran ne le dit.
-        # Une garde qui ne vérifie que le NOM du champ resterait verte.
+        # ⚠ La cible qui compte le plus. Avec le BON nom et des valeurs
+        # remises en centimes, « 500 000 DA » part en `maxPrice=50000000` — un
+        # plafond de 50 MILLIONS de dinars, donc aucun filtre, et rien à l'écran
+        # ne le dit. Une garde qui ne vérifie que le NOM du champ resterait verte.
+        # ⚠ RÉÉCRITE EN D254 : les `<option>` n'énumèrent plus de montants, ils
+        # dérivent de `BUDGET_TIERS`. La mutation porte donc sur LA DÉRIVATION,
+        # ce qui la rend indépendante du nombre de paliers offerts.
         "fichier": ACCUEIL,
-        "avant": L(
-            '                <option value="500000">500 000 DA</option>',
-            '                <option value="1000000">1 000 000 DA</option>',
-        ),
-        "apres": L(
-            '                <option value="50000000">500 000 DA</option>',
-            '                <option value="100000000">1 000 000 DA</option>',
-        ),
+        "avant": '                  <option key={dinars} value={dinars}>',
+        "apres": '                  <option key={dinars} value={centsFromDinars(dinars)}>',
         "occurrences": 1,
         "suite": "accueil",
         "titre": "chaque palier de budget SURVIT",
@@ -80,8 +88,8 @@ CIBLES = [
     {
         "libelle": "M3. L'assistant réémet le nom de l'API dans l'URL publique",
         "fichier": ASSISTANT,
-        "avant": '          if (dinars !== "") q.set("maxPrice", dinars);',
-        "apres": '          if (dinars !== "") q.set("maxPriceCents", budget);',
+        "avant": '          q.set("maxPrice", budget);',
+        "apres": '          q.set("maxPriceCents", String(centsFromDinars(budget)));',
         "occurrences": 1,
         "suite": "assistant",
         "titre": "les noms et l'encodage que `/salles` LIT",
@@ -91,8 +99,8 @@ CIBLES = [
         # Prouve que la séparation est mesurée DES DEUX CÔTÉS. Une garde qui ne
         # regarderait que l'URL laisserait la requête d'API se tromper d'unité.
         "fichier": ASSISTANT,
-        "avant": '          q.set("maxPriceCents", budget);',
-        "apres": '          q.set("maxPrice", budget);',
+        "avant": '          q.set("maxPriceCents", String(centsFromDinars(budget)));',
+        "apres": '          q.set("maxPriceCents", budget);',
         "occurrences": 1,
         "suite": "assistant",
         "titre": "interroge le serveur avec les paramètres du CONTRAT",
@@ -136,6 +144,33 @@ CIBLES = [
         "occurrences": 1,
         "suite": "module",
         "titre": "ne réémet JAMAIS l'ancien nom",
+    },
+    {
+        "libelle": "M9. ⛔ D254 — UN PALIER REMONTE AU-DESSUS DE LA BUTÉE (le défaut B lui-même)",
+        # ⚠ C'EST LA GARDE QUI N'EXISTAIT PAS. Un commentaire dans
+        # `home-view.tsx` avertissait que 2 000 000 et 4 000 000 DA dépassaient
+        # `BUDGET_CEILING` ; il a vécu toute la durée du défaut sans rien
+        # empêcher. On remet exactement ce palier-là : la suite doit tomber.
+        "fichier": MODULE,
+        "avant": "export const BUDGET_TIERS = [500_000, 750_000, 1_000_000] as const;",
+        "apres": "export const BUDGET_TIERS = [500_000, 750_000, 2_000_000] as const;",
+        "occurrences": 1,
+        "suite": "module",
+        "titre": "AUCUN palier n'atteint la butée",
+    },
+    {
+        "libelle": "M10. ⛔ D254 — LES DEUX BRANCHES DE L'ASSISTANT SE REMETTENT À DIVERGER",
+        # ⚠ On abaisse la butée SOUS les paliers : le compteur continue de
+        # demander un plafond en centimes, la page de résultats se le fait
+        # effacer par `atCeiling`. C'est la divergence LATENTE restée ouverte
+        # après D228 — invisible tant qu'aucune salle ne coûte plus que le
+        # palier, ce qui est précisément pourquoi elle a besoin d'un test.
+        "fichier": MODULE,
+        "avant": "export const BUDGET_CEILING = 1_500_000;",
+        "apres": "export const BUDGET_CEILING = 400_000;",
+        "occurrences": 1,
+        "suite": "assistant",
+        "titre": "arrive intact à l'API ET à l'URL",
     },
 ]
 

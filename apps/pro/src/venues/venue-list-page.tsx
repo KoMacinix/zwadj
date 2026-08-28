@@ -20,12 +20,12 @@ import { ProHeader } from "../shell/pro-header";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { mediaSrc } from "../lib/media-url";
 import { useProVenues } from "../shell/pro-venues-context";
-import { useReferentialsData, useVenues } from "./venue-client-context";
+import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { PublicationBadge, StatusSelect } from "./venue-form";
 
 export function VenueListPage() {
   const { t, i18n } = useTranslation();
-  const venuesApi = useVenues();
+  const venuesApi = useVenueCrud();
   const apiErrorMessage = useApiErrorMessage();
   const isAr = i18n.language === "ar";
   const locale = isAr ? "ar" : "fr";

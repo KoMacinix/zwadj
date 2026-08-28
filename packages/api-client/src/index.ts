@@ -11,6 +11,12 @@ export {
   createVenueProClient,
   type AuthedRequest,
   type ReferentialsClient,
+  type VenueCrudClient,
+  type VenueMediaClient,
+  type VenueSlotTemplateClient,
+  type VenuePricingRuleClient,
+  type VenueAvailabilityClient,
+  type VenueVisitClient,
   type VenueProClient
 } from "./venue-client";
 export { createAccountClient, type AccountClient } from "./account-client";

@@ -3,6 +3,10 @@
 // elles se trompent : dinars → centimes (facteur 100) et amenities répétées →
 // liste jointe.
 import {
+  BUDGET_CEILING,
+  BUDGET_FLOOR,
+  BUDGET_TIERS,
+  centsFromDinars,
   dinarsFromCents,
   pageWindow,
   parseSearchParams,
@@ -284,5 +288,52 @@ describe("page de recherche — rendu à la demande", () => {
       "utf8"
     );
     expect(source).toContain('export const dynamic = "force-dynamic"');
+  });
+});
+
+/* ── D254 — LA GARDE QUI MANQUAIT ───────────────────────────────────
+   Un commentaire dans `home-view.tsx` avertissait déjà que 2 000 000 et
+   4 000 000 DA dépassaient la butée. Il n'a rien empêché pendant toute la vie
+   du défaut. Ce qui suit n'avertit pas : ça TOMBE. */
+describe("BUDGET_TIERS — l'autorité unique des paliers", () => {
+  it("⛔ AUCUN palier n'atteint la butée — un palier en butée ne filtre RIEN (D69)", () => {
+    // C'est LE défaut B de D228, réduit à une assertion. `>=` et pas `>` :
+    // `atCeiling` efface dès l'égalité, donc un palier ÉGAL à la butée est
+    // déjà mort. La borne est écrite ici APRÈS avoir été mesurée sur le
+    // parseur, pas devinée (D55).
+    for (const palier of BUDGET_TIERS) {
+      expect(palier).toBeLessThan(BUDGET_CEILING);
+      expect(palier).toBeGreaterThan(BUDGET_FLOOR);
+    }
+  });
+
+  it("⛔ chaque palier SURVIT à l'aller-retour URL → état → API", () => {
+    // La garde ci-dessus dit que le palier est SOUS la butée. Celle-ci dit
+    // qu'il arrive intact à l'API : les deux ensemble couvrent l'erreur
+    // d'unité (facteur 100) ET l'effacement par butée, qui sont deux façons
+    // différentes de rendre un plafond inopérant sans rien afficher.
+    for (const palier of BUDGET_TIERS) {
+      const etat = parseSearchParams({ maxPrice: String(palier) });
+      expect(etat.maxPrice).toBe(String(palier));
+      expect(toApiQuery(etat).get("maxPriceCents")).toBe(String(palier * 100));
+      expect(toPublicQuery(etat)).toContain(`maxPrice=${palier}`);
+    }
+  });
+
+  it("les paliers sont strictement croissants et sans doublon", () => {
+    // Deux paliers égaux, c'est deux entrées indiscernables dans le menu ;
+    // un ordre inversé, c'est une liste qui se lit de travers. Aucun des deux
+    // ne casse un filtre — raison de plus pour qu'un test le dise.
+    const croissants = [...BUDGET_TIERS].sort((a, b) => a - b);
+    expect([...BUDGET_TIERS]).toEqual(croissants);
+    expect(new Set(BUDGET_TIERS).size).toBe(BUDGET_TIERS.length);
+  });
+
+  it("⚠ `centsFromDinars` et `dinarsFromCents` sont réciproques sur les paliers", () => {
+    // Les deux seules conversions du front, confrontées. Prises séparément
+    // elles ont chacune l'air juste ; c'est leur désaccord qui coûte.
+    for (const palier of BUDGET_TIERS) {
+      expect(dinarsFromCents(String(centsFromDinars(palier)))).toBe(String(palier));
+    }
   });
 });

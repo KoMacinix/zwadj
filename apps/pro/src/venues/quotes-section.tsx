@@ -46,7 +46,7 @@ import {
   type VenueProDTO
 } from "@zwadj/types";
 import { Field, useApiErrorMessage } from "../auth/auth-ui";
-import { useQuotes, useServices, useVenues } from "./venue-client-context";
+import { useQuotes, useServices, useVenueCrud } from "./venue-client-context";
 
 type Draft = { eventDate: string; slotTemplateId: string; guests: string; picks: string[] };
 const EMPTY: Draft = { eventDate: "", slotTemplateId: "", guests: "", picks: [] };
@@ -61,7 +61,7 @@ export function QuotesSection({ venueId }: { venueId: string }) {
   const { t } = useTranslation();
   const quotes = useQuotes();
   const services = useServices();
-  const venues = useVenues();
+  const venues = useVenueCrud();
   const toMessage = useApiErrorMessage();
   const toMessageRef = useRef(toMessage);
   toMessageRef.current = toMessage;

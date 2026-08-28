@@ -28,6 +28,36 @@ const PAYMENT_SELECT = {
   createdAt: true
 } satisfies Prisma.PaymentSelect;
 
+/** Le nom de l'index de E3d-1. ⚠ Il n'entre PAS dans le contrôle de flux — il
+ *  sert à confronter ce fichier à la migration : `payment-intent-race.int-spec`
+ *  interroge `pg_indexes` avec cette constante, et rougit si le SQL a nommé
+ *  autre chose. Un nom écrit deux fois sans rien qui les compare, c'est deux
+ *  noms qui divergent un jour. */
+export const INDEX_UNE_ATTENTE = "payments_one_pending_per_booking";
+
+/** ⛔ P2002 SEUL, ET C'EST UN RECUL ASSUMÉ SUR LA VERSION PRÉCÉDENTE.
+ *
+ *  Elle lisait `error.meta.target` pour exiger le nom de l'index. Cette forme
+ *  n'est garantie nulle part quand l'index vient d'un `CREATE UNIQUE INDEX` en
+ *  SQL brut, donc inconnu du schéma Prisma : je l'avais DÉDUITE, pas mesurée.
+ *  Écrire une borne avant d'avoir vu le cas réel, c'est D55 — et ici le prix
+ *  est un P2002 relancé au visiteur au lieu d'une intention rendue.
+ *
+ *  ⚠ POURQUOI ÊTRE LARGE EST SÛR *ICI*, alors que ça ne le serait pas ailleurs.
+ *  L'insertion qui peut lever porte `status: "PENDING"`. Le seul autre index
+ *  unique de la table, `payments_one_paid_per_booking`, a pour prédicat
+ *  `status = 'PAID'` : une ligne PENDING ne peut pas le violer. Sur CET
+ *  `create`, P2002 ne peut donc venir que de l'index des intentions en attente.
+ *
+ *  ⚠ ET LA RELECTURE EST LA VRAIE PREUVE. On ne rend une intention que si une
+ *  ligne PENDING existe réellement ; sinon l'erreur d'origine repart. Le
+ *  diagnostic ne dépend plus de la forme interne d'une erreur Prisma, mais de
+ *  l'état de la base — qui est ce dont on parle. */
+function estViolationUnicite(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) return false;
+  return (error as { code?: unknown }).code === "P2002";
+}
+
 @Injectable()
 export class PrismaPaymentStore implements PaymentStore {
   constructor(private readonly prisma: PrismaService) {}
@@ -62,23 +92,53 @@ export class PrismaPaymentStore implements PaymentStore {
     });
     if (existant) return existant;
 
-    // ⚠ COURSE CONNUE, RAPPORTÉE, NON CORRIGÉE ICI (cadrage S5a, § 5).
-    // Ces deux requêtes ne sont PAS dans une transaction : deux appels
-    // concurrents peuvent ne rien trouver tous les deux et créer deux
-    // intentions — exactement ce que l'idempotence ci-dessus veut éviter. Le
-    // défaut est ANTÉRIEUR au port ; S5a le déplace tel quel, parce qu'un lot
-    // de refactoring ne corrige pas au passage. Ce qu'il apporte, c'est
-    // l'endroit : la séquence vit désormais derrière un seul nom, donc la
-    // rendre atomique ne touchera plus le service. À traiter AVANT E3c, qui
-    // rendra la réconciliation critique.
-    return this.prisma.payment.create({
-      data: {
-        bookingId: input.bookingId,
-        amountCents: input.amountCents,
-        discountAppliedCents: input.discountAppliedCents,
-        status: "PENDING"
-      },
-      select: PAYMENT_SELECT
-    });
+    // ⛔ LA COURSE EST FERMÉE EN BASE, PAS ICI (E3d-1, cadrage D255).
+    // Les deux requêtes ci-dessus et ci-dessous ne sont toujours PAS dans une
+    // transaction, et c'est assumé : même en sérialisable, deux appels
+    // concurrents peuvent ne rien lire tous les deux. Ce qui les départage est
+    // `payments_one_pending_per_booking` — un index UNIQUE PARTIEL sur
+    // `(booking_id) WHERE status = 'PENDING'`. Le perdant reçoit P2002 et
+    // RELIT : il repart avec l'intention du gagnant, ce qui est exactement ce
+    // que l'idempotence promet.
+    //
+    // ⚠ UN VERROU APPLICATIF AURAIT ÉTÉ CONTOURNABLE. Il ne survit ni à un
+    // crash entre le verrou et l'écriture, ni à un second processus — et le
+    // déploiement multi-instance est l'état NORMAL d'une API, pas une
+    // hypothèse lointaine. La base est le seul endroit que les deux partagent.
+    //
+    // ⚠ CE QUI N'EST PAS FAIT ICI : l'EXPIRATION. Une intention `PENDING`
+    // abandonnée est encore réutilisée indéfiniment — comportement INCHANGÉ,
+    // `findFirst` ne regardait déjà pas l'âge. La durée ne peut pas être fixée
+    // avant de connaître celle d'un lien Chargily : plus courte qu'elle, un
+    // visiteur paierait une intention qu'on a marquée morte. Arbitrage Ko :
+    // tranché au branchement de Chargily (E3d-2).
+    try {
+      return await this.prisma.payment.create({
+        data: {
+          bookingId: input.bookingId,
+          amountCents: input.amountCents,
+          discountAppliedCents: input.discountAppliedCents,
+          status: "PENDING"
+        },
+        select: PAYMENT_SELECT
+      });
+    } catch (error) {
+      // ⚠ `await` OBLIGATOIRE SUR LE `create` CI-DESSUS. Sans lui, la promesse
+      // rejetée sort du `try` avant d'être attrapée et le `catch` ne sert à
+      // rien — un `return` nu aurait laissé la garde verte tout en étant
+      // inopérante.
+      if (!estViolationUnicite(error)) throw error;
+      // Le gagnant a écrit entre notre lecture et notre écriture : sa ligne
+      // existe forcément, puisque c'est elle qui nous a refusés.
+      const gagnante = await this.prisma.payment.findFirst({
+        where: { bookingId: input.bookingId, status: "PENDING" },
+        select: PAYMENT_SELECT
+      });
+      if (gagnante) return gagnante;
+      // ⚠ Introuvable après un refus de l'index : la ligne a été sortie de
+      // `PENDING` dans l'intervalle. On ne boucle PAS — une reprise silencieuse
+      // sur le chemin de l'argent masquerait un état qu'on ne comprend pas.
+      throw error;
+    }
   }
 }

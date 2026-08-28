@@ -30,4 +30,9 @@ e2e/test-results/
 e2e/blob-report/
 # Sauvegarde temporaire des campagnes de neutralisation — présente UNIQUEMENT
 # si une campagne a été interrompue (elle est relue et purgée au redémarrage).
+# ⚠ MOTIF, PAS NOM EXACT. Cinq campagnes sur dix-sept se sauvegardent ailleurs
+# — `.neutralisation-404`, `-horizon`, `-maxprice`, `-e3d1`, `-s9` — et
+# n'étaient donc couvertes par RIEN : une campagne interrompue laissait des
+# copies de sources versionnables à la racine.
 .neutralisation-sauvegarde/
+.neutralisation-*/

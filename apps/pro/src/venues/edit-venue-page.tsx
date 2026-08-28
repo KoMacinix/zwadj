@@ -12,7 +12,7 @@ import type { FieldErrors } from "@zwadj/api-client";
 import type { VenueProDTO } from "@zwadj/types";
 import { ProHeader } from "../shell/pro-header";
 import { Field, FormError, useApiErrorMessage, useValidationMessage } from "../auth/auth-ui";
-import { useReferentialsData, useVenues } from "./venue-client-context";
+import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { isVenueNotFound, venueFieldErrors } from "./venue-errors";
 import {
   AmenitiesPicker,
@@ -52,7 +52,7 @@ export function EditVenuePage() {
   const { t } = useTranslation();
   const { id = "" } = useParams();
   const navigate = useNavigate();
-  const venuesApi = useVenues();
+  const venuesApi = useVenueCrud();
   const apiErrorMessage = useApiErrorMessage();
   const tval = useValidationMessage();
   const referentials = useReferentialsData();

@@ -18,6 +18,8 @@ import { BookingsProController } from "./bookings-pro.controller";
 import { BookingsService } from "./bookings.service";
 import { QuotesController } from "./quotes.controller";
 import { QuotesService } from "./quotes.service";
+import { PrismaQuoteStore } from "./quote-store.prisma";
+import { QUOTE_STORE } from "./quote-store.types";
 import { ServicesController } from "./services.controller";
 import { ServicesService } from "./services.service";
 import { VisitBookingsController } from "./visit-bookings.controller";
@@ -41,6 +43,8 @@ import { SlotTemplatesController } from "./slot-templates.controller";
 import { SlotTemplatesService } from "./slot-templates.service";
 import { VenuesController } from "./venues.controller";
 import { VenuesService } from "./venues.service";
+import { PrismaReferentielsExistence, PrismaVenueStore } from "./venue-store.prisma";
+import { REFERENTIELS_EXISTENCE, VENUE_STORE } from "./venue-store.types";
 
 @Module({
   imports: [MediaModule],
@@ -65,6 +69,14 @@ import { VenuesService } from "./venues.service";
     QuotesController
   ],
   providers: [
+    // ⛔ S10a — LES DEUX PORTS SALLE. Le service ne reçoit plus `PrismaService` :
+    // c'est ici, et seulement ici, qu'on décide que la persistance est Prisma.
+    { provide: VENUE_STORE, useClass: PrismaVenueStore },
+    { provide: REFERENTIELS_EXISTENCE, useClass: PrismaReferentielsExistence },
+    // ⛔ S10b-1 — le cycle de vie du devis. `convert()` reste sur Prisma :
+    // il écrit dans `bookings`, sur le chemin de l'argent (S10b-2).
+    { provide: QUOTE_STORE, useClass: PrismaQuoteStore },
+
     VenuesService,
     VenueMediaService,
     SlotTemplatesService,

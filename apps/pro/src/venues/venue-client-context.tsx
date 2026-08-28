@@ -16,6 +16,12 @@ import {
   type QuotesClient,
   type ServicesClient,
   type ReferentialsClient,
+  type VenueAvailabilityClient,
+  type VenueCrudClient,
+  type VenueMediaClient,
+  type VenuePricingRuleClient,
+  type VenueSlotTemplateClient,
+  type VenueVisitClient,
   type VenueProClient
 } from "@zwadj/api-client";
 import type { AmenityDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
@@ -75,6 +81,51 @@ function useVenueClients(): VenueClients {
   return ctx;
 }
 
+/**
+ * ⛔ S9 — SIX CROCHETS ÉTROITS. C'EST ICI QUE L'ISP DEVIENT EXÉCUTOIRE.
+ *
+ * Le découpage de `VenueProClient` en six interfaces ne contraint personne
+ * tant que tout le monde appelle `useVenues()` : le type reçu resterait
+ * l'intersection, donc les vingt-deux membres. Ce sont ces crochets qui
+ * rétrécissent CE QUE CHAQUE ÉCRAN DEMANDE — et une section qui tend la main
+ * hors de sa famille ne compile plus.
+ *
+ * ⚠ L'objet rendu est LE MÊME dans les six cas : une seule instance pour toute
+ * la zone protégée (Lot A5). Ce qui change est le TYPE, pas la fourniture —
+ * donc aucun aller-retour de plus, aucune identité de référence cassée dans les
+ * dépendances de `useEffect`.
+ *
+ * ⚠ `useVenues()` SUBSISTE, et c'est délibéré : le retirer aurait forcé une
+ * réécriture de tous les tests de composants dans le même lot. Il n'a plus
+ * aucun appelant de production — vérifié par `venue-client-context.test.tsx`,
+ * qui TOMBE si un écran y revient.
+ */
+export function useVenueCrud(): VenueCrudClient {
+  return useVenueClients().venues;
+}
+
+export function useVenueMedia(): VenueMediaClient {
+  return useVenueClients().venues;
+}
+
+export function useVenueSlotTemplates(): VenueSlotTemplateClient {
+  return useVenueClients().venues;
+}
+
+export function useVenuePricingRules(): VenuePricingRuleClient {
+  return useVenueClients().venues;
+}
+
+export function useVenueAvailability(): VenueAvailabilityClient {
+  return useVenueClients().venues;
+}
+
+export function useVenueVisits(): VenueVisitClient {
+  return useVenueClients().venues;
+}
+
+/** ⚠ Le client ENTIER. Plus aucun écran ne devrait l'appeler — seuls les
+ *  doubles de test le construisent en entier. */
 export function useVenues(): VenueProClient {
   return useVenueClients().venues;
 }

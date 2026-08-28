@@ -49,6 +49,29 @@ export const BUDGET_FLOOR = 0;
 export const BUDGET_CEILING = 1_500_000;
 export const BUDGET_STEP = 50_000;
 
+/** Les paliers de budget OFFERTS AU VISITEUR, en dinars, déclarés UNE SEULE
+ *  FOIS. Arbitrage Ko du 24/08/2026 : trois paliers, tous strictement sous la
+ *  butée (D254).
+ *
+ *  ⛔ POURQUOI ILS VIVENT ICI ET PAS DANS LES ÉCRANS. Le même montant était
+ *  déclaré TROIS FOIS dans DEUX UNITÉS : `BUDGET_CEILING` ici en dinars, le
+ *  `<select>` de l'accueil en dinars, `BUDGET_TIERS` de l'assistant en
+ *  CENTIMES. Deux des quatre paliers valaient 2 000 000 et 4 000 000 DA, soit
+ *  au-dessus de la butée : par D69 ils signifiaient « pas de plafond », donc
+ *  ils ne filtraient RIEN. Mesuré avant correction — l'assistant poussait une
+ *  querystring VIDE après quatre écrans. Aucun des trois fichiers ne lisait
+ *  les deux autres : c'est la faute que les bornes de capacité interdisent
+ *  vingt lignes plus haut, non appliquée au budget.
+ *
+ *  ⚠ VALEURS LITTÉRALES, jamais calculées — aucune arithmétique monétaire dans
+ *  ce navigateur. Elles ne dérivent pas non plus du jeu de démonstration : ce
+ *  sont des chiffres inventés pour peupler un écran, pas une mesure du marché.
+ *
+ *  ⛔ UN PALIER `>= BUDGET_CEILING` EST UN PALIER MORT. `search-query.test.ts`
+ *  le fait TOMBER. Un commentaire d'avertissement existait déjà dans
+ *  `home-view.tsx` — il n'avait rien empêché. */
+export const BUDGET_TIERS = [500_000, 750_000, 1_000_000] as const;
+
 /** Ce que porte l'URL, déjà nettoyé. Les champs texte restent des chaînes :
  *  ils réalimentent les `<input>` à l'identique, y compris quand la saisie est
  *  absurde — on ne réécrit pas ce que le visiteur a tapé. */
@@ -135,6 +158,19 @@ function atCeiling(value: string, ceiling: number): string {
  *  bricolée : on l'ABANDONNE plutôt que d'inventer un arrondi que personne
  *  n'a décidé. Un plafond arrondi en silence est un plafond que le visiteur
  *  n'a pas demandé. */
+/** Dinars → centimes. ⚠ SEUL ENDROIT DU FRONT QUI MULTIPLIE PAR 100, en regard
+ *  du seul qui divise (`dinarsFromCents`, juste en dessous). Il était jusqu'ici
+ *  écrit à la main dans `toApiQuery` ; l'assistant en avait besoin aussi, et une
+ *  seconde multiplication recopiée est exactement le facteur 100 qui ne se voit
+ *  pas à l'écran mais se voit sur la facture.
+ *
+ *  ⚠ PRÉCONDITION : un entier positif déjà validé — sortie de `positiveInteger`
+ *  ou membre de `BUDGET_TIERS`. Cette fonction ne valide RIEN, sans quoi elle
+ *  deviendrait une seconde autorité de validation à côté du parseur. */
+export function centsFromDinars(dinars: string | number): number {
+  return Number(dinars) * 100;
+}
+
 export function dinarsFromCents(cents: string): string {
   if (!/^\d+$/.test(cents)) return "";
   const value = Number(cents);
@@ -231,9 +267,9 @@ export function toApiQuery(state: SearchState): URLSearchParams {
   const query = new URLSearchParams();
   if (state.cityId) query.set("cityId", state.cityId);
   if (state.guests) query.set("guests", state.guests);
-  // Dinars → centimes. Le seul endroit du front où cette multiplication existe.
-  if (state.minPrice) query.set("minPriceCents", String(Number(state.minPrice) * 100));
-  if (state.maxPrice) query.set("maxPriceCents", String(Number(state.maxPrice) * 100));
+  // Dinars → centimes, par la SEULE fonction qui multiplie (`centsFromDinars`).
+  if (state.minPrice) query.set("minPriceCents", String(centsFromDinars(state.minPrice)));
+  if (state.maxPrice) query.set("maxPriceCents", String(centsFromDinars(state.maxPrice)));
   if (state.maxCapacity) query.set("maxCapacity", state.maxCapacity);
   if (state.amenities.length > 0) query.set("amenities", state.amenities.join(","));
   if (state.styles.length > 0) query.set("styles", state.styles.join(","));

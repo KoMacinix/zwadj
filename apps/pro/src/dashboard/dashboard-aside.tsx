@@ -39,7 +39,7 @@ import { NavLink } from "react-router";
 import type { QuoteConversionDTO, VenueProDTO } from "@zwadj/types";
 import { BookingsIcon, CalendarIcon, RequestsIcon, VenueIcon } from "@zwadj/ui";
 import { algiersToday } from "../lib/algiers-date";
-import { useBookingsPro, useQuotes, useVenues } from "../venues/venue-client-context";
+import { useBookingsPro, useQuotes, useVenueVisits } from "../venues/venue-client-context";
 
 type CountState = { kind: "loading" } | { kind: "error" } | { kind: "ready"; value: number };
 
@@ -61,7 +61,7 @@ function Counter({ label, state }: { label: string; state: CountState }) {
 
 export function DashboardAside({ venue, nowMs }: { venue: VenueProDTO; nowMs?: number }) {
   const { t, i18n } = useTranslation();
-  const venuesApi = useVenues();
+  const venuesApi = useVenueVisits();
   const bookings = useBookingsPro();
   const quotes = useQuotes();
   const isAr = i18n.language === "ar";

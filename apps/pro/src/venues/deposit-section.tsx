@@ -19,7 +19,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DEPOSIT_RATE_BPS_MAX, DEPOSIT_RATE_BPS_MIN, type VenueProDTO } from "@zwadj/types";
 import { Field, useApiErrorMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenueCrud } from "./venue-client-context";
 import { PriceInput, formatPriceForDisplay, parseIntegerPrice, stripGroupSeparators } from "./venue-form";
 
 type Mode = "RATE" | "AMOUNT";
@@ -39,7 +39,7 @@ export function DepositSection({
 }) {
   const { t } = useTranslation();
   const toMessage = useApiErrorMessage();
-  const venues = useVenues();
+  const venues = useVenueCrud();
 
   const [mode, setMode] = useState<Mode>(venue.depositAmountCents === null ? "RATE" : "AMOUNT");
   const [percent, setPercent] = useState(

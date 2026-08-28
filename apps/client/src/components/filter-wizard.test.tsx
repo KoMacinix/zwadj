@@ -11,7 +11,7 @@ import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
 import { FilterWizard } from "./filter-wizard";
 // ⚠ Le parseur RÉEL de la page d'arrivée, pas une copie : c'est la
 // confrontation des deux modules qui manquait, et qui a laissé passer D228.
-import { parseSearchParams } from "../lib/search-query";
+import { BUDGET_TIERS, centsFromDinars, parseSearchParams, toApiQuery } from "../lib/search-query";
 
 const push = vi.fn();
 vi.mock("../i18n/navigation", () => ({
@@ -57,8 +57,19 @@ function poser(locale: "fr" | "ar" = "fr") {
 /** ⚠ Le libellé du palier vient du FORMATEUR, jamais tapé à la main :
  *  `Intl` en `fr-DZ` insère des espaces insécables ÉTROITES (U+202F), et
  *  « 1 000 000 » écrit au clavier ne correspond à rien. Première version fautive,
- *  et c'est la même famille de défaut que la doctrine des valeurs relevées. */
-const PALIER_1M = formatDZD(100_000_000, "fr");
+ *  et c'est la même famille de défaut que la doctrine des valeurs relevées.
+ *
+ *  ⚠ ET LE MONTANT VIENT DE L'AUTORITÉ (D254), plus d'un nombre tapé ici.
+ *  Un `100_000_000` écrit dans ce fichier resterait vert le jour où les
+ *  paliers changent — sur un menu qui ne le propose plus. */
+// ⚠ `Math.max`, PAS `BUDGET_TIERS[length - 1]`. Sous
+// `noUncheckedIndexedAccess`, une indexation par un CALCUL rend
+// `number | undefined` même sur un tuple `as const` — TS2345, porte rouge
+// pendant que le test passait. Et ça dit mieux ce qu'on veut : LE PALIER LE
+// PLUS HAUT, sans dépendre de l'ordre de déclaration (garanti ailleurs, par
+// le test de croissance de `search-query.test.ts`).
+const PALIER = Math.max(...BUDGET_TIERS);
+const PALIER_1M = formatDZD(centsFromDinars(PALIER), "fr");
 
 const question = () => document.getElementById("wz-question")?.textContent;
 const recap = () => screen.getByRole("list", { name: "Réponses déjà données" });
@@ -162,7 +173,7 @@ describe("Le compteur vient du SERVEUR", () => {
     // ⚠ Ici, `maxPriceCents` est CORRECT : c'est la requête d'API, pas l'URL.
     // Les deux constructeurs de l'assistant sont mesurés séparément, et c'est
     // le point de leur séparation (D228).
-    expect(q.get("maxPriceCents")).toBe("100000000");
+    expect(q.get("maxPriceCents")).toBe(String(centsFromDinars(PALIER)));
     expect(q.get("maxPrice")).toBeNull();
   });
 
@@ -183,6 +194,51 @@ describe("Le compteur vient du SERVEUR", () => {
   });
 });
 
+describe("⛔ TOUS les paliers, pas seulement celui du parcours (D254)", () => {
+  // ⚠ L'ancien test n'exerçait QU'UN palier, et il était sous la butée. Les
+  // deux paliers morts — 2 000 000 et 4 000 000 DA — n'étaient couverts nulle
+  // part. Famille D219 : le test avait choisi le cas qui marche. On boucle
+  // donc sur L'AUTORITÉ entière. `it.each` et pas une boucle dans un `it` :
+  // le rendu doit être démonté entre deux paliers, sinon le second cliquerait
+  // dans l'écran du premier.
+  it.each([...BUDGET_TIERS])(
+    "le palier %s DA arrive intact à l'API ET à l'URL, et les deux CONCORDENT",
+    async (palier) => {
+      poser();
+      fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
+      fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+      fireEvent.change(screen.getByLabelText("Invités"), { target: { value: "250" } });
+      fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+      fireEvent.click(
+        screen.getByRole("button", { name: formatDZD(centsFromDinars(palier), "fr") })
+      );
+      await screen.findByRole("button", { name: "Moderne" });
+
+      // 1) LA REQUÊTE D'API — centimes, sous le nom de l'API.
+      await waitFor(() => expect(countVenues).toHaveBeenCalled());
+      const q = countVenues.mock.calls[0]?.[0] as URLSearchParams;
+      expect(q.get("maxPriceCents")).toBe(String(centsFromDinars(palier)));
+
+      // 2) L'URL PUBLIQUE — dinars, relue par le parseur RÉEL de la page
+      //    d'arrivée, pas comparée à une chaîne écrite dans ce fichier.
+      fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
+      const pousse = push.mock.calls[0]?.[0] as string;
+      const etat = parseSearchParams(
+        Object.fromEntries(new URLSearchParams(pousse.split("?")[1] ?? ""))
+      );
+      expect(etat.maxPrice).toBe(String(palier));
+
+      // 3) ⛔ LE POINT DU LOT. Les deux branches de l'assembleur sont
+      //    CONFRONTÉES : ce que le compteur a demandé et ce que la page de
+      //    résultats demandera doivent être le MÊME plafond. Sur 2 000 000 DA,
+      //    le compteur filtrait à `lte 200000000` pendant que la page, plafond
+      //    effacé par la butée, n'en demandait aucun — deux écrans, deux
+      //    vérités, invisible tant qu'aucune salle ne coûte plus que le palier.
+      expect(toApiQuery(etat).get("maxPriceCents")).toBe(q.get("maxPriceCents"));
+    }
+  );
+});
+
 describe("La séquence finit sur la page de résultats EXISTANTE", () => {
   it("⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT", async () => {
     poser();
@@ -197,14 +253,14 @@ describe("La séquence finit sur la page de résultats EXISTANTE", () => {
     // `styles` et `amenities` sont des clés SÉPARÉES PAR DES VIRGULES — relevé
     // du schéma Zod, jamais deviné.
     expect(push).toHaveBeenCalledWith(
-      "/salles?cityId=c1&guests=250&maxPrice=1000000&styles=moderne&amenities=parking"
+      `/salles?cityId=c1&guests=250&maxPrice=${PALIER}&styles=moderne&amenities=parking`
     );
     // ⚠ L'ALLER-RETOUR, et c'est lui qui compte : la chaîne ci-dessus est
     // écrite à la main, donc elle peut être fausse des deux côtés à la fois.
     // On relit l'URL poussée avec le parseur RÉEL de la page d'arrivée.
     const pousse = push.mock.calls[0]?.[0] as string;
     const etat = parseSearchParams(Object.fromEntries(new URLSearchParams(pousse.split("?")[1] ?? "")));
-    expect(etat.maxPrice).toBe("1000000");
+    expect(etat.maxPrice).toBe(String(PALIER));
     expect(etat.cityId).toBe("c1");
     expect(etat.guests).toBe("250");
     // ⚠ Avec DEUX valeurs, sinon un séparateur faux passerait inaperçu : un

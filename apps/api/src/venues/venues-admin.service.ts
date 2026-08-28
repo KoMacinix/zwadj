@@ -14,7 +14,11 @@ import {
 import type { Prisma } from "../generated/prisma/client";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { PrismaService } from "../prisma/prisma.service";
-import { toVenueProDTO, VENUE_PRO_SELECT } from "./venues.service";
+import { toVenueProDTO } from "./venues.service";
+// ⚠ `VENUE_PRO_SELECT` a déménagé dans le fichier de port (S10a) : le port en
+// a besoin, et le service a besoin du port. Le laisser dans le service aurait
+// fermé un cycle ; le recopier aurait fait DEUX formes de la même ligne.
+import { VENUE_PRO_SELECT } from "./venue-store.types";
 
 const VENUE_ADMIN_SELECT = {
   ...VENUE_PRO_SELECT,

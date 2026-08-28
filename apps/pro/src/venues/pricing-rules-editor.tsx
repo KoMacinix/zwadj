@@ -25,7 +25,7 @@ import { ConfirmDialog } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import type { PricingRuleDTO, PricingRuleType, SlotTemplateDTO } from "@zwadj/types";
 import { useApiErrorMessage, useValidationMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenuePricingRules } from "./venue-client-context";
 import { venueFieldErrors } from "./venue-errors";
 import { PriceInput, formatPriceForDisplay, parseIntegerPrice, stripGroupSeparators } from "./venue-form";
 
@@ -93,7 +93,7 @@ export function PricingRulesEditor({
   onRulesChanged: (rules: PricingRuleDTO[]) => void;
 }) {
   const { t, i18n } = useTranslation();
-  const venues = useVenues();
+  const venues = useVenuePricingRules();
   const toMessage = useApiErrorMessage();
   const tval = useValidationMessage();
   const formId = useId();

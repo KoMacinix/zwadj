@@ -94,7 +94,38 @@ async function recreerBase(): Promise<void> {
   const c = new Client({ connectionString: admin.toString() });
   await c.connect();
   try {
-    await c.query(`DROP DATABASE IF EXISTS "${DB}" WITH (FORCE)`);
+    // ⛔ UN `DROP DATABASE` BLOQUÉ MANGEAIT LES 60 s DU HOOK SANS RIEN DIRE,
+    // et les sept tests de ce fichier étaient SAUTÉS — y compris la garde de
+    // migration, qui est la seule à prouver qu'une migration passe sur une
+    // base ayant déjà servi. Un échec muet coûte plus cher qu'un échec.
+    await c.query("SET statement_timeout = '20s'");
+
+    // ⚠ QUI OCCUPE LA BASE, relevé AVANT de la libérer : c'est cette liste
+    // qui nommera le coupable au prochain blocage. `WITH (FORCE)` termine
+    // déjà les sessions, mais il le fait en silence — et s'il n'y arrive pas,
+    // il attend.
+    const occupants = await c.query<{ pid: number; application_name: string; state: string }>(
+      `SELECT pid, application_name, state FROM pg_stat_activity
+        WHERE datname = $1 AND pid <> pg_backend_pid()`,
+      [DB]
+    );
+    if (occupants.rows.length > 0) {
+      await c.query(
+        `SELECT pg_terminate_backend(pid) FROM pg_stat_activity
+          WHERE datname = $1 AND pid <> pg_backend_pid()`,
+        [DB]
+      );
+    }
+
+    try {
+      await c.query(`DROP DATABASE IF EXISTS "${DB}" WITH (FORCE)`);
+    } catch (error) {
+      throw new Error(
+        `DROP DATABASE "${DB}" refusé ou expiré (statement_timeout 20 s). ` +
+          `Occupants relevés juste avant : ${JSON.stringify(occupants.rows)}. ` +
+          `Cause : ${(error as Error).message}`
+      );
+    }
     await c.query(`CREATE DATABASE "${DB}"`);
   } finally {
     await c.end();
@@ -191,6 +222,21 @@ async function semerDonnees(): Promise<void> {
      ORDER BY q.event_date
      LIMIT 1
   `);
+
+  // ⛔ TROIS INTENTIONS « EN ATTENTE » SUR LA MÊME RÉSERVATION, À LA MÊME
+  // MICROSECONDE. C'est la base d'un déploiement où la course décrite par
+  // E3d-1 a déjà eu lieu — et c'est le SEUL état sur lequel la dernière
+  // migration peut échouer. Sur une base vide, son `CREATE UNIQUE INDEX`
+  // passe toujours : le test ne prouverait rien (MD6).
+  //
+  // ⚠ UN SEUL `now()` POUR LES TROIS. L'égalité exacte de `created_at` est le
+  // cas que `created_at` SEUL ne sait pas départager ; c'est pour lui que le
+  // nettoyage compare le couple `(created_at, id)`.
+  await sql(`
+    INSERT INTO payments (id, booking_id, amount_cents, discount_applied_cents, status, updated_at, created_at)
+    SELECT uuidv7(), b.id, b.deposit_cents, 0, 'PENDING', t, t
+      FROM bookings b, (SELECT now() AS t) s, generate_series(1, 3)
+  `);
 }
 
 beforeAll(async () => {
@@ -236,14 +282,24 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     // raison : la sonde doit décrire ce que fait LA dernière migration, et
     // celle-ci change à chaque lot. R4 ajoute `CANCELLED` au TYPE — donc à
     // l'avant-dernière migration, la valeur n'existe PAS encore.
-    const contrainte = await sql<{ def: string }>(`
-      SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint
-       WHERE conname = 'quotes_sent_at_coherent'
+    // ⚠ CINQUIÈME CHANGEMENT DE SONDE EN SIX LOTS, même raison que les quatre
+    // précédents : la sonde décrit ce que fait LA dernière migration, et
+    // celle-ci change à chaque lot. E3d-1 crée un index unique partiel — donc
+    // à l'avant-dernière migration, il n'existe PAS.
+    const index = await sql<{ indexname: string }>(`
+      SELECT indexname FROM pg_indexes WHERE indexname = 'payments_one_pending_per_booking'
     `);
     expect(
-      contrainte[0]!.def,
-      "le CHECK exempte déjà CANCELLED : la dernière migration est appliquée, le test ne prouverait rien"
-    ).not.toContain("CANCELLED");
+      index,
+      "l'index de E3d-1 existe déjà : la dernière migration est appliquée, le test ne prouverait rien"
+    ).toHaveLength(0);
+
+    // ⛔ ET LES TROIS DOUBLONS SONT BIEN LÀ. Sans eux, la migration s'appliquerait
+    // sur une base où son nettoyage n'a rien à faire — verte, et muette.
+    const attente = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM payments WHERE status = 'PENDING'`
+    );
+    expect(attente[0]!.n, "le semis n'a pas produit les doublons attendus").toBe("3");
 
     // ⚠ LA SONDE D166 A ÉTÉ RETIRÉE, ET C'EST DÉLIBÉRÉ (lot R4).
     // Elle exigeait `1` devis `SENT` après le semis, c'est-à-dire l'EFFET du
@@ -299,6 +355,41 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
       `SELECT count(*)::text AS n FROM quotes WHERE sent_at IS NOT NULL`
     );
     expect(envoyesApres).toEqual(envoyesAvant);
+  });
+
+  it("⛔ E3d-1 — l'index PASSE sur une base ayant couru, et le départage a eu lieu", async () => {
+    // ⚠ C'EST LA GARDE QUE `payment-intent-race` NE PEUT PAS PORTER. Là-bas,
+    // l'index est déposé et recréé à la main dans un test ; ici, c'est la VRAIE
+    // migration qui s'applique, sur des données sémées, par le même chemin qu'en
+    // production. Si son nettoyage ne départage pas complètement, le
+    // `CREATE UNIQUE INDEX` échoue et ce test tombe — exactement comme le
+    // déploiement aurait échoué.
+    const idxPaiement = await sql<{ indexdef: string }>(`
+      SELECT indexdef FROM pg_indexes WHERE indexname = 'payments_one_pending_per_booking'
+    `);
+    expect(idxPaiement, "l'index de E3d-1 n'a pas été créé").toHaveLength(1);
+    expect(idxPaiement[0]!.indexdef).toContain("UNIQUE");
+    expect(idxPaiement[0]!.indexdef).toContain("PENDING");
+
+    // ⛔ UN SEUL SURVIVANT PAR RÉSERVATION, et c'est ce qui a permis à l'index de
+    // passer. Trois lignes semaient la même microseconde : le départage sur le
+    // COUPLE `(created_at, id)` était nécessaire, pas décoratif.
+    const restants = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM payments WHERE status = 'PENDING'`
+    );
+    expect(restants[0]!.n, "le départage a laissé plusieurs intentions en attente").toBe("1");
+
+    // ⚠ LES AUTRES SONT EXPIRÉES, PAS SUPPRIMÉES. Une migration qui aurait fait
+    // `DELETE` au lieu d'`UPDATE` passerait les deux assertions ci-dessus et
+    // effacerait des traces de paiement. Sur le chemin de l'argent, la
+    // différence n'est pas théorique.
+    const expirees = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM payments WHERE status = 'EXPIRED'`
+    );
+    expect(expirees[0]!.n, "les doublons ont été SUPPRIMÉS au lieu d'être expirés").toBe("2");
+
+    const total = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM payments`);
+    expect(total[0]!.n, "des lignes de paiement ont disparu").toBe("3");
   });
 
   it("⚠ Q4 — la colonne a disparu, et RIEN d'autre", async () => {

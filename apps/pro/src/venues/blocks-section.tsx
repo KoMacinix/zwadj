@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { ConfirmDialog } from "@zwadj/ui";
 import type { AvailabilityBlockDTO } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenueAvailability } from "./venue-client-context";
 import { defaultWindow, inclusiveEndDate, isWholeDays, toBlockPayload } from "./block-time";
 import { TimeSelect } from "./time-select";
 
@@ -50,7 +50,7 @@ const emptyDraft = (from: string): BlockDraft => ({
 
 export function BlocksSection({ venueId }: { venueId: string }) {
   const { t } = useTranslation();
-  const venues = useVenues();
+  const venues = useVenueAvailability();
   const toMessage = useApiErrorMessage();
   const formId = useId();
 

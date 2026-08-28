@@ -14,7 +14,7 @@ import { formatSlotRange, VISIT_DURATION_MINUTES, type ProVisitBookingDTO } from
 import { AVAILABILITY_MAX_WINDOW_DAYS } from "@zwadj/types";
 import { algiersCivilDate } from "../lib/algiers-date";
 import { useApiErrorMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenueVisits } from "./venue-client-context";
 
 /** ⚠ CORRECTION — la fenêtre était REFUSÉE par le serveur.
  *
@@ -41,7 +41,7 @@ const WINDOW_DAYS = AVAILABILITY_MAX_WINDOW_DAYS - 1;
 
 export function VisitsSection({ venueId }: { venueId: string }) {
   const { t } = useTranslation();
-  const venues = useVenues();
+  const venues = useVenueVisits();
   const toMessage = useApiErrorMessage();
   const toMessageRef = useRef(toMessage);
   toMessageRef.current = toMessage;

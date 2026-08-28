@@ -37,9 +37,11 @@
 // `VenueSummaryDTO` n'a aucun champ mis en avant. Les deux grilles s'adossent
 // donc aux deux SEULS tris que l'API expose : `recent` et `price_asc`.
 import { useLocale, useTranslations } from "next-intl";
+import { formatDZD } from "@zwadj/i18n";
 import type { VenueListResponse } from "@zwadj/types";
 import { Link } from "../i18n/navigation";
 import type { VenueCardData } from "../lib/preview-venues";
+import { BUDGET_TIERS, centsFromDinars } from "../lib/search-query";
 import { VENDOR_CATEGORIES } from "../lib/vendor-categories";
 import { VenueCard } from "./venue-card";
 
@@ -131,24 +133,24 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
 
             <div className="hm-search-field">
               <label htmlFor="hm-budget">{t("search.budget")}</label>
-              {/* ⚠ En DINARS, comme l'URL publique. Les paliers restent des
-                  valeurs de filtre écrites en toutes lettres, pas des calculs :
-                  aucune arithmétique monétaire dans le navigateur.
-                  ⚠ Le libellé et la valeur disent désormais LA MÊME CHOSE —
-                  « 500 000 DA » vaut `500000`. Avant, le libellé annonçait des
-                  dinars et la valeur portait des centimes ; l'écart d'un
-                  facteur 100 entre les deux ne se voyait nulle part.
-                  ⚠ 2 000 000 et 4 000 000 dépassent `BUDGET_CEILING`
-                  (1 500 000) : par D69 ils signifient « pas de plafond ». Ces
-                  deux paliers ne filtrent donc rien, AVANT COMME APRÈS cette
-                  correction. Choisir les paliers offerts est une décision
-                  produit, laissée ouverte — voir CADRAGE_MAXPRICE_D228 §5. */}
+              {/* ⚠ En DINARS, comme l'URL publique, et LUS DEPUIS L'AUTORITÉ
+                  UNIQUE (`BUDGET_TIERS`) : plus aucun montant n'est écrit ici.
+                  Le libellé et la valeur dérivent du MÊME nombre, donc ils ne
+                  peuvent plus diverger — c'est l'écart d'un facteur 100 entre
+                  « 500 000 DA » et `50000000` qui jetait le budget en silence.
+                  ⚠ Le libellé passe par `formatDZD` : il se met en arabe quand
+                  la page l'est. Il était figé en français, dans les deux langues.
+                  ⛔ 2 000 000 ET 4 000 000 DA ONT DISPARU. Au-dessus de
+                  `BUDGET_CEILING`, D69 les lisait « pas de plafond » : deux des
+                  quatre paliers ne filtraient rien, et l'assistant poussait une
+                  querystring vide. Arbitrage Ko du 24/08/2026 (D254). */}
               <select id="hm-budget" name="maxPrice" defaultValue="">
                 <option value="">{t("search.budgetAny")}</option>
-                <option value="500000">500 000 DA</option>
-                <option value="1000000">1 000 000 DA</option>
-                <option value="2000000">2 000 000 DA</option>
-                <option value="4000000">4 000 000 DA</option>
+                {BUDGET_TIERS.map((dinars) => (
+                  <option key={dinars} value={dinars}>
+                    {formatDZD(centsFromDinars(dinars), ar ? "ar" : "fr")}
+                  </option>
+                ))}
               </select>
             </div>
 

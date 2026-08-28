@@ -21,7 +21,7 @@ import { ArrowBackIcon } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import { ProHeader } from "../shell/pro-header";
 import { FormError, useApiErrorMessage } from "../auth/auth-ui";
-import { useReferentialsData, useVenues } from "./venue-client-context";
+import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { venueFieldErrors } from "./venue-errors";
 import {
   CapacityPriceFields,
@@ -37,7 +37,7 @@ import { VenueWizard } from "./venue-wizard";
 export function CreateVenuePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const venuesApi = useVenues();
+  const venuesApi = useVenueCrud();
   const apiErrorMessage = useApiErrorMessage();
   const referentials = useReferentialsData();
 

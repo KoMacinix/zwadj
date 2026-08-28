@@ -48,8 +48,35 @@ export type AuthedRequest = <T>(path: string, init?: { method?: string; body?: u
 /**
  * Topologie A2, volontairement asymétrique — NE PAS « harmoniser » :
  * ÉCRITURES sur /venues, LECTURES pro sur /pro/venues.
+ *
+ * ⚠ Cette note vaut pour LES SIX interfaces ci-dessous. Elle a failli
+ * disparaître au découpage S9 — un refactoring qui emporte un avertissement
+ * en emporte la raison d'être.
  */
-export interface VenueProClient {
+
+/**
+ * ⛔ S9 — SIX INTERFACES LÀ OÙ IL Y EN AVAIT UNE DE VINGT-DEUX MEMBRES.
+ *
+ * Le défaut n'était pas « vingt-deux méthodes » : c'est que CHAQUE écran en
+ * recevait vingt-deux pour en employer entre un et cinq. Mesuré sur les
+ * quatorze consommateurs — aucun n'en emploie plus de cinq.
+ *
+ * ⚠ `VenueProClient` reste, en INTERSECTION : aucun appelant existant ne
+ * bouge, et c'est ce qui rend ce lot sûr. Ce qui change, c'est ce que chaque
+ * écran DEMANDE — via les crochets étroits de `venue-client-context`. Une
+ * section qui tend la main hors de sa famille ne compile plus.
+ *
+ * ⚠ Les familles suivent l'USAGE MESURÉ, pas une taxonomie. Voir la note de
+ * `VenueAvailabilityClient` : mon premier découpage en cinq familles a été
+ * corrigé par la mesure, pas par une relecture.
+ */
+
+/** Le cycle de vie d'une salle — 5 membres.
+ *
+ *  La seule famille que PLUSIEURS écrans se partagent — liste, création, édition,
+ *  acompte, devis. C'est aussi la seule dont un écran n'emploie souvent qu'UN
+ *  membre : `deposit-section` ne fait qu'`update`. */
+export interface VenueCrudClient {
   /** Toutes mes salles hors supprimées, tri updatedAt desc, sans pagination. */
   listMine(): Promise<VenueProDTO[]>;
   /** Par ID (le slug est public-only). 404 INDISTINCT — cf. VENUE_NOT_FOUND. */
@@ -61,6 +88,14 @@ export interface VenueProClient {
   update(id: string, input: VenueUpdateInput): Promise<VenueProDTO>;
   /** 204 sans corps (soft delete) : toute opération ultérieure → 404 indistinct. */
   softDelete(id: string): Promise<void>;
+}
+
+/** Photos et visite virtuelle — 5 membres.
+ *
+ *  `photos-section` est le SEUL écran à croiser deux familles : il lit la salle
+ *  (`getMine`) avant de toucher à ses photos. Il prend donc les deux crochets,
+ *  et pas une sixième interface inventée pour lui. */
+export interface VenueMediaClient {
   /** D45 — rattache/détache le modèle Matterport. Endpoint SÉPARÉ du PATCH
    *  général : la saisie est brute (ID ou URL) et le serveur la normalise, donc
    *  le corps ne ressemble pas au champ stocké. Chaîne vide = désactivation. */
@@ -80,6 +115,12 @@ export interface VenueProClient {
   updatePhotoAlt(id: string, photoId: string, input: VenuePhotoAltUpdateInput): Promise<VenuePhotoDTO>;
   /** 204 sans corps : l'appelant n'a RIEN à réconcilier localement, il refetch. */
   deletePhoto(id: string, photoId: string): Promise<void>;
+}
+
+/** Gabarits de créneaux — 3 membres.
+ *
+ *  Un seul écran, `slots-section`, et il emploie les trois. */
+export interface VenueSlotTemplateClient {
 
   // ── Créneaux de fête (B1) ─────────────────────────────────────────────────
   // ⚠ Toute écriture de créneau RECALCULE `Venue.basePriceCents` (dérivé D46,
@@ -97,6 +138,12 @@ export interface VenueProClient {
   /** Suppression DURE. 409 `SLOT_TEMPLATE_IN_USE` si un devis ou une
    *  réservation le référence : ce qui a été vendu ne se réécrit pas. */
   deleteSlotTemplate(id: string, slotId: string): Promise<void>;
+}
+
+/** Règles de tarif — 3 membres.
+ *
+ *  Un seul écran, `pricing-rules-editor`, et il emploie les trois. */
+export interface VenuePricingRuleClient {
 
   // ── Règles de prix (B2) ───────────────────────────────────────────────────
   // Les règles voyagent DANS `SlotTemplateDTO.pricingRules` en lecture : il n'y
@@ -113,6 +160,15 @@ export interface VenueProClient {
     input: PricingRuleUpdateInput
   ): Promise<PricingRuleDTO>;
   deletePricingRule(id: string, slotId: string, ruleId: string): Promise<void>;
+}
+
+/** Blocages et calendrier — 4 membres.
+ *
+ *  ⚠ SÉPARÉE DES VISITES, contre mon découpage initial. Je proposais une famille
+ *  « disponibilité et visites » de six membres ; la mesure dit qu'AUCUN écran ne
+ *  croise les deux. Un regroupement qui ne suit pas l'usage réel rend six
+ *  méthodes là où deux suffisent — c'est le défaut qu'on répare, en plus petit. */
+export interface VenueAvailabilityClient {
 
   // ── Blocages de disponibilité (B3, D51) ───────────────────────────────────
 
@@ -121,16 +177,6 @@ export interface VenueProClient {
    *  Rend les blocages qui RECOUVRENT la fenêtre, pas seulement ceux qui y
    *  commencent — un blocage de six mois doit apparaître. */
   listAvailabilityBlocks(id: string, window: AvailabilityWindowQueryInput): Promise<AvailabilityBlockDTO[]>;
-  /** C3b — rendez-vous de visite d'une salle. Fenêtre NON écrêtée (D70) : le
-   *  passé est l'historique du pro. */
-  listVisitBookings(id: string, window: AvailabilityWindowQueryInput): Promise<ProVisitBookingDTO[]>;
-  /** Calendrier de SA salle. MÊME moteur que la route publique — seule la
-   *  recherche diffère : par id du propriétaire, sans condition de publication.
-   *  ⚠ La route publique par slug exige `publicationStatus = PUBLISHED` : un pro
-   *  dont la salle est en brouillon y recevait un 404 sur son propre calendrier. */
-  availability(id: string, window: AvailabilityWindowQueryInput): Promise<VenueAvailabilityResponse>;
-  /** C3b — annulation par le pro. Le client est prévenu par e-mail. */
-  cancelVisitBooking(id: string, bookingId: string): Promise<void>;
   /** D51 — `startsAt`/`endsAt` en date-heure civile LOCALE `YYYY-MM-DDTHH:mm`,
    *  SANS décalage : l'API applique UTC+1 elle-même. Envoyer un ISO offsetté
    *  créerait un blocage aux mauvaises heures d'Alger. Le DTO rendu porte le
@@ -140,7 +186,35 @@ export interface VenueProClient {
   createAvailabilityBlock(id: string, input: AvailabilityBlockCreateInput): Promise<AvailabilityBlockDTO>;
   /** 204 sans corps. Autorisé même sur une plage passée. */
   deleteAvailabilityBlock(id: string, blockId: string): Promise<void>;
+  /** Calendrier de SA salle. MÊME moteur que la route publique — seule la
+   *  recherche diffère : par id du propriétaire, sans condition de publication.
+   *  ⚠ La route publique par slug exige `publicationStatus = PUBLISHED` : un pro
+   *  dont la salle est en brouillon y recevait un 404 sur son propre calendrier. */
+  availability(id: string, window: AvailabilityWindowQueryInput): Promise<VenueAvailabilityResponse>;
 }
+
+/** Visites de salle — 2 membres.
+ *
+ *  `visits-section` les emploie toutes deux ; `dashboard-aside` n'emploie que la
+ *  lecture. Deux membres, là où le client entier en offrait vingt-deux. */
+export interface VenueVisitClient {
+  /** C3b — rendez-vous de visite d'une salle. Fenêtre NON écrêtée (D70) : le
+   *  passé est l'historique du pro. */
+  listVisitBookings(id: string, window: AvailabilityWindowQueryInput): Promise<ProVisitBookingDTO[]>;
+  /** C3b — annulation par le pro. Le client est prévenu par e-mail. */
+  cancelVisitBooking(id: string, bookingId: string): Promise<void>;
+}
+
+/** L'union des six. ⚠ `type` et non `interface` : une interface ne peut pas
+ *  être l'intersection d'autres sans les ré-énumérer, et ré-énumérer, c'est la
+ *  seconde copie qui divergera. Rien d'autre ne change pour les appelants :
+ *  `createVenueProClient` rend toujours ce type. */
+export type VenueProClient = VenueCrudClient &
+  VenueMediaClient &
+  VenueSlotTemplateClient &
+  VenuePricingRuleClient &
+  VenueAvailabilityClient &
+  VenueVisitClient;
 
 export function createVenueProClient(request: AuthedRequest): VenueProClient {
   return {

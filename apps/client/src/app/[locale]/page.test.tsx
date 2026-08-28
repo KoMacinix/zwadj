@@ -16,7 +16,7 @@ import type { VenueListResponse, VenueSummaryDTO } from "@zwadj/types";
 import { HomeView } from "../../components/home-view";
 import { PREVIEW_VENUES, previewVenuesFor } from "../../lib/preview-venues";
 import { VENDOR_CATEGORIES } from "../../lib/vendor-categories";
-import { parseSearchParams, BUDGET_CEILING } from "../../lib/search-query";
+import { parseSearchParams, BUDGET_CEILING, BUDGET_TIERS } from "../../lib/search-query";
 
 /** ⚠ Une salle RÉELLE : elle n'a ni note, ni avis, ni badge — `VenueSummaryDTO`
  *  ne les porte pas. C'est le point de la carte conditionnelle : une salle
@@ -119,7 +119,9 @@ describe("Accueil — la recherche marche sans JavaScript", () => {
     const select = screen.getByLabelText("Budget maximum") as HTMLSelectElement;
     const nom = select.getAttribute("name") ?? "";
     const paliers = [...select.options].filter((o) => o.value !== "");
-    expect(paliers.length).toBeGreaterThan(0);
+    // ⚠ Le NOMBRE aussi est mesuré : « au moins un » resterait vert si le
+    // menu tombait à un seul palier par accident de rendu.
+    expect(paliers.length).toBe(BUDGET_TIERS.length);
 
     for (const option of paliers) {
       const etat = parseSearchParams({ [nom]: option.value });
@@ -127,13 +129,14 @@ describe("Accueil — la recherche marche sans JavaScript", () => {
       // page en fera. Les deux doivent désigner le même montant.
       const dinarsAffiches = option.textContent?.replace(/[^0-9]/g, "") ?? "";
       expect(option.value).toBe(dinarsAffiches);
-      // ⚠ Les paliers AU-DESSUS de `BUDGET_CEILING` signifient « pas de
-      // plafond » (D69) : leur état est vide, et c'est attendu. Ce test ne
-      // tranche pas ce point — il empêche seulement qu'un palier SOUS la
-      // butée se fasse effacer par une erreur d'unité.
-      if (Number(option.value) < BUDGET_CEILING) {
-        expect(etat.maxPrice).toBe(option.value);
-      }
+      // ⛔ PLUS D'EXEMPTION (D254). Ce test excluait les paliers au-dessus de
+      // la butée — c'est-à-dire exactement les deux qui ne filtraient rien.
+      // Il restait vert sur le défaut qu'il aurait dû nommer. TOUS les
+      // paliers offerts doivent désormais survivre à la lecture de l'URL ;
+      // qu'ils soient sous la butée est garanti en amont par
+      // `search-query.test.ts`, ici on mesure ce que l'ÉCRAN émet.
+      expect(Number(option.value)).toBeLessThan(BUDGET_CEILING);
+      expect(etat.maxPrice).toBe(option.value);
     }
   });
 });

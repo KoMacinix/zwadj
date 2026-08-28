@@ -35,6 +35,17 @@ import shutil
 import subprocess
 import sys
 
+# ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
+#   dossier : tous ses chemins sont relatifs au DOSSIER COURANT. Sans cette
+#   garde, un `cd neutralisation` produirait « ERREUR DE SCRIPT : 0
+#   occurrence(s) » — un message qui envoie chercher un défaut de code là où il
+#   n'y a qu'un dossier de travail.
+if not os.path.isfile("pnpm-workspace.yaml"):
+    print("✗ À LANCER DEPUIS LA RACINE DU MONOREPO (pnpm-workspace.yaml introuvable).")
+    print(f"  dossier courant : {os.getcwd()}")
+    print(f"  → python3 neutralisation/{os.path.basename(__file__)}")
+    sys.exit(2)
+
 SAUVEGARDE = ".neutralisation-404"
 MANIFESTE = os.path.join(SAUVEGARDE, "manifeste.json")
 

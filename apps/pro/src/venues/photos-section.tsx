@@ -34,7 +34,7 @@ import {
 import { useApiErrorMessage, useValidationMessage } from "../auth/auth-ui";
 import { mediaSrc } from "../lib/media-url";
 import { venueFieldErrors } from "./venue-errors";
-import { useVenues } from "./venue-client-context";
+import { useVenueCrud, useVenueMedia } from "./venue-client-context";
 
 /** Échec UNITAIRE d'un fichier : la file continue, les réussies restent. */
 interface FileFailure {
@@ -49,7 +49,12 @@ const ACCEPT = ACCEPTED_IMAGE_MIME_TYPES.join(",");
 
 export function PhotosSection({ venueId, initialPhotos }: { venueId: string; initialPhotos: VenuePhotoDTO[] }) {
   const { t } = useTranslation();
-  const venues = useVenues();
+  // ⚠ SEUL ÉCRAN À CROISER DEUX FAMILLES (S9) : il relit la salle après
+  // chaque écriture de média. Deux crochets plutôt qu'une interface
+  // « photos + lecture » faite sur mesure — une interface à un seul client
+  // ment sur sa généralité, et deviendrait le fourre-tout suivant.
+  const salles = useVenueCrud();
+  const medias = useVenueMedia();
   const toMessage = useApiErrorMessage();
   const tval = useValidationMessage();
   const inputId = useId();
@@ -84,7 +89,7 @@ export function PhotosSection({ venueId, initialPhotos }: { venueId: string; ini
   /** Recharge la galerie SEULE, sans toucher au formulaire principal. */
   async function refetch(): Promise<void> {
     try {
-      const venue = await venues.getMine(venueId);
+      const venue = await salles.getMine(venueId);
       setPhotos(venue.photos);
     } catch {
       setSectionError(t("venue.ui.photos.refreshError"));
@@ -138,7 +143,7 @@ export function PhotosSection({ venueId, initialPhotos }: { venueId: string; ini
     setUploading(true);
     for (const file of queue) {
       try {
-        const created = await venues.addPhoto(venueId, file);
+        const created = await medias.addPhoto(venueId, file);
         setPhotos((current) => [...current, created]);
       } catch (error) {
         setFailures((current) => [...current, { name: file.name, message: toMessage(error) }]);
@@ -167,7 +172,7 @@ export function PhotosSection({ venueId, initialPhotos }: { venueId: string; ini
       // ENSEMBLE COMPLET, jamais un delta ni un sortOrder par photo. L'ordre
       // affiché ne change QU'ICI, au remplacement en bloc par le tableau
       // retourné : aucun rollback à conserver, aucun état intermédiaire.
-      const server = await venues.reorderPhotos(venueId, { photoIds: next.map((photo) => photo.id) });
+      const server = await medias.reorderPhotos(venueId, { photoIds: next.map((photo) => photo.id) });
       setPhotos(server);
     } catch {
       // Tout échec se traite pareil — PHOTO_ORDER_MISMATCH comme un 500 ou une
@@ -205,7 +210,7 @@ export function PhotosSection({ venueId, initialPhotos }: { venueId: string; ini
       // Et une chaîne vide n'est PAS un effacement : `optionalText` est
       // `.trim().min(1)`, `""` donnerait 400 venue.validation.textEmpty —
       // l'effacement explicite, c'est `null`.
-      const updated = await venues.updatePhotoAlt(venueId, photoId, {
+      const updated = await medias.updatePhotoAlt(venueId, photoId, {
         altFr: altDraft.altFr.trim() || null,
         altAr: altDraft.altAr.trim() || null
       });
@@ -232,7 +237,7 @@ export function PhotosSection({ venueId, initialPhotos }: { venueId: string; ini
     setSectionError(null);
     setDeleting(true);
     try {
-      await venues.deletePhoto(venueId, photoId);
+      await medias.deletePhoto(venueId, photoId);
       if (openAltId === photoId) setOpenAltId(null);
       // 204 sans corps : AUCUN retrait local. La couverture n'a pas de cas
       // particulier — elle est re-résolue depuis l'état issu du refetch.

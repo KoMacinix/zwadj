@@ -283,7 +283,14 @@ describe("VenuesPublicService.list — availableOn : refus HORS HORIZON (D227)",
         await service.list({ ...QUERY_DEFAULTS, availableOn: date });
         return undefined;
       } catch (e) {
-        return (e as BadRequestException & { getResponse(): { code?: string } }).getResponse().code;
+        // ⚠ SURTOUT PAS UNE INTERSECTION SUR L'OBJET. Quand les deux membres
+        // déclarent `getResponse`, TypeScript en fait une LISTE DE SURCHARGES et
+        // retient la PREMIÈRE — celle de Nest, qui rend `string | object`. Le
+        // membre ajouté est mort, `.code` tombe en TS2339, et c'est ce qui
+        // laissait le typecheck global ROUGE pendant que les 560 tests passaient.
+        // Forme reprise de la ligne 268 de CE fichier : on caste le RÉSULTAT de
+        // l'appel, jamais l'objet qui le porte.
+        return ((e as BadRequestException).getResponse() as { code?: string }).code;
       }
     };
     const passe = await code("2020-01-01");

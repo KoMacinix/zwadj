@@ -18,7 +18,7 @@ CIBLES = [
     (
         "A1. Le refus de date passée est retiré",
         "apps/api/src/venues/venues-public.service.ts",
-        "if (civilUtcMs(date) < civilUtcMs(civilTodayAt(Date.now()))) this.throwAvailableOnPast();",
+        "if (civilUtcMs(date) < civilUtcMs(aujourdhui)) this.throwAvailableOnPast();",
         "/* neutralisé */",
         1,
         "date passée",
@@ -27,8 +27,8 @@ CIBLES = [
     (
         "A2. La borne devient `<=` : aujourd'hui est refusé à tort",
         "apps/api/src/venues/venues-public.service.ts",
-        "if (civilUtcMs(date) < civilUtcMs(civilTodayAt(Date.now()))) this.throwAvailableOnPast();",
-        "if (civilUtcMs(date) <= civilUtcMs(civilTodayAt(Date.now()))) this.throwAvailableOnPast();",
+        "if (civilUtcMs(date) < civilUtcMs(aujourdhui)) this.throwAvailableOnPast();",
+        "if (civilUtcMs(date) <= civilUtcMs(aujourdhui)) this.throwAvailableOnPast();",
         1,
         "AUJOURD'HUI EST ACCEPTÉ",
         "src/venues/venues-public.service.spec.ts",
@@ -149,6 +149,17 @@ CIBLES = [
 #
 # Parade : les originaux sont écrits sur disque AVANT toute mutation, et un
 # démarrage les restaure s'ils traînent encore d'une exécution interrompue.
+# ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
+#   dossier : tous ses chemins sont relatifs au DOSSIER COURANT. Sans cette
+#   garde, un `cd neutralisation` produirait « ERREUR DE SCRIPT : 0
+#   occurrence(s) » — un message qui envoie chercher un défaut de code là où il
+#   n'y a qu'un dossier de travail.
+if not os.path.isfile("pnpm-workspace.yaml"):
+    print("✗ À LANCER DEPUIS LA RACINE DU MONOREPO (pnpm-workspace.yaml introuvable).")
+    print(f"  dossier courant : {os.getcwd()}")
+    print(f"  → python3 neutralisation/{os.path.basename(__file__)}")
+    sys.exit(2)
+
 SAUVEGARDE = ".neutralisation-sauvegarde"
 
 

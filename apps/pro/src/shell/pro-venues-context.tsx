@@ -26,7 +26,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { VenueProDTO } from "@zwadj/types";
 import { useAuth } from "../auth/auth-context";
-import { useVenues } from "../venues/venue-client-context";
+import { useVenueCrud } from "../venues/venue-client-context";
 
 export type ProVenuesState =
   | { kind: "loading" }
@@ -49,7 +49,7 @@ export interface ProVenuesValue {
 const ProVenuesContext = createContext<ProVenuesValue | null>(null);
 
 export function ProVenuesProvider({ children }: { children: React.ReactNode }) {
-  const venuesApi = useVenues();
+  const venuesApi = useVenueCrud();
   const { user } = useAuth();
   const isPro = user?.role === "PRO";
 
