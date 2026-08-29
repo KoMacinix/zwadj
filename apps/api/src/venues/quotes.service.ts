@@ -45,8 +45,15 @@
 //   transition se lit DANS la transaction — par check-and-set conditionné au
 //   statut, jamais par un contrôle lu avant.
 import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+// ⚠ `BookingStatus` A ÉTÉ RETIRÉ DE CETTE LISTE (D263), et ce n'était pas un
+//   import décoratif : avant S10b-2, la conversion écrivait le statut de la
+//   demande ICI, depuis l'énumération partagée. La transaction est partie dans
+//   `quote-store.prisma.ts`, et la valeur y est devenue une CHAÎNE LITTÉRALE.
+//   L'import est resté derrière, sans consommateur. ⛔ Le défaut qu'il
+//   signalait est OUVERT et consigné au backlog — voir le commentaire posé sur
+//   `convertirEnDemande`. Le supprimer ferme la porte lint ; il ne ferme pas le
+//   défaut, et cette phrase existe pour qu'on ne l'oublie pas.
 import {
-  BookingStatus,
   QuoteErrorCode,
   QuoteStatus,
   ServiceErrorCode,
@@ -70,10 +77,13 @@ import {
   quoteAllowedFrom,
   quoteWrittenStatus
 } from "./quote-transitions";
+// ⚠ `QUOTE_SELECT` et `DevisChiffre` retirés (D263) : résidus de S10b-1, qui a
+//   emporté dans l'adaptateur les quatre transactions du devis — donc la forme
+//   du `select` et le type du chiffrage. Vérifié : leurs SEULS consommateurs
+//   sont `quote-store.types.ts`, `quote-store.prisma.ts` et son spec. Contrairement
+//   au précédent, ceux-là ne signalent rien : ils sont morts pour de bon.
 import {
   QUOTE_STORE,
-  QUOTE_SELECT,
-  type DevisChiffre,
   type QuoteRow,
   type QuoteStore
 } from "./quote-store.types";

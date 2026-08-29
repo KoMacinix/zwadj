@@ -193,6 +193,33 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 - **`packages/types` compile avec `lib: ["ES2022"]` SEULE** (`packages/config/tsconfig/base.json`) — ni DOM, ni `@types/node`. Toute fonction partagée doit éviter les globals navigateur/Node (`URL`, `fetch`, `Buffer`…), sous peine de `TS2304: Cannot find name`. Constaté au Lot A6a : `parseMatterportInput` ne peut pas utiliser `new URL()`, réécrit en découpage manuel de chaîne (authority/host/query).
 - OAuth Google côté front (Lot 9) : bouton OFFICIEL GIS `renderButton` (D29), jamais custom-stylé, jamais de hover-lift ni de tokens de palette sur CE bouton ; présent UNIQUEMENT sur connexion + inscription de `apps/client`, jamais dans `apps/pro`. Sans `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, le bloc entier (séparateur inclus) n'est PAS rendu et le script Google n'est PAS chargé. Le body de `POST /auth/google` porte TOUJOURS la locale courante du segment `[locale]`. Le client ID est une valeur PUBLIQUE (audience) — le `GOOGLE_CLIENT_SECRET` ne doit exister nulle part côté front ni dans le code.
 
+⚠ **CE QUI DÉPEND DE L'HORLOGE NE VIT PAS DANS UN SCHÉMA ZOD.** Un schéma est pur et partagé ; y lire `Date.now()` le rend non déterministe pour tous ses appelants, dont leurs tests. Le service est seul autorisé à lire l'heure (D48). Corollaire côté test : **figer l'horloge** (`vi.setSystemTime`), jamais choisir une date « dans le futur » — elle cesse de l'être, et la suite rougit sans qu'une ligne de code ait bougé. (D213, D227)
+
+⚠ **ÉCRÊTER UNE FENÊTRE ≠ ÉCRÊTER UN POINT.** D49 écrête parce qu'une fenêtre qui rétrécit reste une réponse à la question posée. Un paramètre-POINT écrêté répond sur autre chose, en silence : il se **refuse**. (D213)
+
+⚠ **UN BOOLÉEN NULLABLE EST UN TYPE À TROIS VALEURS.** `null` ne veut pas dire `false`. Tout écran qui le consomme teste `=== false` explicitement : un `!valeur` traite « je ne sais pas » comme « non ». (D211, D225)
+
+⚠ **TOUTE RÉPONSE PARAMÉTRÉE PORTE L'ÉCHO DE SON PARAMÈTRE.** Sans écho, l'appelant PRÉSUME que la réponse porte sur ce qu'il croit avoir envoyé. Généralisation des bornes effectives de D49. (D212)
+
+⚠ **UN REFUS MÉTIER NE SE REPLIE PAS SUR UNE PANNE.** « Momentanément indisponible » invite à réessayer une requête qui ne marchera jamais. Distinguer coûte un type ; ne pas distinguer coûte un visiteur qui recharge en boucle. (D217)
+
+⚠ **UN FILTRE VIT DANS LE `where`, JAMAIS APRÈS LA PAGE.** Retirer des lignes après que `count()` les a comptées fait mentir `total` et laisse la dernière page vide. Les deux requêtes du `$transaction` doivent partager le même `where` : l'accord est alors structurel, il n'y a rien à resynchroniser. (D225)
+
+⚠ **PAS DE CHROME DUPLIQUÉE ENTRE PRO ET CLIENT.** Deux copies d'un même écran avaient déjà divergé sur trois points, et aucun n'était un choix. Ce qui est visuellement commun vit dans `@zwadj/ui` (`journey.tsx` + bloc dédié de `styles.css`) ; les feuilles des apps ne gardent que la MISE EN PAGE (`grid-area`, position). (D223)
+
+⚠ **UNE SEULE AUTORITÉ DE CONVERSION D'UNITÉ.** L'URL publique porte des **dinars** (`maxPrice`), l'API des **centimes** (`maxPriceCents`), et `toApiQuery` fait seule le passage. Tout écran qui construit sa propre querystring contourne cette autorité — c'est par là que le budget partait sous le mauvais nom. (D228)
+
+⚠ **RÈGLE SEO** : une page de recherche portant le moindre paramètre est une VARIANTE ⇒ `noindex, follow`, canonical sur la page nue. Le `follow` est le point : les FICHES, seules pages qu'on veut indexer, sont atteintes **depuis** ces variantes. `NEXT_PUBLIC_SITE_URL` est **obligatoire en production**. (D216)
+
+⚠ **AUCUNE FRONTIÈRE SUSPENSE AU-DESSUS D'UNE PAGE QUI PEUT REFUSER.** Un `loading.tsx` place les pages du segment sous une frontière ; Next vide alors la coquille AVANT que `notFound()` ne remonte, l'en-tête HTTP est déjà parti, et le 404 sort en **200**. Un soft-404 se fait indexer comme une vraie page et fait mentir toute sonde. Mesuré des deux côtés : fichier en place ⇒ 200, fichier retiré ⇒ 404. Borner la frontière par un **groupe de routes** plutôt que la supprimer. (D250)
+
+⚠ **UN NOM DE FICHIER SPÉCIAL EST UNE LISTE FERMÉE.** `page`, `layout`, `loading`, `not-found`, `error`… Tout autre nom n'est pas une route en erreur : ce n'est **pas une route**. Un `_not-found.tsx` a vécu quatre jours dans l'arbre sans jamais se rendre, et aucun test de rendu n'aurait pu s'en apercevoir. Les gardes de routage mesurent des **noms de fichiers**. (D249)
+
+⚠ **UNE FRONTIÈRE IMBRIQUÉE N'ATTRAPE PAS CE QUI N'APPARIE RIEN.** `[locale]/not-found.tsx` ne couvre qu'un `notFound()` levé dans un segment DÉJÀ apparié. Une URL inconnue n'apparie pas `[locale]` : il faut un attrape-tout `[locale]/[...rest]/page.tsx`, dont le travail n'est pas d'appeler `notFound()` mais de faire **apparier le segment** pour que le layout se monte. (D249)
+
+⚠ **UNE IMAGE EN `<img>` EST UN DOCUMENT ISOLÉ.** Elle n'accède ni au CSS de la page, ni à ses polices auto-hébergées, ni à son thème. Trois conséquences : du `<text>` y retombe sur une police système — et sur l'arabe cela donne des lettres **NON LIÉES**, illisibles, défaut invisible pour qui ne lit pas l'arabe ; les couleurs y sont gravées, pas héritées ; les opacités se gravent au niveau du **mode sombre**, la page atténuant en clair, car `opacity` ne dépasse pas 1. (D251)
+
+⚠ **UN DÉCOR PORTE `alt=""`, PAS UN `alt` ABSENT.** Sans `alt`, une image est annoncée par son **nom de fichier** — « quatre cent quatre tiret nuage point s v g » lu avant le message d'erreur. `alt=""` la sort de l'arbre d'accessibilité, ce qui est le traitement exact d'un élément sans valeur d'information. (D251)
 ## Routes de l'app Pro (tranche UIP — D130)
 
 | Route | Écran | Note |
@@ -238,14 +265,37 @@ connexion (famille D115).
   ⚠ **Le design ne fait pas foi sur une phrase qui DÉCRIT le comportement du système** : sa boîte de suppression annonce « supprimées définitivement » alors que `DELETE /venues/:id` est un **soft delete**.
   ⚠ **Une maquette peut compter à l'envers.** Ses colonnes plaçaient les étapes 01/03 à gauche et 02 à droite : lu dans le DOM — donc au clavier et au lecteur d'écran — cela donne 01 → 03 → 02. **Le DOM énumère, `grid-template-areas` place.**
 
+⚠ **LES PORTES SE RELANCENT APRÈS LA DERNIÈRE MODIFICATION, JAMAIS AVANT.** Une archive a été livrée **rouge au typecheck**, avec une note annonçant « 0 erreur » : la mesure était exacte, des fichiers avaient changé entre la mesure et l'emballage. Une porte mesurée n'est pas une porte verte à la livraison. Corollaire : une archive fautive déjà partagée se **supprime** — un lien mort vaut mieux qu'une archive qu'on extrait par erreur. (D218)
+
+⚠ **UN TEST ÉCRIT DANS LA MÊME SÉANCE QUE LE CODE PEUT VALIDER LA FAUTE.** Deux fois dans cette série : la lecture d'un code d'erreur écrite de mémoire à la racine du corps au lieu de `message.code`, avec un test posant la même enveloppe imaginée — cohérents entre eux, faux tous les deux (D219) ; et le test de l'assistant assertant l'URL poussée contre le contrat de l'**API** au lieu de celui de l'**URL**, vert depuis la livraison sur un budget silencieusement jeté (D228). **Toute forme de donnée qui traverse une frontière (HTTP, URL, base, fichier) se relève d'un appelant existant qui la lit déjà, ou se MESURE.**
+
+⚠ **UN DÉFAUT PEUT NAÎTRE DE LA RENCONTRE DE DEUX CORRECTIONS.** Le CSS déclarait une animation, le JSX était correct, et l'animation n'a jamais joué parce que React réconciliait un nœud stable. Ni la relecture du CSS ni celle du JSX ne pouvait le voir. **Quand un effet dépend du cycle de vie d'un nœud, la garde mesure l'IDENTITÉ DU NŒUD**, pas une classe ni un style — jsdom ne calcule pas les animations. (D222)
+
+⚠ **UNE GARDE PEUT ÊTRE TAUTOLOGIQUE.** Après extraction d'un cœur commun, un test « A rend la même chose que B » ne peut plus rougir si B appelle A. Il se lit comme une garde anti-divergence et n'en est pas une. Retirée **par écrit**, remplacée par une garde de SOURCE. (D223)
+
+⚠ **VÉRIFIER LA PRÉMISSE AVANT DE CODER LA DEMANDE.** Une consigne partait de « ne pas perdre la recherche par mots-clés » ; vérification faite, cette fonctionnalité **n'existait nulle part** — ni dans le contrat public, ni dans le service, ni en base. Coder dessus aurait produit une correction sans objet et masqué la régression réelle. Quand une consigne s'appuie sur un existant, **mesurer cet existant fait partie de la consigne**. (D231)
+
+### Harnais de neutralisation — cinq exigences (D223, D224, D226)
+
+- ⚠ **SURVIVRE À UN SIGNAL, pas seulement à une exception.** Un `finally` ne s'exécute pas quand le processus est tué. Deux fois, un harnais interrompu a laissé un fichier **sciemment cassé** dans l'arbre. Exigé : sauvegarde disque **avant** mutation, restauration au démarrage, purge en fin de campagne.
+- ⚠ **CHAQUE CIBLE DÉSIGNE SON FICHIER DE TEST.** Sans lui, la campagne dépassait quinze minutes et se faisait tuer. **Une campagne qu'on n'ose plus lancer ne mesure plus rien.**
+- ⚠ **L'ASSERTION DE COMPTAGE PROTÈGE DU FAUX POSITIF INVERSE.** Une cible visait UNE occurrence d'un rendu qui en a DEUX : neutraliser une seule branche aurait laissé l'autre produire le bon rendu, et la garde aurait **paru mordre sans rien mesurer**.
+- ⚠ **APRÈS TOUTE INVERSION DE DÉCISION, RELANCER LES CAMPAGNES AVANT DE CROIRE LES COMPTEURS DE TESTS.** Une décision inversée périme les cibles qui mesuraient l'ancien comportement. Une suite verte ne prouve rien si les gardes qui la surveillaient ne mordent plus. Arrivé **deux fois**.
+- ⚠ **UNE GARDE SUR DU CODE PARTAGÉ SE VÉRIFIE DANS TOUS SES CONSOMMATEURS.** Neutraliser dans `@zwadj/ui` doit faire rougir **client ET pro**. Un rouge d'un seul côté signale que l'autre ne mesure rien.
+
+- ⚠ **UNE ANCRE DE CIBLE SE REVÉRIFIE À CHAQUE REFONTE DU BALISAGE.** Un lot visuel a déplacé un `<p style=…>` vers un `<span>` : l'ancre ne trouvait plus rien, la campagne s'arrêtait sur `ERREUR DE SCRIPT` — comportement voulu — mais **quatre cibles suivantes n'ont pas été jouées**. Une campagne partiellement jouée n'est pas une campagne verte.
+- ⚠ **UNE GARDE QUI SE CONTENTE D'UN EXEMPLE CESSE DE MESURER DÈS QU'IL Y EN A DEUX.** Un `toMatch(/lang="ar"[^>]*dir="rtl"/)` écrit quand la page comptait UN passage arabe est resté VERT sous neutralisation le jour où elle en a compté trois : les deux autres le satisfaisaient. Ces gardes s'écrivent en règle **universelle** — *tout* élément qui déclare `lang` déclare sa direction — et se comptent, elles ne se cherchent pas.
+- ⚠ **UNE CIBLE DEVENUE SANS OBJET SE RÉORIENTE OU SE RETIRE, PAR ÉCRIT.** Quand le décor est passé d'un composant à une image, « le décor disparaît » a cessé d'être la faute possible : c'est devenu « le décor se met à parler » (perte de `alt`). Quatre cibles ont été retirées avec le code qu'elles mesuraient, une réorientée, une ajoutée.
 ## À NE PAS faire
 - Ne pas élargir le périmètre au-delà du MVP demandé, même si le design fourni montre plus.
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).
 - Ne pas coder les chemins d'argent sans tests + demande de revue.
 - ⛔ **NE PAS LIVRER E3 (paiement Chargily) COMME UN LOT ORDINAIRE.** La méthode est **durcie (D126)** et décrite dans `ZWADJ_CONTINUITE.md` → « ⛔ E3 — MÉTHODE RENFORCÉE » : **cinq sous-lots** avec arrêt franc entre chacun, cadrage listant les **modes de défaillance** avant tout code, **toute garde neutralisée pour prouver que son test mord**, **aucune valeur écrite de mémoire** (charges utiles Chargily capturées du bac à sable, aucun montant en dur), **aucune référence gelée** sur le chemin de l'argent (la seule valeur acceptable est zéro), webhook **mince** (signature → dédup → file → 200 : un handler lent fait retenter Chargily et multiplie les courses), **livraison sombre** derrière un drapeau. Un mode de défaillance non listé au cadrage **ne se code pas**.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
+- ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 
-## État des lots — au 16/08/2026
+- ⛔ **NE PAS PRENDRE UN NUMÉRO DE DÉCISION DANS UN RÉSUMÉ DE SESSION.** Deux décisions ont été écrites `D233` et `D234` dans **sept fichiers livrés** alors que ces numéros appartenaient déjà à la campagne SOLID/Strategy. Repéré seulement en mettant `ZWADJ_CONTINUITE.md` à jour. Un numéro se prend en lisant le **dernier attribué dans ce fichier**, jamais ailleurs.
+## État des lots — au 20/08/2026
 
 | Lot | Objet | État |
 |---|---|---|
@@ -267,7 +317,15 @@ connexion (famille D115).
 | Accueil Client | 8 sections, SSR, sans JavaScript | ✅ livré — 11/11 gardes |
 | Retouches visuelles | Rail vertical, devis, carte, pied de page | ✅ livré et mesuré |
 | Assistant de filtres | 4 étapes → `/salles`, route dédiée | ✅ livré — 9/9 gardes |
-| `availableOn` | Disponibilité partielle, salles grisées | ⏳ **cadré, 4 arbitrages en attente** |
+| `availableOn` | Annotation par date, exclusion situation B | ✅ **livré et mesuré** — 10/10 + 12/12 gardes |
+| SEO `robots`/`canonical` | Règle `isVariant` + câblage 9 pages | ✅ **livré et mesuré** — 9 tests |
+| Point B — 404 | Front localisé + racine + API `ROUTE_NOT_FOUND` | ⚠ **livré ; front JAMAIS rendu en test** |
+| Point D — chrome partagée | `@zwadj/ui/journey`, pro + client | ✅ **livré et mesuré** — 7/7 gardes |
+| Exclusion situation B | Salles sans créneau retirées si date demandée | ⚠ **zip livré ; application NON confirmée** |
+| D227 — hors horizon | Refus explicite, code distinct | ⛔ **NON livré** |
+| D228 — `maxPrice` | Budget silencieusement jeté | ⛔ **NON livré — DÉFAUT ACTIF** |
+| Lot ③ — assistant | Mode de `/salles`, `?guide=`, accueil 3 champs | ⛔ **NON livrable (D232)** |
+| **Campagne SOLID/Strategy** | S0→S7 + R4 (défaut de production) + R5 | ✅ **livrée et mesurée** — 74 gardes rouges, 12 campagnes, intégration 424/424 |
 
 ⚠ **`C1` est ambigu** : il désigne « Flux C, lot 1 — plages de visite » (livré).
 Les lots de machine à états sont `Q0`→`Q5`. Correspondance en tête de la section
@@ -298,6 +356,161 @@ réservation reste un acte distinct.
 
 ## Leçons de méthode — répétées, donc consignées
 
+### Campagne DIP/ISP/SRP (S8 → S10b) — 24 au 28/08/2026
+
+- ⛔ **LES HARNAIS VIVENT DANS `neutralisation/`** et se lancent **depuis la racine** :
+  `python3 neutralisation/neutralize-xxx.py`. Aucun ne se repère par `__file__` — tous
+  leurs chemins sont relatifs au **dossier courant**. Chacun porte une garde qui refuse
+  de démarrer si `pnpm-workspace.yaml` n'est pas là, sans quoi un `cd neutralisation`
+  produirait « ERREUR DE SCRIPT : 0 occurrence(s) », c'est-à-dire un message qui envoie
+  chercher un défaut de code là où il n'y a qu'un dossier.
+- ⛔ **UNE CIBLE DONT UNE MESURE NE PEUT PAS ROUGIR EST MUETTE PAR CONSTRUCTION.**
+  Trois fois dans cette campagne : une mutation de l'ADAPTATEUR déclarée aussi sur la
+  mesure du SERVICE (qui bouchonne le port et ne voit rien) ; une mesure pointée sur un
+  fichier NON exempté pour tester un plafond qui ne s'y applique pas ; une cible qui
+  neutralisait un `if` dont aucune branche ne se déclenche en régime nominal.
+  **Avant d'écrire une cible : par quel chemin cette mesure voit-elle la mutation ?**
+- ⛔ **`toContain` NE MESURE PAS UNE LISTE.** Une garde assertait
+  `toContain("DRAFT")` ; la neutralisation posait `["DRAFT", "CONVERTED"]`, qui contient
+  bien « DRAFT ». **Verte.** On compare à l'AUTORITÉ (`toEqual([...quoteAllowedFrom(…)])`),
+  jamais à une liste écrite dans le test.
+- ⛔ **ÉLARGIR UN TYPE DE RETOUR NE CASSE JAMAIS UN APPELANT** — seul un type rétréci le
+  fait. Un découpage d'interfaces peut donc se défaire méthode par méthode, en silence,
+  sans qu'aucune porte ne bouge. Ce qui le tient, ce sont des assertions
+  `Identiques<ReturnType<typeof crochet>, Interface>` portées par `tsc`, pas par vitest.
+- ⛔ **UNE GARDE STATIQUE CHERCHE L'IDENTIFIANT, PAS L'APPEL.**
+  `import { useVenues as useVenueCrud }` laisse le site d'appel intact : chercher
+  `useVenues(` ne voit rien, chercher `\buseVenues\b` attrape l'import comme l'appel.
+- ⛔ **UNE ASSERTION CONDITIONNELLE NE MESURE RIEN.** `if (mock.calls.length > 0) expect(…)`
+  est vert quand le chemin a marché, vert quand il a échoué, vert toujours. Écrite puis
+  retirée dans le spec de `QuotesService` — avec la raison consignée à la place, là où le
+  lecteur cherchera le test manquant.
+- ⛔ **UN RELEVÉ NE DOIT JAMAIS SORTIR EN VERT.** `UPDATE_CONSOLE_CEILINGS=1` désactive
+  ENTIÈREMENT la garde des sorties console. Une variable restée dans le shell rend toutes
+  les portes suivantes vertes **sans rien mesurer** — vécu. Le mode relevé lève désormais,
+  et un **pré-vol inversé** dans le harnais abandonne si un run de relevé sort en 0.
+- ⚠ **UN PLAFOND SE RELÈVE SUR PLUSIEURS PASSES.** Le compte d'avertissements `act(…)`
+  FLOTTE : le même fichier a rendu 1 puis 0, un autre 3 puis 4, sans qu'une ligne bouge.
+  Une égalité stricte sur une mesure qui flotte fabrique une suite qui rougit au hasard.
+  On gèle le **maximum observé**, dépasser fait tomber, descendre s'imprime.
+- ⚠ **`satisfies`, JAMAIS `as unknown as`, pour un double de port.** Avec `as`, un double
+  incomplet ou désynchronisé passe ; avec `satisfies`, TypeScript exige les signatures.
+  ⛔ Et le cast n'est PAS de la paresse quand la cible est Prisma : ses délégués sont des
+  génériques surchargés, `vi.fn()` ne leur est pas assignable. **C'est l'argument du port**,
+  pas un défaut de discipline. Le cast reste légitime dans le spec d'un ADAPTATEUR, dont
+  le métier est de parler à Prisma et dont on mesure la charge utile.
+- ⛔ **UN DOUBLE `vi.fn()` SANS PARAMÈTRE DÉCLARÉ REND `mock.calls[0][0]` INCOMPILABLE**
+  (`TS2493`, tuple vide). Chaque bouchon déclare sa charge et son retour.
+- ⛔ **UN SQL EXTRAIT SE NETTOIE AVANT D'ÊTRE DÉCOUPÉ.** Un extracteur coupait sur `;`
+  puis retirait les commentaires : un point-virgule DANS une phrase française scinde le
+  bloc, le fragment perd son `--`, et PostgreSQL répond `syntax error at or near "les"`.
+  ⚠ **Et l'extracteur avait été vérifié — avant qu'on modifie le fichier qu'il lit.** Une
+  mesure faite une fois ne couvre pas l'entrée qu'on change ensuite.
+- ⛔ **UNE FUITE DE CONNEXION DANS UN TEST NE SE VOIT PAS DANS CE TEST** — elle se voit
+  dans le suivant, et on cherche au mauvais endroit. Tout client `pg` brut ouvert par un
+  spec doit avoir un chemin de fermeture appelé en `finally`, y compris quand l'assertion
+  qui précède lève **par conception**.
+- ⛔ **`migration-non-empty.int-spec.ts` SE RETARGE À CHAQUE MIGRATION AJOUTÉE.** Il
+  applique tout SAUF la dernière, puis vérifie qu'elle n'est pas là. Ajouter une migration
+  sans suivre sa sonde le fait échouer sur l'avant-dernière — cinq changements de sonde en
+  six lots. Le semis doit produire l'état sur lequel la NOUVELLE migration peut échouer,
+  sinon elle s'applique sur du vide et le test est vert et muet.
+- ⚠ **`import.meta` : la leçon existait déjà et j'ai récidivé.** Écrit dans un
+  `int-spec`, il passe sous Vitest (SWC rend le fichier en ESM) et tombe en `TS1343` au
+  typecheck. `__dirname` ferait l'inverse. On passe par `process.cwd()` **et on vérifie
+  le chemin**, au lieu d'y croire.
+- ⛔ **`noUncheckedIndexedAccess` : indexer par un CALCUL rend `T | undefined`**, même sur
+  un tuple `as const`. `TIERS[TIERS.length - 1]` ne compile pas ; `Math.max(...TIERS)` si,
+  et dit mieux ce qu'on veut.
+- ⚠ **UN REFACTORING QUI EMPORTE UN AVERTISSEMENT EN EMPORTE LA RAISON D'ÊTRE.** Le
+  découpage de `VenueProClient` a failli effacer « Topologie A2, volontairement
+  asymétrique — NE PAS harmoniser ». Relire ce qu'on remplace, pas seulement ce qu'on écrit.
+
+### Lot S11-a (SRP sur `BookingsService`) — 28/08/2026
+
+- ⛔ **CE QUI COMMANDE UN DÉCOUPAGE, C'EST OÙ LA MESURE POURRA VIVRE.** `BookingsService`
+  n'a **aucune spec unitaire** : sa seule mesure demande un PostgreSQL réel. Toute cible
+  posée dans ce service était donc muette par construction. Le choix n'a pas été « quel
+  découpage est le plus élégant » mais « lequel rend ces décisions neutralisables en
+  millisecondes ». **Modules purs**, pas un septième `as unknown as PrismaService` (D258).
+- ⛔ **UN LOT DE SRP SE MESURE AVANT ET APRÈS, SINON IL S'AUTO-DÉCERNE SON RÉSULTAT.**
+  Premier jet : l'appel écrit en ligne dans `create` **faisait grossir la méthode**
+  (136 → 138 lignes exécutables). Le lot ratait son objet et rien ne l'aurait dit. La
+  traduction du verdict est passée dans une aide privée — même idiome que la méthode
+  voisine — et `create` est descendu à **123**. **On mesure, on n'annonce pas.**
+- ⚠ **UN CHIFFRE DE BACKLOG PEUT ÊTRE UNE ESTIMATION.** « `create` pèse 200 lignes sur
+  729 » : la mesure dit **189**. Sans gravité ici, mais un lot suivant qui part de ce
+  chiffre part d'à peu près. **Recompter fait partie de la reprise.**
+- ⛔ **UNE CONSIGNE DE DÉCOUPAGE SE VÉRIFIE CONTRE LES DÉCISIONS DÉJÀ PRISES.** Le backlog
+  proposait de déplacer les aides de notification **dans** `booking-notifications.service.ts`.
+  Appliqué tel quel, cela obligeait le service à **injecter son propre destinataire** —
+  c'est-à-dire à défaire **D63**. Un module pur voisin satisfait les deux. C'est D231
+  (« vérifier la prémisse avant de coder la demande ») appliqué à une consigne d'archi.
+- ⛔ **DEUX `null` DE SENS DIFFÉRENT NE VOYAGENT PAS DANS LA MÊME VARIABLE.** Ici,
+  « créneau introuvable » et « ignore les heures du créneau » (SINGLE_SLOT). Les
+  confondre coûte un jour de calendrier. Le second voyage dans un **drapeau nommé**.
+- ⛔ **UN ORDRE DE REFUS EST UNE RÈGLE MÉTIER, ET IL SE MESURE SUR UN CAS DOUBLEMENT
+  FAUTIF.** Un test qui n'enfreint qu'une règle à la fois est vert quel que soit l'ordre.
+  Ici : capacité (400) AVANT date (409) — intervertir enverrait le client changer de
+  date au lieu de réduire sa table.
+- ⛔ **UNE GARDE DE FUSEAU EST MUETTE SUR UN SERVEUR EN UTC.** Une colonne `@db.Date` lue
+  avec `getFullYear()` recule d'un jour à l'ouest de Greenwich — et l'intégration, en
+  UTC, ne le voit **jamais**. La spec **épingle `process.env.TZ`** (mesuré : Node 22 le
+  prend en compte à chaud) et le **restaure en `afterAll`**, sinon elle contamine ses
+  voisines.
+- ⚠ **UNE GARDE DE SOURCE PEUT ROUGIR SUR UN COMMENTAIRE.** Le commentaire qui explique
+  pourquoi un import a disparu **épelait le jeton** que la garde interdit. Reformulé en
+  toutes lettres, avec la raison écrite sur place : une garde qui accuse à tort finit
+  ignorée.
+- ⛔ **UN RENOMMAGE DE NEUTRALISATION NE DOIT PAS ÊTRE UN PRÉFIXE DU NOM CHERCHÉ**, sinon
+  `toContain` reste vert sans rien mesurer. Même famille que la leçon `toContain` de S10b.
+- ⚠ **UN ATTENDU ÉCRIT DE MÉMOIRE SE FAIT ENCORE ATTRAPER, MÊME PETIT.** `"Yasmine  Belkacem"`
+  contre `"Yasmine   Belkacem"` : `trim()` ne nettoie que les **bords**. La mesure a
+  tranché, l'attendu a suivi.
+- ⛔ **UN IMPORT MORT PEUT ÊTRE UN PANNEAU INDICATEUR (D263).** Trois imports signalés
+  par `eslint` dans le même fichier : deux étaient du mort pur, le troisième
+  (`BookingStatus`) désignait un défaut OUVERT — un refactoring l'avait dépouillé de son
+  consommateur en remplaçant, ailleurs, l'énumération par une **chaîne littérale sur le
+  chemin de l'argent**. **Avant de supprimer un symbole inutilisé, demander où il était
+  utilisé avant.** Et s'il désignait quelque chose, écrire le report AVANT de couper.
+- ⛔ **UNE EXEMPTION PEUT ÊTRE LA PREUVE QU'UNE GARDE N'EXISTE PAS (D263).** Un
+  `eslint-disable` signalé « inutile » n'est pas forcément du ménage : ici, la règle
+  exemptée demandait l'information de TYPES et n'était **pas activée du tout**. La
+  directive faisait taire un silence. Vérifier la config avant de conclure au ménage.
+- ⛔⛔ **« NON MESURÉ » N'EST PAS « NON LANÇABLE » — ET CE LOT A ÉTÉ LIVRÉ ROUGE (D262).**
+  Le typecheck API est non concluant sur les FORMES Prisma. Ce constat a été étendu, sans
+  que personne l'écrive, en « le typecheck ne dit rien » — et `tsc` n'a **pas été lancé
+  du tout**. L'erreur qui a cassé la porte chez Ko était présente en bac à sable **depuis
+  le début**, noyée dans 586 erreurs de talon. **On lance l'outil, PUIS on trie.** Deux
+  gestes qui rendent le tri possible : renforcer le talon (index de délégués sur
+  `PrismaClient` : 586 → 151 erreurs) et **restreindre la mesure aux fichiers sans import
+  Prisma** (zéro bruit).
+- ⛔ **`Parameters<typeof f>` SUR UNE FONCTION GÉNÉRIQUE EFFACE LE PARAMÈTRE DE TYPE** et
+  le remplace par sa **contrainte**. Une aide de test qui s'en sert reçoit `S = Contrainte`
+  et perd tout champ concret. **On nomme le type d'entrée exporté par le module**, on ne le
+  reconstruit pas depuis la signature.
+- ⛔ **UNE FAUTE DE TYPE PEUT ÊTRE TOTALEMENT INVISIBLE À VITEST.** Vérifié, pas supposé :
+  sous la mutation qui retire le paramètre de type, la spec reste **15/15 verte** — rien ne
+  change à l'exécution. **Toute garde qui ne vit que dans les types exige une mesure `tsc`
+  dans le harnais**, sinon elle est muette par construction.
+- ⛔ **VÉRIFIER L'ÉTAT DES PORTES À L'ENTRÉE, PAS SEULEMENT À LA SORTIE.** La porte **lint
+  était déjà rouge** dans l'archive reçue (trois imports morts laissés par S10b), et
+  `AGENTS.md` du dépôt était **périmé de cinq sections**. Deux constats qu'un lot ne
+  produit pas mais qu'il doit **relever et rapporter**, sinon il les endosse.
+
+### Campagne SOLID/Strategy (S0→S7, R4, R5) — 20 au 22/08/2026
+
+- **Vérifier que le filet EXISTE avant de s'y suspendre.** Deux lots ont différé la moitié de leur preuve à l'intégration ; cette moitié est revenue muette (D236). Une preuve différée n'est pas une preuve.
+- **Un compte de remplacements asserté prouve que la mutation a EU LIEU, pas qu'elle CHANGE quelque chose.** Deux cibles de S5a-0 remplaçaient une expression par une autre de même valeur : comptes justes, mutations inertes, gardes vertes.
+- **Une garde qui se relit elle-même ne mesure rien** (D241). Une matrice qui recalcule ses attentes depuis la source qu'elle teste est verte par construction.
+- **Une cible sans mesure n'est pas un succès** (D248).
+- **Vitest transpile sans typer.** Une spec peut être verte et ne pas compiler : ne jamais conclure d'un vitest ciblé sans repasser le typecheck.
+- **`str_replace` insère des LF nus dans un fichier CRLF**, et un fichier neuf naît en LF. Normaliser puis mesurer en octets, dans le fichier ET dans l'archive.
+- **Un motif multi-lignes de harnais doit porter `\r\n`**, sinon il ne matche rien — et seul le compte asserté le dit.
+- **Sous Windows, `subprocess` ne résout pas `pnpm.cmd`** : passer par `shutil.which`, et imposer `encoding="utf-8"` (cp1252 casse sur la sortie de vitest).
+- **`pgrep -f <motif>` se voit lui-même** quand le motif est dans sa propre ligne de commande.
+- **Un `finally` ne s'exécute pas quand le processus est tué.** Vu deux fois de plus pendant cette campagne : contrôler l'intégrité de l'arbre APRÈS chaque campagne, pas seulement à la fin.
+
 ⚠ **Ne jamais écrire une valeur de mémoire.** Quatre occurrences dans une seule
 session : `capacity_min` (supprimée par `20260723090000`), `quotes.updated_at`
 (n'existe pas), `venues.owner_id → users` (référence en réalité
@@ -323,6 +536,42 @@ fois par la campagne de neutralisation, pas par relecture.
 `svg[aria-hidden]` : lucide pose cet attribut **tout seul**, l'assertion ne
 pouvait pas rougir. Un autre affirmait un compteur **avant** que l'action
 mesurée soit rendue. Les deux étaient verts et vides.
+
+### Session des 23 et 24/08/2026 — 404, `maxPrice`, hors horizon, décor
+
+- **Un test de RENDU ne mesure pas qu'on ATTEINT la page.** Deux pages 404 correctes n'ont jamais été rendues pour un visiteur ; monter le composant et lire son titre serait resté vert tout du long. Quand ce qui a cédé est du **routage**, la garde porte sur des noms de fichiers et des chemins.
+- **Chercher une phrase par sous-chaîne dans une réponse HTTP, c'est aussi chercher dans ses SCRIPTS.** Une note de livraison a annoncé « layout complet » sur une page dont le HTML rendu était **vide** : la phrase se trouvait dans la charge de streaming. Retirer `<script>`, `<style>` et `<template>` avant d'extraire, et **valider l'extracteur sur une page témoin**.
+- **Une valeur « très loin » finit par entrer dans un domaine refusé.** La fixture `2099-06-02`, choisie pour n'être jamais passée, est devenue exactement ce que le nouvel horizon refuse, et faisait tomber trois tests qui ne parlaient pas d'horizon. Les bornes de test se **dérivent** de l'horloge figée et de la constante du code.
+- **Arrondir APRÈS avoir testé fait mentir le test.** Deux boîtes exactement jointives sont ressorties chevauchantes d'un demi-pixel : le calcul disait « libre », la sortie disait le contraire. On teste les coordonnées qu'on écrira.
+- **Un tirage AVEC REMISE échantillonne un vocabulaire, il ne le couvre pas.** Deux mots n'apparaissaient nulle part, et rien à l'écran ne le disait. Paquet battu, distribué **sans remise**.
+- **Indexer une taille sur la mauvaise dimension vide un canevas.** Corps calculés sur la hauteur d'un canevas portrait : 13 mots posés sur 56, le reste refusé faute de largeur. Suivre la **plus petite** dimension.
+- **`str.rstrip("0")` sur un nombre rabote aussi les zéros de POSITION.** `100` est devenu `1` sur tous les glyphes d'une image : lettres méconnaissables. Un arrondi s'écrit avec une condition, pas avec un `rstrip`.
+- **Une garde peut mesurer la DOCUMENTATION du fichier qu'elle teste.** `expect(svg).not.toContain("<text")` rougissait sur le commentaire expliquant justement pourquoi le fichier n'en utilise pas. Retirer les commentaires avant d'assertir — la règle existait pour les audits de livraison, elle vaut aussi pour les tests.
+- **Un bloc inséré sans fin de ligne finale DÉTRUIT la ligne suivante.** La vérification de non-perte l'a attrapé (50 lignes annoncées perdues) avant toute écriture. Une faute qu'on peut rendre impossible se rend impossible : l'outil d'insertion l'assertit désormais.
+- **Une contrainte de rendu peut rendre une demande contradictoire, et il faut le dire.** « Une image unique » + « rien derrière le rectangle central » ne tenaient ensemble qu'à condition de calibrer le vide pour les deux aspects extrêmes ; un vide étroit laissait des mots sous les boutons sur mobile, un vide large vidait l'écran de bureau.
+- **Retirer un module retire ses gardes, et c'est le résultat attendu.** Seize tests ont disparu avec le générateur qu'ils mesuraient ; les garder aurait voulu dire garder le code. Un compteur de tests qui BAISSE n'est pas une régression s'il est expliqué.
+### Notes d'environnement (bac à sable)
+
+- **`prisma generate` fonctionne HORS LIGNE avec Prisma 7** (générateur `prisma-client`, TypeScript natif) : un `DATABASE_URL` factice suffit, aucun binaire de moteur à télécharger. La porte typecheck API est donc **atteignable** — l'affirmation contraire, faite en début de session du 19/08, était fausse.
+  ⚠ **CORRIGÉ LE 23/08/2026 : ce n'est PAS vrai dans tous les bacs à sable.** Mesuré : `prisma generate` échoue en `Failed to fetch the engine file at https://binaries.prisma.sh/… — 403 Forbidden`, ce domaine n'étant pas autorisé en sortie et les moteurs n'étant pas embarqués dans le paquet npm. **Sans client généré, AUCUNE spec de l'API ne se collecte.** Contournement employé : un **talon** dans `apps/api/src/generated/` (répertoire ignoré par git, absent de toute archive, écrasé au premier `prisma:generate`), exposant les types plus deux valeurs (`Prisma.Decimal`, `Prisma.PrismaClientKnownRequestError`). ⚠ Conséquence à déclarer : les **tests unitaires API sont mesurés**, le **typecheck API ne l'est PAS** — types du talon volontairement lâches. Le déclarer NON MESURÉ, jamais vert. Pour lever la limite : autoriser `binaries.prisma.sh` en sortie.
+- **`import.meta` est une erreur de compilation côté API** (`TS1343`, tsconfig CommonJS) alors qu'il passe côté client. Pour lire un fichier depuis un test API : `process.cwd()`, vitest s'exécutant depuis `apps/api`.
+- **Les scripts de harnais sont en CRLF** comme le reste du dépôt : toute édition programmatique doit le relever **en octets**, pas le supposer.
+- **Compteurs de la dernière mesure certifiable** : API **482/44** · client **239/18** · pro **344/27** · i18n **1090 = 1090**.
+  ⚠ **Au 24/08/2026** : API **560/50** · client **264/19** · i18n **1093 = 1093**.
+  ⚠ **Au 28/08/2026** : API **602/53** · api-client **36/3** · client **287/20** ·
+  pro **347/28** · intégration **432/35**. Harnais : **18 scripts, 149 cibles**,
+  tous dans `neutralisation/`. Base de départ API relevée AVANT le lot (**556/50**) pour que le « +4 » mesure quelque chose.
+  ⚠ **Après S11-a (28/08/2026, D261)** : API **638/55**, base d'entrée relevée à
+  **602/53** avant toute modification. Harnais : **19 scripts, 165 cibles**.
+  ⚠ **`pnpm install --ignore-scripts` SUFFIT pour les specs unitaires API** (772 paquets,
+  ~22 s) : argon2 et sharp ne sont pas requis à la collecte. `prisma generate` reste en
+  **403** sur `binaries.prisma.sh`, y compris avec `PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1`
+  — mesuré, ce contournement ne lève QUE la vérification de somme, pas le téléchargement.
+  Le talon de `apps/api/src/generated/` reste donc obligatoire, et le **typecheck API
+  NON MESURÉ**.
+  ⚠ **La porte LINT, elle, est mesurable en bac à sable** et n'était pas relevée jusqu'ici.
+- ⛔ **Jamais exécutés en bac à sable** : intégration (PostgreSQL réel), e2e, axe-core, `pnpm build`.
+  ⚠ **CORRIGÉ LE 23/08/2026 : `next build` A ÉTÉ EXÉCUTÉ**, plusieurs fois, ainsi que `next start` — c'est ce qui a permis de mesurer les statuts HTTP réels des 404 et de prouver le soft-404. Restent jamais exécutés : intégration (PostgreSQL réel), e2e, axe-core.
 
 ## Migrations — `prisma migrate dev` est INTERDIT
 

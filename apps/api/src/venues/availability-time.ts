@@ -79,6 +79,23 @@ export function civilUtcMs(date: CivilDate): number {
   return Date.UTC(date.year, date.month - 1, date.day);
 }
 
+/** Date civile d'une colonne `@db.Date` — l'INVERSE exact de `civilUtcMs`.
+ *
+ *  ⚠ Les composantes se lisent en UTC, jamais en local : Prisma rend une
+ *  `@db.Date` à minuit UTC, et `getFullYear()` laisserait le fuseau du serveur
+ *  choisir le jour en silence. Une machine à l'ouest de Greenwich reculerait
+ *  d'une journée toutes les dates d'événement affichées.
+ *
+ *  ⚠ Cette fonction VIVAIT EN PRIVÉ dans `bookings.service.ts` (lot S11-a),
+ *  où elle servait DEUX appelants. Le jour où l'un des deux a quitté le
+ *  fichier, en garder une copie de chaque côté aurait fabriqué deux autorités
+ *  sur la même conversion — la classe de défauts que S1 a fermée sur les
+ *  statuts et que R4 a payée sur l'énumération des devis. Elle atterrit ici,
+ *  dans le module qui possède déjà `CivilDate` et sa conversion aller. */
+export function civilOfUtcDate(date: Date): CivilDate {
+  return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };
+}
+
 /** Instant réel de minuit à Alger. C'est le seul point du dépôt où une date
  *  civile devient un instant. */
 export function civilDayStartMs(date: CivilDate): number {

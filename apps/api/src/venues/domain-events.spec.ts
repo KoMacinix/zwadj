@@ -119,7 +119,15 @@ describe("⚠ NE LÈVE JAMAIS (D63) — l'acte écrit reste écrit", () => {
   it("un rejet NON-Error est absorbé de la même façon", async () => {
     const { events, logger } = editeur();
     events.subscribe("booking.declined", async () => {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
+      // ⚠ DIRECTIVE `eslint-disable` RETIRÉE ICI (D263) — et le motif compte
+      //   plus que la ligne. Elle avait été posée en croyant faire taire
+      //   `@typescript-eslint/only-throw-error`. Mesuré : cette règle demande
+      //   l'information de TYPES, et `packages/config/eslint/base.mjs` n'active
+      //   que `tseslint.configs.recommended`. Elle n'a donc JAMAIS tourné —
+      //   la directive faisait taire un silence.
+      //   ⛔ Le `throw` d'une chaîne, ci-dessous, est VOLONTAIRE : c'est
+      //   l'objet même du test. Le jour où les règles typées seront activées
+      //   (report au backlog), c'est ici qu'il faudra reposer une exemption.
       throw "passerelle coupée";
     });
 

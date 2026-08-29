@@ -137,6 +137,16 @@ export class PrismaQuoteStore implements QuoteStore {
           // ⚠ PENDING, pas ACCEPTED : c'est le pro qui acceptera la date. Une
           // demande PENDING ne verrouille rien, donc l'EXCLUDE de chevauchement
           // ne peut pas refuser ici — le 409 de créneau pris arrive plus tard.
+          //
+          // ⛔ DÉFAUT OUVERT (D263), NON CORRIGÉ ICI — chemin de l'argent, donc
+          //   arbitrage avant code. Cette valeur est une CHAÎNE LITTÉRALE alors
+          //   que `BookingStatus` existe dans `@zwadj/types` depuis S1. Mesuré :
+          //   le littéral « PENDING » est écrit TROIS FOIS et aucune des trois
+          //   ne dérive de l'autorité — ici, `quote-store.prisma.spec.ts` l. 254,
+          //   et `quotes.int-spec.ts` l. 449. Les trois s'accorderaient entre
+          //   elles et se tromperaient ensemble. C'est exactement la classe que
+          //   D259 a nommée sur `BookingSource`, et le contraire de la règle
+          //   « on compare à l'AUTORITÉ, jamais à une liste écrite dans le test ».
           status: "PENDING",
           paymentMethod: donnees.paymentMethod,
           eventDate: donnees.eventDate,

@@ -38,7 +38,6 @@ import {
 } from "@nestjs/common";
 import {
   AuthErrorCode,
-  BOOKING_HORIZON_MONTHS,
   BookingErrorCode,
   BookingStatus,
   HARD_BOOKING_STATUSES,
@@ -52,7 +51,7 @@ import {
 import { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import {
-  addMonthsCivil,
+  civilOfUtcDate,
   civilTodayAt,
   civilUtcMs,
   formatCivilDate,
@@ -61,7 +60,24 @@ import {
   toCalendarDay,
   type CivilDate
 } from "./availability-time";
+// ⚠ S11-a — L'HORIZON DE RÉSERVATION, L'AJOUT DE MOIS ET LE CALCUL DE FENÊTRE
+// ne sont plus importés ici : ils sont partis ENTIERS dans `booking-admission`,
+// pas recopiés. Les laisser dans cette liste aurait donné à croire que le
+// service décide encore de la fenêtre de dates. Seuls les deux TYPES restent —
+// ils décrivent ce que le verdict rend, ils ne calculent rien.
+//
+// ⚠ Et ce commentaire ÉPELLE VOLONTAIREMENT LES NOMS EN TOUTES LETTRES plutôt
+// qu'en identifiants : une garde de source, dans `booking-admission.spec.ts`,
+// vérifie que la constante d'horizon n'apparaît plus dans ce fichier. Écrite
+// ici, elle aurait fait rougir la garde sur un simple commentaire — et une
+// garde qui accuse à tort finit ignorée.
+import type { BookingWindow, SlotBounds } from "./booking-window";
+import { decideBookingAdmission } from "./booking-admission";
 import type { BookingNotificationInput } from "./booking-notifications.service";
+import {
+  buildBookingNotification,
+  type VenueForNotification
+} from "./booking-notification-input";
 import {
   BookingCommand,
   allowedFrom,
@@ -74,7 +90,6 @@ import {
   type BookingLocks,
   type BookingRow
 } from "./booking-locks.types";
-import { computeBookingWindow } from "./booking-window";
 import { DomainEvents } from "./domain-events";
 import { resolveDepositCents } from "./deposit";
 import { resolveServiceLine, type ResolvedLine } from "./service-pricing";
@@ -171,33 +186,12 @@ export class BookingsService {
     });
     if (!venue) this.throwVenueNotFound();
 
-    const slot = venue.slotTemplates[0];
-    // Créneau inconnu, retiré, ou appartenant à une autre salle : « ce créneau
-    // n'existe pas », pas « il est pris ». Les deux phrases n'appellent pas la
-    // même action du client.
-    if (!slot) this.throwSlotUnavailable();
-
-    if (input.guests > venue.capacityMax) {
-      throw new BadRequestException({
-        code: BookingErrorCode.BOOKING_GUESTS_EXCEED_CAPACITY,
-        message: "booking.errors.guestsExceedCapacity"
-      });
-    }
-
-    // UNE seule lecture d'horloge par requête (D48).
+    // UNE seule lecture d'horloge par requête (D48). Elle remonte d'un cran :
+    // le module qui décide de la recevabilité est PUR, il REÇOIT la date du
+    // jour au lieu de la lire.
     const nowMs = Date.now();
-    const today = civilTodayAt(nowMs);
 
-    // Strictement future : on ne prend pas une demande pour aujourd'hui — la
-    // salle n'aurait pas le temps de répondre, et le créneau du soir est
-    // peut-être déjà commencé. Même autorité que le calendrier pour l'horizon
-    // (D49) : une écriture au-delà se REFUSE, elle ne se déplace pas.
-    const horizon = addMonthsCivil(today, BOOKING_HORIZON_MONTHS);
-    if (civilUtcMs(date) <= civilUtcMs(today) || civilUtcMs(date) > civilUtcMs(horizon)) {
-      this.throwSlotUnavailable();
-    }
-
-    const window = computeBookingWindow(date, venue.bookingMode === "SINGLE_SLOT" ? null : slot);
+    const { slot, window } = this.admitOrThrow(date, nowMs, venue, input.guests);
 
     // Prix : la MÊME résolution que le calendrier public, sur la vraie date.
     const holidays = await this.prisma.holiday.findMany({
@@ -313,7 +307,7 @@ export class BookingsService {
 
     // D63 — APRÈS l'écriture, jamais dedans, et sans lever : un e-mail tombé ne
     // défait pas une demande enregistrée.
-    await this.events.publish("booking.requested", this.notificationInput(row, venue, client, null));
+    await this.events.publish("booking.requested", buildBookingNotification(row, venue, client, null));
 
     return this.toDTO(row);
   }
@@ -511,6 +505,51 @@ export class BookingsService {
   // Aides
   // ───────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Les trois refus PRÉALABLES au chiffrage, traduits en HTTP.
+   *
+   * ⚠ LA DÉCISION N'EST PLUS ICI. Elle est dans `booking-admission.ts` (S11-a),
+   * module pur. Chacun de ces trois refus gardait une frontière — créneau
+   * introuvable, capacité, fenêtre de dates — et aucun n'était neutralisable
+   * tant qu'il vivait dans `create` : ce service n'a AUCUNE spec unitaire, sa
+   * seule mesure demande un PostgreSQL réel. Leur ORDRE fait partie de la règle
+   * et il est désormais mesuré : la capacité (400) avant la date (409).
+   *
+   * ⚠ CE QUI RESTE ICI EST LA TRADUCTION, et rien qu'elle — même partage que
+   * `transitionStatus` juste au-dessus. La politique rend un verdict ; le
+   * service seul connaît les codes applicatifs et les clés i18n.
+   *
+   * ⚠ `slot` REVIENT PAR LE VERDICT, il ne se relit pas dans `venue`. Une
+   * seconde lecture obligerait `create` à réécrire la garde de nullité que le
+   * module vient de rendre — c'est-à-dire à garder un `if` dont plus aucune
+   * branche ne se déclenche. Une garde sans objet se retire, elle ne se
+   * conserve pas « au cas où » (D258, leçon des gardes fantômes).
+   */
+  private admitOrThrow<S extends SlotBounds>(
+    date: CivilDate,
+    nowMs: number,
+    venue: { bookingMode: string; capacityMax: number; slotTemplates: S[] },
+    guests: number
+  ): { slot: S; window: BookingWindow } {
+    const admission = decideBookingAdmission({
+      date,
+      today: civilTodayAt(nowMs),
+      slot: venue.slotTemplates[0] ?? null,
+      wholeDay: venue.bookingMode === "SINGLE_SLOT",
+      capacityMax: venue.capacityMax,
+      guests
+    });
+
+    if (admission.outcome === "SLOT_UNAVAILABLE") this.throwSlotUnavailable();
+    if (admission.outcome === "GUESTS_EXCEED_CAPACITY") {
+      throw new BadRequestException({
+        code: BookingErrorCode.BOOKING_GUESTS_EXCEED_CAPACITY,
+        message: "booking.errors.guestsExceedCapacity"
+      });
+    }
+    return { slot: admission.slot, window: admission.window };
+  }
+
   /** 404 INDISTINCT « dans MA salle » (D47) : id malformé, inexistant, ou salle
    *  d'un autre pro rendent le même 404. Distinguer les trois apprendrait à un
    *  curieux ce qui existe. */
@@ -607,6 +646,13 @@ export class BookingsService {
     return (LOCKING_STATUSES as readonly string[]).includes(status);
   }
 
+  /** La LECTURE qui manque à la charge utile, et rien d'autre.
+   *
+   *  ⚠ CE QUI RESTE ICI EST UN ACCÈS BASE, PAS UNE DÉCISION. La construction de
+   *  la charge est partie dans `booking-notification-input.ts` (S11-a) ; ce
+   *  qui subsiste est le seul motif pour lequel cette méthode était `async` —
+   *  une ligne ancienne dont le client n'est plus en main. `create`, lui, tient
+   *  déjà le sien et appelle le constructeur en direct. */
   private async notificationFor(
     row: BookingRow,
     venue: VenueForNotification,
@@ -619,49 +665,7 @@ export class BookingsService {
             where: { id: row.clientId },
             select: { id: true, email: true, locale: true }
           });
-    return this.notificationInput(row, venue, client, reason);
-  }
-
-  private notificationInput(
-    row: BookingRow,
-    venue: VenueForNotification,
-    client: { id: string; email: string; locale: string } | null,
-    reason: string | null
-  ): BookingNotificationInput {
-    return {
-      bookingId: row.id,
-      venueId: row.venueId,
-      venueNameFr: venue.nameFr,
-      venueNameAr: venue.nameAr,
-      eventDate: formatCivilDate(this.civilOf(row.eventDate)),
-      slotNameFr: row.slotNameFr,
-      slotNameAr: row.slotNameAr,
-      guests: row.guests,
-      totalCents: row.totalCents,
-      depositCents: row.depositCents,
-      clientName: `${row.contactFirstName} ${row.contactLastName}`.trim(),
-      contact: row.contactPhone,
-      reason,
-      pro: {
-        userId: venue.owner.user.id,
-        email: venue.owner.user.email,
-        locale: venue.owner.user.locale === "AR" ? "ar" : "fr",
-        phone: venue.owner.phone,
-        notifyByEmail: venue.owner.notifyByEmail,
-        notifyBySms: venue.owner.notifyBySms
-      },
-      client:
-        client === null
-          ? null
-          : { userId: client.id, email: client.email, locale: client.locale === "AR" ? "ar" : "fr" }
-    };
-  }
-
-  /** `Booking.eventDate` est une colonne `@db.Date` : Prisma la rend à minuit
-   *  UTC. On lit donc ses composantes en UTC, jamais en local — sinon le
-   *  fuseau du serveur choisirait le jour en silence. */
-  private civilOf(date: Date): CivilDate {
-    return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };
+    return buildBookingNotification(row, venue, client, reason);
   }
 
   private toDTO(row: BookingRow): BookingDTO {
@@ -673,7 +677,7 @@ export class BookingsService {
       venueNameAr: row.venue.nameAr,
       status: row.status,
       paymentMethod: row.paymentMethod,
-      eventDate: formatCivilDate(this.civilOf(row.eventDate)),
+      eventDate: formatCivilDate(civilOfUtcDate(row.eventDate)),
       startsAt: row.startsAt.toISOString(),
       endsAt: row.endsAt.toISOString(),
       slotNameFr: row.slotNameFr,
@@ -713,16 +717,4 @@ export class BookingsService {
       message: "booking.errors.slotUnavailable"
     });
   }
-}
-
-interface VenueForNotification {
-  id: string;
-  nameFr: string;
-  nameAr: string;
-  owner: {
-    phone: string;
-    notifyByEmail: boolean;
-    notifyBySms: boolean;
-    user: { id: string; email: string; locale: string };
-  };
 }
