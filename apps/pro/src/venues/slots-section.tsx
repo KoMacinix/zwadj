@@ -29,7 +29,7 @@ import { ConfirmDialog } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import type { SlotTemplateDTO } from "@zwadj/types";
 import { useApiErrorMessage, useValidationMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenueSlotTemplates } from "./venue-client-context";
 import { venueFieldErrors } from "./venue-errors";
 import { PriceInput, formatPriceForDisplay, parseIntegerPrice, stripGroupSeparators } from "./venue-form";
 import { clockToMinutes, crossesMidnight, deriveEndMinutes, minutesToClock } from "./slot-time";
@@ -63,7 +63,7 @@ const byStart = (a: SlotTemplateDTO, b: SlotTemplateDTO): number =>
 
 export function SlotsSection({ venueId, initialSlots }: { venueId: string; initialSlots: SlotTemplateDTO[] }) {
   const { t } = useTranslation();
-  const venues = useVenues();
+  const venues = useVenueSlotTemplates();
   const toMessage = useApiErrorMessage();
   const tval = useValidationMessage();
   const formId = useId();

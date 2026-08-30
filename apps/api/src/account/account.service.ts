@@ -89,7 +89,7 @@ export class AccountService {
     const isPro = actor.role === "PRO";
 
     const allowed = isPro
-      ? (["businessName", "phone", "phone2"] as const)
+      ? (["businessName", "phone", "phone2", "notifyByEmail", "notifyBySms"] as const)
       : (["firstName", "lastName", "phone"] as const);
     const rejected = Object.keys(input).filter((k) => !(allowed as readonly string[]).includes(k));
     if (rejected.length > 0) {
@@ -124,6 +124,35 @@ export class AccountService {
     if (input.businessName !== undefined) data.businessName = input.businessName;
     if (input.phone !== undefined) data.phone = input.phone;
     if (input.phone2 !== undefined) data.phone2 = input.phone2; // null = effacement (D38 : nullable)
+
+    // D60 — canaux. Le PATCH est PARTIEL : couper l'e-mail sans parler du SMS
+    // peut couper les deux si le SMS était déjà à false. Zod ne voit pas l'état
+    // en base, donc on RELIT la ligne — même raisonnement que les taux D35 — et
+    // on refuse un 400 lisible plutôt que de laisser le
+    // `CHECK pro_profiles_one_channel_required` remonter en 500.
+    //
+    // ⚠ Le CHECK reste le dernier mot : entre cette lecture et l'écriture, un
+    // autre onglet peut avoir coupé l'autre canal. On ne prétend pas fermer la
+    // fenêtre, seulement rendre le cas courant compréhensible.
+    if (input.notifyByEmail !== undefined || input.notifyBySms !== undefined) {
+      const current = await this.prisma.proProfile.findUniqueOrThrow({
+        where: { userId },
+        select: { notifyByEmail: true, notifyBySms: true }
+      });
+      const nextEmail = input.notifyByEmail ?? current.notifyByEmail;
+      const nextSms = input.notifyBySms ?? current.notifyBySms;
+      // Un pro sans aucun canal ne verrait plus jamais une demande arriver —
+      // et sous request-to-book, une demande que personne ne voit expire seule.
+      if (!nextEmail && !nextSms) {
+        throw new BadRequestException({
+          code: AccountErrorCode.PROFILE_FIELD_NOT_ALLOWED,
+          message: "account.errors.channelRequired"
+        });
+      }
+      data.notifyByEmail = nextEmail;
+      data.notifyBySms = nextSms;
+    }
+
     await this.prisma.proProfile.update({ where: { userId }, data });
   }
 

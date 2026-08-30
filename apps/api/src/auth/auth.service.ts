@@ -66,7 +66,7 @@ const AUTH_USER_SELECT = {
   phone: true,
   passwordHash: true,
   googleSub: true,
-  proProfile: { select: { businessName: true, phone: true, phone2: true } }
+  proProfile: { select: { businessName: true, phone: true, phone2: true, notifyByEmail: true, notifyBySms: true } }
 } as const;
 
 type AuthUserRow = Prisma.UserGetPayload<{ select: typeof AUTH_USER_SELECT }>;
@@ -86,6 +86,20 @@ export interface LoginResult {
   // persistent=false (« se souvenir » décoché) : le contrôleur pose un cookie
   // de SESSION (sans expires) — Lot 7/D27.
   refreshCookie: { value: string; expiresAt: Date; persistent: boolean };
+}
+
+/**
+ * Sortie de refresh() — D116. Type DISTINCT de `LoginResult`, et pas un
+ * `LoginResult` au cookie rendu optionnel : `login()` et `googleAuth()` posent
+ * TOUJOURS un cookie, et relâcher leur contrat ferait porter à tous leurs
+ * appelants un `if` qui ne les concerne pas.
+ *
+ * Le refresh, lui, a deux issues légitimes : la rotation nominale (cookie
+ * neuf) et le rejeu gracié (AUCUN cookie — celui du gagnant est déjà posé).
+ */
+export interface RefreshResult {
+  response: LoginResponse;
+  refreshCookie?: { value: string; expiresAt: Date; persistent: boolean };
 }
 
 /**
@@ -458,7 +472,33 @@ export class AuthService {
   }
 
   // ── Refresh (Lot 3 — D9 rotation, D10 réutilisation, D12 format login) ─────
-  async refresh(rawToken: string | undefined): Promise<LoginResult> {
+  //
+  // ⚠ CHEMIN CRITIQUE (auth + concurrence) — REVUE HUMAINE REQUISE.
+  //
+  // ══════════════════════════════════════════════════════════════════════════
+  // D116 — FENÊTRE DE GRÂCE À LA ROTATION, SANS RE-ROTATION.
+  //
+  // Le problème : le mutex de D115 sérialise les refresh d'UN contexte JS.
+  // Deux ONGLETS sont deux contextes qui présentent le MÊME cookie — aucun
+  // mutex navigateur ne peut les fusionner. Et rien ne peut fusionner une
+  // réponse perdue puis retentée, ce qui sur un réseau mobile algérien n'est
+  // pas un cas d'école. Avant D116, ces deux gestes légitimes faisaient tomber
+  // toutes les sessions de l'utilisateur, sur tous ses appareils.
+  //
+  // ⚠ CE QUE LE REJEU GRACIÉ NE FAIT PAS : il ne rote pas.
+  //
+  // Roter dans la fenêtre paraît naturel — chaque appelant repart avec son
+  // cookie — mais les onglets partagent UN SEUL pot à cookies : un seul
+  // `Set-Cookie` survit à l'échange. L'autre jeton, parfaitement valide, reste
+  // vivant 30 jours sans que personne ne le porte. Mesuré : un orphelin PAR
+  // rechargement à deux onglets, et ils survivent à la déconnexion — D11 ne
+  // révoque que le jeton présenté. « Se déconnecter » cessait de déconnecter.
+  //
+  // Ce que l'onglet perdant attend n'est donc PAS un refresh token de plus :
+  // c'est une session utilisable. On lui rend un access token seul, et AUCUN
+  // cookie — celui du gagnant est déjà dans le pot, et il est frais.
+  // ══════════════════════════════════════════════════════════════════════════
+  async refresh(rawToken: string | undefined): Promise<RefreshResult> {
     // Les QUATRE échecs ci-dessous renvoient le même 401 UNAUTHENTICATED :
     // la distinction (absent / inconnu / réutilisé / expiré) n'existe que
     // côté serveur — rien d'exploitable pour calibrer une attaque.
@@ -471,12 +511,14 @@ export class AuthService {
     // « punir » ne punirait personne.
     if (!row) throw this.unauthenticated();
 
-    // D10 — le token matche une ligne DÉJÀ révoquée : un token consommé (rotation
-    // ou logout) qui ressert. Le détenteur légitime a déjà son successeur ; qui
-    // rejoue l'ancien détient une copie → indécidable attaquant/légitime →
-    // révocation de TOUTES les sessions du user. (Vérifié AVANT l'expiration :
-    // même périmé, un token révoqué qui ressert reste un signal de vol.)
-    if (row.revokedAt) {
+    // D10 — le token matche une ligne DÉJÀ révoquée : un token consommé qui
+    // ressert. Le détenteur légitime a déjà son successeur ; qui rejoue
+    // l'ancien détient une copie → indécidable attaquant/légitime → révocation
+    // de TOUTES les sessions du user. (Vérifié AVANT l'expiration : même
+    // périmé, un token révoqué qui ressert reste un signal de vol.)
+    //
+    // D116 — SAUF DANS LA FENÊTRE DE GRÂCE. Voir `withinRotationGrace`.
+    if (row.revokedAt && !this.withinRotationGrace(row)) {
       await this.revokeAllSessions(row.userId, "refresh_token_reuse");
       throw this.unauthenticated();
     }
@@ -490,38 +532,112 @@ export class AuthService {
     // suppression révoque déjà TOUS les refresh tokens, mais une SUSPENSION
     // manuelle en base (DBeaver, D4) n'en révoque aucun : sans ce test, un
     // compte suspendu se re-délivrerait des access tokens indéfiniment.
+    //
+    // ⚠ La grâce ne saute PAS ce contrôle : un compte suspendu ne se rouvre
+    // pas parce qu'il rejoue un token de moins de 30 secondes.
     if (!user || user.status !== "ACTIVE") throw this.unauthenticated();
+
+    // Rejeu gracié détecté AVANT la transaction : la ligne était déjà rotée à
+    // la lecture. Rien à écrire — on ne consomme rien, on ne crée rien.
+    if (row.revokedAt) return this.graceResult(row, user);
 
     // D9 — rotation : consommer l'ancien ET créer le neuf atomiquement.
     // Le updateMany conditionné à revokedAt IS NULL est un check-and-set : si
-    // count = 0, un refresh CONCURRENT vient de consommer ce token (double
-    // soumission). Traité en réutilisation (strict) : le front doit sérialiser
-    // ses refresh (mutex, note Lot 5).
+    // count = 0, un refresh CONCURRENT vient de consommer ce token entre notre
+    // lecture et notre écriture. C'est la course des deux onglets, vue de
+    // l'intérieur — et c'est le SEUL endroit où elle se voit.
     const refreshRaw = this.tokens.generate();
     const ttlDays = this.config.getOrThrow<number>("REFRESH_TOKEN_TTL_DAYS");
     const expiresAt = new Date(Date.now() + ttlDays * 86_400_000); // fenêtre GLISSANTE : 30 j pleins à chaque rotation
-    const rotated = await this.prisma.$transaction(async (tx) => {
+    const outcome = await this.prisma.$transaction(async (tx): Promise<"rotated" | "graced" | "reuse"> => {
+      const rotatedAt = new Date();
       const consumed = await tx.refreshToken.updateMany({
         where: { id: row.id, revokedAt: null },
-        data: { revokedAt: new Date() }
+        data: { revokedAt: rotatedAt, rotatedAt }
       });
-      if (consumed.count === 0) return false;
+      if (consumed.count === 0) {
+        // Le concurrent a commité pendant qu'on attendait le verrou de ligne.
+        // On relit pour trancher — et on ne tranche QUE sur `rotatedAt`, jamais
+        // sur `revokedAt` seul : une déconnexion ne donne aucune grâce.
+        const current = await tx.refreshToken.findUnique({ where: { id: row.id } });
+        return current && this.withinRotationGrace(current) ? "graced" : "reuse";
+      }
       // D27 — la rotation PRÉSERVE le mode de persistance choisi au login.
       await tx.refreshToken.create({
         data: { userId: row.userId, tokenHash: this.tokens.hash(refreshRaw), expiresAt, persistent: row.persistent }
       });
-      return true;
+      return "rotated";
     });
-    if (!rotated) {
-      await this.revokeAllSessions(row.userId, "concurrent_refresh");
+
+    if (outcome === "reuse") {
+      await this.revokeAllSessions(row.userId, "refresh_token_reuse");
       throw this.unauthenticated();
     }
+    // Le perdant de la course repart SANS cookie : le gagnant vient de poser
+    // le sien, l'écraser reviendrait à jeter le seul jeton encore porté.
+    if (outcome === "graced") return this.graceResult(row, user);
 
     const payload: AccessTokenPayload = { sub: user.id, role: user.role };
     return {
       response: { accessToken: await this.jwt.signAsync(payload), user: this.toAuthUserDTO(user) },
       refreshCookie: { value: refreshRaw, expiresAt, persistent: row.persistent }
     };
+  }
+
+  /**
+   * D116 — réponse du rejeu gracié : un access token, et RIEN d'autre.
+   *
+   * ⚠ La grâce n'est PAS inconditionnelle : elle exige que la rotation qui a
+   * consommé ce jeton ait produit un successeur ENCORE VIVANT. Sans ce
+   * contrôle, une déconnexion suivie d'un rejeu de moins de 30 secondes
+   * rouvrirait un accès que l'utilisateur venait explicitement de fermer — le
+   * trou exact que la colonne `rotated_at` sert à éviter, réintroduit par une
+   * autre porte.
+   *
+   * Le successeur se reconnaît à sa date de création : il naît de la rotation
+   * de CE jeton, donc strictement APRÈS lui. Un jeton plus ancien — le
+   * téléphone resté connecté — ne rachète pas cette lignée-ci.
+   *
+   * ⚠ Les deux dates comparées viennent toutes deux de l'horloge POSTGRES
+   * (`@default(now())`), jamais de celle de Node : comparer `created_at` à un
+   * `rotated_at` calculé en JS ferait dépendre l'auth d'une dérive d'horloge
+   * entre deux machines — et sur un décalage de quelques millisecondes, la
+   * grâce refuserait un héritier parfaitement vivant.
+   *
+   * ⚠ Résidu ASSUMÉ : une session ouverte sur un AUTRE appareil APRÈS ce jeton
+   * rachète la lignée pendant les 30 s. Fermer la fenêtre à cent pour cent
+   * demanderait une colonne `replaced_by_id` ; le gain ne vaut pas la colonne
+   * tant que la déconnexion mono-appareil est nette — et elle l'est (test).
+   */
+  private async graceResult(row: { userId: string; createdAt: Date }, user: AuthUserRow): Promise<RefreshResult> {
+    const heir = await this.prisma.refreshToken.count({
+      where: { userId: row.userId, revokedAt: null, createdAt: { gt: row.createdAt } }
+    });
+    // Aucun héritier vivant : la session a été fermée entre-temps. 401 SEC, et
+    // surtout AUCUNE révocation en masse — fermer sa session n'est pas un vol,
+    // et il ne reste de toute façon rien à révoquer.
+    if (heir === 0) throw this.unauthenticated();
+
+    const payload: AccessTokenPayload = { sub: user.id, role: user.role };
+    return {
+      response: { accessToken: await this.jwt.signAsync(payload), user: this.toAuthUserDTO(user) }
+      // `refreshCookie` ABSENT — volontairement. C'est toute la différence.
+    };
+  }
+
+  /**
+   * D116 — la ligne a-t-elle été consommée par ROTATION il y a moins de
+   * `REFRESH_ROTATION_GRACE_MS` ?
+   *
+   * ⚠ `rotatedAt`, JAMAIS `revokedAt`. C'est toute la colonne : sans elle on ne
+   * distingue pas « consommé par rotation » de « révoqué par déconnexion, par
+   * suspension, ou par détection de vol ». Une déconnexion doit tuer le token à
+   * l'instant même — lui accorder 30 secondes de grâce serait un tout autre
+   * comportement, et un vrai trou.
+   */
+  private withinRotationGrace(row: { rotatedAt: Date | null }): boolean {
+    if (!row.rotatedAt) return false;
+    return Date.now() - row.rotatedAt.getTime() <= AUTH.REFRESH_ROTATION_GRACE_MS;
   }
 
   // ── Logout (Lot 3 — D11 : idempotent, ne révoque QUE le token présenté) ────
@@ -578,7 +694,9 @@ export class AuthService {
         ? {
             businessName: user.proProfile.businessName,
             phone: user.proProfile.phone,
-            phone2: user.proProfile.phone2
+            phone2: user.proProfile.phone2,
+            notifyByEmail: user.proProfile.notifyByEmail,
+            notifyBySms: user.proProfile.notifyBySms
           }
         : null
     };

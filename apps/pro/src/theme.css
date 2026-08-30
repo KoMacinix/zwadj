@@ -6,6 +6,55 @@
   --accent-strong: #0d0a09;
   --accent-soft: #f1efee;
   --on-accent: #ffffff;
+
+  /* Remplissages des quatre états du calendrier (Lot B6), en variables depuis
+     UI-D2 : écrits en dur dans les règles, ils restaient pâles en sombre et la
+     grille virait au blanc éblouissant au milieu d'une page noire. */
+  --cal-available: #ffffff;
+  --cal-requested: #fff4d6;
+  --cal-booked: #d8e9d8;
+  --cal-blocked: #e6e3e1;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MODE SOMBRE — PRO (Lot UI-D2, correction de D64)
+
+   ⚠ RÉGRESSION CORRIGÉE ICI. D64 a posé les neutres sombres dans
+   `@zwadj/ui/styles.css`, que le PRO importe aussi : sa page devenait donc
+   sombre, mais ses accents restaient ceux du clair. Résultat, le bouton
+   principal peignait #211C1B — quasi-noir — sur un fond #111111 : invisible.
+   Poser des tokens partagés sans traiter TOUS leurs consommateurs, c'est
+   livrer la moitié d'un changement.
+
+   L'accent pro est monochrome (charbon). En sombre il ne s'éclaircit pas :
+   il S'INVERSE. Le bouton devient clair sur page sombre, et l'encre qu'il
+   porte redevient sombre — sinon il n'existe plus.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --dark-pro-accent: #ebe7e5;
+  --dark-pro-accent-strong: #ffffff;
+  /* Pendant sombre du voile #F1EFEE : une teinte PROFONDE, pas un blanc cassé. */
+  --dark-pro-accent-soft: #24201f;
+  --dark-pro-on-accent: #141110;
+  /* Les quatre états gardent leur TEINTE (ambre, vert, gris) mais passent en
+     versions profondes : c'est la teinte qui porte le sens, pas la clarté —
+     et le mot qui double la couleur (B6) reste lisible sur chacune. */
+  --dark-cal-available: #1c1c1c;
+  --dark-cal-requested: #3a2f10;
+  --dark-cal-booked: #17301c;
+  --dark-cal-blocked: #2b2724;
+}
+
+:root[data-theme="dark"] {
+  --accent: var(--dark-pro-accent);
+  --accent-strong: var(--dark-pro-accent-strong);
+  --accent-soft: var(--dark-pro-accent-soft);
+  --on-accent: var(--dark-pro-on-accent);
+  --cal-available: var(--dark-cal-available);
+  --cal-requested: var(--dark-cal-requested);
+  --cal-booked: var(--dark-cal-booked);
+  --cal-blocked: var(--dark-cal-blocked);
 }
 
 /* ── Calendrier de la salle (Lot B6) ────────────────────────────────────────
@@ -25,10 +74,10 @@
 .cal-day.is-selected { outline: 2px solid var(--accent); outline-offset: -2px; }
 /* Quatre états, quatre remplissages — TOUJOURS doublés d'un mot : la couleur
    seule exclurait un pro daltoniste, et ce sont ses réservations. */
-.cal-chip.is-available, .cal-day.is-available { background: #ffffff; }
-.cal-chip.is-requested, .cal-day.is-requested { background: #fff4d6; }
-.cal-chip.is-booked, .cal-day.is-booked { background: #d8e9d8; }
-.cal-chip.is-blocked, .cal-day.is-blocked { background: #e6e3e1; }
+.cal-chip.is-available, .cal-day.is-available { background: var(--cal-available); }
+.cal-chip.is-requested, .cal-day.is-requested { background: var(--cal-requested); }
+.cal-chip.is-booked, .cal-day.is-booked { background: var(--cal-booked); }
+.cal-chip.is-blocked, .cal-day.is-blocked { background: var(--cal-blocked); }
 .cal-pad { padding: 2px; }
 .cal-slots ul { list-style: none; margin: 8px 0 0; padding: 0; }
 .cal-slot { display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -41,3 +90,956 @@
 .time-select { display: inline-flex; align-items: center; gap: 4px; }
 .time-select select { font-variant-numeric: tabular-nums; }
 .field-label { display: block; font-size: 13px; font-weight: 500; margin-block-end: 4px; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   COQUILLE PRO — top panel, portée, panneau gauche (Lot UIP-A)
+
+   Propriétés LOGIQUES uniquement : la moitié du public de Zwadj lit en arabe,
+   et un `margin-left` fige la mise en page dans un sens de lecture.
+
+   ⚠ AUCUNE COULEUR EN DUR. Le design de référence peint ses états actifs en
+   rgba(213,87,98,…) — le rose CLIENT — alors même qu'il déclare une palette pro
+   séparée. Transposées telles quelles, ces valeurs réintroduiraient le rose
+   dans le pro par-dessous le token (décisions ② et ⑧). Tout passe donc par
+   --accent / --accent-soft, qui s'inversent déjà en sombre.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.pro-nav {
+  border-block-end: 1px solid var(--line);
+  background: var(--bg);
+}
+.pro-nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0 12px;
+  max-inline-size: 1080px;
+  margin-inline: auto;
+}
+.pro-nav-link {
+  display: inline-block;
+  padding: 12px 14px;
+  color: var(--ink-2);
+  text-decoration: none;
+  /* L'état actif est porté par la BORDURE **et** par aria-current (NavLink le
+     pose seul) : la couleur seule exclurait un pro daltonien. */
+  border-block-end: 2px solid transparent;
+  margin-block-end: -1px;
+}
+.pro-nav-link:hover {
+  color: var(--ink);
+}
+.pro-nav-link.is-active {
+  color: var(--ink);
+  font-weight: 500;
+  border-block-end-color: var(--accent);
+}
+.pro-nav-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Sélecteur de salle — n'apparaît qu'à partir de DEUX salles. */
+.pro-scope {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-block-end: 16px;
+}
+
+/* Panneau gauche — tableau de bord UNIQUEMENT (décision ⑨). */
+.pro-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: start;
+  max-inline-size: 1280px;
+  margin-inline: auto;
+}
+.pro-aside {
+  border-inline-end: 1px solid var(--line);
+  min-block-size: 100%;
+  padding: 20px 16px;
+}
+.pro-layout-main {
+  min-inline-size: 0;
+}
+.pro-aside-eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.pro-aside-name {
+  margin: 0 0 20px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.pro-counter {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-block: 10px;
+  border-block-start: 1px solid var(--line);
+}
+.pro-counter-label {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.pro-counter-value {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.pro-counter-muted {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* Une seule colonne dès que le panneau ne tient plus : il passe AU-DESSUS du
+   contenu, jamais en tiroir caché — ses deux compteurs sont la raison d'être
+   de l'écran. */
+@media (max-width: 860px) {
+  .pro-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pro-aside {
+    border-inline-end: none;
+    border-block-end: 1px solid var(--line);
+    min-block-size: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PARCOURS CLIENT SUR PLACE (Lot UIP-B)
+
+   ⚠ `grid-template-areas` et NON un ordre de colonnes implicite. Le design de
+   référence place 01 et 03 à gauche, 02 à droite : dans le DOM cela donne
+   01 → 03 → 02, donc au clavier et au lecteur d'écran aussi. Ici le DOM énumère
+   dans l'ordre des numéros et la grille se charge de la position — la
+   disposition est conservée, le compte à rebours disparaît.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.walkin-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "etape1 etape2"
+    "etape3 etape2";
+  align-items: start;
+  margin-block: 16px;
+}
+.walkin-step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+.walkin-step-n {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.walkin-services {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.walkin-service {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-block: 4px;
+}
+.walkin-total {
+  border-block-start: 1px solid var(--line);
+  margin-block-start: 20px;
+  padding-block-start: 16px;
+}
+.walkin-lines {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+.walkin-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 4px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
+}
+.walkin-amounts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  margin: 0 0 16px;
+}
+.walkin-amounts dt {
+  color: var(--ink-2);
+  font-size: 14px;
+}
+.walkin-amounts dd {
+  margin: 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.walkin-amounts .walkin-grand {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 16px;
+}
+.walkin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 12px 4px;
+}
+
+/* Une colonne dès que deux ne tiennent plus : les étapes s'enchaînent alors
+   exactement dans l'ordre des numéros, ce qui est déjà l'ordre du DOM. */
+@media (max-width: 780px) {
+  .walkin-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "etape1"
+      "etape2"
+      "etape3";
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REFONTE GRAPHIQUE — coquille pro et écran « Nouvelle réservation »
+
+   ⚠ AUCUNE COULEUR EN DUR. La maquette de référence peint ses états en
+   rgba(213,87,98,…) — le rose CLIENT — et ses dates en rouge/orange. Transposées
+   telles quelles, ces valeurs contrediraient la palette pro (décisions ② et ⑧)
+   et rendraient les états du calendrier illisibles. Tout passe par les tokens.
+
+   ⚠ Propriétés LOGIQUES uniquement : la moitié du public lit en arabe.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Top panel : capitales, lettrage espacé, actif souligné ─────────────── */
+.pro-nav-list {
+  max-inline-size: 1560px;
+  padding-inline: 28px;
+  gap: 0;
+}
+.pro-nav-link {
+  padding: 14px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  /* Les capitales viennent de la CSS, jamais des chaînes : l'arabe n'a pas de
+     casse, et une chaîne en majuscules dans le JSON serait illisible. */
+  text-transform: uppercase;
+}
+.pro-nav-link.is-active {
+  border-block-end-width: 2px;
+}
+
+/* ── Panneau gauche ─────────────────────────────────────────────────────── */
+.pro-layout {
+  grid-template-columns: 292px minmax(0, 1fr);
+  max-inline-size: none;
+}
+.pro-aside {
+  padding: 26px 24px 40px;
+  background: var(--bg-2, var(--bg));
+  min-block-size: calc(100vh - 116px);
+}
+.pro-aside-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+.pro-aside-name {
+  font-size: 20px;
+  line-height: 1.25;
+  margin-block-end: 24px;
+}
+.pro-aside-nav ul {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+/* Grille et non flex : la colonne d'icônes est FIXE, donc les libellés
+   s'alignent verticalement même quand un glyphe est plus étroit qu'un autre.
+   En flex, chaque ligne se calait sur la largeur de sa propre icône. */
+.pro-aside-link {
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  color: var(--ink-2);
+  text-decoration: none;
+  font-size: 14px;
+  border-inline-start: 2px solid transparent;
+}
+.pro-aside-link:hover {
+  color: var(--ink);
+}
+.pro-aside-link.is-active {
+  color: var(--ink);
+  font-weight: 500;
+  border-inline-start-color: var(--accent);
+  background: var(--surface);
+}
+.pro-aside-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+/* L'icône suit la couleur du libellé (`currentColor` chez lucide) : elle pâlit
+   au repos et fonce à l'état actif, sans règle de couleur propre. */
+.pro-aside-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Section dépliable « Devis ». L'en-tête est un vrai bouton : l'état est annoncé
+   par `aria-expanded`, pas déduit d'un chevron. */
+.pro-aside-fold {
+  margin-block-start: 20px;
+  border-block-start: 1px solid var(--line);
+}
+.pro-fold-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  gap: 10px;
+  padding: 14px 0 10px;
+  background: none;
+  border: 0;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.pro-fold-head:hover {
+  color: var(--ink);
+}
+.pro-fold-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.pro-fold-chevron {
+  font-size: 14px;
+  line-height: 1;
+}
+.pro-fold-line {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+/* ══ Écran « Nouvelle réservation » ═══════════════════════════════════════ */
+
+.wk-main {
+  padding: 30px 32px 64px;
+  max-inline-size: 1560px;
+}
+.wk-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-block-end: 30px;
+}
+.wk-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-eyebrow-rule {
+  inline-size: 56px;
+  block-size: 1px;
+  background: var(--line);
+}
+.wk-title {
+  margin: 0 0 10px;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.wk-lede {
+  margin: 0;
+  max-inline-size: 62ch;
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.wk-head-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.wk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.wk-btn:hover:not(:disabled) {
+  background: var(--bg-2, var(--bg));
+}
+.wk-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.wk-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+/* ⚠ `--on-accent`, pas `--accent-ink` : ce dernier n'est défini nulle part dans
+   le dépôt — c'était le repli `var(--surface)` qui portait tout. Il donnait
+   la bonne couleur par coïncidence en clair, et `--on-accent` existe justement
+   pour ça : il S'INVERSE avec l'accent en sombre (UI-D2). */
+.wk-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+/* ⚠ LE FOND EST REPOSÉ ICI, ET C'EST TOUT LE CORRECTIF.
+   `.wk-btn:hover:not(:disabled)` pèse (0,3,0) et écrasait `.wk-btn-primary`
+   (0,1,0) sur `background` : au survol le fond passait à `--bg-2` pendant que
+   l'encre restait `--surface`. Mesuré : le contraste tombait de 16,85 à 1,10
+   en clair et 1,11 en sombre — blanc sur blanc, dans les DEUX thèmes.
+   L'ancienne règle ne posait qu'un `filter`, qui ne récupère aucun fond.
+   axe ne l'avait pas vu : il n'évalue pas les états de survol. */
+.wk-btn.wk-btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+/* ── FLUX PAR ÉTAPES ──────────────────────────────────────────────────────
+   ⚠ `.wk-grid` A DISPARU, ce n'est pas un oubli. Elle plaçait trois cartes
+   SIMULTANÉES en `grid-template-areas` ; le flux n'en montre qu'une. La garde
+   dont l'objet disparaît se retire par écrit — la laisser aurait fait une règle
+   morte que personne n'ose supprimer six mois plus tard.
+   Idem pour `.wk-picked` (bandeau « date sélectionnée / tarif du jour ») : la
+   ligne de récapitulatif porte désormais la date, et le tarif n'y a pas sa
+   place — arbitrage §5.3, aucun montant avant l'étape Devis. */
+
+/* ── Rail de progression — VERTICAL, entre le panneau gauche et le flux ───
+   ⚠ Il est le PREMIER élément du DOM et la première COLONNE de la grille : la
+   position visuelle est portée par `grid-template-areas`, pas par l'ordre de
+   lecture. Au clavier et à la voix on sait où l'on en est avant de recevoir la
+   question — c'est le même arbitrage que la grille à trois cartes d'avant. */
+.wk-main {
+  display: grid;
+  gap: 0 34px;
+  /* ⚠ Marges latérales RÉDUITES et flux CENTRÉ (demande Ko) : le contenu
+     occupait un tiers gauche de l'écran, le reste était vide. */
+  grid-template-columns: minmax(0, 168px) minmax(0, 760px);
+  justify-content: center;
+  grid-template-areas:
+    "head head"
+    "rail flow";
+  align-items: start;
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+.wk-head {
+  grid-area: head;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+.wk-head-reset {
+  /* ⚠ En haut à DROITE — donc `margin-inline-start: auto`, qui bascule seul en
+     arabe. `margin-left` l'aurait cloué du mauvais côté. */
+  margin-inline-start: auto;
+}
+/* ⚠ CHROME DÉPLACÉE dans `@zwadj/ui` (`styles.css`, bloc « parcours par
+   étapes »). Ce qui reste ici est la MISE EN PAGE propre au Pro. Le Client
+   portait le même bloc sous `.wz-*`, et les deux avaient déjà divergé — coche
+   icône contre coche texte, `flex-shrink` d'un seul côté, `:hover` manquant.
+   ⚠ `.wk-rail-n`, `.wk-rail-btn`, `.wk-rail-label`, `.wk-recap-row`,
+   `.wk-recap-step`, `.wk-recap-value`, `.wk-recap-edit` et `.wk-step-counter`
+   sont RETIRÉES : leurs éléments ne portent plus ces classes. Une règle dont
+   l'objet a disparu ne se laisse pas « au cas où » — elle devient du bruit que
+   le prochain lecteur croira utile. */
+.wk-rail {
+  grid-area: rail;
+  position: sticky;
+  top: 24px;
+}
+.wk-connector {
+  grid-area: flow;
+}
+
+.wk-recap,
+.wk-active,
+.wk-alert,
+.wk-notice {
+  grid-area: flow;
+}
+/* ⚠ Sur écran étroit le rail repasse AU-DESSUS : à 168px de colonne il
+   mangerait la moitié de la largeur utile, et la question active est ce qui
+   compte. Il redevient alors horizontal. */
+@media (max-width: 900px) {
+  .wk-main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "rail"
+      "flow";
+  }
+  .wk-rail {
+    position: static;
+    margin-block-end: 22px;
+  }
+  .wk-rail ol {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+  .wk-rail li {
+    padding-block-end: 0;
+  }
+  .wk-rail li:not(:last-child)::before {
+    display: none;
+  }
+}
+
+/* ⚠ RETIRÉ AVEC LA CHROME PARTAGÉE : `.wk-recap` (détail), `.wk-recap-row`,
+   `.wk-recap-step`, `.wk-recap-value`, `.wk-recap-edit`, `@keyframes
+   wk-step-in`, `@keyframes wk-recap-in` et leur bloc `prefers-reduced-motion`.
+   Tout est dans `@zwadj/ui/styles.css`, y compris la remarque RTL :
+   `border-inline-start` et non `border-left`, sinon la bordure reste à gauche
+   en arabe. Rien n'est laissé « au cas où » — une règle sans objet est du bruit
+   que le prochain lecteur croira utile. */
+.wk-question {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.wk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-block-start: 20px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
+}
+.wk-outcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 18px;
+}
+
+/* ⚠ `.wk-card-head` et `.wk-step-n` sont RETIRÉES avec le composant `Step`
+   qui les portait : les trois cartes numérotées « 01 / 02 / 03 » n'existent
+   plus. Leur remplaçant est `.wk-question` + `.wk-step-counter`, qui gardent le
+   même traitement typographique (Readex Pro, graisse 600, crénage -0.02em) et
+   la même remarque sur D26 — en mode pro l'accent est un quasi-noir #211C1B,
+   donc le compteur FONCE, il ne devient pas rose. La maquette, elle, écrit
+   `rgba(213,87,98,…)` en dur à cinq endroits de cet écran : c'est l'accent
+   CLIENT, une erreur de reskin confirmée par Ko le 17/08/2026. */
+
+.wk-pair {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.wk-field {
+  min-inline-size: 0;
+}
+.wk-label {
+  display: block;
+  margin-block-end: 6px;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wk-input {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+.wk-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+.wk-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ── Compteur d'invités ────────────────────────────────────────────────── */
+.wk-guests {
+  margin-block-start: 18px;
+  padding-block-start: 18px;
+  border-block-start: 1px solid var(--line);
+}
+.wk-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wk-step-btn {
+  inline-size: 40px;
+  min-block-size: 40px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.wk-step-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.wk-guests-input {
+  max-inline-size: 110px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Prestations : une case par ligne, l'état coché lisible sans couleur ── */
+.wk-services {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+/* Sélection des prestations — alignée sur la maquette (Lot R2e).
+   Écarts relevés puis corrigés : bordure sélectionnée `--ink` → `--accent`,
+   aucun fond sélectionné → voile d'accent, libellé 14px → 12px, et un état
+   NON sélectionné qui ne se distinguait pas du tout du sélectionné autrement
+   que par une nuance de bordure quasi identique. */
+.wk-service {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.wk-service.is-on {
+  border-color: var(--accent);
+  /* Même arbitrage qu'au bandeau d'acompte : le voile d'accent, PAS le
+     `rgba(200,30,99,0.06)` écrit en dur de la maquette, qui resterait rose sur
+     une page noire (UI-D2). */
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 500;
+}
+.wk-service:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.wk-service-name {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+.wk-service-type {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  /* ⚠ `--ink-2` et non le `--ink-mute` de la maquette : mesuré à 2,56 sur
+     `--surface`, il échoue le seuil AA de 4,5. Même correction que le lot de
+     contraste précédent. */
+  color: var(--ink-2);
+}
+.wk-service.is-on .wk-service-type {
+  color: var(--accent);
+}
+
+/* ⚠ LA CASE RESTE UN VRAI `input[type=checkbox]`, seulement redessiné.
+   La maquette dessine un `<span>` de 16px et gère l'état à la main ; refaire
+   ça ici coûterait le rôle `checkbox`, la commande au clavier, l'annonce
+   « coché / non coché », et exigerait de remettre tout ça en ARIA. Or un test
+   cherche déjà `getByRole("checkbox")`. `appearance: none` donne le dessin
+   voulu en gardant UNE SEULE autorité sur l'état : l'input lui-même. */
+.wk-service input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.wk-service input[type="checkbox"]:checked {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+/* La coche : deux bords d'un carré pivoté. Aucune image, donc elle suit
+   `--on-accent` et s'inverse avec le thème. */
+.wk-service input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 4px;
+  inline-size: 6px;
+  block-size: 3px;
+  border-inline-start: 2px solid var(--on-accent);
+  border-block-end: 2px solid var(--on-accent);
+  transform: rotate(-45deg);
+}
+.wk-devis-actions {
+  margin-block-start: 20px;
+}
+
+/* ── Total à facturer ──────────────────────────────────────────────────── */
+/* Maquette : `1px solid var(--accent)`. En pro, accent et encre sont deux
+   quasi-noirs voisins — mais c'est l'ACCENT qui porte le sens « ce bloc
+   conclut », et lui seul s'inverse proprement en sombre. */
+.wk-total {
+  border-color: var(--accent);
+}
+/* ⚠ HIÉRARCHIE EXPLICITE (demande ⑦). Elle allait de 10px à 30px sans palier
+   lisible : la même valeur servait à un intitulé de section et à une ligne de
+   prestation. Quatre rangs, et un seul par rôle :
+     · 12px capitales  → intitulé de bloc
+     · 14px            → intitulés de montants (salle, prestations)
+     · 15px            → lignes du détail (elles se LISENT, elles ne se survolent pas)
+     · 32px            → le total, une seule fois sur l'écran
+   ⚠ Le plancher est à 12px, pas 10 : en arabe, 10px n'est pas « petit ». */
+.wk-total-head {
+  margin: 0 0 18px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+/* ⚠ SÉPARATEURS ENTRE LES LIGNES (demande ⑥). Sans eux, un intitulé long qui
+   passe à la ligne se lit comme deux postes, et le montant de droite ne se
+   rattache plus visuellement à rien. Le filet est posé sur chaque rangée SAUF
+   la dernière — un trait sous le dernier poste ferait doublon avec celui du
+   total juste dessous. */
+.wk-amounts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 16px;
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+.wk-amounts dt,
+.wk-amounts dd {
+  padding-block: 11px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
+}
+.wk-amounts dt {
+  color: var(--ink-2);
+}
+.wk-amounts dd {
+  margin: 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.wk-lines {
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+  /* 15px : ces lignes SE LISENT — c'est le détail que le client contestera.
+     Elles étaient à 13px sur `--ink-2`, soit le traitement d'une note de bas de
+     page pour le contenu même du devis. */
+  font-size: 15px;
+  color: var(--ink);
+}
+.wk-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 11px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
+  font-variant-numeric: tabular-nums;
+}
+.wk-lines li:last-child {
+  border-block-end: 0;
+}
+/* Le filet « élégant » de la maquette porte un nom : `.accent-rule`, soit un
+   dégradé d'1px qui s'éteint aux DEUX bouts. Un `border-block-start` ne peut
+   pas le rendre — une bordure est uniforme — d'où le pseudo-élément.
+   `background-image` et non `background` : la règle reste additive si un thème
+   pose une couleur de fond derrière. */
+.wk-grand {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 16px;
+}
+.wk-grand::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 1px;
+  background-image: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
+}
+/* ⚠ TOTAL — le seul élément de ce rang sur l'écran (demande ⑧). Son intitulé
+   monte aussi : « Total » en 13px capitales face à un nombre de 32px, c'était
+   un nombre sans étiquette lisible. */
+.wk-grand > span:first-child {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 600;
+}
+.wk-grand strong {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.wk-deposit {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  margin-block-end: 16px;
+  /* ⚠ `--accent-soft`, le VOILE d'accent pro — pas `--bg-2`, qui est un fond
+     neutre et ne dit rien. La maquette teinte bien ce bandeau à l'accent ; ce
+     qu'on ne reprend pas, c'est son `rgba(200,30,99,0.08)` ÉCRIT EN DUR, qui
+     resterait rose sur une page noire. `--accent-soft` s'inverse (#F1EFEE en
+     clair, #24201F en sombre) : c'est exactement la régression qu'UI-D2 a
+     corrigée, on ne la réintroduit pas pour une teinte. */
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-soft);
+  border-radius: 2px;
+  font-size: 14px;
+}
+.wk-deposit strong {
+  font-variant-numeric: tabular-nums;
+}
+.wk-total-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-end: 8px;
+}
+.wk-total-actions .wk-btn {
+  flex: 1 1 auto;
+}
+.wk-alert,
+.wk-notice {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 2px;
+  background: var(--surface);
+  font-size: 14px;
+}
+
+/* ── Créneaux du jour, cliquables dans le parcours ──────────────────────── */
+.cal-slot-pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  inline-size: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.cal-slot-pick:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.cal-slot-pick.is-picked {
+  border-color: var(--ink);
+  border-inline-start-width: 3px;
+  font-weight: 500;
+}
+.cal-slot-pick:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.cal-slot-price {
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Responsive : empiler proprement, sans jamais rogner les cibles ─────── */
+@media (max-width: 860px) {
+  .wk-main {
+    padding: 22px 18px 48px;
+  }
+  .wk-title {
+    font-size: 30px;
+  }
+  .wk-pair,
+  .wk-services {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pro-aside {
+    min-block-size: 0;
+  }
+}

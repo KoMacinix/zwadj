@@ -60,7 +60,10 @@ function ProfileSection({ client }: { client: AccountClient }) {
   const [values, setValues] = useState({
     businessName: user?.proProfile?.businessName ?? "",
     phone: user?.proProfile?.phone ?? "",
-    phone2: user?.proProfile?.phone2 ?? ""
+    phone2: user?.proProfile?.phone2 ?? "",
+    // D60 (F1) — canaux. Défauts alignés sur la base : e-mail oui, SMS non.
+    notifyByEmail: user?.proProfile?.notifyByEmail ?? true,
+    notifyBySms: user?.proProfile?.notifyBySms ?? false
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [banner, setBanner] = useState<{ kind: "ok" | "ko"; text: string } | null>(null);
@@ -74,7 +77,9 @@ function ProfileSection({ client }: { client: AccountClient }) {
     const checked = validate(profileUpdateSchema, {
       businessName: values.businessName,
       phone: values.phone,
-      phone2: values.phone2.trim() === "" ? null : values.phone2
+      phone2: values.phone2.trim() === "" ? null : values.phone2,
+      notifyByEmail: values.notifyByEmail,
+      notifyBySms: values.notifyBySms
     });
     if (checked.errors) {
       setErrors(checked.errors);
@@ -134,6 +139,40 @@ function ProfileSection({ client }: { client: AccountClient }) {
             )}
           </Field>
           {/* Seconde ligne FACULTATIVE (D38) : pas de `required`. */}
+          {/* D60 — les canaux. Le pro les subissait depuis C2b : il recevait ce
+              que la base avait décidé pour lui, sans pouvoir le changer.
+
+              ⚠ Deux cases et non un menu : sous request-to-book, une demande que
+              le pro ne voit pas EXPIRE toute seule. Ce réglage n'est donc pas un
+              confort, c'est ce qui décide s'il perd des affaires — et il doit
+              voir d'un coup d'œil ce qui est allumé. */}
+          <fieldset style={{ border: 0, padding: 0, margin: "0 0 12px" }}>
+            <legend>{t("account.ui.profile.channels")}</legend>
+            <p className="field-hint">{t("account.ui.profile.channelsHint")}</p>
+            <label style={{ display: "block" }}>
+              <input
+                type="checkbox"
+                checked={values.notifyByEmail}
+                onChange={(e) => setValues((v) => ({ ...v, notifyByEmail: e.target.checked }))}
+              />{" "}
+              {t("account.ui.profile.channelEmail")}
+            </label>
+            <label style={{ display: "block" }}>
+              <input
+                type="checkbox"
+                checked={values.notifyBySms}
+                onChange={(e) => setValues((v) => ({ ...v, notifyBySms: e.target.checked }))}
+              />{" "}
+              {t("account.ui.profile.channelSms")}
+            </label>
+            {/* Le refus vient du serveur ET du schéma ; on l'annonce AVANT, parce
+                qu'un pro qui décoche les deux doit comprendre pourquoi le bouton
+                ne marche pas. */}
+            {!values.notifyByEmail && !values.notifyBySms ? (
+              <p className="field-error">{t("account.validation.channelRequired")}</p>
+            ) : null}
+          </fieldset>
+
           <Field label={t("account.ui.profile.phone2")} error={tval(errors.phone2)}>
             {({ id, describedBy, invalid }) => (
               <input

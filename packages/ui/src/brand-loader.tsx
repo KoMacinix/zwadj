@@ -72,7 +72,7 @@ export interface BrandLoaderProps {
  * `role="status"` + `aria-live="polite"` : l'attente est annoncée, sans voler
  * le focus ni interrompre ce qui est en train d'être lu.
  */
-export function BrandLoader({ label, size = 40 }: BrandLoaderProps) {
+export function BrandLoader({ label, size = 250 }: BrandLoaderProps) {
   return (
     <div className="brand-loader" role="status" aria-live="polite">
       <BrandLoaderIcon size={size} />

@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { parseMatterportInput } from "@zwadj/types";
 import { Field, useApiErrorMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenueMedia } from "./venue-client-context";
 
 /** URL publique reconstruite par NOUS depuis l'ID stocké — jamais la chaîne
  *  saisie par le pro. C'est ce qui rend la validation d'hôte inoffensive : rien
@@ -35,7 +35,7 @@ export function VirtualTourSection({
 }) {
   const { t } = useTranslation();
   const toMessage = useApiErrorMessage();
-  const venues = useVenues();
+  const venues = useVenueMedia();
 
   // La saisie est libre : on n'y remet PAS l'URL canonique tant que le pro n'a
   // pas enregistré, sinon on écraserait ce qu'il est en train de taper.

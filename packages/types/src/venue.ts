@@ -1,7 +1,13 @@
 import { z } from "zod";
+// D61 (C3) — le téléphone de contact d'un rendez-vous de visite réutilise la
+// SEULE définition du format algérien, celle de la tranche auth. En recopier la
+// regex ici créerait deux vérités sur le même format (patron déjà en place dans
+// `account.ts`).
+import { dzPhoneSchema } from "./auth";
 import { PRICING_RULE_TYPES, type PricingRuleType } from "./enums";
-import { BookingMode, VenueAvailabilityStatus, type VenuePublicationStatus } from "./enums";
+import { BookingMode, CeremonyType, VenueAvailabilityStatus, type VenuePublicationStatus, type VisitStatus } from "./enums";
 import { VENUE_MEDIA_CAPS } from "./media";
+import type { ServiceDTO } from "./service";
 import type { AmenityDTO } from "./referentials";
 
 /** Résumé d'une salle pour les listes/recherche — aligné sur le modèle Prisma `Venue`. */
@@ -20,6 +26,8 @@ export interface VenueSummaryDTO {
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
   bookingMode: BookingMode;
+  /** D66 (A13) — `null` : la salle ne l'a pas encore déclaré. */
+  ceremonyType: CeremonyType | null;
   publicationStatus: VenuePublicationStatus;
   /** Lot A4 — règle verrouillée : couverture = PREMIÈRE photo par sortOrder
    *  (thumb 480). Sert les cartes A7, les OG tags (9.9) et schema.org (23.8) ;
@@ -28,6 +36,31 @@ export interface VenueSummaryDTO {
   coverThumbUrl: string | null;
   /** Lot A4 — signal « complétude » (le tri recommandé du 23.8 le consommera). */
   photoCount: number;
+  /** Lot `availableOn` — la salle a-t-elle ENCORE un créneau libre à la date
+   *  annotée ? ⚠ Ce champ ANNOTE, il ne filtre pas : la salle grisée reste
+   *  DANS la page et reste cliquable — le client peut vouloir changer de date
+   *  plutôt que de salle. Filtrer coûterait O(catalogue) là où annoter coûte
+   *  O(page).
+   *
+   *  ⚠ TROIS VALEURS, MAIS UNE SEULE SIGNIFICATION PAR CONTEXTE :
+   *   - `true`  : au moins un créneau actif reste AVAILABLE ce jour-là ;
+   *   - `false` : tous les créneaux actifs sont pris ou bloqués ⇒ GRISÉE ;
+   *   - `null`  : la question n'a pas été posée. UN SEUL cas — l'écho
+   *     `VenueListResponse.availableOn` vaut alors `null` lui aussi.
+   *
+   *  ⚠ ÉCART ASSUMÉ AVEC LA PREMIÈRE VERSION DE D211 (correction Ko).
+   *  Une salle SANS AUCUN CRÉNEAU ACTIF rendait `null`. Elle n'est désormais
+   *  plus rendue du tout quand `availableOn` est demandé : elle est EXCLUE de
+   *  la réponse. D211 confondait deux refus sous un seul état — « prise ce
+   *  jour-là » et « jamais réservable ». Le premier rend « essayez une autre
+   *  date » utile ; le second le rend TROMPEUR, puisque aucune date ne
+   *  marchera. Le contrat ne peut donc plus produire `null` quand l'écho porte
+   *  une date.
+   *
+   *  ⚠ `PENDING` ne grise PAS (D101, arbitrage Ko) : une demande en attente ne
+   *  verrouille rien — deux couples peuvent demander la même date, le pro
+   *  tranche. Seul le DUR (`ACCEPTED`/`CONFIRMED`) et les blocages pro grisent. */
+  availableOnDate: boolean | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -81,6 +114,33 @@ const availabilityStatusSchema = z.enum(
   [VenueAvailabilityStatus.ACTIVE, VenueAvailabilityStatus.HIDDEN, VenueAvailabilityStatus.TEMPORARILY_UNAVAILABLE],
   { errorMap: () => ({ message: "venue.validation.statusInvalid" }) }
 );
+
+// ─────────────────────────────────────────────────────────────────────────────
+// D81 — Politique d'acompte, PAR SALLE : pourcentage OU montant fixe.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Bornes du taux d'acompte, en points de base. 500 = 5 %, 10000 = 100 %.
+ *
+ *  Le plancher n'est pas décoratif : un acompte de 0 % voudrait dire « on
+ *  confirme sans rien encaisser », ce qui n'est plus du request-to-book mais un
+ *  autre parcours. Le plafond autorise le paiement intégral en ligne, qui est un
+ *  choix légitime pour une petite salle. */
+export const DEPOSIT_RATE_BPS_MIN = 500;
+export const DEPOSIT_RATE_BPS_MAX = 10000;
+
+/** Valeur de reprise des salles existantes : les 30 % implicites d'avant D81,
+ *  ceux que le design annonce partout. */
+export const DEPOSIT_RATE_BPS_DEFAULT = 3000;
+
+/** Politique d'acompte d'une salle. EXACTEMENT un des deux champs est non nul —
+ *  invariant tenu par le `CHECK` SQL, par Zod, et par ce type.
+ *
+ *  Deux champs plutôt qu'un couple `type` + `valeur` : mélanger des centimes et
+ *  des points de base dans une même colonne est exactement ce que D46 refuse.
+ *  Chacun garde son unité et ses bornes. */
+export type DepositPolicy =
+  | { depositRateBps: number; depositAmountCents: null }
+  | { depositRateBps: null; depositAmountCents: number };
 
 export const venueCreateSchema = z
   .object({
@@ -137,7 +197,35 @@ export const venueUpdateSchema = z
     status: availabilityStatusSchema.optional(),
     /** A3-① : REMPLACEMENT de l'ensemble des équipements (ids du référentiel
      *  Amenity). Doublons dédupliqués côté service ; id inconnu → 400. */
-    amenityIds: z.array(z.string().uuid("venue.validation.amenityInvalid")).max(50, "venue.validation.amenitiesTooMany").optional()
+    amenityIds: z.array(z.string().uuid("venue.validation.amenityInvalid")).max(50, "venue.validation.amenitiesTooMany").optional(),
+    /** D65 (A13) — REMPLACEMENT de l'ensemble des styles (ids du référentiel
+     *  VenueStyle), même contrat qu'`amenityIds` : tableau vide = plus aucun
+     *  style, absent = inchangé. */
+    styleIds: z.array(z.string().uuid("venue.validation.styleInvalid")).max(20, "venue.validation.stylesTooMany").optional(),
+    /** D66 (A13) — `null` efface explicitement (la salle ne le déclare plus). */
+    ceremonyType: z
+      .enum([CeremonyType.INDOOR, CeremonyType.OUTDOOR, CeremonyType.MIXED], {
+        errorMap: () => ({ message: "venue.validation.ceremonyTypeInvalid" })
+      })
+      .nullable()
+      .optional(),
+    /** D81 — politique d'acompte. PAIRE INDISSOCIABLE, exactement un des deux
+     *  non nul : le couple se fournit ensemble, comme lat/lng juste au-dessous.
+     *  Décidable par Zod seul, donc AUCUNE lecture croisée en base — contrairement
+     *  aux taux D35, où le partiel réel obligeait le service à relire l'autre. */
+    depositRateBps: z
+      .number({ invalid_type_error: "venue.validation.depositInteger" })
+      .int("venue.validation.depositInteger")
+      .min(DEPOSIT_RATE_BPS_MIN, "venue.validation.depositRateRange")
+      .max(DEPOSIT_RATE_BPS_MAX, "venue.validation.depositRateRange")
+      .nullable()
+      .optional(),
+    depositAmountCents: z
+      .number({ invalid_type_error: "venue.validation.depositInteger" })
+      .int("venue.validation.depositInteger")
+      .positive("venue.validation.depositAmountRange")
+      .nullable()
+      .optional()
   })
   .strict("venue.validation.unknownKey")
   .superRefine((v, ctx) => {
@@ -146,6 +234,17 @@ export const venueUpdateSchema = z
     const lngGiven = v.lng !== undefined;
     if (latGiven !== lngGiven || (latGiven && lngGiven && (v.lat === null) !== (v.lng === null))) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["lng"], message: "venue.validation.coordsPair" });
+    }
+
+    // D81 — la paire d'acompte se fournit ENTIÈRE, et exactement un des deux
+    // champs est non nul. Une salle sans politique n'existe pas : la migration
+    // en donne une à tout le monde, et ce PATCH ne sait pas la retirer.
+    const rateGiven = v.depositRateBps !== undefined;
+    const amountGiven = v.depositAmountCents !== undefined;
+    if (rateGiven !== amountGiven) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["depositAmountCents"], message: "venue.validation.depositPair" });
+    } else if (rateGiven && amountGiven && (v.depositRateBps === null) === (v.depositAmountCents === null)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["depositAmountCents"], message: "venue.validation.depositExclusive" });
     }
   })
   .refine((v) => Object.keys(v).length > 0, { message: "venue.validation.emptyUpdate" });
@@ -361,7 +460,61 @@ export const VenueErrorCode = {
   /** D47 (C1) — 409 : deux plages de visite du MÊME jour se chevauchent.
    *  Refusé parce que C2 découpera ces plages en créneaux : deux plages qui se
    *  recouvrent produiraient le même créneau deux fois. */
-  VISIT_AVAILABILITY_OVERLAP: "VISIT_AVAILABILITY_OVERLAP"
+  VISIT_AVAILABILITY_OVERLAP: "VISIT_AVAILABILITY_OVERLAP",
+  /** D65 (A13) — 400 : un id de style absent du référentiel. Comme pour les
+   *  équipements, on refuse AVANT l'écriture plutôt que de laisser remonter une
+   *  violation de clé étrangère en 500. */
+  VENUE_STYLE_NOT_FOUND: "VENUE_STYLE_NOT_FOUND",
+  /** D61 (C3) — 409 : ce créneau n'EXISTE pas. Hors de toute plage active,
+   *  plage suspendue, créneau déjà passé (filtré à la MINUTE), ou date au-delà
+   *  de l'horizon de 18 mois. Distinct de VISIT_SLOT_TAKEN : « il n'y a rien à
+   *  cette heure-là » et « quelqu'un vient de le prendre » demandent deux
+   *  phrases différentes au client. */
+  VISIT_SLOT_UNAVAILABLE: "VISIT_SLOT_UNAVAILABLE",
+  /** D59/D61 (C3) — 409 : le créneau est DÉJÀ PRIS. Ce code ne peut sortir que
+   *  de la traduction du `P2002` de `visit_bookings_no_double_confirmed` :
+   *  l'exclusivité appartient à la base, jamais à une vérification applicative
+   *  qui laisserait une fenêtre entre le test et l'insertion. */
+  VISIT_SLOT_TAKEN: "VISIT_SLOT_TAKEN",
+  /** D62 (C3) — 409 : ce client a déjà un rendez-vous CONFIRMÉ à venir dans
+   *  CETTE salle. Garde anti-nuisance née de D59 : sous la tolérance au
+   *  chevauchement, réserver seize créneaux ne gênait personne ; sous
+   *  l'exclusivité, cela tue la journée du pro. Une autre salle, ou un
+   *  rendez-vous déjà passé, ne bloquent rien. */
+  VISIT_ALREADY_BOOKED: "VISIT_ALREADY_BOOKED",
+  /** D62 (C3) — 404 INDISTINCT « parmi MES rendez-vous » : id malformé,
+   *  inexistant, ou rendez-vous d'un autre client. */
+  VISIT_BOOKING_NOT_FOUND: "VISIT_BOOKING_NOT_FOUND",
+  /** D62 (C3) — 409 : on n'annule pas un rendez-vous déjà passé. « Le client a
+   *  annulé » et « le client n'est pas venu » ne sont pas le même fait, et
+   *  écraser l'un par l'autre trompe le pro. */
+  VISIT_BOOKING_PAST: "VISIT_BOOKING_PAST",
+  /** Lot `availableOn` — 400 : la date d'annotation demandée est DÉJÀ PASSÉE à
+   *  Alger. ⚠ ÉCART ASSUMÉ AVEC D49, et c'est la seule raison qui le justifie :
+   *  D49 écrête au lieu de rejeter parce qu'elle borne une FENÊTRE, et une
+   *  fenêtre qui rétrécit reste une réponse à la question posée. `availableOn`
+   *  est un POINT : l'écrêter à aujourd'hui répondrait sur un AUTRE jour que
+   *  celui demandé, en silence, et la grille grisée mentirait. Le sélecteur ne
+   *  propose aucune date passée — ce refus ne peut donc venir que d'un lien
+   *  forgé, d'un appel direct à l'API, ou d'un défaut : tous méritent de le
+   *  savoir. Reste intermittent au voisinage de minuit à Alger, et c'est
+   *  ACCEPTÉ : la veille au soir, la réponse honnête est « cette date est
+   *  passée ». */
+  AVAILABLE_ON_PAST: "AVAILABLE_ON_PAST",
+
+  /** La date demandée dépasse l'horizon de réservation (D227).
+   *
+   *  ⚠ CODE DISTINCT DE `AVAILABLE_ON_PAST`, ET C'EST TOUT LE POINT. Les
+   *  deux refus sont métier, mais ils n'appellent pas la même action :
+   *  « cette date est passée » dit de regarder DEVANT, « nous n'ouvrons pas
+   *  encore si loin » dit de se RAPPROCHER. Un code unique aurait forcé
+   *  l'écran à en choisir un — faux une fois sur deux.
+   *
+   *  Même motif que `AVAILABLE_ON_PAST` sur le fond : `availableOn` est un
+   *  POINT, et un point hors bornes se REFUSE au lieu de s'écrêter (D213).
+   *  L'horizon est `BOOKING_HORIZON_MONTHS`, le même que celui qui refuse
+   *  une demande de visite — pas une seconde valeur à faire diverger. */
+  AVAILABLE_ON_BEYOND_HORIZON: "AVAILABLE_ON_BEYOND_HORIZON"
 } as const;
 export type VenueErrorCode = (typeof VenueErrorCode)[keyof typeof VenueErrorCode];
 
@@ -393,12 +546,21 @@ export interface VenueProDTO {
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
   bookingMode: BookingMode;
+  /** D81 (E1a) — politique d'acompte de la salle. EXACTEMENT un des deux est
+   *  non nul. Le pro la règle lui-même, contrairement à commission/cashback qui
+   *  restent admin : c'est SON argent d'avance, pas la marge de la plateforme. */
+  depositRateBps: number | null;
+  depositAmountCents: number | null;
   /** Lecture seule pour le pro — la publication est un acte admin (A3). */
   publicationStatus: VenuePublicationStatus;
   /** D33 — libre-service via PATCH. */
   status: VenueAvailabilityStatus;
   /** A3-① : ids d'équipements, triés — remplacés en bloc via PATCH amenityIds. */
   amenityIds: string[];
+  /** D65 (A13) — ids de styles, triés ; remplacés en bloc via PATCH styleIds. */
+  styleIds: string[];
+  /** D66 (A13) — `null` : la salle ne l'a pas encore déclaré. */
+  ceremonyType: CeremonyType | null;
   /** Lot A4 — photos triées par sortOrder (l'ordre du tableau = l'affichage). */
   photos: VenuePhotoDTO[];
   /** D46 (B1) — créneaux de fête, triés par heure de début puis id. Ils
@@ -599,6 +761,39 @@ export type VenueRatesUpdateInput = z.infer<typeof venueRatesUpdateSchema>;
 export const VENUE_LIST_SORTS = ["recent", "price_asc", "price_desc"] as const;
 export type VenueListSort = (typeof VENUE_LIST_SORTS)[number];
 
+/* ════════ Flux A, Lot A13 — styles & type de cérémonie (D65, D66) ═══════════ */
+
+/** D65 — un style tel que le référentiel le publie. Même forme qu'`AmenityDTO` :
+ *  la `key` est ce que les filtres transportent, les libellés ne servent qu'à
+ *  l'affichage. Pas d'`icon` : le design rend les styles en PUCES de texte, et
+ *  un champ que personne ne lit finit par mentir. */
+export interface VenueStyleDTO {
+  id: string;
+  key: string;
+  nameFr: string;
+  nameAr: string;
+  sortOrder: number;
+}
+
+/** D66 — les trois valeurs, en minuscules dans l'URL (`?ceremonyType=outdoor`)
+ *  comme le reste des paramètres de recherche, converties côté service. */
+export const CEREMONY_TYPE_FILTERS = ["indoor", "outdoor", "mixed"] as const;
+export type CeremonyTypeFilter = (typeof CEREMONY_TYPE_FILTERS)[number];
+
+/** Filtre → valeurs de base RETENUES. Une seule table pour la règle, sinon
+ *  l'API et l'écran finiraient par ne plus dire la même chose.
+ *
+ *  ⚠ ASYMÉTRIE VOULUE : « je veux l'extérieur » accepte une salle MIXTE (elle
+ *  propose l'extérieur), mais « je veux mixte » n'accepte QUE mixte — là, la
+ *  demande porte sur les deux possibilités à la fois. Filtrer par égalité
+ *  cacherait toutes les salles mixtes à qui cherche un mariage en extérieur :
+ *  exactement la mauvaise réponse. */
+export const CEREMONY_TYPE_MATCHES: Record<CeremonyTypeFilter, CeremonyType[]> = {
+  indoor: [CeremonyType.INDOOR, CeremonyType.MIXED],
+  outdoor: [CeremonyType.OUTDOOR, CeremonyType.MIXED],
+  mixed: [CeremonyType.MIXED]
+};
+
 /**
  * Querystring de GET /venues (liste publique). VOLONTAIREMENT non-strict :
  * les clés inconnues (utm_*, fbclid…) sont ignorées, jamais un 400 — une URL
@@ -627,6 +822,36 @@ export const venueListQuerySchema = z
       .int("venue.validation.priceFilterInvalid")
       .min(0, "venue.validation.priceFilterInvalid")
       .optional(),
+    /** D68 (A13) — plafond de capacité de la SALLE, en regard de `guests` qui en
+     *  est le plancher. Deux noms pour deux rôles : `guests` dit « j'ai tant
+     *  d'invités » (donc capacityMax ≥ guests, D36 inchangé), `maxCapacity` dit
+     *  « pas plus grand que ça » — une fête de 80 personnes dans une salle de
+     *  800 sonne vide et coûte plus cher. */
+    maxCapacity: z.coerce
+      .number({ invalid_type_error: "venue.validation.guestsInvalid" })
+      .int("venue.validation.guestsInvalid")
+      .min(1, "venue.validation.guestsInvalid")
+      .max(10_000, "venue.validation.guestsInvalid")
+      .optional(),
+    /** D65 — clés de styles séparées par des virgules, sémantique **OU**. */
+    styles: z
+      .string()
+      .regex(/^[a-z0-9-]+(?:,[a-z0-9-]+)*$/, "venue.validation.stylesFilterInvalid")
+      .optional(),
+    /** D66 — filtre INCLUSIF, voir CEREMONY_TYPE_MATCHES. */
+    ceremonyType: z
+      .enum(CEREMONY_TYPE_FILTERS, { errorMap: () => ({ message: "venue.validation.ceremonyTypeInvalid" }) })
+      .optional(),
+    /** Lot `availableOn` — date civile d'Alger `YYYY-MM-DD`. ANNOTE la page,
+     *  ne la filtre pas : voir `VenueSummaryDTO.availableOnDate`.
+     *
+     *  ⚠ Ce schéma ne refuse ICI que ce qui est DÉTERMINISTE — la forme et la
+     *  date irréelle (`2026-02-31` a la bonne forme et n'existe pas). Le passé
+     *  dépend de l'instant de la requête et de l'horloge d'Alger : il est
+     *  refusé par le SERVICE, seul détenteur de `Date.now()`
+     *  (`AVAILABLE_ON_PAST`). Le mettre ici forcerait Zod à lire une horloge et
+     *  rendrait ce schéma non déterministe pour tous ses autres appelants. */
+    availableOn: z.string().refine(isRealCivilDate, "venue.validation.dateFormat").optional(),
     /** Clés d'amenities séparées par des virgules — sémantique ET (toutes). */
     amenities: z
       .string()
@@ -645,6 +870,11 @@ export const venueListQuerySchema = z
     if (v.minPriceCents !== undefined && v.maxPriceCents !== undefined && v.minPriceCents > v.maxPriceCents) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["maxPriceCents"], message: "venue.validation.priceRangeInvalid" });
     }
+    // D68 — deux poignées d'un même curseur : la basse ne peut pas dépasser la
+    // haute. Une plage inversée ne rend rien ET n'a rien à afficher.
+    if (v.guests !== undefined && v.maxCapacity !== undefined && v.guests > v.maxCapacity) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["maxCapacity"], message: "venue.validation.capacityRangeInvalid" });
+    }
   });
 export type VenueListQueryInput = z.infer<typeof venueListQuerySchema>;
 
@@ -654,6 +884,12 @@ export interface VenueListResponse {
   total: number;
   page: number;
   pageSize: number;
+  /** Lot `availableOn` — ÉCHO de la date annotée, `null` si la question n'a pas
+   *  été posée. Même raison que les bornes effectives de D49 : sans écho,
+   *  l'appelant devrait PRÉSUMER que la réponse porte sur la date qu'il croit
+   *  avoir envoyée. C'est aussi lui qui désambiguïse les deux `null` de
+   *  `availableOnDate` — question non posée, ou salle sans créneau actif. */
+  availableOn: string | null;
 }
 
 /**
@@ -698,16 +934,34 @@ export interface VenuePublicDTO {
   /** Centimes de DZD (invariant : argent en entiers). */
   basePriceCents: number;
   bookingMode: BookingMode;
+  /** D81 (E1a) — exposée AVANT la demande, et pas seulement au récapitulatif :
+   *  l'acompte est la première question que se pose un client, et la découvrir
+   *  à la dernière étape est la meilleure façon de le faire abandonner. */
+  depositRateBps: number | null;
+  depositAmountCents: number | null;
   status: VenueAvailabilityStatus;
   city: VenuePublicCityDTO;
   /** Référentiel complet (clé stable + libellés + icône), trié par nameFr. */
   amenities: AmenityDTO[];
+  /** D65 (A13) — styles de la salle, triés par `sortOrder` (ordre éditorial). */
+  styles: VenueStyleDTO[];
+  /** D66 (A13) — `null` : la salle ne l'a pas encore déclaré. */
+  ceremonyType: CeremonyType | null;
   /** Lot A4 — galerie (ordre du tableau = sortOrder ; couverture = 1ʳᵉ). */
   photos: VenuePublicPhotoDTO[];
   /** D45 (A6a) — identifiant du modèle Matterport, `null` si la salle n'a pas
    *  de scan. A8 monte l'iframe AU GESTE UTILISATEUR, jamais automatiquement
    *  (tiers, coût réseau — cible Android bas de gamme, backlog 24.6). */
   matterportModelId: string | null;
+  /** E2d — catalogue de prestations, ACTIVES seulement, triées par `sortOrder`.
+   *
+   *  Le pro voit aussi les retirées ; le public, jamais : une prestation qu'on
+   *  ne peut plus commander n'a rien à faire sur une fiche.
+   *
+   *  Exposé sur le DÉTAIL et non sur la liste : un catalogue n'aide pas à
+   *  choisir entre deux salles dans une grille, et l'y charger alourdirait
+   *  chaque carte pour rien (cible Android bas de gamme). */
+  services: ServiceDTO[];
 }
 
 /* ══════════════════════════ Lot B3 — disponibilité ═══════════════════════════
@@ -725,6 +979,8 @@ export const ALGERIA_UTC_OFFSET_MINUTES = 60;
 /** D46 — on ne réserve pas au-delà de 18 mois. Constante partagée, jamais une
  *  colonne : c'est une règle commerciale unique, pas un réglage par salle. */
 export const BOOKING_HORIZON_MONTHS = 18;
+
+
 
 /** Nombre maximal de jours RENDUS par une fenêtre, bornes incluses. 92 est le
  *  plus long trimestre civil (juillet + août + septembre), soit exactement le
@@ -1009,6 +1265,37 @@ export interface ProNotificationChannelsDTO {
   notifyBySms: boolean;
 }
 
+/* ── Lot C3b — les rendez-vous vus par le PRO ────────────────────────────────
+ *
+ *  ⚠ D70 — la fenêtre de lecture des rendez-vous n'est PAS écrêtée au présent,
+ *  contrairement à celle des disponibilités (D49). Une disponibilité passée
+ *  n'est rien ; un rendez-vous passé est une information — qui est venu, qui ne
+ *  s'est pas présenté. Écrêter effacerait l'historique du pro à chaque requête.
+ *  Le schéma de fenêtre (`availabilityWindowQuerySchema`) est réutilisé tel quel
+ *  pour la forme et la largeur maximale ; c'est l'ÉCRÊTAGE qui ne s'applique
+ *  pas, pas la validation. */
+
+/** Rendez-vous vu par le pro. Il porte le CONTACT du client — c'est toute la
+ *  raison d'être de cette lecture : rappeler avant la visite, ou prévenir en
+ *  cas d'empêchement. Le téléphone peut manquer (D61 le rend facultatif) ;
+ *  l'e-mail, jamais. */
+export interface ProVisitBookingDTO {
+  id: string;
+  /** Repère civil d'Alger `YYYY-MM-DD`, redérivé de `scheduledAt` (symétrie
+   *  D51). `string` et non un type dédié : `packages/types` n'en expose pas —
+   *  la forme est garantie par `isRealCivilDate` à la frontière. */
+  date: string;
+  startMinutes: number;
+  scheduledAt: string;
+  status: VisitStatus;
+  clientFirstName: string | null;
+  clientLastName: string | null;
+  clientEmail: string;
+  contactPhone: string | null;
+  cancelledAt: string | null;
+  createdAt: string;
+}
+
 export const proNotificationChannelsSchema = z
   .object({ notifyByEmail: z.boolean(), notifyBySms: z.boolean() })
   .strict()
@@ -1017,3 +1304,62 @@ export const proNotificationChannelsSchema = z
     message: "account.validation.oneChannelRequired"
   });
 export type ProNotificationChannelsInput = z.infer<typeof proNotificationChannelsSchema>;
+
+
+/* ═════════════ Flux C, Lot C3 — prise de rendez-vous (D61, D62) ══════════════ */
+
+/** D61 — le client renvoie le créneau qu'il a CHOISI, dans le repère où il l'a
+ *  reçu : une date civile et des minutes depuis minuit. **Jamais un instant
+ *  ISO** — accepter un horodatage offsetté laisserait le navigateur choisir le
+ *  fuseau, ce que D48 interdit précisément ; la conversion en instant se fait
+ *  côté serveur, une seule fois, avec le décalage d'Alger et lui seul.
+ *
+ *  `phone` est OPTIONNEL (décision de Ko) : exiger un numéro à l'étape du
+ *  rendez-vous coûterait des rendez-vous, et le pro dispose toujours de
+ *  l'e-mail du client. Le numéro du PRO, lui, est structurellement obligatoire
+ *  — c'est le destinataire WhatsApp de D60.
+ *
+ *  ⚠ `startMinutes` est borné à la JOURNÉE (0–1439), pas à « 1440 − 30 » : ce
+ *  schéma dit seulement « une minute réelle du jour ». Savoir si un créneau
+ *  EXISTE appartient au découpage des plages (`computeVisitSlots`), et une
+ *  borne ne se valide jamais deux fois (D55). */
+export const visitBookingCreateSchema = z
+  .object({
+    date: z.string().refine(isRealCivilDate, "venue.validation.dateFormat"),
+    startMinutes: z
+      .number()
+      .int()
+      .min(0, "venue.validation.visitOutOfDay")
+      .max(1439, "venue.validation.visitOutOfDay"),
+    phone: dzPhoneSchema.optional()
+  })
+  .strict();
+export type VisitBookingCreateInput = z.infer<typeof visitBookingCreateSchema>;
+
+/** Rendez-vous de visite tel que le client le relit.
+ *
+ *  ⚠ Pas de `durationMinutes` : `VISIT_DURATION_MINUTES` est une constante
+ *  partagée que le front importe (D58). La répéter sur chaque ligne serait une
+ *  occasion de divergence pour une valeur que la plateforme connaît déjà.
+ *
+ *  `date` et `startMinutes` sont REDÉRIVÉS de `scheduledAt` par l'arithmétique
+ *  civile du serveur (symétrie D51) : le client relit exactement le repère
+ *  qu'il a envoyé, et n'héberge aucune seconde décision de fuseau. */
+export interface VisitBookingDTO {
+  id: string;
+  venueId: string;
+  venueSlug: string;
+  venueNameFr: string;
+  venueNameAr: string;
+  /** Date civile locale `YYYY-MM-DD`. */
+  date: string;
+  startMinutes: number;
+  /** Instant absolu, pour tout tri ou comparaison — jamais pour l'affichage. */
+  scheduledAt: string;
+  status: VisitStatus;
+  /** D61 — SNAPSHOT du contact au moment du rendez-vous. `null` quand ni le
+   *  corps ni le profil ne portaient de numéro. */
+  contactPhone: string | null;
+  cancelledAt: string | null;
+  createdAt: string;
+}

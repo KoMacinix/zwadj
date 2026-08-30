@@ -49,9 +49,13 @@ const VENUE: VenueProDTO = {
   capacityMax: 400,
   basePriceCents: 15_000_000,
   bookingMode: "SINGLE_SLOT",
+  depositRateBps: 3000,
+  depositAmountCents: null,
   publicationStatus: "DRAFT",
   status: "ACTIVE",
   amenityIds: [],
+  styleIds: [],
+  ceremonyType: null,
   photos: [],
   matterportModelId: null,
   createdAt: "2026-01-05T10:00:00.000Z",
@@ -100,6 +104,7 @@ function makeReferentials(overrides: Partial<ReferentialsClient> = {}): Referent
   return {
     listWilayas: vi.fn().mockResolvedValue(WILAYAS),
     listAmenities: vi.fn().mockResolvedValue([]),
+    listVenueStyles: vi.fn().mockResolvedValue([]),
     ...overrides
   };
 }

@@ -1,9 +1,15 @@
+// ⚠ IMPORT DE VALEUR, pas `import type` : `VenueErrorCode` est un objet lu à
+// l'exécution pour reconnaître le refus de l'API. Un `import type` l'effacerait
+// à la compilation et la comparaison sauterait sur `undefined`.
+import { VenueErrorCode } from "@zwadj/types";
 import type {
   AmenityDTO,
   VenueAvailabilityResponse,
   ApiHealthResponse,
   VenueListResponse,
   VenuePublicDTO,
+  VenueStyleDTO,
+  VenueVisitSlotsResponse,
   WilayaDTO
 } from "@zwadj/types";
 
@@ -32,15 +38,102 @@ export async function getApiHealth(): Promise<ApiHealthResponse | { status: "unr
 // Tolérance aux pannes, comme `getApiHealth` : une API éteinte doit produire un
 // ÉTAT D'ERREUR rendu, jamais une exception qui casse la page.
 
-/** Résultats de recherche, ou `null` si l'API n'a pas répondu correctement. */
-export async function searchVenues(query: URLSearchParams): Promise<VenueListResponse | null> {
+/**
+ * Résultat de la recherche — QUATRE issues, parce qu'elles se disent en quatre
+ * phrases différentes à l'écran.
+ *
+ * ⚠ POURQUOI CE TYPE REMPLACE UN `| null`. Le lot `availableOn` a introduit un
+ * refus MÉTIER : une date déjà passée rend 400 `AVAILABLE_ON_PAST`. Replié sur
+ * `null` comme une panne, il se serait affiché « la recherche est momentanément
+ * indisponible » — un message faux, qui invite à réessayer une requête qui ne
+ * marchera jamais. Distinguer coûte un type ; ne pas distinguer coûte un
+ * visiteur qui recharge en boucle.
+ */
+export type SearchOutcome =
+  | { kind: "ok"; data: VenueListResponse }
+  /** La date d'annotation demandée est passée à Alger. L'URL a été forgée, ou
+   *  gardée en favori d'une saison à l'autre — le sélecteur, lui, ne propose
+   *  aucune date passée. */
+  | { kind: "past-date" }
+  /** La date demandée dépasse l'horizon de réservation (D227).
+   *
+   *  ⚠ ISSUE À PLAT, pas un champ sur `past-date`. Le `switch` de l'écran
+   *  reste exhaustif au sens de TypeScript : ajouter une cinquième issue
+   *  fera tomber la compilation là où elle n'est pas traitée, ce qu'un
+   *  drapeau booléen ne ferait pas.
+   *
+   *  ⚠ DISTINCTE DE `past-date` parce que les deux n'appellent pas la même
+   *  action : « regardez devant » contre « rapprochez-vous ». À l'écran, un
+   *  SEUL panneau, deux jeux de textes. */
+  | { kind: "beyond-horizon" }
+  /** API éteinte, réseau coupé, réponse illisible : on ne sait rien. */
+  | { kind: "unreachable" };
+
+export async function searchVenues(query: URLSearchParams): Promise<SearchOutcome> {
   try {
     // `no-store` : la publication d'une salle par l'admin doit se voir tout de
     // suite. Le cache de cette page relève d'un futur lot de performance.
     const res = await fetch(`${API_URL}/api/v1/venues?${query.toString()}`, { cache: "no-store" });
-    if (!res.ok) return null;
-    return (await res.json()) as VenueListResponse;
+    if (!res.ok) {
+      // ⚠ On lit le CODE, pas le statut seul. Un 400 peut venir d'ailleurs (un
+      // paramètre bricolé à la main), et il ne se dit pas de la même façon. Le
+      // corps est lu dans son PROPRE `try` : une réponse d'erreur sans JSON
+      // exploitable ne doit pas transformer un refus connu en panne inconnue.
+      if (res.status === 400) {
+        try {
+          // ⚠ LE CODE EST IMBRIQUÉ SOUS `message`, pas à la racine.
+          // `AllExceptionsFilter` enveloppe toute exception en
+          // `{ statusCode, message, path, timestamp }` où `message` porte le
+          // corps de la `HttpException` — donc `{ code, message }` pour nos
+          // erreurs métier. Forme RELEVÉE de `packages/api-client`
+          // (`auth-client.ts` : `body.message?.code`), qui la lit ainsi depuis
+          // le premier lot, et non écrite de mémoire : la lire à la racine
+          // n'aurait JAMAIS reconnu le refus, et l'écran aurait affiché « la
+          // recherche est momentanément indisponible » en production.
+          const body = (await res.json()) as { message?: { code?: string } };
+          if (body.message?.code === VenueErrorCode.AVAILABLE_ON_PAST) return { kind: "past-date" };
+          if (body.message?.code === VenueErrorCode.AVAILABLE_ON_BEYOND_HORIZON) {
+            return { kind: "beyond-horizon" };
+          }
+        } catch {
+          /* corps illisible : on retombe sur « on ne sait rien ». */
+        }
+      }
+      return { kind: "unreachable" };
+    }
+    return { kind: "ok", data: (await res.json()) as VenueListResponse };
   } catch {
+    return { kind: "unreachable" };
+  }
+}
+
+/**
+ * COMBIEN de salles correspondent — le total, pas les salles.
+ *
+ * ⚠ SEULE FONCTION DE CE FICHIER APPELÉE DEPUIS LE NAVIGATEUR, et c'est
+ * délibéré : `/api/v1/venues` est public, non authentifié, et ne porte aucun
+ * état de session. La mise en garde en tête du fichier vise l'authentification —
+ * traîner `@zwadj/api-client` côté serveur ferait fuiter une session entre deux
+ * visiteurs. Ici il n'y a pas de session du tout.
+ *
+ * ⚠ `pageSize=1` : on veut le COMPTE, pas la page. Demander 12 salles pour n'en
+ * lire aucune ferait payer au visiteur — sur un réseau lent — une charge utile
+ * qu'on jette. Le serveur reste l'autorité sur « quelles salles correspondent » :
+ * refiltrer dans le navigateur serait une seconde autorité, qui divergerait au
+ * premier critère ajouté.
+ */
+export async function countVenues(query: URLSearchParams, signal?: AbortSignal): Promise<number | null> {
+  const params = new URLSearchParams(query);
+  params.set("pageSize", "1");
+  params.set("page", "1");
+  try {
+    const res = await fetch(`${API_URL}/api/v1/venues?${params.toString()}`, { cache: "no-store", signal });
+    if (!res.ok) return null;
+    return ((await res.json()) as VenueListResponse).total;
+  } catch {
+    // ⚠ Une annulation passe par ici comme une panne, et c'est sans conséquence :
+    // l'appelant a déjà lancé la requête suivante. `null` = « je ne sais pas »,
+    // jamais « zéro salle » — les deux ne se disent pas pareil à l'écran.
     return null;
   }
 }
@@ -63,6 +156,19 @@ export async function getAmenities(): Promise<AmenityDTO[]> {
     const res = await fetch(`${API_URL}/api/v1/amenities`, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     return (await res.json()) as AmenityDTO[];
+  } catch {
+    return [];
+  }
+}
+
+/** Référentiel des styles (D65). Même contrat que les équipements : un tableau
+ *  vide en cas d'échec, jamais une exception — le panneau de filtres perd des
+ *  puces, la recherche continue de fonctionner. */
+export async function getVenueStyles(): Promise<VenueStyleDTO[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/v1/venue-styles`, { next: { revalidate: 3600 } });
+    if (!res.ok) return [];
+    return (await res.json()) as VenueStyleDTO[];
   } catch {
     return [];
   }
@@ -117,6 +223,39 @@ export async function getVenueAvailability(
     );
     if (!res.ok) return null;
     return (await res.json()) as VenueAvailabilityResponse;
+  } catch {
+    return null;
+  }
+}
+
+// ── Lot C5 — créneaux de visite ──────────────────────────────────────
+
+/** Créneaux de visite CONCRETS d'une salle sur une fenêtre de dates civiles.
+ *
+ *  Route ANONYME (D58/C2) : la liste s'affiche sans compte, seule la
+ *  RÉSERVATION exige la session. Exiger de se connecter pour *regarder*
+ *  ferait fuir avant de montrer.
+ *
+ *  Appelée depuis le NAVIGATEUR, donc `cache: "no-store"` — même raison qu'en
+ *  B5 : un créneau mis en cache serait annoncé libre alors qu'il vient d'être
+ *  pris, et la demande partirait pour échouer en 409.
+ *
+ *  ⚠ Les bornes RENDUES peuvent différer des bornes demandées (écrêtage du
+ *  passé et de l'horizon) : lire `from`/`to` de la réponse, jamais présumer
+ *  les siennes. */
+export async function getVisitSlots(
+  slug: string,
+  from: string,
+  to: string
+): Promise<VenueVisitSlotsResponse | null> {
+  try {
+    const query = new URLSearchParams({ from, to });
+    const res = await fetch(
+      `${API_URL}/api/v1/venues/${encodeURIComponent(slug)}/visit-slots?${query.toString()}`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) return null;
+    return (await res.json()) as VenueVisitSlotsResponse;
   } catch {
     return null;
   }

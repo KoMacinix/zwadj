@@ -157,10 +157,14 @@ describe("POST /venues — création", () => {
         "publicationStatus",
         "status",
         "amenityIds",
+        "styleIds", // Lot A13 — D65, remplacement d'ensemble comme amenityIds
+        "ceremonyType", // Lot A13 — D66, null tant que le pro ne l'a pas déclaré
         "photos", // Lot A4 — médias sur le DTO pro
         "slotTemplates", // Lot B1 — D46, créneaux sur le DTO pro
         "matterportModelId", // Lot A6a — D45
         "createdAt",
+        "depositAmountCents",
+        "depositRateBps",
         "updatedAt"
       ].sort()
     );

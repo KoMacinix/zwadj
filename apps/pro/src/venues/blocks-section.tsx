@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { ConfirmDialog } from "@zwadj/ui";
 import type { AvailabilityBlockDTO } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
-import { useVenues } from "./venue-client-context";
+import { useVenueAvailability } from "./venue-client-context";
 import { defaultWindow, inclusiveEndDate, isWholeDays, toBlockPayload } from "./block-time";
 import { TimeSelect } from "./time-select";
 
@@ -50,7 +50,7 @@ const emptyDraft = (from: string): BlockDraft => ({
 
 export function BlocksSection({ venueId }: { venueId: string }) {
   const { t } = useTranslation();
-  const venues = useVenues();
+  const venues = useVenueAvailability();
   const toMessage = useApiErrorMessage();
   const formId = useId();
 
@@ -77,7 +77,10 @@ export function BlocksSection({ venueId }: { venueId: string }) {
     void (async () => {
       try {
         const rows = await venues.listAvailabilityBlocks(venueId, window);
-        if (!cancelled) setBlocks(rows);
+        // D120 — GARDE DE FORME, voir `visits-section`. Ici le rendu lit aussi
+        // `.endsWith()` sur des champs de chaque ligne : un tableau d'éléments
+        // amputés casse tout autant qu'une non-liste.
+        if (!cancelled) setBlocks(Array.isArray(rows) ? rows : []);
       } catch (cause) {
         if (cancelled) return;
         setError(toMessageRef.current(cause));

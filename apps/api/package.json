@@ -10,10 +10,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate": "prisma migrate deploy",
     "prisma:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "test:int": "vitest run -c vitest.config.int.ts"
+    "test:int": "vitest run -c vitest.config.int.ts",
+    "prisma:migrate:dev": "node -e \"console.error('INTERDIT \u2014 voir AGENTS.md : migrate dev supprime les garanties SQL ecrites a la main (EXCLUDE anti-double-booking, index partiels, FK composite). Ecrire la migration a la main, puis pnpm prisma:migrate.'); process.exit(1)\"",
+    "db:seed:demo": "tsx prisma/seed-demo.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",

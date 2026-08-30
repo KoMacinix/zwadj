@@ -14,9 +14,63 @@
 //     fonctionner sans JS (SEO + Android bas de gamme, backlog 24.6). La forme
 //     répétée est donc la CANONIQUE ; la jointure se fait au dernier moment,
 //     à l'appel de l'API.
-import { VENUE_LIST_SORTS, type VenueListSort } from "@zwadj/types";
+import {
+  CEREMONY_TYPE_FILTERS,
+  isRealCivilDate,
+  VENUE_LIST_SORTS,
+  type CeremonyTypeFilter,
+  type VenueListSort
+} from "@zwadj/types";
 
 export const PAGE_SIZE = 12;
+
+/* ── Bornes des curseurs (Lot A13b — D69) ────────────────────────────────────
+   Déclarées ICI et pas dans la vue : le parseur DOIT connaître les mêmes
+   valeurs pour reconnaître qu'une poignée est au bout de sa course. Deux
+   copies, c'est un jour où le curseur affiche « 500+ » pendant que l'API reçoit
+   un plafond de 500.
+
+   ⚠ RÈGLE D69 — une poignée EN BUTÉE ne filtre pas. Un curseur exprime un
+   RÉTRÉCISSEMENT : à pleine largeur il ne rétrécit rien, donc le paramètre est
+   OMIS. Sans cette règle, le panneau au repos exclurait déjà des salles — celle
+   de 1 200 places disparaîtrait d'une recherche que personne n'a touchée, et
+   « 500+ » afficherait moins de résultats que « 500 ».
+
+   Le sentinelle est la borne elle-même, pas une valeur magique : `maxCapacity`
+   à 500 SIGNIFIE « 500 ou plus ». C'est ce que le libellé annonce, et cela
+   survit à l'absence de JavaScript — un `input[type=range]` soumet toujours sa
+   valeur, il n'a aucun moyen de se taire. */
+export const CAPACITY_FLOOR = 20;
+export const CAPACITY_CEILING = 500;
+export const CAPACITY_STEP = 10;
+
+/** En DINARS, comme le reste de l'URL publique (les centimes vivent côté API). */
+export const BUDGET_FLOOR = 0;
+export const BUDGET_CEILING = 1_500_000;
+export const BUDGET_STEP = 50_000;
+
+/** Les paliers de budget OFFERTS AU VISITEUR, en dinars, déclarés UNE SEULE
+ *  FOIS. Arbitrage Ko du 24/08/2026 : trois paliers, tous strictement sous la
+ *  butée (D254).
+ *
+ *  ⛔ POURQUOI ILS VIVENT ICI ET PAS DANS LES ÉCRANS. Le même montant était
+ *  déclaré TROIS FOIS dans DEUX UNITÉS : `BUDGET_CEILING` ici en dinars, le
+ *  `<select>` de l'accueil en dinars, `BUDGET_TIERS` de l'assistant en
+ *  CENTIMES. Deux des quatre paliers valaient 2 000 000 et 4 000 000 DA, soit
+ *  au-dessus de la butée : par D69 ils signifiaient « pas de plafond », donc
+ *  ils ne filtraient RIEN. Mesuré avant correction — l'assistant poussait une
+ *  querystring VIDE après quatre écrans. Aucun des trois fichiers ne lisait
+ *  les deux autres : c'est la faute que les bornes de capacité interdisent
+ *  vingt lignes plus haut, non appliquée au budget.
+ *
+ *  ⚠ VALEURS LITTÉRALES, jamais calculées — aucune arithmétique monétaire dans
+ *  ce navigateur. Elles ne dérivent pas non plus du jeu de démonstration : ce
+ *  sont des chiffres inventés pour peupler un écran, pas une mesure du marché.
+ *
+ *  ⛔ UN PALIER `>= BUDGET_CEILING` EST UN PALIER MORT. `search-query.test.ts`
+ *  le fait TOMBER. Un commentaire d'avertissement existait déjà dans
+ *  `home-view.tsx` — il n'avait rien empêché. */
+export const BUDGET_TIERS = [500_000, 750_000, 1_000_000] as const;
 
 /** Ce que porte l'URL, déjà nettoyé. Les champs texte restent des chaînes :
  *  ils réalimentent les `<input>` à l'identique, y compris quand la saisie est
@@ -26,7 +80,26 @@ export interface SearchState {
   guests: string;
   minPrice: string;
   maxPrice: string;
+  /** Plafond de capacité (D68). `""` = pas de plafond. */
+  maxCapacity: string;
   amenities: string[];
+  /** Clés de styles, sémantique OU (D65). */
+  styles: string[];
+  /** `""` | `"indoor"` | `"outdoor"` | `"mixed"` — filtre INCLUSIF (D66). */
+  ceremonyType: string;
+  /** Lot `availableOn` — date civile `YYYY-MM-DD`, `""` si absente.
+   *
+   *  ⚠ ANNOTE, NE FILTRE PAS : les salles prises restent dans la page, grisées.
+   *  Le client cherche une salle ; lui en cacher une parce qu'elle est prise le
+   *  2 juin l'empêche de constater qu'elle est libre le 9.
+   *
+   *  ⚠ AUCUNE NOTION DE « PASSÉ » ICI, et c'est structurel. « Hier » dépend de
+   *  l'horloge d'Alger, que ce module ne lit pas et ne doit pas lire : un
+   *  navigateur au Canada ne calcule pas le même « aujourd'hui ». L'API est
+   *  seule autorité et refuse en 400 (`AVAILABLE_ON_PAST`) ; la page rend ce
+   *  refus. Trancher ici créerait une SECONDE autorité, qui dirait « date
+   *  passée » là où Alger dit « c'est aujourd'hui ». */
+  availableOn: string;
   sort: VenueListSort;
   page: number;
 }
@@ -44,6 +117,83 @@ function positiveInteger(value: string): string {
   return /^\d+$/.test(value) && Number(value) > 0 ? String(Number(value)) : "";
 }
 
+/** Remet deux bornes dans l'ordre. Une borne absente n'est pas « zéro » : elle
+ *  ne participe pas à la comparaison. */
+function ordered(low: string, high: string): [string, string] {
+  if (low === "" || high === "") return [low, high];
+  return Number(low) <= Number(high) ? [low, high] : [high, low];
+}
+
+/** Poignée basse au plancher = aucun minimum demandé (D69). */
+function atFloor(value: string, floor: number): string {
+  return value === "" || Number(value) <= floor ? "" : value;
+}
+
+/** Poignée haute en butée = aucun maximum demandé (D69). Le `>=` couvre une URL
+ *  bricolée à la main au-delà de la borne : elle veut dire « tout », pas « rien ». */
+function atCeiling(value: string, ceiling: number): string {
+  return value === "" || Number(value) >= ceiling ? "" : value;
+}
+
+/* ── REPLI DE TRANSITION `maxPriceCents` → `maxPrice` (D228) ─────────────────
+   ⛔ DETTE DATÉE AU 19/11/2026. Ce bloc a une date de péremption ; passée
+   celle-ci, les liens partagés portant l'ancien nom sont assez vieux pour
+   qu'on cesse de les servir, et tout ce paragraphe se retire.
+
+   ⚠ LE DÉFAUT QU'IL RATTRAPE, mesuré avant correction : l'URL publique porte
+   des DINARS (`maxPrice`), l'API des CENTIMES (`maxPriceCents`) — et les deux
+   formulaires du front écrivaient le nom de l'API dans l'URL. Résultat :
+       ?maxPriceCents=50000000 → state.maxPrice="" → requête API SANS plafond.
+   Un visiteur qui choisit « 500 000 DA » recevait le catalogue entier. */
+
+/** Centimes → dinars. `""` si la valeur ne peut pas être rendue EXACTEMENT.
+ *
+ *  ⚠ SEUL ENDROIT DU FRONT QUI DIVISE PAR 100, en regard du seul endroit qui
+ *  multiplie (`toApiQuery`). Deux copies du facteur, c'est un jour où l'une
+ *  change sans l'autre — et un facteur 100 sur un prix ne se voit pas à
+ *  l'écran, il se voit sur la facture.
+ *
+ *  ⚠ MULTIPLES DE 100 SEULEMENT (D228). Ce sont les seules valeurs que nos
+ *  propres formulaires ont produites. Un reste non nul vient d'une URL
+ *  bricolée : on l'ABANDONNE plutôt que d'inventer un arrondi que personne
+ *  n'a décidé. Un plafond arrondi en silence est un plafond que le visiteur
+ *  n'a pas demandé. */
+/** Dinars → centimes. ⚠ SEUL ENDROIT DU FRONT QUI MULTIPLIE PAR 100, en regard
+ *  du seul qui divise (`dinarsFromCents`, juste en dessous). Il était jusqu'ici
+ *  écrit à la main dans `toApiQuery` ; l'assistant en avait besoin aussi, et une
+ *  seconde multiplication recopiée est exactement le facteur 100 qui ne se voit
+ *  pas à l'écran mais se voit sur la facture.
+ *
+ *  ⚠ PRÉCONDITION : un entier positif déjà validé — sortie de `positiveInteger`
+ *  ou membre de `BUDGET_TIERS`. Cette fonction ne valide RIEN, sans quoi elle
+ *  deviendrait une seconde autorité de validation à côté du parseur. */
+export function centsFromDinars(dinars: string | number): number {
+  return Number(dinars) * 100;
+}
+
+export function dinarsFromCents(cents: string): string {
+  if (!/^\d+$/.test(cents)) return "";
+  const value = Number(cents);
+  if (!Number.isSafeInteger(value) || value % 100 !== 0) return "";
+  return String(value / 100);
+}
+
+/** Le plafond porté par l'URL, en dinars.
+ *
+ *  ⚠ LA PRÉSENCE DE LA CLÉ DÉCIDE DE LA BRANCHE, SA VALIDITÉ DÉCIDE DE LA
+ *  VALEUR (D228). `?maxPrice=` VIDE compte comme présent, et c'est le point :
+ *  un `<form method="get">` soumet ses champs vides, donc un visiteur qui
+ *  choisit « peu importe » écrit exactement cela. Replier là-dessus lui
+ *  ressusciterait le plafond qu'il vient d'effacer.
+ *
+ *  ⚠ JAMAIS DANS L'AUTRE SENS : `maxPriceCents` ne corrige jamais un
+ *  `maxPrice` malformé. Sans quoi le mauvais nom deviendrait une source
+ *  normale, et la dette ne se paierait jamais. */
+function maxPriceFromRaw(raw: RawSearchParams): string {
+  if (raw.maxPrice !== undefined) return first(raw.maxPrice);
+  return dinarsFromCents(first(raw.maxPriceCents));
+}
+
 export function parseSearchParams(raw: RawSearchParams): SearchState {
   const amenitiesRaw = raw.amenities;
   const amenities = (Array.isArray(amenitiesRaw) ? amenitiesRaw : amenitiesRaw ? [amenitiesRaw] : [])
@@ -53,17 +203,60 @@ export function parseSearchParams(raw: RawSearchParams): SearchState {
     .map((value) => value.trim())
     .filter((value) => /^[a-z0-9-]+$/.test(value));
 
+  const stylesRaw = raw.styles;
+  const styles = (Array.isArray(stylesRaw) ? stylesRaw : stylesRaw ? [stylesRaw] : [])
+    .flatMap((value) => value.split(","))
+    .map((value) => value.trim())
+    .filter((value) => /^[a-z0-9-]+$/.test(value));
+
+  const ceremonyRaw = first(raw.ceremonyType);
+
+  // D69 — sans JavaScript, rien n'empêche de traîner la poignée basse au-dessus
+  // de la haute : les deux `input` sont indépendants. On REDRESSE ici plutôt que
+  // de laisser partir une plage inversée, que l'API refuserait en 400 (D68) —
+  // un 400 sur une page publique indexée est un accident, et le visiteur n'a
+  // rien fait d'illégitime, il a juste croisé deux poignées.
+  const [guests, maxCapacity] = ordered(
+    atFloor(positiveInteger(first(raw.guests)), CAPACITY_FLOOR),
+    atCeiling(positiveInteger(first(raw.maxCapacity)), CAPACITY_CEILING)
+  );
+  // ⚠ Pas de repli symétrique pour `minPrice` : aucun formulaire du dépôt
+  // n'a jamais émis `minPriceCents` dans une URL (vérifié sur tout
+  // `apps/client`). Un chemin de transition que personne n'emprunte est du
+  // code mort qu'il faudra retirer un jour — on ne l'écrit pas.
+  const [minPrice, maxPrice] = ordered(
+    atFloor(positiveInteger(first(raw.minPrice)), BUDGET_FLOOR),
+    atCeiling(positiveInteger(maxPriceFromRaw(raw)), BUDGET_CEILING)
+  );
+
+  // ⚠ D55 — le cas RÉEL avant la borne : `2026-06-02` doit passer, et
+  // `2026-02-31` doit tomber. La bonne FORME ne fait pas une date : février n'a
+  // pas de 31. `isRealCivilDate` valide par aller-retour, et c'est la MÊME
+  // fonction que le schéma de l'API — pas une seconde règle à faire diverger.
+  const availableOnRaw = first(raw.availableOn);
+
   const sortRaw = first(raw.sort) as VenueListSort;
   const pageRaw = Number(first(raw.page));
 
   return {
     cityId: first(raw.cityId),
-    guests: positiveInteger(first(raw.guests)),
-    minPrice: positiveInteger(first(raw.minPrice)),
-    maxPrice: positiveInteger(first(raw.maxPrice)),
+    // D69 — une poignée en butée est effacée DÈS LA LECTURE de l'URL : l'état
+    // ne porte que ce qui filtre réellement, donc `toApiQuery` et
+    // `toPublicQuery` n'ont pas chacune à se souvenir de la règle.
+    guests,
+    maxCapacity,
+    minPrice,
+    maxPrice,
     // Dédoublonné : cocher deux fois la même clé ne doit pas produire deux
     // conditions ET identiques dans la requête.
     amenities: [...new Set(amenities)].sort(),
+    styles: [...new Set(styles)].sort(),
+    ceremonyType: CEREMONY_TYPE_FILTERS.includes(ceremonyRaw as CeremonyTypeFilter) ? ceremonyRaw : "",
+    // Une date irréelle est SILENCIEUSEMENT abandonnée, comme les autres
+    // valeurs mal formées de cette fonction : l'envoyer produirait un 400 sur
+    // une page publique indexée, ce qui est un accident (même motif que
+    // `positiveInteger`).
+    availableOn: isRealCivilDate(availableOnRaw) ? availableOnRaw : "",
     sort: VENUE_LIST_SORTS.includes(sortRaw) ? sortRaw : "recent",
     page: Number.isInteger(pageRaw) && pageRaw >= 1 ? pageRaw : 1
   };
@@ -74,10 +267,14 @@ export function toApiQuery(state: SearchState): URLSearchParams {
   const query = new URLSearchParams();
   if (state.cityId) query.set("cityId", state.cityId);
   if (state.guests) query.set("guests", state.guests);
-  // Dinars → centimes. Le seul endroit du front où cette multiplication existe.
-  if (state.minPrice) query.set("minPriceCents", String(Number(state.minPrice) * 100));
-  if (state.maxPrice) query.set("maxPriceCents", String(Number(state.maxPrice) * 100));
+  // Dinars → centimes, par la SEULE fonction qui multiplie (`centsFromDinars`).
+  if (state.minPrice) query.set("minPriceCents", String(centsFromDinars(state.minPrice)));
+  if (state.maxPrice) query.set("maxPriceCents", String(centsFromDinars(state.maxPrice)));
+  if (state.maxCapacity) query.set("maxCapacity", state.maxCapacity);
   if (state.amenities.length > 0) query.set("amenities", state.amenities.join(","));
+  if (state.styles.length > 0) query.set("styles", state.styles.join(","));
+  if (state.ceremonyType) query.set("ceremonyType", state.ceremonyType);
+  if (state.availableOn) query.set("availableOn", state.availableOn);
   query.set("sort", state.sort);
   query.set("page", String(state.page));
   query.set("pageSize", String(PAGE_SIZE));
@@ -94,7 +291,11 @@ export function toPublicQuery(state: SearchState, page = state.page): string {
   if (state.guests) query.set("guests", state.guests);
   if (state.minPrice) query.set("minPrice", state.minPrice);
   if (state.maxPrice) query.set("maxPrice", state.maxPrice);
+  if (state.maxCapacity) query.set("maxCapacity", state.maxCapacity);
   for (const amenity of state.amenities) query.append("amenities", amenity);
+  for (const style of state.styles) query.append("styles", style);
+  if (state.ceremonyType) query.set("ceremonyType", state.ceremonyType);
+  if (state.availableOn) query.set("availableOn", state.availableOn);
   if (state.sort !== "recent") query.set("sort", state.sort);
   if (page > 1) query.set("page", String(page));
   const serialized = query.toString();

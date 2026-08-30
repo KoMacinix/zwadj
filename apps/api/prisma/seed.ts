@@ -14,11 +14,13 @@ import { PrismaClient } from "../src/generated/prisma/client";
 import { AMENITIES } from "./seed-data/amenities";
 import { CITIES } from "./seed-data/cities";
 import { WILAYAS } from "./seed-data/wilayas";
+import { VENUE_STYLES } from "./seed-data/venue-styles";
 
 export interface SeedSummary {
   wilayas: number;
   cities: number;
   amenities: number;
+  venueStyles: number;
 }
 
 export async function seed(prisma: PrismaClient): Promise<SeedSummary> {
@@ -57,7 +59,21 @@ export async function seed(prisma: PrismaClient): Promise<SeedSummary> {
     });
   }
 
-  return { wilayas: WILAYAS.length, cities: CITIES.length, amenities: AMENITIES.length };
+  // 4. Styles de salle — clé naturelle : key (Lot A13, D65).
+  for (const s of VENUE_STYLES) {
+    await prisma.venueStyle.upsert({
+      where: { key: s.key },
+      create: { key: s.key, nameFr: s.nameFr, nameAr: s.nameAr, sortOrder: s.sortOrder },
+      update: { nameFr: s.nameFr, nameAr: s.nameAr, sortOrder: s.sortOrder }
+    });
+  }
+
+  return {
+    wilayas: WILAYAS.length,
+    cities: CITIES.length,
+    amenities: AMENITIES.length,
+    venueStyles: VENUE_STYLES.length
+  };
 }
 
 /* Entrée CLI — jamais déclenchée à l'import (les specs d'intégration passent

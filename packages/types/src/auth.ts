@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { normalizeDzPhone } from "./phone";
 import type { Locale, UserRole } from "./enums";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -24,14 +25,40 @@ export const emailSchema = z
   .max(254, "auth.validation.emailInvalid");
 
 /**
- * Téléphone pro : +213 suivi de 8 ou 9 chiffres (fixe/mobile DZ).
- * Volontairement permissif au MVP — normalisation/validation fine via
- * libphonenumber prévue au backlog (23.9), ne pas durcir ici.
+ * Téléphone algérien — MOBILE, et NORMALISÉ à l'entrée (Lot R3).
+ *
+ * Deux changements par rapport à la version précédente (`/^\+213\d{8,9}$/`),
+ * et il faut les lire ensemble :
+ *
+ * 1. ⚠ LE SCHÉMA ACCEPTE DÉSORMAIS LA SAISIE LOCALE et rend l'E.164. Personne
+ *    ne tape `+213` de lui-même : on écrit `0555 12 34 56`. Exiger la forme
+ *    canonique revenait à demander à l'utilisateur de faire la conversion que
+ *    la machine sait faire. C'est un ÉLARGISSEMENT du contrat — tout ce qui
+ *    passait hier passe encore, à l'exception du point 2.
+ *
+ * 2. ⚠ LES FIXES NE PASSENT PLUS. `+213` + 8 chiffres (Alger `021`, Oran
+ *    `041`…) était accepté ; il ne l'est plus. Raison : `ProProfile.phone` est
+ *    la destination WhatsApp des notifications (D60), et WhatsApp n'existe pas
+ *    sur un fixe — un pro inscrit avec un fixe ne recevait rien, sans erreur
+ *    nulle part. Et la clé de dédoublonnage du futur portefeuille doit désigner
+ *    une personne joignable.
+ *
+ * La conversion vit dans `./phone`, en UNE SEULE copie partagée par le Pro, le
+ * Client et l'API — comme `roundToDinar` pour l'argent. Deux écritures du même
+ * numéro qui ne donneraient pas la même chaîne produiraient deux fiches pour
+ * une seule personne.
  */
 export const dzPhoneSchema = z
   .string({ required_error: "auth.validation.phoneRequired" })
   .trim()
-  .regex(/^\+213\d{8,9}$/, "auth.validation.phoneInvalid");
+  .transform((saisie, ctx) => {
+    const e164 = normalizeDzPhone(saisie);
+    if (e164 === null) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "auth.validation.phoneInvalid" });
+      return z.NEVER;
+    }
+    return e164;
+  });
 
 export const localeSchema = z.enum(["fr", "ar"]).default("fr");
 
@@ -181,7 +208,16 @@ export interface AuthUserDTO {
   hasGoogle: boolean;
   /** Renseigné pour un PRO uniquement (D3) — null pour CLIENT/ADMIN.
    *  `phone2` (D38) : seconde ligne, beaucoup de salles en ont deux. */
-  proProfile: { businessName: string; phone: string; phone2: string | null } | null;
+  proProfile: {
+    businessName: string;
+    phone: string;
+    phone2: string | null;
+    /** D60 (F1) — canaux choisis. Au moins un des deux est vrai, garanti par
+     *  `CHECK pro_profiles_one_channel_required` : un pro sans canal ne verrait
+     *  plus jamais une demande arriver. */
+    notifyByEmail: boolean;
+    notifyBySms: boolean;
+  } | null;
 }
 /** POST /auth/login — l'access token va en mémoire JS ; le refresh token, lui,
  *  n'apparaît JAMAIS dans le corps : cookie httpOnly `zwadj_rt` (D2). */

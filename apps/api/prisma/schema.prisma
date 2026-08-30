@@ -139,6 +139,38 @@ enum PricingRuleType {
   HOLIDAY
 }
 
+// E2b — cycle de vie du DEVIS. PAS d'EXPIRED : un statut que rien ne fait
+// basculer devient un mensonge en base (leçon D80).
+//
+// ⚠ TROIS VALEURS SONT LEGACY : plus jamais écrites, toujours lues.
+//   DECLINED (Q3a) : absorbé par CANCELLED (D161) — un seul état, un seul
+//            bouton. La nuance « refusé par le client » / « annulé par le pro »
+//            perd sa valeur dès que le devis n'est plus envoyé à distance.
+//            ⚠ AUCUNE reprise : basculer les lignes closes réécrirait
+//            l'histoire pour un gain cosmétique. Elles restent DECLINED, et
+//            l'entonnoir les compte AVEC les CANCELLED — sans quoi le compteur
+//            des affaires perdues retomberait à zéro le jour du déploiement.
+//   Les deux suivantes datent de Q2 :
+//   SENT   : la migration `20260814140000` a ramené en DRAFT les devis SENT
+//            SANS réservation ; ceux qui en portaient une l'ont gardé (D166),
+//            car les rendre éditables aurait violé D163 par la migration
+//            elle-même. Ces lignes existent donc encore.
+//   SUPERSEDED : `supersedeActive()` a été retirée — elle visait [SENT,
+//            ACCEPTED], or SENT n'est plus écrit et ACCEPTED ne l'a jamais été.
+//            Elle serait devenue un no-op silencieux.
+//   Les lignes déjà remplacées gardent leur état : devant un litige, « remplacé
+//   par une version plus récente » n'est toujours pas « explicitement refusé ».
+//   ⚠ Retirer une valeur d'un énuméré PostgreSQL impose de recréer le type ;
+//   c'est l'affaire de Q4, avec les colonnes, pas d'un lot de basculement.
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  DECLINED  // ⚠ LEGACY depuis Q3a — absorbé par CANCELLED (D161), voir ci-dessus
+  CANCELLED // le devis est clos sans avoir abouti — refus client OU renoncement pro
+  SUPERSEDED
+}
+
 // backlog 3.5 — visites auto-confirmées, annulables
 enum VisitStatus {
   CONFIRMED
@@ -251,6 +283,17 @@ model RefreshToken {
   tokenHash String    @unique @map("token_hash")
   expiresAt DateTime  @map("expires_at") @db.Timestamptz(6)
   revokedAt DateTime? @map("revoked_at") @db.Timestamptz(6)
+  /// D116 — horodatage de la consommation par ROTATION, et par elle seule.
+  /// Une déconnexion ou une révocation après vol posent `revoked_at` SANS
+  /// `rotated_at` : c'est ce qui permet d'accorder une fenêtre de grâce à la
+  /// première sans en accorder aux secondes.
+  /// ⚠ L'index qui l'accompagne est PARTIEL (`WHERE rotated_at IS NOT NULL`) :
+  /// Prisma ne sait pas exprimer le `WHERE`, il vit donc UNIQUEMENT dans la
+  /// migration écrite à la main et reste invisible ici. Ne PAS ajouter un
+  /// `@@index([rotatedAt])` nu pour « faire propre » : ce serait un SECOND
+  /// index, complet celui-là, que rien ne crée en base — une dérive de plus,
+  /// dans l'autre sens.
+  rotatedAt DateTime? @map("rotated_at") @db.Timestamptz(6)
   /// Lot 7 (D27) — false = « se souvenir de moi » décoché : le cookie posé est
   /// un cookie de SESSION ; le flag est copié à chaque rotation pour que le
   /// serveur re-pose le même mode. La révocation globale l'IGNORE (voulu).
@@ -470,6 +513,14 @@ model Venue {
   // l'admin SEUL. Défaut 0 = pas de cashback tant que non réglé (A3-③).
   // Garantie mécanique « jamais sur les fonds Zwadj » : CHECK SQL 0 ≤ x ≤ commission_rate_bps.
   cashbackRateBps   Int                    @default(0) @map("cashback_rate_bps")
+
+  // D81 (E1a) — politique d'acompte PAR SALLE : pourcentage OU montant fixe,
+  // exactement un des deux (CHECK SQL `venues_deposit_policy_exclusive`). Deux
+  // colonnes plutôt qu'un couple type+valeur : des centimes et des points de
+  // base dans une même colonne, c'est ce que D46 refuse. Reprise des salles
+  // existantes à 3000 bps = les 30 % implicites d'avant.
+  depositRateBps     Int?                  @default(3000) @map("deposit_rate_bps") // CHECK SQL : 500–10000, DEFAULT 3000
+  depositAmountCents Int?                  @map("deposit_amount_cents") // CHECK SQL : > 0
   rejectionReason   String?                @map("rejection_reason") // Phase 12 : rejet admin → draft + raison
   // Soft delete (Lot A2) : fin de vie côté pro — JAMAIS de DELETE SQL sur
   // venues, l'historique réservations/commissions doit y survivre. Filtré
@@ -481,7 +532,11 @@ model Venue {
   owner              ProProfile          @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   city               City                @relation(fields: [cityId], references: [id], onDelete: Restrict)
   photos             VenuePhoto[]
+  /// D66 (A13) — NULLABLE : les salles antérieures à ce lot n'en ont pas, et un
+  /// défaut mentirait sur une donnée jamais saisie.
+  ceremonyType       CeremonyType?          @map("ceremony_type")
   amenities          VenueAmenity[]
+  styles             VenueStyleLink[]
   slotTemplates      SlotTemplate[]
   pricingRules       PricingRule[]
   services           Service[]
@@ -503,6 +558,10 @@ model Venue {
   @@index([ownerId])
   @@index([basePriceCents]) // filtre budget
   @@index([capacityMax]) // filtre capacité
+  /// A13a — DOIT rester déclaré ici : l'index existe en base depuis la migration
+  /// `venue_styles_and_ceremony_type`, et tout index créé en SQL sans son
+  /// pendant Prisma est une DÉRIVE que `migrate dev` propose de supprimer.
+  @@index([ceremonyType])
   @@map("venues")
 }
 
@@ -538,6 +597,46 @@ model VenuePhoto {
 // tient désormais dans Venue.matterportModelId.
 
 // backlog 3.3 — Amenity (référentiel seedé, 3.8) + jointure VenueAmenity
+/// D66 (A13) — type de cérémonie. Une ENUM et non un référentiel : intérieur /
+/// extérieur / mixte est exhaustif par construction, il ne s'étend pas.
+/// ⚠ Le filtre public n'est PAS une égalité : une salle MIXED répond aussi à une
+/// demande INDOOR et à une demande OUTDOOR (voir venues-public.service.ts).
+enum CeremonyType {
+  INDOOR
+  OUTDOOR
+  MIXED
+}
+
+/// D65 (A13) — référentiel de styles, calqué trait pour trait sur `Amenity` :
+/// ajouter un style ne doit pas demander une migration, et les libellés FR/AR
+/// vivent avec la donnée. Le filtre public transporte `key`, jamais le libellé.
+model VenueStyle {
+  id        String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  key       String @unique
+  nameFr    String @map("name_fr")
+  nameAr    String @map("name_ar")
+  /// Ordre ÉDITORIAL des puces, identique dans les deux langues — un tri par
+  /// libellé donnerait deux ordres différents selon la locale.
+  sortOrder Int    @default(0) @map("sort_order")
+
+  venues VenueStyleLink[]
+
+  @@map("venue_styles")
+}
+
+/// Jointure pure → PK composite, comme `VenueAmenity`.
+model VenueStyleLink {
+  venueId String @map("venue_id") @db.Uuid
+  styleId String @map("style_id") @db.Uuid
+
+  venue Venue      @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  style VenueStyle @relation(fields: [styleId], references: [id], onDelete: Cascade)
+
+  @@id([venueId, styleId])
+  @@index([styleId])
+  @@map("venue_style_links")
+}
+
 model Amenity {
   id     String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
   key    String  @unique // ex: "parking", "piscine" — clé stable pour les icônes
@@ -595,6 +694,14 @@ model SlotTemplate {
   pricingRules PricingRule[]
 
   @@index([venueId])
+  /// B2 — cible de la FK COMPOSITE `pricing_rules_slot_belongs_to_venue`, qui
+  /// interdit qu'une règle de prix pointe le créneau d'une AUTRE salle. La
+  /// contrainte existait en base depuis A4, sans déclaration ici : Prisma la
+  /// voyait donc comme un objet inconnu et proposait de la supprimer — ce qui
+  /// emportait la FK avec elle. Le nom généré par Prisma
+  /// (`slot_templates_id_venue_id_key`) est exactement celui déjà en base :
+  /// déclarer ne recrée rien, cela cesse seulement de mentir.
+  @@unique([id, venueId])
   @@map("slot_templates")
 }
 
@@ -768,8 +875,11 @@ model ServiceTier {
 
 // =============================================================================
 // VISITES — backlog 3.5 (système ENTIÈREMENT séparé des réservations de fête :
-// aucune FK vers SlotTemplate/Booking, aucune contrainte d'exclusion,
-// auto-confirmation à la création — décision AGENTS.md)
+// aucune FK vers SlotTemplate/Booking, auto-confirmation à la création —
+// décision AGENTS.md). ⚠ D59 (C2b) a RENVERSÉ D47 : un rendez-vous CONFIRMÉ est
+// EXCLUSIF, garanti par l'index unique PARTIEL
+// `visit_bookings_no_double_confirmed`. Les deux systèmes restent séparés, mais
+// aucun des deux ne tolère le double-booking.
 // =============================================================================
 
 // backlog 3.5 — VisitAvailability : fenêtres hebdomadaires dédiées aux visites
@@ -792,16 +902,23 @@ model VisitAvailability {
 }
 
 // backlog 3.5 — VisitBooking : créée directement CONFIRMED (aucune approbation
-// pro). Le pro est notifié (8.4) et peut annuler / contacter le client (6.4).
-// Chevauchements tolérés par conception → pas de contrainte d'exclusion.
+// pro). Le pro est notifié (D60) et peut annuler / contacter le client (6.4).
+// ⚠ D59 supersède D47 : les chevauchements NE sont PLUS tolérés — voir l'index
+// unique partiel documenté dans le modèle.
 model VisitBooking {
-  id          String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  venueId     String      @map("venue_id") @db.Uuid
-  clientId    String      @map("client_id") @db.Uuid
-  scheduledAt DateTime    @map("scheduled_at") @db.Timestamptz(6)
-  status      VisitStatus @default(CONFIRMED)
-  cancelledAt DateTime?   @map("cancelled_at") @db.Timestamptz(6)
-  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  id           String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  venueId      String      @map("venue_id") @db.Uuid
+  clientId     String      @map("client_id") @db.Uuid
+  scheduledAt  DateTime    @map("scheduled_at") @db.Timestamptz(6)
+  status       VisitStatus @default(CONFIRMED)
+  /// D61 (C3) — SNAPSHOT du contact au moment du rendez-vous, même patron que
+  /// `Booking.contactPhone` : le pro rappelle sur le numéro qui lui a été donné,
+  /// pas sur celui que le client aurait changé depuis. NULLABLE : le téléphone du
+  /// CLIENT est optionnel (celui du PRO, destinataire WhatsApp de D60, ne l'est
+  /// pas). Résolution : corps de la demande, puis `User.phone`, puis null.
+  contactPhone String?     @map("contact_phone")
+  cancelledAt  DateTime?   @map("cancelled_at") @db.Timestamptz(6)
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
 
   venue  Venue @relation(fields: [venueId], references: [id], onDelete: Restrict)
   client User  @relation(fields: [clientId], references: [id], onDelete: Restrict)
@@ -836,16 +953,61 @@ model Quote {
   totalCents         Int       @map("total_cents")
   depositCents       Int       @map("deposit_cents") // 30 % — la remise en ligne −1000 DA s'applique au PAIEMENT, pas ici
   lines              Json // [{serviceId, nameFr, nameAr, pricingType, unitPriceCents, quantity, tierId?, lineTotalCents}]
-  validUntil         DateTime? @map("valid_until") @db.Timestamptz(6)
+  // ⚠ `validUntil` A ÉTÉ SUPPRIMÉE au lot Q4 (`20260815120000`). Neutralisée
+  // depuis Q2 (D160) — rien n'engage tant que l'acompte n'est pas payé, donc une
+  // date de validité sur un document qui n'engage personne ne protégeait aucun
+  // montant. Elle a été retirée seulement APRÈS que Q2 et Q3a aient été vérifiés
+  // verts sur base réelle : c'est le premier point de non-retour de la série,
+  // toutes les migrations précédentes laissaient le retour arrière à portée
+  // d'une bascule de code.
+  // ⚠ `chain_id` / `version` / `parent_quote_id` NE L'ONT PAS SUIVIE. D165 les
+  // inscrivait au même lot ; la décision A les en a retirées — le versionnement
+  // est CONSERVÉ, ces trois colonnes sont ACTIVES et le restent.
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // E2b — cycle de vie et chaîne de versions.
+  //
+  // `chainId` est DÉNORMALISÉ (= son propre id pour la v1, hérité ensuite) et
+  // c'est LUI qui porte les index partiels « au plus un actif par chaîne ». Une
+  // chaîne reliée seulement par `parentQuoteId` ne se parcourt que par
+  // récursion, et un index unique ne s'appuie pas sur une CTE récursive.
+  //
+  // ⚠ Les index `quotes_one_accepted_per_chain` / `quotes_one_sent_per_chain`
+  //   sont PARTIELS, donc NON différables : la transaction d'acceptation doit
+  //   rétrograder l'ancienne active AVANT d'activer la nouvelle.
+  status         QuoteStatus @default(DRAFT)
+  version        Int         @default(1)
+  chainId        String      @map("chain_id") @db.Uuid
+  parentQuoteId  String?     @map("parent_quote_id") @db.Uuid
+  sentAt         DateTime?   @map("sent_at") @db.Timestamptz(6)
+  // C1b — PAR QUOI le devis est parti, quand `sentAt` ne dit que QUAND.
+  // `String` et non un énuméré : la liste des canaux est ouverte (impression,
+  // SMS, remise en main propre, accord téléphonique, à venir), et un type
+  // PostgreSQL imposerait une migration par libellé ajouté. Le jeu de valeurs
+  // a une seule autorité, `quoteSentViaSchema` dans `@zwadj/types`. Un CHECK en
+  // base interdit seulement le vide et le blanc.
+  // ⚠ Q2 — C'EST DÉSORMAIS LUI QUI DÉCIDE DE L'ENTONNOIR. NULL = pas encore
+  // remis. Le dénominateur portait sur `sent_at`, c'est-à-dire sur l'horodatage
+  // que le clic « Envoyer » posait — un clic obligatoire pour débloquer la
+  // conversion, donc systématique, donc muet. `deliver()` écrit les deux
+  // colonnes ; `sent_at` dit QUAND, `sent_via` PAR QUOI, et seul le second
+  // atteste d'une remise réelle.
+  // ⚠ AUCUNE REPRISE sur les lignes antérieures : l'entonnoir repart de zéro
+  // plutôt que d'inventer un canal (D168).
+  sentVia        String?     @map("sent_via")
+  acceptedAt     DateTime?   @map("accepted_at") @db.Timestamptz(6)
 
   venue        Venue         @relation(fields: [venueId], references: [id], onDelete: Restrict)
   client       User?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
   slotTemplate SlotTemplate? @relation(fields: [slotTemplateId], references: [id], onDelete: SetNull)
   booking      Booking?
+  parentQuote  Quote?        @relation("QuoteVersions", fields: [parentQuoteId], references: [id], onDelete: SetNull)
+  revisions    Quote[]       @relation("QuoteVersions")
 
+  @@unique([chainId, version], map: "quotes_chain_version_unique")
   @@index([venueId])
   @@index([clientId])
+  @@index([venueId, status, createdAt], map: "quotes_venue_status_created_idx")
   @@map("quotes")
 }
 
@@ -870,7 +1032,12 @@ model Booking {
   id             String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
   venueId        String        @map("venue_id") @db.Uuid
   clientId       String?       @map("client_id") @db.Uuid // NULL pour un walk-in (client non inscrit)
-  quoteId        String?       @unique @map("quote_id") @db.Uuid // NULL pour un walk-in
+  /// ⚠ Le commentaire d'origine disait « NULL pour un walk-in » : c'est
+  /// l'INVERSE. D159 (remplace D101) — `Quote` est walk-in SEUL ; le parcours EN
+  /// LIGNE appelle `POST /venues/:slug/bookings` et ne crée aucun devis, donc
+  /// c'est LUI qui laisse ce champ nul. Le code ne l'a jamais fait autrement,
+  /// c'est la doctrine écrite qui avait quitté le code.
+  quoteId        String?       @unique @map("quote_id") @db.Uuid
   slotTemplateId String?       @map("slot_template_id") @db.Uuid // NULL si plage custom (walk-in)
   source         BookingSource @default(CLIENT)
   status         BookingStatus @default(PENDING)
@@ -895,6 +1062,11 @@ model Booking {
   contactEmail     String? @map("contact_email")
 
   idempotencyKey String? @unique @map("idempotency_key") // invariant : POST /bookings idempotent
+
+  // D79 (E1a) — « 02 · Message à la salle (optionnel) ». Plafonné à 1000
+  // caractères par Zod SEULEMENT : un CHECK ferait une seconde vérité sur la
+  // même borne, ce que D55 interdit.
+  clientMessage String? @map("client_message")
 
   // Jalons du cycle de vie (state machine 6.3 ; transitions gardées en code)
   expiresAt          DateTime? @map("expires_at") @db.Timestamptz(6) // pending → expired si pro muet (job pg-boss)

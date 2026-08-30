@@ -1,0 +1,46 @@
+-- Lot Q4 — suppression de `quotes.valid_until`. Écrite À LA MAIN
+-- (`prisma migrate dev` reste interdit).
+--
+-- ── ⚠ C'EST LE PREMIER POINT DE NON-RETOUR DE LA SÉRIE ──────────────────────
+-- Toutes les migrations Q1→Q3a laissaient le retour arrière à portée d'une
+-- bascule de CODE : la colonne restait là, simplement plus lue ni écrite.
+-- Celle-ci détruit de la donnée. Revenir en arrière après elle demande une
+-- restauration de sauvegarde, pas un déploiement.
+--
+-- Elle n'est donc appliquée qu'APRÈS que Q2 et Q3a aient été vérifiés verts sur
+-- base réelle — tests d'intégration passés, migration de bascule appliquée. Le
+-- filet a servi ; il peut être retiré.
+--
+-- ── Ce qui est supprimé, et pourquoi c'est sans effet ───────────────────────
+-- `valid_until` est neutralisée depuis Q2 (D160) : plus rien ne l'écrit ni ne la
+-- lit. Rien n'engage tant que l'acompte n'est pas payé, donc une date de
+-- validité sur un document qui n'engage personne ne protégeait aucun montant —
+-- elle empêchait seulement de conclure une affaire encore vivante.
+-- Toute ligne créée depuis Q2 la porte à NULL ; les lignes antérieures la
+-- portent renseignée mais plus personne ne la consulte.
+--
+-- ── ⚠ CE QUE CETTE MIGRATION NE TOUCHE PAS, ET C'EST DÉLIBÉRÉ ───────────────
+--
+-- `chain_id`, `version`, `parent_quote_id` — D165 les inscrivait ici. La
+--   DÉCISION A les en a retirées : le versionnement est CONSERVÉ, `revise()`
+--   crée toujours une version, ces colonnes sont ACTIVES. Q4 se réduit donc à
+--   une seule colonne.
+--
+-- `quotes_one_sent_per_chain` — index partiel INERTE (plus rien n'écrit `SENT`)
+--   mais conservé pour deux raisons. Il contraint encore les lignes héritées de
+--   D166, celles qui ont gardé `SENT` en portant une réservation. Et il sert de
+--   TÉMOIN : un test d'intégration vérifie sa présence, ce qui détecte un
+--   `prisma migrate dev` égaré — lequel emporterait avec lui l'anti-double-
+--   booking et la FK composite B2. Le supprimer ferait perdre le canari en même
+--   temps que le garde-fou, pour économiser un index qui ne coûte rien.
+--
+-- `quotes_one_accepted_per_chain` — celui-ci va REDEVENIR ACTIF : E3 est le seul
+--   chemin vers `ACCEPTED`. Le supprimer maintenant reviendrait à retirer une
+--   garantie la veille du jour où elle sert.
+--
+-- L'énuméré `QuoteStatus` — `SENT`, `SUPERSEDED` et `DECLINED` restent des
+--   valeurs LEGACY lues sur des lignes réelles. Retirer une valeur d'un énuméré
+--   PostgreSQL impose de recréer le type ; ce n'est ni nécessaire ni gratuit.
+--   ⚠ Et `NotificationStatus.SENT` est un énuméré DISTINCT, à ne pas confondre.
+
+ALTER TABLE "quotes" DROP COLUMN "valid_until";

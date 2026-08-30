@@ -1,7 +1,16 @@
-// Liste des salles du pro — l'ACCUEIL RÉEL de l'app (le placeholder D24 a
-// disparu, §3.1). Tableau simple trié `updatedAt` desc côté API, SANS
+// Liste des salles du pro. Tableau simple trié `updatedAt` desc côté API, SANS
 // pagination : un pro a 1 à 3 salles, en paginer serait du décor.
-import { useCallback, useEffect, useState } from "react";
+//
+// Lot UIP-A — DEUX changements.
+// 1. L'écran a quitté `/` pour `/salles` : le top panel annonce « Tableau de
+//    bord » en premier, la table de routes le suit.
+// 2. Il ne fait plus son propre `listMine()`. Il LIT le provider de la coquille.
+//    ⚠ Ce n'est pas une économie d'appel, c'est une correction : la navigation
+//    affiche « Ma salle » ou « Mes salles » d'après ce même compte. Avec deux
+//    lectures indépendantes, supprimer sa seconde salle laissait la liste à jour
+//    et le libellé bloqué au pluriel jusqu'au rechargement complet de la page.
+//    Une question, une autorité (D78).
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { ConfirmDialog } from "@zwadj/ui";
@@ -10,38 +19,27 @@ import type { VenueAvailabilityStatus, VenueProDTO } from "@zwadj/types";
 import { ProHeader } from "../shell/pro-header";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { mediaSrc } from "../lib/media-url";
-import { useReferentialsData, useVenues } from "./venue-client-context";
+import { useProVenues } from "../shell/pro-venues-context";
+import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { PublicationBadge, StatusSelect } from "./venue-form";
-
-type ListState =
-  | { kind: "loading" }
-  | { kind: "error" }
-  | { kind: "ready"; venues: VenueProDTO[] };
 
 export function VenueListPage() {
   const { t, i18n } = useTranslation();
-  const venuesApi = useVenues();
+  const venuesApi = useVenueCrud();
   const apiErrorMessage = useApiErrorMessage();
   const isAr = i18n.language === "ar";
   const locale = isAr ? "ar" : "fr";
 
-  const [state, setState] = useState<ListState>({ kind: "loading" });
+  const { state, reload: load } = useProVenues();
+  /** Bascule OPTIMISTE locale : le provider porte la vérité venue du réseau,
+   *  cet état ne porte que l'affichage tant que l'appel n'a pas répondu. */
+  const [pendingStatus, setPendingStatus] = useState<Record<string, VenueAvailabilityStatus>>({});
   const [pendingDelete, setPendingDelete] = useState<VenueProDTO | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   // La commune vient du référentiel public. Son échec n'est PAS bloquant ici :
   // une salle reste parfaitement lisible et actionnable sans son libellé de
   // commune (le blocage, lui, appartient aux écrans de formulaire — ajout B).
   const { cityById } = useReferentialsData();
-
-  const load = useCallback(() => {
-    setState({ kind: "loading" });
-    venuesApi
-      .listMine()
-      .then((venues) => setState({ kind: "ready", venues }))
-      .catch(() => setState({ kind: "error" }));
-  }, [venuesApi]);
-
-  useEffect(() => load(), [load]);
 
   /**
    * D33 — bascule OPTIMISTE avec revert. Aucune confirmation : le changement
@@ -52,19 +50,14 @@ export function VenueListPage() {
   const changeStatus = async (venue: VenueProDTO, next: VenueAvailabilityStatus) => {
     const previous = venue.status;
     setActionError(null);
-    setState((current) =>
-      current.kind === "ready"
-        ? { kind: "ready", venues: current.venues.map((v) => (v.id === venue.id ? { ...v, status: next } : v)) }
-        : current
-    );
+    setPendingStatus((current) => ({ ...current, [venue.id]: next }));
     try {
       await venuesApi.update(venue.id, { status: next });
+      load();
     } catch {
-      setState((current) =>
-        current.kind === "ready"
-          ? { kind: "ready", venues: current.venues.map((v) => (v.id === venue.id ? { ...v, status: previous } : v)) }
-          : current
-      );
+      // On remet l'ancienne valeur ET on le dit : sans le message, le pro croit
+      // sa salle masquée alors qu'elle est toujours visible en ligne.
+      setPendingStatus((current) => ({ ...current, [venue.id]: previous }));
       setActionError(t("venue.ui.status.updateError"));
     }
   };
@@ -208,7 +201,7 @@ export function VenueListPage() {
                         </label>
                         <StatusSelect
                           id={`status-${venue.id}`}
-                          value={venue.status}
+                          value={pendingStatus[venue.id] ?? venue.status}
                           onChange={(next) => void changeStatus(venue, next)}
                         />
                       </div>

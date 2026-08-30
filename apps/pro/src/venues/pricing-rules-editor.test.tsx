@@ -66,9 +66,13 @@ function venueWith(slotTemplates: SlotTemplateDTO[]): VenueProDTO {
     capacityMax: 400,
     basePriceCents: 15_000_000,
     bookingMode: "MULTI_SLOT",
+  depositRateBps: 3000,
+  depositAmountCents: null,
     publicationStatus: "DRAFT",
     status: "ACTIVE",
     amenityIds: [],
+    styleIds: [],
+    ceremonyType: null,
     photos: [],
     slotTemplates,
     matterportModelId: null,
@@ -83,7 +87,7 @@ function makeVenues(slots: SlotTemplateDTO[], overrides: Partial<VenueProClient>
 
 function renderEdit(venues: VenueProClient) {
   return render(
-    <MemoryRouter initialEntries={["/salles/v1"]}>
+    <MemoryRouter initialEntries={["/salles/v1?etape=4"]}>
       <AppProviders client={makeAuthDouble()} venues={venues} referentials={makeReferentialsDouble()}>
         <Routes>
           <Route path="/salles/:id" element={<EditVenuePage />} />
@@ -98,7 +102,9 @@ const section = () => screen.getByRole("region", { name: "Créneaux et prix" });
 /** Scopé à la RÉGION des variantes : la ligne du créneau porte elle aussi des
  *  boutons « Modifier » et une liste, d'où l'ambiguïté sans ce cadrage. */
 async function openRules() {
-  await screen.findByDisplayValue("Salle El Ryad");
+  // ⚠ UIP-C — ancre au titre de l'étape : les créneaux (et leurs règles de
+  // prix) vivent à l'étape 4, plus sur la même page que le nom de la salle.
+  await screen.findByRole("heading", { name: "Réservation", level: 2 });
   fireEvent.click(within(section()).getByRole("button", { name: "Variantes de prix" }));
   return within(await screen.findByRole("region", { name: "Variantes de prix" }));
 }

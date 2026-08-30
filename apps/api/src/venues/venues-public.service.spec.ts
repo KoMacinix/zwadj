@@ -2,11 +2,23 @@
 // prouver ici : la construction EXACTE des deux WHERE D33 (liste stricte
 // ACTIVE ; détail élargi à TEMPORARILY_UNAVAILABLE) et des filtres combinés.
 // Résultats réels, pagination et anti-fuite des taux : en intégration.
-import { NotFoundException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { describe, expect, it, vi } from "vitest";
 import type { VenueListQueryInput } from "@zwadj/types";
 import type { PrismaService } from "../prisma/prisma.service";
 import { VenuesPublicService } from "./venues-public.service";
+// ⚠ Les MÊMES fonctions que le service, pas une arithmétique de test
+// parallèle : une seconde implémentation des mois civils dériverait sans que
+// rien ne rougisse.
+import { BOOKING_HORIZON_MONTHS } from "@zwadj/types";
+import {
+  addMonthsCivil,
+  civilTodayAt,
+  civilUtcMs,
+  formatCivilDate,
+  parseCivilDate,
+  type CivilDate
+} from "./availability-time";
 
 const fakeStorage = {
   put: vi.fn(),
@@ -18,6 +30,13 @@ const fakeStorage = {
 function buildService() {
   const prisma = {
     venue: { findMany: vi.fn().mockResolvedValue([]), count: vi.fn().mockResolvedValue(0), findFirst: vi.fn() },
+    // Lot `availableOn` — les trois lectures de l'annotation. Elles rendent des
+    // tableaux VIDES par défaut : les tests d'avant ce lot ne posent aucune
+    // date, donc `annotatePage` n'est jamais appelée et ces mocks ne bougent
+    // pas. C'est ce qui rend l'ajout non intrusif — et ce qu'un test vérifie.
+    slotTemplate: { findMany: vi.fn().mockResolvedValue([]) },
+    booking: { findMany: vi.fn().mockResolvedValue([]) },
+    availabilityBlock: { findMany: vi.fn().mockResolvedValue([]) },
     // Les mocks renvoient des promesses ordinaires : $transaction = Promise.all.
     $transaction: vi.fn((ops: Promise<unknown>[]) => Promise.all(ops))
   };
@@ -107,5 +126,392 @@ describe("VenuesPublicService.bySlug — WHERE D33 détail + court-circuit", () 
         }
       })
     );
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Lot `availableOn` — annotation par date
+// ═══════════════════════════════════════════════════════════════════════════
+
+/** Premier argument du premier appel d'un mock, ou une erreur EXPLICITE.
+ *
+ *  ⚠ `noUncheckedIndexedAccess` refuse `mock.calls[0][0]`, et il a raison : sur
+ *  un mock jamais appelé, l'indexation nue rendrait `undefined` et le test
+ *  échouerait sur « cannot read property of undefined » — un message qui ne dit
+ *  RIEN de la cause réelle (« la requête n'a pas été lancée »). */
+function premierAppel<T>(mock: { mock: { calls: unknown[][] } }, quoi: string): T {
+  const appel = mock.mock.calls[0];
+  if (appel === undefined) throw new Error(`${quoi} : aucun appel enregistré`);
+  return appel[0] as T;
+}
+
+/** Ligne de salle minimale : seuls `id`, `bookingMode` et les champs du DTO
+ *  sont lus. `photos: []` et `_count` sont OBLIGATOIRES — `toSummary` les
+ *  déréférence, et une ligne incomplète ferait échouer le test pour une raison
+ *  qui n'est pas celle qu'il vise. */
+function ligne(id: string, bookingMode = "SINGLE_SLOT") {
+  return {
+    id,
+    slug: `salle-${id}`,
+    cityId: "018f0000-0000-7000-8000-00000000cccc",
+    nameFr: "Salle",
+    nameAr: "قاعة",
+    taglineFr: null,
+    taglineAr: null,
+    districtFr: null,
+    districtAr: null,
+    capacityMax: 300,
+    basePriceCents: 20_000_000,
+    bookingMode,
+    ceremonyType: null,
+    publicationStatus: "PUBLISHED",
+    photos: [],
+    _count: { photos: 0 }
+  };
+}
+
+/** UTC+1 fixe, sans heure d'été (invariant Algérie) : minuit local du 2 juin
+ *  2026 est le 1ᵉʳ juin à 23h00 UTC. ⚠ Valeur DÉRIVÉE du décalage, pas écrite
+ *  de mémoire — c'est la même arithmétique que `civilDayStartMs`. */
+const MINUIT_2_JUIN_2026 = Date.UTC(2026, 5, 2) - 60 * 60_000;
+const LE_2_JUIN = "2026-06-02";
+
+const VEILLE_MIDI_ALGER = MINUIT_2_JUIN_2026 - 12 * 60 * 60_000;
+
+/* ── D227 : `HORIZON = "2099-06-02"` N'EXISTE PLUS ──────────────────────────
+   Cette constante était choisie « très loin » pour n'être jamais passée, quoi
+   qu'il arrive. Depuis D227, « très loin » est précisément ce qui se refuse :
+   elle faisait tomber trois tests qui ne parlaient pas d'horizon du tout.
+
+   ⚠ LES DEUX BORNES SONT DÉRIVÉES, jamais recopiées : de l'horloge FIGÉE de
+   ce fichier et de `BOOKING_HORIZON_MONTHS`, la même constante que le service.
+   Une chaîne écrite à la main ici cesserait de désigner l'horizon au premier
+   changement de la constante, et le test continuerait de passer en mesurant
+   autre chose. */
+const HORIZON = formatCivilDate(addMonthsCivil(civilTodayAt(VEILLE_MIDI_ALGER), BOOKING_HORIZON_MONTHS));
+
+/** Le LENDEMAIN de l'horizon — le premier jour refusé. Dérivé du même point,
+ *  via `civilUtcMs` + un jour, puis reconverti : `+1` sur la chaîne casserait
+ *  sur un 31. */
+const AU_DELA_DE_L_HORIZON = formatCivilDate(
+  civilTodayAt(civilUtcMs(parseCivilDate(HORIZON) as CivilDate) + 86_400_000)
+);
+
+/**
+ * ⚠ L'HORLOGE EST FIGÉE, et ce n'est pas du confort.
+ *
+ * `civilDateOrRefusePast` lit `Date.now()` : sans horloge figée, une date de
+ * fixture choisie « dans le futur » le reste jusqu'au jour où elle ne l'est
+ * plus, et toute la suite vire au rouge sans qu'une ligne de code ait bougé.
+ * Défaut RÉEL : ces tests ont d'abord été écrits avec le 2 juin 2026 relevé de
+ * la maquette — déjà passé le jour où ils ont tourné pour la première fois.
+ *
+ * On se place la VEILLE, à midi heure d'Alger : le 2 juin est donc demain, et
+ * les fixtures d'intervalles gardent leur arithmétique lisible.
+ */
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(VEILLE_MIDI_ALGER));
+});
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+describe("VenuesPublicService.list — availableOn : refus de la date passée", () => {
+  it("⚠ AUJOURD'HUI EST ACCEPTÉ (`<`, pas `<=`) : chercher une salle pour ce soir est le cas normal", async () => {
+    const { service } = buildService();
+    // La date civile d'Alger à l'instant figé, DÉRIVÉE du décalage — jamais une
+    // chaîne recopiée, qui pourrait ne plus correspondre à l'horloge.
+    const aujourdhui = new Date(Date.now() + 60 * 60_000).toISOString().slice(0, 10);
+    expect(aujourdhui).toBe("2026-06-01");
+    await expect(service.list({ ...QUERY_DEFAULTS, availableOn: aujourdhui })).resolves.toBeDefined();
+  });
+
+  it("HIER est refusé : la borne est bien au jour près, pas au mois", async () => {
+    const { service } = buildService();
+    await expect(service.list({ ...QUERY_DEFAULTS, availableOn: "2026-05-31" })).rejects.toBeInstanceOf(
+      BadRequestException
+    );
+  });
+
+  it("une date passée : 400 AVAILABLE_ON_PAST, et AUCUNE requête n'est lancée", async () => {
+    const { service, prisma } = buildService();
+    await expect(service.list({ ...QUERY_DEFAULTS, availableOn: "2020-01-01" })).rejects.toSatisfy(
+      (e: unknown) =>
+        e instanceof BadRequestException && (e.getResponse() as { code?: string }).code === "AVAILABLE_ON_PAST"
+    );
+    // ⚠ Le refus tombe AVANT la page : interroger la base pour une date qu'on
+    // s'apprête à refuser serait un aller-retour payé pour rien.
+    expect(prisma.venue.findMany).not.toHaveBeenCalled();
+    expect(prisma.slotTemplate.findMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("VenuesPublicService.list — availableOn : refus HORS HORIZON (D227)", () => {
+  // ⚠ D55 — LE CAS RÉEL AVANT LA BORNE : le jour de l'horizon LUI-MÊME doit
+  // passer. Écrire la borne d'abord et vérifier ensuite, c'est se donner
+  // raison ; une salle réservable au dernier jour ouvert doit pouvoir être
+  // annotée, sinon la borne est fausse d'un jour et personne ne le voit.
+  it("⚠ LE JOUR DE L'HORIZON EST ACCEPTÉ (`>`, pas `>=`)", async () => {
+    const { service } = buildService();
+    await expect(service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON })).resolves.toBeDefined();
+  });
+
+  it("le LENDEMAIN de l'horizon : 400 AVAILABLE_ON_BEYOND_HORIZON", async () => {
+    const { service, prisma } = buildService();
+    await expect(
+      service.list({ ...QUERY_DEFAULTS, availableOn: AU_DELA_DE_L_HORIZON })
+    ).rejects.toSatisfy(
+      (e: unknown) =>
+        e instanceof BadRequestException &&
+        (e.getResponse() as { code?: string }).code === "AVAILABLE_ON_BEYOND_HORIZON"
+    );
+    // Même exigence que pour la date passée : aucun aller-retour en base.
+    expect(prisma.venue.findMany).not.toHaveBeenCalled();
+    expect(prisma.slotTemplate.findMany).not.toHaveBeenCalled();
+  });
+
+  it("⛔ LES DEUX REFUS NE PORTENT PAS LE MÊME CODE — c'est la décision D227", async () => {
+    // Un code unique aurait forcé l'écran à choisir un message, faux une
+    // fois sur deux : « regardez devant » et « rapprochez-vous » ne se
+    // disent pas pareil. Les deux refus sont donc CONFRONTÉS ici, pas
+    // mesurés chacun dans son coin.
+    const { service } = buildService();
+    const code = async (date: string): Promise<string | undefined> => {
+      try {
+        await service.list({ ...QUERY_DEFAULTS, availableOn: date });
+        return undefined;
+      } catch (e) {
+        // ⚠ SURTOUT PAS UNE INTERSECTION SUR L'OBJET. Quand les deux membres
+        // déclarent `getResponse`, TypeScript en fait une LISTE DE SURCHARGES et
+        // retient la PREMIÈRE — celle de Nest, qui rend `string | object`. Le
+        // membre ajouté est mort, `.code` tombe en TS2339, et c'est ce qui
+        // laissait le typecheck global ROUGE pendant que les 560 tests passaient.
+        // Forme reprise de la ligne 268 de CE fichier : on caste le RÉSULTAT de
+        // l'appel, jamais l'objet qui le porte.
+        return ((e as BadRequestException).getResponse() as { code?: string }).code;
+      }
+    };
+    const passe = await code("2020-01-01");
+    const tropLoin = await code(AU_DELA_DE_L_HORIZON);
+    expect(passe).toBe("AVAILABLE_ON_PAST");
+    expect(tropLoin).toBe("AVAILABLE_ON_BEYOND_HORIZON");
+    expect(passe).not.toBe(tropLoin);
+  });
+
+  it("⚠ l'horizon suit la MÊME constante que la demande de visite", () => {
+    // Deux valeurs d'horizon dans le dépôt, c'est un jour où l'annotation
+    // accepte une date que la demande de visite refuse — le visiteur voit
+    // « libre », puis se fait refuser au moment de demander.
+    expect(HORIZON).toBe(
+      formatCivilDate(addMonthsCivil(civilTodayAt(VEILLE_MIDI_ALGER), BOOKING_HORIZON_MONTHS))
+    );
+    expect(BOOKING_HORIZON_MONTHS).toBeGreaterThan(0);
+  });
+});
+
+describe("VenuesPublicService.list — availableOn : ce qui est chargé", () => {
+  it("⚠ SANS `availableOn`, AUCUNE des trois lectures n'a lieu, et l'écho vaut `null`", async () => {
+    const { service, prisma } = buildService();
+    const res = await service.list(QUERY_DEFAULTS);
+    expect(prisma.slotTemplate.findMany).not.toHaveBeenCalled();
+    expect(prisma.booking.findMany).not.toHaveBeenCalled();
+    expect(prisma.availabilityBlock.findMany).not.toHaveBeenCalled();
+    expect(res.availableOn).toBeNull();
+  });
+
+  it("⚠ TROIS REQUÊTES, bornées par `venueId IN` — O(page), pas O(page × salles)", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1"), ligne("v2"), ligne("v3")]);
+    await service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON });
+
+    for (const table of [prisma.slotTemplate, prisma.booking, prisma.availabilityBlock]) {
+      expect(table.findMany).toHaveBeenCalledTimes(1);
+      const where = premierAppel<{ where: { venueId: unknown } }>(table.findMany, "annotation");
+      expect(where.where.venueId).toEqual({ in: ["v1", "v2", "v3"] });
+    }
+  });
+
+  it("⚠ `PENDING` N'EST PAS CHARGÉ (D101) : une demande en attente ne grise rien", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
+    await service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON });
+
+    const { where } = premierAppel<{ where: { status: { in: string[] } } }>(prisma.booking.findMany, "réservations");
+    expect(where.status).toEqual({ in: ["ACCEPTED", "CONFIRMED"] });
+    expect(where.status.in.includes("PENDING")).toBe(false);
+  });
+
+  it("⚠ LA FENÊTRE VA À +48 H, pas à minuit + 24 h : sinon la soirée 20h→02h ment", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
+    await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+
+    const { where } = premierAppel<{ where: { startsAt: { lt: Date }; endsAt: { gt: Date } } }>(
+      prisma.booking.findMany,
+      "réservations"
+    );
+    // Bornes DÉRIVÉES du décalage Algérie et du plafond du CHECK
+    // `slot_templates_minutes_valid` (2880 min), jamais recopiées à la main.
+    expect(where.endsAt.gt.getTime()).toBe(MINUIT_2_JUIN_2026);
+    expect(where.startsAt.lt.getTime()).toBe(MINUIT_2_JUIN_2026 + 2880 * 60_000);
+  });
+
+  it("aucune salle dans la page : aucune requête d'annotation, et pas de `IN ()` vide", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: HORIZON });
+    expect(prisma.slotTemplate.findMany).not.toHaveBeenCalled();
+    expect(res.availableOn).toBe(HORIZON);
+  });
+});
+
+describe("VenuesPublicService.list — availableOn : ce qui est annoté", () => {
+  const CRENEAU_SOIR = { id: "s1", venueId: "v1", startMinutes: 1200, endMinutes: 1560 }; // 20h → 02h
+
+  it("aucune réservation, aucun blocage ⇒ `true`", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
+    prisma.slotTemplate.findMany.mockResolvedValue([CRENEAU_SOIR]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.items.map((v) => v.availableOnDate)).toEqual([true]);
+  });
+
+  it("⚠ UNE RÉSERVATION DE 00H30 LE LENDEMAIN ferme la soirée 20h→02h ⇒ `false`", async () => {
+    // Le cas que la fenêtre à +48 h existe pour attraper. Avec une borne à
+    // minuit + 24 h, cette réservation ne serait pas chargée et la salle
+    // sortirait annoncée LIBRE — faux, et invisible.
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
+    prisma.slotTemplate.findMany.mockResolvedValue([CRENEAU_SOIR]);
+    prisma.booking.findMany.mockResolvedValue([
+      {
+        venueId: "v1",
+        startsAt: new Date(MINUIT_2_JUIN_2026 + 1470 * 60_000), // 00h30 le 3
+        endsAt: new Date(MINUIT_2_JUIN_2026 + 1530 * 60_000),
+        slotTemplateId: null
+      }
+    ]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.items.map((v) => v.availableOnDate)).toEqual([false]);
+  });
+
+  it("un blocage pro qui ENJAMBE la journée sans y commencer ⇒ `false`", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
+    prisma.slotTemplate.findMany.mockResolvedValue([CRENEAU_SOIR]);
+    prisma.availabilityBlock.findMany.mockResolvedValue([
+      {
+        venueId: "v1",
+        blockedFrom: new Date(MINUIT_2_JUIN_2026 - 30 * 86_400_000),
+        blockedUntil: new Date(MINUIT_2_JUIN_2026 + 30 * 86_400_000)
+      }
+    ]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.items.map((v) => v.availableOnDate)).toEqual([false]);
+  });
+
+  it("⚠ SITUATION B — salle sans AUCUN créneau : EXCLUE par le `where`, pas grisée", async () => {
+    // Correction Ko : D211 confondait deux refus. « Prise ce jour-là » rend
+    // « essayez une autre date » utile ; « jamais réservable » le rend
+    // TROMPEUR. L'exclusion vit dans le `where`, donc `count()` la voit aussi.
+    const { service, prisma } = buildService();
+    await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+
+    const whereListe = premierAppel<{ where: Record<string, unknown> }>(prisma.venue.findMany, "page").where;
+    expect(whereListe.slotTemplates).toEqual({ some: { isActive: true } });
+
+    // ⚠ LA GARDE QUI COMPTE : le MÊME `where` sert au comptage. Un filtrage
+    // post-requête annoncerait 37 pour 34 salles rendues et laisserait la
+    // dernière page vide.
+    const whereCompte = premierAppel<{ where: Record<string, unknown> }>(prisma.venue.count, "total").where;
+    expect(whereCompte).toEqual(whereListe);
+  });
+
+  it("⚠ SANS `availableOn`, AUCUNE exclusion : la recherche non datée ne retire rien", async () => {
+    const { service, prisma } = buildService();
+    await service.list(QUERY_DEFAULTS);
+    const where = premierAppel<{ where: Record<string, unknown> }>(prisma.venue.findMany, "page").where;
+    expect(where.slotTemplates).toBeUndefined();
+  });
+
+  it("MULTI_SLOT : un créneau pris, l'autre libre ⇒ `true` — la salle reste disponible", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1", "MULTI_SLOT")]);
+    prisma.slotTemplate.findMany.mockResolvedValue([
+      { id: "midi", venueId: "v1", startMinutes: 720, endMinutes: 960 },
+      CRENEAU_SOIR
+    ]);
+    prisma.booking.findMany.mockResolvedValue([
+      {
+        venueId: "v1",
+        startsAt: new Date(MINUIT_2_JUIN_2026 + 720 * 60_000),
+        endsAt: new Date(MINUIT_2_JUIN_2026 + 960 * 60_000),
+        slotTemplateId: "midi"
+      }
+    ]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.items.map((v) => v.availableOnDate)).toEqual([true]);
+  });
+
+  it("⚠ SINGLE_SLOT : la MÊME réservation ferme la journée entière ⇒ `false`", async () => {
+    // La règle vit dans le moteur, pas dans ce service — et c'est bien le
+    // moteur qui la produit ici : mêmes données, `bookingMode` seul change.
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1", "SINGLE_SLOT")]);
+    prisma.slotTemplate.findMany.mockResolvedValue([
+      { id: "midi", venueId: "v1", startMinutes: 720, endMinutes: 960 },
+      CRENEAU_SOIR
+    ]);
+    prisma.booking.findMany.mockResolvedValue([
+      {
+        venueId: "v1",
+        startsAt: new Date(MINUIT_2_JUIN_2026 + 720 * 60_000),
+        endsAt: new Date(MINUIT_2_JUIN_2026 + 960 * 60_000),
+        slotTemplateId: "midi"
+      }
+    ]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.items.map((v) => v.availableOnDate)).toEqual([false]);
+  });
+
+  it("⚠ LES SALLES NE SE CONTAMINENT PAS : la réservation de v1 ne grise pas v2", async () => {
+    // Trois requêtes collectives rendent des lignes MÊLÉES. Sans regroupement
+    // par salle, la réservation de l'une fermerait le créneau de l'autre.
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1"), ligne("v2")]);
+    prisma.slotTemplate.findMany.mockResolvedValue([
+      CRENEAU_SOIR,
+      { id: "s2", venueId: "v2", startMinutes: 1200, endMinutes: 1560 }
+    ]);
+    prisma.booking.findMany.mockResolvedValue([
+      {
+        venueId: "v1",
+        startsAt: new Date(MINUIT_2_JUIN_2026 + 1200 * 60_000),
+        endsAt: new Date(MINUIT_2_JUIN_2026 + 1560 * 60_000),
+        slotTemplateId: "s1"
+      }
+    ]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.items.map((v) => v.availableOnDate)).toEqual([false, true]);
+  });
+
+  it("⚠ ANNOTER N'EST PAS FILTRER : la salle grisée reste dans `items`, et `total` ne bouge pas", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([ligne("v1")]);
+    prisma.venue.count.mockResolvedValue(37);
+    prisma.slotTemplate.findMany.mockResolvedValue([CRENEAU_SOIR]);
+    prisma.availabilityBlock.findMany.mockResolvedValue([
+      {
+        venueId: "v1",
+        blockedFrom: new Date(MINUIT_2_JUIN_2026),
+        blockedUntil: new Date(MINUIT_2_JUIN_2026 + 86_400_000)
+      }
+    ]);
+    const res = await service.list({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.items).toHaveLength(1);
+    expect(res.total).toBe(37);
+    expect(res.availableOn).toBe(LE_2_JUIN);
   });
 });

@@ -14,3 +14,32 @@ apps/api/var/
 
 # Archives de livraison (git archive) — jamais versionnées
 *.zip
+
+# ⚠ Corps de requête jetables tapés à la racine pour un `curl -d @fichier`.
+# `checkout-body.json` a voyagé jusque dans un zip de livraison : rien ne le
+# couvrait, donc il était versionnable. La vraie capture vit désormais dans
+# `apps/api/src/payments/__fixtures__/`, à côté de la réponse qu'elle a produite.
+/*-body.json
+/body.json
+
+# Sorties de Playwright : rapport HTML, captures et traces d'échec. Elles
+# n'étaient couvertes nulle part — donc versionnables, et surtout LINTÉES :
+# `eslint .` y trouvait 2 934 erreurs sur du JavaScript minifié.
+e2e/playwright-report/
+e2e/test-results/
+e2e/blob-report/
+# Sauvegarde temporaire des campagnes de neutralisation — présente UNIQUEMENT
+# si une campagne a été interrompue (elle est relue et purgée au redémarrage).
+# ⚠ MOTIF, PAS NOM EXACT. Cinq campagnes sur dix-sept se sauvegardent ailleurs
+# — `.neutralisation-404`, `-horizon`, `-maxprice`, `-e3d1`, `-s9` — et
+# n'étaient donc couvertes par RIEN : une campagne interrompue laissait des
+# copies de sources versionnables à la racine.
+.neutralisation-sauvegarde/
+.neutralisation-*/
+
+# Overrides Claude Code personnels (non partagés)
+.claude/settings.local.json
+
+# Caches Python des harnais de neutralisation : recreees a chaque
+# execution, jamais versionnables.
+__pycache__/

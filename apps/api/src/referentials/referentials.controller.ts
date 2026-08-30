@@ -5,7 +5,7 @@
 // 100/min/IP ne gêne aucun usage légitime et reste une protection utile.
 import { Controller, Get } from "@nestjs/common";
 import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
-import type { AmenityDTO, WilayaDTO } from "@zwadj/types";
+import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
 import { Public } from "../auth/auth.decorators";
 import { ReferentialsService } from "./referentials.service";
 
@@ -33,5 +33,16 @@ export class ReferentialsController {
   })
   listAmenities(): Promise<AmenityDTO[]> {
     return this.referentials.listAmenities();
+  }
+
+  @Get("venue-styles")
+  @ApiOperation({ summary: "Styles de salle filtrables (VenueStyle, D65)" })
+  @ApiOkResponse({
+    description:
+      "Les styles, triés par sortOrder ÉDITORIAL (pas alphabétique : un tri par libellé " +
+      "donnerait deux ordres différents en FR et en AR). La `key` est ce que le filtre transporte."
+  })
+  listVenueStyles(): Promise<VenueStyleDTO[]> {
+    return this.referentials.listVenueStyles();
   }
 }

@@ -18,6 +18,11 @@ export type AccountDeletionStatus = (typeof AccountDeletionStatus)[keyof typeof 
 export const Locale = { fr: "fr", ar: "ar" } as const;
 export type Locale = (typeof Locale)[keyof typeof Locale];
 
+/** D66 (A13) — type de cérémonie d'une salle. ⚠ Le FILTRE n'est pas une
+ *  égalité : `MIXED` répond aussi à une demande `INDOOR` ou `OUTDOOR`. */
+export const CeremonyType = { INDOOR: "INDOOR", OUTDOOR: "OUTDOOR", MIXED: "MIXED" } as const;
+export type CeremonyType = (typeof CeremonyType)[keyof typeof CeremonyType];
+
 export const BookingMode = { SINGLE_SLOT: "SINGLE_SLOT", MULTI_SLOT: "MULTI_SLOT" } as const;
 export type BookingMode = (typeof BookingMode)[keyof typeof BookingMode];
 
@@ -30,6 +35,14 @@ export const BookingStatus = {
   CANCELLED: "CANCELLED"
 } as const;
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus];
+
+/** D'où vient l'affaire : le client l'a demandée en ligne, ou le pro l'a
+ *  saisie au comptoir. ⚠ Ajouté en S10b-2 : l'énumération existait dans
+ *  `schema.prisma` depuis l'origine mais n'avait jamais été reflétée ici,
+ *  contrairement à ses trois voisines de la même table. Chaque écrivain la
+ *  retapait donc en chaîne littérale. */
+export const BookingSource = { CLIENT: "CLIENT", WALK_IN: "WALK_IN" } as const;
+export type BookingSource = (typeof BookingSource)[keyof typeof BookingSource];
 
 export const PaymentMethod = { ONLINE: "ONLINE", CASH: "CASH" } as const;
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];

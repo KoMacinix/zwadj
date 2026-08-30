@@ -1,0 +1,29 @@
+{
+  "client accueil (clair)": [
+    "color-contrast @ .is-soon.site-nav-link",
+    "color-contrast @ .site-nav-soon"
+  ],
+  "client accueil (sombre)": [
+    "color-contrast @ .is-soon.site-nav-link",
+    "color-contrast @ .site-nav-soon"
+  ],
+  "client accueil (arabe, RTL)": [
+    "color-contrast @ .is-soon.site-nav-link"
+  ],
+  "client recherche de salles": [
+    "color-contrast @ .filters-reset",
+    "color-contrast @ .is-soon.site-nav-link",
+    "color-contrast @ .range-value",
+    "color-contrast @ .site-nav-soon"
+  ],
+  "client compte": [
+    "color-contrast @ .is-soon.site-nav-link",
+    "color-contrast @ .site-nav-soon"
+  ],
+  "pro connexion (clair)": [],
+  "pro connexion (sombre)": [],
+  "pro liste des salles": [],
+  "pro tableau de bord": [],
+  "pro nouvelle salle": [],
+  "pro compte": []
+}

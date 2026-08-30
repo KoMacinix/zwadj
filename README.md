@@ -1,8 +1,10 @@
 # Zwadj — monorepo
 
-Marketplace de réservation de salles de mariage (Algérie). Bilingue FR/AR + RTL, mobile-first, request-to-book, paiement Chargily (tranche ultérieure).
+Marketplace de réservation de salles de mariage (Algérie). Bilingue FR/AR + RTL, mobile-first, request-to-book, paiement Chargily.
 
-**Source de vérité technique : `AGENTS.md`.** Ce squelette n'embarque aucune logique métier — c'est la fondation validée sur laquelle les tranches (auth, réservation, paiement) s'ajoutent.
+⚠ **État réel du paiement** (il n'est plus « à venir », il n'est pas non plus complet) : le port `PAYMENT_GATEWAY`, l'adaptateur `chargily.gateway.ts` et la décision pure `payment-intent.ts` sont livrés et mesurés (E3a/E3b) ; **le webhook signé est EN PAUSE** (E3c), donc rien ne bascule un `Payment` en `PAID` ni une réservation en `CONFIRMED`. Tout le chemin est derrière `PAYMENTS_ENABLED`, qui vaut **`false`** en l'absence de valeur — voir `apps/api/src/config/env.ts`.
+
+**Source de vérité technique : `AGENTS.md`.** Ce dépôt n'est plus un squelette : neuf modules Nest (`auth`, `account`, `venues`, `payments`, `media`, `referentials`, `health`, `config`, `prisma`), quinze contrôleurs sur le seul domaine `venues`, 23 migrations écrites à la main, et des moteurs métier purs (`pricing-engine`, `service-pricing`, `availability-engine`, `booking-window`, `deposit`, `payment-intent`). L'état des lots, les décisions arbitrées et les invariants à ne pas casser vivent dans `AGENTS.md` et `ZWADJ_CONTINUITE.md` — **ce fichier ne décrit que la mise en route**, il n'a autorité sur rien d'autre.
 
 ## Structure
 
@@ -34,14 +36,32 @@ pnpm install
 # 4. Client Prisma (génère apps/api/src/generated/prisma — gitignoré)
 pnpm --filter @zwadj/api prisma:generate
 
-# 5. Migrations — première exécution réelle de migrate dev
+# 5. Migrations — `migrate deploy`, JAMAIS `migrate dev`
 pnpm --filter @zwadj/api prisma:migrate
-#   Attendu : applique les migrations committées dans l'ordre (…_init →
-#   …_city_natural_key), crée la table _prisma_migrations si besoin, RÉGÉNÈRE
-#   le client Prisma (src/generated), et déclare la base "in sync" SANS
-#   proposer de migration supplémentaire ni de reset.
-#   ⚠ Si un drift est signalé ou un reset proposé : répondre NON et remonter la
-#   sortie complète — ne pas laisser Prisma régénérer quoi que ce soit.
+#   ⛔ `prisma migrate dev` est INTERDIT dans ce dépôt. Il ne connaît QUE ce que
+#   `schema.prisma` déclare : toute table, colonne ou contrainte présente en
+#   base mais absente du schéma — au premier rang celles que le langage Prisma
+#   ne sait pas exprimer (`EXCLUDE` anti-double-booking, index PARTIELS,
+#   certains `CHECK`, FK composites) — lui apparaît comme un écart à corriger.
+#   Et « corriger », pour lui, veut dire SUPPRIMER cet objet de la base réelle :
+#   il ne défait pas un changement accidentel, il aligne la base sur un schéma
+#   qui ignore l'existence de ces garanties. Une seule exécution a déjà détruit
+#   la FK composite B2 en base de dev. Le script `prisma:migrate:dev` existe
+#   uniquement pour REFUSER. Toute migration neuve s'écrit à la main —
+#   procédure complète : AGENTS.md § « Migrations ».
+#
+#   Ce que `prisma:migrate` (= `migrate deploy`) fait : applique les migrations
+#   committées non encore appliquées, dans l'ordre (…_init →
+#   …_quote_drop_valid_until), et crée _prisma_migrations si besoin.
+#   Ce qu'il ne fait PAS : il ne régénère pas le client Prisma (c'est l'étape
+#   4), et il ne compare jamais la base au schéma — donc aucune invite de
+#   « drift » ni de reset ne peut venir de lui. En voir une signifie qu'une
+#   AUTRE commande tourne : arrêter et remonter la sortie complète.
+#
+#   ⚠ `migrate deploy` SORT EN SUCCÈS SANS RIEN APPLIQUER quand le
+#   schema-engine est inaccessible (poste hors ligne) : base restée vide ET
+#   code de retour zéro. Vérifier qu'une table attendue existe — ne jamais se
+#   fier au code de sortie seul.
 
 # 5bis. Seed des référentiels (Lot A1 — 58 wilayas, 23 communes d'Alger,
 #       23 équipements). IDEMPOTENT : ré-exécutable à volonté, converge vers

@@ -15,8 +15,8 @@
 // l'autre et rendrait les compteurs faux dans l'ordre d'exécution seulement —
 // le genre d'échec qui n'apparaît qu'en CI.
 import { vi } from "vitest";
-import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
-import type { AmenityDTO, VenueProDTO, WilayaDTO } from "@zwadj/types";
+import type { BookingsProClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
+import type { AmenityDTO, VenueProDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import type { AuthClient } from "../lib/auth-client";
 
 export interface AuthenticatedProUser {
@@ -63,11 +63,13 @@ export function makeAuthDouble(overrides: Partial<AuthClient> = {}): AuthClient 
 
 export function makeReferentialsDouble(
   wilayas: WilayaDTO[] = [],
-  amenities: AmenityDTO[] = []
+  amenities: AmenityDTO[] = [],
+  venueStyles: VenueStyleDTO[] = []
 ): ReferentialsClient {
   return {
     listWilayas: vi.fn().mockResolvedValue(wilayas),
-    listAmenities: vi.fn().mockResolvedValue(amenities)
+    listAmenities: vi.fn().mockResolvedValue(amenities),
+    listVenueStyles: vi.fn().mockResolvedValue(venueStyles)
   };
 }
 
@@ -100,7 +102,65 @@ export function makeVenueClientDouble(
     deletePricingRule: vi.fn().mockResolvedValue(undefined),
     listAvailabilityBlocks: vi.fn().mockResolvedValue([]),
     createAvailabilityBlock: vi.fn(),
-    deleteAvailabilityBlock: vi.fn().mockResolvedValue(undefined),
+    deleteAvailabilityBlock: vi.fn(),
+    // Calendrier pro : réponse VIDE mais BIEN FORMÉE par défaut. Un `vi.fn()`
+    // nu rendrait `undefined`, et le calendrier tomberait dans son `catch` — un
+    // « calendrier indisponible » silencieux dans tous les tests qui montent la
+    // coquille sans s'intéresser au calendrier.
+    availability: vi.fn().mockResolvedValue({
+      venueId: "v1",
+      slug: "salle",
+      bookingMode: "SINGLE_SLOT",
+      from: "2026-08-01",
+      to: "2026-08-31",
+      slots: [],
+      days: []
+    }),
+    listVisitBookings: vi.fn().mockResolvedValue([]),
+    cancelVisitBooking: vi.fn().mockResolvedValue(undefined).mockResolvedValue(undefined),
+    ...overrides
+  };
+}
+
+/** Double des demandes de réservation (E1b). Même règle que les autres : mocks
+ *  créés à CHAQUE appel, jamais partagés entre tests. */
+export function makeBookingsProDouble(overrides: Partial<BookingsProClient> = {}): BookingsProClient {
+  return {
+    listForVenue: vi.fn().mockResolvedValue([]),
+    accept: vi.fn(),
+    decline: vi.fn(),
+    cancel: vi.fn(),
+    ...overrides
+  };
+}
+
+/** Double du catalogue (E2c). */
+export function makeServicesDouble(overrides: Partial<ServicesClient> = {}): ServicesClient {
+  return {
+    listForVenue: vi.fn().mockResolvedValue([]),
+    create: vi.fn(),
+    update: vi.fn(),
+    remove: vi.fn(),
+    ...overrides
+  };
+}
+
+/** Double des devis (E2e, contrat Q2).
+ *
+ *  ⚠ `send` a laissé place à `deliver`, et `conversion` a perdu `expired` : le
+ *  typage fait échouer ICI tout test resté sur l'ancien contrat, au lieu de le
+ *  laisser vert en appelant une méthode qui n'existe plus. C'est la raison
+ *  d'être du fichier — le double était recopié dans sept endroits, et chaque
+ *  extension du contrat les cassait tous les sept. */
+export function makeQuotesDouble(overrides: Partial<QuotesClient> = {}): QuotesClient {
+  return {
+    listForVenue: vi.fn().mockResolvedValue([]),
+    conversion: vi.fn().mockResolvedValue({ delivered: 0, accepted: 0, cancelled: 0 }),
+    create: vi.fn(),
+    deliver: vi.fn(),
+    revise: vi.fn(),
+    convert: vi.fn(),
+    cancel: vi.fn(),
     ...overrides
   };
 }

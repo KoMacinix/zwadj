@@ -1,10 +1,31 @@
 /* Zwadj CLIENT — accent chaleureux/corail (Lot 7/D26, AGENTS.md).
    Importé APRÈS @zwadj/ui/styles.css (qui ne définit AUCUN accent).
-   AA : #DA3642 passe le contraste texte sur BLANC PUR uniquement — jamais en
-   texte sur --bg-2/--accent-soft (réservé aux boutons pleins + non-textuel). */
+
+   ⛔ AA : #DA3642 NE PASSE EN TEXTE QUE SUR BLANC PUR. Cette règle était déjà
+   écrite ici, et elle a quand même été enfreinte — parce qu'elle vivait dans un
+   commentaire, et qu'un commentaire ne rougit pas. Mesuré (D264) :
+
+     fond                     --accent #da3642     --accent-text #b32c36
+     --surface #ffffff        4,58:1  passe        6,31:1  passe
+     --bg      #fafafa        4,39:1  ÉCHEC        6,04:1  passe
+     --bg-2    #f4f4f5        4,16:1  ÉCHEC        5,74:1  passe
+
+   Or `body` porte `background: var(--bg)` : tout conteneur sans fond propre est
+   posé sur #fafafa. La règle « accent en texte » n'était donc tenable NULLE
+   PART hors des surfaces blanches, et B8 l'a prouvé sur trois sélecteurs.
+
+   ⚠ D'OÙ `--accent-text`, ET POURQUOI CE N'EST PAS `var(--accent-strong)`.
+   Les deux valent #b32c36 aujourd'hui, et c'est une COÏNCIDENCE, pas une
+   dépendance : `--accent-strong` est la couleur de SURVOL/ACTIF. La faire
+   porter aussi le contraste du texte, c'est garantir qu'un jour un ajustement
+   de survol déplacera une conformité AA sans que personne ne le voie passer.
+   Un token, un rôle. */
 :root {
   --accent: #da3642;
   --accent-strong: #b32c36;
+  /* ⛔ ACCENT UTILISABLE EN TEXTE — 6,04:1 sur --bg, 5,74:1 sur --bg-2 (D264).
+     Valeur littérale VOULUE : voir l'en-tête, ce n'est pas `--accent-strong`. */
+  --accent-text: #b32c36;
   --accent-soft: #fdeef0; /* = --rose-pale, recalibrée pour #DA3642 */
   --on-accent: #ffffff;
 
@@ -14,192 +35,1468 @@
   --star: #ebb04a;
 }
 
-/* ── Navigation principale (Lot UI-N1) ──────────────────────────────────────
-   Mobile-first : sur téléphone l'en-tête passe en COLONNE et la barre défile
-   horizontalement. Pas de menu burger — il coûterait un état, un piège de
-   focus et une gestion d'Échap, pour six entrées dont quatre sont inactives.
-   Le défilement, lui, ne peut pas casser.
-   Aucune propriété directionnelle en `left/right` : tout est en logique
-   (`inline`), sinon l'arabe RTL décale la barre du mauvais côté. */
-.site-header {
-  flex-wrap: wrap;
+/* ── Accent en MODE SOMBRE (Lot UI-D1 — D64) ────────────────────────────────
+   #DA3642 sur #111111 tombe à 3,4:1 : illisible en texte, terne en bouton.
+   L'accent sombre est donc ÉCLAIRCI (#E07A84, repris du design), et il gagne
+   au passage ce que le clair n'a pas — 5,91:1 sur --surface : en sombre,
+   l'accent EST utilisable comme couleur de texte.
+
+   ⚠ CORRECTION ASSUMÉE DU DESIGN : le design garde `--on-accent: #fff` en
+   sombre, ce qui donne 2,88:1 sur #E07A84 — ÉCHEC AA sur chaque bouton plein.
+   L'encre d'un bouton accent sombre est donc SOMBRE (#111111 → 6,55:1).
+   Un accent qui s'éclaircit inverse la couleur du texte qu'il porte : c'est
+   contre-intuitif, et c'est arithmétique.
+
+   `--accent-strong` (survol/actif) s'ÉCLAIRCIT en sombre au lieu de foncer :
+   sur fond noir, « plus present » veut dire plus clair. */
+:root {
+  --dark-accent: #e07a84;
+  --dark-accent-strong: #ec9ba4;
+  /* ⚠ EN SOMBRE, LE TOKEN DE TEXTE SE CONFOND AVEC L'ACCENT, et c'est mesuré :
+     #E07A84 rend 6,55:1 sur --bg, 5,91:1 sur --surface, 5,32:1 sur --bg-2 —
+     l'accent sombre EST déjà lisible en texte (D64). Dérivé, pas recopié : une
+     valeur écrite en dur ici cesserait de suivre l'accent au premier ajustement. */
+  --dark-accent-text: var(--dark-accent);
+  /* Pendant sombre de --accent-soft : un voile PROFOND, pas un rose pâle. */
+  --dark-accent-soft: #2a1416;
+  --dark-on-accent: #111111;
+  --dark-rose-pale: #2a1416;
+  --dark-sage: #b07078;
+  --dark-star: #e6a93c;
 }
 
-.site-nav {
-  order: 3;
-  flex-basis: 100%;
-  overflow-x: auto;
-  /* Masque la barre de défilement sans empêcher le geste. */
-  scrollbar-width: none;
+:root[data-theme="dark"] {
+  --accent: var(--dark-accent);
+  --accent-strong: var(--dark-accent-strong);
+  --accent-text: var(--dark-accent-text);
+  --accent-soft: var(--dark-accent-soft);
+  --on-accent: var(--dark-on-accent);
+  --rose-pale: var(--dark-rose-pale);
+  --sage: var(--dark-sage);
+  --star: var(--dark-star);
 }
 
-.site-nav::-webkit-scrollbar {
-  display: none;
+/* ── Bascule de langue (Lot UI-D2) ──────────────────────────────────────────
+   Même gabarit que la bascule de thème pour qu'elles fassent paire, mais en
+   pilule : l'étiquette est du texte, pas une icône. */
+.locale-switch {
+  display: inline-flex;
+  align-items: center;
+  block-size: 34px;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  text-decoration: none;
 }
 
-.site-nav-list {
+.locale-switch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PANNEAU DE FILTRES (Lot A13b) — repris du design de référence.
+   ══════════════════════════════════════════════════════════════════════════ */
+.filters {
+  display: grid;
+  gap: 26px;
+  align-content: start;
+  padding-block: 28px;
+  padding-inline: 24px;
+  background: var(--bg-2);
+  /* ⚠ UI-D5 — plus de `border-radius` ni de `padding` uniforme : ce n'était pas
+     un panneau flottant dans le design, c'est la COLONNE de gauche, à fleur de
+     bord d'écran. Un rayon de coin ici rouvre un liseré de fond sur trois côtés
+     et redonne l'air de carte qu'on retire. */
+  border-block-end: 1px solid var(--line);
+}
+
+.filters-head {
   display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.filters-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.filters-reset {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.filter-block {
+  display: grid;
+  gap: 10px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0; /* un <fieldset> refuse de rétrécir sans cela */
+}
+
+.filter-label {
+  padding: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* ── Curseur à deux poignées ────────────────────────────────────────────────
+   Deux `input[type=range]` NATIFS empilés. Les pistes natives sont masquées et
+   remplacées par une piste unique dessinée en dessous ; seules les poignées
+   restent cliquables, sinon celle du dessus intercepterait tous les clics
+   destinés à l'autre. */
+.range {
+  position: relative;
+  block-size: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.range-track,
+.range-fill {
+  position: absolute;
+  block-size: 3px;
+  border-radius: 999px;
+}
+
+.range-track {
+  inset-inline: 0;
+  background: var(--line);
+}
+
+.range-fill {
+  background: var(--accent);
+}
+
+.range input[type="range"] {
+  position: absolute;
+  inset-inline: 0;
+  inline-size: 100%;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  pointer-events: none; /* la piste ne prend rien… */
+}
+
+.range input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto; /* …seule la poignée répond */
+  appearance: none;
+  inline-size: 16px;
+  block-size: 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  cursor: pointer;
+}
+
+.range input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  inline-size: 16px;
+  block-size: 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  cursor: pointer;
+}
+
+.range input[type="range"]:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.range-value {
+  margin: 0;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+/* ── Puces (styles, type de mariage) ────────────────────────────────────────
+   La case ou le bouton radio reste dans le DOM, focalisable au clavier, et
+   c'est lui qui porte l'état — `:checked` peint le `<span>` frère. Un `<div>`
+   cliquable aurait exigé de réinventer la sélection, le focus et le clavier. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  display: inline-block;
+  padding-block: 8px;
+  padding-inline: 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.chip input:checked + span {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Le focus clavier doit se voir : l'input étant invisible, l'anneau se dessine
+   sur le libellé. Sans cette règle, naviguer les puces au clavier ne montre
+   plus rien du tout. */
+.chip input:focus-visible + span {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.service-list {
+  display: grid;
+  gap: 10px;
+}
+
+.service-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Les listes du panneau (commune, tri) : `.filter-block` n'est pas `.field`,
+   elles sortaient donc SANS style, avec le rendu natif du navigateur. Même
+   traitement que les champs de `@zwadj/ui`, sans dupliquer la primitive.
+
+   ⚠ `appearance` reste NATIVE : dessiner soi-même le chevron oblige à le
+   positionner en propriété physique (`background-position`), que RTL n'inverse
+   pas. La flèche du navigateur, elle, passe à gauche toute seule en arabe. */
+.filter-block select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding-block: 10px;
+  padding-inline: 12px;
+  inline-size: 100%;
+}
+
+.filter-block select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+/* ── Bascule de langue (dessin retenu, UI-D4) ───────────────────────────────
+   Une pastille unique portant la langue de DESTINATION. Deux segments FR|AR
+   avaient été essayés : ils occupent plus de place pour dire la même chose, et
+   le segment courant n'est cliquable nulle part. */
+.locale-switch {
+  display: inline-flex;
+  align-items: center;
+  block-size: 34px;
+  padding-inline: 14px;
+  border: 1px solid var(--ink-mute);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.locale-switch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PAGE « SALLES » (Lot UI-D5) — alignée sur le design de référence.
+
+   Remplace la grille centrée d'UI-D4. Ce qui change et pourquoi :
+
+   ① **Pleine largeur.** Le design pose la barre latérale À FLEUR de bord
+      d'écran ; un conteneur centré à 1100 px l'en éloignait de plusieurs
+      centaines de pixels sur un écran large. Le confort de lecture est repris
+      par le rembourrage de la colonne de résultats, pas par une largeur
+      maximale du document.
+
+   ② **La colonne de résultats est sur `--surface` (BLANC PUR), pas `--bg`.**
+      Ce n'est pas une préférence : `#DA3642` en TEXTE ne passe AA que sur blanc
+      pur (4,58:1) — sur `--bg` (#fafafa) il tombe à 4,39:1, sous le seuil. Le
+      prix et le compteur de résultats étant accentués dans le design, la
+      colonne DOIT être blanche pour qu'ils soient lisibles. En sombre,
+      `--accent` sur `--surface` donne 5,91:1 (acquis en UI-D1).
+      ⚠ Conséquence : ne jamais reposer un fond `--bg-2`/`--bg-3` sur
+      `.search-results` sans en retirer d'abord les textes accentués.
+
+   ③ **La barre latérale occupe toute la hauteur du volet**, avec son propre
+      défilement. `100dvh` et non `100vh` : sur mobile, la barre d'adresse de
+      Safari/Chrome mange une portion de `vh` et le bas du panneau devient
+      inatteignable. `100vh` est gardé en repli pour les moteurs anciens.
+   ══════════════════════════════════════════════════════════════════════════ */
+.search-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  background: var(--surface);
+}
+
+.search-results {
+  min-inline-size: 0; /* sans quoi une grille imbriquée refuse de rétrécir */
+  padding-block: 24px;
+  padding-inline: 20px;
+}
+
+@media (min-width: 900px) {
+  .search-shell {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+
+  .search-results {
+    padding-block: 32px;
+    padding-inline: 48px;
+  }
+
+  .search-shell > .filters {
+    position: sticky;
+    inset-block-start: 0;
+    block-size: 100vh;
+    block-size: 100dvh;
+    overflow-y: auto;
+    /* Le filet passe du bas au côté : en pile c'est un séparateur horizontal,
+       en colonnes c'est la limite entre les deux volets. Propriété LOGIQUE :
+       en arabe la barre est à droite et le filet la suit. */
+    border-block-end: 0;
+    border-inline-end: 1px solid var(--line);
+  }
+}
+
+/* ── Barre de résultats : titre + compteur à gauche, outils à droite ──────── */
+.results-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-block-end: 24px;
+}
+
+.results-heading {
+  min-inline-size: 0;
+}
+
+.results-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.results-count {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* Accent en TEXTE : légitime ici et seulement ici, parce que `.search-results`
+   est sur blanc pur (voir ② en tête de bloc). */
+.results-count-n {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.results-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ⚠ `appearance` reste NATIVE, comme les listes du panneau : dessiner soi-même
+   le chevron oblige à le positionner en propriété physique
+   (`background-position`), que RTL n'inverse pas. La flèche du navigateur, elle,
+   passe à gauche toute seule en arabe. */
+.sort-select {
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding-block: 9px;
+  padding-inline: 12px;
+}
+
+.sort-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+/* ── Bascule grille / carte ──────────────────────────────────────────────── */
+.view-switch {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.view-switch-btn {
+  display: grid;
+  place-items: center;
+  padding-block: 9px;
+  padding-inline: 13px;
+  color: var(--ink-2);
+  background: var(--surface);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.view-switch-btn:hover {
+  color: var(--ink);
+}
+
+/* Fond accent + encre `--on-accent` : c'est un bouton PLEIN, jamais du texte
+   accentué sur un fond clair — la contrainte AA d'AGENTS.md porte sur le
+   second cas, pas sur le premier. */
+.view-switch-btn.is-active {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.view-switch-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+/* ── Cartouche de la carte (post-MVP) ────────────────────────────────────── */
+.map-panel {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  min-block-size: 420px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.map-panel-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.map-panel-body {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ── Bandeau des données de démonstration ────────────────────────────────── */
+.preview-note {
+  margin: 0 0 18px;
+  padding-block: 10px;
+  padding-inline: 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  /* Encre NORMALE et non accent : `--accent-soft` est un fond décoratif clair,
+     sur lequel AGENTS.md interdit explicitement le texte accentué. */
+  color: var(--ink);
+  font-size: 13px;
+}
+
+/* ── Grille des salles ───────────────────────────────────────────────────────
+   Colonnes EXPLICITES par palier, pas `auto-fill` : le design en veut quatre
+   sur grand écran, et `auto-fill` en donne cinq dès que la colonne dépasse un
+   multiple de la largeur minimale — la carte rétrécit alors sous la taille où
+   son pied (capacité · commune | prix) tient encore sur deux lignes. */
+.venue-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (min-width: 560px) {
+  .venue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .venue-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1400px) {
+  .venue-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ── Carte de salle ──────────────────────────────────────────────────────────
+   Ni bordure ni fond : dans le design, la carte EST son image, le texte pose
+   dessous à même la page. Le cadre gris de la version A7 fabriquait une boîte
+   là où le design n'en a pas. */
+.venue-card {
+  position: relative; /* ancre le bouton favori, hors du lien */
+}
+
+.venue-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.venue-card-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.venue-card-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.venue-card-media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.venue-card-link:hover .venue-card-media img {
+  transform: scale(1.04);
+}
+
+/* Liseré accentué en retrait, repris du design. En `::after` et non en bordure
+   sur l'image : une bordure décalerait le cadrage de la photo au survol. */
+.venue-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.venue-card-link:hover .venue-card-media::after,
+.venue-card-link:focus-visible .venue-card-media::after {
+  opacity: 1;
+}
+
+/* D44 — le mouvement est un CONFORT, jamais une condition de lecture : sous
+   `reduce`, la photo ne bouge plus et le liseré apparaît sans transition. */
+@media (prefers-reduced-motion: reduce) {
+  .venue-card-media img,
+  .venue-card-media::after,
+  .venue-card-dots {
+    transition: none;
+  }
+
+  .venue-card-link:hover .venue-card-media img {
+    transform: none;
+  }
+}
+
+.venue-card-nophoto {
+  display: grid;
+  place-items: center;
+  block-size: 100%;
+  color: var(--ink-2);
+  font-size: 12px;
+}
+
+.venue-card-badge {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  padding-block: 5px;
+  padding-inline: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ── Lot `availableOn` — salle sans créneau libre à la date annotée ──────────
+   ⚠ LE GRISÉ N'EST JAMAIS SEUL. `.venue-card-unavailable` porte la mention
+   écrite, et c'est elle qui informe : un contraste abaissé ne dit rien à un
+   lecteur d'écran, et rien du tout à qui ne distingue pas les gris. L'opacité
+   ne descend donc qu'à 0,55 sur le MÉDIA — le texte de la carte garde son
+   contraste AA, sans quoi on aurait échangé une information contre une
+   régression d'accessibilité.
+   ⚠ La carte reste CLIQUABLE : « pas ce jour-là » n'est pas « pas cette
+   salle ». Aucun `pointer-events: none` ici, et c'est délibéré. */
+.venue-card.is-unavailable .venue-card-media {
+  opacity: 0.55;
+  filter: grayscale(0.8);
+}
+.venue-card-unavailable {
+  position: absolute;
+  /* La pastille d'accroche occupe déjà le coin haut : celle-ci prend le BAS,
+     sur toute la largeur — elle est un état, pas une décoration. */
+  inset-block-end: 0;
+  inset-inline: 0;
+  padding-block: 7px;
+  padding-inline: 12px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Bandeau de contexte au-dessus de la grille : sans lui, un visiteur qui
+   reçoit une URL partagée voit des cartes grisées sans savoir pourquoi. */
+.results-annotated {
+  margin: 0 0 16px;
+  padding-block: 10px;
+  padding-inline: 14px;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--bg-2);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* ── Point B — page 404 ─────────────────────────────────────────────────────
+   Le nuage est du texte SVG décoratif : aucun bitmap, aucune dépendance, et il
+   reste hors de l'arbre d'accessibilité. Les deux canevas évitent de comprimer
+   les glyphes : un paysage pour le bureau, un portrait pour le mobile. */
+.notfound-main {
+  position: relative;
+  isolation: isolate;
+  /* ⚠ Pas de plafond en pixels : le nuage est un FOND, il doit descendre
+     jusqu'au pied de page quelle que soit la fenêtre. Le `- 190px` retire
+     l'en-tête et le pied, qui occupent déjà la hauteur ; sans lui, la page
+     défilerait d'autant sur toutes les 404. */
+  min-block-size: max(520px, calc(100dvh - 190px));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding-block: clamp(52px, 8vw, 96px);
+  padding-inline: 20px;
+}
+
+/* ⚠ LARGEUR ACCORDÉE AU VIDE RÉSERVÉ DANS LE NUAGE (56 % du canevas large).
+   Élargir ce bloc sans élargir `videCentral` ferait repasser des mots
+   derrière les boutons — le nuage ne saurait pas qu'on lui a pris de la
+   place. Les deux valeurs se déplacent ENSEMBLE. */
+.notfound-content {
+  position: relative;
+  z-index: 1;
+  inline-size: min(100%, 560px);
+  text-align: center;
+}
+
+/* ⚠ `.notfound-code` a été RETIRÉE le 23/08/2026 avec le « 404 » qu'elle
+   habillait : le code est porté par le statut HTTP, là où les machines le
+   lisent. Une règle sans balise est un piège pour le prochain lecteur, qui
+   la croit vivante. */
+.notfound-content h1 {
+  margin: 0;
+  font-size: clamp(25px, 3.4vw, 34px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.notfound-body {
+  max-inline-size: 430px;
+  margin: 14px auto 0;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.notfound-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-block-start: 28px;
+}
+
+/* ⚠ UNE SEULE RÈGLE là où il y en avait six. Le décor est passé d'un composant
+   qui calculait sa disposition à chaque rendu — collisions, largeurs imposées,
+   deux canevas selon l'écran — à UNE IMAGE STATIQUE (24/08/2026).
+   `object-fit: cover` remplace à lui seul la gestion des tailles d'écran : un
+   canevas de 1400×1000 recadré, dont le vide central est calibré pour rester
+   sous le bloc de texte du bureau comme du mobile.
+   ⚠ `opacity: .7` — les opacités sont GRAVÉES dans le fichier au niveau qu'il
+   faut sur fond sombre, parce qu'une image en `<img>` ne connaît pas le thème
+   de la page et ne peut pas s'éclaircir. On atténue donc en clair ; l'inverse
+   serait impossible, `opacity` ne dépasse pas 1. */
+.lost-word-cloud {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.7;
+}
+
+@media (prefers-color-scheme: dark) {
+  .lost-word-cloud {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 620px) {
+  .notfound-main {
+    min-block-size: max(560px, calc(100dvh - 150px));
+    padding-block: 44px;
+  }
+
+  .notfound-actions {
+    align-items: stretch;
+    flex-direction: column;
+    inline-size: min(100%, 280px);
+    margin-inline: auto;
+    margin-block-start: 26px;
+  }
+
+}
+
+.venue-card-fav {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  inline-size: 34px;
+  block-size: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 2px 8px rgba(24, 24, 27, 0.14);
+  opacity: 0.92;
+}
+
+/* Rubrique annoncée, pas construite : le curseur ne promet pas un clic qui
+   n'arrivera pas (même doctrine que « Bientôt » dans la navigation). */
+.venue-card-fav[disabled] {
+  cursor: default;
+}
+
+.venue-card-dots {
+  position: absolute;
+  inset-block-end: 12px;
+  inset-inline: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.venue-card-link:hover .venue-card-dots {
+  opacity: 1;
+}
+
+.venue-card-dot {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.venue-card-dot.is-first {
+  background: var(--accent);
+}
+
+.venue-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.venue-card-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.venue-card-rating {
+  display: inline-flex;
+  align-items: center;
   gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ⚠ `--ink-2` et non `--ink-mute` sur ces libellés : c'étaient les quatre
+   entrées `.venue-card-*` de la référence a11y. La carte n'a AUCUN fond propre,
+   elle repose à même la page : le contraste se lit contre `--bg`, où l'ancienne
+   teinte tombait à 2,46 pour un seuil de 4,5. */
+.venue-card-reviews {
+  color: var(--ink-2);
+}
+
+.venue-card-tagline {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.venue-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 10px;
+  margin-block-start: 10px;
+}
+
+.venue-card-meta {
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--ink-2);
+}
+
+/* Voir ② en tête de bloc : accent en texte, sur blanc pur uniquement. */
+.venue-card-price {
+  font-size: 13px;
+  font-weight: 600;
+  /* 13 px sur #fafafa (la carte n'a pas de fond propre) : --accent y rend
+     4,39:1, sous le seuil AA de 4,5:1 pour du texte < 18 px. */
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+
+.venue-card-from {
+  margin-inline-end: 6px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCUEIL — lot Accueil, sur la maquette `HomePage`.
+
+   ⚠ TOKENS DU DÉPÔT, PAS CEUX DE LA MAQUETTE. L'export pose `--accent: #D55762`
+   et écrit `rgba(213,87,98,…)` en dur ; l'accent client du dépôt est `#da3642`
+   (D26). Erreur de reskin confirmée par Ko le 17/08/2026 — même diagnostic que
+   sur l'écran Pro, où la maquette repeignait le pro avec l'accent client.
+
+   ⚠ NI `--ink-mute`, NI CORPS SOUS 12 px. La maquette met des libellés en
+   `fontSize: 9` sur `--ink-mute` : ce token échoue AA, et l'arabe à 9 px n'est
+   pas « petit », il est illisible.
+
+   ⚠ PROPRIÉTÉS LOGIQUES PARTOUT (`padding-inline`, `border-inline-start`,
+   `margin-inline-*`) : cette page se rend aussi en RTL, et un `padding-left`
+   figé y met la marge du mauvais côté.
+   ══════════════════════════════════════════════════════════════════════════ */
+.hm {
+  --hm-gutter: clamp(18px, 5vw, 80px);
+}
+.hm-hero {
+  padding: clamp(40px, 6vw, 64px) var(--hm-gutter) clamp(28px, 4vw, 40px);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+}
+.hm-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  /* 12 px sur le dégradé --bg → --bg-2 du héros : 4,39:1 à 4,16:1 selon la
+     hauteur. Aucun point du dégradé ne passait. */
+  color: var(--accent-text);
+}
+.hm-ornament {
+  inline-size: 28px;
+  block-size: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.hm-title {
+  margin: 0 0 16px;
+  font-size: clamp(32px, 6vw, 60px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  max-inline-size: 20ch;
+}
+.hm-lede {
+  margin: 0;
+  max-inline-size: 62ch;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.hm-lede-2 {
+  margin-block-end: 24px;
+}
+
+/* Formulaire du héros. ⚠ `<fieldset>` en grille : c'est un vrai formulaire GET,
+   et la mise en page ne doit pas coûter sa sémantique. */
+.hm-search fieldset {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-items: end;
+  margin: 28px 0 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+}
+.hm-search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-inline-size: 0;
+}
+.hm-search-field label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.hm-search-field input,
+.hm-search-field select {
+  min-block-size: 44px; /* cible tactile : jamais rognée (doctrine UI) */
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+.hm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hm-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+/* ⚠ Le fond ET l'encre changent ensemble. Une règle qui ne poserait que le fond
+   laisserait l'encre de l'état précédent — c'est le défaut mesuré côté Pro, où
+   le contraste tombait à 1,10 au survol : blanc sur blanc, dans les deux
+   thèmes, et axe ne l'avait pas vu (il n'évalue pas les états de survol). */
+.hm-btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+.hm-section {
+  padding: clamp(44px, 7vw, 92px) var(--hm-gutter) 0;
+}
+.hm-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-block-end: 34px;
+}
+.hm-h2 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 48px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.hm-note,
+.hm-empty {
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* Cartouche de carte — même parti que la recherche : on annonce l'absence, on
+   ne pose pas une image figée qui laisserait croire à une carte cassée. */
+/* ⚠ La carte prend la place qu'elle a dans la maquette (demande ②) et se
+   détache du fond (demande ③). Le fond est DÉRIVÉ des tokens — `--accent-soft`
+   sur `--bg-2` — jamais une couleur écrite en dur : elle basculerait en thème
+   sombre, où `--accent-soft` vaut déjà `#2a1416`. */
+.hm-map-soon {
+  display: grid;
+  place-content: center;
+  margin: 22px 0 0;
+  min-block-size: clamp(240px, 34vw, 420px);
+  padding: 32px 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: linear-gradient(160deg, var(--accent-soft) 0%, var(--bg-2) 70%);
+  text-align: center;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.hm-grid {
+  display: grid;
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-
-.site-nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding-block: 8px;
-  padding-inline: 10px;
-  border-radius: 8px;
-  white-space: nowrap;
-  text-decoration: none;
-  color: var(--ink-2, inherit);
-  font-size: 15px;
+.hm-grid-6 {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.hm-grid-3 {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.hm-grid-5 {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
 }
 
-.site-nav-link:hover {
-  background: var(--accent-soft);
-}
-
-.site-nav-link.is-active {
-  color: var(--accent-strong);
-  font-weight: 600;
-  background: var(--accent-soft);
-}
-
-/* Rubrique annoncée mais pas construite : visiblement inerte, et le curseur
-   ne suggère pas un clic qui n'arrivera pas. */
-.site-nav-link.is-soon {
-  opacity: 0.55;
-  cursor: default;
-}
-
-.site-nav-soon {
-  font-size: 11px;
-  padding-block: 1px;
-  padding-inline: 5px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-}
-
-/* À partir de la tablette, la barre reprend sa place sur la ligne de l'en-tête. */
-@media (min-width: 720px) {
-  .site-header {
-    flex-wrap: nowrap;
-  }
-
-  .site-nav {
-    order: 0;
-    flex-basis: auto;
-    flex: 1;
-    margin-inline-start: 12px;
-  }
-}
-
-/* ── Calendrier de disponibilité (Lot B5) ───────────────────────────────────
-   Grille en <table> : ce SONT des données tabulaires (7 colonnes de jours),
-   et un lecteur d'écran y navigue par en-têtes. Une grille de <div> perdrait
-   cette lecture.
-   Toutes les propriétés sont logiques : en arabe la grille doit se remplir de
-   droite à gauche, ce que `dir="rtl"` fait seul sur un tableau. */
-.cal-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-block: 12px;
-}
-
-.cal-grid {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.cal-grid th {
-  padding-block: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-2, inherit);
-}
-
-.cal-cell {
-  padding: 2px;
-  vertical-align: top;
-}
-
-/* Vendredi-samedi : le week-end algérien, et le PIC de la demande en salle
-   des fêtes — mis en avant, pas grisé comme un jour creux. */
-.cal-cell.is-weekend .cal-day {
-  background: var(--accent-soft);
-}
-
-.cal-day {
-  inline-size: 100%;
-  min-block-size: 54px;
+/* ── Catégories de prestataires : GRISÉES, et non désactivées ─────────────
+   Ce ne sont ni des liens ni des boutons — il n'y a rien à ouvrir, donc rien à
+   désactiver. Le gris ne porte pas le message seul (WCAG 1.4.1) : chaque carte
+   affiche « À venir » en texte, et la section porte une note. */
+.hm-vendor {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
-  cursor: pointer;
-  font: inherit;
-}
-
-.cal-day:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.cal-day.is-selected {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-
-.cal-num {
-  font-weight: 600;
-}
-
-.cal-price {
-  font-size: 11px;
-  color: var(--ink-2, inherit);
-}
-
-.cal-holiday {
-  inline-size: 5px;
-  block-size: 5px;
-  border-radius: 999px;
-  background: var(--star);
-}
-
-.cal-pad {
-  padding: 2px;
-}
-
-.cal-slots ul {
-  list-style: none;
-  margin: 8px 0 0;
+  gap: 0;
+  overflow: hidden;
   padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg-2);
+  /* ⚠ AUCUN `opacity` sur le bloc entier : il ferait tomber le contraste du
+     texte sous le seuil AA en même temps que le fond, et l'étiquette « À venir »
+     deviendrait le premier élément illisible de la section censée l'annoncer. */
+  color: var(--ink-2);
 }
-
-.cal-slot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding-block: 10px;
+/* ⚠ Zone média SANS image : un dégradé dérivé des tokens du site. Il donne à la
+   carte le volume de la maquette sans quinze requêtes vers un tiers. Le décalage
+   d'angle par catégorie suffit à les distinguer sans rien prétendre. */
+.hm-vendor-media {
+  display: block;
+  block-size: 108px;
+  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg) 100%);
   border-block-end: 1px solid var(--line);
 }
-
-.cal-slot.is-booked,
-.cal-slot.is-blocked {
-  opacity: 0.55;
+.hm-vendor-media-photographers { background: linear-gradient(115deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-videographers { background: linear-gradient(155deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-dj { background: linear-gradient(95deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-dresses { background: linear-gradient(175deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-suits { background: linear-gradient(75deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-decoration { background: linear-gradient(195deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-cars { background: linear-gradient(55deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-cakes { background: linear-gradient(215deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-beauty { background: linear-gradient(35deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-media-negafa { background: linear-gradient(235deg, var(--accent-soft), var(--bg)); }
+.hm-vendor-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding: 14px 16px 16px;
+}
+.hm-vendor-name {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.hm-vendor-soon {
+  margin-block-start: auto;
+  align-self: flex-start;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.cal-status {
+/* Quartiers : puces NON cliquables — aucun filtre par quartier n'existe. */
+.hm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hm-chip {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 14px;
+}
+
+.hm-steps {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hm-step-n {
+  display: block;
+  margin-block-end: 12px;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2em;
+  color: var(--accent-text);
+}
+.hm-step-t {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 500;
+}
+.hm-step-b {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.hm-pro {
+  margin-block-start: clamp(44px, 7vw, 92px);
+  padding-block: clamp(44px, 6vw, 76px);
+  border-block: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.hm-pro .hm-btn-primary {
+  margin-block-start: 4px;
+}
+
+/* Dernière section : on rend la marge basse de la page. */
+.hm > .hm-section:last-child {
+  padding-block-end: clamp(44px, 7vw, 92px);
+}
+
+
+/* ── PIED DE PAGE — strict minimum ────────────────────────────────────────
+   ⚠ Il ne contient que des liens vers des pages qui EXISTENT. Un pied de page
+   est l'endroit où les promesses s'accumulent sans relecture. */
+.site-footer {
+  margin-block-start: clamp(40px, 6vw, 80px);
+  border-block-start: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  padding: 26px clamp(18px, 5vw, 80px);
+}
+.site-footer-brand {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.site-footer nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer nav a {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.site-footer nav a:hover {
+  color: var(--ink);
+}
+.site-footer-legal {
+  /* ⚠ `margin-inline-start` : en arabe la mention passe à gauche toute seule. */
+  margin: 0 0 0 auto;
+  margin-inline-start: auto;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ASSISTANT DE FILTRES — même système que le flux Pro, tokens CLIENT.
+   ⚠ `--accent` du dépôt (#da3642), jamais les `rgba(213,87,98,…)` en dur de la
+   maquette. Propriétés logiques partout : cet écran se rend aussi en RTL.
+   ══════════════════════════════════════════════════════════════════════════ */
+.wz {
+  display: grid;
+  gap: 0 34px;
+  grid-template-columns: minmax(0, 168px) minmax(0, 720px);
+  justify-content: center;
+  grid-template-areas:
+    "head head"
+    "rail flow";
+  align-items: start;
+  padding: clamp(28px, 5vw, 56px) clamp(16px, 4vw, 40px) clamp(48px, 7vw, 88px);
+}
+.wz-head {
+  grid-area: head;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  margin-block-end: 32px;
+}
+.wz-head-reset {
+  margin-inline-start: auto;
+}
+.wz-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  inline-size: 100%;
+}
+.wz-ornament {
+  inline-size: 28px;
+  block-size: 1px;
+  background: currentColor;
+}
+.wz-title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.wz-lede {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+/* Rail — vertical, premier dans le DOM, placé par `grid-area`. */
+/* ⚠ CHROME DÉPLACÉE dans `@zwadj/ui` (`styles.css`, bloc « parcours par
+   étapes »). Ce qui reste ici est la MISE EN PAGE propre au client.
+   `.wz-rail-n`, `.wz-rail-btn`, `.wz-rail-label`, `.wz-recap` (détail),
+   `.wz-recap-row`, `.wz-recap-step`, `.wz-recap-value` sont RETIRÉES : leurs
+   éléments ne portent plus ces classes. */
+.wz-rail {
+  grid-area: rail;
+  position: sticky;
+  top: 24px;
+}
+.wz-recap,
+.wz-card,
+.wz-connector {
+  grid-area: flow;
+}
+/* ⚠ `.wz-card` ne garde que sa zone de grille et son rembourrage propre : la
+   boîte, la bordure de départ et l'animation d'entrée viennent de `.zj-card`. */
+.wz-card {
+  padding: 26px 24px;
+}
+.wz-counter {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wz-question {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.wz-hint {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.wz-label {
+  display: block;
+  margin: 20px 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wz-input {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+.wz-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-block-start: 22px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
+}
+.wz-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.wz-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+/* Fond ET encre ensemble : une règle qui ne poserait que le fond laisserait
+   l'encre de l'état précédent. */
+.wz-btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--on-accent);
+}
+.wz-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.wz-tiers,
+.wz-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.wz-tier,
+.wz-chip {
+  min-block-size: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+/* ⚠ L'état retenu ne repose PAS sur la seule couleur : `aria-pressed` le porte
+   pour la voix, et la bordure épaissit pour l'œil (WCAG 1.4.1). */
+.wz-tier.is-on,
+.wz-chip.is-on {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  border-width: 2px;
+  font-weight: 600;
+}
+.wz-group {
+  margin: 20px 0 0;
+  padding: 0;
+  border: 0;
+}
+.wz-count {
+  margin: 22px 0 0;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
+  font-size: 17px;
+  font-weight: 600;
+}
+.hm-assistant {
+  margin: 14px 0 0;
+  font-size: 14px;
+}
+
+/* ⚠ `@keyframes wz-step-in`, `@keyframes wz-recap-in` et leur bloc
+   `prefers-reduced-motion` sont RETIRÉS : ils sont dans `@zwadj/ui`, avec en
+   plus la coupure des TRANSITIONS du rail — ce lot vient de les ajouter, et une
+   transition est une animation. */
+
+/* ⚠ Même seuil que le flux Pro — et que la maquette elle-même, qui appelle
+   `useIsMobile(900)`. À 168px de colonne, le rail mangerait la moitié de la
+   largeur utile ; la question active est ce qui compte. */
+@media (max-width: 900px) {
+  .wz {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "rail"
+      "flow";
+  }
+  .wz-rail {
+    position: static;
+    margin-block-end: 22px;
+  }
+  .wz-rail ol {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+  .wz-rail li {
+    padding-block-end: 0;
+  }
+  .wz-rail li:not(:last-child)::before {
+    display: none;
+  }
 }

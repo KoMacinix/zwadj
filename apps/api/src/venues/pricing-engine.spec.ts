@@ -165,3 +165,14 @@ describe("roundToDinar", () => {
     expect(roundToDinar(20_000_000)).toBe(20_000_000);
   });
 });
+
+describe("Famille de règle INCONNUE — le repli du `default:` d'origine", () => {
+  it("⚠ une règle d'un type que le moteur ignore NE S'APPLIQUE PAS", () => {
+    // Trou de couverture mesuré par la cible S4-3 : le `default: return false`
+    // de la cascade d'origine n'était mesuré par rien. Le registre est
+    // exhaustif à la COMPILATION, mais une colonne de base peut porter une
+    // valeur neuve : elle ne doit pas écraser le prix de base en silence.
+    const inconnue = rule({ ruleType: "MOON_PHASE" as PricingRuleLike["ruleType"], priceCents: 99_000_000 });
+    expect(ruleApplies(inconnue, FERIE_VENDREDI)).toBe(false);
+  });
+});

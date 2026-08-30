@@ -17,6 +17,12 @@
   --bg-2: #f4f4f5;
   --ink: #18181b;
   --ink-2: #52525b;
+  /* ⚠ CE TOKEN N'HABILLE PLUS DE TEXTE D'INFORMATION. Mesuré à 2,46 / 2,56 /
+     2,33 sur `--bg`, `--surface` et `--bg-2` en clair et 4,22 / 3,81 / 3,42 en
+     sombre, il échoue le seuil AA de 4,5 sur les six fonds réels — pas sur un cas
+     limite. `.field-hint` et les métadonnées des cartes du client sont passées à
+     `--ink-2`. Il reste pour le NON-TEXTUEL (bordures, UI-D4) et pour les deux
+     écarts signalés plus bas, chacun avec sa raison. */
   --ink-mute: #a1a1aa;
   --line: #e4e4e7;
 
@@ -28,11 +34,78 @@
   /* États */
   --danger: #dc2626;
   --danger-soft: #fef2f2;
+  /* D129 — ENCRE de l'encart d'alerte, séparée de `--danger`.
+     `--danger` sur `--danger-soft` mesure 4,41:1 : sous le 4,5:1 de l'AA pour
+     du texte de 13 px. Une légende illisible est un désagrément ; une ALERTE
+     illisible est un message perdu.
+     ⚠ On ne déplace PAS `--danger` : il porte aussi le fond de `.btn-danger`,
+     les bordures d'erreur de champ et le texte d'erreur, dans les DEUX apps et
+     les DEUX thèmes. Bouger un token partagé pour un écran, c'est exactement
+     UI-D1 → UI-D2. #b91c1c sur #fef2f2 mesure 5,91:1. */
+  --danger-ink: #b91c1c;
   --success: #15803d;
   --success-soft: #f0fdf4;
 
   --radius: 2px;
   --shadow-modal: 0 32px 80px rgba(24, 24, 27, 0.16);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MODE SOMBRE (Lot UI-D1 — D64). Valeurs reprises du design de référence.
+
+   Les hex sombres sont déclarés UNE SEULE FOIS ci-dessous, puis simplement
+   REMAPPÉS par les deux règles qui les activent. La liste de remappage, elle,
+   est écrite deux fois par nécessité : une media query ne peut pas partager
+   son sélecteur avec une règle hors media query, et le choix EXPLICITE doit
+   fonctionner même sous un système en mode clair. Ce qui compte est qu'une
+   couleur ne se change jamais qu'à un seul endroit.
+
+   ⚠ UN SEUL déclencheur : `[data-theme="dark"]` sur <html>, posé par la bascule.
+   La préférence système (`prefers-color-scheme`) a été RETIRÉE en UI-D3 : Zwadj
+   s'ouvre en CLAIR, en français comme en arabe. Le design de référence est
+   pensé en clair ; ouvrir en sombre chez qui a un système sombre montrait un
+   rendu que personne n'a dessiné. Le sombre reste offert, il n'est plus subi.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --dark-bg: #111111;
+  --dark-surface: #1c1c1c;
+  --dark-bg-2: #252525;
+  --dark-ink: #f0f0f0;
+  --dark-ink-2: #ababab;
+  --dark-ink-mute: #777777;
+  --dark-line: #333333;
+  /* Les tons « soft » clairs (#fef2f2, #f0fdf4) sont des voiles blancs : sur
+     fond sombre ils éblouissent. Leurs équivalents sont des teintes PROFONDES
+     de la même couleur, pas les mêmes valeurs assombries. */
+  --dark-danger: #f0736b;
+  --dark-danger-soft: #2a1512;
+  --dark-success: #5cbb7d;
+  --dark-success-soft: #12241a;
+  --dark-shadow-modal: 0 32px 80px rgba(0, 0, 0, 0.55);
+}
+
+:root[data-theme="dark"] {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --bg-2: var(--dark-bg-2);
+  --ink: var(--dark-ink);
+  --ink-2: var(--dark-ink-2);
+  --ink-mute: var(--dark-ink-mute);
+  --line: var(--dark-line);
+  --danger: var(--dark-danger);
+  --danger-soft: var(--dark-danger-soft);
+  /* En sombre, `--dark-danger` sur `--dark-danger-soft` mesure DÉJÀ 6,07:1 :
+     rien à corriger, mais le token doit exister sur les DEUX thèmes — sinon il
+     retombe sur `inherit` en sombre et l'alerte devient pire qu'avant. */
+  --danger-ink: var(--dark-danger);
+  --success: var(--dark-success);
+  --success-soft: var(--dark-success-soft);
+  --shadow-modal: var(--dark-shadow-modal);
+  /* `color-scheme` fait suivre ce que le CSS ne peint pas : barres de
+     défilement, listes natives, autofill. Sans lui, un <select> reste blanc
+     au milieu d'une page sombre. */
+  color-scheme: dark;
 }
 
 *,
@@ -144,19 +217,22 @@ button {
 .brand-lockup {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px; /* Augmenté (anciennement 10px) */
   color: var(--ink);
   text-decoration: none;
+  font-size: 1.2rem; /* AJOUT : Augmente proportionnellement tout le bloc */
 }
 
 .brand-lockup svg {
   flex-shrink: 0;
+  width: 2.00em; /* AJOUT : Permet au SVG de grandir avec le texte */
+  height: 2.00em;
 }
 
 .brand-word {
   font-weight: 500;
   letter-spacing: 0.25em;
-  font-size: 15px;
+  font-size: 18px; /* Augmenté (anciennement 15px) */
   line-height: 1.1;
 }
 
@@ -167,14 +243,19 @@ button {
 
 .brand-tagline {
   display: block;
-  font-size: 10.5px;
+  font-size: 9.5px;
   color: var(--ink-2);
-  letter-spacing: 0.02em;
-  margin-block-start: 2px;
+  letter-spacing: 0.40em;
+  
+  /* LES MODIFICATIONS : */
+  margin-block-start: -2px;     /* Fait monter le texte (valeur négative ou proche de 0) */
+  text-transform: uppercase;   /* Force le texte en MAJUSCULES */
+  font-weight: 300;             /* Rend le style de la lettre plus fin (Light) */
 }
 
+/* Version large (Large) */
 .brand-lockup--lg .brand-word {
-  font-size: 19px;
+  font-size: 23px; /* Augmenté (anciennement 19px) */
 }
 
 /* ── Bandeau « email non vérifié » (D1) ──────────────────────────────────── */
@@ -412,6 +493,11 @@ button {
   resize: vertical;
 }
 
+/* [ÉCART] Le texte indicatif reste sur `--ink-mute`, contrairement à
+   `.field-hint`. Le foncer à `--ink-2` le rendrait indiscernable d'une valeur
+   déjà saisie : on échangerait un défaut de contraste contre un défaut de sens.
+   Le résoudre demande une teinte intermédiaire dédiée, donc une décision, pas
+   un remplacement. */
 .field input::placeholder,
 .field textarea::placeholder {
   color: var(--ink-mute);
@@ -431,6 +517,9 @@ button {
   border-color: var(--danger);
 }
 
+/* [ÉCART] WCAG 1.4.3 exempte explicitement le texte des composants d'interface
+   INACTIFS : un contrôle désactivé doit se lire comme indisponible. Le laisser
+   pâle est le comportement attendu — ce n'est pas une dette. */
 .field select[disabled] {
   color: var(--ink-mute);
   cursor: not-allowed;
@@ -447,9 +536,24 @@ button {
   color: var(--danger);
 }
 
+/* ⚠ `--ink-2`, PAS `--ink-mute`, et ce n'est pas un goût de teinte.
+ *
+ * Mesuré : `--ink-mute` donne 2,46 sur `--bg`, 2,56 sur `--surface`, 2,33 sur
+ * `--bg-2` en clair, et 4,22 / 3,81 / 3,42 en sombre. Le seuil AA pour du texte
+ * de 11px est 4,5 : la teinte échouait sur les six fonds, pas sur un cas
+ * limite. Le candidat intermédiaire zinc-500 (#71717a) a été écarté par la
+ * mesure et non par principe — il passe sur `--bg` (4,63) mais retombe à 4,40
+ * sur `--bg-2`, qui est justement le fond du panneau latéral pro et des cartes
+ * `.wk-card` où ces indications s'affichent. `--ink-2` tient partout : 7,03 au
+ * plus bas en clair, 6,68 en sombre.
+ *
+ * Aucun token n'est retouché — la palette pro reste figée (D26). C'est le
+ * choix de teinte de CETTE classe qui change, et il aligne `.field-hint` sur
+ * `.wk-hint`, qui utilise déjà `--ink-2` : la refonte avait tranché de son
+ * côté, l'ancienne classe était restée en arrière. */
 .field-hint {
   font-size: 11px;
-  color: var(--ink-mute);
+  color: var(--ink-2);
 }
 
 .pw-toggle {
@@ -551,6 +655,18 @@ button {
 }
 
 /* Secondaire COMPACT, sans surface : le niveau le plus discret. */
+/* Bouton réduit à un glyphe (Lot R2c — navigation de mois).
+   ⚠ La cible reste CARRÉE et d'au moins 34px : le rembourrage horizontal de
+   `.btn` est dimensionné pour du texte, et sans cette règle un chevron de 16px
+   donnait une cible tactile plus petite que le minimum utilisable au pouce.
+   C'est le seul apport de cette classe — la couleur, la bordure et le survol
+   restent ceux de `.btn`. */
+.btn-icon {
+  min-inline-size: 34px;
+  min-block-size: 34px;
+  padding-inline: 10px;
+}
+
 .btn-ghost {
   background: transparent;
   border: 1px solid var(--line);
@@ -617,7 +733,7 @@ button {
 .alert-error {
   background: var(--danger-soft);
   border: 1px solid color-mix(in srgb, var(--danger) 28%, transparent);
-  color: var(--danger);
+  color: var(--danger-ink); /* D129 — AA sur --danger-soft, voir le token */
 }
 
 .alert-success {
@@ -999,4 +1115,460 @@ button {
   font-size: 13px;
   color: var(--ink-2);
   line-height: 1.5;
+}
+
+/* ── Bascule de thème (Lot UI-D1, déplacée ici en UI-D2 : le pro l'utilise aussi) ───────────────────────────────────────────
+   L'icône est choisie par le CSS, pas par du JS : les deux sont dans le DOM,
+   la règle de thème n'en montre qu'une. Rien à recalculer à l'hydratation,
+   donc aucun scintillement et aucun écart serveur/client. Le nom accessible,
+   lui, ne dépend PAS du CSS — il dit « changer de thème », vrai dans les deux
+   sens (voir `theme-toggle.tsx`). */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 34px;
+  block-size: 34px;
+  /* Rond, comme le dessin retenu (UI-D4). La bordure reste `--ink-mute` et non
+     `--line` : sur le dégradé clair du panneau pro, un gris trop pâle rendait
+     le bouton invisible — il était dans la page, personne ne le voyait. */
+  border: 1px solid var(--ink-mute);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+
+/* Un système sombre + choix EXPLICITE du clair : la lune doit revenir. La
+   règle ci-dessus ne suffit pas, celle de la media query non plus — c'est ce
+   couple qui rend le choix explicite réellement souverain. */
+:root[data-theme="light"] .theme-toggle .icon-moon {
+  display: block;
+}
+
+:root[data-theme="light"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+/* ── Navigation principale (Lot UI-N1, remaniée UI-D5) ──────────────────────
+   Pas de menu burger — il coûterait un état, un piège de focus et une gestion
+   d'Échap, pour six entrées dont quatre sont inactives. Le défilement
+   horizontal, lui, ne peut pas casser.
+   Aucune propriété directionnelle en `left/right` : tout est en logique
+   (`inline`), sinon l'arabe RTL décale la barre du mauvais côté.
+
+   ⚠ UI-D5 — la nav occupe MAINTENANT une deuxième ligne à TOUTE largeur, plus
+   seulement sous 720 px. Le design de référence pose le logo seul sur sa ligne
+   et les onglets sous lui ; la règle `@media (min-width: 720px)` qui remettait
+   la barre en ligne a donc été retirée, pas neutralisée. */
+.site-header {
+  flex-wrap: wrap;
+}
+
+/* Variante EMPILÉE — portée par l'en-tête du site CLIENT uniquement
+   (`site-chrome.tsx`). Elle n'est pas fondue dans `.site-header` parce que les
+   deux en-têtes Pro partagent ce sélecteur et perdraient leur marge basse :
+   `padding-block-end: 0` n'a de sens que sous une barre d'onglets qui pose sa
+   propre hauteur. `row-gap: 0` fait mordre le soulignement de l'onglet actif
+   sur la bordure de l'en-tête — sans lui, l'onglet flotte 16 px au-dessus de
+   son trait. */
+.site-header--stacked {
+  row-gap: 0;
+  padding-block-end: 0;
+}
+
+.site-nav {
+  order: 3;
+  flex-basis: 100%;
+  overflow-x: auto;
+  /* Masque la barre de défilement sans empêcher le geste. */
+  scrollbar-width: none;
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.site-nav-list {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Onglet : capitales espacées + SOULIGNEMENT de l'onglet actif, repris du
+   design de référence (la pilule à fond teinté qui servait jusqu'ici n'y
+   figure pas). `margin-block-end: -1px` fait mordre le trait de 2 px sur la
+   bordure de 1 px de l'en-tête : sans ce décalage, deux lignes se superposent
+   et l'onglet paraît flotter au-dessus de sa barre.
+   `border-block-end` et non `border-bottom` : le bloc reste en bas en RTL,
+   mais le dépôt n'écrit aucune propriété physique — la règle n'admet pas
+   d'exception « celle-ci est sans risque ». */
+.site-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-block: 14px;
+  padding-inline: 18px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--ink-2, inherit);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-block-end: 2px solid transparent;
+  margin-block-end: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+/* Le survol se dit par la COULEUR : un fond teinté rendrait l'onglet actif et
+   l'onglet survolé presque identiques, et le soulignement ne se verrait plus. */
+.site-nav-link:hover {
+  color: var(--ink);
+}
+
+.site-nav-link.is-active {
+  color: var(--accent);
+  font-weight: 600;
+  border-block-end-color: var(--accent);
+}
+
+/* Rubrique annoncée mais pas construite : visiblement inerte, et le curseur
+   ne suggère pas un clic qui n'arrivera pas. */
+.site-nav-link.is-soon {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.site-nav-soon {
+  font-size: 11px;
+  padding-block: 1px;
+  padding-inline: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+
+/* ── Calendrier de disponibilité (Lot B5) ───────────────────────────────────
+   Grille en <table> : ce SONT des données tabulaires (7 colonnes de jours),
+   et un lecteur d'écran y navigue par en-têtes. Une grille de <div> perdrait
+   cette lecture.
+   Toutes les propriétés sont logiques : en arabe la grille doit se remplir de
+   droite à gauche, ce que `dir="rtl"` fait seul sur un tableau. */
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block: 12px;
+}
+
+.cal-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.cal-grid th {
+  padding-block: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2, inherit);
+}
+
+.cal-cell {
+  padding: 2px;
+  vertical-align: top;
+}
+
+/* Vendredi-samedi : le week-end algérien, et le PIC de la demande en salle
+   des fêtes — mis en avant, pas grisé comme un jour creux. */
+.cal-cell.is-weekend .cal-day {
+  background: var(--accent-soft);
+}
+
+.cal-day {
+  inline-size: 100%;
+  min-block-size: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+  font: inherit;
+}
+
+.cal-day:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.cal-day.is-selected {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.cal-num {
+  font-weight: 600;
+}
+
+.cal-price {
+  font-size: 11px;
+  color: var(--ink-2, inherit);
+}
+
+.cal-holiday {
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 999px;
+  background: var(--star);
+}
+
+.cal-pad {
+  padding: 2px;
+}
+
+.cal-slots ul {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.cal-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-block: 10px;
+  border-block-end: 1px solid var(--line);
+}
+
+.cal-slot.is-booked,
+.cal-slot.is-blocked {
+  opacity: 0.55;
+}
+
+.cal-status {
+  font-size: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Chrome de PARCOURS PAR ÉTAPES (`packages/ui/src/journey.tsx`)
+
+   ⚠ SEULE AUTORITÉ. Le Pro (`.wk-*`) et le Client (`.wz-*`) portaient chacun
+   leur copie de ce bloc, et les deux copies avaient déjà divergé — coche icône
+   contre coche texte, `flex-shrink` présent d'un côté seulement, `:hover`
+   absent d'un côté. Ce qui reste dans les feuilles des applications ne concerne
+   plus que la MISE EN PAGE (`grid-area`, position collante) : la chrome, elle,
+   ne se décide plus qu'ici.
+
+   Les applications gardent leurs jetons : `--accent` est rose côté client et
+   quasi-noir côté pro (D26). Rien n'est écrit en dur ici.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.zj-rail ol {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.zj-rail li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding-block-end: 26px;
+  position: relative;
+}
+/* Trait ENTRE PASTILLES — pseudo-élément : il n'a rien à dire à un lecteur
+   d'écran. À ne pas confondre avec `.zj-connector`, qui relie deux blocs. */
+.zj-rail li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 15px;
+  top: 32px;
+  bottom: 6px;
+  inline-size: 2px;
+  background: var(--line);
+  /* ① ANIMATION BULLE À BULLE — absente des deux applications avant ce lot.
+     Le trait se colore EN MÊME TEMPS que la pastille qu'il quitte, sinon la
+     progression saute au lieu de couler. */
+  transition: background 0.3s ease;
+}
+.zj-rail li.is-done:not(:last-child)::before {
+  background: var(--accent);
+}
+.zj-rail-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  z-index: 1;
+  /* ① Le cœur de l'animation bulle à bulle. `box-shadow` est listé pour que le
+     halo de l'étape courante grandisse au lieu d'apparaître. */
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.zj-rail li.is-done .zj-rail-n,
+.zj-rail li.is-current .zj-rail-n {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.zj-rail li.is-current .zj-rail-n {
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+/* La pastille cliquable est un vrai `<button>` : même traitement de focus que
+   les autres commandes, et un `:hover` qui dit qu'elle est cliquable — il
+   manquait côté client. */
+.zj-rail-btn {
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+.zj-rail-btn:hover {
+  border-color: var(--ink);
+}
+.zj-rail-label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition: color 0.25s ease;
+}
+.zj-rail li.is-current .zj-rail-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.zj-recap {
+  margin: 0 0 2px;
+  padding: 0;
+  list-style: none;
+}
+.zj-recap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px;
+  margin-block-end: 2px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+  background: var(--surface);
+  animation: zj-recap-in 0.28s ease both;
+}
+.zj-recap-step {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.zj-recap-value {
+  display: block;
+  margin-block-start: 3px;
+  font-size: 14px;
+  color: var(--ink);
+}
+/* ⚠ Manquait côté client : sans lui, « Modifier » se comprime dès qu'une
+   valeur récapitulée est longue — au premier nom de quartier un peu bavard. */
+.zj-recap-edit {
+  flex-shrink: 0;
+}
+
+/* ③ TRAIT VERTICAL DE LIAISON entre le dernier récapitulatif et la carte
+   active. Absent des deux applications avant ce lot. */
+.zj-connector {
+  display: block;
+  inline-size: 2px;
+  block-size: 14px;
+  margin-inline-start: 18px;
+  background: var(--accent);
+}
+
+/* ② La carte active. L'animation est enfin JOUÉE : `JourneyCard` remonte le
+   nœud à chaque étape (`key={stepId}`). Elle était déclarée depuis la première
+   livraison et n'avait jamais rejoué. */
+.zj-card {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg-2, var(--surface));
+  padding: 22px 24px 24px;
+  border-inline-start: 3px solid var(--ink);
+  animation: zj-step-in 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Les deux animations restent VERTICALES : un glissement horizontal écrit en
+   `translateX(-100%)` part du mauvais côté une fois sur deux en RTL. */
+@keyframes zj-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes zj-recap-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ⚠ Se tromper vers « pas d'animation » coûte un peu d'élégance ; se tromper
+   vers « animation » peut déclencher un vertige chez quelqu'un qui a justement
+   demandé à en être protégé. L'inconfort n'est pas symétrique.
+   ⚠ Les TRANSITIONS du rail sont coupées elles aussi — ce lot vient de les
+   ajouter, et une transition est une animation. */
+@media (prefers-reduced-motion: reduce) {
+  .zj-card,
+  .zj-recap-row {
+    animation: none;
+  }
+  .zj-rail-n,
+  .zj-rail-label,
+  .zj-rail li::before {
+    transition: none;
+  }
 }

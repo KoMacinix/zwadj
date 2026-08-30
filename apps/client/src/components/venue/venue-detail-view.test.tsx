@@ -3,7 +3,10 @@
 //     n'arrive jamais jusqu'à cette vue, c'est un 404 côté API) ;
 //   - la visite Matterport n'est PAS montée au chargement — c'est la décision
 //     de coût réseau du lot, et rien d'autre ne la démontrerait ;
-//   - les appels à l'action du Flux B/C sont présents et RÉELLEMENT inertes ;
+//   - PLUS AUCUN appel à l'action inerte : la visite (C5) puis la demande de
+//     réservation (E1a) sont réelles, leurs panneaux portent les titres. Deux
+//     tests le figent, parce que c'est exactement ce qu'un zip construit sur une
+//     base ancienne a déjà réintroduit une fois ;
 //   - les URL de médias relatives sont préfixées, la couverture n'est pas
 //     différée (LCP), les alt du pro font foi ;
 //   - parité FR/AR et aucune orientation posée par un composant.
@@ -11,6 +14,8 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
 import type { VenuePublicDTO, VenuePublicPhotoDTO } from "@zwadj/types";
+import type { AuthClient } from "../../lib/auth/auth-client";
+import { AuthProvider } from "../../lib/auth/auth-context";
 import { VenueDetailView } from "./venue-detail-view";
 
 vi.mock("../../i18n/navigation", () => ({
@@ -38,6 +43,7 @@ function photo(n: number, over: Partial<VenuePublicPhotoDTO> = {}): VenuePublicP
 
 function venue(over: Partial<VenuePublicDTO> = {}): VenuePublicDTO {
   return {
+    services: [],
     id: "v1",
     slug: "salle-el-ryad",
     nameFr: "Salle El Ryad",
@@ -54,19 +60,61 @@ function venue(over: Partial<VenuePublicDTO> = {}): VenuePublicDTO {
     capacityMax: 300,
     basePriceCents: 20_000_000,
     bookingMode: "SINGLE_SLOT",
+  depositRateBps: 3000,
+  depositAmountCents: null,
     status: "ACTIVE",
     city: { id: "c1", nameFr: "Bab Ezzouar", nameAr: "باب الزوار" },
     amenities: [{ id: "a1", key: "wifi", nameFr: "Wifi", nameAr: "واي فاي", icon: "wifi" }],
+    styles: [],
+    ceremonyType: null,
     photos: [photo(1), photo(2)],
     matterportModelId: "SxQL3iGyoDo",
     ...over
   };
 }
 
+/** Visiteur ANONYME : c'est l'état par défaut d'une page publique, et celui où
+ *  le panneau C5 montre ses créneaux sans exiger de compte. */
+function anonymousAuth(): AuthClient {
+  return {
+    bootstrap: vi.fn().mockResolvedValue(null),
+    logout: vi.fn(),
+    me: vi.fn(),
+    authedRequest: vi.fn(),
+    getAccessToken: () => null
+  } as unknown as AuthClient;
+}
+
+// Le panneau de visite appelle `getVisitSlots`, donc `fetch`. Sans ce double,
+// jsdom tenterait un VRAI appel vers localhost:3001 : lent hors ligne, et vert
+// pour une mauvaise raison si un serveur traîne sur le port.
+beforeEach(() => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        venueId: "v1",
+        slug: "salle-el-ryad",
+        from: "2026-01-01",
+        to: "2026-01-31",
+        durationMinutes: 30,
+        slots: []
+      })
+    })
+  );
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
 function renderDetail(over: Partial<VenuePublicDTO> = {}, locale: "fr" | "ar" = "fr") {
   return render(
     <NextIntlClientProvider locale={locale} messages={messages[locale]}>
-      <VenueDetailView venue={venue(over)} />
+      <AuthProvider client={anonymousAuth()}>
+        <VenueDetailView venue={venue(over)} />
+      </AuthProvider>
     </NextIntlClientProvider>
   );
 }
@@ -181,14 +229,37 @@ describe("Détail salle — visite Matterport", () => {
   });
 });
 
-describe("Détail salle — appels à l'action (Flux B/C)", () => {
-  it("présents et RÉELLEMENT inertes : `disabled`, donc hors de l'ordre de tabulation", () => {
+describe("Détail salle — appels à l'action (Flux B)", () => {
+  it("PLUS AUCUN bouton mort : la demande de réservation est réelle depuis E1a", () => {
     renderDetail();
-    expect(screen.getByRole("button", { name: "Demander une réservation" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Réserver une visite" })).toBeDisabled();
-    // Et la raison est écrite : un bouton grisé sans explication est un bug aux
-    // yeux du visiteur.
-    expect(screen.getByText(/ouvriront prochainement/)).toBeInTheDocument();
+    // E1b — le dernier appel à l'action inerte a disparu. Il annonçait « les
+    // demandes ouvriront prochainement » alors qu'elles sont ouvertes. Ce test
+    // le FIGE : c'est exactement ce qu'un zip bâti sur une base ancienne a déjà
+    // réintroduit une fois.
+    expect(screen.queryByRole("button", { name: "Demander une réservation" })).toBeNull();
+    expect(screen.queryByText(/ouvriront prochainement/)).toBeNull();
+    // Et le panneau RÉEL porte désormais le titre.
+    expect(screen.getByRole("heading", { level: 2, name: "Demander cette salle" })).toBeInTheDocument();
+  });
+
+  it("AUCUN bouton mort « Réserver une visite » : c'est le panneau RÉEL de C5 qui porte ce titre", () => {
+    renderDetail();
+    // Deux appels à l'action pour la même chose, dont un mort, apprennent
+    // surtout au visiteur que le site ne marche pas.
+    expect(screen.queryByRole("button", { name: "Réserver une visite" })).toBeNull();
+    expect(screen.getByRole("heading", { level: 2, name: "Réserver une visite" })).toBeInTheDocument();
+  });
+
+  it("le panneau de visite est MONTÉ et interroge les créneaux — un composant livré mais non monté est un composant absent", async () => {
+    renderDetail();
+    await screen.findByText("Cette salle ne propose aucun créneau de visite pour le moment.");
+    // Anonyme : on ne cache pas les créneaux, on demande la session au moment
+    // où elle devient nécessaire.
+    expect(screen.getByRole("link", { name: "Se connecter pour réserver" })).toBeInTheDocument();
+    expect(vi.mocked(fetch)).toHaveBeenCalledWith(
+      expect.stringContaining("/venues/salle-el-ryad/visit-slots?"),
+      expect.objectContaining({ cache: "no-store" })
+    );
   });
 });
 
@@ -197,7 +268,7 @@ describe("Détail salle — bilingue", () => {
     renderDetail({}, "ar");
     expect(screen.getByRole("heading", { level: 1, name: "قاعة الرياض" })).toBeInTheDocument();
     expect(screen.getByText("أناقة وراحة")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "طلب حجز" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "اطلب هذه القاعة" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /العودة إلى القاعات/ })).toBeInTheDocument();
   });
 

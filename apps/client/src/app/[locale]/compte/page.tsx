@@ -8,6 +8,12 @@ import type { Metadata } from "next";
 import { AccountSettingsView } from "../../../components/account/account-settings-view";
 
 // `noindex` : une page de compte n'a rien à faire dans un index de recherche.
+// ⚠ SEULE PAGE DU DÉPÔT QUI PORTAIT DÉJÀ UN `robots` avant le lot SEO — et la
+// seule où `follow: false` se justifie : derrière elle il n'y a que des écrans
+// privés, il n'y a donc aucun chemin d'exploration à préserver. Partout
+// ailleurs le `noindex` va avec `follow: true`. Pas de `canonical` : en
+// désigner une reviendrait à donner une adresse de référence à une page qu'on
+// demande justement d'ignorer.
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default function AccountPage() {

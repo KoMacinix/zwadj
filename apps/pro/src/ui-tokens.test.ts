@@ -13,18 +13,22 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const CSS = readFileSync(
-  join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "packages", "ui", "styles.css"),
-  "utf8"
-);
+const ICI = dirname(fileURLToPath(import.meta.url));
 
-/** Corps d'une règle CSS, par sélecteur exact. */
-function rule(selector: string): string {
-  const start = CSS.indexOf(`\n${selector} {`);
+const CSS = readFileSync(join(ICI, "..", "..", "..", "packages", "ui", "styles.css"), "utf8");
+
+/** La feuille PROPRE à l'app pro (palette D26). */
+const THEME = readFileSync(join(ICI, "theme.css"), "utf8");
+
+/** Corps d'une règle CSS, par sélecteur exact, dans la feuille donnée. */
+function ruleIn(sheet: string, selector: string): string {
+  const start = sheet.indexOf(`\n${selector} {`);
   expect(start, `règle « ${selector} » introuvable`).toBeGreaterThan(-1);
-  const open = CSS.indexOf("{", start);
-  return CSS.slice(open + 1, CSS.indexOf("}", open));
+  const open = sheet.indexOf("{", start);
+  return sheet.slice(open + 1, sheet.indexOf("}", open));
 }
+
+const rule = (selector: string) => ruleIn(CSS, selector);
 
 describe("styles partagés — niveaux de bouton", () => {
   it(".btn NUE est visible : elle repose fond ET filet, que le reset global retire", () => {
@@ -49,5 +53,46 @@ describe("styles partagés — niveaux de bouton", () => {
   it("la flèche de retour est MIROITÉE en RTL : en arabe, revenir pointe à droite", () => {
     expect(CSS).toContain('[dir="rtl"] .backlink svg');
     expect(CSS).toContain('[dir="rtl"] .btn svg[data-mirror-rtl]');
+  });
+});
+
+describe("thème pro — cases à cocher des prestations (R2e)", () => {
+  /** ⚠ LE DÉFAUT QUE CE BLOC EMPÊCHE, ET IL EST SÉVÈRE. `appearance: none`
+   *  efface le dessin natif du navigateur. Si l'état COCHÉ ne repose pas
+   *  lui-même un fond, la case reste un carré vide quoi qu'on clique : le pro
+   *  sélectionne ses prestations et ne voit strictement rien changer. C'est la
+   *  même famille que le bouton devenu invisible qui a motivé ce fichier —
+   *  aucune erreur, aucun test rouge, un écran qui ment.
+   *
+   *  Aucune assertion d'esthétique ici non plus : on ne fige ni la teinte ni la
+   *  taille, seulement le fait qu'un état visible EXISTE. */
+  it("la case redessinée rend son état COCHÉ visible : fond ET filet reposés", () => {
+    const cochee = ruleIn(THEME, '.wk-service input[type="checkbox"]:checked');
+    expect(cochee, "un fond coché est indispensable dès qu'on retire l'apparence native").toMatch(
+      /\bbackground:/
+    );
+    expect(cochee).toMatch(/border-color:/);
+  });
+
+  it("la coche elle-même est dessinée, pas seulement le fond", () => {
+    // Sans elle, la case cochée serait un aplat plein — lisible, mais moins
+    // reconnaissable qu'une coche par quelqu'un qui parcourt vite l'écran.
+    const marque = ruleIn(THEME, '.wk-service input[type="checkbox"]:checked::after');
+    expect(marque).toMatch(/border-inline-start:/);
+    expect(marque).toMatch(/var\(--on-accent\)/);
+  });
+
+  /** L'état sélectionné de la LIGNE doit rester distinguable indépendamment de
+   *  la case : c'est ce qui se lit du coin de l'œil sur une grille de huit. */
+  it("la ligne sélectionnée se distingue par le fond ET la bordure", () => {
+    const on = ruleIn(THEME, ".wk-service.is-on");
+    expect(on).toMatch(/\bbackground:/);
+    expect(on).toMatch(/border-color:/);
+  });
+
+  /** ⚠ Le repère de focus ne doit pas partir avec l'apparence native : sans lui,
+   *  la navigation au clavier devient invisible sur toute la grille. */
+  it("le repère de focus survit à `appearance: none`", () => {
+    expect(ruleIn(THEME, ".wk-service:focus-within")).toMatch(/outline:/);
   });
 });

@@ -15,6 +15,8 @@ process.env.DATABASE_URL = withDatabase(process.env.DATABASE_URL ?? "", TEST_DB)
 // racine média jetable hors du repo (jamais var/media du poste de dev).
 process.env.MEDIA_DISK_ROOT = mkdtempSync(join(tmpdir(), "zwadj-media-test-"));
 
+// D128 — le limiteur PAR DÉFAUT (hors /auth) rejoint le même levier.
+process.env.THROTTLE_DEFAULT_LIMIT = "1000000";
 process.env.THROTTLE_REGISTER_LIMIT = "10000";
 process.env.THROTTLE_VERIFY_LIMIT = "10000";
 process.env.THROTTLE_RESEND_LIMIT = "10000";

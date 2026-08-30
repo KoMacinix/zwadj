@@ -26,7 +26,8 @@ export class VisitSlotsController {
     summary: "Créneaux de visite disponibles d'une salle publiée",
     description:
       "Même fenêtre que /availability (92 jours, bornes écrêtées D49). Les créneaux durent 30 minutes (D58). " +
-      "`taken` est INFORMATIF : les visites tolèrent le chevauchement (D47)."
+      "`taken: true` = créneau DÉJÀ PRIS et non réservable (D59, exclusivité garantie en base) : il reste rendu " +
+      "pour aider à en choisir un autre, mais POST /venues/:slug/visit-bookings le refusera en 409."
   })
   @ApiOkResponse({ description: "VenueVisitSlotsResponse. Créneaux passés exclus à la minute près." })
   @ApiBadRequestResponse({ description: "Date irréelle, to < from, ou fenêtre de plus de 92 jours." })

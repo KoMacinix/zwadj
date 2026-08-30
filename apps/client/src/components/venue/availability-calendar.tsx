@@ -25,6 +25,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatSlotRange } from "@zwadj/types";
+import { MonthNextIcon, MonthPrevIcon } from "@zwadj/ui";
 import type { VenueAvailabilityDayDTO, VenueAvailabilityResponse } from "@zwadj/types";
 import { getVenueAvailability } from "../../lib/api";
 import {
@@ -104,14 +105,29 @@ export function AvailabilityCalendar({ slug }: { slug: string }) {
       <h2 id="availability-title">{t("title")}</h2>
 
       <div className="cal-head">
-        <button type="button" className="btn btn-ghost" onClick={() => setCursor(shiftMonth(cursor, -1))} disabled={!canGoBack}>
-          {t("previous")}
+        {/* ⚠ Le libellé passe en `aria-label` : le chevron est décoratif, mais le
+            NOM ACCESSIBLE reste « Mois précédent » — sinon le bouton s'annonce
+            « bouton » et plus personne ne sait ce qu'il fait. */}
+        <button
+          type="button"
+          className="btn btn-ghost btn-icon"
+          onClick={() => setCursor(shiftMonth(cursor, -1))}
+          disabled={!canGoBack}
+          aria-label={t("previous")}
+        >
+          <MonthPrevIcon />
         </button>
         {/* `aria-live` : au changement de mois, un lecteur d'écran doit
             entendre où il a atterri — la grille change sans que le focus bouge. */}
         <strong aria-live="polite">{monthLabel(cursor, locale)}</strong>
-        <button type="button" className="btn btn-ghost" onClick={() => setCursor(shiftMonth(cursor, 1))} disabled={!canGoForward}>
-          {t("next")}
+        <button
+          type="button"
+          className="btn btn-ghost btn-icon"
+          onClick={() => setCursor(shiftMonth(cursor, 1))}
+          disabled={!canGoForward}
+          aria-label={t("next")}
+        >
+          <MonthNextIcon />
         </button>
       </div>
 

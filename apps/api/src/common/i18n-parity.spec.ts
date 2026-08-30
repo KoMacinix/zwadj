@@ -53,4 +53,78 @@ describe("Parité i18n FR/AR (invariant produit)", () => {
       expect([...ar.keys()].some((k) => k.startsWith(ns))).toBe(true);
     }
   });
+
+  // ── Ajouts du lot de RÉCONCILIATION ────────────────────────────────────────
+  // Cette porte a laissé passer la disparition de 20 clés. Elle ne compare que
+  // FR à AR : une suppression SYMÉTRIQUE la laisse verte, et c'est exactement
+  // ce qu'un zip construit sur une base ancienne produit. Les deux tests qui
+  // suivent regardent enfin les clés elles-mêmes.
+
+  it("le TOTAL ne RECULE pas — une suppression symétrique laisse la parité verte", () => {
+    // Repère MESURÉ au lot de réconciliation. À relever DÉLIBÉRÉMENT quand un
+    // lot ajoute des clés ; le voir baisser signifie qu'un lot en a effacé.
+    // UIP-A : 843 → 868. 26 clés ajoutées (nav, portée, panneau gauche, tableau
+    // de bord, réservations, deux entêtes de « Demandes ») MOINS
+    // `venue.ui.calendar.backToVenue`, dont le lien n'existe plus : la route
+    // `/salles/:id/calendrier` a disparu.
+    // UIP-B : 868 → 910. 42 clés du parcours « client sur place »
+    // (`venue.ui.walkin.*`) : trois étapes, contact, conditions, catalogue,
+    // bloc total, trois envois désactivés, deux issues.
+    // ⚠ Chiffres RELEVÉS sur les fichiers après modification, jamais estimés.
+    // UIP-C : 910 -> 926. 16 clés de l'assistant (`venue.ui.wizard.*`) : barre
+    // de progression, sept titres d'étape, raison d'inactivité, et les deux
+    // phrases qui expliquent ce que l'étape 1 ne demande pas encore.
+    // ⚠ Chiffre RELEVÉ sur les fichiers après modification, jamais estimé.
+    // Refonte graphique : 926 -> 937. Sur-titre, titre, description, bandeau
+    // date/tarif, pas du compteur d'invités, « Modifier le devis », « Total à
+    // facturer », navigation et section dépliable du panneau — moins
+    // `venue.ui.walkin.hint`, remplacée par `lede`.
+    // ⚠ Chiffre RELEVÉ sur les fichiers après modification, jamais déduit du
+    // nombre de clés que je croyais avoir ajoutées.
+    // Q2 : 937 -> 943. HUIT clés retirées — `send`, `st_EXPIRED`, `validUntil`,
+    // `validUntilHint`, et les quatre du bloc d'envoi du parcours sur place
+    // (`print`, `sendSms`, `sendEmail`, `sendReason`) — contre QUATORZE
+    // ajoutées : les quatre canaux de remise, le libellé et l'aide du
+    // sélecteur, son texte de choix, le bouton, les deux états de remise, et
+    // les quatre du bloc de remise côté « client sur place ». `stats` est
+    // RÉÉCRITE et non ajoutée : elle perd `{expired}` et renomme `{sent}` en
+    // `{delivered}`.
+    // ⚠ 943 est le nombre COMPTÉ sur les deux fichiers après écriture, pas
+    // 937 - 8 + 15 : `stats` existait déjà, et l'arithmétique de tête aurait
+    // annoncé 944.
+    expect(fr.size).toBeGreaterThanOrEqual(943);
+  });
+
+  it("les surfaces C5/C5b sont COMPLÈTES — elles ont déjà été effacées une fois", () => {
+    // Un plancher sur le total ne voit pas 5 clés retirées et 5 ajoutées.
+    // Ces deux namespaces-là portent des écrans entiers : on les fige au nom.
+    const under = (ns: string) =>
+      [...fr.keys()].filter((k) => k.startsWith(ns)).map((k) => k.slice(ns.length)).sort();
+
+    expect(under("account.ui.visits.")).toEqual([
+      "cancel",
+      "cancelError",
+      "cancelled",
+      "empty",
+      "loadError",
+      "loading",
+      "past",
+      "title"
+    ]);
+
+    expect(under("venueDetail.visit.")).toEqual([
+      "confirmed",
+      "errorGeneric",
+      "intro",
+      "loading",
+      "loginToBook",
+      "none",
+      "phoneHint",
+      "phoneLabel",
+      "seeMine",
+      "submit",
+      "taken",
+      "title"
+    ]);
+  });
 });

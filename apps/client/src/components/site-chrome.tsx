@@ -9,7 +9,8 @@
 // Lot A11b : une fois connecté, le prénom en clair et le bouton « Se
 // déconnecter » cèdent la place au ROND À INITIALES et à son menu — même
 // composant que le Pro, SANS « Ajouter une salle » (un client n'a pas de salle).
-import { AccountMenu, ZwadjLogo, type AccountMenuItem } from "@zwadj/ui";
+import { AccountMenu, ThemeToggle, ZwadjLogo, type AccountMenuItem } from "@zwadj/ui";
+import { LocaleSwitch } from "./locale-switch";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "../i18n/navigation";
@@ -18,17 +19,24 @@ import { SiteNav } from "./site-nav";
 
 export function SiteHeader() {
   const t = useTranslations("auth.ui.header");
+  const tBrand = useTranslations("common.brand");
+  const tTheme = useTranslations("common.theme");
   const tAccount = useTranslations("account.ui.menu");
   const { status, user, logout } = useAuth();
   const router = useRouter();
 
   return (
-    <header className="site-header">
+    // UI-D5 — `--stacked` : le logo reste SEUL sur sa ligne, la nav occupe la
+    // seconde, à toute largeur (design de référence). La classe est portée ici
+    // et non par `.site-header` nue : les en-têtes Pro partagent ce sélecteur.
+    <header className="site-header site-header--stacked">
       <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-        <ZwadjLogo iconSize={22} />
+        <ZwadjLogo iconSize={22} tagline={tBrand("tagline")} />
       </Link>
       <SiteNav />
       <div className="header-auth">
+        <ThemeToggle label={tTheme("toggle")} />
+        <LocaleSwitch />
         {status === "authenticated" && user ? (
           <AccountMenu
             // Prénom + nom quand les deux existent ; sinon ce qu'on a. Le

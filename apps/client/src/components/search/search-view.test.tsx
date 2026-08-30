@@ -6,10 +6,21 @@
 // faite de LIENS porteurs des filtres, et le fait que le formulaire soit un
 // vrai `<form method="get">` — c'est lui qui rend la page utilisable sans
 // JavaScript, ce qu'aucun test de rendu ne montrerait autrement.
-import { render, screen, within } from "@testing-library/react";
+//
+// Lot UI-D5 — deux contrats NEUFS s'ajoutent, et ce sont les deux endroits où
+// le remaniement visuel pouvait casser du fonctionnel en silence :
+//   - le tri a QUITTÉ le `<form>` pour la barre de résultats ; c'est son
+//     attribut `form` qui le lui rattache encore. Un test de présence dans
+//     l'arbre DOM ne prouve donc plus rien — celui qui suit assert le
+//     RATTACHEMENT, pas la position ;
+//   - le repli sur des salles fictives ne doit JAMAIS s'activer par défaut ni
+//     masquer l'état d'erreur d'une API muette.
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
-import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO } from "@zwadj/types";
+import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
+import type { SearchOutcome } from "../../lib/api";
+import { PREVIEW_VENUES } from "../../lib/preview-venues";
 import { parseSearchParams } from "../../lib/search-query";
 import { SearchView } from "./search-view";
 
@@ -40,6 +51,11 @@ const AMENITIES: AmenityDTO[] = [
   { id: "a2", key: "parking", nameFr: "Parking", nameAr: "موقف سيارات", icon: "parking" }
 ];
 
+const STYLES: VenueStyleDTO[] = [
+  { id: "s1", key: "royal", nameFr: "Royal", nameAr: "ملكي", sortOrder: 1 },
+  { id: "s2", key: "jardin", nameFr: "Jardin", nameAr: "حديقة", sortOrder: 2 }
+];
+
 function venue(n: number, over: Partial<VenueSummaryDTO> = {}): VenueSummaryDTO {
   return {
     id: `v${n}`,
@@ -57,12 +73,24 @@ function venue(n: number, over: Partial<VenueSummaryDTO> = {}): VenueSummaryDTO 
     publicationStatus: "PUBLISHED",
     coverThumbUrl: "/api/v1/media/cover-1-thumb.webp",
     photoCount: 4,
+    availableOnDate: null,
     ...over
   } as VenueSummaryDTO;
 }
 
-function results(items: VenueSummaryDTO[], total = items.length, page = 1): VenueListResponse {
-  return { items, total, page, pageSize: 12 };
+function results(
+  items: VenueSummaryDTO[],
+  total = items.length,
+  page = 1,
+  availableOn: string | null = null
+): VenueListResponse {
+  return { items, total, page, pageSize: 12, availableOn };
+}
+
+/** Lot `availableOn` — `SearchView` reçoit désormais une ISSUE, pas un
+ *  résultat. `ok(...)` évite d'envelopper à la main dans chaque cas. */
+function ok(data: VenueListResponse): SearchOutcome {
+  return { kind: "ok", data };
 }
 
 function renderView(
@@ -74,9 +102,10 @@ function renderView(
     <NextIntlClientProvider locale={locale} messages={messages[locale]}>
       <SearchView
         state={parseSearchParams(raw)}
-        results={results([venue(1)])}
+        outcome={ok(results([venue(1)]))}
         wilayas={WILAYAS}
         amenities={AMENITIES}
+        styles={STYLES}
         {...over}
       />
     </NextIntlClientProvider>
@@ -88,29 +117,36 @@ describe("Recherche — états", () => {
     renderView();
     // Scopé à la liste : « Bab Ezzouar » figure AUSSI dans le sélecteur de
     // commune du panneau de filtres.
-    const liste = within(screen.getByRole("list", { name: "Salles de mariage" }));
+    const liste = within(screen.getByRole("list", { name: "Salles à Alger" }));
     expect(liste.getByRole("heading", { name: "Salle 1" })).toBeInTheDocument();
-    expect(liste.getByText("Bab Ezzouar")).toBeInTheDocument();
-    expect(liste.getByText("Jusqu'à 300 invités")).toBeInTheDocument();
+    // UI-D5 — capacité ET commune tiennent désormais sur UNE ligne, séparées
+    // par un point médian (design de référence). Les chercher séparément
+    // échouerait, alors que la page les affiche bien toutes les deux.
+    expect(liste.getByText("Jusqu'à 300 invités · Bab Ezzouar")).toBeInTheDocument();
     expect(liste.getByText(/200/)).toBeInTheDocument();
   });
 
   it("aucun résultat : message d'élargissement, PAS un écran vide", () => {
-    renderView({ results: results([], 0) });
+    renderView({ outcome: ok(results([], 0)) });
     expect(screen.getByText("Aucune salle ne correspond à ces critères")).toBeInTheDocument();
   });
 
   it("API muette : état d'ERREUR distinct du vide — on ne dit pas « aucune salle » quand on n'en sait rien", () => {
-    renderView({ results: null });
+    renderView({ outcome: { kind: "unreachable" } });
     expect(screen.getByRole("alert")).toHaveTextContent("La recherche est momentanément indisponible");
     expect(screen.queryByText("Aucune salle ne correspond à ces critères")).toBeNull();
   });
 
   it("le compteur s'accorde au singulier", () => {
-    renderView({ results: results([venue(1)], 1) });
-    expect(screen.getByRole("status")).toHaveTextContent("1 salle");
-    renderView({ results: results([venue(1), venue(2)], 37) });
-    expect(screen.getAllByRole("status")[1]).toHaveTextContent("37 salles");
+    renderView({ outcome: ok(results([venue(1)], 1)) });
+    expect(screen.getByRole("status")).toHaveTextContent("1 salle trouvée");
+    renderView({ outcome: ok(results([venue(1), venue(2)], 37)) });
+    expect(screen.getAllByRole("status")[1]).toHaveTextContent("37 salles trouvées");
+  });
+
+  it("UI-D5 — le NOMBRE est isolé dans son propre élément : c'est lui que le design accentue", () => {
+    const { container } = renderView({ outcome: ok(results([venue(1), venue(2)], 37)) });
+    expect(container.querySelector(".results-count-n")).toHaveTextContent("37");
   });
 });
 
@@ -123,12 +159,12 @@ describe("Recherche — médias", () => {
   });
 
   it("une URL ABSOLUE (adapter S3/CDN) est laissée intacte", () => {
-    renderView({ results: results([venue(1, { coverThumbUrl: "https://cdn.zwadj.dz/c.webp" })]) });
+    renderView({ outcome: ok(results([venue(1, { coverThumbUrl: "https://cdn.zwadj.dz/c.webp" })])) });
     expect(screen.getByRole("presentation", { hidden: true }).getAttribute("src")).toBe("https://cdn.zwadj.dz/c.webp");
   });
 
   it("salle sans photo : un cartouche explicite, pas une image cassée", () => {
-    renderView({ results: results([venue(1, { coverThumbUrl: null })]) });
+    renderView({ outcome: ok(results([venue(1, { coverThumbUrl: null })])) });
     expect(screen.getByText("Photo à venir")).toBeInTheDocument();
     expect(document.querySelector("img")).toBeNull();
   });
@@ -144,38 +180,115 @@ describe("Recherche — filtres sans JavaScript", () => {
     expect(form).not.toHaveAttribute("action");
   });
 
-  it("les champs sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche", () => {
+  it("les contrôles sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche", () => {
     renderView({}, "fr", {
       cityId: CITY_ID,
       guests: "250",
+      maxCapacity: "400",
       minPrice: "100000",
       maxPrice: "400000",
       amenities: ["wifi"],
+      styles: ["jardin"],
+      ceremonyType: "outdoor",
       sort: "price_asc"
     });
     expect(screen.getByLabelText("Commune")).toHaveValue(CITY_ID);
-    expect(screen.getByLabelText("Nombre d'invités")).toHaveValue(250);
-    expect(screen.getByLabelText("Prix minimum (DA)")).toHaveValue(100000);
-    expect(screen.getByLabelText("Prix maximum (DA)")).toHaveValue(400000);
     expect(screen.getByLabelText("Trier par")).toHaveValue("price_asc");
+
+    const sliders = screen.getAllByRole("slider");
+    expect(sliders.map((s) => (s as HTMLInputElement).value)).toEqual(["250", "400", "100000", "400000"]);
+
     expect(screen.getByRole("checkbox", { name: "Wifi" })).toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Parking" })).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Jardin" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Royal" })).not.toBeChecked();
+    expect(screen.getByRole("radio", { name: "Extérieur" })).toBeChecked();
+    expect(screen.getByRole("radio", { name: "Intérieur" })).not.toBeChecked();
+  });
+
+  it("D69 — poignées EN BUTÉE quand l'URL est nue : le panneau au repos ne filtre rien", () => {
+    renderView();
+    // 20 / 500 / 0 / 1 500 000 : les bornes elles-mêmes. L'état, lui, est vide —
+    // c'est ce qui garantit qu'aucun paramètre ne partira à l'API.
+    expect(screen.getAllByRole("slider").map((s) => (s as HTMLInputElement).value)).toEqual([
+      "20",
+      "500",
+      "0",
+      "1500000"
+    ]);
+  });
+
+  it("la butée haute s'annonce « et plus » — sinon « 500 » se lirait comme un plafond", () => {
+    renderView();
+    expect(screen.getByText(/500\+ invités/)).toBeInTheDocument();
+  });
+
+  it("les puces de style sont des CASES (plusieurs à la fois, D65), le type est un RADIO (choix unique, D66)", () => {
+    renderView();
+    for (const key of ["Royal", "Jardin"]) {
+      expect(screen.getByRole("checkbox", { name: key })).toHaveAttribute("name", "styles");
+    }
+    for (const label of ["Intérieur", "Extérieur", "Mixte"]) {
+      expect(screen.getByRole("radio", { name: label })).toHaveAttribute("name", "ceremonyType");
+    }
+  });
+
+  it("UI-D3 — recliquer une puce de type la DÉCOCHE : sans elle, un groupe de radios ne se vide jamais", () => {
+    renderView({}, "fr", { ceremonyType: "mixed" });
+    const mixte = screen.getByRole("radio", { name: "Mixte" });
+    expect(mixte).toBeChecked();
+
+    fireEvent.click(mixte);
+    expect(mixte).not.toBeChecked();
+  });
+
+  it("UI-D3 — trois types exactement, « Tous » n'existe plus", () => {
+    renderView();
+    expect(screen.getAllByRole("radio")).toHaveLength(3);
+    expect(screen.queryByRole("radio", { name: "Tous" })).toBeNull();
+  });
+
+  it("référentiel de styles VIDE : le bloc disparaît, la recherche reste utilisable", () => {
+    renderView({ styles: [] });
+    expect(screen.queryByRole("checkbox", { name: "Royal" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Afficher les résultats" })).toBeInTheDocument();
   });
 
   it("les équipements partagent le même `name` : c'est l'encodage natif que le navigateur sait produire seul", () => {
     renderView();
-    for (const box of screen.getAllByRole("checkbox")) expect(box).toHaveAttribute("name", "amenities");
+    // Portée aux SERVICES : depuis A13b, les puces de style sont aussi des cases
+    // à cocher, sous un autre `name`. Compter toutes les cases confondrait les
+    // deux groupes et ce test ne prouverait plus rien.
+    for (const box of screen.getAllByRole("checkbox", { name: /Wifi|Parking/ })) {
+      expect(box).toHaveAttribute("name", "amenities");
+    }
   });
 
-  it("le tri vit DANS le formulaire : sans JS, le bouton de soumission le valide comme les autres champs", () => {
+  it("UI-D5 — le tri a quitté le formulaire dans l'ARBRE mais lui APPARTIENT toujours (attribut `form`)", () => {
     const { container } = renderView();
-    expect(container.querySelector("form")?.contains(screen.getByLabelText("Trier par"))).toBe(true);
+    const form = container.querySelector("form");
+    const sort = screen.getByLabelText("Trier par") as HTMLSelectElement;
+
+    // Il n'est PLUS descendant : c'est le déplacement voulu par le design.
+    expect(form?.contains(sort)).toBe(false);
+    // …mais il reste soumis avec lui, sinon le tri cesse de marcher sans JS.
+    expect(sort).toHaveAttribute("form", "search-filters");
+    expect(form).toHaveAttribute("id", "search-filters");
+    expect(sort.form).toBe(form);
+  });
+
+  it("UI-D5 — l'étiquette dit « Recommandé », la VALEUR soumise reste `recent` (contrat A3 non rouvert)", () => {
+    renderView();
+    const sort = screen.getByLabelText("Trier par") as HTMLSelectElement;
+    const recommande = within(sort).getByRole("option", { name: "Recommandé" }) as HTMLOptionElement;
+    expect(recommande.value).toBe("recent");
+    expect(within(sort).queryByRole("option", { name: /récent/i })).toBeNull();
   });
 });
 
 describe("Recherche — pagination", () => {
   it("des LIENS, pas un « charger plus » : un bouton JS ne produit aucune URL indexable", () => {
-    renderView({ results: results([venue(1)], 40, 2) }, "fr", { page: "2", sort: "price_asc" });
+    renderView({ outcome: ok(results([venue(1)], 40, 2)) }, "fr", { page: "2", sort: "price_asc" });
     const nav = screen.getByRole("navigation", { name: "Pagination" });
     const suivant = within(nav).getByRole("link", { name: "Suivant" });
     // Le lien reporte les filtres courants : changer de page ne remet pas la
@@ -185,14 +298,14 @@ describe("Recherche — pagination", () => {
   });
 
   it("la page courante est signalée aux lecteurs d'écran", () => {
-    renderView({ results: results([venue(1)], 40, 2) }, "fr", { page: "2" });
+    renderView({ outcome: ok(results([venue(1)], 40, 2)) }, "fr", { page: "2" });
     const courante = screen.getByRole("link", { current: "page" });
     expect(courante).toHaveTextContent("2");
     expect(courante).toHaveAccessibleName("Page 2, page courante");
   });
 
   it("une seule page : aucune navigation de pagination", () => {
-    renderView({ results: results([venue(1)], 3) });
+    renderView({ outcome: ok(results([venue(1)], 3)) });
     expect(screen.queryByRole("navigation", { name: "Pagination" })).toBeNull();
   });
 });
@@ -200,10 +313,10 @@ describe("Recherche — pagination", () => {
 describe("Recherche — bilingue", () => {
   it("en arabe : libellés, noms de salle et de commune passent en AR", () => {
     renderView({}, "ar");
-    expect(screen.getByRole("heading", { name: "قاعات الأفراح", level: 1 })).toBeInTheDocument();
-    const liste = within(screen.getByRole("list", { name: "قاعات الأفراح" }));
+    expect(screen.getByRole("heading", { name: "قاعات في الجزائر", level: 1 })).toBeInTheDocument();
+    const liste = within(screen.getByRole("list", { name: "قاعات في الجزائر" }));
     expect(liste.getByRole("heading", { name: "قاعة 1" })).toBeInTheDocument();
-    expect(liste.getByText("باب الزوار")).toBeInTheDocument();
+    expect(liste.getByText(/باب الزوار/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "عرض النتائج" })).toBeInTheDocument();
   });
 
@@ -213,9 +326,181 @@ describe("Recherche — bilingue", () => {
   });
 });
 
-describe("Recherche — carte", () => {
+describe("Recherche — bascule grille / carte (UI-D5)", () => {
+  it("la grille est l'affichage par DÉFAUT — le cartouche de carte ne squatte plus le bas de page", () => {
+    renderView();
+    expect(screen.getByRole("list", { name: "Salles à Alger" })).toBeInTheDocument();
+    expect(screen.queryByText("Carte à venir")).toBeNull();
+  });
+
   it("le report post-MVP est DIT, pas laissé en blanc (décision produit n°2)", () => {
     renderView();
+    fireEvent.click(screen.getByRole("button", { name: "Carte" }));
     expect(screen.getByText("Carte à venir")).toBeInTheDocument();
+    // La grille cède la place : deux affichages, pas un empilement.
+    expect(screen.queryByRole("list", { name: "Salles à Alger" })).toBeNull();
+  });
+
+  it("l'état de la bascule est ANNONCÉ : `aria-pressed`, que la seule couleur de fond ne dit pas", () => {
+    renderView();
+    expect(screen.getByRole("button", { name: "Grille" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Carte" })).toHaveAttribute("aria-pressed", "false");
+  });
+});
+
+describe("Recherche — données de démonstration (UI-D5)", () => {
+  it("ÉTEINT par défaut : sans `previewVenues`, un résultat vide reste un résultat vide", () => {
+    renderView({ outcome: ok(results([], 0)) });
+    expect(screen.getByText("Aucune salle ne correspond à ces critères")).toBeInTheDocument();
+    expect(screen.queryByText(/Données de démonstration/)).toBeNull();
+  });
+
+  it("allumé + recherche vide : la GRILLE se remplit, et le bandeau dit que ces salles sont fausses", () => {
+    renderView({ outcome: ok(results([], 0)), previewVenues: PREVIEW_VENUES });
+    expect(screen.getByText(/Données de démonstration/)).toBeInTheDocument();
+    const liste = within(screen.getByRole("list", { name: "Salles à Alger" }));
+    expect(liste.getByRole("heading", { name: "Salle El Aurassi Royale" })).toBeInTheDocument();
+    expect(screen.queryByText("Aucune salle ne correspond à ces critères")).toBeNull();
+  });
+
+  it("allumé mais recherche PLEINE : les vraies salles gagnent, aucun bandeau", () => {
+    renderView({ outcome: ok(results([venue(1)])), previewVenues: PREVIEW_VENUES });
+    expect(screen.queryByText(/Données de démonstration/)).toBeNull();
+    expect(screen.getByRole("heading", { name: "Salle 1" })).toBeInTheDocument();
+  });
+
+  it("les salles de démonstration portent la note du design", () => {
+    renderView({ outcome: ok(results([], 0)), previewVenues: PREVIEW_VENUES });
+    expect(screen.getByText("4,92")).toBeInTheDocument();
+    expect(screen.getByText("(142)")).toBeInTheDocument();
+  });
+
+  it("une salle RÉELLE n'invente PAS de note : le DTO n'en porte pas encore (Flux B)", () => {
+    // ⚠ Scopé au conteneur : `render` empile dans `document.body` et le
+    // nettoyage n'a lieu qu'entre les tests — un `document.querySelectorAll`
+    // recompterait les cartes d'un rendu précédent.
+    const { container } = renderView({ outcome: ok(results([venue(1)])) });
+    expect(container.querySelectorAll(".venue-card-rating")).toHaveLength(0);
+    expect(container.querySelectorAll(".venue-card")).toHaveLength(1);
+  });
+});
+
+describe("Lot `availableOn` — annotation par date", () => {
+  const LE_2_JUIN = "2026-06-02";
+
+  it("`availableOnDate === false` ⇒ carte GRISÉE, avec une mention ÉCRITE", () => {
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(1);
+    // ⚠ Le grisé seul ne dit RIEN à un lecteur d'écran : la mention est la
+    // partie qui informe, le CSS n'en est que l'écho visuel.
+    expect(screen.getByText(`Complet le ${LE_2_JUIN}`)).toBeInTheDocument();
+  });
+
+  it("⚠ LA CARTE GRISÉE RESTE UN LIEN : « pas ce jour-là » n'est pas « pas cette salle »", () => {
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, LE_2_JUIN))
+    });
+    const carte = container.querySelector(".venue-card.is-unavailable");
+    // ⚠ Le `Link` est MOQUÉ en haut de ce fichier et rend un `<a href>` NU,
+    // sans préfixe de locale. L'attendu se relève du mock, pas de la route.
+    expect(carte?.querySelector("a.venue-card-link")).toHaveAttribute("href", "/salles/salle-1");
+  });
+
+  it("`availableOnDate === true` ⇒ AUCUN grisé, et la salle reste dans la page", () => {
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: true })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelectorAll(".venue-card")).toHaveLength(1);
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(0);
+  });
+
+  it("⚠ `null` NE GRISE PAS : il ne signifie plus QUE « question non posée »", () => {
+    // ⚠ Correction Ko. Ce test décrivait auparavant la SITUATION B — salle sans
+    // aucun créneau actif. Cette salle n'arrive plus jusqu'ici : l'API l'exclut
+    // de la réponse dès qu'une date est demandée, parce que la griser
+    // inviterait à essayer une autre date alors qu'AUCUNE ne marchera jamais.
+    // La garde reste en robustesse : si un `null` arrivait quand même sous une
+    // date annotée, il ne doit RIEN griser — « je ne sais pas » n'est pas
+    // « indisponible ».
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: null })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(0);
+  });
+
+  it("⚠ QUESTION NON POSÉE ⇒ aucun bandeau, aucun grisé, même avec des `false` en base", () => {
+    // L'écho vaut `null` : quoi qu'annonce l'item, l'écran n'a aucune date à
+    // afficher, donc il ne prétend rien. Sans cette garde, un `false` résiduel
+    // griserait une carte sous une page qui ne parle d'aucune date.
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, null))
+    });
+    expect(container.querySelectorAll(".venue-card.is-unavailable")).toHaveLength(0);
+    expect(container.querySelectorAll(".results-annotated")).toHaveLength(0);
+  });
+
+  it("un bandeau DIT sur quelle date porte l'annotation — sinon une URL partagée grise sans expliquer", () => {
+    // ⚠ Scopé par CLASSE et non par `role="status"` : le compteur de résultats
+    // en porte un aussi, et `getByRole` échouerait sur l'ambiguïté — ce qui
+    // aurait été un test rouge pour une raison qui n'est pas celle qu'il vise.
+    const { container } = renderView({
+      outcome: ok(results([venue(1, { availableOnDate: true })], 1, 1, LE_2_JUIN))
+    });
+    expect(container.querySelector(".results-annotated")?.textContent ?? "").toContain(LE_2_JUIN);
+  });
+
+  it("⚠ LA DATE AFFICHÉE VIENT DE L'ÉCHO, jamais de l'URL", () => {
+    // L'URL demande le 2 juin, le serveur répond avoir annoté le 9. C'est le 9
+    // qui doit s'afficher : l'inverse écrirait une date à côté d'une annotation
+    // calculée sur une autre (même piège que les bornes effectives de D49).
+    const { container } = renderView(
+      { outcome: ok(results([venue(1, { availableOnDate: false })], 1, 1, "2026-06-09")) },
+      "fr",
+      { availableOn: LE_2_JUIN }
+    );
+    const bandeau = container.querySelector(".results-annotated");
+    expect(bandeau?.textContent ?? "").toContain("2026-06-09");
+    expect(bandeau?.textContent ?? "").not.toContain(LE_2_JUIN);
+  });
+
+  it("DATE PASSÉE : message PROPRE, distinct de la panne, avec une sortie qui marche", () => {
+    const { container } = renderView({ outcome: { kind: "past-date" } }, "fr", { availableOn: "2020-01-01", cityId: "c1" });
+    expect(screen.getByRole("alert")).toHaveTextContent("Cette date est déjà passée");
+    // ⚠ Pas « la recherche est momentanément indisponible » : inviter à
+    // réessayer une requête qui ne marchera jamais est un piège à rechargement.
+    expect(screen.queryByText("La recherche est momentanément indisponible")).toBeNull();
+    // La sortie GARDE les autres filtres et ne retire que la date.
+    const sortie = container.querySelector(".state-panel a");
+    expect(sortie).toHaveAttribute("href", "/salles?cityId=c1");
+  });
+
+  it("DATE TROP LOINTAINE : l'AUTRE message, et surtout PAS celui de la date passée", () => {
+    // ⛔ LA GARDE DE D227. Les deux refus se disent à l'envers l'un de
+    // l'autre : « regardez devant » contre « rapprochez-vous ». Un code
+    // unique aurait forcé l'écran à en choisir un, faux une fois sur deux —
+    // et une garde qui ne vérifierait que la présence du bon texte
+    // laisserait passer un écran qui affiche LES DEUX.
+    const { container } = renderView({ outcome: { kind: "beyond-horizon" } }, "fr", {
+      availableOn: "2099-06-02",
+      cityId: "c1"
+    });
+    expect(screen.getByRole("alert")).toHaveTextContent("Cette date est trop lointaine");
+    expect(screen.queryByText("Cette date est déjà passée")).toBeNull();
+    expect(screen.queryByText("La recherche est momentanément indisponible")).toBeNull();
+    // ⚠ UN SEUL PANNEAU : deux `state-panel` voudraient dire que la branche
+    // s'est dédoublée au lieu de choisir son jeu de textes.
+    expect(container.querySelectorAll(".state-panel")).toHaveLength(1);
+    // La MÊME sortie que pour la date passée, et elle garde les filtres.
+    expect(container.querySelector(".state-panel a")).toHaveAttribute("href", "/salles?cityId=c1");
+  });
+
+  it("⚠ une PANNE reste une panne : elle n'emprunte aucun des deux messages de date", () => {
+    // Le `switch` de `refusDeDate` nomme les quatre issues ; ce test vérifie
+    // que `unreachable` n'est pas tombée du mauvais côté en chemin.
+    renderView({ outcome: { kind: "unreachable" } }, "fr", { availableOn: "2099-06-02" });
+    expect(screen.queryByText("Cette date est trop lointaine")).toBeNull();
+    expect(screen.queryByText("Cette date est déjà passée")).toBeNull();
   });
 });

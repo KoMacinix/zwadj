@@ -9,9 +9,14 @@
 // `TEMPORARILY_UNAVAILABLE`. Une salle `HIDDEN` est un 404 côté API, y compris
 // en accès direct — il n'y a donc aucun état « cachée » à rendre ici.
 //
-// Flux B/C : les deux appels à l'action sont PRÉSENTS et INERTES. Un bouton
-// désactivé avec sa raison écrite vaut mieux qu'un lien vers une page vide ou
-// qu'un bouton absent qui laisse croire que la salle ne se réserve pas.
+// Flux B : l'appel à l'action de RÉSERVATION DE FÊTE est PRÉSENT et INERTE. Un
+// bouton désactivé avec sa raison écrite vaut mieux qu'un lien vers une page
+// vide ou qu'un bouton absent qui laisse croire que la salle ne se réserve pas.
+//
+// Flux C : la visite, elle, est RÉELLE depuis C5 — son panneau est monté plus
+// bas. Le second bouton inerte « Réserver une visite » a donc été RETIRÉ : deux
+// appels à l'action pour la même chose, dont un mort, apprennent surtout au
+// visiteur que le site ne marche pas.
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
 import type { VenuePublicDTO } from "@zwadj/types";
@@ -20,6 +25,8 @@ import { Link } from "../../i18n/navigation";
 import { mediaSrc } from "../../lib/media-url";
 import { AvailabilityCalendar } from "./availability-calendar";
 import { MatterportEmbed } from "./matterport-embed";
+import { BookingRequestPanel } from "./booking-request-panel";
+import { VisitBookingPanel } from "./visit-booking-panel";
 
 const SECTION_TITLE = {
   fontSize: 13,
@@ -196,19 +203,32 @@ export function VenueDetailView({ venue }: { venue: VenuePublicDTO }) {
           background: "var(--surface)"
         }}
       >
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-          {/* INERTES, et désactivés pour de vrai : `disabled` interdit le clic
-              ET sort les boutons de l'ordre de tabulation. Un bouton d'allure
-              cliquable qui ne fait rien est un défaut, pas un aperçu. */}
-          <button type="button" className="btn btn-accent" disabled>
-            {t("bookingCta")}
-          </button>
-          <button type="button" className="btn" disabled>
-            {t("visitCta")}
-          </button>
-        </div>
-        <p style={{ margin: "10px 0 0", fontSize: 12, color: "var(--ink-2)" }}>{t("ctaSoon")}</p>
+        {/* E1b — le DERNIER appel à l'action inerte a disparu. Il annonçait « les
+            demandes de réservation ouvriront prochainement » : depuis E1a elles
+            sont ouvertes, et le panneau réel est juste au-dessous. Laisser un
+            bouton mort à côté d'un formulaire vivant apprend au visiteur que le
+            site ne marche pas — même raisonnement que D73 pour la visite. */}
+        <p style={{ margin: 0, fontSize: 12, color: "var(--ink-2)" }}>{t("bookingHint")}</p>
       </section>
+
+      {/* C5 — prise de rendez-vous RÉELLE. Le panneau charge ses créneaux depuis
+          la route anonyme `/visit-slots` : il s'affiche pour un visiteur non
+          connecté, et ne demande la session qu'au moment de réserver. */}
+      {/* E1b — la DEMANDE de réservation vient avant la visite : c'est ce que le
+          visiteur est venu chercher. La visite est une étape vers elle, pas une
+          alternative. */}
+      <div style={{ marginBlockStart: 28 }}>
+        <BookingRequestPanel
+          slug={venue.slug}
+          depositRateBps={venue.depositRateBps}
+          depositAmountCents={venue.depositAmountCents}
+          services={venue.services}
+        />
+      </div>
+
+      <div style={{ marginBlockStart: 28 }}>
+        <VisitBookingPanel slug={venue.slug} />
+      </div>
     </main>
   );
 }

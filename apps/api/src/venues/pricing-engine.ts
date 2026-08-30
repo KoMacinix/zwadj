@@ -63,23 +63,41 @@ export function monthInWindow(month: number, start: number, end: number): boolea
   return start <= end ? month >= start && month <= end : month >= start || month <= end;
 }
 
+/** Prédicat d'applicabilité d'UNE famille de règle. */
+type RuleMatcher = (rule: PricingRuleLike, day: CalendarDay) => boolean;
+
+/** Registre des familles — lot S4 (audit F3).
+ *
+ *  ⚠ CE N'EST PAS UN `switch` DÉGUISÉ. Le `Record` est EXHAUSTIF sur
+ *  `PricingRuleType` : ajouter une famille à l'énumération sans l'ajouter ici
+ *  ne compile plus. Le `switch` d'origine, lui, retombait silencieusement sur
+ *  son `default` — une règle d'un type neuf aurait cessé de s'appliquer sans
+ *  qu'aucune erreur ne soit levée, et le prix de base serait sorti à la place.
+ *  Sur un chemin d'argent, un oubli qui compile est pire qu'un oubli qui casse.
+ *
+ *  ⚠ `SPECIFICITY` reste séparé et INCHANGÉ : c'est l'arbitrage D46, pas
+ *  l'applicabilité. Les fondre serait mélanger « cette règle concerne-t-elle ce
+ *  jour ? » et « laquelle gagne ? ». */
+const MATCHERS: Record<PricingRuleType, RuleMatcher> = {
+  HOLIDAY: (_rule, day) => day.isHoliday,
+  WEEKDAY: (rule, day) => rule.daysOfWeek.includes(day.dayOfWeek),
+  // Une saison sans bornes ne veut rien dire : on la considère inapplicable
+  // plutôt que « toute l'année », qui écraserait le prix de base sans que le
+  // pro l'ait demandé.
+  SEASON: (rule, day) =>
+    rule.startMonth !== null && rule.endMonth !== null
+      ? monthInWindow(day.month, rule.startMonth, rule.endMonth)
+      : false
+};
+
 export function ruleApplies(rule: PricingRuleLike, day: CalendarDay): boolean {
   if (!rule.isActive) return false;
-  switch (rule.ruleType) {
-    case "HOLIDAY":
-      return day.isHoliday;
-    case "WEEKDAY":
-      return rule.daysOfWeek.includes(day.dayOfWeek);
-    case "SEASON":
-      // Une saison sans bornes ne veut rien dire : on la considère
-      // inapplicable plutôt que « toute l'année », qui écraserait le prix de
-      // base sans que le pro l'ait demandé.
-      return rule.startMonth !== null && rule.endMonth !== null
-        ? monthInWindow(day.month, rule.startMonth, rule.endMonth)
-        : false;
-    default:
-      return false;
-  }
+  // ⚠ LE REPLI DU `default:` EST CONSERVÉ TEL QUEL, et il n'est pas redondant
+  // avec l'exhaustivité du `Record` : celle-ci vaut à la COMPILATION, tandis
+  // qu'une colonne de base peut porter une valeur que le type ignore. Le
+  // transtypage n'est pas une facilité, c'est ce qui rend ce repli exprimable.
+  const matcher = (MATCHERS as Record<string, RuleMatcher | undefined>)[rule.ruleType];
+  return matcher === undefined ? false : matcher(rule, day);
 }
 
 /** Comparateur d'arbitrage. Retourne < 0 si `a` l'emporte sur `b`. */

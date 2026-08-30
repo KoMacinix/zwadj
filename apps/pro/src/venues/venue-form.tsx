@@ -1,3 +1,4 @@
+import { AmenityIcon } from "@zwadj/ui";
 // Corps de formulaire PARTAGÉ création/édition (Lot A5) + les briques que la
 // liste réutilise (statut D33, badge de publication).
 //
@@ -10,6 +11,7 @@ import { useId, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BookingMode,
+  CeremonyType,
   VenueAvailabilityStatus,
   VenuePublicationStatus,
   venueCreateSchema,
@@ -18,11 +20,11 @@ import {
   type VenueCreateInput,
   type VenueProDTO,
   type VenueUpdateInput,
+  type VenueStyleDTO,
   type WilayaDTO
 } from "@zwadj/types";
 import { validate, type FieldErrors } from "@zwadj/api-client";
 import { Field, useValidationMessage } from "../auth/auth-ui";
-import { AmenityIcon } from "./amenity-icon";
 
 /** Clé de l'erreur de prix — cf. `parseIntegerPrice`. */
 const PRICE_ERROR_KEY = "venue.validation.basePriceInteger";
@@ -89,6 +91,11 @@ export interface VenueFormValues {
   bookingMode: BookingMode;
   status: VenueAvailabilityStatus;
   amenityIds: string[];
+  /** Styles (D65), remplacement d'ENSEMBLE comme les équipements. */
+  styleIds: string[];
+  /** `""` = non déclaré. D66 rend la colonne nullable exprès : une salle dont
+   *  le pro n'a rien dit ne doit pas se faire passer pour « Intérieur ». */
+  ceremonyType: string;
 }
 
 export function emptyVenueForm(): VenueFormValues {
@@ -109,7 +116,9 @@ export function emptyVenueForm(): VenueFormValues {
     basePrice: "",
     bookingMode: BookingMode.SINGLE_SLOT,
     status: VenueAvailabilityStatus.ACTIVE,
-    amenityIds: []
+    amenityIds: [],
+    styleIds: [],
+    ceremonyType: ""
   };
 }
 
@@ -133,7 +142,9 @@ export function venueToForm(venue: VenueProDTO): VenueFormValues {
     basePrice: String(venue.basePriceCents / 100),
     bookingMode: venue.bookingMode,
     status: venue.status,
-    amenityIds: [...venue.amenityIds]
+    amenityIds: [...venue.amenityIds],
+    styleIds: [...venue.styleIds],
+    ceremonyType: venue.ceremonyType ?? ""
   };
 }
 
@@ -290,6 +301,18 @@ export function buildUpdateDiff(values: VenueFormValues, venue: VenueProDTO): Ve
   const amenitiesChanged =
     nextAmenities.length !== currentAmenities.length || nextAmenities.some((id, i) => id !== currentAmenities[i]);
   if (amenitiesChanged) diff.amenityIds = nextAmenities;
+
+  // Même règle d'ensemble pour les styles (D65).
+  const nextStyles = [...values.styleIds].sort();
+  const currentStyles = [...venue.styleIds].sort();
+  const stylesChanged =
+    nextStyles.length !== currentStyles.length || nextStyles.some((id, i) => id !== currentStyles[i]);
+  if (stylesChanged) diff.styleIds = nextStyles;
+
+  // ⚠ `""` doit repartir en `null`, pas être omis : omettre voudrait dire « ne
+  // change rien », alors que le pro vient d'effacer sa déclaration.
+  const nextCeremony = values.ceremonyType === "" ? null : (values.ceremonyType as CeremonyType);
+  if (nextCeremony !== (venue.ceremonyType ?? null)) diff.ceremonyType = nextCeremony;
 
   if (!price.ok) {
     const checked = validate(venueUpdateSchema, diff);
@@ -529,6 +552,75 @@ function CitySelect({
   );
 }
 
+/** Styles (D65) et type de mariage (D66) — Lot A13c.
+ *
+ *  ⚠ Ces deux champs alimentent des FILTRES de la recherche publique. Tant
+ *  qu'ils n'étaient pas saisissables ici, les puces du client filtraient sur du
+ *  vide : l'API les acceptait, l'écran les affichait, aucune salle n'en portait.
+ *
+ *  Le type est un `select` avec une option VIDE explicite : D66 rend la colonne
+ *  nullable pour que « non déclaré » reste distinct de « Intérieur », et le pro
+ *  doit pouvoir revenir en arrière après avoir choisi. */
+export function StylesPicker({
+  venueStyles,
+  selectedStyles,
+  onToggleStyle,
+  ceremonyType,
+  onCeremonyType,
+  loading
+}: {
+  venueStyles: VenueStyleDTO[];
+  selectedStyles: string[];
+  onToggleStyle: (id: string, checked: boolean) => void;
+  ceremonyType: string;
+  onCeremonyType: (value: string) => void;
+  loading: boolean;
+}) {
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language === "ar";
+  const chosen = new Set(selectedStyles);
+
+  return (
+    <fieldset style={{ border: "none", margin: 0, padding: 0 }}>
+      <legend style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--ink-2)" }}>
+        {t("venue.ui.form.sectionStyles")}
+      </legend>
+      <p className="field-hint" style={{ marginBlock: "4px 10px" }}>
+        {loading ? t("venue.ui.form.referentialsLoading") : t("venue.ui.form.stylesHint")}
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: 8 }}>
+        {venueStyles.map((style) => (
+          <label key={style.id} className="checkline">
+            <input
+              type="checkbox"
+              checked={chosen.has(style.id)}
+              onChange={(e) => onToggleStyle(style.id, e.target.checked)}
+            />
+            <span>{isAr ? style.nameAr : style.nameFr}</span>
+          </label>
+        ))}
+      </div>
+
+      <div style={{ marginBlockStart: 14, maxInlineSize: 320 }}>
+        {/* `Field` passe l'`id` et les attributs d'accessibilité à son enfant :
+            c'est ce qui relie le <label> au <select> sans le répéter à la main. */}
+        <Field label={t("venue.ui.form.ceremonyType")} hint={t("venue.ui.form.ceremonyTypeHint")}>
+          {({ id, describedBy }) => (
+            <select id={id} aria-describedby={describedBy} value={ceremonyType} onChange={(e) => onCeremonyType(e.target.value)}>
+              <option value="">{t("venue.ui.form.ceremonyTypeNone")}</option>
+              {Object.values(CeremonyType).map((type) => (
+                <option key={type} value={type}>
+                  {t(`venue.ceremonyType.${type.toLowerCase()}`)}
+                </option>
+              ))}
+            </select>
+          )}
+        </Field>
+      </div>
+    </fieldset>
+  );
+}
+
 /** Grille de cases à cocher — remplacement d'ENSEMBLE au submit. Libellés
  *  issus de la DATA (`nameFr`/`nameAr`), jamais de l'i18n applicative. */
 export function AmenitiesPicker({
@@ -602,26 +694,63 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
  * (slug, badge, statut, équipements) sont composés PAR la page d'édition —
  * ce composant reste le tronc commun, pas un couteau suisse à drapeaux.
  */
-export function VenueFormFields({
-  values,
-  onChange,
-  errors,
-  wilayas,
-  referentialsLoading
-}: {
+// ══════════════════════════════════════════════════════════════════════════
+// GROUPES DE CHAMPS — Lot UIP-C.
+//
+// `VenueFormFields` rendait les trois sections d'un bloc, ce qui convenait à une
+// page unique. L'assistant doit les redistribuer par étape, et surtout composer
+// l'ÉTAPE 1 avec des champs venus des TROIS : `POST /venues` exige `nameFr`,
+// `nameAr`, `cityId`, `capacityMax` et `basePriceCents`. La salle ne peut naître
+// qu'une fois ces cinq réunis — c'est la décision (a), et c'est ce qui permet à
+// toutes les étapes suivantes d'écrire sur un id réel.
+//
+// ⚠ Le JSX est DÉPLACÉ, pas réécrit. Aucun libellé, aucune borne, aucun `aria-*`,
+// aucune logique de caret de prix ne change. La découpe a été faite par un script
+// qui VÉRIFIE ses seize ancres avant de couper : un décalage d'une ligne aurait
+// mélangé deux champs en silence, et le typecheck ne l'aurait pas vu.
+//
+// `VenueFormFields` reste exporté et recompose les six groupes dans l'ordre
+// d'origine — ce qui l'utilisait déjà n'a rien à changer.
+// ══════════════════════════════════════════════════════════════════════════
+
+/** Noms FR/AR — requis par la création. */
+/** Erreurs à afficher AVANT tout clic, pour les seuls champs déjà remplis.
+ *
+ *  ⚠ Défaut trouvé en exécutant : « Suivant » désactivé tant que l'étape est
+ *  invalide (exigence du cadrage) supprimait du même coup l'affichage des
+ *  messages, qui n'apparaissaient qu'au submit. Un prix « 150000.5 » laissait
+ *  donc le bouton grisé SANS dire pourquoi — le pro n'avait plus aucun moyen de
+ *  savoir quel champ fâchait.
+ *
+ *  On montre donc les messages des champs NON VIDES, et on laisse les requis
+ *  encore vierges au seul « Suivant » grisé + sa raison écrite : afficher « le
+ *  nom est requis » sur un formulaire qu'on vient d'ouvrir accuse l'utilisateur
+ *  de n'avoir pas encore tapé. */
+export function liveErrors(errors: FieldErrors, values: VenueFormValues): FieldErrors {
+  const rempli: Record<string, boolean> = {
+    nameFr: values.nameFr.trim() !== "",
+    nameAr: values.nameAr.trim() !== "",
+    cityId: values.cityId !== "",
+    capacityMax: values.capacityMax.trim() !== "",
+    basePriceCents: values.basePrice.trim() !== ""
+  };
+  const sortie: FieldErrors = {};
+  for (const [cle, message] of Object.entries(errors)) {
+    if (rempli[cle] !== false) sortie[cle] = message;
+  }
+  return sortie;
+}
+
+export function NameFields({ values, onChange, errors }: {
   values: VenueFormValues;
   onChange: (patch: Partial<VenueFormValues>) => void;
   errors: FieldErrors;
-  wilayas: WilayaDTO[];
-  referentialsLoading: boolean;
 }) {
   const { t } = useTranslation();
   const tval = useValidationMessage();
 
   return (
     <>
-      <SectionTitle>{t("venue.ui.form.sectionInfo")}</SectionTitle>
-
       <Field label={t("venue.ui.form.nameFr")} required error={tval(errors.nameFr)}>
         {({ id, describedBy, invalid, required }) => (
           <input
@@ -651,7 +780,21 @@ export function VenueFormFields({
           />
         )}
       </Field>
+    </>
+  );
+}
 
+/** Accroche et description dans les deux langues. Tout facultatif. */
+export function PresentationFields({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
+
+  return (
+    <>
       <div className="field-row">
         <Field label={t("venue.ui.form.taglineFr")} error={tval(errors.taglineFr)}>
           {({ id, describedBy, invalid }) => (
@@ -708,9 +851,27 @@ export function VenueFormFields({
           />
         )}
       </Field>
+    </>
+  );
+}
 
-      <SectionTitle>{t("venue.ui.form.sectionLocation")}</SectionTitle>
+/** Wilaya — requise par la création (`cityId`). */
+export function CityField({
+  values,
+  onChange,
+  errors,
+  wilayas,
+  referentialsLoading
+}: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+  wilayas: WilayaDTO[];
+  referentialsLoading: boolean;
+}) {
+  const tval = useValidationMessage();
 
+  return (
       <CitySelect
         wilayas={wilayas}
         value={values.cityId}
@@ -718,7 +879,20 @@ export function VenueFormFields({
         error={tval(errors.cityId)}
         loading={referentialsLoading}
       />
+  );
+}
 
+/** Quartier, adresse, coordonnées — facultatifs, lat/lng par PAIRE. */
+export function PlaceFields({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
+
+  return (
+    <>
       <div className="field-row">
         <Field label={t("venue.ui.form.districtFr")} error={tval(errors.districtFr)}>
           {({ id, describedBy, invalid }) => (
@@ -791,9 +965,22 @@ export function VenueFormFields({
           )}
         </Field>
       </div>
+    </>
+  );
+}
 
-      <SectionTitle>{t("venue.ui.form.sectionCapacityPrice")}</SectionTitle>
+/** Capacité et prix de base — requis par la création.
+ *  ⚠ Le prix garde son rejet décimal strict et sa gestion de caret. */
+export function CapacityPriceFields({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
 
+  return (
+    <>
       <div className="field-row">
         <Field label={t("venue.ui.form.capacityMax")} required error={tval(errors.capacityMax)}>
           {({ id, describedBy, invalid, required }) => (
@@ -827,7 +1014,21 @@ export function VenueFormFields({
           )}
         </Field>
       </div>
+    </>
+  );
+}
 
+/** Mode de réservation. Omis à la création ⇒ défaut Prisma SINGLE_SLOT. */
+export function BookingModeField({ values, onChange, errors }: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const tval = useValidationMessage();
+
+  return (
+    <>
       <Field label={t("venue.ui.form.bookingMode")} error={tval(errors.bookingMode)}>
         {({ id, describedBy, invalid }) => (
           <select
@@ -842,6 +1043,41 @@ export function VenueFormFields({
           </select>
         )}
       </Field>
+    </>
+  );
+}
+
+/** Le formulaire COMPLET, recomposé depuis les six groupes dans l'ordre
+ *  historique. Conservé pour que rien de ce qui l'utilisait n'ait à changer. */
+export function VenueFormFields({
+  values,
+  onChange,
+  errors,
+  wilayas,
+  referentialsLoading
+}: {
+  values: VenueFormValues;
+  onChange: (patch: Partial<VenueFormValues>) => void;
+  errors: FieldErrors;
+  wilayas: WilayaDTO[];
+  referentialsLoading: boolean;
+}) {
+  const { t } = useTranslation();
+  const groupe = { values, onChange, errors };
+
+  return (
+    <>
+      <SectionTitle>{t("venue.ui.form.sectionInfo")}</SectionTitle>
+      <NameFields {...groupe} />
+      <PresentationFields {...groupe} />
+
+      <SectionTitle>{t("venue.ui.form.sectionLocation")}</SectionTitle>
+      <CityField {...groupe} wilayas={wilayas} referentialsLoading={referentialsLoading} />
+      <PlaceFields {...groupe} />
+
+      <SectionTitle>{t("venue.ui.form.sectionCapacityPrice")}</SectionTitle>
+      <CapacityPriceFields {...groupe} />
+      <BookingModeField {...groupe} />
     </>
   );
 }

@@ -10,4 +10,4 @@ export const defaultLocale: AppLocale = "fr";
 export const messages = { fr, ar } as const;
 export type Messages = typeof fr;
 
-export { formatDZD } from "./format";
+export { formatDZD, formatRating } from "./format";

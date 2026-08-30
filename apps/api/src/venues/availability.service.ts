@@ -16,6 +16,8 @@
 // `slot_templates_minutes_valid`) et le test de recouvrement est semi-ouvert.
 import { Injectable, NotFoundException } from "@nestjs/common";
 import {
+  BookingStatus,
+  HARD_BOOKING_STATUSES,
   VenueErrorCode,
   type AvailabilityWindowQueryInput,
   type BookingMode,
@@ -23,6 +25,7 @@ import {
   type VenueAvailabilityResponse,
   type VenueAvailabilitySlotDTO
 } from "@zwadj/types";
+import type { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { computeDayAvailability, type BookingWindow, type Interval } from "./availability-engine";
 import {
@@ -34,37 +37,89 @@ import {
   holidayKey,
   parseCivilDate,
   toCalendarDay,
+  SLOT_END_MAX_MINUTES,
   type CivilDate
 } from "./availability-time";
 import { RULE_SELECT } from "./pricing-rules.service";
 import { SLOT_ORDER_BY } from "./slot-templates.service";
 import { PUBLIC_BASE_WHERE, PUBLIC_DETAIL_STATUSES, SLUG_PATTERN } from "./venues-public.service";
 
-/** Plafond du CHECK `slot_templates_minutes_valid` : 48 h. Rien de plus tardif
- *  ne peut recouvrir un créneau du dernier jour de la fenêtre. */
-const SLOT_END_MAX_MINUTES = 2880;
+// ⚠ `SLOT_END_MAX_MINUTES` a DÉMÉNAGÉ dans `availability-time.ts` au lot
+// `availableOn` : la liste publique borne la même fenêtre de chargement, et
+// deux copies de cette borne divergeraient en silence.
 const MINUTE_MS = 60_000;
 
 /** Statuts qui DISENT quelque chose. DECLINED, EXPIRED et CANCELLED libèrent le
- *  créneau : ne pas les charger est plus sûr que les filtrer plus loin. */
-const BLOCKING_BOOKING_STATUSES = ["PENDING", "ACCEPTED", "CONFIRMED"] as const;
-/** Verrou DUR, doublé en base par `bookings_no_overlap_accepted_confirmed`. */
-const HARD_BOOKING_STATUSES = new Set<string>(["ACCEPTED", "CONFIRMED"]);
+ *  créneau : ne pas les charger est plus sûr que les filtrer plus loin.
+ *
+ *  ⚠ TROISIÈME COPIE trouvée au lot S1, à QUATRE LIGNES de la dérivation
+ *  correcte ci-dessous. Le danger n'est pas la recopie mais l'ASYMÉTRIE : un
+ *  statut verrouillant ajouté demain entrerait dans `HARD_BOOKING_STATUS_SET`
+ *  — donc serait classé `hard` ligne 198 — sans entrer dans ce `WHERE`, si
+ *  bien que la ligne ne serait JAMAIS chargée. Le calendrier annoncerait libre
+ *  un créneau que la base verrouille. `PENDING` reste écrit ici : c'est ce que
+ *  ce fichier AJOUTE au verrou dur, pas une seconde autorité sur celui-ci. */
+const BLOCKING_BOOKING_STATUSES = [BookingStatus.PENDING, ...HARD_BOOKING_STATUSES] as const;
+/** Verrou DUR, doublé en base par `bookings_no_overlap_accepted_confirmed`.
+ *  ⚠ La LISTE vient de `@zwadj/types` (une seule autorité) ; le `Set` n'est
+ *  qu'une forme d'appel — ce fichier interroge l'appartenance ligne à ligne. */
+const HARD_BOOKING_STATUS_SET = new Set<string>(HARD_BOOKING_STATUSES);
 
 @Injectable()
 export class AvailabilityService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /** Porte PUBLIQUE : par slug, et seulement si la salle est PUBLIÉE. */
   async bySlug(slug: string, query: AvailabilityWindowQueryInput): Promise<VenueAvailabilityResponse> {
+    if (!SLUG_PATTERN.test(slug)) this.throwNotFound();
+    return this.compute({ slug, ...PUBLIC_BASE_WHERE, status: { in: [...PUBLIC_DETAIL_STATUSES] } }, query);
+  }
+
+  /** Porte PRO : par id, pour le PROPRIÉTAIRE, SANS condition de publication.
+   *
+   *  ⚠ POURQUOI CETTE SECONDE PORTE EXISTE. Le calendrier pro consommait
+   *  l'endpoint public — décision de B6, et son motif était juste : ne pas
+   *  dupliquer le moteur. Mais la conséquence n'avait jamais été vérifiée sur une
+   *  salle réelle : `PUBLIC_BASE_WHERE` exige `publicationStatus = PUBLISHED`, si
+   *  bien qu'un pro dont la salle est encore en brouillon recevait un 404 sur SON
+   *  PROPRE calendrier. Depuis la refonte, cela tuait aussi l'écran « Nouvelle
+   *  réservation », qui en fait son sélecteur de date.
+   *
+   *  ⚠ Ce n'est PAS un second moteur : même `compute`, mêmes règles de prix,
+   *  mêmes statuts, même écrêtage. Seule la CLAUSE DE RECHERCHE change. Un calcul
+   *  parallèle finirait par répondre autrement, et le pro verrait alors autre
+   *  chose que ses clients — le pire des écarts (D78).
+   *
+   *  `deletedAt: null` reste : une salle supprimée n'a plus de calendrier, même
+   *  pour son propriétaire. */
+  async byIdForOwner(
+    venueId: string,
+    userId: string,
+    query: AvailabilityWindowQueryInput
+  ): Promise<VenueAvailabilityResponse> {
+    // ⚠ `owner: { userId }` et NON `ownerId: userId`. `Venue.ownerId` référence
+    // `ProProfile.id`, pas `User.id` — le schéma le dit :
+    //   `owner ProProfile @relation(fields: [ownerId], references: [id])`
+    // Mon premier jet passait l'id UTILISATEUR dans `ownerId`, qui ne peut jamais
+    // correspondre : la route rendait donc 404 pour TOUS les pros, publiée ou pas.
+    // Le nom du champ m'a induit en erreur là où la relation était écrite noir sur
+    // blanc — un identifiant qui « ressemble » se relève, il ne se devine pas.
+    // C'est l'idiome employé par `visit-bookings.service.ts`, et il traverse la
+    // relation au lieu de supposer une égalité d'ids.
+    return this.compute({ id: venueId, deletedAt: null, owner: { userId } }, query);
+  }
+
+  private async compute(
+    where: Prisma.VenueWhereInput,
+    query: AvailabilityWindowQueryInput
+  ): Promise<VenueAvailabilityResponse> {
     // Zod a déjà garanti la forme : dates réelles, ordre, largeur ≤ 92 jours.
     // Ce qui reste ne peut plus échouer.
     const requestedFrom = parseCivilDate(query.from) as CivilDate;
     const requestedTo = parseCivilDate(query.to) as CivilDate;
 
-    if (!SLUG_PATTERN.test(slug)) this.throwNotFound();
-
     const venue = await this.prisma.venue.findFirst({
-      where: { slug, ...PUBLIC_BASE_WHERE, status: { in: [...PUBLIC_DETAIL_STATUSES] } },
+      where,
       select: {
         id: true,
         slug: true,
@@ -149,7 +204,7 @@ export class AvailabilityService {
       // pas encore basculée compte QUAND MÊME : le statut fait foi. Une
       // seconde règle d'expiration lue à la volée finirait par diverger de
       // celle du job, et le client verrait deux vérités selon la page.
-      hard: HARD_BOOKING_STATUSES.has(row.status)
+      hard: HARD_BOOKING_STATUS_SET.has(row.status)
     }));
     const blocks: Interval[] = blockRows.map((row) => ({
       startMs: row.blockedFrom.getTime(),

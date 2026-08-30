@@ -19,6 +19,30 @@ const MINUTE_MS = 60_000;
 const DAY_MS = 86_400_000;
 const OFFSET_MS = ALGERIA_UTC_OFFSET_MINUTES * MINUTE_MS;
 
+/** Plafond du CHECK `slot_templates_minutes_valid` (migration
+ *  `20260707000001_booking_constraints`) : `end_minutes <= 2880`, soit 48 h.
+ *  Rien de plus tardif ne peut recouvrir un créneau du jour considéré.
+ *
+ *  ⚠ REMONTÉ ICI au lot `availableOn`. La constante vivait dans
+ *  `availability.service.ts` ; la liste publique en a besoin pour borner
+ *  exactement la même fenêtre de chargement. La recopier aurait créé deux
+ *  bornes à faire diverger le jour où le CHECK bouge — et l'écart aurait été
+ *  SILENCIEUX : une soirée 20h→02h manquée d'un côté, vue de l'autre. Elle ne
+ *  pouvait pas être importée depuis le service : `availability.service.ts`
+ *  importe déjà `venues-public.service.ts` (`PUBLIC_BASE_WHERE`), le sens
+ *  inverse fermerait le cycle. */
+export const SLOT_END_MAX_MINUTES = 2880;
+
+/** Fin de la fenêtre de CHARGEMENT d'un jour civil : minuit local + 48 h.
+ *  ⚠ Ce n'est PAS la fin du jour. Un filtre `startsAt >= minuit` et
+ *  `endsAt <= minuit + 24h` raterait les deux cas qui comptent — le blocage de
+ *  six mois qui enjambe la journée sans y commencer, et la réservation de
+ *  00h30 le lendemain qui occupe la soirée 20h→02h du jour demandé. Le test de
+ *  recouvrement, lui, reste semi-ouvert et fait seul autorité. */
+export function civilDayLoadEndMs(date: CivilDate): number {
+  return civilDayStartMs(date) + SLOT_END_MAX_MINUTES * MINUTE_MS;
+}
+
 export interface CivilDate {
   year: number;
   /** 1–12. */
@@ -53,6 +77,23 @@ export function formatCivilDate(date: CivilDate): string {
  *  veille et décalerait la fenêtre d'un jour à ses deux extrémités. */
 export function civilUtcMs(date: CivilDate): number {
   return Date.UTC(date.year, date.month - 1, date.day);
+}
+
+/** Date civile d'une colonne `@db.Date` — l'INVERSE exact de `civilUtcMs`.
+ *
+ *  ⚠ Les composantes se lisent en UTC, jamais en local : Prisma rend une
+ *  `@db.Date` à minuit UTC, et `getFullYear()` laisserait le fuseau du serveur
+ *  choisir le jour en silence. Une machine à l'ouest de Greenwich reculerait
+ *  d'une journée toutes les dates d'événement affichées.
+ *
+ *  ⚠ Cette fonction VIVAIT EN PRIVÉ dans `bookings.service.ts` (lot S11-a),
+ *  où elle servait DEUX appelants. Le jour où l'un des deux a quitté le
+ *  fichier, en garder une copie de chaque côté aurait fabriqué deux autorités
+ *  sur la même conversion — la classe de défauts que S1 a fermée sur les
+ *  statuts et que R4 a payée sur l'énumération des devis. Elle atterrit ici,
+ *  dans le module qui possède déjà `CivilDate` et sa conversion aller. */
+export function civilOfUtcDate(date: Date): CivilDate {
+  return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };
 }
 
 /** Instant réel de minuit à Alger. C'est le seul point du dépôt où une date

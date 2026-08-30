@@ -66,6 +66,16 @@ const AMENITIES: AmenityDTO[] = [
   { id: "2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e", key: "kosha", nameFr: "Kosha", nameAr: "كوشة العروسين", icon: null }
 ];
 
+// ⚠ UUID RÉELS : `venueUpdateSchema` valide `styleIds` en UUID. Une fixture en
+// « st-1 » échouait la validation AVANT tout appel réseau, et le test se serait
+// lu comme « le formulaire n'envoie rien » alors qu'il refusait la fixture.
+const STYLE_ROYAL = "2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e";
+const STYLE_JARDIN = "3c4d5e6f-7a8b-4c9d-8e1f-2a3b4c5d6e7f";
+const STYLES = [
+  { id: STYLE_ROYAL, key: "royal", nameFr: "Royal", nameAr: "ملكي", sortOrder: 1 },
+  { id: STYLE_JARDIN, key: "jardin", nameFr: "Jardin", nameAr: "حديقة", sortOrder: 2 }
+];
+
 const VENUE: VenueProDTO = {
   slotTemplates: [],
   id: "v1",
@@ -85,9 +95,13 @@ const VENUE: VenueProDTO = {
   capacityMax: 400,
   basePriceCents: 15_000_000,
   bookingMode: "SINGLE_SLOT",
+  depositRateBps: 3000,
+  depositAmountCents: null,
   publicationStatus: "DRAFT",
   status: "ACTIVE",
   amenityIds: [],
+  styleIds: [],
+  ceremonyType: null,
   photos: [],
   matterportModelId: null,
   createdAt: "2026-01-05T10:00:00.000Z",
@@ -123,6 +137,7 @@ function makeReferentials(overrides: Partial<ReferentialsClient> = {}): Referent
   return {
     listWilayas: vi.fn().mockResolvedValue(WILAYAS),
     listAmenities: vi.fn().mockResolvedValue(AMENITIES),
+    listVenueStyles: vi.fn().mockResolvedValue(STYLES),
     ...overrides
   };
 }
@@ -140,9 +155,16 @@ function renderCreate(venues: VenueProClient, referentials: ReferentialsClient =
   );
 }
 
-function renderEdit(venues: VenueProClient, referentials: ReferentialsClient = makeReferentials()) {
+/** ⚠ UIP-C — l'édition est un assistant : il faut dire À QUELLE ÉTAPE on entre.
+ *  Défaut 1 (« L'essentiel »), où vivent les champs généraux ; équipements et
+ *  styles sont passés à l'étape 3. */
+function renderEdit(
+  venues: VenueProClient,
+  referentials: ReferentialsClient = makeReferentials(),
+  etape = 1
+) {
   return render(
-    <MemoryRouter initialEntries={["/salles/v1"]}>
+    <MemoryRouter initialEntries={[`/salles/v1?etape=${etape}`]}>
       <AppProviders client={makeAuth()} venues={venues} referentials={referentials}>
         <Routes>
           <Route path="/salles/:id" element={<EditVenuePage />} />
@@ -178,7 +200,7 @@ describe("Prix — rejet décimal strict (invariant argent)", () => {
     renderCreate(venues);
     await fillRequired("150000.5");
 
-    fireEvent.click(screen.getByRole("button", { name: "Créer la salle" }));
+    fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
 
     expect(await screen.findByText("Le prix de base doit être un nombre entier de centimes.")).toBeInTheDocument();
     expect(venues.create).not.toHaveBeenCalled();
@@ -189,7 +211,7 @@ describe("Prix — rejet décimal strict (invariant argent)", () => {
     renderCreate(venues);
     await fillRequired("150000,5");
 
-    fireEvent.click(screen.getByRole("button", { name: "Créer la salle" }));
+    fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
 
     expect(await screen.findByText("Le prix de base doit être un nombre entier de centimes.")).toBeInTheDocument();
     expect(venues.create).not.toHaveBeenCalled();
@@ -200,7 +222,7 @@ describe("Prix — rejet décimal strict (invariant argent)", () => {
     renderCreate(venues);
     await fillRequired("150000");
 
-    fireEvent.click(screen.getByRole("button", { name: "Créer la salle" }));
+    fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
 
     await waitFor(() =>
       expect(venues.create).toHaveBeenCalledWith(expect.objectContaining({ basePriceCents: 15_000_000, cityId: CITY_ID }))
@@ -213,18 +235,24 @@ describe("Prix — rejet décimal strict (invariant argent)", () => {
 });
 
 describe("Création — rejeu de validate() et mapping des erreurs API", () => {
-  it("champs vides : erreurs Zod localisées sur les champs, aucun appel API", async () => {
+  it("⚠ champs vides : « Suivant » est INACTIF avec sa raison écrite, aucun appel API (UIP-C)", async () => {
+    // ⚠ CHANGEMENT ASSUMÉ, exigé par le cadrage : « Suivant n'est actif que si
+    // l'étape courante est valide ». Sur un formulaire vierge, il n'y a donc plus
+    // de clic à faire — et donc plus de messages « requis » par champ, qui
+    // accuseraient l'utilisateur de n'avoir pas encore tapé. Ce qu'il voit : le
+    // bouton grisé ET la liste de ce qui manque.
+    // Les messages par champ, eux, réapparaissent dès qu'un champ est REMPLI mais
+    // invalide — c'est le cas mesuré par les tests de prix décimal juste au-dessus.
     const venues = makeVenues();
     renderCreate(venues);
-    await screen.findByLabelText("Nom (français)");
+    await screen.findByLabelText(/Nom \(français\)/);
 
-    fireEvent.click(screen.getByRole("button", { name: "Créer la salle" }));
-
-    expect(await screen.findByText("Le nom en français est requis.")).toBeInTheDocument();
-    expect(screen.getByText("La commune est requise.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Créer la salle et continuer" })).toBeDisabled();
+    expect(
+      screen.getByText(/ces cinq informations sont nécessaires pour que la salle existe/)
+    ).toBeInTheDocument();
     expect(venues.create).not.toHaveBeenCalled();
   });
-
   it("CITY_NOT_FOUND → message porté par le champ Commune", async () => {
     const venues = makeVenues({
       create: vi.fn().mockRejectedValue(new ApiError(400, "CITY_NOT_FOUND", "venue.errors.cityNotFound"))
@@ -232,7 +260,7 @@ describe("Création — rejeu de validate() et mapping des erreurs API", () => {
     renderCreate(venues);
     await fillRequired();
 
-    fireEvent.click(screen.getByRole("button", { name: "Créer la salle" }));
+    fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
 
     expect(await screen.findByText("La commune sélectionnée est introuvable.")).toBeInTheDocument();
     expect(screen.getByLabelText("Commune")).toHaveAttribute("aria-invalid", "true");
@@ -278,12 +306,20 @@ describe("Référentiels (ajout B) — chargement, échec, submit bloqué", () =
       await screen.findByText("Impossible de charger les communes et les équipements. Réessayez.")
     ).toBeInTheDocument();
     // Sans commune, pas de cityId : le bouton d'envoi reste inerte.
-    expect(screen.getByRole("button", { name: "Créer la salle" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Créer la salle et continuer" })).toBeDisabled();
 
     fireEvent.click(screen.getByRole("button", { name: "Réessayer" }));
 
-    await waitFor(() => expect(screen.getByRole("button", { name: "Créer la salle" })).toBeEnabled());
-    expect(listWilayas).toHaveBeenCalledTimes(2);
+    // ⚠ Le retry ne suffit PLUS à réactiver le bouton, et c'est voulu : depuis
+    // UIP-C la validité de l'étape est évaluée en continu, pas au clic. Les
+    // communes revenues, il reste les cinq champs à remplir. On mesure donc les
+    // deux choses séparément — le rechargement a bien eu lieu, ET le bouton
+    // s'active une fois l'étape réellement valide.
+    await waitFor(() => expect(listWilayas).toHaveBeenCalledTimes(2));
+    expect(screen.getByRole("button", { name: "Créer la salle et continuer" })).toBeDisabled();
+
+    await fillRequired();
+    await waitFor(() => expect(screen.getByRole("button", { name: "Créer la salle et continuer" })).toBeEnabled());
     expect(venues.create).not.toHaveBeenCalled();
   });
 });
@@ -311,15 +347,21 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     expect(screen.getByText("Cette salle n'existe pas ou n'est plus disponible.")).toBeInTheDocument();
   });
 
-  it("aucune modification : message dédié, AUCUN appel PATCH (le corps vide serait un 400)", async () => {
+  it("⚠ aucune modification : on AVANCE sans PATCH — l'avertissement a disparu (UIP-C)", async () => {
+    // ⚠ CHANGEMENT DE COMPORTEMENT ASSUMÉ. Sur une page unique, « Aucune
+    // modification à enregistrer » répondait à un clic sur « Enregistrer ». Dans
+    // un assistant, traverser une étape sans rien y toucher est le cas NORMAL :
+    // avertir à chaque « Suivant » apprendrait à ne plus lire les messages.
+    // Ce qui NE change pas : aucun PATCH, un corps vide serait un 400.
     const venues = makeVenues();
     renderEdit(venues);
     await screen.findByDisplayValue("Salle El Ryad");
 
-    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
 
-    expect(await screen.findByText("Aucune modification à enregistrer.")).toBeInTheDocument();
+    await screen.findByRole("heading", { name: "Emplacement", level: 2 });
     expect(venues.update).not.toHaveBeenCalled();
+    expect(screen.queryByText("Aucune modification à enregistrer.")).not.toBeInTheDocument();
   });
 
   it("diff RÉEL : seul le champ modifié est envoyé (et le slug reste en lecture seule)", async () => {
@@ -328,40 +370,92 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
 
     expect(await screen.findByDisplayValue("salle-el-ryad")).toHaveAttribute("readonly");
     fireEvent.change(screen.getByLabelText("Capacité maximale"), { target: { value: "500" } });
-    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
 
     await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { capacityMax: 500 }));
   });
 
   it("équipements : remplacement d'ENSEMBLE complet, jamais un delta", async () => {
     const venues = makeVenues();
-    renderEdit(venues);
+    // Étape 3 — équipements et styles ont quitté l'écran unique.
+    renderEdit(venues, makeReferentials(), 3);
 
     const wifi = await screen.findByRole("checkbox", { name: "Wifi" });
     fireEvent.click(wifi);
-    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
 
     await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { amenityIds: [AMENITY_ID] }));
+  });
+
+  it("A13c — styles : remplacement d'ENSEMBLE, comme les équipements (D65)", async () => {
+    const venues = makeVenues();
+    // Étape 3 — équipements et styles ont quitté l'écran unique.
+    renderEdit(venues, makeReferentials(), 3);
+
+    fireEvent.click(await screen.findByRole("checkbox", { name: "Jardin" }));
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
+
+    await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { styleIds: [STYLE_JARDIN] }));
+  });
+
+  it("A13c — le type de mariage part tel quel quand le pro le déclare (D66)", async () => {
+    const venues = makeVenues();
+    // Étape 3 — équipements et styles ont quitté l'écran unique.
+    renderEdit(venues, makeReferentials(), 3);
+
+    fireEvent.change(await screen.findByLabelText("Type de mariage"), { target: { value: "OUTDOOR" } });
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
+
+    await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { ceremonyType: "OUTDOOR" }));
+  });
+
+  it("A13c — EFFACER le type envoie `null`, jamais rien : omettre voudrait dire « ne change pas »", async () => {
+    const venues = makeVenueClientDouble(
+      { ...VENUE, ceremonyType: "MIXED" },
+      { update: vi.fn().mockResolvedValue(VENUE) }
+    );
+    // UIP-C — cette section vit à l'étape 3 de l'assistant.
+    renderEdit(venues, makeReferentials(), 3);
+
+    const select = await screen.findByLabelText("Type de mariage");
+    expect(select).toHaveValue("MIXED");
+    fireEvent.change(select, { target: { value: "" } });
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
+
+    await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { ceremonyType: null }));
+  });
+
+  it("A13c — « Non précisé » existe : D66 rend la colonne nullable pour que le non-dit reste distinct d'« Intérieur »", async () => {
+    // UIP-C — cette section vit à l'étape 3 de l'assistant.
+    renderEdit(makeVenues(), makeReferentials(), 3);
+    const select = await screen.findByLabelText("Type de mariage");
+
+    expect(select).toHaveValue("");
+    expect(screen.getByRole("option", { name: "Non précisé" })).toBeInTheDocument();
   });
 
   it("AMENITY_NOT_FOUND → message porté par la section Équipements", async () => {
     const venues = makeVenues({
       update: vi.fn().mockRejectedValue(new ApiError(400, "AMENITY_NOT_FOUND", "venue.errors.amenityNotFound"))
     });
-    renderEdit(venues);
+    // UIP-C — cette section vit à l'étape 3 de l'assistant.
+    renderEdit(venues, makeReferentials(), 3);
 
     fireEvent.click(await screen.findByRole("checkbox", { name: "Wifi" }));
-    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
 
     expect(await screen.findByText("Un des équipements sélectionnés est introuvable.")).toBeInTheDocument();
   });
 
   it("statut D33 dans le formulaire : même contrôle à 3 entrées, enregistré par le diff", async () => {
     const venues = makeVenues();
-    renderEdit(venues);
+    // UIP-C — cette section vit à l'étape 7 de l'assistant.
+    renderEdit(venues, makeReferentials(), 7);
 
     const select = await screen.findByLabelText("Visibilité");
     fireEvent.change(select, { target: { value: "TEMPORARILY_UNAVAILABLE" } });
+    // Dernière étape : le bouton s'appelle « Enregistrer », pas « Suivant » —
+    // il n'y a plus rien après.
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
 
     await waitFor(() => expect(venues.update).toHaveBeenCalledWith("v1", { status: "TEMPORARILY_UNAVAILABLE" }));
@@ -390,8 +484,10 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
         ]
       })
     });
-    const { container } = renderEdit(venues);
-    await screen.findByDisplayValue("Salle El Ryad");
+    // UIP-C — le volet photos vit à l'étape 6 de l'assistant.
+    const { container } = renderEdit(venues, makeReferentials(), 6);
+    // ⚠ L'ancre ne peut plus être le champ « nom » : il est à l'étape 1.
+    await screen.findByRole("heading", { name: "Photos et visite virtuelle", level: 2 });
 
     const img = container.querySelector("img");
     expect(img).not.toBeNull();
@@ -408,7 +504,8 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
     const venues = makeVenues({
       updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: "SxQL3iGyoDo" })
     });
-    renderEdit(venues);
+    // UIP-C — cette section vit à l'étape 6 de l'assistant.
+    renderEdit(venues, makeReferentials(), 6);
 
     const champ = await screen.findByLabelText("Lien Matterport");
     fireEvent.change(champ, { target: { value: "https://my.matterport.com/show/?m=SxQL3iGyoDo" } });
@@ -426,7 +523,8 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
 
   it("format invalide au blur : message inline, AUCUN appel API tant qu'on n'enregistre pas", async () => {
     const venues = makeVenues();
-    renderEdit(venues);
+    // UIP-C — cette section vit à l'étape 6 de l'assistant.
+    renderEdit(venues, makeReferentials(), 6);
 
     const champ = await screen.findByLabelText("Lien Matterport");
     fireEvent.change(champ, { target: { value: "https://exemple.dz/show/?m=SxQL3iGyoDo" } });
@@ -437,7 +535,8 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
   });
 
   it("salle SANS visite : ni bouton de retrait, ni lien externe (rien à retirer)", async () => {
-    renderEdit(makeVenues());
+    // UIP-C — cette section vit à l'étape 6 de l'assistant.
+    renderEdit(makeVenues(), makeReferentials(), 6);
     await screen.findByLabelText("Lien Matterport");
     expect(screen.queryByRole("button", { name: "Retirer la visite" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Ouvrir la visite dans un nouvel onglet" })).not.toBeInTheDocument();
@@ -448,7 +547,8 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
       getMine: vi.fn().mockResolvedValue({ ...VENUE, matterportModelId: "SxQL3iGyoDo" }),
       updateVirtualTour: vi.fn().mockResolvedValue({ matterportModelId: null })
     });
-    renderEdit(avecVisite);
+    // UIP-C — cette section vit à l'étape 6 de l'assistant.
+    renderEdit(avecVisite, makeReferentials(), 6);
 
     const lien = await screen.findByRole("link", { name: "Ouvrir la visite dans un nouvel onglet" });
     // L'URL est RECONSTRUITE par nous depuis l'ID, jamais la saisie du pro.
@@ -466,7 +566,8 @@ describe("Édition — PATCH par diff, 404 indistinct, équipements", () => {
         .fn()
         .mockRejectedValue(new ApiError(409, "MATTERPORT_ALREADY_LINKED", "venue.errors.matterportAlreadyLinked"))
     });
-    renderEdit(venues);
+    // UIP-C — cette section vit à l'étape 6 de l'assistant.
+    renderEdit(venues, makeReferentials(), 6);
 
     fireEvent.change(await screen.findByLabelText("Lien Matterport"), { target: { value: "SxQL3iGyoDo" } });
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer la visite" }));
@@ -541,7 +642,7 @@ describe("Prix — affichage groupé + unité (lisibilité de la saisie)", () =>
     // unité affichée à côté du champ, purement décorative
     expect(screen.getByText("DA")).toHaveAttribute("aria-hidden", "true");
 
-    fireEvent.click(screen.getByRole("button", { name: "Créer la salle" }));
+    fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
 
     await waitFor(() => expect(venues.create).toHaveBeenCalled());
     const payload = vi.mocked(venues.create).mock.calls[0]?.[0] as { basePriceCents?: number } | undefined;
@@ -585,9 +686,13 @@ describe("Sortie de page (Lot UI-P1)", () => {
     // s'arrête pas au submit (photos et visite virtuelle suivent).
     const sortie = screen.getAllByRole("link", { name: /Retour à mes salles/ }).find((a) => a.classList.contains("btn"));
     expect(sortie).toBeDefined();
-    expect(sortie).toHaveAttribute("href", "/");
-    const form = container.querySelector("form");
-    expect(form?.contains(sortie as Node)).toBe(false);
+    expect(sortie).toHaveAttribute("href", "/salles");
+    // ⚠ Plus de `<form>` sur cet écran (UIP-C) : les étapes 4 à 7 montent des
+    // sections qui ont leurs propres submits. L'invariant reste le même, exprimé
+    // sur l'assistant : la sortie de page vit EN DEHORS de lui.
+    const assistant = container.querySelector(".wizard");
+    expect(assistant).not.toBeNull();
+    expect(assistant?.contains(sortie as Node)).toBe(false);
   });
 
   it("création : le bouton de retour est à côté de l'action principale", async () => {
@@ -596,7 +701,7 @@ describe("Sortie de page (Lot UI-P1)", () => {
 
     const sortie = screen.getAllByRole("link", { name: /Retour à mes salles/ }).find((a) => a.classList.contains("btn"));
     expect(sortie).toBeDefined();
-    expect(sortie).toHaveAttribute("href", "/");
+    expect(sortie).toHaveAttribute("href", "/salles");
     expect(sortie?.querySelector("svg[data-mirror-rtl]")).not.toBeNull();
   });
 });

@@ -6,7 +6,7 @@
 import { useId, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import { ZwadjLogo } from "@zwadj/ui";
+import { ThemeToggle, ZwadjLogo } from "@zwadj/ui";
 import { ApiError, NetworkError } from "../lib/auth-client";
 
 export function LangToggle() {
@@ -49,7 +49,10 @@ export function ProAuthShell({
           <div style={{ position: "relative" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBlockEnd: 24 }}>
               <ZwadjLogo large iconSize={30} suffix="PRO" />
-              <LangToggle />
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <ThemeToggle label={t("auth.ui.pro.theme")} />
+                <LangToggle />
+              </div>
             </div>
             <h2 className="auth-title">{title}</h2>
             <p className="auth-subtitle">{subtitle}</p>

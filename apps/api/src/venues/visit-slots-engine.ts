@@ -5,14 +5,17 @@
 // minuit ; l'appelant fournit `dayStartMs` et `nowMs`.
 //
 // ── Ce que ce moteur ne fait PAS ─────────────────────────────────────────────
-// Il n'arbitre aucun conflit. D47 tolère le chevauchement des visites : deux
-// familles peuvent visiter à 15:00, il n'y a pas de contrainte d'exclusion en
-// base et il n'y en aura pas ici. `taken` est INFORMATIF — il permet à un
-// client de préférer un horaire libre, il ne lui interdit rien.
+// Il n'arbitre aucun conflit, et ce n'est pas de la tolérance : depuis D59 (qui
+// supersède D47) un créneau CONFIRMÉ est EXCLUSIF, et cette exclusivité est
+// garantie EN BASE par l'index unique partiel `visit_bookings_no_double_confirmed`.
+// Ce moteur ne fait que MARQUER : `taken` dit « occupé », il ne refuse rien —
+// c'est l'insertion qui échoue, pas le découpage. Un créneau pris reste rendu
+// plutôt que retiré : voir qu'un horaire est occupé aide à en choisir un autre.
 //
 // Il ne connaît pas non plus les réservations de fête : une salle louée le
 // samedi peut parfaitement se visiter le dimanche. Les deux systèmes ne se
-// parlent pas (D47).
+// parlent pas (D47) — ce qui reste vrai ; seule la tolérance au chevauchement a
+// été renversée.
 import { VISIT_DURATION_MINUTES } from "@zwadj/types";
 
 const MINUTE_MS = 60_000;
