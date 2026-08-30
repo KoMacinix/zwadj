@@ -24,9 +24,6 @@
   "pro connexion (sombre)": [],
   "pro liste des salles": [],
   "pro tableau de bord": [],
-  "pro nouvelle salle": [
-    "color-contrast @ h2",
-    "color-contrast @ p"
-  ],
+  "pro nouvelle salle": [],
   "pro compte": []
 }

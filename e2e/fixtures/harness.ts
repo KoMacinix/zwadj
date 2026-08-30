@@ -23,6 +23,53 @@ export interface Account {
 const PASSWORD = "Motdepasse1";
 
 /**
+ * ⚠ RENDRE `TypeError: fetch failed` LISIBLE — D265. CE N'EST PAS UN CORRECTIF.
+ *
+ * Le run du 28/08 a produit DOUZE échecs `TypeError: fetch failed` sur
+ * `/auth/register`, et ce message ne dit RIEN : `fetch` de Node est une
+ * enveloppe qui masque l'erreur réelle dans `.cause`. `ECONNREFUSED` (serveur
+ * mort), `ECONNRESET` / `UND_ERR_SOCKET` (socket keep-alive fermée côté
+ * serveur pendant que le client la réutilise) et `UND_ERR_HEADERS_TIMEOUT`
+ * (réponse trop lente) portent le même texte et appellent trois corrections
+ * différentes.
+ *
+ * ⛔ ON NE CORRIGE PAS UNE PANNE QU'ON N'A PAS NOMMÉE. Cette enveloppe-ci ne
+ * change aucun comportement : elle déplie la chaîne des causes, mesure la durée
+ * et pose une échéance explicite. Le prochain run dira LAQUELLE des trois.
+ *
+ * ⚠ AUCUNE NOUVELLE TENTATIVE ICI, délibérément. `playwright.config.ts` pose
+ * `retries: 0` avec un motif écrit ; réessayer en douce dans le harnais
+ * contournerait cette décision par la petite porte. Si l'instabilité est réelle,
+ * elle doit rester visible.
+ */
+async function postJson(url: string, body: unknown): Promise<Response> {
+  const debut = Date.now();
+  try {
+    return await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+      // Sans échéance, `fetch` attend jusqu'au timeout du TEST : le message
+      // parle alors de la spec et jamais de l'appel qui n'a pas fini.
+      signal: AbortSignal.timeout(30_000)
+    });
+  } catch (erreur) {
+    const causes: string[] = [];
+    let courante: unknown = erreur;
+    while (courante instanceof Error) {
+      const code = (courante as NodeJS.ErrnoException).code;
+      causes.push(`${courante.name}${code ? ` [${code}]` : ""}: ${courante.message}`);
+      courante = courante.cause;
+    }
+    throw new Error(
+      `POST ${url} a échoué après ${Date.now() - debut} ms.\n` +
+        `Chaîne des causes (la DERNIÈRE est la vraie) :\n  ${causes.join("\n  ")}`,
+      { cause: erreur }
+    );
+  }
+}
+
+/**
  * Crée un compte VÉRIFIÉ, prêt à se connecter.
  *
  * L'inscription passe par l'API réelle (le mot de passe est donc haché par le
@@ -37,11 +84,7 @@ export async function createVerifiedAccount(role: "CLIENT" | "PRO"): Promise<Acc
       ? { role, email, password: PASSWORD, businessName: "Salle e2e", phone: "+213550000001" }
       : { role, email, password: PASSWORD, firstName: "Aya", lastName: "Benali" };
 
-  const res = await fetch(`${API}/api/v1/auth/register`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+  const res = await postJson(`${API}/api/v1/auth/register`, payload);
   if (res.status !== 201) throw new Error(`register e2e a échoué (${res.status}) : ${await res.text()}`);
 
   const db = new Client({ connectionString: DATABASE_URL });

@@ -49,6 +49,48 @@ const SURFACES = [
   { nom: "pro-dark", url: `${PRO}/auth/connexion`, theme: "dark" as const }
 ];
 
+/**
+ * ⚠ TABLE EXPLICITE DES VARIABLES LOCALES (D265) — surface, sélecteur, variables.
+ *
+ * LE DÉFAUT QU'ELLE RÉPARE. B7 collectait les NOMS dans toutes les règles de la
+ * feuille, puis résolvait TOUT sur `document.documentElement`. Une variable
+ * déclarée ailleurs qu'à la racine y rend la CHAÎNE VIDE — et la vide était
+ * enregistrée comme si c'était une mesure. Concrètement, `--hm-gutter` vit sur
+ * `.hm` : sa valeur pouvait passer de `clamp(18px, 5vw, 80px)` à `0` sans que
+ * B7 bronche, puisque la racine rendait `""` dans les deux cas. ⛔ **Un test
+ * vert qui ne mesure rien**, et le premier symptôme visible a été un faux
+ * positif : `--hm-gutter: (absent) → ` au run du 28/08.
+ *
+ * ⚠ POURQUOI UNE TABLE ÉCRITE À LA MAIN, alors que le reste du fichier dérive
+ * tout de la feuille. Déduire automatiquement un élément porteur depuis un
+ * sélecteur CSS quelconque demanderait de résoudre `:hover`, `>`, `:not()`, les
+ * media queries — et rendrait la mesure dépendante d'une heuristique qu'il
+ * faudrait tester elle-même. Une table de trois lignes se lit ; une heuristique
+ * se débogue. **Décision Ko.**
+ *
+ * ⚠ ELLE NE PEUT PAS DÉRIVER EN SILENCE. Une garde plus bas confronte cette
+ * table à la RÉALITÉ : toute variable déclarée dans la feuille qui ne résout
+ * pas à la racine ET ne figure pas ici fait échouer B7. Ajouter une variable
+ * locale sans l'inscrire est donc impossible sans s'en apercevoir.
+ */
+interface VariablesLocales {
+  /** Sélecteur d'un élément RÉELLEMENT présent sur la surface. */
+  readonly selecteur: string;
+  readonly variables: readonly string[];
+}
+
+const LOCALES: Record<string, readonly VariablesLocales[]> = {
+  // `<main className="hm">` — `home-view.tsx` l. 99. Consommée par `.hm-hero`
+  // et `.hm-section` pour leur gouttière horizontale.
+  "client-light": [{ selecteur: ".hm", variables: ["--hm-gutter"] }],
+  "client-dark": [{ selecteur: ".hm", variables: ["--hm-gutter"] }],
+  // Mesuré à l'écriture : `apps/pro/src/theme.css` et `packages/ui/styles.css`
+  // ne déclarent AUCUNE variable hors `:root`. Listes vides VOLONTAIRES, pas
+  // oubliées — la garde de couverture le prouvera si cela change.
+  "pro-light": [],
+  "pro-dark": []
+};
+
 type Releve = Record<string, Record<string, string>>;
 
 function lireBaseline(): Releve {
@@ -92,7 +134,7 @@ test.describe("B7 — contrat des tokens résolus (D124)", () => {
        * Un token ajouté demain entre dans le relevé le jour même ; une liste
        * recopiée aurait cessé d'être complète au premier lot suivant.
        */
-      const tokens = await page.evaluate(() => {
+      const mesure = await page.evaluate((locales: VariablesLocales[]) => {
         const noms = new Set<string>();
         for (const feuille of Array.from(document.styleSheets)) {
           let regles: CSSRuleList;
@@ -108,17 +150,78 @@ test.describe("B7 — contrat des tokens résolus (D124)", () => {
             }
           }
         }
-        const calcule = getComputedStyle(document.documentElement);
+
+        // ── 1. TOKENS GLOBAUX ET DE THÈME : résolus sur la racine ────────────
+        // Une valeur vide n'entre PLUS dans le relevé : elle signifie « cette
+        // variable ne vit pas ici », pas « elle vaut rien ».
+        const racine = getComputedStyle(document.documentElement);
         const out: Record<string, string> = {};
+        const nonResolus: string[] = [];
         for (const nom of Array.from(noms).sort()) {
-          out[nom] = calcule.getPropertyValue(nom).trim();
+          const valeur = racine.getPropertyValue(nom).trim();
+          if (valeur === "") nonResolus.push(nom);
+          else out[nom] = valeur;
         }
-        return out;
-      });
+
+        // ── 2. VARIABLES LOCALES : résolues sur leur élément RÉEL ────────────
+        // Clé préfixée par le sélecteur : `.hm --hm-gutter`. Sans le préfixe,
+        // deux éléments portant la même variable s'écraseraient dans le relevé.
+        const selecteursAbsents: string[] = [];
+        const valeursVides: string[] = [];
+        for (const entree of locales) {
+          const element = document.querySelector(entree.selecteur);
+          if (element === null) {
+            selecteursAbsents.push(entree.selecteur);
+            continue;
+          }
+          const calcule = getComputedStyle(element);
+          for (const variable of entree.variables) {
+            const valeur = calcule.getPropertyValue(variable).trim();
+            if (valeur === "") valeursVides.push(`${entree.selecteur} ${variable}`);
+            else out[`${entree.selecteur} ${variable}`] = valeur;
+          }
+        }
+
+        return { tokens: out, nonResolus, selecteursAbsents, valeursVides };
+      }, [...(LOCALES[surface.nom] ?? [])]);
+
+      const { tokens } = mesure;
 
       // Un relevé vide voudrait dire que la feuille partagée n'est pas chargée —
       // et le test passerait en comparant deux vides.
       expect(Object.keys(tokens).length, "aucun token résolu : la feuille est-elle chargée ?").toBeGreaterThan(20);
+
+      // ⛔ TROIS GARDES SUR LA TABLE ELLE-MÊME. Sans elles, la table pourrait
+      //   pourrir en silence et B7 redeviendrait vert-sans-mesure — le défaut
+      //   même qu'on est en train de réparer.
+
+      // (a) Le sélecteur existe-t-il encore sur cette surface ? Une classe
+      //     renommée rendrait la mesure muette au lieu de rouge.
+      expect(
+        mesure.selecteursAbsents,
+        `Sélecteur(s) introuvable(s) sur ${surface.nom} : ${mesure.selecteursAbsents.join(", ")}.\n` +
+          `La table LOCALES pointe vers un élément qui n'existe plus sur cette page.`
+      ).toEqual([]);
+
+      // (b) La variable est-elle encore portée par cet élément ? Une valeur vide
+      //     ICI veut dire que la table est périmée, pas que la valeur est vide.
+      expect(
+        mesure.valeursVides,
+        `Variable(s) locale(s) sans valeur sur leur élément (${surface.nom}) : ${mesure.valeursVides.join(", ")}.`
+      ).toEqual([]);
+
+      // (c) ⛔ LA GARDE QUI EMPÊCHE LA TABLE DE DÉRIVER. Toute variable déclarée
+      //     dans la feuille qui ne résout PAS à la racine est locale par
+      //     définition. Si elle n'est pas dans la table, personne ne la mesure.
+      const couvertes = new Set((LOCALES[surface.nom] ?? []).flatMap((e) => [...e.variables]));
+      const orphelines = mesure.nonResolus.filter((n) => !couvertes.has(n)).sort();
+      expect(
+        orphelines,
+        `Variable(s) locale(s) NON MESURÉE(S) sur ${surface.nom} : ${orphelines.join(", ")}.\n` +
+          `Elles sont déclarées hors de :root, donc invisibles depuis la racine.\n` +
+          `⇒ Inscrire chacune dans la table LOCALES avec le sélecteur de son élément porteur.\n` +
+          `   Ne PAS les déplacer vers :root pour faire taire ce message : la cascade en dépend.`
+      ).toEqual([]);
 
       releve[surface.nom] = tokens;
 

@@ -1,10 +1,31 @@
 /* Zwadj CLIENT — accent chaleureux/corail (Lot 7/D26, AGENTS.md).
    Importé APRÈS @zwadj/ui/styles.css (qui ne définit AUCUN accent).
-   AA : #DA3642 passe le contraste texte sur BLANC PUR uniquement — jamais en
-   texte sur --bg-2/--accent-soft (réservé aux boutons pleins + non-textuel). */
+
+   ⛔ AA : #DA3642 NE PASSE EN TEXTE QUE SUR BLANC PUR. Cette règle était déjà
+   écrite ici, et elle a quand même été enfreinte — parce qu'elle vivait dans un
+   commentaire, et qu'un commentaire ne rougit pas. Mesuré (D264) :
+
+     fond                     --accent #da3642     --accent-text #b32c36
+     --surface #ffffff        4,58:1  passe        6,31:1  passe
+     --bg      #fafafa        4,39:1  ÉCHEC        6,04:1  passe
+     --bg-2    #f4f4f5        4,16:1  ÉCHEC        5,74:1  passe
+
+   Or `body` porte `background: var(--bg)` : tout conteneur sans fond propre est
+   posé sur #fafafa. La règle « accent en texte » n'était donc tenable NULLE
+   PART hors des surfaces blanches, et B8 l'a prouvé sur trois sélecteurs.
+
+   ⚠ D'OÙ `--accent-text`, ET POURQUOI CE N'EST PAS `var(--accent-strong)`.
+   Les deux valent #b32c36 aujourd'hui, et c'est une COÏNCIDENCE, pas une
+   dépendance : `--accent-strong` est la couleur de SURVOL/ACTIF. La faire
+   porter aussi le contraste du texte, c'est garantir qu'un jour un ajustement
+   de survol déplacera une conformité AA sans que personne ne le voie passer.
+   Un token, un rôle. */
 :root {
   --accent: #da3642;
   --accent-strong: #b32c36;
+  /* ⛔ ACCENT UTILISABLE EN TEXTE — 6,04:1 sur --bg, 5,74:1 sur --bg-2 (D264).
+     Valeur littérale VOULUE : voir l'en-tête, ce n'est pas `--accent-strong`. */
+  --accent-text: #b32c36;
   --accent-soft: #fdeef0; /* = --rose-pale, recalibrée pour #DA3642 */
   --on-accent: #ffffff;
 
@@ -31,6 +52,11 @@
 :root {
   --dark-accent: #e07a84;
   --dark-accent-strong: #ec9ba4;
+  /* ⚠ EN SOMBRE, LE TOKEN DE TEXTE SE CONFOND AVEC L'ACCENT, et c'est mesuré :
+     #E07A84 rend 6,55:1 sur --bg, 5,91:1 sur --surface, 5,32:1 sur --bg-2 —
+     l'accent sombre EST déjà lisible en texte (D64). Dérivé, pas recopié : une
+     valeur écrite en dur ici cesserait de suivre l'accent au premier ajustement. */
+  --dark-accent-text: var(--dark-accent);
   /* Pendant sombre de --accent-soft : un voile PROFOND, pas un rose pâle. */
   --dark-accent-soft: #2a1416;
   --dark-on-accent: #111111;
@@ -42,6 +68,7 @@
 :root[data-theme="dark"] {
   --accent: var(--dark-accent);
   --accent-strong: var(--dark-accent-strong);
+  --accent-text: var(--dark-accent-text);
   --accent-soft: var(--dark-accent-soft);
   --on-accent: var(--dark-on-accent);
   --rose-pale: var(--dark-rose-pale);
@@ -875,7 +902,9 @@
 .venue-card-price {
   font-size: 13px;
   font-weight: 600;
-  color: var(--accent);
+  /* 13 px sur #fafafa (la carte n'a pas de fond propre) : --accent y rend
+     4,39:1, sous le seuil AA de 4,5:1 pour du texte < 18 px. */
+  color: var(--accent-text);
   white-space: nowrap;
 }
 
@@ -920,7 +949,9 @@
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* 12 px sur le dégradé --bg → --bg-2 du héros : 4,39:1 à 4,16:1 selon la
+     hauteur. Aucun point du dégradé ne passait. */
+  color: var(--accent-text);
 }
 .hm-ornament {
   inline-size: 28px;
@@ -1166,7 +1197,7 @@
   font-size: 12px;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.2em;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .hm-step-t {
   margin: 0 0 6px;

@@ -1282,10 +1282,10 @@ ensuite. Ni l'archive téléversée ni le dépôt de Ko ne les contenaient.
 et vérifier en fin de lot que le diff ne contient qu'eux.
 
 ⛔ **UN NUMÉRO DE DÉCISION SE PREND EN LISANT `ZWADJ_CONTINUITE.md`.** Dernier
-attribué au 28/08/2026 : **D263**.
+attribué au 28/08/2026 : **D267**.
 
 ⛔ **LES HARNAIS SONT DANS `neutralisation/`** et se lancent depuis la RACINE :
-`python3 neutralisation/neutralize-xxx.py`. 19 scripts, 167 cibles.
+`python3 neutralisation/neutralize-xxx.py`. 20 scripts, 170 cibles.
 
 **Ordre recommandé**, du plus risqué au moins risqué :
 
@@ -1781,6 +1781,117 @@ Trois régressions constatées sur le zip de Ko, **un seul mécanisme** : UI-D5 
 - [ ] **Toute borne côté front est importée du contrat**, jamais recopiée — les fenêtres se comptent **bornes incluses** (D147) [PROCESS][P0]
 - [ ] **Recopier une référence, c'est parfois recopier la règle qu'on prétend réfuter** : deux fixtures d'acompte valaient pile 30 % du total, dont celles de la maquette, et ne prouvaient donc rien contre `Math.round(total * 0.3)` [PROCESS][P1]
 
+
+## Lot R1 — réduction documentaire, part mécanique — 28/08/2026 (D267)
+
+✅ **FAIT.** `ZWADJ_CONTINUITE.md` : **3 289 → 1 277 lignes**, **250 → 109 Ko** (−57 %).
+Vingt-deux sections de journal déplacées **sans modification** vers trois fichiers de
+`docs/history/`. ⛔ **Preuve de non-perte ligne à ligne : 0 ligne perdue**, vérifiée
+contre l'archive reçue, pas contre ma propre sortie.
+
+⚠ **Huit lignes ont été RETIRÉES, et c'est déclaré** : la consigne « exactement trois
+fichiers » (caduque avec `CLAUDE.md`) et un état e2e périmé (« 33 passés », « E3 seul
+verrou restant »). Retrait explicite, jamais perte silencieuse.
+
+⛔ **Le registre des décisions D1 → D266 reste dans `ZWADJ_CONTINUITE.md`** : sans lui,
+le fichier qui fait autorité sur la numérotation aurait cessé de contenir les numéros.
+⚠ C'est un **LOCALISATEUR, pas un résumé** — chaque entrée est la ligne de définition
+relevée dans le texte, jamais une reformulation. Mesuré : **217 des 241** numéros ont
+une définition repérable, **22** n'ont qu'une mention (marquées `?`), **2** ne sont
+ancrées que par leur section.
+
+### Reste à faire — deux lots, tous deux pour Claude Code
+
+- [ ] **[GOUVERNANCE][P0]** **R2 — réconcilier `ZWADJ_BACKLOG.md`.** 645 cases ouvertes,
+      245 fermées. Les phases 0 à 24 sont le plan initial exhaustif : beaucoup de cases
+      sont faites mais jamais cochées. ⚠ **Ce n'est pas une coupe, c'est un AUDIT** —
+      chaque case se vérifie contre le code. Non mécanisable, donc pas faisable par
+      archives : c'est un lot Claude Code.
+- [ ] **[GOUVERNANCE][P1]** **R3 — `AGENTS.md` (619 lignes) vers `.claude/rules/`.**
+      La documentation vise moins de 200 lignes ; un import `@` charge tout à chaque
+      session, alors qu'une règle avec frontmatter `paths:` ne se charge que sur les
+      fichiers correspondants. ⚠ **À vérifier avec `/context` après découpage** : le
+      gain est nul s'il n'est pas mesuré.
+
+- [ ] **[GOUVERNANCE][P2]** ⚠ **DIX-SEPT NUMÉROS DE DÉCISION NE SONT DOCUMENTÉS NULLE
+      PART** — D7, D8, D13, D19 à D22, D24, D25, D28, D67, D104, D105, D108, D109, D112,
+      D113. Aucun des trois documents ne les cite. Le trou préexiste à R1. ⛔ **Ne pas
+      les reconstituer** : un numéro réinventé vaut moins que rien. Les rapporter et les
+      considérer comme brûlés.
+
+## Reports — bascule Claude Code — 28/08/2026 (D266)
+
+- [ ] **[E2E][P1]** ⛔ **`fetch failed` : DISPARU, PAS EXPLIQUÉ — NE PAS FERMER.**
+      Les douze échecs ne se sont pas reproduits sur le run complet (34 passés, 1 sauté).
+      Rien n'a été corrigé : seule l'instrumentation D265 a été ajoutée, et elle n'a pas
+      parlé faute d'occurrence. ⚠ **Une intermittence qui ne se reproduit pas une fois
+      n'est pas fermée** — l'absence est même compatible avec l'hypothèse de tête (course
+      keep-alive undici ↔ serveur Node, qui dépend du délai entre appels et de la charge).
+      L'instrumentation reste armée : à la prochaine occurrence, relever la CHAÎNE DES
+      CAUSES et rouvrir avec elle. Arbitrage toujours en attente sur une nouvelle
+      tentative en mise en place.
+
+- [x] **[E2E]** Les quinze tests B7/B8 masqués ont réellement tourné — compte réconcilié
+      (17 + 2 + 1 + 15 = 35 = 34 + 1). Les trois violations de contraste de D264 ont
+      disparu par la correction CSS, sans toucher à la référence.
+
+- [ ] **[GOUVERNANCE][P0]** **Réduction documentaire — premier objet : `AGENTS.md`.**
+      619 lignes importées à CHAQUE session Claude Code, contre les moins de 200
+      recommandées. Total des trois documents : **496 Ko ≈ 141 k tokens**. **642 cases
+      ouvertes** au backlog, dont une part correspond à des sujets déjà réglés.
+      Découpage par deltas ancrés avec preuve de non-perte, jamais par régénération.
+      Piste : `.claude/rules/` avec frontmatter `paths:` — ces règles ne se chargent que
+      sur les fichiers correspondants, alors qu'un import `@` charge toujours tout.
+
+- [ ] **[GOUVERNANCE][P1]** **Mémoire automatique de Claude Code : décision non prise.**
+      Active par défaut, elle recharge des notes que le modèle écrit lui-même. Face à une
+      discipline qui interdit de prendre un numéro de décision ailleurs que dans
+      `ZWADJ_CONTINUITE.md`, c'est une seconde autorité. La couper ou l'accepter
+      sciemment — mais trancher.
+
+## Reports du lot e2e — 28/08/2026 (D265)
+
+- [ ] **[E2E][P0]** ⛔ **`neutralize-b7.py` N'A PAS ÉTÉ EXÉCUTÉ** — Playwright n'est pas
+      lançable dans l'environnement de rédaction. Les trois cibles sont écrites et leurs
+      ancres vérifiées à l'unité, mais **tant que la campagne n'a pas tourné, la
+      correction B7 n'est pas prouvée**. ⚠ Compter ~3 à 5 min par cible : chaque
+      mutation relance une pile complète.
+
+- [ ] **[E2E][P0]** ⛔ **`fetch failed` : cause encore INCONNUE.** L'instrumentation la
+      nommera au prochain run. Hypothèse de tête : course keep-alive undici ↔ serveur
+      Node (asymétrie mesurée : seul `register` utilise le `fetch` global, `login` passe
+      par `context.request` et ne tombe pas). Seconde piste : `nest start --watch`
+      redémarre l'API pendant la suite — à écarter en lisant les journaux `webServer`
+      (« Nest application successfully started » ne doit apparaître qu'UNE fois).
+      ⚠ **Arbitrage en attente** : si la cause est bien la socket, faut-il une nouvelle
+      tentative sur les erreurs de CONNEXION dans le harnais ? Le `retries: 0` de la
+      config vise les ASSERTIONS ; réessayer une mise en place n'est pas la même chose.
+      Décision non prise.
+
+- [ ] **[A11Y][P1]** **`.filters-reset` et `.range-value` sont TOLÉRÉES depuis toujours**
+      dans `a11y.json` (`client recherche de salles`). `--accent-text` (D264) les rend
+      corrigeables : deux lignes de CSS, puis **retrait** de deux entrées de la référence.
+      Gain net, hors du périmètre de D264. `.results-count-n` et `.wz-eyebrow` ne sont pas
+      dans la référence — elles rougiront si l'étape 3 les atteint.
+
+## Reports du lot B8 — contraste Client — 28/08/2026 (D264)
+
+- [ ] **[A11Y][P0]** ⛔ **CINQ AUTRES TEXTES EN `--accent`, mesurés, non corrigés** :
+      `.filters-reset` (l. 104, 12 px, 4,16:1), `.range-value` (l. 194, 13 px, 4,16:1),
+      `.results-count-n` (l. 395, 4,39:1), `.wz-eyebrow` (l. 1270, 12 px, 4,39:1).
+      Toutes sous 4,5:1. Hors du périmètre validé de D264 (trois sélecteurs nommés).
+      ⚠ **B8 s'est arrêté au premier écran** : ses onze tests suivants n'ont pas tourné.
+      Ces quatre-là les feront rougir. Correctif identique : `var(--accent-text)`.
+      `.locale-switch:hover` (l. 68 et 298) passe — elle est sur `--surface`.
+
+- [ ] **[CSS][P3]** `.locale-switch:hover` est déclaré **deux fois à l'identique**
+      (`theme.css` l. 68 et l. 298). Sans effet observable, mais deux endroits pour
+      une même règle.
+
+- [ ] **[E2E][P1]** ⛔ **NE PAS RÉGÉNÉRER LA RÉFÉRENCE B7 AVANT LE CORRECTIF DU HARNAIS.**
+      L'ajout de `--accent-text` fera légitimement rougir B7. La régénérer maintenant
+      graverait au passage `--hm-gutter: ""` — une valeur vide prise pour une mesure.
+      Ordre : correctif B7, PUIS régénération.
 
 ## Reports du lot L1 — porte lint — 28/08/2026 (D263)
 
