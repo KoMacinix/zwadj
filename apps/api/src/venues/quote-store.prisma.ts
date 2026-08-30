@@ -4,7 +4,7 @@
 // BLOC, pas l'appel : couper une transaction en deux méthodes casserait
 // l'abstraction au premier besoin d'atomicité croisée (MD5 du cadrage S10).
 import { Injectable } from "@nestjs/common";
-import type { QuoteStatus } from "@zwadj/types";
+import { BookingStatus, type QuoteStatus } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import {
@@ -138,16 +138,15 @@ export class PrismaQuoteStore implements QuoteStore {
           // demande PENDING ne verrouille rien, donc l'EXCLUDE de chevauchement
           // ne peut pas refuser ici — le 409 de créneau pris arrive plus tard.
           //
-          // ⛔ DÉFAUT OUVERT (D263), NON CORRIGÉ ICI — chemin de l'argent, donc
-          //   arbitrage avant code. Cette valeur est une CHAÎNE LITTÉRALE alors
-          //   que `BookingStatus` existe dans `@zwadj/types` depuis S1. Mesuré :
-          //   le littéral « PENDING » est écrit TROIS FOIS et aucune des trois
-          //   ne dérive de l'autorité — ici, `quote-store.prisma.spec.ts` l. 254,
-          //   et `quotes.int-spec.ts` l. 449. Les trois s'accorderaient entre
-          //   elles et se tromperaient ensemble. C'est exactement la classe que
-          //   D259 a nommée sur `BookingSource`, et le contraire de la règle
-          //   « on compare à l'AUTORITÉ, jamais à une liste écrite dans le test ».
-          status: "PENDING",
+          // ⚠ LA VALEUR DÉRIVE DE L'AUTORITÉ (D268 — ferme le report de D263).
+          //   Le champ Prisma est typé sur l'énuméré généré : une divergence
+          //   entre `@zwadj/types` et le schéma tombe au TYPECHECK, ce qu'un
+          //   littéral ne pouvait pas faire — il ne s'accordait qu'avec les
+          //   autres littéraux. Classe nommée par D259 sur `BookingSource`.
+          //   ⚠ Le littéral survit à UN seul endroit, délibérément :
+          //   `quotes.int-spec.ts` le confronte à ce que PostgreSQL contient
+          //   VRAIMENT. Sa présence là-bas est exigée par une garde de source.
+          status: BookingStatus.PENDING,
           paymentMethod: donnees.paymentMethod,
           eventDate: donnees.eventDate,
           startsAt: donnees.startsAt,

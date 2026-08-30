@@ -10,7 +10,7 @@
 //
 // Le client venue s'injecte par `AppProviders`. `fireEvent`, comme les autres
 // suites pro (`@testing-library/user-event` n'est pas une dépendance du dépôt).
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { vi } from "vitest";
 import type { VenueProClient } from "@zwadj/api-client";
@@ -73,7 +73,13 @@ function makeVenues(slots: SlotTemplateDTO[], overrides: Partial<VenueProClient>
   return makeVenueClientDouble(venueWith(slots), overrides);
 }
 
+/** ⚠ La coquille est CAPTURÉE au montage parce que `ready()` doit attendre SA
+ *  décantation, et que `ProVenuesProvider` ne rend rien d'observable dans le
+ *  DOM : il n'expose son état qu'aux consommateurs du contexte. */
+let coquille: VenueProClient;
+
 function renderEdit(venues: VenueProClient) {
+  coquille = venues;
   return render(
     <MemoryRouter initialEntries={["/salles/v1?etape=4"]}>
       <AppProviders client={makeAuthDouble()} venues={venues} referentials={makeReferentialsDouble()}>
@@ -85,10 +91,45 @@ function renderEdit(venues: VenueProClient) {
   );
 }
 
-// ⚠ UIP-C — voir blocks-section : l'ancre est le titre de l'étape, pas un champ
-// de l'étape 1, que l'assistant ne monte plus en même temps.
-const ready = () => screen.findByRole("heading", { name: "Réservation", level: 2 });
 const section = () => screen.getByRole("region", { name: "Créneaux et prix" });
+
+/** ⛔ D269 — L'ATTENTE PORTE SUR L'ÉTAT FINAL RENDU, PAS SUR UN TITRE.
+ *
+ *  Cet écran monte DEUX chargements asynchrones que ce fichier ne teste pas, et
+ *  dont il n'attendait pourtant pas la fin :
+ *   · `BlocksSection` — `listAvailabilityBlocks()` puis `setBlocks()` ;
+ *   · `ProVenuesProvider`, monté par `AppProviders` — `listMine()` puis
+ *     `setState()`.
+ *  Le titre « Réservation » paraît AVANT eux. Le corps du test assertionnait
+ *  donc en SYNCHRONE et rendait la main ; les deux mises à jour tombaient après
+ *  la fin du test, React les signalait en « not wrapped in act(...) », et la
+ *  garde de `test-setup.ts` levait — de façon INTERMITTENTE, le compte
+ *  d'avertissements flottant selon l'ordonnancement (D256).
+ *  ⚠ Ce n'était un défaut ni de l'écran ni des composants : seulement de
+ *  l'endroit où ce fichier cessait d'attendre.
+ *
+ *  ⚠ LES DEUX ATTENTES SONT DES IDIOMES RELEVÉS DU DÉPÔT, PAS INVENTÉS :
+ *   · le texte de chargement qui disparaît — `blocks-section.test.tsx` ;
+ *   · la file de microtâches vidée DANS `act` — `a3-unexpected-responses.test.tsx`,
+ *     seul moyen d'attendre un composant qui ne rend rien d'observable.
+ *
+ *  ⛔ NE PAS remplacer ceci par un plafond dans `PLAFONDS` : un plafond contient
+ *  le symptôme, il ne soigne pas la cause — le dépôt l'écrit déjà. */
+async function ready() {
+  // ⚠ UIP-C — voir blocks-section : l'ancre est le titre de l'étape, pas un champ
+  // de l'étape 1, que l'assistant ne monte plus en même temps.
+  await screen.findByRole("heading", { name: "Réservation", level: 2 });
+  // ⚠ `queryByText` ET NON `getByRole(... { name })` DANS LA BOUCLE. Mesuré :
+  // le calcul du NOM ACCESSIBLE d'une région parcourt tout le sous-arbre, et
+  // `waitFor` le rejoue à chaque tour — sur une machine chargée, ce seul détail
+  // faisait passer des tests voisins au-dessus du délai de 5 s. On interroge
+  // donc le nœud de chargement directement, ce qui coûte un balayage de texte.
+  await waitFor(() => expect(screen.queryByText(/^Chargement des périodes/)).toBeNull());
+  await waitFor(() => expect(vi.mocked(coquille.listMine)).toHaveBeenCalled());
+  await act(async () => {
+    await Promise.resolve();
+  });
+}
 
 
 /** D57 — l'heure se saisit sur DEUX listes 24 h (pas de `<input type="time">`,

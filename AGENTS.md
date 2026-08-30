@@ -550,7 +550,22 @@ mesurée soit rendue. Les deux étaient verts et vides.
 - **Un bloc inséré sans fin de ligne finale DÉTRUIT la ligne suivante.** La vérification de non-perte l'a attrapé (50 lignes annoncées perdues) avant toute écriture. Une faute qu'on peut rendre impossible se rend impossible : l'outil d'insertion l'assertit désormais.
 - **Une contrainte de rendu peut rendre une demande contradictoire, et il faut le dire.** « Une image unique » + « rien derrière le rectangle central » ne tenaient ensemble qu'à condition de calibrer le vide pour les deux aspects extrêmes ; un vide étroit laissait des mots sous les boutons sur mobile, un vide large vidait l'écran de bureau.
 - **Retirer un module retire ses gardes, et c'est le résultat attendu.** Seize tests ont disparu avec le générateur qu'ils mesuraient ; les garder aurait voulu dire garder le code. Un compteur de tests qui BAISSE n'est pas une régression s'il est expliqué.
-### Notes d'environnement (bac à sable)
+### Notes d'environnement
+
+⛔ **CES NOTES DÉCRIVENT LE BAC À SABLE WEB, PAS TOUS LES POSTES (D268).** Elles
+ont été écrites depuis un environnement sans accès à `binaries.prisma.sh` et
+sans PostgreSQL, et leur portée n'était pas déclarée — un lecteur les prenait
+donc pour des propriétés du DÉPÔT. **Mesuré le 30/08/2026 depuis Claude Code sur
+le poste de Ko** : le vrai client Prisma est présent dans
+`apps/api/src/generated/prisma/` (47 fichiers, `BookingStatus` en union de
+littéraux, identique à `@zwadj/types`), `pnpm --filter @zwadj/api typecheck`
+sort en **0**, et `test:int` rend **432/432 sur 35 fichiers** contre un
+PostgreSQL réel. ⚠ **La conséquence dépasse Prisma** : c'est D262 une seconde
+fois — un empêchement d'environnement se recopie de rapport en rapport bien
+après avoir disparu, et couvre exactement ce qu'il prétendait signaler. **Une
+note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
+
+#### Bac à sable web (Claude via archives)
 
 - **`prisma generate` fonctionne HORS LIGNE avec Prisma 7** (générateur `prisma-client`, TypeScript natif) : un `DATABASE_URL` factice suffit, aucun binaire de moteur à télécharger. La porte typecheck API est donc **atteignable** — l'affirmation contraire, faite en début de session du 19/08, était fausse.
   ⚠ **CORRIGÉ LE 23/08/2026 : ce n'est PAS vrai dans tous les bacs à sable.** Mesuré : `prisma generate` échoue en `Failed to fetch the engine file at https://binaries.prisma.sh/… — 403 Forbidden`, ce domaine n'étant pas autorisé en sortie et les moteurs n'étant pas embarqués dans le paquet npm. **Sans client généré, AUCUNE spec de l'API ne se collecte.** Contournement employé : un **talon** dans `apps/api/src/generated/` (répertoire ignoré par git, absent de toute archive, écrasé au premier `prisma:generate`), exposant les types plus deux valeurs (`Prisma.Decimal`, `Prisma.PrismaClientKnownRequestError`). ⚠ Conséquence à déclarer : les **tests unitaires API sont mesurés**, le **typecheck API ne l'est PAS** — types du talon volontairement lâches. Le déclarer NON MESURÉ, jamais vert. Pour lever la limite : autoriser `binaries.prisma.sh` en sortie.
@@ -559,19 +574,53 @@ mesurée soit rendue. Les deux étaient verts et vides.
 - **Compteurs de la dernière mesure certifiable** : API **482/44** · client **239/18** · pro **344/27** · i18n **1090 = 1090**.
   ⚠ **Au 24/08/2026** : API **560/50** · client **264/19** · i18n **1093 = 1093**.
   ⚠ **Au 28/08/2026** : API **602/53** · api-client **36/3** · client **287/20** ·
-  pro **347/28** · intégration **432/35**. Harnais : **18 scripts, 149 cibles**,
-  tous dans `neutralisation/`. Base de départ API relevée AVANT le lot (**556/50**) pour que le « +4 » mesure quelque chose.
+  pro **347/28** · intégration **432/35**. Base de départ API relevée AVANT le lot (**556/50**) pour que le « +4 » mesure quelque chose.
   ⚠ **Après S11-a (28/08/2026, D261)** : API **638/55**, base d'entrée relevée à
-  **602/53** avant toute modification. Harnais : **19 scripts, 165 cibles**.
+  **602/53** avant toute modification.
   ⚠ **`pnpm install --ignore-scripts` SUFFIT pour les specs unitaires API** (772 paquets,
   ~22 s) : argon2 et sharp ne sont pas requis à la collecte. `prisma generate` reste en
   **403** sur `binaries.prisma.sh`, y compris avec `PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1`
   — mesuré, ce contournement ne lève QUE la vérification de somme, pas le téléchargement.
   Le talon de `apps/api/src/generated/` reste donc obligatoire, et le **typecheck API
-  NON MESURÉ**.
+  NON MESURÉ**. ⚠ **Vrai DANS CE BAC À SABLE UNIQUEMENT** — voir l'encadré en tête
+  de section : sur le poste de Ko le client est réel et le typecheck sort en 0.
   ⚠ **La porte LINT, elle, est mesurable en bac à sable** et n'était pas relevée jusqu'ici.
 - ⛔ **Jamais exécutés en bac à sable** : intégration (PostgreSQL réel), e2e, axe-core, `pnpm build`.
   ⚠ **CORRIGÉ LE 23/08/2026 : `next build` A ÉTÉ EXÉCUTÉ**, plusieurs fois, ainsi que `next start` — c'est ce qui a permis de mesurer les statuts HTTP réels des 404 et de prouver le soft-404. Restent jamais exécutés : intégration (PostgreSQL réel), e2e, axe-core.
+
+#### Poste de Ko (Claude Code local) — mesuré le 30/08/2026
+
+- **Client Prisma RÉEL**, `test:int` et `typecheck` tous deux **exécutables et verts**.
+  Les deux limites majeures du bac à sable web ne s'y appliquent pas.
+- ⛔ **La console est en cp1252 et faisait LEVER tous les harnais.** Mesuré : le
+  premier `✓` imprimé rend `UnicodeEncodeError: '✓' … maps to <undefined>`, avec
+  une trace Python qui ressemble à un défaut de harnais — alors que le pré-vol
+  venait de passer. **Corrigé pour tout le parc le 30/08/2026 (D268)** : chaque
+  script reconfigure `sys.stdout`/`sys.stderr` en UTF-8 dès l'import. Avant ce
+  correctif, **aucun harnais n'avait jamais tourné sur ce poste.**
+  ⚠ Tout nouveau script de `neutralisation/` doit porter ces trois lignes.
+- ⚠ **`grep -c $'\r$'` MENT ICI.** Mesuré sur un fichier neuf réellement en LF :
+  grep annonce « 229 lignes CRLF », la lecture en octets dit **0**. La règle du
+  dépôt (« compter `\r\n` contre `\n` sur les OCTETS ») n'est donc pas un excès de
+  prudence sur ce poste, c'est la seule mesure qui tienne.
+- ⛔ **AUCUN COMPTEUR DE HARNAIS N'EST ÉCRIT ICI, ET C'EST DÉLIBÉRÉ (D268).**
+  Ce document a porté « 18 scripts, 149 cibles » puis « 19 scripts, 165 cibles » ;
+  les deux étaient faux au moment où on les lisait. Le nombre de cibles bouge à
+  **chaque lot** — un chiffre figé sur une quantité mouvante se recopie de rapport
+  en rapport bien après avoir cessé d'être vrai, et finit par couvrir exactement
+  ce qu'il prétendait mesurer.
+  ⇒ **Pour l'état courant, LANCER `python3 neutralisation/lancer-campagnes.py`**
+  depuis la racine. Il joue les campagnes **en série** — jamais en parallèle,
+  chacune MUTE des fichiers sources partagés — et rend le relevé complet
+  (mordues / muettes / non mesurées, par campagne). Il ne sort en 0 que si tout
+  a été joué ET tout a mordu. Compter ~40 minutes.
+  ⚠ Il écrit ses journaux dans `.neutralisation-journaux/`, ignoré par git.
+- ⛔ **LA SUITE PRO EST INTERMITTENTE** (`services-section.test.tsx`, PER_UNIT) :
+  mesuré rouge ×2 puis vert ×2 sur un arbre inchangé. Elle fait **avorter
+  `neutralize-solid-s7.py`** au hasard, dont le pré-vol lance la suite entière.
+  ⚠ Et `pnpm test` (racine) peut être VERT quand `pnpm --filter @zwadj/pro test`
+  est ROUGE, sur le même arbre : la répartition des fichiers entre workers diffère.
+  **Ne jamais conclure sur un seul des deux.**
 
 ## Migrations — `prisma migrate dev` est INTERDIT
 

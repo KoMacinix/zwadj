@@ -1888,16 +1888,23 @@ ancrées que par leur section.
       (`theme.css` l. 68 et l. 298). Sans effet observable, mais deux endroits pour
       une même règle.
 
-- [ ] **[E2E][P1]** ⛔ **NE PAS RÉGÉNÉRER LA RÉFÉRENCE B7 AVANT LE CORRECTIF DU HARNAIS.**
+- [x] **[E2E][P1]** ⛔ **NE PAS RÉGÉNÉRER LA RÉFÉRENCE B7 AVANT LE CORRECTIF DU HARNAIS.**
       L'ajout de `--accent-text` fera légitimement rougir B7. La régénérer maintenant
       graverait au passage `--hm-gutter: ""` — une valeur vide prise pour une mesure.
       Ordre : correctif B7, PUIS régénération.
+      ✅ **FERMÉE le 30/08/2026 — l'ordre prescrit A ÉTÉ respecté.** Relevé dans
+      `e2e/baselines/tokens.json` (et non déduit) : `"--accent-text": "#b32c36"` en
+      clair et `"#e07a84"` en sombre, `"--dark-accent-text": "#e07a84"`, et surtout
+      `".hm --hm-gutter": "clamp(18px, 5vw, 80px)"` — **une vraie valeur**, pas la
+      chaîne vide que l'entrée existait pour empêcher. Le correctif B7 (D265) a donc
+      précédé la régénération. ⚠ Fermée sur la LECTURE DU FICHIER, pas sur un run e2e :
+      la suite est validée par Ko (34 passés, 1 saut légitime T2).
 
 ## Reports du lot L1 — porte lint — 28/08/2026 (D263)
 
 ### ⛔ Ouverts, mesurés, NON corrigés
 
-- [ ] **[API][P0]** ⛔ **CHEMIN DE L'ARGENT — le statut de la demande est un LITTÉRAL.**
+- [x] **[API][P0]** ⛔ **CHEMIN DE L'ARGENT — le statut de la demande est un LITTÉRAL.**
       `quote-store.prisma.ts` l. 140 écrit `status: "PENDING"` au lieu de
       `BookingStatus.PENDING`. Mesuré : le littéral est écrit **trois fois** et aucune
       des trois ne dérive de l'autorité — l'adaptateur, `quote-store.prisma.spec.ts`
@@ -1909,6 +1916,13 @@ ancrées que par leur section.
       ⛔ **L'import `BookingStatus` qui le signalait a été supprimé** pour fermer la
       porte lint : cette entrée et le commentaire posé sur `convertirEnDemande` sont
       désormais la seule trace.
+      ✅ **FERMÉ le 30/08/2026 par D268** — mais **PAS comme demandé ici**, et l'écart
+      est le cœur du lot : faire dériver les TROIS sites ne traitait pas le motif
+      invoqué (« se tromperaient ensemble »), il le déplaçait — trois sites dérivés
+      d'une même source s'accordent encore (D241). Retenu : l'adaptateur et la spec
+      unitaire dérivent, **`quotes.int-spec.ts` GARDE son littéral** comme témoin
+      indépendant contre PostgreSQL, exigé par une garde de source **bilatérale**.
+      Motif complet en D268, pas seulement en commentaire. 3/3 cibles mordent.
 
 - [ ] **[QUALITÉ][P1]** ⛔ **AUCUNE RÈGLE ESLINT À INFORMATION DE TYPES N'EST ACTIVE.**
       `packages/config/eslint/base.mjs` n'utilise que `tseslint.configs.recommended`.
@@ -2044,6 +2058,14 @@ D-numéro. Un lot de refactoring rapporte un défaut, il ne le corrige pas au pa
   deux fermerait la classe entière ; il n'existe toujours pas.
 - **`password.service.spec.ts`** — argon2 consomme 3,4 s d'un budget de 5 s au repos.
   Rougit sous charge. Non traité : relever le délai masquerait un vrai test devenu lent.
+  ⛔ **REQUALIFIÉ EN BLOQUANT le 30/08/2026 (D269).** Mesuré **en isolation, machine
+  libérée** : rouge (1/7) puis vert (7/7) sur deux runs consécutifs. Il est donc
+  intermittent **AU REPOS**, pas seulement sous charge — la formulation ci-dessus le
+  sous-estimait. C'est le SEUL rouge de la passe de portes du 30/08, et il suffit à
+  empêcher « 6 portes fiables à 100 % », seuil posé avant S11-b.
+  ⚠ Il avorte aussi les paquets suivants depuis `--workspace-concurrency=1` : client,
+  pro et api-client n'ont pas tourné du run rouge. **Décision attendue de Ko** — la
+  consigne « ne pas relever le délai » tient toujours, mais elle laisse la porte rouge.
 - **Sept exemptions de la garde console** (D247/D256) — désormais **plafonnées et
   vérifiées**, plus décoratives. À faire décroître ; `walkin-journey.test.tsx` (293) ne
   baissera qu'avec S13.
@@ -2068,3 +2090,87 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
 - **`schema.prisma` vs base** — rien ne les compare (D237). Un test qui diffe les énumérations fermerait la classe entière de défauts.
 - ~~**D227 (hors horizon) et D228 (`maxPrice`)** — toujours non livrés~~ — **LIVRÉS**
   (D227/D228 le 24/08, défaut B fermé par **D254** le 25/08).
+
+## Report — 30/08/2026, trouvé en marge du lot `BookingStatus.PENDING`
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- [ ] **[API][P1]** ⚠ **`payment-intent.spec.ts` recopie SEPT statuts en littéraux — même
+      classe que D263 et D259, un troisième site.** `BookingSnapshot.status`
+      (`payment-intent.ts` l. 17) est typé `string`, pas `BookingStatus` : rien n'oblige les
+      appelants à dériver de l'autorité. Le spec écrit en dur `"ACCEPTED"` (l. 11),
+      `"PENDING"` (l. 23, 47, 50), `"CONFIRMED"` (l. 58, 69), et la liste de la ligne 58
+      (`"PENDING", "CONFIRMED", "DECLINED", "CANCELLED", "COMPLETED", "NO_SHOW", "EXPIRED"`).
+      ⚠ **Le commentaire des lignes 55-56 affirme le contraire du code** : « on boucle sur
+      les statuts RÉELS de l'énuméré plutôt que sur une liste écrite ici » — mesuré, la
+      liste EST écrite ici, à la main, et ne dérive de rien. C'est **D264** (« la règle
+      existait, elle vivait dans un commentaire ») retourné : ici le commentaire décrit une
+      garde qui n'existe pas.
+      ⚠ **Deux valeurs de cette liste n'existent PAS dans `BookingStatus`** (`COMPLETED`,
+      `NO_SHOW` — l'énuméré n'a que PENDING/ACCEPTED/DECLINED/EXPIRED/CONFIRMED/CANCELLED) :
+      à vérifier si c'est un autre modèle de statut mélangé par erreur, ou une liste
+      délibérément plus large que le domaine réel pour éprouver la robustesse à tout
+      littéral inconnu. **Non tranché ici.**
+      Non corrigé — hors périmètre du lot `BookingStatus.PENDING`, et chemin de l'argent
+      (`payment-intent.ts` décide l'ouverture d'un paiement) : arbitrage écrit avant tout
+      code, à la même exigence que lui.
+      ⚠ **L'arbitrage de D268 s'y appliquera** : la question n'est pas « tout faire
+      dériver » mais « quelle est l'autorité de CE site ». Ici il n'y a pas de témoin
+      base à préserver — `payment-intent.spec.ts` est un module pur, sans I/O.
+
+- [x] **[INFRA][P1]** ⛔ **LES 21 HARNAIS DE `neutralisation/` LÈVENT SUR LA CONSOLE
+      WINDOWS et n'ont jamais tourné sur le poste de Ko.** Mesuré le 30/08 : au premier
+      `✓` imprimé, `UnicodeEncodeError: '✓' … maps to <undefined>` (console cp1252,
+      Python 3.13). ⚠ **Le pré-vol avait DÉJÀ tourné et était vert** — la trace Python
+      ressemble donc à un défaut de harnais alors que la campagne allait bien, et invite
+      à chercher au mauvais endroit.
+      ✅ **CORRIGÉ le 30/08/2026 (D268)** — trois lignes propagées aux 21 scripts, ancre
+      `import sys` unique dans chacun, compte vérifié avant et marqueur après. **22/22
+      pourvus, CRLF pur, tous compilent.** Puis campagnes lancées **en série** (jamais en
+      parallèle : elles mutent des sources partagées) : **164 gardes mordues sur
+      173 cibles**, 0 muette, 9 `NON MESURÉE` déjà documentées.
+      ⚠ **Le compteur du dépôt (« 19 scripts, 165 cibles ») est FAUX** : 22 et 173.
+      Écart relevé, non expliqué.
+
+- [ ] **[PRO][P0]** ⛔ **`act(…)` TARDIF DANS LA COQUILLE — deux fichiers de plus, et la
+      porte pro n'est PAS fiable.** ⚠ **Diagnostic ISOLÉ le 30/08 (D268), pas supposé.**
+      L'échec n'est **pas** une assertion : c'est la garde des sorties console
+      (`apps/pro/src/test-setup.ts:172`) qui lève sur `2 avertissement(s) … dans un
+      fichier NON exempté`, les deux `not wrapped in act(...)`, émis par **`BlocksSection`**
+      et **`ProVenuesProvider`** — qui mettent à jour leur état APRÈS la fin du corps de
+      test.
+      ⛔ **C'est EXACTEMENT la cause déjà écrite** dans le commentaire de
+      `venue-wizard.test.tsx` (`PLAFONDS`) : « une assertion qui finit avant la dernière
+      mise à jour laisse un `act(…)` tomber après le test, tantôt un, tantôt deux ».
+      **Fichiers concernés** : `services-section.test.tsx` (8ᵉ, déjà en commentaire dans
+      `PLAFONDS`, « DÉCISION EN ATTENTE (Ko) ») et **`slots-section.test.tsx` (9ᵉ, jamais
+      relevé)** — ce dernier reproductible **2/2** sous `--no-file-parallelism`.
+      ⚠ **Trois hypothèses écartées PAR MESURE**, pour qu'on ne les reprenne pas :
+      ce n'est pas un ordre de fichiers, pas un singleton i18n, **pas une pollution
+      inter-fichiers** — apparié à chacun de ses pollueurs supposés (`blocks-section`,
+      `a3-unexpected-responses`, `App`), `slots-section` **PASSE** ; **seul, il ÉCHOUE**.
+      Les deux composants sont montés **transitivement** par le fichier lui-même
+      (`EditVenuePage` dans `AppProviders`) — un grep du fichier de test ne le voit pas.
+      ⚠ Le fichier fautif CHANGE selon l'ordonnancement (garde par fichier + compte qui
+      flotte, D256) : `services-section` en parallèle, `slots-section` en série.
+      ⚠ **Piège de diagnostic** : `pnpm test` (racine) et `pnpm --filter @zwadj/pro test`
+      ne répartissent pas les fichiers pareil — le premier peut être VERT quand le second
+      est ROUGE, sur le même arbre. Ne jamais conclure sur un seul des deux.
+      ⚠ **Effet de bord** : le pré-vol de `neutralize-solid-s7.py` lance la suite pro
+      entière, donc cette campagne **avorte au hasard**, zéro cible jouée.
+      ⛔ **DÉCISION REQUISE (Ko), la même que pour le 8ᵉ fichier** : corriger les tests
+      (attendre la décantation avant de rendre la main) ou inscrire des plafonds datés.
+      Le dépôt tranche déjà contre la seconde : « le plafond contient le symptôme ; il ne
+      soigne pas la cause ». **Bloquant déclaré avant S11-b** : le chemin de l'argent ne
+      s'attaque pas avec une porte fiable à 90 %.
+      ⚠ **CORRECTIF LIVRÉ le 30/08/2026 (D269), ENTRÉE VOLONTAIREMENT ROUVERTE.**
+      Les deux fichiers attendent désormais l'état final rendu, par deux idiomes relevés
+      du dépôt. Mesuré 9/9 et 8/8 trois fois chacun, puis 17/17 deux fois ensemble.
+      ⚠ Le 8ᵉ fichier (`services-section`) reste **commenté** dans `PLAFONDS` : la ligne
+      n'a pas été décommentée, elle est devenue sans objet. Ne pas la réactiver.
+      ⛔ **POURQUOI ELLE RESTE OUVERTE** : je l'avais cochée alors que la porte `test`
+      était ROUGE (argon2). Un lot ne se certifie pas sous une porte rouge, même quand le
+      rouge vient d'ailleurs — la provenance dit qui corrige, pas si la porte est verte.
+      ⛔ Et la preuve manquait : j'avais mesuré la stabilité de DEUX FICHIERS, jamais
+      celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
+      exécutions demandée par Ko ; résultats consignés dans D269.

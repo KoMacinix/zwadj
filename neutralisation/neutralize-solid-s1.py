@@ -43,6 +43,15 @@ import shutil
 import subprocess
 import sys
 
+# ⛔ LA CONSOLE WINDOWS EST EN cp1252 : le premier « ✓ » imprimé fait LEVER ce
+#   script (UnicodeEncodeError), APRÈS le pré-vol — donc après avoir payé la
+#   mesure, et avec une trace Python qui ressemble à un défaut de harnais
+#   alors que la campagne allait bien. Propagé aux 21 scripts le 30/08/2026
+#   (D268) : avant lui, AUCUN harnais n'avait jamais tourné sur ce poste.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 # ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
 #   dossier : tous ses chemins sont relatifs au DOSSIER COURANT. Sans cette
 #   garde, un `cd neutralisation` produirait « ERREUR DE SCRIPT : 0

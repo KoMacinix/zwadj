@@ -39,3 +39,7 @@ e2e/blob-report/
 
 # Overrides Claude Code personnels (non partagés)
 .claude/settings.local.json
+
+# Caches Python des harnais de neutralisation : recreees a chaque
+# execution, jamais versionnables.
+__pycache__/

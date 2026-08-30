@@ -4,7 +4,7 @@
 // discriminée, un champ étranger fait échouer la requête), et que
 // l'avertissement PER_GUEST est bien à l'écran — c'est lui qui évite l'erreur la
 // plus chère de la page.
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import type { ServicesClient } from "@zwadj/api-client";
@@ -36,15 +36,40 @@ const FIXED: ServiceDTO = {
   tiers: []
 };
 
-function setup(rows: ServiceDTO[], overrides: Partial<ServicesClient> = {}) {
+/** ⛔ D269 — `setup` EST DEVENU ASYNCHRONE, ET C'EST TOUT L'OBJET DU CORRECTIF.
+ *
+ *  `AppProviders` monte `ProVenuesProvider` au-dessus de CET écran comme de tous
+ *  les autres, et ce provider appelle `listMine()` puis `setState()`. Rien ici
+ *  ne l'attendait : les tests attendaient la décantation des PRESTATIONS
+ *  (`Aucune prestation`), assertionnaient en synchrone, et rendaient la main.
+ *  Le `setState()` du provider tombait APRÈS la fin du test — React le signalait
+ *  en « not wrapped in act(...) », et la garde de `test-setup.ts` levait.
+ *  ⚠ De façon INTERMITTENTE : le compte d'avertissements flotte selon
+ *  l'ordonnancement (D256), donc le fichier rougissait un run sur deux environ,
+ *  et c'était tantôt celui-ci, tantôt `slots-section.test.tsx`.
+ *
+ *  ⚠ IDIOME RELEVÉ, PAS INVENTÉ — `a3-unexpected-responses.test.tsx` : attendre
+ *  que l'appel ait eu lieu, PUIS vider la file de microtâches DANS `act`. C'est
+ *  le seul moyen d'attendre un composant qui ne rend rien d'observable : le
+ *  provider n'expose son état qu'aux consommateurs du contexte, pas au DOM.
+ *
+ *  ⛔ NE PAS remplacer ceci par une entrée dans `PLAFONDS` : ce fichier y figure
+ *  en commentaire depuis le 25/08 (« DÉCISION EN ATTENTE »), et le dépôt tranche
+ *  déjà — « le plafond contient le symptôme ; il ne soigne pas la cause ». */
+async function setup(rows: ServiceDTO[], overrides: Partial<ServicesClient> = {}) {
   const client = makeServicesDouble({ listForVenue: vi.fn().mockResolvedValue(rows), ...overrides });
+  const coquille = makeVenueClientDouble();
   render(
     <MemoryRouter>
-      <AppProviders client={makeAuthDouble()} venues={makeVenueClientDouble()} servicesClient={client}>
+      <AppProviders client={makeAuthDouble()} venues={coquille} servicesClient={client}>
         <ServicesSection venueId="v1" />
       </AppProviders>
     </MemoryRouter>
   );
+  await waitFor(() => expect(vi.mocked(coquille.listMine)).toHaveBeenCalled());
+  await act(async () => {
+    await Promise.resolve();
+  });
   return client;
 }
 
@@ -75,7 +100,7 @@ async function attendreEcranRetombe(nomLigne: string): Promise<void> {
 
 describe("Catalogue pro — l'avertissement qui évite l'erreur la plus chère", () => {
   it("PER_GUEST affiche que le montant sera MULTIPLIÉ par les invités", async () => {
-    setup([]);
+    await setup([]);
     await screen.findByText(/Aucune prestation/);
     fireEvent.change(screen.getByLabelText(/Tarification/), { target: { value: "PER_GUEST" } });
     // ⚠ `findByText` et non `getByText` : l'attente rend la main à React avant
@@ -86,7 +111,7 @@ describe("Catalogue pro — l'avertissement qui évite l'erreur la plus chère",
   });
 
   it("l'avertissement n'apparaît PAS sur un forfait", async () => {
-    setup([]);
+    await setup([]);
     await screen.findByText(/Aucune prestation/);
     expect(screen.queryByText(/MULTIPLIÉ/)).toBeNull();
   });
@@ -94,7 +119,7 @@ describe("Catalogue pro — l'avertissement qui évite l'erreur la plus chère",
 
 describe("Catalogue pro — le corps dépend du TYPE", () => {
   it("FIXED n'envoie que `fixedPriceCents`", async () => {
-    const client = setup([], { listForVenue: rechargeVers([], [{ ...FIXED, nameFr: "Déco" }]) });
+    const client = await setup([], { listForVenue: rechargeVers([], [{ ...FIXED, nameFr: "Déco" }]) });
     await screen.findByText(/Aucune prestation/);
     type(/Nom \(français\)/, "Déco");
     type(/Nom \(arabe\)/, "زينة");
@@ -110,7 +135,7 @@ describe("Catalogue pro — le corps dépend du TYPE", () => {
   });
 
   it("PER_UNIT exige l'unité dans les DEUX langues avant d'être envoyable", async () => {
-    setup([]);
+    await setup([]);
     await screen.findByText(/Aucune prestation/);
     fireEvent.change(screen.getByLabelText(/Tarification/), { target: { value: "PER_UNIT" } });
     type(/Nom \(français\)/, "Tables");
@@ -124,7 +149,7 @@ describe("Catalogue pro — le corps dépend du TYPE", () => {
   });
 
   it("TIERED envoie un premier palier : un TIERED sans palier est inchoisissable", async () => {
-    const client = setup([], { listForVenue: rechargeVers([], [{ ...FIXED, nameFr: "Menu" }]) });
+    const client = await setup([], { listForVenue: rechargeVers([], [{ ...FIXED, nameFr: "Menu" }]) });
     await screen.findByText(/Aucune prestation/);
     fireEvent.change(screen.getByLabelText(/Tarification/), { target: { value: "TIERED" } });
     type(/Nom \(français\)/, "Menu");
@@ -145,7 +170,7 @@ describe("Catalogue pro — le corps dépend du TYPE", () => {
 
 describe("Catalogue pro — retirer n'est pas supprimer", () => {
   it("le retrait de la vente est proposé en PREMIER, et il est réversible", async () => {
-    const client = setup([FIXED], { listForVenue: rechargeVers([FIXED], [RETIRE]) });
+    const client = await setup([FIXED], { listForVenue: rechargeVers([FIXED], [RETIRE]) });
     fireEvent.click(await screen.findByRole("button", { name: "Retirer de la vente" }));
     // ⚠ ON ATTEND L'ÉCRAN, PAS L'APPEL. `run()` enchaîne `update` → `load`
     // → `setBusy(false)` ; s'arrêter à l'appel laissait trois états tomber
@@ -158,7 +183,7 @@ describe("Catalogue pro — retirer n'est pas supprimer", () => {
   });
 
   it("une prestation retirée propose de la REMETTRE en vente", async () => {
-    setup([{ ...FIXED, isActive: false }]);
+    await setup([{ ...FIXED, isActive: false }]);
     expect(await screen.findByRole("button", { name: "Remettre en vente" })).toBeInTheDocument();
     expect(screen.getByText(/Retirée de la vente/)).toBeInTheDocument();
   });
@@ -170,7 +195,7 @@ describe("Catalogue pro — retirer n'est pas supprimer", () => {
   // donc groupés en un seul rendu. Quand l'alerte paraît, `busy` est déjà
   // retombé — il n'y a pas de queue qui dépasse.
   it("un refus de suppression s'affiche au lieu de disparaître", async () => {
-    setup([FIXED], {
+    await setup([FIXED], {
       remove: vi.fn().mockRejectedValue({ code: "SERVICE_IN_USE", message: "service.errors.inUse" })
     });
     fireEvent.click(await screen.findByRole("button", { name: "Supprimer" }));

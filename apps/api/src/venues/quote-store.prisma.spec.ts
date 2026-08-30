@@ -6,6 +6,9 @@
 // check-and-set relit le statut DANS la transaction. Il ne prouve pas
 // l'atomicité réelle — seul `quotes.int-spec.ts`, contre PostgreSQL, le peut.
 // Une séquence juste est nécessaire, pas suffisante ; les deux se complètent.
+import { BookingStatus } from "@zwadj/types";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { PrismaService } from "../prisma/prisma.service";
 import { PrismaQuoteStore } from "./quote-store.prisma";
@@ -251,7 +254,13 @@ describe("⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT", () =>
     // ⚠ PENDING : une demande qui ne verrouille rien. L'EXCLUDE de chevauchement
     // ne peut donc pas refuser ici ; le 409 de créneau pris arrive à
     // l'acceptation, et d'un seul endroit du dépôt.
-    expect(data.status).toBe("PENDING");
+    //
+    // ⚠ CONFRONTÉ À L'AUTORITÉ, PAS À UNE CHAÎNE (D268). Ce que cette assertion
+    // mesure, c'est QUEL MEMBRE l'adaptateur choisit — écrire `ACCEPTED` ici
+    // verrouillerait un créneau que le pro n'a pas accordé. La VALEUR du membre,
+    // elle, est tenue ailleurs : par `tsc` (le champ Prisma est typé sur
+    // l'énuméré généré) et par `quotes.int-spec.ts` contre PostgreSQL réel.
+    expect(data.status).toBe(BookingStatus.PENDING);
   });
 
   it("⚠ AUCUNE ÉCRITURE SUR LE DEVIS — il attend l'acompte", async () => {
@@ -289,5 +298,70 @@ describe("⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT", () =>
     prisma.booking.create.mockRejectedValue(new Error("panne réseau"));
     await expect(store.convertirEnDemande(DONNEES)).rejects.toThrow("panne réseau");
     expect(prisma.booking.findFirst).not.toHaveBeenCalled();
+  });
+});
+
+/** ⛔ GARDE DE SOURCE **BILATÉRALE** (D268) — le statut de la demande.
+ *
+ *  Elle a deux versants, et c'est le second qui est inhabituel :
+ *
+ *  1. l'ADAPTATEUR ne doit plus écrire le littéral — il dérive de l'énuméré ;
+ *  2. `quotes.int-spec.ts` doit TOUJOURS l'écrire, et c'est délibéré.
+ *
+ *  ⚠ POURQUOI LE SECOND VERSANT. Faire dériver les TROIS sites du même énuméré
+ *  ne supprime pas le défaut que D263 décrit, il le déplace : ils
+ *  s'accorderaient encore, et se tromperaient encore ensemble — c'est D241.
+ *  Ce qui protège, c'est que chaque site confronte SON autorité. Pour
+ *  l'adaptateur et cette spec, l'autorité est l'énuméré TypeScript. Pour le
+ *  test d'intégration, l'autorité est **PostgreSQL** : il relit la colonne et
+ *  la compare à une chaîne écrite indépendamment. Le faire dériver lui ferait
+ *  poser la mauvaise question — « mon code est-il d'accord avec lui-même ? » au
+ *  lieu de « qu'est-ce que la base a stocké ? ». Et le couplage n'est pas
+ *  théorique : les prédicats qui verrouillent le créneau vivent en SQL BRUT
+ *  dans les migrations (`status IN ('ACCEPTED','CONFIRMED')` de l'EXCLUDE
+ *  GiST), que TypeScript ne voit pas.
+ *
+ *  ⚠ LES COMMENTAIRES SONT RETIRÉS AVANT D'ASSERTIR. Les deux fichiers
+ *  EXPLIQUENT ce littéral en prose ; sans ce nettoyage, la garde rougirait sur
+ *  l'explication qui la justifie — le dépôt a déjà payé cette faute trois fois.
+ *  L'explication est donc vérifiée SÉPARÉMENT, sur la source brute.
+ */
+describe("Garde de SOURCE — le statut de la demande dérive de l'autorité (D268)", () => {
+  // Vitest s'exécute depuis `apps/api` ; `import.meta` tombe en TS1343 côté API
+  // (tsconfig CommonJS). On passe par `process.cwd()` ET ON VÉRIFIE que le
+  // chemin a rendu du contenu — un fichier introuvable rendrait la garde verte
+  // et muette, ce qui est exactement ce qu'elle existe pour empêcher.
+  const lire = (...segments: string[]): string => {
+    const chemin = join(process.cwd(), ...segments);
+    const source = readFileSync(chemin, "utf8");
+    expect(source.length, `source illisible ou vide : ${chemin}`).toBeGreaterThan(1000);
+    return source;
+  };
+
+  const sansCommentaires = (source: string): string =>
+    source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+
+  it("⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus`", () => {
+    const declarations = sansCommentaires(lire("src", "venues", "quote-store.prisma.ts"));
+    expect(declarations).not.toContain('"PENDING"');
+    expect(declarations).toContain("BookingStatus.PENDING");
+  });
+
+  it("⛔ le TÉMOIN INDÉPENDANT survit dans `quotes.int-spec.ts` — littéral EXIGÉ", () => {
+    // Le versant qui surprend : cette garde REFUSE qu'on « corrige » le test
+    // d'intégration en le faisant dériver de l'énuméré. C'est le seul point du
+    // dépôt où la valeur relue depuis PostgreSQL est confrontée à une chaîne
+    // qui ne vient pas de notre propre code.
+    const declarations = sansCommentaires(lire("test", "int", "quotes.int-spec.ts"));
+    expect(declarations).toContain('expect(booking.status).toBe("PENDING")');
+    expect(declarations).not.toContain("expect(booking.status).toBe(BookingStatus");
+  });
+
+  it("⚠ et l'EXPLICATION est restée dans les deux fichiers", () => {
+    // Une garde dont on a effacé le motif se fait « nettoyer » au lot suivant
+    // par quelqu'un qui la prend pour une incohérence. Les commentaires sont
+    // retirés pour ASSERTIR ; ils sont vérifiés présents ICI, sur la brute.
+    expect(lire("src", "venues", "quote-store.prisma.ts")).toContain("DÉRIVE DE L'AUTORITÉ");
+    expect(lire("test", "int", "quotes.int-spec.ts")).toContain("TÉMOIN INDÉPENDANT");
   });
 });

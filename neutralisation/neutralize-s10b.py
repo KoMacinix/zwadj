@@ -26,6 +26,15 @@ import shutil
 import subprocess
 import sys
 
+# ⛔ LA CONSOLE WINDOWS EST EN cp1252 : le premier « ✓ » imprimé fait LEVER ce
+#   script (UnicodeEncodeError), APRÈS le pré-vol — donc après avoir payé la
+#   mesure, et avec une trace Python qui ressemble à un défaut de harnais
+#   alors que la campagne allait bien. Propagé aux 21 scripts le 30/08/2026
+#   (D268) : avant lui, AUCUN harnais n'avait jamais tourné sur ce poste.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 # ⛔ CE SCRIPT SE LANCE DEPUIS LA RACINE DU MONOREPO, jamais depuis son propre
 #   dossier : tous ses chemins sont relatifs au DOSSIER COURANT.
 if not os.path.isfile("pnpm-workspace.yaml"):
@@ -194,9 +203,21 @@ CIBLES = [
     ),
     (
         "S10b2-C3. ⛔ LA DEMANDE NAÎT ACCEPTÉE — elle verrouille un créneau que personne n'a accordé",
+        # ⚠ ANCRE RÉÉCRITE LE 30/08/2026 (D268). Elle visait le littéral
+        #   `status: "PENDING",` que D268 a remplacé par l'énuméré. Résultat
+        #   mesuré : « ERREUR DE SCRIPT : 0 occurrence(s) » — comportement VOULU,
+        #   la campagne refuse de mentir — mais elle s'arrête là, et les CINQ
+        #   cibles suivantes (C4 → C8) n'ont pas été jouées. Une campagne
+        #   partiellement jouée n'est pas une campagne verte.
+        #   ⛔ La faute n'est pas dans ce fichier : c'est D268 qui devait relancer
+        #   les campagnes après avoir changé la ligne, et ne l'a pas fait.
+        # ⚠ RECOUVREMENT ASSUMÉ : cette cible est désormais identique à BS-2 de
+        #   `neutralize-booking-status.py` — même ligne, même mutation, même
+        #   mesure. Conservée ici pour que s10b reste AUTONOME : la retirer
+        #   rendrait sa complétude dépendante d'une autre campagne.
         ADAPTATEUR,
-        '          status: "PENDING",',
-        '          status: "ACCEPTED",',
+        "          status: BookingStatus.PENDING,",
+        "          status: BookingStatus.ACCEPTED,",
         1,
         ["adaptateur"],
     ),

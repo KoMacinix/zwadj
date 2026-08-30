@@ -446,6 +446,18 @@ describe("Conversion — la chaîne complète, dans l'ordre", () => {
     const booking = await ctx.prisma.booking.findUniqueOrThrow({ where: { id: after.bookingId as string } });
     // PENDING : c'est le pro qui accepte la date ensuite, comme pour toute
     // demande venue du site. Aucun chemin séparé.
+    //
+    // ⛔ CE LITTÉRAL EST DÉLIBÉRÉ — c'est le TÉMOIN INDÉPENDANT (D268). NE PAS
+    // le remplacer par `BookingStatus.PENDING` : une garde de source, dans
+    // `quote-store.prisma.spec.ts`, EXIGE sa présence ici et rougira.
+    // ⚠ D263 demandait que les trois sites dérivent de l'énuméré. Appliqué aux
+    // trois, cela ne supprimait pas le défaut — ils s'accorderaient encore et se
+    // tromperaient encore ensemble (D241). Ici, l'autorité n'est PAS l'énuméré
+    // TypeScript : c'est PostgreSQL. Cette ligne relit la colonne réelle et la
+    // confronte à une chaîne qui ne vient pas de notre code. C'est aussi le seul
+    // garde-fou côté TS pour les prédicats écrits en SQL BRUT dans les
+    // migrations — `status IN ('ACCEPTED','CONFIRMED')` de l'EXCLUDE GiST —
+    // qu'aucun typecheck ne relie à l'énuméré.
     expect(booking.status).toBe("PENDING");
     expect(booking.quoteId).toBe(q.id);
     expect(booking.source).toBe("WALK_IN");

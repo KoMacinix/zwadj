@@ -402,6 +402,304 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## Session du 30/08/2026 — D269 · `act(…)` tardif, concurrence, tri des campagnes
+
+⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D268**.
+
+⛔⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — PORTE `test` ROUGE** (cause antérieure au lot :
+`password.service.spec.ts`, argon2). **Ce lot n'est PAS clos.**
+⚠ Je l'avais d'abord présenté comme terminé au motif que le rouge « venait
+d'ailleurs ». **C'est une faute de raisonnement, et Ko l'a refusée** : un lot ne se
+certifie pas sous une porte rouge, même quand le rouge n'est pas le sien. La
+provenance du défaut change qui doit le corriger ; elle ne change pas l'état de la
+porte. Accepter une exception ici, c'est rouvrir D218 par la petite porte — une
+mesure exacte présentée comme un feu vert qu'elle n'est pas.
+⇒ Reclassement en clôture : **argon2 doit passer AVANT S11-b**, puisque c'est lui
+qui tient la porte.
+
+### D269 — la cause était dans l'ATTENTE, pas dans le code
+
+`services-section.test.tsx` et `slots-section.test.tsx` rougissaient un run sur
+deux. L'échec n'était pas une assertion : c'était la garde des sorties console
+(`test-setup.ts:172`), sur des `not wrapped in act(...)` émis par
+**`BlocksSection`** et **`ProVenuesProvider`** — montés **transitivement**
+(`EditVenuePage` dans `AppProviders`), ce qu'un grep du fichier de test ne voit
+pas. Les tests attendaient un titre ou la décantation des prestations, puis
+assertionnaient en SYNCHRONE et rendaient la main ; les mises à jour tombaient
+après la fin du test.
+
+⛔ **Corrigé à la cause, PAS plafonné.** `PLAFONDS` contenait déjà ce fichier en
+commentaire (« DÉCISION EN ATTENTE ») et le dépôt tranche : « le plafond contient
+le symptôme ; il ne soigne pas la cause ». Les deux attentes sont des **idiomes
+relevés du dépôt** — `blocks-section.test.tsx` pour le texte de chargement qui
+disparaît, `a3-unexpected-responses.test.tsx` pour la file de microtâches vidée
+DANS `act`, seul moyen d'attendre un composant qui ne rend rien d'observable.
+Mesuré : 9/9 et 8/8, trois fois chacun.
+
+⚠ **MON CORRECTIF A D'ABORD AGGRAVÉ LA PORTE, ET C'EST MESURÉ.** Sans lui : 5
+échecs, 8 timeouts. Avec : 24–28 échecs, **48 timeouts**. La cause : `waitFor`
+rejouant `getByRole(…, { name })`, dont le calcul du NOM ACCESSIBLE parcourt tout
+le sous-arbre à chaque tour. Remplacé par une interrogation directe du nœud de
+chargement. **Une attente juste peut coûter assez cher pour casser ses voisines.**
+
+### D269 — le MÉCANISME remplace la règle (décision de Ko)
+
+D268 proposait une règle : « le périmètre d'un lot inclut les campagnes qui lisent
+les lignes qu'il touche ». ⛔ **Ko l'a REJETÉE**, et le motif est plus fort que la
+règle : **une règle écrite s'oublie** — D226 disait déjà « relancer les campagnes
+après toute inversion de décision », elle était écrite, elle n'a pas été appliquée.
+⇒ `neutralisation/lancer-campagnes.py` lit `git diff --name-only HEAD` **plus les
+fichiers non suivis** (l'index seul raterait un lot déjà `git add`é), croise avec
+les fichiers que chaque campagne lit, et ne joue que les concernées. `--tout` pour
+les livraisons, `--liste` pour voir le tri sans exécuter.
+⚠ **Le tri est validé sur le cas qui l'a fait naître** : sur `quote-store.prisma.ts`
+il désigne `neutralize-s10b.py` — la campagne que D268 a cassée sans le voir.
+⚠ Un détecteur limité aux CONSTANTES de chemin aurait raté `available-on` et
+`available-on-api`, qui n'en déclarent aucune, **en silence**. Le balayage retient
+toute chaîne désignant un fichier existant : 22/22 campagnes rendent au moins un
+fichier. Une campagne qui n'en rendrait aucun ne pourrait jamais être
+sélectionnée — le script le DIT au lieu de la passer sous silence.
+
+### D269 — concurrence : ce que le changement donne ET ce qu'il coûte
+
+`pnpm test` devient `pnpm -r --workspace-concurrency=1 run test`. Le timeout n'est
+PAS relevé : le test client fait **702 ms** contre un budget de 5 000 ms, il ne
+tombait que sous cinq paquets simultanés, chacun avec son pool vitest sur 12 cœurs.
+⚠ **CONTREPARTIE MESURÉE, à trancher** : en séquentiel, l'échec du PREMIER paquet
+**avorte les suivants** — l'API rouge a laissé client, pro et api-client sans
+exécution, d'où un run rouge en 34 s au lieu de plusieurs minutes. On gagne le
+déterminisme, on perd l'information sur un run rouge. Trois issues ouvertes :
+garder, ajouter `--no-bail`, ou revenir en parallèle en bornant les workers vitest
+(4 configs à toucher, aucune partagée n'existe — mesuré : `maxWorkers=4` ramène
+48 timeouts à 4).
+
+### D269 — ⛔ CE QUI RESTE ROUGE, ET CE N'EST PAS CE LOT
+
+`password.service.spec.ts` : argon2 dépasse 5 000 ms. **Déjà au backlog** —
+« 3,4 s d'un budget de 5 s au repos, rougit sous charge ». Mesuré en isolation
+sur machine libérée : **rouge puis vert** sur deux runs consécutifs. Donc
+intermittent AU REPOS, pas seulement sous charge. La décision consignée est de ne
+pas relever le délai ; elle n'est pas révoquée ici. **Tant qu'il est là, la porte
+`test` n'est pas fiable à 100 %** — c'est le seuil posé avant S11-b.
+
+### D269 — l'e2e s'est vérifiée en DEUX MOITIÉS, et il faut le déclarer
+
+⚠ **Ce n'est pas équivalent à une passe entière.** Amorçage (~2 min) plus 35 tests
+à 2 workers dépassent le plafond d'un appel. Découpé en `--shard=1/2` et `2/2` :
+**17 passés + 1 sauté**, puis **18 passés**, exit 0 des deux côtés.
+⚠ **Compte réconcilié avant d'être publié** : 34 tests chromium + **2** amorçages
+(le projet `warmup` rejoue une fois par moitié, chacune démarrant ses serveurs) =
+36 entrées, contre 35 en run unique. Sans cette réconciliation, « 35 passés »
+aurait paru contredire le relevé historique.
+⛔ **Le découpage change l'ordre d'attribution aux workers** — précisément la
+classe de défauts que cette suite existe pour attraper. Deux moitiés vertes ne
+valent pas un run entier vert.
+
+⛔ **UNE E2E INTERROMPUE NE MEURT PAS SEULE.** Elle laisse deux serveurs qui
+tiennent 3100/3101 **et** la mémoire. Vécu quatre fois : la tentative suivante
+échoue en 8 s sur `localhost:3101 is already used`, ou son worker Next
+s'effondre faute de RAM (4,5 → 2,25 Go libres). Le message ne parle alors ni de
+tests ni de la vraie panne. **Avant toute e2e : purger les processus node et
+vérifier que 3100/3101 sont libres.**
+
+### D269 — trois fautes de méthode, à mon compte
+
+1. ⛔ **J'ai édité les fichiers qu'une vérification était en train de mesurer.**
+   Résultat : 24 échecs sans signification.
+2. ⛔ **Puis j'ai conclu que ces 24 échecs VENAIENT de cette édition.** Faux : ils
+   se reproduisaient sur arbre stabilisé. Une explication commode, adoptée avant
+   d'être mesurée — la faute que ce lot passe son temps à corriger ailleurs.
+3. ⛔ **J'ai sous-dimensionné trois fenêtres d'appel de suite**, et lu les morts
+   qui en résultaient comme des échecs de la suite. `build`+`test:int` valaient
+   15 min sur une fenêtre de 9,8 que j'avais fixée moi-même, après avoir mesuré
+   `test:int` à 731 s.
+
+## Session du 30/08/2026 — D268 · `BookingStatus.PENDING`, premier lot Claude Code
+
+⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D267**.
+⚠ Et il est inscrit **ICI D'ABORD**, avant le backlog — l'inverse est la faute
+que D267 a commise dans le lot dont l'objet était de protéger la numérotation.
+
+### D268 — l'objet du lot, et ce qu'il ne change pas
+
+`quote-store.prisma.ts` écrivait `status: "PENDING"` en chaîne littérale sur le
+chemin de l'argent (conversion d'un devis en demande). D263 l'avait relevé, puis
+**l'import qui le signalait a été supprimé** pour fermer la porte lint : le
+défaut ne tenait plus qu'à une case de backlog.
+
+⚠ **AUCUN COMPORTEMENT NE CHANGE.** `BookingStatus.PENDING` *vaut* la chaîne
+« PENDING ». Un lot qui ne change rien à l'exécution ne peut pas se prouver par
+un test qui passe — d'où une garde de source et trois cibles.
+
+### D268 — ⛔ LA CONSIGNE DE D263 ÉTAIT JUSTE SUR LE DÉFAUT, FAUSSE SUR LE REMÈDE
+
+D263 demandait que les **trois** sites dérivent de l'énuméré, au motif qu'ils
+« s'accorderaient entre elles et se tromperaient ensemble ». Vérification faite,
+le remède ne traite pas ce motif : **trois sites dérivés d'une même source
+s'accordent encore, et se trompent encore ensemble** — c'est exactement D241,
+une garde qui se relit elle-même.
+
+Ce qui protège n'est pas que tout dérive, c'est que **chaque site confronte SON
+autorité** :
+
+| Site | Son autorité | Décision |
+|---|---|---|
+| `quote-store.prisma.ts` | l'énuméré TS (le champ Prisma est typé dessus) | **dérive** |
+| `quote-store.prisma.spec.ts` | l'énuméré TS | **dérive** — mesure QUEL membre est choisi |
+| `quotes.int-spec.ts` | **PostgreSQL** | ⚠ **littéral CONSERVÉ** |
+
+Le troisième est le seul point du dépôt où la valeur **relue depuis la base
+réelle** est confrontée à une chaîne qui ne vient pas de notre code. Le faire
+dériver lui ferait poser la mauvaise question — « mon code est-il d'accord avec
+lui-même ? » au lieu de « qu'est-ce que la base a stocké ? ».
+⚠ Et le couplage n'est pas théorique : les prédicats qui **verrouillent le
+créneau** vivent en **SQL BRUT dans les migrations**
+(`status IN ('ACCEPTED','CONFIRMED')` de l'EXCLUDE GiST), qu'aucun typecheck ne
+relie à l'énuméré. Un renommage coordonné TS + schéma laisserait ce SQL en
+arrière **sans qu'une seule porte ne bouge**.
+
+⛔ **LA GARDE EST DONC BILATÉRALE** : elle interdit le littéral dans
+l'adaptateur **et EXIGE sa présence** dans `quotes.int-spec.ts`. Sans le second
+versant, un « nettoyage » bien intentionné — lire D263, voir un littéral dans un
+test, le faire dériver — effacerait le témoin sans que rien ne rougisse.
+⚠ **La dérogation est écrite ICI, pas seulement en commentaire** : un motif qui
+ne vit que dans le fichier qu'il justifie se fait supprimer avec lui.
+
+### D268 — la garde de source rend mesurable un fichier d'intégration
+
+Les trois cibles sont mesurées par **une spec unitaire**, y compris celle qui
+mute `quotes.int-spec.ts` : la garde lit ce fichier **depuis le disque**. Une
+propriété d'un test qui exige PostgreSQL se rejoue en millisecondes, sans base.
+C'est le motif de D187/D192 appliqué à une garde de provenance.
+⚠ Les cibles 1 et 2 partagent leur ancre et font rougir les **deux** gardes à la
+fois : ce qui est prouvé est qu'aucune des deux mutations ne peut être livrée,
+pas laquelle des deux l'attrape.
+
+### D268 — ⛔ CE QUE CE LOT A APPRIS SUR L'ENVIRONNEMENT, ET QUI PÉRIME `AGENTS.md`
+
+Les « Notes d'environnement (bac à sable) » décrivaient un poste **sans** client
+Prisma et **sans** PostgreSQL, **sans déclarer leur portée** — donc lues comme
+des propriétés du dépôt. Mesuré sur le poste de Ko : client Prisma **réel**,
+`typecheck` **exit 0**, `test:int` **432/432 sur 35 fichiers**. La section est
+désormais scindée par POSTE. ⚠ **C'est D262 une seconde fois** : un empêchement
+d'environnement se recopie de rapport en rapport bien après avoir disparu, et
+couvre exactement ce qu'il prétendait signaler. **Une note d'environnement porte
+le nom de l'environnement mesuré, ou elle ment.**
+
+Deux mesures locales, trouvées en exécutant et non en relisant :
+- ⛔ **`grep -c $'\r$'` MENT sur ce poste.** Sur un fichier neuf réellement en LF,
+  il annonce « 229 lignes CRLF » ; la lecture en octets dit **0**. Le fichier
+  serait parti en LF dans un dépôt CRLF — la faute exacte que le dépôt a déjà
+  payée deux fois. La règle « compter sur les OCTETS » n'est pas de la prudence
+  ici, c'est la seule mesure qui tienne.
+- ⛔ **La console cp1252 fait LEVER les harnais** au premier `✓`, avec une trace
+  Python qui ressemble à un défaut de harnais alors que le pré-vol vient de
+  passer. Corrigé dans `neutralize-booking-status.py` ; **les 21 autres scripts
+  portent le même défaut** et n'ont jamais tourné ici. Reporté, non corrigé —
+  un lot ne corrige pas un défaut croisé au passage.
+
+### D268 — ⛔ CE LOT A CASSÉ UNE CAMPAGNE EXISTANTE, ET NE L'A PAS VU
+
+⛔ **LA FAUTE DE MÉTHODE EST PLUS GRAVE QUE LE DÉFAUT.** `neutralize-s10b.py`
+portait une cible `S10b2-C3` ancrée sur `status: "PENDING",` — **la ligne exacte
+que ce lot a réécrite**. Résultat mesuré : `ERREUR DE SCRIPT : 0 occurrence(s),
+1 attendue(s)`. Le harnais a fait ce qu'il devait — refuser de mentir — mais il
+**s'arrête là**, et les **CINQ cibles suivantes (C4 → C8) n'ont pas été jouées**.
+
+⚠ La règle existait, écrite noir sur blanc : « après toute inversion de décision,
+relancer les campagnes avant de croire les compteurs » (D226) et « une ancre de
+cible se revérifie à chaque refonte du balisage ». **Je ne l'ai pas appliquée.**
+Toutes les portes de ce lot étaient vertes, la campagne du lot mordait 3/3, et
+une autre campagne était cassée sans que rien ne le dise. C'est **exactement** le
+motif de D218 déplacé d'un cran : une mesure juste sur un périmètre trop étroit.
+⇒ ⚠ **RÈGLE PROPOSÉE, PAS ENCORE EN VIGUEUR — soumise à Ko le 30/08, en attente
+de validation explicite** : *« le périmètre d'un lot inclut les campagnes qui
+lisent les lignes qu'il touche »*. Elle est écrite ici pour ne pas se perdre,
+**elle ne s'applique à aucun lot tant qu'elle n'est pas validée**. ⛔ Je l'avais
+d'abord posée comme acquise : ajouter une règle permanente sans la soumettre est
+précisément le geste qu'`AGENTS.md` interdit (« toute modification de
+comportement non demandée »), et il est plus grave sur une règle de MÉTHODE, qui
+s'appliquera à tous les lots suivants sans que personne ne la relise.
+Réancrée, s10b passe de « 15 jouées + 1 erreur + 5 muettes » à **20/20**.
+⚠ Recouvrement assumé et écrit : C3 est désormais identique à BS-2. Conservée
+pour que s10b reste AUTONOME — la retirer rendrait sa complétude dépendante
+d'une autre campagne.
+
+### D268 — les 22 harnais ont tourné pour la première fois sur ce poste
+
+**164 gardes mordues sur 173 cibles, 22 scripts** — mesuré le 30/08, script par
+script, pas estimé. Les 9 restantes sont des cibles `NON MESURÉE` déjà
+documentées (5 dans `e3d1-s8`, hors exécution « course » ; 4 dans `solid-s6`,
+hors « int-visites »). Zéro garde muette, zéro échec après correctifs.
+⚠ **Ce chiffre est DATÉ, pas courant** : il vaut pour le 30/08 et rien d'autre.
+`AGENTS.md` portait « 19 scripts, 165 cibles » — faux au moment où on le lisait.
+**Décision de Ko : plus aucun compteur de harnais dans la documentation.** L'état
+courant se mesure en lançant `neutralisation/lancer-campagnes.py`, ajouté par ce
+lot. Un chiffre figé sur une quantité mouvante finit par couvrir exactement ce
+qu'il prétend mesurer.
+
+⛔ **Rien de tout cela n'était mesurable avant ce lot** : les 21 harnais levaient
+sur la console cp1252 au premier `✓`, APRÈS le pré-vol. Correctif de trois lignes
+propagé aux 21, ancre uniforme `import sys`, compte vérifié avant et marqueur
+après, refus explicite sur toute ancre absente ou multiple — zéro refus.
+⚠ Le même défaut a mordu mon propre script d'analyse pendant ce lot, ce qui est
+la meilleure démonstration qu'il n'était pas anecdotique.
+
+### D268 — la suite pro : DEUX diagnostics faux avant le bon
+
+⚠ **Ce paragraphe garde ses erreurs, parce qu'elles sont l'objet de la leçon.**
+
+1. **« instable »** — mesuré rouge ×2 puis vert ×2, arbre inchangé. Vrai comme
+   symptôme, inutile comme diagnostic.
+2. **« classe D127 »** — une ÉTIQUETTE posée sur un symptôme, pas une cause. Ko
+   l'a refusée : *« ne documente pas D127 comme conclusion tant que la cause
+   réelle n'est pas isolée »*. Elle avait l'apparence d'un résultat.
+3. **« pollution inter-fichiers, confirmée »** — ⛔ **FAUX, et je l'avais écrit
+   comme acquis.** Le grep direct de `slots-section.test.tsx` ne trouvait ni
+   `BlocksSection` ni `ProVenuesProvider`, j'en ai conclu que les avertissements
+   venaient d'ailleurs. **Le rendu TRANSITIF ne se voit pas dans un grep** : le
+   fichier monte `EditVenuePage` dans `AppProviders`, qui rendent l'un et
+   l'autre. L'expérience qui a tranché : apparier le fichier avec chaque
+   pollueur supposé. Résultat inverse de l'hypothèse — **seul il ÉCHOUE, apparié
+   il PASSE**.
+
+**La cause, isolée :** l'échec n'est pas une assertion, c'est la **garde des
+sorties console** (`test-setup.ts:172`) qui lève sur
+`2 avertissement(s) … dans un fichier NON exempté`, tous deux
+`not wrapped in act(...)`. `BlocksSection` et `ProVenuesProvider` mettent à jour
+leur état **après la fin du corps de test** — le test assertionne et rend la main
+avant que leurs lectures réseau n'aient décanté.
+
+⛔ **Le dépôt le savait déjà, et l'avait écrit.** Le commentaire de
+`venue-wizard.test.tsx` dans `PLAFONDS` dit mot pour mot : *« une assertion qui
+finit avant la dernière mise à jour laisse un `act(…)` tomber après le test,
+tantôt un, tantôt deux »*, et désigne ce fichier comme *« le prochain candidat »*.
+`services-section.test.tsx` y est présent **en commentaire**, marqué
+« ⛔ HUITIÈME FICHIER — DÉCISION EN ATTENTE (Ko) ».
+`slots-section.test.tsx` est le **neuvième**, jamais relevé.
+
+⚠ Pourquoi le fichier fautif CHANGE : la garde est par fichier et le compte
+d'avertissements FLOTTE (D256). Selon l'ordonnancement, la mise à jour tardive
+tombe pendant `services-section` (mode parallèle) ou `slots-section`
+(`--no-file-parallelism`, reproductible 2/2). Ce n'est pas le même fichier qui
+est malade : c'est la même faute, dans plusieurs fichiers qui montent la coquille.
+
+⇒ **Conséquence exécutoire** : le pré-vol de `neutralize-solid-s7.py` lance la
+suite pro entière, donc cette campagne **avorte au hasard**, zéro cible jouée.
+⇒ **Décision requise de Ko**, la même que pour le huitième fichier : corriger les
+tests (attendre la décantation) ou inscrire des plafonds datés. ⚠ Le dépôt
+tranche déjà contre la seconde option : *« le plafond contient le symptôme ; il
+ne soigne pas la cause »*.
+
+### D268 — un troisième site de la même classe, RAPPORTÉ et NON touché
+
+`payment-intent.spec.ts` recopie **sept** statuts en littéraux, et son
+commentaire affirme le contraire du code (« on boucle sur les statuts RÉELS de
+l'énuméré plutôt que sur une liste écrite ici » — la liste EST écrite là, à la
+main). Deux de ses valeurs (`COMPLETED`, `NO_SHOW`) **n'existent pas** dans
+`BookingStatus`. C'est du chemin de l'argent : arbitrage écrit avant tout code,
+comme ici. Au backlog, non corrigé.
+
 ## Session du 28/08/2026 — D267 · R1, réduction documentaire (part mécanique)
 
 ⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D266**.
@@ -1054,7 +1352,7 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - **Rotation d'identifiants dans une console externe** — signalée plusieurs fois, toujours non résolue.
 - **Cohérence du nom de domaine** : « zwadj » vs « zawadj », à vérifier avant tout support public.
 
-## Registre des décisions — D1 à D267
+## Registre des décisions — D1 à D269
 
 ⛔ **CE REGISTRE EXISTE POUR QU'UN NUMÉRO SE PRENNE TOUJOURS EN LISANT CE FICHIER.**
 Les journaux datés sont partis dans `docs/history/` (lot R1). Sans registre, le
@@ -1066,8 +1364,10 @@ ligne chacune aurait demandé de les réinterpréter. Chaque entrée est la lign
 DÉFINITION **relevée dans le texte**, tronquée, jamais reformulée.
 Mesuré : **217 des 241** ont une définition repérable ; **22** n'ont qu'une
 mention (marquées `?`) ; **2** ne sont ancrées que par leur section.
+⚠ Chiffres de l'audit R1 (28/08), **non recomptés depuis** : D268 s'y ajoute avec
+sa ligne de définition, soit 218 sur 242 — dérivé, pas remesuré.
 
-⛔ **DERNIER NUMÉRO ATTRIBUÉ : D267. Le prochain est D268.**
+⛔ **DERNIER NUMÉRO ATTRIBUÉ : D269. Le prochain est D270.**
 
 ⚠ **D267 a été mal posé une première fois** : inscrit au backlog sans section ici,
 pendant que le registre annonçait encore D266. Corrigé le 28/08.
@@ -1326,3 +1626,5 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D265 | S | D265 — --hm-gutter : artefact de mesure, DÉMONTRÉ |
 | D266 | A | D266 — ⛔ fetch failed : DISPARU, PAS EXPLIQUÉ |
 | D267 | A | ## Session du 28/08/2026 — D267 · R1, réduction documentaire (part mécan… |
+| D268 | A | D268 — ⛔ LA CONSIGNE DE D263 ÉTAIT JUSTE SUR LE DÉFAUT, FAUSSE SUR LE R… |
+| D269 | A | D269 — la cause était dans l'ATTENTE, pas dans le code |
