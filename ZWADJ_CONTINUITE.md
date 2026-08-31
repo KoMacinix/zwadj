@@ -413,26 +413,31 @@ pour D269** : un lot ne se certifie pas sous une porte rouge, quelle qu'en soit
 la cause. La certification des deux lots viendra avec argon2, qui est le seul
 rouge restant.
 
-### D270 — OÙ VIT CHAQUE LOT NON CERTIFIÉ, ET POURQUOI CE N'EST PAS LISIBLE
+### D270 — OÙ VIVENT LES LOTS NON CERTIFIÉS : DANS `main`, PAS SUR UNE BRANCHE
 
-⛔ **La branche ne porte PAS les deux lots.** Relevé par `git`, pas de mémoire :
+⛔ **AUCUNE BRANCHE NE PORTE DE LOT EN ATTENTE. LES DEUX SONT DANS `main`.**
+Relevé par `git` le 31/08/2026, pas de mémoire :
 
 | Lot | Où il vit | État |
 |---|---|---|
-| **D269** | **déjà FUSIONNÉ dans `main`** (tête `2bd01af`) | livré, NON certifié |
-| **D270** | branche **`D270-execution-suite-pro`** — **un seul** commit (`1f85aa6`) au-dessus de `main` | livré, NON certifié |
+| **D269** | **`main`**, fusionné | livré, **NON certifié** |
+| **D270** | **`main`**, fusionné (`1f85aa6`, puis un commit documentaire) | livré, **NON certifié** |
 
-⇒ Le nom de la branche est donc **exact** : elle contient un lot, et c'est le sien.
-⛔ **Ce qui est piégeux n'est pas la branche, c'est que D269 est non certifié À
-L'INTÉRIEUR de `main`.** Qui cherche les lots en attente « sur une branche » ne l'y
-trouvera jamais, et `main` ne porte aucune marque disant qu'un lot non certifié y
-dort. La marque de réfutation posée dans la section D269 le dit (« il est FUSIONNÉ
-dans `main` ») — mais elle parle de la conclusion réfutée, pas de l'état du lot.
-⚠ **Conséquence sur la fusion à venir** : elle amènera **D270 + argon2**, soit
-**deux** lots, pas trois. D269 y est déjà. Le relevé de porte à écrire reste celui
-de D270 ci-dessous — « porte verte à cette date, D269 et D270 en font partie » —
-et il vaudra pour un lot fusionné et un lot qui arrive, ce qui ne change rien à sa
-formulation mais change **où** il faut aller le lire.
+⛔ **Le seul rouge restant est `password.service.spec.ts` (argon2).** C'est lui, et
+lui seul, qui tient la porte `test` — donc les deux certifications à la fois.
+
+⚠ **CE QUI NE SE VOIT NULLE PART AILLEURS, ET QUI EST TOUT L'OBJET DE CE BLOC** :
+un lot non certifié n'attend pas sur une branche, **il est déjà dans `main`**. Qui
+les cherchera là où on cherche d'ordinaire un travail en attente — une branche non
+fusionnée — n'en trouvera **aucun**, et en conclura qu'il n'y en a pas. Rien dans
+`git`, aucune porte, aucun fichier de configuration ne dit que deux lots non
+certifiés dorment dans `main`. **La seule marque est ici**, et dans les en-têtes
+d'état des sections D269 et D270 — c'est pourquoi elle est posée des DEUX côtés.
+
+⚠ **Ce que la porte redevenue verte permettra d'écrire, et rien de plus** :
+« porte `test` verte à cette date, D269 et D270 en font partie ». ⛔ **NE PAS
+réécrire leurs en-têtes en « certifié »** — ce serait la certification par
+procuration refusée plus bas.
 
 ### D270 — ⛔ LA CONTRADICTION, ET CE QU'ELLE TRANCHE : MES QUINZE EXÉCUTIONS MESURAIENT LA MACHINE
 
@@ -590,6 +595,43 @@ D270 pour autant.** Trois raisons, posées par Ko :
 ⛔ **NE PAS réécrire leurs en-têtes en « certifié ».** Ils resteront « livré, non
 certifié » — c'est l'état vrai, et le relevé daté suffit à dire le reste.
 
+### D270 — AUTOCORRECTION : SA PROPRE LIVRAISON A FIGÉ TROIS CHIFFRES
+
+⛔ **Le commit `1f85aa6` ajoutait à `AGENTS.md` la règle « RELEVER L'ÉTAT MACHINE
+AVANT TOUTE MESURE DE DURÉE » — et gravait, dans le MÊME diff, trois durées sans
+état machine.** Trois emplacements :
+- la note d'environnement « SUITE PRO » comparait trois durées comme si elles
+  étaient des propriétés du dépôt ;
+- la règle sur l'état machine citait elle-même une durée et un **compte de tests** ;
+- la consigne de fenêtre d'appel dimensionnait le découpage sur un ordre de grandeur.
+
+⚠ **Et les deux premières sont dans la section même où D268 avait écrit qu'aucun
+compteur ne s'écrit ici, avec la raison.** Une règle contredite par sa voisine,
+dans le fichier chargé à CHAQUE session — donc lue par chaque lecteur avant tout
+le reste. ⚠ Ces durées sont par surcroît celles que ce lot venait de démontrer
+dépendantes de la charge : elles ne se recopient pas sans l'état qui les rend
+lisibles.
+
+⛔ **« CELUI-LÀ EST VÉNIEL, C'EST UN ORDRE DE GRANDEUR » EST LE DÉFAUT LUI-MÊME.**
+J'avais classé le troisième à part à ce motif, et Ko l'a refusé. « 18 scripts,
+149 cibles » était aussi un ordre de grandeur le jour où on l'a écrit ; D268 l'a
+retiré pour cette raison exacte. **Les trois sont traités pareil.**
+
+⇒ **Corrigé** : le VERDICT reste dans `AGENTS.md` — `maxWorkers: 4` retenu, la clé
+mord, c'est une **assurance sous charge** et non un correctif ; les CHIFFRES
+renvoient à cette section, seule à les porter avec la charge relevée devant
+chacune. La consigne de fenêtre d'appel ne contient **plus aucun nombre** : la
+passe complète des portes dépasse la fenêtre d'un appel, on la découpe et on relève
+la durée de chaque morceau pour dimensionner le suivant.
+
+⚠ **Sans nouveau numéro, et c'est délibéré** : le défaut a été introduit par la
+livraison de D270, il lui appartient. `1f85aa6` n'est **pas** réécrit — il est dans
+`main`.
+
+⚠ **REPORT, non corrigé ici** (un lot à la fois) : la même section d'`AGENTS.md`
+porte encore « Compter ~40 minutes » pour `lancer-campagnes.py`. Même classe,
+antérieur à D270 — il ne se corrige pas dans un lot qui parle d'autre chose.
+
 ### D270 — ordre des lots, révisé par Ko
 
 1. **ce lot** (mode d'exécution de la suite pro) ;
@@ -615,6 +657,11 @@ porte. Accepter une exception ici, c'est rouvrir D218 par la petite porte — un
 mesure exacte présentée comme un feu vert qu'elle n'est pas.
 ⇒ Reclassement en clôture : **argon2 doit passer AVANT S11-b**, puisque c'est lui
 qui tient la porte.
+
+⚠ **OÙ CE LOT VIT AUJOURD'HUI (31/08/2026) : dans `main`, fusionné, et TOUJOURS
+non certifié.** Aucune branche ne le porte — le chercher là où on cherche un lot
+en attente ne donnera rien. Tableau des deux lots non certifiés et de ce qui les
+tient : section **D270**.
 
 ### D269 — la cause était dans l'ATTENTE, pas dans le code
 

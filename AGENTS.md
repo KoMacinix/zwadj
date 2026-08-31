@@ -274,8 +274,12 @@ réécrit pas les en-têtes des précédents — ce serait une certification par
 
 ⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**
 Trois fois en deux sessions une mesure a renseigné sur la MACHINE et non sur le code,
-dont une conclusion publiée puis fusionnée : même commande, 35 s / 347 verts ou
-177 s / 36 échecs. **« Intermittent » sans état relevé ne veut rien dire.**
+dont une conclusion publiée puis fusionnée : **la même commande, sur le même arbre,
+a rendu une suite entièrement verte en quelques dizaines de secondes, et des dizaines
+d'échecs en plusieurs minutes.** ⛔ Les relevés ne sont pas recopiés ici : une durée
+sans son état machine est exactement la mesure que cette règle interdit. Ils vivent
+dans la section **D270** de `ZWADJ_CONTINUITE.md`, chacun précédé de sa charge.
+**« Intermittent » sans état relevé ne veut rien dire.**
 
 ⛔ **NE JAMAIS ÉDITER UN FICHIER PENDANT QU'UNE VÉRIFICATION LE LIT (D270)** — 24 échecs
 sans signification, puis une conclusion fausse tirée d'eux. ⚠ Et une campagne de N
@@ -634,13 +638,20 @@ note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
   ⚠ Il écrit ses journaux dans `.neutralisation-journaux/`, ignoré par git.
 - ✅ **SUITE PRO : BORNÉE À `maxWorkers: 4`** (`apps/pro/vite.config.ts`, D270) — elle
   n'est **PAS** « intermittente », l'ancien cadrage prenait la CHARGE MACHINE pour le
-  mode d'exécution. À charge égale : défaut 35 s · borne 46 s · `maxWorkers: 1` 88 s.
+  mode d'exécution. La clé **MORD** — démontré en la poussant à 1, qui ralentit la suite
+  d'un facteur net — et ce qu'elle achète est le comportement **sous charge** : au repos,
+  tous les modes sont verts. ⛔ **Les durées comparées ne sont pas recopiées ici** : la
+  règle « relever l'état machine » ci-dessus les interdirait. Section **D270** de
+  `ZWADJ_CONTINUITE.md`, avec la charge relevée devant chaque mesure.
   ⚠ Reste vrai : `pnpm test` (racine) et `pnpm --filter @zwadj/pro test` ne répartissent
   pas pareil — **ne jamais conclure sur un seul des deux**.
 - ⛔ **UNE E2E INTERROMPUE LAISSE SES SERVEURS SUR 3100/3101** (et la mémoire) : la
   suivante meurt en 8 s sur « already used ». Purger node et les ports AVANT.
-- ⛔ **DIMENSIONNER LA FENÊTRE D'APPEL SUR LES DURÉES MESURÉES** — `build`+`test:int`
-  ≈ 15 min ; trois tâches tuées ont été lues comme des échecs de suite.
+- ⛔ **LA PASSE COMPLÈTE DES PORTES DÉPASSE LA FENÊTRE D'UN APPEL** : la découper, et
+  RELEVER la durée de chaque morceau pour dimensionner le suivant. Trois tâches tuées
+  ont été lues comme des échecs de suite. ⚠ **Aucun ordre de grandeur n'est écrit ici** —
+  « ce n'est qu'un ordre de grandeur » est l'argument qui a laissé passer les autres
+  chiffres figés — celui-là même que D268 refuse plus haut dans cette section.
 - ⛔ **LIRE LE CODE DE SORTIE DE LA COMMANDE, PAS DE SON ENVELOPPE** : `{ …; } > f` rend
   0 quand la commande dedans a rendu 1.
 
