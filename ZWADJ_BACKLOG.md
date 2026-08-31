@@ -2230,6 +2230,17 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       fichier a suffi.** L'absence de base partagée reste un vrai sujet, elle n'est
       simplement bloquante pour rien aujourd'hui.
 
+- [ ] **[DOC][P2]** ⚠ **`AGENTS.md` PORTE ENCORE UNE DURÉE FIGÉE : « Compter ~40
+      minutes » pour `lancer-campagnes.py`.** Même classe que les trois chiffres retirés
+      par l'autocorrection de D270, mais **antérieure à D270** — donc pas corrigée dans ce
+      lot, qui parlait d'autre chose. ⚠ Elle est dans la section même où D268 a écrit
+      qu'aucun compteur ne s'y écrit, et pour la raison exacte qui s'applique ici : le
+      nombre de campagnes bouge à chaque lot, et une durée sans état machine ne renseigne
+      pas sur le code. **En OBSERVATION** : la corriger demande de décider ce qui remplace
+      le repère (rien, ou « relever la durée avant de dimensionner », comme pour la fenêtre
+      d'appel). ⚠ Voisines de même classe à trancher en même temps : « meurt en 8 s sur
+      already used » dans la note e2e.
+
 - [ ] **[API][P0]** ⛔ **argon2 — LE VRAI HACHAGE QUITTE L'UNITAIRE POUR `test:int`.**
       Décision de Ko : **ne relever aucun délai, ne toucher à aucun paramètre de coût**.
       Les tests qui paient le KDF réel partent vers `test:int`, où le budget est large ;
