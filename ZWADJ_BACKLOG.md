@@ -2174,3 +2174,88 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       ⛔ Et la preuve manquait : j'avais mesuré la stabilité de DEUX FICHIERS, jamais
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
+
+## Reports du 30/08/2026 — suites, concurrence, outillage
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- [ ] **[PRO][P1]** ⛔ **L'ATTENTE DE LA COQUILLE DEVRAIT ÊTRE UN UTILITAIRE PARTAGÉ,
+      PAS UNE COPIE PAR FICHIER.** Cause structurelle : `AppProviders` monte
+      `ProVenuesProvider`, qui appelle `listMine()` puis `setState()` de façon
+      asynchrone. **Tout fichier de test pro qui monte `AppProviders` hérite donc du
+      défaut**, qu'il teste la coquille ou non.
+      Mesuré le 30/08 : **19 fichiers montent `AppProviders`** ; **5 seulement**
+      mentionnent `listMine` (`App`, `pro-venues-context`, `services-section`,
+      `slots-section`, `venue-list`), et chacun écrit SA propre attente. Les
+      14 autres n'en ont aucune — ils ne rougissent pas aujourd'hui, mais rien ne les
+      en protège : c'est l'ordonnancement qui décide.
+      ⇒ Un utilitaire unique (`test-support/`, à côté de `client-doubles.ts`, qui
+      centralise déjà les doubles pour la même raison) supprimerait la classe entière
+      au lieu de la traiter fichier par fichier. Chaque copie est une occasion
+      d'oublier l'attente, ou de l'écrire un peu différemment.
+      ⚠ Non fait : hors périmètre du lot qui a corrigé deux fichiers, et un utilitaire
+      de test partagé se conçoit une fois, pas dans l'urgence d'une porte rouge.
+
+- [x] ~~**[INFRA][P0]** LA SUITE PRO EST INEXPLOITABLE EN PARALLÈLE DE FICHIERS~~
+      ⛔ **ENTRÉE FAUSSE, RETIRÉE PAR D270.** Elle reposait sur quinze exécutions
+      prises sur machine chargée, sans relevé d'état. Rejouée sous charge légère, la
+      commande **exacte de la porte** rend **7 verts sur 8 en ~35 s**, et le
+      contrefactuel pré-D269 rend **347/347 en 34-35 s** : le correctif d'attente
+      n'aggrave rien. Conservée barrée plutôt que supprimée — l'entrée a existé,
+      quelqu'un a pu la lire.
+      ✅ **Borne appliquée quand même** (`maxWorkers: 4`, `apps/pro/vite.config.ts`)
+      comme **assurance sous charge** : 46-52 délais dépassés en mode par défaut
+      contre 4 avec la borne, machine chargée. Coût mesuré à charge égale : 35 s → 46 s
+      (+31 %), contre 92 s pour la sérialisation. Vérifié : 347/347 deux fois, 38-40 s.
+
+- [ ] **[INFRA][P3]** ⚠ **OBSERVATION NON EXPLIQUÉE — 15 % D'ÉCART ENTRE DEUX CHEMINS
+      QUI POSENT LE MÊME RÉGLAGE.** `--maxWorkers=4` en ligne de commande rend **46 s** ;
+      `maxWorkers: 4` écrit dans `apps/pro/vite.config.ts` rend **38-40 s**, à charge
+      égale. ⚠ **La clé de config n'est PAS ignorée** — vérifié en posant
+      `maxWorkers: 1` dans le même fichier : la durée passe à **88 s** (contre 35 s par
+      défaut). Le réglage mord donc ; c'est l'écart entre les deux CHEMINS qui n'est pas
+      élucidé. Piste non vérifiée : ligne de commande et fichier ne fixent peut-être pas
+      le même pool.
+      ⚠ **Consigné comme observation, PAS comme défaut** : aucune chasse ouverte, aucune
+      conclusion tirée. Inscrit ici parce que le corps de D270 ne se relit pas.
+
+- [ ] **[INFRA][P2]** ⚠ **AUCUNE CONFIGURATION VITEST PARTAGÉE N'EXISTE.** Relevé :
+      `apps/api` (×2), `apps/client`, `packages/api-client` ont chacun la leur, et
+      **`apps/pro` n'en a aucune** — ses réglages vivent dans `vite.config.ts`.
+      `packages/config/` porte `eslint/` et `tsconfig/`, pas de `vitest/`.
+      ⛔ **REQUALIFIÉ P1 → P2 par D270** : j'avais présenté cette absence comme
+      BLOQUANTE pour borner les workers (« quatre fichiers à toucher »). C'était
+      répondre à un problème général au lieu du problème posé — le paquet qui avait
+      le défaut est le seul à corriger, et son bloc `test` existait déjà. **Un seul
+      fichier a suffi.** L'absence de base partagée reste un vrai sujet, elle n'est
+      simplement bloquante pour rien aujourd'hui.
+
+- [ ] **[API][P0]** ⛔ **argon2 — LE VRAI HACHAGE QUITTE L'UNITAIRE POUR `test:int`.**
+      Décision de Ko : **ne relever aucun délai, ne toucher à aucun paramètre de coût**.
+      Les tests qui paient le KDF réel partent vers `test:int`, où le budget est large ;
+      l'unitaire garde ce qui n'a pas besoin du hachage réel.
+      ⚠ **Surface d'AUTHENTIFICATION** ⇒ analyse écrite des modes de défaillance avant
+      toute ligne de code, même exigence que pour un lot du chemin de l'argent.
+      ⛔ **Doit passer AVANT S11-b** : c'est ce test qui tient la porte `test` rouge, et
+      un lot ne se certifie pas sous une porte rouge.
+
+- [ ] **[E2E][P2]** ⚠ **UNE E2E INTERROMPUE LAISSE SES SERVEURS VIVANTS.** Vécu quatre
+      fois le 30/08 : les processus tiennent 3100/3101 **et** la mémoire (4,5 → 2,25 Go
+      libres). La tentative suivante échoue en 8 s sur
+      `localhost:3101 is already used`, ou son worker Next s'effondre — un message qui
+      ne parle ni de tests ni de la vraie panne.
+      ⇒ Purger les processus node et vérifier 3100/3101 avant toute e2e. Automatisable
+      dans le script `test:e2e` ; non fait ici.
+
+- [x] ~~**[QUALITÉ][P2]** AUCUNE CAMPAGNE DE NEUTRALISATION NE GARDE LES FICHIERS DE
+      TEST PRO~~ — ⛔ **ENTRÉE RETIRÉE PAR D270, ELLE N'AURAIT PAS DÛ ÊTRE OUVERTE.**
+      Vrai au sens strict (le tri ne désigne rien pour ces deux fichiers, et c'est le
+      **comportement correct**), faux au sens qui compte : **la garde de ce défaut
+      existe** — c'est l'`afterEach` de `apps/pro/src/test-setup.ts`, qui lève sur les
+      avertissements console non exemptés. C'est elle qui a RÉVÉLÉ le défaut, et elle
+      remordra si quelqu'un réintroduit une assertion synchrone. **Aucune campagne de
+      neutralisation à créer sur ces fichiers.**
+      ⚠ Seule chose à retenir du relevé : deux chemins de `neutralize-s9.py`
+      (`src/venue-families.test.ts`, `src/venues/venue-client-narrowing.test.ts`) sont
+      écrits **relativement à un paquet** et ne résolvent pas depuis la racine, donc
+      restent invisibles au tri. Sans effet aujourd'hui ; forme fragile.

@@ -265,6 +265,23 @@ connexion (famille D115).
   ⚠ **Le design ne fait pas foi sur une phrase qui DÉCRIT le comportement du système** : sa boîte de suppression annonce « supprimées définitivement » alors que `DELETE /venues/:id` est un **soft delete**.
   ⚠ **Une maquette peut compter à l'envers.** Ses colonnes plaçaient les étapes 01/03 à gauche et 02 à droite : lu dans le DOM — donc au clavier et au lecteur d'écran — cela donne 01 → 03 → 02. **Le DOM énumère, `grid-template-areas` place.**
 
+⛔ **AUCUN LOT NE PART DANS `main` SOUS UNE PORTE ROUGE, même quand le rouge vient
+d'ailleurs (D270).** La provenance dit QUI corrige, pas si la porte est verte ; D269
+fusionné rouge a brouillé l'attribution des mesures. ⚠ Deux lots non certifiés en
+attente sont tenables, **trois non**. Et une porte redevenue verte ne certifie QUE le
+lot mesuré : on écrit « porte verte à cette date, tel lot en fait partie », on ne
+réécrit pas les en-têtes des précédents — ce serait une certification par procuration.
+
+⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**
+Trois fois en deux sessions une mesure a renseigné sur la MACHINE et non sur le code,
+dont une conclusion publiée puis fusionnée : même commande, 35 s / 347 verts ou
+177 s / 36 échecs. **« Intermittent » sans état relevé ne veut rien dire.**
+
+⛔ **NE JAMAIS ÉDITER UN FICHIER PENDANT QU'UNE VÉRIFICATION LE LIT (D270)** — 24 échecs
+sans signification, puis une conclusion fausse tirée d'eux. ⚠ Et une campagne de N
+exécutions écrit dans un **FICHIER**, jamais dans une variable de shell : un rouge
+qu'on ne peut plus relire se relance sans être lu.
+
 ⚠ **LES PORTES SE RELANCENT APRÈS LA DERNIÈRE MODIFICATION, JAMAIS AVANT.** Une archive a été livrée **rouge au typecheck**, avec une note annonçant « 0 erreur » : la mesure était exacte, des fichiers avaient changé entre la mesure et l'emballage. Une porte mesurée n'est pas une porte verte à la livraison. Corollaire : une archive fautive déjà partagée se **supprime** — un lien mort vaut mieux qu'une archive qu'on extrait par erreur. (D218)
 
 ⚠ **UN TEST ÉCRIT DANS LA MÊME SÉANCE QUE LE CODE PEUT VALIDER LA FAUTE.** Deux fois dans cette série : la lecture d'un code d'erreur écrite de mémoire à la racine du corps au lieu de `message.code`, avec un test posant la même enveloppe imaginée — cohérents entre eux, faux tous les deux (D219) ; et le test de l'assistant assertant l'URL poussée contre le contrat de l'**API** au lieu de celui de l'**URL**, vert depuis la livraison sur un budget silencieusement jeté (D228). **Toute forme de donnée qui traverse une frontière (HTTP, URL, base, fichier) se relève d'un appelant existant qui la lit déjà, ou se MESURE.**
@@ -615,12 +632,17 @@ note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
   (mordues / muettes / non mesurées, par campagne). Il ne sort en 0 que si tout
   a été joué ET tout a mordu. Compter ~40 minutes.
   ⚠ Il écrit ses journaux dans `.neutralisation-journaux/`, ignoré par git.
-- ⛔ **LA SUITE PRO EST INTERMITTENTE** (`services-section.test.tsx`, PER_UNIT) :
-  mesuré rouge ×2 puis vert ×2 sur un arbre inchangé. Elle fait **avorter
-  `neutralize-solid-s7.py`** au hasard, dont le pré-vol lance la suite entière.
-  ⚠ Et `pnpm test` (racine) peut être VERT quand `pnpm --filter @zwadj/pro test`
-  est ROUGE, sur le même arbre : la répartition des fichiers entre workers diffère.
-  **Ne jamais conclure sur un seul des deux.**
+- ✅ **SUITE PRO : BORNÉE À `maxWorkers: 4`** (`apps/pro/vite.config.ts`, D270) — elle
+  n'est **PAS** « intermittente », l'ancien cadrage prenait la CHARGE MACHINE pour le
+  mode d'exécution. À charge égale : défaut 35 s · borne 46 s · `maxWorkers: 1` 88 s.
+  ⚠ Reste vrai : `pnpm test` (racine) et `pnpm --filter @zwadj/pro test` ne répartissent
+  pas pareil — **ne jamais conclure sur un seul des deux**.
+- ⛔ **UNE E2E INTERROMPUE LAISSE SES SERVEURS SUR 3100/3101** (et la mémoire) : la
+  suivante meurt en 8 s sur « already used ». Purger node et les ports AVANT.
+- ⛔ **DIMENSIONNER LA FENÊTRE D'APPEL SUR LES DURÉES MESURÉES** — `build`+`test:int`
+  ≈ 15 min ; trois tâches tuées ont été lues comme des échecs de suite.
+- ⛔ **LIRE LE CODE DE SORTIE DE LA COMMANDE, PAS DE SON ENVELOPPE** : `{ …; } > f` rend
+  0 quand la commande dedans a rendu 1.
 
 ## Migrations — `prisma migrate dev` est INTERDIT
 

@@ -402,6 +402,184 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+
+⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D269**.
+
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — la porte `test` reste rouge sur argon2.**
+Les changements de CE lot sont vérifiés (pro 347/347 deux fois avec la borne,
+38-40 s), mais la porte prise dans son ensemble ne l'est pas. **Même règle que
+pour D269** : un lot ne se certifie pas sous une porte rouge, quelle qu'en soit
+la cause. La certification des deux lots viendra avec argon2, qui est le seul
+rouge restant.
+
+### D270 — ⛔ LA CONTRADICTION, ET CE QU'ELLE TRANCHE : MES QUINZE EXÉCUTIONS MESURAIENT LA MACHINE
+
+Ko a relevé une incohérence que je n'avais pas vue : `apps/pro/package.json`
+définit `test` comme **`vitest run`, sans drapeau**, et le bloc `test` de
+`apps/pro/vite.config.ts` ne portait **ni `fileParallelism` ni `maxWorkers`**
+(vérifié : `environment`, `setupFiles`, `globals`, rien d'autre). La porte tourne
+donc exactement dans le mode que j'avais mesuré à 32-36 échecs — elle aurait dû
+être massivement rouge sur pro, pas « rouge à cause d'argon2 ».
+
+**Commandes exactes de chaque mesure, pour qu'on sache ce que chacune vaut :**
+
+| Étiquette | Commande réelle | Ce que c'est |
+|---|---|---|
+| « PRO-PAR » | `pnpm --filter @zwadj/pro test` → `vitest run` | **le mode de la porte** |
+| « PRO-SER » | `pnpm --filter @zwadj/pro exec vitest run --no-file-parallelism` | drapeau que la porte n'utilise **jamais** |
+| porte | `pnpm test` → … → `vitest run` par paquet | **identique à PRO-PAR** |
+
+⇒ **PRO-PAR ET LA PORTE SONT LA MÊME COMMANDE.** La contradiction n'était donc pas
+entre deux modes, mais entre deux **états de machine**. Rejouée sous charge légère,
+la commande exacte de la porte rend :
+
+| Run | RAM libre · CPU | Résultat | Délais dépassés | Durée |
+|---|---|---|---|---|
+| 1 | 3841 Mo · 17 % | 347/347 | 0 | 36 s |
+| 2 | 3875 Mo · 14 % | 1 échec / 346 | 0 | 35 s |
+| 3-8 | 3783-3912 Mo · 7-19 % | 347/347 (×6) | 0 | 34-35 s |
+
+**7 verts sur 8, ~35 s.** Contre 32-36 échecs et 125-177 s pendant les quinze
+exécutions. ⛔ **Même commande, 4× plus lente : c'était la charge.**
+
+⛔ **CE QUE JE DOIS RETIRER.** D269 affirme « LE CORRECTIF D'ATTENTE AGGRAVE LE MODE
+PARALLÈLE » et « la suite pro est inexploitable en parallèle ». **Les deux sont
+FAUX**, et ils sont déjà fusionnés dans `main`. Contrefactuel mesuré sous charge
+légère, fichiers pré-D269 restaurés depuis `d334fc5` :
+
+| Version | 3 runs | Durée |
+|---|---|---|
+| **pré-D269** | 347/347 · 347/347 · 347/347 | 34-35 s |
+| **D269** | 7 verts sur 8 | 34-36 s |
+
+⇒ **D269 n'a PAS aggravé la porte.** Il n'a pas non plus certifié quoi que ce soit
+sous une porte rouge — cela reste vrai — mais la porte n'était pas rouge pour la
+raison que j'avais écrite.
+⚠ **Troisième fois dans cette session qu'une mesure me renseigne sur la machine
+plutôt que sur le code**, et la première où j'en tire une conclusion publiée puis
+fusionnée. Une mesure sans état machine relevé n'est pas une mesure.
+
+### D270 — la borne tient dans UN fichier, pas quatre
+
+⛔ **J'avais écrit que borner les workers était « bloqué par l'absence de config
+vitest partagée, quatre fichiers à toucher ». Faux pour le cas qui compte** :
+`apps/pro/vite.config.ts` a déjà son bloc `test`. Le paquet qui a le problème est
+le seul à corriger. Le raisonnement « il faudrait une base partagée » répondait à
+un problème général au lieu du problème posé.
+
+Durées mesurées sous charge **identique et légère** (RAM ~4,2 Go, CPU 1-2 %,
+zéro processus node — relevé avant chacune) :
+
+| Mode | Durée | Résultat |
+|---|---|---|
+| défaut (porte) | **35 s** | 347/347 |
+| `maxWorkers=4` | **46 s** | 347/347 |
+| `--no-file-parallelism` | **92 s** | 347/347 |
+
+⇒ **Retenu : `maxWorkers: 4`** dans `apps/pro/vite.config.ts`. +31 % de durée
+contre 2,6× pour la sérialisation, et c'est le mode qui encaissait la charge
+(4 délais dépassés contre 46-52 en mode par défaut, mesuré le 30/08).
+**Vérifié après application : 347/347 deux fois, 38-40 s.**
+⚠ **C'est une ASSURANCE, pas un correctif** : au repos les trois modes sont verts.
+Ce qu'on achète, c'est le comportement sous charge.
+
+⚠ **CÔTÉ CLIENT, JE NE PEUX RIEN DÉMONTRER.** `filter-wizard` ne rougit pas au
+repos (287/287, défaut 20 s, borne 25 s). Son échec n'apparaît que sous `pnpm test`
+complet. **Donc : borne NON appliquée au client**, faute de pouvoir mesurer qu'elle
+règle quoi que ce soit. Une borne posée sur une intuition serait un réglage de
+plus que personne ne saurait défendre.
+
+### D270 — `maxWorkers` EST BIEN PRIS EN COMPTE : preuve par la borne à 1
+
+⚠ Signal relevé par Ko : `--maxWorkers=4` en ligne de commande donne **46 s**, la
+même valeur écrite dans `vite.config.ts` donne **38-40 s**. Deux chemins censés
+poser le même réglage ne devraient pas s'écarter de 15 % — et **une option de
+config silencieusement ignorée est exactement la classe de défaut que ce dépôt
+traque partout ailleurs** : un réglage qui rassure sans rien faire.
+
+Preuve directe — `maxWorkers: 1` posé **dans le fichier**, charge relevée
+(RAM 3636 Mo, CPU 28 %, zéro node) :
+
+| Réglage, dans le FICHIER | Durée |
+|---|---|
+| défaut (aucune clé) | 35 s |
+| `maxWorkers: 4` | 38-40 s |
+| **`maxWorkers: 1`** | **88 s** |
+| (référence) `--no-file-parallelism` en ligne de commande | 92 s |
+
+⇒ **88 s contre 35 s : la clé MORD.** Elle n'est pas décorative. Restauré à 4.
+⚠ **L'écart de 15 % entre les deux chemins n'est PAS élucidé, et ne le sera pas
+ici** : la question posée était « la clé est-elle prise en compte », pas « d'où
+viennent les 15 % ». Ligne de commande et fichier ne fixent pas forcément le même
+pool. Consigné comme non expliqué plutôt que comblé par une hypothèse.
+
+### D270 — l'échec isolé : ce que je peux nommer, et ce que je ne peux pas
+
+⛔ **UN ROUGE ÉTIQUETÉ AVANT D'ÊTRE IDENTIFIÉ EST CE QUI A OUVERT TOUTE CETTE
+AFFAIRE.** Sept verts sur huit avaient été rapportés sans que le huitième soit
+nommé. Reprise du fil :
+
+**Ce que les journaux sauvegardés permettent de nommer** — trois rouges isolés,
+tous **ANTÉRIEURS au correctif D269**, tous dans le même fichier :
+- `slots-section.test.tsx > l'écran DIT ce qu'il a déduit, avant même l'envoi`
+  (`--no-file-parallelism`, machine chargée) ;
+- `slots-section.test.tsx > 20:00 → 02:00 part en endMinutes 1560`
+  (même mode, graine fixée) ;
+- côté client, `filter-wizard.test.tsx > construit l'URL avec les noms et
+  l'encodage que /salles LIT` — délai dépassé, défaut connu et distinct.
+
+Les deux premiers sont des instances du défaut que D269 a corrigé : le fichier
+rougissait sur des tests VARIÉS, ce qui est la signature d'une garde de fichier
+qui lève sur un avertissement tardif, non d'une assertion fausse.
+
+⛔ **CE QUE JE NE PEUX PAS NOMMER, ET JE LE DIS PLUTÔT QUE DE L'HABILLER** : les
+deux rouges isolés survenus APRÈS le correctif (un en mode par défaut sous charge
+légère, un pendant les quinze exécutions) **n'ont pas été capturés** — leur sortie
+n'a jamais touché un fichier. Ils sont perdus.
+⚠ **Ils ne se reproduisent pas** : avec la borne en place, **9 exécutions sur 9
+vertes**. Ce n'est pas une explication, c'est une absence de récidive.
+⇒ **Règle qui en découle, appliquée dès maintenant** : toute campagne de N
+exécutions écrit sa sortie dans un FICHIER, pas dans une variable de shell. Un
+rouge qu'on ne peut plus relire est un rouge qu'on relancera sans le lire.
+
+### D270 — la garde de ce défaut EXISTE, et le tri a raison de ne rien désigner
+
+⛔ **RETRAIT D'UN REPORT QUE J'AVAIS OUVERT À TORT.** J'avais écrit « aucune
+campagne ne garde ce défaut » et proposé d'en créer une. Ko a tranché : vrai au
+sens strict, faux au sens qui compte. **La garde est l'`afterEach` de
+`apps/pro/src/test-setup.ts`** — celle qui lève sur les avertissements console non
+exemptés. C'est elle qui a RÉVÉLÉ le défaut, et elle remordra si quelqu'un
+réintroduit une assertion synchrone.
+⇒ Le tri ne désigne rien pour ces fichiers, **et c'est le comportement correct**.
+Aucune entrée backlog, aucune campagne à créer. Le point est CLOS.
+
+### D270 — ⛔ LA CERTIFICATION À VENIR NE VAUDRA PAS PAR PROCURATION
+
+Le lot argon2 rendra la porte `test` verte. ⛔ **Cela ne certifiera PAS D269 et
+D270 pour autant.** Trois raisons, posées par Ko :
+- deux lots antérieurs déclarés certifiés par la porte d'un troisième, c'est une
+  **certification par procuration** ;
+- les deux correctifs pro sont **déjà dans l'arbre** depuis, donc un relevé de
+  porte ne dira pas ce que chaque lot a fait **individuellement** ;
+- un seul relevé ne peut pas servir de preuve pour trois lots.
+
+⇒ **Ce qu'il faudra écrire, exactement, et rien de plus** :
+« porte `test` verte à cette date, D269 et D270 en font partie ».
+⛔ **NE PAS réécrire leurs en-têtes en « certifié ».** Ils resteront « livré, non
+certifié » — c'est l'état vrai, et le relevé daté suffit à dire le reste.
+
+### D270 — ordre des lots, révisé par Ko
+
+1. **ce lot** (mode d'exécution de la suite pro) ;
+2. **argon2 → `test:int`** — surface d'authentification, modes de défaillance
+   écrits avant code ;
+3. **S11-b**.
+
+⚠ **Deux lots non certifiés sont en attente (D269, D270). C'est tenable ; trois
+ne le serait pas** — plus personne ne saurait lequel a certifié quoi. Cela borne
+la file : argon2 doit passer avant qu'un quatrième lot ne s'ouvre.
+
 ## Session du 30/08/2026 — D269 · `act(…)` tardif, concurrence, tri des campagnes
 
 ⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D268**.
@@ -460,6 +638,58 @@ toute chaîne désignant un fichier existant : 22/22 campagnes rendent au moins 
 fichier. Une campagne qui n'en rendrait aucun ne pourrait jamais être
 sélectionnée — le script le DIT au lieu de la passer sous silence.
 
+### D269 — ⛔⛔ SECTION SUIVANTE RÉFUTÉE PAR D270 — NE PAS LA LIRE SEULE
+
+⛔ **Tout ce paragraphe conclut faux, et il est FUSIONNÉ dans `main`.** Les quinze
+exécutions ci-dessous ont été prises sur une machine chargée, sans que j'en relève
+l'état. Rejouée sous charge légère, **la commande exacte de la porte rend 7 verts
+sur 8 en ~35 s**, et le contrefactuel pré-D269 rend 347/347 en 34-35 s.
+⇒ **« Le correctif aggrave le mode parallèle » et « la suite pro est inexploitable
+en parallèle » sont FAUX.** Détail et mesures : **D270**.
+⚠ Conservé tel quel, non réécrit : c'est la trace de la faute, et elle est plus
+utile que sa correction silencieuse.
+
+### D269 — ⛔ QUINZE EXÉCUTIONS : LE CORRECTIF NE TIENT QU'EN SÉRIALISÉ
+
+⛔ **J'avais prouvé la stabilité de DEUX FICHIERS, jamais celle des SUITES** — or
+c'est la suite entière qui rougissait. Ko a exigé la mesure ; elle me donne tort.
+
+| Mode | 5 exécutions | Délais dépassés |
+|---|---|---|
+| pro, parallèle de fichiers | **35 · 32 · 36 · 35 · 33** échecs | **48 · 46 · 52 · 48 · 50** |
+| pro, `--no-file-parallelism` | **0 · 0 · 0 · 0 · 1** échec | **0 · 0 · 0 · 0 · 0** |
+| client (`pnpm --filter`) | **0 · 0 · 0 · 0 · 0** | **0 · 0 · 0 · 0 · 0** |
+
+⛔ **LE CORRECTIF D'ATTENTE AGGRAVE LE MODE PARALLÈLE.** Sans lui : 5 échecs,
+8 délais dépassés. Avec : ~48. L'attente est JUSTE — sérialisé, la suite est à
+347/347 avec zéro délai dépassé, ce qu'elle n'atteignait jamais avant — mais elle
+COÛTE, et le parallélisme de fichiers n'avait plus de marge.
+⚠ **Mon « optimisation » (`queryByText` au lieu de `getByRole`) n'a rien réglé au
+niveau de la SUITE.** Je l'avais déclarée efficace sur la foi de deux fichiers
+isolés à 17/17. Deux fichiers verts ne disent rien d'une suite de vingt-huit.
+⇒ Reporté : borner les workers vitest, bloqué par l'absence de config partagée.
+
+### D269 — concurrence : la mesure, enfin produite
+
+⚠ **Promise deux fois, jamais donnée avant que Ko ne l'exige.** Un changement
+resté dans l'arbre sans mesure est un changement qu'on ne peut ni défendre ni
+retirer.
+
+| Forme | Durée | Paquets exécutés |
+|---|---|---|
+| `pnpm -r run test` | **47 s** | **2 sur 4** — api, api-client |
+| `--workspace-concurrency=1 --no-bail` | **284 s** | **4 sur 4** |
+
+⛔ **CE QUE LA MESURE DIT VRAIMENT, ET QUI CORRIGE MON RAPPORT PRÉCÉDENT** : le
+gain vient de **`--no-bail`**, pas de la sérialisation. L'ancienne forme
+s'arrêtait AUSSI au premier paquet rouge — j'avais écrit l'inverse, sur un run où
+l'échec arrivait tard, une fois les autres déjà terminés.
+⚠ **Et la sérialisation seule n'a PAS rendu le client déterministe** : sous
+`pnpm test` séquentiel il tombe encore à 1 échec sur 287, alors qu'il est à 5/5
+vert lancé seul. Le coût est réel (47 s → 284 s), le bénéfice propre à la
+sérialisation n'est pas démontré. **Les deux drapeaux sont conservés par décision
+de Ko ; ce paragraphe existe pour que la moitié non démontrée soit relisible.**
+
 ### D269 — concurrence : ce que le changement donne ET ce qu'il coûte
 
 `pnpm test` devient `pnpm -r --workspace-concurrency=1 run test`. Le timeout n'est
@@ -502,7 +732,27 @@ s'effondre faute de RAM (4,5 → 2,25 Go libres). Le message ne parle alors ni d
 tests ni de la vraie panne. **Avant toute e2e : purger les processus node et
 vérifier que 3100/3101 sont libres.**
 
-### D269 — trois fautes de méthode, à mon compte
+### D269 — le tri des campagnes, passé sur SON PROPRE lot
+
+Sortie brute, lancée sur D269 lui-même :
+
+```
+33 fichier(s) modifié(s) depuis HEAD → 2 campagne(s) concernée(s) sur 22.
+  · neutralize-booking-status.py  (2 fichier(s) en commun)
+  · neutralize-s10b.py            (1 fichier en commun)
+```
+
+⛔ **Il ne désigne RIEN pour les deux fichiers que D269 a corrigés**, et c'est
+**correct** : vérifié, aucune campagne ne lit `services-section.test.tsx` ni
+`slots-section.test.tsx`. La plus proche, `neutralize-s9.py`, lit
+`slots-section.tsx` — le COMPOSANT, que ce lot n'a pas touché.
+⇒ Conséquence à ne pas enjoliver : **le correctif d'attente n'est gardé par
+aucune campagne**. Le supprimer ne ferait rougir aucune neutralisation. Reporté.
+⚠ Limite du tri relevée au passage : deux chemins de `neutralize-s9.py` sont
+écrits relativement à un paquet et ne résolvent pas depuis la racine — invisibles
+au croisement. Sans effet aujourd'hui, forme fragile.
+
+### D269 — SIX fautes de méthode, à mon compte
 
 1. ⛔ **J'ai édité les fichiers qu'une vérification était en train de mesurer.**
    Résultat : 24 échecs sans signification.
@@ -513,6 +763,26 @@ vérifier que 3100/3101 sont libres.**
    qui en résultaient comme des échecs de la suite. `build`+`test:int` valaient
    15 min sur une fenêtre de 9,8 que j'avais fixée moi-même, après avoir mesuré
    `test:int` à 731 s.
+4. ⛔ **J'ai déclaré ce lot CLOS sous une porte rouge**, au motif que le rouge
+   venait d'ailleurs. Refusé par Ko. La provenance dit QUI corrige, pas si la
+   porte est verte.
+5. ⛔ **J'ai généralisé de deux fichiers à une suite.** 17/17 en isolation, puis
+   « corrigé » annoncé — alors que la suite tournait à ~48 délais dépassés. Une
+   mesure sur un périmètre plus étroit que la conclusion n'est pas une mesure.
+6. ⛔ **J'ai laissé deux fois un changement dans l'arbre en promettant sa mesure
+   pour plus tard.** Elle a fini par contredire une partie de ce que j'en disais.
+
+### D269 — ce qui reste OUVERT à la clôture de la session
+
+⛔ **Le lot est LIVRÉ, pas CERTIFIÉ.** Porte `test` rouge (argon2).
+- **argon2 → `test:int`** : lot séparé, surface d'authentification, analyse des
+  modes de défaillance avant code. **Doit passer AVANT S11-b.**
+- **Borner les workers vitest** : mesuré efficace (48 → 4), bloqué par l'absence
+  de configuration vitest partagée — lot séparé.
+- **Utilitaire d'attente partagé** : 19 fichiers pro montent `AppProviders`, 2
+  seulement portent l'attente de D269.
+- **Aucune campagne ne garde les fichiers de test pro.**
+- **S11-b n'est pas commencé** — son cadrage attend une porte verte.
 
 ## Session du 30/08/2026 — D268 · `BookingStatus.PENDING`, premier lot Claude Code
 
@@ -1352,7 +1622,7 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - **Rotation d'identifiants dans une console externe** — signalée plusieurs fois, toujours non résolue.
 - **Cohérence du nom de domaine** : « zwadj » vs « zawadj », à vérifier avant tout support public.
 
-## Registre des décisions — D1 à D269
+## Registre des décisions — D1 à D270
 
 ⛔ **CE REGISTRE EXISTE POUR QU'UN NUMÉRO SE PRENNE TOUJOURS EN LISANT CE FICHIER.**
 Les journaux datés sont partis dans `docs/history/` (lot R1). Sans registre, le
@@ -1367,7 +1637,7 @@ mention (marquées `?`) ; **2** ne sont ancrées que par leur section.
 ⚠ Chiffres de l'audit R1 (28/08), **non recomptés depuis** : D268 s'y ajoute avec
 sa ligne de définition, soit 218 sur 242 — dérivé, pas remesuré.
 
-⛔ **DERNIER NUMÉRO ATTRIBUÉ : D269. Le prochain est D270.**
+⛔ **DERNIER NUMÉRO ATTRIBUÉ : D270. Le prochain est D271.**
 
 ⚠ **D267 a été mal posé une première fois** : inscrit au backlog sans section ici,
 pendant que le registre annonçait encore D266. Corrigé le 28/08.
@@ -1628,3 +1898,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D267 | A | ## Session du 28/08/2026 — D267 · R1, réduction documentaire (part mécan… |
 | D268 | A | D268 — ⛔ LA CONSIGNE DE D263 ÉTAIT JUSTE SUR LE DÉFAUT, FAUSSE SUR LE R… |
 | D269 | A | D269 — la cause était dans l'ATTENTE, pas dans le code |
+| D270 | A | D270 — mes quinze exécutions mesuraient la MACHINE, pas le mode |

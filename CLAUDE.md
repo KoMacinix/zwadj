@@ -17,8 +17,10 @@ Les journaux datés sont archivés dans `docs/history/` (lot R1). Ne les ouvrir
 que pour retrouver le RAISONNEMENT d'une décision ancienne — jamais pour
 connaître l'état courant, qui n'est que dans `ZWADJ_CONTINUITE.md`.
 
-⛔ Le **registre des décisions** (D1 à D266) est en bas de `ZWADJ_CONTINUITE.md`.
-Un numéro se prend en le lisant, jamais depuis un résumé ni la mémoire.
+⛔ Le **registre des décisions** est en bas de `ZWADJ_CONTINUITE.md`. Un numéro se
+prend en LISANT ce registre — jamais depuis un résumé, la mémoire, ni un compteur
+recopié ailleurs. ⚠ Cette ligne portait « D1 à D266 » : un numéro figé dans un
+fichier chargé à chaque session est faux dès le lot suivant.
 
 ## Avant de toucher au code
 
@@ -53,8 +55,13 @@ pnpm test:e2e          # à la demande, pas systématique
 Puis le harnais du lot, depuis la RACINE :
 
 ```
-python3 neutralisation/neutralize-<lot>.py
+python3 neutralisation/neutralize-<lot>.py       # le harnais du lot
+python3 neutralisation/lancer-campagnes.py       # les campagnes que le lot TOUCHE
 ```
+
+Le second croise `git diff --name-only HEAD` avec les fichiers que lit chaque
+campagne, et ne joue que les concernées — un lot peut périmer l'ancre d'une cible
+sans qu'aucune porte ne le dise. `--tout` avant une LIVRAISON.
 
 ⛔ Une garde qui ne mord pas n'est pas une garde. Un test vert qui ne mesure
 rien est pire que pas de test : il donne une assurance fausse.
