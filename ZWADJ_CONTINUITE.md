@@ -413,6 +413,27 @@ pour D269** : un lot ne se certifie pas sous une porte rouge, quelle qu'en soit
 la cause. La certification des deux lots viendra avec argon2, qui est le seul
 rouge restant.
 
+### D270 — OÙ VIT CHAQUE LOT NON CERTIFIÉ, ET POURQUOI CE N'EST PAS LISIBLE
+
+⛔ **La branche ne porte PAS les deux lots.** Relevé par `git`, pas de mémoire :
+
+| Lot | Où il vit | État |
+|---|---|---|
+| **D269** | **déjà FUSIONNÉ dans `main`** (tête `2bd01af`) | livré, NON certifié |
+| **D270** | branche **`D270-execution-suite-pro`** — **un seul** commit (`1f85aa6`) au-dessus de `main` | livré, NON certifié |
+
+⇒ Le nom de la branche est donc **exact** : elle contient un lot, et c'est le sien.
+⛔ **Ce qui est piégeux n'est pas la branche, c'est que D269 est non certifié À
+L'INTÉRIEUR de `main`.** Qui cherche les lots en attente « sur une branche » ne l'y
+trouvera jamais, et `main` ne porte aucune marque disant qu'un lot non certifié y
+dort. La marque de réfutation posée dans la section D269 le dit (« il est FUSIONNÉ
+dans `main` ») — mais elle parle de la conclusion réfutée, pas de l'état du lot.
+⚠ **Conséquence sur la fusion à venir** : elle amènera **D270 + argon2**, soit
+**deux** lots, pas trois. D269 y est déjà. Le relevé de porte à écrire reste celui
+de D270 ci-dessous — « porte verte à cette date, D269 et D270 en font partie » —
+et il vaudra pour un lot fusionné et un lot qui arrive, ce qui ne change rien à sa
+formulation mais change **où** il faut aller le lire.
+
 ### D270 — ⛔ LA CONTRADICTION, ET CE QU'ELLE TRANCHE : MES QUINZE EXÉCUTIONS MESURAIENT LA MACHINE
 
 Ko a relevé une incohérence que je n'avais pas vue : `apps/pro/package.json`
