@@ -406,7 +406,10 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 
 ⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D269**.
 
-⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — la porte `test` reste rouge sur argon2.**
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — la porte `test` reste rouge SOUS CHARGE.**
+⚠ **Corrigé le 01/09/2026** : cette ligne portait « rouge sur argon2 ». **Faux, et
+mesuré faux** — `image-pipeline.spec.ts` (sharp) tient la porte tout autant. Relevé
+complet plus bas : « LA PORTE N'EST PAS ROUGE SUR ARGON2 SEUL ».
 Les changements de CE lot sont vérifiés (pro 347/347 deux fois avec la borne,
 38-40 s), mais la porte prise dans son ensemble ne l'est pas. **Même règle que
 pour D269** : un lot ne se certifie pas sous une porte rouge, quelle qu'en soit
@@ -423,8 +426,12 @@ Relevé par `git` le 31/08/2026, pas de mémoire :
 | **D269** | **`main`**, fusionné | livré, **NON certifié** |
 | **D270** | **`main`**, fusionné (`1f85aa6`, puis un commit documentaire) | livré, **NON certifié** |
 
-⛔ **Le seul rouge restant est `password.service.spec.ts` (argon2).** C'est lui, et
-lui seul, qui tient la porte `test` — donc les deux certifications à la fois.
+⛔ **DEUX fichiers tiennent la porte, pas un** (mesuré le 01/09/2026) :
+`password.service.spec.ts` (argon2) **et** `src/media/image-pipeline.spec.ts`
+(sharp). Les deux dépassent le même budget de 5 000 ms sous charge, et le second
+est apparu **seul** dans une exécution rouge. ⚠ La phrase précédente disait « le
+seul rouge restant » : c'est elle qui aurait orienté la session suivante vers un
+lot argon2 censé rendre la porte verte.
 
 ⚠ **CE QUI NE SE VOIT NULLE PART AILLEURS, ET QUI EST TOUT L'OBJET DE CE BLOC** :
 un lot non certifié n'attend pas sur une branche, **il est déjà dans `main`**. Qui
@@ -582,8 +589,13 @@ Aucune entrée backlog, aucune campagne à créer. Le point est CLOS.
 
 ### D270 — ⛔ LA CERTIFICATION À VENIR NE VAUDRA PAS PAR PROCURATION
 
-Le lot argon2 rendra la porte `test` verte. ⛔ **Cela ne certifiera PAS D269 et
-D270 pour autant.** Trois raisons, posées par Ko :
+⚠ **PRÉMISSE CORRIGÉE LE 01/09/2026.** Cette section s'ouvrait sur « le lot argon2
+rendra la porte `test` verte » : **il ne le fera pas à lui seul**, sharp la tient
+aussi. Ce qui suit reste vrai mot pour mot, et le devient même davantage — la porte
+verte viendra d'un TROISIÈME lot, ce qui rendrait la procuration plus tentante
+encore.
+⛔ **Une porte verte ne certifiera PAS D269 et D270 pour autant.** Trois raisons,
+posées par Ko :
 - deux lots antérieurs déclarés certifiés par la porte d'un troisième, c'est une
   **certification par procuration** ;
 - les deux correctifs pro sont **déjà dans l'arbre** depuis, donc un relevé de
@@ -632,23 +644,95 @@ livraison de D270, il lui appartient. `1f85aa6` n'est **pas** réécrit — il e
 porte encore « Compter ~40 minutes » pour `lancer-campagnes.py`. Même classe,
 antérieur à D270 — il ne se corrige pas dans un lot qui parle d'autre chose.
 
+### D270 — ⛔ LA PORTE N'EST PAS ROUGE SUR ARGON2 SEUL (mesuré le 01/09/2026)
+
+⛔ **Consigné SANS nouveau numéro**, comme l'autocorrection ci-dessus : c'est une
+mesure qui corrige l'état décrit par D270, pas une décision neuve.
+
+**Objet de la campagne** : Ko a proposé de traiter la contention là où elle naît —
+`maxWorkers: 4` dans `apps/api/vitest.config.ts`, comme D270 l'a fait pour pro. Si
+la borne suffisait, le lot argon2 devenait **inutile** : aucun test déplacé, aucune
+garde de sécurité déportée, aucun compteur bougé.
+
+**Méthode** — charge produite par un générateur **auto-terminant** (il porte son
+échéance, donc il meurt seul si le harnais est tué — D224) ; charge **comptée et
+assertie** avant chaque exécution par un pré-vol inversé qui ABANDONNE si elle
+n'est pas établie ou si des résidus traînent ; état machine relevé avant chaque
+mesure ; **sortie de chaque exécution dans un fichier**.
+
+**Suite API complète, charge identique vérifiée à 9 processus :**
+
+| Bras | Résultat | Délais dépassés | Durée | Sortie |
+|---|---|---|---|---|
+| sans borne | 3 échecs / 638 | 6 | 87 s | 1 |
+| sans borne | 6 échecs / 635 | 12 | 211 s | 1 |
+| sans borne | 8 échecs / 633 | 16 | 151 s | 1 |
+| `maxWorkers: 4` | **641/641** | **0** | 133 s | **0** |
+| `maxWorkers: 4` | **641/641** | **0** | 123 s | **0** |
+| `maxWorkers: 4` | 5 échecs / 636 | 10 | 212 s | 1 |
+| `maxWorkers: 4` | 6 échecs / 635 | 12 | 130 s | 1 |
+| `maxWorkers: 4` | 4 échecs / 637 | 8 | 231 s | 1 |
+
+⇒ **Sans borne 0 vert sur 3 ; avec borne 2 verts sur 5.** La borne déplace le taux,
+elle ne rend rien de déterministe. **Elle n'est PAS retenue** — un réglage qui
+rassure sans trancher est exactement ce que ce dépôt traque.
+
+⛔ **J'AI FAILLI PUBLIER L'INVERSE.** Après les deux premières exécutions bornées —
+641/641, zéro délai — « la borne suffit » était écrit. **C'est la troisième qui l'a
+réfutée.** Deux exécutions vertes ne sont pas une garantie : c'est mot pour mot la
+faute que D270 venait de payer, et elle s'est représentée dans la campagne montée
+pour l'éviter.
+⚠ Et les deux verts sont tombés aux **RAM libres les plus basses de la campagne**
+(2 319 et 2 793 Mo, contre 3 771-4 120 Mo pour trois des rouges) : ils ne
+s'expliquent pas par une machine plus clémente. C'est de la variance.
+
+⛔ **CE QUE LA CAMPAGNE A TROUVÉ EN PLUS, ET QUI CHANGE LE PLAN.**
+`src/media/image-pipeline.spec.ts` (sharp) dépasse le même budget de 5 000 ms dans
+les mêmes conditions, et figure dans **5 des 6 exécutions rouges — parfois seul**.
+Le backlog le disait déjà (« argon2 **et sharp** le frôlent sous charge ») ; l'état
+courant, lui, décrivait la porte comme rouge sur `password.service.spec.ts`
+**uniquement**. ⇒ **Déporter les tests argon2 ne rendra pas la porte déterministe.**
+
+⚠ **LIMITE DE LA MESURE, DÉCLARÉE.** La charge est un **proxy calibré pour
+reproduire le rouge**, pas un relevé de conditions ordinaires : au repos la porte
+est verte, borne ou pas, avec une marge d'environ 13× sur le test le plus lourd.
+Ce qui est établi : sous une charge qui produit le défaut, la borne ne l'élimine
+pas. Ce qui ne l'est pas : son effet aux charges intermédiaires, non balayées.
+
 ### D270 — ordre des lots, révisé par Ko
 
-1. **ce lot** (mode d'exécution de la suite pro) ;
+⛔ **ORDRE RÉVISÉ LE 01/09/2026, APRÈS MESURE.** L'ordre écrit ici était
+« argon2 → S11-b », au motif qu'argon2 rendrait la porte verte. **Il ne la rendra
+pas verte**, donc il perd exactement la raison pour laquelle il passait avant
+S11-b. Ordre qui s'applique :
+
+1. ~~ce lot~~ (mode d'exécution de la suite pro) — **fait** ;
 2. **argon2 → `test:int`** — surface d'authentification, modes de défaillance
-   écrits avant code ;
-3. **S11-b**.
+   écrits avant code. ⚠ **Ne rendra PAS la porte verte** ;
+3. **sharp / `image-pipeline.spec.ts`** — même classe, entrée backlog P0 ouverte
+   avec la campagne pour preuve ;
+4. **certification de D269 ET D270 ensemble**, sur la porte redevenue verte, dans
+   les termes fixés plus haut (« porte verte à cette date, D269 et D270 en font
+   partie », sans réécrire leurs en-têtes) ;
+5. **S11-b**.
+
+⛔ **S11-b EST UN LOT DU CHEMIN DE L'ARGENT ET NE S'OUVRE PAS SOUS UNE PORTE NON
+FIABLE.** C'est le seul point de cet ordre qui ne se négocie pas : sans les rangs
+2 et 3, le rang 5 se mesurerait contre une porte qui rougit au hasard de la charge.
 
 ⚠ **Deux lots non certifiés sont en attente (D269, D270). C'est tenable ; trois
-ne le serait pas** — plus personne ne saurait lequel a certifié quoi. Cela borne
-la file : argon2 doit passer avant qu'un quatrième lot ne s'ouvre.
+ne le serait pas** — plus personne ne saurait lequel a certifié quoi. ⚠ Les rangs
+2 et 3 sont des lots de FIABILITÉ DE PORTE, pas des lots de produit : ils ne
+créent pas de troisième lot non certifié, ils lèvent ce qui bloque les deux.
 
 ## Session du 30/08/2026 — D269 · `act(…)` tardif, concurrence, tri des campagnes
 
 ⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D268**.
 
 ⛔⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — PORTE `test` ROUGE** (cause antérieure au lot :
-`password.service.spec.ts`, argon2). **Ce lot n'est PAS clos.**
+`password.service.spec.ts` (argon2) **et `image-pipeline.spec.ts` (sharp)** — le
+second ajouté le 01/09/2026 après mesure ; cette ligne ne nommait qu'argon2).
+**Ce lot n'est PAS clos.**
 ⚠ Je l'avais d'abord présenté comme terminé au motif que le rouge « venait
 d'ailleurs ». **C'est une faute de raisonnement, et Ko l'a refusée** : un lot ne se
 certifie pas sous une porte rouge, même quand le rouge n'est pas le sien. La
@@ -773,6 +857,10 @@ garder, ajouter `--no-bail`, ou revenir en parallèle en bornant les workers vit
 
 ### D269 — ⛔ CE QUI RESTE ROUGE, ET CE N'EST PAS CE LOT
 
+⚠ **CONSTAT INCOMPLET, corrigé le 01/09/2026** : il ne nomme qu'argon2, alors que
+`image-pipeline.spec.ts` (sharp) dépasse le même budget dans les mêmes conditions.
+Conservé tel quel, non réécrit — c'est la trace de ce qui avait été vu.
+
 `password.service.spec.ts` : argon2 dépasse 5 000 ms. **Déjà au backlog** —
 « 3,4 s d'un budget de 5 s au repos, rougit sous charge ». Mesuré en isolation
 sur machine libérée : **rouge puis vert** sur deux runs consécutifs. Donc
@@ -845,6 +933,8 @@ au croisement. Sans effet aujourd'hui, forme fragile.
 ⛔ **Le lot est LIVRÉ, pas CERTIFIÉ.** Porte `test` rouge (argon2).
 - **argon2 → `test:int`** : lot séparé, surface d'authentification, analyse des
   modes de défaillance avant code. **Doit passer AVANT S11-b.**
+  ⚠ **INSUFFISANT À LUI SEUL (01/09/2026)** : sharp tient la porte aussi. Ordre
+  complet dans la section D270, « ORDRE RÉVISÉ ».
 - **Borner les workers vitest** : mesuré efficace (48 → 4), bloqué par l'absence
   de configuration vitest partagée — lot séparé.
 - **Utilitaire d'attente partagé** : 19 fichiers pro montent `AppProviders`, 2

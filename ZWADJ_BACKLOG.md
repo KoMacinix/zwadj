@@ -2241,14 +2241,36 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       d'appel). ⚠ Voisines de même classe à trancher en même temps : « meurt en 8 s sur
       already used » dans la note e2e.
 
+- [ ] **[API][P0]** ⛔ **sharp — `image-pipeline.spec.ts` TIENT LA PORTE AUTANT
+      QU'ARGON2.** Ouvert le 01/09/2026 sur MESURE, pas sur soupçon : campagne de 8
+      exécutions de la suite API sous charge vérifiée (9 processus), état machine relevé
+      avant chacune, sortie de chacune dans un fichier. `src/media/image-pipeline.spec.ts`
+      dépasse le budget de **5 000 ms** dans **5 des 6 exécutions rouges — parfois SEUL**
+      (« au-delà du plafond : la grande redescend à 1920 de large » 6 020 ms ; « PNG
+      accepté en entrée, sortie webp quand même » 5 134 ms).
+      ⛔ **CONSÉQUENCE EXÉCUTOIRE** : le lot argon2 **ne rendra pas la porte verte**. Tant
+      que celui-ci n'est pas fait, la porte reste non fiable sous charge, donc D269 et D270
+      restent non certifiés, donc **S11-b — chemin de l'argent — ne s'ouvre pas**.
+      ⚠ **Même décision de cadrage qu'argon2, à confirmer** : ne relever aucun délai, ne
+      toucher à aucun paramètre de coût ; ce qui paie le traitement d'image réel part vers
+      `test:int` (budget 30 s, `fileParallelism: false`), l'unitaire garde ce qui n'en a
+      pas besoin — **et au moins un test qui exerce le vrai pipeline**, par le même motif
+      que MD7 côté argon2 : une régression de configuration doit se voir tout de suite,
+      pas à la porte lourde.
+      ⚠ **La borne `maxWorkers: 4` a été mesurée et écartée** : 2 verts sur 5 contre 0 sur
+      3 sans elle. Elle déplace le taux, elle ne tranche pas. Relevé complet dans la
+      section D270 de `ZWADJ_CONTINUITE.md`.
+
 - [ ] **[API][P0]** ⛔ **argon2 — LE VRAI HACHAGE QUITTE L'UNITAIRE POUR `test:int`.**
       Décision de Ko : **ne relever aucun délai, ne toucher à aucun paramètre de coût**.
       Les tests qui paient le KDF réel partent vers `test:int`, où le budget est large ;
       l'unitaire garde ce qui n'a pas besoin du hachage réel.
       ⚠ **Surface d'AUTHENTIFICATION** ⇒ analyse écrite des modes de défaillance avant
       toute ligne de code, même exigence que pour un lot du chemin de l'argent.
-      ⛔ **Doit passer AVANT S11-b** : c'est ce test qui tient la porte `test` rouge, et
-      un lot ne se certifie pas sous une porte rouge.
+      ⛔ **Doit passer AVANT S11-b**, mais **NE SUFFIRA PAS** : corrigé le 01/09/2026 sur
+      mesure — cette ligne disait « c'est CE test qui tient la porte rouge ». Sharp la tient
+      aussi (entrée ci-dessus). Ordre : argon2, puis sharp, puis certification de D269 et
+      D270 ensemble, puis S11-b.
 
 - [ ] **[E2E][P2]** ⚠ **UNE E2E INTERROMPUE LAISSE SES SERVEURS VIVANTS.** Vécu quatre
       fois le 30/08 : les processus tiennent 3100/3101 **et** la mémoire (4,5 → 2,25 Go
