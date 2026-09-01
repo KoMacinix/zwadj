@@ -402,6 +402,197 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## Session du 01/09/2026 — D271 · argon2 quitte l'unitaire pour `test:int`
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D270**.
+
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** La porte `test` reste rouge **sous charge** — sharp
+la tient encore (lot suivant). Ce lot ne prétend pas la rendre verte, et il ne
+certifie donc ni D269 ni D270.
+
+### D271 — ⛔ UNE TROISIÈME CAUSE, TROUVÉE EN RELANÇANT LES PORTES : L'HORLOGE
+
+⛔ **La porte `test` est rouge sur `@zwadj/pro`, et ce n'est ni argon2 ni sharp.**
+Trouvé le 01/09 en relançant la passe finale : `walkin-journey.test.tsx` rend **24
+échecs sur 41**, tous en `expect(element).toBeEnabled()`. **Mesuré aussi sur `main`,
+sans mes changements : 24 échecs identiques.** Le défaut n'est pas de ce lot.
+
+⚠ **ET LA MÊME COMMANDE RENDAIT 347/347 LA VEILLE, DANS CETTE SESSION.** Aucune
+ligne n'a bougé entre les deux. Ce qui a bougé, c'est **la date** : la session a
+franchi minuit, on est passé au 01/09/2026.
+
+⛔ **CAUSE PROUVÉE, PAS DÉDUITE.** Le fichier fixe une fenêtre
+`from: "2026-08-01", to: "2026-08-31"` et des dates `2026-08-15/16/22`, **sans figer
+l'horloge**. Ces dates sont désormais PASSÉES, le calendrier les refuse, le bouton
+reste désactivé. Reproduction : `vi.setSystemTime("2026-08-10")` ⇒ **41/41 VERT** ;
+horloge réelle ⇒ 24 rouges. Horloge restaurée après la mesure, rien laissé dans
+l'arbre — vérifié.
+
+⚠ **LA LEÇON EXISTAIT DÉJÀ, ÉCRITE, ET N'A PAS ÉTÉ APPLIQUÉE ICI** (D213, D227) :
+« figer l'horloge, jamais choisir une date dans le futur — elle cesse de l'être, et
+la suite rougit sans qu'une ligne de code ait bougé ». Une règle consignée ne
+protège que les fichiers qui l'appliquent.
+
+⛔ **CE QUE ÇA CHANGE POUR L'ORDRE DES LOTS.** Contrairement à argon2 et sharp, ce
+défaut est **DÉTERMINISTE** : il ne dépend d'aucune charge, il rougit à chaque
+exécution, et il ne se réparera pas seul. **Il devient la cause dominante de la
+porte rouge**, devant les deux autres. Tant qu'il est là, la porte ne redeviendra
+verte à AUCUNE charge — donc D269 et D270 ne pourront pas être certifiés.
+⇒ **Entrée backlog P0 ouverte.** ⛔ **NON corrigé dans ce lot** : il ne touche ni
+l'authentification ni argon2, et un défaut croisé se RAPPORTE, il ne se corrige pas
+dans un lot qui parle d'autre chose.
+⚠ **Le correctif n'est pas « décaler les dates »** — ce serait reconduire le défaut
+d'un mois. Et **rien ne dit que ce fichier soit le seul** : un balayage fait partie
+du correctif.
+
+⚠ **CE QUE CET ÉPISODE DIT DE MES PROPRES MESURES.** Ma première mesure de la
+session — « la porte racine sort en 0 » — était **exacte au moment où je l'ai
+prise**, et fausse quelques heures plus tard. Une porte n'est pas verte : elle a
+été verte, à une date, sur une machine. C'est D218 sous un autre angle — la mesure
+était juste, ce qui a changé, c'est le monde autour d'elle.
+
+### D271 — ce que le lot achète exactement : CINQ exposés deviennent UN
+
+`password.service.spec.ts` payait le KDF réel sur **5 de ses 7 tests**, dans une
+suite au budget de 5 000 ms qui parallélise ses fichiers. Après le lot, **un seul**
+test de la suite unitaire paie un vrai argon2.
+
+| Test d'origine | Coût mesuré au repos | Sort |
+|---|---|---|
+| produit un hash `$argon2id$` différent du mot de passe | ~80 ms | **reste unitaire** (écart MD7) |
+| retourne `false` sans lever sur hash malformé | **0 ms** | reste unitaire — argon2 rejette avant tout calcul |
+| vérifie le bon mot de passe et rejette le mauvais | ~210 ms | → `test:int` |
+| deux hashs du même mot de passe diffèrent (sel) | ~90 ms | → `test:int` |
+| `verifyAgainstDummy` retourne toujours `false` | ~270 ms | reste unitaire, **bouchonné** |
+| paie un vrai coût argon2 | ~340 ms | **garde REMPLACÉE** |
+| mémoïse le hash factice | ~200 ms | **garde REMPLACÉE** |
+
+⚠ **ÉCART AU CADRAGE, déclaré** : le cadrage annonçait TROIS tests partant vers
+`test:int`. Il n'y en a que **deux**. « Retourne toujours `false` » ne dépendait
+d'aucun argon2 — il payait 270 ms de KDF pour une assertion qui n'en avait pas
+besoin. Bouchonné, il reste unitaire et cesse de payer. **Moins de tests
+franchissent la frontière que prévu, ce qui réduit d'autant l'exposition à MD6.**
+
+### D271 — MD2 : les deux gardes temporelles sont REMPLACÉES, pas supprimées
+
+Elles comparaient des **durées** : « le factice coûte au moins un tiers d'un verify
+réel », « le second appel est plus rapide que le premier ». Une garde qui compare
+des durées cesse de mesurer ce qu'elle prétend dès que la machine bouge — et ces
+deux-là figuraient parmi les tests qui dépassaient 5 000 ms sous charge.
+
+Elles deviennent **structurelles**, sans horloge : `argon2.verify` est appelé **avec
+le hash factice**, et `argon2.hash` est appelé **exactement une fois** sur deux
+invocations.
+
+⛔ **CE QU'ON PERD, ÉCRIT PLUTÔT QUE TAIRE** : la preuve par le chronomètre que le
+chemin n'est pas gratuit. **CE QU'ON GAGNE** : des gardes qui ne dépendent plus de
+la machine, donc qui mesurent encore quelque chose le jour où elle bouge. La
+propriété D5 reste couverte pour le **corps** de la réponse par `login.int-spec.ts`
+et `google.int-spec.ts` ; ces gardes tiennent le **chemin d'exécution**.
+
+⚠ **Une garde AJOUTÉE, et il faut le dire** : « la préimage du hash factice n'est
+PAS le mot de passe soumis ». Elle n'existait pas — la propriété ne vivait que dans
+un commentaire. C'est elle qui rend la troisième mutation neutralisable.
+
+### D271 — ⛔ `vi.spyOn` SUR UN OBJET DE MODULE EST REFUSÉ, ET C'EST MESURÉ
+
+Le cadrage signalait le risque sans trancher. Mesuré :
+
+```
+Cannot spy on export "verify". Module namespace is not configurable in ESM.
+```
+
+⇒ La garde passe par `vi.mock`, **qui bouchonne le module pour TOUT le fichier**.
+C'est ce qui impose un **second fichier de spec** : le bouchon ne peut pas cohabiter
+avec le test qui exige un vrai argon2. **Deux fichiers, deux régimes, chacun écrit
+en tête du sien.**
+⚠ La sentinelle `argon2id` du bouchon est un `Symbol`, **jamais la valeur réelle
+recopiée de mémoire** : le service ne fait que la transmettre.
+
+### D271 — ⛔ LE HARNAIS A FAILLI RAPPORTER TROIS GARDES MUETTES QUI MORDAIENT
+
+Premier passage : **les trois cibles « MUETTES »**. La garde mordait — vérifié à la
+main, 2 échecs sur 3 sous la première mutation. **C'était le LECTEUR qui était
+faux** : le motif cherchait `× B1` alors que le rapporteur écrit
+`× <chemin> > <describe> > B1 — …`. Un motif qui ne trouve rien se lit **exactement**
+comme « la garde est muette ».
+⇒ **Le harnais porte désormais un PRÉ-VOL DE SA PROPRE DÉTECTION** : il mute une
+fois, exige que le lecteur voie des rouges, et abandonne sinon. Sans lui, ce lot
+concluait que la garde MD2 ne mordait pas — et je retirais des gardes en croyant
+avoir mesuré. C'est D144 à un étage de plus.
+
+### D271 — ⛔ UN HARNAIS QUI SORT EN 0 PEUT ÊTRE AGRÉGÉ À ZÉRO GARDE
+
+Le harnais mordait sur ses trois cibles et sortait en 0. Passé au tri
+(`lancer-campagnes.py`), il a été compté **« 0 mordue, 0 muette, 0 non mesurée »**.
+
+⛔ **Cause** : le tri compte les lignes commençant par `✓` / `✗` et cherche une
+ligne de résumé « N garde(s) mordue(s) sur M cible(s) ». Mon harnais écrivait
+`MORD | …` et « toutes les gardes mordent ». **Format non conforme ⇒ campagne
+invisible à l'agrégat, sans jamais échouer.** C'est pire qu'un rouge : un rouge se
+voit. Le format a été **relevé dans la source du tri**, pas deviné.
+
+⚠ **ET DEUX CIBLES ONT ÉTÉ RAPPORTÉES MUETTES POUR UNE RAISON ENCORE PLUS BÊTE** :
+en réécrivant le harnais en ASCII, j'ai retapé les noms de tests **sans leurs
+accents** — « execute » pour « exécute », « moise » pour « mémoïse ». La garde
+mordait ; l'ancre ne correspondait plus. **Un attendu écrit de mémoire, la faute
+que ce dépôt attrape en boucle.**
+⇒ **Le harnais porte désormais un PRÉ-VOL DES ANCRES** : chaque libellé attendu
+doit exister dans la source du spec, sinon il abandonne. Avec les deux pré-vols
+(détection et ancres), les trois façons dont ce harnais pouvait mentir en silence
+sont fermées.
+
+### D271 — la réserve sur `test:int`, et la mesure qui la lève (ou pas)
+
+⛔ **`test:int` N'EST PAS UNE IMMUNITÉ.** Il tourne sur la même machine. Ce que le
+déplacement achète : un budget de 30 000 ms au lieu de 5 000, et
+`fileParallelism: false`, qui retire la contention que vitest s'infligeait à
+lui-même. **La contention externe demeure entière.**
+
+**Vérification, sous le MÊME proxy de charge que la campagne du 31/08** (charge
+comptée et assertie à 9 processus, état machine relevé avant chaque exécution,
+sortie dans un fichier) :
+
+| Exécution | RAM libre · CPU | Résultat | Délais | Test le plus lourd |
+|---|---|---|---|---|
+| fichier déplacé, run 1 | 2 035 Mo · 68 % | 2/2 | 0 | 285 ms |
+| fichier déplacé, run 2 | 2 036 Mo · 76 % | 2/2 | 0 | 288 ms |
+
+⚠ **CE QUE CETTE MESURE NE DIT PAS** : un fichier joué seul n'a pas la contention
+d'une suite. L'argument qui la rend représentative est **structurel** — `test:int`
+tourne en `fileParallelism: false`, un fichier à la fois y est la règle — mais un
+argument structurel non mesuré reste une déduction. **Mesuré, donc :**
+
+**Suite d'intégration COMPLÈTE sous la même charge** (9 processus, RAM libre
+1 896 Mo, CPU 70 %) :
+
+| Mesure | Valeur |
+|---|---|
+| résultat | **434/434, sortie 0** |
+| délais dépassés | **0** |
+| durée | 641 s, contre 477 s au repos — **facteur 1,34** |
+| `password-hashing.int-spec.ts` | **443 ms** |
+| test le plus lent de toute la suite | 13 504 ms, sous le budget de 30 000 ms |
+
+⇒ **443 ms sous la charge exacte qui faisait dépasser 5 000 ms à ces mêmes tests
+dans la suite unitaire.** Et la suite entière ne ralentit que d'un facteur 1,34 là
+où l'unitaire ralentissait au point de rendre des grappes d'échecs : c'est la
+sérialisation qui fait la différence, pas le budget seul.
+⚠ **Ce qui reste à surveiller, et qui n'est pas de ce lot** : le test le plus lent
+de `test:int` consomme déjà 13 504 ms sous charge, soit moins de la moitié du
+budget de marge. La destination n'est pas infiniment élastique.
+
+⛔ **UNE FAUTE DE MÉTHODE À CONSIGNER, PARCE QU'ELLE EST EXACTEMENT LA RÈGLE QUE
+D270 VENAIT D'ÉCRIRE.** Une première exécution de cette suite complète a été lancée
+en arrière-plan, **puis le harnais de neutralisation a tourné pendant qu'elle
+tournait** — or ce harnais MUTE `password.service.ts`, que cette suite lit. La
+mesure était sans valeur : arrêtée, arbre vérifié non muté après la mise à mort,
+charge purgée, mesure refaite **seule**. Les chiffres ci-dessus sont ceux de la
+mesure propre.
+⇒ **Corollaire pratique** : une mesure de fond et un harnais de mutation ne
+cohabitent jamais, même quand l'un est « juste en arrière-plan ».
+
+
 ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
 
 ⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D269**.
@@ -1780,7 +1971,7 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - **Rotation d'identifiants dans une console externe** — signalée plusieurs fois, toujours non résolue.
 - **Cohérence du nom de domaine** : « zwadj » vs « zawadj », à vérifier avant tout support public.
 
-## Registre des décisions — D1 à D270
+## Registre des décisions — D1 à D271
 
 ⛔ **CE REGISTRE EXISTE POUR QU'UN NUMÉRO SE PRENNE TOUJOURS EN LISANT CE FICHIER.**
 Les journaux datés sont partis dans `docs/history/` (lot R1). Sans registre, le
@@ -2057,3 +2248,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D268 | A | D268 — ⛔ LA CONSIGNE DE D263 ÉTAIT JUSTE SUR LE DÉFAUT, FAUSSE SUR LE R… |
 | D269 | A | D269 — la cause était dans l'ATTENTE, pas dans le code |
 | D270 | A | D270 — mes quinze exécutions mesuraient la MACHINE, pas le mode |
+| D271 | A | D271 — argon2 quitte l'unitaire ; cinq tests exposés deviennent UN |

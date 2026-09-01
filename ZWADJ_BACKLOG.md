@@ -829,7 +829,21 @@
 - [x] Socle e2e Playwright + concurrence/montage React [SHARED][P0] — ✅ **T1/D118** : `e2e/` à la racine, pile dédiée (ports 3101/3100/5273, base `zwadj_e2e`), A1 bootstrap de session, A2 un appel par montage, A5 parité navigation interne/rechargement. **À la demande, pas une septième porte.** Vérifié par Ko sous Windows : 16 passés, 1 ignoré, 0 échec
 - [x] Migration testée sur base NON VIDE [BACK][P0] — ✅ **T3/D123** : `migration-non-empty.int-spec.ts`. ⚠ Applique le SQL directement (`prisma migrate deploy` sort en succès **sans rien appliquer** quand le schema-engine est absent)
 - [ ] Seed deterministic test data + factories [SHARED][P1]
-- [ ] Élargir le `testTimeout` de `apps/api` (5 s par défaut) [BACK][P1] — argon2 à m=64MiB/t=3/p=4 et sharp le frôlent sous charge ; quatre faux rouges observés lors de l'intégration d'A10. Correctif de configuration séparé, à mesurer avant de choisir la valeur
+- [x] ~~Élargir le `testTimeout` de `apps/api` (5 s par défaut) [BACK][P1] — argon2 à
+      m=64MiB/t=3/p=4 et sharp le frôlent sous charge ; quatre faux rouges observés lors
+      de l'intégration d'A10. Correctif de configuration séparé, à mesurer avant de
+      choisir la valeur~~ — ⛔ **PÉRIMÉE LE 01/09/2026, BARRÉE AVEC SON MOTIF, PAS
+      SUPPRIMÉE.** Une décision dont la raison a été invalidée se corrige ; effacée, elle
+      serait rouverte de bonne foi comme une piste neuve.
+      ⛔ **Motif du retrait, en deux points** : (1) élargir le budget **masquerait un test
+      devenu lent** au lieu de le montrer ; (2) la campagne du 01/09 a établi que **le
+      budget n'est pas la cause** — au repos le test le plus lourd tient dans environ un
+      treizième des 5 000 ms, et le rouge exige un facteur d'environ 55×, c'est-à-dire de
+      la CONTENTION. Un budget élargi déplacerait le seuil sans toucher à ce qui le
+      franchit.
+      ⚠ Ce qui remplace cette piste : sortir de la suite unitaire ce qui paie le KDF réel
+      (lot argon2, fait) et traiter la contention de la porte unitaire dans son ensemble
+      (lot sharp, ci-dessous).
 - [x] Configurer `server.deps.inline: ["next-intl"]` dans `apps/client/vitest.config.ts` [CLIENT][P0] — next-intl est publié en ESM et importe `next/navigation` SANS extension ; hors résolveur Vite, toute suite montant un composant qui touche `src/i18n/navigation` NE SE CHARGE PAS. Découvert en A11b, premier test client à monter un `Link` localisé
 
 > Deferred to post-MVP: offline/sync/conflict tests (Phase 11 is deferred).
@@ -2241,6 +2255,29 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       d'appel). ⚠ Voisines de même classe à trancher en même temps : « meurt en 8 s sur
       already used » dans la note e2e.
 
+- [ ] **[PRO][P0]** ⛔ **`walkin-journey.test.tsx` ROUGIT DEPUIS LE PASSAGE AU
+      01/09/2026, ET C'EST L'HORLOGE.** Découvert le 01/09 en relançant les portes du lot
+      argon2 : **24 échecs sur 41**, tous en `expect(element).toBeEnabled()`, sur un arbre
+      où **aucune ligne n'a bougé**. La même commande rendait 347/347 la veille.
+      ⛔ **CAUSE PROUVÉE, pas supposée** : le fichier fixe une fenêtre de disponibilité
+      `from: "2026-08-01", to: "2026-08-31"` et des dates `2026-08-15/16/22`, **sans figer
+      l'horloge**. Depuis minuit, ces dates sont PASSÉES : le calendrier les refuse, le
+      bouton reste désactivé. **Mesure de reproduction** : `vi.setSystemTime` au
+      `2026-08-10` ⇒ **41/41 vert** ; horloge réelle ⇒ 24 rouges. Horloge restaurée après
+      mesure, rien laissé dans l'arbre.
+      ⚠ **C'est la leçon déjà écrite du dépôt** (D213, D227) : « figer l'horloge, jamais
+      choisir une date dans le futur — elle cesse de l'être, et la suite rougit sans qu'une
+      ligne de code ait bougé ». Elle était consignée ; ce fichier ne l'applique pas.
+      ⛔ **CE DÉFAUT EST DÉTERMINISTE, PAS INTERMITTENT** — contrairement à argon2 et sharp,
+      il ne dépend d'aucune charge : il rougit à chaque exécution, et il ne se réparera pas
+      tout seul. **Il devient la cause DOMINANTE de la porte `test` rouge**, devant les deux
+      autres. ⇒ **À traiter AVANT la certification de D269 et D270**, sans quoi la porte ne
+      redeviendra verte à aucune charge.
+      ⚠ **Le correctif n'est pas « décaler les dates »** : ce serait reconduire le défaut
+      d'un mois. C'est **figer l'horloge** et dériver les dates de fixture de cette horloge
+      figée. ⚠ **Balayer les autres fichiers pour la même faute** avant de conclure : rien
+      ne dit que celui-ci soit le seul.
+
 - [ ] **[API][P0]** ⛔ **sharp — `image-pipeline.spec.ts` TIENT LA PORTE AUTANT
       QU'ARGON2.** Ouvert le 01/09/2026 sur MESURE, pas sur soupçon : campagne de 8
       exécutions de la suite API sous charge vérifiée (9 processus), état machine relevé
@@ -2260,6 +2297,16 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       ⚠ **La borne `maxWorkers: 4` a été mesurée et écartée** : 2 verts sur 5 contre 0 sur
       3 sans elle. Elle déplace le taux, elle ne tranche pas. Relevé complet dans la
       section D270 de `ZWADJ_CONTINUITE.md`.
+      ⛔ **CE LOT PORTE AUSSI LE RÉSIDUEL LAISSÉ PAR ARGON2, ET C'EST DÉLIBÉRÉ.** Le lot
+      argon2 a fait passer l'exposition de la suite unitaire de CINQ tests payant le KDF
+      réel à UN seul (le préfixe `$argon2id$`, gardé exprès — une régression de
+      configuration du hachage doit se voir tout de suite, pas à la porte lourde). Ce test
+      reste théoriquement capable de dépasser le budget sous une charge extrême.
+      ⚠ **Il ne se traite pas fichier par fichier** : à ce niveau de charge, la porte
+      entière rendait déjà des grappes de six à seize échecs — un état où elle ne mesure
+      plus rien, et où un test qui rougit ne se distingue plus des autres. **Ce lot doit
+      prendre la contention de la porte unitaire DANS SON ENSEMBLE**, pas ajouter un
+      troisième déplacement de fichier.
 
 - [ ] **[API][P0]** ⛔ **argon2 — LE VRAI HACHAGE QUITTE L'UNITAIRE POUR `test:int`.**
       Décision de Ko : **ne relever aucun délai, ne toucher à aucun paramètre de coût**.
