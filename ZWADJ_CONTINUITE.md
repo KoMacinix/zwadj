@@ -402,6 +402,83 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## Session du 02/09/2026 — D272 · l'horloge gelée, et les fixtures qui en dérivent
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D271**.
+
+⛔ **ÉTAT : LIVRÉ.** ⚠ **La porte `test` sort en 0 AU REPOS** — état machine relevé
+avant la mesure : RAM libre 4 579 Mo, CPU 6 %, zéro processus node. api 640/640 ·
+api-client 36/36 · client 287/287 · **pro 347/347**, zéro délai dépassé.
+⛔ **« Verte au repos » n'est PAS « verte ».** argon2 (1 test) et sharp (2 tests)
+restent capables de la faire rougir sous charge : c'est le lot sharp qui suit. **Ce
+lot ne certifie donc rien** — ni D269, ni D270, ni D271, ni lui-même.
+
+### D272 — un seul fichier, et c'est le verdict de la sonde qui l'a dit
+
+Sur les **28 fichiers de test d'`apps/pro`**, la sonde en désigne **UN** :
+`walkin-journey.test.tsx`. Deux méritent d'être nommés parmi les insensibles :
+- `account-settings-page.test.tsx` — d'abord classé SENSIBLE, **à tort** : ses
+  échecs étaient `2 avertissement(s) de console`, c'est-à-dire un artefact de la
+  sonde elle-même (voir plus bas) ;
+- `request-scope.test.tsx` — **insensible bien que sa fixture expire le 12/09/2026**.
+  Sa date n'est comparée à rien. ⇒ **La table des échéances n'est pas une liste de
+  défauts**, et cette phrase est désormais écrite au-dessus d'elle au backlog.
+
+### D272 — ⛔ LA PROPRIÉTÉ VISÉE N'EST PAS « ÇA REPASSE AU VERT »
+
+C'est **l'insensibilité à TOUTE date**, et elle tient à une condition : `MAINTENANT`
+est la **seule date écrite** du fichier, tout le reste en DÉRIVE (`jour(5)`,
+`jour(-9)`, `jour(21)`…). Vérifié en relevant les littéraux : il en reste **un**.
+
+⚠ **Pourquoi la formulation compte.** Décaler les dates aurait rendu le vert
+immédiat et reconduit le défaut d'un mois. Garder une date en dur à côté du gel
+aurait laissé **deux valeurs à maintenir**, qui divergent au premier changement de
+fixture. La dérivation supprime la seconde valeur ; c'est la propriété, le vert
+n'en est que la conséquence.
+
+### D272 — la preuve est BILATÉRALE, et c'est ce qui la rend une preuve
+
+`neutralisation/neutralize-horloge.py`, **2 cibles, 2 mordues** :
+- **C1, classique** — le gel est retiré ⇒ le fichier doit devenir **ROUGE**. Prouve
+  que le gel MORD, et non qu'il décore.
+- **C2, INVERSÉE** — l'ancre est déplacée de **dix ans** ⇒ le fichier doit rester
+  **VERT**. Prouve que toutes les fixtures dérivent : s'il en restait une écrite en
+  dur, elle divergerait et le test tomberait.
+⚠ **Une cible inversée se lit à l'envers** : « la mutation ne change RIEN » est le
+succès. C'est la seule façon de mesurer une INSENSIBILITÉ — aucune
+mutation-qui-fait-rougir ne peut la démontrer.
+
+### D272 — ⛔ TROISIÈME INSTRUMENT ÉCARTÉ… PUIS RÉPARÉ ET GARDÉ
+
+Après les deux du relevé (gel global, détection statique), la sonde elle-même a
+produit un faux positif : `account-settings-page.test.tsx` désigné SENSIBLE alors
+que ses seuls échecs étaient la garde des avertissements console. **Les faux timers
+perturbent l'ordonnancement asynchrone de React**, produisent des `act(...)`, et la
+garde les transforme en échecs. C'est **le mécanisme qui avait déjà invalidé
+l'instrument global, revenu par fichier — assez discret pour passer pour un
+résultat.**
+⇒ La sonde écarte désormais un rouge dont **toutes** les causes sont cette garde.
+
+### D272 — la sonde a ABANDONNÉ sur le fichier qu'elle venait de faire corriger
+
+Rejouée après le correctif, elle a refusé de rendre un verdict : son cas de
+calibration positif était `walkin-journey.test.tsx`, **que ce lot vient de rendre
+insensible**. Un lot qui corrige son propre cas de calibration détruit la preuve que
+l'instrument sait détecter.
+⇒ **Cas positif SYNTHÉTIQUE** : la sonde fabrique une copie temporaire du fichier
+corrigé, **privée de son gel**, et exige qu'elle ressorte SENSIBLE. Elle se
+recalibre donc sur le correctif lui-même, et reste capable de prouver qu'elle
+détecte. **Calibrée 3/3.**
+⚠ C'est la leçon « une cible devenue sans objet se réoriente ou se retire, par
+écrit » — appliquée cette fois à l'instrument, pas à une cible.
+
+### D272 — le gel vit PAR FICHIER, et la raison est écrite là où on serait tenté de factoriser
+
+`apps/pro/src/test-setup.ts` porte désormais l'interdiction et sa **mesure** : gel
+global posé à la date du jour ⇒ **26 échecs au lieu de 24** ; posé loin ⇒ la
+collecte entière tombe. Sans cette note, quelqu'un remonterait le gel un jour en
+croyant simplifier, et casserait la suite de la même façon.
+
 ## Session du 02/09/2026 — lot HORLOGE, relevé préalable (sans numéro)
 
 ⛔ **Aucun numéro de décision** : ce relevé ne tranche rien, il prépare. Le numéro
@@ -2065,7 +2142,7 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - **Rotation d'identifiants dans une console externe** — signalée plusieurs fois, toujours non résolue.
 - **Cohérence du nom de domaine** : « zwadj » vs « zawadj », à vérifier avant tout support public.
 
-## Registre des décisions — D1 à D271
+## Registre des décisions — D1 à D272
 
 ⛔ **CE REGISTRE EXISTE POUR QU'UN NUMÉRO SE PRENNE TOUJOURS EN LISANT CE FICHIER.**
 Les journaux datés sont partis dans `docs/history/` (lot R1). Sans registre, le
@@ -2343,3 +2420,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D269 | A | D269 — la cause était dans l'ATTENTE, pas dans le code |
 | D270 | A | D270 — mes quinze exécutions mesuraient la MACHINE, pas le mode |
 | D271 | A | D271 — argon2 quitte l'unitaire ; cinq tests exposés deviennent UN |
+| D272 | A | D272 — l'horloge gelée, et les fixtures qui DÉRIVENT de l'ancre |

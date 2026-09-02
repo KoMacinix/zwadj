@@ -1,5 +1,22 @@
 import "@testing-library/jest-dom/vitest";
 
+// ⛔ AUCUN GEL D'HORLOGE ICI, ET C'EST UNE DÉCISION MESURÉE — NE PAS « FACTORISER ».
+//
+// Des fichiers de test gèlent l'horloge (`vi.useFakeTimers` + `vi.setSystemTime`),
+// chacun sur SA propre ancre. La tentation est de remonter ce gel ici pour éviter
+// la répétition. **Mesuré le 02/09/2026 : ça casse la suite.**
+//   · gel global posé à la date DU JOUR, où rien ne devrait changer :
+//     26 échecs au lieu de 24 — l'instrument perturbe ce qu'il mesure ;
+//   · gel global posé à une date lointaine : la COLLECTE entière tombe
+//     (« no tests »), y compris sur des fichiers sans aucune date.
+// Cause : des faux timers actifs pour TOUS les fichiers entrent en conflit avec les
+// tests asynchrones ; React produit des avertissements `act(...)` que l'`afterEach`
+// ci-dessous transforme en échecs.
+//
+// ⇒ Le gel reste PAR FICHIER, posé par ceux qui en ont besoin, sur une ancre dont
+// leurs fixtures dérivent. La répétition est le prix, et il est plus bas que celui
+// d'une suite qui rougit sans rapport avec ce qu'elle teste.
+
 // GARDE DES SORTIES DE TEST — lot S7 (audit F8).
 //
 // ⚠ POURQUOI UNE SUITE VERTE MAIS BRUYANTE EST UN PROBLÈME.

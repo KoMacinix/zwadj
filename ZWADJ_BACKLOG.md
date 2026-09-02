@@ -2271,6 +2271,27 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       facteur se dégrade : ce serait la piste `testTimeout` barrée plus haut, rouverte
       sous un autre nom.
 
+- [ ] **[TESTS][P1]** ⚠ **QUARANTE-DEUX FICHIERS NON TRIÉS HORS `apps/pro` — L'INSTRUMENT
+      EXISTE, IL EST CALIBRÉ, IL N'A PAS ÉTÉ APPLIQUÉ.** C'est ce qui sépare une dette d'un
+      travail pas fait : il ne reste pas à inventer une méthode, il reste à la jouer.
+      Fichiers de test portant une date en dur (relevé du 02/09/2026) : **`apps/api` 31
+      (1 gelé) · `apps/client` 10 (1 gelé) · `packages/api-client` 1 (0 gelé)**.
+      `apps/pro` est trié : 16 fichiers, 1 gelé, et c'était le seul sensible.
+      ⇒ **Instrument : `neutralisation/sonde-horloge.py`**, calibré sur trois cas — un
+      positif SYNTHÉTIQUE (le fichier corrigé privé de son gel, qui doit ressortir
+      sensible), un négatif sans date, et un négatif AVEC une date en dur. Il abandonne si
+      un seul cas manque son verdict.
+      ⛔ **NE PAS LE TRANSPOSER SANS LE RECALIBRER** : il porte `PAQUET_NOM = "pro"` et
+      trois cas propres à ce paquet. Changer de paquet sans désigner trois nouveaux cas
+      dont la réponse est connue AVANT de mesurer donne une sonde qui rend un verdict sans
+      l'avoir jamais prouvé — exactement ce que faisaient ses deux prédécesseurs écartés.
+      ⚠ **`test:int` est compris dans les 31 d'`apps/api`.** La sonde ne sait pas encore les
+      jouer (elle appelle `vitest run` sans `-c vitest.config.int.ts`) : adaptation à faire,
+      pas obstacle.
+      ⚠ **P1 et non P0, honnêtement** : aucun de ces 42 fichiers ne tient la porte
+      aujourd'hui. Ce qui justifie de ne pas attendre, c'est la table d'échéances ci-dessous
+      — neuf fichiers tombent le même jour de 2027.
+
 - [ ] **[TESTS][P1]** ⚠ **DIX-NEUF FICHIERS À ÉCHÉANCE CONNUE — CE SONT DES DATES DE
       PÉREMPTION, PAS DES DÉFAUTS.** Relevé le 02/09/2026. Toutes leurs dates en dur sont
       **futures** et aucun ne fige l'horloge : ils passent aujourd'hui et tomberont le jour
@@ -2280,6 +2301,15 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       ⚠ **Extraction VALIDÉE** (`fromisoformat`) : un premier extracteur rendait
       `2026-13-01` et `2027-02-31`, c'est-à-dire qu'il attrapait des chaînes qui ne sont pas
       des dates. **12 chaînes écartées à ce titre**, et le compte est passé de 20 à 19.
+
+      ⛔ **CETTE TABLE DIT QUAND UNE FIXTURE CESSE D'ÊTRE FUTURE, PAS QU'ELLE CASSERA.**
+      Démontré par la sonde du lot horloge (D272) : `request-scope.test.tsx` expire le
+      **12/09/2026** et ressort **INSENSIBLE** — sa date `eventDate` n'est comparée à rien.
+      À l'inverse, `walkin-journey.test.tsx` n'a jamais figuré dans cette table (ses dates
+      étaient déjà passées) et c'est pourtant lui qui tenait la porte rouge.
+      ⚠ **Sans cette phrase, dix-neuf échéances se lisent comme dix-neuf défauts** — et on
+      corrigerait dix-huit fichiers qui n'ont rien. Le tri revient à la sonde, jamais à la
+      lecture de cette table.
 
       | Première échéance | Fichier |
       |---|---|

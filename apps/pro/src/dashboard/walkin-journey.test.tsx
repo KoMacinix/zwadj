@@ -17,7 +17,7 @@
 // un montant affiché avant que le serveur ait chiffré.
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { formatDZD } from "@zwadj/i18n";
 import type { QuoteDTO, VenueProDTO } from "@zwadj/types";
 import { AppProviders } from "../App";
@@ -45,12 +45,49 @@ const VENUE = {
   ]
 } as unknown as VenueProDTO;
 
+/** ⛔ HORLOGE GELÉE, ET TOUTES LES DATES DÉRIVÉES D'ELLE.
+ *
+ *  Ce fichier a rendu 24 échecs sur 41 le 01/09/2026, sur un arbre où aucune ligne
+ *  n'avait bougé : ses dates de fixture étaient écrites en dur en août 2026, et
+ *  elles ont cessé d'être futures à minuit. Le calendrier les a refusées, les
+ *  boutons de jour sont restés désactivés.
+ *
+ *  ⛔ LA PROPRIÉTÉ VISÉE N'EST PAS « ça repasse au vert », C'EST L'INSENSIBILITÉ À
+ *  TOUTE DATE. Elle tient à une seule condition : `MAINTENANT` est l'UNIQUE date
+ *  écrite du fichier, et tout le reste en DÉRIVE. Réintroduire une date en dur
+ *  ailleurs recréerait une seconde valeur à maintenir — elle divergerait au premier
+ *  changement de fixture, et le défaut reviendrait un matin, sans qu'une ligne ait
+ *  bougé.
+ *  ⚠ Corollaire : déplacer `MAINTENANT` de dix ans ne doit RIEN changer au résultat.
+ *  C'est mesuré par la cible inversée de `neutralisation/neutralize-horloge.py`.
+ *
+ *  ⚠ Le gel est posé PAR FICHIER et non dans `test-setup.ts` : mesuré le 02/09/2026,
+ *  un gel global ajoute DEUX échecs à date INCHANGÉE et fait tomber la collecte
+ *  entière aux dates lointaines. La raison est aussi écrite dans `test-setup.ts`. */
+const MAINTENANT = new Date("2026-08-10T09:00:00Z");
+
+beforeAll(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  vi.setSystemTime(MAINTENANT);
+});
+afterAll(() => {
+  vi.useRealTimers();
+});
+
+/** Un jour de la fenêtre, en décalage depuis `MAINTENANT`. Rendu en ISO court, le
+ *  format que l'API de disponibilité renvoie. */
+function jour(decalage: number): string {
+  const d = new Date(MAINTENANT);
+  d.setUTCDate(d.getUTCDate() + decalage);
+  return d.toISOString().slice(0, 10);
+}
+
 /** Un jour LIBRE et un jour VENDU, pour que le test puisse mesurer l'écart entre
  *  « cliquable » et « refusé par le moteur ». Les prix sont ceux que rendrait le
  *  moteur (B2/B3) — jamais recalculés ici. */
-const LIBRE = "2026-08-15";
-const AUTRE = "2026-08-16";
-const VENDU = "2026-08-22";
+const LIBRE = jour(5);
+const AUTRE = jour(6);
+const VENDU = jour(12);
 
 /** ⚠ La disponibilité passe désormais par le CLIENT AUTHENTIFIÉ
  *  (`GET /pro/venues/:id/availability`), plus par un `fetch` brut sur la route
@@ -61,8 +98,8 @@ function availabilityDouble() {
     venueId: "v1",
     slug: "salle-el-ryad",
     bookingMode: "SINGLE_SLOT",
-    from: "2026-08-01",
-    to: "2026-08-31",
+    from: jour(-9),
+    to: jour(21),
     slots: VENUE.slotTemplates,
     days: [
       { date: LIBRE, slots: [{ slotTemplateId: SLOT_ID, status: "AVAILABLE", priceCents: 158_100_000 }] },
@@ -327,7 +364,7 @@ describe("Retour en arrière — les réponses survivent, les montants non", () 
     modifierDepuisRecap(/Modifier.*Client/);
     const recapEl = recap();
     expect(recapEl.textContent).toContain("Soirée");
-    expect(recapEl.textContent).toContain("2026-08-15");
+    expect(recapEl.textContent).toContain(LIBRE);
   });
 
   it("valider une étape corrigée renvoie à la PREMIÈRE question sans réponse", async () => {
