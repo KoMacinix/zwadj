@@ -17,6 +17,23 @@ import "@testing-library/jest-dom/vitest";
 // leurs fixtures dérivent. La répétition est le prix, et il est plus bas que celui
 // d'une suite qui rougit sans rapport avec ce qu'elle teste.
 
+// ⛔ UNE ATTENTE INTERROGE UN NŒUD DÉJÀ TENU, JAMAIS UN RÔLE PAR NOM (D269).
+//
+// `waitFor(() => expect(screen.getByRole("button", { name: … })).…)` recalcule le
+// NOM ACCESSIBLE de tout le sous-arbre à CHAQUE tour de la boucle d'attente. Sur un
+// écran chargé, c'est assez cher pour faire tomber les tests VOISINS.
+// ⚠ Mesuré, et payé : le premier correctif d'attente de D269 est passé de 8 à
+// **48 délais dépassés** avant d'être repris. Il était juste sur le fond ; c'est son
+// COÛT qui cassait la porte, et rien dans son intention ne le laissait deviner.
+//
+// ⇒ On tient le nœud d'abord, on attend ensuite sur LUI :
+//     const jour = await screen.findByRole("button", { name: /15/ });
+//     await waitFor(() => expect(jour).toBeEnabled());
+// Et pour un composant qui ne rend rien d'observable, on attend la DISPARITION du
+// texte de chargement (idiome de `blocks-section.test.tsx`) ou on vide la file de
+// microtâches DANS `act` (idiome de `a3-unexpected-responses.test.tsx`) — jamais une
+// boucle qui re-cherche par rôle.
+
 // GARDE DES SORTIES DE TEST — lot S7 (audit F8).
 //
 // ⚠ POURQUOI UNE SUITE VERTE MAIS BRUYANTE EST UN PROBLÈME.

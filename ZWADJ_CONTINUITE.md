@@ -402,6 +402,99 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## PROCHAIN LOT — `act(...)` tardif dans `walkin-journey` · CADRAGE VALIDÉ, NON COMMENCÉ
+
+⛔ **Aucun numéro de décision** : rien n'est fait. Le numéro se prendra en LISANT le
+registre au moment d'exécuter. ⚠ **Ce cadrage a été validé par Ko le 02/09/2026 et
+doit être exécuté dans une SESSION NEUVE** (règle « un lot par session »,
+`CLAUDE.md`). Il est écrit ici parce que c'est le seul endroit où la reprise le
+trouvera.
+
+### Ce qui tient encore la porte, mesuré
+
+La porte racine sort en **0 au repos** (état relevé : RAM libre 4 579 Mo, CPU 6 %,
+zéro node). **Sous charge (24 processus) elle sort en 1** — et ce n'est ni argon2 ni
+sharp :
+- api 640/640 · api-client 36/36 · client 287/287 · **pro : 347 tests passés sur 347** ;
+- **c'est le FICHIER qui tombe, pas un test** :
+  `295 avertissement(s) dans « walkin-journey.test.tsx », plafond 293`.
+
+Le compte FLOTTE : **293 · 293 · 293** au repos, **294** sous charge, **295** dans la
+porte complète. Le plafond gelé vaut 293 — **zéro marge**.
+
+### ⛔ LE RELEVÉ QUI DÉCIDE DU LOT : 293 sur 293 sont des `act(...)`
+
+| Composant émetteur | Compte |
+|---|---|
+| **`VenueCalendar`** | **171** |
+| `AuthProvider` | 82 |
+| `WalkinJourney` | 40 |
+| **total** | **293** |
+
+Aucun autre `Warning:` React, aucun `Not implemented`, aucun bruit réseau. **C'est
+intégralement la famille corrigée par D269** — des mises à jour qui tombent après la
+fin du test. `AuthProvider` est monté **transitivement** par `AppProviders`, le cas
+exact que D269 décrit et qu'un grep du fichier de test ne voit pas.
+
+⛔ **DONC : `walkin-journey.test.tsx` SORT DE `PLAFONDS`, il n'y monte pas d'un cran.**
+⚠ **J'avais proposé de relever le plafond de 293, et Ko a refusé — à raison.** Mon
+argument était qu'un `testTimeout` borne une durée « qui dit quelque chose du code »
+tandis qu'un compte d'avertissements serait du bruit inerte. **Le relevé le réfute** :
+ces 293 ne sont pas du bruit, ce sont 293 occurrences du défaut. Relever aurait fait
+pour ce fichier ce que le dépôt a refusé pour `services-section` et `slots-section`
+trois jours plus tôt — et ce refus avait produit un correctif durable.
+⚠ **Et cela vaut aussi pour la certification** : quatre lots attendent une
+certification qui doit vouloir dire quelque chose. La rendre verte par un plafond
+relevé, ce serait certifier sous une pièce qu'on sait masquante.
+
+### Les idiomes, RELEVÉS du dépôt et non inventés
+
+- **Disparition du texte de chargement** — `blocks-section.test.tsx` :
+  `await waitFor(() => expect(section().textContent).not.toContain("Chargement"))`.
+- **File de microtâches vidée DANS `act`** — `a3-unexpected-responses.test.tsx` :
+  seul moyen d'attendre un composant qui ne rend rien d'observable.
+
+⛔ **Le piège que D269 a payé, désormais écrit dans `test-setup.ts`** : une attente
+interroge un **nœud déjà tenu**, jamais un rôle par nom — `waitFor` recalculant
+`getByRole(…, { name })` parcourt tout le sous-arbre à chaque tour, et le premier
+correctif de D269 est passé de 8 à **48 délais dépassés** avant d'être repris.
+
+### ⛔ BARÈME DE SORTIE DE `PLAFONDS`, FIXÉ AVANT DE MESURER
+
+**CINQ passes à zéro au repos, DEUX sous charge, état machine relevé à chaque fois.**
+L'entrée ne se retire pas avant.
+⚠ **Le barème est fixé maintenant, et c'est tout l'intérêt** : « plusieurs passes,
+dont une sous charge » se serait choisi APRÈS coup, en regardant les résultats — ce
+n'est plus une mesure. Ce dépôt a déjà payé **deux fois** une conclusion tirée sur
+deux passes (D270 sur le mode d'exécution, D271 sur la borne `maxWorkers`).
+⚠ Sortir de `PLAFONDS` est un aller sans retour mesuré : le fichier tombe ensuite au
+**premier** avertissement. C'est l'objectif, et c'est aussi le risque — un
+avertissement intermittent rendrait la porte rouge par intermittence.
+
+### ⚠ ATTENTION PARTICULIÈRE : `VenueCalendar`, 171 sur 293
+
+Plus de la moitié du total, et **un composant que D269 n'a jamais traité** — il n'a vu
+que `BlocksSection` et `ProVenuesProvider`. **Ne pas présumer qu'il tombe du même
+geste que `AuthProvider`.**
+⇒ **Mesurer le compte APRÈS CHAQUE COMPOSANT**, pas seulement à la fin. Si l'un
+résiste, **le dire** : un reliquat plafonné annulerait tout le lot, qui n'a
+précisément d'objet que parce qu'on refuse le plafond.
+
+### Volet indépendant, à garder quoi qu'il arrive
+
+`test-setup.ts` dit « on garde le MAXIMUM de trois relevés » **sans dire dans quelles
+conditions**. Mesuré : un maximum relevé au repos (293) ne borne pas un compte qui
+monte sous charge (295). La règle se corrige, indépendamment du reste — sinon le
+prochain plafond gelé aura le même défaut.
+
+### Fichiers attendus, énumérés avant d'écrire
+
+`apps/pro/src/dashboard/walkin-journey.test.tsx` · `apps/pro/src/test-setup.ts`
+(retrait de l'entrée `PLAFONDS` + correction de la règle) · un harnais
+`neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
+⛔ **Aucun composant de production n'est touché.**
+⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
 ## Session du 02/09/2026 — D272 · l'horloge gelée, et les fixtures qui en dérivent
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D271**.
