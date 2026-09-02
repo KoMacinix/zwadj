@@ -406,7 +406,9 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D271**.
 
-⛔ **ÉTAT : LIVRÉ.** ⚠ **La porte `test` sort en 0 AU REPOS** — état machine relevé
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** ⚠ Cette ligne portait « LIVRÉ » seul : en tête
+d'une file de quatre lots non certifiés, c'est le mot qui décide de la lecture, et
+« LIVRÉ » se lit comme clos. **La porte `test` sort en 0 AU REPOS** — état machine relevé
 avant la mesure : RAM libre 4 579 Mo, CPU 6 %, zéro processus node. api 640/640 ·
 api-client 36/36 · client 287/287 · **pro 347/347**, zéro délai dépassé.
 ⛔ **« Verte au repos » n'est PAS « verte ».** argon2 (1 test) et sharp (2 tests)

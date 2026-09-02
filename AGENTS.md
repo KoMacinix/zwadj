@@ -385,6 +385,12 @@ réservation reste un acte distinct.
   de démarrer si `pnpm-workspace.yaml` n'est pas là, sans quoi un `cd neutralisation`
   produirait « ERREUR DE SCRIPT : 0 occurrence(s) », c'est-à-dire un message qui envoie
   chercher un défaut de code là où il n'y a qu'un dossier.
+- ⛔ **UN HARNAIS SE NOMME `neutralize-<lot>.py`, SINON IL NE SERA JAMAIS JOUÉ (D272).**
+  `lancer-campagnes.py` ne découvre que ce motif. Un harnais nommé autrement vit dans
+  `neutralisation/`, se lance à la main, et n'est plus jamais rejoué par le tri — ni par
+  personne. ⚠ Les autres scripts du dossier sont des **instruments** de diagnostic, pas
+  des campagnes : `sonde-horloge.py` s'invoque explicitement et ne rend aucun compte de
+  gardes mordues.
 - ⛔ **UNE CIBLE DONT UNE MESURE NE PEUT PAS ROUGIR EST MUETTE PAR CONSTRUCTION.**
   Trois fois dans cette campagne : une mutation de l'ADAPTATEUR déclarée aussi sur la
   mesure du SERVICE (qui bouchonne le port et ne voit rien) ; une mesure pointée sur un

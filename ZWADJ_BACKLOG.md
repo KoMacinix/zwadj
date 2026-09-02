@@ -2281,6 +2281,21 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       positif SYNTHÉTIQUE (le fichier corrigé privé de son gel, qui doit ressortir
       sensible), un négatif sans date, et un négatif AVEC une date en dur. Il abandonne si
       un seul cas manque son verdict.
+      ⛔ **COMMENT ON LA LANCE — rien ne l'invoque à votre place.** Elle n'est PAS une
+      campagne : ni `lancer-campagnes.py` (qui ne découvre que `neutralize-*.py`), ni
+      aucune porte ne la joue. **Depuis la RACINE du dépôt**, jamais depuis
+      `neutralisation/` :
+
+      ```
+      python3 neutralisation/sonde-horloge.py                      # calibration seule
+      python3 neutralisation/sonde-horloge.py src/lib/calendar.spec.ts   # + des cibles
+      ```
+
+      Les chemins passés en argument sont **relatifs au paquet** (`apps/pro`), pas à la
+      racine. Sans argument elle ne fait que sa calibration — utile pour vérifier qu'elle
+      mesure encore avant de lui faire confiance.
+      ⚠ **Un instrument calibré que personne ne sait invoquer est un script mort en trois
+      semaines.** C'est pourquoi la commande est ici et pas seulement dans son en-tête.
       ⛔ **NE PAS LE TRANSPOSER SANS LE RECALIBRER** : il porte `PAQUET_NOM = "pro"` et
       trois cas propres à ce paquet. Changer de paquet sans désigner trois nouveaux cas
       dont la réponse est connue AVANT de mesurer donne une sonde qui rend un verdict sans
@@ -2313,7 +2328,7 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
 
       | Première échéance | Fichier |
       |---|---|
-      | **2026-09-12** | `apps/pro/src/venues/request-scope.test.tsx` |
+      | **2026-09-12** ⛔ | `apps/pro/src/venues/request-scope.test.tsx` — **voir la note sous la table** |
       | 2026-12-31 | `apps/pro/src/venues/block-time.spec.ts` |
       | 2027-01-01 | `apps/api/src/payments/payment-store.prisma.spec.ts` |
       | 2027-01-01 | `apps/api/src/payments/payments.service.spec.ts` |
@@ -2332,6 +2347,16 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       | 2027-08-15 | `apps/api/test/int/visit-availabilities.int-spec.ts` |
       | 2027-08-15 | `apps/api/test/int/visit-bookings.int-spec.ts` |
       | 2027-09-18 | `apps/api/test/int/quotes.int-spec.ts` |
+
+      ⛔ **`request-scope.test.tsx` EXPIRE LE SAMEDI 12 SEPTEMBRE 2026** — soit dix jours
+      après ce relevé, **pendant le lot sharp**. Sa date `eventDate: "2026-09-12"` cessera
+      d'être future ce jour-là.
+      ⚠ **La sonde le classe INSENSIBLE** : cette date n'est comparée à rien, il ne devrait
+      donc pas tomber. Mais « ne devrait pas » n'est pas « ne peut pas », et le verdict
+      porte sur les deux dates que la sonde dérive, pas sur toutes. **Si la suite pro rougit
+      autour du 12/09 sur ce fichier, la cause est écrite ici** — inutile de rouvrir
+      l'enquête depuis le début, comme il a fallu le faire le 01/09.
+      ⇒ C'est le seul intérêt d'écrire une échéance : ne pas la redécouvrir.
 
       ⛔ **`request-scope.test.tsx` EXPIRE LE 12/09/2026 — DANS DIX JOURS**, et il est dans
       `apps/pro`. Il entre donc dans le lot horloge en cours, au critère posé par Ko : ce
