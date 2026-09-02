@@ -2146,6 +2146,31 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       ⚠ **Le compteur du dépôt (« 19 scripts, 165 cibles ») est FAUX** : 22 et 173.
       Écart relevé, non expliqué.
 
+- [ ] **[PRO][P0]** ⛔ **`venue-list.test.tsx` ÉCHOUE PAR INTERMITTENCE, ET CE N'EST PAS
+      D273.** Relevé le 02/09/2026 pendant le barème de sortie de `PLAFONDS` : **3 passes
+      de la suite pro sur 5** rouges sur ce fichier, message
+      `Unable to find role="heading" and name "Salle El Ryad"` — c'est-à-dire une liste
+      pas encore arrivée au moment de l'assertion. État machine relevé devant chaque
+      passe (D270) : RAM libre 2 247–3 017 Mo, CPU 30–65 %, zéro node avant lancement.
+      ⛔ **ATTRIBUÉ PAR CONTRÔLE, PAS SUPPOSÉ — et c'est le point de cette entrée.**
+      L'arbre **d'avant D273** a été remonté (`git stash`) et mesuré dans les mêmes
+      conditions : `venue-list.test.tsx` y échoue **aussi** (RAM 2 572 Mo, CPU 35 %).
+      **Le défaut est donc ANTÉRIEUR à D273 et étranger à lui.** Sans ce contrôle, il se
+      serait lu comme une régression de ce lot — et le lot aurait été refait pour rien.
+      ⚠ **Famille probable : D269** — une assertion qui interroge par RÔLE et par NOM
+      pendant que la donnée est encore en vol. À confronter à la règle désormais écrite
+      dans `apps/pro/src/test-setup.ts` (« une attente interroge un nœud déjà tenu »),
+      et à l'aide `laisserRetomber()` de `walkin-journey.test.tsx`, qui traite la même
+      classe de défaut par une fenêtre `act` au lieu d'une attente.
+      ⛔ **NE PAS le traiter en relevant un plafond** : ce fichier n'est pas dans
+      `PLAFONDS`, et son échec n'est pas un avertissement — c'est une assertion qui
+      tombe. Un plafond n'y peut rien.
+      ⚠ **Deux autres fichiers ont été vus rouges une fois chacun** dans la même
+      campagne — `account-settings-page.test.tsx` (avec 2 avertissements console) et,
+      sous charge produite, une grappe qui touche jusqu'à 12 fichiers. **Ces derniers
+      sont des EXPIRATIONS à 5 000 ms sous contention**, pas la même chose : ils
+      apparaissent aussi sur l'arbre d'avant le lot, et relèvent de D270.
+
 - [ ] **[PRO][P0]** ⛔ **`act(…)` TARDIF DANS LA COQUILLE — deux fichiers de plus, et la
       porte pro n'est PAS fiable.** ⚠ **Diagnostic ISOLÉ le 30/08 (D268), pas supposé.**
       L'échec n'est **pas** une assertion : c'est la garde des sorties console

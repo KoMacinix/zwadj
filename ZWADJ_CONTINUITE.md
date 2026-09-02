@@ -403,13 +403,18 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — `act(...)` tardif dans `walkin-journey` · CADRAGE VALIDÉ, NON COMMENCÉ
+## ~~PROCHAIN LOT~~ — `act(...)` tardif dans `walkin-journey` · ⛔ **FAIT : D273**
 
-⛔ **Aucun numéro de décision** : rien n'est fait. Le numéro se prendra en LISANT le
-registre au moment d'exécuter. ⚠ **Ce cadrage a été validé par Ko le 02/09/2026 et
-doit être exécuté dans une SESSION NEUVE** (règle « un lot par session »,
-`CLAUDE.md`). Il est écrit ici parce que c'est le seul endroit où la reprise le
-trouvera.
+⛔ **CE CADRAGE A ÉTÉ EXÉCUTÉ LE 02/09/2026 — voir la section D273 plus bas.** Il est
+conservé tel quel, sans retouche, parce qu'il est ce à quoi le lot doit être confronté :
+un cadrage réécrit après coup ne peut plus démentir personne. **Deux points sur
+lesquels il s'est révélé juste**, et un sur lequel la mesure l'a corrigé, sont relevés
+dans D273 — dont son avertissement sur `VenueCalendar`, qui a effectivement demandé un
+traitement à part.
+⚠ **Ce qui suit décrit donc l'ÉTAT AU MOMENT DU CADRAGE, pas l'état courant.** Le
+plafond de 293 n'existe plus, le fichier est sorti de `PLAFONDS`, et le compte est à
+zéro. ⛔ **Le barème fixé plus bas n'a PAS été tenu** : D273 dit lequel de ses termes,
+et pourquoi.
 
 ### Ce qui tient encore la porte, mesuré
 
@@ -495,6 +500,183 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 02/09/2026 — D273 · `act(...)` tardif : 293 → 0, et la sortie de `PLAFONDS`
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D272**.
+
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — ET LE BARÈME N'EST PAS SATISFAIT.** Il exigeait
+**cinq passes à zéro au repos et deux sous charge**. Ce qui a été obtenu, mesuré :
+`walkin-journey.test.tsx` est à **zéro avertissement sur 5 passes de la suite pro sur
+5**, mais **aucune de ces passes n'a eu lieu au repos** (CPU 27–65 %, RAM ~2,6 Go, là
+où le cadrage relevait 6 % et 4 579 Mo), et **trois des cinq sont rouges sur d'AUTRES
+fichiers**. ⛔ **Le barème a été fixé avant de mesurer, et c'est précisément pour ne
+pas se réécrire maintenant.** Il n'est pas déclaré tenu ; il est déclaré NON TENU, et
+la raison est ci-dessous.
+
+### D273 — le relevé qui a commandé le correctif
+
+Reproduit à l'identique du cadrage : **293**, et 293 sur 293 sont des `act(...)`.
+L'attribution par test — que le cadrage n'avait pas — montre un motif **parfaitement
+régulier**, ce qui exclut l'aléa :
+
+| Émetteur | Compte | Rythme relevé |
+|---|---|---|
+| `VenueCalendar` | 171 | **3 par montage** ; 6 dans les parcours qui dépassent l'étape date |
+| `AuthProvider` | 82 | **2 dans CHACUN des 41 tests** |
+| `WalkinJourney` | 40 | **1 par test** (40, un test n'en produit pas) |
+
+23 tests à 6 + 11 à 3 = 171 ; 41 × 2 = 82. **Le total ne se devine pas, il se
+décompose.**
+
+### D273 — ⛔ CE N'ÉTAIT PAS « UNE MISE À JOUR APRÈS LA FIN DU TEST »
+
+C'est la phrase que `test-setup.ts` emploie, et elle décrit la famille D269 — pas ce
+cas-ci. Ici les trois `setState` de `VenueCalendar` (`setData`, `setError`,
+`setLoading`) tombent **PENDANT** le test, simplement **hors de toute fenêtre `act`**.
+⇒ **Conséquence qui a orienté tout le lot : ATTENDRE NE LES SUPPRIME PAS.**
+`repondreDate` attendait déjà que la case du jour soit ACTIVE — donc que la donnée
+soit arrivée — et laissait quand même passer ses 3 avertissements : quand l'attente
+rend la main, React a déjà écrit son message. Une attente demande « est-ce arrivé ? » ;
+il fallait **ouvrir une fenêtre pour recevoir**, ce que fait `laisserRetomber()`.
+
+### D273 — aucun composant de production n'a bougé, et ce n'est pas une précaution
+
+`VenueCalendar` a **raison** de poser ses trois `setState` après son `await` ; le
+défaut était dans le test, qui rendait la main pendant que le travail était en vol.
+Les fichiers touchés sont ceux qui étaient énumérés au cadrage, et eux seuls.
+
+### D273 — le correctif, en trois fenêtres et une aide
+
+`laisserRetomber()` = `await act(async () => { await Promise.resolve(); })`, appelée à
+**trois moments distincts**, chacun mesuré séparément :
+
+| Front | Moment | Avant → après |
+|---|---|---|
+| 1 | fin de `setup()` — le bootstrap d'`AppProviders` est encore en vol | 293 → **171** |
+| 2 | après l'étape client — l'étape date MONTE `VenueCalendar` | — |
+| 3 | après le choix de la date — l'effet du calendrier REJOUE | 171 → **0** |
+
+⚠ **Le compte a été relevé APRÈS CHAQUE FRONT**, comme le cadrage l'exigeait :
+`AuthProvider` et `WalkinJourney` sont tombés à zéro au front 1, `VenueCalendar` aux
+fronts 2 et 3. ⛔ **Le cadrage disait « ne pas présumer que `VenueCalendar` tombe du
+même geste » — il avait raison, mais pas comme prévu** : il ne demandait pas un autre
+geste, il en demandait **deux du même**, parce que son effet s'exécute deux fois.
+Un seul aurait laissé la moitié des 171 et fait échouer le lot.
+
+### D273 — la preuve : `neutralize-act-plafonds.py`, 4 cibles, 4 mordues
+
+- **C1, C2, C3 — classiques** : chaque fenêtre `act` est retirée à son tour, le
+  fichier doit devenir **ROUGE**. Les trois mordent. ⚠ Sans les trois séparément, une
+  seule fenêtre pourrait porter toute la charge pendant que les deux autres décorent.
+- **C4 — INVERSÉE, et c'est elle qui mesure la SORTIE de `PLAFONDS`** : on retire la
+  même fenêtre que C1 **et** on remet l'exemption, plafond 999. Le fichier doit rester
+  **VERT**. Il l'est. ⇒ Le rouge de C1 vient donc de **l'absence d'exemption**,
+  c'est-à-dire que la garde est bien **armée** sur ce fichier — et non d'un test qui
+  casserait pour une autre raison. **Sans C4, C1–C3 seraient compatibles avec un
+  fichier toujours exempté dont un test tombe.**
+
+### D273 — ⚠ MON PROPRE HARNAIS A PRODUIT UNE ERREUR DE SCRIPT, ET ELLE VALAIT LA PEINE
+
+La vérification post-mutation était « l'ancre a disparu ». **C4 est une INSERTION** :
+son remplacement CONTIENT l'ancre, qui est donc toujours là après coup. Le harnais a
+donc levé « la mutation n'a pas été appliquée » sur une mutation **parfaitement
+appliquée** — une erreur d'outil qui se lit exactement comme un défaut de code.
+⇒ La vérification compare désormais à l'**ÉTAT ATTENDU**, ce qui couvre les deux
+formes et attrape en prime la **mutation inerte** (un remplacement de même valeur, qui
+ne mesure rien — D236).
+⚠ Au passage, la sauvegarde disque de D224 a fait son travail : l'arbre est reparti
+propre au démarrage suivant, sans intervention.
+
+### D273 — ⛔ POURQUOI LE BARÈME N'EST PAS TENU, EN DEUX FAITS MESURÉS
+
+**1. La machine n'a jamais été au repos de la session.** État relevé DEVANT chaque
+passe (D270) : CPU 27 %, 30 %, 31 %, 34 %, 35 %, 57 %, 65 %, 79 % ; RAM libre 2 247 à
+3 017 Mo. Le cadrage appelait « repos » 4 579 Mo et 6 %. **Cinq passes prises dans ces
+conditions ne sont pas cinq passes au repos**, et les appeler ainsi ferait exactement
+ce que D270 interdit.
+
+**2. Trois passes sur cinq sont rouges — sur des fichiers que ce lot ne touche pas.**
+`venue-list.test.tsx` (×3) et `account-settings-page.test.tsx` (×1).
+⛔ **ATTRIBUÉ PAR CONTRÔLE, PAS SUPPOSÉ** : l'arbre **d'avant le lot** a été remonté et
+mesuré dans les mêmes conditions — `venue-list.test.tsx` y échoue **aussi**
+(RAM 2 572 Mo, CPU 35 %). **Cette intermittence est antérieure et étrangère à ce lot.**
+Reportée au backlog, non corrigée ici : un défaut croisé se rapporte.
+
+**3. Sous charge produite, la suite s'effondre — sur les DEUX arbres.** À 12 processus
+occupés : 72 échecs, 76 délais dépassés. À 4 processus : 14 échecs sur l'arbre du lot,
+3 sur l'arbre d'avant, **`walkin-journey` en échec dans les deux cas, par EXPIRATION à
+5 000 ms**. ⚠ Ses avertissements sous charge (4, puis 7) sont la **conséquence** des
+tests interrompus — `test-setup.ts` écrit noir sur blanc que ce bruit-là ne se juge pas
+sur une suite par ailleurs rouge. **Ce ne sont pas des avertissements de la famille
+corrigée ici.**
+⇒ **Ce qui reste vrai et mesuré : dès que le fichier va au bout, il est à ZÉRO.**
+
+### D273 — le volet indépendant : la règle du maximum déclare enfin ses conditions
+
+`test-setup.ts` disait « on garde le MAXIMUM de trois relevés » **sans dire de quoi**.
+Trois relevés au repos rendent trois fois le même chiffre et se lisent comme une
+confirmation ; c'est une confirmation de la MACHINE. Mesuré : 293 · 293 · 293 au repos,
+294 sous charge, 295 dans la porte complète — le plafond gelé valait 293, c'est-à-dire
+le maximum de trois passes qui ne pouvaient pas le dépasser, et il a fait tomber la
+porte. La règle exige désormais **au moins une exécution sous charge et une dans la
+porte complète**, avec l'état machine relevé devant chacune.
+
+### D273 — ⛔ CE LOT A PÉRIMÉ L'ANCRE D'UNE AUTRE CAMPAGNE, ET IL LA RÉPARE
+
+Le tri (`lancer-campagnes.py`) a retenu **trois** campagnes. Deux passent :
+`neutralize-act-plafonds` **4/4** et — contrôle qui comptait — `neutralize-horloge`
+(D272) **2/2**, donc mes fenêtres `act` n'ont pas périmé les ancres du lot précédent.
+La troisième, `neutralize-solid-s7`, s'est arrêtée sur `ERREUR DE SCRIPT : 0
+occurrence(s)`.
+
+⛔ **C'est ce lot qui l'a cassée.** Sa cible **S7-2** renommait la clé
+`"src/dashboard/walkin-journey.test.tsx"` dans `PLAFONDS` pour prouver que vider la
+liste d'exemptions fait tomber les fichiers qu'elle couvre. **Cette clé n'existe
+plus** — c'est l'objet même du lot. ⚠ **Un lot ne laisse pas derrière lui une campagne
+qui ne démarre pas** : elle se lirait comme un défaut de code au prochain passage,
+exactement le piège que le dépôt a déjà payé.
+⇒ **Cible RÉORIENTÉE, par écrit, dans le script** : son INTENTION est inchangée
+(« vider la liste d'exemptions du pro fait tomber ce qu'elle couvre »), seul son SUJET
+passe à `venue-form.test.tsx`, exemption qui subsiste. Le commentaire dit aussi ce
+qu'il faudra en faire le jour où `PLAFONDS` sera vide côté pro : **la retirer**, pas
+la re-pointer au hasard.
+⚠ **Son intitulé ne porte plus de compte.** Il annonçait « les 64 avertissements du
+parcours » — faux depuis longtemps. Mesuré en le réorientant : `venue-form` rend **6**
+au relevé et **1** sous une autre répartition, sans qu'une ligne bouge. Ce que la
+cible mesure est « le fichier TOMBE », pas « il tombe avec n ».
+
+⛔ **SIXIÈME FICHIER AU DIFF, HORS DE L'ÉNUMÉRATION DU CADRAGE, ET DÉCLARÉ COMME TEL :**
+`neutralisation/neutralize-solid-s7.py`. Le cadrage en énumérait cinq. Celui-ci n'est
+pas un élargissement de périmètre — c'est la réparation de ce que le lot a cassé.
+
+### D273 — ⚠ LA CIBLE RÉORIENTÉE A ÉTÉ VÉRIFIÉE SÉPARÉMENT, ET VOICI POURQUOI
+
+`neutralize-solid-s7` **n'a pas pu être rejouée en entier** : son pré-vol exige une
+suite **client** verte, et la suite client est rouge. ⛔ **Mesuré, pas supposé** :
+l'arbre **d'avant ce lot** a été remonté et la suite client y est rouge **aussi**
+(2 fichiers), avec un ensemble de fichiers fautifs qui **change d'une passe à
+l'autre** — `venue-detail-view` deux fois, puis `search-view`, `availability-calendar`,
+`account-settings-view`. ⚠ Un test **SYNCHRONE** y expire à 5 000 ms, avec
+`collect` à 284 s : **c'est la machine qui est mesurée, pas le code** (D270). Ce lot
+ne touche rien dans `apps/client`.
+⇒ La cible S7-2 a donc été vérifiée **sur sa moitié pro**, isolément : ancre présente
+**une fois**, mutation appliquée, `venue-form.test.tsx` **tombe** avec
+« avertissement(s) de console dans un fichier NON exempté », arbre restauré et
+vérifié. **La campagne complète reste à rejouer sur une machine calme** — c'est une
+limite déclarée, pas un résultat.
+
+### D273 — portes
+
+`typecheck` **0** · `lint` **0** · `walkin-journey.test.tsx` seul : **41/41, 0
+avertissement** · harnais du lot **4/4** · `neutralize-horloge` **2/2** · suite pro :
+**347/347** sur les passes vertes, rouge par intermittence pour la cause antérieure
+ci-dessus.
+⛔ **NON LANCÉS, ET DÉCLARÉS TELS** : `pnpm build`, `test:int`, la suite e2e, et
+`lancer-campagnes.py --tout`. Ce lot ne touche aucun code de production, mais **cela
+ne les rend pas verts** — cela les rend non mesurés, ce qui n'est pas la même chose
+(D262).
+⛔ **Rien n'est déclaré vert au-delà de ce qui a été lancé.**
 
 ## Session du 02/09/2026 — D272 · l'horloge gelée, et les fixtures qui en dérivent
 
@@ -1164,10 +1346,14 @@ rang : un ordre sans motif ne se corrige pas, il se recopie.
    pas réglé**. **Ce rang se ROUVRE** si du travail coûteux (KDF, image, chiffrement)
    revient en unitaire dans `apps/api`, ou si une mesure sous charge redonne un rouge
    sur ce fichier ;
-5. ⛔ **`act(...)` TARDIF — `walkin-journey.test.tsx` SORT DE `PLAFONDS`.** C'est ce
-   qui tient la porte sous charge maintenant que les rangs 3 et 4 sont levés : **295
-   avertissements contre un plafond gelé à 293**, dont **293 sur 293 sont des
-   `act(...)`** (`VenueCalendar` 171 · `AuthProvider` 82 · `WalkinJourney` 40).
+5. ~~⛔ **`act(...)` TARDIF — `walkin-journey.test.tsx` SORT DE `PLAFONDS`**~~ —
+   **fait (D273)** : 293 → **0**, entrée retirée, garde armée, harnais 4/4.
+   ⚠ **N'a pas rendu la porte verte pour autant**, et ne le prétend pas : il reste une
+   intermittence sur `venue-list.test.tsx`, **antérieure et étrangère**, prouvée telle
+   par un contrôle sur l'arbre d'avant le lot. Elle est au backlog.
+   ⇒ **Ce rang portait le constat d'entrée** : **295 avertissements contre un plafond
+   gelé à 293**, dont **293 sur 293 des `act(...)`**
+   (`VenueCalendar` 171 · `AuthProvider` 82 · `WalkinJourney` 40).
    ⚠ **Le cadrage validé, le barème de sortie et les fichiers attendus sont en tête de
    ce fichier**, section « PROCHAIN LOT » ; ce rang ne les répète pas. **Deux endroits
    qui répondent à « quoi ensuite » finissent par ne plus dire la même chose** — c'est
@@ -2577,3 +2763,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D270 | A | D270 — mes quinze exécutions mesuraient la MACHINE, pas le mode |
 | D271 | A | D271 — argon2 quitte l'unitaire ; cinq tests exposés deviennent UN |
 | D272 | A | D272 — l'horloge gelée, et les fixtures qui DÉRIVENT de l'ancre |
+| D273 | A | D273 — attendre ne supprime pas l'avertissement ; il faut une fenêtre pour le recevoir |

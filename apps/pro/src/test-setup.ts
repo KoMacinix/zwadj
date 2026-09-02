@@ -89,6 +89,19 @@ import { afterAll, afterEach, beforeEach, expect } from "vitest";
  * un chiffre pris une seule fois peut être dépassé au run suivant : on garde
  * le MAXIMUM de trois relevés, et on écrit qu'il en vient.
  *
+ * ⛔ ET LES PASSES DÉCLARENT LEURS CONDITIONS — SANS QUOI LE MAXIMUM NE BORNE
+ * RIEN. Cette règle disait « le maximum de trois relevés » sans dire de quoi.
+ * Trois relevés AU REPOS donnent trois fois le même chiffre et se lisent comme
+ * une confirmation ; c'est une confirmation de la machine, pas du code.
+ * ⚠ MESURÉ le 02/09/2026 sur `walkin-journey.test.tsx` : 293 · 293 · 293 au
+ * repos, **294 sous charge, 295 dans la porte complète**. Le plafond gelé valait
+ * 293 — c'est-à-dire le maximum de trois passes qui ne pouvaient pas le
+ * dépasser — et il a fait tomber la porte.
+ * ⇒ Les passes comportent AU MOINS UNE EXÉCUTION SOUS CHARGE et une dans la
+ * porte complète (l'ordonnancement entre fichiers change le compte), et l'état
+ * machine se relève DEVANT chaque relevé (D270). Un plafond calé au repos est
+ * trop bas par construction.
+ *
  * ⛔ LES NOMBRES NE SONT PAS ÉCRITS ICI À LA MAIN. Ceux du 22/08 sont périmés
  * depuis D249–D251 et D254. On les RELÈVE, une fois :
  *
@@ -105,8 +118,20 @@ import { afterAll, afterEach, beforeEach, expect } from "vitest";
 const A_RELEVER = -1;
 
 const PLAFONDS: Record<string, number> = {
-  // ⚠ 64 le 22/08 (S7) → 293. ÉCART NON EXPLIQUÉ — voir plus bas.
-  "src/dashboard/walkin-journey.test.tsx": 293,
+  // ⛔ `src/dashboard/walkin-journey.test.tsx` A ÉTÉ RETIRÉ D'ICI (02/09/2026).
+  // Il portait 293, et son entrée disait « 64 le 22/08 → 293, ÉCART NON EXPLIQUÉ
+  // — voir plus bas » : le « plus bas » ne renvoyait à rien, et l'écart n'a
+  // jamais été expliqué. Il n'y a plus rien à expliquer — le compte est à ZÉRO.
+  //
+  // ⚠ CE QU'IL FAUT SAVOIR SI ON EST TENTÉ DE L'Y REMETTRE. Les 293 étaient
+  // 293 `act(…)`, et ils venaient de DEUX gestes de test, pas d'un défaut de
+  // composant : le bootstrap d'`AppProviders` laissé en vol par `setup()`
+  // (2 `AuthProvider` + 1 `WalkinJourney` dans chacun des 41 tests = 122), et
+  // les deux passages de l'effet de `VenueCalendar` (3 au montage, 3 au choix
+  // de la date = 171). Le correctif tient en une aide, `laisserRetomber()`,
+  // appelée aux trois moments. Aucun composant de production n'a bougé.
+  // ⇒ Un avertissement qui reviendrait dans ce fichier signale un TROISIÈME
+  // moment asynchrone non reçu, pas un besoin d'exemption.
   // 6 le 22/08 (S7), inchangé.
   "src/venues/venue-form.test.tsx": 6,
   // ⚠ 3 le 22/08 (S7), 3 au relevé du 25/08, puis 4 au run suivant — SANS

@@ -77,10 +77,27 @@ CIBLES = [
         ["client"],
     ),
     (
-        "S7-2. ⚠ LA LISTE D'EXEMPTIONS DU PRO EST VIDÉE — les 64 avertissements du parcours doivent tomber",
+        # ⛔ CIBLE RÉORIENTÉE LE 02/09/2026 (D273), ET PAR ÉCRIT.
+        # Elle visait l'exemption de `src/dashboard/walkin-journey.test.tsx` et
+        # s'intitulait « les 64 avertissements du parcours ». Ce fichier est
+        # SORTI de PLAFONDS — son compte est à zéro — donc l'ancre ne
+        # correspondait plus à rien et la campagne s'arrêtait sur ERREUR DE
+        # SCRIPT, laissant croire à un défaut de code là où il n'y avait qu'une
+        # ancre périmée.
+        # ⚠ L'INTENTION DE LA CIBLE EST INCHANGÉE : « vider la liste
+        # d'exemptions du pro doit faire tomber les fichiers qu'elle couvre ».
+        # Seul son SUJET change, pour une exemption qui existe encore.
+        # ⛔ Le jour où PLAFONDS sera vide côté pro, cette cible deviendra sans
+        # objet : elle se RETIRERA alors, elle ne se re-pointera pas au hasard.
+        # ⚠ AUCUN COMPTE DANS CET INTITULÉ, ET C'EST DÉLIBÉRÉ. Le précédent en
+        # portait un (« les 64 avertissements du parcours ») qui était faux
+        # depuis longtemps. Le compte de ce fichier FLOTTE — 6 au relevé,
+        # 1 sous une autre répartition, sans qu'une ligne bouge (D256). Ce que
+        # la cible mesure est « le fichier TOMBE », pas « il tombe avec n ».
+        "S7-2. ⚠ LA LISTE D'EXEMPTIONS DU PRO EST VIDÉE — le fichier qu'elle couvre doit tomber",
         GARDE_PRO,
-        '  "src/dashboard/walkin-journey.test.tsx"',
-        '  "src/dashboard/PLUS_EXEMPTE.test.tsx"',
+        '  "src/venues/venue-form.test.tsx"',
+        '  "src/venues/PLUS_EXEMPTE.test.tsx"',
         1,
         ["pro"],
     ),
