@@ -2255,6 +2255,22 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       d'appel). ⚠ Voisines de même classe à trancher en même temps : « meurt en 8 s sur
       already used » dans la note e2e.
 
+- [ ] **[API][P2]** ⚠ **MARGE DE `test:int` : À SURVEILLER, PAS À CORRIGER.** Relevé le
+      01/09/2026 pendant la vérification du lot argon2 (D271), sous charge produite
+      (9 processus ; état machine au démarrage : RAM libre 1 896 Mo, CPU 70 %) : la suite
+      d'intégration complète rend 434/434 en 641 s, **et son test le plus lent consomme
+      13 504 ms** — « D116 — la déconnexion ferme TOUT ce que la fenêtre de grâce… ».
+      Budget : `testTimeout: 30_000`. **Facteur 2,2, pas davantage.**
+      ⚠ Pourquoi c'est noté maintenant : **ce lot vient de DÉPLACER du travail dans cette
+      suite**. La destination n'est pas infiniment élastique, et le raisonnement « le
+      budget est large là-bas » cesse d'être vrai en silence à mesure qu'on l'y remplit.
+      ⛔ **EN OBSERVATION, aucune action** : 2,2 sous une charge délibérément sévère n'est
+      pas un défaut. Ce qu'il faut, c'est **relever ce chiffre à chaque lot qui ajoute du
+      travail à `test:int`**, avec son état machine — pas décider aujourd'hui d'un seuil
+      qu'on ne saurait pas défendre. ⚠ Et surtout **ne pas relever le budget** si le
+      facteur se dégrade : ce serait la piste `testTimeout` barrée plus haut, rouverte
+      sous un autre nom.
+
 - [ ] **[PRO][P0]** ⛔ **`walkin-journey.test.tsx` ROUGIT DEPUIS LE PASSAGE AU
       01/09/2026, ET C'EST L'HORLOGE.** Découvert le 01/09 en relançant les portes du lot
       argon2 : **24 échecs sur 41**, tous en `expect(element).toBeEnabled()`, sur un arbre
@@ -2277,6 +2293,17 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       d'un mois. C'est **figer l'horloge** et dériver les dates de fixture de cette horloge
       figée. ⚠ **Balayer les autres fichiers pour la même faute** avant de conclure : rien
       ne dit que celui-ci soit le seul.
+      ⚠ **PISTE, PAS CONCLUSION — elle explique peut-être une part de ce qu'on a appelé
+      « suite pro intermittente » pendant trois sessions.** D270 a relevé deux rouges
+      isolés qu'il n'a PAS pu nommer, leur sortie n'ayant jamais touché un fichier. Une
+      faute d'horloge produit exactement cette signature : un rouge qui apparaît sans
+      qu'une ligne ait bougé, et qu'on attribue à la charge faute de mieux.
+      ⛔ **CE N'EST PAS UNE RÉFUTATION DE D270.** La contention est MESURÉE par ailleurs,
+      et solidement : 0 vert sur 3 sans borne contre 2 sur 5 avec, et des grappes de six à
+      seize échecs sous charge. Les deux causes coexistent. ⚠ Cette piste ne se vérifiera
+      qu'en datant précisément les rouges non nommés — et leurs journaux sont perdus,
+      **donc elle restera peut-être une piste pour toujours**. L'écrire comme telle vaut
+      mieux que la laisser se durcir en explication commode.
 
 - [ ] **[API][P0]** ⛔ **sharp — `image-pipeline.spec.ts` TIENT LA PORTE AUTANT
       QU'ARGON2.** Ouvert le 01/09/2026 sur MESURE, pas sur soupçon : campagne de 8

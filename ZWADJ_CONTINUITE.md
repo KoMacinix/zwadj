@@ -892,29 +892,67 @@ pas. Ce qui ne l'est pas : son effet aux charges intermédiaires, non balayées.
 
 ### D270 — ordre des lots, révisé par Ko
 
-⛔ **ORDRE RÉVISÉ LE 01/09/2026, APRÈS MESURE.** L'ordre écrit ici était
-« argon2 → S11-b », au motif qu'argon2 rendrait la porte verte. **Il ne la rendra
-pas verte**, donc il perd exactement la raison pour laquelle il passait avant
-S11-b. Ordre qui s'applique :
+⚠ **CET ORDRE EN EST À SA TROISIÈME ÉCRITURE, ET LES DEUX PRÉCÉDENTES SONT
+CONSERVÉES DANS L'HISTORIQUE DU DÉPÔT, PAS ICI.** Écrit « argon2 → S11-b » au motif
+qu'argon2 rendrait la porte verte (faux, 01/09) ; puis « argon2 → sharp » au motif
+que ces deux-là la tenaient (incomplet, 02/09). **Deux fois la mesure a démenti la
+prémisse, jamais le raisonnement.** C'est pourquoi le motif est écrit sous chaque
+rang : un ordre sans motif ne se corrige pas, il se recopie.
 
-1. ~~ce lot~~ (mode d'exécution de la suite pro) — **fait** ;
-2. **argon2 → `test:int`** — surface d'authentification, modes de défaillance
-   écrits avant code. ⚠ **Ne rendra PAS la porte verte** ;
-3. **sharp / `image-pipeline.spec.ts`** — même classe, entrée backlog P0 ouverte
-   avec la campagne pour preuve ;
-4. **certification de D269 ET D270 ensemble**, sur la porte redevenue verte, dans
-   les termes fixés plus haut (« porte verte à cette date, D269 et D270 en font
-   partie », sans réécrire leurs en-têtes) ;
-5. **S11-b**.
+⛔ **ORDRE RE-RÉVISÉ LE 02/09/2026 — L'HORLOGE PASSE EN TÊTE** (tranché par Ko) :
+
+1. ~~mode d'exécution de la suite pro (D270)~~ — **fait** ;
+2. ~~argon2 → `test:int` (D271)~~ — **fait**. ⚠ N'a **pas** rendu la porte verte,
+   et ne l'a jamais prétendu ;
+3. ⛔ **HORLOGE — `walkin-journey.test.tsx` et tout fichier de même famille** ;
+4. **sharp / `image-pipeline.spec.ts`** — entrée backlog P0, campagne pour preuve ;
+5. **certification de D269, D270 ET D271 ensemble**, sur la porte redevenue verte,
+   dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
+   partie », **sans réécrire leurs en-têtes**) ;
+6. **S11-b**.
+
+⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
+causes de la porte rouge, elle est **la seule qui rougisse de façon DÉTERMINISTE**,
+sans condition de charge. argon2 et sharp exigent une contention pour tomber : au
+repos, ils passent. L'horloge, elle, tombe à **chaque exécution, sur toute machine,
+et de plus en plus** à mesure que la fenêtre de fixture s'éloigne dans le passé.
+⇒ **Elle rend la porte incertifiable QUOI QU'IL ARRIVE.** Tant qu'elle est là,
+aucune charge, aucune borne, aucun déplacement de test ne peut rendre la porte
+verte — donc aucune certification n'est possible, pour aucun des trois lots.
 
 ⛔ **S11-b EST UN LOT DU CHEMIN DE L'ARGENT ET NE S'OUVRE PAS SOUS UNE PORTE NON
-FIABLE.** C'est le seul point de cet ordre qui ne se négocie pas : sans les rangs
-2 et 3, le rang 5 se mesurerait contre une porte qui rougit au hasard de la charge.
+FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 et
+4, le rang 6 se mesurerait contre une porte qui ne dit rien.
 
-⚠ **Deux lots non certifiés sont en attente (D269, D270). C'est tenable ; trois
-ne le serait pas** — plus personne ne saurait lequel a certifié quoi. ⚠ Les rangs
-2 et 3 sont des lots de FIABILITÉ DE PORTE, pas des lots de produit : ils ne
-créent pas de troisième lot non certifié, ils lèvent ce qui bloque les deux.
+⛔ **LE CORRECTIF DE L'HORLOGE EST DE FIGER L'HORLOGE, JAMAIS DE DÉCALER LA
+FENÊTRE.** Décaler les dates de fixture reconduit le défaut d'un mois : la même
+porte redeviendra rouge, un matin, sans qu'une ligne ait bougé — et la prochaine
+session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ, pas
+un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
+concerné, et corriger le seul cas connu laisserait les autres armés.
+
+### D271 — ⚠ DEUX BRANCHES EMPILÉES : ELLES PARTENT ENSEMBLE OU AUCUNE
+
+⛔ **`argon2-vers-test-int` est empilée sur `D270-autocorrection-chiffres-figes`**,
+dont elle CONTIENT les commits. Fusionner la seconde sans la première n'a pas de
+sens ; fusionner la première seule emporte la seconde. **Cette dépendance est
+invisible dès que la session se ferme** — `git` ne la nomme nulle part, et deux
+branches côte à côte dans une liste ne disent pas laquelle porte l'autre.
+
+| Branche | Contenu | Dépend de |
+|---|---|---|
+| `D270-autocorrection-chiffres-figes` | 3 commits documentaires : chiffres figés retirés d'`AGENTS.md`, provenance des lots réécrite, report backlog, correction « la porte n'est pas rouge sur argon2 seul » | `main` |
+| `argon2-vers-test-int` | D271, **plus les 3 commits ci-dessus** | la branche ci-dessus |
+
+⇒ **Fusionner `argon2-vers-test-int` suffit** : elle emporte tout. L'autre branche
+n'a pas à être fusionnée séparément, et se supprime une fois la première partie.
+
+⚠ **TROIS lots non certifiés sont désormais en attente : D269, D270 et D271.**
+La règle disait « deux, c'est tenable ; trois, non ». Le seuil est franchi — et il
+l'est parce que la cause du rouge a changé deux fois en deux jours, pas parce qu'on
+a empilé des lots de produit. ⚠ Les rangs 3 et 4 sont des lots de FIABILITÉ DE
+PORTE : ils ne créent pas de quatrième lot non certifié, ils lèvent ce qui bloque
+les trois. ⛔ **Aucun lot de produit ne s'ouvre avant que la porte soit verte.**
 
 ## Session du 30/08/2026 — D269 · `act(…)` tardif, concurrence, tri des campagnes
 
