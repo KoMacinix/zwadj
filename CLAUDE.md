@@ -83,3 +83,27 @@ exécuté (D262).
 
 Présenter : le `git diff`, les portes exécutées AVEC leurs chiffres, et les
 limites restantes. Puis s'arrêter.
+
+⛔ **UN LOT PAR SESSION.** Quand un lot est clos ou livré, **dire à Ko d'ouvrir une
+nouvelle session, et s'arrêter**. Un lot découvert en cours de route se **REPORTE au
+backlog**, il ne s'ouvre pas dans la foulée. La reprise se fait par
+`ZWADJ_CONTINUITE.md` **seul**.
+
+⚠ **SA RAISON N'EST PAS L'HYGIÈNE DE CONTEXTE, C'EST UNE MESURE.** Reprendre dans une
+session neuve est le seul test réel de « ce fichier suffit-il à reprendre sans Ko ».
+Tant qu'on enchaîne dans le même fil, la question reste théorique et le fichier peut
+se dégrader sans que personne le voie. La reprise du 31/08 en a donné la
+démonstration : **trois des quatre points de contexte** donnés de mémoire étaient
+contredits par le dépôt — branche, nombre de lots en attente, provenance.
+
+⛔ **CETTE RÈGLE A DÉJÀ ÉTÉ DEMANDÉE, ET ELLE AVAIT DISPARU.** Elle a vécu dans un
+message de chat, plusieurs sessions durant, sans jamais atterrir dans un fichier :
+vérifié le 02/09/2026, **zéro occurrence** dans `AGENTS.md`, `CLAUDE.md` et
+`ZWADJ_CONTINUITE.md`, tous trois pourtant postérieurs. Elle a donc cessé d'être
+appliquée — D271, D272 et le cadrage sharp ont été faits dans la même session, chacun
+faisant naître le suivant. **C'est le défaut que ce dépôt corrige en boucle, appliqué
+à la règle qui devait l'empêcher.**
+
+⇒ **Corollaire, à tenir en fin de session** : confirmer explicitement à Ko que ce qui
+a été décidé dans le chat a bien atterri dans un FICHIER, et lequel. Une décision qui
+n'existe que dans le fil disparaît avec lui.
