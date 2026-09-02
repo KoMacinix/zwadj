@@ -248,22 +248,23 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
 - ✅ **FLUX A — Lot A6a (visite virtuelle Matterport, D45)** : intégré, gates vertes, migration prouvée en base réelle.
 - ✅ **TRANCHE UIP — refonte de l'app Pro (D130 → D149)** : coquille + top panel, parcours « client sur place », assistant de salle en 7 étapes, refonte graphique, contrat de contact D135. ⚠ Livrée sur **cinq portes** : le bac à sable ne peut pas exécuter l'API (voir les compteurs UIP). **Sept tests d'intégration restent à passer chez Ko.**
 
-### Compteurs — MESURÉS à la clôture de la campagne qualité (07/08/2026)
+### ⛔ AUCUN COMPTEUR COURANT N'EST ÉCRIT ICI
 
-| Gate | Valeur |
-|---|---|
-| typecheck | **8 projets**, 0 erreur — `@zwadj/e2e` s'est ajouté |
-| lint | exit 0 |
-| tests unitaires | **76 fichiers / 808 tests** — api 39/374 · api-client 2/34 · client 15/160 · pro 20/240 |
-| tests d'intégration | **34 fichiers / 398 tests**, base recréée de zéro |
-| i18n | **844 = 844** |
-| builds | Next ✅ · Vite ✅ |
-| suite e2e (à la demande) | **34 tests / 6 fichiers** — exécutée par Ko sous Windows : **33 passés, 1 ignoré, 0 échec**, 2,5 min |
-| `prisma/migrations` | **21 entrées** (20 migrations + `migration_lock.toml`) |
-
-> ⚠ **Le typecheck compte 8 projets** dont `@zwadj/e2e`. La suite e2e n'est
-> **PAS** une septième porte : elle se lance à la demande, avant tout lot touchant
-> **auth, concurrence ou argent**, et avant chaque livraison finale.
+Cette place portait un tableau **« Compteurs — clôture de la campagne qualité
+(07/08/2026) »** : 76 fichiers / 808 tests, 8 projets au typecheck, 34 fichiers
+d'intégration. En tête d'« État actuel », il se lisait comme l'état du jour. **Il
+avait un mois**, et l'API à elle seule était passée de 374 à 640 tests entre-temps.
+⛔ **Un chiffre figé en tête d'un document d'état finit par couvrir exactement ce
+qu'il prétendait mesurer** — c'est D268 (« aucun compteur de harnais n'est écrit
+ici ») appliqué aux compteurs de PORTES.
+⇒ **Les compteurs courants se MESURENT en lançant les portes** — `pnpm typecheck`,
+`lint`, `test`, `build`, `test:int` — jamais en lisant ce fichier. Les chiffres d'un
+lot donné vivent dans l'**en-tête de sa session**, avec l'état machine relevé devant
+eux, sans quoi ils ne veulent rien dire (D270).
+⚠ **Les tableaux qui suivent sont des RELEVÉS DE CLÔTURE DATÉS**, conservés comme
+histoire : ils disent ce qui a été mesuré tel jour, jamais l'état courant. La suite
+e2e n'est toujours **PAS** une septième porte — elle se lance à la demande, avant
+tout lot touchant **auth, concurrence ou argent**, et avant chaque livraison.
 
 ### Compteurs — MESURÉS à la clôture de F1 (02/08/2026)
 
@@ -504,9 +505,25 @@ d'une file de quatre lots non certifiés, c'est le mot qui décide de la lecture
 « LIVRÉ » se lit comme clos. **La porte `test` sort en 0 AU REPOS** — état machine relevé
 avant la mesure : RAM libre 4 579 Mo, CPU 6 %, zéro processus node. api 640/640 ·
 api-client 36/36 · client 287/287 · **pro 347/347**, zéro délai dépassé.
-⛔ **« Verte au repos » n'est PAS « verte ».** argon2 (1 test) et sharp (2 tests)
-restent capables de la faire rougir sous charge : c'est le lot sharp qui suit. **Ce
-lot ne certifie donc rien** — ni D269, ni D270, ni D271, ni lui-même.
+⛔ **« Verte au repos » n'est PAS « verte ».** ~~argon2 (1 test) et sharp (2 tests)
+restent capables de la faire rougir sous charge : c'est le lot sharp qui suit.~~
+⚠ **RECTIFIÉ LE 02/09/2026, QUELQUES HEURES PLUS TARD DANS LA MÊME JOURNÉE.** La
+phrase barrée était exacte quand elle a été écrite ; elle a cessé de l'être avant la
+fin du jour. argon2 a quitté la suite unitaire (D271), et **sharp est requalifié SANS
+OBJET SUR MESURE** : API **640/640, zéro délai dépassé, à 8, 24 et 48 processus**,
+état machine relevé avant chacune — le test sharp le plus lourd garde **2,1× de
+marge** à 48 processus contre un budget de 5 000 ms. Relevé complet dans
+`ZWADJ_BACKLOG.md`.
+⛔ **SA CONDITION DE VALIDITÉ EST STRICTE, ET ELLE FAIT PARTIE DU CONSTAT : sharp ne
+tombe plus PARCE QUE les cinq tests argon2 ont quitté la suite unitaire API.** Ce
+n'est pas sharp qui s'est amélioré, c'est la pression qui a baissé. **Si du travail
+coûteux revient en unitaire dans `apps/api` — un KDF, un traitement d'image, un
+chiffrement — la marge se referme et sharp retombe.** Il est **déchargé, pas réglé** :
+sans cette phrase, la prochaine lecture sera « sharp est réglé ».
+⇒ Ce qui tient encore la porte sous charge n'est donc **ni argon2 ni sharp**, mais le
+plafond d'avertissements de `walkin-journey.test.tsx` — c'est le lot qui suit, cadré
+en tête de ce fichier. **Ce lot ne certifie rien** — ni D269, ni D270, ni D271, ni
+lui-même.
 
 ### D272 — un seul fichier, et c'est le verdict de la sonde qui l'a dit
 
@@ -634,9 +651,13 @@ péremption.
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D270**.
 
-⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** La porte `test` reste rouge **sous charge** — sharp
-la tient encore (lot suivant). Ce lot ne prétend pas la rendre verte, et il ne
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** La porte `test` reste rouge **sous charge** — ~~sharp
+la tient encore (lot suivant)~~. Ce lot ne prétend pas la rendre verte, et il ne
 certifie donc ni D269 ni D270.
+⚠ **LE RENVOI EST PÉRIMÉ DEPUIS LE 02/09/2026 : sharp est requalifié SANS OBJET sur
+mesure** (rang 4 de l'ordre des lots), précisément **parce que** ce lot-ci a sorti les
+cinq tests argon2 de la suite unitaire. Le constat daté reste vrai au 01/09 ; c'est le
+« lot suivant » qui a changé — il est désormais le rang 5, `act(...)` tardif.
 
 ### D271 — ⛔ UNE TROISIÈME CAUSE, TROUVÉE EN RELANÇANT LES PORTES : L'HORLOGE
 
@@ -1132,12 +1153,35 @@ rang : un ordre sans motif ne se corrige pas, il se recopie.
 1. ~~mode d'exécution de la suite pro (D270)~~ — **fait** ;
 2. ~~argon2 → `test:int` (D271)~~ — **fait**. ⚠ N'a **pas** rendu la porte verte,
    et ne l'a jamais prétendu ;
-3. ⛔ **HORLOGE — `walkin-journey.test.tsx` et tout fichier de même famille** ;
-4. **sharp / `image-pipeline.spec.ts`** — entrée backlog P0, campagne pour preuve ;
-5. **certification de D269, D270 ET D271 ensemble**, sur la porte redevenue verte,
+3. ~~⛔ **HORLOGE — `walkin-journey.test.tsx` et tout fichier de même famille**~~ —
+   **fait (D272)**. ⚠ N'a **pas** rendu la porte verte sous charge, et ne l'a jamais
+   prétendu ;
+4. ~~**sharp / `image-pipeline.spec.ts`** — entrée backlog P0, campagne pour preuve~~
+   — ⛔ **REQUALIFIÉ SANS OBJET SUR MESURE le 02/09/2026**, après le départ des cinq
+   tests argon2 : API **640/640, zéro délai dépassé à 8, 24 et 48 processus**, 2,1× de
+   marge sur le test le plus lourd. ⛔ **Condition de validité, stricte** : sharp ne
+   tombe plus **PARCE QUE** argon2 a quitté la suite unitaire API — il est **déchargé,
+   pas réglé**. **Ce rang se ROUVRE** si du travail coûteux (KDF, image, chiffrement)
+   revient en unitaire dans `apps/api`, ou si une mesure sous charge redonne un rouge
+   sur ce fichier ;
+5. ⛔ **`act(...)` TARDIF — `walkin-journey.test.tsx` SORT DE `PLAFONDS`.** C'est ce
+   qui tient la porte sous charge maintenant que les rangs 3 et 4 sont levés : **295
+   avertissements contre un plafond gelé à 293**, dont **293 sur 293 sont des
+   `act(...)`** (`VenueCalendar` 171 · `AuthProvider` 82 · `WalkinJourney` 40).
+   ⚠ **Le cadrage validé, le barème de sortie et les fichiers attendus sont en tête de
+   ce fichier**, section « PROCHAIN LOT » ; ce rang ne les répète pas. **Deux endroits
+   qui répondent à « quoi ensuite » finissent par ne plus dire la même chose** — c'est
+   arrivé à ce rang même, qui a annoncé le lot sharp pendant que le backlog le
+   fermait ;
+6. **CERTIFICATION** — ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
+   non certifiés à sa date, quel qu'en soit le nombre**, sur la porte redevenue verte,
    dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
-   partie », **sans réécrire leurs en-têtes**) ;
-6. **S11-b**.
+   partie », **sans réécrire leurs en-têtes**). ⚠ **Ce rang portait la liste « D269,
+   D270 ET D271 », et elle était déjà fausse en la lisant** : D272 s'est ajouté après,
+   sans que personne réécrive la phrase. Une liste de lots dans un plan se périme au
+   lot suivant ; une règle non — et c'est la seule raison de ce changement de
+   formulation ;
+7. **S11-b**.
 
 ⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
 causes de la porte rouge, elle est **la seule qui rougisse de façon DÉTERMINISTE**,
@@ -1146,11 +1190,13 @@ repos, ils passent. L'horloge, elle, tombe à **chaque exécution, sur toute mac
 et de plus en plus** à mesure que la fenêtre de fixture s'éloigne dans le passé.
 ⇒ **Elle rend la porte incertifiable QUOI QU'IL ARRIVE.** Tant qu'elle est là,
 aucune charge, aucune borne, aucun déplacement de test ne peut rendre la porte
-verte — donc aucune certification n'est possible, pour aucun des trois lots.
+verte — donc aucune certification n'est possible, pour aucun des lots en attente.
+⚠ Cette phrase disait « pour aucun des **trois** lots » : le compte a bougé le
+lendemain. Un plan écrit avec le nombre de lots dedans se périme au lot suivant.
 
 ⛔ **S11-b EST UN LOT DU CHEMIN DE L'ARGENT ET NE S'OUVRE PAS SOUS UNE PORTE NON
-FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 et
-4, le rang 6 se mesurerait contre une porte qui ne dit rien.
+FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 à 5,
+le rang 7 se mesurerait contre une porte qui ne dit rien.
 
 ⛔ **LE CORRECTIF DE L'HORLOGE EST DE FIGER L'HORLOGE, JAMAIS DE DÉCALER LA
 FENÊTRE.** Décaler les dates de fixture reconduit le défaut d'un mois : la même
@@ -1181,6 +1227,11 @@ l'est parce que la cause du rouge a changé deux fois en deux jours, pas parce q
 a empilé des lots de produit. ⚠ Les rangs 3 et 4 sont des lots de FIABILITÉ DE
 PORTE : ils ne créent pas de quatrième lot non certifié, ils lèvent ce qui bloque
 les trois. ⛔ **Aucun lot de produit ne s'ouvre avant que la porte soit verte.**
+⚠ **DÉMENTI LE 02/09/2026, ET LA PHRASE RESTE POUR QU'ON LE VOIE : D272 EST CE
+QUATRIÈME LOT NON CERTIFIÉ.** Un lot de fiabilité de porte qui ne rend pas la porte
+verte s'ajoute à la file au lieu de la vider. **Quatre lots attendent aujourd'hui** —
+et ce compte-ci se périmera aussi, ce qui est pourquoi le rang de certification est
+désormais écrit en règle et non en liste.
 
 ## Session du 30/08/2026 — D269 · `act(…)` tardif, concurrence, tri des campagnes
 
@@ -2252,7 +2303,17 @@ mention (marquées `?`) ; **2** ne sont ancrées que par leur section.
 ⚠ Chiffres de l'audit R1 (28/08), **non recomptés depuis** : D268 s'y ajoute avec
 sa ligne de définition, soit 218 sur 242 — dérivé, pas remesuré.
 
-⛔ **DERNIER NUMÉRO ATTRIBUÉ : D270. Le prochain est D271.**
+⛔ **AUCUN « DERNIER NUMÉRO » N'EST ÉCRIT ICI, ET C'EST LE REMÈDE.** Cette ligne a
+porté **« DERNIER NUMÉRO ATTRIBUÉ : D270 »** pendant que le titre de ce registre
+annonçait « D1 à D272 » et que sa table listait D271 **et** D272 : un compteur figé
+dans l'endroit même qui existe pour empêcher les compteurs figés. C'est le troisième
+de la série — après « 18 scripts, 149 cibles » (D268) et « D1 à D266 » dans
+`CLAUDE.md` — et il reçoit le même traitement que les deux autres : **on supprime le
+chiffre, on ne le met pas à jour.**
+⇒ **Le numéro se prend en lisant la DERNIÈRE LIGNE DE LA TABLE ci-dessous.** Au
+02/09/2026 elle porte **D272**, donc le prochain est **D273** — et cette phrase-ci
+sera périmée au lot suivant, ce qui est exactement pourquoi elle renvoie à la table
+plutôt que de se substituer à elle.
 
 ⚠ **D267 a été mal posé une première fois** : inscrit au backlog sans section ici,
 pendant que le registre annonçait encore D266. Corrigé le 28/08.
