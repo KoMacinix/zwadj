@@ -2403,7 +2403,34 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       **donc elle restera peut-être une piste pour toujours**. L'écrire comme telle vaut
       mieux que la laisser se durcir en explication commode.
 
-- [ ] **[API][P0]** ⛔ **sharp — `image-pipeline.spec.ts` TIENT LA PORTE AUTANT
+- [x] ~~**[API][P0]** sharp — `image-pipeline.spec.ts` tient la porte autant qu'argon2~~
+      — ⛔ **REQUALIFIÉ SANS OBJET LE 02/09/2026, SUR MESURE.** Après le départ des cinq
+      tests argon2 vers `test:int` (D271), la suite unitaire API **ne rougit plus à
+      aucune charge produite**. État machine relevé avant chaque exécution :
+
+      | Charge | RAM libre | Résultat | Délais | Test le plus lent |
+      |---|---|---|---|---|
+      | 8 procs (×3) | 3 507–3 567 Mo | 640/640 | 0 | 738 ms |
+      | 24 procs (×2) | 2 599–2 901 Mo | 640/640 | 0 | 1 589 ms |
+      | 48 procs (×2) | 1 750–1 832 Mo | 640/640 | 0 | 2 346 ms |
+
+      À **8 processus** — la charge exacte qui produisait 3 à 8 échecs le 01/09 — l'API est
+      verte trois fois sur trois. Le test sharp le plus lourd garde **2,1× de marge** même
+      à 48 processus, contre un budget de 5 000 ms.
+      ⛔ **CONDITION DE VALIDITÉ DE CE CONSTAT, ET ELLE EST STRICTE : sharp ne tombe plus
+      PARCE QUE les cinq tests argon2 ont quitté la suite unitaire API.** Ce n'est pas
+      sharp qui s'est amélioré, c'est la pression qui a baissé. **Si du travail coûteux
+      revient dans `apps/api` en unitaire — un KDF, un traitement d'image, un chiffrement —
+      la marge se referme et sharp retombe.** ⚠ Sans cette phrase, la prochaine lecture
+      sera « sharp est réglé », et il ne l'est pas : il est **déchargé**.
+      ⇒ **Rien à faire aujourd'hui.** Rouvrir cette entrée si la suite unitaire API
+      s'alourdit, ou si une mesure sous charge redonne un rouge sur ce fichier.
+
+- [x] ~~**[API][P0]** ⛔ **CONSTAT D'ORIGINE, CONSERVÉ POUR LA TRACE — il était exact
+      le 01/09 et il a cessé de l'être le 02/09.** Ce qui suit décrit la mesure telle
+      qu'elle a été prise, avec argon2 encore dans la suite unitaire. Ne pas le lire comme
+      l'état courant : voir la requalification ci-dessus.~~
+      ⛔ **`image-pipeline.spec.ts` TENAIT LA PORTE AUTANT
       QU'ARGON2.** Ouvert le 01/09/2026 sur MESURE, pas sur soupçon : campagne de 8
       exécutions de la suite API sous charge vérifiée (9 processus), état machine relevé
       avant chacune, sortie de chacune dans un fichier. `src/media/image-pipeline.spec.ts`
