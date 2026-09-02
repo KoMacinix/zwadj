@@ -402,6 +402,62 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## Session du 02/09/2026 — lot HORLOGE, relevé préalable (sans numéro)
+
+⛔ **Aucun numéro de décision** : ce relevé ne tranche rien, il prépare. Le numéro
+se prendra au cadrage du correctif, en LISANT le registre.
+
+### HORLOGE — le relevé statique
+
+**57 fichiers de test portent une date en dur. DEUX figent l'horloge**
+(`venues-public.service.spec.ts`, `availability-calendar.test.tsx`). Aucun des deux
+`test-setup.ts` partagés n'en pose. 37 fichiers portent des dates déjà passées.
+
+### HORLOGE — ⛔ DEUX INSTRUMENTS CONSTRUITS, DEUX INSTRUMENTS ÉCARTÉS PAR LEUR PROPRE CONTRÔLE
+
+⚠ **C'est le vrai produit de ce relevé, et il vaut mieux que la liste qu'il devait
+produire.**
+
+**Instrument 1 — le voyage dans le temps.** Injecter un gel d'horloge dans le
+`test-setup.ts` partagé, avancer à 2027 puis 2028, lire ce qui tombe. Sortie
+apparente : 28 fichiers rouges côté pro, 18 côté client — **dont `ui-tokens.test.ts`
+et `theme-toggle.test.tsx`, qui ne contiennent aucune date.**
+⇒ **Contrôle qui l'invalide** : la même injection posée à la date **du jour**, où
+rien ne doit changer, rend **26 échecs au lieu de 24**. L'instrument perturbe ce
+qu'il mesure ; aux dates lointaines il fait tomber la collecte entière (« no
+tests »). Un `useFakeTimers` global entre en conflit avec les tests asynchrones.
+**Écarté.**
+
+**Instrument 2 — la détection statique des lectures d'horloge.** Chercher
+`new Date()`, `Date.now()`, `today` dans le test et dans le module voisin qu'il
+exerce, pour ne garder que les fichiers réellement exposés. Sortie : 24 candidats
+sur 56, ce qui avait l'air d'un bon tri.
+⇒ **Invalidé par le SEUL cas dont la réponse est connue** :
+`walkin-journey.test.tsx` — le fichier qui échoue en ce moment même — en ressort
+**classé sans risque**. La lecture d'horloge est faite par un composant plus bas
+dans l'arbre, pas par le module de même nom. **Un classificateur qui rate le cas
+connu ne peut pas trier les 56 autres. Écarté.**
+
+⛔ **CE QUE J'AURAIS LIVRÉ SANS CES DEUX CONTRÔLES** : une liste de 24 fichiers « à
+corriger » **dont celui qui est cassé aurait été absent**. Elle aurait eu l'air
+d'un relevé complet — la forme exacte d'un audit tronqué (D200).
+⚠ **Un instrument se calibre sur des cas dont on connaît déjà la réponse, AVANT de
+lui faire trier ce qu'on ignore.** Cette règle existait pour les tests ; elle vaut
+pour les outils de relevé.
+
+### HORLOGE — la seule information sûre SANS instrument : les échéances
+
+**19 fichiers** n'ont que des dates futures : ils passent aujourd'hui et tomberont
+le jour dit. Cela ne demande aucun jugement sur ce qui compare une date à
+« maintenant » — c'est une date de péremption, pas un défaut. **Table complète au
+backlog.**
+⚠ **Extraction VALIDÉE** (`fromisoformat`) après que le premier extracteur eut rendu
+`2026-13-01` et `2027-02-31` : **12 chaînes écartées, le compte passe de 20 à 19.**
+⛔ **`request-scope.test.tsx` expire le 12/09/2026 — dans dix jours.**
+⚠ **Neuf fichiers partagent l'échéance 2027-08-15** : le jour venu, ce n'est pas un
+test qui tombe mais une grappe — et une grappe se lit comme une panne, pas comme une
+péremption.
+
 ## Session du 01/09/2026 — D271 · argon2 quitte l'unitaire pour `test:int`
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D270**.

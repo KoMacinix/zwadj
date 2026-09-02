@@ -2271,6 +2271,49 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       facteur se dégrade : ce serait la piste `testTimeout` barrée plus haut, rouverte
       sous un autre nom.
 
+- [ ] **[TESTS][P1]** ⚠ **DIX-NEUF FICHIERS À ÉCHÉANCE CONNUE — CE SONT DES DATES DE
+      PÉREMPTION, PAS DES DÉFAUTS.** Relevé le 02/09/2026. Toutes leurs dates en dur sont
+      **futures** et aucun ne fige l'horloge : ils passent aujourd'hui et tomberont le jour
+      dit, sans qu'une ligne ait bougé — exactement comme `walkin-journey.test.tsx` le
+      01/09. **C'est la seule information du relevé qui soit sûre SANS instrument** : elle
+      ne demande aucun jugement sur ce qui compare une date à « maintenant ».
+      ⚠ **Extraction VALIDÉE** (`fromisoformat`) : un premier extracteur rendait
+      `2026-13-01` et `2027-02-31`, c'est-à-dire qu'il attrapait des chaînes qui ne sont pas
+      des dates. **12 chaînes écartées à ce titre**, et le compte est passé de 20 à 19.
+
+      | Première échéance | Fichier |
+      |---|---|
+      | **2026-09-12** | `apps/pro/src/venues/request-scope.test.tsx` |
+      | 2026-12-31 | `apps/pro/src/venues/block-time.spec.ts` |
+      | 2027-01-01 | `apps/api/src/payments/payment-store.prisma.spec.ts` |
+      | 2027-01-01 | `apps/api/src/payments/payments.service.spec.ts` |
+      | 2027-01-01 | `apps/api/src/venues/quotes.service.spec.ts` |
+      | 2027-01-01 | `apps/pro/src/venues/visits-section.test.tsx` |
+      | 2027-02-01 | `apps/api/src/venues/quote-store.prisma.spec.ts` |
+      | 2027-02-01 | `apps/client/src/lib/calendar.spec.ts` |
+      | 2027-02-01 | `apps/pro/src/venues/pro-calendar.spec.ts` |
+      | 2027-08-01 | `apps/client/src/components/venue/booking-request-panel.test.tsx` |
+      | 2027-08-14 | `apps/api/test/int/bookings.int-spec.ts` |
+      | 2027-08-15 | `apps/api/src/common/notifications/notification-dispatch.spec.ts` |
+      | 2027-08-15 | `apps/api/src/venues/bookings.schemas.spec.ts` |
+      | 2027-08-15 | `apps/api/src/venues/visit-bookings.schemas.spec.ts` |
+      | 2027-08-15 | `apps/api/src/venues/visit-notifications.service.spec.ts` |
+      | 2027-08-15 | `apps/api/test/int/services.int-spec.ts` |
+      | 2027-08-15 | `apps/api/test/int/visit-availabilities.int-spec.ts` |
+      | 2027-08-15 | `apps/api/test/int/visit-bookings.int-spec.ts` |
+      | 2027-09-18 | `apps/api/test/int/quotes.int-spec.ts` |
+
+      ⛔ **`request-scope.test.tsx` EXPIRE LE 12/09/2026 — DANS DIX JOURS**, et il est dans
+      `apps/pro`. Il entre donc dans le lot horloge en cours, au critère posé par Ko : ce
+      qui compte est ce que l'instrument désigne comme sensible, pas ce qui rougit déjà.
+      ⚠ **Neuf fichiers partagent l'échéance 2027-08-15** : le jour venu, ce n'est pas un
+      test qui tombe, c'est une grappe — et une grappe se lit comme une panne, pas comme
+      une péremption. Raison de plus pour ne pas attendre.
+      ⚠ **Une échéance future n'est pas une preuve de sensibilité** : ces dates peuvent
+      n'être que de la métadonnée (`createdAt`) que rien ne compare à maintenant. Cette
+      table dit QUAND une fixture cesse d'être future, pas qu'elle cassera. Le tri revient
+      à l'instrument du lot horloge.
+
 - [ ] **[PRO][P0]** ⛔ **`walkin-journey.test.tsx` ROUGIT DEPUIS LE PASSAGE AU
       01/09/2026, ET C'EST L'HORLOGE.** Découvert le 01/09 en relançant les portes du lot
       argon2 : **24 échecs sur 41**, tous en `expect(element).toBeEnabled()`, sur un arbre
