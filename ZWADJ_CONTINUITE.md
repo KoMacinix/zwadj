@@ -1401,7 +1401,21 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
    D270 ET D271 », et elle était déjà fausse en la lisant** : D272 s'est ajouté après,
    sans que personne réécrive la phrase. Une liste de lots dans un plan se périme au
    lot suivant ; une règle non — et c'est la seule raison de ce changement de
-   formulation ;
+   formulation.
+   ⛔ **CE QUE LA CERTIFICATION DEVRA PAYER, ÉCRIT LE 03/09/2026 POUR NE PAS ÊTRE
+   REDÉCOUVERT** (dicté par Ko ; il ne vivait que dans un fil de chat, et un fil se
+   ferme) :
+   - **le barème de D273 reste DÛ** — cinq passes de la suite pro à **zéro**
+     avertissement sur `walkin-journey.test.tsx` **au repos**, plus **deux sous charge
+     encaissable**. D273 a obtenu 5 passes à zéro sur 5, mais **aucune au repos**, et
+     l'a déclaré NON TENU plutôt que de réécrire son barème après coup ;
+   - **`neutralize-solid-s7` est à rejouer ENTIÈRE.** D273 n'a vérifié que sa moitié
+     pro, isolément : son pré-vol exige une suite client verte, qui ne l'était pas.
+     Une cible réorientée vérifiée à moitié n'est pas une campagne jouée ;
+   - **les six portes, la suite e2e, et `lancer-campagnes.py --tout`** — en **UNE
+     SEULE passe**. ⚠ Le point est « une seule » : des portes vertes relevées à des
+     moments différents, sur un arbre qui bouge entre elles, ne certifient rien
+     ensemble (D218 — l'archive livrée rouge avec une note annonçant « 0 erreur ») ;
 8. **S11-b**.
 
 ⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
