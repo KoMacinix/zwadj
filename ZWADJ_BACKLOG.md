@@ -2171,6 +2171,26 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       sont des EXPIRATIONS à 5 000 ms sous contention**, pas la même chose : ils
       apparaissent aussi sur l'arbre d'avant le lot, et relèvent de D270.
 
+- [ ] **[INFRA][P1]** ⛔ **LE RELEVÉ D'ÉTAT MACHINE N'A PAS D'INSTRUMENT DANS LE DÉPÔT.**
+      Rapporté le 03/09/2026, **non corrigé ici** : c'est un défaut croisé, et le lot en
+      cours parle de `venue-list`. ⚠ **Mesuré, pas supposé** : `LoadPercentage`,
+      `FreePhysicalMemory`, `PerfFormattedData` et `Get-Counter` ont **zéro occurrence**
+      dans tout le dépôt, `neutralisation/` compris. Depuis D270, **chaque** décision
+      d'intermittence s'appuie sur un état machine relevé À LA MAIN, par un outil que
+      personne ne peut nommer et que la session suivante ne peut pas reproduire.
+      ⛔ **CE QUE ÇA A DÉJÀ COÛTÉ** : le « CPU 6 % » du cadrage D273 est devenu une cible
+      inatteignable-par-construction, parce qu'on ne peut ni la reproduire ni la
+      convertir — l'instrument retenu après calibration (`Win32_PerfFormattedData_PerfOS_Processor`)
+      lit ~17 % là où l'écarté (`Win32_Processor.LoadPercentage`) lit `28, 30, 9, 0` sur
+      la même machine à la même seconde.
+      ⇒ **REMÈDE** : une sonde `neutralisation/sonde-etat-machine.py`, sur le modèle de
+      `sonde-horloge.py` — un **instrument**, invoqué explicitement, pas une campagne
+      (elle ne se nommerait donc pas `neutralize-*`, que le tri seul découvre). Elle rend
+      RAM libre, compte de node, **inventaire des processus ≥ 100 Mo**, et CPU par
+      **médiane de ≥ 5 relevés avec sa dispersion**, jamais un échantillon unique.
+      ⚠ **Elle porte les trois lignes de reconfiguration UTF-8** (D268), sans quoi elle
+      lèvera au premier caractère non-cp1252 sur ce poste.
+
 - [ ] **[PRO][P0]** ⛔ **`act(…)` TARDIF DANS LA COQUILLE — deux fichiers de plus, et la
       porte pro n'est PAS fiable.** ⚠ **Diagnostic ISOLÉ le 30/08 (D268), pas supposé.**
       L'échec n'est **pas** une assertion : c'est la garde des sorties console

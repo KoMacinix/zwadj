@@ -1467,6 +1467,33 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
      pas une référence à renégocier à la baisse. Un seuil redéfini qui achèterait moins
      qu'avant serait une certification obtenue en déplaçant la barre — exactement ce que
      le refus du plafond relevé de `walkin-journey` a écarté trois jours plus tôt.
+     ⛔ **L'INSTRUMENT CPU EST DISQUALIFIÉ, ET LA CIBLE AVEC LUI — CALIBRÉ LE
+     03/09/2026 SUR UNE CHARGE CONNUE**, parce qu'un instrument se calibre sur des cas
+     dont la réponse est déjà connue AVANT de lui faire trier ce qu'on ignore (règle du
+     relevé HORLOGE, appliquée cette fois à moi). Quatre boucles saturantes sur
+     **12 cœurs logiques**, soit **+33 points attendus** :
+     - `Win32_Processor.LoadPercentage` — au repos `28, 30, 9, 0` ; **sous la charge
+       connue** `27, 0, 30, 4`. **Il ne distingue pas les deux cas** et rend `0` à
+       répétition. ⛔ **ÉCARTÉ** — c'est lui qui a servi à annoncer « CPU 25 % » en
+       ouverture de cette session, chiffre qui ne valait donc rien.
+     - `Win32_PerfFormattedData_PerfOS_Processor` (`_Total`) — au repos `17, 17, 30,
+       16` ; sous charge `49, 53, 53, 22`, soit la ligne de base **+33** sur trois
+       relevés sur quatre. ✅ **RETENU**, et **jamais en échantillon unique** : médiane
+       d'au moins cinq relevés, dispersion écrite à côté — il varie lui aussi.
+     ⛔ **CONSÉQUENCE EN AMONT, ET ELLE PORTE SUR LA CIBLE ELLE-MÊME** (point soulevé
+     par Ko) : le « CPU 6 % » du cadrage D273 vient d'un instrument **dont le dépôt ne
+     garde aucune trace**. Vérifié : `LoadPercentage`, `FreePhysicalMemory`,
+     `PerfFormattedData` et `Get-Counter` ont **zéro occurrence** dans tout le dépôt,
+     `neutralisation/` compris. Les relevés d'état machine ont **toujours** été pris à
+     la main, par un outil que personne ne peut nommer. **Un 6 % non attribuable ne se
+     convertit pas** vers l'instrument retenu : il n'y a rien à convertir. Calibrer
+     soigneusement pour viser un nombre produit par un instrument non calibré serait
+     absurde.
+     ⇒ **LA BARRE CPU HÉRITÉE EST ANNULÉE.** Le CPU **reste relevé** — l'instrument
+     existe et il est calibré — mais il **ne porte plus de seuil hérité** : sa valeur
+     de plancher s'établit à neuf, en même temps que celle de la RAM. **Ce qui LIE le
+     plancher reste : RAM libre + compte de node + INVENTAIRE.** C'est ce qui manquait ;
+     un quatrième nombre gardé pour la forme n'aurait rien ajouté.
      ⛔ **Dans les deux cas, tout relevé porte désormais son INVENTAIRE** — ce qui
      tourne, pas seulement ses trois nombres — sinon la question se reposera à la
      session suivante, sans plus de moyen d'y répondre ;
