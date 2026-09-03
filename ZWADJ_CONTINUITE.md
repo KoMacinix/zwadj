@@ -575,6 +575,49 @@ correctement sur les dix passes ; le CPU y manque, et cela reste vrai.
 vérification a échoué en supposant le superutilisateur conventionnel au lieu de le
 relever. `test:int` aura ce qu'il lui faut.
 
+### ⛔ TROIS INSTRUMENTS ÉCARTÉS PAR LEUR PROPRE CONTRÔLE EN UNE SESSION — C'EST UN MOTIF
+
+Écrit une fois pour toutes à la demande de Ko, pour qu'il cesse d'être redécouvert. Le
+relevé HORLOGE (02/09) en avait déjà écarté deux ; cette session en écarte **trois de
+plus**, dont deux qui ont failli produire un résultat au lieu d'une erreur :
+
+1. **`Win32_Processor.LoadPercentage`** — ne distingue pas une charge connue de son
+   absence (`27, 0, 30, 4` sous charge contre `28, 30, 9, 0` au repos). Écarté par
+   **calibration sur charge connue**. ⇒ Sans elle, tous les CPU de cette session — et la
+   cible « 6 % » héritée — auraient été du bruit présenté comme des mesures.
+2. **Le relevé CPU par passe de la forme A** — filtre `Name='_Total'` perdu dans
+   l'imbrication bash/PowerShell : la commande rendait une **chaîne vide sans jamais
+   échouer**. Écarté par la **lecture du résumé** (`CPU=%`). ⇒ Un champ vide se lit
+   exactement comme un champ mesuré.
+3. **Ma propre charge RAM** — première version touchant **un seul octet** toutes les 5 s :
+   Windows a rogné l'ensemble de travail des porteurs et la RAM libre est remontée de
+   2 352 à **4 299 Mo** pendant qu'on la croyait tenue. Écartée par un **contrôle de
+   stabilité sur 60 s** posé avant de s'y fier. ⇒ Sans lui, la campagne aurait tourné à
+   ~4,3 Go libres **en s'annonçant « sous charge de D273 »**, serait sortie verte, et
+   aurait fait conclure que la contention n'explique rien — sur une charge qui n'existait
+   plus.
+
+⛔ **CE QUE LES CINQ ONT EN COMMUN : AUCUN N'AURAIT ÉCHOUÉ.** Tous rendaient une sortie
+bien formée. Un instrument défaillant ne lève pas — **il répond**, et sa réponse a la
+forme exacte d'une mesure. C'est pourquoi la règle n'est pas « vérifier ses outils » mais
+la seule qui morde : **un instrument se calibre sur un cas dont la réponse est déjà
+connue, AVANT de lui faire trier ce qu'on ignore.**
+⚠ Corollaire, appliqué ici trois fois : le cas connu doit être **produit exprès** —
+charge connue, sortie attendue non vide, état devant tenir dans le temps. Un instrument
+confronté aux seules données qu'on cherche à trier ne peut pas être pris en défaut.
+
+### ⚠ UN ABANDON EN COURS DE CAMPAGNE N'EST PAS UN ÉCHEC DE CAMPAGNE
+
+La 6ᵉ passe sous charge a **abandonné** : RAM libre 1 306 Mo, hors de la bande
+1 900–3 300 assertie avant chaque passe. Cause attribuée **par inventaire, pas supposée** :
+**Chrome était revenu** (13 processus, 1 802 Mo), les quatre processus de charge étant
+intacts. ⇒ Les cinq passes précédentes **restent valides**, chacune portant l'état relevé
+devant elle.
+⛔ **Sans cette assertion, la sixième aurait tourné à 1 306 Mo avec Chrome dessus, serait
+probablement sortie verte, et serait entrée dans le compte comme « une passe sous la
+charge de D273 ».** Une passe jouée hors de l'état cible mesure autre chose et **se lit
+exactement pareil**.
+
 ### Prochaine mesure : SÉPARER les deux variables confondues
 
 Charge **pure** — CPU et RAM occupés, **aucun observateur de fichiers** — jusqu'à
