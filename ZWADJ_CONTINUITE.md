@@ -512,6 +512,78 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 03/09/2026 — rang 6 · `venue-list`, campagne au plancher (sans numéro)
+
+⛔ **Aucun numéro de décision : rien n'est tranché.** Ce sont des mesures, et elles sont
+consignées ICI parce que leurs journaux vivent dans `.neutralisation-journaux/`, **ignoré
+par git** : ils disparaîtront au premier nettoyage, et un chiffre dont la preuve s'est
+évaporée redevient un chiffre de mémoire (demandé par Ko).
+
+### Le plancher, AVEC son inventaire — la donnée qui manquait à tous les relevés
+
+| | Barre | Mesuré le 03/09 |
+|---|---|---|
+| RAM libre | 4 579 Mo | **5 326 Mo** ✅ |
+| node | zéro | **0** ✅ |
+| CPU (instrument calibré) | *barre annulée* | médiane **17 %**, étendue 5–28 |
+
+**Inventaire** : `Code` 21 proc / 2 491 Mo · `svchost` 99 / 1 231 · `oracle` 592 · WSL 429
+· `claude` 343 · Edge d'arrière-plan 613 · Docker 300 · le reste sous 200 Mo.
+⇒ **Verdict de la règle écrite d'avance (rang 7) : le barème de D273 TIENT tel quel.** La
+session produit 5 326 Mo **avec VS Code ouvert**, donc la question « 4 579 incluait-il VS
+Code ? » est sans objet en pratique. Rien n'est redéfini, le nombre de passes ne monte pas.
+
+### ⛔ LE TAUX AU PLANCHER : **0 SUR 15**, LES DEUX FORMES
+
+| Forme | Passes | Rouges | `venue-list` | Durée | RAM devant | CPU devant |
+|---|---|---|---|---|---|---|
+| A — `--filter @zwadj/pro test` | 10 | **0** | jamais | 28–29 s | 5 340–5 743 Mo | ⚠ non relevé |
+| B — racine, tous paquets | 5 | **0** | jamais | 53–57 s | 5 513–5 560 Mo | 10–19 % |
+
+La forme B a bien joué **tout** l'espace de travail — vérifié dans le journal, pas
+supposé : api **640/640** (56 fichiers) · api-client **36/36** (3) · client **287/287**
+(20) · pro **347/347** (28), soit **1 310 tests sur 107 fichiers**. ⚠ Le résumé de
+campagne n'affichait que la DERNIÈRE ligne `Test Files` — celle de `pro` — ce qui donnait
+« 28 passed » pour une passe qui en jouait 107. L'extracteur montrait moins que la mesure.
+
+⇒ **Ce que le chiffre autorise** : contre les **3 rouges sur 5** de D273, si le taux
+d'échec était resté celui-là, quinze passes vertes d'affilée seraient de l'ordre du
+**millionième**. **Quelque chose a réellement changé.** C'est un fait sur les TAUX.
+⛔ **Ce qu'il n'autorise PAS** : une absence de reproduction n'est pas une absence de
+défaut, et **deux variables ont bougé ENSEMBLE** entre D273 et cette campagne — la pile
+`dev` s'est arrêtée **et** la RAM libre est passée de ~2,5 Go à ~5,5 Go. Les attribuer ici
+serait ce que D270 a payé trois fois.
+
+### ⚠ LIMITE DÉCLARÉE DE CETTE CAMPAGNE : PAS DE CPU PAR PASSE EN FORME A
+
+Le champ CPU du relevé par passe est sorti **vide sur les dix**, et **sans jamais
+échouer** (`RAM=5340Mo CPU=% node=0`). Cause : le filtre `Name='_Total'` s'est perdu dans
+l'imbrication des guillemets entre bash et PowerShell, la commande rendant une chaîne vide
+au lieu de lever. **C'est le remplacement fantôme du dépôt appliqué à un relevé** — un
+champ vide se lit exactement comme un champ mesuré.
+⇒ Réparé pour la forme B : instrument déplacé dans un `.ps1` dédié, qui rend
+`ECHEC-INSTRUMENT` au lieu du vide, et **pré-volé** avant campagne (les trois champs
+doivent être remplis, sinon on n'avance pas).
+⛔ **La forme A n'a PAS été rejouée** : la relancer maintenant mesurerait une AUTRE
+machine. RAM et node — les deux quantités qui LIENT le plancher — sont relevés
+correctement sur les dix passes ; le CPU y manque, et cela reste vrai.
+
+### PostgreSQL, pour la certification
+
+`zwadj-db` (postgres:18) debout depuis 6 jours, 5432 exposé, **PostgreSQL 18.4 répond**,
+**40 tables** dans `public`. ⚠ Le rôle est **`zwadj`**, pas `postgres` : ma première
+vérification a échoué en supposant le superutilisateur conventionnel au lieu de le
+relever. `test:int` aura ce qu'il lui faut.
+
+### Prochaine mesure : SÉPARER les deux variables confondues
+
+Charge **pure** — CPU et RAM occupés, **aucun observateur de fichiers** — jusqu'à
+retrouver l'état de D273 (~2,5 Go libres), puis les deux formes.
+- rouge sous charge pure ⇒ c'est la contention ; la piste de la pile `dev` tombe, le
+  défaut est réel mais **conditionnel** ;
+- vert sous charge pure équivalente ⇒ la charge ne suffit pas, et la piste des quatre
+  observateurs qui recompilent pendant la lecture gagne du poids.
+
 ## Session du 02/09/2026 — D273 · `act(...)` tardif : 293 → 0, et la sortie de `PLAFONDS`
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D272**.

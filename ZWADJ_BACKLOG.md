@@ -2171,6 +2171,19 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       sont des EXPIRATIONS à 5 000 ms sous contention**, pas la même chose : ils
       apparaissent aussi sur l'arbre d'avant le lot, et relèvent de D270.
 
+- [ ] **[CLIENT][P2]** ⚠ **LA SUITE CLIENT ÉMET DES `act(...)`.** Vu le 03/09/2026 dans le
+      journal d'une passe racine (`pnpm test`), pendant la campagne du rang 6 :
+      « When testing, code that causes React state updates should be wrapped into
+      act(...) » y apparaît plusieurs fois pendant `@zwadj/client`, sur une suite pourtant
+      **verte à 287/287**.
+      ⛔ **C'EST TOUT CE QUI A ÉTÉ VU, ET RIEN DE PLUS.** Ni compte exact, ni composant
+      émetteur, ni fichier de test : le journal n'a pas été dépouillé, et cette entrée
+      n'affirme donc rien sur l'ampleur ni sur la cause. Famille APPARENTE D269/D273
+      (`apps/pro`), dans une app que le lot en cours **ne touche pas**.
+      ⚠ Point à vérifier AVANT d'ouvrir : `apps/client` a-t-il seulement une garde de
+      sorties console équivalente à celle d'`apps/pro` ? Si non, ces avertissements n'ont
+      jamais eu de quoi faire rougir quoi que ce soit, et l'entrée change de nature.
+
 - [ ] **[INFRA][P1]** ⛔ **LE RELEVÉ D'ÉTAT MACHINE N'A PAS D'INSTRUMENT DANS LE DÉPÔT.**
       Rapporté le 03/09/2026, **non corrigé ici** : c'est un défaut croisé, et le lot en
       cours parle de `venue-list`. ⚠ **Mesuré, pas supposé** : `LoadPercentage`,
