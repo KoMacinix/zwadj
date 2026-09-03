@@ -1446,6 +1446,27 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
        avec sa raison, et les chiffres de D273 restent comme **HISTOIRE, pas comme
        barre**. Le numéro de décision se prendra à ce moment-là, pas avant : rien n'est
        encore tranché.
+     ⛔ **REDÉFINIR LE SEUIL SANS REDÉFINIR CE QU'IL GARANTIT SERAIT LA MOITIÉ DU
+     TRAVAIL** (ajout de Ko, 03/09/2026, écrit AVANT la mesure). **Cinq passes à zéro
+     sur un plancher plus contendu prouvent MOINS que cinq passes sur un plancher
+     calme** : chaque passe y est plus près du régime où D273 a mesuré l'expiration à
+     5 000 ms et des avertissements qui ne sont que la **conséquence** de tests
+     interrompus. Une passe prise près du bruit porte moins d'information qu'une passe
+     prise loin de lui — donc il en faut davantage pour la même garantie.
+     ⇒ **LE NOMBRE DE PASSES MONTE, ET IL SE DÉRIVE — IL NE SE CHOISIT PAS.** Deux
+     quantités se mesurent au nouveau plancher, **avant de compter la moindre passe** :
+     1. **la marge sur la contrainte LIANTE** — le test le plus lent de
+        `walkin-journey.test.tsx` contre son `testTimeout` de 5 000 ms. C'est par
+        expiration que le fichier tombe sous charge (D273) : c'est donc elle qui borne,
+        et non la RAM, qui n'est qu'un proxy ;
+     2. **la dispersion de cette marge entre passes** — une marge moyenne ne dit rien
+        si elle varie du simple au double.
+     Le nombre est **fixé et écrit avec ces deux mesures devant lui**, puis les passes
+     se comptent. Marge plus mince ou dispersion plus large ⇒ plus de passes.
+     ⛔ **ET IL NE REDESCEND JAMAIS SOUS CINQ** : le barème de D273 est un **plancher**,
+     pas une référence à renégocier à la baisse. Un seuil redéfini qui achèterait moins
+     qu'avant serait une certification obtenue en déplaçant la barre — exactement ce que
+     le refus du plafond relevé de `walkin-journey` a écarté trois jours plus tôt.
      ⛔ **Dans les deux cas, tout relevé porte désormais son INVENTAIRE** — ce qui
      tourne, pas seulement ses trois nombres — sinon la question se reposera à la
      session suivante, sans plus de moyen d'y répondre ;
