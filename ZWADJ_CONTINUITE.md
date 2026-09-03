@@ -1393,7 +1393,22 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
    ⚠ **Famille PROBABLE, pas établie : D269** — une attente qui interroge par RÔLE et
    par NOM pendant que la donnée est en vol. **À reproduire et attribuer par mesure
    avant tout correctif**, méthode de D273 : rien n'est présumé de la cause.
-   ⇒ Entrée détaillée au backlog, **[PRO][P0] `venue-list.test.tsx`** ;
+   ⇒ Entrée détaillée au backlog, **[PRO][P0] `venue-list.test.tsx`**.
+   ⚠ **PISTE, PAS CONCLUSION (03/09/2026) — UNE PILE `pnpm dev` TOURNAIT SUR LE POSTE.**
+   Relevé au démarrage de cette session : **9 processus node lancés à 00:10**, soit
+   `next dev`, `vite`, l'API Nest et un `tsc --watch` — **quatre observateurs de
+   fichiers qui recompilent pendant que les suites lisent les mêmes fichiers**. C'est
+   la classe de D270 (« ne jamais éditer un fichier pendant qu'une vérification le
+   lit » — 24 échecs sans signification, puis une conclusion fausse tirée d'eux).
+   ⛔ **CE QUI EST MESURÉ ET CE QUI NE L'EST PAS.** Mesuré : la pile tournait le
+   03/09 à 00:10. **NON mesuré : qu'une pile équivalente ait tourné pendant les
+   sessions des 01 et 02/09** — et c'est **invérifiable après coup**, puisque aucun
+   relevé du dépôt ne consigne d'inventaire de processus (voir le rang 7). La piste
+   est donc plausible et **hors de portée de toute preuve rétrospective**.
+   ⛔ **ELLE N'EXPLIQUE RIEN TANT QUE LA MESURE NE L'A PAS DIT**, et il se peut très
+   bien que `venue-list` rougisse **aussi machine propre** — c'est exactement ce que
+   la première campagne doit trancher. Écrite comme piste pour qu'elle ne se durcisse
+   pas en explication commode, même traitement que la piste horloge de D272 ;
 7. **CERTIFICATION** — ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
    non certifiés à sa date, quel qu'en soit le nombre**, sur la porte redevenue verte,
    dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
@@ -1408,7 +1423,32 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
    - **le barème de D273 reste DÛ** — cinq passes de la suite pro à **zéro**
      avertissement sur `walkin-journey.test.tsx` **au repos**, plus **deux sous charge
      encaissable**. D273 a obtenu 5 passes à zéro sur 5, mais **aucune au repos**, et
-     l'a déclaré NON TENU plutôt que de réécrire son barème après coup ;
+     l'a déclaré NON TENU plutôt que de réécrire son barème après coup.
+     ⛔ **MAIS « AU REPOS » N'EST PAS ENCORE DÉFINI DE FAÇON PAYABLE — QUESTION POSÉE
+     PAR KO LE 03/09/2026** : le « 4 579 Mo / 6 % » du cadrage D273 a-t-il été relevé
+     **avec ou sans** la session Claude Code et son hôte VS Code, qui coûtent à eux
+     seuls **2,4 Go et 21 processus** (mesuré ; `claude.exe` est un enfant de
+     `Code.exe`, donc la session ne peut pas s'en passer) ? Si c'était sans, le barème
+     exige un état que la session **ne peut pas produire**, et il serait impayable une
+     seconde fois.
+     ⛔ **LE DÉPÔT NE PEUT PAS RÉPONDRE, ET C'EST LE VRAI CONSTAT.** `VS Code`,
+     `Code.exe` et `vscode` ont **zéro occurrence** dans les quatre documents, et
+     **TOUS** les relevés du dépôt ne portent que trois quantités — RAM libre, CPU,
+     nombre de node. **Aucun ne dit ce qui tournait.** Un état machine sans inventaire
+     ne se reproduit pas : c'est la faute des compteurs figés, appliquée aux mesures.
+     ⇒ **RÈGLE D'ARBITRAGE FIXÉE AVANT DE MESURER** — D273 vient de payer qu'un barème
+     choisi APRÈS coup ne mesure plus rien. On relève le **plancher que cette session
+     PEUT produire** : VS Code et `claude` seuls, sans navigateur, sans pile `dev`,
+     zéro node.
+     - **Si ce plancher atteint 4 579 Mo et 6 %** : le barème de D273 tient tel quel,
+       il est payable, **rien n'est redéfini** ;
+     - **s'il ne les atteint pas** : « repos » est **redéfini sur ce plancher mesuré**,
+       avec sa raison, et les chiffres de D273 restent comme **HISTOIRE, pas comme
+       barre**. Le numéro de décision se prendra à ce moment-là, pas avant : rien n'est
+       encore tranché.
+     ⛔ **Dans les deux cas, tout relevé porte désormais son INVENTAIRE** — ce qui
+     tourne, pas seulement ses trois nombres — sinon la question se reposera à la
+     session suivante, sans plus de moyen d'y répondre ;
    - **`neutralize-solid-s7` est à rejouer ENTIÈRE.** D273 n'a vérifié que sa moitié
      pro, isolément : son pré-vol exige une suite client verte, qui ne l'était pas.
      Une cible réorientée vérifiée à moitié n'est pas une campagne jouée ;
