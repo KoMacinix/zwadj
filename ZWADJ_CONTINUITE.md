@@ -11,11 +11,22 @@
 > à ligne. Ce fichier ne garde que l'ÉTAT ACTIF. ⛔ **Le registre des décisions, en
 > bas de page, reste ici** : un numéro se prend toujours en lisant CE fichier.
 >
-> **Révision courante : réduction documentaire R1 faite (D267), bascule ouverte.**
-> Six portes vertes, lint à 0 problème, API **638 / 55**, e2e **34 passés, 1 sauté,
-> 0 échec** (4,7 min), harnais **18/18** et **3/3**.
-> **Prochain lot : `BookingStatus.PENDING` (D263)** — chemin de l'argent, modes de
-> défaillance écrits avant tout code.
+> ⛔ **AUCUN ÉTAT COURANT NI PROCHAIN LOT N'EST ÉCRIT DANS CET EN-TÊTE.**
+> Cette place portait « Six portes vertes, lint à 0 problème, API **638 / 55**, e2e
+> 34 passés » et « **Prochain lot : `BookingStatus.PENDING` (D263)** » — un lot fait le
+> 30/08 sous **D268**, annoncé sous une porte qui n'est pas verte. En tête du fichier,
+> ces lignes se lisaient comme l'état du jour.
+> ⛔ **ET ELLES CONTREDISAIENT LA RÈGLE POSÉE DANS LE MÊME COMMIT**, section « État
+> actuel » (« ⛔ AUCUN COMPTEUR COURANT N'EST ÉCRIT ICI ») : le remède avait été
+> appliqué au CORPS du document et pas à sa TÊTE, c'est-à-dire pas à l'endroit qu'une
+> reprise lit en premier.
+> ⇒ **Où lire l'état** : les compteurs se MESURENT en lançant les portes ; les chiffres
+> d'un lot vivent dans l'en-tête de SA session, avec l'état machine relevé devant eux
+> (D270). **Où lire le prochain lot** : l'ordre des rangs, section D270, et lui seul.
+> **Où prendre un numéro** : la dernière ligne de la table du registre, en bas.
+> ⚠ **Retrait déclaré, pas mise à jour** — un compteur rafraîchi redevient faux au lot
+> suivant. C'est le même geste que pour les trois autres de la série (D268, « D1 à
+> D266 » dans `CLAUDE.md`, le bandeau du registre).
 >
 > ⚠ Huit lignes périmées ont été RETIRÉES ici par R1 : l'ancienne consigne
 > « exactement trois fichiers » et un état e2e caduc (« 33 passés » / « E3 seul
@@ -1323,14 +1334,23 @@ pas. Ce qui ne l'est pas : son effet aux charges intermédiaires, non balayées.
 
 ### D270 — ordre des lots, révisé par Ko
 
-⚠ **CET ORDRE EN EST À SA TROISIÈME ÉCRITURE, ET LES DEUX PRÉCÉDENTES SONT
+⚠ **CET ORDRE EN EST À SA QUATRIÈME ÉCRITURE, ET LES TROIS PRÉCÉDENTES SONT
 CONSERVÉES DANS L'HISTORIQUE DU DÉPÔT, PAS ICI.** Écrit « argon2 → S11-b » au motif
 qu'argon2 rendrait la porte verte (faux, 01/09) ; puis « argon2 → sharp » au motif
 que ces deux-là la tenaient (incomplet, 02/09). **Deux fois la mesure a démenti la
 prémisse, jamais le raisonnement.** C'est pourquoi le motif est écrit sous chaque
 rang : un ordre sans motif ne se corrige pas, il se recopie.
+⚠ **QUATRIÈME ÉCRITURE, 03/09/2026 — ET CELLE-CI NE CORRIGE PAS UNE PRÉMISSE, ELLE
+COMBLE UN TROU.** Les trois précédentes changeaient l'ordre parce que la CAUSE du
+rouge avait été mal nommée. Ici la cause est bien nommée : c'est le PLAN qui était
+incomplet. Il exigeait une porte verte au rang de certification **sans porter le lot
+qui l'en empêche** — `venue-list.test.tsx`, qui ne vivait qu'au backlog. Une reprise
+par ce fichier seul partait donc sur la certification et découvrait le blocage en le
+heurtant. **Un rang faux se voit ; un rang manquant, non.**
 
-⛔ **ORDRE RE-RÉVISÉ LE 02/09/2026 — L'HORLOGE PASSE EN TÊTE** (tranché par Ko) :
+⛔ **ORDRE RE-RÉVISÉ LE 02/09/2026 — L'HORLOGE PASSE EN TÊTE** (tranché par Ko).
+⛔ **RANG 6 INSÉRÉ LE 03/09/2026 — `venue-list.test.tsx` PASSE AVANT LA CERTIFICATION**
+(tranché par Ko) : la certification devient le rang **7**, S11-b le rang **8**.
 
 1. ~~mode d'exécution de la suite pro (D270)~~ — **fait** ;
 2. ~~argon2 → `test:int` (D271)~~ — **fait**. ⚠ N'a **pas** rendu la porte verte,
@@ -1359,7 +1379,22 @@ rang : un ordre sans motif ne se corrige pas, il se recopie.
    qui répondent à « quoi ensuite » finissent par ne plus dire la même chose** — c'est
    arrivé à ce rang même, qui a annoncé le lot sharp pendant que le backlog le
    fermait ;
-6. **CERTIFICATION** — ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
+6. ⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.** Rouge sur
+   **trois passes de la suite pro sur cinq**, relevées le 02/09 pendant le barème de
+   sortie de `PLAFONDS` : `Unable to find role="heading" and name "Salle El Ryad"`,
+   c'est-à-dire une liste pas encore arrivée au moment de l'assertion. État machine
+   relevé devant chaque passe (D270) : RAM libre 2 247–3 017 Mo, CPU 30–65 %.
+   ⛔ **ANTÉRIORITÉ PROUVÉE PAR CONTRÔLE, PAS SUPPOSÉE** : l'arbre d'AVANT D273 a été
+   remonté et mesuré dans les mêmes conditions — le fichier y échoue **aussi**. Le
+   défaut est donc étranger à D273 ; sans ce contrôle il se serait lu comme une
+   régression de ce lot, et le lot aurait été refait pour rien.
+   ⛔ **NE PAS le traiter en relevant un plafond** : ce fichier n'est pas dans
+   `PLAFONDS`, et son échec n'est pas un avertissement — c'est une assertion qui tombe.
+   ⚠ **Famille PROBABLE, pas établie : D269** — une attente qui interroge par RÔLE et
+   par NOM pendant que la donnée est en vol. **À reproduire et attribuer par mesure
+   avant tout correctif**, méthode de D273 : rien n'est présumé de la cause.
+   ⇒ Entrée détaillée au backlog, **[PRO][P0] `venue-list.test.tsx`** ;
+7. **CERTIFICATION** — ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
    non certifiés à sa date, quel qu'en soit le nombre**, sur la porte redevenue verte,
    dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
    partie », **sans réécrire leurs en-têtes**). ⚠ **Ce rang portait la liste « D269,
@@ -1367,7 +1402,7 @@ rang : un ordre sans motif ne se corrige pas, il se recopie.
    sans que personne réécrive la phrase. Une liste de lots dans un plan se périme au
    lot suivant ; une règle non — et c'est la seule raison de ce changement de
    formulation ;
-7. **S11-b**.
+8. **S11-b**.
 
 ⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
 causes de la porte rouge, elle est **la seule qui rougisse de façon DÉTERMINISTE**,
@@ -1381,8 +1416,8 @@ verte — donc aucune certification n'est possible, pour aucun des lots en atten
 lendemain. Un plan écrit avec le nombre de lots dedans se périme au lot suivant.
 
 ⛔ **S11-b EST UN LOT DU CHEMIN DE L'ARGENT ET NE S'OUVRE PAS SOUS UNE PORTE NON
-FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 à 5,
-le rang 7 se mesurerait contre une porte qui ne dit rien.
+FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 à 6,
+le rang 8 se mesurerait contre une porte qui ne dit rien.
 
 ⛔ **LE CORRECTIF DE L'HORLOGE EST DE FIGER L'HORLOGE, JAMAIS DE DÉCALER LA
 FENÊTRE.** Décaler les dates de fixture reconduit le défaut d'un mois : la même
@@ -2474,7 +2509,7 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - **Rotation d'identifiants dans une console externe** — signalée plusieurs fois, toujours non résolue.
 - **Cohérence du nom de domaine** : « zwadj » vs « zawadj », à vérifier avant tout support public.
 
-## Registre des décisions — D1 à D272
+## Registre des décisions
 
 ⛔ **CE REGISTRE EXISTE POUR QU'UN NUMÉRO SE PRENNE TOUJOURS EN LISANT CE FICHIER.**
 Les journaux datés sont partis dans `docs/history/` (lot R1). Sans registre, le
@@ -2496,10 +2531,18 @@ dans l'endroit même qui existe pour empêcher les compteurs figés. C'est le tr
 de la série — après « 18 scripts, 149 cibles » (D268) et « D1 à D266 » dans
 `CLAUDE.md` — et il reçoit le même traitement que les deux autres : **on supprime le
 chiffre, on ne le met pas à jour.**
-⇒ **Le numéro se prend en lisant la DERNIÈRE LIGNE DE LA TABLE ci-dessous.** Au
-02/09/2026 elle porte **D272**, donc le prochain est **D273** — et cette phrase-ci
-sera périmée au lot suivant, ce qui est exactement pourquoi elle renvoie à la table
-plutôt que de se substituer à elle.
+⚠ **QUATRIÈME DE LA MÊME SÉRIE, RETIRÉ LE 03/09/2026 : LE TITRE DE CE REGISTRE.** Il
+portait « — D1 à D272 » pendant que sa table portait déjà **D273**. Le titre d'un
+registre est ce qu'on lit AVANT sa table ; annoncer une plage close, c'est proposer un
+numéro déjà pris à qui ne descendra pas jusqu'en bas. **Plage supprimée, pas
+rafraîchie.**
+⇒ **Le numéro se prend en lisant la DERNIÈRE LIGNE DE LA TABLE ci-dessous**, et nulle
+part ailleurs — **pas même ici**.
+⚠ **CETTE PHRASE PORTAIT SON PROPRE EXEMPLE CHIFFRÉ, ET IL A PÉRIMÉ EN UN LOT** :
+« au 02/09 elle porte D272, donc le prochain est D273 ». Elle annonçait donc comme
+libre un numéro **déjà attribué**, dans le paragraphe même qui existe pour empêcher
+cela. Elle se savait périssable et le disait — **se déclarer périmable n'empêche pas
+de tromper une fois périmé.** Exemple supprimé le 03/09/2026, pas mis à jour.
 
 ⚠ **D267 a été mal posé une première fois** : inscrit au backlog sans section ici,
 pendant que le registre annonçait encore D266. Corrigé le 28/08.

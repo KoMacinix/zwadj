@@ -2394,7 +2394,16 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       table dit QUAND une fixture cesse d'être future, pas qu'elle cassera. Le tri revient
       à l'instrument du lot horloge.
 
-- [ ] **[PRO][P0]** ⛔ **`walkin-journey.test.tsx` ROUGIT DEPUIS LE PASSAGE AU
+- [x] ~~**[PRO][P0]** `walkin-journey.test.tsx` rougit depuis le passage au 01/09/2026,
+      et c'est l'horloge~~ — ✅ **FAIT le 02/09/2026 (D272).** Horloge gelée, et **toutes**
+      les fixtures dérivées de l'ancre : il ne reste qu'**une seule date écrite** dans le
+      fichier. Preuve **BILATÉRALE** (`neutralize-horloge.py`, 2 cibles, 2 mordues) —
+      classique : le gel retiré ⇒ ROUGE ; **inversée** : l'ancre déplacée de dix ans ⇒ le
+      fichier doit rester **VERT**, seule façon de mesurer une INSENSIBILITÉ.
+      ⚠ **Le balayage demandé ci-dessous a eu lieu** : sur les 28 fichiers de test d'
+      `apps/pro`, la sonde n'en désigne qu'**UN**, celui-ci.
+      ⚠ **Constat d'origine conservé ci-dessous :**
+      ⛔ **`walkin-journey.test.tsx` ROUGIT DEPUIS LE PASSAGE AU
       01/09/2026, ET C'EST L'HORLOGE.** Découvert le 01/09 en relançant les portes du lot
       argon2 : **24 échecs sur 41**, tous en `expect(element).toBeEnabled()`, sur un arbre
       où **aucune ligne n'a bougé**. La même commande rendait 347/347 la veille.
@@ -2485,7 +2494,11 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       prendre la contention de la porte unitaire DANS SON ENSEMBLE**, pas ajouter un
       troisième déplacement de fichier.
 
-- [ ] **[API][P0]** ⛔ **argon2 — LE VRAI HACHAGE QUITTE L'UNITAIRE POUR `test:int`.**
+- [x] ~~**[API][P0]** argon2 — le vrai hachage quitte l'unitaire pour `test:int`~~
+      — ✅ **FAIT le 01/09/2026 (D271).** Cinq tests exposés au KDF réel deviennent un ;
+      aucun délai relevé, aucun paramètre de coût touché, comme Ko l'avait tranché.
+      ⚠ **N'a PAS rendu la porte verte, et ne l'a jamais prétendu.**
+      ⚠ **Consigne d'origine conservée ci-dessous, elle dit ce à quoi le lot répondait :**
       Décision de Ko : **ne relever aucun délai, ne toucher à aucun paramètre de coût**.
       Les tests qui paient le KDF réel partent vers `test:int`, où le budget est large ;
       l'unitaire garde ce qui n'a pas besoin du hachage réel.
@@ -2493,8 +2506,14 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       toute ligne de code, même exigence que pour un lot du chemin de l'argent.
       ⛔ **Doit passer AVANT S11-b**, mais **NE SUFFIRA PAS** : corrigé le 01/09/2026 sur
       mesure — cette ligne disait « c'est CE test qui tient la porte rouge ». Sharp la tient
-      aussi (entrée ci-dessus). Ordre : argon2, puis sharp, puis certification de D269 et
-      D270 ensemble, puis S11-b.
+      aussi (entrée ci-dessus).
+      ⛔ **L'ORDRE DES LOTS QUI VIVAIT ICI EST RETIRÉ LE 03/09/2026.** Il prescrivait
+      « argon2, puis sharp, puis certification de D269 et D270 ensemble, puis S11-b » —
+      **périmé trois fois** : argon2 fait (D271), sharp requalifié SANS OBJET sur mesure,
+      et la certification porte désormais sur cinq lots, pas deux.
+      ⇒ **L'ordre vit dans UN seul endroit** : la section D270 de `ZWADJ_CONTINUITE.md`.
+      En trois exemplaires, deux finissent par dire autre chose — c'est exactement ce qui
+      venait d'arriver.
 
 - [ ] **[E2E][P2]** ⚠ **UNE E2E INTERROMPUE LAISSE SES SERVEURS VIVANTS.** Vécu quatre
       fois le 30/08 : les processus tiennent 3100/3101 **et** la mémoire (4,5 → 2,25 Go
