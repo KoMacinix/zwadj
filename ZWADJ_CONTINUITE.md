@@ -512,7 +512,83 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
-## Session du 03/09/2026 — rang 6 · `venue-list`, campagne au plancher (sans numéro)
+## Session du 03/09/2026 — D274 · `venue-list` : 0 sur 30, et l'écart n'est PAS le code
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D273**.
+
+⛔ **ÉTAT : RANG 6 CLOS EN DOCUMENTANT, PAS EN CORRIGEANT — ET AUCUNE LIGNE DE CODE N'A
+ÉTÉ ÉCRITE.** Le rang existait pour reproduire puis corriger une intermittence. **Elle ne
+se reproduit pas** : 30 passes, deux formes, deux états machine, **zéro rouge
+`venue-list`**. On ne corrige pas ce qu'on ne peut pas faire rougir — on écrit ce qu'on a
+mesuré, et ce qu'on n'a pas pu établir.
+
+### D274 — le taux, aux quatre coins
+
+| État | Forme | Passes | Rouges | dont `venue-list` | Durée | RAM devant | CPU devant |
+|---|---|---|---|---|---|---|---|
+| plancher | A — pro | 10 | 0 | 0 | 28–29 s | 5 340–5 743 Mo | ⚠ non relevé |
+| plancher | B — racine | 5 | 0 | 0 | 53–57 s | 5 513–5 560 Mo | 10–19 % |
+| charge | A — pro | 10 | **1** | **0** | 34–48 s | 2 408–2 852 Mo | 24–68 % |
+| charge | B — racine | 5 | **1** | **0** | 67–69 s | 2 848–3 020 Mo | 20–39 % |
+
+⇒ **`venue-list.test.tsx` : 0 rouge sur 30.** Le fichier est présent dans les 30 journaux,
+en échec dans aucun. Contre les **3 sur 5** de D273.
+
+### D274 — ⛔ CE QUI TRANCHE : LE CODE EST LE MÊME, À L'OCTET
+
+**Mesuré, et c'est ce qui clôt le rang** : `git diff --name-only <commit D273> HEAD` rend
+**deux fichiers, tous deux `.md`**. **Zéro fichier de code modifié.** `apps/pro` à HEAD est
+identique à `apps/pro` au commit de D273.
+⚠ **Et les trois rouges de D273 ont été mesurés APRÈS son correctif**, pendant le barème —
+son texte le dit, et il avait en plus contrôlé l'arbre d'AVANT, où le fichier rougissait
+aussi.
+⇒ **Même code, 3 sur 5 chez D273, 0 sur 20 en forme A ici. L'écart ne peut pas être le
+code.** ⚠ Piste écartée **par mesure** ; j'avais écrit « cinq commits documentaires, aucun
+de code » **sans l'avoir vérifié**, alors que D273 touchait bien deux fichiers du paquet
+pro. La conclusion était juste et ne tenait qu'à la chance — c'est Ko qui a exigé le
+contrôle.
+
+### D274 — ⛔ CE QUE L'EXPÉRIENCE DE SÉPARATION A RENDU, ET CE QU'ELLE N'A PAS RENDU
+
+Elle devait départager **contention** et **observateurs de fichiers**, en supposant que
+`venue-list` rougirait d'un côté. **Il ne rougit d'aucun.** La séparation ne s'est donc pas
+faite.
+- **Établi** : la contention seule, dans l'état de D273 (RAM 2 408–3 020 contre ses
+  2 247–3 017 ; CPU 20–68 % contre ses 27–79 %), **ne suffit pas** à faire rougir
+  `venue-list`. Et la charge **mord réellement** — mesuré, pas supposé : +20 à +65 % sur la
+  durée des passes.
+- ⛔ **NON établi** : que la pile `dev` soit en cause. Ne pas reproduire une chose n'en
+  désigne pas une autre.
+- ⛔ **NON établi non plus** : que `venue-list` aille bien. Une absence de reproduction
+  n'est pas une absence de défaut, et 0 sur 30 borne un taux, il ne prouve pas un zéro.
+⚠ **Deux facteurs de D273 restent NON reproduits, et ils sont nommés pour que personne ne
+les redécouvre** : (1) la pile `dev` et ses quatre observateurs ; (2) la NATURE de sa
+charge — la sienne venait de processus **occupés par des tests**, la mienne de brûleurs
+CPU et de porteurs de RAM. Ce n'est pas la même contention (disque, ordonnancement).
+
+### D274 — le fil produit et NON suivi : ce n'est peut-être pas un fichier, c'est la garde
+
+Les **deux** rouges sous charge tombent sur `account-settings-page.test.tsx`, par un
+mécanisme qui **n'est pas une assertion** : `Error: 2 avertissement(s) de console dans un
+fichier NON exempté`. **Même fichier, même nombre, même message** que ce que D272 avait
+classé SENSIBLE à tort la veille.
+⇒ Hypothèse écrite au backlog, **[PRO][P1]**, avec ses trois occurrences datées : ce ne
+serait pas un fichier qui porte un défaut, mais **la garde console qui tombe sous charge
+sur le fichier que l'ordonnancement désigne**. C'est peut-être ce que `venue-list` a été.
+⛔ **Rapporté, pas ouvert** : un défaut croisé se rapporte.
+
+### D274 — ⚠ CE QUE CE LOT NE LIVRE PAS À LA CERTIFICATION
+
+Le rang 6 existait pour rendre la porte fiable. **Il ne la rend pas verte sous charge** :
+il remplace un bloqueur non reproductible par un bloqueur **nommé et mesuré** (2 rouges sur
+15 sous charge, sur la garde console). Au **plancher**, en revanche, **0 rouge sur 15** aux
+deux formes.
+⇒ Conséquence pour le rang 7 : son barème exige « cinq passes au repos **plus deux sous
+charge encaissable** ». La moitié « repos » est atteignable aujourd'hui ; la moitié « sous
+charge » rencontrera la garde console. **Le dire maintenant évite de le découvrir au
+moment de certifier cinq lots.**
+
+## Session du 03/09/2026 — rang 6 · les mesures (détail)
 
 ⛔ **Aucun numéro de décision : rien n'est tranché.** Ce sont des mesures, et elles sont
 consignées ICI parce que leurs journaux vivent dans `.neutralisation-journaux/`, **ignoré
@@ -1494,7 +1570,15 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
    qui répondent à « quoi ensuite » finissent par ne plus dire la même chose** — c'est
    arrivé à ce rang même, qui a annoncé le lot sharp pendant que le backlog le
    fermait ;
-6. ⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.** Rouge sur
+6. ~~⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.**~~ — ⛔ **CLOS
+   EN DOCUMENTANT le 03/09/2026 (D274) : NE SE REPRODUIT PAS.** 30 passes, deux formes,
+   deux états machine, **zéro rouge `venue-list`** — et `apps/pro` est identique À
+   L'OCTET au commit de D273, donc l'écart avec ses 3 sur 5 **n'est pas le code**.
+   ⚠ **Ne rend PAS la porte verte sous charge** : il remplace un bloqueur non
+   reproductible par un bloqueur nommé — la garde console, 2 rouges sur 15 sous charge,
+   sur `account-settings-page.test.tsx` (backlog [PRO][P1]). Au plancher : 0 sur 15.
+   ⇒ Constat d'origine conservé ci-dessous, il dit ce à quoi le lot devait répondre :
+   ⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.** Rouge sur
    **trois passes de la suite pro sur cinq**, relevées le 02/09 pendant le barème de
    sortie de `PLAFONDS` : `Unable to find role="heading" and name "Salle El Ryad"`,
    c'est-à-dire une liste pas encore arrivée au moment de l'assertion. État machine
@@ -3024,3 +3108,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D271 | A | D271 — argon2 quitte l'unitaire ; cinq tests exposés deviennent UN |
 | D272 | A | D272 — l'horloge gelée, et les fixtures qui DÉRIVENT de l'ancre |
 | D273 | A | D273 — attendre ne supprime pas l'avertissement ; il faut une fenêtre pour le recevoir |
+| D274 | A | D274 — même code, 3 sur 5 chez D273 et 0 sur 30 ici : l'écart n'est pas le code |

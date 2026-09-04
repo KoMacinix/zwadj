@@ -2171,6 +2171,34 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       sont des EXPIRATIONS à 5 000 ms sous contention**, pas la même chose : ils
       apparaissent aussi sur l'arbre d'avant le lot, et relèvent de D270.
 
+- [ ] **[PRO][P1]** ⛔ **LA GARDE DES SORTIES CONSOLE TOMBE SOUS CHARGE, ET LE FICHIER
+      FAUTIF CHANGE — DEUX SESSIONS, MÊME SYMPTÔME.** Fil produit par la campagne du rang 6
+      (03/09/2026) et **non suivi** : il sort du périmètre du lot.
+      **Les trois occurrences, avec leurs mesures :**
+      1. **02/09 (D272)** — `account-settings-page.test.tsx` classé **SENSIBLE à tort** par
+         la sonde horloge : ses seuls échecs étaient `2 avertissement(s) de console`. La
+         sonde écarte désormais un rouge dont toutes les causes sont cette garde.
+      2. **02/09 (D273)** — pendant le barème de sortie de `PLAFONDS`, **3 passes sur 5**
+         rouges : `venue-list.test.tsx` ×3, `account-settings-page.test.tsx` ×1.
+      3. **03/09 (rang 6)** — sous **charge pure assertée** (RAM 2 408–3 020 Mo, CPU
+         20–68 %, 4 processus de charge comptés devant chaque passe) : **2 rouges sur 15**,
+         **tous deux `account-settings-page.test.tsx`**, message identique au caractère
+         près — `Error: 2 avertissement(s) de console dans un fichier NON exempté`. Et
+         **ZÉRO `venue-list` sur 30 passes**, plancher et charge confondus.
+      ⚠ **HYPOTHÈSE, PAS CONCLUSION** : ce ne serait pas un fichier qui porte un défaut,
+      mais **la garde console qui tombe sous charge sur le fichier que l'ordonnancement
+      désigne** — le fautif variant d'une campagne à l'autre. C'est le motif que D270
+      décrit pour la suite pro, vu ici sur un autre mécanisme que l'expiration.
+      ⛔ **CE QUI N'EST PAS ÉTABLI** : par quel chemin la charge produit ces
+      avertissements. D273 a mesuré que **sous charge, les avertissements sont la
+      CONSÉQUENCE de tests interrompus** — donc un rouge de cette famille ne se juge pas
+      sur une suite par ailleurs rouge. Ici la suite était **verte par ailleurs** (27/28),
+      ce qui n'est pas le même cas et mérite d'être distingué.
+      ⚠ **À vérifier AVANT d'ouvrir** : quels composants émettent ces deux avertissements,
+      et si le nombre **2** est stable ou s'il flotte comme le compte de `walkin-journey`
+      flottait (293 · 294 · 295). Un plafond n'y peut rien — c'est la question de savoir si
+      la garde doit se juger différemment sous charge.
+
 - [ ] **[CLIENT][P2]** ⚠ **LA SUITE CLIENT ÉMET DES `act(...)`.** Vu le 03/09/2026 dans le
       journal d'une passe racine (`pnpm test`), pendant la campagne du rang 6 :
       « When testing, code that causes React state updates should be wrapped into
