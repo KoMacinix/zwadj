@@ -9,7 +9,12 @@
 3. `ZWADJ_BACKLOG.md` — travaux à venir. Ne décrit RIEN d'acquis.
 
 ⚠ Ils ne sont PAS importés : les lire à la demande, et par SECTION, jamais en
-entier. `ZWADJ_CONTINUITE.md` fait 108 Ko, `ZWADJ_BACKLOG.md` 175 Ko.
+entier — **les deux sont volumineux, et ils grossissent à chaque lot.**
+⛔ **AUCUNE TAILLE N'EST ÉCRITE ICI, ET C'EST DÉLIBÉRÉ (D268).** Cette ligne a porté
+« 108 Ko » et « 175 Ko » : mesuré le 04/09/2026, les deux étaient faux — l'un de plus
+du double. Un chiffre figé sur une quantité qui bouge, dans le SEUL fichier chargé à
+chaque session, se recopie longtemps après avoir cessé d'être vrai. ⇒ Pour la taille
+du jour : `ls -l`.
 ⛔ Ne jamais écrire leur nom précédé d'un `@` : ce serait un import, et la
 session démarrerait avec des dizaines de milliers de tokens de journal.
 

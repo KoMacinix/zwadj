@@ -516,6 +516,9 @@ prochain plafond gelé aura le même défaut.
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D273**.
 
+⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
+`git` le 04/09/2026). Tableau de provenance complet en section D270.
+
 ⛔ **ÉTAT : RANG 6 CLOS EN DOCUMENTANT, PAS EN CORRIGEANT — ET AUCUNE LIGNE DE CODE N'A
 ÉTÉ ÉCRITE.** Le rang existait pour reproduire puis corriger une intermittence. **Elle ne
 se reproduit pas** : 30 passes, deux formes, deux états machine, **zéro rouge
@@ -707,6 +710,9 @@ retrouver l'état de D273 (~2,5 Go libres), puis les deux formes.
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D272**.
 
+⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
+`git` le 04/09/2026). Tableau de provenance complet en section D270.
+
 ⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — ET LE BARÈME N'EST PAS SATISFAIT.** Il exigeait
 **cinq passes à zéro au repos et deux sous charge**. Ce qui a été obtenu, mesuré :
 `walkin-journey.test.tsx` est à **zéro avertissement sur 5 passes de la suite pro sur
@@ -883,6 +889,9 @@ ne les rend pas verts** — cela les rend non mesurés, ce qui n'est pas la mêm
 ## Session du 02/09/2026 — D272 · l'horloge gelée, et les fixtures qui en dérivent
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D271**.
+
+⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
+`git` le 04/09/2026). Tableau de provenance complet en section D270.
 
 ⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** ⚠ Cette ligne portait « LIVRÉ » seul : en tête
 d'une file de quatre lots non certifiés, c'est le mot qui décide de la lecture, et
@@ -1240,15 +1249,36 @@ pour D269** : un lot ne se certifie pas sous une porte rouge, quelle qu'en soit
 la cause. La certification des deux lots viendra avec argon2, qui est le seul
 rouge restant.
 
-### D270 — OÙ VIVENT LES LOTS NON CERTIFIÉS : DANS `main`, PAS SUR UNE BRANCHE
+### D270 — OÙ VIVENT LES LOTS NON CERTIFIÉS : DEUX ENDROITS, ET CE BLOC DISAIT L'INVERSE
 
-⛔ **AUCUNE BRANCHE NE PORTE DE LOT EN ATTENTE. LES DEUX SONT DANS `main`.**
-Relevé par `git` le 31/08/2026, pas de mémoire :
+⛔ **~~AUCUNE BRANCHE NE PORTE DE LOT EN ATTENTE. LES DEUX SONT DANS `main`.~~**
+⛔ **RÉÉCRIT LE 04/09/2026 SUR MESURE `git`, ET LA PHRASE BARRÉE RESTE POUR QU'ON VOIE
+CE QU'ELLE A COÛTÉ.** Elle était exacte le 31/08, quand deux lots existaient. **Quatre
+lots ont été livrés depuis, tous sur une branche**, et personne n'est revenu ici : le
+bloc écrit pour dire OÙ CHERCHER affirmait donc l'inverse de l'état réel, en gras, à
+l'endroit exact où on vient le lire. **C'est le défaut que ce dépôt corrige en boucle,
+appliqué au bloc qui devait l'empêcher.**
+
+Relevé le 04/09/2026 par `git`, pas de mémoire — `main` et `origin/main` sont tous deux
+à `790ae01` :
 
 | Lot | Où il vit | État |
 |---|---|---|
 | **D269** | **`main`**, fusionné | livré, **NON certifié** |
 | **D270** | **`main`**, fusionné (`1f85aa6`, puis un commit documentaire) | livré, **NON certifié** |
+| **D271** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
+| **D272** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
+| **D273** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
+| **D274** | branche **`argon2-vers-test-int`**, non fusionnée | livré (aucune ligne de code), **NON certifié** |
+
+⛔ **`argon2-vers-test-int` porte VINGT ET UN commits d'avance sur `main`**
+(`git log --oneline main..HEAD`) : D271 à D274 et leurs commits documentaires. C'est la
+branche courante, et **elle emporte tout** — voir l'empilement des branches en fin de
+section D271.
+⚠ **`D270-autocorrection-chiffres-figes` EXISTE TOUJOURS** (`8d1bd4f`), **non
+fusionnée**. D271 écrivait qu'elle « se supprime une fois la première partie » : la
+première n'est pas partie, donc la seconde est encore là. Elle n'a **pas** à être
+fusionnée séparément — `argon2-vers-test-int` contient ses commits.
 
 ⛔ **DEUX fichiers tiennent la porte, pas un** (mesuré le 01/09/2026) :
 `password.service.spec.ts` (argon2) **et** `src/media/image-pipeline.spec.ts`
@@ -1258,12 +1288,15 @@ seul rouge restant » : c'est elle qui aurait orienté la session suivante vers 
 lot argon2 censé rendre la porte verte.
 
 ⚠ **CE QUI NE SE VOIT NULLE PART AILLEURS, ET QUI EST TOUT L'OBJET DE CE BLOC** :
-un lot non certifié n'attend pas sur une branche, **il est déjà dans `main`**. Qui
-les cherchera là où on cherche d'ordinaire un travail en attente — une branche non
-fusionnée — n'en trouvera **aucun**, et en conclura qu'il n'y en a pas. Rien dans
-`git`, aucune porte, aucun fichier de configuration ne dit que deux lots non
-certifiés dorment dans `main`. **La seule marque est ici**, et dans les en-têtes
-d'état des sections D269 et D270 — c'est pourquoi elle est posée des DEUX côtés.
+un lot non certifié peut attendre **dans `main`** (D269, D270) **ou sur une branche**
+(D271 à D274), et **les deux cas coexistent aujourd'hui**. Qui ne cherche qu'à un seul
+des deux endroits en trouve la moitié et conclut sur le tout — c'est ce que la première
+écriture de ce bloc garantissait. Rien dans `git`, aucune porte, aucun fichier de
+configuration ne dit que des lots non certifiés dorment dans `main` ; une branche, au
+moins, se voit. **La seule marque est ici**, et dans l'en-tête d'état de CHAQUE section
+concernée — c'est pourquoi elle est posée des DEUX côtés, et pourquoi **D272, D273 et
+D274 ont reçu la leur le 04/09/2026** : elles ne disaient pas où elles vivaient. D271
+la portait déjà, dans sa sous-section « DEUX BRANCHES EMPILÉES ».
 
 ⚠ **Ce que la porte redevenue verte permettra d'écrire, et rien de plus** :
 « porte `test` verte à cette date, D269 et D270 en font partie ». ⛔ **NE PAS
@@ -1616,6 +1649,56 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
    sans que personne réécrive la phrase. Une liste de lots dans un plan se périme au
    lot suivant ; une règle non — et c'est la seule raison de ce changement de
    formulation.
+   ⛔ **LA LISTE NOMMÉE, TRANCHÉE PAR KO LE 04/09/2026 : D269, D270, D271, D272, D273
+   ET D274.** Six lots. ⚠ **La règle ci-dessus ne change pas** — la certification porte
+   sur TOUS les lots non certifiés à sa date — **mais elle ne dispense pas de les
+   NOMMER.** « Quel qu'en soit le nombre » n'apprend à personne lesquels, et le nombre
+   lui-même a déjà été faux deux fois dans ce fichier : « quatre lots attendent
+   aujourd'hui » en section D272, « certifier cinq lots » en section D274, alors qu'ils
+   sont **six**. ⇒ **Un nombre se périme au lot suivant ; une liste se COMPLÈTE** — un
+   lot livré avant la certification s'y ajoute d'une ligne, et l'omission se voit.
+
+   ⛔ **CRITÈRE DE CERTIFICATION — TRANCHÉ PAR KO LE 04/09/2026, ÉCRIT AVANT DE
+   MESURER.** C'est le point qui manquait au rang, et il est fixé maintenant pour la
+   raison qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus
+   rien (D273 vient de le payer sur son barème).
+   - **CE QUI EST EXIGÉ : la porte verte AU REPOS**, avec l'**état machine relevé et son
+     INVENTAIRE** devant chaque mesure — ce qui tourne, pas seulement RAM libre, CPU et
+     compte de node. C'est la donnée qui manquait à tous les relevés antérieurs (rang 6,
+     03/09), et sans laquelle un état ne se reproduit pas.
+   - ⛔ **CE QUI N'EST PAS EXIGÉ : la porte verte SOUS CHARGE.** La fragilité de la garde
+     des sorties console **reste au backlog comme DETTE MESURÉE** — `[PRO][P1]`, avec ses
+     **trois occurrences datées** (02/09 par la sonde horloge, 02/09 pendant le barème,
+     03/09 sous charge assertée). Elle n'est ni effacée, ni requalifiée, ni comptée comme
+     réglée : elle est **sortie du critère et laissée visible**, ce qui n'est pas la même
+     chose.
+   - **LA RAISON, ÉCRITE POUR NE PAS ÊTRE REDÉCOUVERTE** : exiger une porte
+     **déterministe sous n'importe quelle charge** est une propriété que **cette machine
+     ne peut pas offrir aujourd'hui**. Mesuré, pas supposé : 2 rouges sur 15 sous charge
+     assertée, sur un fichier que l'ordonnancement désigne et **qui change d'une campagne
+     à l'autre** (D274). Et **six lots attendent depuis cinq jours** — D269 est du 30/08.
+     Une barre qu'aucune mesure ne peut franchir ne protège rien : elle immobilise, puis
+     elle finit par se baisser en catastrophe le jour où l'attente devient intenable —
+     c'est-à-dire exactement la « certification obtenue en déplaçant la barre » que ce
+     fichier refuse par ailleurs, mais obtenue plus tard et sous pression. **Une barre
+     franchissable qui dit ce qu'elle vaut protège davantage qu'une barre impayable.**
+
+   ⛔ **CE QUE LA CERTIFICATION NE GARANTIT PAS — CE PARAGRAPHE S'ÉCRIT AVEC ELLE, MOT
+   POUR MOT.** Sans lui, « certifié » se lira comme « sûr », et c'est plus que ce qui
+   aura été mesuré :
+   - **elle ne dit rien de la porte SOUS CHARGE.** Elle est prise au repos ; sous
+     contention, la garde console tombe encore, sur un fichier variable ;
+   - **elle ne dit pas que `venue-list.test.tsx` va bien.** 0 sur 30 **borne un taux, il
+     ne prouve pas un zéro** (D274), et le défaut n'a jamais été attribué ;
+   - **elle ne dit pas que `sharp` est réglé** : il est **déchargé** parce qu'argon2 a
+     quitté l'unitaire, et son rang **se rouvre** si du travail coûteux y revient (D272) ;
+   - **elle ne couvre pas ce qu'aucune porte ne regarde** : le navigateur réel, une
+     migration sur base NON VIDE, la clause `WHERE` d'une réutilisation d'endpoint, un
+     composant jamais monté. Inchangé — rappelé ici parce qu'un mot comme « certifié »
+     invite précisément à l'oublier ;
+   - **elle porte une DATE et une LISTE, pas un état permanent** : « portes vertes au
+     repos à cette date, tels lots en font partie ». Elle ne se reconduit pas au lot
+     suivant, et **ne réécrit aucun en-tête** en « certifié ».
    ⛔ **CE QUE LA CERTIFICATION DEVRA PAYER, ÉCRIT LE 03/09/2026 POUR NE PAS ÊTRE
    REDÉCOUVERT** (dicté par Ko ; il ne vivait que dans un fil de chat, et un fil se
    ferme) :
