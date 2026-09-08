@@ -15,9 +15,9 @@
 // les quatre endroits où l'écran pourrait mentir : un total périmé, une date
 // qu'on dirait bloquée sans l'avoir bloquée, un devis de plus à chaque clic, et
 // un montant affiché avant que le serveur ait chiffré.
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { formatDZD } from "@zwadj/i18n";
 import type { QuoteDTO, VenueProDTO } from "@zwadj/types";
 import { AppProviders } from "../App";
@@ -45,12 +45,49 @@ const VENUE = {
   ]
 } as unknown as VenueProDTO;
 
+/** ⛔ HORLOGE GELÉE, ET TOUTES LES DATES DÉRIVÉES D'ELLE.
+ *
+ *  Ce fichier a rendu 24 échecs sur 41 le 01/09/2026, sur un arbre où aucune ligne
+ *  n'avait bougé : ses dates de fixture étaient écrites en dur en août 2026, et
+ *  elles ont cessé d'être futures à minuit. Le calendrier les a refusées, les
+ *  boutons de jour sont restés désactivés.
+ *
+ *  ⛔ LA PROPRIÉTÉ VISÉE N'EST PAS « ça repasse au vert », C'EST L'INSENSIBILITÉ À
+ *  TOUTE DATE. Elle tient à une seule condition : `MAINTENANT` est l'UNIQUE date
+ *  écrite du fichier, et tout le reste en DÉRIVE. Réintroduire une date en dur
+ *  ailleurs recréerait une seconde valeur à maintenir — elle divergerait au premier
+ *  changement de fixture, et le défaut reviendrait un matin, sans qu'une ligne ait
+ *  bougé.
+ *  ⚠ Corollaire : déplacer `MAINTENANT` de dix ans ne doit RIEN changer au résultat.
+ *  C'est mesuré par la cible inversée de `neutralisation/neutralize-horloge.py`.
+ *
+ *  ⚠ Le gel est posé PAR FICHIER et non dans `test-setup.ts` : mesuré le 02/09/2026,
+ *  un gel global ajoute DEUX échecs à date INCHANGÉE et fait tomber la collecte
+ *  entière aux dates lointaines. La raison est aussi écrite dans `test-setup.ts`. */
+const MAINTENANT = new Date("2026-08-10T09:00:00Z");
+
+beforeAll(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  vi.setSystemTime(MAINTENANT);
+});
+afterAll(() => {
+  vi.useRealTimers();
+});
+
+/** Un jour de la fenêtre, en décalage depuis `MAINTENANT`. Rendu en ISO court, le
+ *  format que l'API de disponibilité renvoie. */
+function jour(decalage: number): string {
+  const d = new Date(MAINTENANT);
+  d.setUTCDate(d.getUTCDate() + decalage);
+  return d.toISOString().slice(0, 10);
+}
+
 /** Un jour LIBRE et un jour VENDU, pour que le test puisse mesurer l'écart entre
  *  « cliquable » et « refusé par le moteur ». Les prix sont ceux que rendrait le
  *  moteur (B2/B3) — jamais recalculés ici. */
-const LIBRE = "2026-08-15";
-const AUTRE = "2026-08-16";
-const VENDU = "2026-08-22";
+const LIBRE = jour(5);
+const AUTRE = jour(6);
+const VENDU = jour(12);
 
 /** ⚠ La disponibilité passe désormais par le CLIENT AUTHENTIFIÉ
  *  (`GET /pro/venues/:id/availability`), plus par un `fetch` brut sur la route
@@ -61,8 +98,8 @@ function availabilityDouble() {
     venueId: "v1",
     slug: "salle-el-ryad",
     bookingMode: "SINGLE_SLOT",
-    from: "2026-08-01",
-    to: "2026-08-31",
+    from: jour(-9),
+    to: jour(21),
     slots: VENUE.slotTemplates,
     days: [
       { date: LIBRE, slots: [{ slotTemplateId: SLOT_ID, status: "AVAILABLE", priceCents: 158_100_000 }] },
@@ -118,7 +155,32 @@ function montant(cents: number) {
   return (contenu: string) => plat(contenu) === plat(formatDZD(cents));
 }
 
-function setup(
+/** ⛔ LAISSE RETOMBER, **DANS `act`**, LE TRAVAIL ASYNCHRONE DÉJÀ LANCÉ.
+ *
+ *  ⚠ CE N'EST PAS UNE ATTENTE, ET LES CONFONDRE COÛTE CHER. Une attente
+ *  (`waitFor`, `findBy…`) demande « est-ce arrivé ? » et rend la main dès que
+ *  oui — mais la mise à jour qui a répondu, elle, s'est produite pendant que le
+ *  test tournait, HORS `act`, et React a déjà écrit son avertissement. Attendre
+ *  APRÈS coup ne l'efface pas : c'est pourquoi `repondreDate` attendait déjà que
+ *  la case soit active et laissait quand même passer 3 avertissements.
+ *
+ *  ⛔ CE QU'ON MESURE ICI EST DONC UN DÉFAUT DE TEST, PAS DE COMPOSANT. Aucun
+ *  composant de production n'est touché par ce lot : `VenueCalendar` a raison de
+ *  poser `setData`, `setError` et `setLoading` après son `await` — c'est le test
+ *  qui doit ouvrir une fenêtre `act` pour les recevoir.
+ *
+ *  ⚠ UN SEUL TOUR DE MICROTÂCHES SUFFIT, ET C'EST MESURÉ : les doubles rendent
+ *  des promesses déjà résolues (`mockResolvedValue`). Si un double passait un
+ *  jour à un vrai délai, ce vidage cesserait de suffire — et le compte
+ *  remonterait, ce que la garde des plafonds ferait tomber. Elle est le filet de
+ *  cette aide-ci. */
+async function laisserRetomber(): Promise<void> {
+  await act(async () => {
+    await Promise.resolve();
+  });
+}
+
+async function setup(
   over: {
     quotes?: Parameters<typeof makeQuotesDouble>[0];
     bookings?: Parameters<typeof makeBookingsProDouble>[0];
@@ -140,6 +202,10 @@ function setup(
       </AppProviders>
     </MemoryRouter>
   );
+  // ⚠ Le bootstrap d'`AppProviders` est encore en vol quand `render` rend la
+  // main : c'est lui qui produisait 2 avertissements `AuthProvider` et 1
+  // `WalkinJourney` dans CHACUN des 41 tests, soit 122 des 293.
+  await laisserRetomber();
   return { quotes, bookings };
 }
 
@@ -152,6 +218,10 @@ async function repondreClient(invites = "200") {
   fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
   fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: invites } });
   fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+  // ⚠ Valider le client fait apparaître l'étape date, donc MONTE
+  // `VenueCalendar`, qui part aussitôt chercher sa disponibilité. Ses trois
+  // `setState` (`setData`, `setError`, `setLoading`) retombent ici.
+  await laisserRetomber();
 }
 
 /** ⚠ On attend que la case soit ACTIVE, pas seulement présente. La grille du
@@ -162,6 +232,10 @@ async function repondreDate(jourVisible = /15/) {
   const jour = await screen.findByRole("button", { name: jourVisible });
   await waitFor(() => expect(jour).toBeEnabled());
   fireEvent.click(jour);
+  // ⚠ Choisir la date fait REJOUER l'effet du calendrier — d'où 6 et non 3
+  // dans les parcours qui vont au-delà de l'étape date. Le second passage se
+  // reçoit comme le premier.
+  await laisserRetomber();
 }
 
 async function repondreCreneau() {
@@ -199,7 +273,7 @@ const question = () => document.getElementById("wk-question")?.textContent;
 
 describe("Flux par étapes — une seule question à l'écran", () => {
   it("s'ouvre sur la question du client, et sur elle seule", async () => {
-    setup();
+    await setup();
     expect(question()).toBe("Qui est le client ?");
     // ⚠ La mesure qui compte n'est pas « la question 1 est là » mais « les
     // autres n'y sont PAS » : c'est tout le sujet du lot.
@@ -212,14 +286,14 @@ describe("Flux par étapes — une seule question à l'écran", () => {
     // pas : forcer l'étape Client à s'afficher en permanence le laissait vert,
     // parce qu'il ne regardait que les étapes SUIVANTES. Ce qui distingue un
     // flux exclusif d'un formulaire complet, c'est ce qui n'est PLUS là.
-    setup();
+    await setup();
     await repondreClient();
     expect(screen.queryByLabelText("Prénom")).toBeNull();
     expect(screen.queryByLabelText("Nombre d'invités")).toBeNull();
   });
 
   it("chaque réponse fait apparaître la suivante, dans l'ordre arbitré", async () => {
-    setup();
+    await setup();
     await repondreClient();
     expect(question()).toBe("Quelle date ?");
     await repondreDate();
@@ -231,22 +305,22 @@ describe("Flux par étapes — une seule question à l'écran", () => {
   });
 
   it("⚠ ne laisse pas passer un client incomplet — le bouton reste inerte", async () => {
-    setup();
+    await setup();
     fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
     expect(screen.getByRole("button", { name: "Continuer" })).toBeDisabled();
     expect(question()).toBe("Qui est le client ?");
   });
 
   it("⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations", async () => {
-    setup();
+    await setup();
     fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
     fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
     fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
     expect(screen.getByRole("button", { name: "Continuer" })).toBeDisabled();
   });
 
-  it("chaque champ client porte un LABEL visible — quatre cases nues ne se distinguent pas", () => {
-    setup();
+  it("chaque champ client porte un LABEL visible — quatre cases nues ne se distinguent pas", async () => {
+    await setup();
     // ⚠ Libellés EXACTS, pas des expressions régulières : /Nom/ attrapait aussi
     // « Nombre d'invités », et le test échouait sur son propre sélecteur.
     for (const nom of ["Prénom", "Nom", "Téléphone", "E-mail (facultatif)"]) {
@@ -255,7 +329,7 @@ describe("Flux par étapes — une seule question à l'écran", () => {
   });
 
   it("le fil de progression NOMME l'étape courante pour un lecteur d'écran", async () => {
-    setup();
+    await setup();
     const courant = () => screen.getByRole("navigation").querySelector('[aria-current="step"]');
     expect(courant()?.textContent).toContain("Client");
     await repondreClient();
@@ -265,7 +339,7 @@ describe("Flux par étapes — une seule question à l'écran", () => {
 
 describe("Récapitulatif — des réponses, JAMAIS des montants", () => {
   it("fige la réponse validée en ligne de récapitulatif", async () => {
-    setup();
+    await setup();
     await repondreClient();
     const recapEl = recap();
     expect(recapEl.textContent).toContain("Amine Belkacem");
@@ -277,7 +351,7 @@ describe("Récapitulatif — des réponses, JAMAIS des montants", () => {
     // ligne « Date » et un sous-total dans celle des prestations, puis calcule
     // `Math.round(total * 0.3)` (D81/D188). Le test cherche l'unité monétaire :
     // aucun montant, quelle que soit sa valeur, ne doit s'y trouver.
-    setup();
+    await setup();
     await repondreClient();
     await repondreDate();
     await repondreCreneau();
@@ -296,7 +370,7 @@ describe("Récapitulatif — des réponses, JAMAIS des montants", () => {
     // qui n'y figure jamais, puisqu'il porte le LIBELLÉ d'étape et la réponse,
     // pas la question. Elle ne mordait donc rien. On revient sur l'étape Client
     // et on vérifie que sa réponse n'est pas affichée DEUX fois.
-    setup();
+    await setup();
     await repondreClient();
     await repondreDate();
     modifierDepuisRecap(/Modifier.*Client/);
@@ -308,7 +382,7 @@ describe("Récapitulatif — des réponses, JAMAIS des montants", () => {
 
 describe("Retour en arrière — les réponses survivent, les montants non", () => {
   it("« Modifier » ramène à l'étape, sans rien effacer", async () => {
-    setup();
+    await setup();
     await repondreClient();
     await repondreDate();
     modifierDepuisRecap(/Modifier.*Client/);
@@ -320,18 +394,18 @@ describe("Retour en arrière — les réponses survivent, les montants non", () 
     // `editStep(n)` de la maquette remet `confirmedUpTo` à `n - 1` : corriger le
     // nom ferait disparaître la date du récapitulatif et obligerait à recliquer
     // « Continuer » quatre fois. Arbitrage Ko : les réponses survivent.
-    setup();
+    await setup();
     await repondreClient();
     await repondreDate();
     await repondreCreneau();
     modifierDepuisRecap(/Modifier.*Client/);
     const recapEl = recap();
     expect(recapEl.textContent).toContain("Soirée");
-    expect(recapEl.textContent).toContain("2026-08-15");
+    expect(recapEl.textContent).toContain(LIBRE);
   });
 
   it("valider une étape corrigée renvoie à la PREMIÈRE question sans réponse", async () => {
-    setup();
+    await setup();
     await allerAuDevis();
     modifierDepuisRecap(/Modifier.*Client/);
     fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
@@ -342,7 +416,7 @@ describe("Retour en arrière — les réponses survivent, les montants non", () 
 
 describe("Rail latéral, numéros cliquables et remise à zéro", () => {
   it("⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »", async () => {
-    setup();
+    await setup();
     await repondreClient();
     await repondreDate();
     fireEvent.click(within(rail()).getByRole("button", { name: /Modifier.*Client/ }));
@@ -350,15 +424,15 @@ describe("Rail latéral, numéros cliquables et remise à zéro", () => {
     expect(screen.getByLabelText("Prénom")).toHaveValue("Amine");
   });
 
-  it("⚠ une étape SANS réponse n'est pas cliquable dans le rail", () => {
+  it("⚠ une étape SANS réponse n'est pas cliquable dans le rail", async () => {
     // Un bouton qui n'agit pas est pire qu'un élément inerte : il promet une
     // commande. Les étapes non répondues restent de simples `<span>`.
-    setup();
+    await setup();
     expect(within(rail()).queryAllByRole("button")).toHaveLength(0);
   });
 
   it("« Annuler » remet tout à zéro et ramène à la première question", async () => {
-    setup();
+    await setup();
     await repondreClient();
     await repondreDate();
     fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
@@ -370,7 +444,7 @@ describe("Rail latéral, numéros cliquables et remise à zéro", () => {
   it("⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien", async () => {
     // Après `convert`, une demande existe en base. Un bouton qui viderait
     // l'écran laisserait croire qu'elle a été annulée. Elle ne l'aurait pas été.
-    setup({
+    await setup({
       quotes: {
         create: vi.fn().mockResolvedValue(draft()),
         convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" }))
@@ -394,14 +468,14 @@ describe("Date et créneau sont DEUX écrans", () => {
   const grilleDuMois = () => screen.queryByRole("table");
 
   it("l'étape date montre la grille du mois, jamais les créneaux", async () => {
-    setup();
+    await setup();
     await repondreClient();
     await waitFor(() => expect(grilleDuMois()).not.toBeNull());
     expect(screen.queryByRole("button", { name: /Soirée/ })).toBeNull();
   });
 
   it("⚠ l'étape créneau montre les créneaux, PAS la grille du mois", async () => {
-    setup();
+    await setup();
     await repondreClient();
     await repondreDate();
     expect(await screen.findByRole("button", { name: /Soirée/ })).toBeInTheDocument();
@@ -415,7 +489,7 @@ describe("La date vient du calendrier réel", () => {
     // cliquer le 22 et désactive sa soirée. Première version de ce test écrite
     // sur l'hypothèse inverse — corrigée en lisant le comportement, pas en
     // affaiblissant l'assertion.
-    setup();
+    await setup();
     await repondreClient();
     const vendu = await screen.findByRole("button", { name: /22/ });
     await waitFor(() => expect(vendu).toBeEnabled());
@@ -426,7 +500,7 @@ describe("La date vient du calendrier réel", () => {
   it("⚠ changer la date EFFACE le créneau, le DIT, et repose la question", async () => {
     // Le cas que la maquette n'a pas : garder à l'écran un créneau qui ne
     // s'applique plus serait pire que de le perdre.
-    setup({ services: { listForVenue: vi.fn().mockResolvedValue([]) } });
+    await setup({ services: { listForVenue: vi.fn().mockResolvedValue([]) } });
     await repondreClient();
     await repondreDate();
     await repondreCreneau();
@@ -451,7 +525,7 @@ describe("La date vient du calendrier réel", () => {
 
 describe("Un seul devis, révisé", () => {
   it("⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus", async () => {
-    const { quotes } = setup({
+    const { quotes } = await setup({
       quotes: {
         create: vi.fn().mockResolvedValue(draft()),
         revise: vi.fn().mockResolvedValue(draft({ version: 2 }))
@@ -466,13 +540,13 @@ describe("Un seul devis, révisé", () => {
   });
 
   it("aucun montant total avant que le SERVEUR ait chiffré", async () => {
-    setup();
+    await setup();
     await allerAuDevis();
     expect(screen.queryByText(montant(478_600_000))).toBeNull();
   });
 
   it("le total et l'acompte affichés sont ceux du devis, à l'unité près", async () => {
-    setup();
+    await setup();
     await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     expect(await screen.findByText(montant(478_600_000))).toBeInTheDocument();
@@ -480,7 +554,7 @@ describe("Un seul devis, révisé", () => {
   });
 
   it("⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge", async () => {
-    setup();
+    await setup();
     await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     expect(await screen.findByText(montant(478_600_000))).toBeInTheDocument();
@@ -492,13 +566,13 @@ describe("Un seul devis, révisé", () => {
 });
 
 describe("Le focus suit la question (R2d, désormais structurel)", () => {
-  it("⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé", () => {
-    setup();
+  it("⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé", async () => {
+    await setup();
     expect(document.activeElement).toBe(document.body);
   });
 
   it("emmène le focus sur la carte de l'étape à chaque transition", async () => {
-    setup();
+    await setup();
     await repondreClient();
     await waitFor(() => {
       const carte = screen.getByRole("heading", { level: 2 }).closest("section");
@@ -509,7 +583,7 @@ describe("Le focus suit la question (R2d, désormais structurel)", () => {
   it("fait aussi défiler, en une seule fois", async () => {
     const scroll = vi.fn();
     Element.prototype.scrollIntoView = scroll;
-    setup();
+    await setup();
     await repondreClient();
     await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
   });
@@ -517,7 +591,7 @@ describe("Le focus suit la question (R2d, désormais structurel)", () => {
 
 describe("Les deux issues (décision ⑥)", () => {
   async function jusquAuTotal(over: Parameters<typeof setup>[0] = {}) {
-    const outils = setup(over);
+    const outils = await setup(over);
     await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     await screen.findByText(montant(478_600_000));
@@ -589,7 +663,7 @@ describe("Les deux issues (décision ⑥)", () => {
 
 describe("La remise par canal (Q2) et le catalogue", () => {
   async function jusquAuTotal(over: Parameters<typeof setup>[0] = {}) {
-    const outils = setup(over);
+    const outils = await setup(over);
     await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     await screen.findByText(montant(478_600_000));
@@ -619,7 +693,7 @@ describe("La remise par canal (Q2) et le catalogue", () => {
   });
 
   it("le catalogue affiché est celui de la SALLE — aucune prestation inventée", async () => {
-    setup({
+    await setup({
       services: {
         listForVenue: vi.fn().mockResolvedValue([
           { id: "sv1", nameFr: "Traiteur maison", nameAr: "مطعم", pricingType: "PER_GUEST", isActive: true }
@@ -634,7 +708,7 @@ describe("La remise par canal (Q2) et le catalogue", () => {
   });
 
   it("⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133)", async () => {
-    setup({ services: { listForVenue: vi.fn().mockRejectedValue(new Error("boom")) } });
+    await setup({ services: { listForVenue: vi.fn().mockRejectedValue(new Error("boom")) } });
     await repondreClient();
     await repondreDate();
     await repondreCreneau();
@@ -656,7 +730,7 @@ describe("Point D — chrome partagée", () => {
     // React réconciliait une `<section>` stable. On mesure l'identité du nœud
     // DOM — jsdom ne calcule pas les animations, et un test sur la classe CSS
     // serait resté vert pendant toute la durée du défaut.
-    setup();
+    await setup();
     const avant = document.querySelector(".zj-card");
     await repondreClient();
     const apres = document.querySelector(".zj-card");
@@ -664,30 +738,30 @@ describe("Point D — chrome partagée", () => {
     expect(apres).not.toBe(avant);
   });
 
-  it("le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro", () => {
+  it("le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro", async () => {
     // `grid-area` et la position collante restent propres à cet écran : si la
     // `className` d'app sautait, le rail quitterait sa colonne.
-    setup();
+    await setup();
     expect(rail()).toHaveClass("zj-rail");
     expect(rail()).toHaveClass("wk-rail");
   });
 
   it("le bouton « Modifier » est le composant partagé, identique au client", async () => {
-    setup();
+    await setup();
     await repondreClient();
     const bouton = within(recap()).getByRole("button", { name: /Modifier/ });
     expect(bouton).toHaveClass("zj-recap-edit");
   });
 
   it("⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite", async () => {
-    setup();
+    await setup();
     expect(document.querySelector(".zj-connector")).toBeNull();
     await repondreClient();
     expect(document.querySelector(".zj-connector")).not.toBeNull();
   });
 
   it("la coche du rail est une icône, la même que côté client", async () => {
-    setup();
+    await setup();
     await repondreClient();
     const faite = rail().querySelector("li.is-done .zj-rail-n");
     expect(faite?.querySelector("svg")).not.toBeNull();

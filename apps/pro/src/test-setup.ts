@@ -1,5 +1,39 @@
 import "@testing-library/jest-dom/vitest";
 
+// ⛔ AUCUN GEL D'HORLOGE ICI, ET C'EST UNE DÉCISION MESURÉE — NE PAS « FACTORISER ».
+//
+// Des fichiers de test gèlent l'horloge (`vi.useFakeTimers` + `vi.setSystemTime`),
+// chacun sur SA propre ancre. La tentation est de remonter ce gel ici pour éviter
+// la répétition. **Mesuré le 02/09/2026 : ça casse la suite.**
+//   · gel global posé à la date DU JOUR, où rien ne devrait changer :
+//     26 échecs au lieu de 24 — l'instrument perturbe ce qu'il mesure ;
+//   · gel global posé à une date lointaine : la COLLECTE entière tombe
+//     (« no tests »), y compris sur des fichiers sans aucune date.
+// Cause : des faux timers actifs pour TOUS les fichiers entrent en conflit avec les
+// tests asynchrones ; React produit des avertissements `act(...)` que l'`afterEach`
+// ci-dessous transforme en échecs.
+//
+// ⇒ Le gel reste PAR FICHIER, posé par ceux qui en ont besoin, sur une ancre dont
+// leurs fixtures dérivent. La répétition est le prix, et il est plus bas que celui
+// d'une suite qui rougit sans rapport avec ce qu'elle teste.
+
+// ⛔ UNE ATTENTE INTERROGE UN NŒUD DÉJÀ TENU, JAMAIS UN RÔLE PAR NOM (D269).
+//
+// `waitFor(() => expect(screen.getByRole("button", { name: … })).…)` recalcule le
+// NOM ACCESSIBLE de tout le sous-arbre à CHAQUE tour de la boucle d'attente. Sur un
+// écran chargé, c'est assez cher pour faire tomber les tests VOISINS.
+// ⚠ Mesuré, et payé : le premier correctif d'attente de D269 est passé de 8 à
+// **48 délais dépassés** avant d'être repris. Il était juste sur le fond ; c'est son
+// COÛT qui cassait la porte, et rien dans son intention ne le laissait deviner.
+//
+// ⇒ On tient le nœud d'abord, on attend ensuite sur LUI :
+//     const jour = await screen.findByRole("button", { name: /15/ });
+//     await waitFor(() => expect(jour).toBeEnabled());
+// Et pour un composant qui ne rend rien d'observable, on attend la DISPARITION du
+// texte de chargement (idiome de `blocks-section.test.tsx`) ou on vide la file de
+// microtâches DANS `act` (idiome de `a3-unexpected-responses.test.tsx`) — jamais une
+// boucle qui re-cherche par rôle.
+
 // GARDE DES SORTIES DE TEST — lot S7 (audit F8).
 //
 // ⚠ POURQUOI UNE SUITE VERTE MAIS BRUYANTE EST UN PROBLÈME.
@@ -55,6 +89,19 @@ import { afterAll, afterEach, beforeEach, expect } from "vitest";
  * un chiffre pris une seule fois peut être dépassé au run suivant : on garde
  * le MAXIMUM de trois relevés, et on écrit qu'il en vient.
  *
+ * ⛔ ET LES PASSES DÉCLARENT LEURS CONDITIONS — SANS QUOI LE MAXIMUM NE BORNE
+ * RIEN. Cette règle disait « le maximum de trois relevés » sans dire de quoi.
+ * Trois relevés AU REPOS donnent trois fois le même chiffre et se lisent comme
+ * une confirmation ; c'est une confirmation de la machine, pas du code.
+ * ⚠ MESURÉ le 02/09/2026 sur `walkin-journey.test.tsx` : 293 · 293 · 293 au
+ * repos, **294 sous charge, 295 dans la porte complète**. Le plafond gelé valait
+ * 293 — c'est-à-dire le maximum de trois passes qui ne pouvaient pas le
+ * dépasser — et il a fait tomber la porte.
+ * ⇒ Les passes comportent AU MOINS UNE EXÉCUTION SOUS CHARGE et une dans la
+ * porte complète (l'ordonnancement entre fichiers change le compte), et l'état
+ * machine se relève DEVANT chaque relevé (D270). Un plafond calé au repos est
+ * trop bas par construction.
+ *
  * ⛔ LES NOMBRES NE SONT PAS ÉCRITS ICI À LA MAIN. Ceux du 22/08 sont périmés
  * depuis D249–D251 et D254. On les RELÈVE, une fois :
  *
@@ -71,8 +118,20 @@ import { afterAll, afterEach, beforeEach, expect } from "vitest";
 const A_RELEVER = -1;
 
 const PLAFONDS: Record<string, number> = {
-  // ⚠ 64 le 22/08 (S7) → 293. ÉCART NON EXPLIQUÉ — voir plus bas.
-  "src/dashboard/walkin-journey.test.tsx": 293,
+  // ⛔ `src/dashboard/walkin-journey.test.tsx` A ÉTÉ RETIRÉ D'ICI (02/09/2026).
+  // Il portait 293, et son entrée disait « 64 le 22/08 → 293, ÉCART NON EXPLIQUÉ
+  // — voir plus bas » : le « plus bas » ne renvoyait à rien, et l'écart n'a
+  // jamais été expliqué. Il n'y a plus rien à expliquer — le compte est à ZÉRO.
+  //
+  // ⚠ CE QU'IL FAUT SAVOIR SI ON EST TENTÉ DE L'Y REMETTRE. Les 293 étaient
+  // 293 `act(…)`, et ils venaient de DEUX gestes de test, pas d'un défaut de
+  // composant : le bootstrap d'`AppProviders` laissé en vol par `setup()`
+  // (2 `AuthProvider` + 1 `WalkinJourney` dans chacun des 41 tests = 122), et
+  // les deux passages de l'effet de `VenueCalendar` (3 au montage, 3 au choix
+  // de la date = 171). Le correctif tient en une aide, `laisserRetomber()`,
+  // appelée aux trois moments. Aucun composant de production n'a bougé.
+  // ⇒ Un avertissement qui reviendrait dans ce fichier signale un TROISIÈME
+  // moment asynchrone non reçu, pas un besoin d'exemption.
   // 6 le 22/08 (S7), inchangé.
   "src/venues/venue-form.test.tsx": 6,
   // ⚠ 3 le 22/08 (S7), 3 au relevé du 25/08, puis 4 au run suivant — SANS

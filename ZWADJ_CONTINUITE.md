@@ -11,11 +11,22 @@
 > à ligne. Ce fichier ne garde que l'ÉTAT ACTIF. ⛔ **Le registre des décisions, en
 > bas de page, reste ici** : un numéro se prend toujours en lisant CE fichier.
 >
-> **Révision courante : réduction documentaire R1 faite (D267), bascule ouverte.**
-> Six portes vertes, lint à 0 problème, API **638 / 55**, e2e **34 passés, 1 sauté,
-> 0 échec** (4,7 min), harnais **18/18** et **3/3**.
-> **Prochain lot : `BookingStatus.PENDING` (D263)** — chemin de l'argent, modes de
-> défaillance écrits avant tout code.
+> ⛔ **AUCUN ÉTAT COURANT NI PROCHAIN LOT N'EST ÉCRIT DANS CET EN-TÊTE.**
+> Cette place portait « Six portes vertes, lint à 0 problème, API **638 / 55**, e2e
+> 34 passés » et « **Prochain lot : `BookingStatus.PENDING` (D263)** » — un lot fait le
+> 30/08 sous **D268**, annoncé sous une porte qui n'est pas verte. En tête du fichier,
+> ces lignes se lisaient comme l'état du jour.
+> ⛔ **ET ELLES CONTREDISAIENT LA RÈGLE POSÉE DANS LE MÊME COMMIT**, section « État
+> actuel » (« ⛔ AUCUN COMPTEUR COURANT N'EST ÉCRIT ICI ») : le remède avait été
+> appliqué au CORPS du document et pas à sa TÊTE, c'est-à-dire pas à l'endroit qu'une
+> reprise lit en premier.
+> ⇒ **Où lire l'état** : les compteurs se MESURENT en lançant les portes ; les chiffres
+> d'un lot vivent dans l'en-tête de SA session, avec l'état machine relevé devant eux
+> (D270). **Où lire le prochain lot** : l'ordre des rangs, section D270, et lui seul.
+> **Où prendre un numéro** : la dernière ligne de la table du registre, en bas.
+> ⚠ **Retrait déclaré, pas mise à jour** — un compteur rafraîchi redevient faux au lot
+> suivant. C'est le même geste que pour les trois autres de la série (D268, « D1 à
+> D266 » dans `CLAUDE.md`, le bandeau du registre).
 >
 > ⚠ Huit lignes périmées ont été RETIRÉES ici par R1 : l'ancienne consigne
 > « exactement trois fichiers » et un état e2e caduc (« 33 passés » / « E3 seul
@@ -248,22 +259,23 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
 - ✅ **FLUX A — Lot A6a (visite virtuelle Matterport, D45)** : intégré, gates vertes, migration prouvée en base réelle.
 - ✅ **TRANCHE UIP — refonte de l'app Pro (D130 → D149)** : coquille + top panel, parcours « client sur place », assistant de salle en 7 étapes, refonte graphique, contrat de contact D135. ⚠ Livrée sur **cinq portes** : le bac à sable ne peut pas exécuter l'API (voir les compteurs UIP). **Sept tests d'intégration restent à passer chez Ko.**
 
-### Compteurs — MESURÉS à la clôture de la campagne qualité (07/08/2026)
+### ⛔ AUCUN COMPTEUR COURANT N'EST ÉCRIT ICI
 
-| Gate | Valeur |
-|---|---|
-| typecheck | **8 projets**, 0 erreur — `@zwadj/e2e` s'est ajouté |
-| lint | exit 0 |
-| tests unitaires | **76 fichiers / 808 tests** — api 39/374 · api-client 2/34 · client 15/160 · pro 20/240 |
-| tests d'intégration | **34 fichiers / 398 tests**, base recréée de zéro |
-| i18n | **844 = 844** |
-| builds | Next ✅ · Vite ✅ |
-| suite e2e (à la demande) | **34 tests / 6 fichiers** — exécutée par Ko sous Windows : **33 passés, 1 ignoré, 0 échec**, 2,5 min |
-| `prisma/migrations` | **21 entrées** (20 migrations + `migration_lock.toml`) |
-
-> ⚠ **Le typecheck compte 8 projets** dont `@zwadj/e2e`. La suite e2e n'est
-> **PAS** une septième porte : elle se lance à la demande, avant tout lot touchant
-> **auth, concurrence ou argent**, et avant chaque livraison finale.
+Cette place portait un tableau **« Compteurs — clôture de la campagne qualité
+(07/08/2026) »** : 76 fichiers / 808 tests, 8 projets au typecheck, 34 fichiers
+d'intégration. En tête d'« État actuel », il se lisait comme l'état du jour. **Il
+avait un mois**, et l'API à elle seule était passée de 374 à 640 tests entre-temps.
+⛔ **Un chiffre figé en tête d'un document d'état finit par couvrir exactement ce
+qu'il prétendait mesurer** — c'est D268 (« aucun compteur de harnais n'est écrit
+ici ») appliqué aux compteurs de PORTES.
+⇒ **Les compteurs courants se MESURENT en lançant les portes** — `pnpm typecheck`,
+`lint`, `test`, `build`, `test:int` — jamais en lisant ce fichier. Les chiffres d'un
+lot donné vivent dans l'**en-tête de sa session**, avec l'état machine relevé devant
+eux, sans quoi ils ne veulent rien dire (D270).
+⚠ **Les tableaux qui suivent sont des RELEVÉS DE CLÔTURE DATÉS**, conservés comme
+histoire : ils disent ce qui a été mesuré tel jour, jamais l'état courant. La suite
+e2e n'est toujours **PAS** une septième porte — elle se lance à la demande, avant
+tout lot touchant **auth, concurrence ou argent**, et avant chaque livraison.
 
 ### Compteurs — MESURÉS à la clôture de F1 (02/08/2026)
 
@@ -402,37 +414,1083 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## ~~PROCHAIN LOT~~ — `act(...)` tardif dans `walkin-journey` · ⛔ **FAIT : D273**
+
+⛔ **CE CADRAGE A ÉTÉ EXÉCUTÉ LE 02/09/2026 — voir la section D273 plus bas.** Il est
+conservé tel quel, sans retouche, parce qu'il est ce à quoi le lot doit être confronté :
+un cadrage réécrit après coup ne peut plus démentir personne. **Deux points sur
+lesquels il s'est révélé juste**, et un sur lequel la mesure l'a corrigé, sont relevés
+dans D273 — dont son avertissement sur `VenueCalendar`, qui a effectivement demandé un
+traitement à part.
+⚠ **Ce qui suit décrit donc l'ÉTAT AU MOMENT DU CADRAGE, pas l'état courant.** Le
+plafond de 293 n'existe plus, le fichier est sorti de `PLAFONDS`, et le compte est à
+zéro. ⛔ **Le barème fixé plus bas n'a PAS été tenu** : D273 dit lequel de ses termes,
+et pourquoi.
+
+### Ce qui tient encore la porte, mesuré
+
+La porte racine sort en **0 au repos** (état relevé : RAM libre 4 579 Mo, CPU 6 %,
+zéro node). **Sous charge (24 processus) elle sort en 1** — et ce n'est ni argon2 ni
+sharp :
+- api 640/640 · api-client 36/36 · client 287/287 · **pro : 347 tests passés sur 347** ;
+- **c'est le FICHIER qui tombe, pas un test** :
+  `295 avertissement(s) dans « walkin-journey.test.tsx », plafond 293`.
+
+Le compte FLOTTE : **293 · 293 · 293** au repos, **294** sous charge, **295** dans la
+porte complète. Le plafond gelé vaut 293 — **zéro marge**.
+
+### ⛔ LE RELEVÉ QUI DÉCIDE DU LOT : 293 sur 293 sont des `act(...)`
+
+| Composant émetteur | Compte |
+|---|---|
+| **`VenueCalendar`** | **171** |
+| `AuthProvider` | 82 |
+| `WalkinJourney` | 40 |
+| **total** | **293** |
+
+Aucun autre `Warning:` React, aucun `Not implemented`, aucun bruit réseau. **C'est
+intégralement la famille corrigée par D269** — des mises à jour qui tombent après la
+fin du test. `AuthProvider` est monté **transitivement** par `AppProviders`, le cas
+exact que D269 décrit et qu'un grep du fichier de test ne voit pas.
+
+⛔ **DONC : `walkin-journey.test.tsx` SORT DE `PLAFONDS`, il n'y monte pas d'un cran.**
+⚠ **J'avais proposé de relever le plafond de 293, et Ko a refusé — à raison.** Mon
+argument était qu'un `testTimeout` borne une durée « qui dit quelque chose du code »
+tandis qu'un compte d'avertissements serait du bruit inerte. **Le relevé le réfute** :
+ces 293 ne sont pas du bruit, ce sont 293 occurrences du défaut. Relever aurait fait
+pour ce fichier ce que le dépôt a refusé pour `services-section` et `slots-section`
+trois jours plus tôt — et ce refus avait produit un correctif durable.
+⚠ **Et cela vaut aussi pour la certification** : quatre lots attendent une
+certification qui doit vouloir dire quelque chose. La rendre verte par un plafond
+relevé, ce serait certifier sous une pièce qu'on sait masquante.
+
+### Les idiomes, RELEVÉS du dépôt et non inventés
+
+- **Disparition du texte de chargement** — `blocks-section.test.tsx` :
+  `await waitFor(() => expect(section().textContent).not.toContain("Chargement"))`.
+- **File de microtâches vidée DANS `act`** — `a3-unexpected-responses.test.tsx` :
+  seul moyen d'attendre un composant qui ne rend rien d'observable.
+
+⛔ **Le piège que D269 a payé, désormais écrit dans `test-setup.ts`** : une attente
+interroge un **nœud déjà tenu**, jamais un rôle par nom — `waitFor` recalculant
+`getByRole(…, { name })` parcourt tout le sous-arbre à chaque tour, et le premier
+correctif de D269 est passé de 8 à **48 délais dépassés** avant d'être repris.
+
+### ⛔ BARÈME DE SORTIE DE `PLAFONDS`, FIXÉ AVANT DE MESURER
+
+**CINQ passes à zéro au repos, DEUX sous charge, état machine relevé à chaque fois.**
+L'entrée ne se retire pas avant.
+⚠ **Le barème est fixé maintenant, et c'est tout l'intérêt** : « plusieurs passes,
+dont une sous charge » se serait choisi APRÈS coup, en regardant les résultats — ce
+n'est plus une mesure. Ce dépôt a déjà payé **deux fois** une conclusion tirée sur
+deux passes (D270 sur le mode d'exécution, D271 sur la borne `maxWorkers`).
+⚠ Sortir de `PLAFONDS` est un aller sans retour mesuré : le fichier tombe ensuite au
+**premier** avertissement. C'est l'objectif, et c'est aussi le risque — un
+avertissement intermittent rendrait la porte rouge par intermittence.
+
+### ⚠ ATTENTION PARTICULIÈRE : `VenueCalendar`, 171 sur 293
+
+Plus de la moitié du total, et **un composant que D269 n'a jamais traité** — il n'a vu
+que `BlocksSection` et `ProVenuesProvider`. **Ne pas présumer qu'il tombe du même
+geste que `AuthProvider`.**
+⇒ **Mesurer le compte APRÈS CHAQUE COMPOSANT**, pas seulement à la fin. Si l'un
+résiste, **le dire** : un reliquat plafonné annulerait tout le lot, qui n'a
+précisément d'objet que parce qu'on refuse le plafond.
+
+### Volet indépendant, à garder quoi qu'il arrive
+
+`test-setup.ts` dit « on garde le MAXIMUM de trois relevés » **sans dire dans quelles
+conditions**. Mesuré : un maximum relevé au repos (293) ne borne pas un compte qui
+monte sous charge (295). La règle se corrige, indépendamment du reste — sinon le
+prochain plafond gelé aura le même défaut.
+
+### Fichiers attendus, énumérés avant d'écrire
+
+`apps/pro/src/dashboard/walkin-journey.test.tsx` · `apps/pro/src/test-setup.ts`
+(retrait de l'entrée `PLAFONDS` + correction de la règle) · un harnais
+`neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
+⛔ **Aucun composant de production n'est touché.**
+⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 07/09/2026 — D275 · CERTIFICATION (rang 7) : portes vertes AU REPOS
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D274**.
+
+⛔ **ÉTAT : PASSE COMPLÈTE TENUE, EN UNE SEULE, SUR UN ARBRE QUI N'A PAS BOUGÉ.** Six
+portes vertes, e2e verte, barème de D273 tenu en sa moitié repos, `neutralize-solid-s7`
+entière, et **182 gardes mordues sur 182 cibles, zéro muette**. État machine relevé avec
+son inventaire devant chaque mesure. Le détail est plus bas, et **les réserves qui le
+bornent sont écrites AVANT lui**, à la demande de Ko.
+⇒ **OÙ VIT CE QUI EST CERTIFIÉ** : branche `argon2-vers-test-int`, non fusionnée
+(section D270). **Rien n'est fusionné du fait de cette certification.**
+⚠ **CE QUI EST ÉCRIT, MOT POUR MOT : « portes vertes AU REPOS le 07/09/2026, et D269,
+D270, D271, D272, D273 et D274 en font partie ».** ⛔ **Les en-têtes de ces six sections
+ne sont PAS réécrits en « certifié »** — ce serait la certification par procuration que
+le rang 7 refuse depuis D270. Ils restent « livré, NON certifié » ; **la marque est
+ici, datée, et elle ne se reconduit pas au lot suivant.**
+
+### ⛔ LE PREMIER RELEVÉ A BLOQUÉ, ET C'EST LUI QUI A RENDU LE SECOND POSSIBLE
+
+**Rien n'a rougi : rien n'avait été mesuré.** Les deux ne se ressemblent pas et ne
+doivent pas se lire pareil. À la première tentative, le repos n'était pas produisible —
+**3 793 Mo** contre une barre à 4 579 — et **aucune passe n'a été lancée**. L'écart a été
+attribué par inventaire (`oracle` +607 Mo, `svchost` +484), Ko a arrêté `oracle`, et le
+plancher est tombé. ⚠ **Sans le refus initial, cinq passes seraient sorties vertes à
+3 793 Mo et auraient été comptées comme « cinq passes au repos »** : le mot sans la
+chose, dans une section intitulée « certification ».
+
+### Les deux réserves de la certification — écrites AVANT elle, à la demande de Ko
+
+Elles ne dépendent pas du résultat, et elles s'écrivent **avec** la certification, pas
+seulement au backlog : **c'est ce qui distingue une mesure d'une affirmation datée.**
+
+- ⛔ **L'INSTRUMENT D'ÉTAT MACHINE NE VIT PAS DANS LE DÉPÔT.** Tous les états relevés
+  pour cette certification l'ont été par un script qui vit dans le **scratchpad de la
+  session**, hors du dépôt et hors de `git`. Conséquence exécutoire : **la session
+  suivante ne pourra ni le rejouer, ni le contester, ni distinguer un écart de machine
+  d'un écart d'instrument.** Un relevé irreproductible n'est pas une mesure — c'est une
+  affirmation datée, et elle doit être lue comme telle. ⚠ Et la **calibration est
+  HÉRITÉE du 03/09/2026** : l'instrument retenu ce jour-là sur charge connue
+  (`Win32_PerfFormattedData_PerfOS_Processor`, contre `Win32_Processor.LoadPercentage`
+  écarté) a été **réemployé sans être recalibré**. Ce qui a été vérifié à chaque relevé
+  est bien plus faible : que les champs ne sortent pas **vides** (`ECHEC-INSTRUMENT`
+  plutôt qu'une chaîne vide, leçon du rang 6). **Non vide n'est pas juste.**
+  ⇒ Remède déjà rapporté, **non fait ici** : `neutralisation/sonde-etat-machine.py`,
+  entrée `[INFRA][P1]`. Tant qu'elle n'existe pas, **cette réserve se recopie dans
+  chaque certification** — elle ne s'éteint pas en étant écrite une fois.
+- ✅ **ZÉRO NODE PENDANT LA MESURE — C'EST UN FAIT DE LA CERTIFICATION, PAS UN DÉTAIL.**
+  Aucune pile `pnpm dev`, aucun `next dev`, aucun `vite`, aucun `tsc --watch` : **aucun
+  observateur de fichiers ne recompilait pendant que les suites lisaient les mêmes
+  fichiers.** C'est exactement le facteur que **D274 a nommé sans pouvoir le
+  reproduire** — neuf processus node relevés le 03/09 à 00:10, dont quatre observateurs
+  — et qui reste à ce jour la seule piste non écartée de l'intermittence de
+  `venue-list.test.tsx`. **Son absence fait donc partie des conditions dans lesquelles
+  la porte sera déclarée verte**, et par là de ce que la certification vaut : elle ne
+  dira **rien** de la porte pendant qu'une pile `dev` tourne — c'est-à-dire pendant le
+  régime de travail ordinaire. Le compte de node se relève devant **chaque** passe,
+  jamais une seule fois en ouverture.
+
+### Le relevé du 07/09/2026 qui BLOQUE, avec son inventaire
+
+Chrome fermé sur demande — **absent de l'inventaire, vérifié** (`CHROME=0`).
+⚠ **ET LA RAM N'A PAS SUIVI : mon estimation « ~5 990 Mo » était FAUSSE.** Elle
+additionnait naïvement le working set de Chrome à la RAM libre ; la mesure dit
+**3 793 Mo** (médiane de 6 relevés sur 60 s, bande 3 726–3 834, stable et en légère
+remontée). **Une addition n'est pas une mesure** — elle en a seulement la forme, ce qui
+est très exactement le motif des instruments écartés au rang 6.
+
+| | Plancher 03/09 | Barre D273 | Mesuré 07/09 | |
+|---|---|---|---|---|
+| RAM libre | 5 326 Mo | 4 579 Mo | **3 793 Mo** | ⛔ **−1 533 / −786** |
+| node | 0 | 0 | **0** | ✅ |
+| CPU médiane (étendue) | 17 % (5–28) | *barre annulée* | 18 % (0–28) | ✅ même régime |
+
+**Inventaire** : Code 22 proc / 2 545 Mo · svchost 105 / 1 715 · **oracle 1 / 1 199** ·
+Memory Compression 671 · vmmemWSL 554 · msedgewebview2 396 · explorer 335 · msedge 311 ·
+claude 309 · powershell 272 (dont la session) · Docker 247 · MsMpEng 175 · sqlservr 112 ·
+le reste sous 230. Total **14 049 Mo sur 367 processus**. `zwadj-db` (postgres:18) debout
+depuis 10 jours, 5432 exposé — `test:int` aura ce qu'il lui faut.
+
+⚠ **CE QUE L'ÉCART EST, ET CE QU'IL N'EST PAS — attribué par INVENTAIRE, à MOITIÉ.**
+Postes **nommés dans les DEUX relevés**, seuls comparables : `oracle` **+607** ·
+`svchost` **+484** · WSL **+125** · Code +54 · Docker −53 · `claude` −34. Soit **~1,2 Go
+sur les 1,5 Go manquants**. ⛔ **Le reste n'est PAS attribuable** : l'inventaire du 03/09
+s'arrêtait à « le reste sous 200 Mo » sans le détailler, donc aucun poste absent de sa
+liste ne peut être déclaré « nouveau » — il était probablement là, sous le seuil affiché.
+**C'est la limite d'un inventaire tronqué : il ne se compare qu'AU-DESSUS de sa coupe.**
+
+⛔ **RÈGLE CORRIGÉE, ET C'EST LA LEÇON DU JOUR (dictée par Ko, 07/09/2026) : UN
+INVENTAIRE PORTE LE TOTAL DES PROCESSUS ET LEUR NOMBRE, pas seulement les postes
+au-dessus d'un seuil.** Le seuil reste — lister 367 processus n'apprend rien — mais
+**seul le total borne ce qu'on n'a pas listé.** Sans lui, la coupe est un trou muet : ici
+elle laisse **~300 Mo sur 1 500 inattribuables**, et rien dans le relevé du 03/09 ne
+permet de dire si ces 300 Mo sont un poste qui a grossi sous la barre ou une centaine de
+petits qui ont bougé ensemble. **Avec le total, le résidu se calcule** (total moins la
+somme des postes nommés) : il cesse d'être inconnu pour devenir **borné**, ce qui suffit
+à conclure ou à s'abstenir en connaissance de cause.
+⚠ **La forme minimale d'un relevé d'état est donc de CINQ quantités**, pas trois : RAM
+libre · compte de node · CPU (médiane et dispersion) · **total des processus** · **leur
+nombre** — puis l'inventaire nommé au-dessus du seuil. Le relevé du 07/09 les porte
+toutes ; celui du 03/09 n'en portait pas les deux dernières, **et c'est pour cela que
+cette comparaison-ci est restée à moitié faite**. La prochaine certification héritera du
+même trou si la règle n'est pas dans la sonde.
+⇒ Deux postes portent l'essentiel et **n'ont rien à voir avec Zwadj** : `oracle`
+(1,2 Go) et `sqlservr` (112 Mo). ⚠ Docker, lui, **doit rester** : il porte `zwadj-db`,
+sans quoi `test:int` n'a plus de base.
+
+### ⛔ POURQUOI LA PASSE N'A PAS ÉTÉ LANCÉE QUAND MÊME
+
+Une passe jouée hors de l'état cible **mesure autre chose et se lit exactement pareil** —
+c'est ce qui a fait écarter la 6ᵉ passe du rang 6 (RAM 1 306 Mo, Chrome revenu), et sans
+cette assertion elle serait « probablement sortie verte » et serait entrée dans le compte.
+Cinq passes vertes prises à 3 793 Mo ne seraient pas « cinq passes au repos » : elles
+porteraient le mot sans la chose, dans une section intitulée « certification ».
+⛔ **Et il n'était pas question de redéfinir « repos » sur ce plancher-ci en passant** :
+la règle d'arbitrage a **déjà** été jouée le 03/09, verdict « le barème de D273 tient tel
+quel ». La rejouer trois jours plus tard parce que la machine est plus chargée, ce serait
+la certification obtenue en déplaçant la barre — ce que le refus du plafond relevé de
+`walkin-journey` a écarté quatre jours plus tôt. **Si la barre doit bouger, c'est une
+décision de Ko, elle prend un numéro, et le nombre de passes se DÉRIVE** (marge sur le
+`testTimeout` de 5 000 ms + dispersion entre passes), **sans jamais redescendre sous
+cinq**.
+
+### D275 — la passe, dans l'ordre où elle a été jouée
+
+⚠ **Le plancher retrouvé, mesuré avant de lancer quoi que ce soit** : RAM libre
+**4 732 Mo** (médiane de 6 relevés sur 60 s, bande 4 666–4 974), **node 0**, CPU médiane
+18 % (13–28), total **12 344 Mo sur 347 processus**. ⛔ **La marge est MINCE : +153 Mo sur
+la médiane, +87 au point bas.** C'est pourquoi chaque passe porte son assertion, et non
+la campagne entière.
+⚠ `sqlservr` (107 Mo) est **resté allumé** — relevé, sans conséquence sur la barre.
+
+| Étape | Code | Durée | Ce qui a été mesuré |
+|---|---|---|---|
+| 5 passes suite pro | **0** ×5 | 31–34 s | 28/28 fichiers, **347/347** tests, **0 avertissement `walkin-journey`** |
+| `neutralize-solid-s7` | **0** | 83 s | pré-vol **client ET pro** verts, **2/2 mordues** |
+| `typecheck` | **0** | 19 s | 4 paquets, **API comprise** |
+| `lint` | **0** | 13 s | 4 paquets |
+| `test` (racine) | **0** | 59 s | **1 310 tests / 107 fichiers** — api 640 · api-client 36 · client 287 · pro 347 |
+| `build` | **0** | 39 s | client + pro + api |
+| `test:int` | **0** | 303 s | **434 tests / 36 fichiers**, `zwadj-db` (postgres:18) réel |
+| `e2e` | **0** | 118 s | **34 passés, 1 ignoré, 0 instable** |
+| `lancer-campagnes --tout` | 1 | 1 844 s | **173 mordues · 0 muette · 9 non mesurées** · 25 campagnes |
+| les 9, en mode `--int` | **0** | — | **9/9 mordues** ⇒ **182 sur 182, zéro muette** |
+
+**État devant les cinq passes** (RAM · node · CPU médiane) : 4 740 · 0 · 21 % — 4 819 · 0
+· 21 % — 4 823 · 0 · 7 % — 4 906 · 0 · 16 % — 4 940 · 0 · 0 %. Toutes au-dessus de la
+barre, aucune écartée.
+⚠ **Les 9 `act(...)` du journal pro viennent de `venue-form` (6) et `venue-wizard` (3)**,
+couverts par leurs entrées `PLAFONDS` — **aucun de `walkin-journey`** — et leurs comptes
+sont **identiques sur les cinq passes**, là où ce compte flottait (293 · 294 · 295) sous
+charge. **Le barème de D273 est tenu en sa moitié repos.**
+⚠ **Le test e2e ignoré est NOMMÉ**, parce qu'une certification doit dire ce qu'elle n'a
+pas joué : `a5-cold-reload-vs-spa.e2e.ts:175` — « le calendrier d'une salle survit au
+rechargement ».
+
+### ⛔ D275 — LES « 9 NON MESURÉES » N'ÉTAIENT PAS MUETTES : ELLES N'ÉTAIENT PAS JOUÉES
+
+**C'est le fait nouveau de cette passe, et il vaut au-delà d'elle.** Le relevé de
+référence du dépôt annonce depuis D268 « **164 mordues sur 173, 9 NON MESURÉE déjà
+documentées** », formule qui se lit comme une limite acquise. **Mesuré : les neuf mordent
+toutes.** Elles portent `hors exécution : course / int-reservations / int-visites`, et
+`lancer-campagnes.py --tout` **ne joue pas les mesures d'intégration** — les harnais
+concernés les gardent derrière un drapeau `--int`. Joué : `neutralize-solid-s6` **6/6**,
+`neutralize-e3d1-s8` **8/8**.
+⛔ **C'est D262 et D268 une TROISIÈME fois** : un empêchement du bac à sable web — pas de
+PostgreSQL — s'est recopié de rapport en rapport après avoir disparu, et **couvrait
+exactement ce qu'il prétendait signaler**. Neuf gardes du chemin de l'argent et des
+notifications (index partiel d'intention de paiement, relecture du perdant, abonnements
+`visit.booked`) figuraient comme « non mesurées » alors qu'elles sont mesurables **sur ce
+poste depuis le 30/08**.
+⇒ **Rapporté au backlog, PAS corrigé ici** (défaut croisé) : `--tout` devrait soit jouer
+les mesures `--int`, soit **dire qu'il ne les joue pas** — aujourd'hui il rend « 9 non
+mesurées » sans nommer le drapeau qui les mesure.
+
+### ⚠ D275 — TROIS FOIS L'INSTRUMENT A ÉTÉ PLUS FRAGILE QUE LA MESURE
+
+Aucun n'a faussé un résultat, **tous ont failli** — et c'est le motif du rang 6, appliqué
+cette fois à mes propres extracteurs :
+1. `grep "Test Files"` **ne voyait rien** : les résumés Vitest portent des codes ANSI. Il
+   rendait zéro ligne sur une passe qui en avait quatre ;
+2. le compteur `FAIL` de `test:int` a rendu **1** sur une suite à 434/434 : le mot est
+   dans le **NOM** d'un test qui passe (« la ligne passe FAILED (D63) ») ;
+3. le chronomètre des campagnes a rendu **1 788 796 851 s** — un horodatage epoch, `t0`
+   perdu au passage en arrière-plan. La durée retenue (1 844 s) est celle que l'outil
+   mesure lui-même.
+⇒ **Les trois se lisaient comme des mesures.** Aucun n'a levé. C'est la règle du rang 6
+— *un instrument défaillant ne lève pas, il répond* — et elle vaut pour l'outillage
+jetable d'une session autant que pour les sondes du dépôt.
+
+## Session du 03/09/2026 — D274 · `venue-list` : 0 sur 30, et l'écart n'est PAS le code
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D273**.
+
+⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
+`git` le 04/09/2026). Tableau de provenance complet en section D270.
+
+⛔ **ÉTAT : RANG 6 CLOS EN DOCUMENTANT, PAS EN CORRIGEANT — ET AUCUNE LIGNE DE CODE N'A
+ÉTÉ ÉCRITE.** Le rang existait pour reproduire puis corriger une intermittence. **Elle ne
+se reproduit pas** : 30 passes, deux formes, deux états machine, **zéro rouge
+`venue-list`**. On ne corrige pas ce qu'on ne peut pas faire rougir — on écrit ce qu'on a
+mesuré, et ce qu'on n'a pas pu établir.
+
+### D274 — le taux, aux quatre coins
+
+| État | Forme | Passes | Rouges | dont `venue-list` | Durée | RAM devant | CPU devant |
+|---|---|---|---|---|---|---|---|
+| plancher | A — pro | 10 | 0 | 0 | 28–29 s | 5 340–5 743 Mo | ⚠ non relevé |
+| plancher | B — racine | 5 | 0 | 0 | 53–57 s | 5 513–5 560 Mo | 10–19 % |
+| charge | A — pro | 10 | **1** | **0** | 34–48 s | 2 408–2 852 Mo | 24–68 % |
+| charge | B — racine | 5 | **1** | **0** | 67–69 s | 2 848–3 020 Mo | 20–39 % |
+
+⇒ **`venue-list.test.tsx` : 0 rouge sur 30.** Le fichier est présent dans les 30 journaux,
+en échec dans aucun. Contre les **3 sur 5** de D273.
+
+### D274 — ⛔ CE QUI TRANCHE : LE CODE EST LE MÊME, À L'OCTET
+
+**Mesuré, et c'est ce qui clôt le rang** : `git diff --name-only <commit D273> HEAD` rend
+**deux fichiers, tous deux `.md`**. **Zéro fichier de code modifié.** `apps/pro` à HEAD est
+identique à `apps/pro` au commit de D273.
+⚠ **Et les trois rouges de D273 ont été mesurés APRÈS son correctif**, pendant le barème —
+son texte le dit, et il avait en plus contrôlé l'arbre d'AVANT, où le fichier rougissait
+aussi.
+⇒ **Même code, 3 sur 5 chez D273, 0 sur 20 en forme A ici. L'écart ne peut pas être le
+code.** ⚠ Piste écartée **par mesure** ; j'avais écrit « cinq commits documentaires, aucun
+de code » **sans l'avoir vérifié**, alors que D273 touchait bien deux fichiers du paquet
+pro. La conclusion était juste et ne tenait qu'à la chance — c'est Ko qui a exigé le
+contrôle.
+
+### D274 — ⛔ CE QUE L'EXPÉRIENCE DE SÉPARATION A RENDU, ET CE QU'ELLE N'A PAS RENDU
+
+Elle devait départager **contention** et **observateurs de fichiers**, en supposant que
+`venue-list` rougirait d'un côté. **Il ne rougit d'aucun.** La séparation ne s'est donc pas
+faite.
+- **Établi** : la contention seule, dans l'état de D273 (RAM 2 408–3 020 contre ses
+  2 247–3 017 ; CPU 20–68 % contre ses 27–79 %), **ne suffit pas** à faire rougir
+  `venue-list`. Et la charge **mord réellement** — mesuré, pas supposé : +20 à +65 % sur la
+  durée des passes.
+- ⛔ **NON établi** : que la pile `dev` soit en cause. Ne pas reproduire une chose n'en
+  désigne pas une autre.
+- ⛔ **NON établi non plus** : que `venue-list` aille bien. Une absence de reproduction
+  n'est pas une absence de défaut, et 0 sur 30 borne un taux, il ne prouve pas un zéro.
+⚠ **Deux facteurs de D273 restent NON reproduits, et ils sont nommés pour que personne ne
+les redécouvre** : (1) la pile `dev` et ses quatre observateurs ; (2) la NATURE de sa
+charge — la sienne venait de processus **occupés par des tests**, la mienne de brûleurs
+CPU et de porteurs de RAM. Ce n'est pas la même contention (disque, ordonnancement).
+
+### D274 — le fil produit et NON suivi : ce n'est peut-être pas un fichier, c'est la garde
+
+Les **deux** rouges sous charge tombent sur `account-settings-page.test.tsx`, par un
+mécanisme qui **n'est pas une assertion** : `Error: 2 avertissement(s) de console dans un
+fichier NON exempté`. **Même fichier, même nombre, même message** que ce que D272 avait
+classé SENSIBLE à tort la veille.
+⇒ Hypothèse écrite au backlog, **[PRO][P1]**, avec ses trois occurrences datées : ce ne
+serait pas un fichier qui porte un défaut, mais **la garde console qui tombe sous charge
+sur le fichier que l'ordonnancement désigne**. C'est peut-être ce que `venue-list` a été.
+⛔ **Rapporté, pas ouvert** : un défaut croisé se rapporte.
+
+### D274 — ⚠ CE QUE CE LOT NE LIVRE PAS À LA CERTIFICATION
+
+Le rang 6 existait pour rendre la porte fiable. **Il ne la rend pas verte sous charge** :
+il remplace un bloqueur non reproductible par un bloqueur **nommé et mesuré** (2 rouges sur
+15 sous charge, sur la garde console). Au **plancher**, en revanche, **0 rouge sur 15** aux
+deux formes.
+⇒ Conséquence pour le rang 7 : son barème exige « cinq passes au repos **plus deux sous
+charge encaissable** ». La moitié « repos » est atteignable aujourd'hui ; la moitié « sous
+charge » rencontrera la garde console. **Le dire maintenant évite de le découvrir au
+moment de certifier cinq lots.**
+
+## Session du 03/09/2026 — rang 6 · les mesures (détail)
+
+⛔ **Aucun numéro de décision : rien n'est tranché.** Ce sont des mesures, et elles sont
+consignées ICI parce que leurs journaux vivent dans `.neutralisation-journaux/`, **ignoré
+par git** : ils disparaîtront au premier nettoyage, et un chiffre dont la preuve s'est
+évaporée redevient un chiffre de mémoire (demandé par Ko).
+
+### Le plancher, AVEC son inventaire — la donnée qui manquait à tous les relevés
+
+| | Barre | Mesuré le 03/09 |
+|---|---|---|
+| RAM libre | 4 579 Mo | **5 326 Mo** ✅ |
+| node | zéro | **0** ✅ |
+| CPU (instrument calibré) | *barre annulée* | médiane **17 %**, étendue 5–28 |
+
+**Inventaire** : `Code` 21 proc / 2 491 Mo · `svchost` 99 / 1 231 · `oracle` 592 · WSL 429
+· `claude` 343 · Edge d'arrière-plan 613 · Docker 300 · le reste sous 200 Mo.
+⇒ **Verdict de la règle écrite d'avance (rang 7) : le barème de D273 TIENT tel quel.** La
+session produit 5 326 Mo **avec VS Code ouvert**, donc la question « 4 579 incluait-il VS
+Code ? » est sans objet en pratique. Rien n'est redéfini, le nombre de passes ne monte pas.
+
+### ⛔ LE TAUX AU PLANCHER : **0 SUR 15**, LES DEUX FORMES
+
+| Forme | Passes | Rouges | `venue-list` | Durée | RAM devant | CPU devant |
+|---|---|---|---|---|---|---|
+| A — `--filter @zwadj/pro test` | 10 | **0** | jamais | 28–29 s | 5 340–5 743 Mo | ⚠ non relevé |
+| B — racine, tous paquets | 5 | **0** | jamais | 53–57 s | 5 513–5 560 Mo | 10–19 % |
+
+La forme B a bien joué **tout** l'espace de travail — vérifié dans le journal, pas
+supposé : api **640/640** (56 fichiers) · api-client **36/36** (3) · client **287/287**
+(20) · pro **347/347** (28), soit **1 310 tests sur 107 fichiers**. ⚠ Le résumé de
+campagne n'affichait que la DERNIÈRE ligne `Test Files` — celle de `pro` — ce qui donnait
+« 28 passed » pour une passe qui en jouait 107. L'extracteur montrait moins que la mesure.
+
+⇒ **Ce que le chiffre autorise** : contre les **3 rouges sur 5** de D273, si le taux
+d'échec était resté celui-là, quinze passes vertes d'affilée seraient de l'ordre du
+**millionième**. **Quelque chose a réellement changé.** C'est un fait sur les TAUX.
+⛔ **Ce qu'il n'autorise PAS** : une absence de reproduction n'est pas une absence de
+défaut, et **deux variables ont bougé ENSEMBLE** entre D273 et cette campagne — la pile
+`dev` s'est arrêtée **et** la RAM libre est passée de ~2,5 Go à ~5,5 Go. Les attribuer ici
+serait ce que D270 a payé trois fois.
+
+### ⚠ LIMITE DÉCLARÉE DE CETTE CAMPAGNE : PAS DE CPU PAR PASSE EN FORME A
+
+Le champ CPU du relevé par passe est sorti **vide sur les dix**, et **sans jamais
+échouer** (`RAM=5340Mo CPU=% node=0`). Cause : le filtre `Name='_Total'` s'est perdu dans
+l'imbrication des guillemets entre bash et PowerShell, la commande rendant une chaîne vide
+au lieu de lever. **C'est le remplacement fantôme du dépôt appliqué à un relevé** — un
+champ vide se lit exactement comme un champ mesuré.
+⇒ Réparé pour la forme B : instrument déplacé dans un `.ps1` dédié, qui rend
+`ECHEC-INSTRUMENT` au lieu du vide, et **pré-volé** avant campagne (les trois champs
+doivent être remplis, sinon on n'avance pas).
+⛔ **La forme A n'a PAS été rejouée** : la relancer maintenant mesurerait une AUTRE
+machine. RAM et node — les deux quantités qui LIENT le plancher — sont relevés
+correctement sur les dix passes ; le CPU y manque, et cela reste vrai.
+
+### PostgreSQL, pour la certification
+
+`zwadj-db` (postgres:18) debout depuis 6 jours, 5432 exposé, **PostgreSQL 18.4 répond**,
+**40 tables** dans `public`. ⚠ Le rôle est **`zwadj`**, pas `postgres` : ma première
+vérification a échoué en supposant le superutilisateur conventionnel au lieu de le
+relever. `test:int` aura ce qu'il lui faut.
+
+### ⛔ TROIS INSTRUMENTS ÉCARTÉS PAR LEUR PROPRE CONTRÔLE EN UNE SESSION — C'EST UN MOTIF
+
+Écrit une fois pour toutes à la demande de Ko, pour qu'il cesse d'être redécouvert. Le
+relevé HORLOGE (02/09) en avait déjà écarté deux ; cette session en écarte **trois de
+plus**, dont deux qui ont failli produire un résultat au lieu d'une erreur :
+
+1. **`Win32_Processor.LoadPercentage`** — ne distingue pas une charge connue de son
+   absence (`27, 0, 30, 4` sous charge contre `28, 30, 9, 0` au repos). Écarté par
+   **calibration sur charge connue**. ⇒ Sans elle, tous les CPU de cette session — et la
+   cible « 6 % » héritée — auraient été du bruit présenté comme des mesures.
+2. **Le relevé CPU par passe de la forme A** — filtre `Name='_Total'` perdu dans
+   l'imbrication bash/PowerShell : la commande rendait une **chaîne vide sans jamais
+   échouer**. Écarté par la **lecture du résumé** (`CPU=%`). ⇒ Un champ vide se lit
+   exactement comme un champ mesuré.
+3. **Ma propre charge RAM** — première version touchant **un seul octet** toutes les 5 s :
+   Windows a rogné l'ensemble de travail des porteurs et la RAM libre est remontée de
+   2 352 à **4 299 Mo** pendant qu'on la croyait tenue. Écartée par un **contrôle de
+   stabilité sur 60 s** posé avant de s'y fier. ⇒ Sans lui, la campagne aurait tourné à
+   ~4,3 Go libres **en s'annonçant « sous charge de D273 »**, serait sortie verte, et
+   aurait fait conclure que la contention n'explique rien — sur une charge qui n'existait
+   plus.
+
+⛔ **CE QUE LES CINQ ONT EN COMMUN : AUCUN N'AURAIT ÉCHOUÉ.** Tous rendaient une sortie
+bien formée. Un instrument défaillant ne lève pas — **il répond**, et sa réponse a la
+forme exacte d'une mesure. C'est pourquoi la règle n'est pas « vérifier ses outils » mais
+la seule qui morde : **un instrument se calibre sur un cas dont la réponse est déjà
+connue, AVANT de lui faire trier ce qu'on ignore.**
+⚠ Corollaire, appliqué ici trois fois : le cas connu doit être **produit exprès** —
+charge connue, sortie attendue non vide, état devant tenir dans le temps. Un instrument
+confronté aux seules données qu'on cherche à trier ne peut pas être pris en défaut.
+
+### ⚠ UN ABANDON EN COURS DE CAMPAGNE N'EST PAS UN ÉCHEC DE CAMPAGNE
+
+La 6ᵉ passe sous charge a **abandonné** : RAM libre 1 306 Mo, hors de la bande
+1 900–3 300 assertie avant chaque passe. Cause attribuée **par inventaire, pas supposée** :
+**Chrome était revenu** (13 processus, 1 802 Mo), les quatre processus de charge étant
+intacts. ⇒ Les cinq passes précédentes **restent valides**, chacune portant l'état relevé
+devant elle.
+⛔ **Sans cette assertion, la sixième aurait tourné à 1 306 Mo avec Chrome dessus, serait
+probablement sortie verte, et serait entrée dans le compte comme « une passe sous la
+charge de D273 ».** Une passe jouée hors de l'état cible mesure autre chose et **se lit
+exactement pareil**.
+
+### Prochaine mesure : SÉPARER les deux variables confondues
+
+Charge **pure** — CPU et RAM occupés, **aucun observateur de fichiers** — jusqu'à
+retrouver l'état de D273 (~2,5 Go libres), puis les deux formes.
+- rouge sous charge pure ⇒ c'est la contention ; la piste de la pile `dev` tombe, le
+  défaut est réel mais **conditionnel** ;
+- vert sous charge pure équivalente ⇒ la charge ne suffit pas, et la piste des quatre
+  observateurs qui recompilent pendant la lecture gagne du poids.
+
+## Session du 02/09/2026 — D273 · `act(...)` tardif : 293 → 0, et la sortie de `PLAFONDS`
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D272**.
+
+⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
+`git` le 04/09/2026). Tableau de provenance complet en section D270.
+
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — ET LE BARÈME N'EST PAS SATISFAIT.** Il exigeait
+**cinq passes à zéro au repos et deux sous charge**. Ce qui a été obtenu, mesuré :
+`walkin-journey.test.tsx` est à **zéro avertissement sur 5 passes de la suite pro sur
+5**, mais **aucune de ces passes n'a eu lieu au repos** (CPU 27–65 %, RAM ~2,6 Go, là
+où le cadrage relevait 6 % et 4 579 Mo), et **trois des cinq sont rouges sur d'AUTRES
+fichiers**. ⛔ **Le barème a été fixé avant de mesurer, et c'est précisément pour ne
+pas se réécrire maintenant.** Il n'est pas déclaré tenu ; il est déclaré NON TENU, et
+la raison est ci-dessous.
+
+### D273 — le relevé qui a commandé le correctif
+
+Reproduit à l'identique du cadrage : **293**, et 293 sur 293 sont des `act(...)`.
+L'attribution par test — que le cadrage n'avait pas — montre un motif **parfaitement
+régulier**, ce qui exclut l'aléa :
+
+| Émetteur | Compte | Rythme relevé |
+|---|---|---|
+| `VenueCalendar` | 171 | **3 par montage** ; 6 dans les parcours qui dépassent l'étape date |
+| `AuthProvider` | 82 | **2 dans CHACUN des 41 tests** |
+| `WalkinJourney` | 40 | **1 par test** (40, un test n'en produit pas) |
+
+23 tests à 6 + 11 à 3 = 171 ; 41 × 2 = 82. **Le total ne se devine pas, il se
+décompose.**
+
+### D273 — ⛔ CE N'ÉTAIT PAS « UNE MISE À JOUR APRÈS LA FIN DU TEST »
+
+C'est la phrase que `test-setup.ts` emploie, et elle décrit la famille D269 — pas ce
+cas-ci. Ici les trois `setState` de `VenueCalendar` (`setData`, `setError`,
+`setLoading`) tombent **PENDANT** le test, simplement **hors de toute fenêtre `act`**.
+⇒ **Conséquence qui a orienté tout le lot : ATTENDRE NE LES SUPPRIME PAS.**
+`repondreDate` attendait déjà que la case du jour soit ACTIVE — donc que la donnée
+soit arrivée — et laissait quand même passer ses 3 avertissements : quand l'attente
+rend la main, React a déjà écrit son message. Une attente demande « est-ce arrivé ? » ;
+il fallait **ouvrir une fenêtre pour recevoir**, ce que fait `laisserRetomber()`.
+
+### D273 — aucun composant de production n'a bougé, et ce n'est pas une précaution
+
+`VenueCalendar` a **raison** de poser ses trois `setState` après son `await` ; le
+défaut était dans le test, qui rendait la main pendant que le travail était en vol.
+Les fichiers touchés sont ceux qui étaient énumérés au cadrage, et eux seuls.
+
+### D273 — le correctif, en trois fenêtres et une aide
+
+`laisserRetomber()` = `await act(async () => { await Promise.resolve(); })`, appelée à
+**trois moments distincts**, chacun mesuré séparément :
+
+| Front | Moment | Avant → après |
+|---|---|---|
+| 1 | fin de `setup()` — le bootstrap d'`AppProviders` est encore en vol | 293 → **171** |
+| 2 | après l'étape client — l'étape date MONTE `VenueCalendar` | — |
+| 3 | après le choix de la date — l'effet du calendrier REJOUE | 171 → **0** |
+
+⚠ **Le compte a été relevé APRÈS CHAQUE FRONT**, comme le cadrage l'exigeait :
+`AuthProvider` et `WalkinJourney` sont tombés à zéro au front 1, `VenueCalendar` aux
+fronts 2 et 3. ⛔ **Le cadrage disait « ne pas présumer que `VenueCalendar` tombe du
+même geste » — il avait raison, mais pas comme prévu** : il ne demandait pas un autre
+geste, il en demandait **deux du même**, parce que son effet s'exécute deux fois.
+Un seul aurait laissé la moitié des 171 et fait échouer le lot.
+
+### D273 — la preuve : `neutralize-act-plafonds.py`, 4 cibles, 4 mordues
+
+- **C1, C2, C3 — classiques** : chaque fenêtre `act` est retirée à son tour, le
+  fichier doit devenir **ROUGE**. Les trois mordent. ⚠ Sans les trois séparément, une
+  seule fenêtre pourrait porter toute la charge pendant que les deux autres décorent.
+- **C4 — INVERSÉE, et c'est elle qui mesure la SORTIE de `PLAFONDS`** : on retire la
+  même fenêtre que C1 **et** on remet l'exemption, plafond 999. Le fichier doit rester
+  **VERT**. Il l'est. ⇒ Le rouge de C1 vient donc de **l'absence d'exemption**,
+  c'est-à-dire que la garde est bien **armée** sur ce fichier — et non d'un test qui
+  casserait pour une autre raison. **Sans C4, C1–C3 seraient compatibles avec un
+  fichier toujours exempté dont un test tombe.**
+
+### D273 — ⚠ MON PROPRE HARNAIS A PRODUIT UNE ERREUR DE SCRIPT, ET ELLE VALAIT LA PEINE
+
+La vérification post-mutation était « l'ancre a disparu ». **C4 est une INSERTION** :
+son remplacement CONTIENT l'ancre, qui est donc toujours là après coup. Le harnais a
+donc levé « la mutation n'a pas été appliquée » sur une mutation **parfaitement
+appliquée** — une erreur d'outil qui se lit exactement comme un défaut de code.
+⇒ La vérification compare désormais à l'**ÉTAT ATTENDU**, ce qui couvre les deux
+formes et attrape en prime la **mutation inerte** (un remplacement de même valeur, qui
+ne mesure rien — D236).
+⚠ Au passage, la sauvegarde disque de D224 a fait son travail : l'arbre est reparti
+propre au démarrage suivant, sans intervention.
+
+### D273 — ⛔ POURQUOI LE BARÈME N'EST PAS TENU, EN DEUX FAITS MESURÉS
+
+**1. La machine n'a jamais été au repos de la session.** État relevé DEVANT chaque
+passe (D270) : CPU 27 %, 30 %, 31 %, 34 %, 35 %, 57 %, 65 %, 79 % ; RAM libre 2 247 à
+3 017 Mo. Le cadrage appelait « repos » 4 579 Mo et 6 %. **Cinq passes prises dans ces
+conditions ne sont pas cinq passes au repos**, et les appeler ainsi ferait exactement
+ce que D270 interdit.
+
+**2. Trois passes sur cinq sont rouges — sur des fichiers que ce lot ne touche pas.**
+`venue-list.test.tsx` (×3) et `account-settings-page.test.tsx` (×1).
+⛔ **ATTRIBUÉ PAR CONTRÔLE, PAS SUPPOSÉ** : l'arbre **d'avant le lot** a été remonté et
+mesuré dans les mêmes conditions — `venue-list.test.tsx` y échoue **aussi**
+(RAM 2 572 Mo, CPU 35 %). **Cette intermittence est antérieure et étrangère à ce lot.**
+Reportée au backlog, non corrigée ici : un défaut croisé se rapporte.
+
+**3. Sous charge produite, la suite s'effondre — sur les DEUX arbres.** À 12 processus
+occupés : 72 échecs, 76 délais dépassés. À 4 processus : 14 échecs sur l'arbre du lot,
+3 sur l'arbre d'avant, **`walkin-journey` en échec dans les deux cas, par EXPIRATION à
+5 000 ms**. ⚠ Ses avertissements sous charge (4, puis 7) sont la **conséquence** des
+tests interrompus — `test-setup.ts` écrit noir sur blanc que ce bruit-là ne se juge pas
+sur une suite par ailleurs rouge. **Ce ne sont pas des avertissements de la famille
+corrigée ici.**
+⇒ **Ce qui reste vrai et mesuré : dès que le fichier va au bout, il est à ZÉRO.**
+
+### D273 — le volet indépendant : la règle du maximum déclare enfin ses conditions
+
+`test-setup.ts` disait « on garde le MAXIMUM de trois relevés » **sans dire de quoi**.
+Trois relevés au repos rendent trois fois le même chiffre et se lisent comme une
+confirmation ; c'est une confirmation de la MACHINE. Mesuré : 293 · 293 · 293 au repos,
+294 sous charge, 295 dans la porte complète — le plafond gelé valait 293, c'est-à-dire
+le maximum de trois passes qui ne pouvaient pas le dépasser, et il a fait tomber la
+porte. La règle exige désormais **au moins une exécution sous charge et une dans la
+porte complète**, avec l'état machine relevé devant chacune.
+
+### D273 — ⛔ CE LOT A PÉRIMÉ L'ANCRE D'UNE AUTRE CAMPAGNE, ET IL LA RÉPARE
+
+Le tri (`lancer-campagnes.py`) a retenu **trois** campagnes. Deux passent :
+`neutralize-act-plafonds` **4/4** et — contrôle qui comptait — `neutralize-horloge`
+(D272) **2/2**, donc mes fenêtres `act` n'ont pas périmé les ancres du lot précédent.
+La troisième, `neutralize-solid-s7`, s'est arrêtée sur `ERREUR DE SCRIPT : 0
+occurrence(s)`.
+
+⛔ **C'est ce lot qui l'a cassée.** Sa cible **S7-2** renommait la clé
+`"src/dashboard/walkin-journey.test.tsx"` dans `PLAFONDS` pour prouver que vider la
+liste d'exemptions fait tomber les fichiers qu'elle couvre. **Cette clé n'existe
+plus** — c'est l'objet même du lot. ⚠ **Un lot ne laisse pas derrière lui une campagne
+qui ne démarre pas** : elle se lirait comme un défaut de code au prochain passage,
+exactement le piège que le dépôt a déjà payé.
+⇒ **Cible RÉORIENTÉE, par écrit, dans le script** : son INTENTION est inchangée
+(« vider la liste d'exemptions du pro fait tomber ce qu'elle couvre »), seul son SUJET
+passe à `venue-form.test.tsx`, exemption qui subsiste. Le commentaire dit aussi ce
+qu'il faudra en faire le jour où `PLAFONDS` sera vide côté pro : **la retirer**, pas
+la re-pointer au hasard.
+⚠ **Son intitulé ne porte plus de compte.** Il annonçait « les 64 avertissements du
+parcours » — faux depuis longtemps. Mesuré en le réorientant : `venue-form` rend **6**
+au relevé et **1** sous une autre répartition, sans qu'une ligne bouge. Ce que la
+cible mesure est « le fichier TOMBE », pas « il tombe avec n ».
+
+⛔ **SIXIÈME FICHIER AU DIFF, HORS DE L'ÉNUMÉRATION DU CADRAGE, ET DÉCLARÉ COMME TEL :**
+`neutralisation/neutralize-solid-s7.py`. Le cadrage en énumérait cinq. Celui-ci n'est
+pas un élargissement de périmètre — c'est la réparation de ce que le lot a cassé.
+
+### D273 — ⚠ LA CIBLE RÉORIENTÉE A ÉTÉ VÉRIFIÉE SÉPARÉMENT, ET VOICI POURQUOI
+
+`neutralize-solid-s7` **n'a pas pu être rejouée en entier** : son pré-vol exige une
+suite **client** verte, et la suite client est rouge. ⛔ **Mesuré, pas supposé** :
+l'arbre **d'avant ce lot** a été remonté et la suite client y est rouge **aussi**
+(2 fichiers), avec un ensemble de fichiers fautifs qui **change d'une passe à
+l'autre** — `venue-detail-view` deux fois, puis `search-view`, `availability-calendar`,
+`account-settings-view`. ⚠ Un test **SYNCHRONE** y expire à 5 000 ms, avec
+`collect` à 284 s : **c'est la machine qui est mesurée, pas le code** (D270). Ce lot
+ne touche rien dans `apps/client`.
+⇒ La cible S7-2 a donc été vérifiée **sur sa moitié pro**, isolément : ancre présente
+**une fois**, mutation appliquée, `venue-form.test.tsx` **tombe** avec
+« avertissement(s) de console dans un fichier NON exempté », arbre restauré et
+vérifié. **La campagne complète reste à rejouer sur une machine calme** — c'est une
+limite déclarée, pas un résultat.
+
+### D273 — portes
+
+`typecheck` **0** · `lint` **0** · `walkin-journey.test.tsx` seul : **41/41, 0
+avertissement** · harnais du lot **4/4** · `neutralize-horloge` **2/2** · suite pro :
+**347/347** sur les passes vertes, rouge par intermittence pour la cause antérieure
+ci-dessus.
+⛔ **NON LANCÉS, ET DÉCLARÉS TELS** : `pnpm build`, `test:int`, la suite e2e, et
+`lancer-campagnes.py --tout`. Ce lot ne touche aucun code de production, mais **cela
+ne les rend pas verts** — cela les rend non mesurés, ce qui n'est pas la même chose
+(D262).
+⛔ **Rien n'est déclaré vert au-delà de ce qui a été lancé.**
+
+## Session du 02/09/2026 — D272 · l'horloge gelée, et les fixtures qui en dérivent
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D271**.
+
+⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
+`git` le 04/09/2026). Tableau de provenance complet en section D270.
+
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** ⚠ Cette ligne portait « LIVRÉ » seul : en tête
+d'une file de quatre lots non certifiés, c'est le mot qui décide de la lecture, et
+« LIVRÉ » se lit comme clos. **La porte `test` sort en 0 AU REPOS** — état machine relevé
+avant la mesure : RAM libre 4 579 Mo, CPU 6 %, zéro processus node. api 640/640 ·
+api-client 36/36 · client 287/287 · **pro 347/347**, zéro délai dépassé.
+⛔ **« Verte au repos » n'est PAS « verte ».** ~~argon2 (1 test) et sharp (2 tests)
+restent capables de la faire rougir sous charge : c'est le lot sharp qui suit.~~
+⚠ **RECTIFIÉ LE 02/09/2026, QUELQUES HEURES PLUS TARD DANS LA MÊME JOURNÉE.** La
+phrase barrée était exacte quand elle a été écrite ; elle a cessé de l'être avant la
+fin du jour. argon2 a quitté la suite unitaire (D271), et **sharp est requalifié SANS
+OBJET SUR MESURE** : API **640/640, zéro délai dépassé, à 8, 24 et 48 processus**,
+état machine relevé avant chacune — le test sharp le plus lourd garde **2,1× de
+marge** à 48 processus contre un budget de 5 000 ms. Relevé complet dans
+`ZWADJ_BACKLOG.md`.
+⛔ **SA CONDITION DE VALIDITÉ EST STRICTE, ET ELLE FAIT PARTIE DU CONSTAT : sharp ne
+tombe plus PARCE QUE les cinq tests argon2 ont quitté la suite unitaire API.** Ce
+n'est pas sharp qui s'est amélioré, c'est la pression qui a baissé. **Si du travail
+coûteux revient en unitaire dans `apps/api` — un KDF, un traitement d'image, un
+chiffrement — la marge se referme et sharp retombe.** Il est **déchargé, pas réglé** :
+sans cette phrase, la prochaine lecture sera « sharp est réglé ».
+⇒ Ce qui tient encore la porte sous charge n'est donc **ni argon2 ni sharp**, mais le
+plafond d'avertissements de `walkin-journey.test.tsx` — c'est le lot qui suit, cadré
+en tête de ce fichier. **Ce lot ne certifie rien** — ni D269, ni D270, ni D271, ni
+lui-même.
+
+### D272 — un seul fichier, et c'est le verdict de la sonde qui l'a dit
+
+Sur les **28 fichiers de test d'`apps/pro`**, la sonde en désigne **UN** :
+`walkin-journey.test.tsx`. Deux méritent d'être nommés parmi les insensibles :
+- `account-settings-page.test.tsx` — d'abord classé SENSIBLE, **à tort** : ses
+  échecs étaient `2 avertissement(s) de console`, c'est-à-dire un artefact de la
+  sonde elle-même (voir plus bas) ;
+- `request-scope.test.tsx` — **insensible bien que sa fixture expire le 12/09/2026**.
+  Sa date n'est comparée à rien. ⇒ **La table des échéances n'est pas une liste de
+  défauts**, et cette phrase est désormais écrite au-dessus d'elle au backlog.
+
+### D272 — ⛔ LA PROPRIÉTÉ VISÉE N'EST PAS « ÇA REPASSE AU VERT »
+
+C'est **l'insensibilité à TOUTE date**, et elle tient à une condition : `MAINTENANT`
+est la **seule date écrite** du fichier, tout le reste en DÉRIVE (`jour(5)`,
+`jour(-9)`, `jour(21)`…). Vérifié en relevant les littéraux : il en reste **un**.
+
+⚠ **Pourquoi la formulation compte.** Décaler les dates aurait rendu le vert
+immédiat et reconduit le défaut d'un mois. Garder une date en dur à côté du gel
+aurait laissé **deux valeurs à maintenir**, qui divergent au premier changement de
+fixture. La dérivation supprime la seconde valeur ; c'est la propriété, le vert
+n'en est que la conséquence.
+
+### D272 — la preuve est BILATÉRALE, et c'est ce qui la rend une preuve
+
+`neutralisation/neutralize-horloge.py`, **2 cibles, 2 mordues** :
+- **C1, classique** — le gel est retiré ⇒ le fichier doit devenir **ROUGE**. Prouve
+  que le gel MORD, et non qu'il décore.
+- **C2, INVERSÉE** — l'ancre est déplacée de **dix ans** ⇒ le fichier doit rester
+  **VERT**. Prouve que toutes les fixtures dérivent : s'il en restait une écrite en
+  dur, elle divergerait et le test tomberait.
+⚠ **Une cible inversée se lit à l'envers** : « la mutation ne change RIEN » est le
+succès. C'est la seule façon de mesurer une INSENSIBILITÉ — aucune
+mutation-qui-fait-rougir ne peut la démontrer.
+
+### D272 — ⛔ TROISIÈME INSTRUMENT ÉCARTÉ… PUIS RÉPARÉ ET GARDÉ
+
+Après les deux du relevé (gel global, détection statique), la sonde elle-même a
+produit un faux positif : `account-settings-page.test.tsx` désigné SENSIBLE alors
+que ses seuls échecs étaient la garde des avertissements console. **Les faux timers
+perturbent l'ordonnancement asynchrone de React**, produisent des `act(...)`, et la
+garde les transforme en échecs. C'est **le mécanisme qui avait déjà invalidé
+l'instrument global, revenu par fichier — assez discret pour passer pour un
+résultat.**
+⇒ La sonde écarte désormais un rouge dont **toutes** les causes sont cette garde.
+
+### D272 — la sonde a ABANDONNÉ sur le fichier qu'elle venait de faire corriger
+
+Rejouée après le correctif, elle a refusé de rendre un verdict : son cas de
+calibration positif était `walkin-journey.test.tsx`, **que ce lot vient de rendre
+insensible**. Un lot qui corrige son propre cas de calibration détruit la preuve que
+l'instrument sait détecter.
+⇒ **Cas positif SYNTHÉTIQUE** : la sonde fabrique une copie temporaire du fichier
+corrigé, **privée de son gel**, et exige qu'elle ressorte SENSIBLE. Elle se
+recalibre donc sur le correctif lui-même, et reste capable de prouver qu'elle
+détecte. **Calibrée 3/3.**
+⚠ C'est la leçon « une cible devenue sans objet se réoriente ou se retire, par
+écrit » — appliquée cette fois à l'instrument, pas à une cible.
+
+### D272 — le gel vit PAR FICHIER, et la raison est écrite là où on serait tenté de factoriser
+
+`apps/pro/src/test-setup.ts` porte désormais l'interdiction et sa **mesure** : gel
+global posé à la date du jour ⇒ **26 échecs au lieu de 24** ; posé loin ⇒ la
+collecte entière tombe. Sans cette note, quelqu'un remonterait le gel un jour en
+croyant simplifier, et casserait la suite de la même façon.
+
+## Session du 02/09/2026 — lot HORLOGE, relevé préalable (sans numéro)
+
+⛔ **Aucun numéro de décision** : ce relevé ne tranche rien, il prépare. Le numéro
+se prendra au cadrage du correctif, en LISANT le registre.
+
+### HORLOGE — le relevé statique
+
+**57 fichiers de test portent une date en dur. DEUX figent l'horloge**
+(`venues-public.service.spec.ts`, `availability-calendar.test.tsx`). Aucun des deux
+`test-setup.ts` partagés n'en pose. 37 fichiers portent des dates déjà passées.
+
+### HORLOGE — ⛔ DEUX INSTRUMENTS CONSTRUITS, DEUX INSTRUMENTS ÉCARTÉS PAR LEUR PROPRE CONTRÔLE
+
+⚠ **C'est le vrai produit de ce relevé, et il vaut mieux que la liste qu'il devait
+produire.**
+
+**Instrument 1 — le voyage dans le temps.** Injecter un gel d'horloge dans le
+`test-setup.ts` partagé, avancer à 2027 puis 2028, lire ce qui tombe. Sortie
+apparente : 28 fichiers rouges côté pro, 18 côté client — **dont `ui-tokens.test.ts`
+et `theme-toggle.test.tsx`, qui ne contiennent aucune date.**
+⇒ **Contrôle qui l'invalide** : la même injection posée à la date **du jour**, où
+rien ne doit changer, rend **26 échecs au lieu de 24**. L'instrument perturbe ce
+qu'il mesure ; aux dates lointaines il fait tomber la collecte entière (« no
+tests »). Un `useFakeTimers` global entre en conflit avec les tests asynchrones.
+**Écarté.**
+
+**Instrument 2 — la détection statique des lectures d'horloge.** Chercher
+`new Date()`, `Date.now()`, `today` dans le test et dans le module voisin qu'il
+exerce, pour ne garder que les fichiers réellement exposés. Sortie : 24 candidats
+sur 56, ce qui avait l'air d'un bon tri.
+⇒ **Invalidé par le SEUL cas dont la réponse est connue** :
+`walkin-journey.test.tsx` — le fichier qui échoue en ce moment même — en ressort
+**classé sans risque**. La lecture d'horloge est faite par un composant plus bas
+dans l'arbre, pas par le module de même nom. **Un classificateur qui rate le cas
+connu ne peut pas trier les 56 autres. Écarté.**
+
+⛔ **CE QUE J'AURAIS LIVRÉ SANS CES DEUX CONTRÔLES** : une liste de 24 fichiers « à
+corriger » **dont celui qui est cassé aurait été absent**. Elle aurait eu l'air
+d'un relevé complet — la forme exacte d'un audit tronqué (D200).
+⚠ **Un instrument se calibre sur des cas dont on connaît déjà la réponse, AVANT de
+lui faire trier ce qu'on ignore.** Cette règle existait pour les tests ; elle vaut
+pour les outils de relevé.
+
+### HORLOGE — la seule information sûre SANS instrument : les échéances
+
+**19 fichiers** n'ont que des dates futures : ils passent aujourd'hui et tomberont
+le jour dit. Cela ne demande aucun jugement sur ce qui compare une date à
+« maintenant » — c'est une date de péremption, pas un défaut. **Table complète au
+backlog.**
+⚠ **Extraction VALIDÉE** (`fromisoformat`) après que le premier extracteur eut rendu
+`2026-13-01` et `2027-02-31` : **12 chaînes écartées, le compte passe de 20 à 19.**
+⛔ **`request-scope.test.tsx` expire le 12/09/2026 — dans dix jours.**
+⚠ **Neuf fichiers partagent l'échéance 2027-08-15** : le jour venu, ce n'est pas un
+test qui tombe mais une grappe — et une grappe se lit comme une panne, pas comme une
+péremption.
+
+## Session du 01/09/2026 — D271 · argon2 quitte l'unitaire pour `test:int`
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D270**.
+
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** La porte `test` reste rouge **sous charge** — ~~sharp
+la tient encore (lot suivant)~~. Ce lot ne prétend pas la rendre verte, et il ne
+certifie donc ni D269 ni D270.
+⚠ **LE RENVOI EST PÉRIMÉ DEPUIS LE 02/09/2026 : sharp est requalifié SANS OBJET sur
+mesure** (rang 4 de l'ordre des lots), précisément **parce que** ce lot-ci a sorti les
+cinq tests argon2 de la suite unitaire. Le constat daté reste vrai au 01/09 ; c'est le
+« lot suivant » qui a changé — il est désormais le rang 5, `act(...)` tardif.
+
+### D271 — ⛔ UNE TROISIÈME CAUSE, TROUVÉE EN RELANÇANT LES PORTES : L'HORLOGE
+
+⛔ **La porte `test` est rouge sur `@zwadj/pro`, et ce n'est ni argon2 ni sharp.**
+Trouvé le 01/09 en relançant la passe finale : `walkin-journey.test.tsx` rend **24
+échecs sur 41**, tous en `expect(element).toBeEnabled()`. **Mesuré aussi sur `main`,
+sans mes changements : 24 échecs identiques.** Le défaut n'est pas de ce lot.
+
+⚠ **ET LA MÊME COMMANDE RENDAIT 347/347 LA VEILLE, DANS CETTE SESSION.** Aucune
+ligne n'a bougé entre les deux. Ce qui a bougé, c'est **la date** : la session a
+franchi minuit, on est passé au 01/09/2026.
+
+⛔ **CAUSE PROUVÉE, PAS DÉDUITE.** Le fichier fixe une fenêtre
+`from: "2026-08-01", to: "2026-08-31"` et des dates `2026-08-15/16/22`, **sans figer
+l'horloge**. Ces dates sont désormais PASSÉES, le calendrier les refuse, le bouton
+reste désactivé. Reproduction : `vi.setSystemTime("2026-08-10")` ⇒ **41/41 VERT** ;
+horloge réelle ⇒ 24 rouges. Horloge restaurée après la mesure, rien laissé dans
+l'arbre — vérifié.
+
+⚠ **LA LEÇON EXISTAIT DÉJÀ, ÉCRITE, ET N'A PAS ÉTÉ APPLIQUÉE ICI** (D213, D227) :
+« figer l'horloge, jamais choisir une date dans le futur — elle cesse de l'être, et
+la suite rougit sans qu'une ligne de code ait bougé ». Une règle consignée ne
+protège que les fichiers qui l'appliquent.
+
+⛔ **CE QUE ÇA CHANGE POUR L'ORDRE DES LOTS.** Contrairement à argon2 et sharp, ce
+défaut est **DÉTERMINISTE** : il ne dépend d'aucune charge, il rougit à chaque
+exécution, et il ne se réparera pas seul. **Il devient la cause dominante de la
+porte rouge**, devant les deux autres. Tant qu'il est là, la porte ne redeviendra
+verte à AUCUNE charge — donc D269 et D270 ne pourront pas être certifiés.
+⇒ **Entrée backlog P0 ouverte.** ⛔ **NON corrigé dans ce lot** : il ne touche ni
+l'authentification ni argon2, et un défaut croisé se RAPPORTE, il ne se corrige pas
+dans un lot qui parle d'autre chose.
+⚠ **Le correctif n'est pas « décaler les dates »** — ce serait reconduire le défaut
+d'un mois. Et **rien ne dit que ce fichier soit le seul** : un balayage fait partie
+du correctif.
+
+⚠ **CE QUE CET ÉPISODE DIT DE MES PROPRES MESURES.** Ma première mesure de la
+session — « la porte racine sort en 0 » — était **exacte au moment où je l'ai
+prise**, et fausse quelques heures plus tard. Une porte n'est pas verte : elle a
+été verte, à une date, sur une machine. C'est D218 sous un autre angle — la mesure
+était juste, ce qui a changé, c'est le monde autour d'elle.
+
+### D271 — ce que le lot achète exactement : CINQ exposés deviennent UN
+
+`password.service.spec.ts` payait le KDF réel sur **5 de ses 7 tests**, dans une
+suite au budget de 5 000 ms qui parallélise ses fichiers. Après le lot, **un seul**
+test de la suite unitaire paie un vrai argon2.
+
+| Test d'origine | Coût mesuré au repos | Sort |
+|---|---|---|
+| produit un hash `$argon2id$` différent du mot de passe | ~80 ms | **reste unitaire** (écart MD7) |
+| retourne `false` sans lever sur hash malformé | **0 ms** | reste unitaire — argon2 rejette avant tout calcul |
+| vérifie le bon mot de passe et rejette le mauvais | ~210 ms | → `test:int` |
+| deux hashs du même mot de passe diffèrent (sel) | ~90 ms | → `test:int` |
+| `verifyAgainstDummy` retourne toujours `false` | ~270 ms | reste unitaire, **bouchonné** |
+| paie un vrai coût argon2 | ~340 ms | **garde REMPLACÉE** |
+| mémoïse le hash factice | ~200 ms | **garde REMPLACÉE** |
+
+⚠ **ÉCART AU CADRAGE, déclaré** : le cadrage annonçait TROIS tests partant vers
+`test:int`. Il n'y en a que **deux**. « Retourne toujours `false` » ne dépendait
+d'aucun argon2 — il payait 270 ms de KDF pour une assertion qui n'en avait pas
+besoin. Bouchonné, il reste unitaire et cesse de payer. **Moins de tests
+franchissent la frontière que prévu, ce qui réduit d'autant l'exposition à MD6.**
+
+### D271 — MD2 : les deux gardes temporelles sont REMPLACÉES, pas supprimées
+
+Elles comparaient des **durées** : « le factice coûte au moins un tiers d'un verify
+réel », « le second appel est plus rapide que le premier ». Une garde qui compare
+des durées cesse de mesurer ce qu'elle prétend dès que la machine bouge — et ces
+deux-là figuraient parmi les tests qui dépassaient 5 000 ms sous charge.
+
+Elles deviennent **structurelles**, sans horloge : `argon2.verify` est appelé **avec
+le hash factice**, et `argon2.hash` est appelé **exactement une fois** sur deux
+invocations.
+
+⛔ **CE QU'ON PERD, ÉCRIT PLUTÔT QUE TAIRE** : la preuve par le chronomètre que le
+chemin n'est pas gratuit. **CE QU'ON GAGNE** : des gardes qui ne dépendent plus de
+la machine, donc qui mesurent encore quelque chose le jour où elle bouge. La
+propriété D5 reste couverte pour le **corps** de la réponse par `login.int-spec.ts`
+et `google.int-spec.ts` ; ces gardes tiennent le **chemin d'exécution**.
+
+⚠ **Une garde AJOUTÉE, et il faut le dire** : « la préimage du hash factice n'est
+PAS le mot de passe soumis ». Elle n'existait pas — la propriété ne vivait que dans
+un commentaire. C'est elle qui rend la troisième mutation neutralisable.
+
+### D271 — ⛔ `vi.spyOn` SUR UN OBJET DE MODULE EST REFUSÉ, ET C'EST MESURÉ
+
+Le cadrage signalait le risque sans trancher. Mesuré :
+
+```
+Cannot spy on export "verify". Module namespace is not configurable in ESM.
+```
+
+⇒ La garde passe par `vi.mock`, **qui bouchonne le module pour TOUT le fichier**.
+C'est ce qui impose un **second fichier de spec** : le bouchon ne peut pas cohabiter
+avec le test qui exige un vrai argon2. **Deux fichiers, deux régimes, chacun écrit
+en tête du sien.**
+⚠ La sentinelle `argon2id` du bouchon est un `Symbol`, **jamais la valeur réelle
+recopiée de mémoire** : le service ne fait que la transmettre.
+
+### D271 — ⛔ LE HARNAIS A FAILLI RAPPORTER TROIS GARDES MUETTES QUI MORDAIENT
+
+Premier passage : **les trois cibles « MUETTES »**. La garde mordait — vérifié à la
+main, 2 échecs sur 3 sous la première mutation. **C'était le LECTEUR qui était
+faux** : le motif cherchait `× B1` alors que le rapporteur écrit
+`× <chemin> > <describe> > B1 — …`. Un motif qui ne trouve rien se lit **exactement**
+comme « la garde est muette ».
+⇒ **Le harnais porte désormais un PRÉ-VOL DE SA PROPRE DÉTECTION** : il mute une
+fois, exige que le lecteur voie des rouges, et abandonne sinon. Sans lui, ce lot
+concluait que la garde MD2 ne mordait pas — et je retirais des gardes en croyant
+avoir mesuré. C'est D144 à un étage de plus.
+
+### D271 — ⛔ UN HARNAIS QUI SORT EN 0 PEUT ÊTRE AGRÉGÉ À ZÉRO GARDE
+
+Le harnais mordait sur ses trois cibles et sortait en 0. Passé au tri
+(`lancer-campagnes.py`), il a été compté **« 0 mordue, 0 muette, 0 non mesurée »**.
+
+⛔ **Cause** : le tri compte les lignes commençant par `✓` / `✗` et cherche une
+ligne de résumé « N garde(s) mordue(s) sur M cible(s) ». Mon harnais écrivait
+`MORD | …` et « toutes les gardes mordent ». **Format non conforme ⇒ campagne
+invisible à l'agrégat, sans jamais échouer.** C'est pire qu'un rouge : un rouge se
+voit. Le format a été **relevé dans la source du tri**, pas deviné.
+
+⚠ **ET DEUX CIBLES ONT ÉTÉ RAPPORTÉES MUETTES POUR UNE RAISON ENCORE PLUS BÊTE** :
+en réécrivant le harnais en ASCII, j'ai retapé les noms de tests **sans leurs
+accents** — « execute » pour « exécute », « moise » pour « mémoïse ». La garde
+mordait ; l'ancre ne correspondait plus. **Un attendu écrit de mémoire, la faute
+que ce dépôt attrape en boucle.**
+⇒ **Le harnais porte désormais un PRÉ-VOL DES ANCRES** : chaque libellé attendu
+doit exister dans la source du spec, sinon il abandonne. Avec les deux pré-vols
+(détection et ancres), les trois façons dont ce harnais pouvait mentir en silence
+sont fermées.
+
+### D271 — la réserve sur `test:int`, et la mesure qui la lève (ou pas)
+
+⛔ **`test:int` N'EST PAS UNE IMMUNITÉ.** Il tourne sur la même machine. Ce que le
+déplacement achète : un budget de 30 000 ms au lieu de 5 000, et
+`fileParallelism: false`, qui retire la contention que vitest s'infligeait à
+lui-même. **La contention externe demeure entière.**
+
+**Vérification, sous le MÊME proxy de charge que la campagne du 31/08** (charge
+comptée et assertie à 9 processus, état machine relevé avant chaque exécution,
+sortie dans un fichier) :
+
+| Exécution | RAM libre · CPU | Résultat | Délais | Test le plus lourd |
+|---|---|---|---|---|
+| fichier déplacé, run 1 | 2 035 Mo · 68 % | 2/2 | 0 | 285 ms |
+| fichier déplacé, run 2 | 2 036 Mo · 76 % | 2/2 | 0 | 288 ms |
+
+⚠ **CE QUE CETTE MESURE NE DIT PAS** : un fichier joué seul n'a pas la contention
+d'une suite. L'argument qui la rend représentative est **structurel** — `test:int`
+tourne en `fileParallelism: false`, un fichier à la fois y est la règle — mais un
+argument structurel non mesuré reste une déduction. **Mesuré, donc :**
+
+**Suite d'intégration COMPLÈTE sous la même charge** (9 processus, RAM libre
+1 896 Mo, CPU 70 %) :
+
+| Mesure | Valeur |
+|---|---|
+| résultat | **434/434, sortie 0** |
+| délais dépassés | **0** |
+| durée | 641 s, contre 477 s au repos — **facteur 1,34** |
+| `password-hashing.int-spec.ts` | **443 ms** |
+| test le plus lent de toute la suite | 13 504 ms, sous le budget de 30 000 ms |
+
+⇒ **443 ms sous la charge exacte qui faisait dépasser 5 000 ms à ces mêmes tests
+dans la suite unitaire.** Et la suite entière ne ralentit que d'un facteur 1,34 là
+où l'unitaire ralentissait au point de rendre des grappes d'échecs : c'est la
+sérialisation qui fait la différence, pas le budget seul.
+⚠ **Ce qui reste à surveiller, et qui n'est pas de ce lot** : le test le plus lent
+de `test:int` consomme déjà 13 504 ms sous charge, soit moins de la moitié du
+budget de marge. La destination n'est pas infiniment élastique.
+
+⛔ **UNE FAUTE DE MÉTHODE À CONSIGNER, PARCE QU'ELLE EST EXACTEMENT LA RÈGLE QUE
+D270 VENAIT D'ÉCRIRE.** Une première exécution de cette suite complète a été lancée
+en arrière-plan, **puis le harnais de neutralisation a tourné pendant qu'elle
+tournait** — or ce harnais MUTE `password.service.ts`, que cette suite lit. La
+mesure était sans valeur : arrêtée, arbre vérifié non muté après la mise à mort,
+charge purgée, mesure refaite **seule**. Les chiffres ci-dessus sont ceux de la
+mesure propre.
+⇒ **Corollaire pratique** : une mesure de fond et un harnais de mutation ne
+cohabitent jamais, même quand l'un est « juste en arrière-plan ».
+
+
 ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
 
 ⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D269**.
 
-⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — la porte `test` reste rouge sur argon2.**
+⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — la porte `test` reste rouge SOUS CHARGE.**
+⚠ **Corrigé le 01/09/2026** : cette ligne portait « rouge sur argon2 ». **Faux, et
+mesuré faux** — `image-pipeline.spec.ts` (sharp) tient la porte tout autant. Relevé
+complet plus bas : « LA PORTE N'EST PAS ROUGE SUR ARGON2 SEUL ».
 Les changements de CE lot sont vérifiés (pro 347/347 deux fois avec la borne,
 38-40 s), mais la porte prise dans son ensemble ne l'est pas. **Même règle que
 pour D269** : un lot ne se certifie pas sous une porte rouge, quelle qu'en soit
 la cause. La certification des deux lots viendra avec argon2, qui est le seul
 rouge restant.
 
-### D270 — OÙ VIT CHAQUE LOT NON CERTIFIÉ, ET POURQUOI CE N'EST PAS LISIBLE
+### D270 — OÙ VIVENT LES LOTS NON CERTIFIÉS : DEUX ENDROITS, ET CE BLOC DISAIT L'INVERSE
 
-⛔ **La branche ne porte PAS les deux lots.** Relevé par `git`, pas de mémoire :
+⛔ **~~AUCUNE BRANCHE NE PORTE DE LOT EN ATTENTE. LES DEUX SONT DANS `main`.~~**
+⛔ **RÉÉCRIT LE 04/09/2026 SUR MESURE `git`, ET LA PHRASE BARRÉE RESTE POUR QU'ON VOIE
+CE QU'ELLE A COÛTÉ.** Elle était exacte le 31/08, quand deux lots existaient. **Quatre
+lots ont été livrés depuis, tous sur une branche**, et personne n'est revenu ici : le
+bloc écrit pour dire OÙ CHERCHER affirmait donc l'inverse de l'état réel, en gras, à
+l'endroit exact où on vient le lire. **C'est le défaut que ce dépôt corrige en boucle,
+appliqué au bloc qui devait l'empêcher.**
+
+Relevé le 04/09/2026 par `git`, pas de mémoire — `main` et `origin/main` sont tous deux
+à `790ae01` :
 
 | Lot | Où il vit | État |
 |---|---|---|
-| **D269** | **déjà FUSIONNÉ dans `main`** (tête `2bd01af`) | livré, NON certifié |
-| **D270** | branche **`D270-execution-suite-pro`** — **un seul** commit (`1f85aa6`) au-dessus de `main` | livré, NON certifié |
+| **D269** | **`main`**, fusionné | livré, **NON certifié** |
+| **D270** | **`main`**, fusionné (`1f85aa6`, puis un commit documentaire) | livré, **NON certifié** |
+| **D271** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
+| **D272** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
+| **D273** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
+| **D274** | branche **`argon2-vers-test-int`**, non fusionnée | livré (aucune ligne de code), **NON certifié** |
 
-⇒ Le nom de la branche est donc **exact** : elle contient un lot, et c'est le sien.
-⛔ **Ce qui est piégeux n'est pas la branche, c'est que D269 est non certifié À
-L'INTÉRIEUR de `main`.** Qui cherche les lots en attente « sur une branche » ne l'y
-trouvera jamais, et `main` ne porte aucune marque disant qu'un lot non certifié y
-dort. La marque de réfutation posée dans la section D269 le dit (« il est FUSIONNÉ
-dans `main` ») — mais elle parle de la conclusion réfutée, pas de l'état du lot.
-⚠ **Conséquence sur la fusion à venir** : elle amènera **D270 + argon2**, soit
-**deux** lots, pas trois. D269 y est déjà. Le relevé de porte à écrire reste celui
-de D270 ci-dessous — « porte verte à cette date, D269 et D270 en font partie » —
-et il vaudra pour un lot fusionné et un lot qui arrive, ce qui ne change rien à sa
-formulation mais change **où** il faut aller le lire.
+⛔ **`argon2-vers-test-int` porte VINGT ET UN commits d'avance sur `main`**
+(`git log --oneline main..HEAD`) : D271 à D274 et leurs commits documentaires. C'est la
+branche courante, et **elle emporte tout** — voir l'empilement des branches en fin de
+section D271.
+⚠ **`D270-autocorrection-chiffres-figes` EXISTE TOUJOURS** (`8d1bd4f`), **non
+fusionnée**. D271 écrivait qu'elle « se supprime une fois la première partie » : la
+première n'est pas partie, donc la seconde est encore là. Elle n'a **pas** à être
+fusionnée séparément — `argon2-vers-test-int` contient ses commits.
+
+⛔ **DEUX fichiers tiennent la porte, pas un** (mesuré le 01/09/2026) :
+`password.service.spec.ts` (argon2) **et** `src/media/image-pipeline.spec.ts`
+(sharp). Les deux dépassent le même budget de 5 000 ms sous charge, et le second
+est apparu **seul** dans une exécution rouge. ⚠ La phrase précédente disait « le
+seul rouge restant » : c'est elle qui aurait orienté la session suivante vers un
+lot argon2 censé rendre la porte verte.
+
+⚠ **CE QUI NE SE VOIT NULLE PART AILLEURS, ET QUI EST TOUT L'OBJET DE CE BLOC** :
+un lot non certifié peut attendre **dans `main`** (D269, D270) **ou sur une branche**
+(D271 à D274), et **les deux cas coexistent aujourd'hui**. Qui ne cherche qu'à un seul
+des deux endroits en trouve la moitié et conclut sur le tout — c'est ce que la première
+écriture de ce bloc garantissait. Rien dans `git`, aucune porte, aucun fichier de
+configuration ne dit que des lots non certifiés dorment dans `main` ; une branche, au
+moins, se voit. **La seule marque est ici**, et dans l'en-tête d'état de CHAQUE section
+concernée — c'est pourquoi elle est posée des DEUX côtés, et pourquoi **D272, D273 et
+D274 ont reçu la leur le 04/09/2026** : elles ne disaient pas où elles vivaient. D271
+la portait déjà, dans sa sous-section « DEUX BRANCHES EMPILÉES ».
+
+⚠ **Ce que la porte redevenue verte permettra d'écrire, et rien de plus** :
+« porte `test` verte à cette date, D269 et D270 en font partie ». ⛔ **NE PAS
+réécrire leurs en-têtes en « certifié »** — ce serait la certification par
+procuration refusée plus bas.
 
 ### D270 — ⛔ LA CONTRADICTION, ET CE QU'ELLE TRANCHE : MES QUINZE EXÉCUTIONS MESURAIENT LA MACHINE
 
@@ -577,8 +1635,13 @@ Aucune entrée backlog, aucune campagne à créer. Le point est CLOS.
 
 ### D270 — ⛔ LA CERTIFICATION À VENIR NE VAUDRA PAS PAR PROCURATION
 
-Le lot argon2 rendra la porte `test` verte. ⛔ **Cela ne certifiera PAS D269 et
-D270 pour autant.** Trois raisons, posées par Ko :
+⚠ **PRÉMISSE CORRIGÉE LE 01/09/2026.** Cette section s'ouvrait sur « le lot argon2
+rendra la porte `test` verte » : **il ne le fera pas à lui seul**, sharp la tient
+aussi. Ce qui suit reste vrai mot pour mot, et le devient même davantage — la porte
+verte viendra d'un TROISIÈME lot, ce qui rendrait la procuration plus tentante
+encore.
+⛔ **Une porte verte ne certifiera PAS D269 et D270 pour autant.** Trois raisons,
+posées par Ko :
 - deux lots antérieurs déclarés certifiés par la porte d'un troisième, c'est une
   **certification par procuration** ;
 - les deux correctifs pro sont **déjà dans l'arbre** depuis, donc un relevé de
@@ -590,23 +1653,388 @@ D270 pour autant.** Trois raisons, posées par Ko :
 ⛔ **NE PAS réécrire leurs en-têtes en « certifié ».** Ils resteront « livré, non
 certifié » — c'est l'état vrai, et le relevé daté suffit à dire le reste.
 
+### D270 — AUTOCORRECTION : SA PROPRE LIVRAISON A FIGÉ TROIS CHIFFRES
+
+⛔ **Le commit `1f85aa6` ajoutait à `AGENTS.md` la règle « RELEVER L'ÉTAT MACHINE
+AVANT TOUTE MESURE DE DURÉE » — et gravait, dans le MÊME diff, trois durées sans
+état machine.** Trois emplacements :
+- la note d'environnement « SUITE PRO » comparait trois durées comme si elles
+  étaient des propriétés du dépôt ;
+- la règle sur l'état machine citait elle-même une durée et un **compte de tests** ;
+- la consigne de fenêtre d'appel dimensionnait le découpage sur un ordre de grandeur.
+
+⚠ **Et les deux premières sont dans la section même où D268 avait écrit qu'aucun
+compteur ne s'écrit ici, avec la raison.** Une règle contredite par sa voisine,
+dans le fichier chargé à CHAQUE session — donc lue par chaque lecteur avant tout
+le reste. ⚠ Ces durées sont par surcroît celles que ce lot venait de démontrer
+dépendantes de la charge : elles ne se recopient pas sans l'état qui les rend
+lisibles.
+
+⛔ **« CELUI-LÀ EST VÉNIEL, C'EST UN ORDRE DE GRANDEUR » EST LE DÉFAUT LUI-MÊME.**
+J'avais classé le troisième à part à ce motif, et Ko l'a refusé. « 18 scripts,
+149 cibles » était aussi un ordre de grandeur le jour où on l'a écrit ; D268 l'a
+retiré pour cette raison exacte. **Les trois sont traités pareil.**
+
+⇒ **Corrigé** : le VERDICT reste dans `AGENTS.md` — `maxWorkers: 4` retenu, la clé
+mord, c'est une **assurance sous charge** et non un correctif ; les CHIFFRES
+renvoient à cette section, seule à les porter avec la charge relevée devant
+chacune. La consigne de fenêtre d'appel ne contient **plus aucun nombre** : la
+passe complète des portes dépasse la fenêtre d'un appel, on la découpe et on relève
+la durée de chaque morceau pour dimensionner le suivant.
+
+⚠ **Sans nouveau numéro, et c'est délibéré** : le défaut a été introduit par la
+livraison de D270, il lui appartient. `1f85aa6` n'est **pas** réécrit — il est dans
+`main`.
+
+⚠ **REPORT, non corrigé ici** (un lot à la fois) : la même section d'`AGENTS.md`
+porte encore « Compter ~40 minutes » pour `lancer-campagnes.py`. Même classe,
+antérieur à D270 — il ne se corrige pas dans un lot qui parle d'autre chose.
+
+### D270 — ⛔ LA PORTE N'EST PAS ROUGE SUR ARGON2 SEUL (mesuré le 01/09/2026)
+
+⛔ **Consigné SANS nouveau numéro**, comme l'autocorrection ci-dessus : c'est une
+mesure qui corrige l'état décrit par D270, pas une décision neuve.
+
+**Objet de la campagne** : Ko a proposé de traiter la contention là où elle naît —
+`maxWorkers: 4` dans `apps/api/vitest.config.ts`, comme D270 l'a fait pour pro. Si
+la borne suffisait, le lot argon2 devenait **inutile** : aucun test déplacé, aucune
+garde de sécurité déportée, aucun compteur bougé.
+
+**Méthode** — charge produite par un générateur **auto-terminant** (il porte son
+échéance, donc il meurt seul si le harnais est tué — D224) ; charge **comptée et
+assertie** avant chaque exécution par un pré-vol inversé qui ABANDONNE si elle
+n'est pas établie ou si des résidus traînent ; état machine relevé avant chaque
+mesure ; **sortie de chaque exécution dans un fichier**.
+
+**Suite API complète, charge identique vérifiée à 9 processus :**
+
+| Bras | Résultat | Délais dépassés | Durée | Sortie |
+|---|---|---|---|---|
+| sans borne | 3 échecs / 638 | 6 | 87 s | 1 |
+| sans borne | 6 échecs / 635 | 12 | 211 s | 1 |
+| sans borne | 8 échecs / 633 | 16 | 151 s | 1 |
+| `maxWorkers: 4` | **641/641** | **0** | 133 s | **0** |
+| `maxWorkers: 4` | **641/641** | **0** | 123 s | **0** |
+| `maxWorkers: 4` | 5 échecs / 636 | 10 | 212 s | 1 |
+| `maxWorkers: 4` | 6 échecs / 635 | 12 | 130 s | 1 |
+| `maxWorkers: 4` | 4 échecs / 637 | 8 | 231 s | 1 |
+
+⇒ **Sans borne 0 vert sur 3 ; avec borne 2 verts sur 5.** La borne déplace le taux,
+elle ne rend rien de déterministe. **Elle n'est PAS retenue** — un réglage qui
+rassure sans trancher est exactement ce que ce dépôt traque.
+
+⛔ **J'AI FAILLI PUBLIER L'INVERSE.** Après les deux premières exécutions bornées —
+641/641, zéro délai — « la borne suffit » était écrit. **C'est la troisième qui l'a
+réfutée.** Deux exécutions vertes ne sont pas une garantie : c'est mot pour mot la
+faute que D270 venait de payer, et elle s'est représentée dans la campagne montée
+pour l'éviter.
+⚠ Et les deux verts sont tombés aux **RAM libres les plus basses de la campagne**
+(2 319 et 2 793 Mo, contre 3 771-4 120 Mo pour trois des rouges) : ils ne
+s'expliquent pas par une machine plus clémente. C'est de la variance.
+
+⛔ **CE QUE LA CAMPAGNE A TROUVÉ EN PLUS, ET QUI CHANGE LE PLAN.**
+`src/media/image-pipeline.spec.ts` (sharp) dépasse le même budget de 5 000 ms dans
+les mêmes conditions, et figure dans **5 des 6 exécutions rouges — parfois seul**.
+Le backlog le disait déjà (« argon2 **et sharp** le frôlent sous charge ») ; l'état
+courant, lui, décrivait la porte comme rouge sur `password.service.spec.ts`
+**uniquement**. ⇒ **Déporter les tests argon2 ne rendra pas la porte déterministe.**
+
+⚠ **LIMITE DE LA MESURE, DÉCLARÉE.** La charge est un **proxy calibré pour
+reproduire le rouge**, pas un relevé de conditions ordinaires : au repos la porte
+est verte, borne ou pas, avec une marge d'environ 13× sur le test le plus lourd.
+Ce qui est établi : sous une charge qui produit le défaut, la borne ne l'élimine
+pas. Ce qui ne l'est pas : son effet aux charges intermédiaires, non balayées.
+
 ### D270 — ordre des lots, révisé par Ko
 
-1. **ce lot** (mode d'exécution de la suite pro) ;
-2. **argon2 → `test:int`** — surface d'authentification, modes de défaillance
-   écrits avant code ;
-3. **S11-b**.
+⚠ **CET ORDRE EN EST À SA QUATRIÈME ÉCRITURE, ET LES TROIS PRÉCÉDENTES SONT
+CONSERVÉES DANS L'HISTORIQUE DU DÉPÔT, PAS ICI.** Écrit « argon2 → S11-b » au motif
+qu'argon2 rendrait la porte verte (faux, 01/09) ; puis « argon2 → sharp » au motif
+que ces deux-là la tenaient (incomplet, 02/09). **Deux fois la mesure a démenti la
+prémisse, jamais le raisonnement.** C'est pourquoi le motif est écrit sous chaque
+rang : un ordre sans motif ne se corrige pas, il se recopie.
+⚠ **QUATRIÈME ÉCRITURE, 03/09/2026 — ET CELLE-CI NE CORRIGE PAS UNE PRÉMISSE, ELLE
+COMBLE UN TROU.** Les trois précédentes changeaient l'ordre parce que la CAUSE du
+rouge avait été mal nommée. Ici la cause est bien nommée : c'est le PLAN qui était
+incomplet. Il exigeait une porte verte au rang de certification **sans porter le lot
+qui l'en empêche** — `venue-list.test.tsx`, qui ne vivait qu'au backlog. Une reprise
+par ce fichier seul partait donc sur la certification et découvrait le blocage en le
+heurtant. **Un rang faux se voit ; un rang manquant, non.**
 
-⚠ **Deux lots non certifiés sont en attente (D269, D270). C'est tenable ; trois
-ne le serait pas** — plus personne ne saurait lequel a certifié quoi. Cela borne
-la file : argon2 doit passer avant qu'un quatrième lot ne s'ouvre.
+⛔ **ORDRE RE-RÉVISÉ LE 02/09/2026 — L'HORLOGE PASSE EN TÊTE** (tranché par Ko).
+⛔ **RANG 6 INSÉRÉ LE 03/09/2026 — `venue-list.test.tsx` PASSE AVANT LA CERTIFICATION**
+(tranché par Ko) : la certification devient le rang **7**, S11-b le rang **8**.
+
+1. ~~mode d'exécution de la suite pro (D270)~~ — **fait** ;
+2. ~~argon2 → `test:int` (D271)~~ — **fait**. ⚠ N'a **pas** rendu la porte verte,
+   et ne l'a jamais prétendu ;
+3. ~~⛔ **HORLOGE — `walkin-journey.test.tsx` et tout fichier de même famille**~~ —
+   **fait (D272)**. ⚠ N'a **pas** rendu la porte verte sous charge, et ne l'a jamais
+   prétendu ;
+4. ~~**sharp / `image-pipeline.spec.ts`** — entrée backlog P0, campagne pour preuve~~
+   — ⛔ **REQUALIFIÉ SANS OBJET SUR MESURE le 02/09/2026**, après le départ des cinq
+   tests argon2 : API **640/640, zéro délai dépassé à 8, 24 et 48 processus**, 2,1× de
+   marge sur le test le plus lourd. ⛔ **Condition de validité, stricte** : sharp ne
+   tombe plus **PARCE QUE** argon2 a quitté la suite unitaire API — il est **déchargé,
+   pas réglé**. **Ce rang se ROUVRE** si du travail coûteux (KDF, image, chiffrement)
+   revient en unitaire dans `apps/api`, ou si une mesure sous charge redonne un rouge
+   sur ce fichier ;
+5. ~~⛔ **`act(...)` TARDIF — `walkin-journey.test.tsx` SORT DE `PLAFONDS`**~~ —
+   **fait (D273)** : 293 → **0**, entrée retirée, garde armée, harnais 4/4.
+   ⚠ **N'a pas rendu la porte verte pour autant**, et ne le prétend pas : il reste une
+   intermittence sur `venue-list.test.tsx`, **antérieure et étrangère**, prouvée telle
+   par un contrôle sur l'arbre d'avant le lot. Elle est au backlog.
+   ⇒ **Ce rang portait le constat d'entrée** : **295 avertissements contre un plafond
+   gelé à 293**, dont **293 sur 293 des `act(...)`**
+   (`VenueCalendar` 171 · `AuthProvider` 82 · `WalkinJourney` 40).
+   ⚠ **Le cadrage validé, le barème de sortie et les fichiers attendus sont en tête de
+   ce fichier**, section « PROCHAIN LOT » ; ce rang ne les répète pas. **Deux endroits
+   qui répondent à « quoi ensuite » finissent par ne plus dire la même chose** — c'est
+   arrivé à ce rang même, qui a annoncé le lot sharp pendant que le backlog le
+   fermait ;
+6. ~~⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.**~~ — ⛔ **CLOS
+   EN DOCUMENTANT le 03/09/2026 (D274) : NE SE REPRODUIT PAS.** 30 passes, deux formes,
+   deux états machine, **zéro rouge `venue-list`** — et `apps/pro` est identique À
+   L'OCTET au commit de D273, donc l'écart avec ses 3 sur 5 **n'est pas le code**.
+   ⚠ **Ne rend PAS la porte verte sous charge** : il remplace un bloqueur non
+   reproductible par un bloqueur nommé — la garde console, 2 rouges sur 15 sous charge,
+   sur `account-settings-page.test.tsx` (backlog [PRO][P1]). Au plancher : 0 sur 15.
+   ⇒ Constat d'origine conservé ci-dessous, il dit ce à quoi le lot devait répondre :
+   ⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.** Rouge sur
+   **trois passes de la suite pro sur cinq**, relevées le 02/09 pendant le barème de
+   sortie de `PLAFONDS` : `Unable to find role="heading" and name "Salle El Ryad"`,
+   c'est-à-dire une liste pas encore arrivée au moment de l'assertion. État machine
+   relevé devant chaque passe (D270) : RAM libre 2 247–3 017 Mo, CPU 30–65 %.
+   ⛔ **ANTÉRIORITÉ PROUVÉE PAR CONTRÔLE, PAS SUPPOSÉE** : l'arbre d'AVANT D273 a été
+   remonté et mesuré dans les mêmes conditions — le fichier y échoue **aussi**. Le
+   défaut est donc étranger à D273 ; sans ce contrôle il se serait lu comme une
+   régression de ce lot, et le lot aurait été refait pour rien.
+   ⛔ **NE PAS le traiter en relevant un plafond** : ce fichier n'est pas dans
+   `PLAFONDS`, et son échec n'est pas un avertissement — c'est une assertion qui tombe.
+   ⚠ **Famille PROBABLE, pas établie : D269** — une attente qui interroge par RÔLE et
+   par NOM pendant que la donnée est en vol. **À reproduire et attribuer par mesure
+   avant tout correctif**, méthode de D273 : rien n'est présumé de la cause.
+   ⇒ Entrée détaillée au backlog, **[PRO][P0] `venue-list.test.tsx`**.
+   ⚠ **PISTE, PAS CONCLUSION (03/09/2026) — UNE PILE `pnpm dev` TOURNAIT SUR LE POSTE.**
+   Relevé au démarrage de cette session : **9 processus node lancés à 00:10**, soit
+   `next dev`, `vite`, l'API Nest et un `tsc --watch` — **quatre observateurs de
+   fichiers qui recompilent pendant que les suites lisent les mêmes fichiers**. C'est
+   la classe de D270 (« ne jamais éditer un fichier pendant qu'une vérification le
+   lit » — 24 échecs sans signification, puis une conclusion fausse tirée d'eux).
+   ⛔ **CE QUI EST MESURÉ ET CE QUI NE L'EST PAS.** Mesuré : la pile tournait le
+   03/09 à 00:10. **NON mesuré : qu'une pile équivalente ait tourné pendant les
+   sessions des 01 et 02/09** — et c'est **invérifiable après coup**, puisque aucun
+   relevé du dépôt ne consigne d'inventaire de processus (voir le rang 7). La piste
+   est donc plausible et **hors de portée de toute preuve rétrospective**.
+   ⛔ **ELLE N'EXPLIQUE RIEN TANT QUE LA MESURE NE L'A PAS DIT**, et il se peut très
+   bien que `venue-list` rougisse **aussi machine propre** — c'est exactement ce que
+   la première campagne doit trancher. Écrite comme piste pour qu'elle ne se durcisse
+   pas en explication commode, même traitement que la piste horloge de D272 ;
+7. **CERTIFICATION** — ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
+   non certifiés à sa date, quel qu'en soit le nombre**, sur la porte redevenue verte,
+   dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
+   partie », **sans réécrire leurs en-têtes**). ⚠ **Ce rang portait la liste « D269,
+   D270 ET D271 », et elle était déjà fausse en la lisant** : D272 s'est ajouté après,
+   sans que personne réécrive la phrase. Une liste de lots dans un plan se périme au
+   lot suivant ; une règle non — et c'est la seule raison de ce changement de
+   formulation.
+   ⛔ **LA LISTE NOMMÉE, TRANCHÉE PAR KO LE 04/09/2026 : D269, D270, D271, D272, D273
+   ET D274.** Six lots. ⚠ **La règle ci-dessus ne change pas** — la certification porte
+   sur TOUS les lots non certifiés à sa date — **mais elle ne dispense pas de les
+   NOMMER.** « Quel qu'en soit le nombre » n'apprend à personne lesquels, et le nombre
+   lui-même a déjà été faux deux fois dans ce fichier : « quatre lots attendent
+   aujourd'hui » en section D272, « certifier cinq lots » en section D274, alors qu'ils
+   sont **six**. ⇒ **Un nombre se périme au lot suivant ; une liste se COMPLÈTE** — un
+   lot livré avant la certification s'y ajoute d'une ligne, et l'omission se voit.
+
+   ⛔ **CRITÈRE DE CERTIFICATION — TRANCHÉ PAR KO LE 04/09/2026, ÉCRIT AVANT DE
+   MESURER.** C'est le point qui manquait au rang, et il est fixé maintenant pour la
+   raison qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus
+   rien (D273 vient de le payer sur son barème).
+   - **CE QUI EST EXIGÉ : la porte verte AU REPOS**, avec l'**état machine relevé et son
+     INVENTAIRE** devant chaque mesure — ce qui tourne, pas seulement RAM libre, CPU et
+     compte de node. C'est la donnée qui manquait à tous les relevés antérieurs (rang 6,
+     03/09), et sans laquelle un état ne se reproduit pas.
+   - ⛔ **CE QUI N'EST PAS EXIGÉ : la porte verte SOUS CHARGE.** La fragilité de la garde
+     des sorties console **reste au backlog comme DETTE MESURÉE** — `[PRO][P1]`, avec ses
+     **trois occurrences datées** (02/09 par la sonde horloge, 02/09 pendant le barème,
+     03/09 sous charge assertée). Elle n'est ni effacée, ni requalifiée, ni comptée comme
+     réglée : elle est **sortie du critère et laissée visible**, ce qui n'est pas la même
+     chose.
+   - **LA RAISON, ÉCRITE POUR NE PAS ÊTRE REDÉCOUVERTE** : exiger une porte
+     **déterministe sous n'importe quelle charge** est une propriété que **cette machine
+     ne peut pas offrir aujourd'hui**. Mesuré, pas supposé : 2 rouges sur 15 sous charge
+     assertée, sur un fichier que l'ordonnancement désigne et **qui change d'une campagne
+     à l'autre** (D274). Et **six lots attendent depuis cinq jours** — D269 est du 30/08.
+     Une barre qu'aucune mesure ne peut franchir ne protège rien : elle immobilise, puis
+     elle finit par se baisser en catastrophe le jour où l'attente devient intenable —
+     c'est-à-dire exactement la « certification obtenue en déplaçant la barre » que ce
+     fichier refuse par ailleurs, mais obtenue plus tard et sous pression. **Une barre
+     franchissable qui dit ce qu'elle vaut protège davantage qu'une barre impayable.**
+
+   ⛔ **CE QUE LA CERTIFICATION NE GARANTIT PAS — CE PARAGRAPHE S'ÉCRIT AVEC ELLE, MOT
+   POUR MOT.** Sans lui, « certifié » se lira comme « sûr », et c'est plus que ce qui
+   aura été mesuré :
+   - **elle ne dit rien de la porte SOUS CHARGE.** Elle est prise au repos ; sous
+     contention, la garde console tombe encore, sur un fichier variable ;
+   - **elle ne dit pas que `venue-list.test.tsx` va bien.** 0 sur 30 **borne un taux, il
+     ne prouve pas un zéro** (D274), et le défaut n'a jamais été attribué ;
+   - **elle ne dit pas que `sharp` est réglé** : il est **déchargé** parce qu'argon2 a
+     quitté l'unitaire, et son rang **se rouvre** si du travail coûteux y revient (D272) ;
+   - **elle ne couvre pas ce qu'aucune porte ne regarde** : le navigateur réel, une
+     migration sur base NON VIDE, la clause `WHERE` d'une réutilisation d'endpoint, un
+     composant jamais monté. Inchangé — rappelé ici parce qu'un mot comme « certifié »
+     invite précisément à l'oublier ;
+   - **elle porte une DATE et une LISTE, pas un état permanent** : « portes vertes au
+     repos à cette date, tels lots en font partie ». Elle ne se reconduit pas au lot
+     suivant, et **ne réécrit aucun en-tête** en « certifié ».
+   ⛔ **CE QUE LA CERTIFICATION DEVRA PAYER, ÉCRIT LE 03/09/2026 POUR NE PAS ÊTRE
+   REDÉCOUVERT** (dicté par Ko ; il ne vivait que dans un fil de chat, et un fil se
+   ferme) :
+   - **le barème de D273 reste DÛ** — cinq passes de la suite pro à **zéro**
+     avertissement sur `walkin-journey.test.tsx` **au repos**, plus **deux sous charge
+     encaissable**. D273 a obtenu 5 passes à zéro sur 5, mais **aucune au repos**, et
+     l'a déclaré NON TENU plutôt que de réécrire son barème après coup.
+     ⛔ **MAIS « AU REPOS » N'EST PAS ENCORE DÉFINI DE FAÇON PAYABLE — QUESTION POSÉE
+     PAR KO LE 03/09/2026** : le « 4 579 Mo / 6 % » du cadrage D273 a-t-il été relevé
+     **avec ou sans** la session Claude Code et son hôte VS Code, qui coûtent à eux
+     seuls **2,4 Go et 21 processus** (mesuré ; `claude.exe` est un enfant de
+     `Code.exe`, donc la session ne peut pas s'en passer) ? Si c'était sans, le barème
+     exige un état que la session **ne peut pas produire**, et il serait impayable une
+     seconde fois.
+     ⛔ **LE DÉPÔT NE PEUT PAS RÉPONDRE, ET C'EST LE VRAI CONSTAT.** `VS Code`,
+     `Code.exe` et `vscode` ont **zéro occurrence** dans les quatre documents, et
+     **TOUS** les relevés du dépôt ne portent que trois quantités — RAM libre, CPU,
+     nombre de node. **Aucun ne dit ce qui tournait.** Un état machine sans inventaire
+     ne se reproduit pas : c'est la faute des compteurs figés, appliquée aux mesures.
+     ⇒ **RÈGLE D'ARBITRAGE FIXÉE AVANT DE MESURER** — D273 vient de payer qu'un barème
+     choisi APRÈS coup ne mesure plus rien. On relève le **plancher que cette session
+     PEUT produire** : VS Code et `claude` seuls, sans navigateur, sans pile `dev`,
+     zéro node.
+     - **Si ce plancher atteint 4 579 Mo et 6 %** : le barème de D273 tient tel quel,
+       il est payable, **rien n'est redéfini** ;
+     - **s'il ne les atteint pas** : « repos » est **redéfini sur ce plancher mesuré**,
+       avec sa raison, et les chiffres de D273 restent comme **HISTOIRE, pas comme
+       barre**. Le numéro de décision se prendra à ce moment-là, pas avant : rien n'est
+       encore tranché.
+     ⛔ **REDÉFINIR LE SEUIL SANS REDÉFINIR CE QU'IL GARANTIT SERAIT LA MOITIÉ DU
+     TRAVAIL** (ajout de Ko, 03/09/2026, écrit AVANT la mesure). **Cinq passes à zéro
+     sur un plancher plus contendu prouvent MOINS que cinq passes sur un plancher
+     calme** : chaque passe y est plus près du régime où D273 a mesuré l'expiration à
+     5 000 ms et des avertissements qui ne sont que la **conséquence** de tests
+     interrompus. Une passe prise près du bruit porte moins d'information qu'une passe
+     prise loin de lui — donc il en faut davantage pour la même garantie.
+     ⇒ **LE NOMBRE DE PASSES MONTE, ET IL SE DÉRIVE — IL NE SE CHOISIT PAS.** Deux
+     quantités se mesurent au nouveau plancher, **avant de compter la moindre passe** :
+     1. **la marge sur la contrainte LIANTE** — le test le plus lent de
+        `walkin-journey.test.tsx` contre son `testTimeout` de 5 000 ms. C'est par
+        expiration que le fichier tombe sous charge (D273) : c'est donc elle qui borne,
+        et non la RAM, qui n'est qu'un proxy ;
+     2. **la dispersion de cette marge entre passes** — une marge moyenne ne dit rien
+        si elle varie du simple au double.
+     Le nombre est **fixé et écrit avec ces deux mesures devant lui**, puis les passes
+     se comptent. Marge plus mince ou dispersion plus large ⇒ plus de passes.
+     ⛔ **ET IL NE REDESCEND JAMAIS SOUS CINQ** : le barème de D273 est un **plancher**,
+     pas une référence à renégocier à la baisse. Un seuil redéfini qui achèterait moins
+     qu'avant serait une certification obtenue en déplaçant la barre — exactement ce que
+     le refus du plafond relevé de `walkin-journey` a écarté trois jours plus tôt.
+     ⛔ **L'INSTRUMENT CPU EST DISQUALIFIÉ, ET LA CIBLE AVEC LUI — CALIBRÉ LE
+     03/09/2026 SUR UNE CHARGE CONNUE**, parce qu'un instrument se calibre sur des cas
+     dont la réponse est déjà connue AVANT de lui faire trier ce qu'on ignore (règle du
+     relevé HORLOGE, appliquée cette fois à moi). Quatre boucles saturantes sur
+     **12 cœurs logiques**, soit **+33 points attendus** :
+     - `Win32_Processor.LoadPercentage` — au repos `28, 30, 9, 0` ; **sous la charge
+       connue** `27, 0, 30, 4`. **Il ne distingue pas les deux cas** et rend `0` à
+       répétition. ⛔ **ÉCARTÉ** — c'est lui qui a servi à annoncer « CPU 25 % » en
+       ouverture de cette session, chiffre qui ne valait donc rien.
+     - `Win32_PerfFormattedData_PerfOS_Processor` (`_Total`) — au repos `17, 17, 30,
+       16` ; sous charge `49, 53, 53, 22`, soit la ligne de base **+33** sur trois
+       relevés sur quatre. ✅ **RETENU**, et **jamais en échantillon unique** : médiane
+       d'au moins cinq relevés, dispersion écrite à côté — il varie lui aussi.
+     ⛔ **CONSÉQUENCE EN AMONT, ET ELLE PORTE SUR LA CIBLE ELLE-MÊME** (point soulevé
+     par Ko) : le « CPU 6 % » du cadrage D273 vient d'un instrument **dont le dépôt ne
+     garde aucune trace**. Vérifié : `LoadPercentage`, `FreePhysicalMemory`,
+     `PerfFormattedData` et `Get-Counter` ont **zéro occurrence** dans tout le dépôt,
+     `neutralisation/` compris. Les relevés d'état machine ont **toujours** été pris à
+     la main, par un outil que personne ne peut nommer. **Un 6 % non attribuable ne se
+     convertit pas** vers l'instrument retenu : il n'y a rien à convertir. Calibrer
+     soigneusement pour viser un nombre produit par un instrument non calibré serait
+     absurde.
+     ⇒ **LA BARRE CPU HÉRITÉE EST ANNULÉE.** Le CPU **reste relevé** — l'instrument
+     existe et il est calibré — mais il **ne porte plus de seuil hérité** : sa valeur
+     de plancher s'établit à neuf, en même temps que celle de la RAM. **Ce qui LIE le
+     plancher reste : RAM libre + compte de node + INVENTAIRE.** C'est ce qui manquait ;
+     un quatrième nombre gardé pour la forme n'aurait rien ajouté.
+     ⛔ **Dans les deux cas, tout relevé porte désormais son INVENTAIRE** — ce qui
+     tourne, pas seulement ses trois nombres — sinon la question se reposera à la
+     session suivante, sans plus de moyen d'y répondre ;
+   - **`neutralize-solid-s7` est à rejouer ENTIÈRE.** D273 n'a vérifié que sa moitié
+     pro, isolément : son pré-vol exige une suite client verte, qui ne l'était pas.
+     Une cible réorientée vérifiée à moitié n'est pas une campagne jouée ;
+   - **les six portes, la suite e2e, et `lancer-campagnes.py --tout`** — en **UNE
+     SEULE passe**. ⚠ Le point est « une seule » : des portes vertes relevées à des
+     moments différents, sur un arbre qui bouge entre elles, ne certifient rien
+     ensemble (D218 — l'archive livrée rouge avec une note annonçant « 0 erreur ») ;
+8. **S11-b**.
+
+⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
+causes de la porte rouge, elle est **la seule qui rougisse de façon DÉTERMINISTE**,
+sans condition de charge. argon2 et sharp exigent une contention pour tomber : au
+repos, ils passent. L'horloge, elle, tombe à **chaque exécution, sur toute machine,
+et de plus en plus** à mesure que la fenêtre de fixture s'éloigne dans le passé.
+⇒ **Elle rend la porte incertifiable QUOI QU'IL ARRIVE.** Tant qu'elle est là,
+aucune charge, aucune borne, aucun déplacement de test ne peut rendre la porte
+verte — donc aucune certification n'est possible, pour aucun des lots en attente.
+⚠ Cette phrase disait « pour aucun des **trois** lots » : le compte a bougé le
+lendemain. Un plan écrit avec le nombre de lots dedans se périme au lot suivant.
+
+⛔ **S11-b EST UN LOT DU CHEMIN DE L'ARGENT ET NE S'OUVRE PAS SOUS UNE PORTE NON
+FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 à 6,
+le rang 8 se mesurerait contre une porte qui ne dit rien.
+
+⛔ **LE CORRECTIF DE L'HORLOGE EST DE FIGER L'HORLOGE, JAMAIS DE DÉCALER LA
+FENÊTRE.** Décaler les dates de fixture reconduit le défaut d'un mois : la même
+porte redeviendra rouge, un matin, sans qu'une ligne ait bougé — et la prochaine
+session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ, pas
+un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
+concerné, et corriger le seul cas connu laisserait les autres armés.
+
+### D271 — ⚠ DEUX BRANCHES EMPILÉES : ELLES PARTENT ENSEMBLE OU AUCUNE
+
+⛔ **`argon2-vers-test-int` est empilée sur `D270-autocorrection-chiffres-figes`**,
+dont elle CONTIENT les commits. Fusionner la seconde sans la première n'a pas de
+sens ; fusionner la première seule emporte la seconde. **Cette dépendance est
+invisible dès que la session se ferme** — `git` ne la nomme nulle part, et deux
+branches côte à côte dans une liste ne disent pas laquelle porte l'autre.
+
+| Branche | Contenu | Dépend de |
+|---|---|---|
+| `D270-autocorrection-chiffres-figes` | 3 commits documentaires : chiffres figés retirés d'`AGENTS.md`, provenance des lots réécrite, report backlog, correction « la porte n'est pas rouge sur argon2 seul » | `main` |
+| `argon2-vers-test-int` | D271, **plus les 3 commits ci-dessus** | la branche ci-dessus |
+
+⇒ **Fusionner `argon2-vers-test-int` suffit** : elle emporte tout. L'autre branche
+n'a pas à être fusionnée séparément, et se supprime une fois la première partie.
+
+⚠ **TROIS lots non certifiés sont désormais en attente : D269, D270 et D271.**
+La règle disait « deux, c'est tenable ; trois, non ». Le seuil est franchi — et il
+l'est parce que la cause du rouge a changé deux fois en deux jours, pas parce qu'on
+a empilé des lots de produit. ⚠ Les rangs 3 et 4 sont des lots de FIABILITÉ DE
+PORTE : ils ne créent pas de quatrième lot non certifié, ils lèvent ce qui bloque
+les trois. ⛔ **Aucun lot de produit ne s'ouvre avant que la porte soit verte.**
+⚠ **DÉMENTI LE 02/09/2026, ET LA PHRASE RESTE POUR QU'ON LE VOIE : D272 EST CE
+QUATRIÈME LOT NON CERTIFIÉ.** Un lot de fiabilité de porte qui ne rend pas la porte
+verte s'ajoute à la file au lieu de la vider. **Quatre lots attendent aujourd'hui** —
+et ce compte-ci se périmera aussi, ce qui est pourquoi le rang de certification est
+désormais écrit en règle et non en liste.
 
 ## Session du 30/08/2026 — D269 · `act(…)` tardif, concurrence, tri des campagnes
 
 ⛔ **Numéro pris en LISANT ce fichier** : le dernier attribué était **D268**.
 
 ⛔⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — PORTE `test` ROUGE** (cause antérieure au lot :
-`password.service.spec.ts`, argon2). **Ce lot n'est PAS clos.**
+`password.service.spec.ts` (argon2) **et `image-pipeline.spec.ts` (sharp)** — le
+second ajouté le 01/09/2026 après mesure ; cette ligne ne nommait qu'argon2).
+**Ce lot n'est PAS clos.**
 ⚠ Je l'avais d'abord présenté comme terminé au motif que le rouge « venait
 d'ailleurs ». **C'est une faute de raisonnement, et Ko l'a refusée** : un lot ne se
 certifie pas sous une porte rouge, même quand le rouge n'est pas le sien. La
@@ -615,6 +2043,11 @@ porte. Accepter une exception ici, c'est rouvrir D218 par la petite porte — un
 mesure exacte présentée comme un feu vert qu'elle n'est pas.
 ⇒ Reclassement en clôture : **argon2 doit passer AVANT S11-b**, puisque c'est lui
 qui tient la porte.
+
+⚠ **OÙ CE LOT VIT AUJOURD'HUI (31/08/2026) : dans `main`, fusionné, et TOUJOURS
+non certifié.** Aucune branche ne le porte — le chercher là où on cherche un lot
+en attente ne donnera rien. Tableau des deux lots non certifiés et de ce qui les
+tient : section **D270**.
 
 ### D269 — la cause était dans l'ATTENTE, pas dans le code
 
@@ -726,6 +2159,10 @@ garder, ajouter `--no-bail`, ou revenir en parallèle en bornant les workers vit
 
 ### D269 — ⛔ CE QUI RESTE ROUGE, ET CE N'EST PAS CE LOT
 
+⚠ **CONSTAT INCOMPLET, corrigé le 01/09/2026** : il ne nomme qu'argon2, alors que
+`image-pipeline.spec.ts` (sharp) dépasse le même budget dans les mêmes conditions.
+Conservé tel quel, non réécrit — c'est la trace de ce qui avait été vu.
+
 `password.service.spec.ts` : argon2 dépasse 5 000 ms. **Déjà au backlog** —
 « 3,4 s d'un budget de 5 s au repos, rougit sous charge ». Mesuré en isolation
 sur machine libérée : **rouge puis vert** sur deux runs consécutifs. Donc
@@ -798,6 +2235,8 @@ au croisement. Sans effet aujourd'hui, forme fragile.
 ⛔ **Le lot est LIVRÉ, pas CERTIFIÉ.** Porte `test` rouge (argon2).
 - **argon2 → `test:int`** : lot séparé, surface d'authentification, analyse des
   modes de défaillance avant code. **Doit passer AVANT S11-b.**
+  ⚠ **INSUFFISANT À LUI SEUL (01/09/2026)** : sharp tient la porte aussi. Ordre
+  complet dans la section D270, « ORDRE RÉVISÉ ».
 - **Borner les workers vitest** : mesuré efficace (48 → 4), bloqué par l'absence
   de configuration vitest partagée — lot séparé.
 - **Utilitaire d'attente partagé** : 19 fichiers pro montent `AppProviders`, 2
@@ -1643,7 +3082,7 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - **Rotation d'identifiants dans une console externe** — signalée plusieurs fois, toujours non résolue.
 - **Cohérence du nom de domaine** : « zwadj » vs « zawadj », à vérifier avant tout support public.
 
-## Registre des décisions — D1 à D270
+## Registre des décisions
 
 ⛔ **CE REGISTRE EXISTE POUR QU'UN NUMÉRO SE PRENNE TOUJOURS EN LISANT CE FICHIER.**
 Les journaux datés sont partis dans `docs/history/` (lot R1). Sans registre, le
@@ -1658,7 +3097,25 @@ mention (marquées `?`) ; **2** ne sont ancrées que par leur section.
 ⚠ Chiffres de l'audit R1 (28/08), **non recomptés depuis** : D268 s'y ajoute avec
 sa ligne de définition, soit 218 sur 242 — dérivé, pas remesuré.
 
-⛔ **DERNIER NUMÉRO ATTRIBUÉ : D270. Le prochain est D271.**
+⛔ **AUCUN « DERNIER NUMÉRO » N'EST ÉCRIT ICI, ET C'EST LE REMÈDE.** Cette ligne a
+porté **« DERNIER NUMÉRO ATTRIBUÉ : D270 »** pendant que le titre de ce registre
+annonçait « D1 à D272 » et que sa table listait D271 **et** D272 : un compteur figé
+dans l'endroit même qui existe pour empêcher les compteurs figés. C'est le troisième
+de la série — après « 18 scripts, 149 cibles » (D268) et « D1 à D266 » dans
+`CLAUDE.md` — et il reçoit le même traitement que les deux autres : **on supprime le
+chiffre, on ne le met pas à jour.**
+⚠ **QUATRIÈME DE LA MÊME SÉRIE, RETIRÉ LE 03/09/2026 : LE TITRE DE CE REGISTRE.** Il
+portait « — D1 à D272 » pendant que sa table portait déjà **D273**. Le titre d'un
+registre est ce qu'on lit AVANT sa table ; annoncer une plage close, c'est proposer un
+numéro déjà pris à qui ne descendra pas jusqu'en bas. **Plage supprimée, pas
+rafraîchie.**
+⇒ **Le numéro se prend en lisant la DERNIÈRE LIGNE DE LA TABLE ci-dessous**, et nulle
+part ailleurs — **pas même ici**.
+⚠ **CETTE PHRASE PORTAIT SON PROPRE EXEMPLE CHIFFRÉ, ET IL A PÉRIMÉ EN UN LOT** :
+« au 02/09 elle porte D272, donc le prochain est D273 ». Elle annonçait donc comme
+libre un numéro **déjà attribué**, dans le paragraphe même qui existe pour empêcher
+cela. Elle se savait périssable et le disait — **se déclarer périmable n'empêche pas
+de tromper une fois périmé.** Exemple supprimé le 03/09/2026, pas mis à jour.
 
 ⚠ **D267 a été mal posé une première fois** : inscrit au backlog sans section ici,
 pendant que le registre annonçait encore D266. Corrigé le 28/08.
@@ -1920,3 +3377,8 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D268 | A | D268 — ⛔ LA CONSIGNE DE D263 ÉTAIT JUSTE SUR LE DÉFAUT, FAUSSE SUR LE R… |
 | D269 | A | D269 — la cause était dans l'ATTENTE, pas dans le code |
 | D270 | A | D270 — mes quinze exécutions mesuraient la MACHINE, pas le mode |
+| D271 | A | D271 — argon2 quitte l'unitaire ; cinq tests exposés deviennent UN |
+| D272 | A | D272 — l'horloge gelée, et les fixtures qui DÉRIVENT de l'ancre |
+| D273 | A | D273 — attendre ne supprime pas l'avertissement ; il faut une fenêtre pour le recevoir |
+| D274 | A | D274 — même code, 3 sur 5 chez D273 et 0 sur 30 ici : l'écart n'est pas le code |
+| D275 | A | D275 — CERTIFICATION : portes vertes AU REPOS le 07/09/2026, six lots nommés, réserves écrites |

@@ -829,7 +829,21 @@
 - [x] Socle e2e Playwright + concurrence/montage React [SHARED][P0] — ✅ **T1/D118** : `e2e/` à la racine, pile dédiée (ports 3101/3100/5273, base `zwadj_e2e`), A1 bootstrap de session, A2 un appel par montage, A5 parité navigation interne/rechargement. **À la demande, pas une septième porte.** Vérifié par Ko sous Windows : 16 passés, 1 ignoré, 0 échec
 - [x] Migration testée sur base NON VIDE [BACK][P0] — ✅ **T3/D123** : `migration-non-empty.int-spec.ts`. ⚠ Applique le SQL directement (`prisma migrate deploy` sort en succès **sans rien appliquer** quand le schema-engine est absent)
 - [ ] Seed deterministic test data + factories [SHARED][P1]
-- [ ] Élargir le `testTimeout` de `apps/api` (5 s par défaut) [BACK][P1] — argon2 à m=64MiB/t=3/p=4 et sharp le frôlent sous charge ; quatre faux rouges observés lors de l'intégration d'A10. Correctif de configuration séparé, à mesurer avant de choisir la valeur
+- [x] ~~Élargir le `testTimeout` de `apps/api` (5 s par défaut) [BACK][P1] — argon2 à
+      m=64MiB/t=3/p=4 et sharp le frôlent sous charge ; quatre faux rouges observés lors
+      de l'intégration d'A10. Correctif de configuration séparé, à mesurer avant de
+      choisir la valeur~~ — ⛔ **PÉRIMÉE LE 01/09/2026, BARRÉE AVEC SON MOTIF, PAS
+      SUPPRIMÉE.** Une décision dont la raison a été invalidée se corrige ; effacée, elle
+      serait rouverte de bonne foi comme une piste neuve.
+      ⛔ **Motif du retrait, en deux points** : (1) élargir le budget **masquerait un test
+      devenu lent** au lieu de le montrer ; (2) la campagne du 01/09 a établi que **le
+      budget n'est pas la cause** — au repos le test le plus lourd tient dans environ un
+      treizième des 5 000 ms, et le rouge exige un facteur d'environ 55×, c'est-à-dire de
+      la CONTENTION. Un budget élargi déplacerait le seuil sans toucher à ce qui le
+      franchit.
+      ⚠ Ce qui remplace cette piste : sortir de la suite unitaire ce qui paie le KDF réel
+      (lot argon2, fait) et traiter la contention de la porte unitaire dans son ensemble
+      (lot sharp, ci-dessous).
 - [x] Configurer `server.deps.inline: ["next-intl"]` dans `apps/client/vitest.config.ts` [CLIENT][P0] — next-intl est publié en ESM et importe `next/navigation` SANS extension ; hors résolveur Vite, toute suite montant un composant qui touche `src/i18n/navigation` NE SE CHARGE PAS. Découvert en A11b, premier test client à monter un `Link` localisé
 
 > Deferred to post-MVP: offline/sync/conflict tests (Phase 11 is deferred).
@@ -2132,6 +2146,118 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       ⚠ **Le compteur du dépôt (« 19 scripts, 165 cibles ») est FAUX** : 22 et 173.
       Écart relevé, non expliqué.
 
+- [ ] **[PRO][P0]** ⛔ **`venue-list.test.tsx` ÉCHOUE PAR INTERMITTENCE, ET CE N'EST PAS
+      D273.** Relevé le 02/09/2026 pendant le barème de sortie de `PLAFONDS` : **3 passes
+      de la suite pro sur 5** rouges sur ce fichier, message
+      `Unable to find role="heading" and name "Salle El Ryad"` — c'est-à-dire une liste
+      pas encore arrivée au moment de l'assertion. État machine relevé devant chaque
+      passe (D270) : RAM libre 2 247–3 017 Mo, CPU 30–65 %, zéro node avant lancement.
+      ⛔ **ATTRIBUÉ PAR CONTRÔLE, PAS SUPPOSÉ — et c'est le point de cette entrée.**
+      L'arbre **d'avant D273** a été remonté (`git stash`) et mesuré dans les mêmes
+      conditions : `venue-list.test.tsx` y échoue **aussi** (RAM 2 572 Mo, CPU 35 %).
+      **Le défaut est donc ANTÉRIEUR à D273 et étranger à lui.** Sans ce contrôle, il se
+      serait lu comme une régression de ce lot — et le lot aurait été refait pour rien.
+      ⚠ **Famille probable : D269** — une assertion qui interroge par RÔLE et par NOM
+      pendant que la donnée est encore en vol. À confronter à la règle désormais écrite
+      dans `apps/pro/src/test-setup.ts` (« une attente interroge un nœud déjà tenu »),
+      et à l'aide `laisserRetomber()` de `walkin-journey.test.tsx`, qui traite la même
+      classe de défaut par une fenêtre `act` au lieu d'une attente.
+      ⛔ **NE PAS le traiter en relevant un plafond** : ce fichier n'est pas dans
+      `PLAFONDS`, et son échec n'est pas un avertissement — c'est une assertion qui
+      tombe. Un plafond n'y peut rien.
+      ⚠ **Deux autres fichiers ont été vus rouges une fois chacun** dans la même
+      campagne — `account-settings-page.test.tsx` (avec 2 avertissements console) et,
+      sous charge produite, une grappe qui touche jusqu'à 12 fichiers. **Ces derniers
+      sont des EXPIRATIONS à 5 000 ms sous contention**, pas la même chose : ils
+      apparaissent aussi sur l'arbre d'avant le lot, et relèvent de D270.
+
+- [ ] **[PRO][P1]** ⛔ **LA GARDE DES SORTIES CONSOLE TOMBE SOUS CHARGE, ET LE FICHIER
+      FAUTIF CHANGE — DEUX SESSIONS, MÊME SYMPTÔME.** Fil produit par la campagne du rang 6
+      (03/09/2026) et **non suivi** : il sort du périmètre du lot.
+      **Les trois occurrences, avec leurs mesures :**
+      1. **02/09 (D272)** — `account-settings-page.test.tsx` classé **SENSIBLE à tort** par
+         la sonde horloge : ses seuls échecs étaient `2 avertissement(s) de console`. La
+         sonde écarte désormais un rouge dont toutes les causes sont cette garde.
+      2. **02/09 (D273)** — pendant le barème de sortie de `PLAFONDS`, **3 passes sur 5**
+         rouges : `venue-list.test.tsx` ×3, `account-settings-page.test.tsx` ×1.
+      3. **03/09 (rang 6)** — sous **charge pure assertée** (RAM 2 408–3 020 Mo, CPU
+         20–68 %, 4 processus de charge comptés devant chaque passe) : **2 rouges sur 15**,
+         **tous deux `account-settings-page.test.tsx`**, message identique au caractère
+         près — `Error: 2 avertissement(s) de console dans un fichier NON exempté`. Et
+         **ZÉRO `venue-list` sur 30 passes**, plancher et charge confondus.
+      ⚠ **HYPOTHÈSE, PAS CONCLUSION** : ce ne serait pas un fichier qui porte un défaut,
+      mais **la garde console qui tombe sous charge sur le fichier que l'ordonnancement
+      désigne** — le fautif variant d'une campagne à l'autre. C'est le motif que D270
+      décrit pour la suite pro, vu ici sur un autre mécanisme que l'expiration.
+      ⛔ **CE QUI N'EST PAS ÉTABLI** : par quel chemin la charge produit ces
+      avertissements. D273 a mesuré que **sous charge, les avertissements sont la
+      CONSÉQUENCE de tests interrompus** — donc un rouge de cette famille ne se juge pas
+      sur une suite par ailleurs rouge. Ici la suite était **verte par ailleurs** (27/28),
+      ce qui n'est pas le même cas et mérite d'être distingué.
+      ⚠ **À vérifier AVANT d'ouvrir** : quels composants émettent ces deux avertissements,
+      et si le nombre **2** est stable ou s'il flotte comme le compte de `walkin-journey`
+      flottait (293 · 294 · 295). Un plafond n'y peut rien — c'est la question de savoir si
+      la garde doit se juger différemment sous charge.
+
+- [ ] **[CLIENT][P2]** ⚠ **LA SUITE CLIENT ÉMET DES `act(...)`.** Vu le 03/09/2026 dans le
+      journal d'une passe racine (`pnpm test`), pendant la campagne du rang 6 :
+      « When testing, code that causes React state updates should be wrapped into
+      act(...) » y apparaît plusieurs fois pendant `@zwadj/client`, sur une suite pourtant
+      **verte à 287/287**.
+      ⛔ **C'EST TOUT CE QUI A ÉTÉ VU, ET RIEN DE PLUS.** Ni compte exact, ni composant
+      émetteur, ni fichier de test : le journal n'a pas été dépouillé, et cette entrée
+      n'affirme donc rien sur l'ampleur ni sur la cause. Famille APPARENTE D269/D273
+      (`apps/pro`), dans une app que le lot en cours **ne touche pas**.
+      ⚠ Point à vérifier AVANT d'ouvrir : `apps/client` a-t-il seulement une garde de
+      sorties console équivalente à celle d'`apps/pro` ? Si non, ces avertissements n'ont
+      jamais eu de quoi faire rougir quoi que ce soit, et l'entrée change de nature.
+
+- [ ] **[INFRA][P1]** ⛔ **`--tout` NE JOUE PAS LES MESURES D'INTÉGRATION, ET NE LE DIT
+      PAS.** Relevé le 07/09/2026 pendant la certification (D275), **non corrigé ici** :
+      défaut croisé. `lancer-campagnes.py --tout` rend « **9 non mesurées** » sur
+      `neutralize-e3d1-s8` (5) et `neutralize-solid-s6` (4) ; ces cibles portent
+      `hors exécution : course / int-reservations / int-visites` et vivent derrière un
+      drapeau **`--int`** que le tri n'emploie pas. ⛔ **Mesuré : les neuf MORDENT** —
+      s6 **6/6**, e3d1-s8 **8/8**, soit **182 sur 182** au lieu des 173 annoncés.
+      ⚠ **Ce sont des gardes du chemin de l'argent et des notifications** (index partiel
+      d'intention de paiement, relecture du perdant sur P2002, abonnements
+      `visit.booked`) : les laisser figurer comme « non mesurées » les fait lire comme
+      structurellement inaccessibles, alors qu'elles sont mesurables **sur ce poste
+      depuis le 30/08/2026**. C'est **D262/D268 une troisième fois** — un empêchement du
+      bac à sable web recopié après sa disparition, qui couvre exactement ce qu'il
+      prétend signaler.
+      ⇒ **REMÈDE, deux options, à trancher** : soit `--tout` joue aussi les mesures
+      `--int` (coût : ~10 min de plus, PostgreSQL requis), soit il **nomme le drapeau**
+      dans son relevé au lieu d'écrire « non mesurées » sans dire par quoi. ⛔ Le
+      relevé de référence « 164 mordues sur 173, 9 non mesurées déjà documentées » de
+      D268 est à **relire à cette lumière** : il sous-estimait par construction.
+
+- [ ] **[INFRA][P1]** ⛔ **LE RELEVÉ D'ÉTAT MACHINE N'A PAS D'INSTRUMENT DANS LE DÉPÔT.**
+      Rapporté le 03/09/2026, **non corrigé ici** : c'est un défaut croisé, et le lot en
+      cours parle de `venue-list`. ⚠ **Mesuré, pas supposé** : `LoadPercentage`,
+      `FreePhysicalMemory`, `PerfFormattedData` et `Get-Counter` ont **zéro occurrence**
+      dans tout le dépôt, `neutralisation/` compris. Depuis D270, **chaque** décision
+      d'intermittence s'appuie sur un état machine relevé À LA MAIN, par un outil que
+      personne ne peut nommer et que la session suivante ne peut pas reproduire.
+      ⛔ **CE QUE ÇA A DÉJÀ COÛTÉ** : le « CPU 6 % » du cadrage D273 est devenu une cible
+      inatteignable-par-construction, parce qu'on ne peut ni la reproduire ni la
+      convertir — l'instrument retenu après calibration (`Win32_PerfFormattedData_PerfOS_Processor`)
+      lit ~17 % là où l'écarté (`Win32_Processor.LoadPercentage`) lit `28, 30, 9, 0` sur
+      la même machine à la même seconde.
+      ⇒ **REMÈDE** : une sonde `neutralisation/sonde-etat-machine.py`, sur le modèle de
+      `sonde-horloge.py` — un **instrument**, invoqué explicitement, pas une campagne
+      (elle ne se nommerait donc pas `neutralize-*`, que le tri seul découvre). Elle rend
+      RAM libre, compte de node, **inventaire des processus ≥ 100 Mo**, et CPU par
+      **médiane de ≥ 5 relevés avec sa dispersion**, jamais un échantillon unique.
+      ⛔ **PLUS le TOTAL des processus et leur NOMBRE — corrigé le 07/09/2026 après en
+      avoir payé l'absence** (voir la section CERTIFICATION de `ZWADJ_CONTINUITE.md`).
+      Cette spec portait exactement le défaut qu'elle devait corriger : un inventaire
+      coupé à 100 Mo ne se compare qu'au-dessus de sa coupe, et **seul le total borne ce
+      qui n'a pas été listé**. Sans lui, 300 Mo sur 1 500 sont restés inattribuables
+      entre deux relevés à quatre jours d'écart. **Cinq quantités, pas trois.**
+      ⚠ **Elle porte les trois lignes de reconfiguration UTF-8** (D268), sans quoi elle
+      lèvera au premier caractère non-cp1252 sur ce poste.
+
 - [ ] **[PRO][P0]** ⛔ **`act(…)` TARDIF DANS LA COQUILLE — deux fichiers de plus, et la
       porte pro n'est PAS fiable.** ⚠ **Diagnostic ISOLÉ le 30/08 (D268), pas supposé.**
       L'échec n'est **pas** une assertion : c'est la garde des sorties console
@@ -2230,14 +2356,251 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       fichier a suffi.** L'absence de base partagée reste un vrai sujet, elle n'est
       simplement bloquante pour rien aujourd'hui.
 
-- [ ] **[API][P0]** ⛔ **argon2 — LE VRAI HACHAGE QUITTE L'UNITAIRE POUR `test:int`.**
+- [ ] **[DOC][P2]** ⚠ **`AGENTS.md` PORTE ENCORE UNE DURÉE FIGÉE : « Compter ~40
+      minutes » pour `lancer-campagnes.py`.** Même classe que les trois chiffres retirés
+      par l'autocorrection de D270, mais **antérieure à D270** — donc pas corrigée dans ce
+      lot, qui parlait d'autre chose. ⚠ Elle est dans la section même où D268 a écrit
+      qu'aucun compteur ne s'y écrit, et pour la raison exacte qui s'applique ici : le
+      nombre de campagnes bouge à chaque lot, et une durée sans état machine ne renseigne
+      pas sur le code. **En OBSERVATION** : la corriger demande de décider ce qui remplace
+      le repère (rien, ou « relever la durée avant de dimensionner », comme pour la fenêtre
+      d'appel). ⚠ Voisines de même classe à trancher en même temps : « meurt en 8 s sur
+      already used » dans la note e2e.
+
+- [ ] **[API][P2]** ⚠ **MARGE DE `test:int` : À SURVEILLER, PAS À CORRIGER.** Relevé le
+      01/09/2026 pendant la vérification du lot argon2 (D271), sous charge produite
+      (9 processus ; état machine au démarrage : RAM libre 1 896 Mo, CPU 70 %) : la suite
+      d'intégration complète rend 434/434 en 641 s, **et son test le plus lent consomme
+      13 504 ms** — « D116 — la déconnexion ferme TOUT ce que la fenêtre de grâce… ».
+      Budget : `testTimeout: 30_000`. **Facteur 2,2, pas davantage.**
+      ⚠ Pourquoi c'est noté maintenant : **ce lot vient de DÉPLACER du travail dans cette
+      suite**. La destination n'est pas infiniment élastique, et le raisonnement « le
+      budget est large là-bas » cesse d'être vrai en silence à mesure qu'on l'y remplit.
+      ⛔ **EN OBSERVATION, aucune action** : 2,2 sous une charge délibérément sévère n'est
+      pas un défaut. Ce qu'il faut, c'est **relever ce chiffre à chaque lot qui ajoute du
+      travail à `test:int`**, avec son état machine — pas décider aujourd'hui d'un seuil
+      qu'on ne saurait pas défendre. ⚠ Et surtout **ne pas relever le budget** si le
+      facteur se dégrade : ce serait la piste `testTimeout` barrée plus haut, rouverte
+      sous un autre nom.
+
+- [ ] **[TESTS][P1]** ⚠ **QUARANTE-DEUX FICHIERS NON TRIÉS HORS `apps/pro` — L'INSTRUMENT
+      EXISTE, IL EST CALIBRÉ, IL N'A PAS ÉTÉ APPLIQUÉ.** C'est ce qui sépare une dette d'un
+      travail pas fait : il ne reste pas à inventer une méthode, il reste à la jouer.
+      Fichiers de test portant une date en dur (relevé du 02/09/2026) : **`apps/api` 31
+      (1 gelé) · `apps/client` 10 (1 gelé) · `packages/api-client` 1 (0 gelé)**.
+      `apps/pro` est trié : 16 fichiers, 1 gelé, et c'était le seul sensible.
+      ⇒ **Instrument : `neutralisation/sonde-horloge.py`**, calibré sur trois cas — un
+      positif SYNTHÉTIQUE (le fichier corrigé privé de son gel, qui doit ressortir
+      sensible), un négatif sans date, et un négatif AVEC une date en dur. Il abandonne si
+      un seul cas manque son verdict.
+      ⛔ **COMMENT ON LA LANCE — rien ne l'invoque à votre place.** Elle n'est PAS une
+      campagne : ni `lancer-campagnes.py` (qui ne découvre que `neutralize-*.py`), ni
+      aucune porte ne la joue. **Depuis la RACINE du dépôt**, jamais depuis
+      `neutralisation/` :
+
+      ```
+      python3 neutralisation/sonde-horloge.py                      # calibration seule
+      python3 neutralisation/sonde-horloge.py src/lib/calendar.spec.ts   # + des cibles
+      ```
+
+      Les chemins passés en argument sont **relatifs au paquet** (`apps/pro`), pas à la
+      racine. Sans argument elle ne fait que sa calibration — utile pour vérifier qu'elle
+      mesure encore avant de lui faire confiance.
+      ⚠ **Un instrument calibré que personne ne sait invoquer est un script mort en trois
+      semaines.** C'est pourquoi la commande est ici et pas seulement dans son en-tête.
+      ⛔ **NE PAS LE TRANSPOSER SANS LE RECALIBRER** : il porte `PAQUET_NOM = "pro"` et
+      trois cas propres à ce paquet. Changer de paquet sans désigner trois nouveaux cas
+      dont la réponse est connue AVANT de mesurer donne une sonde qui rend un verdict sans
+      l'avoir jamais prouvé — exactement ce que faisaient ses deux prédécesseurs écartés.
+      ⚠ **`test:int` est compris dans les 31 d'`apps/api`.** La sonde ne sait pas encore les
+      jouer (elle appelle `vitest run` sans `-c vitest.config.int.ts`) : adaptation à faire,
+      pas obstacle.
+      ⚠ **P1 et non P0, honnêtement** : aucun de ces 42 fichiers ne tient la porte
+      aujourd'hui. Ce qui justifie de ne pas attendre, c'est la table d'échéances ci-dessous
+      — neuf fichiers tombent le même jour de 2027.
+
+- [ ] **[TESTS][P1]** ⚠ **DIX-NEUF FICHIERS À ÉCHÉANCE CONNUE — CE SONT DES DATES DE
+      PÉREMPTION, PAS DES DÉFAUTS.** Relevé le 02/09/2026. Toutes leurs dates en dur sont
+      **futures** et aucun ne fige l'horloge : ils passent aujourd'hui et tomberont le jour
+      dit, sans qu'une ligne ait bougé — exactement comme `walkin-journey.test.tsx` le
+      01/09. **C'est la seule information du relevé qui soit sûre SANS instrument** : elle
+      ne demande aucun jugement sur ce qui compare une date à « maintenant ».
+      ⚠ **Extraction VALIDÉE** (`fromisoformat`) : un premier extracteur rendait
+      `2026-13-01` et `2027-02-31`, c'est-à-dire qu'il attrapait des chaînes qui ne sont pas
+      des dates. **12 chaînes écartées à ce titre**, et le compte est passé de 20 à 19.
+
+      ⛔ **CETTE TABLE DIT QUAND UNE FIXTURE CESSE D'ÊTRE FUTURE, PAS QU'ELLE CASSERA.**
+      Démontré par la sonde du lot horloge (D272) : `request-scope.test.tsx` expire le
+      **12/09/2026** et ressort **INSENSIBLE** — sa date `eventDate` n'est comparée à rien.
+      À l'inverse, `walkin-journey.test.tsx` n'a jamais figuré dans cette table (ses dates
+      étaient déjà passées) et c'est pourtant lui qui tenait la porte rouge.
+      ⚠ **Sans cette phrase, dix-neuf échéances se lisent comme dix-neuf défauts** — et on
+      corrigerait dix-huit fichiers qui n'ont rien. Le tri revient à la sonde, jamais à la
+      lecture de cette table.
+
+      | Première échéance | Fichier |
+      |---|---|
+      | **2026-09-12** ⛔ | `apps/pro/src/venues/request-scope.test.tsx` — **voir la note sous la table** |
+      | 2026-12-31 | `apps/pro/src/venues/block-time.spec.ts` |
+      | 2027-01-01 | `apps/api/src/payments/payment-store.prisma.spec.ts` |
+      | 2027-01-01 | `apps/api/src/payments/payments.service.spec.ts` |
+      | 2027-01-01 | `apps/api/src/venues/quotes.service.spec.ts` |
+      | 2027-01-01 | `apps/pro/src/venues/visits-section.test.tsx` |
+      | 2027-02-01 | `apps/api/src/venues/quote-store.prisma.spec.ts` |
+      | 2027-02-01 | `apps/client/src/lib/calendar.spec.ts` |
+      | 2027-02-01 | `apps/pro/src/venues/pro-calendar.spec.ts` |
+      | 2027-08-01 | `apps/client/src/components/venue/booking-request-panel.test.tsx` |
+      | 2027-08-14 | `apps/api/test/int/bookings.int-spec.ts` |
+      | 2027-08-15 | `apps/api/src/common/notifications/notification-dispatch.spec.ts` |
+      | 2027-08-15 | `apps/api/src/venues/bookings.schemas.spec.ts` |
+      | 2027-08-15 | `apps/api/src/venues/visit-bookings.schemas.spec.ts` |
+      | 2027-08-15 | `apps/api/src/venues/visit-notifications.service.spec.ts` |
+      | 2027-08-15 | `apps/api/test/int/services.int-spec.ts` |
+      | 2027-08-15 | `apps/api/test/int/visit-availabilities.int-spec.ts` |
+      | 2027-08-15 | `apps/api/test/int/visit-bookings.int-spec.ts` |
+      | 2027-09-18 | `apps/api/test/int/quotes.int-spec.ts` |
+
+      ⛔ **`request-scope.test.tsx` EXPIRE LE SAMEDI 12 SEPTEMBRE 2026** — soit dix jours
+      après ce relevé, **pendant le lot sharp**. Sa date `eventDate: "2026-09-12"` cessera
+      d'être future ce jour-là.
+      ⚠ **La sonde le classe INSENSIBLE** : cette date n'est comparée à rien, il ne devrait
+      donc pas tomber. Mais « ne devrait pas » n'est pas « ne peut pas », et le verdict
+      porte sur les deux dates que la sonde dérive, pas sur toutes. **Si la suite pro rougit
+      autour du 12/09 sur ce fichier, la cause est écrite ici** — inutile de rouvrir
+      l'enquête depuis le début, comme il a fallu le faire le 01/09.
+      ⇒ C'est le seul intérêt d'écrire une échéance : ne pas la redécouvrir.
+
+      ⛔ **`request-scope.test.tsx` EXPIRE LE 12/09/2026 — DANS DIX JOURS**, et il est dans
+      `apps/pro`. Il entre donc dans le lot horloge en cours, au critère posé par Ko : ce
+      qui compte est ce que l'instrument désigne comme sensible, pas ce qui rougit déjà.
+      ⚠ **Neuf fichiers partagent l'échéance 2027-08-15** : le jour venu, ce n'est pas un
+      test qui tombe, c'est une grappe — et une grappe se lit comme une panne, pas comme
+      une péremption. Raison de plus pour ne pas attendre.
+      ⚠ **Une échéance future n'est pas une preuve de sensibilité** : ces dates peuvent
+      n'être que de la métadonnée (`createdAt`) que rien ne compare à maintenant. Cette
+      table dit QUAND une fixture cesse d'être future, pas qu'elle cassera. Le tri revient
+      à l'instrument du lot horloge.
+
+- [x] ~~**[PRO][P0]** `walkin-journey.test.tsx` rougit depuis le passage au 01/09/2026,
+      et c'est l'horloge~~ — ✅ **FAIT le 02/09/2026 (D272).** Horloge gelée, et **toutes**
+      les fixtures dérivées de l'ancre : il ne reste qu'**une seule date écrite** dans le
+      fichier. Preuve **BILATÉRALE** (`neutralize-horloge.py`, 2 cibles, 2 mordues) —
+      classique : le gel retiré ⇒ ROUGE ; **inversée** : l'ancre déplacée de dix ans ⇒ le
+      fichier doit rester **VERT**, seule façon de mesurer une INSENSIBILITÉ.
+      ⚠ **Le balayage demandé ci-dessous a eu lieu** : sur les 28 fichiers de test d'
+      `apps/pro`, la sonde n'en désigne qu'**UN**, celui-ci.
+      ⚠ **Constat d'origine conservé ci-dessous :**
+      ⛔ **`walkin-journey.test.tsx` ROUGIT DEPUIS LE PASSAGE AU
+      01/09/2026, ET C'EST L'HORLOGE.** Découvert le 01/09 en relançant les portes du lot
+      argon2 : **24 échecs sur 41**, tous en `expect(element).toBeEnabled()`, sur un arbre
+      où **aucune ligne n'a bougé**. La même commande rendait 347/347 la veille.
+      ⛔ **CAUSE PROUVÉE, pas supposée** : le fichier fixe une fenêtre de disponibilité
+      `from: "2026-08-01", to: "2026-08-31"` et des dates `2026-08-15/16/22`, **sans figer
+      l'horloge**. Depuis minuit, ces dates sont PASSÉES : le calendrier les refuse, le
+      bouton reste désactivé. **Mesure de reproduction** : `vi.setSystemTime` au
+      `2026-08-10` ⇒ **41/41 vert** ; horloge réelle ⇒ 24 rouges. Horloge restaurée après
+      mesure, rien laissé dans l'arbre.
+      ⚠ **C'est la leçon déjà écrite du dépôt** (D213, D227) : « figer l'horloge, jamais
+      choisir une date dans le futur — elle cesse de l'être, et la suite rougit sans qu'une
+      ligne de code ait bougé ». Elle était consignée ; ce fichier ne l'applique pas.
+      ⛔ **CE DÉFAUT EST DÉTERMINISTE, PAS INTERMITTENT** — contrairement à argon2 et sharp,
+      il ne dépend d'aucune charge : il rougit à chaque exécution, et il ne se réparera pas
+      tout seul. **Il devient la cause DOMINANTE de la porte `test` rouge**, devant les deux
+      autres. ⇒ **À traiter AVANT la certification de D269 et D270**, sans quoi la porte ne
+      redeviendra verte à aucune charge.
+      ⚠ **Le correctif n'est pas « décaler les dates »** : ce serait reconduire le défaut
+      d'un mois. C'est **figer l'horloge** et dériver les dates de fixture de cette horloge
+      figée. ⚠ **Balayer les autres fichiers pour la même faute** avant de conclure : rien
+      ne dit que celui-ci soit le seul.
+      ⚠ **PISTE, PAS CONCLUSION — elle explique peut-être une part de ce qu'on a appelé
+      « suite pro intermittente » pendant trois sessions.** D270 a relevé deux rouges
+      isolés qu'il n'a PAS pu nommer, leur sortie n'ayant jamais touché un fichier. Une
+      faute d'horloge produit exactement cette signature : un rouge qui apparaît sans
+      qu'une ligne ait bougé, et qu'on attribue à la charge faute de mieux.
+      ⛔ **CE N'EST PAS UNE RÉFUTATION DE D270.** La contention est MESURÉE par ailleurs,
+      et solidement : 0 vert sur 3 sans borne contre 2 sur 5 avec, et des grappes de six à
+      seize échecs sous charge. Les deux causes coexistent. ⚠ Cette piste ne se vérifiera
+      qu'en datant précisément les rouges non nommés — et leurs journaux sont perdus,
+      **donc elle restera peut-être une piste pour toujours**. L'écrire comme telle vaut
+      mieux que la laisser se durcir en explication commode.
+
+- [x] ~~**[API][P0]** sharp — `image-pipeline.spec.ts` tient la porte autant qu'argon2~~
+      — ⛔ **REQUALIFIÉ SANS OBJET LE 02/09/2026, SUR MESURE.** Après le départ des cinq
+      tests argon2 vers `test:int` (D271), la suite unitaire API **ne rougit plus à
+      aucune charge produite**. État machine relevé avant chaque exécution :
+
+      | Charge | RAM libre | Résultat | Délais | Test le plus lent |
+      |---|---|---|---|---|
+      | 8 procs (×3) | 3 507–3 567 Mo | 640/640 | 0 | 738 ms |
+      | 24 procs (×2) | 2 599–2 901 Mo | 640/640 | 0 | 1 589 ms |
+      | 48 procs (×2) | 1 750–1 832 Mo | 640/640 | 0 | 2 346 ms |
+
+      À **8 processus** — la charge exacte qui produisait 3 à 8 échecs le 01/09 — l'API est
+      verte trois fois sur trois. Le test sharp le plus lourd garde **2,1× de marge** même
+      à 48 processus, contre un budget de 5 000 ms.
+      ⛔ **CONDITION DE VALIDITÉ DE CE CONSTAT, ET ELLE EST STRICTE : sharp ne tombe plus
+      PARCE QUE les cinq tests argon2 ont quitté la suite unitaire API.** Ce n'est pas
+      sharp qui s'est amélioré, c'est la pression qui a baissé. **Si du travail coûteux
+      revient dans `apps/api` en unitaire — un KDF, un traitement d'image, un chiffrement —
+      la marge se referme et sharp retombe.** ⚠ Sans cette phrase, la prochaine lecture
+      sera « sharp est réglé », et il ne l'est pas : il est **déchargé**.
+      ⇒ **Rien à faire aujourd'hui.** Rouvrir cette entrée si la suite unitaire API
+      s'alourdit, ou si une mesure sous charge redonne un rouge sur ce fichier.
+
+- [x] ~~**[API][P0]** ⛔ **CONSTAT D'ORIGINE, CONSERVÉ POUR LA TRACE — il était exact
+      le 01/09 et il a cessé de l'être le 02/09.** Ce qui suit décrit la mesure telle
+      qu'elle a été prise, avec argon2 encore dans la suite unitaire. Ne pas le lire comme
+      l'état courant : voir la requalification ci-dessus.~~
+      ⛔ **`image-pipeline.spec.ts` TENAIT LA PORTE AUTANT
+      QU'ARGON2.** Ouvert le 01/09/2026 sur MESURE, pas sur soupçon : campagne de 8
+      exécutions de la suite API sous charge vérifiée (9 processus), état machine relevé
+      avant chacune, sortie de chacune dans un fichier. `src/media/image-pipeline.spec.ts`
+      dépasse le budget de **5 000 ms** dans **5 des 6 exécutions rouges — parfois SEUL**
+      (« au-delà du plafond : la grande redescend à 1920 de large » 6 020 ms ; « PNG
+      accepté en entrée, sortie webp quand même » 5 134 ms).
+      ⛔ **CONSÉQUENCE EXÉCUTOIRE** : le lot argon2 **ne rendra pas la porte verte**. Tant
+      que celui-ci n'est pas fait, la porte reste non fiable sous charge, donc D269 et D270
+      restent non certifiés, donc **S11-b — chemin de l'argent — ne s'ouvre pas**.
+      ⚠ **Même décision de cadrage qu'argon2, à confirmer** : ne relever aucun délai, ne
+      toucher à aucun paramètre de coût ; ce qui paie le traitement d'image réel part vers
+      `test:int` (budget 30 s, `fileParallelism: false`), l'unitaire garde ce qui n'en a
+      pas besoin — **et au moins un test qui exerce le vrai pipeline**, par le même motif
+      que MD7 côté argon2 : une régression de configuration doit se voir tout de suite,
+      pas à la porte lourde.
+      ⚠ **La borne `maxWorkers: 4` a été mesurée et écartée** : 2 verts sur 5 contre 0 sur
+      3 sans elle. Elle déplace le taux, elle ne tranche pas. Relevé complet dans la
+      section D270 de `ZWADJ_CONTINUITE.md`.
+      ⛔ **CE LOT PORTE AUSSI LE RÉSIDUEL LAISSÉ PAR ARGON2, ET C'EST DÉLIBÉRÉ.** Le lot
+      argon2 a fait passer l'exposition de la suite unitaire de CINQ tests payant le KDF
+      réel à UN seul (le préfixe `$argon2id$`, gardé exprès — une régression de
+      configuration du hachage doit se voir tout de suite, pas à la porte lourde). Ce test
+      reste théoriquement capable de dépasser le budget sous une charge extrême.
+      ⚠ **Il ne se traite pas fichier par fichier** : à ce niveau de charge, la porte
+      entière rendait déjà des grappes de six à seize échecs — un état où elle ne mesure
+      plus rien, et où un test qui rougit ne se distingue plus des autres. **Ce lot doit
+      prendre la contention de la porte unitaire DANS SON ENSEMBLE**, pas ajouter un
+      troisième déplacement de fichier.
+
+- [x] ~~**[API][P0]** argon2 — le vrai hachage quitte l'unitaire pour `test:int`~~
+      — ✅ **FAIT le 01/09/2026 (D271).** Cinq tests exposés au KDF réel deviennent un ;
+      aucun délai relevé, aucun paramètre de coût touché, comme Ko l'avait tranché.
+      ⚠ **N'a PAS rendu la porte verte, et ne l'a jamais prétendu.**
+      ⚠ **Consigne d'origine conservée ci-dessous, elle dit ce à quoi le lot répondait :**
       Décision de Ko : **ne relever aucun délai, ne toucher à aucun paramètre de coût**.
       Les tests qui paient le KDF réel partent vers `test:int`, où le budget est large ;
       l'unitaire garde ce qui n'a pas besoin du hachage réel.
       ⚠ **Surface d'AUTHENTIFICATION** ⇒ analyse écrite des modes de défaillance avant
       toute ligne de code, même exigence que pour un lot du chemin de l'argent.
-      ⛔ **Doit passer AVANT S11-b** : c'est ce test qui tient la porte `test` rouge, et
-      un lot ne se certifie pas sous une porte rouge.
+      ⛔ **Doit passer AVANT S11-b**, mais **NE SUFFIRA PAS** : corrigé le 01/09/2026 sur
+      mesure — cette ligne disait « c'est CE test qui tient la porte rouge ». Sharp la tient
+      aussi (entrée ci-dessus).
+      ⛔ **L'ORDRE DES LOTS QUI VIVAIT ICI EST RETIRÉ LE 03/09/2026.** Il prescrivait
+      « argon2, puis sharp, puis certification de D269 et D270 ensemble, puis S11-b » —
+      **périmé trois fois** : argon2 fait (D271), sharp requalifié SANS OBJET sur mesure,
+      et la certification porte désormais sur cinq lots, pas deux.
+      ⇒ **L'ordre vit dans UN seul endroit** : la section D270 de `ZWADJ_CONTINUITE.md`.
+      En trois exemplaires, deux finissent par dire autre chose — c'est exactement ce qui
+      venait d'arriver.
 
 - [ ] **[E2E][P2]** ⚠ **UNE E2E INTERROMPUE LAISSE SES SERVEURS VIVANTS.** Vécu quatre
       fois le 30/08 : les processus tiennent 3100/3101 **et** la mémoire (4,5 → 2,25 Go

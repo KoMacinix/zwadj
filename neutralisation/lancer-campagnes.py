@@ -82,8 +82,20 @@ ROUGES = re.compile(r"(\d+) garde\(s\) neutralis..e\(s\) et ROUGE\(s\)")
 
 
 def campagnes() -> list[str]:
+    """UNE CAMPAGNE SE NOMME `neutralize-*.py`, et c'est le motif qui fait foi.
+
+    ⚠ Le glob portait sur `neutralisation/*.py` : tout script depose ici etait donc
+    pris pour une campagne. `neutralisation/` contient aussi des INSTRUMENTS de
+    diagnostic (`sonde-horloge.py`), qui ne mutent rien, ne declarent aucune cible et
+    ne rendent aucun compte de gardes mordues. Le tri les signalait — a juste titre —
+    comme « AUCUN fichier detecte, cette campagne ne sera JAMAIS selectionnee », et
+    sortait en 1 a chaque passage.
+    ⇒ On inscrit la convention deja suivie par les 24 campagnes existantes plutot que
+    d'entretenir une liste d'exceptions, qu'il aurait fallu tenir a jour a chaque
+    outil ajoute."""
     moi = os.path.basename(__file__)
-    return [p for p in sorted(glob.glob("neutralisation/*.py")) if os.path.basename(p) != moi]
+    return [p for p in sorted(glob.glob("neutralisation/neutralize-*.py"))
+            if os.path.basename(p) != moi]
 
 
 def fichiers_lus(script: str) -> set[str]:

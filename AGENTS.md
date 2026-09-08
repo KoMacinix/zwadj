@@ -254,6 +254,22 @@ connexion (famille D115).
   ⚠ **Recopier une référence, c'est parfois recopier la règle qu'on prétend réfuter** : deux fixtures d'acompte valaient **pile 30 %** du total — dont celles de la maquette — et ne prouvaient donc rien contre un `Math.round(total * 0.3)` côté navigateur.
 - **Vérifier la provenance de l'arbre avant d'y toucher.** L'arbre de travail a divergé deux fois pendant la campagne — du code non attribué est apparu entre deux tours, dont un lot entier sur la rotation des jetons. `diff` contre le zip livré, `git apply --check` avant toute extraction.
 - **Suite e2e (`e2e/`, Playwright) : à la demande, PAS une septième porte.** À lancer avant tout lot touchant **auth, concurrence ou argent**, et avant chaque livraison finale. Elle tourne contre les serveurs de **développement** : `StrictMode` ne double le montage que là, et c'est ce double montage qui révèle la classe de défauts pour laquelle elle existe.
+- ⛔ **UN EXTRACTEUR SE VÉRIFIE CONTRE LA SORTIE BRUTE AVANT DE SERVIR À COMPTER (D275).**
+  **Trois faux positifs dans une seule session**, tous sur l'outillage jetable d'une
+  certification, aucun sur le code mesuré : `grep "Test Files"` ne voyait **rien** parce
+  que les résumés Vitest portent des **codes ANSI** ; un compteur de `FAIL` rendait 1 sur
+  une suite à 434/434 parce que le mot est dans le **NOM** d'un test qui passe (« la ligne
+  passe FAILED ») ; un chronomètre rendait **1 788 796 851 s**, un horodatage epoch, sa
+  variable de départ perdue au passage en arrière-plan. ⛔ **AUCUN N'A LEVÉ — TOUS ONT
+  RÉPONDU**, et leur réponse avait la forme exacte d'une mesure : zéro ligne se lit comme
+  « rien à signaler », un `1` comme un échec, un grand nombre comme une durée.
+  ⚠ **C'est un MOTIF, pas un incident** : c'est la règle du rang 6 (« un instrument se
+  calibre sur un cas dont la réponse est déjà connue ») appliquée aux extracteurs qu'on
+  écrit en passant — précisément ceux qu'on ne songe pas à calibrer parce qu'ils ne sont
+  « que » du `grep`. ⇒ **Avant de compter sur une sortie : l'ouvrir, la lire, et vérifier
+  que le motif trouve ce qu'on sait y être.** Un extracteur qui rend zéro se confronte à
+  la sortie brute avant d'être cru — et un compte lu par sous-chaîne se confronte au
+  **contexte** de ses occurrences, jamais à leur seul nombre.
 - ⚠ **UN COMPTE DE VIOLATIONS N'EST PAS UN COMPTE DE PROBLÈMES.** La première référence d'accessibilité annonçait **70 violations** ; c'étaient **19 problèmes**, dont deux pesaient 54 nœuds. Un outil qui compte par nœud DOM surestime toujours. Regrouper par cause **avant** de prioriser — et geler par **catégorie**, pas par nœud : 96 % des signatures initiales contenaient un `:nth-child()` ou un `[href$=…]`, donc churnaient sur un changement de graine ou l'insertion d'un champ. Un gel qu'on régénère sans le lire ne gèle rien.
 - ⚠ **UN ÉCHEC QUI SE DÉPLACE EST PIRE QU'UN ÉCHEC STABLE (D127).** Next et Vite compilent une route à la première demande : le test qui paie la compilation dépend de l'ordre d'attribution aux workers. Un tel échec finit relancé sans être lu. On paie le coût **hors de toute mesure** (projet `warmup`) plutôt que de monter les délais d'attente. ⚠ Un délai qu'on augmente à chaque échec finit par ne plus rien mesurer.
 - **Ce qu'une porte verte ne regarde pas** : qu'un composant soit **monté** quelque part (leçon R1 — deux écrans livrés et inatteignables, six portes vertes), ce qui se passe dans un vrai navigateur, et ce qu'une migration fait sur une base **non vide** (D123). ⚠ **Ni la clause `WHERE` d'une réutilisation d'endpoint** (D146 — le calendrier pro rendait 404 pour toute salle non publiée, toutes portes vertes), **ni un identifiant qui « ressemble »** (D149 — id utilisateur passé dans un champ qui référence un profil pro).
@@ -274,8 +290,12 @@ réécrit pas les en-têtes des précédents — ce serait une certification par
 
 ⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**
 Trois fois en deux sessions une mesure a renseigné sur la MACHINE et non sur le code,
-dont une conclusion publiée puis fusionnée : même commande, 35 s / 347 verts ou
-177 s / 36 échecs. **« Intermittent » sans état relevé ne veut rien dire.**
+dont une conclusion publiée puis fusionnée : **la même commande, sur le même arbre,
+a rendu une suite entièrement verte en quelques dizaines de secondes, et des dizaines
+d'échecs en plusieurs minutes.** ⛔ Les relevés ne sont pas recopiés ici : une durée
+sans son état machine est exactement la mesure que cette règle interdit. Ils vivent
+dans la section **D270** de `ZWADJ_CONTINUITE.md`, chacun précédé de sa charge.
+**« Intermittent » sans état relevé ne veut rien dire.**
 
 ⛔ **NE JAMAIS ÉDITER UN FICHIER PENDANT QU'UNE VÉRIFICATION LE LIT (D270)** — 24 échecs
 sans signification, puis une conclusion fausse tirée d'eux. ⚠ Et une campagne de N
@@ -381,6 +401,12 @@ réservation reste un acte distinct.
   de démarrer si `pnpm-workspace.yaml` n'est pas là, sans quoi un `cd neutralisation`
   produirait « ERREUR DE SCRIPT : 0 occurrence(s) », c'est-à-dire un message qui envoie
   chercher un défaut de code là où il n'y a qu'un dossier.
+- ⛔ **UN HARNAIS SE NOMME `neutralize-<lot>.py`, SINON IL NE SERA JAMAIS JOUÉ (D272).**
+  `lancer-campagnes.py` ne découvre que ce motif. Un harnais nommé autrement vit dans
+  `neutralisation/`, se lance à la main, et n'est plus jamais rejoué par le tri — ni par
+  personne. ⚠ Les autres scripts du dossier sont des **instruments** de diagnostic, pas
+  des campagnes : `sonde-horloge.py` s'invoque explicitement et ne rend aucun compte de
+  gardes mordues.
 - ⛔ **UNE CIBLE DONT UNE MESURE NE PEUT PAS ROUGIR EST MUETTE PAR CONSTRUCTION.**
   Trois fois dans cette campagne : une mutation de l'ADAPTATEUR déclarée aussi sur la
   mesure du SERVICE (qui bouchonne le port et ne voit rien) ; une mesure pointée sur un
@@ -634,13 +660,20 @@ note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
   ⚠ Il écrit ses journaux dans `.neutralisation-journaux/`, ignoré par git.
 - ✅ **SUITE PRO : BORNÉE À `maxWorkers: 4`** (`apps/pro/vite.config.ts`, D270) — elle
   n'est **PAS** « intermittente », l'ancien cadrage prenait la CHARGE MACHINE pour le
-  mode d'exécution. À charge égale : défaut 35 s · borne 46 s · `maxWorkers: 1` 88 s.
+  mode d'exécution. La clé **MORD** — démontré en la poussant à 1, qui ralentit la suite
+  d'un facteur net — et ce qu'elle achète est le comportement **sous charge** : au repos,
+  tous les modes sont verts. ⛔ **Les durées comparées ne sont pas recopiées ici** : la
+  règle « relever l'état machine » ci-dessus les interdirait. Section **D270** de
+  `ZWADJ_CONTINUITE.md`, avec la charge relevée devant chaque mesure.
   ⚠ Reste vrai : `pnpm test` (racine) et `pnpm --filter @zwadj/pro test` ne répartissent
   pas pareil — **ne jamais conclure sur un seul des deux**.
 - ⛔ **UNE E2E INTERROMPUE LAISSE SES SERVEURS SUR 3100/3101** (et la mémoire) : la
   suivante meurt en 8 s sur « already used ». Purger node et les ports AVANT.
-- ⛔ **DIMENSIONNER LA FENÊTRE D'APPEL SUR LES DURÉES MESURÉES** — `build`+`test:int`
-  ≈ 15 min ; trois tâches tuées ont été lues comme des échecs de suite.
+- ⛔ **LA PASSE COMPLÈTE DES PORTES DÉPASSE LA FENÊTRE D'UN APPEL** : la découper, et
+  RELEVER la durée de chaque morceau pour dimensionner le suivant. Trois tâches tuées
+  ont été lues comme des échecs de suite. ⚠ **Aucun ordre de grandeur n'est écrit ici** —
+  « ce n'est qu'un ordre de grandeur » est l'argument qui a laissé passer les autres
+  chiffres figés — celui-là même que D268 refuse plus haut dans cette section.
 - ⛔ **LIRE LE CODE DE SORTIE DE LA COMMANDE, PAS DE SON ENVELOPPE** : `{ …; } > f` rend
   0 quand la commande dedans a rendu 1.
 
