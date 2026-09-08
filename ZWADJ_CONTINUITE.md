@@ -934,7 +934,22 @@ L'entrée `[INFRA][P1]` peut être close par Ko.
 
 ### ⛔ D279 — étape 1 puis 3 : LE LOT A RATÉ SON OBJET AU PREMIER JET, ET LA MESURE L'A DIT
 
-C'est le fait de cette session, et il répète **exactement** S11-a (D261) :
+⛔ **CE N'EST PAS UN INCIDENT DE SESSION, C'EST UN FAIT SUR LA MÉTHODE, ET C'EST LA
+DEUXIÈME FOIS.** La première était **S11-a** (D261) : son premier jet faisait *grossir* la
+méthode qu'il prétendait réduire, et rien d'autre que le chiffre d'entrée ne l'aurait dit.
+Ici, le second jet ne la faisait pas grossir — il ne la réduisait **pas du tout**, ce qui se
+raconte encore plus facilement comme un succès.
+⇒ **Le chiffre d'entrée de D261 a donc empêché DEUX lots consécutifs de s'auto-décerner
+leur résultat.** Deux occurrences sur deux lots de SRP, c'est un taux, pas une malchance :
+**un lot de SRP ne sait pas, de l'intérieur, s'il a réduit quoi que ce soit.** L'extraction
+donne le sentiment du travail fait — les décisions ONT bougé, le module pur existe, les
+gardes mordent — et ce sentiment est exactement ce qui rend le relevé indispensable plutôt
+que cérémoniel.
+⚠ **Corollaire exécutoire, pour le prochain lot de SRP** : le chiffre d'entrée se relève
+AVANT, avec sa définition écrite, et le chiffre de sortie se relève **avant de rédiger la
+note**, jamais après — une note écrite d'abord cherche ensuite la façon de compter qui la
+confirme.
+
 
 | moment | `create`, lignes exécutables |
 |---|---|
@@ -987,8 +1002,25 @@ quel chemin cette mesure voit-elle la mutation ?* — et je l'avais posée pour 
 mutation, les deux chemins ont écrit en base des réservations et des devis dont
 `base_price_cents` **ne correspond plus** à `total_cents − services_total_cents` — et
 **PostgreSQL comme les 36 fichiers d'intégration les ont acceptées, en vert.** L'agrégat
-n'est gardé par rien. **C'est un argument de plus pour le `CHECK` que Ko a tranché**, et il
-n'a pas été cherché : il est tombé d'un instrument mal réglé.
+n'est gardé par rien, et il n'a pas fallu le raisonner : **on l'a vu.**
+
+⛔ **C'EST DÉSORMAIS LA JUSTIFICATION DU `CHECK` DE L'ÉTAPE 4, ET ELLE EST ÉCRITE ICI EXPRÈS.**
+Jusqu'à cette mutation, MD2 était un **raisonnement** : « la migration impose
+`line_total = unit_price × quantity` au niveau ligne et rien au niveau agrégat, donc une
+erreur d'agrégation passerait ». Un raisonnement se discute — et le jour où quelqu'un
+trouvera ce `CHECK` coûteux, gênant pour une reprise de données ou « manifestement
+redondant », c'est ce raisonnement qu'il croira pouvoir défaire.
+⇒ **Ce n'est plus un raisonnement, c'est une OBSERVATION, datée et reproductible** :
+`neutralisation/neutralize-s11b.py`, cible 8, première version — conservée en commentaire
+avec son motif exactement pour cela. On modifie une ligne du calcul, on lance les portes,
+et **des lignes incohérentes entrent en base sans qu'un seul test rougisse**. La question
+n'est donc pas « une erreur d'agrégation pourrait-elle passer ? » mais « **combien de temps
+est-elle passée sans que rien ne le dise ?** ».
+⚠ **Et c'est le contraire d'une preuve cherchée** : elle est tombée d'un instrument mal
+réglé, dans une cible qui visait autre chose. Une observation qu'on n'a pas construite pour
+gagner un argument est la plus difficile à écarter.
+⛔ **Qui voudra retirer ce `CHECK` devra donc expliquer ce que devient CETTE mesure-là**,
+pas répondre à une inquiétude théorique.
 ⇒ Cible refaite sur le **total**, asserté des deux côtés (`bookings.int-spec.ts:152`,
 `quotes.int-spec.ts:93`), avec un `+ 100` qui la rend fausse **même sans prestation** —
 sinon la mutation serait inerte sur le cas nominal. ⚠ La première version est **conservée
@@ -1027,6 +1059,10 @@ cassée par le refus du doublon**, qui est pourtant un changement de comportemen
    retargé avec un semis qui VIOLE la contrainte**. ⚠ Le prérequis mesuré en D278 (0 violation)
    portait sur **4 réservations** : il ne borne à peu près rien, et c'est le harnais non vide
    qui porte la garantie. **Ko veut voir ce harnais rougir avant que la migration parte.**
+   ⛔ **SA JUSTIFICATION N'EST PAS DANS CE POINT-CI, ELLE EST DANS LA SECTION SUR LA CIBLE
+   MUETTE CI-DESSUS** — l'observation, pas le raisonnement : des lignes incohérentes SONT
+   entrées en base, portes vertes. **À lire avant d'écrire cette migration, et surtout avant
+   de la retirer.**
 2. **Étape 5 — les deux échéances** (`expiresAt`, `paymentDueAt`), cas limites spécifiés.
 3. **Étape 6 — le harnais**, pour sa part restante (CHECK + échéances).
 
