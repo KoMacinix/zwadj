@@ -270,6 +270,40 @@ connexion (famille D115).
   que le motif trouve ce qu'on sait y être.** Un extracteur qui rend zéro se confronte à
   la sortie brute avant d'être cru — et un compte lu par sous-chaîne se confronte au
   **contexte** de ses occurrences, jamais à leur seul nombre.
+- ⛔ **CE QUI VAUT DÉCISION S'ÉCRIT DANS UN FICHIER D'AUTORITÉ, JAMAIS DANS UN MESSAGE DE
+  COMMIT (D276).** Une fusion, une levée de consigne, un changement d'ordre des lots, la
+  suppression d'une branche : **un message de commit n'est lu par personne à la
+  reprise.** La reprise se fait par `ZWADJ_CONTINUITE.md` **seul** — c'est la définition
+  de « un lot par session », et c'est ce qui la rend mesurable.
+  ⚠ **TROISIÈME FOIS EN TROIS SESSIONS, SOUS UNE FORME DIFFÉRENTE À CHAQUE FOIS** :
+  « un lot par session » a vécu plusieurs sessions dans un message de chat sans jamais
+  atterrir dans un fichier (02/09) ; le bloc de provenance affirmait « aucune branche ne
+  porte de lot en attente » pendant que quatre lots vivaient sur une branche (D270,
+  04/09) ; puis **cinq mentions « non fusionnée » ont survécu à la fusion qui les
+  démentait**, la levée du verrou n'existant, elle, que dans le message de cette fusion
+  (D276, 07/09). ⛔ **Cette fois le motif touchait LE VERROU QUI AUTORISE LE CHEMIN DE
+  L'ARGENT** : une session à froid aurait lu « aucun lot de produit ne s'ouvre » alors
+  que S11-b était ouvert.
+  ⇒ **Corollaire exécutoire** : après tout `git` qui change l'état d'un lot — fusion,
+  bascule de branche, suppression, poussée — **le geste suivant est de l'écrire dans
+  `ZWADJ_CONTINUITE.md`, AVANT de fermer la session**, jamais « au prochain lot ». C'est
+  le corollaire de fin de session de `CLAUDE.md` étendu au seul endroit qui y échappait :
+  le message de commit ressemble à un fichier, il est versionné comme un fichier, **et
+  personne ne le lit à la reprise.**
+  ⚠ **Symétrique, et c'est ce qui rend la règle vérifiable** : quand un fichier
+  d'autorité et `git` se contredisent, **c'est `git` qui fait foi sur l'ÉTAT**, et le
+  fichier se corrige — jamais l'inverse. Une affirmation ainsi invalidée se **BARRE avec
+  son motif**, elle ne s'efface pas : supprimée, elle se réécrit de bonne foi plus tard
+  par quelqu'un qui ignore qu'elle a déjà été fausse.
+  ⛔ **ET LA RÉCIPROQUE, QUI FERME LA BOUCLE (ajout de Ko, 07/09/2026) : UN LOT
+  DOCUMENTAIRE SE COMMITE AVANT LA FIN DE SESSION, AU MÊME TITRE QU'UN LOT DE CODE.**
+  Sans elle, on obtient le cas inverse et exactement symétrique — **la décision écrite
+  dans le fichier, et le fichier jamais commité** : un arbre sale que la session suivante
+  trouve sans pouvoir dire s'il est un travail fini, un brouillon, ou un accident.
+  ⚠ Un lot dont l'objet est « ce qui ne se pose pas dans un fichier disparaît » ne peut
+  pas s'arrêter sur un arbre non commité — et **aucun lot ne le peut**. « Ce n'est que de
+  la doc » est très exactement l'argument qui a laissé la levée du verrou dans un message
+  de commit.
 - ⚠ **UN COMPTE DE VIOLATIONS N'EST PAS UN COMPTE DE PROBLÈMES.** La première référence d'accessibilité annonçait **70 violations** ; c'étaient **19 problèmes**, dont deux pesaient 54 nœuds. Un outil qui compte par nœud DOM surestime toujours. Regrouper par cause **avant** de prioriser — et geler par **catégorie**, pas par nœud : 96 % des signatures initiales contenaient un `:nth-child()` ou un `[href$=…]`, donc churnaient sur un changement de graine ou l'insertion d'un champ. Un gel qu'on régénère sans le lire ne gèle rien.
 - ⚠ **UN ÉCHEC QUI SE DÉPLACE EST PIRE QU'UN ÉCHEC STABLE (D127).** Next et Vite compilent une route à la première demande : le test qui paie la compilation dépend de l'ordre d'attribution aux workers. Un tel échec finit relancé sans être lu. On paie le coût **hors de toute mesure** (projet `warmup`) plutôt que de monter les délais d'attente. ⚠ Un délai qu'on augmente à chaque échec finit par ne plus rien mesurer.
 - **Ce qu'une porte verte ne regarde pas** : qu'un composant soit **monté** quelque part (leçon R1 — deux écrans livrés et inatteignables, six portes vertes), ce qui se passe dans un vrai navigateur, et ce qu'une migration fait sur une base **non vide** (D123). ⚠ **Ni la clause `WHERE` d'une réutilisation d'endpoint** (D146 — le calendrier pro rendait 404 pour toute salle non publiée, toutes portes vertes), **ni un identifiant qui « ressemble »** (D149 — id utilisateur passé dans un champ qui référence un profil pro).

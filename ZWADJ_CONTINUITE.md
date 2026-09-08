@@ -414,6 +414,62 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## PROCHAIN LOT — rang 8 · **S11-b**, le chiffrage ⛔ **CHEMIN DE L'ARGENT**
+
+⛔ **OUVERT LE 07/09/2026 PAR D276**, quand la consigne « aucun lot de produit ne s'ouvre
+avant que la porte soit verte » a été levée par la certification D275. ⚠ **Cette section
+est un POINT D'ENTRÉE, pas un cadrage.** Le cadrage de S11-b **n'existe pas** : il est le
+**premier livrable** de la session qui ouvrira ce lot, pas un préalable qu'elle
+trouverait écrit.
+
+### Ce que le rang 8 recouvre
+**S11-b — le chiffrage de `BookingsService`** : tarification, prestations, confrontation
+à **D75**, échéance d'acompte. Il fait suite à **S11-a** (D261), qui a pris la moitié
+amont.
+⚠ **Repartir des mesures RÉELLES, jamais de l'estimation d'origine** : après S11-a,
+`create` pèse **168 lignes / 123 exécutables** — et non « 200 sur 729 », qui était une
+estimation de backlog. **Recompter fait partie de la reprise** (leçon S11-a).
+
+### ⛔ Ce qui ne se négocie pas
+- **C'est un lot du CHEMIN DE L'ARGENT.** Les modes de défaillance s'écrivent **AVANT**
+  tout code, et un mode non listé au cadrage **ne se code pas**. Arrêt franc pour
+  arbitrage de Ko après le cadrage, avant la première ligne.
+- **Ce qui commande le découpage, c'est OÙ LA MESURE POURRA VIVRE** (D261) :
+  `BookingsService` n'a **aucune spec unitaire**, et sa seule mesure demande un
+  PostgreSQL réel. Toute décision laissée dans le service est **muette par
+  construction** — elles vont dans des **modules purs** (D187, motif réécrit par D192 :
+  ce qui tient la règle est la **vitesse** de rejeu, pas l'exécutabilité).
+- **Un lot de SRP se mesure AVANT et APRÈS, sinon il s'auto-décerne son résultat**
+  (D261) : le premier jet de S11-a faisait **grossir** la méthode qu'il prétendait
+  réduire, et rien ne l'aurait dit.
+- **Vérifier la prémisse avant de coder la consigne** (D231) : deux points du découpage
+  proposé pour S11-a se sont révélés faux à la vérification, dont un qui aurait **défait
+  D63**.
+
+### ⚠ Ce que la certification du 07/09 NE dit PAS, et qui borne ce lot
+Les deux réserves de D275 sont **actives**, et elles ne s'éteignent pas en ayant été
+écrites une fois :
+1. **la porte n'est verte qu'AU REPOS** — rien n'est mesuré sous charge, ni pendant
+   qu'une pile `dev` tourne, c'est-à-dire pendant le régime de travail ordinaire ;
+2. **l'instrument d'état machine ne vit pas dans le dépôt** — `sonde-etat-machine.py`
+   reste à écrire (`[INFRA][P1]`), et tant qu'elle manque, aucun relevé n'est
+   reproductible ni contestable par la session suivante.
+⇒ **Conséquence exécutoire** : un rouge rencontré pendant S11-b **ne se juge pas** sans
+relever l'état machine devant lui (D270), et ce relevé porte **CINQ quantités** — RAM
+libre · compte de node · CPU (médiane et dispersion) · **total des processus** · **leur
+nombre** — puis l'inventaire nommé au-dessus du seuil.
+
+### Défauts croisés à NE PAS corriger dans ce lot — ils sont au backlog
+`--tout` qui ne joue ni ne nomme les mesures `--int` (`[INFRA][P1]`) · la sonde d'état
+machine (`[INFRA][P1]`) · `venue-list.test.tsx`, documenté sans avoir été reproduit
+(`[PRO][P0]`, D274 : **0 rouge sur 30**, ce qui **borne un taux et ne prouve pas un
+zéro**) · `act(…)` tardif sur deux autres fichiers de la coquille (`[PRO][P0]`) ·
+`QuotesSection` démontée, cinq gestes inatteignables (`[PRO][P0]`).
+
+⚠ **Le cadrage ARCHIVÉ du rang 5 suit immédiatement ci-dessous**, conservé sans retouche
+par D273. **Ce n'est pas le prochain lot : c'est l'histoire d'un lot fait**, gardée parce
+qu'un cadrage réécrit après coup ne peut plus démentir personne.
+
 ## ~~PROCHAIN LOT~~ — `act(...)` tardif dans `walkin-journey` · ⛔ **FAIT : D273**
 
 ⛔ **CE CADRAGE A ÉTÉ EXÉCUTÉ LE 02/09/2026 — voir la section D273 plus bas.** Il est
@@ -512,6 +568,106 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 07/09/2026 (après la fusion) — D276 · ce qui vaut décision s'écrit dans un FICHIER
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D275**.
+
+⛔ **ÉTAT : LOT DOCUMENTAIRE, AUCUNE LIGNE DE CODE.** Deux fichiers au diff,
+`ZWADJ_CONTINUITE.md` et `AGENTS.md`, **énumérés avant écriture**. Aucune porte n'a été
+lancée, et c'est motivé et mesuré plus bas — **rien n'est déclaré vert.**
+
+⚠ **CE LOT NE DÉCOUVRE RIEN : IL CONSTATE.** Tout ce qu'il écrit avait déjà eu lieu la
+veille au soir. **C'est exactement le problème.**
+
+### D276 — ⛔ LA FUSION A EU LIEU, ET AUCUN FICHIER D'AUTORITÉ NE LE DISAIT
+
+Relevé `git` le 07/09/2026, pas de mémoire :
+
+| Ce que `ZWADJ_CONTINUITE.md` affirmait | Ce que `git` mesure |
+|---|---|
+| D271→D275 vivent sur `argon2-vers-test-int`, **non fusionnée** | **fusionnée dans `main`** (`c9f49ed`), **et poussée** sur `origin/main` |
+| « **Rien n'est fusionné du fait de cette certification** » (D275) | la fusion a suivi la certification **dans la même heure** (20:31) |
+| `D270-autocorrection-chiffres-figes` **existe toujours** | **supprimée**, emportée par la fusion |
+
+**Contrôlé, pas supposé** : `git log main..argon2-vers-test-int` rend **0 commit**,
+`git diff main argon2-vers-test-int` rend **0 ligne**, et `git ls-remote --heads origin`
+ne liste que `main`.
+
+⛔ **CINQ ENDROITS PORTAIENT L'AFFIRMATION PÉRIMÉE**, tous en gras, tous à l'endroit
+exact où on vient les lire : la provenance de D275, les trois blocs « OÙ IL VIT »
+identiques de D274, D273 et D272, et le **tableau de provenance** de D270 — c'est-à-dire
+le bloc écrit tout exprès pour dire OÙ CHERCHER.
+⚠ **C'est le défaut que D270 a corrigé le 04/09, revenu par le même chemin trois jours
+plus tard.** Le bloc qui existe pour empêcher qu'on cherche au mauvais endroit est
+précisément celui que personne ne pense à mettre à jour — **parce qu'on ne le lit que
+quand on cherche déjà.**
+
+### D276 — ⛔ CE QUE ÇA A FAILLI COÛTER : LE VERROU DU CHEMIN DE L'ARGENT
+
+La consigne **« aucun lot de produit ne s'ouvre avant que la porte soit verte »** a tenu
+quatre lots durant. La certification D275 l'a **levée** — mais la levée n'existait que
+dans le message de la fusion :
+
+> « La consigne "aucun lot de produit ne s'ouvre avant que la porte soit verte" est
+> levée. Rang 8, S11-b, chemin de l'argent : nouvelle session, à froid. »
+
+⛔ **Dans les fichiers, la consigne restait écrite comme ACTIVE.** Une session à froid —
+c'est-à-dire le test même que « un lot par session » existe pour produire — aurait lu un
+verrou **fermé** sur le chemin de l'argent, et un « PROCHAIN LOT » barré « FAIT : D273 »
+que rien n'avait remplacé. **La contradiction jouait dans les deux sens à la fois** : le
+fichier interdisait ce que la fusion autorisait, et ne nommait pas ce qui venait ensuite.
+
+### D276 — ⚠ TROISIÈME FOIS EN TROIS SESSIONS, SOUS TROIS FORMES DIFFÉRENTES
+
+C'est ce qui en fait une règle et non un incident :
+1. **02/09** — « un lot par session » avait vécu plusieurs sessions dans un **message de
+   chat** sans jamais atterrir dans un fichier : zéro occurrence dans les trois
+   documents, donc plus appliquée, donc trois décisions prises dans la même session ;
+2. **04/09 (D270)** — le bloc de provenance affirmait « aucune branche ne porte de lot
+   en attente » pendant que quatre lots vivaient sur une branche ;
+3. **07/09 (ici)** — la **fusion** et la **levée du verrou** n'existent que dans un
+   message de commit.
+⛔ **Un message de commit n'est lu par personne à la reprise.** La reprise se fait par
+`ZWADJ_CONTINUITE.md` **seul** — c'est la définition de « un lot par session », et c'est
+ce qui la rend mesurable. ⇒ **Règle écrite dans `AGENTS.md`**, à côté de celle sur les
+extracteurs (D275).
+
+### D276 — la branche : deux affirmations ne pouvaient pas être vraies ensemble
+
+Le message de fusion annonçait « elle est supprimée avec cette fusion » ; `git branch` la
+listait toujours. ⇒ **Supprimée**, après contrôle qu'elle ne porte rien.
+⛔ **L'autre option — corriger le message — a été ÉCARTÉE, et c'est délibéré** : c'est un
+commit de fusion **déjà poussé**, le réécrire est une réécriture d'historique partagé
+pour un gain cosmétique. **On rend l'affirmation vraie, on ne la maquille pas.**
+
+### D276 — ce qui a été écrit, et où
+
+| Fichier | Ce qui change |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | 5 mentions « non fusionnée » **barrées avec leur motif** · tableau de provenance D270 corrigé sur sa colonne « où il vit » · consigne levée, datée et motivée · rangs 7 et 8 mis à jour · section **PROCHAIN LOT** rouverte sur le rang 8 · cette section · registre |
+| `AGENTS.md` | la règle « ce qui vaut décision s'écrit dans un fichier d'autorité », **et sa réciproque** : un lot documentaire se commite avant la fin de session, au même titre qu'un lot de code (ajout de Ko, en clôture de ce lot — le cas inverse serait la décision écrite dans le fichier, et le fichier jamais commité) |
+
+⚠ **BARRÉ, PAS EFFACÉ — consigne de Ko, écrite ici pour qu'elle survive à la session** :
+une affirmation invalidée qu'on **supprime** se réécrit de bonne foi plus tard, par
+quelqu'un qui n'a aucun moyen de savoir qu'elle a déjà été fausse et corrigée. Le dépôt
+le pratiquait déjà (le bloc de provenance de D270, la phrase démentie de D272) ; c'est
+désormais **la forme attendue**, pas un usage.
+
+### ⛔ D276 — POURQUOI AUCUNE PORTE N'A ÉTÉ LANCÉE, ET COMMENT C'EST MESURÉ
+
+**Ce lot ne touche que deux `.md`.** ⚠ Ce n'est pas une dispense décrétée — « non
+concerné » est une **mesure**, pas une impression (D192). **Vérifié** : aucune porte,
+aucun test et aucun harnais ne LIT ces fichiers. Cherché sur les lectures réelles
+(`readFileSync`, `readFile`, `open(`, `Path(`, `read_text`) visant `ZWADJ_CONTINUITE.md`,
+`ZWADJ_BACKLOG.md` ou `AGENTS.md`, dans tout le dépôt, en `.ts`, `.tsx`, `.py`, `.js`,
+`.mjs` et `.json`, hors `node_modules` et `dist` : **zéro occurrence**. Les seules
+mentions sont des **commentaires** qui citent la doctrine en prose.
+⛔ **CE QUI EST DONC AFFIRMÉ, ET RIEN DE PLUS** : la certification de D275 porte sur
+l'arbre au commit `f7a87dd`, et ce lot n'ajoute aucun fichier qu'une porte regarde.
+⚠ **Elle n'est pas reconduite pour autant.** Elle est datée du 07/09 et **ne se reconduit
+pas au lot suivant**, S11-b compris. C'est la règle du rang 7, et elle vaut contre moi
+ici comme contre n'importe qui.
+
 ## Session du 07/09/2026 — D275 · CERTIFICATION (rang 7) : portes vertes AU REPOS
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D274**.
@@ -521,8 +677,13 @@ portes vertes, e2e verte, barème de D273 tenu en sa moitié repos, `neutralize-
 entière, et **182 gardes mordues sur 182 cibles, zéro muette**. État machine relevé avec
 son inventaire devant chaque mesure. Le détail est plus bas, et **les réserves qui le
 bornent sont écrites AVANT lui**, à la demande de Ko.
-⇒ **OÙ VIT CE QUI EST CERTIFIÉ** : branche `argon2-vers-test-int`, non fusionnée
-(section D270). **Rien n'est fusionné du fait de cette certification.**
+⇒ **~~OÙ VIT CE QUI EST CERTIFIÉ : branche `argon2-vers-test-int`, non fusionnée
+(section D270). Rien n'est fusionné du fait de cette certification.~~**
+⛔ **PÉRIMÉ LE SOIR MÊME, ET LA PHRASE RESTE BARRÉE POUR QU'ON VOIE CE QUI S'EST PASSÉ
+ENTRE ELLE ET LA FUSION.** Elle était exacte à la minute où elle a été écrite ; la
+fusion a suivi **dans la même heure** (`c9f49ed`, 20:31), et personne n'est revenu la
+corriger. ⇒ **Ce qui est certifié vit dans `main`, fusionné et poussé** — relevé `git`
+le 07/09/2026, voir **D276**.
 ⚠ **CE QUI EST ÉCRIT, MOT POUR MOT : « portes vertes AU REPOS le 07/09/2026, et D269,
 D270, D271, D272, D273 et D274 en font partie ».** ⛔ **Les en-têtes de ces six sections
 ne sont PAS réécrits en « certifié »** — ce serait la certification par procuration que
@@ -705,8 +866,10 @@ jetable d'une session autant que pour les sondes du dépôt.
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D273**.
 
-⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
-`git` le 04/09/2026). Tableau de provenance complet en section D270.
+⛔ **~~OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`~~** (relevé
+`git` le 04/09/2026). ⛔ **PÉRIMÉ PAR LA FUSION DU 07/09/2026 (`c9f49ed`) — barré, pas
+effacé : ce lot vit désormais dans `main`.** Tableau de provenance complet en section
+D270, corrigé par **D276**.
 
 ⛔ **ÉTAT : RANG 6 CLOS EN DOCUMENTANT, PAS EN CORRIGEANT — ET AUCUNE LIGNE DE CODE N'A
 ÉTÉ ÉCRITE.** Le rang existait pour reproduire puis corriger une intermittence. **Elle ne
@@ -899,8 +1062,10 @@ retrouver l'état de D273 (~2,5 Go libres), puis les deux formes.
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D272**.
 
-⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
-`git` le 04/09/2026). Tableau de provenance complet en section D270.
+⛔ **~~OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`~~** (relevé
+`git` le 04/09/2026). ⛔ **PÉRIMÉ PAR LA FUSION DU 07/09/2026 (`c9f49ed`) — barré, pas
+effacé : ce lot vit désormais dans `main`.** Tableau de provenance complet en section
+D270, corrigé par **D276**.
 
 ⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ — ET LE BARÈME N'EST PAS SATISFAIT.** Il exigeait
 **cinq passes à zéro au repos et deux sous charge**. Ce qui a été obtenu, mesuré :
@@ -1079,8 +1244,10 @@ ne les rend pas verts** — cela les rend non mesurés, ce qui n'est pas la mêm
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D271**.
 
-⛔ **OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`** (relevé
-`git` le 04/09/2026). Tableau de provenance complet en section D270.
+⛔ **~~OÙ IL VIT : branche `argon2-vers-test-int`, NON fusionnée dans `main`~~** (relevé
+`git` le 04/09/2026). ⛔ **PÉRIMÉ PAR LA FUSION DU 07/09/2026 (`c9f49ed`) — barré, pas
+effacé : ce lot vit désormais dans `main`.** Tableau de provenance complet en section
+D270, corrigé par **D276**.
 
 ⛔ **ÉTAT : LIVRÉ, NON CERTIFIÉ.** ⚠ Cette ligne portait « LIVRÉ » seul : en tête
 d'une file de quatre lots non certifiés, c'est le mot qui décide de la lecture, et
@@ -1455,19 +1622,31 @@ Relevé le 04/09/2026 par `git`, pas de mémoire — `main` et `origin/main` son
 |---|---|---|
 | **D269** | **`main`**, fusionné | livré, **NON certifié** |
 | **D270** | **`main`**, fusionné (`1f85aa6`, puis un commit documentaire) | livré, **NON certifié** |
-| **D271** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
-| **D272** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
-| **D273** | branche **`argon2-vers-test-int`**, non fusionnée | livré, **NON certifié** |
-| **D274** | branche **`argon2-vers-test-int`**, non fusionnée | livré (aucune ligne de code), **NON certifié** |
+| **D271** | ~~branche `argon2-vers-test-int`, non fusionnée~~ ⇒ **`main`**, fusionné (`c9f49ed`) | livré, **NON certifié** |
+| **D272** | ~~branche `argon2-vers-test-int`, non fusionnée~~ ⇒ **`main`**, fusionné (`c9f49ed`) | livré, **NON certifié** |
+| **D273** | ~~branche `argon2-vers-test-int`, non fusionnée~~ ⇒ **`main`**, fusionné (`c9f49ed`) | livré, **NON certifié** |
+| **D274** | ~~branche `argon2-vers-test-int`, non fusionnée~~ ⇒ **`main`**, fusionné (`c9f49ed`) | livré (aucune ligne de code), **NON certifié** |
 
-⛔ **`argon2-vers-test-int` porte VINGT ET UN commits d'avance sur `main`**
-(`git log --oneline main..HEAD`) : D271 à D274 et leurs commits documentaires. C'est la
-branche courante, et **elle emporte tout** — voir l'empilement des branches en fin de
-section D271.
-⚠ **`D270-autocorrection-chiffres-figes` EXISTE TOUJOURS** (`8d1bd4f`), **non
-fusionnée**. D271 écrivait qu'elle « se supprime une fois la première partie » : la
-première n'est pas partie, donc la seconde est encore là. Elle n'a **pas** à être
-fusionnée séparément — `argon2-vers-test-int` contient ses commits.
+⛔ **COLONNE « OÙ IL VIT » CORRIGÉE LE 07/09/2026 SUR RELEVÉ `git` (D276) — COLONNE
+« ÉTAT » VOLONTAIREMENT INTACTE.** Une fusion change **où un lot vit**, elle ne certifie
+rien. ⚠ **Et ces lots SONT couverts** par la certification du 07/09 — **mais sa marque
+vit à UN SEUL endroit, daté, en section D275**, et ne se recopie pas colonne par
+colonne : ce serait la certification par procuration que le rang 7 refuse depuis D270.
+**Pour savoir ce qui est certifié, on lit D275, pas cette table.**
+
+⛔ **~~`argon2-vers-test-int` porte VINGT ET UN commits d'avance sur `main`~~**
+(`git log --oneline main..HEAD`) : D271 à D274 et leurs commits documentaires.
+⛔ **PÉRIMÉ LE 07/09/2026 — la branche a été fusionnée puis SUPPRIMÉE (D276).** Elle en
+portait **23** au moment de la fusion : les 21 relevés le 04/09, plus les deux commits
+documentaires de D275. ⚠ **Ce chiffre n'était pas faux quand il a été écrit — il a péri
+parce que le travail a continué.** C'est le motif des compteurs figés appliqué à un
+compte de commits : un nombre relevé un jour se lit comme un fait le lendemain.
+⚠ **~~`D270-autocorrection-chiffres-figes` EXISTE TOUJOURS (`8d1bd4f`), non
+fusionnée.~~** ⛔ **PLUS VRAI (D276)** : elle était **entièrement contenue** dans
+`argon2-vers-test-int`, la fusion l'a donc emportée, et elle n'existe plus. Vérifié le
+07/09/2026 : `git branch -a` ne liste que `main` et `origin/main`. **La prédiction de
+D271 — « elle se supprime une fois la première partie » — s'est vérifiée, avec trois
+jours de retard sur ce que ce bloc annonçait.**
 
 ⛔ **DEUX fichiers tiennent la porte, pas un** (mesuré le 01/09/2026) :
 `password.service.spec.ts` (argon2) **et** `src/media/image-pipeline.spec.ts`
@@ -1830,7 +2009,9 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
    bien que `venue-list` rougisse **aussi machine propre** — c'est exactement ce que
    la première campagne doit trancher. Écrite comme piste pour qu'elle ne se durcisse
    pas en explication commode, même traitement que la piste horloge de D272 ;
-7. **CERTIFICATION** — ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
+7. ~~**CERTIFICATION**~~ — ⇒ **FAIT LE 07/09/2026 (D275)** : six portes vertes au
+   repos en une seule passe, e2e verte, **182 gardes mordues sur 182**, six lots nommés.
+   ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
    non certifiés à sa date, quel qu'en soit le nombre**, sur la porte redevenue verte,
    dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
    partie », **sans réécrire leurs en-têtes**). ⚠ **Ce rang portait la liste « D269,
@@ -1975,7 +2156,10 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
      SEULE passe**. ⚠ Le point est « une seule » : des portes vertes relevées à des
      moments différents, sur un arbre qui bouge entre elles, ne certifient rien
      ensemble (D218 — l'archive livrée rouge avec une note annonçant « 0 erreur ») ;
-8. **S11-b**.
+8. **S11-b** — ⇒ **RANG COURANT depuis le 07/09/2026**, la consigne qui le retenait
+   ayant été levée par D275. **Point d'entrée en tête de ce fichier, section « PROCHAIN
+   LOT ».** ⛔ Chemin de l'argent : modes de défaillance écrits AVANT tout code, arrêt
+   franc pour arbitrage.
 
 ⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
 causes de la porte rouge, elle est **la seule qui rougisse de façon DÉTERMINISTE**,
@@ -2014,13 +2198,28 @@ branches côte à côte dans une liste ne disent pas laquelle porte l'autre.
 
 ⇒ **Fusionner `argon2-vers-test-int` suffit** : elle emporte tout. L'autre branche
 n'a pas à être fusionnée séparément, et se supprime une fois la première partie.
+⇒ ✅ **EXÉCUTÉ LE 07/09/2026, ET LA PRÉDICTION ÉTAIT JUSTE (D276)** : `argon2-vers-test-int`
+a été fusionnée dans `main` (`c9f49ed`), elle a bien emporté l'autre, et **les DEUX
+branches n'existent plus** — `git branch -a` ne liste que `main` et `origin/main`.
+⛔ **Ce bloc reste comme MÉTHODE, il ne décrit plus un ÉTAT** : aucune des deux branches
+n'est à chercher.
 
 ⚠ **TROIS lots non certifiés sont désormais en attente : D269, D270 et D271.**
 La règle disait « deux, c'est tenable ; trois, non ». Le seuil est franchi — et il
 l'est parce que la cause du rouge a changé deux fois en deux jours, pas parce qu'on
 a empilé des lots de produit. ⚠ Les rangs 3 et 4 sont des lots de FIABILITÉ DE
 PORTE : ils ne créent pas de quatrième lot non certifié, ils lèvent ce qui bloque
-les trois. ⛔ **Aucun lot de produit ne s'ouvre avant que la porte soit verte.**
+les trois. ⛔ **~~Aucun lot de produit ne s'ouvre avant que la porte soit verte.~~**
+⛔ **LEVÉE LE 07/09/2026 PAR LA CERTIFICATION D275**, et barrée plutôt qu'effacée : elle
+a tenu quatre lots durant, et c'est elle qui explique pourquoi S11-b a attendu. **Motif
+de la levée** : la porte est verte **au repos**, en une seule passe, sur un arbre qui
+n'a pas bougé — la condition que cette consigne posait est payée, et mesurée. ⚠ **Ce
+qu'elle ne dit pas** : la porte n'est verte ni **sous charge**, ni pendant qu'une pile
+`dev` tourne (les deux réserves de D275). **La levée porte sur ce qui a été mesuré, pas
+plus.**
+⇒ ⛔ **ET LA LEVÉE N'A EXISTÉ QUE DANS UN MESSAGE DE FUSION JUSQU'À D276** — pendant que
+cette ligne-ci restait écrite comme active. C'est le défaut que D276 corrige, et il
+touchait précisément le verrou qui autorise le chemin de l'argent.
 ⚠ **DÉMENTI LE 02/09/2026, ET LA PHRASE RESTE POUR QU'ON LE VOIE : D272 EST CE
 QUATRIÈME LOT NON CERTIFIÉ.** Un lot de fiabilité de porte qui ne rend pas la porte
 verte s'ajoute à la file au lieu de la vider. **Quatre lots attendent aujourd'hui** —
@@ -3382,3 +3581,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D273 | A | D273 — attendre ne supprime pas l'avertissement ; il faut une fenêtre pour le recevoir |
 | D274 | A | D274 — même code, 3 sur 5 chez D273 et 0 sur 30 ici : l'écart n'est pas le code |
 | D275 | A | D275 — CERTIFICATION : portes vertes AU REPOS le 07/09/2026, six lots nommés, réserves écrites |
+| D276 | A | D276 — ce qui vaut décision s'écrit dans un FICHIER d'autorité, jamais dans un message de commit |
