@@ -512,6 +512,195 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 07/09/2026 — D275 · CERTIFICATION (rang 7) : portes vertes AU REPOS
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D274**.
+
+⛔ **ÉTAT : PASSE COMPLÈTE TENUE, EN UNE SEULE, SUR UN ARBRE QUI N'A PAS BOUGÉ.** Six
+portes vertes, e2e verte, barème de D273 tenu en sa moitié repos, `neutralize-solid-s7`
+entière, et **182 gardes mordues sur 182 cibles, zéro muette**. État machine relevé avec
+son inventaire devant chaque mesure. Le détail est plus bas, et **les réserves qui le
+bornent sont écrites AVANT lui**, à la demande de Ko.
+⇒ **OÙ VIT CE QUI EST CERTIFIÉ** : branche `argon2-vers-test-int`, non fusionnée
+(section D270). **Rien n'est fusionné du fait de cette certification.**
+⚠ **CE QUI EST ÉCRIT, MOT POUR MOT : « portes vertes AU REPOS le 07/09/2026, et D269,
+D270, D271, D272, D273 et D274 en font partie ».** ⛔ **Les en-têtes de ces six sections
+ne sont PAS réécrits en « certifié »** — ce serait la certification par procuration que
+le rang 7 refuse depuis D270. Ils restent « livré, NON certifié » ; **la marque est
+ici, datée, et elle ne se reconduit pas au lot suivant.**
+
+### ⛔ LE PREMIER RELEVÉ A BLOQUÉ, ET C'EST LUI QUI A RENDU LE SECOND POSSIBLE
+
+**Rien n'a rougi : rien n'avait été mesuré.** Les deux ne se ressemblent pas et ne
+doivent pas se lire pareil. À la première tentative, le repos n'était pas produisible —
+**3 793 Mo** contre une barre à 4 579 — et **aucune passe n'a été lancée**. L'écart a été
+attribué par inventaire (`oracle` +607 Mo, `svchost` +484), Ko a arrêté `oracle`, et le
+plancher est tombé. ⚠ **Sans le refus initial, cinq passes seraient sorties vertes à
+3 793 Mo et auraient été comptées comme « cinq passes au repos »** : le mot sans la
+chose, dans une section intitulée « certification ».
+
+### Les deux réserves de la certification — écrites AVANT elle, à la demande de Ko
+
+Elles ne dépendent pas du résultat, et elles s'écrivent **avec** la certification, pas
+seulement au backlog : **c'est ce qui distingue une mesure d'une affirmation datée.**
+
+- ⛔ **L'INSTRUMENT D'ÉTAT MACHINE NE VIT PAS DANS LE DÉPÔT.** Tous les états relevés
+  pour cette certification l'ont été par un script qui vit dans le **scratchpad de la
+  session**, hors du dépôt et hors de `git`. Conséquence exécutoire : **la session
+  suivante ne pourra ni le rejouer, ni le contester, ni distinguer un écart de machine
+  d'un écart d'instrument.** Un relevé irreproductible n'est pas une mesure — c'est une
+  affirmation datée, et elle doit être lue comme telle. ⚠ Et la **calibration est
+  HÉRITÉE du 03/09/2026** : l'instrument retenu ce jour-là sur charge connue
+  (`Win32_PerfFormattedData_PerfOS_Processor`, contre `Win32_Processor.LoadPercentage`
+  écarté) a été **réemployé sans être recalibré**. Ce qui a été vérifié à chaque relevé
+  est bien plus faible : que les champs ne sortent pas **vides** (`ECHEC-INSTRUMENT`
+  plutôt qu'une chaîne vide, leçon du rang 6). **Non vide n'est pas juste.**
+  ⇒ Remède déjà rapporté, **non fait ici** : `neutralisation/sonde-etat-machine.py`,
+  entrée `[INFRA][P1]`. Tant qu'elle n'existe pas, **cette réserve se recopie dans
+  chaque certification** — elle ne s'éteint pas en étant écrite une fois.
+- ✅ **ZÉRO NODE PENDANT LA MESURE — C'EST UN FAIT DE LA CERTIFICATION, PAS UN DÉTAIL.**
+  Aucune pile `pnpm dev`, aucun `next dev`, aucun `vite`, aucun `tsc --watch` : **aucun
+  observateur de fichiers ne recompilait pendant que les suites lisaient les mêmes
+  fichiers.** C'est exactement le facteur que **D274 a nommé sans pouvoir le
+  reproduire** — neuf processus node relevés le 03/09 à 00:10, dont quatre observateurs
+  — et qui reste à ce jour la seule piste non écartée de l'intermittence de
+  `venue-list.test.tsx`. **Son absence fait donc partie des conditions dans lesquelles
+  la porte sera déclarée verte**, et par là de ce que la certification vaut : elle ne
+  dira **rien** de la porte pendant qu'une pile `dev` tourne — c'est-à-dire pendant le
+  régime de travail ordinaire. Le compte de node se relève devant **chaque** passe,
+  jamais une seule fois en ouverture.
+
+### Le relevé du 07/09/2026 qui BLOQUE, avec son inventaire
+
+Chrome fermé sur demande — **absent de l'inventaire, vérifié** (`CHROME=0`).
+⚠ **ET LA RAM N'A PAS SUIVI : mon estimation « ~5 990 Mo » était FAUSSE.** Elle
+additionnait naïvement le working set de Chrome à la RAM libre ; la mesure dit
+**3 793 Mo** (médiane de 6 relevés sur 60 s, bande 3 726–3 834, stable et en légère
+remontée). **Une addition n'est pas une mesure** — elle en a seulement la forme, ce qui
+est très exactement le motif des instruments écartés au rang 6.
+
+| | Plancher 03/09 | Barre D273 | Mesuré 07/09 | |
+|---|---|---|---|---|
+| RAM libre | 5 326 Mo | 4 579 Mo | **3 793 Mo** | ⛔ **−1 533 / −786** |
+| node | 0 | 0 | **0** | ✅ |
+| CPU médiane (étendue) | 17 % (5–28) | *barre annulée* | 18 % (0–28) | ✅ même régime |
+
+**Inventaire** : Code 22 proc / 2 545 Mo · svchost 105 / 1 715 · **oracle 1 / 1 199** ·
+Memory Compression 671 · vmmemWSL 554 · msedgewebview2 396 · explorer 335 · msedge 311 ·
+claude 309 · powershell 272 (dont la session) · Docker 247 · MsMpEng 175 · sqlservr 112 ·
+le reste sous 230. Total **14 049 Mo sur 367 processus**. `zwadj-db` (postgres:18) debout
+depuis 10 jours, 5432 exposé — `test:int` aura ce qu'il lui faut.
+
+⚠ **CE QUE L'ÉCART EST, ET CE QU'IL N'EST PAS — attribué par INVENTAIRE, à MOITIÉ.**
+Postes **nommés dans les DEUX relevés**, seuls comparables : `oracle` **+607** ·
+`svchost` **+484** · WSL **+125** · Code +54 · Docker −53 · `claude` −34. Soit **~1,2 Go
+sur les 1,5 Go manquants**. ⛔ **Le reste n'est PAS attribuable** : l'inventaire du 03/09
+s'arrêtait à « le reste sous 200 Mo » sans le détailler, donc aucun poste absent de sa
+liste ne peut être déclaré « nouveau » — il était probablement là, sous le seuil affiché.
+**C'est la limite d'un inventaire tronqué : il ne se compare qu'AU-DESSUS de sa coupe.**
+
+⛔ **RÈGLE CORRIGÉE, ET C'EST LA LEÇON DU JOUR (dictée par Ko, 07/09/2026) : UN
+INVENTAIRE PORTE LE TOTAL DES PROCESSUS ET LEUR NOMBRE, pas seulement les postes
+au-dessus d'un seuil.** Le seuil reste — lister 367 processus n'apprend rien — mais
+**seul le total borne ce qu'on n'a pas listé.** Sans lui, la coupe est un trou muet : ici
+elle laisse **~300 Mo sur 1 500 inattribuables**, et rien dans le relevé du 03/09 ne
+permet de dire si ces 300 Mo sont un poste qui a grossi sous la barre ou une centaine de
+petits qui ont bougé ensemble. **Avec le total, le résidu se calcule** (total moins la
+somme des postes nommés) : il cesse d'être inconnu pour devenir **borné**, ce qui suffit
+à conclure ou à s'abstenir en connaissance de cause.
+⚠ **La forme minimale d'un relevé d'état est donc de CINQ quantités**, pas trois : RAM
+libre · compte de node · CPU (médiane et dispersion) · **total des processus** · **leur
+nombre** — puis l'inventaire nommé au-dessus du seuil. Le relevé du 07/09 les porte
+toutes ; celui du 03/09 n'en portait pas les deux dernières, **et c'est pour cela que
+cette comparaison-ci est restée à moitié faite**. La prochaine certification héritera du
+même trou si la règle n'est pas dans la sonde.
+⇒ Deux postes portent l'essentiel et **n'ont rien à voir avec Zwadj** : `oracle`
+(1,2 Go) et `sqlservr` (112 Mo). ⚠ Docker, lui, **doit rester** : il porte `zwadj-db`,
+sans quoi `test:int` n'a plus de base.
+
+### ⛔ POURQUOI LA PASSE N'A PAS ÉTÉ LANCÉE QUAND MÊME
+
+Une passe jouée hors de l'état cible **mesure autre chose et se lit exactement pareil** —
+c'est ce qui a fait écarter la 6ᵉ passe du rang 6 (RAM 1 306 Mo, Chrome revenu), et sans
+cette assertion elle serait « probablement sortie verte » et serait entrée dans le compte.
+Cinq passes vertes prises à 3 793 Mo ne seraient pas « cinq passes au repos » : elles
+porteraient le mot sans la chose, dans une section intitulée « certification ».
+⛔ **Et il n'était pas question de redéfinir « repos » sur ce plancher-ci en passant** :
+la règle d'arbitrage a **déjà** été jouée le 03/09, verdict « le barème de D273 tient tel
+quel ». La rejouer trois jours plus tard parce que la machine est plus chargée, ce serait
+la certification obtenue en déplaçant la barre — ce que le refus du plafond relevé de
+`walkin-journey` a écarté quatre jours plus tôt. **Si la barre doit bouger, c'est une
+décision de Ko, elle prend un numéro, et le nombre de passes se DÉRIVE** (marge sur le
+`testTimeout` de 5 000 ms + dispersion entre passes), **sans jamais redescendre sous
+cinq**.
+
+### D275 — la passe, dans l'ordre où elle a été jouée
+
+⚠ **Le plancher retrouvé, mesuré avant de lancer quoi que ce soit** : RAM libre
+**4 732 Mo** (médiane de 6 relevés sur 60 s, bande 4 666–4 974), **node 0**, CPU médiane
+18 % (13–28), total **12 344 Mo sur 347 processus**. ⛔ **La marge est MINCE : +153 Mo sur
+la médiane, +87 au point bas.** C'est pourquoi chaque passe porte son assertion, et non
+la campagne entière.
+⚠ `sqlservr` (107 Mo) est **resté allumé** — relevé, sans conséquence sur la barre.
+
+| Étape | Code | Durée | Ce qui a été mesuré |
+|---|---|---|---|
+| 5 passes suite pro | **0** ×5 | 31–34 s | 28/28 fichiers, **347/347** tests, **0 avertissement `walkin-journey`** |
+| `neutralize-solid-s7` | **0** | 83 s | pré-vol **client ET pro** verts, **2/2 mordues** |
+| `typecheck` | **0** | 19 s | 4 paquets, **API comprise** |
+| `lint` | **0** | 13 s | 4 paquets |
+| `test` (racine) | **0** | 59 s | **1 310 tests / 107 fichiers** — api 640 · api-client 36 · client 287 · pro 347 |
+| `build` | **0** | 39 s | client + pro + api |
+| `test:int` | **0** | 303 s | **434 tests / 36 fichiers**, `zwadj-db` (postgres:18) réel |
+| `e2e` | **0** | 118 s | **34 passés, 1 ignoré, 0 instable** |
+| `lancer-campagnes --tout` | 1 | 1 844 s | **173 mordues · 0 muette · 9 non mesurées** · 25 campagnes |
+| les 9, en mode `--int` | **0** | — | **9/9 mordues** ⇒ **182 sur 182, zéro muette** |
+
+**État devant les cinq passes** (RAM · node · CPU médiane) : 4 740 · 0 · 21 % — 4 819 · 0
+· 21 % — 4 823 · 0 · 7 % — 4 906 · 0 · 16 % — 4 940 · 0 · 0 %. Toutes au-dessus de la
+barre, aucune écartée.
+⚠ **Les 9 `act(...)` du journal pro viennent de `venue-form` (6) et `venue-wizard` (3)**,
+couverts par leurs entrées `PLAFONDS` — **aucun de `walkin-journey`** — et leurs comptes
+sont **identiques sur les cinq passes**, là où ce compte flottait (293 · 294 · 295) sous
+charge. **Le barème de D273 est tenu en sa moitié repos.**
+⚠ **Le test e2e ignoré est NOMMÉ**, parce qu'une certification doit dire ce qu'elle n'a
+pas joué : `a5-cold-reload-vs-spa.e2e.ts:175` — « le calendrier d'une salle survit au
+rechargement ».
+
+### ⛔ D275 — LES « 9 NON MESURÉES » N'ÉTAIENT PAS MUETTES : ELLES N'ÉTAIENT PAS JOUÉES
+
+**C'est le fait nouveau de cette passe, et il vaut au-delà d'elle.** Le relevé de
+référence du dépôt annonce depuis D268 « **164 mordues sur 173, 9 NON MESURÉE déjà
+documentées** », formule qui se lit comme une limite acquise. **Mesuré : les neuf mordent
+toutes.** Elles portent `hors exécution : course / int-reservations / int-visites`, et
+`lancer-campagnes.py --tout` **ne joue pas les mesures d'intégration** — les harnais
+concernés les gardent derrière un drapeau `--int`. Joué : `neutralize-solid-s6` **6/6**,
+`neutralize-e3d1-s8` **8/8**.
+⛔ **C'est D262 et D268 une TROISIÈME fois** : un empêchement du bac à sable web — pas de
+PostgreSQL — s'est recopié de rapport en rapport après avoir disparu, et **couvrait
+exactement ce qu'il prétendait signaler**. Neuf gardes du chemin de l'argent et des
+notifications (index partiel d'intention de paiement, relecture du perdant, abonnements
+`visit.booked`) figuraient comme « non mesurées » alors qu'elles sont mesurables **sur ce
+poste depuis le 30/08**.
+⇒ **Rapporté au backlog, PAS corrigé ici** (défaut croisé) : `--tout` devrait soit jouer
+les mesures `--int`, soit **dire qu'il ne les joue pas** — aujourd'hui il rend « 9 non
+mesurées » sans nommer le drapeau qui les mesure.
+
+### ⚠ D275 — TROIS FOIS L'INSTRUMENT A ÉTÉ PLUS FRAGILE QUE LA MESURE
+
+Aucun n'a faussé un résultat, **tous ont failli** — et c'est le motif du rang 6, appliqué
+cette fois à mes propres extracteurs :
+1. `grep "Test Files"` **ne voyait rien** : les résumés Vitest portent des codes ANSI. Il
+   rendait zéro ligne sur une passe qui en avait quatre ;
+2. le compteur `FAIL` de `test:int` a rendu **1** sur une suite à 434/434 : le mot est
+   dans le **NOM** d'un test qui passe (« la ligne passe FAILED (D63) ») ;
+3. le chronomètre des campagnes a rendu **1 788 796 851 s** — un horodatage epoch, `t0`
+   perdu au passage en arrière-plan. La durée retenue (1 844 s) est celle que l'outil
+   mesure lui-même.
+⇒ **Les trois se lisaient comme des mesures.** Aucun n'a levé. C'est la règle du rang 6
+— *un instrument défaillant ne lève pas, il répond* — et elle vaut pour l'outillage
+jetable d'une session autant que pour les sondes du dépôt.
+
 ## Session du 03/09/2026 — D274 · `venue-list` : 0 sur 30, et l'écart n'est PAS le code
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D273**.
@@ -3192,3 +3381,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D272 | A | D272 — l'horloge gelée, et les fixtures qui DÉRIVENT de l'ancre |
 | D273 | A | D273 — attendre ne supprime pas l'avertissement ; il faut une fenêtre pour le recevoir |
 | D274 | A | D274 — même code, 3 sur 5 chez D273 et 0 sur 30 ici : l'écart n'est pas le code |
+| D275 | A | D275 — CERTIFICATION : portes vertes AU REPOS le 07/09/2026, six lots nommés, réserves écrites |

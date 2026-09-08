@@ -2212,6 +2212,26 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       sorties console équivalente à celle d'`apps/pro` ? Si non, ces avertissements n'ont
       jamais eu de quoi faire rougir quoi que ce soit, et l'entrée change de nature.
 
+- [ ] **[INFRA][P1]** ⛔ **`--tout` NE JOUE PAS LES MESURES D'INTÉGRATION, ET NE LE DIT
+      PAS.** Relevé le 07/09/2026 pendant la certification (D275), **non corrigé ici** :
+      défaut croisé. `lancer-campagnes.py --tout` rend « **9 non mesurées** » sur
+      `neutralize-e3d1-s8` (5) et `neutralize-solid-s6` (4) ; ces cibles portent
+      `hors exécution : course / int-reservations / int-visites` et vivent derrière un
+      drapeau **`--int`** que le tri n'emploie pas. ⛔ **Mesuré : les neuf MORDENT** —
+      s6 **6/6**, e3d1-s8 **8/8**, soit **182 sur 182** au lieu des 173 annoncés.
+      ⚠ **Ce sont des gardes du chemin de l'argent et des notifications** (index partiel
+      d'intention de paiement, relecture du perdant sur P2002, abonnements
+      `visit.booked`) : les laisser figurer comme « non mesurées » les fait lire comme
+      structurellement inaccessibles, alors qu'elles sont mesurables **sur ce poste
+      depuis le 30/08/2026**. C'est **D262/D268 une troisième fois** — un empêchement du
+      bac à sable web recopié après sa disparition, qui couvre exactement ce qu'il
+      prétend signaler.
+      ⇒ **REMÈDE, deux options, à trancher** : soit `--tout` joue aussi les mesures
+      `--int` (coût : ~10 min de plus, PostgreSQL requis), soit il **nomme le drapeau**
+      dans son relevé au lieu d'écrire « non mesurées » sans dire par quoi. ⛔ Le
+      relevé de référence « 164 mordues sur 173, 9 non mesurées déjà documentées » de
+      D268 est à **relire à cette lumière** : il sous-estimait par construction.
+
 - [ ] **[INFRA][P1]** ⛔ **LE RELEVÉ D'ÉTAT MACHINE N'A PAS D'INSTRUMENT DANS LE DÉPÔT.**
       Rapporté le 03/09/2026, **non corrigé ici** : c'est un défaut croisé, et le lot en
       cours parle de `venue-list`. ⚠ **Mesuré, pas supposé** : `LoadPercentage`,
@@ -2229,6 +2249,12 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       (elle ne se nommerait donc pas `neutralize-*`, que le tri seul découvre). Elle rend
       RAM libre, compte de node, **inventaire des processus ≥ 100 Mo**, et CPU par
       **médiane de ≥ 5 relevés avec sa dispersion**, jamais un échantillon unique.
+      ⛔ **PLUS le TOTAL des processus et leur NOMBRE — corrigé le 07/09/2026 après en
+      avoir payé l'absence** (voir la section CERTIFICATION de `ZWADJ_CONTINUITE.md`).
+      Cette spec portait exactement le défaut qu'elle devait corriger : un inventaire
+      coupé à 100 Mo ne se compare qu'au-dessus de sa coupe, et **seul le total borne ce
+      qui n'a pas été listé**. Sans lui, 300 Mo sur 1 500 sont restés inattribuables
+      entre deux relevés à quatre jours d'écart. **Cinq quantités, pas trois.**
       ⚠ **Elle porte les trois lignes de reconfiguration UTF-8** (D268), sans quoi elle
       lèvera au premier caractère non-cp1252 sur ce poste.
 

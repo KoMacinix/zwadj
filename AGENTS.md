@@ -254,6 +254,22 @@ connexion (famille D115).
   ⚠ **Recopier une référence, c'est parfois recopier la règle qu'on prétend réfuter** : deux fixtures d'acompte valaient **pile 30 %** du total — dont celles de la maquette — et ne prouvaient donc rien contre un `Math.round(total * 0.3)` côté navigateur.
 - **Vérifier la provenance de l'arbre avant d'y toucher.** L'arbre de travail a divergé deux fois pendant la campagne — du code non attribué est apparu entre deux tours, dont un lot entier sur la rotation des jetons. `diff` contre le zip livré, `git apply --check` avant toute extraction.
 - **Suite e2e (`e2e/`, Playwright) : à la demande, PAS une septième porte.** À lancer avant tout lot touchant **auth, concurrence ou argent**, et avant chaque livraison finale. Elle tourne contre les serveurs de **développement** : `StrictMode` ne double le montage que là, et c'est ce double montage qui révèle la classe de défauts pour laquelle elle existe.
+- ⛔ **UN EXTRACTEUR SE VÉRIFIE CONTRE LA SORTIE BRUTE AVANT DE SERVIR À COMPTER (D275).**
+  **Trois faux positifs dans une seule session**, tous sur l'outillage jetable d'une
+  certification, aucun sur le code mesuré : `grep "Test Files"` ne voyait **rien** parce
+  que les résumés Vitest portent des **codes ANSI** ; un compteur de `FAIL` rendait 1 sur
+  une suite à 434/434 parce que le mot est dans le **NOM** d'un test qui passe (« la ligne
+  passe FAILED ») ; un chronomètre rendait **1 788 796 851 s**, un horodatage epoch, sa
+  variable de départ perdue au passage en arrière-plan. ⛔ **AUCUN N'A LEVÉ — TOUS ONT
+  RÉPONDU**, et leur réponse avait la forme exacte d'une mesure : zéro ligne se lit comme
+  « rien à signaler », un `1` comme un échec, un grand nombre comme une durée.
+  ⚠ **C'est un MOTIF, pas un incident** : c'est la règle du rang 6 (« un instrument se
+  calibre sur un cas dont la réponse est déjà connue ») appliquée aux extracteurs qu'on
+  écrit en passant — précisément ceux qu'on ne songe pas à calibrer parce qu'ils ne sont
+  « que » du `grep`. ⇒ **Avant de compter sur une sortie : l'ouvrir, la lire, et vérifier
+  que le motif trouve ce qu'on sait y être.** Un extracteur qui rend zéro se confronte à
+  la sortie brute avant d'être cru — et un compte lu par sous-chaîne se confronte au
+  **contexte** de ses occurrences, jamais à leur seul nombre.
 - ⚠ **UN COMPTE DE VIOLATIONS N'EST PAS UN COMPTE DE PROBLÈMES.** La première référence d'accessibilité annonçait **70 violations** ; c'étaient **19 problèmes**, dont deux pesaient 54 nœuds. Un outil qui compte par nœud DOM surestime toujours. Regrouper par cause **avant** de prioriser — et geler par **catégorie**, pas par nœud : 96 % des signatures initiales contenaient un `:nth-child()` ou un `[href$=…]`, donc churnaient sur un changement de graine ou l'insertion d'un champ. Un gel qu'on régénère sans le lire ne gèle rien.
 - ⚠ **UN ÉCHEC QUI SE DÉPLACE EST PIRE QU'UN ÉCHEC STABLE (D127).** Next et Vite compilent une route à la première demande : le test qui paie la compilation dépend de l'ordre d'attribution aux workers. Un tel échec finit relancé sans être lu. On paie le coût **hors de toute mesure** (projet `warmup`) plutôt que de monter les délais d'attente. ⚠ Un délai qu'on augmente à chaque échec finit par ne plus rien mesurer.
 - **Ce qu'une porte verte ne regarde pas** : qu'un composant soit **monté** quelque part (leçon R1 — deux écrans livrés et inatteignables, six portes vertes), ce qui se passe dans un vrai navigateur, et ce qu'une migration fait sur une base **non vide** (D123). ⚠ **Ni la clause `WHERE` d'une réutilisation d'endpoint** (D146 — le calendrier pro rendait 404 pour toute salle non publiée, toutes portes vertes), **ni un identifiant qui « ressemble »** (D149 — id utilisateur passé dans un champ qui référence un profil pro).
