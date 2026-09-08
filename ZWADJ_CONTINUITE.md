@@ -591,6 +591,11 @@ chiffrage de `BookingsService` » sans prendre celui de `QuotesService`. Le pren
 extrairait un module pur consommé par **un** appelant, en laissant la copie vivante à côté
 — c'est-à-dire en produisant exactement la divergence que le lot prétend fermer.
 
+✅ **VALIDÉ PAR KO LE 08/09/2026 (D278) — LE LOT PREND LES DEUX CHEMINS.** Motif écrit de
+Ko : *« extraire le module pur pour un seul appelant en laissant la copie vivante créerait
+la divergence qu'on veut fermer »*. ⇒ Le périmètre du rang 8 est **élargi de
+`QuotesService`**, sur constat de code, pas sur préférence d'architecture.
+
 ### Les modes de défaillance — ⛔ ÉCRITS AVANT LE CODE, ET UN MODE NON LISTÉ NE SE CODE PAS
 
 | # | mode | protégé aujourd'hui par | ce que S11-b en fait |
@@ -632,6 +637,16 @@ qui sera facturé à E3.
 **seule** autorité sur cette identité, et sa spec doit la mesurer explicitement — pas comme
 effet de bord d'un cas nominal.
 
+✅ **ARBITRÉ PAR KO LE 08/09/2026 (D278) — RÉPONSE (1), LE `CHECK`.** Motif écrit de Ko :
+*« la base garantit déjà le détail, laisser l'agrégat sans garde alors que c'est lui qui
+sera facturé n'est pas tenable »*.
+⛔ **AVEC UN PRÉREQUIS EXIGÉ PAR KO, ET IL A ÉTÉ EXÉCUTÉ — VOIR SA PORTÉE RÉELLE EN D278** :
+mesurer sur la base réelle qu'aucune ligne existante ne viole le `CHECK` avant d'écrire la
+migration, *« une migration qui échoue sur des données préexistantes est le pire endroit
+pour découvrir un écart »*. **Résultat : 0 violation — sur 4 réservations, et sur un schéma
+en retard de 3 migrations.** ⚠ **Ce résultat ne dédouane RIEN** : lire D278 avant de s'en
+servir. La vraie garde reste `migration-non-empty.int-spec.ts`, à **retarger**.
+
 #### ⛔ MD3 — le doublon de prestation : trois autorités consultées, aucune ne l'empêche
 
 - **Zod** (`packages/types/src/booking.ts:135`) : `z.array(...).max(20)`. Aucune unicité.
@@ -652,6 +667,13 @@ contrat** : fusionner accepte silencieusement une entrée que le client n'a peut
 voulue ; refuser casse un front qui enverrait légitimement deux lignes d'un même service
 `PER_UNIT`. ⚠ **Aucune des deux ne se code avant réponse** — et le mode s'applique
 **aussi** au devis, qui partage le schéma.
+
+✅ **ARBITRÉ PAR KO LE 08/09/2026 (D278) — REFUS EN 409, PAS DE FUSION.** Motif écrit de
+Ko : *« fusionner devine une intention qu'on n'a pas. Le refus est explicite, réparable par
+le client, vérifiable »*. ⛔ **Et le MÊME contrat des deux côtés, devis compris** — sinon,
+mot pour mot, *« on rouvre la divergence par un autre bord »*. ⚠ C'est un **contrat d'API
+neuf** (un code de refus qui n'existait pas) : il est autorisé par cet arbitrage, et par
+lui seul.
 
 #### MD4 — l'ordre des refus est une règle métier, et il n'est mesuré nulle part
 
@@ -679,6 +701,12 @@ par formule, et le chemin de l'argent en profite), ou **s'en tient-il au chiffra
 au rang 8 ? ⚠ **Je recommande les deux**, mais c'est un **élargissement du périmètre
 annoncé**, donc pas mon appel : le dépôt punit le refactoring opportuniste autant que la
 formule dupliquée.
+
+✅ **ARBITRÉ PAR KO LE 08/09/2026 (D278) — LES DEUX ÉCHÉANCES.** Motif écrit de Ko :
+*« `paymentDueAt` décide si un règlement arrive à temps, et ses cas limites ne sont écrits
+nulle part. Un lot du chemin du prix qui la laisse non spécifiée serait à rouvrir tout de
+suite »*. ⇒ Les cas limites nommés au cadrage — événement à moins de 48 h, événement déjà
+commencé — **doivent être spécifiés et mesurés**, pas seulement déplacés.
 
 #### MD8 — le bon refus, obtenu par la bonne raison ? Non : par une absence
 
@@ -873,6 +901,106 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 08/09/2026 (suite) — D278 · arbitrage de S11-b, et le prérequis qui ne prouve presque rien
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D277**.
+
+⛔ **ÉTAT : AUCUNE LIGNE DE CODE, AUCUNE PORTE, AUCUNE MIGRATION APPLIQUÉE.** Deux fichiers
+au diff, `ZWADJ_CONTINUITE.md` et `ZWADJ_BACKLOG.md`, **énumérés avant écriture**. Les
+seules commandes exécutées sont des **lectures** : `SELECT` en lecture seule sur `zwadj`,
+et une comparaison de listes de migrations. **Rien n'a été écrit en base.**
+
+### D278 — les quatre arbitrages de Ko, et le périmètre qui s'élargit sur CONSTAT
+
+| point | verdict | ce qui l'a emporté |
+|---|---|---|
+| périmètre | **les deux chemins**, `bookings` ET `quotes` | extraire pour un seul appelant créerait la divergence qu'on ferme |
+| n°1 — l'agrégat | **le `CHECK`**, avec prérequis mesuré | l'agrégat est ce qui sera facturé ; le laisser sans garde n'est pas tenable |
+| n°2 — le doublon | **refus 409**, jamais de fusion, **même contrat côté devis** | fusionner devine une intention qu'on n'a pas |
+| n°3 — les échéances | **les deux** | `paymentDueAt` décide si un règlement arrive à temps |
+
+⚠ **Le point n°2 autorise un CONTRAT D'API NEUF**, ce que `AGENTS.md` interdit sans accord
+explicite. L'accord est ici, daté, avec son motif. **Il ne s'étend à rien d'autre.**
+
+### ⛔ D278 — LE PRÉREQUIS DU `CHECK` A ÉTÉ EXÉCUTÉ, ET IL NE PROUVE PRESQUE RIEN
+
+**Mesuré sur `zwadj` (la base de développement permanente), en lecture seule :**
+
+| mesure | valeur |
+|---|---|
+| réservations | **4** |
+| lignes de prestation | **4** |
+| violations de `total_cents = base_price_cents + services_total_cents` | **0** |
+| désaccords `services_total_cents` ↔ somme des lignes | **0** |
+| doublons `(booking_id, service_id)` | **0** |
+
+⛔ **ZÉRO SUR QUATRE NE BORNE À PEU PRÈS RIEN, ET C'EST LA SEULE LECTURE HONNÊTE.** C'est la
+leçon de D274 (« 0 sur 30 borne un taux et ne prouve PAS un zéro ») à un ordre de grandeur
+plus faible. Le prérequis de Ko visait le cas *« une migration qui échoue sur des données
+préexistantes »* : sur quatre lignes écrites à la main, la migration réussira quoi qu'il
+arrive et **n'apprendra rien**. ⚠ **Le résultat est vert et il est presque vide** — les deux
+se lisent pareil, et c'est exactement ce que ce dépôt corrige en boucle.
+⇒ **CE QUI PORTE RÉELLEMENT LA GARANTIE, ET C'EST DÉJÀ LA DOCTRINE (D123)** :
+`apps/api/test/int/migration-non-empty.int-spec.ts`, qui applique tout SAUF la dernière
+migration, **sème l'état sur lequel la nouvelle peut échouer**, puis vérifie. ⛔ Il **se
+retarge à chaque migration ajoutée** — cinq changements de sonde en six lots — et le semis
+doit produire une réservation dont `total_cents ≠ base + prestations`, **sinon la migration
+s'applique sur du vide et le test est vert et muet.** C'est une obligation de la session de
+code, pas une option.
+
+### ⛔ D278 — DÉCOUVERT EN CHEMIN : LA BASE DE DEV EST EN RETARD DE TROIS MIGRATIONS
+
+Relevé, pas supposé — `_prisma_migrations` contre le contenu de `prisma/migrations/` :
+**23 appliquées sur `zwadj`, 26 au dépôt.** Les trois absentes :
+
+- `20260821000000_quote_status_cancelled`
+- `20260821000100_quote_cancel_without_delivery`
+- ⛔ `20260824120000_payment_one_pending_per_booking` — **l'index partiel du chemin de
+  l'argent**, celui que les cibles E1→E5 mesurent.
+
+⚠ **CE QUE CE N'EST PAS, ET IL FAUT LE DIRE D'ABORD : la certification de D275 n'est PAS
+en cause.** `test:int` travaille sur **`zwadj_test`**, recréée de zéro et remigrée à chaque
+exécution (`db-url.ts`) — les 434 tests ont donc bien couru sur le schéma de tête. Les
+bases présentes sont `zwadj`, `zwadj_test`, `zwadj_e2e`, `zwadj_migration_test`.
+⛔ **CE QUE C'EST** : la base contre laquelle tourne `pnpm dev` **n'a pas** l'unicité
+partielle des intentions de paiement. Quelqu'un qui exercerait le chemin de l'argent à la
+main sur cette base ne serait protégé par **rien**, pendant qu'une campagne verte affirme
+— à juste titre, sur `zwadj_test` — que la garantie tient. **Deux bases, deux schémas, un
+seul mot pour les deux.**
+⛔ **AUCUNE MIGRATION N'A ÉTÉ APPLIQUÉE, ET C'EST DÉLIBÉRÉ.** Appliquer trois migrations à
+la base de travail de Ko sans le lui demander est un geste d'état, pas une lecture — et
+`AGENTS.md` rappelle que `migrate deploy` peut **sortir en succès sans rien appliquer**
+quand le schema-engine manque, donc que le code de retour ne fait pas foi. ⇒ **Rapporté au
+backlog** (`[INFRA][P1]`), à faire par Ko ou en ouverture de la session de code, **avec
+vérification qu'une table/contrainte attendue existe après**, jamais sur le code de sortie.
+
+### D278 — ce que la session de code devra faire, dans l'ordre
+
+1. **Relever à nouveau** les bornes de `create` (`146,324` bougeront) et le chiffre
+   d'entrée **123 lignes exécutables**, avec la commande écrite au rang 8.
+2. **Appliquer les trois migrations manquantes sur `zwadj`** et **vérifier en base** que
+   `payments_one_pending_per_booking` existe — pas lire un code de sortie.
+3. **Le module pur**, consommé par les DEUX services, avec le refus 409 du doublon posé au
+   même endroit pour les deux.
+4. **Le `CHECK`** — migration écrite à la MAIN (`migrate dev` est interdit), et
+   `migration-non-empty.int-spec.ts` **retargé avec un semis qui viole le `CHECK`**.
+5. **Les deux échéances**, avec leurs cas limites spécifiés.
+6. `neutralize-s11b.py` — nommé ainsi, sinon jamais découvert (D272).
+
+⚠ **Mesurer avant ET après** (D261), sinon le lot s'auto-décerne son résultat.
+
+### D278 — ce qui a été écrit, et où
+
+| Fichier | Ce qui change |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | les quatre arbitrages **annotés sous chaque point ouvert**, la question laissée INTACTE · le prérequis mesuré et sa portée réelle · le retard de la base de dev · cette section · registre |
+| `ZWADJ_BACKLOG.md` | entrée `[INFRA][P1]` : trois migrations non appliquées sur `zwadj`, dont l'index partiel du chemin de l'argent |
+
+⚠ **LE CADRAGE N'A PAS ÉTÉ RÉÉCRIT.** Chaque point ouvert garde sa question mot pour mot et
+reçoit une annotation **en dessous**. Un cadrage réécrit après arbitrage ne peut plus
+démentir personne (D277) — et il ne pourrait notamment plus montrer que la question posée
+n'était pas celle qui a été tranchée, le jour où cela arrivera.
 
 ## Session du 08/09/2026 — D277 · la levée était bien dans un fichier, et elle n'a pas traversé
 
@@ -3984,3 +4112,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D275 | A | D275 — CERTIFICATION : portes vertes AU REPOS le 07/09/2026, six lots nommés, réserves écrites |
 | D276 | A | D276 — ce qui vaut décision s'écrit dans un FICHIER d'autorité, jamais dans un message de commit |
 | D277 | A | D277 — la levée était bien dans un fichier, et elle n'a pas traversé jusqu'à l'autre autorité |
+| D278 | A | D278 — arbitrage de S11-b : les deux chemins, le CHECK, refus 409, les deux échéances |

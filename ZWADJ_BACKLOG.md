@@ -2313,6 +2313,29 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Report du 08/09/2026 — la base de développement
+
+- [ ] **[INFRA][P1]** ⛔ **`zwadj` (BASE DE DEV) EST EN RETARD DE TROIS MIGRATIONS, DONT
+      L'INDEX PARTIEL DU CHEMIN DE L'ARGENT.** Relevé le 08/09/2026 (D278) en comparant
+      `_prisma_migrations` au contenu de `prisma/migrations/` : **23 appliquées, 26 au
+      dépôt**. Manquent `20260821000000_quote_status_cancelled`,
+      `20260821000100_quote_cancel_without_delivery` et surtout
+      ⛔ `20260824120000_payment_one_pending_per_booking`.
+      ⚠ **LA CERTIFICATION D275 N'EST PAS EN CAUSE, ET IL FAUT LE DIRE D'ABORD** :
+      `test:int` travaille sur `zwadj_test`, recréée et remigrée à chaque exécution
+      (`test/int/db-url.ts`). Les 434 tests ont couru sur le schéma de tête.
+      ⛔ **CE QUI EST EN CAUSE** : `pnpm dev` tape sur `zwadj`, qui **n'a pas** l'unicité
+      partielle des intentions de paiement. Exercer le chemin de l'argent à la main sur
+      cette base n'est protégé par **rien**, pendant qu'une campagne verte affirme — à
+      juste titre, ailleurs — que la garantie tient. **Deux bases, deux schémas, un seul
+      mot pour les deux.**
+      ⇒ **REMÈDE** : `pnpm --filter @zwadj/api run prisma:migrate` (= `migrate deploy`),
+      puis ⛔ **VÉRIFIER EN BASE que `payments_one_pending_per_booking` existe** — jamais
+      se fier au code de sortie : `migrate deploy` sort en **succès sans rien appliquer**
+      quand le schema-engine manque.
+      ⚠ **Non fait le 08/09 et c'est délibéré** : appliquer trois migrations à la base de
+      travail de Ko est un geste d'ÉTAT, pas une lecture, et il n'avait pas été demandé.
+
 ## Reports du 30/08/2026 — suites, concurrence, outillage
 
 ### ⛔ Ouverts, mesurés, NON corrigés
