@@ -532,6 +532,246 @@ liste est encore là pour être consultée — sinon elle devient invérifiable,
 ⚠ Même motif que le cadrage ARCHIVÉ du rang 5, conservé sans retouche par D273 : **un
 cadrage réécrit après coup ne peut plus démentir personne.**
 
+---
+
+## ⛔ CADRAGE DE S11-b — écrit le 08/09/2026, AVANT toute ligne de code
+
+⛔ **CE CADRAGE NE PREND PAS DE NUMÉRO DE DÉCISION, ET C'EST VOULU.** Il ne tranche rien :
+il relève l'état réel, énumère les modes de défaillance, et pose **trois points ouverts**
+qui demandent l'arbitrage de Ko. **L'arbitrage prendra un numéro** ; le cadrage seul n'en
+mérite pas, sans quoi le registre porterait une décision que personne n'a prise.
+⛔ **ARRÊT FRANC ICI.** Aucune ligne de code avant la réponse de Ko aux trois points.
+
+⚠ **ÉTAT MACHINE RELEVÉ AVANT TOUTE MESURE (D270), et il INTERDIT les mesures de porte** :
+RAM libre **médiane 3 304 Mo** (6 relevés sur 60 s, bande 3 299–3 360) · **node 0** · CPU
+médiane **4 %** (bande 2–5) · total **14 411 Mo** sur **348 processus**. Inventaire au-dessus
+de 100 Mo : chrome 18 proc / 2 851 Mo · Code 21 / 2 584 · svchost 99 / 1 233 · Memory
+Compression 1 142 · vmmemWSL 482 · claude 334 · msedgewebview2 325 · explorer 289 · msedge
+259 · powershell 244 · le reste sous 200.
+⛔ **3 304 Mo contre une barre D273 à 4 579 : la machine n'est PAS au repos** — Chrome est
+ouvert, il pèse le premier poste. **Aucune passe de portes n'a donc été lancée**, et aucun
+chiffre de suite n'est produit par ce cadrage. Il n'en avait pas besoin : **il LIT**. Les
+seules mesures prises sont des lectures de fichiers et des comptes de lignes, insensibles
+à la charge. ⚠ La certification de D275 **n'est pas reconduite** par ce cadrage.
+
+### ⛔ LE FAIT CENTRAL, ET IL N'ÉTAIT PAS DANS LE POINT D'ENTRÉE : LE CHIFFRAGE EXISTE DEUX FOIS
+
+Le point d'entrée du rang 8 annonce « S11-b — le chiffrage de `BookingsService` ». **Relevé
+dans le code, l'objet est plus large d'un fichier.** Le même chiffrage est écrit **deux
+fois, presque au mot près** :
+
+| | `BookingsService.create` | `QuotesService` |
+|---|---|---|
+| jours fériés + jour calendaire | lignes **196–200** | lignes **425–429** |
+| `resolveSlotPrice` | 201 | 430 |
+| catalogue `findMany` + boucle `find` | 205–221 | 432–448 |
+| refus « prestation absente » | `SERVICE_UNAVAILABLE` | `SERVICE_UNAVAILABLE` |
+| `reduce` des lignes | 224 | 451 |
+| `total = base + prestations` | 225 | 452 |
+| `resolveDepositCents(venue, total)` | 228 | 468 |
+| confrontation **D75** | **233–240** | ⛔ **absente** |
+
+⚠ **Les différences sont relevées, pas supposées, et elles ne sont pas toutes des défauts** :
+`quotes` lève un `ConflictException` en ligne avec une clé i18n construite par gabarit
+(`service.errors.${code}`) là où `bookings` passe par deux aides privées ; `bookings`
+écrit des LIGNES filles, `quotes` stocke un JSON. ⛔ **L'absence de la confrontation D75
+côté devis est LÉGITIME** : un devis est chiffré par le pro, il n'y a pas d'attente client
+à confronter. **Ne pas « harmoniser » ce point** — ce serait inventer une exigence.
+
+⛔ **CE QUE ÇA COÛTE, ET C'EST LE CHEMIN DE L'ARGENT** : `AGENTS.md` dit « un seul endroit
+par formule — deux formules concurrentes du même calcul finissent toujours par diverger, et
+la divergence est silencieuse ». Ici, une correction portée à l'un et pas à l'autre donne
+**deux totaux pour les mêmes choix** : celui d'une affaire passée en direct, et celui de la
+même affaire passée par devis. ⚠ **`quote.convert` ne recalcule pas** — il **recopie** les
+montants snapshotés du devis (lignes 337–340) — donc la divergence ne se rattrape à aucun
+moment : elle est **gravée** dans la réservation.
+
+⇒ **Conséquence sur le périmètre, à valider par Ko** : S11-b ne peut pas prendre « le
+chiffrage de `BookingsService` » sans prendre celui de `QuotesService`. Le prendre seul
+extrairait un module pur consommé par **un** appelant, en laissant la copie vivante à côté
+— c'est-à-dire en produisant exactement la divergence que le lot prétend fermer.
+
+### Les modes de défaillance — ⛔ ÉCRITS AVANT LE CODE, ET UN MODE NON LISTÉ NE SE CODE PAS
+
+| # | mode | protégé aujourd'hui par | ce que S11-b en fait |
+|---|---|---|---|
+| MD1 | les deux chiffrages **divergent** | ⛔ **rien** — aucune garde ne les compare | un module pur unique + une garde de **source** |
+| MD2 | `total ≠ base + prestations` écrit en base | ⛔ **rien en base** (voir ci-dessous) | **point ouvert n°1** |
+| MD3 | un `serviceId` **en double** facturé deux fois | ⛔ **rien** : ni Zod, ni la base, ni le code | **point ouvert n°2** |
+| MD4 | l'**ordre des refus** s'inverse | rien : aucune spec ne le mesure | garde sur un cas **doublement fautif** |
+| MD5 | la confrontation D75 rend un 409 **sans les vrais montants** | rien en unitaire | fonction pure + spec |
+| MD6 | les deux **échéances** divergent | rien : deux expressions en ligne | **point ouvert n°3** |
+| MD7 | l'**écrêtage** de l'acompte se perd au déménagement | le module `deposit` et sa spec | ordre de calcul figé par la signature |
+| MD8 | une prestation d'une **autre salle** est facturée | le `where venueId` — **par accident** | garde sur la CAUSE, pas sur le code d'erreur |
+| MD9 | une notification tombée **défait** l'écriture | ✅ D63 + couture S6 (cibles S6-1, S6-2) | rien — déjà tenu |
+| MD10 | course sur l'intention de paiement | ✅ index partiel + relecture (cibles E1→E5) | rien — **hors périmètre** |
+
+#### ⛔ MD2 — la base garantit le DÉTAIL et **pas** l'AGRÉGAT (relevé dans la MIGRATION, pas dans `schema.prisma`)
+
+`20260707000001_booking_constraints/migration.sql` :
+
+- `booking_services_amounts_valid` impose **`line_total_cents = unit_price_cents × quantity`**
+  — l'arithmétique d'une LIGNE est garantie par PostgreSQL ;
+- `bookings_amounts_valid` impose `guests > 0`, les quatre montants `>= 0`, et
+  **`deposit_cents <= total_cents`** — **mais PAS `total_cents = base_price_cents +
+  services_total_cents`**, ni l'accord entre `services_total_cents` et la somme des lignes.
+
+⚠ **L'asymétrie est le fait, pas l'absence** : le détail est prouvé par la base, l'agrégat
+repose entièrement sur une addition TypeScript qu'aucune contrainte ne relit. Une erreur
+d'agrégation écrit une réservation **incohérente que la base accepte**, et c'est ce montant
+qui sera facturé à E3.
+⛔ **POINT OUVERT n°1 — POUR KO, JE NE TRANCHE PAS.** Deux réponses défendables :
+1. **ajouter le `CHECK`** — c'est une **migration**, donc un point de non-retour, écrite à
+   la main (`migrate dev` est interdit), et **à éprouver sur une base NON vide** (D123) :
+   une ligne existante qui ne passe pas le `CHECK` fait échouer le déploiement, et rien
+   dans `test:int` ne le verrait puisqu'il rejoue tout sur du vide ;
+2. **l'assumer comme garantie APPLICATIVE documentée**, avec le précédent déjà écrit dans
+   `AGENTS.md` — la correspondance `Service.pricingType` ↔ `ServicePricing`, « exception
+   consciente et documentée à *garanti par la BDD* ».
+⚠ **Ce que je peux dire sans arbitrage** : si c'est (2), alors le module pur devient la
+**seule** autorité sur cette identité, et sa spec doit la mesurer explicitement — pas comme
+effet de bord d'un cas nominal.
+
+#### ⛔ MD3 — le doublon de prestation : trois autorités consultées, aucune ne l'empêche
+
+- **Zod** (`packages/types/src/booking.ts:135`) : `z.array(...).max(20)`. Aucune unicité.
+- **La base** (`20260707000000_init`) : `booking_services` porte deux index **non uniques**
+  (`booking_id`, `service_id`) et trois FK. **Aucun `UNIQUE (booking_id, service_id)`.**
+- **Le code** : `for (const choice of choices)` + `catalogue.find(...)` — un choix, une
+  ligne. Deux choix identiques ⇒ **deux lignes**.
+
+⇒ Une prestation `FIXED` envoyée deux fois est **facturée deux fois**, `services_total_cents`
+la compte deux fois, et l'acompte suit puisqu'il est un pourcentage du total.
+⚠ **D75 NE PROTÈGE PAS DE CE CAS, et c'est le point à ne pas confondre** : elle garantit que
+le client n'est jamais engagé sur un montant **qu'il n'a pas vu**. Elle ne dit rien d'un
+montant qu'il **a** vu et qui est **faux** — un double envoi du front produit un
+`expectedTotalCents` cohérent avec le doublon, et la confrontation passe.
+⛔ **POINT OUVERT n°2 — POUR KO.** **Refuser** (409, la demande est malformée) ou **fusionner**
+(une ligne, quantités additionnées) ? Les deux se défendent, et le choix **change le
+contrat** : fusionner accepte silencieusement une entrée que le client n'a peut-être pas
+voulue ; refuser casse un front qui enverrait légitimement deux lignes d'un même service
+`PER_UNIT`. ⚠ **Aucune des deux ne se code avant réponse** — et le mode s'applique
+**aussi** au devis, qui partage le schéma.
+
+#### MD4 — l'ordre des refus est une règle métier, et il n'est mesuré nulle part
+
+Relevé dans `create` : admission (capacité, date, horizon) → prix → **prestations**
+(`SERVICE_UNAVAILABLE`) → **D75** (`BOOKING_PRICE_CHANGED`) → utilisateur disparu (401).
+⇒ Une prestation retirée du catalogue rend `SERVICE_UNAVAILABLE` **avant** que le client
+apprenne que le prix a bougé — c'est le bon ordre : l'envoyer rejouer un montant sur une
+demande de toute façon irrecevable lui ferait faire le trajet deux fois.
+⚠ **La garde se mesure sur un cas DOUBLEMENT FAUTIF** (leçon S11-a) : une demande qui
+enfreint **une seule** règle est verte quel que soit l'ordre.
+
+#### MD6 — deux échéances, la même forme, deux endroits — et l'une est sur le chemin de l'argent
+
+- `create` ligne **253** : `expiresAt = min(now + PRO_RESPONSE_DAYS×24 h, window.startsAt)` ;
+- `accept` lignes **382–384** : `paymentDueAt = min(acceptedAt + PAYMENT_WINDOW_HOURS, row.startsAt)`.
+
+Même idiome — « une échéance, écrêtée par le début de l'événement » — écrit deux fois, avec
+deux constantes différentes et **aucune spec unitaire ni d'un côté ni de l'autre**.
+⛔ **`paymentDueAt` est ce sur quoi E3 décidera si un règlement arrive encore à temps.** Les
+cas limites ne sont écrits nulle part : événement dans moins de 48 h ⇒ l'échéance **est** le
+début de l'événement ; événement déjà commencé au moment de l'acceptation ⇒ échéance **dans
+le passé**, et personne n'a écrit ce que vaut alors le bouton « payer l'acompte ».
+⛔ **POINT OUVERT n°3 — POUR KO** : S11-b prend-il **les deux** échéances (un seul endroit
+par formule, et le chemin de l'argent en profite), ou **s'en tient-il au chiffrage** annoncé
+au rang 8 ? ⚠ **Je recommande les deux**, mais c'est un **élargissement du périmètre
+annoncé**, donc pas mon appel : le dépôt punit le refactoring opportuniste autant que la
+formule dupliquée.
+
+#### MD8 — le bon refus, obtenu par la bonne raison ? Non : par une absence
+
+`create` lit le catalogue avec `where: { venueId: venue.id, id: { in: [...] } }`, puis
+apparie par `find`. Une prestation appartenant à une **autre salle** n'est donc pas
+ramenée, `find` rend `undefined`, et le refus tombe en `SERVICE_UNAVAILABLE`.
+⚠ **Le résultat est correct ; le mécanisme est un effet de bord.** Il n'existe **aucun
+contrôle de propriété** : le jour où le `where` perdrait `venueId` — une pagination, une
+mise en cache, une « simplification » — la prestation d'une autre salle serait **facturée**,
+et **aucun test ne rougirait**, puisque le code d'erreur qu'ils vérifient existe toujours
+pour le cas « id inconnu ». ⇒ La garde de S11-b mesure **la cause** : un id valide,
+appartenant à une **autre salle**, doit être refusé — cas que le module pur peut recevoir
+directement.
+
+### Ce que les neuf cibles `--int` disent DÉJÀ protégé sur ce chemin
+
+Lues, pas supposées — `neutralize-e3d1-s8.py` (E1→E5) et `neutralize-solid-s6.py` (S6-3→S6-6) :
+
+| cible | ce qu'elle tient |
+|---|---|
+| E1 | `payments_one_pending_per_booking` est **UNIQUE** et partiel : la base refuse deux intentions en attente |
+| E2 | le nettoyage préalable de la migration départage par `(created_at, id)` — trois `PENDING` à la même microseconde ne bloquent pas le déploiement |
+| E3 | le prédicat reconnaît **P2002** — sans lui, le perdant renvoie une erreur Prisma au visiteur |
+| E4 | **le perdant RELIT et rend l'intention gagnante** au lieu de propager le conflit |
+| E5 | le `return await` garde la promesse **dans** le `try` — sans lui le `catch` ne sert plus à rien |
+| S6-3 / S6-4 | les abonnements « demande reçue » et « acceptée » sont réellement branchés |
+| S6-5 / S6-6 | `visit.booked` a bien **deux** abonnés, et leur **ordre** est mesuré |
+| S6-1 / S6-2 | la couture **n'a pas le droit de lever** (D63) et **attend** ses handlers |
+
+⛔ **CE QU'ELLES NE DISENT PAS, ET C'EST LE PÉRIMÈTRE DE S11-b** : elles protègent
+l'**intention de paiement** et l'**acheminement des notifications**. **Aucune ne regarde le
+MONTANT.** Le chiffrage — ce que le client doit, ce que l'acompte vaut, ce que la base
+enregistre — n'est mesuré aujourd'hui que par des specs d'**intégration**, contre un
+PostgreSQL réel, à la porte lourde. C'est exactement la situation que D261 a nommée : les
+décisions vivent là où la mesure est lente, donc rare, donc tardive.
+
+### Découpage proposé — ⚠ ce qui le commande est OÙ LA MESURE POURRA VIVRE (D261)
+
+1. **`booking-charge.ts`** — module **pur**, sans Prisma, sans Nest. Il reçoit le catalogue
+   **déjà lu**, les choix, le nombre d'invités, le prix de base **déjà résolu** et la
+   politique d'acompte ; il rend un **résultat discriminé** :
+   `{ ok: true, basePriceCents, servicesTotalCents, totalCents, depositCents, lines }` ou
+   `{ ok: false, code }`.
+   ⛔ **Il ne lève pas** : même idiome que `booking-admission` et `booking-locks`, qui rendent
+   un verdict que le service traduit en HTTP. Les codes applicatifs et les clés i18n ne
+   descendent pas dans un module de calcul.
+2. **`booking-charge.spec.ts`** — la spec unitaire qui n'existe pas aujourd'hui. Elle se
+   rejoue en millisecondes, sans base, sans client généré, sans amorçage Nest : c'est ce qui
+   permet de la **neutraliser à chaque passage** (D187, motif réécrit par D192).
+3. **La confrontation D75** devient une fonction pure du même module, rendant l'écart **avec
+   les montants réels** — c'est ce que le 409 doit porter.
+4. **Les deux services appellent le même module.** `create` garde : lire la salle, lire les
+   fériés, lire le catalogue, écrire, publier. `QuotesService` garde les siennes.
+5. **Une garde de SOURCE** interdit la réapparition d'une seconde formule : ni
+   `reduce((sum` ni `basePriceCents + servicesTotalCents` ne doivent revenir dans les deux
+   services. ⚠ Elle cherche **l'identifiant**, pas l'appel (leçon S10b), et le commentaire
+   qui l'explique **n'épelle pas** le jeton interdit (leçon S11-a).
+6. **`neutralize-s11b.py`** — nommé ainsi, sinon `lancer-campagnes.py` ne le découvrira
+   jamais (D272). Chaque cible **désigne son fichier de mesure**, et l'on se demande, cible
+   par cible : *par quel chemin cette mesure voit-elle la mutation ?*
+
+### Ce qui se MESURE avant et après — sinon le lot s'auto-décerne son résultat (D261)
+
+| quantité | entrée (08/09/2026) | définition |
+|---|---|---|
+| `BookingsService.create` | **123 lignes exécutables** | lignes 146–324, non vides, hors commentaires — commande écrite en tête de section |
+| `QuotesService` (fichier) | **546 lignes** | `wc -l` |
+| specs unitaires du chiffrage | **0** | aucune spec ne monte `BookingsService` |
+
+⚠ **Les bornes `146,324` se relèvent à nouveau à la sortie** : le lot va les déplacer.
+⚠ **Un compteur de tests qui MONTE n'est pas la preuve du lot** : ce qui se mesure est le
+nombre de décisions qui ont quitté un endroit non mesurable pour un endroit mesurable.
+
+### ⛔ Ce qui NE se code PAS dans ce lot
+
+- **Aucun changement de comportement.** Un montant qui change en sortie de S11-b est un
+  **défaut du lot**, pas une amélioration — sauf sur les points 1, 2 et 3 si Ko les tranche
+  en ce sens, auquel cas c'est écrit, numéroté, et mesuré avant/après.
+- **Aucun contrat d'API neuf** (arrêt et demande — `AGENTS.md`).
+- **Aucune migration**, sauf arbitrage explicite du point ouvert n°1.
+- **Rien sur E3** : la course d'intention de paiement, le webhook, la bascule `CONFIRMED`.
+- Les **défauts croisés** listés plus haut restent au backlog.
+
+### ⚠ Ce que ce cadrage n'a PAS mesuré, et qu'il ne faut pas lire comme vert
+
+- **Aucune porte n'a été lancée** — la machine était sous la barre (état relevé ci-dessus).
+- **Aucune campagne de neutralisation n'a été jouée**, ni au repos ni sous charge.
+- La liste des modes de défaillance est **relevée dans le code, la migration et le schéma
+  Zod du jour**. Elle ne prétend pas être exhaustive — elle prétend être **vérifiable** :
+  chaque ligne porte le fichier et les numéros où elle se contrôle.
+
+---
+
 ⚠ **Le cadrage ARCHIVÉ du rang 5 suit immédiatement ci-dessous**, conservé sans retouche
 par D273. **Ce n'est pas le prochain lot : c'est l'histoire d'un lot fait**, gardée parce
 qu'un cadrage réécrit après coup ne peut plus démentir personne.
