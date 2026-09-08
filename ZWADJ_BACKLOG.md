@@ -1295,25 +1295,65 @@ ensuite. Ni l'archive téléversée ni le dépôt de Ko ne les contenaient.
 **Premier geste de la session :** énumérer les fichiers attendus AVANT de coder,
 et vérifier en fin de lot que le diff ne contient qu'eux.
 
-⛔ **UN NUMÉRO DE DÉCISION SE PREND EN LISANT `ZWADJ_CONTINUITE.md`.** Dernier
-attribué au 28/08/2026 : **D267**.
+⛔ **UN NUMÉRO DE DÉCISION SE PREND EN LISANT `ZWADJ_CONTINUITE.md`.** ~~Dernier
+attribué au 28/08/2026 : **D267**.~~
+⛔ **BARRÉ LE 08/09/2026 (D280) — DOUZE NUMÉROS D'ÉCART, DANS LE BLOC « À LIRE EN
+PREMIER ».** Le dernier attribué était **D279**. C'est le compteur figé que le registre de
+`ZWADJ_CONTINUITE.md` dit avoir retiré de trois autres endroits, réapparu dans le seul bloc
+qui s'annonce comme la première chose à lire d'une session.
+⇒ **AUCUN NUMÉRO N'EST RÉÉCRIT ICI, ET C'EST LE REMÈDE** : il se prend en lisant la
+**dernière ligne de la table du registre**, en bas de `ZWADJ_CONTINUITE.md`, et nulle part
+ailleurs — pas même dans une ligne qui prétendrait le rappeler.
 
 ⛔ **LES HARNAIS SONT DANS `neutralisation/`** et se lancent depuis la RACINE :
-`python3 neutralisation/neutralize-xxx.py`. 20 scripts, 170 cibles.
+`python3 neutralisation/neutralize-xxx.py`.
+⛔ **LE COMPTE « 20 scripts, 170 cibles » QUI FINISSAIT CETTE LIGNE EST RETIRÉ, PAS
+RAFRAÎCHI (D280, 08/09/2026).** D268 l'interdit nommément — « aucun compteur de harnais
+n'est écrit ici, et c'est délibéré » — et le chiffre était faux : **26** scripts
+`neutralize-*.py` au 08/09. Le nombre de cibles bouge à chaque lot.
+⇒ **Pour l'état du jour** : `ls neutralisation/` pour les scripts, et
+`python3 neutralisation/lancer-campagnes.py` pour le relevé mordues / muettes / non
+mesurées, campagne par campagne.
 
 **Ordre recommandé**, du plus risqué au moins risqué :
 
-1. **`migration-non-empty.int-spec.ts` bloqué.** `beforeAll` expire à 60 000 ms,
+1. ~~**`migration-non-empty.int-spec.ts` bloqué.** `beforeAll` expire à 60 000 ms,
    deux fois de suite, et les **sept tests sont sautés** — dont la garde qui prouve
    qu'une migration passe sur une base non vide. Ce n'est pas de la lenteur. Un
    diagnostic est en place et **nommera les occupants** de `zwadj_migration_test`
-   au prochain run : commencer par lire ce message.
+   au prochain run : commencer par lire ce message.~~
+   ⛔ **BARRÉ LE 08/09/2026 (D280) — PÉRIMÉ, ET LA LECTURE SEULE SUFFISAIT À LE DIRE.**
+   Trois faits qui se recoupent : le dépôt porte **36 fichiers `*.int-spec.ts`** ;
+   `pnpm test:int` a rendu **434 tests / 36 fichiers, exit 0** le 08/09 (D279) ; et le
+   tableau de mesures de D279 **sait écrire « 1 ignoré »** — il le fait pour la suite e2e,
+   et pas pour `test:int`. **Sept tests sautés se verraient.**
+   ⚠ **Le « 60 000 ms » existe bel et bien**, et le chercher dans le spec était l'erreur :
+   c'est `hookTimeout: 60_000`, dans `apps/api/vitest.config.int.ts:20`. Dire « le fichier
+   ne porte pas de `beforeAll` à 60 s » était **vrai et trompeur** — une réponse exacte à
+   la mauvaise question se lit comme une réponse à la bonne.
+   ⛔ **RIEN N'EST DÉCLARÉ VERT AU-DELÀ DE CELA.** Ce barrage dit que l'entrée décrit un
+   état révolu, pas que le harnais fera son office : **la vérification réelle a lieu à
+   l'ouverture de l'étape 4, en LANÇANT ce fichier** — c'est lui qui doit rougir sur un
+   semis qui viole le `CHECK`.
 2. ~~**S11 — SRP sur `BookingsService`**, moitié amont~~ — **S11-a LIVRÉ**
-   (D261, 16/16). Reste **S11-b — le chiffrage** : tarification, prestations,
-   confrontation D75, échéance d'acompte. ⛔ **CHEMIN DE L'ARGENT** : modes de
+   (D261, 16/16). ~~Reste **S11-b — le chiffrage** : tarification, prestations,
+   confrontation D75, échéance d'acompte.~~ ⛔ **CHEMIN DE L'ARGENT** : modes de
    défaillance écrits AVANT tout code, arrêt franc pour arbitrage.
-   ⚠ Repartir des mesures RÉELLES, pas de l'estimation d'origine : `create`
-   pèse **168 lignes / 123 exécutables** après S11-a, et non « 200 sur 729 ».
+   ~~⚠ Repartir des mesures RÉELLES, pas de l'estimation d'origine : `create`
+   pèse **168 lignes / 123 exécutables** après S11-a, et non « 200 sur 729 ».~~
+   ⛔ **BARRÉ LE 08/09/2026 (D280) — DEUX FAUTES, ET LA SECONDE EST CELLE DE D277
+   ELLE-MÊME.** (a) S11-b n'est plus « à faire » : ses **étapes 1 à 3 sur 6 sont livrées
+   et mesurées** (D279) — module pur `booking-charge.ts` consommé par `bookings` ET
+   `quotes`, 8 gardes mordues sur 8. Restent les étapes **4 (le `CHECK`)**, **5 (les deux
+   échéances)** et **6 (le reste du harnais)**. (b) « **168 lignes** » a été **barré dans
+   `ZWADJ_CONTINUITE.md` par D277**, comme ne correspondant à aucune des trois façons de
+   compter ; et « 123 exécutables » est périmé — le chiffre courant est **107**, `create`
+   ayant été réduite par D279.
+   ⛔ **C'EST L'OCCURRENCE QUE D277 A MANQUÉE DANS SA PROPRE PASSE** : ce lot-là existait
+   pour porter un barrage jusqu'aux autres autorités, il l'a fait pour la phrase
+   « Bloquant avant S11-b » et **pas pour le chiffre barré, deux entrées plus haut dans ce
+   même fichier**. ⇒ Chiffres du jour : section du rang 8 de `ZWADJ_CONTINUITE.md`, avec
+   la commande qui les relève.
 3. **E3d-2 — expiration des `PENDING`.** Attend la durée de vie d'un lien
    Chargily. Ne pas figer le nombre avant de l'avoir mesurée : plus courte qu'elle,
    un visiteur paie une intention marquée morte.
@@ -2315,8 +2355,18 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
 
 ## Report du 08/09/2026 — la base de développement
 
-- [ ] **[INFRA][P1]** ⛔ **`zwadj` (BASE DE DEV) EST EN RETARD DE TROIS MIGRATIONS, DONT
-      L'INDEX PARTIEL DU CHEMIN DE L'ARGENT.** Relevé le 08/09/2026 (D278) en comparant
+- [x] ~~**[INFRA][P1]** ⛔ **`zwadj` (BASE DE DEV) EST EN RETARD DE TROIS MIGRATIONS, DONT
+      L'INDEX PARTIEL DU CHEMIN DE L'ARGENT.**~~
+      ✅ **CLOSE LE 08/09/2026 (D280) — KO A APPLIQUÉ LES TROIS, ET LA PREUVE EST EN BASE,
+      PAS DANS UN CODE DE SORTIE.** Vérifié par **définition d'objet** (D279) :
+      `_prisma_migrations` rend **26 appliquées** contre 23 au matin ; `QuoteStatus`
+      contient `CANCELLED` ; `quotes_sent_at_coherent` porte son exemption ; et
+      `payments_one_pending_per_booking` est présent avec **`indisunique` ET
+      `indpred IS NOT NULL`** — unique **et** partiel, c'est-à-dire la garantie elle-même
+      et pas seulement un index qui en porte le nom.
+      ⚠ **Le constat d'origine est conservé ci-dessous**, barré en tête : il a existé, il
+      était juste, et une entrée supprimée se réécrit de bonne foi plus tard.
+      Relevé le 08/09/2026 (D278) en comparant
       `_prisma_migrations` au contenu de `prisma/migrations/` : **23 appliquées, 26 au
       dépôt**. Manquent `20260821000000_quote_status_cancelled`,
       `20260821000100_quote_cancel_without_delivery` et surtout

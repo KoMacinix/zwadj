@@ -99,11 +99,23 @@
 > **toute garde neuve doit être NEUTRALISÉE pour prouver que son test mord**, et
 > **aucune valeur attendue ne s'écrit de mémoire — elle se relève**.
 >
-> **➡️ PROCHAIN LOT — E3, PAIEMENT CHARGILY. C'est le lot de Ko** (chemin critique,
+> ~~**➡️ PROCHAIN LOT — E3, PAIEMENT CHARGILY. C'est le lot de Ko** (chemin critique,
 > revue humaine D39), et c'est **le seul verrou restant**. Il débloque à lui seul :
 > `Booking → CONFIRMED`, la bascule `Quote → ACCEPTED`, le compteur « aboutis » de
 > l'écran devis (aujourd'hui structurellement à 0), la libération automatique des
-> créneaux, et la ligne `Commission`.
+> créneaux, et la ligne `Commission`.~~
+>
+> ⛔ **BARRÉ LE 08/09/2026 (D280) — ET ELLE A SURVÉCU SOUS SA PROPRE RÈGLE.** Quatre-vingts
+> lignes PLUS HAUT, dans ce même bloc d'en-tête, est écrit : « **AUCUN ÉTAT COURANT NI
+> PROCHAIN LOT N'EST ÉCRIT DANS CET EN-TÊTE** » — règle posée précisément parce qu'un
+> « Prochain lot » figé y avait déjà menti. **Le jumeau a été retiré, celui-ci est resté**,
+> dans le paragraphe qui raconte le retrait. Une passe de barrage qui ne se relit pas dans
+> son propre fichier laisse derrière elle ce qu'elle est venue chercher.
+> ⇒ **Où lire le prochain lot** : l'ORDRE DES RANGS (D270), et la section « PROCHAIN LOT »
+> du corps de ce fichier. Au 08/09/2026 le rang courant est **8 — S11-b**, et **E3 n'est
+> pas le prochain lot** ; « le seul verrou restant » était faux dès l'ouverture du rang 8.
+> ⚠ Ce qui reste VRAI dans la phrase barrée, et qui vit ailleurs : E3 est un lot du chemin
+> critique à revue humaine (D39), et sa méthode renforcée est décrite plus bas.
 >
 > ⚠ **E3 NE SE FAIT PAS COMME LES AUTRES LOTS.** Cinq sous-lots, un arrêt franc
 > entre chacun, et six exigences qui n'existaient pour aucun lot précédent. Voir
@@ -251,7 +263,7 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
 ## État actuel
 
 ### Livré, intégré et VÉRIFIÉ
-- ✅ **Schéma Prisma complet**, **18 entrées** dans `prisma/migrations` (17 migrations + `migration_lock.toml`).
+- ✅ **Schéma Prisma complet.** ⛔ **LE COMPTE DE MIGRATIONS QUI VIVAIT ICI EST RETIRÉ, PAS CORRIGÉ (D280, 08/09/2026).** Il annonçait « 18 entrées (17 migrations + `migration_lock.toml`) » ; le dépôt en portait **26 migrations** plus le verrou. Un compteur figé dans « État actuel » se recopie longtemps après avoir cessé d'être vrai — c'est D268, appliqué ici pour la cinquième fois. **Le rafraîchir aurait reconduit la faute d'un lot.** ⇒ Pour le compte du jour : `ls apps/api/prisma/migrations`, ou `SELECT count(*) FROM _prisma_migrations WHERE finished_at IS NOT NULL` sur la base visée.
 - ✅ **TRANCHE AUTHENTIFICATION (Lots 0–6)** : 9 routes `/auth/*`.
 - ✅ **TRANCHE PIVOT VISUEL + OAUTH GOOGLE (Lots 7–9)** : palette par app (D26), remember-me (D27/D31), invariant `required` (D32), OAuth Google ID-token GIS (D29/D30).
 - ✅ **FLUX A — Lots A0 à A5** + correctif prix D40.
@@ -418,9 +430,14 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 
 ⛔ **OUVERT LE 07/09/2026 PAR D276**, quand la consigne « aucun lot de produit ne s'ouvre
 avant que la porte soit verte » a été levée par la certification D275. ⚠ **Cette section
-est un POINT D'ENTRÉE, pas un cadrage.** Le cadrage de S11-b **n'existe pas** : il est le
+est un POINT D'ENTRÉE, pas un cadrage.** ~~Le cadrage de S11-b **n'existe pas** : il est le
 **premier livrable** de la session qui ouvrira ce lot, pas un préalable qu'elle
-trouverait écrit.
+trouverait écrit.~~
+⛔ **BARRÉ LE 08/09/2026 (D280)** : le cadrage **existe**, il a été écrit le 08/09 et il est
+**dans ce fichier**, section « ⛔ CADRAGE DE S11-b », une centaine de lignes plus bas. La
+phrase était exacte quand elle a été écrite le 07/09 et fausse le lendemain matin ; elle est
+restée en tête du bloc qu'une reprise lit EN PREMIER pour ce lot. ⚠ Le reste de la phrase
+tient : cette section est bien un point d'entrée, pas le cadrage.
 
 ### Ce que le rang 8 recouvre
 **S11-b — le chiffrage de `BookingsService`** : tarification, prestations, confrontation
@@ -901,6 +918,102 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 08/09/2026 (D280) — les décisions ne traversent pas, et c'est la cinquième fois
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D279**.
+
+⛔ **ÉTAT : LOT DOCUMENTAIRE, AUCUNE LIGNE DE CODE, AUCUNE PORTE, AUCUNE ÉCRITURE EN BASE.**
+Trois fichiers au diff, **énumérés avant écriture** : `ZWADJ_CONTINUITE.md`,
+`ZWADJ_BACKLOG.md`, `AGENTS.md`. Neuf barrages, listés plus bas.
+
+### ⛔ D280 — LE FAIT, PAS L'INCIDENT : CINQUIÈME OCCURRENCE, ET LA RÈGLE EXISTE DÉJÀ
+
+Une décision est prise, elle est écrite **au bon endroit**, et elle **ne traverse pas**
+jusqu'aux autres fichiers d'autorité — qui continuent d'affirmer le contraire, au présent,
+dans des blocs qu'une reprise lit en premier.
+
+| | où | ce qui a manqué |
+|---|---|---|
+| 1 · 02/09 | un message de chat | la décision n'était dans aucun fichier |
+| 2 · 04/09 (D270) | un fichier, bloc de provenance | il affirmait « aucune branche en attente » pendant que quatre lots vivaient sur une branche |
+| 3 · 07/09 (D276) | un message de commit de fusion | la fusion et la levée du verrou n'étaient dans aucun fichier |
+| 4 · 08/09 (D277) | `ZWADJ_CONTINUITE.md`, correctement | `ZWADJ_BACKLOG.md` la contredisait, non barré |
+| **5 · 08/09 (ici)** | **partout où il fallait, une fois** | **neuf affirmations périmées survivaient dans les TROIS fichiers** |
+
+⛔ **CE QUI REND CELLE-CI DIFFÉRENTE, ET PIRE : DEUX DES NEUF ONT ÉTÉ MANQUÉES PAR LA PASSE
+QUI EXISTAIT POUR LES ATTRAPER.**
+1. **Le « PROCHAIN LOT — E3 » de l'en-tête** a survécu **quatre-vingts lignes sous la règle
+   qui l'interdit nommément**, dans le paragraphe même qui raconte avoir retiré son jumeau.
+2. **Le « 168 lignes » du backlog** a survécu à **D277**, dont l'objet unique était de
+   porter ce barrage-là jusqu'aux autres autorités : la passe a traité une occurrence et
+   pas l'autre, **deux entrées plus haut dans le même fichier**.
+
+⇒ **COROLLAIRE EXÉCUTOIRE, ET IL A DEUX MOITIÉS — c'est la seconde qui manquait :**
+- **le barrage se fait dans TOUS les fichiers d'autorité au moment où la décision est
+  prise**, jamais seulement dans celui où elle est écrite ;
+- **et une passe de barrage se RELIT dans son propre fichier avant d'être close.** Chercher
+  ailleurs sans se relire soi-même est exactement ce qui a produit les points 1 et 7.
+⚠ La recherche est mécanique et n'a aucune excuse : on cherche les MOTS de l'affirmation
+qu'on vient d'invalider, on compte les occurrences AVANT, on les traite toutes.
+
+### ⚠ D280 — LA REPRISE ANNONCÉE « À FROID » N'EN ÉTAIT PAS UNE, ET LE TEST RESTE À FAIRE
+
+Le rapport qui a produit ces neuf points a été demandé comme une reprise à froid, sans état
+fourni. **Ce n'en était pas une** : la session n'avait pas été rouverte, et le rapport a
+donc été produit **avec le contexte de la session précédente en mémoire**. Ko l'a relevé.
+⛔ **CONSÉQUENCE, ÉCRITE POUR QU'ON NE SE PAIE PAS DE MOTS** : les neuf contradictions sont
+vraies — elles ont été recoupées contre les fichiers, une par une — mais **elles ne
+démontrent PAS que `ZWADJ_CONTINUITE.md` suffit à reprendre sans Ko.** Ce test-là n'a pas
+eu lieu. Il reste entier.
+⇒ **Il aura lieu à l'ouverture de l'étape 4, en session RÉELLEMENT neuve** — et il portera
+sur le fichier **réparé par ce lot**, ce qui vaut mieux que sur le fichier cassé : un
+document qui ment en neuf endroits ne teste pas la reprise, il teste la mémoire de celui
+qui le lit.
+⚠ **C'est la raison d'être de « un lot par session »** : tant qu'on enchaîne dans le même
+fil, la question « ce fichier suffit-il ? » reste théorique, et le fichier peut se dégrader
+sans que personne le voie. **Neuf affirmations périmées, c'est la mesure de cette
+dégradation.**
+
+### D280 — les neuf, et ce que chacune disait
+
+| # | où | ce qui était écrit | traitement |
+|---|---|---|---|
+| 1 | `CONTINUITE`, en-tête | « PROCHAIN LOT — E3 […] **le seul verrou restant** » | **barré** — renvoi à l'ordre des rangs (D270) ; rang courant **8, S11-b** |
+| 2 | `CONTINUITE`, rang 8 | « le cadrage de S11-b **n'existe pas** » | **barré** — il existe, écrit le 08/09, dans ce fichier |
+| 3 | `CONTINUITE`, « État actuel » | « **18 entrées** (17 migrations + lock) » | **retiré**, pas corrigé — 26 migrations ; `ls apps/api/prisma/migrations` |
+| 4 | `BACKLOG`, « À LIRE EN PREMIER » | « dernier attribué : **D267** » | **barré** — c'était **D279**, douze d'écart ; renvoi au registre |
+| 5 | `BACKLOG`, « À LIRE EN PREMIER » | « **20 scripts, 170 cibles** » | **retiré** (D268 l'interdit) — 26 scripts ; `ls neutralisation/` |
+| 6 | `BACKLOG`, ordre recommandé | « `migration-non-empty` **bloqué**, sept tests sautés » | **barré** avec sa mesure — rien déclaré vert au-delà |
+| 7 | `BACKLOG`, ordre recommandé | « **Reste** S11-b » · « **168 lignes** / 123 exécutables » | **barrés** — étapes 1→3 faites ; 168 barré depuis D277 ; **107** aujourd'hui |
+| 8 | `BACKLOG`, report 08/09 | `[INFRA][P1]` retard de trois migrations | **CLOSE**, datée, preuve en base (26/26, index unique ET partiel) |
+| 9 | `AGENTS`, table des lots | « État des lots — au 20/08/2026 » | **table INTACTE**, chapeau ajouté : instantané daté, non courant, et où lire l'état |
+
+### ⚠ D280 — LE POINT 6 A ÉTÉ SOUS-RÉSOLU, ET LA CORRECTION VAUT COMME MÉTHODE
+
+Le rapport disait : « le fichier ne porte pas de `beforeAll` à 60 s mais un
+`statement_timeout` à 20 s ». ⛔ **Vrai, et trompeur.** Le « 60 000 ms » existe — c'est
+`hookTimeout: 60_000`, dans **`apps/api/vitest.config.int.ts:20`**, pas dans le spec. Une
+réponse exacte à la mauvaise question se lit comme une réponse à la bonne.
+⛔ **Et la lecture seule TRANCHAIT, sans rien lancer** : 36 fichiers `*.int-spec.ts` au
+dépôt, `test:int` à **434 / 36, exit 0** le 08/09, et un tableau de mesures qui **sait
+écrire « 1 ignoré »** puisqu'il le fait pour l'e2e et pas pour `test:int`. **Sept tests
+sautés se verraient.** Le rapport a conclu « je ne peux pas trancher sans lancer » alors
+que trois relevés déjà écrits se recoupaient.
+⇒ **Leçon** : avant de déclarer une question indécidable, épuiser ce que les mesures DÉJÀ
+consignées disent ensemble. « Non concluant » est une mesure, pas une impression (D192).
+
+### D280 — ce qui a été écrit, et où
+
+| Fichier | Ce qui change |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | points 1, 2, 3 · cette section · registre |
+| `ZWADJ_BACKLOG.md` | points 4, 5, 6, 7, 8 |
+| `AGENTS.md` | point 9 — chapeau au-dessus de la table, **table inchangée** |
+
+⚠ **AUCUNE PORTE N'A ÉTÉ LANCÉE**, et le motif n'est pas recopié : aucune porte, aucun test
+et aucun harnais ne LIT ces trois fichiers — vérifié le 08/09 sur les lectures réelles.
+**Rien n'est déclaré vert, et la certification de D275 n'est pas reconduite.**
 
 ## Session du 08/09/2026 (S11-b, étapes 1→3) — D279 · le chiffrage devient un module pur, et il n'a pas maigri du premier coup
 
@@ -4282,3 +4395,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D277 | A | D277 — la levée était bien dans un fichier, et elle n'a pas traversé jusqu'à l'autre autorité |
 | D278 | A | D278 — arbitrage de S11-b : les deux chemins, le CHECK, refus 409, les deux échéances |
 | D279 | A | D279 — le chiffrage devient un module pur ; extrait, il n'avait PAS réduit `create` |
+| D280 | A | D280 — neuf affirmations périmées dans les trois autorités ; une passe de barrage se relit dans son propre fichier |

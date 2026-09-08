@@ -381,6 +381,16 @@ qu'on ne peut plus relire se relance sans être lu.
 - ⛔ **NE PAS PRENDRE UN NUMÉRO DE DÉCISION DANS UN RÉSUMÉ DE SESSION.** Deux décisions ont été écrites `D233` et `D234` dans **sept fichiers livrés** alors que ces numéros appartenaient déjà à la campagne SOLID/Strategy. Repéré seulement en mettant `ZWADJ_CONTINUITE.md` à jour. Un numéro se prend en lisant le **dernier attribué dans ce fichier**, jamais ailleurs.
 ## État des lots — au 20/08/2026
 
+⛔ **INSTANTANÉ DATÉ, NON COURANT — AVERTISSEMENT AJOUTÉ LE 08/09/2026 (D280).** La table
+ci-dessous **n'est PAS réécrite**, et c'est délibéré : elle dit ce qui était vrai le
+20/08/2026, et une table d'état rafraîchie sur place perd la seule chose qui la rendait
+lisible — sa date. ⚠ Mais `AGENTS.md` est **importé à chaque démarrage de session**, donc
+cette table est vue par tout le monde, tous les jours, alors qu'elle **s'arrête à la
+campagne SOLID/Strategy** : elle ignore S11-a (D261), S11-b et tout ce qui suit.
+⇒ **L'ÉTAT COURANT NE SE LIT PAS ICI.** Il se lit dans `ZWADJ_CONTINUITE.md` : la section
+« PROCHAIN LOT » pour le rang en cours, la section de la dernière session pour ce qui vient
+d'être livré et mesuré, et la table du registre pour le dernier numéro de décision.
+
 | Lot | Objet | État |
 |---|---|---|
 | R2a→R2e | Correctifs CSS, panneau gauche, flèches RTL, focus, prestations | ✅ livrés |
