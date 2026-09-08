@@ -263,7 +263,7 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
 ## État actuel
 
 ### Livré, intégré et VÉRIFIÉ
-- ✅ **Schéma Prisma complet.** ⛔ **LE COMPTE DE MIGRATIONS QUI VIVAIT ICI EST RETIRÉ, PAS CORRIGÉ (D280, 08/09/2026).** Il annonçait « 18 entrées (17 migrations + `migration_lock.toml`) » ; le dépôt en portait **26 migrations** plus le verrou. Un compteur figé dans « État actuel » se recopie longtemps après avoir cessé d'être vrai — c'est D268, appliqué ici pour la cinquième fois. **Le rafraîchir aurait reconduit la faute d'un lot.** ⇒ Pour le compte du jour : `ls apps/api/prisma/migrations`, ou `SELECT count(*) FROM _prisma_migrations WHERE finished_at IS NOT NULL` sur la base visée.
+- ✅ **Schéma Prisma complet.** ⛔ **LE COMPTE DE MIGRATIONS QUI VIVAIT ICI EST RETIRÉ, PAS CORRIGÉ (D280, 08/09/2026).** Il annonçait « 18 entrées (17 migrations + `migration_lock.toml`) », et le dépôt en portait bien davantage. Un compteur figé dans « État actuel » se recopie longtemps après avoir cessé d'être vrai — c'est D268, appliqué ici pour la cinquième fois. **Le rafraîchir aurait reconduit la faute d'un lot** ; ⛔ **et écrire le compte du jour à sa place l'aurait REPLANTÉE**, dans le bloc même qui se lit comme l'état courant. Le compte mesuré le 08/09 vit dans la section D280, daté. ⇒ **Ici, la commande seule** : `ls apps/api/prisma/migrations`, ou `SELECT count(*) FROM _prisma_migrations WHERE finished_at IS NOT NULL` sur la base visée.
 - ✅ **TRANCHE AUTHENTIFICATION (Lots 0–6)** : 9 routes `/auth/*`.
 - ✅ **TRANCHE PIVOT VISUEL + OAUTH GOOGLE (Lots 7–9)** : palette par app (D26), remember-me (D27/D31), invariant `required` (D32), OAuth Google ID-token GIS (D29/D30).
 - ✅ **FLUX A — Lots A0 à A5** + correctif prix D40.
@@ -981,9 +981,9 @@ dégradation.**
 |---|---|---|---|
 | 1 | `CONTINUITE`, en-tête | « PROCHAIN LOT — E3 […] **le seul verrou restant** » | **barré** — renvoi à l'ordre des rangs (D270) ; rang courant **8, S11-b** |
 | 2 | `CONTINUITE`, rang 8 | « le cadrage de S11-b **n'existe pas** » | **barré** — il existe, écrit le 08/09, dans ce fichier |
-| 3 | `CONTINUITE`, « État actuel » | « **18 entrées** (17 migrations + lock) » | **retiré**, pas corrigé — 26 migrations ; `ls apps/api/prisma/migrations` |
+| 3 | `CONTINUITE`, « État actuel » | « **18 entrées** (17 migrations + lock) » | **retiré**, pas corrigé — `ls apps/api/prisma/migrations` |
 | 4 | `BACKLOG`, « À LIRE EN PREMIER » | « dernier attribué : **D267** » | **barré** — c'était **D279**, douze d'écart ; renvoi au registre |
-| 5 | `BACKLOG`, « À LIRE EN PREMIER » | « **20 scripts, 170 cibles** » | **retiré** (D268 l'interdit) — 26 scripts ; `ls neutralisation/` |
+| 5 | `BACKLOG`, « À LIRE EN PREMIER » | « **20 scripts, 170 cibles** » | **retiré** (D268 l'interdit) — `ls neutralisation/` |
 | 6 | `BACKLOG`, ordre recommandé | « `migration-non-empty` **bloqué**, sept tests sautés » | **barré** avec sa mesure — rien déclaré vert au-delà |
 | 7 | `BACKLOG`, ordre recommandé | « **Reste** S11-b » · « **168 lignes** / 123 exécutables » | **barrés** — étapes 1→3 faites ; 168 barré depuis D277 ; **107** aujourd'hui |
 | 8 | `BACKLOG`, report 08/09 | `[INFRA][P1]` retard de trois migrations | **CLOSE**, datée, preuve en base (26/26, index unique ET partiel) |
@@ -1002,6 +1002,38 @@ sautés se verraient.** Le rapport a conclu « je ne peux pas trancher sans lanc
 que trois relevés déjà écrits se recoupaient.
 ⇒ **Leçon** : avant de déclarer une question indécidable, épuiser ce que les mesures DÉJÀ
 consignées disent ensemble. « Non concluant » est une mesure, pas une impression (D192).
+
+### ⛔ D280 — LES DEUX COMPTEURS REPLANTÉS, ET LE RELEVÉ DATÉ QUI LES REMPLACE
+
+⛔ **LE PREMIER JET DE CE LOT A REPLANTÉ LE DÉFAUT QU'IL RETIRAIT.** En barrant « 18
+entrées » et « 20 scripts, 170 cibles », il a écrit **le compte du jour à leur place** —
+c'est-à-dire un compteur neuf, dans « État actuel » et dans « À LIRE EN PREMIER », les deux
+blocs qui se lisent comme l'état courant. Le rapport de fin de lot les a signalés « à
+surveiller » : **ce n'était pas une réponse**, un chiffre qu'on surveille est un chiffre
+qu'on a laissé.
+⇒ **Retirés le 08/09/2026 à la relecture**, avec la commande seule à leur place. **Le
+précédent est dans `CLAUDE.md`, deux fois** : la taille du fichier a été retirée sous
+« AUCUNE TAILLE N'EST ÉCRITE ICI, ET C'EST DÉLIBÉRÉ » avec renvoi à `ls -l` ; et la ligne
+du registre porte « D1 à D266 » barré **sans nouveau numéro**.
+
+**Relevé du 08/09/2026 — daté, non reconduit, et c'est ici qu'il vit :**
+
+| mesure | valeur au 08/09/2026 | comment la reprendre |
+|---|---|---|
+| migrations au dépôt | **26** (+ `migration_lock.toml`) | `ls apps/api/prisma/migrations` |
+| migrations appliquées sur `zwadj` | **26** | `SELECT count(*) FROM _prisma_migrations WHERE finished_at IS NOT NULL` |
+| harnais `neutralize-*.py` | **26** | `ls neutralisation/` |
+| `create`, lignes exécutables | **107** | commande écrite dans la section du rang 8 |
+
+⚠ **Ces quatre nombres ne valent que pour le 08/09/2026**, et aucun n'est recopié ailleurs.
+Une session qui les lit lit une **section datée**, pas un état — c'est toute la différence
+entre le journal d'un lot et un compteur.
+⚠ **Trois occurrences de plus ont été retirées à la même relecture** : mon barrage du
+« dernier attribué : D267 » écrivait **le numéro courant** à la place — donc replantait le
+compteur sous le mot « barré » — et son titre en donnait l'**écart chiffré**, qui le
+reconstruit et grandit tout seul ; et le « chiffre courant est 107 » avait été posé dans le
+bloc de lecture du backlog. ⛔ **Une passe de barrage se relit dans son propre fichier** :
+c'est le corollaire écrit plus haut, et il vient de mordre sur son propre auteur.
 
 ### D280 — ce qui a été écrit, et où
 

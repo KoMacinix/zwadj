@@ -1297,10 +1297,15 @@ et vérifier en fin de lot que le diff ne contient qu'eux.
 
 ⛔ **UN NUMÉRO DE DÉCISION SE PREND EN LISANT `ZWADJ_CONTINUITE.md`.** ~~Dernier
 attribué au 28/08/2026 : **D267**.~~
-⛔ **BARRÉ LE 08/09/2026 (D280) — DOUZE NUMÉROS D'ÉCART, DANS LE BLOC « À LIRE EN
-PREMIER ».** Le dernier attribué était **D279**. C'est le compteur figé que le registre de
+⛔ **BARRÉ LE 08/09/2026 (D280) — UN COMPTEUR FIGÉ, DANS LE BLOC « À LIRE EN PREMIER ».**
+Il était périmé de plusieurs lots. C'est le compteur que le registre de
 `ZWADJ_CONTINUITE.md` dit avoir retiré de trois autres endroits, réapparu dans le seul bloc
 qui s'annonce comme la première chose à lire d'une session.
+⛔ **ET LE PREMIER JET DE CE BARRAGE-CI ÉCRIVAIT LE NUMÉRO COURANT À LA PLACE** — donc
+replantait exactement ce qu'il retirait, sous le mot « barré ». Retiré à la relecture, le
+08/09 : le précédent applicable est dans `CLAUDE.md`, où « D1 à D266 » est barré **SANS
+nouveau numéro**. ⚠ Un ÉCART chiffré ne vaut pas mieux qu'un numéro : il le reconstruit, et
+il grandit tout seul au lot suivant.
 ⇒ **AUCUN NUMÉRO N'EST RÉÉCRIT ICI, ET C'EST LE REMÈDE** : il se prend en lisant la
 **dernière ligne de la table du registre**, en bas de `ZWADJ_CONTINUITE.md`, et nulle part
 ailleurs — pas même dans une ligne qui prétendrait le rappeler.
@@ -1309,8 +1314,10 @@ ailleurs — pas même dans une ligne qui prétendrait le rappeler.
 `python3 neutralisation/neutralize-xxx.py`.
 ⛔ **LE COMPTE « 20 scripts, 170 cibles » QUI FINISSAIT CETTE LIGNE EST RETIRÉ, PAS
 RAFRAÎCHI (D280, 08/09/2026).** D268 l'interdit nommément — « aucun compteur de harnais
-n'est écrit ici, et c'est délibéré » — et le chiffre était faux : **26** scripts
-`neutralize-*.py` au 08/09. Le nombre de cibles bouge à chaque lot.
+n'est écrit ici, et c'est délibéré » — et le chiffre était faux, dans les deux moitiés.
+⛔ **AUCUN COMPTE N'EST ÉCRIT ICI À SA PLACE** : le relevé du 08/09 vit dans la section
+D280 de `ZWADJ_CONTINUITE.md`, daté. Le nombre de scripts et le nombre de cibles bougent à
+chaque lot — un chiffre posé ici serait faux au lot suivant, et il aurait l'air d'un fait.
 ⇒ **Pour l'état du jour** : `ls neutralisation/` pour les scripts, et
 `python3 neutralisation/lancer-campagnes.py` pour le relevé mordues / muettes / non
 mesurées, campagne par campagne.
@@ -1347,8 +1354,10 @@ mesurées, campagne par campagne.
    `quotes`, 8 gardes mordues sur 8. Restent les étapes **4 (le `CHECK`)**, **5 (les deux
    échéances)** et **6 (le reste du harnais)**. (b) « **168 lignes** » a été **barré dans
    `ZWADJ_CONTINUITE.md` par D277**, comme ne correspondant à aucune des trois façons de
-   compter ; et « 123 exécutables » est périmé — le chiffre courant est **107**, `create`
-   ayant été réduite par D279.
+   compter ; et « 123 exécutables » est périmé — `create` a été réduite par D279.
+   ⛔ **AUCUN CHIFFRE COURANT N'EST ÉCRIT ICI**, pour la même raison que les deux compteurs
+   ci-dessus : il bougera encore aux étapes 4 et 5, dans un bloc qui se lit comme l'état du
+   jour. Le relevé daté vit dans la section du rang 8, avec la commande qui le reproduit.
    ⛔ **C'EST L'OCCURRENCE QUE D277 A MANQUÉE DANS SA PROPRE PASSE** : ce lot-là existait
    pour porter un barrage jusqu'aux autres autorités, il l'a fait pour la phrase
    « Bloquant avant S11-b » et **pas pour le chiffre barré, deux entrées plus haut dans ce
