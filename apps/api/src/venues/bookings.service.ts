@@ -41,7 +41,6 @@ import {
   BookingErrorCode,
   BookingStatus,
   HARD_BOOKING_STATUSES,
-  ServiceErrorCode,
   type BookingCancelInput,
   type BookingCreateInput,
   type BookingDTO,
@@ -91,8 +90,11 @@ import {
   type BookingRow
 } from "./booking-locks.types";
 import { DomainEvents } from "./domain-events";
-import { resolveDepositCents } from "./deposit";
-import { resolveServiceLine, type ResolvedLine } from "./service-pricing";
+// ⚠ S11-b — `deposit` et `service-pricing` ne sont plus importés ICI : ils sont
+// consommés par `booking-charge`, qui est désormais le SEUL endroit où le total
+// et l'acompte d'une demande se calculent. Les laisser dans cette liste aurait
+// donné à croire que ce service chiffre encore.
+import { confrontExpectedCharge, resolveCharge, type Charge } from "./booking-charge";
 import { SERVICE_SELECT } from "./services.service";
 import { resolveSlotPrice } from "./pricing-engine";
 // Le SELECT des règles est celui du service qui les possède : en recopier un
@@ -204,38 +206,32 @@ export class BookingsService {
     // E2a — les PRESTATIONS. Résolues depuis le catalogue de la salle, jamais
     // depuis le corps de la requête (D91) : un prix reçu du navigateur est un
     // prix éditable.
-    const choices = input.services ?? [];
-    const lines: ResolvedLine[] = [];
-    if (choices.length > 0) {
-      const catalogue = await this.prisma.service.findMany({
-        where: { venueId: venue.id, id: { in: choices.map((choice) => choice.serviceId) } },
-        select: SERVICE_SELECT
-      });
-      for (const choice of choices) {
-        const found = catalogue.find((row) => row.id === choice.serviceId);
-        // Une prestation d'une AUTRE salle, ou retirée du catalogue depuis que
-        // l'onglet est ouvert : refus explicite, jamais un silence à zéro dinar.
-        if (!found) this.throwServiceUnavailable(ServiceErrorCode.SERVICE_UNAVAILABLE);
-        const resolved = resolveServiceLine(found, choice, input.guests);
-        if (!resolved.ok) this.throwServiceUnavailable(resolved.failure.code);
-        lines.push(resolved.line);
-      }
-    }
-
-    const basePriceCents = price.priceCents;
-    const servicesTotalCents = lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
-    const totalCents = basePriceCents + servicesTotalCents;
-    const depositCents = resolveDepositCents(venue, totalCents);
+    //
+    // ⚠ S11-b — LE CHIFFRAGE EST PARTI ENTIER dans `booking-charge`, module PUR,
+    // et c'est le MÊME que consomme `QuotesService`. Il était écrit deux fois,
+    // presque au mot près ; `quote.convert` RECOPIANT les montants snapshotés du
+    // devis, une divergence entre les deux copies se serait gravée dans la
+    // réservation, sans rattrapage possible. Ce service lit et écrit ; il ne
+    // calcule plus.
+    //
+    // ⚠ ET L'APPEL PASSE PAR UNE AIDE PRIVÉE, MÊME IDIOME QU'`admitOrThrow`
+    // ci-dessus — parce que c'est MESURÉ, pas parce que c'est plus joli : écrit
+    // en ligne, ce même appel laissait `create` à 123 lignes exécutables, c'est
+    // à dire EXACTEMENT son poids d'avant le lot. Un lot de SRP qui ne se mesure
+    // pas avant ET après s'auto-décerne son résultat (D261).
+    const { basePriceCents, servicesTotalCents, totalCents, depositCents, lines } =
+      await this.chargeOrThrow(venue, price.priceCents, input);
 
     // D75 — le client annonce ce qu'il a vu. Divergence ⇒ 409 portant les
     // montants RÉELS : il rejoue en connaissance de cause, jamais engagé sur un
     // montant qu'il n'a pas lu.
-    if (input.expectedTotalCents !== totalCents || input.expectedDepositCents !== depositCents) {
+    const attendu = confrontExpectedCharge({ totalCents, depositCents }, input);
+    if (!attendu.ok) {
       throw new ConflictException({
         code: BookingErrorCode.BOOKING_PRICE_CHANGED,
         message: "booking.errors.priceChanged",
-        totalCents,
-        depositCents
+        totalCents: attendu.totalCents,
+        depositCents: attendu.depositCents
       });
     }
 
@@ -703,6 +699,37 @@ export class BookingsService {
 
   private throwBookingNotFound(): never {
     throw new NotFoundException({ code: BookingErrorCode.BOOKING_NOT_FOUND, message: "booking.errors.notFound" });
+  }
+
+  /** Lit le catalogue de la salle et chiffre la demande.
+   *
+   *  ⚠ LA DÉCISION N'EST PAS ICI : elle vit dans `booking-charge`, module pur,
+   *  partagé avec `QuotesService`. Cette aide ne fait que l'entrée-sortie et la
+   *  traduction du refus en HTTP — exactement le partage qu'`admitOrThrow` tient
+   *  pour la recevabilité. */
+  private async chargeOrThrow(
+    venue: { id: string; depositRateBps: number | null; depositAmountCents: number | null },
+    basePriceCents: number,
+    input: BookingCreateInput
+  ): Promise<Charge> {
+    const choices = input.services ?? [];
+    const catalogue =
+      choices.length > 0
+        ? await this.prisma.service.findMany({
+            where: { venueId: venue.id, id: { in: choices.map((choice) => choice.serviceId) } },
+            select: SERVICE_SELECT
+          })
+        : [];
+    const chiffrage = resolveCharge({
+      venueId: venue.id,
+      basePriceCents,
+      guests: input.guests,
+      choices,
+      catalogue,
+      deposit: venue
+    });
+    if (!chiffrage.ok) this.throwServiceUnavailable(chiffrage.failure.code);
+    return chiffrage.charge;
   }
 
   /** Un refus de PRESTATION est un 409 : la demande est bien formée, c'est le

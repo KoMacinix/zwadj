@@ -579,7 +579,8 @@
       "inUse": "Cette prestation figure déjà sur des réservations : elle ne peut plus être supprimée. Retirez-la de la vente pour ne plus la proposer — vous pourrez la remettre quand vous voudrez.",
       "SERVICE_UNAVAILABLE": "Cette prestation n'est plus proposée par la salle.",
       "SERVICE_TIER_MISMATCH": "L'option choisie ne correspond pas à cette prestation.",
-      "SERVICE_QUANTITY_OUT_OF_RANGE": "La quantité demandée n'est pas acceptée pour cette prestation."
+      "SERVICE_QUANTITY_OUT_OF_RANGE": "La quantité demandée n'est pas acceptée pour cette prestation.",
+      "SERVICE_DUPLICATE": "Cette prestation figure deux fois dans votre demande. Retirez le doublon avant d'envoyer."
     },
     "validation": {
       "required": "Ce champ est obligatoire.",

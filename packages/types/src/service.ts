@@ -28,6 +28,19 @@ export const ServiceErrorCode = {
   SERVICE_TIER_MISMATCH: "SERVICE_TIER_MISMATCH",
   /** 400 — quantité hors des bornes `minUnits`/`maxUnits` du PER_UNIT. */
   SERVICE_QUANTITY_OUT_OF_RANGE: "SERVICE_QUANTITY_OUT_OF_RANGE",
+  /** 409 — la MÊME prestation figure deux fois dans la demande. Arbitrage D278 :
+   *  on REFUSE, on ne fusionne pas — fusionner devinerait une intention qu'on
+   *  n'a pas, et le refus est explicite, réparable par le client, vérifiable.
+   *  ⚠ Rien ne l'empêchait : ni Zod (`.max(20)` SEUL, aucune unicité), ni la
+   *  base (aucun `UNIQUE (booking_id, service_id)` — relevé dans la MIGRATION,
+   *  pas dans `schema.prisma`), ni le code. Une prestation FIXED envoyée deux
+   *  fois était donc FACTURÉE deux fois, et l'acompte suivait puisqu'il est un
+   *  pourcentage du total.
+   *  ⚠ D75 NE COUVRE PAS CE CAS : elle garantit que le client n'est jamais
+   *  engagé sur un montant qu'il n'a pas VU, pas qu'un montant vu soit juste.
+   *  ⛔ MÊME contrat des deux côtés, devis compris — sinon on rouvre la
+   *  divergence par un autre bord. */
+  SERVICE_DUPLICATE: "SERVICE_DUPLICATE",
   /** 409 — suppression DURE refusée : la prestation figure déjà sur au moins une
    *  réservation. La suppression ne couvre que le cas rare « créée par erreur,
    *  jamais utilisée » ; arrêter un service qui a servi est un geste RÉVERSIBLE,

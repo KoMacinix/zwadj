@@ -56,7 +56,6 @@ import { ConflictException, Inject, Injectable, NotFoundException } from "@nestj
 import {
   QuoteErrorCode,
   QuoteStatus,
-  ServiceErrorCode,
   isQuoteLost,
   type QuoteConvertInput,
   type QuoteConversionDTO,
@@ -69,7 +68,7 @@ import { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { civilUtcMs, holidayKey, parseCivilDate, toCalendarDay, type CivilDate } from "./availability-time";
 import { computeBookingWindow } from "./booking-window";
-import { resolveDepositCents } from "./deposit";
+import { resolveCharge } from "./booking-charge";
 import { resolveSlotPrice } from "./pricing-engine";
 import { RULE_SELECT } from "./pricing-rules.service";
 import {
@@ -87,7 +86,10 @@ import {
   type QuoteRow,
   type QuoteStore
 } from "./quote-store.types";
-import { resolveServiceLine, type ResolvedLine } from "./service-pricing";
+// ⚠ `resolveServiceLine` n'est plus appelé ici : il l'est par `booking-charge`,
+// seul endroit où une demande se chiffre. Le TYPE reste — `convert` relit les
+// lignes snapshotées du devis.
+import type { ResolvedLine } from "./service-pricing";
 import { SERVICE_SELECT } from "./services.service";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -431,25 +433,33 @@ export class QuotesService {
     const basePriceCents = resolveSlotPrice(slot.basePriceCents, slot.pricingRules, day).priceCents;
 
     const choices = input.services ?? [];
-    const lines: ResolvedLine[] = [];
-    if (choices.length > 0) {
-      const catalogue = await this.prisma.service.findMany({
-        where: { venueId, id: { in: choices.map((choice) => choice.serviceId) } },
-        select: SERVICE_SELECT
-      });
-      for (const choice of choices) {
-        const found = catalogue.find((row) => row.id === choice.serviceId);
-        if (!found) throw new ConflictException({ code: ServiceErrorCode.SERVICE_UNAVAILABLE, message: "service.errors.SERVICE_UNAVAILABLE" });
-        const resolved = resolveServiceLine(found, choice, input.guests);
-        if (!resolved.ok) {
-          throw new ConflictException({ code: resolved.failure.code, message: `service.errors.${resolved.failure.code}` });
-        }
-        lines.push(resolved.line);
-      }
-    }
+    const catalogue =
+      choices.length > 0
+        ? await this.prisma.service.findMany({
+            where: { venueId, id: { in: choices.map((choice) => choice.serviceId) } },
+            select: SERVICE_SELECT
+          })
+        : [];
 
-    const servicesTotalCents = lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
-    const totalCents = basePriceCents + servicesTotalCents;
+    // ⚠ S11-b — LE MÊME module que la demande client, consommé dès sa première
+    // ligne par les DEUX chemins. Le prendre pour un seul appelant aurait laissé
+    // la copie vivante le temps d'un commit — et c'est le temps qu'il faut pour
+    // qu'elle diverge.
+    const chiffrage = resolveCharge({
+      venueId,
+      basePriceCents,
+      guests: input.guests,
+      choices,
+      catalogue,
+      deposit: venue
+    });
+    if (!chiffrage.ok) {
+      throw new ConflictException({
+        code: chiffrage.failure.code,
+        message: `service.errors.${chiffrage.failure.code}`
+      });
+    }
+    const { servicesTotalCents, totalCents, depositCents, lines } = chiffrage.charge;
     // ⚠ `validUntil` NE FIGURE PLUS ICI (D160), et sa COLONNE a été supprimée au
     // lot Q4 — après que Q2 et Q3a aient été vérifiés verts sur base réelle.
     // C'est le premier point de non-retour de la série : toutes les migrations
@@ -465,7 +475,7 @@ export class QuotesService {
       basePriceCents,
       servicesTotalCents,
       totalCents,
-      depositCents: resolveDepositCents(venue, totalCents),
+      depositCents,
       lines: lines as unknown as Prisma.InputJsonValue
     };
   }

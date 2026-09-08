@@ -902,6 +902,138 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 08/09/2026 (S11-b, étapes 1→3) — D279 · le chiffrage devient un module pur, et il n'a pas maigri du premier coup
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D278**.
+
+⛔ **ARRÊT DEMANDÉ PAR KO, ET TENU : rien n'a été fait de l'étape 4 (le `CHECK`).** Aucune
+migration écrite, aucune migration appliquée par moi, `migration-non-empty.int-spec.ts`
+NON retargé. Ko veut voir le harnais non vide rougir sur un semis qui viole la contrainte
+**avant que la migration parte**. Les étapes 5 (les deux échéances) et 6 (le harnais, pour
+sa part restante) suivent l'étape 4 et ne sont pas faites non plus.
+
+**Neuf fichiers au diff, énumérés avant écriture** : `booking-charge.ts` et
+`booking-charge.spec.ts` (neufs), `neutralize-s11b.py` (neuf), `bookings.service.ts`,
+`quotes.service.ts`, `service.ts`, `fr.json`, `ar.json`, et ce fichier.
+
+### D279 — étape 2 : les trois migrations VÉRIFIÉES EN BASE, pas au code de sortie
+
+Ko les a appliquées. Contrôlé par **définition d'objet**, jamais sur un code de retour —
+`migrate deploy` sort en succès sans rien appliquer quand le schema-engine manque :
+
+| objet | état relevé |
+|---|---|
+| `_prisma_migrations` | **26 appliquées** (contre 23 le 08/09 au matin) |
+| `QuoteStatus.CANCELLED` | **présent** dans `pg_enum` |
+| `quotes_sent_at_coherent` | présent, avec l'exemption `CANCELLED` |
+| `payments_one_pending_per_booking` | présent, ⛔ **`indisunique` ET `indpred IS NOT NULL`** — unique **et** partiel |
+
+⚠ **Et la distinction qui manquait au report** : `test:int` travaille sur **`zwadj_test`**,
+recréée à chaque exécution ; `pnpm dev` sur **`zwadj`**. C'est `zwadj` qui était en retard.
+L'entrée `[INFRA][P1]` peut être close par Ko.
+
+### ⛔ D279 — étape 1 puis 3 : LE LOT A RATÉ SON OBJET AU PREMIER JET, ET LA MESURE L'A DIT
+
+C'est le fait de cette session, et il répète **exactement** S11-a (D261) :
+
+| moment | `create`, lignes exécutables |
+|---|---|
+| entrée (relevée deux fois, 08/09) | **123** |
+| après extraction, **appel écrit EN LIGNE** | ⛔ **123** — *aucun gain* |
+| après passage par une aide privée | ✅ **107** |
+
+⛔ **L'extraction seule n'a rien réduit.** Les décisions étaient parties dans un module pur
+— l'objet réel du lot — mais l'appel en ligne (objet littéral de sept lignes, déstructuration,
+traduction du refus) rendait exactement ce que la boucle supprimée coûtait. **Un lot de SRP
+qui ne se mesure pas avant ET après s'auto-décerne son résultat** : sans ce relevé, la note
+aurait annoncé « chiffrage extrait » sur une méthode au poids inchangé.
+⇒ **Le remède est l'idiome de la méthode VOISINE, pas une invention** : `create` appelait
+déjà `this.admitOrThrow(...)` en une ligne. Le chiffrage passe par `chargeOrThrow` — lecture
+du catalogue, appel du module pur, traduction du refus en HTTP — **24 lignes exécutables**.
+
+| | lignes exécutables |
+|---|---|
+| `booking-charge.ts` (module PUR) | **77** |
+| `chargeOrThrow` (aide privée, E/S + traduction) | **24** |
+| `create` | 123 → **107** |
+
+### D279 — ce que le module tient, et pourquoi il est consommé par les DEUX dès la première ligne
+
+`resolveCharge` ne lève pas : il rend un verdict discriminé, comme `booking-admission` et
+`booking-locks`. Il porte l'ordre des refus (**doublon → indisponible → refus de ligne**),
+l'agrégat, et l'acompte sur le total FINAL. `confrontExpectedCharge` porte D75 — appelée
+par la demande CLIENT **seulement** : un devis est chiffré par le pro, il n'y a pas
+d'attente à confronter, et l'« harmoniser » inventerait une exigence.
+
+⚠ **`SERVICE_DUPLICATE` est le contrat d'API neuf autorisé par D278**, et il est **identique
+des deux côtés**. Clés i18n FR et AR posées ; la parité i18n reste verte.
+
+⚠ **MD8 est fermé par la CAUSE** : `resolveCharge` compare `found.venueId` à la salle de la
+demande. Avant, le refus tombait parce que le `where venueId` des deux services empêchait la
+ligne d'arriver — un bon résultat obtenu par le mauvais mécanisme, qui aurait cédé en
+silence le jour où ce `where` aurait bougé.
+
+### ⛔ D279 — UNE CIBLE DE NEUTRALISATION EST SORTIE MUETTE, ET SON ÉCHEC EST UNE MESURE
+
+La cible **S11b-8** — celle qui prouve l'exigence de Ko, « le module partagé muté doit
+rougir chez les DEUX consommateurs » — est sortie **VERTE des deux côtés** au premier jet.
+
+⛔ **Cause : elle mutait `basePriceCents`, un champ qu'AUCUNE des deux specs d'intégration
+n'asserte.** C'est la faute nommée dans la campagne S10b — *avant d'écrire une cible : par
+quel chemin cette mesure voit-elle la mutation ?* — et je l'avais posée pour les cibles 1 à
+7 sans la reposer pour la 8ᵉ.
+
+⛔ **MAIS CE QU'ELLE A MONTRÉ VAUT PLUS QUE LA CIBLE : c'est MD2 observé EN VRAI.** Sous la
+mutation, les deux chemins ont écrit en base des réservations et des devis dont
+`base_price_cents` **ne correspond plus** à `total_cents − services_total_cents` — et
+**PostgreSQL comme les 36 fichiers d'intégration les ont acceptées, en vert.** L'agrégat
+n'est gardé par rien. **C'est un argument de plus pour le `CHECK` que Ko a tranché**, et il
+n'a pas été cherché : il est tombé d'un instrument mal réglé.
+⇒ Cible refaite sur le **total**, asserté des deux côtés (`bookings.int-spec.ts:152`,
+`quotes.int-spec.ts:93`), avec un `+ 100` qui la rend fausse **même sans prestation** —
+sinon la mutation serait inerte sur le cas nominal. ⚠ La première version est **conservée
+en commentaire dans le harnais**, avec son motif : une cible retirée sans trace se réécrit.
+
+### D279 — les mesures, avec l'état machine devant elles
+
+⚠ **Chrome fermé par Ko avant la session.** Relevé d'ouverture : RAM libre **médiane
+5 327 Mo** (bande 5 296–5 364) · **node 0** · **chrome 0** · CPU médiane 11 % (6–20) ·
+total **11 587 Mo sur 335 processus**. Relevé devant la passe finale : **5 242 Mo**
+(5 219–5 267) · node 0 · chrome 0 · CPU 16 % (5–34) · **11 630 Mo sur 332 processus**.
+⛔ **Les deux sont AU-DESSUS de la barre D273 (4 579 Mo)** — inventaire au-dessus de 150 Mo :
+Code 2 577 · svchost 1 239 · Memory Compression 889 · vmmemWSL 640 · msedgewebview2 312 ·
+explorer 308 · claude 306 · powershell 291 · msedge 262 · le reste sous 200.
+⚠ **La sonde reste hors du dépôt** (réserve n°2 de D275, décision D278 : on avance sans).
+Ces relevés sont donc des **affirmations datées**, pas des mesures rejouables.
+
+| porte | code | durée | mesure |
+|---|---|---|---|
+| `typecheck` | **0** | 18 s | 8 projets |
+| `lint` | **0** | 12 s | 8 projets |
+| `test` | **0** | 60 s | **1 323 tests / 108 fichiers** — api 653/57 · api-client 36/3 · client 287/20 · pro 347/28 |
+| `build` | **0** | 52 s | client + pro + api |
+| `test:int` | **0** | 342 s | **434 / 36**, `zwadj_test` réel |
+| `e2e` | **0** | 144 s | **34 passés, 1 ignoré, 0 instable** |
+| `neutralize-s11b --int` | **0** | 166 s | ⛔ **8 mordues sur 8, ZÉRO muette** |
+
+⚠ **L'écart de tests est ENTIÈREMENT expliqué** : 1 310 → **1 323** (+13) et 107 → **108**
+fichiers (+1), soit exactement `booking-charge.spec.ts`. Aucune autre suite n'a bougé, et
+`test:int` rend le même **434 / 36** qu'à D275 — **aucune spec d'intégration n'a été
+cassée par le refus du doublon**, qui est pourtant un changement de comportement.
+
+### ⛔ D279 — CE QUI RESTE, ET CE QUI N'EST PAS CERTIFIÉ
+
+1. ⛔ **Étape 4 — le `CHECK`** : migration écrite à la MAIN, et **`migration-non-empty.int-spec.ts`
+   retargé avec un semis qui VIOLE la contrainte**. ⚠ Le prérequis mesuré en D278 (0 violation)
+   portait sur **4 réservations** : il ne borne à peu près rien, et c'est le harnais non vide
+   qui porte la garantie. **Ko veut voir ce harnais rougir avant que la migration parte.**
+2. **Étape 5 — les deux échéances** (`expiresAt`, `paymentDueAt`), cas limites spécifiés.
+3. **Étape 6 — le harnais**, pour sa part restante (CHECK + échéances).
+
+⚠ **CE LOT N'EST PAS CERTIFIÉ.** Les portes sont vertes **au repos, le 08/09/2026**, et cette
+marque ne se reconduit pas — ni au lot suivant, ni aux étapes 4 à 6. Les deux réserves de
+D275 restent actives.
+
 ## Session du 08/09/2026 (suite) — D278 · arbitrage de S11-b, et le prérequis qui ne prouve presque rien
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D277**.
@@ -4113,3 +4245,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D276 | A | D276 — ce qui vaut décision s'écrit dans un FICHIER d'autorité, jamais dans un message de commit |
 | D277 | A | D277 — la levée était bien dans un fichier, et elle n'a pas traversé jusqu'à l'autre autorité |
 | D278 | A | D278 — arbitrage de S11-b : les deux chemins, le CHECK, refus 409, les deux échéances |
+| D279 | A | D279 — le chiffrage devient un module pur ; extrait, il n'avait PAS réduit `create` |
