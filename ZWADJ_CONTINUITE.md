@@ -257,7 +257,7 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
 - ✅ **FLUX A — Lots A0 à A5** + correctif prix D40.
 - ✅ **FLUX A — Lots A9, A12, A10, A11a, A11b** : intégrés dans cet ordre, sept correctifs appliqués (voir plus bas), **toutes gates vertes**.
 - ✅ **FLUX A — Lot A6a (visite virtuelle Matterport, D45)** : intégré, gates vertes, migration prouvée en base réelle.
-- ✅ **TRANCHE UIP — refonte de l'app Pro (D130 → D149)** : coquille + top panel, parcours « client sur place », assistant de salle en 7 étapes, refonte graphique, contrat de contact D135. ⚠ Livrée sur **cinq portes** : le bac à sable ne peut pas exécuter l'API (voir les compteurs UIP). **Sept tests d'intégration restent à passer chez Ko.**
+- ✅ **TRANCHE UIP — refonte de l'app Pro (D130 → D149)** : coquille + top panel, parcours « client sur place », assistant de salle en 7 étapes, refonte graphique, contrat de contact D135. ⚠ Livrée sur **cinq portes** : le bac à sable ne peut pas exécuter l'API (voir les compteurs UIP). ~~**Sept tests d'intégration restent à passer chez Ko.**~~ ⛔ **BARRÉ LE 08/09/2026 (D277)** : mesuré sur CETTE machine le 07/09, `test:int` rend **434 tests / 36 fichiers, exit 0** contre `zwadj-db` (postgres:18) réel — D275. La phrase datait du bac à sable web, où l'API n'était pas exécutable ; elle est restée écrite **au présent**, en tête de la section qui existe pour dire l'état, onze jours après avoir cessé d'être vraie. **Barré, pas effacé.**
 
 ### ⛔ AUCUN COMPTEUR COURANT N'EST ÉCRIT ICI
 
@@ -427,8 +427,44 @@ trouverait écrit.
 à **D75**, échéance d'acompte. Il fait suite à **S11-a** (D261), qui a pris la moitié
 amont.
 ⚠ **Repartir des mesures RÉELLES, jamais de l'estimation d'origine** : après S11-a,
-`create` pèse **168 lignes / 123 exécutables** — et non « 200 sur 729 », qui était une
+`create` pèse ~~**168 lignes / 123 exécutables**~~ — et non « 200 sur 729 », qui était une
 estimation de backlog. **Recompter fait partie de la reprise** (leçon S11-a).
+
+#### ⛔ Le chiffre d'entrée de S11-b, recompté le 08/09/2026 (D277) — **avec sa définition**
+
+`BookingsService.create` occupe les lignes **146 à 324** de
+`apps/api/src/venues/bookings.service.ts`, signature et accolade fermante comprises
+(le fichier en compte 720). **Trois comptes en sortent, et ils ne disent pas la même
+chose** :
+
+| compte | définition | valeur |
+|---|---|---|
+| lignes totales | `324 − 146 + 1` | **179** |
+| lignes non vides | total moins les lignes blanches | **164** |
+| ⭐ **lignes exécutables** | non vides, **hors** `//`, `/*` et `*` de continuation | **123** |
+
+```
+sed -n '146,324p' apps/api/src/venues/bookings.service.ts \
+  | grep -v '^\s*$' | grep -v '^\s*//' | grep -v '^\s*\*' | grep -v '^\s*/\*' | wc -l
+```
+
+⇒ **LE CHIFFRE D'ENTRÉE EST 123 LIGNES EXÉCUTABLES**, et c'est lui qui se remesure **à la
+sortie du lot**, avec la commande ci-dessus et la même définition. ⚠ Les bornes `146,324`
+**se relèvent à nouveau** avant la mesure de sortie : le lot va les déplacer.
+
+⛔ **« 168 » EST BARRÉ PARCE QU'IL NE CORRESPOND À AUCUNE DES TROIS.** Ni 179, ni 164, ni
+123. Sa définition n'a jamais été écrite, donc il ne peut ni se reproduire ni se
+contester — et personne ne peut plus dire ce qu'il mesurait.
+⚠ **CE QUI REND LE CONSTAT SÛR PLUTÔT QU'ACCUSATEUR : l'autre moitié, elle, retombe À
+L'UNITÉ PRÈS.** « 123 exécutables » est reproduit exactement, onze jours après, par une
+commande écrite après coup. Ce n'est donc pas la mesure de S11-a qui était fausse : c'est
+**la moitié qui n'avait pas de définition** qui est devenue inutilisable, pendant que la
+moitié définie tenait. **Un chiffre sans définition ne vieillit pas, il devient muet.**
+⚠ **Et c'est la moitié qui compte** : D261 exige qu'un lot de SRP se mesure AVANT et
+APRÈS, **sinon il s'auto-décerne son résultat** — le premier jet de S11-a faisait
+**grossir** la méthode qu'il prétendait réduire, et rien ne l'aurait dit. Un « avant »
+sans définition rend cette mesure inopérante : on peut toujours trouver, après coup, une
+façon de compter qui donne une baisse.
 
 ### ⛔ Ce qui ne se négocie pas
 - **C'est un lot du CHEMIN DE L'ARGENT.** Les modes de défaillance s'écrivent **AVANT**
@@ -459,12 +495,42 @@ relever l'état machine devant lui (D270), et ce relevé porte **CINQ quantités
 libre · compte de node · CPU (médiane et dispersion) · **total des processus** · **leur
 nombre** — puis l'inventaire nommé au-dessus du seuil.
 
+⛔ **DÉCISION DE KO, 08/09/2026 (D277) — ON AVANCE SANS LA SONDE, ET LA RÉSERVE RESTE
+ACTIVE.** Les deux ne se contredisent pas, et c'est le point : **la réserve dit ce que les
+relevés ne valent pas, la décision dit qu'on paie ce prix-là** plutôt que d'ajourner le
+produit. Motif écrit de Ko : *« huit rangs viennent d'être dépensés sur la mesure, et
+S11-b livre du produit »*.
+⇒ **CE QUI DÉCLENCHE L'ÉCRITURE DE LA SONDE EST UN CAS RÉEL, PAS UN CALENDRIER** : le
+premier rouge de S11-b qui demande une attribution sérieuse. Elle s'écrit **à ce
+moment-là, avec le cas sous les yeux — pas d'avance et à vide.**
+⚠ **CE N'EST PAS UNE DISPENSE DE RELEVÉ.** Les cinq quantités se relèvent devant chaque
+mesure, à la main, comme pour D275. Ce qui manque est l'**instrument reproductible**, pas
+le relevé — et un relevé fait à la main reste une affirmation datée (D275, réserve n°1).
+⚠ **Ce qu'on accepte en connaissance de cause est nommé** : la session suivante ne pourra
+ni rejouer ces relevés, ni les contester, ni distinguer un écart de MACHINE d'un écart
+d'INSTRUMENT. L'entrée `[INFRA][P1]` reste ouverte au backlog, elle n'est pas requalifiée.
+
 ### Défauts croisés à NE PAS corriger dans ce lot — ils sont au backlog
 `--tout` qui ne joue ni ne nomme les mesures `--int` (`[INFRA][P1]`) · la sonde d'état
 machine (`[INFRA][P1]`) · `venue-list.test.tsx`, documenté sans avoir été reproduit
 (`[PRO][P0]`, D274 : **0 rouge sur 30**, ce qui **borne un taux et ne prouve pas un
 zéro**) · `act(…)` tardif sur deux autres fichiers de la coquille (`[PRO][P0]`) ·
 `QuotesSection` démontée, cinq gestes inatteignables (`[PRO][P0]`).
+
+### ⛔ Où s'écrit le cadrage de S11-b, et il y RESTE (décision de Ko, 08/09/2026 — D277)
+
+Le cadrage s'écrit **dans ce fichier, dans cette section, AVANT toute ligne de code** —
+pas dans le chat, pas dans un message de commit, pas dans un document annexe. C'est D276
+appliqué par avance au livrable qui y était le plus exposé : un cadrage est très
+exactement « ce qui vaut décision ».
+⛔ **ET IL Y RESTE, MÊME UNE FOIS ARBITRÉ ET VALIDÉ PAR KO** — c'est la moitié de la
+consigne qu'on serait tenté de sauter. Un cadrage retiré après validation emporte avec
+lui **la liste des modes de défaillance** : la session qui livrera E3d, ou un correctif
+sur ce chemin, ne pourra plus vérifier qu'un mode rencontré avait été prévu. Or la règle
+« **un mode de défaillance non listé au cadrage ne se code pas** » n'a de sens que si la
+liste est encore là pour être consultée — sinon elle devient invérifiable, donc décorative.
+⚠ Même motif que le cadrage ARCHIVÉ du rang 5, conservé sans retouche par D273 : **un
+cadrage réécrit après coup ne peut plus démentir personne.**
 
 ⚠ **Le cadrage ARCHIVÉ du rang 5 suit immédiatement ci-dessous**, conservé sans retouche
 par D273. **Ce n'est pas le prochain lot : c'est l'histoire d'un lot fait**, gardée parce
@@ -567,6 +633,101 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 08/09/2026 — D277 · la levée était bien dans un fichier, et elle n'a pas traversé
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D276**.
+
+⛔ **ÉTAT : LOT DOCUMENTAIRE, AUCUNE LIGNE DE CODE.** Trois fichiers au diff —
+`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md` — **énumérés avant écriture**.
+Aucune porte n'a été lancée, et le motif n'est pas recopié de D276 : **revérifié le
+08/09**, aucune porte, aucun test et aucun harnais ne LIT ces trois fichiers (cherché sur
+les lectures réelles — `readFileSync`, `readFile`, `open(`, `Path(`, `read_text` — dans
+tout le dépôt, hors `node_modules` et `dist`). **Rien n'est déclaré vert.**
+
+### ⛔ D277 — QUATRIÈME FOIS, ET CETTE FOIS LA RÈGLE DE D276 ÉTAIT RESPECTÉE
+
+C'est ce qui rend ce lot différent des trois précédents, et ce qui justifie d'étendre la
+règle plutôt que de la répéter :
+
+| | où vivait la décision | ce qui a manqué |
+|---|---|---|
+| 02/09 | un message de **chat** | elle n'était dans aucun fichier |
+| 04/09 (D270) | un fichier, mais le bloc de provenance **mentait** | l'état n'était pas relevé |
+| 07/09 (D276) | un message de **commit** de fusion | elle n'était dans aucun fichier |
+| **08/09 (ici)** | **`ZWADJ_CONTINUITE.md`, correctement** | **un AUTRE fichier d'autorité la contredisait, non barré** |
+
+⛔ **LA LEVÉE DU VERROU ÉTAIT ÉCRITE AU BON ENDROIT DEPUIS LE 07/09.** D276 l'a posée dans
+`ZWADJ_CONTINUITE.md`, datée et motivée, et a rouvert la section « PROCHAIN LOT » sur le
+rang 8. **La règle de D276 a été suivie à la lettre — et elle n'a pas suffi.**
+`ZWADJ_BACKLOG.md`, autorité n°3 de `CLAUDE.md`, portait toujours, dans une entrée
+**ouverte** `[PRO][P0]` donc lue comme courante : « **Bloquant déclaré avant S11-b** : le
+chemin de l'argent ne s'attaque pas avec une porte fiable à 90 % ».
+
+⚠ **MESURÉ, ET C'EST LA MESURE QUI DÉSIGNE LE REMÈDE** : `S11-b` apparaît **8 fois** dans
+`ZWADJ_BACKLOG.md`, dont **deux** déclarent le lot bloqué. **L'une des deux était
+correctement encadrée** — elle vit dans une entrée `[x]` dont l'en-tête barré dit « CONSTAT
+D'ORIGINE, CONSERVÉ POUR LA TRACE […] ne pas le lire comme l'état courant » — **l'autre
+non.** Le passage n'était donc pas absent, il était **partiel** : quelqu'un a bien traité
+l'une des deux occurrences. **Une passe partielle se lit exactement comme une passe
+faite** — c'est le motif de l'audit tronqué (D200) appliqué à la documentation.
+
+⇒ **RÈGLE ÉTENDUE, ÉCRITE DANS `AGENTS.md`** : écrire la décision dans **un** fichier
+d'autorité ne suffit pas. **Le geste suivant est de CHERCHER, dans les autres fichiers
+d'autorité, l'affirmation qu'elle invalide, et de la barrer avec son motif.** Cette
+recherche est mécanique et n'a aucune excuse : on cherche les mots de l'affirmation
+elle-même. ⚠ **Et elle se compte** : on relève le nombre d'occurrences AVANT, on les
+traite toutes, et un `[x]` déjà barré ne dispense pas de regarder les autres.
+
+### D277 — les trois écritures, et ce que chacune corrige
+
+| # | où | ce qui était écrit | ce qui l'a démenti |
+|---|---|---|---|
+| 1 | `ZWADJ_BACKLOG.md`, entrée `[ ]` `[PRO][P0]` | « Bloquant déclaré avant S11-b » | D275 (porte verte au repos) + D276 (verrou levé) |
+| 2 | `ZWADJ_CONTINUITE.md`, « État actuel » | « Sept tests d'intégration restent à passer chez Ko » | D275 : `test:int` **434 / 36, exit 0**, sur cette machine |
+| 3 | `ZWADJ_CONTINUITE.md`, rang 8 | « `create` pèse **168 lignes** / 123 exécutables » | recompte du 08/09 : **179** total · **164** non vides · **123** exécutables |
+
+⚠ **Les trois sont BARRÉES avec leur motif et leur date, aucune n'est effacée** — forme
+attendue depuis D276. Une affirmation supprimée se réécrit de bonne foi plus tard, par
+quelqu'un qui n'a aucun moyen de savoir qu'elle a déjà été fausse.
+
+### ⚠ D277 — le chiffre barré n'était pas faux : il était SANS DÉFINITION
+
+Le détail est en tête de la section du rang 8. Ce qui vaut au-delà de ce lot :
+**« 123 exécutables » se reproduit à l'unité près onze jours plus tard, « 168 lignes » ne
+correspond à aucune des trois façons de compter.** La même mesure, prise le même jour, a
+donc vieilli des deux façons possibles — et c'est la **définition écrite**, pas la
+fraîcheur, qui a fait la différence.
+⇒ Conséquence pour S11-b : le chiffre d'entrée est **123 lignes exécutables**, sa
+commande est écrite dans le fichier, et **il se remesure à la sortie** (D261 — un lot de
+SRP qui ne se mesure pas avant ET après s'auto-décerne son résultat).
+
+### D277 — les deux décisions de Ko posées dans un fichier, comme l'exige D276
+
+1. ⛔ **La sonde d'état machine : on avance sans.** La réserve n°2 de D275 **reste active
+   et écrite** ; l'entrée `[INFRA][P1]` reste ouverte. La sonde s'écrira au premier rouge
+   qui demande une attribution sérieuse, **avec le cas réel sous les yeux, pas d'avance et
+   à vide**. Motif de Ko : huit rangs dépensés sur la mesure, S11-b livre du produit.
+   ⚠ Écrit en toutes lettres dans la section du rang 8, là où la réserve est lue.
+2. ⛔ **Le cadrage de S11-b s'écrit dans `ZWADJ_CONTINUITE.md`, dans la section du lot,
+   avant toute ligne de code — et il y RESTE, même arbitré et validé.** Motif écrit sur
+   place : un cadrage retiré après validation emporte la liste des modes de défaillance,
+   et « un mode non listé au cadrage ne se code pas » cesse alors d'être vérifiable.
+
+### D277 — ce qui a été écrit, et où
+
+| Fichier | Ce qui change |
+|---|---|
+| `ZWADJ_BACKLOG.md` | la phrase « Bloquant déclaré avant S11-b » **barrée** avec son motif et sa date · l'entrée reste **ouverte**, le défaut `act(…)` n'étant pas corrigé — seul le verrou est levé |
+| `ZWADJ_CONTINUITE.md` | « Sept tests d'intégration » **barré** · « 168 lignes » **barré**, remplacé par le chiffre d'entrée **123 exécutables** avec sa définition et sa commande · la décision « on avance sans la sonde » · la décision « où vit le cadrage, et il y reste » · cette section · registre |
+| `AGENTS.md` | la règle **étendue** : porter la décision partout où un autre fichier d'autorité la contredit, et **compter les occurrences** |
+
+⚠ **POURQUOI `AGENTS.md` EST AU DIFF ALORS QUE KO A DEMANDÉ « TROIS POINTS D'ÉCRITURE »**,
+et c'est un élargissement assumé, à trancher : la **leçon** de ce lot est une règle
+permanente, et une règle qui ne vit que dans une section de session est de l'histoire, pas
+une règle. D276 a mis la sienne dans `AGENTS.md` ; celle-ci l'étend de six lignes, dans le
+**même bloc**, sans ouvrir de sujet nouveau. ⚠ Si Ko juge l'élargissement non désiré, il
+se retire seul — c'est un bloc contigu.
 
 ## Session du 07/09/2026 (après la fusion) — D276 · ce qui vaut décision s'écrit dans un FICHIER
 
@@ -3582,3 +3743,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D274 | A | D274 — même code, 3 sur 5 chez D273 et 0 sur 30 ici : l'écart n'est pas le code |
 | D275 | A | D275 — CERTIFICATION : portes vertes AU REPOS le 07/09/2026, six lots nommés, réserves écrites |
 | D276 | A | D276 — ce qui vaut décision s'écrit dans un FICHIER d'autorité, jamais dans un message de commit |
+| D277 | A | D277 — la levée était bien dans un fichier, et elle n'a pas traversé jusqu'à l'autre autorité |

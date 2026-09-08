@@ -304,6 +304,19 @@ connexion (famille D115).
   pas s'arrêter sur un arbre non commité — et **aucun lot ne le peut**. « Ce n'est que de
   la doc » est très exactement l'argument qui a laissé la levée du verrou dans un message
   de commit.
+  ⛔ **ET L'EXTENSION QUE LA QUATRIÈME FOIS A EXIGÉE (D277, 08/09/2026) : ÉCRIRE LA
+  DÉCISION DANS UN FICHIER D'AUTORITÉ NE SUFFIT PAS — IL FAUT LA PORTER PARTOUT OÙ UN
+  AUTRE FICHIER D'AUTORITÉ LA CONTREDIT.** La levée du verrou du chemin de l'argent était
+  écrite au bon endroit, datée et motivée, dès D276 : **la règle ci-dessus était respectée
+  à la lettre.** `ZWADJ_BACKLOG.md` — autorité n°3 — déclarait pourtant toujours S11-b
+  bloqué, dans une entrée **ouverte**, donc lue comme courante.
+  ⇒ **Le geste suivant l'écriture est une RECHERCHE, et elle est mécanique** : chercher
+  dans les autres fichiers d'autorité les mots de l'affirmation qu'on vient d'invalider,
+  **compter les occurrences**, les traiter TOUTES, et les barrer avec leur motif.
+  ⚠ **Une occurrence déjà bien encadrée ne dispense pas des autres** : sur les deux
+  occurrences trouvées, l'une vivait dans une entrée `[x]` marquée « ne pas lire comme
+  l'état courant » et l'autre non. **Une passe partielle se lit exactement comme une passe
+  faite** — c'est l'audit tronqué de D200, appliqué à la documentation.
 - ⚠ **UN COMPTE DE VIOLATIONS N'EST PAS UN COMPTE DE PROBLÈMES.** La première référence d'accessibilité annonçait **70 violations** ; c'étaient **19 problèmes**, dont deux pesaient 54 nœuds. Un outil qui compte par nœud DOM surestime toujours. Regrouper par cause **avant** de prioriser — et geler par **catégorie**, pas par nœud : 96 % des signatures initiales contenaient un `:nth-child()` ou un `[href$=…]`, donc churnaient sur un changement de graine ou l'insertion d'un champ. Un gel qu'on régénère sans le lire ne gèle rien.
 - ⚠ **UN ÉCHEC QUI SE DÉPLACE EST PIRE QU'UN ÉCHEC STABLE (D127).** Next et Vite compilent une route à la première demande : le test qui paie la compilation dépend de l'ordre d'attribution aux workers. Un tel échec finit relancé sans être lu. On paie le coût **hors de toute mesure** (projet `warmup`) plutôt que de monter les délais d'attente. ⚠ Un délai qu'on augmente à chaque échec finit par ne plus rien mesurer.
 - **Ce qu'une porte verte ne regarde pas** : qu'un composant soit **monté** quelque part (leçon R1 — deux écrans livrés et inatteignables, six portes vertes), ce qui se passe dans un vrai navigateur, et ce qu'une migration fait sur une base **non vide** (D123). ⚠ **Ni la clause `WHERE` d'une réutilisation d'endpoint** (D146 — le calendrier pro rendait 404 pour toute salle non publiée, toutes portes vertes), **ni un identifiant qui « ressemble »** (D149 — id utilisateur passé dans un champ qui référence un profil pro).

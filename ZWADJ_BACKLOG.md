@@ -2287,8 +2287,20 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       ⛔ **DÉCISION REQUISE (Ko), la même que pour le 8ᵉ fichier** : corriger les tests
       (attendre la décantation avant de rendre la main) ou inscrire des plafonds datés.
       Le dépôt tranche déjà contre la seconde : « le plafond contient le symptôme ; il ne
-      soigne pas la cause ». **Bloquant déclaré avant S11-b** : le chemin de l'argent ne
-      s'attaque pas avec une porte fiable à 90 %.
+      soigne pas la cause ». ~~**Bloquant déclaré avant S11-b** : le chemin de l'argent
+      ne s'attaque pas avec une porte fiable à 90 %.~~
+      ⛔ **BARRÉ LE 08/09/2026 (D277) — LA LEVÉE DATE DU 07/09 ET N'AVAIT PAS TRAVERSÉ
+      JUSQU'ICI.** La porte n'est plus « fiable à 90 % » : D275 l'a mesurée verte AU REPOS
+      (six portes, e2e, **182 gardes mordues sur 182**), et D276 a ouvert le rang 8 en
+      levant la consigne « aucun lot de produit ne s'ouvre avant que la porte soit verte ».
+      ⛔ **DEUX AUTORITÉS NE PEUVENT PAS SE CONTREDIRE SUR « LE LOT PEUT-IL S'OUVRIR ».**
+      `ZWADJ_CONTINUITE.md` ouvrait S11-b pendant que cette entrée — **ouverte**, donc lue
+      comme courante — le déclarait bloqué.
+      ⚠ **L'ENTRÉE, ELLE, RESTE OUVERTE, ET CE N'EST PAS UNE CONTRADICTION** : le défaut
+      `act(…)` tardif sur ces deux fichiers **n'est pas corrigé**. Il est classé **défaut
+      croisé de S11-b** (section « PROCHAIN LOT » de `ZWADJ_CONTINUITE.md`) : rapporté, à
+      ne pas corriger dans ce lot-là. Ce qui est barré est le **verrou**, pas le défaut.
+      ⚠ **Barré, pas effacé** : supprimée, la phrase se réécrirait de bonne foi plus tard.
       ⚠ **CORRECTIF LIVRÉ le 30/08/2026 (D269), ENTRÉE VOLONTAIREMENT ROUVERTE.**
       Les deux fichiers attendent désormais l'état final rendu, par deux idiomes relevés
       du dépôt. Mesuré 9/9 et 8/8 trois fois chacun, puis 17/17 deux fois ensemble.
