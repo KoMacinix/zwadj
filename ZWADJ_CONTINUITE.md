@@ -285,7 +285,11 @@ ici ») appliqué aux compteurs de PORTES.
 lot donné vivent dans l'**en-tête de sa session**, avec l'état machine relevé devant
 eux, sans quoi ils ne veulent rien dire (D270).
 ⚠ **Les tableaux qui suivent sont des RELEVÉS DE CLÔTURE DATÉS**, conservés comme
-histoire : ils disent ce qui a été mesuré tel jour, jamais l'état courant. La suite
+histoire : ils disent ce qui a été mesuré tel jour, jamais l'état courant.
+⛔ **ET ILS NE SONT PAS EN ORDRE CHRONOLOGIQUE (clause ajoutée le 08/09/2026, D281) :
+le SECOND est ANTÉRIEUR au premier**, et il est le seul dont le titre ne portait pas de
+date. Une lecture linéaire prend le dernier tableau pour le plus récent — c'est la
+lecture normale, et elle est fausse ici. La suite
 e2e n'est toujours **PAS** une septième porte — elle se lance à la demande, avant
 tout lot touchant **auth, concurrence ou argent**, et avant chaque livraison.
 
@@ -304,7 +308,36 @@ tout lot touchant **auth, concurrence ou argent**, et avant chaque livraison.
 > ⚠ **Le typecheck compte 8 projets et non 7** : `@zwadj/api-client` s'est ajouté.
 > Valeur mesurée, jamais déduite.
 
-**Compteurs de référence à la clôture du Flux C (C1 → C5b) + tranche A13 + passes UI-D1→D4** — tout écart futur est une régression. Valeurs **MESURÉES en bac à sable**, jamais déduites :
+**Compteurs de référence à la clôture du Flux C (C1 → C5b) + tranche A13 + passes UI-D1→D4** — ~~tout écart futur est une régression~~. Valeurs **MESURÉES en bac à sable**, jamais déduites :
+
+⛔ **DATE : NON RELEVABLE AU 08/09/2026. BORNE BASSE RELEVÉE : 30/07/2026.** Cherché, et
+c'est la mesure — pas une impression : `docs/history/CONTINUITE-flux-A-E.md`, où vit le
+détail du Flux C et de la tranche A13, ne porte **aucune date au format JJ/MM/2026** ; le
+titre de ce tableau nomme un ÉVÉNEMENT, pas un jour ; et `git log -S` sur cette ligne rend
+**28/08/2026**, qui date le **déplacement documentaire de R1 (D267)**, pas la clôture.
+⇒ Ce qui SE relève : la migration la plus tardive du périmètre couvert est
+`20260730120000_venue_styles_and_ceremony_type` (A13a) — la clôture n'est donc **pas
+antérieure au 30/07/2026**. ⛔ **Une borne n'est pas une date, et aucun jour n'est inventé
+ici** : le tableau F1 qui PRÉCÈDE porte, lui, sa date au titre (02/08/2026).
+
+⛔ **« TOUT ÉCART FUTUR EST UNE RÉGRESSION » EST BARRÉ LE 08/09/2026 (D281), ET C'EST CETTE
+PHRASE QUI FAISAIT LE MAL.** Elle transforme un relevé d'histoire en **norme tournée vers
+l'avenir**, et elle contredit frontalement le chapeau posé trente lignes plus haut
+(« ils disent ce qui a été mesuré tel jour, jamais l'état courant »). Des deux, c'est la
+phrase normative qui gagne à la lecture, parce qu'elle parle du futur. ⇒ Le chapeau
+n'était pas absent : **il était contredit en dessous.**
+⚠ **CE QUE LA PHRASE COÛTAIT, MESURÉ** : ses cinq nombres sont périmés, et une reprise à
+froid qui les prend pour une base y lit une **régression massive** — 72 fichiers / 688
+tests unitaires contre 1 323 / 108 mesurés le 08/09 (D279), 27 / 297 en intégration contre
+434 / 36, et 18 entrées de migrations contre le contenu réel du dossier.
+⚠ **ET LES DEUX TABLEAUX SE CONTREDISAIENT DÉJÀ SUR UN POINT** : F1 annonce « typecheck
+**8 projets**, valeur mesurée, jamais déduite », celui-ci « **7 projets** », chacun avec sa
+note de correction. Une reprise obtenait 7 ou 8 **selon le tableau qu'elle ouvrait**.
+⇒ **Aucun des deux chiffres n'est faux, et aucun n'est touché** : `api-client` s'est ajouté
+entre les deux clôtures. C'est l'ABSENCE DE DATE qui rendait la contradiction insoluble —
+la dater la résout **sans corriger un seul nombre**.
+⚠ **Les deux tables restent INTACTES.** On ne réécrit pas un relevé d'histoire : on lui
+rend sa date et on lui retire ce qui le faisait passer pour une norme.
 
 | Gate | Valeur |
 |---|---|
@@ -919,6 +952,69 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 08/09/2026 (D281) — une norme sans date, et la phrase qui se racontait trop bien
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D280**.
+
+⛔ **ÉTAT : LOT DOCUMENTAIRE, UN SEUL FICHIER AU DIFF** — `ZWADJ_CONTINUITE.md`, énuméré
+avant écriture. Aucune ligne de code, aucune porte, aucune migration, aucune écriture en
+base. **Rien n'est déclaré vert.**
+
+### D281 — ce que l'audit de Ko a trouvé, et que la passe de D280 avait manqué
+
+Le tableau « compteurs de référence à la clôture du Flux C » portait encore, **non barré et
+dans la même section que le barrage de D280**, le compteur « 18 entrées (17 migrations) ».
+⛔ **Le geste n'était pas celui que j'avais proposé.** J'ai suggéré d'ajouter un chapeau :
+**il en existait déjà un**, trente lignes plus haut, et il dit exactement ce qu'il faut.
+Ce qui manquait n'était pas un chapeau — c'était que **rien ne le contredise en dessous**.
+En poser un second aurait fait grossir le fichier de la façon même que ces lots combattent.
+⇒ Ce qui a bougé : **une clause ajoutée au chapeau existant**, et la phrase normative
+barrée dans le titre du tableau. Rien de neuf n'a été créé.
+
+### ⛔ D281 — DEUX FAITS QUE MON RELEVÉ N'AVAIT PAS SORTIS, ET ILS CHANGEAIENT LE GESTE
+
+1. **Les deux tableaux sont en ordre chronologique INVERSE.** Flux C est **antérieure** à
+   F1 et placée **après** elle. Une lecture linéaire prend la dernière pour la plus
+   récente : c'est la lecture normale, et elle est fausse. Le défaut n'était donc pas
+   « une table sans date » mais « **sans date, en dernier, et plus basse que la table datée
+   qui la précède** » — trois propriétés dont aucune ne suffit seule.
+2. **Les deux tableaux se contredisaient déjà** : F1 dit « typecheck **8 projets** », Flux C
+   dit « **7 projets** », chacun avec sa note de correction. Une reprise obtenait 7 ou 8
+   selon celui qu'elle ouvrait. ⇒ **Aucun des deux n'est faux** — `api-client` s'est ajouté
+   entre les deux clôtures — et **dater les titres résout la contradiction sans toucher un
+   seul chiffre**. C'est le contraire d'une correction : c'est une restitution d'ordre.
+
+### ⚠ D281 — LA DATE NE S'EST PAS LAISSÉE RELEVER, ET C'EST ÉCRIT COMME TEL
+
+La consigne était explicite : la date se relève, elle ne se déduit ni des nombres ni de
+l'ordre des sections ; et si elle n'est pas relevable, on l'écrit.
+**Elle ne l'est pas.** Cherché : `docs/history/CONTINUITE-flux-A-E.md` ne porte **aucune
+date au format JJ/MM/2026** ; le titre du tableau nomme un événement ; `git log -S` rend
+**28/08/2026**, qui date le déplacement documentaire de R1 (D267), **pas la clôture**.
+⇒ **Ce qui se relève est une BORNE, et elle est écrite comme une borne** : la migration la
+plus tardive du périmètre couvert est `20260730120000_venue_styles_and_ceremony_type`
+(A13a), donc la clôture n'est **pas antérieure au 30/07/2026**.
+⛔ **Aucun jour n'a été inventé.** « Date non relevable, borne basse 30/07/2026 » est une
+mesure ; un mois plausible n'en aurait pas été une, et aurait eu exactement la forme d'une
+date vraie.
+
+### D281 — la phrase de D280, qualifiée sur place
+
+D280 affirmait que son corollaire « a mordu sur son propre auteur ». **Il a mordu trois
+fois et manqué la quatrième**, sans même le changement de fichier qui excusait D277. La
+qualification est écrite **à l'endroit de la phrase**, pas dans une section neuve : une
+section qui se raconte mieux qu'elle n'a fait est la matière première du défaut qu'elle
+décrit, et la déplacer ailleurs l'aurait laissée intacte là où on la lit.
+
+### D281 — ce qui a été écrit, et où
+
+| Fichier | Ce qui change |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | clause ajoutée au **chapeau existant** (ordre non chronologique) · titre du tableau Flux C : borne de date relevée + « tout écart futur est une régression » **barré** · phrase de D280 **qualifiée sur place** · cette section · registre |
+
+⚠ **Les deux tableaux sont INTACTES** — pas un chiffre touché. ⚠ **Limite qui reste** : la
+date exacte de clôture du Flux C n'est pas dans le dépôt ; seule une borne l'est.
+
 ## Session du 08/09/2026 (D280) — les décisions ne traversent pas, et c'est la cinquième fois
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D279**.
@@ -1034,6 +1130,16 @@ compteur sous le mot « barré » — et son titre en donnait l'**écart chiffr�
 reconstruit et grandit tout seul ; et le « chiffre courant est 107 » avait été posé dans le
 bloc de lecture du backlog. ⛔ **Une passe de barrage se relit dans son propre fichier** :
 c'est le corollaire écrit plus haut, et il vient de mordre sur son propre auteur.
+⛔ **QUALIFIÉ LE 08/09/2026 (D281) — CETTE PHRASE SURESTIME CE QUI S'EST PASSÉ.** Le
+corollaire a mordu **trois fois et manqué la quatrième** : `ZWADJ_CONTINUITE.md:318`
+portait encore, non barré, le compteur « 18 entrées (17 migrations) » que la passe venait
+de retirer **cinquante-deux lignes plus haut, dans la MÊME section**. C'est le point 7 de
+la liste ci-dessus — « une occurrence traitée, l'autre laissée » — appliqué à la passe qui
+l'écrivait, et sans même le changement de fichier qui l'excusait chez D277.
+⚠ **La correction n'est pas cosmétique, et c'est pour cela qu'elle est ici et pas dans une
+section neuve** : une section qui se raconte mieux qu'elle n'a fait est **la matière
+première du défaut qu'elle décrit**. Relevé par Ko, à l'audit ; la recherche mécanique que
+ce corollaire prescrit n'avait pas été jouée par la passe qui le prescrivait.
 
 ### D280 — ce qui a été écrit, et où
 
@@ -4428,3 +4534,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D278 | A | D278 — arbitrage de S11-b : les deux chemins, le CHECK, refus 409, les deux échéances |
 | D279 | A | D279 — le chiffrage devient un module pur ; extrait, il n'avait PAS réduit `create` |
 | D280 | A | D280 — neuf affirmations périmées dans les trois autorités ; une passe de barrage se relit dans son propre fichier |
+| D281 | A | D281 — une norme sans date : « tout écart futur est une régression » barré, borne de date relevée |
