@@ -2,8 +2,13 @@
  * T3 / B9 — LA DERNIÈRE MIGRATION, APPLIQUÉE SUR UNE BASE NON VIDE (D123).
  *
  * ⚠ CE QUE `test:int` NE PEUT PAS VOIR.
- * Son `globalSetup` fait `DROP DATABASE` puis rejoue les 20 migrations sur du
- * VIDE. Toute la classe de défauts qui n'existe qu'en présence de données lui
+ * Son `globalSetup` fait `DROP DATABASE` puis rejoue TOUTES les migrations sur
+ * du VIDE.
+ * ⛔ CE PASSAGE A PORTÉ « les 20 migrations » JUSQU'AU 09/09/2026 (D282). Il y en
+ * avait 26 le jour du relevé. **Compteur RETIRÉ, pas rafraîchi** : un nombre qui
+ * bouge à chaque lot se recopie longtemps après avoir cessé d'être vrai (D268,
+ * puis trois lots consécutifs l'ont payé). Pour le compte du jour :
+ * `ls apps/api/prisma/migrations`. Toute la classe de défauts qui n'existe qu'en présence de données lui
  * échappe par construction :
  *   - une colonne `NOT NULL` sans valeur par défaut ;
  *   - un `UNIQUE` que les lignes existantes violent ;
@@ -138,8 +143,10 @@ async function recreerBase(): Promise<void> {
  * ⚠ CE SEMIS SUIT LA DERNIÈRE MIGRATION, il n'est pas figé une fois pour toutes.
  * Il visait `refresh_tokens` quand `20260804120000` fermait la marche, puis les
  * DEVIS pour `20260814120000_quote_sent_via`, puis LES DEUX CAS du tri D166 pour
- * `20260814140000_quote_delivery_switch`. La dernière est désormais
- * `20260815120000_quote_drop_valid_until`.
+ * `20260814140000_quote_delivery_switch`, puis Q4, puis E3d-1.
+ * ⚠ LA DERNIÈRE MIGRATION N'EST PLUS NOMMÉE ICI, MÊME REMÈDE QUE CI-DESSUS
+ * (D282) : ce nom changeait à chaque lot, et il était faux depuis deux. Elle se
+ * relève — `ls apps/api/prisma/migrations | tail -1`.
  * Semer la mauvaise table laisserait le test vert sur une table vide — exactement
  * le défaut que D123 cherche à empêcher.
  *
@@ -203,6 +210,30 @@ async function semerDonnees(): Promise<void> {
     FROM venues v CROSS JOIN generate_series(1, 3) AS g(i)
   `);
 
+  // ⛔ UN DEVIS DONT L'AGRÉGAT EST FAUX — SEMÉ EXPRÈS (D282).
+  // `total_cents` vaut `base + services + 100`. Rien ne l'empêche à ce stade :
+  // `quotes_amounts_valid` ne regarde que les signes et `deposit <= total`. C'est
+  // le trou que MD2 nommait, et que la cible 8 de `neutralize-s11b.py` a fait
+  // OBSERVER le 08/09 — des lignes incohérentes entrées en base, 36 fichiers
+  // d'intégration verts.
+  //
+  // ⚠ IL EST `SENT`, ET CE N'EST PAS INDIFFÉRENT — MESURÉ, PAS SUPPOSÉ (D282).
+  // Mon premier jet le posait en `DRAFT` sans `sent_at`, c'est-à-dire sur LA
+  // ligne exacte que la garde R4 met à jour plus bas. La neutralisation de la
+  // migration l'a montré : sous mutation, la contrainte existante refusait cet
+  // `UPDATE`, et la campagne rendait DEUX rouges dont un collatéral. Une cible
+  // qui produit deux rouges ne dit plus lequel mesure quoi (D209, « mesure
+  // confondue »). Le devis violant est donc tenu à l'écart des lignes que les
+  // autres gardes manipulent.
+  await sql(`
+    INSERT INTO quotes (id, venue_id, status, version, chain_id, event_date, guests,
+                        base_price_cents, services_total_cents, total_cents, deposit_cents,
+                        lines, sent_at, created_at)
+    SELECT uuidv7(), v.id, 'SENT'::"QuoteStatus", 1, uuidv7(), current_date + 40, 100,
+           150000000, 0, 150000100, 45000000, '[]'::jsonb, now() - interval '3 days', now()
+      FROM venues v LIMIT 1
+  `);
+
   // ⚠ UN des deux devis `SENT` reçoit une RÉSERVATION, et c'est ce qui rend le
   // test capable de mesurer quoi que ce soit. Le critère de D166 est
   // `booking_id IS NULL` : sans une ligne de chaque côté, un `UPDATE` sans
@@ -223,19 +254,67 @@ async function semerDonnees(): Promise<void> {
      LIMIT 1
   `);
 
-  // ⛔ TROIS INTENTIONS « EN ATTENTE » SUR LA MÊME RÉSERVATION, À LA MÊME
-  // MICROSECONDE. C'est la base d'un déploiement où la course décrite par
-  // E3d-1 a déjà eu lieu — et c'est le SEUL état sur lequel la dernière
-  // migration peut échouer. Sur une base vide, son `CREATE UNIQUE INDEX`
-  // passe toujours : le test ne prouverait rien (MD6).
+  // ⛔ UNE RÉSERVATION DONT L'AGRÉGAT EST FAUX — SEMÉE EXPRÈS (D282).
+  // Même écart de 100 centimes, côté réservation. C'est CETTE ligne qui doit
+  // arrêter la dernière migration : elle est la raison d'être du semis, et le
+  // contrôle de validité posé plus bas vérifie qu'elle viole RÉELLEMENT — un
+  // semis qui ne viole rien rendrait le rouge attendu sans objet.
+  // ⚠ Statut PENDING : l'EXCLUDE ne porte que sur ACCEPTED/CONFIRMED, cette ligne
+  // ne peut donc pas entrer en conflit de plage avec la précédente.
   //
-  // ⚠ UN SEUL `now()` POUR LES TROIS. L'égalité exacte de `created_at` est le
-  // cas que `created_at` SEUL ne sait pas départager ; c'est pour lui que le
-  // nettoyage compare le couple `(created_at, id)`.
+  // ⛔ CE SEMIS A UNE DURÉE DE VIE, ET ELLE SE TERMINE AU PROCHAIN LOT QUI
+  // AJOUTERA UNE MIGRATION (écrit d'avance, D282). Ces deux lignes ne peuvent
+  // être insérées que TANT QUE la contrainte d'agrégat n'est pas encore posée —
+  // c'est-à-dire tant que `20260909120000` ferme la marche. Dès qu'une migration
+  // la suit, celle-ci s'applique en PRÉPARATION et la base REJETTE ce semis, tout
+  // comme elle rejette aujourd'hui le semis à trois `PENDING` d'E3d-1.
+  // ⇒ Ce n'est pas une négligence de ce lot : c'est le défaut de conception du
+  // harnais, rapporté au backlog (D282). Il est écrit ICI pour que la session
+  // suivante le lise AVANT de chercher la cause dans son propre code.
+  // ⚠ VALEURS RELEVÉES DANS `pg_enum`, PAS ÉCRITES DE MÉMOIRE (D282) : mon
+  // premier jet posait `source = 'ONLINE'` et la base a répondu
+  // « invalid input value for enum "BookingSource" ». Les valeurs réelles sont
+  // `BookingSource = CLIENT | WALK_IN` et `PaymentMethod = ONLINE | CASH` — deux
+  // énumérations voisines dont UNE SEULE porte `ONLINE`.
+  await sql(`
+    INSERT INTO bookings (id, venue_id, source, status, payment_method,
+                          event_date, starts_at, ends_at, guests,
+                          base_price_cents, services_total_cents, total_cents, deposit_cents,
+                          contact_first_name, contact_last_name, contact_phone, created_at, updated_at)
+    SELECT uuidv7(), v.id, 'CLIENT', 'PENDING', 'ONLINE',
+           current_date + 60, (current_date + 60)::timestamptz,
+           (current_date + 60)::timestamptz + interval '6 hours', 100,
+           150000000, 0, 150000100, 45000000,
+           'Nadia', 'Cherif', '+213550000002', now(), now()
+      FROM venues v LIMIT 1
+  `);
+
+  // ⛔ LE SEMIS À TROIS INTENTIONS « EN ATTENTE » EST RETIRÉ — ÉCRIT ICI, PAS
+  // DISPARU (D282, patron exact du retrait de la sonde D166 au lot R4).
+  //
+  // CE QU'IL SEMAIT : trois `payments` PENDING sur la MÊME réservation, à la
+  // MÊME microseconde — l'état d'un déploiement où la course d'E3d-1 a déjà eu
+  // lieu, et le seul sur lequel son `CREATE UNIQUE INDEX` pouvait échouer.
+  //
+  // POURQUOI IL NE PEUT PLUS VIVRE : E3d-1 n'est plus la dernière migration.
+  // Elle s'applique désormais pendant la PRÉPARATION, donc AVANT ce semis, et
+  // son index unique partiel `payments_one_pending_per_booking` REJETTE la
+  // deuxième ligne. Ce semis ne devient pas inutile : il devient IMPOSSIBLE.
+  //
+  // ⛔ CE QU'ON PERD, ET IL FAUT LE DIRE : plus rien ne mesure le NETTOYAGE
+  // d'E3d-1 — le départage sur le couple `(created_at, id)`, et les doublons
+  // EXPIRÉS plutôt que supprimés. Cette garantie n'a plus de base non vide à
+  // doublons où se prouver, et elle n'en aura plus JAMAIS dans ce harnais.
+  // ⇒ La regagner demande un harnais qui sème AVANT une migration CHOISIE, pas
+  // avant la dernière — autre chose que B9/D123. Ce fichier le dit déjà pour la
+  // sonde D166 : « à inscrire au backlog, pas à improviser ici ». Fait (D282).
+  //
+  // ⚠ UNE SEULE INTENTION SUBSISTE, sur la réservation cohérente : elle sert aux
+  // comptes de lignes, plus au départage.
   await sql(`
     INSERT INTO payments (id, booking_id, amount_cents, discount_applied_cents, status, updated_at, created_at)
-    SELECT uuidv7(), b.id, b.deposit_cents, 0, 'PENDING', t, t
-      FROM bookings b, (SELECT now() AS t) s, generate_series(1, 3)
+    SELECT uuidv7(), b.id, b.deposit_cents, 0, 'PENDING', now(), now()
+      FROM bookings b WHERE b.quote_id IS NOT NULL
   `);
 }
 
@@ -254,7 +333,10 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     const semees = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM refresh_tokens`);
     expect(Number(semees[0]!.n)).toBe(12);
     const devis = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes`);
-    expect(Number(devis[0]!.n), "sans devis semés, la migration s'appliquerait sur du vide").toBe(3);
+    // ⚠ QUATRE, ET NON TROIS DEPUIS D282 : le quatrième est le devis dont
+    // l'agrégat est faux. Le compte est écrit en clair plutôt que `> 0` — un
+    // semis qui perdrait une ligne se verrait ici, pas trois lots plus tard.
+    expect(Number(devis[0]!.n), "sans devis semés, la migration s'appliquerait sur du vide").toBe(4);
 
     // ⚠ GARDE-FOU : sans lui, une erreur de préparation laisserait une base
     // DÉJÀ à jour, et le test suivant vérifierait une migration déjà appliquée
@@ -286,20 +368,49 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     // précédents : la sonde décrit ce que fait LA dernière migration, et
     // celle-ci change à chaque lot. E3d-1 crée un index unique partiel — donc
     // à l'avant-dernière migration, il n'existe PAS.
-    const index = await sql<{ indexname: string }>(`
-      SELECT indexname FROM pg_indexes WHERE indexname = 'payments_one_pending_per_booking'
+    // ⚠ SIXIÈME CHANGEMENT DE SONDE EN SEPT LOTS (D282), même raison que les
+    // cinq précédents : la sonde décrit ce que fait LA dernière migration, et
+    // celle-ci change à chaque lot. L'ancienne portait sur l'index d'E3d-1, qui
+    // s'applique désormais pendant la PRÉPARATION — il EXISTE ici, et la sonde
+    // aurait rougi sans rien mesurer.
+    // ⛔ CE N'EST PLUS UN ACCIDENT, C'EST UN DÉFAUT DE CONCEPTION du harnais :
+    // rapporté au backlog comme tel, PAS corrigé ici (un seul lot à la fois).
+    const contrainte = await sql<{ conname: string }>(`
+      SELECT conname FROM pg_constraint WHERE conname = 'bookings_total_coherent'
     `);
     expect(
-      index,
-      "l'index de E3d-1 existe déjà : la dernière migration est appliquée, le test ne prouverait rien"
+      contrainte,
+      "la contrainte de D282 existe déjà : la dernière migration est appliquée, le test ne prouverait rien"
     ).toHaveLength(0);
 
-    // ⛔ ET LES TROIS DOUBLONS SONT BIEN LÀ. Sans eux, la migration s'appliquerait
-    // sur une base où son nettoyage n'a rien à faire — verte, et muette.
-    const attente = await sql<{ n: string }>(
-      `SELECT count(*)::text AS n FROM payments WHERE status = 'PENDING'`
+    // ⛔ CONTRÔLE DE VALIDITÉ DU SEMIS — ET IL NE REMPLACE PAS LE ROUGE ATTENDU.
+    // Posé sur arbitrage de Ko, avec son motif écrit : poser le prédicat à la
+    // main et exiger que PostgreSQL refuse est VERT DÈS AUJOURD'HUI, avant
+    // qu'aucune migration n'existe — un `ADD CONSTRAINT CHECK` sur une table
+    // portant une ligne incohérente lève TOUJOURS. Ce contrôle mesure donc le
+    // SEMIS, jamais la garantie.
+    // ⇒ Sa vertu est unique et décisive : s'il devenait vert-muet — l'ajout
+    // PASSE — c'est que plus rien ne viole, et le rouge de la migration plus bas
+    // ne prouverait alors plus rien.
+    const violantes = await sql<{ n: string }>(
+      `SELECT count(*)::text AS n FROM bookings
+        WHERE total_cents <> base_price_cents + services_total_cents`
     );
-    expect(attente[0]!.n, "le semis n'a pas produit les doublons attendus").toBe("3");
+    expect(Number(violantes[0]!.n), "le semis ne porte AUCUNE ligne incohérente").toBeGreaterThan(0);
+
+    let refus: (Error & { code?: string }) | null = null;
+    try {
+      await sql(
+        `ALTER TABLE bookings ADD CONSTRAINT tmp_controle_semis_d282
+           CHECK (total_cents = base_price_cents + services_total_cents)`
+      );
+    } catch (error) {
+      refus = error as Error & { code?: string };
+    }
+    // ⚠ Le refus est attendu, donc rien n'est laissé derrière : une contrainte
+    // rejetée n'est pas créée. Le nom `tmp_` ne survit à aucun cas de figure.
+    expect(refus, "PostgreSQL a ACCEPTÉ la contrainte : le semis ne viole rien").not.toBeNull();
+    expect(refus!.code, "refus obtenu, mais PAS par une violation de CHECK (23514)").toBe("23514");
 
     // ⚠ LA SONDE D166 A ÉTÉ RETIRÉE, ET C'EST DÉLIBÉRÉ (lot R4).
     // Elle exigeait `1` devis `SENT` après le semis, c'est-à-dire l'EFFET du
@@ -311,7 +422,7 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     // ci-dessous, comme l'annonce déjà le commentaire de `semerDonnees`.
   });
 
-  it("applique la dernière migration SANS perdre ni abîmer les données", async () => {
+  it("⛔ D282 — la dernière migration REFUSE une base incohérente, et ne laisse RIEN", async () => {
     const avant = await sql<{ table_name: string; n: string }>(`
       SELECT 'users' AS table_name, count(*)::text AS n FROM users
       UNION ALL SELECT 'refresh_tokens', count(*)::text FROM refresh_tokens
@@ -327,7 +438,31 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
       `SELECT count(*)::text AS n FROM quotes WHERE sent_at IS NOT NULL`
     );
 
-    await appliquerMigrations([migrationsOrdonnees().at(-1)!]);
+    // ⛔ C'EST ICI QUE LE LOT SE MESURE, ET LE ROUGE VIENT DE L'ABSENCE DE LA
+    // MIGRATION — pas d'un prédicat qu'on poserait soi-même.
+    // Tant que la contrainte d'agrégat n'est pas écrite, la dernière migration
+    // s'applique sans broncher sur une base portant une réservation dont
+    // `total <> base + services` : `erreur` reste nulle et CE TEST TOMBE. C'est
+    // le rouge demandé, et il dit exactement ce qui manque.
+    // ⚠ Une fois la migration écrite, le refus doit venir d'une VIOLATION DE
+    // CHECK (SQLSTATE 23514) et NOMMER la contrainte — un refus obtenu pour une
+    // autre raison (table absente, syntaxe) serait un vert creux déguisé en
+    // rouge utile.
+    let erreur: (Error & { code?: string }) | null = null;
+    try {
+      await appliquerMigrations([migrationsOrdonnees().at(-1)!]);
+    } catch (error) {
+      erreur = error as Error & { code?: string };
+    }
+    expect(
+      erreur,
+      "la dernière migration s'est APPLIQUÉE sur une base portant une ligne incohérente"
+    ).not.toBeNull();
+    expect(erreur!.code, "refus obtenu, mais PAS par une violation de CHECK (23514)").toBe("23514");
+    expect(
+      erreur!.message,
+      "le refus ne nomme pas la contrainte : impossible de dire ce qui a arrêté le déploiement"
+    ).toContain("bookings_total_coherent");
 
     const apres = await sql<{ table_name: string; n: string }>(`
       SELECT 'users' AS table_name, count(*)::text AS n FROM users
@@ -337,8 +472,15 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
       UNION ALL SELECT 'cities', count(*)::text FROM cities
       ORDER BY 1
     `);
-    // Aucune ligne perdue. Une migration qui recrée une table au lieu de
-    // l'altérer se voit ICI, et nulle part ailleurs dans le dépôt.
+    // ⛔ ET LA MIGRATION REFUSÉE NE LAISSE RIEN DERRIÈRE ELLE. C'est la seconde
+    // moitié de la garantie, et elle vaut autant que la première : un fichier de
+    // migration s'exécute dans une transaction implicite, donc un `ALTER TABLE`
+    // rejeté doit rendre la base EXACTEMENT dans l'état où il l'a trouvée. Une
+    // migration qui échoue à mi-course en ayant déjà supprimé quelque chose est
+    // le cas que `AGENTS.md` décrit sur `migrate dev` — « ce qu'elle a supprimé
+    // AVANT l'échec n'est pas rendu ».
+    // ⚠ Une migration qui recrée une table au lieu de l'altérer se voit aussi
+    // ICI, et nulle part ailleurs dans le dépôt.
     expect(apres).toEqual(avant);
 
     // Les états antérieurs sont préservés : une reprise de données involontaire
@@ -355,15 +497,29 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
       `SELECT count(*)::text AS n FROM quotes WHERE sent_at IS NOT NULL`
     );
     expect(envoyesApres).toEqual(envoyesAvant);
+
+    // ⛔ ET AUCUNE DES DEUX CONTRAINTES N'A SURVÉCU À L'ÉCHEC. Si celle des
+    // devis était posée pendant que celle des réservations tombe, la base
+    // sortirait à moitié migrée — l'état qu'aucune reprise ne sait diagnostiquer.
+    const posees = await sql<{ conname: string }>(`
+      SELECT conname FROM pg_constraint
+       WHERE conname IN ('bookings_total_coherent', 'quotes_total_coherent')
+    `);
+    expect(posees, "une contrainte a survécu à une migration refusée").toHaveLength(0);
   });
 
-  it("⛔ E3d-1 — l'index PASSE sur une base ayant couru, et le départage a eu lieu", async () => {
-    // ⚠ C'EST LA GARDE QUE `payment-intent-race` NE PEUT PAS PORTER. Là-bas,
-    // l'index est déposé et recréé à la main dans un test ; ici, c'est la VRAIE
-    // migration qui s'applique, sur des données sémées, par le même chemin qu'en
-    // production. Si son nettoyage ne départage pas complètement, le
-    // `CREATE UNIQUE INDEX` échoue et ce test tombe — exactement comme le
-    // déploiement aurait échoué.
+  it("⚠ E3d-1 — l'index EXISTE ; son départage n'est plus mesurable ici (D282)", async () => {
+    // ⚠ CE COMMENTAIRE ÉTAIT EXACT JUSQU'AU 09/09/2026, IL NE L'EST PLUS QU'À
+    // MOITIÉ (D282). Il disait : « c'est la VRAIE migration qui s'applique, sur
+    // des données semées, par le même chemin qu'en production ; si son nettoyage
+    // ne départage pas complètement, le `CREATE UNIQUE INDEX` échoue et ce test
+    // tombe ». ⛔ La seconde moitié est morte avec le semis à doublons : E3d-1
+    // s'applique désormais en PRÉPARATION, sur une table `payments` vide, donc
+    // son `CREATE UNIQUE INDEX` ne peut plus échouer ici quoi qu'il arrive.
+    // ⚠ CE QUI RESTE VRAI, et c'est pour cela que le test survit : c'est bien la
+    // VRAIE migration qui pose cet index, pas un `CREATE INDEX` écrit à la main
+    // dans un test — ce que `payment-intent-race` ne peut pas dire. La FORME de
+    // l'index reste donc mesurée par le chemin de production ; son EFFET, non.
     const idxPaiement = await sql<{ indexdef: string }>(`
       SELECT indexdef FROM pg_indexes WHERE indexname = 'payments_one_pending_per_booking'
     `);
@@ -371,25 +527,30 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     expect(idxPaiement[0]!.indexdef).toContain("UNIQUE");
     expect(idxPaiement[0]!.indexdef).toContain("PENDING");
 
-    // ⛔ UN SEUL SURVIVANT PAR RÉSERVATION, et c'est ce qui a permis à l'index de
-    // passer. Trois lignes semaient la même microseconde : le départage sur le
-    // COUPLE `(created_at, id)` était nécessaire, pas décoratif.
-    const restants = await sql<{ n: string }>(
-      `SELECT count(*)::text AS n FROM payments WHERE status = 'PENDING'`
-    );
-    expect(restants[0]!.n, "le départage a laissé plusieurs intentions en attente").toBe("1");
-
-    // ⚠ LES AUTRES SONT EXPIRÉES, PAS SUPPRIMÉES. Une migration qui aurait fait
-    // `DELETE` au lieu d'`UPDATE` passerait les deux assertions ci-dessus et
-    // effacerait des traces de paiement. Sur le chemin de l'argent, la
-    // différence n'est pas théorique.
-    const expirees = await sql<{ n: string }>(
-      `SELECT count(*)::text AS n FROM payments WHERE status = 'EXPIRED'`
-    );
-    expect(expirees[0]!.n, "les doublons ont été SUPPRIMÉS au lieu d'être expirés").toBe("2");
-
-    const total = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM payments`);
-    expect(total[0]!.n, "des lignes de paiement ont disparu").toBe("3");
+    // ⛔ TROIS ASSERTIONS ONT ÉTÉ RETIRÉES ICI LE 09/09/2026 (D282), PAR ÉCRIT ET
+    // NON PAR SOURDINE — patron du retrait de la sonde D166 au lot R4.
+    //
+    // CE QU'ELLES MESURAIENT : le NETTOYAGE d'E3d-1 sur une base ayant déjà
+    // couru — `1` intention survivante (le départage sur le couple
+    // `(created_at, id)`, nécessaire parce que trois lignes partageaient la même
+    // microseconde), `2` doublons EXPIRÉS et non supprimés (un `DELETE` au lieu
+    // d'un `UPDATE` effacerait des traces de paiement), `3` lignes au total
+    // (aucune disparue).
+    //
+    // POURQUOI ELLES NE MESURENT PLUS RIEN : E3d-1 n'est plus la dernière
+    // migration. Elle s'applique pendant la PRÉPARATION, sur une table
+    // `payments` encore VIDE — son nettoyage n'a plus rien à départager, et son
+    // index rend le semis à doublons impossible (voir `semerDonnees`). Les
+    // garder les rendrait vertes en ne mesurant rien : c'est le vert creux que
+    // ce fichier existe pour attraper.
+    //
+    // ⛔ CE N'EST PAS UN NETTOYAGE, C'EST UNE PERTE, ET ELLE EST DÉFINITIVE DANS
+    // CE HARNAIS. La garantie de nettoyage d'E3d-1 n'aura plus jamais de base
+    // non vide à doublons où se prouver. Ce qui la regagnerait — semer avant une
+    // migration CHOISIE plutôt qu'avant la dernière — est autre chose que
+    // B9/D123 : rapporté au backlog (D282), pas improvisé ici.
+    // ⚠ Ce qui reste mesuré ci-dessus est la FORME de l'index (unique, partiel
+    // sur PENDING), pas l'effet de son nettoyage. Les deux ne se remplacent pas.
   });
 
   it("⚠ Q4 — la colonne a disparu, et RIEN d'autre", async () => {

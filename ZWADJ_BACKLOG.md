@@ -2362,6 +2362,144 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 09/09/2026 — S11-b étapes 4→6 (D282)
+
+⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE** : un défaut croisé se rapporte, il ne se
+corrige pas dans un lot qui parle d'autre chose.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[INFRA][P1]** ⛔ **`migration-non-empty.int-spec.ts` SE PÉRIME À CHAQUE MIGRATION, ET
+  CE N'EST PLUS UN ACCIDENT — C'EST SA CONCEPTION.** Ce harnais mesure « ce que fait **LA
+  DERNIÈRE** migration sur une base non vide ». Conséquence mécanique : à chaque lot qui en
+  ajoute une, sa sonde doit changer — **sixième changement en sept lots**, relevé dans ses
+  propres commentaires (`sent_via`, effet du tri D166, `valid_until`, `CANCELLED`, l'index
+  d'E3d-1, puis l'agrégat de D282).
+  ⛔ **ET CE N'EST PAS QU'UNE CORVÉE : LA GARANTIE DU LOT PRÉCÉDENT DEVIENT INTESTABLE.**
+  Mesuré le 09/09 : E3d-1 ayant cessé d'être la dernière, son nettoyage — départage sur
+  `(created_at, id)`, doublons EXPIRÉS et non supprimés — n'a **plus jamais** de base non
+  vide à doublons où se prouver, et son semis à trois `PENDING` est devenu **impossible**
+  (l'index unique partiel s'applique désormais avant le semis). Trois assertions retirées
+  par écrit. **Le même sort attend l'agrégat de D282 au prochain lot qui ajoutera une
+  migration** — c'est écrit d'avance dans le fichier.
+  ⇒ **REMÈDE, NON FAIT** : un harnais qui sème AVANT une migration **CHOISIE**, pas avant
+  la dernière. C'est autre chose que B9/D123, et le fichier le disait déjà pour la sonde
+  D166 : « à inscrire au backlog, pas à improviser ici ».
+
+- **[API][P0]** ⛔ **LES DEUX ÉCHÉANCES NE SONT ASSERTÉES QUE « NON NULLES » — INTERVERTIR
+  LEURS CONSTANTES SERAIT INVISIBLE.** Relevé le 09/09 sur l'ensemble des specs :
+  `bookings.int-spec.ts:156` vérifie `expiresAt` **not null**, `:373` vérifie
+  `paymentDueAt` **not null**. **Aucune assertion ne porte sur leur VALEUR.**
+  ⇒ Échanger `PRO_RESPONSE_DAYS` (7 jours) et `PAYMENT_WINDOW_HOURS` (48 h) entre les deux
+  sites d'appel produirait deux dates parfaitement non nulles, et **rien ne rougirait** —
+  y compris la spec unitaire neuve de D282, qui mesure la FORMULE et ne peut rien dire de
+  la constante que l'appelant lui passe.
+  ⛔ **C'EST LE CHEMIN DE L'ARGENT** : `paymentDueAt` est ce sur quoi E3 décidera si un
+  règlement arrive à temps. ⚠ **Aucune cible de neutralisation n'a été écrite pour ce cas
+  dans D282, et c'est délibéré** : elle serait **muette par construction** avec les mesures
+  existantes, et une cible muette fait sortir la campagne en échec sans rien apprendre.
+  ⇒ **REMÈDE, NON FAIT** : exporter les deux constantes et faire assertir la DURÉE par la
+  spec d'intégration — l'attendu venant de la constante partagée, jamais recopié.
+
+- **[INFRA][P1]** ⚠ **MODIFIER UN FICHIER DE MIGRATION DÉJÀ APPLIQUÉ CRÉE UNE DÉRIVE DE
+  SOMME DE CONTRÔLE, ET PRISMA N'EN DIT RIEN.** Mesuré le 09/09 : après ajout d'un
+  commentaire à `20260909120000` (SQL inchangé), `_prisma_migrations` porte
+  `4bf7e91e…b689` — le sha256 du fichier **avant** — tandis que le fichier vaut
+  `8c34e7b0…b3db`. ⛔ **`migrate deploy` répond « No pending migrations to apply » et sort
+  en 0**, `migrate status` répond « Database schema is up to date! ». Même famille que le
+  piège déjà consigné : un code 0 qui ne dit pas ce qu'on croit.
+  ⛔ **LES FAITS, EN ENTIER, POUR QUE LA SESSION QUI REPRENDRA N'AIT RIEN À REDÉRIVER** —
+  c'est là qu'on improvise, sinon :
+
+  | | valeur |
+  |---|---|
+  | migration | `20260909120000_booking_quote_total_coherent` |
+  | base concernée | `zwadj` (dev). ⚠ `zwadj_test` est recréée à chaque `test:int` : elle n'a **pas** la dérive |
+  | empreinte STOCKÉE | `4bf7e91e3b4d2a8d66d5a863e1bc123b892108ad109006592d234a8e2320b689` |
+  | empreinte CALCULÉE | `8c34e7b0ea92689cc4ceb6ed10cf103042fda5962c10e1bb703dd1ef82dab3db` |
+  | nature de l'écart | **commentaire ajouté**, SQL **identique** — vérifié commentaires retirés |
+
+  ```
+  # stockée
+  docker exec -i zwadj-db psql -U zwadj -d zwadj -t -c \
+    "SELECT checksum FROM _prisma_migrations WHERE migration_name = '20260909120000_booking_quote_total_coherent';"
+  # calculée (la somme de Prisma EST le sha256 des octets du fichier — vérifié deux fois)
+  python3 -c "import hashlib;print(hashlib.sha256(open('apps/api/prisma/migrations/20260909120000_booking_quote_total_coherent/migration.sql','rb').read()).hexdigest())"
+  ```
+
+  ⇒ **REMÈDE POSSIBLE, NON FAIT ET NON AUTORISÉ** : `UPDATE _prisma_migrations SET checksum
+  = '<la calculée>' WHERE migration_name = '20260909120000_booking_quote_total_coherent'`.
+  ⛔ **KO A INTERDIT D'Y TOUCHER LE 09/09/2026**, et le refus d'improviser est le bon geste :
+  c'est une écriture à la main dans le journal qui décide de ce qui s'applique.
+  ⚠ Ne rien faire reste un piège différé — Prisma 8 est proposé par l'outil, et rien ne dit
+  qu'il restera aussi silencieux.
+  ⚠ **LEÇON GÉNÉRALE, indépendante de l'arbitrage** : une migration **déjà appliquée** ne se
+  modifie plus, **même pour un commentaire**. Ce qu'on veut y ajouter après coup vit dans le
+  fichier de continuité, pas dans le fichier de migration.
+
+- **[E3][P1]** ⚠ **CE QUE VAUT LE BOUTON « PAYER L'ACOMPTE » QUAND L'ÉCHÉANCE EST PASSÉE —
+  ENTRÉE RENVOYÉE À D80, ET ADRESSÉE À E3.**
+  ⛔ **CE N'EST PAS UNE LACUNE DE S11-b, ET LE RANGER AINSI SERAIT UNE ERREUR DE LECTURE**
+  (corrigé par Ko, 09/09/2026). `bookings.service.ts:27-30` le porte **depuis D80**, mot pour
+  mot : « ce lot s'arrête à ACCEPTED. Aucune route ne mène à CONFIRMED, aucun job n'expire
+  quoi que ce soit. `expiresAt` et `paymentDueAt` sont posés pour le lot Paiement ; en
+  attendant, une demande acceptée verrouille son créneau jusqu'à ce que le pro l'annule.
+  **Dette assumée, pas un oubli.** »
+  ⇒ **CE QUE D282 A CHANGÉ, ET RIEN DE PLUS** : le comportement d'une échéance passée était
+  *implicite* — il tombait d'un `Math.min` écrit en ligne, sans spec. Il est désormais
+  **spécifié et mesuré** (`booking-deadline.spec.ts`, cas limite 2 : échéance antérieure à
+  son propre point de départ). La dette n'a pas bougé ; elle est simplement devenue
+  **visible et gardée**.
+  ⇒ **LA DÉCISION APPARTIENT À E3** — refus explicite, réouverture de fenêtre, ou acceptation
+  tardive assumée — et c'est E3 qui aura les deux autres moitiés du problème : la route vers
+  `CONFIRMED` et le job d'expiration. Le test qui fige le comportement actuel dira alors ce
+  qu'il a remplacé.
+
+- **[MÉTHODE][P0]** ⛔ **LA BARRE D273 A ÉTÉ REFUSÉE PUIS FRANCHIE DANS LA MÊME SESSION —
+  EST-ELLE UNE PORTE DURE, OU L'ANNOTATION D'UN RELEVÉ ?** Relevé le 09/09/2026, et les deux
+  faits sont écrits côte à côte dans la section D282 :
+  `test:int` **refusé à 2 926 Mo** (arrêt franc, demande à Ko), puis **toutes les portes
+  lancées à 2 607 Mo** — c'est-à-dire **plus bas encore** — sur ordre de Ko, verdicts retenus
+  et durées explicitement écartées.
+  ⚠ **Les deux gestes sont défendables, et leurs motifs sont écrits.** Ce n'est donc pas un
+  incident : c'est un **trou dans la règle**. ⛔ **UNE BARRE QU'ON FRANCHIT SUR ORDRE, SANS
+  QU'AUCUNE RÈGLE NE DISE QUAND, CESSE DE MESURER** — et c'est la faute que ce dépôt nomme
+  partout ailleurs : un seuil renégocié au cas par cas finit par se baisser en catastrophe le
+  jour où l'attente devient intenable (le raisonnement exact du critère de certification,
+  D275).
+  ⇒ **À TRANCHER, ET KO NE L'A PAS FAIT LE 09/09** : (a) **porte dure** — rien ne se lance
+  sous la barre, et une session bloquée est une session bloquée ; ou (b) **annotation d'un
+  relevé** — on lance, on écrit l'état devant la mesure, et on déclare ce que cette mesure ne
+  vaut plus. ⚠ Si c'est (b), la barre doit dire **ce qu'elle disqualifie** (les durées, la
+  certification) et **ce qu'elle laisse valide** (les verdicts déterministes), sans quoi elle
+  redevient une barre franchie au jugé.
+  ⚠ **Rappel de contexte, pour ne pas rejouer le débat à vide** : la barre 4 579 Mo vient du
+  cadrage de D273, et D270 avait déjà posé la règle d'arbitrage — « relever le plancher que
+  cette session PEUT produire », puis redéfinir « repos » sur lui **avec sa raison** si la
+  barre héritée est impayable. Cette règle n'a jamais été jouée.
+
+### Reports décidés, non oubliés
+
+- **[DOC][P2]** `ZWADJ_CONTINUITE.md` — **deux pointeurs qui se contredisent dans le même
+  en-tête** : l. 25 « Où lire le prochain lot : l'ordre des rangs, section D270, **et lui
+  seul** » ; l. 114 (barrage de D280) « l'ordre des rangs (D270), **et la section PROCHAIN
+  LOT** ». Le contenu concorde, le pointeur non. ⚠ **C'est la l. 114 qui doit céder**
+  (arbitrage de Ko, 09/09) — et c'est exactement le défaut contre lequel le rang 5 de D270
+  met en garde : deux endroits qui répondent à « quoi ensuite » finissent par diverger.
+
+- **[DOC][P2]** `ZWADJ_BACKLOG.md:2111` — « **S11-b (chiffrage) reste entier, cadrage
+  exigé** », écrit **au présent**, faux depuis le 08/09. La clause vit sous une entrée
+  `~~S11~~` barrée, mais **le barré ne couvre que le titre**. ⚠ C'est la configuration
+  exacte que D277 décrit : sur deux occurrences, l'une correctement encadrée (`:2657`,
+  « CONSTAT D'ORIGINE, CONSERVÉ POUR LA TRACE ») et l'autre non.
+
+- **[DOC][P2]** `AGENTS.md` — « deux lots non certifiés en attente sont tenables, **trois
+  non** » ne dit pas si un lot **DOCUMENTAIRE** compte. ⛔ **Arbitré par Ko le 09/09/2026 :
+  il ne compte pas** — il ne touche aucun code et ne peut dégrader aucune porte. Sur les
+  sept lots non certifiés à ce jour (D276 → D282), **deux** portent du code : D279 et D282.
+  ⇒ À écrire dans la règle **la prochaine fois qu'on touche `AGENTS.md`**, pas dans un lot
+  ouvert pour ça.
+
 ## Report du 08/09/2026 — la base de développement
 
 - [x] ~~**[INFRA][P1]** ⛔ **`zwadj` (BASE DE DEV) EST EN RETARD DE TROIS MIGRATIONS, DONT

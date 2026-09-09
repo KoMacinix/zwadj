@@ -472,6 +472,63 @@ phrase était exacte quand elle a été écrite le 07/09 et fausse le lendemain 
 restée en tête du bloc qu'une reprise lit EN PREMIER pour ce lot. ⚠ Le reste de la phrase
 tient : cette section est bien un point d'entrée, pas le cadrage.
 
+### ⛔ AVANCEMENT DU RANG 8 — étapes 1→3 sur 6 FAITES ET MESURÉES (08/09/2026, D279)
+
+⛔ **CE LOT EST OUVERT ET À MI-PARCOURS.** Ce qui suit est son **point d'entrée**, pas son
+état ; l'état est ici, et il tient en six lignes :
+
+| étape | objet | état |
+|---|---|---|
+| 1 | le chiffrage devient un **module pur**, consommé par les DEUX chemins dès la 1ʳᵉ ligne | ✅ **D279** |
+| 2 | les trois migrations de retard **appliquées, vérifiées EN BASE** par définition d'objet | ✅ **D279** |
+| 3 | la confrontation **D75** devient une fonction pure du même module | ✅ **D279** |
+| 4 | le **`CHECK`** d'agrégat + `migration-non-empty.int-spec.ts` **retargé sur un semis qui le VIOLE** | ✅ **D282** |
+| 5 | les **deux échéances** (`expiresAt`, `paymentDueAt`), cas limites spécifiés et mesurés | ✅ **D282** |
+| 6 | le **harnais**, pour sa part restante (CHECK + échéances) | ✅ **D282** |
+
+⛔ **LES SIX ÉTAPES SONT FAITES. LE RANG 8 N'EST PAS CLOS POUR AUTANT** : ce qui reste est
+ce qu'aucune étape ne portait — la dérive de somme de contrôle Prisma, en attente
+d'arbitrage, et trois reports au backlog. **Le lot n'est pas certifié.**
+⚠ **DATATION, POUR QU'ON N'Y VOIE PAS UNE INCOHÉRENCE** : les dates portées ci-dessus sont
+celles des ÉVÉNEMENTS — D278 a levé l'arrêt franc le 08/09, D279 a livré les étapes 1→3 le
+08/09. La session qui écrit ces lignes est du **09/09/2026**, d'où l'horodatage
+`20260909120000` de la migration. Le passage de minuit a eu lieu **pendant** la reprise à
+froid, entre l'étape 0 et l'étape 2.
+
+⇒ **LES CHIFFRES VIVENT DANS LA SECTION D279, ET NULLE PART AILLEURS** : poids du module,
+poids de l'aide privée, poids de `create` avant et après, portes avec leurs durées, cibles
+mordues. ⛔ **Aucun n'est recopié ici, et c'est délibéré** — un compteur posé dans le bloc
+qui se lit comme l'état courant est exactement ce que D280 a dû retirer de quatre endroits.
+**Ce qui est écrit ici est un RENVOI, pas une mesure.**
+⚠ **L'étape 4 porte sa justification ailleurs qu'en elle-même** : c'est l'**observation** de
+la cible muette de D279 — des lignes dont l'agrégat est faux SONT entrées en base, portes
+vertes — et non la déduction MD2 du cadrage. **À lire avant d'écrire cette migration, et
+surtout avant de la retirer.**
+⚠ **CE LOT N'EST PAS CERTIFIÉ.** Portes vertes **au repos le 08/09/2026** (D279) : la marque
+ne se reconduit ni aux étapes 4 à 6 ni au lot suivant, et les deux réserves de D275 restent
+actives.
+
+#### ⛔ POURQUOI CE BLOC EXISTE, ET LA RÈGLE QU'IL POSE (D282, 09/09/2026)
+
+**Mesuré par une reprise RÉELLEMENT à froid** — celle que D280 avait annoncée pour
+l'ouverture de l'étape 4, et qui a eu lieu : de l'ouverture de cette section à la fin du
+cadrage, il y avait **zéro occurrence** de « étape », de « D279 » et du poids de sortie de
+`create`, pendant que « ARRÊT FRANC ICI » y était toujours écrit sans qualification. Une
+reprise qui s'arrête ici — c'est-à-dire qui **suit l'indication du fichier** — conclut
+« lot arbitré, pas commencé », avec un jour et trois étapes de retard.
+⛔ **ET L'INVERSION QUI REND LE POINT SÉRIEUX : `ZWADJ_BACKLOG.md`, AUTORITÉ N°3, ÉTAIT PLUS
+À JOUR QUE CE BLOC** — il y est écrit que les étapes 1 à 3 sont livrées et mesurées. C'est
+**D277 d'un cran retourné** : la décision a bien traversé vers les autres autorités, et elle
+n'est **pas revenue** dans le bloc de lecture de la première.
+
+⇒ **RÈGLE EXÉCUTOIRE : LE POINT D'ENTRÉE DU RANG COURANT SE RAFRAÎCHIT À LA CLÔTURE DE
+TOUTE SESSION QUI LE FAIT AVANCER**, au même titre que le registre, et **jamais « au
+prochain lot »**. Ce n'est pas un lot documentaire : c'est la comptabilité du rang courant à
+propos du rang courant, et elle tient en un renvoi.
+⚠ **Sans cette règle, ce bloc se périme à l'étape suivante**, et quelqu'un le réécrira sous
+le même constat. C'est D276 — « ce qui vaut décision s'écrit dans un fichier » — appliqué à
+l'endroit qui répond à *où en est-on*.
+
 ### Ce que le rang 8 recouvre
 **S11-b — le chiffrage de `BookingsService`** : tarification, prestations, confrontation
 à **D75**, échéance d'acompte. Il fait suite à **S11-a** (D261), qui a pris la moitié
@@ -590,7 +647,15 @@ cadrage réécrit après coup ne peut plus démentir personne.**
 il relève l'état réel, énumère les modes de défaillance, et pose **trois points ouverts**
 qui demandent l'arbitrage de Ko. **L'arbitrage prendra un numéro** ; le cadrage seul n'en
 mérite pas, sans quoi le registre porterait une décision que personne n'a prise.
-⛔ **ARRÊT FRANC ICI.** Aucune ligne de code avant la réponse de Ko aux trois points.
+~~⛔ **ARRÊT FRANC ICI.** Aucune ligne de code avant la réponse de Ko aux trois points.~~
+⛔ **LEVÉ LE 08/09/2026 (D278) — LES TROIS POINTS SONT ARBITRÉS**, chacun par un ✅ posé **à
+l'endroit du point**, plus bas dans ce cadrage : (1) le `CHECK`, (2) le refus en 409 sans
+fusion, (3) les deux échéances. L'arrêt a été demandé, tenu, et **il a produit ce pour quoi
+il existait** : trois arbitrages écrits, motivés, datés. ⚠ **Barré, pas effacé** — sinon la
+session qui livrera E3d lira un cadrage dont les trois points semblent avoir été tranchés
+par personne.
+⇒ **CE QUI NE SE LÈVE PAS AVEC LUI** : un mode de défaillance non listé à ce cadrage **ne se
+code pas**, et le cadrage **reste ici** une fois validé (D277).
 
 ⚠ **ÉTAT MACHINE RELEVÉ AVANT TOUTE MESURE (D270), et il INTERDIT les mesures de porte** :
 RAM libre **médiane 3 304 Mo** (6 relevés sur 60 s, bande 3 299–3 360) · **node 0** · CPU
@@ -951,6 +1016,235 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 09/09/2026 (S11-b, étapes 4→6) — D282 · le `CHECK` que la garde d'origine avait oublié, et deux échéances mesurées nulle part
+
+⛔ **Numéro pris en LISANT le registre de ce fichier** : le dernier attribué était **D281**.
+
+⛔ **SEPT FICHIERS AU DIFF, ÉNUMÉRÉS AVANT ÉCRITURE** : `ZWADJ_CONTINUITE.md`,
+`ZWADJ_BACKLOG.md`, `bookings.service.ts`, `migration-non-empty.int-spec.ts`,
+`neutralize-s11b.py`, et trois neufs — `booking-deadline.ts`, `booking-deadline.spec.ts`,
+`20260909120000_booking_quote_total_coherent/migration.sql`. ⚠ `quotes.service.ts` était
+annoncé et n'a **pas** été touché : les deux échéances vivent uniquement dans
+`BookingsService`, relevé avant d'écrire.
+
+### ⛔ D282 — LA REPRISE À FROID ANNONCÉE PAR D280 A EU LIEU, ET ELLE A RAPPORTÉ
+
+D280 avait écrit que le test « ce fichier suffit-il à reprendre sans Ko ? » aurait lieu à
+l'ouverture de l'étape 4, en session réellement neuve. **Il a eu lieu.** Résultat, et il
+n'est ni un succès ni un échec :
+
+⇒ **Le fichier permet de reconstituer un état complet et juste — mais PAS par la route
+qu'il indique.** Mesuré : entre l'ouverture de « PROCHAIN LOT » et la fin du cadrage,
+**zéro occurrence** de « étape », de « D279 » et du poids de sortie de `create`, pendant que
+« ARRÊT FRANC ICI » y était toujours écrit **sans qualification**. Une reprise qui suit
+l'indication du fichier — le point d'entrée du rang courant — conclut « lot arbitré, pas
+commencé », avec un jour et trois étapes de retard.
+⛔ **ET L'INVERSION QUI REND LE POINT SÉRIEUX : `ZWADJ_BACKLOG.md`, AUTORITÉ N°3, ÉTAIT PLUS
+À JOUR QUE LE BLOC DE LECTURE DE L'AUTORITÉ N°2.** C'est **D277 d'un cran retourné** : la
+décision a bien traversé vers les autres fichiers, et elle n'est **pas revenue** là où on la
+lit en premier.
+⇒ **Remède posé, et c'est une RÈGLE, pas une correction** : *le point d'entrée du rang
+courant se rafraîchit à la clôture de toute session qui le fait avancer*, au même titre que
+le registre. Sans elle, ce bloc se périme à l'étape suivante et quelqu'un le réécrira sous
+le même constat.
+
+### ⛔ D282 — LE FAIT QUI COMMANDE LA MIGRATION : UNE INCOHÉRENCE INTERNE À UN SEUL FICHIER
+
+MD2 disait « la base garantit le DÉTAIL et pas l'AGRÉGAT ». **C'est plus précis que ça, et
+plus embarrassant.** Relevé dans `20260707000001_booking_constraints` :
+
+- `bookings_amounts_valid` et `quotes_amounts_valid` — écrites **à quatre lignes d'écart**,
+  contenu identique — gouvernent **déjà** les trois colonnes en cause
+  (`base >= 0 AND services >= 0 AND total >= 0 AND deposit <= total`) et **omettent
+  précisément** `total = base + services` ;
+- et le **même fichier** écrit **deux identités arithmétiques** en `CHECK`, à une vingtaine
+  de lignes de là, dans **deux contraintes de la MÊME famille de noms** : l. 203,
+  `booking_services_amounts_valid` (`line_total = unit_price × quantity`), et l. 228,
+  `commissions_amounts_valid` (`net = gross − incentive`).
+
+⇒ **Sur les cinq `*_amounts_valid` du dépôt, celles qui avaient une identité à écrire l'ont
+écrite ; les deux qui snapshotent un AGRÉGAT ne l'ont pas.** L'auteur savait écrire la
+forme : elle était à la ligne d'à côté.
+⛔ **Ce n'est donc pas « une contrainte a laissé passer », c'est une INCOHÉRENCE INTERNE À UN
+SEUL FICHIER** — et c'est ce qui interdit de traiter les deux contraintes neuves de
+redondance. Écrit dans la migration, pas seulement ici.
+
+### ⛔ D282 — LE ROUGE EST VENU DE L'ABSENCE DE LA MIGRATION, ET MA PREMIÈRE FORME N'EN ÉTAIT PAS UNE
+
+J'avais proposé de poser le prédicat du `CHECK` **à la main** sur la base semée et d'exiger
+que PostgreSQL le refuse. ⛔ **Cette assertion est VERTE dès aujourd'hui, avant qu'aucune
+migration n'existe** : un `ADD CONSTRAINT CHECK` sur une table portant une ligne incohérente
+lève **toujours**. Elle mesure le SEMIS, pas la garantie. Corrigé par Ko, et **gardé à sa
+place** comme contrôle de validité du semis — il a une vertu unique : s'il devenait
+vert-muet, c'est que plus rien ne violerait, et le rouge d'à côté ne prouverait plus rien.
+⇒ **La bonne assertion porte sur l'APPLICATION de la dernière migration** : sur un semis
+violant, elle doit ÉCHOUER en **23514** et **NOMMER** la contrainte.
+
+| moment | `migration-non-empty.int-spec.ts` |
+|---|---|
+| tel quel, avant tout retarget | **7 / 7, exit 0** — ni bloqué, ni sauté (barrage de D280 vérifié à l'exécution) |
+| retargé, migration ABSENTE | ⛔ **1 rouge / 6 verts** — « la dernière migration s'est APPLIQUÉE sur une base portant une ligne incohérente » |
+| après la migration | ✅ **7 / 7, exit 0** |
+| sous mutation `NOT VALID` | ⛔ **1 rouge** — la garde mord |
+
+### D282 — la migration : elle ne répare rien, et elle échoue franc
+
+`20260909120000_booking_quote_total_coherent` pose `bookings_total_coherent` **et**
+`quotes_total_coherent`. ⛔ **Aucun `UPDATE` correctif, aucun `NOT VALID`** (tranché par Ko) :
+sur le chemin de l'argent, une migration qui recalcule des montants toute seule est pire que
+celle qui s'arrête — c'est le sens du « EXPIRÉES, pas supprimées » d'E3d-1.
+⚠ **Les DEUX tables, sur constat** : le dépôt les contraint ensemble et symétriquement
+depuis sa première migration, et `Booking` porte des « snapshots copiés du devis » — le
+devis est l'amont, contraindre la copie sans la source garderait le mauvais bout.
+⚠ **Contrainte SÉPARÉE, pas un conjoint ajouté à `amounts_valid`** : un `23514` doit NOMMER
+la faute. Fondu dans l'existante, six conditions rendraient le même nom et le diagnostic
+serait perdu au moment précis où on en a besoin.
+
+**Vérification par DÉFINITION D'OBJET, jamais par code de retour** : `pg_constraint` rend les
+deux contraintes avec `convalidated = t`, `_prisma_migrations` **27 appliquées**.
+**Preuve bilatérale** (D272) : un devis faux **refusé**, un décalage de +1 centime sur les
+réservations **refusé**, et l'écriture cohérente **acceptée** (`UPDATE 4`).
+**Compte avant application, exigé par Ko** : **0 violante sur 4 réservations, 0 sur 38
+devis**, et 0 divergence `services_total_cents` ↔ somme des lignes filles. ⚠ **Les 38 devis
+sont un relevé NEUF** : le prérequis de D278 n'avait porté que sur les 4 réservations.
+
+### ⛔ D282 — LA NEUTRALISATION A TROUVÉ UN DÉFAUT QUE LE VERT CACHAIT, ET IL ÉTAIT DE MOI
+
+Sous mutation, la campagne rendait **deux** rouges. Le second venait de mon semis : le devis
+violant était un `DRAFT` sans `sent_at`, c'est-à-dire **la ligne exacte** que la garde R4 met
+à jour. En réel, invisible — la migration échoue et la contrainte n'existe jamais.
+⛔ **Une cible qui rend deux rouges ne dit plus lequel mesure quoi** (D209, « mesure
+confondue »). Découplé, motif écrit sur place ; la cible rend désormais **un** rouge.
+⚠ **Et une faute écrite de mémoire, attrapée par la base et non par moi** : `source =
+'ONLINE'`. `BookingSource` vaut `CLIENT | WALK_IN` ; c'est `PaymentMethod` qui porte
+`ONLINE`. Deux énumérations voisines, une seule avec ce libellé. Valeur relevée dans
+`pg_enum`, et **le relevé est écrit à côté** pour qu'on ne la redevine pas.
+
+### D282 — étape 5 : les deux échéances, et ce que le lot NE tranche pas
+
+`booking-deadline.ts` — module **pur**, 8 lignes exécutables, `min(from + window, début de
+l'événement)`. Il ne lit pas l'heure (D48), ne lève pas, ne connaît ni code applicatif ni
+clé i18n : idiome de `booking-admission`, `booking-charge`, `booking-window`.
+⛔ **LES DEUX CONSTANTES NE FUSIONNENT PAS, ET LE MODULE EST CONSTRUIT POUR QU'ELLES NE
+PUISSENT PAS** : `PRO_RESPONSE_DAYS` (7 j) et `PAYMENT_WINDOW_HOURS` (48 h) sont deux valeurs
+métier distinctes ; la durée est un **paramètre**, et ce fichier ne déclare **aucune**
+constante de durée. Une garde de la spec le mesure : deux fenêtres différentes doivent rendre
+un écart **exactement égal** à leur différence — un module qui ignorerait son paramètre
+rendrait deux fois le même instant.
+⚠ **LES DEUX CAS LIMITES SONT SPÉCIFIÉS TELS QUE LE CODE LES TRAITE, ET AUCUN N'EST CHANGÉ** :
+événement à moins d'une fenêtre ⇒ l'échéance **EST** le début ; événement déjà commencé ⇒
+échéance **antérieure à son propre point de départ**.
+⛔ **CE QUE VAUT ALORS LE BOUTON « PAYER L'ACOMPTE » N'EST PAS TRANCHÉ ICI**, et c'est
+délibéré : c'est une décision de COMPORTEMENT, rapportée au backlog `[PRODUIT][P1]`. Un lot
+de SRP qui corrige un comportement en passant est le refactoring opportuniste que ce dépôt
+punit.
+
+### D282 — les mesures du lot, relevées AVANT rédaction (D261)
+
+| quantité | entrée | sortie | définition |
+|---|---|---|---|
+| `create`, exécutables | **107** | **107** | bornes 148–320 puis 149–322, commande du rang 8 |
+| `accept`, exécutables | **39** | **37** | bornes 374–425 puis 376–427 |
+| `booking-deadline.ts` | — | **8** | module pur neuf |
+| specs unitaires des échéances | ⛔ **0** | ✅ **6** | aucune n'existait, ni d'un côté ni de l'autre |
+| `Math.min` dans `bookings.service.ts` | 2 | **0** | la formule a quitté le service |
+
+⛔ **`create` N'A PAS MAIGRI, ET LE DIRE FAIT PARTIE DE LA MESURE.** L'expression y tenait
+déjà sur une ligne : il n'y avait rien à y gagner, et l'appel a été écrit en une ligne
+**exprès** pour ne pas la faire grossir — c'est la leçon de D279, appliquée d'avance plutôt
+que découverte après. Le gain réel est ailleurs, et c'est ce que D261 demande de compter :
+**deux décisions du chemin de l'argent ont quitté un endroit sans aucune mesure pour un
+endroit qui se rejoue en 12 ms.**
+
+⛔ **CE QUE KO RETIENT DU LOT, ET IL FAUT QUE ÇA SURVIVE AU FIL DE CHAT** : *« `create`
+107 → 107, dit comme mesure NULLE et avec sa cause, est le vrai progrès »*. C'est le
+**troisième passage** du chiffre d'entrée de D261 dans ce seul lot — S11-a l'avait vu
+grossir, D279 l'avait vu ne pas maigrir, D282 le voit ne rien changer — et **la première
+fois que la leçon est appliquée D'AVANCE plutôt que découverte après**. D279 avait écrit ce
+corollaire pour le lot suivant : *« le chiffre d'entrée se relève AVANT, avec sa définition
+écrite, et le chiffre de sortie se relève avant de rédiger la note »*. **Il a tenu**, et
+c'est la première fois qu'un corollaire de ce fichier se vérifie sur le lot d'après au lieu
+d'être repayé.
+
+### D282 — portes et campagnes, avec l'état machine devant elles
+
+⛔ **ÉTAT MACHINE : SOUS LA BARRE, ET C'EST ÉCRIT AVANT LES CHIFFRES.** RAM libre médiane
+**2 607 Mo** (bande 2 562–2 639) contre la barre D273 à **4 579** — **1 972 sous la barre** ·
+**node 0** · CPU médiane 13 % (6–32) · total **16 569 Mo sur 373 processus**. Inventaire
+au-dessus de 150 Mo : chrome 26 proc / 3 507 Mo · Code 19 / 2 533 · svchost 104 / 1 302 ·
+Memory Compression 1 294 · WINWORD 553 · NVIDIA App 442 · msedgewebview2 388 · vmmemWSL 373 ·
+msedge 311 · NVIDIA Overlay 303 · claude 295 · explorer 291 · powershell 266 · RuntimeBroker
+222 · OmenCommandCenterBackground 189 · nvcontainer 184.
+⚠ **`chrome` était présent aux QUATRE relevés de la session**, y compris après annonce de sa
+fermeture. La règle symétrique de D276 vaut pour un état machine : **c'est la mesure qui fait
+foi sur l'état**, et elle est écrite comme telle, sans conclusion sur la cause.
+⛔ **CONSÉQUENCE, ÉCRITE ET NON NÉGOCIÉE : les DURÉES ci-dessous ne sont comparables à
+RIEN**, et **aucun** chiffre de cette session ne vaut pour une certification. Les **codes de
+sortie**, eux, sont des verdicts.
+
+#### ⛔ D282 — LA BARRE D273 A ÉTÉ REFUSÉE PUIS FRANCHIE DANS LA MÊME SESSION, ET LES DEUX SONT ÉCRITS CÔTE À CÔTE
+
+| moment | RAM libre | barre | geste |
+|---|---|---|---|
+| étape 2, avant `test:int` | **2 926 Mo** | 4 579 | ⛔ **REFUS de lancer**, arrêt franc et demande à Ko |
+| étapes 2 à 6, toutes les portes | **2 607 Mo** | 4 579 | ✅ **LANCÉ**, sur ordre de Ko, après réaffirmation |
+
+⚠ **Le second relevé est PLUS BAS que celui qui avait motivé le refus.** Les deux gestes
+sont défendables et leurs motifs sont écrits — le refus portait sur le mode d'échec
+spécifique du fichier (la contention mange le `DROP DATABASE`, `statement_timeout` 20 s), et
+l'exécution sur le fait que l'objet cherché était un **verdict** et non une durée, les durées
+étant explicitement écartées. ⛔ **MAIS MIS BOUT À BOUT, ILS LAISSENT UNE BARRE QU'ON
+FRANCHIT SUR ORDRE SANS QU'AUCUNE RÈGLE NE DISE QUAND** — et une barre qu'on franchit sans
+règle cesse de mesurer. C'est la faute que ce dépôt nomme partout ailleurs : un seuil
+renégocié au cas par cas est un seuil qui finit par se baisser en catastrophe.
+⇒ **QUESTION PORTÉE AU BACKLOG, NON TRANCHÉE ICI (décision de Ko)** : la barre D273 est-elle
+une **porte dure** — rien ne se lance en dessous — ou l'**annotation d'un relevé** — on lance,
+on écrit l'état, et on déclare ce que la mesure ne vaut plus ? Les deux se défendent ; ce qui
+ne se défend pas est de continuer sans le dire.
+
+| porte | code | durée | mesure |
+|---|---|---|---|
+| `typecheck` | **0** | 106 s | 8 projets |
+| `lint` | **0** | 64 s | 8 projets |
+| `test` | **0** | 186 s | **1 329 / 109** — api 659/58 · api-client 36/3 · client 287/20 · pro 347/28 |
+| `build` | **0** | 136 s | client + pro + api |
+| `test:int` | **0** | 594 s | **434 / 36**, `zwadj_test` réel |
+| `neutralize-s11b --int` | **0** | 337 s | ⛔ **11 mordues sur 11, ZÉRO muette** |
+| `lancer-campagnes` | ⚠ **1** | 233 s | **27 mordues, 0 muette, 2 NON MESURÉES** |
+
+⚠ **L'écart de tests est ENTIÈREMENT expliqué** : 1 323 → **1 329** (+6) et 108 → **109**
+fichiers (+1), soit exactement `booking-deadline.spec.ts` et ses six cas. Aucune autre suite
+n'a bougé, et `test:int` rend le **même 434 / 36** qu'à D275 et D279 — **le `CHECK` neuf n'a
+cassé aucune spec d'intégration**.
+
+⛔ **`lancer-campagnes.py` A ÉTÉ LANCÉ — IL MANQUAIT AU TABLEAU DE D279 — ET IL SORT EN 1.**
+Le motif est nommé, pas couvert : le tri joue `neutralize-s11b.py` **sans `--int`**, donc
+S11b-8 et S11b-9 ressortent « non mesurées » et la campagne rend **3** (incomplète). C'est le
+défaut croisé **`[INFRA][P1]`** déjà au backlog — « `--tout` qui ne joue ni ne nomme les
+mesures `--int` ». ⚠ **Les deux cibles ont été mesurées directement, avec `--int` : elles
+mordent.** Le 1 est un défaut d'outillage, pas une garde muette — et il est écrit comme tel
+plutôt que déclaré vert.
+
+### ⛔ D282 — CE QUI RESTE, ET CE QUI N'EST PAS CERTIFIÉ
+
+1. ⛔ **UNE DÉRIVE DE SOMME DE CONTRÔLE PRISMA, EN ATTENTE D'ARBITRAGE.** Avoir ajouté un
+   commentaire à une migration **déjà appliquée** a désaligné `_prisma_migrations`
+   (`4bf7e91e…`, le sha256 d'avant) du fichier (`8c34e7b0…`). ⛔ **`migrate deploy` et
+   `migrate status` sortent en 0 sans un mot** — même famille que le piège déjà consigné.
+   Remède proposé, **non fait** : une écriture unique dans le journal des migrations. Elle
+   ne s'improvise pas. Entrée `[INFRA][P1]` au backlog.
+2. **Les deux échéances ne sont assertées que « non nulles » en intégration** : intervertir
+   leurs constantes entre les sites serait **invisible**. `[API][P0]`, chemin de l'argent.
+3. **Le harnais `migration-non-empty` se périme à chaque migration**, par conception :
+   sixième sonde en sept lots, et la garantie du lot précédent devient intestable.
+   `[INFRA][P1]`.
+4. **Le comportement d'une échéance passée** reste à trancher. `[PRODUIT][P1]`.
+
+⚠ **CE LOT N'EST PAS CERTIFIÉ.** Les portes sont vertes **sous une machine à 2 607 Mo**,
+c'est-à-dire **loin sous la barre** — ce qui est plus faible encore qu'un « vert au repos »,
+et ne s'en approche pas. Les deux réserves de D275 restent actives, et la certification du
+07/09 n'est **pas** reconduite.
 
 ## Session du 08/09/2026 (D281) — une norme sans date, et la phrase qui se racontait trop bien
 
@@ -4535,3 +4829,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D279 | A | D279 — le chiffrage devient un module pur ; extrait, il n'avait PAS réduit `create` |
 | D280 | A | D280 — neuf affirmations périmées dans les trois autorités ; une passe de barrage se relit dans son propre fichier |
 | D281 | A | D281 — une norme sans date : « tout écart futur est une régression » barré, borne de date relevée |
+| D282 | A | D282 — le CHECK d'agrégat : la garde d'origine l'avait omis À CÔTÉ de deux identités qu'elle écrivait |

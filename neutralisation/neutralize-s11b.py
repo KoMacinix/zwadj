@@ -57,6 +57,8 @@ if not os.path.isfile("pnpm-workspace.yaml"):
 SAUVEGARDE = ".neutralisation-s11b"
 
 CHIFFRAGE = "apps/api/src/venues/booking-charge.ts"
+ECHEANCE = "apps/api/src/venues/booking-deadline.ts"
+MIGRATION = "apps/api/prisma/migrations/20260909120000_booking_quote_total_coherent/migration.sql"
 
 
 def _binaire(nom: str) -> str:
@@ -76,6 +78,17 @@ MESURES = {
     "int-devis": (
         ["pnpm", "--filter", "@zwadj/api", "exec", "vitest", "run",
          "-c", "vitest.config.int.ts", "test/int/quotes.int-spec.ts"],
+        "int",
+    ),
+    "echeances": (
+        ["pnpm", "--filter", "@zwadj/api", "exec", "vitest", "run", "src/venues/booking-deadline.spec.ts"],
+        "unit",
+    ),
+    # ⚠ Cette mesure reconstruit sa PROPRE base, migration par migration : elle
+    #   est la seule à voir ce que fait une migration sur des données existantes.
+    "int-migration": (
+        ["pnpm", "--filter", "@zwadj/api", "exec", "vitest", "run",
+         "-c", "vitest.config.int.ts", "test/int/migration-non-empty.int-spec.ts"],
         "int",
     ),
 }
@@ -196,6 +209,44 @@ CIBLES = [
         "  const totalCents = input.basePriceCents + servicesTotalCents + 100;",
         1,
         ["int-reservations", "int-devis"],
+    ),
+    (
+        "S11b-9. ⛔ LE CHECK D'AGRÉGAT DEVIENT TRIVIAL — une ligne incohérente entre en base",
+        # ⚠ LA MUTATION PORTE SUR LES DEUX CONTRAINTES À LA FOIS (attendu = 2), et
+        #   c'est voulu : `bookings` et `quotes` sont contraintes ensemble et
+        #   symétriquement depuis `20260707000001`. Neutraliser une seule laisserait
+        #   l'autre porter la garantie et rendrait la cible verte à moitié.
+        # ⚠ Sous cette mutation, la migration s'APPLIQUE au lieu d'échouer : c'est
+        #   très exactement l'état d'avant D282, où des lignes dont
+        #   `total <> base + services` entraient en base, 36 fichiers d'intégration
+        #   verts (observation de la cible 8, D279).
+        MIGRATION,
+        '    "total_cents" = "base_price_cents" + "services_total_cents"',
+        '    "total_cents" >= 0',
+        2,
+        ["int-migration"],
+    ),
+    (
+        "S11b-10. ⛔ L'ÉCRÊTAGE DE L'ÉCHÉANCE DISPARAÎT — elle peut tomber APRÈS la fête",
+        # C'est D82 défait : une demande pour dans cinq jours expirerait après
+        # l'événement, et `paymentDueAt` laisserait payer un acompte pour une fête
+        # déjà passée.
+        ECHEANCE,
+        "  return new Date(Math.min(fromMs + windowMs, eventStartsAt.getTime()));",
+        "  return new Date(fromMs + windowMs);",
+        1,
+        ["echeances"],
+    ),
+    (
+        "S11b-11. ⛔ L'ÉCRÊTAGE S'INVERSE — `min` devient `max`",
+        # ⚠ Cible distincte de la précédente, et pas un doublon : un `max` garde une
+        #   BORNE — donc l'apparence d'un écrêtage — là où la cible 10 la supprime.
+        #   Une garde qui ne verrait que l'absence de borne laisserait passer celle-ci.
+        ECHEANCE,
+        "  return new Date(Math.min(fromMs + windowMs, eventStartsAt.getTime()));",
+        "  return new Date(Math.max(fromMs + windowMs, eventStartsAt.getTime()));",
+        1,
+        ["echeances"],
     ),
 ]
 

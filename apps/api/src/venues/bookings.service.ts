@@ -89,6 +89,7 @@ import {
   type BookingLocks,
   type BookingRow
 } from "./booking-locks.types";
+import { deadlineClampedToEventStart } from "./booking-deadline";
 import { DomainEvents } from "./domain-events";
 // ⚠ S11-b — `deposit` et `service-pricing` ne sont plus importés ICI : ils sont
 // consommés par `booking-charge`, qui est désormais le SEUL endroit où le total
@@ -245,8 +246,9 @@ export class BookingsService {
       throw new UnauthorizedException({ code: AuthErrorCode.UNAUTHENTICATED, message: "auth.errors.unauthenticated" });
     }
 
-    // D82 — bornée par le début de l'événement.
-    const expiresAt = new Date(Math.min(nowMs + PRO_RESPONSE_DAYS * DAY_MS, window.startsAt.getTime()));
+    // D82 — bornée par le début de l'événement. La formule vit dans
+    // `booking-deadline`, avec ses deux cas limites spécifiés (D282).
+    const expiresAt = deadlineClampedToEventStart({ fromMs: nowMs, windowMs: PRO_RESPONSE_DAYS * DAY_MS, eventStartsAt: window.startsAt });
 
     // ⚠ Aucune transaction ici, et c'est voulu : une demande PENDING ne
     // verrouille RIEN (décision produit actée). Il n'y a donc aucun invariant
@@ -375,9 +377,9 @@ export class BookingsService {
     const { row, venue } = await this.ownedBooking(userId, bookingId);
 
     const acceptedAt = new Date();
-    const paymentDueAt = new Date(
-      Math.min(acceptedAt.getTime() + PAYMENT_WINDOW_HOURS * HOUR_MS, row.startsAt.getTime())
-    );
+    // ⚠ MÊME formule que `expiresAt`, DEUX constantes métier distinctes (D282) :
+    // la durée est un paramètre, jamais une valeur harmonisée entre les deux.
+    const paymentDueAt = deadlineClampedToEventStart({ fromMs: acceptedAt.getTime(), windowMs: PAYMENT_WINDOW_HOURS * HOUR_MS, eventStartsAt: row.startsAt });
 
     // ⚠ UN SEUL APPEL DE PORT : verrou, relecture D117, contrôle de blocage,
     // écriture et traduction de l'EXCLUDE forment une séquence indivisible. La
