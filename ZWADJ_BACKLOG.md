@@ -2362,6 +2362,108 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
+
+⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** ⛔ **Et ces trois-là ne dépendent PAS du
+verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[MÉTHODE][P0]** ⛔ **AUCUNE SUITE UNITAIRE NE DÉCLARE DE BUDGET DE TEST — LE VERDICT DES
+  PORTES REPOSE SUR UN DÉFAUT QUE PERSONNE N'A ÉCRIT.** Relevé le 10/09/2026 sur les cinq
+  configurations du dépôt :
+
+  | config | budget |
+  |---|---|
+  | `apps/api/vitest.config.int.ts` | ✅ `testTimeout: 30_000`, `hookTimeout: 60_000` |
+  | `apps/api/vitest.config.ts` | ⛔ aucun |
+  | `apps/client/vitest.config.ts` | ⛔ aucun |
+  | `packages/api-client/vitest.config.ts` | ⛔ aucun |
+  | `apps/pro/vite.config.ts` (bloc `test`) | ⛔ aucun |
+
+  **Seule la config d'INTÉGRATION écrit un budget.** Les cinq suites unitaires héritent du
+  défaut vitest — **5 000 ms**, valeur relevée dans la sortie des échecs eux-mêmes, pas de
+  mémoire.
+  ⛔ **CE QUE ÇA FALSIFIE, ET C'EST LA PHRASE QUI NOUS SERVAIT DE GARDE-FOU** : « les verdicts
+  valent, les durées ne valent rien » (D282). **Mesuré le 10/09 : une dérive de durée EST
+  DEVENUE un verdict.** Même arbre, même commande — `pnpm --filter @zwadj/client run test`
+  rend **273/287 avec 22 signatures « Test timed out in 5000ms »** sous contention, et
+  **287/287 en 21 s** au repos. La barre RAM était **satisfaite** dans le cas rouge (4 636 Mo,
+  soit +57 au-dessus).
+  ⇒ **La barre ne protège pas les verdicts en soi : elle les protège parce qu'elle tient les
+  durées sous un budget QUE PERSONNE N'A ÉCRIT. Un budget non écrit n'est pas une garde.**
+  ⚠ **ET LE REMÈDE N'EST PAS D'ÉCRIRE UN `testTimeout` PLUS GRAND** : augmenter le budget
+  **masque** l'effondrement au lieu de le révéler. D270 le disait déjà de sa propre borne —
+  « une assurance, pas un correctif ». Ce report demande une décision, pas un réglage.
+
+- **[MÉTHODE][P0]** ⛔ **LA BORNE DE WORKERS DE D270 N'EXISTE QUE DANS `pro` — UN REMÈDE
+  MESURÉ, CHIFFRÉ, ÉCRIT, ET APPLIQUÉ À UNE SUITE SUR QUATRE.**
+
+  | config | borne |
+  |---|---|
+  | `apps/pro/vite.config.ts` | ✅ `maxWorkers: 4` (D270, mesuré le 30/08) |
+  | `apps/client/vitest.config.ts` | ⛔ aucune — **c'est la suite qui a rendu les 22 délais dépassés** |
+  | `apps/api/vitest.config.ts` | ⛔ aucune |
+  | `packages/api-client/vitest.config.ts` | ⛔ aucune |
+
+  ⛔ **C'EST LA CONFIGURATION DE D277 SUR UN REMÈDE DE CODE** — la décision est écrite au bon
+  endroit, elle n'a pas traversé jusqu'aux trois autres — **et elle vient de convertir une
+  durée en verdict pour la DEUXIÈME fois** (30/08 sur `pro`, 09/09 sur `client`).
+  ⚠ **LA GRANDEUR QUI DÉCIDE N'A TOUJOURS PAS DE NOM, ET ELLE EST MAINTENANT CHIFFRÉE.** Le
+  commentaire de `apps/pro/vite.config.ts` nomme le mécanisme : « chaque worker porte un
+  environnement jsdom complet ; le défaut de vitest suit le nombre de cœurs (12 ici) **SANS
+  REGARDER LA MÉMOIRE DISPONIBLE** ». Mesuré le 10/09 par échantillonnage périodique : la
+  passe fait tomber la RAM libre de **5 400 à 2 652 Mo** avec **12 à 14 workers**, et **66
+  échantillons sur 104 sont SOUS la barre** — dont **zéro** machine au repos. ⇒ La grandeur
+  est la **mémoire disponible PAR WORKER**, et personne ne l'a nommée ni le 30/08 ni le 10/09.
+  ⛔ **NE PAS PROPAGER `maxWorkers: 4` PAR RÉFLEXE** : D270 a mesuré qu'elle coûte **+31 %**
+  sur `pro` et que la sérialisation coûterait 2,6×. Une borne se **mesure** par suite ; celle
+  de `pro` n'est pas transposable sans sa mesure.
+
+- **[MÉTHODE][P0]** ⛔ **LA SOURCE D'ALIMENTATION N'EST DANS AUCUN RELEVÉ DU DÉPÔT, ET SON
+  ABSENCE A COÛTÉ DEUX FENÊTRES DE CERTIFICATION.** Les relevés d'état machine ont toujours
+  porté quatre quantités — RAM libre · `node` · CPU · inventaire. **Aucune ne voit
+  l'alimentation.**
+  ⇒ **Mesuré la nuit du 09→10/09/2026** : bascule sur batterie à **20:44:41** (au milieu de la
+  porte `test:int`, qui enjambe l'instant), puis `Critical Battery Trigger Met` à **02:22:11**
+  et **huit heures de veille**. **Pendant tout ce temps les quatre quantités étaient
+  NOMINALES.** La porte dure a été tenue et elle n'a rien vu.
+  ⇒ **Effet chiffré sur le même arbre et la même suite** : `test:int` **475 s sur batterie
+  contre 279 s sur secteur** (−41 %) ; `lancer-campagnes --tout` **5 454 s contre 2 011 s**
+  (−63 %). Le « +57 % inexpliqué » du 09/09 avait cette cause.
+  ⚠ **CE N'EST PAS « LA SOURCE », C'EST LA SOURCE ET LE MODE ACTIF** : un mode bridé peut
+  survivre au rebranchement tant que la charge est basse. **Rebrancher n'est pas être au
+  régime secteur**, et seul un instrument calibré le distingue (retenu le 10/09 :
+  `% Processor Performance`, repos 83,5 % / charge connue 128,6 % ; `CurrentClockSpeed`
+  écarté, il rend `MaxClockSpeed` et ne distingue rien).
+  ⇒ **DÉJÀ FAIT, et ce n'est pas ce report** : le critère du rang 9 porte désormais la
+  cinquième quantité et les relevés périodiques. **CE QUI RESTE DÛ ICI** : les porter dans
+  `neutralisation/sonde-etat-machine.py` — l'instrument vit toujours dans le **scratchpad**
+  (réserve n°2 de D275, jamais levée), donc **irreproductible et incontestable par la session
+  suivante**. ⚠ La nuit du 09→10/09 est la démonstration de ce que cette réserve coûte :
+  l'instrument qui a raté la cause était précisément un instrument hors dépôt.
+
+- **[INFRA][P1]** ⚠ **UN `.ps1` NON-ASCII SANS BOM NE S'EXÉCUTE PAS, ET LA TÂCHE REND
+  « exit code 0 ».** Mesuré le 10/09 : la passe complète est morte sur `Missing closing '}'`
+  — Windows PowerShell 5.1 lit un fichier sans BOM en **ANSI**, et le décodage casse la
+  structure. ⛔ **C'est le pendant EN ENTRÉE du piège de console cp1252 (D268)**, que le dépôt
+  n'avait jamais nommé : D268 a corrigé la SORTIE des scripts Python, personne n'avait regardé
+  l'ENTRÉE des scripts PowerShell.
+  ⇒ **Règle** : tout `.ps1` portant un octet non-ASCII s'écrit **avec BOM**, et **le parse se
+  contrôle avant de lancer** (`[System.Management.Automation.Language.Parser]::ParseFile`).
+  ⚠ Le contrôle a découvert au passage un second script **jamais exécuté depuis sa
+  réécriture** : il aurait échoué de la même façon. **Un code 0 sur un script qui n'a pas
+  parsé est le vert le plus creux de la série.**
+
+### Reports décidés, non oubliés
+
+- **[DOC][P2]** Le préambule du **registre des décisions** empile cinq avertissements contre
+  les compteurs figés, puis en porte un : « 217 des 241 … 218 sur 242 », déclaré « non
+  recompté depuis » le 28/08. Il est aujourd'hui en retard de **quatorze** décisions.
+  ⚠ **Déclaré, donc ce n'est pas un défaut** — c'est la forme que le fichier exige. Rapporté
+  parce que c'est exactement la forme dont il se méfie ailleurs, dans le paragraphe qui existe
+  pour s'en méfier.
+
 ## Reports du 09/09/2026 — S11-b étapes 4→6 (D282)
 
 ⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE** : un défaut croisé se rapporte, il ne se
@@ -2455,8 +2557,30 @@ corrige pas dans un lot qui parle d'autre chose.
   `CONFIRMED` et le job d'expiration. Le test qui fige le comportement actuel dira alors ce
   qu'il a remplacé.
 
-- **[MÉTHODE][P0]** ⛔ **LA BARRE D273 A ÉTÉ REFUSÉE PUIS FRANCHIE DANS LA MÊME SESSION —
-  EST-ELLE UNE PORTE DURE, OU L'ANNOTATION D'UN RELEVÉ ?** Relevé le 09/09/2026, et les deux
+- [x] ~~**[MÉTHODE][P0]** ⛔ **LA BARRE D273 A ÉTÉ REFUSÉE PUIS FRANCHIE DANS LA MÊME
+  SESSION — EST-ELLE UNE PORTE DURE, OU L'ANNOTATION D'UN RELEVÉ ?**~~
+  ⇒ ✅ **TRANCHÉ PAR KO LE 09/09/2026, ET APPLIQUÉ LE 10/09 (D283) : c'est (a) une PORTE DURE
+  pour une CERTIFICATION, et (b) une ANNOTATION partout ailleurs** — sur les durées et
+  l'intermittence, **jamais sur un verdict**.
+  ⛔ **Motif de Ko, en une phrase** : *si « au repos » se franchit sur ordre, le mot ne
+  certifie plus rien.*
+  ⇒ **Ce que la distinction achète** : sous la barre, un **verdict déterministe** (code de
+  sortie, `23514`, garde qui mord) reste valide et se lance ; ce qui tombe est le droit d'en
+  tirer une **durée**, une **intermittence** ou une **certification**. D282 avait raison de
+  lancer ; il ne pouvait pas certifier.
+  ⚠ **ÉPROUVÉE TROIS FOIS LE 10/09, ET DANS LES DEUX SENS** : trois fenêtres de certification
+  ont été **refusées sur le régime** (`chrome` revenu ; huit heures de veille sur batterie ;
+  puis un relevé d'ouverture à 4 008 Mo, **571 sous la barre, refusé alors que Ko venait
+  d'annoncer la fermeture du navigateur** — la porte dure vaut aussi contre Ko). La quatrième
+  a tenu, et **la sortie de secours de D270 — redéfinir « repos » sur le plancher que la
+  session peut produire — n'a PAS servi** : le plancher mesuré était de 6 585 Mo, soit 2 006
+  au-dessus. **La barre a été tenue, pas déplacée.**
+  ⛔ **MAIS ELLE NE SUFFIT PAS À DÉFINIR « REPOS », ET C'EST MESURÉ** : voir les trois
+  `[MÉTHODE][P0]` du 10/09. Le plancher RAM est une **condition nécessaire**, pas une
+  définition — il protège les verdicts **tant qu'un budget non écrit tient les durées**, et il
+  ne voit ni l'alimentation ni ce qui se passe **pendant** la mesure.
+  ⚠ **Constat d'origine conservé ci-dessous pour la trace ; ne pas le lire comme l'état
+  courant.** Relevé le 09/09/2026, et les deux
   faits sont écrits côte à côte dans la section D282 :
   `test:int` **refusé à 2 926 Mo** (arrêt franc, demande à Ko), puis **toutes les portes
   lancées à 2 607 Mo** — c'est-à-dire **plus bas encore** — sur ordre de Ko, verdicts retenus
@@ -2480,12 +2604,26 @@ corrige pas dans un lot qui parle d'autre chose.
 
 ### Reports décidés, non oubliés
 
-- **[DOC][P2]** `ZWADJ_CONTINUITE.md` — **deux pointeurs qui se contredisent dans le même
-  en-tête** : l. 25 « Où lire le prochain lot : l'ordre des rangs, section D270, **et lui
-  seul** » ; l. 114 (barrage de D280) « l'ordre des rangs (D270), **et la section PROCHAIN
-  LOT** ». Le contenu concorde, le pointeur non. ⚠ **C'est la l. 114 qui doit céder**
-  (arbitrage de Ko, 09/09) — et c'est exactement le défaut contre lequel le rang 5 de D270
-  met en garde : deux endroits qui répondent à « quoi ensuite » finissent par diverger.
+- [x] ~~**[DOC][P2]** `ZWADJ_CONTINUITE.md` — **deux pointeurs qui se contredisent dans le
+  même en-tête** : l. 25 « Où lire le prochain lot : l'ordre des rangs, section D270, **et
+  lui seul** » ; l. 114 (barrage de D280) « l'ordre des rangs (D270), **et la section
+  PROCHAIN LOT** ».~~ ⇒ **FAIT LE 09/09/2026 (D283)**, mais **PAS comme cette entrée le
+  demandait.**
+  ⛔ **L'ARBITRAGE « C'EST LA L. 114 QUI DOIT CÉDER » ÉTAIT FAUX, ET IL EST BARRÉ AVEC SON
+  MOTIF PLUTÔT QU'EFFACÉ** (corrigé par Ko, 09/09/2026, après relevé) : ~~la 114 cède~~.
+  Les deux pointeurs ne se contredisent pas — **ils répondent à DEUX questions** : D270 dit
+  **QUEL** lot vient ensuite, le point d'entrée dit **OÙ CE LOT EN EST**. Faire céder la
+  l. 114 aurait retiré le seul pointeur vers le bloc que **D282 venait de rendre autoritaire
+  sur l'état du rang**, et dont la règle de D282 exige le rafraîchissement à chaque clôture
+  de session : c'est-à-dire rétabli la route que D282 a mesurée comme trompeuse.
+  ⇒ **CE QUI TOMBE EST « ET LUI SEUL », À LA L. 25**, et les deux questions y sont désormais
+  séparées. **Le remède n'était pas de choisir un vainqueur, c'était de séparer les
+  questions** — c'est bien le défaut du rang 5 de D270, mais son remède n'est pas d'élire un
+  pointeur.
+  ⚠ **CE QUE « ET LUI SEUL » A COÛTÉ, MESURÉ LE MÊME JOUR** : une reprise à froid l'a suivi
+  et l'ordre des rangs **ne portait aucun rang 9** — le prochain lot n'était écrit nulle
+  part, dans aucun des trois fichiers d'autorité. **Un pointeur exclusif sur un endroit
+  incomplet empêche le recoupement qu'il rend nécessaire.** Le rang 9 est désormais écrit.
 
 - **[DOC][P2]** `ZWADJ_BACKLOG.md:2111` — « **S11-b (chiffrage) reste entier, cadrage
   exigé** », écrit **au présent**, faux depuis le 08/09. La clause vit sous une entrée
@@ -2493,12 +2631,23 @@ corrige pas dans un lot qui parle d'autre chose.
   exacte que D277 décrit : sur deux occurrences, l'une correctement encadrée (`:2657`,
   « CONSTAT D'ORIGINE, CONSERVÉ POUR LA TRACE ») et l'autre non.
 
-- **[DOC][P2]** `AGENTS.md` — « deux lots non certifiés en attente sont tenables, **trois
-  non** » ne dit pas si un lot **DOCUMENTAIRE** compte. ⛔ **Arbitré par Ko le 09/09/2026 :
-  il ne compte pas** — il ne touche aucun code et ne peut dégrader aucune porte. Sur les
-  sept lots non certifiés à ce jour (D276 → D282), **deux** portent du code : D279 et D282.
-  ⇒ À écrire dans la règle **la prochaine fois qu'on touche `AGENTS.md`**, pas dans un lot
-  ouvert pour ça.
+- [x] ~~**[DOC][P2]** `AGENTS.md` — « deux lots non certifiés en attente sont tenables,
+  **trois non** » ne dit pas si un lot **DOCUMENTAIRE** compte.~~ ⇒ **ÉCRIT DANS `AGENTS.md`,
+  À CÔTÉ DE LA RÈGLE, LE 09/09/2026 (D283)**, daté, avec son motif et le renvoi à cet
+  arbitrage. **Arbitrage inchangé : il ne compte pas** — il ne touche aucun code et ne peut
+  dégrader aucune porte. Sur les sept lots non certifiés au 09/09 (D276 → D282), **deux**
+  portent du code : D279 et D282.
+  ⛔ **CE QUI EST BARRÉ ICI EST LE REPORT D'ÉCRITURE, ET C'EST KO QUI L'A ANNULÉ** :
+  ~~à écrire la prochaine fois qu'on touche `AGENTS.md`, pas dans un lot ouvert pour ça~~.
+  **Faux, et sur la règle la plus structurante du dépôt.** La règle vivait dans `AGENTS.md`
+  et l'arbitrage qui la rend **CALCULABLE** dans ce fichier : configuration **D277** exacte.
+  Lue seule, `AGENTS.md` comptait **sept** lots non certifiés, concluait « trois, donc non »
+  et **interdisait tout** — y compris le lot de certification qui lève le blocage.
+  ⇒ **RÈGLE QUI EN SORT** : un report d'écriture sur une règle de **blocage** est un report
+  sur la décision d'ouvrir un lot. Il ne se différencie pas au prochain passage.
+  ⚠ **Complété à l'écriture, dérivé du motif de Ko et non ajouté à côté** : « documentaire »
+  veut dire **aucun fichier hors `.md` d'autorité au diff**. Un lot qui touche un harnais, un
+  test, un script ou une migration **COMPTE** — il peut dégrader une porte.
 
 ## Report du 08/09/2026 — la base de développement
 

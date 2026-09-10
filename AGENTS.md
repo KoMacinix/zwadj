@@ -335,6 +335,25 @@ attente sont tenables, **trois non**. Et une porte redevenue verte ne certifie Q
 lot mesuré : on écrit « porte verte à cette date, tel lot en fait partie », on ne
 réécrit pas les en-têtes des précédents — ce serait une certification par procuration.
 
+⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
+et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
+dégrader aucune porte**.
+⛔ **SANS CETTE LIGNE, LA RÈGLE CI-DESSUS N'EST PAS CALCULABLE.** Au 09/09/2026, **sept**
+lots n'étaient pas certifiés (D276 → D282) et **deux seulement portaient du code** : D279
+et D282. Lue seule, cette page compte sept, conclut « trois, donc non » et **interdit
+tout** — y compris le lot de certification qui lèverait le blocage.
+⛔ **ET VOICI POURQUOI ELLE EST ICI, ET PAS SEULEMENT AU BACKLOG.** L'arbitrage a vécu une
+journée dans `ZWADJ_BACKLOG.md` seul, sous la mention « à écrire dans la règle **la
+prochaine fois qu'on touche `AGENTS.md`** » : la règle dans un fichier, ce qui la rend
+applicable dans un autre — très exactement la configuration de **D277**, cette fois sur la
+règle qui décide si un lot peut s'ouvrir. **Un report d'écriture sur une règle de blocage
+est un report sur la décision d'ouvrir un lot.** Ko a annulé ce report le 09/09/2026.
+⇒ **Ce que « documentaire » veut dire, DÉRIVÉ DU MOTIF et non ajouté à côté** : aucun
+fichier hors `.md` d'autorité au diff. **Un lot qui touche un harnais, un test, un script
+ou une migration COMPTE** — il peut dégrader une porte, donc il tombe sous la règle.
+⚠ Relevé complet et contre-exemple : entrée `[DOC][P2]` du 09/09 dans `ZWADJ_BACKLOG.md`,
+et section **D283** de `ZWADJ_CONTINUITE.md`.
+
 ⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**
 Trois fois en deux sessions une mesure a renseigné sur la MACHINE et non sur le code,
 dont une conclusion publiée puis fusionnée : **la même commande, sur le même arbre,
