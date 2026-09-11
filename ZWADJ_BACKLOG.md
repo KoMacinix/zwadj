@@ -2544,9 +2544,13 @@ corrige pas dans un lot qui parle d'autre chose.
   2. **l'égalité exacte n'est disponible que d'un côté** : `expiresAt` naît de l'horloge **Node**
      alors que le seul instant exposé (`createdAt`) naît de l'horloge **PostgreSQL** ⇒ assertion
      **bornée** ; `accepted_at` étant **persistée**, l'acceptation admet l'égalité **exacte** ;
-  3. la consigne « les constantes rejoignent `booking-deadline.ts` » **contredit une phrase
-     écrite de ce module** (« ce fichier ne déclare aucune constante de durée ») : l'en-tête
-     s'amende dans le même geste, sinon c'est **D116** — un commentaire qui dit l'inverse du code.
+  3. ~~la consigne « les constantes rejoignent `booking-deadline.ts` » contredit une phrase
+     écrite de ce module : l'en-tête s'amende dans le même geste~~ ⛔ **BARRÉ LE 10/09/2026 —
+     KO S'EST DÉJUGÉ**, le heurt signalé par le cadrage ayant montré que l'amendement ÉTAIT le
+     défaut. ⇒ **Les deux constantes sont EXPORTÉES depuis `bookings.service.ts`** et la spec les
+     importe de là ; `booking-deadline.ts` n'est pas au diff. Précédent mesuré : **9 fichiers** de
+     `test/int/` importent depuis `../../src/`, dont `INDEX_UNE_ATTENTE` pour confronter
+     l'autorité. ⇒ **Trois fichiers attendus au lieu de quatre.**
   ⚠ **Deux affirmations de cette entrée ont été confrontées à la source le 10/09 : `:156` et
   `:373` sont EXACTES au mot.** Relevé au passage et absent d'ici : `:157` assertit que
   `paymentDueAt` est **nulle à la création** — une vraie garde, que le lot ne touche pas.

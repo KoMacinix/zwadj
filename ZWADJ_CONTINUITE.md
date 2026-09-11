@@ -568,38 +568,96 @@ sur l'ancienne valeur.
 ⇒ **REMÈDE** : les deux constantes sont **exportées** et la spec les **importe**. L'attendu s'écrit
 `PRO_RESPONSE_DAYS * DAY_MS`, jamais un nombre.
 
-**MD4 — ⛔ DEUX HORLOGES : L'ÉGALITÉ EXACTE N'EST PAS DISPONIBLE DES DEUX CÔTÉS, ET LE CADRAGE LE
-DIT PLUTÔT QUE DE LA PROMETTRE.** Mesuré :
+**MD4 — ⛔ DEUX HORLOGES SI ON EN COMPARE DEUX. ⇒ L'ASSERTION N'EN UTILISE QU'UNE, ET IL N'Y A
+DONC AUCUNE TOLÉRANCE À CHOISIR.** ⚠ **FORME RECTIFIÉE PAR KO LE 10/09/2026**, et elle est
+meilleure que celle qu'elle remplace : ~~une assertion bornée dont la tolérance se dérive d'une
+mesure~~ — une tolérance, même dérivée, reste un nombre que quelqu'un relèvera un jour « parce
+que ça passe juste ». **Supprimer le besoin vaut mieux que le chiffrer.**
 
-- `expiresAt` part de `nowMs = Date.now()` (`:195`), horloge **Node** ; le seul instant de référence
-  exposé par le DTO est `createdAt`, qui vient de `@default(now())`, horloge **PostgreSQL**.
-  **Deux horloges ⇒ aucune égalité exacte possible.** L'assertion est donc **bornée**, et sa
-  tolérance s'écrit avec son motif : ce qui la rend suffisante n'est pas sa finesse, c'est que
-  **48 h et 7 jours sont séparés de cinq jours** — toute borne très inférieure à cet écart rend
-  l'interversion visible ;
-- `paymentDueAt` part de `acceptedAt = new Date()` (`:379`), et **`accepted_at` est PERSISTÉE**
-  (`schema.prisma:1073`). La spec d'intégration peut donc relire la ligne et assertir **l'égalité
-  EXACTE** : `paymentDueAt − acceptedAt === PAYMENT_WINDOW_HOURS * HOUR_MS`.
+- **`expiresAt` — ENCADREMENT PAR DEUX INSTANTS QUE LA SPEC MESURE ELLE-MÊME.** `Date.now()` est
+  lu **à l'intérieur de `create`** (`:195`), donc entre le `t0` relevé par la spec avant la
+  requête et le `t1` relevé après :
 
-⇒ **Les deux côtés n'ont pas la même force, pour une raison MESURÉE. L'écrire ici évite qu'une
-session suivante lise l'assertion bornée comme un relâchement** — ou qu'elle « corrige » la
-bornée en exacte et fabrique une suite qui rougit au hasard.
+  ```
+  expiresAt ∈ [ t0 + PRO_RESPONSE_DAYS * DAY_MS , t1 + PRO_RESPONSE_DAYS * DAY_MS ]
+  ```
 
-**MD5 — ⛔ LE MODULE NIERAIT SON PROPRE CORPS.** `booking-deadline.ts` porte, en tête et en toutes
-lettres : « **ce fichier ne déclare aucune constante de durée** », avec son motif — garder les deux
-règles métier séparées, la durée étant un PARAMÈTRE. Y déposer les deux constantes **sans toucher à
-cet en-tête** livrerait un module dont le commentaire dit l'inverse du code, et **D116 a déjà payé
-exactement cela** (« le commentaire disait l'inverse du code, et un relecteur l'aurait cru »).
-⇒ **REMÈDE** : l'en-tête est **amendé dans le même geste**, pour dire ce qui reste vrai — **ce que
-le motif interdit est une valeur HARMONISÉE, pas deux constantes distinctes et nommées**.
-⚠ **La garde qui empêche la fusion existe déjà** : `booking-deadline.spec.ts:108`, « LES DEUX
-FENÊTRES RESTENT DISTINCTES — la garde qui interdit de les fusionner ».
+  ⇒ **Zéro comparaison avec l'horloge PostgreSQL, zéro nombre choisi au jugé.** La largeur de
+  l'encadrement **est** la durée de la requête — quelques dizaines de millisecondes — contre les
+  **cinq jours** qui séparent 48 h de 7 jours. L'interversion sort de l'encadrement par cinq
+  ordres de grandeur.
+  ⛔ **ET C'EST LA MÊME HORLOGE AU SENS LE PLUS FORT, MESURÉ ET NON SUPPOSÉ** : `helpers.ts:39`
+  monte l'app par `Test.createTestingModule` et les requêtes partent en `supertest` sur
+  `ctx.app.getHttpServer()` — **l'API d'intégration tourne DANS le processus du test.** Le
+  `Date.now()` du service et ceux de la spec sont le même compteur, pas seulement la même source
+  système. `createdAt`, lui, vient de `@default(now())`, horloge **PostgreSQL** : **c'est la seule
+  valeur que l'assertion ne doit PAS utiliser**, et c'est écrit ici pour qu'on ne l'y ramène pas
+  par commodité.
+  ⚠ **DÉPENDANCE À MD1, ET ELLE EST STRUCTURELLE** : cet encadrement n'est valide que si
+  l'écrêtage ne mord pas. Si `startsAt` tombe sous `t0 + 7 j`, `expiresAt` vaut `startsAt` et
+  l'encadrement échoue — **pour la bonne raison, mais sur le mauvais sujet**. La fixture de MD1
+  est donc la condition de validité de MD4, pas une précaution voisine.
+- **`paymentDueAt` — ÉGALITÉ EXACTE.** Il part de `acceptedAt = new Date()` (`:379`), et
+  `accepted_at` est **PERSISTÉE** (`schema.prisma:1073`). La spec relit la ligne et assertit
+  `paymentDueAt − acceptedAt === PAYMENT_WINDOW_HOURS * HOUR_MS`. **Aucun encadrement, aucune
+  marge.**
+
+⇒ **Les deux côtés n'ont pas la même FORME — encadrement d'un côté, égalité de l'autre — et les
+deux sont EXACTS au sens où aucun nombre n'y est choisi.** L'écrire évite qu'une session suivante
+« harmonise » les deux formes et fabrique soit une comparaison inter-horloges, soit une tolérance.
+
+**MD5 — ⛔ AMENDER LE MOTIF D'UN MODULE POUR Y LOGER CE QU'IL EXCLUAIT.**
+⛔ **CE MODE A CHANGÉ DE RÉPONSE LE 10/09/2026 — KO S'EST DÉJUGÉ, ET C'EST LE HEURT SIGNALÉ PAR LE
+CADRAGE QUI L'A FAIT.** `booking-deadline.ts` porte en tête, en toutes lettres : « **ce fichier ne
+déclare aucune constante de durée** », avec son motif — garder les deux règles métier séparées, la
+durée étant un PARAMÈTRE.
+⇒ ~~Y déposer les deux constantes en amendant l'en-tête dans le même geste~~ ⛔ **ÉCARTÉ PAR KO**,
+motif : **amender le motif d'un module pour y loger ce qu'il excluait est la dérive que ce dépôt
+traque.** Un en-tête qui cède devant le premier lot qui le gêne ne protège plus rien — c'est la
+même faute que relever un plafond pour faire passer une suite.
+⚠ **CE QUI RESTE VRAI DE LA VERSION PRÉCÉDENTE, ET C'EST POURQUOI CE MODE NE DISPARAÎT PAS** :
+livrer un module dont le commentaire dit l'inverse du code est **D116**, payé. Le mode est donc
+conservé **comme interdiction**, et non retiré parce qu'on a choisi de ne pas l'enfreindre.
+
+⇒ **RETENU : LES DEUX CONSTANTES SONT EXPORTÉES DEPUIS `bookings.service.ts`, ET LA SPEC LES
+IMPORTE DE LÀ.** C'est l'option que ce cadrage avait écartée ; l'argument qui la condamnait —
+« faire importer un service par une spec » — **ne résiste pas à la mesure**.
+
+**Mesuré le 10/09/2026, et le compte de Ko est exact** : **9 fichiers** de `apps/api/test/int/`
+importent depuis `../../src/`, **valeurs comprises** — `configureApp`, `AppModule`,
+`PrismaService`, `PasswordService`, `IS_PUBLIC_KEY`, `ROLES_KEY`, `MEDIA_STORAGE`, `EMAIL_SENDER`,
+`WHATSAPP_SENDER`, `PAYMENT_STORE`.
+⛔ **ET LE PRÉCÉDENT EXACT EXISTE, SUR LE CHEMIN DE L'ARGENT** :
+`payment-store.prisma.ts:36` exporte `INDEX_UNE_ATTENTE = "payments_one_pending_per_booking"`, et
+`payment-intent-race.int-spec.ts:19` l'importe **pour confronter l'autorité** — il interroge
+`pg_indexes` avec la constante au lieu de retaper le nom de l'index. **C'est mot pour mot le geste
+que le rang 10 doit faire**, une constante de durée au lieu d'un nom d'index.
+⇒ **Aucun patron neuf, aucun en-tête amendé, et la spec confronte le SYMBOLE que le service
+utilise** — ce qui est plus fort que confronter une copie posée ailleurs : si le service cessait
+d'utiliser sa propre constante, la spec ne pourrait plus l'importer.
+⚠ **`booking-deadline.ts` N'EST DONC PAS TOUCHÉ PAR CE LOT.** Il garde son en-tête, son motif et
+sa spec. ⇒ Conséquence portée aux **fichiers attendus**, plus bas : **trois fichiers, pas quatre.**
 
 **MD6 — ⚠ LE FUSEAU, ET IL EST MUET SUR UN SERVEUR EN UTC.** `eventDate` est une date **civile**
 (UTC+1 sans heure d'été, D48) tandis que `startsAt` est un instant UTC. Une date d'échéance dérivée
 par arithmétique sur un `Date` local peut glisser d'un jour — et l'intégration, qui tourne en UTC,
 **ne le verrait jamais** (leçon S11-a, mesurée). ⇒ La fixture dérive sa date par les aides civiles
 existantes du dépôt, jamais à la main.
+
+**MD7 — ⛔ LA DATE DÉRIVÉE RENDRAIT LA DEMANDE IRRECEVABLE, ET LE TEST ROUGIRAIT POUR LA MAUVAISE
+RAISON.** ⚠ **AJOUTÉ PAR KO LE 10/09/2026** ; il manquait à la liste, et c'est la **conséquence du
+remède de MD2** — d'où sa place après MD6 plutôt qu'à celle de MD2, les numéros étant déjà cités
+ailleurs.
+**Dériver la date oblige à dériver LA DISPONIBILITÉ SEMÉE AVEC ELLE.** Une salle dont les créneaux
+sont semés sur `EVENT_DATE` **refuse** une demande à `now + 90 j` : le test tomberait en **400**,
+sans rien dire des échéances. ⛔ **Une garde qui rougit pour la mauvaise raison est pire qu'une
+garde absente** — elle s'attribue la preuve d'un défaut qu'elle n'a pas mesuré, et c'est la
+« mesure confondue » de D209 appliquée à la fixture au lieu de l'assertion.
+⇒ **REMÈDE** : la fixture dérive **la date ET le semis d'ouverture qui la rend acceptable**, des
+mêmes constantes. ⚠ **Et l'ordre de refus se vérifie** : un 400 de disponibilité arriverait
+**avant** toute écriture d'échéance, donc avant la mesure — le test ne pourrait même pas
+distinguer « fixture fautive » de « échéance fautive ». La fixture se prouve d'abord en
+**201**, ensuite on assertit la durée.
 
 #### Les cibles de neutralisation, nommées d'avance
 
@@ -633,27 +691,41 @@ mutent la **formule** et sont mesurées par la spec **unitaire** ; les deux nouv
    **434 / 36** (D283) — pour que le « +N » mesure quelque chose. **Recompter fait partie de la
    reprise** (leçon S11-a) : ce chiffre est un renvoi, pas une mesure du jour.
 
-#### ⛔ UN POINT D'ARBITRAGE POUR KO — soulevé, non tranché par la session
+#### ⛔ LE POINT D'ARBITRAGE — TRANCHÉ PAR KO LE 10/09/2026, ET IL S'EST DÉJUGÉ
 
-**OÙ VIVENT LES DEUX CONSTANTES.** La consigne dit `booking-deadline.ts`, et c'est le choix retenu
-par ce cadrage. ⚠ **Mais il entre en collision frontale avec une phrase écrite du module** (MD5), et
-le dépôt impose de vérifier une consigne contre les décisions déjà prises — D231, et la leçon S11-a
-où une consigne de backlog aurait défait D63. Les trois options, mesurées :
+**OÙ VIVENT LES DEUX CONSTANTES.** ⚠ **Ce bloc est conservé avec ses trois options et leurs
+verdicts D'ORIGINE barrés**, parce qu'un arbitrage dont on effacerait la première réponse ne
+peut plus expliquer pourquoi la seconde est meilleure. Le dépôt impose de vérifier une consigne
+contre les décisions déjà prises — D231, et la leçon S11-a où une consigne de backlog aurait
+défait D63 : **c'est ce contrôle qui a produit le renversement, et non une préférence.**
 
-- **`booking-deadline.ts`** — ⇒ **RETENU**. Le patron existe (`booking-charge.ts` : le module pur
-  est l'autorité, service **et** spec importent de lui). **Coût : amender l'en-tête** (MD5) ;
+- **`booking-deadline.ts`** — ~~⇒ RETENU. Le patron existe (`booking-charge.ts`). Coût : amender
+  l'en-tête~~ ⛔ **ÉCARTÉ PAR KO LE 10/09/2026** : « amender le motif d'un module pour y loger ce
+  qu'il excluait est la dérive que ce dépôt traque ». **Le coût n'était pas un coût, c'était le
+  défaut.** ⚠ Un en-tête qui cède devant le premier lot qui le gêne ne protège plus rien ;
 - **`@zwadj/types`** — `AGENTS.md` dit « les constantes de temps vivent dans `@zwadj/types` », où
   vivent déjà `VISIT_DURATION_MINUTES`, `AVAILABILITY_MAX_WINDOW_DAYS` et
   `ALGERIA_UTC_OFFSET_MINUTES`. ⛔ **Écarté, et sur une mesure** : ces trois-là sont des constantes
-  de **contrat**, partagées front/back. Relevé ce jour — **aucune des deux fenêtres n'est affichée
+  de **contrat**, partagées front/back. Relevé le 10/09 — **aucune des deux fenêtres n'est affichée
   ni consommée par `apps/client` ni par `apps/pro`** (zéro occurrence). Les y porter **élargirait le
-  contrat public sans consommateur**, ce que le périmètre MVP interdit ;
+  contrat public sans consommateur**, ce que le périmètre MVP interdit. ⚠ **Verdict INCHANGÉ** ;
 - **export depuis `bookings.service.ts`** — la lettre du backlog (« exporter les deux constantes »).
-  ⛔ **Écarté** : ce serait faire importer un **service** par une spec pour y lire une règle métier,
-  alors que S11-a et S11-b ont précisément sorti ces règles du service.
+  ~~⛔ Écarté : ce serait faire importer un service par une spec pour y lire une règle métier~~
+  ⛔ **RETENU LE 10/09/2026, ET MON ARGUMENT NE RÉSISTAIT PAS À LA MESURE** : **9 fichiers** de
+  `test/int/` importent déjà depuis `../../src/`, **valeurs comprises**, et l'un d'eux —
+  `payment-intent-race.int-spec.ts:19` — importe la constante `INDEX_UNE_ATTENTE` d'un module
+  `src` **précisément pour confronter l'autorité**, sur le chemin de l'argent. **J'avais objecté
+  sur un principe que le dépôt pratique déjà neuf fois.**
 
-⇒ **Si Ko préfère une autre maison, seul MD5 change** ; les cinq autres modes et les deux cibles
-tiennent à l'identique.
+⇒ **CE QUE LE RENVERSEMENT ACHÈTE** : aucun patron neuf, aucun en-tête amendé, **trois fichiers au
+lieu de quatre**, et la spec confronte le **symbole que le service utilise** plutôt qu'une copie
+posée ailleurs. ⚠ **Comme ce cadrage l'avait prévu, seul MD5 a changé** : les six autres modes et
+les deux cibles tiennent à l'identique.
+⛔ **LEÇON DE MÉTHODE, ET ELLE VAUT AU-DELÀ DE CE LOT** : le cadrage a **signalé le heurt sans le
+trancher**, et c'est ce qui a permis de le trancher correctement. Une session qui aurait appliqué
+la consigne en silence aurait livré un module amendé pour la circonstance ; une session qui
+l'aurait refusée seule aurait pris un arbitrage qui n'est pas le sien. **Signaler, proposer, ne pas
+décider.**
 
 #### ⛔ Ce qui NE se code PAS dans ce lot
 
@@ -673,17 +745,25 @@ tiennent à l'identique.
 - **les deux cibles n'ont pas été jouées.** Elles sont **spécifiées, pas mesurées** : leur mutisme
   sur l'arbre d'avant est une **prédiction de ce cadrage**, et c'est la première chose que la
   session de code doit vérifier ;
-- **la tolérance de l'assertion bornée de MD4 n'est pas chiffrée ici** : elle se dérive d'une
-  mesure, et un nombre choisi au jugé dans un cadrage se recopierait tel quel ;
+- ~~la tolérance de l'assertion bornée de MD4 n'est pas chiffrée ici~~ ⛔ **LIMITE RETIRÉE LE
+  10/09/2026 : ELLE N'A PLUS D'OBJET.** La forme rectifiée de MD4 **ne porte aucune tolérance**
+  — un encadrement par deux instants que la spec mesure elle-même, et une égalité exacte. ⚠ Retrait
+  **déclaré**, pas silencieux : une limite qui disparaît sans motif se lit comme une limite oubliée ;
 - **rien n'a été vérifié sur une base réelle** — `test:int` n'a pas tourné.
 
 #### Fichiers attendus de la session de CODE, énumérés avant qu'elle commence
 
-`apps/api/src/venues/booking-deadline.ts` (les deux constantes + en-tête amendé) ·
-`apps/api/src/venues/bookings.service.ts` (import au lieu de déclaration) ·
-`apps/api/test/int/bookings.int-spec.ts` (fixture dédiée + deux assertions de durée) ·
+⛔ **TROIS, ET NON QUATRE — CONSÉQUENCE DIRECTE DU RENVERSEMENT DE MD5** (10/09/2026) :
+
+`apps/api/src/venues/bookings.service.ts` (les deux constantes **exportées**, valeurs inchangées) ·
+`apps/api/test/int/bookings.int-spec.ts` (fixture dédiée — date **et** semis dérivés, MD7 — plus
+l'encadrement de MD4 et l'égalité exacte) ·
 `neutralisation/neutralize-s11b.py` (deux cibles).
-⛔ **En fin de lot, `git diff` ne doit contenir que ceux-là.** ⚠ Et ce lot **compte** dans les
+
+⛔ **`apps/api/src/venues/booking-deadline.ts` N'EST PAS AU DIFF.** ~~Il portait les deux
+constantes et son en-tête amendé~~ — écarté par Ko le 10/09. **Son apparition au diff serait le
+signe que MD5 a été rejoué dans sa forme abandonnée.**
+⛔ **En fin de lot, `git diff` ne doit contenir que ces trois-là.** ⚠ Et ce lot **compte** dans les
 deux/trois lots non certifiés : il touche un test et un harnais, donc il peut dégrader une porte.
 
 ---
@@ -1462,12 +1542,20 @@ recopié ici.**
    bornée comme un relâchement et la « corrigera » en une suite qui rougit au hasard.
 3. ⛔ **LA CONSIGNE ENTRE EN COLLISION AVEC UNE PHRASE ÉCRITE DU MODULE VISÉ.**
    `booking-deadline.ts` porte en tête « **ce fichier ne déclare aucune constante de durée** », avec
-   son motif. ⇒ **Le choix de Ko est retenu**, et le coût est nommé : l'en-tête s'amende dans le
-   même geste, sans quoi on livre un module dont le commentaire dit l'inverse du code — **D116**.
-   ⚠ Le motif du module interdit une valeur **harmonisée**, pas deux constantes nommées : c'est ce
-   qui rend l'amendement honnête plutôt qu'une réécriture de convenance.
+   son motif. ~~⇒ Le choix de Ko est retenu, et le coût est nommé : l'en-tête s'amende dans le même
+   geste~~ ⛔ **BARRÉ LE 10/09/2026 — KO S'EST DÉJUGÉ APRÈS LECTURE DU CADRAGE**, motif :
+   « amender le motif d'un module pour y loger ce qu'il excluait est la dérive que ce dépôt
+   traque ». ⇒ **Les deux constantes sont EXPORTÉES depuis `bookings.service.ts`**, la spec les
+   importe de là, et `booking-deadline.ts` **n'est pas touché**.
+   ⛔ **CE QUE CE FAIT DEVIENT, ET C'EST PLUS FORT QUE CE QU'IL DISAIT** : un cadrage qui SIGNALE
+   un heurt sans le trancher est ce qui a permis de le trancher correctement. Appliquer la consigne
+   en silence aurait livré un en-tête amendé pour la circonstance ; la refuser seule aurait pris un
+   arbitrage qui n'est pas celui de la session. **Signaler, proposer, ne pas décider.**
+   ⚠ **Mon argument contre l'option retenue ne résistait pas à la mesure** : j'avais objecté qu'une
+   spec n'importe pas d'un service — **9 fichiers de `test/int/` le font déjà**, dont un pour
+   confronter une constante sur le chemin de l'argent (`INDEX_UNE_ATTENTE`).
 
-### ⛔ D284 — DEUX FAUTES DE MÉTHODE, À MON COMPTE
+### ⛔ D284 — TROIS FAUTES DE MÉTHODE, À MON COMPTE
 
 1. ⛔ **J'AI ANNONCÉ UN DÉCALAGE DE LIGNE QUI N'EXISTAIT PAS.** Ayant lu `:156` via `sed -n
    '150,160p'`, j'ai mal compté les lignes vides de la sortie et rapporté que le backlog était
@@ -1479,6 +1567,24 @@ recopié ici.**
    c'est la seule raison pour laquelle elle ne compte pas comme un troisième fait : un script
    d'édition tronqué qui aurait **parsé** aurait écrit la moitié du cadrage sans le dire. ⇒ Le
    contenu est passé par des fichiers, et l'insertion a asserti ses comptes.
+3. ⛔ **UN BLOC INSÉRÉ SANS FIN DE LIGNE FINALE A HAPPÉ LA LIGNE SUIVANTE — À LA RETOUCHE DU
+   10/09, ET LE DÉPÔT LE DOCUMENTAIT DÉJÀ.** Mon remplacement dans `ZWADJ_BACKLOG.md` se
+   terminait sans `
+` : la ligne « ⚠ Deux affirmations… » s'est retrouvée **collée** à la
+   fin de mon dernier alinéa. ⚠ **Rien n'a été perdu** — mais la structure de la liste l'était,
+   et c'est mot pour mot la leçon écrite dans `AGENTS.md` : « **un bloc inséré sans fin de ligne
+   finale DÉTRUIT la ligne suivante** ».
+   ⛔ **CE QUI L'A ATTRAPÉ N'EST PAS MON CONTRÔLE DE MARQUEURS, ET C'EST LE POINT.** Les onze
+   marqueurs asssertés étaient **tous présents** : ils testaient l'EXISTENCE de chaînes, pas la
+   **structure** des lignes. C'est la revue du `git diff` — une suppression que je n'avais pas
+   prévue — qui l'a montrée. **Un contrôle de présence ne voit pas une jointure.**
+   ⇒ **Contrôle ajouté et joué sur les trois fichiers** : tout marqueur de DÉBUT de ligne
+   (`####`, `**MDn`, un alinéa numéroté) trouvé en MILIEU de ligne est une couture cassée. Une
+   seule occurrence est ressortie, **antérieure et légitime** (référence en prose au MD8
+   du cadrage de S11-b) — vérifiée hors de mes édits avant d'être écartée.
+   ⚠ **La longueur de ligne ne sert à rien comme détecteur ici** : `ZWADJ_BACKLOG.md` compte 264
+   lignes de plus de 160 caractères, écrites ainsi. Un instrument se calibre sur un cas dont la
+   réponse est connue (D275), et celui-là aurait rendu 264 faux positifs.
 
 ### ⛔ D284 — CE QUI RESTE, ET CE QUI N'EST PAS MESURÉ
 
