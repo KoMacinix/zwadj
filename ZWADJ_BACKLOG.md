@@ -2362,6 +2362,34 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 10/09/2026 — rang 10, cadrage (D284)
+
+⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** Ce lot est documentaire : il n'a touché aucun code.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[API][P2]** ⚠ **`DAY_MS` EST REDÉCLARÉ DANS CINQ FICHIERS, `HOUR_MS` DANS UN.** Relevé le
+  10/09/2026 en marge du cadrage du rang 10 : `86_400_000` est écrit en dur dans
+  `availability-time.ts:19`, `booking-window.ts:31`, `bookings.service.ts:120`,
+  `visit-bookings.service.ts:49` et `visit-slots.service.ts:35`.
+  ⚠ **CE N'EST PAS UNE FORMULE, ET C'EST POURQUOI C'EST UN P2 ET NON UN P0** : une conversion
+  d'unité ne peut pas diverger silencieusement comme deux calculs concurrents du même montant —
+  un jour fait 86 400 000 ms partout ou le test tombe. ⛔ **Mais `AGENTS.md` dit « les constantes
+  de temps vivent dans `@zwadj/types` »**, et cinq déclarations locales sont cinq endroits où
+  quelqu'un écrira un jour `86_400` ou `8_640_000` sans que rien ne le confronte.
+  ⇒ **RAPPORTÉ, NON CORRIGÉ** : le rang 10 parle des deux **fenêtres métier**, pas des unités.
+  Les toucher serait le refactoring opportuniste que ce dépôt punit — **un défaut croisé se
+  rapporte, il ne se corrige pas dans un lot qui parle d'autre chose.**
+
+### Reports décidés, non oubliés
+
+- **[DOC][P3]** ⚠ **LE CADRAGE DU RANG 10 PORTE UNE PRÉDICTION, ET ELLE DOIT ÊTRE VÉRIFIÉE AVANT
+  D'ÊTRE CRUE.** Il affirme que les deux cibles d'interversion sont **muettes sur l'arbre
+  d'avant** — c'est la démonstration que le défaut existe, et elle **n'a pas été jouée** (lot
+  documentaire, aucune porte lancée). ⛔ **Si elles mordaient déjà, le cadrage se serait trompé
+  d'objet** et le lot de code devrait s'arrêter pour le dire. C'est la première mesure de la
+  session de code, pas une formalité.
+
 ## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
 
 ⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** ⛔ **Et ces trois-là ne dépendent PAS du
@@ -2502,6 +2530,26 @@ corrige pas dans un lot qui parle d'autre chose.
   existantes, et une cible muette fait sortir la campagne en échec sans rien apprendre.
   ⇒ **REMÈDE, NON FAIT** : exporter les deux constantes et faire assertir la DURÉE par la
   spec d'intégration — l'attendu venant de la constante partagée, jamais recopié.
+  ⛔ **DEVENU LE RANG 10 LE 10/09/2026, ARBITRÉ PAR KO — CADRÉ, TOUJOURS PAS CORRIGÉ (D284).**
+  Le cadrage vit dans `ZWADJ_CONTINUITE.md`, section « **PROCHAIN LOT — rang 10** » : six modes
+  de défaillance écrits avant toute ligne de code, deux cibles de neutralisation nommées
+  d'avance, un point d'arbitrage soulevé. ⚠ **Le remède reste NON FAIT** : cette entrée ne se
+  barre qu'avec le code, en session neuve.
+  ⇒ **TROIS FAITS QUE CETTE ENTRÉE N'AVAIT PAS, et qui changent le geste** :
+  1. la garde à écrire **porterait une date de péremption** — `bookings.int-spec.ts:32` porte
+     `EVENT_DATE = "2027-08-15"`, qui satisfait la condition « au-delà des deux fenêtres »
+     **par accident du calendrier** et cesse de la satisfaire le **08/08/2027**. La fixture doit
+     **dériver** sa date des constantes ; et `EVENT_DATE` **ne se corrige pas en place**, `:167`
+     et `:511` en dérivant des instants ISO exacts qui mesurent le créneau franchissant minuit ;
+  2. **l'égalité exacte n'est disponible que d'un côté** : `expiresAt` naît de l'horloge **Node**
+     alors que le seul instant exposé (`createdAt`) naît de l'horloge **PostgreSQL** ⇒ assertion
+     **bornée** ; `accepted_at` étant **persistée**, l'acceptation admet l'égalité **exacte** ;
+  3. la consigne « les constantes rejoignent `booking-deadline.ts` » **contredit une phrase
+     écrite de ce module** (« ce fichier ne déclare aucune constante de durée ») : l'en-tête
+     s'amende dans le même geste, sinon c'est **D116** — un commentaire qui dit l'inverse du code.
+  ⚠ **Deux affirmations de cette entrée ont été confrontées à la source le 10/09 : `:156` et
+  `:373` sont EXACTES au mot.** Relevé au passage et absent d'ici : `:157` assertit que
+  `paymentDueAt` est **nulle à la création** — une vraie garde, que le lot ne touche pas.
 
 - **[INFRA][P1]** ⚠ **MODIFIER UN FICHIER DE MIGRATION DÉJÀ APPLIQUÉ CRÉE UNE DÉRIVE DE
   SOMME DE CONTRÔLE, ET PRISMA N'EN DIT RIEN.** Mesuré le 09/09 : après ajout d'un
@@ -2624,6 +2672,14 @@ corrige pas dans un lot qui parle d'autre chose.
   et l'ordre des rangs **ne portait aucun rang 9** — le prochain lot n'était écrit nulle
   part, dans aucun des trois fichiers d'autorité. **Un pointeur exclusif sur un endroit
   incomplet empêche le recoupement qu'il rend nécessaire.** Le rang 9 est désormais écrit.
+  ⛔ **ET LA CLASSE S'EST REFERMÉE LE LENDEMAIN, CE QUI A FAIT ÉCRIRE UNE RÈGLE (D284,
+  10/09/2026).** Rang 9 clos le matin, **l'ordre s'arrêtait à nouveau** : la reprise à froid du
+  10/09 a dû refaire le même recoupement, le prochain lot ne vivant plus que dans une **incise**
+  du rang précédent. ⇒ **Inscrire un rang corrige l'INSTANCE ; un rang inscrit se referme.**
+  ⇒ **RÈGLE ÉCRITE DANS `AGENTS.md` LE 10/09/2026** : « **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ,
+  JAMAIS UNE ABSENCE** » — si le rang suivant n'est pas arbitré, l'ordre écrit qu'il est
+  **attendu**. ⚠ Appliquée à elle-même dans le même commit : l'ordre porte « rang suivant : en
+  attente d'arbitrage de Ko » sous le rang 10.
 
 - **[DOC][P2]** `ZWADJ_BACKLOG.md:2111` — « **S11-b (chiffrage) reste entier, cadrage
   exigé** », écrit **au présent**, faux depuis le 08/09. La clause vit sous une entrée

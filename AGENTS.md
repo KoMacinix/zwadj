@@ -354,6 +354,27 @@ ou une migration COMPTE** — il peut dégrader une porte, donc il tombe sous la
 ⚠ Relevé complet et contre-exemple : entrée `[DOC][P2]` du 09/09 dans `ZWADJ_BACKLOG.md`,
 et section **D283** de `ZWADJ_CONTINUITE.md`.
 
+⛔ **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ, JAMAIS UNE ABSENCE — arbitré par Ko le 10/09/2026,
+ÉCRIT ICI LE MÊME JOUR (D284).** La session qui ferme un rang écrit, dans l'ordre des rangs
+(`ZWADJ_CONTINUITE.md`, section D270), **ce que devient le rang suivant** : son objet s'il est
+arbitré, et sinon, mot pour mot, « **rang suivant : en attente d'arbitrage de Ko** ».
+⛔ **UNE LISTE QUI S'ARRÊTE N'EST PAS UN ÉTAT** : elle se lit comme une route, et elle envoie
+recouper — c'est-à-dire exactement ce que le pointeur « l'ordre des rangs dit QUEL lot »
+promet d'éviter.
+⚠ **LE MOTIF EST MESURÉ, ET IL S'EST PRODUIT DEUX FOIS EN DEUX JOURS.** Le 09/09/2026, une
+reprise à froid a suivi ce pointeur, trouvé une liste close au rang 8 — dont les six étapes
+étaient faites — et a dû recouper `AGENTS.md` et `ZWADJ_BACKLOG.md` pour établir un prochain
+lot qui n'était écrit **nulle part** (D283). Le 10/09, rang 9 clos, **le trou était rouvert** :
+le candidat ne vivait plus que dans une incise du rang précédent, et la même reprise a dû
+refaire le même recoupement.
+⛔ **CE QUE D283 A CORRIGÉ EST L'INSTANCE, PAS LA CLASSE.** Il a inscrit le rang 9 — et un rang
+inscrit se referme. Une règle qui exige un **état à la clôture** ne se périme pas au rang
+suivant ; c'est la distinction « une liste se périme, une règle non », déjà payée sur la liste
+des lots à certifier (rang 7).
+⚠ **L'ARBITRAGE DU RANG APPARTIENT À KO** — quatre écritures de cet ordre, aucune par une
+session. La session ne choisit donc pas le rang suivant : **elle écrit qu'il est attendu.**
+Ne rien écrire n'est pas neutre — c'est la seule forme qui se lit comme une route sans fin.
+
 ⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**
 Trois fois en deux sessions une mesure a renseigné sur la MACHINE et non sur le code,
 dont une conclusion publiée puis fusionnée : **la même commande, sur le même arbre,
