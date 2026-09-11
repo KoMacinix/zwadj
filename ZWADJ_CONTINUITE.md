@@ -487,19 +487,26 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 ⛔ **OUVERT LE 10/09/2026, ARBITRÉ PAR KO.** ⇒ **QUEL lot : rang 10 de l'ordre des rangs. OÙ IL
 EN EST : ici.** C'est la séparation des deux questions posée par D283.
 
-⛔ **ÉTAT : CADRÉ LE 10/09/2026 (D284). AUCUNE LIGNE DE CODE ÉCRITE.** L'arrêt franc de
-`CLAUDE.md` s'applique — « tout code sur le CHEMIN DE L'ARGENT sans analyse écrite des modes de
-défaillance » — et le cadrage est le **premier livrable**, pas un préalable que la session aurait
-trouvé écrit. Le code s'écrit en **session neuve**, après arbitrage de Ko sur ce cadrage.
+⛔ **ÉTAT : LIVRÉ ET MESURÉ LE 11/09/2026 (D285).** ~~CADRÉ LE 10/09/2026 (D284). AUCUNE LIGNE
+DE CODE ÉCRITE.~~ — l'arrêt franc a eu lieu, le cadrage a été ratifié par Ko, et le code a été
+écrit en session neuve, comme ce bloc l'exigeait. ⇒ **Détail : section « Session du 11/09/2026 —
+D285 » de ce fichier.**
+⛔ **CE LOT N'EST PAS CERTIFIÉ, ET IL COMPTE.** Il touche un test et un harnais, donc il peut
+dégrader une porte — le cadrage le disait déjà. ⇒ **Le compteur de lots de code non certifiés
+passe de ZÉRO à UN.** Deux restent tenables, trois non.
 ⚠ **Ce bloc se rafraîchit à la clôture de toute session qui fait avancer le rang** (règle D282).
 
 ### Ce que le rang 10 recouvre
 
-**Rendre VISIBLE l'interversion des deux constantes d'échéance.** Aujourd'hui, échanger
+⛔ **CE PARAGRAPHE DÉCRIT LE PROBLÈME TEL QU'IL ÉTAIT LE 10/09/2026 — IL EST RÉSOLU DEPUIS LE
+11/09 (D285).** Conservé parce qu'un cadrage reste consultable après validation (D277) et qu'il
+dit ce à quoi le lot répondait ; son « aujourd'hui » n'est plus le jour de qui le lit.
+
+~~**Rendre VISIBLE l'interversion des deux constantes d'échéance.** Aujourd'hui, échanger
 `PRO_RESPONSE_DAYS` (7 jours) et `PAYMENT_WINDOW_HOURS` (48 h) entre leurs deux sites d'appel
-produit deux dates parfaitement non nulles : **aucune porte ne rougit**. Le lot exporte les deux
-constantes, fait assertir la **durée** par l'intégration en les important, et arme la cible de
-neutralisation qui le prouve.
+produit deux dates parfaitement non nulles : **aucune porte ne rougit**.~~ Le lot exporte les
+deux constantes, fait assertir la **durée** par l'intégration en les important, et arme la cible
+de neutralisation qui le prouve — **fait, et mesuré : 13/13.**
 ⛔ **POURQUOI C'EST LE CHEMIN DE L'ARGENT** : `paymentDueAt` est ce sur quoi **E3 décidera si un
 règlement arrive à temps**. Une fenêtre de 48 h servie à 7 jours — ou l'inverse — ne se voit ni à
 la lecture ni à l'exécution ; elle se verrait au premier litige de paiement.
@@ -1477,6 +1484,183 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 11/09/2026 — D285 · les deux échéances : la garde naît, et c'est la mesure d'ouverture qui l'a autorisée
+
+⛔ **RANG 10 LIVRÉ ET MESURÉ.** Le cadrage de D284 a été ratifié par Ko, puis exécuté dans
+l'ordre qu'il impose. Trois fichiers au diff, ceux qui étaient énumérés — plus les deux
+fichiers d'autorité, sur consigne explicite de Ko (voir « ce qui a atterri où »).
+
+### ⛔ D285 — LA PRÉDICTION DU CADRAGE A TENU, ET C'EST ELLE QUI AUTORISAIT LE LOT
+
+Le cadrage déclarait ses deux cibles **spécifiées, pas mesurées**, et leur mutisme sur l'arbre
+d'avant comme une **prédiction à vérifier avant toute ligne de code**. Vérifiée :
+
+| | résultat |
+|---|---|
+| pré-vol | **5 mesures vertes** — `chiffrage`, `int-reservations`, `int-devis`, `echeances`, `int-migration` |
+| cible 12 (`expiresAt` reçoit 48 h) | **MUETTE** — verte dans `int-reservations` malgré la neutralisation |
+| cible 13 (`paymentDueAt` reçoit 7 j) | **MUETTE** — idem |
+| verdict du harnais | `0 garde mordue sur 2 cibles RÉELLEMENT MESURÉES`, sortie **1** |
+
+⚠ **LA SORTIE 1 EST LE RÉSULTAT ATTENDU ICI, PAS UN ÉCHEC** : c'est le code « au moins une
+garde muette », et deux gardes muettes sont exactement la démonstration que le défaut existe.
+Une cible qui aurait mordu **avant** aurait voulu dire que la mesure existait déjà et que le
+cadrage s'était trompé d'objet — l'arrêt franc prévu par Ko. Il n'a pas eu lieu.
+
+### ⛔ D285 — « MUETTE » A DEUX CAUSES, ET LA SECONDE FABRIQUERAIT LA PREUVE QU'ON CHERCHE
+
+Consigne de Ko, écrite avant la mesure : une cible verte sous neutralisation signifie soit que
+**l'assertion est aveugle au défaut** (ce qu'on cherche), soit que **la mutation n'a jamais été
+appliquée** — le remplacement fantôme d'`AGENTS.md`, trois fois un motif en `\n` qui n'a rien
+remplacé dans un fichier CRLF pendant que le script annonçait « fait ».
+⛔ **ICI, LE FANTÔME NE SERAIT PAS UN FAUX NÉGATIF : IL SERAIT UNE PREUVE FABRIQUÉE.** Le lot
+tout entier repose sur « les cibles sont muettes » ; une mutation non posée rend ce mutisme
+gratuitement, et rien dans la sortie du harnais ne distingue les deux cas.
+
+**Ce que le harnais fait déjà, et ce qu'il ne fait pas** : il compte ses occurrences **avant**
+(`vus != attendu` ⇒ `ERREUR DE SCRIPT`, sortie 2) ; il **ne relit pas** le marqueur après. La
+moitié manquante a été produite par un instrument séparé, qui pour chaque cible relève l'ancre
+et le marqueur **avant et après** la mutation, en mémoire, et imprime la ligne réellement
+changée.
+
+⛔ **RÉSULTAT, ET IL PORTE UNE SUBTILITÉ QU'UNE ASSERTION NAÏVE AURAIT MANQUÉE** : pour une
+**interversion**, le texte de remplacement **existe déjà dans le fichier**, à l'autre site
+d'appel. Le marqueur ne vaut donc pas 0 avant et 1 après, mais **1 avant et 2 après**. Une
+garde écrite « le marqueur est-il présent ? » aurait été **VRAIE AVANT TOUTE MUTATION** et
+n'aurait rien mesuré — c'est la « mesure confondue » de D209, transposée à l'instrument qui
+vérifie la mesure.
+
+| cible | ancre avant → après | marqueur avant → après | ligne mutée |
+|---|---|---|---|
+| 12 | 1 → 0 | 1 → **2** | `windowMs: PRO_RESPONSE_DAYS * DAY_MS` → `PAYMENT_WINDOW_HOURS * HOUR_MS` |
+| 13 | 1 → 0 | 1 → **2** | `windowMs: PAYMENT_WINDOW_HOURS * HOUR_MS` → `PRO_RESPONSE_DAYS * DAY_MS` |
+
+⇒ **Les deux mutations sont prouvées POSÉES. Le mutisme vient donc bien de l'aveuglement de
+l'assertion**, et le lot avait son objet.
+
+### ⛔ D285 — L'INSTRUMENT A ÉTÉ CALIBRÉ AVANT DE SERVIR, ET LE CAS LIMITE ÉTAIT DANS LE LOT
+
+D275 — trois faux positifs d'outillage jetable en une session, **aucun n'ayant levé, tous
+ayant répondu**. La règle qui en sort : **un extracteur se confronte à une sortie dont la
+réponse est déjà connue avant de servir à compter.** Appliquée ici avant tout usage :
+l'instrument a été passé sur **cinq cibles existantes** (1, 5, 8, 10, 11), toutes connues
+mordantes depuis la certification du rang 9. Les cinq ont rendu « mutation posée » avec leur
+ligne exacte.
+⛔ **ET LA CALIBRATION A RAPPORTÉ UN CAS QUE JE N'AVAIS PAS PRÉVU** : la cible 11 (`min` →
+`max`) change **zéro octet**. Un contrôle par taille de fichier — le réflexe — l'aurait
+déclarée non posée. C'est la comparaison de contenu (`source != mute`) qui la rattrape.
+
+### ⛔ D285 — L'ANCRE SUR LE SITE D'APPEL : LA CONSIGNE ÉTAIT JUSTE, ET ELLE S'EST VÉRIFIÉE
+
+Consigne de Ko : ancrer sur les **sites d'appel**, jamais sur les **déclarations**, le lot
+allant préfixer celles-ci d'`export`. Mesuré après le lot : le bloc de commentaire ajouté
+au-dessus des constantes a décalé les deux sites d'appel de **251 → 261** et **382 → 392**,
+mais **leur texte est identique**. Les deux ancres s'appliquent encore, à 1 occurrence chacune.
+⇒ **Ancrées sur les déclarations, elles seraient devenues « non mesurées »**, et le `13/13` de
+la fin de lot n'aurait pas eu lieu — il aurait fallu réécrire les cibles au milieu du lot.
+⚠ Le harnais n'utilise **aucun numéro de ligne** : c'est ce qui rend le décalage indolore.
+
+### ⛔ D285 — ÉCART AU CADRAGE ASSUMÉ : QUATRE CONSTANTES EXPORTÉES, PAS DEUX
+
+Le cadrage dit « les **deux** constantes sont exportées ». Mais son propre remède MD3 exige que
+l'attendu s'écrive `PRO_RESPONSE_DAYS * DAY_MS` — or `DAY_MS` et `HOUR_MS` sont **privées elles
+aussi**, et **`@zwadj/types` n'en porte aucun équivalent** (relevé : une seule occurrence de
+`86_400_000` dans tout `packages/types`, à l'intérieur d'un calcul de fenêtre, pas une
+constante exportée).
+⇒ **Les quatre sont exportées.** Les alternatives ont été écartées, chacune sur son motif :
+- écrire `7 * 86_400_000` dans la spec ⇒ **c'est MD3**, la valeur recopiée qui laisse la garde
+  verte sur l'ancienne le jour où la constante change ;
+- importer un `DAY_MS` depuis `@zwadj/types` ⇒ **deuxième autorité** pour le même nombre, ce
+  que « un seul endroit par formule » interdit ;
+- exporter un produit déjà calculé (`PRO_RESPONSE_WINDOW_MS`) ⇒ **symbole neuf**, et il
+  faudrait changer les sites d'appel — donc les ancres de neutralisation, dans le lot même qui
+  les pose.
+⚠ **L'export porte son motif EN COMMENTAIRE, au-dessus des quatre** : un `export` sans
+consommateur visible dans le même fichier est exactement le symbole qu'un lot de ménage
+supprime (D263 — « avant de supprimer un symbole inutilisé, demander où il était utilisé »).
+
+### ⛔ D285 — UNE PRÉMISSE DE MD7 ÉTAIT FAUSSE, ET LE VRAI RISQUE ÉTAIT AILLEURS
+
+MD7 posait : « une salle dont les créneaux sont **semés sur `EVENT_DATE`** refuse une demande à
+`now + 90 j` ». **Relevé dans le spec : il n'y a aucun semis par date.** `makeVenue` crée un
+`SlotTemplate` **récurrent** (nom, minutes de début/fin, prix) ; aucune disponibilité n'est
+attachée à une date. La date n'a donc pas à être accompagnée d'un semis.
+⛔ **MAIS LE MODE DE DÉFAILLANCE NE DISPARAÎT PAS — IL CHANGE DE CAUSE.** Ce qui peut rendre la
+date irrecevable, c'est **l'horizon** : `BOOKING_HORIZON_MONTHS = 18` (relevé dans
+`packages/types/src/venue.ts`), et D227 refuse explicitement au-delà. Le remède de MD7 tient
+donc, avec une autre justification : **la fixture se prouve en 201 avant qu'on assertisse quoi
+que ce soit**, et les deux tests portent en plus une assertion qui vérifie que la date dérivée
+dépasse bien les deux fenêtres — sans quoi l'écrêtage la ramènerait au début de l'événement et
+la garde naîtrait muette (MD1).
+⚠ C'est D231 appliqué à un mode de défaillance : **vérifier la prémisse fait partie de coder la
+consigne**. La consigne était bonne, son motif non.
+
+### D285 — la fixture, et pourquoi elle ne porte aucune date de calendrier
+
+`EVENT_DATE = "2027-08-15"` est **laissée intacte** : deux tests en dérivent des instants ISO
+exacts qui mesurent le créneau franchissant minuit (D55/D77), et la corriger en place serait le
+refactoring opportuniste que ce dépôt punit. La fixture des échéances est **dédiée** :
+
+```
+FENETRE_MAX_MS   = max(PRO_RESPONSE_DAYS * DAY_MS, PAYMENT_WINDOW_HOURS * HOUR_MS)
+dateHorsEcretage = formatCivilDate(civilTodayAt(now + 2 * FENETRE_MAX_MS))
+```
+
+- **la marge est le DOUBLE de la plus large des deux fenêtres**, et elle se dérive : allonger
+  une fenêtre fait suivre la fixture au lieu de la rendre silencieusement fausse ;
+- **`max` des deux, pas `PRO_RESPONSE_DAYS` en dur** : MD1 demande « au-delà des DEUX », et
+  l'écrire ainsi rend la condition **structurelle** au lieu d'incidente ;
+- **la conversion civile passe par les aides du dépôt** (`civilTodayAt`, `formatCivilDate`),
+  jamais par `getFullYear()` sur un `Date` — MD6, et la leçon S11-a d'une garde de fuseau muette
+  sur un serveur en UTC. ⚠ L'arithmétique en millisecondes est exacte ici parce que l'Algérie
+  est **UTC+1 sans heure d'été** (D48) ; elle ne le serait pas ailleurs.
+
+### D285 — les deux assertions n'ont pas la même FORME, et c'est écrit pour qu'on ne les harmonise pas
+
+- **`expiresAt` — encadrement par deux instants que la spec mesure elle-même.** `Date.now()`
+  est lu **dans** `create`, donc entre le `t0` et le `t1` relevés autour de la requête. La
+  largeur de l'encadrement **est** la durée de la requête ; l'interversion en sort de cinq
+  ordres de grandeur. ⛔ `createdAt` vient de l'horloge **PostgreSQL** : c'est la seule valeur
+  que cette assertion ne doit pas utiliser, et c'est écrit sur place.
+- **`paymentDueAt` — égalité exacte.** `accepted_at` étant **persistée**, les deux instants se
+  relisent dans la **même ligne** et se soustraient sans approximation.
+
+⇒ **Aucun nombre n'est choisi dans l'une ni dans l'autre.** MD4 dans sa forme rectifiée par Ko :
+**supprimer le besoin d'une tolérance vaut mieux que la chiffrer.**
+
+### ⛔ D285 — TROIS FAUTES DE MÉTHODE, À MON COMPTE
+
+1. ⛔ **J'AI ÉCRIT DEUX NUMÉROS DE LIGNE DANS DES COMMENTAIRES, ET ILS ÉTAIENT PÉRIMÉS DANS LE
+   LOT MÊME QUI LES POSAIT.** Mes commentaires de cibles citaient `:156` et `:373` ; mes propres
+   insertions ont poussé ces assertions en **186** et **433**. C'est D116 — le commentaire qui
+   dit l'inverse du code — commis en écrivant. Attrapé par la relecture du marqueur, pas par
+   relecture humaine. ⇒ Corrigé par **le remède du dépôt : on supprime le chiffre, on ne le met
+   pas à jour** ; les commentaires nomment désormais « l'assertion de la CRÉATION » et « celle de
+   l'ACCEPTATION ».
+2. ⛔ **MON PREMIER EXTRACTEUR DE VERDICT A COMPTÉ UN `FAIL` QUI N'EN ÉTAIT PAS.** `grep FAIL`
+   sur la sortie d'intégration a matché **le NOM d'un test qui passe** — « la ligne passe FAILED
+   (D63) ». C'est très exactement le deuxième des trois faux positifs de D275, reproduit à
+   l'identique, par moi, le jour où je venais de le lire. ⇒ Tous les verdicts de cette session
+   sont lus sur les lignes de résumé Vitest, **codes ANSI retirés**.
+3. ⚠ **J'AI PRÉDIT UN ENCODAGE AU LIEU DE LE MESURER.** J'ai annoncé que les échappements
+   `\uXXXX` de mon script d'édition atterriraient **littéralement** dans le harnais ; ils se sont
+   résolus en caractères. Sans conséquence — le résultat était celui voulu — mais je ne le savais
+   qu'après avoir relu le fichier. **La relecture du marqueur n'a pas servi qu'à la mutation.**
+
+### ⛔ D285 — UNE OBSERVATION DE DURÉE QUI N'EST PAS EXPLIQUÉE, ET QUI NE SERA PAS EXPLIQUÉE ICI
+
+`test:int` a rendu **918 s** sur l'arbre d'avant le lot et **615 s** après, pour **deux tests de
+plus** — avec un état machine relevé devant chacune et **comparable** (RAM libre 4 224 puis
+3 562 Mo, zéro node, Chrome présent dans les deux cas).
+⛔ **JE NE SAIS PAS POURQUOI, ET JE NE PROPOSE PAS DE CAUSE.** D270 interdit de conclure d'une
+durée sur le code sans avoir tenu la machine ; D266 a établi qu'un défaut **disparu** se déclare
+disparu, pas expliqué. ⚠ **Ce qui est sûr et suffit au lot** : les deux passes portent le même
+verdict vert, et le compte est passé de 434 à 436. **La durée n'entre dans aucune conclusion de
+ce lot.**
+⚠ Pour mémoire, la certification du rang 9 mesurait `test:int` à **279 s** — soit 2,2× à 3,3×
+plus vite que les deux passes de cette session, sur une machine où `chrome` valait **0**. Les
+trois chiffres ne se comparent pas entre eux.
+
 ## Session du 10/09/2026 — D284 · rang 10 ouvert, cadrage seul, et la règle qui ferme la CLASSE
 
 ⛔ **Numéro pris en LISANT le registre de ce fichier** : la dernière ligne de sa table portait
@@ -1995,8 +2179,15 @@ plutôt que déclaré vert.
    `migrate status` sortent en 0 sans un mot** — même famille que le piège déjà consigné.
    Remède proposé, **non fait** : une écriture unique dans le journal des migrations. Elle
    ne s'improvise pas. Entrée `[INFRA][P1]` au backlog.
-2. **Les deux échéances ne sont assertées que « non nulles » en intégration** : intervertir
-   leurs constantes entre les sites serait **invisible**. `[API][P0]`, chemin de l'argent.
+2. ~~**Les deux échéances ne sont assertées que « non nulles » en intégration** : intervertir
+   leurs constantes entre les sites serait **invisible**. `[API][P0]`, chemin de l'argent.~~
+   ⛔ **BARRÉ LE 11/09/2026 — TRAITÉ PAR LE RANG 10 (D285).** La **DURÉE** est désormais assertie
+   par l'intégration, et les cibles **12** et **13** de `neutralize-s11b.py` mordent sur
+   l'interversion. ⚠ **Barré, pas effacé** : une affirmation invalidée qu'on supprime se réécrit
+   de bonne foi plus tard par quelqu'un qui ignore qu'elle a cessé d'être vraie (D276).
+   ⚠ **Cette occurrence-ci a été trouvée par la passe de D277**, pas par la mise à jour du rang :
+   elle vivait dans une liste « ce qui reste » d'une session CLOSE, au présent — et une liste de
+   ce genre se lit comme l'état courant.
 3. **Le harnais `migration-non-empty` se périme à chaque migration**, par conception :
    sixième sonde en sept lots, et la garantie du lot précédent devient intestable.
    `[INFRA][P1]`.
@@ -4196,16 +4387,30 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
    fait partie de la règle. C'est « **rien de ce qui touche du code ne s'ouvre avant** ». Ce
    qui attend derrière est `[API][P0]`, sur le chemin de l'argent : les deux échéances ne
    sont assertées que « non nulles », intervertir leurs constantes serait invisible.
+   ⛔ **CETTE DERNIÈRE PHRASE DÉCRIT CE QUI ATTENDAIT LE 10/09, PAS L'ÉTAT COURANT** : c'est
+   devenu le **rang 10**, livré et mesuré le **11/09/2026 (D285)**. Marqué le 11/09 par la passe
+   de D277.
    ⚠ **PRÉCÉDENT, PAS INVENTION** : le rang 7 (D275) avait été inséré **avant** S11-b sous
    cette règle exacte, quand trois lots attendaient. Le rang 9 est le même geste, une file
    plus loin — et c'est la deuxième fois que cette règle commande un rang.
    ⇒ **Critère, résolution et état : section « ~~PROCHAIN LOT~~ — rang 9 · CLOS » en tête de
    ce fichier** (titre barré le 10/09, D284). Ce rang dit QUEL lot ; il ne dit pas où il en est.
 
-10. ⛔ **`[API][P0]` — LES DEUX ÉCHÉANCES · RANG COURANT depuis le 10/09/2026 (D284).**
-    ⛔ **CHEMIN DE L'ARGENT.** `bookings.int-spec.ts:156` et `:373` n'assertent que « non
+10. ~~⛔ **`[API][P0]` — LES DEUX ÉCHÉANCES**~~ — ⇒ **LIVRÉ ET MESURÉ LE 11/09/2026 (D285)** :
+    les quatre constantes exportées, la DURÉE des deux échéances assertie par l'intégration,
+    `neutralize-s11b` passé de **11/11 à 13/13**, `test:int` de **434/36 à 436/36**.
+    ⚠ « **RANG COURANT depuis le 10/09/2026** » **barré le 11/09/2026 (D285)** : il l'était, il ne
+    l'est plus — même geste que les rangs 8 et 9.
+    ⛔ **CE QU'IL LAISSE OUVERT** : le lot **n'est pas certifié**, et il compte pour UN dans les
+    deux/trois. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 10 » en tête de ce fichier.
+    ⛔ **CHEMIN DE L'ARGENT.** ~~`bookings.int-spec.ts:156` et `:373` n'assertent que « non
     nulles » : **intervertir `PRO_RESPONSE_DAYS` et `PAYMENT_WINDOW_HOURS` entre les deux sites
-    d'appel produirait deux dates parfaitement non nulles, et rien ne rougirait.**
+    d'appel produirait deux dates parfaitement non nulles, et rien ne rougirait.**~~
+    ⛔ **BARRÉ LE 11/09/2026 — C'EST EXACTEMENT CE QUE D285 A SUPPRIMÉ.** La phrase est conservée
+    parce qu'une affirmation invalidée qu'on EFFACE se réécrit de bonne foi plus tard par
+    quelqu'un qui ignore qu'elle a cessé d'être vraie (D276). ⇒ Les deux assertions portent
+    désormais sur la **DURÉE** — encadrement pour `expiresAt`, égalité exacte pour `paymentDueAt` —
+    et les cibles **12** et **13** de `neutralize-s11b.py` mordent sur l'interversion.
     ⛔ **CE QUI L'IMPOSE, ET C'EST UNE RÈGLE, PAS UN CALENDRIER** : `AGENTS.md`, bloc « AUCUN LOT
     NE PART DANS `main` SOUS UNE PORTE ROUGE » — « deux lots non certifiés en attente sont
     tenables, **trois non** » — **plus** l'arbitrage « un lot documentaire ne compte pas »,
@@ -5660,3 +5865,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D282 | A | D282 — le CHECK d'agrégat : la garde d'origine l'avait omis À CÔTÉ de deux identités qu'elle écrivait |
 | D283 | A | D283 — CERTIFICATION (rang 9) : trois fenêtres refusées sur leur RÉGIME, et une cinquième quantité au relevé |
 | D284 | A | D284 — rang 10 ouvert et cadré ; un rang clos laisse un ÉTAT NOMMÉ, jamais une absence |
+| D285 | A | D285 — « muette » a deux causes : la mutation prouvée POSÉE sépare l'assertion aveugle du remplacement fantôme |

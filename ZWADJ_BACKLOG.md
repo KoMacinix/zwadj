@@ -2516,8 +2516,27 @@ corrige pas dans un lot qui parle d'autre chose.
   la dernière. C'est autre chose que B9/D123, et le fichier le disait déjà pour la sonde
   D166 : « à inscrire au backlog, pas à improviser ici ».
 
-- **[API][P0]** ⛔ **LES DEUX ÉCHÉANCES NE SONT ASSERTÉES QUE « NON NULLES » — INTERVERTIR
-  LEURS CONSTANTES SERAIT INVISIBLE.** Relevé le 09/09 sur l'ensemble des specs :
+- **[DOC][P3]** ⚠ **UN TITRE AU FUTUR QUI SURVIT À SA RÉPONSE COÛTE TROIS LECTURES À CHAQUE
+  REPRISE.** Relevé le 10/09/2026 par une reprise à froid, **rapporté sans être corrigé** sur
+  consigne de Ko. `ZWADJ_CONTINUITE.md` porte le titre « **Prochaine mesure : SÉPARER les deux
+  variables confondues** », dernière sous-section de « Session du 03/09/2026 — rang 6 ».
+  ⇒ **LA MESURE A ÉTÉ JOUÉE**, et sa réponse vit sous un autre titre, dans une section
+  physiquement plus haute donc plus récente : « D274 — ⛔ CE QUE L'EXPÉRIENCE DE SÉPARATION A
+  RENDU, ET CE QU'ELLE N'A PAS RENDU » — elle n'a départagé ni la contention ni les observateurs
+  de fichiers. **Rien n'est en suspens.**
+  ⚠ **CE N'EST DONC PAS UN DÉFAUT D'ÉTAT, C'EST UN DÉFAUT DE FORME** — et il ne se voit que par
+  la voie que `CLAUDE.md` prescrit : lire **par SECTION**, donc naviguer par la carte des titres.
+  Un lecteur descendant croise la réponse avant la question et ne voit rien ; un lecteur qui
+  relève les titres lit « Prochaine mesure » au futur et l'ouvre pour rien. **Coût mesuré sur la
+  reprise du 10/09 : trois lectures** — la sous-section, sa section englobante, puis celle qui
+  portait la réponse.
+  ⇒ **REMÈDE, NON FAIT** : un titre de sous-section datée se met au PASSÉ une fois répondu, ou
+  porte son renvoi (« → réponse : D274 »). ⚠ **Le corriger n'entrait pas dans le rang 10** : un
+  défaut croisé se RAPPORTE, il ne se corrige pas dans un lot qui parle d'autre chose.
+
+- ~~**[API][P0]** ⛔ **LES DEUX ÉCHÉANCES NE SONT ASSERTÉES QUE « NON NULLES » — INTERVERTIR
+  LEURS CONSTANTES SERAIT INVISIBLE.**~~ ⇒ ⛔ **CORRIGÉ ET MESURÉ LE 11/09/2026 (D285)** — clôture
+  en fin d'entrée. Le constat d'origine est conservé tel quel : il dit ce à quoi le lot répondait. Relevé le 09/09 sur l'ensemble des specs :
   `bookings.int-spec.ts:156` vérifie `expiresAt` **not null**, `:373` vérifie
   `paymentDueAt` **not null**. **Aucune assertion ne porte sur leur VALEUR.**
   ⇒ Échanger `PRO_RESPONSE_DAYS` (7 jours) et `PAYMENT_WINDOW_HOURS` (48 h) entre les deux
@@ -2554,6 +2573,21 @@ corrige pas dans un lot qui parle d'autre chose.
   ⚠ **Deux affirmations de cette entrée ont été confrontées à la source le 10/09 : `:156` et
   `:373` sont EXACTES au mot.** Relevé au passage et absent d'ici : `:157` assertit que
   `paymentDueAt` est **nulle à la création** — une vraie garde, que le lot ne touche pas.
+  ⛔ **CLÔTURE, 11/09/2026 (D285) — LE REMÈDE EST FAIT, ET IL EST MESURÉ.** Les quatre constantes
+  (`PRO_RESPONSE_DAYS`, `PAYMENT_WINDOW_HOURS`, `DAY_MS`, `HOUR_MS`) sont **exportées** de
+  `bookings.service.ts` ; `bookings.int-spec.ts` les **importe** et assertit la DURÉE —
+  encadrement par deux instants qu'elle mesure elle-même pour `expiresAt`, **égalité exacte**
+  contre `accepted_at` persistée pour `paymentDueAt`. Fixture **dédiée**, date et marge
+  **dérivées des constantes** ; `EVENT_DATE` laissée intacte.
+  ⇒ **L'AVANT/APRÈS, ET C'EST LUI QUI FAIT LA CLÔTURE** : les cibles **12** et **13** de
+  `neutralize-s11b.py`, jouées sur l'arbre d'AVANT, étaient **MUETTES toutes les deux** —
+  mutations pourtant **prouvées POSÉES** par un instrument séparé, ce qui écarte le remplacement
+  fantôme. Après le lot elles **mordent** : `neutralize-s11b --int` passe de **11/11 à 13/13**, et
+  `test:int` de **434/36 à 436/36**.
+  ⚠ **ÉCART AU CADRAGE, ASSUMÉ ET ÉCRIT** : le cadrage annonçait **deux** constantes exportées ; il
+  en faut **quatre**, `DAY_MS`/`HOUR_MS` étant privées elles aussi et `@zwadj/types` n'en portant
+  aucun équivalent. Motif complet en section **D285** de `ZWADJ_CONTINUITE.md`.
+  ⚠ **CE LOT N'EST PAS CERTIFIÉ** : il compte pour UN dans les deux/trois.
 
 - **[INFRA][P1]** ⚠ **MODIFIER UN FICHIER DE MIGRATION DÉJÀ APPLIQUÉ CRÉE UNE DÉRIVE DE
   SOMME DE CONTRÔLE, ET PRISMA N'EN DIT RIEN.** Mesuré le 09/09 : après ajout d'un

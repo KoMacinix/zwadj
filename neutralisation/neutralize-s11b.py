@@ -22,6 +22,21 @@ empêchement d'environnement ne doit pas se lire comme un succès (D262, D268,
 puis D275 qui a montré que neuf cibles données pour « non mesurées » mordaient
 toutes).
 
+⛔ LES CIBLES 12 ET 13 APPARTIENNENT AU RANG 10, PAS À S11-b, ET C'EST VOULU.
+Elles vivent ici parce que la MESURE qu'elles exigent — `int-reservations` —
+est déjà déclarée par cette campagne : un harnais nommé autrement ne serait
+jamais rejoué par `lancer-campagnes.py`, qui ne découvre que `neutralize-<lot>`.
+⚠ Elles ne recouvrent PAS les cibles 10 et 11 : celles-là mutent la FORMULE de
+`booking-deadline.ts` et sont mesurées par la spec UNITAIRE ; celles-ci mutent
+les SITES D'APPEL de `bookings.service.ts` et ne sont vues que par
+l'INTÉGRATION. Aucune spec unitaire ne peut les voir — `booking-deadline.spec.ts`
+reçoit `windowMs` en PARAMÈTRE, donc elle est aveugle PAR CONSTRUCTION à la
+constante que le service lui passe.
+⛔ LEURS ANCRES SONT SUR LES SITES D'APPEL, JAMAIS SUR LES DÉCLARATIONS. Le lot
+du rang 10 préfixe les déclarations d'`export` : une ancre posée sur
+`const PRO_RESPONSE_DAYS = 7;` cesserait de s'appliquer après le lot et rendrait
+« non mesurée » au lieu de « mordue ». Les sites d'appel, eux, ne bougent pas.
+
 Usage :
     python3 neutralisation/neutralize-s11b.py          # le module pur seul
     python3 neutralisation/neutralize-s11b.py --int    # + les deux consommateurs
@@ -58,6 +73,7 @@ SAUVEGARDE = ".neutralisation-s11b"
 
 CHIFFRAGE = "apps/api/src/venues/booking-charge.ts"
 ECHEANCE = "apps/api/src/venues/booking-deadline.ts"
+SERVICE = "apps/api/src/venues/bookings.service.ts"
 MIGRATION = "apps/api/prisma/migrations/20260909120000_booking_quote_total_coherent/migration.sql"
 
 
@@ -247,6 +263,35 @@ CIBLES = [
         "  return new Date(Math.max(fromMs + windowMs, eventStartsAt.getTime()));",
         1,
         ["echeances"],
+    ),
+    (
+        "S11b-12. ⛔ L'ÉCHÉANCE DE RÉPONSE PRO REÇOIT LA FENÊTRE DE PAIEMENT — 7 jours deviennent 48 h",
+        # ⛔ RANG 10 — CHEMIN DE L'ARGENT. C'est la moitié « aller » de l'interversion.
+        #   Sans assertion de DURÉE, `expiresAt` reste parfaitement non nulle et
+        #   l'assertion « non nulle » de la CRÉATION passe : le pro croirait avoir sept jours pour
+        #   répondre et en aurait deux.
+        # ⚠ ANCRE SUR LE SITE D'APPEL, pas sur la déclaration — voir l'en-tête.
+        SERVICE,
+        "windowMs: PRO_RESPONSE_DAYS * DAY_MS",
+        "windowMs: PAYMENT_WINDOW_HOURS * HOUR_MS",
+        1,
+        ["int-reservations"],
+    ),
+    (
+        "S11b-13. ⛔ L'ÉCHÉANCE D'ACOMPTE REÇOIT LA FENÊTRE DE RÉPONSE PRO — 48 h deviennent 7 jours",
+        # ⛔ RANG 10 — CHEMIN DE L'ARGENT, et c'est le côté qui coûte le plus cher :
+        #   `paymentDueAt` est ce sur quoi E3 décidera si un règlement arrive à
+        #   temps. Servie à 7 jours, elle laisse payer un acompte cinq jours après
+        #   l'échéance réelle, et celle « non nulle » de l'ACCEPTATION ne verrait rien.
+        # ⚠ DEUX CIBLES ET NON UNE : une interversion réelle mute les deux sites à
+        #   la fois. Muter UN SEUL site prouve que CHAQUE assertion voit LE SIEN —
+        #   une cible unique laisserait passer le cas où une seule des deux mord
+        #   (assertion de comptage, D226, transposée aux sites d'appel).
+        SERVICE,
+        "windowMs: PAYMENT_WINDOW_HOURS * HOUR_MS",
+        "windowMs: PRO_RESPONSE_DAYS * DAY_MS",
+        1,
+        ["int-reservations"],
     ),
 ]
 

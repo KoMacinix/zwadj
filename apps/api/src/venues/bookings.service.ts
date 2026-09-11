@@ -111,14 +111,24 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
 // parle plus à PostgreSQL : les laisser ici aurait été garder l'étiquette après
 // avoir déménagé la boîte.
 
+// ⛔ CES QUATRE CONSTANTES SONT EXPORTÉES POUR ÊTRE MESURÉES, ET L'EXPORT N'EST
+//   PAS DU MÉNAGE À SUPPRIMER (rang 10). `bookings.int-spec.ts` les IMPORTE pour
+//   assertir la DURÉE des deux échéances : sans cela, intervertir les deux
+//   fenêtres entre leurs sites d'appel (plus bas) produit deux dates
+//   parfaitement non nulles et AUCUNE porte ne rougit — sur le chemin de
+//   l'argent, `paymentDueAt` étant ce sur quoi E3 décidera si un règlement
+//   arrive à temps.
+// ⚠ La spec confronte le SYMBOLE que ce service utilise, jamais une copie posée
+//   ailleurs : recopier « 7 » ou « 48 » dans le test laisserait la garde verte
+//   sur l'ancienne valeur le jour où la constante change.
 /** Délai de réponse laissé au pro (D82). Borné par le début de l'événement :
  *  une demande pour dans cinq jours ne doit pas expirer après la fête. */
-const PRO_RESPONSE_DAYS = 7;
+export const PRO_RESPONSE_DAYS = 7;
 /** Fenêtre d'acompte après acceptation (D82). Posée, pas encore consommée (D80). */
-const PAYMENT_WINDOW_HOURS = 48;
+export const PAYMENT_WINDOW_HOURS = 48;
 
-const DAY_MS = 86_400_000;
-const HOUR_MS = 3_600_000;
+export const DAY_MS = 86_400_000;
+export const HOUR_MS = 3_600_000;
 
 /** Statuts qui VERROUILLENT le créneau. Miroir exact du `WHERE` de l'EXCLUDE :
  *  les deux doivent bouger ensemble, ou l'écran mentirait sur la base.

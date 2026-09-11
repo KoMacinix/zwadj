@@ -17,6 +17,12 @@ import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { BookingDTO, ProBookingDTO, VenueProDTO } from "@zwadj/types";
 import { createTestApp, loginAs, registerUser, truncateAll, verifyLastRegistered, type TestContext } from "./helpers";
+// ⛔ RANG 10 — les DEUX fenêtres viennent du service qui les applique, jamais
+//   d'une copie : c'est la seule façon qu'une valeur changée en production ne
+//   laisse pas cette garde verte sur l'ancienne. Neuf specs d'intégration
+//   importent déjà depuis `../../src/`, valeurs comprises.
+import { DAY_MS, HOUR_MS, PAYMENT_WINDOW_HOURS, PRO_RESPONSE_DAYS } from "../../src/venues/bookings.service";
+import { civilTodayAt, formatCivilDate } from "../../src/venues/availability-time";
 
 let ctx: TestContext;
 
@@ -36,6 +42,30 @@ const EVENT_DATE = "2027-08-15";
 const SOIREE_START = 1200;
 const SOIREE_END = 1560;
 const SLOT_PRICE = 20_000_000; // 200 000 DA
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ⛔ FIXTURE DÉDIÉE AUX ÉCHÉANCES — elle ne réutilise PAS `EVENT_DATE`, et c'est
+//   le point.
+//
+// L'échéance rendue est `min(from + fenêtre, début de l'événement)`. Si la date
+// de fête tombe DANS l'une des deux fenêtres, l'échéance vaut le début de
+// l'événement et la constante DISPARAÎT du résultat : l'assertion passerait,
+// l'interversion resterait invisible, et on aurait écrit exactement la garde
+// que ce lot existe pour supprimer.
+//
+// ⚠ `EVENT_DATE` satisfait cette condition AUJOURD'HUI, mais par accident du
+//   calendrier : elle cesse de la satisfaire le 08/08/2027, sept jours avant la
+//   fête, et la garde deviendrait muette SANS QU'UNE LIGNE AIT BOUGÉ. Elle ne se
+//   corrige pas en place non plus — deux tests en dérivent des instants ISO
+//   exacts qui mesurent le créneau franchissant minuit (D55/D77).
+// ⇒ La date se DÉRIVE donc des constantes, et la marge vaut le DOUBLE de la plus
+//   large des deux fenêtres : si quelqu'un allonge une fenêtre, la fixture suit
+//   au lieu de devenir silencieusement fausse.
+const FENETRE_MAX_MS = Math.max(PRO_RESPONSE_DAYS * DAY_MS, PAYMENT_WINDOW_HOURS * HOUR_MS);
+
+/** Date civile d'Alger (UTC+1, D48) très au-delà des DEUX fenêtres, dérivée de
+ *  l'horloge et des constantes — jamais un littéral de calendrier (D213/D227). */
+const dateHorsEcretage = (nowMs: number) => formatCivilDate(civilTodayAt(nowMs + 2 * FENETRE_MAX_MS));
 
 interface Fixture {
   proToken: string;
@@ -155,6 +185,36 @@ describe("POST /venues/:slug/bookings — création", () => {
     // encore — D80 assume la dette.
     expect(dto.expiresAt).not.toBeNull();
     expect(dto.paymentDueAt).toBeNull();
+  });
+
+  // ⛔ CHEMIN DE L'ARGENT (rang 10). Le test ci-dessus n'assertit que « non
+  //   nulle » : servir 48 h au lieu de 7 jours produirait une date tout aussi
+  //   non nulle, et rien ne rougirait.
+  // ⚠ AUCUNE TOLÉRANCE N'EST CHOISIE ICI. `Date.now()` est lu DANS `create`,
+  //   donc entre les deux instants que ce test relève lui-même : la largeur de
+  //   l'encadrement EST la durée de la requête — quelques dizaines de ms —
+  //   contre les cinq jours qui séparent 48 h de 7 jours.
+  // ⛔ Et c'est la MÊME horloge au sens fort : l'app d'intégration tourne DANS le
+  //   processus du test. `createdAt`, lui, vient de `now()` PostgreSQL — c'est la
+  //   seule valeur que cette assertion ne doit PAS utiliser.
+  it("expiresAt vaut la fenêtre de réponse PRO, encadrée par deux instants mesurés ici", async () => {
+    const f = await setup();
+    const eventDate = dateHorsEcretage(Date.now());
+
+    // La fixture se prouve AVANT l'assertion : sans cette garde, une date que la
+    // salle refuserait ferait tomber le test en 400 — rouge pour la mauvaise
+    // raison, et il s'attribuerait la preuve d'un défaut qu'il n'a pas mesuré.
+    expect(Date.parse(`${eventDate}T00:00:00Z`) - Date.now()).toBeGreaterThan(FENETRE_MAX_MS);
+
+    const t0 = Date.now();
+    const res = await post(f.clientToken, f.venue.slug, body(f, { eventDate })).expect(201);
+    const t1 = Date.now();
+
+    const dto = res.body as BookingDTO;
+    expect(dto.expiresAt).not.toBeNull();
+    const expiresAt = Date.parse(dto.expiresAt as string);
+    expect(expiresAt).toBeGreaterThanOrEqual(t0 + PRO_RESPONSE_DAYS * DAY_MS);
+    expect(expiresAt).toBeLessThanOrEqual(t1 + PRO_RESPONSE_DAYS * DAY_MS);
   });
 
   it("le créneau 20h→02h produit une plage qui finit LE LENDEMAIN (D55/D77)", async () => {
@@ -372,6 +432,32 @@ describe("Acceptation — l'exclusivité appartient à la BASE (D78)", () => {
     const res = await api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).expect(201);
     expect((res.body as BookingDTO).paymentDueAt).not.toBeNull();
     expect(ctx.emails.some((m) => m.to === CLIENT.email)).toBe(true);
+  });
+
+  // ⛔ CHEMIN DE L'ARGENT (rang 10) — et c'est le côté qui coûte le plus cher :
+  //   `paymentDueAt` est ce sur quoi E3 décidera si un règlement arrive à temps.
+  // ⚠ ÉGALITÉ EXACTE, aucune marge, et la forme diffère volontairement de celle
+  //   du test d'`expiresAt` : `accepted_at` est PERSISTÉE, donc les deux instants
+  //   se relisent dans la MÊME ligne et se soustraient sans approximation.
+  //   « Harmoniser » les deux formes réintroduirait soit une comparaison entre
+  //   deux horloges, soit une tolérance — un nombre que quelqu'un relèverait un
+  //   jour « parce que ça passe juste ».
+  it("paymentDueAt − acceptedAt vaut EXACTEMENT la fenêtre d'acompte", async () => {
+    const f = await setup();
+    const eventDate = dateHorsEcretage(Date.now());
+    expect(Date.parse(`${eventDate}T00:00:00Z`) - Date.now()).toBeGreaterThan(FENETRE_MAX_MS);
+
+    const a = (await post(f.clientToken, f.venue.slug, body(f, { eventDate })).expect(201)).body as BookingDTO;
+    await api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).expect(201);
+
+    const row = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { acceptedAt: true, paymentDueAt: true }
+    });
+    expect(row.acceptedAt).not.toBeNull();
+    expect(row.paymentDueAt).not.toBeNull();
+    expect((row.paymentDueAt as Date).getTime() - (row.acceptedAt as Date).getTime())
+      .toBe(PAYMENT_WINDOW_HOURS * HOUR_MS);
   });
 });
 
