@@ -399,7 +399,13 @@ qu'on ne peut plus relire se relance sans être lu.
 
 ⚠ **VÉRIFIER LA PRÉMISSE AVANT DE CODER LA DEMANDE.** Une consigne partait de « ne pas perdre la recherche par mots-clés » ; vérification faite, cette fonctionnalité **n'existait nulle part** — ni dans le contrat public, ni dans le service, ni en base. Coder dessus aurait produit une correction sans objet et masqué la régression réelle. Quand une consigne s'appuie sur un existant, **mesurer cet existant fait partie de la consigne**. (D231)
 
-### Harnais de neutralisation — cinq exigences (D223, D224, D226)
+### Harnais de neutralisation — les exigences (D223, D224, D226, D286)
+
+⚠ **CE TITRE PORTAIT « CINQ EXIGENCES » ET LA LISTE EN COMPTAIT HUIT.** Cinquième de
+la série des compteurs figés — après « 18 scripts, 149 cibles », « D1 à D266 »,
+« DERNIER NUMÉRO ATTRIBUÉ » et la plage du registre. Même traitement que les quatre
+autres : **le chiffre est supprimé, pas mis à jour** — un titre est ce qu'on lit avant
+la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
 
 - ⚠ **SURVIVRE À UN SIGNAL, pas seulement à une exception.** Un `finally` ne s'exécute pas quand le processus est tué. Deux fois, un harnais interrompu a laissé un fichier **sciemment cassé** dans l'arbre. Exigé : sauvegarde disque **avant** mutation, restauration au démarrage, purge en fin de campagne.
 - ⚠ **CHAQUE CIBLE DÉSIGNE SON FICHIER DE TEST.** Sans lui, la campagne dépassait quinze minutes et se faisait tuer. **Une campagne qu'on n'ose plus lancer ne mesure plus rien.**
@@ -409,6 +415,33 @@ qu'on ne peut plus relire se relance sans être lu.
 
 - ⚠ **UNE ANCRE DE CIBLE SE REVÉRIFIE À CHAQUE REFONTE DU BALISAGE.** Un lot visuel a déplacé un `<p style=…>` vers un `<span>` : l'ancre ne trouvait plus rien, la campagne s'arrêtait sur `ERREUR DE SCRIPT` — comportement voulu — mais **quatre cibles suivantes n'ont pas été jouées**. Une campagne partiellement jouée n'est pas une campagne verte.
 - ⚠ **UNE GARDE QUI SE CONTENTE D'UN EXEMPLE CESSE DE MESURER DÈS QU'IL Y EN A DEUX.** Un `toMatch(/lang="ar"[^>]*dir="rtl"/)` écrit quand la page comptait UN passage arabe est resté VERT sous neutralisation le jour où elle en a compté trois : les deux autres le satisfaisaient. Ces gardes s'écrivent en règle **universelle** — *tout* élément qui déclare `lang` déclare sa direction — et se comptent, elles ne se cherchent pas.
+- ⛔ **« MUETTE » A DEUX CAUSES OPPOSÉES, ET AUCUNE PORTE NE LES SÉPARE (D286).** Une cible
+  qui ne fait pas rougir sa mesure peut signifier *l'assertion est aveugle au défaut* —
+  ce qu'une campagne cherche — ou *la mutation n'a jamais été appliquée*. Le second est un
+  **remplacement fantôme**, et il **FABRIQUE la preuve que le lot cherche** : on conclut
+  « la garde est muette » sur une garde qui n'a jamais été mesurée. Les harnais comptent
+  leurs occurrences AVANT de muter ; **aucun ne relit son marqueur APRÈS**. C'est cette
+  moitié-là que produit `neutralisation/verifier-mutations.py`, en mémoire, sans rien
+  écrire.
+- ⛔ **LA FORME DE LA PREUVE EST « ANCRE 1 → 0 **ET** MARQUEUR 1 → 2 » — JAMAIS UNE
+  PRÉSENCE (D286, arbitré par Ko).** Pour une **interversion**, le texte de remplacement
+  **existe déjà** dans le fichier, à l'autre site d'appel : l'assertion naïve
+  « `apres` est dans le contenu » est donc **VRAIE AVANT TOUTE MUTATION**. Un
+  « relis ton marqueur après » se satisferait d'elle et ne mesurerait rien.
+  ⛔ **ET PAS PAR LA TAILLE.** Cas de calibration, relevé et non supposé : la cible **11**
+  de `neutralize-s11b.py` (`Math.min` → `Math.max`) change **ZÉRO octet** — 3 790 → 3 790.
+  Un contrôle par `len` l'aurait déclarée NON POSÉE.
+  ⚠ **Mesuré le 11/09/2026 sur les 26 harnais** : **11 cibles** ont leur marqueur déjà
+  présent, et **11** sont à taille constante. Les deux raccourcis auraient menti onze fois
+  chacun.
+- ⛔ **MAIS CETTE ARITHMÉTIQUE EST CELLE D'UN SEUL GENRE (D286).** Appliquée à tous, elle a
+  rendu **SIX faux négatifs** sur les 26 harnais — **2 suppressions** (`apres` est la chaîne
+  VIDE : `count("")` rend `len + 1`) et **4 insertions** (`apres` CONTIENT `avant`, donc
+  l'ancre **SURVIT**, et c'est correct). ⚠ **Une seule formule pour trois genres est une
+  garde qui accuse à tort — et une garde qui accuse à tort finit ignorée.**
+  Chaque genre a son arithmétique : *substitution* ancre → 0 et marqueur `n → n + attendu` ;
+  *suppression* ancre → 0, marqueur **sans objet** ; *insertion* ancre → `attendu × k`,
+  marqueur **sans objet**.
 - ⚠ **UNE CIBLE DEVENUE SANS OBJET SE RÉORIENTE OU SE RETIRE, PAR ÉCRIT.** Quand le décor est passé d'un composant à une image, « le décor disparaît » a cessé d'être la faute possible : c'est devenu « le décor se met à parler » (perte de `alt`). Quatre cibles ont été retirées avec le code qu'elles mesuraient, une réorientée, une ajoutée.
 ## À NE PAS faire
 - Ne pas élargir le périmètre au-delà du MVP demandé, même si le design fourni montre plus.
@@ -504,6 +537,35 @@ réservation reste un acte distinct.
   personne. ⚠ Les autres scripts du dossier sont des **instruments** de diagnostic, pas
   des campagnes : `sonde-horloge.py` s'invoque explicitement et ne rend aucun compte de
   gardes mordues.
+- ⛔ **UN INSTRUMENT ENTRE AU DÉPÔT, IL NE RESTE PAS DANS UN SCRATCHPAD (D286, arbitré par
+  Ko le 11/09/2026).** Un relevé produit par un script qui vit hors de `git` est
+  **irreproductible et incontestable** : la session suivante ne peut ni le rejouer, ni
+  distinguer un écart de MACHINE d'un écart d'INSTRUMENT. Ce n'est plus une mesure, c'est
+  une affirmation datée. ⚠ **Ce n'est pas un cas mais une CLASSE** : trois instruments
+  étaient dehors au 11/09 — le vérificateur de mutations, la sonde d'état machine, et
+  celui qui a raté la bascule d'alimentation du 09/09.
+  ⇒ **Tout instrument versionné porte, dans son en-tête : son mode d'emploi, POURQUOI il
+  existe, quels instruments concurrents ont été ÉCARTÉS et sur quelle mesure, et sa
+  CALIBRATION.**
+- ⛔ **UNE CALIBRATION HÉRITÉE N'EST PAS UNE CALIBRATION (D286).** « Calibré une fois,
+  ailleurs, sur une autre machine » ne vaut rien ; « les champs ne sortent pas vides » vaut
+  encore moins — **non vide n'est pas juste**. Un instrument versionné **rejoue** sa
+  calibration, et il **ABANDONNE** quand un seul cas manque son verdict.
+  ⚠ **Et la calibration exige ses DEUX bras.** Un détecteur qui répondrait « 1 » à tout
+  passerait le cas positif seul et déclarerait fautif ce qui est sain — l'inverse exact du
+  défaut, avec la même conséquence : on cesse de le croire.
+- ⛔ **UNE CHARGE DE CALIBRATION ELLE-MÊME BRIDÉE MESURE LE BRIDAGE, PAS L'INSTRUMENT
+  (D286).** Mesuré le 11/09/2026 : douze threads occupés n'obtenaient que **3,7 s de CPU
+  sur 3 s de mur** là où douze cœurs en offrent 36 — Windows bride les threads de fond
+  (`PROCESS_POWER_THROTTLING_EXECUTION_SPEED`), d'autant plus sur batterie. La sonde
+  concluait « l'instrument ne sépare pas les régimes » alors que l'instrument était juste
+  et que **la charge n'avait pas eu lieu** — un diagnostic qui envoie chercher le défaut à
+  l'exact opposé de sa cause. Bridage retiré : **34,2 s sur 3 s**, et le compteur `_Total`
+  monte à 100 %. ⇒ **Une calibration vérifie d'abord que son cas connu a bien EU LIEU.**
+- ⛔ **L'ÉQUIVALENT POWERSHELL DES TROIS LIGNES PYTHON DE D268 :
+  `[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false`.** Sans elle les
+  glyphes `✓`/`✗`/`⚠` sortent en « ? » à la console et en « � » dès que la sortie est
+  **REDIRIGÉE vers un journal** — c'est-à-dire exactement quand elle sert de preuve.
 - ⛔ **UNE CIBLE DONT UNE MESURE NE PEUT PAS ROUGIR EST MUETTE PAR CONSTRUCTION.**
   Trois fois dans cette campagne : une mutation de l'ADAPTATEUR déclarée aussi sur la
   mesure du SERVICE (qui bouchonne le port et ne voit rien) ; une mesure pointée sur un

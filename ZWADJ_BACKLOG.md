@@ -2448,7 +2448,7 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   sur `pro` et que la sérialisation coûterait 2,6×. Une borne se **mesure** par suite ; celle
   de `pro` n'est pas transposable sans sa mesure.
 
-- **[MÉTHODE][P0]** ⛔ **LA SOURCE D'ALIMENTATION N'EST DANS AUCUN RELEVÉ DU DÉPÔT, ET SON
+- [x] ~~**[MÉTHODE][P0]** ⛔ **LA SOURCE D'ALIMENTATION N'EST DANS AUCUN RELEVÉ DU DÉPÔT, ET SON
   ABSENCE A COÛTÉ DEUX FENÊTRES DE CERTIFICATION.** Les relevés d'état machine ont toujours
   porté quatre quantités — RAM libre · `node` · CPU · inventaire. **Aucune ne voit
   l'alimentation.**
@@ -2469,7 +2469,69 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   `neutralisation/sonde-etat-machine.py` — l'instrument vit toujours dans le **scratchpad**
   (réserve n°2 de D275, jamais levée), donc **irreproductible et incontestable par la session
   suivante**. ⚠ La nuit du 09→10/09 est la démonstration de ce que cette réserve coûte :
-  l'instrument qui a raté la cause était précisément un instrument hors dépôt.
+  l'instrument qui a raté la cause était précisément un instrument hors dépôt.~~
+  ⛔ **TRAITÉ LE 11/09/2026 — RANG 11 (D286).** L'instrument est au dépôt : `neutralisation/sonde-etat-machine.ps1`
+  (+ `echantillonneur-etat-machine.ps1` pour l'INTERVALLE, que deux extrémités ne voient
+  jamais). ⚠ **Écart au nom annoncé** : `.ps1` et non `.py` — les cinq quantités sont des
+  compteurs Windows, et les lire depuis Python reviendrait à lancer powershell.
+  ⚠ **ET LA CALIBRATION DE 2024 N'EST PLUS HÉRITÉE** : `-Calibrer` rejoue la séparation des
+  régimes ici et maintenant. Motif mesuré le 11/09 : une charge de calibration **elle-même
+  bridée** rendait 3,7 s de CPU sur 3 s là où 12 cœurs en offrent 36, et faisait conclure
+  « l'instrument ne sépare pas les régimes ». Bridage retiré : **34,2 s sur 3 s**.
+  ⛔ **CONTRADICTION RELEVÉE, ET TRANCHÉE PAR LA MESURE** : le message de Ko du 11/09 dit
+  « les trois `[MÉTHODE][P0]` du 10/09 restent ouverts et ne sont pas de ce lot ». Celui-ci
+  **en était**, et le rang 11 qu'il a lui-même arbitré le traite. Quand une phrase et l'état
+  mesuré se contredisent, **c'est l'état qui fait foi** (D276) — l'entrée est donc fermée,
+  et la contradiction écrite plutôt que tue. **Les deux AUTRES restent ouverts.**
+
+- **[INFRA][P3]** ⚠ **LA SONDE COMPTE LES PROCESSUS `node` SANS DISTINGUER UN OBSERVATEUR
+  D'UN WORKER DE TEST.** La condition écrite par D275 porte sur les **observateurs de
+  fichiers** (`next dev`, `vite`, `tsc --watch`) qui recompilent pendant qu'une suite lit les
+  mêmes fichiers — c'est la seule piste non écartée de l'intermittence de D274. Mais
+  `NODE=15` relevé pendant `pnpm test:int` le 11/09/2026, ce sont **les workers des suites
+  elles-mêmes**, et le chiffre ne dit pas lequel est lequel.
+  ⇒ **Conséquence actuelle, et elle tient** : c'est le relevé d'**OUVERTURE**, machine au
+  repos, qui porte la condition (`NODE=0`). Le relevé pendant la mesure ne peut pas la porter.
+  ⇒ **Affinage possible** : relever la **ligne de commande** des processus `node`
+  (`Get-CimInstance Win32_Process`) et compter séparément ceux qui portent `dev`, `vite`,
+  `--watch`. ⚠ **À calibrer** sur un cas connu — une pile `dev` lancée exprès — sinon
+  l'instrument classerait sans qu'on sache s'il classe juste.
+
+- **[INFRA][P2]** ⚠ **TROIS HARNAIS N'ONT PAS DE GARDE `if __name__ == "__main__"`, ET LES
+  IMPORTER JOUE LA CAMPAGNE.** Relevé le 11/09/2026 sur les 26 harnais :
+  `neutralize-act-plafonds.py`, `neutralize-argon2.py`, `neutralize-horloge.py`.
+  ⇒ **Conséquence exécutoire** : `neutralisation/verifier-mutations.py` **REFUSE** de les
+  importer et les compte NON COUVERTS — il ne peut donc pas prouver que leurs mutations sont
+  posées, et une de leurs cibles déclarée « muette » resterait indistinguable d'un
+  remplacement fantôme.
+  ⚠ **Ce n'est pas un défaut du vérificateur, c'est une limite nommée** : le refus vaut mieux
+  que l'import, qui muterait des fichiers sources sur un arbre propre.
+  ⇒ **Remède** : envelopper le corps de ces trois harnais dans une fonction `main()` sous
+  garde. ⛔ **C'est un lot qui touche des campagnes, donc il peut dégrader une porte** — il ne
+  s'ouvre pas dans la foulée d'un autre.
+
+- **[INFRA][P2]** ⚠ **SIX CIBLES DE `neutralize-404.py` NE SONT PAS DES SUBSTITUTIONS DE
+  TEXTE**, et le vérificateur de mutations n'a rien à y prouver : elles RENOMMENT, CRÉENT ou
+  SUPPRIMENT un fichier (`genre` = `renommer` / `creer` / `supprimer`). Comptées NON
+  COUVERTES au 11/09/2026.
+  ⇒ **Ce qui serait dû** : une preuve d'une autre nature — le fichier cible existe-t-il avant,
+  a-t-il disparu après. ⚠ **Elle n'est pas écrite, et l'écrire n'est pas gratuit** : c'est
+  précisément la classe de cibles qui a fait naître la garde de ROUTAGE de D249 (« un nom de
+  fichier spécial est une liste fermée »), donc leur preuve porte sur des noms de fichiers,
+  pas sur du contenu.
+
+- **[INFRA][P2]** ⚠ **LE COMPARATEUR DE DÉRIVE DE SOMME DE CONTRÔLE EST RESTÉ UN SCRIPT
+  JETABLE — ET C'EST LE CONTRAIRE DU PRINCIPE DU RANG 11.** Écrit le 11/09/2026 pour l'étape 0
+  (confronter les 27 migrations du dossier à `_prisma_migrations`), calibré sur les octets
+  d'avant restauration, puis **jeté**. Le rang qui a fait entrer les instruments au dépôt en a
+  donc laissé un dehors, et l'écart est écrit plutôt que tu.
+  ⇒ **Ce qu'il ferait** : `neutralisation/sonde-derive-migrations.py` — pour chaque dossier de
+  `prisma/migrations/`, comparer le sha256 des octets au `checksum` stocké ; rendre ≠ 0 sur
+  toute dérive ou toute migration absente du journal. Calibration : les octets d'une migration
+  volontairement modifiés doivent le faire ROUGIR.
+  ⚠ **Motif de l'utilité, et il est mesuré** : `migrate deploy` et `migrate status` sortent
+  **tous deux en 0** sur une base dérivée, sans un mot. Aucune porte du dépôt ne voit cette
+  classe de défaut.
 
 - **[INFRA][P1]** ⚠ **UN `.ps1` NON-ASCII SANS BOM NE S'EXÉCUTE PAS, ET LA TÂCHE REND
   « exit code 0 ».** Mesuré le 10/09 : la passe complète est morte sur `Missing closing '}'`
@@ -2477,6 +2539,12 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   structure. ⛔ **C'est le pendant EN ENTRÉE du piège de console cp1252 (D268)**, que le dépôt
   n'avait jamais nommé : D268 a corrigé la SORTIE des scripts Python, personne n'avait regardé
   l'ENTRÉE des scripts PowerShell.
+  ⚠ **ET LE SYMÉTRIQUE, MESURÉ LE 11/09/2026 : UN BOM *DOUBLÉ* CASSE AUTANT QU'UN BOM
+  ABSENT.** Relire un `.ps1` en `utf-8` au lieu de `utf-8-sig` transforme le BOM existant en
+  **contenu** ; en préfixer un second laisse un `U+FEFF` devant `param`, qui **cesse alors
+  d'être le bloc de paramètres**. PowerShell rapporte l'erreur sur `param(`, **à 60 lignes
+  de la cause**. ⇒ **Tout script qui réécrit un `.ps1` retire les BOM empilés avant d'en
+  reposer UN**, et le vérifie en octets.
   ⇒ **Règle** : tout `.ps1` portant un octet non-ASCII s'écrit **avec BOM**, et **le parse se
   contrôle avant de lancer** (`[System.Management.Automation.Language.Parser]::ParseFile`).
   ⚠ Le contrôle a découvert au passage un second script **jamais exécuté depuis sa
@@ -2589,7 +2657,7 @@ corrige pas dans un lot qui parle d'autre chose.
   aucun équivalent. Motif complet en section **D285** de `ZWADJ_CONTINUITE.md`.
   ⚠ **CE LOT N'EST PAS CERTIFIÉ** : il compte pour UN dans les deux/trois.
 
-- **[INFRA][P1]** ⚠ **MODIFIER UN FICHIER DE MIGRATION DÉJÀ APPLIQUÉ CRÉE UNE DÉRIVE DE
+- [x] ~~**[INFRA][P1]** ⚠ **MODIFIER UN FICHIER DE MIGRATION DÉJÀ APPLIQUÉ CRÉE UNE DÉRIVE DE
   SOMME DE CONTRÔLE, ET PRISMA N'EN DIT RIEN.** Mesuré le 09/09 : après ajout d'un
   commentaire à `20260909120000` (SQL inchangé), `_prisma_migrations` porte
   `4bf7e91e…b689` — le sha256 du fichier **avant** — tandis que le fichier vaut
@@ -2623,7 +2691,17 @@ corrige pas dans un lot qui parle d'autre chose.
   qu'il restera aussi silencieux.
   ⚠ **LEÇON GÉNÉRALE, indépendante de l'arbitrage** : une migration **déjà appliquée** ne se
   modifie plus, **même pour un commentaire**. Ce qu'on veut y ajouter après coup vit dans le
-  fichier de continuité, pas dans le fichier de migration.
+  fichier de continuité, pas dans le fichier de migration.~~
+  ⛔ **TRAITÉ LE 11/09/2026 — RANG 11 (D286).** ⛔ **NI PAR L'UN NI PAR L'AUTRE DES DEUX REMÈDES POSÉS CI-DESSUS.**
+  Ko a tranché : on **rend au fichier de migration les octets qui ont été appliqués** —
+  le commentaire ajouté après coup est retiré. Rien n'est écrit dans `_prisma_migrations`.
+  ⇒ **Mesuré** : empreinte calculée redevenue `4bf7e91e…b689`, **égale à la stockée relue
+  dans la base** ; 15 lignes de commentaire retirées, **0 ligne de SQL touchée** ; audit
+  complet des **27** migrations — **0 dérive, 0 absente**.
+  ⚠ **CE QUI RESTE VRAI ET NE SE BARRE PAS** : la leçon générale ci-dessus, et le constat
+  que `migrate deploy` comme `migrate status` **sortent en 0 sans un mot** sur une base
+  dérivée. C'est ce constat qui fait naître l'entrée « sonde de dérive » plus bas.
+  ⇒ **Le rang 8 est CLOS** : certifié le 10/09, clos le 11/09.
 
 - **[E3][P1]** ⚠ **CE QUE VAUT LE BOUTON « PAYER L'ACOMPTE » QUAND L'ÉCHÉANCE EST PASSÉE —
   ENTRÉE RENVOYÉE À D80, ET ADRESSÉE À E3.**
