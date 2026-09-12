@@ -336,6 +336,53 @@ connexion (famille D115).
 - ⚠ **UN ÉCHEC QUI SE DÉPLACE EST PIRE QU'UN ÉCHEC STABLE (D127).** Next et Vite compilent une route à la première demande : le test qui paie la compilation dépend de l'ordre d'attribution aux workers. Un tel échec finit relancé sans être lu. On paie le coût **hors de toute mesure** (projet `warmup`) plutôt que de monter les délais d'attente. ⚠ Un délai qu'on augmente à chaque échec finit par ne plus rien mesurer.
 - **Ce qu'une porte verte ne regarde pas** : qu'un composant soit **monté** quelque part (leçon R1 — deux écrans livrés et inatteignables, six portes vertes), ce qui se passe dans un vrai navigateur, et ce qu'une migration fait sur une base **non vide** (D123). ⚠ **Ni la clause `WHERE` d'une réutilisation d'endpoint** (D146 — le calendrier pro rendait 404 pour toute salle non publiée, toutes portes vertes), **ni un identifiant qui « ressemble »** (D149 — id utilisateur passé dans un champ qui référence un profil pro).
 - ⚠ **UN REMPLACEMENT DE TEXTE SANS ASSERTION EST UN REMPLACEMENT FANTÔME.** Trois fois dans une même tranche, un motif écrit en `\n` n'a rien remplacé dans un fichier en **CRLF** — et le script annonçait « fait ». Un branchement entier est resté non câblé, typecheck vert. **Tout script d'édition vérifie son nombre d'occurrences AVANT de remplacer, et le marqueur attendu APRÈS.** L'audit du zip est le dernier filet : il a attrapé celui-là.
+  ⛔ **AMENDÉ LE 12/09/2026 (D289) — CES DEUX CONTRÔLES SONT NÉCESSAIRES ET NON SUFFISANTS,
+  ET LA PHRASE CI-DESSUS LES DÉCLARAIT SUFFISANTS.** Ils vérifient l'**ÉCRITURE** : que le
+  motif existait, que le remplacement a eu lieu, que le marqueur est là. **Aucun ne regarde
+  l'ENTRÉE** — c'est-à-dire si le texte qu'on s'apprête à écrire est celui qu'on croit.
+  ⚠ **MESURÉ, PAS CRAINT (D288)** : un utilitaire a rapporté « 1 remplacement · 0 LF nu ·
+  marqueur présent » — **les trois vrais**, et le fichier était faux. Le texte avait été passé
+  à un `python3 -c` entre **guillemets doubles** : bash a pris les jetons entre accents graves
+  pour des substitutions de commandes, et `AGENTS.md` a reçu « local et  sur le MÊME SHA ».
+  **La corruption était en amont de tout contrôle.**
+  ⛔ **ET ELLE NE S'EST PAS CONTENTÉE DE MANGER : ELLE A EXÉCUTÉ**, dont un `git fetch` — une
+  opération réseau non voulue. Ici tout était en lecture seule ; **c'est la chance, pas la
+  conception.** Un texte d'autorité qui traverse un interpréteur est du code qu'on lui donne.
+  ⇒ **RÈGLE, ET ELLE EST DE FORME, DONC VÉRIFIABLE : aucun texte destiné à un fichier
+  d'autorité ne transite par une couche qui l'interpole.** Heredoc à délimiteur **entre quotes
+  simples**, fichier, ou l'outil d'écriture. Jamais `-c`, jamais une chaîne à guillemets
+  doubles, jamais un argument de ligne de commande.
+  ⇒ **ET LE CONTRÔLE SE DÉPLACE : ON RELIT CE QU'ON A ÉCRIT DANS LE FICHIER, JAMAIS LE COMPTE
+  RENDU DE L'OUTIL.** Le compte rendu décrit ce que l'outil a fait ; seul le fichier dit ce
+  qu'il contient. Relire veut dire **chercher les jetons attendus**, pas constater qu'une
+  écriture a eu lieu.
+  ⛔ **POURQUOI « SUFFISANT » EST PIRE QU'« ABSENT », ET C'EST LE MOTIF DE L'AMENDEMENT** : un
+  contrôle déclaré suffisant **fait arrêter de chercher**. C'est la famille de « une garde qui
+  ne mord pas n'est pas une garde », appliquée à l'outillage d'édition — et c'est pour cela que
+  cette phrase s'AMENDE au lieu de se compléter par un ajout en dessous.
+  ⚠ **LA CLASSE AVAIT DÉJÀ FRAPPÉ UN FICHIER DE CODE, ET PERSONNE NE L'AVAIT VUE.** Balayé le
+  12/09/2026 sur **457 fichiers source** : **une** occurrence, `apps/pro/vite.config.ts:24` —
+  « mode par défaut = 46 à 52 délais dépassés,  = 4. », un jeton mangé entre la virgule et le
+  « = 4 », **double espace pour seule trace**. Introduite par le commit `1f85aa6` (D270,
+  30/08/2026), elle a survécu **treize jours et une certification complète** : un commentaire
+  ne casse ni `tsc` ni `lint` ni un test. **Aucune porte ne voit cette classe de défaut.**
+  ⛔ **ET UN EXTRACTEUR QUI LIT LIGNE À LIGNE EST AVEUGLE À CE QUI ENJAMBE UN RETOUR À LA
+  LIGNE — MESURÉ DANS CE LOT MÊME, CONTRE MOI.** Le backlog signale une coquille `[DOC][P3]`
+  dans `ZWADJ_CONTINUITE.md` : « l'écart est écrit ici plutôt que **tu** », déclarée « phrase
+  tronquée ». Cherchée par `grep` puis par `git log -S`, la chaîne **ne ressortait nulle part**,
+  et j'en ai conclu ici même qu'elle n'avait jamais existé. **Faux deux fois.**
+  1. Elle **existe** : la phrase enjambe un retour à la ligne (« plutôt que » / « tu. »), que
+     ni `grep` ni `git log -S` ne franchissent. **Il a fallu aplatir les blancs pour la voir.**
+     ⇒ **Tout balayage d'un fichier d'autorité se fait sur le texte APLATI**, jamais sur ses
+     lignes : ces fichiers sont enveloppés à ~95 colonnes, donc **toute expression de plus de
+     quelques mots y est coupée au moins une fois.**
+  2. Et ce **n'est pas une coquille** : `tu` est le participe passé de **taire**, accordé au
+     masculin « l'écart » ; la même tournure porte « tu**e** » ailleurs, accordée à « la
+     contradiction ». Les deux sont justes. **Le signalement est une mésaudition, pas un
+     défaut**, et il dort dans une entrée ouverte depuis le 11/09.
+  ⇒ **LA LEÇON EST LA MÊME DANS LES DEUX SENS, ET C'EST POUR ÇA QU'ELLE EST ICI** : un rapport
+  de corruption **non confronté au fichier** vaut une affirmation non mesurée — que le rapport
+  vienne d'un outil, d'un lecteur, ou de moi trois paragraphes plus haut.
 - Petites PR, messages Conventional Commits. Expliquer les choix d'architecture dans la PR.
 - Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine.
 - Le design fourni (App.tsx) est une **référence visuelle par écran**, jamais une base de code à refactorer telle quelle : il est desktop-only, en instant-book, et hors périmètre MVP sur plusieurs écrans (forum, magazine, carte, 360°, planning). Ne construire que les écrans du MVP en cours, en respectant ce présent fichier, pas l'intégralité du prototype.

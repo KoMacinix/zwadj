@@ -2362,6 +2362,56 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 12/09/2026 — rang 13, cadrage (D289)
+
+⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** Le rang 13 parle de la borne de workers ; tout
+le reste se **rapporte**.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[DOC][P0]** ⛔ **LE FICHIER CHARGÉ D'OFFICE PAR TOUTE SESSION EST DEVENU LE POSTE PRINCIPAL,
+  ET C'EST LE SEUL QUI NE PEUT PAS SE PLIER À LA LECTURE PAR SECTION.** ⚠ **Arbitrage de Ko,
+  12/09/2026 : c'est un RANG À LUI SEUL — découper ce qui est chargé d'office ne se fait pas en
+  marge d'un lot de code.** Reporté ici, non traité.
+
+  Mesuré le 12/09 par une reprise à froid, sur le compteur de contexte de la session :
+
+  | | mesure |
+  |---|---|
+  | démarrage de session, **avant la première lecture** | **91 659 jetons** |
+  | lecture ciblée entière de `ZWADJ_CONTINUITE.md` (6 sections + 3 index) | **28 199 jetons** |
+  | part du fichier de 495 905 o effectivement lue | **6,3 %** |
+  | part de `ZWADJ_BACKLOG.md` (280 280 o) lue | **0,7 %** |
+
+  ⇒ **Le chargement d'office coûte plus de TROIS FOIS la lecture ciblée complète du plus gros
+  fichier du dépôt.** La discipline « lire par section » fonctionne et est mesurée ; elle ne
+  s'applique simplement pas à `AGENTS.md`, importé en entier par `CLAUDE.md` à chaque session.
+  ⛔ **HONNÊTETÉ DE LA MESURE — LE PREMIER CHIFFRE EST UN MAJORANT, PAS LE COÛT D'`AGENTS.md`
+  SEUL.** Les 91 659 jetons couvrent l'invite système complète (dont `AGENTS.md` importé et
+  `CLAUDE.md`), le message d'ouverture et le premier aller-retour d'outil. `AGENTS.md` en est
+  la composante dominante — **103 327 o au relevé du 12/09** — mais **le décomposer demanderait
+  une mesure que cette session n'a pas faite**. Le rapport de trois est donc un ordre de
+  grandeur mesuré, pas une attribution.
+  ⚠ **ET LE LOT D289 A FAIT GROSSIR CE FICHIER** : 103 327 → **107 627 o**, +4 300 o pour
+  l'amendement de l'étape 0. **Le poste rapporté ici augmente donc du fait même de la session
+  qui le rapporte** — ce n'est pas une raison de ne pas écrire la règle, c'en est une de traiter
+  ce report.
+  ⛔ **CE QUE CE REPORT NE DEMANDE PAS** : un élagage. Chaque bloc d'`AGENTS.md` porte un défaut
+  payé, et « ce n'est qu'un vieux paragraphe » est l'argument qui a laissé passer les compteurs
+  figés. ⇒ **Il demande une décision de FORME** — par exemple ce qui doit rester chargé d'office
+  et ce qui se lit à la demande — et cette décision appartient à Ko.
+
+- **[INFRA][P2]** ⚠ **TROISIÈME RECONDUCTION DU MÊME ÉCART : L'OUTIL D'ÉDITION DES FICHIERS
+  D'AUTORITÉ EST RESTÉ DANS LE SCRATCHPAD.** `ed.py` au rang 11, l'éditeur CRLF au rang 12, et
+  `splice.py` au rang 13. Celui-ci porte trois gardes payées dans son propre lot : ancre comptée
+  **avant** écriture (abandon si ≠ 1), normalisation CRLF du remplacement, et **refus d'écrire**
+  si un LF nu subsiste après splice.
+  ⛔ **LE VERSER AU DÉPÔT DANS UN LOT DOCUMENTAIRE EN FERAIT UN LOT DE CODE** (D283) — c'est-à-
+  dire un lot non certifié ajouté par une session qui n'en ouvre aucun. **C'est la raison pour
+  laquelle l'écart se reconduit, et elle est structurelle, pas de la négligence.** ⇒ Il demande
+  un lot d'infrastructure qui assume d'être du code, avec la calibration sur ses deux bras que
+  D286 exige de tout instrument versionné.
+
 ## Reports du 10/09/2026 — rang 10, cadrage (D284)
 
 ⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** Ce lot est documentaire : il n'a touché aucun code.
@@ -2426,6 +2476,16 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
 
 - **[MÉTHODE][P0]** ⛔ **LA BORNE DE WORKERS DE D270 N'EXISTE QUE DANS `pro` — UN REMÈDE
   MESURÉ, CHIFFRÉ, ÉCRIT, ET APPLIQUÉ À UNE SUITE SUR QUATRE.**
+
+  ⛔ **CETTE ENTRÉE A UN RANG DEPUIS LE 12/09/2026 (D289) : c'est le RANG 13**, arbitré par Ko.
+  ~~Sans rang, désignée seulement.~~ ⇒ **Son cadrage est ÉCRIT** — section « PROCHAIN LOT —
+  rang 13 » de `ZWADJ_CONTINUITE.md` : la grandeur y est **nommée** (mémoire disponible **par
+  worker**, **pendant** la passe), le protocole de dérivation des bornes est fixé d'avance, et
+  la démonstration est spécifiée. ⚠ **Le lot de CODE reste à faire** ; cette entrée n'est donc
+  **pas** close, et ce qui suit reste la mesure d'origine.
+  ⛔ **ET LE CADRAGE A TROUVÉ QUE LA RAM D'OUVERTURE NE DISCRIMINE PAS** : le cas rouge du 09/09
+  (4 636 Mo) tombe **entre** les deux cas verts du 12/09 (4 624 et 4 643). La contention à
+  reproduire n'est donc pas une simple baisse de RAM de départ — voir le cadrage.
 
   | config | borne |
   |---|---|
@@ -2514,11 +2574,26 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   ⚠ **Et il ne se traite pas en écrivant un numéro de rang quelque part** : c'est très
   exactement le compteur figé que D283 a retiré de l'en-tête pour cette raison.
 
-- **[DOC][P3]** ⚠ **COQUILLE DANS UN FICHIER D'AUTORITÉ** : section D286 de
+- [x] ~~**[DOC][P3]** ⚠ **COQUILLE DANS UN FICHIER D'AUTORITÉ** : section D286 de
   `ZWADJ_CONTINUITE.md`, « l'écart est écrit ici plutôt que **tu** » — phrase tronquée
   (« plutôt que tu », pour « plutôt que passé sous silence » ou « que tu »). Relevée le
   11/09/2026, **non corrigée**, parce qu'elle vit dans une section de session close et que
-  la corriger seule vaut moins qu'une passe groupée. Sans conséquence de lecture.
+  la corriger seule vaut moins qu'une passe groupée. Sans conséquence de lecture.~~
+  ⛔ **FERMÉE LE 12/09/2026 (D289) — CE N'EST PAS UNE COQUILLE, ET LE SIGNALEMENT ÉTAIT UNE
+  MÉSAUDITION.** `tu` est le **participe passé de « taire »**, accordé au masculin « l'écart » :
+  « l'écart est écrit ici plutôt que **tu** » = *plutôt que passé sous silence*. La même
+  tournure porte « tu**e** » ailleurs dans le backlog, accordée à « la **contradiction** ».
+  **Les deux sont justes ; il n'y a rien à corriger.**
+  ⚠ **ENTRÉE BARRÉE, PAS EFFACÉE** (D276) : effacée, elle se resignalerait de bonne foi au
+  prochain balayage, par quelqu'un qui ignore qu'elle a déjà été jugée.
+  ⛔ **ET CE QU'ELLE A COÛTÉ EN PASSANT, QUI VAUT PLUS QUE L'ENTRÉE** : en la vérifiant, une
+  session a d'abord conclu — et **écrit dans `AGENTS.md`** — que la chaîne « n'avait jamais
+  existé dans aucun commit », parce que `grep` et `git log -S` ne la trouvaient pas. **Elle
+  existe** : la phrase **enjambe un retour à la ligne**, et ni l'un ni l'autre ne franchit un
+  saut de ligne. ⇒ **Ces fichiers sont enveloppés à ~95 colonnes — toute expression de plus de
+  quelques mots y est coupée au moins une fois.** Tout balayage d'un fichier d'autorité se fait
+  donc sur le **texte aplati**, jamais sur ses lignes. Affirmation fausse retirée d'`AGENTS.md`
+  et remplacée par cette mesure le 12/09.
 
 - **[INFRA][P2]** ⚠ **L'OUTIL D'ÉDITION DES FICHIERS D'AUTORITÉ EST RESTÉ UN SCRIPT JETABLE
   DU SCRATCHPAD, ET C'EST LE CONTRAIRE DU PRINCIPE DU RANG 11.** `ed.py`, écrit le

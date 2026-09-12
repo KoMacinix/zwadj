@@ -482,6 +482,178 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## PROCHAIN LOT — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CADRAGE ÉCRIT : D289**
+
+⛔ **OUVERT ET ARBITRÉ PAR KO LE 12/09/2026.** ⇒ **QUEL lot : rang 13 de l'ordre des rangs.
+OÙ IL EN EST : ici.** C'est la **cinquième** écriture d'ordre, et toutes sont de Ko. Le
+candidat était **désigné** depuis le 11/09 (« quatre configs, c'est du code et ça mérite son
+propre rang ») et **bloqué** derrière la marque du rang 12 ; la marque est posée (D288), le
+compteur de lots de code non certifiés est à **zéro**, la condition est levée.
+
+⛔ **ÉTAT, AU 12/09/2026 : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE.** Patron du rang 10
+(D284), qui s'est ouvert de la même façon. ⇒ **Ce lot est DOCUMENTAIRE** — deux `.md`
+d'autorité au diff, aucun fichier de code (D283) : **il ne compte pas** dans les deux/trois.
+**Le lot de CODE qui suivra portera le compteur à un.**
+
+⛔ **MOTIF DE L'ORDRE, ÉCRIT PAR KO** : les six durées gravées le 12/09 par D288 sont la
+**référence**. Une borne de workers les déplace toutes. **Les déplacer sans l'avoir écrit
+d'avance fait perdre la comparaison** — et la comparaison est le seul instrument qui reste
+pour distinguer un lot qui règle le défaut d'un lot qui déplace le seuil.
+
+### ⛔ ÉTAPE 0 — FAITE DANS CE LOT, ET C'EST UNE PERMISSION PÉRIMÉE QUI A ÉTÉ AMENDÉE
+
+`AGENTS.md` portait, depuis la campagne SOLID : « **Tout script d'édition vérifie son nombre
+d'occurrences AVANT de remplacer, et le marqueur attendu APRÈS.** » Cette phrase **déclare un
+contrôle suffisant**. L'utilitaire de D288 l'a respectée **à la lettre** — 1 remplacement,
+0 LF nu, marqueur présent, les trois vrais — et a écrit faux : **la corruption était dans son
+ENTRÉE**, en amont de tout contrôle.
+⛔ **C'est une permission périmée au sens de D287** : elle ne contredit aucun mot d'aucun lot,
+donc **aucune recherche par contradiction ne la ramène**. Elle vivait dans le seul fichier
+chargé à chaque session, sur la règle même dont la faute a montré la brèche.
+⇒ **AMENDÉE, pas complétée** (arbitrage de Ko) : les deux contrôles sont déclarés
+**nécessaires et non suffisants** ; la règle d'interpolation est posée au même endroit ; et le
+contrôle **se déplace vers le FICHIER relu**. Détail : `AGENTS.md`, bloc « AMENDÉ LE
+12/09/2026 (D289) ».
+⚠ **ET LE BALAYAGE A TROUVÉ LA CLASSE DÉJÀ POSÉE DANS UN FICHIER DE CODE** : sur **457
+fichiers source**, **une** occurrence — `apps/pro/vite.config.ts:24`, un jeton mangé entre la
+virgule et le « = 4 », **double espace pour seule trace**, introduite par `1f85aa6` (D270,
+30/08). **Treize jours et une certification complète** ne l'ont pas vue : un commentaire ne
+casse aucune porte. ⇒ **Sa restauration est la première écriture du lot de CODE** — elle est
+dans le fichier que ce rang doit toucher, donc elle n'a pas à être un lot à part.
+
+### 1 · ⛔ LA GRANDEUR SE NOMME AVANT QUE LA BORNE SE POSE
+
+Elle est **chiffrée depuis le 30/08 et sans nom depuis le 30/08**. Un lot qui pose une borne
+sans nommer ce qu'elle borne repose le même défaut au prochain poste — **troisième occurrence
+qu'on paierait**.
+
+⇒ **NOM RETENU : la MÉMOIRE DISPONIBLE PAR WORKER, PENDANT la passe.** Trois termes, et
+chacun porte sa raison :
+- **mémoire**, pas cœurs : le commentaire de `apps/pro/vite.config.ts` nomme déjà le mécanisme
+  — « chaque worker porte un environnement jsdom complet ; le défaut de vitest suit le nombre
+  de cœurs (12 ici) **sans regarder la mémoire disponible** » ;
+- **par worker**, pas globale : c'est le terme que la barre RAM globale **ne capture pas** ;
+- **pendant**, pas à l'ouverture : la passe est **son propre consommateur**. Mesuré le 10/09 —
+  elle fait tomber la RAM libre de **5 400 à 2 652 Mo** avec **12 à 14 workers**, et **66
+  échantillons sur 104** passent sous la barre, **dont zéro machine au repos**.
+
+⛔ **LA PREUVE QUE LA BARRE GLOBALE NE SUFFIT PAS EST DÉJÀ AU DÉPÔT, ET ELLE EST NETTE.** Dans
+le cas ROUGE du 09/09, la barre RAM était **SATISFAITE** — 4 636 Mo, soit **+57 au-dessus** de
+4 579 — et la suite a rendu **273/287**. Une porte dure franchie n'a donc rien protégé.
+**C'est ce constat qui NOMME la grandeur** : si la quantité qui décidait était la RAM libre à
+l'ouverture, ce cas serait vert.
+
+### 2 · ⛔ TROIS SUITES, TROIS MESURES — ET LA DÉRIVATION S'ÉCRIT ICI, PAS APRÈS COUP
+
+| config | borne | environnement |
+|---|---|---|
+| `apps/pro/vite.config.ts` | ✅ `maxWorkers: 4` (D270, mesuré le 30/08) | jsdom |
+| `apps/client/vitest.config.ts` | ⛔ aucune — **la suite qui a rendu les 22 délais dépassés** | jsdom |
+| `apps/api/vitest.config.ts` | ⛔ aucune | **node** |
+| `packages/api-client/vitest.config.ts` | ⛔ aucune | **node** |
+
+⛔ **INTERDIT : TRANSPOSER LE `4` DE `pro`.** Le backlog l'écrit déjà, et D270 l'a mesuré —
+la borne coûte **+31 %** sur `pro`, la sérialisation **2,6×**. Ces chiffres sont ceux de
+`pro`, **pas une propriété du dépôt**. Une borne recopiée est un réglage que personne ne
+saura défendre.
+
+⇒ **COMMENT CHAQUE BORNE SE DÉRIVE — le protocole, écrit d'avance pour qu'aucun chiffre ne
+soit choisi au jugé puis appelé une mesure :**
+
+1. **Relevé d'ouverture** par `neutralisation/sonde-etat-machine.ps1`, calibration rejouée
+   (D286) : RAM libre médiane, `chrome` = 0, `node` = 0, alimentation. **Même porte dure que
+   la certification** — sinon la mesure renseigne sur la machine (D270).
+2. **Suite SANS borne, AU REPOS** : verdict, durée, et `echantillonneur-etat-machine.ps1` en
+   fond pour le **creux de RAM pendant** et le **nombre de workers observé**.
+3. **Suite SANS borne, SOUS CONTENTION** (point 3 ci-dessous), même relevé.
+   ⛔ **Si le verdict ne bouge pas sous contention, la suite N'A PAS le défaut et NE REÇOIT
+   PAS DE BORNE.** D270 a déjà tranché ainsi pour `client` le 30/08 — « je ne peux rien
+   démontrer » ⇒ borne non appliquée. **Ce résultat est un résultat, pas un échec du lot.**
+4. **Si le verdict bouge** : bornes candidates mesurées **chacune au repos ET sous la même
+   contention**. ⇒ **Retenue : la PLUS GRANDE borne qui rend le verdict stable sous
+   contention.** Motif : la borne s'achète en durée ; prendre la plus petite qui marche paie
+   plus que nécessaire, sur des portes dont les durées sont la référence de D288.
+5. Le chiffre retenu s'écrit **dans la config, avec sa mesure** — les deux verdicts et les
+   deux durées — comme D270 l'a fait pour `pro`.
+
+⚠ **ET UN RÉSULTAT À PRÉVOIR D'AVANCE, POUR NE PAS SE CROIRE OBLIGÉ DE POSER TROIS BORNES** :
+`api` et `api-client` tournent en `environment: "node"`, **pas jsdom**. Le mécanisme nommé —
+un environnement jsdom complet par worker — **ne s'y applique pas tel quel**. Il est donc
+attendu que la mesure conclue « pas de borne » pour l'une ou les deux. ⛔ **Poser une borne
+là où la mesure n'en demande pas serait exactement le réflexe que ce cadrage interdit.**
+
+### 3 · ⛔ LA DÉMONSTRATION — ET LA CONTENTION DOIT ÊTRE PRODUITE, PAS ATTENDUE
+
+**Le défaut se reproduit par une mesure avant d'être corrigé.** Cas de référence, relevé :
+`pnpm --filter @zwadj/client run test` rend **273/287 avec 22 signatures « Test timed out in
+5000ms »** sous contention, et **287/287 en 21 s** au repos.
+⇒ **La borne doit rendre ce verdict STABLE sous la MÊME contention.** Sinon elle n'a rien
+corrigé : elle a déplacé le seuil.
+
+⛔ **ET VOICI LE POINT DUR DE CE LOT, TROUVÉ AU CADRAGE : CETTE CONTENTION ÉTAIT
+INCIDENTELLE.** C'était l'état de la machine le 09/09, pas une charge produite exprès. **Telle
+quelle, la démonstration n'est pas reproductible** — c'est la question de Ko, et elle n'a pas
+de réponse au dépôt aujourd'hui.
+
+⛔ **PIRE : LA RAM D'OUVERTURE EST DÉMENTIE COMME DISCRIMINANT, ET LA COMPARAISON EST
+ACCABLANTE DE PRÉCISION.**
+
+| passe | RAM à l'ouverture | verdict |
+|---|---|---|
+| 09/09, `--filter @zwadj/client` | **4 636 Mo** | ⛔ **273/287** |
+| 12/09, `pnpm test` (D288) | **4 624 Mo** puis **4 643 Mo** | ✅ **1 329/1 329** |
+
+Le cas rouge tombe **ENTRE** les deux cas verts. ⇒ **La RAM d'ouverture ne décide pas.** Une
+contention qui ne ferait que baisser la RAM de départ reproduirait donc le mauvais terme.
+⚠ **ET UNE SECONDE VARIABLE EST DÉJÀ NOMMÉE DANS `AGENTS.md`, SANS QU'ON L'AIT RELIÉE À
+CECI** : « `pnpm test` (racine) et `pnpm --filter @zwadj/pro test` **ne répartissent pas
+pareil** — ne jamais conclure sur un seul des deux ». **Le cas rouge est une passe FILTRÉE, le
+cas vert une passe RACINE.** C'est la différence la plus visible entre les deux, elle est déjà
+écrite comme un piège connu, et personne ne l'a mise en face de ces deux verdicts.
+
+⇒ **PREMIER GESTE DU LOT DE CODE : UN RELEVÉ, PAS UN CORRECTIF** (patron D271). Tant que le
+terme qui sépare rouge de vert n'est pas nommé, **toute borne « vérifiée sous contention »
+serait vérifiée sous la mauvaise contention.** Ce que ce relevé doit trancher :
+
+1. **filtrée contre racine** — combien de workers chaque chemin ouvre RÉELLEMENT pour
+   `client` (relevé par échantillonnage, pas déduit du nombre de cœurs) ;
+2. le **creux de RAM pendant** chacun des deux, pas seulement à l'ouverture ;
+3. la **contention CPU** concurrente (`chrome` tournait le 09/09, il était à 0 le 12/09).
+
+⇒ **CE QUE LE GÉNÉRATEUR DE CONTENTION DOIT ÊTRE, une fois ce terme connu :**
+
+- **reproductible** — même amplitude à chaque exécution, paramètre écrit, pas « la machine
+  était chargée » ;
+- **il agit sur la grandeur nommée** — la mémoire, et non le seul CPU. ⛔ **La calibration
+  existante de `sonde-etat-machine.ps1` charge DOUZE CŒURS et rien d'autre** (D286 : 120 s de
+  CPU sur 124,5) : **elle n'est pas un générateur de contention mémoire**, et la prendre pour
+  tel mesurerait le mauvais terme ;
+- **calibré sur ses DEUX bras** (D286) : générateur actif ⇒ la suite non bornée doit
+  **rougir** ; générateur arrêté ⇒ elle doit **verdir**. ⛔ **S'il ne produit pas le rouge, le
+  lot s'ARRÊTE et le dit** — il n'a alors aucune démonstration, et poser une borne reviendrait
+  à la poser sur une intuition ;
+- **au dépôt, pas dans un scratchpad** (D286) : il entre dans `neutralisation/`, avec son mode
+  d'emploi, son motif, les instruments écartés et leur mesure.
+
+⚠ **ET IL NE DOIT PAS DEVENIR CE QU'ON MESURE** : une charge qui fait pagailler la machine
+rendrait des durées qui parlent d'elle. Son amplitude se **relève**, elle ne se règle pas au
+ressenti.
+
+### ⛔ CE QUE CE LOT NE FERA PAS
+
+1. ⛔ **AUCUN `testTimeout` ÉCRIT DANS CE LOT** — consigne de Ko, et le dépôt la portait déjà :
+   augmenter le budget **masque** l'effondrement au lieu de le révéler, et D270 le dit de sa
+   propre borne, « une **assurance**, pas un correctif ». ⇒ **Les budgets de test restent un
+   `[MÉTHODE][P0]` DISTINCT**, non traité ici. ⚠ Ce n'est pas un report par commodité : un
+   budget écrit **en même temps** qu'une borne rendrait les deux inévaluables, puisque le vert
+   obtenu ne dirait plus lequel des deux l'a produit.
+2. **Il ne touche à aucun autre réglage de vitest** — ni `fileParallelism`, ni `pool`, ni
+   `isolate`. Un lot qui change deux termes ne mesure aucun des deux.
+3. **Il ne rouvre pas l'écart de 15 % entre ligne de commande et fichier**, consigné NON
+   EXPLIQUÉ par D270 et qui le reste.
+
+⚠ **Ce bloc se rafraîchit à la clôture de toute session qui fait avancer le rang** (règle D282).
+
 ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 11/09/2026.** ⇒ **QUEL lot : rang 12 de l'ordre des rangs.
@@ -1643,6 +1815,136 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 12/09/2026 — D289 · rang 13 ouvert (cadrage seul), et la permission qui déclarait un contrôle SUFFISANT
+
+⛔ **RANG 13, ARBITRÉ PAR KO LE 12/09.** ⇒ **État du rang** : section « PROCHAIN LOT — rang 13 »
+en tête de ce fichier. **Cadrage écrit, aucune ligne de code.**
+⚠ **Cinquième écriture d'ordre, et toutes sont de Ko** — la session n'attribue pas un rang, et
+n'en a pas attribué un ici : elle a reçu l'arbitrage et l'a écrit.
+
+### ⛔ ÉTAPE 0 — LA PERMISSION PÉRIMÉE, AMENDÉE ET NON COMPLÉTÉE
+
+`AGENTS.md` déclarait, depuis la campagne SOLID : « **Tout script d'édition vérifie son nombre
+d'occurrences AVANT de remplacer, et le marqueur attendu APRÈS.** » ⇒ **Une phrase qui déclare
+un contrôle SUFFISANT.** L'utilitaire de D288 l'a respectée à la lettre — 1 remplacement,
+0 LF nu, marqueur présent, **les trois vrais** — et a écrit faux.
+⛔ **PARCE QUE LES DEUX CONTRÔLES REGARDENT L'ÉCRITURE, ET QUE LA CORRUPTION ÉTAIT DANS
+L'ENTRÉE.** Aucun ne demande si le texte qu'on s'apprête à écrire est celui qu'on croit.
+⚠ **C'est une permission périmée au sens strict de D287** : elle ne contredit aucun mot d'aucun
+lot, donc **aucune recherche par contradiction ne pouvait la ramener**. Elle vivait dans le seul
+fichier chargé à chaque session, sur la règle même dont la faute avait montré la brèche — et
+c'est **Ko** qui l'a désignée, à partir de mon rapport de reprise, pas une passe automatique.
+
+⇒ **Trois écritures, au même endroit, dans `AGENTS.md` :**
+1. les deux contrôles sont déclarés **nécessaires et non suffisants**, avec le cas mesuré ;
+2. la règle de forme : **aucun texte destiné à un fichier d'autorité ne transite par une couche
+   qui l'interpole** — heredoc à délimiteur entre quotes simples, fichier, ou l'outil
+   d'écriture ; jamais `-c`, jamais une chaîne à guillemets doubles, jamais un argument ;
+3. le contrôle **se déplace vers le FICHIER relu** — « relire » voulant dire *chercher les
+   jetons attendus*, pas constater qu'une écriture a eu lieu.
+
+⛔ **ET LE MOTIF QUI COMMANDE « AMENDER » PLUTÔT QUE « COMPLÉTER » (arbitrage de Ko) : un
+contrôle déclaré suffisant fait ARRÊTER DE CHERCHER.** Un ajout en dessous aurait laissé la
+phrase d'origine intacte et lisible seule — et c'est elle qu'on lit en premier.
+
+### ⛔ LA CLASSE AVAIT DÉJÀ FRAPPÉ UN FICHIER DE CODE, ET AUCUNE PORTE NE POUVAIT LA VOIR
+
+Balayage du 12/09 sur **457 fichiers source** (`.ts`, `.tsx`, `.py`, `.ps1`), signature =
+double espace au milieu d'une phrase de commentaire :
+
+| | |
+|---|---|
+| candidats bruts | 9 |
+| alignement légitime (tableaux et flèches en commentaire) | 8 |
+| **corruption réelle** | **1** |
+
+⇒ `apps/pro/vite.config.ts:24` — « mode par défaut = 46 à 52 délais dépassés,  = 4. ». Un jeton
+mangé entre la virgule et le « = 4 », **double espace pour seule trace**. Introduite par
+`1f85aa6` (**D270, 30/08/2026**), elle a survécu **treize jours et une certification complète**.
+⛔ **PARCE QU'UN COMMENTAIRE NE CASSE NI `tsc`, NI `lint`, NI UN TEST.** Les six portes de D288
+étaient vertes **avec cette corruption dans l'arbre**. C'est la définition d'un défaut hors de
+portée des portes — et il vit dans le fichier même que le rang 13 doit toucher.
+⚠ **Le sens du jeton se retrouve, le jeton lui-même non** : D270 écrit ailleurs « 4 délais
+dépassés contre 46-52 en mode par défaut ». La phrase se restaure donc par **son sens relevé**,
+pas par un caractère deviné — et cela appartient au lot de CODE, première écriture.
+
+### ⛔ LE CADRAGE, ET SON POINT DUR : LA RAM D'OUVERTURE NE DÉCIDE PAS
+
+Les trois exigences de Ko sont traitées en section « PROCHAIN LOT — rang 13 » : la grandeur
+**nommée** (mémoire disponible **par worker**, **pendant** la passe), le protocole de
+**dérivation** écrit d'avance pour les trois suites, et la **démonstration** spécifiée.
+
+⛔ **CE QUE LE CADRAGE A TROUVÉ, ET QUI N'ÉTAIT ÉCRIT NULLE PART** : la contention du cas rouge
+était **incidentelle**, et la RAM d'ouverture est **démentie comme discriminant**.
+
+| passe | RAM à l'ouverture | verdict |
+|---|---|---|
+| 09/09, `pnpm --filter @zwadj/client run test` | **4 636 Mo** | ⛔ **273/287**, 22 délais dépassés |
+| 12/09, `pnpm test` (D288) | **4 624** puis **4 643 Mo** | ✅ **1 329/1 329** |
+
+**Le cas rouge tombe ENTRE les deux cas verts.** ⇒ Une contention qui se contenterait de
+baisser la RAM de départ reproduirait **le mauvais terme**, et une borne « vérifiée sous
+contention » le serait sous la mauvaise.
+⚠ **ET LA SECONDE VARIABLE ÉTAIT DÉJÀ NOMMÉE DANS `AGENTS.md`** — « `pnpm test` (racine) et
+`pnpm --filter @zwadj/pro test` **ne répartissent pas pareil** — ne jamais conclure sur un seul
+des deux ». **Le cas rouge est FILTRÉ, le cas vert est RACINE.** Le piège était écrit ; personne
+ne l'avait mis en face de ces deux verdicts. ⇒ **Premier geste du lot de code : un RELEVÉ, pas
+un correctif** (patron D271).
+
+### Passe D277 — les DEUX sens, et ce qu'elle a traité
+
+- **Sens 1, ce que le lot INVALIDE** : « rang suivant : en attente d'arbitrage de Ko » (ordre
+  des rangs) — **barré avec son motif**, remplacé par l'arbitrage du 12/09 ; l'entrée
+  `[MÉTHODE][P0]` de `ZWADJ_BACKLOG.md` qui déclarait la borne de workers **sans rang** ; et la
+  phrase d'`AGENTS.md` traitée à l'étape 0.
+- **Sens 2, ce que le lot REND PERMIS** (D287) : rien de neuf — la permission qui comptait
+  (« elle peut s'ouvrir dès que Ko l'arbitre ») a été **consommée** par cet arbitrage, et les
+  occurrences de « bloquée derrière la marque » sont désormais de l'histoire datée, non des
+  conditions courantes. ⚠ **Vérifié, non supposé** : balayage des quatre fichiers d'autorité sur
+  le texte **aplati**.
+
+### ⛔ DEUX FAUTES DE MÉTHODE, À MON COMPTE — ET LA PREMIÈRE A ÉCRIT DANS UN FICHIER D'AUTORITÉ
+
+1. ⛔ **J'AI ÉCRIT UNE AFFIRMATION FAUSSE DANS `AGENTS.md`, DANS LE LOT DONT C'EST L'OBJET.**
+   Le backlog signale une coquille `[DOC][P3]` — « l'écart est écrit ici plutôt que **tu** ».
+   `grep` ne la trouvait pas, `git log -S` non plus, et **j'en ai conclu qu'elle n'avait jamais
+   existé**, phrase que j'ai écrite dans le fichier. **Faux deux fois :**
+   - elle **existe** — la phrase **enjambe un retour à la ligne**, que ni `grep` ni `git log -S`
+     ne franchissent. Il a fallu **aplatir les blancs** pour la voir. ⇒ Ces fichiers sont
+     enveloppés à ~95 colonnes : **toute expression de plus de quelques mots y est coupée au
+     moins une fois**, donc tout balayage se fait sur le texte aplati ;
+   - et **ce n'est pas une coquille** : `tu` est le participe passé de **taire**, accordé au
+     masculin « l'écart » ; la même tournure porte « tue » ailleurs, accordée à « la
+     contradiction ». Les deux sont justes. **Le signalement du backlog est une mésaudition.**
+   ⇒ **Corrigé dans `AGENTS.md`** — l'affirmation fausse est **retirée et remplacée par la
+   mesure**, et l'entrée `[DOC][P3]` du backlog est **barrée avec son motif** (D276 : une
+   affirmation invalidée se barre, elle ne s'efface pas).
+   ⚠ **Ce qui l'a attrapée est un second extracteur, pas une relecture** — et ce qui l'avait
+   produite est très exactement ce que le lot dénonce : **j'ai cru le compte rendu d'un outil
+   (« 0 occurrence ») au lieu du fichier.**
+2. ⚠ **TROIS ATTENDUS ÉCRITS DE MÉMOIRE DANS MES PROPRES VÉRIFICATIONS**, tous rendus « MANQUE »
+   sur un fichier parfaitement correct : un `\n` cherché dans un fichier **CRLF** ; un
+   aplatissement laissant l'**indentation**, donc des espaces multiples ; une recherche
+   **sensible à la casse** contre un titre en capitales. **Aucun n'a écrit**, tous ont accusé à
+   tort. ⚠ C'est la règle du dépôt retournée contre moi — et c'est pourquoi l'extracteur final
+   **rejoue sa calibration sur ses deux bras** (un témoin présent, un témoin absent) à chaque
+   invocation.
+
+### ⛔ CE QUE CE LOT NE FAIT PAS
+
+1. **Aucune ligne de code**, aucun `testTimeout`, aucune borne posée. Les budgets de test
+   restent un `[MÉTHODE][P0]` **distinct** — motif écrit au cadrage : un budget posé en même
+   temps qu'une borne rendrait les deux inévaluables.
+2. **Il ne corrige pas** `apps/pro/vite.config.ts:24`, pourtant mesuré ici : ce serait du code,
+   et le lot est documentaire. **Il est inscrit comme première écriture du lot de code.**
+3. **Ce lot est DOCUMENTAIRE** (D283) — trois `.md` d'autorité au diff, aucun fichier de code :
+   il **ne compte pas** dans les deux/trois. Le compteur reste à **zéro** ; le lot de code du
+   rang 13 le portera à un.
+4. ⚠ **L'UTILITAIRE DE SPLICE EST RESTÉ DANS LE SCRATCHPAD**, comme `ed.py` au rang 11 et
+   l'éditeur CRLF au rang 12 — **troisième reconduction du même écart, et elle est écrite plutôt
+   que passée sous silence.** Le verser au dépôt ici ferait de ce lot un lot de CODE (D283).
+   ⇒ Report déjà ouvert au backlog ; cette occurrence s'y ajoute.
 
 ## Session du 12/09/2026 — D288 · CERTIFICATION (rang 12) : la marque, et la porte dure entre au critère
 
@@ -5215,8 +5517,21 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     ⚠ **Le lot de ce rang est DOCUMENTAIRE** (aucun fichier hors `.md` d'autorité au diff, D283) :
     il **ne compte pas** dans les deux/trois — il les REMET à zéro sans s'y ajouter.
 
-⇒ **RANG SUIVANT : EN ATTENTE D'ARBITRAGE DE KO.**
-⚠ **ET « SUIVANT » VEUT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
+⇒ ~~**RANG SUIVANT : EN ATTENTE D'ARBITRAGE DE KO.**~~ ⛔ **CONSOMMÉ LE 12/09/2026 (D289) —
+ARBITRÉ PAR KO : le RANG 13 est la BORNE DE WORKERS.** L'attente est levée, et la ligne est
+**barrée plutôt qu'effacée** : effacée, elle se réécrirait de bonne foi plus tard par
+quelqu'un qui ignore qu'elle a été satisfaite (D276). ⇒ **Motif de l'ordre, écrit par Ko** :
+les six durées gravées le 12/09 par D288 sont la référence, une borne les déplace toutes, et
+**les déplacer sans l'avoir écrit d'avance fait perdre la comparaison** ; la borne passe donc
+devant les budgets de test, qui masqueraient l'effondrement au lieu de le corriger.
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 13 » en tête de ce fichier — **cadrage
+écrit le 12/09 (D289), aucune ligne de code**. Cette liste dit QUEL lot, jamais OÙ IL EN EST
+(D283).
+⚠ **ET LE RANG 14 EST DONC, À SON TOUR, EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit
+maintenant, et non à la clôture du rang 13, pour qu'aucune reprise ne tombe sur une liste qui
+s'arrête. ⚠ **Ce qui attend toujours, sans rang** : les **budgets de test** (`[MÉTHODE][P0]` du
+10/09), explicitement **hors** du rang 13 par consigne de Ko.
+⚠ **ET « SUIVANT » VOULAIT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
 **OUVERT, pas clos** ; ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa
 mesure**.~~ ⛔ **PRÉMISSE PÉRIMÉE LE 12/09/2026 (D288) : le rang 12 est CLOS**, sa marque est
 posée. Ce qui reste dû est donc bien un **arbitrage**, et il appartient à Ko.
@@ -6685,3 +7000,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D286 | A | D286 — les instruments entrent au dépôt ; « muette » a deux causes, et la preuve est ancre 1→0 ET marqueur 1→2 |
 | D287 | A | D287 — une passe D277 cherche aussi ce que le lot REND PERMIS ; une permission périmée n'a rien à contredire |
 | D288 | A | D288 — CERTIFICATION (rang 12) : 195 gardes, fenêtre homogène mesurée, et la porte dure `chrome` = 0 entre au critère |
+| D289 | A | D289 — rang 13 ouvert (borne de workers), cadrage seul ; un contrôle d'écriture déclaré SUFFISANT ne regarde pas l'ENTRÉE |
