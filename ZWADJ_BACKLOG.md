@@ -2481,8 +2481,18 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   ~~Sans rang, désignée seulement.~~ ⇒ **Son cadrage est ÉCRIT** — section « PROCHAIN LOT —
   rang 13 » de `ZWADJ_CONTINUITE.md` : la grandeur y est **nommée** (mémoire disponible **par
   worker**, **pendant** la passe), le protocole de dérivation des bornes est fixé d'avance, et
-  la démonstration est spécifiée. ⚠ **Le lot de CODE reste à faire** ; cette entrée n'est donc
-  **pas** close, et ce qui suit reste la mesure d'origine.
+  la démonstration est spécifiée. ~~⚠ **Le lot de CODE reste à faire**~~ ⛔ **LE LOT DE CODE A EU LIEU LE 12/09/2026 (D290),
+  ET IL N'A POSÉ AUCUNE BORNE** ; cette entrée n'est donc **pas** close, et ce qui suit reste
+  la mesure d'origine.
+  ⇒ **TROIS TERMES SONT ÉLIMINÉS** : la RAM d'ouverture (D289), le **chemin d'invocation**
+  racine-contre-filtré (**11 workers contre 11**, 1,6 % d'écart de durée sur un bruit de
+  19 %, sérialisation dénombrée stricte), et le **nombre de workers** comme grandeur propre.
+  ⛔ **ET LES DEUX CHIFFRES DE CETTE ENTRÉE SONT PÉRIMÉS** : le creux de 2 652 Mo appartient
+  aux **54 min** des portes et campagnes — isolée, la suite creuse **1 329 Mo** — et
+  « 12 à 14 workers » comptait des **processus**, les workers sont **11**.
+  ⇒ **CE QUI RESTE DÛ N'EST PLUS UNE BORNE** : c'est l'expérience du **RÉGIME
+  D'ALIMENTATION**, seul terme non éliminé, dont **Ko produit la condition**. Protocole et
+  deux issues en section D290.
   ⛔ **ET LE CADRAGE A TROUVÉ QUE LA RAM D'OUVERTURE NE DISCRIMINE PAS** : le cas rouge du 09/09
   (4 636 Mo) tombe **entre** les deux cas verts du 12/09 (4 624 et 4 643). La contention à
   reproduire n'est donc pas une simple baisse de RAM de départ — voir le cadrage.

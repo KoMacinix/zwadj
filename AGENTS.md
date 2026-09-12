@@ -383,6 +383,36 @@ connexion (famille D115).
   ⇒ **LA LEÇON EST LA MÊME DANS LES DEUX SENS, ET C'EST POUR ÇA QU'ELLE EST ICI** : un rapport
   de corruption **non confronté au fichier** vaut une affirmation non mesurée — que le rapport
   vienne d'un outil, d'un lecteur, ou de moi trois paragraphes plus haut.
+- ⛔ **UN COMPTEUR REND AUSSI CE QU'IL A PARCOURU, ET L'ATTENDU S'ÉCRIT À CÔTÉ DU MESURÉ
+  (D290, 12/09/2026).** Un « 0 » sur **zéro élément parcouru** n'est pas une mesure : c'est un
+  silence qui a la forme d'un résultat. ⚠ **Mesuré, pas craint** : une vérification a rendu
+  « 0 signature restante » sur un fichier lu en mode texte — CRLF traduit en LF, découpage sur
+  le séparateur CRLF, **une seule ligne**, la boucle n'a rien parcouru. **Le zéro était exact et
+  vide.** ⇒ **Tout compteur imprime, à côté de son total, le NOMBRE D'ÉLÉMENTS QU'IL A
+  EXAMINÉS** — lignes parcourues, fichiers ouverts, occurrences vues. Un compteur qui ne dit
+  pas sur quoi il a compté ne se confronte à rien.
+  ⛔ **ET LA SECONDE MOITIÉ EST CELLE QUI ATTRAPE RÉELLEMENT : L'ATTENDU S'ÉCRIT À CÔTÉ DU
+  MESURÉ, DANS LA MÊME LIGNE DE SORTIE.** `(attendu 0)` imprimé à droite d'un `17` a suffi ;
+  sans lui, 17 doubles espaces « résiduels » — en réalité l'indentation du fichier — se lisaient
+  comme un relevé plausible.
+  ⚠ **MOTIF MESURÉ : TROIS OCCURRENCES DANS UN SEUL LOT, AUCUNE N'A LEVÉ, TOUTES ONT RÉPONDU.**
+  Un extracteur a rendu **−236** et n'a **pas** levé ; il n'a été vu **que parce que le signe
+  était absurde**. ⛔ **Avec un chiffre plausible il ne l'aurait pas été**, et « 309 corruptions
+  possibles » serait entré dans un fichier d'autorité. ⇒ **La cause n'est pas le chiffre en dur
+  seul : c'est d'avoir changé la DÉFINITION de ce qu'on compte entre deux passes qui se
+  comparent** — ici le corps du commentaire dans la première, la ligne brute dans la seconde.
+  **Deux passes qui se soustraient comptent la même chose, ou elles ne se soustraient pas.**
+  ⚠ C'est la règle du rang 6 (« un instrument se calibre sur un cas dont la réponse est déjà
+  connue ») et D275 (« un extracteur se vérifie contre la sortie brute avant de servir à
+  compter ») portées à l'étage au-dessus : **ce qui précède le comptage, c'est de savoir ce
+  qu'on compte.**
+  ⛔ **ET LA RÈGLE D'INTERPOLATION DE D289 VAUT AUSSI POUR LES MOTIFS DE RECHERCHE — deux
+  commandes cassées par un accent grave non échappé dans le lot qui traite cette classe**, dont
+  l'une cherchait les traces de la corruption par accents graves, et l'autre écrivait la section
+  de décision. ⚠ **La couche qui interpole peut être celle de l'outil lui-même** : un heredoc à
+  délimiteur quoté a été cassé par l'enveloppe `bash -c`. ⇒ Des trois formes que D289 autorise,
+  **celle qui ne dépend d'aucune enveloppe est le FICHIER** : le texte s'écrit dans un fichier,
+  un script le LIT, et rien ne traverse un interpréteur.
 - Petites PR, messages Conventional Commits. Expliquer les choix d'architecture dans la PR.
 - Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine.
 - Le design fourni (App.tsx) est une **référence visuelle par écran**, jamais une base de code à refactorer telle quelle : il est desktop-only, en instant-book, et hors périmètre MVP sur plusieurs écrans (forum, magazine, carte, 360°, planning). Ne construire que les écrans du MVP en cours, en respectant ce présent fichier, pas l'intégralité du prototype.

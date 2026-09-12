@@ -488,12 +488,39 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 OÙ IL EN EST : ici.** C'est la **cinquième** écriture d'ordre, et toutes sont de Ko. Le
 candidat était **désigné** depuis le 11/09 (« quatre configs, c'est du code et ça mérite son
 propre rang ») et **bloqué** derrière la marque du rang 12 ; la marque est posée (D288), le
-compteur de lots de code non certifiés est à **zéro**, la condition est levée.
+compteur de lots de code non certifiés ~~est~~ **ÉTAIT** à **zéro**, la condition est levée.
+⚠ **IL EST À UN DEPUIS `251e82b` (D290)** — ce rang porte du code. La condition de son
+OUVERTURE reste levée, elle s'évaluait à l'ouverture ; c'est le compteur qui a bougé, et il
+est écrit ici parce que c'est lui qu'un prochain rang devra lire.
 
-⛔ **ÉTAT, AU 12/09/2026 : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE.** Patron du rang 10
+⛔ ~~**ÉTAT, AU 12/09/2026 : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE.** Patron du rang 10
 (D284), qui s'est ouvert de la même façon. ⇒ **Ce lot est DOCUMENTAIRE** — deux `.md`
 d'autorité au diff, aucun fichier de code (D283) : **il ne compte pas** dans les deux/trois.
-**Le lot de CODE qui suivra portera le compteur à un.**
+**Le lot de CODE qui suivra portera le compteur à un.**~~
+
+⛔ **PÉRIMÉ LE MÊME JOUR, 12/09/2026 (D290) — LE LOT DE CODE A EU LIEU, ET IL N'A POSÉ AUCUNE
+BORNE.** Barré plutôt qu'effacé (D276) : effacé, « cadrage seul » se relirait comme l'état
+courant par une reprise à froid.
+⇒ **ÉTAT : LE RELEVÉ EST FAIT. TROIS TERMES SONT ÉLIMINÉS. AUCUNE BORNE N'EST POSÉE.** Détail
+et chiffres en section **D290**. Le rang porte du code (`251e82b`, la restauration de
+`vite.config.ts:24`), donc **le compteur de lots de code non certifiés est à UN.**
+⛔ **LES TROIS TERMES ÉLIMINÉS SE LISENT ICI, POUR QU'AUCUNE REPRISE NE LES REMESURE** :
+1. la **RAM à l'ouverture** — démentie au cadrage (D289) : le cas rouge à 4 636 Mo tombe
+   **entre** deux cas verts à 4 624 et 4 643 ;
+2. le **chemin d'invocation**, racine contre filtré — mesuré **identique** (D290) : **11
+   workers contre 11**, et **1,6 %** d'écart de durée sur un bruit de **19 %**. La sérialisation
+   de `--workspace-concurrency=1` est **stricte**, dénombrée à 1 paquet en vol sur 34 relevés ;
+3. le **nombre de workers** comme grandeur propre — il ne distingue pas les deux chemins, et
+   le « 12 à 14 » du cadrage comptait des **processus** (11 workers + 2 pnpm + 1 runner).
+⇒ **CE QUI RESTE DÛ, ET CE N'EST PLUS UNE BORNE** : l'expérience du **RÉGIME D'ALIMENTATION**,
+seul terme non éliminé, **dont Ko produit la condition** (il débranche le secteur, charge
+haute). Protocole et deux issues écrits d'avance en D290 — terme identifié ⇒ **le rang change
+d'objet** ; vert des deux côtés ⇒ **le rang se clôt sur trois éliminations sans remède, ce qui
+est un résultat et non un échec**.
+⚠ **ET LE PROTOCOLE DE DÉRIVATION CI-DESSOUS N'EST PAS PÉRIMÉ, IL EST SUSPENDU** : son point 3
+dit lui-même « si le verdict ne bouge pas sous contention, la suite N'A PAS le défaut et NE
+REÇOIT PAS DE BORNE ». Il n'a jamais été atteint, faute de contention reproductible — et c'est
+exactement ce que son point 4 interdisait de contourner.
 
 ⛔ **MOTIF DE L'ORDRE, ÉCRIT PAR KO** : les six durées gravées le 12/09 par D288 sont la
 **référence**. Une borne de workers les déplace toutes. **Les déplacer sans l'avoir écrit
@@ -536,6 +563,12 @@ chacun porte sa raison :
 - **pendant**, pas à l'ouverture : la passe est **son propre consommateur**. Mesuré le 10/09 —
   elle fait tomber la RAM libre de **5 400 à 2 652 Mo** avec **12 à 14 workers**, et **66
   échantillons sur 104** passent sous la barre, **dont zéro machine au repos**.
+  ⛔ **CES DEUX CHIFFRES SONT PÉRIMÉS — MESURÉ LE 12/09/2026 (D290).** Le creux de 2 652 Mo
+  appartient aux **54 minutes** des portes ET des campagnes, pas à la suite : isolée,
+  `pnpm test` creuse **1 329 Mo** et plancher à **4 396**. Et « 12 à 14 » comptait des
+  **processus** — les workers sont **11** (11 + 2 pnpm + 1 runner = 14). ⚠ **Le MÉCANISME
+  nommé ci-dessus n'est pas touché ; son CHIFFRAGE l'est** — et c'est la distinction que le
+  cadrage lui-même exigeait en nommant la grandeur.
 
 ⛔ **LA PREUVE QUE LA BARRE GLOBALE NE SUFFIT PAS EST DÉJÀ AU DÉPÔT, ET ELLE EST NETTE.** Dans
 le cas ROUGE du 09/09, la barre RAM était **SATISFAITE** — 4 636 Mo, soit **+57 au-dessus** de
@@ -619,6 +652,12 @@ serait vérifiée sous la mauvaise contention.** Ce que ce relevé doit trancher
    `client` (relevé par échantillonnage, pas déduit du nombre de cœurs) ;
 2. le **creux de RAM pendant** chacun des deux, pas seulement à l'ouverture ;
 3. la **contention CPU** concurrente (`chrome` tournait le 09/09, il était à 0 le 12/09).
+   ⛔ **LES TROIS POINTS SONT TRAITÉS, ET LES TROIS SONT ÉLIMINÉS (D290)** — le 3ᵉ pour une
+   raison que le cadrage n'avait pas prévue : **`chrome` était présent aux DEUX cas** (14 aux
+   deux bouts de la session du 12/09, entièrement verte), et **le relevé du cas rouge ne
+   porte NI `chrome` NI l'alimentation** — sa seule quantité est la RAM. ⚠ Un terme présent
+   des deux côtés ne discrimine pas ; un terme absent du relevé ne se reconstitue pas après
+   coup (D283 : « un état machine sans inventaire ne se reproduit pas »).
 
 ⇒ **CE QUE LE GÉNÉRATEUR DE CONTENTION DOIT ÊTRE, une fois ce terme connu :**
 
@@ -1816,6 +1855,202 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 12/09/2026 — D290 · le rang 13 perd son objet : trois termes éliminés, aucune borne posée
+
+⛔ **AUCUNE BORNE N'A ÉTÉ POSÉE, ET C'EST LE RÉSULTAT DU LOT, PAS SON ÉCHEC.** Le protocole du
+cadrage exigeait qu'un terme soit identifié avant toute borne ; le relevé a éliminé celui qui
+restait. **Le remède ne se pose pas sur un défaut dont la cause est inconnue et qu'on ne sait
+pas reproduire** (rappelé par Ko, 12/09 : « c'est la doctrine, pas ma préférence »).
+⚠ **LE RANG 13 PORTE DÉSORMAIS DU CODE** — `251e82b`, la restauration de
+`apps/pro/vite.config.ts:24`. Il cesse donc d'être documentaire au sens de D283 : **le
+compteur de lots de code non certifiés passe de zéro à un.**
+
+### ⛔ DEUX CORRECTIONS DU CADRAGE, MESURÉES — EN TÊTE, PARCE QU'ELLES PÉRIMENT SES CHIFFRES
+
+1. ⛔ **LE CREUX DE 2 652 Mo N'APPARTIENT PAS À LA SUITE.** Il vient des **104 échantillons
+   sur 54 minutes** de D283 — les six portes **et** les campagnes. Isolée, `pnpm test` creuse
+   **1 329 Mo** et plancher à **4 396** : **moitié moins profond**. Le cadrage attribuait à la
+   suite unitaire un creux produit par une fenêtre qui la contient treize fois.
+2. ⛔ **« 12 À 14 WORKERS » COMPTAIT DES PROCESSUS, PAS DES WORKERS.** Le `node` max est
+   exactement **14**, et il contient **2 pnpm + 1 runner vitest**. **Les workers sont 11.**
+   ⚠ C'est la raison d'être de l'ordre de Ko — « ça se dénombre, ça ne se déduit pas » : la
+   grandeur nommée par le cadrage était chiffrée sur son propre proxy.
+
+### ⛔ LE TERME RACINE-CONTRE-FILTRÉ EST ÉLIMINÉ, ET PAR DEUX QUANTITÉS INDÉPENDANTES
+
+| | `client` FILTRÉ | `client` dans la RACINE |
+|---|---|---|
+| **workers concurrents** | **11** | **11** |
+| `node` total max | 14 | 15 |
+| durée vitest | **20,09 s** | **20,02 s** · **20,34 s** |
+| verdict | 287/287 | 287/287 · 287/287 |
+
+**`RUNNERS_SIMULTANES_MAX = 1`** sur les 34 dénombrements de la passe racine :
+`--workspace-concurrency=1` sérialise **strictement**, jamais deux paquets en vol. **Mesuré,
+plus lu** — et c'est la variable que Ko avait écartée par LECTURE le 10/09, faute qu'il a
+lui-même relevée le 12/09.
+⚠ **L'ÉCART EST PLUS PETIT QUE LE BRUIT** : 1,6 % entre les trois mesures de `client`, contre
+**19 %** de variance sur trois passes filtrées consécutives (19,6 / 23,3 / 22,9 s de mur).
+Conclure un écart de 1,6 % sur un bruit de 19 % serait lire la machine, pas le code.
+⛔ **ET LE DÉNOMBREUR EST CALIBRÉ PAR UN CAS DONT LA RÉPONSE ÉTAIT CONNUE D'AVANCE** : dans la
+même trace, `api` et `client` rendent **11**, et **`pro` rend 4** — sa borne mord, visiblement.
+Un instrument qui rendrait 11 partout, ou 4 partout, serait faux ; celui-ci **sépare**. Le
+compte se recoupe par une seconde voie : 14 − 2 pnpm − 1 runner = **11**.
+
+### ⛔ L'INDICE ARITHMÉTIQUE ÉTAIT FAUX, ET IL AVAIT DEUX VICES, PAS UN
+
+Pris dans le même état, tout s'additionne — il n'y a **aucune** anomalie à expliquer :
+
+| | api | api-client | client | pro | somme | mur |
+|---|---|---|---|---|---|---|
+| racine #1 | 13,83 | 0,92 | 20,02 | 35,34 | **70,1** | **75,4** |
+| racine #2 | 12,17 | 1,01 | 20,34 | 34,99 | **68,5** | **73,7** |
+
+L'écart au mur est l'amorçage de pnpm : 5,3 puis 5,2 s.
+⇒ **LE TERME FAUTIF ÉTAIT LE 46 s DE `pro`, ET IL L'ÉTAIT DEUX FOIS** : pris le 30/08 sur
+machine chargée, **et** mesuré sur le chemin `--maxWorkers=4` **en ligne de commande**, dont
+D270 écrit lui-même qu'il rend 46 s là où la même valeur **dans le fichier** rend 38-40.
+Mesuré ici, `pro` tel qu'il est configuré rend **35,0 s**. L'addition mêlait trois dates et
+**deux chemins**.
+⚠ **Qui a produit la faute, et qui l'a corrigée, est écrit** : la retenue venait de la session
+(« trois dates, trois états machine, ce n'est pas une preuve »), l'amplification de Ko (« le
+plus fort des trois »), et le désaveu de Ko également, avant toute mesure de ma part. **Un
+indice qu'on appelle fort cesse d'être un indice** — c'est l'écart de 15 % de D270, reconduit
+comme argument au lieu d'être reconduit comme inexpliqué.
+
+### Le creux de RAM — voie choisie, et c'est la MESURE qui a choisi
+
+⇒ **VOIE 1 RETENUE : ALLONGER LA FENÊTRE** (trois passes `client` enchaînées sous un seul
+échantillonneur). **Aucun code neuf** — l'instrument du dépôt relève déjà `node` et le minimum
+de RAM ; il suffisait de le lancer hors de son pas nominal.
+⛔ **ET LA VOIE 2 A ÉTÉ ÉCARTÉE SUR MESURE, PAS PAR PRÉFÉRENCE** : même avec `-Intervalle 1`,
+on obtient **24 échantillons sur 66 s**, soit un pas **effectif de 2,9 s** — une itération
+(WMI + `Get-Counter` + `Get-Process`) coûte **~1,9 s** à elle seule. **Le plancher du pas est
+~1,9 s, pas 1 s : affiner n'achetait presque rien.**
+
+| | mesure |
+|---|---|
+| creux `client` ×3 (24 échantillons, fenêtre homogène) | **5 725 → 4 396 Mo**, soit **1 329 Mo** |
+| par worker | ≈ **121 Mo** pour 11 workers |
+| coût de l'observateur, pas 2 s | **1,31 s** CPU · 95 Mo |
+| coût de l'observateur, pas 1 s | **3,14 s** CPU · 101 Mo — **0,38 %** de 12 cœurs |
+| coût du dénombreur de workers | **0,42 s** CPU |
+
+⚠ **C'est le chiffre que l'en-tête de l'échantillonneur déclarait « non négligeable sous 30 s »
+sans jamais le donner.** Il l'est, et largement : le déclarer sans le mesurer aurait interdit
+l'usage qui a rendu ce relevé possible.
+
+### ⛔ CE QUI RESTE : UN SEUL TERME NON ÉLIMINÉ, ET LE DOSSIER NE PEUT PAS LE TRANCHER
+
+⇒ **LE RÉGIME D'ALIMENTATION**, désigné par Ko le 12/09 et **relevé par la session, pas cru** :
+
+| fait relevé | source |
+|---|---|
+| bascule sur **BATTERIE** le 09/09 à **20:44:41**, retour secteur le 10/09 à **10:22:30** | journal d'événements Windows (D283) |
+| `test:int` **475 s** sur batterie contre **279 s** sur secteur — **−41 %** | D283, même arbre, même suite |
+| `lancer-campagnes --tout` **5 454 s** contre **2 011 s** — **−63 %** | D283 |
+| charge bridée : **3,7 s** de CPU là où 12 cœurs en offrent 36 ; PERF 70 → 147 % | D286 |
+
+⇒ **LE MÉCANISME EST DONC DÉJÀ DÉMONTRÉ DANS CE DÉPÔT** : le régime batterie multiplie les
+durées par **1,7 à 2,7**. **Un budget de 5 000 ms n'y survit pas** — et c'est très exactement
+la forme du cas rouge, 22 signatures « Test timed out in 5000ms ».
+
+⛔ **MAIS LA CORRÉLATION N'EST PAS ÉTABLIE PAR LE DOSSIER, ET C'EST À ÉCRIRE PLUTÔT QU'À
+SUPPOSER.** Relevé, contre l'attente :
+- la passe rouge est datée **« mesuré le 10/09 »**, **sans heure** : le dossier ne dit pas de
+  quel côté de la bascule de 20:44:41 elle tombe ;
+- **la seule quantité relevée devant elle est la RAM** (4 636 Mo). **Ni `chrome`, ni
+  l'alimentation** n'y figurent — et le `chrome` 13 « du 09/09 » ne se retrouve nulle part :
+  l'unique relevé portant `chrome 13` est daté du **11/09** (D286).
+⚠ **C'est le défaut de D283 appliqué à la mesure qui fonde tout le rang 13** : « un état
+machine sans inventaire ne se reproduit pas ». **Rien ne sera établi rétrospectivement** — la
+condition doit être **produite**, et c'est l'expérience ci-dessous.
+⛔ **ET `chrome` TOMBE AVEC LES AUTRES TERMES** : il était présent au cas rouge comme au cas
+vert d'aujourd'hui (**14**, aux deux bouts de cette session). Un terme présent des deux côtés
+ne discrimine pas.
+
+### ⛔ L'EXPÉRIENCE EN ATTENTE — ET C'EST KO QUI PRODUIT LA CONDITION
+
+Protocole arrêté le 12/09, **écrit avant la mesure** : même session, `chrome` **inchangé**,
+rien d'autre touché. `client` sur **batterie**, puis `client` sur **secteur**, plusieurs passes
+chacune, **régime et `PERF` relevés devant chaque passe**.
+- **rouge sur batterie, vert sur secteur** ⇒ le terme est identifié, et **le rang 13 change
+  d'objet** : ce n'est plus une borne de workers, c'est ce que le dépôt fait d'un régime qui
+  convertit une durée en verdict. Arrêt et remise à Ko ;
+- **vert des deux côtés** ⇒ le terme n'est pas là non plus, et **le rang 13 se clôt sur trois
+  éliminations sans remède — un résultat, pas un échec.**
+⚠ **CONDITION D'ARRÊT, POSÉE PAR KO** : si la charge descend sous un seuil inquiétant, la
+mesure s'arrête. **Une veille critique a déjà coûté huit heures à ce dépôt** (D283).
+
+### ⛔ QUATRE FAUTES DE MÉTHODE, À MON COMPTE — UNE SEULE CLASSE, QUATRE FORMES
+
+**Aucune n'a levé. Toutes ont répondu.** Et c'est la classe que le lot est censé traiter,
+retournée contre l'outillage du lot lui-même.
+
+1. ⛔ **UN EXTRACTEUR A RENDU −236, ET N'A PAS LEVÉ.** Vu **parce que le signe était absurde** —
+   **avec un chiffre plausible, il ne l'aurait pas été**, et « 309 corruptions possibles »
+   serait entré dans un fichier d'autorité. ⇒ **La cause n'est pas le chiffre en dur seul :
+   c'est d'avoir changé la DÉFINITION DU CANDIDAT entre deux passes qui se comparent** — corps
+   de commentaire dans la première, ligne brute dans la seconde.
+2. ⛔ **UN CONTRÔLE POST-ÉCRITURE A ANNONCÉ 17 DOUBLES ESPACES RÉSIDUELS** — chiffre
+   **parfaitement plausible** — parce qu'il comptait deux espaces suivis de deux barres
+   obliques, c'est-à-dire **l'indentation du fichier**. Seul l'attendu « 0 » écrit à côté l'a
+   trahi.
+3. ⛔ **UNE REVÉRIFICATION A RENDU 0 TOUCHES, VRAI PAR CONSTRUCTION.** Lecture en mode texte
+   ⇒ CRLF traduit en LF ⇒ le découpage sur le séparateur CRLF rend **une seule ligne** ⇒ la
+   boucle n'a **rien parcouru**. Le zéro était exact et **vide**.
+4. ⚠ **DEUX COMMANDES CASSÉES PAR UN ACCENT GRAVE NON ÉCHAPPÉ**, dont l'une en cherchant
+   précisément les traces de la corruption par accents graves, et l'autre en écrivant la
+   présente section. ⇒ **La règle D289 ne vaut pas que pour les textes destinés à un fichier :
+   elle vaut pour les MOTIFS DE RECHERCHE, et la couche qui interpole peut être celle de
+   l'outil lui-même.** Voie retenue : écrire le texte dans un FICHIER, puis l'insérer — l'une
+   des trois formes que D289 autorise, et la seule qui n'a pas échoué ici.
+
+⇒ **RÈGLE TIRÉE DES TROIS PREMIÈRES, ÉCRITE DANS `AGENTS.md` (demandée par Ko)** : **un
+compteur rend aussi ce qu'il a PARCOURU**, et **l'attendu s'écrit À CÔTÉ du mesuré**. C'est ce
+second point qui a réellement attrapé les trois — pas la relecture.
+
+### Passe D277 — les DEUX sens, et le second a rapporté
+
+- **Sens 1, ce que le lot INVALIDE** — 5 occurrences traitées, toutes **barrées avec leur
+  motif** et non effacées (D276) : les deux chiffres du cadrage (creux de 2 652 Mo, « 12 à 14
+  workers ») dans `ZWADJ_CONTINUITE.md` **et** dans `ZWADJ_BACKLOG.md` — autorité n°3, où
+  l'entrée est **ouverte**, donc lue comme courante (c'est très exactement D277) ; le point 3
+  du cadrage sur `chrome` ; et « le lot de CODE reste à faire » au backlog.
+  ⚠ **Les occurrences de D283 ne sont PAS touchées** : elles décrivent, à leur date, ce qui a
+  été mesuré ce jour-là, et c'était juste. Ce qui était faux est leur **report** dans une
+  entrée courante comme si la fenêtre était celle de la suite.
+- ⛔ **Sens 2, ce que le lot REND PERMIS (D287) — ET IL A RAPPORTÉ, CONTRE L'ATTENTE** : le
+  cadrage exclut les **budgets de test** du rang 13 au motif qu'« un budget écrit en même
+  temps qu'une borne rendrait les deux inévaluables ». **Aucune borne n'a été posée** ⇒ **ce
+  motif-là est tombé.** La condition de l'exclusion a changé sans qu'aucun mot du lot ne la
+  contredise — la forme exacte d'une permission périmée, et aucune recherche par
+  contradiction ne l'aurait ramenée.
+  ⛔ **ELLE EST ÉCRITE, ELLE N'EST PAS CONSOMMÉE.** La session n'arbitre pas l'ordre des rangs
+  (cinq écritures, toutes de Ko), et Ko a par ailleurs interdit tout `testTimeout` ici par
+  consigne directe. ⇒ **Porté à l'arbitrage, pas exploité** : le motif tombé ne rend pas le
+  lot souhaitable, il rend seulement son refus non fondé SUR CE MOTIF.
+- **Compteur de lots de code non certifiés** : deux phrases le disaient « à zéro », l'une dans
+  le point d'entrée du rang courant, l'autre dans D289. **Les deux marquées : il est à un.**
+
+### ⛔ CE QUE CE LOT NE FAIT PAS
+
+1. ⛔ **AUCUNE BORNE, AUCUN `testTimeout`, AUCUN GÉNÉRATEUR DE CONTENTION.** Le générateur
+   aurait été calibré sur la mauvaise contention : les deux termes qu'il devait reproduire
+   (RAM d'ouverture, chemin d'invocation) sont démentis.
+2. **Aucun instrument neuf.** Quatrième lot consécutif où la tentation existait ; l'existant a
+   suffi, hors de son pas nominal, avec son coût enfin mesuré.
+3. ⛔ **IL NE COMPARE PAS AUX SIX DURÉES DE D288** : `chrome` = **14** aux deux bouts, là où la
+   porte dure exige **0**. La comparaison qui tranche est **interne** — deux chemins, même
+   état, dix minutes d'écart, fenêtre homogène vérifiée — et elle ne dépend pas de cette porte.
+   ⚠ `chrome` n'a pas été fermé : ce sont les onglets de Ko, et c'est lui qui l'a fermé le
+   12/09.
+4. **Portes relancées après la modification** : `test` **deux fois, 1 329/1 329, code 0**.
+   `typecheck`, `lint`, `build`, `test:int`, `e2e` **non relancées** — un commentaire ne les
+   touche pas, et elles ne sont **pas** déclarées vertes pour autant.
+5. **Il ne rouvre pas l'écart de 15 %** entre ligne de commande et fichier (D270) — mais ce lot
+   montre qu'il a **déjà coûté une fausse piste**, et le report est au backlog.
+
 ## Session du 12/09/2026 — D289 · rang 13 ouvert (cadrage seul), et la permission qui déclarait un contrôle SUFFISANT
 
 ⛔ **RANG 13, ARBITRÉ PAR KO LE 12/09.** ⇒ **État du rang** : section « PROCHAIN LOT — rang 13 »
@@ -1941,6 +2176,9 @@ un correctif** (patron D271).
 3. **Ce lot est DOCUMENTAIRE** (D283) — trois `.md` d'autorité au diff, aucun fichier de code :
    il **ne compte pas** dans les deux/trois. Le compteur reste à **zéro** ; le lot de code du
    rang 13 le portera à un.
+   ⚠ **FAIT LE MÊME JOUR — IL EST À UN (D290, `251e82b`).** Vrai à la date de D289, périmé
+   depuis : marqué ici et non effacé, parce qu'**une section close peut porter une phrase au
+   présent** et se lire comme l'état courant (D284).
 4. ⚠ **L'UTILITAIRE DE SPLICE EST RESTÉ DANS LE SCRATCHPAD**, comme `ed.py` au rang 11 et
    l'éditeur CRLF au rang 12 — **troisième reconduction du même écart, et elle est écrite plutôt
    que passée sous silence.** Le verser au dépôt ici ferait de ce lot un lot de CODE (D283).
@@ -7001,3 +7239,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D287 | A | D287 — une passe D277 cherche aussi ce que le lot REND PERMIS ; une permission périmée n'a rien à contredire |
 | D288 | A | D288 — CERTIFICATION (rang 12) : 195 gardes, fenêtre homogène mesurée, et la porte dure `chrome` = 0 entre au critère |
 | D289 | A | D289 — rang 13 ouvert (borne de workers), cadrage seul ; un contrôle d'écriture déclaré SUFFISANT ne regarde pas l'ENTRÉE |
+| D290 | A | D290 — le rang 13 perd son objet : trois termes éliminés (RAM d'ouverture, chemin d'invocation, workers), aucune borne posée |
