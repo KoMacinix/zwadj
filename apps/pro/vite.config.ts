@@ -21,7 +21,7 @@ export default defineConfig({
     //
     // Sous charge légère les trois modes sont verts ; c'est SOUS CHARGE que
     // le défaut par défaut apparaît. Mesuré le 30/08 sur machine chargée :
-    // mode par défaut = 46 à 52 délais dépassés,  = 4.
+    // mode par défaut = 46 à 52 délais dépassés, cette borne = 4.
     // Durées sous charge IDENTIQUE et légère (RAM ~4,2 Go, CPU 1-2 %) :
     // défaut 35 s · maxWorkers=4 46 s · --no-file-parallelism 92 s.
     // On paie donc +31 % pour encaisser la charge, là où la sérialisation
