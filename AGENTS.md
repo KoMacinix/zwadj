@@ -313,6 +313,21 @@ connexion (famille D115).
   ⇒ **Le geste suivant l'écriture est une RECHERCHE, et elle est mécanique** : chercher
   dans les autres fichiers d'autorité les mots de l'affirmation qu'on vient d'invalider,
   **compter les occurrences**, les traiter TOUTES, et les barrer avec leur motif.
+  ⛔ **ET LA RECHERCHE PORTE SUR LES DEUX SENS — ÉCRIT LE 11/09/2026 (D287), PARCE QUE TROIS
+  PASSES D277 ONT MANQUÉ LE SECOND.** Une passe qui cherche ce que son lot **INVALIDE** ne
+  trouve que les affirmations devenues FAUSSES. Elle est **aveugle aux PERMISSIONS périmées** :
+  une phrase qui autorisait à bon droit hier n'a rien à contredire aujourd'hui — elle ne
+  s'oppose à aucun mot du lot, donc aucune recherche par contradiction ne la ramène.
+  ⇒ **Une passe D277 cherche aussi ce que le lot REND PERMIS** : toute phrase qui dit qu'un
+  lot, un rang ou un code peut s'ouvrir, et dont la CONDITION vient de changer.
+  ⛔ **ET C'EST LE SENS QUI NE SE RATTRAPE PAS.** Une phrase périmée qui **interdit** coûte du
+  temps et un recoupement ; une qui **autorise** fait ouvrir un lot de code sous une règle
+  violée, et celui-là est déjà parti quand on s'en aperçoit.
+  ⚠ **MOTIF MESURÉ, ET IL EST ACCABLANT** : le défaut a été **documenté au rang 9**
+  (D284, « une entrée close peut porter une phrase courante ») et **reproduit au rang 10,
+  douze lignes plus bas**, par une passe D277 qui **avait été faite** et qui était juste —
+  elle cherchait ce que son lot invalidait. La permission périmée est restée douze lignes
+  sous sa propre leçon, et c'est une reprise à froid qui l'a trouvée.
   ⚠ **Une occurrence déjà bien encadrée ne dispense pas des autres** : sur les deux
   occurrences trouvées, l'une vivait dans une entrée `[x]` marquée « ne pas lire comme
   l'état courant » et l'autre non. **Une passe partielle se lit exactement comme une passe

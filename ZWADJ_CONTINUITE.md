@@ -482,7 +482,68 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 11 · `[INFRA]` **les instruments entrent au dépôt**
+## PROCHAIN LOT — rang 12 · **CERTIFICATION** ⛔ **ÉTAPE 0 FAITE · MESURE BLOQUÉE**
+
+⛔ **OUVERT ET ARBITRÉ PAR KO LE 11/09/2026.** ⇒ **QUEL lot : rang 12 de l'ordre des rangs.
+OÙ IL EN EST : ici.** C'est la **quatrième** fois que la règle des deux/trois commande un
+rang — rang 7 à trois lots en attente, rang 9 à deux, rang 10 parce qu'elle les avait levés,
+rang 12 parce que D285 et D286 les ont ramenés à **deux**.
+
+⛔ **ÉTAT, AU 11/09/2026 : L'ÉTAPE 0 EST FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ
+LANCÉE.** Les deux phrases sont traitées et la règle de classe est écrite dans `AGENTS.md`
+(détail : section « Session du 11/09/2026 — D287 »). **La mesure, elle, n'a pas eu lieu** :
+la porte dure d'état machine est rouge, et le critère du rang 9 dit qu'on ne la franchit pas
+sur ordre — « si “au repos” se franchit sur ordre, le mot ne certifie plus rien ».
+
+⛔ **LA PORTE DURE, MESURÉE DEUX FOIS À TROIS MINUTES D'INTERVALLE (16 échantillons) :**
+
+| | relevé 1 (23:52) | relevé 2 (23:54) | exigé |
+|---|---|---|---|
+| RAM libre médiane | **2 471 Mo** | **2 488 Mo** | **≥ 4 579** ⛔ **−2 091** |
+| `chrome` | **16** | **16** | **0** ⛔ (2 283 Mo) |
+| `node` | 0 | 0 | 0 ✅ |
+| alimentation | SECTEUR 100 %, overlays identiques | idem | stable ✅ |
+| CPU médiane | 39,5 % (16–48) | 20 % (9–37) | relevé, sans seuil hérité |
+| `% Processor Performance` | 77,4 % | 85,6 % | > 100 = turbo |
+
+⚠ **L'INSTRUMENT N'EST PAS EN CAUSE, ET C'EST MESURÉ** : `-Calibrer` a été rejoué à 23:51 et
+il **passe** — 12 cœurs chargés, bridage retiré, **112,9 s de CPU produites sur un plafond de
+126,6** (rendement 0,89), CPU 22 % → 100 %, PERF 70,2 % → 146,7 %. Les deux instruments
+séparent les régimes sur une charge **réelle**. C'est la machine qui n'est pas au repos.
+⚠ **Et l'état est STABLE, pas transitoire** — c'est la raison du second relevé : un état pris
+une fois ne dit pas s'il tient, et rapporter un transitoire comme un plancher serait la faute
+que ce critère existe pour empêcher.
+
+⛔ **CE QUI EST MOBILISABLE, RELEVÉ À L'INVENTAIRE — ET CE QUI NE L'EST PAS.**
+Mobilisable : `chrome` **2 283 Mo**, `msedge` + `msedgewebview2` **748 Mo**,
+`NVIDIA Overlay` 313, `OmenCommandCenterBackground` 191, `sqlservr` 167 (SQL Server — le
+dépôt n'utilise que PostgreSQL).
+⛔ **À NE PAS FERMER** : `vmmemWSL` **789 Mo** — c'est le backend de `zwadj-db`, vérifié *Up 2
+weeks* sur 5432, et `test:int` en dépend. ⛔ **Incompressibles** : `Code` 21 proc / **3 173 Mo**
++ `claude` 2 / **620 Mo** — D275 l'a déjà mesuré, la session ne peut pas s'en passer.
+
+⚠ **PROJECTION, PAS MESURE — ET ELLE SE VÉRIFIE PAR UN RELEVÉ, JAMAIS PAR UNE SOUSTRACTION.**
+`chrome` seul rendrait 2 488 + 2 283 = **4 771 Mo**, soit **+192** au-dessus de la barre : ça
+passerait **de justesse**. Avec les deux Edge, ~5 519 Mo, soit +940. ⛔ Mais la mémoire rendue
+par un processus fermé n'égale pas son *working set* (`Memory Compression` porte 611 Mo), donc
+**ces deux nombres sont des hypothèses à mesurer**, pas un feu vert.
+
+⛔ **ET SI LE PLANCHER RESTE SOUS 4 579 APRÈS FERMETURE DE `chrome`, LA SORTIE EST DÉJÀ
+ÉCRITE — ON N'EN BRICOLE PAS UNE AUTRE** (critère du rang 9, qui reprend D270) : relever le
+plancher que cette session PEUT produire, puis **redéfinir « repos » sur lui AVEC SA RAISON**,
+les chiffres hérités restant comme HISTOIRE et non comme barre. ⚠ Et redéfinir le seuil sans
+redéfinir **ce qu'il garantit** serait la moitié du travail : le nombre de passes se **dérive**
+de la marge sur la contrainte liante et de sa dispersion, il ne se choisit pas, et **il ne
+redescend jamais sous cinq**. ⛔ **Cet arbitrage appartient à Ko** — la session ne baisse pas
+une barre.
+
+⇒ **CE QUI RESTE DÛ AU RANG 12** : le relevé d'ouverture au-dessus de la barre, puis les six
+portes + e2e + `--tout` avec sa résolution + les cibles `--int` séparées, **en une seule
+passe**, échantillonnées par `echantillonneur-etat-machine.ps1`. Puis la marque, qui nommera
+**D285 et D286**, et **rien d'autre**.
+⚠ **Ce bloc se rafraîchit à la clôture de toute session qui fait avancer le rang** (règle D282).
+
+## ~~PROCHAIN LOT~~ — rang 11 · `[INFRA]` **les instruments entrent au dépôt** ⛔ **CLOS : D286**
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 11/09/2026.** ⇒ **QUEL lot : rang 11 de l'ordre des rangs.
 OÙ IL EN EST : ici.**
@@ -508,7 +569,17 @@ D273 — mesuré, pas supposé, par l'échantillonneur que ce lot livre.
 ⛔ **CE LOT N'EST PAS CERTIFIÉ, ET IL COMPTE.** Il touche des scripts — donc il peut
 dégrader une porte (`AGENTS.md`, D283 : « un lot qui touche un harnais, un test, un script
 ou une migration COMPTE »). ⇒ **Le compteur de lots de code non certifiés passe de UN à
-DEUX.** Deux restent tenables, trois non — **le prochain lot de code ferme la fenêtre**.
+DEUX.** Deux restent tenables, trois non — **un lot de code suivant serait le troisième, et ne peut
+pas s'ouvrir**.
+⛔ **FORME RÉÉCRITE LE 11/09/2026 (D287) — C'EST CELLE DU RANG 9 QUI EST REPRISE, MOT POUR
+MOT.** Cette phrase portait « **le prochain lot de code ferme la fenêtre** », qui se lit dans
+DEUX sens : « il la trouve fermée », ou « il est encore permis, et c'est lui qui la fermera ».
+⇒ Une reprise à froid du 11/09 a dû descendre au rang 9 chercher la formulation non ambiguë
+pour trancher — c'est-à-dire **recouper**, très exactement ce que le pointeur de rang promet
+d'éviter.
+⚠ **UNE PHRASE QUI DÉCIDE D'UNE AUTORISATION NE SE LIT PAS DANS DEUX SENS**, et celle-ci se
+lisait à côté de la permission périmée du rang 10 (barrée le même jour) : **les deux penchaient
+du même côté**, celui qui ne se rattrape pas.
 ⚠ **Ce bloc se rafraîchit à la clôture de toute session qui fait avancer le rang** (règle D282).
 
 ## ~~PROCHAIN LOT~~ — rang 10 · `[API][P0]` **les deux échéances** ⛔ **CLOS : D285**
@@ -1522,6 +1593,110 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+
+⛔ **RANG 12, ARBITRÉ PAR KO.** Objet : *la certification qui débloque la borne de workers.*
+⛔ **ÉTAPE 0 FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ LANCÉE** — porte dure rouge, voir
+plus bas. ⇒ **État du rang** : section « PROCHAIN LOT — rang 12 » en tête de ce fichier.
+
+### ⛔ CE QUE LA REPRISE À FROID A TROUVÉ, ET POURQUOI C'EST UNE CLASSE
+
+Une reprise sans état, le 11/09/2026, a établi rang, portes, certification, numéro et compteur
+en lisant ce fichier seul — puis a buté sur **deux phrases d'autorisation qui penchaient du même
+côté** :
+
+| | où | ce qu'elle disait | état |
+|---|---|---|---|
+| 1 | ordre des rangs, **rang 10 CLOS** | « le compteur est **à zéro**, donc un lot de code peut s'ouvrir » | **barrée** (D287) |
+| 2 | point d'entrée, **rang 11** | « le prochain lot de code **ferme la fenêtre** » | **réécrite** (D287) |
+
+⛔ **LA PREMIÈRE ÉTAIT VRAIE QUAND ELLE A ÉTÉ ÉCRITE, ET C'EST MESURÉ — PAS SUPPOSÉ.**
+`git blame` la date du **10/09** (`f8eee9e`, l'ouverture du rang 10), quand la marque du rang 9
+venait de ramener le compteur à zéro. **C'est le rang 10 lui-même qu'elle autorisait, et à bon
+droit.** Elle est devenue fausse le **11/09** à la livraison du rang 11 (`31f6a00`).
+⇒ **Chronologie relevée, sans trou** : `e4ce1d0` (10/09, marque du rang 9) → compteur **0** ;
+`f8eee9e` (10/09, la phrase est écrite) → **0**, ✅ vraie ; `ae9b3f8` (11/09, D285) → **1** ;
+`31f6a00` (11/09, D286) → **2**, ⛔ la phrase devient fausse.
+⛔ **AUCUN LOT N'A DONC ÉTÉ OUVERT À TORT** : rang 10 ouvert à 0, rang 11 ouvert à 1. **Le piège
+était armé, pas déclenché** — et il n'y a **aucun lot à défaire**. C'est pourquoi le barrage est
+le seul geste requis.
+
+### ⛔ LA RÈGLE DE CLASSE, ET C'EST ELLE LE LIVRABLE — `AGENTS.md`
+
+**Une passe D277 cherche aussi ce que le lot REND PERMIS, pas seulement ce qu'il INVALIDE.**
+⛔ **LE MOTIF EST STRUCTUREL, PAS UN OUBLI** : une recherche par CONTRADICTION ne peut pas
+trouver une permission périmée. Une phrase qui autorisait à bon droit hier **ne contredit aucun
+mot** du lot d'aujourd'hui — elle ne s'oppose à rien, donc aucun mot-clé de l'affirmation
+invalidée ne la ramène. Elle est **invisible à la méthode**, et non manquée par distraction.
+⛔ **ET C'EST LE SENS QUI NE SE RATTRAPE PAS** (hiérarchie ratifiée par Ko) : une phrase périmée
+qui **interdit** coûte du temps et un recoupement ; une qui **autorise** fait ouvrir un lot de
+code sous une règle violée, et celui-là est déjà parti quand on s'en aperçoit.
+⚠ **MOTIF MESURÉ, ET IL EST ACCABLANT** : le défaut a été **documenté au rang 9** (D284, « une
+entrée close peut porter une phrase courante ») et **reproduit au rang 10, douze lignes plus
+bas**, par une passe D277 qui **avait été faite** et qui était **juste** — elle cherchait ce que
+son lot invalidait. La permission est restée douze lignes sous sa propre leçon.
+⇒ **Quatrième manifestation de la famille D276/D277, et la première dans le sens permissif.**
+
+### La porte dure — ⛔ ROUGE, ET RIEN N'A ÉTÉ LANCÉ
+
+⛔ **Consigne de Ko, mot pour mot** : « `chrome` à 0 au relevé d'ouverture, sinon tu ne lances
+rien et tu me le dis. » ⇒ **Deux relevés, à trois minutes d'intervalle, 16 échantillons :**
+
+| | 23:52 | 23:54 | exigé |
+|---|---|---|---|
+| RAM libre médiane | **2 471 Mo** | **2 488 Mo** | ≥ **4 579** ⛔ **−2 091** |
+| `chrome` | **16** (2 283 Mo) | **16** | **0** ⛔ |
+| `node` | 0 | 0 | 0 ✅ |
+| alimentation | SECTEUR 100 %, overlays identiques | idem | stable ✅ |
+
+⚠ **L'INSTRUMENT N'EST PAS EN CAUSE, ET LA CALIBRATION LE DIT** : `-Calibrer` rejoué à 23:51 et
+**passant** — 12 cœurs chargés, bridage retiré, **112,9 s de CPU sur un plafond de 126,6**
+(rendement 0,89), CPU 22 % → 100 %, PERF 70,2 % → 146,7 %. **Première fois qu'une certification
+dispose de ses instruments AU DÉPÔT** — c'est la contrepartie du rang 11, et elle a servi dès le
+premier relevé : sans calibration rejouée, « la machine est au repos » serait resté une opinion.
+⚠ **Le second relevé n'est pas une redondance** : un état pris une fois ne dit pas s'il TIENT, et
+rapporter un transitoire comme un plancher serait la faute que cette porte existe pour empêcher.
+⚠ **`vmmemWSL` (789 Mo) NE SE FERME PAS** : c'est le backend de `zwadj-db` (*Up 2 weeks*, 5432 en
+écoute, vérifié) — et `test:int` en dépend. Relevé avant d'être bloqué, pour que l'enchaînement
+ne meure pas dix minutes plus tard.
+
+### ⛔ TROIS FAUTES DE MÉTHODE, À MON COMPTE, TOUTES DANS MES PROPRES SCRIPTS
+
+Aucune dans le contenu livré ; toutes dans l'outillage jetable de ce lot — **très exactement la
+classe de D275**, « l'outillage qu'on écrit en passant, celui qu'on ne songe pas à calibrer ».
+
+1. ⛔ **61 LF NUS injectés dans un fichier CRLF pur**, par un bloc Python triple-quoté. La règle
+   du dépôt le dit depuis S0→S7 ; je l'ai reproduite. ⚠ **Et l'assertion ne l'a vu qu'APRÈS
+   l'écriture** — un contrôle qui suit l'écriture rapporte un dégât, il ne l'empêche pas.
+   ⇒ Corrigé **à la racine** : `norm()` normalise le remplacement **avant** d'écrire. La faute
+   est devenue impossible, pas surveillée.
+2. ⛔ **LE GENRE DE MUTATION DÉCLARÉ FAUX, DEUX FOIS** — et c'est l'arithmétique de **D286**,
+   livrée la veille, appliquée de travers par son propre auteur. Une **insertion au MILIEU d'une
+   ancre la DÉTRUIT** : c'est une substitution au sens du compte, quelle que soit l'intention.
+   ⇒ Corrigé **à la racine** : le genre se **DÉRIVE** de `apres.count(avant)`, il ne se déclare
+   plus. **Un genre déclaré peut mentir ; un genre dérivé non.**
+3. ⛔ **`s.encode()` SANS ARGUMENT PREND cp1252** sur ce poste, et lève sur `⛔` — D268 en
+   miniature, dans un contrôle de vérification. Un instrument qui tombe sur l'encodage de sa
+   propre sortie ne mesure rien.
+
+⇒ **Ce que ces trois ont en commun** : elles ont toutes **levé bruyamment**, donc aucune n'a
+produit de fausse mesure — l'inverse exact des trois faux positifs de D275, qui **répondaient**.
+⚠ Mais deux d'entre elles ont écrit **avant** d'assertir, et c'est la leçon à garder : sur un
+fichier d'autorité, l'ordre « vérifier puis écrire » n'est pas un détail de style.
+
+### ⛔ CE QUE CE LOT NE FAIT PAS
+
+1. **La certification n'a pas eu lieu.** Aucune porte, aucune campagne, aucune e2e n'a été
+   lancée : la porte dure est rouge et le critère du rang 9 interdit de la franchir sur ordre.
+   ⛔ **Le compteur reste donc à DEUX** (D285, D286) et **aucun lot de code ne peut s'ouvrir.**
+2. **Ce lot est DOCUMENTAIRE** — trois `.md` d'autorité au diff, aucun fichier de code
+   (D283) : il **ne compte pas** dans les deux/trois, et c'est ce qui lui permet d'exister
+   alors que le compteur est déjà à deux.
+3. **La borne de workers reste sans rang**, désignée par Ko et bloquée derrière la marque du 12.
+4. **`ed.py` est resté un script jetable du scratchpad** — ⚠ **c'est le contraire du principe du
+   rang 11**, et l'écart est écrit ici plutôt que passé sous silence. Reporté au backlog comme
+   candidat instrument, au même titre que le comparateur de dérive de D286.
 
 ## Session du 11/09/2026 — D286 · les instruments entrent au dépôt, et le rang 8 se ferme sur des octets rendus
 
@@ -4709,8 +4884,22 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     ⛔ **CE QUI L'IMPOSE, ET C'EST UNE RÈGLE, PAS UN CALENDRIER** : `AGENTS.md`, bloc « AUCUN LOT
     NE PART DANS `main` SOUS UNE PORTE ROUGE » — « deux lots non certifiés en attente sont
     tenables, **trois non** » — **plus** l'arbitrage « un lot documentaire ne compte pas »,
-    écrit à côté de cette règle depuis D283. La marque du 10/09 a certifié D279 et D282 : le
-    compteur de lots de code non certifiés est **à zéro**, donc un lot de code peut s'ouvrir.
+    écrit à côté de cette règle depuis D283. La marque du 10/09 a certifié D279 et D282 : ~~le
+    compteur de lots de code non certifiés est **à zéro**, donc un lot de code peut s'ouvrir~~.
+    ⛔ **BARRÉ LE 11/09/2026 (D287) : LE COMPTEUR EST À DEUX — D285 ET D286 — ET AUCUN LOT DE
+    CODE NE PEUT S'OUVRIR.** ⚠ La phrase était vraie **à l'instant où elle a été écrite**, et ce
+    n'est pas une supposition : `git blame` la date du 10/09 (`f8eee9e`, l'ouverture du rang 10),
+    quand la marque du rang 9 venait de ramener le compteur à zéro. **C'est le rang 10 lui-même
+    qu'elle autorisait, et elle l'a autorisé à bon droit.** Elle est devenue fausse le 11/09, à la
+    livraison du rang 11 (`31f6a00`), qui a porté le compteur à deux.
+    ⛔ **ET C'EST LE DÉFAUT QUE D284 A BARRÉ DOUZE LIGNES PLUS HAUT, DANS L'AUTRE SENS.** Au
+    rang 9, la phrase périmée **INTERDISAIT** : lue seule, elle coûtait un recoupement. Ici elle
+    **AUTORISE** : lue seule, elle fait ouvrir un troisième lot de code sous une règle violée.
+    **Une phrase périmée qui interdit coûte du temps ; une qui autorise ne se rattrape pas.**
+    ⚠ **AUCUN LOT N'A ÉTÉ OUVERT SOUS ELLE À TORT, ET C'EST MESURÉ** — rang 10 ouvert à compteur
+    **0**, rang 11 ouvert à compteur **1**. Le piège était **armé, pas déclenché** : la reprise
+    qu'il visait est celle qui l'a trouvé. C'est pourquoi ce barrage est le seul geste requis,
+    et qu'il n'y a **aucun lot à défaire**.
     ⚠ **C'est la troisième fois que cette règle commande un rang** — rang 7 (D275) quand trois
     lots attendaient, rang 9 (D283) quand deux attendaient, rang 10 parce qu'elle les a levés.
     ⛔ **ARRÊT FRANC : LE PREMIER LIVRABLE EST UN CADRAGE ÉCRIT**, `CLAUDE.md` — « tout code sur
@@ -4735,7 +4924,28 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     deux moitiés** — « hors dépôt » et « calibration héritée, jamais rejouée ».
 
 
+12. ⛔ **CERTIFICATION** — **arbitrée par Ko le 11/09/2026**, et c'est la **QUATRIÈME fois que
+    la règle des deux/trois commande un rang** : rang 7 à trois lots en attente, rang 9 à deux,
+    rang 10 parce qu'elle les avait levés, rang 12 parce que **D285 et D286** les ont ramenés à
+    deux. ⇒ **Ce qu'elle débloquera** : la **borne de workers**, désignée par Ko le 11/09 comme
+    méritant son propre rang — c'est du **code**, donc elle ne peut pas s'ouvrir avant.
+    ⛔ **ÉTAT : ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287).** Les deux phrases
+    d'autorisation sont traitées et la règle de classe est écrite dans `AGENTS.md`. **La mesure
+    n'a pas eu lieu** : porte dure d'état machine **rouge sur deux relevés** — `chrome` 16 au
+    lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés (**−2 091**). ⚠ L'instrument n'est pas en
+    cause : `-Calibrer` rejoué et **passant** (rendement 0,89 sur la charge connue).
+    ⇒ **Où il en est** : section « PROCHAIN LOT — rang 12 » en tête de ce fichier, qui porte les
+    deux relevés, l'inventaire du mobilisable, et la sortie déjà écrite si le plancher résiste.
+    ⚠ **Le lot de ce rang est DOCUMENTAIRE** (aucun fichier hors `.md` d'autorité au diff, D283) :
+    il **ne compte pas** dans les deux/trois, et le compteur reste donc à **deux**.
+
 ⇒ **RANG SUIVANT : EN ATTENTE D'ARBITRAGE DE KO.**
+⚠ **ET « SUIVANT » VEUT DIRE LE RANG 13 — AJOUT DU 11/09/2026 (D287).** Le rang 12 est
+**OUVERT, pas clos** : ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa mesure**.
+Sans cette ligne, une reprise lit « rang suivant : en attente » au bas de la liste et conclut
+qu'il n'y a rien à faire — alors que la certification est ouverte et bloquée sur une porte
+dure. ⇒ **Un rang OUVERT se lit dans son point d'entrée** (« PROCHAIN LOT — rang 12 »), pas
+ici : cette liste dit QUEL lot, jamais OÙ IL EN EST (D283).
 ⛔ **CETTE LIGNE EST LA RÈGLE ÉCRITE LE 10/09/2026 DANS `AGENTS.md`, APPLIQUÉE À ELLE-MÊME**
 — « **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ, JAMAIS UNE ABSENCE** ». Elle ne dit pas quel sera le
 rang 11 : **la session n'arbitre pas l'ordre**, quatre écritures, toutes de Ko. Elle dit que
@@ -6187,3 +6397,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D284 | A | D284 — rang 10 ouvert et cadré ; un rang clos laisse un ÉTAT NOMMÉ, jamais une absence |
 | D285 | A | D285 — « muette » a deux causes : la mutation prouvée POSÉE sépare l'assertion aveugle du remplacement fantôme |
 | D286 | A | D286 — les instruments entrent au dépôt ; « muette » a deux causes, et la preuve est ancre 1→0 ET marqueur 1→2 |
+| D287 | A | D287 — une passe D277 cherche aussi ce que le lot REND PERMIS ; une permission périmée n'a rien à contredire |

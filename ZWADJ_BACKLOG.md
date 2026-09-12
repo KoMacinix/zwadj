@@ -2497,6 +2497,48 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   `--watch`. ⚠ **À calibrer** sur un cas connu — une pile `dev` lancée exprès — sinon
   l'instrument classerait sans qu'on sache s'il classe juste.
 
+- **[DOC][P1]** ⛔ **LE POINTEUR « RANG SUIVANT » EST À ~330 LIGNES DU DÉBUT DE L'ORDRE DES
+  RANGS, ET IL S'ÉLOIGNE D'UN RANG PAR LOT.** Relevé le 11/09/2026 par une reprise à froid :
+  la section D270 de `ZWADJ_CONTINUITE.md` — celle que l'en-tête désigne pour répondre à
+  « QUEL lot vient ensuite » — ouvre l. 4412 et sa réponse vit l. **4838**. Entre les deux,
+  douze rangs clos et leurs cadrages, dont le seul critère de certification du rang 7 fait
+  ~90 lignes.
+  ⇒ **Le coût est mesuré, pas supposé** : une reprise doit soit traverser les 330 lignes,
+  soit **savoir d'avance** d'aller à la fin — c'est-à-dire disposer d'une information que le
+  pointeur ne donne pas.
+  ⚠ **CE N'EST PAS UN APPEL À RÉSUMER LA SECTION.** Chaque rang clos porte son MOTIF, et
+  l'ordre lui-même écrit pourquoi : « un ordre sans motif ne se corrige pas, il se recopie »
+  (quatrième écriture, 03/09). Élaguer les motifs rouvrirait la porte que quatre révisions
+  d'ordre ont fermée. ⛔ **Ce report demande une décision de FORME, pas un élagage** — par
+  exemple porter l'état courant en TÊTE de la section, les rangs clos restant dessous.
+  ⚠ **Et il ne se traite pas en écrivant un numéro de rang quelque part** : c'est très
+  exactement le compteur figé que D283 a retiré de l'en-tête pour cette raison.
+
+- **[DOC][P3]** ⚠ **COQUILLE DANS UN FICHIER D'AUTORITÉ** : section D286 de
+  `ZWADJ_CONTINUITE.md`, « l'écart est écrit ici plutôt que **tu** » — phrase tronquée
+  (« plutôt que tu », pour « plutôt que passé sous silence » ou « que tu »). Relevée le
+  11/09/2026, **non corrigée**, parce qu'elle vit dans une section de session close et que
+  la corriger seule vaut moins qu'une passe groupée. Sans conséquence de lecture.
+
+- **[INFRA][P2]** ⚠ **L'OUTIL D'ÉDITION DES FICHIERS D'AUTORITÉ EST RESTÉ UN SCRIPT JETABLE
+  DU SCRATCHPAD, ET C'EST LE CONTRAIRE DU PRINCIPE DU RANG 11.** `ed.py`, écrit le
+  11/09/2026 pour D287, porte deux gardes payées **dans ce lot même** :
+  1. `norm()` — normalise le remplacement en CRLF **avant** d'écrire. Motif : un bloc
+     triple-quoté a injecté **61 LF nus** dans un fichier CRLF pur, et l'assertion ne l'a vu
+     qu'APRÈS l'écriture ;
+  2. le **genre dérivé** — `substitution` / `insertion` / `suppression` se déduit de
+     `apres.count(avant)`, il ne se déclare plus. Motif : le genre a été déclaré **faux deux
+     fois**, parce qu'une **insertion au MILIEU d'une ancre la DÉTRUIT** et devient une
+     substitution au sens du compte. **Un genre déclaré peut mentir ; un genre dérivé non.**
+  ⇒ **Ce qui est dû** : le versionner sous `neutralisation/` avec l'en-tête exigé par D286 —
+  mode d'emploi, pourquoi il existe, instruments écartés, calibration rejouée à chaque
+  invocation. ⚠ **Sa calibration a un cas limite tout prêt** : une insertion au milieu d'une
+  ancre, dont le verdict attendu est `substitution` — c'est le cas qui l'a fait naître.
+  ⚠ **MÊME CLASSE QUE LE COMPARATEUR DE DÉRIVE DE D286**, resté jetable lui aussi : deux
+  instruments hors dépôt en deux lots, sur le lot qui a fait entrer les instruments au dépôt.
+  ⛔ **Il touche `neutralisation/`, donc c'est du code : il ne s'ouvre pas à deux lots non
+  certifiés.**
+
 - **[INFRA][P2]** ⚠ **TROIS HARNAIS N'ONT PAS DE GARDE `if __name__ == "__main__"`, ET LES
   IMPORTER JOUE LA CAMPAGNE.** Relevé le 11/09/2026 sur les 26 harnais :
   `neutralize-act-plafonds.py`, `neutralize-argon2.py`, `neutralize-horloge.py`.
