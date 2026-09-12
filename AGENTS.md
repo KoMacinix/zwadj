@@ -466,6 +466,24 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 
+- ⛔ **ET LE CONTRÔLE DE FIN DE LOT VÉRIFIE AUSSI QUE LE DISTANT A REÇU — local et `origin`
+  sur le MÊME SHA, vérifié et RAPPORTÉ, sinon le lot n'est pas clos (D288, 12/09/2026).**
+  Il vérifiait l'arbre propre et le commit ; **il s'arrêtait là**, et un commit est LOCAL.
+  ⚠ **MOTIF MESURÉ, PAS CRAINT** : le rang 11 n'a **pas été poussé** par la session qui l'a
+  clos. Il a dormi une nuit en local — dans un dépôt dont toute la doctrine, D276 en tête,
+  répète que *rien ne dort en local* — et cela n'a été découvert que le **12/09**, par un
+  push qui a emporté **deux** commits au lieu d'un.
+  ⛔ **C'EST D276 AVEC UN CRAN DE PLUS.** D276 dit qu'une décision logée dans un message de
+  commit n'est lue par personne à la reprise ; ici le fichier d'autorité était juste, il
+  était commité, et il restait **invisible au distant**. Un état correct que personne ne
+  peut lire ne vaut pas mieux qu'un état faux : une session qui clone ou qui tire ne voit
+  **rien** de ce lot.
+  ⚠ **ET L'ARBRE PROPRE NE LE DIT PAS** : `git status` rend **vide** sur un dépôt en retard
+  de deux commits sur son distant. C'est exactement le contrôle qui se lit comme s'il avait
+  regardé — l'audit tronqué de D200, appliqué à la synchronisation.
+  ⇒ **Le geste, mécanique** : `git fetch`, puis `git rev-parse HEAD` et
+  `git rev-parse origin/main`, et **les deux SHA vont dans le rapport de fin de lot**.
+
 - ⛔ **NE PAS PRENDRE UN NUMÉRO DE DÉCISION DANS UN RÉSUMÉ DE SESSION.** Deux décisions ont été écrites `D233` et `D234` dans **sept fichiers livrés** alors que ces numéros appartenaient déjà à la campagne SOLID/Strategy. Repéré seulement en mettant `ZWADJ_CONTINUITE.md` à jour. Un numéro se prend en lisant le **dernier attribué dans ce fichier**, jamais ailleurs.
 ## État des lots — au 20/08/2026
 

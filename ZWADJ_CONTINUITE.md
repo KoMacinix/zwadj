@@ -482,20 +482,35 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 12 · **CERTIFICATION** ⛔ **ÉTAPE 0 FAITE · MESURE BLOQUÉE**
+## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 11/09/2026.** ⇒ **QUEL lot : rang 12 de l'ordre des rangs.
 OÙ IL EN EST : ici.** C'est la **quatrième** fois que la règle des deux/trois commande un
 rang — rang 7 à trois lots en attente, rang 9 à deux, rang 10 parce qu'elle les avait levés,
 rang 12 parce que D285 et D286 les ont ramenés à **deux**.
 
-⛔ **ÉTAT, AU 11/09/2026 : L'ÉTAPE 0 EST FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ
-LANCÉE.** Les deux phrases sont traitées et la règle de classe est écrite dans `AGENTS.md`
-(détail : section « Session du 11/09/2026 — D287 »). **La mesure, elle, n'a pas eu lieu** :
-la porte dure d'état machine est rouge, et le critère du rang 9 dit qu'on ne la franchit pas
-sur ordre — « si “au repos” se franchit sur ordre, le mot ne certifie plus rien ».
+⛔ **ÉTAT, AU 12/09/2026 : LA MARQUE EST POSÉE. LE RANG 12 EST CLOS.**
+⇒ **CE QUI EST ÉCRIT, MOT POUR MOT** : « **portes vertes AU REPOS le 12/09/2026, et D285 et
+D286 en font partie** ». Deux lots, **et rien d'autre**. Aucun en-tête antérieur n'est
+réécrit en « certifié » (point 4 du critère). ⇒ **Détail : section « Session du 12/09/2026 —
+D288 » de ce fichier.**
+⛔ **LE COMPTEUR DE LOTS DE CODE NON CERTIFIÉS PASSE DE DEUX À ZÉRO** — c'est l'objet même du
+rang. ⚠ **Et cette phrase est écrite au format non ambigu du rang 9** (exigence D287) : un
+lot de code **peut** désormais s'ouvrir, et c'est lui qui portera le compteur à un.
 
-⛔ **LA PORTE DURE, MESURÉE DEUX FOIS À TROIS MINUTES D'INTERVALLE (16 échantillons) :**
+⚠ ~~**ÉTAT, AU 11/09/2026 : L'ÉTAPE 0 EST FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ
+LANCÉE.**~~ **BARRÉ LE 12/09/2026 (D288) : la mesure a eu lieu.** Ce qui reste vrai de cette
+ligne est son étape 0 — les deux phrases d'autorisation traitées et la règle de classe écrite
+dans `AGENTS.md` (détail : section « Session du 11/09/2026 — D287 »). Ce qui est périmé est
+« la certification n'a pas été lancée » : la porte dure a été **rejouée le 12/09 et trouvée
+verte**, `chrome` fermé par Ko.
+
+⛔ **LA PORTE DURE TELLE QU'ELLE ÉTAIT LE 11/09 — HISTOIRE, PAS ÉTAT COURANT.** Elle est
+conservée parce qu'elle porte le déficit exact qui a bloqué la passe ce jour-là, et parce
+qu'une porte dure dont on efface les rouges ne se relit plus. **Le relevé d'ouverture qui
+FAIT FOI pour la certification est celui du 12/09**, en section D288 : 4 624 puis 4 643 Mo,
+`chrome` 0, `node` 0, SECTEUR 100 %.
+⇒ **Les deux relevés du 11/09, à trois minutes d'intervalle (16 échantillons) :**
 
 | | relevé 1 (23:52) | relevé 2 (23:54) | exigé |
 |---|---|---|---|
@@ -527,6 +542,13 @@ weeks* sur 5432, et `test:int` en dépend. ⛔ **Incompressibles** : `Code` 21 p
 passerait **de justesse**. Avec les deux Edge, ~5 519 Mo, soit +940. ⛔ Mais la mémoire rendue
 par un processus fermé n'égale pas son *working set* (`Memory Compression` porte 611 Mo), donc
 **ces deux nombres sont des hypothèses à mesurer**, pas un feu vert.
+⇒ ⛔ **MESURÉ LE 12/09, ET LA RÉSERVE AVAIT RAISON CONTRE LE CHIFFRE** : `chrome` fermé, le
+relevé rend **4 624 puis 4 643 Mo**, soit **+45 à +64** — et non les **+192** projetés.
+**L'écart est de l'ordre du tiers de la marge annoncée.** La projection par soustraction
+surestimait donc de beaucoup ce qu'une fermeture rend, exactement pour le motif qu'elle
+énonçait elle-même. ⚠ **CE QUI SE GARDE N'EST PAS LE NOMBRE, C'EST LA FORME** : une
+soustraction d'inventaire ne remplace pas un relevé, et ici elle aurait fait annoncer une
+marge trois fois trop large sur une porte dure.
 
 ⛔ **ET SI LE PLANCHER RESTE SOUS 4 579 APRÈS FERMETURE DE `chrome`, LA SORTIE EST DÉJÀ
 ÉCRITE — ON N'EN BRICOLE PAS UNE AUTRE** (critère du rang 9, qui reprend D270) : relever le
@@ -536,11 +558,18 @@ redéfinir **ce qu'il garantit** serait la moitié du travail : le nombre de pas
 de la marge sur la contrainte liante et de sa dispersion, il ne se choisit pas, et **il ne
 redescend jamais sous cinq**. ⛔ **Cet arbitrage appartient à Ko** — la session ne baisse pas
 une barre.
+⇒ ✅ **LA CONDITION NE S'EST PAS PRÉSENTÉE (12/09/2026, D288)** : `chrome` fermé, le plancher
+est repassé **au-dessus** de 4 579 — de peu, mais au-dessus, et sur les deux relevés, bande
+basse comprise (4 609 et 4 619). **Aucune barre n'a été redéfinie, aucun arbitrage n'a été
+demandé à Ko.** ⚠ La sortie de secours reste écrite **pour la prochaine fois** : elle n'est
+pas consommée par ce lot, et la barre héritée de D273 est intacte.
 
-⇒ **CE QUI RESTE DÛ AU RANG 12** : le relevé d'ouverture au-dessus de la barre, puis les six
-portes + e2e + `--tout` avec sa résolution + les cibles `--int` séparées, **en une seule
-passe**, échantillonnées par `echantillonneur-etat-machine.ps1`. Puis la marque, qui nommera
-**D285 et D286**, et **rien d'autre**.
+⇒ ~~**CE QUI RESTE DÛ AU RANG 12**~~ — ⛔ **TOUT A ÉTÉ PRODUIT LE 12/09/2026 (D288)** :
+relevé d'ouverture au-dessus de la barre (**+45 puis +64 Mo**, `chrome` 0) · **six portes
+vertes** · e2e verte · `--tout` **sorti en 1** avec sa résolution appliquée · cibles `--int`
+jouées séparément ⇒ **195 mordues · 0 muette · 0 non mesurée** · arbre **immobile sur
+`c2ac531`** de bout en bout · fenêtre échantillonnée **homogène** (103 échantillons, 0
+transition d'alimentation, 0 trou). Puis la marque, nommant **D285 et D286**, et rien d'autre.
 ⚠ **Ce bloc se rafraîchit à la clôture de toute session qui fait avancer le rang** (règle D282).
 
 ## ~~PROCHAIN LOT~~ — rang 11 · `[INFRA]` **les instruments entrent au dépôt** ⛔ **CLOS : D286**
@@ -930,6 +959,27 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
 7. ⛔ **LES RELEVÉS SONT PÉRIODIQUES PENDANT LA FENÊTRE, dans un journal à part** — pas
    seulement à ses deux extrémités. « La machine a tenu pendant la mesure » devient une
    **mesure**, et cesse d'être une **inférence entre deux bouts**.
+8. ⛔ **`chrome` À 0 AU RELEVÉ D'OUVERTURE — SIXIÈME QUANTITÉ, ET C'EST UNE PORTE DURE, PAS
+   UNE ANNOTATION (D288, 12/09/2026).** Au même titre que la barre de RAM : si elle est
+   rouge, **on ne lance rien** et on le dit.
+   ⛔ **ELLE VIVAIT DANS UN MESSAGE DE CHAT, ET C'EST POUR ÇA QU'ELLE EST ICI.** Ko l'avait
+   posée mot pour mot le 11/09 — « `chrome` à 0 au relevé d'ouverture, sinon tu ne lances
+   rien et tu me le dis » — et D287 l'a fidèlement RAPPORTÉE dans son compte rendu de
+   session. ⚠ **Un compte rendu de session n'est pas un critère** : une certification
+   future lit CETTE liste, pas la section d'une session vieille de deux jours. C'était
+   **D276 appliqué à la règle de certification elle-même** — la décision existait, au bon
+   format, au mauvais endroit.
+   ⚠ **ET LE MOTIF DE LA QUANTITÉ EST DISTINCT DE CELUI DE LA BARRE**, sinon elle serait
+   redondante : `chrome` est le plus gros poste **mobilisable** de cette machine (2 283 Mo
+   mesurés le 11/09, soit près de la moitié du déficit qui bloquait alors la passe). La
+   barre dit *combien il reste* ; `chrome` dit *si ce qui reste a été libéré*. Une barre
+   franchie de justesse **avec** un navigateur ouvert et une barre franchie **sans** ne
+   décrivent pas la même machine.
+   ⚠ **RELEVÉ DU 12/09, ET IL JUSTIFIE LA SÉPARATION DES DEUX** : `chrome` fermé, la RAM
+   d'ouverture est remontée à **4 624 puis 4 643 Mo** — au-dessus de la barre, mais de
+   **+45 à +64 Mo seulement**, là où la projection par soustraction de D287 annonçait
+   **+192**. ⇒ **La projection était bien une projection** (D287 le disait), et une porte
+   dure adossée à la seule RAM se serait jouée dans cette marge-là.
 
 #### ⛔ LE MOTIF DES POINTS 6 ET 7, ET IL EST MESURÉ — LA NUIT DU 09 AU 10/09/2026
 
@@ -1594,6 +1644,218 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 12/09/2026 — D288 · CERTIFICATION (rang 12) : la marque, et la porte dure entre au critère
+
+⛔ **RANG 12, ARBITRÉ PAR KO LE 11/09.** ⇒ **État du rang** : section « PROCHAIN LOT — rang 12 »
+en tête de ce fichier. **Il est CLOS.**
+
+### ⛔ LA MARQUE — CE QUI EST ÉCRIT, MOT POUR MOT
+
+> **Portes vertes AU REPOS le 12/09/2026, et D285 et D286 en font partie.**
+
+**Deux lots, et rien d'autre.** ⛔ **Aucun en-tête antérieur n'est réécrit en « certifié »**
+(point 4 du critère) — ce serait la certification par procuration que le rang 7 refuse depuis
+D270. La marque est ici, datée, et **elle ne se reconduit pas au lot suivant**.
+⇒ **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO.**
+
+### ⛔ LA PORTE DURE, REJOUÉE ET VERTE — ET LA PROJECTION DÉMENTIE PAR LE RELEVÉ
+
+`chrome` fermé par Ko. **Calibration rejouée à 00:36, et PASSANTE** : 12 cœurs chargés,
+bridage retiré, **120 s de CPU produites sur un plafond de 124,5** (rendement **0,96**),
+CPU 9 % → 100 %, PERF 76,2 % → 146,8 %. Les deux instruments séparent les régimes sur charge
+réelle — l'instrument n'est donc pas en cause dans ce qui suit, et c'est mesuré, pas supposé.
+
+| | relevé 1 (00:37) | relevé 2 (00:40) | clôture (01:36) | exigé |
+|---|---|---|---|---|
+| RAM libre médiane | **4 624 Mo** | **4 643 Mo** | **5 050 Mo** | ≥ 4 579 ✅ |
+| RAM, bande basse | 4 609 | 4 619 | 5 039 | > barre ✅ |
+| écart à la barre | **+45** | **+64** | +471 | > 0 ✅ |
+| `chrome` | **0** | **0** | **0** | **0** ✅ |
+| `node` | 0 | 0 | 0 | 0 ✅ |
+| alimentation | SECTEUR 100 %, overlays identiques | idem | idem | stable ✅ |
+| `% Processor Performance` | 74,8 % | 73,8 % | 79,2 % | > 100 = turbo |
+
+⛔ **LA PROJECTION DE D287 ÉTAIT UNE PROJECTION, ET L'ÉCART EST GRAND.** Elle annonçait, par
+soustraction d'inventaire, **+192 Mo** une fois `chrome` fermé. Mesuré : **+45 puis +64** —
+**de l'ordre du tiers**. D287 avait écrit la réserve (« la mémoire rendue par un processus
+fermé n'égale pas son *working set* ») ; le relevé la confirme et donne sa taille.
+⚠ **CE QUE ÇA CHANGE POUR LA MÉTHODE** : une soustraction d'inventaire ne peut pas servir de
+feu vert sur une porte dure. Ici elle aurait annoncé une marge **trois fois trop large**, et
+la passe s'est ouverte dans une marge de 45 Mo — un onglet de plus et la porte était rouge.
+⇒ **La sortie de secours de D270 n'a PAS été consommée** : le plancher est repassé au-dessus
+de la barre, **aucune barre n'a été redéfinie**, aucun arbitrage demandé à Ko.
+
+### Les six portes, l'e2e, et l'état machine devant chacune
+
+⚠ **Toutes lancées en AVANT-PLAN, délibérément.** D286 a mesuré que Windows bride les threads
+de fond (`PROCESS_POWER_THROTTLING_EXECUTION_SPEED`) — 3,7 s de CPU produites sur 3 s de mur
+là où douze cœurs en offrent 36. **Une durée relevée sur une porte lancée en tâche de fond
+mesurerait le bridage, pas la porte.**
+
+| porte | code de sortie | durée | chiffres |
+|---|---|---|---|
+| `typecheck` | **0** | 20 s | 9 projets |
+| `lint` | **0** | 12 s | 9 projets |
+| `test` | **0** | 59 s | **1 329 tests / 109 fichiers** |
+| `build` | **0** | 48 s | client SSG+SSR, middleware 45,5 kB |
+| `test:int` | **0** | 306 s | **436 tests / 36 fichiers**, PostgreSQL réel |
+| `e2e` | **0** | 127 s | **34 passés · 1 ignoré** |
+
+⚠ **AUCUN COMPTEUR N'A BOUGÉ** depuis D286 — 1 329/109 et 436/36 à l'identique. C'est le
+résultat **attendu** d'une passe qui ne modifie aucun code, et c'est ce qui rend la
+comparaison lisible : un compteur qui bouge sans lot de code serait le signal.
+⚠ **L'e2e ignorée est NOMMÉE** (elle l'est depuis D283, et le motif est reconduit sans
+changement) : `a5-cold-reload-vs-spa.e2e.ts:190`, motif « nécessite une salle de fixture : à
+brancher avec T2 ». **Relevée dans la source**, pas déduite du compte.
+
+⛔ **UN COMPTEUR D'ÉCHECS LU PAR SOUS-CHAÎNE AURAIT ANNONCÉ DEUX ÉCHECS SUR UNE SUITE À
+1 329/1 329.** La sortie de `test` porte **deux** occurrences de « failed » : ce sont des
+lignes de JOURNAL, `TypeError: fetch failed`, émises par `ChargilyGateway` **à l'intérieur
+d'un test qui exerce le chemin d'échec réseau**. Zéro occurrence de « FAIL », zéro
+`ELIFECYCLE`, et les quatre lignes de résumé disent toutes « passed ».
+⚠ **C'est D275 à la lettre** — « un compte lu par sous-chaîne se confronte au CONTEXTE de ses
+occurrences, jamais à leur seul nombre ». L'extracteur a été confronté à la sortie brute
+**avant** de servir à compter, et les quatre lignes « Test Files » ont été vérifiées présentes
+(58 + 3 + 20 + 28 = 109) plutôt que supposées.
+
+### ⛔ LES CAMPAGNES — 195 GARDES, ET LA RÉSOLUTION DU `--tout` A SERVI EXACTEMENT COMME ÉCRIT
+
+`lancer-campagnes.py --tout` : **26 campagnes, 1 944 s (32 min), sortie 1** — 182 mordues,
+**0 muette**, 13 non mesurées, réparties sur les trois campagnes gardées derrière `--int`
+(`e3d1-s8` 5, `s11b` 4, `solid-s6` 4). Les trois rejouées **séparément** avec `--int` :
+
+| campagne | sans `--int` | avec `--int` | code |
+|---|---|---|---|
+| `neutralize-e3d1-s8.py` | 3 mordues + 5 non mesurées | **8 / 8** | 0 |
+| `neutralize-s11b.py` | 9 mordues + 4 non mesurées | **13 / 13** | 0 |
+| `neutralize-solid-s6.py` | 2 mordues + 4 non mesurées | **6 / 6** | 0 |
+
+⇒ **TOTAL CERTIFIANT : 195 mordues · 0 muette · 0 non mesurée.** L'arithmétique se boucle
+campagne par campagne (3+5=8, 9+4=13, 2+4=6), et non par un seul grand total — un total qui
+tombe juste par compensation ne prouve rien.
+⚠ **Le précédent de D275 tenait 182 sur 182** ; l'écart de **+13** vient des cibles ajoutées
+depuis (les deux échéances de D285, et S11-b), pas d'un changement de méthode.
+✅ **S11b-11 mord** — c'est la cible `Math.min` → `Math.max` que D286 a relevée comme changeant
+**zéro octet**, et qui démontrait qu'un contrôle de mutation par la TAILLE aurait déclaré
+« non posée » une mutation parfaitement posée.
+
+⛔ **LE CODE DE SORTIE RAPPORTÉ PAR LE HARNAIS ÉTAIT 0, ET LE VRAI ÉTAIT 1.** La commande de
+fond était suivie d'un écho du code réel ; c'est **l'enveloppe** qui a rendu 0, et c'est elle
+que la notification de fin de tâche affiche. **La précaution a tenu** — le code réel était
+imprimé et lu — mais le fait mérite d'être écrit : `AGENTS.md` dit « lire le code de sortie de
+la COMMANDE, pas de son ENVELOPPE », et **une notification de fin de tâche est une
+enveloppe**. ⚠ Sans la prédiction du critère (« `--tout` sort en 1, c'est attendu »), un
+« exit code 0 » se serait lu comme un succès du tri.
+
+### ⛔ L'ARBRE N'A PAS BOUGÉ, ET LA FENÊTRE EST HOMOGÈNE — les points 1, 6 et 7 enfin MESURÉS
+
+**Arbre immobile sur `c2ac531` d'un bout à l'autre** : `git status --porcelain` **vide** avant
+les campagnes, après le `--tout`, et après les trois `--int`. Les harnais mutent des sources ;
+trois contrôles, pas un.
+⚠ **Aucun fichier n'a été édité pendant la passe** — les écritures documentaires de ce lot sont
+toutes **postérieures** au dernier relevé (D270 : ne jamais éditer un fichier pendant qu'une
+vérification le lit — 24 échecs sans signification, puis une conclusion fausse tirée d'eux).
+
+**`echantillonneur-etat-machine.ps1`, en fond sur toute la fenêtre :**
+
+```
+ECHANTILLONS=103   dont ECHEC-INSTRUMENT=0
+FENETRE=2026-09-12 00:41:09 → 2026-09-12 01:34:58   (53.8 min)
+RAM_LIBRE_MO min=2496 max=5261   CPU_PCT max=100   NODE max=15
+TRANSITIONS_ALIMENTATION=0       TROUS_DANS_LA_SERIE=0
+✓ FENETRE HOMOGENE : une seule source d'alimentation, aucune interruption de serie.
+```
+
+⛔ **C'EST LA PREMIÈRE CERTIFICATION OÙ LES POINTS 6 ET 7 SONT DES MESURES.** Ils ont été
+écrits après la nuit du 09→10/09, où huit heures de veille sur batterie critique tenaient
+entre deux bouts nominaux. Ici la bascule d'alimentation et le trou de série sont **cherchés
+par un instrument et rendus à zéro**, au lieu d'être inférés de deux extrémités.
+⚠ **Le lecteur du journal rejoue sa calibration à chaque invocation, et sur ses DEUX bras** :
+deux cas négatifs (série homogène → 0 transition, 0 trou) et deux cas positifs (bascule
+secteur→batterie, trou de huit heures). Les quatre passent. **Un détecteur qui répondrait
+« 0 » à tout aurait passé les deux négatifs seuls** — c'est l'exigence des deux bras de D286.
+⚠ **RAM min 2 496 Mo pendant la fenêtre, et ce n'est PAS une violation de la porte dure** :
+c'est la mesure elle-même qui consomme (jusqu'à **15 processus node**, CPU à 100 %, PERF à
+141 % — turbo engagé, donc **non bridé**). La porte dure porte sur l'état d'**OUVERTURE au
+repos** ; l'échantillonneur, lui, surveille le **RÉGIME**. Confondre les deux ferait échouer
+toute certification, puisqu'une passe qui ne consomme rien n'a rien mesuré.
+
+### ⛔ LA PORTE DURE `chrome` = 0 ENTRE AU CRITÈRE — le point non traité de D287
+
+**Point 8 du critère du rang 9**, écrit dans ce lot. ⛔ **ELLE VIVAIT DANS UN MESSAGE DE
+CHAT.** Ko l'avait posée mot pour mot le 11/09 ; D287 l'a fidèlement **rapportée** dans son
+compte rendu de session — ce qui est le bon format **au mauvais endroit**.
+⚠ **UNE CERTIFICATION FUTURE LIT LE CRITÈRE, PAS LA SECTION D'UNE SESSION VIEILLE DE DEUX
+JOURS.** C'est **D276 appliqué à la règle de certification elle-même** : la décision existait,
+elle était écrite, elle était datée, et elle n'était pas là où on va la chercher.
+⇒ **C'est la classe que D287 venait d'inscrire dans `AGENTS.md`, retournée contre la session
+qui l'a écrite** — et c'est **Ko** qui l'a relevée, pas la session.
+⚠ **ET LE MOTIF DE LA QUANTITÉ EST DISTINCT DE CELUI DE LA BARRE**, sinon elle serait
+redondante : la barre dit *combien il reste*, `chrome` dit *si ce qui reste a été libéré*. Le
+relevé du 12/09 le démontre — barre franchie de **+45 Mo** seulement, mais franchie `chrome`
+**fermé** : les deux quantités ne décrivent pas la même machine.
+
+### Les deux réserves de D275 — l'une LEVÉE, l'autre RECONDUITE, avec leur motif
+
+Point 5 du critère : elles ne s'éteignent pas en ayant été écrites une fois.
+
+- ✅ **LEVÉE — l'instrument d'état machine** (dite « n°2 » par l'usage ; ⚠ écart de
+  numérotation déjà relevé et **non corrigé** par D286, le référent n'ayant jamais été
+  ambigu). Levée **dans ses deux moitiés** par le rang 11 : l'instrument est **au dépôt**
+  (`neutralisation/sonde-etat-machine.ps1`, `echantillonneur-etat-machine.ps1`) et sa
+  calibration est **rejouée à l'invocation**, pas héritée. ⇒ **Cette certification est la
+  première à en bénéficier** : « la machine est au repos » y est un relevé reproductible et
+  contestable, au lieu d'une affirmation datée.
+- ⚠ **RECONDUITE — zéro `node` pendant la mesure.** `NODE=0` aux trois relevés au repos, et
+  aucune pile `dev` n'a tourné. **C'est une condition de ce que la certification vaut, pas un
+  défaut à corriger** : elle ne dit **rien** de la porte pendant qu'un observateur de fichiers
+  recompile — le facteur que D274 a nommé sans pouvoir le reproduire, et la seule piste non
+  écartée de l'intermittence de `venue-list.test.tsx`. **Elle se recopiera dans la prochaine.**
+
+### ⛔ DEUX FAUTES DE MÉTHODE, À MON COMPTE — ET LA PREMIÈRE A ÉCRIT
+
+1. ⛔ **BASH A MANGÉ CINQ JETONS DANS UN FICHIER D'AUTORITÉ, ET LE REMPLACEMENT A RÉUSSI.**
+   Le texte de la règle de synchronisation a été passé à un `python3 -c` entre **guillemets
+   doubles** : les jetons entre accents graves — `origin`, `git status`, `git fetch` et les
+   deux `git rev-parse` — ont été pris par bash pour des **substitutions de commandes**.
+   Écrit dans `AGENTS.md` : « local et  sur le MÊME SHA », « le geste est  et  ».
+   ⚠ **L'UTILITAIRE D'ÉDITION N'Y POUVAIT RIEN** — il a fait exactement son travail : une
+   occurrence trouvée, zéro LF nu, marqueur présent. **La corruption était dans son ENTRÉE**,
+   en amont de tout contrôle. Un contrôle d'écriture ne protège pas d'un texte déjà faux quand
+   il lui arrive.
+   ⛔ **CE QUI L'A ATTRAPÉE EST LA RELECTURE DU FICHIER, PAS LE SUCCÈS DE L'OUTIL** — et les
+   `fatal: not a git repository` imprimés au passage étaient le seul signal, facile à lire
+   comme du bruit. ⇒ Corrigé **à la racine** : tout texte d'autorité passe désormais par un
+   heredoc à délimiteur **entre quotes**, qui n'interpole rien, ou par l'outil d'écriture.
+   Restauration par `git checkout --`, réécriture, puis **vérification que les jetons sont
+   présents** — pas seulement que le remplacement a eu lieu.
+   ⚠ **ET LE CÔTÉ QUI AURAIT PU COÛTER PLUS CHER** : la substitution a **exécuté** ce qu'elle
+   a mangé, dont un `git fetch` — une opération réseau non voulue. Ici tout était en lecture
+   seule ; **c'est la chance, pas la conception.**
+2. ⚠ **J'AI FAILLI LIRE UN CODE DE SORTIE D'ENVELOPPE.** Voir plus haut : la notification de
+   tâche annonçait 0, le tri avait rendu 1. La précaution (imprimer le code réel) a tenu, et le
+   critère prédisait ce 1 — **deux filets pour une faute que le dépôt a déjà écrite**.
+
+### ⛔ CE QUE CE LOT NE FAIT PAS
+
+1. **Il n'ouvre aucun lot de code.** La borne de workers est **désignée** par Ko (11/09 :
+   « quatre configs, c'est du code et ça mérite son propre rang ») et **n'est pas arbitrée** —
+   la session n'attribue pas un rang. ⇒ **Rang 13 : en attente d'arbitrage de Ko** (D284).
+   ⚠ **Ce que ce lot change pour elle est sa CONDITION, pas son rang** : elle était bloquée
+   derrière la marque du 12, la marque est posée, **elle peut s'ouvrir dès l'arbitrage**.
+2. **Ce lot est DOCUMENTAIRE** — deux `.md` d'autorité au diff, aucun fichier de code (D283) :
+   il **ne compte pas** dans les deux/trois, il les remet à zéro sans s'y ajouter.
+3. ⚠ **L'UTILITAIRE D'ÉDITION CRLF EST RESTÉ DANS LE SCRATCHPAD**, comme `ed.py` au rang 11 —
+   **c'est le même écart que D287 a signalé contre lui-même, et il se reconduit ici plutôt que
+   d'être passé sous silence.** Il est calibré sur ses deux bras (compte juste ⇒ il écrit et
+   normalise le LF ; compte faux ⇒ il **refuse sans écrire**), mais une calibration qui vit
+   hors de `git` n'est pas rejouable par la session suivante. ⇒ **Reporté au backlog**, au même
+   titre que `ed.py` et le comparateur de dérive de D286.
+   ⛔ **Le verser au dépôt ICI aurait fait de ce lot un lot de CODE** (D283 : « un lot qui
+   touche un harnais, un test, un script ou une migration COMPTE ») — c'est-à-dire un lot non
+   certifié ajouté par la session même qui certifie, et le compteur serait reparti à un le jour
+   de sa remise à zéro.
+
 ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
 
 ⛔ **RANG 12, ARBITRÉ PAR KO.** Objet : *la certification qui débloque la borne de workers.*
@@ -1689,11 +1951,21 @@ fichier d'autorité, l'ordre « vérifier puis écrire » n'est pas un détail d
 
 1. **La certification n'a pas eu lieu.** Aucune porte, aucune campagne, aucune e2e n'a été
    lancée : la porte dure est rouge et le critère du rang 9 interdit de la franchir sur ordre.
-   ⛔ **Le compteur reste donc à DEUX** (D285, D286) et **aucun lot de code ne peut s'ouvrir.**
+   ⛔ ~~**Le compteur reste donc à DEUX** (D285, D286) et **aucun lot de code ne peut
+   s'ouvrir.**~~ **BARRÉ LE 12/09/2026 (D288).** La certification a eu lieu le lendemain :
+   **compteur à ZÉRO**, un lot de code **peut** s'ouvrir. ⚠ **Cette phrase était VRAIE quand
+   elle a été écrite** — c'est une phrase d'état devenue fausse, pas une faute de D287.
 2. **Ce lot est DOCUMENTAIRE** — trois `.md` d'autorité au diff, aucun fichier de code
    (D283) : il **ne compte pas** dans les deux/trois, et c'est ce qui lui permet d'exister
    alors que le compteur est déjà à deux.
-3. **La borne de workers reste sans rang**, désignée par Ko et bloquée derrière la marque du 12.
+3. ~~**La borne de workers reste sans rang**, désignée par Ko et bloquée derrière la marque
+   du 12.~~ ⛔ **MOITIÉ BARRÉE LE 12/09/2026 (D288), ET C'EST LA MOITIÉ PERMISSIVE.** Elle
+   reste **sans rang** — vrai, Ko ne l'a pas arbitrée. Elle n'est plus **bloquée** : la marque
+   du 12 est posée. ⚠ **C'EST LE SENS QUI NE SE RATTRAPE PAS**, et il est ici dans sa forme la
+   plus discrète : rien dans cette phrase ne *contredit* le lot du 12/09, donc une passe D277
+   qui ne chercherait que les contradictions ne la ramènerait pas — elle serait restée à
+   interdire un lot déjà permis. **C'est la règle de classe de D287 exercée sur la section qui
+   l'a écrite.**
 4. **`ed.py` est resté un script jetable du scratchpad** — ⚠ **c'est le contraire du principe du
    rang 11**, et l'écart est écrit ici plutôt que passé sous silence. Reporté au backlog comme
    candidat instrument, au même titre que le comparateur de dérive de D286.
@@ -4929,23 +5201,37 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     rang 10 parce qu'elle les avait levés, rang 12 parce que **D285 et D286** les ont ramenés à
     deux. ⇒ **Ce qu'elle débloquera** : la **borne de workers**, désignée par Ko le 11/09 comme
     méritant son propre rang — c'est du **code**, donc elle ne peut pas s'ouvrir avant.
-    ⛔ **ÉTAT : ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287).** Les deux phrases
-    d'autorisation sont traitées et la règle de classe est écrite dans `AGENTS.md`. **La mesure
-    n'a pas eu lieu** : porte dure d'état machine **rouge sur deux relevés** — `chrome` 16 au
-    lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés (**−2 091**). ⚠ L'instrument n'est pas en
-    cause : `-Calibrer` rejoué et **passant** (rendement 0,89 sur la charge connue).
-    ⇒ **Où il en est** : section « PROCHAIN LOT — rang 12 » en tête de ce fichier, qui porte les
-    deux relevés, l'inventaire du mobilisable, et la sortie déjà écrite si le plancher résiste.
+    ⛔ **ÉTAT : LIVRÉ ET MESURÉ LE 12/09/2026 (D288) — LA MARQUE EST POSÉE, LE RANG EST CLOS.**
+    « **Portes vertes AU REPOS le 12/09/2026, et D285 et D286 en font partie** ».
+    ⇒ **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code **peut**
+    s'ouvrir, et c'est lui qui le portera à un.
+    ⚠ ~~**ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287)** : porte dure **rouge sur
+    deux relevés** — `chrome` 16 au lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés
+    (**−2 091**).~~ **BARRÉ LE 12/09/2026 (D288)** : `chrome` fermé par Ko, la porte dure a été
+    rejouée et trouvée **verte** (4 624 puis 4 643 Mo, `chrome` 0, `node` 0, SECTEUR 100 %).
+    L'étape 0 elle-même reste acquise et n'est pas barrée.
+    ⇒ **Où il en est** : section « PROCHAIN LOT — rang 12 » en tête de ce fichier, et le détail
+    de la passe en section « Session du 12/09/2026 — D288 ».
     ⚠ **Le lot de ce rang est DOCUMENTAIRE** (aucun fichier hors `.md` d'autorité au diff, D283) :
-    il **ne compte pas** dans les deux/trois, et le compteur reste donc à **deux**.
+    il **ne compte pas** dans les deux/trois — il les REMET à zéro sans s'y ajouter.
 
 ⇒ **RANG SUIVANT : EN ATTENTE D'ARBITRAGE DE KO.**
-⚠ **ET « SUIVANT » VEUT DIRE LE RANG 13 — AJOUT DU 11/09/2026 (D287).** Le rang 12 est
-**OUVERT, pas clos** : ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa mesure**.
-Sans cette ligne, une reprise lit « rang suivant : en attente » au bas de la liste et conclut
-qu'il n'y a rien à faire — alors que la certification est ouverte et bloquée sur une porte
-dure. ⇒ **Un rang OUVERT se lit dans son point d'entrée** (« PROCHAIN LOT — rang 12 »), pas
-ici : cette liste dit QUEL lot, jamais OÙ IL EN EST (D283).
+⚠ **ET « SUIVANT » VEUT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
+**OUVERT, pas clos** ; ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa
+mesure**.~~ ⛔ **PRÉMISSE PÉRIMÉE LE 12/09/2026 (D288) : le rang 12 est CLOS**, sa marque est
+posée. Ce qui reste dû est donc bien un **arbitrage**, et il appartient à Ko.
+⚠ **CE QUI NE CHANGE PAS, ET C'EST LE POINT DE LA RÈGLE** : la ligne « rang suivant : en
+attente d'arbitrage de Ko » **reste écrite**. Elle ne disparaît pas au motif que le rang
+précédent est clos — c'est exactement l'absence que D284 interdit, et une liste qui s'arrête
+se lit comme une route. ⇒ **Un rang OUVERT se lit dans son point d'entrée**, pas ici : cette
+liste dit QUEL lot, jamais OÙ IL EN EST (D283).
+⛔ **ET LE CANDIDAT EST DÉSIGNÉ SANS ÊTRE ARBITRÉ — LA DISTINCTION EST TOUT** : Ko a écrit le
+11/09 que **la borne de workers** « touche quatre configs, c'est du code et ça mérite son
+propre rang ». C'est une **désignation**, relevée ici pour qu'une reprise n'ait rien à
+recouper ; **ce n'est pas l'arbitrage du rang 13**, que la session ne prend pas (quatre
+écritures de cet ordre, toutes de Ko). ⚠ **Ce qui a changé le 12/09 est sa CONDITION, pas son
+rang** : elle était bloquée derrière la marque du 12 parce qu'elle est du code et que le
+compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que Ko l'arbitre.**
 ⛔ **CETTE LIGNE EST LA RÈGLE ÉCRITE LE 10/09/2026 DANS `AGENTS.md`, APPLIQUÉE À ELLE-MÊME**
 — « **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ, JAMAIS UNE ABSENCE** ». Elle ne dit pas quel sera le
 rang 11 : **la session n'arbitre pas l'ordre**, quatre écritures, toutes de Ko. Elle dit que
@@ -6398,3 +6684,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D285 | A | D285 — « muette » a deux causes : la mutation prouvée POSÉE sépare l'assertion aveugle du remplacement fantôme |
 | D286 | A | D286 — les instruments entrent au dépôt ; « muette » a deux causes, et la preuve est ancre 1→0 ET marqueur 1→2 |
 | D287 | A | D287 — une passe D277 cherche aussi ce que le lot REND PERMIS ; une permission périmée n'a rien à contredire |
+| D288 | A | D288 — CERTIFICATION (rang 12) : 195 gardes, fenêtre homogène mesurée, et la porte dure `chrome` = 0 entre au critère |

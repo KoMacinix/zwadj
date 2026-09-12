@@ -2536,8 +2536,27 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   ancre, dont le verdict attendu est `substitution` — c'est le cas qui l'a fait naître.
   ⚠ **MÊME CLASSE QUE LE COMPARATEUR DE DÉRIVE DE D286**, resté jetable lui aussi : deux
   instruments hors dépôt en deux lots, sur le lot qui a fait entrer les instruments au dépôt.
-  ⛔ **Il touche `neutralisation/`, donc c'est du code : il ne s'ouvre pas à deux lots non
-  certifiés.**
+  ⛔ **TROISIÈME DE LA MÊME CLASSE, AJOUTÉ LE 12/09/2026 (D288)** : `edcrlf.py`, écrit pour
+  les écritures documentaires du rang 12 et **resté dans le scratchpad**. Il porte une garde
+  de plus, payée elle aussi dans son propre lot : **il assertit le compte d'occurrences AVANT
+  d'écrire et refuse sans rien toucher** s'il ne trouve pas le compte attendu. ⚠ Il est
+  calibré sur ses **deux bras** (compte juste ⇒ écrit et normalise le LF ; compte faux ⇒
+  refuse, fichier inchangé) — mais **une calibration hors `git` n'est pas rejouable**, ce qui
+  est le reproche exact de D286. ⇒ **Trois instruments, trois lots consécutifs.**
+  ⛔ **ET CE QUE D288 A MESURÉ SUR LUI VAUT POUR SON EN-TÊTE, LE JOUR OÙ IL SERA VERSÉ** :
+  un outil d'édition **ne protège pas d'une entrée déjà corrompue**. Le 12/09, bash a mangé
+  cinq jetons entre accents graves d'un texte passé à `python3 -c` entre guillemets doubles ;
+  l'outil a rapporté « 1 remplacement, 0 LF nu, marqueur présent » — **tout juste, et le
+  fichier était faux**. ⇒ Son mode d'emploi doit dire que **la vérification qui compte est la
+  relecture du fichier**, pas le succès de l'outil.
+  ⛔ ~~**Il touche `neutralisation/`, donc c'est du code : il ne s'ouvre pas à deux lots non
+  certifiés.**~~ **CONDITION LEVÉE LE 12/09/2026 (D288)** : la certification du rang 12 a
+  ramené le compteur de lots de code non certifiés **à ZÉRO**. Il touche toujours
+  `neutralisation/`, c'est toujours du code — **mais plus rien ne le bloque**, il lui manque
+  seulement un rang arbitré par Ko.
+  ⚠ **C'EST UNE PERMISSION PÉRIMÉE AU SENS DE D287, ET ELLE A ÉTÉ TROUVÉE PAR LA PASSE QUI
+  CHERCHE CE QUE LE LOT REND PERMIS** — pas par une recherche de contradiction : cette phrase
+  ne contredisait **aucun mot** du lot de certification, elle en dépendait.
 
 - **[INFRA][P2]** ⚠ **TROIS HARNAIS N'ONT PAS DE GARDE `if __name__ == "__main__"`, ET LES
   IMPORTER JOUE LA CAMPAGNE.** Relevé le 11/09/2026 sur les 26 harnais :
