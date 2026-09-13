@@ -2362,6 +2362,44 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports des 12 et 13/09/2026 — rang 14, `PERF` et la durée (D291)
+
+⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** Le rang 14 retire du dossier ce qu'il affirmait sans
+mesure, verse les preuves de D290 et mesure la durée à régime constant ; le reste se **rapporte**.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[DOC][P1]** ⛔ **DES PREUVES D'AUTRES DÉCISIONS SONT ENCORE SUR DISQUE, HORS DÉPÔT — ET UNE
+  PARTIE SERA ÉCRASÉE À LA PROCHAINE EXÉCUTION.** Inventaire de `.neutralisation-journaux/` le
+  12/09/2026 à 23:46 (42 entrées) :
+
+  | pièces | rattachement PROBABLE (nom, heure) | risque |
+  |---|---|---|
+  | `venue-list-03-09/` (03/09) | rang 6, D274 — la continuité cite le dossier, pas les fichiers | aucun écrasement connu |
+  | `p1-typecheck.log` … `p5-testint.log`, `portes-r11.txt`, `etat-r11.csv` (11/09) | rang 11, D286 | `p1`…`p5` : noms génériques |
+  | `porte-{test,build,testint,e2e}-rang12.log`, `etat-rang12.csv` (12/09, 00:43 → 01:34) | rang 12, D288 | noms propres au rang |
+  | `neutralize-*.py.log` × 26 (12/09, 00:56 → 01:25) | rang 12, D288, passe `--tout` | ⛔ **réécrits à la prochaine exécution de chaque campagne** |
+
+  ⛔ **NON VERSÉES PAR D291, ET C'EST DÉLIBÉRÉ** : aucune décision ne cite un journal par son
+  chemin (zéro, relevé le 13/09) ; le rattachement ci-dessus est une **inférence** par nom et par
+  heure, et l'écrire comme un fait serait l'erreur de statut que D291 corrige. Et deux de ces
+  journaux (`porte-e2e-rang12.log`, 363 Ko ; `porte-testint-rang12.log`) demandent un audit de
+  secrets plus large que ce lot.
+  ⇒ **Ce que demande le lot qui les versera** : un rattachement **écrit et confronté** (contenu
+  contre chiffres de la décision), un audit de secrets non tronqué — et, pour les 26 journaux de
+  campagne, **avant la prochaine passe `--tout`**, sans quoi la pièce de la certification D288
+  disparaît.
+- **[INFRA][P3]** ⚠ **L'EN-TÊTE DE `sonde-etat-machine.ps1` NOMME `PERF` « BRIDAGE RÉEL » ET ÉCRIT
+  « > 100 % = turbo, donc NON bridé ».** Vrai dans ce sens, sous charge (D286). Mais le nom invite
+  la lecture réciproque — « sous 100 ⇒ bridé » — qui est **fausse au repos** (D288 ouvre à 74,8).
+  ⇒ **NON corrigé** : c'est un fichier d'instrument, donc du code, hors de ce lot.
+- **[MÉTHODE][P2]** ⚠ **UNE RECHERCHE LITTÉRALE SUR DU MARKDOWN EST AVEUGLE AU GRAS.** Trouvé au tri
+  de la passe D277 de D291 : « un lot de code **peut** s'ouvrir » ne sortait pas sur le motif
+  « peut s'ouvrir » — une permission périmée de l'ordre des rangs restait invisible. Corrigé **dans
+  l'outil de D291** (`*` et accent grave retirés du texte et du motif, `~~` gardés pour l'indice
+  de barrage). ⚠ Cousin de D289 : le texte aplati rend visible ce qui enjambe une ligne, pas ce
+  que coupe un marqueur. **Pas porté dans `AGENTS.md`** — premier constat ; à Ko d'en décider.
+
 ## Reports du 12/09/2026 — rang 13, cadrage (D289)
 
 ⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** Le rang 13 parle de la borne de workers ; tout
@@ -2401,11 +2439,31 @@ le reste se **rapporte**.
   figés. ⇒ **Il demande une décision de FORME** — par exemple ce qui doit rester chargé d'office
   et ce qui se lit à la demande — et cette décision appartient à Ko.
 
-- **[INFRA][P2]** ⚠ **TROISIÈME RECONDUCTION DU MÊME ÉCART : L'OUTIL D'ÉDITION DES FICHIERS
+- **[INFRA][P2]** ⚠ ~~**TROISIÈME RECONDUCTION DU MÊME ÉCART**~~ ⛔ **QUATRIÈME — ET LA QUATRIÈME
+  N'ÉTAIT ÉCRITE NULLE PART ICI (relevé le 13/09/2026, D291)** : **L'OUTIL D'ÉDITION DES FICHIERS
   D'AUTORITÉ EST RESTÉ DANS LE SCRATCHPAD.** `ed.py` au rang 11, l'éditeur CRLF au rang 12, et
   `splice.py` au rang 13. Celui-ci porte trois gardes payées dans son propre lot : ancre comptée
   **avant** écriture (abandon si ≠ 1), normalisation CRLF du remplacement, et **refus d'écrire**
   si un LF nu subsiste après splice.
+  ⛔ **LA QUATRIÈME (D290, 12/09/2026)** : `passes_secteur.ps1` — le harnais des cinq passes — et
+  les scripts d'écriture documentaire du lot, relevés sur disque le 13/09 (`inserer_d290.py`,
+  `inserer_etat_et_regle.py`, `passe_d277.py`, `cloture_rang13.py`, `ajout_scratchpad.py`). D290
+  écrivait « cette occurrence s'y ajoute » : **`dfca28f` ne touchait que `ZWADJ_CONTINUITE.md`**, et
+  cette entrée disait encore « TROISIÈME ». **Une affirmation fausse, pas un oubli.**
+  ⇒ **CE QUE D291 EN A FAIT** : `passes_secteur.ps1` et ses cinq journaux sont versés comme
+  **preuves** de D290 (`docs/preuves/D290/`) — archivés, **jamais promus en instrument** : il
+  emporterait son défaut de mesure (`PERF` lu une fois, avant la passe, juste après la
+  précédente). Les autres outils **ne sont pas** de ce lot (consigne de Ko).
+  ⚠ **DEUX FAITS NEUFS POUR LE LOT QUI SOLDERA CETTE ENTRÉE** :
+  1. **Copier `passe_d277.py` ne rendrait pas la passe de D290 rejouable** : il contient les deux
+     ancres remplacées, pas la recherche qui les a trouvées — et cette recherche, écrite nulle
+     part, a manqué une troisième occurrence (ordre des rangs, « Le compteur est à zéro »). D291
+     verse la sienne, calibrée : `docs/preuves/D291/passe-d277/`.
+  2. **Mesuré le 13/09/2026 : l'outil d'écriture de Claude Code PRÉSERVE le CRLF** sur les trois
+     fichiers d'autorité de ce lot — 0 LF nu après une vingtaine d'écritures ; sur `AGENTS.md`,
+     après la première, le CRLF est passé de 1 007 à 1 031, exactement les 24 lignes ajoutées.
+     ⚠ Mesuré sur ce poste et sur cet outil : à confronter avant de conclure que les éditeurs CRLF
+     du scratchpad sont sans objet.
   ⛔ **LE VERSER AU DÉPÔT DANS UN LOT DOCUMENTAIRE EN FERAIT UN LOT DE CODE** (D283) — c'est-à-
   dire un lot non certifié ajouté par une session qui n'en ouvre aucun. **C'est la raison pour
   laquelle l'écart se reconduit, et elle est structurelle, pas de la négligence.** ⇒ Il demande
@@ -2473,6 +2531,10 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   ⚠ **ET LE REMÈDE N'EST PAS D'ÉCRIRE UN `testTimeout` PLUS GRAND** : augmenter le budget
   **masque** l'effondrement au lieu de le révéler. D270 le disait déjà de sa propre borne —
   « une assurance, pas un correctif ». Ce report demande une décision, pas un réglage.
+  ⛔ **ORDRE ARBITRÉ PAR KO LE 12/09/2026 (D291)** : le **rang 14 — `PERF` et la durée — passe
+  AVANT ce report.** Motif de Ko : un budget calculé sur des durées dont ~20 % restent
+  inexpliqués serait choisi au jugé. ⚠ La désignation « rang 14 » que D290 lui donnait est
+  barrée dans l'ordre des rangs ; aucun rang ne lui est attribué.
 
 - **[MÉTHODE][P1]** ⛔ **EXIGER LE SECTEUR PROTÈGE LES MESURES, PAS LE DÉVELOPPEMENT QUOTIDIEN —
   RAPPORTÉ LE 12/09/2026 (D290), NON CORRIGÉ, ET C'EST DÉLIBÉRÉ.**
@@ -2507,9 +2569,12 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   ⛔ **ET LES DEUX CHIFFRES DE CETTE ENTRÉE SONT PÉRIMÉS** : le creux de 2 652 Mo appartient
   aux **54 min** des portes et campagnes — isolée, la suite creuse **1 329 Mo** — et
   « 12 à 14 workers » comptait des **processus**, les workers sont **11**.
-  ⇒ **CE QUI RESTE DÛ N'EST PLUS UNE BORNE** : c'est l'expérience du **RÉGIME
+  ~~⇒ **CE QUI RESTE DÛ N'EST PLUS UNE BORNE** : c'est l'expérience du **RÉGIME
   D'ALIMENTATION**, seul terme non éliminé, dont **Ko produit la condition**. Protocole et
-  deux issues en section D290.
+  deux issues en section D290.~~
+  ⛔ **BARRÉ LE 13/09/2026 (D291)** : l'expérience batterie a été **refusée par Ko** avant toute
+  mesure (clôture de D290). La dispersion de durée **à régime constant** est l'objet du
+  **rang 14** (D291).
   ⛔ **ET LE CADRAGE A TROUVÉ QUE LA RAM D'OUVERTURE NE DISCRIMINE PAS** : le cas rouge du 09/09
   (4 636 Mo) tombe **entre** les deux cas verts du 12/09 (4 624 et 4 643). La contention à
   reproduire n'est donc pas une simple baisse de RAM de départ — voir le cadrage.

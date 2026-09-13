@@ -1,0 +1,34 @@
+# Passe D277 de D291 — un motif par ligne : SENS|motif (insensible a la casse, texte aplati,
+# marqueurs * et accent grave retires du texte et du motif).
+# S1 = ce que le lot INVALIDE · S2 = ce dont le lot change la CONDITION (permissions, D287).
+S1|73-77
+S1|73 à 77
+S1|heure d'intervalle
+S1|cause nommable
+S1|bridage réel explique
+S1|20 % de durée
+S1|qui tranche
+S1|qui le dit
+S1|bruit intrinsèque
+S1|variance intrinsèque
+S1|plus petit que le bruit
+S1|bruit de 19
+S1|seul régime
+S1|au rebranchement
+S1|rebrancher n'est pas
+S1|devant chaque passe
+S1|deux bras et dit
+S1|TROISIÈME RECONDUCTION
+S1|compteur est à zéro
+S1|aucune ligne de code
+S1|reste dû
+S1|en attente d'arbitrage de ko
+S1|rang 14
+S1|il est à un
+S1|perf avant
+S2|peut s'ouvrir
+S2|un lot de code peut
+S2|donc non bridé
+S2|> 100
+S2|ignoré par git
+S2|n'entre pas au dépôt

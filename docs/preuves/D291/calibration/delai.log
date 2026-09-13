@@ -1,0 +1,28 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D291/calibration
+
+ ❯ delai.test.mjs (1 test | 1 failed) 122ms
+   × ne se resout jamais 121ms
+     → Test timed out in 100ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  delai.test.mjs > ne se resout jamais
+Error: Test timed out in 100ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ delai.test.mjs:8:1
+      6| // propre documentation (voir delai-premiere-version.log et la section…
+      7| // Lance par vitest.CMD de apps/client (meme version que la suite mesu…
+      8| it("ne se resout jamais", () => new Promise(() => {}));
+       | ^
+      9| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  02:34:08
+   Duration  719ms (transform 25ms, setup 0ms, collect 9ms, tests 122ms, environment 0ms, prepare 211ms)
+

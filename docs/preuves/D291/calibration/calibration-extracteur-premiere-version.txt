@@ -1,0 +1,4 @@
+﻿===== CALIBRATION DE L'EXTRACTEUR, DEUX BRAS, SORTIES REELLES =====
+  positif : code vitest 1 (attendu non nul) |delais 3 (attendu >= 1) |verdict 0/1 (1 failed) (attendu 0/1 (1 failed)) |ESC 0 |29 lignes parcourues -> OK
+  negatif : delais 0 (attendu 0) |verdict 287/287 (attendu passed = total > 0) |ESC 0 |1241 lignes parcourues -> OK
+  occurrences de delai par test en echec, sur le cas connu : 3

@@ -1,0 +1,4 @@
+r13-client-1.csv     lignes  6 · lignes de passe  5 · >100 :  3 · min  93.5 · mediane 128.2 · bande 73-77 : 0 (attendu 0) · 2026-09-12 16:15:48 -> 2026-09-12 16:16:07
+r13-racine-1.csv     lignes 21 · lignes de passe 10 · >100 : 10 · min 100.6 · mediane 131.8 · bande 73-77 : 0 (attendu 0) · 2026-09-12 16:16:47 -> 2026-09-12 16:18:01
+r13-client-x3.csv    lignes 24 · lignes de passe 21 · >100 : 16 · min  80.4 · mediane 116.8 · bande 73-77 : 0 (attendu 0) · 2026-09-12 16:22:14 -> 2026-09-12 16:23:18
+TOTAL : 3 journaux parcourus (attendu 3) · 51 lignes · 36 lignes de passe · >100 : 29 · min 80.4 · bande 73-77 : 0 (attendu 0)

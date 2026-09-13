@@ -1,0 +1,5 @@
+// CAS CONNU pour calibrer le compteur de delais et l'extracteur de verdict (D291).
+// Une promesse qui ne se resout jamais, sous un budget de 100 ms : la sortie DOIT porter
+// exactement UN « Test timed out in 100ms » et un resume « 1 failed (1) ».
+// Lance par vitest.CMD de apps/client (meme version que la suite mesuree), --globals, sans config.
+it("ne se resout jamais", () => new Promise(() => {}));

@@ -393,11 +393,35 @@ connexion (famille D115).
   bridage retiré. ⚠ **Un budget de test de 5 000 ms n'y survit pas**, et c'est ainsi qu'une
   durée devient un **verdict**.
   ⚠ **CE N'EST PAS « INVALIDE », C'EST « NON CERTIFIANT »** : un relevé pris sur batterie se
-  **déclare comme tel** et n'entre dans aucune comparaison. ⛔ Et **`SECTEUR` ne suffit pas à lui
+  **déclare comme tel** et n'entre dans aucune comparaison. ~~⛔ Et **`SECTEUR` ne suffit pas à lui
   seul** : sur Windows un mode bridé survit au rebranchement tant que la charge est basse —
   **c'est `% Processor Performance` qui tranche** (> 100 = turbo, donc non bridé). Mesuré le
   12/09 : 20,0-20,3 s à `PERF` 73-77 % contre 16,4-18,7 s à `PERF` 103-122 %, **sur secteur les
-  deux fois**, même suite, une heure d'intervalle — soit **20 % de durée** pour le seul régime.
+  deux fois**, même suite, une heure d'intervalle — soit **20 % de durée** pour le seul régime.~~
+  ⛔ **BARRÉ LE 13/09/2026 (D291) — UNE HYPOTHÈSE ÉCRITE AU STATUT DE MESURE, ET TROIS CHIFFRES QUE
+  LES JOURNAUX NE PORTENT PAS.** Confronté aux pièces brutes, versées dans `docs/preuves/D290/` :
+  1. **« `PERF` 73-77 % » est introuvable.** Pendant les passes journalisées ce jour-là,
+     l'échantillonneur relève `PERF` **au-dessus de 100 sur 29 lignes sur 36** (lignes où tournent
+     les workers, `node` ≥ 13), minimum **80,4** — et **13 sur 15** sur les deux passes de la
+     comparaison elle-même. **Aucune des 51 lignes** des trois journaux n'est entre 73 et 77.
+  2. **« une heure d'intervalle » est d'au moins 2 h 36** — les durées comparées sont déjà dans le
+     commit `fc7c02e` de 18:57:17, la première des cinq passes démarre vers 21:33:34 — et
+     **d'environ 5 h 15** d'après les deux journaux de la comparaison (16:15:48 → 16:18:01).
+  3. **Les `PERF` 103-122 % sont UNE lecture chacun**, prise avant la passe et, pour les passes
+     2 à 5, **au plus 3,7 s après la fin de la précédente** (horodatages des journaux moins le mur
+     mesuré). ⚠ Qu'elle mesure la retombée de la charge d'avant plutôt qu'un régime est une
+     **inférence**, pas une mesure : c'est la première prédiction du relevé de D291.
+  ⇒ **LA CAUSE DES ~20 % DE DURÉE À RÉGIME CONSTANT RESTE INEXPLIQUÉE.** Sur les cinq passes, la
+  durée suit l'**ordre** des passes (ρ = −1,0), pas `PERF` (ρ = −0,3, et +0,4 sans la passe
+  froide) : cinq points n'établissent rien.
+  ⚠ **« Un mode bridé survit au rebranchement » n'a aucune mesure au dépôt** : D283 écrivait
+  « **peut** survivre », sans relevé — le modal est tombé en recopiant, et c'est la même classe.
+  ⛔ **ET AUCUN SEUIL `PERF` N'ENTRE DANS UN CRITÈRE.** Au repos cette machine est sous 100 — la
+  certification de D288 ouvre à **74,8** puis **73,8** — et ne passe en turbo que sous charge
+  (146,8 sous la calibration, 141 pendant la fenêtre de D288). « > 100 avant la mesure » serait
+  insatisfiable, et la certification de référence y échouerait. **`PERF` se lit PENDANT la
+  mesure, par l'échantillonneur** ; « > 100 sous charge ⇒ non bridé » est démontré (D286), la
+  réciproque ne l'est pas.
 - ⛔ **UN COMPTEUR REND AUSSI CE QU'IL A PARCOURU, ET L'ATTENDU S'ÉCRIT À CÔTÉ DU MESURÉ
   (D290, 12/09/2026).** Un « 0 » sur **zéro élément parcouru** n'est pas une mesure : c'est un
   silence qui a la forme d'un résultat. ⚠ **Mesuré, pas craint** : une vérification a rendu
@@ -428,6 +452,40 @@ connexion (famille D115).
   délimiteur quoté a été cassé par l'enveloppe `bash -c`. ⇒ Des trois formes que D289 autorise,
   **celle qui ne dépend d'aucune enveloppe est le FICHIER** : le texte s'écrit dans un fichier,
   un script le LIT, et rien ne traverse un interpréteur.
+- ⛔ **UNE HYPOTHÈSE FORMULÉE DANS LE FIL NE S'ÉCRIT PAS AU STATUT DE MESURE — MÊME QUAND C'EST KO
+  QUI LA FORMULE (règle de Ko, D291, 13/09/2026).**
+  ⛔ **CE QUI S'EST PASSÉ, EN UN TOUR** : la session de D290 a rapporté une observation sur les
+  `PERF` ; d'après le récit de Ko, Ko l'a reformulée dans le fil en « le bruit a une cause
+  nommable » ; et la session l'a écrite **comme mesurée**, dans `ZWADJ_CONTINUITE.md` **et dans ce
+  fichier**, le seul chargé à chaque session. Trois chiffres cités à l'appui ne se retrouvent pas
+  dans les journaux (bloc D290 ci-dessus, barré).
+  ⚠ **CE N'EST PAS UN CHIFFRE ERRONÉ, C'EST UN STATUT ERRONÉ — et c'est pire.** Un chiffre faux se
+  corrige quand on le recoupe ; « mesuré, pas supposé » en tête d'une inférence **fait arrêter de
+  recouper**. C'est la garde qui ne mord pas, appliquée à la documentation.
+  ⇒ **FORME VÉRIFIABLE — dérivée par la session, avec la règle des preuves ci-dessous** : une
+  affirmation écrite comme MESURÉE nomme la pièce brute qui la porte, versée au dépôt ; sans pièce,
+  elle s'écrit **inférence** ou **hypothèse**, en toutes lettres. ⚠ **Et on confronte aux
+  JOURNAUX, jamais au texte qui les résume** : c'est la confrontation qu'aucune session n'avait
+  faite avant la reprise du 12/09/2026.
+- ⛔ **LES PREUVES BRUTES QU'UNE DÉCISION CITE ENTRENT AU DÉPÔT (décision de forme de Ko, D291,
+  13/09/2026).** Une décision dont personne ne peut relire la preuve n'est pas vérifiable.
+  `.neutralisation-journaux/` est **ignoré par git** : les pièces qui fondaient D290 étaient hors
+  dépôt, pas seulement ses outils — et c'est en les relisant qu'une reprise à froid a trouvé trois
+  chiffres qu'elles ne portent pas.
+  ⇒ **OÙ** : `docs/preuves/<Dnnn>/`, un dossier par décision. **COMMENT** : copie OCTET POUR
+  OCTET, vérifiée par empreinte. `.gitattributes` y coupe toute conversion de fin de ligne —
+  `core.autocrlf=true` sur ce poste aurait réécrit les preuves de D290 à l'ajout (journaux en LF
+  pur, CSV en CRLF : mesuré). **QUOI** : les journaux cités **et** la procédure qui les a
+  produits, **archivée comme preuve, jamais promue en instrument** — elle emporterait ses défauts
+  de mesure. **AVANT LE COMMIT** : un audit de secrets non tronqué, qui rend ce qu'il a parcouru
+  (D200).
+  ⚠ **Les journaux de travail restent où ils sont** : ce qui entre au dépôt est la COPIE de ceux
+  qu'une décision cite, jamais `.neutralisation-journaux/` lui-même.
+  ⚠ **PORTÉE AU 13/09/2026 : D290 et D291.** Les pièces encore sur disque d'autres décisions
+  (rangs 6, 11 et 12) ne sont **pas** versées : aucune décision ne cite un journal par son
+  chemin — mesuré, zéro —, donc leur rattachement serait une **inférence**, précisément ce que la
+  règle ci-dessus interdit d'écrire comme un fait. Inventaire et report : `ZWADJ_BACKLOG.md`,
+  reports de D291.
 - Petites PR, messages Conventional Commits. Expliquer les choix d'architecture dans la PR.
 - Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine.
 - Le design fourni (App.tsx) est une **référence visuelle par écran**, jamais une base de code à refactorer telle quelle : il est desktop-only, en instant-book, et hors périmètre MVP sur plusieurs écrans (forum, magazine, carte, 360°, planning). Ne construire que les écrans du MVP en cours, en respectant ce présent fichier, pas l'intégralité du prototype.
@@ -941,7 +999,9 @@ note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
   chacune MUTE des fichiers sources partagés — et rend le relevé complet
   (mordues / muettes / non mesurées, par campagne). Il ne sort en 0 que si tout
   a été joué ET tout a mordu. Compter ~40 minutes.
-  ⚠ Il écrit ses journaux dans `.neutralisation-journaux/`, ignoré par git.
+  ⚠ Il écrit ses journaux dans `.neutralisation-journaux/`, ignoré par git. ⛔ **Ceux qu'une
+  décision cite en sont COPIÉS dans `docs/preuves/<Dnnn>/` (D291)** — sinon la décision n'est pas
+  vérifiable.
 - ✅ **SUITE PRO : BORNÉE À `maxWorkers: 4`** (`apps/pro/vite.config.ts`, D270) — elle
   n'est **PAS** « intermittente », l'ancien cadrage prenait la CHARGE MACHINE pour le
   mode d'exécution. La clé **MORD** — démontré en la poussant à 1, qui ralentit la suite

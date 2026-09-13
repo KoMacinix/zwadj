@@ -482,6 +482,51 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## PROCHAIN LOT — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée**
+
+⛔ **OUVERT ET ARBITRÉ PAR KO LE 12/09/2026 (D291).** ⇒ **QUEL lot : rang 14 de l'ordre des rangs.
+OÙ IL EN EST : ici.** Sixième écriture d'ordre, et toutes sont de Ko.
+⛔ **CE QUI L'A OUVERT : la reprise à froid du 12/09/2026, première de la série à confronter les
+textes d'autorité aux JOURNAUX BRUTS qu'ils citent.** Trois chiffres écrits comme des mesures ne
+s'y retrouvaient pas, dont un dans `AGENTS.md` (section D291).
+⛔ **MOTIF DE L'ORDRE, ÉCRIT PAR KO** : ce rang passe **avant les budgets de test**, parce qu'un
+budget calculé sur des durées dont ~20 % restent inexpliqués serait choisi au jugé. Et **avant de
+mesurer quoi que ce soit, le dossier cesse d'affirmer ce qu'il n'a pas mesuré** : c'est l'étape 0
+du même lot.
+
+⇒ **ÉTAT, AU 13/09/2026, AVANT LE RELEVÉ** :
+1. ✅ **Étape 0 faite** — trois chiffres barrés et remplacés par ce que rendent les journaux, quatre
+   phrases périmées dont une **permissive**, le report de la quatrième reconduction, et sept autres
+   affirmations de la même classe trouvées en chemin. Détail : section D291.
+2. ✅ **Règle de classe et décision de forme posées dans `AGENTS.md`** : une hypothèse formulée dans
+   le fil ne s'écrit pas au statut de mesure ; les preuves brutes qu'une décision cite entrent au
+   dépôt, sous `docs/preuves/<Dnnn>/`.
+3. ✅ **Preuves de D290 versées** : 9 fichiers, 9 identiques à leur source par sha256.
+4. ✅ **Protocole du relevé écrit et commité AVANT la première passe** (section D291).
+5. ⏳ **Relevé : à faire.**
+
+⛔ **COMPTEUR DE LOTS DE CODE NON CERTIFIÉS : DEUX** — le rang 13 (`251e82b`) et ce rang, qui verse
+des fichiers hors `.md` d'autorité (`.gitattributes`, `docs/preuves/**`, scripts compris). ⇒ **Il
+se lit désormais ici, et c'est la dernière place : aucun lot de code ne s'ouvre avant une
+certification.**
+⚠ **ÉCART DE LECTURE, ÉCRIT PLUTÔT QUE TRANCHÉ** : Ko a écrit « ce lot est du CODE si tu verses un
+instrument » ; D283, telle qu'elle est écrite, compte **tout** fichier hors `.md` d'autorité,
+preuves archivées comprises. La session applique la lettre. Exempter des preuves qu'aucune porte
+ne lit serait un **amendement de D283**, et il appartient à Ko.
+⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : ordre des rangs (section D270) — **rang 15 en attente
+d'arbitrage de Ko**.
+
+### ⛔ CE QUE CE LOT NE FERA PAS
+
+1. **Aucun seuil `PERF` dans aucun critère** (consigne de Ko) : « > 100 avant la mesure » est
+   insatisfiable au repos, la certification de D288 ouvre à 74,8.
+2. **Aucune borne, aucun `testTimeout`, aucun budget** : les budgets viennent après ce rang.
+3. **Aucun instrument modifié ni promu** : `passes_secteur.ps1` et le harnais de D291 sont des
+   **preuves archivées**. Les outils d'écriture du scratchpad ne sont pas de ce lot (consigne de Ko).
+4. **Pas de certification**, et aucune durée de ce relevé ne se compare aux six de D288.
+5. **Aucune preuve d'une autre décision n'est versée** : leur rattachement n'est écrit nulle part
+   (report au backlog).
+
 ## ~~PROCHAIN LOT~~ — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CLOS : D290 — TROIS TERMES ÉLIMINÉS, AUCUNE BORNE POSÉE**
 
 ⛔ **ÉTIQUETTE BARRÉE LE 12/09/2026, PATRON DE D284** : ce bloc a porté « PROCHAIN LOT » pendant
@@ -503,6 +548,8 @@ compteur de lots de code non certifiés ~~est~~ **ÉTAIT** à **zéro**, la cond
 ⚠ **IL EST À UN DEPUIS `251e82b` (D290)** — ce rang porte du code. La condition de son
 OUVERTURE reste levée, elle s'évaluait à l'ouverture ; c'est le compteur qui a bougé, et il
 est écrit ici parce que c'est lui qu'un prochain rang devra lire.
+⛔ **À DEUX DEPUIS D291 (13/09/2026)** — le rang 14 verse des fichiers hors `.md` d'autorité
+(D283). ⇒ **Le compteur se lit désormais dans le point d'entrée du rang 14.**
 
 ⛔ ~~**ÉTAT, AU 12/09/2026 : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE.** Patron du rang 10
 (D284), qui s'est ouvert de la même façon. ⇒ **Ce lot est DOCUMENTAIRE** — deux `.md`
@@ -523,11 +570,14 @@ et chiffres en section **D290**. Le rang porte du code (`251e82b`, la restaurati
    de `--workspace-concurrency=1` est **stricte**, dénombrée à 1 paquet en vol sur 34 relevés ;
 3. le **nombre de workers** comme grandeur propre — il ne distingue pas les deux chemins, et
    le « 12 à 14 » du cadrage comptait des **processus** (11 workers + 2 pnpm + 1 runner).
-⇒ **CE QUI RESTE DÛ, ET CE N'EST PLUS UNE BORNE** : l'expérience du **RÉGIME D'ALIMENTATION**,
+~~⇒ **CE QUI RESTE DÛ, ET CE N'EST PLUS UNE BORNE** : l'expérience du **RÉGIME D'ALIMENTATION**,
 seul terme non éliminé, **dont Ko produit la condition** (il débranche le secteur, charge
 haute). Protocole et deux issues écrits d'avance en D290 — terme identifié ⇒ **le rang change
 d'objet** ; vert des deux côtés ⇒ **le rang se clôt sur trois éliminations sans remède, ce qui
-est un résultat et non un échec**.
+est un résultat et non un échec**.~~
+⛔ **BARRÉ LE 13/09/2026 (D291) : RIEN NE RESTE DÛ ICI.** L'expérience batterie a été refusée par
+Ko avant toute mesure, et le rang s'est clos par condition (section D290, « Clôture du rang 13 »).
+La dispersion de durée **à régime constant** est l'objet du **rang 14** (D291).
 ⚠ **ET LE PROTOCOLE DE DÉRIVATION CI-DESSOUS N'EST PAS PÉRIMÉ, IL EST SUSPENDU** : son point 3
 dit lui-même « si le verdict ne bouge pas sous contention, la suite N'A PAS le défaut et NE
 REÇOIT PAS DE BORNE ». Il n'a jamais été atteint, faute de contention reproductible — et c'est
@@ -719,6 +769,9 @@ D288 » de ce fichier.**
 ⛔ **LE COMPTEUR DE LOTS DE CODE NON CERTIFIÉS PASSE DE DEUX À ZÉRO** — c'est l'objet même du
 rang. ⚠ **Et cette phrase est écrite au format non ambigu du rang 9** (exigence D287) : un
 lot de code **peut** désormais s'ouvrir, et c'est lui qui portera le compteur à un.
+⛔ **(D291, 13/09/2026) PERMISSION CONSOMMÉE** : le rang 13 a porté le compteur à UN (D290), le
+rang 14 à DEUX (D291). ⇒ **Aucun lot de code ne s'ouvre avant une certification.** ⚠ Invisible à
+la première recherche de D291, qui ne voyait pas le gras : trouvée par la seconde.
 
 ⚠ ~~**ÉTAT, AU 11/09/2026 : L'ÉTAPE 0 EST FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ
 LANCÉE.**~~ **BARRÉ LE 12/09/2026 (D288) : la mesure a eu lieu.** Ce qui reste vrai de cette
@@ -741,7 +794,7 @@ FAIT FOI pour la certification est celui du 12/09**, en section D288 : 4 624 pui
 | `node` | 0 | 0 | 0 ✅ |
 | alimentation | SECTEUR 100 %, overlays identiques | idem | stable ✅ |
 | CPU médiane | 39,5 % (16–48) | 20 % (9–37) | relevé, sans seuil hérité |
-| `% Processor Performance` | 77,4 % | 85,6 % | > 100 = turbo |
+| `% Processor Performance` | 77,4 % | 85,6 % | > 100 = turbo — ⚠ **légende, jamais une exigence** (D291) |
 
 ⚠ **L'INSTRUMENT N'EST PAS EN CAUSE, ET C'EST MESURÉ** : `-Calibrer` a été rejoué à 23:51 et
 il **passe** — 12 cœurs chargés, bridage retiré, **112,9 s de CPU produites sur un plafond de
@@ -1182,14 +1235,25 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
    ⚠ **UN RELEVÉ SUR BATTERIE N'EST PAS INVALIDE — IL N'EST PAS CERTIFIANT, ET IL SE DÉCLARE
    COMME TEL.** La nuance est le point : interdire tout court ferait mentir les relevés du
    dépôt pris ainsi, qui restent de l'histoire utile.
-   ⚠ **ET LA QUANTITÉ QUI RELIE LE RÉGIME À LA DURÉE EST `PERF`** — mesuré le 12/09 : 16,4-18,7 s
+   ~~⚠ **ET LA QUANTITÉ QUI RELIE LE RÉGIME À LA DURÉE EST `PERF`** — mesuré le 12/09 : 16,4-18,7 s
    à `PERF` 103-122 % contre 20,0-20,3 s à `PERF` 73-77 %, **sur secteur**, même suite, une heure
-   d'intervalle. **Rebrancher n'est pas être au régime secteur**, et c'est `PERF` qui le dit.
+   d'intervalle. **Rebrancher n'est pas être au régime secteur**, et c'est `PERF` qui le dit.~~
+   ⛔ **BARRÉ LE 13/09/2026 (D291) : RIEN DANS CETTE PHRASE N'EST PORTÉ PAR LES JOURNAUX.**
+   « 73-77 % » ne s'y trouve pas — pendant les passes, `PERF` est au-dessus de 100 sur 29 lignes
+   sur 36, minimum 80,4 ; l'intervalle est d'**au moins 2 h 36** ; les 103-122 % sont des lectures
+   uniques prises au plus 3,7 s après la passe précédente. **Aucune quantité n'est établie comme
+   reliant le régime à la durée.** Pièces : `docs/preuves/D290/` ; détail : section D291.
+   ⛔ **ET AUCUN SEUIL `PERF` N'ENTRE DANS CE CRITÈRE** : au repos cette machine est sous 100 (la
+   certification de D288 ouvre à 74,8), donc « > 100 avant la mesure » serait insatisfiable.
+   `PERF` se lit **pendant** la mesure, par l'échantillonneur — jamais avant.
    ⚠ **Cinquième quantité, ajoutée le 10/09/2026 (D283), réécrite le 12/09 (D290).** Elle rejoint les quatre autres (RAM libre ·
    node · CPU · inventaire nommé) et se relève avec elles. ⚠ **Ce n'est pas « la source »,
    c'est la source ET LE MODE D'ALIMENTATION ACTIF** : sur Windows, un mode bridé peut
    survivre au rebranchement tant que la charge est basse. **Rebrancher n'est pas être au
    régime secteur.**
+   ⚠ **NON MESURÉ AU DÉPÔT — relevé le 13/09/2026 (D291)** : la survie d'un mode bridé au
+   rebranchement n'a **aucun** relevé dans ce fichier ni dans le backlog. C'est une
+   **possibilité**, et elle se lit comme telle ; `AGENTS.md` l'avait recopiée en « survit ».
 7. ⛔ **LES RELEVÉS SONT PÉRIODIQUES PENDANT LA FENÊTRE, dans un journal à part** — pas
    seulement à ses deux extrémités. « La machine a tenu pendant la mesure » devient une
    **mesure**, et cesse d'être une **inférence entre deux bouts**.
@@ -1878,6 +1942,182 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les preuves entrent au dépôt
+
+⛔ **RANG 14, ARBITRÉ PAR KO LE 12/09/2026.** ⇒ **État du rang** : section « PROCHAIN LOT — rang
+14 » en tête de ce fichier. **Numéro pris en LISANT le registre** : sa dernière ligne portait D290.
+
+### ⛔ CE QUI A OUVERT CE RANG — LA PREMIÈRE CONFRONTATION AUX JOURNAUX BRUTS
+
+La reprise à froid du 12/09/2026 a fait ce qu'aucune session n'avait fait : **relire les journaux
+que citent les textes d'autorité**. Trois chiffres écrits comme des mesures ne s'y retrouvaient pas.
+⛔ **Ce que Ko a écrit de sa part de la faute, et c'est le motif de la règle de classe** : une
+hypothèse formulée dans le fil « est devenue une mesure dans le fichier le plus lu du dépôt, en un
+tour — pas un chiffre erroné, un statut erroné ». ⚠ **L'écriture, elle, est de la session de D290** :
+c'est au moment d'écrire « mesuré » que la pièce aurait dû être exigée.
+
+### ⛔ ÉTAPE 0 — CE QUI ÉTAIT ÉCRIT, CE QUE RENDENT LES PIÈCES, OÙ C'EST CORRIGÉ
+
+| # | affirmation | ce que rendent les pièces | corrigé dans |
+|---|---|---|---|
+| 1 | « `PERF` 73-77 % » (passes lentes) | pendant les passes : **13 lignes sur 15** au-dessus de 100 sur les deux passes de la comparaison, **29 sur 36** sur les trois journaux, minimum **80,4** ; **0 ligne sur 51** entre 73 et 77 | `AGENTS.md` (barré, remplacé) · critère, point 6 · D290 |
+| 2 | « à une heure d'intervalle » | **au moins 2 h 36** (`fc7c02e` à 18:57:17, passe 1 vers 21:33:34) ; **≈ 5 h 15** d'après les journaux (16:15:48 → 16:18:01) | idem |
+| 3 | « `PERF` 103-122 % » (passes rapides) | **une lecture `Get-Counter` par passe**, au plus 3,7 s après la fin de la précédente (passes 2 à 5) ; « retombée » est une **inférence**, question Q1 du relevé | `AGENTS.md` · D290 |
+| 4 | quatre phrases périmées | ordre des rangs : « Le compteur est à zéro. Elle peut s'ouvrir… » (**permissive**), « cadrage écrit, aucune ligne de code », « ⏳ la borne de workers… toujours ouvert » ; point d'entrée du rang 13 : « CE QUI RESTE DÛ : l'expérience… » | ordre des rangs · point d'entrée du rang 13 |
+| 5 | « cette occurrence s'y ajoute, la quatrième » | `dfca28f` ne touchait que ce fichier ; l'entrée du backlog disait « TROISIÈME » | `ZWADJ_BACKLOG.md`, `[INFRA][P2]` |
+
+Pièces : `docs/preuves/D290/` ; recalcul du point 1 : `docs/preuves/D291/controles/perf-journaux-d290.*`.
+
+⛔ **ET SEPT AUTRES DE LA MÊME CLASSE, TROUVÉES EN CHEMIN** — hors consigne, traitées parce qu'elles
+en sont :
+- Point d'entrée du rang 12 : « un lot de code **peut** désormais s'ouvrir » — permission consommée,
+  dans une entrée close ; **vue seulement au tri de la seconde recherche**.
+- `AGENTS.md` : « un mode bridé **survit** au rebranchement » — **aucune mesure** au dépôt ; D283
+  écrivait « **peut** survivre ». Le modal est tombé en recopiant. Annoté aussi au critère.
+- D290 : « l'extracteur de délais est calibré sur ses deux bras » — le bras positif est celui du
+  **verdict** ; le compteur de délais n'a jamais reçu de délai, et le motif de verdict ne lisait
+  pas une suite rouge.
+- D290 : « régime et `PERF` relevés devant chaque passe » (protocole jamais exécuté) et « c'est
+  exactement le trou que le durcissement ferme » — `PERF` se lit **pendant**.
+- Ordre des rangs, rang 12 : « un lot de code **peut** s'ouvrir » — permission consommée, **trouvée
+  seulement après correction de l'outil de recherche** (passe D277 ci-dessous).
+- Backlog, entrée de la borne de workers : « CE QUI RESTE DÛ … l'expérience du régime
+  d'alimentation ».
+- Tableaux du rang 12 et de D288 : « > 100 = turbo » dans une colonne « exigé » — **une légende,
+  jamais une exigence** ; annotée sur place.
+
+### ⛔ LA RÈGLE DE CLASSE ET LA DÉCISION DE FORME — `AGENTS.md`
+
+1. **« Une hypothèse formulée dans le fil ne s'écrit pas au statut de mesure — même quand c'est Ko
+   qui la formule »** (Ko). ⇒ Forme vérifiable, **dérivée par la session** : ce qui s'écrit mesuré
+   nomme sa pièce versée au dépôt ; sinon il s'écrit « inférence » ou « hypothèse ».
+2. **« Les preuves brutes qu'une décision cite entrent au dépôt »** (Ko). ⇒ `docs/preuves/<Dnnn>/`,
+   copie à l'octet vérifiée par empreinte, procédure archivée et jamais promue, audit de secrets
+   avant commit.
+⛔ **`.gitattributes` N'EST PAS UNE PRÉCAUTION, C'EST UNE MESURE** : `core.autocrlf=true` sur ce
+poste et aucun `.gitattributes` ; les preuves de D290 mêlent des **journaux vitest en LF pur** (0 CRLF
+sur 1 234 à 1 242 lignes) et des **CSV en CRLF**. Sans `-text`, git aurait stocké autre chose que ce
+qui a été mesuré.
+
+### Les preuves versées, et ce qui ne l'est pas
+
+- **D290**, `docs/preuves/D290/` : `r13-client-1.csv`, `r13-racine-1.csv`, `r13-client-x3.csv`,
+  `passes_secteur.ps1`, `passes/client-secteur-1.log` à `-5.log`. **9 copies identiques sur 9** à
+  leur source (sha256, `D291/controles/integrite-et-secrets-avant-commit-1.txt`).
+  ⚠ L'en-tête de `passes_secteur.ps1` dit qu'il « n'entre pas au dépôt » : **une preuve ne se
+  retouche pas** — cet en-tête est lui-même la pièce de l'écart que D291 ferme.
+- **Audit de secrets** (`D291/controles/integrite-et-secrets.py`, 11 motifs calibrés sur leurs deux
+  bras) : **0 alerte sur 28 fichiers** avant le premier commit. ⚠ **Le chemin local du compte Windows
+  y apparaît 14 fois** (journaux vitest, harnais de D290, sorties de calibration) ; **aucun fichier
+  suivi ne le contenait avant.** Signalé, pas masqué : une preuve ne se retouche pas.
+- **Non versées** : les pièces d'autres décisions encore sur disque (rangs 6, 11 et 12). **Aucune
+  décision ne cite un journal par son chemin** (zéro) : les rattacher serait une inférence.
+  Inventaire et risque d'écrasement : `ZWADJ_BACKLOG.md`, reports de D291.
+
+### ⛔ PASSE D277 — LES DEUX SENS, PAR UNE RECHERCHE VERSÉE ET CALIBRÉE
+
+- **L'outil est une pièce** : `docs/preuves/D291/passe-d277/` — `recherche.py`, `motifs.txt` (lus
+  dans un fichier, jamais tapés en ligne de commande), et ses sorties. Texte **aplati** (D289) ;
+  calibration à deux bras — une expression qui enjambe un retour à la ligne doit sortir aplatie et
+  pas ligne à ligne, un motif absent doit rendre 0 — et **abandon** si un bras manque.
+- ⛔ **L'OUTIL ÉTAIT AVEUGLE AU GRAS, ET C'EST LE TRI QUI L'A VU.** Première sortie — **non
+  conservée**, écrasée par la seconde : 82 occurrences sur 27 motifs, et « un lot de code **peut**
+  s'ouvrir » n'y figurait pas. Correctif : `*` et accent grave retirés du texte et du motif.
+  Relancée sur les fichiers **encore intacts** : **106 occurrences sur 31 motifs** (`avant.txt`).
+- **Principe de tri, écrit pour pouvoir être contesté** : sont traitées les phrases **courantes** —
+  critère, points d'entrée, ordre des rangs, `AGENTS.md`, entrées ouvertes du backlog. Une annotation
+  **datée** d'une section de session, vraie à sa date, **ne se re-marque pas** : sinon chaque
+  mouvement du compteur obligerait à re-marquer toutes les annotations qui l'ont suivi.
+
+### ⛔ LA CALIBRATION DE L'EXTRACTEUR — UN ATTENDU ÉCRIT DE MÉMOIRE, ET DEUX INSTRUMENTS QUI SE SONT COMPTÉS EUX-MÊMES
+
+- **L'environnement d'abord, relevé et non supposé** : l'outil Bash porte `TERM=xterm-256color`,
+  l'outil PowerShell `NO_COLOR=1`. Le même test rend sa sortie **avec** codes ANSI sous Bash, **sans**
+  sous PowerShell. D290 a tourné sous PowerShell ⇒ **le relevé et sa calibration tournent sous
+  PowerShell**.
+- ⛔ **L'attendu démenti** : le commentaire du cas connu annonçait « exactement UN » message de délai ;
+  la sortie en portait **trois**. ⛔ **Le troisième était ce commentaire**, que vitest recopie dans
+  son cadre de code : **le compteur comptait la documentation du cas connu.** Seconde version, qui ne
+  cite plus la signature : **2 occurrences pour 1 test en échec** (l'arbre, puis le détail de
+  l'erreur). Première version et ses sorties gardées : `D291/calibration/delai-premiere-version.*`
+  et `delai-outil-bash.log`.
+  ⇒ **Un compte d'occurrences n'est pas un compte de tests.** Les « 22 signatures » du cas rouge du
+  09/09 ne font pas 22 tests — et son journal n'est pas conservé : rien de plus ne s'en déduit.
+- ⛔ **Le second instrument** : l'audit de secrets s'est détecté **lui-même** — 12 alertes, toutes dans
+  sa source : des clés qui nomment les motifs qu'elles cherchent, et sa ligne de résumé. Clés
+  renommées ; sortie gardée (`D291/controles/integrite-et-secrets-premiere-execution.txt`) ; **seule
+  exclusion déclarée** de l'audit : ses propres sorties, qui ne recopient aucun contenu audité.
+- **Calibration finale, deux bras sur des sorties réelles** (`D291/calibration/calibration-extracteur.txt`) :
+  positif — code vitest 1, 2 délais, verdict `0/1 (1 failed)` ; négatif
+  (`D290/passes/client-secteur-1.log`) — 0 délai, `287/287`. ⚠ **Un verdict rouge se lit** :
+  l'extracteur de D290 l'aurait rendu ILLISIBLE.
+
+### ⛔ LE PROTOCOLE DU RELEVÉ — ÉCRIT ET COMMITÉ AVANT LA PREMIÈRE PASSE
+
+**Question** : qu'est-ce qui fait bouger de ~20 % la durée de `pnpm --filter @zwadj/client run
+test`, **à régime constant** ? ⛔ **On identifie ; on ne borne rien.**
+**Procédure** : `docs/preuves/D291/releve/releve-perf-duree.ps1`, empreinte relevée avant la première
+passe et après la dernière ; lancée **sous l'outil PowerShell, en avant-plan**, en deux appels
+(cycles 1 à 3, puis 4 à 6).
+
+| cycle | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| observateur | OFF | ON | ON | OFF | OFF | ON |
+
+**Un cycle** : observateur démarré si ON (échantillonneur, `-Intervalle 1`) → **repos 60 s** →
+**passe A** (après repos) → **passe B** (enchaînée, même séquence que D290) → observateur arrêté.
+L'ordre ABBAAB compense une dérive linéaire.
+⚠ **60 s est un choix, pas une dérivation** : aucune mesure du dépôt ne dit en combien de temps
+`PERF` retombe ; les journaux de l'observateur le montreront pour les cycles ON. Entre les deux
+appels, le repos du cycle 4 s'allonge du temps de la session : il reste d'au moins 60 s.
+**Par passe** : régime avant et après — la lecture de D290 **recopiée à l'identique**, pour que
+« `PERF` avant » reste comparable —, horodatages à la milliseconde, verdict lu y compris rouge,
+délais, durée vitest, mur, code de sortie. Un journal vitest par passe, le tableau `releve.csv`, et
+le journal de l'observateur `ech-cN.csv` pour les cycles 2, 3 et 6.
+**État machine** : sonde `-Calibrer` avant le cycle 1, sortie versée ; **SECTEUR exigé devant chaque
+passe, sinon arrêt** (point 6 du critère) ; `chrome` relevé, non exigé — ce n'est pas une
+certification, et il ne change pas entre les conditions comparées.
+
+**Les questions, et la règle qui les tranche — fixées avant de mesurer :**
+
+| # | question | établi SI, et seulement si |
+|---|---|---|
+| Q1 | « `PERF` avant » mesure-t-il la retombée de la passe précédente ? | `PERF` avant B > `PERF` avant A dans **6 cycles sur 6** |
+| Q2 | l'observateur est-il un terme de durée ? | pour A **et** pour B, les 3 durées ON sont toutes du même côté des 3 durées OFF, **dans le même sens** |
+| Q3 | la position (après repos, enchaînée) est-elle un terme ? | durée B < durée A — ou > — dans **6 cycles sur 6** |
+| Q4 | `PERF` pendant la passe va-t-il avec la durée ? | **jamais « établi » ici** : ρ de Spearman entre la médiane de `PERF` pendant la passe et la durée, sur les 6 passes ON, rapporté avec son n ; seul ρ = ±1 se dit « compatible » |
+| Q5 | verdicts | toute passe rouge est rapportée seule et **retirée de Q2 à Q4**, qui se déclarent alors incomplets |
+
+⚠ **Durée comparée : la « Duration » de vitest**, colonne de D290. **Aucune moyenne** : chaque passe
+a sa ligne.
+⚠ **Résolution, pas preuve** : au hasard, 6 cycles sur 6 dans un sens donné arrivent 1 fois sur 64,
+dans l'un ou l'autre sens 1 fois sur 32 ; trois contre trois tous du même côté, 1 fois sur 10 par
+position. **Un « non établi » ne réfute rien.**
+**Conséquence, écrite d'avance** :
+- Q2 ou Q3 établi ⇒ **le terme est nommé**, le rang se clôt sur lui, **sans remède dans ce lot** ;
+- ni Q2 ni Q3 ⇒ le rang se clôt sur « **non identifié à cette résolution** » — observateur et
+  position séparés, aucun établi : un résultat, pas un échec ;
+- Q1 tranche le statut de « retombée » écrit à l'étape 0 : établi, la phrase perd son
+  « inférence » ; sinon elle la garde ;
+- dans tous les cas, **rang 15 en attente d'arbitrage de Ko**.
+⛔ **Ce que ce relevé ne peut pas dire** : pourquoi le cas rouge du 09/09 (non reproduit, journal non
+conservé) ; ce que fait la batterie (exclue par le point 6) ; si l'observateur perturbe au-delà de
+ce que la durée voit.
+
+### ⛔ FAUTES DE MÉTHODE DE L'ÉTAPE 0, À MON COMPTE
+
+1. **Ma reprise étiquetait « passes lentes (20,0-20,3 s) » un compte de 36 lignes qui inclut trois
+   autres passes** (`r13-client-x3`). Sur les deux passes de la comparaison : 13 sur 15. Le chiffre
+   était juste, sa portée non ; les textes corrigés portent les deux.
+2. **L'outil de recherche D277 était aveugle au gras** — vu au tri, pas par relecture.
+3. **Un attendu écrit de mémoire dans le cas connu** — démenti par la calibration, qui existait pour
+   ça.
+4. **Deux instruments se sont comptés eux-mêmes** : le cas connu par son commentaire, l'audit par ses
+   clés. ⚠ C'est la leçon « une garde peut mesurer la DOCUMENTATION du fichier qu'elle teste »,
+   déjà écrite dans `AGENTS.md`, reproduite deux fois dans le lot qui confronte le dossier aux pièces.
+5. **Une commande cassée par une citation** pendant la reprise (`$'\r'` dans une substitution) — la
+   classe D289/D290, sur une commande de lecture.
+
 ## Session du 12/09/2026 — D290 · le rang 13 perd son objet : trois termes éliminés, aucune borne posée
 
 ⛔ **AUCUNE BORNE N'A ÉTÉ POSÉE, ET C'EST LE RÉSULTAT DU LOT, PAS SON ÉCHEC.** Le protocole du
@@ -1997,6 +2237,9 @@ ne discrimine pas.
 Protocole arrêté le 12/09, **écrit avant la mesure** : même session, `chrome` **inchangé**,
 rien d'autre touché. `client` sur **batterie**, puis `client` sur **secteur**, plusieurs passes
 chacune, **régime et `PERF` relevés devant chaque passe**.
+⚠ **(D291, 13/09/2026) Protocole jamais exécuté — refusé par Ko, voir la clôture plus bas.** Et
+sa lecture de `PERF` « devant chaque passe » ne lit pas un régime : `PERF` se lit **pendant** la
+passe, par l'échantillonneur.
 - **rouge sur batterie, vert sur secteur** ⇒ le terme est identifié, et **le rang 13 change
   d'objet** : ce n'est plus une borne de workers, c'est ce que le dépôt fait d'un régime qui
   convertit une durée en verdict. Arrêt et remise à Ko ;
@@ -2055,13 +2298,24 @@ moyenne** — la variance mesurée l'aurait cachée (consigne de Ko) :
 
 `chrome` = **17** aux cinq · `node` avant = **0** aux cinq · 20/20 fichiers aux cinq · clôture
 SECTEUR 100 %, `PERF` 105,3, RAM 5 419. **Zéro délai dépassé sur cinq passes.**
-⚠ **L'extracteur de délais est calibré sur ses deux bras et dit ce qu'il a parcouru** : motif
+~~⚠ **L'extracteur de délais est calibré sur ses deux bras et dit ce qu'il a parcouru** : motif
 de verdict trouvé (1), motif témoin absent rendu **0**, **1 240 lignes parcourues** sur la
-passe 1. Un « 0 délai » non calibré aurait été un silence (D290).
+passe 1. Un « 0 délai » non calibré aurait été un silence (D290).~~
+⛔ **BARRÉ LE 13/09/2026 (D291) : LE BRAS POSITIF EST CELUI DU VERDICT, PAS CELUI DU DÉLAI.** Relu
+dans `docs/preuves/D290/passes_secteur.ps1` : le positif vérifie que le motif **de verdict** est
+dans la sortie, le négatif qu'un motif absent rend 0, et les occurrences du motif **de délai** sont
+seulement imprimées « en contexte ». **Le compteur de délais n'a jamais reçu une sortie contenant
+un délai dépassé** : son « 0 » est vrai sur 1 240 lignes parcourues, et son bras positif n'a pas
+été exercé. ⚠ Et son motif de verdict (`Tests N passed (N)`) ne lit pas une suite ROUGE, dont le
+résumé porte « N failed | M passed » : elle serait sortie « ILLISIBLE ». D291 calibre les deux sur
+une vraie sortie vitest en échec de délai.
 
 #### ⛔ ET LES `PERF` DISENT QUELQUE CHOSE QUE JE N'AVAIS PAS MESURÉ — ILS CORRIGENT MON PROPRE MOT
 
-**Mesuré, pas supposé** : cette série tourne en **16,4 à 18,7 s** avec `PERF` de **103 à 122 %**
+⛔⛔ **SOUS-SECTION RÉFUTÉE PAR D291 (13/09/2026) — NE PAS LA LIRE SEULE.** Ce qui suit est une
+inférence écrite « mesuré, pas supposé ».
+
+~~**Mesuré, pas supposé** : cette série tourne en **16,4 à 18,7 s** avec `PERF` de **103 à 122 %**
 (turbo), là où le relevé de comparaison de ce même lot rendait **20,0 à 20,3 s** avec `PERF`
 **73 à 77 %** — même machine, même suite, même arbre, à une heure d'intervalle.
 ⇒ **Le bridage réel explique donc de l'ordre de 20 % de durée, SUR SECTEUR.**
@@ -2070,9 +2324,38 @@ une **cause nommable**, et c'est `PERF`. La passe 1 de cette série le montre se
 à l'ouverture, la durée la plus longue des cinq, puis une décroissance **monotone** à mesure que
 la machine monte en turbo. Une décroissance monotone n'est pas du bruit.
 ⚠ **CE QUE ÇA NE CHANGE PAS** : l'élimination du terme racine-contre-filtré tient, parce que ses
-trois mesures ont été prises **dans le même régime** (`PERF` 73-77 %) et en alternance.
+trois mesures ont été prises **dans le même régime** (`PERF` 73-77 %) et en alternance.~~
 ⛔ **MAIS C'ÉTAIT UNE CHANCE, PAS UNE PRÉCAUTION** — `PERF` n'était pas relevé devant chaque
-passe à ce moment-là. **C'est exactement le trou que le durcissement ferme.**
+passe à ce moment-là. ~~**C'est exactement le trou que le durcissement ferme.**~~
+
+⛔ **CE QUE LES JOURNAUX RENDENT — confrontation du 13/09/2026 (D291).** Pièces :
+`docs/preuves/D290/` ; recalcul : `docs/preuves/D291/controles/perf-journaux-d290.py` et sa sortie.
+- **« `PERF` 73 à 77 % » ne se trouve dans aucun journal.** Sur les deux passes de la
+  comparaison, `PERF` est au-dessus de 100 sur **13 lignes sur 15** où tournent les workers
+  (`node` ≥ 13 ; médianes 128,2 et 131,8) ; sur les trois journaux du jour, **29 sur 36**, minimum
+  **80,4** ; **aucune des 51 lignes** n'est entre 73 et 77. La troisième mesure (racine #2,
+  20,34 s) n'a pas de journal.
+- **« à une heure d'intervalle » : au moins 2 h 36, environ 5 h 15.** Les durées comparées sont
+  dans le commit `fc7c02e` (18:57:17) ; les journaux datent la comparaison de 16:15:48 → 16:18:01 ;
+  la passe 1 de cette série démarre vers 21:33:34 (journal clos à 21:33:55, moins 21,2 s de mur).
+- **Les `PERF` « avant » de cette série sont UNE lecture `Get-Counter` chacune**
+  (`passes_secteur.ps1`, l. 21), prise pour les passes 2 à 5 **au plus 3,7 s après la fin de la
+  précédente** — écarts entre journaux de 23,0 · 22,7 · 22,3 · 22,1 s, moins les murs. ⚠ Qu'elle
+  mesure une **retombée** de charge et non un régime est une **inférence** : D291 la met à l'épreuve.
+- **La décroissance suit l'ORDRE des passes, pas `PERF`** : durée contre ordre ρ = −1,0 ; contre
+  `PERF` ρ = −0,3, et **+0,4 sans la passe 1** — tout le lien reposait sur la seule passe qui ne
+  suit pas une autre. Cinq points n'établissent rien.
+⇒ **« Bruit intrinsèque » était faux ; « une cause nommable, et c'est `PERF` » ne l'est pas moins.
+La dispersion de ~20 % à régime constant est NON EXPLIQUÉE.**
+⚠ **Origine, écrite parce que c'est la classe** : l'observation venait de la session ; sa
+reformulation en « cause nommable » venait de Ko dans le fil, **d'après le récit de Ko** ; son
+écriture au statut de mesure, ici et dans `AGENTS.md`, venait de la session. Règle :
+`AGENTS.md`, « une hypothèse formulée dans le fil ne s'écrit pas au statut de mesure ».
+⚠ **CE QUI NE CHANGE PAS** : l'élimination du terme racine-contre-filtré **tient** — onze workers
+contre onze, grandeur qui n'est pas une durée, et 1,6 % d'écart. Les deux passes journalisées
+avaient des `PERF` du même ordre **pendant** la mesure — ce que « 73-77 % » ne disait pas.
+⛔ **C'ÉTAIT UNE CHANCE, PAS UNE PRÉCAUTION.** Et relever `PERF` **devant** chaque passe ne ferme
+aucun trou : c'est **pendant** qu'il se lit.
 
 #### ⛔ LE DURCISSEMENT — POINT 6 DU CRITÈRE RÉÉCRIT, ET C'EST LE LIVRABLE DU LOT
 
@@ -2110,7 +2393,8 @@ restent sans borne, **délibérément** : la mesure n'en a demandé aucune.
    serait une garde dans le code, et ce lot n'en pose aucune.
 3. **Le motif d'exclusion des budgets de test est tombé** avec l'absence de borne (passe D277,
    sens 2). ⛔ **NON TRANCHÉ ICI** — Ko l'arbitrera au rang 14. Un motif tombé ne rend pas le lot
-   souhaitable.
+   souhaitable. ⛔ **(D291) Arbitré autrement par Ko le 12/09/2026** : le rang 14 est `PERF` et la
+   durée ; les budgets viennent **après**.
 4. ⚠ **TOUT L'OUTILLAGE DE CE LOT EST RESTÉ DANS LE SCRATCHPAD — QUATRIÈME RECONDUCTION DU
    MÊME ÉCART, ET ELLE EST ÉCRITE PLUTÔT QUE PASSÉE SOUS SILENCE.** Après `ed.py` au rang 11,
    l'éditeur CRLF au rang 12 et l'utilitaire de splice de D289. Il s'agit ici du harnais des
@@ -2123,6 +2407,11 @@ restent sans borne, **délibérément** : la mesure n'en a demandé aucune.
    ⛔ **MAIS LE RELEVÉ DES CINQ PASSES N'EST DONC PAS REJOUABLE À L'IDENTIQUE PAR UNE SESSION
    FUTURE**, et c'est la conséquence exacte que D286 reproche. Report déjà ouvert au backlog ;
    cette occurrence s'y ajoute, **la quatrième**.
+   ⛔ **(D291, 13/09/2026) « S'Y AJOUTE » ÉTAIT FAUX** : `dfca28f` ne touchait que ce fichier, et
+   l'entrée du backlog portait toujours « TROISIÈME » sans nommer `passes_secteur.ps1`. Porté au
+   backlog par D291. ⇒ Et le relevé est désormais **relisible** : `passes_secteur.ps1` et ses cinq
+   journaux sont versés comme preuves dans `docs/preuves/D290/` — la procédure se rejoue, l'état
+   machine non.
 
 ### Passe D277 — les DEUX sens, et le second a rapporté
 
@@ -2327,7 +2616,7 @@ réelle — l'instrument n'est donc pas en cause dans ce qui suit, et c'est mesu
 | `chrome` | **0** | **0** | **0** | **0** ✅ |
 | `node` | 0 | 0 | 0 | 0 ✅ |
 | alimentation | SECTEUR 100 %, overlays identiques | idem | idem | stable ✅ |
-| `% Processor Performance` | 74,8 % | 73,8 % | 79,2 % | > 100 = turbo |
+| `% Processor Performance` | 74,8 % | 73,8 % | 79,2 % | > 100 = turbo — ⚠ **légende, jamais une exigence : au repos cette machine est sous 100** (D291) |
 
 ⛔ **LA PROJECTION DE D287 ÉTAIT UNE PROJECTION, ET L'ÉCART EST GRAND.** Elle annonçait, par
 soustraction d'inventaire, **+192 Mo** une fois `chrome` fermé. Mesuré : **+45 puis +64** —
@@ -5859,6 +6148,8 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     « **Portes vertes AU REPOS le 12/09/2026, et D285 et D286 en font partie** ».
     ⇒ **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code **peut**
     s'ouvrir, et c'est lui qui le portera à un.
+    ⛔ **(D291, 13/09/2026) Permission consommée** : le rang 13 a porté le compteur à UN (D290), le
+    rang 14 à DEUX (D291). ⇒ **Plus aucun lot de code ne s'ouvre avant une certification.**
     ⚠ ~~**ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287)** : porte dure **rouge sur
     deux relevés** — `chrome` 16 au lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés
     (**−2 091**).~~ **BARRÉ LE 12/09/2026 (D288)** : `chrome` fermé par Ko, la porte dure a été
@@ -5876,10 +6167,10 @@ quelqu'un qui ignore qu'elle a été satisfaite (D276). ⇒ **Motif de l'ordre, 
 les six durées gravées le 12/09 par D288 sont la référence, une borne les déplace toutes, et
 **les déplacer sans l'avoir écrit d'avance fait perdre la comparaison** ; la borne passe donc
 devant les budgets de test, qui masqueraient l'effondrement au lieu de le corriger.
-⇒ **Où il en est** : section « PROCHAIN LOT — rang 13 » en tête de ce fichier — **cadrage
-écrit le 12/09 (D289), aucune ligne de code**. Cette liste dit QUEL lot, jamais OÙ IL EN EST
-(D283).
-⚠ **CANDIDAT NOMMÉ POUR LE RANG 14, PAR KO, LE 12/09/2026 (D290)** : les **budgets de test**
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 13 » en tête de ce fichier — ~~**cadrage
+écrit le 12/09 (D289), aucune ligne de code**~~ ⛔ **(D291) CLOS le 12/09 (D290), avec du code
+(`251e82b`)**. Cette liste dit QUEL lot, jamais OÙ IL EN EST (D283).
+~~⚠ **CANDIDAT NOMMÉ POUR LE RANG 14, PAR KO, LE 12/09/2026 (D290)** : les **budgets de test**
 (`[MÉTHODE][P0]` du 10/09). Leur motif d'exclusion du rang 13 — « un budget posé en même temps
 qu'une borne rendrait les deux inévaluables » — **est tombe avec l'absence de borne** (passe
 D277, sens 2). ⛔ **C'est une DÉSIGNATION, pas l'arbitrage** : « il ira au rang 14 quand
@@ -5887,11 +6178,20 @@ j'arbitrerai » (Ko). Un motif tombé ne rend pas le lot souhaitable.
 ⚠ **ET LE RANG 14 EST DONC, À SON TOUR, EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit
 maintenant, et non à la clôture du rang 13, pour qu'aucune reprise ne tombe sur une liste qui
 s'arrête. ⚠ **Ce qui attend toujours, sans rang** : les **budgets de test** (`[MÉTHODE][P0]` du
-10/09), explicitement **hors** du rang 13 par consigne de Ko.
+10/09), explicitement **hors** du rang 13 par consigne de Ko.~~
+⛔ **CONSOMMÉ LE 12/09/2026 (D291) — ARBITRÉ PAR KO : le RANG 14 est `PERF` ET LA DURÉE**, et il
+passe **AVANT** les budgets de test. **Motif de Ko** : un budget calculé sur des durées dont ~20 %
+restent inexpliqués serait choisi au jugé. La désignation des budgets pour le rang 14 est
+**barrée plutôt qu'effacée** (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 14 » en
+tête de ce fichier.
+⇒ **RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ **Ce qui attend, sans rang** : les
+**budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
+rang 15 leur soit attribué.
 ⚠ **ET « SUIVANT » VOULAIT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
 **OUVERT, pas clos** ; ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa
 mesure**.~~ ⛔ **PRÉMISSE PÉRIMÉE LE 12/09/2026 (D288) : le rang 12 est CLOS**, sa marque est
-posée. Ce qui reste dû est donc bien un **arbitrage**, et il appartient à Ko.
+posée. Ce qui reste dû est donc bien un **arbitrage**, et il appartient à Ko. ⛔ **(D291)
+Consommé deux fois depuis : rang 13 (D289), rang 14 (D291).**
 ⚠ **CE QUI NE CHANGE PAS, ET C'EST LE POINT DE LA RÈGLE** : la ligne « rang suivant : en
 attente d'arbitrage de Ko » **reste écrite**. Elle ne disparaît pas au motif que le rang
 précédent est clos — c'est exactement l'absence que D284 interdit, et une liste qui s'arrête
@@ -5901,9 +6201,15 @@ liste dit QUEL lot, jamais OÙ IL EN EST (D283).
 11/09 que **la borne de workers** « touche quatre configs, c'est du code et ça mérite son
 propre rang ». C'est une **désignation**, relevée ici pour qu'une reprise n'ait rien à
 recouper ; **ce n'est pas l'arbitrage du rang 13**, que la session ne prend pas (quatre
-écritures de cet ordre, toutes de Ko). ⚠ **Ce qui a changé le 12/09 est sa CONDITION, pas son
+écritures de cet ordre, toutes de Ko). ~~⚠ **Ce qui a changé le 12/09 est sa CONDITION, pas son
 rang** : elle était bloquée derrière la marque du 12 parce qu'elle est du code et que le
-compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que Ko l'arbitre.**
+compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que Ko l'arbitre.**~~
+⛔ **BARRÉ LE 13/09/2026 (D291) — PERMISSION PÉRIMÉE, ET LA PASSE D277 DE D290 L'AVAIT MANQUÉE.**
+La borne a été arbitrée (rang 13, D289) puis close sans borne (D290) ; le compteur est passé à
+UN (D290) puis à DEUX (D291). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
+⚠ D290 avait traité deux phrases « à zéro » au moyen d'**ancres écrites en dur** dans un script de
+scratchpad ; la recherche qui les avait trouvées n'était écrite nulle part, et celle-ci lui a
+échappé. D291 verse sa recherche elle-même : `docs/preuves/D291/passe-d277/`.
 ⛔ **CETTE LIGNE EST LA RÈGLE ÉCRITE LE 10/09/2026 DANS `AGENTS.md`, APPLIQUÉE À ELLE-MÊME**
 — « **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ, JAMAIS UNE ABSENCE** ». Elle ne dit pas quel sera le
 rang 11 : **la session n'arbitre pas l'ordre**, quatre écritures, toutes de Ko. Elle dit que
@@ -5918,9 +6224,11 @@ liste d'attente qui garde ce qui est fait envoie recouper, c'est-à-dire exactem
 pointeur promet d'éviter :
 - ✅ **la sonde d'état machine hors dépôt** — FAITE au rang 11 (D286) ;
 - ✅ **le reliquat du rang 8** — FAIT à l'étape 0 du rang 11 (D286) ;
-- ⏳ **les budgets de test non écrits** — `[MÉTHODE][P0]` du 10/09, toujours ouvert ;
-- ⏳ **la borne de workers sur une suite de quatre** — `[MÉTHODE][P0]` du 10/09, toujours
-  ouvert. ⚠ **Ko, 11/09/2026, mot pour mot** : « la borne de workers touche quatre configs,
+- ⏳ **les budgets de test non écrits** — `[MÉTHODE][P0]` du 10/09, toujours ouvert ; ⛔ **placés
+  APRÈS le rang 14 par Ko le 12/09/2026 (D291)** ;
+- ~~⏳ **la borne de workers sur une suite de quatre** — `[MÉTHODE][P0]` du 10/09, toujours
+  ouvert.~~ ✅ **RANG 13, CLOS LE 12/09/2026 SANS BORNE (D290)** — barré le 13/09 (D291).
+  ⚠ **Ko, 11/09/2026, mot pour mot** : « la borne de workers touche quatre configs,
   c'est du code et ça mérite son propre rang ». **Ce n'est pas un arbitrage du rang 12** —
   c'est une désignation, relevée ici pour qu'une reprise n'ait rien à recouper.
 
@@ -7359,3 +7667,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D288 | A | D288 — CERTIFICATION (rang 12) : 195 gardes, fenêtre homogène mesurée, et la porte dure `chrome` = 0 entre au critère |
 | D289 | A | D289 — rang 13 ouvert (borne de workers), cadrage seul ; un contrôle d'écriture déclaré SUFFISANT ne regarde pas l'ENTRÉE |
 | D290 | A | D290 — rang 13 CLOS sur trois termes éliminés et AUCUNE borne ; le point 6 du critère exige désormais le SECTEUR, « stable » laissait passer une fenêtre entière sur batterie |
+| D291 | A | D291 — rang 14 (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, et les preuves brutes qu'une décision cite entrent au dépôt |

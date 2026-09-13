@@ -1,0 +1,7 @@
+# Preuves brutes citées par une décision (D291) : versionnées OCTET POUR OCTET.
+# ⚠ core.autocrlf=true sur le poste de Ko : sans cette ligne, git réécrit les fins de
+# ligne à l'ajout. Mesuré le 12/09/2026 sur les preuves de D290 — journaux vitest en LF
+# pur, CSV de l'échantillonneur en CRLF : le dépôt aurait stocké autre chose que ce qui a
+# été mesuré, et une empreinte recalculée sur un clone n'aurait plus rien confirmé.
+# `-text` coupe toute conversion ; le diff reste lisible.
+docs/preuves/** -text

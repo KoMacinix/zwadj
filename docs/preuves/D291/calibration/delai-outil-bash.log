@@ -1,0 +1,28 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D291/calibration[39m
+
+ [31m❯[39m delai.test.mjs [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 134[2mms[22m[39m
+[31m   [31m×[31m ne se resout jamais[39m[32m 133[2mms[22m[39m
+[31m     → Test timed out in 100ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m delai.test.mjs[2m > [22mne se resout jamais
+[31m[1mError[22m: Test timed out in 100ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m delai.test.mjs:[2m5:1[22m[39m
+    [90m  3| [39m// exactement UN « Test timed out in 100ms » et un resume « 1 failed (…
+    [90m  4| [39m// Lance par vitest.CMD de apps/client (meme version que la suite mesu…
+    [90m  5| [39m[34mit[39m([32m"ne se resout jamais"[39m[33m,[39m () [33m=>[39m [35mnew[39m [33mPromise[39m(() [33m=>[39m {}))[33m;[39m
+    [90m   | [39m[31m^[39m
+    [90m  6| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m   Start at [22m 00:11:14
+[2m   Duration [22m 830ms[2m (transform 45ms, setup 0ms, collect 7ms, tests 134ms, environment 0ms, prepare 286ms)[22m
+
