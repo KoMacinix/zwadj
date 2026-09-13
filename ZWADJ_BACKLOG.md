@@ -2474,6 +2474,23 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   **masque** l'effondrement au lieu de le révéler. D270 le disait déjà de sa propre borne —
   « une assurance, pas un correctif ». Ce report demande une décision, pas un réglage.
 
+- **[MÉTHODE][P1]** ⛔ **EXIGER LE SECTEUR PROTÈGE LES MESURES, PAS LE DÉVELOPPEMENT QUOTIDIEN —
+  RAPPORTÉ LE 12/09/2026 (D290), NON CORRIGÉ, ET C'EST DÉLIBÉRÉ.**
+  Le point 6 du critère et la règle d'`AGENTS.md` interdisent désormais qu'une mesure qui entre
+  dans une décision soit prise sur batterie. ⛔ **Mais si le régime batterie convertit bien une
+  durée en verdict, il le fera encore quand une suite se lancera débranchée — et là, personne ne
+  mesure.** Un développeur qui lance `pnpm test` dans un train verra des échecs que le code n'a
+  pas produits, et cherchera dans le code.
+  ⚠ **CE QUI EST MESURÉ** : − 41 % sur `test:int`, − 63 % sur les campagnes (D283) ; un budget
+  hérité de **5 000 ms** non écrit dans les quatre suites unitaires.
+  ⛔ **CE QUI N'EST PAS MESURÉ, ET C'EST LE POINT** : **que ce soit la cause du cas rouge du
+  09/09.** Le terme reste **NON IDENTIFIÉ** — trois termes écartés ne font pas une cause trouvée,
+  et **273/287 avec 22 délais dépassés n'a à ce jour aucune explication établie**. ⚠ Écrit pour
+  qu'aucune session future ne lise la clotûre du rang 13 comme « la question est réglée ».
+  ⇒ **Remède possible, NON arbitré** : une garde qui refuse ou avertit quand une suite démarre
+  hors secteur. Ce serait du **code**, donc un lot, donc un rang — et la session n'arbitre pas
+  l'ordre des rangs.
+
 - **[MÉTHODE][P0]** ⛔ **LA BORNE DE WORKERS DE D270 N'EXISTE QUE DANS `pro` — UN REMÈDE
   MESURÉ, CHIFFRÉ, ÉCRIT, ET APPLIQUÉ À UNE SUITE SUR QUATRE.**
 

@@ -383,6 +383,21 @@ connexion (famille D115).
   ⇒ **LA LEÇON EST LA MÊME DANS LES DEUX SENS, ET C'EST POUR ÇA QU'ELLE EST ICI** : un rapport
   de corruption **non confronté au fichier** vaut une affirmation non mesurée — que le rapport
   vienne d'un outil, d'un lecteur, ou de moi trois paragraphes plus haut.
+- ⛔ **AUCUNE MESURE QUI ENTRE DANS UNE DÉCISION NE SE PREND SUR BATTERIE (D290, 12/09/2026).**
+  Pas seulement les certifications : **les portes se lancent aussi hors certification**, et une
+  durée relevée débranchée ne renseigne pas sur le code.
+  ⛔ **MOTIF CHIFFRÉ, MESURÉ SUR LE MÊME ARBRE ET LA MÊME SUITE (D283)** : `test:int` rend
+  **475 s** sur batterie contre **279 s** sur secteur (**− 41 %**), et `lancer-campagnes --tout`
+  **5 454 s** contre **2 011 s** (**− 63 %**). Le mécanisme est celui de D286 : la charge est
+  **bridée** — **3,7 s de CPU là où douze cœurs en offrent 36**, `PERF` 70 → 147 % une fois le
+  bridage retiré. ⚠ **Un budget de test de 5 000 ms n'y survit pas**, et c'est ainsi qu'une
+  durée devient un **verdict**.
+  ⚠ **CE N'EST PAS « INVALIDE », C'EST « NON CERTIFIANT »** : un relevé pris sur batterie se
+  **déclare comme tel** et n'entre dans aucune comparaison. ⛔ Et **`SECTEUR` ne suffit pas à lui
+  seul** : sur Windows un mode bridé survit au rebranchement tant que la charge est basse —
+  **c'est `% Processor Performance` qui tranche** (> 100 = turbo, donc non bridé). Mesuré le
+  12/09 : 20,0-20,3 s à `PERF` 73-77 % contre 16,4-18,7 s à `PERF` 103-122 %, **sur secteur les
+  deux fois**, même suite, une heure d'intervalle — soit **20 % de durée** pour le seul régime.
 - ⛔ **UN COMPTEUR REND AUSSI CE QU'IL A PARCOURU, ET L'ATTENDU S'ÉCRIT À CÔTÉ DU MESURÉ
   (D290, 12/09/2026).** Un « 0 » sur **zéro élément parcouru** n'est pas une mesure : c'est un
   silence qui a la forme d'un résultat. ⚠ **Mesuré, pas craint** : une vérification a rendu

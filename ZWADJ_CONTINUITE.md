@@ -482,7 +482,18 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CADRAGE ÉCRIT : D289**
+## ~~PROCHAIN LOT~~ — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CLOS : D290 — TROIS TERMES ÉLIMINÉS, AUCUNE BORNE POSÉE**
+
+⛔ **ÉTIQUETTE BARRÉE LE 12/09/2026, PATRON DE D284** : ce bloc a porté « PROCHAIN LOT » pendant
+que son corps déclarait le rang clos, et une reprise à froid a déjà lu « prochain » sur du fait
+accompli (rang 9). **Le corps ne bouge pas** — il reste l'état du rang 13 ; c'est l'ÉTIQUETTE
+qui mentirait.
+⇒ **ÉTAT : CLOS. Trois termes éliminés, AUCUNE borne posée, aucun `testTimeout` écrit.** Les
+cinq passes, le durcissement du point 6 et ce qui reste ouvert sont en section **D290**.
+⚠ **`pro` garde sa borne** (`maxWorkers: 4`, D270, 30/08) — vue mordre au relevé : 4 workers
+contre 11 pour `api` et `client` dans la même trace.
+⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : l'ordre des rangs (section D270) dit QUEL lot, ce
+bloc dit OÙ IL EN EST (D283).
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 12/09/2026.** ⇒ **QUEL lot : rang 13 de l'ordre des rangs.
 OÙ IL EN EST : ici.** C'est la **cinquième** écriture d'ordre, et toutes sont de Ko. Le
@@ -1161,8 +1172,20 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
    ce serait la certification par procuration que le rang 7 refuse depuis D270.
 5. **Les deux réserves de D275 se reconduisent ou se lèvent EXPLICITEMENT, avec leur
    motif** — elles ne s'éteignent pas en ayant été écrites une fois.
-6. ⛔ **LE RÉGIME D'ALIMENTATION EST RELEVÉ ET STABLE SUR TOUTE LA FENÊTRE — CINQUIÈME
-   QUANTITÉ, AJOUTÉE LE 10/09/2026 (D283).** Elle rejoint les quatre autres (RAM libre ·
+6. ⛔ ~~**LE RÉGIME D'ALIMENTATION EST RELEVÉ ET STABLE SUR TOUTE LA FENÊTRE**~~ ⛔ **RÉÉCRIT
+   LE 12/09/2026 (D290) : LE RÉGIME DOIT ÊTRE **SECTEUR**, RELEVÉ DEVANT CHAQUE MESURE ET À LA
+   CLÔTURE.**
+   ⛔ **MOTIF : UNE FENÊTRE ENTIÈREMENT SUR BATTERIE SATISFAIT « STABLE ».** Le trou était dans
+   le mot, et il était **déjà chiffré au dépôt** : `test:int` **475 s** contre **279** (− 41 %),
+   campagnes `--tout` **5 454 s** contre **2 011** (− 63 %), même arbre, même suite (D283) ; et la
+   charge bridée rend **3,7 s de CPU là où douze cœurs en offrent 36** (D286).
+   ⚠ **UN RELEVÉ SUR BATTERIE N'EST PAS INVALIDE — IL N'EST PAS CERTIFIANT, ET IL SE DÉCLARE
+   COMME TEL.** La nuance est le point : interdire tout court ferait mentir les relevés du
+   dépôt pris ainsi, qui restent de l'histoire utile.
+   ⚠ **ET LA QUANTITÉ QUI RELIE LE RÉGIME À LA DURÉE EST `PERF`** — mesuré le 12/09 : 16,4-18,7 s
+   à `PERF` 103-122 % contre 20,0-20,3 s à `PERF` 73-77 %, **sur secteur**, même suite, une heure
+   d'intervalle. **Rebrancher n'est pas être au régime secteur**, et c'est `PERF` qui le dit.
+   ⚠ **Cinquième quantité, ajoutée le 10/09/2026 (D283), réécrite le 12/09 (D290).** Elle rejoint les quatre autres (RAM libre ·
    node · CPU · inventaire nommé) et se relève avec elles. ⚠ **Ce n'est pas « la source »,
    c'est la source ET LE MODE D'ALIMENTATION ACTIF** : sur Windows, un mode bridé peut
    survivre au rebranchement tant que la charge est basse. **Rebrancher n'est pas être au
@@ -2009,6 +2032,85 @@ retournée contre l'outillage du lot lui-même.
 ⇒ **RÈGLE TIRÉE DES TROIS PREMIÈRES, ÉCRITE DANS `AGENTS.md` (demandée par Ko)** : **un
 compteur rend aussi ce qu'il a PARCOURU**, et **l'attendu s'écrit À CÔTÉ du mesuré**. C'est ce
 second point qui a réellement attrapé les trois — pas la relecture.
+
+### ⛔ CLÔTURE DU RANG 13 — CINQ PASSES SUR SECTEUR, ET LE TERME ÉCARTÉ PAR CONDITION
+
+⛔ **L'EXPÉRIENCE BATTERIE N'A PAS EU LIEU — ARBITRAGE DE KO, 12/09/2026, AVANT TOUTE MESURE.**
+Motif, et il est la doctrine du dépôt : **on ne corrige pas un défaut qu'on ne sait pas
+reproduire**, et la session avait établi elle-même que **rien ne s'établirait
+rétrospectivement** — l'heure de la passe rouge n'est écrite nulle part, et son relevé ne porte
+ni `chrome` ni l'alimentation. ⇒ **Le terme est donc clos par une CONDITION DE MESURE, pas par
+un remède au jugé**, et le durcissement ci-dessous est le livrable du lot.
+
+**Cinq passes de `pnpm --filter @zwadj/client run test`, régime relevé DEVANT chacune. Aucune
+moyenne** — la variance mesurée l'aurait cachée (consigne de Ko) :
+
+| passe | régime | `PERF` avant | RAM avant | verdict | délais dépassés | `FAIL` | durée vitest | mur | code |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | SECTEUR 100 % | **64,8** | 5 362 | **287/287** | **0** | 0 | 18,65 s | 21,2 s | **0** |
+| 2 | SECTEUR 100 % | **121,8** | 5 282 | **287/287** | **0** | 0 | 17,22 s | 19,3 s | **0** |
+| 3 | SECTEUR 100 % | **103,4** | 5 421 | **287/287** | **0** | 0 | 17,13 s | 19,2 s | **0** |
+| 4 | SECTEUR 100 % | **121,3** | 5 315 | **287/287** | **0** | 0 | 16,71 s | 18,8 s | **0** |
+| 5 | SECTEUR 100 % | **116,6** | 5 301 | **287/287** | **0** | 0 | 16,41 s | 18,5 s | **0** |
+
+`chrome` = **17** aux cinq · `node` avant = **0** aux cinq · 20/20 fichiers aux cinq · clôture
+SECTEUR 100 %, `PERF` 105,3, RAM 5 419. **Zéro délai dépassé sur cinq passes.**
+⚠ **L'extracteur de délais est calibré sur ses deux bras et dit ce qu'il a parcouru** : motif
+de verdict trouvé (1), motif témoin absent rendu **0**, **1 240 lignes parcourues** sur la
+passe 1. Un « 0 délai » non calibré aurait été un silence (D290).
+
+#### ⛔ ET LES `PERF` DISENT QUELQUE CHOSE QUE JE N'AVAIS PAS MESURÉ — ILS CORRIGENT MON PROPRE MOT
+
+**Mesuré, pas supposé** : cette série tourne en **16,4 à 18,7 s** avec `PERF` de **103 à 122 %**
+(turbo), là où le relevé de comparaison de ce même lot rendait **20,0 à 20,3 s** avec `PERF`
+**73 à 77 %** — même machine, même suite, même arbre, à une heure d'intervalle.
+⇒ **Le bridage réel explique donc de l'ordre de 20 % de durée, SUR SECTEUR.**
+⛔ **J'AVAIS APPELÉ CETTE DISPERSION « BRUIT INTRINSÈQUE » (19 %). C'ÉTAIT INEXACT :** elle a
+une **cause nommable**, et c'est `PERF`. La passe 1 de cette série le montre seule — `PERF` 64,8
+à l'ouverture, la durée la plus longue des cinq, puis une décroissance **monotone** à mesure que
+la machine monte en turbo. Une décroissance monotone n'est pas du bruit.
+⚠ **CE QUE ÇA NE CHANGE PAS** : l'élimination du terme racine-contre-filtré tient, parce que ses
+trois mesures ont été prises **dans le même régime** (`PERF` 73-77 %) et en alternance.
+⛔ **MAIS C'ÉTAIT UNE CHANCE, PAS UNE PRÉCAUTION** — `PERF` n'était pas relevé devant chaque
+passe à ce moment-là. **C'est exactement le trou que le durcissement ferme.**
+
+#### ⛔ LE DURCISSEMENT — POINT 6 DU CRITÈRE RÉÉCRIT, ET C'EST LE LIVRABLE DU LOT
+
+Le point 6 exigeait un régime « relevé et **STABLE** sur toute la fenêtre ». ⛔ **UNE FENÊTRE
+ENTIÈREMENT SUR BATTERIE SATISFAIT « STABLE ».** C'est le trou, et il était **déjà chiffré au
+dépôt** : `test:int` **475 s** contre **279** (−41 %), campagnes `--tout` **5 454 s** contre
+**2 011** (−63 %), même arbre, même suite (D283).
+⇒ **Réécrit : le régime doit être SECTEUR**, relevé **devant chaque mesure ET à la clôture**.
+⚠ **Un relevé sur batterie n'est pas INVALIDE — il n'est pas CERTIFIANT**, et il se déclare
+comme tel. La nuance est le point : l'interdire tout court ferait mentir les relevés du dépôt
+qui ont été pris ainsi, et qui restent de l'histoire utile.
+
+#### ⛔ TROIS TERMES ÉLIMINÉS, AUCUNE BORNE POSÉE — C'EST UN RÉSULTAT
+
+| terme | comment il tombe |
+|---|---|
+| **RAM à l'ouverture** | **mesure** (D289) : le cas rouge à 4 636 Mo tombe ENTRE deux cas verts, 4 624 et 4 643 |
+| **chemin d'invocation** (racine / filtré) | **mesure** (D290) : 11 workers contre 11 · 1,6 % d'écart de durée · sérialisation dénombrée stricte |
+| **régime d'alimentation** | ⚠ **CONDITION, pas mesure** : cinq passes vertes sur secteur, et l'expérience batterie refusée par Ko — le terme est **écarté du chemin de certification**, il n'est pas **réfuté** |
+
+⛔ **`pro` GARDE SA BORNE** — `maxWorkers: 4`, mesurée le 30/08 (D270). Ce lot ne la touche pas,
+et le relevé l'a vue **mordre** : 4 workers contre 11 pour `api` et `client`, dans la même trace.
+⛔ **AUCUNE AUTRE BORNE N'EST POSÉE. AUCUN `testTimeout` N'EST ÉCRIT.** Trois suites sur quatre
+restent sans borne, **délibérément** : la mesure n'en a demandé aucune.
+
+#### ⛔ CE QUI RESTE OUVERT, ET QUI NE DOIT PAS SE LIRE COMME RÉGLÉ
+
+1. ⛔ **LE TERME EST NON IDENTIFIÉ, ET LE CAS ROUGE DU 09/09 RESTE SANS EXPLICATION.** Trois
+   termes écartés ne font pas une cause trouvée. **Écrit ici pour qu'aucune session future ne
+   croie la question réglée** : 273/287 avec 22 délais dépassés n'a, à ce jour, **aucune cause
+   établie**.
+2. ⛔ **EXIGER LE SECTEUR PROTÈGE LES MESURES, PAS LE DÉVELOPPEMENT QUOTIDIEN.** Si le régime
+   batterie convertit bien une durée en verdict, **il le fera encore quand une suite se lancera
+   débranchée — et là, personne ne mesure.** Rapporté au backlog, **non corrigé** : le remède
+   serait une garde dans le code, et ce lot n'en pose aucune.
+3. **Le motif d'exclusion des budgets de test est tombé** avec l'absence de borne (passe D277,
+   sens 2). ⛔ **NON TRANCHÉ ICI** — Ko l'arbitrera au rang 14. Un motif tombé ne rend pas le lot
+   souhaitable.
 
 ### Passe D277 — les DEUX sens, et le second a rapporté
 
@@ -5765,6 +5867,11 @@ devant les budgets de test, qui masqueraient l'effondrement au lieu de le corrig
 ⇒ **Où il en est** : section « PROCHAIN LOT — rang 13 » en tête de ce fichier — **cadrage
 écrit le 12/09 (D289), aucune ligne de code**. Cette liste dit QUEL lot, jamais OÙ IL EN EST
 (D283).
+⚠ **CANDIDAT NOMMÉ POUR LE RANG 14, PAR KO, LE 12/09/2026 (D290)** : les **budgets de test**
+(`[MÉTHODE][P0]` du 10/09). Leur motif d'exclusion du rang 13 — « un budget posé en même temps
+qu'une borne rendrait les deux inévaluables » — **est tombe avec l'absence de borne** (passe
+D277, sens 2). ⛔ **C'est une DÉSIGNATION, pas l'arbitrage** : « il ira au rang 14 quand
+j'arbitrerai » (Ko). Un motif tombé ne rend pas le lot souhaitable.
 ⚠ **ET LE RANG 14 EST DONC, À SON TOUR, EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit
 maintenant, et non à la clôture du rang 13, pour qu'aucune reprise ne tombe sur une liste qui
 s'arrête. ⚠ **Ce qui attend toujours, sans rang** : les **budgets de test** (`[MÉTHODE][P0]` du
@@ -7239,4 +7346,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D287 | A | D287 — une passe D277 cherche aussi ce que le lot REND PERMIS ; une permission périmée n'a rien à contredire |
 | D288 | A | D288 — CERTIFICATION (rang 12) : 195 gardes, fenêtre homogène mesurée, et la porte dure `chrome` = 0 entre au critère |
 | D289 | A | D289 — rang 13 ouvert (borne de workers), cadrage seul ; un contrôle d'écriture déclaré SUFFISANT ne regarde pas l'ENTRÉE |
-| D290 | A | D290 — le rang 13 perd son objet : trois termes éliminés (RAM d'ouverture, chemin d'invocation, workers), aucune borne posée |
+| D290 | A | D290 — rang 13 CLOS sur trois termes éliminés et AUCUNE borne ; le point 6 du critère exige désormais le SECTEUR, « stable » laissait passer une fenêtre entière sur batterie |
