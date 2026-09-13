@@ -2252,6 +2252,13 @@ dans les preuves.
 2. **Le premier tri de la passe D277 n'avait pas relevé la permission du point d'entrée du rang 12** :
    la seconde recherche la sortait, c'est mon tri qui l'avait sautée. Trouvée au balayage des seules
    occurrences non barrées.
+3. ⛔ **UNE SECONDE COMMANDE CASSÉE PAR UNE CITATION, APRÈS LE COMMIT DE CLÔTURE** — `$'\r$'` dans une
+   substitution entre guillemets, la forme exacte de la reprise. La vérification des blobs a été refaite
+   **par un fichier** : **65 preuves sur 65 identiques à l'octet** entre disque et blob. ⚠ Mon attendu
+   disait 66, parce que j'y avais compté `.gitattributes` : hors preuves, il est normalisé comme tout
+   fichier texte — 535 → 528 octets, ses 7 retours chariot. ⚠ **Deux fois dans la même session, sur des
+   commandes de LECTURE** : « le fichier est la seule forme qui ne dépend d'aucune enveloppe » (D290)
+   vaut pour les contrôles autant que pour les écritures.
 
 ## Session du 12/09/2026 — D290 · le rang 13 perd son objet : trois termes éliminés, aucune borne posée
 
