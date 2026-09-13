@@ -1,0 +1,37 @@
+# Passe D277 de CLOTURE de D291 : les motifs de l'etape 0, plus ceux dont la cloture change l'etat.
+S1|73-77
+S1|73 à 77
+S1|heure d'intervalle
+S1|cause nommable
+S1|bridage réel explique
+S1|20 % de durée
+S1|qui tranche
+S1|qui le dit
+S1|bruit intrinsèque
+S1|variance intrinsèque
+S1|plus petit que le bruit
+S1|bruit de 19
+S1|seul régime
+S1|au rebranchement
+S1|rebrancher n'est pas
+S1|devant chaque passe
+S1|deux bras et dit
+S1|TROISIÈME RECONDUCTION
+S1|compteur est à zéro
+S1|aucune ligne de code
+S1|reste dû
+S1|en attente d'arbitrage de ko
+S1|rang 14
+S1|il est à un
+S1|perf avant
+S1|Relevé : à faire
+S1|AVANT LE RELEVÉ
+S1|met à l'épreuve
+S1|première prédiction du relevé
+S2|peut s'ouvrir
+S2|peut désormais s'ouvrir
+S2|un lot de code peut
+S2|donc non bridé
+S2|> 100
+S2|ignoré par git
+S2|n'entre pas au dépôt

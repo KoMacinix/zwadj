@@ -2369,6 +2369,19 @@ mesure, verse les preuves de D290 et mesure la durée à régime constant ; le r
 
 ### ⛔ Ouverts, mesurés, NON corrigés
 
+- **[MÉTHODE][P1]** ⛔ **LA POSITION D'UNE PASSE EST UN TERME DE DURÉE — ÉTABLI LE 13/09/2026 (D291),
+  ET AUCUNE RÈGLE N'EN EST TIRÉE.** Une passe enchaînée est plus rapide qu'une passe après 60 s de
+  repos dans 6 cycles sur 6, de 0,12 à 1,29 s (0,7 à 7,2 %) ; le sens est établi, pas le mécanisme.
+  ⇒ **Ce que ça implique, à arbitrer** : deux durées ne se comparent qu'à **position égale** — une
+  certification qui enchaîne ses portes, un budget dérivé de passes mêlées, une comparaison
+  « avant/après » sur des passes de rang différent portent ce terme sans le dire.
+  ⛔ **NON corrigé** : fixer la position dans les relevés de durée serait une règle de méthode, et
+  elle appartient à Ko.
+- **[DOC][P2]** ⚠ **L'ÉCART DE ~20 % DE D290 N'EST PAS REPRODUIT, ET RESTE INEXPLIQUÉ.** Le relevé de
+  D291 rend 12 durées de 16,37 à 17,95 s, observateur présent ou non ; la comparaison de D290 rendait
+  20,0-20,3 s. **Différences non testées** : le dénombreur de workers qui tournait pendant la
+  comparaison, l'heure (16:15 contre 02:46), `chrome` (14 contre 18), et ce que l'inventaire de 16:15
+  ne porte pas. ⚠ À ne pas lire comme « réglé par la position » : elle pèse au plus 7,2 % ici.
 - **[DOC][P1]** ⛔ **DES PREUVES D'AUTRES DÉCISIONS SONT ENCORE SUR DISQUE, HORS DÉPÔT — ET UNE
   PARTIE SERA ÉCRASÉE À LA PROCHAINE EXÉCUTION.** Inventaire de `.neutralisation-journaux/` le
   12/09/2026 à 23:46 (42 entrées) :
@@ -2535,6 +2548,9 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   AVANT ce report.** Motif de Ko : un budget calculé sur des durées dont ~20 % restent
   inexpliqués serait choisi au jugé. ⚠ La désignation « rang 14 » que D290 lui donnait est
   barrée dans l'ordre des rangs ; aucun rang ne lui est attribué.
+  ⚠ **RÉSULTAT DU RANG 14, À LIRE AVANT D'ÉCRIRE UN BUDGET (D291, 13/09/2026)** : la **position**
+  d'une passe est un terme de durée — après repos plus lente qu'enchaînée, 6 cycles sur 6, de 0,7 à
+  7,2 % ; et l'écart de ~20 % de D290 **n'est pas reproduit** : il reste inexpliqué.
 
 - **[MÉTHODE][P1]** ⛔ **EXIGER LE SECTEUR PROTÈGE LES MESURES, PAS LE DÉVELOPPEMENT QUOTIDIEN —
   RAPPORTÉ LE 12/09/2026 (D290), NON CORRIGÉ, ET C'EST DÉLIBÉRÉ.**

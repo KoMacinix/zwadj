@@ -1,0 +1,14 @@
+# Relecture de la CLOTURE dans les FICHIERS (D289) : chaque jeton doit sortir au moins une fois.
+R|CLOS : D291 — UN TERME NOMMÉ, LA POSITION
+R|RÉSULTATS DU RELEVÉ — ÉCRITS APRÈS LA MESURE
+R|LA POSITION EST UN TERME DE DURÉE : ÉTABLI, 6 CYCLES SUR 6
+R|L'ÉCART DE ~20 % DE D290 N'EST PAS REPRODUIT
+R|Les portes, le tri, et l'état machine devant elles
+R|LA POSITION D'UNE PASSE EST UN TERME DE DURÉE
+R|RÉSULTAT DU RANG 14, À LIRE AVANT D'ÉCRIRE UN BUDGET
+R|5 cycles sur 6, NON établie
+R|Le relevé de D291 a nommé UN terme
+R|| D291 | A | D291 — rang 14 CLOS
+R|Docker Desktop, lui, reste ouvert
+R|minimums de 83,4 à 100,4
+R|L'AUDIT AVANT LE SECOND COMMIT A MORDU

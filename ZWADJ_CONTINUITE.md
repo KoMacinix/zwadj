@@ -482,7 +482,10 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée**
+## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSITION ; L'ÉCART DE D290 NON REPRODUIT**
+
+⛔ **ÉTIQUETTE BARRÉE À LA CLÔTURE, PATRON DE D284** : le corps reste l'état du rang 14 ; c'est
+l'étiquette « PROCHAIN LOT » qui mentirait. **Le rang 15 n'est pas arbitré** : il n'a pas de bloc.
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 12/09/2026 (D291).** ⇒ **QUEL lot : rang 14 de l'ordre des rangs.
 OÙ IL EN EST : ici.** Sixième écriture d'ordre, et toutes sont de Ko.
@@ -494,7 +497,7 @@ budget calculé sur des durées dont ~20 % restent inexpliqués serait choisi au
 mesurer quoi que ce soit, le dossier cesse d'affirmer ce qu'il n'a pas mesuré** : c'est l'étape 0
 du même lot.
 
-⇒ **ÉTAT, AU 13/09/2026, AVANT LE RELEVÉ** :
+⇒ **ÉTAPES DU RANG, AU 13/09/2026** :
 1. ✅ **Étape 0 faite** — trois chiffres barrés et remplacés par ce que rendent les journaux, quatre
    phrases périmées dont une **permissive**, le report de la quatrième reconduction, et sept autres
    affirmations de la même classe trouvées en chemin. Détail : section D291.
@@ -502,8 +505,20 @@ du même lot.
    le fil ne s'écrit pas au statut de mesure ; les preuves brutes qu'une décision cite entrent au
    dépôt, sous `docs/preuves/<Dnnn>/`.
 3. ✅ **Preuves de D290 versées** : 9 fichiers, 9 identiques à leur source par sha256.
-4. ✅ **Protocole du relevé écrit et commité AVANT la première passe** (section D291).
-5. ⏳ **Relevé : à faire.**
+4. ✅ **Protocole du relevé écrit et commité AVANT la première passe** (section D291, `f8b578d`).
+5. ~~⏳ **Relevé : à faire.**~~ ✅ **Relevé fait le 13/09/2026, de 02:46 à 02:57** : 12 passes sur 12
+   à 287/287, SECTEUR devant chacune.
+
+⛔ **ÉTAT : CLOS (D291)**, selon les règles commitées avant la mesure :
+- ⛔ **Q3, ÉTABLI — LA POSITION EST UN TERME DE DURÉE** : une passe enchaînée est plus rapide qu'une
+  passe après 60 s de repos, dans **6 cycles sur 6**, de **0,7 à 7,2 %**. Le **sens** est établi, pas
+  le mécanisme.
+- **Q2, l'observateur : non établi.** **Q1, la « retombée » : non établie** (5 cycles sur 6) —
+  l'inférence de l'étape 0 reste une inférence.
+- **Q4 : ρ = +0,70 sur n = 6**, non établi par règle — et **de signe inverse** à l'hypothèse de D290.
+- ⛔ **L'écart de ~20 % de D290 N'EST PAS REPRODUIT** — 12 durées de 16,37 à 17,95 s : **il reste
+  inexpliqué**, et ce rang ne prétend pas l'avoir expliqué.
+⇒ **Aucun remède** : ni borne, ni budget, ni règle tirée du terme — à Ko d'en décider (backlog).
 
 ⛔ **COMPTEUR DE LOTS DE CODE NON CERTIFIÉS : DEUX** — le rang 13 (`251e82b`) et ce rang, qui verse
 des fichiers hors `.md` d'autorité (`.gitattributes`, `docs/preuves/**`, scripts compris). ⇒ **Il
@@ -2118,6 +2133,126 @@ ce que la durée voit.
 5. **Une commande cassée par une citation** pendant la reprise (`$'\r'` dans une substitution) — la
    classe D289/D290, sur une commande de lecture.
 
+### ⛔ RÉSULTATS DU RELEVÉ — ÉCRITS APRÈS LA MESURE, SELON LES RÈGLES COMMITÉES DANS `f8b578d`
+
+**État machine** : sonde calibrée à 02:45 (rendement 0,93 ; `PERF` 72,6 → 146,7 sous charge), SECTEUR
+100 %, RAM médiane 5 306 Mo, `node` 0, `chrome` 18 — 17 devant une seule passe
+(`releve/sonde-ouverture.txt`). **12 passes de 02:46:10 à 02:57:04, SECTEUR devant chacune et aux
+deux clôtures.** **Harnais inchangé** : empreinte identique avant et après
+(`releve/empreinte-avant-releve.txt`, `-apres-releve.txt`). Analyse : `releve/analyse.py` et sa
+sortie `analyse.txt`, qui **appliquent** les règles sans les choisir.
+
+| cycle | observateur | A — après repos | B — enchaînée | A − B |
+|---|---|---|---|---|
+| 1 | OFF | 17,95 s | 16,66 s | +1,29 s (7,2 %) |
+| 2 | ON | 17,73 s | 16,68 s | +1,05 s (5,9 %) |
+| 3 | ON | 17,73 s | 17,23 s | +0,50 s (2,8 %) |
+| 4 | OFF | 16,76 s | 16,64 s | +0,12 s (0,7 %) |
+| 5 | OFF | 17,55 s | 16,37 s | +1,18 s (6,7 %) |
+| 6 | ON | 17,65 s | 17,36 s | +0,29 s (1,6 %) |
+
+- **Q5 — verdicts : 12 sur 12 à 287/287**, 0 délai, code 0. Aucune passe retirée.
+- ⛔ **Q3 — LA POSITION EST UN TERME DE DURÉE : ÉTABLI, 6 CYCLES SUR 6.** Une passe enchaînée est plus
+  rapide qu'une passe après 60 s de repos, dans les six cycles, observateur présent ou non. **Son
+  ampleur est petite et instable : de 0,12 à 1,29 s, soit 0,7 à 7,2 %.** ⚠ Ce qui est établi est le
+  **sens** ; le mécanisme ne l'est pas — régime de départ, caches, compilation à la volée : rien de
+  cela n'est séparé ici.
+- **Q2 — l'observateur : NON ÉTABLI.** En A, les durées ON et OFF sont entremêlées ; en B, les trois
+  ON sont plus lentes que les trois OFF, mais de **0,02 s** à la paire la plus proche. La règle
+  exigeait le même sens aux deux positions.
+- **Q1 — « `PERF` avant » mesure la retombée : NON ÉTABLI, 5 cycles sur 6.** L'exception est le
+  cycle 1 (A 92,6, B 89,2), le seul qui suit la charge de calibration de la sonde. ⇒ **La phrase de
+  l'étape 0 garde son « inférence ».**
+- **Q4 — `PERF` pendant la passe : ρ = +0,70 sur n = 6, non établi par règle.** ⚠ **Son signe est
+  l'INVERSE de l'hypothèse de D290** : les médianes les plus hautes vont plutôt avec les passes les
+  plus longues (A : 129,9 · 130,1 · 123,5 ; B : 120,3 · 125,6 · 119,7). Six points ne l'établissent
+  pas — ils ne soutiennent pas non plus « plus de turbo, donc plus rapide ». **La médiane de `PERF`
+  est au-dessus de 100 pendant les six passes observées** (119,7 à 130,1 ; minimums de 83,4 à
+  100,4). ⚠ Les six passes OFF n'ont, **par construction**, aucune lecture pendant : rien ne s'en dit.
+- **Le repos** : dans les cycles ON, `PERF` retombe à 64-72 sur les quatre derniers relevés avant la
+  passe A. Le repos de 60 s suffit, à ce que l'observateur en voit.
+
+⛔ **CE QUE LE RELEVÉ NE REPRODUIT PAS — ET C'EST AUSSI UN RÉSULTAT** : les **12 durées vont de 16,37 à
+17,95 s**, et **aucune** n'approche les 20,0-20,3 s de la comparaison de D290 — y compris sous
+observateur à `-Intervalle 1`. ⇒ **L'écart de ~20 % entre les deux séries de D290 reste NON
+EXPLIQUÉ** : ni l'observateur ni la position ne le reproduisent à cette résolution.
+⚠ **Différences NON testées entre la comparaison de D290 et ce relevé**, écrites pour qu'aucune ne se
+lise comme écartée : le **dénombreur de workers** qui tournait aussi pendant la comparaison (0,42 s de
+CPU, mesurés par D290) ; l'**heure** (16:15 contre 02:46) ; `chrome` (14 contre 18) ; et tout ce que
+l'inventaire de 16:15, qui ne porte que les colonnes de l'échantillonneur, ne dit pas.
+⚠ **Ce que Q3 dit de la série de cinq passes de D290, sans l'étendre** : sa passe 1 était la seule
+« après repos », les quatre suivantes étaient enchaînées — **compatible** avec le terme de position
+pour la passe 1. La décroissance continue de la passe 2 à la passe 5 n'est **pas** testée ici : deux
+passes par cycle.
+
+⇒ **CONSÉQUENCE, TELLE QU'ÉCRITE D'AVANCE : Q3 est établi, le terme est nommé — LA POSITION —, et le
+rang 14 se clôt sur lui, SANS REMÈDE.** ⚠ Ce que le résultat implique, **sans le décider** : deux
+durées ne se comparent qu'**à position égale**, et un budget dérivé de durées mêlant les deux
+positions porterait jusqu'à 7 % d'un terme connu. **À Ko d'en faire une règle ou non** — report au
+backlog. ⛔ **Rang 15 : en attente d'arbitrage de Ko.**
+
+### Les portes, le tri, et l'état machine devant elles
+
+**Sonde calibrée** avant les portes (rendement 0,92) : SECTEUR, RAM médiane 5 202 Mo, `PERF` 67,6 au
+repos, `node` 0, `chrome` 18 (`D291/portes/sonde-avant-portes.txt`).
+
+| porte | code | durée | chiffres |
+|---|---|---|---|
+| `typecheck` | **0** | 41 s | — |
+| `lint` | **0** | 17 s | — |
+| `test` | **0** | 72 s | **1 329 tests / 109 fichiers** — 659 · 36 · 287 · 347 |
+| `build` | **0** | 83 s | — |
+| `test:int` | **0** | 498 s | **436 tests / 36 fichiers**, PostgreSQL réel |
+| tri des campagnes | **0** | — | 33 fichiers modifiés depuis `HEAD` ⇒ **0 campagne concernée sur 26**, comme prédit |
+
+Journaux : `docs/preuves/D291/portes/`. ⚠ **Les comptes sont ceux de D288 à l'identique** : c'est
+l'attendu d'un lot qui ne touche aucun code applicatif. ⚠ **« failed » confronté à son contexte**
+(D275) : deux lignes de journal de `ChargilyGateway`, un **nom** de test ; zéro `ELIFECYCLE`.
+⛔ **`test:int` N'ÉTAIT PAS LANÇABLE À L'ARRIVÉE, ET C'EST MESURÉ** : aucun service PostgreSQL, port
+5432 refusé, démon Docker arrêté. **« Non mesuré » n'est pas « non lançable » (D262)** : Docker Desktop
+démarré par la session (prêt en 12 s), conteneur `zwadj-db` levé par `pnpm db:up`, `pg_isready`
+attendu avant la porte, conteneur arrêté après (`pnpm db:down`). ⚠ **Docker Desktop, lui, reste
+ouvert** — un relevé d'état machine futur le verra.
+⚠ **Ces durées ne se comparent à rien** : Docker venait de démarrer (`test:int` à 498 s contre 306 s
+à D288), et le terme de position que ce lot établit vaut aussi pour des portes enchaînées.
+**Non lancées, et déclarées** : l'e2e — à la demande, et ce lot ne touche ni l'auth, ni la
+concurrence, ni l'argent ; les campagnes `--tout` — ce n'est pas une livraison, et le tri suffit à
+un lot dont aucun fichier n'est lu par une campagne.
+⛔ **L'AUDIT AVANT LE SECOND COMMIT A MORDU — DEUX ALERTES, ET CE SONT DEUX NOMS DE TEST.** Sur 63
+fichiers parcourus, `portes/test-int.log` porte « … forgot-password : … CONSTANTE, mais aucun e-mail
+ne part » et « … compte supprimé après émission du token : … », que les motifs « mot de passe » et
+« jeton » lisent comme des affectations. **Tri au contexte, valeurs masquées, dans la sortie versée**
+(`D291/controles/integrite-et-secrets-avant-commit-2.txt`) : les deux valeurs masquées sont présentes
+dans 101 et 40 fichiers suivis hors preuves. ⚠ **Les motifs ne sont PAS relâchés pour que l'audit
+passe** — ce serait régler l'instrument sur le résultat voulu : il sort en 1, et la décision de
+commiter repose sur ce tri écrit. ⚠ Le chemin local du compte Windows apparaît désormais **57 fois**
+dans les preuves.
+
+### ⛔ CE QUE CE LOT NE FAIT PAS, ET CE QUI RESTE OUVERT
+
+1. **Aucune borne, aucun budget, aucun seuil `PERF`, aucune règle tirée de Q3** : à Ko.
+2. **Aucun instrument modifié ni promu.** L'en-tête de la sonde qui nomme `PERF` « bridage réel » est
+   rapporté, pas corrigé ; les éditeurs du scratchpad y restent (consigne de Ko).
+3. **Les preuves d'autres décisions ne sont pas versées** : inventaire et risque d'écrasement au
+   backlog.
+4. ⛔ **L'écart de ~20 % de D290 reste inexpliqué**, et le cas rouge du 09/09 sans cause établie.
+5. **Pas une certification.** ⛔ **Compteur de lots de code non certifiés : DEUX — dernière place.**
+6. ⚠ **Le chemin local du compte Windows entre au dépôt avec les journaux** : aucun fichier suivi ne
+   le contenait avant ce lot. Signalé, pas masqué ; le garder est une décision de Ko.
+7. ⚠ **La lecture de D283 appliquée ici** — des preuves archivées comptent comme du code — est la
+   lettre de la règle ; **l'exemption éventuelle appartient à Ko**.
+
+### ⛔ FAUTES DE MÉTHODE DU RELEVÉ ET DE LA CLÔTURE, À MON COMPTE
+
+1. ⛔ **EN ÉCRIVANT LES RÉSULTATS, J'AI ÉCRIT UNE AFFIRMATION SANS MESURE** — « `PERF` est au-dessus de
+   100 pendant les 12 passes observées ou non » : les six passes sans observateur n'ont, par
+   construction, **aucune** lecture pendant. Vu à la relecture, corrigé avant commit. **La classe de ce
+   lot, dans la section qui la corrige** — et c'est la raison pour laquelle la relecture se fait dans
+   le fichier, jamais de mémoire.
+2. **Le premier tri de la passe D277 n'avait pas relevé la permission du point d'entrée du rang 12** :
+   la seconde recherche la sortait, c'est mon tri qui l'avait sautée. Trouvée au balayage des seules
+   occurrences non barrées.
+
 ## Session du 12/09/2026 — D290 · le rang 13 perd son objet : trois termes éliminés, aucune borne posée
 
 ⛔ **AUCUNE BORNE N'A ÉTÉ POSÉE, ET C'EST LE RÉSULTAT DU LOT, PAS SON ÉCHEC.** Le protocole du
@@ -2341,7 +2476,8 @@ passe à ce moment-là. ~~**C'est exactement le trou que le durcissement ferme.*
 - **Les `PERF` « avant » de cette série sont UNE lecture `Get-Counter` chacune**
   (`passes_secteur.ps1`, l. 21), prise pour les passes 2 à 5 **au plus 3,7 s après la fin de la
   précédente** — écarts entre journaux de 23,0 · 22,7 · 22,3 · 22,1 s, moins les murs. ⚠ Qu'elle
-  mesure une **retombée** de charge et non un régime est une **inférence** : D291 la met à l'épreuve.
+  mesure une **retombée** de charge et non un régime est une **inférence** : D291 la met à l'épreuve
+  — **5 cycles sur 6, non établie** ; elle reste une inférence.
 - **La décroissance suit l'ORDRE des passes, pas `PERF`** : durée contre ordre ρ = −1,0 ; contre
   `PERF` ρ = −0,3, et **+0,4 sans la passe 1** — tout le lien reposait sur la seule passe qui ne
   suit pas une autre. Cinq points n'établissent rien.
@@ -7667,4 +7803,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D288 | A | D288 — CERTIFICATION (rang 12) : 195 gardes, fenêtre homogène mesurée, et la porte dure `chrome` = 0 entre au critère |
 | D289 | A | D289 — rang 13 ouvert (borne de workers), cadrage seul ; un contrôle d'écriture déclaré SUFFISANT ne regarde pas l'ENTRÉE |
 | D290 | A | D290 — rang 13 CLOS sur trois termes éliminés et AUCUNE borne ; le point 6 du critère exige désormais le SECTEUR, « stable » laissait passer une fenêtre entière sur batterie |
-| D291 | A | D291 — rang 14 (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, et les preuves brutes qu'une décision cite entrent au dépôt |
+| D291 | A | D291 — rang 14 CLOS (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, les preuves brutes qu'une décision cite entrent au dépôt, et la POSITION d'une passe est un terme de durée (6 cycles sur 6) ; l'écart de D290 n'est pas reproduit |

@@ -1,0 +1,6 @@
+
+> zwadj@ db:up C:\Users\benla\Desktop\MyProjct\Zwadj
+> docker compose up -d
+
+ Container zwadj-db Starting 
+ Container zwadj-db Started 

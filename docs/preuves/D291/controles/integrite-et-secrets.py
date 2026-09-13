@@ -102,6 +102,30 @@ for base, _, noms in os.walk(os.path.join("docs", "preuves")):
             fichiers.append(chemin)
 print(f"== EXCLUS (sorties de cet audit) : {len(exclus)} fichier(s)")
 alertes, info, octets = 0, 0, 0
+contextes = []
+
+
+def contexte(f, t, cle, motif):
+    """Contexte d'une alerte, VALEUR MASQUEE, et presence de la valeur dans des fichiers suivis hors preuves.
+    Ajoute le 13/09/2026 : la premiere alerte reelle etait un NOM DE TEST ; trier se fait sur le contexte
+    (D275), et le contexte doit etre dans la sortie versee — jamais recopie a la main."""
+    import subprocess
+    for n, ligne in enumerate(t.split("\n"), 1):
+        for m in re.finditer(motif, ligne, flags=re.IGNORECASE):
+            if motif.endswith("[:=]"):
+                suite = re.match(r"\s*[\"']?([^\s\"',}]*)", ligne[m.end():])
+                debut, valeur = m.end() + suite.start(1), suite.group(1)
+            else:
+                debut, valeur = m.start(), m.group(0)
+            masque = ligne[:debut] + f"<{len(valeur)} car. masques>" + ligne[debut + len(valeur):]
+            suivis = "valeur trop courte pour une recherche"
+            if len(valeur) >= 3:
+                r = subprocess.run(["git", "grep", "-l", "-F", "--", valeur], capture_output=True, text=True, encoding="utf-8")
+                hors = [x for x in r.stdout.splitlines() if not x.startswith("docs/preuves/")]
+                suivis = f"valeur deja presente dans {len(hors)} fichier(s) suivi(s) hors preuves"
+            contextes.append(f"  [{cle}] {f.replace(os.sep, '/')}:{n} : {masque.strip()[:200]}\n      -> {suivis}")
+
+
 print(f"== B. AUDIT DE SECRETS : {len(fichiers)} fichiers ==")
 for f in sorted(fichiers):
     texte = open(f, "rb").read()
@@ -113,6 +137,7 @@ for f in sorted(fichiers):
         if n:
             alertes += n
             ligne.append(f"ALERTE {cle}={n}")
+            contexte(f, t, cle, motif)
     for cle, motif in INFORMATIF.items():
         n = len(re.findall(motif, t, flags=re.IGNORECASE))
         if n:
@@ -121,4 +146,7 @@ for f in sorted(fichiers):
     print(f"  {f.replace(os.sep, '/'):58s} {len(texte):>7} o  {' · '.join(ligne)}")
 print(f"  parcourus : {len(fichiers)} fichiers, {octets} octets · alertes : {alertes} (attendu 0) · "
       f"chemin local (informatif) : {info}")
+if contextes:
+    print("== CONTEXTE DES ALERTES, VALEURS MASQUEES — le tri est humain et se lit ici (D275) ==")
+    print("\n".join(contextes))
 sys.exit(1 if alertes else 0)

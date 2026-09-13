@@ -1,0 +1,61 @@
+== releve.csv : 12 passes lues (attendu 12)
+   passes attendues absentes : 0 (attendu 0) []
+
+== TOUTES LES PASSES, une ligne chacune (aucune moyenne)
+   cycle pos obs | alim     | PERF av  ap   | RAM  | chrome | verdict | delais | vitest | mur   | code
+   1     A   OFF | SECTEUR 100% |  92.6  85.3 | 5286 |     18 | 287/287 |      0 |  17.95 | 20.24 | 0
+   1     B   OFF | SECTEUR 100% |  89.2 106.6 | 5277 |     18 | 287/287 |      0 |  16.66 | 18.90 | 0
+   2     A   ON  | SECTEUR 100% |  67.8  82.8 | 5237 |     18 | 287/287 |      0 |  17.73 | 19.94 | 0
+   2     B   ON  | SECTEUR 100% |  84.6  87.0 | 5197 |     18 | 287/287 |      0 |  16.68 | 18.86 | 0
+   3     A   ON  | SECTEUR 100% |  69.4  88.4 | 5408 |     18 | 287/287 |      0 |  17.73 | 19.92 | 0
+   3     B   ON  | SECTEUR 100% |  85.5  79.7 | 5430 |     18 | 287/287 |      0 |  17.23 | 19.42 | 0
+   4     A   OFF | SECTEUR 100% |  69.3  83.4 | 5439 |     18 | 287/287 |      0 |  16.76 | 18.90 | 0
+   4     B   OFF | SECTEUR 100% |  97.2  77.4 | 5451 |     17 | 287/287 |      0 |  16.64 | 18.80 | 0
+   5     A   OFF | SECTEUR 100% |  69.1  78.8 | 5376 |     18 | 287/287 |      0 |  17.55 | 19.70 | 0
+   5     B   OFF | SECTEUR 100% |  93.7  85.8 | 5374 |     18 | 287/287 |      0 |  16.37 | 18.47 | 0
+   6     A   ON  | SECTEUR 100% |  76.2  76.0 | 5347 |     18 | 287/287 |      0 |  17.65 | 19.83 | 0
+   6     B   ON  | SECTEUR 100% | 102.3 100.8 | 5316 |     18 | 287/287 |      0 |  17.36 | 19.53 | 0
+
+== Q5 verdicts : 0 passe(s) rouge(s) ou hors secteur sur 12 parcourues (attendu 0) []
+
+== Q1 « PERF avant » B > A : 5 cycles sur 6 parcourus — regle : 6 sur 6 -> NON ETABLI
+   cycle 1 : A  92.6 · B  89.2 · B <= A
+   cycle 2 : A  67.8 · B  84.6 · B > A
+   cycle 3 : A  69.4 · B  85.5 · B > A
+   cycle 4 : A  69.3 · B  97.2 · B > A
+   cycle 5 : A  69.1 · B  93.7 · B > A
+   cycle 6 : A  76.2 · B 102.3 · B > A
+
+== Q3 position : B plus rapide que A dans 6 cycles, plus lente dans 0, sur 6 parcourus (attendu 6) — regle : 6 sur 6 dans un sens -> ETABLI
+   cycle 1 (OFF) : A  17.95 s · B  16.66 s · A - B = +1.29 s (+7.2 % de A)
+   cycle 2 (ON) : A  17.73 s · B  16.68 s · A - B = +1.05 s (+5.9 % de A)
+   cycle 3 (ON) : A  17.73 s · B  17.23 s · A - B = +0.50 s (+2.8 % de A)
+   cycle 4 (OFF) : A  16.76 s · B  16.64 s · A - B = +0.12 s (+0.7 % de A)
+   cycle 5 (OFF) : A  17.55 s · B  16.37 s · A - B = +1.18 s (+6.7 % de A)
+   cycle 6 (ON) : A  17.65 s · B  17.36 s · A - B = +0.29 s (+1.6 % de A)
+
+== Q2 observateur (durees vitest)
+   position A : ON [17.65, 17.73, 17.73] · OFF [16.76, 17.55, 17.95] -> entremeles
+   position B : ON [16.68, 17.23, 17.36] · OFF [16.37, 16.64, 16.66] -> ON plus lent
+   regle : meme sens pour A et pour B -> NON ETABLI
+
+== Q4 PERF PENDANT la passe, journaux de l'observateur (cycles ON)
+   cycle 2 A : 7 lignes dans [02:48:59 ; 02:49:19] · node 3-14 · PERF min 97.3 · mediane 129.9 · max 145.6 · > 100 : 5 · duree 17.73 s
+   cycle 2 B : 8 lignes dans [02:49:22 ; 02:49:41] · node 0-14 · PERF min 84.8 · mediane 120.3 · max 136.4 · > 100 : 5 · duree 16.68 s
+   cycle 2 repos : 23 lignes avant la passe A · PERF des 4 dernieres [120.1, 66.4, 64.0, 64.9] · echecs d'instrument dans le journal : 0
+   cycle 3 A : 7 lignes dans [02:50:44 ; 02:51:04] · node 3-14 · PERF min 100.4 · mediane 130.1 · max 147.5 · > 100 : 7 · duree 17.73 s
+   cycle 3 B : 8 lignes dans [02:51:08 ; 02:51:27] · node 1-14 · PERF min 83.4 · mediane 125.6 · max 141.5 · > 100 : 5 · duree 17.23 s
+   cycle 3 repos : 23 lignes avant la passe A · PERF des 4 dernieres [70.8, 69.4, 67.4, 67.5] · echecs d'instrument dans le journal : 0
+   cycle 6 A : 7 lignes dans [02:56:18 ; 02:56:38] · node 4-14 · PERF min 98.9 · mediane 123.5 · max 144.3 · > 100 : 4 · duree 17.65 s
+   cycle 6 B : 8 lignes dans [02:56:41 ; 02:57:01] · node 0-14 · PERF min 90.1 · mediane 119.7 · max 137.5 · > 100 : 5 · duree 17.36 s
+   cycle 6 repos : 23 lignes avant la passe A · PERF des 4 dernieres [68.0, 67.9, 70.5, 71.6] · echecs d'instrument dans le journal : 0
+   117 lignes d'observateur parcourues · passes ON retenues : 6 (attendu 6)
+   rho de Spearman (mediane PERF pendant, duree) = +0.70 sur n = 6 — regle : jamais etabli ; seul rho = +-1 se dit compatible -> NON ETABLI
+
+== SYNTHESE SELON LES REGLES COMMITEES
+   Q1 retombee : NON ETABLI (5/6)
+   Q2 observateur : NON ETABLI (A : entremeles · B : ON plus lent)
+   Q3 position : ETABLI (B plus rapide 6/6, plus lente 0/6)
+   Q4 PERF pendant : rho +0.70, n = 6 — jamais etabli par regle
+   Q5 verdicts : 12 verts sur 12
+   etendue des 12 durees : 16.37 -> 17.95 s

@@ -1,0 +1,10 @@
+﻿cycle 4 |observateur OFF |repos 60 s a partir de 02:51:46
+c4-A obs OFF |SECTEUR 100% |PERF av 69.3 ap 83.4 |RAM 5439 |CPU 3 |node 0 |chrome 18 |287/287 |delais 0 |vitest 16.76s |mur 18.9s |code 0 |1241 lignes
+c4-B obs OFF |SECTEUR 100% |PERF av 97.2 ap 77.4 |RAM 5451 |CPU 14 |node 0 |chrome 17 |287/287 |delais 0 |vitest 16.64s |mur 18.8s |code 0 |1236 lignes
+cycle 5 |observateur OFF |repos 60 s a partir de 02:53:32
+c5-A obs OFF |SECTEUR 100% |PERF av 69.1 ap 78.8 |RAM 5376 |CPU 15 |node 0 |chrome 18 |287/287 |delais 0 |vitest 17.55s |mur 19.7s |code 0 |1240 lignes
+c5-B obs OFF |SECTEUR 100% |PERF av 93.7 ap 85.8 |RAM 5374 |CPU 9 |node 0 |chrome 18 |287/287 |delais 0 |vitest 16.37s |mur 18.47s |code 0 |1239 lignes
+cycle 6 |observateur ON |repos 60 s a partir de 02:55:17
+c6-A obs ON |SECTEUR 100% |PERF av 76.2 ap 76 |RAM 5347 |CPU 36 |node 0 |chrome 18 |287/287 |delais 0 |vitest 17.65s |mur 19.83s |code 0 |1240 lignes
+c6-B obs ON |SECTEUR 100% |PERF av 102.3 ap 100.8 |RAM 5316 |CPU 16 |node 0 |chrome 18 |287/287 |delais 0 |vitest 17.36s |mur 19.53s |code 0 |1245 lignes
+cloture : SECTEUR 100% |PERF 82.3 |RAM 5359 |CPU 25 |node 0 |chrome 18 |2026-09-13 02:57:04

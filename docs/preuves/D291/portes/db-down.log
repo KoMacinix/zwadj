@@ -1,0 +1,10 @@
+
+> zwadj@ db:down C:\Users\benla\Desktop\MyProjct\Zwadj
+> docker compose down
+
+ Container zwadj-db Stopping 
+ Container zwadj-db Stopped 
+ Container zwadj-db Removing 
+ Container zwadj-db Removed 
+ Network zwadj_default Removing 
+ Network zwadj_default Removed 

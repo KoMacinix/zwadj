@@ -410,10 +410,14 @@ connexion (famille D115).
   3. **Les `PERF` 103-122 % sont UNE lecture chacun**, prise avant la passe et, pour les passes
      2 à 5, **au plus 3,7 s après la fin de la précédente** (horodatages des journaux moins le mur
      mesuré). ⚠ Qu'elle mesure la retombée de la charge d'avant plutôt qu'un régime est une
-     **inférence**, pas une mesure : c'est la première prédiction du relevé de D291.
+     **inférence**, pas une mesure : mise à l'épreuve par le relevé de D291, **5 cycles sur 6,
+     NON établie** — elle reste une inférence.
   ⇒ **LA CAUSE DES ~20 % DE DURÉE À RÉGIME CONSTANT RESTE INEXPLIQUÉE.** Sur les cinq passes, la
   durée suit l'**ordre** des passes (ρ = −1,0), pas `PERF` (ρ = −0,3, et +0,4 sans la passe
-  froide) : cinq points n'établissent rien.
+  froide) : cinq points n'établissent rien. ⚠ **Le relevé de D291 a nommé UN terme — la POSITION :
+  une passe enchaînée est plus rapide qu'une passe après repos, 6 cycles sur 6, de 0,7 à 7,2 %** —
+  et **ne reproduit pas** l'écart de ~20 % (12 durées de 16,37 à 17,95 s). Détail et pièces :
+  `ZWADJ_CONTINUITE.md`, section D291 ; `docs/preuves/D291/releve/`.
   ⚠ **« Un mode bridé survit au rebranchement » n'a aucune mesure au dépôt** : D283 écrivait
   « **peut** survivre », sans relevé — le modal est tombé en recopiant, et c'est la même classe.
   ⛔ **ET AUCUN SEUIL `PERF` N'ENTRE DANS UN CRITÈRE.** Au repos cette machine est sous 100 — la
