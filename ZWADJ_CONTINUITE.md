@@ -2111,6 +2111,18 @@ restent sans borne, **délibérément** : la mesure n'en a demandé aucune.
 3. **Le motif d'exclusion des budgets de test est tombé** avec l'absence de borne (passe D277,
    sens 2). ⛔ **NON TRANCHÉ ICI** — Ko l'arbitrera au rang 14. Un motif tombé ne rend pas le lot
    souhaitable.
+4. ⚠ **TOUT L'OUTILLAGE DE CE LOT EST RESTÉ DANS LE SCRATCHPAD — QUATRIÈME RECONDUCTION DU
+   MÊME ÉCART, ET ELLE EST ÉCRITE PLUTÔT QUE PASSÉE SOUS SILENCE.** Après `ed.py` au rang 11,
+   l'éditeur CRLF au rang 12 et l'utilitaire de splice de D289. Il s'agit ici du harnais des
+   cinq passes (`passes_secteur.ps1`) et de quatre scripts d'écriture documentaire.
+   ⚠ **CE QUI REND L'ÉCART TENABLE ICI, ET IL FAUT LE DIRE POUR QU'IL NE S'ÉTENDE PAS** : ce ne
+   sont pas des **instruments** au sens de D286 — ils ne rendent aucun verdict de garde et ne
+   portent aucune calibration propre. Les deux instruments employés, eux, **sont au dépôt** et
+   ont rejoué leur calibration : `sonde-etat-machine.ps1` (rendement 0,96) et
+   `echantillonneur-etat-machine.ps1` (quatre cas du lecteur).
+   ⛔ **MAIS LE RELEVÉ DES CINQ PASSES N'EST DONC PAS REJOUABLE À L'IDENTIQUE PAR UNE SESSION
+   FUTURE**, et c'est la conséquence exacte que D286 reproche. Report déjà ouvert au backlog ;
+   cette occurrence s'y ajoute, **la quatrième**.
 
 ### Passe D277 — les DEUX sens, et le second a rapporté
 
