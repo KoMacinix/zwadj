@@ -1,0 +1,2 @@
+calibration sur docs/preuves/D288/campagnes/neutralize-404.py.log : identique 1 (attendu 1) · altere 0 (attendu 0)
+fichiers indexes parcourus : 45 · identiques a l'octet : 45 (attendu 45)

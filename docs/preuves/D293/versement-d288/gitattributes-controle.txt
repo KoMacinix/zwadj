@@ -1,0 +1,6 @@
+controle .gitattributes (AGENTS.md, bloc D283), rejoue le 2026-09-14 01:40:18
+lignes actives EXAMINEES :
+1
+hors preuves (0 exige) :
+0
+(attendu : 1 puis 0)

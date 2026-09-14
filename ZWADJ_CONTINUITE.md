@@ -519,7 +519,12 @@ bloque — `test:int` recrée `zwadj_test` (`apps/api/test/int/setup-global.ts`)
 `zwadj_e2e` (`e2e/global-setup.ts`, base par défaut de `e2e/playwright.config.ts`) — mais **la marque
 portera sur une base reconstruite, sans les données sur lesquelles D282 a mesuré.**
 
-⇒ **ÉTAT AU 14/09/2026 : ARBITRÉ, RIEN D'EXÉCUTÉ.**
+⇒ ~~**ÉTAT AU 14/09/2026 : ARBITRÉ, RIEN D'EXÉCUTÉ.**~~
+⛔ **ÉTAPE 0 FAITE LE 14/09/2026 (D293), AVANT TOUTE MESURE** : les 26 journaux sont versés dans
+`docs/preuves/D288/campagnes/`, 26 copies identiques sur 26 ; leur rattachement à D288 est **confronté
+au texte de D288 et CONCORDANT** — ce qui reste une inférence confrontée, pas une preuve d'origine.
+**Le protocole de la passe est écrit et commité AVANT le relevé d'ouverture.** ⇒ Étape 0, protocole,
+passe et marque : section « **Session du 14/09/2026 — D293** ».
 
 ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSITION ; L'ÉCART DE D290 NON REPRODUIT**
 
@@ -2009,6 +2014,124 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : le rang 13 et l'incident D292
+
+⛔ **RANG 15, ARBITRÉ PAR KO LE 14/09/2026** (clôture de D292). ⇒ **État du rang** : section « PROCHAIN
+LOT — rang 15 » en tête de ce fichier. **Numéro pris en LISANT le registre** : sa dernière ligne
+portait D292.
+⛔ **Lots que la marque nommera, et rien d'autre** : le rang 13 (D290, `251e82b`) et l'incident D292
+(`49f3ace`). Le rang 14 est hors du compte (exemption `docs/preuves/`).
+
+### ⛔ ÉTAPE 0 — LES 26 JOURNAUX DE D288 VERSÉS, ET LEUR RATTACHEMENT CONFRONTÉ AVANT D'ÊTRE ÉCRIT
+
+**Procédure et sortie** : `docs/preuves/D293/versement-d288/verser-et-confronter.py` et `.txt`.
+
+- **Copie octet pour octet** dans `docs/preuves/D288/campagnes/` : **26 copies identiques sur 26**
+  (sha256), empreinte **et** date de la source relues après copie, inchangées. Dates des sources :
+  12/09/2026 **00:56:04 → 01:25:31**.
+- **La règle de comptage appliquée est celle du lanceur TEL QU'IL ÉTAIT dans l'arbre de D288** — les
+  trois expressions relues dans `c2ac531:neutralisation/lancer-campagnes.py`, une occurrence chacune ;
+  `neutralisation/` est inchangé de `c2ac531` à `HEAD`. **Calibration, deux bras et deux cas réels**
+  lus dans la sortie brute avant d'écrire le script (`s11b` 9 · 0 · 4, `404` 12 · 0 · 0) : 4 sur 4.
+
+| quantité | mesuré sur les 26 copies | écrit par D288 |
+|---|---|---|
+| campagnes | 26, noms = les 26 harnais de `c2ac531` (0 sans journal, 0 en trop) | 26 |
+| mordues · muettes · non mesurées | **182 · 0 · 13** (375 lignes parcourues) | 182 · 0 · 13 |
+| `e3d1-s8` · `s11b` · `solid-s6` | 3 + 5 · 9 + 4 · 2 + 4 | 3 + 5 · 9 + 4 · 2 + 4 |
+| les 23 autres | 168 mordues, 0 non mesurée | 182 − 14 = 168, « réparties sur les trois » |
+| « ERREUR DE SCRIPT » | 0 | — |
+| dates dans la fenêtre de l'échantillonneur | **26 sur 26** dans 00:41:09 → 01:34:58 | fenêtre écrite par D288 |
+| ordre des dates | = ordre de jeu du lanceur (tri alphabétique) | jeu en série |
+| étendue premier → dernier | 1 768 s (exclut la durée de la 1ʳᵉ campagne) | 1 944 s pour les 26 : compatible |
+
+⇒ **RATTACHEMENT CONFRONTÉ ET CONCORDANT.** ⚠ **Ce n'est PAS une preuve d'origine** : aucune pièce ne
+lie ces fichiers au processus de D288 ; le rattachement reste une **inférence, confrontée et non
+contredite**. Les copies s'écrivent donc « attribuées à D288 », jamais « produites par D288 ».
+⛔ **NON CONFRONTABLE, ET DÉCLARÉ** : le **total certifiant 195** — les +13 viennent des trois rejeux
+`--int`, qu'aucun de ces journaux ne porte (le lanceur ne passe pas `--int`), et aucun fichier du
+dossier n'est modifié entre 01:25:31 et la fin de la fenêtre ; la **durée 1 944 s** ; le **code de
+sortie 1**.
+- **Audit de secrets non tronqué** : calibration 11 motifs sur 11 (deux bras), **0 alerte sur 28
+  fichiers, 41 592 octets** ; chemin local du compte : 0. Seule exclusion : les sorties du script.
+  ⛔ **Rejoué avant commit sur tout le versé, et il a d'abord exclu TROP** : sa règle « tout `.txt` du
+  dossier » a écarté 4 fichiers, dont 2 sorties d'autres contrôles (`gitattributes-controle.txt`,
+  `verifier-decl.txt`) — « seule exclusion : ses sorties » était donc faux à ce passage. Règle resserrée
+  sur ses propres sorties, sortie fautive gardée (`…-avant-commit.txt`), rejoué :
+  **0 alerte sur 41 fichiers, 68 941 octets, 3 exclus** (`…-avant-commit-2.txt`).
+- **Contrôle `.gitattributes` rejoué** (`AGENTS.md`, bloc D283) : **1 · 0** (`gitattributes-controle.txt`).
+- **Défaut croisé relevé, NON corrigé** : la colonne « décl » du lanceur rend « — » sur 11 campagnes
+  sur 26 — l'expression `neutralis..e\(s\)` attend deux caractères là où « neutralisée » décodé n'en
+  porte qu'un. **Sans effet sur les comptes ni sur le code de sortie**, qui lisent les lignes de
+  verdict. ⇒ Backlog, reports de D293.
+- **Versement exempté du compteur** (`docs/preuves/` seul au diff avec les `.md` d'autorité).
+- **Passe D277 de l'étape 0** (`docs/preuves/D293/outils/passe-d277.py`, motifs lus dans un fichier,
+  texte aplati, calibration deux bras) : **34 occurrences vues sur 9 motifs**. **Sens 1 — invalidé** :
+  `AGENTS.md`, portée de la règle des preuves (« rangs 6, 11 et 12 […] ne sont pas versées ») annotée ;
+  point d'entrée du rang 15 et entrée `[DOC][P1]` du backlog annotés ; sections datées D291 et D292 non
+  re-marquées (principe de D291). **Sens 2 — rendu permis** : lancer `--tout` sans perdre la pièce de
+  D288 ; aucune autre phrase ne le conditionnait.
+
+### ⛔ LE PROTOCOLE DE LA PASSE — ÉCRIT ET COMMITÉ AVANT LE RELEVÉ D'OUVERTURE
+
+**Critère** : section « LE CRITÈRE DU RANG 9 », points 1 à 8 — **aucune valeur n'en est recopiée ici** ;
+la barre de RAM est celle que la sonde imprime (`BARRE_D273_MO`).
+**Journaux** : `.neutralisation-journaux/rang15-*` — noms propres au rang, jamais `p1`…`p5`. Ceux que
+cette section citera sont **copiés dans `docs/preuves/D293/passe/`** après la clôture (sha256, audit
+de secrets), **y compris les 26 journaux de campagne que `--tout` va réécrire** — pour que la prochaine
+certification n'ait pas d'étape 0 à faire.
+
+**Ordre, sans retouche de fichier entre le premier relevé et la clôture (D270) :**
+1. **Docker et `zwadj-db` levés AVANT le relevé d'ouverture** — le relevé décrit la machine où la passe
+   tourne ; `pg_isready` attendu.
+2. **Relevé d'ouverture** : `sonde-etat-machine.ps1 -Calibrer`, puis un second relevé sans calibration.
+   ⛔ **Porte dure, jugée sur CHACUN des deux** : `CHROME=0` ; RAM médiane **et** bande basse au-dessus de
+   la barre ; `ALIM_SOURCE=SECTEUR`. **Un seul rouge, ou une calibration en échec ⇒ rien ne se lance, et
+   Ko est prévenu.**
+3. **Échantillonneur en fond**, `-Intervalle 30`, `rang15-etat.csv`, démarré après les relevés
+   d'ouverture, arrêté après le relevé de clôture, lu par `-Resume`.
+4. `HEAD` et `git status --porcelain` relevés.
+5. **Les six portes, dans l'ordre de `CLAUDE.md`** — `typecheck`, `lint`, `test`, `build`, `test:int`,
+   `test:e2e` —, chacune **précédée d'un relevé de sonde** (sans calibration) dont `ALIM_SOURCE` doit
+   être `SECTEUR`. Avant l'e2e : ports 3100/3101 libres. **Code de sortie RÉEL écrit dans un fichier
+   `.code`**, jamais lu sur une enveloppe ni sur une notification (D288). Portes courtes en avant-plan ;
+   `test:int` et les campagnes en fond d'outil, leur durée dépassant la fenêtre d'un appel.
+6. `HEAD` et `git status --porcelain` avant les campagnes.
+7. `lancer-campagnes.py --tout`, puis `HEAD` et `git status --porcelain`.
+8. **Chaque campagne que `--tout` rend « non mesurée » — relevée dans SA sortie, pas dans une liste —
+   est rejouée avec `--int`**, puis `HEAD` et `git status --porcelain`.
+9. **Relevé de clôture** (`SECTEUR` exigé), arrêt et lecture de l'échantillonneur.
+
+**Règles de lecture, fixées avant de mesurer :**
+- une porte est verte **si et seulement si** son code réel est 0 ; ses lignes de résumé sont
+  confrontées à la sortie brute, et tout « failed » à son contexte (D275) ;
+- campagnes : `--tout` **sort en 1 par le défaut `[INFRA][P1]`, et c'est attendu** ; certifie le total
+  **mordues de `--tout` + mordues des rejeux `--int`**, avec **0 muette et 0 non mesurée après rejeu**,
+  arithmétique bouclée **campagne par campagne** (mordues `--tout` + non mesurées `--tout` = mordues
+  `--int`) ;
+- **arbre immobile** : même `HEAD` et `git status --porcelain` vide aux trois points de contrôle ;
+- **régime** : `SECTEUR` à chaque relevé ; échantillonneur **homogène** (0 transition, 0 trou, 0 échec
+  d'instrument).
+
+**Prédictions — ce ne sont PAS des critères, et elles sont dérivées, pas écrites de mémoire** : depuis
+`c2ac531`, trois fichiers hors `.md` ont changé — `.gitattributes` (preuves seules), un commentaire de
+`apps/pro/vite.config.ts`, le montage de `docker-compose.yml` —, et `neutralisation/` est inchangé.
+D'où, relevé dans ce fichier : `test` **1 329 / 109** et `test:int` **436 / 36** (D288, D291, D292 à
+l'identique) ; e2e **34 passés · 1 ignoré**, `a5-cold-reload-vs-spa.e2e.ts:190` (**D288 seul** — ni D291
+ni D292 ne l'ont lancée) ; campagnes **26**, `--tout` **182 · 0 · 13** sur `e3d1-s8`, `s11b`,
+`solid-s6`, rejeux **8, 13, 6** ⇒ **195**.
+⛔ **UN COMPTE QUI S'ÉCARTE D'UNE PRÉDICTION N'EST PAS UN ROUGE, MAIS IL SUSPEND LA MARQUE** jusqu'à
+explication dans cette session — « un compteur qui bouge sans lot de code serait le signal » (D288).
+Inexpliqué ⇒ refus motivé.
+
+⛔ **ARRÊT, SANS RATTRAPAGE APRÈS COUP** : un relevé hors `SECTEUR`, ou un échantillonneur non homogène,
+⇒ la passe s'arrête, c'est dit, **pas de marque**. Trois fenêtres ont déjà été jetées pour ça.
+⚠ **Limites écrites d'avance, que la marque portera** : la base de dev `zwadj` est **reconstruite et
+vierge** depuis D292 — `test:int` et l'e2e recréent leurs propres bases, mais la marque ne couvre pas les
+données sur lesquelles D282 a mesuré ; **l'e2e est la première mesure du nouveau montage sous e2e** ; la
+réserve de D275 « zéro `node` pendant la mesure » se reconduit ; **aucune durée ne se compare** (terme
+de position, D291 ; portes longues en fond d'outil).
 
 ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue
 
@@ -8086,3 +8209,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D290 | A | D290 — rang 13 CLOS sur trois termes éliminés et AUCUNE borne ; le point 6 du critère exige désormais le SECTEUR, « stable » laissait passer une fenêtre entière sur batterie |
 | D291 | A | D291 — rang 14 CLOS (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, les preuves brutes qu'une décision cite entrent au dépôt, et la POSITION d'une passe est un terme de durée (6 cycles sur 6) ; l'écart de D290 n'est pas reproduit |
 | D292 | A | Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue |
+| D293 | A | Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : le rang 13 et l'incident D292 |

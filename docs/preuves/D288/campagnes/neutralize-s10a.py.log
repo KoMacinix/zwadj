@@ -1,0 +1,18 @@
+✓ Pré-vol : 3 mesure(s) verte(s) — service, adaptateur, types
+
+✓ S10a-1. ⛔ LE WHERE D'APPARTENANCE PERD SON FILTRE DE PROPRIÉTAIRE  [adaptateur]
+✓ S10a-2. ⛔ LE WHERE PERD `deletedAt` — une salle archivée redevient lisible  [adaptateur]
+✓ S10a-3. ⛔ P2002 CESSE D'ÊTRE TRADUIT — le service reverrait un code de driver  [adaptateur]
+✓ S10a-4. ⛔ N'IMPORTE QUELLE ERREUR DEVIENT « SLUG PRIS » — la panne se déguise  [adaptateur]
+✓ S10a-5. ⛔ LE REMPLACEMENT D'ENSEMBLE PERD SON `deleteMany` — les équipements s'ACCUMULENT  [adaptateur]
+✓ S10a-6. ⛔ LA LISTE VIDE INTERROGE LA BASE et rend FAUX — effacer une sélection devient impossible  [adaptateur]
+✓ S10a-7. ⛔ LA COMPARAISON DE COMPTE S'INVERSE — un id inconnu passe  [adaptateur]
+✓ S10a-8. ⛔ LA BOUCLE DE SLUG S'ARRÊTE AU PREMIER REFUS — plus aucune reprise  [service]
+✓ S10a-9. ⛔ LA DÉDUPLICATION SAUTE — les doublons partent en base  [service]
+✓ S10a-10. ⛔ LE `null` DU PORT CESSE D'ÊTRE TRADUIT EN 404  [service]
+✓ S10a-11. ⛔ LA RUPTURE D'INVARIANT D3 EST AVALÉE  [service]
+✓ S10a-12. ⛔ LE DOUBLE REDEVIENT UN MENSONGE — `satisfies` retiré du port  [types]
+✓ S10a-13. ⛔ UNE MÉTHODE DISPARAÎT DU PORT — le double ne le dirait plus  [types]
+
+13 garde(s) mordue(s) sur 13 cible(s) RÉELLEMENT MESURÉE(S).
+

@@ -2362,6 +2362,25 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 14/09/2026 — rang 15, certification (D293)
+
+⚠ **UNE CERTIFICATION NE CORRIGE RIEN.** Ce qui est croisé pendant l'étape 0 et la passe se **rapporte**.
+Détail : section D293 de `ZWADJ_CONTINUITE.md`.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[INFRA][P3]** ⚠ **LA COLONNE « décl » DE `lancer-campagnes.py` REND « — » SUR 11 CAMPAGNES SUR 26.**
+  Relevé le 14/09/2026 sur les journaux attribués à D288 : l'expression `ROUGES` attend
+  `neutralis..e\(s\)` — deux caractères — alors que « neutralisée », décodé en UTF-8, n'en porte qu'un.
+  **Mesuré** : les 11 résumés sont retrouvés dès qu'un seul caractère remplace les deux (pièce :
+  `docs/preuves/D293/versement-d288/verifier-decl.txt`).
+  Campagnes concernées : `404`, `available-on-api`, `available-on`, `horizon`, `journey`, `maxprice`,
+  `r4`, `solid-s4`, `solid-s5a`, `solid-s5b`, `solid-s7`.
+  ⚠ **Sans effet sur les comptes ni sur le code de sortie** : mordues, muettes et non mesurées se
+  comptent sur les lignes de verdict, et la colonne n'entre dans aucun total. **Mais une colonne qui
+  affiche « — » sur une campagne à 12 gardes mordues se lit comme « aucun résumé »**, c'est-à-dire
+  comme une campagne arrêtée en cours. ⇒ **NON corrigé** : le lanceur est un instrument, donc du code.
+
 ## Reports du 13/09/2026 — incident `zwadj-db`, postgres:18 et le montage (D292)
 
 ⚠ **UN INCIDENT, PAS UN LOT.** Le correctif (montage sur `/var/lib/postgresql`) est fait et mesuré ;
@@ -2455,6 +2474,13 @@ mesure, verse les preuves de D290 et mesure la durée à régime constant ; le r
   12/09 01:25:31. ⚠ **Le rattachement à D288 reste à confronter** au total de gardes que D288 écrit,
   avant d'être écrit comme un fait. ⚠ **Les autres lignes du tableau ne sont pas couvertes** par cet
   arbitrage : elles restent ouvertes ici.
+  ✅ **LES 26 JOURNAUX DE CAMPAGNE SONT VERSÉS LE 14/09/2026 (D293), AVANT TOUTE MESURE** :
+  `docs/preuves/D288/campagnes/`, 26 copies identiques sur 26 (sha256). **Rattachement confronté au
+  texte de D288 et CONCORDANT** — 182 · 0 · 13, répartition des non mesurées, noms, fenêtre et ordre
+  de jeu — ⚠ **ce qui reste une inférence confrontée, pas une preuve d'origine** ; le total 195 n'est
+  pas confrontable sur ces pièces. Détail : section D293 de `ZWADJ_CONTINUITE.md`.
+  ⚠ **CE QUI RESTE OUVERT DANS CETTE ENTRÉE** : les lignes `venue-list-03-09/`, `p1`…`p5` /
+  `portes-r11.txt` / `etat-r11.csv`, et `porte-*-rang12.log` / `etat-rang12.csv` — non versées.
 - **[INFRA][P3]** ⚠ **L'EN-TÊTE DE `sonde-etat-machine.ps1` NOMME `PERF` « BRIDAGE RÉEL » ET ÉCRIT
   « > 100 % = turbo, donc NON bridé ».** Vrai dans ce sens, sous charge (D286). Mais le nom invite
   la lecture réciproque — « sous 100 ⇒ bridé » — qui est **fausse au repos** (D288 ouvre à 74,8).

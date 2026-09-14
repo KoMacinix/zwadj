@@ -490,6 +490,10 @@ connexion (famille D115).
   chemin — mesuré, zéro —, donc leur rattachement serait une **inférence**, précisément ce que la
   règle ci-dessus interdit d'écrire comme un fait. Inventaire et report : `ZWADJ_BACKLOG.md`,
   reports de D291.
+  ⚠ **(D293, 14/09/2026) Portée ÉTENDUE aux 26 journaux de campagne attribués à D288 (rang 12)** :
+  versés dans `docs/preuves/D288/campagnes/` sur arbitrage de Ko, leur rattachement **confronté au
+  texte de D288 et concordant** — et écrit comme ce qu'il reste : une **inférence confrontée**, pas
+  une preuve d'origine. **Les autres pièces des rangs 6, 11 et 12 restent non versées.**
 - Petites PR, messages Conventional Commits. Expliquer les choix d'architecture dans la PR.
 - Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine.
 - Le design fourni (App.tsx) est une **référence visuelle par écran**, jamais une base de code à refactorer telle quelle : il est desktop-only, en instant-book, et hors périmètre MVP sur plusieurs écrans (forum, magazine, carte, 360°, planning). Ne construire que les écrans du MVP en cours, en respectant ce présent fichier, pas l'intégralité du prototype.

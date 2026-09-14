@@ -1,0 +1,18 @@
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · "## Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : le rang 13 et l'incident D292"
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '| D293 | A | Session du 14/09/2026 — D293'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · "le rang 13 (D290, `251e82b`) et l'incident D292\n(`49f3ace`)"
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '`c2ac531:neutralisation/lancer-campagnes.py`'
+✓ ZWADJ_CONTINUITE.md : 2 (attendu 2) · '`docs/preuves/D288/campagnes/`'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '**182 · 0 · 13** (375 lignes parcourues)'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '`neutralis..e\\(s\\)`'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · "### ⛔ LE PROTOCOLE DE LA PASSE — ÉCRIT ET COMMITÉ AVANT LE RELEVÉ D'OUVERTURE"
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '`a5-cold-reload-vs-spa.e2e.ts:190` (**D288 seul**'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · "~~**ÉTAT AU 14/09/2026 : ARBITRÉ, RIEN D'EXÉCUTÉ.**~~"
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '`.neutralisation-journaux/rang15-*`'
+  ZWADJ_CONTINUITE.md : 578562 caracteres parcourus, 11 jetons
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · '## Reports du 14/09/2026 — rang 15, certification (D293)'
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · '`neutralis..e\\(s\\)`'
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · '`docs/preuves/D293/versement-d288/verifier-decl.txt`'
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · '`docs/preuves/D288/campagnes/`, 26 copies identiques sur 26'
+  ZWADJ_BACKLOG.md : 288991 caracteres parcourus, 4 jetons
+jetons en ecart : 0 (attendu 0)

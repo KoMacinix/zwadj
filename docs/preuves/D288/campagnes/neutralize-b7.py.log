@@ -1,0 +1,8 @@
+✓ Pré-vol : B7 vert
+
+✓ B7-1. ⛔⛔ LA VALEUR DE `--hm-gutter` TOMBE À ZÉRO — la gouttière disparaît
+✓ B7-2. ⛔ LA TABLE OUBLIE `--hm-gutter` — la garde de COUVERTURE doit mordre
+✓ B7-3. ⛔ LE SÉLECTEUR PORTEUR N'EXISTE PLUS — la garde de PRÉSENCE doit mordre
+
+3 garde(s) mordue(s) sur 3 cible(s) mesurée(s).
+

@@ -1,0 +1,11 @@
+# Passe D277 de l'etape 0 (D293). Sens 1 : ce que le versement INVALIDE (« non verse », « sur disque »,
+# « reecrit ») ; sens 2 : ce qu'il REND PERMIS (lancer --tout sans perdre la piece de D288).
+sur disque
+non versé
+pas versé
+ne sont pas versées
+journaux de campagne
+PORTÉE AU 13/09/2026
+réécrits à la prochaine
+avant la prochaine passe
+avant toute mesure
