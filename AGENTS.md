@@ -520,6 +520,13 @@ est un report sur la décision d'ouvrir un lot.** Ko a annulé ce report le 09/0
 ⇒ **Ce que « documentaire » veut dire, DÉRIVÉ DU MOTIF et non ajouté à côté** : aucun
 fichier hors `.md` d'autorité au diff. **Un lot qui touche un harnais, un test, un script
 ou une migration COMPTE** — il peut dégrader une porte, donc il tombe sous la règle.
+⛔ **AMENDÉ PAR KO LE 13/09/2026 (D292) — `docs/preuves/` NE COMPTE PAS, ET C'EST LA SEULE
+EXEMPTION.** Même motif que la règle : aucune porte ne lit une preuve archivée — mesuré le
+13/09/2026, **zéro** fichier hors `docs/preuves/` ne cite ce dossier. ⛔ **ET LE CAS QUI BORNE
+L'EXEMPTION** : `docker-compose.yml` n'est ni un `.md` d'autorité ni du code applicatif, et il
+**peut** dégrader `test:int`, qui dépend du conteneur qu'il décrit — **il COMPTE**. ⇒ **Une
+exemption se définit par « aucune porte ne le lit », jamais par « ce n'est pas du code ».**
+Détail : section D292 de `ZWADJ_CONTINUITE.md`.
 ⚠ Relevé complet et contre-exemple : entrée `[DOC][P2]` du 09/09 dans `ZWADJ_BACKLOG.md`,
 et section **D283** de `ZWADJ_CONTINUITE.md`.
 

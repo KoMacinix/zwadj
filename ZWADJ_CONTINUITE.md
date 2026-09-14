@@ -520,11 +520,21 @@ du même lot.
   inexpliqué**, et ce rang ne prétend pas l'avoir expliqué.
 ⇒ **Aucun remède** : ni borne, ni budget, ni règle tirée du terme — à Ko d'en décider (backlog).
 
-⛔ **COMPTEUR DE LOTS DE CODE NON CERTIFIÉS : DEUX** — le rang 13 (`251e82b`) et ce rang, qui verse
-des fichiers hors `.md` d'autorité (`.gitattributes`, `docs/preuves/**`, scripts compris). ⇒ **Il
+⛔ **COMPTEUR DE LOTS DE CODE NON CERTIFIÉS : DEUX** — ~~le rang 13 (`251e82b`) et ce rang, qui verse
+des fichiers hors `.md` d'autorité (`.gitattributes`, `docs/preuves/**`, scripts compris).~~ ⇒ **Il
 se lit désormais ici, et c'est la dernière place : aucun lot de code ne s'ouvre avant une
 certification.**
-⚠ **ÉCART DE LECTURE, ÉCRIT PLUTÔT QUE TRANCHÉ** : Ko a écrit « ce lot est du CODE si tu verses un
+⛔ **COMPOSITION BARRÉE LE 13/09/2026 (D292) — LE CHIFFRE RESTE DEUX, UN DE SES DEUX LOTS A CHANGÉ.**
+Ko a tranché l'écart ci-dessous : **`docs/preuves/` ne compte pas** (amendement de D283, écrit dans
+`AGENTS.md`), donc **ce rang sort du compte**. L'**incident `zwadj-db`** du 13/09/2026 y **entre** :
+il modifie `docker-compose.yml`, qui peut dégrader `test:int`. ⇒ **DEUX = le rang 13 (`251e82b`)
+et l'incident D292.** Le rang 15 devra donc passer par une certification (Ko, 13/09/2026).
+⚠ **ÉCART DE LETTRE, SIGNALÉ ET NON TRANCHÉ PAR LA SESSION** : ce rang porte aussi `.gitattributes`,
+hors `docs/preuves/`. Sa seule ligne active est `docs/preuves/** -text` (relevé le 13/09/2026) : il
+n'agit que sur les preuves. Le compte de Ko, DEUX, le range avec elles ; la lettre de l'exemption
+ne le nomme pas.
+⚠ ~~**ÉCART DE LECTURE, ÉCRIT PLUTÔT QUE TRANCHÉ**~~ **TRANCHÉ PAR KO LE 13/09/2026 (D292), VOIR
+CI-DESSUS** : Ko a écrit « ce lot est du CODE si tu verses un
 instrument » ; D283, telle qu'elle est écrite, compte **tout** fichier hors `.md` d'autorité,
 preuves archivées comprises. La session applique la lettre. Exempter des preuves qu'aucune porte
 ne lit serait un **amendement de D283**, et il appartient à Ko.
@@ -563,8 +573,9 @@ compteur de lots de code non certifiés ~~est~~ **ÉTAIT** à **zéro**, la cond
 ⚠ **IL EST À UN DEPUIS `251e82b` (D290)** — ce rang porte du code. La condition de son
 OUVERTURE reste levée, elle s'évaluait à l'ouverture ; c'est le compteur qui a bougé, et il
 est écrit ici parce que c'est lui qu'un prochain rang devra lire.
-⛔ **À DEUX DEPUIS D291 (13/09/2026)** — le rang 14 verse des fichiers hors `.md` d'autorité
-(D283). ⇒ **Le compteur se lit désormais dans le point d'entrée du rang 14.**
+⛔ **À DEUX DEPUIS D291 (13/09/2026)** — ~~le rang 14 verse des fichiers hors `.md` d'autorité
+(D283).~~ **Motif barré le 13/09/2026 (D292)** : le rang 14 sort du compte par l'exemption
+`docs/preuves/`, l'incident `zwadj-db` y entre — le compteur reste à DEUX. ⇒ **Le compteur se lit désormais dans le point d'entrée du rang 14.**
 
 ⛔ ~~**ÉTAT, AU 12/09/2026 : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE.** Patron du rang 10
 (D284), qui s'est ouvert de la même façon. ⇒ **Ce lot est DOCUMENTAIRE** — deux `.md`
@@ -1957,6 +1968,182 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue
+
+⛔ **UN INCIDENT, PAS UN LOT — MAIS IL COMPTE.** Il modifie `docker-compose.yml`, qui n'est pas un
+`.md` d'autorité et peut dégrader `test:int` : **compteur de lots de code non certifiés à DEUX**
+(le rang 13 et cet incident ; le rang 14 en sort par l'exemption `docs/preuves/`, arbitrée par Ko
+et écrite dans `AGENTS.md`). Il se lit au point d'entrée du rang 14. **Le rang 15 reste en attente
+d'arbitrage de Ko, et il passera par une certification.**
+
+### La cause — trois sources, et elles disent la même chose
+
+Symptôme rapporté par Ko, puis **reproduit** : `Exited (1)`, « in 18+, these Docker images are
+configured to store database data in a format which is compatible with "pg_ctlcluster" […] there
+appears to be PostgreSQL data in: /var/lib/postgresql/data (unused mount/volume) ».
+
+1. **Le script d'entrée de l'image locale** (`postgres:18`, `PG_VERSION=18.4-1.pgdg13+1`, construite
+   le 07/07/2026). Si aucun `PG_VERSION` n'existe sous `/var/lib/postgresql`,
+   `/var/lib/postgresql/data` ni `/var/lib/postgresql/*/docker`, **et** que
+   `/var/lib/postgresql/data` est un point de montage, il déclare
+   `/var/lib/postgresql/data (unused mount/volume)` comme « ancienne base » et sort en 1.
+   ⇒ **Le suffixe veut dire qu'AUCUNE donnée n'a été trouvée : c'est le montage qui déclenche le
+   refus, même vide.** En amont depuis le 15/10/2025 (commit `5ec8931`, patch lu).
+2. **La configuration de l'image** : `PGDATA=/var/lib/postgresql/18/docker`, `VOLUME ["/var/lib/postgresql"]`.
+3. **La documentation officielle** — Docker Hub, et la PR `docker-library/postgres` #1259 fusionnée
+   le 05/06/2025 : en 18+, « *Mounts and volumes should be targeted at the updated location* »,
+   c'est-à-dire `/var/lib/postgresql`. Poser `PGDATA=/var/lib/postgresql/data` n'y figure que comme
+   **voie de migration**, pas comme configuration recommandée.
+
+⚠ **Deux corrections de l'hypothèse de départ, retenues par Ko** : le refus vient du montage et non
+de données ; et `docker-compose.yml` porte `postgres:18` **depuis le commit initial** (12/07/2026) —
+le fichier n'avait pas bougé.
+
+### Reproduction AVANT le correctif, puis le correctif
+
+- **Reproduit** sur la configuration d'origine : `Exited (1)`, message identique. Volume nommé
+  inspecté avant toute suppression : **0 fichier**.
+- **Correctif** : `zwadj_pgdata:/var/lib/postgresql/data` → `zwadj_pgdata:/var/lib/postgresql`, seule
+  occurrence du chemin dans le dépôt. Commentaire posé à côté de celui qui exige PG 18 : pourquoi la
+  racine, et ⛔ **un retour à `postgres:17` ou moins impose de remettre le montage sur `/data`**, sinon
+  les données ne sont pas conservées à la recréation du conteneur (doc Docker Hub).
+- `down -v` puis `up -d` : journal propre (`initdb` dans `/var/lib/postgresql/18/docker`, « ready to
+  accept connections »), statut `Up`.
+- ⛔ **Persistance MESURÉE, pas déduite de `Up`** : un seul montage, le volume nommé sur
+  `/var/lib/postgresql` ; `PG_VERSION` = 18 **dans** ce volume ; une table témoin a survécu à
+  `docker compose down` (sans `-v`) puis `up`, et a été supprimée. ⇒ **`pnpm db:down` ne détache plus
+  la base.**
+
+### ⛔ LA BASE DE DEV `zwadj` EST PERDUE — LA CHAÎNE, SES PIÈCES, ET CE QUI N'EST PAS ÉTABLI
+
+**Le mécanisme, mesuré sur des volumes jetables** (`zz_probe_*`, supprimés ensuite ; 4 volumes sur la
+machine avant et après) :
+- **sonde A** — ancien montage, volumes neufs : refus, code 1. Docker monte **deux** volumes : le nommé
+  sur `/data` **et un anonyme** sur `/var/lib/postgresql` ;
+- **sonde C** — ancien montage, base déjà présente sous `/var/lib/postgresql` : le conteneur démarre,
+  écrit dans `/var/lib/postgresql/18/docker`, et le volume monté sur `/data` reste à **0 fichier**.
+
+⇒ Sous l'ancien montage, **tant que le conteneur tournait en 18.4 avec le `PGDATA` de l'image**, la
+base vivait dans le **volume anonyme** du conteneur, jamais dans `zwadj_pgdata`.
+
+**La chaîne, pièce par pièce :**
+1. Le conteneur servait **PostgreSQL 18.4** (section « PostgreSQL, pour la certification » de ce
+   fichier), la version de l'image locale ; `docker-compose.yml` ne pose aucun `PGDATA`.
+2. Rang 14 (D291) : `docs/preuves/D291/portes/db-up.log` porte « Starting / Started » sans
+   « Creating » — **le même conteneur**, donc le même volume anonyme. Puis `db-down.log` porte
+   « **Container zwadj-db Removed** », et aucun volume retiré. ⇒ **`pnpm db:down` (= `docker compose
+   down`) a détaché la base de tout conteneur.** D291 l'avait écrit « conteneur arrêté » : barré.
+3. Le démarrage suivant crée un conteneur neuf, avec un volume anonyme neuf et vide : le contrôle de
+   l'image refuse.
+
+**Balayage de la machine, en lecture seule** : 4 volumes, 2 conteneurs. Un seul cluster 18, le neuf ;
+l'autre cluster est un PG **15**, monté par `floranet-db` (autre projet). Aucun service PostgreSQL
+Windows ; sur 5432 n'écoutent que `com.docker.backend` et `wslrelay`. ⇒ **Aucune copie de l'ancienne
+base sur ce poste.**
+
+**Ce qu'elle portait** : D282 y a compté **0 violante sur 4 réservations et 0 sur 38 devis** ; au
+rang 11 (D286), l'empreinte stockée y a été **relue** pour clore le rang 8. **Ces relevés restent vrais
+à leur date**, et aucune mesure future sur `zwadj` ne s'y compare (report au backlog). Les migrations
+sont dans git ; les données, non.
+
+⚠ **Le `down -v` de la session n'a rien coûté, et c'est mesuré** : le journal d'événements de Docker
+montre qu'il n'a détruit que le volume nommé — vide, 0 fichier relevé avant — et le volume anonyme du
+conteneur de reproduction.
+
+⛔ **NON ÉTABLI — NE PAS L'ÉCRIRE COMME UN FAIT :**
+- **qui a supprimé le volume anonyme détaché, et quand.** Il n'est plus sur la machine ; le volume
+  nommé a été recréé à 00:35:46 UTC le 14/09 (20:35:46 heure locale le 13/09), avant cette session ; le
+  journal d'événements de Docker ne remonte qu'à 00:46:18 UTC ;
+- **ce qu'a contenu `zwadj_pgdata` avant cette recréation** ;
+- **comment l'ancienne base a été initialisée**, alors que l'image locale refuse de le faire sous le
+  montage `/data` (sonde A). Inférence : une autre configuration ou une autre image, puis reprise
+  telle quelle.
+
+### Migrations réappliquées — vérifiées par le journal, jamais par le code de sortie
+
+`pnpm --filter @zwadj/api run prisma:migrate` (= `migrate deploy`) : exit 0, « 27 migrations found »,
+« All migrations have been successfully applied ». ⛔ Non cru sur parole — `migrate deploy` peut
+sortir en succès sans rien appliquer :
+
+| contrôle | mesuré | attendu |
+|---|---|---|
+| dossiers de migration parcourus | 27 | 27 |
+| lignes de `_prisma_migrations` parcourues | 27 | 27 |
+| dérives d'empreinte (sha256 du fichier ≠ `checksum`) | **0** | 0 |
+| absentes du journal · en trop · non finies ou annulées | 0 · 0 · 0 | 0 · 0 · 0 |
+| garanties SQL citées par `AGENTS.md`, présentes en base et validées | **11 sur 11** | 11 |
+
+**Calibration, deux bras, AVANT de croire le « 0 »** : bras + — l'empreinte de
+`20260909120000_booking_quote_total_coherent`, calculée **et** stockée, vaut `4bf7e91e…b689`, la valeur
+que D286 a relue dans l'ancienne base ; bras − — un octet altéré en mémoire est détecté. Relevé
+ensuite : **40** tables dans `public`, **0** ligne dans `bookings`, `quotes`, `venues` et `users`.
+
+### Portes — après la dernière modification de `docker-compose.yml`
+
+Alimentation relevée avant : **SECTEUR** (`PowerLineStatus: Online`, batterie à 100 %). Aucun
+échantillonneur `PERF` : **les durées sont indicatives et ne se comparent à rien.**
+
+| porte | code | durée | chiffres |
+|---|---|---|---|
+| `typecheck` | **0** | 35 s | 0 `error TS` |
+| `lint` | **0** | 15 s | — |
+| `test` | **0** | 68 s | **1 329 tests / 109 fichiers** — 659 · 36 · 287 · 347 |
+| `build` | **0** | 93 s | 4 paquets « Done » |
+| `test:int` | **0** | 446 s | **436 tests / 36 fichiers**, sur `zwadj_test` (recréée par le setup, jamais `zwadj`) |
+
+⚠ **Les comptes sont ceux de D291 à l'identique**, attendu d'un changement qui ne touche aucun code
+applicatif. ⚠ **« failed » confronté à son contexte (D275)** : dans `test`, deux lignes de journal de
+`ChargilyGateway` ; dans `test:int`, deux **noms** de tests verts (« la ligne passe FAILED », « …
+idempotent »). Zéro `ELIFECYCLE`.
+**Non lancées, et déclarées** : l'e2e — ni auth, ni concurrence, ni argent ; les campagnes `--tout` —
+ce n'est pas une livraison. **Tri des campagnes** (`lancer-campagnes.py`, après toutes les écritures) :
+exit 0, **4 fichiers modifiés depuis `HEAD` ⇒ 0 campagne concernée sur 26**. Joué d'abord en
+`--liste` : un passage réel qui aurait retenu une campagne réécrivait les journaux de D288 (backlog,
+reports de D291). Journal de campagne le plus récent avant et après : 12/09/2026 01:25:31, inchangé.
+
+### Passe D277 — les deux sens
+
+Recherche sur le texte **aplati** des quatre fichiers d'autorité (D289), **64 occurrences vues** sur
+1 079 + 115 + 7 831 + 3 464 lignes, triées au contexte.
+**Invalidé par l'incident, traité :**
+- point d'entrée du rang 14 : composition du compteur barrée, écart de lecture tranché par Ko, et
+  écart de lettre `.gitattributes` signalé ;
+- point d'entrée du rang 13 : motif « À DEUX DEPUIS D291 » barré ;
+- section D291 : « conteneur arrêté après (`pnpm db:down`) » barré ; « l'exemption éventuelle
+  appartient à Ko » annoté comme tranché ;
+- `AGENTS.md`, bloc D283 : amendement de Ko — `docs/preuves/` seule exemptée, et le cas
+  `docker-compose.yml` qui borne l'exemption.
+
+**Rendu permis** : `pnpm db:down` ne détache plus la base — aucune phrase ne l'interdisait. **Aucune
+permission périmée par l'incident** : chaque « un lot de code peut s'ouvrir » trouvé est déjà barré ou
+annoté « permission consommée », et le compteur à DEUX interdit tout lot de code avant certification.
+⚠ **Le marquage automatique « barrée » de l'outil n'est pas fiable** : il compte les `~~` par parité et
+a déclaré courantes deux lignes barrées (6263, 6366 à la date du relevé). Le tri s'est fait sur les
+extraits.
+
+### ⛔ FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **UNE VALEUR DE CALIBRATION RATTACHÉE PAR INFÉRENCE — ET LA CALIBRATION L'A REFUSÉE.** J'ai
+   attribué l'empreinte `4bf7e91e…` de D286 à `20260707000001_booking_constraints`, cité juste à côté
+   pour un autre argument. Le comparateur a abandonné sur « calibration manquée » : ce fichier fait
+   12 847 octets, D286 en décrit 5 949. Le bon a été **trouvé par la mesure** — 27 fichiers × 2 formes
+   de fin de ligne, **1 correspondance**, `20260909120000_booking_quote_total_coherent`, celui que
+   touche `31f6a00`. ⇒ La classe de D291 à l'échelle d'un script : une attribution qui « ressemble »
+   n'est pas relevée. **Une calibration qui abandonne a fait son travail.**
+2. ⚠ **UNE DATE UTC ÉCRITE COMME UNE DATE LOCALE.** Le commentaire de `docker-compose.yml` a d'abord
+   porté « incident du 14/09/2026 », lu sur les horodatages de Docker. Heure locale relevée : 13/09/2026,
+   −04:00. Corrigé avant les portes ; **0** `14/09` restant dans le fichier (compté).
+3. ⚠ **UNE AFFIRMATION TIRÉE D'UN TITRE DE COMMIT.** « Le contrôle existe en amont depuis octobre 2025 »
+   a d'abord été écrit sur la foi d'un titre résumé par un outil. Vérifié ensuite sur le patch
+   (`5ec8931`, 15/10/2025, ajoute la chaîne exacte).
+
+### Ce que cet incident ne fait pas
+
+1. **Aucun `docker volume prune`** (consigne de Ko) : il retire tous les volumes anonymes inutilisés de
+   la machine. Les deux orphelins vides sont au backlog.
+2. **Aucun semis** de la base de dev.
+3. **Pas une certification.** ⛔ **Compteur : DEUX — dernière place.**
+
 ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les preuves entrent au dépôt
 
 ⛔ **RANG 14, ARBITRÉ PAR KO LE 12/09/2026.** ⇒ **État du rang** : section « PROCHAIN LOT — rang
@@ -2211,7 +2398,11 @@ l'attendu d'un lot qui ne touche aucun code applicatif. ⚠ **« failed » confr
 ⛔ **`test:int` N'ÉTAIT PAS LANÇABLE À L'ARRIVÉE, ET C'EST MESURÉ** : aucun service PostgreSQL, port
 5432 refusé, démon Docker arrêté. **« Non mesuré » n'est pas « non lançable » (D262)** : Docker Desktop
 démarré par la session (prêt en 12 s), conteneur `zwadj-db` levé par `pnpm db:up`, `pg_isready`
-attendu avant la porte, conteneur arrêté après (`pnpm db:down`). ⚠ **Docker Desktop, lui, reste
+attendu avant la porte, conteneur ~~arrêté~~ **supprimé** après (`pnpm db:down`).
+⛔ **« ARRÊTÉ » BARRÉ LE 13/09/2026 (D292)** : `db:down` vaut `docker compose down`, et
+`portes/db-down.log` porte « Container zwadj-db Removed ». Avec le montage d'alors, la base de dev
+vivait dans le volume anonyme du conteneur : **ce geste l'a détachée de tout conteneur**, et le
+démarrage suivant a échoué. Chaîne et pièces : section D292. ⚠ **Docker Desktop, lui, reste
 ouvert** — un relevé d'état machine futur le verra.
 ⚠ **Ces durées ne se comparent à rien** : Docker venait de démarrer (`test:int` à 498 s contre 306 s
 à D288), et le terme de position que ce lot établit vaut aussi pour des portes enchaînées.
@@ -2241,6 +2432,8 @@ dans les preuves.
    le contenait avant ce lot. Signalé, pas masqué ; le garder est une décision de Ko.
 7. ⚠ **La lecture de D283 appliquée ici** — des preuves archivées comptent comme du code — est la
    lettre de la règle ; **l'exemption éventuelle appartient à Ko**.
+   ⛔ **TRANCHÉ PAR KO LE 13/09/2026 (D292)** : `docs/preuves/` ne compte pas, et c'est la seule
+   exemption. Ce rang sort du compte ; le compteur reste à DEUX par l'incident `zwadj-db`.
 
 ### ⛔ FAUTES DE MÉTHODE DU RELEVÉ ET DE LA CLÔTURE, À MON COMPTE
 
@@ -7811,3 +8004,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D289 | A | D289 — rang 13 ouvert (borne de workers), cadrage seul ; un contrôle d'écriture déclaré SUFFISANT ne regarde pas l'ENTRÉE |
 | D290 | A | D290 — rang 13 CLOS sur trois termes éliminés et AUCUNE borne ; le point 6 du critère exige désormais le SECTEUR, « stable » laissait passer une fenêtre entière sur batterie |
 | D291 | A | D291 — rang 14 CLOS (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, les preuves brutes qu'une décision cite entrent au dépôt, et la POSITION d'une passe est un terme de durée (6 cycles sur 6) ; l'écart de D290 n'est pas reproduit |
+| D292 | A | Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue |

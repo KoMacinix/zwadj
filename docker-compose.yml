@@ -1,5 +1,12 @@
 # PostgreSQL 18 — requis : le schéma utilise la fonction native uuidv7()
 # (décision validée : génération d'ID par défaut côté BDD, PG 18+).
+# ⛔ Montage sur /var/lib/postgresql, PAS sur /var/lib/postgresql/data : en 18+, l'image
+# range la base dans /var/lib/postgresql/18/docker et REFUSE de démarrer si /data est un
+# point de montage, même vide. Monté sur /data, ce volume ne recevait rien : la base vivait
+# dans un volume anonyme, détaché au premier `docker compose down` (incident du 13/09/2026,
+# ZWADJ_CONTINUITE.md).
+# ⛔ Retour à postgres:17 ou moins : remettre le montage sur /var/lib/postgresql/data, sinon
+# les données ne sont PAS conservées à la recréation du conteneur.
 services:
   db:
     image: postgres:18
@@ -11,6 +18,6 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - zwadj_pgdata:/var/lib/postgresql/data
+      - zwadj_pgdata:/var/lib/postgresql
 volumes:
   zwadj_pgdata:

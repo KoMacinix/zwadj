@@ -2362,6 +2362,48 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 13/09/2026 — incident `zwadj-db`, postgres:18 et le montage (D292)
+
+⚠ **UN INCIDENT, PAS UN LOT.** Le correctif (montage sur `/var/lib/postgresql`) est fait et mesuré ;
+ce qui suit est **rapporté**. Cause, pièces et portes : section D292 de `ZWADJ_CONTINUITE.md`.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[DOC][P1]** ⛔ **LA BASE DE DEV `zwadj` EST REPARTIE DE ZÉRO LE 13/09/2026 — AUCUNE MESURE FUTURE
+  SUR `zwadj` NE SE COMPARE PLUS À CELLES D'AVANT.** Recréée vide, puis les **27** migrations
+  appliquées (`migrate deploy`, journal confronté aux fichiers : 0 dérive). Relevé après migration :
+  **0** ligne dans `bookings`, `quotes`, `venues` et `users`.
+  ⛔ **Ce que l'ancienne base portait et qui est perdu** : c'est sur elle que D282 a compté
+  **0 violante sur 4 réservations et 0 sur 38 devis**, et qu'au rang 11 (D286) l'empreinte stockée a
+  été relue pour clore le rang 8. **Ces relevés restent vrais à leur date** ; ils ne décrivent plus
+  la base. ⚠ Les migrations sont dans git, **les données non** : rien ne les restitue.
+  ⚠ **Aucun semis n'a été rejoué** (`db:seed`, `db:seed:demo`) : ce n'était pas demandé, et un semis
+  ne rendrait pas les lignes perdues — il en fabriquerait d'autres. À Ko.
+- **[INFRA][P3]** ⚠ **DEUX VOLUMES ANONYMES ORPHELINS, VIDES, LAISSÉS EN PLACE.** Relevés le 13/09/2026,
+  montés en lecture seule :
+
+  | volume | créé (UTC) | contenu |
+  |---|---|---|
+  | `c9d8107231a9…` | 2026-07-10 04:11:10 | répertoires `18` et `data`, **0 fichier** |
+  | `9380cdd3bcc6…` | 2026-09-14 00:35:46 | répertoires `18` et `data`, **0 fichier** |
+
+  Leur forme est celle d'un démarrage refusé sous l'ancien montage (sonde A de D292) : volume anonyme
+  sur `/var/lib/postgresql`, répertoire `18` créé, `data` créé comme point de montage.
+  ⛔ **NE PAS LANCER `docker volume prune`** (consigne de Ko) : il retire **tous** les volumes anonymes
+  inutilisés de la machine, pas ces deux-là. ⇒ Si Ko décide de les retirer : `docker volume rm` par
+  identifiant complet, **après** avoir revérifié qu'ils sont vides.
+- **[DOC][P3]** ⚠ **LE SORT DU VOLUME ANONYME QUI PORTAIT LA BASE N'EST PAS ÉTABLI.** Détaché par
+  `pnpm db:down` le 13/09/2026 (pièce : `docs/preuves/D291/portes/db-down.log`), il ne figure plus
+  parmi les 4 volumes de la machine, et le volume nommé a été **recréé** à 00:35:46 UTC le 14/09, soit
+  20:35:46 heure locale le 13/09, avant la session D292. Le journal d'événements de Docker ne remonte
+  qu'à 00:46:18 UTC : **le geste qui les a supprimés n'a pas de pièce.** Ne pas l'écrire comme un fait.
+- **[DOC][P3]** ⚠ **COMMENT L'ANCIENNE BASE A PASSÉ LE CONTRÔLE D'INITIALISATION N'EST PAS ÉTABLI.**
+  L'image locale (18.4, construite le 07/07/2026) refuse d'**initialiser** une base sous le montage
+  `/data` (sonde A), et le contrôle existe en amont depuis le 15/10/2025 (commit `5ec8931` de
+  `docker-library/postgres`, patch lu le 13/09/2026). La base de dev a pourtant
+  existé et servi 18.4. **Inférence non vérifiée** : initialisée sous une autre configuration ou une
+  autre image, puis reprise telle quelle. Sans effet sur le correctif.
+
 ## Reports des 12 et 13/09/2026 — rang 14, `PERF` et la durée (D291)
 
 ⚠ **AUCUN N'EST CORRIGÉ, ET C'EST LA RÈGLE.** Le rang 14 retire du dossier ce qu'il affirmait sans
