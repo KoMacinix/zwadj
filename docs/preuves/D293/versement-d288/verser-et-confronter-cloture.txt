@@ -1,0 +1,139 @@
+== A. INVENTAIRE ET COPIE OCTET POUR OCTET ==
+  journaux examines dans .neutralisation-journaux/ : 26 (attendu 26)
+  ✓ neutralize-404.py.log                  2026-09-12 00:56:04   1049 o  eefa994d1ad40b8b4b02044c98a7be1f8ee3fed26e3964bea1bf45b10dcd8a18  deja-verse
+  ✓ neutralize-act-plafonds.py.log         2026-09-12 00:57:03    537 o  500f72be4afa9da2fb5891d896c321d27dedfc4a1f6d4ef04bab558ee65b0a31  deja-verse
+  ✓ neutralize-argon2.py.log               2026-09-12 00:57:18    403 o  e791147f83f30809446cae3eea30c6230da06d034752ca3af13204e6bc74cc8f  deja-verse
+  ✓ neutralize-available-on-api.py.log     2026-09-12 00:57:18    947 o  5f4f74605c63a73313ea85dbb508ee7b76511e9c0cb13ed398c69cc2b8ac9a3c  deja-verse
+  ✓ neutralize-available-on.py.log         2026-09-12 00:59:39    747 o  b7c7bca5beccb8ab7165f6420ed56a85389d52a9f0db1ea31064bc0f3f2f32c2  deja-verse
+  ✓ neutralize-b7.py.log                   2026-09-12 01:02:55    342 o  fbcf426bc8510be8a692cf233fee273b7d37a6d4e050547f98be2af965e4b044  deja-verse
+  ✓ neutralize-booking-status.py.log       2026-09-12 01:03:10   2036 o  25b3ba72074699505d52993d2196153c1c7c72d367240a64dd6dfe4c4bc966c8  deja-verse
+  ✓ neutralize-e3d1-s8.py.log              2026-09-12 01:03:39   2138 o  592f093668026c8a8b341d6c9e1ebf8c5d7b2c445a8cd4eac5d71a160ab2a3ab  deja-verse
+  ✓ neutralize-horizon.py.log              2026-09-12 01:05:01    608 o  0369e9371eda789dc8496075dffff9901ce719bb7ae11063d15433db63b045d1  deja-verse
+  ✓ neutralize-horloge.py.log              2026-09-12 01:05:53    262 o  8019a6d799b045dbabd87fc005030ce297dc4257d567b786e008d8c2ee9c1ab8  deja-verse
+  ✓ neutralize-journey.py.log              2026-09-12 01:09:14    692 o  a08cb8ac0ec19fa9cb0ab6be088311c06c204452361dcaf5ed5497c005f43ed1  deja-verse
+  ✓ neutralize-maxprice.py.log             2026-09-12 01:11:32    878 o  90a7db1dabaf3c109321290b5c4d5449aba0dcade4426916f626aaa4f702cd99  deja-verse
+  ✓ neutralize-r4.py.log                   2026-09-12 01:12:37    331 o  d5eca225734ea3c55f05354d098feaf962e0be4c7e202bc52aead65410f8002a  deja-verse
+  ✓ neutralize-s10a.py.log                 2026-09-12 01:13:45   1364 o  1b32817776d0bd7ad0533c8ecb482dab5301cc8bac688e060951646fec99a714  deja-verse
+  ✓ neutralize-s10b.py.log                 2026-09-12 01:15:16   2096 o  65e0c228cbe22cd38fcbd635f509968513869082c65ca65e346dad830eccbf48  deja-verse
+  ✓ neutralize-s11a.py.log                 2026-09-12 01:16:16   1982 o  e6e0596dfe645f4c910c26570943b1fb8348fd4a249cc718cc43f2da48249fd7  deja-verse
+  ✓ neutralize-s11b.py.log                 2026-09-12 01:16:47   2174 o  db146e619ccad40a6cf51f287aae22677bcd3af0999132c0da4735156fa14c74  deja-verse
+  ✓ neutralize-s9.py.log                   2026-09-12 01:17:30    648 o  3aa770a4f052be279da1222474aad32beb1f408772e7686f07d0e02d1b9d08c5  deja-verse
+  ✓ neutralize-solid-s1.py.log             2026-09-12 01:17:59    503 o  96a9cd64031209be3150f6d1a531eefe420c4bc89d530b57df1f4b103503c38d  deja-verse
+  ✓ neutralize-solid-s2.py.log             2026-09-12 01:18:30    819 o  08efd41ec06c2a770787d6914280ea905961d8dc03114e47fd35f9301410ab84  deja-verse
+  ✓ neutralize-solid-s3.py.log             2026-09-12 01:18:53    997 o  1d30e2878c731566228e9b7a28a735df9b082dccf4b8e8fee7097686f0eee969  deja-verse
+  ✓ neutralize-solid-s4.py.log             2026-09-12 01:19:20    860 o  4da54971528022c1caa5311cbc60264b5efa0359109800afab3b95034bb43e22  deja-verse
+  ✓ neutralize-solid-s5a.py.log            2026-09-12 01:19:57   1028 o  6667dfbeb7098173cec2edd7e7bfa796a13d70534bc9bcdb8bafdc1811eddfe5  deja-verse
+  ✓ neutralize-solid-s5b.py.log            2026-09-12 01:23:55    720 o  6028ae32f1ac81a6449835b4c7e418757d80863c1148223a340495fd908f2458  deja-verse
+  ✓ neutralize-solid-s6.py.log             2026-09-12 01:24:05   1661 o  6964bb825d20c9507811911c666aef98f6d4073c6885e3ef4ceee552b918731f  deja-verse
+  ✓ neutralize-solid-s7.py.log             2026-09-12 01:25:31    338 o  9d7a42ea09312d9f3964ca97bb58e00f3e6fc2ca8bddb5a28e94d16ea55003d9  deja-verse
+  copies identiques a leur source, source inchangee : 26 sur 26 parcourues (attendu 26)
+
+== B. CONFRONTATION AU TEXTE DE D288 ==
+  regles relues dans c2ac531:neutralisation/lancer-campagnes.py : mordues 1 occurrence(s) (attendu 1) · muettes 1 occurrence(s) (attendu 1) · non_mes 1 occurrence(s) (attendu 1)
+  neutralisation/ entre c2ac531 et HEAD : INCHANGE (attendu INCHANGE)
+  calibration synthetique positif    : (1, 1, 1) (attendu (1, 1, 1)) ✓
+  calibration synthetique negatif    : (0, 0, 0) (attendu (0, 0, 0)) ✓
+  calibration reel lu brut : s11b    : (9, 0, 4) (attendu (9, 0, 4)) ✓
+  calibration reel lu brut : 404     : (12, 0, 0) (attendu (12, 0, 0)) ✓
+  campagne                   lignes  mord  muet  nonm  decl  attendu (texte de D288)
+  neutralize-404.py              16    12     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-act-plafonds.py     10     4     0     0     4  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-argon2.py            9     3     0     0     3  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-available-on-api.py     16    13     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-available-on.py     13    10     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-b7.py                8     3     0     0     3  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-booking-status.py     21     3     0     0     3  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-e3d1-s8.py          28     3     0     5     3  3 mord · 0 muet · 5 nonm ✓
+  neutralize-horizon.py          10     6     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-horloge.py           7     2     0     0     2  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-journey.py          10     7     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-maxprice.py         14    10     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-r4.py                7     2     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-s10a.py             18    13     0     0    13  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-s10b.py             25    20     0     0    20  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-s11a.py             23    18     0     0    18  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-s11b.py             27     9     0     4     9  9 mord · 0 muet · 4 nonm ✓
+  neutralize-s9.py               11     6     0     0     6  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-solid-s1.py         10     2     0     0     2  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-solid-s2.py         13     5     0     0     5  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-solid-s3.py         14     6     0     0     6  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-solid-s4.py         12     7     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-solid-s5a.py        14     9     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-solid-s5b.py        10     5     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  neutralize-solid-s6.py         22     2     0     4     2  2 mord · 0 muet · 4 nonm ✓
+  neutralize-solid-s7.py          7     2     0     0     —  0 muet · 0 nonm ✓ (mordues : total seulement)
+  lignes parcourues : 375 sur 26 journaux
+  23 campagnes non chiffrees une a une : 168 mordues (attendu 168) · 0 non mesurees (attendu 0)
+  TOTAL : 182 mordues (attendu 182) · 0 muettes (attendu 0) · 13 non mesurees (attendu 13)
+  « ERREUR DE SCRIPT » : 0 occurrence(s) (attendu 0)
+  harnais neutralize-*.py a c2ac531 : 26 (attendu 26) · sans journal : 0 (attendu 0) · journal sans harnais : 0 (attendu 0)
+  dates de modification dans la fenetre ecrite par D288 (00:41:09 -> 01:34:58) : 26 sur 26 (attendu 26)
+  ordre des dates de modification = ordre de jeu du lanceur (tri alphabetique) : OUI (attendu OUI)
+  premier -> dernier : 00:56:04 -> 01:25:31, 1768 s ; D288 ecrit 1 944 s pour les 26 -> compatible (l'etendue exclut la duree de la premiere campagne)
+  fichiers de .neutralisation-journaux/ modifies apres le dernier journal et avant la fin de fenetre : aucun
+
+VERDICT B : CONCORDANT — comptes, noms, fenetre et ordre de jeu concordent avec le texte de D288.
+  ⚠ Ce n'est PAS une preuve d'origine : aucune piece ne lie ces fichiers au processus de D288.
+  ⚠ NON CONFRONTABLE ICI : le total certifiant 195 (les +13 des trois rejeux --int ne sont dans aucun
+    de ces journaux : le lanceur ne passe pas --int), la duree 1 944 s, et le code de sortie 1.
+
+== C. AUDIT DE SECRETS, NON TRONQUE ==
+  calibration : 11 motifs, 11 passent leurs deux bras (attendu 11)
+  exclus (sorties de ce script) : 4 fichier(s)
+  .gitattributes                                                  535 o  
+  docs/preuves/D288/campagnes/neutralize-404.py.log              1049 o  
+  docs/preuves/D288/campagnes/neutralize-act-plafonds.py.log      537 o  
+  docs/preuves/D288/campagnes/neutralize-argon2.py.log            403 o  
+  docs/preuves/D288/campagnes/neutralize-available-on-api.py.log    947 o  
+  docs/preuves/D288/campagnes/neutralize-available-on.py.log      747 o  
+  docs/preuves/D288/campagnes/neutralize-b7.py.log                342 o  
+  docs/preuves/D288/campagnes/neutralize-booking-status.py.log   2036 o  
+  docs/preuves/D288/campagnes/neutralize-e3d1-s8.py.log          2138 o  
+  docs/preuves/D288/campagnes/neutralize-horizon.py.log           608 o  
+  docs/preuves/D288/campagnes/neutralize-horloge.py.log           262 o  
+  docs/preuves/D288/campagnes/neutralize-journey.py.log           692 o  
+  docs/preuves/D288/campagnes/neutralize-maxprice.py.log          878 o  
+  docs/preuves/D288/campagnes/neutralize-r4.py.log                331 o  
+  docs/preuves/D288/campagnes/neutralize-s10a.py.log             1364 o  
+  docs/preuves/D288/campagnes/neutralize-s10b.py.log             2096 o  
+  docs/preuves/D288/campagnes/neutralize-s11a.py.log             1982 o  
+  docs/preuves/D288/campagnes/neutralize-s11b.py.log             2174 o  
+  docs/preuves/D288/campagnes/neutralize-s9.py.log                648 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s1.py.log          503 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s2.py.log          819 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s3.py.log          997 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s4.py.log          860 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s5a.py.log        1028 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s5b.py.log         720 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s6.py.log         1661 o  
+  docs/preuves/D288/campagnes/neutralize-solid-s7.py.log          338 o  
+  docs/preuves/D293/outils/motifs-etape0.txt                      371 o  
+  docs/preuves/D293/outils/motifs-refus.txt                       459 o  
+  docs/preuves/D293/outils/normaliser-crlf-etape0-2.txt           534 o  
+  docs/preuves/D293/outils/normaliser-crlf-etape0-3.txt           277 o  
+  docs/preuves/D293/outils/normaliser-crlf-etape0.txt             409 o  
+  docs/preuves/D293/outils/normaliser-crlf-refus-2.txt            277 o  
+  docs/preuves/D293/outils/normaliser-crlf-refus.txt              534 o  
+  docs/preuves/D293/outils/normaliser-crlf.py                    2136 o  
+  docs/preuves/D293/outils/passe-d277-etape0.txt                 8881 o  
+  docs/preuves/D293/outils/passe-d277-refus.txt                 26705 o  
+  docs/preuves/D293/outils/passe-d277.py                         2295 o  
+  docs/preuves/D293/outils/relire-jetons-etape0-2.txt            1780 o  
+  docs/preuves/D293/outils/relire-jetons-etape0-3.txt            2116 o  
+  docs/preuves/D293/outils/relire-jetons-etape0.txt              1597 o  
+  docs/preuves/D293/outils/relire-jetons-refus-2.txt             1526 o  
+  docs/preuves/D293/outils/relire-jetons-refus.txt               1473 o  
+  docs/preuves/D293/outils/relire-jetons.py                      4275 o  
+  docs/preuves/D293/outils/verifier-blobs-etape0.txt              192 o  
+  docs/preuves/D293/outils/verifier-blobs.py                     2117 o  
+  docs/preuves/D293/outils/verser-ouverture.txt                   850 o  
+  docs/preuves/D293/outils/verser.py                             1345 o  
+  docs/preuves/D293/ouverture/rang15-chrome-identification.txt   2044 o  
+  docs/preuves/D293/ouverture/rang15-docker-avant-releve.txt       24 o  
+  docs/preuves/D293/ouverture/rang15-sonde-ouverture-1.txt       1155 o  
+  docs/preuves/D293/ouverture/rang15-sonde-ouverture-2.txt        726 o  
+  docs/preuves/D293/versement-d288/gitattributes-controle.txt     155 o  
+  docs/preuves/D293/versement-d288/verifier-decl.py              1894 o  
+  docs/preuves/D293/versement-d288/verifier-decl.txt             2012 o  
+  docs/preuves/D293/versement-d288/verser-et-confronter.py      15234 o  
+  parcourus : 56 fichiers, 110088 octets · alertes : 0 (attendu 0) · chemin local (informatif) : 0

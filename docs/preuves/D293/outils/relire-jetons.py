@@ -42,6 +42,30 @@ ETAPES = {
     },
 }
 
+ETAPES["refus"] = {
+    "ZWADJ_CONTINUITE.md": [
+        ("## Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte dure ROUGE sur `chrome`, passe NON lancée", 1),
+        ("| D293 | A | Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte dure ROUGE sur `chrome`, passe NON lancée |", 1),
+        ("### ⛔ ÉTAPE 1 — LA PORTE DURE EST ROUGE SUR LES DEUX RELEVÉS : RIEN N'EST LANCÉ, PAS DE MARQUE", 1),
+        ("| **`chrome`** | **14** | **15** | **0 ⛔ ROUGE** |", 1),
+        ("`C:\\Program Files\\Google\\Chrome\\`", 1),
+        # ⚠ L'attendu etait 3, ecrit de memoire en fusionnant deux fichiers ; la sortie en ecart est gardee
+        # (relire-jetons-refus.txt). Releve par recherche : 2 ici (point d'entree, etape 1), 1 au backlog.
+        ("`657e9ba`", 2),
+        ("**108 occurrences vues sur 7 motifs**", 1),
+        ("⛔ Compteur de lots de code non certifiés : toujours DEUX", 0),
+        ("⛔ **Compteur de lots de code non certifiés : toujours DEUX**", 1),
+        # BRAS NEGATIF : le processus sans piece a ete retire, le titre non amende a disparu.
+        ("01:49:06", 0),
+        ("CERTIFICATION (rang 15) : le rang 13 et l'incident D292", 0),
+    ],
+    "ZWADJ_BACKLOG.md": [
+        ("- **[MÉTHODE][P1]** ⛔ **LA CERTIFICATION DU RANG 15 N'A PAS ÉTÉ LANCÉE", 1),
+        ("`docs/preuves/D293/ouverture/`", 1),
+        ("`657e9ba`", 1),
+    ],
+}
+
 etape = sys.argv[1] if len(sys.argv) > 1 else ""
 if etape not in ETAPES:
     sys.exit(f"ABANDON : etape inconnue {etape!r}")

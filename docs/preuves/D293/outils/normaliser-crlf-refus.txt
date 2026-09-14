@@ -1,0 +1,5 @@
+calibration positif : ✓ (b'a\r\nb\r\nc\r\n', attendu b'a\r\nb\r\nc\r\n')
+calibration negatif : ✓ (b'a\r\nb\r\n', attendu b'a\r\nb\r\n')
+ZWADJ_CONTINUITE.md : avant 619555 o, CRLF 8292, LF nus 0 -> relu 619555 o, CRLF 8292, LF nus 0 (attendu 0) · lignes parcourues 8292
+ZWADJ_BACKLOG.md : avant 302835 o, CRLF 3511, LF nus 0 -> relu 302835 o, CRLF 3511, LF nus 0 (attendu 0) · lignes parcourues 3511
+AGENTS.md : avant 120268 o, CRLF 1101, LF nus 0 -> relu 120268 o, CRLF 1101, LF nus 0 (attendu 0) · lignes parcourues 1101

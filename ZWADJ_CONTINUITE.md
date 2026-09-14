@@ -525,6 +525,11 @@ portera sur une base reconstruite, sans les données sur lesquelles D282 a mesur
 au texte de D288 et CONCORDANT** — ce qui reste une inférence confrontée, pas une preuve d'origine.
 **Le protocole de la passe est écrit et commité AVANT le relevé d'ouverture.** ⇒ Étape 0, protocole,
 passe et marque : section « **Session du 14/09/2026 — D293** ».
+⛔ **ÉTAPE 1 ROUGE LE 14/09/2026 — PORTE DURE `chrome` : 14 puis 15 aux deux relevés d'ouverture (01:50,
+01:51), une fenêtre Google Chrome visible. RIEN N'EST LANCÉ, AUCUNE MARQUE.** RAM et SECTEUR étaient
+verts. ⇒ **Le rang 15 reste OUVERT. La reprise se fait À L'ÉTAPE 1**, sur le protocole commité dans
+`657e9ba`, **sans le réécrire** ; l'étape 0 est acquise. **Condition, et elle appartient à Ko** :
+`chrome` à 0 au relevé — détail et pièces, section D293, « ÉTAPE 1 ».
 
 ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSITION ; L'ÉCART DE D290 NON REPRODUIT**
 
@@ -2015,7 +2020,7 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
-## Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : le rang 13 et l'incident D292
+## Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte dure ROUGE sur `chrome`, passe NON lancée
 
 ⛔ **RANG 15, ARBITRÉ PAR KO LE 14/09/2026** (clôture de D292). ⇒ **État du rang** : section « PROCHAIN
 LOT — rang 15 » en tête de ce fichier. **Numéro pris en LISANT le registre** : sa dernière ligne
@@ -2132,6 +2137,86 @@ vierge** depuis D292 — `test:int` et l'e2e recréent leurs propres bases, mais
 données sur lesquelles D282 a mesuré ; **l'e2e est la première mesure du nouveau montage sous e2e** ; la
 réserve de D275 « zéro `node` pendant la mesure » se reconduit ; **aucune durée ne se compare** (terme
 de position, D291 ; portes longues en fond d'outil).
+
+### ⛔ ÉTAPE 1 — LA PORTE DURE EST ROUGE SUR LES DEUX RELEVÉS : RIEN N'EST LANCÉ, PAS DE MARQUE
+
+**Docker levé avant le relevé, comme écrit** : `zwadj-db Up 5 hours`. Pièces : `docs/preuves/D293/ouverture/`
+(4 copies identiques sur 4, `outils/verser-ouverture.txt`).
+
+| | relevé 1 (01:50:36, `-Calibrer`) | relevé 2 (01:51:20) | exigé |
+|---|---|---|---|
+| calibration | **passante** — rendement 0,93, CPU 16 → 100 %, `PERF` 75,2 → 146,7 | non rejouée | passante |
+| RAM médiane · bande | 5 276,5 · 5 270-5 308 Mo (**+697,5**) | 5 300 · 5 292-5 302 Mo (**+721**) | ≥ barre ✅ |
+| alimentation | SECTEUR 100 %, overlays identiques | idem | SECTEUR ✅ |
+| `node` | 0 | 0 | — (réserve D275) |
+| **`chrome`** | **14** | **15** | **0 ⛔ ROUGE** |
+
+⛔ **CE QUE SONT CES PROCESSUS, RELEVÉ ET NON SUPPOSÉ** (`rang15-chrome-identification.txt`, 01:51:56) :
+**15 `chrome.exe`, tous `C:\Program Files\Google\Chrome\`** — pas le Chromium de Playwright, et aucun `node`
+ne tourne ; processus principal démarré le **12/09 à 23:24:09**, **une fenêtre visible** titrée « Claude
+Code - Google Chrome », et trois processus enfants **créés le 14/09** (deux à 01:31:48, un à 01:51:08,
+12 s avant l'horodatage du second relevé — que la sonde prend en FIN de ses 6 échantillons à 5 s
+d'écart : **pendant** ce relevé). ⇒ **Le navigateur est ouvert ET actif** ; 1 722 puis 1 783 Mo à
+l'inventaire des deux relevés.
+⚠ **Hypothèse, non vérifiée** : le titre de la fenêtre laisse penser que Ko suit la session dans ce
+navigateur. Si c'est le cas, **suivre la session depuis ce poste et tenir `chrome` = 0 sont
+incompatibles** — report au backlog, à Ko d'arbitrer.
+⛔ **L'ANNONCE « `chrome` EST FERMÉ » EST DÉMENTIE PAR LE RELEVÉ, ET C'EST EXACTEMENT POURQUOI LA PORTE EST
+UNE MESURE.** Une porte dure qui se franchirait sur déclaration ne certifierait plus rien — c'est la phrase
+de Ko sur la barre (« si « au repos » se franchit sur ordre, le mot ne certifie plus rien ») appliquée à la
+sixième quantité. ⚠ **Et la RAM ne l'aurait PAS vu** : +697 Mo au-dessus de la barre avec le navigateur
+ouvert — la séparation des deux quantités écrite par D288 (« la barre dit combien il reste, `chrome` dit si
+ce qui reste a été libéré ») mord ici pour la première fois **dans ce sens**.
+
+⇒ **CE QU'IL FAUT POUR QUE LA PASSE SE LANCE — rien d'autre ne change** : `chrome` à 0, **fenêtres ET
+processus d'arrière-plan** (Chrome peut continuer à tourner fenêtre fermée) ; puis **reprise à l'étape 1**
+du protocole de `657e9ba` — Docker levé, deux relevés d'ouverture, porte dure jugée sur chacun. **Le
+protocole ne se réécrit pas** : il a été commité avant la mesure, et le réécrire après un rouge serait
+régler l'instrument sur le résultat voulu. **L'étape 0 est acquise**, et les 26 journaux de D288 sont au
+dépôt : une reprise n'a plus rien d'urgent à archiver avant `--tout`.
+⚠ **Ce qui n'a PAS eu lieu, et se vérifie** : aucun échantillonneur démarré, aucune porte, aucune campagne ;
+les 26 `neutralize-*.py.log` du disque portent toujours leurs dates du 12/09 (00:56 → 01:25).
+
+### Passe D277 de la clôture — les deux sens
+
+`outils/passe-d277.py` sur `outils/motifs-refus.txt` : **108 occurrences vues sur 7 motifs** — ⚠ dont **31
+comptées deux fois** : la recherche ignore la casse, et « rang 15 » / « RANG 15 » ne différaient que par
+elle ; 77 occurrences distinctes. **Sens 1 — invalidé** : le point d'entrée du rang 15 (« passe et marque :
+section D293 ») — annoté par l'état rouge ; **aucune** phrase courante ne présente le rang 15 comme exécuté,
+certifié ou clos, et **toutes** les « `chrome` fermé » sont des relevés datés (D275 à D288). **Sens 2 — rendu
+permis : rien.** Les 17 « peut s'ouvrir » sont barrées, annotées « permission consommée » ou dans des
+sections datées ; le compteur reste à DEUX ; « RANG 16 : EN ATTENTE D'ARBITRAGE DE KO » reste juste.
+
+### ⛔ CE QUE CE LOT NE FAIT PAS
+
+1. **Il ne certifie rien.** ⛔ **Compteur de lots de code non certifiés : toujours DEUX** — le rang 13 et
+   l'incident D292. **Aucun lot de code ne s'ouvre**, et le rang 15 n'est pas clos.
+2. **Il ne ferme pas le navigateur de Ko** : fermer ses processus aurait été un geste sur son poste, que la
+   consigne ne donne pas — elle dit « rouge ⇒ tu ne lances rien et tu me le dis ».
+3. **Il est DOCUMENTAIRE** : trois `.md` d'autorité et `docs/preuves/` au diff (exemption D292) — il ne
+   compte pas dans les deux/trois.
+4. **Il ne verse pas les autres pièces orphelines** (rangs 6, 11, 12 hors campagnes) : hors arbitrage.
+
+### ⛔ FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **UNE EXCLUSION D'AUDIT PLUS LARGE QUE SON NOM.** La règle « tout `.txt` du dossier » a exclu deux
+   sorties d'autres contrôles, et la sortie imprimait « sorties de ce script » : **un compte d'exclusions
+   qui ne dit pas CE qu'il exclut se lit comme juste**. Vu parce que le nombre (4) ne correspondait pas à ce
+   que je savais avoir écrit (1 puis 2) — c'est l'attendu à côté du mesuré (D290) qui a mordu, pas une
+   relecture. Corrigé, rejoué, sortie fautive gardée.
+2. ⚠ **LE RELECTEUR DE JETONS N'AVAIT QU'UN BRAS À SA PREMIÈRE EXÉCUTION** (présence seule) : un compteur
+   qui rendrait « 1 » à tout l'aurait passé. Bras négatif ajouté (ancienne ligne non barrée → 0, jeton absent
+   → 0), première sortie gardée (`relire-jetons-etape0.txt`).
+3. ⚠ **J'AI LU LE PROCESSUS `chrome` AVANT LE RELEVÉ FORMEL**, par un listage hors instrument. Il n'a rien
+   décidé — le refus repose sur les deux relevés de la sonde et sur l'identification versée —, mais le premier
+   listage (01:49:12) n'est dans aucune pièce. ⇒ **Rien de ce qu'il montrait n'est écrit ici sans être aussi
+   dans `rang15-chrome-identification.txt`** : un processus qu'il était seul à porter a été retiré du texte
+   à la relecture, où je l'avais d'abord cité.
+4. ⛔ **UN ATTENDU ÉCRIT DE MÉMOIRE DANS MON PROPRE RELECTEUR** : « `657e9ba` × 3 dans ce fichier » — il y est
+   **deux** fois, la troisième est au backlog. **Le fichier était juste, l'attendu faux**, et c'est le
+   relecteur qui a rendu l'écart (1). Attendu relevé par recherche, sortie en écart gardée
+   (`relire-jetons-refus.txt`), rejoué à 0 (`-refus-2.txt`). ⚠ C'est la classe exacte que D291 a trouvée dans
+   son cas connu — **reproduite dans l'instrument qui existe pour l'attraper**.
 
 ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue
 
@@ -8209,4 +8294,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D290 | A | D290 — rang 13 CLOS sur trois termes éliminés et AUCUNE borne ; le point 6 du critère exige désormais le SECTEUR, « stable » laissait passer une fenêtre entière sur batterie |
 | D291 | A | D291 — rang 14 CLOS (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, les preuves brutes qu'une décision cite entrent au dépôt, et la POSITION d'une passe est un terme de durée (6 cycles sur 6) ; l'écart de D290 n'est pas reproduit |
 | D292 | A | Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue |
-| D293 | A | Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : le rang 13 et l'incident D292 |
+| D293 | A | Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte dure ROUGE sur `chrome`, passe NON lancée |

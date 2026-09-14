@@ -1,0 +1,11 @@
+# Passe D277 de la cloture (D293) — porte dure rouge, passe non lancee.
+# Sens 1 : ce que le refus INVALIDE (toute phrase qui presente le rang 15 comme execute, certifie, ou clos ;
+# toute phrase qui presente chrome comme ferme). Sens 2 : ce qu'il REND PERMIS (rien attendu : toute phrase
+# qui autorise un lot de code ou le rang 16 est a relire).
+rang 15
+RANG 15
+peut s'ouvrir
+peuvent s'ouvrir
+chrome fermé
+RANG 16
+compteur de lots de code non certifiés

@@ -1,0 +1,16 @@
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '## Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte dure ROUG'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '| D293 | A | Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · "### ⛔ ÉTAPE 1 — LA PORTE DURE EST ROUGE SUR LES DEUX RELEVÉS : RIEN N'EST LANCÉ, PAS DE MA"
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '| **`chrome`** | **14** | **15** | **0 ⛔ ROUGE** |'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '`C:\\Program Files\\Google\\Chrome\\`'
+✗ ZWADJ_CONTINUITE.md : 2 (attendu 3) · '`657e9ba`'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '**108 occurrences vues sur 7 motifs**'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · '⛔ Compteur de lots de code non certifiés : toujours DEUX'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '⛔ **Compteur de lots de code non certifiés : toujours DEUX**'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · '01:49:06'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · "CERTIFICATION (rang 15) : le rang 13 et l'incident D292"
+  ZWADJ_CONTINUITE.md : 585907 caracteres parcourus, 11 jetons
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · "- **[MÉTHODE][P1]** ⛔ **LA CERTIFICATION DU RANG 15 N'A PAS ÉTÉ LANCÉE"
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · '`docs/preuves/D293/ouverture/`'
+  ZWADJ_BACKLOG.md : 290052 caracteres parcourus, 2 jetons
+jetons en ecart : 1 (attendu 0)

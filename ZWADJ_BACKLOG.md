@@ -2369,6 +2369,17 @@ Détail : section D293 de `ZWADJ_CONTINUITE.md`.
 
 ### ⛔ Ouverts, mesurés, NON corrigés
 
+- **[MÉTHODE][P1]** ⛔ **LA CERTIFICATION DU RANG 15 N'A PAS ÉTÉ LANCÉE : PORTE DURE ROUGE SUR `chrome`
+  (14 PUIS 15), ALORS QU'IL ÉTAIT ANNONCÉ FERMÉ.** Relevé le 14/09/2026 à 01:50 et 01:51 : 15 processus
+  Google Chrome, **une fenêtre visible titrée « Claude Code - Google Chrome »**, des processus enfants
+  créés pendant le second relevé (pièces : `docs/preuves/D293/ouverture/`). RAM +697 et +721 au-dessus de
+  la barre, SECTEUR : **seul `chrome` bloque.**
+  ⚠ **Hypothèse, NON vérifiée** : Ko suit la session dans ce navigateur. ⇒ **Si c'est le cas, suivre une
+  certification depuis ce poste et tenir `chrome` = 0 sont incompatibles**, et la porte restera rouge à
+  chaque reprise. ⇒ **À ARBITRER PAR KO** : suivre depuis un autre appareil, ou fermer le navigateur (y
+  compris ses processus d'arrière-plan) et ne pas suivre. **La porte ne se relâche pas** : elle vient de
+  mordre exactement sur ce qu'elle existe pour voir, et la RAM, seule, ne l'aurait pas vu.
+  ⇒ **Reprise** : rang 15, **étape 1**, protocole de `657e9ba` inchangé (section D293).
 - **[INFRA][P3]** ⚠ **LA COLONNE « décl » DE `lancer-campagnes.py` REND « — » SUR 11 CAMPAGNES SUR 26.**
   Relevé le 14/09/2026 sur les journaux attribués à D288 : l'expression `ROUGES` attend
   `neutralis..e\(s\)` — deux caractères — alors que « neutralisée », décodé en UTF-8, n'en porte qu'un.
