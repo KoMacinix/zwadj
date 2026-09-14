@@ -54,7 +54,7 @@
 ### 1.1 Repo & workspace
 - [ ] `git init` and push initial empty commit [INFRA][P0]
 - [ ] Add root `.gitignore` (node, env, build, OS files) [INFRA][P0]
-- [ ] Add `.gitattributes` (line endings, lockfile diff) [INFRA][P2]
+- [ ] Add `.gitattributes` (line endings, lockfile diff) [INFRA][P2] — ⚠ **(14/09/2026, D292)** le fichier existe et ne vise que `docs/preuves/` ; une règle de fins de ligne ou de lockfile viserait **autre chose**, donc **le lot qui l'ajoute COMPTE** (clause bornée, `AGENTS.md`, bloc D283)
 - [ ] Initialize pnpm workspace (`pnpm-workspace.yaml`) [INFRA][P0]
 - [ ] Create root `package.json` with workspace scripts [INFRA][P0]
 - [ ] Create folders `apps/` and `packages/` [INFRA][P0]
@@ -2397,6 +2397,9 @@ ce qui suit est **rapporté**. Cause, pièces et portes : section D292 de `ZWADJ
   parmi les 4 volumes de la machine, et le volume nommé a été **recréé** à 00:35:46 UTC le 14/09, soit
   20:35:46 heure locale le 13/09, avant la session D292. Le journal d'événements de Docker ne remonte
   qu'à 00:46:18 UTC : **le geste qui les a supprimés n'a pas de pièce.** Ne pas l'écrire comme un fait.
+  ⚠ **Ce qui ne doit pas s'en déduire** : depuis le correctif, `pnpm db:down` est **sans effet** sur
+  les données — elles vivent dans le volume nommé (mesuré par table témoin). Ne pas éviter la
+  commande ; seul `down -v` les supprime.
 - **[DOC][P3]** ⚠ **COMMENT L'ANCIENNE BASE A PASSÉ LE CONTRÔLE D'INITIALISATION N'EST PAS ÉTABLI.**
   L'image locale (18.4, construite le 07/07/2026) refuse d'**initialiser** une base sous le montage
   `/data` (sonde A), et le contrôle existe en amont depuis le 15/10/2025 (commit `5ec8931` de
@@ -2444,6 +2447,14 @@ mesure, verse les preuves de D290 et mesure la durée à régime constant ; le r
   contre chiffres de la décision), un audit de secrets non tronqué — et, pour les 26 journaux de
   campagne, **avant la prochaine passe `--tout`**, sans quoi la pièce de la certification D288
   disparaît.
+  ⛔ **ARBITRÉ PAR KO LE 14/09/2026 (clôture de D292) — POUR LES 26 JOURNAUX DE CAMPAGNE SEULEMENT :
+  ÉTAPE 0 DU RANG 15, AVANT `--tout`.** Archivés dans `docs/preuves/D288/` ; versement de preuves,
+  donc exempté du compteur. **Motif de l'urgence** : le rang 15 est une certification, et une
+  certification lance `--tout`, qui les réécrit (`lancer-campagnes.py` ouvre chaque journal en `"w"`,
+  relu le 14/09). ⚠ **Encore sur disque le 14/09/2026 à 01:00** : 26 fichiers, du 12/09 00:56:04 au
+  12/09 01:25:31. ⚠ **Le rattachement à D288 reste à confronter** au total de gardes que D288 écrit,
+  avant d'être écrit comme un fait. ⚠ **Les autres lignes du tableau ne sont pas couvertes** par cet
+  arbitrage : elles restent ouvertes ici.
 - **[INFRA][P3]** ⚠ **L'EN-TÊTE DE `sonde-etat-machine.ps1` NOMME `PERF` « BRIDAGE RÉEL » ET ÉCRIT
   « > 100 % = turbo, donc NON bridé ».** Vrai dans ce sens, sous charge (D286). Mais le nom invite
   la lecture réciproque — « sous 100 ⇒ bridé » — qui est **fausse au repos** (D288 ouvre à 74,8).

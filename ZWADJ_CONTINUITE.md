@@ -482,10 +482,50 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## PROCHAIN LOT — rang 15 · **CERTIFICATION** — le rang 13 et l'incident D292
+
+⛔ **OUVERT ET ARBITRÉ PAR KO LE 14/09/2026, ÉCRIT À LA CLÔTURE DE D292.** ⇒ **QUEL lot : rang 15 de
+l'ordre des rangs. OÙ IL EN EST : ici.** Toutes les écritures d'ordre sont de Ko.
+⛔ **MOTIF DE L'ORDRE, ÉCRIT PAR KO** : le compteur de lots de code non certifiés est à **DEUX** —
+le rang 13 (`251e82b`) et l'incident D292 (`49f3ace`) —, c'est la dernière place, et **la règle
+impose la certification.**
+⛔ **LA MARQUE NOMMERA LE RANG 13 ET L'INCIDENT D292, RIEN D'AUTRE.** Le rang 14 est hors du compte
+(exemption `docs/preuves/`, `.gitattributes` compris par sa clause — `AGENTS.md`, bloc D283).
+
+⇒ **ORDRE DE KO, À ENCHAÎNER SANS L'ATTENDRE** — Ko ferme `chrome` et ne touche plus la machine :
+
+0. ⛔ **URGENCE DATÉE DE D292 — ARCHIVER LES 26 JOURNAUX DE CAMPAGNE DE D288, AVANT TOUTE MESURE.**
+   `--tout` les **réécrit** : `lancer-campagnes.py` ouvre chaque `neutralize-*.py.log` en `"w"`
+   (relu le 14/09/2026). Sur disque le 14/09/2026 à 01:00 : **26 fichiers** dans
+   `.neutralisation-journaux/`, du 12/09 00:56:04 au 12/09 01:25:31. ⇒ Copie **octet pour octet**
+   dans `docs/preuves/D288/`, vérifiée par empreinte, audit de secrets non tronqué qui rend ce qu'il
+   a parcouru (règle des preuves, D291), **puis commit AVANT toute mesure**.
+   - **Exempté du compteur** : c'est un versement de preuves. **La clause `.gitattributes` s'applique,
+     et son contrôle se rejoue avant le commit** (`AGENTS.md`, bloc D283).
+   - ⚠ **Le rattachement de ces journaux à D288 est une INFÉRENCE par nom et par heure** (backlog,
+     reports de D291) : le confronter à ce que D288 écrit — le total de gardes de sa passe `--tout` —
+     **avant** de l'écrire comme un fait.
+   - ⚠ **Les journaux de travail de la certification portent des noms propres au rang 15** : les
+     `p1`…`p5` du rang 11 sont génériques et seraient écrasés (même entrée du backlog).
+1. **Relevé d'ouverture, calibration rejouée.** ⛔ **PORTE DURE — sinon rien ne se lance, et la
+   session le dit à Ko** : `chrome` = 0 ; RAM libre **au-dessus de la barre** ; **SECTEUR**. Critère :
+   section « LE CRITÈRE DU RANG 9 », point 6 durci par D290, porte `chrome` = 0 entrée par D288 —
+   **aucune valeur n'est recopiée ici**.
+2. **La passe complète, en une fois** : échantillonneur en fond, **arbre immobile**.
+3. **La marque** — elle nommera le rang 13 et l'incident D292, rien d'autre — **ou le refus motivé.**
+
+⚠ **LIMITE À RELEVER DANS LA MARQUE** : la base de dev `zwadj` est **vierge** depuis D292. Rien ne
+bloque — `test:int` recrée `zwadj_test` (`apps/api/test/int/setup-global.ts`) et l'e2e recrée
+`zwadj_e2e` (`e2e/global-setup.ts`, base par défaut de `e2e/playwright.config.ts`) — mais **la marque
+portera sur une base reconstruite, sans les données sur lesquelles D282 a mesuré.**
+
+⇒ **ÉTAT AU 14/09/2026 : ARBITRÉ, RIEN D'EXÉCUTÉ.**
+
 ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSITION ; L'ÉCART DE D290 NON REPRODUIT**
 
 ⛔ **ÉTIQUETTE BARRÉE À LA CLÔTURE, PATRON DE D284** : le corps reste l'état du rang 14 ; c'est
-l'étiquette « PROCHAIN LOT » qui mentirait. **Le rang 15 n'est pas arbitré** : il n'a pas de bloc.
+l'étiquette « PROCHAIN LOT » qui mentirait. ~~**Le rang 15 n'est pas arbitré** : il n'a pas de bloc.~~
+⛔ **(14/09/2026, D292) LE RANG 15 EST ARBITRÉ : CERTIFICATION** — son bloc est au-dessus.
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 12/09/2026 (D291).** ⇒ **QUEL lot : rang 14 de l'ordre des rangs.
 OÙ IL EN EST : ici.** Sixième écriture d'ordre, et toutes sont de Ko.
@@ -529,7 +569,9 @@ Ko a tranché l'écart ci-dessous : **`docs/preuves/` ne compte pas** (amendemen
 `AGENTS.md`), donc **ce rang sort du compte**. L'**incident `zwadj-db`** du 13/09/2026 y **entre** :
 il modifie `docker-compose.yml`, qui peut dégrader `test:int`. ⇒ **DEUX = le rang 13 (`251e82b`)
 et l'incident D292.** Le rang 15 devra donc passer par une certification (Ko, 13/09/2026).
-⚠ **ÉCART DE LETTRE, SIGNALÉ ET NON TRANCHÉ PAR LA SESSION** : ce rang porte aussi `.gitattributes`,
+⛔ **TRANCHÉ PAR KO LE 14/09/2026 (D292) : `.gitattributes` EST COUVERT** — par ce que fait sa ligne,
+pas par son nom. Clause bornée et son contrôle : `AGENTS.md`, bloc D283. **Le compteur reste à DEUX.**
+⚠ ~~**ÉCART DE LETTRE, SIGNALÉ ET NON TRANCHÉ PAR LA SESSION**~~ — constat d'origine : ce rang porte aussi `.gitattributes`,
 hors `docs/preuves/`. Sa seule ligne active est `docs/preuves/** -text` (relevé le 13/09/2026) : il
 n'agit que sur les preuves. Le compte de Ko, DEUX, le range avec elles ; la lettre de l'exemption
 ne le nomme pas.
@@ -538,8 +580,8 @@ CI-DESSUS** : Ko a écrit « ce lot est du CODE si tu verses un
 instrument » ; D283, telle qu'elle est écrite, compte **tout** fichier hors `.md` d'autorité,
 preuves archivées comprises. La session applique la lettre. Exempter des preuves qu'aucune porte
 ne lit serait un **amendement de D283**, et il appartient à Ko.
-⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : ordre des rangs (section D270) — **rang 15 en attente
-d'arbitrage de Ko**.
+⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : ordre des rangs (section D270) — ~~**rang 15 en attente
+d'arbitrage de Ko**~~ ⛔ **rang 15 = CERTIFICATION, arbitré par Ko le 14/09/2026 (D292)**.
 
 ### ⛔ CE QUE CE LOT NE FERA PAS
 
@@ -1973,8 +2015,9 @@ prochain plafond gelé aura le même défaut.
 ⛔ **UN INCIDENT, PAS UN LOT — MAIS IL COMPTE.** Il modifie `docker-compose.yml`, qui n'est pas un
 `.md` d'autorité et peut dégrader `test:int` : **compteur de lots de code non certifiés à DEUX**
 (le rang 13 et cet incident ; le rang 14 en sort par l'exemption `docs/preuves/`, arbitrée par Ko
-et écrite dans `AGENTS.md`). Il se lit au point d'entrée du rang 14. **Le rang 15 reste en attente
-d'arbitrage de Ko, et il passera par une certification.**
+et écrite dans `AGENTS.md`). Il se lit au point d'entrée du rang 14. ~~**Le rang 15 reste en attente
+d'arbitrage de Ko, et il passera par une certification.**~~ ⛔ **Ratifié par Ko le 14/09/2026, qui a
+arbitré : le rang 15 EST la certification** (clôture en fin de section).
 
 ### La cause — trois sources, et elles disent la même chose
 
@@ -2107,7 +2150,7 @@ Recherche sur le texte **aplati** des quatre fichiers d'autorité (D289), **64 o
 1 079 + 115 + 7 831 + 3 464 lignes, triées au contexte.
 **Invalidé par l'incident, traité :**
 - point d'entrée du rang 14 : composition du compteur barrée, écart de lecture tranché par Ko, et
-  écart de lettre `.gitattributes` signalé ;
+  écart de lettre `.gitattributes` signalé — ⛔ tranché par Ko le 14/09/2026, voir la clôture ;
 - point d'entrée du rang 13 : motif « À DEUX DEPUIS D291 » barré ;
 - section D291 : « conteneur arrêté après (`pnpm db:down`) » barré ; « l'exemption éventuelle
   appartient à Ko » annoté comme tranché ;
@@ -2143,6 +2186,35 @@ extraits.
    la machine. Les deux orphelins vides sont au backlog.
 2. **Aucun semis** de la base de dev.
 3. **Pas une certification.** ⛔ **Compteur : DEUX — dernière place.**
+
+### ⛔ CLÔTURE — CE QUE LE CORRECTIF CHANGE, ET LES ARBITRAGES DE KO DU 14/09/2026
+
+**Incident ratifié par Ko le 14/09/2026.** Sa lecture, écrite parce qu'elle est le point : **la base
+n'est pas morte d'un accident, elle est morte d'une commande normale du dépôt**, `pnpm db:down`.
+
+⛔ **CE QUE LE CORRECTIF CHANGE — SINON ON ÉVITERA LONGTEMPS UNE COMMANDE DEVENUE INOFFENSIVE (Ko).**
+Avec le montage sur `/var/lib/postgresql`, **les données vivent dans le volume NOMMÉ** `zwadj_pgdata`.
+`pnpm db:down` (= `docker compose down`) retire le conteneur et laisse ce volume : **il redevient sans
+effet sur les données** — mesuré par la table témoin, qui a survécu à `down` puis `up`. ⛔ **`down -v`,
+lui, les supprime.** Écrit aussi dans `AGENTS.md` (notes du poste de Ko), dans la note barrée de la
+section D291 et au backlog.
+⚠ **Le commentaire de `docker-compose.yml` n'a PAS été retouché** : il décrit l'ancien montage, au
+passé. Le modifier aurait changé un fichier qui compte et rouvert les portes, pour une phrase déjà
+exacte.
+
+**Arbitrage 1 — `.gitattributes` EST COUVERT par l'exemption, par ce que fait sa ligne et non par son
+nom.** Sa seule règle vise `docs/preuves/` : elle ne peut affecter aucun fichier de code.
+⛔ **Borné et vérifiable** : si une règle de ce fichier vise un jour autre chose, **le lot qui
+l'introduit COMPTE**. Clause et contrôle dans `AGENTS.md`, bloc D283 ; contrôle calibré le 14/09/2026
+sur quatre cas (fichier réel **1 · 0**, règle `*.ts` ajoutée **2 · 1**, commentaires seuls **0 · 0**,
+motif ancré **1 · 0**). **Le compteur reste à DEUX.**
+
+**Arbitrage 2 — le numéro D292 est ratifié.**
+
+**Arbitrage 3 — RANG 15 = CERTIFICATION**, avec une étape 0 urgente : archiver les 26 journaux de
+campagne de D288 avant que `--tout` ne les réécrive. Ordre complet, porte dure et limite de la base
+vierge : bloc « PROCHAIN LOT — rang 15 », en tête de ce fichier. **Rien n'en est exécuté dans cette
+session** : Ko l'a close, et le rang s'ouvre à froid.
 
 ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les preuves entrent au dépôt
 
@@ -2402,7 +2474,10 @@ attendu avant la porte, conteneur ~~arrêté~~ **supprimé** après (`pnpm db:do
 ⛔ **« ARRÊTÉ » BARRÉ LE 13/09/2026 (D292)** : `db:down` vaut `docker compose down`, et
 `portes/db-down.log` porte « Container zwadj-db Removed ». Avec le montage d'alors, la base de dev
 vivait dans le volume anonyme du conteneur : **ce geste l'a détachée de tout conteneur**, et le
-démarrage suivant a échoué. Chaîne et pièces : section D292. ⚠ **Docker Desktop, lui, reste
+démarrage suivant a échoué. Chaîne et pièces : section D292.
+⚠ **Et depuis le correctif de D292, la même commande est SANS EFFET sur les données** : le volume
+nommé est monté sur `/var/lib/postgresql`, et la base y vit. Ne pas éviter `db:down` ; seul `down -v`
+supprime les données. ⚠ **Docker Desktop, lui, reste
 ouvert** — un relevé d'état machine futur le verra.
 ⚠ **Ces durées ne se comparent à rien** : Docker venait de démarrer (`test:int` à 498 s contre 306 s
 à D288), et le terme de position que ce lot établit vaut aussi pour des portes enchaînées.
@@ -6520,9 +6595,15 @@ passe **AVANT** les budgets de test. **Motif de Ko** : un budget calculé sur de
 restent inexpliqués serait choisi au jugé. La désignation des budgets pour le rang 14 est
 **barrée plutôt qu'effacée** (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 14 » en
 tête de ce fichier.
-⇒ **RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ **Ce qui attend, sans rang** : les
+⇒ ~~**RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284).~~ ⛔ **CONSOMMÉ LE 14/09/2026, À LA CLÔTURE
+DE D292 — ARBITRÉ PAR KO : le RANG 15 est la CERTIFICATION.** **Motif de Ko** : le compteur de lots
+de code non certifiés est à DEUX (rang 13 et incident D292), et la règle l'impose. Barré plutôt
+qu'effacé (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 15 » en tête de ce fichier.
+⚠ **Ce qui attend, sans rang** : les
 **budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
 rang 15 leur soit attribué.
+⇒ **RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'ouverture du rang 15, pour
+qu'aucune reprise ne tombe sur une liste qui s'arrête.
 ⚠ **ET « SUIVANT » VOULAIT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
 **OUVERT, pas clos** ; ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa
 mesure**.~~ ⛔ **PRÉMISSE PÉRIMÉE LE 12/09/2026 (D288) : le rang 12 est CLOS**, sa marque est

@@ -527,6 +527,19 @@ L'EXEMPTION** : `docker-compose.yml` n'est ni un `.md` d'autorité ni du code ap
 **peut** dégrader `test:int`, qui dépend du conteneur qu'il décrit — **il COMPTE**. ⇒ **Une
 exemption se définit par « aucune porte ne le lit », jamais par « ce n'est pas du code ».**
 Détail : section D292 de `ZWADJ_CONTINUITE.md`.
+⛔ **`.gitattributes` EST COUVERT — PAR CE QUE FONT SES RÈGLES, JAMAIS PAR SON NOM (Ko, 14/09/2026,
+D292).** Il tombe sous l'exemption **tant que chacune de ses règles actives vise `docs/preuves/`** :
+il ne peut alors affecter aucun fichier de code. ⛔ **L'amendement est BORNÉ** : une seule règle qui
+vise autre chose ⇒ **le lot qui l'introduit COMPTE**. **Contrôle, rejoué par tout lot qui touche ce
+fichier — on relit le fichier, on ne se fie pas à son nom :**
+```
+grep -cvE '^[[:space:]]*(#|$)' .gitattributes                                # lignes actives EXAMINÉES
+grep -vE '^[[:space:]]*(#|$)' .gitattributes | grep -cvE '^/?docs/preuves/'   # hors preuves : 0 exigé
+```
+Les deux nombres se lisent ensemble (D290) : « 0 hors preuves » sur 0 ligne examinée ne dit rien.
+⚠ `grep -c` sort en **1** quand il compte zéro : on lit le NOMBRE, pas le code de sortie.
+**Calibré le 14/09/2026** — fichier réel **1 · 0** ; une règle `*.ts` ajoutée **2 · 1** ; commentaires
+seuls **0 · 0** ; motif ancré `/docs/preuves/…` **1 · 0**.
 ⚠ Relevé complet et contre-exemple : entrée `[DOC][P2]` du 09/09 dans `ZWADJ_BACKLOG.md`,
 et section **D283** de `ZWADJ_CONTINUITE.md`.
 
@@ -1024,6 +1037,12 @@ note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
   pas pareil — **ne jamais conclure sur un seul des deux**.
 - ⛔ **UNE E2E INTERROMPUE LAISSE SES SERVEURS SUR 3100/3101** (et la mémoire) : la
   suivante meurt en 8 s sur « already used ». Purger node et les ports AVANT.
+- ✅ **`pnpm db:down` EST SANS EFFET SUR LES DONNÉES DEPUIS D292 (13/09/2026) — NE PAS L'ÉVITER.**
+  `zwadj_pgdata` est monté sur `/var/lib/postgresql`, où postgres:18 range la base : `docker compose
+  down` retire le conteneur, **le volume NOMMÉ reste** — mesuré par une table témoin à travers
+  `down` puis `up`. ⛔ **`down -v`, lui, supprime les données.** ⚠ Avant D292, le montage sur `/data`
+  laissait la base dans un volume anonyme, et c'est `db:down` qui l'a détachée : la faute était le
+  montage, pas la commande (section D292 de `ZWADJ_CONTINUITE.md`).
 - ⛔ **LA PASSE COMPLÈTE DES PORTES DÉPASSE LA FENÊTRE D'UN APPEL** : la découper, et
   RELEVER la durée de chaque morceau pour dimensionner le suivant. Trois tâches tuées
   ont été lues comme des échecs de suite. ⚠ **Aucun ordre de grandeur n'est écrit ici** —
