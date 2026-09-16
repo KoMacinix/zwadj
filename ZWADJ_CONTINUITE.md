@@ -1364,6 +1364,20 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
    **+45 à +64 Mo seulement**, là où la projection par soustraction de D287 annonçait
    **+192**. ⇒ **La projection était bien une projection** (D287 le disait), et une porte
    dure adossée à la seule RAM se serait jouée dans cette marge-là.
+   ⛔ **ET LA JUSTIFICATION LA PLUS FORTE EST VENUE APRÈS COUP — DEUX FENÊTRES, DEUX QUANTITÉS,
+   JAMAIS LA MÊME (D293, gravé ici sur instruction de Ko le 16/09/2026).**
+   **14/09** : RAM **+697,5 puis +721** au-dessus de la barre, SECTEUR, calibration passante — et
+   **`chrome` 14 puis 15** ⇒ **refus**. **16/09**, Chrome fermé par Ko : **`chrome` 0**, `node` 0,
+   SECTEUR, calibration passante (rendement 0,96) — et **RAM 3 073,5 puis 3 077,5 Mo, soit −1 505,5**
+   ⇒ **refus**. ⚠ **UNE PORTE DURE À UNE SEULE QUANTITÉ AURAIT LAISSÉ PASSER UNE DES DEUX FENÊTRES** :
+   celle qu'elle satisfaisait. ⛔ **Le point 8 a été écrit comme une correction de FORME** — sortir une
+   règle d'un message de chat (D288) — **et il a mordu comme une correction de FOND** : sans lui, la
+   fenêtre du 14/09 partait sous une RAM confortable et un navigateur actif.
+   ⚠ Et la réciproque est du même relevé : **la RAM a refusé une fenêtre où `chrome` était à 0**. Aucune
+   des deux quantités ne couvre l'autre — c'est la séparation que D288 écrivait (« la barre dit combien
+   il reste, `chrome` dit si ce qui reste a été libéré »), **mesurée dans les deux sens**.
+   ⇒ Pièces et inventaires : section D293, « ÉTAPE 1 » et « ÉTAPE 1, SECONDE TENTATIVE » ;
+   `docs/preuves/D293/ouverture/` (14/09) et `ouverture-16-09/`.
 
 #### ⛔ LE MOTIF DES POINTS 6 ET 7, ET IL EST MESURÉ — LA NUIT DU 09 AU 10/09/2026
 
@@ -2257,6 +2271,10 @@ pesait 726 Mo. C'est une **inférence**, dans les deux sens.
 ⛔ **DEUXIÈME REFUS DE LA MÊME PASSE, SUR UNE AUTRE QUANTITÉ — ET C'EST L'ARGUMENT DES SIX.** Le 14/09,
 RAM et SECTEUR étaient verts et `chrome` refusait ; le 16/09, `chrome` est à 0 et c'est la RAM. **Une
 porte dure à une seule quantité aurait laissé passer l'une des deux fenêtres.**
+⛔ **RATIFIÉ ET GRAVÉ AU CRITÈRE PAR KO LE 16/09/2026** — point 8 de « LE CRITÈRE DU RANG 9 », avec les
+deux fenêtres et leurs chiffres. **Motif de Ko** : « je l'avais fait entrer au critère en croyant fermer
+un trou de forme ». ⇒ **Une certification future lit le critère, pas cette section** : c'est D276
+appliqué à ce qui justifie une règle, et non plus seulement à la règle.
 
 ### Passe D277 de la clôture — les deux sens
 

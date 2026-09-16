@@ -1,0 +1,6 @@
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '⛔ **ET LA JUSTIFICATION LA PLUS FORTE EST VENUE APRÈS COUP'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · 'UNE PORTE DURE À UNE SEULE QUANTITÉ AURAIT LAISSÉ PASSER UNE DES DEUX FENÊTRES'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '⛔ **RATIFIÉ ET GRAVÉ AU CRITÈRE PAR KO LE 16/09/2026**'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · 'jeton-absent-de-calibration-d293'
+  ZWADJ_CONTINUITE.md : 595435 caracteres parcourus, 4 jetons
+jetons en ecart : 0 (attendu 0)

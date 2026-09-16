@@ -89,6 +89,15 @@ ETAPES["refus2"] = {
     ],
 }
 
+ETAPES["critere"] = {
+    "ZWADJ_CONTINUITE.md": [
+        ("⛔ **ET LA JUSTIFICATION LA PLUS FORTE EST VENUE APRÈS COUP", 1),
+        ("UNE PORTE DURE À UNE SEULE QUANTITÉ AURAIT LAISSÉ PASSER UNE DES DEUX FENÊTRES", 1),
+        ("⛔ **RATIFIÉ ET GRAVÉ AU CRITÈRE PAR KO LE 16/09/2026**", 1),
+        ("jeton-absent-de-calibration-d293", 0),
+    ],
+}
+
 etape = sys.argv[1] if len(sys.argv) > 1 else ""
 if etape not in ETAPES:
     sys.exit(f"ABANDON : etape inconnue {etape!r}")
