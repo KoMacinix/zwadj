@@ -1,0 +1,9 @@
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · 'Portes vertes AU REPOS le 16/09/2026'
+✓ ZWADJ_CONTINUITE.md : 3 (attendu 3) · '195 mordues'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · 'zwadj_zwadj_pgdata'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · 'rang15-e2e-EXTRAIT.txt'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · 'CLOS LE 16/09/2026 : D293 — MARQUE POSÉE'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · 'passe NON lancée'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · 'jeton-absent-de-calibration-d293'
+  ZWADJ_CONTINUITE.md : 609773 caracteres parcourus, 7 jetons
+jetons en ecart : 0 (attendu 0)

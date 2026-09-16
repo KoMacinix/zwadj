@@ -1,0 +1,13 @@
+# Passe D277 de la marque (D293, 16/09/2026).
+# Sens 1 — ce que la marque INVALIDE : toute phrase courante qui dit le compteur a DEUX, le rang 15 ouvert,
+# la passe non lancee, ou la porte dure rouge comme etat courant.
+# Sens 2 — ce qu'elle REND PERMIS : toute phrase qui dit qu'un lot de code ne peut pas s'ouvrir, ou dont la
+# condition etait la marque du rang 15.
+compteur de lots de code non certifiés
+DEUX — dernière place
+aucun lot de code
+peut s'ouvrir
+rang 15
+RANG 16
+porte dure
+passe NON lancée

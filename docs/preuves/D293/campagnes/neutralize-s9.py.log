@@ -1,0 +1,11 @@
+✓ Pré-vol : 4 mesure(s) verte(s) — types, familles, etroit, types-pro
+
+✓ S9-1. ⛔ UN MEMBRE CHANGE DE FAMILLE — `addPhoto` passe côté salles  [types]
+✓ S9-2. ⛔ UNE 23ᵉ CLÉ APPARAÎT DANS L'IMPLÉMENTATION, sans interface  [familles]
+✓ S9-3. ⛔ LA LISTE DE FAMILLES MENT — une taille est retouchée  [familles, types]
+✓ S9-4. ⛔ UN CROCHET ÉTROIT REND LE CLIENT ENTIER — le découpage devient décoratif  [types-pro]
+✓ S9-5. ⛔ UN ÉCRAN TEND LA MAIN HORS DE SA FAMILLE  [types-pro]
+✓ S9-6. ⛔ UN ÉCRAN REVIENT AU CROCHET LARGE  [etroit]
+
+6 garde(s) mordue(s) sur 6 cible(s) RÉELLEMENT MESURÉE(S).
+

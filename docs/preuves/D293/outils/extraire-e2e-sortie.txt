@@ -1,0 +1,2 @@
+lignes parcourues : 911 · gardees : 3 · « token= » dans la sortie : 0 (attendu 0)
+ecrit : docs/preuves/D293/passe/rang15-e2e-EXTRAIT.txt

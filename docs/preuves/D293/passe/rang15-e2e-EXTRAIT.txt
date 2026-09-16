@@ -1,0 +1,9 @@
+EXTRAIT DERIVE de .neutralisation-journaux/rang15-e2e.log — PAS la piece brute.
+Le journal brut n'entre pas au depot : il porte 24 jetons de verification d'e-mail imprimes
+par le serveur de developpement (audit de secrets du 16/09/2026). Il reste hors depot, et une
+preuve ne se retouche pas : ceci est un EXTRAIT par liste blanche des lignes de verdict.
+lignes parcourues : 911 · lignes gardees : 3
+--- verdict ---
+Running 35 tests using 2 workers
+  1 skipped
+  34 passed (1.8m)

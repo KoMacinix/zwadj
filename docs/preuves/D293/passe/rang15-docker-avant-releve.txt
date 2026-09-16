@@ -1,0 +1,14 @@
+﻿
+> zwadj@ db:up C:\Users\benla\Desktop\MyProjct\Zwadj
+> docker compose up -d
+
+node.exe :  Container zwadj-db Starting 
+At C:\Users\benla\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.mjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ( Container zwadj-db Starting :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ Container zwadj-db Started 
+zwadj-db Up Less than a second
+pg_isready apres 2 tentative(s) : /var/run/postgresql:5432 - accepting connections

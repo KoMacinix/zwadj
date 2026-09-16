@@ -1,0 +1,12 @@
+✓ Pré-vol : 3 mesure(s) verte(s) — moteur, services, devis
+
+✓ S4-1. ⚠ HOLIDAY et WEEKDAY sont ÉCHANGÉS — un férié se tarife comme un jour ordinaire  [moteur]
+✓ S4-2. SEASON cesse de refuser les bornes absentes : une saison sans dates couvre l'année  [moteur]
+✓ S4-3. ⚠ LE REPLI DU TYPE INCONNU SAUTE — une famille de règle inconnue s'applique toujours  [moteur]
+✓ S4-4. ⚠ PER_GUEST et PER_UNIT sont ÉCHANGÉS — le menu par tête se facture à la quantité saisie  [services]
+✓ S4-5. Le type inconnu redevient vendable (le retombé PER_UNIT d'origine)  [services]
+✓ S4-6. FIXED cesse de refuser une quantité — un forfait se multiplie  [services]
+✓ S4-7. TIERED accepte un palier INACTIF — un tarif retiré du catalogue se revend  [services]
+
+7 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+

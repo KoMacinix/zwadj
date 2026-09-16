@@ -1,0 +1,28 @@
+✓ Pré-vol inversé : un run de relevé ROUGIT — releve
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, les cinq gardes de E3d-1 restent NON PROUVÉES : une contrainte
+  de table ne se mesure pas contre un faux magasin.
+
+✓ Pré-vol : 1 mesure(s) verte(s) — plafond
+
+⚠ E1. ⛔ L'INDEX PARTIEL DISPARAÎT — la base réaccepte deux intentions en attente
+   NON MESURÉE — course hors de cette exécution.
+⚠ E2. ⛔ LE NETTOYAGE PRÉALABLE SAUTE — la migration tomberait sur une base ayant couru
+   NON MESURÉE — course hors de cette exécution.
+⚠ E3. Le prédicat ne reconnaît plus la violation — le perdant relance P2002 au visiteur
+   NON MESURÉE — course hors de cette exécution.
+⚠ E4. ⛔ LE PERDANT NE RELIT PLUS — il propage P2002 au lieu de rendre l'intention gagnante
+   NON MESURÉE — course hors de cette exécution.
+⚠ E5. Le `await` saute : la promesse rejetée sort du `try` et le `catch` ne sert plus à rien
+   NON MESURÉE — course hors de cette exécution.
+✓ S8-1. ⛔ LE PLAFOND EST DÉPASSÉ ET RIEN NE TOMBE — le nombre redevient décoratif  [plafond]
+✓ S8-2. ⛔ L'EXEMPTION CESSE D'ÊTRE CIBLÉE — plus rien ne sépare un fichier bruyant d'un échec  [plafond]
+✓ S8-3. La sentinelle `A_RELEVER` cesse de mordre — un plafond deviné passerait  [plafond]
+
+3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+  NON MESURÉE : E1. ⛔ L'INDEX PARTIEL DISPARAÎT — la base réaccepte deux intentions en attente (hors exécution : course)
+  NON MESURÉE : E2. ⛔ LE NETTOYAGE PRÉALABLE SAUTE — la migration tomberait sur une base ayant couru (hors exécution : course)
+  NON MESURÉE : E3. Le prédicat ne reconnaît plus la violation — le perdant relance P2002 au visiteur (hors exécution : course)
+  NON MESURÉE : E4. ⛔ LE PERDANT NE RELIT PLUS — il propage P2002 au lieu de rendre l'intention gagnante (hors exécution : course)
+  NON MESURÉE : E5. Le `await` saute : la promesse rejetée sort du `try` et le `catch` ne sert plus à rien (hors exécution : course)
+

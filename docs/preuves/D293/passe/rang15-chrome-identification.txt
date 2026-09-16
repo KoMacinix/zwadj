@@ -1,0 +1,31 @@
+﻿identification des processus chrome — 2026-09-14 01:51:56 (lecture seule)
+processus chrome.exe parcourus : 15
+
+ProcessId ParentProcessId Creation             Mo ExecutablePath                                       
+--------- --------------- --------             -- --------------                                       
+    27632           13604 2026-09-12 23:24:09 294 C:\Program Files\Google\Chrome\Application\chrome.exe
+     2524           27632 2026-09-12 23:24:09   9 C:\Program Files\Google\Chrome\Application\chrome.exe
+    20100           27632 2026-09-12 23:24:09  64 C:\Program Files\Google\Chrome\Application\chrome.exe
+    29172           27632 2026-09-12 23:24:09 208 C:\Program Files\Google\Chrome\Application\chrome.exe
+    28872           27632 2026-09-12 23:24:09  22 C:\Program Files\Google\Chrome\Application\chrome.exe
+     6380           27632 2026-09-12 23:24:11  78 C:\Program Files\Google\Chrome\Application\chrome.exe
+    29460           27632 2026-09-12 23:24:11  85 C:\Program Files\Google\Chrome\Application\chrome.exe
+    28952           27632 2026-09-12 23:24:12  76 C:\Program Files\Google\Chrome\Application\chrome.exe
+    25336           27632 2026-09-12 23:24:12 298 C:\Program Files\Google\Chrome\Application\chrome.exe
+    29472           27632 2026-09-12 23:24:16  23 C:\Program Files\Google\Chrome\Application\chrome.exe
+    28344           27632 2026-09-12 23:24:16  38 C:\Program Files\Google\Chrome\Application\chrome.exe
+    20624           27632 2026-09-13 23:27:12 101 C:\Program Files\Google\Chrome\Application\chrome.exe
+    30424           27632 2026-09-14 01:31:48 404 C:\Program Files\Google\Chrome\Application\chrome.exe
+    22512           27632 2026-09-14 01:31:48  36 C:\Program Files\Google\Chrome\Application\chrome.exe
+    17936           27632 2026-09-14 01:51:08  51 C:\Program Files\Google\Chrome\Application\chrome.exe
+
+
+
+fenetres visibles :
+
+   Id MainWindowTitle            
+   -- ---------------            
+27632 Claude Code - Google Chrome
+
+
+

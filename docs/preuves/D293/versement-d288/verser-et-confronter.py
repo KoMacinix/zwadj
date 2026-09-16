@@ -56,6 +56,11 @@ def git(*args):
     return r.stdout
 
 
+# ⚠ APRES LA PASSE DU RANG 15 (16/09/2026), CE SCRIPT NE SE REJOUE PLUS : `.neutralisation-journaux/`
+# porte desormais les journaux de CETTE passe, pas ceux de D288 — sa garde a d'ailleurs ABANDONNE sur
+# neutralize-booking-status.py.log, comme elle doit (« une preuve ne s'ecrase pas »). Il reste la piece
+# de l'etape 0. L'audit de secrets courant vit dans `docs/preuves/D293/outils/audit-secrets.py`.
+
 # ============================================================================ A
 print("== A. INVENTAIRE ET COPIE OCTET POUR OCTET ==")
 noms = sorted(n for n in os.listdir(SOURCE) if n.startswith("neutralize-") and n.endswith(".py.log"))

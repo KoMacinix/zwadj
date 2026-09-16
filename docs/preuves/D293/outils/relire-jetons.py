@@ -98,6 +98,20 @@ ETAPES["critere"] = {
     ],
 }
 
+ETAPES["marque"] = {
+    # Attendus RELEVES par recherche apres la derniere ecriture (lecon des etapes « refus » et « refus2 »),
+    # et sur des chaines qui n'enjambent aucun retour a la ligne.
+    "ZWADJ_CONTINUITE.md": [
+        ("Portes vertes AU REPOS le 16/09/2026", 1),
+        ("195 mordues", 3),
+        ("zwadj_zwadj_pgdata", 1),
+        ("rang15-e2e-EXTRAIT.txt", 1),
+        ("CLOS LE 16/09/2026 : D293 — MARQUE POSÉE", 1),
+        ("passe NON lancée", 0),
+        ("jeton-absent-de-calibration-d293", 0),
+    ],
+}
+
 etape = sys.argv[1] if len(sys.argv) > 1 else ""
 if etape not in ETAPES:
     sys.exit(f"ABANDON : etape inconnue {etape!r}")

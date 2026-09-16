@@ -2369,6 +2369,19 @@ Détail : section D293 de `ZWADJ_CONTINUITE.md`.
 
 ### ⛔ Ouverts, mesurés, NON corrigés
 
+- **[INFRA][P2]** ⛔ **LE JOURNAL e2e NE PEUT PAS ENTRER AU DÉPÔT : IL PORTE DES JETONS DE VÉRIFICATION
+  D'E-MAIL.** Relevé le 16/09/2026 par l'audit de secrets, sur la passe du rang 15 : **24 occurrences**
+  de `…/auth/verification-email?token=` avec une valeur de **43 caractères**, imprimées par le serveur
+  de **développement** (pas de mailer en dev) pour les comptes créés par l'e2e.
+  ⇒ **Ce que D293 en a fait** : le journal brut **n'est pas versé** (il reste dans
+  `.neutralisation-journaux/`, ignoré par git) et la section cite un **EXTRAIT DÉRIVÉ** nommé comme tel,
+  construit par **liste blanche** des lignes de verdict (`docs/preuves/D293/outils/extraire-e2e.py`).
+  ⛔ **NON corrigé, et c'est une décision de Ko** : (1) laisser ainsi — toute certification future versera
+  un extrait, jamais le journal ; (2) ou faire taire le lien de vérification côté serveur de dev, ce qui
+  **touche du code** et retire un confort réel. ⚠ **Ne pas « caviarder » le journal** : une preuve ne se
+  retouche pas (D291).
+  ⚠ **Portée** : tout journal qui capture la sortie d'un serveur de dev est concerné, pas seulement
+  l'e2e.
 - **[MÉTHODE][P1]** ⛔ **LA CERTIFICATION DU RANG 15 N'A PAS ÉTÉ LANCÉE : PORTE DURE ROUGE SUR `chrome`
   (14 PUIS 15), ALORS QU'IL ÉTAIT ANNONCÉ FERMÉ.** Relevé le 14/09/2026 à 01:50 et 01:51 : 15 processus
   Google Chrome, **une fenêtre visible titrée « Claude Code - Google Chrome »**, des processus enfants
@@ -2394,6 +2407,14 @@ Détail : section D293 de `ZWADJ_CONTINUITE.md`.
   produire, **avec sa raison**, et redéfinir **ce que le seuil garantit** (le critère l'exige). ⛔ **La
   session ne redéfinit pas la barre** : D288 a écrit, en ne consommant pas cette sortie, « aucun
   arbitrage demandé à Ko ».
+  ✅ **CLOS LE 16/09/2026 — ET AUCUNE BARRE N'A ÉTÉ REDÉFINIE.** Ko a refusé la sortie de D270 (« redéfinir
+  « repos » sur un plancher dégradé fabriquerait la permission au lieu de la condition »), a fermé Edge et
+  allégé VS Code, et a fait jouer `wsl --shutdown`. RAM libre remontée à **4 686 puis 4 718 Mo** (+107,
+  +139) ⇒ **porte dure verte, passe lancée, marque posée**. ⚠ **Mesuré au passage, et contraire à
+  l'attente** : `wsl --shutdown` **n'a pas rendu la mémoire** (`vmmemWSL` 2 133 → 2 165) ; le
+  franchissement vient des fermetures de Ko. Détail : section D293, « LE MOUVEMENT D'INVENTAIRE ».
+  ⇒ **CE QUI RESTE, ET CE N'EST PAS RIEN** : deux fenêtres ont été perdues, et **la marge à l'ouverture
+  était de +107 Mo**. Aucune règle n'en est tirée — à Ko.
 - **[INFRA][P3]** ⚠ **LA COLONNE « décl » DE `lancer-campagnes.py` REND « — » SUR 11 CAMPAGNES SUR 26.**
   Relevé le 14/09/2026 sur les journaux attribués à D288 : l'expression `ROUGES` attend
   `neutralis..e\(s\)` — deux caractères — alors que « neutralisée », décodé en UTF-8, n'en porte qu'un.

@@ -1,0 +1,10 @@
+✓ D1. ⚠ LE `key` DE LA CARTE SAUTE — l'animation redevient muette  [client, pro]
+✓ D2. La coche redevient un rang (le rail ne distingue plus fait/à faire)  [client]
+✓ D3. Le trait de liaison se rend TOUJOURS, même sans rien à relier  [client]
+✓ D4. Le trait cesse d'être décoratif (il parle à un lecteur d'écran)  [client]
+✓ D5. Le bouton « Modifier » perd la classe partagée (retour à deux boutons)  [client, pro]
+✓ D6. La `className` d'application est jetée : le rail quitte sa colonne  [client, pro]
+✓ D7. Le trait de liaison saute côté PRO (l'écart entre les deux revient)  [pro]
+
+7 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+

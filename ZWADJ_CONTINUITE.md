@@ -482,7 +482,15 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 15 · **CERTIFICATION** — le rang 13 et l'incident D292
+## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+
+⛔ **TITRE BARRÉ À LA CLÔTURE (patron de D273 et D284)** : un bloc qui garde l'étiquette « PROCHAIN LOT »
+sur du fait accompli envoie une reprise à froid travailler sur un rang clos. **Le corps ne bouge pas** —
+il reste l'état du rang 15, refus compris.
+⇒ **RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284). L'ordre des rangs (section D270) dit QUEL lot ;
+**aucun rang 16 n'est arbitré**, et la session n'en choisit pas. ⚠ Le compteur est à **ZÉRO** : un lot de
+code peut s'ouvrir dès que Ko l'arbitre, et c'est lui qui le portera à un.
+
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 14/09/2026, ÉCRIT À LA CLÔTURE DE D292.** ⇒ **QUEL lot : rang 15 de
 l'ordre des rangs. OÙ IL EN EST : ici.** Toutes les écritures d'ordre sont de Ko.
@@ -530,6 +538,13 @@ passe et marque : section « **Session du 14/09/2026 — D293** ».
 verts. ⇒ **Le rang 15 reste OUVERT. La reprise se fait À L'ÉTAPE 1**, sur le protocole commité dans
 `657e9ba`, **sans le réécrire** ; l'étape 0 est acquise. **Condition, et elle appartient à Ko** :
 `chrome` à 0 au relevé — détail et pièces, section D293, « ÉTAPE 1 ».
+✅ **MARQUE POSÉE LE 16/09/2026 (D293), À LA TROISIÈME TENTATIVE** : « **Portes vertes AU REPOS le
+16/09/2026, et le rang 13 (D290, `251e82b`) et l'incident D292 (`49f3ace`) en font partie** ». **Deux
+lots, rien d'autre**, aucun en-tête antérieur réécrit. ⇒ **Compteur de lots de code non certifiés :
+DEUX → ZÉRO**, le **rang 15 est CLOS**, et un lot de code peut s'ouvrir dès l'arbitrage de Ko.
+⇒ Chiffres, fenêtre, limites et fautes : section **D293**.
+⚠ Les deux refus qui précèdent restent écrits, non effacés — c'est ce qui rend la troisième fenêtre
+lisible :
 ⛔ **SECONDE TENTATIVE LE 16/09/2026 — `chrome` = 0 (Ko l'a fermé), ET LA PORTE DURE EST ROUGE SUR LA
 RAM** : 3 073,5 puis 3 077,5 Mo, soit **−1 505,5 et −1 501,5** sous la barre, à 80 s d'écart, SECTEUR et
 calibration passante (rendement 0,96). **RIEN N'EST LANCÉ, AUCUNE MARQUE.** ⚠ La RAM libre est **plus
@@ -582,6 +597,8 @@ du même lot.
 des fichiers hors `.md` d'autorité (`.gitattributes`, `docs/preuves/**`, scripts compris).~~ ⇒ **Il
 se lit désormais ici, et c'est la dernière place : aucun lot de code ne s'ouvre avant une
 certification.**
+⛔ **(D293, 16/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 15, **compteur à
+ZÉRO**, et **un lot de code PEUT s'ouvrir** dès que Ko l'arbitre — c'est lui qui le portera à un.
 ⛔ **COMPOSITION BARRÉE LE 13/09/2026 (D292) — LE CHIFFRE RESTE DEUX, UN DE SES DEUX LOTS A CHANGÉ.**
 Ko a tranché l'écart ci-dessous : **`docs/preuves/` ne compte pas** (amendement de D283, écrit dans
 `AGENTS.md`), donc **ce rang sort du compte**. L'**incident `zwadj-db`** du 13/09/2026 y **entre** :
@@ -858,6 +875,9 @@ lot de code **peut** désormais s'ouvrir, et c'est lui qui portera le compteur �
 ⛔ **(D291, 13/09/2026) PERMISSION CONSOMMÉE** : le rang 13 a porté le compteur à UN (D290), le
 rang 14 à DEUX (D291). ⇒ **Aucun lot de code ne s'ouvre avant une certification.** ⚠ Invisible à
 la première recherche de D291, qui ne voyait pas le gras : trouvée par la seconde.
+⛔ **(D293, 16/09/2026) ET CETTE INTERDICTION EST LEVÉE À SON TOUR** : la certification du rang 15 a eu
+lieu, **compteur à ZÉRO**, **un lot de code peut s'ouvrir**. ⚠ Troisième bascule de cette même phrase en
+cinq jours — elle se lit ici, jamais de mémoire.
 
 ⚠ ~~**ÉTAT, AU 11/09/2026 : L'ÉTAPE 0 EST FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ
 LANCÉE.**~~ **BARRÉ LE 12/09/2026 (D288) : la mesure a eu lieu.** Ce qui reste vrai de cette
@@ -2042,7 +2062,7 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
-## Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte dure ROUGE sur `chrome`, passe NON lancée
+## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
 
 ⛔ **RANG 15, ARBITRÉ PAR KO LE 14/09/2026** (clôture de D292). ⇒ **État du rang** : section « PROCHAIN
 LOT — rang 15 » en tête de ce fichier. **Numéro pris en LISANT le registre** : sa dernière ligne
@@ -2276,6 +2296,150 @@ deux fenêtres et leurs chiffres. **Motif de Ko** : « je l'avais fait entrer au
 un trou de forme ». ⇒ **Une certification future lit le critère, pas cette section** : c'est D276
 appliqué à ce qui justifie une règle, et non plus seulement à la règle.
 
+### ✅ LA MARQUE — CE QUI EST ÉCRIT, MOT POUR MOT
+
+> **Portes vertes AU REPOS le 16/09/2026, et le rang 13 (D290, `251e82b`) et l'incident D292
+> (`49f3ace`) en font partie.**
+
+**Deux lots, et rien d'autre.** ⛔ **Aucun en-tête antérieur n'est réécrit en « certifié »** (point 4 du
+critère). La marque est ici, datée, et **elle ne se reconduit pas au lot suivant**.
+⇒ **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO.**
+
+### ⛔ LE MOUVEMENT D'INVENTAIRE — `wsl --shutdown` N'A PAS RENDU LA MÉMOIRE, ET C'EST MESURÉ
+
+**Sur instruction de Ko**, et parce que `vmmemWSL` était le plus gros poste. Écrit ici comme un
+**mouvement d'inventaire**, pas comme un détail : il change la fenêtre.
+
+| poste | 16:06 (refus) | 18:41 (ouverture) | écart |
+|---|---|---|---|
+| **`vmmemWSL`** | 2 133 | **2 165** | **+32 — rien rendu** |
+| `Code` (VS Code) | 3 282 | 2 676 | **−606** |
+| `msedge` + `msedgewebview2` | 309 + 352 | 272 + 247 | −142 |
+| `claude` · `NVIDIA Overlay` · `svchost` | 552 · 329 · 1 480 | 321 · 243 · 1 406 | −231 · −86 · −74 |
+| total des processus | 15 417 | 13 396 | **−2 021** |
+| **RAM libre médiane** | **3 077,5** | **4 686** | **+1 608,5** |
+
+⛔ **LE FRANCHISSEMENT VIENT DES FERMETURES DE KO, PAS DU REDÉMARRAGE DE WSL.** Docker Desktop relance
+sa distribution **immédiatement** — moteur répondu **14 s** après la coupure — et la VM reprend sa
+place. ⚠ **L'attente écrite était l'inverse** (« WSL ne rend pas la mémoire qu'il libère,
+`wsl --shutdown` la rend d'un coup ») : elle n'est **pas** vérifiée ici. ⚠ **Ce que ce relevé ne dit
+pas** : ce qu'aurait donné la VM sans redémarrage du conteneur — une seule mesure, pas deux.
+⇒ **D292 REJOUÉ EN CONDITIONS RÉELLES, ET IL TIENT** : après `wsl --shutdown` + `pnpm db:up`, **même
+volume** (`cree=2026-09-14T00:47:54Z`, à l'identique), même montage sur `/var/lib/postgresql`,
+`PG_VERSION` **18**, **27 lignes de `_prisma_migrations`, 0 non finie**, **40 tables**, **0 ligne** dans
+`bookings`/`quotes`/`venues`/`users` — les chiffres de D292. ⚠ **PRÉCISION DE NOM, relevée ici** : le
+volume Docker s'appelle **`zwadj_zwadj_pgdata`** (préfixe de projet `compose`) ; `zwadj_pgdata` est la
+**clé** du fichier compose, pas le nom du volume. Les deux se lisent dans `docker volume ls`.
+
+### Les six portes, l'e2e, et l'état machine devant chacune
+
+**Relevé de sonde devant CHAQUE mesure** (`SECTEUR`, `node` 0, `chrome` 0 à tous), pièces dans
+`docs/preuves/D293/passe/`.
+
+| porte | mode | code RÉEL | chiffres | RAM au relevé |
+|---|---|---|---|---|
+| `typecheck` | avant-plan | **0** | 9 projets, 0 `error TS` | 4 814 |
+| `lint` | avant-plan | **0** | — | 4 812 |
+| `test` | avant-plan | **0** | **1 329 tests / 109 fichiers** (659 · 36 · 287 · 347) | 4 822 |
+| `build` | avant-plan | **0** | 4 paquets « Done », middleware **45,5 kB** | 4 774 |
+| `test:int` | fond d'outil | **0** | **436 tests / 36 fichiers**, PostgreSQL réel | 4 722 |
+| `test:e2e` | fond d'outil | **0** | **34 passés · 1 ignoré** | 5 776 |
+
+⚠ **AUCUN COMPTEUR N'A BOUGÉ** depuis D288 — 1 329/109, 436/36, 34+1 à l'identique : l'attendu d'une
+passe qui ne touche aucun code, et **c'est ce qui rend la comparaison lisible**.
+⚠ **Le code de sortie lu est le RÉEL**, écrit dans un fichier `.code` par chaque porte — jamais celui
+de l'enveloppe ni d'une notification de tâche (D288).
+⚠ **« failed » confronté à son CONTEXTE, jamais à son nombre (D275)** : dans `test`, **2** lignes de
+journal de `ChargilyGateway` (chemin d'échec réseau exercé par un test) et **0 `FAIL` en casse exacte**
+— ⛔ mon premier compteur était **insensible à la casse** et annonçait « FAIL = 2 » ; dans `test:int`,
+**1** occurrence, qui est le **nom** d'un test vert (« la ligne passe FAILED ») ; dans l'e2e, **4**
+lignes `[WebServer]` sur 742. **0 `ELIFECYCLE` partout.**
+⚠ **L'e2e ignorée est NOMMÉE, relevée dans la SOURCE** : `e2e/specs/a5-cold-reload-vs-spa.e2e.ts:190`,
+motif « nécessite une salle de fixture : à brancher avec T2 » — le même qu'à D283 et D288. Après la
+passe : **0 `node`, ports 3100/3101 libres**.
+⛔ **AUCUNE DURÉE NE SE COMPARE ICI** : modes mixtes (avant-plan / fond d'outil) et terme de **position**
+établi par D291. Les durées sont dans les journaux, elles n'entrent dans aucun verdict.
+
+### ⛔ LES CAMPAGNES — 195 GARDES, ET LA RÉSOLUTION DU `--tout` A SERVI EXACTEMENT COMME ÉCRITE
+
+`lancer-campagnes.py --tout` : **26 campagnes, 1 845 s, sortie 1** — **182 mordues · 0 muette · 13 non
+mesurées**, sur les trois campagnes gardées derrière `--int` (`e3d1-s8` 5, `s11b` 4, `solid-s6` 4).
+**La sortie 1 était PRÉDITE par le critère** ; sans cette prédiction écrite, elle se lirait comme un échec.
+
+| campagne | sans `--int` | avec `--int` | code |
+|---|---|---|---|
+| `neutralize-e3d1-s8.py` | 3 mordues + 5 non mesurées | **8 / 8** | 0 |
+| `neutralize-s11b.py` | 9 mordues + 4 non mesurées | **13 / 13** | 0 |
+| `neutralize-solid-s6.py` | 2 mordues + 4 non mesurées | **6 / 6** | 0 |
+
+⇒ **TOTAL CERTIFIANT : 195 mordues · 0 muette · 0 non mesurée.** L'arithmétique boucle **campagne par
+campagne** (3+5=8, 9+4=13, 2+4=6), jamais par un seul grand total — un total juste par compensation ne
+prouve rien. **Même total qu'à D288**, sur un arbre dont aucun code n'a bougé.
+
+### ⛔ L'ARBRE N'A PAS BOUGÉ, ET LA FENÊTRE EST HOMOGÈNE
+
+**Arbre immobile sur `3b65fbe`** : `HEAD` et `git status --porcelain` **vide** relevés **quatre fois** —
+avant les portes, avant les campagnes, après le `--tout`, après les rejeux `--int`. Les harnais mutent
+des sources : quatre contrôles, pas un. **Aucun fichier n'a été édité pendant la fenêtre** ; toutes les
+écritures de ce lot sont postérieures au relevé de clôture (D270).
+
+```
+ECHANTILLONS=101   dont ECHEC-INSTRUMENT=0
+FENETRE=2026-09-16 18:42:56 → 2026-09-16 19:35:37   (52.7 min)
+RAM_LIBRE_MO min=3293 max=5925   CPU_PCT max=99   NODE max=15
+TRANSITIONS_ALIMENTATION=0       TROUS_DANS_LA_SERIE=0
+✓ FENETRE HOMOGENE : une seule source d'alimentation, aucune interruption de serie.
+```
+
+⚠ Le lecteur **rejoue sa calibration sur ses deux bras** à chaque invocation : 4 cas sur 4.
+⚠ **RAM min 3 293 Mo pendant la fenêtre, et ce n'est PAS une violation de la porte dure** : c'est la
+mesure elle-même qui consomme (jusqu'à **15 `node`**, CPU 99 %). La porte porte sur l'**OUVERTURE au
+repos** ; l'échantillonneur surveille le **RÉGIME**.
+
+### ⛔ L'AUDIT DE SECRETS A MORDU SUR UN VRAI SECRET — LE JOURNAL e2e NE PEUT PAS ENTRER AU DÉPÔT
+
+**24 jetons de vérification d'e-mail** (43 caractères) dans `rang15-e2e.log` : le serveur de
+développement **imprime les liens de vérification**, faute de mailer en dev, et l'e2e crée des comptes.
+⛔ **Une preuve ne se retouche pas (D291) : le journal brut N'EST PAS VERSÉ**, il reste hors dépôt, et la
+section cite à sa place un **EXTRAIT DÉRIVÉ, nommé comme tel** (`rang15-e2e-EXTRAIT.txt`, liste
+**blanche** des lignes de verdict — une liste noire laisserait passer ce qu'on n'a pas prévu ;
+contrôle imprimé : 911 lignes parcourues, 3 gardées, **0 « token= » dans la sortie**).
+⚠ **C'est la première fois que cet audit trouve autre chose que des noms de test** — et il ne l'aurait
+pas trouvé s'il s'était arrêté au premier écran (D200).
+**Tri des 16 alertes restantes, valeurs masquées dans la sortie versée** (dernier passage avant commit :
+**226 fichiers, 1 731 347 octets** parcourus — ⚠ le nombre de fichiers **croît d'un à chaque passage**,
+puisque chaque passage verse sa sortie) : **7** dans des pièces de D291 **déjà au dépôt** (son audit qui se décrit lui-même, et deux
+**noms de test** qu'elle avait triés), **5** dans mon propre outil d'extraction et sa sortie (le mot
+`token=` dans sa prose et son motif), **1** nom de test dans `test:int` (valeur présente dans **101**
+fichiers suivis hors preuves), et **1** dans ma sortie de recherche D277, **qui cite l'entrée de backlog
+décrivant ces jetons**. **Aucune valeur.**
+⚠ **Et ce dernier dit quelque chose sur l'instrument** : écrire la trouvaille fait monter le compte de
+l'audit — c'est la famille « une garde mesure la DOCUMENTATION de ce qu'elle teste », qui s'était déjà
+présentée deux fois à D291. **Le compte ne se lit pas seul ; le contexte, toujours.** ⚠ **Les motifs ne sont PAS relâchés pour que l'audit passe** : il sort en 1, et la décision de
+commiter repose sur ce tri écrit.
+⚠ **Le chemin local du compte Windows** apparaît **79 fois** dans les preuves (dont 10 dans les journaux
+d'aujourd'hui) — signalé, pas masqué.
+
+### Les deux réserves de D275 — l'une LEVÉE, l'autre RECONDUITE
+
+- ✅ **LEVÉE et reconduite comme telle — l'instrument d'état machine** : il est au dépôt et **rejoue sa
+  calibration à l'invocation** (rendement **0,96** ici, CPU 15 → 100 %, `PERF` 80,2 → 146,8). Cette
+  passe en a bénéficié trois fois : deux refus et une ouverture, tous contestables sur pièces.
+- ⚠ **RECONDUITE — zéro `node` pendant la mesure.** `NODE=0` à **tous** les relevés au repos, aucune
+  pile `dev` en tâche de fond. **C'est une condition de ce que la marque vaut, pas un défaut** : elle ne
+  dit rien de la porte pendant qu'un observateur de fichiers recompile (piste D274 jamais écartée).
+  **Elle se recopiera dans la prochaine.**
+
+### ⚠ CE QUE LA MARQUE NE COUVRE PAS — écrit avant elle, et Ko l'a exigé
+
+1. ⛔ **La base de dev `zwadj` est RECONSTRUITE et VIERGE depuis D292** : `test:int` recrée `zwadj_test`
+   et l'e2e recrée `zwadj_e2e`, donc les portes ne s'en plaignent pas — mais **la marque ne porte pas
+   sur les données sur lesquelles D282 a mesuré**, et aucune mesure future ne s'y compare.
+2. **L'e2e est la première mesure du nouveau montage** (D292) sous e2e : elle passe, 34 · 1.
+3. **Aucune durée n'est certifiée** — modes mixtes et terme de position (D291).
+4. **`wsl --shutdown` a été joué dans la fenêtre d'ouverture**, avant les relevés : la fenêtre mesurée
+   commence après lui.
+
 ### Passe D277 de la clôture — les deux sens
 
 `outils/passe-d277.py` sur `outils/motifs-refus.txt` : **108 occurrences vues sur 7 motifs** — ⚠ dont **31
@@ -2286,10 +2450,30 @@ certifié ou clos, et **toutes** les « `chrome` fermé » sont des relevés dat
 permis : rien.** Les 17 « peut s'ouvrir » sont barrées, annotées « permission consommée » ou dans des
 sections datées ; le compteur reste à DEUX ; « RANG 16 : EN ATTENTE D'ARBITRAGE DE KO » reste juste.
 
+### ⛔ PASSE D277 DE LA MARQUE — ET C'EST LE SENS « RENDU PERMIS » QUI RAPPORTE
+
+`outils/passe-d277.py` sur `motifs-marque.txt` : **146 occurrences sur 8 motifs**, 967 047 caractères
+parcourus. **Sens 1 — invalidé** : le point d'entrée du rang 15 (titre barré, état réécrit), et la ligne
+« CE QUE CE LOT NE FAIT PAS » de cette section, barrée avec son motif.
+⛔ **SENS 2 — RENDU PERMIS, ET IL Y EN AVAIT QUATRE** : quatre phrases **courantes** disaient encore
+« aucun lot de code ne s'ouvre avant une certification » — point d'entrée du rang 14, point d'entrée du
+rang 12, et **deux** dans l'ordre des rangs. Toutes annotées « **LEVÉ — compteur à ZÉRO** », au format
+non ambigu exigé par D287.
+⚠ **C'est la TROISIÈME bascule de cette même phrase en cinq jours** (à zéro le 12/09, à deux le 13/09,
+à zéro le 16/09). ⛔ **Aucune de ces quatre n'aurait été trouvée par une recherche de contradiction** :
+elles ne contredisent aucun mot de la marque — elles **conditionnent** ce qu'elle autorise. C'est
+exactement le second sens que D287 a dû écrire, et le seul qui ne se rattrape pas.
+⚠ **Les « DEUX — dernière place » des sections D291 et D292 ne sont PAS re-marquées** : annotations
+datées, vraies à leur date (principe de D291).
+
 ### ⛔ CE QUE CE LOT NE FAIT PAS
 
-1. **Il ne certifie rien.** ⛔ **Compteur de lots de code non certifiés : toujours DEUX** — le rang 13 et
-   l'incident D292. **Aucun lot de code ne s'ouvre**, et le rang 15 n'est pas clos.
+1. ~~**Il ne certifie rien.** ⛔ **Compteur de lots de code non certifiés : toujours DEUX** — le rang 13 et
+   l'incident D292. **Aucun lot de code ne s'ouvre**, et le rang 15 n'est pas clos.~~
+   ⛔ **BARRÉ LE 16/09/2026 À LA POSE DE LA MARQUE** — vrai des deux refus, faux après la passe : **la
+   marque est posée, le compteur passe à ZÉRO, le rang 15 est CLOS.** Barré plutôt qu'effacé (D276) :
+   effacé, on ne saurait plus que ce lot a été deux fois refusé avant d'aboutir.
+   ⇒ **Un lot de code PEUT s'ouvrir dès que Ko l'arbitre** — et c'est lui qui portera le compteur à un.
 2. **Il ne ferme pas le navigateur de Ko** : fermer ses processus aurait été un geste sur son poste, que la
    consigne ne donne pas — elle dit « rouge ⇒ tu ne lances rien et tu me le dis ».
 3. **Il est DOCUMENTAIRE** : trois `.md` d'autorité et `docs/preuves/` au diff (exemption D292) — il ne
@@ -2326,6 +2510,20 @@ sections datées ; le compteur reste à DEUX ; « RANG 16 : EN ATTENTE D'ARBITRA
    donc le compte est passé de 1 à 2 pendant que je l'écrivais. **Un attendu relevé avant la dernière
    modification n'est plus un attendu** — c'est D218 (« les portes se relancent après la dernière
    modification ») porté à un compteur de jetons.
+5. ⛔ **UN EXTRACTEUR QUI A RENDU « 0 MORDUE » SUR 27 GARDES QUI AVAIENT MORDU.** En relisant les rejeux
+   `--int`, mon compteur PowerShell de lignes `✓` a rendu **0** pour les trois campagnes : il lisait des
+   journaux **UTF-8** avec l'encodage ANSI par défaut de `Get-Content`, donc le `✓` ne correspondait à
+   rien. ⛔ **Il n'a pas levé — il a répondu**, et « 0 mordue » se lit comme un résultat. **Ce qui l'a
+   attrapé est la ligne de résumé lue à côté** (« 8 garde(s) mordue(s) sur 8 »), dont le mojibake
+   (« RÃ‰ELLEMENT ») nommait la cause. Recompté avec `-Encoding UTF8` : 8 · 13 · 6. ⚠ C'est **D275 mot
+   pour mot** — « un extracteur qui rend zéro se confronte à la sortie brute avant d'être cru » — dans le
+   lot qui cite cette règle deux fois.
+6. ⚠ **J'AI VOULU GREFFER UN DRAPEAU `--audit-seul` SUR LA PROCÉDURE ARCHIVÉE DE L'ÉTAPE 0**, pour
+   rejouer son audit après la passe. Écarté avant d'aller au bout : cela aurait mis **deux chemins** dans
+   une pièce déjà versée (D128, « deux endroits où se tromper »). ⇒ L'audit courant est un instrument à
+   part (`outils/audit-secrets.py`), calibré à chaque exécution ; la procédure de l'étape 0 reste ce
+   qu'elle était, et **sa garde a d'ailleurs ABANDONNÉ** plutôt que d'écraser un journal de D288 par un
+   journal d'aujourd'hui — la garde « une preuve ne s'écrase pas » **a mordu en vrai**.
 
 ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue
 
@@ -6878,6 +7076,8 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     s'ouvrir, et c'est lui qui le portera à un.
     ⛔ **(D291, 13/09/2026) Permission consommée** : le rang 13 a porté le compteur à UN (D290), le
     rang 14 à DEUX (D291). ⇒ **Plus aucun lot de code ne s'ouvre avant une certification.**
+    ⛔ **(D293, 16/09/2026) LEVÉ** : marque du rang 15 posée, **compteur à ZÉRO**, un lot de code **peut**
+    s'ouvrir dès l'arbitrage de Ko.
     ⚠ ~~**ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287)** : porte dure **rouge sur
     deux relevés** — `chrome` 16 au lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés
     (**−2 091**).~~ **BARRÉ LE 12/09/2026 (D288)** : `chrome` fermé par Ko, la porte dure a été
@@ -6915,7 +7115,10 @@ tête de ce fichier.
 ⇒ ~~**RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284).~~ ⛔ **CONSOMMÉ LE 14/09/2026, À LA CLÔTURE
 DE D292 — ARBITRÉ PAR KO : le RANG 15 est la CERTIFICATION.** **Motif de Ko** : le compteur de lots
 de code non certifiés est à DEUX (rang 13 et incident D292), et la règle l'impose. Barré plutôt
-qu'effacé (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 15 » en tête de ce fichier.
+qu'effacé (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 15 » en tête de ce fichier —
+✅ **CLOS le 16/09/2026 (D293), marque posée après DEUX refus sur la porte dure** (`chrome` le 14/09,
+RAM le 16/09). **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code
+**peut** s'ouvrir, et c'est lui qui le portera à un.
 ⚠ **Ce qui attend, sans rang** : les
 **budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
 rang 15 leur soit attribué.
@@ -6941,6 +7144,8 @@ compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que
 ⛔ **BARRÉ LE 13/09/2026 (D291) — PERMISSION PÉRIMÉE, ET LA PASSE D277 DE D290 L'AVAIT MANQUÉE.**
 La borne a été arbitrée (rang 13, D289) puis close sans borne (D290) ; le compteur est passé à
 UN (D290) puis à DEUX (D291). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
+⛔ **(D293, 16/09/2026) LEVÉ** : la certification du rang 15 est faite, **compteur à ZÉRO**. La borne de
+workers, elle, reste **close sans borne** (D290) — ce n'est pas elle qui rouvre.
 ⚠ D290 avait traité deux phrases « à zéro » au moyen d'**ancres écrites en dur** dans un script de
 scratchpad ; la recherche qui les avait trouvées n'était écrite nulle part, et celle-ci lui a
 échappé. D291 verse sa recherche elle-même : `docs/preuves/D291/passe-d277/`.
@@ -8403,4 +8608,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D290 | A | D290 — rang 13 CLOS sur trois termes éliminés et AUCUNE borne ; le point 6 du critère exige désormais le SECTEUR, « stable » laissait passer une fenêtre entière sur batterie |
 | D291 | A | D291 — rang 14 CLOS (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, les preuves brutes qu'une décision cite entrent au dépôt, et la POSITION d'une passe est un terme de durée (6 cycles sur 6) ; l'écart de D290 n'est pas reproduit |
 | D292 | A | Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue |
-| D293 | A | Session du 14/09/2026 — D293 · CERTIFICATION (rang 15) : étape 0 faite, porte dure ROUGE sur `chrome`, passe NON lancée |
+| D293 | A | Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque |

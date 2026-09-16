@@ -1,0 +1,13 @@
+﻿lecture memoire — 2026-09-16 16:06:54 (lecture seule)
+--- docker stats (sans flux) ---
+zwadj-db 54.86MiB / 7.614GiB 0.70%
+--- conteneurs, tous etats ---
+zwadj-db Up 2 minutes
+floranet-db Exited (255) 4 months ago
+--- distributions WSL ---
+  NAME              STATE           VERSION
+
+* docker-desktop    Running         2
+
+
+
