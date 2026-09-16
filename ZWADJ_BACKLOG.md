@@ -2380,6 +2380,20 @@ Détail : section D293 de `ZWADJ_CONTINUITE.md`.
   compris ses processus d'arrière-plan) et ne pas suivre. **La porte ne se relâche pas** : elle vient de
   mordre exactement sur ce qu'elle existe pour voir, et la RAM, seule, ne l'aurait pas vu.
   ⇒ **Reprise** : rang 15, **étape 1**, protocole de `657e9ba` inchangé (section D293).
+  ✅ **`chrome` RÉGLÉ LE 16/09/2026** : Ko l'a fermé, `CHROME=0` aux deux relevés — la question du suivi
+  depuis ce poste **ne se pose plus** (Ko suit depuis VS Code). **Cette ligne est close sur `chrome`.**
+- **[MÉTHODE][P1]** ⛔ **ET LA PASSE A ÉTÉ REFUSÉE UNE SECONDE FOIS, SUR LA RAM (16/09/2026).**
+  3 073,5 puis 3 077,5 Mo de RAM libre médiane, **−1 505,5 et −1 501,5** sous la barre, deux relevés à
+  80 s d'écart, `chrome` 0, `node` 0, SECTEUR, calibration passante (pièces :
+  `docs/preuves/D293/ouverture-16-09/`). ⚠ **La RAM libre est plus basse de 2 222 Mo qu'au relevé du
+  14/09, qui passait la barre AVEC Chrome ouvert** : `vmmemWSL` +1 407, `Code` +751, `msedge` +661 au
+  moins, total des processus +2 974. `zwadj-db` ne pèse que **54,86 Mio** — la VM de Docker n'est pas la
+  base. ⛔ **Que le démarrage du conteneur par la session explique les +1,4 Go n'est PAS établi.**
+  ⇒ **DEUX SORTIES, TOUTES DEUX ARBITRAGE DE KO** : (1) libérer de la mémoire, puis reprise à l'étape 1 ;
+  (2) consommer la sortie écrite de D270 — redéfinir « repos » sur le plancher que cette machine peut
+  produire, **avec sa raison**, et redéfinir **ce que le seuil garantit** (le critère l'exige). ⛔ **La
+  session ne redéfinit pas la barre** : D288 a écrit, en ne consommant pas cette sortie, « aucun
+  arbitrage demandé à Ko ».
 - **[INFRA][P3]** ⚠ **LA COLONNE « décl » DE `lancer-campagnes.py` REND « — » SUR 11 CAMPAGNES SUR 26.**
   Relevé le 14/09/2026 sur les journaux attribués à D288 : l'expression `ROUGES` attend
   `neutralis..e\(s\)` — deux caractères — alors que « neutralisée », décodé en UTF-8, n'en porte qu'un.

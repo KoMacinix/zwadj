@@ -530,6 +530,14 @@ passe et marque : section « **Session du 14/09/2026 — D293** ».
 verts. ⇒ **Le rang 15 reste OUVERT. La reprise se fait À L'ÉTAPE 1**, sur le protocole commité dans
 `657e9ba`, **sans le réécrire** ; l'étape 0 est acquise. **Condition, et elle appartient à Ko** :
 `chrome` à 0 au relevé — détail et pièces, section D293, « ÉTAPE 1 ».
+⛔ **SECONDE TENTATIVE LE 16/09/2026 — `chrome` = 0 (Ko l'a fermé), ET LA PORTE DURE EST ROUGE SUR LA
+RAM** : 3 073,5 puis 3 077,5 Mo, soit **−1 505,5 et −1 501,5** sous la barre, à 80 s d'écart, SECTEUR et
+calibration passante (rendement 0,96). **RIEN N'EST LANCÉ, AUCUNE MARQUE.** ⚠ La RAM libre est **plus
+basse de 2 222 Mo** qu'au relevé du 14/09, qui était **au-dessus de la barre avec Chrome ouvert** :
+le déficit n'est pas Chrome. ⇒ **Le rang 15 reste OUVERT**, reprise à l'étape 1 ; **deux sorties, toutes
+deux arbitrage de Ko** — libérer de la mémoire, ou consommer la sortie écrite de D270 (redéfinir
+« repos » sur le plancher que cette machine peut produire, avec sa raison). Détail, inventaire et
+pièces : section D293, « ÉTAPE 1, SECONDE TENTATIVE ».
 
 ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSITION ; L'ÉCART DE D290 NON REPRODUIT**
 
@@ -2188,6 +2196,67 @@ régler l'instrument sur le résultat voulu. **L'étape 0 est acquise**, et les 
 dépôt : une reprise n'a plus rien d'urgent à archiver avant `--tout`.
 ⚠ **Ce qui n'a PAS eu lieu, et se vérifie** : aucun échantillonneur démarré, aucune porte, aucune campagne ;
 les 26 `neutralize-*.py.log` du disque portent toujours leurs dates du 12/09 (00:56 → 01:25).
+⛔ **« RIEN D'AUTRE NE CHANGE » A ÉTÉ DÉMENTI DEUX JOURS PLUS TARD** : `chrome` est passé à 0 le
+16/09 et **la porte dure est restée rouge, sur la RAM**. ⇒ section suivante, « ÉTAPE 1, SECONDE
+TENTATIVE ». **Fermer Chrome était nécessaire, pas suffisant.**
+
+### ⛔ ÉTAPE 1, SECONDE TENTATIVE (16/09/2026) — `chrome` EST À 0, ET C'EST LA **RAM** QUI REFUSE
+
+**Ko a fermé Chrome et suit depuis VS Code.** Docker relevé avant les relevés, comme écrit : conteneur
+`zwadj-db` **arrêté** à l'arrivée, levé par `pnpm db:up` (« Starting », donc le même conteneur et le
+même volume nommé — correctif D292), `pg_isready` **accepting connections** à la 2ᵉ tentative ; ports
+3100/3101 **libres**. Pièces : `docs/preuves/D293/ouverture-16-09/` (4 copies identiques sur 4).
+⚠ Le dossier `ouverture/` porte les relevés **du 14/09** ; `ouverture-16-09/` ceux d'aujourd'hui.
+⚠ **Le chemin local du compte Windows apparaît 2 fois** dans ces pièces (en-tête de `pnpm db:up`) —
+signalé par l'audit, **pas masqué** : une preuve ne se retouche pas (D291).
+
+| | relevé 1 (16:05:07, `-Calibrer`) | relevé 2 (16:06:24) | exigé |
+|---|---|---|---|
+| calibration | **passante** — rendement **0,96**, CPU 15 → 100 %, `PERF` 85,8 → 146,8 | non rejouée | passante ✅ |
+| **`chrome`** | **0** | **0** | 0 ✅ |
+| `node` | 0 | 0 | — |
+| alimentation | SECTEUR 100 %, overlays identiques | idem | SECTEUR ✅ |
+| **RAM médiane · bande** | **3 073,5 · 3 053-3 085 Mo** | **3 077,5 · 3 068-3 087 Mo** | ≥ barre ⛔ **ROUGE** |
+| écart à la barre | **−1 505,5** | **−1 501,5** | > 0 ⛔ |
+
+⛔ **CE N'EST PAS UN CREUX PASSAGER** : deux relevés à 80 s d'écart, bandes serrées (32 et 19 Mo),
+même déficit. ⇒ **Rien n'est lancé** : ni échantillonneur, ni porte, ni campagne.
+⛔ **ET LE DÉFICIT N'EST PAS CELUI QU'ON VIENT DE LIBÉRER.** Chrome fermé rend ~1,78 Go, et la RAM
+libre est pourtant **plus basse de 2 222 Mo** qu'au relevé du 14/09 — qui, lui, était **au-dessus de la
+barre AVEC Chrome ouvert**. Mouvements, relevés dans les deux pièces (inventaires > 150 Mo) :
+
+| poste | 14/09 01:51 | 16/09 16:06 | écart |
+|---|---|---|---|
+| `vmmemWSL` (machine virtuelle de Docker) | 726 | **2 133** | **+1 407** |
+| `Code` (VS Code) | 2 531 (19 proc.) | **3 282** (17 proc.) | **+751** |
+| `msedge` + `msedgewebview2` | *sous 150, donc hors inventaire* | 309 + 352 | **+661 au moins** |
+| `svchost` · `claude` · `NVIDIA Overlay` · `nvcontainer` | 1 142 · 316 · hors inv. · hors inv. | 1 480 · 552 · 329 · 172 | +338 · +236 · +329 · +172 |
+| `oracle` | 866 | 544 | −322 |
+| **total des processus** | **12 443** | **15 417** | **+2 974** |
+| `chrome` | 1 783 | **0** | −1 783 |
+
+⚠ **« Hors inventaire » ne veut pas dire « absent »** : la sonde ne liste que les postes > 150 Mo.
+⚠ **LA BASE N'EST PAS EN CAUSE, ET C'EST MESURÉ** : `docker stats` rend **54,86 Mio** pour `zwadj-db`
+— les 2,1 Go de `vmmemWSL` sont la **machine virtuelle**, pas Postgres. Un seul conteneur tourne ;
+`floranet-db` (autre projet) est `Exited`.
+⛔ **NON ÉTABLI, ET JE NE L'ÉCRIS PAS COMME UN FAIT** : que le démarrage du conteneur **par cette
+session** explique les +1,4 Go de `vmmemWSL`. Le 14/09, le conteneur tournait **depuis 5 h** et la VM
+pesait 726 Mo. C'est une **inférence**, dans les deux sens.
+
+⇒ **CE QU'IL FAUT POUR QUE LA PASSE SE LANCE — et le choix appartient à Ko, pas à la session :**
+1. **libérer de la mémoire** (les postes ci-dessus sont ceux de Ko : VS Code, Edge, overlays ; la VM de
+   Docker se vide en la redémarrant, ce qui arrête le conteneur — **je n'y touche pas**), puis
+   **reprise à l'étape 1** du protocole de `657e9ba`, inchangé ;
+2. **ou consommer la sortie ÉCRITE de D270**, citée dans le critère du rang 9 : « relever le plancher
+   que cette session PEUT produire, puis **redéfinir « repos » sur lui AVEC SA RAISON** », les chiffres
+   hérités restant comme HISTOIRE. ⛔ **C'est un arbitrage de Ko** : D288 a écrit noir sur blanc, en ne
+   la consommant pas, qu'aucune barre n'avait été redéfinie et **« aucun arbitrage demandé à Ko »**.
+   ⚠ Et la même phrase du critère ajoute que **redéfinir le seuil sans redéfinir ce qu'il garantit
+   serait la moitié du travail** : une passe prise près du bruit porte moins d'information.
+
+⛔ **DEUXIÈME REFUS DE LA MÊME PASSE, SUR UNE AUTRE QUANTITÉ — ET C'EST L'ARGUMENT DES SIX.** Le 14/09,
+RAM et SECTEUR étaient verts et `chrome` refusait ; le 16/09, `chrome` est à 0 et c'est la RAM. **Une
+porte dure à une seule quantité aurait laissé passer l'une des deux fenêtres.**
 
 ### Passe D277 de la clôture — les deux sens
 
@@ -2229,6 +2298,16 @@ sections datées ; le compteur reste à DEUX ; « RANG 16 : EN ATTENTE D'ARBITRA
    relecteur qui a rendu l'écart (1). Attendu relevé par recherche, sortie en écart gardée
    (`relire-jetons-refus.txt`), rejoué à 0 (`-refus-2.txt`). ⚠ C'est la classe exacte que D291 a trouvée dans
    son cas connu — **reproduite dans l'instrument qui existe pour l'attraper**.
+   ⛔ **RÉCIDIVE LE 16/09, SUR LE MÊME INSTRUMENT ET DANS LE MÊME LOT** : « `docs/preuves/D293/ouverture-16-09/`
+   × 2 » — il y est **une** fois en toutes lettres, la seconde mention étant le dossier **nu**. Même cause :
+   un attendu compté **de tête** au lieu d'être relevé. ⇒ Les deux écarts ont été rendus par l'instrument,
+   pas par relecture, et les deux sorties fautives sont gardées (`relire-jetons-refus.txt`,
+   `-refus2.txt`). ⚠ **Deux fois en deux étapes, c'est un motif, pas un accident** : tout attendu de ce
+   relecteur se relève désormais par recherche AVANT d'être écrit.
+   ⚠ **Et le relevé lui-même s'est périmé au tour suivant** : la note que vous lisez **cite le chemin**,
+   donc le compte est passé de 1 à 2 pendant que je l'écrivais. **Un attendu relevé avant la dernière
+   modification n'est plus un attendu** — c'est D218 (« les portes se relancent après la dernière
+   modification ») porté à un compteur de jetons.
 
 ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue
 

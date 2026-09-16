@@ -1,0 +1,14 @@
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · "### ⛔ ÉTAPE 1, SECONDE TENTATIVE (16/09/2026) — `chrome` EST À 0, ET C'EST LA **RAM** QUI "
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '| **RAM médiane · bande** | **3 073,5 · 3 053-3 085 Mo** | **3 077,5 · 3 068-3 087 Mo** | '
+✓ ZWADJ_CONTINUITE.md : 2 (attendu 2) · '`docs/preuves/D293/ouverture-16-09/`'
+✓ ZWADJ_CONTINUITE.md : 3 (attendu 3) · 'ouverture-16-09/'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '**54,86 Mio**'
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · "⛔ **NON ÉTABLI, ET JE NE L'ÉCRIS PAS COMME UN FAIT**"
+✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · '**Fermer Chrome était nécessaire, pas suffisant.**'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · 'la barre est redéfinie'
+✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · 'jeton-absent-de-calibration-d293'
+  ZWADJ_CONTINUITE.md : 593748 caracteres parcourus, 9 jetons
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · '✅ **`chrome` RÉGLÉ LE 16/09/2026**'
+✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · 'REFUSÉE UNE SECONDE FOIS, SUR LA RAM (16/09/2026)'
+  ZWADJ_BACKLOG.md : 292606 caracteres parcourus, 2 jetons
+jetons en ecart : 0 (attendu 0)

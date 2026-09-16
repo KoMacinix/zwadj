@@ -66,6 +66,29 @@ ETAPES["refus"] = {
     ],
 }
 
+ETAPES["refus2"] = {
+    "ZWADJ_CONTINUITE.md": [
+        ("### ⛔ ÉTAPE 1, SECONDE TENTATIVE (16/09/2026) — `chrome` EST À 0, ET C'EST LA **RAM** QUI REFUSE", 1),
+        ("| **RAM médiane · bande** | **3 073,5 · 3 053-3 085 Mo** | **3 077,5 · 3 068-3 087 Mo** | ≥ barre ⛔ **ROUGE** |", 1),
+        # ⚠ Attendu 2 ecrit de memoire, RECIDIVE de l'ecart de l'etape « refus » : le chemin complet
+        # n'apparait qu'UNE fois ; la seconde mention est le dossier nu. Releve : 1 complet, 2 nus.
+        # ⚠ Et RE-RELEVE apres la derniere ecriture : la note de faute cite elle-meme le chemin.
+        # Un attendu releve AVANT la derniere modification est perime (D218, porte a un compteur de jetons).
+        ("`docs/preuves/D293/ouverture-16-09/`", 2),
+        ("ouverture-16-09/", 3),
+        ("**54,86 Mio**", 1),
+        ("⛔ **NON ÉTABLI, ET JE NE L'ÉCRIS PAS COMME UN FAIT**", 1),
+        ("**Fermer Chrome était nécessaire, pas suffisant.**", 1),
+        # BRAS NEGATIF : rien ne doit presenter la passe comme lancee ou la barre comme redefinie.
+        ("la barre est redéfinie", 0),
+        ("jeton-absent-de-calibration-d293", 0),
+    ],
+    "ZWADJ_BACKLOG.md": [
+        ("✅ **`chrome` RÉGLÉ LE 16/09/2026**", 1),
+        ("REFUSÉE UNE SECONDE FOIS, SUR LA RAM (16/09/2026)", 1),
+    ],
+}
+
 etape = sys.argv[1] if len(sys.argv) > 1 else ""
 if etape not in ETAPES:
     sys.exit(f"ABANDON : etape inconnue {etape!r}")
