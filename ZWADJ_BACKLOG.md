@@ -2391,6 +2391,20 @@ Détail : section D293 de `ZWADJ_CONTINUITE.md`.
   comptent sur les lignes de verdict, et la colonne n'entre dans aucun total. **Mais une colonne qui
   affiche « — » sur une campagne à 12 gardes mordues se lit comme « aucun résumé »**, c'est-à-dire
   comme une campagne arrêtée en cours. ⇒ **NON corrigé** : le lanceur est un instrument, donc du code.
+  ⛔ **TRANCHÉ LE 16/09/2026 (D293), SUR LECTURE DES 26 JOURNAUX VERSÉS — ET LE DOUTE ÉTAIT FONDÉ.**
+  Ko a relevé que « décl = — » est **la signature exacte** d'une campagne qui **abandonne au pré-vol
+  sans déclarer une seule cible** — diagnostiquée à **D283** (rang 9, fenêtre 1 : `r4` et `solid-s7`,
+  suites déjà rouges avant mutation). ⚠ **C'est bien la même colonne, et c'est pourquoi ce n'est pas
+  cosmétique** : deux états opposés — *résumé au vieux format* et *aucune cible jouée* — sortent
+  identiques.
+  ⇒ **Lecture** (`docs/preuves/D293/versement-d288/lecture-decl.txt`, calibrée sur un journal
+  d'abandon synthétique et sur un journal réel) : les **11** journaux sans « décl » portent **tous**
+  leur résumé, son nombre **égale** les mordues comptées (12·13·10·6·7·10·2·7·9·5·2), **0 abandon de
+  pré-vol et 0 erreur de script sur les 26**. ⚠ `r4` et `solid-s7` — les deux de D283 — déclarent ici
+  **2 et 2**, ce que D283 écrit comme leur rejeu au repos.
+  ⇒ **DÉFAUT D'AFFICHAGE, P3, et la passe de D288 a bien joué ses 26 campagnes.** ⚠ Ce que la lecture
+  ne dit pas : que la colonne soit sans conséquence **pour un lecteur** — c'est précisément parce
+  qu'elle confond ces deux états qu'elle reste ouverte.
 
 ## Reports du 13/09/2026 — incident `zwadj-db`, postgres:18 et le montage (D292)
 

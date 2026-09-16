@@ -2070,6 +2070,18 @@ sortie 1**.
   sur 26 — l'expression `neutralis..e\(s\)` attend deux caractères là où « neutralisée » décodé n'en
   porte qu'un. **Sans effet sur les comptes ni sur le code de sortie**, qui lisent les lignes de
   verdict. ⇒ Backlog, reports de D293.
+  ⛔ **ET « SANS EFFET SUR LES COMPTES » N'EST PAS « SANS OBJET » — RANGÉ TROP BAS PAR MOI, RELEVÉ PAR KO
+  LE 16/09/2026, TRANCHÉ PAR LECTURE AVANT LA PASSE.** « décl = — » est **la signature** d'une campagne
+  qui **abandonne au pré-vol sans déclarer une seule cible** : diagnostiquée à **D283** — rang 9,
+  fenêtre 1, `r4` et `solid-s7`, suites déjà rouges avant mutation. ⚠ **Ko l'attribuait au rang 12 ; la
+  phrase est en section D283.** Les deux états — *résumé au vieux format* et *aucune cible jouée* —
+  sortent identiques, et **les deux campagnes de D283 sont parmi les onze**.
+  ⇒ **LECTURE, PAS MESURE** (`versement-d288/lecture-decl.*`, calibrée sur un journal d'abandon
+  synthétique **et** sur un journal réel) : les 11 portent **tous** leur résumé, **son nombre égale les
+  mordues comptées** (12·13·10·6·7·10·2·7·9·5·2), **0 abandon de pré-vol · 0 erreur de script sur les
+  26**, et `r4`/`solid-s7` déclarent **2 et 2** — ce que D283 écrit comme leur rejeu au repos.
+  ⇒ **DÉFAUT D'AFFICHAGE : la passe de D288 a joué ses 26 campagnes.** L'entrée reste **P3**, non
+  corrigée, parce que la colonne confond deux états opposés **pour un lecteur**.
 - **Versement exempté du compteur** (`docs/preuves/` seul au diff avec les `.md` d'autorité).
 - **Passe D277 de l'étape 0** (`docs/preuves/D293/outils/passe-d277.py`, motifs lus dans un fichier,
   texte aplati, calibration deux bras) : **34 occurrences vues sur 9 motifs**. **Sens 1 — invalidé** :

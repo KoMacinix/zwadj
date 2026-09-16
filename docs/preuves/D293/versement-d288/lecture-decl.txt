@@ -1,0 +1,40 @@
+  calibration positif : journal d'abandon synthetique    : abandon=1 (attendu 1) · resume=None (attendu None) · mord=0 (attendu 0)  ✓
+  calibration negatif : journal reel neutralize-r4       : abandon=0 (attendu 0) · resume='2' (attendu '2') · mord=2 (attendu 2)  ✓
+
+journaux lus : 26 (attendu 26)
+  campagne                    decl  resume  mord  muet  nonm  abandon  err  prevol
+  neutralize-404.py              —      12    12     0     0        0    0       0
+  neutralize-act-plafonds.py     4       4     4     0     0        0    0       0
+  neutralize-argon2.py           3       3     3     0     0        0    0       0
+  neutralize-available-on-api.py     —      13    13     0     0        0    0       0
+  neutralize-available-on.py     —      10    10     0     0        0    0       0
+  neutralize-b7.py               3       3     3     0     0        0    0       1
+  neutralize-booking-status.py     3       3     3     0     0        0    0       1
+  neutralize-e3d1-s8.py          3       3     3     0     5        0    0       2
+  neutralize-horizon.py          —       6     6     0     0        0    0       0
+  neutralize-horloge.py          2       2     2     0     0        0    0       0
+  neutralize-journey.py          —       7     7     0     0        0    0       0
+  neutralize-maxprice.py         —      10    10     0     0        0    0       0
+  neutralize-r4.py               —       2     2     0     0        0    0       1
+  neutralize-s10a.py            13      13    13     0     0        0    0       1
+  neutralize-s10b.py            20      20    20     0     0        0    0       1
+  neutralize-s11a.py            18      18    18     0     0        0    0       1
+  neutralize-s11b.py             9       9     9     0     4        0    0       1
+  neutralize-s9.py               6       6     6     0     0        0    0       1
+  neutralize-solid-s1.py         2       2     2     0     0        0    0       1
+  neutralize-solid-s2.py         5       5     5     0     0        0    0       1
+  neutralize-solid-s3.py         6       6     6     0     0        0    0       1
+  neutralize-solid-s4.py         —       7     7     0     0        0    0       1
+  neutralize-solid-s5a.py        —       9     9     0     0        0    0       1
+  neutralize-solid-s5b.py        —       5     5     0     0        0    0       1
+  neutralize-solid-s6.py         2       2     2     0     4        0    0       1
+  neutralize-solid-s7.py         —       2     2     0     0        0    0       1
+
+sans « decl » : 11 sur 26 (attendu 11) — neutralize-404.py, neutralize-available-on-api.py, neutralize-available-on.py, neutralize-horizon.py, neutralize-journey.py, neutralize-maxprice.py, neutralize-r4.py, neutralize-solid-s4.py, neutralize-solid-s5a.py, neutralize-solid-s5b.py, neutralize-solid-s7.py
+abandons de pre-vol sur les 26 : 0 (attendu 0)
+journaux sans « decl » qui NE sont PAS benins : 0 (attendu 0)
+
+VERDICT : DEFAUT D'AFFICHAGE. Les journaux sans « decl » portent tous leur resume, avec le
+  meme nombre que les mordues comptees, sans abandon de pre-vol ni erreur de script.
+  ⚠ Ce que cette lecture NE dit pas : que la colonne soit sans consequence pour un LECTEUR —
+    a D283, « decl = — » etait la signature de deux campagnes reellement abandonnees.
