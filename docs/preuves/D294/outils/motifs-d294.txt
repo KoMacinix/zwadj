@@ -1,0 +1,20 @@
+# Motifs de la passe D277 du rang 16 (D294). Un motif par ligne, casse ignoree.
+# Les lignes vides et celles qui commencent par # sont ignorees.
+# SENS 1 — ce que ce lot INVALIDE (affirmations devenues fausses)
+rang 8
+n'est pas clos
+mi-parcours
+etapes 1
+reliquat
+serre a 5 s
+testTimeout de
+bac a sable n'a ni
+911
+rang 16
+# SENS 2 — ce que ce lot REND PERMIS (permissions dont la CONDITION change)
+budgets de test
+peut s'ouvrir
+au juge
+choisi au juge
+compteur
+en attente d'arbitrage

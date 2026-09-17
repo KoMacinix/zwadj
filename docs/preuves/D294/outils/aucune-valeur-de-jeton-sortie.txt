@@ -1,0 +1,8 @@
+== CALIBRATION
+   bras positif (journal e2e, hors depot) : 24 (attendu 24)
+   bras negatif (ce script)               : 0 (attendu 0)
+   => 2 bras sur 2
+
+== PARCOURU : 244 fichiers, 2202682 octets sous docs/preuves/
+== VALEURS DE JETON TROUVEES : 0 (attendu 0)
+== ✓ aucune valeur de jeton sous docs/preuves/.

@@ -482,14 +482,59 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294**
+
+⛔ **TITRE BARRÉ À LA CLÔTURE (patron de D273, D284 et D293)** : l'étiquette « PROCHAIN LOT » sur du
+fait accompli envoie une reprise à froid travailler sur un rang clos. **Le corps reste l'état du
+rang 16.**
+⇒ **RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ **CANDIDAT DÉSIGNÉ, PAS ARBITRÉ** : les
+**budgets de test**, dans la forme **(b)** arbitrée le 16/09 — *écrire la valeur EN VIGUEUR*.
+« Je l'ouvrirai après ce lot » (Ko). **Une désignation n'est pas un arbitrage, et la session
+n'arbitre pas l'ordre des rangs.**
+⚠ **Compteur de lots de code non certifiés : ZÉRO.** Ce lot est **DOCUMENTAIRE** — aucun fichier
+hors `.md` d'autorité au diff, `docs/preuves/` exempté (D283, amendé par D292) — donc **il ne s'y
+ajoute pas.** Un lot de code peut s'ouvrir dès l'arbitrage de Ko, et c'est lui qui portera le
+compteur à un.
+
+⛔ **OUVERT ET ARBITRÉ PAR KO LE 16/09/2026**, à la lecture du rapport d'une reprise à froid —
+**septième de la série**, et la première depuis que la forme en a été allégée (première partie
+sans recoupement, seconde partie entière). ⇒ **QUEL lot : rang 16 de l'ordre des rangs. OÙ IL EN
+EST : ici.** Toutes les écritures d'ordre sont de Ko.
+⛔ **MOTIF DE L'ORDRE, ÉCRIT PAR KO** : « une phrase qui déclare à moitié fait un lot **certifié**
+du chemin de l'argent est plus dangereuse qu'un budget manquant ». Le constat n°1 passe donc
+devant, et les budgets attendent un rang de plus.
+⚠ **CE QUE CE LOT N'EST PAS** : une certification. Il ne mesure aucune porte, n'en relance
+aucune, **et ne relance pas l'e2e** (consigne de Ko) — il écrit la RÈGLE de l'extrait élargi,
+dont l'application vient à la prochaine certification.
+
+⇒ **LES SEPT CONSTATS ONT TOUS ATTERRI. Où :**
+
+| # | constat | où il a atterri |
+|---|---|---|
+| 1 | le bloc du rang 8 se présentait comme un lot **ouvert** du chemin de l'argent | bloc « RANG 8 » : titre, sous-titre, 3 affirmations barrées ; **règle de D282 complétée** et portée dans `AGENTS.md` |
+| 2 | `testTimeout` de `apps/api` « serré à 5 s » — périmé sur ses trois termes | « Décisions encore ouvertes », barré avec la mesure |
+| 3 | « le bac à sable n'a ni navigateur ni API » — raison périmée, dette conservée | « Dette restante », raison barrée (D268) |
+| 4 | la réparation de `vite.config.ts:24` absente du seul fichier chargé à chaque session | `AGENTS.md`, bloc D289 |
+| 5 | `+1` de `.split("\n")` — « 911 » au lieu de 910 | section D293 rectifiée ; `RECTIFICATION-D294.txt` à côté de l'archive **non retouchée** |
+| 6 | titre « n'a pas été lancée » sur une entrée close | `ZWADJ_BACKLOG.md`, une ligne |
+| 7 | section « NON corrigés » portant deux entrées closes | `ZWADJ_BACKLOG.md`, une ligne |
+
+⇒ **DEUX DÉCISIONS DE KO, PRISES SUR MESURE, ET LA PREMIÈRE A CHANGÉ SON ARBITRAGE** :
+**journal e2e — ni 1 ni 2**, l'extrait s'élargit (critère, **point 9**) ; **budgets — option (b)**,
+candidat du rang 17. ⇒ Détail, pièces et fautes : section « **Session du 16/09/2026 — D294** ».
+
 ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
 
 ⛔ **TITRE BARRÉ À LA CLÔTURE (patron de D273 et D284)** : un bloc qui garde l'étiquette « PROCHAIN LOT »
 sur du fait accompli envoie une reprise à froid travailler sur un rang clos. **Le corps ne bouge pas** —
 il reste l'état du rang 15, refus compris.
-⇒ **RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284). L'ordre des rangs (section D270) dit QUEL lot ;
-**aucun rang 16 n'est arbitré**, et la session n'en choisit pas. ⚠ Le compteur est à **ZÉRO** : un lot de
-code peut s'ouvrir dès que Ko l'arbitre, et c'est lui qui le portera à un.
+⇒ ~~**RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284). L'ordre des rangs (section D270) dit QUEL lot ;
+**aucun rang 16 n'est arbitré**, et la session n'en choisit pas.~~ ⛔ **CONSOMMÉ LE 16/09/2026 (D294) —
+ARBITRÉ PAR KO : le RANG 16 est le LOT DOCUMENTAIRE des sept constats.** Barré plutôt qu'effacé (D276).
+⇒ **RANG 17 : EN ATTENTE D'ARBITRAGE DE KO**, candidat désigné = les **budgets de test**, forme (b).
+⚠ Le compteur est à **ZÉRO** : un lot de
+code peut s'ouvrir dès que Ko l'arbitre, et c'est lui qui le portera à un. ⚠ **Le rang 16 ne l'a pas
+porté à un** : il est documentaire.
 
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 14/09/2026, ÉCRIT À LA CLÔTURE DE D292.** ⇒ **QUEL lot : rang 15 de
@@ -569,6 +614,15 @@ s'y retrouvaient pas, dont un dans `AGENTS.md` (section D291).
 budget calculé sur des durées dont ~20 % restent inexpliqués serait choisi au jugé. Et **avant de
 mesurer quoi que ce soit, le dossier cesse d'affirmer ce qu'il n'a pas mesuré** : c'est l'étape 0
 du même lot.
+⛔ **(D294, 16/09/2026) CE MOTIF VAUT DE LA FORME (a), PAS DE LA FORME (b) — ET LA DISTINCTION
+DÉBLOQUE LE LOT.** Il reste **entièrement vrai** d'un budget qui *choisirait une valeur* sur des
+durées : celui-là attend toujours une explication des ~20 %, et elle n'est pas venue. Il est
+**sans objet** pour la forme **(b)** arbitrée par Ko le 16/09 — *écrire la valeur EN VIGUEUR*,
+sans rien changer au comportement : **aucune valeur neuve n'y est choisie, donc rien n'y est
+choisi au jugé.** ⚠ **Lue seule, cette phrase conditionne le lot des budgets à une explication
+qui ne viendra peut-être jamais** — c'est le second sens de D287, celui qui n'a rien à contredire
+et qu'aucune recherche par contradiction ne ramène. **Trois phrases de cette famille ont été
+annotées le 16/09**, ici, dans l'ordre des rangs, et au backlog.
 
 ⇒ **ÉTAPES DU RANG, AU 13/09/2026** :
 1. ✅ **Étape 0 faite** — trois chiffres barrés et remplacés par ce que rendent les journaux, quatre
@@ -1398,6 +1452,36 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
    il reste, `chrome` dit si ce qui reste a été libéré »), **mesurée dans les deux sens**.
    ⇒ Pièces et inventaires : section D293, « ÉTAPE 1 » et « ÉTAPE 1, SECONDE TENTATIVE » ;
    `docs/preuves/D293/ouverture/` (14/09) et `ouverture-16-09/`.
+9. ⛔ **LE JOURNAL e2e N'ENTRE PAS AU DÉPÔT, ET SON EXTRAIT DOIT PORTER DE QUOI LE RECOMPTER —
+   RÈGLE ARBITRÉE PAR KO LE 16/09/2026 (D294), NI L'OPTION 1 NI L'OPTION 2.**
+   **Le fait qui l'impose** : le serveur de développement imprime les liens de vérification
+   (pas de mailer en dev), l'e2e crée des comptes, et l'audit de D293 y a relevé **24 jetons de
+   43 caractères**. **C'est la justification de l'existence de cet audit, pas un incident** — et
+   il ne les aurait pas vus en s'arrêtant au premier écran (D200).
+   ⛔ **CE QUI EST REFUSÉ, ET SUR QUELLE MESURE** : faire taire le lien côté serveur de dev
+   (« option 2 ») **paierait une capacité contre un risque qu'on peut borner autrement**.
+   Mesuré le 16/09 : `EmailVerificationToken` ne stocke qu'un **`tokenHash`** — le jeton clair
+   n'est **jamais** persisté — et `DevLoggerEmailSender` est le **seul** fournisseur lié au port
+   `EMAIL_SENDER` (`@Global()`, un seul `useClass`). ⇒ **Le journal de dev est le seul endroit
+   où le jeton clair existe** : le faire taire rendrait la vérification d'e-mail **et** la
+   réinitialisation de mot de passe **inachevables en dev**, par aucun chemin que le dépôt
+   fournit. Ce n'est pas « un confort ». ⚠ **Et l'autre moitié est mesurée aussi** : cela ne
+   casserait **pas** l'e2e — aucune spec de `e2e/` ne lit ce jeton, les seules occurrences de
+   « token » y sont les **tokens CSS** de `b7-token-contract`. Les 24 jetons sont un
+   **sous-produit**, consommé par rien.
+   ⛔ **CE QUI EST REFUSÉ AUSSI : L'EXTRAIT TEL QU'IL EST.** Celui de D293 garde **3 lignes sur
+   910** — de quoi lire le verdict, **pas** de quoi confronter chaque « failed » à son contexte,
+   ce que le point de lecture des portes EXIGE (D275). Les 4 lignes `[WebServer]` sur 742 de la
+   passe du 16/09 ne sont dans **aucune** pièce versée.
+   ⇒ **LA RÈGLE, EXÉCUTOIRE À LA PROCHAINE CERTIFICATION** : le journal brut **reste hors
+   dépôt** ; l'extrait reste une **liste blanche** — jamais une liste noire, qui laisserait
+   passer ce qu'on n'a pas prévu — et cette liste s'**ÉLARGIT jusqu'à porter de quoi (a)
+   recompter l'e2e par elle-même et (b) confronter chaque « failed » à son contexte**. **Les
+   jetons sont exclus par CONSTRUCTION**, pas par filtrage : l'extrait ABANDONNE si sa sortie
+   porte encore `token=`. ⚠ **Une preuve ne se caviarde pas** (D291, ratifié par Ko) : on
+   n'élargit jamais en retouchant le journal, seulement en gardant davantage de lignes.
+   ⚠ **L'instrument qui le fera reste À ÉCRIRE** — il corrigera au passage le `+1` de
+   `.split("\n")` (D294) et imprimera son compte de parcouru **avec son attendu à côté** (D290).
 
 #### ⛔ LE MOTIF DES POINTS 6 ET 7, ET IL EST MESURÉ — LA NUIT DU 09 AU 10/09/2026
 
@@ -1472,7 +1556,16 @@ non tranché.~~
 ⛔ **BARRÉ LE 11/09/2026 (D286).** Le reliquat est traité — les octets appliqués rendus au fichier de
 migration — et **le rang 8 est CLOS**. ⇒ section « Session du 11/09/2026 — D286 ».
 
-## RANG 8 — S11-b · **point d'entrée CONSERVÉ** ⛔ **CHEMIN DE L'ARGENT**
+## RANG 8 — S11-b · **point d'entrée CONSERVÉ** ⛔ **CHEMIN DE L'ARGENT** ⛔ **CLOS LE 11/09/2026 (D286) — TITRE ALIGNÉ LE 16/09/2026 (D294)**
+
+⛔ **POURQUOI CE TITRE A CHANGÉ, ET C'EST UNE REPRISE À FROID QUI L'A VU (D294).** Sur les huit
+blocs de rang en `##`, **sept portaient « CLOS » dans leur titre ; celui-ci, non** — seul bloc à
+ne pas le porter, et seul bloc du **CHEMIN DE L'ARGENT**. Le rang est clos depuis le 11/09/2026
+(D286). ⚠ **Un titre se lit avant son corps** : trois affirmations courantes de ce bloc, barrées
+ci-dessous, le présentaient encore comme un lot **ouvert et à mi-parcours** — c'est-à-dire un lot
+**certifié** du chemin de l'argent annoncé à moitié fait. **Une phrase qui déclare à moitié fait
+un lot certifié du chemin de l'argent est plus dangereuse qu'un budget manquant** (arbitrage de
+Ko, 16/09/2026).
 
 ⛔ **CE N'EST PLUS LE RANG COURANT depuis le 09/09/2026 (D283)** — ~~c'est le rang 9,
 CERTIFICATION~~ ⛔ **BARRÉ LE 10/09/2026 (D284) : le rang 9 est clos, le rang courant est le
@@ -1485,8 +1578,19 @@ Ce bloc reste **entier et à sa place** : ses six étapes sont faites,
 nomme D279 ET D282**, c'est-à-dire les deux lots de code de ce rang. La phrase était vraie
 jusqu'au matin du 10/09. ⚠ **Et l'en-tête de ce bloc n'est PAS réécrit en « certifié »** : la
 marque vit en section D283, datée, et ne se reconduit pas — c'est la certification par
-procuration que le rang 7 refuse depuis D270. Ce qui reste vrai : **le rang n'est pas CLOS**,
-il garde son reliquat d'arbitrage. Son cadrage — donc **la liste de ses modes de défaillance** —
+procuration que le rang 7 refuse depuis D270. ~~Ce qui reste vrai : **le rang n'est pas CLOS**,
+il garde son reliquat d'arbitrage.~~
+⛔ **BARRÉ LE 16/09/2026 (D294) — ET C'EST LA SEULE DES CINQ QUI ÉTAIT RESTÉE COURANTE.** Le
+rang 8 est **CLOS** depuis le 11/09/2026 (D286, étape 0 du rang 11) : le reliquat — la dérive de
+somme de contrôle `_prisma_migrations` — a été éteint en rendant au fichier de migration les
+octets appliqués, empreinte calculée redevenue égale à la stockée. ⚠ **Mesuré, pas relu** :
+balayage sur texte **aplati** (ces fichiers sont enveloppés à ~95 colonnes, une expression de
+plus de quelques mots y est coupée), 5 motifs, **24 occurrences examinées** — la même
+affirmation est barrée **quatre fois ailleurs**, dont **deux dans ce bloc même**, plus l'ordre
+des rangs (« LE RANG N'EST PAS CLOS » BARRÉ LE 11/09/2026 (D286) : IL L'EST) et le « CE QUI
+RESTE » de D284. **Une seule était restée debout, et c'était celle du premier paragraphe du
+bloc** — c'est-à-dire la première lue. ⚠ **Une passe partielle se lit exactement comme une passe
+faite** (D280). Son cadrage — donc **la liste de ses modes de défaillance** —
 doit rester consultable (D277 : un cadrage retiré après validation ne peut plus démentir
 personne). ⚠ **Ne pas le lire comme « ce qui vient ensuite ».**
 
@@ -1501,9 +1605,19 @@ phrase était exacte quand elle a été écrite le 07/09 et fausse le lendemain 
 restée en tête du bloc qu'une reprise lit EN PREMIER pour ce lot. ⚠ Le reste de la phrase
 tient : cette section est bien un point d'entrée, pas le cadrage.
 
-### ⛔ AVANCEMENT DU RANG 8 — étapes 1→3 sur 6 FAITES ET MESURÉES (08/09/2026, D279)
+### ⛔ AVANCEMENT DU RANG 8 — ~~étapes 1→3 sur 6 FAITES ET MESURÉES (08/09/2026, D279)~~ **LES SIX ÉTAPES SONT FAITES (D279 + D282), RANG CLOS (D286)**
 
-⛔ **CE LOT EST OUVERT ET À MI-PARCOURS.** Ce qui suit est son **point d'entrée**, pas son
+⛔ **SOUS-TITRE CORRIGÉ LE 16/09/2026 (D294), ET LA RAISON EST DANS SA POSITION.** Il annonçait
+**1→3 sur 6** pendant que le tableau **immédiatement en dessous** portait **six lignes sur six à
+✅**. ⚠ **Un titre se lit avant sa table** : la correction ci-dessous ne rattrape pas un lecteur
+qui s'est arrêté au titre. C'est la famille des compteurs figés (D268), appliquée à un
+sous-titre — et le chiffre est **remplacé par l'état, pas rafraîchi vers un autre chiffre.**
+
+~~⛔ **CE LOT EST OUVERT ET À MI-PARCOURS.**~~ ⛔ **BARRÉ LE 16/09/2026 (D294) : IL NE L'EST PAS.**
+Les six étapes sont faites (D279 pour 1→3, D282 pour 4→6), le lot est **certifié** par la marque
+du rang 9 (D283, « D279 et D282 en font partie ») et le rang est **CLOS** depuis le 11/09 (D286).
+⚠ **Barré, pas effacé** (D276) : effacée, cette phrase se réécrirait de bonne foi par quelqu'un
+qui ignore qu'elle a cessé d'être vraie. Ce qui suit est son **point d'entrée**, pas son
 état ; l'état est ici, et il tient en six lignes :
 
 | étape | objet | état |
@@ -1573,6 +1687,23 @@ propos du rang courant, et elle tient en un renvoi.
 ⚠ **Sans cette règle, ce bloc se périme à l'étape suivante**, et quelqu'un le réécrira sous
 le même constat. C'est D276 — « ce qui vaut décision s'écrit dans un fichier » — appliqué à
 l'endroit qui répond à *où en est-on*.
+
+⛔ **SECONDE MOITIÉ DE LA RÈGLE, AJOUTÉE LE 16/09/2026 (D294) — ET C'EST CE BLOC QUI L'A PAYÉE :
+IL SE RAFRAÎCHIT À CHAQUE AVANCEMENT *ET À LA CLÔTURE*.**
+⛔ **LE FAIT QUI RANGE L'INCIDENT, ET IL EST ACCABLANT : CE BLOC PORTE LA RÈGLE QU'IL ENFREINT.**
+La règle ci-dessus est écrite ici, par D282, en réponse à une reprise à froid qui avait lu ce
+bloc comme « lot arbitré, pas commencé ». Elle a été **respectée à chaque étape** — le bloc a été
+rafraîchi par D279, puis par D282. Elle a été **oubliée à la clôture** : quand D286 a fermé le
+rang, trois affirmations sont restées debout, dont le titre et la première phrase.
+⇒ **ET LA CLÔTURE EST LA SEULE QUI PUISSE ÊTRE OUBLIÉE, PARCE QUE PLUS RIEN NE SUIT.** Un
+avancement oublié se rattrape à l'avancement suivant, qui relit le bloc ; une clôture oubliée
+n'a pas de suivant — **elle reste telle quelle jusqu'à ce qu'une lecture adverse tombe dessus**,
+ici cinq jours et deux certifications plus tard. C'est pourquoi la seconde moitié n'est pas un
+ajout de confort : **elle couvre le seul cas que la première ne pouvait pas couvrir.**
+⚠ **Cette règle est PORTÉE dans `AGENTS.md` le 16/09/2026**, à côté de « UN RANG CLOS LAISSE UN
+ÉTAT NOMMÉ ». Motif, et il est tiré de l'incident lui-même : **une règle qui ne vit que dans le
+bloc d'un rang meurt avec l'attention qu'on porte à ce rang.** Ce bloc n'est plus relu depuis
+qu'il est clos — c'est très exactement pour cela que sa propre règle n'y a pas été appliquée.
 
 ### Ce que le rang 8 recouvre
 **S11-b — le chiffrage de `BookingsService`** : tarification, prestations, confrontation
@@ -2062,6 +2193,200 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 16/09/2026 — D294 · rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règle que portait le bloc qui l'enfreignait
+
+⛔ **RANG 16, ARBITRÉ PAR KO LE 16/09/2026.** ⇒ **État du rang** : section « PROCHAIN LOT — rang 16 »
+en tête de ce fichier, avec la table des sept atterrissages. **Numéro pris en LISANT le registre** :
+sa dernière ligne portait **D293**.
+⛔ **CE LOT NE MESURE AUCUNE PORTE, N'EN RELANCE AUCUNE, ET NE RELANCE PAS L'E2E** (consigne de Ko).
+Il est **documentaire** : trois `.md` d'autorité et `docs/preuves/` au diff. **Compteur de lots de
+code non certifiés : ZÉRO, inchangé.**
+
+### D294 — ce qui l'a ouvert : la septième reprise à froid, et la première sous forme allégée
+
+⛔ **LA FORME A ÉTÉ ALLÉGÉE PAR KO, ET LE MOTIF EST UNE MESURE** : sept reprises, sept trouvailles,
+dont deux qu'aucune session en cours ne pouvait faire — une permission périmée qui autorisait ce que
+la règle interdit (D287), et trois chiffres écrits comme des mesures et introuvables dans les
+journaux (D291). ⇒ **Aucune porte ne lit ces fichiers : cette lecture est le seul contrôle adverse
+du dépôt**, et la passe D277 ne la remplace pas — elle est faite par la session qui écrit.
+⚠ **Ce qui coûte n'est pas la lecture, c'est la rédaction de l'état** : première partie courte (rang,
+numéro, conclusion de la règle, condition), seconde partie **entière**. **Coupée là, pas ailleurs.**
+✅ **RÉSULTAT MESURABLE DE L'ALLÈGEMENT** : les quatre questions de la première partie se sont lues
+**dans le bloc du rang 15 SEUL** — zéro recoupement. C'est ce que le pointeur « l'ordre des rangs dit
+QUEL lot, le bloc dit OÙ IL EN EST » promet, et c'est la première fois qu'il est tenu sans détour.
+
+### ⛔ D294 — LE CONSTAT N°1 : UN LOT CERTIFIÉ DU CHEMIN DE L'ARGENT S'ANNONÇAIT À MOITIÉ FAIT
+
+**Relevé, pas relu.** Sur les huit blocs de rang en `##`, **sept portaient « CLOS » dans leur
+titre ; un seul ne le portait pas** — et c'était le **rang 8 (S11-b), le seul du CHEMIN DE
+L'ARGENT**. Trois affirmations courantes, non barrées, à l'intérieur :
+
+| où | ce qu'elle disait | ce que dit la mesure |
+|---|---|---|
+| titre du bloc | pas de « CLOS » | rang **clos** depuis le 11/09 (D286) |
+| sous-titre | « étapes **1→3 sur 6** FAITES » | la table **juste en dessous** : **6 sur 6** (D279 + D282) |
+| 1ʳᵉ phrase du corps | « **CE LOT EST OUVERT ET À MI-PARCOURS** » | six étapes faites, lot **certifié** (D283) |
+| 1ᵉʳ paragraphe | « le rang **n'est pas CLOS**, il garde son reliquat » | reliquat **éteint** le 11/09 (D286, étape 0 du rang 11) |
+
+⚠ **La dernière est la plus nette, et c'est une MESURE qui le dit** : balayage sur texte **aplati**,
+5 motifs, **24 occurrences examinées** — la même affirmation est **barrée quatre fois ailleurs**,
+dont **deux dans ce bloc même**. **Une seule était restée debout : celle du premier paragraphe**,
+c'est-à-dire la première lue. **Une passe partielle se lit exactement comme une passe faite** (D280).
+⛔ **CE QUI LIMITE LA PORTÉE, ET JE L'ÉCRIS PARCE QUE C'EST VRAI** : le bloc dit aussi « CE N'EST
+PLUS LE RANG COURANT » et « Ne pas le lire comme *ce qui vient ensuite* ». Le risque n'était donc
+**pas** qu'une reprise l'ouvre comme prochain lot — c'était qu'elle lise **S11-b comme à moitié fait
+sur le chemin de l'argent**, et rouvre du travail livré, mesuré et certifié.
+⛔ **ET LE FAIT QUI LE RANGE COMME UN MOTIF PLUTÔT QU'UN ACCIDENT : CE BLOC PORTE LA RÈGLE QU'IL
+ENFREINT.** La règle « le point d'entrée se rafraîchit à la clôture de toute session qui le fait
+avancer » **est écrite dans ce bloc**, par D282, en réponse à une reprise à froid qui l'avait lu
+comme « lot arbitré, pas commencé ». Elle a été **respectée à chaque avancement** — D279, puis D282
+— et **oubliée à la clôture**.
+⇒ **LA RÈGLE REÇOIT SA SECONDE MOITIÉ (arbitrage de Ko)** : le point d'entrée se rafraîchit à chaque
+avancement **ET À LA CLÔTURE**, et **la clôture est la seule qui puisse être oubliée, puisque plus
+rien ne suit**. Un avancement oublié se rattrape au suivant, qui relit le bloc ; une clôture oubliée
+n'a pas de suivant. ⇒ **Portée dans `AGENTS.md`**, à côté de « UN RANG CLOS LAISSE UN ÉTAT NOMMÉ » —
+motif tiré de l'incident lui-même : **une règle qui ne vit que dans le bloc d'un rang meurt avec
+l'attention qu'on porte à ce rang.**
+
+### ⛔ D294 — DÉCISION DE KO n°1 : LE JOURNAL e2e, NI (1) NI (2) — L'EXTRAIT S'ÉLARGIT
+
+⚠ **L'audit a attrapé 24 jetons réels dans le journal e2e. C'est la justification de son existence,
+pas un incident** (Ko).
+
+**Ce qui a fait tomber (2) — faire taire le lien côté serveur de dev — est une mesure de cette
+reprise** : `EmailVerificationToken` ne stocke qu'un **`tokenHash`**, le jeton clair n'est **jamais**
+persisté, et `DevLoggerEmailSender` est le **seul** fournisseur lié au port `EMAIL_SENDER`
+(`@Global()`, un seul `useClass`). ⇒ **Le journal de dev est le seul endroit où le jeton clair
+existe** : le faire taire rendrait la vérification d'e-mail **et** la réinitialisation de mot de
+passe **inachevables en dev**. ⛔ **Le backlog écrivait « retire un confort réel » — c'était faux, et
+sous-estimer un coût biaise l'arbitrage qu'il alimente.** **Motif de Ko** : « paierait une capacité
+contre un risque qu'on peut borner autrement ».
+⚠ **Et l'autre moitié est mesurée aussi, elle va dans le sens inverse** : (2) ne casserait **pas**
+l'e2e — aucune spec de `e2e/` ne lit ce jeton, les seules occurrences de « token » y sont les
+**tokens CSS** de `b7-token-contract`. Les 24 jetons sont un **sous-produit**, consommé par rien.
+**Ce qui a fait tomber (1)** : l'extrait de D293 garde **3 lignes sur 910** — de quoi lire le
+verdict, **pas** de quoi confronter chaque « failed » à son contexte (D275). Les 4 lignes
+`[WebServer]` sur 742 ne sont dans **aucune** pièce versée.
+⇒ **RÈGLE ÉCRITE AU POINT 9 DU CRITÈRE DU RANG 9**, et **pas ici** : une certification future lit le
+critère, pas une section de session (D276 appliqué à ce qui justifie une règle). **L'élargissement
+s'applique à la prochaine certification** ; ce lot n'écrit pas l'instrument.
+
+### ⛔ D294 — DÉCISION DE KO n°2 : LES BUDGETS, FORME (b), CANDIDAT DU RANG 17
+
+⛔ **(a) — choisir une valeur sur des durées : NON FONDABLE, et c'est mesuré.** La quantité qu'un
+budget **LIE** est le **maximum PAR TEST** : le mode de défaillance est l'expiration. Le dépôt n'en a
+que **deux points isolés, sur deux suites, à deux dates** — un treizième des 5 000 ms au repos
+(01/09, le rouge exigeant ≈ 55×, donc de la contention) et 2,1× de marge sur l'API à 8, 24 et 48
+processus (02/09) —, un troisième étant **caduc** (argon2, sorti de l'unitaire à D271). ⛔ **Et sa
+dispersion n'a jamais été mesurée** : les 12 passes de D291 mesurent la durée **de suite entière**.
+✅ **(b) — écrire la valeur EN VIGUEUR : FONDABLE, et elle ne demande pas que les ~20 % soient
+expliqués.** **5 000 ms n'est écrit nulle part** dans les quatre configurations unitaires (remesuré
+le 16/09 : seule `vitest.config.int.ts` déclare un budget) : personne ne peut distinguer une
+**politique** d'un **héritage**. Le lot écrit le budget **à la valeur déjà en vigueur**, avec les
+marges mesurées à côté ; **rien ne change de comportement**, mais une dérive devient visible et un
+changement futur devient arbitrable. ⛔ **Contrainte retenue par Ko : N se DÉRIVE de la dispersion du
+maximum PAR TEST, mesurée DANS LE MÊME LOT.**
+⚠ **Candidat DÉSIGNÉ du rang 17, NON arbitré** — « je l'ouvrirai après ce lot » (Ko).
+
+### ⛔ D294 — UNE CONSIGNE DE KO APPLIQUÉE AUTREMENT QU'À LA LETTRE, ET LE MOTIF EST SA PROPRE RÈGLE
+
+**Consigne** : « le biais `split("\n")` : corrigé dans `extraire-e2e.py`, et le « 911 » rectifié en
+910 là où il est écrit ».
+⛔ **CE QUI A ÉTÉ FAIT AUTREMENT** : `extraire-e2e.py`, sa sortie et l'extrait versé **n'ont pas été
+retouchés**. **Deux raisons, et la seconde est la vraie** : une preuve ne se retouche pas (D291,
+ratifiée par Ko dans le même message) ; et surtout, **corriger le script sans corriger la sortie
+qu'il a produite donnerait une archive qui ne reproduit plus la sienne** — une archive incohérente
+avec elle-même, alors qu'une archive ne vaut que parce qu'on peut la rejouer. Entre « un chiffre
+faux, expliqué à côté » et « une archive qui ment sur elle-même », **le premier reste confrontable**.
+⇒ **CE QUI A ÉTÉ FAIT** : le 911 est **rectifié là où il engage une AUTORITÉ** — section D293 de ce
+fichier, barré avec sa cause — et une note est posée **à côté** des pièces :
+`docs/preuves/D293/outils/RECTIFICATION-D294.txt`. **L'instrument corrigé s'écrit à la prochaine
+certification**, avec l'élargissement : ici, un script ferait **compter** ce lot.
+⚠ **Si Ko veut la lettre, c'est une ligne à dire** — la note se remplace par l'édition.
+
+### ⛔ D294 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **MON PROPRE EXTRACTEUR A RENDU ZÉRO SUR SIX MOTIFS SUR SEIZE, EN SILENCE.** La première
+   version de `passe-d277.py` comparait les motifs au texte **brut** : « serre a 5 s » ne trouvait
+   pas « serré à 5 s », « au juge » ne trouvait pas « au jugé », « testTimeout de » ne trouvait pas
+   « \`testTimeout\` de ». **Le total — 302 — avait l'air d'une mesure saine.** ⛔ **Il n'a pas levé,
+   il a répondu**, et six angles morts passaient pour six absences. ⚠ Vu **uniquement** parce que le
+   compte **PAR MOTIF** a été imprimé. ⇒ Deux replis ajoutés (accents **et** balisage, appliqués au
+   texte **et** au motif), un **troisième bras de calibration** né de la faute (un motif accentué
+   connu présent), et le compte par motif imprimé avec « MOTIFS À ZÉRO ». Rejoué : **342 occurrences,
+   0 motif à zéro**. Sortie fautive **gardée** (`passe-d277-sortie-FAUTIVE-motifs-non-replies.txt`).
+   ⚠ **C'est D275 mot pour mot, et c'est la DEUXIÈME fois en deux sessions** : la reprise à froid du
+   16/09 avait déjà vu son `grep` rendre 0 sur un fichier dont elle venait de lire le contenu.
+   **Deux fois, c'est un motif** — mes extracteurs jetables ne sont pas calibrés parce qu'ils ne
+   sont « que » de la recherche de chaîne.
+2. ⚠ **J'AI FAILLI RAPPORTER LA RÉPARATION DE `vite.config.ts:24` COMME UN CAS D276** (« décision
+   logée dans un message de commit »). **Fausse** : elle est écrite en section D290 et dans l'entrée
+   du rang 13. Ma première recherche l'avait manquée parce que sa sortie était **tronquée par un
+   `tail`**. ⇒ Cherchée à nouveau avant d'écrire, trouvée, conclusion changée. **Un audit tronqué se
+   lit exactement comme un audit complet** (D200) — ici contre moi, et à deux doigts d'accuser à
+   tort un lot qui avait bien fait son travail.
+
+### D294 — passe D277, les deux sens
+
+`docs/preuves/D294/outils/passe-d277.py` sur `motifs-d294.txt`, texte aplati, calibration **3 bras
+sur 3** : **342 occurrences vues sur 16 motifs**, 4 fichiers, 1 027 343 caractères, **0 motif à zéro**.
+- **Sens 1 — invalidé** : les quatre affirmations du rang 8, la ligne `testTimeout`, la raison du bac
+  à sable, le « 911 », et « RANG 16 en attente » (2 endroits). **Toutes barrées avec leur motif**, et
+  aucune autre occurrence courante des mêmes affirmations ailleurs.
+- ⛔ **Sens 2 — rendu permis, ET IL Y EN AVAIT TROIS.** Trois phrases **courantes** portent « un
+  budget calculé sur des durées dont ~20 % restent inexpliqués serait choisi au jugé » : point
+  d'entrée du rang 14, ordre des rangs, et l'entrée `[MÉTHODE][P0]` du backlog. **Aucune n'est
+  fausse** — elles restent vraies de la forme **(a)**. Mais lues seules, **elles conditionnent le lot
+  des budgets à une explication qui ne viendra peut-être jamais**, alors que Ko vient d'arbitrer la
+  forme **(b)**, qui n'en dépend pas. **Toutes trois annotées « vaut de (a), pas de (b) ».**
+  ⚠ **Aucune n'aurait été trouvée par une recherche de contradiction** : elles ne contredisent aucun
+  mot de ce lot — elles **conditionnent** ce qu'il autorise. C'est exactement le second sens que
+  D287 a dû écrire, et le seul qui ne se rattrape pas.
+
+### D294 — les pièces versées, et le tri de l'audit de secrets
+
+**Pièces** : `docs/preuves/D294/outils/` — la passe D277 (script, motifs, sortie, **et la sortie
+fautive gardée**), le relecteur des jetons écrits, le script qui **re-dérive toutes les quantités
+que cette section cite**, et le contrôle « aucune valeur de jeton ». Plus, à côté des pièces de
+D293 : `RECTIFICATION-D294.txt`.
+- **Relecture de ce qui a été écrit** (D289 : on relit le FICHIER, jamais le compte rendu de
+  l'outil) : **24 jetons cherchés, 0 manquant**, sur 4 fichiers et 1 066 509 caractères lus.
+  ⚠ **Attendu « ≥ 1 » et non un chiffre**, délibérément : D293 s'est fait rendre **deux** écarts
+  par son propre relecteur sur des attendus comptés **de tête**. Quand la quantité exacte n'a pas
+  été relevée AVANT l'écriture, le seul attendu honnête est la **présence**.
+- **Re-dérivation** : les huit blocs de `mesures-d294.py` reproduisent **tout** ce que cette
+  section chiffre — les cinq configurations, le `tokenHash`, le fournisseur unique, l'absence de
+  jeton dans nos specs e2e, le 910 contre 911, les cinq instruments porteurs de l'idiome, la
+  réparation de `vite.config.ts`, et les fins de ligne en octets. **0 échec.**
+- ⛔ **AUDIT DE SECRETS NON TRONQUÉ, ET IL SORT EN 1** : **239 fichiers, 2 147 998 octets
+  parcourus, 33 alertes, 11 motifs passant leurs deux bras.** **Les motifs ne sont pas relâchés
+  pour que l'audit passe** (D293) : la décision de commiter repose sur ce **tri écrit**.
+  **Aucune alerte n'est une valeur** — toutes portent le MOT `token=` dans de la prose ou dans un
+  motif de recherche : 13 dans des pièces de D291 et D293 **déjà au dépôt**, les autres dans mes
+  propres outils, leurs sorties et la rectification, **qui parlent tous de jetons**.
+  ⚠ **Famille connue, rencontrée deux fois à D291 et une à D293** : écrire la trouvaille fait
+  monter le compte de l'audit. **Le compte ne se lit pas seul ; le contexte, toujours.**
+- ✅ **ET LA QUESTION QUI ENGAGE LE DÉPÔT EST MESURÉE À PART, PARCE QU'UN TRI HUMAIN SUR 33 LIGNES
+  N'EST PAS UNE MESURE** : `aucune-valeur-de-jeton.py`, calibré sur le cas connu — le journal hors
+  dépôt rend bien **24** — puis passé sur tout `docs/preuves/` : **0 valeur sur 244 fichiers et
+  2 202 682 octets.** ⚠ Il **ABANDONNE** si le journal a disparu, plutôt que de rendre un 0
+  rassurant sur un instrument non calibré.
+- ⚠ **Le chemin local du compte Windows** apparaît **79 fois** dans les preuves — signalé par
+  l'audit, **pas masqué** : une preuve ne se retouche pas (D291).
+
+### ⛔ D294 — CE QUE CE LOT NE FAIT PAS
+
+1. **Il ne certifie rien, et ne mesure aucune porte.** Compteur de lots de code non certifiés :
+   **ZÉRO**, inchangé — il est documentaire et ne s'y ajoute pas.
+2. **Il ne relance pas l'e2e** (consigne de Ko) : il écrit la règle de l'extrait élargi, dont
+   l'application vient à la prochaine certification.
+3. **Il n'écrit aucun instrument** — ni l'extracteur e2e corrigé, ni rien dans `neutralisation/` :
+   un script ferait compter ce lot.
+4. **Il n'ouvre pas les budgets** : la FORME est arbitrée, le RANG ne l'est pas.
+5. **Il ne retouche aucune pièce de D293** — voir la section sur la consigne appliquée autrement.
+6. **Il ne verse pas les pièces orphelines** des rangs 6, 11 et 12 (hors campagnes) : hors arbitrage,
+   inchangé depuis D291.
+
 ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
 
 ⛔ **RANG 15, ARBITRÉ PAR KO LE 14/09/2026** (clôture de D292). ⇒ **État du rang** : section « PROCHAIN
@@ -2403,7 +2728,25 @@ développement **imprime les liens de vérification**, faute de mailer en dev, e
 ⛔ **Une preuve ne se retouche pas (D291) : le journal brut N'EST PAS VERSÉ**, il reste hors dépôt, et la
 section cite à sa place un **EXTRAIT DÉRIVÉ, nommé comme tel** (`rang15-e2e-EXTRAIT.txt`, liste
 **blanche** des lignes de verdict — une liste noire laisserait passer ce qu'on n'a pas prévu ;
-contrôle imprimé : 911 lignes parcourues, 3 gardées, **0 « token= » dans la sortie**).
+contrôle imprimé : ~~911~~ lignes parcourues, 3 gardées, **0 « token= » dans la sortie**).
+⛔ **RECTIFIÉ LE 16/09/2026 (D294) : LE JOURNAL EN PORTE 910, PAS 911, ET LA CAUSE EST DANS
+L'INSTRUMENT.** `wc -l` **et** `splitlines()` rendent **910** sur un fichier qui se termine bien
+par `\n` ; `extraire-e2e.py` fait `.split("\n")`, qui rend un **élément vide final** — donc
+**+1 systématique sur tout fichier qu'il lira**. ⚠ **Le verdict ne bouge pas** : 3 lignes
+gardées, 0 jeton en sortie, et les 3 gardées disent bien 34 passés · 1 ignoré. Si cela vaut
+d'être écrit, c'est que sous D290 le compte de parcouru **n'existe que pour être confrontable**
+— et confronté, il était faux. ⚠ **Portée VÉRIFIÉE, pas présumée** : 5 instruments versés
+portent cet idiome, **un seul alimente un compte « parcouru » imprimé** ; les « 375 lignes » de
+`verser-et-confronter.py` passent par `splitlines()`, et le `split` d'`audit-secrets.py` ne sert
+qu'à **numéroter** les lignes, ses comptes imprimés étant des fichiers et des octets. **Aucun
+autre chiffre d'autorité n'est touché.**
+⛔ **L'ARCHIVE N'EST PAS RETOUCHÉE, ET C'EST DÉLIBÉRÉ.** `extraire-e2e.py`, sa sortie et
+l'extrait versé portent toujours **911** : une preuve ne se retouche pas (D291), et corriger le
+script **sans** corriger la sortie qu'il a produite donnerait une archive qui **ne reproduit plus
+la sienne** — c'est-à-dire une archive qui ment sur elle-même. ⇒ La rectification est posée **à
+côté** d'eux : `docs/preuves/D293/outils/RECTIFICATION-D294.txt`. **L'instrument corrigé s'écrit
+à la prochaine certification**, avec l'élargissement de la liste blanche (critère, point 9) —
+pas ici : un script ferait **compter** ce lot.
 ⚠ **C'est la première fois que cet audit trouve autre chose que des noms de test** — et il ne l'aurait
 pas trouvé s'il s'était arrêté au premier écran (D200).
 **Tri des 16 alertes restantes, valeurs masquées dans la sortie versée** (dernier passage avant commit :
@@ -7109,7 +7452,10 @@ s'arrête. ⚠ **Ce qui attend toujours, sans rang** : les **budgets de test** (
 10/09), explicitement **hors** du rang 13 par consigne de Ko.~~
 ⛔ **CONSOMMÉ LE 12/09/2026 (D291) — ARBITRÉ PAR KO : le RANG 14 est `PERF` ET LA DURÉE**, et il
 passe **AVANT** les budgets de test. **Motif de Ko** : un budget calculé sur des durées dont ~20 %
-restent inexpliqués serait choisi au jugé. La désignation des budgets pour le rang 14 est
+restent inexpliqués serait choisi au jugé.
+⛔ **(D294, 16/09/2026) VAUT DE LA FORME (a), PAS DE (b)** — deuxième des trois phrases de cette
+famille. La forme (b) n'écrit **aucune valeur neuve**, donc ce motif ne la conditionne pas.
+Détail : point d'entrée du rang 14. La désignation des budgets pour le rang 14 est
 **barrée plutôt qu'effacée** (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 14 » en
 tête de ce fichier.
 ⇒ ~~**RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284).~~ ⛔ **CONSOMMÉ LE 14/09/2026, À LA CLÔTURE
@@ -7119,11 +7465,34 @@ qu'effacé (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 15 �
 ✅ **CLOS le 16/09/2026 (D293), marque posée après DEUX refus sur la porte dure** (`chrome` le 14/09,
 RAM le 16/09). **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code
 **peut** s'ouvrir, et c'est lui qui le portera à un.
-⚠ **Ce qui attend, sans rang** : les
+⚠ ~~**Ce qui attend, sans rang** : les
 **budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
-rang 15 leur soit attribué.
-⇒ **RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'ouverture du rang 15, pour
-qu'aucune reprise ne tombe sur une liste qui s'arrête.
+rang 15 leur soit attribué.~~ ⛔ **(D294, 16/09/2026) TOUJOURS SANS RANG, MAIS PLUS SANS FORME** :
+les budgets restent le seul candidat en attente, et Ko en a **arbitré la FORME le 16/09** — c'est
+**(b)**, écrire la valeur en vigueur. **Candidat désigné du rang 17**, non arbitré.
+⇒ ~~**RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'ouverture du rang 15, pour
+qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 16/09/2026 (D294) — ARBITRÉ PAR KO : le RANG 16 est un LOT DOCUMENTAIRE**, les sept
+constats de la septième reprise à froid. Barré plutôt qu'effacé (D276). **Motif de l'ordre, écrit par
+Ko** : « une phrase qui déclare à moitié fait un lot **certifié** du chemin de l'argent est plus
+dangereuse qu'un budget manquant » — le bloc du rang 8 passe donc devant les budgets.
+⇒ **Où il en est** : section « ~~PROCHAIN LOT~~ — rang 16 » en tête de ce fichier — ✅ **CLOS le
+16/09/2026 (D294)**. ⚠ **Documentaire : il ne compte pas dans les deux/trois** (D283, amendé par
+D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
+⇒ **RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la clôture du rang 16, pour qu'aucune
+reprise ne tombe sur une liste qui s'arrête.
+⚠ **CANDIDAT DÉSIGNÉ POUR LE RANG 17, PAR KO, LE 16/09/2026 : les BUDGETS DE TEST**
+(`[MÉTHODE][P0]` du 10/09), **dans la forme (b) et pas une autre** — *écrire la valeur EN VIGUEUR,
+ne rien changer au comportement, rendre un héritage invisible arbitrable* —, avec la contrainte
+que Ko a retenue : **N dérivé de la dispersion du maximum PAR TEST, mesurée dans le même lot.**
+⛔ **C'est une DÉSIGNATION, pas l'arbitrage** : « je l'ouvrirai après ce lot » (Ko). La session
+n'arbitre pas l'ordre des rangs — **sept écritures de cet ordre, toutes de Ko.**
+⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
+que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
+12 passes de D291 mesurent la durée **de suite entière**. Un budget *choisi sur des durées* serait
+donc choisi au jugé — le motif même qui a fait tomber la borne de workers. **(b) ne demande pas
+que les ~20 % de D290 soient expliqués**, puisqu'elle n'écrit aucune valeur neuve. Détail :
+section D294, et l'entrée `[MÉTHODE][P0]` du backlog.
 ⚠ **ET « SUIVANT » VOULAIT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
 **OUVERT, pas clos** ; ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa
 mesure**.~~ ⛔ **PRÉMISSE PÉRIMÉE LE 12/09/2026 (D288) : le rang 12 est CLOS**, sa marque est
@@ -7164,7 +7533,8 @@ pointeur promet d'éviter :
 - ✅ **la sonde d'état machine hors dépôt** — FAITE au rang 11 (D286) ;
 - ✅ **le reliquat du rang 8** — FAIT à l'étape 0 du rang 11 (D286) ;
 - ⏳ **les budgets de test non écrits** — `[MÉTHODE][P0]` du 10/09, toujours ouvert ; ⛔ **placés
-  APRÈS le rang 14 par Ko le 12/09/2026 (D291)** ;
+  APRÈS le rang 14 par Ko le 12/09/2026 (D291)** ; ⛔ **(D294, 16/09/2026) FORME ARBITRÉE — c'est
+  (b), écrire la valeur EN VIGUEUR — et CANDIDAT DÉSIGNÉ DU RANG 17, non arbitré** ;
 - ~~⏳ **la borne de workers sur une suite de quatre** — `[MÉTHODE][P0]` du 10/09, toujours
   ouvert.~~ ✅ **RANG 13, CLOS LE 12/09/2026 SANS BORNE (D290)** — barré le 13/09 (D291).
   ⚠ **Ko, 11/09/2026, mot pour mot** : « la borne de workers touche quatre configs,
@@ -8258,10 +8628,22 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
   corrigée doit sortir du fichier. Un `UPDATE` non relu transforme le gel en
   blanc-seing. Deux points à lire en premier : le contraste des capitales à 12 px
   du top panel, et celui des cases du calendrier.
-- ⛔ **Vérification visuelle jamais faite** : le bac à sable n'a ni navigateur ni
-  API. Les proportions de la refonte sont dérivées des maquettes, pas comparées à
+- ⛔ **Vérification visuelle jamais faite** : ~~le bac à sable n'a ni navigateur ni
+  API.~~ Les proportions de la refonte sont dérivées des maquettes, pas comparées à
   un rendu réel. Structure, hiérarchie, tokens, RTL et absence des éléments
   interdits sont audités ; l'accord fin des espacements ne l'est pas.
+  ⛔ **RAISON BARRÉE LE 16/09/2026 (D294), DETTE CONSERVÉE — ET LA DISTINCTION EST TOUT.**
+  **La dette tient** : personne n'a comparé les espacements à un rendu réel, et aucune porte ne
+  le regarde. **Sa raison, non** : elle décrit le **bac à sable web**, et elle était écrite ici
+  sans nommer son environnement — dans une section d'état que tout le monde lit comme générale.
+  ⚠ **Sur le poste de Ko il y a un navigateur ET une API** : la suite e2e Playwright tourne
+  contre des serveurs réels, et elle vient de rendre **34 passés · 1 ignoré** dans la
+  certification du 16/09 (D293). Une raison qui s'appuie sur une limite levée fait chercher le
+  remède au mauvais endroit — et surtout, elle fait croire la dette **impayable** alors qu'elle
+  est seulement **non payée**.
+  ⇒ **C'est D268 mot pour mot — « une note d'environnement porte le nom de l'environnement
+  mesuré, ou elle ment »** — appliqué à une note qui vivait **hors** de la section
+  d'environnement, donc hors de portée de la règle qui la visait.
 
 ## Décisions encore ouvertes (pas bloquantes maintenant)
 
@@ -8269,7 +8651,26 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - **« Nouvelle salle » dans l'état vide de la liste Pro** — conservé par choix, alors que le cadrage disait « le bouton disparaît de la liste ». À confirmer ou infirmer.
 - **Parcours de réclamation** d'un compte supprimé revenu. `emailHash` l'outille, rien ne l'implémente.
 - **Greffon `react-hooks` absent de `packages/ui`** alors que le paquet héberge désormais de vrais hooks. Correctif de configuration à part entière, jamais glissé dans un lot fonctionnel.
-- **`testTimeout` de `apps/api` serré à 5 s** : argon2 (m=64MiB) et sharp le frôlent sous charge, quatre faux rouges déjà observés. Correctif de configuration séparé. *(Le repère « sharp sur 4096×2048 » est périmé depuis D45 — c'était le traitement des panoramas 360°, disparu avec `processVenuePhoto360` ; le pipeline restant plafonne à 1920 de large.)*
+- ~~**`testTimeout` de `apps/api` serré à 5 s** : argon2 (m=64MiB) et sharp le frôlent sous charge, quatre faux rouges déjà observés. Correctif de configuration séparé.~~ *(Le repère « sharp sur 4096×2048 » est périmé depuis D45 — c'était le traitement des panoramas 360°, disparu avec `processVenuePhoto360` ; le pipeline restant plafonne à 1920 de large.)*
+  ⛔ **BARRÉE LE 16/09/2026 (D294) — PÉRIMÉE SUR SES TROIS TERMES, ET C'EST LA MESURE QUI TRANCHE.**
+  1. **« serré à 5 s » décrit un défaut HÉRITÉ comme un réglage DÉCLARÉ.** Mesuré le 16/09 sur les
+     cinq configurations : `apps/api/vitest.config.ts` **ne déclare aucun `testTimeout`** — pas
+     plus que `apps/client`, `packages/api-client` et le bloc `test` de `apps/pro`. **Seule**
+     `apps/api/vitest.config.int.ts` en déclare un (`30_000` / `60_000`). Les 5 000 ms sont le
+     défaut de vitest, **que personne n'a écrit** — et c'est très exactement l'objet du report
+     `[MÉTHODE][P0]` du 10/09 : **« un budget non écrit n'est pas une garde. »**
+  2. **argon2 a quitté la suite unitaire** à D271 (01/09) : il ne frôle plus rien dans
+     `apps/api`, il vit dans `test:int`, dont le budget est large.
+  3. **sharp a été requalifié SANS OBJET sur mesure** le 02/09 — API 640/640, zéro délai dépassé
+     à 8, 24 et 48 processus, 2,1× de marge sur le test le plus lourd — **PARCE QUE** argon2
+     était parti. Il est **déchargé, pas réglé**, et son rang **se rouvre** si du travail coûteux
+     revient en unitaire.
+  ⚠ **DIVERGENCE ENTRE DEUX AUTORITÉS, ET LA PÉRIMÉE ÉTAIT DANS LE FICHIER D'ÉTAT.** L'entrée
+  correspondante de `ZWADJ_BACKLOG.md` avait été **correctement barrée avec son motif le
+  01/09/2026** — « élargir le budget masquerait un test devenu lent », et « le budget n'est pas la
+  cause ». **La décision a traversé vers l'autorité n°3 et n'est jamais revenue ici** : c'est D277
+  d'un cran retourné, exactement comme le bloc du rang 8 l'avait déjà été (D282).
+  ⚠ **Et c'est la première ligne qu'un lot de budgets lirait** — voir le candidat du rang 17.
 - **Sort « recommandé »** : algorithme non défini (backlog 23.8). ⚠ Devenu un **risque produit actif** — voir la dette ci-dessus.
 - Régime fiscal, entité légale en Algérie, taux de commission exact par salle, timing de l'abonnement/featured listing.
 - **Communes** : 23 des 57 communes d'Alger seedées — extension = une ligne par commune dans `apps/api/prisma/seed-data/cities.ts`, **zéro migration**.
@@ -8609,3 +9010,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D291 | A | D291 — rang 14 CLOS (`PERF` et la durée) : une hypothèse écrite au statut de mesure est barrée, les preuves brutes qu'une décision cite entrent au dépôt, et la POSITION d'une passe est un terme de durée (6 cycles sur 6) ; l'écart de D290 n'est pas reproduit |
 | D292 | A | Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue |
 | D293 | A | Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque |
+| D294 | A | D294 — rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règle que portait le bloc qui l'enfreignait |

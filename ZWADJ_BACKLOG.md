@@ -2362,12 +2362,60 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 16/09/2026 — rang 16, lot documentaire (D294)
+
+⚠ **UN LOT DOCUMENTAIRE NE CORRIGE PAS DU CODE.** Ce qui a été croisé en écrivant les sept constats
+se **rapporte** ici. Détail : section D294 de `ZWADJ_CONTINUITE.md`.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[INFRA][P3]** ⛔ **`.split("\n")` REND UN ÉLÉMENT VIDE FINAL — UN COMPTE DE « PARCOURU » BIAISÉ
+  DE +1, DANS UN INSTRUMENT VERSÉ.** Relevé le 16/09/2026 : `docs/preuves/D293/outils/extraire-e2e.py`
+  imprime « 911 lignes parcourues » là où `wc -l` **et** `splitlines()` rendent **910**, sur un
+  fichier bien terminé par `\n`. **Biais systématique**, pour tout fichier que cet instrument lira.
+  ⚠ **Le verdict de D293 ne bouge pas** : 3 lignes gardées, 0 jeton en sortie, et les 3 gardées
+  disent bien 34 passés · 1 ignoré. ⚠ **Mais sous D290 le compte de parcouru n'existe QUE pour être
+  confrontable** — confronté, il était faux.
+  ⚠ **Portée VÉRIFIÉE, pas présumée** : **5** instruments versés portent l'idiome (`D291/controles`,
+  `D291/passe-d277`, `D293/outils/audit-secrets.py`, `D293/outils/extraire-e2e.py`,
+  `D293/versement-d288`), mais **un seul alimente un compte imprimé**. Les « 375 lignes » de
+  `verser-et-confronter.py` passent par `splitlines()` ; le `split` d'`audit-secrets.py` ne sert qu'à
+  **numéroter** les lignes. **Aucun autre chiffre d'autorité n'est touché.**
+  ⛔ **NON corrigé, et c'est délibéré** : l'archive de D293 n'est **pas** retouchée — une preuve ne se
+  retouche pas (D291), et corriger le script sans corriger sa sortie donnerait une archive qui **ne
+  reproduit plus la sienne**. ⇒ Rectification posée **à côté** :
+  `docs/preuves/D293/outils/RECTIFICATION-D294.txt` ; chiffre rectifié là où il engage une autorité
+  (section D293). **L'instrument corrigé s'écrit à la prochaine certification**, avec
+  l'élargissement de la liste blanche — ici, un script ferait **compter** le lot.
+
+- **[INFRA][P3]** ⚠ **`python3` ET `python` NE SONT PAS LE MÊME INTERPRÉTEUR SUR CE POSTE — RELEVÉ,
+  NON ÉTABLI COMME UN DÉFAUT.** Mesuré le 16/09/2026 : `python3` → **3.14.3**
+  (`…/WindowsApps/python3`), `python` → **3.13.3** (`C:\Python313`). ⚠ `CLAUDE.md` et `AGENTS.md`
+  invoquent les harnais par **`python3`** ; les scripts de lecture de ce lot ont tourné sous
+  `python`. ⛔ **Aucune mesure ne montre que cela change quoi que ce soit** — c'est écrit comme un
+  **terme non calibré**, pas comme une cause : dans un dépôt où un instrument rejoue sa calibration
+  à chaque invocation, deux interpréteurs pour un même nom méritent d'être connus avant qu'une
+  divergence soit attribuée au code. ⇒ **À vérifier le jour où un harnais se comporte différemment
+  selon la commande employée**, pas avant.
+
+- **[DOC][P3]** ⚠ **DIX SECTIONS DE REPORTS PORTENT LE TITRE « Ouverts, mesurés, NON corrigés », ET
+  CERTAINES CONTIENNENT DES ENTRÉES CLOSES.** Relevé le 16/09/2026 sur les reports de D293 : deux
+  entrées sur quatre y sont ✅ closes. **Convention inchangée** (arbitrage de Ko : « sans réécrire les
+  conventions »), et chaque entrée porte son ✅/⛔ — mais **un titre se lit avant sa liste**, et c'est
+  la même famille que le sous-titre du rang 8 corrigé par ce lot. ⇒ Une ligne d'avertissement a été
+  posée sous le titre de la section D293 ; **les neuf autres ne sont pas touchées.**
+
 ## Reports du 14/09/2026 — rang 15, certification (D293)
 
 ⚠ **UNE CERTIFICATION NE CORRIGE RIEN.** Ce qui est croisé pendant l'étape 0 et la passe se **rapporte**.
 Détail : section D293 de `ZWADJ_CONTINUITE.md`.
 
 ### ⛔ Ouverts, mesurés, NON corrigés
+
+⚠ **(D294, 16/09/2026) DEUX DES QUATRE ENTRÉES CI-DESSOUS SONT CLOSES** (`chrome`, puis la RAM) : le
+titre nomme ce que la section a RECUEILLI, pas l'état de chaque entrée — lire le ✅/⛔ de chacune.
+**Convention inchangée** (dix sections portent ce titre), signalé parce qu'un titre se lit avant sa
+liste.
 
 - **[INFRA][P2]** ⛔ **LE JOURNAL e2e NE PEUT PAS ENTRER AU DÉPÔT : IL PORTE DES JETONS DE VÉRIFICATION
   D'E-MAIL.** Relevé le 16/09/2026 par l'audit de secrets, sur la passe du rang 15 : **24 occurrences**
@@ -2382,6 +2430,33 @@ Détail : section D293 de `ZWADJ_CONTINUITE.md`.
   retouche pas (D291).
   ⚠ **Portée** : tout journal qui capture la sortie d'un serveur de dev est concerné, pas seulement
   l'e2e.
+  ✅ **ARBITRÉ PAR KO LE 16/09/2026 (D294) — NI (1) NI (2) : L'EXTRAIT S'ÉLARGIT.** La règle est
+  écrite au **point 9 du critère du rang 9**, parce qu'une certification future lit le critère, pas
+  une section de session (D276 appliqué à ce qui justifie une règle).
+  ⛔ **CE QUI A FAIT TOMBER (2), ET C'EST UNE MESURE DE LA REPRISE À FROID** : `EmailVerificationToken`
+  ne stocke qu'un **`tokenHash`** — le jeton clair n'est **jamais** persisté — et
+  `DevLoggerEmailSender` est le **seul** fournisseur lié au port `EMAIL_SENDER` (`@Global()`, un
+  seul `useClass`). ⇒ **le journal de dev est le seul endroit où le jeton clair existe** : le faire
+  taire rendrait la vérification d'e-mail **et** la réinitialisation de mot de passe
+  **inachevables en dev**, par aucun chemin que le dépôt fournit. ⚠ **Cette entrée écrivait « retire
+  un confort réel » : c'était faux, et sous-estimer un coût biaise l'arbitrage qu'il alimente.**
+  **Motif de Ko** : « faire taire le seul chemin de dev pour protéger un journal qui ne quitte pas
+  la machine paierait une capacité contre un risque qu'on peut borner autrement. »
+  ⚠ **Mesuré aussi, et dans l'autre sens** : (2) ne casserait **pas** l'e2e — aucune spec de `e2e/`
+  ne lit ce jeton, les seules occurrences de « token » y sont les **tokens CSS** de
+  `b7-token-contract`. Les 24 jetons sont un **sous-produit** de la création de comptes, consommé
+  par rien.
+  ⛔ **CE QUI A FAIT TOMBER (1)** : l'extrait de D293 garde **3 lignes sur 910** — de quoi lire le
+  verdict, **pas** de quoi confronter chaque « failed » à son contexte (D275). Les 4 lignes
+  `[WebServer]` sur 742 de la passe du 16/09 ne sont dans **aucune** pièce versée.
+  ⇒ **CE QUI EST DÛ, À LA PROCHAINE CERTIFICATION** : journal brut toujours hors dépôt ; liste
+  **blanche** élargie jusqu'à porter de quoi **(a) recompter l'e2e** et **(b) confronter chaque
+  « failed » à son contexte** ; **jetons exclus par CONSTRUCTION** — l'extrait ABANDONNE si sa
+  sortie porte encore `token=`. ⚠ **Ce lot-ci ne relance pas l'e2e** (consigne de Ko) : il écrit la
+  règle, pas l'instrument.
+  ⚠ **La règle « une preuve ne se caviarde pas » (D291) est RATIFIÉE et elle reste, quelle que soit
+  l'option** (Ko, 16/09) : on n'élargit jamais en retouchant le journal, seulement en gardant
+  davantage de lignes.
 - **[MÉTHODE][P1]** ⛔ **LA CERTIFICATION DU RANG 15 N'A PAS ÉTÉ LANCÉE : PORTE DURE ROUGE SUR `chrome`
   (14 PUIS 15), ALORS QU'IL ÉTAIT ANNONCÉ FERMÉ.** Relevé le 14/09/2026 à 01:50 et 01:51 : 15 processus
   Google Chrome, **une fenêtre visible titrée « Claude Code - Google Chrome »**, des processus enfants
@@ -2395,6 +2470,9 @@ Détail : section D293 de `ZWADJ_CONTINUITE.md`.
   ⇒ **Reprise** : rang 15, **étape 1**, protocole de `657e9ba` inchangé (section D293).
   ✅ **`chrome` RÉGLÉ LE 16/09/2026** : Ko l'a fermé, `CHROME=0` aux deux relevés — la question du suivi
   depuis ce poste **ne se pose plus** (Ko suit depuis VS Code). **Cette ligne est close sur `chrome`.**
+  ⚠ **(D294) LE TITRE DE CETTE ENTRÉE — « LA CERTIFICATION DU RANG 15 N'A PAS ÉTÉ LANCÉE » — EST
+  PÉRIMÉ** : elle a été lancée et la marque est posée (D293, 16/09). Titre conservé, il date le
+  constat d'origine ; l'état est le ✅ ci-dessus.
 - **[MÉTHODE][P1]** ⛔ **ET LA PASSE A ÉTÉ REFUSÉE UNE SECONDE FOIS, SUR LA RAM (16/09/2026).**
   3 073,5 puis 3 077,5 Mo de RAM libre médiane, **−1 505,5 et −1 501,5** sous la barre, deux relevés à
   80 s d'écart, `chrome` 0, `node` 0, SECTEUR, calibration passante (pièces :
@@ -2690,6 +2768,43 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   ⚠ **RÉSULTAT DU RANG 14, À LIRE AVANT D'ÉCRIRE UN BUDGET (D291, 13/09/2026)** : la **position**
   d'une passe est un terme de durée — après repos plus lente qu'enchaînée, 6 cycles sur 6, de 0,7 à
   7,2 % ; et l'écart de ~20 % de D290 **n'est pas reproduit** : il reste inexpliqué.
+
+  ⛔ **FORME ARBITRÉE PAR KO LE 16/09/2026 (D294) — C'EST (b), ET CE REPORT A ENFIN SA FORME.**
+  ⚠ **LE MOTIF CI-DESSUS VAUT DE (a), PAS DE (b)** : troisième des trois phrases de cette famille
+  annotées le 16/09 (les deux autres sont au point d'entrée du rang 14 et dans l'ordre des rangs).
+  Lue seule, elle conditionne ce report à une explication des ~20 % qui n'est pas venue et ne
+  viendra peut-être jamais — **c'est le second sens de D287**, celui qui n'a rien à contredire.
+  - ⛔ **(a) — CHOISIR UNE VALEUR SUR DES DURÉES : NON FONDABLE AUJOURD'HUI, ET C'EST MESURÉ.** La
+    quantité qu'un budget **LIE** est le **maximum PAR TEST** — le mode de défaillance est
+    l'expiration, les 22 signatures du 10/09 sont par test. Or le dépôt n'en a que **deux points
+    isolés, sur deux suites, à deux dates** : le test le plus lourd au repos tient dans environ
+    **un treizième** des 5 000 ms (01/09, le rouge exigeant un facteur d'environ **55×**, donc de
+    la contention), et l'API rend **2,1× de marge** à 8, 24 et 48 processus (02/09, après le
+    départ d'argon2). Un troisième point est **caduc** : argon2 à 3,4 s de 5 s au repos, sorti de
+    l'unitaire à D271. ⛔ **Et sa DISPERSION n'a jamais été mesurée** — les 12 passes de D291
+    mesurent la durée **de suite entière** (16,37 à 17,95 s), pas le maximum par test. Le critère
+    du rang 9 exige déjà, pour un simple nombre de passes, **la marge sur la contrainte liante ET
+    sa dispersion** : un budget en demande au moins autant.
+  - ✅ **(b) — ÉCRIRE LA VALEUR EN VIGUEUR : FONDABLE, ET ELLE NE DEMANDE PAS QUE LES ~20 %
+    SOIENT EXPLIQUÉS.** Aujourd'hui **5 000 ms n'est écrit nulle part** dans les quatre
+    configurations unitaires (remesuré le 16/09 : seule `vitest.config.int.ts` déclare un budget).
+    Personne ne peut donc distinguer une **politique** d'un **héritage** — et c'est littéralement
+    ce que dit ce report : « un budget non écrit n'est pas une garde ». Le lot mesure le maximum
+    par test des quatre suites **au repos**, écrit le budget **à la valeur déjà en vigueur**, avec
+    les marges mesurées à côté. **Rien ne change de comportement** ; ce qui change, c'est qu'une
+    dérive devient visible et qu'un changement futur devient arbitrable.
+    ⛔ **CONTRAINTE RETENUE PAR KO** : **N — le nombre de passes — se DÉRIVE de la dispersion du
+    maximum PAR TEST, mesurée DANS LE MÊME LOT.** Il ne se choisit pas, et il ne s'hérite pas
+    d'un autre relevé : la quantité n'a jamais été mesurée, donc sa dispersion se produit ici ou
+    le lot n'a pas de base.
+    ⚠ **COMPATIBLE AVEC L'INTERDIT DE CE REPORT** — « le remède n'est pas d'écrire un
+    `testTimeout` plus grand » : (b) écrit **la même** valeur, pas une plus grande. ⚠ **Et tout
+    multiplicateur au-dessus du maximum observé serait une ASSURANCE, pas une mesure** : il
+    s'écrirait comme telle, d'avance. (b) n'en porte aucun.
+  ⇒ **CANDIDAT DÉSIGNÉ DU RANG 17, NON ARBITRÉ** : « je l'ouvrirai après ce lot » (Ko, 16/09).
+  ⚠ **Ce lot rendra vraie ou fausse PAR MESURE** la ligne « `testTimeout` de `apps/api` serré à
+  5 s » des « décisions encore ouvertes », barrée le 16/09 pour cause d'héritage pris pour un
+  réglage (D294).
 
 - **[MÉTHODE][P1]** ⛔ **EXIGER LE SECTEUR PROTÈGE LES MESURES, PAS LE DÉVELOPPEMENT QUOTIDIEN —
   RAPPORTÉ LE 12/09/2026 (D290), NON CORRIGÉ, ET C'EST DÉLIBÉRÉ.**

@@ -1,0 +1,61 @@
+RECTIFICATION — posee le 16/09/2026 par D294, A COTE des pieces de D293, jamais DEDANS.
+
+OBJET
+  `extraire-e2e.py`, sa sortie `extraire-e2e-sortie.txt` et l'extrait verse
+  `../passe/rang15-e2e-EXTRAIT.txt` impriment tous trois :
+
+      lignes parcourues : 911
+
+  Le journal source `.neutralisation-journaux/rang15-e2e.log` en porte **910**.
+
+MESURE
+  `wc -l`                     -> 910
+  Python `splitlines()`       -> 910
+  dernier octet du fichier    -> `\n` (le fichier est bien termine par un saut de ligne)
+
+CAUSE, RELEVEE DANS L'INSTRUMENT ET NON SUPPOSEE
+  `extraire-e2e.py` fait `.split("\n")`. Sur un fichier termine par un saut de ligne, cette
+  expression rend un ELEMENT VIDE FINAL. Le compte est donc **+1 de facon systematique**, pour
+  tout fichier que cet instrument lira.
+
+CE QUE LA RECTIFICATION NE CHANGE PAS — LE VERDICT TIENT
+  3 lignes gardees, 0 « token= » dans la sortie, et les 3 lignes gardees disent bien
+  « 34 passed » et « 1 skipped ». Aucune conclusion de D293 ne repose sur le 911.
+
+POURQUOI CELA VAUT D'ETRE ECRIT QUAND MEME
+  Sous D290, le compte de « parcouru » n'existe QUE pour etre confrontable : c'est sa seule
+  fonction. Confronte, il etait faux. Un compteur qui ne peut pas etre confronte, ou qui l'est
+  et se revele faux sans que personne l'ecrive, cesse de proteger ce qu'il pretend mesurer.
+
+PORTEE — VERIFIEE, PAS PRESUMEE
+  5 instruments verses portent l'idiome `.split("\n")` :
+    docs/preuves/D291/controles/integrite-et-secrets.py
+    docs/preuves/D291/passe-d277/recherche.py
+    docs/preuves/D293/outils/audit-secrets.py
+    docs/preuves/D293/outils/extraire-e2e.py
+    docs/preuves/D293/versement-d288/verser-et-confronter.py
+  UN SEUL alimente un compte « parcouru » imprime : `extraire-e2e.py`.
+    - les « 375 lignes parcourues » de `verser-et-confronter.py` passent par `splitlines()`
+      (fonction `compter`) : NON biaisees ;
+    - le `split` d'`audit-secrets.py` ne sert qu'a NUMEROTER les lignes (`enumerate(..., 1)`),
+      ses comptes imprimes etant des fichiers et des octets : NON biaises.
+  => AUCUN AUTRE CHIFFRE D'AUTORITE N'EST TOUCHE.
+
+POURQUOI L'ARCHIVE N'EST PAS RETOUCHEE — ET C'EST LE POINT DE CE FICHIER
+  1. **Une preuve ne se retouche pas** (D291, ratifiee par Ko).
+  2. Et surtout : corriger le SCRIPT sans corriger la SORTIE qu'il a produite donnerait une
+     archive qui **ne reproduit plus la sienne** — c'est-a-dire une archive qui ment sur
+     elle-meme. Or une archive ne vaut que parce qu'on peut la rejouer et retrouver ce qu'elle
+     dit. Entre « un chiffre faux, explique a cote » et « une archive incoherente avec
+     elle-meme », le premier est confrontable et le second ne l'est plus.
+  => Le 911 RESTE dans les trois pieces. La rectification est ici.
+  => Le chiffre est rectifie la ou il engage une AUTORITE : section D293 de
+     `ZWADJ_CONTINUITE.md`, barre avec sa cause.
+
+CE QUI EST DU, ET QUAND
+  L'instrument corrige s'ecrit **a la prochaine certification**, en meme temps que
+  l'elargissement de la liste blanche arbitre par Ko le 16/09/2026 (critere du rang 9,
+  point 9). Il utilisera `splitlines()` et imprimera son compte de parcouru AVEC SON ATTENDU
+  A COTE (D290).
+  ⛔ Pas dans le lot D294 : ecrire un script ferait COMPTER ce lot dans les deux/trois, alors
+  qu'il est documentaire (D283, amende par D292).

@@ -1,0 +1,56 @@
+== 1. LES CINQ CONFIGURATIONS DE TEST — qui declare un budget ?
+   apps/api/vitest.config.ts                    testTimeout x0
+   apps/api/vitest.config.int.ts                testTimeout x1
+   apps/client/vitest.config.ts                 testTimeout x0
+   packages/api-client/vitest.config.ts         testTimeout x0
+   apps/pro/vite.config.ts                      testTimeout x0
+   OK    configs examinees                              mesure=5                            attendu=5
+   OK    configs qui declarent un budget                mesure=['apps/api/vitest.config.int.ts'] attendu=['apps/api/vitest.config.int.ts'] seule
+
+== 2. LE JETON DE VERIFICATION N'EST JAMAIS PERSISTE EN CLAIR
+   OK    EmailVerificationToken : 'tokenHash'           mesure=1                            attendu=>= 1
+   OK    EmailVerificationToken : champ 'token' en clair mesure=0                            attendu=0
+
+== 3. UN SEUL FOURNISSEUR LIE AU PORT EMAIL_SENDER
+   OK    email.module.ts : 'useClass'                   mesure=1                            attendu=1
+   OK    email.module.ts : '@Global()'                  mesure=1                            attendu=1
+
+== 4. AUCUNE SPEC e2e NE LIT UN JETON DE VERIFICATION
+   OK    fichiers e2e examines (hors node_modules)      mesure=9                            attendu=>= 1
+   OK    occurrences de 'token' (calibration : tokens CSS de b7) mesure=37                           attendu=>= 1
+   OK    occurrences de 'verification-email' dans nos specs mesure=0                            attendu=0
+
+== 5. LE JOURNAL e2e : 910 LIGNES, 24 JETONS — AUCUNE VALEUR IMPRIMEE
+   OK    dernier octet du journal                       mesure=b'\n'                        attendu=b'\n'
+   OK    lignes par splitlines()                        mesure=910                          attendu=910
+   OK    lignes par split(chr(10)) — l'idiome fautif    mesure=911                          attendu=911
+   OK    occurrences de 'verification-email?token='     mesure=24                           attendu=24
+
+== 6. L'IDIOME .split(chr(10)) DANS LES INSTRUMENTS VERSES
+   OK    instruments .py examines                       mesure=18                           attendu=>= 1
+      porteur : docs/preuves/D291/controles/integrite-et-secrets.py
+      porteur : docs/preuves/D291/passe-d277/recherche.py
+      porteur : docs/preuves/D293/outils/audit-secrets.py
+      porteur : docs/preuves/D293/outils/extraire-e2e.py
+      porteur : docs/preuves/D293/versement-d288/verser-et-confronter.py
+      porteur : docs/preuves/D294/outils/mesures-d294.py   <-- CE SCRIPT : il porte le motif parce qu'il le CHERCHE
+   OK    porteurs, CE SCRIPT COMPRIS                    mesure=6                            attendu=>= 1
+   OK    porteurs, hors ce script                       mesure=5                            attendu=5
+
+== 7. LA REPARATION DE apps/pro/vite.config.ts EST EN PLACE
+   OK    'cette borne' present                          mesure=1                            attendu=>= 1
+   OK    double espace en commentaire                   mesure=0                            attendu=0
+      dernier commit du fichier : 251e82b fix(rang-13): restaure le commentaire corrompu de vite.config.ts:24
+
+== 8. FINS DE LIGNE DES FICHIERS D'AUTORITE — en OCTETS, jamais par grep
+   OK    ZWADJ_CONTINUITE.md : LF nus                   mesure=0                            attendu=0
+         (CRLF=9013 · octets=680405)
+   OK    ZWADJ_BACKLOG.md : LF nus                      mesure=0                            attendu=0
+         (CRLF=3675 · octets=317418)
+   OK    AGENTS.md : LF nus                             mesure=0                            attendu=0
+         (CRLF=1140 · octets=124026)
+   OK    CLAUDE.md : LF nus                             mesure=0                            attendu=0
+         (CRLF=114 · octets=5605)
+
+== ECHECS : 0 (attendu 0)
+== ✓ toutes les quantites citees par D294 se reproduisent.

@@ -366,6 +366,25 @@ connexion (famille D115).
   « = 4 », **double espace pour seule trace**. Introduite par le commit `1f85aa6` (D270,
   30/08/2026), elle a survécu **treize jours et une certification complète** : un commentaire
   ne casse ni `tsc` ni `lint` ni un test. **Aucune porte ne voit cette classe de défaut.**
+  ✅ **RÉPARÉE — ÉCRIT ICI LE 16/09/2026 (D294), ET LE MOTIF EST LA PLACE DE CETTE PHRASE.** Le
+  commentaire porte « …délais dépassés, **cette borne** = 4. » depuis le commit `251e82b`
+  (rang 13, D290), lot **certifié** par la marque du rang 15 (D293). ⛔ **Ce n'est PAS un cas
+  D276** : la réparation était bien écrite dans un fichier d'autorité — section D290 et entrée du
+  rang 13 de `ZWADJ_CONTINUITE.md`. **Elle n'avait simplement pas traversé jusqu'ici**, et
+  `AGENTS.md` est **le seul fichier chargé à chaque session** : lu seul, il laissait croire le
+  jeton encore mangé, et un lot aurait pu « réparer » ce qui l'était déjà. **C'est D277, sur le
+  fichier où une omission coûte le plus cher.**
+  ⚠ **Vérifié, calibré sur le cas connu avant de conclure** (16/09/2026) : « cette borne » présent,
+  **0** double espace dans ce fichier ; et un balayage indépendant des fichiers source suivis ne
+  trouve **aucune** corruption réelle — les candidats sont tous de l'alignement légitime (tables de
+  contraste, listes d'exemples).
+  ⛔ **ET CE BALAYAGE NE SE SOUSTRAIT PAS À CELUI DE 2026-09-12 : SES CHIFFRES NE SONT PAS
+  COMPARABLES, ET C'EST LA LEÇON, PAS LE CHIFFRE.** Il compte un **autre ensemble de fichiers**
+  (extensions retenues) et applique une **autre expression**. **Deux passes qui se soustraient
+  comptent la même chose, ou elles ne se soustraient pas** (D290) — celle-ci confirme donc *la
+  classe est propre*, elle ne corrige ni ne confirme le « 457 / 9 / 1 » ci-dessus. ⚠ Écrire
+  « le balayage rend maintenant X au lieu de 9 » aurait été la faute que D290 a payée en rendant
+  **−236** : changer la DÉFINITION de ce qu'on compte entre deux passes qui se comparent.
   ⛔ **ET UN EXTRACTEUR QUI LIT LIGNE À LIGNE EST AVEUGLE À CE QUI ENJAMBE UN RETOUR À LA
   LIGNE — MESURÉ DANS CE LOT MÊME, CONTRE MOI.** Le backlog signale une coquille `[DOC][P3]`
   dans `ZWADJ_CONTINUITE.md` : « l'écart est écrit ici plutôt que **tu** », déclarée « phrase
@@ -567,6 +586,26 @@ des lots à certifier (rang 7).
 ⚠ **L'ARBITRAGE DU RANG APPARTIENT À KO** — quatre écritures de cet ordre, aucune par une
 session. La session ne choisit donc pas le rang suivant : **elle écrit qu'il est attendu.**
 Ne rien écrire n'est pas neutre — c'est la seule forme qui se lit comme une route sans fin.
+
+⛔ **ET LE POINT D'ENTRÉE D'UN RANG SE RAFRAÎCHIT À CHAQUE AVANCEMENT *ET À SA CLÔTURE* — seconde
+moitié de la règle de D282, écrite le 16/09/2026 (D294) parce que la première ne suffisait pas.**
+D282 avait posé « le point d'entrée du rang courant se rafraîchit à la clôture de TOUTE SESSION
+QUI LE FAIT AVANCER, et jamais *au prochain lot* ». ⇒ **Il manquait le cas où plus rien n'avance.**
+⛔ **LA CLÔTURE EST LE SEUL RAFRAÎCHISSEMENT QUI PUISSE ÊTRE OUBLIÉ, PARCE QUE PLUS RIEN NE SUIT.**
+Un avancement oublié se rattrape à l'avancement suivant, qui relit le bloc ; une clôture oubliée
+n'a pas de suivant — **elle reste telle quelle jusqu'à ce qu'une lecture adverse tombe dessus.**
+⚠ **MOTIF MESURÉ, ET IL EST ACCABLANT : LE BLOC QUI PORTE CETTE RÈGLE EST CELUI QUI L'A ENFREINTE.**
+Le bloc du **rang 8 (S11-b, CHEMIN DE L'ARGENT)** a été rafraîchi par D279, puis par D282 — la règle
+y était **respectée à chaque étape**. Quand D286 a clos le rang le 11/09, **rien n'a été rafraîchi** :
+son titre est resté le **seul des huit blocs de rang à ne pas porter « CLOS »**, son sous-titre a
+continué d'annoncer « étapes 1→3 sur 6 » au-dessus d'une table à 6 sur 6, et « **CE LOT EST OUVERT
+ET À MI-PARCOURS** » est resté en gras. **Cinq jours et deux certifications** plus tard, c'est une
+reprise à froid qui l'a vu. ⛔ **Un lot CERTIFIÉ du chemin de l'argent s'annonçait à moitié fait.**
+⚠ **ET LA RÈGLE EST ICI, PAS SEULEMENT DANS CE BLOC, POUR LA RAISON QUE L'INCIDENT DÉMONTRE** :
+**une règle qui ne vit que dans le bloc d'un rang meurt avec l'attention qu'on porte à ce rang.**
+Ce bloc n'est plus relu depuis qu'il est clos — c'est exactement pour cela que sa propre règle n'y
+a pas été appliquée. C'est D276 (« ce qui vaut décision s'écrit dans un fichier d'autorité »)
+poussé d'un cran : **le bon fichier est celui qu'on lit encore quand le sujet est refermé.**
 
 ⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**
 Trois fois en deux sessions une mesure a renseigné sur la MACHINE et non sur le code,

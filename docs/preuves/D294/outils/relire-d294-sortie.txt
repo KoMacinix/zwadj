@@ -1,0 +1,33 @@
+== CALIBRATION (ZWADJ_CONTINUITE.md, 643452 caracteres lus)
+   bras positif 'Registre des décisions' : 1 (attendu >= 1)
+   bras negatif 'zzzz-...-zzzz'          : 0 (attendu 0)
+   => 2 bras sur 2
+
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 1 — titre du rang 8 aligne
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 1 — phrase barree
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 1 — sous-titre
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 1 — 1er paragraphe
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  regle de D282 completee
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 2 — testTimeout barre
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 3 — bac a sable
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 5 — rectification
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  constat 5 — archive intacte
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  decision 1 — point 9 du critere
+OK       ZWADJ_CONTINUITE.md    x2   (attendu >= 1)  section de session D294
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  ligne de registre D294
+OK       ZWADJ_CONTINUITE.md    x2   (attendu >= 1)  bloc du rang 16
+OK       ZWADJ_CONTINUITE.md    x3   (attendu >= 1)  etat nomme du rang suivant (D284)
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  sens 2 — occurrence 1
+OK       ZWADJ_CONTINUITE.md    x1   (attendu >= 1)  sens 2 — occurrence 2
+OK       ZWADJ_BACKLOG.md       x1   (attendu >= 1)  decision 1 au backlog
+OK       ZWADJ_BACKLOG.md       x1   (attendu >= 1)  decision 2 au backlog
+OK       ZWADJ_BACKLOG.md       x1   (attendu >= 1)  section de reports D294
+OK       ZWADJ_BACKLOG.md       x1   (attendu >= 1)  constat 6 — une ligne
+OK       ZWADJ_BACKLOG.md       x1   (attendu >= 1)  constat 7 — une ligne
+OK       AGENTS.md              x1   (attendu >= 1)  constat 4 — reparation vite.config
+OK       AGENTS.md              x1   (attendu >= 1)  regle de D282, portee dans AGENTS
+OK       RECTIFICATION-D294.txt x1   (attendu >= 1)  rectification cite le chiffre fautif
+
+== PARCOURU : 4 fichiers ouverts · 1069043 caracteres lus · 24 jetons cherches
+== MANQUANTS : 0 (attendu 0)
+== ✓ tout ce que ce lot dit avoir ecrit est DANS les fichiers.
