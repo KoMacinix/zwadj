@@ -2747,9 +2747,26 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   | `packages/api-client/vitest.config.ts` | ⛔ aucun |
   | `apps/pro/vite.config.ts` (bloc `test`) | ⛔ aucun |
 
-  **Seule la config d'INTÉGRATION écrit un budget.** Les cinq suites unitaires héritent du
-  défaut vitest — **5 000 ms**, valeur relevée dans la sortie des échecs eux-mêmes, pas de
+  **Seule la config d'INTÉGRATION écrit un budget.** ~~Les cinq suites unitaires héritent du
+  défaut vitest~~ — **5 000 ms**, valeur relevée dans la sortie des échecs eux-mêmes, pas de
   mémoire.
+  ⛔ **« CINQ » CORRIGÉ EN **QUATRE** LE 20/09/2026 (D295), ET LE MOTIF N'EST PAS L'ARITHMÉTIQUE.**
+  Mesuré : quatre packages seulement portent un script `test` — `apps/api`, `apps/client`,
+  `apps/pro`, `packages/api-client` ; `packages/i18n`, `types`, `ui` et `config` n'en ont aucun.
+  La table ci-dessus compte **cinq configurations**, dont **une d'intégration** : cinq moins une
+  fait quatre, et la phrase se contredisait **dans ses onze premiers mots**.
+  ⛔ **CE QUI REND LA CORRECTION URGENTE, ET C'EST LA SEULE RAISON QUI COMPTE : CE CHIFFRE POINTE
+  VERS `vitest.config.int.ts`.** Un lot qui part de « cinq » cherche une cinquième configuration
+  unitaire où écrire un budget, et **la seule candidate du dépôt est celle d'intégration — qui en
+  a déjà un, à 30 s.** Y écrire 5 000 ms le diviserait par six : **un CHANGEMENT DE COMPORTEMENT,
+  que la forme (b) interdit explicitement.** Le chiffre faux désignait le seul fichier qu'il ne
+  faut pas toucher, et il le désignait dans **la ligne d'attaque du lot**.
+  ⚠ **ET CE QUI LE RANGE COMME UN MOTIF PLUTÔT QUE COMME UNE COQUILLE** : la phrase date du relevé
+  du 10/09 et a **survécu à trois passes D277** (D290, D291, D294). Le 16/09, une remesure a écrit
+  « **les quatre configurations unitaires** » **douze lignes plus bas, dans cette même entrée**,
+  sans corriger « cinq » douze lignes plus haut. **Une affirmation juste posée à côté d'une
+  affirmation fausse ne corrige pas la fausse** — et une passe partielle se lit exactement comme
+  une passe faite (D280). ⇒ Trouvée par une **reprise à froid**, pas par une passe.
   ⛔ **CE QUE ÇA FALSIFIE, ET C'EST LA PHRASE QUI NOUS SERVAIT DE GARDE-FOU** : « les verdicts
   valent, les durées ne valent rien » (D282). **Mesuré le 10/09 : une dérive de durée EST
   DEVENUE un verdict.** Même arbre, même commande — `pnpm --filter @zwadj/client run test`
@@ -2801,7 +2818,14 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
     `testTimeout` plus grand » : (b) écrit **la même** valeur, pas une plus grande. ⚠ **Et tout
     multiplicateur au-dessus du maximum observé serait une ASSURANCE, pas une mesure** : il
     s'écrirait comme telle, d'avance. (b) n'en porte aucun.
-  ⇒ **CANDIDAT DÉSIGNÉ DU RANG 17, NON ARBITRÉ** : « je l'ouvrirai après ce lot » (Ko, 16/09).
+  ⇒ ~~**CANDIDAT DÉSIGNÉ DU RANG 17, NON ARBITRÉ** : « je l'ouvrirai après ce lot » (Ko, 16/09).~~
+  ⛔ **ARBITRÉ PAR KO LE 20/09/2026 (D295) — C'EST LE RANG 17, FORME (b), ET SON PREMIER LOT EST UN
+  CADRAGE SEUL.** Barré plutôt qu'effacé (D276).
+  ⛔ **CETTE ENTRÉE RESTE OUVERTE, ET CE N'EST PAS UN OUBLI** : le cadrage n'écrit **aucun**
+  `testTimeout` — il écrit la quantité que le budget lie, la règle de dérivation de N **avant** les
+  chiffres, le protocole de calibration et les modes de défaillance. **C'est le lot de CODE qui
+  suivra qui épuisera cette entrée**, et c'est lui qui portera le compteur de lots non certifiés à
+  UN. ⇒ Le cadrage : section « PROCHAIN LOT — rang 17 » de `ZWADJ_CONTINUITE.md`.
   ⚠ **Ce lot rendra vraie ou fausse PAR MESURE** la ligne « `testTimeout` de `apps/api` serré à
   5 s » des « décisions encore ouvertes », barrée le 16/09 pour cause d'héritage pris pour un
   réglage (D294).

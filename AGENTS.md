@@ -468,6 +468,22 @@ connexion (famille D115).
   connue ») et D275 (« un extracteur se vérifie contre la sortie brute avant de servir à
   compter ») portées à l'étage au-dessus : **ce qui précède le comptage, c'est de savoir ce
   qu'on compte.**
+  ⛔ **ET UN COMPTEUR QUI CROISE DEUX ENTRÉES REND SON DÉTAIL SUR LES DEUX (D295, 20/09/2026).**
+  La règle ci-dessus couvre le corpus **PARCOURU** ; elle est **AVEUGLE À L'AUTRE ENTRÉE**. Un
+  balayage de M motifs sur N fichiers peut parcourir tous ses fichiers, imprimer un total
+  d'apparence saine, et **ne rien voir sur six motifs de seize** — mesuré : **302** d'apparence
+  saine contre **342** réels, les motifs étant comparés au texte **BRUT** (« serre a 5 s » ne
+  trouvait pas « serré à 5 s », « testTimeout de » ne trouvait pas « `testTimeout` de »).
+  ⇒ **Le total s'accompagne de sa VENTILATION PAR MOTIF, et les motifs à zéro s'impriment sous un
+  intitulé qui les nomme.** Un motif à zéro est une **hypothèse à vérifier**, jamais une absence
+  constatée.
+  ⚠ **Le taux est ce qui range ceci comme une règle et non comme un report** : deux sessions de
+  suite, et **les deux fois ce qui a attrapé est le DÉTAIL imprimé à côté du total** — jamais une
+  relecture.
+  ⚠ **ET ELLE N'A RIEN ATTRAPÉ LE JOUR OÙ ELLE A ÉTÉ ÉCRITE.** Appliquée par anticipation au lot
+  qui l'écrit : 7 motifs, 1 070 984 caractères, **0 motif à zéro**. **C'est écrit exprès** — une
+  règle présentée avec ses seuls succès cesse d'être vérifiée. Son coût est de **trois lignes de
+  sortie**.
   ⛔ **ET LA RÈGLE D'INTERPOLATION DE D289 VAUT AUSSI POUR LES MOTIFS DE RECHERCHE — deux
   commandes cassées par un accent grave non échappé dans le lot qui traite cette classe**, dont
   l'une cherchait les traces de la corruption par accents graves, et l'autre écrivait la section
@@ -513,6 +529,20 @@ connexion (famille D115).
   versés dans `docs/preuves/D288/campagnes/` sur arbitrage de Ko, leur rattachement **confronté au
   texte de D288 et concordant** — et écrit comme ce qu'il reste : une **inférence confrontée**, pas
   une preuve d'origine. **Les autres pièces des rangs 6, 11 et 12 restent non versées.**
+  ⛔ **ET UN INSTRUMENT ET LA PIÈCE QU'IL A PRODUITE SE CORRIGENT ENSEMBLE OU PAS DU TOUT
+  (précédent ratifié par Ko le 20/09/2026 — D295).** Corriger le script sans corriger la sortie
+  qu'il a produite donne une **archive qui ne reproduit plus la sienne**, et une archive ne vaut
+  que parce qu'on peut la **rejouer**. Entre « un chiffre faux, expliqué à côté » et « une archive
+  qui ment sur elle-même », **le premier reste confrontable**.
+  ⇒ Le chiffre se rectifie **là où il engage une AUTORITÉ** ; la rectification se pose **À CÔTÉ
+  des pièces** ; **l'instrument corrigé s'écrit au lot suivant qui en a l'usage**.
+  ⚠ **Cas d'origine (D294)** : le `+1` de `.split("\n")` dans `extraire-e2e.py` — « 911 » pour 910
+  lignes. Section D293 rectifiée, `RECTIFICATION-D294.txt` posé à côté des pièces, **script, sortie
+  et extrait versé NON retouchés**.
+  ⛔ **ET LA RAISON POUR LAQUELLE CETTE RÈGLE EST ICI PLUTÔT QUE DANS LE FIL : « garde-la comme
+  précédent » EST D276.** Un précédent qui ne vit que dans un message disparaît avec lui — **y
+  compris quand c'est Ko qui l'énonce**, et ici deux messages après avoir invoqué D276 contre le
+  dossier. La règle, pas l'intention, est ce qui survit à la session.
 - Petites PR, messages Conventional Commits. Expliquer les choix d'architecture dans la PR.
 - Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine.
 - Le design fourni (App.tsx) est une **référence visuelle par écran**, jamais une base de code à refactorer telle quelle : il est desktop-only, en instant-book, et hors périmètre MVP sur plusieurs écrans (forum, magazine, carte, 360°, planning). Ne construire que les écrans du MVP en cours, en respectant ce présent fichier, pas l'intégralité du prototype.

@@ -482,15 +482,131 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## PROCHAIN LOT — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ **OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**
+
+⛔ **OUVERT ET ARBITRÉ PAR KO LE 20/09/2026.** ⇒ **QUEL lot : rang 17 de l'ordre des rangs.
+OÙ IL EN EST : ici.** Toutes les écritures d'ordre sont de Ko.
+⇒ **ÉTAT : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE, AUCUNE PORTE LANCÉE.** Patron des rangs 10
+(D284) et 13 (D289), qui se sont ouverts de la même façon.
+⚠ **Compteur de lots de code non certifiés : ZÉRO, inchangé.** Ce lot est **documentaire** — seuls
+des `.md` d'autorité au diff (D283, amendé par D292). ⛔ **Le lot de CODE qui suivra — celui qui
+écrira les quatre `testTimeout` — le portera à UN.**
+⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), **aucun candidat désigné**. Écrit à
+l'OUVERTURE et non à la clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.
+
+⛔ **CE QUE (b) EST, ET CE QU'ELLE N'EST PAS.** Elle écrit le budget **à la valeur déjà en
+vigueur** dans les **quatre** configurations unitaires, **sans rien changer au comportement**. Ce
+qu'elle achète : personne ne peut aujourd'hui distinguer une **politique** d'un **héritage**, et
+c'est littéralement ce que dit le report — « un budget non écrit n'est pas une garde ». ⛔ **Elle
+n'écrit AUCUNE valeur neuve**, donc elle ne dépend pas de l'explication des ~20 % de D290 : les
+trois phrases qui conditionnaient les budgets à cette explication valent de **(a)**, pas de (b), et
+sont annotées depuis le 16/09 (D294).
+
+### ⛔ PIÈCE 1 — LA QUANTITÉ QUE LE BUDGET LIE, ET CE N'EST PAS CELLE QU'ON CROIT
+
+`testTimeout` borne la durée **D'UN TEST**. Il ne borne **ni** les hooks — c'est `hookTimeout`, un
+réglage **distinct**, déjà écrit à 60 s côté intégration — **ni** la collecte, la transformation ou
+l'import du fichier, **ni** la durée de la suite.
+⇒ **LA QUANTITÉ EST DONC : le MAXIMUM, sur tous les tests d'une suite, de la durée d'un test.**
+C'est elle, et elle seule, dont la dispersion fonde N.
+⛔ **CE QU'ON NE MESURE PAS, ET POURQUOI C'EST ÉCRIT ICI** : les **12 passes de D291** mesurent la
+durée **de suite entière** (16,37 à 17,95 s). Elles ne servent pas à ce lot. **Deux passes qui se
+soustraient comptent la même chose, ou elles ne se soustraient pas** (D290) — mesurer une durée et
+en borner une autre est la faute que ce cadrage existe pour empêcher.
+⇒ **SOURCE : le reporter JSON de vitest**, qui porte la `duration` de chaque test — **jamais un
+extracteur de la sortie console**. **Motif, retenu par Ko** : cette sortie porte des codes ANSI
+(D275, premier faux positif de la série) et n'imprime que les tests jugés lents. **La moitié du
+problème est supprimée par construction plutôt que surveillée.**
+
+### ⛔ PIÈCE 2 — LA RÈGLE DE DÉRIVATION DE N, ÉCRITE **AVANT** LES CHIFFRES
+
+⛔ **ARBITRAGE DE KO, 20/09/2026 — ÉCRIT COMME ARBITRAGE ET NON COMME MESURE.**
+1. **Seuil x = 5 %.** **N est le nombre de passes tel qu'une passe de plus ne déplace plus le
+   maximum observé de plus de 5 %.**
+2. **PLAFOND : 15 passes par suite.** ⛔ **Si le critère n'est pas atteint à 15, le lot l'écrit
+   COMME RÉSULTAT et NE choisit PAS un N par défaut.**
+3. **Pas de formule gaussienne, pas de décoration.** Motif de Ko : c'est un arbitrage, **il porte
+   son nom et sa date**.
+⚠ **POURQUOI UN PLAFOND — la mise en garde qui l'a exigé** : le maximum est une **statistique
+d'extremum**. Sa dispersion est intrinsèquement plus instable que celle d'une moyenne et **ne
+rétrécit pas comme la racine de N**. Un critère de stabilisation **sans borne peut ne jamais
+converger** — le plafond transforme un lot qui tourne indéfiniment en un **résultat écrit**.
+⛔ **ET POURQUOI CETTE RÈGLE EST ÉCRITE AVANT TOUTE MESURE** : si on mesure d'abord et qu'on choisit
+N ensuite, **N est choisi au jugé en regardant les nombres** — c'est-à-dire le motif exact qui a
+fait tomber la borne de workers (D290), déplacé d'un cran. La règle écrite d'avance est la seule
+chose qui rende N défendable.
+
+### ⛔ PIÈCE 3 — LA CALIBRATION DE L'INSTRUMENT, SUR UN CAS DONT LA RÉPONSE EST CONNUE
+
+Une **suite témoin jetable**, dont les durées sont écrites **par construction**. **Trois bras**, et
+l'instrument **ABANDONNE si un seul manque son verdict** (D286) — il ne continue pas.
+
+| bras | cas construit | verdict attendu | ce qu'il attrape |
+|---|---|---|---|
+| **positif** | un test qui dort **1 200 ms** | max proche de 1 200, **tolérance écrite d'avance** | l'instrument voit une durée de test |
+| **négatif** | la même suite, ce test retiré, tous sous 50 ms | **max sous 100** | un instrument qui répondrait « 1 200 » à tout — **le positif seul est satisfait par un menteur constant** |
+| **discrimination** | les 1 200 ms déplacés dans un `beforeEach` | ⛔ **max sous 100 — il ne doit PAS le compter** | **c'est LUI qui fait le travail** : il prouve que la quantité mesurée est celle que `testTimeout` borne, et pas une durée voisine |
+
+⚠ **Le bras de discrimination est retenu par Ko comme le bras qui fait le travail.** Sans lui, un
+instrument qui prendrait « la plus grande durée du rapport » passerait les deux autres tout en
+mesurant un `beforeAll` ou un temps de transformation.
+
+### ⛔ PIÈCE 4 — LES MODES DE DÉFAILLANCE. UN MODE NON LISTÉ ICI NE SE CODE PAS.
+
+⛔ **n°0 — L'ENCADREMENT DU BUDGET EN VIGUEUR. OBLIGATOIRE, PAS OPTIONNEL : C'EST LUI QUI FONDE LE
+LOT (arbitrage de Ko, 20/09/2026).** Un témoin qui dort **5 100 ms DOIT ÉCHOUER** avec la signature
+`Test timed out in 5000ms` ; un témoin qui dort **4 900 ms DOIT PASSER**. ⛔ **Si l'encadrement ne
+rend pas 5 000, LE LOT S'ARRÊTE ET N'ÉCRIT RIEN.**
+⚠ **Motif de Ko, et il est décisif** : sans lui, (b) écrirait **un nombre recopié d'un texte d'aide
+et d'un incident du 10/09** — c'est-à-dire exactement ce qu'elle prétend supprimer. ⚠ **État de la
+valeur AUJOURD'HUI, déclaré pour ce qu'il est** : `5000` est le défaut documenté de **vitest 3.2.7**
+(texte d'aide de l'outil installé, relevé le 18/09) et la valeur lue dans les signatures d'échec du
+10/09. **Ce sont deux sources documentaires, pas un comportement mesuré.** Le n°0 est ce qui les
+remplace.
+- **n°1 — écrire dans la mauvaise configuration.** `vitest.config.int.ts` **a déjà un budget, à
+  30 s** : y écrire 5 000 ms le diviserait par six, **changement de comportement que (b)
+  interdit**. ⚠ Le chiffre « cinq suites unitaires » du backlog **pointait vers elle** ; corrigé le
+  20/09 (D295). **Les quatre cibles sont `apps/api`, `apps/client`, `apps/pro`,
+  `packages/api-client`** — seuls packages du dépôt portant un script `test` (mesuré).
+- **n°2 — mesurer une durée voisine et en borner une autre** (hook, collecte, suite entière).
+  Couvert par le **bras de discrimination** de la pièce 3.
+- **n°3 — choisir N après avoir vu les chiffres.** Couvert par la pièce 2, écrite d'avance.
+- **n°4 — mesurer sur batterie ou sous bridage.** `SECTEUR` exigé ; `PERF` se lit **PENDANT** la
+  mesure par l'échantillonneur, et **aucun seuil `PERF` n'entre dans un critère** (D290, D291).
+- **n°5 — mesurer sous contention.** ⛔ **Le maximum par test est précisément ce qui s'effondre sous
+  charge** — 22 signatures de dépassement le 10/09 sur une suite verte au repos. La mesure se fait
+  **AU REPOS, état machine relevé AVANT** (D270). Une passe sous charge ne se soustrait pas d'une
+  passe au repos.
+- **n°6 — un extracteur qui rend zéro en silence.** Le reporter JSON l'écarte en grande partie ;
+  tout compteur imprime son **parcouru**, son **attendu à côté du mesuré**, et sa **ventilation par
+  motif** (D290, D295).
+- **n°7 — mêler les régimes de passe.** La **POSITION** d'une passe est un terme de durée établi
+  (D291 : après repos plus lente qu'enchaînée, **6 cycles sur 6, de 0,7 à 7,2 %**). Les N passes se
+  prennent dans un **régime déclaré**, pas moitié après repos moitié enchaînées.
+
+### ⛔ CE QUE CE CADRAGE NE FAIT PAS
+
+1. **Il n'écrit aucun `testTimeout`** — aucune des quatre configurations n'est touchée.
+2. **Il ne mesure rien** : ni maximum par test, ni dispersion, ni N. Aucune porte n'est lancée.
+3. **Il n'écrit aucun instrument** — ni le lecteur de rapport JSON, ni la suite témoin : un script
+   ferait **compter** ce lot (D283).
+4. **Il n'épuise pas l'entrée `[MÉTHODE][P0]` du backlog**, qui reste **ouverte** : c'est le lot de
+   CODE qui l'épuisera.
+5. **Il ne fixe pas N**, qui n'existera qu'après mesure — et **peut n'exister pas du tout** si le
+   plafond de 15 passes est atteint sans convergence, ce qui est alors **un résultat**.
+
 ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294**
 
 ⛔ **TITRE BARRÉ À LA CLÔTURE (patron de D273, D284 et D293)** : l'étiquette « PROCHAIN LOT » sur du
 fait accompli envoie une reprise à froid travailler sur un rang clos. **Le corps reste l'état du
 rang 16.**
-⇒ **RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ **CANDIDAT DÉSIGNÉ, PAS ARBITRÉ** : les
+⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ **CANDIDAT DÉSIGNÉ, PAS ARBITRÉ** : les
 **budgets de test**, dans la forme **(b)** arbitrée le 16/09 — *écrire la valeur EN VIGUEUR*.
 « Je l'ouvrirai après ce lot » (Ko). **Une désignation n'est pas un arbitrage, et la session
-n'arbitre pas l'ordre des rangs.**
+n'arbitre pas l'ordre des rangs.**~~
+⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ PAR KO : le RANG 17 est les BUDGETS DE TEST, forme (b),
+CADRAGE SEUL.** Barré plutôt qu'effacé (D276). ⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun
+candidat désigné.
 ⚠ **Compteur de lots de code non certifiés : ZÉRO.** Ce lot est **DOCUMENTAIRE** — aucun fichier
 hors `.md` d'autorité au diff, `docs/preuves/` exempté (D283, amendé par D292) — donc **il ne s'y
 ajoute pas.** Un lot de code peut s'ouvrir dès l'arbitrage de Ko, et c'est lui qui portera le
@@ -531,10 +647,13 @@ il reste l'état du rang 15, refus compris.
 ⇒ ~~**RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284). L'ordre des rangs (section D270) dit QUEL lot ;
 **aucun rang 16 n'est arbitré**, et la session n'en choisit pas.~~ ⛔ **CONSOMMÉ LE 16/09/2026 (D294) —
 ARBITRÉ PAR KO : le RANG 16 est le LOT DOCUMENTAIRE des sept constats.** Barré plutôt qu'effacé (D276).
-⇒ **RANG 17 : EN ATTENTE D'ARBITRAGE DE KO**, candidat désigné = les **budgets de test**, forme (b).
+⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO**, candidat désigné = les **budgets de test**, forme (b).~~
+⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ : rang 17 = budgets de test, forme (b), cadrage seul.**
+⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.
 ⚠ Le compteur est à **ZÉRO** : un lot de
 code peut s'ouvrir dès que Ko l'arbitre, et c'est lui qui le portera à un. ⚠ **Le rang 16 ne l'a pas
-porté à un** : il est documentaire.
+porté à un** : il est documentaire. ⚠ **Le rang 17 non plus, tant qu'il en est à son CADRAGE** — le
+lot de CODE des budgets, lui, le portera à un (D295).
 
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 14/09/2026, ÉCRIT À LA CLÔTURE DE D292.** ⇒ **QUEL lot : rang 15 de
@@ -2192,6 +2311,140 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 20/09/2026 — D295 · rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et le chiffre faux qui pointait vers le seul fichier à ne pas toucher
+
+⛔ **RANG 17, ARBITRÉ PAR KO LE 20/09/2026.** ⇒ **État du rang** : section « PROCHAIN LOT — rang 17 »
+en tête de ce fichier. **Numéro pris en LISANT le registre** : sa dernière ligne portait **D294**.
+⛔ **CE LOT NE MESURE AUCUNE PORTE, N'EN LANCE AUCUNE, ET N'ÉCRIT AUCUNE LIGNE DE CODE.** Il est
+**documentaire** : trois `.md` d'autorité au diff. **Compteur de lots de code non certifiés : ZÉRO,
+inchangé.** Le lot de CODE des budgets le portera à UN.
+
+### ⛔ D295 — CE QUI L'A OUVERT : LA HUITIÈME REPRISE À FROID, ET UNE TROUVAILLE DANS LA LIGNE D'ATTAQUE
+
+La reprise du 18/09 — deuxième sous forme allégée — a rapporté **un défaut réel**, dans l'entrée
+`[MÉTHODE][P0]` que le lot des budgets lit **en premier**.
+✅ **ET LA FORME ALLÉGÉE A TENU UNE SECONDE FOIS** : les quatre questions de la première partie se
+sont lues **dans le bloc du rang 16 SEUL**, zéro recoupement. Le pointeur « l'ordre des rangs dit
+QUEL lot, le bloc dit OÙ IL EN EST » tient désormais **deux fois de suite**.
+
+### ⛔ D295 — LA PREMIÈRE ÉCRITURE EST L'ARBITRAGE LUI-MÊME, ET L'ORDRE EST DE KO
+
+Au moment où ce lot s'est ouvert, le dépôt disait « **rang 17 : en attente d'arbitrage** » — et il
+**avait raison**, puisque l'arbitrage n'existait que dans un message de chat. ⛔ **C'est D276
+appliqué à la ligne qui AUTORISE un lot**, et c'est la reprise qui l'a signalé avant d'écrire quoi
+que ce soit d'autre.
+⇒ **L'ordre des rangs a donc reçu le rang 17 arbitré AVANT toute autre ligne**, avec le **rang 18
+nommé en attente**, écrit à l'**ouverture** et non à la clôture (D284, et la seconde moitié de D294).
+⚠ **La session n'a pas écrit le numéro d'ordre de cette écriture** : le dépôt porte « quatre »
+(D284, rang 10), « cinquième » (D289, rang 13) et « sept » (D294) — **trois comptages qui ne se
+recoupent pas**. Un compteur qu'on ne sait pas dériver ne se recopie pas (D268). **Ce qui est vrai
+sans compter : toutes sont de Ko.**
+
+### ⛔ D295 — LE DÉFAUT : « CINQ SUITES UNITAIRES » POINTAIT VERS `vitest.config.int.ts`
+
+L'entrée du backlog écrivait, **deux lignes sous sa propre table** : « *Seule la config
+d'INTÉGRATION écrit un budget.* Les **cinq** suites unitaires héritent du défaut vitest ». ⛔ **Elle
+se contredit dans ses onze premiers mots** : la table compte cinq configurations dont **une
+d'intégration**.
+**Mesuré** : quatre packages seulement portent un script `test` — `apps/api`, `apps/client`,
+`apps/pro`, `packages/api-client` ; `packages/i18n`, `types`, `ui` et `config` n'en ont aucun.
+⛔ **CE QUI LE SORT DU COSMÉTIQUE, ET C'EST LA SEULE RAISON QUI COMPTE** : un lot qui part de
+« cinq » cherche une **cinquième configuration unitaire** où écrire un budget, et **la seule
+candidate du dépôt est celle d'intégration — qui en a déjà un, à 30 s**. Y écrire 5 000 ms le
+**diviserait par six** : un **changement de comportement que la forme (b) interdit explicitement**.
+**Le chiffre faux désignait le seul fichier qu'il ne faut pas toucher.**
+⚠ **ET CE QUI LE RANGE COMME UN MOTIF** : la phrase date du 10/09 et a **survécu à trois passes
+D277** (D290, D291, D294). Le 16/09, une remesure a écrit « les **quatre** configurations
+unitaires » **douze lignes plus bas, dans cette même entrée**, sans corriger « cinq » douze lignes
+plus haut. **Une affirmation juste posée à côté d'une affirmation fausse ne corrige pas la fausse**
+— c'est D280, et c'est une **reprise à froid** qui l'a vu, pas une passe.
+
+### ⛔ D295 — LES DEUX RÈGLES, TOUTES DEUX EN EXTENSION D'UN BLOC EXISTANT
+
+**Arbitrage de Ko : jamais en bloc autonome.** `AGENTS.md` est chargé à chaque session ; un bloc de
+plus est un bloc de plus à lire, et deux règles voisines séparées se lisent comme concurrentes.
+
+| règle | bloc d'accueil | ce qu'elle ajoute |
+|---|---|---|
+| **un instrument et la pièce qu'il a produite se corrigent ensemble ou pas du tout** | « LES PREUVES BRUTES QU'UNE DÉCISION CITE ENTRENT AU DÉPÔT » (D291) | une archive ne vaut que si elle se **rejoue** ; le chiffre se rectifie où il engage une **autorité**, la rectification se pose **à côté** des pièces |
+| **un compteur qui croise deux entrées rend son détail sur les DEUX** | « UN COMPTEUR REND AUSSI CE QU'IL A PARCOURU » (D290) | D290 couvre le **corpus parcouru** et est **aveugle à l'autre entrée** : la **ventilation par motif**, et les motifs à zéro nommés |
+
+⛔ **L'ARGUMENT QUI FONDE LA SECONDE, ET IL A ÉTÉ VÉRIFIÉ AVANT D'ÊTRE ÉCRIT** : la passe de D294
+**parcourait bien** ses 4 fichiers et son million de caractères — **son compte de parcouru était
+juste**. Ce qui était aveugle, c'est **l'autre entrée** : les motifs. D290 ne pouvait donc pas
+l'attraper, et ce n'est pas une redite.
+⚠ **La phrase « elle n'a rien attrapé le jour où elle a été écrite » est GARDÉE, sur consigne de
+Ko** : appliquée par anticipation ici — 7 motifs, 0 à zéro — elle n'a rien trouvé. **Une règle
+présentée avec ses seuls succès cesse d'être vérifiée.**
+⚠ **Et la première est écrite parce que « garde-la comme précédent » est D276**, y compris quand
+c'est Ko qui l'énonce — ici deux messages après avoir invoqué D276 contre le dossier. **Ko l'a
+reconnu et l'a fait écrire.**
+
+### ⛔ D295 — LES DEUX ARBITRAGES DE KO SUR LE CADRAGE, ÉCRITS COMME ARBITRAGES ET NON COMME MESURES
+
+1. ⛔ **SEUIL x = 5 %, PLAFOND 15 PASSES.** N est le nombre de passes tel qu'une passe de plus ne
+   déplace plus le maximum observé de plus de 5 %. **Si le critère n'est pas atteint à 15 passes, le
+   lot l'écrit COMME RÉSULTAT et ne choisit PAS un N par défaut.** ⚠ **Le plafond vient d'une mise
+   en garde de la session** : le maximum est une **statistique d'extremum**, un critère de
+   stabilisation sans borne **peut ne jamais converger**. ⛔ **Pas de formule gaussienne** — « c'est
+   un arbitrage, il porte mon nom et sa date » (Ko).
+2. ⛔ **LE QUATRIÈME CONTRÔLE DEVIENT LE MODE DE DÉFAILLANCE n°0, ET IL EST OBLIGATOIRE.** Témoin à
+   **5 100 ms ⇒ doit échouer** avec la signature ; témoin à **4 900 ms ⇒ doit passer**. **Si
+   l'encadrement ne rend pas 5 000, le lot s'arrête et n'écrit rien.** **Motif de Ko** : sans lui,
+   (b) écrirait un nombre **recopié d'un texte d'aide et d'un incident du 10/09** — exactement ce
+   qu'elle prétend supprimer.
+
+⇒ **Retenus aussi, avec leur motif** : le **bras de discrimination** (les 1 200 ms déplacés dans un
+`beforeEach`) comme **le bras qui fait le travail**, parce qu'il prouve que la quantité mesurée est
+celle que `testTimeout` borne ; et le **reporter JSON** plutôt qu'un extracteur de texte — **la
+moitié du problème supprimée par construction plutôt que surveillée**.
+
+### ⛔ D295 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **MON HEREDOC À DÉLIMITEUR QUOTÉ A ÉTÉ CASSÉ PAR L'ENVELOPPE `bash -c`** — au moment précis
+   d'écrire le bloc de cadrage. ⚠ **C'est le cas que D290 décrit mot pour mot** (« la couche qui
+   interpole peut être celle de l'outil lui-même »), et je l'ai rencontré **en appliquant D289**.
+   ⇒ Basculé sur **l'outil d'écriture**, troisième forme autorisée. ⛔ **Et la faute ne s'arrête pas
+   à l'échec visible** : les écritures précédentes avaient traversé **la même enveloppe**. Contrôle
+   de corruption passé sur les **210 lignes ajoutées** — **0 double espace interne, 0 trace
+   d'interprétation** — **détecteur calibré 2 bras sur 2 avant d'être cru**, sur la corruption
+   connue de `vite.config.ts:24`. Sans le bras négatif, un détecteur qui répond « 0 » à tout aurait
+   déclaré l'arbre propre.
+2. ⛔ **MON `grep -i` A RENDU ZÉRO SUR UNE LIGNE QUI EXISTAIT.** Cherchant « candidat désigné du
+   rang 17 » dans le backlog, il n'a **rien** trouvé ; la ligne est là, en majuscules accentuées.
+   **La casse des caractères accentués n'est pas gérée par `grep -i` en locale C.** Trouvé
+   uniquement parce que j'ai cherché **autrement**. ⚠ **C'est la règle que ce lot écrit, rencontrée
+   le jour même de son écriture, et par son propre auteur.**
+3. ⚠ **MON RELECTEUR A PRODUIT UN JETON DÉGÉNÉRÉ.** Un jeton découpé sur un retour de ligne a laissé
+   le fragment « y », qui a rendu **213 occurrences**. Le total aurait dit « 11 jetons, 0 manquant »
+   ; **c'est la ventilation qui a montré qu'un jeton ne mesurait rien** — la règle écrite ce jour,
+   en action contre moi.
+
+### D295 — passe D277, les deux sens
+
+Instrument calibré **3 bras sur 3** (positif enjambant un retour à la ligne, positif à accents et
+balisage, négatif), sur **texte aplati** — ces fichiers sont enveloppés à ~95 colonnes. **8 motifs,
+4 fichiers, 1 076 514 caractères, 27 occurrences, 0 motif à zéro.**
+- **Sens 1 — invalidé** : « RANG 17 : EN ATTENTE » (**3** endroits : ordre des rangs, bloc du
+  rang 16, bloc du rang 15), « TOUJOURS SANS RANG », « CANDIDAT DÉSIGNÉ DU RANG 17, NON ARBITRÉ »
+  (ordre des rangs **et** backlog). **Toutes barrées avec leur motif**, jamais effacées (D276).
+- ⚠ **La section D294 n'est PAS re-marquée** : c'est une section de session **datée**, vraie à sa
+  date — principe posé par D291 pour les sections D291 et D292.
+- ⚠ **Sens 2 — rendu permis : RIEN À TRAITER, et c'est vérifié, pas supposé.** Ce lot ne lève aucune
+  condition : le compteur était **déjà** à zéro depuis D293, et les **6** occurrences de « aucun lot
+  de code ne s'ouvre avant une certification » étaient **toutes** barrées ou annotées « LEVÉ » par
+  la passe de D293. Ce lot **n'ajoute** aucune permission — il en **consomme** une.
+
+### ⛔ D295 — CE QUE CE LOT NE FAIT PAS
+
+1. **Il n'écrit aucun `testTimeout`** et ne touche **aucune** des quatre configurations.
+2. **Il ne mesure ni maximum par test, ni dispersion, ni N**, et ne lance **aucune porte**.
+3. **Il n'écrit aucun instrument** — un script ferait **compter** ce lot (D283).
+4. **Il n'épuise pas l'entrée `[MÉTHODE][P0]`** du backlog, qui reste **ouverte**.
+5. **Il ne verse aucune pièce dans `docs/preuves/`** : aucune quantité de ce lot ne fonde une
+   décision de mesure — les seuls chiffres cités sont des **relevés de structure** (quatre scripts
+   `test`, 30 s en intégration) reproductibles en une commande.
 
 ## Session du 16/09/2026 — D294 · rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règle que portait le bloc qui l'enfreignait
 
@@ -7467,9 +7720,13 @@ RAM le 16/09). **Le compteur de lots de code non certifiés passe de DEUX à ZÉ
 **peut** s'ouvrir, et c'est lui qui le portera à un.
 ⚠ ~~**Ce qui attend, sans rang** : les
 **budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
-rang 15 leur soit attribué.~~ ⛔ **(D294, 16/09/2026) TOUJOURS SANS RANG, MAIS PLUS SANS FORME** :
+rang 15 leur soit attribué.~~ ⛔ ~~**(D294, 16/09/2026) TOUJOURS SANS RANG, MAIS PLUS SANS FORME** :
 les budgets restent le seul candidat en attente, et Ko en a **arbitré la FORME le 16/09** — c'est
-**(b)**, écrire la valeur en vigueur. **Candidat désigné du rang 17**, non arbitré.
+**(b)**, écrire la valeur en vigueur. **Candidat désigné du rang 17**, non arbitré.~~
+⛔ **PÉRIMÉ LE 20/09/2026 (D295) — LES BUDGETS ONT UN RANG : c'est le RANG 17, arbitré par Ko**,
+forme (b), premier lot = **cadrage seul**. Barré plutôt qu'effacé (D276) : effacé, « sans rang » se
+relirait comme l'état courant. ⚠ **Ce qui reste SANS RANG, et c'est le lot suivant** : le lot de
+**CODE** des budgets, celui qui mesurera et écrira les quatre `testTimeout`.
 ⇒ ~~**RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'ouverture du rang 15, pour
 qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
 ⛔ **CONSOMMÉ LE 16/09/2026 (D294) — ARBITRÉ PAR KO : le RANG 16 est un LOT DOCUMENTAIRE**, les sept
@@ -7479,14 +7736,29 @@ dangereuse qu'un budget manquant » — le bloc du rang 8 passe donc devant les 
 ⇒ **Où il en est** : section « ~~PROCHAIN LOT~~ — rang 16 » en tête de ce fichier — ✅ **CLOS le
 16/09/2026 (D294)**. ⚠ **Documentaire : il ne compte pas dans les deux/trois** (D283, amendé par
 D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
-⇒ **RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la clôture du rang 16, pour qu'aucune
-reprise ne tombe sur une liste qui s'arrête.
+⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la clôture du rang 16, pour qu'aucune
+reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ PAR KO : le RANG 17 est les BUDGETS DE TEST, dans la
+forme (b), et son premier lot est un CADRAGE SEUL.** Barré plutôt qu'effacé (D276).
 ⚠ **CANDIDAT DÉSIGNÉ POUR LE RANG 17, PAR KO, LE 16/09/2026 : les BUDGETS DE TEST**
 (`[MÉTHODE][P0]` du 10/09), **dans la forme (b) et pas une autre** — *écrire la valeur EN VIGUEUR,
 ne rien changer au comportement, rendre un héritage invisible arbitrable* —, avec la contrainte
 que Ko a retenue : **N dérivé de la dispersion du maximum PAR TEST, mesurée dans le même lot.**
-⛔ **C'est une DÉSIGNATION, pas l'arbitrage** : « je l'ouvrirai après ce lot » (Ko). La session
-n'arbitre pas l'ordre des rangs — **sept écritures de cet ordre, toutes de Ko.**
+⛔ ~~**C'est une DÉSIGNATION, pas l'arbitrage** : « je l'ouvrirai après ce lot » (Ko).~~
+⛔ **DEVENU L'ARBITRAGE LE 20/09/2026 (D295).** ⚠ **Et la session n'arbitre toujours pas l'ordre des
+rangs** : elle a reçu l'arbitrage et l'a écrit. ⛔ **C'est la PREMIÈRE ligne de ce lot, avant toute
+autre, et l'ordre est de Ko** — parce que le dépôt disait « rang 17 : en attente » et **avait raison
+tant que rien n'était écrit**. Un arbitrage qui n'existe que dans le fil est très exactement D276,
+appliqué cette fois à la ligne qui AUTORISE un lot. ⚠ **La session n'a pas écrit le numéro d'ordre
+de cette écriture** : le dépôt en porte deux comptages qui ne se recoupent pas (« quatre » à D284
+pour le rang 10, « cinquième » à D289 pour le rang 13, « sept » à D294), et un compteur qu'on ne
+sait pas dériver ne se recopie pas (D268). **Ce qui est vrai sans compter : toutes sont de Ko.**
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 17 » en tête de ce fichier.
+⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'**OUVERTURE** du rang 17 et non à sa
+clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Aucun candidat n'est
+désigné.** ⛔ **Ce qui est connu et qui n'a PAS de rang : le lot de CODE des budgets** — celui qui
+mesurera et écrira les quatre `testTimeout`. Il suit ce cadrage, **il est du code, et c'est lui qui
+portera le compteur de lots non certifiés à UN.** La session ne se l'attribue pas.
 ⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
 que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
 12 passes de D291 mesurent la durée **de suite entière**. Un budget *choisi sur des durées* serait
@@ -7532,9 +7804,12 @@ liste d'attente qui garde ce qui est fait envoie recouper, c'est-à-dire exactem
 pointeur promet d'éviter :
 - ✅ **la sonde d'état machine hors dépôt** — FAITE au rang 11 (D286) ;
 - ✅ **le reliquat du rang 8** — FAIT à l'étape 0 du rang 11 (D286) ;
-- ⏳ **les budgets de test non écrits** — `[MÉTHODE][P0]` du 10/09, toujours ouvert ; ⛔ **placés
+- ✅ ~~**les budgets de test non écrits** — `[MÉTHODE][P0]` du 10/09, toujours ouvert ; ⛔ **placés
   APRÈS le rang 14 par Ko le 12/09/2026 (D291)** ; ⛔ **(D294, 16/09/2026) FORME ARBITRÉE — c'est
-  (b), écrire la valeur EN VIGUEUR — et CANDIDAT DÉSIGNÉ DU RANG 17, non arbitré** ;
+  (b), écrire la valeur EN VIGUEUR — et CANDIDAT DÉSIGNÉ DU RANG 17, non arbitré** ;~~
+  ⛔ **RANG 17, ARBITRÉ PAR KO LE 20/09/2026 (D295)** — forme (b), **cadrage seul** en premier lot.
+  ⚠ **L'entrée du backlog reste OUVERTE** : le cadrage ne l'épuise pas, c'est le lot de CODE qui
+  l'épuisera ;
 - ~~⏳ **la borne de workers sur une suite de quatre** — `[MÉTHODE][P0]` du 10/09, toujours
   ouvert.~~ ✅ **RANG 13, CLOS LE 12/09/2026 SANS BORNE (D290)** — barré le 13/09 (D291).
   ⚠ **Ko, 11/09/2026, mot pour mot** : « la borne de workers touche quatre configs,
@@ -9011,3 +9286,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D292 | A | Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image, et la base de dev perdue |
 | D293 | A | Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque |
 | D294 | A | D294 — rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règle que portait le bloc qui l'enfreignait |
+| D295 | A | D295 — rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et « cinq suites unitaires » pointait vers le seul fichier à ne pas toucher |
