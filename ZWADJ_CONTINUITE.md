@@ -482,9 +482,107 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**~~ ⛔ **BLOQUÉ LE 20/09/2026 (D296) : LE CADRAGE ÉCHOUE À SON PROPRE BRAS DE DISCRIMINATION — EN ATTENTE D'ARBITRAGE DE KO, AUCUNE LIGNE DE CODE**
+## PROCHAIN LOT — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**BLOQUÉ LE 20/09/2026 (D296) : LE CADRAGE ÉCHOUE À SON PROPRE BRAS DE DISCRIMINATION — EN ATTENTE D'ARBITRAGE DE KO, AUCUNE LIGNE DE CODE**~~ ⛔ **DÉBLOQUÉ LE 20/09/2026 PAR L'ARBITRAGE (ii) DE KO (D297) — CADRAGE AMENDÉ ET COMMITÉ AVANT LA PREMIÈRE MESURE ; LOT DE CODE EN COURS**
+
+### ⛔ AMENDEMENT DU CADRAGE — ARBITRAGE DE KO DU 20/09/2026 (D297), COMMITÉ AVANT LA PREMIÈRE MESURE
+
+⛔ **CE BLOC PRIME SUR LES PIÈCES 1, 3 ET 4 DE D295 PARTOUT OÙ ILS DIFFÈRENT.** Elles restent écrites
+dessous, annotées, pour que l'amendement se lise contre ce qu'il amende. ⛔ **Il est commité AVANT
+toute mesure** — c'est ce qui rend le protocole antérieur au résultat, comme au rang 14 (ordre de Ko).
+⚠ **Ouvert dans la même session que D296, sur ordre explicite de Ko** : la reprise à froid, qui est la
+mesure de « un lot par session », n'est donc **pas** exercée pour ce lot.
+
+⛔ **L'ARBITRAGE : (ii), MAJORANT DÉCLARÉ. LE MOTIF, ÉCRIT TEL QUEL (Ko)** :
+« **UNE `duration` QUI CONTIENT LES HOOKS EST TOUJOURS ≥ LA DURÉE DU TEST.** Une marge calculée
+dessus ne peut être que **PLUS PESSIMISTE** que la vraie : elle peut inquiéter à tort, jamais
+rassurer à tort. Or (b) écrit la valeur en vigueur ; la marge se lit à côté, elle ne choisit rien.
+⇒ **UN MAJORANT SUFFIT POUR CONFIRMER QU'UNE BORNE TIENT ; IL NE SUFFIT PAS POUR EN CHOISIR UNE
+NOUVELLE.** Le jour où quelqu'un veut écrire autre chose que 5 000, **(i) devient obligatoire.**
+Aujourd'hui elle achèterait une précision dont aucune décision ne dépend, au prix d'un instrument
+neuf sur une API non vérifiée. »
+⛔ **ET C'EST LA CONDITION QUI REND (i) OBLIGATOIRE, ÉCRITE ICI POUR QU'ELLE NE SE PERDE PAS** : toute
+valeur de `testTimeout` **autre que la valeur en vigueur** exige un instrument qui mesure la **seule
+fonction du test** — la sortie (i) de D296. Un majorant ne fonde pas un choix.
+
+**PIÈCE 1, AMENDÉE — LA QUANTITÉ MESURÉE.** Pour une suite et une passe : le **maximum, sur tous les
+tests, de la `duration` du reporter JSON** — durée du test **et de ses hooks** (`beforeEach`,
+`afterEach`, nettoyages). **Déclarée MAJORANT** de la quantité que `testTimeout` borne. ⇒ **La clôture
+écrit « marge ≥ X », jamais « marge = X »**, avec X = 5 000 − maximum observé.
+**Source inchangée** : le reporter JSON, jamais un extracteur de console (motif de D295, qui tient).
+
+**PIÈCE 3, AMENDÉE — LA CALIBRATION, TROIS BRAS, ABANDON SI UN SEUL MANQUE (D286).** Suite témoin
+construite, configuration nue, rejouée à **chaque** invocation de l'instrument :
+
+| bras | cas construit | verdict exigé |
+|---|---|---|
+| positif | un test qui dort 1 200 ms | maximum dans **[1 200 ; 1 300]** |
+| négatif | deux tests vides | maximum **< 100** |
+| discrimination | 1 200 ms dans un `beforeEach`, tests vides | ⛔ maximum **≥ 1 200 — le majorant DOIT les compter** |
+
+⛔ **LE BRAS DE DISCRIMINATION RESTE, ET SON VERDICT S'INVERSE** : il prouve désormais que le majorant
+**contient ce qu'il déclare contenir**.
+⛔ **LA TOLÉRANCE DU BRAS POSITIF N'EST PAS « ÉCRITE D'AVANCE » : ELLE EST POSÉE PAR KO LE 20/09/2026,
+APRÈS TROIS OBSERVATIONS** (1 204 · 1 205,7 · 1 213,6 ms, D296). **Borne basse 1 200** — un sommeil
+ne peut pas durer moins que lui-même ; **borne haute 1 300**. C'est ce qui la rend honnête.
+
+**PIÈCE 4, n°0 AMENDÉ — L'ENCADREMENT, SOUS CHACUNE DES QUATRE CONFIGURATIONS, `setupFiles` COMPRIS.**
+- **Témoin écrit TEMPORAIREMENT dans le motif d'inclusion de chaque paquet** —
+  `apps/api/src/__temoin_budget__.spec.ts`, et `src/__temoin_budget__.test.ts` pour `apps/client`,
+  `apps/pro` et `packages/api-client` — puis joué par **la configuration du paquet lui-même**,
+  depuis son dossier. **Aucune configuration enveloppe** : elle mesurerait l'enveloppe. Témoins
+  **purgés au démarrage et en fin** (un `finally` ne survit pas à un signal, D224).
+- **Sommeil par `node:timers/promises`** : il échappe aux horloges factices de vitest, qu'un
+  fichier de configuration pourrait installer.
+- **La valeur attendue V n'est pas écrite : elle est lue à l'exécution dans le texte d'aide**
+  (`--testTimeout … (default: V)`). **V − 100 DOIT PASSER ; V + 100 DOIT ÉCHOUER** avec la signature
+  `Test timed out in Vms`. ⛔ **Si l'encadrement ne rend pas V, le lot s'arrête et n'écrit rien.**
+- ⛔ **TROIS SOURCES NOMMÉES POUR V, ET LA CLÔTURE LES NOMME AINSI** : le **texte d'aide** (défaut
+  documenté) ; la **signature**, générée depuis la valeur **effective** du processus
+  (`makeTimeoutError`) — plus forte que la première ; l'**encadrement** comportemental, à ±100 ms.
+  **Aucune ne suffit seule.** Jamais « 5 000 mesuré ».
+- ⛔ **UN ÉCHEC DU BRAS V − 100 SE REPRODUIT AU REPOS AVANT D'ÊTRE CRU** (condition de Ko) : relevé
+  d'état, puis **une** reprise du témoin de ce paquet ; reproduit ⇒ le lot s'arrête ; non reproduit ⇒
+  écrit comme **contention**, et on continue.
+
+**PIÈCE 4, n°8 — NOUVEAU, OBLIGATOIRE : LA LIGNE ÉCRITE MAIS IGNORÉE. C'EST LA CIBLE DU HARNAIS.**
+`5_000` vaut le défaut : quatre lignes ignorées seraient vertes partout. ⇒
+**`neutralisation/neutralize-budgets.py`, quatre cibles, une par configuration** :
+`testTimeout: 5_000` → `testTimeout: 1_000` ; **témoin connu** : un test qui dort **2 000 ms** sous
+cette configuration — **vert sans mutation** (pré-vol), **rouge sous mutation avec la signature
+`Test timed out in 1000ms`**. ⚠ **La signature portant la valeur MUTÉE est la preuve que la ligne est lue**, puisque le
+message interpole la valeur effective. ⚠ **1 000 / 2 000 et non 4 900 / 5 000** : une seconde de marge
+de chaque côté, **hors de la zone que la contention mange**. Garde `__main__`, sauvegarde disque,
+restauration au démarrage, comptage d'ancre 1 → 0 et de marqueur 0 → 1 (D286).
+
+**PIÈCE 2, RENDUE OPÉRATOIRE — SANS CHANGER L'ARBITRAGE (x = 5 %, plafond 15).**
+- M_k = maximum, sur les passes 1 à k, du maximum de chaque passe. **N = le plus petit k ≥ 1 tel que
+  M_(k+1) ≤ 1,05 × M_k.** On joue des passes jusqu'à ce que ce soit vrai, **ou jusqu'à 15 passes
+  comptées** ; si la quinzième déplace encore M de plus de 5 %, **« non convergé à 15 » est le
+  résultat**, sans N par défaut.
+- **Régime déclaré : ENCHAÎNÉ (n°7).** Une **passe froide** précède la passe 1 de chaque suite :
+  jouée, relevée, **rapportée à part, jamais comptée** ni dans M ni dans N. Si son maximum dépasse
+  celui des passes comptées, la clôture le dit.
+- **Ordre déclaré** : `packages/api-client`, `apps/api`, `apps/client`, `apps/pro`.
+- ⛔ **Une passe non verte, ou dont le nombre de tests lus diffère de la passe froide, ARRÊTE
+  l'instrument** : un rouge est un verdict, pas une durée ; un compte qui change est un extracteur
+  qui perd des lignes (D290).
+
+**ÉTAT MACHINE (n°4, n°5, et le critère).** **Porte dure au relevé d'ouverture : SECTEUR, `chrome` = 0,
+RAM libre ≥ 4 579 Mo** (barre D273). Rouge ⇒ **rien n'est lancé**, et on le dit à Ko. L'échantillonneur
+tourne **pendant** les étapes 2 à 4 ; son journal est versé.
+
+**CE QUE LE LOT ÉCRIT** : `testTimeout: 5_000` dans `apps/api/vitest.config.ts`,
+`apps/client/vitest.config.ts`, `apps/pro/vite.config.ts`, `packages/api-client/vitest.config.ts` —
+⛔ **jamais `vitest.config.int.ts`** (n°1) ; l'instrument `neutralisation/mesure-budgets.py` (D286 :
+un instrument entre au dépôt) ; le harnais `neutralisation/neutralize-budgets.py` ; les pièces dans
+`docs/preuves/D297/`. **Ordre de la session, de Ko, non réordonnable** : 0 cet amendement commité ;
+1 relevé d'ouverture ; 2 calibration ; 3 n°0 sous les quatre configurations ; 4 mesures ; 5 les quatre
+lignes, le n°8 sur chacune, les portes.
 
 ### ⛔ ÉTAT AU 20/09/2026 (D296) — À LIRE AVANT LES PIÈCES, QUI SONT CELLES DE D295
+
+⛔ **(D297) PÉRIMÉ LE MÊME JOUR : KO A ARBITRÉ (ii).** Ce bloc reste l'état **au moment du blocage** ;
+l'état courant est l'amendement ci-dessus.
 
 ⛔ **ARBITRAGE DE KO, 20/09/2026, ÉCRIT EN PREMIER (D276)** : le lot de **CODE** des budgets est le
 **second lot du RANG 17** — « sur le cadrage de D295, sans le réécrire. C'est mon arbitrage : le
@@ -578,6 +676,8 @@ vitest 3.2.7 la pose entre un départ pris **avant** les `beforeEach` et une fin
 discrimination rend **1 208 à 1 218 ms** là où la pièce 3 exige moins de 100. ⚠ **Le motif ci-dessus
 reste juste** — un extracteur de console reste écarté ; c'est la **source** qui mesure une durée
 voisine, **le mode n°2 de ce même cadrage**. Non réécrite : annotée, en attente d'arbitrage.
+⛔ **(D297) ARBITRÉ PAR KO — (ii) : cette `duration` devient un MAJORANT DÉCLARÉ.** Pièce amendée en
+tête de ce bloc.
 
 ### ⛔ PIÈCE 2 — LA RÈGLE DE DÉRIVATION DE N, ÉCRITE **AVANT** LES CHIFFRES
 
@@ -611,6 +711,9 @@ l'instrument **ABANDONNE si un seul manque son verdict** (D286) — il ne contin
 ⚠ **Le bras de discrimination est retenu par Ko comme le bras qui fait le travail.** Sans lui, un
 instrument qui prendrait « la plus grande durée du rapport » passerait les deux autres tout en
 mesurant un `beforeAll` ou un temps de transformation.
+⛔ **(D297) AMENDÉE : le verdict du bras de discrimination S'INVERSE (≥ 1 200, le majorant doit les
+compter), et la tolérance du bras positif est [1 200 ; 1 300], posée par Ko après trois
+observations.** Table amendée en tête de ce bloc.
 
 ### ⛔ PIÈCE 4 — LES MODES DE DÉFAILLANCE. UN MODE NON LISTÉ ICI NE SE CODE PAS.
 
@@ -626,6 +729,8 @@ valeur AUJOURD'HUI, déclaré pour ce qu'il est** : `5000` est le défaut docume
 remplace.
 ⛔ **(D296, 20/09/2026) DEUX CONDITIONS DE KO S'Y AJOUTENT** — la formule de clôture sur « ce qui fixe
 5 000 », et le bras 4 900 reproduit au repos avant d'être cru : **en tête de ce bloc.**
+⛔ **(D297) AMENDÉ : sous CHACUNE des quatre configurations, V lu dans le texte d'aide, trois sources
+nommées ; et le n°8 — la ligne écrite mais ignorée — est ajouté, obligatoire.** En tête de ce bloc.
 - **n°1 — écrire dans la mauvaise configuration.** `vitest.config.int.ts` **a déjà un budget, à
   30 s** : y écrire 5 000 ms le diviserait par six, **changement de comportement que (b)
   interdit**. ⚠ Le chiffre « cinq suites unitaires » du backlog **pointait vers elle** ; corrigé le
@@ -8030,6 +8135,9 @@ cadrage prescrit (la `duration` du reporter JSON) **échoue à son propre bras d
 pièce 3 du cadrage, **donc appartient à Ko**. ⇒ **ÉTAT : en attente d'arbitrage de Ko sur le
 cadrage. Compteur de lots de code non certifiés : toujours ZÉRO** — aucune ligne de code n'a été
 écrite, et le lot D296 est documentaire. ⇒ **Où il en est** : point d'entrée du rang 17.
+⛔ **(D297, 20/09/2026) DÉBLOQUÉ LE MÊME JOUR : KO A ARBITRÉ (ii), MAJORANT DÉCLARÉ.** Cadrage amendé
+et commité **avant** la première mesure ; le lot de code est **en cours**. Barré de fait, pas effacé :
+le blocage reste l'histoire du rang (D276). ⇒ **Où il en est** : point d'entrée du rang 17.
 ⇒ **Le RANG 18 reste EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.
 ⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
 que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
@@ -9560,3 +9668,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D294 | A | D294 — rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règle que portait le bloc qui l'enfreignait |
 | D295 | A | D295 — rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et « cinq suites unitaires » pointait vers le seul fichier à ne pas toucher |
 | D296 | A | D296 — rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la `duration` du reporter JSON compte les hooks, le bras de discrimination rend 1 208 à 1 218 ms contre < 100 |
+| D297 | A | D297 — rang 17 : arbitrage (ii), majorant déclaré ; un majorant confirme qu'une borne tient, il n'en choisit pas une nouvelle ; cadrage amendé commité avant la première mesure |
