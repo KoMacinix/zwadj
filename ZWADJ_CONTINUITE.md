@@ -482,15 +482,70 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ **OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**
+## PROCHAIN LOT — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**~~ ⛔ **BLOQUÉ LE 20/09/2026 (D296) : LE CADRAGE ÉCHOUE À SON PROPRE BRAS DE DISCRIMINATION — EN ATTENTE D'ARBITRAGE DE KO, AUCUNE LIGNE DE CODE**
+
+### ⛔ ÉTAT AU 20/09/2026 (D296) — À LIRE AVANT LES PIÈCES, QUI SONT CELLES DE D295
+
+⛔ **ARBITRAGE DE KO, 20/09/2026, ÉCRIT EN PREMIER (D276)** : le lot de **CODE** des budgets est le
+**second lot du RANG 17** — « sur le cadrage de D295, sans le réécrire. C'est mon arbitrage : le
+cadrage est validé. Il portera le compteur à UN. » Il enchaînait sur une lecture adverse, **« sauf
+si elle trouve un défaut qui bloque »**.
+⛔ **ELLE EN A TROUVÉ UN, ET IL EST MESURÉ — LE LOT DE CODE N'A PAS COMMENCÉ.** La pièce 1 prescrit
+comme source la `duration` du **reporter JSON** ; la pièce 3 exige que le bras de discrimination
+(1 200 ms déplacés dans un `beforeEach`) rende **un maximum sous 100 ms**. **Mesuré trois fois :
+1 218 · 1 216,2 · 1 208,2 ms.** Les bras positif (1 204 à 1 214 ms) et négatif (0,9 à 1 ms) rendent
+leur verdict ; **le bras qui « fait le travail » (Ko) le manque**.
+⚠ **MÉCANISME, LU DANS LA SOURCE INSTALLÉE (vitest 3.2.7)** : `runTest` pose son départ **avant** les
+`beforeEach` et sa `duration` **après** les `afterEach` et les nettoyages ; `testTimeout` n'enveloppe
+que la **fonction du test**. La `duration` du reporter est donc *test + hooks* — **la durée voisine
+du mode n°2**. Le bras a fait exactement son office : **il a attrapé la source du cadrage lui-même,
+avant qu'une ligne soit écrite.**
+⛔ **CE N'EST PAS UN CAS CONSTRUIT** : `apps/client` et `apps/pro` posent un `beforeEach` et un
+`afterEach` **globaux** dans leur `test-setup.ts` — dans ces deux suites, **aucun** test n'a une
+`duration` JSON égale à la quantité que le budget lie.
+⇒ **Par la règle du cadrage (D286), l'instrument ABANDONNE à la calibration** : ni maximum, ni N, ni
+marge. **Toute sortie réécrit la pièce 1 (la source ou la quantité) ou la pièce 3 (le verdict du
+bras)** — c'est-à-dire le cadrage que l'arbitrage interdit de réécrire. **Elle appartient à Ko.**
+Sorties relevées, **aucune arbitrée** : section « Session du 20/09/2026 — D296 ».
+⚠ **DEUX AUTRES POINTS À ARBITRER AVEC LA REPRISE, NON BLOQUANTS SEULS** :
+1. **« Un témoin » (n°0) doit se lire « un témoin SOUS CHACUNE des quatre configurations »** : la
+   valeur en vigueur est celle de chaque configuration, `setupFiles` compris.
+2. **MODE NON LISTÉ — la ligne écrite mais IGNORÉE.** `testTimeout: 5_000` vaut le défaut : une fois
+   écrite, **l'encadrement passe qu'elle soit lue ou non** (mal imbriquée hors du bloc `test`, par
+   exemple). Seule une mutation vers une **autre** valeur montre qu'elle mord. **Un mode non listé
+   ne se code pas** : il attend l'arbitrage, comme candidat n°8.
+3. **La tolérance du bras positif** est annoncée « écrite d'avance » et **n'est écrite nulle part** :
+   elle doit l'être avant la mesure.
+⛔ **LES DEUX CONDITIONS DE KO POUR LE JOUR OÙ LE LOT DE CODE REPREND — ÉCRITES ICI POUR NE PAS VIVRE
+DANS LE FIL** :
+1. **Ce qui fixe 5 000.** L'encadrement « 4 900 passe / 5 100 échoue » prouve que la valeur en
+   vigueur est **ENTRE** les deux, pas qu'elle vaut 5 000. **C'est le texte d'aide de vitest qui
+   nomme le point ; le comportement confirme qu'il tient à ±100 ms. Aucune des deux sources ne
+   suffit seule ; ensemble, elles suffisent.** La clôture l'écrit **ainsi** — jamais « 5 000
+   mesuré » (la faute de D290 : une valeur lue au statut de mesure).
+2. **Le bras à 4 900 ms est à 100 ms du seuil**, dans la zone que la contention mange. Le mode n°0
+   se joue **état machine relevé devant lui** (secteur, RAM, `chrome`) ; **un échec du bras 4 900 se
+   REPRODUIT AU REPOS avant d'être cru** — s'il ne se reproduit pas, c'est une contention : on
+   l'écrit et on continue. ⚠ **La source le justifie** : l'expiration se vérifie aussi **après
+   coup** (`now() - startTime >= timeout`), donc un 4 900 dont la suite est retardée au-delà de
+   5 000 échoue ; le bras 5 100, lui, **ne peut pas** passer à tort. **L'encadrement ne se trompe
+   que d'un côté, et seulement par contention** — c'est exactement ce que la condition vise.
+⛔ **CONDITION MACHINE, RELEVÉE LE 20/09/2026 ET NON SATISFAITE** : SECTEUR ✅ · `chrome` **14** ⛔ ·
+RAM libre **3 849 Mo, soit −730 sous la barre de 4 579** ⛔ (`docs/preuves/D296/reproduction/`).
+**Même sans le défaut, les mesures du lot ne pouvaient pas partir dans cet état.**
+⇒ **Compteur de lots de code non certifiés : ZÉRO**, inchangé — aucune ligne de code, et D296 est
+documentaire. ⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 20/09/2026.** ⇒ **QUEL lot : rang 17 de l'ordre des rangs.
 OÙ IL EN EST : ici.** Toutes les écritures d'ordre sont de Ko.
-⇒ **ÉTAT : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE, AUCUNE PORTE LANCÉE.** Patron des rangs 10
+⇒ ~~**ÉTAT : CADRAGE SEUL, ÉCRIT. AUCUNE LIGNE DE CODE, AUCUNE PORTE LANCÉE.**~~ ⛔ **(D296,
+20/09/2026) ÉTAT PÉRIMÉ — LE CADRAGE EST BLOQUÉ** : toujours aucune ligne de code ni porte, mais
+l'état courant est celui écrit en tête de ce bloc. Patron des rangs 10
 (D284) et 13 (D289), qui se sont ouverts de la même façon.
 ⚠ **Compteur de lots de code non certifiés : ZÉRO, inchangé.** Ce lot est **documentaire** — seuls
 des `.md` d'autorité au diff (D283, amendé par D292). ⛔ **Le lot de CODE qui suivra — celui qui
-écrira les quatre `testTimeout` — le portera à UN.**
+écrira les quatre `testTimeout` — le portera à UN.** ⛔ **(D296) Arbitré au rang 17 le 20/09/2026, et
+bloqué le même jour avant toute ligne : il n'a encore rien porté.**
 ⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), **aucun candidat désigné**. Écrit à
 l'OUVERTURE et non à la clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.
 
@@ -517,6 +572,12 @@ en borner une autre est la faute que ce cadrage existe pour empêcher.
 extracteur de la sortie console**. **Motif, retenu par Ko** : cette sortie porte des codes ANSI
 (D275, premier faux positif de la série) et n'imprime que les tests jugés lents. **La moitié du
 problème est supprimée par construction plutôt que surveillée.**
+⛔ **RÉFUTÉ PAR MESURE LE 20/09/2026 (D296) — CETTE `duration` N'EST PAS LA QUANTITÉ CI-DESSUS.**
+vitest 3.2.7 la pose entre un départ pris **avant** les `beforeEach` et une fin prise **après** les
+`afterEach` et nettoyages ; `testTimeout` n'enveloppe que la fonction du test. Le bras de
+discrimination rend **1 208 à 1 218 ms** là où la pièce 3 exige moins de 100. ⚠ **Le motif ci-dessus
+reste juste** — un extracteur de console reste écarté ; c'est la **source** qui mesure une durée
+voisine, **le mode n°2 de ce même cadrage**. Non réécrite : annotée, en attente d'arbitrage.
 
 ### ⛔ PIÈCE 2 — LA RÈGLE DE DÉRIVATION DE N, ÉCRITE **AVANT** LES CHIFFRES
 
@@ -563,6 +624,8 @@ valeur AUJOURD'HUI, déclaré pour ce qu'il est** : `5000` est le défaut docume
 (texte d'aide de l'outil installé, relevé le 18/09) et la valeur lue dans les signatures d'échec du
 10/09. **Ce sont deux sources documentaires, pas un comportement mesuré.** Le n°0 est ce qui les
 remplace.
+⛔ **(D296, 20/09/2026) DEUX CONDITIONS DE KO S'Y AJOUTENT** — la formule de clôture sur « ce qui fixe
+5 000 », et le bras 4 900 reproduit au repos avant d'être cru : **en tête de ce bloc.**
 - **n°1 — écrire dans la mauvaise configuration.** `vitest.config.int.ts` **a déjà un budget, à
   30 s** : y écrire 5 000 ms le diviserait par six, **changement de comportement que (b)
   interdit**. ⚠ Le chiffre « cinq suites unitaires » du backlog **pointait vers elle** ; corrigé le
@@ -577,7 +640,8 @@ remplace.
   charge** — 22 signatures de dépassement le 10/09 sur une suite verte au repos. La mesure se fait
   **AU REPOS, état machine relevé AVANT** (D270). Une passe sous charge ne se soustrait pas d'une
   passe au repos.
-- **n°6 — un extracteur qui rend zéro en silence.** Le reporter JSON l'écarte en grande partie ;
+- **n°6 — un extracteur qui rend zéro en silence.** ⛔ *(D296 : le reporter JSON est réfuté comme
+  source de la quantité — pièce 1 ; le risque du zéro silencieux, lui, reste entier.)* Le reporter JSON l'écarte en grande partie ;
   tout compteur imprime son **parcouru**, son **attendu à côté du mesuré**, et sa **ventilation par
   motif** (D290, D295).
 - **n°7 — mêler les régimes de passe.** La **POSITION** d'une passe est un terme de durée établi
@@ -2311,6 +2375,197 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 20/09/2026 — D296 · rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la source du cadrage échoue au bras qui fait le travail
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D295**. ⇒ **État du rang** :
+point d'entrée « rang 17 » en tête de ce fichier. ⛔ **CE LOT EST DOCUMENTAIRE** : deux `.md`
+d'autorité et `docs/preuves/D296/` au diff — **aucune ligne de code, aucune porte lancée, compteur de
+lots de code non certifiés à ZÉRO, inchangé** (D283, amendé par D292).
+
+### ⛔ D296 — LA CONSIGNE, ET CE QUI L'A ARRÊTÉE
+
+Reprise à froid sous forme allégée, puis, mot pour mot : « sauf si ta lecture trouve un défaut qui
+bloque, tu enchaînes le lot de code du rang 17, sur le cadrage de D295, sans le réécrire. C'est mon
+arbitrage : le cadrage est validé. Il portera le compteur à UN » (Ko).
+⇒ **Première écriture : l'arbitrage lui-même**, dans l'ordre des rangs, parce que le dépôt disait
+« le lot de code n'a PAS de rang, la session ne se l'attribue pas » (D276, patron de D295).
+⇒ **Seconde : le défaut**, parce que la lecture l'a trouvé — dans la source, puis par une mesure —
+**avant la première ligne de code**. Le lot de code n'a pas commencé.
+
+### ⛔ D296 — LE DÉFAUT : LA SOURCE DE LA PIÈCE 1 ÉCHOUE AU BRAS DE LA PIÈCE 3
+
+Trouvé **dans la source** avant d'être mesuré, puis **mesuré** avant d'être écrit — « un défaut se
+reproduit par une mesure avant d'être corrigé ».
+
+| bras (cadrage, pièce 3) | attendu écrit d'avance | exécution 1 | exécution 2 | exécution 3 (versée) |
+|---|---|---|---|---|
+| positif — un test de 1 200 ms | ~1 200 | 1 204 | 1 205,7 | 1 213,6 |
+| négatif — tests vides | < 100 | 1 | 0,9 | 0,9 |
+| **discrimination** — 1 200 ms en `beforeEach` | **< 100** | ⛔ **1 218** | ⛔ **1 216,2** | ⛔ **1 208,2** |
+
+Maximum en ms sur **deux tests parcourus par bras**, les deux lus ; l'exécution 1 imprimait des
+entiers. Pièces : `docs/preuves/D296/reproduction/` — procédure, suite témoin, trois rapports JSON
+bruts, sortie, état machine, extrait de source, empreintes. ⚠ **Les exécutions 1 et 2 ne sont PAS
+versées** : la 1 a tourné depuis la ligne de commande, la 2 depuis une version du script corrigée
+ensuite (faute n°1). **Seule la 3 est le produit du script archivé** ; les deux autres sont des
+relevés de console, cités pour ce qu'ils sont.
+⚠ **MÉCANISME** (`extrait-source-vitest-3.2.7.txt`) : dans `runTest` (lignes 1528 à 1652 de
+`@vitest/runner`), `const start` ligne 1543, `beforeEach` ligne 1566, la fonction du test ligne 1574,
+`afterEach` ligne 1597, `duration = now() - start` ligne 1649. Le budget est posé par `withTimeout`
+autour de la **seule** fonction du test (ligne 641). Le reporter JSON recopie `task.result.duration`
+(ligne 1730 de son module).
+⛔ **CE N'EST PAS UN CAS CONSTRUIT — LE PARCOURS DES SUITES** : sur **109** fichiers de test suivis,
+**21** portent un `beforeEach` ou un `afterEach` local — api **12/58**, client **7/20**, pro **2/28**,
+api-client **0/3**. ⚠ **Mais le fait qui compte est ailleurs** : `apps/client/src/test-setup.ts` et
+`apps/pro/src/test-setup.ts` posent un `beforeEach` et un `afterEach` **globaux** (lignes 112 et 132,
+188 et 208). **Dans ces deux suites, aucun test n'a une `duration` JSON égale à la quantité que le
+budget lie.** Dans `api-client` et dans les fichiers d'`api` sans hook, les deux coïncident à peu de
+chose près — ce qui ne sauve pas l'instrument : il abandonne sur **un** bras manqué.
+
+### ⛔ D296 — POURQUOI IL BLOQUE, ET POURQUOI CE N'EST PAS À LA SESSION DE LE LEVER
+
+1. **La règle du cadrage** : « l'instrument ABANDONNE si un seul bras manque son verdict » (D286). Il
+   en manque un ⇒ ni maximum, ni N, ni marge.
+2. **Le bras manqué est celui que Ko a retenu comme « le bras qui fait le travail »** — et il le
+   fait : écrit pour refuser un instrument qui prendrait une durée voisine, **il refuse la source que
+   le cadrage prescrit**. ⚠ **C'est un succès du cadrage, pas un échec** : le défaut est attrapé par
+   sa propre calibration, avant une ligne de code, au lieu de l'être — ou de ne pas l'être — par une
+   marge fausse écrite à côté d'un budget.
+3. **Toute sortie réécrit une pièce**, et l'arbitrage est « sans le réécrire ».
+
+⇒ **LES SORTIES RELEVÉES — AUCUNE ARBITRÉE** :
+- **(i) garder la quantité, changer la source** : chronométrer la seule fonction du test. ⚠ **Piste
+  NON VÉRIFIÉE, écrite comme hypothèse** : le reporter JSON recopie aussi `task.meta` (ligne 1733), et
+  `runTest` appelle un point d'accroche `runner.runTask` quand il existe — un runner réservé à la
+  mesure pourrait y écrire la durée de la fonction, que le rapport transporterait. **Rien de cela n'a
+  été essayé.** Réécrit la pièce 1 (la source).
+- **(ii) garder la source, changer la quantité** : la `duration` JSON devient un **majorant déclaré**
+  de la quantité bornée, et une marge mesurée sur elle un **minorant** de la vraie marge. Réécrit la
+  pièce 1 (la quantité) **et renverse le verdict du bras de discrimination** — le bras que Ko a
+  désigné.
+- **(iii) restreindre la mesure aux tests sans hook** : **impossible** dans `client` et `pro` (hooks
+  globaux) ; ne couvre donc pas les quatre suites.
+
+### ⛔ D296 — LES DEUX CONDITIONS DE KO, ET CE QUE LA SOURCE Y AJOUTE
+
+Écrites au point d'entrée du rang 17. Ce qui suit est ce que la lecture de la source y ajoute.
+1. **Ce qui fixe 5 000.** La formule de Ko est tenue telle quelle. ⚠ **Un troisième témoin existe, et
+   le cadrage le range mal** : la signature « Test timed out in 5000ms » n'est pas une phrase figée —
+   `makeTimeoutError` y **interpole la valeur effective** du processus (lignes 2005-2006). C'est une
+   valeur **autodéclarée par le processus qui l'applique**, plus forte que le texte d'aide, et
+   **toujours pas un comportement**. ⇒ **Proposé, non arbitré** : que la clôture nomme les trois
+   jambes — aide (défaut documenté), signature (valeur effective autodéclarée), encadrement
+   (comportement à ±100) — sans qu'aucune soit « 5 000 mesuré ».
+2. **Le bras à 4 900 ms.** ⚠ **La source donne raison à la condition, et dit pourquoi elle suffit** :
+   `withTimeout` vérifie l'expiration **aussi après coup** (`if (now() - startTime >= timeout)`,
+   ligne 1883). Un 4 900 dont la continuation est retardée au-delà de 5 000 **échoue**, même si son
+   propre minuteur a sonné le premier ; un 5 100 **ne peut pas** passer, son minuteur étant dû plus
+   tard et la vérification après coup le rattrapant. ⇒ **L'encadrement ne se trompe que dans un sens,
+   et seulement par contention** : la reproduction au repos vise la **seule** fausse lecture possible.
+
+### D296 — les prémisses du cadrage vérifiées, et elles tiennent
+
+- **Quatre** packages portent un script `test` : `apps/api`, `apps/client`, `apps/pro`,
+  `packages/api-client` ; `packages/config`, `i18n`, `types`, `ui` **zéro**. La correction de D295
+  tient.
+- **vitest 3.2.7** dans les quatre ; texte d'aide : `--testTimeout … (default: 5000)`,
+  `--hookTimeout … (default: 10000)`.
+- **Zéro budget par test et zéro `vi.setConfig`** sur les **109** fichiers de test suivis — motif
+  calibré **1 / 0** sur un positif et un négatif construits. ⚠ Le premier motif rendait **24** et ne
+  mesurait rien : faute n°3.
+- `vitest.config.int.ts` : `testTimeout: 30_000`, `hookTimeout: 60_000` — **non touché**, comme
+  l'exige le mode n°1.
+
+### D296 — état machine, et pourquoi le verdict n'en dépend pas
+
+Relevé par `sonde-etat-machine.ps1`, calibration **non** rejouée — la sonde l'imprime elle-même :
+23:29:53 puis 23:30:55, **SECTEUR**, `PERF` 90,4 puis 96,9, `node` 0, **`chrome` 15 puis 14**, RAM
+libre **3 779 puis 3 849 Mo** contre une barre de 4 579. ⇒ **Pas au repos.** Seul le second relevé est
+versé (`etat-machine.txt`) ; le premier n'a été lu qu'à la console.
+⚠ **Le verdict est APPARIÉ, donc indépendant de la charge** : le bras négatif et le bras de
+discrimination ne diffèrent **que** par le `beforeEach`, dans la même minute, sur la même machine —
+environ 1 207 ms d'écart pour 1 200 ms construits, qu'aucune contention n'explique. ⚠ **Les mesures
+du lot de code, elles, en dépendent entièrement** (mode n°5) : dans cet état elles ne pouvaient pas
+partir — écrit au point d'entrée.
+
+### D296 — passe D277, les deux sens
+
+Instrument calibré **3 bras sur 3** (positif enjambant un retour à la ligne, positif à accents et
+balisage, négatif), sur **texte aplati**. **12 motifs, 4 fichiers, 1 111 244 caractères,
+45 occurrences, 0 motif à zéro** ; contextes relevés un par un, **45 vus pour 45 comptés**. Pièces :
+`docs/preuves/D296/passe-d277/`, lancée sur `030da95` avant toute écriture.
+- **Sens 1 — invalidé, traité** : « la source est le reporter JSON » (pièce 1, n°6) — **annotées en
+  place**, pas réécrites ; « le lot de CODE des budgets reste SANS RANG » et « n'a PAS de rang, la
+  session ne se l'attribue pas » (ordre des rangs) — **barrées avec leur motif** ; « le lot de CODE
+  qui suivra le portera à UN » (point d'entrée) et « c'est le lot de CODE qui suivra qui épuisera
+  cette entrée » (backlog) — **annotées « arbitré, puis bloqué »**.
+- ⚠ **Non re-marquées** : les mentions de la section D295, **datée et vraie à sa date** (principe de
+  D291) ; « le rang 17 non plus, tant qu'il en est à son cadrage » (bloc du rang 15), **toujours
+  vraie**.
+- ⚠ **Sens 2 — rendu permis : RIEN À AJOUTER, et c'est vérifié.** Les 17 « un lot de code peut
+  s'ouvrir » et les 5 « peut s'ouvrir dès l'arbitrage » sont **génériques** — ils portent sur le
+  **compteur**, toujours à zéro — ou déjà barrés, ou dans des sections datées. ⛔ **Le seul endroit où
+  vivait une permission SPÉCIFIQUE** — le lot de code du rang 17, partant sur le cadrage — **est le
+  point d'entrée**, désormais « BLOQUÉ » dès son titre. ⚠ **Et ce lot ne lève aucune condition** : il
+  en **ajoute** une, l'arbitrage du cadrage.
+- **`AGENTS.md` : 0 occurrence sur les 12 motifs** — il n'est pas touché, et le report de Ko sur la
+  phrase « n'a rien attrapé le jour où elle a été écrite » **reste un report** (backlog, reports de
+  D296).
+
+### ⛔ D296 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **MA PROCÉDURE DE REPRODUCTION ÉCRASAIT SA PROPRE ARCHIVE.** Elle écrivait ses rapports JSON **à
+   côté d'elle** : rejouée depuis `docs/preuves/D296/`, elle aurait réécrit les pièces qu'elle
+   prétend reproduire. Vue **avant** le versement ; corrigée — dossier de sortie en argument,
+   avertissement en tête — puis **rejouée**, pour que l'archive soit le produit du script archivé et
+   non d'une version antérieure.
+2. ⚠ **MON PREMIER EXTRAIT DE SOURCE MÊLAIT D'AUTRES FONCTIONS.** Un `grep` sur tout le fichier
+   rendait aussi des `await fn()` et un `const start` de fonctions voisines (lignes 1517, 1524, 1690,
+   1849) : lu tel quel, il aurait fait croire à un `runTest` qui chronomètre ailleurs. Restreint aux
+   bornes de la fonction, bornes imprimées dans l'extrait.
+3. ⛔ **MON PREMIER MOTIF DE « BUDGET PAR TEST » COMPTAIT TOUT ET NE MESURAIT RIEN** : **24**
+   occurrences, **toutes** des appels de fonction à dernier argument numérique
+   (`resolveServiceLine(…, 250)`). ⚠ **C'est exactement la classe que Ko a demandé de reporter** — le
+   jeton « y » de D295, un motif qui compte tout — **rencontrée par la session suivante, le jour même
+   du report.** Vue en lisant les lignes, pas au total ; motif réécrit, calibré 1 / 0.
+4. ⚠ **LA PREMIÈRE EXÉCUTION DE LA REPRODUCTION A TOURNÉ SANS ÉTAT MACHINE RELEVÉ DEVANT ELLE** —
+   c'est la règle de D270, et je l'ai appliquée **à partir de la deuxième**. Le verdict n'en est pas
+   touché (apparié, ci-dessus), mais **l'omission n'est pas excusée par son innocuité** : c'est
+   pourquoi l'exécution 1 n'est ni versée ni citée autrement que comme relevé de console.
+5. ⚠ **MON RELECTEUR DE FIN DE LOT A ACCUSÉ À TORT, DEUX FOIS SUR DOUZE JETONS** — et c'étaient
+   **mes attendus**, écrits de mémoire : un jeton omettait « , 20/09/2026 », l'autre comptait deux
+   formes d'une expression dont l'une est enveloppée dans un `if (…)`. **Confrontés au fichier avant
+   d'être crus** (D275) : le fichier était juste. ⚠ **La règle « aucune valeur attendue ne s'écrit de
+   mémoire » vaut aussi pour l'outil qui vérifie qu'on l'a respectée.**
+6. ⚠ **J'AI D'ABORD ÉCRIT MON PROPRE AUDIT DE SECRETS** — un second mécanisme pour la même protection
+   (D128), alors que `docs/preuves/D293/outils/audit-secrets.py` est versé **pour se rejouer à chaque
+   versement**. Il n'est pas versé ; **l'audit qui fait foi est celui de D293**, ci-dessous.
+
+### D296 — audit de secrets avant commit (instrument de D293, rejoué)
+
+`python3 docs/preuves/D293/outils/audit-secrets.py` : calibration **11 motifs sur 11**, **260 fichiers,
+2 191 947 octets** parcourus, **83 alertes (attendu 0), code de sortie 1**. ⛔ **Aucune ne touche
+D296** : ses fichiers ne portent que du « chemin local », informatif. **Le tri, fichier par
+fichier** : **33** sur les **13** fichiers que l'audit de D294 relevait déjà ; **45** dans
+`D294/outils/audit-secrets-d294.txt` — **la sortie de l'audit précédent, réauditée**, qui recite les
+contextes de ses propres alertes ; **5** dans `D294/outils/aucune-valeur-de-jeton.py`, versé après
+cet audit. **33 + 45 + 5 = 83.** ⚠ **Un compte qui grandit par l'écho de ses propres sorties** :
+rapporté au backlog, non corrigé. Sortie versée : `docs/preuves/D296/audit-secrets-d296.txt` — ⚠ et
+elle **nourrira à son tour** l'écho au prochain audit, faute d'exclusion ; c'est le report.
+
+### ⛔ D296 — CE QUE CE LOT NE FAIT PAS
+
+1. **Il n'écrit aucun `testTimeout`**, ne touche **aucune** des quatre configurations et ne lance
+   **aucune** porte.
+2. **Il n'écrit aucun instrument dans `neutralisation/`** : la procédure versée est une **preuve**,
+   jamais promue en instrument (D291).
+3. **Il ne réécrit pas le cadrage** : la pièce 1 et le n°6 sont **annotés** de la réfutation mesurée,
+   le n°0 d'un renvoi aux conditions de Ko ; les pièces 2 à 4 sont intactes. **Choisir une sortie est
+   l'arbitrage de Ko.**
+4. **Il n'épuise pas l'entrée `[MÉTHODE][P0]`**, qui reste **ouverte**.
+5. **Il ne touche pas `AGENTS.md`** (0 occurrence à la passe) : le report de Ko y attend le prochain
+   lot qui touchera ce fichier.
 
 ## Session du 20/09/2026 — D295 · rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et le chiffre faux qui pointait vers le seul fichier à ne pas toucher
 
@@ -7725,8 +7980,12 @@ les budgets restent le seul candidat en attente, et Ko en a **arbitré la FORME 
 **(b)**, écrire la valeur en vigueur. **Candidat désigné du rang 17**, non arbitré.~~
 ⛔ **PÉRIMÉ LE 20/09/2026 (D295) — LES BUDGETS ONT UN RANG : c'est le RANG 17, arbitré par Ko**,
 forme (b), premier lot = **cadrage seul**. Barré plutôt qu'effacé (D276) : effacé, « sans rang » se
-relirait comme l'état courant. ⚠ **Ce qui reste SANS RANG, et c'est le lot suivant** : le lot de
-**CODE** des budgets, celui qui mesurera et écrira les quatre `testTimeout`.
+relirait comme l'état courant. ~~⚠ **Ce qui reste SANS RANG, et c'est le lot suivant** : le lot de
+**CODE** des budgets, celui qui mesurera et écrira les quatre `testTimeout`.~~
+⛔ **PÉRIMÉ LE 20/09/2026 (D296) — ARBITRÉ PAR KO : le lot de CODE des budgets est le SECOND LOT DU
+RANG 17**, « sur le cadrage de D295, sans le réécrire », et c'est lui qui portera le compteur à UN.
+⛔ **ET IL EST BLOQUÉ LE MÊME JOUR, AVANT TOUTE LIGNE DE CODE** — détail sous le rang 18 ci-dessous,
+et au point d'entrée du rang 17. Barré plutôt qu'effacé (D276).
 ⇒ ~~**RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'ouverture du rang 15, pour
 qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
 ⛔ **CONSOMMÉ LE 16/09/2026 (D294) — ARBITRÉ PAR KO : le RANG 16 est un LOT DOCUMENTAIRE**, les sept
@@ -7756,9 +8015,22 @@ sait pas dériver ne se recopie pas (D268). **Ce qui est vrai sans compter : tou
 ⇒ **Où il en est** : section « PROCHAIN LOT — rang 17 » en tête de ce fichier.
 ⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'**OUVERTURE** du rang 17 et non à sa
 clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Aucun candidat n'est
-désigné.** ⛔ **Ce qui est connu et qui n'a PAS de rang : le lot de CODE des budgets** — celui qui
+désigné.** ~~⛔ **Ce qui est connu et qui n'a PAS de rang : le lot de CODE des budgets** — celui qui
 mesurera et écrira les quatre `testTimeout`. Il suit ce cadrage, **il est du code, et c'est lui qui
-portera le compteur de lots non certifiés à UN.** La session ne se l'attribue pas.
+portera le compteur de lots non certifiés à UN.** La session ne se l'attribue pas.~~
+⛔ **PÉRIMÉ LE 20/09/2026 (D296) — ARBITRÉ PAR KO, ET C'EST LA PREMIÈRE ÉCRITURE DE CE LOT : le lot
+de CODE des budgets n'est pas un rang 18, c'est le SECOND LOT DU RANG 17.** Mot pour mot : « tu
+enchaînes le lot de code du rang 17, sur le cadrage de D295, sans le réécrire. C'est mon arbitrage :
+le cadrage est validé. Il portera le compteur à UN. » ⚠ **La session ne se l'est pas attribué** :
+elle a reçu l'arbitrage et l'a écrit, avant toute autre ligne — le dépôt disait « n'a PAS de rang »
+et **avait raison tant que rien n'était écrit** (D276, patron de D295).
+⛔ **BLOQUÉ LE MÊME JOUR PAR LA LECTURE ADVERSE, AVANT TOUTE LIGNE DE CODE** : la source que le
+cadrage prescrit (la `duration` du reporter JSON) **échoue à son propre bras de discrimination** —
+**1 208 à 1 218 ms mesurés, < 100 exigés**, trois exécutions. Toute sortie réécrit la pièce 1 ou la
+pièce 3 du cadrage, **donc appartient à Ko**. ⇒ **ÉTAT : en attente d'arbitrage de Ko sur le
+cadrage. Compteur de lots de code non certifiés : toujours ZÉRO** — aucune ligne de code n'a été
+écrite, et le lot D296 est documentaire. ⇒ **Où il en est** : point d'entrée du rang 17.
+⇒ **Le RANG 18 reste EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.
 ⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
 que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
 12 passes de D291 mesurent la durée **de suite entière**. Un budget *choisi sur des durées* serait
@@ -9287,3 +9559,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D293 | A | Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque |
 | D294 | A | D294 — rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règle que portait le bloc qui l'enfreignait |
 | D295 | A | D295 — rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et « cinq suites unitaires » pointait vers le seul fichier à ne pas toucher |
+| D296 | A | D296 — rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la `duration` du reporter JSON compte les hooks, le bras de discrimination rend 1 208 à 1 218 ms contre < 100 |

@@ -2362,6 +2362,52 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 20/09/2026 — rang 17, lecture adverse du cadrage (D296)
+
+⚠ **UN LOT DOCUMENTAIRE NE CORRIGE RIEN.** Ce qui a été croisé en lisant se **rapporte** ici. ⛔ **Le
+défaut BLOQUANT n'est pas dans cette section** : il est au point d'entrée du rang 17 de
+`ZWADJ_CONTINUITE.md`, où une reprise le lira **avant** le cadrage. Détail : section D296.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[DOC][P2]** ⛔ **LA RÈGLE DU DÉTAIL PAR MOTIF (D295) A MORDU DANS LA SESSION MÊME QUI L'A
+  VERSÉE — ET DANS LE SENS INVERSE DE CELUI QUI L'A FAIT NAÎTRE. REPORT DE KO, 20/09/2026, NON
+  CORRIGÉ PAR CONSIGNE.** Le jeton dégénéré « y » — fragment laissé par un découpage sur un retour de
+  ligne — a rendu **213 occurrences**, que le total « 11 jetons, 0 manquant » aurait noyées ; **c'est
+  la ventilation qui l'a montré** (section D295, faute n°3). ⚠ **Ce n'était pas un motif MUET — le cas
+  qui a fait naître la règle — mais un motif qui COMPTE TOUT et ne mesure rien.**
+  ⛔ **LA PHRASE D'`AGENTS.md` EST DONC INCOMPLÈTE** : « ET ELLE N'A RIEN ATTRAPÉ LE JOUR OÙ ELLE A
+  ÉTÉ ÉCRITE » (bloc « UN COMPTEUR QUI CROISE DEUX ENTRÉES », D295). Vraie de la passe anticipée —
+  7 motifs, 0 à zéro —, fausse du relecteur du même lot. ⚠ La section D295 porte les deux
+  affirmations **à 42 lignes d'écart** (relevé à `030da95`) sans les confronter.
+  ⇒ **Consigne de Ko : elle se complète DANS LES DEUX SENS au prochain lot qui touche `AGENTS.md`** —
+  un motif à zéro est une hypothèse à vérifier, **un motif au compte invraisemblablement haut
+  aussi**. ⚠ **Pas dans D296, qui ne touche pas `AGENTS.md`** (passe D277 : 0 occurrence).
+  ⚠ **Récidive mesurée le jour même du report** : le premier motif de « budget par test » de D296
+  rendait **24** occurrences, **toutes** des appels de fonction — même classe (section D296, faute
+  n°3).
+
+- **[DOC][P3]** ⚠ **LE CAS ROUGE DE `client` — 273/287, 22 EXPIRATIONS, 4 636 Mo — PORTE DEUX DATES
+  DANS LES AUTORITÉS.** Relevé le 20/09/2026 **en lisant, pas par balayage** : **09/09** au bloc du
+  rang 13 de `ZWADJ_CONTINUITE.md` (« le cas ROUGE du 09/09 ») et dans l'entrée `[MÉTHODE][P1]` de ce
+  fichier ; **10/09** au mode n°5 du cadrage du rang 17 et dans l'entrée `[MÉTHODE][P0]` de ce fichier
+  (« Mesuré le 10/09 »). Le message de Ko du 20/09 dit « 09/09 ». ⚠ **Laquelle est juste n'est PAS
+  établi** — d'autres sections parlent de « la nuit du 09 au 10/09 », ce qui rend les deux lectures
+  plausibles : c'est une **inférence**. ⇒ À trancher **sur la pièce d'origine** si elle existe, jamais
+  en alignant l'une sur l'autre. Non bloquant : aucune décision ne dépend du jour.
+
+- **[INFRA][P3]** ⚠ **L'AUDIT DE SECRETS VERSÉ PAR D293 GRANDIT PAR L'ÉCHO DE SES PROPRES SORTIES.**
+  Mesuré le 20/09/2026 : **33** alertes à l'audit de D294, **83** à celui de D296, **pour zéro fuite
+  nouvelle** — le tri fichier par fichier rend **33 + 45 + 5** : les 13 mêmes fichiers ;
+  `D294/outils/audit-secrets-d294.txt`, **sortie d'audit réauditée**, qui recite les contextes de ses
+  alertes ; et un outil de D294 versé après son audit. ⛔ **La cause est de forme** : l'exclusion
+  déclarée ne couvre que `audit-secrets*.txt` **du dossier de D293** ; toute sortie versée ailleurs —
+  D294 hier, D296 aujourd'hui — est réauditée au versement suivant. ⚠ **Pourquoi ce n'est pas du
+  bruit** : un « attendu 0 » qui n'est jamais atteint **apprend à ne plus lire le compte** (D275),
+  et c'est là qu'une vraie fuite passerait. ⇒ **Non corrigé** : un instrument et ses sorties versées
+  se corrigent ensemble ou pas du tout (précédent de D295) — **au prochain lot qui a l'usage de
+  l'audit**. Détail : section D296 de `ZWADJ_CONTINUITE.md`.
+
 ## Reports du 16/09/2026 — rang 16, lot documentaire (D294)
 
 ⚠ **UN LOT DOCUMENTAIRE NE CORRIGE PAS DU CODE.** Ce qui a été croisé en écrivant les sept constats
@@ -2826,6 +2872,13 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   chiffres, le protocole de calibration et les modes de défaillance. **C'est le lot de CODE qui
   suivra qui épuisera cette entrée**, et c'est lui qui portera le compteur de lots non certifiés à
   UN. ⇒ Le cadrage : section « PROCHAIN LOT — rang 17 » de `ZWADJ_CONTINUITE.md`.
+  ⛔ **(D296, 20/09/2026) LE LOT DE CODE EST ARBITRÉ AU RANG 17 PAR KO — ET BLOQUÉ LE MÊME JOUR, AVANT
+  TOUTE LIGNE.** La source que le cadrage prescrit, la `duration` du **reporter JSON**, compte les
+  `beforeEach`/`afterEach` ; `testTimeout` n'enveloppe que la fonction du test. Le bras de
+  discrimination rend **1 208 à 1 218 ms** là où il exige moins de 100 — et `client` comme `pro`
+  portent des hooks **globaux**, donc aucun de leurs tests n'y échappe. **Toute sortie réécrit une
+  pièce du cadrage : elle appartient à Ko.** Cette entrée reste **ouverte**, le compteur à **zéro**.
+  ⇒ État et sorties : point d'entrée du rang 17 et section D296 de `ZWADJ_CONTINUITE.md`.
   ⚠ **Ce lot rendra vraie ou fausse PAR MESURE** la ligne « `testTimeout` de `apps/api` serré à
   5 s » des « décisions encore ouvertes », barrée le 16/09 pour cause d'héritage pris pour un
   réglage (D294).

@@ -1,0 +1,24 @@
+EXTRAIT DE SOURCE — vitest 3.2.7 installe au depot (node_modules), releve le 2026-09-20.
+Extrait, pas copie integrale : lignes numerotees, fichiers cites par leur chemin.
+
+=== node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js
+=== runTest occupe les lignes 1528 a 1652. Dans cet intervalle SEULEMENT :
+1543:	const start = now$1();
+1566:				beforeEachCleanups = await callSuiteHook(suite, test, "beforeEach", runner, [test.context, suite]);
+1574:					await fn();
+1597:				await callSuiteHook(suite, test, "afterEach", runner, [test.context, suite]);
+1649:	test.result.duration = now$1() - start;
+
+=== le budget n'enveloppe QUE la fonction du test :
+641:			setFn(task, withTimeout(withAwaitAsyncAssertions(withFixtures(runner, handler, context), task), timeout, false, stackTraceError, (_, error) => abortIfTimeout([context], error)));
+
+=== le message d'expiration interpole la valeur EFFECTIVE :
+2005:function makeTimeoutError(isHook, timeout, stackTraceError) {
+2006-	const message = `${isHook ? "Hook" : "Test"} timed out in ${timeout}ms.\nIf this is a long-running ${isHook ? "hook" : "test"}, pass a timeout value as the last argument or configure it globally with "${isHook ? "hookTimeout" : "testTimeout"}".`;
+
+=== expiration aussi APRES coup, si la fonction a rendu la main trop tard :
+1883:				if (now() - startTime >= timeout) {
+
+=== node_modules/.pnpm/vitest@3.2.7_@types+node@22_a195238d66859ef167c1e89312f31f88/node_modules/vitest/dist/chunks/index.VByaPkjc.js — reporter JSON :
+1730:					duration: t.result?.duration,
+1733:					meta: t.meta

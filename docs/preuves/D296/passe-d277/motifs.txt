@@ -1,0 +1,14 @@
+# sens 1 — ce que ce lot INVALIDE
+reporter JSON
+lot de CODE des budgets
+reste SANS RANG
+n'a PAS de rang
+La session ne se l'attribue pas
+portera le compteur
+sans le réécrire
+# sens 2 — ce que ce lot REND PERMIS, ou dont la condition vient de changer
+peut s'ouvrir dès l'arbitrage
+un lot de code peut s'ouvrir
+qui écrira les quatre
+mesurera et écrira les quatre
+épuisera cette entrée

@@ -1,0 +1,18 @@
+calibration positif, enjambe un retour à la ligne : 1 (attendu 1)
+calibration positif, accents + balisage + retour : 1 (attendu 1)
+calibration négatif : 0 (attendu 0)
+parcouru : 4 fichiers, 1111244 caractères, 12 motifs
+     3  « reporter JSON »  ZWADJ_CONTINUITE.md=3
+     4  « lot de CODE des budgets »  ZWADJ_CONTINUITE.md=4
+     3  « reste SANS RANG »  ZWADJ_CONTINUITE.md=3
+     1  « n'a PAS de rang »  ZWADJ_CONTINUITE.md=1
+     1  « La session ne se l'attribue pas »  ZWADJ_CONTINUITE.md=1
+     6  « portera le compteur »  ZWADJ_CONTINUITE.md=5 · ZWADJ_BACKLOG.md=1
+     1  « sans le réécrire »  ZWADJ_CONTINUITE.md=1
+     5  « peut s'ouvrir dès l'arbitrage »  ZWADJ_CONTINUITE.md=5
+    17  « un lot de code peut s'ouvrir »  ZWADJ_CONTINUITE.md=16 · ZWADJ_BACKLOG.md=1
+     1  « qui écrira les quatre »  ZWADJ_CONTINUITE.md=1
+     2  « mesurera et écrira les quatre »  ZWADJ_CONTINUITE.md=2
+     1  « épuisera cette entrée »  ZWADJ_BACKLOG.md=1
+total : 45 occurrences
+motifs à ZÉRO (0) — hypothèses à vérifier, pas absences constatées :

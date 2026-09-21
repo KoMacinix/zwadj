@@ -1,0 +1,11 @@
+horodatage : 2026-09-20 23:31:36
+vitest : 3.2.7
+dossier temoin : /c/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/613ebeb8-49d9-4c83-bccd-7aff0e338695/scratchpad/D296
+dossier de sortie : /c/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/613ebeb8-49d9-4c83-bccd-7aff0e338695/scratchpad/D296
+positif : code de sortie vitest = 0
+negatif : code de sortie vitest = 0
+discrimination : code de sortie vitest = 0
+positif : tests parcourus = 2 | lourd = 1213.6 ms (passed) ; leger = 0.2 ms (passed) | max = 1213.6 ms
+negatif : tests parcourus = 2 | leger-1 = 0.9 ms (passed) ; leger-2 = 0.1 ms (passed) | max = 0.9 ms
+discrimination : tests parcourus = 2 | leger-1 = 1203.6 ms (passed) ; leger-2 = 1208.2 ms (passed) | max = 1208.2 ms
+attendus (cadrage, piece 3) : positif ~1200 · negatif < 100 · discrimination < 100
