@@ -1,0 +1,6 @@
+# Passe D277 de D299, au refus de l'étape 1 — sens 1 : ce qui présenterait le rang 19 comme exécuté,
+# certifié ou clos ; sens 2 : ce qui autoriserait un lot de code (le compteur reste à DEUX).
+rang19	(?i)rang 19
+marque-d297-d298	(?i)marque (?:nomme|nommera|posée)
+peut-s-ouvrir	(?i)\*{0,2}peu(?:t|vent)\*{0,2} (?:désormais |donc )?s'ouvrir
+compteur-zero	(?i)compteur (?:de lots de code non certifiés )?(?:est |reste |passe )?(?:à |: )\*{0,2}zéro

@@ -482,7 +482,21 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## PROCHAIN LOT — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ **OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 ÉCRITE ET COMMITÉE AVANT TOUTE MESURE**
+## PROCHAIN LOT — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ **OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 ÉCRITE ET COMMITÉE AVANT TOUTE MESURE** ⛔ **ÉTAPE 1 ROUGE : PORTE DURE SUR LA RAM, RIEN N'EST LANCÉ, AUCUNE MARQUE**
+
+⛔ **ÉTAT AU 21/09/2026 19:08 — À LIRE EN PREMIER.** Relevés d'ouverture, sur le protocole commité dans
+`c42c967` : **`chrome` 0**, `node` 0, **SECTEUR**, calibration de la sonde **passante** (rendement 0,96) —
+et **RAM libre 4 526,5 puis 4 548 Mo (bandes 4 510-4 542 et 4 534-4 565), soit −52,5 et −31 sous la
+barre** que la sonde imprime. ⇒ **Porte dure ROUGE sur les deux relevés. RIEN N'EST LANCÉ, AUCUNE
+MARQUE** (ordre de Ko : « rouge ⇒ tu ne lances rien et tu me le dis »).
+⇒ **Le rang 19 reste OUVERT. La reprise se fait À L'ÉTAPE 1**, sur le protocole commité, **sans le
+réécrire** ; l'étape 0 est acquise. ⇒ **Compteur : toujours DEUX. Aucun lot de code ne s'ouvre.**
+⛔ **LA SORTIE APPARTIENT À KO, ET ELLE EST DÉJÀ ÉCRITE** (critère du rang 9, fin de « LA BARRE D'ÉTAT
+MACHINE ») : **libérer de la mémoire** — plus gros postes relevés : `Code` **4 082 à 4 104 Mo sur 20
+processus**, `oracle` **633**, `vmmemWSL` **763**, `claude` **429** —, **ou consommer la sortie de D270**
+(redéfinir « repos » sur le plancher que cette machine peut produire, avec sa raison). ⚠ **La session ne
+ferme aucun processus de Ko**, et **ne relève pas en boucle jusqu'au vert** : une fenêtre choisie par son
+résultat ne certifie rien. Détail et pièces : section D299, « ÉTAPE 1 » ; `docs/preuves/D299/ouverture-refusee/`.
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 21/09/2026** (première écriture : l'ordre des rangs). ⇒ **QUEL lot : rang
 19. OÙ IL EN EST : ici.** **Motif de Ko** : « le compteur est à DEUX, la règle l'impose ».
@@ -2714,6 +2728,41 @@ adverse : **aucun défaut bloquant**, sept constats, écrits dans l'étape 0 ci-
    deux.
 7. **La RAM est le risque** : relevée ce midi à 3 768 puis 4 102 Mo **avec** Chrome (1 162 Mo) ; sans lui,
    la projection passe la barre — **une projection n'est pas une mesure** (D287).
+
+⇒ **Étape 0 commitée et poussée AVANT tout relevé** : `c42c967` (audit scellé de l'étape 0 : 396 fichiers,
+92 alertes, **0 nouvelle** contre la sortie scellée de D298 ; second audit après la pièce de tri, mêmes
+comptes).
+
+### ⛔ D299 — ÉTAPE 1 : LA PORTE DURE EST ROUGE SUR LA RAM, AUX DEUX RELEVÉS — RIEN N'EST LANCÉ
+
+Base levée (`pg_isready` : accepting connections), ports **3100, 3101, 5273** libres, `node` 0, `chrome` 0
+(relevés par la session **avant** la sonde — la parole de Ko est confirmée par la mesure).
+
+| relevé | heure | RAM médiane | bande | écart à la barre | `chrome` | `node` | alim. | calibration |
+|---|---|---|---|---|---|---|---|---|
+| 1 (`-Calibrer`) | 19:06:41 → 19:07 | **4 526,5** | 4 510-4 542 | **−52,5** | 0 | 0 | SECTEUR | ✓ rendement 0,96 |
+| 2 | 19:08:29 | **4 548** | 4 534-4 565 | **−31** | 0 | 0 | SECTEUR | (relevé seul) |
+
+⇒ **ROUGE sur la seule quantité RAM**, les autres vertes — c'est la séparation du point 8 du critère,
+**mesurée une troisième fois** : `chrome` 0 ne garantit pas la barre.
+⚠ **LA PROJECTION ÉTAIT FAUSSE, ET DANS LE MAUVAIS SENS** : avec Chrome ouvert (1 162 Mo), la RAM libre
+valait 4 102 Mo à 16:11 (relevé de D298) ; Chrome fermé, elle vaut **4 548**, soit **+446 et non +1 162**.
+Entre-temps `Code` est passé de 3 840 à 4 104 Mo et `claude` de 334 à 433 (inventaires de D298 et de ce
+relevé). **C'est exactement pourquoi la lecture adverse refusait de la tenir pour une mesure.**
+**Inventaire > 150 Mo au second relevé** : `Code` 4 082 (20 processus) · `svchost` 1 233 · `vmmemWSL` 764
+· `oracle` 633 · `claude` 429 · `powershell` 332 · `explorer` 309 · Docker Desktop 273 ·
+`msedgewebview2` 239 · Memory Compression 227 · `com.docker.backend` 194.
+⚠ **Écart de −31 à −52,5 Mo** : des deux refus de la série portés par la RAM, c'est le plus petit (D293, le
+16/09 : −1 505,5) ; les deux autres refus (14/09, 20/09) portaient sur `chrome`. **Il ne se franchit pas
+« de peu »** : une barre franchie au jugé cesse de mesurer (Ko, 09/09/2026).
+⇒ **Rien n'est lancé** : ni échantillonneur, ni porte, ni campagne, ni e2e. **Aucune marque. Compteur à
+DEUX.** Pièces : `docs/preuves/D299/ouverture-refusee/` (les deux sorties de sonde, copiées à l'octet,
+empreintes vérifiées).
+⇒ **Audit avant le commit du refus, selon la règle du point 10** : audit scellé → tri différentiel contre
+la sortie scellée de l'étape 0 : **0 alerte nouvelle** → second audit, dernière écriture : **402 fichiers,
+92 alertes, 0 nouvelle** (`ouverture-refusee/audit-secrets-refus.txt`, `tri-refus.txt`). Passe D277 du refus :
+aucune phrase courante ne présente le rang 19 comme exécuté ou certifié ; les 13 permissions courantes restent
+traitées (`passe-d277/sortie-refus.txt`).
 
 ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut par l'identité des octets et imprime ce qu'il exclut
 
@@ -10302,4 +10351,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D296 | A | D296 — rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la `duration` du reporter JSON compte les hooks, le bras de discrimination rend 1 208 à 1 218 ms contre < 100 |
 | D297 | A | D297 — rang 17 CLOS : arbitrage (ii), majorant déclaré ; quatre `testTimeout: 5_000` écrits à la valeur en vigueur et lus (n°8 4 sur 4, contre-épreuve 3 sur 4) ; marge ~~≥ 4 618 ms~~ ≥ 4 603 ms passes froides comprises (D298) ; toute autre valeur exige (i) |
 | D298 | A | D298 — rang 18 CLOS : l'écho de l'audit de secrets ; `neutralisation/audit-secrets.py`, instrument NOUVEAU, exclut par l'IDENTITÉ des octets (17 sorties épinglées, sorties propres scellées) et imprime ce qu'il exclut ; calibration 5 bras dont le cas réel 24/24, contre-épreuve 5 sur 5 ; D293 433 = 90 + 472 − 129 ; règle « un défaut d'instrument arrête la mesure, pas le lot » ratifiée ; marge du rang 17 froides comprises ; compteur à DEUX |
-| D299 | A | D299 — rang 19, CERTIFICATION des rangs 17 et 18 : étape 0 (arbitrage de Ko sur l'audit — des valeurs, pas des mots ; tri différentiel ; minorant par défaut ; extrait e2e élargi, calibré) — passe : voir la section |
+| D299 | A | D299 — rang 19, CERTIFICATION des rangs 17 et 18 : étape 0 (arbitrage de Ko sur l'audit — des valeurs, pas des mots ; tri différentiel ; minorant par défaut ; extrait e2e élargi, calibré) — ⛔ étape 1 ROUGE sur la RAM (−52,5 puis −31), rien lancé, aucune marque ; reprise à l'étape 1 |

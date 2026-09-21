@@ -1,0 +1,6 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D299/etape0/audit-secrets-etape0.txt (92 contextes) · nouvelle docs/preuves/D299/ouverture-refusee/audit-secrets-refus.txt (92 contextes)
+   alertes ABSENTES de la précédente : 0 — à trier au contexte avant le commit
+   ventilation par motif : aucune
