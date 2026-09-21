@@ -1,0 +1,7 @@
+# Passe D277 de D298, sens 2 — ce que le lot REND FAUX en portant le compteur à DEUX : toute permission
+# d'ouvrir un lot de code, et tout état du compteur écrit au présent. Plus le sens 1 : l'attente du rang 18.
+peut-s-ouvrir	peu(?:t|vent) s'ouvrir
+compteur-zero	[Cc]ompteur (?:de lots de code non certifiés )?(?:est |reste |passe )?(?:à |: )\*{0,2}(?:ZÉRO|zéro)
+compteur-un	[Cc]ompteur (?:de lots de code non certifiés )?(?:est |reste |passe )?(?:à |: )\*{0,2}(?:UN|un)\b
+rang18-attente	RANG 18 : EN ATTENTE
+tenable	deux (?:lots )?(?:non certifiés )?sont tenables

@@ -480,10 +480,20 @@ connexion (famille D115).
   ⚠ **Le taux est ce qui range ceci comme une règle et non comme un report** : deux sessions de
   suite, et **les deux fois ce qui a attrapé est le DÉTAIL imprimé à côté du total** — jamais une
   relecture.
-  ⚠ **ET ELLE N'A RIEN ATTRAPÉ LE JOUR OÙ ELLE A ÉTÉ ÉCRITE.** Appliquée par anticipation au lot
-  qui l'écrit : 7 motifs, 1 070 984 caractères, **0 motif à zéro**. **C'est écrit exprès** — une
-  règle présentée avec ses seuls succès cesse d'être vérifiée. Son coût est de **trois lignes de
-  sortie**.
+  ⚠ ~~**ET ELLE N'A RIEN ATTRAPÉ LE JOUR OÙ ELLE A ÉTÉ ÉCRITE.**~~ ⛔ **BARRÉ LE 21/09/2026 (D298, consigne
+  de Ko du 20/09) — VRAI DE LA PASSE ANTICIPÉE, FAUX DU RELECTEUR DU MÊME LOT.** Appliquée par
+  anticipation au lot qui l'écrit : 7 motifs, 1 070 984 caractères, **0 motif à zéro**. **C'est écrit
+  exprès** — une règle présentée avec ses seuls succès cesse d'être vérifiée. Son coût est de **trois
+  lignes de sortie**. ⛔ **Mais dans la même session, le relecteur a rendu 213 occurrences pour le jeton
+  dégénéré « y »** — fragment laissé par un découpage sur un retour de ligne — que le total « 11 jetons,
+  0 manquant » aurait noyées : **c'est la ventilation qui l'a montré** (section D295, faute n°3). La
+  section D295 portait les deux affirmations à 42 lignes d'écart (relevé à `030da95`), sans les
+  confronter.
+  ⇒ **LA RÈGLE SE LIT DANS LES DEUX SENS** : un motif à zéro est une hypothèse à vérifier — **un motif
+  au compte invraisemblablement haut AUSSI**. Le premier ne voit rien ; le second **compte tout et ne
+  mesure rien**, et c'est le cas qui a mordu. ⚠ **Récidive mesurée le jour même du report** : le
+  premier motif de « budget par test » de D296 rendait 24 occurrences, **toutes** des appels de
+  fonction (section D296, faute n°3).
   ⛔ **ET LA RÈGLE D'INTERPOLATION DE D289 VAUT AUSSI POUR LES MOTIFS DE RECHERCHE — deux
   commandes cassées par un accent grave non échappé dans le lot qui traite cette classe**, dont
   l'une cherchait les traces de la corruption par accents graves, et l'autre écrivait la section
@@ -518,6 +528,17 @@ connexion (famille D115).
   produits, **archivée comme preuve, jamais promue en instrument** — elle emporterait ses défauts
   de mesure. **AVANT LE COMMIT** : un audit de secrets non tronqué, qui rend ce qu'il a parcouru
   (D200).
+  ⛔ **L'AUDIT QUI FAIT FOI DEPUIS LE 21/09/2026 (D298) : `neutralisation/audit-secrets.py`**, et sa
+  sortie se verse par `--sortie <chemin>` — **scellée**, donc exclue des audits suivants. ⚠ **Jamais
+  par redirection** : PowerShell 5.1 réencode en UTF-16 et le sceau ne couvre plus les octets.
+  ⛔ **L'outil de D293 (`docs/preuves/D293/outils/audit-secrets.py`) est une PIÈCE : il ne se rejoue
+  plus.** Il réaudite toute sortie versée hors de son dossier et la recompte comme des alertes —
+  83 → 185 → 244, puis **433** sur l'arbre du 21/09/2026, pour zéro fuite nouvelle. Le nouvel
+  instrument exclut ces sorties **par l'identité de leurs octets** (empreinte épinglée, ou sceau
+  vérifié), **jamais par leur nom**, et imprime chaque exclusion avec ce qu'elle aurait rendu.
+  ⚠ **Il n'atteint pas « attendu 0 »** : 92 alertes à la clôture de D298, **aucune n'est de l'écho ni
+  une fuite** — titres de tests recités par les journaux versés, outils qui nomment ce qu'ils cherchent
+  (backlog, `[INFRA][P2]` de D298).
   ⚠ **Les journaux de travail restent où ils sont** : ce qui entre au dépôt est la COPIE de ceux
   qu'une décision cite, jamais `.neutralisation-journaux/` lui-même.
   ⚠ **PORTÉE AU 13/09/2026 : D290 et D291.** Les pièces encore sur disque d'autres décisions
@@ -842,6 +863,26 @@ réservation reste un acte distinct.
   et que **la charge n'avait pas eu lieu** — un diagnostic qui envoie chercher le défaut à
   l'exact opposé de sa cause. Bridage retiré : **34,2 s sur 3 s**, et le compteur `_Total`
   monte à 100 %. ⇒ **Une calibration vérifie d'abord que son cas connu a bien EU LIEU.**
+- ⛔ **UN DÉFAUT D'INSTRUMENT DÉCOUVERT À UN POINT D'ARRÊT ARRÊTE LA MESURE, PAS LE LOT (règle de
+  Ko, ratifiée le 21/09/2026 — D298).** Il impose, dans cet ordre : la **recalibration** de
+  l'instrument réparé **sur ses bras** — y compris ceux qu'il n'avait pas ; le **REJEU INTÉGRAL** de
+  l'étape, calibration comprise, jamais la seule partie qui a échoué ; et l'**écriture du défaut** dans
+  la section de la session, avec la sortie brute qui l'a montré. ⛔ **Le lot ne s'arrête que si le
+  COMPORTEMENT dément** — c'est-à-dire si, l'instrument réparé et recalibré, l'étape rejouée ne rend
+  toujours pas la valeur attendue.
+  ⚠ **MOTIF : LE RANG 17, OÙ LA RÈGLE TELLE QU'ÉCRITE AURAIT ARRÊTÉ UNE VALEUR JUSTE.** Le protocole
+  commité disait « si l'encadrement ne rend pas V, le lot s'arrête ». L'encadrement rendait 5 000 —
+  4 900 passait, 5 100 échouait, quatre configurations sur quatre — et c'était le **LECTEUR** de
+  signature qui échouait : il lisait le rapport JSON, où vitest 3.2.7 ne met jamais le message
+  d'expiration. Arrêter là aurait été croire l'extracteur plutôt que la sortie brute, l'inverse de
+  D275.
+  ⚠ **CE QUE LA RATIFICATION CORRIGE AUSSI** : au rang 17, la procédure a été **inventée sur place,
+  après le commit du protocole**. Elle est désormais écrite ici, **avant** le prochain protocole —
+  un protocole qui porte un point d'arrêt porte cette distinction dès son commit.
+  ⇒ **Ce qui sépare les deux cas (dérivé par la session, D275 — pas une parole de Ko)** : le défaut
+  est d'INSTRUMENT quand la **sortie brute** porte ce que l'instrument cherchait, ou montre qu'il le
+  cherchait au mauvais endroit ; le COMPORTEMENT dément quand c'est la sortie brute elle-même qui
+  contredit la valeur attendue.
 - ⛔ **L'ÉQUIVALENT POWERSHELL DES TROIS LIGNES PYTHON DE D268 :
   `[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false`.** Sans elle les
   glyphes `✓`/`✗`/`⚠` sortent en « ? » à la console et en « � » dès que la sortie est

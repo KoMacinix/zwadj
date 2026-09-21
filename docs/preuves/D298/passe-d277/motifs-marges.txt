@@ -1,0 +1,12 @@
+# Passe D277 de D298, point 2 de Ko — TOUTES les marges et majorants de D297, pas seulement 4 618 :
+# la première recherche ne portait que sur le chiffre cité par Ko et a laissé « ≥ 4 637 » (api, hors froide).
+m4962	4[\s  ]?96[12]\b
+m4637	4[\s  ]?637\b
+m4629	4[\s  ]?629\b
+m4660	4[\s  ]?660\b
+m4618	4[\s  ]?618\b
+m4603	4[\s  ]?603\b
+M362	362,7
+M381	381,6
+M38	\b38,3
+douze	douze fois

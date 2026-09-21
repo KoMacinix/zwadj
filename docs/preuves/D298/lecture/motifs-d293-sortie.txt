@@ -1,0 +1,4 @@
+motifs lus dans la piece de D293 : 11
+.neutralisation-journaux/rang15-e2e.log : total 24 · url-avec-identifiants=0 · mot-de-passe=0 · valeur-nommee-secrete=0 · jeton=24 · jwt=0 · porteur=0 · cle-privee=0 · google-client=0 · aws=0 · cle-api=0 · chargily=0
+docs/preuves/D297/audit-secrets-d297.txt : total 189 · url-avec-identifiants=0 · mot-de-passe=44 · valeur-nommee-secrete=19 · jeton=122 · jwt=0 · porteur=0 · cle-privee=0 · google-client=0 · aws=0 · cle-api=4 · chargily=0
+docs/preuves/D296/audit-secrets-d296.txt : total 102 · url-avec-identifiants=0 · mot-de-passe=25 · valeur-nommee-secrete=12 · jeton=61 · jwt=0 · porteur=0 · cle-privee=0 · google-client=0 · aws=0 · cle-api=4 · chargily=0

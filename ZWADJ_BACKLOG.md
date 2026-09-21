@@ -2362,6 +2362,35 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 21/09/2026 — rang 18, l'écho de l'audit de secrets (D298)
+
+⚠ **Ce qui a été croisé en écrivant l'instrument se RAPPORTE ici.** Détail : section D298 de
+`ZWADJ_CONTINUITE.md`.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[INFRA][P2]** ⛔ **L'AUDIT SANS ÉCHO N'ATTEINT PAS « ATTENDU 0 » — ET CE QUI RESTE CROÎT AUSSI, SANS
+  ÊTRE DE L'ÉCHO.** Mesuré le 21/09/2026 par `neutralisation/audit-secrets.py` : **90** alertes avant les
+  pièces de D298, toutes triées, **aucune fuite** — valeurs déjà présentes dans des fichiers suivis hors
+  preuves. **Trois familles** : titres de tests recopiés dans les **rapports JSON** et les **journaux**
+  `test:int` versés (59 pour D297 seul : 10 par rapport JSON d'`api`, 2 par rapport de `client`, 4 par
+  rapport de `pro`, 1 par journal `test:int` — ex. « forgot-password : réponse CONSTANTE ») ; **outils
+  qui nomment le motif qu'ils cherchent**, et leurs sorties (21 pour D294) ; pièces de D293 et de D291.
+  ⚠ **Pourquoi c'est P2 et pas P3** : chaque lot qui verse un journal de portes ajoute au moins une
+  alerte — **D298 lui-même : 90 → 92**, le même titre de test que D297 dans son journal `test:int`, et
+  sa propre sortie de passe D277 qui recite la ligne du backlog décrivant le lien e2e. **Un « attendu 0 » jamais atteint apprend à ne
+  plus lire le compte** (D275) — c'est l'argument même de Ko pour le rang 18, et il vaut ici aussi.
+  ⇒ **NON CORRIGÉ, ET LA FORME N'EST PAS DÉCIDÉE** : les exclure par contenu serait une exclusion par
+  le résultat, précisément ce que le rang 18 a refusé. **À arbitrer par Ko.**
+
+- **[INFRA][P3]** ⚠ **`mesure-budgets.py` ARRONDIT UN MINORANT AU PLUS PROCHE.** Ligne 417 :
+  `{v - m_courant:.0f}` et `{v / m_courant:.1f}` impriment « ≥ 4962 » pour 4 961,67 et « ≥ 13.8× » pour
+  13,785× — un « ≥ » arrondi vers le haut **rassure à tort**, fût-ce de 0,3 ms. Relevé par D298 en
+  corrigeant la marge du rang 17 (point 2 de Ko). ⇒ Chiffre rectifié là où il engage une autorité (table
+  du rang 17) ; `docs/preuves/D297/mesures/RECTIFICATION-D298.txt` posé **à côté** des pièces ;
+  **instrument NON retouché** (précédent de D294, ratifié par Ko — D295). **Il se corrige au prochain lot
+  qui en a l'usage**, avec la même règle pour tout « ≥ » : partie entière, jamais arrondi.
+
 ## Reports des 20 et 21/09/2026 — rang 17, lot de code des budgets (D297)
 
 ⚠ **Ce qui a été croisé en écrivant les budgets se RAPPORTE ici.** Détail : section D297 de
@@ -2394,6 +2423,12 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
   `neutralisation/mesure-budgets.py`. ⇒ Un lot qui ne toucherait que l'instrument **ne déclencherait
   pas** la campagne qui en dépend. ⚠ Non corrigé : `lancer-campagnes.py` est partagé par 27
   campagnes, et élargir son motif est un changement d'outillage à part entière.
+  ⚠ **(D298, 21/09/2026) SECONDE CONSÉQUENCE, SOUS L'ANGLE INVERSE** : un lot dont l'objet est un
+  **instrument** ne peut pas avoir de campagne `neutralize-<lot>.py` — elle ne viserait qu'un `.py`,
+  serait « aveugle », et ferait sortir le tri en **1** à chaque passage. D298 a donc versé sa
+  contre-épreuve comme **pièce** (`docs/preuves/D298/contre-epreuve/`, 5 sur 5) : **elle ne se rejoue
+  qu'à la main**, et une modification future de `neutralisation/audit-secrets.py` ne la déclenchera pas.
+  Toujours non corrigé.
 
 ## Reports du 20/09/2026 — rang 17, lecture adverse du cadrage (D296)
 
@@ -2419,6 +2454,10 @@ défaut BLOQUANT n'est pas dans cette section** : il est au point d'entrée du r
   ⚠ **Récidive mesurée le jour même du report** : le premier motif de « budget par test » de D296
   rendait **24** occurrences, **toutes** des appels de fonction — même classe (section D296, faute
   n°3).
+  ✅ **CLOS LE 21/09/2026 (D298)** : le rang 18 touche `AGENTS.md` (point 1 de Ko), donc la consigne
+  s'applique. La phrase « ET ELLE N'A RIEN ATTRAPÉ… » est **barrée avec son motif** (vraie de la passe
+  anticipée, fausse du relecteur), et la règle se lit désormais **dans les deux sens** : un motif au
+  compte invraisemblablement haut est lui aussi une hypothèse à vérifier.
 
 - **[DOC][P3]** ⚠ **LE CAS ROUGE DE `client` — 273/287, 22 EXPIRATIONS, 4 636 Mo — PORTE DEUX DATES
   DANS LES AUTORITÉS.** Relevé le 20/09/2026 **en lisant, pas par balayage** : **09/09** au bloc du
@@ -2446,6 +2485,17 @@ défaut BLOQUANT n'est pas dans cette section** : il est au point d'entrée du r
   est une pièce versée de D293. ⇒ **L'échéance devient l'arbitrage de Ko.** ⚠ Deux mesures seulement
   (33 → 83 → 185) : le compte a plus que doublé à chaque sortie versée — c'est une **inférence sur deux
   points**, pas une loi.
+  ✅ **CLOS LE 21/09/2026 — RANG 18 (D298), ARBITRÉ PAR KO.** Instrument **nouveau**,
+  `neutralisation/audit-secrets.py` ; l'outil de D293 **n'est pas retouché** et ne se rejoue plus
+  (`AGENTS.md`, « AVANT LE COMMIT »). Il exclut les sorties des trois instruments prédécesseurs — **17
+  fichiers épinglés par chemin et empreinte** — et ses **propres sorties scellées**, **par l'identité des
+  octets, jamais par le nom**, et imprime chaque exclusion avec ce qu'elle aurait rendu. Calibration 5
+  bras sur 5 (cas réel : les 24 jetons du journal e2e, vus), contre-épreuve 5 sur 5.
+  ⇒ **Mesuré sur le même arbre** : l'outil de D293 rend **433** (244 + 189, prédit), le nouvel instrument
+  **90** alertes et **472** d'écho imprimées, non comptées — 90 + 472 − 129 = 433.
+  ⚠ **« Attendu 0 » N'EST PAS ATTEINT** : les alertes restantes ne sont pas de l'écho — entrée
+  `[INFRA][P2]` des reports de D298. ⚠ **Et la décomposition de D297 était fausse** : sur 185, l'écho ne
+  pesait que 154 (section D298).
 
 ## Reports du 16/09/2026 — rang 16, lot documentaire (D294)
 
@@ -2825,7 +2875,8 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   ✅ **ÉPUISÉE LE 21/09/2026 (D297), RANG 17 CLOS.** `testTimeout: 5_000` est écrit dans les quatre
   configurations unitaires, à la valeur **en vigueur** (aide, signature effective, encadrement — trois
   sources, aucune seule) ; la ligne est **lue** (n°8 : 4 sur 4, contre-épreuve 3 sur 4) ; marge
-  **≥ 4 618 ms** sur un majorant, au repos. ⛔ **Toute AUTRE valeur exige un instrument qui chronomètre
+  ~~**≥ 4 618 ms**~~ **≥ 4 603 ms, passes froides comprises** (D298, sur ordre de Ko ; 4 618 est le
+  chiffre hors froide) sur un majorant, au repos. ⛔ **Toute AUTRE valeur exige un instrument qui chronomètre
   la seule fonction du test** — report décidé, section D297 ci-dessous.
   ⚠ **LE TABLEAU ET LES PHRASES QUI SUIVENT DÉCRIVENT L'ÉTAT AVANT D297** — ne pas les lire comme
   l'état courant (une entrée close peut porter une phrase courante, D284).
@@ -2927,7 +2978,8 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   pièce du cadrage : elle appartient à Ko.** Cette entrée reste **ouverte**, le compteur à **zéro**.
   ⇒ État et sorties : point d'entrée du rang 17 et section D296 de `ZWADJ_CONTINUITE.md`.
   ⛔ **(D297, 21/09/2026) RENDUE FAUSSE PAR MESURE** : le plus lourd test d'`apps/api` tient, hooks
-  compris, en 362,7 ms au repos — marge ≥ 4 637 ms.
+  compris, en ~~362,7 ms au repos — marge ≥ 4 637 ms~~ **370,7 ms passe froide comprise — marge ≥ 4 629 ms**
+  (D298 : la marge écrite comprend les passes froides ; 362,7 / ≥ 4 637 est le chiffre hors froide).
   ⚠ **Ce lot rendra vraie ou fausse PAR MESURE** la ligne « `testTimeout` de `apps/api` serré à
   5 s » des « décisions encore ouvertes », barrée le 16/09 pour cause d'héritage pris pour un
   réglage (D294).

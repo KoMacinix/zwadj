@@ -1,0 +1,24 @@
+D293      : 329 fichiers audités, 4278295 octets, 4 exclus (ses propres sorties) · alertes 433
+nouveau   : 333 parcourus (4316662 octets) · 316 audités · 17 exclus · écho non compté 472 · alertes 90
+exclusions relues ligne à ligne : 17 (attendu 17) · somme de leur écho 472 (attendu 472)
+sorties que D293 s'exclut, relues : 4 (attendu 4) · leur écho 129
+identité des fichiers : 333 − 4 = 329 (D293 : 329) → ✓
+identité des alertes  : 90 + 472 − 129 = 433 (D293 : 433) → ✓
+écho exclu, par fichier :
+     0  docs/preuves/D291/controles/integrite-et-secrets-avant-commit-1.txt
+     2  docs/preuves/D291/controles/integrite-et-secrets-avant-commit-2.txt
+     5  docs/preuves/D291/controles/integrite-et-secrets-premiere-execution.txt
+    28  docs/preuves/D293/outils/audit-secrets-final.txt
+    28  docs/preuves/D293/outils/audit-secrets-marque.txt
+    27  docs/preuves/D293/outils/audit-secrets-passe-2.txt
+    46  docs/preuves/D293/outils/audit-secrets-passe.txt
+     0  docs/preuves/D293/versement-d288/verser-et-confronter-avant-commit-2.txt
+     0  docs/preuves/D293/versement-d288/verser-et-confronter-avant-commit.txt
+     0  docs/preuves/D293/versement-d288/verser-et-confronter-cloture.txt
+     0  docs/preuves/D293/versement-d288/verser-et-confronter-lecture.txt
+     0  docs/preuves/D293/versement-d288/verser-et-confronter-refus2-2.txt
+     0  docs/preuves/D293/versement-d288/verser-et-confronter-refus2.txt
+     0  docs/preuves/D293/versement-d288/verser-et-confronter.txt
+    45  docs/preuves/D294/outils/audit-secrets-d294.txt
+   102  docs/preuves/D296/audit-secrets-d296.txt
+   189  docs/preuves/D297/audit-secrets-d297.txt

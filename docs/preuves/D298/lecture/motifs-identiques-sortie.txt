@@ -1,0 +1,4 @@
+motifs     D293 11 élément(s) · identiques : True
+informatif D293 1 élément(s) · identiques : True
+positifs   D293 11 élément(s) · identiques : True
+propre     D293 1 élément(s) · identiques : True

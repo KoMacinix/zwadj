@@ -1,0 +1,2 @@
+calibration : valeurs relevées 24 (attendu 24) · positif 24 (attendu 24) · négatif 0 (attendu 0)
+== parcourus : 447 fichiers, 6643139 octets · fichiers portant une valeur réelle : 0 (attendu 0)

@@ -1,0 +1,32 @@
+RECTIFICATION — posee le 21/09/2026 par D298, A COTE des pieces de D297, jamais DEDANS.
+
+OBJET
+  `neutralisation/mesure-budgets.py`, et sa sortie versee `etape4-mesures.txt`, impriment un MINORANT
+  et un RAPPORT arrondis AU PLUS PROCHE, la ou un « >= » exige l'arrondi PAR DEFAUT :
+
+      packages/api-client   marge >= 4962 ms   ... >= 130.5x
+      apps/api              marge >= 4637 ms   ... >= 13.8x
+
+MESURE, SUR LE RESUME VERSE (`resume-mesures.json`) ET SUR L'INSTRUMENT
+  api-client : marge_min_ms = 4961.6748  -> imprime 4962  (arrondi VERS LE HAUT : faux comme « >= »)
+               5000 / 38.3  = 130.548    -> imprime 130.5 (juste, par chance)
+  api        : 5000 - 362.7 = 4637.3     -> imprime 4637  (juste, par chance)
+               5000 / 362.7 = 13.785     -> imprime 13.8  (arrondi VERS LE HAUT : faux comme « >= »)
+  client     : 4618.4 -> 4618, 13.103 -> 13.1 ; pro : 4660.0 -> 4660, 14.706 -> 14.7 (justes)
+  Cause : `mesure-budgets.py`, ligne 417 — `{v - m_courant:.0f}` et `{v / m_courant:.1f}`.
+
+CE QUI ENGAGE UNE AUTORITE, ET OU C'EST RECTIFIE
+  Un seul chiffre : « >= 4 962 ms » dans la table de cloture du rang 17 (`ZWADJ_CONTINUITE.md`,
+  point d'entree du rang 17). Rectifie la-bas en « >= 4 961 ms », l'ancien barre. Le « 13.8x » n'est
+  ecrit dans aucune autorite.
+
+CE QUE LA RECTIFICATION NE CHANGE PAS
+  L'ecart est de 0,3 ms sur une marge de pres de cinq secondes : aucune decision n'en depend. Mais le
+  principe est celui que Ko a pose le meme jour pour la marge du rang 17 : un « >= » ne rassure jamais
+  a tort, meme de 0,3 ms.
+
+CE QUI N'EST PAS FAIT, ET POURQUOI (precedent de D294, ratifie par Ko — D295)
+  Ni `mesure-budgets.py`, ni `etape4-mesures.txt`, ni `resume-mesures.json` ne sont retouches : un
+  instrument et la piece qu'il a produite se corrigent ensemble ou pas du tout, et une archive qui ne
+  reproduit plus la sienne ne vaut plus rien. L'instrument corrige s'ecrit AU PROCHAIN LOT QUI EN A
+  L'USAGE (report au backlog, section D298).

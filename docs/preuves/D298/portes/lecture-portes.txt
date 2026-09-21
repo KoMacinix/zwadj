@@ -1,0 +1,23 @@
+== porte-build.log : 133 lignes parcourues, 10958 caractères bruts
+   « Done » : 4 — packages/types, apps/api, apps/pro, apps/client
+   « timed out » : 0 · « FAIL » en tête de ligne : 0 · « error » (lint/tsc) : 0
+== porte-lint.log : 21 lignes parcourues, 526 caractères bruts
+   « Done » : 8 — packages/i18n, e2e, packages/ui, packages/types, packages/api-client, apps/api, apps/client, apps/pro
+   « timed out » : 0 · « FAIL » en tête de ligne : 0 · « error » (lint/tsc) : 0
+== porte-test-int.log : 284 lignes parcourues, 44210 caractères bruts
+   Test Files  36 passed (36)
+   Tests  436 passed (436)
+   « timed out » : 0 · « FAIL » en tête de ligne : 0 · « error » (lint/tsc) : 0
+== porte-test.log : 1534 lignes parcourues, 78298 caractères bruts
+   Test Files  58 passed (58)
+   Tests  659 passed (659)
+   Test Files  3 passed (3)
+   Tests  36 passed (36)
+   Test Files  20 passed (20)
+   Tests  287 passed (287)
+   Test Files  28 passed (28)
+   Tests  347 passed (347)
+   « timed out » : 0 · « FAIL » en tête de ligne : 0 · « error » (lint/tsc) : 0
+== porte-typecheck.log : 21 lignes parcourues, 627 caractères bruts
+   « Done » : 8 — packages/i18n, packages/types, packages/ui, e2e, packages/api-client, apps/api, apps/pro, apps/client
+   « timed out » : 0 · « FAIL » en tête de ligne : 0 · « error » (lint/tsc) : 0

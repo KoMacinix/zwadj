@@ -1,0 +1,14 @@
+  ✗ l.833 : NON TRAITÉE
+  ✗ l.875 : NON TRAITÉE
+  ✗ l.929 : NON TRAITÉE
+  ✗ l.995 : NON TRAITÉE
+  ✓ l.1268 : consommée (D291), la levée suivante est vérifiée à son tour
+  ✗ l.1273 : NON TRAITÉE
+  ✓ l.8189 : barrée
+  ✓ l.8191 : négative
+  ✓ l.8235 : consommée (D291), la levée suivante est vérifiée à son tour
+  ✗ l.8239 : NON TRAITÉE
+  ✗ l.8284 : NON TRAITÉE
+  ✗ l.8306 : NON TRAITÉE
+  ✓ l.8372 : barrée
+== permissions parcourues : 28 · courantes examinées : 13 (attendu 13, sortie de permissions.py) · non traitées : 8 (attendu 0)

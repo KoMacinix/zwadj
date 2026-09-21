@@ -1,0 +1,5 @@
+docs/preuves/D297/audit-secrets-d297.txt : correspondances vues 189 · suivies d'un masque 129 · NON masquées 60
+docs/preuves/D296/audit-secrets-d296.txt : correspondances vues 102 · suivies d'un masque 68 · NON masquées 34
+docs/preuves/D294/outils/audit-secrets-d294.txt : correspondances vues 45 · suivies d'un masque 31 · NON masquées 14
+docs/preuves/D291/controles/integrite-et-secrets-premiere-execution.txt : correspondances vues 5 · suivies d'un masque 0 · NON masquées 5
+== 4 sorties parcourues, 11 motifs : vues 341 · masquées 228 · NON masquées 113

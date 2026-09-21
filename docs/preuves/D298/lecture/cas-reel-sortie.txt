@@ -1,0 +1,4 @@
+.neutralisation-journaux/rang15-e2e.log : 365474 octets · sha256 67354b7e73cf2d1b56789be55c5bdb2de257af30af65866f28630ae0a6e7f411
+  lignes (splitlines) : 910 · occurrences de la forme : 24 (attendu 24, D293) · longueurs {43: 24} · valeurs distinctes : 24 · alphabet base64url : True
+  forme relevée, 20 ligne(s) : '\x1b[2m[WebServer] \x1b[22mhttp://localhost:5273/auth/' + « verification-email? » + paramètre du lien + valeur
+  forme relevée, 4 ligne(s) : '\x1b[2m[WebServer] \x1b[22mhttp://localhost:3100/fr/auth/' + « verification-email? » + paramètre du lien + valeur

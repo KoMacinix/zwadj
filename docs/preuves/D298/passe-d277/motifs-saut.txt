@@ -1,0 +1,3 @@
+saut	\bsaut\b
+extremum	extremum
+N-vaut	N vaut 1 ou 2

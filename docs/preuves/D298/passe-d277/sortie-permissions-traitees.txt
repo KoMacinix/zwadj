@@ -1,0 +1,14 @@
+  ✓ l.886 : annotée D298
+  ✓ l.931 : annotée D298
+  ✓ l.987 : annotée D298
+  ✓ l.1055 : annotée D298
+  ✓ l.1330 : consommée (D291), la levée suivante est vérifiée à son tour
+  ✓ l.1335 : annotée D298
+  ✓ l.8446 : barrée
+  ✓ l.8448 : négative
+  ✓ l.8492 : consommée (D291), la levée suivante est vérifiée à son tour
+  ✓ l.8496 : annotée D298
+  ✓ l.8543 : annotée D298
+  ✓ l.8567 : annotée D298
+  ✓ l.8661 : barrée
+== permissions parcourues : 30 · courantes examinées : 13 (attendu 13, sortie de permissions.py) · non traitées : 0 (attendu 0)

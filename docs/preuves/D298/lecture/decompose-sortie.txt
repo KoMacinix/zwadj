@@ -1,0 +1,34 @@
+lignes de fichier vues : 82 · fichiers avec alerte : 27 · somme : 244 (declare 244)
+  docs/preuves/D291            9
+  docs/preuves/D293            8
+  docs/preuves/D294            66
+  docs/preuves/D296            102
+  docs/preuves/D297            59
+-- detail
+     2  docs/preuves/D291/controles/integrite-et-secrets-avant-commit-2.txt
+     5  docs/preuves/D291/controles/integrite-et-secrets-premiere-execution.txt
+     2  docs/preuves/D291/portes/test-int.log
+     1  docs/preuves/D293/outils/RECTIFICATION-D294.txt
+     1  docs/preuves/D293/outils/extraire-e2e-sortie.txt
+     4  docs/preuves/D293/outils/extraire-e2e.py
+     1  docs/preuves/D293/outils/passe-d277-marque.txt
+     1  docs/preuves/D293/passe/rang15-testint.log
+     5  docs/preuves/D294/outils/aucune-valeur-de-jeton.py
+    45  docs/preuves/D294/outils/audit-secrets-d294.txt
+     3  docs/preuves/D294/outils/mesures-d294-sortie-AVANT-EXCLUSION.txt
+     3  docs/preuves/D294/outils/mesures-d294-sortie.txt
+     6  docs/preuves/D294/outils/mesures-d294.py
+     2  docs/preuves/D294/outils/passe-d277-sortie-FAUTIVE-motifs-non-replies.txt
+     2  docs/preuves/D294/outils/passe-d277-sortie.txt
+   102  docs/preuves/D296/audit-secrets-d296.txt
+    10  docs/preuves/D297/mesures/apps_api-froide.json
+    10  docs/preuves/D297/mesures/apps_api-passe-01.json
+    10  docs/preuves/D297/mesures/apps_api-passe-02.json
+    10  docs/preuves/D297/mesures/apps_api-passe-03.json
+     2  docs/preuves/D297/mesures/apps_client-froide.json
+     2  docs/preuves/D297/mesures/apps_client-passe-01.json
+     2  docs/preuves/D297/mesures/apps_client-passe-02.json
+     4  docs/preuves/D297/mesures/apps_pro-froide.json
+     4  docs/preuves/D297/mesures/apps_pro-passe-01.json
+     4  docs/preuves/D297/mesures/apps_pro-passe-02.json
+     1  docs/preuves/D297/portes/porte-test-int.log

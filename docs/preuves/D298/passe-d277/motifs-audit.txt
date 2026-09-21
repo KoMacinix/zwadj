@@ -1,0 +1,7 @@
+outil-D293	D293/outils/audit-secrets\.py
+audit-secrets-generique	audit-secrets
+audit de secrets	[Aa]udit de secrets
+echo-audit	[ÉéEe]CHO
+N0-arret	n°0
+instrument-bloc	UNE CALIBRATION HÉRITÉE
+compte-haut	RIEN ATTRAPÉ LE JOUR

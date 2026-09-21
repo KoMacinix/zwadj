@@ -482,7 +482,45 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
-## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**BLOQUÉ LE 20/09/2026 (D296) : LE CADRAGE ÉCHOUE À SON PROPRE BRAS DE DISCRIMINATION — EN ATTENTE D'ARBITRAGE DE KO, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**DÉBLOQUÉ LE 20/09/2026 PAR L'ARBITRAGE (ii) DE KO (D297) — CADRAGE AMENDÉ ET COMMITÉ AVANT LA PREMIÈRE MESURE ; LOT DE CODE EN COURS**~~ ⛔ **CLOS LE 21/09/2026 : D297 — QUATRE `testTimeout: 5_000` ÉCRITS À LA VALEUR EN VIGUEUR, TOUS LUS, MARGE ≥ 4 618 ms SUR MAJORANT ; NON CERTIFIÉ (COMPTEUR À UN)**
+## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INSTRUMENT NOUVEAU QUI EXCLUT PAR L'IDENTITÉ DES OCTETS ; NON CERTIFIÉ (COMPTEUR À DEUX)**
+
+### ⛔ CLÔTURE DU 21/09/2026 (D298) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **OUVERT, ARBITRÉ ET CLOS LE 21/09/2026, DANS LA SESSION DE LA REPRISE À FROID, SUR ORDRE DE KO** —
+arbitrage écrit en **première** ligne dans l'ordre des rangs (section D270), avant toute autre. ⇒ **QUEL
+lot : rang 18 de l'ordre des rangs. OÙ IL EN EST : ici.**
+⇒ **CE QUI EST ÉCRIT** : `neutralisation/audit-secrets.py`, **instrument nouveau** — l'outil de D293 est
+une pièce versée et **n'est pas retouché** (contrainte de Ko). ⛔ **C'EST LUI QUI FAIT FOI DÉSORMAIS**, et
+`AGENTS.md` le dit à l'endroit qui prescrit l'audit avant commit. Sortie versée par `--sortie`, **scellée**.
+⇒ **CE QU'IL EXCLUT, ET LE CRITÈRE** : les sorties des **trois** instruments prédécesseurs qui portent un
+audit (`D291/controles/integrite-et-secrets.py`, `D293/versement-d288/verser-et-confronter.py`,
+`D293/outils/audit-secrets.py`) — **17 fichiers épinglés par chemin ET empreinte SHA-256**, retenus
+parce qu'ils portent la ligne de bilan d'un audit, **jamais parce qu'ils alertent** — et ses **propres
+sorties scellées**. ⛔ **L'exclusion tient à l'IDENTITÉ DES OCTETS, jamais au nom** : un octet changé
+rend le fichier à l'audit, et chaque exclusion s'imprime avec ce qu'elle aurait rendu.
+⇒ **CALIBRATION, REJOUÉE À CHAQUE INVOCATION, EN MÉMOIRE, ABANDON SI UN BRAS MANQUE** : motifs (11 sur
+11, **identiques à D293** — mesuré) ; **positif** (Ko) — une pièce neuve portant un jeton de la forme
+réelle est vue ; **écho** (Ko) — les 17 sorties épinglées et une sortie scellée ne rendent rien, 661
+alertes non comptées ; **discrimination** (ajouté par la session) — le même jeton ajouté à une sortie
+épinglée, avant ou après un sceau, ou dans une pièce **nommée** comme une sortie d'audit, est vu 4 fois
+sur 4 ; **cas réel** (Ko) — le journal e2e hors dépôt, **24 jetons sur 24**. **5 bras sur 5.**
+⇒ **LES BRAS MORDENT, ET C'EST PROUVÉ** : contre-épreuve de cinq mutations — exclusion par emplacement,
+par nom, sceau présent au lieu de vérifié, registre vide, exclusion par extension — **5 sur 5**, chacune
+sur le bras attendu et lui seul (`docs/preuves/D298/contre-epreuve/`).
+⇒ **LE RÉSULTAT, CONFRONTÉ À L'OUTIL DE D293 SUR LE MÊME ARBRE** : D293 rend **433** alertes — 244 + 189,
+la sortie de D297 réauditée, **prédit avant d'être mesuré** ; le nouvel instrument rend **90** audités
+et **472** d'écho imprimés et non comptés ; 90 + 472 − 129 (les sorties que D293 s'exclut déjà) = 433.
+Audit final de clôture : section D298.
+⚠ **« ATTENDU 0 » N'EST PAS ATTEINT, ET CE N'ÉTAIT PAS L'OBJET** : les alertes restantes **ne sont pas de
+l'écho** — titres de tests recopiés dans les journaux et rapports versés, outils qui nomment le motif
+qu'ils cherchent. Triées, **rapportées au backlog, NON exclues** : les exclure serait un autre lot.
+⇒ **Compteur de lots de code non certifiés : DEUX** (rangs 17 et 18). ⛔ **AUCUN LOT DE CODE NE S'OUVRE
+AVANT UNE CERTIFICATION** (D270 : deux sont tenables, trois non). « La certification suivante couvrira
+les rangs 17 et 18 ensemble » (Ko, 21/09) — ⚠ **une désignation, pas l'arbitrage du rang 19.**
+⇒ **RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ Sous le compteur à DEUX, la règle n'y admet
+qu'une **certification** ou un lot **documentaire**.
+
+## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**BLOQUÉ LE 20/09/2026 (D296) : LE CADRAGE ÉCHOUE À SON PROPRE BRAS DE DISCRIMINATION — EN ATTENTE D'ARBITRAGE DE KO, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**DÉBLOQUÉ LE 20/09/2026 PAR L'ARBITRAGE (ii) DE KO (D297) — CADRAGE AMENDÉ ET COMMITÉ AVANT LA PREMIÈRE MESURE ; LOT DE CODE EN COURS**~~ ⛔ **CLOS LE 21/09/2026 : D297 — QUATRE `testTimeout: 5_000` ÉCRITS À LA VALEUR EN VIGUEUR, TOUS LUS, MARGE ~~≥ 4 618 ms~~ ≥ 4 603 ms PASSES FROIDES COMPRISES (D298) SUR MAJORANT ; NON CERTIFIÉ (COMPTEUR À UN, PUIS DEUX AU RANG 18)**
 
 ### ⛔ CLÔTURE DU 21/09/2026 (D297) — L'ÉTAT DU RANG, À LIRE EN PREMIER
 
@@ -499,17 +537,28 @@ chacun avec un commentaire qui renvoie ici. ⛔ `vitest.config.int.ts` **n'est p
 **chacune des quatre configurations** ; l'**encadrement** la tient à ±100 ms — 4 900 passe, 5 100
 échoue, quatre fois sur quatre, `setupFiles` compris. **Aucune des trois ne suffit seule ;
 ensemble, elles suffisent.** Ce n'est pas « 5 000 mesuré ».
-⇒ **LES MARGES, SUR UN MAJORANT DÉCLARÉ (test + hooks), AU REPOS** — « marge ≥ X », jamais « = X » :
+⇒ **LES MARGES, SUR UN MAJORANT DÉCLARÉ (test + hooks), AU REPOS** — « marge ≥ X », jamais « = X ».
+⛔ **CORRIGÉ LE 21/09/2026 (D298), SUR ORDRE DE KO — LA MARGE ÉCRITE COMPREND LES PASSES FROIDES.** La
+table calculait M **hors** passe froide, alors que les passes froides d'`api` et de `client` dépassent M.
+**Un majorant qui retire sa plus grande observation perd la seule propriété qui le justifie : ne jamais
+rassurer à tort** — et pour un budget de délai, la passe froide est le cas **RÉALISTE** : un processus
+neuf, c'est la CI (Ko). ⇒ La colonne qui fait foi est **« marge, froide comprise »** ; le chiffre hors
+froide passe en second, **déclaré comme tel**. ⚠ **N, lui, ne change pas** : la règle de dérivation de
+N porte sur le régime ENCHAÎNÉ (pièce 2 du cadrage), et Ko n'a corrigé que la marge.
+⛔ **ET UN MINORANT S'ARRONDIT PAR DÉFAUT** : la table écrivait **≥ 4 962** pour `api-client`, alors que
+5 000 − 38,3 = **4 961,7** — `mesure-budgets.py` imprime `:.0f`, qui arrondit au plus proche (relevé par
+D298 ; rectification posée à côté des pièces, `docs/preuves/D297/mesures/RECTIFICATION-D298.txt`).
 
-| suite | N (règle de Ko) | M, majorant | marge | passe froide, hors compte |
-|---|---|---|---|---|
-| `packages/api-client` | 2 | 38,3 ms | **≥ 4 962 ms** | 31,8 ms |
-| `apps/api` | 2 | 362,7 ms | **≥ 4 637 ms** | 370,7 ms ⚠ > M |
-| `apps/client` | 1 | 381,6 ms | **≥ 4 618 ms** | 396,7 ms ⚠ > M |
-| `apps/pro` | 1 | 340,0 ms | **≥ 4 660 ms** | 331,0 ms |
+| suite | N (règle de Ko) | passe froide | M, froide comprise | **marge, froide comprise** | M hors froide | marge hors froide (second) |
+|---|---|---|---|---|---|---|
+| `packages/api-client` | 2 | 31,8 ms | 38,3 ms | **≥ 4 961 ms** | 38,3 ms | ≥ ~~4 962~~ 4 961 ms |
+| `apps/api` | 2 | 370,7 ms ⚠ > M | 370,7 ms | **≥ 4 629 ms** | 362,7 ms | ≥ 4 637 ms |
+| `apps/client` | 1 | 396,7 ms ⚠ > M | 396,7 ms | **≥ 4 603 ms** | 381,6 ms | ≥ 4 618 ms |
+| `apps/pro` | 1 | 331,0 ms | 340,0 ms | **≥ 4 660 ms** | 340,0 ms | ≥ 4 660 ms |
 
-⚠ **La passe froide dépasse M dans deux suites** (+2,2 % et +4,0 %) : le cadrage l'exigeait dit. Marge
-passe froide comprise : **≥ 4 603 ms**, soit un budget **≥ 12,6 fois** le plus lourd des majorants.
+⚠ **La passe froide dépasse M dans deux suites** (+2,2 % et +4,0 %) : le cadrage l'exigeait dit. ⇒ **Marge,
+passes froides comprises : ≥ 4 603 ms**, soit un budget **≥ 12,6 fois** le plus lourd des majorants
+(5 000 / 396,7 = 12,604). Hors passes froides, en second : ≥ 4 618 ms.
 ⚠ **N vaut 1 ou 2, et c'est la règle appliquée à la lettre** : elle se satisfait d'une passe qui ne
 déplace plus le maximum. Pour un extremum, **un saut plus tard n'est pas exclu** — rapporté au
 backlog. **Aucune décision n'en dépend** : (b) n'écrit que la valeur en vigueur.
@@ -522,8 +571,10 @@ sur cette cible seule, témoin resté vert. `verifier-mutations.py` : **4 posée
 confirme qu'une borne tient, il n'en choisit pas une nouvelle. ⇒ Écrite **dans le commentaire de
 chacune des quatre lignes**, là où la lira celui qui voudra la changer, et au backlog.
 ⇒ **Compteur de lots de code non certifiés : UN** (D297). **Portes vertes le 21/09/2026**, état
-machine relevé : section « Session des 20 et 21/09/2026 — D297 ».
-⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné.
+machine relevé : section « Session des 20 et 21/09/2026 — D297 ». ⛔ **(D298) Passé à DEUX par le rang
+18** : aucun lot de code ne s'ouvre avant une certification.
+⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné.~~ ⛔ **CONSOMMÉ LE
+21/09/2026 (D298) — ARBITRÉ PAR KO : l'écho de l'audit de secrets.** Point d'entrée : « rang 18 », en tête.
 
 ### ⛔ AMENDEMENT DU CADRAGE — ARBITRAGE DE KO DU 20/09/2026 (D297), COMMITÉ AVANT LA PREMIÈRE MESURE
 
@@ -682,7 +733,8 @@ DANS LE FIL** :
 RAM libre **3 849 Mo, soit −730 sous la barre de 4 579** ⛔ (`docs/preuves/D296/reproduction/`).
 **Même sans le défaut, les mesures du lot ne pouvaient pas partir dans cet état.**
 ⇒ **Compteur de lots de code non certifiés : ZÉRO**, inchangé — aucune ligne de code, et D296 est
-documentaire. ⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.
+documentaire. ⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.~~ ⛔ **(D298)
+Consommé le 21/09/2026 : rang 18 = l'écho de l'audit de secrets, arbitré par Ko.**
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 20/09/2026.** ⇒ **QUEL lot : rang 17 de l'ordre des rangs.
 OÙ IL EN EST : ici.** Toutes les écritures d'ordre sont de Ko.
@@ -695,8 +747,9 @@ des `.md` d'autorité au diff (D283, amendé par D292). ⛔ **Le lot de CODE qui
 écrira les quatre `testTimeout` — le portera à UN.** ⛔ **(D296) Arbitré au rang 17 le 20/09/2026, et
 bloqué le même jour avant toute ligne : il n'a encore rien porté.** ⛔ **(D297) Écrit et clos le
 21/09/2026 : il a porté le compteur à UN.**
-⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), **aucun candidat désigné**. Écrit à
-l'OUVERTURE et non à la clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.
+⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), **aucun candidat désigné**. Écrit à
+l'OUVERTURE et non à la clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⛔ **(D298)
+Consommé le 21/09/2026 : rang 18 = l'écho de l'audit de secrets, arbitré par Ko.**
 
 ⛔ **CE QUE (b) EST, ET CE QU'ELLE N'EST PAS.** Elle écrit le budget **à la valeur déjà en
 vigueur** dans les **quatre** configurations unitaires, **sans rien changer au comportement**. Ce
@@ -825,13 +878,15 @@ rang 16.**
 « Je l'ouvrirai après ce lot » (Ko). **Une désignation n'est pas un arbitrage, et la session
 n'arbitre pas l'ordre des rangs.**~~
 ⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ PAR KO : le RANG 17 est les BUDGETS DE TEST, forme (b),
-CADRAGE SEUL.** Barré plutôt qu'effacé (D276). ⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun
-candidat désigné.
+CADRAGE SEUL.** Barré plutôt qu'effacé (D276). ⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun
+candidat désigné.~~ ⛔ **(D298) Consommé le 21/09/2026 : rang 18 = l'écho de l'audit de secrets.**
 ⚠ **Compteur de lots de code non certifiés : ZÉRO.** ⛔ *(D297 : passé à UN le 21/09/2026 par le lot
 de code du rang 17.)* Ce lot est **DOCUMENTAIRE** — aucun fichier
 hors `.md` d'autorité au diff, `docs/preuves/` exempté (D283, amendé par D292) — donc **il ne s'y
 ajoute pas.** Un lot de code peut s'ouvrir dès l'arbitrage de Ko, et c'est lui qui portera le
 compteur à un.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 16/09/2026**, à la lecture du rapport d'une reprise à froid —
 **septième de la série**, et la première depuis que la forme en a été allégée (première partie
@@ -870,11 +925,14 @@ il reste l'état du rang 15, refus compris.
 ARBITRÉ PAR KO : le RANG 16 est le LOT DOCUMENTAIRE des sept constats.** Barré plutôt qu'effacé (D276).
 ⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO**, candidat désigné = les **budgets de test**, forme (b).~~
 ⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ : rang 17 = budgets de test, forme (b), cadrage seul.**
-⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.
+⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.~~ ⛔ **(D298) Consommé le
+21/09/2026 : rang 18 = l'écho de l'audit de secrets.**
 ⚠ Le compteur est à **ZÉRO** : un lot de
 code peut s'ouvrir dès que Ko l'arbitre, et c'est lui qui le portera à un. ⚠ **Le rang 16 ne l'a pas
 porté à un** : il est documentaire. ⚠ **Le rang 17 non plus, tant qu'il en est à son CADRAGE** — le
 lot de CODE des budgets, lui, le portera à un (D295).
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 14/09/2026, ÉCRIT À LA CLÔTURE DE D292.** ⇒ **QUEL lot : rang 15 de
@@ -927,6 +985,8 @@ verts. ⇒ **Le rang 15 reste OUVERT. La reprise se fait À L'ÉTAPE 1**, sur le
 16/09/2026, et le rang 13 (D290, `251e82b`) et l'incident D292 (`49f3ace`) en font partie** ». **Deux
 lots, rien d'autre**, aucun en-tête antérieur réécrit. ⇒ **Compteur de lots de code non certifiés :
 DEUX → ZÉRO**, le **rang 15 est CLOS**, et un lot de code peut s'ouvrir dès l'arbitrage de Ko.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 ⇒ Chiffres, fenêtre, limites et fautes : section **D293**.
 ⚠ Les deux refus qui précèdent restent écrits, non effacés — c'est ce qui rend la troisième fenêtre
 lisible :
@@ -993,6 +1053,8 @@ se lit désormais ici, et c'est la dernière place : aucun lot de code ne s'ouvr
 certification.**
 ⛔ **(D293, 16/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 15, **compteur à
 ZÉRO**, et **un lot de code PEUT s'ouvrir** dès que Ko l'arbitre — c'est lui qui le portera à un.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 ⛔ **COMPOSITION BARRÉE LE 13/09/2026 (D292) — LE CHIFFRE RESTE DEUX, UN DE SES DEUX LOTS A CHANGÉ.**
 Ko a tranché l'écart ci-dessous : **`docs/preuves/` ne compte pas** (amendement de D283, écrit dans
 `AGENTS.md`), donc **ce rang sort du compte**. L'**incident `zwadj-db`** du 13/09/2026 y **entre** :
@@ -1272,6 +1334,8 @@ la première recherche de D291, qui ne voyait pas le gras : trouvée par la seco
 ⛔ **(D293, 16/09/2026) ET CETTE INTERDICTION EST LEVÉE À SON TOUR** : la certification du rang 15 a eu
 lieu, **compteur à ZÉRO**, **un lot de code peut s'ouvrir**. ⚠ Troisième bascule de cette même phrase en
 cinq jours — elle se lit ici, jamais de mémoire.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE — QUATRIÈME BASCULE** : compteur à UN (rang 17, D297) puis
+à DEUX (rang 18, D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 
 ⚠ ~~**ÉTAT, AU 11/09/2026 : L'ÉTAPE 0 EST FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ
 LANCÉE.**~~ **BARRÉ LE 12/09/2026 (D288) : la mesure a eu lieu.** Ce qui reste vrai de cette
@@ -2533,6 +2597,202 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut par l'identité des octets et imprime ce qu'il exclut
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D297**. ⇒ **État du rang** : point
+d'entrée « rang 18 ». ⛔ **LOT DE CODE, NON CERTIFIÉ : il porte le compteur de lots de code non
+certifiés à DEUX.** Reprise à froid sans état donné, forme allégée ; la lecture adverse d'abord, puis le
+rang 18 **enchaîné dans la même session sur ordre explicite de Ko** (« sauf défaut bloquant ») — la
+reprise à froid a donc été exercée pour l'ouverture, pas pour la suite.
+
+### D298 — ce que Ko a ordonné, en trois points, et où chacun a atterri
+
+| point de Ko | ce qui est écrit | où |
+|---|---|---|
+| 1 — le n°0 non appliqué au rang 17 : **ratifié, la règle s'écrit** | « un défaut d'instrument découvert à un point d'arrêt arrête la mesure, pas le lot » | `AGENTS.md`, bloc des instruments |
+| 2 — la marge du rang 17 **comprend les passes froides** | **≥ 4 603 ms** en premier, ≥ 4 618 ms en second et déclaré ; **sept** marges hors froide traitées (« 4 618 » ×5, « 4 637 » ×2) | point d'entrée du rang 17, ordre des rangs, décisions ouvertes, registre, backlog |
+| 3 — **rang 18 = l'écho de l'audit de secrets** | `neutralisation/audit-secrets.py`, instrument nouveau ; l'outil de D293 intact | ci-dessous ; pointeur dans `AGENTS.md` |
+
+### ⛔ D298 — LA LECTURE ADVERSE : AUCUN DÉFAUT BLOQUANT, HUIT CONSTATS
+
+1. **Les affirmations de clôture de D297 tiennent contre les pièces brutes** : encadrement (première
+   exécution : comportement 4 sur 4, signature non lue ; seconde : 4 sur 4 lues), harnais 4 sur 4,
+   passes froides 370,7 et 396,7 ms, compteur à UN confirmé par `git` (seul `a2dd3f3` porte du code
+   depuis la marque de D293).
+2. ⛔ **« 185 sont l'écho déjà relevé » (section D297) est faux dans sa décomposition** : 185 était le
+   total précédent ; l'écho y pèse **154** (sorties d'audit réauditées : D294 45, D296 102, D291 7) et
+   **31** n'en sont pas. Barré sur place avec son motif.
+3. ⛔ **La prémisse « environ cent par lot » ne vaut que pour moitié** : les +102 de D296 étaient de
+   l'écho, les **+59 de D297 n'en sont pas** — des titres de tests recopiés dans les rapports JSON et le
+   journal `test:int`. ⇒ **L'objectif atteignable est « ne plus voir l'écho », pas « attendu 0 »** — et
+   c'est bien celui que la calibration de Ko définit. Écrit au point d'entrée comme limite.
+4. ⛔ **Exclure par le NOM serait un audit tronqué** — un `audit-secrets-*.txt` portant un vrai jeton
+   serait caché. ⇒ Exclusion par **identité** : empreinte épinglée ou sceau vérifié.
+5. **`lancer-campagnes.py` ne retient que `.ts|tsx|css|json|sql|mjs`** : une campagne qui ne vise qu'un
+   `.py` serait « aveugle » et ferait sortir le tri en 1 à chaque passage. ⇒ Pas de `neutralize-<lot>.py`
+   pour ce lot ; la contre-épreuve est versée comme **pièce**. ⚠ **Déjà rapporté par D297**
+   (`[INFRA][P3]`, sous l'angle inverse : un harnais dont l'instrument change n'est pas rejoué) ; D298
+   ajoute cette seconde conséquence à la même entrée, non corrigée.
+6. **Rien ne disait quel audit fait foi** : la prescription d'`AGENTS.md` est générique, et les trois
+   sessions précédentes écrivent « instrument de D293, rejoué ». ⇒ Pointeur écrit (passe D277, sens 2).
+7. **Le point 1 touche `AGENTS.md`, donc il déclenche la consigne `[DOC][P2]` de Ko du 20/09** —
+   compléter la règle de D295 dans les deux sens. **Appliquée** : c'est l'ordre écrit de Ko, conditionné
+   à exactement cet événement.
+8. **Trouvé en traitant le point 2** : la table de D297 écrivait **≥ 4 962** pour `api-client`, alors que
+   5 000 − 38,3 = 4 961,7 — `mesure-budgets.py` arrondit un minorant au plus proche. Rectifié dans
+   l'autorité, rectification posée à côté des pièces (`docs/preuves/D297/mesures/RECTIFICATION-D298.txt`),
+   instrument **non retouché** (précédent de D294, ratifié par Ko — D295).
+
+### D298 — l'instrument : exclure par l'identité des octets
+
+- **Prédécesseurs, 17 fichiers** : tout fichier de `docs/preuves/` portant la **ligne de bilan** d'un
+  audit, **dérivé du disque** (331 parcourus au relevé) et attribué à son producteur — 3 de
+  `integrite-et-secrets.py` (D291), 7 de `verser-et-confronter.py` (D293), 7 de `audit-secrets.py` (D293,
+  dont les sorties versées par D294, D296 et D297). ⚠ **Les 7 de `verser-et-confronter.py` n'alertent
+  pas** : ils sont exclus parce que le critère est l'**origine**, jamais le résultat — et, épinglés à
+  l'octet, leur exclusion ne peut rien cacher. Registre relu contre l'instrument par l'arbre syntaxique :
+  **17 = 17, même ordre** (`lecture/registre-dans-instrument-sortie.txt`).
+- **Ses propres sorties** : scellées (dernière ligne = empreinte de tout ce qui précède). Un octet ajouté,
+  retiré ou changé, avant ou après le sceau, rend le fichier à l'audit.
+- **Écartés, sur mesure** : l'exclusion par **nom** (bras (d), mutation M2) ; l'exclusion **ligne par
+  ligne** des masques « <N car. masques> » — **113 correspondances d'écho sur 341 ne portent aucun
+  masque** (lignes de bilan des prédécesseurs, contextes imbriqués tronqués) ; retoucher l'outil de D293
+  (contrainte de Ko).
+- **Motifs** : les onze de D293, **identiques** — motifs, échantillons positifs, propre et informatif
+  comparés par valeur (`lecture/motifs-identiques-sortie.txt`).
+- **Le cas réel porte DEUX formes**, pas une : **20** lignes sur `localhost:5273/auth/`, **4** sur
+  `localhost:3100/fr/auth/` — 24 jetons de 43 caractères, **24 distincts**, 910 lignes, empreinte
+  épinglée (`lecture/cas-reel-sortie.txt`). Le bras construit reprend la plus fréquente ; le bras réel
+  couvre les deux.
+
+### ⛔ D298 — LA CALIBRATION, ET LA PREUVE QU'ELLE MORD
+
+| bras | cas | verdict |
+|---|---|---|
+| motifs | 11 positifs, 1 propre | 11 sur 11 |
+| positif (Ko) | pièce neuve, jeton construit de la forme réelle | vu : 1 alerte, motif `jeton` |
+| écho (Ko) | 17 sorties épinglées lues sur disque + 1 sortie scellée | 0 audité, 18 exclues, 661 non comptées (> 0) |
+| discrimination (session) | jeton ajouté (a) à une épinglée (b) après / (c) avant un sceau (d) dans une pièce nommée comme une sortie d'audit | vu 4 sur 4, un de plus chaque fois |
+| cas réel (Ko) | journal e2e du rang 15, hors dépôt | 24 sur 24, tous `jeton` |
+
+**Contre-épreuve** (`contre-epreuve/`, copies mutées écrites **hors dépôt**, jouées en
+`--calibration-seule`, preuve de pose « ancre 1 → 0 et marqueur n → n + 1 », D286) : pré-vol non muté
+**vert, 5 bras** ; **M1** emplacement sans empreinte → ✗ discrimination ; **M2** exclusion par nom → ✗
+discrimination ; **M3** sceau présent au lieu de vérifié (marqueur **1 → 2** : interversion) → ✗
+discrimination ; **M4** registre vide → ✗ écho ; **M5** exclusion des `.log` → ✗ positif **et** cas réel.
+**5 gardes mordues sur 5**, chacune sur le bras attendu et lui seul.
+
+### D298 — confrontation à l'outil de D293, sur le même arbre
+
+**Prédit avant d'être mesuré** : 244 + 189 (la sortie de D297, rejouée par les onze motifs de D293 lus
+dans la pièce) = **433**. **Mesuré : 433.** Le nouvel instrument, même arbre : **333** parcourus, **316**
+audités, **17** exclus, **472** alertes d'écho imprimées et non comptées, **90** alertes.
+⇒ **333 − 4 = 329** fichiers (D293 : 329) ✓ ; **90 + 472 − 129 = 433** alertes (D293 : 433) ✓ — 129 étant
+l'écho des quatre sorties que D293 s'excluait déjà. Détail relu ligne à ligne, 17 sur 17 et 472 sur
+472 (`lecture/confronter-sortie.txt`). ⚠ **Les deux sorties brutes restent hors dépôt** : versée, celle
+de D293 serait un écho non épinglé de plus.
+
+### D298 — les portes, après la dernière modification du code
+
+État machine, **sonde calibrée** (rendement 0,96) : **ouverture 16:02:13** — SECTEUR, RAM **3 768 Mo
+(−811 sous la barre D273)**, `chrome` **14**, `node` 0, `PERF` 80,2 ; **clôture 16:11:16** — SECTEUR, RAM
+**4 102 Mo (−477)**, `chrome` **15**, `node` 0. ⛔ **NON CERTIFIANT, ET DÉCLARÉ** : navigateur ouvert et
+RAM sous la barre — la porte dure du critère est **rouge**. Elle n'est pas exigée d'un lot de code non
+certifiant ; **aucune durée ci-dessous n'entre dans une comparaison** (D290).
+
+| porte | sortie | chiffres (journaux relus en entier, ANSI retiré) | durée |
+|---|---|---|---|
+| `pnpm typecheck` | 0 | 8 projets « Done » | 20 s |
+| `pnpm lint` | 0 | 8 paquets « Done », 0 erreur | 12 s |
+| `pnpm test` | 0 | api **659/58** · api-client **36/3** · client **287/20** · pro **347/28** · 0 « timed out » | 57 s |
+| `pnpm build` | 0 | 4 builds « Done » | 36 s |
+| `pnpm test:int` | 0 | **436/36** | 260 s |
+| harnais du lot | — | **aucun** : un `neutralize-*.py` ne visant qu'un `.py` serait aveugle au tri ; contre-épreuve **5 sur 5** à la place | — |
+| `lancer-campagnes.py` | 0 | 0 campagne concernée sur 27 (aucun fichier que lit une campagne n'est touché) | — |
+
+⚠ **Non lancés** : l'e2e (à la demande, non demandée ; le lot ne touche ni auth, ni concurrence, ni
+argent) et `--tout` (ce n'est pas une livraison certifiée). Pièces : `docs/preuves/D298/portes/`.
+
+### D298 — passe D277, les deux sens
+
+Recherche versée (`docs/preuves/D298/passe-d277/`), sur texte **aplati**, ventilée par motif.
+- **Sens 1 — invalidé, traité** : « 4 618 » comme marge principale (**5** : titre et table du point
+  d'entrée du rang 17, ordre des rangs, registre, backlog) ; ⚠ **et « 362,7 ms — ≥ 4 637 ms », la marge
+  d'`api` hors froide écrite comme un fait (2 : décisions encore ouvertes, backlog)** — trouvée
+  seulement en élargissant la recherche à **toutes** les marges et tous les majorants de D297
+  (`passe-d277/motifs-marges.txt`) ; « RANG 18 : EN ATTENTE » (**7**, toutes
+  barrées « consommé ») ; « 185 sont l'écho » (section D297, barré) ; l'entrée `[INFRA][P3]` de l'écho et
+  l'entrée `[DOC][P2]` du « y », **fermées** au backlog.
+- ⛔ **Sens 2 — ce que le compteur à DEUX rend FAUX** : **huit** « un lot de code peut s'ouvrir »
+  encore vivants — **cinq** dans les points d'entrée (rangs 16, 15 deux fois, 14, 12), **trois** dans
+  l'ordre des rangs — tous annotés « **PERMISSION CONSOMMÉE** » au format de D291 (comptés dans le
+  fichier : 8) ; et **deux** états du compteur au présent annotés (« UN » au point d'entrée du rang 17,
+  « ZÉRO » dans l'ordre des rangs). ⚠ **J'avais annoncé « neuf » à Ko** en comptant un état du compteur
+  parmi les permissions : c'est le compte relu dans le fichier qui fait foi.
+- ⚠ **Deux failles de ma propre recherche, trouvées avant de conclure** : le premier motif ne voyait ni
+  le gras (« **peut** s'ouvrir ») ni les capitales — **la faille exacte que D291 avait déjà relevée** ; et
+  le classement « courante / datée » rangeait l'**ordre des rangs** en « datée », parce qu'il vit dans une
+  section de session. Corrigées dans la procédure versée.
+- **`AGENTS.md`** : aucun état du compteur ; le pointeur de l'audit est la seule permission ajoutée.
+
+### D298 — audit de secrets avant commit (l'instrument de D298, sortie scellée)
+
+`python3 neutralisation/audit-secrets.py --sortie docs/preuves/D298/audit-secrets-d298.txt`, lancé à
+16:25:45 **en dernier, après le versement de toutes les autres pièces** — ⚠ **deux passes précédentes
+ont été retirées**, et c'est le point de cette phrase : celle de 16:22:50 précédait la passe D277 finale,
+celle de 16:24:34 précédait le contrôle des valeurs réelles ci-dessous. **Un audit qui ne couvre pas les
+derniers octets versés n'est pas l'audit avant commit.** Mêmes comptes d'alertes les trois fois.
+Calibration **5 bras sur 5**, cas réel **rejoué** ; **384 fichiers, 4 588 762 octets parcourus** · **367
+audités** · **17 exclus** (472 alertes d'écho imprimées, non comptées) · contrôle audités + exclus = 384
+(attendu 384) · **92 alertes (attendu 0), code 1**. Sortie **relue identique, sceau vérifié à la relecture**.
+⇒ **Et aucune des 24 valeurs RÉELLES n'est sortie de la mémoire** : cherchées une à une dans
+`docs/preuves/`, `neutralisation/` et les quatre `.md` d'autorité — **447 fichiers, 0 porteur**
+(attendu 0), calibration 24 / 0 sur ses deux bras (`lecture/aucune-valeur-reelle-sortie.txt`).
+⇒ **Le tri, fichier par fichier : 92 = 90 + 1 + 1**, aucune fuite — les **90** d'avant les pièces de D298
+(section ci-dessus) ; **1** dans `portes/porte-test-int.log`, le **même titre de test** que le journal de
+D297 (« forgot-password : réponse CONSTANTE », valeur déjà dans 101 fichiers suivis) ; **1** dans
+`passe-d277/sortie-audit.txt`, qui **recite** la ligne du backlog décrivant la forme du lien e2e (valeur
+masquée d'un caractère). Ventilation : mot-de-passe 30 · valeur-nommée-secrète 8 · jeton 38 · chargily
+16 ; **motifs à zéro** : url-avec-identifiants, jwt, porteur, clé privée, google-client, aws, clé-api — des
+hypothèses, **vérifiées** en ce qu'ils voient chacun leur échantillon positif (bras « motifs »).
+⇒ **Le sceau, vérifié sur disque et pas seulement en mémoire** : rejoué juste après, l'instrument
+reconnaît `audit-secrets-d298.txt` comme **sa sortie scellée** — **18** exclus sur 385 parcourus, **35**
+alertes qu'il aurait rendues, compte **inchangé à 92**, écho imprimé **507**. ⚠ L'outil de D293, rejoué sur ce même
+arbre, compterait 92 + 507 − 129 = **470** (calcul, pas mesure).
+
+### ⛔ D298 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **TROIS COMMANDES BLOQUÉES SUR L'ENTRÉE STANDARD** : un `cat >` résiduel, un heredoc écrasé par
+   `< /dev/null` (Python passé en interactif), un `python3 -` laissé dans une ligne. **Aucune n'a écrit
+   quoi que ce soit** ; deux tâches arrêtées. D295 disait déjà « celle qui ne dépend d'aucune enveloppe
+   est le FICHIER » — **je ne l'ai appliquée qu'après la deuxième.**
+2. ⛔ **UN EXTRACTEUR À CONTEXTE FIXE A RATÉ LA LIGNE DU REGISTRE** (« 4 618 » en fin de fichier, moins
+   de 60 caractères après) — rendu comme une absence, rattrapé en réécrivant la recherche.
+3. ⚠ **J'AI ÉCRIT « LA FORME RÉELLE » AU SINGULIER SUR DEUX LIGNES LUES SUR VINGT-QUATRE** — il y en a
+   deux. Vu par la procédure versée, qui compte par préfixe ; commentaire de l'instrument corrigé.
+4. ⚠ **`SystemExit("…")` SORT EN 1**, c'est-à-dire « alertes » : un abandon de registre se serait lu
+   comme un audit qui trouve. Attrapé à la relecture, **avant** la première exécution.
+5. ⚠ **LES DEUX FAILLES DE LA PASSE D277 CI-DESSUS** — la première est une leçon déjà écrite, récidivée.
+6. ⛔ **J'AI CHERCHÉ LE CHIFFRE QUE KO A CITÉ, PAS LA CLASSE QU'IL VISAIT** : « 4 618 » seul. La marge
+   d'`api` hors froide (« ≥ 4 637 ») vivait à deux endroits de plus, écrite comme un fait. C'est la
+   passe D277 qui cherche ce que son lot invalide **par son exemple** au lieu de **par sa règle**.
+7. ⚠ **J'AI ANNONCÉ « NEUF » PERMISSIONS À KO** en comptant un état du compteur parmi elles — le fichier
+   en porte huit. Rattrapé en comptant les annotations posées.
+8. ⛔ **MON VÉRIFICATEUR DE PERMISSIONS RETROUVAIT CHAQUE OCCURRENCE PAR UN EXTRAIT DE TEXTE** — et la
+   même phrase figure mot pour mot aux deux sites de l'ordre des rangs : « non traitée » sur une
+   permission annotée. Réécrit par **position**, puis **calibré sur ses deux bras** : sur la version
+   `HEAD` du fichier, il rend les **8** permissions que ce lot a annotées, et elles seules ; sur l'arbre
+   final, **0** (`passe-d277/sortie-permissions-traitees*.txt`). C'est D149 — « un identifiant qui
+   ressemble » — appliqué à mon propre outil.
+
+### ⛔ D298 — CE QUE CE LOT NE FAIT PAS
+
+1. **Il ne certifie rien** : compteur à **DEUX**, e2e et `--tout` non lancés.
+2. **Il n'atteint pas « attendu 0 »** et **n'exclut pas** les titres de tests recopiés dans les journaux :
+   ce ne sont pas des échos, les exclure serait un autre lot (backlog).
+3. **Il ne retouche ni l'outil de D293, ni `mesure-budgets.py`, ni `lancer-campagnes.py`.**
+4. **Il ne rend pas la contre-épreuve rejouable par le tri** : elle se relance à la main (backlog).
+
 ## Session des 20 et 21/09/2026 — D297 · rang 17 CLOS : les quatre budgets écrits à la valeur en vigueur, lus, et une marge d'au moins douze fois sur un majorant
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D296**. ⇒ **État du rang** :
@@ -2650,7 +2910,10 @@ Lancé avant le commit du refus (20/09 23:57) : **aucune marque sur D297**, tota
 (attendu 0), soit **+102**, **entièrement l'écho** de la sortie d'audit versée par D296 — prédit par
 son report. **Rejoué avant le commit final** (`docs/preuves/D297/audit-secrets-d297.txt`) : calibration
 **11 sur 11**, **326 fichiers, 4 183 173 octets**, **244 alertes (attendu 0), code 1**. **Le tri,
-fichier par fichier** : **185** sont l'écho déjà relevé, inchangé ; **59** touchent des pièces de D297
+fichier par fichier** : ~~**185** sont l'écho déjà relevé, inchangé~~ ⛔ **(D298) FAUX DANS SA
+DÉCOMPOSITION : 185 est le TOTAL précédent, déjà trié — l'écho n'y pèse que 154** (sorties d'audit
+réauditées : D294 45, D296 102, D291 7) **et 31 n'en sont pas** (outils de D294 et leurs sorties, pièces
+de D293, journal `test:int` de D291 ; `docs/preuves/D298/lecture/decompose-sortie.txt`) ; **59** touchent des pièces de D297
 — les rapports JSON d'`api`, `client` et `pro`, et le journal `test:int` — et **toutes** portent une
 valeur que l'audit trouve **déjà dans 6 à 275 fichiers suivis hors preuves**. **185 + 59 = 244.**
 ⚠ **Relu à l'œil sur la famille la plus sensible** (« chargily … key/secret », 4 correspondances vues
@@ -8238,6 +8501,8 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     rang 14 à DEUX (D291). ⇒ **Plus aucun lot de code ne s'ouvre avant une certification.**
     ⛔ **(D293, 16/09/2026) LEVÉ** : marque du rang 15 posée, **compteur à ZÉRO**, un lot de code **peut**
     s'ouvrir dès l'arbitrage de Ko.
+    ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+    D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
     ⚠ ~~**ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287)** : porte dure **rouge sur
     deux relevés** — `chrome` 16 au lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés
     (**−2 091**).~~ **BARRÉ LE 12/09/2026 (D288)** : `chrome` fermé par Ko, la porte dure a été
@@ -8282,6 +8547,8 @@ qu'effacé (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 15 �
 ✅ **CLOS le 16/09/2026 (D293), marque posée après DEUX refus sur la porte dure** (`chrome` le 14/09,
 RAM le 16/09). **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code
 **peut** s'ouvrir, et c'est lui qui le portera à un.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 ⚠ ~~**Ce qui attend, sans rang** : les
 **budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
 rang 15 leur soit attribué.~~ ⛔ ~~**(D294, 16/09/2026) TOUJOURS SANS RANG, MAIS PLUS SANS FORME** :
@@ -8304,6 +8571,8 @@ dangereuse qu'un budget manquant » — le bloc du rang 8 passe donc devant les 
 ⇒ **Où il en est** : section « ~~PROCHAIN LOT~~ — rang 16 » en tête de ce fichier — ✅ **CLOS le
 16/09/2026 (D294)**. ⚠ **Documentaire : il ne compte pas dans les deux/trois** (D283, amendé par
 D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 ⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la clôture du rang 16, pour qu'aucune
 reprise ne tombe sur une liste qui s'arrête.~~
 ⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ PAR KO : le RANG 17 est les BUDGETS DE TEST, dans la
@@ -8322,9 +8591,9 @@ de cette écriture** : le dépôt en porte deux comptages qui ne se recoupent pa
 pour le rang 10, « cinquième » à D289 pour le rang 13, « sept » à D294), et un compteur qu'on ne
 sait pas dériver ne se recopie pas (D268). **Ce qui est vrai sans compter : toutes sont de Ko.**
 ⇒ **Où il en est** : section « PROCHAIN LOT — rang 17 » en tête de ce fichier.
-⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'**OUVERTURE** du rang 17 et non à sa
+⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'**OUVERTURE** du rang 17 et non à sa
 clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Aucun candidat n'est
-désigné.** ~~⛔ **Ce qui est connu et qui n'a PAS de rang : le lot de CODE des budgets** — celui qui
+désigné.**~~ ⛔ **(D298) Consommé le 21/09/2026 — voir plus bas, à la clôture du rang 17.** ~~⛔ **Ce qui est connu et qui n'a PAS de rang : le lot de CODE des budgets** — celui qui
 mesurera et écrira les quatre `testTimeout`. Il suit ce cadrage, **il est du code, et c'est lui qui
 portera le compteur de lots non certifiés à UN.** La session ne se l'attribue pas.~~
 ⛔ **PÉRIMÉ LE 20/09/2026 (D296) — ARBITRÉ PAR KO, ET C'EST LA PREMIÈRE ÉCRITURE DE CE LOT : le lot
@@ -8343,10 +8612,36 @@ cadrage. Compteur de lots de code non certifiés : toujours ZÉRO** — aucune l
 et commité **avant** la première mesure ; ~~le lot de code est **en cours**~~. Barré de fait, pas
 effacé : le blocage reste l'histoire du rang (D276).
 ⛔ **(D297, 21/09/2026) RANG 17 CLOS** : les quatre `testTimeout: 5_000` sont écrits à la valeur en
-vigueur, **lus** (n°8, 4 sur 4), marge **≥ 4 618 ms** sur majorant. **Compteur de lots de code non
+vigueur, **lus** (n°8, 4 sur 4), marge ~~**≥ 4 618 ms**~~ **≥ 4 603 ms, passes froides comprises**
+sur majorant (⛔ corrigé le 21/09/2026 par D298 sur ordre de Ko : 4 618 est le chiffre **hors** passes
+froides, qui retirait la plus grande observation d'un majorant). **Compteur de lots de code non
 certifiés : UN.** ⇒ **Où il en est** : point d'entrée du rang 17, bloc de clôture.
-⇒ **RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné — écrit à la **clôture**
-du rang 17, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.
+⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné — écrit à la **clôture**
+du rang 17, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 21/09/2026 (D298) — ARBITRÉ PAR KO : le RANG 18 est L'ÉCHO DE L'AUDIT DE SECRETS.**
+Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, avant toute autre, et l'ordre
+est de Ko** — le dépôt disait « en attente » et **avait raison tant que rien n'était écrit** (patron de
+D295 et D296). ⚠ **La session ne se l'est pas attribué** : elle a reçu l'arbitrage et l'a écrit.
+**Motif de Ko, tel quel** : « 83 → 185 → 244, environ cent par lot ; l'échéance du report est passée.
+Un audit que personne ne peut lire n'est plus une garde, et la prochaine certification le relancera.
+Il se corrige AVANT elle. » ⛔ **Contrainte de Ko** : l'outil de D293 est une **pièce versée** —
+instrument et pièce se corrigent ensemble ou pas du tout — donc **on ne le retouche pas** : un
+instrument **nouveau** est versé dans `neutralisation/`, qui reconnaît ses propres sorties et celles de
+ses prédécesseurs, les **exclut**, et **imprime ce qu'il a exclu et pourquoi** ; calibration à deux
+bras — il voit toujours un jeton réel placé dans une pièce neuve, il ne voit plus l'écho ; les 24
+jetons du journal e2e hors dépôt sont le cas positif connu. ⇒ **C'est du code : il porte le compteur
+de lots de code non certifiés à DEUX.** « La certification suivante couvrira les rangs 17 et 18
+ensemble — c'est pour ça qu'on fait celui-ci d'abord » (Ko).
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 18 » en tête de ce fichier.
+⛔ **(D298, 21/09/2026) RANG 18 CLOS** : `neutralisation/audit-secrets.py` versé, exclusion par
+l'identité des octets, calibration 5 bras sur 5 (cas réel 24 sur 24), contre-épreuve 5 sur 5 ; l'écho
+imprimé et non compté. **Compteur de lots de code non certifiés : DEUX. Aucun lot de code ne s'ouvre
+avant une certification.**
+⇒ **RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
+rang 18, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ Ko a écrit le 21/09 que « la
+certification suivante couvrira les rangs 17 et 18 ensemble » : c'est une **désignation** relevée ici
+pour qu'une reprise n'ait rien à recouper, **pas** l'arbitrage du rang 19. ⚠ Sous le compteur à DEUX,
+la règle (D270) n'admet qu'une **certification** ou un lot **documentaire**.
 ⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
 que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
 12 passes de D291 mesurent la durée **de suite entière**. Un budget *choisi sur des durées* serait
@@ -8375,6 +8670,8 @@ La borne a été arbitrée (rang 13, D289) puis close sans borne (D290) ; le com
 UN (D290) puis à DEUX (D291). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
 ⛔ **(D293, 16/09/2026) LEVÉ** : la certification du rang 15 est faite, **compteur à ZÉRO**. La borne de
 workers, elle, reste **close sans borne** (D290) — ce n'est pas elle qui rouvre.
+⛔ **(D298, 21/09/2026) Compteur à DEUX** : rang 17 (D297) puis rang 18 (D298). ⇒ **Aucun lot de code ne
+s'ouvre avant une certification.**
 ⚠ D290 avait traité deux phrases « à zéro » au moyen d'**ancres écrites en dur** dans un script de
 scratchpad ; la recherche qui les avait trouvées n'était écrite nulle part, et celle-ci lui a
 échappé. D291 verse sa recherche elle-même : `docs/preuves/D291/passe-d277/`.
@@ -9524,7 +9821,9 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
      `[MÉTHODE][P0]` du 10/09 : **« un budget non écrit n'est pas une garde. »**
      ⛔ **(D297, 21/09/2026) ÉCRIT, ET « SERRÉ » EST FAUX PAR MESURE** : `testTimeout: 5_000` figure
      désormais dans les quatre configurations unitaires, et le plus lourd test d'`apps/api` tient,
-     hooks compris, en **362,7 ms** au repos — marge **≥ 4 637 ms**. Détail : section D297.
+     hooks compris, en ~~**362,7 ms** au repos — marge **≥ 4 637 ms**~~ **370,7 ms, passe froide
+     comprise — marge ≥ 4 629 ms** (D298, sur ordre de Ko : la marge écrite comprend les passes
+     froides ; 362,7 ms / ≥ 4 637 ms est le chiffre hors froide, en second). Détail : section D297.
   2. **argon2 a quitté la suite unitaire** à D271 (01/09) : il ne frôle plus rien dans
      `apps/api`, il vit dans `test:int`, dont le budget est large.
   3. **sharp a été requalifié SANS OBJET sur mesure** le 02/09 — API 640/640, zéro délai dépassé
@@ -9879,4 +10178,5 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D294 | A | D294 — rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règle que portait le bloc qui l'enfreignait |
 | D295 | A | D295 — rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et « cinq suites unitaires » pointait vers le seul fichier à ne pas toucher |
 | D296 | A | D296 — rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la `duration` du reporter JSON compte les hooks, le bras de discrimination rend 1 208 à 1 218 ms contre < 100 |
-| D297 | A | D297 — rang 17 CLOS : arbitrage (ii), majorant déclaré ; quatre `testTimeout: 5_000` écrits à la valeur en vigueur et lus (n°8 4 sur 4, contre-épreuve 3 sur 4) ; marge ≥ 4 618 ms ; toute autre valeur exige (i) |
+| D297 | A | D297 — rang 17 CLOS : arbitrage (ii), majorant déclaré ; quatre `testTimeout: 5_000` écrits à la valeur en vigueur et lus (n°8 4 sur 4, contre-épreuve 3 sur 4) ; marge ~~≥ 4 618 ms~~ ≥ 4 603 ms passes froides comprises (D298) ; toute autre valeur exige (i) |
+| D298 | A | D298 — rang 18 CLOS : l'écho de l'audit de secrets ; `neutralisation/audit-secrets.py`, instrument NOUVEAU, exclut par l'IDENTITÉ des octets (17 sorties épinglées, sorties propres scellées) et imprime ce qu'il exclut ; calibration 5 bras dont le cas réel 24/24, contre-épreuve 5 sur 5 ; D293 433 = 90 + 472 − 129 ; règle « un défaut d'instrument arrête la mesure, pas le lot » ratifiée ; marge du rang 17 froides comprises ; compteur à DEUX |
