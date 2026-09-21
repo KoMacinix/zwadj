@@ -1,0 +1,14 @@
+== CALIBRATION (2026-09-21 00:15:25) — trois bras, abandon si un seul manque
+   ✓ positif         tests parcourus 2 (attendu 2) · max 1215.0 ms (exigé dans [1200 ; 1300]) · code vitest 0
+   ✓ negatif         tests parcourus 2 (attendu 2) · max 0.9 ms (exigé < 100) · code vitest 0
+   ✓ discrimination  tests parcourus 2 (attendu 2) · max 1216.1 ms (exigé ≥ 1200 (le majorant DOIT compter le hook)) · code vitest 0
+   ✓ signature+     expiration sous 300 ms : lue ['Test timed out in 300ms'] (attendue ['Test timed out in 300ms']) · source JUnit
+   ✓ signature−     erreur ordinaire : échecs ['boom'], signatures lues [] (attendu [])
+   calibration : 3 bras sur 3 · lecteur de signature : 2 sur 2
+== ENCADREMENT (2026-09-21 00:15:35) — V = 5000 lu dans le texte d'aide ; 4900 doit passer, 5100 doit échouer avec « Test timed out in 5000ms »
+   packages/api-client  tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue ['Test timed out in 5000ms'] (attendue ['Test timed out in 5000ms']) · 11.2 s
+   apps/api             tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue ['Test timed out in 5000ms'] (attendue ['Test timed out in 5000ms']) · 11.4 s
+   apps/client          tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue ['Test timed out in 5000ms'] (attendue ['Test timed out in 5000ms']) · 12.6 s
+   apps/pro             tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue ['Test timed out in 5000ms'] (attendue ['Test timed out in 5000ms']) · 12.3 s
+   encadrement : 4 configuration(s) sur 4 rendent V = 5000 à ±100 ms — trois sources : aide, signature effective, comportement.
+témoins restants en fin : 0 purgé(s) (attendu 0)

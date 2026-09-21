@@ -20,6 +20,11 @@ export default defineConfig({
     // qui touche `src/i18n/navigation` (Link/useRouter localises).
     server: { deps: { inline: ["next-intl"] } },
     setupFiles: ["./src/test-setup.ts"],
-    globals: true
+    globals: true,
+    // ⛔ D297 — budget écrit à la valeur EN VIGUEUR (défaut de vitest), forme (b) :
+    // aucun comportement ne change, la politique devient visible. Changer cette valeur
+    // exige un instrument qui chronomètre la seule fonction du test (section D297) ;
+    // `neutralisation/neutralize-budgets.py` prouve que cette ligne est LUE.
+    testTimeout: 5_000
   }
 });

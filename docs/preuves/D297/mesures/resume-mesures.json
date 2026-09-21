@@ -1,0 +1,196 @@
+[
+  {
+    "paquet": "packages/api-client",
+    "V": 5000,
+    "froide": {
+      "etiquette": "froide",
+      "code": 0,
+      "tests_lus": 36,
+      "passes": 36,
+      "echecs": 0,
+      "max": 31.83839999999998,
+      "au_max": "packages/api-client/src/auth-client.test.ts › createAuthClient — session & refresh D115 — bootstrap() et un rejeu 401 concurrents partagent LE MÊME refresh",
+      "mur": 1.7148540019989014,
+      "echecs_detail": []
+    },
+    "passes": [
+      {
+        "etiquette": "passe-01",
+        "code": 0,
+        "tests_lus": 36,
+        "passes": 36,
+        "echecs": 0,
+        "max": 35.89440000000002,
+        "au_max": "packages/api-client/src/venue-client.test.ts › createVenueProClient — mutex de refresh PARTAGÉ avec l'auth (§8) trois appels venue expirés en parallèle : UN refresh, UN rejeu chacun, pas de boucle",
+        "mur": 1.7228150367736816,
+        "echecs_detail": []
+      },
+      {
+        "etiquette": "passe-02",
+        "code": 0,
+        "tests_lus": 36,
+        "passes": 36,
+        "echecs": 0,
+        "max": 38.325199999999995,
+        "au_max": "packages/api-client/src/auth-client.test.ts › createAuthClient — session & refresh SINGLE-FLIGHT : trois requêtes expirées en parallèle = UN SEUL POST /auth/refresh",
+        "mur": 1.6698715686798096,
+        "echecs_detail": []
+      },
+      {
+        "etiquette": "passe-03",
+        "code": 0,
+        "tests_lus": 36,
+        "passes": 36,
+        "echecs": 0,
+        "max": 36.99490000000003,
+        "au_max": "packages/api-client/src/auth-client.test.ts › createAuthClient — session & refresh SINGLE-FLIGHT : trois requêtes expirées en parallèle = UN SEUL POST /auth/refresh",
+        "mur": 1.6401817798614502,
+        "echecs_detail": []
+      }
+    ],
+    "M": 38.325199999999995,
+    "N": 2,
+    "marge_min_ms": 4961.6748,
+    "facteur_min": 130.4624633400478
+  },
+  {
+    "paquet": "apps/api",
+    "V": 5000,
+    "froide": {
+      "etiquette": "froide",
+      "code": 0,
+      "tests_lus": 659,
+      "passes": 659,
+      "echecs": 0,
+      "max": 370.7334000000001,
+      "au_max": "apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large",
+      "mur": 12.340754508972168,
+      "echecs_detail": []
+    },
+    "passes": [
+      {
+        "etiquette": "passe-01",
+        "code": 0,
+        "tests_lus": 659,
+        "passes": 659,
+        "echecs": 0,
+        "max": 334.5703000000001,
+        "au_max": "apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large",
+        "mur": 11.849592208862305,
+        "echecs_detail": []
+      },
+      {
+        "etiquette": "passe-02",
+        "code": 0,
+        "tests_lus": 659,
+        "passes": 659,
+        "echecs": 0,
+        "max": 355.91769999999997,
+        "au_max": "apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large",
+        "mur": 11.617677688598633,
+        "echecs_detail": []
+      },
+      {
+        "etiquette": "passe-03",
+        "code": 0,
+        "tests_lus": 659,
+        "passes": 659,
+        "echecs": 0,
+        "max": 362.6880000000001,
+        "au_max": "apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large",
+        "mur": 11.642698287963867,
+        "echecs_detail": []
+      }
+    ],
+    "M": 362.6880000000001,
+    "N": 2,
+    "marge_min_ms": 4637.312,
+    "facteur_min": 13.785953767425442
+  },
+  {
+    "paquet": "apps/client",
+    "V": 5000,
+    "froide": {
+      "etiquette": "froide",
+      "code": 0,
+      "tests_lus": 287,
+      "passes": 287,
+      "echecs": 0,
+      "max": 396.65759999999955,
+      "au_max": "apps/client/src/components/venue/venue-detail-view.test.tsx › Détail salle — contenu nom, commune, accroche, prix formaté et capacité",
+      "mur": 12.463818550109863,
+      "echecs_detail": []
+    },
+    "passes": [
+      {
+        "etiquette": "passe-01",
+        "code": 0,
+        "tests_lus": 287,
+        "passes": 287,
+        "echecs": 0,
+        "max": 379.8172000000004,
+        "au_max": "apps/client/src/components/venue/venue-detail-view.test.tsx › Détail salle — contenu nom, commune, accroche, prix formaté et capacité",
+        "mur": 12.111016750335693,
+        "echecs_detail": []
+      },
+      {
+        "etiquette": "passe-02",
+        "code": 0,
+        "tests_lus": 287,
+        "passes": 287,
+        "echecs": 0,
+        "max": 381.6234999999997,
+        "au_max": "apps/client/src/components/venue/venue-detail-view.test.tsx › Détail salle — contenu nom, commune, accroche, prix formaté et capacité",
+        "mur": 12.306035995483398,
+        "echecs_detail": []
+      }
+    ],
+    "M": 381.6234999999997,
+    "N": 1,
+    "marge_min_ms": 4618.3765,
+    "facteur_min": 13.101918513928005
+  },
+  {
+    "paquet": "apps/pro",
+    "V": 5000,
+    "froide": {
+      "etiquette": "froide",
+      "code": 0,
+      "tests_lus": 347,
+      "passes": 347,
+      "echecs": 0,
+      "max": 331.00289999999995,
+      "au_max": "apps/pro/src/venues/pricing-rules-editor.test.tsx › Variantes de prix — lecture l'ordre affiché est celui de la RÉSOLUTION : férié, puis jour, puis saison",
+      "mur": 28.475504636764526,
+      "echecs_detail": []
+    },
+    "passes": [
+      {
+        "etiquette": "passe-01",
+        "code": 0,
+        "tests_lus": 347,
+        "passes": 347,
+        "echecs": 0,
+        "max": 339.97109999999975,
+        "au_max": "apps/pro/src/dashboard/walkin-journey.test.tsx › Rail latéral, numéros cliquables et remise à zéro ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien",
+        "mur": 28.149476528167725,
+        "echecs_detail": []
+      },
+      {
+        "etiquette": "passe-02",
+        "code": 0,
+        "tests_lus": 347,
+        "passes": 347,
+        "echecs": 0,
+        "max": 328.9596999999999,
+        "au_max": "apps/pro/src/venues/venue-form.test.tsx › Prix — rejet décimal strict (invariant argent) formulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes",
+        "mur": 28.008723258972168,
+        "echecs_detail": []
+      }
+    ],
+    "M": 339.97109999999975,
+    "N": 1,
+    "marge_min_ms": 4660.0289,
+    "facteur_min": 14.707132459200219
+  }
+]

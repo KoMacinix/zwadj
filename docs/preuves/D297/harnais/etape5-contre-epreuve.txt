@@ -1,0 +1,15 @@
+témoin (aucune mutation), sous chacune des quatre configurations
+   packages/api-client  vert · 2002.6 ms
+   apps/api             vert · 2015.9 ms
+   apps/client          vert · 2008.7 ms
+   apps/pro             vert · 2003.3 ms
+pré-vol de la DÉTECTION (mutation connue rouge)
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 183, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 146, in main
+    assert code != 0 and t[2] == "failed", "PRÉ-VOL : la mutation témoin n'a pas fait rougir — mutation inerte"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PRÉ-VOL : la mutation témoin n'a pas fait rougir — mutation inerte
+code=1

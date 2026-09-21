@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="2" errors="0" time="0.3221923">
+    <testsuite name="signature.test.mjs" timestamp="2026-09-21T04:16:43.643Z" hostname="Macinix" tests="2" failures="2" errors="0" skipped="0" time="0.3221923">
+        <testcase classname="signature.test.mjs" name="expire" time="0.3202617">
+            <failure message="Test timed out in 300ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;." type="Error">
+Error: Test timed out in 300ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;.
+ ❯ signature.test.mjs:2:1
+            </failure>
+        </testcase>
+        <testcase classname="signature.test.mjs" name="leve" time="0.0006792">
+            <failure message="boom" type="Error">
+Error: boom
+ ❯ signature.test.mjs:3:26
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

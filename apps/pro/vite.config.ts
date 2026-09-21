@@ -30,6 +30,11 @@ export default defineConfig({
     // ⚠ Chaque worker porte un environnement jsdom complet. Le défaut de
     // vitest suit le nombre de cœurs (12 ici) sans regarder la mémoire
     // disponible — c'est ce qui s'effondre quand la machine est occupée.
-    maxWorkers: 4
+    maxWorkers: 4,
+    // ⛔ D297 — budget écrit à la valeur EN VIGUEUR (défaut de vitest), forme (b) :
+    // aucun comportement ne change, la politique devient visible. Changer cette valeur
+    // exige un instrument qui chronomètre la seule fonction du test (section D297) ;
+    // `neutralisation/neutralize-budgets.py` prouve que cette ligne est LUE.
+    testTimeout: 5_000
   }
 });

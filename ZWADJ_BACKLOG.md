@@ -2362,6 +2362,39 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports des 20 et 21/09/2026 — rang 17, lot de code des budgets (D297)
+
+⚠ **Ce qui a été croisé en écrivant les budgets se RAPPORTE ici.** Détail : section D297 de
+`ZWADJ_CONTINUITE.md`.
+
+### Reports décidés, non oubliés
+
+- **[MÉTHODE][P1]** ⛔ **TOUTE VALEUR DE `testTimeout` AUTRE QUE LA VALEUR EN VIGUEUR EXIGE LA SORTIE
+  (i) — CONDITION DE KO, 20/09/2026 (D297).** La marge écrite au rang 17 est mesurée sur un
+  **majorant** (test + hooks) : « un majorant suffit pour confirmer qu'une borne tient ; il ne suffit
+  pas pour en choisir une nouvelle ». ⇒ Le jour où quelqu'un veut écrire autre chose que 5 000, il
+  faut d'abord un instrument qui chronomètre la **seule fonction du test** — piste relevée par D296,
+  **non vérifiée** : un runner réservé à la mesure (`runner.runTask`), la durée transportée par
+  `task.meta`, que le reporter JSON recopie. ⚠ **La condition est aussi écrite dans le commentaire de
+  chacune des quatre lignes**, là où la lira celui qui voudra la changer.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[MÉTHODE][P3]** ⚠ **LA RÈGLE DE N SE SATISFAIT D'UNE SEULE PASSE QUI NE DÉPLACE PAS LE MAXIMUM.**
+  Mesuré le 21/09/2026 : **N = 2, 2, 1, 1** — deux suites ont convergé après **deux** passes comptées.
+  C'est la règle arbitrée (x = 5 %, plafond 15) **appliquée à la lettre** ; mais le maximum est un
+  **extremum**, et une passe calme ne dit rien de la suivante. ⚠ **Aucune décision n'en dépend
+  aujourd'hui** : (b) écrit la valeur en vigueur, la marge est d'au moins douze fois. ⇒ **À revoir
+  seulement si (a) ou (i) est un jour poursuivi** — c'est-à-dire si une valeur doit être CHOISIE.
+
+- **[INFRA][P3]** ⚠ **`lancer-campagnes.py` NE REJOUE PAS `neutralize-budgets.py` QUAND SEUL
+  L'INSTRUMENT CHANGE.** Relevé le 21/09/2026 dans sa source : le tri retient les chaînes littérales
+  qui désignent un fichier existant, **avec les extensions `ts|tsx|css|json|sql|mjs`** — un `.py` n'y
+  figure pas. Or la mécanique des témoins et le **lecteur de signature** du harnais vivent dans
+  `neutralisation/mesure-budgets.py`. ⇒ Un lot qui ne toucherait que l'instrument **ne déclencherait
+  pas** la campagne qui en dépend. ⚠ Non corrigé : `lancer-campagnes.py` est partagé par 27
+  campagnes, et élargir son motif est un changement d'outillage à part entière.
+
 ## Reports du 20/09/2026 — rang 17, lecture adverse du cadrage (D296)
 
 ⚠ **UN LOT DOCUMENTAIRE NE CORRIGE RIEN.** Ce qui a été croisé en lisant se **rapporte** ici. ⛔ **Le
@@ -2405,8 +2438,14 @@ défaut BLOQUANT n'est pas dans cette section** : il est au point d'entrée du r
   D294 hier, D296 aujourd'hui — est réauditée au versement suivant. ⚠ **Pourquoi ce n'est pas du
   bruit** : un « attendu 0 » qui n'est jamais atteint **apprend à ne plus lire le compte** (D275),
   et c'est là qu'une vraie fuite passerait. ⇒ **Non corrigé** : un instrument et ses sorties versées
-  se corrigent ensemble ou pas du tout (précédent de D295) — **au prochain lot qui a l'usage de
-  l'audit**. Détail : section D296 de `ZWADJ_CONTINUITE.md`.
+  se corrigent ensemble ou pas du tout (précédent de D295) — ~~**au prochain lot qui a l'usage de
+  l'audit**~~. Détail : section D296 de `ZWADJ_CONTINUITE.md`.
+  ⛔ **(D297, 20-21/09/2026) PRÉDICTION VÉRIFIÉE, ÉCHÉANCE MANQUÉE.** Rejoué le 20/09 à 23:57 : **185**
+  alertes, soit **+102**, entièrement la sortie versée par D296, réauditée — et aucune marque sur
+  D297. **D297 a eu l'usage de l'audit et ne l'a PAS corrigé** : hors de l'ordre de Ko, et l'instrument
+  est une pièce versée de D293. ⇒ **L'échéance devient l'arbitrage de Ko.** ⚠ Deux mesures seulement
+  (33 → 83 → 185) : le compte a plus que doublé à chaque sortie versée — c'est une **inférence sur deux
+  points**, pas une loi.
 
 ## Reports du 16/09/2026 — rang 16, lot documentaire (D294)
 
@@ -2781,8 +2820,16 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
 
 ### ⛔ Ouverts, mesurés, NON corrigés
 
-- **[MÉTHODE][P0]** ⛔ **AUCUNE SUITE UNITAIRE NE DÉCLARE DE BUDGET DE TEST — LE VERDICT DES
-  PORTES REPOSE SUR UN DÉFAUT QUE PERSONNE N'A ÉCRIT.** Relevé le 10/09/2026 sur les cinq
+- [x] ~~**[MÉTHODE][P0]** ⛔ **AUCUNE SUITE UNITAIRE NE DÉCLARE DE BUDGET DE TEST — LE VERDICT DES
+  PORTES REPOSE SUR UN DÉFAUT QUE PERSONNE N'A ÉCRIT.**~~
+  ✅ **ÉPUISÉE LE 21/09/2026 (D297), RANG 17 CLOS.** `testTimeout: 5_000` est écrit dans les quatre
+  configurations unitaires, à la valeur **en vigueur** (aide, signature effective, encadrement — trois
+  sources, aucune seule) ; la ligne est **lue** (n°8 : 4 sur 4, contre-épreuve 3 sur 4) ; marge
+  **≥ 4 618 ms** sur un majorant, au repos. ⛔ **Toute AUTRE valeur exige un instrument qui chronomètre
+  la seule fonction du test** — report décidé, section D297 ci-dessous.
+  ⚠ **LE TABLEAU ET LES PHRASES QUI SUIVENT DÉCRIVENT L'ÉTAT AVANT D297** — ne pas les lire comme
+  l'état courant (une entrée close peut porter une phrase courante, D284).
+  Relevé le 10/09/2026 sur les cinq
   configurations du dépôt :
 
   | config | budget |
@@ -2879,6 +2926,8 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   portent des hooks **globaux**, donc aucun de leurs tests n'y échappe. **Toute sortie réécrit une
   pièce du cadrage : elle appartient à Ko.** Cette entrée reste **ouverte**, le compteur à **zéro**.
   ⇒ État et sorties : point d'entrée du rang 17 et section D296 de `ZWADJ_CONTINUITE.md`.
+  ⛔ **(D297, 21/09/2026) RENDUE FAUSSE PAR MESURE** : le plus lourd test d'`apps/api` tient, hooks
+  compris, en 362,7 ms au repos — marge ≥ 4 637 ms.
   ⚠ **Ce lot rendra vraie ou fausse PAR MESURE** la ligne « `testTimeout` de `apps/api` serré à
   5 s » des « décisions encore ouvertes », barrée le 16/09 pour cause d'héritage pris pour un
   réglage (D294).
@@ -2891,7 +2940,8 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   mesure.** Un développeur qui lance `pnpm test` dans un train verra des échecs que le code n'a
   pas produits, et cherchera dans le code.
   ⚠ **CE QUI EST MESURÉ** : − 41 % sur `test:int`, − 63 % sur les campagnes (D283) ; un budget
-  hérité de **5 000 ms** non écrit dans les quatre suites unitaires.
+  hérité de **5 000 ms** non écrit dans les quatre suites unitaires. ⛔ *(D297 : écrit depuis le
+  21/09/2026, à la même valeur — le budget n'est plus hérité, il est déclaré.)*
   ⛔ **CE QUI N'EST PAS MESURÉ, ET C'EST LE POINT** : **que ce soit la cause du cas rouge du
   09/09.** Le terme reste **NON IDENTIFIÉ** — trois termes écartés ne font pas une cause trouvée,
   et **273/287 avec 22 délais dépassés n'a à ce jour aucune explication établie**. ⚠ Écrit pour
@@ -3316,7 +3366,8 @@ corrige pas dans un lot qui parle d'autre chose.
   au-dessus. **La barre a été tenue, pas déplacée.**
   ⛔ **MAIS ELLE NE SUFFIT PAS À DÉFINIR « REPOS », ET C'EST MESURÉ** : voir les trois
   `[MÉTHODE][P0]` du 10/09. Le plancher RAM est une **condition nécessaire**, pas une
-  définition — il protège les verdicts **tant qu'un budget non écrit tient les durées**, et il
+  définition — il protège les verdicts **tant qu'un budget non écrit tient les durées** *(D297 : écrit
+  depuis le 21/09/2026, même valeur)*, et il
   ne voit ni l'alimentation ni ce qui se passe **pendant** la mesure.
   ⚠ **Constat d'origine conservé ci-dessous pour la trace ; ne pas le lire comme l'état
   courant.** Relevé le 09/09/2026, et les deux

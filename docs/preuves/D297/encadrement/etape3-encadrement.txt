@@ -1,0 +1,12 @@
+== CALIBRATION (2026-09-21 00:12:04) — trois bras, abandon si un seul manque
+   ✓ positif         tests parcourus 2 (attendu 2) · max 1205.6 ms (exigé dans [1200 ; 1300]) · code vitest 0
+   ✓ negatif         tests parcourus 2 (attendu 2) · max 0.9 ms (exigé < 100) · code vitest 0
+   ✓ discrimination  tests parcourus 2 (attendu 2) · max 1214.6 ms (exigé ≥ 1200 (le majorant DOIT compter le hook)) · code vitest 0
+   calibration : 3 bras sur 3
+== ENCADREMENT (2026-09-21 00:12:12) — V = 5000 lu dans le texte d'aide ; 4900 doit passer, 5100 doit échouer avec « Test timed out in 5000ms »
+   packages/api-client  tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue — (attendue ['Test timed out in 5000ms']) · 11.3 s
+   apps/api             tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue — (attendue ['Test timed out in 5000ms']) · 11.4 s
+   apps/client          tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue — (attendue ['Test timed out in 5000ms']) · 13.1 s
+   apps/pro             tests parcourus 2 (attendu 2) · 4900 : passed (attendu passed) · 5100 : failed (attendu failed) · signature lue — (attendue ['Test timed out in 5000ms']) · 12.3 s
+⛔ L'ENCADREMENT NE REND PAS 5000 — le lot s'arrête et n'écrit rien (n°0).
+témoins restants en fin : 0 purgé(s) (attendu 0)

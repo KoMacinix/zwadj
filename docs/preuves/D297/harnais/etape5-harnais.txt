@@ -1,0 +1,14 @@
+témoin (aucune mutation), sous chacune des quatre configurations
+   packages/api-client  vert · 2002.5 ms
+   apps/api             vert · 2011.3 ms
+   apps/client          vert · 2016.4 ms
+   apps/pro             vert · 2007.3 ms
+pré-vol de la DÉTECTION (mutation connue rouge)
+✓ packages/api-client : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+✓ apps/api : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+✓ apps/client : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+✓ apps/pro : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+
+4 garde(s) mordue(s) sur 4 cible(s).
+arbre rendu à son état de départ : vérifié.
+code=0

@@ -1,0 +1,23 @@
+calibration positif, enjambe un retour à la ligne : 1 (attendu 1)
+calibration positif, accents + balisage + retour : 1 (attendu 1)
+calibration négatif : 0 (attendu 0)
+parcouru : 4 fichiers, 1147042 caractères, 17 motifs
+     5  « n'est écrit nulle part »  ZWADJ_CONTINUITE.md=3 · ZWADJ_BACKLOG.md=2
+     5  « budget non écrit »  ZWADJ_CONTINUITE.md=2 · ZWADJ_BACKLOG.md=3
+     2  « héritent du défaut »  ZWADJ_CONTINUITE.md=1 · ZWADJ_BACKLOG.md=1
+     1  « budget hérité »  ZWADJ_BACKLOG.md=1
+     2  « Seule la config d'INTÉGRATION écrit un budget »  ZWADJ_CONTINUITE.md=1 · ZWADJ_BACKLOG.md=1
+     2  « seule vitest.config.int.ts »  ZWADJ_CONTINUITE.md=1 · ZWADJ_BACKLOG.md=1
+     3  « que personne n'a écrit »  ZWADJ_CONTINUITE.md=1 · ZWADJ_BACKLOG.md=2
+     1  « LOT DE CODE EN COURS »  ZWADJ_CONTINUITE.md=1
+     1  « en attente d'arbitrage de Ko sur le cadrage »  ZWADJ_CONTINUITE.md=1
+     1  « toujours ZÉRO »  ZWADJ_CONTINUITE.md=1
+     6  « Compteur de lots de code non certifiés : ZÉRO »  ZWADJ_CONTINUITE.md=6
+     1  « rendra vraie ou fausse »  ZWADJ_BACKLOG.md=1
+     6  « serré à 5 s »  AGENTS.md=1 · ZWADJ_CONTINUITE.md=4 · ZWADJ_BACKLOG.md=1
+    18  « un lot de code peut s'ouvrir »  ZWADJ_CONTINUITE.md=17 · ZWADJ_BACKLOG.md=1
+    10  « portera le compteur »  ZWADJ_CONTINUITE.md=9 · ZWADJ_BACKLOG.md=1
+     1  « (i) devient obligatoire »  ZWADJ_CONTINUITE.md=1
+     9  « RANG 18 »  ZWADJ_CONTINUITE.md=9
+total : 74 occurrences
+motifs à ZÉRO (0) — hypothèses à vérifier, pas absences constatées :

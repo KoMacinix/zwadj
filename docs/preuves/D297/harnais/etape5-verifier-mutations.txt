@@ -1,0 +1,63 @@
+CALIBRATION — des cas dont la reponse est connue d'avance
+   ✓ 1. positif                       → POSEE
+   ✓ 2. fantome CRLF (sans normal.)   → NON POSEE
+   ✓ 2b. meme motif, harnais normal.  → POSEE
+   ✓ 3. interversion                  → POSEE
+   ✓ 4. taille egale                  → POSEE
+   ✓ 5. marqueur inclus               → POSEE
+   ✓ 6. suppression (apres vide)      → POSEE
+   ✓ 7. insertion (ancre survit)      → POSEE
+   ⇒ les 8 cas rendent leur verdict connu.
+
+==============================================================================
+neutralize-budgets.py
+   normalisation CRLF des motifs par le harnais : NON
+
+── cible 1 : packages/api-client : la ligne testTimeout est LUE (5_000 → 1_000 fait
+   fichier          : packages/api-client/vitest.config.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 644 → 644 octets   ⚠ INCHANGEE — un controle par taille aurait menti
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 13 :
+     -  testTimeout: 5_000
+     +  testTimeout: 1_000
+
+── cible 2 : apps/api : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un
+   fichier          : apps/api/vitest.config.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 1236 → 1236 octets   ⚠ INCHANGEE — un controle par taille aurait menti
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 20 :
+     -  testTimeout: 5_000
+     +  testTimeout: 1_000
+
+── cible 3 : apps/client : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer
+   fichier          : apps/client/vitest.config.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 1514 → 1514 octets   ⚠ INCHANGEE — un controle par taille aurait menti
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 28 :
+     -  testTimeout: 5_000
+     +  testTimeout: 1_000
+
+── cible 4 : apps/pro : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un
+   fichier          : apps/pro/vite.config.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 1948 → 1948 octets   ⚠ INCHANGEE — un controle par taille aurait menti
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 38 :
+     -  testTimeout: 5_000
+     +  testTimeout: 1_000
+
+==============================================================================
+POSEES 4   ·   NON POSEES 0   ·   NON COUVERTES 0
+✓ TOUTES LES MUTATIONS SONT POSEES, ET TOUTES LES CIBLES ONT ETE REGARDEES
+code=0

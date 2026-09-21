@@ -1,0 +1,42 @@
+== CALIBRATION (2026-09-21 00:16:34) — trois bras, abandon si un seul manque
+   ✓ positif         tests parcourus 2 (attendu 2) · max 1205.6 ms (exigé dans [1200 ; 1300]) · code vitest 0
+   ✓ negatif         tests parcourus 2 (attendu 2) · max 0.9 ms (exigé < 100) · code vitest 0
+   ✓ discrimination  tests parcourus 2 (attendu 2) · max 1213.3 ms (exigé ≥ 1200 (le majorant DOIT compter le hook)) · code vitest 0
+   ✓ signature+     expiration sous 300 ms : lue ['Test timed out in 300ms'] (attendue ['Test timed out in 300ms']) · source JUnit
+   ✓ signature−     erreur ordinaire : échecs ['boom'], signatures lues [] (attendu [])
+   calibration : 3 bras sur 3 · lecteur de signature : 2 sur 2
+== MESURES (2026-09-21 00:16:44) — régime ENCHAÎNÉ, une passe froide hors compte ; N = plus petit k tel que M(k+1) ≤ 1.05 × M(k) ; plafond 15 passes
+
+-- packages/api-client (2026-09-21 00:16:44)
+   froide   : 36 tests lus · max 31.8 ms (packages/api-client/src/auth-client.test.ts › createAuthClient — session & refresh D115 — bootstrap() et un rejeu 401 concurrents partagent LE MÊME refresh) · 1.7 s   [HORS COMPTE]
+   passe  1 : 36 tests lus · max 35.9 ms (packages/api-client/src/venue-client.test.ts › createVenueProClient — mutex de refresh PARTAGÉ avec l'auth (§8) trois appels venue expirés en parallèle : UN refresh, UN rejeu chacun, pas de boucle) · 1.7 s
+   passe  2 : 36 tests lus · max 38.3 ms (packages/api-client/src/auth-client.test.ts › createAuthClient — session & refresh SINGLE-FLIGHT : trois requêtes expirées en parallèle = UN SEUL POST /auth/refresh) · 1.7 s · M 35.9 → 38.3 (+6.8 %)
+   passe  3 : 36 tests lus · max 37.0 ms (packages/api-client/src/auth-client.test.ts › createAuthClient — session & refresh SINGLE-FLIGHT : trois requêtes expirées en parallèle = UN SEUL POST /auth/refresh) · 1.6 s · M 38.3 → 38.3 (+0.0 %)
+   N = 2 (la passe 3 déplace M de ≤ 5 %) · M = 38.3 ms
+   marge ≥ 4962 ms (budget 5000 / majorant 38.3 ≥ 130.5×)
+
+-- apps/api (2026-09-21 00:16:50)
+   froide   : 659 tests lus · max 370.7 ms (apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large) · 12.3 s   [HORS COMPTE]
+   passe  1 : 659 tests lus · max 334.6 ms (apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large) · 11.8 s
+   passe  2 : 659 tests lus · max 355.9 ms (apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large) · 11.6 s · M 334.6 → 355.9 (+6.4 %)
+   passe  3 : 659 tests lus · max 362.7 ms (apps/api/src/media/image-pipeline.spec.ts › processVenuePhoto au-delà du plafond : la grande redescend à 1920 de large) · 11.6 s · M 355.9 → 362.7 (+1.9 %)
+   N = 2 (la passe 3 déplace M de ≤ 5 %) · M = 362.7 ms
+   marge ≥ 4637 ms (budget 5000 / majorant 362.7 ≥ 13.8×) · ⚠ la passe froide (370.7) DÉPASSE M
+
+-- apps/client (2026-09-21 00:17:38)
+   froide   : 287 tests lus · max 396.7 ms (apps/client/src/components/venue/venue-detail-view.test.tsx › Détail salle — contenu nom, commune, accroche, prix formaté et capacité) · 12.5 s   [HORS COMPTE]
+   passe  1 : 287 tests lus · max 379.8 ms (apps/client/src/components/venue/venue-detail-view.test.tsx › Détail salle — contenu nom, commune, accroche, prix formaté et capacité) · 12.1 s
+   passe  2 : 287 tests lus · max 381.6 ms (apps/client/src/components/venue/venue-detail-view.test.tsx › Détail salle — contenu nom, commune, accroche, prix formaté et capacité) · 12.3 s · M 379.8 → 381.6 (+0.5 %)
+   N = 1 (la passe 2 déplace M de ≤ 5 %) · M = 381.6 ms
+   marge ≥ 4618 ms (budget 5000 / majorant 381.6 ≥ 13.1×) · ⚠ la passe froide (396.7) DÉPASSE M
+
+-- apps/pro (2026-09-21 00:18:15)
+   froide   : 347 tests lus · max 331.0 ms (apps/pro/src/venues/pricing-rules-editor.test.tsx › Variantes de prix — lecture l'ordre affiché est celui de la RÉSOLUTION : férié, puis jour, puis saison) · 28.5 s   [HORS COMPTE]
+   passe  1 : 347 tests lus · max 340.0 ms (apps/pro/src/dashboard/walkin-journey.test.tsx › Rail latéral, numéros cliquables et remise à zéro ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien) · 28.1 s
+   passe  2 : 347 tests lus · max 329.0 ms (apps/pro/src/venues/venue-form.test.tsx › Prix — rejet décimal strict (invariant argent) formulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes) · 28.0 s · M 340.0 → 340.0 (+0.0 %)
+   N = 1 (la passe 2 déplace M de ≤ 5 %) · M = 340.0 ms
+   marge ≥ 4660 ms (budget 5000 / majorant 340.0 ≥ 14.7×)
+
+résumé : .neutralisation-journaux\budgets\resume-mesures.json
+témoins restants en fin : 0 purgé(s) (attendu 0)
+code=0

@@ -1,0 +1,19 @@
+# sens 1 — ce que D297 INVALIDE (le budget est désormais écrit ; le rang 17 se ferme)
+n'est écrit nulle part
+budget non écrit
+héritent du défaut
+budget hérité
+Seule la config d'INTÉGRATION écrit un budget
+seule vitest.config.int.ts
+que personne n'a écrit
+LOT DE CODE EN COURS
+en attente d'arbitrage de Ko sur le cadrage
+toujours ZÉRO
+Compteur de lots de code non certifiés : ZÉRO
+rendra vraie ou fausse
+serré à 5 s
+# sens 2 — ce que D297 REND PERMIS, ou dont la condition vient de changer
+un lot de code peut s'ouvrir
+portera le compteur
+(i) devient obligatoire
+RANG 18

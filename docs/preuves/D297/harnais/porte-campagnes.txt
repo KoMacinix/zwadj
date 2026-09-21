@@ -1,0 +1,18 @@
+6 fichier(s) modifié(s) depuis HEAD → 1 campagne(s) concernée(s) sur 27.
+  · neutralize-budgets.py  (4 fichier(s) en commun)
+      apps/api/vitest.config.ts
+      apps/client/vitest.config.ts
+      apps/pro/vite.config.ts
+
+[1/1] neutralisation\neutralize-budgets.py …
+    sortie=0  4 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-budgets.py                   0     4     4     0     0    30
+================================================================================================
+MESURÉ : 4 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 1 campagne(s) · 30s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+code=0

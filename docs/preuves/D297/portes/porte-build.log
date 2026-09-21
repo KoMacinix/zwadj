@@ -1,0 +1,133 @@
+
+> zwadj@ build C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run build
+
+Scope: 9 of 10 workspace projects
+packages/types build$ tsc -p tsconfig.build.json
+packages/types build: Done
+apps/api build$ nest build
+apps/api build: Done
+apps/client build$ next build
+apps/pro build$ tsc --noEmit && vite build
+apps/client build:  ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+apps/client build:  We detected multiple lockfiles and selected the directory of C:\Users\benla\package-lock.json as the root directory.
+apps/client build:  To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+apps/client build:    See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+apps/client build:  Detected additional lockfiles: 
+apps/client build:    * C:\Users\benla\Desktop\MyProjct\Zwadj\pnpm-lock.yaml
+apps/client build:    ▲ Next.js 15.5.20
+apps/client build:    - Environments: .env
+apps/client build:    Creating an optimized production build ...
+apps/client build:  ✓ Compiled successfully in 3.5s
+apps/client build:    Linting and checking validity of types ...
+apps/pro build: [36mvite v6.4.3 [32mbuilding for production...[36m[39m
+apps/pro build: transforming...
+apps/client build:  ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+apps/pro build: [32m✓[39m 1835 modules transformed.
+apps/pro build: rendering chunks...
+apps/pro build: computing gzip size...
+apps/pro build: [2mdist/[22m[32mindex.html                                              [39m[1m[2m  0.48 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-400-normal-DAQS1QRE.woff2  [39m[1m[2m  5.22 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-300-normal-BbErzVcM.woff2  [39m[1m[2m  5.57 kB[22m[1m[22m
+apps/pro build: [33m
+apps/pro build: (!) Some chunks are larger than 500 kB after minification. Consider:
+apps/pro build: - Using dynamic import() to code-split the application
+apps/pro build: - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+apps/pro build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-500-normal-Bo8-wSxK.woff2  [39m[1m[2m  5.67 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-700-normal-BOdn1JB1.woff2  [39m[1m[2m  5.68 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-600-normal-CvqEbH36.woff2  [39m[1m[2m  5.71 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-400-normal-DRTbt2AX.woff   [39m[1m[2m  7.05 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-300-normal-Co7UWWay.woff   [39m[1m[2m  7.38 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-500-normal-BcJVvAU6.woff   [39m[1m[2m  7.42 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-600-normal-BT-w1HBH.woff   [39m[1m[2m  7.48 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-vietnamese-700-normal-DWiQMDrn.woff   [39m[1m[2m  7.49 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-400-normal-BzB5iZVu.woff2      [39m[1m[2m  9.78 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-300-normal-BWRKQ0Cq.woff2      [39m[1m[2m 10.33 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-700-normal-EXBdNfUG.woff2      [39m[1m[2m 10.36 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-600-normal-BHxn1TEo.woff2      [39m[1m[2m 10.40 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-500-normal-Bmdbfz0h.woff2      [39m[1m[2m 10.45 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-400-normal-CRluTl2A.woff       [39m[1m[2m 12.37 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-700-normal-CrhlwrkQ.woff       [39m[1m[2m 12.79 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-300-normal-BLNop-yJ.woff       [39m[1m[2m 12.94 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-500-normal-DZnHuMwu.woff       [39m[1m[2m 12.96 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-arabic-600-normal-9mhVJBMn.woff       [39m[1m[2m 13.02 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-400-normal-CDeDBhe3.woff2   [39m[1m[2m 13.19 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-300-normal-DNjf7_rG.woff2   [39m[1m[2m 13.58 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-700-normal-Bpf-iva7.woff2   [39m[1m[2m 13.69 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-500-normal-WcGKYLel.woff2   [39m[1m[2m 13.77 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-600-normal-DvstIQFU.woff2   [39m[1m[2m 13.87 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-400-normal-BZtYQVaG.woff2       [39m[1m[2m 14.42 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-300-normal-DnMmd_eB.woff2       [39m[1m[2m 14.90 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-700-normal-oqSerPEB.woff2       [39m[1m[2m 14.98 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-500-normal-fMl4bkAY.woff2       [39m[1m[2m 14.98 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-600-normal-C3IhmgOg.woff2       [39m[1m[2m 15.08 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-400-normal-DzeKRH4q.woff    [39m[1m[2m 18.26 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-400-normal-SP_jEUAw.woff        [39m[1m[2m 18.42 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-300-normal-BnD3jC7y.woff    [39m[1m[2m 18.70 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-700-normal-C1QSodUR.woff    [39m[1m[2m 18.76 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-500-normal-vT4Zcawv.woff    [39m[1m[2m 18.81 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-700-normal-L_HvUYJT.woff        [39m[1m[2m 18.82 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-300-normal-CaFWNMpl.woff        [39m[1m[2m 18.83 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-ext-600-normal-DRKkFP2q.woff    [39m[1m[2m 18.87 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-500-normal-CQ-MGytt.woff        [39m[1m[2m 18.87 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[32massets/readex-pro-latin-600-normal-CeYg1m9V.woff        [39m[1m[2m 18.91 kB[22m[1m[22m
+apps/pro build: [2mdist/[22m[35massets/index-BfP6UiR7.css                               [39m[1m[2m 42.99 kB[22m[1m[22m[2m │ gzip:   7.95 kB[22m
+apps/pro build: [2mdist/[22m[36massets/index-B_vsTmZO.js                                [39m[1m[33m648.82 kB[39m[22m[2m │ gzip: 185.67 kB[22m
+apps/pro build: [32m✓ built in 5.99s[39m
+apps/pro build: Done
+apps/client build:    Collecting page data ...
+apps/client build:    Generating static pages (0/26) ...
+apps/client build:    Generating static pages (6/26) 
+apps/client build:    Generating static pages (12/26) 
+apps/client build:    Generating static pages (19/26) 
+apps/client build:  ✓ Generating static pages (26/26)
+apps/client build:    Finalizing page optimization ...
+apps/client build:    Collecting build traces ...
+apps/client build: Route (app)                                 Size  First Load JS
+apps/client build: ┌ ○ /_not-found                            127 B         103 kB
+apps/client build: ├ ● /[locale]                            1.68 kB         149 kB
+apps/client build: ├   ├ /fr
+apps/client build: ├   └ /ar
+apps/client build: ├ ƒ /[locale]/[...rest]                    127 B         103 kB
+apps/client build: ├ ● /[locale]/assistant                  3.17 kB         149 kB
+apps/client build: ├   ├ /fr/assistant
+apps/client build: ├   └ /ar/assistant
+apps/client build: ├ ● /[locale]/auth/connexion             1.16 kB         151 kB
+apps/client build: ├   ├ /fr/auth/connexion
+apps/client build: ├   └ /ar/auth/connexion
+apps/client build: ├ ● /[locale]/auth/inscription           1.59 kB         152 kB
+apps/client build: ├   ├ /fr/auth/inscription
+apps/client build: ├   └ /ar/auth/inscription
+apps/client build: ├ ● /[locale]/auth/mot-de-passe-oublie     190 B         150 kB
+apps/client build: ├   ├ /fr/auth/mot-de-passe-oublie
+apps/client build: ├   └ /ar/auth/mot-de-passe-oublie
+apps/client build: ├ ● /[locale]/auth/reinitialisation        190 B         150 kB
+apps/client build: ├   ├ /fr/auth/reinitialisation
+apps/client build: ├   └ /ar/auth/reinitialisation
+apps/client build: ├ ● /[locale]/auth/verification-email    4.13 kB         132 kB
+apps/client build: ├   ├ /fr/auth/verification-email
+apps/client build: ├   └ /ar/auth/verification-email
+apps/client build: ├ ● /[locale]/cgu                          276 B         115 kB
+apps/client build: ├   ├ /fr/cgu
+apps/client build: ├   └ /ar/cgu
+apps/client build: ├ ● /[locale]/compte                     4.41 kB         152 kB
+apps/client build: ├   ├ /fr/compte
+apps/client build: ├   └ /ar/compte
+apps/client build: ├ ● /[locale]/confidentialite              276 B         115 kB
+apps/client build: ├   ├ /fr/confidentialite
+apps/client build: ├   └ /ar/confidentialite
+apps/client build: ├ ● /[locale]/salles                     2.68 kB         150 kB
+apps/client build: ├   ├ /fr/salles
+apps/client build: ├   └ /ar/salles
+apps/client build: ├ ƒ /[locale]/salles/[slug]              6.71 kB         154 kB
+apps/client build: └ ○ /icon.svg                                0 B            0 B
+apps/client build: + First Load JS shared by all             102 kB
+apps/client build:   ├ chunks/573-0ad1d2ff480a0c3f.js       46.1 kB
+apps/client build:   ├ chunks/c79d42af-462402a9e845d29c.js  54.2 kB
+apps/client build:   └ other shared chunks (total)             2 kB
+apps/client build: ƒ Middleware                             45.5 kB
+apps/client build: ○  (Static)   prerendered as static content
+apps/client build: ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+apps/client build: ƒ  (Dynamic)  server-rendered on demand
+apps/client build: Done

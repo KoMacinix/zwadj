@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="0" errors="0" time="0.0019557">
+    <testsuite name="negatif.test.mjs" timestamp="2026-09-21T04:16:38.256Z" hostname="Macinix" tests="2" failures="0" errors="0" skipped="0" time="0.0019557">
+        <testcase classname="negatif.test.mjs" name="leger-1" time="0.0008881">
+        </testcase>
+        <testcase classname="negatif.test.mjs" name="leger-2" time="0.0000887">
+        </testcase>
+    </testsuite>
+</testsuites>

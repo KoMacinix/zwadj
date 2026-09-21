@@ -1,0 +1,20 @@
+EXTRAIT DE SOURCE — vitest 3.2.7 installe au depot, releve le 2026-09-21 (D297).
+Pourquoi la signature d'expiration n'est PAS dans le rapport JSON, et pourquoi elle est dans le JUnit.
+
+=== node_modules/.pnpm/@vitest+runner@3.2.7/node_modules/@vitest/runner/dist/chunk-hooks.js — makeTimeoutError : la pile de l'erreur est REMPLACEE par celle de STACK_TRACE_ERROR
+2005:function makeTimeoutError(isHook, timeout, stackTraceError) {
+2006-	const message = `${isHook ? "Hook" : "Test"} timed out in ${timeout}ms.\nIf this is a long-running ${isHook ? "hook" : "test"}, pass a timeout value as the last argument or configure it globally with "${isHook ? "hookTimeout" : "testTimeout"}".`;
+2007-	const error = new Error(message);
+2008-	if (stackTraceError === null || stackTraceError === void 0 ? void 0 : stackTraceError.stack) {
+2009-		error.stack = stackTraceError.stack.replace(error.message, stackTraceError.message);
+2010-	}
+2011-	return error;
+2012-}
+
+=== node_modules/.pnpm/vitest@3.2.7_@types+node@22_a195238d66859ef167c1e89312f31f88/node_modules/vitest/dist/chunks/index.VByaPkjc.js — reporter JSON : failureMessages = e.stack || e.message (la pile existe, donc le message est perdu)
+1731:					failureMessages: t.result?.errors?.map((e) => e.stack || e.message) || [],
+
+=== node_modules/.pnpm/vitest@3.2.7_@types+node@22_a195238d66859ef167c1e89312f31f88/node_modules/vitest/dist/chunks/index.VByaPkjc.js — reporter JUnit : <failure message=...> ecrit depuis error.message
+1921-					const errors = task.result.errors || [];
+1922:					for (const error of errors) await this.writeElement("failure", {
+1923-						message: error?.message,

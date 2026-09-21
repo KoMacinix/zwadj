@@ -12,7 +12,12 @@ export default defineConfig({
   test: {
     environment: "node",
     globals: true,
-    include: ["src/**/*.spec.ts", "prisma/**/*.spec.ts"]
+    include: ["src/**/*.spec.ts", "prisma/**/*.spec.ts"],
+    // ⛔ D297 — budget écrit à la valeur EN VIGUEUR (défaut de vitest), forme (b) :
+    // aucun comportement ne change, la politique devient visible. Changer cette valeur
+    // exige un instrument qui chronomètre la seule fonction du test (section D297) ;
+    // `neutralisation/neutralize-budgets.py` prouve que cette ligne est LUE.
+    testTimeout: 5_000
   },
   plugins: [
     swc.vite({
