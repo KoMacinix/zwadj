@@ -539,6 +539,17 @@ connexion (famille D115).
   ⚠ **Il n'atteint pas « attendu 0 »** : 92 alertes à la clôture de D298, **aucune n'est de l'écho ni
   une fuite** — titres de tests recités par les journaux versés, outils qui nomment ce qu'ils cherchent
   (backlog, `[INFRA][P2]` de D298).
+  ⛔ **ET « ATTENDU 0 » VISAIT LA MAUVAISE QUANTITÉ — ARBITRAGE DE KO DU 21/09/2026 (D299).** **L'audit
+  ne garantit pas l'absence de MOTS sensibles** — un titre de test qui nomme une variable est légitime —
+  **mais l'absence de VALEURS.** ⛔ **Pas de liste blanche** : ce serait un audit tronqué.
+  ⇒ **RÈGLE : TOUTE ALERTE ABSENTE DE LA SORTIE SCELLÉE PRÉCÉDENTE SE TRIE AU CONTEXTE AVANT LE
+  COMMIT.** Rien n'est caché, le coût reste borné au nouveau. Procédure :
+  `docs/preuves/D299/outils/alertes-nouvelles.py <précédente> <nouvelle>` — elle renvoie aux lignes de la
+  sortie scellée et **ne recopie aucun contexte**, sans quoi sa propre sortie serait un écho non scellé.
+  ⇒ **CE QUI FAIT FOI SUR L'ABSENCE DE VALEURS, C'EST LE CONTRÔLE DÉDIÉ « 0 valeur réelle sur N
+  fichiers »** (Ko) : `docs/preuves/D299/outils/aucune-valeur-reelle.py <journal>… -- <cibles>…`, calibré
+  sur ses deux bras, attendu **0 porteur**. ⚠ Il cherche les valeurs d'un JOURNAL qu'on lui nomme : sans
+  journal à valeurs réelles dans la session, il n'y a rien à chercher, et il le dit.
   ⚠ **Les journaux de travail restent où ils sont** : ce qui entre au dépôt est la COPIE de ceux
   qu'une décision cite, jamais `.neutralisation-journaux/` lui-même.
   ⚠ **PORTÉE AU 13/09/2026 : D290 et D291.** Les pièces encore sur disque d'autres décisions
@@ -883,6 +894,9 @@ réservation reste un acte distinct.
   est d'INSTRUMENT quand la **sortie brute** porte ce que l'instrument cherchait, ou montre qu'il le
   cherchait au mauvais endroit ; le COMPORTEMENT dément quand c'est la sortie brute elle-même qui
   contredit la valeur attendue.
+- ⛔ **UN MINORANT S'ARRONDIT VERS LE BAS, UN MAJORANT VERS LE HAUT (Ko, 21/09/2026, D299)** — jamais au
+  plus proche : `mesure-budgets.py` imprimait « ≥ 4962 » pour 4 961,67 (D298). Il n'est pas retouché ici :
+  un instrument et sa pièce se corrigent ensemble (D295).
 - ⛔ **L'ÉQUIVALENT POWERSHELL DES TROIS LIGNES PYTHON DE D268 :
   `[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false`.** Sans elle les
   glyphes `✓`/`✗`/`⚠` sortent en « ? » à la console et en « � » dès que la sortie est

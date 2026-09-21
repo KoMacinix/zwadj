@@ -1,0 +1,8 @@
+# Passe D277 de D299, étape 0 — sens 1 : ce que l'étape 0 invalide ; sens 2 : ce qu'elle rend permis/obligatoire.
+rang19-attente	RANG 19 : EN ATTENTE
+reste-a-ecrire	(?i)reste \*{0,2}À ÉCRIRE
+a-arbitrer	(?i)à arbitrer par Ko
+attendu-0-audit	(?i)atteint pas « attendu 0 »
+prochaine-certif	(?i)prochaine certification
+extrait-elargi	(?i)extrait (?:s'|reste |doit )
+split-plus-un	split\("\\n"\)

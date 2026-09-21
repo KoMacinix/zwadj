@@ -482,6 +482,71 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## PROCHAIN LOT — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ **OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 ÉCRITE ET COMMITÉE AVANT TOUTE MESURE**
+
+⛔ **OUVERT ET ARBITRÉ PAR KO LE 21/09/2026** (première écriture : l'ordre des rangs). ⇒ **QUEL lot : rang
+19. OÙ IL EN EST : ici.** **Motif de Ko** : « le compteur est à DEUX, la règle l'impose ».
+⛔ **LA MARQUE NOMMERA D297 ET D298, RIEN D'AUTRE**, aucun en-tête antérieur réécrit — ou le refus motivé.
+⇒ **Ce lot ne compte pas** : `.md` d'autorité et `docs/preuves/` seulement (exemption D292) — les
+procédures de la passe vivent sous `docs/preuves/D299/outils/`, **sur ordre de Ko**, parce qu'un script
+de `neutralisation/` ferait compter un troisième lot de code.
+
+**ÉTAPE 0 — FAITE ET COMMITÉE AVANT LE RELEVÉ D'OUVERTURE (ordre de Ko)** :
+1. **L'arbitrage de Ko sur les 92 alertes** — l'audit garantit l'absence de VALEURS, pas de mots ; pas de
+   liste blanche ; **toute alerte absente de la sortie scellée précédente se trie au contexte avant le
+   commit** ; le contrôle « 0 valeur réelle » fait foi. ⇒ **Critère du rang 9, point 10**, et **`AGENTS.md`**,
+   au pointeur d'audit. Procédures : `outils/alertes-nouvelles.py` (tri différentiel, calibré : 0 contre
+   lui-même, **exactement les 2** alertes triées par D298 contre D297) et `outils/aucune-valeur-reelle.py`
+   (calibré sur ses deux bras, **0 porteur sur 452 fichiers** pour les 48 valeurs des journaux e2e des rangs
+   12 et 15).
+2. **« Un minorant s'arrondit vers le bas, un majorant vers le haut »** — `AGENTS.md`, bloc des
+   instruments ; `mesure-budgets.py` **non retouché**.
+3. **L'extrait e2e élargi** (point 9) — `outils/extraire-e2e.py`, **calibré sur le journal réel avant
+   d'être cru** : 3 bras sur 3 (réel, échec construit, lien dans une fenêtre d'échec ⇒ refus). Extrait du
+   cas connu versé : `outils/calibration/rang15-e2e-EXTRAIT-D299.txt`, 56 lignes gardées sur 910.
+
+**PROTOCOLE DE LA PASSE — écrit ici AVANT le relevé** (critère du rang 9, points 1 à 10 ; **aucune
+valeur n'en est recopiée** — la barre de RAM est celle que la sonde imprime) :
+- **Journaux** : `.neutralisation-journaux/rang19-*`. ⛔ **Jamais `rang15-*`** : le bras « cas réel » de
+  `audit-secrets.py` et de `extraire-e2e.py` est épinglé sur `rang15-e2e.log` — l'écraser le ferait passer,
+  sans bruit, à « NON REJOUÉ ».
+- **Ordre, sans retouche de fichier suivi entre le premier relevé et la clôture (D270)** :
+  1. Docker et `zwadj-db` levés, `pg_isready` ; ports **3100, 3101 et 5273** libres (relevés dans
+     `e2e/playwright.config.ts` — D293 n'en contrôlait que deux).
+  2. **Relevé d'ouverture** : sonde `-Calibrer`, puis un second relevé. ⛔ **PORTE DURE sur CHACUN** :
+     `CHROME=0`, RAM médiane **et** bande basse au-dessus de la barre, `SECTEUR`, calibration passante.
+     **Un rouge ⇒ rien ne se lance, et Ko est prévenu.**
+  3. Échantillonneur en fond, `-Intervalle 30`, `rang19-etat.csv`, arrêté après la clôture, lu par `-Resume`.
+  4. `HEAD` + `git status --porcelain` (vide exigé).
+  5. Six portes dans l'ordre de `CLAUDE.md`, chacune précédée d'un relevé (`SECTEUR`) ; code **réel** dans un
+     fichier `.code`. Avant l'e2e : `node` 0 et les trois ports libres.
+  6. `HEAD` + statut ; `lancer-campagnes.py --tout` ; `HEAD` + statut.
+  7. Chaque campagne que `--tout` rend « non mesurée » — **relevée dans SA sortie** — rejouée avec
+     `--int` ; `HEAD` + statut.
+  8. **Contre-épreuve de `audit-secrets.py`, rejouée à la main** (`docs/preuves/D298/contre-epreuve/`) —
+     le tri ignore les `.py`, et sans elle la certification couvrirait un instrument dont la garde n'est pas
+     jouée (Ko). Elle n'écrit que dans un dossier temporaire hors dépôt. `HEAD` + statut.
+  9. Relevé de clôture (`SECTEUR`), arrêt et lecture de l'échantillonneur.
+- **Après la clôture seulement** : copie des journaux cités dans `docs/preuves/D299/passe/` (sauf le
+  journal e2e brut, qui **reste hors dépôt**), extrait e2e, contrôle « 0 valeur réelle » sur le journal
+  e2e **de la passe**, audit scellé, tri différentiel, **second audit en dernière écriture**, marque.
+- **Règles de lecture** : porte verte ⇔ code réel 0, résumés confrontés au brut, tout « failed » à son
+  contexte (D275) ; campagnes : `--tout` sort en 1 et **c'est attendu** — certifie le total **mordues `--tout`
+  + mordues `--int`**, 0 muette, 0 non mesurée après rejeu, arithmétique **campagne par campagne** ; arbre
+  immobile aux cinq points de contrôle ; échantillonneur **homogène** (0 transition, 0 trou, 0 échec).
+- **Prédictions, DÉRIVÉES et non critères** — depuis la marque de D293 (`ceced54`), deux lots de code :
+  D297 (quatre `testTimeout: 5_000`, sans test ajouté ; une campagne neuve, `neutralize-budgets.py`, 4
+  cibles) et D298 (un instrument hors de toute porte, 0 campagne concernée). D'où : `test` **1 329 / 109**,
+  `test:int` **436 / 36**, e2e **34 passés · 1 ignoré** (`a5-cold-reload-vs-spa`), campagnes **27** —
+  `--tout` **186 · 0 · 13** sur `e3d1-s8`, `s11b`, `solid-s6`, rejeux **8, 13, 6** ⇒ **199** ; contre-épreuve
+  **5 sur 5**. ⛔ **Un compte qui s'écarte suspend la marque** jusqu'à explication ; inexpliqué ⇒ refus.
+- ⛔ **ARRÊT SANS RATTRAPAGE** : un relevé hors `SECTEUR`, `chrome` qui réapparaît, ou un échantillonneur
+  non homogène ⇒ la passe s'arrête, c'est dit, **pas de marque** (ordre de Ko : « si la machine sort du
+  régime pendant la fenêtre, tu arrêtes et tu le dis »).
+- **Limites écrites d'avance** : la base de dev `zwadj` était **vierge** au relevé de D293 — **non
+  re-mesurée ici** ; réserve « zéro `node` pendant la mesure » **reconduite** ; **aucune durée ne se
+  compare** (modes mixtes, terme de position de D291).
+
 ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INSTRUMENT NOUVEAU QUI EXCLUT PAR L'IDENTITÉ DES OCTETS ; NON CERTIFIÉ (COMPTEUR À DEUX)**
 
 ### ⛔ CLÔTURE DU 21/09/2026 (D298) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -517,8 +582,9 @@ qu'ils cherchent. Triées, **rapportées au backlog, NON exclues** : les exclure
 ⇒ **Compteur de lots de code non certifiés : DEUX** (rangs 17 et 18). ⛔ **AUCUN LOT DE CODE NE S'OUVRE
 AVANT UNE CERTIFICATION** (D270 : deux sont tenables, trois non). « La certification suivante couvrira
 les rangs 17 et 18 ensemble » (Ko, 21/09) — ⚠ **une désignation, pas l'arbitrage du rang 19.**
-⇒ **RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ Sous le compteur à DEUX, la règle n'y admet
-qu'une **certification** ou un lot **documentaire**.
+⇒ ~~**RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ Sous le compteur à DEUX, la règle n'y admet
+qu'une **certification** ou un lot **documentaire**.~~ ⛔ **(D299) Consommé le 21/09/2026 : rang 19 = la
+certification des rangs 17 et 18, arbitrée par Ko.**
 
 ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**BLOQUÉ LE 20/09/2026 (D296) : LE CADRAGE ÉCHOUE À SON PROPRE BRAS DE DISCRIMINATION — EN ATTENTE D'ARBITRAGE DE KO, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**DÉBLOQUÉ LE 20/09/2026 PAR L'ARBITRAGE (ii) DE KO (D297) — CADRAGE AMENDÉ ET COMMITÉ AVANT LA PREMIÈRE MESURE ; LOT DE CODE EN COURS**~~ ⛔ **CLOS LE 21/09/2026 : D297 — QUATRE `testTimeout: 5_000` ÉCRITS À LA VALEUR EN VIGUEUR, TOUS LUS, MARGE ~~≥ 4 618 ms~~ ≥ 4 603 ms PASSES FROIDES COMPRISES (D298) SUR MAJORANT ; NON CERTIFIÉ (COMPTEUR À UN, PUIS DEUX AU RANG 18)**
 
@@ -1884,8 +1950,27 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
    jetons sont exclus par CONSTRUCTION**, pas par filtrage : l'extrait ABANDONNE si sa sortie
    porte encore `token=`. ⚠ **Une preuve ne se caviarde pas** (D291, ratifié par Ko) : on
    n'élargit jamais en retouchant le journal, seulement en gardant davantage de lignes.
-   ⚠ **L'instrument qui le fera reste À ÉCRIRE** — il corrigera au passage le `+1` de
-   `.split("\n")` (D294) et imprimera son compte de parcouru **avec son attendu à côté** (D290).
+   ⚠ ~~**L'instrument qui le fera reste À ÉCRIRE** — il corrigera au passage le `+1` de
+   `.split("\n")` (D294) et imprimera son compte de parcouru **avec son attendu à côté** (D290).~~
+   ⛔ **ÉCRIT LE 21/09/2026 (D299) : `docs/preuves/D299/outils/extraire-e2e.py`** — sous `docs/preuves/`
+   et **pas** dans `neutralisation/`, **sur ordre de Ko** : il y ferait compter la certification (un
+   troisième lot de code) ; ici il est exempté parce qu'**aucune porte ne le lit** (D292). Il garde
+   Running, **chaque ligne de résultat**, le résumé, les **blocs d'échec**, et **3 lignes autour de toute
+   ligne « fail »** ; il imprime son **recompte à côté du résumé** et son parcouru **à côté de l'attendu
+   compté sur les octets** (le `+1` de D294 corrigé). **Calibré sur le journal réel avant d'être cru**
+   (rang 15 : 910 lignes, 34 `ok` + 1 `-`, 4 « fail » gardés, 24 jetons dans la source, 0 dans la sortie),
+   sur un échec construit, et sur un lien placé dans une fenêtre d'échec — où il **refuse**.
+10. ⛔ **L'AUDIT DE SECRETS GARANTIT L'ABSENCE DE VALEURS, PAS DE MOTS — ARBITRAGE DE KO DU 21/09/2026
+    (D299).** « Attendu 0 » visait la mauvaise quantité : un titre de test qui nomme une variable est
+    légitime. ⛔ **Pas de liste blanche** — ce serait un audit tronqué.
+    ⇒ **TOUTE ALERTE ABSENTE DE LA SORTIE SCELLÉE PRÉCÉDENTE SE TRIE AU CONTEXTE AVANT LE COMMIT** —
+    procédure `docs/preuves/D299/outils/alertes-nouvelles.py`, qui renvoie aux lignes de la sortie scellée
+    sans recopier aucun contexte.
+    ⇒ **CE QUI FAIT FOI SUR LES VALEURS EST LE CONTRÔLE DÉDIÉ « 0 VALEUR RÉELLE SUR N FICHIERS »**
+    (`docs/preuves/D299/outils/aucune-valeur-reelle.py`), joué sur le journal e2e **de la passe** : attendu
+    **0 porteur** dans `docs/preuves/`, `neutralisation/` et les `.md` d'autorité.
+    ⚠ Ordre de clôture qui en découle : audit scellé → tri différentiel (sa pièce ne recopie rien) →
+    **second audit, vraie dernière écriture**, qui doit rendre les **mêmes** alertes.
 
 #### ⛔ LE MOTIF DES POINTS 6 ET 7, ET IL EST MESURÉ — LA NUIT DU 09 AU 10/09/2026
 
@@ -2596,6 +2681,39 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 21/09/2026 — D299 · CERTIFICATION (rang 19) des rangs 17 et 18
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D298**. ⇒ **État du rang** : point
+d'entrée « rang 19 ». Reprise à froid sans état donné, forme allégée ; Chrome quitté par Ko avant la
+reprise (« `Get-Process chrome` ne renvoie rien ») — **à vérifier au relevé, pas à croire**. Lecture
+adverse : **aucun défaut bloquant**, sept constats, écrits dans l'étape 0 ci-dessous.
+
+### D299 — étape 0 : les trois points de Ko, et ce que la lecture adverse y a ajouté
+
+1. **Le point 1 de Ko n'était pas outillé** : `audit-secrets.py` ne compare rien à la sortie scellée
+   précédente. ⇒ `outils/alertes-nouvelles.py`, **sous `docs/preuves/`** — l'intégrer à l'instrument serait
+   du code (report). ⚠ **Et une sortie de tri qui recopierait les contextes serait un écho non scellé** :
+   elle renvoie aux lignes de la sortie scellée. Calibré : **92 contextes contre eux-mêmes ⇒ 0** ; **D298
+   contre D297 (244 contextes) ⇒ exactement les 2** que D298 avait triées.
+2. **Le contrôle « 0 valeur réelle » de D298 ne pouvait pas servir tel quel** : il exige les 24 valeurs du
+   rang 15. ⇒ `outils/aucune-valeur-reelle.py`, paramétré sur un journal quelconque, compte attendu dérivé
+   par une **seconde expression** (stricte et large doivent s'accorder), bras positif **par le chemin de
+   lecture des fichiers**. Calibré sur les journaux e2e des rangs 12 et 15 : 48 valeurs, **0 porteur sur 452
+   fichiers**.
+3. **L'extrait élargi (point 9)** : `outils/extraire-e2e.py`. Marques du rapporteur **relevées dans la
+   source de Playwright 1.50.1**, pas devinées (`ok`/`x` sous Windows hors VS Code). Structure du journal
+   réel relevée avant d'écrire une règle : 910 lignes, **742 `[WebServer]`**, 34 `ok` + 1 `-` ; ses **4
+   « failed »** sont deux requêtes en 500 sur `/api/v1/venues` **au démarrage des serveurs** (avant
+   `Running`), en JSON sur plusieurs lignes — d'où la fenêtre de 3 lignes. **3 bras sur 3.**
+4. **L'ordre de clôture se contredisait** : « audit en dernière écriture » et « tri avant le commit » —
+   une pièce de tri versée après l'audit n'est pas couverte par lui. ⇒ audit scellé, tri, **second audit**.
+5. **Les journaux de la passe se nomment `rang19-*`** : le bras « cas réel » des deux instruments est
+   épinglé sur `rang15-e2e.log`.
+6. **Les ports de l'e2e sont TROIS** (3100, 3101, 5273), relevés dans la configuration ; D293 en contrôlait
+   deux.
+7. **La RAM est le risque** : relevée ce midi à 3 768 puis 4 102 Mo **avec** Chrome (1 162 Mo) ; sans lui,
+   la projection passe la barre — **une projection n'est pas une mesure** (D287).
 
 ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut par l'identité des octets et imprime ce qu'il exclut
 
@@ -8637,8 +8755,12 @@ ensemble — c'est pour ça qu'on fait celui-ci d'abord » (Ko).
 l'identité des octets, calibration 5 bras sur 5 (cas réel 24 sur 24), contre-épreuve 5 sur 5 ; l'écho
 imprimé et non compté. **Compteur de lots de code non certifiés : DEUX. Aucun lot de code ne s'ouvre
 avant une certification.**
-⇒ **RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
-rang 18, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ Ko a écrit le 21/09 que « la
+⇒ ~~**RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
+rang 18, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 21/09/2026 (D299) — ARBITRÉ PAR KO : le RANG 19 est la CERTIFICATION DES RANGS 17 ET 18
+(D297, D298).** Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de
+Ko.** **Motif de Ko** : « le compteur est à DEUX, la règle l'impose ». ⇒ **Où il en est** : section
+« PROCHAIN LOT — rang 19 » en tête de ce fichier. ⚠ Ko a écrit le 21/09 que « la
 certification suivante couvrira les rangs 17 et 18 ensemble » : c'est une **désignation** relevée ici
 pour qu'une reprise n'ait rien à recouper, **pas** l'arbitrage du rang 19. ⚠ Sous le compteur à DEUX,
 la règle (D270) n'admet qu'une **certification** ou un lot **documentaire**.
@@ -10180,3 +10302,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D296 | A | D296 — rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la `duration` du reporter JSON compte les hooks, le bras de discrimination rend 1 208 à 1 218 ms contre < 100 |
 | D297 | A | D297 — rang 17 CLOS : arbitrage (ii), majorant déclaré ; quatre `testTimeout: 5_000` écrits à la valeur en vigueur et lus (n°8 4 sur 4, contre-épreuve 3 sur 4) ; marge ~~≥ 4 618 ms~~ ≥ 4 603 ms passes froides comprises (D298) ; toute autre valeur exige (i) |
 | D298 | A | D298 — rang 18 CLOS : l'écho de l'audit de secrets ; `neutralisation/audit-secrets.py`, instrument NOUVEAU, exclut par l'IDENTITÉ des octets (17 sorties épinglées, sorties propres scellées) et imprime ce qu'il exclut ; calibration 5 bras dont le cas réel 24/24, contre-épreuve 5 sur 5 ; D293 433 = 90 + 472 − 129 ; règle « un défaut d'instrument arrête la mesure, pas le lot » ratifiée ; marge du rang 17 froides comprises ; compteur à DEUX |
+| D299 | A | D299 — rang 19, CERTIFICATION des rangs 17 et 18 : étape 0 (arbitrage de Ko sur l'audit — des valeurs, pas des mots ; tri différentiel ; minorant par défaut ; extrait e2e élargi, calibré) — passe : voir la section |

@@ -2362,6 +2362,23 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 21/09/2026 — rang 19, certification des rangs 17 et 18 (D299)
+
+⚠ **UNE CERTIFICATION NE CORRIGE RIEN.** Ce qui est croisé se **rapporte** ici. Détail : section D299 de
+`ZWADJ_CONTINUITE.md`.
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[INFRA][P3]** ⚠ **LE TRI DIFFÉRENTIEL N'EST PAS DANS L'INSTRUMENT.** La règle de Ko (critère, point
+  10) exige de trier au contexte toute alerte absente de la sortie scellée précédente ; `audit-secrets.py`
+  ne compare rien. D299 le fait par une **procédure versée** (`docs/preuves/D299/outils/alertes-nouvelles.py`)
+  parce qu'une certification ne peut pas porter de code. ⇒ **À intégrer à l'instrument au prochain lot de
+  code qui en a l'usage** — avec la même contrainte : **ne recopier aucun contexte** hors de la sortie
+  scellée, sans quoi le tri produit un écho.
+- **[INFRA][P3]** ⚠ **LE CONTRÔLE « 0 VALEUR RÉELLE » N'EST PAS DANS L'INSTRUMENT NON PLUS** — il fait foi
+  (Ko), et il vit en procédure (`docs/preuves/D299/outils/aucune-valeur-reelle.py`), qu'il faut nommer à
+  chaque fois avec le journal à contrôler. Même report, même lot.
+
 ## Reports du 21/09/2026 — rang 18, l'écho de l'audit de secrets (D298)
 
 ⚠ **Ce qui a été croisé en écrivant l'instrument se RAPPORTE ici.** Détail : section D298 de
@@ -2381,7 +2398,12 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
   sa propre sortie de passe D277 qui recite la ligne du backlog décrivant le lien e2e. **Un « attendu 0 » jamais atteint apprend à ne
   plus lire le compte** (D275) — c'est l'argument même de Ko pour le rang 18, et il vaut ici aussi.
   ⇒ **NON CORRIGÉ, ET LA FORME N'EST PAS DÉCIDÉE** : les exclure par contenu serait une exclusion par
-  le résultat, précisément ce que le rang 18 a refusé. **À arbitrer par Ko.**
+  le résultat, précisément ce que le rang 18 a refusé. ~~**À arbitrer par Ko.**~~
+  ✅ **ARBITRÉ PAR KO LE 21/09/2026 (D299)** : « attendu 0 » visait la mauvaise quantité — **l'audit
+  garantit l'absence de VALEURS, pas de mots** ; **pas de liste blanche** (audit tronqué) ; **toute alerte
+  absente de la sortie scellée précédente se trie au contexte avant le commit** ; le contrôle « 0 valeur
+  réelle sur N fichiers » **fait foi**. Écrit au critère (point 10) et au pointeur d'audit d'`AGENTS.md`.
+  **Les 92 ne sont pas exclues** : elles restent imprimées, et seules les nouvelles se trient.
 
 - **[INFRA][P3]** ⚠ **`mesure-budgets.py` ARRONDIT UN MINORANT AU PLUS PROCHE.** Ligne 417 :
   `{v - m_courant:.0f}` et `{v / m_courant:.1f}` impriment « ≥ 4962 » pour 4 961,67 et « ≥ 13.8× » pour
@@ -2390,6 +2412,9 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
   du rang 17) ; `docs/preuves/D297/mesures/RECTIFICATION-D298.txt` posé **à côté** des pièces ;
   **instrument NON retouché** (précédent de D294, ratifié par Ko — D295). **Il se corrige au prochain lot
   qui en a l'usage**, avec la même règle pour tout « ≥ » : partie entière, jamais arrondi.
+  ⚠ **(D299, 21/09/2026) LA RÈGLE EST ÉCRITE, L'INSTRUMENT NE L'EST PAS** : « un minorant s'arrondit vers
+  le bas, un majorant vers le haut » vit dans `AGENTS.md`, bloc des instruments (Ko). **L'entrée reste
+  ouverte** jusqu'au lot qui corrigera `mesure-budgets.py` avec sa pièce.
 
 ## Reports des 20 et 21/09/2026 — rang 17, lot de code des budgets (D297)
 
@@ -2522,6 +2547,9 @@ se **rapporte** ici. Détail : section D294 de `ZWADJ_CONTINUITE.md`.
   `docs/preuves/D293/outils/RECTIFICATION-D294.txt` ; chiffre rectifié là où il engage une autorité
   (section D293). **L'instrument corrigé s'écrit à la prochaine certification**, avec
   l'élargissement de la liste blanche — ici, un script ferait **compter** le lot.
+  ✅ **ÉCRIT À L'ÉTAPE 0 DE LA CERTIFICATION DU RANG 19 (D299)** : `docs/preuves/D299/outils/extraire-e2e.py`
+  compte ses lignes par `splitlines()` **et** son attendu sur les octets de saut de ligne — 910 et 910 sur le
+  journal du rang 15. L'archive de D293 reste **non retouchée**.
 
 - **[INFRA][P3]** ⚠ **`python3` ET `python` NE SONT PAS LE MÊME INTERPRÉTEUR SUR CE POSTE — RELEVÉ,
   NON ÉTABLI COMME UN DÉFAUT.** Mesuré le 16/09/2026 : `python3` → **3.14.3**
@@ -2589,6 +2617,10 @@ liste.
   « failed » à son contexte** ; **jetons exclus par CONSTRUCTION** — l'extrait ABANDONNE si sa
   sortie porte encore `token=`. ⚠ **Ce lot-ci ne relance pas l'e2e** (consigne de Ko) : il écrit la
   règle, pas l'instrument.
+  ⛔ **(D299, 21/09/2026) L'INSTRUMENT EST ÉCRIT À L'ÉTAPE 0 DE LA CERTIFICATION DU RANG 19** —
+  `docs/preuves/D299/outils/extraire-e2e.py`, sous `docs/preuves/` **sur ordre de Ko** (exempté : aucune porte
+  ne le lit), **calibré sur le journal réel** (3 bras sur 3, dont un lien dans une fenêtre d'échec ⇒ refus).
+  Son application à la passe : section D299.
   ⚠ **La règle « une preuve ne se caviarde pas » (D291) est RATIFIÉE et elle reste, quelle que soit
   l'option** (Ko, 16/09) : on n'élargit jamais en retouchant le journal, seulement en gardant
   davantage de lignes.
