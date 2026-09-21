@@ -578,6 +578,15 @@ un instrument entre au dépôt) ; le harnais `neutralisation/neutralize-budgets.
 `docs/preuves/D297/`. **Ordre de la session, de Ko, non réordonnable** : 0 cet amendement commité ;
 1 relevé d'ouverture ; 2 calibration ; 3 n°0 sous les quatre configurations ; 4 mesures ; 5 les quatre
 lignes, le n°8 sur chacune, les portes.
+⛔ **ÉTAPE 1, 20/09/2026 23:56:12 — PORTE DURE ROUGE SUR `chrome` (14) : RIEN N'EST LANCÉ.** SECTEUR ✅,
+RAM libre **5 194 Mo, +615** au-dessus de la barre ✅, calibration de la sonde rejouée (rendement
+0,96) ✅ — **mais `chrome` = 14** ⛔ : une seule instance, lancée à 21:33:55 par
+`--startup-foreground-launch`, 828 Mo. **Aucune des étapes 2 à 5 n'a commencé** ; la session ne ferme
+pas le navigateur de Ko (précédent de D293). Pièces : `docs/preuves/D297/ouverture-refusee/`.
+⚠ **État de l'arbre à ce moment** : l'instrument `neutralisation/mesure-budgets.py` et le harnais
+`neutralisation/neutralize-budgets.py` sont **écrits et NON commités** — ni lancés, ni passés aux
+portes : du code non mesuré n'entre pas dans `main`. ⇒ **Reprise À L'ÉTAPE 1**, sur ce protocole,
+sans le réécrire.
 
 ### ⛔ ÉTAT AU 20/09/2026 (D296) — À LIRE AVANT LES PIÈCES, QUI SONT CELLES DE D295
 

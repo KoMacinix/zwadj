@@ -1,0 +1,4 @@
+releve lecture seule, 2026-09-20 23:56:54
+processus chrome : 14
+ 14  C:\Program Files\Google\Chrome\Application\chrome.exe
+racine : pid 23484, cree 2026-09-20 9:33:55 PM, ligne de commande : "C:\Program Files\Google\Chrome\Application\chrome.exe" --startup-foreground-launch
