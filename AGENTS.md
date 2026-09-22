@@ -1165,6 +1165,14 @@ note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
   pas pareil — **ne jamais conclure sur un seul des deux**.
 - ⛔ **UNE E2E INTERROMPUE LAISSE SES SERVEURS SUR 3100/3101** (et la mémoire) : la
   suivante meurt en 8 s sur « already used ». Purger node et les ports AVANT.
+- ⛔ **UN `tail -f` (Git Bash) SUR LE JOURNAL DE L'ÉCHANTILLONNEUR L'AVEUGLE (D299, 21/09/2026).**
+  `Add-Content` (PowerShell) refuse d'écrire un fichier qu'un `tail -f` tient ouvert : **62 `IOException`,
+  aucun échantillon pendant 2 023 s**, toute la fenêtre de `--tout` d'une certification — qui n'a donc
+  pas pu porter la marque. **Reproduit sur ses deux bras** (`docs/preuves/D299/outils/reproduire-verrou.sh`).
+  ⇒ **Pendant une fenêtre, aucun lecteur sur ce journal** ; le régime se lit à la clôture, par `-Resume`.
+  ⚠ Un `tail -f` sur un journal écrit par **Python** (celui des campagnes) n'a rien bloqué : mesuré, complet.
+  ⚠ **Et un `tail` lancé en sous-shell d'arrière-plan survit à l'arrêt du moniteur qui l'a lancé** :
+  quatre survivaient ; ils se retrouvent par leur ligne de commande (`Win32_Process`) et s'arrêtent à la main.
 - ✅ **`pnpm db:down` EST SANS EFFET SUR LES DONNÉES DEPUIS D292 (13/09/2026) — NE PAS L'ÉVITER.**
   `zwadj_pgdata` est monté sur `/var/lib/postgresql`, où postgres:18 range la base : `docker compose
   down` retire le conteneur, **le volume NOMMÉ reste** — mesuré par une table témoin à travers

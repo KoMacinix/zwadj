@@ -1,0 +1,6 @@
+bras 1 (tail actif) : REFUSE - IOException
+bras 2 (tail arrete) : ECRIT
+--- contenu du témoin (attendu : entete, ligne2)
+entete
+ligne2
+--- tail restants sur le témoin : 0 (attendu 0)

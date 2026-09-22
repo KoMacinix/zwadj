@@ -1,0 +1,26 @@
+== CALIBRATION : résumé ANSI lu ['Test Files 3 passed (3)', 'Tests 36 passed (36)'] · témoin sans résumé [] · « FAILED » dans un nom compté 0 (attendu 0) · vrai FAIL compté 1 (attendu 1) → ✓
+== rang19-build.log : 133 lignes, 11136 octets · code 0
+   « Done » : 4 — packages/types, apps/api, apps/pro, apps/client
+   FAIL (casse exacte, tête de ligne) 0 · « timed out » 0 · error TS 0 · ELIFECYCLE 0
+== rang19-campagnes-tout.log : 118 lignes, 5966 octets · code 1
+   FAIL (casse exacte, tête de ligne) 0 · « timed out » 0 · error TS 0 · ELIFECYCLE 0
+== rang19-lint.log : 21 lignes, 526 octets · code 0
+   « Done » : 8 — packages/i18n, packages/ui, e2e, packages/types, packages/api-client, apps/api, apps/client, apps/pro
+   FAIL (casse exacte, tête de ligne) 0 · « timed out » 0 · error TS 0 · ELIFECYCLE 0
+== rang19-test-int.log : 289 lignes, 46655 octets · code 0
+   Test Files 36 passed (36)
+   Tests 436 passed (436)
+   FAIL (casse exacte, tête de ligne) 0 · « timed out » 0 · error TS 0 · ELIFECYCLE 0
+== rang19-test.log : 1554 lignes, 82515 octets · code 0
+   Test Files 58 passed (58)
+   Tests 659 passed (659)
+   Test Files 3 passed (3)
+   Tests 36 passed (36)
+   Test Files 20 passed (20)
+   Tests 287 passed (287)
+   Test Files 28 passed (28)
+   Tests 347 passed (347)
+   FAIL (casse exacte, tête de ligne) 0 · « timed out » 0 · error TS 0 · ELIFECYCLE 0
+== rang19-typecheck.log : 21 lignes, 627 octets · code 0
+   « Done » : 8 — packages/i18n, packages/types, packages/ui, e2e, packages/api-client, apps/api, apps/client, apps/pro
+   FAIL (casse exacte, tête de ligne) 0 · « timed out » 0 · error TS 0 · ELIFECYCLE 0

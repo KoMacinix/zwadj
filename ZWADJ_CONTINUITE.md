@@ -502,6 +502,20 @@ résultat ne certifie rien. Détail et pièces : section D299, « ÉTAPE 1 » ; 
 parce qu'il suit ce MOUVEMENT D'INVENTAIRE NOMMÉ**, pas parce qu'on le répète (règle écrite au critère, fin
 de « LA BARRE D'ÉTAT MACHINE ») ; ce que l'arrêt a réellement rendu s'écrit **mesuré**. ⇒ **Reprise à
 l'étape 1, protocole de `c42c967` inchangé.**
+⛔ **PASSE 1 (21/09/2026, 23:10 → 23:59) — INTERROMPUE PAR UN DÉFAUT D'INSTRUMENT, LE MIEN. PAS DE
+MARQUE SUR ELLE ; REJEU INTÉGRAL (règle de Ko, D298).** Porte dure **verte** (RAM +993,5 puis +1 285,
+`chrome` 0, SECTEUR, calibration 0,93) ; **six portes à 0** aux comptes prédits ; `--tout` **186 · 0 · 13**,
+exactement la prédiction. ⛔ **Mais l'échantillonneur n'a rien écrit de 23:25:45 à 23:59:28 (2 023 s,
+toute la fenêtre de `--tout`)** : son journal était tenu par le `tail -f` de **mon** moniteur, et
+`Add-Content` a levé 62 fois. **Cause reproduite sur ses deux bras** (témoin hors dépôt). ⇒ Le lecteur
+de l'échantillonneur rend **« FENÊTRE NON HOMOGÈNE »** : le point 7 du critère n'est pas tenu sur cette
+passe. **Le comportement n'a pas démenti** — la mesure s'arrête, pas le lot.
+⇒ **AMENDEMENT DU PROTOCOLE, COMMITÉ AVANT LE REJEU** : (1) **aucun lecteur** — `tail`, `cat`,
+`Get-Content` — sur le journal de l'échantillonneur pendant la fenêtre ; le régime se lit **à la clôture**,
+par `-Resume` ; le moniteur ne suit que le journal des campagnes, écrit par Python (mesuré : complet sous
+`tail -f`) ; (2) journaux du rejeu : `rang19-p2-*`, ceux de la passe 1 restant pièces ; (3) un
+`pg_isready` en échec **arrête** avant le relevé (faute de la passe 1, section D299). Pièces :
+`docs/preuves/D299/passe-1-interrompue/`.
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 21/09/2026** (première écriture : l'ordre des rangs). ⇒ **QUEL lot : rang
 19. OÙ IL EN EST : ici.** **Motif de Ko** : « le compteur est à DEUX, la règle l'impose ».
@@ -2794,6 +2808,57 @@ marge exacte où la condition échoue ». **Mouvement d'inventaire : Ko a arrêt
 D275 ; `chrome` et `oracle` vérifiés absents de son côté. ⚠ **Ce que l'arrêt a rendu n'est PAS 633 Mo tant
 qu'il n'est pas mesuré** : fermer Chrome n'a rendu que 446 Mo sur 1 162 (ci-dessus). Il se lit au relevé
 de reprise.
+
+### ⛔ D299 — PASSE 1 : VERTE PARTOUT, ET NON CERTIFIANTE — MON MONITEUR A AVEUGLÉ L'ÉCHANTILLONNEUR
+
+**Le relevé de reprise, et ma faute d'entrée.** À 23:07, `chrome` 0, `oracle` 0, `node` 0 — mais
+**Docker Desktop était arrêté** : `pg_isready` a échoué, et ma commande a **enchaîné sur la sonde au lieu de
+s'arrêter**. Ce relevé (RAM 6 607 Mo) décrit une machine **sans Docker**, pas celle de la passe : il n'est
+**pas** un relevé d'ouverture, il n'entre dans aucun verdict. ⇒ Docker Desktop relancé **par la session**
+— second mouvement d'inventaire, **imposé par le protocole** (`test:int` et l'e2e en dépendent), non fait
+par Ko — puis `pnpm db:up` (même volume `zwadj_zwadj_pgdata`). ⚠ **Ce n'était pas une relance jusqu'au vert** :
+le relevé de 23:07 n'était pas conforme, il n'avait rien à refuser.
+**Relevés d'ouverture conformes** : 23:10:37, calibré (rendement 0,93) — RAM **5 572,5** (bande 4 713-5 844,
+Docker en démarrage) ; 23:11:12 — **5 864** (5 853-5 881). `chrome` 0, `node` 0, SECTEUR. **Porte dure verte.**
+**Ce que le mouvement a réellement rendu — mesuré, et non attribuable** : entre le refus de 19:08 (4 548 Mo)
+et 23:11 (5 864 Mo), toutes deux avec Docker levé : **+1 316 Mo**. ⚠ **La part d'`oracle` (633 Mo au refus)
+ne s'isole pas** : dans le même intervalle, `Code` −838, `svchost` −309, `claude` −111, `vmmemWSL` +432
+(Docker relancé). **On écrit le net, et on dit qu'on ne sait pas l'attribuer.**
+**La passe** (arbre `b56da7f`, vide aux deux premiers contrôles) :
+
+| porte | code | chiffres (journaux relus en entier, ANSI retiré, lecteur calibré) | RAM au relevé |
+|---|---|---|---|
+| `typecheck` | 0 | 8 projets « Done » | 5 756,5 |
+| `lint` | 0 | 8 paquets « Done » | 5 770 |
+| `test` | 0 | 659/58 · 36/3 · 287/20 · 347/28 = **1 329 / 109** | 5 665,5 |
+| `build` | 0 | 4 builds | 6 034 |
+| `test:int` | 0 | **436 / 36** | 6 238 |
+| `test:e2e` | 0 | **34 passés · 1 ignoré** sur 35 ; `node` 0 et ports libres avant et après | 6 008 |
+| `--tout` | 1 (attendu) | **186 mordues · 0 muette · 13 non mesurées** (`e3d1-s8` 5, `s11b` 4, `solid-s6` 4), 1 948 s | 6 000,5 |
+
+⇒ **Tout est exactement la prédiction dérivée.**
+⛔ **ET RIEN DE CELA NE CERTIFIE, PARCE QUE LA FENÊTRE DE `--tout` N'EST PAS ÉCHANTILLONNÉE.** Pour être averti
+de la fin de chaque campagne et de toute ligne hors SECTEUR, j'ai armé un moniteur qui suivait par
+`tail -f` le journal des campagnes **et celui de l'échantillonneur**. `Add-Content` a alors levé à chaque
+échantillon (**62 `IOException`**, « being used by another process ») : **aucun échantillon de 23:25:45 à
+23:59:28**. Les `tail` ont **survécu** à l'arrêt des moniteurs (sous-shells lancés en arrière-plan) ; arrêtés
+par la session (quatre, lignes de commande vérifiées avant), l'échantillonneur a repris **à la cadence
+suivante**. ⇒ Son lecteur, calibré sur ses quatre cas : **1 trou de 2 023 s, « LA FENÊTRE N'EST PAS
+HOMOGÈNE »** (code 2).
+**La cause est reproduite, pas supposée**, sur un témoin hors dépôt : `tail -f` actif ⇒ `Add-Content`
+**refusé** (`IOException`) ; `tail` arrêté ⇒ **écrit** (`outils/reproduire-verrou.sh`, sortie versée).
+⛔ **C'EST LA RÈGLE N°1 DE D298 QUI S'APPLIQUE, ET ELLE DIT QUOI FAIRE** : le défaut est d'**instrument**
+(une mesure du régime empêchée par la surveillance du régime) ; le **comportement ne dément pas** (portes
+vertes, compte des gardes prédit, **SECTEUR aux neuf relevés conformes** — deux d'ouverture, sept avant les
+mesures — et aux 29 échantillons pris). ⇒ **La mesure
+s'arrête, pas le lot** : réparation de l'usage (aucun lecteur sur ce journal pendant la fenêtre), **rejeu
+INTÉGRAL** de la passe, relevé d'ouverture compris, défaut écrit ici avec ses sorties brutes.
+⚠ **Ce qui ne se déduit PAS** : que la machine soit restée au régime pendant le trou. La durée de `--tout`
+(1 948 s, contre 5 454 s sur batterie à D283) le rend **plausible** — c'est une **inférence**, et c'est
+précisément pourquoi la passe ne certifie pas. ⚠ **Et le rejeu n'est pas une relance jusqu'au vert** : la
+passe 1 était verte ; c'est son **instrument** qui manquait.
+Pièces : `docs/preuves/D299/passe-1-interrompue/` (28 fichiers copiés à l'octet ; le journal e2e brut **reste
+hors dépôt**, sans extrait : cette passe ne sert à aucun verdict).
 
 ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut par l'identité des octets et imprime ce qu'il exclut
 

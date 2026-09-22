@@ -1,0 +1,570 @@
+ECHANTILLONNAGE vers .neutralisation-journaux/rang19-etat.csv toutes les 30 s — Ctrl+C pour arreter.
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+Add-Content : The process cannot access the file 
+'C:\Users\benla\Desktop\MyProjct\Zwadj\.neutralisation-journaux\rang19-etat.csv' because it is being used by another 
+process.
+At C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\echantillonneur-etat-machine.ps1:184 char:13
++             Add-Content -Path $Journal -Encoding utf8
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\benla\...rang19-etat.csv:String) [Add-Content], IOException
+    + FullyQualifiedErrorId : GetContentWriterIOError,Microsoft.PowerShell.Commands.AddContentCommand
+ 
+
+[killed]

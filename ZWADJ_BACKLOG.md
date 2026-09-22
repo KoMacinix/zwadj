@@ -2375,6 +2375,16 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
   parce qu'une certification ne peut pas porter de code. ⇒ **À intégrer à l'instrument au prochain lot de
   code qui en a l'usage** — avec la même contrainte : **ne recopier aucun contexte** hors de la sortie
   scellée, sans quoi le tri produit un écho.
+- **[INFRA][P2]** ⛔ **L'ÉCHANTILLONNEUR PERD SES ÉCHANTILLONS EN SILENCE QUAND SON JOURNAL EST TENU.**
+  Mesuré le 21/09/2026 (passe 1 du rang 19) : un `tail -f` sur `rang19-etat.csv` fait lever `Add-Content`
+  (`echantillonneur-etat-machine.ps1`, l. 184) **à chaque cadence** — 62 fois — et l'instrument **continue
+  sans écrire** : rien ne s'affiche sur la console de la passe, seul le trou le révèle à la clôture. Une
+  certification a été perdue ainsi (section D299). ⚠ **Et son lecteur (`-Resume`) nomme « veille, gel, ou
+  échantillonneur tué »** : la quatrième cause — **journal verrouillé** — n'y figure pas, ce qui enverrait
+  chercher un défaut de machine. ⇒ **À corriger avec l'instrument** (code de `neutralisation/`, donc un lot
+  qui compte) : écrire par un flux ouvert une fois avec partage en lecture, ou compter et **imprimer** les
+  échecs d'écriture ; ajouter la cause au lecteur. **Contournement écrit** (`AGENTS.md`, notes du poste de
+  Ko) : aucun lecteur sur ce journal pendant une fenêtre.
 - **[INFRA][P3]** ⚠ **LE CONTRÔLE « 0 VALEUR RÉELLE » N'EST PAS DANS L'INSTRUMENT NON PLUS** — il fait foi
   (Ko), et il vit en procédure (`docs/preuves/D299/outils/aucune-valeur-reelle.py`), qu'il faut nommer à
   chaque fois avec le journal à contrôler. Même report, même lot.
