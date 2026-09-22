@@ -497,6 +497,11 @@ processus**, `oracle` **633**, `vmmemWSL` **763**, `claude` **429** —, **ou co
 (redéfinir « repos » sur le plancher que cette machine peut produire, avec sa raison). ⚠ **La session ne
 ferme aucun processus de Ko**, et **ne relève pas en boucle jusqu'au vert** : une fenêtre choisie par son
 résultat ne certifie rien. Détail et pièces : section D299, « ÉTAPE 1 » ; `docs/preuves/D299/ouverture-refusee/`.
+⛔ **(21/09/2026, Ko) REFUS RATIFIÉ — SORTIE CHOISIE : LIBÉRER, PAS REDÉFINIR.** Ko a **arrêté `oracle`**
+(633 Mo au relevé du refus) et vérifié `chrome` et `oracle` absents. ⇒ **Le prochain relevé est légitime
+parce qu'il suit ce MOUVEMENT D'INVENTAIRE NOMMÉ**, pas parce qu'on le répète (règle écrite au critère, fin
+de « LA BARRE D'ÉTAT MACHINE ») ; ce que l'arrêt a réellement rendu s'écrit **mesuré**. ⇒ **Reprise à
+l'étape 1, protocole de `c42c967` inchangé.**
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 21/09/2026** (première écriture : l'ordre des rangs). ⇒ **QUEL lot : rang
 19. OÙ IL EN EST : ici.** **Motif de Ko** : « le compteur est à DEUX, la règle l'impose ».
@@ -2039,6 +2044,17 @@ session PEUT produire, puis redéfinir « repos » sur lui AVEC SA RAISON**, les
 hérités restant comme HISTOIRE et non comme barre. ⚠ Et redéfinir le seuil sans redéfinir ce
 qu'il garantit serait la moitié du travail : une passe prise près du bruit porte moins
 d'information qu'une passe prise loin de lui.
+⛔ **ET UN RELEVÉ NE SE RÉPÈTE PAS JUSQU'AU VERT — RÈGLE DE KO, 21/09/2026 (D299).** Un relevé pris
+après un **CHANGEMENT D'ÉTAT NOMMÉ** mesure un **autre état** ; un relevé répété sur **le même état**
+jusqu'au vert, **c'est de la SÉLECTION** — la fenêtre serait choisie pour son résultat, et la barre ne
+mesurerait plus rien. ⇒ **Après un refus, aucun nouveau relevé sans un MOUVEMENT D'INVENTAIRE NOMMÉ**, et
+ce que ce mouvement a **réellement rendu** s'écrit **mesuré**, jamais projeté : Chrome fermé a rendu
+**446 Mo sur 1 162** (D299).
+⚠ **Le cas qui la fonde est celui où la tentation était la plus forte** : le refus du 21/09/2026 était à
+**−31 Mo**, le plus petit écart de la série — trois relevés de plus auraient probablement passé.
+⛔ **ET REDÉFINIR « REPOS » À LA MARGE EXACTE OÙ LA CONDITION ÉCHOUE FABRIQUERAIT LA PERMISSION** (Ko) :
+devant ce refus, Ko a choisi de **libérer** (arrêt d'`oracle`, précédent de D275), **pas de redéfinir**. La
+sortie de D270 reste écrite pour un plancher **durablement** sous la barre, pas pour 31 Mo.
 
 ### État du rang 9 — ✅ **MARQUE POSÉE LE 10/09/2026 (D283)**
 
@@ -2763,6 +2779,21 @@ la sortie scellée de l'étape 0 : **0 alerte nouvelle** → second audit, derni
 92 alertes, 0 nouvelle** (`ouverture-refusee/audit-secrets-refus.txt`, `tri-refus.txt`). Passe D277 du refus :
 aucune phrase courante ne présente le rang 19 comme exécuté ou certifié ; les 13 permissions courantes restent
 traitées (`passe-d277/sortie-refus.txt`).
+
+### ⛔ D299 — LE REFUS RATIFIÉ, ET LE RELEVÉ QUI NE S'EST PAS FAIT
+
+**Ratifié par Ko**, qui nomme le geste qui compte : **la sonde n'a pas été relancée jusqu'au vert.** À
+**31 Mo** de la barre, trois relevés de plus auraient probablement passé — et la fenêtre aurait été
+**choisie pour son résultat**. ⛔ **C'est le cas où la tentation était la plus forte de toute la série**,
+et c'est pourquoi il s'écrit : un écart de −1 505 Mo (D293) ne tente personne, un écart de −31 Mo si.
+⇒ **Règle de Ko, écrite au critère** (fin de « LA BARRE D'ÉTAT MACHINE ») : un relevé après un changement
+d'état **nommé** mesure un autre état ; un relevé répété sur le même état jusqu'au vert est de la
+**sélection**.
+⇒ **Choix de Ko : LIBÉRER, PAS REDÉFINIR** — « redéfinir “repos” pour 31 Mo fabriquerait la permission à la
+marge exacte où la condition échoue ». **Mouvement d'inventaire : Ko a arrêté `oracle`**, précédent de
+D275 ; `chrome` et `oracle` vérifiés absents de son côté. ⚠ **Ce que l'arrêt a rendu n'est PAS 633 Mo tant
+qu'il n'est pas mesuré** : fermer Chrome n'a rendu que 446 Mo sur 1 162 (ci-dessus). Il se lit au relevé
+de reprise.
 
 ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut par l'identité des octets et imprime ce qu'il exclut
 
