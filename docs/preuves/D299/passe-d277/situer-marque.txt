@@ -1,0 +1,218 @@
+AGENTS.md:322 [peut-s-ouvrir] ## Méthode
+AGENTS.md:603 [peut-s-ouvrir] ## Méthode
+ZWADJ_CONTINUITE.md:494 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:495 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:543 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:605 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:607 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:642 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:647 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:651 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:653 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:706 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:824 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:883 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:1021 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1022 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1065 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1069 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1076 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1090 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1122 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1124 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1187 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1193 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1202 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1249 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CLOS : D290 — TROIS TERMES ÉLIMINÉS, 
+ZWADJ_CONTINUITE.md:1254 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CLOS : D290 — TROIS TERMES ÉLIMINÉS, 
+ZWADJ_CONTINUITE.md:1261 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CLOS : D290 — TROIS TERMES ÉLIMINÉS, 
+ZWADJ_CONTINUITE.md:1468 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1469 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1475 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1578 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 11 · `[INFRA]` **les instruments entrent au dépôt** ⛔ **CLOS : D286**
+ZWADJ_CONTINUITE.md:1602 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 10 · `[API][P0]` **les deux échéances** ⛔ **CLOS : D285**
+ZWADJ_CONTINUITE.md:2186 [compteur-deux] ## RANG 8 — S11-b · **point d'entrée CONSERVÉ** ⛔ **CHEMIN DE L'ARGENT** ⛔ **CLOS LE 11/09/2026 (D286) — TITRE AL
+ZWADJ_CONTINUITE.md:2828 [compteur-deux] ## Session du 21/09/2026 — D299 · CERTIFICATION (rang 19) des rangs 17 et 18
+ZWADJ_CONTINUITE.md:2999 [compteur-deux] ## Session du 21/09/2026 — D299 · CERTIFICATION (rang 19) des rangs 17 et 18
+ZWADJ_CONTINUITE.md:3031 [compteur-deux] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:3048 [compteur-deux] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:3154 [compteur-deux] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:3218 [compteur-deux] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:3227 [compteur-deux] ## Session des 20 et 21/09/2026 — D297 · rang 17 CLOS : les quatre budgets écrits à la valeur en vigueur, lus, et
+ZWADJ_CONTINUITE.md:3330 [compteur-deux] ## Session des 20 et 21/09/2026 — D297 · rang 17 CLOS : les quatre budgets écrits à la valeur en vigueur, lus, et
+ZWADJ_CONTINUITE.md:3374 [compteur-deux] ## Session des 20 et 21/09/2026 — D297 · rang 17 CLOS : les quatre budgets écrits à la valeur en vigueur, lus, et
+ZWADJ_CONTINUITE.md:3390 [compteur-deux] ## Session du 20/09/2026 — D296 · rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la sour
+ZWADJ_CONTINUITE.md:4302 [compteur-deux] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4327 [compteur-deux] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4382 [compteur-deux] ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image,
+ZWADJ_CONTINUITE.md:4528 [compteur-deux] ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image,
+ZWADJ_CONTINUITE.md:4554 [compteur-deux] ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image,
+ZWADJ_CONTINUITE.md:4576 [compteur-deux] ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image,
+ZWADJ_CONTINUITE.md:4871 [compteur-deux] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:4877 [compteur-deux] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:4905 [compteur-deux] ## Session du 12/09/2026 — D290 · le rang 13 perd son objet : trois termes éliminés, aucune borne posée
+ZWADJ_CONTINUITE.md:5213 [compteur-deux] ## Session du 12/09/2026 — D290 · le rang 13 perd son objet : trois termes éliminés, aucune borne posée
+ZWADJ_CONTINUITE.md:5357 [compteur-deux] ## Session du 12/09/2026 — D289 · rang 13 ouvert (cadrage seul), et la permission qui déclarait un contrôle SUFFI
+ZWADJ_CONTINUITE.md:5576 [compteur-deux] ## Session du 12/09/2026 — D288 · CERTIFICATION (rang 12) : la marque, et la porte dure entre au critère
+ZWADJ_CONTINUITE.md:5674 [compteur-deux] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:5680 [compteur-deux] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:8294 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8881 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8886 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8912 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8926 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8928 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8932 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8973 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8977 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8979 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8992 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9004 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9029 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9033 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9048 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9063 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9069 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9075 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9078 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9082 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9083 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9111 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9113 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9117 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:10628 [compteur-deux] ## Registre des décisions
+ZWADJ_CONTINUITE.md:513 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:642 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:708 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:1023 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1070 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1125 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1189 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1194 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1470 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1476 [aucun-lot-de-code] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:3690 [aucun-lot-de-code] ## Session du 20/09/2026 — D295 · rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et le chif
+ZWADJ_CONTINUITE.md:4310 [aucun-lot-de-code] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4323 [aucun-lot-de-code] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:5674 [aucun-lot-de-code] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:8881 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8929 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8933 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8980 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9005 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9069 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9114 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9117 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:605 [non-certifie-17-18] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:607 [non-certifie-17-18] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:651 [non-certifie-17-18] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:653 [non-certifie-17-18] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:706 [non-certifie-17-18] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:3031 [non-certifie-17-18] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:3227 [non-certifie-17-18] ## Session des 20 et 21/09/2026 — D297 · rang 17 CLOS : les quatre budgets écrits à la valeur en vigueur, lus, et
+ZWADJ_CONTINUITE.md:5575 [non-certifie-17-18] ## Session du 12/09/2026 — D288 · CERTIFICATION (rang 12) : la marque, et la porte dure entre au critère
+ZWADJ_CONTINUITE.md:1022 [permission-consommee] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1069 [permission-consommee] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1124 [permission-consommee] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1193 [permission-consommee] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1469 [permission-consommee] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1475 [permission-consommee] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:3156 [permission-consommee] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:4301 [permission-consommee] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4528 [permission-consommee] ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image,
+ZWADJ_CONTINUITE.md:4613 [permission-consommee] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:4622 [permission-consommee] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:8928 [permission-consommee] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8932 [permission-consommee] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8979 [permission-consommee] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9004 [permission-consommee] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:485 [rang19-ouvert] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:512 [rang19-ouvert] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:9087 [rang19-ouvert] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:495 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:646 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:709 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:1020 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1024 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1066 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1071 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1123 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1126 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1192 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1195 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1468 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1473 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1477 [peut-s-ouvrir] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:2998 [peut-s-ouvrir] ## Session du 21/09/2026 — D299 · CERTIFICATION (rang 19) des rangs 17 et 18
+ZWADJ_CONTINUITE.md:3154 [peut-s-ouvrir] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:3161 [peut-s-ouvrir] ## Session du 21/09/2026 — D298 · rang 18 CLOS : l'écho de l'audit de secrets — un instrument nouveau, qui exclut
+ZWADJ_CONTINUITE.md:3330 [peut-s-ouvrir] ## Session des 20 et 21/09/2026 — D297 · rang 17 CLOS : les quatre budgets écrits à la valeur en vigueur, lus, et
+ZWADJ_CONTINUITE.md:3506 [peut-s-ouvrir] ## Session du 20/09/2026 — D296 · rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la sour
+ZWADJ_CONTINUITE.md:3507 [peut-s-ouvrir] ## Session du 20/09/2026 — D296 · rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la sour
+ZWADJ_CONTINUITE.md:4301 [peut-s-ouvrir] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4327 [peut-s-ouvrir] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4527 [peut-s-ouvrir] ## Incident du 13/09/2026 — D292 · `zwadj-db` ne démarrait plus : le montage `/data` contre le volume de l'image,
+ZWADJ_CONTINUITE.md:4606 [peut-s-ouvrir] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:4613 [peut-s-ouvrir] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:4622 [peut-s-ouvrir] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:4664 [peut-s-ouvrir] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:5317 [peut-s-ouvrir] ## Session du 12/09/2026 — D289 · rang 13 ouvert (cadrage seul), et la permission qui déclarait un contrôle SUFFI
+ZWADJ_CONTINUITE.md:5565 [peut-s-ouvrir] ## Session du 12/09/2026 — D288 · CERTIFICATION (rang 12) : la marque, et la porte dure entre au critère
+ZWADJ_CONTINUITE.md:5593 [peut-s-ouvrir] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:5674 [peut-s-ouvrir] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:5676 [peut-s-ouvrir] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:8880 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8882 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8926 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8930 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8934 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8978 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8981 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9003 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9006 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9083 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9088 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9111 [peut-s-ouvrir] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:514 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 
+ZWADJ_CONTINUITE.md:609 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:645 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 18 · `[INFRA]` **l'écho de l'audit de secrets** ⛔ **CLOS LE 21/09/2026 : D298 — UN INS
+ZWADJ_CONTINUITE.md:655 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:709 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:869 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:879 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, 
+ZWADJ_CONTINUITE.md:1017 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1024 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 16 · `[DOC]` **les sept constats de la reprise à froid** ⛔ **CLOS LE 16/09/2026 : D294
+ZWADJ_CONTINUITE.md:1065 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1071 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1126 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1191 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1195 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS : D291 — UN TERME NOMMÉ, LA POSIT
+ZWADJ_CONTINUITE.md:1473 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:1477 [compteur-zero] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE**
+ZWADJ_CONTINUITE.md:3383 [compteur-zero] ## Session du 20/09/2026 — D296 · rang 17 : le lot de code arbitré, puis bloqué avant sa première ligne — la sour
+ZWADJ_CONTINUITE.md:3575 [compteur-zero] ## Session du 20/09/2026 — D295 · rang 17 ouvert (cadrage seul) : l'arbitrage écrit en PREMIÈRE ligne, et le chif
+ZWADJ_CONTINUITE.md:3710 [compteur-zero] ## Session du 16/09/2026 — D294 · rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règl
+ZWADJ_CONTINUITE.md:3887 [compteur-zero] ## Session du 16/09/2026 — D294 · rang 16, lot DOCUMENTAIRE : les sept constats d'une reprise à froid, et la règl
+ZWADJ_CONTINUITE.md:4311 [compteur-zero] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4325 [compteur-zero] ## Session des 14 et 16/09/2026 — D293 · CERTIFICATION (rang 15) : deux refus sur la porte dure, puis la marque
+ZWADJ_CONTINUITE.md:4606 [compteur-zero] ## Session des 12 et 13/09/2026 — D291 · rang 14 : le dossier cesse d'affirmer ce qu'il n'a pas mesuré, et les pr
+ZWADJ_CONTINUITE.md:5357 [compteur-zero] ## Session du 12/09/2026 — D289 · rang 13 ouvert (cadrage seul), et la permission qui déclarait un contrôle SUFFI
+ZWADJ_CONTINUITE.md:5598 [compteur-zero] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:5676 [compteur-zero] ## Session du 11/09/2026 — D287 · une passe D277 cherche aussi ce que le lot REND PERMIS
+ZWADJ_CONTINUITE.md:8884 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8930 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8934 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:8981 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9003 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9006 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9070 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9088 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9111 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9115 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_CONTINUITE.md:9119 [compteur-zero] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+ZWADJ_BACKLOG.md:3013 [compteur-deux] ## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
+ZWADJ_BACKLOG.md:2804 [peut-s-ouvrir] ## Reports des 12 et 13/09/2026 — rang 14, `PERF` et la durée (D291)
+ZWADJ_BACKLOG.md:2805 [peut-s-ouvrir] ## Reports des 12 et 13/09/2026 — rang 14, `PERF` et la durée (D291)
+ZWADJ_BACKLOG.md:2867 [compteur-zero] ## Reports du 12/09/2026 — rang 13, cadrage (D289)
+ZWADJ_BACKLOG.md:3020 [compteur-zero] ## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
+== 217 occurrence(s) situées · 7 motif(s) · 4 fichiers

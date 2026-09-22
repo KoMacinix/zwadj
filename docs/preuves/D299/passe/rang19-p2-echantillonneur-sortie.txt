@@ -1,0 +1,3 @@
+ECHANTILLONNAGE vers .neutralisation-journaux/rang19-p2-etat.csv toutes les 30 s — Ctrl+C pour arreter.
+
+[killed]

@@ -1,0 +1,5 @@
+✓ .neutralisation-journaux/rang19-p2-test-e2e.log : occurrences stricte 24 · large 24 (doivent s'accorder) · valeurs distinctes 24 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ .neutralisation-journaux/rang19-test-e2e.log : occurrences stricte 24 · large 24 (doivent s'accorder) · valeurs distinctes 24 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, .neutralisation-journaux/rang19-p2-test-e2e.log porte 24 valeur(s) (attendu ≥ 24)
+✓ lu comme une cible, .neutralisation-journaux/rang19-test-e2e.log porte 24 valeur(s) (attendu ≥ 24)
+== valeurs cherchées : 48 (2 journal/journaux) · parcourus : 590 fichiers, 7308496 octets · porteurs : 0 (attendu 0)

@@ -1,0 +1,42 @@
+TRI À LA MAIN DES 22 OCCURRENCES « NON TRAITÉES » DU SENS 1 — passe D277 de D299, à la marque (22/09/2026)
+Source : verifier-marque-sortie.txt (92 examinées, 70 traitées, 22 non traitées). Chaque ligne relue dans son
+contexte (± 2 lignes) avant d'être classée. Numéros de ligne de ZWADJ_CONTINUITE.md au moment du tri.
+
+DATÉES — vraies à leur date, non re-marquées (principe de D291, suivi par D288 et D293) : 16
+  824   rang 17 — citation de l'arbitrage de Ko du 20/09 : « Il portera le compteur à UN. »
+  883   rang 17 — « (D297) Écrit et clos le 21/09/2026 : il a porté le compteur à UN. » — fait daté, vrai.
+  1076  rang 15 — « MOTIF DE L'ORDRE, ÉCRIT PAR KO » (14/09) : compteur à DEUX (rang 13, incident D292).
+  1202  rang 14 — « TRANCHÉ PAR KO LE 14/09/2026 (D292) … Le compteur reste à DEUX. »
+  1249  rang 13 — « Motif barré le 13/09/2026 (D292) … le compteur reste à DEUX » ; renvoie au rang 14, levé.
+  1261  rang 13 — clôture D290 : « le compteur … est à UN » (rang 13 certifié depuis par D293).
+  1468  rang 12 — maillon (D291) d'une chaîne D293 LEVÉ → D298 CONSOMMÉE → D299 LEVÉ (l. 1477, à 9 lignes :
+        hors de la fenêtre de 8 du vérificateur — traitée par la chaîne).
+  1578  rang 11 — D286 (11/09) : « un lot de code suivant serait le troisième, et ne peut pas s'ouvrir » —
+        vraie à sa date, périmée depuis D288 ; ni D288 ni D293 ne l'ont re-marquée.
+  1602  rang 10 — D285 : « passe de ZÉRO à UN » — fait daté.
+  8881  ordre des rangs, rang 10 — « BARRÉ LE 11/09/2026 (D287) : LE COMPTEUR EST À DEUX — D285 ET D286 — ET
+        AUCUN LOT DE CODE NE PEUT S'OUVRIR » (compté deux fois : compteur-deux et aucun-lot-de-code) — nomme
+        deux lots certifiés par D288 ; note datée, non re-marquée par D288 ni D293.
+  8886  ordre des rangs, rang 10 — récit : « qui a porté le compteur à deux » (11/09).
+  8912  ordre des rangs, rang 11 — D286 : « passe de UN à DEUX » — fait daté.
+  8992  ordre des rangs — « PÉRIMÉ LE 20/09/2026 (D296) … c'est lui qui portera le compteur à UN ».
+  9048  ordre des rangs, rang 17 — clôture D297 : « Compteur … : UN » ; l'entrée du rang 18 qui suit porte
+        DEUX puis la levée D299, et celle du rang 19 porte ZÉRO — lecture séquentielle non ambiguë.
+  ZWADJ_BACKLOG.md:3013 — citation datée (D295) : « c'est lui qui portera le compteur … à UN ».
+
+CITATIONS OU LIGNES DE CETTE MARQUE : 3
+  9033  ordre des rangs — citation de Ko (20/09) : « Il portera le compteur à UN. »
+  9082, 9083  ordre des rangs — MA ligne D299 : « Compteur … : DEUX → ZÉRO » (la mention « D299 » est à la
+        ligne 9081, avant la fenêtre du vérificateur, qui ne regarde qu'en aval).
+
+FAUX POSITIFS DU MOTIF : 3
+  1090  « Exempté du compteur** : c'est un versement » — « un » article, pas un compte.
+  2186  « compteurs figés (D268), appliquée à un » — idem.
+  9087  motif rang19-ouvert : « clôture du rang 19, pour qu'aucune reprise … » — « reprise » hors sens.
+
+⇒ 16 + 3 + 3 = 22. AUCUNE ÉCRITURE REQUISE PAR CE TRI.
+⚠ CE QUE LE VÉRIFICATEUR A TROUVÉ, LUI, AVANT CE TRI : l. 9117 — « (D298, 21/09/2026) Compteur à DEUX : rang 17
+(D297) puis rang 18 (D298). ⇒ Aucun lot de code ne s'ouvre avant une certification. » — interdiction COURANTE,
+formulée autrement que l'ancre du script de levée (8 occurrences) : levée à la main, (D299) LEVÉ.
+⚠ ET L'ANGLE MORT QU'IL A FALLU LUI RETIRER : l'ordre des rangs vit sous « ## Session du 31/08/2026 — D270 » ;
+la première version l'excluait comme section datée (56 examinées au lieu de 92).

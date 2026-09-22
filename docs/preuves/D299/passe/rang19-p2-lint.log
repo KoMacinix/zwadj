@@ -1,0 +1,21 @@
+
+> zwadj@ lint C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run lint
+
+Scope: 9 of 10 workspace projects
+e2e lint$ eslint .
+packages/ui lint$ eslint src
+packages/i18n lint$ eslint src
+packages/types lint$ eslint src
+packages/i18n lint: Done
+packages/ui lint: Done
+e2e lint: Done
+packages/types lint: Done
+apps/api lint$ eslint src prisma
+packages/api-client lint$ eslint src
+packages/api-client lint: Done
+apps/api lint: Done
+apps/client lint$ eslint src
+apps/pro lint$ eslint src
+apps/client lint: Done
+apps/pro lint: Done

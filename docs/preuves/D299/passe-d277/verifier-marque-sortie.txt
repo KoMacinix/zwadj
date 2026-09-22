@@ -1,0 +1,24 @@
+== ordre des rangs : lignes 8579 à 9171, ramenées dans le champ
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:824 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:883 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1076 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1090 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 16/09/2026 : D293 
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1202 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 14 · `[MÉTHODE][P0]` **`PERF` et la durée** ⛔ **CLOS 
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1249 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CLOS
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1261 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 13 · `[MÉTHODE][P0]` **la borne de workers** ⛔ **CLOS
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1468 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 12 · **CERTIFICATION** ⛔ **CLOS : D288 — MARQUE POSÉE
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1578 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 11 · `[INFRA]` **les instruments entrent au dépôt** ⛔
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1602 [compteur-deux] ## ~~PROCHAIN LOT~~ — rang 10 · `[API][P0]` **les deux échéances** ⛔ **CLOS : D2
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:2186 [compteur-deux] ## RANG 8 — S11-b · **point d'entrée CONSERVÉ** ⛔ **CHEMIN DE L'ARGENT** ⛔ **CLO
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:8881 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:8886 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:8912 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:8992 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:9033 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:9048 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:9082 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:9083 [compteur-deux] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:8881 [aucun-lot-de-code] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:9087 [rang19-ouvert] ## Session du 31/08/2026 — D270 · le mode d'exécution de la suite pro
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3013 [compteur-deux] ## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
+== occurrences du sens 1 hors sections datées examinées : 92 · traitées 70 · non traitées 22 (attendu 0, à trier une à une)

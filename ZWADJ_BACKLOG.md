@@ -2388,6 +2388,15 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
 - **[INFRA][P3]** ⚠ **LE CONTRÔLE « 0 VALEUR RÉELLE » N'EST PAS DANS L'INSTRUMENT NON PLUS** — il fait foi
   (Ko), et il vit en procédure (`docs/preuves/D299/outils/aucune-valeur-reelle.py`), qu'il faut nommer à
   chaque fois avec le journal à contrôler. Même report, même lot.
+- **[DOC][P2]** ⛔ **L'ORDRE DES RANGS VIT SOUS UN TITRE DE SESSION DATÉE — « ## Session du 31/08/2026 —
+  D270 » —, ET TOUT OUTIL QUI CLASSE PAR TITRE `##` LE SAUTE.** Mesuré à la passe D277 de la marque (22/09) :
+  le vérificateur excluait les sections datées par leur titre, et a rendu **56** occurrences examinées au
+  lieu de **92** — **le bloc le plus courant du fichier était hors champ**, et une interdiction courante
+  (« (D298) Compteur à DEUX ») y restait non levée. Corrigé **dans la procédure** (sous-titre ramené par son
+  texte : `docs/preuves/D299/passe-d277/verifier-marque.py`), **pas dans le fichier**.
+  ⇒ **À ARBITRER PAR KO** : donner à l'ordre des rangs **son propre titre `##`** — un lot documentaire,
+  mais qui déplace un bloc que chaque reprise lit en premier, et dont le nom est cité ailleurs
+  (« section D270 ») : ⚠ une passe D277 dans les deux sens, sur ces renvois, en ferait partie.
 
 ## Reports du 21/09/2026 — rang 18, l'écho de l'audit de secrets (D298)
 

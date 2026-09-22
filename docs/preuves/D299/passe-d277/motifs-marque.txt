@@ -1,0 +1,12 @@
+# Passe D277 de D299, à la MARQUE (rangs 17 et 18 certifiés, compteur DEUX → ZÉRO).
+# Sens 1 — ce que la marque INVALIDE : le compteur à DEUX (ou à UN) écrit comme courant, « aucun lot de code »
+# qui interdit, D297/D298 « non certifié(s) », les permissions « consommées » par D297/D298, le rang 19 ouvert.
+# Sens 2 — ce que la marque REND PERMIS : « peut s'ouvrir », « compteur à zéro » — à confronter au rang 20,
+# qui reste EN ATTENTE D'ARBITRAGE DE KO (une permission ne vaut pas arbitrage).
+compteur-deux	(?i)compteur[^.]{0,60}?\*{0,2}(?:à |: |est |reste |passe )\*{0,2}(?:à )?\*{0,2}(?:deux|un)\b
+aucun-lot-de-code	(?i)aucun lot de code ne (?:\*{0,2})?(?:peut )?s'ouvr
+non-certifie-17-18	(?i)non certifi[ée]s?[^.]{0,80}?(?:D297|D298|rang 17|rang 18|compteur)
+permission-consommee	(?i)permission consomm[ée]e
+rang19-ouvert	(?i)rang 19[^.]{0,80}?(?:ouvert|rouge|reprise|rien n'est lancé)
+peut-s-ouvrir	(?i)\*{0,2}peu(?:t|vent)\*{0,2} (?:désormais |donc )?s'ouvrir
+compteur-zero	(?i)compteur (?:de lots de code non certifiés )?(?:est |reste |passe )?(?:à |: )\*{0,2}zéro

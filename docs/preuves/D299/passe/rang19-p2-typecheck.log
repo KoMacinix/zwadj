@@ -1,0 +1,21 @@
+
+> zwadj@ typecheck C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run typecheck
+
+Scope: 9 of 10 workspace projects
+packages/ui typecheck$ tsc --noEmit
+packages/types typecheck$ tsc --noEmit
+packages/i18n typecheck$ tsc --noEmit
+e2e typecheck$ tsc --noEmit
+packages/i18n typecheck: Done
+packages/types typecheck: Done
+packages/ui typecheck: Done
+e2e typecheck: Done
+packages/api-client typecheck$ tsc --noEmit
+apps/api typecheck$ tsc --noEmit
+packages/api-client typecheck: Done
+apps/api typecheck: Done
+apps/client typecheck$ tsc --noEmit
+apps/pro typecheck$ tsc --noEmit
+apps/pro typecheck: Done
+apps/client typecheck: Done

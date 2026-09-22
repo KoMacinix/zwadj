@@ -1,0 +1,60 @@
+AGENTS.md:322 [peut-s-ouvrir] lot, un rang ou un code peut s'ouvrir, et dont la CONDITION vient de changer.
+AGENTS.md:603 [peut-s-ouvrir] règle qui décide si un lot peut s'ouvrir. **Un report d'écriture sur une règle de blocage
+ZWADJ_CONTINUITE.md:495 [peut-s-ouvrir] **peut** s'ouvrir dès l'arbitrage de Ko — c'est lui qui portera le compteur à un.
+ZWADJ_CONTINUITE.md:646 [peut-s-ouvrir] un lot de code **peut** s'ouvrir dès que Ko l'arbitre. ⇒ **Rang 20 : en attente d'arbitrage de Ko.**
+ZWADJ_CONTINUITE.md:709 [peut-s-ouvrir] au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1020 [peut-s-ouvrir] ajoute pas.** Un lot de code peut s'ouvrir dès l'arbitrage de Ko, et c'est lui qui portera le
+ZWADJ_CONTINUITE.md:1024 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1066 [peut-s-ouvrir] code peut s'ouvrir dès que Ko l'arbitre, et c'est lui qui le portera à un. ⚠ **Le rang 16 ne l'a pas
+ZWADJ_CONTINUITE.md:1071 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1123 [peut-s-ouvrir] DEUX → ZÉRO**, le **rang 15 est CLOS**, et un lot de code peut s'ouvrir dès l'arbitrage de Ko.
+ZWADJ_CONTINUITE.md:1126 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1192 [peut-s-ouvrir] ZÉRO**, et **un lot de code PEUT s'ouvrir** dès que Ko l'arbitre — c'est lui qui le portera à un.
+ZWADJ_CONTINUITE.md:1195 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1468 [peut-s-ouvrir] lot de code **peut** désormais s'ouvrir, et c'est lui qui portera le compteur à un.
+ZWADJ_CONTINUITE.md:1473 [peut-s-ouvrir] lieu, **compteur à ZÉRO**, **un lot de code peut s'ouvrir**. ⚠ Troisième bascule de cette même phrase en
+ZWADJ_CONTINUITE.md:1477 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:8880 [peut-s-ouvrir] compteur de lots de code non certifiés est **à zéro**, donc un lot de code peut s'ouvrir~~.
+ZWADJ_CONTINUITE.md:8882 [peut-s-ouvrir] CODE NE PEUT S'OUVRIR.** ⚠ La phrase était vraie **à l'instant où elle a été écrite**, et ce
+ZWADJ_CONTINUITE.md:8926 [peut-s-ouvrir] ⇒ **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code **peut**
+ZWADJ_CONTINUITE.md:8930 [peut-s-ouvrir] ⛔ **(D293, 16/09/2026) LEVÉ** : marque du rang 15 posée, **compteur à ZÉRO**, un lot de code **peut**
+ZWADJ_CONTINUITE.md:8934 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:8978 [peut-s-ouvrir] **peut** s'ouvrir, et c'est lui qui le portera à un.
+ZWADJ_CONTINUITE.md:8981 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:9003 [peut-s-ouvrir] D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
+ZWADJ_CONTINUITE.md:9006 [peut-s-ouvrir] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:9083 [peut-s-ouvrir] **peut** s'ouvrir dès que Ko l'arbitre, et c'est lui qui portera le compteur à un. Après un refus
+ZWADJ_CONTINUITE.md:9088 [peut-s-ouvrir] arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel.
+ZWADJ_CONTINUITE.md:9111 [peut-s-ouvrir] compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que Ko l'arbitre.**~~
+ZWADJ_CONTINUITE.md:514 [compteur-zero] ⛔ **BARRÉ LE 22/09/2026 (D299)** — vrai au refus de 19:08, faux après la passe 2 : **marque posée, compteur
+ZWADJ_CONTINUITE.md:609 [compteur-zero] le compteur est à **ZÉRO**. ⚠ **Le titre n'est pas réécrit** : aucun en-tête antérieur ne l'est (point 4
+ZWADJ_CONTINUITE.md:645 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**,
+ZWADJ_CONTINUITE.md:655 [compteur-zero] 22/09/2026 » —, et le compteur est à **ZÉRO**. ⚠ **Le titre n'est pas réécrit** : aucun en-tête antérieur
+ZWADJ_CONTINUITE.md:709 [compteur-zero] au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:869 [compteur-zero] ⇒ **Compteur de lots de code non certifiés : ZÉRO**, inchangé — aucune ligne de code, et D296 est
+ZWADJ_CONTINUITE.md:879 [compteur-zero] ⚠ **Compteur de lots de code non certifiés : ZÉRO, inchangé.** Ce lot est **documentaire** — seuls
+ZWADJ_CONTINUITE.md:1017 [compteur-zero] ⚠ **Compteur de lots de code non certifiés : ZÉRO.** ⛔ *(D297 : passé à UN le 21/09/2026 par le lot
+ZWADJ_CONTINUITE.md:1024 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1065 [compteur-zero] ⚠ Le compteur est à **ZÉRO** : un lot de
+ZWADJ_CONTINUITE.md:1071 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1126 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1191 [compteur-zero] ⛔ **(D293, 16/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 15, **compteur à
+ZWADJ_CONTINUITE.md:1195 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:1473 [compteur-zero] lieu, **compteur à ZÉRO**, **un lot de code peut s'ouvrir**. ⚠ Troisième bascule de cette même phrase en
+ZWADJ_CONTINUITE.md:1477 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:8884 [compteur-zero] quand la marque du rang 9 venait de ramener le compteur à zéro. **C'est le rang 10 lui-même
+ZWADJ_CONTINUITE.md:8930 [compteur-zero] ⛔ **(D293, 16/09/2026) LEVÉ** : marque du rang 15 posée, **compteur à ZÉRO**, un lot de code **peut**
+ZWADJ_CONTINUITE.md:8934 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:8981 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:9003 [compteur-zero] D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
+ZWADJ_CONTINUITE.md:9006 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+ZWADJ_CONTINUITE.md:9070 [compteur-zero] avant une certification.** ⛔ **(D299, 22/09/2026) LEVÉ** : marque posée au rang 19, **compteur à ZÉRO**.
+ZWADJ_CONTINUITE.md:9088 [compteur-zero] arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel.
+ZWADJ_CONTINUITE.md:9111 [compteur-zero] compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que Ko l'arbitre.**~~
+ZWADJ_CONTINUITE.md:9115 [compteur-zero] ⛔ **(D293, 16/09/2026) LEVÉ** : la certification du rang 15 est faite, **compteur à ZÉRO**. La borne de
+ZWADJ_CONTINUITE.md:9119 [compteur-zero] ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**.
+ZWADJ_BACKLOG.md:2804 [peut-s-ouvrir] de la passe D277 de D291 : « un lot de code **peut** s'ouvrir » ne sortait pas sur le motif
+ZWADJ_BACKLOG.md:2805 [peut-s-ouvrir] « peut s'ouvrir » — une permission périmée de l'ordre des rangs restait invisible. Corrigé **dans
+ZWADJ_BACKLOG.md:2867 [compteur-zero] part, a manqué une troisième occurrence (ordre des rangs, « Le compteur est à zéro »). D291
+ZWADJ_BACKLOG.md:3020 [compteur-zero] pièce du cadrage : elle appartient à Ko.** Cette entrée reste **ouverte**, le compteur à **zéro**.
+== sens 2 : 87 occurrence(s) des deux motifs vues · 59 hors sections datées, listées pour tri
