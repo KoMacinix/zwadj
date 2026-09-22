@@ -1,0 +1,45 @@
+   ✗ NON TRAITÉE : AGENTS.md:688 [section-D270] COURANTE ## Méthode
+        dans la section **D270** de `ZWADJ_CONTINUITE.md`, chacun précédé de sa charge.
+   ✗ NON TRAITÉE : AGENTS.md:1172 [section-D270] COURANTE ## Leçons de méthode — répétées, donc consignées
+        règle « relever l'état machine » ci-dessus les interdirait. Section **D270** de
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:511 [section-D270] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        section D270 garde tout le reste, et sa sous-section garde son titre.
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1030 [section-D270] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⛔ **Contrainte de Ko** : la section D270 est datée et ne se réécrit pas (D291) — l'ordre en **SORT** et reçoit
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1032 [section-D270] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        section D270 » pour l'ordre des rangs se met à jour, `CLAUDE.md` compris ; passe D277 dans les deux sens.
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1037 [section-D270] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        corps déplacé à l'octet (606 lignes, SHA-256 égal avant et après), renvoi daté dans la section D270,
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1141 [section-D270] COURANTE ## ~~PROCHAIN LOT~~ — rang 20 · `[DOC]` **l'ordre des rangs reç
+        renvoi daté. La section D270 n'est pas réécrite au-delà (contrainte de Ko, D291).
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1140 [ordre-puis-D270] COURANTE ## ~~PROCHAIN LOT~~ — rang 20 · `[DOC]` **l'ordre des rangs reç
+        ⇒ **À SA PLACE D'ORIGINE** : le sous-titre « ### D270 — ordre des lots, révisé par Ko » **reste**, suivi d'un
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1032 [D270-puis-ordre] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        section D270 » pour l'ordre des rangs se met à jour, `CLAUDE.md` compris ; passe D277 dans les deux sens.
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1140 [D270-puis-ordre] COURANTE ## ~~PROCHAIN LOT~~ — rang 20 · `[DOC]` **l'ordre des rangs reç
+        ⇒ **À SA PLACE D'ORIGINE** : le sous-titre « ### D270 — ordre des lots, révisé par Ko » **reste**, suivi d'un
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1140 [sous-titre-ordre] COURANTE ## ~~PROCHAIN LOT~~ — rang 20 · `[DOC]` **l'ordre des rangs reç
+        ⇒ **À SA PLACE D'ORIGINE** : le sous-titre « ### D270 — ordre des lots, révisé par Ko » **reste**, suivi d'un
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1028 [titre-session-D270] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        qui l'a traversé pour constater une absence, et un vérificateur aveugle parce qu'il vit sous “## Session du
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:2427 [section-D270] BACKLOG ## Reports du 21/09/2026 — rang 19, certification des rangs 17 
+        (« section D270 ») : ⚠ une passe D277 dans les deux sens, sur ces renvois, en ferait partie.
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3193 [section-D270] BACKLOG ## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
+        la section D270 de `ZWADJ_CONTINUITE.md` — celle que l'en-tête désigne pour répondre à
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3210 [section-D270] BACKLOG ## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
+        « section D270 » tombait **333** lignes au-dessus de l'ordre et **840** au-dessus du rang courant — ce
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3550 [section-D270] BACKLOG ## Reports du 09/09/2026 — S11-b étapes 4→6 (D282)
+        même en-tête** : l. 25 « Où lire le prochain lot : l'ordre des rangs, section D270, **et
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3903 [section-D270] BACKLOG ## Reports du 30/08/2026 — suites, concurrence, outillage
+        section D270 de `ZWADJ_CONTINUITE.md`.
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3932 [section-D270] BACKLOG ## Reports du 30/08/2026 — suites, concurrence, outillage
+        ⇒ **L'ordre vit dans UN seul endroit** : la section D270 de `ZWADJ_CONTINUITE.md`.
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3082 [ordre-puis-D270] BACKLOG ## Reports du 10/09/2026 — rang 9, CERTIFICATION (D283)
+        l'ordre des rangs.
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3550 [ordre-puis-D270] BACKLOG ## Reports du 09/09/2026 — S11-b étapes 4→6 (D282)
+        même en-tête** : l. 25 « Où lire le prochain lot : l'ordre des rangs, section D270, **et
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3551 [ordre-puis-D270] BACKLOG ## Reports du 09/09/2026 — S11-b étapes 4→6 (D282)
+        lui seul** » ; l. 114 (barrage de D280) « l'ordre des rangs (D270), **et la section
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3551 [ordre-paren-D270] BACKLOG ## Reports du 09/09/2026 — S11-b étapes 4→6 (D282)
+        lui seul** » ; l. 114 (barrage de D280) « l'ordre des rangs (D270), **et la section
+== occurrences lues : 74 (attendu 74) · examinées (COURANTE + BACKLOG) : 55 · traitées 33 · NON TRAITÉES 22 — à trier une à une

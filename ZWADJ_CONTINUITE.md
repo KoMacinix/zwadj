@@ -23,8 +23,9 @@
 > ⇒ **Où lire l'état** : les compteurs se MESURENT en lançant les portes ; les chiffres
 > d'un lot vivent dans l'en-tête de SA session, avec l'état machine relevé devant eux
 > (D270). **Où lire le prochain lot — DEUX QUESTIONS, DEUX ENDROITS** : l'ordre des rangs
-> (section D270) dit **QUEL** lot vient ensuite ; le point d'entrée du rang courant, section
-> « PROCHAIN LOT » du corps, dit **OÙ CE LOT EN EST**.
+> (~~section D270~~ section « **ORDRE DES RANGS** », titre `##` propre depuis le 22/09/2026, D300)
+> dit **QUEL** lot vient ensuite ; le point d'entrée du rang courant, section « PROCHAIN LOT » du
+> corps, **juste en dessous de lui**, dit **OÙ CE LOT EN EST**.
 > ⛔ **« ET LUI SEUL » RETIRÉ LE 09/09/2026 (D283) — ET C'EST L'INVERSE DE L'ARBITRAGE QUI
 > AVAIT ÉTÉ PRIS LE MATIN MÊME.** L'entrée `[DOC][P2]` tranchait que la l. 114 — celle qui
 > nomme les DEUX endroits — devait céder devant celle-ci. **Faux, corrigé par Ko** : elle
@@ -126,8 +127,9 @@
 > « Prochain lot » figé y avait déjà menti. **Le jumeau a été retiré, celui-ci est resté**,
 > dans le paragraphe qui raconte le retrait. Une passe de barrage qui ne se relit pas dans
 > son propre fichier laisse derrière elle ce qu'elle est venue chercher.
-> ⇒ **Où lire le prochain lot** : l'ORDRE DES RANGS (D270) pour **QUEL** lot, et la section
-> « PROCHAIN LOT » du corps pour **OÙ IL EN EST** — deux questions, deux endroits (D283).
+> ⇒ **Où lire le prochain lot** : l'ORDRE DES RANGS (~~D270~~ section « **ORDRE DES RANGS** », titre propre
+> depuis le 22/09/2026, D300) pour **QUEL** lot, et la section « PROCHAIN LOT » du corps pour **OÙ IL EN
+> EST** — deux questions, deux endroits (D283).
 > ~~Au 08/09/2026 le rang courant est **8 — S11-b**~~, et **E3 n'est pas le prochain lot** ;
 > « le seul verrou restant » était faux dès l'ouverture du rang 8.
 > ⛔ **LE NUMÉRO DE RANG EST BARRÉ, PAS RAFRAÎCHI (09/09/2026, D283).** Il était exact à sa
@@ -482,6 +484,681 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+## ORDRE DES RANGS — QUEL lot vient ensuite
+
+⛔ **TITRE PROPRE DEPUIS LE 22/09/2026 (D300, rang 20, arbitrage de Ko).** Cet ordre a vécu du 31/08 au
+22/09/2026 sous « ## Session du 31/08/2026 — D270 », en sous-section « ### D270 — ordre des lots, révisé par
+Ko » : **du contenu COURANT rangé dans une section DATÉE** — l'anomalie racine, et ses lecteurs l'ont payée
+trois fois : le pointeur « section D270 » tombait **333** lignes au-dessus de l'ordre et **840** au-dessus du
+rang courant (mesuré à `0a8235d`, `docs/preuves/D300/deplacement/distances-sortie.txt`) ; une
+reprise l'a traversé pour constater une absence — aucun rang 9 (D283) ; un vérificateur qui excluait les
+sections datées par leur titre `##` l'a sauté — 56 occurrences examinées au lieu de 92 (D299).
+⇒ **CE QUI A BOUGÉ, C'EST SA PLACE, PAS SON TEXTE.** Le corps ci-dessous est celui de la sous-section,
+**déplacé à l'octet** — empreintes SHA-256 égales avant et après le déplacement
+(`docs/preuves/D300/deplacement/`). Ce qui l'a touché ensuite est **signé D300 dans le texte même**. Les
+motifs restent sous chaque rang : « un ordre sans motif ne se corrige pas, il se recopie ».
+⚠ **CE QUE LE DÉPLACEMENT NE RACCOURCIT PAS** : la distance, DANS l'ordre, de son début à la réponse — celle que
+chiffrait à ~330 lignes l'entrée `[DOC][P1]` du 11/09 : **507** au commit d'avant (`0a8235d`), et **davantage**
+après, puisque ce titre et cette introduction s'y ajoutent (valeur à la clôture de D300 : même pièce). Le
+préambule de 333 lignes a disparu ; la longueur de l'ordre, non. L'entrée reste ouverte — une décision de
+forme au-delà du titre appartient à Ko.
+⇒ **COMMENT LE LIRE** : les rangs y sont dans l'ordre **chronologique** ; **le rang courant est la DERNIÈRE
+ligne « ⇒ RANG N » de la liste** — elle est suivie de paragraphes plus anciens (motifs, règle, attente sans
+rang), qui ne sont pas l'état. **QUEL lot : ici. OÙ IL EN EST : le point d'entrée du rang, section « PROCHAIN
+LOT » juste en dessous** (D283 : deux questions, deux endroits).
+⛔ **CE DÉPLACEMENT N'EST PAS UNE PERMISSION DE RÉÉCRIRE UNE SECTION DATÉE.** Il est borné à ce que Ko a
+arbitré : du contenu **courant**, qui en sort **en entier**, avec un **renvoi daté** à sa place d'origine. La
+section D270 garde tout le reste, et sa sous-section garde son titre.
+
+⚠ **CET ORDRE EN EST À SA QUATRIÈME ÉCRITURE, ET LES TROIS PRÉCÉDENTES SONT
+CONSERVÉES DANS L'HISTORIQUE DU DÉPÔT, PAS ICI.** Écrit « argon2 → S11-b » au motif
+qu'argon2 rendrait la porte verte (faux, 01/09) ; puis « argon2 → sharp » au motif
+que ces deux-là la tenaient (incomplet, 02/09). **Deux fois la mesure a démenti la
+prémisse, jamais le raisonnement.** C'est pourquoi le motif est écrit sous chaque
+rang : un ordre sans motif ne se corrige pas, il se recopie.
+⚠ **QUATRIÈME ÉCRITURE, 03/09/2026 — ET CELLE-CI NE CORRIGE PAS UNE PRÉMISSE, ELLE
+COMBLE UN TROU.** Les trois précédentes changeaient l'ordre parce que la CAUSE du
+rouge avait été mal nommée. Ici la cause est bien nommée : c'est le PLAN qui était
+incomplet. Il exigeait une porte verte au rang de certification **sans porter le lot
+qui l'en empêche** — `venue-list.test.tsx`, qui ne vivait qu'au backlog. Une reprise
+par ce fichier seul partait donc sur la certification et découvrait le blocage en le
+heurtant. **Un rang faux se voit ; un rang manquant, non.**
+
+⛔ **ORDRE RE-RÉVISÉ LE 02/09/2026 — L'HORLOGE PASSE EN TÊTE** (tranché par Ko).
+⛔ **RANG 6 INSÉRÉ LE 03/09/2026 — `venue-list.test.tsx` PASSE AVANT LA CERTIFICATION**
+(tranché par Ko) : la certification devient le rang **7**, S11-b le rang **8**.
+
+1. ~~mode d'exécution de la suite pro (D270)~~ — **fait** ;
+2. ~~argon2 → `test:int` (D271)~~ — **fait**. ⚠ N'a **pas** rendu la porte verte,
+   et ne l'a jamais prétendu ;
+3. ~~⛔ **HORLOGE — `walkin-journey.test.tsx` et tout fichier de même famille**~~ —
+   **fait (D272)**. ⚠ N'a **pas** rendu la porte verte sous charge, et ne l'a jamais
+   prétendu ;
+4. ~~**sharp / `image-pipeline.spec.ts`** — entrée backlog P0, campagne pour preuve~~
+   — ⛔ **REQUALIFIÉ SANS OBJET SUR MESURE le 02/09/2026**, après le départ des cinq
+   tests argon2 : API **640/640, zéro délai dépassé à 8, 24 et 48 processus**, 2,1× de
+   marge sur le test le plus lourd. ⛔ **Condition de validité, stricte** : sharp ne
+   tombe plus **PARCE QUE** argon2 a quitté la suite unitaire API — il est **déchargé,
+   pas réglé**. **Ce rang se ROUVRE** si du travail coûteux (KDF, image, chiffrement)
+   revient en unitaire dans `apps/api`, ou si une mesure sous charge redonne un rouge
+   sur ce fichier ;
+5. ~~⛔ **`act(...)` TARDIF — `walkin-journey.test.tsx` SORT DE `PLAFONDS`**~~ —
+   **fait (D273)** : 293 → **0**, entrée retirée, garde armée, harnais 4/4.
+   ⚠ **N'a pas rendu la porte verte pour autant**, et ne le prétend pas : il reste une
+   intermittence sur `venue-list.test.tsx`, **antérieure et étrangère**, prouvée telle
+   par un contrôle sur l'arbre d'avant le lot. Elle est au backlog.
+   ⇒ **Ce rang portait le constat d'entrée** : **295 avertissements contre un plafond
+   gelé à 293**, dont **293 sur 293 des `act(...)`**
+   (`VenueCalendar` 171 · `AuthProvider` 82 · `WalkinJourney` 40).
+   ⚠ **Le cadrage validé, le barème de sortie et les fichiers attendus sont en tête de
+   ce fichier**, section « PROCHAIN LOT » ; ce rang ne les répète pas. **Deux endroits
+   qui répondent à « quoi ensuite » finissent par ne plus dire la même chose** — c'est
+   arrivé à ce rang même, qui a annoncé le lot sharp pendant que le backlog le
+   fermait ;
+6. ~~⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.**~~ — ⛔ **CLOS
+   EN DOCUMENTANT le 03/09/2026 (D274) : NE SE REPRODUIT PAS.** 30 passes, deux formes,
+   deux états machine, **zéro rouge `venue-list`** — et `apps/pro` est identique À
+   L'OCTET au commit de D273, donc l'écart avec ses 3 sur 5 **n'est pas le code**.
+   ⚠ **Ne rend PAS la porte verte sous charge** : il remplace un bloqueur non
+   reproductible par un bloqueur nommé — la garde console, 2 rouges sur 15 sous charge,
+   sur `account-settings-page.test.tsx` (backlog [PRO][P1]). Au plancher : 0 sur 15.
+   ⇒ Constat d'origine conservé ci-dessous, il dit ce à quoi le lot devait répondre :
+   ⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.** Rouge sur
+   **trois passes de la suite pro sur cinq**, relevées le 02/09 pendant le barème de
+   sortie de `PLAFONDS` : `Unable to find role="heading" and name "Salle El Ryad"`,
+   c'est-à-dire une liste pas encore arrivée au moment de l'assertion. État machine
+   relevé devant chaque passe (D270) : RAM libre 2 247–3 017 Mo, CPU 30–65 %.
+   ⛔ **ANTÉRIORITÉ PROUVÉE PAR CONTRÔLE, PAS SUPPOSÉE** : l'arbre d'AVANT D273 a été
+   remonté et mesuré dans les mêmes conditions — le fichier y échoue **aussi**. Le
+   défaut est donc étranger à D273 ; sans ce contrôle il se serait lu comme une
+   régression de ce lot, et le lot aurait été refait pour rien.
+   ⛔ **NE PAS le traiter en relevant un plafond** : ce fichier n'est pas dans
+   `PLAFONDS`, et son échec n'est pas un avertissement — c'est une assertion qui tombe.
+   ⚠ **Famille PROBABLE, pas établie : D269** — une attente qui interroge par RÔLE et
+   par NOM pendant que la donnée est en vol. **À reproduire et attribuer par mesure
+   avant tout correctif**, méthode de D273 : rien n'est présumé de la cause.
+   ⇒ Entrée détaillée au backlog, **[PRO][P0] `venue-list.test.tsx`**.
+   ⚠ **PISTE, PAS CONCLUSION (03/09/2026) — UNE PILE `pnpm dev` TOURNAIT SUR LE POSTE.**
+   Relevé au démarrage de cette session : **9 processus node lancés à 00:10**, soit
+   `next dev`, `vite`, l'API Nest et un `tsc --watch` — **quatre observateurs de
+   fichiers qui recompilent pendant que les suites lisent les mêmes fichiers**. C'est
+   la classe de D270 (« ne jamais éditer un fichier pendant qu'une vérification le
+   lit » — 24 échecs sans signification, puis une conclusion fausse tirée d'eux).
+   ⛔ **CE QUI EST MESURÉ ET CE QUI NE L'EST PAS.** Mesuré : la pile tournait le
+   03/09 à 00:10. **NON mesuré : qu'une pile équivalente ait tourné pendant les
+   sessions des 01 et 02/09** — et c'est **invérifiable après coup**, puisque aucun
+   relevé du dépôt ne consigne d'inventaire de processus (voir le rang 7). La piste
+   est donc plausible et **hors de portée de toute preuve rétrospective**.
+   ⛔ **ELLE N'EXPLIQUE RIEN TANT QUE LA MESURE NE L'A PAS DIT**, et il se peut très
+   bien que `venue-list` rougisse **aussi machine propre** — c'est exactement ce que
+   la première campagne doit trancher. Écrite comme piste pour qu'elle ne se durcisse
+   pas en explication commode, même traitement que la piste horloge de D272 ;
+7. ~~**CERTIFICATION**~~ — ⇒ **FAIT LE 07/09/2026 (D275)** : six portes vertes au
+   repos en une seule passe, e2e verte, **182 gardes mordues sur 182**, six lots nommés.
+   ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
+   non certifiés à sa date, quel qu'en soit le nombre**, sur la porte redevenue verte,
+   dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
+   partie », **sans réécrire leurs en-têtes**) — ⛔ *(D300, 22/09/2026 : « plus haut » visait la section
+   D270, sous-section « LA CERTIFICATION À VENIR NE VAUDRA PAS PAR PROCURATION », restée à sa place quand
+   l'ordre en est sorti ; relu dans ce fichier, il pointerait ailleurs.)* ⚠ **Ce rang portait la liste « D269,
+   D270 ET D271 », et elle était déjà fausse en la lisant** : D272 s'est ajouté après,
+   sans que personne réécrive la phrase. Une liste de lots dans un plan se périme au
+   lot suivant ; une règle non — et c'est la seule raison de ce changement de
+   formulation.
+   ⛔ **LA LISTE NOMMÉE, TRANCHÉE PAR KO LE 04/09/2026 : D269, D270, D271, D272, D273
+   ET D274.** Six lots. ⚠ **La règle ci-dessus ne change pas** — la certification porte
+   sur TOUS les lots non certifiés à sa date — **mais elle ne dispense pas de les
+   NOMMER.** « Quel qu'en soit le nombre » n'apprend à personne lesquels, et le nombre
+   lui-même a déjà été faux deux fois dans ce fichier : « quatre lots attendent
+   aujourd'hui » en section D272, « certifier cinq lots » en section D274, alors qu'ils
+   sont **six**. ⇒ **Un nombre se périme au lot suivant ; une liste se COMPLÈTE** — un
+   lot livré avant la certification s'y ajoute d'une ligne, et l'omission se voit.
+
+   ⛔ **CRITÈRE DE CERTIFICATION — TRANCHÉ PAR KO LE 04/09/2026, ÉCRIT AVANT DE
+   MESURER.** C'est le point qui manquait au rang, et il est fixé maintenant pour la
+   raison qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus
+   rien (D273 vient de le payer sur son barème).
+   - **CE QUI EST EXIGÉ : la porte verte AU REPOS**, avec l'**état machine relevé et son
+     INVENTAIRE** devant chaque mesure — ce qui tourne, pas seulement RAM libre, CPU et
+     compte de node. C'est la donnée qui manquait à tous les relevés antérieurs (rang 6,
+     03/09), et sans laquelle un état ne se reproduit pas.
+   - ⛔ **CE QUI N'EST PAS EXIGÉ : la porte verte SOUS CHARGE.** La fragilité de la garde
+     des sorties console **reste au backlog comme DETTE MESURÉE** — `[PRO][P1]`, avec ses
+     **trois occurrences datées** (02/09 par la sonde horloge, 02/09 pendant le barème,
+     03/09 sous charge assertée). Elle n'est ni effacée, ni requalifiée, ni comptée comme
+     réglée : elle est **sortie du critère et laissée visible**, ce qui n'est pas la même
+     chose.
+   - **LA RAISON, ÉCRITE POUR NE PAS ÊTRE REDÉCOUVERTE** : exiger une porte
+     **déterministe sous n'importe quelle charge** est une propriété que **cette machine
+     ne peut pas offrir aujourd'hui**. Mesuré, pas supposé : 2 rouges sur 15 sous charge
+     assertée, sur un fichier que l'ordonnancement désigne et **qui change d'une campagne
+     à l'autre** (D274). Et **six lots attendent depuis cinq jours** — D269 est du 30/08.
+     Une barre qu'aucune mesure ne peut franchir ne protège rien : elle immobilise, puis
+     elle finit par se baisser en catastrophe le jour où l'attente devient intenable —
+     c'est-à-dire exactement la « certification obtenue en déplaçant la barre » que ce
+     fichier refuse par ailleurs, mais obtenue plus tard et sous pression. **Une barre
+     franchissable qui dit ce qu'elle vaut protège davantage qu'une barre impayable.**
+
+   ⛔ **CE QUE LA CERTIFICATION NE GARANTIT PAS — CE PARAGRAPHE S'ÉCRIT AVEC ELLE, MOT
+   POUR MOT.** Sans lui, « certifié » se lira comme « sûr », et c'est plus que ce qui
+   aura été mesuré :
+   - **elle ne dit rien de la porte SOUS CHARGE.** Elle est prise au repos ; sous
+     contention, la garde console tombe encore, sur un fichier variable ;
+   - **elle ne dit pas que `venue-list.test.tsx` va bien.** 0 sur 30 **borne un taux, il
+     ne prouve pas un zéro** (D274), et le défaut n'a jamais été attribué ;
+   - **elle ne dit pas que `sharp` est réglé** : il est **déchargé** parce qu'argon2 a
+     quitté l'unitaire, et son rang **se rouvre** si du travail coûteux y revient (D272) ;
+   - **elle ne couvre pas ce qu'aucune porte ne regarde** : le navigateur réel, une
+     migration sur base NON VIDE, la clause `WHERE` d'une réutilisation d'endpoint, un
+     composant jamais monté. Inchangé — rappelé ici parce qu'un mot comme « certifié »
+     invite précisément à l'oublier ;
+   - **elle porte une DATE et une LISTE, pas un état permanent** : « portes vertes au
+     repos à cette date, tels lots en font partie ». Elle ne se reconduit pas au lot
+     suivant, et **ne réécrit aucun en-tête** en « certifié ».
+   ⛔ **CE QUE LA CERTIFICATION DEVRA PAYER, ÉCRIT LE 03/09/2026 POUR NE PAS ÊTRE
+   REDÉCOUVERT** (dicté par Ko ; il ne vivait que dans un fil de chat, et un fil se
+   ferme) :
+   - **le barème de D273 reste DÛ** — cinq passes de la suite pro à **zéro**
+     avertissement sur `walkin-journey.test.tsx` **au repos**, plus **deux sous charge
+     encaissable**. D273 a obtenu 5 passes à zéro sur 5, mais **aucune au repos**, et
+     l'a déclaré NON TENU plutôt que de réécrire son barème après coup.
+     ⛔ **MAIS « AU REPOS » N'EST PAS ENCORE DÉFINI DE FAÇON PAYABLE — QUESTION POSÉE
+     PAR KO LE 03/09/2026** : le « 4 579 Mo / 6 % » du cadrage D273 a-t-il été relevé
+     **avec ou sans** la session Claude Code et son hôte VS Code, qui coûtent à eux
+     seuls **2,4 Go et 21 processus** (mesuré ; `claude.exe` est un enfant de
+     `Code.exe`, donc la session ne peut pas s'en passer) ? Si c'était sans, le barème
+     exige un état que la session **ne peut pas produire**, et il serait impayable une
+     seconde fois.
+     ⛔ **LE DÉPÔT NE PEUT PAS RÉPONDRE, ET C'EST LE VRAI CONSTAT.** `VS Code`,
+     `Code.exe` et `vscode` ont **zéro occurrence** dans les quatre documents, et
+     **TOUS** les relevés du dépôt ne portent que trois quantités — RAM libre, CPU,
+     nombre de node. **Aucun ne dit ce qui tournait.** Un état machine sans inventaire
+     ne se reproduit pas : c'est la faute des compteurs figés, appliquée aux mesures.
+     ⇒ **RÈGLE D'ARBITRAGE FIXÉE AVANT DE MESURER** — D273 vient de payer qu'un barème
+     choisi APRÈS coup ne mesure plus rien. On relève le **plancher que cette session
+     PEUT produire** : VS Code et `claude` seuls, sans navigateur, sans pile `dev`,
+     zéro node.
+     - **Si ce plancher atteint 4 579 Mo et 6 %** : le barème de D273 tient tel quel,
+       il est payable, **rien n'est redéfini** ;
+     - **s'il ne les atteint pas** : « repos » est **redéfini sur ce plancher mesuré**,
+       avec sa raison, et les chiffres de D273 restent comme **HISTOIRE, pas comme
+       barre**. Le numéro de décision se prendra à ce moment-là, pas avant : rien n'est
+       encore tranché.
+     ⛔ **REDÉFINIR LE SEUIL SANS REDÉFINIR CE QU'IL GARANTIT SERAIT LA MOITIÉ DU
+     TRAVAIL** (ajout de Ko, 03/09/2026, écrit AVANT la mesure). **Cinq passes à zéro
+     sur un plancher plus contendu prouvent MOINS que cinq passes sur un plancher
+     calme** : chaque passe y est plus près du régime où D273 a mesuré l'expiration à
+     5 000 ms et des avertissements qui ne sont que la **conséquence** de tests
+     interrompus. Une passe prise près du bruit porte moins d'information qu'une passe
+     prise loin de lui — donc il en faut davantage pour la même garantie.
+     ⇒ **LE NOMBRE DE PASSES MONTE, ET IL SE DÉRIVE — IL NE SE CHOISIT PAS.** Deux
+     quantités se mesurent au nouveau plancher, **avant de compter la moindre passe** :
+     1. **la marge sur la contrainte LIANTE** — le test le plus lent de
+        `walkin-journey.test.tsx` contre son `testTimeout` de 5 000 ms. C'est par
+        expiration que le fichier tombe sous charge (D273) : c'est donc elle qui borne,
+        et non la RAM, qui n'est qu'un proxy ;
+     2. **la dispersion de cette marge entre passes** — une marge moyenne ne dit rien
+        si elle varie du simple au double.
+     Le nombre est **fixé et écrit avec ces deux mesures devant lui**, puis les passes
+     se comptent. Marge plus mince ou dispersion plus large ⇒ plus de passes.
+     ⛔ **ET IL NE REDESCEND JAMAIS SOUS CINQ** : le barème de D273 est un **plancher**,
+     pas une référence à renégocier à la baisse. Un seuil redéfini qui achèterait moins
+     qu'avant serait une certification obtenue en déplaçant la barre — exactement ce que
+     le refus du plafond relevé de `walkin-journey` a écarté trois jours plus tôt.
+     ⛔ **L'INSTRUMENT CPU EST DISQUALIFIÉ, ET LA CIBLE AVEC LUI — CALIBRÉ LE
+     03/09/2026 SUR UNE CHARGE CONNUE**, parce qu'un instrument se calibre sur des cas
+     dont la réponse est déjà connue AVANT de lui faire trier ce qu'on ignore (règle du
+     relevé HORLOGE, appliquée cette fois à moi). Quatre boucles saturantes sur
+     **12 cœurs logiques**, soit **+33 points attendus** :
+     - `Win32_Processor.LoadPercentage` — au repos `28, 30, 9, 0` ; **sous la charge
+       connue** `27, 0, 30, 4`. **Il ne distingue pas les deux cas** et rend `0` à
+       répétition. ⛔ **ÉCARTÉ** — c'est lui qui a servi à annoncer « CPU 25 % » en
+       ouverture de cette session, chiffre qui ne valait donc rien.
+     - `Win32_PerfFormattedData_PerfOS_Processor` (`_Total`) — au repos `17, 17, 30,
+       16` ; sous charge `49, 53, 53, 22`, soit la ligne de base **+33** sur trois
+       relevés sur quatre. ✅ **RETENU**, et **jamais en échantillon unique** : médiane
+       d'au moins cinq relevés, dispersion écrite à côté — il varie lui aussi.
+     ⛔ **CONSÉQUENCE EN AMONT, ET ELLE PORTE SUR LA CIBLE ELLE-MÊME** (point soulevé
+     par Ko) : le « CPU 6 % » du cadrage D273 vient d'un instrument **dont le dépôt ne
+     garde aucune trace**. Vérifié : `LoadPercentage`, `FreePhysicalMemory`,
+     `PerfFormattedData` et `Get-Counter` ont **zéro occurrence** dans tout le dépôt,
+     `neutralisation/` compris. Les relevés d'état machine ont **toujours** été pris à
+     la main, par un outil que personne ne peut nommer. **Un 6 % non attribuable ne se
+     convertit pas** vers l'instrument retenu : il n'y a rien à convertir. Calibrer
+     soigneusement pour viser un nombre produit par un instrument non calibré serait
+     absurde.
+     ⇒ **LA BARRE CPU HÉRITÉE EST ANNULÉE.** Le CPU **reste relevé** — l'instrument
+     existe et il est calibré — mais il **ne porte plus de seuil hérité** : sa valeur
+     de plancher s'établit à neuf, en même temps que celle de la RAM. **Ce qui LIE le
+     plancher reste : RAM libre + compte de node + INVENTAIRE.** C'est ce qui manquait ;
+     un quatrième nombre gardé pour la forme n'aurait rien ajouté.
+     ⛔ **Dans les deux cas, tout relevé porte désormais son INVENTAIRE** — ce qui
+     tourne, pas seulement ses trois nombres — sinon la question se reposera à la
+     session suivante, sans plus de moyen d'y répondre ;
+   - **`neutralize-solid-s7` est à rejouer ENTIÈRE.** D273 n'a vérifié que sa moitié
+     pro, isolément : son pré-vol exige une suite client verte, qui ne l'était pas.
+     Une cible réorientée vérifiée à moitié n'est pas une campagne jouée ;
+   - **les six portes, la suite e2e, et `lancer-campagnes.py --tout`** — en **UNE
+     SEULE passe**. ⚠ Le point est « une seule » : des portes vertes relevées à des
+     moments différents, sur un arbre qui bouge entre elles, ne certifient rien
+     ensemble (D218 — l'archive livrée rouge avec une note annonçant « 0 erreur ») ;
+8. ~~**S11-b**~~ — ⇒ **SES SIX ÉTAPES SONT FAITES** : cadrage et arbitrage (D278), étapes
+   1→3 (D279), étapes 4→6 (D282). ⛔ ~~**MAIS LE RANG N'EST PAS CLOS ET LE LOT N'EST PAS
+   CERTIFIÉ**~~ : reste la dérive de somme de contrôle de `_prisma_migrations`, **arbitrage
+   OUVERT**, laissée hors périmètre du rang 9 par Ko le 09/09/2026.
+   ⛔ **« LE RANG N'EST PAS CLOS » BARRÉ LE 11/09/2026 (D286) : IL L'EST.** Étape 0 du
+   rang 11 — empreinte calculée redevenue égale à la stockée, mesurée et montrée.
+   ⚠ **« LE LOT N'EST PAS CERTIFIÉ » n'est PAS barré** : D282 reste non certifié, et rien
+   dans ce lot-ci ne le certifie. Clore un rang ne certifie pas les lots qu'il contenait.
+   ⚠ « **RANG COURANT depuis le 07/09/2026** » **barré le 09/09/2026 (D283)** : il l'était,
+   il ne l'est plus. ⇒ **Où il en est** : section « RANG 8 — S11-b · point d'entrée
+   CONSERVÉ », qui garde le cadrage et **la liste de ses modes de défaillance** (D277).
+   ⛔ Chemin de l'argent : les modes de défaillance ont été écrits AVANT tout code, et
+   l'arrêt franc pour arbitrage a eu lieu — **c'est fait, ce n'est plus une consigne à
+   suivre ici.**
+9. ~~**CERTIFICATION**~~ — ⇒ **CLOS LE 10/09/2026 (D283)** : marque posée, « portes vertes au
+   repos le 10/09/2026, et **D279 et D282** en font partie ». 193 cibles, 193 mordues, zéro
+   muette. ⚠ « **RANG COURANT depuis le 09/09/2026** » **barré le 10/09/2026 (D284)** : il
+   l'était, il ne l'est plus — même geste que le rang 8 la veille.
+   ⛔ **CE QU'IL LAISSE OUVERT** : les deux réserves de D275, reconduites et non levées.
+   ⛔ **CE RANG A ÉTÉ ÉCRIT PARCE QU'IL N'ÉTAIT ÉCRIT NULLE PART.** La reprise à froid du
+   09/09/2026 a demandé « quel est le prochain lot » et a suivi la route que ce fichier
+   désigne : **cette liste s'arrêtait au rang 8**, dont les six étapes étaient faites. Le
+   prochain lot n'existait dans aucun des trois fichiers d'autorité. ⚠ **Un rang faux se
+   voit ; un rang manquant, non** — la phrase est de la quatrième écriture de cet ordre,
+   trois rangs plus haut, et elle vient de se vérifier une seconde fois.
+   ⛔ **CE QUI L'IMPOSE, ET CE N'EST PAS UN CHOIX DE CALENDRIER** : `AGENTS.md`, bloc
+   « **AUCUN LOT NE PART DANS `main` SOUS UNE PORTE ROUGE** » — « deux lots non certifiés en
+   attente sont tenables, **trois non** » (l. 333 au 09/09/2026 ; **c'est la phrase qui fait
+   autorité, pas le numéro de ligne**) — **plus** l'arbitrage de Ko du 09/09 selon lequel un
+   lot **documentaire** ne compte pas, désormais écrit **à côté de la règle** dans
+   `AGENTS.md` et non plus au backlog seul. Les deux lots de code non certifiés étaient **D279
+   et D282** ; ~~tout lot de code suivant serait le troisième, et ne peut pas s'ouvrir~~
+   ⛔ **BARRÉ LE 10/09/2026 (D284) : la marque du rang 9 a certifié ces deux-là, le compteur
+   est retombé à ZÉRO, et c'est ce qui a permis au rang 10 de s'ouvrir.** ⚠ La phrase était
+   vraie le 09/09 et elle est au PRÉSENT dans une entrée désormais close : lue seule, elle
+   interdit le lot que l'entrée suivante ouvre. **Une entrée close peut porter une phrase
+   courante — c'est la passe partielle de D280, et elle se lit comme une passe faite.**
+   ⚠ **CE N'EST DONC PAS « IL FAUT CERTIFIER AUJOURD'HUI »** — deux est tenable, et le dire
+   fait partie de la règle. C'est « **rien de ce qui touche du code ne s'ouvre avant** ». Ce
+   qui attend derrière est `[API][P0]`, sur le chemin de l'argent : les deux échéances ne
+   sont assertées que « non nulles », intervertir leurs constantes serait invisible.
+   ⛔ **CETTE DERNIÈRE PHRASE DÉCRIT CE QUI ATTENDAIT LE 10/09, PAS L'ÉTAT COURANT** : c'est
+   devenu le **rang 10**, livré et mesuré le **11/09/2026 (D285)**. Marqué le 11/09 par la passe
+   de D277.
+   ⚠ **PRÉCÉDENT, PAS INVENTION** : le rang 7 (D275) avait été inséré **avant** S11-b sous
+   cette règle exacte, quand trois lots attendaient. Le rang 9 est le même geste, une file
+   plus loin — et c'est la deuxième fois que cette règle commande un rang.
+   ⇒ **Critère, résolution et état : section « ~~PROCHAIN LOT~~ — rang 9 · CLOS » en tête de
+   ce fichier** (titre barré le 10/09, D284). Ce rang dit QUEL lot ; il ne dit pas où il en est.
+
+10. ~~⛔ **`[API][P0]` — LES DEUX ÉCHÉANCES**~~ — ⇒ **LIVRÉ ET MESURÉ LE 11/09/2026 (D285)** :
+    les quatre constantes exportées, la DURÉE des deux échéances assertie par l'intégration,
+    `neutralize-s11b` passé de **11/11 à 13/13**, `test:int` de **434/36 à 436/36**.
+    ⚠ « **RANG COURANT depuis le 10/09/2026** » **barré le 11/09/2026 (D285)** : il l'était, il ne
+    l'est plus — même geste que les rangs 8 et 9.
+    ⛔ **CE QU'IL LAISSE OUVERT** : le lot **n'est pas certifié**, et il compte pour UN dans les
+    deux/trois. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 10 » en tête de ce fichier.
+    ⛔ **CHEMIN DE L'ARGENT.** ~~`bookings.int-spec.ts:156` et `:373` n'assertent que « non
+    nulles » : **intervertir `PRO_RESPONSE_DAYS` et `PAYMENT_WINDOW_HOURS` entre les deux sites
+    d'appel produirait deux dates parfaitement non nulles, et rien ne rougirait.**~~
+    ⛔ **BARRÉ LE 11/09/2026 — C'EST EXACTEMENT CE QUE D285 A SUPPRIMÉ.** La phrase est conservée
+    parce qu'une affirmation invalidée qu'on EFFACE se réécrit de bonne foi plus tard par
+    quelqu'un qui ignore qu'elle a cessé d'être vraie (D276). ⇒ Les deux assertions portent
+    désormais sur la **DURÉE** — encadrement pour `expiresAt`, égalité exacte pour `paymentDueAt` —
+    et les cibles **12** et **13** de `neutralize-s11b.py` mordent sur l'interversion.
+    ⛔ **CE QUI L'IMPOSE, ET C'EST UNE RÈGLE, PAS UN CALENDRIER** : `AGENTS.md`, bloc « AUCUN LOT
+    NE PART DANS `main` SOUS UNE PORTE ROUGE » — « deux lots non certifiés en attente sont
+    tenables, **trois non** » — **plus** l'arbitrage « un lot documentaire ne compte pas »,
+    écrit à côté de cette règle depuis D283. La marque du 10/09 a certifié D279 et D282 : ~~le
+    compteur de lots de code non certifiés est **à zéro**, donc un lot de code peut s'ouvrir~~.
+    ⛔ **BARRÉ LE 11/09/2026 (D287) : LE COMPTEUR EST À DEUX — D285 ET D286 — ET AUCUN LOT DE
+    CODE NE PEUT S'OUVRIR.** ⚠ La phrase était vraie **à l'instant où elle a été écrite**, et ce
+    n'est pas une supposition : `git blame` la date du 10/09 (`f8eee9e`, l'ouverture du rang 10),
+    quand la marque du rang 9 venait de ramener le compteur à zéro. **C'est le rang 10 lui-même
+    qu'elle autorisait, et elle l'a autorisé à bon droit.** Elle est devenue fausse le 11/09, à la
+    livraison du rang 11 (`31f6a00`), qui a porté le compteur à deux.
+    ⛔ **ET C'EST LE DÉFAUT QUE D284 A BARRÉ DOUZE LIGNES PLUS HAUT, DANS L'AUTRE SENS.** Au
+    rang 9, la phrase périmée **INTERDISAIT** : lue seule, elle coûtait un recoupement. Ici elle
+    **AUTORISE** : lue seule, elle fait ouvrir un troisième lot de code sous une règle violée.
+    **Une phrase périmée qui interdit coûte du temps ; une qui autorise ne se rattrape pas.**
+    ⚠ **AUCUN LOT N'A ÉTÉ OUVERT SOUS ELLE À TORT, ET C'EST MESURÉ** — rang 10 ouvert à compteur
+    **0**, rang 11 ouvert à compteur **1**. Le piège était **armé, pas déclenché** : la reprise
+    qu'il visait est celle qui l'a trouvé. C'est pourquoi ce barrage est le seul geste requis,
+    et qu'il n'y a **aucun lot à défaire**.
+    ⚠ **C'est la troisième fois que cette règle commande un rang** — rang 7 (D275) quand trois
+    lots attendaient, rang 9 (D283) quand deux attendaient, rang 10 parce qu'elle les a levés.
+    ⛔ **ARRÊT FRANC : LE PREMIER LIVRABLE EST UN CADRAGE ÉCRIT**, `CLAUDE.md` — « tout code sur
+    le CHEMIN DE L'ARGENT sans analyse écrite des modes de défaillance ». **Fait le 10/09/2026
+    (D284)**, aucune ligne de code dans cette session. ⇒ **Où il en est** : section « PROCHAIN
+    LOT — rang 10 » en tête de ce fichier, qui porte le cadrage et **ses six modes de
+    défaillance**. ⚠ Le cadrage **reste consultable après validation** (D277) : un cadrage retiré
+    ne peut plus démentir personne.
+
+11. ~~**LES INSTRUMENTS ENTRENT AU DÉPÔT**~~ — `[INFRA]`, **arbitré par Ko le 11/09/2026**,
+    ⇒ **LIVRÉ ET MESURÉ LE 11/09/2026 (D286)**. Trois fichiers dans `neutralisation/` :
+    `verifier-mutations.py`, `sonde-etat-machine.ps1`, `echantillonneur-etat-machine.ps1`.
+    ⛔ **CE QUE LE RANG A FERMÉ EN PLUS DE SON OBJET — le rang 8.** Son étape 0 a éteint la
+    dérive de somme de contrôle `_prisma_migrations`, par un geste qui n'était NI des deux
+    options posées : **rendre au fichier de migration les octets qui ont été appliqués**.
+    ⇒ Rang 8 : **certifié le 10/09, CLOS le 11/09**.
+    ⛔ **CE QU'IL LAISSE OUVERT** : le lot **n'est pas certifié**, et il **compte** (il touche
+    des scripts). Le compteur de lots de code non certifiés passe de **UN à DEUX** — deux
+    restent tenables, trois non. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 11 » en
+    tête de ce fichier.
+    ⚠ **CE QU'IL A LEVÉ** : la réserve de D275 sur l'instrument d'état machine, **dans ses
+    deux moitiés** — « hors dépôt » et « calibration héritée, jamais rejouée ».
+
+
+12. ⛔ **CERTIFICATION** — **arbitrée par Ko le 11/09/2026**, et c'est la **QUATRIÈME fois que
+    la règle des deux/trois commande un rang** : rang 7 à trois lots en attente, rang 9 à deux,
+    rang 10 parce qu'elle les avait levés, rang 12 parce que **D285 et D286** les ont ramenés à
+    deux. ⇒ **Ce qu'elle débloquera** : la **borne de workers**, désignée par Ko le 11/09 comme
+    méritant son propre rang — c'est du **code**, donc elle ne peut pas s'ouvrir avant.
+    ⛔ **ÉTAT : LIVRÉ ET MESURÉ LE 12/09/2026 (D288) — LA MARQUE EST POSÉE, LE RANG EST CLOS.**
+    « **Portes vertes AU REPOS le 12/09/2026, et D285 et D286 en font partie** ».
+    ⇒ **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code **peut**
+    s'ouvrir, et c'est lui qui le portera à un.
+    ⛔ **(D291, 13/09/2026) Permission consommée** : le rang 13 a porté le compteur à UN (D290), le
+    rang 14 à DEUX (D291). ⇒ **Plus aucun lot de code ne s'ouvre avant une certification.**
+    ⛔ **(D293, 16/09/2026) LEVÉ** : marque du rang 15 posée, **compteur à ZÉRO**, un lot de code **peut**
+    s'ouvrir dès l'arbitrage de Ko.
+    ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+    D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
+    ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+    ⚠ ~~**ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287)** : porte dure **rouge sur
+    deux relevés** — `chrome` 16 au lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés
+    (**−2 091**).~~ **BARRÉ LE 12/09/2026 (D288)** : `chrome` fermé par Ko, la porte dure a été
+    rejouée et trouvée **verte** (4 624 puis 4 643 Mo, `chrome` 0, `node` 0, SECTEUR 100 %).
+    L'étape 0 elle-même reste acquise et n'est pas barrée.
+    ⇒ **Où il en est** : section « PROCHAIN LOT — rang 12 » en tête de ce fichier, et le détail
+    de la passe en section « Session du 12/09/2026 — D288 ».
+    ⚠ **Le lot de ce rang est DOCUMENTAIRE** (aucun fichier hors `.md` d'autorité au diff, D283) :
+    il **ne compte pas** dans les deux/trois — il les REMET à zéro sans s'y ajouter.
+
+⇒ ~~**RANG SUIVANT : EN ATTENTE D'ARBITRAGE DE KO.**~~ ⛔ **CONSOMMÉ LE 12/09/2026 (D289) —
+ARBITRÉ PAR KO : le RANG 13 est la BORNE DE WORKERS.** L'attente est levée, et la ligne est
+**barrée plutôt qu'effacée** : effacée, elle se réécrirait de bonne foi plus tard par
+quelqu'un qui ignore qu'elle a été satisfaite (D276). ⇒ **Motif de l'ordre, écrit par Ko** :
+les six durées gravées le 12/09 par D288 sont la référence, une borne les déplace toutes, et
+**les déplacer sans l'avoir écrit d'avance fait perdre la comparaison** ; la borne passe donc
+devant les budgets de test, qui masqueraient l'effondrement au lieu de le corriger.
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 13 » en tête de ce fichier — ~~**cadrage
+écrit le 12/09 (D289), aucune ligne de code**~~ ⛔ **(D291) CLOS le 12/09 (D290), avec du code
+(`251e82b`)**. Cette liste dit QUEL lot, jamais OÙ IL EN EST (D283).
+~~⚠ **CANDIDAT NOMMÉ POUR LE RANG 14, PAR KO, LE 12/09/2026 (D290)** : les **budgets de test**
+(`[MÉTHODE][P0]` du 10/09). Leur motif d'exclusion du rang 13 — « un budget posé en même temps
+qu'une borne rendrait les deux inévaluables » — **est tombe avec l'absence de borne** (passe
+D277, sens 2). ⛔ **C'est une DÉSIGNATION, pas l'arbitrage** : « il ira au rang 14 quand
+j'arbitrerai » (Ko). Un motif tombé ne rend pas le lot souhaitable.
+⚠ **ET LE RANG 14 EST DONC, À SON TOUR, EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit
+maintenant, et non à la clôture du rang 13, pour qu'aucune reprise ne tombe sur une liste qui
+s'arrête. ⚠ **Ce qui attend toujours, sans rang** : les **budgets de test** (`[MÉTHODE][P0]` du
+10/09), explicitement **hors** du rang 13 par consigne de Ko.~~
+⛔ **CONSOMMÉ LE 12/09/2026 (D291) — ARBITRÉ PAR KO : le RANG 14 est `PERF` ET LA DURÉE**, et il
+passe **AVANT** les budgets de test. **Motif de Ko** : un budget calculé sur des durées dont ~20 %
+restent inexpliqués serait choisi au jugé.
+⛔ **(D294, 16/09/2026) VAUT DE LA FORME (a), PAS DE (b)** — deuxième des trois phrases de cette
+famille. La forme (b) n'écrit **aucune valeur neuve**, donc ce motif ne la conditionne pas.
+Détail : point d'entrée du rang 14. La désignation des budgets pour le rang 14 est
+**barrée plutôt qu'effacée** (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 14 » en
+tête de ce fichier.
+⇒ ~~**RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284).~~ ⛔ **CONSOMMÉ LE 14/09/2026, À LA CLÔTURE
+DE D292 — ARBITRÉ PAR KO : le RANG 15 est la CERTIFICATION.** **Motif de Ko** : le compteur de lots
+de code non certifiés est à DEUX (rang 13 et incident D292), et la règle l'impose. Barré plutôt
+qu'effacé (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 15 » en tête de ce fichier —
+✅ **CLOS le 16/09/2026 (D293), marque posée après DEUX refus sur la porte dure** (`chrome` le 14/09,
+RAM le 16/09). **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code
+**peut** s'ouvrir, et c'est lui qui le portera à un.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⚠ ~~**Ce qui attend, sans rang** : les
+**budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
+rang 15 leur soit attribué.~~ ⛔ ~~**(D294, 16/09/2026) TOUJOURS SANS RANG, MAIS PLUS SANS FORME** :
+les budgets restent le seul candidat en attente, et Ko en a **arbitré la FORME le 16/09** — c'est
+**(b)**, écrire la valeur en vigueur. **Candidat désigné du rang 17**, non arbitré.~~
+⛔ **PÉRIMÉ LE 20/09/2026 (D295) — LES BUDGETS ONT UN RANG : c'est le RANG 17, arbitré par Ko**,
+forme (b), premier lot = **cadrage seul**. Barré plutôt qu'effacé (D276) : effacé, « sans rang » se
+relirait comme l'état courant. ~~⚠ **Ce qui reste SANS RANG, et c'est le lot suivant** : le lot de
+**CODE** des budgets, celui qui mesurera et écrira les quatre `testTimeout`.~~
+⛔ **PÉRIMÉ LE 20/09/2026 (D296) — ARBITRÉ PAR KO : le lot de CODE des budgets est le SECOND LOT DU
+RANG 17**, « sur le cadrage de D295, sans le réécrire », et c'est lui qui portera le compteur à UN.
+⛔ **ET IL EST BLOQUÉ LE MÊME JOUR, AVANT TOUTE LIGNE DE CODE** — détail sous le rang 18 ci-dessous,
+et au point d'entrée du rang 17. Barré plutôt qu'effacé (D276).
+⇒ ~~**RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'ouverture du rang 15, pour
+qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 16/09/2026 (D294) — ARBITRÉ PAR KO : le RANG 16 est un LOT DOCUMENTAIRE**, les sept
+constats de la septième reprise à froid. Barré plutôt qu'effacé (D276). **Motif de l'ordre, écrit par
+Ko** : « une phrase qui déclare à moitié fait un lot **certifié** du chemin de l'argent est plus
+dangereuse qu'un budget manquant » — le bloc du rang 8 passe donc devant les budgets.
+⇒ **Où il en est** : section « ~~PROCHAIN LOT~~ — rang 16 » en tête de ce fichier — ✅ **CLOS le
+16/09/2026 (D294)**. ⚠ **Documentaire : il ne compte pas dans les deux/trois** (D283, amendé par
+D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
+⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
+D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la clôture du rang 16, pour qu'aucune
+reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ PAR KO : le RANG 17 est les BUDGETS DE TEST, dans la
+forme (b), et son premier lot est un CADRAGE SEUL.** Barré plutôt qu'effacé (D276).
+⚠ **CANDIDAT DÉSIGNÉ POUR LE RANG 17, PAR KO, LE 16/09/2026 : les BUDGETS DE TEST**
+(`[MÉTHODE][P0]` du 10/09), **dans la forme (b) et pas une autre** — *écrire la valeur EN VIGUEUR,
+ne rien changer au comportement, rendre un héritage invisible arbitrable* —, avec la contrainte
+que Ko a retenue : **N dérivé de la dispersion du maximum PAR TEST, mesurée dans le même lot.**
+⛔ ~~**C'est une DÉSIGNATION, pas l'arbitrage** : « je l'ouvrirai après ce lot » (Ko).~~
+⛔ **DEVENU L'ARBITRAGE LE 20/09/2026 (D295).** ⚠ **Et la session n'arbitre toujours pas l'ordre des
+rangs** : elle a reçu l'arbitrage et l'a écrit. ⛔ **C'est la PREMIÈRE ligne de ce lot, avant toute
+autre, et l'ordre est de Ko** — parce que le dépôt disait « rang 17 : en attente » et **avait raison
+tant que rien n'était écrit**. Un arbitrage qui n'existe que dans le fil est très exactement D276,
+appliqué cette fois à la ligne qui AUTORISE un lot. ⚠ **La session n'a pas écrit le numéro d'ordre
+de cette écriture** : le dépôt en porte deux comptages qui ne se recoupent pas (« quatre » à D284
+pour le rang 10, « cinquième » à D289 pour le rang 13, « sept » à D294), et un compteur qu'on ne
+sait pas dériver ne se recopie pas (D268). **Ce qui est vrai sans compter : toutes sont de Ko.**
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 17 » en tête de ce fichier.
+⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'**OUVERTURE** du rang 17 et non à sa
+clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Aucun candidat n'est
+désigné.**~~ ⛔ **(D298) Consommé le 21/09/2026 — voir plus bas, à la clôture du rang 17.** ~~⛔ **Ce qui est connu et qui n'a PAS de rang : le lot de CODE des budgets** — celui qui
+mesurera et écrira les quatre `testTimeout`. Il suit ce cadrage, **il est du code, et c'est lui qui
+portera le compteur de lots non certifiés à UN.** La session ne se l'attribue pas.~~
+⛔ **PÉRIMÉ LE 20/09/2026 (D296) — ARBITRÉ PAR KO, ET C'EST LA PREMIÈRE ÉCRITURE DE CE LOT : le lot
+de CODE des budgets n'est pas un rang 18, c'est le SECOND LOT DU RANG 17.** Mot pour mot : « tu
+enchaînes le lot de code du rang 17, sur le cadrage de D295, sans le réécrire. C'est mon arbitrage :
+le cadrage est validé. Il portera le compteur à UN. » ⚠ **La session ne se l'est pas attribué** :
+elle a reçu l'arbitrage et l'a écrit, avant toute autre ligne — le dépôt disait « n'a PAS de rang »
+et **avait raison tant que rien n'était écrit** (D276, patron de D295).
+⛔ **BLOQUÉ LE MÊME JOUR PAR LA LECTURE ADVERSE, AVANT TOUTE LIGNE DE CODE** : la source que le
+cadrage prescrit (la `duration` du reporter JSON) **échoue à son propre bras de discrimination** —
+**1 208 à 1 218 ms mesurés, < 100 exigés**, trois exécutions. Toute sortie réécrit la pièce 1 ou la
+pièce 3 du cadrage, **donc appartient à Ko**. ⇒ **ÉTAT : en attente d'arbitrage de Ko sur le
+cadrage. Compteur de lots de code non certifiés : toujours ZÉRO** — aucune ligne de code n'a été
+écrite, et le lot D296 est documentaire. ⇒ **Où il en est** : point d'entrée du rang 17.
+⛔ **(D297, 20/09/2026) DÉBLOQUÉ LE MÊME JOUR : KO A ARBITRÉ (ii), MAJORANT DÉCLARÉ.** Cadrage amendé
+et commité **avant** la première mesure ; ~~le lot de code est **en cours**~~. Barré de fait, pas
+effacé : le blocage reste l'histoire du rang (D276).
+⛔ **(D297, 21/09/2026) RANG 17 CLOS** : les quatre `testTimeout: 5_000` sont écrits à la valeur en
+vigueur, **lus** (n°8, 4 sur 4), marge ~~**≥ 4 618 ms**~~ **≥ 4 603 ms, passes froides comprises**
+sur majorant (⛔ corrigé le 21/09/2026 par D298 sur ordre de Ko : 4 618 est le chiffre **hors** passes
+froides, qui retirait la plus grande observation d'un majorant). **Compteur de lots de code non
+certifiés : UN.** ⇒ **Où il en est** : point d'entrée du rang 17, bloc de clôture.
+⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné — écrit à la **clôture**
+du rang 17, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 21/09/2026 (D298) — ARBITRÉ PAR KO : le RANG 18 est L'ÉCHO DE L'AUDIT DE SECRETS.**
+Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, avant toute autre, et l'ordre
+est de Ko** — le dépôt disait « en attente » et **avait raison tant que rien n'était écrit** (patron de
+D295 et D296). ⚠ **La session ne se l'est pas attribué** : elle a reçu l'arbitrage et l'a écrit.
+**Motif de Ko, tel quel** : « 83 → 185 → 244, environ cent par lot ; l'échéance du report est passée.
+Un audit que personne ne peut lire n'est plus une garde, et la prochaine certification le relancera.
+Il se corrige AVANT elle. » ⛔ **Contrainte de Ko** : l'outil de D293 est une **pièce versée** —
+instrument et pièce se corrigent ensemble ou pas du tout — donc **on ne le retouche pas** : un
+instrument **nouveau** est versé dans `neutralisation/`, qui reconnaît ses propres sorties et celles de
+ses prédécesseurs, les **exclut**, et **imprime ce qu'il a exclu et pourquoi** ; calibration à deux
+bras — il voit toujours un jeton réel placé dans une pièce neuve, il ne voit plus l'écho ; les 24
+jetons du journal e2e hors dépôt sont le cas positif connu. ⇒ **C'est du code : il porte le compteur
+de lots de code non certifiés à DEUX.** « La certification suivante couvrira les rangs 17 et 18
+ensemble — c'est pour ça qu'on fait celui-ci d'abord » (Ko).
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 18 » en tête de ce fichier.
+⛔ **(D298, 21/09/2026) RANG 18 CLOS** : `neutralisation/audit-secrets.py` versé, exclusion par
+l'identité des octets, calibration 5 bras sur 5 (cas réel 24 sur 24), contre-épreuve 5 sur 5 ; l'écho
+imprimé et non compté. **Compteur de lots de code non certifiés : DEUX. Aucun lot de code ne s'ouvre
+avant une certification.** ⛔ **(D299, 22/09/2026) LEVÉ** : marque posée au rang 19, **compteur à ZÉRO**.
+⇒ ~~**RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
+rang 18, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
+⛔ **CONSOMMÉ LE 21/09/2026 (D299) — ARBITRÉ PAR KO : le RANG 19 est la CERTIFICATION DES RANGS 17 ET 18
+(D297, D298).** Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de
+Ko.** **Motif de Ko** : « le compteur est à DEUX, la règle l'impose ». ⇒ **Où il en est** : section
+« PROCHAIN LOT — rang 19 » en tête de ce fichier. ⚠ Ko a écrit le 21/09 que « la
+certification suivante couvrira les rangs 17 et 18 ensemble » : c'est une **désignation** relevée ici
+pour qu'une reprise n'ait rien à recouper, **pas** l'arbitrage du rang 19. ⚠ Sous le compteur à DEUX,
+la règle (D270) n'admet qu'une **certification** ou un lot **documentaire**.
+⛔ **(D299, 22/09/2026) RANG 19 CLOS — MARQUE POSÉE À LA PASSE 2** : « **portes vertes AU REPOS le
+22/09/2026, et D297 (rang 17, `a2dd3f3`) et D298 (rang 18, `edf66ae`) en font partie** ». 199 mordues, 0
+muette ; fenêtre homogène. **Compteur de lots de code non certifiés : DEUX → ZÉRO** — un lot de code
+**peut** s'ouvrir dès que Ko l'arbitre, et c'est lui qui portera le compteur à un. Après un refus
+(RAM, 21/09 19:08) et une passe non certifiante (échantillonneur aveuglé, 23:10). ⇒ **Où il en est** :
+section « PROCHAIN LOT — rang 19 », clôture.
+⇒ ~~**RANG 20 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
+rang 19, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⚠ **Une permission n'est pas un
+arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel.
+⛔ **CONSOMMÉ LE 22/09/2026 (D300) — ARBITRÉ PAR KO : le RANG 20 est L'ORDRE DES RANGS QUI REÇOIT SON PROPRE
+TITRE `##`** — l'entrée `[DOC][P2]` ouverte par D299. Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE
+écriture du lot, et l'ordre est de Ko** — le dépôt disait « en attente » et **avait raison tant que rien
+n'était écrit** (patron de D295). ⚠ **La session ne se l'est pas attribué** : elle a reçu l'arbitrage et l'a
+écrit. **Motif de Ko, tel quel** : « troisième fois que sa place coûte — le pointeur à 330 lignes, une reprise
+qui l'a traversé pour constater une absence, et un vérificateur aveugle parce qu'il vit sous “## Session du
+31/08/2026 — D270”. DU CONTENU COURANT RANGÉ DANS UNE SECTION DATÉE : c'est l'anomalie racine. »
+⛔ **Contrainte de Ko** : la section D270 est datée et ne se réécrit pas (D291) — l'ordre en **SORT** et reçoit
+son titre ; à sa place d'origine, un **renvoi daté** dit où il est allé ; tout pointeur qui désigne « la
+section D270 » pour l'ordre des rangs se met à jour, `CLAUDE.md` compris ; passe D277 dans les deux sens.
+⇒ **Lot DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement) : **il ne compte pas dans les
+deux/trois** (D283, amendé par D292) — **compteur de lots de code non certifiés : ZÉRO, inchangé.**
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 20 » en tête de ce fichier.
+⛔ **(D300, 22/09/2026) RANG 20 CLOS** : l'ordre a son titre `##` — c'est sous lui que cette ligne se lit —,
+corps déplacé à l'octet (606 lignes, SHA-256 égal avant et après), renvoi daté dans la section D270,
+pointeurs courants mis à jour, passe D277 dans les deux sens ; étape 0 : les huit creux de D299 annotés, et la
+règle de Ko au critère du rang 9, point 7. **Documentaire : compteur de lots de code non certifiés à ZÉRO,
+inchangé.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 20 », clôture. ⇒ La ligne du rang 21,
+ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie à la clôture.**
+⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+20, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage** :
+le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel.
+⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
+que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
+12 passes de D291 mesurent la durée **de suite entière**. Un budget *choisi sur des durées* serait
+donc choisi au jugé — le motif même qui a fait tomber la borne de workers. **(b) ne demande pas
+que les ~20 % de D290 soient expliqués**, puisqu'elle n'écrit aucune valeur neuve. Détail :
+section D294, et l'entrée `[MÉTHODE][P0]` du backlog.
+⚠ **ET « SUIVANT » VOULAIT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
+**OUVERT, pas clos** ; ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa
+mesure**.~~ ⛔ **PRÉMISSE PÉRIMÉE LE 12/09/2026 (D288) : le rang 12 est CLOS**, sa marque est
+posée. Ce qui reste dû est donc bien un **arbitrage**, et il appartient à Ko. ⛔ **(D291)
+Consommé deux fois depuis : rang 13 (D289), rang 14 (D291).**
+⚠ **CE QUI NE CHANGE PAS, ET C'EST LE POINT DE LA RÈGLE** : la ligne « rang suivant : en
+attente d'arbitrage de Ko » **reste écrite**. Elle ne disparaît pas au motif que le rang
+précédent est clos — c'est exactement l'absence que D284 interdit, et une liste qui s'arrête
+se lit comme une route. ⇒ **Un rang OUVERT se lit dans son point d'entrée**, pas ici : cette
+liste dit QUEL lot, jamais OÙ IL EN EST (D283).
+⛔ **ET LE CANDIDAT EST DÉSIGNÉ SANS ÊTRE ARBITRÉ — LA DISTINCTION EST TOUT** : Ko a écrit le
+11/09 que **la borne de workers** « touche quatre configs, c'est du code et ça mérite son
+propre rang ». C'est une **désignation**, relevée ici pour qu'une reprise n'ait rien à
+recouper ; **ce n'est pas l'arbitrage du rang 13**, que la session ne prend pas (quatre
+écritures de cet ordre, toutes de Ko). ~~⚠ **Ce qui a changé le 12/09 est sa CONDITION, pas son
+rang** : elle était bloquée derrière la marque du 12 parce qu'elle est du code et que le
+compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que Ko l'arbitre.**~~
+⛔ **BARRÉ LE 13/09/2026 (D291) — PERMISSION PÉRIMÉE, ET LA PASSE D277 DE D290 L'AVAIT MANQUÉE.**
+La borne a été arbitrée (rang 13, D289) puis close sans borne (D290) ; le compteur est passé à
+UN (D290) puis à DEUX (D291). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
+⛔ **(D293, 16/09/2026) LEVÉ** : la certification du rang 15 est faite, **compteur à ZÉRO**. La borne de
+workers, elle, reste **close sans borne** (D290) — ce n'est pas elle qui rouvre.
+⛔ **(D298, 21/09/2026) Compteur à DEUX** : rang 17 (D297) puis rang 18 (D298). ⇒ **Aucun lot de code ne
+s'ouvre avant une certification.**
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**.
+La borne de workers, elle, reste **close sans borne** (D290) — ce n'est pas elle qui rouvre.
+⚠ D290 avait traité deux phrases « à zéro » au moyen d'**ancres écrites en dur** dans un script de
+scratchpad ; la recherche qui les avait trouvées n'était écrite nulle part, et celle-ci lui a
+échappé. D291 verse sa recherche elle-même : `docs/preuves/D291/passe-d277/`.
+⛔ **CETTE LIGNE EST LA RÈGLE ÉCRITE LE 10/09/2026 DANS `AGENTS.md`, APPLIQUÉE À ELLE-MÊME**
+— « **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ, JAMAIS UNE ABSENCE** ». Elle ne dit pas quel sera le
+rang 11 : **la session n'arbitre pas l'ordre**, quatre écritures, toutes de Ko. Elle dit que
+l'arbitrage est **attendu**, pour qu'une reprise lise un ÉTAT au lieu de tomber sur une liste
+qui s'arrête et de conclure, deux jours de suite, que le prochain lot n'est écrit nulle part.
+⚠ **Ce qui attend déjà, sans rang et sans priorité entre eux** : ~~les trois `[MÉTHODE][P0]` du
+10/09 (budgets de test non écrits, borne de workers sur une suite de quatre, sonde d'état
+machine hors dépôt — réserve n°2 de D275), et le reliquat du rang 8 (dérive de somme de
+contrôle `_prisma_migrations`, **arbitrage toujours ouvert, interdit d'y toucher**).~~
+⛔ **RÉÉCRIT LE 11/09/2026 (D286), PARCE QUE DEUX DES QUATRE ONT ÉTÉ TRAITÉS** — et qu'une
+liste d'attente qui garde ce qui est fait envoie recouper, c'est-à-dire exactement ce que le
+pointeur promet d'éviter :
+- ✅ **la sonde d'état machine hors dépôt** — FAITE au rang 11 (D286) ;
+- ✅ **le reliquat du rang 8** — FAIT à l'étape 0 du rang 11 (D286) ;
+- ✅ ~~**les budgets de test non écrits** — `[MÉTHODE][P0]` du 10/09, toujours ouvert ; ⛔ **placés
+  APRÈS le rang 14 par Ko le 12/09/2026 (D291)** ; ⛔ **(D294, 16/09/2026) FORME ARBITRÉE — c'est
+  (b), écrire la valeur EN VIGUEUR — et CANDIDAT DÉSIGNÉ DU RANG 17, non arbitré** ;~~
+  ⛔ **RANG 17, ARBITRÉ PAR KO LE 20/09/2026 (D295)** — forme (b), **cadrage seul** en premier lot.
+  ⚠ **L'entrée du backlog reste OUVERTE** : le cadrage ne l'épuise pas, c'est le lot de CODE qui
+  l'épuisera ;
+- ~~⏳ **la borne de workers sur une suite de quatre** — `[MÉTHODE][P0]` du 10/09, toujours
+  ouvert.~~ ✅ **RANG 13, CLOS LE 12/09/2026 SANS BORNE (D290)** — barré le 13/09 (D291).
+  ⚠ **Ko, 11/09/2026, mot pour mot** : « la borne de workers touche quatre configs,
+  c'est du code et ça mérite son propre rang ». **Ce n'est pas un arbitrage du rang 12** —
+  c'est une désignation, relevée ici pour qu'une reprise n'ait rien à recouper.
+
+⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
+causes de la porte rouge, elle est **la seule qui rougisse de façon DÉTERMINISTE**,
+sans condition de charge. argon2 et sharp exigent une contention pour tomber : au
+repos, ils passent. L'horloge, elle, tombe à **chaque exécution, sur toute machine,
+et de plus en plus** à mesure que la fenêtre de fixture s'éloigne dans le passé.
+⇒ **Elle rend la porte incertifiable QUOI QU'IL ARRIVE.** Tant qu'elle est là,
+aucune charge, aucune borne, aucun déplacement de test ne peut rendre la porte
+verte — donc aucune certification n'est possible, pour aucun des lots en attente.
+⚠ Cette phrase disait « pour aucun des **trois** lots » : le compte a bougé le
+lendemain. Un plan écrit avec le nombre de lots dedans se périme au lot suivant.
+
+⛔ **S11-b EST UN LOT DU CHEMIN DE L'ARGENT ET NE S'OUVRE PAS SOUS UNE PORTE NON
+FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 à 6,
+le rang 8 se mesurerait contre une porte qui ne dit rien.
+
+⛔ **LE CORRECTIF DE L'HORLOGE EST DE FIGER L'HORLOGE, JAMAIS DE DÉCALER LA
+FENÊTRE.** Décaler les dates de fixture reconduit le défaut d'un mois : la même
+porte redeviendra rouge, un matin, sans qu'une ligne ait bougé — et la prochaine
+session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ, pas
+un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
+concerné, et corriger le seul cas connu laisserait les autres armés.
+
+## ~~PROCHAIN LOT~~ — rang 20 · `[DOC]` **l'ordre des rangs reçoit son propre titre `##`** ⛔ **CLOS LE 22/09/2026 : D300**
+
+### ⛔ CLÔTURE DU 22/09/2026 (D300) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **OUVERT, ARBITRÉ ET CLOS LE 22/09/2026, DANS LA SESSION DE LA REPRISE À FROID, SUR ORDRE DE KO** —
+arbitrage écrit en **première** ligne dans l'ordre des rangs, avant toute autre (patron de D295). ⇒ **QUEL
+lot : rang 20 de l'ordre des rangs. OÙ IL EN EST : ici.** Titre barré à la clôture (patron de D273, D284 et
+D293) ; ce bloc est son rafraîchissement de clôture (règle de D294).
+⇒ **L'ORDRE A SON TITRE** : « ## ORDRE DES RANGS — QUEL lot vient ensuite », **juste au-dessus de ce bloc** —
+la liste qui dit QUEL lot est désormais suivie, sans rien entre les deux, des points d'entrée qui disent OÙ IL
+EN EST. **Corps déplacé à l'octet** : 606 lignes, SHA-256 égal avant et après, **non-perte 0**, bilan de lignes
+exact (`docs/preuves/D300/deplacement/`).
+⇒ **À SA PLACE D'ORIGINE** : le sous-titre « ### D270 — ordre des lots, révisé par Ko » **reste**, suivi d'un
+renvoi daté. La section D270 n'est pas réécrite au-delà (contrainte de Ko, D291).
+⇒ **LES POINTEURS COURANTS** : **7** dans ce fichier (en-tête ×2, points d'entrée des rangs 19, 18, 14, 13 et 9)
+et **1** dans `AGENTS.md` (règle « un rang clos laisse un état nommé ») — barrés et suivis de la route neuve
+(D276). ⛔ **`CLAUDE.md` n'en portait AUCUN** — 0 occurrence, et `git log -S` n'en trouve jamais : la prémisse
+de la consigne était fausse ; **une ligne y est AJOUTÉE**, pas mise à jour (section D300, constat n°5). Les
+pointeurs des sections **datées** restent tels quels, vrais à leur date : ils tombent sur le renvoi. Le seul
+renvoi **relatif** de l'ordre qui sortait de lui (« plus haut », rang 7) est annoté.
+⇒ **ÉTAPE 0 (Ko)** : les huit creux de D299 annotés dans sa section — **7 sous Playwright, 1 sous vitest** ; la
+composition « 11 + pnpm + runner » ne vaut que pour le dernier. La règle de Ko au **critère du rang 9, point
+7** : la barre porte sur l'état ambiant, relevé à `node` = 0.
+⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de
+code non certifiés : ZÉRO, inchangé.** Un lot de code **peut** s'ouvrir dès que Ko l'arbitre. **Aucune porte
+lancée** : aucune ne lit ces fichiers.
+⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, vrai à la
+clôture. ⚠ **Une permission n'est pas un arbitrage.**
+⚠ **CE QUE LE LOT NE FAIT PAS** : il ne raccourcit pas l'ordre — la distance, dans l'ordre, de son début à la
+réponse était de 507 lignes et s'allonge du titre et de l'introduction (entrée `[DOC][P1]` du 11/09, **reste
+ouverte**) ; il ne réordonne pas son intérieur (« ⇒ Pourquoi (b) et pas (a) » se lit sous le rang courant,
+report `[DOC][P3]`) ; il ne répare pas l'échantillonneur, qui ne nomme aucun processus (entrée `[INFRA][P3]` du
+10/09, annotée). Détail, mesures, fautes et limites : section D300.
+
 ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET 18** ⛔ ~~**OUVERT LE 21/09/2026 (D299) — ÉTAPE 0 ÉCRITE ET COMMITÉE AVANT TOUTE MESURE**~~ ⛔ ~~**ÉTAPE 1 ROUGE : PORTE DURE SUR LA RAM, RIEN N'EST LANCÉ, AUCUNE MARQUE**~~ ⛔ **CLOS LE 22/09/2026 : D299 — MARQUE POSÉE À LA PASSE 2 (REJEU INTÉGRAL)**
 
 ### ⛔ CLÔTURE DU 22/09/2026 (D299) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -493,8 +1170,10 @@ CLÔTURE (règle de D294)** : barré plutôt qu'effacé (D276).
 sur les 11 commits depuis la marque de D293 —, aucun en-tête antérieur réécrit.
 ⇒ **Compteur de lots de code non certifiés : DEUX → ZÉRO**, le **rang 19 est CLOS**, et un lot de code
 **peut** s'ouvrir dès l'arbitrage de Ko — c'est lui qui portera le compteur à un.
-⇒ **RANG 20 : EN ATTENTE D'ARBITRAGE DE KO** (ordre des rangs, section D270). ⚠ Une permission n'est pas
-un arbitrage.
+⇒ ~~**RANG 20 : EN ATTENTE D'ARBITRAGE DE KO** (ordre des rangs, section D270).~~ ⚠ Une permission n'est pas
+un arbitrage. ⛔ **(D300, 22/09/2026) ARBITRÉ PAR KO : rang 20 = l'ordre des rangs reçoit son propre titre**
+— documentaire, compteur à ZÉRO inchangé. L'ordre se lit désormais sous « ## **ORDRE DES RANGS** » ; le rang
+20 : point d'entrée « PROCHAIN LOT — rang 20 », au-dessus de celui-ci.
 ⇒ **La passe 2** : six portes à 0 (1 329/109, 436/36), e2e **34 · 1**, `--tout` **186 · 0 · 13** puis rejeux
 **8, 13, 6** ⇒ **199 mordues · 0 muette**, contre-épreuve **5 sur 5**, arbre immobile aux **cinq** contrôles,
 fenêtre **homogène** (109 échantillons, 0 transition, 0 trou, SECTEUR seul). Exactement la prédiction.
@@ -612,7 +1291,8 @@ du critère). ⇒ Point d'entrée « rang 19 », clôture, et section D299.
 ### ⛔ CLÔTURE DU 21/09/2026 (D298) — L'ÉTAT DU RANG, À LIRE EN PREMIER
 
 ⛔ **OUVERT, ARBITRÉ ET CLOS LE 21/09/2026, DANS LA SESSION DE LA REPRISE À FROID, SUR ORDRE DE KO** —
-arbitrage écrit en **première** ligne dans l'ordre des rangs (section D270), avant toute autre. ⇒ **QUEL
+arbitrage écrit en **première** ligne dans l'ordre des rangs (section D270 — ⛔ *(D300) il en est sorti le
+22/09/2026 : section « ORDRE DES RANGS »*), avant toute autre. ⇒ **QUEL
 lot : rang 18 de l'ordre des rangs. OÙ IL EN EST : ici.**
 ⇒ **CE QUI EST ÉCRIT** : `neutralisation/audit-secrets.py`, **instrument nouveau** — l'outil de D293 est
 une pièce versée et **n'est pas retouché** (contrainte de Ko). ⛔ **C'EST LUI QUI FAIT FOI DÉSORMAIS**, et
@@ -643,7 +1323,8 @@ qu'ils cherchent. Triées, **rapportées au backlog, NON exclues** : les exclure
 AVANT UNE CERTIFICATION** (D270 : deux sont tenables, trois non). « La certification suivante couvrira
 les rangs 17 et 18 ensemble » (Ko, 21/09) — ⚠ **une désignation, pas l'arbitrage du rang 19.**
 ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**,
-un lot de code **peut** s'ouvrir dès que Ko l'arbitre. ⇒ **Rang 20 : en attente d'arbitrage de Ko.**
+un lot de code **peut** s'ouvrir dès que Ko l'arbitre. ⇒ ~~**Rang 20 : en attente d'arbitrage de Ko.**~~
+⛔ **(D300, 22/09/2026) Arbitré par Ko : rang 20 = l'ordre des rangs reçoit son propre titre** (documentaire).
 ⇒ ~~**RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ Sous le compteur à DEUX, la règle n'y admet
 qu'une **certification** ou un lot **documentaire**.~~ ⛔ **(D299) Consommé le 21/09/2026 : rang 19 = la
 certification des rangs 17 et 18, arbitrée par Ko.**
@@ -1209,7 +1890,8 @@ CI-DESSUS** : Ko a écrit « ce lot est du CODE si tu verses un
 instrument » ; D283, telle qu'elle est écrite, compte **tout** fichier hors `.md` d'autorité,
 preuves archivées comprises. La session applique la lettre. Exempter des preuves qu'aucune porte
 ne lit serait un **amendement de D283**, et il appartient à Ko.
-⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : ordre des rangs (section D270) — ~~**rang 15 en attente
+⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : ordre des rangs (~~section D270~~ section « ORDRE DES RANGS »
+depuis le 22/09/2026, D300) — ~~**rang 15 en attente
 d'arbitrage de Ko**~~ ⛔ **rang 15 = CERTIFICATION, arbitré par Ko le 14/09/2026 (D292)**.
 
 ### ⛔ CE QUE CE LOT NE FERA PAS
@@ -1233,8 +1915,8 @@ qui mentirait.
 cinq passes, le durcissement du point 6 et ce qui reste ouvert sont en section **D290**.
 ⚠ **`pro` garde sa borne** (`maxWorkers: 4`, D270, 30/08) — vue mordre au relevé : 4 workers
 contre 11 pour `api` et `client` dans la même trace.
-⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : l'ordre des rangs (section D270) dit QUEL lot, ce
-bloc dit OÙ IL EN EST (D283).
+⛔ **LE RANG SUIVANT NE SE LIT PAS ICI** : l'ordre des rangs (~~section D270~~ section « ORDRE DES
+RANGS » depuis le 22/09/2026, D300) dit QUEL lot, ce bloc dit OÙ IL EN EST (D283).
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 12/09/2026.** ⇒ **QUEL lot : rang 13 de l'ordre des rangs.
 OÙ IL EN EST : ici.** C'est la **cinquième** écriture d'ordre, et toutes sont de Ko. Le
@@ -1894,8 +2576,8 @@ mentait. ⇒ **Le point d'entrée du rang courant est désormais la section « P
 rang 10 », juste au-dessus.**
 
 ⛔ **OUVERT ET EXÉCUTÉ LE 09/09/2026, DANS LA SESSION QUI L'A INSCRIT AU PLAN.** Ce rang
-n'existait pas : voir le rang 9 de l'ordre (section D270) pour la règle qui l'impose et
-pour la mesure qui a montré son absence.
+n'existait pas : voir le rang 9 de l'ordre (~~section D270~~ section « ORDRE DES RANGS » depuis le
+22/09/2026, D300) pour la règle qui l'impose et pour la mesure qui a montré son absence.
 ⇒ **QUEL lot : rang 9 de l'ordre des rangs. OÙ IL EN EST : ici.** C'est la séparation des
 deux questions posée par D283 ; ce bloc ne redit pas ce qui l'impose, il dit son état.
 
@@ -1960,6 +2642,24 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
 7. ⛔ **LES RELEVÉS SONT PÉRIODIQUES PENDANT LA FENÊTRE, dans un journal à part** — pas
    seulement à ses deux extrémités. « La machine a tenu pendant la mesure » devient une
    **mesure**, et cesse d'être une **inférence entre deux bouts**.
+   ⛔ **LE TROU QUE CE POINT LAISSAIT — COMBLÉ PAR KO LE 22/09/2026 (D300).** Il exigeait les relevés
+   périodiques **sans dire quoi faire d'un échantillon sous la barre** : la porte dure (point 8, et « LA
+   BARRE D'ÉTAT MACHINE » plus bas) porte sur l'**ouverture**, et rien ne tranchait un creux **pendant** une
+   mesure. D299 a certifié une fenêtre dont le minimum était **3 549 Mo**, et sa clôture ne le disait pas.
+   ⇒ **RÈGLE DE KO : LA BARRE PORTE SUR L'ÉTAT AMBIANT, RELEVÉ À `node` = 0.** Un creux pendant une mesure,
+   **avec les seuls `node` de cette mesure**, est **la charge qu'on certifie**. Un creux **avec `chrome`** ou
+   **un processus étranger DISQUALIFIE la fenêtre.**
+   ⇒ **LES CAS : LES HUIT CREUX DE D299** (passe 2, 22/09/2026, min **3 549 Mo**) — **7 sous Playwright**
+   (`test:e2e` ×3, `neutralize-b7.py` ×4), **1 sous vitest** (`neutralize-maxprice.py`) ; `chrome` **0**,
+   `node` **12 à 14**, `node` **0** aux relevés qui encadrent chaque mesure ⇒ **charge de la mesure, fenêtre
+   NON disqualifiée.** Statut de chaque terme : section D299, annotation de D300 ; `docs/preuves/D300/etape0/`.
+   ⚠ **CE QUE L'INSTRUMENT VOIT DE CETTE RÈGLE, ET CE QU'IL NE VOIT PAS** — écrit pour qu'elle ne se lise
+   pas plus forte qu'elle n'est. L'échantillonneur relève `chrome`, `node` et `nb_proc`, **sans inventaire**.
+   La clause `chrome` est **outillée**. La clause « processus étranger » ne l'est que **par un compte**, et la
+   mesure elle-même fait bouger ce compte (`nb_proc − node` : **+6 à +20** dans les huit creux). ⇒ **Un
+   étranger qui ne s'appelle ni `chrome` ni `node` ne se voit pas ; un `node` étranger ne se distingue pas de
+   ceux de la mesure.** Report au backlog (entrée `[INFRA][P3]` du 10/09 sur le compte des `node`, annotée
+   par D300). **La règle est celle de Ko ; sa limite d'instrument ne la retouche pas.**
 8. ⛔ **`chrome` À 0 AU RELEVÉ D'OUVERTURE — SIXIÈME QUANTITÉ, ET C'EST UNE PORTE DURE, PAS
    UNE ANNOTATION (D288, 12/09/2026).** Au même titre que la barre de RAM : si elle est
    rouge, **on ne lance rien** et on le dit.
@@ -2766,6 +3466,203 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 22/09/2026 — D300 · rang 20 CLOS, lot DOCUMENTAIRE : l'ordre des rangs sort de la section D270 et reçoit son titre `##`
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D299**. ⇒ **État du rang** : point
+d'entrée « rang 20 ». Reprise à froid sans état donné, forme allégée ; la lecture adverse d'abord, puis le rang
+20 **enchaîné dans la même session sur ordre explicite de Ko** (« sauf défaut bloquant ») — **aucun défaut
+bloquant**. Lot **documentaire** : les quatre `.md` d'autorité et `docs/preuves/D300/` au diff — **compteur de
+lots de code non certifiés : ZÉRO, inchangé** ; aucune porte lancée, aucune ne lit ces fichiers (D283, D292).
+
+### D300 — la reprise : les quatre questions, et où elles se sont lues
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 19 **CLOS** (D299) ; rang 20 « en attente d'arbitrage de Ko » | clôture du rang 19 |
+| numéro | dernière ligne du registre : **D299** ⇒ **D300** | registre |
+| conclusion de la règle | compteur à **ZÉRO** — **vérifié par `git`** : 12 commits depuis `ceced54` (marque de D293), deux portent du code, `a2dd3f3` (6 fichiers) et `edf66ae` (1), tous deux dans la marque de D299 ; `0a8235d` est documentaire | clôture du rang 19, puis `git` |
+| condition | un lot de code peut s'ouvrir dès que Ko l'arbitre ; l'arbitrage du rang 20 n'existait que dans le fil ⇒ **première écriture du lot** (D276, patron de D295) | clôture du rang 19 |
+
+✅ **LA FORME ALLÉGÉE A TENU UNE TROISIÈME FOIS** : les quatre réponses dans le bloc de clôture du rang 19 — le
+numéro au registre —, zéro recoupement. `git` a servi à **vérifier** le compteur, pas à le trouver.
+
+### ⛔ D300 — LA LECTURE ADVERSE : AUCUN DÉFAUT BLOQUANT, HUIT CONSTATS
+
+1. **Les affirmations de clôture de D299 tiennent contre les pièces brutes** : code réel 0 aux six portes, à
+   l'e2e, aux trois rejeux `--int` et à la contre-épreuve ; `--tout` **1**, attendu, avec **186 · 0 · 13** et une
+   table de 27 campagnes ; contre-épreuve **5 sur 5** ; les cinq contrôles d'arbre vides sur `90014f7` ;
+   compteur confirmé par `git` (ci-dessus). ⚠ `.gitattributes` relu : **1 · 0** (règle de D292).
+2. ⛔ **LA CLÔTURE NE PORTAIT PAS LES HUIT CREUX** (étape 0 de Ko). La section D299 les nommait ; le bloc de
+   clôture (« 0 transition, 0 trou ») et `-Resume` (`RAM_LIBRE_MO min=3549`) non. **Annotés** dans la section
+   D299.
+3. ⛔ **« 11 WORKERS + PNPM + RUNNER » (D290) VAUT POUR UN CREUX SUR HUIT.** Mesures en vol dérivées des relevés
+   de sonde et de la table de `--tout` — somme des durées = chronomètre, **dérive 0 s** : **7 sous Playwright**
+   (`test:e2e` ×3, `neutralize-b7.py` ×4, dont la source dit « chaque cible coûte un lancement Playwright
+   complet »), **1 sous vitest** (`neutralize-maxprice.py`, `node` **14** = le compte de D290). Playwright tourne
+   avec 2 workers et trois serveurs web lancés par pnpm : **jamais dénombrés**. ⇒ **Écrit au statut que la pièce
+   donne** (règle de D291 : une hypothèse du fil ne s'écrit pas au statut de mesure, même formulée par Ko) ;
+   **la conclusion de Ko tient — charge certifiée, pas étrangère — et son motif non.**
+4. ⛔ **L'ÉCHANTILLONNEUR N'A PAS D'INVENTAIRE** — `node`, `chrome`, `nb_proc`. La clause « processus étranger »
+   de la règle de Ko n'est outillée que pour `chrome` ; `nb_proc − node` monte de **+6 à +20** avec chaque
+   mesure, sous Playwright **et** sous vitest, donc ne signe même pas le navigateur. ⇒ Limite écrite au point
+   7, sous la règle ; entrée `[INFRA][P3]` du 10/09 annotée — c'est elle qui portait déjà « le chiffre ne dit
+   pas lequel est lequel ».
+5. ⛔ **LA PRÉMISSE DE LA CONSIGNE SUR `CLAUDE.md` EST FAUSSE.** « `CLAUDE.md` compris, puisque c'est lui qui dit
+   où le lire » : **0** occurrence de « ordre », « D270 » ou « rang », et `git log -S` ne trouve **jamais**
+   « ordre des rangs » ni « section D270 » dans son histoire. Le pointeur chargé à chaque session vivait dans
+   `AGENTS.md` (règle de D284), que `CLAUDE.md` importe à sa première ligne. ⇒ `AGENTS.md` mis à jour ;
+   `CLAUDE.md` reçoit une ligne **AJOUTÉE**, déclarée comme telle — c'est lire la consigne par son **motif**
+   (« c'est lui qui dit où le lire »), et c'est **réversible par Ko** d'une ligne.
+6. ⚠ **« ⇒ POURQUOI (b) ET PAS (a) » (D294) SE LIT SOUS LE RANG COURANT.** `git blame` : écrit le 16/09 sous le
+   candidat du rang 17 ; les lignes des rangs 17 à 20 se sont insérées au-dessus de lui, une par lot. Il
+   suivait « RANG 20 : EN ATTENTE » et suit désormais « RANG 21 : EN ATTENTE ». Rapporté (`[DOC][P3]`), **non
+   corrigé** : le lot déplace à l'octet.
+7. ⚠ **LE « POINTEUR À 330 LIGNES » DÉSIGNE DEUX QUANTITÉS VOISINES, ET LE DÉPLACEMENT N'EN SUPPRIME QU'UNE.**
+   Mesuré (`deplacement/distances.py`) : au commit d'avant, le pointeur « section D270 » tombait **333** lignes
+   au-dessus de l'ordre et **840** au-dessus du rang courant ; la distance **dans** l'ordre, de son début à la
+   réponse — celle que l'entrée `[DOC][P1]` du 11/09 chiffrait à ~330 — valait **507**. Après : le préambule
+   de 333 lignes a disparu, et la distance du titre au rang courant est de **555** lignes (le titre, son
+   introduction et les lignes de ce lot s'y ajoutent). ⇒ `[DOC][P1]` **reste ouverte**, annotée. Ma propre
+   introduction a d'abord confondu les deux quantités : faute n°3 ci-dessous.
+8. ⚠ **UN RENVOI RELATIF DE L'ORDRE SORTAIT DE LUI.** Relevé AVANT le déplacement (`renvois-relatifs.py`, sur
+   `0a8235d`) : **20** renvois relatifs sur le texte aplati — 16 en ligne à ligne, 4 coupés par un retour à la
+   ligne (D294). **19** restent vrais (internes à l'ordre, ou « en tête de ce fichier » vers les points
+   d'entrée, qui y sont toujours, juste en dessous de lui) ; **1** sortait : « dans les termes fixés **plus
+   haut** » (rang 7) vise la sous-section D270 « LA CERTIFICATION À VENIR NE VAUDRA PAS PAR PROCURATION »,
+   restée en place. **Annoté**, signé D300.
+⚠ **Et une observation qui n'est pas un défaut, mais qui dit que l'anomalie était connue du TRI et pas de la
+STRUCTURE** : le principe de tri de D291 range déjà « l'ordre des rangs » parmi les phrases **courantes** —
+alors qu'il vivait sous un titre daté. Chaque passe D277 le savait et le compensait à la main ; le vérificateur
+de D299 a dû l'épingler par son sous-titre. **Aucun outil ne pouvait le voir par sa règle générale.**
+
+### D300 — étape 0 : les huit creux, et la règle de Ko
+
+- **La pièce** : `docs/preuves/D300/etape0/creux.py` — lit l'échantillonneur, la barre **imprimée par la sonde**
+  (jamais recopiée), les relevés de sonde qui bornent chaque mesure, la table de `--tout` et la **source** de
+  chaque harnais ; parcouru **109 sur 109**, creux **8 sur 8** (attendu relevé dans le complément de D299),
+  campagnes **27**, dérive **0 s**.
+- **Où c'est écrit** : section D299, sous la ligne des huit creux (annotation D300, avec le statut de chaque
+  terme) ; critère du rang 9, **point 7** (la règle de Ko, les huit creux pour cas, et ce que l'instrument en
+  voit).
+- ⚠ **Ce qui n'est PAS écrit, et pourquoi** : que les processus non `node` apparus pendant les creux soient le
+  navigateur. C'était l'explication tentante pour les creux Playwright ; le **+13** du creux vitest de `maxprice`
+  la dément comme explication unique. **Une inférence évitée par une mesure**, pas par prudence.
+
+### D300 — le déplacement
+
+- **La pièce** : `docs/preuves/D300/deplacement/deplacer.py`, joué **une fois** ; titre, introduction et renvoi
+  lus dans des fichiers (`entete-ordre.md`, `renvoi-D270.md`), aucun texte en ligne de commande (D289).
+  **Abandon** prévu sur LF nu, CR seul, repère trouvé ≠ 1 fois, ou titre suivant autre que D271.
+- **Ce qu'il a rendu** (`deplacer-sortie.txt`) : corps **606 lignes**, blancs de bord (1, 1), SHA-256
+  `d153aedb…` **égal** à l'ancienne et à la nouvelle place ; bilan **+30** lignes = titre + introduction +
+  renvoi + 2 blancs ; **non-perte 0** ; lignes en plus = **exactement** les lignes insérées ; 0 LF nu.
+- **L'arbitrage du rang 20 (première écriture) est DANS l'empreinte** : il a été écrit avant le déplacement.
+  Ce qui a touché l'ordre ensuite est signé D300 dans le texte : le renvoi « plus haut » du rang 7, la clôture
+  du rang 20, et l'introduction — rectifiée après coup (faute n°3 ; `RECTIFICATION-D300.txt` à côté des
+  pièces, qui ne sont pas retouchées — précédent de D294, ratifié par Ko en D295).
+- **À la place d'origine** : le sous-titre « ### D270 — ordre des lots, révisé par Ko » **reste**, suivi du
+  renvoi daté. Rien d'autre de la section D270 ne bouge.
+- **Où l'ordre est allé** : juste avant les points d'entrée, au-dessus de celui du rang 20 — la fin de l'ordre
+  (le rang courant) est ainsi suivie, sans rien entre les deux, du point d'entrée qui dit OÙ IL EN EST.
+
+### D300 — les pointeurs
+
+- **Mis à jour — barrés, suivis de la route neuve (D276)** : **7** dans ce fichier — en-tête ×2 (l. 25-27 et
+  l. 130 au relevé), points d'entrée des rangs **19** (clôture), **18**, **14**, **13** et **9** — et **1** dans
+  `AGENTS.md` (règle « un rang clos laisse un état nommé »), où un paragraphe dit pourquoi le pointeur a
+  changé, et **borne le précédent** : le déplacement n'autorise pas à réécrire une section datée.
+- **`CLAUDE.md`** : une ligne **ajoutée** (constat n°5).
+- **Laissés tels quels** : le pointeur du rang 15, **dans un texte déjà barré** ; ceux des sections **datées**
+  (D269, D272-D275, D280, D299…) et des entrées **closes** du backlog — vrais à leur date, et ils tombent sur
+  le renvoi (principe de tri de D291) ; les deux renvois d'`AGENTS.md` vers la section D270 qui désignent les
+  **relevés de durée**, restés en place.
+- **« Rang 20 : en attente »** — trois occurrences courantes (ordre, clôture du rang 19, rang 18) : barrées,
+  suivies de l'arbitrage. **Rang 21 : en attente d'arbitrage de Ko**, écrit à l'ouverture, vrai à la clôture.
+
+### D300 — passe D277, les deux sens
+
+**L'instrument est une pièce** : `docs/preuves/D300/passe-d277/balayage.py` — texte **aplati**, débarrassé de
+tout `*`, des accents graves et du marqueur de citation `> ` en tête de ligne ; **classement par titre et par
+lui seul**, sans aucun titre épinglé (c'est la différence avec `verifier-marque.py` de D299) ; **calibration à
+deux bras rejouée à chaque invocation** (phrase coupée en CRLF derrière `> `, en gras, en italique et entre
+accents graves ⇒ 1 ; même texte avec D271 ⇒ 0) ; ventilation par motif et par classe, motifs à zéro nommés,
+parcouru contre attendu. `verifier.py` rattache chaque occurrence courante à son traitement ; le reste se trie
+à la main (`tri-final.txt`).
+**Sens 1 — ce que le déplacement invalide** (7 motifs : « section D270 », l'ordre suivi ou précédé de D270, le
+sous-titre, le titre de session, « l'ordre des rangs vit sous ») : **avant, 45** occurrences, aucun motif à
+zéro ; **final, 74** — les textes de ce lot citent l'ancienne place. Examinées au final (courantes et backlog) :
+**55**, traitées **33**, **22 triées à la main, 22 justes** (citations signées D300, relevés de durée, entrées
+closes, un faux positif).
+**Sens 2 — ce que le lot rend permis** (6 motifs : rang 20, rang 21, « en attente d'arbitrage », champ du
+vérificateur, « ne se réécrit pas », « peut s'ouvrir ») : ⛔ **LA DÉMONSTRATION DU LOT, MESURÉE** — la ligne
+« RANG 20 : EN ATTENTE » de l'ordre était classée **DATÉE** par la règle générale **avant** le déplacement, et
+l'est **COURANTE** après : le même balayage, sans cas particulier, voit désormais l'ordre. Les trois « rang 20
+en attente » courants sont barrés et arbitrés ; **26 non traitées triées à la main, 26 justes** (lignes barrées
+et consommées de l'ordre, que le classement voit maintenant comme courantes ; textes de D300 ; une entrée sans
+rapport). **Les 29 « peut s'ouvrir » courants restent vrais** : leur condition, le compteur, ne bouge pas.
+**Ce que le lot rend permis, et qui ne l'était pas** : rien sur le compteur. **Ce qu'il pourrait sembler
+permettre, et que le texte borne** : réécrire une section datée — l'introduction de l'ordre, le renvoi et
+`AGENTS.md` disent que le précédent vaut pour du contenu **courant**, sorti **en entier**, avec un renvoi daté.
+⚠ **Le cas particulier de `verifier-marque.py` (D299) n'a plus d'objet** : il épinglait le sous-titre de
+l'ordre, qui ne porte plus que le renvoi. C'est une pièce, **non retouchée** ; une passe future n'a pas à
+l'imiter — le classement par titre suffit.
+⚠ Comptés **avant** l'écriture de cette section, qui cite elle-même les motifs : un recomptage rendra
+davantage, **dans cette section seulement** — datée, donc hors de l'examen de `verifier.py`.
+
+### D300 — audit de secrets avant commit (règle du point 10 ; instrument de D298)
+
+1. **Audit scellé** (`neutralisation/audit-secrets.py --sortie docs/preuves/D300/audit-secrets-d300.txt`) :
+   calibration **5 bras sur 5**, cas réel rejoué ; **557** fichiers parcourus = **534** audités + **23** exclus
+   par l'identité de leurs octets (684 alertes d'écho non comptées) ; **93** alertes.
+2. **Tri différentiel** contre la sortie scellée précédente — `D299/passe/audit-secrets-final.txt`, 93
+   contextes — : calibration **2 bras sur 2** ; **0 alerte nouvelle** (`tri-d300.txt`). Rien à trier au
+   contexte : les pièces de ce lot n'ont apporté aucune alerte.
+3. **« 0 valeur réelle »** : sans objet, aucun journal à valeurs réelles dans la session (ci-dessous).
+4. **Second audit, vraie dernière écriture** : `audit-secrets-final.txt` — il doit rendre les **mêmes**
+   alertes ; confronté par le même tri, sortie non versée (elle serait une écriture de plus).
+
+### ⛔ D300 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **MON PREMIER BALAYAGE AVAIT DEUX ANGLES MORTS, ET CE SONT CEUX QUE LE DÉPÔT A DÉJÀ PAYÉS.** Il ne retirait
+   ni le marqueur de citation `> ` — or l'en-tête du fichier en est une, et une expression coupée par un retour
+   à la ligne y porte un « > » en son milieu — ni le `*` simple de l'italique, alors que D291 écrit en toutes
+   lettres que son outil était « aveugle au gras ». Le premier corrigé **avant** la première mesure ; le second
+   trouvé en relisant D291, **avant** de conclure — les deux balayages rejoués sur les fichiers encore intacts,
+   **mêmes comptes** (45, 100), calibration étendue aux deux cas. ⚠ **La leçon existait ; je l'ai relue
+   après avoir écrit l'outil, pas avant.**
+2. ⛔ **`distances.py` A ÉCHOUÉ DEUX FOIS, ET LES DEUX FOIS C'EST UNE RÈGLE DU DÉPÔT QUI L'A ATTRAPÉ.** D'abord
+   il découpait sur CRLF un blob que `git show` rend en **LF** : une seule « ligne », repère « trouvé **0** fois »
+   ⇒ **abandon** — la garde « ≠ 1 ⇒ abandon » a servi. Puis son attendu, écrit par l'outil d'édition en
+   échappement, comptait la **séquence littérale** barre oblique + n : « 10 682 lignes (**attendu 8**) ». **Vu
+   parce que l'attendu s'imprime à côté du mesuré (D290)** ; c'est la classe de D289 — un texte qui traverse
+   une couche d'échappement —, dans mon propre instrument. Corrigé en désignant l'octet par sa valeur.
+3. ⛔ **J'AI ÉCRIT UN CHIFFRE DU BACKLOG SUR UNE QUANTITÉ QU'IL NE MESURE PAS — DANS LE TEXTE QUE JE DÉPLAÇAIS À
+   L'OCTET POUR NE RIEN ALTÉRER.** L'introduction insérée disait « le pointeur tombait à ~330 lignes de l'ordre
+   (backlog `[DOC][P1]`) » ; l'entrée chiffre la distance **dans** l'ordre, pas le préambule. Deux quantités
+   voisines de 330, qui ne se soustraient pas (D290). Trouvé en **mesurant** avant d'annoter l'entrée ;
+   rectifié dans l'autorité, `RECTIFICATION-D300.txt` à côté des pièces. ⚠ **La même phrase était dans
+   `AGENTS.md`** : rectifiée aussi.
+4. ⚠ **J'ai d'abord écrit dans `AGENTS.md` une norme dérivée du diagnostic de Ko comme si c'était sa parole** —
+   « du contenu courant ne se range pas dans une section datée ». Réécrite **avant tout commit** en « *dérivé
+   par la session, pas une parole de Ko* » : Ko a nommé l'anomalie, pas la règle.
+5. ⚠ **J'ai figé un chiffre que ma propre écriture suivante rendait faux** : « 543 lignes après », dans
+   l'introduction de l'ordre, allongée de quatre lignes à l'écriture d'après. Remplacé par la règle
+   (« davantage ») et un renvoi à la mesure de clôture — **555**. C'est le compteur figé de D268, commis par la
+   session qui écrivait qu'il ne fallait pas en écrire.
+
+### ⛔ D300 — CE QUE CE LOT NE FAIT PAS
+
+- **Aucune porte, aucune campagne, aucune e2e** : documentaire, et aucune porte ne lit un octet de ce diff.
+- **Il ne raccourcit pas l'ordre** (555 lignes du titre au rang courant) et **ne réordonne pas son intérieur**
+  (`[DOC][P1]` reste ouverte ; `[DOC][P3]` neuve) — une décision de forme au-delà du titre appartient à Ko.
+- **Il ne réécrit aucune section datée** au-delà du renvoi que Ko a ordonné ; les pointeurs datés restent.
+- **Il ne retouche aucune pièce** de D299 (dont `verifier-marque.py`, désormais sans cas particulier utile).
+- **Il ne répare pas l'échantillonneur**, qui ne nomme aucun processus : c'est du code de `neutralisation/`,
+  donc un lot qui compte ; la priorité de l'entrée `[INFRA][P3]` appartient à Ko.
+- **Le contrôle « 0 valeur réelle » n'a rien à chercher** : aucun journal à valeurs réelles (e2e) n'a été
+  produit dans cette session. Lancé sans journal, l'outil de D299 le dit lui-même — « valeurs cherchées : 0
+  (0 journal/journaux) » (vérifié, non versé : il n'y avait rien à contrôler).
+
 ## Session du 21/09/2026 — D299 · CERTIFICATION (rang 19) des rangs 17 et 18
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D298**. ⇒ **État du rang** : point
@@ -2976,6 +3873,34 @@ de son moniteur (PID vérifié, 0 `tail` ensuite).
 ⚠ **RAM sous la barre sur 8 échantillons sur 109** (min 3 549), **tous avec 12 à 14 `node`** — l'e2e
 (00:15-00:16) et les campagnes (00:24-00:34). **Pas une violation** : la porte dure porte sur l'**ouverture
 au repos**, l'échantillonneur surveille le **régime** (D293).
+⛔ **(D300, 22/09/2026, sur ordre de Ko) CE QUE SONT CES HUIT CREUX — ET LA CLÔTURE NE LES PORTAIT PAS.** Le
+bloc de clôture du rang 19 écrit « fenêtre homogène (109 échantillons, 0 transition, 0 trou, SECTEUR seul) » ;
+`-Resume` imprime aussi `RAM_LIBRE_MO min=3549` — **sous la barre, dans une fenêtre certifiée**, sans un mot.
+Une reprise qui relit le journal y voit huit passages sous la barre : ils s'écrivent ici, **avec leur statut**.
+⇒ **MESURÉ, creux par creux** (`docs/preuves/D300/etape0/creux.py`, sortie versée ; chaque mesure bornée par
+son relevé de sonde et le suivant, chaque campagne par la table de `--tout` — somme des durées 1 886 s contre
+un chronomètre de 1 886 s, **dérive d'attribution 0 s**) : **7 sous Playwright** — `test:e2e` à 00:15:14,
+00:15:46 et 00:16:17 ; `neutralize-b7.py` à 00:24:11, 00:25:14, 00:25:45 et 00:26:48 (« chaque cible coûte un
+lancement Playwright complet », relevé dans sa source) — et **1 sous vitest**, `neutralize-maxprice.py` à
+00:34:12. `chrome` **0** aux huit ; `node` **0** aux relevés qui précèdent chaque mesure et qui la suivent :
+les `node` naissent et meurent **avec** la mesure en vol.
+⛔ **« 11 WORKERS, PLUS PNPM, PLUS LE RUNNER » EST LA COMPOSITION D'UNE SUITE VITEST** — D290 l'a dénombrée
+sur `client` : 14 = 11 workers + 2 pnpm + 1 runner. Elle vaut pour le creux de `maxprice` (`node` **14**, le
+compte de D290), **comme concordance et non comme dénombrement** : D299 ne sépare pas les workers.
+⛔ **ELLE NE VAUT PAS POUR LES SEPT AUTRES** : Playwright tourne avec **2 workers** et **trois serveurs web
+lancés par pnpm** — API, `next dev`, `vite` (`e2e/playwright.config.ts`) —, et ces 12 à 14 `node` n'ont
+**jamais été dénombrés**. Qu'ils soient ceux de la mesure est établi **par encadrement** (0 avant, 0 après,
+`chrome` 0), pas par inventaire.
+⚠ **Des processus NON `node` naissent aussi avec chaque mesure** : `nb_proc − node` monte de **+6 à +20** contre
+le dernier échantillon à `node` = 0, sous Playwright **et** sous vitest. L'échantillonneur **ne les nomme
+pas** ; les attribuer au navigateur serait une inférence, et le **+13** de `maxprice` la dément comme
+explication unique.
+⇒ **CONCLUSION, AU STATUT QU'ELLE A** : les huit creux sont la **charge de la mesure certifiée**, pas une charge
+étrangère — **établi pour `chrome`, établi par encadrement pour `node`, inféré pour tout le reste**, faute
+d'inventaire pendant la fenêtre. ⚠ **La consigne de Ko attribuait les huit à la composition vitest ; la pièce
+la dément pour sept** — c'est la règle de D291 (une hypothèse du fil ne s'écrit pas au statut de mesure,
+même formulée par Ko), et elle **ne change pas la conclusion**, seulement son motif.
+⇒ **Le trou du critère est comblé au point 7 du rang 9** (règle de Ko), avec ces huit creux pour cas.
 **Pièces** : `docs/preuves/D299/passe/` — **51 pièces + 27 journaux de campagne, 78 identiques par SHA-256
 sur 78 relues** (`outils/verser-passe.py`, sortie `outils/verser-passe-sortie.txt`) ; lecture
 `passe/rang19-p2-lecture.txt` ; **extrait e2e** `passe/rang19-p2-e2e-EXTRAIT.txt` — 819 lignes parcourues
@@ -8631,596 +9556,15 @@ pas. Ce qui ne l'est pas : son effet aux charges intermédiaires, non balayées.
 
 ### D270 — ordre des lots, révisé par Ko
 
-⚠ **CET ORDRE EN EST À SA QUATRIÈME ÉCRITURE, ET LES TROIS PRÉCÉDENTES SONT
-CONSERVÉES DANS L'HISTORIQUE DU DÉPÔT, PAS ICI.** Écrit « argon2 → S11-b » au motif
-qu'argon2 rendrait la porte verte (faux, 01/09) ; puis « argon2 → sharp » au motif
-que ces deux-là la tenaient (incomplet, 02/09). **Deux fois la mesure a démenti la
-prémisse, jamais le raisonnement.** C'est pourquoi le motif est écrit sous chaque
-rang : un ordre sans motif ne se corrige pas, il se recopie.
-⚠ **QUATRIÈME ÉCRITURE, 03/09/2026 — ET CELLE-CI NE CORRIGE PAS UNE PRÉMISSE, ELLE
-COMBLE UN TROU.** Les trois précédentes changeaient l'ordre parce que la CAUSE du
-rouge avait été mal nommée. Ici la cause est bien nommée : c'est le PLAN qui était
-incomplet. Il exigeait une porte verte au rang de certification **sans porter le lot
-qui l'en empêche** — `venue-list.test.tsx`, qui ne vivait qu'au backlog. Une reprise
-par ce fichier seul partait donc sur la certification et découvrait le blocage en le
-heurtant. **Un rang faux se voit ; un rang manquant, non.**
-
-⛔ **ORDRE RE-RÉVISÉ LE 02/09/2026 — L'HORLOGE PASSE EN TÊTE** (tranché par Ko).
-⛔ **RANG 6 INSÉRÉ LE 03/09/2026 — `venue-list.test.tsx` PASSE AVANT LA CERTIFICATION**
-(tranché par Ko) : la certification devient le rang **7**, S11-b le rang **8**.
-
-1. ~~mode d'exécution de la suite pro (D270)~~ — **fait** ;
-2. ~~argon2 → `test:int` (D271)~~ — **fait**. ⚠ N'a **pas** rendu la porte verte,
-   et ne l'a jamais prétendu ;
-3. ~~⛔ **HORLOGE — `walkin-journey.test.tsx` et tout fichier de même famille**~~ —
-   **fait (D272)**. ⚠ N'a **pas** rendu la porte verte sous charge, et ne l'a jamais
-   prétendu ;
-4. ~~**sharp / `image-pipeline.spec.ts`** — entrée backlog P0, campagne pour preuve~~
-   — ⛔ **REQUALIFIÉ SANS OBJET SUR MESURE le 02/09/2026**, après le départ des cinq
-   tests argon2 : API **640/640, zéro délai dépassé à 8, 24 et 48 processus**, 2,1× de
-   marge sur le test le plus lourd. ⛔ **Condition de validité, stricte** : sharp ne
-   tombe plus **PARCE QUE** argon2 a quitté la suite unitaire API — il est **déchargé,
-   pas réglé**. **Ce rang se ROUVRE** si du travail coûteux (KDF, image, chiffrement)
-   revient en unitaire dans `apps/api`, ou si une mesure sous charge redonne un rouge
-   sur ce fichier ;
-5. ~~⛔ **`act(...)` TARDIF — `walkin-journey.test.tsx` SORT DE `PLAFONDS`**~~ —
-   **fait (D273)** : 293 → **0**, entrée retirée, garde armée, harnais 4/4.
-   ⚠ **N'a pas rendu la porte verte pour autant**, et ne le prétend pas : il reste une
-   intermittence sur `venue-list.test.tsx`, **antérieure et étrangère**, prouvée telle
-   par un contrôle sur l'arbre d'avant le lot. Elle est au backlog.
-   ⇒ **Ce rang portait le constat d'entrée** : **295 avertissements contre un plafond
-   gelé à 293**, dont **293 sur 293 des `act(...)`**
-   (`VenueCalendar` 171 · `AuthProvider` 82 · `WalkinJourney` 40).
-   ⚠ **Le cadrage validé, le barème de sortie et les fichiers attendus sont en tête de
-   ce fichier**, section « PROCHAIN LOT » ; ce rang ne les répète pas. **Deux endroits
-   qui répondent à « quoi ensuite » finissent par ne plus dire la même chose** — c'est
-   arrivé à ce rang même, qui a annoncé le lot sharp pendant que le backlog le
-   fermait ;
-6. ~~⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.**~~ — ⛔ **CLOS
-   EN DOCUMENTANT le 03/09/2026 (D274) : NE SE REPRODUIT PAS.** 30 passes, deux formes,
-   deux états machine, **zéro rouge `venue-list`** — et `apps/pro` est identique À
-   L'OCTET au commit de D273, donc l'écart avec ses 3 sur 5 **n'est pas le code**.
-   ⚠ **Ne rend PAS la porte verte sous charge** : il remplace un bloqueur non
-   reproductible par un bloqueur nommé — la garde console, 2 rouges sur 15 sous charge,
-   sur `account-settings-page.test.tsx` (backlog [PRO][P1]). Au plancher : 0 sur 15.
-   ⇒ Constat d'origine conservé ci-dessous, il dit ce à quoi le lot devait répondre :
-   ⛔ **`venue-list.test.tsx` — L'INTERMITTENCE QUI TIENT ENCORE LA PORTE.** Rouge sur
-   **trois passes de la suite pro sur cinq**, relevées le 02/09 pendant le barème de
-   sortie de `PLAFONDS` : `Unable to find role="heading" and name "Salle El Ryad"`,
-   c'est-à-dire une liste pas encore arrivée au moment de l'assertion. État machine
-   relevé devant chaque passe (D270) : RAM libre 2 247–3 017 Mo, CPU 30–65 %.
-   ⛔ **ANTÉRIORITÉ PROUVÉE PAR CONTRÔLE, PAS SUPPOSÉE** : l'arbre d'AVANT D273 a été
-   remonté et mesuré dans les mêmes conditions — le fichier y échoue **aussi**. Le
-   défaut est donc étranger à D273 ; sans ce contrôle il se serait lu comme une
-   régression de ce lot, et le lot aurait été refait pour rien.
-   ⛔ **NE PAS le traiter en relevant un plafond** : ce fichier n'est pas dans
-   `PLAFONDS`, et son échec n'est pas un avertissement — c'est une assertion qui tombe.
-   ⚠ **Famille PROBABLE, pas établie : D269** — une attente qui interroge par RÔLE et
-   par NOM pendant que la donnée est en vol. **À reproduire et attribuer par mesure
-   avant tout correctif**, méthode de D273 : rien n'est présumé de la cause.
-   ⇒ Entrée détaillée au backlog, **[PRO][P0] `venue-list.test.tsx`**.
-   ⚠ **PISTE, PAS CONCLUSION (03/09/2026) — UNE PILE `pnpm dev` TOURNAIT SUR LE POSTE.**
-   Relevé au démarrage de cette session : **9 processus node lancés à 00:10**, soit
-   `next dev`, `vite`, l'API Nest et un `tsc --watch` — **quatre observateurs de
-   fichiers qui recompilent pendant que les suites lisent les mêmes fichiers**. C'est
-   la classe de D270 (« ne jamais éditer un fichier pendant qu'une vérification le
-   lit » — 24 échecs sans signification, puis une conclusion fausse tirée d'eux).
-   ⛔ **CE QUI EST MESURÉ ET CE QUI NE L'EST PAS.** Mesuré : la pile tournait le
-   03/09 à 00:10. **NON mesuré : qu'une pile équivalente ait tourné pendant les
-   sessions des 01 et 02/09** — et c'est **invérifiable après coup**, puisque aucun
-   relevé du dépôt ne consigne d'inventaire de processus (voir le rang 7). La piste
-   est donc plausible et **hors de portée de toute preuve rétrospective**.
-   ⛔ **ELLE N'EXPLIQUE RIEN TANT QUE LA MESURE NE L'A PAS DIT**, et il se peut très
-   bien que `venue-list` rougisse **aussi machine propre** — c'est exactement ce que
-   la première campagne doit trancher. Écrite comme piste pour qu'elle ne se durcisse
-   pas en explication commode, même traitement que la piste horloge de D272 ;
-7. ~~**CERTIFICATION**~~ — ⇒ **FAIT LE 07/09/2026 (D275)** : six portes vertes au
-   repos en une seule passe, e2e verte, **182 gardes mordues sur 182**, six lots nommés.
-   ⛔ **une RÈGLE, pas une liste.** Elle porte sur **TOUS les lots
-   non certifiés à sa date, quel qu'en soit le nombre**, sur la porte redevenue verte,
-   dans les termes fixés plus haut (« porte verte à cette date, tels lots en font
-   partie », **sans réécrire leurs en-têtes**). ⚠ **Ce rang portait la liste « D269,
-   D270 ET D271 », et elle était déjà fausse en la lisant** : D272 s'est ajouté après,
-   sans que personne réécrive la phrase. Une liste de lots dans un plan se périme au
-   lot suivant ; une règle non — et c'est la seule raison de ce changement de
-   formulation.
-   ⛔ **LA LISTE NOMMÉE, TRANCHÉE PAR KO LE 04/09/2026 : D269, D270, D271, D272, D273
-   ET D274.** Six lots. ⚠ **La règle ci-dessus ne change pas** — la certification porte
-   sur TOUS les lots non certifiés à sa date — **mais elle ne dispense pas de les
-   NOMMER.** « Quel qu'en soit le nombre » n'apprend à personne lesquels, et le nombre
-   lui-même a déjà été faux deux fois dans ce fichier : « quatre lots attendent
-   aujourd'hui » en section D272, « certifier cinq lots » en section D274, alors qu'ils
-   sont **six**. ⇒ **Un nombre se périme au lot suivant ; une liste se COMPLÈTE** — un
-   lot livré avant la certification s'y ajoute d'une ligne, et l'omission se voit.
-
-   ⛔ **CRITÈRE DE CERTIFICATION — TRANCHÉ PAR KO LE 04/09/2026, ÉCRIT AVANT DE
-   MESURER.** C'est le point qui manquait au rang, et il est fixé maintenant pour la
-   raison qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus
-   rien (D273 vient de le payer sur son barème).
-   - **CE QUI EST EXIGÉ : la porte verte AU REPOS**, avec l'**état machine relevé et son
-     INVENTAIRE** devant chaque mesure — ce qui tourne, pas seulement RAM libre, CPU et
-     compte de node. C'est la donnée qui manquait à tous les relevés antérieurs (rang 6,
-     03/09), et sans laquelle un état ne se reproduit pas.
-   - ⛔ **CE QUI N'EST PAS EXIGÉ : la porte verte SOUS CHARGE.** La fragilité de la garde
-     des sorties console **reste au backlog comme DETTE MESURÉE** — `[PRO][P1]`, avec ses
-     **trois occurrences datées** (02/09 par la sonde horloge, 02/09 pendant le barème,
-     03/09 sous charge assertée). Elle n'est ni effacée, ni requalifiée, ni comptée comme
-     réglée : elle est **sortie du critère et laissée visible**, ce qui n'est pas la même
-     chose.
-   - **LA RAISON, ÉCRITE POUR NE PAS ÊTRE REDÉCOUVERTE** : exiger une porte
-     **déterministe sous n'importe quelle charge** est une propriété que **cette machine
-     ne peut pas offrir aujourd'hui**. Mesuré, pas supposé : 2 rouges sur 15 sous charge
-     assertée, sur un fichier que l'ordonnancement désigne et **qui change d'une campagne
-     à l'autre** (D274). Et **six lots attendent depuis cinq jours** — D269 est du 30/08.
-     Une barre qu'aucune mesure ne peut franchir ne protège rien : elle immobilise, puis
-     elle finit par se baisser en catastrophe le jour où l'attente devient intenable —
-     c'est-à-dire exactement la « certification obtenue en déplaçant la barre » que ce
-     fichier refuse par ailleurs, mais obtenue plus tard et sous pression. **Une barre
-     franchissable qui dit ce qu'elle vaut protège davantage qu'une barre impayable.**
-
-   ⛔ **CE QUE LA CERTIFICATION NE GARANTIT PAS — CE PARAGRAPHE S'ÉCRIT AVEC ELLE, MOT
-   POUR MOT.** Sans lui, « certifié » se lira comme « sûr », et c'est plus que ce qui
-   aura été mesuré :
-   - **elle ne dit rien de la porte SOUS CHARGE.** Elle est prise au repos ; sous
-     contention, la garde console tombe encore, sur un fichier variable ;
-   - **elle ne dit pas que `venue-list.test.tsx` va bien.** 0 sur 30 **borne un taux, il
-     ne prouve pas un zéro** (D274), et le défaut n'a jamais été attribué ;
-   - **elle ne dit pas que `sharp` est réglé** : il est **déchargé** parce qu'argon2 a
-     quitté l'unitaire, et son rang **se rouvre** si du travail coûteux y revient (D272) ;
-   - **elle ne couvre pas ce qu'aucune porte ne regarde** : le navigateur réel, une
-     migration sur base NON VIDE, la clause `WHERE` d'une réutilisation d'endpoint, un
-     composant jamais monté. Inchangé — rappelé ici parce qu'un mot comme « certifié »
-     invite précisément à l'oublier ;
-   - **elle porte une DATE et une LISTE, pas un état permanent** : « portes vertes au
-     repos à cette date, tels lots en font partie ». Elle ne se reconduit pas au lot
-     suivant, et **ne réécrit aucun en-tête** en « certifié ».
-   ⛔ **CE QUE LA CERTIFICATION DEVRA PAYER, ÉCRIT LE 03/09/2026 POUR NE PAS ÊTRE
-   REDÉCOUVERT** (dicté par Ko ; il ne vivait que dans un fil de chat, et un fil se
-   ferme) :
-   - **le barème de D273 reste DÛ** — cinq passes de la suite pro à **zéro**
-     avertissement sur `walkin-journey.test.tsx` **au repos**, plus **deux sous charge
-     encaissable**. D273 a obtenu 5 passes à zéro sur 5, mais **aucune au repos**, et
-     l'a déclaré NON TENU plutôt que de réécrire son barème après coup.
-     ⛔ **MAIS « AU REPOS » N'EST PAS ENCORE DÉFINI DE FAÇON PAYABLE — QUESTION POSÉE
-     PAR KO LE 03/09/2026** : le « 4 579 Mo / 6 % » du cadrage D273 a-t-il été relevé
-     **avec ou sans** la session Claude Code et son hôte VS Code, qui coûtent à eux
-     seuls **2,4 Go et 21 processus** (mesuré ; `claude.exe` est un enfant de
-     `Code.exe`, donc la session ne peut pas s'en passer) ? Si c'était sans, le barème
-     exige un état que la session **ne peut pas produire**, et il serait impayable une
-     seconde fois.
-     ⛔ **LE DÉPÔT NE PEUT PAS RÉPONDRE, ET C'EST LE VRAI CONSTAT.** `VS Code`,
-     `Code.exe` et `vscode` ont **zéro occurrence** dans les quatre documents, et
-     **TOUS** les relevés du dépôt ne portent que trois quantités — RAM libre, CPU,
-     nombre de node. **Aucun ne dit ce qui tournait.** Un état machine sans inventaire
-     ne se reproduit pas : c'est la faute des compteurs figés, appliquée aux mesures.
-     ⇒ **RÈGLE D'ARBITRAGE FIXÉE AVANT DE MESURER** — D273 vient de payer qu'un barème
-     choisi APRÈS coup ne mesure plus rien. On relève le **plancher que cette session
-     PEUT produire** : VS Code et `claude` seuls, sans navigateur, sans pile `dev`,
-     zéro node.
-     - **Si ce plancher atteint 4 579 Mo et 6 %** : le barème de D273 tient tel quel,
-       il est payable, **rien n'est redéfini** ;
-     - **s'il ne les atteint pas** : « repos » est **redéfini sur ce plancher mesuré**,
-       avec sa raison, et les chiffres de D273 restent comme **HISTOIRE, pas comme
-       barre**. Le numéro de décision se prendra à ce moment-là, pas avant : rien n'est
-       encore tranché.
-     ⛔ **REDÉFINIR LE SEUIL SANS REDÉFINIR CE QU'IL GARANTIT SERAIT LA MOITIÉ DU
-     TRAVAIL** (ajout de Ko, 03/09/2026, écrit AVANT la mesure). **Cinq passes à zéro
-     sur un plancher plus contendu prouvent MOINS que cinq passes sur un plancher
-     calme** : chaque passe y est plus près du régime où D273 a mesuré l'expiration à
-     5 000 ms et des avertissements qui ne sont que la **conséquence** de tests
-     interrompus. Une passe prise près du bruit porte moins d'information qu'une passe
-     prise loin de lui — donc il en faut davantage pour la même garantie.
-     ⇒ **LE NOMBRE DE PASSES MONTE, ET IL SE DÉRIVE — IL NE SE CHOISIT PAS.** Deux
-     quantités se mesurent au nouveau plancher, **avant de compter la moindre passe** :
-     1. **la marge sur la contrainte LIANTE** — le test le plus lent de
-        `walkin-journey.test.tsx` contre son `testTimeout` de 5 000 ms. C'est par
-        expiration que le fichier tombe sous charge (D273) : c'est donc elle qui borne,
-        et non la RAM, qui n'est qu'un proxy ;
-     2. **la dispersion de cette marge entre passes** — une marge moyenne ne dit rien
-        si elle varie du simple au double.
-     Le nombre est **fixé et écrit avec ces deux mesures devant lui**, puis les passes
-     se comptent. Marge plus mince ou dispersion plus large ⇒ plus de passes.
-     ⛔ **ET IL NE REDESCEND JAMAIS SOUS CINQ** : le barème de D273 est un **plancher**,
-     pas une référence à renégocier à la baisse. Un seuil redéfini qui achèterait moins
-     qu'avant serait une certification obtenue en déplaçant la barre — exactement ce que
-     le refus du plafond relevé de `walkin-journey` a écarté trois jours plus tôt.
-     ⛔ **L'INSTRUMENT CPU EST DISQUALIFIÉ, ET LA CIBLE AVEC LUI — CALIBRÉ LE
-     03/09/2026 SUR UNE CHARGE CONNUE**, parce qu'un instrument se calibre sur des cas
-     dont la réponse est déjà connue AVANT de lui faire trier ce qu'on ignore (règle du
-     relevé HORLOGE, appliquée cette fois à moi). Quatre boucles saturantes sur
-     **12 cœurs logiques**, soit **+33 points attendus** :
-     - `Win32_Processor.LoadPercentage` — au repos `28, 30, 9, 0` ; **sous la charge
-       connue** `27, 0, 30, 4`. **Il ne distingue pas les deux cas** et rend `0` à
-       répétition. ⛔ **ÉCARTÉ** — c'est lui qui a servi à annoncer « CPU 25 % » en
-       ouverture de cette session, chiffre qui ne valait donc rien.
-     - `Win32_PerfFormattedData_PerfOS_Processor` (`_Total`) — au repos `17, 17, 30,
-       16` ; sous charge `49, 53, 53, 22`, soit la ligne de base **+33** sur trois
-       relevés sur quatre. ✅ **RETENU**, et **jamais en échantillon unique** : médiane
-       d'au moins cinq relevés, dispersion écrite à côté — il varie lui aussi.
-     ⛔ **CONSÉQUENCE EN AMONT, ET ELLE PORTE SUR LA CIBLE ELLE-MÊME** (point soulevé
-     par Ko) : le « CPU 6 % » du cadrage D273 vient d'un instrument **dont le dépôt ne
-     garde aucune trace**. Vérifié : `LoadPercentage`, `FreePhysicalMemory`,
-     `PerfFormattedData` et `Get-Counter` ont **zéro occurrence** dans tout le dépôt,
-     `neutralisation/` compris. Les relevés d'état machine ont **toujours** été pris à
-     la main, par un outil que personne ne peut nommer. **Un 6 % non attribuable ne se
-     convertit pas** vers l'instrument retenu : il n'y a rien à convertir. Calibrer
-     soigneusement pour viser un nombre produit par un instrument non calibré serait
-     absurde.
-     ⇒ **LA BARRE CPU HÉRITÉE EST ANNULÉE.** Le CPU **reste relevé** — l'instrument
-     existe et il est calibré — mais il **ne porte plus de seuil hérité** : sa valeur
-     de plancher s'établit à neuf, en même temps que celle de la RAM. **Ce qui LIE le
-     plancher reste : RAM libre + compte de node + INVENTAIRE.** C'est ce qui manquait ;
-     un quatrième nombre gardé pour la forme n'aurait rien ajouté.
-     ⛔ **Dans les deux cas, tout relevé porte désormais son INVENTAIRE** — ce qui
-     tourne, pas seulement ses trois nombres — sinon la question se reposera à la
-     session suivante, sans plus de moyen d'y répondre ;
-   - **`neutralize-solid-s7` est à rejouer ENTIÈRE.** D273 n'a vérifié que sa moitié
-     pro, isolément : son pré-vol exige une suite client verte, qui ne l'était pas.
-     Une cible réorientée vérifiée à moitié n'est pas une campagne jouée ;
-   - **les six portes, la suite e2e, et `lancer-campagnes.py --tout`** — en **UNE
-     SEULE passe**. ⚠ Le point est « une seule » : des portes vertes relevées à des
-     moments différents, sur un arbre qui bouge entre elles, ne certifient rien
-     ensemble (D218 — l'archive livrée rouge avec une note annonçant « 0 erreur ») ;
-8. ~~**S11-b**~~ — ⇒ **SES SIX ÉTAPES SONT FAITES** : cadrage et arbitrage (D278), étapes
-   1→3 (D279), étapes 4→6 (D282). ⛔ ~~**MAIS LE RANG N'EST PAS CLOS ET LE LOT N'EST PAS
-   CERTIFIÉ**~~ : reste la dérive de somme de contrôle de `_prisma_migrations`, **arbitrage
-   OUVERT**, laissée hors périmètre du rang 9 par Ko le 09/09/2026.
-   ⛔ **« LE RANG N'EST PAS CLOS » BARRÉ LE 11/09/2026 (D286) : IL L'EST.** Étape 0 du
-   rang 11 — empreinte calculée redevenue égale à la stockée, mesurée et montrée.
-   ⚠ **« LE LOT N'EST PAS CERTIFIÉ » n'est PAS barré** : D282 reste non certifié, et rien
-   dans ce lot-ci ne le certifie. Clore un rang ne certifie pas les lots qu'il contenait.
-   ⚠ « **RANG COURANT depuis le 07/09/2026** » **barré le 09/09/2026 (D283)** : il l'était,
-   il ne l'est plus. ⇒ **Où il en est** : section « RANG 8 — S11-b · point d'entrée
-   CONSERVÉ », qui garde le cadrage et **la liste de ses modes de défaillance** (D277).
-   ⛔ Chemin de l'argent : les modes de défaillance ont été écrits AVANT tout code, et
-   l'arrêt franc pour arbitrage a eu lieu — **c'est fait, ce n'est plus une consigne à
-   suivre ici.**
-9. ~~**CERTIFICATION**~~ — ⇒ **CLOS LE 10/09/2026 (D283)** : marque posée, « portes vertes au
-   repos le 10/09/2026, et **D279 et D282** en font partie ». 193 cibles, 193 mordues, zéro
-   muette. ⚠ « **RANG COURANT depuis le 09/09/2026** » **barré le 10/09/2026 (D284)** : il
-   l'était, il ne l'est plus — même geste que le rang 8 la veille.
-   ⛔ **CE QU'IL LAISSE OUVERT** : les deux réserves de D275, reconduites et non levées.
-   ⛔ **CE RANG A ÉTÉ ÉCRIT PARCE QU'IL N'ÉTAIT ÉCRIT NULLE PART.** La reprise à froid du
-   09/09/2026 a demandé « quel est le prochain lot » et a suivi la route que ce fichier
-   désigne : **cette liste s'arrêtait au rang 8**, dont les six étapes étaient faites. Le
-   prochain lot n'existait dans aucun des trois fichiers d'autorité. ⚠ **Un rang faux se
-   voit ; un rang manquant, non** — la phrase est de la quatrième écriture de cet ordre,
-   trois rangs plus haut, et elle vient de se vérifier une seconde fois.
-   ⛔ **CE QUI L'IMPOSE, ET CE N'EST PAS UN CHOIX DE CALENDRIER** : `AGENTS.md`, bloc
-   « **AUCUN LOT NE PART DANS `main` SOUS UNE PORTE ROUGE** » — « deux lots non certifiés en
-   attente sont tenables, **trois non** » (l. 333 au 09/09/2026 ; **c'est la phrase qui fait
-   autorité, pas le numéro de ligne**) — **plus** l'arbitrage de Ko du 09/09 selon lequel un
-   lot **documentaire** ne compte pas, désormais écrit **à côté de la règle** dans
-   `AGENTS.md` et non plus au backlog seul. Les deux lots de code non certifiés étaient **D279
-   et D282** ; ~~tout lot de code suivant serait le troisième, et ne peut pas s'ouvrir~~
-   ⛔ **BARRÉ LE 10/09/2026 (D284) : la marque du rang 9 a certifié ces deux-là, le compteur
-   est retombé à ZÉRO, et c'est ce qui a permis au rang 10 de s'ouvrir.** ⚠ La phrase était
-   vraie le 09/09 et elle est au PRÉSENT dans une entrée désormais close : lue seule, elle
-   interdit le lot que l'entrée suivante ouvre. **Une entrée close peut porter une phrase
-   courante — c'est la passe partielle de D280, et elle se lit comme une passe faite.**
-   ⚠ **CE N'EST DONC PAS « IL FAUT CERTIFIER AUJOURD'HUI »** — deux est tenable, et le dire
-   fait partie de la règle. C'est « **rien de ce qui touche du code ne s'ouvre avant** ». Ce
-   qui attend derrière est `[API][P0]`, sur le chemin de l'argent : les deux échéances ne
-   sont assertées que « non nulles », intervertir leurs constantes serait invisible.
-   ⛔ **CETTE DERNIÈRE PHRASE DÉCRIT CE QUI ATTENDAIT LE 10/09, PAS L'ÉTAT COURANT** : c'est
-   devenu le **rang 10**, livré et mesuré le **11/09/2026 (D285)**. Marqué le 11/09 par la passe
-   de D277.
-   ⚠ **PRÉCÉDENT, PAS INVENTION** : le rang 7 (D275) avait été inséré **avant** S11-b sous
-   cette règle exacte, quand trois lots attendaient. Le rang 9 est le même geste, une file
-   plus loin — et c'est la deuxième fois que cette règle commande un rang.
-   ⇒ **Critère, résolution et état : section « ~~PROCHAIN LOT~~ — rang 9 · CLOS » en tête de
-   ce fichier** (titre barré le 10/09, D284). Ce rang dit QUEL lot ; il ne dit pas où il en est.
-
-10. ~~⛔ **`[API][P0]` — LES DEUX ÉCHÉANCES**~~ — ⇒ **LIVRÉ ET MESURÉ LE 11/09/2026 (D285)** :
-    les quatre constantes exportées, la DURÉE des deux échéances assertie par l'intégration,
-    `neutralize-s11b` passé de **11/11 à 13/13**, `test:int` de **434/36 à 436/36**.
-    ⚠ « **RANG COURANT depuis le 10/09/2026** » **barré le 11/09/2026 (D285)** : il l'était, il ne
-    l'est plus — même geste que les rangs 8 et 9.
-    ⛔ **CE QU'IL LAISSE OUVERT** : le lot **n'est pas certifié**, et il compte pour UN dans les
-    deux/trois. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 10 » en tête de ce fichier.
-    ⛔ **CHEMIN DE L'ARGENT.** ~~`bookings.int-spec.ts:156` et `:373` n'assertent que « non
-    nulles » : **intervertir `PRO_RESPONSE_DAYS` et `PAYMENT_WINDOW_HOURS` entre les deux sites
-    d'appel produirait deux dates parfaitement non nulles, et rien ne rougirait.**~~
-    ⛔ **BARRÉ LE 11/09/2026 — C'EST EXACTEMENT CE QUE D285 A SUPPRIMÉ.** La phrase est conservée
-    parce qu'une affirmation invalidée qu'on EFFACE se réécrit de bonne foi plus tard par
-    quelqu'un qui ignore qu'elle a cessé d'être vraie (D276). ⇒ Les deux assertions portent
-    désormais sur la **DURÉE** — encadrement pour `expiresAt`, égalité exacte pour `paymentDueAt` —
-    et les cibles **12** et **13** de `neutralize-s11b.py` mordent sur l'interversion.
-    ⛔ **CE QUI L'IMPOSE, ET C'EST UNE RÈGLE, PAS UN CALENDRIER** : `AGENTS.md`, bloc « AUCUN LOT
-    NE PART DANS `main` SOUS UNE PORTE ROUGE » — « deux lots non certifiés en attente sont
-    tenables, **trois non** » — **plus** l'arbitrage « un lot documentaire ne compte pas »,
-    écrit à côté de cette règle depuis D283. La marque du 10/09 a certifié D279 et D282 : ~~le
-    compteur de lots de code non certifiés est **à zéro**, donc un lot de code peut s'ouvrir~~.
-    ⛔ **BARRÉ LE 11/09/2026 (D287) : LE COMPTEUR EST À DEUX — D285 ET D286 — ET AUCUN LOT DE
-    CODE NE PEUT S'OUVRIR.** ⚠ La phrase était vraie **à l'instant où elle a été écrite**, et ce
-    n'est pas une supposition : `git blame` la date du 10/09 (`f8eee9e`, l'ouverture du rang 10),
-    quand la marque du rang 9 venait de ramener le compteur à zéro. **C'est le rang 10 lui-même
-    qu'elle autorisait, et elle l'a autorisé à bon droit.** Elle est devenue fausse le 11/09, à la
-    livraison du rang 11 (`31f6a00`), qui a porté le compteur à deux.
-    ⛔ **ET C'EST LE DÉFAUT QUE D284 A BARRÉ DOUZE LIGNES PLUS HAUT, DANS L'AUTRE SENS.** Au
-    rang 9, la phrase périmée **INTERDISAIT** : lue seule, elle coûtait un recoupement. Ici elle
-    **AUTORISE** : lue seule, elle fait ouvrir un troisième lot de code sous une règle violée.
-    **Une phrase périmée qui interdit coûte du temps ; une qui autorise ne se rattrape pas.**
-    ⚠ **AUCUN LOT N'A ÉTÉ OUVERT SOUS ELLE À TORT, ET C'EST MESURÉ** — rang 10 ouvert à compteur
-    **0**, rang 11 ouvert à compteur **1**. Le piège était **armé, pas déclenché** : la reprise
-    qu'il visait est celle qui l'a trouvé. C'est pourquoi ce barrage est le seul geste requis,
-    et qu'il n'y a **aucun lot à défaire**.
-    ⚠ **C'est la troisième fois que cette règle commande un rang** — rang 7 (D275) quand trois
-    lots attendaient, rang 9 (D283) quand deux attendaient, rang 10 parce qu'elle les a levés.
-    ⛔ **ARRÊT FRANC : LE PREMIER LIVRABLE EST UN CADRAGE ÉCRIT**, `CLAUDE.md` — « tout code sur
-    le CHEMIN DE L'ARGENT sans analyse écrite des modes de défaillance ». **Fait le 10/09/2026
-    (D284)**, aucune ligne de code dans cette session. ⇒ **Où il en est** : section « PROCHAIN
-    LOT — rang 10 » en tête de ce fichier, qui porte le cadrage et **ses six modes de
-    défaillance**. ⚠ Le cadrage **reste consultable après validation** (D277) : un cadrage retiré
-    ne peut plus démentir personne.
-
-11. ~~**LES INSTRUMENTS ENTRENT AU DÉPÔT**~~ — `[INFRA]`, **arbitré par Ko le 11/09/2026**,
-    ⇒ **LIVRÉ ET MESURÉ LE 11/09/2026 (D286)**. Trois fichiers dans `neutralisation/` :
-    `verifier-mutations.py`, `sonde-etat-machine.ps1`, `echantillonneur-etat-machine.ps1`.
-    ⛔ **CE QUE LE RANG A FERMÉ EN PLUS DE SON OBJET — le rang 8.** Son étape 0 a éteint la
-    dérive de somme de contrôle `_prisma_migrations`, par un geste qui n'était NI des deux
-    options posées : **rendre au fichier de migration les octets qui ont été appliqués**.
-    ⇒ Rang 8 : **certifié le 10/09, CLOS le 11/09**.
-    ⛔ **CE QU'IL LAISSE OUVERT** : le lot **n'est pas certifié**, et il **compte** (il touche
-    des scripts). Le compteur de lots de code non certifiés passe de **UN à DEUX** — deux
-    restent tenables, trois non. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 11 » en
-    tête de ce fichier.
-    ⚠ **CE QU'IL A LEVÉ** : la réserve de D275 sur l'instrument d'état machine, **dans ses
-    deux moitiés** — « hors dépôt » et « calibration héritée, jamais rejouée ».
-
-
-12. ⛔ **CERTIFICATION** — **arbitrée par Ko le 11/09/2026**, et c'est la **QUATRIÈME fois que
-    la règle des deux/trois commande un rang** : rang 7 à trois lots en attente, rang 9 à deux,
-    rang 10 parce qu'elle les avait levés, rang 12 parce que **D285 et D286** les ont ramenés à
-    deux. ⇒ **Ce qu'elle débloquera** : la **borne de workers**, désignée par Ko le 11/09 comme
-    méritant son propre rang — c'est du **code**, donc elle ne peut pas s'ouvrir avant.
-    ⛔ **ÉTAT : LIVRÉ ET MESURÉ LE 12/09/2026 (D288) — LA MARQUE EST POSÉE, LE RANG EST CLOS.**
-    « **Portes vertes AU REPOS le 12/09/2026, et D285 et D286 en font partie** ».
-    ⇒ **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code **peut**
-    s'ouvrir, et c'est lui qui le portera à un.
-    ⛔ **(D291, 13/09/2026) Permission consommée** : le rang 13 a porté le compteur à UN (D290), le
-    rang 14 à DEUX (D291). ⇒ **Plus aucun lot de code ne s'ouvre avant une certification.**
-    ⛔ **(D293, 16/09/2026) LEVÉ** : marque du rang 15 posée, **compteur à ZÉRO**, un lot de code **peut**
-    s'ouvrir dès l'arbitrage de Ko.
-    ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
-    D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-    ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
-    ⚠ ~~**ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287)** : porte dure **rouge sur
-    deux relevés** — `chrome` 16 au lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés
-    (**−2 091**).~~ **BARRÉ LE 12/09/2026 (D288)** : `chrome` fermé par Ko, la porte dure a été
-    rejouée et trouvée **verte** (4 624 puis 4 643 Mo, `chrome` 0, `node` 0, SECTEUR 100 %).
-    L'étape 0 elle-même reste acquise et n'est pas barrée.
-    ⇒ **Où il en est** : section « PROCHAIN LOT — rang 12 » en tête de ce fichier, et le détail
-    de la passe en section « Session du 12/09/2026 — D288 ».
-    ⚠ **Le lot de ce rang est DOCUMENTAIRE** (aucun fichier hors `.md` d'autorité au diff, D283) :
-    il **ne compte pas** dans les deux/trois — il les REMET à zéro sans s'y ajouter.
-
-⇒ ~~**RANG SUIVANT : EN ATTENTE D'ARBITRAGE DE KO.**~~ ⛔ **CONSOMMÉ LE 12/09/2026 (D289) —
-ARBITRÉ PAR KO : le RANG 13 est la BORNE DE WORKERS.** L'attente est levée, et la ligne est
-**barrée plutôt qu'effacée** : effacée, elle se réécrirait de bonne foi plus tard par
-quelqu'un qui ignore qu'elle a été satisfaite (D276). ⇒ **Motif de l'ordre, écrit par Ko** :
-les six durées gravées le 12/09 par D288 sont la référence, une borne les déplace toutes, et
-**les déplacer sans l'avoir écrit d'avance fait perdre la comparaison** ; la borne passe donc
-devant les budgets de test, qui masqueraient l'effondrement au lieu de le corriger.
-⇒ **Où il en est** : section « PROCHAIN LOT — rang 13 » en tête de ce fichier — ~~**cadrage
-écrit le 12/09 (D289), aucune ligne de code**~~ ⛔ **(D291) CLOS le 12/09 (D290), avec du code
-(`251e82b`)**. Cette liste dit QUEL lot, jamais OÙ IL EN EST (D283).
-~~⚠ **CANDIDAT NOMMÉ POUR LE RANG 14, PAR KO, LE 12/09/2026 (D290)** : les **budgets de test**
-(`[MÉTHODE][P0]` du 10/09). Leur motif d'exclusion du rang 13 — « un budget posé en même temps
-qu'une borne rendrait les deux inévaluables » — **est tombe avec l'absence de borne** (passe
-D277, sens 2). ⛔ **C'est une DÉSIGNATION, pas l'arbitrage** : « il ira au rang 14 quand
-j'arbitrerai » (Ko). Un motif tombé ne rend pas le lot souhaitable.
-⚠ **ET LE RANG 14 EST DONC, À SON TOUR, EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit
-maintenant, et non à la clôture du rang 13, pour qu'aucune reprise ne tombe sur une liste qui
-s'arrête. ⚠ **Ce qui attend toujours, sans rang** : les **budgets de test** (`[MÉTHODE][P0]` du
-10/09), explicitement **hors** du rang 13 par consigne de Ko.~~
-⛔ **CONSOMMÉ LE 12/09/2026 (D291) — ARBITRÉ PAR KO : le RANG 14 est `PERF` ET LA DURÉE**, et il
-passe **AVANT** les budgets de test. **Motif de Ko** : un budget calculé sur des durées dont ~20 %
-restent inexpliqués serait choisi au jugé.
-⛔ **(D294, 16/09/2026) VAUT DE LA FORME (a), PAS DE (b)** — deuxième des trois phrases de cette
-famille. La forme (b) n'écrit **aucune valeur neuve**, donc ce motif ne la conditionne pas.
-Détail : point d'entrée du rang 14. La désignation des budgets pour le rang 14 est
-**barrée plutôt qu'effacée** (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 14 » en
-tête de ce fichier.
-⇒ ~~**RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284).~~ ⛔ **CONSOMMÉ LE 14/09/2026, À LA CLÔTURE
-DE D292 — ARBITRÉ PAR KO : le RANG 15 est la CERTIFICATION.** **Motif de Ko** : le compteur de lots
-de code non certifiés est à DEUX (rang 13 et incident D292), et la règle l'impose. Barré plutôt
-qu'effacé (D276). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 15 » en tête de ce fichier —
-✅ **CLOS le 16/09/2026 (D293), marque posée après DEUX refus sur la porte dure** (`chrome` le 14/09,
-RAM le 16/09). **Le compteur de lots de code non certifiés passe de DEUX à ZÉRO** : un lot de code
-**peut** s'ouvrir, et c'est lui qui le portera à un.
-⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
-D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
-⚠ ~~**Ce qui attend, sans rang** : les
-**budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
-rang 15 leur soit attribué.~~ ⛔ ~~**(D294, 16/09/2026) TOUJOURS SANS RANG, MAIS PLUS SANS FORME** :
-les budgets restent le seul candidat en attente, et Ko en a **arbitré la FORME le 16/09** — c'est
-**(b)**, écrire la valeur en vigueur. **Candidat désigné du rang 17**, non arbitré.~~
-⛔ **PÉRIMÉ LE 20/09/2026 (D295) — LES BUDGETS ONT UN RANG : c'est le RANG 17, arbitré par Ko**,
-forme (b), premier lot = **cadrage seul**. Barré plutôt qu'effacé (D276) : effacé, « sans rang » se
-relirait comme l'état courant. ~~⚠ **Ce qui reste SANS RANG, et c'est le lot suivant** : le lot de
-**CODE** des budgets, celui qui mesurera et écrira les quatre `testTimeout`.~~
-⛔ **PÉRIMÉ LE 20/09/2026 (D296) — ARBITRÉ PAR KO : le lot de CODE des budgets est le SECOND LOT DU
-RANG 17**, « sur le cadrage de D295, sans le réécrire », et c'est lui qui portera le compteur à UN.
-⛔ **ET IL EST BLOQUÉ LE MÊME JOUR, AVANT TOUTE LIGNE DE CODE** — détail sous le rang 18 ci-dessous,
-et au point d'entrée du rang 17. Barré plutôt qu'effacé (D276).
-⇒ ~~**RANG 16 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'ouverture du rang 15, pour
-qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
-⛔ **CONSOMMÉ LE 16/09/2026 (D294) — ARBITRÉ PAR KO : le RANG 16 est un LOT DOCUMENTAIRE**, les sept
-constats de la septième reprise à froid. Barré plutôt qu'effacé (D276). **Motif de l'ordre, écrit par
-Ko** : « une phrase qui déclare à moitié fait un lot **certifié** du chemin de l'argent est plus
-dangereuse qu'un budget manquant » — le bloc du rang 8 passe donc devant les budgets.
-⇒ **Où il en est** : section « ~~PROCHAIN LOT~~ — rang 16 » en tête de ce fichier — ✅ **CLOS le
-16/09/2026 (D294)**. ⚠ **Documentaire : il ne compte pas dans les deux/trois** (D283, amendé par
-D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
-⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
-D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
-⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la clôture du rang 16, pour qu'aucune
-reprise ne tombe sur une liste qui s'arrête.~~
-⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ PAR KO : le RANG 17 est les BUDGETS DE TEST, dans la
-forme (b), et son premier lot est un CADRAGE SEUL.** Barré plutôt qu'effacé (D276).
-⚠ **CANDIDAT DÉSIGNÉ POUR LE RANG 17, PAR KO, LE 16/09/2026 : les BUDGETS DE TEST**
-(`[MÉTHODE][P0]` du 10/09), **dans la forme (b) et pas une autre** — *écrire la valeur EN VIGUEUR,
-ne rien changer au comportement, rendre un héritage invisible arbitrable* —, avec la contrainte
-que Ko a retenue : **N dérivé de la dispersion du maximum PAR TEST, mesurée dans le même lot.**
-⛔ ~~**C'est une DÉSIGNATION, pas l'arbitrage** : « je l'ouvrirai après ce lot » (Ko).~~
-⛔ **DEVENU L'ARBITRAGE LE 20/09/2026 (D295).** ⚠ **Et la session n'arbitre toujours pas l'ordre des
-rangs** : elle a reçu l'arbitrage et l'a écrit. ⛔ **C'est la PREMIÈRE ligne de ce lot, avant toute
-autre, et l'ordre est de Ko** — parce que le dépôt disait « rang 17 : en attente » et **avait raison
-tant que rien n'était écrit**. Un arbitrage qui n'existe que dans le fil est très exactement D276,
-appliqué cette fois à la ligne qui AUTORISE un lot. ⚠ **La session n'a pas écrit le numéro d'ordre
-de cette écriture** : le dépôt en porte deux comptages qui ne se recoupent pas (« quatre » à D284
-pour le rang 10, « cinquième » à D289 pour le rang 13, « sept » à D294), et un compteur qu'on ne
-sait pas dériver ne se recopie pas (D268). **Ce qui est vrai sans compter : toutes sont de Ko.**
-⇒ **Où il en est** : section « PROCHAIN LOT — rang 17 » en tête de ce fichier.
-⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à l'**OUVERTURE** du rang 17 et non à sa
-clôture, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Aucun candidat n'est
-désigné.**~~ ⛔ **(D298) Consommé le 21/09/2026 — voir plus bas, à la clôture du rang 17.** ~~⛔ **Ce qui est connu et qui n'a PAS de rang : le lot de CODE des budgets** — celui qui
-mesurera et écrira les quatre `testTimeout`. Il suit ce cadrage, **il est du code, et c'est lui qui
-portera le compteur de lots non certifiés à UN.** La session ne se l'attribue pas.~~
-⛔ **PÉRIMÉ LE 20/09/2026 (D296) — ARBITRÉ PAR KO, ET C'EST LA PREMIÈRE ÉCRITURE DE CE LOT : le lot
-de CODE des budgets n'est pas un rang 18, c'est le SECOND LOT DU RANG 17.** Mot pour mot : « tu
-enchaînes le lot de code du rang 17, sur le cadrage de D295, sans le réécrire. C'est mon arbitrage :
-le cadrage est validé. Il portera le compteur à UN. » ⚠ **La session ne se l'est pas attribué** :
-elle a reçu l'arbitrage et l'a écrit, avant toute autre ligne — le dépôt disait « n'a PAS de rang »
-et **avait raison tant que rien n'était écrit** (D276, patron de D295).
-⛔ **BLOQUÉ LE MÊME JOUR PAR LA LECTURE ADVERSE, AVANT TOUTE LIGNE DE CODE** : la source que le
-cadrage prescrit (la `duration` du reporter JSON) **échoue à son propre bras de discrimination** —
-**1 208 à 1 218 ms mesurés, < 100 exigés**, trois exécutions. Toute sortie réécrit la pièce 1 ou la
-pièce 3 du cadrage, **donc appartient à Ko**. ⇒ **ÉTAT : en attente d'arbitrage de Ko sur le
-cadrage. Compteur de lots de code non certifiés : toujours ZÉRO** — aucune ligne de code n'a été
-écrite, et le lot D296 est documentaire. ⇒ **Où il en est** : point d'entrée du rang 17.
-⛔ **(D297, 20/09/2026) DÉBLOQUÉ LE MÊME JOUR : KO A ARBITRÉ (ii), MAJORANT DÉCLARÉ.** Cadrage amendé
-et commité **avant** la première mesure ; ~~le lot de code est **en cours**~~. Barré de fait, pas
-effacé : le blocage reste l'histoire du rang (D276).
-⛔ **(D297, 21/09/2026) RANG 17 CLOS** : les quatre `testTimeout: 5_000` sont écrits à la valeur en
-vigueur, **lus** (n°8, 4 sur 4), marge ~~**≥ 4 618 ms**~~ **≥ 4 603 ms, passes froides comprises**
-sur majorant (⛔ corrigé le 21/09/2026 par D298 sur ordre de Ko : 4 618 est le chiffre **hors** passes
-froides, qui retirait la plus grande observation d'un majorant). **Compteur de lots de code non
-certifiés : UN.** ⇒ **Où il en est** : point d'entrée du rang 17, bloc de clôture.
-⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné — écrit à la **clôture**
-du rang 17, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
-⛔ **CONSOMMÉ LE 21/09/2026 (D298) — ARBITRÉ PAR KO : le RANG 18 est L'ÉCHO DE L'AUDIT DE SECRETS.**
-Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, avant toute autre, et l'ordre
-est de Ko** — le dépôt disait « en attente » et **avait raison tant que rien n'était écrit** (patron de
-D295 et D296). ⚠ **La session ne se l'est pas attribué** : elle a reçu l'arbitrage et l'a écrit.
-**Motif de Ko, tel quel** : « 83 → 185 → 244, environ cent par lot ; l'échéance du report est passée.
-Un audit que personne ne peut lire n'est plus une garde, et la prochaine certification le relancera.
-Il se corrige AVANT elle. » ⛔ **Contrainte de Ko** : l'outil de D293 est une **pièce versée** —
-instrument et pièce se corrigent ensemble ou pas du tout — donc **on ne le retouche pas** : un
-instrument **nouveau** est versé dans `neutralisation/`, qui reconnaît ses propres sorties et celles de
-ses prédécesseurs, les **exclut**, et **imprime ce qu'il a exclu et pourquoi** ; calibration à deux
-bras — il voit toujours un jeton réel placé dans une pièce neuve, il ne voit plus l'écho ; les 24
-jetons du journal e2e hors dépôt sont le cas positif connu. ⇒ **C'est du code : il porte le compteur
-de lots de code non certifiés à DEUX.** « La certification suivante couvrira les rangs 17 et 18
-ensemble — c'est pour ça qu'on fait celui-ci d'abord » (Ko).
-⇒ **Où il en est** : section « PROCHAIN LOT — rang 18 » en tête de ce fichier.
-⛔ **(D298, 21/09/2026) RANG 18 CLOS** : `neutralisation/audit-secrets.py` versé, exclusion par
-l'identité des octets, calibration 5 bras sur 5 (cas réel 24 sur 24), contre-épreuve 5 sur 5 ; l'écho
-imprimé et non compté. **Compteur de lots de code non certifiés : DEUX. Aucun lot de code ne s'ouvre
-avant une certification.** ⛔ **(D299, 22/09/2026) LEVÉ** : marque posée au rang 19, **compteur à ZÉRO**.
-⇒ ~~**RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
-rang 18, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~
-⛔ **CONSOMMÉ LE 21/09/2026 (D299) — ARBITRÉ PAR KO : le RANG 19 est la CERTIFICATION DES RANGS 17 ET 18
-(D297, D298).** Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de
-Ko.** **Motif de Ko** : « le compteur est à DEUX, la règle l'impose ». ⇒ **Où il en est** : section
-« PROCHAIN LOT — rang 19 » en tête de ce fichier. ⚠ Ko a écrit le 21/09 que « la
-certification suivante couvrira les rangs 17 et 18 ensemble » : c'est une **désignation** relevée ici
-pour qu'une reprise n'ait rien à recouper, **pas** l'arbitrage du rang 19. ⚠ Sous le compteur à DEUX,
-la règle (D270) n'admet qu'une **certification** ou un lot **documentaire**.
-⛔ **(D299, 22/09/2026) RANG 19 CLOS — MARQUE POSÉE À LA PASSE 2** : « **portes vertes AU REPOS le
-22/09/2026, et D297 (rang 17, `a2dd3f3`) et D298 (rang 18, `edf66ae`) en font partie** ». 199 mordues, 0
-muette ; fenêtre homogène. **Compteur de lots de code non certifiés : DEUX → ZÉRO** — un lot de code
-**peut** s'ouvrir dès que Ko l'arbitre, et c'est lui qui portera le compteur à un. Après un refus
-(RAM, 21/09 19:08) et une passe non certifiante (échantillonneur aveuglé, 23:10). ⇒ **Où il en est** :
-section « PROCHAIN LOT — rang 19 », clôture.
-⇒ **RANG 20 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
-rang 19, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un
-arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel.
-⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
-que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
-12 passes de D291 mesurent la durée **de suite entière**. Un budget *choisi sur des durées* serait
-donc choisi au jugé — le motif même qui a fait tomber la borne de workers. **(b) ne demande pas
-que les ~20 % de D290 soient expliqués**, puisqu'elle n'écrit aucune valeur neuve. Détail :
-section D294, et l'entrée `[MÉTHODE][P0]` du backlog.
-⚠ **ET « SUIVANT » VOULAIT DIRE LE RANG 13.** ~~AJOUT DU 11/09/2026 (D287) : le rang 12 est
-**OUVERT, pas clos** ; ce qui est dû aujourd'hui n'est pas un arbitrage, c'est **sa
-mesure**.~~ ⛔ **PRÉMISSE PÉRIMÉE LE 12/09/2026 (D288) : le rang 12 est CLOS**, sa marque est
-posée. Ce qui reste dû est donc bien un **arbitrage**, et il appartient à Ko. ⛔ **(D291)
-Consommé deux fois depuis : rang 13 (D289), rang 14 (D291).**
-⚠ **CE QUI NE CHANGE PAS, ET C'EST LE POINT DE LA RÈGLE** : la ligne « rang suivant : en
-attente d'arbitrage de Ko » **reste écrite**. Elle ne disparaît pas au motif que le rang
-précédent est clos — c'est exactement l'absence que D284 interdit, et une liste qui s'arrête
-se lit comme une route. ⇒ **Un rang OUVERT se lit dans son point d'entrée**, pas ici : cette
-liste dit QUEL lot, jamais OÙ IL EN EST (D283).
-⛔ **ET LE CANDIDAT EST DÉSIGNÉ SANS ÊTRE ARBITRÉ — LA DISTINCTION EST TOUT** : Ko a écrit le
-11/09 que **la borne de workers** « touche quatre configs, c'est du code et ça mérite son
-propre rang ». C'est une **désignation**, relevée ici pour qu'une reprise n'ait rien à
-recouper ; **ce n'est pas l'arbitrage du rang 13**, que la session ne prend pas (quatre
-écritures de cet ordre, toutes de Ko). ~~⚠ **Ce qui a changé le 12/09 est sa CONDITION, pas son
-rang** : elle était bloquée derrière la marque du 12 parce qu'elle est du code et que le
-compteur était à deux. **Le compteur est à zéro. Elle peut s'ouvrir dès que Ko l'arbitre.**~~
-⛔ **BARRÉ LE 13/09/2026 (D291) — PERMISSION PÉRIMÉE, ET LA PASSE D277 DE D290 L'AVAIT MANQUÉE.**
-La borne a été arbitrée (rang 13, D289) puis close sans borne (D290) ; le compteur est passé à
-UN (D290) puis à DEUX (D291). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D293, 16/09/2026) LEVÉ** : la certification du rang 15 est faite, **compteur à ZÉRO**. La borne de
-workers, elle, reste **close sans borne** (D290) — ce n'est pas elle qui rouvre.
-⛔ **(D298, 21/09/2026) Compteur à DEUX** : rang 17 (D297) puis rang 18 (D298). ⇒ **Aucun lot de code ne
-s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**.
-La borne de workers, elle, reste **close sans borne** (D290) — ce n'est pas elle qui rouvre.
-⚠ D290 avait traité deux phrases « à zéro » au moyen d'**ancres écrites en dur** dans un script de
-scratchpad ; la recherche qui les avait trouvées n'était écrite nulle part, et celle-ci lui a
-échappé. D291 verse sa recherche elle-même : `docs/preuves/D291/passe-d277/`.
-⛔ **CETTE LIGNE EST LA RÈGLE ÉCRITE LE 10/09/2026 DANS `AGENTS.md`, APPLIQUÉE À ELLE-MÊME**
-— « **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ, JAMAIS UNE ABSENCE** ». Elle ne dit pas quel sera le
-rang 11 : **la session n'arbitre pas l'ordre**, quatre écritures, toutes de Ko. Elle dit que
-l'arbitrage est **attendu**, pour qu'une reprise lise un ÉTAT au lieu de tomber sur une liste
-qui s'arrête et de conclure, deux jours de suite, que le prochain lot n'est écrit nulle part.
-⚠ **Ce qui attend déjà, sans rang et sans priorité entre eux** : ~~les trois `[MÉTHODE][P0]` du
-10/09 (budgets de test non écrits, borne de workers sur une suite de quatre, sonde d'état
-machine hors dépôt — réserve n°2 de D275), et le reliquat du rang 8 (dérive de somme de
-contrôle `_prisma_migrations`, **arbitrage toujours ouvert, interdit d'y toucher**).~~
-⛔ **RÉÉCRIT LE 11/09/2026 (D286), PARCE QUE DEUX DES QUATRE ONT ÉTÉ TRAITÉS** — et qu'une
-liste d'attente qui garde ce qui est fait envoie recouper, c'est-à-dire exactement ce que le
-pointeur promet d'éviter :
-- ✅ **la sonde d'état machine hors dépôt** — FAITE au rang 11 (D286) ;
-- ✅ **le reliquat du rang 8** — FAIT à l'étape 0 du rang 11 (D286) ;
-- ✅ ~~**les budgets de test non écrits** — `[MÉTHODE][P0]` du 10/09, toujours ouvert ; ⛔ **placés
-  APRÈS le rang 14 par Ko le 12/09/2026 (D291)** ; ⛔ **(D294, 16/09/2026) FORME ARBITRÉE — c'est
-  (b), écrire la valeur EN VIGUEUR — et CANDIDAT DÉSIGNÉ DU RANG 17, non arbitré** ;~~
-  ⛔ **RANG 17, ARBITRÉ PAR KO LE 20/09/2026 (D295)** — forme (b), **cadrage seul** en premier lot.
-  ⚠ **L'entrée du backlog reste OUVERTE** : le cadrage ne l'épuise pas, c'est le lot de CODE qui
-  l'épuisera ;
-- ~~⏳ **la borne de workers sur une suite de quatre** — `[MÉTHODE][P0]` du 10/09, toujours
-  ouvert.~~ ✅ **RANG 13, CLOS LE 12/09/2026 SANS BORNE (D290)** — barré le 13/09 (D291).
-  ⚠ **Ko, 11/09/2026, mot pour mot** : « la borne de workers touche quatre configs,
-  c'est du code et ça mérite son propre rang ». **Ce n'est pas un arbitrage du rang 12** —
-  c'est une désignation, relevée ici pour qu'une reprise n'ait rien à recouper.
-
-⛔ **POURQUOI L'HORLOGE PASSE DEVANT, ET C'EST LE MOTIF QUI COMPTE.** Des trois
-causes de la porte rouge, elle est **la seule qui rougisse de façon DÉTERMINISTE**,
-sans condition de charge. argon2 et sharp exigent une contention pour tomber : au
-repos, ils passent. L'horloge, elle, tombe à **chaque exécution, sur toute machine,
-et de plus en plus** à mesure que la fenêtre de fixture s'éloigne dans le passé.
-⇒ **Elle rend la porte incertifiable QUOI QU'IL ARRIVE.** Tant qu'elle est là,
-aucune charge, aucune borne, aucun déplacement de test ne peut rendre la porte
-verte — donc aucune certification n'est possible, pour aucun des lots en attente.
-⚠ Cette phrase disait « pour aucun des **trois** lots » : le compte a bougé le
-lendemain. Un plan écrit avec le nombre de lots dedans se périme au lot suivant.
-
-⛔ **S11-b EST UN LOT DU CHEMIN DE L'ARGENT ET NE S'OUVRE PAS SOUS UNE PORTE NON
-FIABLE.** C'est le point de cet ordre qui ne se négocie pas : sans les rangs 3 à 6,
-le rang 8 se mesurerait contre une porte qui ne dit rien.
-
-⛔ **LE CORRECTIF DE L'HORLOGE EST DE FIGER L'HORLOGE, JAMAIS DE DÉCALER LA
-FENÊTRE.** Décaler les dates de fixture reconduit le défaut d'un mois : la même
-porte redeviendra rouge, un matin, sans qu'une ligne ait bougé — et la prochaine
-session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ, pas
-un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
-concerné, et corriger le seul cas connu laisserait les autres armés.
+⛔ **SORTI D'ICI LE 22/09/2026 (D300, rang 20, arbitrage de Ko) — L'ORDRE DES RANGS A SON PROPRE TITRE :
+« ## ORDRE DES RANGS — QUEL lot vient ensuite », en tête de ce fichier, juste avant les points d'entrée
+« PROCHAIN LOT ».** Le corps de cette sous-section y a été **déplacé à l'octet** — empreintes SHA-256
+égales avant et après (`docs/preuves/D300/deplacement/`) ; rien n'en a été retiré.
+⚠ **Ce titre reste ici, et c'est délibéré** : la section D270 est datée et ne se réécrit pas (D291). Tout
+pointeur ancien qui désigne « la section D270 » pour l'ordre des rangs — il y en a dans des sections datées,
+vrais à leur date et laissés tels quels — tombe sur ce renvoi et y trouve la route.
+⚠ **Du 31/08 au 22/09/2026, l'ordre a vécu ici** : du contenu courant rangé dans une section datée. Ce que
+cela a coûté, et à qui : section D300.
 
 ### D271 — ⚠ DEUX BRANCHES EMPILÉES : ELLES PARTENT ENSEMBLE OU AUCUNE
 
@@ -10680,3 +11024,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D297 | A | D297 — rang 17 CLOS : arbitrage (ii), majorant déclaré ; quatre `testTimeout: 5_000` écrits à la valeur en vigueur et lus (n°8 4 sur 4, contre-épreuve 3 sur 4) ; marge ~~≥ 4 618 ms~~ ≥ 4 603 ms passes froides comprises (D298) ; toute autre valeur exige (i) |
 | D298 | A | D298 — rang 18 CLOS : l'écho de l'audit de secrets ; `neutralisation/audit-secrets.py`, instrument NOUVEAU, exclut par l'IDENTITÉ des octets (17 sorties épinglées, sorties propres scellées) et imprime ce qu'il exclut ; calibration 5 bras dont le cas réel 24/24, contre-épreuve 5 sur 5 ; D293 433 = 90 + 472 − 129 ; règle « un défaut d'instrument arrête la mesure, pas le lot » ratifiée ; marge du rang 17 froides comprises ; compteur à DEUX |
 | D299 | A | D299 — rang 19 CLOS, CERTIFICATION des rangs 17 et 18 : étape 0 (arbitrage de Ko sur l'audit — des valeurs, pas des mots ; tri différentiel ; minorant par défaut ; extrait e2e élargi, calibré) — ⛔ étape 1 ROUGE sur la RAM (−52,5 puis −31), rien lancé ; ~~aucune marque ; reprise à l'étape 1~~ refus ratifié, Ko libère (`oracle`) au lieu de redéfinir ; passe 1 verte et NON certifiante (échantillonneur aveuglé par mon `tail -f`, rejeu intégral) ; passe 2 : MARQUE POSÉE — « portes vertes au repos le 22/09/2026, D297 et D298 en font partie », 199 mordues · 0 muette, fenêtre homogène ; compteur DEUX → ZÉRO ; rang 20 en attente d'arbitrage de Ko |
+| D300 | A | D300 — rang 20 CLOS, lot DOCUMENTAIRE : l'ordre des rangs sort de la section D270 et reçoit son titre `##` (606 lignes déplacées à l'octet, renvoi daté, pointeurs courants mis à jour) ; étape 0 — les huit creux de D299 : 7 sous Playwright, 1 sous vitest, et la barre porte sur l'état ambiant, relevé à `node` = 0 (point 7, règle de Ko) ; compteur ZÉRO inchangé ; rang 21 en attente d'arbitrage de Ko |

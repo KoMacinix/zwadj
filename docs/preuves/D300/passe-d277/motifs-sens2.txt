@@ -1,0 +1,10 @@
+# Passe D277 de D300, SENS 2 — ce que le lot REND PERMIS, ou dont la CONDITION change (D287).
+# rang 20 : arbitré (« en attente » devient faux) · rang 21 : naît en attente · un titre `##` propre rend inutile
+# tout « ramener l'ordre dans le champ » · un contenu sorti d'une section DATÉE pourrait se lire comme la permission
+# de réécrire une section datée · les permissions d'ouvrir un lot : leur condition (compteur) ne doit PAS bouger.
+rang-20               (?i)rang 20\b
+rang-21               (?i)rang 21\b
+en-attente-arbitrage  (?i)en attente d'arbitrage
+champ-verificateur    (?i)(?:ramen\w* dans le champ|hors du champ|hors champ)
+datee-reecrit         (?i)(?:ne se réécri\w*|se réécrit pas|jamais réécrit)
+peut-s-ouvrir         (?i)peut s'ouvrir

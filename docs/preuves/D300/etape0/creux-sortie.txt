@@ -1,0 +1,16 @@
+barre imprimée par la sonde d'ouverture : 4579 Mo
+mesures de la passe, de relevé à relevé : 10 (attendu 10)
+campagnes dans la table : 27 (attendu 27) · somme des durées 1886 s · chronomètre 1886 s · dérive maximale de l'attribution 0 s
+échantillons parcourus : 109 (attendu 109, compté sur les octets)
+échantillons sous la barre : 8 (attendu 8, relevé par D299 dans le complément)
+heure    · RAM  · node · chrome · non-node (écart au dernier node=0) · mesure en vol
+00:15:14 · 4020 ·   12 ·      0 · 341 (+10 contre 00:14:43) · test:e2e · runner : playwright (e2e/playwright.config.ts)
+00:15:46 · 4015 ·   14 ·      0 · 343 (+12 contre 00:14:43) · test:e2e · runner : playwright (e2e/playwright.config.ts)
+00:16:17 · 3549 ·   13 ·      0 · 337 (+6 contre 00:14:43) · test:e2e · runner : playwright (e2e/playwright.config.ts)
+00:24:11 · 4209 ·   12 ·      0 · 338 (+20 contre 00:17:20) · --tout · campagne neutralize-b7.py (runner relevé dans sa source : playwright)
+00:25:14 · 4349 ·   12 ·      0 · 331 (+13 contre 00:17:20) · --tout · campagne neutralize-b7.py (runner relevé dans sa source : playwright)
+00:25:45 · 4127 ·   13 ·      0 · 334 (+16 contre 00:17:20) · --tout · campagne neutralize-b7.py (runner relevé dans sa source : playwright)
+00:26:48 · 4243 ·   13 ·      0 · 336 (+18 contre 00:17:20) · --tout · campagne neutralize-b7.py (runner relevé dans sa source : playwright)
+00:34:12 · 4538 ·   14 ·      0 · 331 (+13 contre 00:17:20) · --tout · campagne neutralize-maxprice.py (runner relevé dans sa source : vitest)
+== ventilation par runner : playwright=7 · vitest=1
+== chrome max dans les creux : 0 (attendu 0)

@@ -1,0 +1,21 @@
+RECTIFICATION — posée à côté des pièces, qui ne sont PAS retouchées (précédent de D294, ratifié par Ko en D295).
+
+Pièce concernée : entete-ordre.md — le titre et l'introduction TELS QU'INSÉRÉS par deplacer.py (sortie :
+deplacer-sortie.txt). Le déplacement lui-même n'est pas en cause : l'empreinte porte sur le CORPS de l'ordre,
+pas sur l'introduction.
+
+Ce que l'introduction insérée disait :
+  « le pointeur « section D270 » tombait à ~330 lignes de l'ordre (backlog `[DOC][P1]`, 11/09) »
+
+Ce que la mesure dit (distances.py, sortie distances-sortie.txt, sur `git show HEAD`, soit 0a8235d) :
+  - le pointeur « section D270 » tombait 333 lignes AU-DESSUS du sous-titre de l'ordre, et 840 au-dessus de la
+    ligne du rang courant ;
+  - l'entrée [DOC][P1] du 11/09 chiffrait à ~330 une AUTRE distance : DANS l'ordre, de son début à la réponse
+    — 507 lignes à 0a8235d, et le déplacement ne la raccourcit pas.
+  La phrase insérée attribuait donc au backlog un chiffre qui mesure autre chose. Deux quantités voisines de
+  330, qui ne se soustraient pas (D290).
+
+Où c'est rectifié : ZWADJ_CONTINUITE.md, introduction de « ## ORDRE DES RANGS » (chiffres mesurés, et un
+paragraphe « CE QUE LE DÉPLACEMENT NE RACCOURCIT PAS ») ; AGENTS.md, paragraphe « POURQUOI CE POINTEUR A
+CHANGÉ ». Trouvé par la session elle-même, en mesurant la distance avant d'annoter l'entrée [DOC][P1] —
+après le déplacement, donc après l'insertion.

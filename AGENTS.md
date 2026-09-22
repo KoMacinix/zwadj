@@ -630,8 +630,18 @@ et section **D283** de `ZWADJ_CONTINUITE.md`.
 
 ⛔ **UN RANG CLOS LAISSE UN ÉTAT NOMMÉ, JAMAIS UNE ABSENCE — arbitré par Ko le 10/09/2026,
 ÉCRIT ICI LE MÊME JOUR (D284).** La session qui ferme un rang écrit, dans l'ordre des rangs
-(`ZWADJ_CONTINUITE.md`, section D270), **ce que devient le rang suivant** : son objet s'il est
+(`ZWADJ_CONTINUITE.md`, ~~section D270~~ section « **ORDRE DES RANGS** », titre `##` propre depuis le
+22/09/2026 — D300), **ce que devient le rang suivant** : son objet s'il est
 arbitré, et sinon, mot pour mot, « **rang suivant : en attente d'arbitrage de Ko** ».
+⛔ **POURQUOI CE POINTEUR A CHANGÉ (D300, 22/09/2026, arbitrage de Ko).** L'ordre a vécu trois semaines sous
+« ## Session du 31/08/2026 — D270 », et il a coûté trois fois : un pointeur qui tombait 333 lignes au-dessus de
+lui et 840 au-dessus du rang courant (mesuré à `0a8235d`, section D300), une reprise qui l'a traversé pour
+constater une absence (D283), un vérificateur qui l'a sauté parce qu'il
+excluait les sections datées par leur titre (D299). « **Du contenu courant rangé dans une section datée :
+c'est l'anomalie racine** » (Ko). ⇒ *Dérivé par la session, pas une parole de Ko* : un contenu courant ne se
+range pas sous un titre de session datée — tout outil ou lecteur qui trie par titre le range avec
+l'histoire. ⚠ **Le déplacement n'autorise pas à réécrire une section datée** : il est borné à du contenu
+courant, sorti en entier, avec un renvoi daté à sa place d'origine.
 ⛔ **UNE LISTE QUI S'ARRÊTE N'EST PAS UN ÉTAT** : elle se lit comme une route, et elle envoie
 recouper — c'est-à-dire exactement ce que le pointeur « l'ordre des rangs dit QUEL lot »
 promet d'éviter.

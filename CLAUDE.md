@@ -32,6 +32,11 @@ fichier chargé à chaque session est faux dès le lot suivant.
 - Lire la section la PLUS RÉCENTE de `ZWADJ_CONTINUITE.md`. Un numéro de
   décision se prend en LISANT ce fichier — jamais depuis un résumé, jamais
   depuis la mémoire. Des collisions ont eu lieu quand cette règle a sauté.
+- Le prochain lot se lit en DEUX endroits de `ZWADJ_CONTINUITE.md` (D283) : la
+  section « ## ORDRE DES RANGS » dit QUEL lot ; le point d'entrée du rang,
+  section « PROCHAIN LOT » juste en dessous, dit OÙ IL EN EST.
+  ⚠ Ligne AJOUTÉE le 22/09/2026 (D300) : l'ordre vivait sous une section de
+  session datée (D270), et ce fichier — qui dit où lire — ne le nommait pas.
 - Énumérer les fichiers attendus AVANT d'écrire. En fin de lot, `git diff` ne
   doit contenir que ceux-là. C'est ce qui remplace le contrôle de provenance
   des archives : deux incidents de code sans origine traçable ont été

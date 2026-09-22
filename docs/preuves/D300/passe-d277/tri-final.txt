@@ -1,0 +1,60 @@
+TRI À LA MAIN des occurrences « NON TRAITÉES » rendues par verifier.py sur les balayages FINAUX de D300
+(sens1-final.txt, sens2-final.txt ; sorties verifier-sens1-final.txt, verifier-sens2-final.txt).
+« Non traitée » veut dire : ni barrée sur sa ligne, ni signée D300 dans sa fenêtre (la ligne et les 3
+suivantes). Une non traitée peut être JUSTE ; chacune se nomme ici. Catégories :
+  CIT  citation du déplacement, dans un texte de D300 dont la signature tombe hors de la fenêtre ;
+  D270 pointeur vers un AUTRE contenu de la section D270, qui y reste (relevés de durée) ;
+  CLOS entrée close ou texte barré sur plusieurs lignes — vrai à sa date ;
+  FP   faux positif du motif (l'expression enjambe deux entrées) ;
+  REG  règle générale, vraie sans date ;
+  AUT  sans rapport avec l'ordre des rangs.
+Numéros de ligne : ceux de l'arbre au moment des balayages finaux, AVANT l'écriture de la section D300.
+
+SENS 1 — 22 examinées non traitées, 22 justes :
+AGENTS.md:688                 D270  « Ils vivent dans la section D270 » : relevés de durée sous charge
+AGENTS.md:1172                D270  « Section D270 de ZWADJ_CONTINUITE.md » : durées de la suite pro
+ZWADJ_CONTINUITE.md:511       CIT   introduction de l'ordre : « la section D270 garde tout le reste »
+ZWADJ_CONTINUITE.md:1028      CIT   arbitrage du rang 20 : motif de Ko cité (« vit sous ## Session du 31/08/2026 »)
+ZWADJ_CONTINUITE.md:1030      CIT   arbitrage du rang 20 : contrainte de Ko citée
+ZWADJ_CONTINUITE.md:1032      CIT   idem (deux motifs sur la même phrase)
+ZWADJ_CONTINUITE.md:1037      CIT   clôture du rang 20 dans l'ordre : « renvoi daté dans la section D270 »
+ZWADJ_CONTINUITE.md:1140      CIT   point d'entrée du rang 20 : « le sous-titre ### D270 — ordre des lots… reste » (trois motifs)
+ZWADJ_CONTINUITE.md:1141      CIT   idem : « La section D270 n'est pas réécrite au-delà »
+ZWADJ_BACKLOG.md:2427         CLOS  entrée [DOC][P2] de D299, fermée par D300 : son texte d'origine, conservé
+ZWADJ_BACKLOG.md:3193         CIT   entrée [DOC][P1] du 11/09, OUVERTE : son constat d'origine ; annotée par D300 plus bas
+ZWADJ_BACKLOG.md:3210         CIT   annotation D300 de cette même entrée (« le pointeur section D270 tombait 333 lignes… »)
+ZWADJ_BACKLOG.md:3082         FP    « …l'ordre des rangs. - [MÉTHODE][P0] … BORNE DE WORKERS DE D270 » : deux entrées
+ZWADJ_BACKLOG.md:3550         CLOS  entrée [x] fermée par D283 (deux pointeurs de l'en-tête, cités)
+ZWADJ_BACKLOG.md:3551         CLOS  idem (deux motifs)
+ZWADJ_BACKLOG.md:3903         CLOS  entrée [x] sharp : « Relevé complet dans la section D270 » (borne maxWorkers)
+ZWADJ_BACKLOG.md:3932         CLOS  entrée [x] argon2 : « L'ordre vit dans UN seul endroit : la section D270 » — un
+                                    lecteur qui la suit tombe sur le renvoi daté
+(les lignes à deux ou trois motifs comptent une fois par motif : 22 occurrences, 17 lignes)
+
+SENS 2 — 26 examinées non traitées, 26 justes :
+ZWADJ_CONTINUITE.md:1040      CIT   clôture du rang 20 dans l'ordre (rang 20, rang 21)
+ZWADJ_CONTINUITE.md:1042      CIT   « RANG 21 : EN ATTENTE D'ARBITRAGE DE KO » — courant, et JUSTE (rang 20, 21, attente)
+ZWADJ_CONTINUITE.md:1134      CIT   point d'entrée du rang 20 : « QUEL lot : rang 20 »
+ZWADJ_CONTINUITE.md:1154      CIT   point d'entrée du rang 20 : « RANG 21 : EN ATTENTE » — courant, juste (rang 21, attente)
+ZWADJ_CONTINUITE.md:1175      CIT   clôture du rang 19 : annotation D300 (arbitrage du rang 20)
+ZWADJ_CONTINUITE.md:1176      CIT   idem
+ZWADJ_CONTINUITE.md:879       CLOS  ordre : « ~~RANG SUIVANT : EN ATTENTE~~ ⛔ CONSOMMÉ (D289) » — barré dans la ligne
+ZWADJ_CONTINUITE.md:894       CLOS  ordre : « RANG 14 … EN ATTENTE » dans un bloc barré sur plusieurs lignes, consommé (D291)
+ZWADJ_CONTINUITE.md:906       CLOS  ordre : « ~~RANG 15 : EN ATTENTE~~ ⛔ CONSOMMÉ » (D292)
+ZWADJ_CONTINUITE.md:973       CLOS  ordre : « ÉTAT : en attente d'arbitrage de Ko sur le cadrage » (D296), débloqué (D297)
+ZWADJ_CONTINUITE.md:1056      REG   ordre : « la ligne “rang suivant : en attente d'arbitrage de Ko” reste écrite »
+ZWADJ_CONTINUITE.md:1332      CLOS  titre du point d'entrée du rang 17 : segments barrés
+ZWADJ_CONTINUITE.md:1391      CLOS  rang 17 : « ~~RANG 18 : EN ATTENTE~~ ⛔ CONSOMMÉ »
+ZWADJ_CONTINUITE.md:1551      CLOS  rang 17 : idem
+ZWADJ_CONTINUITE.md:1597      CLOS  rang 17 : « annotée, en attente d'arbitrage » puis « (D297) ARBITRÉ PAR KO »
+ZWADJ_CONTINUITE.md:1742      CLOS  rang 16 : « ~~RANG 17 : EN ATTENTE~~ »
+ZWADJ_CONTINUITE.md:1744      CLOS  rang 16 : « ~~RANG 18 : EN ATTENTE~~ »
+ZWADJ_CONTINUITE.md:2906      CLOS  rang 8 : segment barré (« en attente d'arbitrage » de la dérive Prisma), barré par D286
+ZWADJ_CONTINUITE.md:1030      CIT   arbitrage du rang 20 : contrainte de Ko citée (« ne se réécrit pas »)
+ZWADJ_BACKLOG.md:2417         CIT   entrée [DOC][P2] fermée par D300 : « la ligne RANG 20 … classée DATÉE avant »
+ZWADJ_BACKLOG.md:1976         AUT   « Correctif tenu prêt, en attente d'arbitrage » (lot L1, D263)
+ZWADJ_BACKLOG.md:3575         CLOS  entrée close (D282) citant l'ordre
+
+⇒ AUCUNE PHRASE COURANTE NE SITUE PLUS L'ORDRE DANS LA SECTION D270 SANS ÊTRE BARRÉE OU RENVOYÉE ; AUCUNE
+N'ANNONCE PLUS LE RANG 20 EN ATTENTE. Les permissions « peut s'ouvrir » (29 courantes) ne sont pas
+examinées ici : leur condition — le compteur — ne bouge pas, ce lot étant documentaire.

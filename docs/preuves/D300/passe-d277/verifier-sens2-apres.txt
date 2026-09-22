@@ -1,0 +1,43 @@
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1029 [rang-20] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⇒ **Où il en est** : section « PROCHAIN LOT — rang 20 » en tête de ce fichier.
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1030 [rang-20] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1129 [rang-20] COURANTE ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET
+        — documentaire, compteur à ZÉRO inchangé. L'ordre se lit désormais sous « ## **ORDRE DES RANGS** » ; le rang
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1130 [rang-20] COURANTE ## ~~PROCHAIN LOT~~ — rang 19 · **CERTIFICATION DES RANGS 17 ET
+        20 : point d'entrée « PROCHAIN LOT — rang 20 », au-dessus de celui-ci.
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1030 [rang-21] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:873 [en-attente-arbitrage] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⇒ ~~**RANG SUIVANT : EN ATTENTE D'ARBITRAGE DE KO.**~~ ⛔ **CONSOMMÉ LE 12/09/2026 (D289) —
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:888 [en-attente-arbitrage] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⚠ **ET LE RANG 14 EST DONC, À SON TOUR, EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:900 [en-attente-arbitrage] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⇒ ~~**RANG 15 : EN ATTENTE D'ARBITRAGE DE KO** (D284).~~ ⛔ **CONSOMMÉ LE 14/09/2026, À LA CLÔTURE
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:967 [en-attente-arbitrage] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        pièce 3 du cadrage, **donc appartient à Ko**. ⇒ **ÉTAT : en attente d'arbitrage de Ko sur le
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1030 [en-attente-arbitrage] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1044 [en-attente-arbitrage] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⚠ **CE QUI NE CHANGE PAS, ET C'EST LE POINT DE LA RÈGLE** : la ligne « rang suivant : en
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1286 [en-attente-arbitrage] COURANTE ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets d
+        ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets de test, forme (b)** ⛔ ~~**OUVERT — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE**~~ ⛔ ~~**BLOQUÉ
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1345 [en-attente-arbitrage] COURANTE ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets d
+        ⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné.~~ ⛔ **CONSOMMÉ LE
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1505 [en-attente-arbitrage] COURANTE ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets d
+        documentaire. ⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.~~ ⛔ **(D298)
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1551 [en-attente-arbitrage] COURANTE ## ~~PROCHAIN LOT~~ — rang 17 · `[MÉTHODE][P0]` **les budgets d
+        voisine, **le mode n°2 de ce même cadrage**. Non réécrite : annotée, en attente d'arbitrage.
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1696 [en-attente-arbitrage] COURANTE ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 1
+        ⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO**, candidat désigné = les **budgets de test**, forme (b).~~
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1698 [en-attente-arbitrage] COURANTE ## ~~PROCHAIN LOT~~ — rang 15 · **CERTIFICATION** ⛔ **CLOS LE 1
+        ⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.~~ ⛔ **(D298) Consommé le
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:2860 [en-attente-arbitrage] COURANTE ## RANG 8 — S11-b · **point d'entrée CONSERVÉ** ⛔ **CHEMIN DE L
+        ce qu'aucune étape ne portait — la dérive de somme de contrôle Prisma, en attente
+   ✗ NON TRAITÉE : ZWADJ_CONTINUITE.md:1024 [datee-reecrit] COURANTE ## ORDRE DES RANGS — QUEL lot vient ensuite
+        ⛔ **Contrainte de Ko** : la section D270 est datée et ne se réécrit pas (D291) — l'ordre en **SORT** et reçoit
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:1976 [en-attente-arbitrage] BACKLOG ## Reports du lot L1 — porte lint — 28/08/2026 (D263)
+        ⚠ **Correctif tenu prêt, en attente d'arbitrage** : chemin de l'argent, donc
+   ✗ NON TRAITÉE : ZWADJ_BACKLOG.md:3526 [en-attente-arbitrage] BACKLOG ## Reports du 09/09/2026 — S11-b étapes 4→6 (D282)
+        **attendu**. ⚠ Appliquée à elle-même dans le même commit : l'ordre porte « rang suivant : en
+== occurrences lues : 117 (attendu 117) · examinées (COURANTE + BACKLOG, motifs datee-reecrit, en-attente-arbitrage, rang-20, rang-21) : 43 · traitées 22 · NON TRAITÉES 21 — à trier une à une

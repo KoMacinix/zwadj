@@ -1,0 +1,9 @@
+AVANT (HEAD) : 10682 lignes parcourues (attendu 10682, compté sur les octets)
+   titre de session désigné par le pointeur : trouvé 1 fois (attendu 1) → ligne 8299
+   sous-titre de l'ordre : trouvé 1 fois (attendu 1) → ligne 8632
+   dernière ligne « ⇒ RANG N » de l'ordre : ligne 9139 · « ⇒ **RANG 20 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun c… »
+   ⇒ pointeur → sous-titre 333 lignes · sous-titre → rang courant 507 · pointeur → rang courant 840
+APRÈS (arbre de travail) : 10830 lignes parcourues (attendu 10830, compté sur les octets)
+   titre ## de l'ordre : trouvé 1 fois (attendu 1) → ligne 487
+   dernière ligne « ⇒ RANG N » de la section : ligne 1042 · « ⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun c… »
+   ⇒ titre → rang courant 555 lignes · section 641 lignes · après le rang courant 85 lignes · titre → point d'entrée suivant (fin de section) 641

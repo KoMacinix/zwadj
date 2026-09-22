@@ -1,0 +1,9 @@
+# Passe D277 de D300, SENS 1 — ce que le déplacement INVALIDE : tout ce qui SITUE l'ordre des rangs dans la
+# section D270 (pointeur par nom de section, par numéro de décision, par sous-titre ou par titre de session).
+section-D270          (?i)section D270
+ordre-puis-D270       (?i)ordre des (?:rangs|lots).{0,80}?D270
+D270-puis-ordre       (?i)D270.{0,40}?ordre des (?:rangs|lots)
+ordre-paren-D270      (?i)ordre[^.]{0,30}\(D270\)
+sous-titre-ordre      (?i)ordre des lots, révisé par Ko
+titre-session-D270    (?i)Session du 31/08/2026
+ordre-vit-sous        (?i)ordre des rangs vit sous

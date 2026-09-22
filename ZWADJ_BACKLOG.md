@@ -2362,6 +2362,27 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 22/09/2026 — rang 20, l'ordre des rangs sort de la section D270 (D300)
+
+⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D300 de `ZWADJ_CONTINUITE.md`.
+⇒ **Traitées par ce lot, ailleurs dans ce fichier** : l'entrée `[DOC][P2]` de D299 (fermée), l'entrée
+`[DOC][P1]` du 11/09 sur la distance du pointeur (annotée, **reste ouverte**), l'entrée `[INFRA][P3]` du 10/09
+sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[DOC][P3]** ⚠ **« ⇒ POURQUOI (b) ET PAS (a) » SE LIT SOUS LE RANG COURANT, SÉPARÉ DE SON RANG 17.** Ce
+  paragraphe de l'ordre des rangs — écrit le 16/09 par D294 (`git blame` : `16ca01a`) — justifiait la forme
+  (b) des budgets, **candidat du rang 17**. Les lignes des rangs 17 à 21 se sont insérées **au-dessus de lui**,
+  une par lot (D295 → D300) : il suit aujourd'hui « RANG 21 : EN ATTENTE D'ARBITRAGE DE KO » et **se lit comme
+  le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
+  « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
+  insertions des rangs suivants les ont éloignées.
+  ⇒ **Non corrigé par D300, et c'est délibéré** : le lot DÉPLACE l'ordre à l'octet — réordonner son intérieur
+  serait un autre lot, et effacerait la preuve d'empreinte. ⇒ **Remède possible, NON arbitré** : garder les
+  paragraphes de motif hors de la chaîne des rangs, pour qu'un rang ajouté ne s'intercale plus entre un motif
+  et son rang. C'est une décision de **FORME** ; elle appartient à Ko.
+
 ## Reports du 21/09/2026 — rang 19, certification des rangs 17 et 18 (D299)
 
 ⚠ **UNE CERTIFICATION NE CORRIGE RIEN.** Ce qui est croisé se **rapporte** ici. Détail : section D299 de
@@ -2388,8 +2409,15 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
 - **[INFRA][P3]** ⚠ **LE CONTRÔLE « 0 VALEUR RÉELLE » N'EST PAS DANS L'INSTRUMENT NON PLUS** — il fait foi
   (Ko), et il vit en procédure (`docs/preuves/D299/outils/aucune-valeur-reelle.py`), qu'il faut nommer à
   chaque fois avec le journal à contrôler. Même report, même lot.
-- **[DOC][P2]** ⛔ **L'ORDRE DES RANGS VIT SOUS UN TITRE DE SESSION DATÉE — « ## Session du 31/08/2026 —
-  D270 » —, ET TOUT OUTIL QUI CLASSE PAR TITRE `##` LE SAUTE.** Mesuré à la passe D277 de la marque (22/09) :
+- [x] ~~**[DOC][P2]** ⛔ **L'ORDRE DES RANGS VIT SOUS UN TITRE DE SESSION DATÉE — « ## Session du 31/08/2026 —
+  D270 » —, ET TOUT OUTIL QUI CLASSE PAR TITRE `##` LE SAUTE.**~~ ⛔ **FERMÉE LE 22/09/2026 (D300) — ARBITRÉE PAR
+  KO EN RANG 20 ET FAITE** : l'ordre a son titre, « ## ORDRE DES RANGS — QUEL lot vient ensuite », juste
+  au-dessus des points d'entrée ; corps déplacé à l'octet (606 lignes, SHA-256 égal), renvoi daté à sa place
+  d'origine, pointeurs courants mis à jour, passe D277 dans les deux sens (`docs/preuves/D300/`). ⇒ **Mesuré
+  après coup, par un balayage qui ne connaît aucun titre** : la ligne « RANG 20 » de l'ordre, classée **DATÉE**
+  avant le déplacement, est classée **COURANTE** après — le cas particulier de `verifier-marque.py` n'a plus
+  d'objet. Barrée, pas effacée (D276). Texte d'origine :
+  Mesuré à la passe D277 de la marque (22/09) :
   le vérificateur excluait les sections datées par leur titre, et a rendu **56** occurrences examinées au
   lieu de **92** — **le bloc le plus courant du fichier était hors champ**, et une interdiction courante
   (« (D298) Compteur à DEUX ») y restait non levée. Corrigé **dans la procédure** (sous-titre ramené par son
@@ -3148,6 +3176,17 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   (`Get-CimInstance Win32_Process`) et compter séparément ceux qui portent `dev`, `vite`,
   `--watch`. ⚠ **À calibrer** sur un cas connu — une pile `dev` lancée exprès — sinon
   l'instrument classerait sans qu'on sache s'il classe juste.
+  ⛔ **(D300, 22/09/2026) UNE RÈGLE DE CERTIFICATION S'ADOSSE DÉSORMAIS À CETTE DISTINCTION.** Ko a comblé le
+  point 7 du critère : la barre porte sur l'état ambiant, relevé à `node` = 0 ; un creux pendant une mesure
+  **« avec les seuls `node` de cette mesure »** est la charge certifiée ; un creux avec `chrome` ou un
+  **processus étranger** disqualifie la fenêtre. ⇒ **Ce que l'instrument en voit, mesuré sur les huit creux
+  de D299** (`docs/preuves/D300/etape0/`) : l'**échantillonneur** — pas seulement la sonde — ne relève que
+  `node`, `chrome` et `nb_proc`, **sans nom ni ligne de commande**. La clause `chrome` est outillée ; « les
+  seuls `node` de cette mesure » ne s'établit que **par encadrement** (0 avant, 0 après) ; un étranger qui ne
+  s'appelle ni `chrome` ni `node` ne se voit qu'au compte `nb_proc`, que la mesure fait elle-même bouger
+  (**+6 à +20** dans les huit creux, sous Playwright comme sous vitest). ⇒ **L'affinage ci-dessus vaudrait
+  pour les deux instruments.** ⚠ **Le P3 date d'avant qu'une règle de certification en dépende** — sa
+  réévaluation appartient à Ko ; c'est du code de `neutralisation/`, donc un lot qui compte.
 
 - **[DOC][P1]** ⛔ **LE POINTEUR « RANG SUIVANT » EST À ~330 LIGNES DU DÉBUT DE L'ORDRE DES
   RANGS, ET IL S'ÉLOIGNE D'UN RANG PAR LOT.** Relevé le 11/09/2026 par une reprise à froid :
@@ -3165,6 +3204,16 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   exemple porter l'état courant en TÊTE de la section, les rangs clos restant dessous.
   ⚠ **Et il ne se traite pas en écrivant un numéro de rang quelque part** : c'est très
   exactement le compteur figé que D283 a retiré de l'en-tête pour cette raison.
+  ⛔ **(D300, 22/09/2026) TRAITÉE À MOITIÉ PAR LE RANG 20 — L'ENTRÉE RESTE OUVERTE.** Ko a arbitré le
+  **titre** (« ## ORDRE DES RANGS — QUEL lot vient ensuite »), pas la forme que cette entrée proposait.
+  **Mesuré** (`docs/preuves/D300/deplacement/distances.py`, sur `0a8235d` puis sur l'arbre) : le pointeur
+  « section D270 » tombait **333** lignes au-dessus de l'ordre et **840** au-dessus du rang courant — ce
+  préambule-là **a disparu**. ⛔ **Mais la distance que CETTE entrée chiffre — dans l'ordre, de son début à
+  la réponse — ne raccourcit pas** : **507** au commit d'avant, davantage après (le titre et son introduction
+  s'y ajoutent ; valeur de clôture dans la même pièce). ⇒ **Ce qui a changé** : l'introduction de l'ordre dit
+  désormais **où** est la réponse — « la DERNIÈRE ligne “⇒ RANG N” » —, soit l'information que « le pointeur
+  ne donne pas », **sans écrire de numéro de rang**. **Ce qui reste** : la traversée elle-même ; une décision
+  de forme au-delà du titre appartient à Ko.
 
 - [x] ~~**[DOC][P3]** ⚠ **COQUILLE DANS UN FICHIER D'AUTORITÉ** : section D286 de
   `ZWADJ_CONTINUITE.md`, « l'écart est écrit ici plutôt que **tu** » — phrase tronquée
