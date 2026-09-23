@@ -1,0 +1,20 @@
+⇒ ~~**RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+22, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⚠ **Une permission n'est pas un arbitrage** :
+le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel. ⚠ **Et pour E3, rang arbitré ne suffit
+pas** : l'état des lieux et le cadrage du sous-lot passent d'abord, et c'est le relecteur (chat) qui décide
+dessus (D302 ; `AGENTS.md`, « À NE PAS faire »).
+⛔ **ARBITRÉ LE 23/09/2026 PAR KO — le RANG 23, mot pour mot : « Rang 23 : les transitions atomiques de la
+réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6. Cadrage, lot documentaire. Aucun besoin de
+Chargily. »** Lot D303. Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de Ko**
+(patron de D295) : la session a reçu l'arbitrage, elle ne se l'est pas attribué.
+⇒ **Documentaire** (`.md` d'autorité et `docs/preuves/` seulement) : il ne compte pas dans les deux/trois (D283,
+amendé par D292) — **compteur de lots de code non certifiés : ZÉRO, inchangé.** ⇒ **Ce qu'il produit** : les
+décisions du relecteur (chat) que Ko a transmises pour ce rang (partie A), puis le **CADRAGE** des quatre défauts
+selon la méthode renforcée (D126) — modes de défaillance d'abord, cibles de neutralisation nommées d'avance,
+fichiers attendus, rouge sur PostgreSQL réel — **et aucune ligne de code** (partie B). Le **découpage en sous-lots
+est PROPOSÉ par la session et TRANCHÉ PAR KO.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 23 » en tête de
+ce fichier.
+⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
+cadrage du rang 23 ne rend PERMIS aucun lot de code** : ses sous-lots attendent le découpage de Ko, la décision du
+relecteur (chat) sur le cadrage, et un rang arbitré (D302).

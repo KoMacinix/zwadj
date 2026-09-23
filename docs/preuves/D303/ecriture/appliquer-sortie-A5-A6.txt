@@ -1,0 +1,24 @@
+== étape A5 · fichiers d'ancre 1 (attendu 1) · de remplacement 1 (attendu 1)
+   cible : ZWADJ_BACKLOG.md
+   ✓ LF nus, CR seuls AVANT : (0, 0) (attendu (0, 0))
+   ✓ ancre AVANT : 1 (attendu 1)
+   ✓ remplacement non vide : True (attendu True)
+   ✓ relu sur disque = écrit : True (attendu True)
+   ✓ ancre APRÈS : 0 (attendu 0)
+   ✓ remplacement APRÈS : 1 (attendu 1)
+   ✓ réversibilité à l'octet : True (attendu True)
+   ✓ bilan de lignes : 28 (attendu 28)
+   ✓ LF nus, CR seuls APRÈS : (0, 0) (attendu (0, 0))
+   ⇒ étape A5 : VÉRIFIÉE · 381089 → 383837 octets
+== étape A6 · fichiers d'ancre 1 (attendu 1) · de remplacement 1 (attendu 1)
+   cible : ZWADJ_BACKLOG.md
+   ✓ LF nus, CR seuls AVANT : (0, 0) (attendu (0, 0))
+   ✓ ancre AVANT : 1 (attendu 1)
+   ✓ remplacement non vide : True (attendu True)
+   ✓ relu sur disque = écrit : True (attendu True)
+   ✓ ancre APRÈS : 0 (attendu 0)
+   ✓ remplacement APRÈS : 1 (attendu 1)
+   ✓ réversibilité à l'octet : True (attendu True)
+   ✓ bilan de lignes : 0 (attendu 0)
+   ✓ LF nus, CR seuls APRÈS : (0, 0) (attendu (0, 0))
+   ⇒ étape A6 : VÉRIFIÉE · 383837 → 384642 octets

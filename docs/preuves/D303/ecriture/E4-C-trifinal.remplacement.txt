@@ -1,0 +1,5 @@
+4. **Audit final**, vraie dernière écriture : `audit-secrets-final.txt`, trié contre `audit-secrets-d303.txt` —
+   **1** alerte nouvelle, **triée** : le nom de la variable de clé du fournisseur, cité par cette section ; **aucune
+   valeur**. ⚠ Ce résultat est écrit ici AVANT la dernière passe : l'audit final a été **rejoué après cette ligne**, et
+   il rend le même résultat — sinon cette ligne serait fausse. C'est le défaut relevé chez D302 (point 1 de la lecture
+   adverse), évité.

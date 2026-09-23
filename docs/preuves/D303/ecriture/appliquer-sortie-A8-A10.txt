@@ -1,0 +1,36 @@
+== étape A8 · fichiers d'ancre 1 (attendu 1) · de remplacement 1 (attendu 1)
+   cible : ZWADJ_CONTINUITE.md
+   ✓ LF nus, CR seuls AVANT : (0, 0) (attendu (0, 0))
+   ✓ ancre AVANT : 1 (attendu 1)
+   ✓ remplacement non vide : True (attendu True)
+   ✓ relu sur disque = écrit : True (attendu True)
+   ✓ ancre APRÈS : 0 (attendu 0)
+   ✓ remplacement APRÈS : 1 (attendu 1)
+   ✓ réversibilité à l'octet : True (attendu True)
+   ✓ bilan de lignes : 43 (attendu 43)
+   ✓ LF nus, CR seuls APRÈS : (0, 0) (attendu (0, 0))
+   ⇒ étape A8 : VÉRIFIÉE · 907058 → 911550 octets
+== étape A9 · fichiers d'ancre 1 (attendu 1) · de remplacement 1 (attendu 1)
+   cible : ZWADJ_CONTINUITE.md
+   ✓ LF nus, CR seuls AVANT : (0, 0) (attendu (0, 0))
+   ✓ ancre AVANT : 1 (attendu 1)
+   ✓ remplacement non vide : True (attendu True)
+   ✓ relu sur disque = écrit : True (attendu True)
+   ✓ ancre APRÈS : 0 (attendu 0)
+   ✓ remplacement APRÈS : 1 (attendu 1)
+   ✓ réversibilité à l'octet : True (attendu True)
+   ✓ bilan de lignes : 5 (attendu 5)
+   ✓ LF nus, CR seuls APRÈS : (0, 0) (attendu (0, 0))
+   ⇒ étape A9 : VÉRIFIÉE · 911550 → 912007 octets
+== étape A10 · fichiers d'ancre 1 (attendu 1) · de remplacement 1 (attendu 1)
+   cible : ZWADJ_CONTINUITE.md
+   ✓ LF nus, CR seuls AVANT : (0, 0) (attendu (0, 0))
+   ✓ ancre AVANT : 1 (attendu 1)
+   ✓ remplacement non vide : True (attendu True)
+   ✓ relu sur disque = écrit : True (attendu True)
+   ✓ ancre APRÈS : 0 (attendu 0)
+   ✓ remplacement APRÈS : 1 (attendu 1)
+   ✓ réversibilité à l'octet : True (attendu True)
+   ✓ bilan de lignes : 0 (attendu 0)
+   ✓ LF nus, CR seuls APRÈS : (0, 0) (attendu (0, 0))
+   ⇒ étape A10 : VÉRIFIÉE · 912007 → 912543 octets

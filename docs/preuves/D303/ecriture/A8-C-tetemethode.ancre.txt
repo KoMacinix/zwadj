@@ -1,0 +1,3 @@
+⚠ **Portée** : le code **E3**. Les autres chemins critiques gardent la règle de revue d'avant ; l'étendre appartient
+à Ko. ⚠ **Les bloquants posés par le relecteur sur les constats de l'audit SOLID du 09/09/2026** — avant E3d, avant
+la levée du drapeau des paiements — sont au backlog, reports de D302 (partie B).

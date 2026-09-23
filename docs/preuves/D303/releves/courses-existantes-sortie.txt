@@ -1,0 +1,23 @@
+== apps/api/test/int/bookings.int-spec.ts · 733 lignes · sites Promise.all : 6 · `new Client(`/`attendreBlocage` : 0 (attendu 0)
+     480 | « deux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500 »
+         const [first, second] = await Promise.all([accept(), accept()]);
+     510 | « deux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN »
+         const [first, second] = await Promise.all([
+     539 | « D121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client »
+         const [first, second] = await Promise.all([decline(), decline()]);
+     555 | « D121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit »
+         const [first, second] = await Promise.all([cancel(), cancel()]);
+     570 | « D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500 »
+         const results = await Promise.all([cancel(), cancel()]);
+     584 | « trois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409 »
+         const results = await Promise.all([accept(), accept(), accept()]);
+== apps/api/test/int/quotes.int-spec.ts · 698 lignes · sites Promise.all : 4 · `new Client(`/`attendreBlocage` : 0 (attendu 0)
+     192 | « deux remises SIMULTANÉES ne rendent jamais 500 »
+         const results = await Promise.all([remettre(f, q.id, "PRINT"), remettre(f, q.id, "SMS")]);
+     338 | « D121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500 »
+         const results = await Promise.all([act(f, q.id, "cancel"), act(f, q.id, "cancel")]);
+     352 | « D121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500 »
+         const results = await Promise.all([act(f, q.id, "convert", CONTACT), act(f, q.id, "convert", CONTACT)]);
+     372 | « deux RÉVISIONS simultanées de la même chaîne : aucun doublon de version »
+         const results = await Promise.all([act(f, v1.id, "revise", corps), act(f, v1.id, "revise", corps)]);
+== parcourus : 2 fichiers · 1431 lignes · 10 sites

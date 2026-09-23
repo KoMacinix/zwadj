@@ -1,0 +1,36 @@
+CALIBRATION : bras positif 1 (attendu 1) · bras négatif 0 (attendu 0)
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ARBITRÉ LE 23/09/2026 PAR KO — le RANG 23, mot pour mot : « Rang 23 : les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6. Cadrage, lot documentaire. Aucun besoin de Chargily. » »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ⇒ RANG 24 : EN ATTENTE D'ARBITRAGE DE KO (D284), aucun candidat arbitré — écrit à l'OUVERTURE du rang 23 »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « (D303, 23/09/2026) RANG 23 — CADRAGE ÉCRIT, RANG OUVERT, AUCUNE LIGNE DE CODE »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ## PROCHAIN LOT — rang 23 · [API] les transitions atomiques de la réservation et du devis »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ## ⛔ CADRAGE DU RANG 23 — transitions atomiques (audit SOLID 09/09 · F1, F2, F5, F6) »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « LE FAIT — DÉCLARÉ PAR KO LE 23/09/2026 : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST. »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « REMPLACÉ LE 23/09/2026 — décision du relecteur (chat), déléguée par Ko (D303). »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ce ✅ couvre accept contre accept, deux acceptations de la même demande relues sous le verrou de salle »
+   ✓ ZWADJ_CONTINUITE.md : 0 (attendu 0) · « sk-secret »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « citation REMPLACÉE le 23/09/2026 par sa position et sa nature »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « | D303 | A | D303 — rang 23 OUVERT, lot DOCUMENTAIRE (cadrage) »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ## Session du 23/09/2026 — D303 · rang 23 OUVERT »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « R23-F2-d »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « MD-F1-3 — la correction ne doit pas perdre la traduction de l'EXCLUDE »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « trois de ces cinq ne sont plus dues »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « le point 10 n'est PAS un constat des audits »
+   ✓ ZWADJ_CONTINUITE.md : 2 (attendu 2) · « et R1 dans les harnais du chemin »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « UN FAIT, DÉCLARÉ PAR KO LE 23/09/2026 (D303) : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST. »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « MOTIF TRANSMIS LE 23/09/2026 (D303) : drapeau éteint, la fabrique sélectionne UnavailablePaymentGateway »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « (D303) : toute requête invalide reste refusée (audit) »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 23/09/2026 (D303) — R1 SUR LE CHEMIN DE L'ARGENT : »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « CLOSE PAR D255 »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « ⛔ BLOQUE E3d (décision du relecteur (chat), déléguée par Ko le 23/09/2026, D303 — motif : c'est E3d qui pose ACCEPTED) »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « ### Trouvaille de la session D302 — PAS un constat des audits »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « ## Reports du 23/09/2026 — rang 23 : décisions du relecteur, et cadrage de F1, F2, F5, F6 (D303) »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « L'AUDIT DE SECRETS EST AVEUGLE À LA FORME D'UNE CLÉ CHARGILY »
+   ✓ ZWADJ_BACKLOG.md : 2 (attendu 2) · « PÉRIMÉE, BARRÉE LE 23/09/2026 (D303) »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « ORDONNÉ PAR KO AU RANG 23 LE 23/09/2026 (D303) »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « il suit désormais « RANG 24 : EN ATTENTE D'ARBITRAGE DE KO » »
+   ✓ AGENTS.md : 1 (attendu 1) · « (D303, 23/09/2026) ET UN FAIT, DÉCLARÉ PAR KO : PAS DE COMPTE CHARGILY EN MODE TEST. »
+   ✓ AGENTS.md : 1 (attendu 1) · « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 23/09/2026 (D303) »
+   ✓ AGENTS.md : 1 (attendu 1) · « cette forme vaut pour tout lot de code du chemin de l'argent »
+   ✓ AGENTS.md : 1 (attendu 1) · « la phrase sur le zip décrit l'ère des archives »
+   ✓ AGENTS.md : 1 (attendu 1) · « cette forme de revue vaut pour tout lot de code du chemin de l'argent, pas seulement E3 »
+== parcourus : 3 fichiers · 1335569 caractères aplatis · 34 jetons · TOUS AU COMPTE

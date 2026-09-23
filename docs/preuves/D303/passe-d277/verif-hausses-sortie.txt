@@ -1,0 +1,10 @@
+== sens1 : avant 57 · après 73 (écart 16) · à contexte entièrement neuf : 2
+   [exclude-a-traduire] ZWADJ_CONTINUITE.md:1427 COURANTE · …: la session en a dérivé une, entrée R1 du backlog ; à arrêter par le relecteur. ### 9. [BACK][P0] « traduire bookings_no_overlap_accepted_confirmed en conflit
+   [pending-intent] ZWADJ_BACKLOG.md:2430 BACKLOG · …les décisions du relecteur (tête de PHASE 7 ; R1, F8, R2 dans les reports de D302) ; D238 → « bloque E3d » et findOrCreatePendingIntent close (reports du 22/08
+== sens2 : avant 97 · après 118 (écart 21) · à contexte entièrement neuf : 6
+   [bloque-e3] ZWADJ_CONTINUITE.md:1288 COURANTE · …s lecture (create, les visites) ne sont pas F6 tel que l'audit le nomme : non codés, rapportés. - Pourquoi F6 bloque E3d (D302) : la même forme après un PAID f
+   [lot-code-ouvre] ZWADJ_CONTINUITE.md:1196 COURANTE · …adrage propose sans les prendre (§ 8). ⚠ Une permission n'est pas un arbitrage : le compteur à zéro dit qu'un lot de code peut s'ouvrir ; aucun ne l'est tant q
+   [bloque-e3] ZWADJ_BACKLOG.md:2430 BACKLOG · … pause d'E3c) ; les décisions du relecteur (tête de PHASE 7 ; R1, F8, R2 dans les reports de D302) ; D238 → « bloque E3d » et findOrCreatePendingIntent close (
+   [argent-ouvre] ZWADJ_BACKLOG.md:2571 BACKLOG · …c. Motif : « un code de sortie non nul, seul, ne prouve rien » ; 2. ⇒ LA CORRECTION DE R1 DANS LES HARNAIS DU CHEMIN DE L'ARGENT BLOQUE LA LEVÉE DU DRAPEAU DES
+   [argent-ouvre] ZWADJ_BACKLOG.md:2572 BACKLOG · …LOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS (PAYMENTS_ENABLED) — aux côtés de F8. Le reste de R1 (harnais hors du chemin de l'argent) reste à ordonner par Ko. ⚠ RE
+   [levee-drapeau] ZWADJ_BACKLOG.md:2571 BACKLOG · …e non nul, seul, ne prouve rien » ; 2. ⇒ LA CORRECTION DE R1 DANS LES HARNAIS DU CHEMIN DE L'ARGENT BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS (PAYMENTS_ENABLED)

@@ -1,0 +1,8 @@
+  ⇒ **BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS** (`PAYMENTS_ENABLED`). *Décision du relecteur (chat), déléguée par
+  Ko le 23/09/2026* — ~~**motif : non transmis avec la décision.**~~ ⛔ **MOTIF TRANSMIS LE 23/09/2026 (D303)** : drapeau
+  éteint, la fabrique sélectionne `UnavailablePaymentGateway`, et aucune réponse Chargily n'atteint l'adaptateur.
+  ✅ **Prémisse vérifiée par la session avant d'écrire, comme Ko l'exigeait** (`docs/preuves/D303/releves/`,
+  `premisse-f8-sortie.txt`) : `createPaymentGateway` rend `new UnavailablePaymentGateway()` quand `PAYMENTS_ENABLED`
+  est faux, avant toute lecture de clé ; `new ChargilyGateway` n'existe qu'en ce site-là hors specs ; `readSession`
+  est privée et n'est appelée que par `createCheckout` de l'adaptateur Chargily ; l'adaptateur de refus lève 503
+  sans appel réseau ; `PAYMENTS_ENABLED` vaut `false` en l'absence de valeur (`env.ts`).

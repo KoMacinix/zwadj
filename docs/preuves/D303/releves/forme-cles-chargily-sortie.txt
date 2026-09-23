@@ -1,0 +1,12 @@
+calibration 2 bras sur 2 : positif ['test_sk corps=40 classes=aA9'] | negatif []
+5c47490 | lignes 79 | jetons au format : 0 []
+d52c721 | lignes 54 | jetons au format : 2 ['test_pk corps=40 classes=aA9', 'test_sk corps=40 classes=aA9']
+dc63afb | lignes 54 | jetons au format : 2 ['test_pk corps=40 classes=aA9', 'test_sk corps=40 classes=aA9']
+5af65de | lignes 51 | jetons au format : 0 []
+ef40c2b | lignes 51 | jetons au format : 0 []
+9a41b36 | lignes 37 | jetons au format : 0 []
+b826c00 | lignes 30 | jetons au format : 0 []
+commits parcourus 7 | lignes parcourues 356
+fichiers suivis a HEAD portant un jeton au format (corps >= 20) : 0 []
+fichiers suivis parcourus a HEAD : 1270
+branches contenant d52c721 : ['*', 'main', 'remotes/origin/main']

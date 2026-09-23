@@ -1,0 +1,4 @@
+  ⚠ **Ce que ces arbitrages NE disent PAS** : ils visent le code **E3**. Les autres chemins critiques (auth,
+  concurrence, suppression de compte, tarification hors E3) gardent la règle de revue d'avant — **l'étendre
+  appartient à Ko.** `CLAUDE.md` (« s'arrêter et demander ») reste compatible : la session demande, la réponse
+  arrive par les messages de Ko.

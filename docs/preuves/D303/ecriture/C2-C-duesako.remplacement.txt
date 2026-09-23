@@ -1,0 +1,5 @@
+critiques hors E3 ; le zip de pièces de l'auditeur, non versé. Détail, mesures, fautes et limites : section D302.
+⛔ *(D303, 23/09/2026 : trois de ces cinq ne sont plus dues — les motifs de F8 et R2 sont transmis et écrits ;
+l'extension de la forme de revue est décidée par le relecteur pour le chemin de l'argent (au-delà : rien) ; le zip
+est versé, `docs/preuves/D303/sources/`. **Restent dus à Ko** : le sort des étiquettes P0-P3, `THROTTLE_*` contre
+D128.)*

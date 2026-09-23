@@ -1,0 +1,2 @@
+  déléguée par Ko le 23/09/2026* — **motif : non transmis avec la décision.**
+  ⇒ **COÛT** : code API (compte) ; `booking-charge.ts` et sa spec, mesurée sur un cas **doublement** fautif

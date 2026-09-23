@@ -1,0 +1,46 @@
+⚠ ~~**Portée** : le code **E3**. Les autres chemins critiques gardent la règle de revue d'avant ; l'étendre appartient
+à Ko.~~ ⛔ *(D303 : portée ÉTENDUE par le relecteur au chemin de l'argent — décision 1 du bloc ci-dessous.)* ⚠ **Les
+bloquants posés par le relecteur sur les constats de l'audit SOLID du 09/09/2026** — avant E3d, avant
+la levée du drapeau des paiements — sont au backlog, reports de D302 (partie B).
+
+#### ⛔ UN FAIT, ET LES DÉCISIONS DU RELECTEUR (chat) DU 23/09/2026 (D303) — À LIRE AVEC LE BLOC CI-DESSUS
+
+⛔ **LE FAIT — DÉCLARÉ PAR KO LE 23/09/2026 : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST.** Conséquences, telles que
+Ko les a données : **le blocage d'E3b-2 (« compte bac à sable ») est ACTUEL** ; **E3c est bloqué aussi**, puisque la
+méthode exige des charges utiles **capturées du bac à sable réel** (point 4 ci-dessous) ; **E3d et E3e suivent.**
+⇒ **E3 ATTEND SUR CE FAIT, PAS SUR UNE PRIORITÉ.** Un arbitrage de rang lève la pause d'E3c (17/08/2026) ; il ne
+donne pas de compte. Tableau des sous-lots : backlog, PHASE 7. ⚠ Écart relevé en lecture seule, non tranché :
+l'adaptateur Chargily et ses fixtures « captures réelles du bac à sable » existent depuis `dc63afb` (16/08/2026) —
+avec quel compte, rien ne le dit ; question posée à Ko, section D303.
+
+⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 23/09/2026** — écrites telles que transmises, avec leur
+motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
+1. **LA FORME DE REVUE RATIFIÉE PAR KO (D302) S'APPLIQUE À TOUT LOT DE CODE DU CHEMIN DE L'ARGENT**, y compris ceux
+   qui n'ont pas besoin de Chargily : audit SOLID 09/09 · **F1, F2, F6**, et **F5** que Ko ordonne avec eux
+   (rang 23). *Motif* : **non transmis avec la décision.** ⚠ **« D39 »** — dans « la forme de la revue (« D39 ») »
+   ci-dessus et partout où D302 l'écrit — désigne la **dernière phrase** de D39 (« Chemin d'argent ⇒ revue
+   humaine »), **pas son objet** (prix par créneau). ⚠ La décision n'énumère pas ce que couvre « chemin de
+   l'argent » au-delà des quatre lots qu'elle nomme — `AGENTS.md` citait « tarification hors E3 » parmi les chemins
+   à règle d'avant : **à préciser par le relecteur**, la session ne tranche pas.
+2. **R1 SUR LE CHEMIN DE L'ARGENT.** Tant que le harnais concerné n'est pas corrigé, **une garde n'est prouvée que
+   par une neutralisation dont on a LU l'échec : tests collectés > 0 ET assertion en échec.** *Motif* : « **un
+   code de sortie non nul, seul, ne prouve rien** ». ⇒ **La correction de R1 dans les harnais du chemin de
+   l'argent BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS**, avec F8. ⚠ Relevé de la session (lecture seule) : **20
+   harnais sur 27 jugent par le seul code de sortie**, dont celui des cibles E1 à E5 de D255, et **aucun des 85
+   journaux de campagne versés** ne garde la sortie qui montre l'assertion en échec — entrée R1, reports de D302.
+   ⇒ Cette décision **complète le point 3** ci-dessous : « prouvée effective » veut dire aussi **lue**.
+3. **PROVENANCE — LE POINT 10 CHANGE DE FORME.** *Motif* : son contrôle date de l'époque des zips. Il devient :
+   SHA de départ relevé et **rapporté** à l'ouverture de chaque sous-lot ; en fin de sous-lot, `git diff` **depuis ce
+   SHA** ne contient **que les fichiers énumérés au cadrage** ; **aucun fichier non suivi hors `a-verser/`.** Écrit
+   au point 10.
+4. **D117 — son ✅ (« statut relu SOUS VERROU ») couvre accept contre accept.** *Motif* : accept contre decline ou
+   cancel reste ouvert — audit SOLID 09/09 · F1, confronté ouvert par D302. Annoté dans l'en-tête de ce fichier.
+5. **Motifs transmis pour deux décisions de D302** — **F8** (bloque la levée du drapeau) : drapeau éteint, la
+   fabrique sélectionne `UnavailablePaymentGateway`, et aucune réponse Chargily n'atteint l'adaptateur — **prémisse
+   vérifiée** avant d'écrire (`docs/preuves/D303/releves/premisse-f8-sortie.txt`) ; **R2** (avec le prochain lot qui
+   touche `booking-charge`) : toute requête invalide reste refusée (audit), seul change le code d'erreur rendu quand
+   une requête cumule deux fautes, et aucun montant n'en dépend. ⚠ **A3 non retouché** : son entrée portait déjà un
+   motif (« le serveur reste l'autorité ») — le motif proposé par Ko ne s'écrivait que faute de motif.
+6. **Deux entrées périmées** — « Avant E3c — rendre atomique `findOrCreatePendingIntent` » (22/08) est **close par
+   D255** (cibles E1 à E5, confirmées par D302), **avec la réserve de la décision 2** ; D238, « Bloquant avant E3 »,
+   devient **« bloque E3d »** — *motif* : c'est E3d qui pose `ACCEPTED`.

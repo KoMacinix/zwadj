@@ -1,0 +1,1 @@
+- [ ] ⛔ **RESTE** — à l'acceptation d'une réservation : **attraper** `bookings_no_overlap_accepted_confirmed`, ne jamais la redoubler en code [BACK][P0]

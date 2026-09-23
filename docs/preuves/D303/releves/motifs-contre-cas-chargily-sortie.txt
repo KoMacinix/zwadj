@@ -1,0 +1,5 @@
+motifs chargés : 11
+dc63afb : octets 3563 · jetons au format Chargily (compte à part) 2 · alertes du fichier 7 (url-avec-identifiants=1, valeur-nommee-secrete=2, cle-api=1, chargily=3)
+      sur les 2 lignes porteuses : alertes 0 (aucune) (attendu >= 2 si les motifs voient ce cas)
+d52c721 : octets 3563 · jetons au format Chargily (compte à part) 2 · alertes du fichier 7 (url-avec-identifiants=1, valeur-nommee-secrete=2, cle-api=1, chargily=3)
+      sur les 2 lignes porteuses : alertes 0 (aucune) (attendu >= 2 si les motifs voient ce cas)

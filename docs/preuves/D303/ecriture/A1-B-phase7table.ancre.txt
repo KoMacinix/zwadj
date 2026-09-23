@@ -1,0 +1,5 @@
+> | **E3b-2** ⛔ | Adaptateur Chargily + session de règlement | **bloqué : compte bac à sable** |
+> | **E3c** | Webhook : signature, déduplication, mise en file | Aucune logique métier dans le handler HTTP |
+> | **E3d** | `PAID` → `Booking CONFIRMED` + `Quote ACCEPTED` + `Commission` | Remboursements, factures |
+> | **E3e** | Remboursements, factures, réconciliation | — |
+>

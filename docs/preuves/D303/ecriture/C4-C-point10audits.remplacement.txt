@@ -1,0 +1,5 @@
+`@SkipThrottle` que l'audit ne nommait pas ; le refus admin de F4 ; A2 (reste) et A4, rattachés ~~; le point 10 de
+la méthode renforcée (contrôle de provenance de l'ère des archives), croisé en l'annotant~~.
+⛔ *(D303, 23/09/2026, consigne de Ko : le point 10 n'est PAS un constat des audits — c'est une trouvaille de la
+session D302, rangée ici à tort sous la partie B. Son entrée du backlog quitte la sous-section des audits ; elle est
+close par la décision du relecteur sur la provenance, section D303.)*

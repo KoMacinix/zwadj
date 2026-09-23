@@ -1,0 +1,3 @@
+  ⇒ ~~**À ordonner par Ko.**~~ ⛔ **ORDONNÉ PAR KO AU RANG 23 LE 23/09/2026 (D303)**, avec F1, F2 et F6 ; la forme de
+  revue ratifiée s'y applique (décision du relecteur). Cadrage : `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 23 ».
+  ⇒ **COÛT** : code API (compte) ; `bookings.service.ts`, et `booking-transitions.ts` si la

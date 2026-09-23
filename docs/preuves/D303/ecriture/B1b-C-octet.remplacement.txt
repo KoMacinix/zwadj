@@ -1,0 +1,3 @@
+`ACCEPTED` sur `bookings` (relevé : aucun autre site) ; introduite par `909702a` (03/08/2026), déplacée dans
+l'adaptateur par S5b (`682ea4c`) — conditions identiques, la levée devenue un retour discriminé (en-tête du fichier) ;
+mesurée par deux tests d'intégration (« la SECONDE acceptation reçoit 409 via

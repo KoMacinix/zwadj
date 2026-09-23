@@ -1,0 +1,12 @@
+### Trouvaille de la session D302 — PAS un constat des audits (sortie de la sous-section ci-dessus par D303)
+
+⛔ *(D303, 23/09/2026, consigne de Ko : cette entrée était rangée sous « Ajoutés — constats des audits » ; c'est une
+trouvaille de la session D302, pas un constat d'audit. Elle quitte cette sous-section, à la même place du fichier.)*
+
+- [x] ~~**[DOC]** **Le point 10 de la méthode renforcée d'E3 prescrit un contrôle de provenance de l'ère des
+  archives** — « `diff` contre le zip livré », `git apply --check`. Depuis la bascule Claude Code (D266), le contrôle
+  de provenance est l'énumération des fichiers attendus (`CLAUDE.md`). Croisé par ce lot en annotant ce point,
+  **non corrigé**. ⇒ **À ordonner par Ko** — mais le cadrage d'E3 le lira. ⇒ **COÛT** : documentaire (ne compte
+  pas) ; 1 fichier, `ZWADJ_CONTINUITE.md`.~~ ✅ **CLOSE LE 23/09/2026 (D303)** — décision du relecteur (chat),
+  déléguée par Ko : le point 10 est réécrit (SHA de départ rapporté ; `git diff` depuis lui limité aux fichiers du
+  cadrage ; aucun fichier non suivi hors `a-verser/`). `ZWADJ_CONTINUITE.md`, « ⛔ E3 — MÉTHODE RENFORCÉE », point 10.

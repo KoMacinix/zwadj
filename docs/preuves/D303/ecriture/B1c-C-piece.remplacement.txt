@@ -1,0 +1,2 @@
+révisions. **C'est le trou exact des quatre défauts.** Pièce : `docs/preuves/D303/releves/courses-existantes-sortie.txt`
+— 10 sites `Promise.all` sur 1 431 lignes, 0 rival `pg` ; limite déclarée dans le script.

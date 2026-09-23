@@ -1,0 +1,13 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D302/audit-secrets-final.txt (99 contextes) · nouvelle docs/preuves/D303/audit-secrets-d303.txt (106 contextes)
+   alertes ABSENTES de la précédente : 7 — à trier au contexte avant le commit
+   [chargily] docs/preuves/D303/ecriture/B4-B-reports.remplacement.txt — contexte : ligne 346 de docs/preuves/D303/audit-secrets-d303.txt
+   [chargily] docs/preuves/D303/ecriture/B4b-B-motif.ancre.txt — contexte : ligne 348 de docs/preuves/D303/audit-secrets-d303.txt
+   [chargily] docs/preuves/D303/ecriture/B4b-B-motif.remplacement.txt — contexte : ligne 350 de docs/preuves/D303/audit-secrets-d303.txt
+   [cle-api] docs/preuves/D303/ecriture/C3-C-postcss.ancre.txt — contexte : ligne 352 de docs/preuves/D303/audit-secrets-d303.txt
+   [chargily] docs/preuves/D303/outils/audit-copie-hors-depot.py — contexte : ligne 354 de docs/preuves/D303/audit-secrets-d303.txt
+   [chargily] docs/preuves/D303/releves/forme-cles-chargily.py — contexte : ligne 356 de docs/preuves/D303/audit-secrets-d303.txt
+   [chargily] docs/preuves/D303/releves/premisse-f8.py — contexte : ligne 358 de docs/preuves/D303/audit-secrets-d303.txt
+   ventilation par motif : chargily=6 · cle-api=1

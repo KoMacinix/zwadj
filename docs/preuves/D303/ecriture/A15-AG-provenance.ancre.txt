@@ -1,0 +1,1 @@
+- **Vérifier la provenance de l'arbre avant d'y toucher.** L'arbre de travail a divergé deux fois pendant la campagne — du code non attribué est apparu entre deux tours, dont un lot entier sur la rotation des jetons. `diff` contre le zip livré, `git apply --check` avant toute extraction.

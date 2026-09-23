@@ -1,0 +1,1 @@
+>   ci-dessous ; D126, règle 4) — un webhook signé ne se capture pas sans compte ;

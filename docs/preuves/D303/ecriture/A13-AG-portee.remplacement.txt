@@ -1,0 +1,16 @@
+  ⚠ **Ce que ces arbitrages NE disent PAS** : ~~ils visent le code **E3**. Les autres chemins critiques (auth,
+  concurrence, suppression de compte, tarification hors E3) gardent la règle de revue d'avant — **l'étendre
+  appartient à Ko.**~~ ⛔ *(D303 : portée étendue — ci-dessous.)* `CLAUDE.md` (« s'arrêter et demander ») reste
+  compatible : la session demande, la réponse arrive par les messages de Ko.
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 23/09/2026 (D303)** — motifs et détail : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D303 :
+  - **la forme de revue ci-dessus s'applique à TOUT lot de code du chemin de l'argent**, y compris ceux qui n'ont pas
+    besoin de Chargily (audit SOLID 09/09 · F1, F2, F5, F6 — rang 23). ⚠ La décision n'énumère pas ce que couvre
+    « chemin de l'argent » au-delà de ces quatre lots — dont la « tarification hors E3 » de la phrase barrée : **à
+    préciser par le relecteur**. Auth, concurrence et suppression de compte **hors de ce chemin** : aucune décision,
+    la règle d'avant tient ;
+  - **R1** : sur ce chemin, une garde n'est prouvée que par une neutralisation dont on a **LU** l'échec — **tests
+    collectés > 0 ET assertion en échec** ; un code de sortie non nul, seul, ne prouve rien. **La correction de R1
+    dans les harnais du chemin de l'argent bloque la levée du drapeau des paiements** ;
+  - **provenance** de chaque sous-lot soumis à la méthode renforcée : **SHA de départ rapporté** à l'ouverture,
+    `git diff` depuis lui limité aux **fichiers énumérés au cadrage**, **aucun fichier non suivi hors `a-verser/`**.

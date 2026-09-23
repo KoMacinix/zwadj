@@ -1,0 +1,31 @@
+  ⇒ ~~**À ordonner par Ko.**~~ ⇒ **COÛT** : code de `neutralisation/` (compte) ; `neutralize-s11b.py`, et chaque
+  harnais de même forme s'il est étendu ; calibration à deux bras (D286) ; e2e : non ; cadrage chemin de
+  l'argent : non (outillage, même s'il mesure ce chemin) ; migration : non ; dépendance : non.
+  ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 23/09/2026 (D303) — R1 SUR LE CHEMIN DE L'ARGENT :**
+  1. **tant que le harnais concerné n'est pas corrigé, une garde n'est prouvée que par une neutralisation dont on a
+     LU l'échec : tests collectés > 0 ET assertion en échec.** *Motif* : « un code de sortie non nul, seul, ne prouve
+     rien » ;
+  2. ⇒ **LA CORRECTION DE R1 DANS LES HARNAIS DU CHEMIN DE L'ARGENT BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS**
+     (`PAYMENTS_ENABLED`) — aux côtés de F8. Le reste de R1 (harnais hors du chemin de l'argent) reste **à ordonner
+     par Ko**.
+  ⚠ **RELEVÉ EN LECTURE SEULE, DEMANDÉ PAR KO — sans conclusion sur les certifications passées** (pièces :
+  `docs/preuves/D303/releves/verdicts-harnais*`, `fichiers-mutes-par-harnais*`, `journaux-sortie-echec*`) :
+  - **27 harnais** `neutralize-*.py` au dépôt. **5** jugent sur la sortie — code ≠ 0 **et** signature attendue sur
+    une ligne d'échec (`404`, `argon2`, `budgets`, `horizon`, `maxprice`) ; **2** comptent les tests collectés puis
+    jugent au code (`act-plafonds`, `horloge`) ; **20 jugent par le SEUL code de sortie** : `available-on-api`,
+    `available-on`, `b7`, `booking-status`, `e3d1-s8`, `journey`, `r4`, `s9`, `s10a`, `s10b`, `s11a`, `s11b`,
+    `solid-s1` à `solid-s7`.
+  - **Parmi les 20, ceux qui mutent un fichier que D187, D302 ou le cadrage du rang 23 placent sur le chemin de
+    l'argent** : `e3d1-s8` (`payments/`, migration d'unicité de l'intention), `s11b` (`booking-charge.ts`),
+    `solid-s4` (`pricing-engine.ts`), `solid-s5a` (`payments/`), `solid-s5b` (`booking-locks.prisma.ts`),
+    `solid-s3` (`booking-transitions.ts`, `quote-transitions.ts`), `s10b` et `booking-status`
+    (`quote-store.prisma.ts`). ⚠ **Liste dérivée par la session, pas énumérée par la décision** — à arrêter par le
+    relecteur.
+  - ⛔ **`neutralize-e3d1-s8.py` DIT LE CONTRAIRE DE CE QU'IL FAIT** : son en-tête promet « une cible ne compte que si
+    le code de sortie est non nul ET que le titre attendu apparaît sur une ligne d'échec » ; sa boucle fait
+    `codes = {m: lancer(m)[0] …}` — la sortie est jetée. C'est le harnais des cibles E1–E5 de D255.
+  - **Les journaux de certification ne conservent pas, par cible, la sortie qui montre l'assertion en échec** :
+    **85** journaux de campagne versés (`docs/preuves/*/campagnes/`, `*/passe/`), **1 219** lignes, **666** lignes
+    « ✓ » ; **0** porte un marqueur d'échec Vitest (croix ou `FAIL` sur une ligne de spec, `AssertionError`,
+    `expected … to`, `Tests N failed`) — calibration deux bras. Chaque cible y tient en une ligne
+    « ✓ <cible> [mesure] ».

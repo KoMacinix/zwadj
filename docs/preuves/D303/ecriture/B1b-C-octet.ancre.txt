@@ -1,0 +1,2 @@
+`ACCEPTED` sur `bookings` (relevé : aucun autre site) ; introduite par `909702a` (03/08/2026), déplacée à l'octet
+dans l'adaptateur par S5b (`682ea4c`) ; mesurée par deux tests d'intégration (« la SECONDE acceptation reçoit 409 via

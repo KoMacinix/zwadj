@@ -1,0 +1,5 @@
+> ⏸ **E3c EST EN PAUSE depuis le 17/08/2026** (arbitrage Ko) — priorité donnée au
+> parcours Client. `pg-boss` attend donc sa reprise.
+> ⛔ *(D303, 23/09/2026 : la pause n'est plus la seule chose qui retient E3c — **pas de compte Chargily en mode test**
+> (fait déclaré par Ko), donc pas de charge utile de webhook capturée. Un arbitrage de rang lèverait la pause, pas ce
+> fait. Tableau des sous-lots, ci-dessus.)*

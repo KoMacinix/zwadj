@@ -1,0 +1,5 @@
+⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+22, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage** :
+le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel. ⚠ **Et pour E3, rang arbitré ne suffit
+pas** : l'état des lieux et le cadrage du sous-lot passent d'abord, et c'est le relecteur (chat) qui décide
+dessus (D302 ; `AGENTS.md`, « À NE PAS faire »).

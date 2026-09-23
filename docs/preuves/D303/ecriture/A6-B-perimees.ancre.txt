@@ -1,0 +1,3 @@
+⚠ **Bloquant avant E3** — `ACCEPTED` face à `quotes_sent_at_coherent` (D238) : un brouillon se convertit sans remise, E3 posera `ACCEPTED` sur une ligne à `sent_at` nul, la contrainte lèvera **sur le chemin de l'argent**. Non corrigé faute de test rouge (E3c en pause, `PAYMENTS_ENABLED=false`).
+
+⚠ **Avant E3c** — rendre atomique `findOrCreatePendingIntent` (D244) : la séquence chercher-puis-créer n'est pas transactionnelle ; le port est désormais l'endroit où la fermer sans toucher au service.

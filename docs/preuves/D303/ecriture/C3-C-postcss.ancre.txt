@@ -1,0 +1,2 @@
+   762), dans le texte d'**avis publics** de PostCSS (
+   `printf 'API_KEY=sk-secret-…'` dans une preuve d'exploitation, une chaîne `/tmp/…` affectée à `secret`), **triées

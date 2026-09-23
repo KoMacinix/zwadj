@@ -1,0 +1,5 @@
+== fichiers dans a-verser/ avant : ['zwadj-audit-evidence.zip', 'zwadj-audit-securite.md', 'zwadj-solid-strategy-audit.md']
+✓ a-verser/zwadj-solid-strategy-audit.md : f2ab7a58012e0606… · versé docs/preuves/D302/sources/zwadj-solid-strategy-audit.md : f2ab7a58012e0606… · attendu f2ab7a58012e0606… ⇒ SUPPRIMÉ
+✓ a-verser/zwadj-audit-securite.md : f53fe074e750afc5… · versé docs/preuves/D302/sources/zwadj-audit-securite.md : f53fe074e750afc5… · attendu f53fe074e750afc5… ⇒ SUPPRIMÉ
+✓ a-verser/zwadj-audit-evidence.zip : 2a871c216296a5d6… · versé docs/preuves/D303/sources/zwadj-audit-evidence.zip : 2a871c216296a5d6… · attendu 2a871c216296a5d6… ⇒ SUPPRIMÉ
+== retirés : 3 (attendu 3) · reste dans a-verser/ : []

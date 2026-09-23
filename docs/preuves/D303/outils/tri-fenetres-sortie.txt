@@ -1,0 +1,143 @@
+CALIBRATION : positif — valeur absente True, masque présent True · négatif inchangé True
+[  1] jeton                  v5/apps/api/audit-probes/architecture.spec.ts:146
+       resets both consume the same one-use token', async () => { const ⟦token =⟧ { id: ID, userId: USER, usedAt: null as Date | null, user: { st
+[  2] jeton                  v5/apps/api/audit-probes/architecture.spec.ts:153
+      eue = Promise.resolve(); const prisma: any = { passwordReset⟦Token:⟧ { findFirst: vi.fn(async () => { const snapshot = {
+[  3] jeton                  v5/apps/api/audit-probes/architecture.spec.ts:163
+      ata)) }, user: { update: vi.fn(async () => ({})) }, ⟦refreshToken:⟧ { updateMany: vi.fn(async () => ({ count: 0 })) }, $transaction
+[  4] mot-de-passe           v5/audit-evidence/source-inventory.json:3051
+       { "name": "expect(<22 car.>(USER_ID, { new⟦Password:⟧ \"Motdepasse1\" }, undefined)).rejects.toSatisfy", "line": 12
+[  5] mot-de-passe           v5/audit-evidence/source-inventory.json:3091
+       "name": "expect(\r\n <22 car.>(USER_ID, { current⟦Password:⟧ \"faux\", newPassword: \"Motdepasse1\" }, undefined)\r\n ).rejects
+[  6] mot-de-passe           v5/audit-evidence/source-inventory.json:3091
+       <22 car.>(USER_ID, { currentPassword: \"faux\", new⟦Password:⟧ \"Motdepasse1\" }, undefined)\r\n ).rejects.toSatisfy", "l
+[  7] mot-de-passe           v5/audit-evidence/source-inventory.json:5221
+       { "name": "expect(<21 car.>({ email: \"a@b.dz\", ⟦password:⟧ \"x\" }).success).toBe", "line": 118 }, { 
+[  8] mot-de-passe           v5/audit-evidence/source-inventory.json:5233
+       { "name": "expect(<21 car.>({ email: \"a@b.dz\", ⟦password:⟧ \"\" }).success).toBe", "line": 119 }, { 
+[  9] mot-de-passe           v5/audit-evidence/source-inventory.json:5249
+      me": "expect(<29 car.>({ token: \"t\".repeat(43), ⟦password:⟧ \"Motdepasse1\" }).success).toBe", "line": 123 }, 
+[ 10] mot-de-passe           v5/audit-evidence/source-inventory.json:5265
+       "name": "expect(<29 car.>({ token: \"court\", ⟦password:⟧ \"Motdepasse1\" }).success).toBe", "line": 124 }, 
+[ 11] mot-de-passe           v5/audit-evidence/source-inventory.json:5277
+      me": "expect(<29 car.>({ token: \"t\".repeat(43), ⟦password:⟧ \"faible\" }).success).toBe", "line": 125 }, { 
+[ 12] mot-de-passe           v5/audit-evidence/source-inventory.json:5297
+      r\n role: \"CLIENT\",\r\n email: \"a@b.dz\",\r\n ⟦password:⟧ \"Motdepasse1\",\r\n firstName: \"Aya\",\r\n lastName: 
+[ 13] mot-de-passe           v5/audit-evidence/source-inventory.json:5309
+      xpect(<24 car.>({ role: \"CLIENT\", email: \"a@b.dz\", ⟦password:⟧ \"Motdepasse1\" }).success).toBe", "line": 139 }, 
+[ 14] mot-de-passe           v5/audit-evidence/source-inventory.json:5321
+      ({\r\n role: \"PRO\",\r\n email: \"p@b.dz\",\r\n ⟦password:⟧ \"Motdepasse1\",\r\n businessName: \"Salle X\",\r\n pho
+[ 15] mot-de-passe           v5/audit-evidence/source-inventory.json:5333
+       "expect(<24 car.>({ role: \"PRO\", email: \"p@b.dz\", ⟦password:⟧ \"Motdepasse1\" }).success).toBe", "line": 150 }, 
+[ 16] mot-de-passe           v5/audit-evidence/source-inventory.json:5345
+      expect(<24 car.>({ role: \"ADMIN\", email: \"r@b.dz\", ⟦password:⟧ \"Motdepasse1\" }).success).toBe", "line": 151 }, 
+[ 17] mot-de-passe           v5/audit-evidence/source-inventory.json:5357
+       "name": "expect(<24 car.>({ email: \"a@b.dz\", ⟦password:⟧ \"Motdepasse1\" }).success).toBe", "line": 152 }, 
+[ 18] mot-de-passe           v5/audit-evidence/source-inventory.json:130623
+      5 }, { "name": "client.login({ email: \"a@b.dz\", ⟦password:⟧ \"x\" }).catch", "line": 37 }, { "name": 
+[ 19] mot-de-passe           v5/audit-evidence/source-inventory.json:130675
+       { "name": "client.register({ role: \"CLIENT\", email: \"x\", ⟦password:⟧ \"y\", locale: \"fr\" } as never).catch", "line": 53 },
+[ 20] mot-de-passe           v5/audit-evidence/source-inventory.json:130703
+      9 }, { "name": "client.login({ email: \"a@b.dz\", ⟦password:⟧ \"x\" }).catch", "line": 60 }, { "name": 
+[ 21] mot-de-passe           v5/audit-evidence/source-inventory.json:130731
+      }, { "name": "expect(offline.login({ email: \"a@b.dz\", ⟦password:⟧ \"x\" }))<23 car.>", "line": 64 }, 
+[ 22] mot-de-passe           v5/audit-evidence/source-inventory.json:133943
+      : 65 }, { "name": "z\r\n .object({\r\n current⟦Password:⟧ z.string().min(1, \"<42 car.>\").opt
+[ 23] mot-de-passe           v5/audit-evidence/source-inventory.json:133943
+      \"<42 car.>\").optional(),\r\n new⟦Password:⟧ passwordSchema\r\n })\r\n .strict", "line": 75 }, 
+[ 24] valeur-nommee-secrete  v5/audit-evidence/source-inventory.json:13081
+       { "name": "expect(() => validateEnv({ ...baseEnv, JWT_ACCESS_⟦SECRET:⟧ \"court\" })).toThrow", "line": 27 }, { "
+[ 25] valeur-nommee-secrete  v5/audit-evidence/source-inventory.json:13538
+      ≥ 32 caractères. Générer : openssl rand -base64 48 */\r\n JWT_ACCESS_⟦SECRET:⟧ z.string().min(32, \"JWT_ACCESS_SECRET doit faire au moins 32 caractè
+[ 26] jeton                  v5/audit-evidence/source-inventory.json:5249
+       }, { "name": "expect(<29 car.>({ ⟦token:⟧ \"t\".repeat(43), password: \"Motdepasse1\" }).success).toBe", 
+[ 27] jeton                  v5/audit-evidence/source-inventory.json:5265
+       }, { "name": "expect(<29 car.>({ ⟦token:⟧ \"court\", password: \"Motdepasse1\" }).success).toBe", "line
+[ 28] jeton                  v5/audit-evidence/source-inventory.json:5277
+       }, { "name": "expect(<29 car.>({ ⟦token:⟧ \"t\".repeat(43), password: \"faible\" }).success).toBe", "li
+[ 29] jeton                  v5/audit-evidence/source-inventory.json:42069
+      (\"<26 car.>\")\r\n .set(auth((logged.body as { ⟦accessToken:⟧ string }).accessToken))\r\n .send", "line": 193 },
+[ 30] jeton                  v5/audit-evidence/source-inventory.json:42109
+       "name": "expect((await api().post(\"/api/v1/auth/google\").send({ ⟦idToken:⟧ \"tok\" })).status).toBe", "line": 203 }, { 
+[ 31] jeton                  v5/audit-evidence/source-inventory.json:42181
+      .post(\"<26 car.>\")\r\n .set(auth((a.body as { ⟦accessToken:⟧ string }).accessToken))\r\n .set(\"Cookie\", [`zwadj_rt=${cookie
+[ 32] jeton                  v5/audit-evidence/source-inventory.json:42185
+      .post(\"<26 car.>\")\r\n .set(auth((a.body as { ⟦accessToken:⟧ string }).accessToken))\r\n .set", "line": 216 }, 
+[ 33] jeton                  v5/audit-evidence/source-inventory.json:49762
+       "line": 104 }, { "name": "expect((await google({ ⟦idToken:⟧ \"tok-aya\" })).status).toBe", "line": 105 }, { 
+[ 34] jeton                  v5/audit-evidence/source-inventory.json:50078
+       "line": 176 }, { "name": "expect((await google({ ⟦idToken:⟧ \"tok-aya\" })).status).toBe", "line": 177 }, { 
+[ 35] jeton                  v5/audit-evidence/source-inventory.json:50266
+      der(<21 car.>)\r\n .useValue({\r\n verify: async (⟦idToken:⟧ string): Promise<<20 car.>> => {\r\n const payload 
+[ 36] jeton                  v5/audit-evidence/source-inventory.json:57873
+       "line": 163 }, { "name": "expect((tab1.body as { ⟦accessToken:⟧ string }).accessToken.split(\".\")).toHaveLength", "line": 16
+[ 37] jeton                  v5/audit-evidence/source-inventory.json:57881
+       "line": 166 }, { "name": "(tab1.body as { ⟦accessToken:⟧ string }).accessToken.split", "line": 166 }, { 
+[ 38] jeton                  v5/audit-evidence/source-inventory.json:57885
+       "line": 166 }, { "name": "expect((tab2.body as { ⟦accessToken:⟧ string }).accessToken.split(\".\")).toHaveLength", "line": 16
+[ 39] jeton                  v5/audit-evidence/source-inventory.json:57893
+       "line": 167 }, { "name": "(tab2.body as { ⟦accessToken:⟧ string }).accessToken.split", "line": 167 }, { 
+[ 40] jeton                  v5/audit-evidence/source-inventory.json:131525
+      esh\", { method: \"POST\" })\r\n .then((session) => {\r\n ⟦accessToken =⟧ session.accessToken;\r\n return session;\r\n })\r\n 
+[ 41] jeton                  v5/audit-evidence/source-inventory.json:131525
+       return session;\r\n })\r\n .catch(() => {\r\n ⟦accessToken =⟧ null;\r\n return null;\r\n })\r\n .finally", 
+[ 42] jeton                  v5/audit-evidence/source-inventory.json:131529
+      esh\", { method: \"POST\" })\r\n .then((session) => {\r\n ⟦accessToken =⟧ session.accessToken;\r\n return session;\r\n })\r\n 
+[ 43] chargily               v5/audit-evidence/source-inventory.json:13417
+      ) =>\r\n validateEnv({ ...baseEnv, PAYMENTS_ENABLED: \"true\", ⟦CHARGILY_SECRET_KEY: <27 car.>⟧_KEY })\r\n ).toThrow", "line": 166 }, { 
+[ 44] chargily               v5/audit-evidence/source-inventory.json:13445
+      ct", "line": 173 }, { "name": "expect(env.⟦CHARGILY_SECRET_KEY⟧).toBeUndefined", "line": 174 }, { "name":
+[ 45] chargily               v5/audit-evidence/source-inventory.json:13538
+      n'apparaît que dans l'en-tête `Authorization`\r\n * construit par `⟦chargily.gateway.ts`. */\r\n CHARGILY_SECRET_KEY⟧: z.string().min(1).optional(),\r\n /**\r\n * Délai d'attente de l'
+[ 46] chargily               v5/audit-evidence/source-inventory.json:16159
+      ibe", "line": 28 }, { "name": "it.each([\"⟦CHARGILY_BASE_URL\", \"CHARGILY_SECRET_KEY⟧\"] as const)", "line": 29 }, { "name": "i
+[ 47] chargily               v5/audit-evidence/source-inventory.json:16179
+      way", "line": 30 }, { "name": "it.each([\"⟦CHARGILY_BASE_URL\", \"CHARGILY_SECRET_KEY⟧\"] as const)", "line": 33 }, { "name": "i
+[ 48] chargily               v5/audit-evidence/source-inventory.json:16256
+       "PAYMENTS_ENABLED", "CHARGILY_BASE_URL", "⟦CHARGILY_SECRET_KEY⟧", "CHARGILY_TIMEOUT_MS" ] } ], "calls
+[ 49] chargily               v5/audit-evidence/source-inventory.json:16263
+       ] } ], "calls": [ { "name": "([\"⟦CHARGILY_BASE_URL\", \"CHARGILY_SECRET_KEY⟧\"] as const).filter", "line": 37 }, { "na
+[ 50] mot-de-passe           v6/audit-evidence/api-tests.json:1
+      uth (@zwadj/types)"],"fullName":"Schémas Zod auth (@zwadj/types) reset⟦Password :⟧ token requis + nouvelle politique appliquée","status":"passed","title
+[ 51] mot-de-passe           v6/audit-evidence/api-tests.json:1
+      equis + nouvelle politique appliquée","status":"passed","title":"reset⟦Password :⟧ token requis + nouvelle politique appliquée","duration":0.17472400000
+[ 52] valeur-nommee-secrete  v6/audit-evidence/api-tests.json:1
+      : CINQ variables exigées explicitement (E3a en ajoute une) JWT_ACCESS_⟦SECRET :⟧ comportement inchangé (déjà requis partout, jamais de défaut)","statu
+[ 53] valeur-nommee-secrete  v6/audit-evidence/api-tests.json:1
+      uis partout, jamais de défaut)","status":"passed","title":"JWT_ACCESS_⟦SECRET :⟧ comportement inchangé (déjà requis partout, jamais de défaut)","durat
+[ 54] jeton                  v6/audit-evidence/api-tests.json:1
+      e":"AuthService.me — lecture fraîche compte disparu après émission du ⟦token :⟧ 401 UNAUTHENTICATED (même code que le guard)","status":"passed","titl
+[ 55] jeton                  v6/audit-evidence/api-tests.json:1
+      e guard)","status":"passed","title":"compte disparu après émission du ⟦token :⟧ 401 UNAUTHENTICATED (même code que le guard)","duration":1.9142269999
+[ 56] chargily               v6/audit-evidence/api-tests.json:1
+      ],"fullName":"Configuration incomplète — on lève, on ne se replie pas ⟦CHARGILY_SECRET_KEY⟧ absente ⇒ erreur nommant la variable","status":"passed","title":"CHAR
+[ 57] chargily               v6/audit-evidence/api-tests.json:1
+      _KEY absente ⇒ erreur nommant la variable","status":"passed","title":"⟦CHARGILY_SECRET_KEY⟧ absente ⇒ erreur nommant la variable","duration":0.15940100000000257,
+[ 58] chargily               v6/audit-evidence/api-tests.json:1
+      ],"fullName":"Configuration incomplète — on lève, on ne se replie pas ⟦CHARGILY_SECRET_KEY⟧ vide ⇒ même traitement qu'absente","status":"passed","title":"CHARGIL
+[ 59] chargily               v6/audit-evidence/api-tests.json:1
+      RET_KEY vide ⇒ même traitement qu'absente","status":"passed","title":"⟦CHARGILY_SECRET_KEY⟧ vide ⇒ même traitement qu'absente","duration":0.13607600000000275,"fa
+[ 60] chargily               v6/audit-evidence/secret-scan-redacted.json:8
+      access_key", "google_api_key", "github_token", "stripe_or_⟦chargily_key⟧", "jwt_literal" ], "redactedMatches": [] }
+[ 61] mot-de-passe           v6/audit-evidence/wiring-probes.json:1
+      uth (@zwadj/types)"],"fullName":"Schémas Zod auth (@zwadj/types) reset⟦Password :⟧ token requis + nouvelle politique appliquée","status":"passed","title
+[ 62] mot-de-passe           v6/audit-evidence/wiring-probes.json:1
+      equis + nouvelle politique appliquée","status":"passed","title":"reset⟦Password :⟧ token requis + nouvelle politique appliquée","duration":0.19518600000
+[ 63] valeur-nommee-secrete  v6/audit-evidence/wiring-probes.json:1
+      : CINQ variables exigées explicitement (E3a en ajoute une) JWT_ACCESS_⟦SECRET :⟧ comportement inchangé (déjà requis partout, jamais de défaut)","statu
+[ 64] valeur-nommee-secrete  v6/audit-evidence/wiring-probes.json:1
+      uis partout, jamais de défaut)","status":"passed","title":"JWT_ACCESS_⟦SECRET :⟧ comportement inchangé (déjà requis partout, jamais de défaut)","durat
+[ 65] jeton                  v6/audit-evidence/wiring-probes.json:1
+      e":"AuthService.me — lecture fraîche compte disparu après émission du ⟦token :⟧ 401 UNAUTHENTICATED (même code que le guard)","status":"passed","titl
+[ 66] jeton                  v6/audit-evidence/wiring-probes.json:1
+      e guard)","status":"passed","title":"compte disparu après émission du ⟦token :⟧ 401 UNAUTHENTICATED (même code que le guard)","duration":0.5473479999
+[ 67] chargily               v6/audit-evidence/wiring-probes.json:1
+      ],"fullName":"Configuration incomplète — on lève, on ne se replie pas ⟦CHARGILY_SECRET_KEY⟧ absente ⇒ erreur nommant la variable","status":"passed","title":"CHAR
+[ 68] chargily               v6/audit-evidence/wiring-probes.json:1
+      _KEY absente ⇒ erreur nommant la variable","status":"passed","title":"⟦CHARGILY_SECRET_KEY⟧ absente ⇒ erreur nommant la variable","duration":0.18556100000000697,
+[ 69] chargily               v6/audit-evidence/wiring-probes.json:1
+      ],"fullName":"Configuration incomplète — on lève, on ne se replie pas ⟦CHARGILY_SECRET_KEY⟧ vide ⇒ même traitement qu'absente","status":"passed","title":"CHARGIL
+[ 70] chargily               v6/audit-evidence/wiring-probes.json:1
+      RET_KEY vide ⇒ même traitement qu'absente","status":"passed","title":"⟦CHARGILY_SECRET_KEY⟧ vide ⇒ même traitement qu'absente","duration":0.161594000000008,"fail
+== parcourus : 72 fichiers · correspondances : 70 (attendu 70, le total de l'instrument)
+== SCEAU sha256:3be5dea08fc90cfae83f16fcbc62b587ce2de7831074e553d8bf8e9594a6c505 — neutralisation/audit-secrets.py : cette sortie s'exclut de l'audit tant que ce sceau couvre ses octets ==

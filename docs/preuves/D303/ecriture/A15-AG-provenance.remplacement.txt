@@ -1,0 +1,5 @@
+- **Vérifier la provenance de l'arbre avant d'y toucher.** L'arbre de travail a divergé deux fois pendant la campagne — du code non attribué est apparu entre deux tours, dont un lot entier sur la rotation des jetons. `diff` contre le zip livré, `git apply --check` avant toute extraction.
+  ⛔ *(D303, 23/09/2026 : la phrase sur le zip décrit l'ère des archives. **Sur le chemin de l'argent**, la forme en
+  vigueur est celle de la décision du relecteur (chat) — SHA de départ rapporté, `git diff` depuis lui limité aux
+  fichiers du cadrage, aucun fichier non suivi hors `a-verser/` : « À NE PAS faire », point E3. Ailleurs, aucune
+  décision : le contrôle de fin de lot de `CLAUDE.md` s'applique. Annotée, pas barrée.)*

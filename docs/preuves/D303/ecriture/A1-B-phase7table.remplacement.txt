@@ -1,0 +1,21 @@
+> | **E3b-2** ⛔ | Adaptateur Chargily + session de règlement | **bloqué : compte bac à sable** — ⛔ **ACTUEL** (Ko, 23/09/2026, D303) |
+> | **E3c** ⛔ | Webhook : signature, déduplication, mise en file | Aucune logique métier dans le handler HTTP — ⛔ **bloqué : compte bac à sable** (D303) |
+> | **E3d** ⛔ | `PAID` → `Booking CONFIRMED` + `Quote ACCEPTED` + `Commission` | Remboursements, factures — ⛔ **suit E3c** (D303) |
+> | **E3e** ⛔ | Remboursements, factures, réconciliation | — ⛔ **suit E3d** (D303) |
+>
+> ⛔ **UN FAIT, DÉCLARÉ PAR KO LE 23/09/2026 (D303) : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST.** Conséquences,
+> écrites telles que Ko les a données :
+> - **le blocage d'E3b-2 (« compte bac à sable ») est ACTUEL** ;
+> - **E3c est bloqué aussi** : la méthode exige des charges utiles **capturées du bac à sable réel** (exigence 2
+>   ci-dessous ; D126, règle 4) — un webhook signé ne se capture pas sans compte ;
+> - **E3d et E3e suivent.**
+> ⇒ **E3 ATTEND SUR CE FAIT, PAS SUR UNE PRIORITÉ.** Un rang arbitré ne suffit pas à ouvrir E3b-2 ni E3c tant qu'il
+> tient.
+> ⚠ **ÉCART RELEVÉ, NON TRANCHÉ (D303, lecture seule)** : `chargily.gateway.ts` et ses trois fixtures existent au dépôt
+> depuis `dc63afb` (16/08/2026, « E3b ») ; la spec les dit « captures réelles du bac à sable » (`livemode` = `false`
+> dans la réponse capturée) ; l'« État des lots » d'`AGENTS.md` (instantané du 20/08) porte « E3b (Chargily) ✅ livré
+> et mesuré », et le journal de ce jour-là précise « exercé contre `fetch` espionné, pas contre le bac à sable ». Ce
+> que ce tableau dit bloqué n'est donc pas l'écriture de l'adaptateur mais **tout ce qui exige le bac à sable réel** :
+> son exercice contre le réseau, le renouvellement des captures, les charges utiles de webhook. **Avec quel compte les
+> captures du 16/08 ont été faites n'est écrit nulle part** — question à Ko, section D303 de `ZWADJ_CONTINUITE.md`.
+>

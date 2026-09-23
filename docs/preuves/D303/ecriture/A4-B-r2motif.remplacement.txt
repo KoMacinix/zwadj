@@ -1,0 +1,4 @@
+  déléguée par Ko le 23/09/2026* — ~~**motif : non transmis avec la décision.**~~ ⛔ **MOTIF TRANSMIS LE 23/09/2026
+  (D303)** : toute requête invalide reste refusée (audit) ; seul change le code d'erreur rendu quand une requête cumule
+  deux fautes, et aucun montant n'en dépend.
+  ⇒ **COÛT** : code API (compte) ; `booking-charge.ts` et sa spec, mesurée sur un cas **doublement** fautif

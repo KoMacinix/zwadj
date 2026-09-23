@@ -1,0 +1,4 @@
+   762), dans le texte d'**avis publics** de PostCSS (⛔ *citation REMPLACÉE le 23/09/2026 par sa position et sa
+   nature — D303, consigne de Ko* : `docs/preuves/D302/dependances/pnpm-audit.json`, lignes 603 et 762 ; deux exemples
+   de l'avis — une commande shell de la preuve d'exploitation, qui affecte une valeur d'exemple à une variable de clé
+   d'API, et un chemin de fichier temporaire affecté à une variable nommée « secret »), **triées

@@ -1,0 +1,16 @@
+# Passe D277 de D303 (rang 23), SENS 2 — ce que le lot REND PERMIS, ou dont la CONDITION change (D287) :
+#  (a) E3 : la condition d'ouverture gagne un fait — pas de compte Chargily en mode test (Ko, 23/09/2026) — donc
+#      E3b-2, E3c, E3d, E3e attendent ce fait ; toute phrase qui dit qu'E3 (ou un de ses sous-lots) peut s'ouvrir
+#      à une condition qui ne le nomme pas est à relire ;
+#  (b) la levée du drapeau des paiements gagne un bloquant (R1 dans les harnais du chemin de l'argent) ;
+#  (c) le cadrage du rang 23 ne rend permis aucun lot de code.
+# Les cinq premiers motifs sont ceux de D302, à l'identique (deux passes qui se comparent comptent la même chose, D290).
+e3-ouvre               (?i)\bE3[a-e]?\b.{0,50}?(?:s'ouvre|s'ouvrir|peut s'|pourra|ouvert|rouvr)
+e3-bloque              (?i)\bE3[a-e]?\b.{0,50}?(?:bloqu|verrou|en pause|interdit)
+bloque-e3              (?i)(?:bloqu\w*|verrou\w*|avant) (?:avant |d')?E3[a-e]?\b
+argent-ouvre           (?i)chemin de l'argent.{0,60}?(?:s'ouvre|s'ouvrir|verrou|autoris|lev[ée])
+claude-code-argent     (?i)Claude Code.{0,80}?(?:argent|paiement|\bE3)
+reste-exige            (?i)reste exigé avant toute ligne de code
+cesse-de-bloquer       (?i)cesse de bloquer
+levee-drapeau          (?i)lev[ée]e? du drapeau|PAYMENTS_ENABLED.{0,40}?(?:lev|allum|bascul)
+lot-code-ouvre         (?i)lot de code (?:peut|pourra) s'ouvrir

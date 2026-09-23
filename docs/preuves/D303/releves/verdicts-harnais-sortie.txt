@@ -1,0 +1,385 @@
+harnais parcourus : 27
+
+=== neutralisation\neutralize-404.py · sites d'incrément/décision : 1
+    420 |             break
+    421 |         try:
+    422 |             code, sortie = _lancer_tests()
+    423 |         finally:
+    424 |             _defaire(annuler)
+    425 |             shutil.rmtree(SAUVEGARDE, ignore_errors=True)
+    426 | 
+    427 |         raison = rouge_attendu(cible, code, sortie)
+    428 |         if raison is None:
+    429 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-act-plafonds.py · sites d'incrément/décision : 1
+    168 | for nom, mutations, attendu in CIBLES:
+    169 |     for fichier, avant, apres in mutations:
+    170 |         muter(fichier, avant, apres)
+    171 |     code = joue()
+    172 |     for fichier in SAUV:
+    173 |         shutil.copyfile(SAUV[fichier], fichier)
+    174 |     obtenu = "vert" if code == 0 else "rouge"
+    175 |     bon = obtenu == attendu
+    176 |     tout = tout and bon
+    177 |     compte += 1 if bon else 0
+   ----
+
+=== neutralisation\neutralize-argon2.py · sites d'incrément/décision : 3
+    115 | muter(CIBLES[0][1], CIBLES[0][2])
+    116 | code, sortie = joue()
+    117 | shutil.copyfile(SAUV, SRC)
+    118 | assert code != 0, "PRE-VOL : la mutation temoin n'a pas fait rougir -- mutation inerte"
+    119 | assert rouges(sortie), (
+    120 |     "PRE-VOL : le lecteur ne voit AUCUN rouge alors que la suite est rouge. "
+    121 |     "Le motif de detection est perime -- sans ce pre-vol, toutes les cibles "
+    122 |     f"auraient ete rapportees « muettes ».\n{sortie[-800:]}")
+    123 | 
+    124 | tout_mord = True
+   ----
+    122 |     f"auraient ete rapportees « muettes ».\n{sortie[-800:]}")
+    123 | 
+    124 | tout_mord = True
+    125 | compte = 0
+    126 | for nom, avant, apres, attendu in CIBLES:
+    127 |     muter(avant, apres)
+    128 |     code, sortie = joue()
+    129 |     shutil.copyfile(SAUV, SRC)
+    130 |     lignes = rouges(sortie)
+    131 |     mord = code != 0 and any(attendu in l for l in lignes)
+   ----
+    124 | tout_mord = True
+    125 | compte = 0
+    126 | for nom, avant, apres, attendu in CIBLES:
+    127 |     muter(avant, apres)
+    128 |     code, sortie = joue()
+    129 |     shutil.copyfile(SAUV, SRC)
+    130 |     lignes = rouges(sortie)
+    131 |     mord = code != 0 and any(attendu in l for l in lignes)
+    132 |     tout_mord &= mord
+    133 |     compte += 1 if mord else 0
+   ----
+
+=== neutralisation\neutralize-available-on-api.py · sites d'incrément/décision : 1
+    232 |             ).returncode
+    233 |         finally:
+    234 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    235 |             os.remove(marque)
+    236 | 
+    237 |         if code == 0:
+    238 |             muettes.append(libelle)
+    239 |             print(f"✗ {libelle}\n   VERT malgré la neutralisation — cette garde ne mesure rien.")
+    240 |         else:
+    241 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-available-on.py · sites d'incrément/décision : 1
+    204 |             code = run(["pnpm", "--filter", "@zwadj/client", "run", "test", "--", fichier, "-t", filtre])
+    205 |         finally:
+    206 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    207 |             os.remove(marque)
+    208 | 
+    209 |         if code == 0:
+    210 |             muettes.append(libelle)
+    211 |             print(f"✗ {libelle}\n   VERT malgré la neutralisation — cette garde ne mesure rien.")
+    212 |         else:
+    213 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-b7.py · sites d'incrément/décision : 1
+    151 |             code, _ = lancer("b7")
+    152 |         finally:
+    153 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    154 |             shutil.rmtree(marque, ignore_errors=True)
+    155 | 
+    156 |         if code == 0:
+    157 |             muettes.append(libelle)
+    158 |             print(f"✗ {libelle}\n   VERT malgré la neutralisation.")
+    159 |         else:
+    160 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-booking-status.py · sites d'incrément/décision : 1
+    213 |         finally:
+    214 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    215 |             shutil.rmtree(marque, ignore_errors=True)
+    216 | 
+    217 |         verts = [m for m, code in codes.items() if code == 0]
+    218 |         if verts:
+    219 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    220 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    221 |         else:
+    222 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-budgets.py · sites d'incrément/décision : 2
+    160 |     for lib, chemin, avant, apres, _n, paquet in CIBLES:
+    161 |         shutil.copyfile(chemin, sauvegarde(chemin))
+    162 |         try:
+    163 |             muter(chemin, avant, apres)
+    164 |             code, t, sig = jouer_temoin(ins, paquet)
+    165 |         finally:
+    166 |             shutil.copyfile(sauvegarde(chemin), chemin)
+    167 |             os.remove(sauvegarde(chemin))
+    168 |         attendue = f"Test timed out in {valeur_de(apres)}ms"
+    169 |         mord = code != 0 and t[2] == "failed" and attendue in sig
+   ----
+    161 |         shutil.copyfile(chemin, sauvegarde(chemin))
+    162 |         try:
+    163 |             muter(chemin, avant, apres)
+    164 |             code, t, sig = jouer_temoin(ins, paquet)
+    165 |         finally:
+    166 |             shutil.copyfile(sauvegarde(chemin), chemin)
+    167 |             os.remove(sauvegarde(chemin))
+    168 |         attendue = f"Test timed out in {valeur_de(apres)}ms"
+    169 |         mord = code != 0 and t[2] == "failed" and attendue in sig
+    170 |         compte += 1 if mord else 0
+   ----
+
+=== neutralisation\neutralize-e3d1-s8.py · sites d'incrément/décision : 1
+    300 |         finally:
+    301 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    302 |             shutil.rmtree(marque, ignore_errors=True)
+    303 | 
+    304 |         verts = [m for m, code in codes.items() if code == 0]
+    305 |         if verts:
+    306 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    307 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    308 |         else:
+    309 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-horizon.py · sites d'incrément/décision : 1
+    212 |             shutil.rmtree(SAUVEGARDE, ignore_errors=True)
+    213 | 
+    214 |         if code == 0:
+    215 |             muettes.append(f"{cible['libelle']} — VERT malgré la neutralisation")
+    216 |             print(f"✗ {cible['libelle']}\n   VERT malgré la neutralisation — la garde ne mesure rien.")
+    217 |         elif not any("×" in ligne and cible["titre"] in ligne for ligne in sortie.splitlines()):
+    218 |             muettes.append(f"{cible['libelle']} — rouge sans le titre attendu")
+    219 |             print(f"✗ {cible['libelle']}\n   rouge, mais aucun échec ne porte « {cible['titre']} » — ancre à revoir.")
+    220 |         else:
+    221 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-horloge.py · sites d'incrément/décision : 1
+     96 | compte = 0
+     97 | tout = True
+     98 | for nom, avant, apres, attendu in CIBLES:
+     99 |     muter(avant, apres)
+    100 |     code = joue()
+    101 |     shutil.copyfile(SAUV, SRC)
+    102 |     obtenu = "vert" if code == 0 else "rouge"
+    103 |     bon = obtenu == attendu
+    104 |     tout = tout and bon
+    105 |     compte += 1 if bon else 0
+   ----
+
+=== neutralisation\neutralize-journey.py · sites d'incrément/décision : 1
+    181 |         finally:
+    182 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    183 |             os.remove(marque)
+    184 | 
+    185 |         verts = [app for app, code in codes.items() if code == 0]
+    186 |         if verts:
+    187 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    188 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    189 |         else:
+    190 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-maxprice.py · sites d'incrément/décision : 1
+    273 |             shutil.rmtree(SAUVEGARDE, ignore_errors=True)
+    274 | 
+    275 |         if code == 0:
+    276 |             muettes.append(f"{cible['libelle']} — VERT malgré la neutralisation")
+    277 |             print(f"✗ {cible['libelle']}\n   VERT malgré la neutralisation — la garde ne mesure rien.")
+    278 |         elif not any("×" in ligne and cible["titre"] in ligne for ligne in sortie.splitlines()):
+    279 |             muettes.append(f"{cible['libelle']} — rouge sans le titre attendu")
+    280 |             print(f"✗ {cible['libelle']}\n   rouge, mais aucun échec ne porte « {cible['titre']} » — ancre à revoir.")
+    281 |         else:
+    282 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-r4.py · sites d'incrément/décision : 1
+    160 |         finally:
+    161 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    162 |             os.remove(marque)
+    163 | 
+    164 |         verts = [m for m, code in codes.items() if code == 0]
+    165 |         if verts:
+    166 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    167 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    168 |         else:
+    169 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-s10a.py · sites d'incrément/décision : 1
+    262 |         finally:
+    263 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    264 |             shutil.rmtree(marque, ignore_errors=True)
+    265 | 
+    266 |         verts = [m for m, code in codes.items() if code == 0]
+    267 |         if verts:
+    268 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    269 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    270 |         else:
+    271 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-s10b.py · sites d'incrément/décision : 1
+    337 |         finally:
+    338 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    339 |             shutil.rmtree(marque, ignore_errors=True)
+    340 | 
+    341 |         verts = [m for m, code in codes.items() if code == 0]
+    342 |         if verts:
+    343 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    344 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    345 |         else:
+    346 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-s11a.py · sites d'incrément/décision : 1
+    371 |         finally:
+    372 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    373 |             shutil.rmtree(marque, ignore_errors=True)
+    374 | 
+    375 |         verts = [m for m, code in codes.items() if code == 0]
+    376 |         if verts:
+    377 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    378 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    379 |         else:
+    380 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-s11b.py · sites d'incrément/décision : 1
+    379 |         finally:
+    380 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    381 |             shutil.rmtree(marque, ignore_errors=True)
+    382 | 
+    383 |         verts = [m for m, code in codes.items() if code == 0]
+    384 |         if verts:
+    385 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    386 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    387 |         else:
+    388 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-s9.py · sites d'incrément/décision : 1
+    222 |         finally:
+    223 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    224 |             shutil.rmtree(marque, ignore_errors=True)
+    225 | 
+    226 |         verts = [m for m, code in codes.items() if code == 0]
+    227 |         if verts:
+    228 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    229 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    230 |         else:
+    231 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s1.py · sites d'incrément/décision : 1
+    217 |         finally:
+    218 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    219 |             os.remove(marque)
+    220 | 
+    221 |         verts = [m for m, code in codes.items() if code == 0]
+    222 |         if verts:
+    223 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    224 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    225 |         else:
+    226 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s2.py · sites d'incrément/décision : 1
+    236 |         finally:
+    237 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    238 |             os.remove(marque)
+    239 | 
+    240 |         verts = [m for m, code in codes.items() if code == 0]
+    241 |         if verts:
+    242 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    243 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    244 |         else:
+    245 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s3.py · sites d'incrément/décision : 1
+    219 |         finally:
+    220 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    221 |             os.remove(marque)
+    222 | 
+    223 |         verts = [m for m, code in codes.items() if code == 0]
+    224 |         if verts:
+    225 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    226 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    227 |         else:
+    228 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s4.py · sites d'incrément/décision : 1
+    195 |         finally:
+    196 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    197 |             os.remove(marque)
+    198 | 
+    199 |         verts = [m for m, code in codes.items() if code == 0]
+    200 |         if verts:
+    201 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    202 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    203 |         else:
+    204 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s5a.py · sites d'incrément/décision : 1
+    222 |         finally:
+    223 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    224 |             os.remove(marque)
+    225 | 
+    226 |         verts = [m for m, code in codes.items() if code == 0]
+    227 |         if verts:
+    228 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    229 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    230 |         else:
+    231 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s5b.py · sites d'incrément/décision : 1
+    173 |         finally:
+    174 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    175 |             os.remove(marque)
+    176 | 
+    177 |         verts = [m for m, code in codes.items() if code == 0]
+    178 |         if verts:
+    179 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    180 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    181 |         else:
+    182 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s6.py · sites d'incrément/décision : 1
+    214 |         finally:
+    215 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    216 |             os.remove(marque)
+    217 | 
+    218 |         verts = [m for m, code in codes.items() if code == 0]
+    219 |         if verts:
+    220 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    221 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    222 |         else:
+    223 |             mordu += 1
+   ----
+
+=== neutralisation\neutralize-solid-s7.py · sites d'incrément/décision : 1
+    167 |         finally:
+    168 |             io.open(chemin, "w", encoding="utf-8", newline="").write(source)
+    169 |             os.remove(marque)
+    170 | 
+    171 |         verts = [m for m, code in codes.items() if code == 0]
+    172 |         if verts:
+    173 |             muettes.append(f"{libelle} (vert dans : {', '.join(verts)})")
+    174 |             print(f"✗ {libelle}\n   VERT dans {verts} malgré la neutralisation.")
+    175 |         else:
+    176 |             mordu += 1
+   ----

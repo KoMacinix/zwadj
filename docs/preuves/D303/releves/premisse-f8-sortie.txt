@@ -1,0 +1,11 @@
+== parcourus : 171 fichiers suivis sous apps/api/src à HEAD
+✓ fabrique : « drapeau éteint ⇒ UnavailablePaymentGateway » présent : True (attendu True)
+✓ fabrique : ce retour précède toute lecture de clé : True (attendu True) · ligne de code 10 contre 11
+✓ sites `new ChargilyGateway` hors specs : 1 (attendu 1) · apps/api/src/payments/payment-gateway.factory.ts:46
+✓ fournisseurs du jeton PAYMENT_GATEWAY hors specs : 1 (attendu 1) · apps/api/src/payments/payments.module.ts
+✓ mentions de readSession hors specs (déclaration + un appel) : 2 (attendu 2) · return this.readSession(response, request.paymentId); | private async readSession(response: Response, paymentId: string): Prom
+✓ readSession est privée : True (attendu True)
+✓ adaptateur de refus : aucun `fetch` : 0 (attendu 0)
+✓ adaptateur de refus : lève ServiceUnavailableException : True (attendu True)
+✓ env.ts : PAYMENTS_ENABLED a un défaut à false : True (attendu True) · extrait : PAYMENTS_ENABLED: z .string() .default("false") .transform((v) => v === "true" || v === "1"), /** OAuth Google (Lot 8) : audience de vérification des ID tokens 
+== VERDICT : prémisse VÉRIFIÉE

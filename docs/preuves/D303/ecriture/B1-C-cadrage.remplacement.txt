@@ -1,0 +1,258 @@
+## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE ; DÉCOUPAGE À TRANCHER PAR KO**
+
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER (D303, 23/09/2026)
+
+⛔ **ARBITRÉ PAR KO LE 23/09/2026, mot pour mot** : « Rang 23 : les transitions atomiques de la réservation et du
+devis — audit SOLID 09/09 · F1, F2, F5, F6. Cadrage, lot documentaire. Aucun besoin de Chargily. » ⇒ **QUEL lot : rang
+23 de l'ordre des rangs. OÙ IL EN EST : ici.**
+⇒ **LE CADRAGE EST ÉCRIT** — section « ⛔ CADRAGE DU RANG 23 » juste en dessous, méthode renforcée (D126) : modes de
+défaillance d'abord, rouge sur PostgreSQL réel, cibles de neutralisation nommées d'avance, fichiers attendus.
+**Aucune ligne de code.** Le lot D303 est **documentaire** (`.md` d'autorité et `docs/preuves/`) : **compteur de lots de
+code non certifiés : ZÉRO, inchangé.**
+⇒ **LE RANG RESTE OUVERT** — précédent du rang 17, ouvert par un cadrage seul (D295), dont le lot de code a été
+arbitré par Ko comme « second lot du même rang » (D296). ⛔ **CE QUI EST ATTENDU, ET DE QUI** : **Ko** tranche le
+découpage en sous-lots (§ 7 du cadrage) et dit si les sous-lots de code avancent ce rang ou prennent un rang neuf ;
+**le relecteur (chat)** décide sur le cadrage — forme de revue étendue au chemin de l'argent (D303, décision 1) —,
+notamment sur les choix que le cadrage **propose sans les prendre** (§ 8).
+⚠ **Une permission n'est pas un arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir ; **aucun ne
+l'est** tant que ces deux réponses manquent.
+
+## ⛔ CADRAGE DU RANG 23 — transitions atomiques (audit SOLID 09/09 · F1, F2, F5, F6) — écrit le 23/09/2026 (D303), AVANT toute ligne de code
+
+⛔ **MÉTHODE RENFORCÉE (D126), et la forme de revue ratifiée par Ko s'y applique** (décision 1 du relecteur, D303) :
+une session code, une AUTRE session ouverte à froid tente de casser et rapporte sans corriger, le relecteur (chat)
+audite et décide, Ko garde le veto. **Un mode de défaillance non listé ici ne se code pas** : on rouvre ce cadrage.
+⚠ **Relu à `HEAD` = `7bdb65c`, par SYMBOLE** — jamais par numéro de ligne. Sources : audit versé
+(`docs/preuves/D302/sources/zwadj-solid-strategy-audit.md`) ; sondes de l'auditeur, versées **telles quelles**
+(`docs/preuves/D303/sources/zwadj-audit-evidence.zip`, SHA-256 `2a871c21…`, 72 entrées ; la sonde de ces quatre
+défauts est `v5/apps/api/audit-probes/architecture.spec.ts`).
+
+### 1. État des lieux à `HEAD`, symbole par symbole
+
+| défaut | où se lit le statut qui décide | où s'écrit la transition | fichier inchangé depuis |
+|---|---|---|---|
+| **F1** | `PrismaBookingLocks.acceptUnderVenueLock` : `tx.booking.findUniqueOrThrow({ select: { status } })`, **lecture simple** sous le verrou de **salle** (`SELECT … FROM venues … FOR UPDATE`) | `tx.booking.update({ where: { id } })` — **aucune condition sur le statut de départ** | `682ea4c` (22/08) |
+| **F1, l'autre bras** | `PrismaBookingLocks.transition` (refus, annulations) : **pas de lecture préalable** | `updateMany({ where: { id, status: { in: from } } })` — check-and-set, **sans le verrou de salle** | `682ea4c` |
+| **F2 — conversion** | `QuotesService.convert` : `ownedQuote` puis `assertStatus`, **hors transaction** | `PrismaQuoteStore.convertirEnDemande` : `booking.create` **sans transaction ni relecture** du devis | `3b327c0` / `538b014` |
+| **F2 — révision** | `QuotesService.revise` : `assertStatus`, **hors transaction** | `creerRevision` : verrou de la **racine** de chaîne (`verrouillerChaine`), `aggregate`, `create` — **statut du parent jamais relu** | `3b327c0` / `538b014` |
+| **F5** | `BookingsService.cancelAsClient` : `booking.findFirst` puis `decideBookingTransition`, **hors transaction** | `transitionStatus(…, allowedFrom(CANCEL_AS_CLIENT), …)` — admet **PENDING ET ACCEPTED** quelle que soit la décision prise | `ae9b3f8` / `682ea4c` |
+| **F6** | — | `accept`, `decline`, `cancelAsPro` : `await this.events.publish(…, await this.notificationFor(…))` — `notificationFor` lit `user.findUnique` **après le commit et hors du `catch`** de `DomainEvents.publish` | `ae9b3f8` / `682ea4c` |
+
+⚠ **Aucun test existant ne croise DEUX COMMANDES DIFFÉRENTES sur la même demande** : `bookings.int-spec.ts` couvre
+accept contre accept (deux et trois fois), deux refus, deux annulations pro, deux annulations client, et deux demandes
+différentes sur un créneau ; `quotes.int-spec.ts` couvre deux remises, deux annulations, deux conversions, deux
+révisions. **C'est le trou exact des quatre défauts.**
+⚠ **Clés étrangères relevées dans les MIGRATIONS (D186)** : `bookings_quote_id_fkey` (`20260707000000_init`) et
+`quotes_parent_quote_id_fkey` (`20260802140000_quote_lifecycle`). Elles servent au § 3.
+
+### 2. Modes de défaillance — écrits AVANT tout le reste
+
+**F1 — accept croise un refus ou une annulation, tous deux depuis `PENDING`.**
+- **MD-F1-1** — un refus commite entre la lecture du statut par `accept` et son écriture : `accept` écrase `DECLINED`
+  par `ACCEPTED`, pose `acceptedAt`/`paymentDueAt` sur une ligne qui garde `declinedAt`/`declineReason`, et le client
+  reçoit « refusée » **puis** « acceptée ». ⇒ **Attendu** : 409 `BOOKING_STATUS_CONFLICT`, statut `DECLINED` ; ligne
+  intacte.
+- **MD-F1-2** — même course avec une annulation client (`PENDING` → `CANCELLED`). ⇒ 409, statut `CANCELLED`.
+- **MD-F1-3** — **la correction ne doit pas perdre la traduction de l'`EXCLUDE`** (23P01 → 409 `BOOKING_SLOT_TAKEN`) :
+  même `try/catch`, même fonction. ⇒ Les tests existants « la SECONDE acceptation reçoit 409 via le 23P01 » et « deux
+  demandes DIFFÉRENTES acceptées simultanément » restent verts, et S5b-4 mord toujours. ⚠ Si l'écriture passe de
+  `update` à `updateMany`, **la forme de l'erreur du pilote pour `updateMany` n'est pas mesurée** : c'est ce test qui
+  la mesure, pas une supposition.
+- **MD-F1-4** — accept contre accept (D117) : inchangé — un seul aboutit, les autres 409, jamais 500.
+- **MD-F1-5** — accept contre création de blocage (D51) : inchangé. **Borne de Ko : le verrou de salle reste.**
+- **MD-F1-6** — **interblocage** : la correction ajoute, au plus, un verrou de LIGNE de réservation après le verrou de
+  salle ; `transition` ne prend que la ligne, le blocage ne prend que la salle ; aucun chemin ne prend la ligne puis
+  la salle. ⇒ Pas d'inversion. Un 40P01 sortirait en 500 : les tests concurrents le verraient.
+- **MD-F1-7** — ordre séquentiel (refus PUIS accept) : déjà 409 par la relecture D117 — inchangé.
+
+**F2 — le devis change sous une conversion ou une révision.**
+- **MD-F2-1** — une annulation commite entre la lecture du devis par `convert` et l'insertion : une réservation
+  `PENDING` naît d'un devis `CANCELLED`, **et c'est de ce devis que vient son montant**. ⇒ 409
+  `QUOTE_STATUS_CONFLICT`, statut `CANCELLED` ; **aucune** réservation pour ce devis.
+- **MD-F2-2** — ⛔ **BORNE DE KO — PRÉSERVÉ : l'annulation voulue d'un devis DÉJÀ converti.** Le devis reste `DRAFT`
+  après conversion (« il attend l'acompte ») et `cancel` l'admet. ⇒ convertir **puis** annuler : 200, devis
+  `CANCELLED`, réservation intacte ; **et en concurrence** : une annulation qui arrive pendant que la conversion tient
+  le verrou **attend puis aboutit**.
+- **MD-F2-3** — double conversion : inchangé — 409 « déjà converti » (`bookings_quote_id_key` + traduction du P2002).
+- **MD-F2-4** — une annulation du **parent** commite entre la lecture de `revise` et la création de la version : une
+  version naît d'un devis annulé. ⇒ 409, statut `CANCELLED` ; **aucune** version créée. ⚠ **Deux cas** : parent =
+  racine de chaîne (v1) **et** parent ≠ racine (v2) — le second est le seul où le verrou de racine ne protège rien.
+- **MD-F2-5** — deux révisions concurrentes : inchangé (verrou de chaîne).
+- **MD-F2-6** — ⛔ **une relecture après P2002 DANS une transaction avortée lève** (PostgreSQL : « current transaction
+  is aborted », 25P02). Si `convertirEnDemande` passe dans un `$transaction`, la relecture « une demande existe-t-elle
+  pour ce devis ? » doit se faire **après** le rollback, hors de la transaction. ⇒ MD-F2-3 reste 409, jamais 500.
+- **MD-F2-7** — interblocage : `convert` corrigé verrouillerait la ligne du devis ; `cancel` la verrouille par son
+  `updateMany` ; `revise` corrigé prendrait la racine puis le parent. Aucun chemin ne prend le parent puis la racine.
+- **Non listé, donc non codé** : conversion contre révision de la même chaîne. L'audit ne le nomme pas ; relevé ici
+  pour qu'une reprise sache qu'il a été vu.
+
+**F5 — l'annulation client croise une acceptation.**
+- **MD-F5-1** — `accept` commite entre la lecture de `cancelAsClient` (`PENDING`, **sans motif**) et son écriture :
+  l'écriture admet `ACCEPTED`, la demande acceptée s'annule **sans le motif que D83 exige**. ⇒ refus, ligne
+  `ACCEPTED` intacte. **Le code du refus est un CHOIX** (§ 8) : 400 `cancelReasonRequired` — la réponse que le client
+  aurait eue dans l'ordre séquentiel — ou 409 `BOOKING_STATUS_CONFLICT`.
+- **MD-F5-2** — **avec** un motif : l'annulation depuis `ACCEPTED` reste admise — inchangé.
+- **MD-F5-3** — annulation client contre refus : 409 par le check-and-set — inchangé.
+- **MD-F5-4** — l'**ordre** des refus de `decideBookingTransition` (statut 409 avant motif 400) — inchangé.
+
+**F6 — la lecture d'enrichissement échoue APRÈS le commit.**
+- **MD-F6-1** — `user.findUnique` lève après que `accept` a commité : aujourd'hui **500** au pro, réservation
+  `ACCEPTED` en base, **aucune** notification ; une nouvelle tentative rend 409 — le pro lit un échec sur un succès.
+  ⇒ **Attendu** : 200 avec le DTO de la ligne commitée ; l'échec **journalisé** ; la notification **perdue et dite**
+  (sémantique de D63). **Borne de Ko : pas de file durable.**
+- **MD-F6-2** — mêmes trois conséquences pour `decline` et `cancelAsPro` : **trois sites, trois cas.**
+- **MD-F6-3** — un **handler** qui lève dans `publish` : déjà attrapé — inchangé.
+- **MD-F6-4** — ⛔ **BORNE DE KO — la frontière d'erreur, rien de plus** : ni contrat d'événements refondu (A5), ni
+  file. ⚠ Les sites qui construisent leur charge **sans lecture** (`create`, les visites) ne sont pas F6 tel que l'audit
+  le nomme : **non codés**, rapportés.
+- **Pourquoi F6 bloque E3d (D302)** : la même forme après un `PAID` ferait lire un échec sur un paiement abouti.
+
+**Transverse.**
+- **MD-X-1** — toute violation de contrainte **et** toute erreur de concurrence introduite par la correction se
+  traduit en erreur métier : un même empêchement ne rend pas 409 d'un côté et 500 de l'autre (invariant d'`AGENTS.md`).
+- **Existant, NON introduit par ce rang, NON codé** : une attente de verrou plus longue que le délai d'une transaction
+  interactive Prisma sort en erreur de transaction, en 500. `accept` y est déjà exposé par son verrou de salle.
+
+### 3. Le rouge AVANT le correctif, sur PostgreSQL réel — deux transactions dont l'ordre est contrôlé
+
+⛔ **POSTGRESQL FAIT L'ORDONNANCEUR, PAS UN DOUBLE.** Patron **existant** au dépôt, `payment-intent-race.int-spec.ts`
+(E3d-1) : une connexion `pg` **brute** — pas un second client Prisma, qui garderait une connexion du pool — ouvre
+une transaction, écrit, **ne commite pas** ; le code réel part et **se bloque** sur un verrou ; `attendreBlocage()`
+sonde `pg_stat_activity` (`wait_event_type = 'Lock'`) et **lève « LA COURSE N'A PAS EU LIEU »** si personne n'attend ;
+puis le rival commite. ⇒ **La course est prouvée par construction** : un rouge obtenu sans blocage ne compte pas.
+⛔ **Le prédicat du rival se RELÈVE dans le code qu'il imite** (même `WHERE` que `transition` ou que `cancel`), il ne
+s'invente pas. ⛔ Chemin de sortie obligatoire (`ROLLBACK` en `finally`) : une fuite de connexion se voit dans le spec
+**suivant**.
+
+| défaut | rival (non commité) | code réel lancé | où il se bloque | rouge AVANT | vert APRÈS |
+|---|---|---|---|---|---|
+| **F1 × refus** | `UPDATE bookings SET status='DECLINED', …  WHERE id=$1 AND status='PENDING'` | `accept` (HTTP) : lit `PENDING` (MVCC), contrôle de blocage | son `UPDATE` attend le verrou de ligne du rival | 2xx, ligne `ACCEPTED` avec `declined_at` posé | 409 `DECLINED`, ligne intacte |
+| **F1 × annulation** | même, vers `CANCELLED` (prédicat de l'annulation client) | `accept` | idem | 2xx, `ACCEPTED` | 409 `CANCELLED` |
+| **F2 × conversion** | `SELECT … FROM quotes WHERE id=$1 FOR UPDATE` **puis** `UPDATE quotes SET status='CANCELLED' WHERE id=$1 AND status IN (ouverts)` | `convert` (HTTP) : lit `DRAFT` | l'insertion de la réservation vérifie `bookings_quote_id_fkey` par un `FOR KEY SHARE` sur le devis, qui attend le `FOR UPDATE` du rival | 201, une réservation existe | 409 `CANCELLED`, aucune réservation |
+| **F2 × révision (v1)** | `FOR UPDATE` + `CANCELLED` sur v1 | `revise` de v1 | `verrouillerChaine` (`FOR UPDATE` sur la racine) attend | 201, v2 créée | 409, aucune v2 |
+| **F2 × révision (v2)** | `FOR UPDATE` + `CANCELLED` sur v2 | `revise` de v2 | l'insertion de v3 vérifie `quotes_parent_quote_id_fkey` sur v2 et attend | 201, v3 créée | 409, aucune v3 |
+| **F5** | `UPDATE bookings SET status='ACCEPTED', … WHERE id=$1 AND status='PENDING'` | `cancelAsClient` **sans motif** : lit `PENDING`, décide « permis » | son `updateMany` attend le verrou de ligne | 200, `CANCELLED` sans motif | refus (code : § 8), ligne `ACCEPTED` |
+| **F6** (×3) | — | `accept` / `decline` / `cancelAsPro` réels, **panne injectée** sur la lecture post-commit (`user.findUnique`, une fois) | — | 500, ligne commitée | 200 + DTO, ligne commitée, échec journalisé |
+
+⚠ **POURQUOI `FOR UPDATE` CHEZ LE RIVAL DE F2 — mécanisme écrit comme INFÉRENCE, vérifiée par construction au lot de
+code** : un `UPDATE` simple ne prend qu'un `FOR NO KEY UPDATE`, qui ne bloque pas le `FOR KEY SHARE` d'une clé
+étrangère ; sans le `FOR UPDATE` explicite, l'insertion ne l'attendrait pas, et `attendreBlocage()` lèverait. Le verrou
+du rival est l'**outil d'ordonnancement** ; ce qu'il commite est ce que commiterait `cancel`.
+⚠ **F6 N'EST PAS UNE COURSE** : la persistance est réelle, la **panne est injectée** — seul moyen déterministe de faire
+échouer une lecture post-commit. ⚠ **Faisabilité non mesurée** : espionner un délégué du client Prisma 7
+(`vi.spyOn(ctx.prisma.user, "findUnique")`) ; repli, un `PrismaService` enveloppé fourni au module de test. Le lot de
+code le mesure avant de s'appuyer dessus.
+⛔ **FORME DE LA PREUVE — celle que la décision 2 du relecteur exige** : pour chaque garde, (1) le **rouge avant
+correctif**, sortie Vitest **conservée** : tests collectés > 0, et le **titre du test** sur une ligne d'échec avec le
+message d'assertion ; (2) le vert après ; (3) la **neutralisation** du correctif, dont l'échec est **LU** dans la même
+forme — jamais un code de sortie seul ; (4) ces sorties **versées** dans `docs/preuves/<Dnnn>/`. ⚠ Les journaux de
+campagne actuels ne gardent qu'une ligne « ✓ » par cible (relevé D303) : le harnais de ce rang doit **écrire la sortie
+de chaque cible dans un fichier**.
+
+### 4. Les sondes du zip : ce qu'elles permettent de réutiliser, ce qu'elles ne prouvent pas
+
+✅ **Réutilisable** :
+- **les points d'entrelacement**, relevés par l'auditeur et confirmés au source ici : F1 — le refus commite entre la
+  relecture D117 et l'`update` (la sonde l'insère au contrôle de blocage) ; F2 — l'annulation commite entre la lecture
+  de `convert` et la création (la sonde l'insère à la lecture de la salle) ; F5 — entre `findFirst` et `updateMany` ;
+  F6 — la lecture de l'utilisateur qui lève après le port ;
+- **les assertions du défaut, INVERSÉES**, comme énoncé du rouge : statut final `ACCEPTED` par-dessus `DECLINED` ;
+  réservation créée sur un devis `CANCELLED` ; `CANCELLED` sans motif depuis `ACCEPTED` ; rejet alors que la ligne est
+  `ACCEPTED` ;
+- **l'inventaire des sites** (F6 : la sonde n'exerce que `accept` ; `decline` et `cancelAsPro` sont relevés au source).
+⛔ **Ce qu'elles ne prouvent pas** — **persistance simulée** : `$transaction: async (cb) => cb(prisma)`, un état qu'un
+double modifie dans un crochet. Elles ne voient ni la visibilité MVCC, ni les verrous de ligne, ni la réévaluation du
+`WHERE` après une attente de verrou en READ COMMITTED, ni les `FOR KEY SHARE` des clés étrangères. **Elles jugent la
+FORME des appels** (`where` égal à `{ id }`) : une correction pourrait les rendre vertes en changeant la forme, et
+rester fautive sur PostgreSQL — ou l'inverse. Le README de l'auditeur le dit lui-même : elles « assert the CURRENT
+UNWANTED behavior », ne sont pas des tests de non-régression, et « production lock/isolation guarantees need database
+integration tests after correction ». ⇒ **Elles n'entrent pas dans la suite** ; elles servent d'énoncé.
+
+### 5. Cibles de neutralisation nommées d'avance
+
+Chaque cible : une mutation, sa mesure, et la **signature d'échec LUE** (décision 2). Mesures : `int-reservations`
+(`bookings.int-spec.ts`), `int-devis` (`quotes.int-spec.ts`), sur base réelle (`--int`).
+| cible | mutation | doit rougir |
+|---|---|---|
+| **R23-F1-a** | la condition de statut de l'écriture d'`accept` retirée (retour à l'écriture sans statut de départ) | F1 × refus, F1 × annulation |
+| **R23-F1-b** | le refus sur statut non admis n'est plus rendu (l'écriture passe) | idem |
+| **S5b-2, S5b-4** (existantes) | ⚠ **ancres à revérifier** : elles visent les lignes que la correction touche | accept × accept ; 23P01 → `SLOT_TAKEN` |
+| **R23-F2-a** | la relecture du statut du devis dans la conversion retirée | F2 × conversion |
+| **R23-F2-b** | le verrou de ligne du devis dans la conversion retiré (lecture simple) | F2 × conversion |
+| **R23-F2-c** | la relecture du statut du parent dans la révision retirée | F2 × révision (v1 **et** v2) |
+| **R23-F2-d** | le verrou du **parent** retiré (celui de la racine gardé) | F2 × révision (v2) **seulement** — c'est pourquoi le cas v2 existe |
+| **R23-F2-e** | **préservation** : une annulation refusée dès qu'une réservation existe (insertion) | « convertir puis annuler » (MD-F2-2) |
+| **R23-F2-f** | la relecture après P2002 remise dans la transaction avortée | double conversion : 409, jamais 500 |
+| **R23-F5-a** | les statuts admis de l'écriture reviennent à `allowedFrom(CANCEL_AS_CLIENT)` quel que soit le motif | F5 |
+| **R23-F5-b** | le refus après conflit ne se redécide plus sur le statut relu | F5 (code du refus) |
+| **R23-F6-1, -2, -3** | la frontière retirée à **un** site à la fois (`accept`, `decline`, `cancelAsPro`) | le cas du site muté, et lui seul |
+| **R23-F6-4** | la journalisation de l'échec retirée | « l'échec est journalisé » — **si** le relecteur l'exige (§ 8) |
+
+⛔ **Une cible par site** (F6) : une cible qui muterait les trois à la fois ne dirait pas lequel mord (leçon du harnais
+404). ⛔ Le harnais de ce rang se nomme `neutralize-<lot>.py` (D272), **lit** l'échec (collectés > 0 **et** titre sur une
+ligne d'échec, comme `neutralize-horizon.py`), et **écrit la sortie de chaque cible** — sans quoi la décision 2 n'est
+pas satisfiable.
+
+### 6. Fichiers attendus
+
+- **Code** : `apps/api/src/venues/booking-locks.prisma.ts` (F1) ; `booking-locks.types.ts` si la forme du résultat
+  change ; `bookings.service.ts` (F5, F6) ; `booking-transitions.ts` si les statuts admis selon le motif y deviennent
+  une fonction pure (F5 — D187 : neutralisable en millisecondes) ; `quote-store.prisma.ts` et `quote-store.types.ts`
+  (F2 : la conversion et la révision rendent un conflit de statut) ; `quotes.service.ts` (F2).
+- **Tests** : `apps/api/test/int/bookings.int-spec.ts` (F1, F5, F6) ; `apps/api/test/int/quotes.int-spec.ts` (F2) ; un
+  utilitaire partagé de course (rival + `attendreBlocage`) si le relecteur le retient — ⚠ `payment-intent-race.int-spec.ts`
+  porte le sien : l'y migrer serait un second objet, **rapporté, pas fait**.
+- **Harnais** : `neutralisation/neutralize-rang23.py` (neuf, lit l'échec) ; ⚠ **possibles selon `lancer-campagnes.py`**
+  — `neutralize-solid-s5b.py` (ancres sur `booking-locks.prisma.ts`), `neutralize-s10b.py` et
+  `neutralize-booking-status.py` (`quote-store.prisma.ts`), `neutralize-s11a.py` et `neutralize-s11b.py`
+  (`bookings.service.ts`), `neutralize-solid-s3.py` (`booking-transitions.ts`) : une ancre que la correction déplace
+  se réancre **dans le sous-lot**, par écrit.
+- **Aucune migration** (l'audit n'en nomme aucune ; les verrous sont à l'exécution), **aucune dépendance**, aucune clé
+  i18n neuve attendue (les codes et messages existent) — un écart se déclare.
+- **Documentaire** : `.md` d'autorité, `docs/preuves/<Dnnn>/`.
+
+### 7. Découpage proposé — ⛔ TRANCHÉ PAR KO
+
+**Proposition de la session : TROIS sous-lots de code**, chacun avec sa session adverse avant le suivant, les six
+portes, la suite e2e (concurrence, argent) et `lancer-campagnes.py` sur les campagnes touchées :
+- **23a — F1 + F5**, la réservation : même adaptateur, même spec, même mécanisme (écriture conditionnée par l'état de
+  départ, rival en `UPDATE`) ;
+- **23b — F2**, le devis : conversion et révision, préservation de l'annulation après conversion ;
+- **23c — F6**, la frontière d'erreur post-commit : autre classe de défaut (pas une course), autre technique (panne
+  injectée).
+⚠ **CE QUE CE DÉCOUPAGE COÛTE, ET C'EST UNE RÈGLE, PAS UN AVIS** : chaque sous-lot de code porte le compteur de lots
+non certifiés à +1 ; après 23a et 23b il vaut **deux**, et « **trois, non** » (`AGENTS.md`, D270) — **une certification
+s'intercale avant 23c**, ou le découpage change. **Alternatives** : deux sous-lots (réservation F1 + F5 + F6 / devis
+F2 — aucune certification intercalée, un sous-lot plus gros sur `bookings.service.ts`) ; quatre (F1, F5 séparés —
+plus petits, et une certification de plus). **La session recommande trois** : F6 ne partage ni la technique ni la
+classe de défaut des trois autres, et le mêler à une course mélangerait deux preuves.
+
+### 8. Ce que le cadrage PROPOSE sans le prendre — au relecteur (chat)
+
+1. **F1, forme de la correction** : (i) la lecture du statut devient `SELECT … FROM bookings … FOR UPDATE`, sous le
+   verrou de salle — l'`update` et sa traduction du 23P01 ne bougent pas ; ou (ii) check-and-set (`updateMany`
+   conditionné, relecture sur 0) comme `transition`. **Proposé : (i)** — un seul verrou couvre la décision et
+   l'écriture, et le chemin du 23P01 reste celui qu'on a mesuré (MD-F1-3).
+2. **F2 et F5 — le contrôle d'avant transaction** (`assertStatus` dans `convert` et `revise`, la décision de
+   `cancelAsClient`) : la doctrine D117/D121 le dit **supprimé, pas doublé** ; `convert` garde pourtant une garde
+   « déjà converti » d'avant, au motif qu'elle évite d'écrire pour rien. **À trancher par sous-lot.**
+3. **F5, le code du refus** (MD-F5-1) : **proposé 400 `cancelReasonRequired`** — la réponse de l'ordre séquentiel pour
+   le même état (« le même empêchement, deux réponses » est la classe de défaut que l'invariant interdit).
+4. **F6, la forme** : une aide unique dans `BookingsService` (ou un petit module pur, testable sans base) qui construit
+   la charge **dans** un `try`, publie, et journalise l'échec avec le type d'événement et l'identifiant — **sans
+   toucher `DomainEvents`** (borne A5). Et **si la journalisation est exigée** comme garde (R23-F6-4).
+5. **La liste des harnais « du chemin de l'argent »** visés par la décision 2 (R1) : la session en a dérivé une,
+   entrée R1 du backlog ; **à arrêter par le relecteur**.
+
+### 9. `[BACK][P0]` « traduire `bookings_no_overlap_accepted_confirmed` en conflit propre » — confronté
+
+⛔ **PÉRIMÉE À `HEAD`, ET C'EST LE MÊME CHEMIN QUE F1.** La traduction **existe** : `isExclusionViolation` →
+`SLOT_TAKEN` → 409 `BOOKING_SLOT_TAKEN`, dans le `catch` de `acceptUnderVenueLock`, seul endroit qui écrit
+`ACCEPTED` sur `bookings` (relevé : aucun autre site) ; introduite par `909702a` (03/08/2026), déplacée à l'octet
+dans l'adaptateur par S5b (`682ea4c`) ; mesurée par deux tests d'intégration (« la SECONDE acceptation reçoit 409 via
+le 23P01 », « deux demandes DIFFÉRENTES acceptées simultanément… 201 + 409 ») ; gardée par la cible **S5b-4**. ⇒ Les
+deux entrées du backlog (B3, « RESTE — à l'acceptation… attraper… » ; Flux B, « À l'acceptation d'une réservation (lot
+ultérieur)… ») sont **barrées avec leur motif**. ⚠ **Ce qui reste vrai et relève de ce rang** : la correction de F1
+touche ce `try/catch` — **MD-F1-3**.
+
+## ~~PROCHAIN LOT~~ — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ ~~**OUVERT LE 23/09/2026 : D302**~~ ⛔ **CLOS LE 23/09/2026 : D302**

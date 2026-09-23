@@ -1,0 +1,2 @@
+jetons. Sur E3 : `diff` contre le zip livré **avant** toute modification, et
+`git apply --check` avant toute extraction.

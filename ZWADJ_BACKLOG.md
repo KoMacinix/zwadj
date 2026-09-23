@@ -400,6 +400,15 @@
 > audite et décide, Ko garde le veto. Avant toute ligne de code E3 : un rang arbitré par Ko, puis l'état des lieux
 > et le cadrage du sous-lot, sur lesquels le relecteur décide. Texte complet, mot pour mot : `AGENTS.md`,
 > « À NE PAS faire », point E3 ; et `ZWADJ_CONTINUITE.md`, tête de « ⛔ E3 — MÉTHODE RENFORCÉE ».
+> ⛔ **(D303, 23/09/2026) — décisions du relecteur (chat), déléguées par Ko** : **(1)** la forme de revue ratifiée
+> s'applique à **TOUT lot de code du chemin de l'argent**, y compris ceux qui n'ont pas besoin de Chargily
+> (audit SOLID 09/09 · F1, F2, F6, et F5 que Ko ordonne avec eux — rang 23) ; **(2)** R1 : sur ce chemin, une garde
+> n'est prouvée que par une neutralisation dont on a **lu** l'échec (tests collectés > 0 **et** assertion en échec),
+> et la correction de R1 dans ses harnais **bloque la levée du drapeau des paiements**, avec F8 ; **(3)** la
+> provenance de chaque sous-lot : SHA de départ rapporté, `git diff` depuis lui limité aux fichiers du cadrage, aucun
+> fichier non suivi hors `a-verser/`. ⚠ **« D39 »** désigne la **dernière phrase** de D39 (« Chemin d'argent ⇒ revue
+> humaine »), **pas son objet** (prix par créneau). ⛔ **Et un fait** : Ko n'a pas de compte Chargily en mode test —
+> tableau des sous-lots ci-dessous. Détail et motifs : tête de la méthode renforcée, bloc D303.
 
 > ⚠ **MÉTHODE RENFORCÉE (D126) — cette phase ne se livre PAS comme les autres.**
 > Cinq sous-lots, **un arrêt franc entre chacun**, six portes **et** suite e2e
@@ -409,10 +418,26 @@
 > |---|---|---|
 > | **E3a** ✅ | Cadrage + modes de défaillance + drapeau `PAYMENTS_ENABLED` | Aucun code métier |
 > | **E3b-1** ✅ | Port de paiement, décision PURE, `Payment` en `PENDING` | Aucune bascule de statut, aucune route |
-> | **E3b-2** ⛔ | Adaptateur Chargily + session de règlement | **bloqué : compte bac à sable** |
-> | **E3c** | Webhook : signature, déduplication, mise en file | Aucune logique métier dans le handler HTTP |
-> | **E3d** | `PAID` → `Booking CONFIRMED` + `Quote ACCEPTED` + `Commission` | Remboursements, factures |
-> | **E3e** | Remboursements, factures, réconciliation | — |
+> | **E3b-2** ⛔ | Adaptateur Chargily + session de règlement | **bloqué : compte bac à sable** — ⛔ **ACTUEL** (Ko, 23/09/2026, D303) |
+> | **E3c** ⛔ | Webhook : signature, déduplication, mise en file | Aucune logique métier dans le handler HTTP — ⛔ **bloqué : compte bac à sable** (D303) |
+> | **E3d** ⛔ | `PAID` → `Booking CONFIRMED` + `Quote ACCEPTED` + `Commission` | Remboursements, factures — ⛔ **suit E3c** (D303) |
+> | **E3e** ⛔ | Remboursements, factures, réconciliation | — ⛔ **suit E3d** (D303) |
+>
+> ⛔ **UN FAIT, DÉCLARÉ PAR KO LE 23/09/2026 (D303) : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST.** Conséquences,
+> écrites telles que Ko les a données :
+> - **le blocage d'E3b-2 (« compte bac à sable ») est ACTUEL** ;
+> - **E3c est bloqué aussi** : la méthode exige des charges utiles **capturées du bac à sable réel** (exigence 2
+>   ci-dessous ; « ⛔ E3 — MÉTHODE RENFORCÉE », point 4) — un webhook signé ne se capture pas sans compte ;
+> - **E3d et E3e suivent.**
+> ⇒ **E3 ATTEND SUR CE FAIT, PAS SUR UNE PRIORITÉ.** Un rang arbitré ne suffit pas à ouvrir E3b-2 ni E3c tant qu'il
+> tient.
+> ⚠ **ÉCART RELEVÉ, NON TRANCHÉ (D303, lecture seule)** : `chargily.gateway.ts` et ses trois fixtures existent au dépôt
+> depuis `dc63afb` (16/08/2026, « E3b ») ; la spec les dit « captures réelles du bac à sable » (`livemode` = `false`
+> dans la réponse capturée) ; l'« État des lots » d'`AGENTS.md` (instantané du 20/08) porte « E3b (Chargily) ✅ livré
+> et mesuré », et le journal de ce jour-là précise « exercé contre `fetch` espionné, pas contre le bac à sable ». Ce
+> que ce tableau dit bloqué n'est donc pas l'écriture de l'adaptateur mais **tout ce qui exige le bac à sable réel** :
+> son exercice contre le réseau, le renouvellement des captures, les charges utiles de webhook. **Avec quel compte les
+> captures du 16/08 ont été faites n'est écrit nulle part** — question à Ko, section D303 de `ZWADJ_CONTINUITE.md`.
 >
 > Quatre exigences qui n'existaient pour aucune phase précédente :
 > 1. **Toute garde neuve est NEUTRALISÉE pour prouver que son test mord** — les deux
@@ -476,6 +501,9 @@
 > ✅ **Confirmé par Ko le 16/08/2026** : `pg-boss` entre **avec E3c**, pas avant.
 > ⏸ **E3c EST EN PAUSE depuis le 17/08/2026** (arbitrage Ko) — priorité donnée au
 > parcours Client. `pg-boss` attend donc sa reprise.
+> ⛔ *(D303, 23/09/2026 : la pause n'est plus la seule chose qui retient E3c — **pas de compte Chargily en mode test**
+> (fait déclaré par Ko), donc pas de charge utile de webhook capturée. Un arbitrage de rang lèverait la pause, pas ce
+> fait. Tableau des sous-lots, ci-dessus.)*
 
 - [ ] Create payment abstraction interface (provider-agnostic, even with one provider — keeps BaridiMob addable later without refactor) [BACK][P0]
 - [ ] Chargily: create checkout session (amount, currency, success/failure return URLs) [BACK][P0]
@@ -686,7 +714,7 @@
 - [x] **`GET /venues/:slug/availability?from=&to=`** — **LIVRÉ (D48–D50)**. Fenêtre ≤ 92 jours rendus, dans les 18 mois de D46. C'est LÀ que le fuseau Algérie (UTC+1, sans heure d'été) se décide [BACK][P0]
 - [x] Tests d'intégration de l'endpoint — **22 tests** [BACK][P0]
 - [x] CRUD des **blocages pro** — **LIVRÉ (D51)**, 17 tests d'intégration. Verrou `SELECT … FOR UPDATE` sur `venues` : une contrainte `EXCLUDE` ne traverse pas deux tables, le conflit bloc↔réservation est applicatif [BACK][P0]
-- [ ] ⛔ **RESTE** — à l'acceptation d'une réservation : **attraper** `bookings_no_overlap_accepted_confirmed`, ne jamais la redoubler en code [BACK][P0]
+- [x] ~~⛔ **RESTE** — à l'acceptation d'une réservation : **attraper** `bookings_no_overlap_accepted_confirmed`, ne jamais la redoubler en code [BACK][P0]~~ ⛔ **PÉRIMÉE, BARRÉE LE 23/09/2026 (D303), CONFRONTÉE À `HEAD`** : la traduction existe — `isExclusionViolation` → 409 `BOOKING_SLOT_TAKEN` dans `acceptUnderVenueLock`, seul site qui écrit `ACCEPTED` ; depuis `909702a` (03/08), déplacée par S5b (`682ea4c`) ; mesurée en intégration, gardée par S5b-4. ⚠ La correction de F1 touche ce même `try/catch` : `ZWADJ_CONTINUITE.md`, cadrage du rang 23, § 9 et MD-F1-3.
 
 **B4 / B5 / B6 — LIVRÉS**
 - [x] **B4a** — les **9 méthodes** `@zwadj/api-client` (créneaux, règles, blocages) + 10 tests. ⚠ **B1, B2 et B3 avaient livré leurs endpoints sans AUCUNE contrepartie client** : vérifier la présence des méthodes fait désormais partie de la revue d'un lot API. [FRONT][P0]
@@ -1792,7 +1820,7 @@ préfixe déjà pris par « Flux C, lot 1 » (livré). Renommés `Q0`→`Q5`.
 - [x] **B4a→d** — UI Pro : 9 méthodes `api-client`, créneaux+prix (D52), variantes (D53), blocages (D54) [PRO][P0]
 - [x] **B5** — calendrier client de disponibilité et de prix (D56) [CLIENT][P0]
 - [x] **B6** — calendrier de la salle côté pro, **lecture seule**, sur l'endpoint PUBLIC [PRO][P0]
-- [ ] **À l'acceptation d'une réservation** (lot ultérieur) : attraper `bookings_no_overlap_accepted_confirmed` pour la traduire en conflit propre, **jamais la redoubler** applicativement [BACK][P0]
+- [x] ~~**À l'acceptation d'une réservation** (lot ultérieur) : attraper `bookings_no_overlap_accepted_confirmed` pour la traduire en conflit propre, **jamais la redoubler** applicativement [BACK][P0]~~ ⛔ **PÉRIMÉE, BARRÉE LE 23/09/2026 (D303)** — même entrée que celle de B3 (PHASE 10), même motif : la traduction existe depuis `909702a` et est mesurée ; c'est le chemin de F1 (cadrage du rang 23, § 9).
 
 ### Flux C — ✅ TERMINÉ (C1 → C5b)
 - [x] **C1** — plages hebdomadaires de visite, CRUD pro, aucune migration [BACK][P0]
@@ -2170,9 +2198,9 @@ D-numéro. Un lot de refactoring rapporte un défaut, il ne le corrige pas au pa
 ⚠ Inscrits ici parce qu'ils ont été **mesurés puis délibérément non corrigés** : un lot de
 refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte son D-numéro.
 
-⚠ **Bloquant avant E3** — `ACCEPTED` face à `quotes_sent_at_coherent` (D238) : un brouillon se convertit sans remise, E3 posera `ACCEPTED` sur une ligne à `sent_at` nul, la contrainte lèvera **sur le chemin de l'argent**. Non corrigé faute de test rouge (E3c en pause, `PAYMENTS_ENABLED=false`).
+⚠ ~~**Bloquant avant E3**~~ ⛔ **BLOQUE E3d** *(décision du relecteur (chat), déléguée par Ko le 23/09/2026, D303 — motif : c'est E3d qui pose `ACCEPTED`)* — `ACCEPTED` face à `quotes_sent_at_coherent` (D238) : un brouillon se convertit sans remise, E3 posera `ACCEPTED` sur une ligne à `sent_at` nul, la contrainte lèvera **sur le chemin de l'argent**. Non corrigé faute de test rouge (E3c en pause, `PAYMENTS_ENABLED=false`).
 
-⚠ **Avant E3c** — rendre atomique `findOrCreatePendingIntent` (D244) : la séquence chercher-puis-créer n'est pas transactionnelle ; le port est désormais l'endroit où la fermer sans toucher au service.
+⚠ ~~**Avant E3c** — rendre atomique `findOrCreatePendingIntent` (D244) : la séquence chercher-puis-créer n'est pas transactionnelle ; le port est désormais l'endroit où la fermer sans toucher au service.~~ ✅ **CLOSE PAR D255** *(décision du relecteur (chat), déléguée par Ko le 23/09/2026, D303)* — l'index unique partiel `UNIQUE (booking_id) WHERE status = 'PENDING'` (migration `20260824120000_payment_one_pending_per_booking`) et la relecture du perdant ; cibles **E1 à E5** de `neutralisation/neutralize-e3d1-s8.py`, confirmées par D302. ⛔ **AVEC LA RÉSERVE DE R1** (décision du même jour) : ce harnais juge par le **seul code de sortie** et ses journaux ne gardent pas la sortie en échec (relevé D303) — tant qu'il n'est pas corrigé, E1 à E5 ne valent preuve que par une neutralisation dont on a **lu** l'échec. Entrée R1, reports de D302.
 
 **Reports décidés, non oubliés :**
 - **F2** — décomposition d'`AuthService`, `BookingsService`, `WalkinJourney`. À réévaluer maintenant que S5b a dégagé la concurrence. ⛔ *(D302 : même objet que l'A2 (reste) et l'A4 de l'audit SOLID du 09/09 — à ne pas confondre avec « audit SOLID 09/09 · F2 », un défaut de conversion de devis. Voir S12 à S14.)*
@@ -2393,6 +2421,38 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 23/09/2026 — rang 23 : décisions du relecteur, et cadrage de F1, F2, F5, F6 (D303)
+
+⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D303 et « ⛔ CADRAGE DU RANG 23 » de
+`ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par Ko** », et son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier, pour qu'une reprise le retrouve** : le fait « pas de compte
+Chargily en mode test » (PHASE 7, tableau des sous-lots et pause d'E3c) ; les décisions du relecteur (tête de PHASE 7 ;
+R1, F8, R2 dans les reports de D302) ; D238 → « bloque E3d » et `findOrCreatePendingIntent` close (reports du 22/08) ;
+les deux entrées « traduire l'`EXCLUDE` », barrées (B3 et Flux B) ; l'entrée « point 10 », sortie des audits et close.
+
+### Ouverts, mesurés, NON corrigés
+
+- [ ] **[OUTIL]** ⛔ **L'AUDIT DE SECRETS EST AVEUGLE À LA FORME D'UNE CLÉ CHARGILY — mesuré sur le seul cas réel du
+  dépôt.** Les onze motifs de `neutralisation/audit-secrets.py` (D293, D298), appliqués aux **deux lignes** qui
+  portaient les clés au format Chargily (`test_pk_` / `test_sk_` + 40 caractères) dans `apps/api/.env.example` aux
+  commits `dc63afb` et `d52c721`, rendent **0 alerte** ; le fichier entier en rend 7, **sur d'autres lignes**
+  (`docs/preuves/D303/releves/motifs-contre-cas-chargily-sortie.txt`). Le motif `chargily` exige « key » ou « secret »
+  dans les 40 caractères qui SUIVENT le mot : sur ces lignes, « Chargily » est suivi de « : » puis de la valeur, et le
+  mot « secrète » le précède ; une valeur nue ne porte rien de tout cela. ⇒ Une clé Chargily
+  seule dans une pièce versée passerait l'audit. ⚠ D303 a ajouté un contrôle de forme **à part**, dans son enveloppant
+  (`docs/preuves/D303/outils/audit-copie-hors-depot.py`) — l'instrument, lui, n'est pas retouché (D295).
+  ⇒ **BLOQUE : à ordonner par Ko** — ⚠ mais c'est l'audit qui passera sur les **charges utiles capturées d'E3** le jour
+  où elles existeront. ⇒ **COÛT** : code de `neutralisation/` (compte) ; l'instrument et sa calibration (un bras
+  positif de la forme réelle, un bras négatif), et sa sortie corrigée avec lui (D295) ; e2e : non ; cadrage chemin de
+  l'argent : non ; migration : non ; dépendance : non.
+- [ ] **[API]** ⚠ **UNE ATTENTE DE VERROU PLUS LONGUE QUE LE DÉLAI D'UNE TRANSACTION INTERACTIVE SORT EN 500 — INFÉRENCE,
+  NON MESURÉE.** `acceptUnderVenueLock` attend le verrou de salle dans un `$transaction` interactif ; au-delà du délai de
+  la transaction, l'erreur remonterait sans traduction. Relevé par le cadrage du rang 23 (« Transverse ») comme
+  **existant, non introduit, non codé** ; la correction de F1 et F2 ajoute des attentes de même nature.
+  ⇒ **BLOQUE : à ordonner par Ko.** ⇒ **COÛT** : d'abord une **mesure** (un rival qui tient le verrou au-delà du délai,
+  sur PostgreSQL réel) ; code API si elle confirme (compte) ; e2e exigée (concurrence) ; cadrage chemin de l'argent :
+  oui (`accept`) ; migration : non ; dépendance : non.
+
 ## Reports du 23/09/2026 — rang 22 : arbitrages de Ko, et les deux audits externes du 09/09 (D302)
 
 ⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D302 de `ZWADJ_CONTINUITE.md`.
@@ -2420,6 +2480,8 @@ ou **non confrontable**. **Nommage** : préfixé par la source — le dépôt a 
 
 ⚠ **La session ne les a pas prises** : elle les écrit telles que Ko les a transmises, avec leur motif (règle de
 Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, pas complété.
+⛔ **(D303, 23/09/2026) F1, F2, F6 ci-dessous — et F5, plus bas — sont CADRÉS AU RANG 23** (arbitrage de Ko) :
+`ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 23 ». Aucune ligne de code ; les entrées restent ouvertes jusqu'aux sous-lots.
 
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F1 — `accept` peut écrire `ACCEPTED` par-dessus un `DECLINED` ou un
   `CANCELLED` déjà commité** (P1 de l'audit). **OUVERT à `HEAD`** : `PrismaBookingLocks.acceptUnderVenueLock` lit
@@ -2458,7 +2520,13 @@ Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, p
   `body = (await response.json()) as ChargilyCheckoutResponse` ; le `catch` ne couvre que l'échec d'analyse — un
   `null` valide passe, puis `typeof body.id` lève une `TypeError`. Reproduit par l'audit (réponse HTTP simulée).
   ⇒ **BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS** (`PAYMENTS_ENABLED`). *Décision du relecteur (chat), déléguée par
-  Ko le 23/09/2026* — **motif : non transmis avec la décision.**
+  Ko le 23/09/2026* — ~~**motif : non transmis avec la décision.**~~ ⛔ **MOTIF TRANSMIS LE 23/09/2026 (D303)** : drapeau
+  éteint, la fabrique sélectionne `UnavailablePaymentGateway`, et aucune réponse Chargily n'atteint l'adaptateur.
+  ✅ **Prémisse vérifiée par la session avant d'écrire, comme Ko l'exigeait** (`docs/preuves/D303/releves/`,
+  `premisse-f8-sortie.txt`) : `createPaymentGateway` rend `new UnavailablePaymentGateway()` quand `PAYMENTS_ENABLED`
+  est faux, avant toute lecture de clé ; `new ChargilyGateway` n'existe qu'en ce site-là hors specs ; `readSession`
+  est privée et n'est appelée que par `createCheckout` de l'adaptateur Chargily ; l'adaptateur de refus lève 503
+  sans appel réseau ; `PAYMENTS_ENABLED` vaut `false` en l'absence de valeur (`env.ts`).
   ⇒ **COÛT** : code API (compte) ; `chargily.gateway.ts` et sa spec ; e2e exigée (argent) ; cadrage chemin de
   l'argent : oui ; migration : non ; dépendance : non ; ne mord qu'avec le drapeau levé.
 - [ ] **[CLIENT]** ⛔ **audit SOLID 09/09 · A3 — acompte recalculé dans le navigateur, aperçu de prestation non
@@ -2478,7 +2546,9 @@ Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, p
   même boucle, choix par choix** — un refus de palier sur le premier choix masque l'indisponibilité du second.
   Reproduit par l'audit (sonde).
   ⇒ **BLOQUE : rien. Se traite avec le prochain lot qui touche `booking-charge`.** *Décision du relecteur (chat),
-  déléguée par Ko le 23/09/2026* — **motif : non transmis avec la décision.**
+  déléguée par Ko le 23/09/2026* — ~~**motif : non transmis avec la décision.**~~ ⛔ **MOTIF TRANSMIS LE 23/09/2026
+  (D303)** : toute requête invalide reste refusée (audit) ; seul change le code d'erreur rendu quand une requête cumule
+  deux fautes, et aucun montant n'en dépend.
   ⇒ **COÛT** : code API (compte) ; `booking-charge.ts` et sa spec, mesurée sur un cas **doublement** fautif
   (leçon S11-a) ; e2e : celle du lot porteur ; cadrage chemin de l'argent : oui ; migration : non ; dépendance : non.
 
@@ -2493,9 +2563,37 @@ Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, p
   « mordue »**. Calibration de l'audit sur une copie isolée, sorties simulées ; l'audit ajoute que les sept cibles
   locales qu'il a rejouées ont mordu par de vraies assertions. ⚠ Même forme possible dans les autres harnais qui ne
   lisent que le code de sortie — **non relevé ici**.
-  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code de `neutralisation/` (compte) ; `neutralize-s11b.py`, et chaque
+  ⇒ ~~**À ordonner par Ko.**~~ ⇒ **COÛT** : code de `neutralisation/` (compte) ; `neutralize-s11b.py`, et chaque
   harnais de même forme s'il est étendu ; calibration à deux bras (D286) ; e2e : non ; cadrage chemin de
   l'argent : non (outillage, même s'il mesure ce chemin) ; migration : non ; dépendance : non.
+  ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 23/09/2026 (D303) — R1 SUR LE CHEMIN DE L'ARGENT :**
+  1. **tant que le harnais concerné n'est pas corrigé, une garde n'est prouvée que par une neutralisation dont on a
+     LU l'échec : tests collectés > 0 ET assertion en échec.** *Motif* : « un code de sortie non nul, seul, ne prouve
+     rien » ;
+  2. ⇒ **LA CORRECTION DE R1 DANS LES HARNAIS DU CHEMIN DE L'ARGENT BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS**
+     (`PAYMENTS_ENABLED`) — aux côtés de F8. Le reste de R1 (harnais hors du chemin de l'argent) reste **à ordonner
+     par Ko**.
+  ⚠ **RELEVÉ EN LECTURE SEULE, DEMANDÉ PAR KO — sans conclusion sur les certifications passées** (pièces :
+  `docs/preuves/D303/releves/verdicts-harnais*`, `fichiers-mutes-par-harnais*`, `journaux-sortie-echec*`) :
+  - **27 harnais** `neutralize-*.py` au dépôt. **5** jugent sur la sortie — code ≠ 0 **et** signature attendue sur
+    une ligne d'échec (`404`, `argon2`, `budgets`, `horizon`, `maxprice`) ; **2** comptent les tests collectés puis
+    jugent au code (`act-plafonds`, `horloge`) ; **20 jugent par le SEUL code de sortie** : `available-on-api`,
+    `available-on`, `b7`, `booking-status`, `e3d1-s8`, `journey`, `r4`, `s9`, `s10a`, `s10b`, `s11a`, `s11b`,
+    `solid-s1` à `solid-s7`.
+  - **Parmi les 20, ceux qui mutent un fichier que D187, D302 ou le cadrage du rang 23 placent sur le chemin de
+    l'argent** : `e3d1-s8` (`payments/`, migration d'unicité de l'intention), `s11b` (`booking-charge.ts`),
+    `solid-s4` (`pricing-engine.ts`), `solid-s5a` (`payments/`), `solid-s5b` (`booking-locks.prisma.ts`),
+    `solid-s3` (`booking-transitions.ts`, `quote-transitions.ts`), `s10b` et `booking-status`
+    (`quote-store.prisma.ts`). ⚠ **Liste dérivée par la session, pas énumérée par la décision** — à arrêter par le
+    relecteur.
+  - ⛔ **`neutralize-e3d1-s8.py` DIT LE CONTRAIRE DE CE QU'IL FAIT** : son en-tête promet « une cible ne compte que si
+    le code de sortie est non nul ET que le titre attendu apparaît sur une ligne d'échec » ; sa boucle fait
+    `codes = {m: lancer(m)[0] …}` — la sortie est jetée. C'est le harnais des cibles E1–E5 de D255.
+  - **Les journaux de certification ne conservent pas, par cible, la sortie qui montre l'assertion en échec** :
+    **85** journaux de campagne versés (`docs/preuves/*/campagnes/`, `*/passe/`), **1 219** lignes, **666** lignes
+    « ✓ » ; **0** porte un marqueur d'échec Vitest (croix ou `FAIL` sur une ligne de spec, `AssertionError`,
+    `expected … to`, `Tests N failed`) — calibration deux bras. Chaque cible y tient en une ligne
+    « ✓ <cible> [mesure] ».
 - [ ] **[API]** **audit SOLID 09/09 · F3 — un jeton de réinitialisation se consomme deux fois ; même forme sur la
   vérification d'e-mail et le changement d'e-mail** (P1 de l'audit ; l'audit sécu le reprend en P1). **OUVERT à
   `HEAD`, les trois** : `AuthService.resetPassword`, `AuthService.verifyEmail` et `AccountService.confirmEmailChange`
@@ -2518,7 +2616,9 @@ Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, p
   famille que F1). **OUVERT à `HEAD`** : `BookingsService.cancelAsClient` décide par `decideBookingTransition` sur
   un statut lu **avant**, puis écrit par `transitionStatus(…, allowedFrom(CANCEL_AS_CLIENT), …)`, qui admet **les
   deux** statuts de départ — un `PENDING` devenu `ACCEPTED` entre-temps s'annule sans motif. Reproduit par l'audit.
-  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `bookings.service.ts`, et `booking-transitions.ts` si la
+  ⇒ ~~**À ordonner par Ko.**~~ ⛔ **ORDONNÉ PAR KO AU RANG 23 LE 23/09/2026 (D303)**, avec F1, F2 et F6 ; la forme de
+  revue ratifiée s'y applique (décision du relecteur). Cadrage : `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 23 ».
+  ⇒ **COÛT** : code API (compte) ; `bookings.service.ts`, et `booking-transitions.ts` si la
   condition y passe ; mesure d'intégration ; e2e exigée (concurrence) ; cadrage chemin de l'argent : non posé par
   le relecteur ; migration : non ; dépendance : non.
 - [ ] **[API]** **audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français** (P2 de
@@ -2648,11 +2748,18 @@ Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, p
   alerting (28). **Pas d'entrée** : l'audit les déclare lui-même « non vérifiables » depuis l'archive.
 - **Non repris en entrée, et l'audit le dit lui-même** : RLS (contrôle 19 — « ne doit pas être ajoutée
   mécaniquement ») ; le `console.error` de rendu de `GuardedSection` (contrôle 25, « globalement présent »).
-- [ ] **[DOC]** **Le point 10 de la méthode renforcée d'E3 prescrit un contrôle de provenance de l'ère des
+### Trouvaille de la session D302 — PAS un constat des audits (sortie de la sous-section ci-dessus par D303)
+
+⛔ *(D303, 23/09/2026, consigne de Ko : cette entrée était rangée sous « Ajoutés — constats des audits » ; c'est une
+trouvaille de la session D302, pas un constat d'audit. Elle quitte cette sous-section, à la même place du fichier.)*
+
+- [x] ~~**[DOC]** **Le point 10 de la méthode renforcée d'E3 prescrit un contrôle de provenance de l'ère des
   archives** — « `diff` contre le zip livré », `git apply --check`. Depuis la bascule Claude Code (D266), le contrôle
   de provenance est l'énumération des fichiers attendus (`CLAUDE.md`). Croisé par ce lot en annotant ce point,
   **non corrigé**. ⇒ **À ordonner par Ko** — mais le cadrage d'E3 le lira. ⇒ **COÛT** : documentaire (ne compte
-  pas) ; 1 fichier, `ZWADJ_CONTINUITE.md`.
+  pas) ; 1 fichier, `ZWADJ_CONTINUITE.md`.~~ ✅ **CLOSE LE 23/09/2026 (D303)** — décision du relecteur (chat),
+  déléguée par Ko : le point 10 est réécrit (SHA de départ rapporté ; `git diff` depuis lui limité aux fichiers du
+  cadrage ; aucun fichier non suivi hors `a-verser/`). `ZWADJ_CONTINUITE.md`, « ⛔ E3 — MÉTHODE RENFORCÉE », point 10.
 
 ## Reports du 22/09/2026 — lot documentaire hors rang (D301)
 
@@ -2702,7 +2809,9 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   (b) des budgets, **candidat du rang 17**. Les lignes des rangs 17 à 21 se sont insérées **au-dessus de lui**,
   une par lot (D295 → D300) : il suit aujourd'hui « RANG 21 : EN ATTENTE D'ARBITRAGE DE KO » ⛔ *(D302, 23/09/2026 :
   il suit désormais la ligne « RANG 23 : EN ATTENTE » et la décision due à Ko sur les étiquettes P0-P3 — le défaut
-  s'aggrave d'un paragraphe, il ne change pas de nature ; non corrigé, ce lot n'y touche pas)* et **se lit comme
+  s'aggrave d'un paragraphe, il ne change pas de nature ; non corrigé, ce lot n'y touche pas)* ⛔ *(D303, 23/09/2026 :
+  il suit désormais « RANG 24 : EN ATTENTE D'ARBITRAGE DE KO », puis la même décision due à Ko — même défaut,
+  toujours non corrigé)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

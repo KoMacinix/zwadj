@@ -1,0 +1,32 @@
+## Reports du 23/09/2026 — rang 23 : décisions du relecteur, et cadrage de F1, F2, F5, F6 (D303)
+
+⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D303 et « ⛔ CADRAGE DU RANG 23 » de
+`ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par Ko** », et son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier, pour qu'une reprise le retrouve** : le fait « pas de compte
+Chargily en mode test » (PHASE 7, tableau des sous-lots et pause d'E3c) ; les décisions du relecteur (tête de PHASE 7 ;
+R1, F8, R2 dans les reports de D302) ; D238 → « bloque E3d » et `findOrCreatePendingIntent` close (reports du 22/08) ;
+les deux entrées « traduire l'`EXCLUDE` », barrées (B3 et Flux B) ; l'entrée « point 10 », sortie des audits et close.
+
+### Ouverts, mesurés, NON corrigés
+
+- [ ] **[OUTIL]** ⛔ **L'AUDIT DE SECRETS EST AVEUGLE À LA FORME D'UNE CLÉ CHARGILY — mesuré sur le seul cas réel du
+  dépôt.** Les onze motifs de `neutralisation/audit-secrets.py` (D293, D298), appliqués aux **deux lignes** qui
+  portaient les clés au format Chargily (`test_pk_` / `test_sk_` + 40 caractères) dans `apps/api/.env.example` aux
+  commits `dc63afb` et `d52c721`, rendent **0 alerte** ; le fichier entier en rend 7, **sur d'autres lignes**
+  (`docs/preuves/D303/releves/motifs-contre-cas-chargily-sortie.txt`). Le motif `chargily` exige « key » ou « secret »
+  à 40 caractères du mot : « Clé secrète » ne le contient pas, et une valeur nue ne le porte pas. ⇒ Une clé Chargily
+  seule dans une pièce versée passerait l'audit. ⚠ D303 a ajouté un contrôle de forme **à part**, dans son enveloppant
+  (`docs/preuves/D303/outils/audit-copie-hors-depot.py`) — l'instrument, lui, n'est pas retouché (D295).
+  ⇒ **BLOQUE : à ordonner par Ko** — ⚠ mais c'est l'audit qui passera sur les **charges utiles capturées d'E3** le jour
+  où elles existeront. ⇒ **COÛT** : code de `neutralisation/` (compte) ; l'instrument et sa calibration (un bras
+  positif de la forme réelle, un bras négatif), et sa sortie corrigée avec lui (D295) ; e2e : non ; cadrage chemin de
+  l'argent : non ; migration : non ; dépendance : non.
+- [ ] **[API]** ⚠ **UNE ATTENTE DE VERROU PLUS LONGUE QUE LE DÉLAI D'UNE TRANSACTION INTERACTIVE SORT EN 500 — INFÉRENCE,
+  NON MESURÉE.** `acceptUnderVenueLock` attend le verrou de salle dans un `$transaction` interactif ; au-delà du délai de
+  la transaction, l'erreur remonterait sans traduction. Relevé par le cadrage du rang 23 (« Transverse ») comme
+  **existant, non introduit, non codé** ; la correction de F1 et F2 ajoute des attentes de même nature.
+  ⇒ **BLOQUE : à ordonner par Ko.** ⇒ **COÛT** : d'abord une **mesure** (un rival qui tient le verrou au-delà du délai,
+  sur PostgreSQL réel) ; code API si elle confirme (compte) ; e2e exigée (concurrence) ; cadrage chemin de l'argent :
+  oui (`accept`) ; migration : non ; dépendance : non.
+
+## Reports du 23/09/2026 — rang 22 : arbitrages de Ko, et les deux audits externes du 09/09 (D302)

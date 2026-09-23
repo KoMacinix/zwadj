@@ -1,0 +1,164 @@
+## Session du 23/09/2026 — D303 · rang 23 OUVERT, lot DOCUMENTAIRE : un fait (pas de compte Chargily en mode test), les décisions du relecteur, et le cadrage de F1, F2, F5, F6
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D302** ⇒ **D303**. « D303 » : **1** occurrence sur
+les 1 270 fichiers suivis à `HEAD` (`git grep`) — le témoin de calibration de `docs/preuves/D302/ecriture/relire.py`
+(bras négatif), **pas une décision**. ⇒ **RANG 23, arbitré par Ko le 23/09/2026** — première écriture du lot, dans
+l'ordre des rangs (patron de D295). Reprise à froid sans état donné, forme allégée ; lecture adverse depuis la clôture
+de D302 ; puis ce lot, sur ordre de Ko. **Documentaire** : `AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` et
+`docs/preuves/D303/` au diff — **compteur de lots de code non certifiés : ZÉRO, inchangé** ; aucune porte lancée,
+aucune ne lit ces fichiers (D283, D292). ⚠ Le zip de l'auditeur entre par `git add -f` : `.gitignore` porte `*.zip`,
+et `.gitignore` **n'est pas touché**.
+
+### D303 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 22 **CLOS** (D302) ; dernière ligne « ⇒ RANG N » : « **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** » | ordre des rangs, point d'entrée du rang 22 |
+| numéro | dernière ligne du registre : **D302** ⇒ **D303** | registre |
+| compteur | **ZÉRO** — vérifié par `git` : `7bdb65c` (D302) ne touche, hors `docs/preuves/D302/`, que les trois `.md` d'autorité | section D302, puis `git` |
+| synchronisation | `HEAD` = `origin/main` = `7bdb65c` après `git fetch` ; arbre propre hormis `a-verser/` | `git` |
+
+### D303 — la lecture adverse depuis la clôture de D302, en entier
+
+**Ce qui tient, relu contre le dépôt** : `booking-locks.prisma.ts` inchangé depuis `682ea4c` ; **0** mention de
+`booking` dans `account-deletion.service.ts` ; `@SkipThrottle` dans **5** contrôleurs ; `bookings_quote_id_key` dans
+la migration `init` ; le zip, **483 343** octets, **72** entrées, SHA-256 `2a871c21…` ; les deux `.md` de `a-verser/`
+**égaux à l'octet** aux copies versées ; `7bdb65c` documentaire, compteur à zéro.
+**Ce qui ne tient pas, ou manquait** :
+1. ⛔ **Le tri différentiel final de D302 avait UNE alerte nouvelle, et la section ne la nomme pas.** Rejoué
+   (`docs/preuves/D303/releves/tri-d302-rejoue.txt`, calibration 2 bras sur 2) : `[cle-api]` dans
+   `D302/ecriture/C1-session.remplacement.txt` — le texte de session lui-même, qui citait l'exemple PostCSS. C'est
+   la citation que Ko fait remplacer ; la section D302 écrivait le second audit « confronté par le même tri » sans en
+   donner le résultat.
+2. ⛔ **Le point 10 était rangé sous les audits** — dans la partie B de la section D302 (« Ajoutés, que la liste de
+   Ko omettait ») **et** dans le backlog (« Ajoutés — constats des audits »). Corrigé aux deux endroits (consigne).
+3. ⛔ **Deux listes des bloquants du drapeau ne nommaient que F8** (ordre des rangs, clôture du rang 22). Devenues
+   **permissions périmées** au sens de D287 par la décision R1 de ce jour — traitées (D1, D2).
+4. ⚠ **La table des sous-lots de la PHASE 7 dit « E3b-2 ⛔ bloqué : compte bac à sable »** (ligne commitée le 28/08,
+   `54dddc3`) **pendant que l'adaptateur existe depuis `dc63afb` (16/08)** et que l'« État des lots » d'`AGENTS.md`
+   porte « E3b (Chargily) ✅ livré et mesuré ». D302 a écrit un en-tête à cette phase sans relever l'écart. **Annoté,
+   non tranché** (partie A, point 1).
+5. ⚠ **Les deux entrées `[BACK][P0]` « traduire l'`EXCLUDE` » étaient ouvertes** alors que la traduction existe
+   depuis `909702a` (03/08) et qu'elle est mesurée. Non demandé à D302 ; confronté ici (cadrage, § 9), barrées.
+6. ⚠ **L'entrée R1 de D302 écrivait « même forme possible dans les autres harnais — non relevé ici »** : relevé
+   ici, **20 harnais sur 27** — et `neutralize-e3d1-s8.py` **annonce en en-tête** la lecture de la sortie qu'il ne
+   fait pas.
+
+### D303 — partie A : ce qui a atterri, et où
+
+| point de Ko | fichier, endroit | étapes |
+|---|---|---|
+| 1. le fait : pas de compte Chargily en mode test ; E3b-2, E3c, E3d, E3e | backlog, PHASE 7 (tableau, pause d'E3c) ; tête de la méthode renforcée ; `AGENTS.md`, point E3 ; tête de PHASE 7 ; clôture du rang 22 ; « Reste exigé » de D302 | A1, A1b, A2, A7, A8, A12, D2, D3 |
+| 2a. forme de revue sur tout lot de code du chemin de l'argent ; « D39 » précisé | `AGENTS.md` (point E3, « Marquer clairement », « Ne pas coder ») ; tête de la méthode ; tête de PHASE 7 ; F5 et F1/F2/F6 au backlog | A7, A8, A13, A14, C1, D5, D6 |
+| 2b. R1 sur le chemin de l'argent ; bloque la levée du drapeau | entrée R1 (décision + relevé) ; tête de la méthode ; `AGENTS.md` ; ordre des rangs et clôture du rang 22 | A5, A8, A13, D1, D2 |
+| 2c. provenance, point 10 | point 10 réécrit ; sa note de D302 ; `AGENTS.md` (point E3, règle générale annotée) ; entrée « point 10 » close | A9, A11, A13, A15, C5 |
+| 2d. D117 | en-tête de ce fichier, ligne D117 — annotée comme le reset | A10 |
+| 2e. motifs | F8 (**prémisse vérifiée** : `releves/premisse-f8-sortie.txt`, 10 contrôles sur 171 fichiers) ; R2 ; **A3 non retouché** — son entrée portait déjà un motif | A3, A4 |
+| 2f. entrées périmées | `findOrCreatePendingIntent` close par D255 avec la réserve de R1 ; D238 → « bloque E3d » | A6 |
+| petites corrections de D302 | citation PostCSS **remplacée** par sa position et sa nature ; point 10 sorti des audits (section et backlog) ; « décisions dues à Ko » : trois ne le sont plus | C2, C3, C4, C5 |
+| `a-verser/` | vidé des trois fichiers versés, **après** égalité SHA-256 avec les copies versées et l'attendu épinglé | `outils/retirer-verses-sortie.txt` |
+
+⚠ **La décision 1 n'énumère pas ce que couvre « chemin de l'argent »** au-delà de F1, F2, F5, F6 — `AGENTS.md` citait
+« tarification hors E3 » parmi les chemins à règle d'avant : **écrit « à préciser par le relecteur »**, pas tranché.
+
+### D303 — relevé en lecture seule demandé par Ko : les « clés Chargily de test » de `[SEC][P0]` — AUCUNE VALEUR IMPRIMÉE
+
+- **Selon les sections** : D200 (archive `CONTINUITE-sessions-D200-D265.md`) — « les clés Chargily de test —
+  publique et **secrète** — vivaient en clair dans `apps/api/.env.example` » ; `[SEC][P0]` — « dans `.env.example`
+  SUIVI (D200) **et dans un fil de discussion** ». **Aucune section ne dit à quel compte elles appartenaient.**
+- **Selon `git`** (`releves/forme-cles-chargily-sortie.txt`, extracteur calibré 2 bras, n'imprime que des formes) : deux
+  jetons, en commentaire de `apps/api/.env.example`, aux commits `dc63afb` et `d52c721` (16/08/2026, « E3b ») ;
+  retirés par `5c47490` (18/08) ; **toujours dans l'historique de `main` et d'`origin/main`** ; **0** fichier suivi à
+  `HEAD`.
+- **Leur forme** : préfixes `test_pk_` et `test_sk_`, corps de **40** caractères alphanumériques à casse mêlée — la
+  forme de clés **générées** du mode test, pas d'un substitut. ⚠ Que 40 soit la longueur des clés Chargily n'est pas
+  confronté à une documentation Chargily : **inférence de forme**.
+- ⛔ **CE QUI CONTREDIT LE FAIT DÉCLARÉ PAR KO — relevé, pas tranché** : les fixtures d'E3b se disent « captures
+  réelles du bac à sable » (`livemode` = `false`, hôte de règlement `pay.chargily.dz`) et D195 dit « mesuré » sur la
+  page de règlement ; l'adaptateur n'appelle Chargily qu'avec la clé secrète en en-tête `Authorization` (`Bearer`),
+  donc une capture réussie en suppose une valide — **inférence**, pas une mesure. **Question à Ko** : de quel
+  compte venaient ces clés et ces captures, et qui peut les révoquer — la rotation que `[SEC][P0]` demande suppose ce
+  compte. `[SEC][P0]` **n'est pas touchée** (consigne).
+- ⚠ **L'audit de secrets ne voit pas ces lignes** : ses onze motifs rendent **0 alerte** sur les deux lignes porteuses
+  (`releves/motifs-contre-cas-chargily-sortie.txt`). Entrée `[OUTIL]`, reports de D303.
+
+### D303 — relevé en lecture seule demandé par Ko : R1 — sans conclusion sur les certifications passées
+
+**27** harnais ; **5** jugent sur la sortie (`404`, `argon2`, `budgets`, `horizon`, `maxprice`) ; **2** comptent les
+tests collectés puis jugent au code (`act-plafonds`, `horloge`) ; **20 jugent par le SEUL code de sortie**, dont tous
+ceux qui mutent un fichier du chemin de l'argent (`e3d1-s8`, `s11b`, `solid-s3`, `-s4`, `-s5a`, `-s5b`, `s10b`,
+`booking-status`). **85** journaux de campagne versés, **1 219** lignes, **666** lignes « ✓ » : **0** porte un marqueur
+d'échec Vitest — **chaque cible y tient en une ligne**. Pièces : `releves/verdicts-harnais*`,
+`fichiers-mutes-par-harnais*`, `journaux-sortie-echec*`. Détail : entrée R1 du backlog.
+
+### D303 — partie B : le zip versé, et le cadrage
+
+- **Le zip, avant versement** : listé (`unzip -l`, rien extrait dans le dépôt) — README, `v5/` et `v6/` : journaux,
+  JSON Vitest, inventaires, deux sondes `.spec.ts` et leurs configs ; **rien d'inattendu**, **483 343** octets (< 10 Mo),
+  SHA-256 `2a871c216296a5d648270baddc00e9e05c8813b2e20f0542747c9f00993b6d16`. **Versé tel quel** :
+  `docs/preuves/D303/sources/zwadj-audit-evidence.zip`, empreinte égale avant et après la copie, `cmp` identique.
+- **L'audit de secrets sur une copie extraite HORS du dépôt** : ⛔ **l'instrument ne peut pas pointer ailleurs** — pas
+  d'option de racine, `os.walk("docs/preuves")` relatif au dossier courant, `pnpm-workspace.yaml` exigé, calibration
+  qui relit des chemins relatifs. ⇒ **Un enveloppant l'IMPORTE sans le modifier** (`outils/audit-copie-hors-depot.py`,
+  empreinte de l'instrument imprimée) : calibration **5 bras sur 5**, cas réel rejoué ; **72** fichiers extraits =
+  **72** entrées ; **70** alertes, **toutes triées au contexte** (`outils/tri-fenetres.py`, fenêtres masquées, 70
+  correspondances = 70) — titres de tests, noms de variables, extraits du code de tests du dépôt dans l'inventaire AST
+  de l'auditeur, catégories de son propre scanner ; les huit valeurs « absentes du dépôt » le sont par l'échappement
+  JSON. **Aucune valeur.** Contrôle de forme Chargily, **à part** de l'instrument : **0** jeton.
+- **Le cadrage** : section « ⛔ CADRAGE DU RANG 23 », juste sous le point d'entrée du rang 23 — état des lieux par
+  symbole, **modes de défaillance d'abord**, rouge sur PostgreSQL réel par un rival `pg` non commité (patron de
+  `payment-intent-race.int-spec.ts`), ce que les sondes donnent et ne prouvent pas, **14** cibles neuves nommées
+  d'avance et **2** existantes à réancrer (S5b-2, S5b-4),
+  fichiers attendus, **découpage proposé : trois sous-lots — à trancher par Ko**, et cinq choix proposés au relecteur.
+
+### D303 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D303/passe-d277/balayage.py`, copie à l'octet de celui de D302 (SHA-256 `fedc303e…`) ;
+« avant » joué sur `HEAD` exporté hors du dépôt. **Sens 1** : **57 → 73** ; **sens 2** : **97 → 118**. Aucun motif à
+zéro. Tri ligne à ligne : `passe-d277/tri.txt` — ⛔ **ce qui a mordu** : deux listes de bloquants du drapeau, **devenues
+permissions périmées par une décision de ce jour** (D1, D2). Hausses : **8** occurrences à contexte entièrement neuf,
+toutes dans des textes de D303 (`verif-hausses-sortie.txt`) ; les autres tombent sur des lignes annotées, **lues**.
+
+### D303 — audit de secrets avant commit (instrument de D298, tri de D299)
+
+1. **Première passe** (`audit-secrets-d303-premier.txt`, scellée) : **88** alertes nouvelles au tri, dont **81** dans ma
+   propre sortie de tri, **non scellée** — faute n° 3 ci-dessous. Gardée comme pièce.
+2. **Passe corrigée** (`audit-secrets-d303.txt`) : calibration **5 bras sur 5**, cas réel rejoué ; **838** fichiers =
+   **806** audités + **32** exclus par l'identité de leurs octets ; **106** alertes ; tri contre
+   `D302/audit-secrets-final.txt` : **7 nouvelles, triées** — trois fois mon texte sur le motif `chargily`, trois fois
+   le **nom** `CHARGILY_SECRET_KEY` dans du code ou une calibration, et l'ancre de l'étape C3, qui porte **la citation
+   remplacée** : c'est la preuve de réversibilité de l'écriture que Ko a ordonnée. **Aucune valeur du projet.**
+3. **« 0 valeur réelle »** (outil de D299) **non joué, et c'est délibéré** : le seul journal à valeurs réelles de la
+   session serait une copie des clés de l'historique — **les recopier sur le disque pour les chercher** n'est pas un
+   contrôle acceptable. Remplacé par le contrôle de **forme** Chargily sur toutes les pièces de `D303/` hors zip.
+4. **Audit final**, vraie dernière écriture : `audit-secrets-final.txt`, trié contre `audit-secrets-d303.txt`.
+
+### ⛔ D303 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **J'AI IMPRIMÉ LES DEUX VALEURS DE CLÉS DANS LA SORTIE D'UN OUTIL.** Mon masque ne couvrait que le séparateur
+   `=` ; les deux lignes utilisaient `:`. La sortie est restée dans le terminal de la session — **aucun fichier, aucun
+   message, aucune pièce** ne les porte, et elles sont celles que l'historique porte déjà. ⇒ **C'est D275 et D290 :
+   un extracteur non calibré avant de servir.** Remplacé par un extracteur à deux bras qui n'imprime que des formes.
+2. ⛔ **D289 enfreint dans sa FORME** : l'étape A1b a fait passer deux lignes par des arguments de `printf` en ligne
+   de commande. Guillemets simples, texte relu juste — **la règle est de forme**, elle est enfreinte. Toutes les
+   écritures suivantes sont passées par l'outil d'écriture.
+3. ⛔ **UN ÉCHO NON SCELLÉ, dans le lot qui verse un audit** : ma sortie de tri récitait des fenêtres masquées ; le tri
+   différentiel l'a vu (**81** alertes). Sortie régénérée **scellée** par la fonction de l'instrument, première passe
+   gardée. **Ce qui a attrapé est la ventilation imprimée à côté du total (D295)**, pas une relecture.
+4. ⚠ **Deux phrases trop fortes, corrigées avant commit** : « déplacée à l'octet » (S5b a changé la levée en retour
+   discriminé) et l'explication du motif `chargily` (il lit ce qui SUIT le mot). Et une phrase de tri écrite
+   « vérifiée » avant de l'être — mesurée ensuite, réduite à ce qui l'est.
+
+### ⛔ D303 — CE QUE CE LOT NE FAIT PAS
+
+- **Aucun code, aucun harnais modifié, aucune dépendance** ; `.gitignore` non touché ; `CLAUDE.md` non touché.
+- **Il ne décide rien sur le chemin de l'argent** : les décisions écrites sont celles du relecteur transmises par Ko ;
+  le cadrage **propose** (§ 7, § 8). Il ne tranche pas le découpage.
+- **Il ne touche pas `[SEC][P0]`** ; il ne tranche pas l'écart E3b-2 contre « E3b ✅ ».
+- **Il ne corrige pas R1** : il le relève. Il ne corrige pas l'aveuglement de l'audit aux clés Chargily : il le rapporte.
+- **Aucune porte, aucune campagne** : documentaire.
+- ⚠ **Attendu de Ko** : le découpage du rang 23 et la suite du rang ; la réponse sur l'origine des clés et des captures
+  du 16/08. **Attendu du relecteur** : les cinq choix du § 8, la portée de « chemin de l'argent », la liste des harnais
+  visés par R1.
+
+## Session du 23/09/2026 — D302 · rang 22, lot DOCUMENTAIRE : les arbitrages de Ko (ordre des rangs, E3, forme des entrées) et les deux audits externes du 09/09, confrontés à `HEAD`

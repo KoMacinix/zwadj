@@ -1,0 +1,164 @@
+== INSTRUMENT IMPORTÉ, NON MODIFIÉ : neutralisation/audit-secrets.py sha256 73c4caa19c8d9f408d0a9677a63a4ee63ff3eb9190914d1d91c8013338ecbfc6 · motifs 11
+== ARCHIVE : a-verser/zwadj-audit-evidence.zip · 483343 octets · sha256 2a871c216296a5d648270baddc00e9e05c8813b2e20f0542747c9f00993b6d16 (attendu 2a871c216296a5d648270baddc00e9e05c8813b2e20f0542747c9f00993b6d16)
+== EXTRACTION : C:\Users\benla\AppData\Local\Temp\claude\c--Users-benla-Desktop-MyProjct-Zwadj\c7e9d7d1-a6cf-49ef-bb32-b757ae752fee\scratchpad\audit-zip-copie · hors du dépôt : True (attendu True)
+   entrées-fichiers de l'archive : 72 · fichiers extraits relus sur le disque : 72 (attendu 72)
+== CALIBRATION DE L'INSTRUMENT (sa fonction `calibrer`, tous bras)
+   ✓ motifs          11 sur 11 trouvent 1 dans leur positif et 0 dans le propre
+   ✓ positif         pièce neuve, jeton de la forme réelle : auditée 1 (attendu 1) · alertes 1 (attendu 1), motif jeton 1 (attendu 1)
+   ✓ écho            18 sorties connues (17 épinglées + 1 scellée) : auditées 0 (attendu 0) · exclues 18 (attendu 18) · alertes qu'elles auraient rendues 661 (attendu > 0)
+   ✓ discrimination  jeton ajouté (a) à une sortie épinglée, (b) après / (c) avant un sceau, (d) dans une pièce nommée comme une sortie d'audit : vu 4 sur 4 (attendu 4), un de plus chaque fois
+   ✓ cas réel        journal e2e du rang 15, empreinte épinglée : jetons de 43 car. comptés à part 24 (attendu 24) · placé dans une pièce neuve : alertes 24, motif jeton 24 (attendus 24)
+   calibration : 5 bras passent sur 5 imprimés, 0 manqué(s) · cas réel : rejoué
+== CALIBRATION DU CONTRÔLE CHARGILY (hors instrument) : bras positif 1 (attendu 1) · bras négatif 0 (attendu 0)
+== AUDIT : 72 fichier(s) parcouru(s) · audités 72 · exclus 0 (attendu 0 : aucune sortie épinglée ni scellée dans une archive tierce)
+  v5/apps/api/audit-probes/architecture.spec.ts                      8850 o  ALERTE jeton=3
+  v5/audit-evidence/source-inventory.json                         2839818 o  ALERTE mot-de-passe=20 · ALERTE valeur-nommee-secrete=2 · ALERTE jeton=17 · ALERTE chargily=7
+  v6/audit-evidence/api-tests.json                                 249134 o  ALERTE mot-de-passe=2 · ALERTE valeur-nommee-secrete=2 · ALERTE jeton=2 · ALERTE chargily=4
+  v6/audit-evidence/secret-scan-redacted.json                         195 o  ALERTE chargily=1
+  v6/audit-evidence/wiring-probes.json                             252794 o  ALERTE mot-de-passe=2 · ALERTE valeur-nommee-secrete=2 · ALERTE jeton=2 · ALERTE chargily=4
+  parcourus : 72 fichiers, 3847333 octets · audités : 72 fichiers, 3847333 octets · alertes : 70 (attendu 0) · chemin local (informatif) : 0
+  ventilation par motif : mot-de-passe=24 · valeur-nommee-secrete=6 · jeton=24 · chargily=16
+  motifs à ZÉRO — des hypothèses à vérifier, jamais des absences constatées (D295) : url-avec-identifiants, jwt, porteur, cle-privee, google-client, aws, cle-api
+== CONTRÔLE CHARGILY (hors instrument) : fichiers porteurs 0 · jetons au format 0 (attendu 0)
+== CONTEXTE DES ALERTES, VALEURS MASQUÉES (fonction `contextes_de` de l'instrument) — le tri est humain (D275) ==
+  [jeton] v5/apps/api/audit-probes/architecture.spec.ts:146 : const token = <1 car. masques> id: ID, userId: USER, usedAt: null as Date | null,
+      -> valeur trop courte pour une recherche
+  [jeton] v5/apps/api/audit-probes/architecture.spec.ts:153 : passwordResetToken: <1 car. masques>
+      -> valeur trop courte pour une recherche
+  [jeton] v5/apps/api/audit-probes/architecture.spec.ts:163 : refreshToken: <1 car. masques> updateMany: vi.fn(async () => ({ count: 0 })) },
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:3051 : "name": "expect(service.changePassword(USER_ID, { newPassword: <1 car. masques>"Motdepasse1\" }, undefined)).rejects.toSatisfy",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:3091 : "name": "expect(\r\n      service.changePassword(USER_ID, { currentPassword: <1 car. masques>"faux\", newPassword: \"Motdepasse1\" }, undefined)\r\n    ).rejects.toSatisfy",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:3091 : "name": "expect(\r\n      service.changePassword(USER_ID, { currentPassword: \"faux\", newPassword: <1 car. masques>"Motdepasse1\" }, undefined)\r\n    ).rejects.toSatisfy",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5221 : "name": "expect(loginSchema.safeParse({ email: \"a@b.dz\", password: <1 car. masques>"x\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5233 : "name": "expect(loginSchema.safeParse({ email: \"a@b.dz\", password: <1 car. masques>"\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5249 : "name": "expect(resetPasswordSchema.safeParse({ token: \"t\".repeat(43), password: <1 car. masques>"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5265 : "name": "expect(resetPasswordSchema.safeParse({ token: \"court\", password: <1 car. masques>"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5277 : "name": "expect(resetPasswordSchema.safeParse({ token: \"t\".repeat(43), password: <1 car. masques>"faible\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5297 : "name": "expect(\r\n      registerSchema.safeParse({\r\n        role: \"CLIENT\",\r\n        email: \"a@b.dz\",\r\n        password: <1 car. masques>"Motdepasse1\",\r\n        firstName: \"Aya\",\r\n 
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5309 : "name": "expect(registerSchema.safeParse({ role: \"CLIENT\", email: \"a@b.dz\", password: <1 car. masques>"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5321 : "name": "expect(\r\n      registerSchema.safeParse({\r\n        role: \"PRO\",\r\n        email: \"p@b.dz\",\r\n        password: <1 car. masques>"Motdepasse1\",\r\n        businessName: \"Salle X\",\
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5333 : "name": "expect(registerSchema.safeParse({ role: \"PRO\", email: \"p@b.dz\", password: <1 car. masques>"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5345 : "name": "expect(registerSchema.safeParse({ role: \"ADMIN\", email: \"r@b.dz\", password: <1 car. masques>"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:5357 : "name": "expect(registerSchema.safeParse({ email: \"a@b.dz\", password: <1 car. masques>"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:130623 : "name": "client.login({ email: \"a@b.dz\", password: <1 car. masques>"x\" }).catch",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:130675 : "name": "client.register({ role: \"CLIENT\", email: \"x\", password: <1 car. masques>"y\", locale: \"fr\" } as never).catch",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:130703 : "name": "client.login({ email: \"a@b.dz\", password: <1 car. masques>"x\" }).catch",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:130731 : "name": "expect(offline.login({ email: \"a@b.dz\", password: <1 car. masques>"x\" })).rejects.toBeInstanceOf",
+      -> valeur trop courte pour une recherche
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:133943 : "name": "z\r\n  .object({\r\n    currentPassword: <16 car. masques>, \"account.validation.currentPasswordRequired\").optional(),\r\n    newPassword: passwordSchema\r\n  })\r\n  .strict",
+      -> valeur deja presente dans 2 fichier(s) suivi(s) hors preuves
+  [mot-de-passe] v5/audit-evidence/source-inventory.json:133943 : "name": "z\r\n  .object({\r\n    currentPassword: z.string().min(1, \"account.validation.currentPasswordRequired\").optional(),\r\n    newPassword: <18 car. masques>  })\r\n  .strict",
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [valeur-nommee-secrete] v5/audit-evidence/source-inventory.json:13081 : "name": "expect(() => validateEnv({ ...baseEnv, JWT_ACCESS_SECRET: <1 car. masques>"court\" })).toThrow",
+      -> valeur trop courte pour une recherche
+  [valeur-nommee-secrete] v5/audit-evidence/source-inventory.json:13538 : "name": "z.object({\r\n  NODE_ENV: z.enum([\"development\", \"test\", \"production\"]).default(\"development\"),\r\n  PORT: z.coerce.number().int().positive().default(3001),\r\n  DATABASE_URL: z\r\n  
+      -> valeur deja presente dans 1 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:5249 : "name": "expect(resetPasswordSchema.safeParse({ token: <1 car. masques>"t\".repeat(43), password: \"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [jeton] v5/audit-evidence/source-inventory.json:5265 : "name": "expect(resetPasswordSchema.safeParse({ token: <1 car. masques>"court\", password: \"Motdepasse1\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [jeton] v5/audit-evidence/source-inventory.json:5277 : "name": "expect(resetPasswordSchema.safeParse({ token: <1 car. masques>"t\".repeat(43), password: \"faible\" }).success).toBe",
+      -> valeur trop courte pour une recherche
+  [jeton] v5/audit-evidence/source-inventory.json:42069 : "name": "api()\r\n      .post(\"/api/v1/me/change-password\")\r\n      .set(auth((logged.body as { accessToken: <6 car. masques> }).accessToken))\r\n      .send",
+      -> valeur deja presente dans 318 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:42109 : "name": "expect((await api().post(\"/api/v1/auth/google\").send({ idToken: <1 car. masques>"tok\" })).status).toBe",
+      -> valeur trop courte pour une recherche
+  [jeton] v5/audit-evidence/source-inventory.json:42181 : "name": "api()\r\n      .post(\"/api/v1/me/change-password\")\r\n      .set(auth((a.body as { accessToken: <6 car. masques> }).accessToken))\r\n      .set(\"Cookie\", [`zwadj_rt=${cookieA}`])\r\n     
+      -> valeur deja presente dans 318 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:42185 : "name": "api()\r\n      .post(\"/api/v1/me/change-password\")\r\n      .set(auth((a.body as { accessToken: <6 car. masques> }).accessToken))\r\n      .set",
+      -> valeur deja presente dans 318 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:49762 : "name": "expect((await google({ idToken: <1 car. masques>"tok-aya\" })).status).toBe",
+      -> valeur trop courte pour une recherche
+  [jeton] v5/audit-evidence/source-inventory.json:50078 : "name": "expect((await google({ idToken: <1 car. masques>"tok-aya\" })).status).toBe",
+      -> valeur trop courte pour une recherche
+  [jeton] v5/audit-evidence/source-inventory.json:50266 : "name": "Test.createTestingModule({\r\n    imports: [AppModule],\r\n    controllers: options?.controllers ?? []\r\n  })\r\n    .overrideProvider(EMAIL_SENDER)\r\n    .useValue({\r\n      send: async (
+      -> valeur deja presente dans 96 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:57873 : "name": "expect((tab1.body as { accessToken: <6 car. masques> }).accessToken.split(\".\")).toHaveLength",
+      -> valeur deja presente dans 318 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:57881 : "name": "(tab1.body as { accessToken: <6 car. masques> }).accessToken.split",
+      -> valeur deja presente dans 318 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:57885 : "name": "expect((tab2.body as { accessToken: <6 car. masques> }).accessToken.split(\".\")).toHaveLength",
+      -> valeur deja presente dans 318 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:57893 : "name": "(tab2.body as { accessToken: <6 car. masques> }).accessToken.split",
+      -> valeur deja presente dans 318 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:131525 : "name": "raw<LoginResponse>(\"/auth/refresh\", { method: \"POST\" })\r\n      .then((session) => {\r\n        accessToken = <24 car. masques>        return session;\r\n      })\r\n      .catch(() => {
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:131525 : "name": "raw<LoginResponse>(\"/auth/refresh\", { method: \"POST\" })\r\n      .then((session) => {\r\n        accessToken = session.accessToken;\r\n        return session;\r\n      })\r\n      .catch(
+      -> valeur deja presente dans 1 fichier(s) suivi(s) hors preuves
+  [jeton] v5/audit-evidence/source-inventory.json:131529 : "name": "raw<LoginResponse>(\"/auth/refresh\", { method: \"POST\" })\r\n      .then((session) => {\r\n        accessToken = <24 car. masques>        return session;\r\n      })\r\n      .catch",
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [chargily] v5/audit-evidence/source-inventory.json:13417 : "name": "expect(() =>\r\n        validateEnv({ ...baseEnv, PAYMENTS_ENABLED: \"true\", <48 car. masques>_KEY })\r\n      ).toThrow",
+      -> valeur deja presente dans 1 fichier(s) suivi(s) hors preuves
+  [chargily] v5/audit-evidence/source-inventory.json:13445 : "name": "expect(env.<19 car. masques>).toBeUndefined",
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v5/audit-evidence/source-inventory.json:13538 : "name": "z.object({\r\n  NODE_ENV: z.enum([\"development\", \"test\", \"production\"]).default(\"development\"),\r\n  PORT: z.coerce.number().int().positive().default(3001),\r\n  DATABASE_URL: z\r\n  
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [chargily] v5/audit-evidence/source-inventory.json:16159 : "name": "it.each([\"<42 car. masques>\"] as const)",
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [chargily] v5/audit-evidence/source-inventory.json:16179 : "name": "it.each([\"<42 car. masques>\"] as const)",
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [chargily] v5/audit-evidence/source-inventory.json:16256 : "<19 car. masques>",
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v5/audit-evidence/source-inventory.json:16263 : "name": "([\"<42 car. masques>\"] as const).filter",
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [mot-de-passe] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 116 fichier(s) suivi(s) hors preuves
+  [mot-de-passe] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 116 fichier(s) suivi(s) hors preuves
+  [valeur-nommee-secrete] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 61 fichier(s) suivi(s) hors preuves
+  [valeur-nommee-secrete] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 61 fichier(s) suivi(s) hors preuves
+  [jeton] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 40 fichier(s) suivi(s) hors preuves
+  [jeton] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 40 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/api-tests.json:1 : {"numTotalTestSuites":232,"numPassedTestSuites":232,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":653,"numPassedTests":653,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/secret-scan-redacted.json:8 : "stripe_or_<12 car. masques>",
+      -> valeur deja presente dans 0 fichier(s) suivi(s) hors preuves
+  [mot-de-passe] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 116 fichier(s) suivi(s) hors preuves
+  [mot-de-passe] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 116 fichier(s) suivi(s) hors preuves
+  [valeur-nommee-secrete] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 61 fichier(s) suivi(s) hors preuves
+  [valeur-nommee-secrete] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 61 fichier(s) suivi(s) hors preuves
+  [jeton] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 40 fichier(s) suivi(s) hors preuves
+  [jeton] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 40 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+  [chargily] v6/audit-evidence/wiring-probes.json:1 : {"numTotalTestSuites":234,"numPassedTestSuites":234,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":663,"numPassedTests":663,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"s
+      -> valeur deja presente dans 7 fichier(s) suivi(s) hors preuves
+== SCEAU sha256:eb4299c756f5e6320d8b7c6a28c3fed57584542441f5b37ac2df6c2f11e8a4e8 — neutralisation/audit-secrets.py : cette sortie s'exclut de l'audit tant que ce sceau couvre ses octets ==

@@ -1,0 +1,7 @@
+jetons. ~~Sur E3 : `diff` contre le zip livré **avant** toute modification, et
+`git apply --check` avant toute extraction.~~
+⛔ **REMPLACÉ LE 23/09/2026 — décision du relecteur (chat), déléguée par Ko (D303).** *Motif* : ce contrôle date de
+l'époque des zips. **Il devient, pour chaque sous-lot soumis à cette méthode :**
+- le **SHA de départ** est relevé et **rapporté** à l'ouverture du sous-lot ;
+- en fin de sous-lot, `git diff` **depuis ce SHA** ne contient **que les fichiers énumérés au cadrage** ;
+- **aucun fichier non suivi hors `a-verser/`.**

@@ -1,0 +1,129 @@
+harnais parcourus : 27
+
+neutralisation\neutralize-404.py · chemins littéraux : 6
+    apps/client/src/app/[locale]/[...rest]/page.tsx
+    apps/client/src/app/[locale]/loading.tsx
+    apps/client/src/app/[locale]/not-found.tsx
+    apps/client/src/app/[locale]/salles/loading.tsx
+    apps/client/src/app/_not-found.tsx
+    apps/client/src/app/not-found.tsx
+
+neutralisation\neutralize-act-plafonds.py · chemins littéraux : 2
+    apps/pro/src/dashboard/walkin-journey.test.tsx
+    apps/pro/src/test-setup.ts
+
+neutralisation\neutralize-argon2.py · chemins littéraux : 2
+    apps/api/src/auth/password.service.dummy.spec.ts
+    apps/api/src/auth/password.service.ts
+
+neutralisation\neutralize-available-on-api.py · chemins littéraux : 4
+    apps/api/src/common/filters/all-exceptions.filter.ts
+    apps/api/src/venues/availability-engine.ts
+    apps/api/src/venues/availability-time.ts
+    apps/api/src/venues/venues-public.service.ts
+
+neutralisation\neutralize-available-on.py · chemins littéraux : 5
+    apps/client/src/components/search/search-view.tsx
+    apps/client/src/components/venue-card.tsx
+    apps/client/src/lib/api.ts
+    apps/client/src/lib/search-query.ts
+    apps/client/src/lib/seo.ts
+
+neutralisation\neutralize-b7.py · chemins littéraux : 1
+    apps/client/src/app/theme.css
+
+neutralisation\neutralize-booking-status.py · chemins littéraux : 2
+    apps/api/src/venues/quote-store.prisma.ts
+    apps/api/test/int/quotes.int-spec.ts
+
+neutralisation\neutralize-budgets.py · chemins littéraux : 4
+    apps/api/vitest.config.ts
+    apps/client/vitest.config.ts
+    apps/pro/vite.config.ts
+    packages/api-client/vitest.config.ts
+
+neutralisation\neutralize-e3d1-s8.py · chemins littéraux : 3
+    apps/api/prisma/migrations/20260824120000_payment_one_pending_per_booking/migration.sql
+    apps/api/src/payments/payment-store.prisma.ts
+    apps/client/src/test-setup.ts
+
+neutralisation\neutralize-horizon.py · chemins littéraux : 3
+    apps/api/src/venues/venues-public.service.ts
+    apps/client/src/components/search/search-view.tsx
+    apps/client/src/lib/api.ts
+
+neutralisation\neutralize-horloge.py · chemins littéraux : 1
+    apps/pro/src/dashboard/walkin-journey.test.tsx
+
+neutralisation\neutralize-journey.py · chemins littéraux : 3
+    apps/client/src/components/filter-wizard.tsx
+    apps/pro/src/dashboard/walkin-journey.tsx
+    packages/ui/src/journey.tsx
+
+neutralisation\neutralize-maxprice.py · chemins littéraux : 3
+    apps/client/src/components/filter-wizard.tsx
+    apps/client/src/components/home-view.tsx
+    apps/client/src/lib/search-query.ts
+
+neutralisation\neutralize-r4.py · chemins littéraux : 2
+    apps/api/prisma/migrations/20260821000000_quote_status_cancelled/migration.sql
+    apps/api/prisma/migrations/20260821000100_quote_cancel_without_delivery/migration.sql
+
+neutralisation\neutralize-s10a.py · chemins littéraux : 4
+    apps/api/src/venues/venue-store.prisma.ts
+    apps/api/src/venues/venue-store.types.ts
+    apps/api/src/venues/venues.service.spec.ts
+    apps/api/src/venues/venues.service.ts
+
+neutralisation\neutralize-s10b.py · chemins littéraux : 4
+    apps/api/src/venues/quote-store.prisma.ts
+    apps/api/src/venues/quote-store.types.ts
+    apps/api/src/venues/quotes.service.spec.ts
+    apps/api/src/venues/quotes.service.ts
+
+neutralisation\neutralize-s11a.py · chemins littéraux : 4
+    apps/api/src/venues/availability-time.ts
+    apps/api/src/venues/booking-admission.ts
+    apps/api/src/venues/booking-notification-input.ts
+    apps/api/src/venues/bookings.service.ts
+
+neutralisation\neutralize-s11b.py · chemins littéraux : 4
+    apps/api/prisma/migrations/20260909120000_booking_quote_total_coherent/migration.sql
+    apps/api/src/venues/booking-charge.ts
+    apps/api/src/venues/booking-deadline.ts
+    apps/api/src/venues/bookings.service.ts
+
+neutralisation\neutralize-s9.py · chemins littéraux : 4
+    apps/pro/src/venues/slots-section.tsx
+    apps/pro/src/venues/venue-client-context.tsx
+    packages/api-client/src/venue-client.ts
+    packages/api-client/src/venue-families.test.ts
+
+neutralisation\neutralize-solid-s1.py · chemins littéraux : 1
+    packages/types/src/booking.ts
+
+neutralisation\neutralize-solid-s2.py · chemins littéraux : 1
+    apps/api/src/common/notifications/notification-dispatch.ts
+
+neutralisation\neutralize-solid-s3.py · chemins littéraux : 2
+    apps/api/src/venues/booking-transitions.ts
+    apps/api/src/venues/quote-transitions.ts
+
+neutralisation\neutralize-solid-s4.py · chemins littéraux : 2
+    apps/api/src/venues/pricing-engine.ts
+    apps/api/src/venues/service-pricing.ts
+
+neutralisation\neutralize-solid-s5a.py · chemins littéraux : 2
+    apps/api/src/payments/payment-store.prisma.ts
+    apps/api/src/payments/payments.service.ts
+
+neutralisation\neutralize-solid-s5b.py · chemins littéraux : 1
+    apps/api/src/venues/booking-locks.prisma.ts
+
+neutralisation\neutralize-solid-s6.py · chemins littéraux : 2
+    apps/api/src/venues/domain-events.ts
+    apps/api/src/venues/notification-subscriptions.ts
+
+neutralisation\neutralize-solid-s7.py · chemins littéraux : 2
+    apps/client/src/test-setup.ts
+    apps/pro/src/test-setup.ts

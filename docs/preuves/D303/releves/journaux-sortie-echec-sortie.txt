@@ -1,0 +1,7 @@
+calibration positif {'croix_vitest': 2, 'AssertionError': 1, 'expected_to': 1, 'Tests_failed': 1} (attendu tous >= 1) · negatif {'croix_vitest': 0, 'AssertionError': 0, 'expected_to': 0, 'Tests_failed': 0} (attendu tous 0)
+journaux parcourus : 85
+lignes parcourues : 1219 · lignes « ✓ » (cibles/pré-vols) : 666
+   journaux portant « croix_vitest » : 0 sur 85
+   journaux portant « AssertionError » : 0 sur 85
+   journaux portant « expected_to » : 0 sur 85
+   journaux portant « Tests_failed » : 0 sur 85

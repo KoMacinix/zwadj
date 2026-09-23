@@ -1,0 +1,20 @@
+# Passe D277 de D303 (rang 23), SENS 1 — ce que le lot INVALIDE ou change d'état :
+#  la portée « E3 seulement » de la forme de revue (étendue à tout lot de code du chemin de l'argent) ;
+#  le contrôle de provenance de l'ère des zips (point 10) ; le ✅ de D117 lu comme complet ;
+#  l'entrée « Avant E3c — findOrCreatePendingIntent » (close par D255) ; « Bloquant avant E3 » de D238 (⇒ E3d) ;
+#  la traduction de l'EXCLUDE décrite comme à faire ; les motifs « non transmis » de F8 et R2 ; le zip « non versé » ;
+#  R1 et F5 « à ordonner par Ko » ; les décisions dues à Ko listées par D302 ; l'état « bac à sable » d'E3.
+revue-portee-e3        (?i)(?:visent|vise|portée).{0,40}?\bE3\b
+hors-e3                (?i)(?:chemins? critiques?|lots?) hors E3
+etendre-a-ko           (?i)l'étendre appartient à Ko
+zip-livre              (?i)zip livré|git apply --check
+sous-verrou-d117       (?i)relu SOUS VERROU
+pending-intent         findOrCreatePendingIntent
+bloquant-avant-e3      (?i)bloquant avant E3|avant E3c
+exclude-a-traduire     (?i)attraper.{0,5}bookings_no_overlap|bookings_no_overlap_accepted_confirmed.{0,40}?(?:pour la traduire|conflit propre)
+motif-non-transmis     (?i)non transmis
+zip-non-verse          (?i)non versé|ne verse pas le zip
+r1-entree              (?i)audit SOLID 09/09 · R1
+f5-entree              (?i)audit SOLID 09/09 · F5
+dues-a-ko              (?i)décisions? dues? à Ko
+bac-a-sable-e3         (?i)(?:compte|capturée?s?) (?:du |depuis le )?bac à sable

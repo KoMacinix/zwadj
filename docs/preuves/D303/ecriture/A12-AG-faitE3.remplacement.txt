@@ -1,0 +1,6 @@
+  relecteur décide**. ⚠ La pause d'E3c (arbitrage de Ko, 17/08/2026) n'est pas levée par D302 : c'est
+  l'arbitrage d'un rang qui la lève.
+  ⛔ **(D303, 23/09/2026) ET UN FAIT, DÉCLARÉ PAR KO : PAS DE COMPTE CHARGILY EN MODE TEST.** E3b-2 est bloqué
+  (« compte bac à sable »), E3c aussi (charges utiles capturées du bac à sable réel), E3d et E3e suivent. ⇒ **E3
+  attend sur ce fait, pas sur une priorité** : un rang arbitré lève la pause d'E3c, il n'ouvre ni E3b-2 ni E3c tant
+  que ce fait tient.

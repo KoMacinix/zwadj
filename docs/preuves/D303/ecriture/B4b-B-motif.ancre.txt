@@ -1,0 +1,2 @@
+  (`docs/preuves/D303/releves/motifs-contre-cas-chargily-sortie.txt`). Le motif `chargily` exige « key » ou « secret »
+  à 40 caractères du mot : « Clé secrète » ne le contient pas, et une valeur nue ne le porte pas. ⇒ Une clé Chargily

@@ -1,0 +1,5 @@
+- [ ] **[DOC]** **Le point 10 de la méthode renforcée d'E3 prescrit un contrôle de provenance de l'ère des
+  archives** — « `diff` contre le zip livré », `git apply --check`. Depuis la bascule Claude Code (D266), le contrôle
+  de provenance est l'énumération des fichiers attendus (`CLAUDE.md`). Croisé par ce lot en annotant ce point,
+  **non corrigé**. ⇒ **À ordonner par Ko** — mais le cadrage d'E3 le lira. ⇒ **COÛT** : documentaire (ne compte
+  pas) ; 1 fichier, `ZWADJ_CONTINUITE.md`.

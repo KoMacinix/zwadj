@@ -253,6 +253,10 @@ connexion (famille D115).
   ⚠ Cela vaut aussi pour les **chemins d'import** (`AuthenticatedUser` vit dans `auth.types`, pas dans `auth.decorators` qui l'importe sans le réexporter), pour les **types de champ** (`WilayaDTO.code` est un **nombre**, pas une chaîne, même s'il s'écrit « 16 »), et pour les **chaînes de format** — `formatDZD` rend **zéro décimale** et des espaces **insécables** que Testing Library normalise d'un seul côté : un attendu littéral échoue sur un écran parfaitement correct. **Dériver l'attendu du formateur partagé.**
   ⚠ **Recopier une référence, c'est parfois recopier la règle qu'on prétend réfuter** : deux fixtures d'acompte valaient **pile 30 %** du total — dont celles de la maquette — et ne prouvaient donc rien contre un `Math.round(total * 0.3)` côté navigateur.
 - **Vérifier la provenance de l'arbre avant d'y toucher.** L'arbre de travail a divergé deux fois pendant la campagne — du code non attribué est apparu entre deux tours, dont un lot entier sur la rotation des jetons. `diff` contre le zip livré, `git apply --check` avant toute extraction.
+  ⛔ *(D303, 23/09/2026 : la phrase sur le zip décrit l'ère des archives. **Sur le chemin de l'argent**, la forme en
+  vigueur est celle de la décision du relecteur (chat) — SHA de départ rapporté, `git diff` depuis lui limité aux
+  fichiers du cadrage, aucun fichier non suivi hors `a-verser/` : « À NE PAS faire », point E3. Ailleurs, aucune
+  décision : le contrôle de fin de lot de `CLAUDE.md` s'applique. Annotée, pas barrée.)*
 - **Suite e2e (`e2e/`, Playwright) : à la demande, PAS une septième porte.** À lancer avant tout lot touchant **auth, concurrence ou argent**, et avant chaque livraison finale. Elle tourne contre les serveurs de **développement** : `StrictMode` ne double le montage que là, et c'est ce double montage qui révèle la classe de défauts pour laquelle elle existe.
 - ⛔ **UN EXTRACTEUR SE VÉRIFIE CONTRE LA SORTIE BRUTE AVANT DE SERVIR À COMPTER (D275).**
   **Trois faux positifs dans une seule session**, tous sur l'outillage jetable d'une
@@ -578,7 +582,8 @@ connexion (famille D115).
 - Petites PR, messages Conventional Commits. Expliquer les choix d'architecture dans la PR.
 - Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine. ⛔ *(D302,
   23/09/2026 : pour le paiement — E3 —, la revue a la forme ratifiée par Ko, « À NE PAS faire », point E3 ; auth et
-  concurrence : inchangé.)*
+  concurrence : inchangé.)* ⛔ *(D303, 23/09/2026 : cette forme vaut pour **tout lot de code du chemin de l'argent**,
+  pas seulement E3 — décision du relecteur (chat), déléguée par Ko, « À NE PAS faire », point E3.)*
 - Le design fourni (App.tsx) est une **référence visuelle par écran**, jamais une base de code à refactorer telle quelle : il est desktop-only, en instant-book, et hors périmètre MVP sur plusieurs écrans (forum, magazine, carte, 360°, planning). Ne construire que les écrans du MVP en cours, en respectant ce présent fichier, pas l'intégralité du prototype.
   ⚠ **La fidélité au design est STRUCTURELLE, jamais chromatique** (D26, confirmée par la tranche UIP). Le design déclare lui-même `body[data-mode="pro"]{--accent:#222222}` : le rose est son accent **client**. Mais ses écrans pro portent **9 valeurs roses en dur** qui traversent l'override de token — transposées telles quelles, elles réintroduisent le rose. **Auditer l'absence de couleur en dur dans toute zone refondue.**
   ⚠ **Le design ne fait pas foi sur une phrase qui DÉCRIT le comportement du système** : sa boîte de suppression annonce « supprimées définitivement » alors que `DELETE /venues/:id` est un **soft delete**.
@@ -776,7 +781,8 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).
 - Ne pas coder les chemins d'argent sans tests + demande de revue. ⛔ *(D302, 23/09/2026 : toujours vrai. Pour E3, la
   « revue » a désormais la forme ratifiée par Ko — une session adverse ouverte à froid, le relecteur (chat) qui
-  décide, le veto de Ko —, et E3 n'est plus codé par Ko : point E3 juste en dessous.)*
+  décide, le veto de Ko —, et E3 n'est plus codé par Ko : point E3 juste en dessous.)* ⛔ *(D303 : cette forme de
+  revue vaut pour **tout lot de code du chemin de l'argent**, pas seulement E3 — décision du relecteur (chat).)*
 - ⛔ **NE PAS LIVRER E3 (paiement Chargily) COMME UN LOT ORDINAIRE.** La méthode est **durcie (D126)** et décrite dans `ZWADJ_CONTINUITE.md` → « ⛔ E3 — MÉTHODE RENFORCÉE » : **cinq sous-lots** avec arrêt franc entre chacun, cadrage listant les **modes de défaillance** avant tout code, **toute garde neutralisée pour prouver que son test mord**, **aucune valeur écrite de mémoire** (charges utiles Chargily capturées du bac à sable, aucun montant en dur), **aucune référence gelée** sur le chemin de l'argent (la seule valeur acceptable est zéro), webhook **mince** (signature → dédup → file → 200 : un handler lent fait retenter Chargily et multiplie les courses), **livraison sombre** derrière un drapeau. Un mode de défaillance non listé au cadrage **ne se code pas**.
 - ⛔ **E3 — QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE : arbitrages de Ko du 23/09/2026 (D302), À LIRE AVANT DE
   TOUCHER AU PAIEMENT.** Portée : **le lot argent, c'est-à-dire E3, paiement Chargily.**
@@ -796,12 +802,28 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (méthode renforcée, D126), **sur lesquels le
   relecteur décide**. ⚠ La pause d'E3c (arbitrage de Ko, 17/08/2026) n'est pas levée par D302 : c'est
   l'arbitrage d'un rang qui la lève.
+  ⛔ **(D303, 23/09/2026) ET UN FAIT, DÉCLARÉ PAR KO : PAS DE COMPTE CHARGILY EN MODE TEST.** E3b-2 est bloqué
+  (« compte bac à sable »), E3c aussi (charges utiles capturées du bac à sable réel), E3d et E3e suivent. ⇒ **E3
+  attend sur ce fait, pas sur une priorité** : un rang arbitré lève la pause d'E3c, il n'ouvre ni E3b-2 ni E3c tant
+  que ce fait tient.
   ⚠ **« D39 »** : au registre, D39 est « prix par créneau », remplacée par D46 pour le Flux B ; sa dernière phrase —
   « Chemin d'argent ⇒ revue humaine » — est ce que « revue humaine D39 » cite depuis. Précision, pas correction.
-  ⚠ **Ce que ces arbitrages NE disent PAS** : ils visent le code **E3**. Les autres chemins critiques (auth,
+  ⚠ **Ce que ces arbitrages NE disent PAS** : ~~ils visent le code **E3**. Les autres chemins critiques (auth,
   concurrence, suppression de compte, tarification hors E3) gardent la règle de revue d'avant — **l'étendre
-  appartient à Ko.** `CLAUDE.md` (« s'arrêter et demander ») reste compatible : la session demande, la réponse
-  arrive par les messages de Ko.
+  appartient à Ko.**~~ ⛔ *(D303 : portée étendue — ci-dessous.)* `CLAUDE.md` (« s'arrêter et demander ») reste
+  compatible : la session demande, la réponse arrive par les messages de Ko.
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 23/09/2026 (D303)** — motifs et détail : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D303 :
+  - **la forme de revue ci-dessus s'applique à TOUT lot de code du chemin de l'argent**, y compris ceux qui n'ont pas
+    besoin de Chargily (audit SOLID 09/09 · F1, F2, F5, F6 — rang 23). ⚠ La décision n'énumère pas ce que couvre
+    « chemin de l'argent » au-delà de ces quatre lots — dont la « tarification hors E3 » de la phrase barrée : **à
+    préciser par le relecteur**. Auth, concurrence et suppression de compte **hors de ce chemin** : aucune décision,
+    la règle d'avant tient ;
+  - **R1** : sur ce chemin, une garde n'est prouvée que par une neutralisation dont on a **LU** l'échec — **tests
+    collectés > 0 ET assertion en échec** ; un code de sortie non nul, seul, ne prouve rien. **La correction de R1
+    dans les harnais du chemin de l'argent bloque la levée du drapeau des paiements** ;
+  - **provenance** de chaque sous-lot soumis à la méthode renforcée : **SHA de départ rapporté** à l'ouverture,
+    `git diff` depuis lui limité aux **fichiers énumérés au cadrage**, **aucun fichier non suivi hors `a-verser/`**.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

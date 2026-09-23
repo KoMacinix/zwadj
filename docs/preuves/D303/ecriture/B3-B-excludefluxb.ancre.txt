@@ -1,0 +1,1 @@
+- [ ] **À l'acceptation d'une réservation** (lot ultérieur) : attraper `bookings_no_overlap_accepted_confirmed` pour la traduire en conflit propre, **jamais la redoubler** applicativement [BACK][P0]

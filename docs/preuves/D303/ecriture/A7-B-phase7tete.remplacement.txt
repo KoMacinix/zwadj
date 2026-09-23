@@ -1,0 +1,10 @@
+> « À NE PAS faire », point E3 ; et `ZWADJ_CONTINUITE.md`, tête de « ⛔ E3 — MÉTHODE RENFORCÉE ».
+> ⛔ **(D303, 23/09/2026) — décisions du relecteur (chat), déléguées par Ko** : **(1)** la forme de revue ratifiée
+> s'applique à **TOUT lot de code du chemin de l'argent**, y compris ceux qui n'ont pas besoin de Chargily
+> (audit SOLID 09/09 · F1, F2, F6, et F5 que Ko ordonne avec eux — rang 23) ; **(2)** R1 : sur ce chemin, une garde
+> n'est prouvée que par une neutralisation dont on a **lu** l'échec (tests collectés > 0 **et** assertion en échec),
+> et la correction de R1 dans ses harnais **bloque la levée du drapeau des paiements**, avec F8 ; **(3)** la
+> provenance de chaque sous-lot : SHA de départ rapporté, `git diff` depuis lui limité aux fichiers du cadrage, aucun
+> fichier non suivi hors `a-verser/`. ⚠ **« D39 »** désigne la **dernière phrase** de D39 (« Chemin d'argent ⇒ revue
+> humaine »), **pas son objet** (prix par créneau). ⛔ **Et un fait** : Ko n'a pas de compte Chargily en mode test —
+> tableau des sous-lots ci-dessous. Détail et motifs : tête de la méthode renforcée, bloc D303.

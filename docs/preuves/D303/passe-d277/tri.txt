@@ -1,0 +1,73 @@
+Passe D277 de D303 (rang 23) — TRI des occurrences COURANTES et BACKLOG de l'état d'AVANT (HEAD 7bdb65c, exporté hors
+dépôt : sens1-avant.txt, sens2-avant.txt). Lignes = numérotation de HEAD. Les occurrences DATÉES ne se réécrivent pas.
+Les hausses entre « avant » et « après » sont les textes de D303 eux-mêmes (tableau à la fin).
+
+SENS 1 — ce que le lot invalide ou change d'état
+  AGENTS.md:782       revue-portee-e3  « Portée : le lot argent, c'est-à-dire E3 » — JUSTE : vise « qui code / qui décide »,
+                                      toujours E3 ; l'extension de la FORME de revue est écrite juste en dessous (A13).
+  AGENTS.md:801-802   revue-portee-e3, etendre-a-ko — TRAITÉ (A13) : barré, décisions D303 écrites.
+  AGENTS.md:255       zip-livre        TRAITÉ (A15) : annotée, pas barrée ; forme du chemin de l'argent citée.
+  AGENTS.md:867       zip-livre        JUSTE : « zip livré ; application NON confirmée » — instantané daté du 20/08,
+                                      autre sens (livraison d'un lot), pas un contrôle de provenance.
+  AGENTS.md:563       zip-non-verse    JUSTE : pièces des rangs 6, 11 et 12 — autre objet.
+  AGENTS.md:703       dues-a-ko        JUSTE : le sort des P0-P3 reste dû à Ko.
+  AGENTS.md:780       bac-a-sable-e3   JUSTE : la règle (charges capturées du bac à sable) tient ; le fait qui la rend
+                                      inatteignable est écrit au point E3 (A12).
+  CONTINUITE:10861    revue-portee-e3, etendre-a-ko — TRAITÉ (A8) : barré, bloc D303.
+  CONTINUITE:1189-90  hors-e3, motif-non-transmis, zip-non-verse, dues-a-ko — TRAITÉ (C2) : trois dues ne le sont plus.
+  CONTINUITE:10562    zip-livre        JUSTE : « zip livré 20/08 — application NON confirmée », autre sens.
+  CONTINUITE:10997-98 zip-livre        TRAITÉ (A9) : premier paragraphe du point 10 barré et réécrit.
+  CONTINUITE:11006    zip-livre (×2)   TRAITÉ (A11) : « non corrigé ici » complété — corrigé.
+  CONTINUITE:99       sous-verrou-d117 TRAITÉ (A10) : annotée, pas barrée.
+  CONTINUITE:1078     dues-a-ko        JUSTE : P0-P3, dû à Ko.
+  CONTINUITE:10940    bac-a-sable-e3   JUSTE : règle du point 4 ; le fait est en tête de la méthode (A8).
+  BACKLOG:2652        zip-livre (×2)   TRAITÉ (C5) : entrée sortie des audits et close.
+  BACKLOG:2175        pending-intent, bloquant-avant-e3 — TRAITÉ (A6) : close par D255, réserve R1.
+  BACKLOG:2173        bloquant-avant-e3 — TRAITÉ (A6) : « bloque E3d ».
+  BACKLOG:689, 1795   exclude-a-traduire — TRAITÉ (B2, B3) : barrées, confrontées.
+  BACKLOG:2422 (×2)   motif-non-transmis — JUSTE : la règle « un motif non transmis s'écrit non transmis ».
+  BACKLOG:2461, 2481  motif-non-transmis — TRAITÉ (A3, A4) : motifs de F8 et R2 écrits.
+  BACKLOG:2624        motif-non-transmis — JUSTE : « version d'acceptation non transmise » (CGU), autre objet.
+  BACKLOG:3140, 3163  zip-non-verse    JUSTE : pièces de D291, autre objet.
+  BACKLOG:2487        r1-entree        TRAITÉ (A5) : décision du relecteur et relevé.
+  BACKLOG:2517        f5-entree        TRAITÉ (D5) : ordonné au rang 23.
+  BACKLOG:2704        dues-a-ko        TRAITÉ (D4) : il suit désormais « RANG 24 : EN ATTENTE ».
+  BACKLOG:412         bac-a-sable-e3   TRAITÉ (A1) : « ACTUEL », E3c/E3d/E3e.
+  BACKLOG:420, 494    bac-a-sable-e3   JUSTE : règles ; le fait est écrit au tableau (A1).
+
+SENS 2 — ce que le lot rend permis, ou dont la condition change (D287)
+  AGENTS.md:790-795   e3-ouvre, reste-exige, cesse-de-bloquer — TRAITÉ (A12) : le fait est ajouté à la condition.
+  AGENTS.md:783       claude-code-argent — JUSTE (qui code).
+  AGENTS.md:284       argent-ouvre     JUSTE : récit de D276, daté dans son texte.
+  CONTINUITE:48, 133  e3-bloque        JUSTE : retraits de R1 et « E3 n'est pas le prochain lot », historiques.
+  CONTINUITE:3185     e3-ouvre         JUSTE : bloc du rang 8, clos (conservation d'un cadrage).
+  CONTINUITE:3292     e3-ouvre         JUSTE : cadrage de S11-b, point ouvert n° 1 adressé à Ko à sa date.
+  CONTINUITE:10855-58 e3-ouvre, claude-code-argent, reste-exige, cesse-de-bloquer — TRAITÉ (D3) : condition complétée.
+  CONTINUITE:10912    e3-ouvre         JUSTE : règle « un mode non listé ne se code pas ».
+  CONTINUITE:11043-46 e3-bloque, bloque-e3 — JUSTE : « à rouvrir avec E3 » (mode de paiement figé).
+  CONTINUITE:1070     bloque-e3, levee-drapeau — TRAITÉ (D1) : ⛔ PERMISSION PÉRIMÉE au sens de D287 — la liste des
+                                      bloquants du drapeau ne nommait que F8 ; R1 ajouté.
+  CONTINUITE:1180     e3-bloque, bloque-e3, levee-drapeau — TRAITÉ (D2) : même motif, et le fait.
+  CONTINUITE:10862-63 bloque-e3, levee-drapeau — JUSTE : renvoie aux reports de D302, où R1 est désormais annoté.
+  CONTINUITE:1154     argent-ouvre     JUSTE : règle de l'ordre (S11-b sous porte fiable), historique.
+  CONTINUITE:1174, 10848, 10854 claude-code-argent — JUSTE.
+  BACKLOG:397         claude-code-argent — JUSTE ; complété par A7.
+  BACKLOG:426, 436    e3-ouvre         JUSTE : règles (mode non listé ; E3a rouverte, D197).
+  BACKLOG:476         e3-bloque        TRAITÉ (A2).
+  BACKLOG:1882        e3-bloque        JUSTE : retrait daté de R1.
+  BACKLOG:2173, 2175  e3-bloque, bloque-e3 — TRAITÉ (A6).
+  BACKLOG:2429, 2441, 2451, 2546 bloque-e3 — JUSTE (F1, F2, F6, A5 bloquent E3d) ; renvoi au cadrage ajouté (D6).
+  BACKLOG:2460        levee-drapeau    JUSTE (F8) ; R1 annoté dans son entrée (A5).
+  BACKLOG:3830        e3-ouvre         JUSTE : « la décision appartient à E3 » (D282).
+  BACKLOG:4228        argent-ouvre     JUSTE : report du 30/08, historique.
+  lot-code-ouvre (26 COURANTE, 1 BACKLOG avant) — JUSTE, collectivement : la règle générale du compteur (« un lot de
+                                      code peut s'ouvrir dès que Ko l'arbitre ») tient ; 25 occurrences sont dans des
+                                      blocs de rangs clos, antérieurs ; la plus récente (ligne du rang 23, conservée par
+                                      A0) est suivie de la ligne du rang 24 qui dit que le cadrage ne rend permis
+                                      aucun lot de code, et le point d'entrée du rang 23 dit ce qui manque (B1).
+
+HAUSSES « avant → après » (sens1 : 57 → 73, +16 ; sens2 : 97 → 118, +21). MESURÉ (verif-hausses-sortie.txt) : 8
+occurrences à contexte entièrement neuf (2 + 6), toutes dans des textes de D303 (cadrage § 9 et MD-F6, point d'entrée
+du rang 23, en-tête des reports de D303, décision R1). ⚠ Les autres hausses tombent sur des lignes existantes que D303
+a annotées : le contrôle ne les sépare pas (limite déclarée dans son en-tête) ; elles ont été LUES dans les sorties
+« après », pas mesurées une à une.

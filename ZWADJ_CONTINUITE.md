@@ -96,7 +96,7 @@
 > |---|---|---|
 > | **D115** | Mutex single-flight élargi à la session — `bootstrap()` passait hors mutex | ✅ |
 > | **D116** | Fenêtre de grâce à la rotation, **sans re-rotation** | ✅ |
-> | **D117** | TOCTOU sur `accept()` / `send()` — statut relu SOUS VERROU | ✅ |
+> | **D117** | TOCTOU sur `accept()` / `send()` — statut relu SOUS VERROU | ✅ ⛔ *(D303, 23/09/2026 — décision du relecteur (chat), déléguée par Ko : ce ✅ couvre **accept contre accept**, deux acceptations de la même demande relues sous le verrou de salle. **Accept contre decline ou cancel reste OUVERT** : `transition` ne prend pas ce verrou, et `acceptUnderVenueLock` écrit par `update({ where: { id } })` sans statut de départ — audit SOLID 09/09 · F1, confronté ouvert par D302, cadré au rang 23. **Annotée, pas barrée** : la ligne n'est pas fausse, elle se lit plus forte qu'elle n'est.)* |
 > | **T1** | Socle e2e Playwright (`e2e/`) + A1/A2/A5 | ✅ |
 > | **T2** | A3 (gardes de forme + frontières d'erreur), A4/D121, B10 RBAC | ✅ |
 > | **T3** | B6 contrats api ↔ api-client, B9 migration sur base non vide | ✅ |
@@ -1067,14 +1067,38 @@ confrontés au code de `HEAD`. ⛔ **C'est la PREMIÈRE écriture du lot, et l'o
 ⛔ **(D302, 23/09/2026) RANG 22 CLOS** : partie A — les arbitrages de Ko écrits là où une session les lit (ordre des
 rangs, `AGENTS.md`, tête de la méthode renforcée d'E3, PHASE 7 du backlog) ; partie B — les deux audits du 09/09
 versés et confrontés par symbole à `HEAD`, **tous les constats nommés OUVERTS sauf le montage PG18 (D292)** ; F1, F2,
-F6 bloquent E3d et F8 la levée du drapeau (décisions du relecteur). **Documentaire : compteur de lots de code non
+F6 bloquent E3d et F8 la levée du drapeau (décisions du relecteur) ⛔ *(D303 : **et R1** dans les harnais du chemin
+de l'argent — décision du relecteur du 23/09/2026)*. **Documentaire : compteur de lots de code non
 certifiés à ZÉRO, inchangé.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 22 », clôture. ⇒ La ligne du rang
 23, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie à la clôture.**
-⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
-22, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage** :
+⇒ ~~**RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+22, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⚠ **Une permission n'est pas un arbitrage** :
 le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel. ⚠ **Et pour E3, rang arbitré ne suffit
 pas** : l'état des lieux et le cadrage du sous-lot passent d'abord, et c'est le relecteur (chat) qui décide
 dessus (D302 ; `AGENTS.md`, « À NE PAS faire »).
+⛔ **ARBITRÉ LE 23/09/2026 PAR KO — le RANG 23, mot pour mot : « Rang 23 : les transitions atomiques de la
+réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6. Cadrage, lot documentaire. Aucun besoin de
+Chargily. »** Lot D303. Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de Ko**
+(patron de D295) : la session a reçu l'arbitrage, elle ne se l'est pas attribué.
+⇒ **Documentaire** (`.md` d'autorité et `docs/preuves/` seulement) : il ne compte pas dans les deux/trois (D283,
+amendé par D292) — **compteur de lots de code non certifiés : ZÉRO, inchangé.** ⇒ **Ce qu'il produit** : les
+décisions du relecteur (chat) que Ko a transmises pour ce rang (partie A), puis le **CADRAGE** des quatre défauts
+selon la méthode renforcée (D126) — modes de défaillance d'abord, cibles de neutralisation nommées d'avance,
+fichiers attendus, rouge sur PostgreSQL réel — **et aucune ligne de code** (partie B). Le **découpage en sous-lots
+est PROPOSÉ par la session et TRANCHÉ PAR KO.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 23 » en tête de
+ce fichier.
+⛔ **(D303, 23/09/2026) RANG 23 — CADRAGE ÉCRIT, RANG OUVERT, AUCUNE LIGNE DE CODE** : partie A — le fait déclaré
+par Ko (pas de compte Chargily en mode test : E3 attend ce fait) et les décisions du relecteur (forme de revue sur tout
+lot de code du chemin de l'argent ; R1, dont la correction bloque aussi la levée du drapeau ; provenance ; D117 ; motifs
+de F8 et R2 ; deux entrées périmées) ; partie B — le zip de l'auditeur versé, et le **cadrage** de F1, F2, F5, F6.
+**Documentaire : compteur de lots de code non certifiés à ZÉRO, inchangé.** ⇒ **Où il en est** : point d'entrée du
+rang 23 — **ouvert**, précédent du rang 17 ; **Ko tranche le découpage** et dit si les sous-lots de code avancent ce
+rang ou en prennent un neuf. ⇒ La ligne du rang 24, ci-dessous, a été écrite à l'ouverture ; **elle est toujours
+vraie.**
+⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
+cadrage du rang 23 ne rend PERMIS aucun lot de code** : ses sous-lots attendent le découpage de Ko, la décision du
+relecteur (chat) sur le cadrage, et un rang arbitré (D302).
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1162,6 +1186,265 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE ; DÉCOUPAGE À TRANCHER PAR KO**
+
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER (D303, 23/09/2026)
+
+⛔ **ARBITRÉ PAR KO LE 23/09/2026, mot pour mot** : « Rang 23 : les transitions atomiques de la réservation et du
+devis — audit SOLID 09/09 · F1, F2, F5, F6. Cadrage, lot documentaire. Aucun besoin de Chargily. » ⇒ **QUEL lot : rang
+23 de l'ordre des rangs. OÙ IL EN EST : ici.**
+⇒ **LE CADRAGE EST ÉCRIT** — section « ⛔ CADRAGE DU RANG 23 » juste en dessous, méthode renforcée (D126) : modes de
+défaillance d'abord, rouge sur PostgreSQL réel, cibles de neutralisation nommées d'avance, fichiers attendus.
+**Aucune ligne de code.** Le lot D303 est **documentaire** (`.md` d'autorité et `docs/preuves/`) : **compteur de lots de
+code non certifiés : ZÉRO, inchangé.**
+⇒ **LE RANG RESTE OUVERT** — précédent du rang 17, ouvert par un cadrage seul (D295), dont le lot de code a été
+arbitré par Ko comme « second lot du même rang » (D296). ⛔ **CE QUI EST ATTENDU, ET DE QUI** : **Ko** tranche le
+découpage en sous-lots (§ 7 du cadrage) et dit si les sous-lots de code avancent ce rang ou prennent un rang neuf ;
+**le relecteur (chat)** décide sur le cadrage — forme de revue étendue au chemin de l'argent (D303, décision 1) —,
+notamment sur les choix que le cadrage **propose sans les prendre** (§ 8).
+⚠ **Une permission n'est pas un arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir ; **aucun ne
+l'est** tant que ces deux réponses manquent.
+
+## ⛔ CADRAGE DU RANG 23 — transitions atomiques (audit SOLID 09/09 · F1, F2, F5, F6) — écrit le 23/09/2026 (D303), AVANT toute ligne de code
+
+⛔ **MÉTHODE RENFORCÉE (D126), et la forme de revue ratifiée par Ko s'y applique** (décision 1 du relecteur, D303) :
+une session code, une AUTRE session ouverte à froid tente de casser et rapporte sans corriger, le relecteur (chat)
+audite et décide, Ko garde le veto. **Un mode de défaillance non listé ici ne se code pas** : on rouvre ce cadrage.
+⚠ **Relu à `HEAD` = `7bdb65c`, par SYMBOLE** — jamais par numéro de ligne. Sources : audit versé
+(`docs/preuves/D302/sources/zwadj-solid-strategy-audit.md`) ; sondes de l'auditeur, versées **telles quelles**
+(`docs/preuves/D303/sources/zwadj-audit-evidence.zip`, SHA-256 `2a871c21…`, 72 entrées ; la sonde de ces quatre
+défauts est `v5/apps/api/audit-probes/architecture.spec.ts`).
+
+### 1. État des lieux à `HEAD`, symbole par symbole
+
+| défaut | où se lit le statut qui décide | où s'écrit la transition | fichier inchangé depuis |
+|---|---|---|---|
+| **F1** | `PrismaBookingLocks.acceptUnderVenueLock` : `tx.booking.findUniqueOrThrow({ select: { status } })`, **lecture simple** sous le verrou de **salle** (`SELECT … FROM venues … FOR UPDATE`) | `tx.booking.update({ where: { id } })` — **aucune condition sur le statut de départ** | `682ea4c` (22/08) |
+| **F1, l'autre bras** | `PrismaBookingLocks.transition` (refus, annulations) : **pas de lecture préalable** | `updateMany({ where: { id, status: { in: from } } })` — check-and-set, **sans le verrou de salle** | `682ea4c` |
+| **F2 — conversion** | `QuotesService.convert` : `ownedQuote` puis `assertStatus`, **hors transaction** | `PrismaQuoteStore.convertirEnDemande` : `booking.create` **sans transaction ni relecture** du devis | `3b327c0` / `538b014` |
+| **F2 — révision** | `QuotesService.revise` : `assertStatus`, **hors transaction** | `creerRevision` : verrou de la **racine** de chaîne (`verrouillerChaine`), `aggregate`, `create` — **statut du parent jamais relu** | `3b327c0` / `538b014` |
+| **F5** | `BookingsService.cancelAsClient` : `booking.findFirst` puis `decideBookingTransition`, **hors transaction** | `transitionStatus(…, allowedFrom(CANCEL_AS_CLIENT), …)` — admet **PENDING ET ACCEPTED** quelle que soit la décision prise | `ae9b3f8` / `682ea4c` |
+| **F6** | — | `accept`, `decline`, `cancelAsPro` : `await this.events.publish(…, await this.notificationFor(…))` — `notificationFor` lit `user.findUnique` **après le commit et hors du `catch`** de `DomainEvents.publish` | `ae9b3f8` / `682ea4c` |
+
+⚠ **Aucun test existant ne croise DEUX COMMANDES DIFFÉRENTES sur la même demande** : `bookings.int-spec.ts` couvre
+accept contre accept (deux et trois fois), deux refus, deux annulations pro, deux annulations client, et deux demandes
+différentes sur un créneau ; `quotes.int-spec.ts` couvre deux remises, deux annulations, deux conversions, deux
+révisions. **C'est le trou exact des quatre défauts.** Pièce : `docs/preuves/D303/releves/courses-existantes-sortie.txt`
+— 10 sites `Promise.all` sur 1 431 lignes, 0 rival `pg` ; limite déclarée dans le script.
+⚠ **Clés étrangères relevées dans les MIGRATIONS (D186)** : `bookings_quote_id_fkey` (`20260707000000_init`) et
+`quotes_parent_quote_id_fkey` (`20260802140000_quote_lifecycle`). Elles servent au § 3.
+
+### 2. Modes de défaillance — écrits AVANT tout le reste
+
+**F1 — accept croise un refus ou une annulation, tous deux depuis `PENDING`.**
+- **MD-F1-1** — un refus commite entre la lecture du statut par `accept` et son écriture : `accept` écrase `DECLINED`
+  par `ACCEPTED`, pose `acceptedAt`/`paymentDueAt` sur une ligne qui garde `declinedAt`/`declineReason`, et le client
+  reçoit « refusée » **puis** « acceptée ». ⇒ **Attendu** : 409 `BOOKING_STATUS_CONFLICT`, statut `DECLINED` ; ligne
+  intacte.
+- **MD-F1-2** — même course avec une annulation client (`PENDING` → `CANCELLED`). ⇒ 409, statut `CANCELLED`.
+- **MD-F1-3** — **la correction ne doit pas perdre la traduction de l'`EXCLUDE`** (23P01 → 409 `BOOKING_SLOT_TAKEN`) :
+  même `try/catch`, même fonction. ⇒ Les tests existants « la SECONDE acceptation reçoit 409 via le 23P01 » et « deux
+  demandes DIFFÉRENTES acceptées simultanément » restent verts, et S5b-4 mord toujours. ⚠ Si l'écriture passe de
+  `update` à `updateMany`, **la forme de l'erreur du pilote pour `updateMany` n'est pas mesurée** : c'est ce test qui
+  la mesure, pas une supposition.
+- **MD-F1-4** — accept contre accept (D117) : inchangé — un seul aboutit, les autres 409, jamais 500.
+- **MD-F1-5** — accept contre création de blocage (D51) : inchangé. **Borne de Ko : le verrou de salle reste.**
+- **MD-F1-6** — **interblocage** : la correction ajoute, au plus, un verrou de LIGNE de réservation après le verrou de
+  salle ; `transition` ne prend que la ligne, le blocage ne prend que la salle ; aucun chemin ne prend la ligne puis
+  la salle. ⇒ Pas d'inversion. Un 40P01 sortirait en 500 : les tests concurrents le verraient.
+- **MD-F1-7** — ordre séquentiel (refus PUIS accept) : déjà 409 par la relecture D117 — inchangé.
+
+**F2 — le devis change sous une conversion ou une révision.**
+- **MD-F2-1** — une annulation commite entre la lecture du devis par `convert` et l'insertion : une réservation
+  `PENDING` naît d'un devis `CANCELLED`, **et c'est de ce devis que vient son montant**. ⇒ 409
+  `QUOTE_STATUS_CONFLICT`, statut `CANCELLED` ; **aucune** réservation pour ce devis.
+- **MD-F2-2** — ⛔ **BORNE DE KO — PRÉSERVÉ : l'annulation voulue d'un devis DÉJÀ converti.** Le devis reste `DRAFT`
+  après conversion (« il attend l'acompte ») et `cancel` l'admet. ⇒ convertir **puis** annuler : 200, devis
+  `CANCELLED`, réservation intacte ; **et en concurrence** : une annulation qui arrive pendant que la conversion tient
+  le verrou **attend puis aboutit**.
+- **MD-F2-3** — double conversion : inchangé — 409 « déjà converti » (`bookings_quote_id_key` + traduction du P2002).
+- **MD-F2-4** — une annulation du **parent** commite entre la lecture de `revise` et la création de la version : une
+  version naît d'un devis annulé. ⇒ 409, statut `CANCELLED` ; **aucune** version créée. ⚠ **Deux cas** : parent =
+  racine de chaîne (v1) **et** parent ≠ racine (v2) — le second est le seul où le verrou de racine ne protège rien.
+- **MD-F2-5** — deux révisions concurrentes : inchangé (verrou de chaîne).
+- **MD-F2-6** — ⛔ **une relecture après P2002 DANS une transaction avortée lève** (PostgreSQL : « current transaction
+  is aborted », 25P02). Si `convertirEnDemande` passe dans un `$transaction`, la relecture « une demande existe-t-elle
+  pour ce devis ? » doit se faire **après** le rollback, hors de la transaction. ⇒ MD-F2-3 reste 409, jamais 500.
+- **MD-F2-7** — interblocage : `convert` corrigé verrouillerait la ligne du devis ; `cancel` la verrouille par son
+  `updateMany` ; `revise` corrigé prendrait la racine puis le parent. Aucun chemin ne prend le parent puis la racine.
+- **Non listé, donc non codé** : conversion contre révision de la même chaîne. L'audit ne le nomme pas ; relevé ici
+  pour qu'une reprise sache qu'il a été vu.
+
+**F5 — l'annulation client croise une acceptation.**
+- **MD-F5-1** — `accept` commite entre la lecture de `cancelAsClient` (`PENDING`, **sans motif**) et son écriture :
+  l'écriture admet `ACCEPTED`, la demande acceptée s'annule **sans le motif que D83 exige**. ⇒ refus, ligne
+  `ACCEPTED` intacte. **Le code du refus est un CHOIX** (§ 8) : 400 `cancelReasonRequired` — la réponse que le client
+  aurait eue dans l'ordre séquentiel — ou 409 `BOOKING_STATUS_CONFLICT`.
+- **MD-F5-2** — **avec** un motif : l'annulation depuis `ACCEPTED` reste admise — inchangé.
+- **MD-F5-3** — annulation client contre refus : 409 par le check-and-set — inchangé.
+- **MD-F5-4** — l'**ordre** des refus de `decideBookingTransition` (statut 409 avant motif 400) — inchangé.
+
+**F6 — la lecture d'enrichissement échoue APRÈS le commit.**
+- **MD-F6-1** — `user.findUnique` lève après que `accept` a commité : aujourd'hui **500** au pro, réservation
+  `ACCEPTED` en base, **aucune** notification ; une nouvelle tentative rend 409 — le pro lit un échec sur un succès.
+  ⇒ **Attendu** : 200 avec le DTO de la ligne commitée ; l'échec **journalisé** ; la notification **perdue et dite**
+  (sémantique de D63). **Borne de Ko : pas de file durable.**
+- **MD-F6-2** — mêmes trois conséquences pour `decline` et `cancelAsPro` : **trois sites, trois cas.**
+- **MD-F6-3** — un **handler** qui lève dans `publish` : déjà attrapé — inchangé.
+- **MD-F6-4** — ⛔ **BORNE DE KO — la frontière d'erreur, rien de plus** : ni contrat d'événements refondu (A5), ni
+  file. ⚠ Les sites qui construisent leur charge **sans lecture** (`create`, les visites) ne sont pas F6 tel que l'audit
+  le nomme : **non codés**, rapportés.
+- **Pourquoi F6 bloque E3d (D302)** : la même forme après un `PAID` ferait lire un échec sur un paiement abouti.
+
+**Transverse.**
+- **MD-X-1** — toute violation de contrainte **et** toute erreur de concurrence introduite par la correction se
+  traduit en erreur métier : un même empêchement ne rend pas 409 d'un côté et 500 de l'autre (invariant d'`AGENTS.md`).
+- **Existant, NON introduit par ce rang, NON codé** : une attente de verrou plus longue que le délai d'une transaction
+  interactive Prisma sort en erreur de transaction, en 500. `accept` y est déjà exposé par son verrou de salle.
+
+### 3. Le rouge AVANT le correctif, sur PostgreSQL réel — deux transactions dont l'ordre est contrôlé
+
+⛔ **POSTGRESQL FAIT L'ORDONNANCEUR, PAS UN DOUBLE.** Patron **existant** au dépôt, `payment-intent-race.int-spec.ts`
+(E3d-1) : une connexion `pg` **brute** — pas un second client Prisma, qui garderait une connexion du pool — ouvre
+une transaction, écrit, **ne commite pas** ; le code réel part et **se bloque** sur un verrou ; `attendreBlocage()`
+sonde `pg_stat_activity` (`wait_event_type = 'Lock'`) et **lève « LA COURSE N'A PAS EU LIEU »** si personne n'attend ;
+puis le rival commite. ⇒ **La course est prouvée par construction** : un rouge obtenu sans blocage ne compte pas.
+⛔ **Le prédicat du rival se RELÈVE dans le code qu'il imite** (même `WHERE` que `transition` ou que `cancel`), il ne
+s'invente pas. ⛔ Chemin de sortie obligatoire (`ROLLBACK` en `finally`) : une fuite de connexion se voit dans le spec
+**suivant**.
+
+| défaut | rival (non commité) | code réel lancé | où il se bloque | rouge AVANT | vert APRÈS |
+|---|---|---|---|---|---|
+| **F1 × refus** | `UPDATE bookings SET status='DECLINED', …  WHERE id=$1 AND status='PENDING'` | `accept` (HTTP) : lit `PENDING` (MVCC), contrôle de blocage | son `UPDATE` attend le verrou de ligne du rival | 2xx, ligne `ACCEPTED` avec `declined_at` posé | 409 `DECLINED`, ligne intacte |
+| **F1 × annulation** | même, vers `CANCELLED` (prédicat de l'annulation client) | `accept` | idem | 2xx, `ACCEPTED` | 409 `CANCELLED` |
+| **F2 × conversion** | `SELECT … FROM quotes WHERE id=$1 FOR UPDATE` **puis** `UPDATE quotes SET status='CANCELLED' WHERE id=$1 AND status IN (ouverts)` | `convert` (HTTP) : lit `DRAFT` | l'insertion de la réservation vérifie `bookings_quote_id_fkey` par un `FOR KEY SHARE` sur le devis, qui attend le `FOR UPDATE` du rival | 201, une réservation existe | 409 `CANCELLED`, aucune réservation |
+| **F2 × révision (v1)** | `FOR UPDATE` + `CANCELLED` sur v1 | `revise` de v1 | `verrouillerChaine` (`FOR UPDATE` sur la racine) attend | 201, v2 créée | 409, aucune v2 |
+| **F2 × révision (v2)** | `FOR UPDATE` + `CANCELLED` sur v2 | `revise` de v2 | l'insertion de v3 vérifie `quotes_parent_quote_id_fkey` sur v2 et attend | 201, v3 créée | 409, aucune v3 |
+| **F5** | `UPDATE bookings SET status='ACCEPTED', … WHERE id=$1 AND status='PENDING'` | `cancelAsClient` **sans motif** : lit `PENDING`, décide « permis » | son `updateMany` attend le verrou de ligne | 200, `CANCELLED` sans motif | refus (code : § 8), ligne `ACCEPTED` |
+| **F6** (×3) | — | `accept` / `decline` / `cancelAsPro` réels, **panne injectée** sur la lecture post-commit (`user.findUnique`, une fois) | — | 500, ligne commitée | 200 + DTO, ligne commitée, échec journalisé |
+
+⚠ **POURQUOI `FOR UPDATE` CHEZ LE RIVAL DE F2 — mécanisme écrit comme INFÉRENCE, vérifiée par construction au lot de
+code** : un `UPDATE` simple ne prend qu'un `FOR NO KEY UPDATE`, qui ne bloque pas le `FOR KEY SHARE` d'une clé
+étrangère ; sans le `FOR UPDATE` explicite, l'insertion ne l'attendrait pas, et `attendreBlocage()` lèverait. Le verrou
+du rival est l'**outil d'ordonnancement** ; ce qu'il commite est ce que commiterait `cancel`.
+⚠ **F6 N'EST PAS UNE COURSE** : la persistance est réelle, la **panne est injectée** — seul moyen déterministe de faire
+échouer une lecture post-commit. ⚠ **Faisabilité non mesurée** : espionner un délégué du client Prisma 7
+(`vi.spyOn(ctx.prisma.user, "findUnique")`) ; repli, un `PrismaService` enveloppé fourni au module de test. Le lot de
+code le mesure avant de s'appuyer dessus.
+⛔ **FORME DE LA PREUVE — celle que la décision 2 du relecteur exige** : pour chaque garde, (1) le **rouge avant
+correctif**, sortie Vitest **conservée** : tests collectés > 0, et le **titre du test** sur une ligne d'échec avec le
+message d'assertion ; (2) le vert après ; (3) la **neutralisation** du correctif, dont l'échec est **LU** dans la même
+forme — jamais un code de sortie seul ; (4) ces sorties **versées** dans `docs/preuves/<Dnnn>/`. ⚠ Les journaux de
+campagne actuels ne gardent qu'une ligne « ✓ » par cible (relevé D303) : le harnais de ce rang doit **écrire la sortie
+de chaque cible dans un fichier**.
+
+### 4. Les sondes du zip : ce qu'elles permettent de réutiliser, ce qu'elles ne prouvent pas
+
+✅ **Réutilisable** :
+- **les points d'entrelacement**, relevés par l'auditeur et confirmés au source ici : F1 — le refus commite entre la
+  relecture D117 et l'`update` (la sonde l'insère au contrôle de blocage) ; F2 — l'annulation commite entre la lecture
+  de `convert` et la création (la sonde l'insère à la lecture de la salle) ; F5 — entre `findFirst` et `updateMany` ;
+  F6 — la lecture de l'utilisateur qui lève après le port ;
+- **les assertions du défaut, INVERSÉES**, comme énoncé du rouge : statut final `ACCEPTED` par-dessus `DECLINED` ;
+  réservation créée sur un devis `CANCELLED` ; `CANCELLED` sans motif depuis `ACCEPTED` ; rejet alors que la ligne est
+  `ACCEPTED` ;
+- **l'inventaire des sites** (F6 : la sonde n'exerce que `accept` ; `decline` et `cancelAsPro` sont relevés au source).
+⛔ **Ce qu'elles ne prouvent pas** — **persistance simulée** : `$transaction: async (cb) => cb(prisma)`, un état qu'un
+double modifie dans un crochet. Elles ne voient ni la visibilité MVCC, ni les verrous de ligne, ni la réévaluation du
+`WHERE` après une attente de verrou en READ COMMITTED, ni les `FOR KEY SHARE` des clés étrangères. **Elles jugent la
+FORME des appels** (`where` égal à `{ id }`) : une correction pourrait les rendre vertes en changeant la forme, et
+rester fautive sur PostgreSQL — ou l'inverse. Le README de l'auditeur le dit lui-même : elles « assert the CURRENT
+UNWANTED behavior », ne sont pas des tests de non-régression, et « production lock/isolation guarantees need database
+integration tests after correction ». ⇒ **Elles n'entrent pas dans la suite** ; elles servent d'énoncé.
+
+### 5. Cibles de neutralisation nommées d'avance
+
+Chaque cible : une mutation, sa mesure, et la **signature d'échec LUE** (décision 2). Mesures : `int-reservations`
+(`bookings.int-spec.ts`), `int-devis` (`quotes.int-spec.ts`), sur base réelle (`--int`).
+| cible | mutation | doit rougir |
+|---|---|---|
+| **R23-F1-a** | la condition de statut de l'écriture d'`accept` retirée (retour à l'écriture sans statut de départ) | F1 × refus, F1 × annulation |
+| **R23-F1-b** | le refus sur statut non admis n'est plus rendu (l'écriture passe) | idem |
+| **S5b-2, S5b-4** (existantes) | ⚠ **ancres à revérifier** : elles visent les lignes que la correction touche | accept × accept ; 23P01 → `SLOT_TAKEN` |
+| **R23-F2-a** | la relecture du statut du devis dans la conversion retirée | F2 × conversion |
+| **R23-F2-b** | le verrou de ligne du devis dans la conversion retiré (lecture simple) | F2 × conversion |
+| **R23-F2-c** | la relecture du statut du parent dans la révision retirée | F2 × révision (v1 **et** v2) |
+| **R23-F2-d** | le verrou du **parent** retiré (celui de la racine gardé) | F2 × révision (v2) **seulement** — c'est pourquoi le cas v2 existe |
+| **R23-F2-e** | **préservation** : une annulation refusée dès qu'une réservation existe (insertion) | « convertir puis annuler » (MD-F2-2) |
+| **R23-F2-f** | la relecture après P2002 remise dans la transaction avortée | double conversion : 409, jamais 500 |
+| **R23-F5-a** | les statuts admis de l'écriture reviennent à `allowedFrom(CANCEL_AS_CLIENT)` quel que soit le motif | F5 |
+| **R23-F5-b** | le refus après conflit ne se redécide plus sur le statut relu | F5 (code du refus) |
+| **R23-F6-1, -2, -3** | la frontière retirée à **un** site à la fois (`accept`, `decline`, `cancelAsPro`) | le cas du site muté, et lui seul |
+| **R23-F6-4** | la journalisation de l'échec retirée | « l'échec est journalisé » — **si** le relecteur l'exige (§ 8) |
+
+⛔ **Une cible par site** (F6) : une cible qui muterait les trois à la fois ne dirait pas lequel mord (leçon du harnais
+404). ⛔ Le harnais de ce rang se nomme `neutralize-<lot>.py` (D272), **lit** l'échec (collectés > 0 **et** titre sur une
+ligne d'échec, comme `neutralize-horizon.py`), et **écrit la sortie de chaque cible** — sans quoi la décision 2 n'est
+pas satisfiable.
+
+### 6. Fichiers attendus
+
+- **Code** : `apps/api/src/venues/booking-locks.prisma.ts` (F1) ; `booking-locks.types.ts` si la forme du résultat
+  change ; `bookings.service.ts` (F5, F6) ; `booking-transitions.ts` si les statuts admis selon le motif y deviennent
+  une fonction pure (F5 — D187 : neutralisable en millisecondes) ; `quote-store.prisma.ts` et `quote-store.types.ts`
+  (F2 : la conversion et la révision rendent un conflit de statut) ; `quotes.service.ts` (F2).
+- **Tests** : `apps/api/test/int/bookings.int-spec.ts` (F1, F5, F6) ; `apps/api/test/int/quotes.int-spec.ts` (F2) ; un
+  utilitaire partagé de course (rival + `attendreBlocage`) si le relecteur le retient — ⚠ `payment-intent-race.int-spec.ts`
+  porte le sien : l'y migrer serait un second objet, **rapporté, pas fait**.
+- **Harnais** : `neutralisation/neutralize-rang23.py` (neuf, lit l'échec) ; ⚠ **possibles selon `lancer-campagnes.py`**
+  — `neutralize-solid-s5b.py` (ancres sur `booking-locks.prisma.ts`), `neutralize-s10b.py` et
+  `neutralize-booking-status.py` (`quote-store.prisma.ts`), `neutralize-s11a.py` et `neutralize-s11b.py`
+  (`bookings.service.ts`), `neutralize-solid-s3.py` (`booking-transitions.ts`) : une ancre que la correction déplace
+  se réancre **dans le sous-lot**, par écrit.
+- **Aucune migration** (l'audit n'en nomme aucune ; les verrous sont à l'exécution), **aucune dépendance**, aucune clé
+  i18n neuve attendue (les codes et messages existent) — un écart se déclare.
+- **Documentaire** : `.md` d'autorité, `docs/preuves/<Dnnn>/`.
+
+### 7. Découpage proposé — ⛔ TRANCHÉ PAR KO
+
+**Proposition de la session : TROIS sous-lots de code**, chacun avec sa session adverse avant le suivant, les six
+portes, la suite e2e (concurrence, argent) et `lancer-campagnes.py` sur les campagnes touchées :
+- **23a — F1 + F5**, la réservation : même adaptateur, même spec, même mécanisme (écriture conditionnée par l'état de
+  départ, rival en `UPDATE`) ;
+- **23b — F2**, le devis : conversion et révision, préservation de l'annulation après conversion ;
+- **23c — F6**, la frontière d'erreur post-commit : autre classe de défaut (pas une course), autre technique (panne
+  injectée).
+⚠ **CE QUE CE DÉCOUPAGE COÛTE, ET C'EST UNE RÈGLE, PAS UN AVIS** : chaque sous-lot de code porte le compteur de lots
+non certifiés à +1 ; après 23a et 23b il vaut **deux**, et « **trois, non** » (`AGENTS.md`, D270) — **une certification
+s'intercale avant 23c**, ou le découpage change. **Alternatives** : deux sous-lots (réservation F1 + F5 + F6 / devis
+F2 — aucune certification intercalée, un sous-lot plus gros sur `bookings.service.ts`) ; quatre (F1, F5 séparés —
+plus petits, et une certification de plus). **La session recommande trois** : F6 ne partage ni la technique ni la
+classe de défaut des trois autres, et le mêler à une course mélangerait deux preuves.
+
+### 8. Ce que le cadrage PROPOSE sans le prendre — au relecteur (chat)
+
+1. **F1, forme de la correction** : (i) la lecture du statut devient `SELECT … FROM bookings … FOR UPDATE`, sous le
+   verrou de salle — l'`update` et sa traduction du 23P01 ne bougent pas ; ou (ii) check-and-set (`updateMany`
+   conditionné, relecture sur 0) comme `transition`. **Proposé : (i)** — un seul verrou couvre la décision et
+   l'écriture, et le chemin du 23P01 reste celui qu'on a mesuré (MD-F1-3).
+2. **F2 et F5 — le contrôle d'avant transaction** (`assertStatus` dans `convert` et `revise`, la décision de
+   `cancelAsClient`) : la doctrine D117/D121 le dit **supprimé, pas doublé** ; `convert` garde pourtant une garde
+   « déjà converti » d'avant, au motif qu'elle évite d'écrire pour rien. **À trancher par sous-lot.**
+3. **F5, le code du refus** (MD-F5-1) : **proposé 400 `cancelReasonRequired`** — la réponse de l'ordre séquentiel pour
+   le même état (« le même empêchement, deux réponses » est la classe de défaut que l'invariant interdit).
+4. **F6, la forme** : une aide unique dans `BookingsService` (ou un petit module pur, testable sans base) qui construit
+   la charge **dans** un `try`, publie, et journalise l'échec avec le type d'événement et l'identifiant — **sans
+   toucher `DomainEvents`** (borne A5). Et **si la journalisation est exigée** comme garde (R23-F6-4).
+5. **La liste des harnais « du chemin de l'argent »** visés par la décision 2 (R1) : la session en a dérivé une,
+   entrée R1 du backlog ; **à arrêter par le relecteur**.
+
+### 9. `[BACK][P0]` « traduire `bookings_no_overlap_accepted_confirmed` en conflit propre » — confronté
+
+⛔ **PÉRIMÉE À `HEAD`, ET C'EST LE MÊME CHEMIN QUE F1.** La traduction **existe** : `isExclusionViolation` →
+`SLOT_TAKEN` → 409 `BOOKING_SLOT_TAKEN`, dans le `catch` de `acceptUnderVenueLock`, seul endroit qui écrit
+`ACCEPTED` sur `bookings` (relevé : aucun autre site) ; introduite par `909702a` (03/08/2026), déplacée dans
+l'adaptateur par S5b (`682ea4c`) — conditions identiques, la levée devenue un retour discriminé (en-tête du fichier) ;
+mesurée par deux tests d'intégration (« la SECONDE acceptation reçoit 409 via
+le 23P01 », « deux demandes DIFFÉRENTES acceptées simultanément… 201 + 409 ») ; gardée par la cible **S5b-4**. ⇒ Les
+deux entrées du backlog (B3, « RESTE — à l'acceptation… attraper… » ; Flux B, « À l'acceptation d'une réservation (lot
+ultérieur)… ») sont **barrées avec leur motif**. ⚠ **Ce qui reste vrai et relève de ce rang** : la correction de F1
+touche ce `try/catch` — **MD-F1-3**.
+
 ## ~~PROCHAIN LOT~~ — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ ~~**OUVERT LE 23/09/2026 : D302**~~ ⛔ **CLOS LE 23/09/2026 : D302**
 
 ### ⛔ CLÔTURE DU 23/09/2026 (D302) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -1180,6 +1463,9 @@ confrontés par symbole à `HEAD` — **tous les constats nommés sont OUVERTS, 
 Décisions du relecteur, transmises par Ko : **F1, F2 et F6 bloquent E3d ; F8 bloque la levée du drapeau des
 paiements ; A3 bloque tout nouveau type de tarification de prestation ; R2 se traite avec le prochain lot qui
 touche `booking-charge`.** Le reste est « à ordonner par Ko ». Entrées : backlog, reports de D302.
+⛔ *(D303, 23/09/2026 : la levée du drapeau a DEUX bloquants — F8 **et R1** dans les harnais du chemin de l'argent
+(décision du relecteur du 23/09) ; et E3 attend un fait — pas de compte Chargily en mode test. Tête de « ⛔ E3 —
+MÉTHODE RENFORCÉE », bloc D303.)*
 ⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de code
 non certifiés : ZÉRO, inchangé.** Aucune porte lancée : aucune ne lit ces fichiers.
 ⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la
@@ -1188,6 +1474,10 @@ lieux et le cadrage passent d'abord, le relecteur décide dessus).
 ⚠ **DÉCISIONS DUES À KO** : le sort des étiquettes P0-P3 existantes (écrit sous la ligne du rang 23) ; les motifs
 non transmis des décisions sur F8 et R2 ; `THROTTLE_*` contre D128 ; l'extension de la forme de revue aux chemins
 critiques hors E3 ; le zip de pièces de l'auditeur, non versé. Détail, mesures, fautes et limites : section D302.
+⛔ *(D303, 23/09/2026 : trois de ces cinq ne sont plus dues — les motifs de F8 et R2 sont transmis et écrits ;
+l'extension de la forme de revue est décidée par le relecteur pour le chemin de l'argent (au-delà : rien) ; le zip
+est versé, `docs/preuves/D303/sources/`. **Restent dus à Ko** : le sort des étiquettes P0-P3, `THROTTLE_*` contre
+D128.)*
 
 ## ~~PROCHAIN LOT~~ — rang 21 · `[DOC]` **D301, rang attribué après coup** ⛔ **CLOS LE 22/09/2026 : D301 — RANG ATTRIBUÉ LE 23/09/2026 PAR KO (D302)**
 
@@ -3567,6 +3857,173 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 23/09/2026 — D303 · rang 23 OUVERT, lot DOCUMENTAIRE : un fait (pas de compte Chargily en mode test), les décisions du relecteur, et le cadrage de F1, F2, F5, F6
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D302** ⇒ **D303**. « D303 » : **1** occurrence sur
+les 1 270 fichiers suivis à `HEAD` (`git grep`) — le témoin de calibration de `docs/preuves/D302/ecriture/relire.py`
+(bras négatif), **pas une décision**. ⇒ **RANG 23, arbitré par Ko le 23/09/2026** — première écriture du lot, dans
+l'ordre des rangs (patron de D295). Reprise à froid sans état donné, forme allégée ; lecture adverse depuis la clôture
+de D302 ; puis ce lot, sur ordre de Ko. **Documentaire** : `AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` et
+`docs/preuves/D303/` au diff — **compteur de lots de code non certifiés : ZÉRO, inchangé** ; aucune porte lancée,
+aucune ne lit ces fichiers (D283, D292). ⚠ Le zip de l'auditeur entre par `git add -f` : `.gitignore` porte `*.zip`,
+et `.gitignore` **n'est pas touché**.
+
+### D303 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 22 **CLOS** (D302) ; dernière ligne « ⇒ RANG N » : « **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** » | ordre des rangs, point d'entrée du rang 22 |
+| numéro | dernière ligne du registre : **D302** ⇒ **D303** | registre |
+| compteur | **ZÉRO** — vérifié par `git` : `7bdb65c` (D302) ne touche, hors `docs/preuves/D302/`, que les trois `.md` d'autorité | section D302, puis `git` |
+| synchronisation | `HEAD` = `origin/main` = `7bdb65c` après `git fetch` ; arbre propre hormis `a-verser/` | `git` |
+
+### D303 — la lecture adverse depuis la clôture de D302, en entier
+
+**Ce qui tient, relu contre le dépôt** : `booking-locks.prisma.ts` inchangé depuis `682ea4c` ; **0** mention de
+`booking` dans `account-deletion.service.ts` ; `@SkipThrottle` dans **5** contrôleurs ; `bookings_quote_id_key` dans
+la migration `init` ; le zip, **483 343** octets, **72** entrées, SHA-256 `2a871c21…` ; les deux `.md` de `a-verser/`
+**égaux à l'octet** aux copies versées ; `7bdb65c` documentaire, compteur à zéro.
+**Ce qui ne tient pas, ou manquait** :
+1. ⛔ **Le tri différentiel final de D302 avait UNE alerte nouvelle, et la section ne la nomme pas.** Rejoué
+   (`docs/preuves/D303/releves/tri-d302-rejoue.txt`, calibration 2 bras sur 2) : `[cle-api]` dans
+   `D302/ecriture/C1-session.remplacement.txt` — le texte de session lui-même, qui citait l'exemple PostCSS. C'est
+   la citation que Ko fait remplacer ; la section D302 écrivait le second audit « confronté par le même tri » sans en
+   donner le résultat.
+2. ⛔ **Le point 10 était rangé sous les audits** — dans la partie B de la section D302 (« Ajoutés, que la liste de
+   Ko omettait ») **et** dans le backlog (« Ajoutés — constats des audits »). Corrigé aux deux endroits (consigne).
+3. ⛔ **Deux listes des bloquants du drapeau ne nommaient que F8** (ordre des rangs, clôture du rang 22). Devenues
+   **permissions périmées** au sens de D287 par la décision R1 de ce jour — traitées (D1, D2).
+4. ⚠ **La table des sous-lots de la PHASE 7 dit « E3b-2 ⛔ bloqué : compte bac à sable »** (ligne commitée le 28/08,
+   `54dddc3`) **pendant que l'adaptateur existe depuis `dc63afb` (16/08)** et que l'« État des lots » d'`AGENTS.md`
+   porte « E3b (Chargily) ✅ livré et mesuré ». D302 a écrit un en-tête à cette phase sans relever l'écart. **Annoté,
+   non tranché** (partie A, point 1).
+5. ⚠ **Les deux entrées `[BACK][P0]` « traduire l'`EXCLUDE` » étaient ouvertes** alors que la traduction existe
+   depuis `909702a` (03/08) et qu'elle est mesurée. Non demandé à D302 ; confronté ici (cadrage, § 9), barrées.
+6. ⚠ **L'entrée R1 de D302 écrivait « même forme possible dans les autres harnais — non relevé ici »** : relevé
+   ici, **20 harnais sur 27** — et `neutralize-e3d1-s8.py` **annonce en en-tête** la lecture de la sortie qu'il ne
+   fait pas.
+
+### D303 — partie A : ce qui a atterri, et où
+
+| point de Ko | fichier, endroit | étapes |
+|---|---|---|
+| 1. le fait : pas de compte Chargily en mode test ; E3b-2, E3c, E3d, E3e | backlog, PHASE 7 (tableau, pause d'E3c) ; tête de la méthode renforcée ; `AGENTS.md`, point E3 ; tête de PHASE 7 ; clôture du rang 22 ; « Reste exigé » de D302 | A1, A1b, A2, A7, A8, A12, D2, D3 |
+| 2a. forme de revue sur tout lot de code du chemin de l'argent ; « D39 » précisé | `AGENTS.md` (point E3, « Marquer clairement », « Ne pas coder ») ; tête de la méthode ; tête de PHASE 7 ; F5 et F1/F2/F6 au backlog | A7, A8, A13, A14, C1, D5, D6 |
+| 2b. R1 sur le chemin de l'argent ; bloque la levée du drapeau | entrée R1 (décision + relevé) ; tête de la méthode ; `AGENTS.md` ; ordre des rangs et clôture du rang 22 | A5, A8, A13, D1, D2 |
+| 2c. provenance, point 10 | point 10 réécrit ; sa note de D302 ; `AGENTS.md` (point E3, règle générale annotée) ; entrée « point 10 » close | A9, A11, A13, A15, C5 |
+| 2d. D117 | en-tête de ce fichier, ligne D117 — annotée comme le reset | A10 |
+| 2e. motifs | F8 (**prémisse vérifiée** : `releves/premisse-f8-sortie.txt`, 10 contrôles sur 171 fichiers) ; R2 ; **A3 non retouché** — son entrée portait déjà un motif | A3, A4 |
+| 2f. entrées périmées | `findOrCreatePendingIntent` close par D255 avec la réserve de R1 ; D238 → « bloque E3d » | A6 |
+| petites corrections de D302 | citation PostCSS **remplacée** par sa position et sa nature ; point 10 sorti des audits (section et backlog) ; « décisions dues à Ko » : trois ne le sont plus | C2, C3, C4, C5 |
+| `a-verser/` | vidé des trois fichiers versés, **après** égalité SHA-256 avec les copies versées et l'attendu épinglé | `outils/retirer-verses-sortie.txt` |
+
+⚠ **La décision 1 n'énumère pas ce que couvre « chemin de l'argent »** au-delà de F1, F2, F5, F6 — `AGENTS.md` citait
+« tarification hors E3 » parmi les chemins à règle d'avant : **écrit « à préciser par le relecteur »**, pas tranché.
+
+### D303 — relevé en lecture seule demandé par Ko : les « clés Chargily de test » de `[SEC][P0]` — AUCUNE VALEUR IMPRIMÉE
+
+- **Selon les sections** : D200 (archive `CONTINUITE-sessions-D200-D265.md`) — « les clés Chargily de test —
+  publique et **secrète** — vivaient en clair dans `apps/api/.env.example` » ; `[SEC][P0]` — « dans `.env.example`
+  SUIVI (D200) **et dans un fil de discussion** ». **Aucune section ne dit à quel compte elles appartenaient.**
+- **Selon `git`** (`releves/forme-cles-chargily-sortie.txt`, extracteur calibré 2 bras, n'imprime que des formes) : deux
+  jetons, en commentaire de `apps/api/.env.example`, aux commits `dc63afb` et `d52c721` (16/08/2026, « E3b ») ;
+  retirés par `5c47490` (18/08) ; **toujours dans l'historique de `main` et d'`origin/main`** ; **0** fichier suivi à
+  `HEAD`.
+- **Leur forme** : préfixes `test_pk_` et `test_sk_`, corps de **40** caractères alphanumériques à casse mêlée — la
+  forme de clés **générées** du mode test, pas d'un substitut. ⚠ Que 40 soit la longueur des clés Chargily n'est pas
+  confronté à une documentation Chargily : **inférence de forme**.
+- ⛔ **CE QUI CONTREDIT LE FAIT DÉCLARÉ PAR KO — relevé, pas tranché** : les fixtures d'E3b se disent « captures
+  réelles du bac à sable » (`livemode` = `false`, hôte de règlement `pay.chargily.dz`) et D195 dit « mesuré » sur la
+  page de règlement ; l'adaptateur n'appelle Chargily qu'avec la clé secrète en en-tête `Authorization` (`Bearer`),
+  donc une capture réussie en suppose une valide — **inférence**, pas une mesure. **Question à Ko** : de quel
+  compte venaient ces clés et ces captures, et qui peut les révoquer — la rotation que `[SEC][P0]` demande suppose ce
+  compte. `[SEC][P0]` **n'est pas touchée** (consigne).
+- ⚠ **L'audit de secrets ne voit pas ces lignes** : ses onze motifs rendent **0 alerte** sur les deux lignes porteuses
+  (`releves/motifs-contre-cas-chargily-sortie.txt`). Entrée `[OUTIL]`, reports de D303.
+
+### D303 — relevé en lecture seule demandé par Ko : R1 — sans conclusion sur les certifications passées
+
+**27** harnais ; **5** jugent sur la sortie (`404`, `argon2`, `budgets`, `horizon`, `maxprice`) ; **2** comptent les
+tests collectés puis jugent au code (`act-plafonds`, `horloge`) ; **20 jugent par le SEUL code de sortie**, dont tous
+ceux qui mutent un fichier du chemin de l'argent (`e3d1-s8`, `s11b`, `solid-s3`, `-s4`, `-s5a`, `-s5b`, `s10b`,
+`booking-status`). **85** journaux de campagne versés, **1 219** lignes, **666** lignes « ✓ » : **0** porte un marqueur
+d'échec Vitest — **chaque cible y tient en une ligne**. Pièces : `releves/verdicts-harnais*`,
+`fichiers-mutes-par-harnais*`, `journaux-sortie-echec*`. Détail : entrée R1 du backlog.
+
+### D303 — partie B : le zip versé, et le cadrage
+
+- **Le zip, avant versement** : listé (`unzip -l`, rien extrait dans le dépôt) — README, `v5/` et `v6/` : journaux,
+  JSON Vitest, inventaires, deux sondes `.spec.ts` et leurs configs ; **rien d'inattendu**, **483 343** octets (< 10 Mo),
+  SHA-256 `2a871c216296a5d648270baddc00e9e05c8813b2e20f0542747c9f00993b6d16`. **Versé tel quel** :
+  `docs/preuves/D303/sources/zwadj-audit-evidence.zip`, empreinte égale avant et après la copie, `cmp` identique.
+- **L'audit de secrets sur une copie extraite HORS du dépôt** : ⛔ **l'instrument ne peut pas pointer ailleurs** — pas
+  d'option de racine, `os.walk("docs/preuves")` relatif au dossier courant, `pnpm-workspace.yaml` exigé, calibration
+  qui relit des chemins relatifs. ⇒ **Un enveloppant l'IMPORTE sans le modifier** (`outils/audit-copie-hors-depot.py`,
+  empreinte de l'instrument imprimée) : calibration **5 bras sur 5**, cas réel rejoué ; **72** fichiers extraits =
+  **72** entrées ; **70** alertes, **toutes triées au contexte** (`outils/tri-fenetres.py`, fenêtres masquées, 70
+  correspondances = 70) — titres de tests, noms de variables, extraits du code de tests du dépôt dans l'inventaire AST
+  de l'auditeur, catégories de son propre scanner ; les huit valeurs « absentes du dépôt » le sont par l'échappement
+  JSON. **Aucune valeur.** Contrôle de forme Chargily, **à part** de l'instrument : **0** jeton.
+- **Le cadrage** : section « ⛔ CADRAGE DU RANG 23 », juste sous le point d'entrée du rang 23 — état des lieux par
+  symbole, **modes de défaillance d'abord**, rouge sur PostgreSQL réel par un rival `pg` non commité (patron de
+  `payment-intent-race.int-spec.ts`), ce que les sondes donnent et ne prouvent pas, **14** cibles neuves nommées
+  d'avance et **2** existantes à réancrer (S5b-2, S5b-4),
+  fichiers attendus, **découpage proposé : trois sous-lots — à trancher par Ko**, et cinq choix proposés au relecteur.
+
+### D303 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D303/passe-d277/balayage.py`, copie à l'octet de celui de D302 (SHA-256 `fedc303e…`) ;
+« avant » joué sur `HEAD` exporté hors du dépôt. **Sens 1** : **57 → 73** ; **sens 2** : **97 → 118**. Aucun motif à
+zéro. Tri ligne à ligne : `passe-d277/tri.txt` — ⛔ **ce qui a mordu** : deux listes de bloquants du drapeau, **devenues
+permissions périmées par une décision de ce jour** (D1, D2). Hausses : **8** occurrences à contexte entièrement neuf,
+toutes dans des textes de D303 (`verif-hausses-sortie.txt`) ; les autres tombent sur des lignes annotées, **lues**.
+
+### D303 — audit de secrets avant commit (instrument de D298, tri de D299)
+
+1. **Première passe** (`audit-secrets-d303-premier.txt`, scellée) : **88** alertes nouvelles au tri, dont **81** dans ma
+   propre sortie de tri, **non scellée** — faute n° 3 ci-dessous. Gardée comme pièce.
+2. **Passe corrigée** (`audit-secrets-d303.txt`) : calibration **5 bras sur 5**, cas réel rejoué ; **838** fichiers =
+   **806** audités + **32** exclus par l'identité de leurs octets ; **106** alertes ; tri contre
+   `D302/audit-secrets-final.txt` : **7 nouvelles, triées** — trois fois mon texte sur le motif `chargily`, trois fois
+   le **nom** `CHARGILY_SECRET_KEY` dans du code ou une calibration, et l'ancre de l'étape C3, qui porte **la citation
+   remplacée** : c'est la preuve de réversibilité de l'écriture que Ko a ordonnée. **Aucune valeur du projet.**
+3. **« 0 valeur réelle »** (outil de D299) **non joué, et c'est délibéré** : le seul journal à valeurs réelles de la
+   session serait une copie des clés de l'historique — **les recopier sur le disque pour les chercher** n'est pas un
+   contrôle acceptable. Remplacé par le contrôle de **forme** Chargily sur toutes les pièces de `D303/` hors zip.
+4. **Audit final**, vraie dernière écriture : `audit-secrets-final.txt`, trié contre `audit-secrets-d303.txt` —
+   **1** alerte nouvelle, **triée** : le nom de la variable de clé du fournisseur, cité par cette section ; **aucune
+   valeur**. ⚠ Ce résultat est écrit ici AVANT la dernière passe : l'audit final a été **rejoué après cette ligne**, et
+   il rend le même résultat — sinon cette ligne serait fausse. C'est le défaut relevé chez D302 (point 1 de la lecture
+   adverse), évité.
+
+### ⛔ D303 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **J'AI IMPRIMÉ LES DEUX VALEURS DE CLÉS DANS LA SORTIE D'UN OUTIL.** Mon masque ne couvrait que le séparateur
+   `=` ; les deux lignes utilisaient `:`. La sortie est restée dans le terminal de la session — **aucun fichier, aucun
+   message, aucune pièce** ne les porte, et elles sont celles que l'historique porte déjà. ⇒ **C'est D275 et D290 :
+   un extracteur non calibré avant de servir.** Remplacé par un extracteur à deux bras qui n'imprime que des formes.
+2. ⛔ **D289 enfreint dans sa FORME** : l'étape A1b a fait passer deux lignes par des arguments de `printf` en ligne
+   de commande. Guillemets simples, texte relu juste — **la règle est de forme**, elle est enfreinte. Toutes les
+   écritures suivantes sont passées par l'outil d'écriture.
+3. ⛔ **UN ÉCHO NON SCELLÉ, dans le lot qui verse un audit** : ma sortie de tri récitait des fenêtres masquées ; le tri
+   différentiel l'a vu (**81** alertes). Sortie régénérée **scellée** par la fonction de l'instrument, première passe
+   gardée. **Ce qui a attrapé est la ventilation imprimée à côté du total (D295)**, pas une relecture.
+4. ⚠ **Deux phrases trop fortes, corrigées avant commit** : « déplacée à l'octet » (S5b a changé la levée en retour
+   discriminé) et l'explication du motif `chargily` (il lit ce qui SUIT le mot). Et une phrase de tri écrite
+   « vérifiée » avant de l'être — mesurée ensuite, réduite à ce qui l'est.
+
+### ⛔ D303 — CE QUE CE LOT NE FAIT PAS
+
+- **Aucun code, aucun harnais modifié, aucune dépendance** ; `.gitignore` non touché ; `CLAUDE.md` non touché.
+- **Il ne décide rien sur le chemin de l'argent** : les décisions écrites sont celles du relecteur transmises par Ko ;
+  le cadrage **propose** (§ 7, § 8). Il ne tranche pas le découpage.
+- **Il ne touche pas `[SEC][P0]`** ; il ne tranche pas l'écart E3b-2 contre « E3b ✅ ».
+- **Il ne corrige pas R1** : il le relève. Il ne corrige pas l'aveuglement de l'audit aux clés Chargily : il le rapporte.
+- **Aucune porte, aucune campagne** : documentaire.
+- ⚠ **Attendu de Ko** : le découpage du rang 23 et la suite du rang ; la réponse sur l'origine des clés et des captures
+  du 16/08. **Attendu du relecteur** : les cinq choix du § 8, la portée de « chemin de l'argent », la liste des harnais
+  visés par R1.
+
 ## Session du 23/09/2026 — D302 · rang 22, lot DOCUMENTAIRE : les arbitrages de Ko (ordre des rangs, E3, forme des entrées) et les deux audits externes du 09/09, confrontés à `HEAD`
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D301** ⇒ **D302** ; « D302 » : **0** occurrence
@@ -3683,8 +4140,11 @@ PHASE 19, 8.1, 23.6, 23.12, entrées de 4 (pino), 5.1 (`EMAIL_ALREADY_USED`, res
 décomposition » du 22/08, et la « Dette restante » de ce fichier (A3) — **16 annotations** (B2 à B17).
 ⇒ **Ajoutés, que la liste de Ko omettait** : l'anonymisation qui laisse les instantanés de contact des
 réservations ; l'absence de plafond absolu de session ; la lecture `metadata()` avant le format ; les trois
-`@SkipThrottle` que l'audit ne nommait pas ; le refus admin de F4 ; A2 (reste) et A4, rattachés ; le point 10 de
-la méthode renforcée (contrôle de provenance de l'ère des archives), croisé en l'annotant.
+`@SkipThrottle` que l'audit ne nommait pas ; le refus admin de F4 ; A2 (reste) et A4, rattachés ~~; le point 10 de
+la méthode renforcée (contrôle de provenance de l'ère des archives), croisé en l'annotant~~.
+⛔ *(D303, 23/09/2026, consigne de Ko : le point 10 n'est PAS un constat des audits — c'est une trouvaille de la
+session D302, rangée ici à tort sous la partie B. Son entrée du backlog quitte la sous-section des audits ; elle est
+close par la décision du relecteur sur la provenance, section D303.)*
 ⇒ **`pnpm audit`, rejoué** (`docs/preuves/D302/dependances/`) : la commande exacte de l'annexe **échoue** avec le
 pnpm épinglé (10.34.4) — `Unknown options: 'fetch-retries', 'fetch-timeout'`, code 1 **sans avis** ; sans ces deux
 options : **55 avis, 53 GHSA — 2 critiques, 30 élevés, 21 modérés, 2 faibles** recomptés sur les avis, contre
@@ -3716,8 +4176,10 @@ larges : absences réelles.
    exclus par l'identité de leurs octets (828 alertes d'écho non comptées) ; **98** alertes.
 2. **Tri différentiel** contre `D301/audit-secrets-final.txt` : calibration 2 bras sur 2 ; **5 alertes nouvelles,
    toutes dans `dependances/pnpm-audit.json`**, sur deux de ses lignes (4 correspondances à la ligne 603, 1 à la
-   762), dans le texte d'**avis publics** de PostCSS (
-   `printf 'API_KEY=sk-secret-…'` dans une preuve d'exploitation, une chaîne `/tmp/…` affectée à `secret`), **triées
+   762), dans le texte d'**avis publics** de PostCSS (⛔ *citation REMPLACÉE le 23/09/2026 par sa position et sa
+   nature — D303, consigne de Ko* : `docs/preuves/D302/dependances/pnpm-audit.json`, lignes 603 et 762 ; deux exemples
+   de l'avis — une commande shell de la preuve d'exploitation, qui affecte une valeur d'exemple à une variable de clé
+   d'API, et un chemin de fichier temporaire affecté à une variable nommée « secret »), **triées
    au contexte : exemples d'un avis, aucune valeur du projet**. Les mots et empreintes SHA-256 des deux audits
    versés, attendus par Ko, **n'ont levé aucune alerte**.
 3. **« 0 valeur réelle »** : sans objet — aucun journal à valeurs réelles n'a été produit dans cette session.
@@ -10857,10 +11319,55 @@ sont dans `AGENTS.md` (« À NE PAS faire », point E3), que toute session charg
    rapport contre le dépôt et **décide** ; **Ko garde le veto final.**
 ⇒ **D39 cesse de bloquer le code E3.** ⛔ **Reste exigé avant toute ligne de code E3** : un **rang que Ko
 arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (§ 1 et 2 ci-dessous), **sur lesquels le relecteur
-décide**. La pause d'E3c (17/08/2026) se lève par cet arbitrage de rang, pas par D302.
-⚠ **Portée** : le code **E3**. Les autres chemins critiques gardent la règle de revue d'avant ; l'étendre appartient
-à Ko. ⚠ **Les bloquants posés par le relecteur sur les constats de l'audit SOLID du 09/09/2026** — avant E3d, avant
+décide**. La pause d'E3c (17/08/2026) se lève par cet arbitrage de rang, pas par D302. ⛔ *(D303, 23/09/2026 : la
+condition n'est plus complète — pas de compte Chargily en mode test ; E3b-2 et E3c attendent ce fait, E3d et E3e
+suivent. Bloc D303 ci-dessous.)*
+⚠ ~~**Portée** : le code **E3**. Les autres chemins critiques gardent la règle de revue d'avant ; l'étendre appartient
+à Ko.~~ ⛔ *(D303 : portée ÉTENDUE par le relecteur au chemin de l'argent — décision 1 du bloc ci-dessous.)* ⚠ **Les
+bloquants posés par le relecteur sur les constats de l'audit SOLID du 09/09/2026** — avant E3d, avant
 la levée du drapeau des paiements — sont au backlog, reports de D302 (partie B).
+
+#### ⛔ UN FAIT, ET LES DÉCISIONS DU RELECTEUR (chat) DU 23/09/2026 (D303) — À LIRE AVEC LE BLOC CI-DESSUS
+
+⛔ **LE FAIT — DÉCLARÉ PAR KO LE 23/09/2026 : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST.** Conséquences, telles que
+Ko les a données : **le blocage d'E3b-2 (« compte bac à sable ») est ACTUEL** ; **E3c est bloqué aussi**, puisque la
+méthode exige des charges utiles **capturées du bac à sable réel** (point 4 ci-dessous) ; **E3d et E3e suivent.**
+⇒ **E3 ATTEND SUR CE FAIT, PAS SUR UNE PRIORITÉ.** Un arbitrage de rang lève la pause d'E3c (17/08/2026) ; il ne
+donne pas de compte. Tableau des sous-lots : backlog, PHASE 7. ⚠ Écart relevé en lecture seule, non tranché :
+l'adaptateur Chargily et ses fixtures « captures réelles du bac à sable » existent depuis `dc63afb` (16/08/2026) —
+avec quel compte, rien ne le dit ; question posée à Ko, section D303.
+
+⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 23/09/2026** — écrites telles que transmises, avec leur
+motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
+1. **LA FORME DE REVUE RATIFIÉE PAR KO (D302) S'APPLIQUE À TOUT LOT DE CODE DU CHEMIN DE L'ARGENT**, y compris ceux
+   qui n'ont pas besoin de Chargily : audit SOLID 09/09 · **F1, F2, F6**, et **F5** que Ko ordonne avec eux
+   (rang 23). *Motif* : **non transmis avec la décision.** ⚠ **« D39 »** — dans « la forme de la revue (« D39 ») »
+   ci-dessus et partout où D302 l'écrit — désigne la **dernière phrase** de D39 (« Chemin d'argent ⇒ revue
+   humaine »), **pas son objet** (prix par créneau). ⚠ La décision n'énumère pas ce que couvre « chemin de
+   l'argent » au-delà des quatre lots qu'elle nomme — `AGENTS.md` citait « tarification hors E3 » parmi les chemins
+   à règle d'avant : **à préciser par le relecteur**, la session ne tranche pas.
+2. **R1 SUR LE CHEMIN DE L'ARGENT.** Tant que le harnais concerné n'est pas corrigé, **une garde n'est prouvée que
+   par une neutralisation dont on a LU l'échec : tests collectés > 0 ET assertion en échec.** *Motif* : « **un
+   code de sortie non nul, seul, ne prouve rien** ». ⇒ **La correction de R1 dans les harnais du chemin de
+   l'argent BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS**, avec F8. ⚠ Relevé de la session (lecture seule) : **20
+   harnais sur 27 jugent par le seul code de sortie**, dont celui des cibles E1 à E5 de D255, et **aucun des 85
+   journaux de campagne versés** ne garde la sortie qui montre l'assertion en échec — entrée R1, reports de D302.
+   ⇒ Cette décision **complète le point 3** ci-dessous : « prouvée effective » veut dire aussi **lue**.
+3. **PROVENANCE — LE POINT 10 CHANGE DE FORME.** *Motif* : son contrôle date de l'époque des zips. Il devient :
+   SHA de départ relevé et **rapporté** à l'ouverture de chaque sous-lot ; en fin de sous-lot, `git diff` **depuis ce
+   SHA** ne contient **que les fichiers énumérés au cadrage** ; **aucun fichier non suivi hors `a-verser/`.** Écrit
+   au point 10.
+4. **D117 — son ✅ (« statut relu SOUS VERROU ») couvre accept contre accept.** *Motif* : accept contre decline ou
+   cancel reste ouvert — audit SOLID 09/09 · F1, confronté ouvert par D302. Annoté dans l'en-tête de ce fichier.
+5. **Motifs transmis pour deux décisions de D302** — **F8** (bloque la levée du drapeau) : drapeau éteint, la
+   fabrique sélectionne `UnavailablePaymentGateway`, et aucune réponse Chargily n'atteint l'adaptateur — **prémisse
+   vérifiée** avant d'écrire (`docs/preuves/D303/releves/premisse-f8-sortie.txt`) ; **R2** (avec le prochain lot qui
+   touche `booking-charge`) : toute requête invalide reste refusée (audit), seul change le code d'erreur rendu quand
+   une requête cumule deux fautes, et aucun montant n'en dépend. ⚠ **A3 non retouché** : son entrée portait déjà un
+   motif (« le serveur reste l'autorité ») — le motif proposé par Ko ne s'écrivait que faute de motif.
+6. **Deux entrées périmées** — « Avant E3c — rendre atomique `findOrCreatePendingIntent` » (22/08) est **close par
+   D255** (cibles E1 à E5, confirmées par D302), **avec la réserve de la décision 2** ; D238, « Bloquant avant E3 »,
+   devient **« bloque E3d »** — *motif* : c'est E3d qui pose `ACCEPTED`.
 
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
@@ -10994,8 +11501,13 @@ gèle pas une dette de paiement, on ne la crée pas.
 
 L'arbre de travail a **divergé deux fois** pendant la campagne — du code non
 attribué est apparu entre deux tours, dont un lot entier sur la rotation des
-jetons. Sur E3 : `diff` contre le zip livré **avant** toute modification, et
-`git apply --check` avant toute extraction.
+jetons. ~~Sur E3 : `diff` contre le zip livré **avant** toute modification, et
+`git apply --check` avant toute extraction.~~
+⛔ **REMPLACÉ LE 23/09/2026 — décision du relecteur (chat), déléguée par Ko (D303).** *Motif* : ce contrôle date de
+l'époque des zips. **Il devient, pour chaque sous-lot soumis à cette méthode :**
+- le **SHA de départ** est relevé et **rapporté** à l'ouverture du sous-lot ;
+- en fin de sous-lot, `git diff` **depuis ce SHA** ne contient **que les fichiers énumérés au cadrage** ;
+- **aucun fichier non suivi hors `a-verser/`.**
 
 Revue humaine obligatoire (D39) — et l'auditeur **reproduit**, il ne relit pas :
 il rejoue le défaut lui-même et neutralise chaque garde neuve. Une relecture de
@@ -11005,7 +11517,9 @@ froid**, qui rejoue les modes de défaillance du cadrage, neutralise chaque gard
 corriger** ; le **relecteur (chat)** audite son rapport contre le dépôt et **décide** ; **Ko garde le veto
 final**. Tête de cette méthode. ⚠ Le premier paragraphe de ce point — « diff contre le zip livré », `git apply
 --check` — décrit l'ère des archives ; depuis la bascule Claude Code (D266), le contrôle de provenance est
-l'énumération des fichiers attendus (`CLAUDE.md`). Rapporté au backlog, non corrigé ici.)*
+l'énumération des fichiers attendus (`CLAUDE.md`). Rapporté au backlog, non corrigé ici.)* ⛔ *(D303, 23/09/2026 :
+CORRIGÉ par décision du relecteur (chat), déléguée par Ko — le premier paragraphe de ce point est réécrit ci-dessus ;
+l'entrée du backlog est close.)*
 
 #### 11. Un seul levier, jamais deux (D128)
 
@@ -11479,3 +11993,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D300 | A | D300 — rang 20 CLOS, lot DOCUMENTAIRE : l'ordre des rangs sort de la section D270 et reçoit son titre `##` (606 lignes déplacées à l'octet, renvoi daté, pointeurs courants mis à jour) ; étape 0 — les huit creux de D299 : 7 sous Playwright, 1 sous vitest, et la barre porte sur l'état ambiant, relevé à `node` = 0 (point 7, règle de Ko) ; compteur ZÉRO inchangé ; rang 21 en attente d'arbitrage de Ko |
 | D301 | A | D301 — lot DOCUMENTAIRE hors rang : la ligne ajoutée à `CLAUDE.md` par D300 se retire (`AGENTS.md`, importé, porte déjà le pointeur ; `CLAUDE.md` rendu identique à l'octet à `0a8235d`) ; point 7 du critère réduit à ce qui se mesure — `chrome` > 0 disqualifie, les autres processus étrangers ne sont pas mesurés pendant la fenêtre (limite déclarée, report `[INFRA]`) ; l'explication « 11 workers + pnpm + runner » des huit creux barrée dans D299 ; compteur ZÉRO inchangé ; rang 21 toujours en attente de Ko ⛔ *(D302 : « hors rang » rejeté par Ko — D301 est le rang 21, rétroactivement)* |
 | D302 | A | D302 — rang 22 CLOS, lot DOCUMENTAIRE : arbitrages de Ko — « hors rang » rejeté (D301 = rang 21, rétroactivement ; aucun lot hors de l'ordre des rangs) ; E3 codé par Claude Code, décisions de paiement au relecteur (chat), forme de la revue ratifiée (« D39 » ne bloque plus le code E3 ; restent un rang arbitré, l'état des lieux et le cadrage) ; pointeur « ORDRE DES RANGS » sous « État des lots » ; entrées neuves sans priorité par urgence (BLOQUE ou « à ordonner par Ko », COÛT relevable), sort des P0-P3 dû à Ko — puis les deux audits externes du 09/09 versés (SHA-256 égaux) et confrontés par symbole à `HEAD` : tous les constats nommés OUVERTS sauf le montage PG18 (clos par D292) ; relecteur : F1, F2, F6 bloquent E3d, F8 la levée du drapeau, A3 tout nouveau type de tarification, R2 avec le prochain lot `booking-charge` ; `pnpm audit` rejoué (la commande exacte échoue sous pnpm 10.34.4) : 55 avis, 53 GHSA ; compteur ZÉRO inchangé ; rang 23 en attente d'arbitrage de Ko |
+| D303 | A | D303 — rang 23 OUVERT, lot DOCUMENTAIRE (cadrage) : arbitrage de Ko écrit en première ligne (transitions atomiques, audit SOLID 09/09 · F1, F2, F5, F6) — un fait déclaré par Ko : pas de compte Chargily en mode test (E3b-2 et E3c bloqués, E3d et E3e suivent ; E3 attend ce fait, pas une priorité) ; décisions du relecteur (chat) déléguées par Ko : forme de revue sur tout lot de code du chemin de l'argent, R1 (preuve = échec LU ; sa correction dans les harnais du chemin de l'argent bloque la levée du drapeau), provenance du point 10 réécrite, D117 annoté, motifs de F8 (prémisse vérifiée) et R2, `findOrCreatePendingIntent` close par D255 sous réserve de R1, D238 → bloque E3d ; zip de l'auditeur versé (audit de secrets sur copie hors dépôt : l'instrument ne peut pas pointer ailleurs, enveloppant) ; cadrage écrit, 14 cibles neuves, découpage proposé en trois sous-lots, à trancher par Ko ; relevés : 20 harnais sur 27 jugent au seul code de sortie, 0 journal sur 85 ne garde l'échec, l'audit de secrets aveugle aux clés Chargily ; compteur ZÉRO inchangé ; rang 24 en attente d'arbitrage de Ko |

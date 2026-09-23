@@ -1,0 +1,1 @@
+4. **Audit final**, vraie dernière écriture : `audit-secrets-final.txt`, trié contre `audit-secrets-d303.txt`.
