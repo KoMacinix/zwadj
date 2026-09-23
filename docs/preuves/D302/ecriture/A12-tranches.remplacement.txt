@@ -1,0 +1,25 @@
+**Paiement Chargily (E3) — ~~à coder par Ko~~, chemin critique, revue humaine D39** ⛔ *(D302, 23/09/2026 : « à coder par Ko » barré — E3 est codé par Claude Code, les décisions reviennent au relecteur (chat), Ko garde le veto ; la revue a la forme ratifiée par Ko, juste en dessous)* → Espace Pro complet → Notifications → Finitions transverses → Lancement.
+
+### ⛔ E3 — MÉTHODE RENFORCÉE (D126)
+
+#### ⛔ QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE — arbitrages de Ko du 23/09/2026 (D302), À LIRE EN PREMIER
+
+⛔ **Ces trois arbitrages PRÉCÈDENT tout ce qui suit, et n'en assouplissent aucun point.** Les mêmes, mot pour mot,
+sont dans `AGENTS.md` (« À NE PAS faire », point E3), que toute session charge au démarrage.
+1. **Qui code** — Ko : « **Le lot argent ne sera plus codé par moi mais par Claude Code.** » (le lot argent = E3)
+2. **Qui décide** — Ko : « **Les décisions concernant le lot paiement seront prises par Claude, dans mon chat de
+   relecture, avec mon intervention si je vois quelque chose qui cloche.** » ⚠ **Ce « Claude » est le relecteur du
+   chat, PAS la session qui code** : sur le paiement, la session de code **signale et propose, elle ne décide
+   pas**. Les décisions lui arrivent par les messages de Ko et s'écrivent « **décision du relecteur (chat),
+   déléguée par Ko le 23/09/2026** », avec leur motif.
+3. **La forme de la revue (« D39 »), RATIFIÉE — arbitrage tranché, à son nom** : une session Claude Code écrit le
+   code E3 ; une **AUTRE** session, ouverte **à froid**, tente de le casser — elle rejoue les modes de défaillance
+   du cadrage, neutralise chaque garde neuve, **ne corrige rien, elle rapporte** ; le relecteur (chat) audite son
+   rapport contre le dépôt et **décide** ; **Ko garde le veto final.**
+⇒ **D39 cesse de bloquer le code E3.** ⛔ **Reste exigé avant toute ligne de code E3** : un **rang que Ko
+arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (§ 1 et 2 ci-dessous), **sur lesquels le relecteur
+décide**. La pause d'E3c (17/08/2026) se lève par cet arbitrage de rang, pas par D302.
+⚠ **Portée** : le code **E3**. Les autres chemins critiques gardent la règle de revue d'avant ; l'étendre appartient
+à Ko. ⚠ **Les bloquants posés par le relecteur sur les constats de l'audit SOLID du 09/09/2026** — avant E3d, avant
+la levée du drapeau des paiements — sont au backlog, reports de D302 (partie B).
+

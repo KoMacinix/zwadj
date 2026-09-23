@@ -1,0 +1,10 @@
+## PHASE 7 — Payments & finance (Chargily only at MVP)
+
+> ⛔ **ARBITRAGES DE KO DU 23/09/2026 (D302) — À LIRE AVANT TOUTE ENTRÉE DE CETTE PHASE.** Le lot argent (E3) est
+> **codé par Claude Code** ; les **décisions** sur le paiement sont prises par **le relecteur du chat** — pas par la
+> session qui code, qui signale et propose —, avec l'intervention de Ko ; la **revue** a la forme ratifiée
+> (« D39 ») : une AUTRE session, ouverte à froid, tente de casser le code et rapporte sans corriger, le relecteur
+> audite et décide, Ko garde le veto. Avant toute ligne de code E3 : un rang arbitré par Ko, puis l'état des lieux
+> et le cadrage du sous-lot, sur lesquels le relecteur décide. Texte complet, mot pour mot : `AGENTS.md`,
+> « À NE PAS faire », point E3 ; et `ZWADJ_CONTINUITE.md`, tête de « ⛔ E3 — MÉTHODE RENFORCÉE ».
+

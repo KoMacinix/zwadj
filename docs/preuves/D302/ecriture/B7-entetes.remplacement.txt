@@ -1,0 +1,7 @@
+- [ ] Enforce HTTPS + HSTS [INFRA][P0]
+- [ ] Set secure headers (CSP, X-Frame-Options, etc.) [BACK][P0]
+  ⛔ *(D302, 23/09/2026 : toujours absents de l'application — l'audit sécu du 09/09 le relève (contrôles 13, 16,
+  17), et à `HEAD` : **0** occurrence de HSTS, CSP, nosniff, anti-encadrement, Referrer-Policy ou
+  Permissions-Policy dans `app.setup.ts`, `main.ts`, `next.config.ts`, `vite.config.ts`, et pas de `helmet`. Une
+  CSP doit rester compatible avec le script de thème, Google GIS et Matterport (audit). **Pas d'entrée neuve** :
+  celles-ci suffisent. Des URL `http://` passent en production : « invariants de production », reports de D302.)*

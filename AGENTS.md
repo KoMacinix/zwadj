@@ -576,7 +576,9 @@ connexion (famille D115).
   compris quand c'est Ko qui l'énonce**, et ici deux messages après avoir invoqué D276 contre le
   dossier. La règle, pas l'intention, est ce qui survit à la session.
 - Petites PR, messages Conventional Commits. Expliquer les choix d'architecture dans la PR.
-- Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine.
+- Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine. ⛔ *(D302,
+  23/09/2026 : pour le paiement — E3 —, la revue a la forme ratifiée par Ko, « À NE PAS faire », point E3 ; auth et
+  concurrence : inchangé.)*
 - Le design fourni (App.tsx) est une **référence visuelle par écran**, jamais une base de code à refactorer telle quelle : il est desktop-only, en instant-book, et hors périmètre MVP sur plusieurs écrans (forum, magazine, carte, 360°, planning). Ne construire que les écrans du MVP en cours, en respectant ce présent fichier, pas l'intégralité du prototype.
   ⚠ **La fidélité au design est STRUCTURELLE, jamais chromatique** (D26, confirmée par la tranche UIP). Le design déclare lui-même `body[data-mode="pro"]{--accent:#222222}` : le rose est son accent **client**. Mais ses écrans pro portent **9 valeurs roses en dur** qui traversent l'override de token — transposées telles quelles, elles réintroduisent le rose. **Auditer l'absence de couleur en dur dans toute zone refondue.**
   ⚠ **Le design ne fait pas foi sur une phrase qui DÉCRIT le comportement du système** : sa boîte de suppression annonce « supprimées définitivement » alors que `DELETE /venues/:id` est un **soft delete**.
@@ -679,6 +681,28 @@ Ce bloc n'est plus relu depuis qu'il est clos — c'est exactement pour cela que
 a pas été appliquée. C'est D276 (« ce qui vaut décision s'écrit dans un fichier d'autorité »)
 poussé d'un cran : **le bon fichier est celui qu'on lit encore quand le sujet est refermé.**
 
+⛔ **AUCUN LOT HORS DE L'ORDRE DES RANGS — règle de Ko, 23/09/2026, écrite ici le même jour (D302).** Chaque lot
+appartient à un rang que Ko arbitre : un rang **neuf**, ou un rang **ouvert** qu'il fait avancer (le rang 17 en a
+porté plusieurs). ⇒ **La catégorie « hors rang » est rejetée** — D301, qui s'en réclamait, est devenu le **rang 21**
+rétroactivement.
+⚠ **MOTIF DE KO, TEL QUEL** : « un lot sans rang n'apparaît pas dans l'ordre ; une reprise qui y lit QUEL lot vient
+ensuite ne voit ni qu'il a eu lieu, ni ce qu'il a changé. »
+⇒ *Dérivé par la session, pas une parole de Ko* : c'est D284 par l'autre bout — D284 interdit qu'un rang clos laisse
+une absence, celle-ci qu'un lot ait lieu sans laisser de trace dans l'ordre. Un lot demandé sans rang nommé : la
+session **demande** le rang, elle ne se l'attribue pas (l'ordre n'a jamais été écrit par une session, D284).
+
+⛔ **FORME DES ENTRÉES NEUVES DU BACKLOG : PLUS DE PRIORITÉ PAR URGENCE — décision de Ko, 23/09/2026 (D302).**
+« Rien ne dort sous “pas urgent”. » Toute entrée écrite **à partir de D302** porte :
+- **CE QU'ELLE BLOQUE** — un lot, un rang, une levée de drapeau, un ajout nommé — **ou**, mot pour mot, « **à
+  ordonner par Ko** » ;
+- son **COÛT, en termes qui se relèvent** : code ou documentaire (compte ou non, D283 amendé par D292), fichiers
+  touchés, e2e exigée, cadrage chemin de l'argent, migration, dépendance, « ne mord qu'en production ».
+  ⛔ **Aucune durée estimée.**
+⇒ **Une classification tirée d'un audit se cite comme la SIENNE** (« P1 de l'audit sécu 09/09 »), jamais comme la
+nôtre.
+⚠ **Les étiquettes P0-P3 existantes ne bougent pas** : leur sort est une **décision due à Ko**, écrite sous la ligne
+du rang en attente, dans l'ordre des rangs de `ZWADJ_CONTINUITE.md`.
+
 ⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**
 Trois fois en deux sessions une mesure a renseigné sur la MACHINE et non sur le code,
 dont une conclusion publiée puis fusionnée : **la même commande, sur le même arbre,
@@ -750,8 +774,34 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
 ## À NE PAS faire
 - Ne pas élargir le périmètre au-delà du MVP demandé, même si le design fourni montre plus.
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).
-- Ne pas coder les chemins d'argent sans tests + demande de revue.
+- Ne pas coder les chemins d'argent sans tests + demande de revue. ⛔ *(D302, 23/09/2026 : toujours vrai. Pour E3, la
+  « revue » a désormais la forme ratifiée par Ko — une session adverse ouverte à froid, le relecteur (chat) qui
+  décide, le veto de Ko —, et E3 n'est plus codé par Ko : point E3 juste en dessous.)*
 - ⛔ **NE PAS LIVRER E3 (paiement Chargily) COMME UN LOT ORDINAIRE.** La méthode est **durcie (D126)** et décrite dans `ZWADJ_CONTINUITE.md` → « ⛔ E3 — MÉTHODE RENFORCÉE » : **cinq sous-lots** avec arrêt franc entre chacun, cadrage listant les **modes de défaillance** avant tout code, **toute garde neutralisée pour prouver que son test mord**, **aucune valeur écrite de mémoire** (charges utiles Chargily capturées du bac à sable, aucun montant en dur), **aucune référence gelée** sur le chemin de l'argent (la seule valeur acceptable est zéro), webhook **mince** (signature → dédup → file → 200 : un handler lent fait retenter Chargily et multiplie les courses), **livraison sombre** derrière un drapeau. Un mode de défaillance non listé au cadrage **ne se code pas**.
+- ⛔ **E3 — QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE : arbitrages de Ko du 23/09/2026 (D302), À LIRE AVANT DE
+  TOUCHER AU PAIEMENT.** Portée : **le lot argent, c'est-à-dire E3, paiement Chargily.**
+  1. **Qui code** — Ko, mot pour mot : « **Le lot argent ne sera plus codé par moi mais par Claude Code.** »
+  2. **Qui décide** — Ko, mot pour mot : « **Les décisions concernant le lot paiement seront prises par Claude, dans
+     mon chat de relecture, avec mon intervention si je vois quelque chose qui cloche.** »
+     ⚠ **Ce « Claude » n'est PAS la session qui code : c'est le relecteur du chat.** Sur le paiement, **la session de
+     code signale et propose, elle ne décide pas.** Les décisions lui arrivent **par les messages de Ko** et
+     s'écrivent « **décision du relecteur (chat), déléguée par Ko le 23/09/2026** », avec leur motif.
+  3. **La forme de la revue (« D39 ») — RATIFIÉE par Ko, arbitrage tranché** :
+     - une session Claude Code écrit le code E3 ;
+     - une **AUTRE** session, ouverte **à froid**, tente de le casser : elle rejoue les modes de défaillance du
+       cadrage, neutralise chaque garde neuve, et **ne corrige rien, elle rapporte** ;
+     - le relecteur (chat) audite son rapport contre le dépôt et **décide** ;
+     - **Ko garde le veto final.**
+  ⇒ **D39 cesse de bloquer le code E3.** ⛔ **Reste exigé avant toute ligne de code E3** : **un rang que Ko
+  arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (méthode renforcée, D126), **sur lesquels le
+  relecteur décide**. ⚠ La pause d'E3c (arbitrage de Ko, 17/08/2026) n'est pas levée par D302 : c'est
+  l'arbitrage d'un rang qui la lève.
+  ⚠ **« D39 »** : au registre, D39 est « prix par créneau », remplacée par D46 pour le Flux B ; sa dernière phrase —
+  « Chemin d'argent ⇒ revue humaine » — est ce que « revue humaine D39 » cite depuis. Précision, pas correction.
+  ⚠ **Ce que ces arbitrages NE disent PAS** : ils visent le code **E3**. Les autres chemins critiques (auth,
+  concurrence, suppression de compte, tarification hors E3) gardent la règle de revue d'avant — **l'étendre
+  appartient à Ko.** `CLAUDE.md` (« s'arrêter et demander ») reste compatible : la session demande, la réponse
+  arrive par les messages de Ko.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 
@@ -785,6 +835,10 @@ campagne SOLID/Strategy** : elle ignore S11-a (D261), S11-b et tout ce qui suit.
 ⇒ **L'ÉTAT COURANT NE SE LIT PAS ICI.** Il se lit dans `ZWADJ_CONTINUITE.md` : la section
 « PROCHAIN LOT » pour le rang en cours, la section de la dernière session pour ce qui vient
 d'être livré et mesuré, et la table du registre pour le dernier numéro de décision.
+⇒ **ET QUEL LOT VIENT ENSUITE : la section « ORDRE DES RANGS »** du même fichier — le rang courant
+est sa dernière ligne « ⇒ RANG N ». « PROCHAIN LOT » dit **OÙ EN EST** un rang, pas **lequel**
+vient (D283 : deux questions, deux endroits). ⛔ *Pointeur AJOUTÉ le 23/09/2026 (D302, consigne de
+Ko) : ce bloc ne le nommait pas — relevé par D301 ; aucun pointeur retiré.*
 
 | Lot | Objet | État |
 |---|---|---|

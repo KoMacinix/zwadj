@@ -1,0 +1,14 @@
+  ⛔ **C'est du code de `neutralisation/` : le lot qui le fera COMPTE** (Ko). ~~⚠ **Priorité posée par la session**,
+  alignée sur l'entrée voisine du 10/09 ; elle appartient à Ko.~~ ⚠ **Voisine, pas doublon** : l'entrée
+  `[INFRA][P3]` du 10/09 veut **classer** les `node` (observateur ou worker) ; celle-ci veut **nommer** tout ce qui
+  tourne. Un même relevé servirait les deux.
+  ⛔ **FORME DE KO (D302, 23/09/2026) : ce report passe à la forme des entrées neuves — sa priorité est retirée.**
+  ⇒ **BLOQUE : rien dans le critère courant — donc « à ordonner par Ko ».** Vérifié le 23/09/2026 : après D301,
+  **aucune règle de certification ne dépend d'un inventaire EN VOL**. Une en dépend **DEVANT chaque mesure** — le
+  point 2 du critère du rang 9 (« l'état machine ET son INVENTAIRE NOMMÉ relevés devant chaque mesure ») — et
+  celui-là existe : la sonde l'imprime (`neutralisation/sonde-etat-machine.ps1`, section « INVENTAIRE > 150 Mo » ;
+  pièce relevée `docs/preuves/D299/passe/rang19-p2-sonde-avant-e2e.txt`). Cet outillage ne débloquerait que la
+  **réécriture** de la clause « processus étranger » du point 7, qui appartient à Ko.
+  ⇒ **COÛT** : **code** (`neutralisation/`, il **compte**) ; 1 fichier, `neutralisation/echantillonneur-etat-machine.ps1`,
+  avec son en-tête et sa calibration à deux bras (D286) ; pas d'e2e, pas de cadrage chemin de l'argent, pas de
+  migration, pas de dépendance ; ne mord qu'en certification, sur le poste de Ko.

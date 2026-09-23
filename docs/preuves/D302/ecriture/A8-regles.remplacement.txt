@@ -1,0 +1,25 @@
+poussé d'un cran : **le bon fichier est celui qu'on lit encore quand le sujet est refermé.**
+
+⛔ **AUCUN LOT HORS DE L'ORDRE DES RANGS — règle de Ko, 23/09/2026, écrite ici le même jour (D302).** Chaque lot
+appartient à un rang que Ko arbitre : un rang **neuf**, ou un rang **ouvert** qu'il fait avancer (le rang 17 en a
+porté plusieurs). ⇒ **La catégorie « hors rang » est rejetée** — D301, qui s'en réclamait, est devenu le **rang 21**
+rétroactivement.
+⚠ **MOTIF DE KO, TEL QUEL** : « un lot sans rang n'apparaît pas dans l'ordre ; une reprise qui y lit QUEL lot vient
+ensuite ne voit ni qu'il a eu lieu, ni ce qu'il a changé. »
+⇒ *Dérivé par la session, pas une parole de Ko* : c'est D284 par l'autre bout — D284 interdit qu'un rang clos laisse
+une absence, celle-ci qu'un lot ait lieu sans laisser de trace dans l'ordre. Un lot demandé sans rang nommé : la
+session **demande** le rang, elle ne se l'attribue pas (l'ordre n'a jamais été écrit par une session, D284).
+
+⛔ **FORME DES ENTRÉES NEUVES DU BACKLOG : PLUS DE PRIORITÉ PAR URGENCE — décision de Ko, 23/09/2026 (D302).**
+« Rien ne dort sous “pas urgent”. » Toute entrée écrite **à partir de D302** porte :
+- **CE QU'ELLE BLOQUE** — un lot, un rang, une levée de drapeau, un ajout nommé — **ou**, mot pour mot, « **à
+  ordonner par Ko** » ;
+- son **COÛT, en termes qui se relèvent** : code ou documentaire (compte ou non, D283 amendé par D292), fichiers
+  touchés, e2e exigée, cadrage chemin de l'argent, migration, dépendance, « ne mord qu'en production ».
+  ⛔ **Aucune durée estimée.**
+⇒ **Une classification tirée d'un audit se cite comme la SIENNE** (« P1 de l'audit sécu 09/09 »), jamais comme la
+nôtre.
+⚠ **Les étiquettes P0-P3 existantes ne bougent pas** : leur sort est une **décision due à Ko**, écrite sous la ligne
+du rang en attente, dans l'ordre des rangs de `ZWADJ_CONTINUITE.md`.
+
+⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**

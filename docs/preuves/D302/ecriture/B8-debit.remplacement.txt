@@ -1,0 +1,1 @@
+- [ ] Global + per-endpoint rate limiting [BACK][P0] ⛔ *(D302 : présent, mais stockage mémoire du processus, confiance du proxy non configurée, et `@SkipThrottle` dans cinq contrôleurs à `HEAD` — audit sécu 09/09 · divers, 2 ; reports de D302.)*

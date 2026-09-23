@@ -1,0 +1,1 @@
+(409 `EMAIL_ALREADY_USED`, tranché par la contrainte BDD, pas de pré-check) ⛔ *(D302 : l'audit sécu du 09/09 y voit une énumération d'adresses — contrôle 26, « partiel » — à l'inscription et au changement d'e-mail. Choix produit, à ordonner par Ko : reports de D302, « audit sécu 09/09 · divers », 4.)*

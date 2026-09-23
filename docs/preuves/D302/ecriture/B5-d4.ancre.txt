@@ -1,0 +1,1 @@
+bornée par la révocation de TOUS les refresh tokens au moment de l'exécution [BACK][P2]

@@ -1,0 +1,1 @@
+- [ ] MFA/2FA for admin & super-admin accounts [ADMIN][P0] ⛔ *(D302 : absent à `HEAD` — audit sécu 09/09, contrôle 12 ; reports de D302, « audit sécu 09/09 · divers », 3.)*

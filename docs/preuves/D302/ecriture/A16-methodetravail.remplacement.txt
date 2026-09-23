@@ -1,0 +1,3 @@
+- **Chemins critiques (paiement, auth, concurrence, suppression de compte) = revue humaine obligatoire.** ⛔ *(D302,
+  23/09/2026 : pour le paiement — E3 —, la revue a la forme ratifiée par Ko : tête de « ⛔ E3 — MÉTHODE
+  RENFORCÉE ». Les trois autres : inchangé.)*

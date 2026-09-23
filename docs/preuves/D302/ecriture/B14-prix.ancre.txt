@@ -1,0 +1,1 @@
+- [ ] Keep booking/pricing rules in shared/backend only — prevent Client/Pro logic drift [SHARED][P0]

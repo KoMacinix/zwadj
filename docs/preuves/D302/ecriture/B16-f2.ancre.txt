@@ -1,0 +1,1 @@
+- **F2** — décomposition d'`AuthService`, `BookingsService`, `WalkinJourney`. À réévaluer maintenant que S5b a dégagé la concurrence.

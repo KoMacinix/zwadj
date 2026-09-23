@@ -1,0 +1,2 @@
+- [ ] Enforce HTTPS + HSTS [INFRA][P0]
+- [ ] Set secure headers (CSP, X-Frame-Options, etc.) [BACK][P0]

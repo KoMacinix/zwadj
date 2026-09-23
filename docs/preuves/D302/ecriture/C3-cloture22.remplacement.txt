@@ -1,0 +1,26 @@
+## ~~PROCHAIN LOT~~ — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ ~~**OUVERT LE 23/09/2026 : D302**~~ ⛔ **CLOS LE 23/09/2026 : D302**
+
+### ⛔ CLÔTURE DU 23/09/2026 (D302) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **OUVERT, ARBITRÉ ET CLOS LE 23/09/2026, DANS LA SESSION DE LA REPRISE À FROID, SUR ORDRE DE KO** — arbitrage
+écrit en **première** ligne dans l'ordre des rangs (patron de D295). ⇒ **QUEL lot : rang 22 de l'ordre des rangs.
+OÙ IL EN EST : clos, ici.** Titre barré à la clôture (patron de D273, D284 et D293) ; ce bloc est son
+rafraîchissement de clôture (règle de D294).
+⇒ **PARTIE A — FAITE** : rang 21 = D301 (rétroactivement), rang 22 = ce lot, rang 23 en attente, et la règle de Ko
+« aucun lot hors de l'ordre des rangs » (ici et dans `AGENTS.md`) ; E3 codé par Claude Code, décisions de paiement
+au **relecteur (chat)**, forme de la revue ratifiée — écrits dans `AGENTS.md` (« À NE PAS faire », point E3), en
+tête de « ⛔ E3 — MÉTHODE RENFORCÉE » et en tête de la PHASE 7 du backlog ; pointeur « ORDRE DES RANGS » sous
+« État des lots » ; forme des entrées neuves du backlog (`AGENTS.md`, « Méthode »). Passe D277 dans les deux sens.
+⇒ **PARTIE B — FAITE** : les deux audits versés (`docs/preuves/D302/sources/`, SHA-256 égaux à ceux de Ko) et
+confrontés par symbole à `HEAD` — **tous les constats nommés sont OUVERTS, sauf le montage PG18, clos par D292**.
+Décisions du relecteur, transmises par Ko : **F1, F2 et F6 bloquent E3d ; F8 bloque la levée du drapeau des
+paiements ; A3 bloque tout nouveau type de tarification de prestation ; R2 se traite avec le prochain lot qui
+touche `booking-charge`.** Le reste est « à ordonner par Ko ». Entrées : backlog, reports de D302.
+⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de code
+non certifiés : ZÉRO, inchangé.** Aucune porte lancée : aucune ne lit ces fichiers.
+⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la
+clôture**. ⚠ **Une permission n'est pas un arbitrage** ; et pour E3, un rang arbitré ne suffit pas (l'état des
+lieux et le cadrage passent d'abord, le relecteur décide dessus).
+⚠ **DÉCISIONS DUES À KO** : le sort des étiquettes P0-P3 existantes (écrit sous la ligne du rang 23) ; les motifs
+non transmis des décisions sur F8 et R2 ; `THROTTLE_*` contre D128 ; l'extension de la forme de revue aux chemins
+critiques hors E3 ; le zip de pièces de l'auditeur, non versé. Détail, mesures, fautes et limites : section D302.

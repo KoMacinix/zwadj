@@ -1,0 +1,3 @@
+- [ ] Automated daily DB backups [INFRA][P0]
+- [ ] Object-storage backup/versioning [INFRA][P1]
+- [ ] Test restore from backup [INFRA][P1]

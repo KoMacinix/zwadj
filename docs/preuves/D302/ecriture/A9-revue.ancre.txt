@@ -1,0 +1,1 @@
+- Ne pas coder les chemins d'argent sans tests + demande de revue.

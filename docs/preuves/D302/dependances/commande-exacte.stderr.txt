@@ -1,0 +1,2 @@
+ ERROR  Unknown options: 'fetch-retries', 'fetch-timeout'
+For help, run: pnpm help audit

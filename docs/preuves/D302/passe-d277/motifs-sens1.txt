@@ -1,0 +1,14 @@
+# Passe D277 de D302 (rang 22), SENS 1 — ce que le lot INVALIDE :
+#  (a) la catégorie « hors rang » (Ko, 23/09/2026 : aucun lot hors de l'ordre des rangs) ;
+#  (b) « E3 est codé par Ko » (Ko : « le lot argent ne sera plus codé par moi mais par Claude Code ») ;
+#  (c) la revue humaine de E3 sous sa forme d'avant (Ko ratifie la forme de D39 : une session code, une AUTRE
+#      session tente de casser, le relecteur du chat audite et décide, Ko garde le veto) ;
+#  (d) « aucune décision sur le paiement sans Ko » lue comme « Ko décide » (Ko délègue au relecteur du chat) ;
+#  (e) le bloc « État des lots » qui ne nomme pas l'ordre des rangs (point 4).
+hors-rang              (?i)hors[ -]rang
+code-par-ko            (?i)cod(?:er|é|e) par Ko|le lot de Ko|lot de Ko
+revue-humaine          (?i)revue humaine
+demande-de-revue       (?i)demande de revue|requiert revue
+d39                    \bD39\b
+ko-decide-paiement     (?i)(?:décision|arbitrage)s? (?:de|par) Ko.{0,60}?(?:paiement|E3|argent)
+etat-courant-ici       (?i)l'état courant ne se lit pas ici

@@ -1,0 +1,29 @@
+⇒ ~~**RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+20, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⚠ **Une permission n'est pas un arbitrage** :
+le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel.
+⛔ **CONSOMMÉ LE 23/09/2026 (D302), RÉTROACTIVEMENT — ARBITRÉ PAR KO : le RANG 21 est D301**, le lot
+documentaire du 22/09/2026 (la ligne de `CLAUDE.md` retirée ; le point 7 du critère réduit à ce qui se mesure).
+Barré plutôt qu'effacé (D276). D301 s'était écrit « **hors rang** », ce rang étant réservé au produit : **Ko
+rejette la catégorie**, et la réserve tombe avec elle. **Motif de Ko, tel quel** : « un lot sans rang
+n'apparaît pas dans l'ordre ; une reprise qui y lit QUEL lot vient ensuite ne voit ni qu'il a eu lieu, ni ce
+qu'il a changé. » ⇒ **Documentaire : compteur de lots de code non certifiés à ZÉRO, inchangé.** ⇒ **Où il en
+est** : section « PROCHAIN LOT — rang 21 » en tête de ce fichier — clôture courte, renvoi à la section D301.
+⛔ **RÈGLE DE KO, 23/09/2026 : AUCUN LOT HORS DE L'ORDRE DES RANGS.** Chaque lot appartient à un rang que Ko
+arbitre — un rang **neuf**, ou un rang **ouvert** qu'il fait avancer (le rang 17 en a porté plusieurs). Écrite
+aussi dans `AGENTS.md`, à côté de la règle de D284, parce que c'est lui qu'une session lit avant d'ouvrir un lot.
+⛔ **ARBITRÉ LE 23/09/2026 PAR KO : le RANG 22 est D302**, lot DOCUMENTAIRE en deux parties : **(A)** ses
+arbitrages — ce rang et le précédent, qui code et qui décide sur E3, la forme de la revue d'E3 ratifiée (« D39 »),
+le pointeur « ORDRE DES RANGS » sous « État des lots » de `AGENTS.md`, la forme des entrées neuves du backlog ;
+**(B)** les deux audits externes du 09/09/2026 (SOLID/Strategy, sécurité en 30 contrôles) versés au dépôt et
+confrontés au code de `HEAD`. ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de Ko** (patron de D295).
+⇒ **Documentaire** (`.md` d'autorité et `docs/preuves/` seulement) : **il ne compte pas dans les deux/trois**
+(D283, amendé par D292). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 22 » en tête de ce fichier.
+⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+22, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage** :
+le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel. ⚠ **Et pour E3, rang arbitré ne suffit
+pas** : l'état des lieux et le cadrage du sous-lot passent d'abord, et c'est le relecteur (chat) qui décide
+dessus (D302 ; `AGENTS.md`, « À NE PAS faire »).
+⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
+la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
+anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
+ligne qu'une reprise lit pour savoir ce qui attend Ko.

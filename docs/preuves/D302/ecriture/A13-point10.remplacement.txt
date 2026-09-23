@@ -1,0 +1,9 @@
+Revue humaine obligatoire (D39) — et l'auditeur **reproduit**, il ne relit pas :
+il rejoue le défaut lui-même et neutralise chaque garde neuve. Une relecture de
+diff n'a jamais trouvé aucun des défauts de cette campagne.
+⛔ *(D302, 23/09/2026 : FORME RATIFIÉE PAR KO — « l'auditeur » est une **AUTRE session Claude Code, ouverte à
+froid**, qui rejoue les modes de défaillance du cadrage, neutralise chaque garde neuve et **rapporte sans
+corriger** ; le **relecteur (chat)** audite son rapport contre le dépôt et **décide** ; **Ko garde le veto
+final**. Tête de cette méthode. ⚠ Le premier paragraphe de ce point — « diff contre le zip livré », `git apply
+--check` — décrit l'ère des archives ; depuis la bascule Claude Code (D266), le contrôle de provenance est
+l'énumération des fichiers attendus (`CLAUDE.md`). Rapporté au backlog, non corrigé ici.)*

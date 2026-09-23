@@ -1,0 +1,1 @@
+- [ ] Dependency vulnerability scanning in CI [INFRA][P1] ⛔ *(D302 : `pnpm audit` rejoué à la main le 23/09/2026 — 55 avis, 53 GHSA, pièces `docs/preuves/D302/dependances/` ; aucun scan en CI. Reports de D302, « audit sécu 09/09 · dépendances ».)*

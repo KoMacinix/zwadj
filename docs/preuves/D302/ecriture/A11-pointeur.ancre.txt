@@ -1,0 +1,3 @@
+⇒ **L'ÉTAT COURANT NE SE LIT PAS ICI.** Il se lit dans `ZWADJ_CONTINUITE.md` : la section
+« PROCHAIN LOT » pour le rang en cours, la section de la dernière session pour ce qui vient
+d'être livré et mesuré, et la table du registre pour le dernier numéro de décision.

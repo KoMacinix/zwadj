@@ -1,0 +1,20 @@
+# Jetons attendus après la partie B et la clôture de D302 — fichier, attendu, jeton (séparés par des tabulations).
+ZWADJ_BACKLOG.md	1	## Reports du 23/09/2026 — rang 22 : arbitrages de Ko, et les deux audits externes du 09/09 (D302)
+ZWADJ_BACKLOG.md	1	audit SOLID 09/09 · F1 — accept peut écrire ACCEPTED
+ZWADJ_BACKLOG.md	3	BLOQUE E3d.
+ZWADJ_BACKLOG.md	1	BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS
+ZWADJ_BACKLOG.md	1	BLOQUE L'AJOUT DE TOUT NOUVEAU TYPE DE TARIFICATION DE PRESTATION
+ZWADJ_BACKLOG.md	1	CONFRONTÉ À D286 — ET D286 NE LE FERME PAS
+ZWADJ_BACKLOG.md	1	audit sécu 09/09 · journaux — jeton dans le chemin de verify-email
+ZWADJ_BACKLOG.md	1	LE MONTAGE PG18 DE CE P1 EST CLOS PAR D292
+ZWADJ_BACKLOG.md	1	La commande exacte de l'annexe ÉCHOUE avec le pnpm du dépôt
+ZWADJ_BACKLOG.md	1	Annotée, pas barrée : la phrase n'est pas fausse
+ZWADJ_BACKLOG.md	1	aucun plafond absolu de durée de session (contrôle 9)
+ZWADJ_BACKLOG.md	1	à ne pas confondre avec « audit SOLID 09/09 · F2 »
+ZWADJ_CONTINUITE.md	1	## Session du 23/09/2026 — D302
+ZWADJ_CONTINUITE.md	1	| D302 | A | D302 — rang 22 CLOS
+ZWADJ_CONTINUITE.md	1	(D302, 23/09/2026) RANG 22 CLOS
+ZWADJ_CONTINUITE.md	1	## ~~PROCHAIN LOT~~ — rang 22
+ZWADJ_CONTINUITE.md	0	## PROCHAIN LOT — rang 22
+ZWADJ_CONTINUITE.md	1	cette dette BLOQUE l'ajout de tout nouveau type de tarification
+ZWADJ_CONTINUITE.md	1	Aucun constat nommé n'est clos, sauf le montage PG18.

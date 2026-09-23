@@ -1,0 +1,1 @@
+- **Chemins critiques (paiement, auth, concurrence, suppression de compte) = revue humaine obligatoire.**

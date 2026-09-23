@@ -1,0 +1,8 @@
+- [ ] Draft Terms of Service (FR/AR) [SHARED][P1]
+- [ ] Draft Privacy Policy (FR/AR) [SHARED][P1]
+- [ ] Cookie/tracking consent banner + storage [CLIENT][P1]
+- [ ] Implement data export (access right) [BACK][P2]
+- [ ] Implement account/data deletion (erasure right) [BACK][P2]
+- [ ] Reconcile soft-delete vs erasure: anonymize (not delete) records tied to financial/legal retention [BACK][P2]
+- [ ] Draft cancellation & payment terms [SHARED][P1]
+- [ ] Add consent checkboxes at registration/booking [CLIENT][P1]

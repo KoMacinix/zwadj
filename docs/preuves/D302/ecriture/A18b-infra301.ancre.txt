@@ -1,0 +1,4 @@
+  ⛔ **C'est du code de `neutralisation/` : le lot qui le fera COMPTE** (Ko). ⚠ **Priorité posée par la session**,
+  alignée sur l'entrée voisine du 10/09 ; elle appartient à Ko. ⚠ **Voisine, pas doublon** : l'entrée
+  `[INFRA][P3]` du 10/09 veut **classer** les `node` (observateur ou worker) ; celle-ci veut **nommer** tout ce qui
+  tourne. Un même relevé servirait les deux.

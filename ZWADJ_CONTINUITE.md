@@ -141,6 +141,9 @@
 > le prochain lot.
 > ⚠ Ce qui reste VRAI dans la phrase barrée, et qui vit ailleurs : E3 est un lot du chemin
 > critique à revue humaine (D39), et sa méthode renforcée est décrite plus bas.
+> ⛔ *(D302, 23/09/2026 : la phrase barrée disait aussi « c'est le lot de Ko » — **plus vrai** : E3 est codé par
+> Claude Code, les décisions reviennent au relecteur (chat), Ko garde le veto, et la revue a la forme ratifiée par
+> Ko. Tête de « ⛔ E3 — MÉTHODE RENFORCÉE ».)*
 >
 > ⚠ **E3 NE SE FAIT PAS COMME LES AUTRES LOTS.** Cinq sous-lots, un arrêt franc
 > entre chacun, et six exigences qui n'existaient pour aucun lot précédent. Voir
@@ -179,7 +182,7 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
 - **D36 — Capacité minimale SUPPRIMÉE.** ✅ **Fait et vérifié au Lot A9.** `capacity_min` retirée par migration ; `capacityMax` porte seul l'information.
 - **D37 — Suppression d'un compte : DEMANDE, jamais exécution directe.** ✅ **Fait et vérifié au Lot A10.** Validation manuelle par l'admin. L'exécution est une anonymisation, jamais un `DELETE`. Réversible tant que `PENDING`.
 - **D38 — Deux numéros de téléphone pour le pro.** ✅ **Fait et vérifié au Lot A10.** `ProProfile.phone` (NOT NULL) + `phone2` (nullable). Normalisation E.164 `+213` (backlog 23.9) **toujours non faite**.
-- **D39 — Prix par créneau : CONTRAINTE DE CONCEPTION du Flux B.** `PricingRule` n'a aucun lien vers `SlotTemplate`. Le besoin est acté et doit être pris en compte **dès la conception du moteur de résolution de prix** (backlog 6.2). Interdit de le bricoler avant. Chemin d'argent ⇒ revue humaine.
+- **D39 — Prix par créneau : CONTRAINTE DE CONCEPTION du Flux B.** `PricingRule` n'a aucun lien vers `SlotTemplate`. Le besoin est acté et doit être pris en compte **dès la conception du moteur de résolution de prix** (backlog 6.2). Interdit de le bricoler avant. Chemin d'argent ⇒ revue humaine. ⛔ *(D302, 23/09/2026 : c'est cette dernière phrase que « revue humaine D39 » cite depuis, pour E3 ; le reste de D39 est remplacé par D46. Pour E3, la forme de la revue est ratifiée par Ko : tête de « ⛔ E3 — MÉTHODE RENFORCÉE ».)*
 - **D40 — Saisie du prix : affichage groupé + unité, valeur brute stockée.** ✅ Espace insécable U+00A0, curseur repositionné, état en chiffres bruts. Le formateur ne groupe pas une saisie non entièrement numérique.
 - **D41 — Salles d'un compte supprimé : archivage réversible.** ✅ **Fait et vérifié au Lot A10.** `deletedAt` sur chaque salle VIVANTE, trace exacte dans `AccountDeletionArchivedVenue`. `businessName` conservé. `emailHash` = SHA-256 de l'adresse détruite. **La restauration n'est PAS un endpoint** : opération manuelle DBeaver.
 - **D42 — Définir un mot de passe sur un compte Google-only.** ✅ **Fait et vérifié aux Lots A10/A11.** Un seul endpoint `POST /me/change-password`, **mode décidé par le SERVEUR** d'après `passwordHash`. Sessions toutes révoquées SAUF la courante, qui est rotée. `AuthUserDTO` gagne `phone`, `hasPassword`, `hasGoogle`, `proProfile.phone2`.
@@ -402,7 +405,9 @@ Aucun n'était visible en relecture ; tous ont été trouvés à l'exécution. *
 - **Un seul flux actif à la fois.** Les comptes Opus additionnels servent uniquement de relais si la session en cours atteint sa limite sur LE FLUX EN COURS.
 - **Toujours faire proposer un découpage en lots avant qu'un agent écrive du code**, valider chaque lot avant le suivant.
 - **Toujours joindre les TROIS fichiers** (`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, zip du repo) à chaque session. Cause d'un vrai incident (Lot A0 livré sous le nom A1).
-- **Chemins critiques (paiement, auth, concurrence, suppression de compte) = revue humaine obligatoire.**
+- **Chemins critiques (paiement, auth, concurrence, suppression de compte) = revue humaine obligatoire.** ⛔ *(D302,
+  23/09/2026 : pour le paiement — E3 —, la revue a la forme ratifiée par Ko : tête de « ⛔ E3 — MÉTHODE
+  RENFORCÉE ». Les trois autres : inchangé.)*
 - ⛔ **`prisma migrate dev` est INTERDIT** — voir la section dédiée. Les migrations s'écrivent à la MAIN, puis `prisma:migrate` (= `migrate deploy`).
 - **Ne jamais traiter un parse syntaxique comme un typecheck.** Les environnements d'exécution de certains agents n'ont ni réseau ni pnpm : `prisma generate`, `typecheck`, `lint`, `test`, `test:int` y sont **impossibles**. Exiger que l'agent dise explicitement ce qu'il a *réellement* exécuté.
 - **Après CHAQUE extraction de zip, avant toute autre chose :**
@@ -1039,9 +1044,41 @@ pointeurs courants mis à jour, passe D277 dans les deux sens ; étape 0 : les h
 règle de Ko au critère du rang 9, point 7. **Documentaire : compteur de lots de code non certifiés à ZÉRO,
 inchangé.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 20 », clôture. ⇒ La ligne du rang 21,
 ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie à la clôture.**
-⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
-20, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage** :
+⇒ ~~**RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+20, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⚠ **Une permission n'est pas un arbitrage** :
 le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel.
+⛔ **CONSOMMÉ LE 23/09/2026 (D302), RÉTROACTIVEMENT — ARBITRÉ PAR KO : le RANG 21 est D301**, le lot
+documentaire du 22/09/2026 (la ligne de `CLAUDE.md` retirée ; le point 7 du critère réduit à ce qui se mesure).
+Barré plutôt qu'effacé (D276). D301 s'était écrit « **hors rang** », ce rang étant réservé au produit : **Ko
+rejette la catégorie**, et la réserve tombe avec elle. **Motif de Ko, tel quel** : « un lot sans rang
+n'apparaît pas dans l'ordre ; une reprise qui y lit QUEL lot vient ensuite ne voit ni qu'il a eu lieu, ni ce
+qu'il a changé. » ⇒ **Documentaire : compteur de lots de code non certifiés à ZÉRO, inchangé.** ⇒ **Où il en
+est** : section « PROCHAIN LOT — rang 21 » en tête de ce fichier — clôture courte, renvoi à la section D301.
+⛔ **RÈGLE DE KO, 23/09/2026 : AUCUN LOT HORS DE L'ORDRE DES RANGS.** Chaque lot appartient à un rang que Ko
+arbitre — un rang **neuf**, ou un rang **ouvert** qu'il fait avancer (le rang 17 en a porté plusieurs). Écrite
+aussi dans `AGENTS.md`, à côté de la règle de D284, parce que c'est lui qu'une session lit avant d'ouvrir un lot.
+⛔ **ARBITRÉ LE 23/09/2026 PAR KO : le RANG 22 est D302**, lot DOCUMENTAIRE en deux parties : **(A)** ses
+arbitrages — ce rang et le précédent, qui code et qui décide sur E3, la forme de la revue d'E3 ratifiée (« D39 »),
+le pointeur « ORDRE DES RANGS » sous « État des lots » de `AGENTS.md`, la forme des entrées neuves du backlog ;
+**(B)** les deux audits externes du 09/09/2026 (SOLID/Strategy, sécurité en 30 contrôles) versés au dépôt et
+confrontés au code de `HEAD`. ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de Ko** (patron de D295).
+⇒ **Documentaire** (`.md` d'autorité et `docs/preuves/` seulement) : **il ne compte pas dans les deux/trois**
+(D283, amendé par D292). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 22 » en tête de ce fichier.
+⛔ **(D302, 23/09/2026) RANG 22 CLOS** : partie A — les arbitrages de Ko écrits là où une session les lit (ordre des
+rangs, `AGENTS.md`, tête de la méthode renforcée d'E3, PHASE 7 du backlog) ; partie B — les deux audits du 09/09
+versés et confrontés par symbole à `HEAD`, **tous les constats nommés OUVERTS sauf le montage PG18 (D292)** ; F1, F2,
+F6 bloquent E3d et F8 la levée du drapeau (décisions du relecteur). **Documentaire : compteur de lots de code non
+certifiés à ZÉRO, inchangé.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 22 », clôture. ⇒ La ligne du rang
+23, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie à la clôture.**
+⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+22, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage** :
+le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel. ⚠ **Et pour E3, rang arbitré ne suffit
+pas** : l'état des lieux et le cadrage du sous-lot passent d'abord, et c'est le relecteur (chat) qui décide
+dessus (D302 ; `AGENTS.md`, « À NE PAS faire »).
+⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
+la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
+anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
+ligne qu'une reprise lit pour savoir ce qui attend Ko.
 ⇒ **Pourquoi (b) et pas (a)** : la quantité qu'un budget LIE — le maximum par test — n'a au dépôt
 que **deux points isolés, sur deux suites, à deux dates**, et **zéro mesure de dispersion** ; les
 12 passes de D291 mesurent la durée **de suite entière**. Un budget *choisi sur des durées* serait
@@ -1125,6 +1162,48 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## ~~PROCHAIN LOT~~ — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ ~~**OUVERT LE 23/09/2026 : D302**~~ ⛔ **CLOS LE 23/09/2026 : D302**
+
+### ⛔ CLÔTURE DU 23/09/2026 (D302) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **OUVERT, ARBITRÉ ET CLOS LE 23/09/2026, DANS LA SESSION DE LA REPRISE À FROID, SUR ORDRE DE KO** — arbitrage
+écrit en **première** ligne dans l'ordre des rangs (patron de D295). ⇒ **QUEL lot : rang 22 de l'ordre des rangs.
+OÙ IL EN EST : clos, ici.** Titre barré à la clôture (patron de D273, D284 et D293) ; ce bloc est son
+rafraîchissement de clôture (règle de D294).
+⇒ **PARTIE A — FAITE** : rang 21 = D301 (rétroactivement), rang 22 = ce lot, rang 23 en attente, et la règle de Ko
+« aucun lot hors de l'ordre des rangs » (ici et dans `AGENTS.md`) ; E3 codé par Claude Code, décisions de paiement
+au **relecteur (chat)**, forme de la revue ratifiée — écrits dans `AGENTS.md` (« À NE PAS faire », point E3), en
+tête de « ⛔ E3 — MÉTHODE RENFORCÉE » et en tête de la PHASE 7 du backlog ; pointeur « ORDRE DES RANGS » sous
+« État des lots » ; forme des entrées neuves du backlog (`AGENTS.md`, « Méthode »). Passe D277 dans les deux sens.
+⇒ **PARTIE B — FAITE** : les deux audits versés (`docs/preuves/D302/sources/`, SHA-256 égaux à ceux de Ko) et
+confrontés par symbole à `HEAD` — **tous les constats nommés sont OUVERTS, sauf le montage PG18, clos par D292**.
+Décisions du relecteur, transmises par Ko : **F1, F2 et F6 bloquent E3d ; F8 bloque la levée du drapeau des
+paiements ; A3 bloque tout nouveau type de tarification de prestation ; R2 se traite avec le prochain lot qui
+touche `booking-charge`.** Le reste est « à ordonner par Ko ». Entrées : backlog, reports de D302.
+⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de code
+non certifiés : ZÉRO, inchangé.** Aucune porte lancée : aucune ne lit ces fichiers.
+⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la
+clôture**. ⚠ **Une permission n'est pas un arbitrage** ; et pour E3, un rang arbitré ne suffit pas (l'état des
+lieux et le cadrage passent d'abord, le relecteur décide dessus).
+⚠ **DÉCISIONS DUES À KO** : le sort des étiquettes P0-P3 existantes (écrit sous la ligne du rang 23) ; les motifs
+non transmis des décisions sur F8 et R2 ; `THROTTLE_*` contre D128 ; l'extension de la forme de revue aux chemins
+critiques hors E3 ; le zip de pièces de l'auditeur, non versé. Détail, mesures, fautes et limites : section D302.
+
+## ~~PROCHAIN LOT~~ — rang 21 · `[DOC]` **D301, rang attribué après coup** ⛔ **CLOS LE 22/09/2026 : D301 — RANG ATTRIBUÉ LE 23/09/2026 PAR KO (D302)**
+
+### ⛔ CLÔTURE — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **CE RANG A ÉTÉ ATTRIBUÉ APRÈS COUP.** D301 s'est ouvert et clos le 22/09/2026 en se déclarant « hors rang » ;
+Ko a rejeté cette catégorie le 23/09/2026 et lui a donné le **rang 21** (arbitrage écrit dans l'ordre des rangs
+par D302). ⇒ **QUEL lot : rang 21 de l'ordre des rangs. OÙ IL EN EST : clos, ici.**
+⇒ **CE QU'IL A CHANGÉ** : la ligne que D300 avait ajoutée à `CLAUDE.md` est retirée — le fichier redevient
+identique à `0a8235d` ; le **point 7** du critère du rang 9 est réduit à ce qui se mesure (`chrome` > 0
+disqualifie la fenêtre ; les autres processus étrangers ne sont pas mesurés pendant la fenêtre, limite déclarée) ;
+l'explication « 11 workers + pnpm + runner » des huit creux de D299 est barrée. **Documentaire : compteur de lots
+de code non certifiés à ZÉRO, inchangé.**
+⇒ **Détail, mesures et limites : section D301** — datée, non réécrite ; sa phrase « hors rang » y est annotée
+comme rejetée (D302).
+
 ## ~~PROCHAIN LOT~~ — rang 20 · `[DOC]` **l'ordre des rangs reçoit son propre titre `##`** ⛔ **CLOS LE 22/09/2026 : D300**
 
 ### ⛔ CLÔTURE DU 22/09/2026 (D300) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -1155,8 +1234,10 @@ les autres processus étrangers ne sont pas mesurés pendant la fenêtre, limite
 ⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de
 code non certifiés : ZÉRO, inchangé.** Un lot de code **peut** s'ouvrir dès que Ko l'arbitre. **Aucune porte
 lancée** : aucune ne lit ces fichiers.
-⇒ **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, vrai à la
-clôture. ⚠ **Une permission n'est pas un arbitrage.**
+⇒ ~~**RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, vrai à la
+clôture.~~ ⚠ **Une permission n'est pas un arbitrage.** ⛔ **(D302, 23/09/2026) ARBITRÉ PAR KO, APRÈS COUP : rang
+21 = D301** — documentaire, compteur à ZÉRO inchangé ; la catégorie « hors rang » est rejetée. **Rang 22 = D302.**
+Points d'entrée « PROCHAIN LOT — rang 21 » et « — rang 22 », au-dessus de celui-ci.
 ⚠ **CE QUE LE LOT NE FAIT PAS** : il ne raccourcit pas l'ordre — la distance, dans l'ordre, de son début à la
 réponse était de 507 lignes et s'allonge du titre et de l'introduction (entrée `[DOC][P1]` du 11/09, **reste
 ouverte**) ; il ne réordonne pas son intérieur (« ⇒ Pourquoi (b) et pas (a) » se lit sous le rang courant,
@@ -3486,10 +3567,193 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 23/09/2026 — D302 · rang 22, lot DOCUMENTAIRE : les arbitrages de Ko (ordre des rangs, E3, forme des entrées) et les deux audits externes du 09/09, confrontés à `HEAD`
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D301** ⇒ **D302** ; « D302 » : **0** occurrence
+sur les 1 154 fichiers suivis à `HEAD` (`git grep`). ⇒ **RANG 22, arbitré par Ko le 23/09/2026** — première
+écriture du lot, dans l'ordre des rangs (patron de D295). Reprise à froid sans état donné, forme allégée ; lecture
+adverse depuis la clôture de D301 ; puis ce lot, sur ordre de Ko, dans la même session. **Documentaire** :
+`AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` et `docs/preuves/D302/` au diff — **compteur de lots de code
+non certifiés : ZÉRO, inchangé** ; aucune porte lancée, aucune ne lit ces fichiers (D283, D292).
+
+### D302 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 20 **CLOS** (D300) ; D301 s'était écrit « hors rang » ; dernière ligne « ⇒ RANG N » : « **RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** » | ordre des rangs, point d'entrée du rang 20, section D301 |
+| numéro | dernière ligne du registre : **D301** ⇒ **D302** | registre |
+| conclusion de la règle | compteur à **ZÉRO** — vérifié par `git` : `d0a1ec4` (D301) porte 44 fichiers, dont 3 hors `docs/preuves/D301/` : `CLAUDE.md` et les deux `.md` d'autorité | section D301, puis `git` |
+| condition | un lot de code peut s'ouvrir dès que Ko l'arbitre ; aucun n'est arbitré | point d'entrée du rang 20 |
+
+✅ **La forme allégée a tenu une cinquième fois.** `HEAD` = `origin/main` = `d0a1ec4` à l'ouverture ; arbre propre
+hormis `a-verser/`, non suivi — le dépôt de Ko pour ce lot, qui ne finit pas au diff.
+
+### D302 — la lecture adverse depuis la clôture de D301 : aucun défaut bloquant
+
+1. ⛔ **D301 N'APPARAISSAIT PAS DANS L'ORDRE DES RANGS** — 0 occurrence de « D301 » entre le titre de l'ordre et le
+   premier point d'entrée. Un lot qui a **changé le critère de certification** (point 7) était invisible à qui lit
+   QUEL lot vient ensuite. C'est le motif de Ko pour rejeter « hors rang » ; corrigé par la partie A, point 1.
+2. **« `CLAUDE.md` identique à l'octet à `0a8235d` » tient — l'empreinte citée est celle de la copie de travail.**
+   Les blobs `HEAD:CLAUDE.md` et `0a8235d:CLAUDE.md` ont la même SHA-256, `f2a438ff…` ; `f6f9c483…`, que cite la
+   section D301, est celle du fichier sur disque, en CRLF — ce que dit sa pièce (`appliquer.py`, « forme du
+   disque »), pas son texte. Précision, pas défaut.
+3. **Le tri final de D301, laissé à son compte rendu, se rejoue à 0** : `alertes-nouvelles.py` entre ses deux
+   sorties scellées — calibration 2 bras sur 2, **0 alerte absente de la précédente**.
+4. ⚠ **« 38 commits depuis le 08/09, 5 touchent `apps/` ou `packages/` » ne se reproduit pas sans sa fenêtre.**
+   Depuis le 08/09 à 00:00 jusqu'à `d9a2c05`, je compte **45** commits et **6** ; l'écart est `3b327c0` (S11-b,
+   étapes 1→3, D279), soit **le rang 8 lui-même** — la conclusion « un seul lot produit depuis le rang 8 »
+   (`ae9b3f8`) **tient**. La section D301 dit avoir « refait sur des dates explicites » **sans écrire ces dates** : un
+   compte sans son parcouru (D290). Écrit ici ; la section D301 reste telle quelle.
+5. **La priorité du report `[INFRA]` de D301 était posée par la session** — la forme que Ko supprime ; report passé à
+   la forme neuve (partie A, point 5).
+6. **La limite relevée par D301 — « État des lots » ne nomme pas « ORDRE DES RANGS » — était juste**, et renvoyée à
+   Ko ; Ko l'a tranchée (partie A, point 4).
+
+### D302 — partie A : ce qui a atterri, et où
+
+| point de Ko | fichier, endroit | étapes |
+|---|---|---|
+| 1. rang 21 = D301 ; aucun lot hors rang ; rang 22 ; rang 23 en attente | ordre des rangs ; points d'entrée 21 et 22 ; clôture du rang 20 ; section D301 et registre (annotés) ; backlog : titre des reports de D301, `[DOC][P3]` « Pourquoi (b) » ; `AGENTS.md`, règle à côté de D284 | A1 à A8 |
+| 2. E3 codé par Claude Code ; décisions de paiement au relecteur (chat) | `AGENTS.md` « À NE PAS faire », point E3 ; tête de la méthode renforcée ; backlog PHASE 7 | A9b, A12, A17 |
+| 3. forme de la revue d'E3 ratifiée (« D39 ») | mêmes trois endroits ; annotés : « demande de revue », « requiert revue humaine » (`AGENTS.md`), « à coder par Ko » **barré** (« Prochaines tranches »), point 10, en-tête, D39, « Méthode de travail » | A9, A10, A12 à A16 |
+| 4. pointeur « ORDRE DES RANGS » | `AGENTS.md`, « État des lots » — ajouté, aucun retiré | A11 |
+| 5. plus de priorité par urgence | règle : `AGENTS.md`, « Méthode » ; décision due à Ko (P0-P3) : ordre des rangs, sous la ligne du rang 23 ; report `[INFRA]` de D301 à la forme neuve | A1, A8, A18, A18b |
+
+⇒ **Contrôles d'écriture** (`docs/preuves/D302/ecriture/`) : **20 étapes, 180 contrôles, 0 échec** — ancre comptée
+avant, relu sur disque, réversibilité à l'octet, bilan de lignes, 0 LF nu. **Relecture D289** — dans le fichier,
+pas le compte rendu : **27 jetons attendus, 27 au compte** (`relire-sortie-A.txt`), calibration 2 bras sur 2.
+⇒ **Réponse du point 5, écrite dans l'entrée** : après D301, **aucune règle de certification ne dépend d'un
+inventaire EN VOL** ; le point 2 du critère du rang 9 en exige un **DEVANT chaque mesure**, et la sonde l'imprime
+(`sonde-etat-machine.ps1`, « INVENTAIRE > 150 Mo »). L'inventaire à chaque échantillon ne débloquerait que la
+réécriture de la clause « processus étranger », qui est à Ko ⇒ « à ordonner par Ko ».
+⚠ **« D39 » — précision, pas correction** : au registre, D39 est « prix par créneau », remplacée par D46 pour le
+Flux B ; « revue humaine D39 » cite sa dernière phrase, « Chemin d'argent ⇒ revue humaine ». Écrit à côté de D39.
+⚠ **Portée tenue** : les arbitrages visent **E3** ; les autres chemins critiques gardent la règle d'avant, et
+l'étendre appartient à Ko — écrit en toutes lettres, pour que la passe D277 dans le sens 2 n'ait rien à trouver.
+⚠ **`CLAUDE.md` non touché** : « s'arrêter et demander » reste compatible — la réponse arrive par les messages de
+Ko ; y recopier les arbitrages ferait deux endroits chargés à chaque session pour une question (D301).
+
+### D302 — partie B : les deux audits externes, versés et confrontés
+
+⇒ **Versés octet pour octet** dans `docs/preuves/D302/sources/` : `zwadj-solid-strategy-audit.md`
+(`f2ab7a58012e06068d5c3e2829006e83a1c9b6dbd2001aa2aa14bf4eb76ae3f9`) et `zwadj-audit-securite.md`
+(`f53fe074e750afc535d18592637ddc01678671ee65a070fd3971d88ee03e38c8`) — **égales** aux empreintes données par Ko,
+avant et après la copie ; fins de ligne LF, `-text` s'applique (`.gitattributes`).
+⚠ **`a-verser/` contenait un troisième fichier que la consigne ne nomme pas** : `zwadj-audit-evidence.zip`
+(483 343 o, SHA-256 `2a871c21…`, 72 entrées — les pièces de l'auditeur, sous `v5/` et `v6/`). **Non versé** :
+décision à Ko.
+⇒ **La base de l'archive** — *inférence confrontée, pas une preuve d'origine* : les fichiers que l'audit dit modifiés
+sont ceux de `3b327c0` ; son lockfile (`99018400…`) est celui du dépôt sous sa forme **CRLF**, à `3b327c0` et à
+`HEAD` (le blob LF a une autre empreinte, `0fe5ba17…`). Depuis `3b327c0`, dans `apps/`, `packages/` et à la racine,
+seuls ont bougé `bookings.service.ts` (échéances), `booking-deadline.ts`, une migration, quatre configs de test et
+`docker-compose.yml` (D292).
+⇒ **Confrontés par SYMBOLE à `HEAD`** (`d0a1ec4`), statut au sens de Ko, « reproduit par l'audit » jamais
+« mesuré au dépôt » :
+
+| constat | symbole relu à `HEAD` | statut | décision, forme |
+|---|---|---|---|
+| SOLID · F1 | `PrismaBookingLocks.acceptUnderVenueLock` — `update({ where: { id } })` sans statut de départ | **ouvert** | relecteur : **bloque E3d** |
+| SOLID · F2 | `PrismaQuoteStore.convertirEnDemande` sans relecture ; `creerRevision` sans statut du parent | **ouvert** | relecteur : **bloque E3d** |
+| SOLID · F3 | `resetPassword`, `verifyEmail`, `confirmEmailChange` — lecture avant, `update` par `id` | **ouvert, les trois** | à ordonner par Ko |
+| SOLID · F4 | `AccountDeletionService.approve` **et** `.reject` — `loadPending` avant, `update` sans `PENDING` | **ouvert** | à ordonner par Ko |
+| SOLID · F5 | `cancelAsClient` — décision sur statut lu avant, écriture qui admet les deux | **ouvert** | à ordonner par Ko |
+| SOLID · F6 | `accept`, `decline`, `cancelAsPro` — `await notificationFor` en argument de `publish` | **ouvert** | relecteur : **bloque E3d** |
+| SOLID · F7 | `booking-notification-input.ts` — `=== "AR"` contre l'énuméré `fr`/`ar` ; la spec attend `["ar", "fr"]` | **ouvert** | à ordonner par Ko |
+| SOLID · F8 | `ChargilyGateway.readSession` — `null` passe le `try`, `body.id` lève | **ouvert** | relecteur : **bloque la levée du drapeau** |
+| SOLID · A1 | `BookingRow`, `transition`, `transitionStatus`, `venue-store.types.ts` (+ `RULE_SELECT` à l'exécution), `QuoteRow`, `InputJsonValue` | **ouvert** | à ordonner par Ko ; D258 |
+| SOLID · A2 (reste), A4 | `create`, `QuotesService`, `AuthService` ; `WalkinJourney` | **ouvert** | entrées S12 à S14, annotées |
+| SOLID · A3 | `previewDeposit`, `lineTotal` (repli sur le prix fixe) | **ouvert** | relecteur : **bloque tout nouveau type de tarification** |
+| SOLID · A5 | `DomainEvents`, charges utiles tirées des services de notification | **ouvert** | à ordonner par Ko |
+| SOLID · R1 | `neutralize-s11b.py`, `main` : code ≠ 0 ⇒ « mordue », sortie jetée | **ouvert** — D286 ferme la cause inverse | à ordonner par Ko |
+| SOLID · R2 | `resolveCharge` : indisponibilité et ligne dans la même boucle | **ouvert** | relecteur : avec le prochain lot `booking-charge` |
+| sécu · journaux | `redact` à deux chemins ; `@Get("verify-email/:token")` ; `EmailModule` sans condition | **ouvert** (dev : D294) | à ordonner par Ko |
+| sécu · invariants | `validateEnv` : présence seule ; `CORS_ORIGINS` hors liste ; `main.ts` : note | **ouvert** | à ordonner par Ko ; `THROTTLE_*` contre D128 |
+| sécu · dépendances | lockfile inchangé ; `sniff` lit `metadata()` avant le format | **ouvert** — rejoué | à ordonner par Ko |
+| sécu · base | `docker-compose.yml` : `5432` publié, superutilisateur ; montage PG18 | **ouvert** ; montage **clos par D292** (`49f3ace`) | à ordonner par Ko |
+| sécu · divers (5) | `.gitignore` ; limiteur mémoire, `@SkipThrottle` ×5 ; pas de MFA ; `EMAIL_ALREADY_USED` ; CGU vides, acceptation non transmise | **ouverts** | à ordonner par Ko |
+| sécu · conformité, sessions | `approve` n'écrit rien sur `bookings` ; refresh glissant sans plafond absolu | **ouverts** | à ordonner par Ko — **ajoutés** |
+| sécu · WAF, chiffrement au repos, alerting | — | **non confrontables** (hébergement) | pas d'entrée |
+
+⚠ **Aucun constat nommé n'est clos, sauf le montage PG18.** Les méthodes en cause sont inchangées depuis l'archive,
+et l'audit l'avait lui-même vérifié pour `accept`, les annulations, `notificationFor`, `convert` et `revise`.
+⇒ **La contradiction connue** : l'entrée ✅ de `POST /auth/reset-password` (« atomique en une transaction ») est
+**annotée, pas barrée**, après confrontation — vraie des trois écritures, pas de l'usage unique.
+⇒ **Rattachés à l'existant, sans doublon** : PHASE 13 (HSTS et en-têtes, débit, dépendances), PHASE 14, PHASE 17,
+PHASE 19, 8.1, 23.6, 23.12, entrées de 4 (pino), 5.1 (`EMAIL_ALREADY_USED`, reset), 5.1bis (D4), S12 à S14, « F2 —
+décomposition » du 22/08, et la « Dette restante » de ce fichier (A3) — **16 annotations** (B2 à B17).
+⇒ **Ajoutés, que la liste de Ko omettait** : l'anonymisation qui laisse les instantanés de contact des
+réservations ; l'absence de plafond absolu de session ; la lecture `metadata()` avant le format ; les trois
+`@SkipThrottle` que l'audit ne nommait pas ; le refus admin de F4 ; A2 (reste) et A4, rattachés ; le point 10 de
+la méthode renforcée (contrôle de provenance de l'ère des archives), croisé en l'annotant.
+⇒ **`pnpm audit`, rejoué** (`docs/preuves/D302/dependances/`) : la commande exacte de l'annexe **échoue** avec le
+pnpm épinglé (10.34.4) — `Unknown options: 'fetch-retries', 'fetch-timeout'`, code 1 **sans avis** ; sans ces deux
+options : **55 avis, 53 GHSA — 2 critiques, 30 élevés, 21 modérés, 2 faibles** recomptés sur les avis, contre
+**31** élevés au compteur de l'outil (écart de un, écrit tel quel) ; mêmes 17 paquets, mêmes comptes que
+l'annexe ; versions résolues dans l'entrée du backlog. Lecteur calibré sur la sortie brute (D275) : 55 avis lus =
+55 clés brutes, bras lockfile positif et négatif. **Lockfile inchangé avant et après** (`99018400…`).
+⚠ **Ce qui a attrapé** : le code 1 de la commande exacte se lisait comme « des avis trouvés » — c'était une option
+refusée. **La sortie d'erreur a été lue avant le code** (D275, et « lire le code de sortie de la commande, pas de
+son enveloppe »).
+
+### D302 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D302/passe-d277/balayage.py`, copie à l'octet de celui de D301 (SHA-256
+`fedc303e…`). Calibration 2 bras sur 2 à chaque invocation ; parcouru = attendu sur les octets.
+**Sens 1 — ce que le lot invalide** (« hors rang », « codé par Ko », la revue, « demande de revue », D39, « Ko
+décide du paiement », le bloc « État des lots ») : **30 → 57 → 57** occurrences (avant, après A, après B) ; les
+courantes d'avant **toutes traitées ou justes** — annotées, barrée (« à coder par Ko »), ou justes parce qu'hors E3
+(Flux B, auth, cases cochées). Tri ligne à ligne : `tri.txt`.
+**Sens 2 — ce que le lot rend permis** (E3 codé par une session, D39 levé, une décision de paiement hors de Ko) :
+**37 → 64 → 78** ; les neuves sont les textes de D302. **Aucune phrase courante ne rend permis le code E3 sans rang
+arbitré**, et la pause d'E3c (17/08) n'est pas levée — c'est un arbitrage de rang qui la lève.
+Motifs à zéro — `ko-decide-paiement` avant, `session-decide` avant et après — **vérifiés** par des expressions plus
+larges : absences réelles.
+
+### D302 — audit de secrets avant commit (instrument de D298, tri de D299)
+
+1. **Audit scellé** (`audit-secrets-d302.txt`), après toutes les écritures sauf cette section, le registre et la
+   clôture : calibration **5 bras sur 5**, cas réel rejoué ; **703** fichiers parcourus = **676** audités + **27**
+   exclus par l'identité de leurs octets (828 alertes d'écho non comptées) ; **98** alertes.
+2. **Tri différentiel** contre `D301/audit-secrets-final.txt` : calibration 2 bras sur 2 ; **5 alertes nouvelles,
+   toutes dans `dependances/pnpm-audit.json`**, sur deux de ses lignes (4 correspondances à la ligne 603, 1 à la
+   762), dans le texte d'**avis publics** de PostCSS (
+   `printf 'API_KEY=sk-secret-…'` dans une preuve d'exploitation, une chaîne `/tmp/…` affectée à `secret`), **triées
+   au contexte : exemples d'un avis, aucune valeur du projet**. Les mots et empreintes SHA-256 des deux audits
+   versés, attendus par Ko, **n'ont levé aucune alerte**.
+3. **« 0 valeur réelle »** : sans objet — aucun journal à valeurs réelles n'a été produit dans cette session.
+4. **Second audit, vraie dernière écriture** : `audit-secrets-final.txt`, confronté par le même tri à
+   `audit-secrets-d302.txt` ; sortie du tri **non versée** (elle serait une écriture de plus) et **rejouable** — la
+   lecture adverse de ce lot l'a fait pour D301.
+
+### ⛔ D302 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **RÉCIDIVE DE D268 SUR UN SCRIPT JETABLE** : une vérification en ligne a levé `UnicodeEncodeError` sur « → »,
+   la console étant en cp1252 — les trois lignes de reconfiguration manquaient. Rien n'a été conclu du plantage ;
+   relancée avec elles. **La règle vaut pour les scripts d'un instant, pas seulement pour ceux de `neutralisation/`.**
+2. ⚠ **Un premier affichage du tri sens 1 était illisible** : un filtre `paste` a fusionné les lignes de contexte.
+   Le tri a été fait sur la sortie brute complète, relue ; il est écrit dans `tri.txt`, pas dans ce filtre.
+
+### ⛔ D302 — CE QUE CE LOT NE FAIT PAS
+
+- **Aucun code, aucune dépendance, aucun lockfile** — empreinte du lockfile identique avant et après `pnpm audit`.
+- **Il ne verse pas le zip de l'auditeur** et ne met pas `a-verser/` au diff.
+- **Il n'écrit rien sur D238, D244, D255, `[E3C][P0]`, D35 et D80** : lecture seule, réponse au **compte rendu**
+  (consigne de Ko).
+- **Il ne touche pas les étiquettes P0-P3** : leur sort est dû à Ko, écrit sous la ligne du rang 23.
+- **Il ne réécrit aucune section datée** : la section D301 est annotée, pas reprise ; le déplacement de « Pourquoi
+  (b) » (`[DOC][P3]`) n'est pas corrigé.
+- **Il ne touche pas `CLAUDE.md`.** **Aucune porte, aucune campagne** : documentaire.
+- ⚠ **Décisions laissées à Ko, écrites où elles se lisent** : le rang 23 ; le sort des P0-P3 ; les motifs non
+  transmis de F8 et R2 ; `THROTTLE_*` contre D128 ; l'extension de la forme de revue aux chemins critiques hors
+  E3 ; le zip.
+
 ## Session du 22/09/2026 — D301 · lot DOCUMENTAIRE hors rang : la ligne de `CLAUDE.md` se retire, le point 7 se réduit à ce qui se mesure
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D300**. ⇒ **HORS RANG** : le rang 21 reste
-« **en attente d'arbitrage de Ko** » — Ko le réserve au **produit**, ce lot ne le consomme pas. Reprise à froid sans
+« **en attente d'arbitrage de Ko** » — Ko le réserve au **produit**, ce lot ne le consomme pas. ⛔ *(D302,
+23/09/2026 : **« HORS RANG » REJETÉ PAR KO** — aucun lot hors de l'ordre des rangs ; ce lot est le **rang 21**,
+rétroactivement, et la réserve au produit tombe avec la catégorie. Le titre de cette section porte la même
+catégorie : même annotation. Section datée, non réécrite.)* Reprise à froid sans
 état donné, forme allégée, puis ce lot sur ordre de Ko, dans la même session. Lot **documentaire** : `CLAUDE.md`,
 `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` et `docs/preuves/D301/` au diff — **compteur de lots de code non
 certifiés : ZÉRO, inchangé** ; aucune porte lancée, aucune ne lit ces fichiers (D283, D292).
@@ -10573,9 +10837,30 @@ de Ko, réappliquer D227, D228 et le lot ③ (D229–D231) en une passe, et **v�
 en fin de course que le diff livré ne contient que des fichiers attendus.**
 
 ## Prochaines tranches prévues
-Auth (0-6) → Pivot + OAuth (7-9) → **Flux A** ✅ → **Flux B — Créneaux/tarification** ✅ → **Flux C — Visites** ✅ → **Tranche A13** ✅ → **Flux E — Devis + Demande de réservation** ✅ → **Paiement Chargily (E3) — à coder par Ko, chemin critique, revue humaine D39** → Espace Pro complet → Notifications → Finitions transverses → Lancement.
+Auth (0-6) → Pivot + OAuth (7-9) → **Flux A** ✅ → **Flux B — Créneaux/tarification** ✅ → **Flux C — Visites** ✅ → **Tranche A13** ✅ → **Flux E — Devis + Demande de réservation** ✅ → **Paiement Chargily (E3) — ~~à coder par Ko~~, chemin critique, revue humaine D39** ⛔ *(D302, 23/09/2026 : « à coder par Ko » barré — E3 est codé par Claude Code, les décisions reviennent au relecteur (chat), Ko garde le veto ; la revue a la forme ratifiée par Ko, juste en dessous)* → Espace Pro complet → Notifications → Finitions transverses → Lancement.
 
 ### ⛔ E3 — MÉTHODE RENFORCÉE (D126)
+
+#### ⛔ QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE — arbitrages de Ko du 23/09/2026 (D302), À LIRE EN PREMIER
+
+⛔ **Ces trois arbitrages PRÉCÈDENT tout ce qui suit, et n'en assouplissent aucun point.** Les mêmes, mot pour mot,
+sont dans `AGENTS.md` (« À NE PAS faire », point E3), que toute session charge au démarrage.
+1. **Qui code** — Ko : « **Le lot argent ne sera plus codé par moi mais par Claude Code.** » (le lot argent = E3)
+2. **Qui décide** — Ko : « **Les décisions concernant le lot paiement seront prises par Claude, dans mon chat de
+   relecture, avec mon intervention si je vois quelque chose qui cloche.** » ⚠ **Ce « Claude » est le relecteur du
+   chat, PAS la session qui code** : sur le paiement, la session de code **signale et propose, elle ne décide
+   pas**. Les décisions lui arrivent par les messages de Ko et s'écrivent « **décision du relecteur (chat),
+   déléguée par Ko le 23/09/2026** », avec leur motif.
+3. **La forme de la revue (« D39 »), RATIFIÉE — arbitrage tranché, à son nom** : une session Claude Code écrit le
+   code E3 ; une **AUTRE** session, ouverte **à froid**, tente de le casser — elle rejoue les modes de défaillance
+   du cadrage, neutralise chaque garde neuve, **ne corrige rien, elle rapporte** ; le relecteur (chat) audite son
+   rapport contre le dépôt et **décide** ; **Ko garde le veto final.**
+⇒ **D39 cesse de bloquer le code E3.** ⛔ **Reste exigé avant toute ligne de code E3** : un **rang que Ko
+arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (§ 1 et 2 ci-dessous), **sur lesquels le relecteur
+décide**. La pause d'E3c (17/08/2026) se lève par cet arbitrage de rang, pas par D302.
+⚠ **Portée** : le code **E3**. Les autres chemins critiques gardent la règle de revue d'avant ; l'étendre appartient
+à Ko. ⚠ **Les bloquants posés par le relecteur sur les constats de l'audit SOLID du 09/09/2026** — avant E3d, avant
+la levée du drapeau des paiements — sont au backlog, reports de D302 (partie B).
 
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
@@ -10715,6 +11000,12 @@ jetons. Sur E3 : `diff` contre le zip livré **avant** toute modification, et
 Revue humaine obligatoire (D39) — et l'auditeur **reproduit**, il ne relit pas :
 il rejoue le défaut lui-même et neutralise chaque garde neuve. Une relecture de
 diff n'a jamais trouvé aucun des défauts de cette campagne.
+⛔ *(D302, 23/09/2026 : FORME RATIFIÉE PAR KO — « l'auditeur » est une **AUTRE session Claude Code, ouverte à
+froid**, qui rejoue les modes de défaillance du cadrage, neutralise chaque garde neuve et **rapporte sans
+corriger** ; le **relecteur (chat)** audite son rapport contre le dépôt et **décide** ; **Ko garde le veto
+final**. Tête de cette méthode. ⚠ Le premier paragraphe de ce point — « diff contre le zip livré », `git apply
+--check` — décrit l'ère des archives ; depuis la bascule Claude Code (D266), le contrôle de provenance est
+l'énumération des fichiers attendus (`CLAUDE.md`). Rapporté au backlog, non corrigé ici.)*
 
 #### 11. Un seul levier, jamais deux (D128)
 
@@ -10742,7 +11033,7 @@ Si une clé apparaît dans un zip ou un chat, elle est **révoquée** — la le�
 - ⛔ **Fournisseur WhatsApp réel** : le port et l'adaptateur dev existent (D63), le transport non. Ses variables rejoindront `PROD_REQUIRED_EXPLICIT`.
 - ⛔ **Onglet « historique » des rendez-vous pro** : `listForVenue` autorise le passé (D70), l'écran ne demande que les 92 jours à venir. ⚠ Et il les demandait **de travers** jusqu'à D147 — 93 jours comptés, donc 400 à chaque chargement.
 - ⛔ **Tri « Recommandé » — TOUJOURS NON TRANCHÉ depuis R1.** Vérifié dans `design.zip` : le design dit bien `sort_recommended: 'Recommandé' / 'موصى به'`, mais l'API reçoit `recent`. **L'écran promet un classement que le serveur ne fait pas.** Soit l'algorithme (backlog 23.8), soit le libellé honnête — c'est un choix produit, pas une réparation.
-- ⚠ **Deux arithmétiques monétaires dupliquées côté navigateur** (`previewDeposit`, `lineTotal`) — seuil posé, voir Flux E.
+- ⚠ **Deux arithmétiques monétaires dupliquées côté navigateur** (`previewDeposit`, `lineTotal`) — seuil posé, voir Flux E. ⛔ *(D302, 23/09/2026 : décision du relecteur (chat), déléguée par Ko — cette dette BLOQUE l'ajout de tout nouveau type de tarification de prestation, sous cadrage chemin de l'argent ; le serveur reste l'autorité. Audit SOLID 09/09 · A3 : `lineTotal` retombe sur le prix fixe pour tout type non listé. Reports de D302.)*
 - ⚠ **Aucune notification sur le cycle du devis** : le pro envoie, le client n'est prévenu par rien. Décidable maintenant que les canaux existent ; se branche sur `BookingNotificationsService`, qui a déjà le bon patron (envoi APRÈS commit, jamais de levée, ligne `FAILED` sur échec — D63).
 - ⚠ **Un devis sans `clientId` ne porte aucun contact — ⚠ ÉNONCÉ CORRIGÉ.** C'est
   vrai du **devis**, pas de la **conversion** : `quoteConvertSchema` exige le contact
@@ -11186,4 +11477,5 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D298 | A | D298 — rang 18 CLOS : l'écho de l'audit de secrets ; `neutralisation/audit-secrets.py`, instrument NOUVEAU, exclut par l'IDENTITÉ des octets (17 sorties épinglées, sorties propres scellées) et imprime ce qu'il exclut ; calibration 5 bras dont le cas réel 24/24, contre-épreuve 5 sur 5 ; D293 433 = 90 + 472 − 129 ; règle « un défaut d'instrument arrête la mesure, pas le lot » ratifiée ; marge du rang 17 froides comprises ; compteur à DEUX |
 | D299 | A | D299 — rang 19 CLOS, CERTIFICATION des rangs 17 et 18 : étape 0 (arbitrage de Ko sur l'audit — des valeurs, pas des mots ; tri différentiel ; minorant par défaut ; extrait e2e élargi, calibré) — ⛔ étape 1 ROUGE sur la RAM (−52,5 puis −31), rien lancé ; ~~aucune marque ; reprise à l'étape 1~~ refus ratifié, Ko libère (`oracle`) au lieu de redéfinir ; passe 1 verte et NON certifiante (échantillonneur aveuglé par mon `tail -f`, rejeu intégral) ; passe 2 : MARQUE POSÉE — « portes vertes au repos le 22/09/2026, D297 et D298 en font partie », 199 mordues · 0 muette, fenêtre homogène ; compteur DEUX → ZÉRO ; rang 20 en attente d'arbitrage de Ko |
 | D300 | A | D300 — rang 20 CLOS, lot DOCUMENTAIRE : l'ordre des rangs sort de la section D270 et reçoit son titre `##` (606 lignes déplacées à l'octet, renvoi daté, pointeurs courants mis à jour) ; étape 0 — les huit creux de D299 : 7 sous Playwright, 1 sous vitest, et la barre porte sur l'état ambiant, relevé à `node` = 0 (point 7, règle de Ko) ; compteur ZÉRO inchangé ; rang 21 en attente d'arbitrage de Ko |
-| D301 | A | D301 — lot DOCUMENTAIRE hors rang : la ligne ajoutée à `CLAUDE.md` par D300 se retire (`AGENTS.md`, importé, porte déjà le pointeur ; `CLAUDE.md` rendu identique à l'octet à `0a8235d`) ; point 7 du critère réduit à ce qui se mesure — `chrome` > 0 disqualifie, les autres processus étrangers ne sont pas mesurés pendant la fenêtre (limite déclarée, report `[INFRA]`) ; l'explication « 11 workers + pnpm + runner » des huit creux barrée dans D299 ; compteur ZÉRO inchangé ; rang 21 toujours en attente de Ko |
+| D301 | A | D301 — lot DOCUMENTAIRE hors rang : la ligne ajoutée à `CLAUDE.md` par D300 se retire (`AGENTS.md`, importé, porte déjà le pointeur ; `CLAUDE.md` rendu identique à l'octet à `0a8235d`) ; point 7 du critère réduit à ce qui se mesure — `chrome` > 0 disqualifie, les autres processus étrangers ne sont pas mesurés pendant la fenêtre (limite déclarée, report `[INFRA]`) ; l'explication « 11 workers + pnpm + runner » des huit creux barrée dans D299 ; compteur ZÉRO inchangé ; rang 21 toujours en attente de Ko ⛔ *(D302 : « hors rang » rejeté par Ko — D301 est le rang 21, rétroactivement)* |
+| D302 | A | D302 — rang 22 CLOS, lot DOCUMENTAIRE : arbitrages de Ko — « hors rang » rejeté (D301 = rang 21, rétroactivement ; aucun lot hors de l'ordre des rangs) ; E3 codé par Claude Code, décisions de paiement au relecteur (chat), forme de la revue ratifiée (« D39 » ne bloque plus le code E3 ; restent un rang arbitré, l'état des lieux et le cadrage) ; pointeur « ORDRE DES RANGS » sous « État des lots » ; entrées neuves sans priorité par urgence (BLOQUE ou « à ordonner par Ko », COÛT relevable), sort des P0-P3 dû à Ko — puis les deux audits externes du 09/09 versés (SHA-256 égaux) et confrontés par symbole à `HEAD` : tous les constats nommés OUVERTS sauf le montage PG18 (clos par D292) ; relecteur : F1, F2, F6 bloquent E3d, F8 la levée du drapeau, A3 tout nouveau type de tarification, R2 avec le prochain lot `booking-charge` ; `pnpm audit` rejoué (la commande exacte échoue sous pnpm 10.34.4) : 55 avis, 53 GHSA ; compteur ZÉRO inchangé ; rang 23 en attente d'arbitrage de Ko |

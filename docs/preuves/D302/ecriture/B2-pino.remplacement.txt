@@ -1,0 +1,1 @@
+(nestjs-pino, redaction headers auth/cookie) ⛔ *(D302, 23/09/2026 : redaction INCOMPLÈTE selon l'audit sécu du 09/09 — le jeton dans l'URL de verify-email et le `Set-Cookie` sortant restent journalisés ; ouvert à `HEAD`. Reports de D302, « audit sécu 09/09 · journaux ».)*

@@ -1,0 +1,6 @@
+- [ ] Write docker-compose for local dev (api, db) [INFRA][P0]
+- [ ] Define env var schema per environment [INFRA][P0]
+  ⛔ *(D302, 23/09/2026 : PARTIELS à `HEAD`, cases laissées telles quelles. Le compose existe — montage PG18 corrigé
+  par D292 ; il publie `5432` et crée la base par le superutilisateur de l'image. Le schéma existe
+  (`config/env.ts`, `PROD_REQUIRED_EXPLICIT`) mais n'exige en production que la PRÉSENCE. Reports de D302 :
+  « audit sécu 09/09 · invariants de production » et « · base ».)*

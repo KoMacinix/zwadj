@@ -1,0 +1,1 @@
+- [ ] Keep booking/pricing rules in shared/backend only — prevent Client/Pro logic drift [SHARED][P0] ⛔ *(D302 : la dérive existe — `previewDeposit`, `lineTotal` ; audit SOLID 09/09 · A3, et le relecteur (chat) a décidé qu'elle BLOQUE l'ajout de tout nouveau type de tarification de prestation. Reports de D302.)*

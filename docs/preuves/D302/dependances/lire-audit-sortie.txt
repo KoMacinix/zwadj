@@ -1,0 +1,41 @@
+CALIBRATION : avis lus 55 · occurrences brutes de "module_name" 55 (attendu égal) · lockfile positif True (attendu True, @hono/node-server ['1.19.11']) · négatif True (attendu True)
+== outil (metadata.vulnerabilities) : {'info': 0, 'low': 2, 'moderate': 21, 'high': 31, 'critical': 2} · dépendances 552
+== recompté sur les avis : 55 avis · {'critical': 2, 'high': 30, 'low': 2, 'moderate': 21} · 53 GHSA distincts
+== paquets parcourus dans le lockfile : 813 noms · 924 versions
+== ventilation par paquet (avis de l'outil, aujourd'hui) :
+   next                          10
+   hono                           7
+   fast-uri                       6
+   brace-expansion                5
+   multer                         5
+   postcss                        4
+   @hono/node-server              2
+   browserslist                   2
+   js-yaml                        2
+   mysql2                         2
+   nanoid                         2
+   qs                             2
+   sharp                          2
+   baseline-browser-mapping       1
+   deepmerge-ts                   1
+   react-router                   1
+   valibot                        1
+== paquets nommés par l'audit sécu du 09/09 — versions RÉSOLUES aujourd'hui (lockfile) · signalées par l'outil :
+   next                       résolues ['15.5.20'] · signalées ['15.5.20'] · corrigées selon l'outil ['>=15.5.21', '>=15.5.24']
+   multer                     résolues ['2.1.1'] · signalées ['2.1.1'] · corrigées selon l'outil ['>=2.2.0', '>=2.3.0']
+   sharp                      résolues ['0.34.5', '0.35.3'] · signalées ['0.34.5', '0.35.3'] · corrigées selon l'outil ['>=0.35.0', '>=0.35.4']
+   react-router               résolues ['7.18.1'] · signalées ['7.18.1'] · corrigées selon l'outil ['>=7.18.2']
+   hono                       résolues ['4.12.28'] · signalées ['4.12.28'] · corrigées selon l'outil ['>=4.12.34', '>=4.13.5']
+   fast-uri                   résolues ['3.1.3'] · signalées ['3.1.3'] · corrigées selon l'outil ['>=3.1.4', '>=3.1.5', '>=3.1.6']
+   brace-expansion            résolues ['1.1.15', '5.0.7'] · signalées ['1.1.15', '5.0.7'] · corrigées selon l'outil ['>=1.1.16', '>=1.1.17', '>=1.1.18', '>=5.0.8', '>=5.0.9']
+   postcss                    résolues ['8.4.31', '8.5.16'] · signalées ['8.4.31'] · corrigées selon l'outil ['>=8.5.10', '>=8.5.12', '>=8.5.18', '>=8.5.23']
+   @hono/node-server          résolues ['1.19.11'] · signalées ['1.19.11'] · corrigées selon l'outil ['>=1.19.13', '>=1.19.15']
+   browserslist               résolues ['4.28.5'] · signalées ['4.28.5'] · corrigées selon l'outil ['>=4.28.7']
+   js-yaml                    résolues ['4.3.0'] · signalées ['4.3.0'] · corrigées selon l'outil ['>=4.3.1', '>=4.3.2']
+   mysql2                     résolues ['3.15.3'] · signalées ['3.15.3'] · corrigées selon l'outil ['>=3.22.0', '>=3.23.1']
+   nanoid                     résolues ['3.3.15'] · signalées ['3.3.15'] · corrigées selon l'outil ['>=3.3.16', '>=3.3.18']
+   qs                         résolues ['6.15.3'] · signalées ['6.15.3'] · corrigées selon l'outil ['>=6.16.0']
+   baseline-browser-mapping   résolues ['2.10.42'] · signalées ['2.10.42'] · corrigées selon l'outil ['>=2.11.0']
+   deepmerge-ts               résolues ['7.1.5'] · signalées ['7.1.5'] · corrigées selon l'outil ['>=8.0.0']
+   valibot                    résolues ['1.2.0'] · signalées ['1.2.0'] · corrigées selon l'outil ['>=1.4.2']
+== paquets signalés AUJOURD'HUI que l'annexe du 09/09 ne nomme pas : aucun

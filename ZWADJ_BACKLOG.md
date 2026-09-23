@@ -216,7 +216,7 @@
 - [x] Add global validation pipe [BACK][P0] — ✅ squelette (ZodValidationPipe maison)
 - [x] Add global exception filter + error schema [BACK][P0] — ✅ squelette
 - [x] Add request logging middleware [BACK][P0] — ✅ Lot 0 (pino-http)
-- [x] Add structured logger (pino) [BACK][P1] — ✅ Lot 0 (nestjs-pino, redaction headers auth/cookie)
+- [x] Add structured logger (pino) [BACK][P1] — ✅ Lot 0 (nestjs-pino, redaction headers auth/cookie) ⛔ *(D302, 23/09/2026 : redaction INCOMPLÈTE selon l'audit sécu du 09/09 — le jeton dans l'URL de verify-email et le `Set-Cookie` sortant restent journalisés ; ouvert à `HEAD`. Reports de D302, « audit sécu 09/09 · journaux ».)*
 - [x] Add health-check endpoint `GET /health` [BACK][P0] — ✅ squelette
 - [ ] Add readiness endpoint `GET /ready` (DB) [BACK][P1] — pas un endpoint séparé ; `/health` répond déjà `db: up/down`, à toi de voir si un `/ready` distinct reste utile
 - [ ] Add pagination helper (cursor/offset) [BACK][P0]
@@ -240,7 +240,7 @@
 - [x] Implement `POST /auth/register` [BACK][P0] — ✅ Lot 1 (CLIENT/PRO, union discriminée, ADMIN inéligible)
 - [x] Validate email format + password strength [BACK][P0] — ✅ Lot 0/1 (schémas Zod partagés `packages/types`)
 - [x] Hash password before insert [BACK][P0] — ✅ Lot 1
-- [x] Handle "email already in use" [BACK][P0] — ✅ Lot 1 (409 `EMAIL_ALREADY_USED`, tranché par la contrainte BDD, pas de pré-check)
+- [x] Handle "email already in use" [BACK][P0] — ✅ Lot 1 (409 `EMAIL_ALREADY_USED`, tranché par la contrainte BDD, pas de pré-check) ⛔ *(D302 : l'audit sécu du 09/09 y voit une énumération d'adresses — contrôle 26, « partiel » — à l'inscription et au changement d'e-mail. Choix produit, à ordonner par Ko : reports de D302, « audit sécu 09/09 · divers », 4.)*
 - [x] Generate email-verification token [BACK][P0] — ✅ Lot 1 (token opaque 256 bits, hash SHA-256 en base)
 - [~] Enqueue verification email job (FR/AR) [BACK][P0] (dep: 4 email primitive) — **partiel** : envoi direct via le port `EMAIL_SENDER` (échec loggé, n'annule pas l'inscription), pas encore une vraie queue pg-boss. Revoir à la Phase 8.1 quand un vrai provider remplace le DevLogger.
 - [x] Implement `GET /auth/verify-email/:token` [BACK][P0] — ✅ Lot 1 (usage unique, un seul code d'erreur inconnu/expiré/déjà utilisé)
@@ -252,7 +252,7 @@
 - [x] Implement `POST /auth/refresh` [BACK][P0] — ✅ Lot 3 (rotation D9 par compare-and-swap, détection de réutilisation D10 → révocation globale, prouvé manuellement en plus des tests)
 - [x] Implement `POST /auth/logout` (revoke refresh) [BACK][P0] — ✅ Lot 3 (idempotent D11, ne révoque que la session courante)
 - [x] Implement `POST /auth/forgot-password` [BACK][P0] — ✅ Lot 4 (D14, anti-énumération, un seul lien valide à la fois)
-- [x] Implement `POST /auth/reset-password` [BACK][P0] — ✅ Lot 4 (D15 révocation globale des sessions, D16 code unique, D17 ne connecte pas — atomique en une transaction)
+- [x] Implement `POST /auth/reset-password` [BACK][P0] — ✅ Lot 4 (D15 révocation globale des sessions, D16 code unique, D17 ne connecte pas — atomique en une transaction) ⛔ *(D302, 23/09/2026, APRÈS CONFRONTATION au code de `HEAD` : « atomique » est vrai des TROIS ÉCRITURES — jeton consommé, nouveau hash, révocation D15 —, pas de l'USAGE UNIQUE. `AuthService.resetPassword` lit le jeton AVANT la transaction et le consomme par `update({ where: { id } })` sans `usedAt: null` : deux requêtes concurrentes peuvent réussir toutes les deux — audit SOLID 09/09 · F3, reproduit par l'audit. **Annotée, pas barrée** : la phrase n'est pas fausse, elle se lit plus forte qu'elle n'est. Reports de D302.)*
 - [x] Add rate limiting on auth endpoints [BACK][P0] (dep: 4 rate-limit primitive) — ✅ Lots 1-4, les 9 routes ont chacune leur limite dédiée (register 5, verify 10, resend 3, login 10, refresh 30, logout 10, forgot 3, reset 10 / 15min/IP) ; 429 positif prouvé sur register/resend/login/reset
 
 ### 5.1bis `UserStatus` lu par les chemins d'authentification (Lot A10 — préalable à D37)
@@ -264,7 +264,7 @@
 - [x] `POST /auth/reset-password` → `TOKEN_INVALID_OR_EXPIRED` — ce chemin raisonne en TOKEN (D16), pas en identifiants ; un lien émis avant la décision cesse d'être exploitable [BACK][P0]
 - [x] `POST /auth/forgot-password` · `resend-verification` → réponse CONSTANTE inchangée, mais **aucun token émis ni e-mail envoyé** [BACK][P0]
 - [x] `GET /auth/me` → 401 (**6ᵉ chemin, hors du tableau d'origine**) : son commentaire promettait déjà ce comportement alors que le code testait `!user`, qui ne se déclenche jamais après anonymisation [BACK][P0]
-- [ ] **Exposition résiduelle ASSUMÉE et documentée** : le `JwtAuthGuard` reste sans accès base (D4 — pas de lecture BDD par requête). La fenêtre est la durée de vie restante d'un access token, bornée par la révocation de TOUS les refresh tokens au moment de l'exécution [BACK][P2]
+- [ ] **Exposition résiduelle ASSUMÉE et documentée** : le `JwtAuthGuard` reste sans accès base (D4 — pas de lecture BDD par requête). La fenêtre est la durée de vie restante d'un access token, bornée par la révocation de TOUS les refresh tokens au moment de l'exécution [BACK][P2] ⛔ *(D302 : l'audit sécu du 09/09 la relève — contrôles 9 et 18, « un JWT déjà émis n'est pas immédiatement invalidé » : conforme à ce qui est assumé ici. Il ajoute AUTRE CHOSE : aucun plafond ABSOLU de durée de session — entrée neuve, reports de D302.)*
 
 ### 5.1ter Gestion du compte (Lot A10 — chemins sensibles, revue humaine obligatoire)
 - [x] `PATCH /me/profile` — patch PARTIEL réel ; champs triés par rôle **côté serveur** (pro : `businessName`/`phone`/`phone2` ; client : `firstName`/`lastName`/`phone`). Le corps ne porte pas de discriminant : en accepter un du client ouvrirait une écriture croisée. Répond un `AuthUserDTO` complet (D12) [BACK][P0]
@@ -393,6 +393,14 @@
 
 ## PHASE 7 — Payments & finance (Chargily only at MVP)
 
+> ⛔ **ARBITRAGES DE KO DU 23/09/2026 (D302) — À LIRE AVANT TOUTE ENTRÉE DE CETTE PHASE.** Le lot argent (E3) est
+> **codé par Claude Code** ; les **décisions** sur le paiement sont prises par **le relecteur du chat** — pas par la
+> session qui code, qui signale et propose —, avec l'intervention de Ko ; la **revue** a la forme ratifiée
+> (« D39 ») : une AUTRE session, ouverte à froid, tente de casser le code et rapporte sans corriger, le relecteur
+> audite et décide, Ko garde le veto. Avant toute ligne de code E3 : un rang arbitré par Ko, puis l'état des lieux
+> et le cadrage du sous-lot, sur lesquels le relecteur décide. Texte complet, mot pour mot : `AGENTS.md`,
+> « À NE PAS faire », point E3 ; et `ZWADJ_CONTINUITE.md`, tête de « ⛔ E3 — MÉTHODE RENFORCÉE ».
+
 > ⚠ **MÉTHODE RENFORCÉE (D126) — cette phase ne se livre PAS comme les autres.**
 > Cinq sous-lots, **un arrêt franc entre chacun**, six portes **et** suite e2e
 > avant que le suivant ne commence :
@@ -498,7 +506,7 @@
 
 ### 8.1 Infrastructure
 - [ ] Create notification service abstraction (port/adapter — swappable provider) [BACK][P0]
-- [ ] Integrate transactional email provider [BACK][P0]
+- [ ] Integrate transactional email provider [BACK][P0] ⛔ *(D302 : à `HEAD`, `EmailModule` lie `DevLoggerEmailSender` SANS CONDITION, production comprise — audit sécu 09/09 · journaux, reports de D302. Le jeton du journal de DEV, lui, est arbitré (D294) et ne se rouvre pas.)*
 - [ ] Configure SPF, DKIM, DMARC for the sending domain — **do this now**: the very first email (account verification) depends on it, and without it everything lands in spam [INFRA][P0]
 - [ ] Create email template engine + layout (FR/AR, RTL) [BACK][P0]
 - [ ] Use `pg-boss` (already installed, Phase 3) for the async send queue + retry/backoff — no separate BullMQ/Redis at MVP [BACK][P0]
@@ -775,17 +783,22 @@
 
 - [ ] Enforce HTTPS + HSTS [INFRA][P0]
 - [ ] Set secure headers (CSP, X-Frame-Options, etc.) [BACK][P0]
+  ⛔ *(D302, 23/09/2026 : toujours absents de l'application — l'audit sécu du 09/09 le relève (contrôles 13, 16,
+  17), et à `HEAD` : **0** occurrence de HSTS, CSP, nosniff, anti-encadrement, Referrer-Policy ou
+  Permissions-Policy dans `app.setup.ts`, `main.ts`, `next.config.ts`, `vite.config.ts`, et pas de `helmet`. Une
+  CSP doit rester compatible avec le script de thème, Google GIS et Matterport (audit). **Pas d'entrée neuve** :
+  celles-ci suffisent. Des URL `http://` passent en production : « invariants de production », reports de D302.)*
 - [ ] Sanitize/escape all user-rendered content (XSS) [SHARED][P0]
 - [ ] CSRF protection for cookie-based flows [BACK][P0]
 - [ ] Parameterized queries / ORM only (no raw concat) [BACK][P0]
-- [ ] Global + per-endpoint rate limiting [BACK][P0]
+- [ ] Global + per-endpoint rate limiting [BACK][P0] ⛔ *(D302 : présent, mais stockage mémoire du processus, confiance du proxy non configurée, et `@SkipThrottle` dans cinq contrôleurs à `HEAD` — audit sécu 09/09 · divers, 2 ; reports de D302.)*
 - [ ] Brute-force/lockout on login [BACK][P1]
 - [ ] Secrets management (env/secret store, no secrets in repo) [INFRA][P0]
 - [ ] Encrypt sensitive fields at rest [BACK][P1]
 - [ ] Payment anti-fraud checks (amount/idempotency) [BACK][P1]
 - [ ] Input validation on every endpoint [BACK][P0]
 - [ ] Write audit-log entries on sensitive actions [BACK][P1]
-- [ ] Dependency vulnerability scanning in CI [INFRA][P1]
+- [ ] Dependency vulnerability scanning in CI [INFRA][P1] ⛔ *(D302 : `pnpm audit` rejoué à la main le 23/09/2026 — 55 avis, 53 GHSA, pièces `docs/preuves/D302/dependances/` ; aucun scan en CI. Reports de D302, « audit sécu 09/09 · dépendances ».)*
 - [ ] File-upload validation (type/size/scan) [BACK][P1]
 
 ---
@@ -801,6 +814,13 @@
 - [ ] Reconcile soft-delete vs erasure: anonymize (not delete) records tied to financial/legal retention [BACK][P2]
 - [ ] Draft cancellation & payment terms [SHARED][P1]
 - [ ] Add consent checkboxes at registration/booking [CLIENT][P1]
+
+⛔ *(D302, 23/09/2026 : l'audit sécu du 09/09 — contrôle 30 — relève, et c'est vrai à `HEAD` : pages `cgu` et
+`confidentialite` réduites à « Bientôt disponible » ; la case d'acceptation de `register-form.tsx` n'est pas
+transmise à l'API, sans version du texte ; l'anonymisation d'un compte ne touche pas les instantanés de contact des
+réservations. Entrées de D302 : « audit sécu 09/09 · divers », 5, et « · conformité ». L'applicabilité du RGPD ou
+du CCPA dépend de l'exploitant et des marchés visés — l'audit ne la tranche pas ; « l'absence d'une bannière
+cookies n'est pas à elle seule une preuve de non-conformité » (audit).)*
 
 ---
 
@@ -867,6 +887,10 @@
 - [ ] Write Dockerfiles for client/pro/admin builds [INFRA][P1]
 - [ ] Write docker-compose for local dev (api, db) [INFRA][P0]
 - [ ] Define env var schema per environment [INFRA][P0]
+  ⛔ *(D302, 23/09/2026 : PARTIELS à `HEAD`, cases laissées telles quelles. Le compose existe — montage PG18 corrigé
+  par D292 ; il publie `5432` et crée la base par le superutilisateur de l'image. Le schéma existe
+  (`config/env.ts`, `PROD_REQUIRED_EXPLICIT`) mais n'exige en production que la PRÉSENCE. Reports de D302 :
+  « audit sécu 09/09 · invariants de production » et « · base ».)*
 - [ ] CI: install + lint + typecheck + test on PR [INFRA][P0]
 - [ ] CI: build all apps [INFRA][P0]
 - [ ] CI: run DB migrations check [INFRA][P1]
@@ -898,6 +922,8 @@
 - [ ] Automated daily DB backups [INFRA][P0]
 - [ ] Object-storage backup/versioning [INFRA][P1]
 - [ ] Test restore from backup [INFRA][P1]
+  ⛔ *(D302, 23/09/2026 : toujours rien au dépôt — audit sécu 09/09, contrôle 29 : « un volume persistant n'est pas
+  une sauvegarde ». Reports de D302, « audit sécu 09/09 · base ».)*
 - [ ] Define retention/archiving policy [INFRA][P2]
 - [ ] Write business-continuity/DR runbook [INFRA][P2]
 
@@ -989,7 +1015,7 @@
 - [ ] Downloadable revenue statements/exports for venues (accounting) [PRO][P2]
 
 ### 23.6 Account & admin security hardening (was thin)
-- [ ] MFA/2FA for admin & super-admin accounts [ADMIN][P0]
+- [ ] MFA/2FA for admin & super-admin accounts [ADMIN][P0] ⛔ *(D302 : absent à `HEAD` — audit sécu 09/09, contrôle 12 ; reports de D302, « audit sécu 09/09 · divers », 3.)*
 - [ ] Optional 2FA for pro accounts [PRO][P1]
 - [ ] Active-sessions list + "log out everywhere" [SHARED][P2]
 - [ ] Phone OTP verification (primary contact in Algeria) [BACK][P1]
@@ -1039,7 +1065,7 @@
 - [ ] Define SLOs + error budgets [INFRA][P3]
 - [ ] Read replicas plan (post-scale) [INFRA][P3]
 - [ ] "Unsynced changes" warning before logout/cache clear (pro offline data-loss) [PRO][P0]
-- [ ] Keep booking/pricing rules in shared/backend only — prevent Client/Pro logic drift [SHARED][P0]
+- [ ] Keep booking/pricing rules in shared/backend only — prevent Client/Pro logic drift [SHARED][P0] ⛔ *(D302 : la dérive existe — `previewDeposit`, `lineTotal` ; audit SOLID 09/09 · A3, et le relecteur (chat) a décidé qu'elle BLOQUE l'ajout de tout nouveau type de tarification de prestation. Reports de D302.)*
 
 ---
 
@@ -2113,6 +2139,11 @@ D-numéro. Un lot de refactoring rapporte un défaut, il ne le corrige pas au pa
   (798 lignes, 293 avertissements exemptés), longue traîne DIP. ⚠ Par la règle de **D258**,
   la longue traîne n'est PAS justifiée par le compte d'imports Prisma : seuls comptent les
   blocs transactionnels et les six doubles castés restants.
+  ⛔ *(D302, 23/09/2026 : l'audit SOLID du 09/09 les retrouve — **A2, reste** : `BookingsService.create`,
+  `QuotesService` (lectures et `Prisma.InputJsonValue`), `AuthService` ; **A4** : `WalkinJourney`, « un seul
+  composant d'environ 650 lignes physiques » selon l'audit — le fichier en compte 798 à `HEAD` : deux définitions
+  différentes, non soustraites (D290). **Pas d'entrée neuve.** Le chiffrage extrait par S11-b y est compté comme
+  résolu.)*
 - **Les six doubles `as unknown as PrismaService` restants** (D258) — c'est le défaut
   chiffrable, pas les 21 imports. `auth.service.spec.ts` est le plus gros, et il simule
   `$transaction` par un passe-plat.
@@ -2144,7 +2175,7 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
 ⚠ **Avant E3c** — rendre atomique `findOrCreatePendingIntent` (D244) : la séquence chercher-puis-créer n'est pas transactionnelle ; le port est désormais l'endroit où la fermer sans toucher au service.
 
 **Reports décidés, non oubliés :**
-- **F2** — décomposition d'`AuthService`, `BookingsService`, `WalkinJourney`. À réévaluer maintenant que S5b a dégagé la concurrence.
+- **F2** — décomposition d'`AuthService`, `BookingsService`, `WalkinJourney`. À réévaluer maintenant que S5b a dégagé la concurrence. ⛔ *(D302 : même objet que l'A2 (reste) et l'A4 de l'audit SOLID du 09/09 — à ne pas confondre avec « audit SOLID 09/09 · F2 », un défaut de conversion de devis. Voir S12 à S14.)*
 - **F7** — découpe de `VenueProClient` : pas de pression de changement.
 - **Ports auth et devis** — écartés au cadrage S5a ; l'un demande F2 d'abord, l'autre n'a pas de consommateur.
 - **Port de LECTURE de la réservation** — `ownedBooking`/`ownedVenue` portent les règles de propriété et restent mesurées en intégration seulement (D245).
@@ -2362,7 +2393,271 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 23/09/2026 — rang 22 : arbitrages de Ko, et les deux audits externes du 09/09 (D302)
+
+⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D302 de `ZWADJ_CONTINUITE.md`.
+⛔ **PREMIÈRES ENTRÉES À LA FORME DE KO** (règle dans `AGENTS.md`, « Méthode ») : chaque entrée dit **CE QU'ELLE
+BLOQUE** ou « **à ordonner par Ko** », et son **COÛT** en termes qui se relèvent. **Aucune étiquette P0-P3** : un
+« P1 » ou « P2 » cité ici est celui **de l'audit**, et se lit comme le sien.
+⇒ **SOURCES, octet pour octet** : `docs/preuves/D302/sources/zwadj-solid-strategy-audit.md` (SHA-256
+`f2ab7a58…`) et `docs/preuves/D302/sources/zwadj-audit-securite.md` (`f53fe074…`) — empreintes **égales** à
+celles que Ko a données. Audits faits sur `zwadj(6).zip`, mis à jour le 09/09/2026.
+⇒ **« REPRODUIT PAR L'AUDIT »** : l'auditeur a rejoué le défaut avec le vrai code et une persistance **simulée**,
+sous Node 24.19.0 et pnpm 11.19.0 — **ni PostgreSQL, ni ce dépôt**. Ce n'est jamais « mesuré au dépôt ». **Aucun
+compteur de l'audit ne s'écrit ici comme état courant.**
+⇒ **LA BASE DE L'ARCHIVE, ET CE QUI A BOUGÉ DEPUIS** — *inférence confrontée, pas une preuve d'origine* : les
+fichiers que l'audit dit modifiés sont ceux de `3b327c0` (S11-b, étapes 1→3, 08/09) ; son lockfile
+(`99018400…`) est celui du dépôt sous sa forme CRLF, à `3b327c0` **et à `HEAD`**. Depuis `3b327c0`, dans `apps/`,
+`packages/` et à la racine, **seuls** ont bougé `bookings.service.ts` (échéances, D282 et D285),
+`booking-deadline.ts` (neuf), une migration, quatre configs de test et `docker-compose.yml` (D292) : **tout autre
+fichier que les audits citent est identique.** `neutralize-s11b.py` a bougé (rangs 8 et 10).
+⇒ **CONFRONTATION PAR SYMBOLE, JAMAIS PAR NUMÉRO DE LIGNE** (le code a bougé depuis l'archive) : chaque entrée
+nomme le symbole relu à `HEAD` (`d0a1ec4`) et son statut — **ouvert**, **clos** (par quel commit), **partiel**
+ou **non confrontable**. **Nommage** : préfixé par la source — le dépôt a déjà un « F1 » (canaux D60) et des « F2 »,
+« F7 » (campagne du 22/08).
+
+### ⛔ CHEMIN DE L'ARGENT — décisions du relecteur (chat), déléguées par Ko le 23/09/2026
+
+⚠ **La session ne les a pas prises** : elle les écrit telles que Ko les a transmises, avec leur motif (règle de
+Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, pas complété.
+
+- [ ] **[API]** ⛔ **audit SOLID 09/09 · F1 — `accept` peut écrire `ACCEPTED` par-dessus un `DECLINED` ou un
+  `CANCELLED` déjà commité** (P1 de l'audit). **OUVERT à `HEAD`** : `PrismaBookingLocks.acceptUnderVenueLock` lit
+  le statut sous le verrou de **salle**, puis écrit `tx.booking.update({ where: { id } })` **sans condition sur le
+  statut de départ** ; `transition` (refus, annulations) écrit par `updateMany` conditionné **sans** prendre ce
+  verrou. Fichier inchangé depuis `682ea4c`. Reproduit par l'audit.
+  ⇒ **BLOQUE E3d.** *Décision du relecteur (chat), déléguée par Ko le 23/09/2026* — **motif** : l'invariant 1
+  d'E3 repose sur des transitions conditionnées par leur état de départ.
+  ⇒ **COÛT** : code API (compte) ; `booking-locks.prisma.ts` et sa mesure d'intégration sur PostgreSQL réel
+  (accept contre refus, accept contre annulation) ; e2e exigée (concurrence) ; cadrage chemin de l'argent : oui ;
+  migration : aucune nommée par l'audit ; dépendance : non ; mord sous concurrence, pas seulement en production.
+- [ ] **[API]** ⛔ **audit SOLID 09/09 · F2 — un devis annulé entre-temps se convertit ; `revise` ne revalide pas le
+  statut du parent** (P1 de l'audit). **OUVERT à `HEAD`** : `QuotesService.convert` contrôle le statut
+  (`assertStatus`) **avant**, puis `PrismaQuoteStore.convertirEnDemande` crée la réservation **sans transaction ni
+  relecture** du statut du devis ; `creerRevision` verrouille la chaîne (`verrouillerChaine`) sans relire le statut
+  du parent, contrôlé avant par `QuotesService.revise`. Conversion reproduite par l'audit ; `revise` relevé au
+  source par l'audit. ⚠ `bookings_quote_id_key` (migration `20260707000000_init`) empêche la **double** conversion,
+  pas celle d'un devis annulé (D186 : cherché dans les migrations).
+  ⇒ **BLOQUE E3d.** *Décision du relecteur (chat), déléguée par Ko le 23/09/2026* — **motif** : le montant de la
+  réservation vient du devis.
+  ⇒ **COÛT** : code API (compte) ; `quote-store.prisma.ts`, `quotes.service.ts` et leurs mesures d'intégration
+  (conversion contre annulation, révision contre annulation) ; e2e exigée ; cadrage chemin de l'argent : oui ;
+  migration : aucune nommée ; dépendance : non ; mord sous concurrence.
+- [ ] **[API]** ⛔ **audit SOLID 09/09 · F6 — l'enrichissement de notification, attendu après le commit et hors du
+  `catch` du publieur, fait échouer une opération déjà faite** (P2 de l'audit). **OUVERT à `HEAD`** :
+  `BookingsService.accept`, `.decline` et `.cancelAsPro` écrivent
+  `await this.events.publish(…, await this.notificationFor(…))` — `notificationFor` s'évalue **avant** `publish`,
+  donc hors de son `catch`. Reproduit par l'audit. Lié à A5 ci-dessous.
+  ⇒ **BLOQUE E3d.** *Décision du relecteur (chat), déléguée par Ko le 23/09/2026* — **motif** : la même forme
+  après un `PAID` ferait lire un échec sur un paiement abouti.
+  ⇒ **COÛT** : code API (compte) ; `bookings.service.ts` (trois sites), et `domain-events.ts` si la correction passe
+  par A5 ; e2e exigée (argent) ; cadrage chemin de l'argent : oui ; migration : non ; dépendance : non ; mord à
+  toute panne de lecture postérieure au commit.
+- [ ] **[API]** ⛔ **audit SOLID 09/09 · F8 — un `null` JSON du fournisseur échappe à `PAYMENT_PROVIDER_MALFORMED`**
+  (P2 de l'audit). **OUVERT à `HEAD`** : `ChargilyGateway.readSession` fait
+  `body = (await response.json()) as ChargilyCheckoutResponse` ; le `catch` ne couvre que l'échec d'analyse — un
+  `null` valide passe, puis `typeof body.id` lève une `TypeError`. Reproduit par l'audit (réponse HTTP simulée).
+  ⇒ **BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS** (`PAYMENTS_ENABLED`). *Décision du relecteur (chat), déléguée par
+  Ko le 23/09/2026* — **motif : non transmis avec la décision.**
+  ⇒ **COÛT** : code API (compte) ; `chargily.gateway.ts` et sa spec ; e2e exigée (argent) ; cadrage chemin de
+  l'argent : oui ; migration : non ; dépendance : non ; ne mord qu'avec le drapeau levé.
+- [ ] **[CLIENT]** ⛔ **audit SOLID 09/09 · A3 — acompte recalculé dans le navigateur, aperçu de prestation non
+  exhaustif.** **OUVERT à `HEAD`** : dans `booking-request-panel.tsx`, `previewDeposit` recalcule l'acompte, et
+  `lineTotal` traite `TIERED`, `PER_GUEST`, `PER_UNIT` puis **retombe sur `fixedPriceCents` pour tout autre type**.
+  Relevé au source par l'audit. **Déjà connu du dépôt, sans ce blocage** : « Deux arithmétiques monétaires
+  dupliquées côté navigateur » (`ZWADJ_CONTINUITE.md`, « Dette restante ») et 23.12 « Keep booking/pricing rules in
+  shared/backend only » — **annotées**, pas dupliquées.
+  ⇒ **BLOQUE L'AJOUT DE TOUT NOUVEAU TYPE DE TARIFICATION DE PRESTATION ; cadrage chemin de l'argent.** *Décision du
+  relecteur (chat), déléguée par Ko le 23/09/2026* — **motif** : le serveur reste l'autorité.
+  ⇒ **COÛT** : code client, et un paquet partagé si l'arithmétique y passe (l'audit le recommande, sans importer
+  l'API dans le navigateur) — compte ; e2e exigée (montants affichés) ; cadrage chemin de l'argent : oui ;
+  migration : non ; dépendance : non.
+- [ ] **[API]** ⛔ **audit SOLID 09/09 · R2 — l'ordre des refus de `booking-charge` contredit son commentaire.**
+  **OUVERT à `HEAD`** : `resolveCharge` promet en tête « doublon → indisponible → refus de ligne » ; les doublons
+  sont bien vus d'abord, par une boucle globale, mais indisponibilité et validité de ligne se testent **dans la
+  même boucle, choix par choix** — un refus de palier sur le premier choix masque l'indisponibilité du second.
+  Reproduit par l'audit (sonde).
+  ⇒ **BLOQUE : rien. Se traite avec le prochain lot qui touche `booking-charge`.** *Décision du relecteur (chat),
+  déléguée par Ko le 23/09/2026* — **motif : non transmis avec la décision.**
+  ⇒ **COÛT** : code API (compte) ; `booking-charge.ts` et sa spec, mesurée sur un cas **doublement** fautif
+  (leçon S11-a) ; e2e : celle du lot porteur ; cadrage chemin de l'argent : oui ; migration : non ; dépendance : non.
+
+### À ordonner par Ko — audit SOLID du 09/09
+
+- [ ] **[OUTIL]** **audit SOLID 09/09 · R1 — `neutralize-s11b.py` compte tout code de sortie non nul comme garde
+  détectée.** **OUVERT à `HEAD`** : dans `main`, le pré-vol est vert sur un code 0 sans compter les tests
+  collectés ; sous mutation, `lancer(m)[0]` garde le code et **jette la sortie**, et **tout code ≠ 0 compte
+  « mordue »** — une erreur de chargement ou de collecte se lit comme une assertion qui mord.
+  ⛔ **CONFRONTÉ À D286 — ET D286 NE LE FERME PAS** : D286 ferme la cause **inverse**, un faux « muette » par
+  mutation jamais posée (`verifier-mutations.py`, ancre 1 → 0 **et** marqueur) ; **rien ne ferme le faux
+  « mordue »**. Calibration de l'audit sur une copie isolée, sorties simulées ; l'audit ajoute que les sept cibles
+  locales qu'il a rejouées ont mordu par de vraies assertions. ⚠ Même forme possible dans les autres harnais qui ne
+  lisent que le code de sortie — **non relevé ici**.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code de `neutralisation/` (compte) ; `neutralize-s11b.py`, et chaque
+  harnais de même forme s'il est étendu ; calibration à deux bras (D286) ; e2e : non ; cadrage chemin de
+  l'argent : non (outillage, même s'il mesure ce chemin) ; migration : non ; dépendance : non.
+- [ ] **[API]** **audit SOLID 09/09 · F3 — un jeton de réinitialisation se consomme deux fois ; même forme sur la
+  vérification d'e-mail et le changement d'e-mail** (P1 de l'audit ; l'audit sécu le reprend en P1). **OUVERT à
+  `HEAD`, les trois** : `AuthService.resetPassword`, `AuthService.verifyEmail` et `AccountService.confirmEmailChange`
+  lisent le jeton (`findFirst`, `usedAt: null`) **avant** la transaction, puis le consomment par
+  `update({ where: { id } })` **sans** `usedAt: null`. Reset reproduit par l'audit ; les deux autres relevés au
+  source par l'audit et confirmés ici par symbole. ⚠ **Contredit l'entrée ✅ de `POST /auth/reset-password`**
+  (section 5.1) — **annotée** après confrontation.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `auth.service.ts`, `account.service.ts` et leurs
+  mesures d'intégration (deux consommations concurrentes, PostgreSQL réel) ; e2e exigée (auth) ; cadrage chemin de
+  l'argent : non ; migration : aucune nommée ; dépendance : non ; mord sous concurrence.
+- [ ] **[API]** **audit SOLID 09/09 · F4 — l'approbation d'une suppression de compte peut agir sur une demande
+  annulée ; le refus admin a la même forme** (P1 de l'audit). **OUVERT à `HEAD`** : `AccountDeletionService.approve`
+  et `.reject` lisent la demande par `loadPending` **avant** d'écrire, puis écrivent `update({ where: { id } })`
+  sans condition `PENDING` — alors que `cancel` est un check-and-set (`updateMany`, `status: "PENDING"`). Relevé
+  au source par l'audit, sans sonde ; l'audit sécu le rappelle. Même famille que F1.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `account-deletion.service.ts` et sa mesure
+  d'intégration ; e2e exigée (auth) ; cadrage chemin de l'argent : non ; migration : non ; dépendance : non ; mord
+  sous concurrence.
+- [ ] **[API]** **audit SOLID 09/09 · F5 — une annulation client contourne le motif exigé** (P2 de l'audit ; même
+  famille que F1). **OUVERT à `HEAD`** : `BookingsService.cancelAsClient` décide par `decideBookingTransition` sur
+  un statut lu **avant**, puis écrit par `transitionStatus(…, allowedFrom(CANCEL_AS_CLIENT), …)`, qui admet **les
+  deux** statuts de départ — un `PENDING` devenu `ACCEPTED` entre-temps s'annule sans motif. Reproduit par l'audit.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `bookings.service.ts`, et `booking-transitions.ts` si la
+  condition y passe ; mesure d'intégration ; e2e exigée (concurrence) ; cadrage chemin de l'argent : non posé par
+  le relecteur ; migration : non ; dépendance : non.
+- [ ] **[API]** **audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français** (P2 de
+  l'audit). **OUVERT à `HEAD`** : `booking-notification-input.ts` compare `locale === "AR"`, alors que l'énuméré
+  `Locale` du schéma est `fr` / `ar` ; et `booking-notification-input.spec.ts` **attend** `["ar", "fr"]` — le test
+  entérine le défaut. Reproduit par l'audit.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; le module et sa spec, corrigés ensemble ; e2e : non ;
+  cadrage chemin de l'argent : non ; migration : non ; dépendance : non ; mord à chaque notification d'un compte `ar`.
+- [ ] **[API]** **audit SOLID 09/09 · A1 — des contrats de persistance exprimés en types Prisma.** **OUVERT à `HEAD`,
+  aux contrats que l'audit NOMME** : `booking-locks.types.ts` (`BookingRow = Prisma.BookingGetPayload`, et
+  `transition` qui prend un `Record<string, unknown>` que l'adaptateur coule en
+  `Prisma.BookingUpdateManyMutationInput`) ; `BookingsService.transitionStatus` (même type Prisma) ;
+  `venue-store.types.ts` (`Prisma`, et `RULE_SELECT` importé **à l'exécution** depuis `pricing-rules.service`) ;
+  `quote-store.types.ts` (`QuoteRow = Prisma.QuoteGetPayload`, `lines: Prisma.InputJsonValue`).
+  ⛔ **D258 — LE COMPTE D'IMPORTS NE JUSTIFIE RIEN** : « 19 fichiers de service sur 25 importent `PrismaService` »
+  est le chiffre **de l'audit**, et la tâche ne le vise pas ; elle vise ces contrats. L'audit note lui-même que
+  l'exception de `BookingRow` est documentée à dessein.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; les quatre contrats et leurs adaptateurs ; e2e exigée
+  (réservations) ; cadrage chemin de l'argent : oui pour `booking-locks` et `transitionStatus` ; migration : non ;
+  dépendance : non.
+- [ ] **[API]** **audit SOLID 09/09 · A5 — le contrat d'événements reste concret : un contrat « publish-only ».**
+  **OUVERT à `HEAD`** : `domain-events.ts` tire ses charges utiles des types de `booking-notifications.service` et de
+  `visit-notifications.service` ; les services dépendent de la classe `DomainEvents` et construisent eux-mêmes les
+  destinataires — F6 en est la conséquence pratique, selon l'audit.
+  ⇒ **À ordonner par Ko** (lié à F6, bloquant d'E3d : la correction de F6 peut passer par lui). ⇒ **COÛT** : code
+  API (compte) ; `domain-events.ts`, les services émetteurs, `notification-subscriptions.ts` ; e2e exigée ;
+  cadrage chemin de l'argent : oui si F6 passe par lui ; migration : non ; dépendance : non.
+- [ ] **[OUTIL]** **audit SOLID 09/09 · garde d'architecture sur les modules purs** (« a small dependency guard for
+  designated pure modules and port contracts », section « Database and tooling observations »). **Non
+  confrontable comme défaut** : c'est une recommandation. Aujourd'hui la pureté des modules du chemin de l'argent
+  (D187 : `payment-intent.ts`, `pricing-engine`, `booking-charge.ts`) tient par leurs specs et par la relecture.
+  ⇒ **À ordonner par Ko — APRÈS A1** (ordre donné par Ko). ⇒ **COÛT** : code — test ou règle de lint (compte) ;
+  e2e : non ; migration : non ; dépendance : aucune si la garde est un test.
+
+### À ordonner par Ko — audit sécurité du 09/09
+
+- [ ] **[API]** **audit sécu 09/09 · journaux — jeton dans le chemin de verify-email, `Set-Cookie` sortant, adaptateur
+  e-mail de dev en production** (P1 de l'audit). **OUVERT à `HEAD`** : `AppModule` ne masque que
+  `req.headers.authorization` et `req.headers.cookie` ; `AuthController` expose `@Get("verify-email/:token")` — le
+  jeton est dans l'URL journalisée ; le `Set-Cookie` des réponses n'est pas masqué ; `EmailModule` lie
+  `DevLoggerEmailSender` **sans condition** (un seul `useClass`, aucun `NODE_ENV`). Sondes de l'audit (pino-http
+  installé ; `NODE_ENV=production` pour l'adaptateur).
+  ⛔ **CE QUI NE SE ROUVRE PAS — D294** : le jeton clair dans le journal de **DEV** est arbitré — ce journal est le
+  seul endroit où il existe, le faire taire rendrait vérification et réinitialisation inachevables en dev. **La
+  tâche porte sur l'adaptateur de dev lié sans condition EN PRODUCTION**, et sur la redaction des journaux HTTP.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `app.module.ts`, `email.module.ts`, et un vrai
+  fournisseur (8.1 « Integrate transactional email provider », annotée) ; e2e exigée (auth) ; cadrage chemin de
+  l'argent : non ; migration : non ; dépendance : **oui** si un fournisseur réel entre ; **ne mord qu'en
+  production** (en dev, D294).
+- [ ] **[API]** **audit sécu 09/09 · invariants de production au démarrage** (P1 de l'audit). **OUVERT à `HEAD`** :
+  `validateEnv` n'exige en production que la **présence** de `PROD_REQUIRED_EXPLICIT` (`CLIENT_URL`, `PRO_URL`,
+  `AUTH_COOKIE_SECURE`, `GOOGLE_CLIENT_ID`, `PAYMENTS_ENABLED`) — `AUTH_COOKIE_SECURE=false` passe ;
+  `CLIENT_URL`/`PRO_URL` en `http://` passent ; `CORS_ORIGINS` n'y figure pas et retombe sur
+  `http://localhost:3000,http://localhost:5173` ; `DATABASE_URL` n'impose pas TLS ; `main.ts` porte une **note**
+  « activer trust proxy », aucune configuration. Sondes de l'audit (Secure=false en production).
+  ⚠ **`THROTTLE_*` hors schéma est une DÉCISION ÉCRITE (D128)**, pas un oubli : l'audit demande des valeurs
+  **valides** — à arbitrer contre D128, pas à corriger d'office.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `config/env.ts`, `main.ts`, et `auth.throttle.ts` si
+  D128 bouge ; e2e exigée (auth : le cookie) ; cadrage chemin de l'argent : non ; migration : non ; dépendance :
+  non ; **ne mord qu'en production**. Existant : PHASE 17 « Define env var schema per environment », annotée.
+- [ ] **[INFRA]** **audit sécu 09/09 · dépendances** (P1 de l'audit). **REJOUÉ LE 23/09/2026** — pièces
+  `docs/preuves/D302/dependances/`. ⚠ **La commande exacte de l'annexe ÉCHOUE avec le pnpm du dépôt** (10.34.4,
+  épinglé) : `Unknown options: 'fetch-retries', 'fetch-timeout'` — code 1 **sans aucun avis**, l'auditeur avait
+  pnpm 11.19.0. Rejouée **sans ces deux options** : **55 avis, 53 GHSA distincts — 2 critiques, 30 élevés,
+  21 modérés, 2 faibles**, recomptés sur les avis ; ⚠ le compteur de l'outil (`metadata`) dit **31** élevés : écart
+  de un entre l'outil et ses propres avis, écrit tel quel. Mêmes 17 paquets que l'annexe, mêmes comptes par paquet.
+  **Versions RÉSOLUES aujourd'hui** (lockfile, inchangé depuis l'audit) : next 15.5.20 · multer 2.1.1 · sharp
+  0.35.3 (API) et 0.34.5 (Next) · react-router 7.18.1 · hono 4.12.28 · fast-uri 3.1.3 · brace-expansion 1.1.15 et
+  5.0.7 · postcss 8.4.31 et 8.5.16 (8.4.31 seule signalée) · @hono/node-server 1.19.11 · browserslist 4.28.5 ·
+  js-yaml 4.3.0 · mysql2 3.15.3 · nanoid 3.3.15 · qs 6.15.3 · baseline-browser-mapping 2.10.42 · deepmerge-ts 7.1.5
+  · valibot 1.2.0. **Aucun changement de dépendance dans ce lot.**
+  ⚠ **Ajout (audit sécu, contrôle 22 — Ko ne le listait pas)** : dans `image-pipeline.ts`, `sniff` appelle
+  `sharp(input).metadata()` **avant** de confronter le format à `ACCEPTED_IMAGE_FORMATS` ; l'audit en **déduit**
+  qu'un refus après cette lecture ne prouve pas que le parseur signalé n'a pas touché les octets. Ouvert à `HEAD`.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : **dépendances** (manifestes et lockfile) ; code si la lecture de `sharp` est
+  réordonnée ; les six portes et l'e2e (build, téléversement) ; cadrage chemin de l'argent : non ; migration :
+  non. Existant : PHASE 13 « Dependency vulnerability scanning in CI », annotée.
+- [ ] **[INFRA]** **audit sécu 09/09 · base** (P1 de l'audit, en partie). **OUVERT à `HEAD`** : aucune sauvegarde
+  automatique ni restauration testée au dépôt (PHASE 19, annotée) ; `docker-compose.yml` publie `5432:5432` et crée
+  la base par `POSTGRES_USER: zwadj`, superutilisateur de l'image selon l'audit (source S5) — pas de rôle de
+  migration distinct du rôle applicatif.
+  ✅ **LE MONTAGE PG18 DE CE P1 EST CLOS PAR D292** (`49f3ace`, 13/09/2026) : le volume nommé monte sur
+  `/var/lib/postgresql` ; `db:down` est sans effet sur les données, mesuré (section D292). L'audit l'avait relevé
+  par rapprochement de la documentation, sans Docker ; l'incident de D292 l'a démontré.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : infra ; `docker-compose.yml` — **il COMPTE** (D292 : il peut dégrader
+  `test:int`) ; rôles SQL à cadrer (`migrate dev` interdit) ; un test de restauration ; e2e : non ; cadrage chemin
+  de l'argent : non ; sauvegardes et rôles **ne mordent qu'en production** ; le port publié vaut pour le poste.
+- [ ] **[SÉCU]** **audit sécu 09/09 · divers — cinq constats, chacun à ordonner par Ko :**
+  1. **`.env.production` et `.env.staging` non ignorés** — `.gitignore` couvre `.env`, `.env.local`, `.env.*.local`.
+     Ouvert. **COÛT** : 1 fichier, `.gitignore` — hors exemption D292, **il compte** ; ne mord qu'au premier tel
+     fichier créé.
+  2. **Limiteur en mémoire derrière un proxy** (P2 de l'audit) — stockage du processus (`app.module.ts` :
+     « suffisant mono-instance »), confiance du proxy non configurée (`main.ts`, note). Ouvert. ⚠ **Ajout** :
+     `@SkipThrottle` se trouve dans **cinq** fichiers de contrôleurs à `HEAD` (`health`, `media`, `referentials`,
+     `availability`, `venues-public`) ; l'audit n'en nommait que deux (médias, health). **COÛT** : code API
+     (compte) ; dépendance si le stockage devient partagé ; ne mord qu'en production. Existant : PHASE 13 « Global +
+     per-endpoint rate limiting », annotée.
+  3. **MFA admin** (contrôle 12, « absent ») — aucun TOTP ni WebAuthn. Ouvert. Existant : 23.6 « MFA/2FA for admin »,
+     annotée. **COÛT** : code API et front, e2e exigée (auth), dépendance probable.
+  4. **Énumération par `EMAIL_ALREADY_USED`** à l'inscription et au changement d'e-mail (contrôle 26, « partiel »)
+     — **choix produit** (Lot 1 : 409 tranché par la contrainte). Existant : entrée ✅ de 5.1, annotée. **COÛT** :
+     décision produit d'abord ; code API ensuite, e2e exigée (auth).
+  5. **Pages CGU et confidentialité vides** (« Bientôt disponible ») et **version d'acceptation non transmise** —
+     `register-form.tsx` exige la case, l'API ne la reçoit pas (« contrat Lot 1 »). Ouvert. → PHASE 14, annotée.
+     **COÛT** : texte juridique (hors code) ; code client et API pour la version, **contrat d'API** (à demander
+     avant, `CLAUDE.md`) ; migration si la version se stocke.
+
+### Ajoutés — constats des audits que la liste de Ko ne nommait pas
+
+- [ ] **[API]** **audit sécu 09/09 · conformité — l'anonymisation laisse les instantanés de contact des
+  réservations.** **OUVERT à `HEAD`** : `AccountDeletionService.approve` anonymise l'utilisateur, archive les salles
+  et consomme les jetons — **aucune écriture sur `bookings`** (0 mention de `booking` dans le service). L'audit :
+  l'étiquette ANONYMIZED « ne suffit pas à rendre tout le jeu de données anonyme » ; une conservation peut être
+  légitime si elle est justifiée et bornée. Existant : PHASE 14 « Reconcile soft-delete vs erasure », annotée.
+  ⇒ **À ordonner par Ko** (décision de conservation d'abord). ⇒ **COÛT** : décision juridique ; code API (compte) ;
+  migration possible ; e2e exigée (auth).
+- [ ] **[API]** **audit sécu 09/09 · sessions — aucun plafond absolu de durée de session** (contrôle 9). **OUVERT à
+  `HEAD`** : la rotation du refresh recalcule `expiresAt` à `REFRESH_TOKEN_TTL_DAYS` (30 par défaut) — « fenêtre
+  GLISSANTE » écrit le code — et aucun plafond absolu n'existe (0 occurrence). Voisin de D4 (entrée de 5.1bis,
+  annotée) : D4 assume la fenêtre d'un access token ; **ceci est autre chose**, la durée totale d'une session.
+  ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; migration probable (date d'origine de la session) ;
+  e2e exigée (auth).
+- **Rattachés à des entrées existantes, sans entrée neuve** : **audit SOLID 09/09 · A2** (reste : `create`,
+  `QuotesService`, `AuthService`) et **· A4** (`WalkinJourney`) → S12 à S14 et « F2 — décomposition » du 22/08,
+  annotées.
+- **Non confrontables au dépôt** (hébergement, exploitation) : WAF et DDoS (contrôle 6), chiffrement au repos (23),
+  alerting (28). **Pas d'entrée** : l'audit les déclare lui-même « non vérifiables » depuis l'archive.
+- **Non repris en entrée, et l'audit le dit lui-même** : RLS (contrôle 19 — « ne doit pas être ajoutée
+  mécaniquement ») ; le `console.error` de rendu de `GuardedSection` (contrôle 25, « globalement présent »).
+- [ ] **[DOC]** **Le point 10 de la méthode renforcée d'E3 prescrit un contrôle de provenance de l'ère des
+  archives** — « `diff` contre le zip livré », `git apply --check`. Depuis la bascule Claude Code (D266), le contrôle
+  de provenance est l'énumération des fichiers attendus (`CLAUDE.md`). Croisé par ce lot en annotant ce point,
+  **non corrigé**. ⇒ **À ordonner par Ko** — mais le cadrage d'E3 le lira. ⇒ **COÛT** : documentaire (ne compte
+  pas) ; 1 fichier, `ZWADJ_CONTINUITE.md`.
+
 ## Reports du 22/09/2026 — lot documentaire hors rang (D301)
+
+⛔ *(D302, 23/09/2026 : « hors rang » rejeté par Ko — aucun lot hors de l'ordre des rangs ; D301 est le **rang 21**,
+rétroactivement. Titre daté, non réécrit.)*
 
 ⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D301 de `ZWADJ_CONTINUITE.md`.
 ⇒ **Traitée par ce lot, ailleurs dans ce fichier** : l'entrée `[INFRA][P3]` du 10/09 sur le compte des `node`
@@ -2370,7 +2665,7 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
 
 ### ⛔ Ouverts, mesurés, NON corrigés
 
-- **[INFRA][P3]** ⛔ **L'ÉCHANTILLONNEUR NE NOMME RIEN PENDANT LA FENÊTRE — OUTILLER L'INVENTAIRE, POUR QUE « PROCESSUS
+- **[INFRA]** ~~[P3]~~ ⛔ **L'ÉCHANTILLONNEUR NE NOMME RIEN PENDANT LA FENÊTRE — OUTILLER L'INVENTAIRE, POUR QUE « PROCESSUS
   ÉTRANGER » REDEVIENNE MESURABLE.** Ko a réduit le point 7 du critère à ce qui se mesure (D301) : un creux avec
   `chrome` > 0 disqualifie la fenêtre ; les autres processus étrangers ne sont pas mesurés pendant la fenêtre —
   **limite déclarée**. `neutralisation/echantillonneur-etat-machine.ps1` relève `node`, `chrome` et `nb_proc`,
@@ -2378,10 +2673,20 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
   mais seulement aux relevés qui ENCADRENT une mesure. ⇒ **À faire** : un inventaire nommé à chaque échantillon,
   **calibré sur ses deux bras** (D286) — un étranger lancé exprès pendant une mesure doit sortir, une mesure seule
   ne doit rien sortir d'étranger. ⇒ Alors seulement la clause pourra se réécrire, et c'est à Ko de le décider.
-  ⛔ **C'est du code de `neutralisation/` : le lot qui le fera COMPTE** (Ko). ⚠ **Priorité posée par la session**,
-  alignée sur l'entrée voisine du 10/09 ; elle appartient à Ko. ⚠ **Voisine, pas doublon** : l'entrée
+  ⛔ **C'est du code de `neutralisation/` : le lot qui le fera COMPTE** (Ko). ~~⚠ **Priorité posée par la session**,
+  alignée sur l'entrée voisine du 10/09 ; elle appartient à Ko.~~ ⚠ **Voisine, pas doublon** : l'entrée
   `[INFRA][P3]` du 10/09 veut **classer** les `node` (observateur ou worker) ; celle-ci veut **nommer** tout ce qui
   tourne. Un même relevé servirait les deux.
+  ⛔ **FORME DE KO (D302, 23/09/2026) : ce report passe à la forme des entrées neuves — sa priorité est retirée.**
+  ⇒ **BLOQUE : rien dans le critère courant — donc « à ordonner par Ko ».** Vérifié le 23/09/2026 : après D301,
+  **aucune règle de certification ne dépend d'un inventaire EN VOL**. Une en dépend **DEVANT chaque mesure** — le
+  point 2 du critère du rang 9 (« l'état machine ET son INVENTAIRE NOMMÉ relevés devant chaque mesure ») — et
+  celui-là existe : la sonde l'imprime (`neutralisation/sonde-etat-machine.ps1`, section « INVENTAIRE > 150 Mo » ;
+  pièce relevée `docs/preuves/D299/passe/rang19-p2-sonde-avant-e2e.txt`). Cet outillage ne débloquerait que la
+  **réécriture** de la clause « processus étranger » du point 7, qui appartient à Ko.
+  ⇒ **COÛT** : **code** (`neutralisation/`, il **compte**) ; 1 fichier, `neutralisation/echantillonneur-etat-machine.ps1`,
+  avec son en-tête et sa calibration à deux bras (D286) ; pas d'e2e, pas de cadrage chemin de l'argent, pas de
+  migration, pas de dépendance ; ne mord qu'en certification, sur le poste de Ko.
 
 ## Reports du 22/09/2026 — rang 20, l'ordre des rangs sort de la section D270 (D300)
 
@@ -2395,7 +2700,9 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
 - **[DOC][P3]** ⚠ **« ⇒ POURQUOI (b) ET PAS (a) » SE LIT SOUS LE RANG COURANT, SÉPARÉ DE SON RANG 17.** Ce
   paragraphe de l'ordre des rangs — écrit le 16/09 par D294 (`git blame` : `16ca01a`) — justifiait la forme
   (b) des budgets, **candidat du rang 17**. Les lignes des rangs 17 à 21 se sont insérées **au-dessus de lui**,
-  une par lot (D295 → D300) : il suit aujourd'hui « RANG 21 : EN ATTENTE D'ARBITRAGE DE KO » et **se lit comme
+  une par lot (D295 → D300) : il suit aujourd'hui « RANG 21 : EN ATTENTE D'ARBITRAGE DE KO » ⛔ *(D302, 23/09/2026 :
+  il suit désormais la ligne « RANG 23 : EN ATTENTE » et la décision due à Ko sur les étiquettes P0-P3 — le défaut
+  s'aggrave d'un paragraphe, il ne change pas de nature ; non corrigé, ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

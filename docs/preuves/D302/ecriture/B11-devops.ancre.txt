@@ -1,0 +1,2 @@
+- [ ] Write docker-compose for local dev (api, db) [INFRA][P0]
+- [ ] Define env var schema per environment [INFRA][P0]

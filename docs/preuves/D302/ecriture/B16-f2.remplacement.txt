@@ -1,0 +1,1 @@
+- **F2** — décomposition d'`AuthService`, `BookingsService`, `WalkinJourney`. À réévaluer maintenant que S5b a dégagé la concurrence. ⛔ *(D302 : même objet que l'A2 (reste) et l'A4 de l'audit SOLID du 09/09 — à ne pas confondre avec « audit SOLID 09/09 · F2 », un défaut de conversion de devis. Voir S12 à S14.)*

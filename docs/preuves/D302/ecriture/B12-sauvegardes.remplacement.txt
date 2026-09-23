@@ -1,0 +1,5 @@
+- [ ] Automated daily DB backups [INFRA][P0]
+- [ ] Object-storage backup/versioning [INFRA][P1]
+- [ ] Test restore from backup [INFRA][P1]
+  ⛔ *(D302, 23/09/2026 : toujours rien au dépôt — audit sécu 09/09, contrôle 29 : « un volume persistant n'est pas
+  une sauvegarde ». Reports de D302, « audit sécu 09/09 · base ».)*

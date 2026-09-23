@@ -1,0 +1,26 @@
+Un mode de défaillance non listé au cadrage **ne se code pas**.
+- ⛔ **E3 — QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE : arbitrages de Ko du 23/09/2026 (D302), À LIRE AVANT DE
+  TOUCHER AU PAIEMENT.** Portée : **le lot argent, c'est-à-dire E3, paiement Chargily.**
+  1. **Qui code** — Ko, mot pour mot : « **Le lot argent ne sera plus codé par moi mais par Claude Code.** »
+  2. **Qui décide** — Ko, mot pour mot : « **Les décisions concernant le lot paiement seront prises par Claude, dans
+     mon chat de relecture, avec mon intervention si je vois quelque chose qui cloche.** »
+     ⚠ **Ce « Claude » n'est PAS la session qui code : c'est le relecteur du chat.** Sur le paiement, **la session de
+     code signale et propose, elle ne décide pas.** Les décisions lui arrivent **par les messages de Ko** et
+     s'écrivent « **décision du relecteur (chat), déléguée par Ko le 23/09/2026** », avec leur motif.
+  3. **La forme de la revue (« D39 ») — RATIFIÉE par Ko, arbitrage tranché** :
+     - une session Claude Code écrit le code E3 ;
+     - une **AUTRE** session, ouverte **à froid**, tente de le casser : elle rejoue les modes de défaillance du
+       cadrage, neutralise chaque garde neuve, et **ne corrige rien, elle rapporte** ;
+     - le relecteur (chat) audite son rapport contre le dépôt et **décide** ;
+     - **Ko garde le veto final.**
+  ⇒ **D39 cesse de bloquer le code E3.** ⛔ **Reste exigé avant toute ligne de code E3** : **un rang que Ko
+  arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (méthode renforcée, D126), **sur lesquels le
+  relecteur décide**. ⚠ La pause d'E3c (arbitrage de Ko, 17/08/2026) n'est pas levée par D302 : c'est
+  l'arbitrage d'un rang qui la lève.
+  ⚠ **« D39 »** : au registre, D39 est « prix par créneau », remplacée par D46 pour le Flux B ; sa dernière phrase —
+  « Chemin d'argent ⇒ revue humaine » — est ce que « revue humaine D39 » cite depuis. Précision, pas correction.
+  ⚠ **Ce que ces arbitrages NE disent PAS** : ils visent le code **E3**. Les autres chemins critiques (auth,
+  concurrence, suppression de compte, tarification hors E3) gardent la règle de revue d'avant — **l'étendre
+  appartient à Ko.** `CLAUDE.md` (« s'arrêter et demander ») reste compatible : la session demande, la réponse
+  arrive par les messages de Ko.
+- Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.

@@ -1,0 +1,1 @@
+- [ ] Dependency vulnerability scanning in CI [INFRA][P1]

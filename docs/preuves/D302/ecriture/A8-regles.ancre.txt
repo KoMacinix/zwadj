@@ -1,0 +1,3 @@
+poussé d'un cran : **le bon fichier est celui qu'on lit encore quand le sujet est refermé.**
+
+⛔ **RELEVER L'ÉTAT MACHINE AVANT TOUTE MESURE DE DURÉE OU D'INTERMITTENCE (D270).**

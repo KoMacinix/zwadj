@@ -1,0 +1,60 @@
+Passe D277 de D302 (rang 22) — TRI À LA MAIN, les deux sens. Instrument : balayage.py, copie à l'octet de celui de D301
+(SHA-256 fedc303e… des deux côtés). Calibration 2 bras sur 2 à chaque invocation ; parcouru = attendu sur les octets.
+
+SENS 1 — ce que le lot INVALIDE (motifs-sens1.txt, 7 motifs)
+  avant 30 occurrences (sens1-avant.txt) · après la partie A 57 (sens1-apres-A.txt) · après la partie B 57 (sens1-apres.txt)
+  Motif à zéro AVANT : ko-decide-paiement — vérifié par trois expressions plus larges sur le texte aplati des quatre
+  fichiers : 3 occurrences, aucune du genre « Ko décide du paiement » (la pause d'E3c dans la table datée d'AGENTS.md,
+  la même au backlog, un « arbitrage de Ko » sur un budget) — absence réelle. APRÈS : 2, qui sont les textes de D302.
+  Occurrences COURANTES ou BACKLOG d'avant, une par une :
+    AGENTS.md « Méthode » — « … → requiert revue humaine »                       ANNOTÉE (A10)
+    AGENTS.md « À NE PAS faire » — « … sans tests + demande de revue »            ANNOTÉE (A9)
+    AGENTS.md « État des lots » — « L'ÉTAT COURANT NE SE LIT PAS ICI »            POINTEUR AJOUTÉ (A11, point 4)
+    CONTINUITE en-tête l.118-119 — « C'est le lot de Ko (… revue humaine D39) »   DÉJÀ BARRÉE (D280) ; annotée juste
+                                                                                   en dessous, l.142-143 (A14)
+    CONTINUITE en-tête l.143 — « E3 … à revue humaine (D39) »                     ANNOTÉE (A14)
+    CONTINUITE D39 (décisions tranchées) — « Chemin d'argent ⇒ revue humaine »    ANNOTÉE (A15)
+    CONTINUITE D46 l.202 — « Chemin d'argent ⇒ revue humaine obligatoire »        JUSTE — Flux B (le résolveur de prix),
+                                                                                   hors E3 ; les arbitrages visent E3
+    CONTINUITE « Méthode de travail » — « Chemins critiques … = revue humaine »   ANNOTÉE (A16)
+    CONTINUITE « Prochaines tranches » — « à coder par Ko … revue humaine D39 »   BARRÉE « à coder par Ko », ANNOTÉE (A12)
+    CONTINUITE méthode renforcée, point 10 — « Revue humaine obligatoire (D39) »  ANNOTÉE (A13) — la fenêtre de contexte
+                                                                                   de 110 caractères s'arrête avant
+                                                                                   l'annotation : relu dans le fichier
+    CONTINUITE l.53 et l.190 — « D46 a remplacé la piste D39 »                    JUSTES
+    BACKLOG 5.1ter — « chemins sensibles, revue humaine obligatoire »             JUSTE — auth, hors E3
+    BACKLOG 6.2 (D39, Flux B) — « ⇒ tests + revue humaine »                       JUSTE — Flux B, hors E3
+    BACKLOG A10 [x] — « Revue humaine ligne à ligne obligatoire »                 JUSTE — case cochée, datée par son lot
+    CONTINUITE section D301 — « ⇒ HORS RANG : le rang 21 reste … »                ANNOTÉE (A4) ; titre : même annotation
+    CONTINUITE registre, ligne D301 — « lot DOCUMENTAIRE hors rang »              ANNOTÉE (A5)
+    BACKLOG titre des reports de D301 — « hors rang »                             ANNOTÉ (A6)
+  Les 27 occurrences neuves sont les textes de D302 (ordre des rangs, points d'entrée 21 et 22, AGENTS.md, méthode
+  renforcée, PHASE 7), signés D302.
+
+SENS 2 — ce que le lot REND PERMIS (motifs-sens2.txt, 7 motifs)
+  avant 37 · après la partie A 64 · après la partie B 78 (sens2-avant.txt, sens2-apres-A.txt, sens2-apres.txt)
+  Motif à zéro avant ET après : session-decide — vérifié par une expression plus large (« session » à 25 caractères de
+  « décide|tranche ») : 0 dans les quatre fichiers. Absence réelle.
+  Ce que le lot rend permis : (a) du code E3 écrit par une session Claude Code ; (b) D39 ne bloque plus le code E3 ;
+  (c) une décision de paiement prise hors de Ko, par le relecteur du chat.
+  ⇒ AUCUNE phrase courante ne rend permis le code E3 SANS rang arbitré : les conditions restantes (un rang que Ko
+    arbitre, puis l'état des lieux et le cadrage du sous-lot, sur lesquels le relecteur décide) sont écrites aux trois
+    endroits (AGENTS.md point E3, tête de la méthode renforcée, PHASE 7) et sous la ligne du rang 23.
+  ⇒ BACKLOG PHASE 7 — « ⏸ E3c EST EN PAUSE depuis le 17/08/2026 (arbitrage Ko) » : JUSTE — la pause n'est pas levée
+    par D302 ; c'est l'arbitrage d'un rang qui la lève (écrit aux trois endroits).
+  ⇒ CONTINUITE méthode renforcée § 2 — « un mode de défaillance non listé en E3a ne se code pas » : JUSTE, inchangé.
+  ⇒ Les permissions du chemin de l'argent hors E3 (tarification, `booking-charge`) NE SONT PAS étendues : écrit en
+    toutes lettres (« Ce que ces arbitrages NE disent PAS » ; « Portée »).
+  ⇒ Les 41 occurrences neuves (37 → 78) sont les textes de D302 : arbitrages E3, décisions du relecteur de la partie
+    B (« BLOQUE E3d », « décision du relecteur »).
+
+⚠ Comptés AVANT l'écriture de la section de session D302, qui cite les motifs : elle est datée (« ## Session »), donc
+classée DATÉE par l'instrument — elle ne change aucun compte COURANT ni BACKLOG.
+
+APRÈS LA CLÔTURE (section de session, registre, point d'entrée du rang 22 rafraîchi, ligne de clôture dans l'ordre) —
+sens1-final.txt, sens2-final.txt :
+  SENS 1 : 57 → 81. COURANTE et BACKLOG INCHANGÉS motif par motif ; les 24 neuves sont DATÉES (la section D302 et le
+           registre, qui citent ce qu'ils décrivent).
+  SENS 2 : 78 → 99. DATÉE +15 ; COURANTE +6 — e3-bloque +1, bloque-e3 +2, relecteur +3 — toutes dans la clôture du
+           rang 22 (point d'entrée et ligne de l'ordre) : elles énoncent des BLOCAGES (« F1, F2, F6 bloquent E3d »),
+           aucune une permission.

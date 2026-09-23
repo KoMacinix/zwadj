@@ -1,0 +1,1 @@
+- [ ] Integrate transactional email provider [BACK][P0] ⛔ *(D302 : à `HEAD`, `EmailModule` lie `DevLoggerEmailSender` SANS CONDITION, production comprise — audit sécu 09/09 · journaux, reports de D302. Le jeton du journal de DEV, lui, est arbitré (D294) et ne se rouvre pas.)*

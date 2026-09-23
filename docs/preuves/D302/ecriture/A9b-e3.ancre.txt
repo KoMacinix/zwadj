@@ -1,0 +1,2 @@
+Un mode de défaillance non listé au cadrage **ne se code pas**.
+- Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.

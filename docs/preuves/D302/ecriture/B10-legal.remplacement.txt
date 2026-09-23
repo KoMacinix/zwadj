@@ -1,0 +1,15 @@
+- [ ] Draft Terms of Service (FR/AR) [SHARED][P1]
+- [ ] Draft Privacy Policy (FR/AR) [SHARED][P1]
+- [ ] Cookie/tracking consent banner + storage [CLIENT][P1]
+- [ ] Implement data export (access right) [BACK][P2]
+- [ ] Implement account/data deletion (erasure right) [BACK][P2]
+- [ ] Reconcile soft-delete vs erasure: anonymize (not delete) records tied to financial/legal retention [BACK][P2]
+- [ ] Draft cancellation & payment terms [SHARED][P1]
+- [ ] Add consent checkboxes at registration/booking [CLIENT][P1]
+
+⛔ *(D302, 23/09/2026 : l'audit sécu du 09/09 — contrôle 30 — relève, et c'est vrai à `HEAD` : pages `cgu` et
+`confidentialite` réduites à « Bientôt disponible » ; la case d'acceptation de `register-form.tsx` n'est pas
+transmise à l'API, sans version du texte ; l'anonymisation d'un compte ne touche pas les instantanés de contact des
+réservations. Entrées de D302 : « audit sécu 09/09 · divers », 5, et « · conformité ». L'applicabilité du RGPD ou
+du CCPA dépend de l'exploitant et des marchés visés — l'audit ne la tranche pas ; « l'absence d'une bannière
+cookies n'est pas à elle seule une preuve de non-conformité » (audit).)*

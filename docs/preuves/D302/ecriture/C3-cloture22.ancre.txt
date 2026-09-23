@@ -1,0 +1,15 @@
+## PROCHAIN LOT — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ **OUVERT LE 23/09/2026 : D302**
+
+### ⛔ ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **OUVERT LE 23/09/2026, DANS LA SESSION DE LA REPRISE À FROID, SUR ORDRE DE KO** — arbitrage écrit en
+**première** ligne dans l'ordre des rangs, avant toute autre (patron de D295). ⇒ **QUEL lot : rang 22 de l'ordre
+des rangs. OÙ IL EN EST : ici.**
+⇒ **PARTIE A — les arbitrages de Ko, écrits dans cet ordre** : (1) rang 21 = D301, rang 22 = ce lot, rang 23 en
+attente ; (2) E3 codé par Claude Code, décisions de paiement au relecteur du chat ; (3) forme de la revue d'E3
+ratifiée ; (4) pointeur « ORDRE DES RANGS » dans `AGENTS.md` ; (5) forme des entrées neuves du backlog.
+⇒ **PARTIE B — les deux audits externes du 09/09/2026**, versés dans `docs/preuves/D302/sources/` et confrontés
+au code de `HEAD`, constat par constat.
+⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de code
+non certifiés : ZÉRO, inchangé.**
+⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture.

@@ -1,0 +1,7 @@
+⇒ **L'ÉTAT COURANT NE SE LIT PAS ICI.** Il se lit dans `ZWADJ_CONTINUITE.md` : la section
+« PROCHAIN LOT » pour le rang en cours, la section de la dernière session pour ce qui vient
+d'être livré et mesuré, et la table du registre pour le dernier numéro de décision.
+⇒ **ET QUEL LOT VIENT ENSUITE : la section « ORDRE DES RANGS »** du même fichier — le rang courant
+est sa dernière ligne « ⇒ RANG N ». « PROCHAIN LOT » dit **OÙ EN EST** un rang, pas **lequel**
+vient (D283 : deux questions, deux endroits). ⛔ *Pointeur AJOUTÉ le 23/09/2026 (D302, consigne de
+Ko) : ce bloc ne le nommait pas — relevé par D301 ; aucun pointeur retiré.*

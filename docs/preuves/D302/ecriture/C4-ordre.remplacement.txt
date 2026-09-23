@@ -1,0 +1,8 @@
+(D283, amendé par D292). ⇒ **Où il en est** : section « PROCHAIN LOT — rang 22 » en tête de ce fichier.
+⛔ **(D302, 23/09/2026) RANG 22 CLOS** : partie A — les arbitrages de Ko écrits là où une session les lit (ordre des
+rangs, `AGENTS.md`, tête de la méthode renforcée d'E3, PHASE 7 du backlog) ; partie B — les deux audits du 09/09
+versés et confrontés par symbole à `HEAD`, **tous les constats nommés OUVERTS sauf le montage PG18 (D292)** ; F1, F2,
+F6 bloquent E3d et F8 la levée du drapeau (décisions du relecteur). **Documentaire : compteur de lots de code non
+certifiés à ZÉRO, inchangé.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 22 », clôture. ⇒ La ligne du rang
+23, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie à la clôture.**
+⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang

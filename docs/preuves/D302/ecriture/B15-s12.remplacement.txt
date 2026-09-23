@@ -1,0 +1,7 @@
+  la longue traîne n'est PAS justifiée par le compte d'imports Prisma : seuls comptent les
+  blocs transactionnels et les six doubles castés restants.
+  ⛔ *(D302, 23/09/2026 : l'audit SOLID du 09/09 les retrouve — **A2, reste** : `BookingsService.create`,
+  `QuotesService` (lectures et `Prisma.InputJsonValue`), `AuthService` ; **A4** : `WalkinJourney`, « un seul
+  composant d'environ 650 lignes physiques » selon l'audit — le fichier en compte 798 à `HEAD` : deux définitions
+  différentes, non soustraites (D290). **Pas d'entrée neuve.** Le chiffrage extrait par S11-b y est compté comme
+  résolu.)*

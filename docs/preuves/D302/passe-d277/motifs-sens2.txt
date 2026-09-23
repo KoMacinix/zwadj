@@ -1,0 +1,13 @@
+# Passe D277 de D302 (rang 22), SENS 2 — ce que le lot REND PERMIS (D287) :
+#  (a) du code E3 écrit par une session Claude Code — dès qu'un rang est arbitré par Ko, et après l'état des lieux
+#      et le cadrage du sous-lot, sur lesquels le relecteur (chat) décide ;
+#  (b) D39 cesse de bloquer le code E3 ;
+#  (c) une décision sur le paiement prise hors de Ko (par le relecteur du chat, délégation de Ko).
+# On cherche toute phrase qui dit qu'E3 peut / ne peut pas s'ouvrir, ou qui en nomme la condition.
+e3-ouvre               (?i)\bE3[a-e]?\b.{0,50}?(?:s'ouvre|s'ouvrir|peut s'|pourra|ouvert|rouvr)
+e3-bloque              (?i)\bE3[a-e]?\b.{0,50}?(?:bloqu|verrou|en pause|interdit)
+bloque-e3              (?i)(?:bloqu\w*|verrou\w*|avant) (?:avant |d')?E3[a-e]?\b
+argent-ouvre           (?i)chemin de l'argent.{0,60}?(?:s'ouvre|s'ouvrir|verrou|autoris|lev[ée])
+claude-code-argent     (?i)Claude Code.{0,80}?(?:argent|paiement|\bE3)
+session-decide         (?i)la session (?:décide|tranche|arbitre)
+relecteur              (?i)relecteur

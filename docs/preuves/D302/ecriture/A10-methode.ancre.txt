@@ -1,0 +1,1 @@
+- Marquer clairement le code des chemins critiques (paiement, auth, concurrence) → requiert revue humaine.

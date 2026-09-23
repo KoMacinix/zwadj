@@ -1,0 +1,29 @@
+CALIBRATION : bras positif 1 (attendu 1) · bras négatif 0 (attendu 0)
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « le RANG 21 est D301 »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « le RANG 22 est D302 »
+   ✓ ZWADJ_CONTINUITE.md : 2 (attendu 2) · « RANG 23 : EN ATTENTE D'ARBITRAGE DE KO »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ## PROCHAIN LOT — rang 22 »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ## ~~PROCHAIN LOT~~ — rang 21 »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « ARBITRÉ PAR KO, APRÈS COUP : rang 21 = D301 »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « « HORS RANG » REJETÉ PAR KO »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « D301 est le rang 21, rétroactivement) »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE — arbitrages de Ko du 23/09/2026 »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « FORME RATIFIÉE PAR KO — « l'auditeur » est une AUTRE session Claude Code »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « Paiement Chargily (E3) — ~~à coder par Ko~~ »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « la phrase barrée disait aussi « c'est le lot de Ko » — plus vrai »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « c'est cette dernière phrase que « revue humaine D39 » cite depuis »
+   ✓ ZWADJ_CONTINUITE.md : 1 (attendu 1) · « = revue humaine obligatoire. ⛔ (D302, »
+   ✓ AGENTS.md : 1 (attendu 1) · « AUCUN LOT HORS DE L'ORDRE DES RANGS — règle de Ko, 23/09/2026 »
+   ✓ AGENTS.md : 1 (attendu 1) · « FORME DES ENTRÉES NEUVES DU BACKLOG : PLUS DE PRIORITÉ PAR URGENCE »
+   ✓ AGENTS.md : 1 (attendu 1) · « E3 — QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE »
+   ✓ AGENTS.md : 1 (attendu 1) · « D39 cesse de bloquer le code E3 »
+   ✓ AGENTS.md : 1 (attendu 1) · « ET QUEL LOT VIENT ENSUITE : la section « ORDRE DES RANGS » »
+   ✓ AGENTS.md : 1 (attendu 1) · « auth et concurrence : inchangé.) »
+   ✓ AGENTS.md : 1 (attendu 1) · « demande de revue. ⛔ (D302, 23/09/2026 : toujours vrai. »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « ARBITRAGES DE KO DU 23/09/2026 (D302) — À LIRE AVANT TOUTE ENTRÉE DE CETTE PHASE »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « [INFRA] ~~[P3]~~ ⛔ L'ÉCHANTILLONNEUR NE NOMME RIEN »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « BLOQUE : rien dans le critère courant — donc « à ordonner par Ko » »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « il suit désormais la ligne « RANG 23 : EN ATTENTE » »
+   ✓ ZWADJ_BACKLOG.md : 1 (attendu 1) · « D301 est le rang 21, rétroactivement. Titre daté »
+== parcourus : 3 fichiers · 1228661 caractères aplatis · 27 jetons · TOUS AU COMPTE
