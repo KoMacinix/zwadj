@@ -1142,12 +1142,16 @@ renvoi daté. La section D270 n'est pas réécrite au-delà (contrainte de Ko, D
 ⇒ **LES POINTEURS COURANTS** : **7** dans ce fichier (en-tête ×2, points d'entrée des rangs 19, 18, 14, 13 et 9)
 et **1** dans `AGENTS.md` (règle « un rang clos laisse un état nommé ») — barrés et suivis de la route neuve
 (D276). ⛔ **`CLAUDE.md` n'en portait AUCUN** — 0 occurrence, et `git log -S` n'en trouve jamais : la prémisse
-de la consigne était fausse ; **une ligne y est AJOUTÉE**, pas mise à jour (section D300, constat n°5). Les
+de la consigne était fausse ; ~~**une ligne y est AJOUTÉE**, pas mise à jour~~ (section D300, constat n°5) ⛔ *(D301,
+22/09/2026 : **retirée** sur ordre de Ko — `AGENTS.md`, que `CLAUDE.md` importe, porte déjà le pointeur ; corriger
+une prémisse fausse ne consiste pas à créer ce qu'elle croyait exister.)* Les
 pointeurs des sections **datées** restent tels quels, vrais à leur date : ils tombent sur le renvoi. Le seul
 renvoi **relatif** de l'ordre qui sortait de lui (« plus haut », rang 7) est annoté.
-⇒ **ÉTAPE 0 (Ko)** : les huit creux de D299 annotés dans sa section — **7 sous Playwright, 1 sous vitest** ; la
-composition « 11 + pnpm + runner » ne vaut que pour le dernier. La règle de Ko au **critère du rang 9, point
-7** : la barre porte sur l'état ambiant, relevé à `node` = 0.
+⇒ **ÉTAPE 0 (Ko)** : les huit creux de D299 annotés dans sa section — **7 sous Playwright, 1 sous vitest** ; ~~la
+composition « 11 + pnpm + runner » ne vaut que pour le dernier~~ ⛔ *(D301, sur ordre de Ko : une explication
+démentie se barre, elle ne se nuance pas.)* La règle de Ko au **critère du rang 9, point 7** : la barre porte sur
+l'état ambiant, relevé à `node` = 0. ⛔ *(D301 : réduite à ce qui se mesure — `chrome` > 0 disqualifie la fenêtre ;
+les autres processus étrangers ne sont pas mesurés pendant la fenêtre, limite déclarée.)*
 ⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de
 code non certifiés : ZÉRO, inchangé.** Un lot de code **peut** s'ouvrir dès que Ko l'arbitre. **Aucune porte
 lancée** : aucune ne lit ces fichiers.
@@ -2647,8 +2651,22 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
    BARRE D'ÉTAT MACHINE » plus bas) porte sur l'**ouverture**, et rien ne tranchait un creux **pendant** une
    mesure. D299 a certifié une fenêtre dont le minimum était **3 549 Mo**, et sa clôture ne le disait pas.
    ⇒ **RÈGLE DE KO : LA BARRE PORTE SUR L'ÉTAT AMBIANT, RELEVÉ À `node` = 0.** Un creux pendant une mesure,
-   **avec les seuls `node` de cette mesure**, est **la charge qu'on certifie**. Un creux **avec `chrome`** ou
-   **un processus étranger DISQUALIFIE la fenêtre.**
+   **avec les seuls `node` de cette mesure**, est **la charge qu'on certifie**. ~~Un creux **avec `chrome`** ou
+   **un processus étranger DISQUALIFIE la fenêtre.**~~
+   ⛔ **RÉDUITE À CE QUI SE MESURE — KO, 22/09/2026 (D301).** La clause « processus étranger » ne pouvait mordre
+   sur rien : l'échantillonneur ne relève aucun inventaire (« CE QUE L'INSTRUMENT VOIT », ci-dessous ; section
+   D300, constat n°4) — « une garde muette, écrite par moi » (Ko). Barrée, pas effacée (D276).
+   ⇒ **LE POINT 7 DIT :**
+   - **un creux avec `chrome` > 0 DISQUALIFIE la fenêtre** — `chrome` est relevé à chaque échantillon ;
+   - **les autres processus étrangers NE SONT PAS MESURÉS pendant la fenêtre** — `node` étrangers compris, qui ne
+     se distinguent pas de ceux de la mesure. **C'est une LIMITE DÉCLARÉE, pas une clause.** Report `[INFRA]` du
+     22/09/2026 (D301) pour outiller l'inventaire — c'est du code, il comptera.
+   ⚠ **« Pendant » est la frontière exacte** : aux relevés de sonde qui ENCADRENT chaque mesure, un inventaire
+   nommé existe (point 2) — dans la pièce relevée, au-dessus de 150 Mo
+   (`docs/preuves/D299/passe/rang19-p2-sonde-avant-e2e.txt`). C'est l'échantillonneur, en vol, qui ne nomme rien.
+   ⚠ **« Avec les seuls `node` de cette mesure » se lit dans ce cadre — lecture de la session, pas une parole de
+   Ko, réversible** : ce qui s'en mesure est l'**encadrement** — `node` = 0 au relevé qui précède la mesure et à
+   celui qui la suit —, jamais l'identité des `node` en vol.
    ⇒ **LES CAS : LES HUIT CREUX DE D299** (passe 2, 22/09/2026, min **3 549 Mo**) — **7 sous Playwright**
    (`test:e2e` ×3, `neutralize-b7.py` ×4), **1 sous vitest** (`neutralize-maxprice.py`) ; `chrome` **0**,
    `node` **12 à 14**, `node` **0** aux relevés qui encadrent chaque mesure ⇒ **charge de la mesure, fenêtre
@@ -2659,7 +2677,9 @@ qui vaut partout ici : un critère choisi APRÈS les résultats ne mesure plus r
    mesure elle-même fait bouger ce compte (`nb_proc − node` : **+6 à +20** dans les huit creux). ⇒ **Un
    étranger qui ne s'appelle ni `chrome` ni `node` ne se voit pas ; un `node` étranger ne se distingue pas de
    ceux de la mesure.** Report au backlog (entrée `[INFRA][P3]` du 10/09 sur le compte des `node`, annotée
-   par D300). **La règle est celle de Ko ; sa limite d'instrument ne la retouche pas.**
+   par D300). ~~**La règle est celle de Ko ; sa limite d'instrument ne la retouche pas.**~~ ⛔ *(D301, 22/09/2026 :
+   elle l'a retouchée — Ko a réduit la règle à ce que l'instrument mesure, et ce paragraphe est la mesure qui l'y a
+   conduit.)*
 8. ⛔ **`chrome` À 0 AU RELEVÉ D'OUVERTURE — SIXIÈME QUANTITÉ, ET C'EST UNE PORTE DURE, PAS
    UNE ANNOTATION (D288, 12/09/2026).** Au même titre que la barre de RAM : si elle est
    rouge, **on ne lance rien** et on le dit.
@@ -3466,6 +3486,138 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 22/09/2026 — D301 · lot DOCUMENTAIRE hors rang : la ligne de `CLAUDE.md` se retire, le point 7 se réduit à ce qui se mesure
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D300**. ⇒ **HORS RANG** : le rang 21 reste
+« **en attente d'arbitrage de Ko** » — Ko le réserve au **produit**, ce lot ne le consomme pas. Reprise à froid sans
+état donné, forme allégée, puis ce lot sur ordre de Ko, dans la même session. Lot **documentaire** : `CLAUDE.md`,
+`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` et `docs/preuves/D301/` au diff — **compteur de lots de code non
+certifiés : ZÉRO, inchangé** ; aucune porte lancée, aucune ne lit ces fichiers (D283, D292).
+
+### D301 — la reprise
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 20 **CLOS** (D300) ; rang 21 « en attente d'arbitrage de Ko » — dernière ligne « ⇒ RANG N » de l'ordre | ordre des rangs, puis clôture du rang 20 |
+| numéro | dernière ligne du registre : **D300** ⇒ **D301** ; « D301 » : **0** occurrence sur 1 113 fichiers suivis | registre, `git grep` |
+| conclusion de la règle | compteur à **ZÉRO** — vérifié par `git` : un seul commit après `0a8235d`, `d9a2c05`, et ses 33 fichiers sont des `.md` d'autorité ou `docs/preuves/` | clôture du rang 20, puis `git` |
+| condition | un lot de code peut s'ouvrir dès que Ko l'arbitre ; aucun candidat n'est arbitré | clôture du rang 20 |
+
+✅ **La forme allégée a tenu une quatrième fois** : les quatre réponses dans l'ordre des rangs et le point d'entrée
+juste en dessous, zéro recoupement. `HEAD` = `origin/main` = `d9a2c05` à l'ouverture, arbre propre.
+
+### D301 — la lecture adverse : aucun défaut bloquant
+
+1. **Le déplacement de D300 n'a rien altéré, contrôlé sans ses pièces** : le corps de l'ordre extrait à `0a8235d`
+   (sous « ### D270 — ordre des lots ») et à `HEAD` (sous « ## ORDRE DES RANGS »), comparé ligne à ligne — 590
+   contre 614 lignes, **3 blocs différents, tous signés D300** (renvoi « plus haut » du rang 7 ; « RANG 20 : en
+   attente » barré ; arbitrage, clôture du rang 20 et ligne du rang 21).
+2. **Les distances de la pièce de D300 survivent à `HEAD`** : titre l. 487, rang courant l. 1042, soit 555 — mesuré
+   sur un arbre de 10 830 lignes, le fichier commité en comptait 11 027 ; tout l'ajout était en dessous.
+3. **Pointeurs « section D270 »** (texte aplati sur deux lignes) : 15 hors sections datées dans ce fichier, tous
+   barrés, récit de D300 ou annotés ; les 7 mis à jour que D300 déclare s'y retrouvent. `AGENTS.md` : 2, l'un barré,
+   l'autre vers les relevés de durée, restés dans D270 — juste. `CLAUDE.md` : 0.
+4. **Backlog cohérent avec la clôture** : `[DOC][P2]` de D299 fermée, `[DOC][P1]` annotée ouverte, `[DOC][P3]` neuve.
+5. **La prémisse de Ko « depuis le rang 8, un seul lot a touché le produit » tient** — 38 commits depuis le 08/09,
+   5 touchent `apps/` ou `packages/` : `bbe405c` (le rang 8 lui-même), **`ae9b3f8` (rang 10, `bookings.service.ts`
+   +14/−4 — le seul lot produit depuis)**, `31f6a00` (rang 11 : 15 lignes de **commentaire** retirées d'une
+   migration, restitution d'octets, aucun effet SQL — `git diff`), `251e82b` (commentaire de `vite.config.ts`),
+   `a2dd3f3` (`testTimeout` dans quatre configs de test).
+6. Déjà rapporté par D300, retrouvé tel quel : « ⇒ Pourquoi (b) et pas (a) » se lit sous le rang 21 (`[DOC][P3]`).
+
+### D301 — correction 1 : la ligne de `CLAUDE.md` se retire
+
+⛔ **DÉCISION DE KO, 22/09/2026, motif tel quel** : « Ton constat 5 était juste : il n'a jamais contenu de pointeur,
+ma consigne reposait sur une erreur. `CLAUDE.md` importe `AGENTS.md`, qui porte déjà le pointeur — deux endroits
+chargés à chaque session qui répondent à la même question. **Corriger ma fausse prémisse ne consiste pas à créer ce
+que je croyais exister.** »
+⇒ **Mesuré** (`docs/preuves/D301/ecriture/appliquer-sortie-1.txt`, étape A) : 5 lignes retirées, 5 995 → 5 605
+octets, **`CLAUDE.md` identique à l'octet à `0a8235d`** — SHA-256 `f6f9c483…` des deux côtés. Le pointeur que Ko
+désigne vit dans `AGENTS.md`, règle « un rang clos laisse un état nommé » (D284, mis à jour par D300).
+⚠ **UN APPUI DU MOTIF NE TIENT PAS — ÉCRIT ICI, PAS PASSÉ SOUS SILENCE** : Ko cite « la configuration des lignes 25 et 114
+déjà payée ». Relue (backlog, `[DOC][P2]` du 09/09 ; section D283) : ce précédent a conclu **l'inverse** — les deux
+pointeurs répondaient à **deux** questions et sont **restés tous les deux** ; ce qui a coûté était « **et lui
+seul** ». ⇒ La décision tient par son premier motif, sans cet appui.
+⇒ La clôture du rang 20 (« une ligne y est AJOUTÉE ») est barrée et annotée ; la section D300 reste telle quelle,
+vraie à sa date.
+
+### D301 — correction 2 : le point 7 se réduit à ce qui se mesure
+
+⛔ **DÉCISION DE KO, 22/09/2026** : « l'échantillonneur ne relève aucun inventaire, donc “ou un processus étranger
+disqualifie” ne peut mordre sur rien — **une garde muette, écrite par moi**. » ⇒ **Le point 7 du critère du rang 9
+dit désormais** : un creux avec `chrome` > 0 disqualifie la fenêtre ; les autres processus étrangers **ne sont pas
+mesurés pendant la fenêtre**, et c'est une **limite déclarée**. Clause d'origine **barrée**, pas effacée (D276).
+⇒ **« Pendant » est la frontière exacte, mesurée** : la sonde, aux relevés qui ENCADRENT chaque mesure, porte un
+inventaire nommé — au-dessus de 150 Mo dans la pièce relevée (`docs/preuves/D299/passe/rang19-p2-sonde-avant-e2e.txt`) ;
+c'est l'échantillonneur, en vol, qui ne nomme rien.
+⚠ **Lecture de la session, pas une parole de Ko, réversible** : « avec les seuls `node` de cette mesure » reste au
+point 7, et y est lu comme ce qui s'en mesure — l'**encadrement** (`node` = 0 avant et après), jamais l'identité des
+`node` en vol. La consigne de Ko ne le nommait pas ; le laisser sans cette lecture aurait laissé une seconde garde
+muette sous la première.
+⇒ **Report `[INFRA][P3]` neuf** (inventaire nommé à chaque échantillon, calibré sur ses deux bras) — **c'est du code,
+il comptera** (Ko). Priorité posée par la session, alignée sur l'entrée voisine du 10/09, qui est annotée : elle garde
+son objet, **classer** les `node`.
+⛔ **ET LA SECTION D299 : « TON RATTACHEMENT » Y ÉTAIT DÉJÀ.** « 7 sous Playwright, 1 sous vitest » y est écrit
+depuis D300 (paragraphe « MESURÉ, creux par creux »). Ce qui manquait est ce que Ko ordonne : **« elle se barre, elle
+ne se nuance pas »**. Barrés dans D299 : le paragraphe qui sauvait « 11 workers + pnpm + runner » pour un creux sur
+huit, et la phrase « elle ne change pas la conclusion, seulement son motif » ; même barrage dans la clôture du rang
+20 (« ne vaut que pour le dernier »). « Quatrième explication par raisonnement démentie par la mesure » est écrit
+comme le **compte de Ko** : ce fichier ne le tient pas (D291).
+
+### D301 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D301/passe-d277/balayage.py` — **copie à l'octet** de celui de D300 (SHA-256
+`fedc303e…` des deux côtés), versée comme pièce de ce lot plutôt que rejouée en place : une pièce ne se promeut pas en
+instrument. Calibration 2 bras sur 2 à chaque invocation ; parcouru = attendu sur les octets.
+**Sens 1 — ce que le lot invalide** (7 motifs : la ligne ajoutée, sous deux formes, « processus étranger », « 11 + pnpm », « pnpm +
+runner », « ne vaut que pour le dernier », « ne la retouche pas ») : **avant 26** occurrences, aucun motif à zéro,
+dont 13 courantes ou au backlog — **9 traitées, 4 justes** (le dénombrement vitest de D290, deux motifs sur deux lignes) ; **après 39**, dont 19 courantes ou au backlog, **triées à la
+main : 13 barrées ou signées D301, 6 justes** (dénombrement vitest de D290 au rang 13, description de l'instrument,
+annotation de D300 que D301 barre dans la même entrée) — `tri-apres.txt`.
+**Sens 2 — ce que le lot rend permis** (certifier sans voir un étranger non `chrome` ; `CLAUDE.md` ne nomme plus
+l'ordre) : **avant 84, après 109** ; les nouvelles sont les textes de D301 ; **aucune phrase courante ne promet une
+fenêtre sans étranger** — les « inventaire » du critère portent sur les relevés DEVANT chaque mesure. Motif
+`claude-ordre` à zéro avant et après, **vérifié** : la seule mention de l'ordre dans `CLAUDE.md` était la ligne
+retirée.
+⚠ Comptés **avant** l'écriture de cette section, qui cite les motifs : elle est datée, donc hors de l'examen.
+
+### D301 — audit de secrets avant commit (instrument de D298, tri de D299)
+
+1. **Audit scellé** (`neutralisation/audit-secrets.py --sortie docs/preuves/D301/audit-secrets-d301.txt`) :
+   calibration **5 bras sur 5**, cas réel rejoué ; **593** fichiers parcourus = **568** audités + **25** exclus par
+   l'identité de leurs octets (756 alertes d'écho non comptées) ; **93** alertes.
+2. **Tri différentiel** contre la dernière sortie scellée — `D300/audit-secrets-final.txt`, 93 contextes — :
+   calibration **2 bras sur 2** ; **0 alerte nouvelle** (`tri-d301.txt`). Rien à trier au contexte : les pièces de
+   ce lot n'ont apporté aucune alerte.
+3. **« 0 valeur réelle »** : sans objet — aucun journal à valeurs réelles n'a été produit dans cette session.
+4. **Second audit, vraie dernière écriture** : `audit-secrets-final.txt`, confronté par le même tri ; il doit rendre
+   **0 alerte nouvelle** — sortie du tri non versée (elle serait une écriture de plus), relevée au compte rendu.
+   ⚠ Le script d'écriture a reçu la cible de cette étape (« L ») après avoir produit `appliquer-sortie-1.txt` et
+   `-2.txt` : une entrée de dictionnaire, sans effet sur les étapes déjà jouées.
+
+### ⛔ D301 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **UNE ANCRE DE FENÊTRE PRISE PAR `--grep`** : pour vérifier « un seul lot produit depuis le rang 8 », j'ai pris le
+   premier commit dont le message cite « D286 » — c'était la **certification du rang 12**, pas la clôture du rang 8.
+   Vu parce que la fenêtre ne contenait pas le rang 10, que je savais y être ; refait sur des dates explicites.
+   **C'est D275 sur `git log` : un extracteur de fenêtre se confronte à ce qu'on sait y être.**
+2. ⚠ **J'ai failli expliquer par raisonnement pourquoi `chrome` restait à 0 sous Playwright** (le nom de l'exécutable
+   du navigateur de test). Non écrit : ce qui est mesuré est `chrome` **0 aux sept creux sous Playwright** (complément
+   de D299) ; ce que devient `chrome` sous Playwright hors de ces sept échantillons **n'est pas établi**.
+
+### ⛔ D301 — CE QUE CE LOT NE FAIT PAS
+
+- **Il n'arbitre pas le rang 21** : la liste des candidats produit demandée par Ko est dans le **compte rendu de
+  session**, pas dans un fichier — ce n'est pas une décision ; l'arbitrage, lui, s'écrira en première ligne du rang 21.
+- **Il ne touche pas `AGENTS.md`** : aucune de ses lignes ne citait la ligne retirée (0). ⚠ **Limite relevée, non
+  corrigée** : après ce retrait, le seul pointeur toujours chargé vers « ORDRE DES RANGS » vit **dans une règle** (D284) ;
+  le bloc « État des lots » (D280), qui dit où lire l'état courant, ne nomme que « PROCHAIN LOT ». L'y ajouter serait
+  le second endroit que Ko vient de refuser : **décision de forme, à Ko.**
+- **Il n'outille pas l'inventaire** (code, `[INFRA][P3]` neuf) et **ne touche pas `[DOC][P1]`** (Ko : « ce serait un
+  rang de méthode de plus »).
+- **Il ne réécrit pas la section D300** (constats 3 et 5, vrais à leur date).
+- **Aucune porte, aucune campagne** : documentaire, et aucune porte ne lit un octet de ce diff.
+
 ## Session du 22/09/2026 — D300 · rang 20 CLOS, lot DOCUMENTAIRE : l'ordre des rangs sort de la section D270 et reçoit son titre `##`
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D299**. ⇒ **État du rang** : point
@@ -3884,9 +4036,16 @@ un chronomètre de 1 886 s, **dérive d'attribution 0 s**) : **7 sous Playwright
 lancement Playwright complet », relevé dans sa source) — et **1 sous vitest**, `neutralize-maxprice.py` à
 00:34:12. `chrome` **0** aux huit ; `node` **0** aux relevés qui précèdent chaque mesure et qui la suivent :
 les `node` naissent et meurent **avec** la mesure en vol.
-⛔ **« 11 WORKERS, PLUS PNPM, PLUS LE RUNNER » EST LA COMPOSITION D'UNE SUITE VITEST** — D290 l'a dénombrée
+~~⛔ **« 11 WORKERS, PLUS PNPM, PLUS LE RUNNER » EST LA COMPOSITION D'UNE SUITE VITEST** — D290 l'a dénombrée
 sur `client` : 14 = 11 workers + 2 pnpm + 1 runner. Elle vaut pour le creux de `maxprice` (`node` **14**, le
-compte de D290), **comme concordance et non comme dénombrement** : D299 ne sépare pas les workers.
+compte de D290), **comme concordance et non comme dénombrement** : D299 ne sépare pas les workers.~~
+⛔ **BARRÉ LE 22/09/2026 (D301, SUR ORDRE DE KO) — UNE EXPLICATION DÉMENTIE PAR LA MESURE SE BARRE, ELLE NE SE
+NUANCE PAS.** Ko avait expliqué les huit creux par « 11 workers + pnpm + runner » ; le paragraphe « MESURÉ, creux
+par creux », ci-dessus, les rattache : **7 sous Playwright, 1 sous vitest**. Le paragraphe barré sauvait
+l'explication pour un creux sur huit : c'est la nuance que Ko refuse. Selon Ko, c'est sa **quatrième** explication
+par raisonnement démentie par la mesure — compte de Ko, que ce fichier ne tient pas. **Ce qui reste, et qui est
+mesuré** : le rattachement ci-dessus ; la composition d'une suite vitest, dénombrée par D290 sur `client`, dans sa
+section.
 ⛔ **ELLE NE VAUT PAS POUR LES SEPT AUTRES** : Playwright tourne avec **2 workers** et **trois serveurs web
 lancés par pnpm** — API, `next dev`, `vite` (`e2e/playwright.config.ts`) —, et ces 12 à 14 `node` n'ont
 **jamais été dénombrés**. Qu'ils soient ceux de la mesure est établi **par encadrement** (0 avant, 0 après,
@@ -3897,9 +4056,11 @@ pas** ; les attribuer au navigateur serait une inférence, et le **+13** de `max
 explication unique.
 ⇒ **CONCLUSION, AU STATUT QU'ELLE A** : les huit creux sont la **charge de la mesure certifiée**, pas une charge
 étrangère — **établi pour `chrome`, établi par encadrement pour `node`, inféré pour tout le reste**, faute
-d'inventaire pendant la fenêtre. ⚠ **La consigne de Ko attribuait les huit à la composition vitest ; la pièce
+d'inventaire pendant la fenêtre. ~~⚠ **La consigne de Ko attribuait les huit à la composition vitest ; la pièce
 la dément pour sept** — c'est la règle de D291 (une hypothèse du fil ne s'écrit pas au statut de mesure,
-même formulée par Ko), et elle **ne change pas la conclusion**, seulement son motif.
+même formulée par Ko), et elle **ne change pas la conclusion**, seulement son motif.~~ ⛔ *(D301 : barré avec le
+paragraphe « 11 WORKERS » ci-dessus, sur ordre de Ko — l'explication est démentie, pas nuancée. La conclusion ne
+reposait pas sur elle : `chrome` et l'encadrement la portent.)*
 ⇒ **Le trou du critère est comblé au point 7 du rang 9** (règle de Ko), avec ces huit creux pour cas.
 **Pièces** : `docs/preuves/D299/passe/` — **51 pièces + 27 journaux de campagne, 78 identiques par SHA-256
 sur 78 relues** (`outils/verser-passe.py`, sortie `outils/verser-passe-sortie.txt`) ; lecture
@@ -11025,3 +11186,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D298 | A | D298 — rang 18 CLOS : l'écho de l'audit de secrets ; `neutralisation/audit-secrets.py`, instrument NOUVEAU, exclut par l'IDENTITÉ des octets (17 sorties épinglées, sorties propres scellées) et imprime ce qu'il exclut ; calibration 5 bras dont le cas réel 24/24, contre-épreuve 5 sur 5 ; D293 433 = 90 + 472 − 129 ; règle « un défaut d'instrument arrête la mesure, pas le lot » ratifiée ; marge du rang 17 froides comprises ; compteur à DEUX |
 | D299 | A | D299 — rang 19 CLOS, CERTIFICATION des rangs 17 et 18 : étape 0 (arbitrage de Ko sur l'audit — des valeurs, pas des mots ; tri différentiel ; minorant par défaut ; extrait e2e élargi, calibré) — ⛔ étape 1 ROUGE sur la RAM (−52,5 puis −31), rien lancé ; ~~aucune marque ; reprise à l'étape 1~~ refus ratifié, Ko libère (`oracle`) au lieu de redéfinir ; passe 1 verte et NON certifiante (échantillonneur aveuglé par mon `tail -f`, rejeu intégral) ; passe 2 : MARQUE POSÉE — « portes vertes au repos le 22/09/2026, D297 et D298 en font partie », 199 mordues · 0 muette, fenêtre homogène ; compteur DEUX → ZÉRO ; rang 20 en attente d'arbitrage de Ko |
 | D300 | A | D300 — rang 20 CLOS, lot DOCUMENTAIRE : l'ordre des rangs sort de la section D270 et reçoit son titre `##` (606 lignes déplacées à l'octet, renvoi daté, pointeurs courants mis à jour) ; étape 0 — les huit creux de D299 : 7 sous Playwright, 1 sous vitest, et la barre porte sur l'état ambiant, relevé à `node` = 0 (point 7, règle de Ko) ; compteur ZÉRO inchangé ; rang 21 en attente d'arbitrage de Ko |
+| D301 | A | D301 — lot DOCUMENTAIRE hors rang : la ligne ajoutée à `CLAUDE.md` par D300 se retire (`AGENTS.md`, importé, porte déjà le pointeur ; `CLAUDE.md` rendu identique à l'octet à `0a8235d`) ; point 7 du critère réduit à ce qui se mesure — `chrome` > 0 disqualifie, les autres processus étrangers ne sont pas mesurés pendant la fenêtre (limite déclarée, report `[INFRA]`) ; l'explication « 11 workers + pnpm + runner » des huit creux barrée dans D299 ; compteur ZÉRO inchangé ; rang 21 toujours en attente de Ko |

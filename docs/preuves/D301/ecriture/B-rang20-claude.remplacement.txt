@@ -1,0 +1,3 @@
+; ~~**une ligne y est AJOUTÉE**, pas mise à jour~~ (section D300, constat n°5) ⛔ *(D301,
+22/09/2026 : **retirée** sur ordre de Ko — `AGENTS.md`, que `CLAUDE.md` importe, porte déjà le pointeur ; corriger
+une prémisse fausse ne consiste pas à créer ce qu'elle croyait exister.)* Les

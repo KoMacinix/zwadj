@@ -1,0 +1,17 @@
+   ⇒ **RÈGLE DE KO : LA BARRE PORTE SUR L'ÉTAT AMBIANT, RELEVÉ À `node` = 0.** Un creux pendant une mesure,
+   **avec les seuls `node` de cette mesure**, est **la charge qu'on certifie**. ~~Un creux **avec `chrome`** ou
+   **un processus étranger DISQUALIFIE la fenêtre.**~~
+   ⛔ **RÉDUITE À CE QUI SE MESURE — KO, 22/09/2026 (D301).** La clause « processus étranger » ne pouvait mordre
+   sur rien : l'échantillonneur ne relève aucun inventaire (« CE QUE L'INSTRUMENT VOIT », ci-dessous ; section
+   D300, constat n°4) — « une garde muette, écrite par moi » (Ko). Barrée, pas effacée (D276).
+   ⇒ **LE POINT 7 DIT :**
+   - **un creux avec `chrome` > 0 DISQUALIFIE la fenêtre** — `chrome` est relevé à chaque échantillon ;
+   - **les autres processus étrangers NE SONT PAS MESURÉS pendant la fenêtre** — `node` étrangers compris, qui ne
+     se distinguent pas de ceux de la mesure. **C'est une LIMITE DÉCLARÉE, pas une clause.** Report `[INFRA]` du
+     22/09/2026 (D301) pour outiller l'inventaire — c'est du code, il comptera.
+   ⚠ **« Pendant » est la frontière exacte** : aux relevés de sonde qui ENCADRENT chaque mesure, un inventaire
+   nommé existe (point 2) — dans la pièce relevée, au-dessus de 150 Mo
+   (`docs/preuves/D299/passe/rang19-p2-sonde-avant-e2e.txt`). C'est l'échantillonneur, en vol, qui ne nomme rien.
+   ⚠ **« Avec les seuls `node` de cette mesure » se lit dans ce cadre — lecture de la session, pas une parole de
+   Ko, réversible** : ce qui s'en mesure est l'**encadrement** — `node` = 0 au relevé qui précède la mesure et à
+   celui qui la suit —, jamais l'identité des `node` en vol.

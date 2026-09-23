@@ -1,0 +1,10 @@
+~~⛔ **« 11 WORKERS, PLUS PNPM, PLUS LE RUNNER » EST LA COMPOSITION D'UNE SUITE VITEST** — D290 l'a dénombrée
+sur `client` : 14 = 11 workers + 2 pnpm + 1 runner. Elle vaut pour le creux de `maxprice` (`node` **14**, le
+compte de D290), **comme concordance et non comme dénombrement** : D299 ne sépare pas les workers.~~
+⛔ **BARRÉ LE 22/09/2026 (D301, SUR ORDRE DE KO) — UNE EXPLICATION DÉMENTIE PAR LA MESURE SE BARRE, ELLE NE SE
+NUANCE PAS.** Ko avait expliqué les huit creux par « 11 workers + pnpm + runner » ; le paragraphe « MESURÉ, creux
+par creux », ci-dessus, les rattache : **7 sous Playwright, 1 sous vitest**. Le paragraphe barré sauvait
+l'explication pour un creux sur huit : c'est la nuance que Ko refuse. Selon Ko, c'est sa **quatrième** explication
+par raisonnement démentie par la mesure — compte de Ko, que ce fichier ne tient pas. **Ce qui reste, et qui est
+mesuré** : le rattachement ci-dessus ; la composition d'une suite vitest, dénombrée par D290 sur `client`, dans sa
+section.

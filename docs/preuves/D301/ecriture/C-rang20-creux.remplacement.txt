@@ -1,0 +1,5 @@
+⇒ **ÉTAPE 0 (Ko)** : les huit creux de D299 annotés dans sa section — **7 sous Playwright, 1 sous vitest** ; ~~la
+composition « 11 + pnpm + runner » ne vaut que pour le dernier~~ ⛔ *(D301, sur ordre de Ko : une explication
+démentie se barre, elle ne se nuance pas.)* La règle de Ko au **critère du rang 9, point 7** : la barre porte sur
+l'état ambiant, relevé à `node` = 0. ⛔ *(D301 : réduite à ce qui se mesure — `chrome` > 0 disqualifie la fenêtre ;
+les autres processus étrangers ne sont pas mesurés pendant la fenêtre, limite déclarée.)*

@@ -1,0 +1,3 @@
+   ⇒ **RÈGLE DE KO : LA BARRE PORTE SUR L'ÉTAT AMBIANT, RELEVÉ À `node` = 0.** Un creux pendant une mesure,
+   **avec les seuls `node` de cette mesure**, est **la charge qu'on certifie**. Un creux **avec `chrome`** ou
+   **un processus étranger DISQUALIFIE la fenêtre.**

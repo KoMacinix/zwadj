@@ -1,0 +1,3 @@
+⇒ **ÉTAPE 0 (Ko)** : les huit creux de D299 annotés dans sa section — **7 sous Playwright, 1 sous vitest** ; la
+composition « 11 + pnpm + runner » ne vaut que pour le dernier. La règle de Ko au **critère du rang 9, point
+7** : la barre porte sur l'état ambiant, relevé à `node` = 0.

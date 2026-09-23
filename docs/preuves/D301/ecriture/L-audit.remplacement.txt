@@ -1,0 +1,15 @@
+### D301 — audit de secrets avant commit (instrument de D298, tri de D299)
+
+1. **Audit scellé** (`neutralisation/audit-secrets.py --sortie docs/preuves/D301/audit-secrets-d301.txt`) :
+   calibration **5 bras sur 5**, cas réel rejoué ; **593** fichiers parcourus = **568** audités + **25** exclus par
+   l'identité de leurs octets (756 alertes d'écho non comptées) ; **93** alertes.
+2. **Tri différentiel** contre la dernière sortie scellée — `D300/audit-secrets-final.txt`, 93 contextes — :
+   calibration **2 bras sur 2** ; **0 alerte nouvelle** (`tri-d301.txt`). Rien à trier au contexte : les pièces de
+   ce lot n'ont apporté aucune alerte.
+3. **« 0 valeur réelle »** : sans objet — aucun journal à valeurs réelles n'a été produit dans cette session.
+4. **Second audit, vraie dernière écriture** : `audit-secrets-final.txt`, confronté par le même tri ; il doit rendre
+   **0 alerte nouvelle** — sortie du tri non versée (elle serait une écriture de plus), relevée au compte rendu.
+   ⚠ Le script d'écriture a reçu la cible de cette étape (« L ») après avoir produit `appliquer-sortie-1.txt` et
+   `-2.txt` : une entrée de dictionnaire, sans effet sur les étapes déjà jouées.
+
+### ⛔ D301 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE

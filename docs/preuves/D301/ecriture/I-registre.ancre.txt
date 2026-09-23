@@ -1,0 +1,1 @@
+(point 7, règle de Ko) ; compteur ZÉRO inchangé ; rang 21 en attente d'arbitrage de Ko |

@@ -1,0 +1,13 @@
+# Passe D277 de D301, SENS 1 — ce que le lot INVALIDE :
+#  (a) la ligne que D300 a AJOUTÉE à CLAUDE.md, retirée par D301 ;
+#  (b) la clause « processus étranger » du point 7, réduite par D301 à ce qui se mesure ;
+#  (c) l'explication « 11 workers + pnpm + runner » des huit creux de D299, et ses nuances (« ne vaut que pour le
+#      dernier », « un creux sur huit ») — barrée par D301, sur ordre de Ko ;
+#  (d) « sa limite d'instrument ne la retouche pas » — démenti par D301.
+ligne-ajoutee          (?i)ligne (?:y est |est )?ajout[ée]e
+claude-ajout           (?i)CLAUDE\.md.{0,60}?ajout
+processus-etranger     (?i)processus étrangers?
+onze-plus-pnpm         (?i)\b11(?: workers)?\s*(?:\+|, plus|plus)\s*(?:2\s*)?pnpm
+pnpm-plus-runner       (?i)pnpm\s*(?:\+|, plus le|plus le)\s*(?:1\s*)?runner
+vaut-dernier           (?i)ne vaut que pour le dernier|creux sur huit
+ne-la-retouche-pas     (?i)ne la retouche pas

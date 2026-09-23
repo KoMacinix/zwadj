@@ -1,0 +1,7 @@
+  réévaluation appartient à Ko ; c'est du code de `neutralisation/`, donc un lot qui compte.
+  ⛔ **(D301, 22/09/2026) LA CLAUSE DE DISQUALIFICATION QUI S'Y ADOSSAIT EST RETIRÉE.** Ko a réduit le point 7 à ce
+  qui se mesure : ~~un creux avec `chrome` ou un **processus étranger** disqualifie la fenêtre~~ ⇒ un creux avec
+  `chrome` > 0 disqualifie ; les autres processus étrangers, `node` compris, **ne sont pas mesurés** pendant la
+  fenêtre — limite déclarée. L'**inventaire** a son entrée propre (`[INFRA]` du 22/09/2026, D301). Celle-ci garde
+  son objet : **classer** les `node` — ce qui rendrait « les seuls `node` de cette mesure » mesurable PENDANT la
+  fenêtre, et plus seulement par encadrement.

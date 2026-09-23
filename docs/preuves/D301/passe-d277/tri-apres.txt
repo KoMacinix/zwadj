@@ -1,0 +1,44 @@
+TRI À LA MAIN — passe D277 de D301, sur sens1-apres.txt et sens2-apres.txt (classes COURANTE et BACKLOG ; la
+classe DATÉE est vraie à sa date, hors examen — principe de tri de D291).
+
+SENS 1 — ce que le lot invalide : 19 occurrences COURANTE ou BACKLOG examinées (ventilation : COURANTE 14, BACKLOG 5)
+  BARRÉES OU SIGNÉES D301 — 13
+    ZWADJ_CONTINUITE.md:1145  [ligne-ajoutee]       barré + note D301 (rang 20, clôture)
+    ZWADJ_CONTINUITE.md:1151  [onze-plus-pnpm]      barré + note D301 (rang 20, clôture)
+    ZWADJ_CONTINUITE.md:1151  [pnpm-plus-runner]    même site
+    ZWADJ_CONTINUITE.md:1151  [vaut-dernier]        même site
+    ZWADJ_CONTINUITE.md:1154  [processus-etranger]  note D301 (rang 20, clôture)
+    ZWADJ_CONTINUITE.md:2655  [processus-etranger]  clause barrée (critère du rang 9, point 7)
+    ZWADJ_CONTINUITE.md:2656  [processus-etranger]  texte D301 (point 7)
+    ZWADJ_CONTINUITE.md:2661  [processus-etranger]  texte D301 (point 7, limite déclarée)
+    ZWADJ_CONTINUITE.md:2680  [ne-la-retouche-pas]  barré + note D301 (point 7)
+    ZWADJ_BACKLOG.md:2373     [processus-etranger]  entrée [INFRA][P3] neuve de D301
+    ZWADJ_BACKLOG.md:2375     [processus-etranger]  même entrée
+    ZWADJ_BACKLOG.md:3212     [processus-etranger]  note D301 dans [INFRA][P3] du 10/09 (clause barrée)
+    ZWADJ_BACKLOG.md:3213     [processus-etranger]  même note
+  JUSTES, LAISSÉES — 6
+    ZWADJ_CONTINUITE.md:1955  [onze-plus-pnpm]      rang 13 : dénombrement de D290 sur une suite VITEST — mesuré, vrai
+    ZWADJ_CONTINUITE.md:1955  [pnpm-plus-runner]    même site
+    ZWADJ_CONTINUITE.md:2013  [onze-plus-pnpm]      rang 13 : même dénombrement (11 + 2 pnpm + 1 runner = 14)
+    ZWADJ_CONTINUITE.md:2013  [pnpm-plus-runner]    même site
+    ZWADJ_CONTINUITE.md:2676  [processus-etranger]  « CE QUE L'INSTRUMENT VOIT » : décrit ce que l'instrument voyait de la
+                                                    clause — fait vrai ; le paragraphe finit sur la note D301 (l. 2680)
+    ZWADJ_BACKLOG.md:3203     [processus-etranger]  annotation de D300 (la règle telle que Ko l'avait posée) ; la note D301
+                                                    de la même entrée (l. 3211-3214) barre la clause
+  ⇒ 13 + 6 = 19 (attendu 19) · aucune occurrence courante ne présente encore la clause, la ligne de CLAUDE.md ou
+    l'explication des huit creux comme en vigueur.
+
+SENS 2 — ce que le lot rend permis : COURANTE 38 (disqualifi 5 · etrang 11 · inventaire 22) · BACKLOG 26 (7 · 10 · 9)
+  - Occurrences NOUVELLES : toutes des textes de D301 (point 7, clôture du rang 20, entrée [INFRA] neuve, note de
+    l'entrée du 10/09).
+  - « disqualifi » hors D301 : l. 708 (instrument CPU, rang 6 — sans rapport) ; l. 2673 « fenêtre NON disqualifiée »
+    — reste vrai sous la règle réduite (`chrome` 0 aux huit creux) ; backlog l. 3566 (barre de RAM, sans rapport).
+  - « étrang » hors D301 : l. 225, 548, 573, backlog 665, 2207 — sans rapport (fuseau, intermittence antérieure, prix
+    d'une autre salle) ; l. 2676, 2678 et backlog 3206 — faits d'instrument, vrais.
+  - « inventaire » hors D301 : les exigences du critère (l. 622, 733, 735, 2596, 2639) portent sur les relevés
+    DEVANT chaque mesure — la sonde, qui nomme ; aucune ne promet un inventaire PENDANT la fenêtre. Les autres sont
+    des relevés datés ou des pièces.
+  ⇒ Aucune phrase courante ne promet une fenêtre certifiée sans processus étranger : la permission que le lot ouvre
+    (certifier sans voir un étranger non `chrome`) est déclarée là où elle naît, au point 7.
+  - [claude-ordre] à ZÉRO avant et après — hypothèse vérifiée : la seule mention de l'ordre dans CLAUDE.md était la
+    ligne retirée (« ORDRE DES RANGS » : 1 avant, 0 après, relevé par grep), et elle ne contient pas « CLAUDE.md ».

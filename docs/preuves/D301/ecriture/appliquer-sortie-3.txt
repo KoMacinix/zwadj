@@ -1,0 +1,10 @@
+== étape L → ZWADJ_CONTINUITE.md · fichiers d'ancre 1 (attendu 1) · de remplacement 1 (attendu 1)
+   ✓ LF nus, CR seuls AVANT : (0, 0) (attendu (0, 0))
+   ✓ ancre AVANT : 1 (attendu 1)
+   ✓ relu sur disque = écrit : True (attendu True)
+   ✓ ancre APRÈS : 1 (attendu 1)
+   ✓ remplacement APRÈS : 1 (attendu 1)
+   ✓ réversibilité à l'octet : True (attendu True)
+   ✓ bilan de lignes : 14 (attendu 14)
+   ✓ LF nus, CR seuls APRÈS : (0, 0) (attendu (0, 0))
+   ⇒ étape L : VÉRIFIÉE · 873307 → 874551 octets

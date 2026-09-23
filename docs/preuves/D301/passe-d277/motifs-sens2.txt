@@ -1,0 +1,9 @@
+# Passe D277 de D301, SENS 2 — ce que le lot REND PERMIS (D287) :
+#  (a) le point 7 réduit PERMET de certifier une fenêtre où un étranger non `chrome` a tourné sans être vu : toute
+#      phrase courante qui promet le contraire — qu'une fenêtre certifiée est sans étranger, ou qu'un inventaire
+#      est relevé pendant la fenêtre — devient une promesse que la règle ne tient plus ;
+#  (b) la ligne de CLAUDE.md retirée : toute phrase qui dit que CLAUDE.md nomme l'ordre des rangs devient fausse.
+disqualifi             (?i)disqualifi
+etrang                 (?i)étrang
+inventaire             (?i)inventaire
+claude-ordre           (?i)CLAUDE\.md.{0,120}?ordre des rangs

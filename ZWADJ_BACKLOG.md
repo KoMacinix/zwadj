@@ -2362,6 +2362,27 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 22/09/2026 — lot documentaire hors rang (D301)
+
+⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D301 de `ZWADJ_CONTINUITE.md`.
+⇒ **Traitée par ce lot, ailleurs dans ce fichier** : l'entrée `[INFRA][P3]` du 10/09 sur le compte des `node`
+(annotée : la clause de disqualification qui s'y adossait est retirée).
+
+### ⛔ Ouverts, mesurés, NON corrigés
+
+- **[INFRA][P3]** ⛔ **L'ÉCHANTILLONNEUR NE NOMME RIEN PENDANT LA FENÊTRE — OUTILLER L'INVENTAIRE, POUR QUE « PROCESSUS
+  ÉTRANGER » REDEVIENNE MESURABLE.** Ko a réduit le point 7 du critère à ce qui se mesure (D301) : un creux avec
+  `chrome` > 0 disqualifie la fenêtre ; les autres processus étrangers ne sont pas mesurés pendant la fenêtre —
+  **limite déclarée**. `neutralisation/echantillonneur-etat-machine.ps1` relève `node`, `chrome` et `nb_proc`,
+  **sans nom ni ligne de commande** (section D300, constat n°4) ; la sonde nomme les processus au-dessus de son seuil,
+  mais seulement aux relevés qui ENCADRENT une mesure. ⇒ **À faire** : un inventaire nommé à chaque échantillon,
+  **calibré sur ses deux bras** (D286) — un étranger lancé exprès pendant une mesure doit sortir, une mesure seule
+  ne doit rien sortir d'étranger. ⇒ Alors seulement la clause pourra se réécrire, et c'est à Ko de le décider.
+  ⛔ **C'est du code de `neutralisation/` : le lot qui le fera COMPTE** (Ko). ⚠ **Priorité posée par la session**,
+  alignée sur l'entrée voisine du 10/09 ; elle appartient à Ko. ⚠ **Voisine, pas doublon** : l'entrée
+  `[INFRA][P3]` du 10/09 veut **classer** les `node` (observateur ou worker) ; celle-ci veut **nommer** tout ce qui
+  tourne. Un même relevé servirait les deux.
+
 ## Reports du 22/09/2026 — rang 20, l'ordre des rangs sort de la section D270 (D300)
 
 ⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D300 de `ZWADJ_CONTINUITE.md`.
@@ -3187,6 +3208,12 @@ verdict de la certification** : ils partaient au backlog qu'elle se pose ou non.
   (**+6 à +20** dans les huit creux, sous Playwright comme sous vitest). ⇒ **L'affinage ci-dessus vaudrait
   pour les deux instruments.** ⚠ **Le P3 date d'avant qu'une règle de certification en dépende** — sa
   réévaluation appartient à Ko ; c'est du code de `neutralisation/`, donc un lot qui compte.
+  ⛔ **(D301, 22/09/2026) LA CLAUSE DE DISQUALIFICATION QUI S'Y ADOSSAIT EST RETIRÉE.** Ko a réduit le point 7 à ce
+  qui se mesure : ~~un creux avec `chrome` ou un **processus étranger** disqualifie la fenêtre~~ ⇒ un creux avec
+  `chrome` > 0 disqualifie ; les autres processus étrangers, `node` compris, **ne sont pas mesurés** pendant la
+  fenêtre — limite déclarée. L'**inventaire** a son entrée propre (`[INFRA]` du 22/09/2026, D301). Celle-ci garde
+  son objet : **classer** les `node` — ce qui rendrait « les seuls `node` de cette mesure » mesurable PENDANT la
+  fenêtre, et plus seulement par encadrement.
 
 - **[DOC][P1]** ⛔ **LE POINTEUR « RANG SUIVANT » EST À ~330 LIGNES DU DÉBUT DE L'ORDRE DES
   RANGS, ET IL S'ÉLOIGNE D'UN RANG PAR LOT.** Relevé le 11/09/2026 par une reprise à froid :
