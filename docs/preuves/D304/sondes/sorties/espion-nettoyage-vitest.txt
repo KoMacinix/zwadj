@@ -1,0 +1,29 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-nettoyage.int-spec.ts[2m > [22m[2mSONDE D304 — passe-plat explicite, nettoyage par RÉAFFECTATION de l'original
+[22m[39mtypeof original (pris par lecture) : function
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-nettoyage.int-spec.ts[2m > [22m[2mSONDE D304 — passe-plat explicite, nettoyage par RÉAFFECTATION de l'original
+[22m[39mbras positif — accept(b1) : REJETÉ « PANNE INJECTÉE D304 » · appels vus : 1 · statut en base : ACCEPTED
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-nettoyage.int-spec.ts[2m > [22m[2mSONDE D304 — passe-plat explicite, nettoyage par RÉAFFECTATION de l'original
+[22m[39mbras négatif — accept(b2) : ABOUTI · appels vus : 1 · statut en base : ACCEPTED
+nettoyage par réaffectation — typeof ensuite : function
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-nettoyage.int-spec.ts[2m > [22m[2mSONDE D304 — passe-plat explicite, nettoyage par RÉAFFECTATION de l'original
+[22m[39maprès nettoyage — accept(b3) : ABOUTI · appels vus par l'ancien espion : 0 · statut en base : ACCEPTED
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-nettoyage.int-spec.ts[2m > [22m[2mSONDE D304 — passe-plat explicite, nettoyage par RÉAFFECTATION de l'original
+[22m[39m
+calibration : positif OK · négatif OK · nettoyage OK
+RÉPONSE (réaffectation) : TIENT SES TROIS BRAS
+
+ [32m✓[39m ../../docs/preuves/D304/sondes/test/int/espion-nettoyage.int-spec.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1202[2mms[22m[39m
+   [33m[2m✓[22m[39m SONDE D304 — passe-plat explicite, nettoyage par RÉAFFECTATION de l'original [33m 448[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 00:34:11
+[2m   Duration [22m 7.01s[2m (transform 1.80s, setup 31ms, collect 4.96s, tests 1.20s, environment 0ms, prepare 147ms)[22m
+

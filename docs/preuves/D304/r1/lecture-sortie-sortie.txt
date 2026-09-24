@@ -1,0 +1,44 @@
+harnais parcourus : 27  (attendu : 27, relevé D303)
+lignes lues : 6841
+calibration bras positif (horizon → T) : OK  {'T': 1, 'C': 0, 'S': 0, 'A': 0}
+calibration bras négatif (s11b → aucun trait) : OK  {'T': 0, 'C': 0, 'S': 0, 'A': 0}
+calibration bras négatif T (horloge → C sans T) : OK  {'T': 0, 'C': 1, 'S': 0, 'A': 0}
+
+harnais                              T  C  S  A   verdict
+neutralize-404.py                     1  0  0  1   T+A
+neutralize-act-plafonds.py            0  1  0  0   C
+neutralize-argon2.py                  3  1  0  0   T+C
+neutralize-available-on-api.py        0  0  0  0   CODE SEUL
+neutralize-available-on.py            0  0  0  0   CODE SEUL
+neutralize-b7.py                      0  0  0  0   CODE SEUL
+neutralize-booking-status.py          0  0  0  0   CODE SEUL
+neutralize-budgets.py                 0  0  3  0   S
+neutralize-e3d1-s8.py                 0  0  0  0   CODE SEUL
+neutralize-horizon.py                 1  0  0  0   T
+neutralize-horloge.py                 0  1  0  0   C
+neutralize-journey.py                 0  0  0  0   CODE SEUL
+neutralize-maxprice.py                1  0  0  0   T
+neutralize-r4.py                      0  0  0  0   CODE SEUL
+neutralize-s10a.py                    0  0  0  0   CODE SEUL
+neutralize-s10b.py                    0  0  0  0   CODE SEUL
+neutralize-s11a.py                    0  0  0  0   CODE SEUL
+neutralize-s11b.py                    0  0  0  0   CODE SEUL
+neutralize-s9.py                      0  0  0  0   CODE SEUL
+neutralize-solid-s1.py                0  0  0  0   CODE SEUL
+neutralize-solid-s2.py                0  0  0  0   CODE SEUL
+neutralize-solid-s3.py                0  0  0  0   CODE SEUL
+neutralize-solid-s4.py                0  0  0  0   CODE SEUL
+neutralize-solid-s5a.py               0  0  0  0   CODE SEUL
+neutralize-solid-s5b.py               0  0  0  0   CODE SEUL
+neutralize-solid-s6.py                0  0  0  0   CODE SEUL
+neutralize-solid-s7.py                0  0  0  0   CODE SEUL
+
+ventilation — harnais portant chaque trait :
+  T : 4
+  C : 3
+  S : 1
+  A : 1
+traits à zéro (hypothèses à vérifier, D295) : aucun
+
+jugent au CODE SEUL : 20 sur 27  (relevé D303 : 20 sur 27)
+lisent au moins un trait : 7  (relevé D303 : 7)

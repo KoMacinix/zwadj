@@ -1,0 +1,125 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+ [31m❯[39m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts [2m([22m[2m7 tests[22m[2m | [22m[31m6 failed[39m[2m)[22m[32m 231[2mms[22m[39m
+   [32m✓[39m CAS-PASSE un test vert[32m 1[2mms[22m[39m
+[31m   [31m×[31m CAS-ASSERTION une assertion en échec[39m[32m 7[2mms[22m[39m
+[31m     → expected 201 to be 409 // Object.is equality[39m
+[31m   [31m×[31m CAS-ASSERTION-OBJET une égalité profonde en échec[39m[32m 2[2mms[22m[39m
+[31m     → expected { statut: 'ACCEPTED' } to deeply equal { statut: 'DECLINED' }[39m
+[31m   [31m×[31m CAS-REJECTS une promesse résolue là où un rejet est attendu[39m[32m 3[2mms[22m[39m
+[31m     → promise resolved "1" instead of rejecting[39m
+[31m   [31m×[31m CAS-PLANTAGE une TypeError levée par le code[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of undefined (reading 'status')[39m
+[31m   [31m×[31m CAS-ERREUR une Error levée par le code (ex. un 500 propagé)[39m[32m 0[2mms[22m[39m
+[31m     → panne simulée[39m
+[31m   [31m×[31m CAS-DELAI un délai dépassé[39m[32m 215[2mms[22m[39m
+[31m     → Test timed out in 200ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m6 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 00:07:51
+[2m   Duration [22m 882ms[2m (transform 34ms, setup 0ms, collect 21ms, tests 231ms, environment 0ms, prepare 197ms)[22m
+
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 6 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts[2m > [22mCAS-ASSERTION une assertion en échec
+[31m[1mAssertionError[22m: expected 201 to be 409 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 201[39m
+
+[36m [2m❯[22m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:[2m10:15[22m[39m
+    [90m  8| [39m
+    [90m  9| [39m[34mit[39m([32m"CAS-ASSERTION une assertion en échec"[39m[33m,[39m () [33m=>[39m {
+    [90m 10| [39m  [34mexpect[39m([34m201[39m)[33m.[39m[34mtoBe[39m([34m409[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m 11| [39m})[33m;[39m
+    [90m 12| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts[2m > [22mCAS-ASSERTION-OBJET une égalité profonde en échec
+[31m[1mAssertionError[22m: expected { statut: 'ACCEPTED' } to deeply equal { statut: 'DECLINED' }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "statut": "DECLINED",[39m
+[31m+   "statut": "ACCEPTED",[39m
+[2m  }[22m
+
+[36m [2m❯[22m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:[2m14:34[22m[39m
+    [90m 12| [39m
+    [90m 13| [39m[34mit[39m([32m"CAS-ASSERTION-OBJET une égalité profonde en échec"[39m[33m,[39m () [33m=>[39m {
+    [90m 14| [39m  [34mexpect[39m({ statut[33m:[39m [32m"ACCEPTED"[39m })[33m.[39m[34mtoEqual[39m({ statut[33m:[39m [32m"DECLINED"[39m })[33m;[39m
+    [90m   | [39m                                 [31m^[39m
+    [90m 15| [39m})[33m;[39m
+    [90m 16| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts[2m > [22mCAS-REJECTS une promesse résolue là où un rejet est attendu
+[31m[1mAssertionError[22m: promise resolved "1" instead of rejecting[39m
+
+[32m- Expected:[39m 
+Error {
+  "message": "rejected promise",
+}
+
+[31m+ Received:[39m 
+1
+
+[36m [2m❯[22m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:[2m18:34[22m[39m
+    [90m 16| [39m
+    [90m 17| [39mit("CAS-REJECTS une promesse résolue là où un rejet est attendu", asyn…
+    [90m 18| [39m  [35mawait[39m [34mexpect[39m([33mPromise[39m[33m.[39m[34mresolve[39m([34m1[39m))[33m.[39mrejects[33m.[39m[34mtoThrow[39m()[33m;[39m
+    [90m   | [39m                                 [31m^[39m
+    [90m 19| [39m})[33m;[39m
+    [90m 20| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts[2m > [22mCAS-PLANTAGE une TypeError levée par le code
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'status')[39m
+[36m [2m❯[22m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:[2m23:16[22m[39m
+    [90m 21| [39m[34mit[39m([32m"CAS-PLANTAGE une TypeError levée par le code"[39m[33m,[39m () [33m=>[39m {
+    [90m 22| [39m  [35mconst[39m ligne [33m=[39m undefined [35mas[39m unknown [35mas[39m { status[33m:[39m string }[33m;[39m
+    [90m 23| [39m  [35mreturn[39m ligne[33m.[39mstatus[33m;[39m
+    [90m   | [39m               [31m^[39m
+    [90m 24| [39m})[33m;[39m
+    [90m 25| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts[2m > [22mCAS-ERREUR une Error levée par le code (ex. un 500 propagé)
+[31m[1mError[22m: panne simulée[39m
+[36m [2m❯[22m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:[2m27:24[22m[39m
+    [90m 25| [39m
+    [90m 26| [39mit("CAS-ERREUR une Error levée par le code (ex. un 500 propagé)", asyn…
+    [90m 27| [39m  [35mawait[39m [33mPromise[39m[33m.[39m[34mreject[39m([35mnew[39m [33mError[39m([32m"panne simulée"[39m))[33m;[39m
+    [90m   | [39m                       [31m^[39m
+    [90m 28| [39m})[33m;[39m
+    [90m 29| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts[2m > [22mCAS-DELAI un délai dépassé
+[31m[1mError[22m: Test timed out in 200ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:[2m30:1[22m[39m
+    [90m 28| [39m})[33m;[39m
+    [90m 29| [39m
+    [90m 30| [39m[34mit[39m(
+    [90m   | [39m[31m^[39m
+    [90m 31| [39m  [32m"CAS-DELAI un délai dépassé"[39m[33m,[39m
+    [90m 32| [39m  [35masync[39m () [33m=>[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯[22m[39m
+

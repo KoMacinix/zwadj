@@ -1,0 +1,120 @@
+D304 — TRI DE LA CARTE « chemin de l'argent » — relevé le 24/09/2026 à HEAD 2b9f8d5
+==================================================================================
+
+⛔ PIÈCE DATÉE, PAS UNE AUTORITÉ (décision 3 du relecteur, chat, déléguée par Ko). La RÈGLE vit
+dans AGENTS.md et ZWADJ_CONTINUITE.md ; cette carte en est une lecture à HEAD 2b9f8d5. Elle se
+périme au premier lot qui ajoute, déplace ou renomme un fichier. En cas de doute, la session
+DEMANDE au relecteur avant d'écrire du code — une absence de cette carte ne vaut pas « hors
+chemin ».
+
+Sortie mécanique : carte-sortie.txt (script carte.py, calibré sur trois bras). Ce fichier-ci
+est le TRI À LA MAIN de ses candidats, plus les FAUX NÉGATIFS trouvés en cherchant chaque item
+que la règle NOMME. Chaque ligne cite ce qui a été lu.
+
+----------------------------------------------------------------------------------
+(1) CALCULE, ARRONDIT OU VALIDE UN MONTANT
+----------------------------------------------------------------------------------
+Candidats du script (16) :
+  DEDANS  migrations/20260707000001_booking_constraints      S1 : 14 CHECK de montant
+  DEDANS  migrations/20260720160000_venue_cashback_public_read  S1 : venues_cashback_rate_range
+  DEDANS  migrations/20260727120000_slot_template_base_price  S1 : slot_templates_base_price_positive
+  DEDANS  migrations/20260727130000_pricing_rule_per_slot     S1 : pricing_rules_price_positive
+  DEDANS  migrations/20260802120000_booking_request_and_deposit_policy  S1 : politique d'acompte
+  DEDANS  migrations/20260909120000_booking_quote_total_coherent  S1 : total = base + prestations
+  DEDANS  payments/chargily.gateway.ts        refuse un montant qui n'est pas un dinar entier (D195) — aussi (3)
+  DEDANS  payments/payment-intent.ts          `amountCents <= 0` → NOTHING_TO_PAY — aussi (3)
+  DEDANS  venues/booking-charge.ts            total = base + prestations (module de chiffrage, D279)
+  DEHORS  venues/booking-notifications.service.ts  `Math.round(cents / 100)` : FORMATE un montant
+                                              reçu pour un message — exclu par la règle
+  DEDANS  venues/deposit.ts                   acompte = total × taux / 10000, arrondi au dinar
+  DEDANS  venues/pricing-engine.ts            arrondi au dinar du prix résolu (tarification)
+  DEDANS  venues/venues-admin.service.ts      cashback ≤ commission (commission, D35)
+  DEDANS  client/…/booking-request-panel.tsx  l'aperçu RECALCULE l'acompte — c'est A3, que la
+                                              règle nomme DEDANS
+  DEDANS  packages/types/src/booking.ts       valide `expectedTotalCents`
+  DEDANS  packages/types/src/venue.ts         valide `basePriceCents`, cashback ≤ commission
+                                              (son M2 `Math.trunc(minutes)` est une heure, pas
+                                              un montant : le fichier est dedans par M3/M4)
+
+FAUX NÉGATIFS — items que la règle NOMME, cherchés par leur symbole :
+  tarification  venues/service-pricing.ts     `roundToDinar(unit * guests)` : M1 ne le voit
+                                              pas, l'identifiant n'est pas un …Cents → DEDANS
+  tarification  packages/types/src/service.ts `priceCents: money` : M3 ne le voit pas, le
+                                              schéma s'appelle `money`, pas `z.` → DEDANS
+  échéances     venues/booking-deadline.ts    `deadlineClampedToEventStart` : aucun montant,
+                                              mais la règle NOMME les échéances → DEDANS
+  devis         venues/quotes.service.ts, quote-store.prisma.ts, quote-store.types.ts : le
+                                              chiffrage passe par booking-charge ; les trois
+                                              sont DEDANS par (2) de toute façon
+  acompte       venues/deposit.ts              (candidat, dedans)
+  commission    venues-admin.service.ts, packages/types/src/venue.ts (candidats, dedans)
+  remise D35    au registre, D35 = « taux de cashback variable par salle » : venues-admin et
+                venue.ts (dedans). La remise de paiement en ligne n'est PAS appliquée à HEAD
+                (`payment-intent.ts`, « aucune remise appliquée à ce lot ») — dedans par (3).
+
+AU RELECTEUR — doute, la session ne tranche pas :
+  venues/pricing-rules.service.ts   agrège le PLUS PETIT prix (créneaux, règles) : un montant
+                                    CALCULÉ pour l'affichage « à partir de » — calcul ou
+                                    affichage ?
+  apps/pro/src/venues/deposit-section.tsx  convertit la politique d'acompte du formulaire
+                                    (pourcentage ↔ points de base, saisie → centimes) : saisie
+                                    validée côté navigateur, le serveur restant l'autorité
+  venues/venues.service.ts          transporte la politique d'acompte (basePriceCents,
+                                    depositRateBps) sans calcul relevé
+
+----------------------------------------------------------------------------------
+(2) TRANSITIONS QUI OUVRENT, MODIFIENT OU ÉTEIGNENT UNE OBLIGATION DE PAYER
+----------------------------------------------------------------------------------
+Candidats du script (8), tous DEDANS : booking-locks.prisma.ts, booking-locks.types.ts,
+booking-transitions.ts, bookings.service.ts, quote-store.prisma.ts, quote-store.types.ts,
+quote-transitions.ts, quotes.service.ts.
+
+FAUX NÉGATIFS — la sonde T1 ne lit que le CODE ; les contraintes SQL de STATUT lui échappent :
+  migrations/20260707000001_booking_constraints     EXCLUDE sur ACCEPTED/CONFIRMED → DEDANS
+  migrations/20260802140000_quote_lifecycle         index partiels et CHECK de statut → DEDANS
+  migrations/20260814140000_quote_delivery_switch   reprise des devis SENT non convertis en
+                                                    DRAFT (Q2) — une écriture de statut → DEDANS
+  migrations/20260821000000_quote_status_cancelled  valeur CANCELLED de l'énuméré → DEDANS
+  migrations/20260821000100_quote_cancel_without_delivery  CHECK de l'annulation → DEDANS
+  (relevé : les migrations dont le SQL, commentaires retirés, nomme le statut ; celles des
+  salles, des visites et des suppressions de compte sont DEHORS — autres objets)
+« expire » : AUCUN écrivain de EXPIRED dans le code à HEAD (sortie du script) — la transition
+n'a pas de code ; elle entrera sur la carte avec son lot.
+Contrôleurs (bookings.controller, bookings-pro.controller, quotes.controller) : ils
+TRANSPORTENT la commande vers le service et ne décident rien — DEHORS, sauf lot qui y
+déplacerait une décision.
+
+----------------------------------------------------------------------------------
+(3) LE PAIEMENT (E3)
+----------------------------------------------------------------------------------
+Candidats du script (12), tous DEDANS : les 9 fichiers de apps/api/src/payments/ hors tests,
+et les 3 migrations qui nomment la table payments (init, booking_constraints,
+payment_one_pending_per_booking).
+
+----------------------------------------------------------------------------------
+(4) LES HARNAIS QUI PROUVENT LES GARDES DE (1) À (3)
+----------------------------------------------------------------------------------
+Motif de chemin IDENTIQUE à celui de D303 (fichiers-mutes-par-harnais.py). Script : 10.
+  DEDANS  booking-status, e3d1-s8, s10b, s11b, solid-s3, solid-s4, solid-s5a, solid-s5b
+          (les huit que D303 avait dérivés — concordance)
+  AJOUTÉ PAR LE TRI  r4 : mute quote_status_cancelled et quote_cancel_without_delivery,
+          contraintes de statut du devis (faux négatif de T1 ci-dessus) → DEDANS
+AU RELECTEUR — doute :
+  s11a      cite bookings.service.ts ; S11-a a découpé les aides de NOTIFICATION du service :
+            ses cibles portent-elles sur une transition ?
+  solid-s1  cite packages/types/src/booking.ts ; ses cibles portent-elles sur le statut ou
+            sur un montant validé ?
+  s10a      cite venue-store et venues.service (politique d'acompte transportée, voir (1))
+  solid-s6  cite domain-events.ts et notification-subscriptions.ts — le terrain de F6 (A5)
+⚠ R1 couvre les 20 harnais relevés par D303 QUEL QUE SOIT ce classement (décision 4) : le
+classement ne décide que de la FORME DE REVUE et de la certification que R1 bloque.
+
+----------------------------------------------------------------------------------
+LIMITES DE CETTE CARTE
+----------------------------------------------------------------------------------
+- Sondes lexicales : « transporte » et « calcule » ne se séparent pas par une expression ; deux
+  faux négatifs de (1) ont été trouvés en cherchant les items nommés, d'autres peuvent exister.
+- Un chemin de fichier construit dynamiquement dans un harnais n'est pas vu (même limite que
+  D303).
+- Les fichiers de test sont exclus du corpus : un test n'est sur la carte que par le harnais
+  qui le désigne.

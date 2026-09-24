@@ -1,0 +1,26 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+ [31m❯[39m ../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 6[2mms[22m[39m
+   [2m[90m↓[39m[22m CAS-CROCHET le corps de ce test ne s'exécute pas
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [33m1 skipped[39m[90m (1)[39m
+[2m   Start at [22m 00:08:06
+[2m   Duration [22m 700ms[2m (transform 37ms, setup 0ms, collect 18ms, tests 6ms, environment 0ms, prepare 217ms)[22m
+
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts[2m [ ../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts ][22m
+[31m[1mError[22m: crochet en panne[39m
+[36m [2m❯[22m ../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts:[2m4:9[22m[39m
+    [90m  2| [39m[90m// mutation). Les tests sont collectés ; aucun n'exécute son corps.[39m
+    [90m  3| [39m[34mbeforeAll[39m(() [33m=>[39m {
+    [90m  4| [39m  [35mthrow[39m [35mnew[39m [33mError[39m([32m"crochet en panne"[39m)[33m;[39m
+    [90m   | [39m        [31m^[39m
+    [90m  5| [39m})[33m;[39m
+    [90m  6| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+

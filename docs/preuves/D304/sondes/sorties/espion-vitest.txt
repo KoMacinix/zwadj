@@ -1,0 +1,57 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts[2m > [22m[2mSONDE D304 — un délégué Prisma 7 s'espionne-t-il, vu depuis le service ?
+[22m[39m── 1. identité et descripteur
+le service tient la MÊME instance que ctx.prisma : true
+ctx.prisma.user === ctx.prisma.user (délégué stable d'un accès à l'autre) : true
+findUnique, propriété PROPRE du délégué : true · configurable true · writable true · type undefined
+classe de l'instance : Object
+
+── 2. vi.spyOn
+vi.spyOn(ctx.prisma.user, "findUnique") : POSÉ, sans erreur
+
+── 3. bras POSITIF : une panne armée une fois, puis accept() réel
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts[2m > [22m[2mSONDE D304 — un délégué Prisma 7 s'espionne-t-il, vu depuis le service ?
+[22m[39maccept(b1) : REJETÉ « PANNE INJECTÉE D304 » · appels vus par l'espion : 1 · statut en base : ACCEPTED
+
+── 4. bras NÉGATIF : même espion, aucune panne armée
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts[2m > [22m[2mSONDE D304 — un délégué Prisma 7 s'espionne-t-il, vu depuis le service ?
+[22m[39maccept(b2) : REJETÉ « Cannot read properties of undefined (reading 'id') » · appels vus par l'espion : 1 · statut en base : ACCEPTED
+
+── 5. l'espion posé sur le client de base traverse-t-il un client de TRANSACTION ?
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts[2m > [22m[2mSONDE D304 — un délégué Prisma 7 s'espionne-t-il, vu depuis le service ?
+[22m[39mtx.user.findUnique dans $transaction : ABOUTI · appels vus par l'espion : 0
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts[2m > [22m[2mSONDE D304 — un délégué Prisma 7 s'espionne-t-il, vu depuis le service ?
+[22m[39mctx.prisma.user.findUnique ensuite : REJETÉ « PANNE TX D304 »
+
+── 6. après mockRestore
+
+ [31m❯[39m ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1457[2mms[22m[39m
+[31m   [31m×[31m SONDE D304 — un délégué Prisma 7 s'espionne-t-il, vu depuis le service ?[39m[33m 540[2mms[22m[39m
+[31m     → ctx.prisma.user.findUnique is not a function[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts[2m > [22mSONDE D304 — un délégué Prisma 7 s'espionne-t-il, vu depuis le service ?
+[31m[1mTypeError[22m: ctx.prisma.user.findUnique is not a function[39m
+[36m [2m❯[22m ../../docs/preuves/D304/sondes/test/int/espion-prisma.int-spec.ts:[2m139:69[22m[39m
+    [90m137| [39m  e[33m.[39m[34mmockRestore[39m()[33m;[39m
+    [90m138| [39m  [34mnoter[39m([32m"\n── 6. après mockRestore"[39m)[33m;[39m
+    [90m139| [39m  noter(`ctx.prisma.user.findUnique : ${await issue(ctx.prisma.user.fi…
+    [90m   | [39m                                                                    [31m^[39m
+    [90m140| [39m
+    [90m141| [39m  const positif = r1 === "REJETÉ « PANNE INJECTÉE D304 »" && (await st…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m   Start at [22m 00:27:04
+[2m   Duration [22m 9.17s[2m (transform 2.55s, setup 37ms, collect 6.77s, tests 1.46s, environment 0ms, prepare 167ms)[22m
+

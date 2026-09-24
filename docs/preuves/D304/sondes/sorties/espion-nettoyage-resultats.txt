@@ -1,0 +1,8 @@
+typeof original (pris par lecture) : function
+bras positif — accept(b1) : REJETÉ « PANNE INJECTÉE D304 » · appels vus : 1 · statut en base : ACCEPTED
+bras négatif — accept(b2) : ABOUTI · appels vus : 1 · statut en base : ACCEPTED
+nettoyage par réaffectation — typeof ensuite : function
+après nettoyage — accept(b3) : ABOUTI · appels vus par l'ancien espion : 0 · statut en base : ACCEPTED
+
+calibration : positif OK · négatif OK · nettoyage OK
+RÉPONSE (réaffectation) : TIENT SES TROIS BRAS

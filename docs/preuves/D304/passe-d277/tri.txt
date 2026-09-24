@@ -1,0 +1,44 @@
+D304 — TRI DE LA PASSE D277, LES DEUX SENS — 24/09/2026, contre HEAD 2b9f8d5
+===========================================================================
+
+Instrument : balayage.py (texte aplati, avant = HEAD, après = arbre), calibré (témoin positif
+AVANT = 1, témoin négatif 0/0). Deux sorties : balayage-sortie-premiere.txt (APRÈS les écritures
+de décision, AVANT le traitement de la passe) et balayage-sortie.txt (après traitement).
+
+SENS 1 — ce que le lot invalide
+-------------------------------
+Première sortie : toutes les occurrences barrées ou annotées D304, SAUF trois affirmations
+périmées que seule une annotation VOISINE corrigeait — traitées EN PLACE (barré + renvoi) :
+  - « Faisabilité non mesurée » (cadrage du rang 23, § 3)          → barré, « mesurée »
+  - « INFÉRENCE, vérifiée par construction au lot de code » (§ 3)   → barré, « MESURÉ, tient »
+  - la liste des bloquants de R1, « bloque la levée du drapeau » :
+      AGENTS.md (point E3, bloc D303) et backlog (tête de PHASE 7) → complétées « et la
+      prochaine certification qui compte des cibles de ce chemin »
+Motif à zéro APRÈS : « BLOQUE : à ordonner par Ko — ⚠ mais c'est l'audit » — VÉRIFIÉ : la phrase
+est présente sous sa forme BARRÉE (« ~~BLOQUE : à ordonner par Ko~~ — ⚠ mais c'est l'audit »,
+1 occurrence) ; les `~~` coupent le motif. Une hypothèse vérifiée, pas une absence.
+Seconde sortie : les seules occurrences sans barré ni D304 à proximité sont des textes de D304
+(décision 3 qui CITE « à préciser par le relecteur » pour le remplacer ; décision 4). Rien à faire.
+
+SENS 2 — ce que le lot rend permis, ou dont la condition change
+---------------------------------------------------------------
+⛔ CE QUI A MORDU. Ko a arbitré 23a. Deux familles de phrases, vraies hier, se lisaient dès
+lors comme une permission d'ouvrir 23a, alors que le relecteur n'a pas décidé sur le cadrage :
+  1. l'ordre des rangs, « ⚠ Et pour E3, rang arbitré ne suffit pas » — trop étroit depuis que
+     D303 a étendu la forme de revue au chemin de l'argent → annoté en place (23a et R1 compris) ;
+  2. « un lot de code peut s'ouvrir dès que Ko l'arbitre / dès l'arbitrage » — 24 occurrences,
+     dont 6 dans des sections datées et 18 courantes, dont 1 barrée (l. 1144, barré ouvert à la
+     ligne précédente) ⇒ 17 annotées par annoter-permissions.py, qui lit son texte dans un
+     fichier (D289) ; relu dans le fichier : 17 annotations (attendu 17). ⚠ Première passe
+     de ce script FAUSSE et compensée — voir son en-tête et annoter-permissions-releve-premiere.txt.
+Les autres motifs :
+  - « PERMIS » (33) : textes de méthode (D287), permissions déjà « CONSOMMÉES », ou la ligne
+    D304 « Aucun lot de code n'est encore PERMIS » — rien de courant qui permette.
+  - « aucun ne l'est » (2) : la phrase du point d'entrée du rang 23, annotée D304 (« aucun ne
+    l'est encore »).
+  - « 23a » (37 après) : tous des textes de D303 ou D304 ; chacun dit que 23a ATTEND le
+    relecteur, ou le décrit — aucun ne le permet.
+  - « prochaine certification » (19 après) : les nouvelles disent que R1 la BLOQUE ; les
+    anciennes portent sur l'élargissement de l'audit (D294) ou l'extrait e2e — sans rapport.
+  - « reprise d'E3 », « lève la pause » : complétées — la reprise d'E3 attend AUSSI l'audit
+    corrigé (AGENTS.md, point E3 ; méthode renforcée, bloc D303).

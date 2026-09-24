@@ -776,6 +776,7 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   *suppression* ancre → 0, marqueur **sans objet** ; *insertion* ancre → `attendu × k`,
   marqueur **sans objet**.
 - ⚠ **UNE CIBLE DEVENUE SANS OBJET SE RÉORIENTE OU SE RETIRE, PAR ÉCRIT.** Quand le décor est passé d'un composant à une image, « le décor disparaît » a cessé d'être la faute possible : c'est devenu « le décor se met à parler » (perte de `alt`). Quatre cibles ont été retirées avec le code qu'elles mesuraient, une réorientée, une ajoutée.
+- ⛔ **« × » + TITRE NE PROUVE PAS UNE ASSERTION, ET UN CODE DE SORTIE NON NUL ENCORE MOINS (D304, mesuré sur vitest 3.2.7).** Un plantage (`TypeError`) et un délai dépassé marquent le test « × » exactement comme une assertion ; seule la **première ligne du bloc `FAIL … > <titre>`** les sépare (`AssertionError: …` contre `TypeError: …`, `Error: Test timed out in …`). Une erreur d'import, une collecte à zéro et un crochet en échec ne marquent **aucun** titre : bloc d'échec **de fichier** (`FAIL <f> [ <f> ]`), ligne `Tests` à « no tests » ou « skipped » — **et code de sortie 1 dans tous ces cas**. ⚠ En JUnit, une collecte ratée produit un `<testcase>` **en échec** : compter les cas du JUnit prend « rien n'a tourné » pour « un test a échoué ». Pièces : `docs/preuves/D304/r1/signatures/` ; la lecture exigée sur le chemin de l'argent est au cadrage de R1.
 ## À NE PAS faire
 - Ne pas élargir le périmètre au-delà du MVP demandé, même si le design fourni montre plus.
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).
@@ -805,7 +806,7 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   ⛔ **(D303, 23/09/2026) ET UN FAIT, DÉCLARÉ PAR KO : PAS DE COMPTE CHARGILY EN MODE TEST.** E3b-2 est bloqué
   (« compte bac à sable »), E3c aussi (charges utiles capturées du bac à sable réel), E3d et E3e suivent. ⇒ **E3
   attend sur ce fait, pas sur une priorité** : un rang arbitré lève la pause d'E3c, il n'ouvre ni E3b-2 ni E3c tant
-  que ce fait tient.
+  que ce fait tient. ⛔ *(D304 : et la reprise d'E3 attend AUSSI l'audit de secrets corrigé — décision 5, ci-dessous.)*
   ⚠ **« D39 »** : au registre, D39 est « prix par créneau », remplacée par D46 pour le Flux B ; sa dernière phrase —
   « Chemin d'argent ⇒ revue humaine » — est ce que « revue humaine D39 » cite depuis. Précision, pas correction.
   ⚠ **Ce que ces arbitrages NE disent PAS** : ~~ils visent le code **E3**. Les autres chemins critiques (auth,
@@ -815,15 +816,35 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 23/09/2026 (D303)** — motifs et détail : tête de « ⛔ E3 —
   MÉTHODE RENFORCÉE », bloc D303 :
   - **la forme de revue ci-dessus s'applique à TOUT lot de code du chemin de l'argent**, y compris ceux qui n'ont pas
-    besoin de Chargily (audit SOLID 09/09 · F1, F2, F5, F6 — rang 23). ⚠ La décision n'énumère pas ce que couvre
+    besoin de Chargily (audit SOLID 09/09 · F1, F2, F5, F6 — rang 23). ⚠ ~~La décision n'énumère pas ce que couvre
     « chemin de l'argent » au-delà de ces quatre lots — dont la « tarification hors E3 » de la phrase barrée : **à
-    préciser par le relecteur**. Auth, concurrence et suppression de compte **hors de ce chemin** : aucune décision,
-    la règle d'avant tient ;
+    préciser par le relecteur**.~~ ⛔ *(D304 : précisé — la règle ci-dessous.)* Auth, concurrence et suppression de
+    compte **hors de ce chemin** : aucune décision, la règle d'avant tient ;
   - **R1** : sur ce chemin, une garde n'est prouvée que par une neutralisation dont on a **LU** l'échec — **tests
     collectés > 0 ET assertion en échec** ; un code de sortie non nul, seul, ne prouve rien. **La correction de R1
-    dans les harnais du chemin de l'argent bloque la levée du drapeau des paiements** ;
+    dans les harnais du chemin de l'argent bloque la levée du drapeau des paiements** ⛔ *(D304 : et la prochaine
+    certification qui compte des cibles de ce chemin — ci-dessous)* ;
   - **provenance** de chaque sous-lot soumis à la méthode renforcée : **SHA de départ rapporté** à l'ouverture,
     `git diff` depuis lui limité aux **fichiers énumérés au cadrage**, **aucun fichier non suivi hors `a-verser/`**.
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 24/09/2026 (D304)** — motifs et détail : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D304 :
+  - ⛔ **PORTÉE DU « CHEMIN DE L'ARGENT » : UNE RÈGLE, PAS UNE LISTE.** En font partie : **(1)** tout code ou
+    contrainte SQL qui **calcule, arrondit ou valide un montant** — tarification (celle « hors E3 » comprise),
+    `booking-charge`, devis, acompte, échéances, commission, remise D35 ; **(2)** toute **transition** de réservation
+    ou de devis qui **ouvre, modifie ou éteint une obligation de payer** — send, revise, convert, accept, decline,
+    cancel, expire ; **(3)** le **paiement** lui-même (E3) ; **(4)** les **harnais** qui prouvent les gardes de (1) à
+    (3). **N'en fait pas partie** : un affichage qui FORMATE un montant reçu du serveur. **En fait partie** : un aperçu
+    qui RECALCULE une règle du serveur (A3). ⛔ **En cas de doute, la session DEMANDE au relecteur avant d'écrire du
+    code.** La carte de la règle vers des fichiers est une **pièce datée** (`docs/preuves/D304/carte-chemin-argent/`),
+    pas une liste dans un fichier d'autorité ;
+  - **R1** — portée : les **20** harnais relevés par D303 **et tout harnais neuf** qui mute un fichier de ce chemin ;
+    leurs morsures passées ne sont **ni infirmées ni prouvées** ; **la correction BLOQUE la prochaine certification
+    qui compte des cibles de ce chemin** (en plus de la levée du drapeau) ; par morsure, le harnais garde **les tests
+    collectés, le test en échec, la première ligne de son assertion** — pas la sortie entière. Cadrage :
+    `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DE R1 » ;
+  - ⛔ **L'audit de secrets ne voit pas une clé au format Chargily : cela BLOQUE LA REPRISE D'E3** — tout lot qui
+    manipule des clés Chargily. La correction reconnaîtra la valeur **par sa forme**, calibrée sur une valeur
+    **synthétique assemblée à l'exécution** — jamais une vraie clé sur le disque.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

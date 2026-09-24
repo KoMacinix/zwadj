@@ -1,0 +1,20 @@
+── 1. identité et descripteur
+le service tient la MÊME instance que ctx.prisma : true
+ctx.prisma.user === ctx.prisma.user (délégué stable d'un accès à l'autre) : true
+findUnique, propriété PROPRE du délégué : true · configurable true · writable true · type undefined
+classe de l'instance : Object
+
+── 2. vi.spyOn
+vi.spyOn(ctx.prisma.user, "findUnique") : POSÉ, sans erreur
+
+── 3. bras POSITIF : une panne armée une fois, puis accept() réel
+accept(b1) : REJETÉ « PANNE INJECTÉE D304 » · appels vus par l'espion : 1 · statut en base : ACCEPTED
+
+── 4. bras NÉGATIF : même espion, aucune panne armée
+accept(b2) : REJETÉ « Cannot read properties of undefined (reading 'id') » · appels vus par l'espion : 1 · statut en base : ACCEPTED
+
+── 5. l'espion posé sur le client de base traverse-t-il un client de TRANSACTION ?
+tx.user.findUnique dans $transaction : ABOUTI · appels vus par l'espion : 0
+ctx.prisma.user.findUnique ensuite : REJETÉ « PANNE TX D304 »
+
+── 6. après mockRestore

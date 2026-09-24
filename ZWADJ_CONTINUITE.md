@@ -489,6 +489,7 @@ La migration générée échoue en cours de route (`DROP INDEX` sur un index qui
 - ⚠ **Sous l'adaptateur pilote, une violation d'exclusion ne remonte PAS en `PrismaClientKnownRequestError`** mais en **`DriverAdapterError`**, dont le code PostgreSQL vit dans **`cause.code`**. Lire `cause.code` **et** le nom de la contrainte — jamais le message brut, il est traduit selon la locale du serveur.
 - ⚠ **Toute section qui remplit une liste depuis le réseau doit garder sa forme** (`Array.isArray`). **Trois occurrences**, dont une qui a fait tomber **49 tests d'un coup** en emportant toute la page d'édition pro. Le typage décrit ce que l'API *promet*, pas ce qu'elle *rend*.
 - ⚠ **Une porte ne voit que ce qu'on lui donne à regarder.** Aucune des six ne demande « ce composant est-il monté quelque part ? » : R1 a trouvé deux écrans livrés, compilables et **inatteignables**, sans qu'aucun signal ne s'allume.
+- ⛔ **`vi.spyOn` SUR UN DÉLÉGUÉ PRISMA 7 N'EST PAS UN PASSE-PLAT, ET `mockRestore()` LE CASSE (D304, mesuré).** Le délégué (`prisma.user`) est un proxy : le descripteur de `findUnique` est `configurable`, `writable`, **sans `value`**, et vitest prend ce `value` absent pour l'implémentation d'origine. L'espion se pose et voit l'appel du service, mais **rend `undefined` quand aucune réponse n'est armée**, et après `mockRestore()` — ou la suppression de la propriété — **`findUnique` n'est plus une fonction pour le reste du fichier**. Forme qui tient ses trois bras : l'original **pris par lecture** avant l'espion, un passe-plat **explicite** (`mockImplementation` qui le rappelle), un nettoyage par **réaffectation** (`Object.defineProperty(…, { value: original })`). Pièces : `docs/preuves/D304/sondes/`.
 ## ORDRE DES RANGS — QUEL lot vient ensuite
 
 ⛔ **TITRE PROPRE DEPUIS LE 22/09/2026 (D300, rang 20, arbitrage de Ko).** Cet ordre a vécu du 31/08 au
@@ -870,7 +871,7 @@ heurtant. **Un rang faux se voit ; un rang manquant, non.**
     s'ouvrir dès l'arbitrage de Ko.
     ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
     D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-    ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+    ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
     ⚠ ~~**ÉTAPE 0 FAITE ET MESURÉE, CERTIFICATION NON LANCÉE (D287)** : porte dure **rouge sur
     deux relevés** — `chrome` 16 au lieu de 0, RAM libre ~2 480 Mo contre 4 579 exigés
     (**−2 091**).~~ **BARRÉ LE 12/09/2026 (D288)** : `chrome` fermé par Ko, la porte dure a été
@@ -917,7 +918,7 @@ RAM le 16/09). **Le compteur de lots de code non certifiés passe de DEUX à ZÉ
 **peut** s'ouvrir, et c'est lui qui le portera à un.
 ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
 D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 ⚠ ~~**Ce qui attend, sans rang** : les
 **budgets de test** (`[MÉTHODE][P0]` du 10/09) — placés **après** le rang 14 par Ko, sans que le
 rang 15 leur soit attribué.~~ ⛔ ~~**(D294, 16/09/2026) TOUJOURS SANS RANG, MAIS PLUS SANS FORME** :
@@ -939,10 +940,10 @@ Ko** : « une phrase qui déclare à moitié fait un lot **certifié** du chemin
 dangereuse qu'un budget manquant » — le bloc du rang 8 passe donc devant les budgets.
 ⇒ **Où il en est** : section « ~~PROCHAIN LOT~~ — rang 16 » en tête de ce fichier — ✅ **CLOS le
 16/09/2026 (D294)**. ⚠ **Documentaire : il ne compte pas dans les deux/trois** (D283, amendé par
-D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage.
+D292), donc **le compteur reste à ZÉRO** et un lot de code peut s'ouvrir dès l'arbitrage ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
 D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 ⇒ ~~**RANG 17 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la clôture du rang 16, pour qu'aucune
 reprise ne tombe sur une liste qui s'arrête.~~
 ⛔ **CONSOMMÉ LE 20/09/2026 (D295) — ARBITRÉ PAR KO : le RANG 17 est les BUDGETS DE TEST, dans la
@@ -1019,7 +1020,7 @@ la règle (D270) n'admet qu'une **certification** ou un lot **documentaire**.
 ⛔ **(D299, 22/09/2026) RANG 19 CLOS — MARQUE POSÉE À LA PASSE 2** : « **portes vertes AU REPOS le
 22/09/2026, et D297 (rang 17, `a2dd3f3`) et D298 (rang 18, `edf66ae`) en font partie** ». 199 mordues, 0
 muette ; fenêtre homogène. **Compteur de lots de code non certifiés : DEUX → ZÉRO** — un lot de code
-**peut** s'ouvrir dès que Ko l'arbitre, et c'est lui qui portera le compteur à un. Après un refus
+**peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*, et c'est lui qui portera le compteur à un. Après un refus
 (RAM, 21/09 19:08) et une passe non certifiante (échantillonneur aveuglé, 23:10). ⇒ **Où il en est** :
 section « PROCHAIN LOT — rang 19 », clôture.
 ⇒ ~~**RANG 20 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **clôture** du
@@ -1075,7 +1076,9 @@ certifiés à ZÉRO, inchangé.** ⇒ **Où il en est** : section « PROCHAIN LO
 22, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⚠ **Une permission n'est pas un arbitrage** :
 le compteur à zéro dit qu'un lot de code **peut** s'ouvrir, pas lequel. ⚠ **Et pour E3, rang arbitré ne suffit
 pas** : l'état des lieux et le cadrage du sous-lot passent d'abord, et c'est le relecteur (chat) qui décide
-dessus (D302 ; `AGENTS.md`, « À NE PAS faire »).
+dessus (D302 ; `AGENTS.md`, « À NE PAS faire »). ⛔ *(D304, passe D277, sens 2 — « pour E3 » se lit trop étroit depuis
+que D303 a étendu la forme de revue : **pour TOUT lot de code du chemin de l'argent**, 23a et R1 compris, le rang
+arbitré ne suffit pas. Ko a arbitré 23a le 24/09/2026 ; lue seule, cette phrase l'aurait laissé s'ouvrir.)*
 ⛔ **ARBITRÉ LE 23/09/2026 PAR KO — le RANG 23, mot pour mot : « Rang 23 : les transitions atomiques de la
 réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6. Cadrage, lot documentaire. Aucun besoin de
 Chargily. »** Lot D303. Barré plutôt qu'effacé (D276). ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de Ko**
@@ -1092,13 +1095,28 @@ par Ko (pas de compte Chargily en mode test : E3 attend ce fait) et les décisio
 lot de code du chemin de l'argent ; R1, dont la correction bloque aussi la levée du drapeau ; provenance ; D117 ; motifs
 de F8 et R2 ; deux entrées périmées) ; partie B — le zip de l'auditeur versé, et le **cadrage** de F1, F2, F5, F6.
 **Documentaire : compteur de lots de code non certifiés à ZÉRO, inchangé.** ⇒ **Où il en est** : point d'entrée du
-rang 23 — **ouvert**, précédent du rang 17 ; **Ko tranche le découpage** et dit si les sous-lots de code avancent ce
-rang ou en prennent un neuf. ⇒ La ligne du rang 24, ci-dessous, a été écrite à l'ouverture ; **elle est toujours
-vraie.**
+rang 23 — **ouvert**, précédent du rang 17 ; ~~**Ko tranche le découpage** et dit si les sous-lots de code avancent ce
+rang ou en prennent un neuf.~~ ⛔ *(D304 : tranché par Ko le 24/09/2026 — ligne suivante.)* ⇒ La ligne du rang 24,
+ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie.**
+⛔ **(D304, 24/09/2026) RANG 23 — ARBITRAGE DE KO, première écriture, mot pour mot : « tous les sous-lots du rang 23
+avancent le rang 23 (règle de D302), certifications comprises. Ordre : ce lot → 23a (F1 + F5) → R1 → certification
+→ 23b (F2) → 23c (F6) → certification. »** « Ce lot » est **D304** (documentaire : décisions du relecteur, cadrage
+de R1, les deux inférences du cadrage mesurées, la carte du chemin de l'argent).
+*Motif de l'ordre — décision du relecteur (chat), déléguée par Ko le 24/09/2026* : « La règle b de D303 permet de
+prouver les gardes de 23a par un échec LU, sans le harnais corrigé. Le harnais corrigé n'est exigé que par la
+première certification, qui vient de toute façon après deux lots de code. Placer R1 en second ne coûte aucune
+certification et livre le correctif produit un lot plus tôt. » ⚠ *Dérivé par la session, pas une parole de Ko* :
+l'ordre tient la règle « deux lots non certifiés tenables, trois non » (D270) — 23a et R1 comptent (R1 touche
+`neutralisation/`, D283), la certification ramène à zéro, 23b et 23c comptent, la seconde certification ramène à zéro.
+⇒ **Où il en est** : point d'entrée du rang 23.
 ⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
 23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
 cadrage du rang 23 ne rend PERMIS aucun lot de code** : ses sous-lots attendent le découpage de Ko, la décision du
-relecteur (chat) sur le cadrage, et un rang arbitré (D302).
+relecteur (chat) sur le cadrage, et un rang arbitré (D302). ⛔ *(D304, 24/09/2026 — passe D277, sens 2 : deux des
+trois conditions sont LEVÉES — le découpage et le rang, par l'arbitrage ci-dessus. La troisième TIENT : **23a attend
+la décision du relecteur sur les choix du § 8 du cadrage** — 1 à 4, le 5ᵉ étant tranché par la décision 4 (Ko : « le
+relecteur les tranchera avant 23a »), et
+**R1 attend la sienne sur les choix de son propre cadrage**. ⇒ **Aucun lot de code n'est encore PERMIS.**)*
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1186,9 +1204,28 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE ; DÉCOUPAGE À TRANCHER PAR KO**
+## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; 23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE**
 
-### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER (D303, 23/09/2026)
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 24/09/2026 (D304)
+
+⛔ **ORDRE ARBITRÉ PAR KO LE 24/09/2026, mot pour mot** : « tous les sous-lots du rang 23 avancent le rang 23 (règle de
+D302), certifications comprises. Ordre : ce lot → 23a (F1 + F5) → R1 → certification → 23b (F2) → 23c (F6) →
+certification. » Motif (décision du relecteur) : ordre des rangs, ligne D304.
+| étape | objet | état au 24/09/2026 |
+|---|---|---|
+| D303 | cadrage de F1, F2, F5, F6 (documentaire) | ✅ fait |
+| **D304** | décisions du relecteur, **cadrage de R1**, les deux inférences du cadrage **mesurées**, carte du chemin de l'argent (documentaire) | ✅ fait |
+| **23a** | F1 + F5, code | ⏸ **attend le relecteur** : les choix 1 à 4 du § 8 du cadrage — le 5ᵉ est tranché (décision 4) ; « le relecteur les tranchera avant 23a » (Ko) |
+| **R1** | la lecture de l'échec dans les harnais, code (`neutralisation/`) | ⏸ après 23a ; attend le relecteur sur les choix de son cadrage (§ 9 de « ⛔ CADRAGE DE R1 ») |
+| certification | — | ⏸ **bloquée par R1** (décision 4 du relecteur, D304) |
+| 23b, 23c, certification | F2, puis F6 | ⏸ |
+⇒ **Aucun lot de code n'est PERMIS aujourd'hui** : le compteur est à zéro, l'ordre est arbitré, et la décision du
+relecteur sur le § 8 manque. ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
+`FOR UPDATE` (pas l'UPDATE simple) — sans effet sur 23a, dont les rivaux sont des UPDATE simples et dont l'attente est
+un verrou de LIGNE, mesuré ; et les deux prémisses des formes (i) et (ii) du choix 1 du § 8 tiennent. Détail : cadrage,
+annotations D304 des § 3 et § 8.
+
+### L'état du rang à l'ouverture (D303, 23/09/2026) — ⚠ ses deux dernières phrases sont PÉRIMÉES par D304
 
 ⛔ **ARBITRÉ PAR KO LE 23/09/2026, mot pour mot** : « Rang 23 : les transitions atomiques de la réservation et du
 devis — audit SOLID 09/09 · F1, F2, F5, F6. Cadrage, lot documentaire. Aucun besoin de Chargily. » ⇒ **QUEL lot : rang
@@ -1198,12 +1235,14 @@ défaillance d'abord, rouge sur PostgreSQL réel, cibles de neutralisation nomm�
 **Aucune ligne de code.** Le lot D303 est **documentaire** (`.md` d'autorité et `docs/preuves/`) : **compteur de lots de
 code non certifiés : ZÉRO, inchangé.**
 ⇒ **LE RANG RESTE OUVERT** — précédent du rang 17, ouvert par un cadrage seul (D295), dont le lot de code a été
-arbitré par Ko comme « second lot du même rang » (D296). ⛔ **CE QUI EST ATTENDU, ET DE QUI** : **Ko** tranche le
-découpage en sous-lots (§ 7 du cadrage) et dit si les sous-lots de code avancent ce rang ou prennent un rang neuf ;
-**le relecteur (chat)** décide sur le cadrage — forme de revue étendue au chemin de l'argent (D303, décision 1) —,
-notamment sur les choix que le cadrage **propose sans les prendre** (§ 8).
+arbitré par Ko comme « second lot du même rang » (D296). ⛔ **CE QUI EST ATTENDU, ET DE QUI** : ~~**Ko** tranche le
+découpage en sous-lots (§ 7 du cadrage) et dit si les sous-lots de code avancent ce rang ou prennent un rang neuf ;~~
+⛔ *(D304 : tranché par Ko le 24/09/2026 — table ci-dessus.)* **le relecteur (chat)** décide sur le cadrage — forme de
+revue étendue au chemin de l'argent (D303, décision 1) —, notamment sur les choix que le cadrage **propose sans les
+prendre** (§ 8). ⛔ *(D304 : cette réponse-là manque TOUJOURS — avant 23a.)*
 ⚠ **Une permission n'est pas un arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir ; **aucun ne
-l'est** tant que ces deux réponses manquent.
+l'est** tant que ces deux réponses manquent. ⛔ *(D304 : une des deux est arrivée ; l'autre manque — **aucun ne
+l'est encore**.)*
 
 ## ⛔ CADRAGE DU RANG 23 — transitions atomiques (audit SOLID 09/09 · F1, F2, F5, F6) — écrit le 23/09/2026 (D303), AVANT toute ligne de code
 
@@ -1323,14 +1362,41 @@ s'invente pas. ⛔ Chemin de sortie obligatoire (`ROLLBACK` en `finally`) : une 
 | **F5** | `UPDATE bookings SET status='ACCEPTED', … WHERE id=$1 AND status='PENDING'` | `cancelAsClient` **sans motif** : lit `PENDING`, décide « permis » | son `updateMany` attend le verrou de ligne | 200, `CANCELLED` sans motif | refus (code : § 8), ligne `ACCEPTED` |
 | **F6** (×3) | — | `accept` / `decline` / `cancelAsPro` réels, **panne injectée** sur la lecture post-commit (`user.findUnique`, une fois) | — | 500, ligne commitée | 200 + DTO, ligne commitée, échec journalisé |
 
-⚠ **POURQUOI `FOR UPDATE` CHEZ LE RIVAL DE F2 — mécanisme écrit comme INFÉRENCE, vérifiée par construction au lot de
-code** : un `UPDATE` simple ne prend qu'un `FOR NO KEY UPDATE`, qui ne bloque pas le `FOR KEY SHARE` d'une clé
+⚠ **POURQUOI `FOR UPDATE` CHEZ LE RIVAL DE F2 — mécanisme écrit comme ~~INFÉRENCE, vérifiée par construction au lot de
+code~~** ⛔ *(D304 : MESURÉ, et l'inférence tient — annotation ci-dessous, point 1)* : un `UPDATE` simple ne prend qu'un `FOR NO KEY UPDATE`, qui ne bloque pas le `FOR KEY SHARE` d'une clé
 étrangère ; sans le `FOR UPDATE` explicite, l'insertion ne l'attendrait pas, et `attendreBlocage()` lèverait. Le verrou
 du rival est l'**outil d'ordonnancement** ; ce qu'il commite est ce que commiterait `cancel`.
 ⚠ **F6 N'EST PAS UNE COURSE** : la persistance est réelle, la **panne est injectée** — seul moyen déterministe de faire
-échouer une lecture post-commit. ⚠ **Faisabilité non mesurée** : espionner un délégué du client Prisma 7
+échouer une lecture post-commit. ⚠ ~~**Faisabilité non mesurée**~~ ⛔ *(D304 : mesurée — annotation ci-dessous,
+point 2 ; l'espion tel qu'écrit ÉCHOUE au bras négatif)* : espionner un délégué du client Prisma 7
 (`vi.spyOn(ctx.prisma.user, "findUnique")`) ; repli, un `PrismaService` enveloppé fourni au module de test. Le lot de
 code le mesure avant de s'appuyer dessus.
+⛔ **(D304, 24/09/2026) LES DEUX INFÉRENCES CI-DESSUS SONT MESURÉES** — sur `zwadj_test` recréée vide par le
+`globalSetup` réel, configuration d'intégration réelle, PostgreSQL 18.4, `read committed`. Pièces :
+`docs/preuves/D304/sondes/` (sondes jetables, sorties brutes, résultats). Section D304, partie C.
+1. **La clé étrangère attend-elle le rival ? — l'inférence TIENT.** Discriminant `lock_timeout` calibré sur ses
+   deux bras. Rival `SELECT … FOR UPDATE` + annulation ⇒ l'insertion **ATTEND** (55P03), pour les deux clés
+   (`bookings_quote_id_fkey`, `quotes_parent_quote_id_fkey`) ; rival en **UPDATE simple** du statut ⇒ elle **N'ATTEND
+   PAS**. Après COMMIT du rival, l'insertion bloquée **aboutit** sur un devis `CANCELLED` : le rouge de MD-F2-1, au
+   niveau SQL. ⇒ **Les cibles de F2 ne changent pas** ; le rival en `FOR UPDATE` du tableau ci-dessus est
+   **nécessaire**, et c'est désormais mesuré. ⇒ **23a joue l'UPDATE simple** (rivaux de F1 et F5 du tableau) : aucune
+   clé étrangère en jeu, l'attente est un verrou de LIGNE — mesuré aussi : lecture simple n'attend pas (lit `PENDING`),
+   `FOR UPDATE`, `FOR NO KEY UPDATE`, UPDATE nu et UPDATE conditionné attendent ; après COMMIT, l'UPDATE nu **écrase**
+   (`ACCEPTED` avec `declined_at` posé — rouge de MD-F1-1) et le prédicat actuel de l'annulation client **annule** une
+   ligne devenue `ACCEPTED` (rouge de MD-F5-1).
+2. **Peut-on espionner un délégué Prisma 7 ? — OUI, MAIS PAS COMME LE CADRAGE L'ÉCRIT.** Mesuré sur le vrai site F6
+   (`BookingsService.accept`) : le délégué est stable d'un accès à l'autre, le service tient la même instance, et
+   `vi.spyOn` se pose et **voit** la lecture post-commit — une panne armée une fois fait rejeter `accept` sur une ligne
+   déjà `ACCEPTED` (le rouge de MD-F6-1). ⛔ **Mais l'espion nu n'est PAS un passe-plat** : sans panne armée il rend
+   `undefined` (le descripteur de `findUnique` sur ce proxy n'a pas de `value`, vitest la prend pour l'original) — le
+   bras négatif **MANQUE** ; ⛔ **et `mockRestore()` laisse `findUnique` INDÉFINI** pour la suite du fichier ; la
+   suppression de la propriété aussi. ⇒ **La forme qui tient ses trois bras** : l'original **pris par lecture** avant de
+   poser l'espion, un passe-plat **explicite** (`mockImplementation` qui le rappelle), et un nettoyage par
+   **réaffectation** de l'original (`Object.defineProperty(…, { value: original })`). ⇒ **Ce que ça change** : les
+   cibles R23-F6-1 à -4, rien ; la **technique** de 23c, oui — et un mode de défaillance de la MESURE, écrit ici :
+   **MD-F6-5** — un espion mal nettoyé casse `user.findUnique` pour tous les tests suivants du même fichier
+   (`bookings.int-spec.ts` partage une application) : rouges sans rapport, ou verts pour une mauvaise raison. ⇒ Le
+   repli (`PrismaService` enveloppé) **n'est pas nécessaire** ; il reste une option du relecteur.
 ⛔ **FORME DE LA PREUVE — celle que la décision 2 du relecteur exige** : pour chaque garde, (1) le **rouge avant
 correctif**, sortie Vitest **conservée** : tests collectés > 0, et le **titre du test** sur une ligne d'échec avec le
 message d'assertion ; (2) le vert après ; (3) la **neutralisation** du correctif, dont l'échec est **LU** dans la même
@@ -1381,6 +1447,12 @@ Chaque cible : une mutation, sa mesure, et la **signature d'échec LUE** (décis
 404). ⛔ Le harnais de ce rang se nomme `neutralize-<lot>.py` (D272), **lit** l'échec (collectés > 0 **et** titre sur une
 ligne d'échec, comme `neutralize-horizon.py`), et **écrit la sortie de chaque cible** — sans quoi la décision 2 n'est
 pas satisfiable.
+⛔ *(D304, 24/09/2026 — lecture adverse : **le patron cité ne satisfait PAS la décision 2.** `neutralize-horizon.py` ne
+compte pas les tests collectés, et « × » + titre ne sépare pas une ASSERTION en échec d'un plantage ou d'un délai
+dépassé — **mesuré**, les trois portent « × » (`docs/preuves/D304/r1/signatures/`). La lecture exigée est celle du
+**§ 4 de « ⛔ CADRAGE DE R1 »** ; et ce harnais neuf est **dans la portée de R1** (décision 4 du relecteur, D304).
+« Écrit la sortie de chaque cible » : la décision 4 fixe ce qu'il garde — collectés, test en échec, première ligne de
+l'assertion, pas la sortie entière.)*
 
 ### 6. Fichiers attendus
 
@@ -1396,11 +1468,19 @@ pas satisfiable.
   `neutralize-booking-status.py` (`quote-store.prisma.ts`), `neutralize-s11a.py` et `neutralize-s11b.py`
   (`bookings.service.ts`), `neutralize-solid-s3.py` (`booking-transitions.ts`) : une ancre que la correction déplace
   se réancre **dans le sous-lot**, par écrit.
+  ⛔ *(D304 : `neutralize-rang23.py` est **dans la portée de R1** — tout harnais neuf qui mute un fichier du chemin de
+  l'argent, décision 4. 23a vient AVANT R1 : que ce harnais naisse à la lecture du cadrage de R1 ou que R1 le corrige
+  avec les vingt autres est un **choix du relecteur** — § 9 de « ⛔ CADRAGE DE R1 ». Pour 23a, la règle b de D303
+  suffit à prouver ses gardes : un échec LU, versé.)*
 - **Aucune migration** (l'audit n'en nomme aucune ; les verrous sont à l'exécution), **aucune dépendance**, aucune clé
   i18n neuve attendue (les codes et messages existent) — un écart se déclare.
 - **Documentaire** : `.md` d'autorité, `docs/preuves/<Dnnn>/`.
 
 ### 7. Découpage proposé — ⛔ TRANCHÉ PAR KO
+
+⛔ **(D304) TRANCHÉ LE 24/09/2026 : trois sous-lots, et R1 intercalé** — « ce lot → 23a (F1 + F5) → R1 → certification
+→ 23b (F2) → 23c (F6) → certification », tous au rang 23. Motif : ordre des rangs, ligne D304. La proposition
+ci-dessous reste telle qu'écrite.
 
 **Proposition de la session : TROIS sous-lots de code**, chacun avec sa session adverse avant le suivant, les six
 portes, la suite e2e (concurrence, argent) et `lancer-campagnes.py` sur les campagnes touchées :
@@ -1431,7 +1511,27 @@ classe de défaut des trois autres, et le mêler à une course mélangerait deux
    la charge **dans** un `try`, publie, et journalise l'échec avec le type d'événement et l'identifiant — **sans
    toucher `DomainEvents`** (borne A5). Et **si la journalisation est exigée** comme garde (R23-F6-4).
 5. **La liste des harnais « du chemin de l'argent »** visés par la décision 2 (R1) : la session en a dérivé une,
-   entrée R1 du backlog ; **à arrêter par le relecteur**.
+   entrée R1 du backlog ; ~~**à arrêter par le relecteur**~~. ⛔ *(D304 : **arrêtée** par le relecteur — décision 4 :
+   les vingt harnais relevés par D303, et tout harnais neuf qui mute un fichier du chemin de l'argent.)*
+
+⛔ **(D304, 24/09/2026) ÉCHÉANCE — Ko : « le relecteur les tranchera avant 23a. »** Les choix 1 à 4 restent OUVERTS ;
+23a ne s'ouvre pas sans eux. Faits **mesurés** par D304 qui les éclairent, écrits ici pour que le relecteur n'ait rien
+à recouper (pièce : `docs/preuves/D304/sondes/sorties/verrous-resultats.txt`) — **la session ne choisit pas** :
+- **choix 1 (i)** — prémisse **tenue** : un `SELECT … FOR UPDATE` bloqué par un refus en vol, relâché au COMMIT, **lit
+  `DECLINED`** ; ⚠ **effet de bord mesuré, non écrit au cadrage** : un `FOR UPDATE` sur une ligne de réservation
+  **bloque l'insertion d'une ligne qui la référence** (`payments.booking_id` : 55P03), ce qu'un UPDATE simple ne fait
+  pas. Les deux ne se croisent pas en régime nominal (`accept` agit sur `PENDING`, un paiement suppose `ACCEPTED`) ;
+- **choix 1 (ii)** — prémisse **tenue** : l'UPDATE conditionné bloqué, relâché au COMMIT du refus, modifie **0**
+  ligne ; la relecture lit `DECLINED` ;
+- ⚠ **une forme (iii) que la mesure fait apparaître, PROPOSÉE, PAS PRISE** : `SELECT … FOR NO KEY UPDATE` **attend**
+  le rival (mesuré) et, par la table des conflits de verrous de ligne de PostgreSQL, **ne bloque pas** le `FOR KEY SHARE`
+  d'une clé étrangère — l'effet de bord de (i) sans son coût. ⚠ **Non mesuré** : ce qu'il lit après le COMMIT du rival
+  (seul `FOR UPDATE` l'a été), et son comportement contre l'insertion d'un paiement ;
+- **choix 3** — le rouge de MD-F5-1 est **mesuré au niveau SQL** : le prédicat actuel annule une ligne devenue
+  `ACCEPTED` ; le prédicat « sans motif » (dérivé du tableau des transitions : `from` moins `reasonRequiredFrom`)
+  modifie **0** ligne ;
+- **choix 4** — la technique de 23c est désormais mesurée (§ 3, annotation D304) : passe-plat explicite, nettoyage par
+  réaffectation ; **jamais `mockRestore()`**.
 
 ### 9. `[BACK][P0]` « traduire `bookings_no_overlap_accepted_confirmed` en conflit propre » — confronté
 
@@ -1444,6 +1544,164 @@ le 23P01 », « deux demandes DIFFÉRENTES acceptées simultanément… 201 + 40
 deux entrées du backlog (B3, « RESTE — à l'acceptation… attraper… » ; Flux B, « À l'acceptation d'une réservation (lot
 ultérieur)… ») sont **barrées avec leur motif**. ⚠ **Ce qui reste vrai et relève de ce rang** : la correction de F1
 touche ce `try/catch` — **MD-F1-3**.
+
+## ⛔ CADRAGE DE R1 — la lecture de l'échec dans les harnais du chemin de l'argent — écrit le 24/09/2026 (D304), AVANT toute ligne de code
+
+⛔ **SOUS-LOT DU RANG 23, entre 23a et la certification (ordre de Ko, D304). CHEMIN DE L'ARGENT par la branche (4)
+de la règle** (décision 3 du relecteur, D304) : **méthode renforcée (D126)** et **forme de revue ratifiée** — une
+session code, une AUTRE ouverte à froid tente de casser et rapporte sans corriger, le relecteur (chat) audite et
+décide, Ko garde le veto. **Provenance** (D303, décision 3) : SHA de départ rapporté à l'ouverture, `git diff` depuis
+lui limité aux fichiers du § 8, aucun fichier non suivi hors `a-verser/`. **Un mode de défaillance non listé ici ne se
+code pas.** Documentaire : ce cadrage ne contient **aucune ligne de code** ; ses pièces sont dans
+`docs/preuves/D304/r1/`.
+
+### 1. Ce que la décision exige — décision 4 du relecteur (chat), déléguée par Ko le 24/09/2026
+
+- **Portée** : les **20** harnais relevés par D303 — `available-on-api`, `available-on`, `b7`, `booking-status`,
+  `e3d1-s8`, `journey`, `r4`, `s9`, `s10a`, `s10b`, `s11a`, `s11b`, `solid-s1` à `solid-s7` — **et tout harnais neuf
+  qui mute un fichier du chemin de l'argent** (dont `neutralize-rang23.py`, cadrage du rang 23, § 6).
+- **Morsures passées** : ni infirmées ni prouvées ; **la première certification après la correction les rétablit
+  sur échec lu.**
+- **La correction BLOQUE la prochaine certification qui compte des cibles du chemin de l'argent**, en plus de la levée
+  du drapeau (D303). *Motif* : par la règle b de D303, ces cibles ne se comptent pas sans elle.
+- **Ce que le harnais garde, par morsure** : le **nombre de tests collectés**, le **test en échec**, et la **première
+  ligne de son assertion**. **Pas la sortie entière.**
+- **`neutralize-e3d1-s8.py`** promet dans son en-tête une lecture qu'il ne fait pas : annoté (entrée R1 du backlog,
+  et ici) ; **la correction vient avec R1**. ⚠ Le fichier lui-même n'est **pas** touché par D304 : ce lot n'a le droit
+  d'écrire que dans les `.md` d'autorité et `docs/preuves/`, et toucher un harnais le ferait compter (D283).
+
+### 2. État des lieux — relevé, pas supposé (point 6 de Ko : « relève d'abord si les 7 autres lisent déjà la sortie »)
+
+Extracteur indépendant de celui de D303, calibré sur trois cas (`docs/preuves/D304/r1/lecture-sortie.py` et sa
+sortie ; **un défaut d'instrument corrigé et rejoué**, en tête du script) : **27** harnais, **6 841** lignes lues ;
+**20** au code seul — les mêmes vingt noms que D303 ; **7** lisent un trait de la sortie :
+| harnais | ce qu'il lit | ce qu'il ne lit pas |
+|---|---|---|
+| `horizon`, `maxprice` | code ≠ 0 **et** « × » + titre attendu sur une même ligne | le nombre de collectés ; la CAUSE de l'échec |
+| `404` | la même forme, **et** pour deux cibles (C1, C3) une ancre libre (« Failed Suites », « Failed to resolve import ») : une collecte en échec comptée comme morsure, **par écrit dans le harnais** | la cause |
+| `argon2` | total des collectés **égal** à l'attendu (`Tests … (N)`), témoin vert, **pré-vol de la détection** sur une mutation connue rouge, puis code ≠ 0 **et** libellé sur une ligne rouge (`^\s*[×✗]\s`), ANSI retiré | la cause |
+| `budgets` | une signature NOMMÉE, « Test timed out in N ms », lue dans le JUnit — l'échec attendu y EST un délai | — |
+| `act-plafonds`, `horloge` | total des collectés, puis le code seul | quel test échoue |
+⇒ **Oui, des patrons existent, et `argon2` est le plus complet** : il sert de point de départ (compte exact des
+collectés, pré-vol de la détection, ANSI retiré, lecture en octets, ancres pré-vérifiées dans le spec).
+⛔ **Mais AUCUN des sept ne sépare une ASSERTION en échec d'un plantage ou d'un délai dépassé** dans le test titré — et
+la décision 2 de D303 exige « assertion en échec ». Mesuré au § 3. ⇒ **Le patron se complète, il ne se recopie pas.**
+⚠ Les sept sont **hors de la portée** de R1 (décision 4) ; leur faiblesse commune est rapportée au backlog.
+
+### 3. Ce que vitest 3.2.7 écrit pour chaque façon d'échouer — MESURÉ
+
+Pièce : `docs/preuves/D304/r1/signatures/` — huit cas de réponse connue, joués depuis `apps/api` (vitest 3.2.7, la
+version des quatre paquets qui testent), sous le reporter par défaut et sous JUnit ; sorties brutes versées ;
+vérification **8 sur 8** après correction d'un attendu que j'avais écrit de mémoire (le crochet, faute n° 1 de D304).
+| cas | « × titre » | 1ʳᵉ ligne du bloc `FAIL … > titre` | ligne `Tests` | JUnit |
+|---|---|---|---|---|
+| assertion (`toBe`, `toEqual`, `.rejects`) | oui | `AssertionError: …` | `N failed … (T)` | `failure type="AssertionError"` |
+| plantage (TypeError levée) | oui | `TypeError: …` | idem | `type="TypeError"` |
+| erreur levée (ex. un 500 propagé) | oui | `Error: …` | idem | `type="Error"` |
+| délai dépassé | oui | `Error: Test timed out in 200ms.` | idem | `type="Error"` — seul le MESSAGE le distingue |
+| erreur d'import | **non** | bloc de FICHIER `FAIL <f> [ <f> ]`, `Error: Cannot find module …` | `Tests  no tests` | **un `<testcase>` au nom du fichier, en échec** |
+| collecte à zéro | **non** | bloc de FICHIER, `Error: No test suite found in file …` | `Tests  no tests` | idem |
+| crochet `beforeAll` qui lève | **non** — le test est `skipped` | bloc de FICHIER, `Error: <message du crochet>` | `Tests  1 skipped (1)` | le test `<skipped/>` + le fichier en échec |
+Code de sortie : **1** dans les sept cas d'échec — c'est pourquoi le code seul ne prouve rien.
+⛔ **Deux pièges mesurés** : (a) en JUnit, une erreur d'import ou une collecte vide produit un `<testcase>` EN ÉCHEC —
+compter les cas du JUnit prendrait « rien n'a tourné » pour « un test a échoué » ; (b) un délai dépassé a le type
+`Error`, comme une erreur quelconque : seul son message le nomme.
+
+### 4. Modes de défaillance — écrits AVANT tout le reste
+
+Le défaut que R1 ferme : **une cible comptée « mordue » alors que rien n'a été prouvé.** Chacun des cas suivants est
+compté mordu aujourd'hui par les vingt (code ≠ 0) :
+- **MD-R1-1** — collecte à zéro (une mutation retire un `describe`, un filtre ne correspond plus — D144). ⇒ **NON
+  PROUVÉE**.
+- **MD-R1-2** — erreur d'import ou de transformation (une mutation casse la syntaxe ou un import). ⇒ **NON PROUVÉE**.
+- **MD-R1-3** — crochet en échec (`createTestApp` qui ne démarre plus ; base absente sous `--int`) : tests `skipped`.
+  ⇒ **NON PROUVÉE**.
+- **MD-R1-4** — plantage dans le test titré (TypeError, erreur qui n'est pas une assertion). ⇒ **NON PROUVÉE** — c'est
+  l'exigence « assertion en échec ».
+- **MD-R1-5** — délai dépassé dans le test titré. ⇒ **NON PROUVÉE**, sauf **exception écrite PAR CIBLE** quand la garde
+  EST un délai (forme de `budgets`) — jamais par défaut.
+- **MD-R1-6** — un AUTRE test que celui qu'on attend échoue (la mutation casse un voisin). ⇒ la cible **nomme** son ou
+  ses titres attendus ; un échec hors de ces titres ne compte pas.
+- **MD-R1-7** — sortie tronquée, processus tué, pas de ligne `Tests`. ⇒ **NON PROUVÉE** (rien n'est lu).
+- **MD-R1-8** — titre ambigu : le titre attendu est une sous-chaîne d'un autre (leçon S11-a sur les préfixes). ⇒ le
+  titre attendu doit désigner **exactement un** test collecté, vérifié sur la sortie verbeuse du témoin AVANT mutation.
+- **MD-R1-9** — lecteur périmé (format de vitest changé). ⇒ calibration à chaque lancement (§ 6) ; un bras manqué ⇒
+  ABANDON.
+- **MD-R1-10** — l'agrégateur compte de travers : `lancer-campagnes.py` compte les lignes qui COMMENCENT par « ✓ » (et
+  ne contiennent pas « vol »), par « ✗ », et celles qui portent « NON MESUR » et « : ». ⇒ une cible non prouvée
+  s'imprime « ✗ … NON PROUVÉE : <raison> » (comptée muette/erreur, la campagne sort en 1 **sans toucher
+  l'agrégateur**) ; les lignes de détail commencent par des espaces et ne contiennent pas « NON MESUR ».
+- **MD-R1-11** — remplacement fantôme : fermé par `verifier-mutations.py` (D286) — **inchangé**, rappelé. ⚠ Cet
+  instrument IMPORTE les harnais et lit leurs cibles : un changement de FORME des cibles (un champ de plus dans un tuple
+  qu'il dépaquette) peut le casser — à mesurer dans le sous-lot.
+- **MD-R1-12** — la sortie gardée porte une valeur sensible (un message d'assertion qui cite un jeton). ⇒ les journaux
+  versés passent par l'audit de secrets (D298, D299) avant tout commit, comme aujourd'hui ; aucune règle neuve.
+
+### 5. Comment le harnais distinguera « assertion en échec » de « rien n'a tourné »
+
+Par cible, sur la sortie texte (reporter par défaut ou verbeux), codes ANSI retirés :
+1. **(a) la ligne `Tests` existe et son total entre parenthèses ÉGALE le nombre attendu pour cette mesure** — relevé au
+   témoin, jamais écrit de mémoire. Sinon : NON PROUVÉE (MD-R1-1, -2, -7).
+2. **(b) aucun bloc d'échec de FICHIER** (`FAIL <fichier> [ <fichier> ]`). Sinon : NON PROUVÉE (MD-R1-2, -3).
+3. **(c) au moins un titre attendu figure sur une ligne « × »**. Sinon : MUETTE (vert), ou « rouge sans le titre
+   attendu ».
+4. **(d) pour ce titre, la première ligne non vide du bloc `FAIL … > <titre>` commence par `AssertionError`.** Sinon :
+   NON PROUVÉE (MD-R1-4, -5) — sauf exception écrite par cible.
+5. **(e) code de sortie ≠ 0** — cohérence ; **seul, il ne prouve rien**.
+**Mordue ⇔ (a) ∧ (b) ∧ (c) ∧ (d) ∧ (e).** Trois autres issues, distinctes et nommées : **muette**, **non prouvée**,
+**erreur de script** (ancre). ⇒ Ce qu'il garde, par morsure (décision 4), sur une ligne de détail : collectés, titre en
+échec, première ligne de l'assertion.
+⚠ **Pourquoi le texte et non le JUnit — PROPOSÉ, au relecteur** : une seule source, celle que les journaux contiennent
+déjà ; pas de fichier intermédiaire par exécution ; et le piège (a) du § 3. Le JUnit a pour lui l'attribut `type`,
+structuré : les deux se valent sur (d), le texte évite le piège.
+
+### 6. Calibration — les deux bras, et le cas connu qui doit AVOIR EU LIEU (D286)
+
+- **Le lecteur** — une fonction pure — se calibre **à chaque lancement** sur des sorties brutes de référence : les
+  sept cas du § 3, **copiés** de la pièce D304 dans le dépôt de l'instrument, avec leur empreinte (une pièce n'est pas
+  un instrument, D291 ; un instrument ne dépend pas de `docs/preuves/`). **Bras positif** : l'assertion ⇒ mordue.
+  **Bras négatifs** : import, collecte vide, crochet, plantage, erreur levée, délai ⇒ non prouvée, chacun. Un bras
+  manqué ⇒ ABANDON.
+- **Sur la vraie suite**, par harnais : **témoin VERT** (aucun titre attendu en échec, collectés = N, N > 0 — le cas
+  connu a eu lieu) ; **pré-vol de la détection** sur une mutation connue rouge, qui doit sortir MORDUE par (a)–(e)
+  (patron `argon2`).
+- **Et les titres attendus** — il en faut un par cible, **158** cibles dans les vingt harnais à la dernière
+  certification (145 en passes unitaires, dont 14 remplacées par les 27 des passes `--int` de `s11b`, `solid-s6`,
+  `e3d1-s8` ; journaux de `docs/preuves/D299/passe/`) : ils se RELÈVENT d'une exécution dont l'échec est LU, puis se
+  confrontent au libellé de la cible — **jamais écrits de mémoire**. C'est le coût principal du sous-lot.
+
+### 7. Les morsures passées, et la certification qui suit
+
+Aucune n'est infirmée, aucune n'est prouvée (décision 4). La certification qui suit R1 rejoue les vingt harnais
+corrigés, `--int` compris ; **une cible qui sort NON PROUVÉE n'est pas une régression du produit** : c'est une garde
+qui n'avait jamais été établie. Elle se traite comme D286 traite une muette — réorientée ou retirée, **par écrit**.
+
+### 8. Fichiers attendus
+
+- **Instrument neuf** : un module de lecture partagé sous `neutralisation/` (nom au choix du relecteur, § 9) — PAS un
+  `neutralize-*.py`, pour que `lancer-campagnes.py` ne le prenne pas pour une campagne (D272) ; en-tête D286 (mode
+  d'emploi, pourquoi, concurrents écartés, calibration) ; ses sorties de référence à côté de lui.
+- **Les vingt harnais** : leur lancement rend la sortie ; leur verdict passe par le lecteur ; chaque cible nomme son ou
+  ses titres attendus ; ligne de détail par morsure. **`neutralize-e3d1-s8.py`** : en-tête rendu vrai (et sa
+  signature `lancer(nom: str) -> int`, qui rend un tuple).
+- **Possibles** : `neutralize-rang23.py` (selon le choix du § 9) ; `verifier-mutations.py` si la forme des cibles
+  change (MD-R1-11) ; **`lancer-campagnes.py` : AUCUN changement attendu** (MD-R1-10) — un écart se déclare.
+- **Pièces** : `docs/preuves/<Dnnn>/` — sorties de calibration, et pour chaque harnais la sortie du témoin et du
+  pré-vol. **Aucun fichier d'application, aucune spec, aucune migration, aucune dépendance.**
+
+### 9. Ce que ce cadrage PROPOSE sans le prendre — au relecteur (chat), avant R1
+
+1. **Lecture texte ou JUnit** (§ 5) : proposé **texte**.
+2. **Un module partagé ou une copie par harnais** : proposé **partagé** — vingt copies d'une même règle divergent
+   (« un seul endroit par formule », `AGENTS.md`).
+3. **Le harnais neuf de 23a** (`neutralize-rang23.py`), qui naît AVANT R1 : (α) il naît à la lecture de ce cadrage,
+   et R1 le branche sur le module partagé ; ou (β) il naît au code seul, ses gardes prouvées par la règle b (échec
+   LU, sorties versées), et R1 le corrige avec les vingt. **Proposé : (α)** — une garde neuve qui naît sous une
+   règle déjà cadrée n'a pas à être corrigée après coup.
+4. **Les exceptions « délai »** (MD-R1-5) : aucune n'est attendue dans les vingt — à vérifier cible par cible dans le
+   sous-lot, et chacune s'écrit.
+5. **Les titres attendus** : un seul par cible, ou plusieurs quand une mutation doit rougir sur plusieurs mesures (cas
+   de S11b-8, « les DEUX consommateurs ») — proposé : une LISTE, chacun exigé.
 
 ## ~~PROCHAIN LOT~~ — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ ~~**OUVERT LE 23/09/2026 : D302**~~ ⛔ **CLOS LE 23/09/2026 : D302**
 
@@ -1522,7 +1780,7 @@ démentie se barre, elle ne se nuance pas.)* La règle de Ko au **critère du ra
 l'état ambiant, relevé à `node` = 0. ⛔ *(D301 : réduite à ce qui se mesure — `chrome` > 0 disqualifie la fenêtre ;
 les autres processus étrangers ne sont pas mesurés pendant la fenêtre, limite déclarée.)*
 ⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de
-code non certifiés : ZÉRO, inchangé.** Un lot de code **peut** s'ouvrir dès que Ko l'arbitre. **Aucune porte
+code non certifiés : ZÉRO, inchangé.** Un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*. **Aucune porte
 lancée** : aucune ne lit ces fichiers.
 ⇒ ~~**RANG 21 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, vrai à la
 clôture.~~ ⚠ **Une permission n'est pas un arbitrage.** ⛔ **(D302, 23/09/2026) ARBITRÉ PAR KO, APRÈS COUP : rang
@@ -1544,7 +1802,7 @@ CLÔTURE (règle de D294)** : barré plutôt qu'effacé (D276).
 (rang 17, `a2dd3f3`) et D298 (rang 18, `edf66ae`) en font partie** ». **Deux lots, rien d'autre** — mesuré
 sur les 11 commits depuis la marque de D293 —, aucun en-tête antérieur réécrit.
 ⇒ **Compteur de lots de code non certifiés : DEUX → ZÉRO**, le **rang 19 est CLOS**, et un lot de code
-**peut** s'ouvrir dès l'arbitrage de Ko — c'est lui qui portera le compteur à un.
+**peut** s'ouvrir dès l'arbitrage de Ko ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)* — c'est lui qui portera le compteur à un.
 ⇒ ~~**RANG 20 : EN ATTENTE D'ARBITRAGE DE KO** (ordre des rangs, section D270).~~ ⚠ Une permission n'est pas
 un arbitrage. ⛔ **(D300, 22/09/2026) ARBITRÉ PAR KO : rang 20 = l'ordre des rangs reçoit son propre titre**
 — documentaire, compteur à ZÉRO inchangé. L'ordre se lit désormais sous « ## **ORDRE DES RANGS** » ; le rang
@@ -1698,7 +1956,7 @@ qu'ils cherchent. Triées, **rapportées au backlog, NON exclues** : les exclure
 AVANT UNE CERTIFICATION** (D270 : deux sont tenables, trois non). « La certification suivante couvrira
 les rangs 17 et 18 ensemble » (Ko, 21/09) — ⚠ **une désignation, pas l'arbitrage du rang 19.**
 ⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**,
-un lot de code **peut** s'ouvrir dès que Ko l'arbitre. ⇒ ~~**Rang 20 : en attente d'arbitrage de Ko.**~~
+un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*. ⇒ ~~**Rang 20 : en attente d'arbitrage de Ko.**~~
 ⛔ **(D300, 22/09/2026) Arbitré par Ko : rang 20 = l'ordre des rangs reçoit son propre titre** (documentaire).
 ⇒ ~~**RANG 19 : EN ATTENTE D'ARBITRAGE DE KO** (D284). ⚠ Sous le compteur à DEUX, la règle n'y admet
 qu'une **certification** ou un lot **documentaire**.~~ ⛔ **(D299) Consommé le 21/09/2026 : rang 19 = la
@@ -1762,7 +2020,7 @@ chacune des quatre lignes**, là où la lira celui qui voudra la changer, et au 
 ⇒ **Compteur de lots de code non certifiés : UN** (D297). **Portes vertes le 21/09/2026**, état
 machine relevé : section « Session des 20 et 21/09/2026 — D297 ». ⛔ **(D298) Passé à DEUX par le rang
 18** : aucun lot de code ne s'ouvre avant une certification. ⛔ **(D299, 22/09/2026) LEVÉ** : marque posée
-au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 ⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat désigné.~~ ⛔ **CONSOMMÉ LE
 21/09/2026 (D298) — ARBITRÉ PAR KO : l'écho de l'audit de secrets.** Point d'entrée : « rang 18 », en tête.
 
@@ -2073,11 +2331,11 @@ candidat désigné.~~ ⛔ **(D298) Consommé le 21/09/2026 : rang 18 = l'écho d
 ⚠ **Compteur de lots de code non certifiés : ZÉRO.** ⛔ *(D297 : passé à UN le 21/09/2026 par le lot
 de code du rang 17.)* Ce lot est **DOCUMENTAIRE** — aucun fichier
 hors `.md` d'autorité au diff, `docs/preuves/` exempté (D283, amendé par D292) — donc **il ne s'y
-ajoute pas.** Un lot de code peut s'ouvrir dès l'arbitrage de Ko, et c'est lui qui portera le
+ajoute pas.** Un lot de code peut s'ouvrir dès l'arbitrage de Ko ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*, et c'est lui qui portera le
 compteur à un.
 ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
 D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 16/09/2026**, à la lecture du rapport d'une reprise à froid —
 **septième de la série**, et la première depuis que la forme en a été allégée (première partie
@@ -2119,12 +2377,12 @@ ARBITRÉ PAR KO : le RANG 16 est le LOT DOCUMENTAIRE des sept constats.** Barré
 ⇒ ~~**RANG 18 : EN ATTENTE D'ARBITRAGE DE KO**, aucun candidat désigné.~~ ⛔ **(D298) Consommé le
 21/09/2026 : rang 18 = l'écho de l'audit de secrets.**
 ⚠ Le compteur est à **ZÉRO** : un lot de
-code peut s'ouvrir dès que Ko l'arbitre, et c'est lui qui le portera à un. ⚠ **Le rang 16 ne l'a pas
+code peut s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*, et c'est lui qui le portera à un. ⚠ **Le rang 16 ne l'a pas
 porté à un** : il est documentaire. ⚠ **Le rang 17 non plus, tant qu'il en est à son CADRAGE** — le
 lot de CODE des budgets, lui, le portera à un (D295).
 ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
 D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 
 
 ⛔ **OUVERT ET ARBITRÉ PAR KO LE 14/09/2026, ÉCRIT À LA CLÔTURE DE D292.** ⇒ **QUEL lot : rang 15 de
@@ -2176,10 +2434,10 @@ verts. ⇒ **Le rang 15 reste OUVERT. La reprise se fait À L'ÉTAPE 1**, sur le
 ✅ **MARQUE POSÉE LE 16/09/2026 (D293), À LA TROISIÈME TENTATIVE** : « **Portes vertes AU REPOS le
 16/09/2026, et le rang 13 (D290, `251e82b`) et l'incident D292 (`49f3ace`) en font partie** ». **Deux
 lots, rien d'autre**, aucun en-tête antérieur réécrit. ⇒ **Compteur de lots de code non certifiés :
-DEUX → ZÉRO**, le **rang 15 est CLOS**, et un lot de code peut s'ouvrir dès l'arbitrage de Ko.
+DEUX → ZÉRO**, le **rang 15 est CLOS**, et un lot de code peut s'ouvrir dès l'arbitrage de Ko ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
 D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 ⇒ Chiffres, fenêtre, limites et fautes : section **D293**.
 ⚠ Les deux refus qui précèdent restent écrits, non effacés — c'est ce qui rend la troisième fenêtre
 lisible :
@@ -2248,7 +2506,7 @@ certification.**
 ZÉRO**, et **un lot de code PEUT s'ouvrir** dès que Ko l'arbitre — c'est lui qui le portera à un.
 ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE** : compteur à UN (rang 17, D297) puis à DEUX (rang 18,
 D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 ⛔ **COMPOSITION BARRÉE LE 13/09/2026 (D292) — LE CHIFFRE RESTE DEUX, UN DE SES DEUX LOTS A CHANGÉ.**
 Ko a tranché l'écart ci-dessous : **`docs/preuves/` ne compte pas** (amendement de D283, écrit dans
 `AGENTS.md`), donc **ce rang sort du compte**. L'**incident `zwadj-db`** du 13/09/2026 y **entre** :
@@ -2531,7 +2789,7 @@ lieu, **compteur à ZÉRO**, **un lot de code peut s'ouvrir**. ⚠ Troisième ba
 cinq jours — elle se lit ici, jamais de mémoire.
 ⛔ **(D298, 21/09/2026) PERMISSION CONSOMMÉE — QUATRIÈME BASCULE** : compteur à UN (rang 17, D297) puis
 à DEUX (rang 18, D298). ⇒ **Aucun lot de code ne s'ouvre avant une certification.**
-⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre.
+⛔ **(D299, 22/09/2026) LEVÉ — LA CERTIFICATION A EU LIEU** : marque posée au rang 19, **compteur à ZÉRO**, un lot de code **peut** s'ouvrir dès que Ko l'arbitre ⛔ *(D304 : sur le chemin de l'argent, l'arbitrage ne suffit pas — le relecteur (chat) décide d'abord sur le cadrage ; ordre des rangs, ligne D304.)*.
 
 ⚠ ~~**ÉTAT, AU 11/09/2026 : L'ÉTAPE 0 EST FAITE ET MESURÉE ; LA CERTIFICATION N'A PAS ÉTÉ
 LANCÉE.**~~ **BARRÉ LE 12/09/2026 (D288) : la mesure a eu lieu.** Ce qui reste vrai de cette
@@ -3857,6 +4115,238 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 24/09/2026 — D304 · rang 23 (reste ouvert), lot DOCUMENTAIRE : l'ordre des sous-lots arbitré par Ko, cinq décisions du relecteur, le cadrage de R1, et les deux inférences du cadrage mesurées
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D303** ⇒ **D304** ; « D304 » : **0** occurrence dans
+les fichiers suivis à `HEAD` (`git grep`). ⇒ **RANG 23**, que ce lot avance sur ordre de Ko (« tous les sous-lots du
+rang 23 avancent le rang 23 ») — première écriture du lot, dans l'ordre des rangs. Reprise à froid sans état donné,
+forme allégée ; lecture adverse depuis la clôture de D303 ; puis ce lot. **Documentaire** : `AGENTS.md`,
+`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` et `docs/preuves/D304/` au diff — **compteur de lots de code non certifiés :
+ZÉRO, inchangé** (D283 amendé par D292). ⚠ **`docs/preuves/D304/` porte du TypeScript et du Python JETABLES** (sondes,
+cas de calibration) : **aucune porte ne les lit** — relevé : les `include` des configurations vitest et des `tsconfig`
+des quatre paquets qui testent sont relatifs à leur paquet ; hors `docs/preuves/` et hors `.md`, seuls `.gitattributes`,
+`audit-secrets.py` et `mesure-budgets.py` citent ce dossier, et ce sont des instruments, pas des portes. Les sondes ont
+été lancées **depuis `apps/api`** par `--dir`, avec la configuration d'intégration réelle, sur `zwadj_test` **recréée vide**
+par son `globalSetup` et vidée en fin de sonde. **Aucune porte, aucune campagne** : aucun code n'a changé.
+
+### D304 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 23 **OUVERT** (D303) : « CADRAGE ÉCRIT, AUCUNE LIGNE DE CODE ; DÉCOUPAGE À TRANCHER PAR KO » ; dernière ligne « ⇒ RANG N » : « **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 23, ordre des rangs |
+| numéro | dernière ligne du registre : **D303** ⇒ **D304** | registre |
+| compteur | **ZÉRO** — depuis la marque `0a8235d`, hors `docs/preuves/`, seuls les trois `.md` d'autorité ont bougé | `git diff --name-only 0a8235d HEAD` |
+| synchronisation | `HEAD` = `origin/main` = `2b9f8d5` après `git fetch` ; arbre propre ; `a-verser/` vide | `git` |
+
+### D304 — la lecture adverse depuis la clôture de D303, en entier
+
+**Ce qui tient, relu contre le dépôt** :
+- **le relevé R1** — 27 harnais, **20** au code seul, 7 qui lisent un trait de la sortie : **reproduit par un
+  extracteur indépendant** (`r1/lecture-sortie.py`, calibré sur trois cas), **mêmes vingt noms** ;
+- **`neutralize-e3d1-s8.py`** : l'en-tête promet le titre sur une ligne d'échec, la boucle fait
+  `codes = {m: lancer(m)[0] …}` — confirmé ;
+- **l'entrée `[OUTIL]` Chargily porte la cause** que la décision 5 cite : motif `chargily…{0,40}(key|secret)`, insensible
+  à la casse, qui lit ce qui SUIT le mot ;
+- **§ 1 du cadrage** — les sept dates « inchangé depuis », relevées par `git log` : concordantes ;
+- **MD-F1-6** (« aucun chemin ne prend la ligne puis la salle ») : les seuls verrous explicites du code sont deux
+  verrous de SALLE (`accept`, création de blocage) et le verrou de RACINE de chaîne — concordant ;
+- **les passes `--int`** : `lancer-campagnes.py` lance chaque harnais **sans argument**, donc sans `--int` ; les cibles
+  E1–E5 ne sont jouées que par la passe séparée de la certification (`D299/passe/rang19-p2-int-e3d1-s8.log`, 8 ✓) —
+  **pas un défaut**, la procédure le prévoit ; relevé pour le cadrage de R1.
+**Ce qui ne tient pas, ou manquait** :
+1. ⛔ **Le § 5 du cadrage désigne `neutralize-horizon.py` comme patron d'un harnais qui « lit l'échec (collectés > 0 et
+   titre sur une ligne d'échec) »** : `horizon` **ne compte pas** les collectés, et « × » + titre **ne sépare pas une
+   assertion d'un plantage ou d'un délai dépassé** — mesuré, les trois portent « × ». Le patron cité ne satisfait pas
+   la décision 2 de D303. Annoté au § 5 ; la lecture exigée est au § 5 du cadrage de R1.
+2. ⛔ **Le § 3 du cadrage propose `vi.spyOn(ctx.prisma.user, "findUnique")` : tel qu'écrit, il ÉCHOUE au bras
+   négatif** — l'espion n'est pas un passe-plat, et `mockRestore()` laisse le délégué sans `findUnique` (partie C).
+   **C'est D296 à nouveau — la source du cadrage échoue au bras qui fait le travail —, attrapé cette fois par une
+   mesure AVANT le lot de code**, sur demande de Ko.
+3. ⚠ **La liste des harnais « du chemin de l'argent » de D303 (huit) manque `r4`**, qui mute deux migrations de statut du
+   devis — une transition, branche (2) de la règle arrêtée aujourd'hui ; trouvé par la carte. ⚠ Et quatre harnais y
+   sont en doute (`s11a`, `solid-s1`, `s10a`, `solid-s6`) : **au relecteur**.
+4. ⚠ **Le relevé R1 de D303 range `404` parmi ceux qui jugent « sur une ligne d'échec »** : deux de ses cibles (C1, C3)
+   jugent une ancre libre — une collecte en échec —, écrit comme tel dans le harnais. Précision, hors portée de R1 ;
+   rapportée au backlog avec les six autres.
+5. ⚠ **Le § 3 écrivait l'attente de la clé étrangère « INFÉRENCE, vérifiée par construction au lot de code »** : mesurée
+   aujourd'hui — **elle tient** (partie C). Pas un défaut ; un statut qui change.
+
+### D304 — partie A : l'arbitrage de Ko et les décisions du relecteur — ce qui a atterri, et où
+
+| point de Ko | fichier, endroit |
+|---|---|
+| **arbitrage** : tous les sous-lots avancent le rang 23 ; l'ordre | ordre des rangs (ligne D304, permission du rang 24 annotée) ; point d'entrée du rang 23 (table) ; cadrage, § 7 ; backlog, tête F1/F2/F6 et entrée F5 |
+| **1.** motif de l'ordre | ordre des rangs ; méthode renforcée, bloc D304 (1) |
+| **2.** motif de la décision 1 de D303 | méthode renforcée, bloc D303 (« non transmis » barré) et bloc D304 (2) |
+| **3.** portée : une règle | `AGENTS.md`, point E3 (la règle entière, « à préciser » barré) ; méthode renforcée, bloc D303 (barré) et bloc D304 (3) ; section D303 (barré, renvoi) ; backlog, tête de PHASE 7 et entrée F5 ; **carte** : `docs/preuves/D304/carte-chemin-argent/` |
+| **4.** R1 | `AGENTS.md`, point E3 ; méthode renforcée, bloc D303 (bloquant ajouté) et bloc D304 (4) ; backlog, entrée R1 (ordonnée, cadrée, portée, coût, `e3d1-s8` annoté) ; **cadrage de R1** |
+| **5.** audit de secrets et clés Chargily | `AGENTS.md`, point E3 ; méthode renforcée, bloc D304 (5) ; backlog, tête de PHASE 7 et entrée `[OUTIL]` (cause **vérifiée présente**) |
+| **6.** cadrage de R1 | section « ⛔ CADRAGE DE R1 », sous le cadrage du rang 23 ; `AGENTS.md`, exigences des harnais (le fait mesuré) |
+| **7.** les deux inférences | cadrage du rang 23, § 3 (annotation D304) et § 8 (faits pour le relecteur) ; « Pièges d'outillage » (l'espion) ; pièces `docs/preuves/D304/sondes/` |
+| **8.** § 8 et alternatives recopiés | rapport de fin de lot (chat) |
+⚠ **Ce que Ko appelle « la décision (a) » et « la règle b » de D303** sont, dans les fichiers, la **décision 1** (forme de
+revue) et la **décision 2** (R1) du bloc D303 de la méthode renforcée. Correspondance écrite ici pour qu'aucune reprise
+ne cherche un « (a) » qui n'existe pas.
+⚠ **« Annote-le » (`neutralize-e3d1-s8.py`)** : annoté dans les fichiers d'autorité, **pas dans le harnais** — ce lot
+n'écrit que dans les `.md` d'autorité et `docs/preuves/`, et toucher un harnais le ferait compter (D283). Si Ko voulait
+l'annotation DANS le fichier, elle vient avec R1.
+
+### D304 — partie B : R1 — ce qui a été relevé pour le cadrer
+
+- **Qui lit la sortie** — `docs/preuves/D304/r1/lecture-sortie.py` et sa sortie : 27 harnais, 6 841 lignes ; 20 au code
+  seul, 7 qui lisent (ventilation par trait imprimée, aucun trait à zéro). **Défaut d'instrument à la première passe**
+  (faute n° 2 ci-dessous), rejoué en entier.
+- **Ce que vitest écrit** — `docs/preuves/D304/r1/signatures/` : huit cas de réponse connue (config jetable sans import,
+  lancée depuis `apps/api` par `--dir`), reporter par défaut et JUnit, sorties brutes versées ; **8 sur 8** à la seconde
+  passe, la première gardée (`jouer-sortie-premiere.txt`, faute n° 1).
+- **Le coût** — **158** cibles dans les vingt harnais à la dernière certification (journaux de `D299/passe/`).
+- Le cadrage lui-même : section « ⛔ CADRAGE DE R1 ».
+
+### D304 — partie C : les deux inférences du cadrage, mesurées (point 7 de Ko)
+
+**Où et comment** : `zwadj_test`, recréée vide par le `globalSetup` réel ; garde en tête de chaque sonde (base ≠
+`zwadj_test` ⇒ abandon) ; PostgreSQL 18.4, `read committed` ; état machine relevé avant : **secteur**
+(`BatteryStatus=2`), `node` = 0 — ces sondes ne mesurent pas de durée, mais elles reposent sur un seuil de 1,5 s.
+Pièces : `docs/preuves/D304/sondes/` — sondes (`test/int/*.int-spec.ts`), sorties vitest brutes, codes de sortie,
+résultats.
+**C1 — la clé étrangère attend-elle le rival ?** Discriminant : la requête testée part avec `SET LOCAL lock_timeout =
+'1500ms'` ; elle attend ⇒ 55P03 ; elle n'attend pas ⇒ elle aboutit. **Calibré sur deux bras** avant toute mesure.
+Prédicats des rivaux **importés** des tableaux de transitions.
+| mesure | attendu (cadrage) | mesuré |
+|---|---|---|
+| `bookings → quotes`, rival `FOR UPDATE` + annulation | attend | **attend** (55P03) |
+| `bookings → quotes`, rival UPDATE simple | n'attend pas | **n'attend pas** |
+| `quotes.parent → v2`, rival `FOR UPDATE` + annulation | attend | **attend** |
+| `quotes.parent → v2`, rival UPDATE simple | n'attend pas | **n'attend pas** |
+| `payments → bookings`, rival `FOR UPDATE` | (non écrit) | **attend** |
+| `payments → bookings`, rival UPDATE simple | (non écrit) | **n'attend pas** |
+| après COMMIT : insertion sur devis annulé | aboutit | attente `Lock/transactionid` prouvée, **1 insérée**, devis `CANCELLED` |
+⇒ **L'inférence du cadrage TIENT ; les cibles de F2 ne changent pas.** ⇒ **Ce que jouera 23a : l'UPDATE simple** —
+rivaux de F1 et F5 du § 3 ; aucune clé étrangère en jeu, l'attente est un verrou de LIGNE, mesuré : lecture simple
+n'attend pas (lit `PENDING`), `FOR UPDATE` / `FOR NO KEY UPDATE` / UPDATE nu / UPDATE conditionné attendent ; après
+COMMIT, `FOR UPDATE` lit `DECLINED`, l'UPDATE nu écrase (`ACCEPTED`, `declined_at` posé), l'UPDATE conditionné modifie
+0 ligne, le prédicat actuel de l'annulation client annule une ligne devenue `ACCEPTED`, le prédicat « sans motif » en
+modifie 0. ⇒ **Les rouges de MD-F1-1 et MD-F5-1 sont reproduits au niveau SQL.**
+**C2 — peut-on espionner un délégué Prisma 7 ?** Trois sondes, chacune écrite APRÈS la mesure de la précédente :
+| sonde | positif (panne armée ⇒ `accept` rejette, ligne `ACCEPTED`) | négatif (aucune panne ⇒ `accept` aboutit) | nettoyage |
+|---|---|---|---|
+| `espion-prisma` — `vi.spyOn` nu, comme le cadrage | **OK** | ⛔ **MANQUÉ** : « Cannot read properties of undefined (reading 'id') » | `mockRestore()` ⇒ `findUnique is not a function` |
+| `espion-variante` — original pris par lecture, passe-plat explicite | **OK** | **OK** | suppression de la propriété ⇒ `typeof` `undefined` |
+| `espion-nettoyage` — idem, nettoyage par réaffectation | **OK** | **OK** | **OK** — `accept` aboutit, l'ancien espion ne voit rien |
+Relevé en chemin : le délégué est stable d'un accès à l'autre ; le service tient la même instance que `ctx.prisma` ;
+le descripteur de `findUnique` est `configurable`, `writable`, **sans `value`** ; un espion posé sur le client de base
+**ne traverse pas** un client de transaction interactive (0 appel vu).
+⇒ **Oui, sous trois conditions** ; ⇒ **ce que ça change** : la technique de 23c et un mode de défaillance de la
+mesure (**MD-F6-5**, écrit au § 3), pas les cibles.
+
+### D304 — partie D : la carte de la règle vers des fichiers (pièce datée)
+
+`docs/preuves/D304/carte-chemin-argent/` : `carte.py` (sondes lexicales par branche, **calibré sur trois bras**, défaut
+d'instrument de la première passe corrigé et rejoué — faute n° 3), `carte-sortie.txt` (candidats et évidence, corpus et
+ventilation imprimés, aucune sonde à zéro), **`tri.txt`** (à la main : dedans, dehors, faux négatifs trouvés en
+cherchant chaque item que la règle NOMME — `service-pricing.ts`, `packages/types/src/service.ts`,
+`booking-deadline.ts`, cinq migrations de statut —, et **sept doutes au relecteur** : `pricing-rules.service.ts`,
+`deposit-section.tsx`, `venues.service.ts`, `s11a`, `solid-s1`, `s10a`, `solid-s6`). ⚠ **Aucun des sept ne touche les
+fichiers de 23a.** « expire » : **aucun écrivain** de `EXPIRED` à `HEAD`. ⛔ **La carte n'est pas une autorité** : elle se
+périme au premier fichier ajouté ; la règle, dans `AGENTS.md`, ne se périme pas.
+
+### D304 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D304/passe-d277/balayage.py` — texte APLATI des quatre fichiers d'autorité, avant
+(`HEAD`) et après ; 15 motifs de sens 1, 7 de sens 2 ; calibré (témoin positif avant = 1, négatif 0/0) ; deux sorties
+(avant et après traitement) ; tri : `passe-d277/tri.txt`.
+**Sens 1** — toutes les occurrences barrées ou annotées, sauf trois qu'une annotation VOISINE seule corrigeait
+(« Faisabilité non mesurée », « vérifiée par construction au lot de code », la liste des bloquants de R1 dans
+`AGENTS.md` et en tête de PHASE 7) : **traitées en place**. Un motif à zéro après — la phrase y est sous sa forme
+barrée, vérifié.
+⛔ **Sens 2 — CE QUI A MORDU** : Ko a arbitré 23a ; deux familles de phrases, vraies hier, se lisaient dès lors comme
+une permission de l'ouvrir. **(1)** « ⚠ Et pour E3, rang arbitré ne suffit pas » (ordre des rangs) — trop étroit depuis
+D303 : annoté, « tout lot du chemin de l'argent, 23a et R1 compris ». **(2)** « un lot de code **peut** s'ouvrir dès
+que Ko l'arbitre / dès l'arbitrage » : 24 occurrences, 18 courantes dont une barrée ⇒ **17 annotées** par
+`annoter-permissions.py`, qui LIT son texte dans un fichier (D289) — relu dans le fichier : **17** (attendu 17). ⚠ Et
+la reprise d'E3 attend désormais aussi l'audit corrigé : les deux phrases « un rang arbitré lève la pause d'E3c »
+sont complétées.
+
+### D304 — audit de secrets avant commit (instrument de D298, tri de D299)
+
+1. **Passe** (`audit-secrets-d304.txt`, scellée) : **906** fichiers = **872** audités + **34** exclus par l'identité de
+   leurs octets ; **107** alertes ; tri différentiel contre `D303/audit-secrets-final.txt` (107 contextes) : **0**
+   alerte nouvelle.
+2. **Contrôle de forme Chargily, à part** (l'instrument en est aveugle — décision 5) : `controle-forme-chargily.py`,
+   calibré sur une valeur **synthétique assemblée à l'exécution** et une valeur trop courte ; forme stricte (préfixe
+   de test + 40 caractères) et forme large (`test_`/`live_` + `pk_`/`sk_` + ≥ 20) ; **56** fichiers — les trois `.md`
+   d'autorité et tout `docs/preuves/D304/` — : **0** porteur. N'imprime que des comptes.
+3. **« 0 valeur réelle »** (outil de D299) : **sans objet** — aucun journal de la session ne porte de valeur réelle
+   (aucune URL de base, aucun mot de passe imprimé par les sondes).
+4. **Audit final**, dernière écriture dans `docs/preuves/` (`audit-secrets-final.txt`, scellé) : **909** = **874** +
+   **35** exclus ; **107** alertes ; tri contre la passe 1 : **0** nouvelle. ⚠ Écrit APRÈS l'audit final, qui ne lit
+   que `docs/preuves/` : ce paragraphe ne le périme pas. ⛔ *(Reprise : il n'est plus la dernière écriture dans
+   `docs/preuves/` — sous-section suivante.)*
+
+### ⛔ D304 — la session interrompue avant son commit, et ce que la reprise a vérifié
+
+⛔ **L'environnement de la session qui a écrit ce lot a été supprimé pendant sa clôture** (capture d'écran transmise
+par Ko le 24/09/2026 ; dernière action affichée : « je relance ce contrôle [de forme] puis l'audit final »). **Rien
+n'était commité** : à la reprise, `HEAD` = `origin/main` = `2b9f8d5` après `git fetch`, les trois `.md` d'autorité
+modifiés, `docs/preuves/D304/` non suivi, `a-verser/` vide. Horodatages sur disque : sortie du contrôle de forme
+02:08:58, audit final 02:09:35, `ZWADJ_CONTINUITE.md` 02:09:46, `AGENTS.md` 02:10:07 — **deux écritures des `.md`
+POSTÉRIEURES au contrôle de forme, qui les lit**. L'audit ne lit que `docs/preuves/` (un seul `os.walk`, sur ce
+dossier) : ces deux écritures ne le périmaient pas.
+**Vérifié par la reprise avant d'écrire ici** — `reprise/integrite.py`, calibré sur deux bras par détecteur (8 sur 8),
+sortie `reprise/integrite-avant-note.txt` :
+- fins de ligne : les trois fichiers **entièrement CRLF** dans l'arbre, **entièrement LF** dans les blobs de `HEAD` —
+  le régime de `core.autocrlf=true` sur ce poste ; `git diff --ignore-cr-at-eol --stat` rend le même 650 + / 57 − ;
+  UTF-8 strict : OK ;
+- lignes ajoutées examinées : **26 + 73 + 552** ; accents graves accolés : **0** ; doubles espaces internes : **3**, les
+  trois dans la table des signatures de vitest (cadrage de R1, § 3) — le reporter écrit « Tests » suivi de deux
+  espaces, relevé dans `r1/signatures/sorties/` une fois les codes ANSI retirés : **recopie fidèle, pas un jeton
+  mangé** ;
+- le registre porte D304, l'ordre des rangs sa ligne, le point d'entrée du rang 23 sa table.
+⚠ **La reprise n'a PAS refait la lecture adverse du lot** : elle établit qu'il est ENTIER et non corrompu, pas qu'il
+est juste.
+**Rejoués APRÈS cette écriture, dans cet ordre** : l'intégrité (`reprise/integrite-apres-note.txt`, pour relire CE
+paragraphe — D289), le contrôle de forme Chargily (`reprise/controle-forme-chargily-reprise.txt`), puis l'audit
+(`reprise/audit-secrets-reprise.txt`, scellé, **dernière écriture dans `docs/preuves/`**) trié contre
+`audit-secrets-final.txt`. **Les sorties de la session interrompue ne sont pas réécrites** : elles restent la pièce de
+ce qu'elle a mesuré ; les chiffres de la reprise sont dans ses sorties. **S'ils démentaient les paragraphes
+précédents, ce paragraphe l'écrirait, et les trois contrôles seraient rejoués.**
+
+### ⛔ D304 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **UN ATTENDU ÉCRIT DE MÉMOIRE, DANS LE SCRIPT QUI MESURE LES SIGNATURES.** J'avais écrit qu'un crochet en panne
+   marque son test « × » avec `Error` ; la sortie brute dit « 1 skipped », aucune croix, l'échec porté par le FICHIER.
+   L'extracteur avait lu juste. Attendu corrigé **à la valeur lue, écrit comme telle** ; première sortie gardée.
+2. ⛔ **Défaut d'instrument — `lecture-sortie.py`** comptait comme « lecture » les `print("✗ …")` d'un harnais : ce
+   qu'il IMPRIME, pas ce qu'il LIT. `horloge` sortait « T+C ». Vu par la ventilation par harnais (D295) ; `horloge`
+   est devenu un second bras négatif ; rejoué en entier (règle de D298).
+3. ⛔ **Défaut d'instrument — `carte.py`** : la sonde M1 prenait `amountCents / 100` (le formateur) pour un calcul ; le
+   bras négatif a ABANDONNÉ la passe. Corrigé (une division ou multiplication par le littéral 100 est une conversion
+   d'unité), défaut écrit dans l'en-tête avec la sortie brute, rejoué en entier.
+4. ⚠ **La première écriture de la sonde des verrous recopiait trois littéraux de statut** (`'PENDING'`, `'ACCEPTED'`,
+   `["PENDING"]`) au lieu de les importer du tableau des transitions — **retirés avant la première exécution**, par
+   relecture. Le « sans motif » est désormais DÉRIVÉ (`from` moins `reasonRequiredFrom`).
+5. ⚠ **`tri.txt` décrivait une migration de mémoire** (« statut et remise du devis ») ; relue — c'est une reprise de
+   données `SENT` → `DRAFT` —, corrigée avant commit.
+6. ⛔ **DEUX ERREURS QUI SE COMPENSAIENT PILE, dans le script qui annote les permissions.** J'avais compté 17
+   occurrences courantes au lieu de 18 et écrit l'attendu 16 ; l'heuristique « barré » ne regardait que la LIGNE et
+   excluait à tort la l. 1956 (le `~~` qui la suit barre la phrase d'après). Sortie : « retenues : 16 (attendu 16) » —
+   **un accord parfait entre deux fautes**. Vu en confrontant la LISTE imprimée à la liste relevée juste avant, pas
+   par le compte : **c'est la raison d'imprimer ce qu'on retient, et pas seulement combien** (D290). Relevé seul, rien
+   n'était écrit ; corrigé (barré compté depuis le début du paragraphe, attendu 17), rejoué, puis écrit.
+
+### ⛔ D304 — CE QUE CE LOT NE FAIT PAS
+
+- **Aucun code hors `docs/preuves/`**, aucun harnais modifié — `neutralize-e3d1-s8.py` compris —, aucune dépendance ;
+  `CLAUDE.md` et `.gitignore` non touchés.
+- **Il ne tranche aucun des choix 1 à 4 du § 8** ni les choix du cadrage de R1 : il les éclaire par des mesures.
+- **Il ne vérifie pas la variante de production des clés Chargily** : la décision la renvoie à la documentation
+  Chargily, pour le lot de correction.
+- **Il ne corrige pas l'audit de secrets** ni R1 : il les cadre ou les rapporte.
+- **Aucune porte, aucune campagne** : documentaire.
+- ⚠ **Attendu du relecteur** : les choix 1 à 4 du § 8 (avant 23a) ; les choix du § 9 du cadrage de R1 (avant R1) ; les
+  sept doutes de la carte. **Attendu de Ko** : la réponse sur l'origine des clés et des captures du 16/08 (question de
+  D303, toujours ouverte).
+
 ## Session du 23/09/2026 — D303 · rang 23 OUVERT, lot DOCUMENTAIRE : un fait (pas de compte Chargily en mode test), les décisions du relecteur, et le cadrage de F1, F2, F5, F6
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D302** ⇒ **D303**. « D303 » : **1** occurrence sur
@@ -3918,7 +4408,8 @@ la migration `init` ; le zip, **483 343** octets, **72** entrées, SHA-256 `2a87
 | `a-verser/` | vidé des trois fichiers versés, **après** égalité SHA-256 avec les copies versées et l'attendu épinglé | `outils/retirer-verses-sortie.txt` |
 
 ⚠ **La décision 1 n'énumère pas ce que couvre « chemin de l'argent »** au-delà de F1, F2, F5, F6 — `AGENTS.md` citait
-« tarification hors E3 » parmi les chemins à règle d'avant : **écrit « à préciser par le relecteur »**, pas tranché.
+« tarification hors E3 » parmi les chemins à règle d'avant : ~~**écrit « à préciser par le relecteur »**, pas tranché.~~
+⛔ *(D304, 24/09/2026 : **tranché** par le relecteur — une règle, décision 3 du bloc D304 de la méthode renforcée.)*
 
 ### D303 — relevé en lecture seule demandé par Ko : les « clés Chargily de test » de `[SEC][P0]` — AUCUNE VALEUR IMPRIMÉE
 
@@ -4022,7 +4513,10 @@ toutes dans des textes de D303 (`verif-hausses-sortie.txt`) ; les autres tombent
 - **Aucune porte, aucune campagne** : documentaire.
 - ⚠ **Attendu de Ko** : le découpage du rang 23 et la suite du rang ; la réponse sur l'origine des clés et des captures
   du 16/08. **Attendu du relecteur** : les cinq choix du § 8, la portée de « chemin de l'argent », la liste des harnais
-  visés par R1.
+  visés par R1. ⛔ *(D304, 24/09/2026 : découpage et suite **arbitrés** par Ko ; portée et liste **tranchées** par le
+  relecteur (décisions 3 et 4) ; **restent** : les cinq choix du § 8, avant 23a ; l'origine des clés et des captures du
+  16/08 — sans réponse dans les messages de D304. Des cinq choix, le 5ᵉ est tranché par la décision 4 : **restent les
+  choix 1 à 4**.)*
 
 ## Session du 23/09/2026 — D302 · rang 22, lot DOCUMENTAIRE : les arbitrages de Ko (ordre des rangs, E3, forme des entrées) et les deux audits externes du 09/09, confrontés à `HEAD`
 
@@ -11333,7 +11827,7 @@ la levée du drapeau des paiements — sont au backlog, reports de D302 (partie 
 Ko les a données : **le blocage d'E3b-2 (« compte bac à sable ») est ACTUEL** ; **E3c est bloqué aussi**, puisque la
 méthode exige des charges utiles **capturées du bac à sable réel** (point 4 ci-dessous) ; **E3d et E3e suivent.**
 ⇒ **E3 ATTEND SUR CE FAIT, PAS SUR UNE PRIORITÉ.** Un arbitrage de rang lève la pause d'E3c (17/08/2026) ; il ne
-donne pas de compte. Tableau des sous-lots : backlog, PHASE 7. ⚠ Écart relevé en lecture seule, non tranché :
+donne pas de compte. ⛔ *(D304 : et la reprise d'E3 attend AUSSI l'audit de secrets corrigé — décision 5 du bloc D304.)* Tableau des sous-lots : backlog, PHASE 7. ⚠ Écart relevé en lecture seule, non tranché :
 l'adaptateur Chargily et ses fixtures « captures réelles du bac à sable » existent depuis `dc63afb` (16/08/2026) —
 avec quel compte, rien ne le dit ; question posée à Ko, section D303.
 
@@ -11341,15 +11835,19 @@ avec quel compte, rien ne le dit ; question posée à Ko, section D303.
 motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
 1. **LA FORME DE REVUE RATIFIÉE PAR KO (D302) S'APPLIQUE À TOUT LOT DE CODE DU CHEMIN DE L'ARGENT**, y compris ceux
    qui n'ont pas besoin de Chargily : audit SOLID 09/09 · **F1, F2, F6**, et **F5** que Ko ordonne avec eux
-   (rang 23). *Motif* : **non transmis avec la décision.** ⚠ **« D39 »** — dans « la forme de la revue (« D39 ») »
+   (rang 23). *Motif* : ~~**non transmis avec la décision.**~~ ⛔ *(D304 : motif **transmis** le 24/09/2026 —
+   décision 2 du bloc D304 ci-dessous.)* ⚠ **« D39 »** — dans « la forme de la revue (« D39 ») »
    ci-dessus et partout où D302 l'écrit — désigne la **dernière phrase** de D39 (« Chemin d'argent ⇒ revue
-   humaine »), **pas son objet** (prix par créneau). ⚠ La décision n'énumère pas ce que couvre « chemin de
+   humaine »), **pas son objet** (prix par créneau). ⚠ ~~La décision n'énumère pas ce que couvre « chemin de
    l'argent » au-delà des quatre lots qu'elle nomme — `AGENTS.md` citait « tarification hors E3 » parmi les chemins
-   à règle d'avant : **à préciser par le relecteur**, la session ne tranche pas.
+   à règle d'avant : **à préciser par le relecteur**, la session ne tranche pas.~~ ⛔ *(D304 : **précisé** par le
+   relecteur le 24/09/2026 — une RÈGLE, décision 3 du bloc D304 ci-dessous ; la « tarification hors E3 » en fait
+   partie, branche (1).)*
 2. **R1 SUR LE CHEMIN DE L'ARGENT.** Tant que le harnais concerné n'est pas corrigé, **une garde n'est prouvée que
    par une neutralisation dont on a LU l'échec : tests collectés > 0 ET assertion en échec.** *Motif* : « **un
    code de sortie non nul, seul, ne prouve rien** ». ⇒ **La correction de R1 dans les harnais du chemin de
-   l'argent BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS**, avec F8. ⚠ Relevé de la session (lecture seule) : **20
+   l'argent BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS**, avec F8. ⛔ *(D304 : **et la prochaine certification qui
+   compte des cibles du chemin de l'argent** ; portée arrêtée — décision 4 du bloc D304.)* ⚠ Relevé de la session (lecture seule) : **20
    harnais sur 27 jugent par le seul code de sortie**, dont celui des cibles E1 à E5 de D255, et **aucun des 85
    journaux de campagne versés** ne garde la sortie qui montre l'assertion en échec — entrée R1, reports de D302.
    ⇒ Cette décision **complète le point 3** ci-dessous : « prouvée effective » veut dire aussi **lue**.
@@ -11368,6 +11866,47 @@ motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
 6. **Deux entrées périmées** — « Avant E3c — rendre atomique `findOrCreatePendingIntent` » (22/08) est **close par
    D255** (cibles E1 à E5, confirmées par D302), **avec la réserve de la décision 2** ; D238, « Bloquant avant E3 »,
    devient **« bloque E3d »** — *motif* : c'est E3d qui pose `ACCEPTED`.
+
+#### ⛔ DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 24/09/2026 (D304) — À LIRE AVEC LES DEUX BLOCS CI-DESSUS
+
+Écrites telles que Ko les a transmises, avec leur motif. La session ne les a pas prises.
+1. **L'ORDRE DU RANG 23** — « ce lot → 23a (F1 + F5) → R1 → certification → 23b (F2) → 23c (F6) → certification »,
+   tous les sous-lots au rang 23, certifications comprises (arbitrage de Ko). *Motif* : « La règle b de D303 permet de
+   prouver les gardes de 23a par un échec LU, sans le harnais corrigé. Le harnais corrigé n'est exigé que par la
+   première certification, qui vient de toute façon après deux lots de code. Placer R1 en second ne coûte aucune
+   certification et livre le correctif produit un lot plus tôt. »
+2. **MOTIF DE LA DÉCISION 1 DE D303** (la forme de revue sur tout lot de code du chemin de l'argent), écrit « non
+   transmis » le 23/09 : « Sur le chemin de l'argent, une faute fait demander de l'argent à tort, ou n'en fait pas
+   demander. Et seule une reproduction y a trouvé des défauts : le point 10 le dit, “une relecture de diff n'a jamais
+   trouvé aucun des défauts de cette campagne”. »
+3. **LA PORTÉE DU « CHEMIN DE L'ARGENT » — UNE RÈGLE, PAS UNE LISTE.** En font partie :
+   **(1)** tout code ou contrainte SQL qui **calcule, arrondit ou valide un montant** : tarification, `booking-charge`,
+   devis, acompte, échéances, commission, remise D35 ;
+   **(2)** toute **transition** de réservation ou de devis qui **ouvre, modifie ou éteint une obligation de payer** :
+   send, revise, convert, accept, decline, cancel, expire ;
+   **(3)** le **paiement** lui-même (E3) ;
+   **(4)** les **harnais** qui prouvent les gardes de (1) à (3).
+   N'en fait pas partie : un affichage qui **formate** un montant reçu du serveur. En fait partie : un aperçu qui
+   **RECALCULE** une règle du serveur (A3). **En cas de doute, la session demande au relecteur avant d'écrire du
+   code.** ⇒ **La carte de cette règle vers des fichiers est une PIÈCE datée**, pas une liste dans un fichier
+   d'autorité : `docs/preuves/D304/carte-chemin-argent/` (script calibré, sortie, tri à la main — relevée à `2b9f8d5`).
+   Remplace « à préciser par le relecteur » partout où D303 l'a écrit, y compris la « tarification hors E3 »
+   d'`AGENTS.md`. *Note du relecteur* : **F5 relève du (2).**
+4. **R1** — **portée** : les 20 harnais relevés par D303, et tout harnais neuf qui mute un fichier du chemin de
+   l'argent. **Les morsures passées** de ces harnais ne sont ni infirmées ni prouvées ; la première certification
+   après la correction les rétablit sur échec lu. **La correction de R1 BLOQUE la prochaine certification qui compte
+   des cibles du chemin de l'argent**, en plus de la levée du drapeau — *motif* : par la règle b, ces cibles ne se
+   comptent pas sans elle. **Par morsure, le harnais corrigé garde** le nombre de tests collectés, le test en échec et
+   la première ligne de son assertion — pas la sortie entière. **`neutralize-e3d1-s8.py`** promet dans son en-tête une
+   lecture qu'il ne fait pas : annoté ; la correction viendra avec R1. Cadrage : « ⛔ CADRAGE DE R1 ».
+5. **L'AUDIT DE SECRETS NE VOIT PAS LES CLÉS AU FORMAT CHARGILY** — cause relevée par D303 : son motif `chargily`
+   cherche « key » ou « secret » dans les 40 caractères qui **suivent** le mot, alors que les lignes fuitées
+   écrivaient « Chargily: » puis la valeur. ⇒ **Cela BLOQUE LA REPRISE D'E3, c'est-à-dire tout lot qui manipule des
+   clés Chargily.** *Motif* : la seule fuite connue du dépôt a cette forme, et l'instrument ne la voit pas. La
+   correction reconnaîtra la valeur **par sa FORME**, pas par les mots voisins — forme relevée par D303 : `test_pk_` ou
+   `test_sk_` suivis de 40 caractères alphanumériques ; **la variante de production est à vérifier dans la
+   documentation Chargily**. Sa calibration utilisera une **valeur synthétique** de cette forme, **assemblée à
+   l'exécution** : jamais une vraie clé sur le disque. Entrée `[OUTIL]` du backlog, reports de D303.
 
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
@@ -11994,3 +12533,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D301 | A | D301 — lot DOCUMENTAIRE hors rang : la ligne ajoutée à `CLAUDE.md` par D300 se retire (`AGENTS.md`, importé, porte déjà le pointeur ; `CLAUDE.md` rendu identique à l'octet à `0a8235d`) ; point 7 du critère réduit à ce qui se mesure — `chrome` > 0 disqualifie, les autres processus étrangers ne sont pas mesurés pendant la fenêtre (limite déclarée, report `[INFRA]`) ; l'explication « 11 workers + pnpm + runner » des huit creux barrée dans D299 ; compteur ZÉRO inchangé ; rang 21 toujours en attente de Ko ⛔ *(D302 : « hors rang » rejeté par Ko — D301 est le rang 21, rétroactivement)* |
 | D302 | A | D302 — rang 22 CLOS, lot DOCUMENTAIRE : arbitrages de Ko — « hors rang » rejeté (D301 = rang 21, rétroactivement ; aucun lot hors de l'ordre des rangs) ; E3 codé par Claude Code, décisions de paiement au relecteur (chat), forme de la revue ratifiée (« D39 » ne bloque plus le code E3 ; restent un rang arbitré, l'état des lieux et le cadrage) ; pointeur « ORDRE DES RANGS » sous « État des lots » ; entrées neuves sans priorité par urgence (BLOQUE ou « à ordonner par Ko », COÛT relevable), sort des P0-P3 dû à Ko — puis les deux audits externes du 09/09 versés (SHA-256 égaux) et confrontés par symbole à `HEAD` : tous les constats nommés OUVERTS sauf le montage PG18 (clos par D292) ; relecteur : F1, F2, F6 bloquent E3d, F8 la levée du drapeau, A3 tout nouveau type de tarification, R2 avec le prochain lot `booking-charge` ; `pnpm audit` rejoué (la commande exacte échoue sous pnpm 10.34.4) : 55 avis, 53 GHSA ; compteur ZÉRO inchangé ; rang 23 en attente d'arbitrage de Ko |
 | D303 | A | D303 — rang 23 OUVERT, lot DOCUMENTAIRE (cadrage) : arbitrage de Ko écrit en première ligne (transitions atomiques, audit SOLID 09/09 · F1, F2, F5, F6) — un fait déclaré par Ko : pas de compte Chargily en mode test (E3b-2 et E3c bloqués, E3d et E3e suivent ; E3 attend ce fait, pas une priorité) ; décisions du relecteur (chat) déléguées par Ko : forme de revue sur tout lot de code du chemin de l'argent, R1 (preuve = échec LU ; sa correction dans les harnais du chemin de l'argent bloque la levée du drapeau), provenance du point 10 réécrite, D117 annoté, motifs de F8 (prémisse vérifiée) et R2, `findOrCreatePendingIntent` close par D255 sous réserve de R1, D238 → bloque E3d ; zip de l'auditeur versé (audit de secrets sur copie hors dépôt : l'instrument ne peut pas pointer ailleurs, enveloppant) ; cadrage écrit, 14 cibles neuves, découpage proposé en trois sous-lots, à trancher par Ko ; relevés : 20 harnais sur 27 jugent au seul code de sortie, 0 journal sur 85 ne garde l'échec, l'audit de secrets aveugle aux clés Chargily ; compteur ZÉRO inchangé ; rang 24 en attente d'arbitrage de Ko |
+| D304 | A | D304 — rang 23 (reste ouvert), lot DOCUMENTAIRE : ordre arbitré par Ko (ce lot → 23a F1+F5 → R1 → certification → 23b F2 → 23c F6 → certification, tous au rang 23) ; décisions du relecteur (chat), déléguées par Ko : motif de l'ordre, motif de la décision 1 de D303, « chemin de l'argent » = une RÈGLE (montant, transition, paiement, harnais ; formater ≠ recalculer ; doute ⇒ demander ; carte = pièce datée), R1 (portée 20 + neufs, bloque la prochaine certification qui compte ce chemin), l'audit aveugle aux clés Chargily bloque la reprise d'E3 ; cadrage de R1 (« × » + titre ne prouve pas une assertion — mesuré) ; mesuré : la clé étrangère n'attend que le rival en FOR UPDATE (inférence tenue), l'espion Prisma 7 nu échoue au bras négatif et mockRestore casse le délégué (passe-plat explicite + réaffectation tiennent) ; 23a attend le relecteur (choix 1 à 4 du § 8) ; compteur ZÉRO inchangé ; rang 24 en attente d'arbitrage de Ko |

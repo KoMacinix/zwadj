@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="1" errors="0" time="0.0048618">
+    <testsuite name="../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts" timestamp="2026-09-24T04:08:09.885Z" hostname="Macinix" tests="2" failures="1" errors="0" skipped="1" time="0.0048618">
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts" name="CAS-CROCHET le corps de ce test ne s&apos;exécute pas" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts" name="../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts" time="0.0048618">
+            <failure message="crochet en panne" type="Error">
+Error: crochet en panne
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts:4:9
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

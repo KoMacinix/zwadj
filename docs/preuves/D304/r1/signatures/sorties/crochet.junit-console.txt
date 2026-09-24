@@ -1,0 +1,1 @@
+JUNIT report written to C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D304/r1/signatures/sorties/crochet.junit.xml

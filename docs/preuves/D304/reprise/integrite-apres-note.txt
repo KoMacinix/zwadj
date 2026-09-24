@@ -1,0 +1,16 @@
+calibration : 8 bras passent sur 8 · manqués : aucun
+AGENTS.md            HEAD  octets   140132 · CRLF      0 · LF nu   1319 · CR nu 0
+AGENTS.md            arbre octets   144651 · CRLF   1340 · LF nu      0 · CR nu 0
+AGENTS.md            UTF-8 strict : OK
+AGENTS.md            lignes ajoutées examinées : 26 · double espace interne : 0 (attendu 0, candidats à trier) · accents graves accolés : 0 (attendu 0)
+ZWADJ_BACKLOG.md     HEAD  octets   386433 · CRLF      0 · LF nu   4398 · CR nu 0
+ZWADJ_BACKLOG.md     arbre octets   397779 · CRLF   4459 · LF nu      0 · CR nu 0
+ZWADJ_BACKLOG.md     UTF-8 strict : OK
+ZWADJ_BACKLOG.md     lignes ajoutées examinées : 73 · double espace interne : 0 (attendu 0, candidats à trier) · accents graves accolés : 0 (attendu 0)
+ZWADJ_CONTINUITE.md  HEAD  octets   945937 · CRLF      0 · LF nu  11996 · CR nu 0
+ZWADJ_CONTINUITE.md  arbre octets  1014458 · CRLF  12536 · LF nu      0 · CR nu 0
+ZWADJ_CONTINUITE.md  UTF-8 strict : OK
+ZWADJ_CONTINUITE.md  lignes ajoutées examinées : 581 · double espace interne : 3 (attendu 0, candidats à trier) · accents graves accolés : 0 (attendu 0)
+    [double] … ER `FAIL <f> [ <f> ]`, `Error: Cannot find module …` | `Tests  no tests` | **un `<testcase>` au nom du f
+    [double] … c de FICHIER, `Error: No test suite found in file …` | `Tests  no tests` | idem |
+    [double] … ed` | bloc de FICHIER, `Error: <message du crochet>` | `Tests  1 skipped (1)` | le test `<skipped/>` + l

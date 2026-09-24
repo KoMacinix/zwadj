@@ -1,0 +1,49 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-variante.int-spec.ts[2m > [22m[2mSONDE D304 — variante : passe-plat explicite, nettoyage par suppression
+[22m[39m── 1. l'original, pris PAR LECTURE avant l'espion
+typeof original : function · propriété propre AVANT l'espion : true
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-variante.int-spec.ts[2m > [22m[2mSONDE D304 — variante : passe-plat explicite, nettoyage par suppression
+[22m[39mun appel de l'original seul : ABOUTI
+
+── 2. l'espion, passe-plat EXPLICITE
+
+── 3. bras POSITIF : une panne armée une fois
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-variante.int-spec.ts[2m > [22m[2mSONDE D304 — variante : passe-plat explicite, nettoyage par suppression
+[22m[39maccept(b1) : REJETÉ « PANNE INJECTÉE D304 » · appels vus : 1 · statut en base : ACCEPTED
+
+── 4. bras NÉGATIF : aucune panne armée
+
+[90mstdout[2m | ../../docs/preuves/D304/sondes/test/int/espion-variante.int-spec.ts[2m > [22m[2mSONDE D304 — variante : passe-plat explicite, nettoyage par suppression
+[22m[39maccept(b2) : ABOUTI · appels vus : 1 · statut en base : ACCEPTED
+
+── 5. NETTOYAGE : suppression de la propriété posée (pas mockRestore)
+deleteProperty : true · typeof ensuite : undefined · propriété propre ensuite : true
+
+ [31m❯[39m ../../docs/preuves/D304/sondes/test/int/espion-variante.int-spec.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1533[2mms[22m[39m
+[31m   [31m×[31m SONDE D304 — variante : passe-plat explicite, nettoyage par suppression[39m[33m 623[2mms[22m[39m
+[31m     → ctx.prisma.user.findUnique is not a function[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D304/sondes/test/int/espion-variante.int-spec.ts[2m > [22mSONDE D304 — variante : passe-plat explicite, nettoyage par suppression
+[31m[1mTypeError[22m: ctx.prisma.user.findUnique is not a function[39m
+[36m [2m❯[22m ../../docs/preuves/D304/sondes/test/int/espion-variante.int-spec.ts:[2m118:44[22m[39m
+    [90m116| [39m    noter(`deleteProperty : ${supprime} · typeof ensuite : ${typeof ct…
+    [90m117| [39m    [35mconst[39m a3 [33m=[39m espion[33m.[39mmock[33m.[39mcalls[33m.[39mlength[33m;[39m
+    [90m118| [39m    const r3 = await issue(ctx.prisma.user.findUnique({ where: { id: c…
+    [90m   | [39m                                           [31m^[39m
+    [90m119| [39m    noter(`appel après nettoyage : ${r3} · appels vus par l'ancien esp…
+    [90m120| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m   Start at [22m 00:33:17
+[2m   Duration [22m 9.85s[2m (transform 2.46s, setup 33ms, collect 7.27s, tests 1.53s, environment 0ms, prepare 176ms)[22m
+

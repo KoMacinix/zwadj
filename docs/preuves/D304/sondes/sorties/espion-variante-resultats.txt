@@ -1,0 +1,14 @@
+── 1. l'original, pris PAR LECTURE avant l'espion
+typeof original : function · propriété propre AVANT l'espion : true
+un appel de l'original seul : ABOUTI
+
+── 2. l'espion, passe-plat EXPLICITE
+
+── 3. bras POSITIF : une panne armée une fois
+accept(b1) : REJETÉ « PANNE INJECTÉE D304 » · appels vus : 1 · statut en base : ACCEPTED
+
+── 4. bras NÉGATIF : aucune panne armée
+accept(b2) : ABOUTI · appels vus : 1 · statut en base : ACCEPTED
+
+── 5. NETTOYAGE : suppression de la propriété posée (pas mockRestore)
+deleteProperty : true · typeof ensuite : undefined · propriété propre ensuite : true

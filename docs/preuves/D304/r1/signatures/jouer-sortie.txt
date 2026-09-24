@@ -1,0 +1,60 @@
+
+=== tests.cas.ts · sortie par défaut : code 1 · 125 lignes lues
+   résumé  | Test Files  1 failed (1)
+   résumé  | Tests  6 failed | 1 passed (7)
+   ×       | × CAS-ASSERTION une assertion en échec 7ms
+   ×       | × CAS-ASSERTION-OBJET une égalité profonde en échec 2ms
+   ×       | × CAS-REJECTS une promesse résolue là où un rejet est attendu 3ms
+   ×       | × CAS-PLANTAGE une TypeError levée par le code 0ms
+   ×       | × CAS-ERREUR une Error levée par le code (ex. un 500 propagé) 0ms
+   ×       | × CAS-DELAI un délai dépassé 215ms
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts > CAS-ASSERTION une assertion en échec
+     1re   | AssertionError: expected 201 to be 409 // Object.is equality
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts > CAS-ASSERTION-OBJET une égalité profonde en éch
+     1re   | AssertionError: expected { statut: 'ACCEPTED' } to deeply equal { statut: 'DECLINED' }
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts > CAS-REJECTS une promesse résolue là où un rejet
+     1re   | AssertionError: promise resolved "1" instead of rejecting
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts > CAS-PLANTAGE une TypeError levée par le code
+     1re   | TypeError: Cannot read properties of undefined (reading 'status')
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts > CAS-ERREUR une Error levée par le code (ex. un 
+     1re   | Error: panne simulée
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts > CAS-DELAI un délai dépassé
+     1re   | Error: Test timed out in 200ms.
+   junit   | code 1 · <testcase> 7 · <failure type> ['AssertionError', 'AssertionError', 'AssertionError', 'TypeError', 'Error', 'Error'] · <error> 0
+   junit   | <testsuites name="vitest tests" tests="7" failures="6" errors="0" time="0.227056">
+
+=== import.cas.ts · sortie par défaut : code 1 · 26 lignes lues
+   résumé  | Test Files  1 failed (1)
+   résumé  | Tests  no tests
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/import.cas.ts [ ../../docs/preuves/D304/r1/signatures/cas/impo
+     1re   | Error: Cannot find module './module-qui-n-existe-pas' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/doc
+   junit   | code 1 · <testcase> 1 · <failure type> ['Error'] · <error> 0
+   junit   | <testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+
+=== vide.cas.ts · sortie par défaut : code 1 · 16 lignes lues
+   résumé  | Test Files  1 failed (1)
+   résumé  | Tests  no tests
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/vide.cas.ts [ ../../docs/preuves/D304/r1/signatures/cas/vide.c
+     1re   | Error: No test suite found in file C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D304/r1/signatures/cas/v
+   junit   | code 1 · <testcase> 1 · <failure type> ['Error'] · <error> 0
+   junit   | <testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+
+=== crochet.cas.ts · sortie par défaut : code 1 · 26 lignes lues
+   résumé  | Test Files  1 failed (1)
+   résumé  | Tests  1 skipped (1)
+   FAIL    | FAIL  ../../docs/preuves/D304/r1/signatures/cas/crochet.cas.ts [ ../../docs/preuves/D304/r1/signatures/cas/cro
+     1re   | Error: crochet en panne
+   junit   | code 1 · <testcase> 2 · <failure type> ['Error'] · <error> 0
+   junit   | <testsuites name="vitest tests" tests="2" failures="1" errors="0" time="0.0048618">
+
+=== vérification des cas contre leur réponse CONNUE (la calibration)
+   OK  tests   CAS-PASSE              attendu None            × False lu None
+   OK  tests   CAS-ASSERTION          attendu AssertionError  × True  lu AssertionError
+   OK  tests   CAS-ASSERTION-OBJET    attendu AssertionError  × True  lu AssertionError
+   OK  tests   CAS-REJECTS            attendu AssertionError  × True  lu AssertionError
+   OK  tests   CAS-PLANTAGE           attendu TypeError       × True  lu TypeError
+   OK  tests   CAS-ERREUR             attendu Error           × True  lu Error
+   OK  tests   CAS-DELAI              attendu Error           × True  lu Error
+   OK  crochet CAS-CROCHET            attendu None            × False lu None
+cas vérifiés : 8 (attendu : 8 — sept dans tests.cas.ts, un dans crochet.cas.ts)
+manqués : 0 (attendu 0)

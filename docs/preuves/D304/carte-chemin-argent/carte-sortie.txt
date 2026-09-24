@@ -1,0 +1,111 @@
+HEAD 2b9f8d5 · corpus : 252 fichiers de code (hors tests, générés, doubles), 27 migrations, 27 harnais
+lignes lues : 45190
+calibration (1) booking-charge.ts : OK · (2) booking-locks.prisma.ts : OK · négatif packages/i18n/src/format.ts hors carte : OK
+
+=== (1) CALCULE, ARRONDIT OU VALIDE UN MONTANT — candidats : 16 fichier(s)
+  apps/api/prisma/migrations/20260707000001_booking_constraints/migration.sql
+      S1: service_pricings_shape, service_tiers_price_positive, pricing_rules_multiplier_positive, venues_base_price_positive, venues_commission_rate_range, quotes_amounts_valid, bookings_amounts_valid, booking_services_amounts_valid, payments_amounts_valid, commissions_rate_range, commissions_amounts_valid, cashback_claims_amount_positive, refunds_amount_positive, invoices_amount_positive
+  apps/api/prisma/migrations/20260720160000_venue_cashback_public_read/migration.sql
+      S1: venues_cashback_rate_range
+  apps/api/prisma/migrations/20260727120000_slot_template_base_price/migration.sql
+      S1: slot_templates_base_price_positive
+  apps/api/prisma/migrations/20260727130000_pricing_rule_per_slot/migration.sql
+      S1: pricing_rules_price_positive
+  apps/api/prisma/migrations/20260802120000_booking_request_and_deposit_policy/migration.sql
+      S1: venues_deposit_policy_exclusive, venues_deposit_rate_range, venues_deposit_amount_positive
+  apps/api/prisma/migrations/20260909120000_booking_quote_total_coherent/migration.sql
+      S1: bookings_total_coherent, quotes_total_coherent
+  apps/api/src/payments/chargily.gateway.ts
+      M1: if (!Number.isInteger(amountCents) || amountCents % CENTIMES_PAR_DINAR !== 0) {
+  apps/api/src/payments/payment-intent.ts
+      M4: if (amountCents <= 0) return { ok: false, code: "NOTHING_TO_PAY" };
+  apps/api/src/venues/booking-charge.ts
+      M1: const totalCents = input.basePriceCents + servicesTotalCents;
+  apps/api/src/venues/booking-notifications.service.ts
+      M2: return String(Math.round(cents / 100));
+  apps/api/src/venues/deposit.ts
+      M1: : roundToDinar((totalCents * (policy.depositRateBps ?? 0)) / 10000);
+  apps/api/src/venues/pricing-engine.ts
+      M2: return Math.round(cents / 100) * 100;
+  apps/api/src/venues/venues-admin.service.ts
+      M4: if (cashbackRateBps > commissionRateBps) {
+  apps/client/src/components/venue/booking-request-panel.tsx
+      M1: : Math.round((totalCents * (policy.depositRateBps ?? 0)) / 10000 / 100) * 100;
+      M2: : Math.round((totalCents * (policy.depositRateBps ?? 0)) / 10000 / 100) * 100;
+  packages/types/src/booking.ts
+      M3: expectedTotalCents: z.number().int().nonnegative("booking.validation.expectedAmount"),
+  packages/types/src/venue.ts
+      M3: basePriceCents: z.number().int().positive("venue.validation.pricePositive")
+      M4: if (v.commissionRateBps !== undefined && v.cashbackRateBps !== undefined && v.cashbackRateBps > v.commissionRa
+      M2: const wall = ((Math.trunc(minutes) % 1440) + 1440) % 1440;
+
+=== (2) TRANSITIONS : 8 fichier(s)
+  apps/api/src/venues/booking-locks.prisma.ts
+      T1: async acceptUnderVenueLock(input: {
+  apps/api/src/venues/booking-locks.types.ts
+      T1: acceptUnderVenueLock(input: {
+  apps/api/src/venues/booking-transitions.ts
+      T1: export const BookingCommand = {
+  apps/api/src/venues/bookings.service.ts
+      T1: BookingCommand,
+  apps/api/src/venues/quote-store.prisma.ts
+      T1: private async checkAndSet(
+  apps/api/src/venues/quote-store.types.ts
+      T1: creerRevision(args: {
+  apps/api/src/venues/quote-transitions.ts
+      T1: export const QuoteCommand = {
+  apps/api/src/venues/quotes.service.ts
+      T1: QuoteCommand,
+
+=== (3) PAIEMENT (E3) : 12 fichier(s)
+  apps/api/prisma/migrations/20260707000000_init/migration.sql
+      P2: nomme la table payments
+  apps/api/prisma/migrations/20260707000001_booking_constraints/migration.sql
+      P2: nomme la table payments
+  apps/api/prisma/migrations/20260824120000_payment_one_pending_per_booking/migration.sql
+      P2: nomme la table payments
+  apps/api/src/payments/chargily.gateway.ts
+      P1: dossier payments/
+  apps/api/src/payments/payment-gateway.factory.ts
+      P1: dossier payments/
+  apps/api/src/payments/payment-intent.ts
+      P1: dossier payments/
+  apps/api/src/payments/payment-store.prisma.ts
+      P1: dossier payments/
+  apps/api/src/payments/payment-store.types.ts
+      P1: dossier payments/
+  apps/api/src/payments/payment.types.ts
+      P1: dossier payments/
+  apps/api/src/payments/payments.module.ts
+      P1: dossier payments/
+  apps/api/src/payments/payments.service.ts
+      P1: dossier payments/
+  apps/api/src/payments/unavailable.gateway.ts
+      P1: dossier payments/
+
+=== (4) HARNAIS qui mutent ou mesurent un fichier de (1)-(3) : 10
+  neutralize-booking-status.py ← 1 : quote-store.prisma.ts
+  neutralize-e3d1-s8.py ← 2 : migration.sql, payment-store.prisma.ts
+  neutralize-s10b.py ← 3 : quote-store.prisma.ts, quote-store.types.ts, quotes.service.ts
+  neutralize-s11a.py ← 1 : bookings.service.ts
+  neutralize-s11b.py ← 3 : migration.sql, booking-charge.ts, bookings.service.ts
+  neutralize-solid-s1.py ← 1 : booking.ts
+  neutralize-solid-s3.py ← 2 : booking-transitions.ts, quote-transitions.ts
+  neutralize-solid-s4.py ← 1 : pricing-engine.ts
+  neutralize-solid-s5a.py ← 2 : payment-store.prisma.ts, payments.service.ts
+  neutralize-solid-s5b.py ← 1 : booking-locks.prisma.ts
+
+=== « expire » : écrivains de EXPIRED dans le code (hors tests)
+  0 : aucun — la transition expire n’a pas de code à HEAD
+
+ventilation — fichiers portant chaque sonde :
+  M1 : 4
+  M2 : 4
+  M3 : 2
+  M4 : 3
+  S1 : 6
+  T1 : 8
+  P1 : 9
+  P2 : 3
+  H1 : 10
+sondes à zéro (hypothèses à vérifier, D295) : aucune

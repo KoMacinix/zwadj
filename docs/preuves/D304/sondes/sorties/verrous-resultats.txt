@@ -1,0 +1,33 @@
+base : zwadj_test · PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) · niveau d'isolation par défaut de la base mesuré ci-dessous
+default_transaction_isolation : read committed
+prédicats importés : accept ["PENDING"]→ACCEPTED · decline ["PENDING"]→DECLINED · cancelAsClient ["PENDING","ACCEPTED"]→CANCELLED (sans motif : ["PENDING"]) · devis cancel ["DRAFT","SENT"]→CANCELLED
+colonnes relevées : bookings 34, quotes 18
+
+── 0. calibration du discriminant lock_timeout (deux bras)
+CAL+ FOR UPDATE contre FOR UPDATE, même ligne attendu : ATTEND                               mesuré : ATTEND (55P03)
+CAL- FOR UPDATE contre FOR UPDATE, autre ligne attendu : N'ATTEND PAS                         mesuré : N'ATTEND PAS (rowCount 1)
+
+── 1. clé étrangère — le rival en FOR UPDATE explicite, puis en UPDATE simple du statut
+FK bookings→quotes, rival FOR UPDATE + annul. attendu : ATTEND (cadrage § 3)                 mesuré : ATTEND (55P03)
+FK bookings→quotes, rival UPDATE simple      attendu : N'ATTEND PAS (cadrage § 3)           mesuré : N'ATTEND PAS (rowCount 1)
+FK quotes.parent→v2, rival FOR UPDATE + annul. attendu : ATTEND (cadrage § 3)                 mesuré : ATTEND (55P03)
+FK quotes.parent→v2, rival UPDATE simple     attendu : N'ATTEND PAS (cadrage § 3)           mesuré : N'ATTEND PAS (rowCount 1)
+FK payments→bookings, rival FOR UPDATE       attendu : (non écrit au cadrage)               mesuré : ATTEND (55P03)
+FK payments→bookings, rival UPDATE simple    attendu : (non écrit au cadrage)               mesuré : N'ATTEND PAS (rowCount 1)
+APRÈS COMMIT : insertion sur devis annulé    attendu : aboutit (rouge de MD-F2-1)           mesuré : attente Lock/transactionid · insérées 1 · devis [{"statut_devis":"CANCELLED"}]
+
+── 2. verrous de ligne de réservation — rival = UPDATE simple (refus depuis PENDING)
+lecture simple (relecture D117 actuelle)     attendu : N'ATTEND PAS                         mesuré : N'ATTEND PAS (rowCount 1) · lu {"s":"PENDING"}
+SELECT … FOR UPDATE (choix (i) du § 8)       attendu : ATTEND                               mesuré : ATTEND (55P03)
+SELECT … FOR NO KEY UPDATE                   attendu : ATTEND                               mesuré : ATTEND (55P03)
+UPDATE nu (écriture actuelle d'accept)       attendu : ATTEND                               mesuré : ATTEND (55P03)
+UPDATE conditionné (choix (ii) du § 8)       attendu : ATTEND                               mesuré : ATTEND (55P03)
+
+── 3. APRÈS COMMIT du rival — ce que la requête bloquée a fait (READ COMMITTED)
+FOR UPDATE, puis refus commité               attendu : lit DECLINED (prémisse de (i))       mesuré : attente Lock/transactionid · lu [{"s":"DECLINED"}]
+UPDATE nu, puis refus commité                attendu : écrase (rouge de MD-F1-1)            mesuré : attente Lock/transactionid · modifiées 1 · [{"s":"ACCEPTED","refus_pose":true}]
+UPDATE conditionné, puis refus commité       attendu : 0 ligne (prémisse de (ii))           mesuré : attente Lock/transactionid · modifiées 0 · relu [{"s":"DECLINED"}]
+F5 prédicat actuel, puis accept commité      attendu : annule (rouge de MD-F5-1)            mesuré : attente Lock/transactionid · modifiées 1 · [{"s":"CANCELLED"}]
+F5 prédicat sans motif, puis accept commité  attendu : 0 ligne                              mesuré : attente Lock/transactionid · modifiées 0 · relu [{"s":"ACCEPTED"}]
+
+fin de la sonde : toutes les mesures ont été jouées (aucune n'a levé).

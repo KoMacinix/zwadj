@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+    <testsuite name="../../docs/preuves/D304/r1/signatures/cas/import.cas.ts" timestamp="2026-09-24T04:08:00.070Z" hostname="Macinix" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/import.cas.ts" name="../../docs/preuves/D304/r1/signatures/cas/import.cas.ts" time="0">
+            <failure message="Cannot find module &apos;./module-qui-n-existe-pas&apos; imported from &apos;C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D304/r1/signatures/cas/import.cas.ts&apos;" type="Error">
+Error: Cannot find module &apos;./module-qui-n-existe-pas&apos; imported from &apos;C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D304/r1/signatures/cas/import.cas.ts&apos;
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/import.cas.ts:2:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;ERR_MODULE_NOT_FOUND&apos; }
+Caused by: Error: Failed to load url ./module-qui-n-existe-pas (resolved id: ./module-qui-n-existe-pas) in C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D304/r1/signatures/cas/import.cas.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

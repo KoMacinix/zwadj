@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+    <testsuite name="../../docs/preuves/D304/r1/signatures/cas/vide.cas.ts" timestamp="2026-09-24T04:08:05.002Z" hostname="Macinix" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/vide.cas.ts" name="../../docs/preuves/D304/r1/signatures/cas/vide.cas.ts" time="0">
+            <failure message="No test suite found in file C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D304/r1/signatures/cas/vide.cas.ts" type="Error">
+Error: No test suite found in file C:/Users/benla/Desktop/MyProjct/Zwadj/docs/preuves/D304/r1/signatures/cas/vide.cas.ts
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

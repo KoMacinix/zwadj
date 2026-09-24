@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="6" errors="0" time="0.227056">
+    <testsuite name="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" timestamp="2026-09-24T04:07:55.146Z" hostname="Macinix" tests="7" failures="6" errors="0" skipped="0" time="0.227056">
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" name="CAS-PASSE un test vert" time="0.001409">
+        </testcase>
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" name="CAS-ASSERTION une assertion en échec" time="0.0084259">
+            <failure message="expected 201 to be 409 // Object.is equality" type="AssertionError">
+AssertionError: expected 201 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 201
+
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:10:15
+            </failure>
+        </testcase>
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" name="CAS-ASSERTION-OBJET une égalité profonde en échec" time="0.00249">
+            <failure message="expected { statut: &apos;ACCEPTED&apos; } to deeply equal { statut: &apos;DECLINED&apos; }" type="AssertionError">
+AssertionError: expected { statut: &apos;ACCEPTED&apos; } to deeply equal { statut: &apos;DECLINED&apos; }
+
+- Expected
++ Received
+
+  {
+-   &quot;statut&quot;: &quot;DECLINED&quot;,
++   &quot;statut&quot;: &quot;ACCEPTED&quot;,
+  }
+
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:14:34
+            </failure>
+        </testcase>
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" name="CAS-REJECTS une promesse résolue là où un rejet est attendu" time="0.0036919">
+            <failure message="promise resolved &quot;1&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;1&quot; instead of rejecting
+
+- Expected: 
+Error {
+  &quot;message&quot;: &quot;rejected promise&quot;,
+}
+
++ Received: 
+1
+
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:18:34
+            </failure>
+        </testcase>
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" name="CAS-PLANTAGE une TypeError levée par le code" time="0.0003846">
+            <failure message="Cannot read properties of undefined (reading &apos;status&apos;)" type="TypeError">
+TypeError: Cannot read properties of undefined (reading &apos;status&apos;)
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:23:16
+            </failure>
+        </testcase>
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" name="CAS-ERREUR une Error levée par le code (ex. un 500 propagé)" time="0.0002427">
+            <failure message="panne simulée" type="Error">
+Error: panne simulée
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:27:24
+            </failure>
+        </testcase>
+        <testcase classname="../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts" name="CAS-DELAI un délai dépassé" time="0.2087354">
+            <failure message="Test timed out in 200ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;." type="Error">
+Error: Test timed out in 200ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;.
+ ❯ ../../docs/preuves/D304/r1/signatures/cas/tests.cas.ts:30:1
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

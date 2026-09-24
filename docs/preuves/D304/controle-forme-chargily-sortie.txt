@@ -1,0 +1,2 @@
+calibration : positif (synthétique, 40 car.) OK · négatif (trop court) OK
+parcourus : 56 fichiers, 1863333 octets · porteurs : 0 (attendu 0)
