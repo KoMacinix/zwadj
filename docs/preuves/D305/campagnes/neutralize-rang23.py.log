@@ -1,0 +1,24 @@
+✓ Pré-vol : 2 mesure(s) verte(s) — int-reservations, unit-transitions
+
+✓ R23-F1-a. ⛔ L'ÉCRITURE D'ACCEPT PERD SA CONDITION DE STATUT — un refus commité pendant l'acceptation est écrasé  [int-reservations]
+    titre attendu : F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+    titre attendu : F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F1-a-int-reservations.txt
+✓ R23-F1-b. ⛔ UN COMPTE NUL N'EST PLUS UN REFUS — la ligne relue part comme acceptée  [int-reservations]
+    titre attendu : F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+    titre attendu : F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F1-b-int-reservations.txt
+✓ R23-F5-a. ⛔ L'ANNULATION CLIENT ÉCRIT DEPUIS TOUT SON `from` — une ACCEPTED s'annule sans motif  [int-reservations]
+    titre attendu : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F5-a-int-reservations.txt
+✓ R23-F5-b. Le refus après conflit ne se redécide plus sur le statut relu — 409 là où l'ordre séquentiel rend 400  [int-reservations]
+    titre attendu : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F5-b-int-reservations.txt
+✓ R23-F5-c. La fonction pure des statuts inscriptibles IGNORE LE MOTIF — le prédicat d'écriture redevient le `from` entier  [unit-transitions]
+    titre attendu : writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+    titre attendu : writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+    journal à lire : .neutralisation-journaux\rang23\R23-F5-c-unit-transitions.txt
+
+5 garde(s) mordue(s) sur 5 cible(s) RÉELLEMENT MESURÉE(S) — au CODE de sortie (forme β).
+⚠ Un code non nul ne prouve rien seul (règle b de D303) : l'échec se LIT dans les journaux.
+

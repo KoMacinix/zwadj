@@ -68,7 +68,15 @@ MESURES = {
 
 CIBLES = [
     (
-        "S5b-1. ⚠ LE VERROU DE SALLE SAUTE — deux acceptations concurrentes ne sont plus sérialisées",
+        # ⛔ RÉORIENTÉE AU RANG 23 (D305, MD-F1-5). Elle disait « deux
+        # acceptations concurrentes ne sont plus sérialisées » : sous l'écriture
+        # conditionnelle (F1, forme (ii)), l'UPDATE les sérialise AUSSI — mesuré
+        # le 25/09/2026, mutation posée, 47/47 verts, la cible était MUETTE
+        # (`docs/preuves/D305/s5b1/`). Ce que le verrou de salle garde encore, et
+        # ce que le relecteur nomme en le gardant (« pour la disponibilité ») :
+        # accept contre une CRÉATION DE BLOCAGE concurrente — mesurée par le test
+        # MD-F1-5 de `bookings.int-spec.ts`.
+        "S5b-1. ⚠ LE VERROU DE SALLE SAUTE — un blocage commité pendant l'acceptation n'est plus vu, la date est bloquée ET acceptée",
         ADAPTATEUR,
         "      await tx.$queryRaw`SELECT id FROM venues WHERE id = ${input.venueId}::uuid FOR UPDATE`;",
         "      void input.venueId;",
@@ -76,7 +84,15 @@ CIBLES = [
         ["int-reservations"],
     ),
     (
-        "S5b-2. ⚠ LA RELECTURE D117 NE JUGE PLUS — le statut sous verrou cesse de faire autorité",
+        # ⛔ RÉORIENTÉE AU RANG 23 (D305, MD-F1-8). Elle disait « le statut sous
+        # verrou cesse de faire autorité » : sous l'écriture conditionnelle (F1,
+        # forme (ii)), cette relecture n'EST plus l'autorité — l'UPDATE refuse
+        # seul, et rend le même 409 dans tous les cas de concurrence que cette
+        # cible mesurait. Mesuré le 25/09/2026 : sous cette mutation, le SEUL
+        # titre en échec est celui de MD-F1-8 (`docs/preuves/D305/s5b2/`) — sans
+        # lui, la cible était muette. Ce que la relecture garde encore, et ce que
+        # la cible mesure désormais : l'ORDRE des refus, statut AVANT blocage.
+        "S5b-2. ⚠ LA RELECTURE D117 NE DÉCIDE PLUS L'ORDRE DES REFUS — une demande déjà refusée sous un blocage rend le blocage, pas son statut réel",
         ADAPTATEUR,
         "      if (!input.allowedFrom.includes(fresh.status)) {",
         "      if (false && !input.allowedFrom.includes(fresh.status)) {",

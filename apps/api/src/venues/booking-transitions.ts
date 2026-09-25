@@ -119,3 +119,24 @@ export function decideBookingTransition(
 
   return { outcome: "ALLOWED", to: transition.to };
 }
+
+/**
+ * Statuts depuis lesquels la commande peut ÉCRIRE, compte tenu du motif fourni —
+ * le prédicat du check-and-set (rang 23 · F5, D305).
+ *
+ * ⚠ POURQUOI IL NE SUFFIT PLUS DE PASSER `allowedFrom`. L'annulation client
+ * décidait sur une lecture faite HORS transaction, puis écrivait avec le `from`
+ * ENTIER. Une acceptation commitée entre les deux faisait annuler une demande
+ * ACCEPTED SANS le motif que D83 exige : la décision avait été prise sur
+ * PENDING, l'écriture admettait ACCEPTED. Le prédicat de l'écriture porte
+ * désormais la règle du motif, et la lecture préalable n'est plus une garde.
+ *
+ * ⚠ DÉRIVÉ DE `decideBookingTransition`, JAMAIS RÉÉCRIT À CÔTÉ : la comparaison
+ * du motif (`undefined` ou chaîne vide) n'existe qu'à un endroit. Deux formules
+ * du même « motif manquant » finiraient par diverger, et en silence.
+ */
+export function writableFrom(command: BookingCommand, reason?: string): readonly BookingStatus[] {
+  return BOOKING_TRANSITIONS[command].from.filter(
+    (status) => decideBookingTransition(command, status, reason).outcome === "ALLOWED"
+  );
+}

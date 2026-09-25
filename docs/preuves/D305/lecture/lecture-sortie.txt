@@ -1,0 +1,100 @@
+== CALIBRATION — six bras sur les sorties brutes de D304, abandon si un seul manque
+   ✓ positif  tests.defaut.txt     CAS-ASSERTION une assertion en échec         attendu MORSURE LUE  lu MORSURE LUE (AssertionError: expected 201 to be 409 // Object.is equality)
+   ✓ négatif  tests.defaut.txt     CAS-PLANTAGE une TypeError levée par le code attendu NON PROUVÉE  lu NON PROUVÉE (1re ligne : TypeError: Cannot read properties of undefined ()
+   ✓ négatif  tests.defaut.txt     CAS-DELAI un délai dépassé                   attendu NON PROUVÉE  lu NON PROUVÉE (1re ligne : Error: Test timed out in 200ms.)
+   ✓ négatif  tests.defaut.txt     CAS-PASSE un test vert                       attendu MUETTE       lu MUETTE (titre absent des lignes « × »)
+   ✓ négatif  vide.defaut.txt      CAS-VIDE (aucun test)                        attendu NON PROUVÉE  lu NON PROUVÉE (collectés 0)
+   ✓ négatif  crochet.defaut.txt   CAS-CROCHET le corps de ce test ne s'exécute attendu NON PROUVÉE  lu NON PROUVÉE (échec de FICHIER (1))
+   calibration : 6 bras sur 6 (attendu 6)
+
+== ROUGE AVANT CORRECTIF — docs/preuves/D305/rouge-vert/rouge-avant-correctif.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 3
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       ↳ AssertionError: {"id":"01a0d6df-ed0a-7238-9018-e33bb7cca8e0","venueId":"01a0d6df-eab0-7d25-b231-c43528842367","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLI
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       ↳ AssertionError: {"id":"01a0d6df-f0af-785f-a717-847e7ee0dbe0","venueId":"01a0d6df-ee67-7528-ae01-0944b70c514d","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLI
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       ↳ AssertionError: {"id":"01a0d6df-f473-7e03-b54c-6bfe7c05e394","venueId":"01a0d6df-f20f-7ba0-b495-b14c9937990d","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONL
+   ✓ [MUETTE] (attendu MUETTE) MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage
+       ↳ titre absent des lignes « × »
+   ✓ [MUETTE] (attendu MUETTE) MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente
+       ↳ titre absent des lignes « × »
+
+== VERT APRÈS CORRECTIF — docs/preuves/D305/rouge-vert/vert-apres-correctif.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 0
+   ✓ [MUETTE] (attendu MUETTE) F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       ↳ titre absent des lignes « × »
+   ✓ [MUETTE] (attendu MUETTE) F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       ↳ titre absent des lignes « × »
+   ✓ [MUETTE] (attendu MUETTE) F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       ↳ titre absent des lignes « × »
+   ✓ [MUETTE] (attendu MUETTE) MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage
+       ↳ titre absent des lignes « × »
+   ✓ [MUETTE] (attendu MUETTE) MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente
+       ↳ titre absent des lignes « × »
+
+== VERT APRÈS CORRECTIF (unitaire) — docs/preuves/D305/rouge-vert/vert-unitaire-transitions.txt
+   collectés 23 · échecs de fichier 0 · lignes « × » 0
+   ✓ [MUETTE] (attendu MUETTE) writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       ↳ titre absent des lignes « × »
+   ✓ [MUETTE] (attendu MUETTE) writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       ↳ titre absent des lignes « × »
+
+== CIBLE R23-F1-a (int-reservations) — docs/preuves/D305/neutralisation\R23-F1-a-int-reservations.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 2
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       ↳ AssertionError: {"id":"01a0d6e1-7fa2-7732-ac68-3c6a5cea148d","venueId":"01a0d6e1-7d6b-7be3-8e8b-82e7d58b4c18","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLI
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       ↳ AssertionError: {"id":"01a0d6e1-8360-76db-96be-e4f0049f1d22","venueId":"01a0d6e1-810d-7567-bc89-db580189b230","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLI
+
+== CIBLE R23-F1-b (int-reservations) — docs/preuves/D305/neutralisation\R23-F1-b-int-reservations.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 2
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       ↳ AssertionError: {"id":"01a0d6e2-4327-78a5-94bd-aa879ca240f9","venueId":"01a0d6e2-40e8-738b-8485-e3962f3ba06e","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"DECLINED","paymentMethod":"ONLI
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       ↳ AssertionError: {"id":"01a0d6e2-46e6-79bc-b285-8165c3cc957e","venueId":"01a0d6e2-4499-77a1-af49-7161194ac429","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONL
+
+== CIBLE R23-F5-a (int-reservations) — docs/preuves/D305/neutralisation\R23-F5-a-int-reservations.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 2
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+   × Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       ↳ AssertionError: {"id":"01a0d6e3-0d77-7415-96ef-337d43f75f0d","venueId":"01a0d6e3-0b27-7029-af1e-ac5c14be6244","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONL
+
+== CIBLE R23-F5-b (int-reservations) — docs/preuves/D305/neutralisation\R23-F5-b-int-reservations.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 2
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+   × Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       ↳ AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"},"path":"/api/v1/bookings/01a0d6e3-d1e8-72a5-b81b-edc0cc3a200e","timestamp":"2026-09-25T04
+
+== CIBLE R23-F5-c (unit-transitions) — docs/preuves/D305/neutralisation\R23-F5-c-unit-transitions.txt
+   collectés 23 · échecs de fichier 0 · lignes « × » 2
+   × Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+   × Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       ↳ AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       ↳ AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+
+== S5b-2 (réorientée, MD-F1-8) — docs/preuves/D305/s5b2/s5b2-int-reservations.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 1
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage
+       ↳ AssertionError: expected 'BOOKING_BLOCKED_PERIOD' to be 'BOOKING_STATUS_CONFLICT' // Object.is equality
+
+== S5b-1 (réorientée, MD-F1-5) — docs/preuves/D305/s5b1/s5b1-int-reservations.txt
+   collectés 48 · échecs de fichier 0 · lignes « × » 1
+   × Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente
+   ✓ [MORSURE LUE] (attendu MORSURE LUE) MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente
+       ↳ AssertionError: {"id":"01a0d6e4-a914-7c94-9167-d9ea58335e20","venueId":"01a0d6e4-a6d4-7496-9c4d-bf04322c121a","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLI
+
+== verdicts attendus manqués : 0 (attendu 0)
+exit=0

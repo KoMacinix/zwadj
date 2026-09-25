@@ -1,0 +1,51 @@
+D305 — TRI À LA MAIN DE LA PASSE D277 (balayage-sortie.txt), 25/09/2026
+=========================================================================
+Corpus : CLAUDE.md, AGENTS.md, ZWADJ_CONTINUITE.md, ZWADJ_BACKLOG.md — texte APLATI, à HEAD (6e87430) et dans l'arbre.
+Calibration : T+ « MÉTHODE RENFORCÉE » 15 à HEAD (attendu > 0) ; T- 0 (attendu 0). 17 motifs examinés, 0 à zéro.
+
+SENS 1 — CE QUE 23a INVALIDE
+- « attend le relecteur » (4) : 2 BARRÉES avec motif (point d'entrée du rang 23, lignes 23a et R1) ; 1 dans la
+  table de reprise de D305 (ce que la reprise a LU — historique, vrai) ; 1 dans la ligne D304 du REGISTRE (localisateur
+  daté ; un registre ne se réécrit pas). ⇒ rien à faire.
+- « n'est PERMIS aujourd'hui » (1) : BARRÉE, motif D305.
+- « n'est encore PERMIS » (1) : ordre des rangs, ligne du rang 24 ; ANNOTÉE D305 juste après (les deux décisions sont
+  arrivées, 23a codé, R1 « à Ko »).
+- « restent OUVERTS » / « 23a ne s'ouvre pas » (1 + 1, même phrase) : BARRÉE, motif D305 (§ 8 du cadrage).
+- « relecteur sur le § 8 manque » (1) : BARRÉE, motif D305.
+- « sauf exception écrite » (2) : l'étape (d) BARRÉE ; l'autre est l'annotation D305 qui le dit. MD-R1-5 (même clause,
+  « sauf **exception écrite PAR CIBLE** », gras interne : le motif littéral ne la trouve pas) — BARRÉE, vérifiée à la
+  lecture du § 4.
+- « au moins un titre attendu » (1 → 0) : l'étape (c) porte « ~~au moins un~~ ⛔ (D305 : chaque …) » — le motif ne se
+  retrouve plus parce que la phrase est coupée par l'annotation ; vérifié à la lecture.
+- « AUCUNE LIGNE DE CODE » (14) : 1 BARRÉE (titre du rang 23) ; la ligne « (D303, 23/09/2026) RANG 23 — CADRAGE
+  ÉCRIT, RANG OUVERT, AUCUNE LIGNE DE CODE » de l'ordre des rangs est DATÉE et suivie des lignes D304 et D305 ; les
+  autres sont d'autres rangs, datés ou barrés. ⇒ rien à faire.
+- « Proposé : (α) » (1) : texte de PROPOSITION du § 9 de R1, suivi de l'annotation « TRANCHÉS » (β). ⇒ rien à faire.
+- « F1 × refus » / « F1 × annulation » (4 + 4) : au § 3 et au § 5 d'origine (D303), ce sont des noms de CAS du
+  cadrage, pas des titres de test ; au § 5 (annotation D305) et dans les fautes de D305, la CITATION de la première
+  écriture fautive. ⇒ rien à faire.
+- « compteur … : ZÉRO, inchangé » (10) : toutes dans des lots documentaires DATÉS (D295 à D304) — vraies à leur date.
+  Le compteur COURANT est écrit au point d'entrée (UN) et à la ligne D305 de l'ordre des rangs. ⇒ rien à faire.
+
+SENS 2 — CE QUE 23a REND PERMIS
+- « après 23a » (2) : ligne R1 du point d'entrée (« ⏸ après 23a ») — 23a est codé, sa REVUE n'est pas faite ; la
+  question « R1 avant la fin de la revue ? » est écrite au point d'entrée et à la ligne du rang 24 : À KO. L'autre
+  occurrence est le calcul du compteur au § 7 (règle, pas permission).
+- « peut s'ouvrir » (28) : génériques ou datés ; ceux qui disent « dès l'arbitrage » portent déjà l'annotation de D304
+  (« sur le chemin de l'argent, l'arbitrage ne suffit pas ») ; le compteur passe à UN, et « deux tenables, trois non »
+  (D270) laisse vraies les permissions génériques. La seule occurrence neuve est de D305 (« Il n'arbitre pas si R1
+  peut s'ouvrir… »). ⇒ rien à faire.
+- « R1 s'ouvre » (1, neuve) : l'annotation D305 elle-même.
+- « avant R1 » (4) : § 9 de R1 (titre), ligne D304 (« avant R1 », attendu du relecteur — arrivé, section D305), bloc
+  D305 de la méthode renforcée et d'AGENTS.md (texte de la décision). ⇒ rien à faire.
+
+PASSE FINALE — rejouée après la dernière écriture des .md qui précède l'audit (balayage-sortie.txt écrasé par elle)
+- Les comptes qui ont bougé depuis la première passe, TOUS d'une unité, tous dans la sous-section « D305 — passe
+  D277, les deux sens » de ZWADJ_CONTINUITE.md, qui CITE les phrases traitées : « n'est encore PERMIS » 1 → 2,
+  « restent OUVERTS » 1 → 2, « AUCUNE LIGNE DE CODE » 14 → 15, « après 23a » 2 → 3, « peut s'ouvrir » 28 → 29 (et
+  l'autre occurrence neuve de D305, « Il n'arbitre pas si R1 peut s'ouvrir… », était déjà là à la première passe).
+  Vérifié par position : chaque occurrence neuve tombe dans l'intervalle de caractères de la section D305.
+- ⚠ Un contrôle AD HOC de ce tri (dans le fil, non versé) a d'abord rendu « 0 occurrence dans D305 » pour « restent
+  OUVERTS » : il découpait la sortie sur la citation « « motif » », qui apparaît aussi DANS le contexte d'un autre
+  motif. Le grep direct a montré l'occurrence (@378907, dans la section). D275 : un extracteur se confronte à la
+  sortie brute avant de servir à compter.

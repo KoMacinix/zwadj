@@ -1109,6 +1109,12 @@ certification et livre le correctif produit un lot plus tôt. » ⚠ *Dérivé p
 l'ordre tient la règle « deux lots non certifiés tenables, trois non » (D270) — 23a et R1 comptent (R1 touche
 `neutralisation/`, D283), la certification ramène à zéro, 23b et 23c comptent, la seconde certification ramène à zéro.
 ⇒ **Où il en est** : point d'entrée du rang 23.
+⛔ **(D305, 25/09/2026) RANG 23 — SOUS-LOT 23a CODÉ (F1 + F5), CHEMIN DE L'ARGENT** : décisions du relecteur (chat) sur
+le § 8 du cadrage du rang 23 et le § 9 du cadrage de R1, reçues de Ko et écrites en premières écritures (méthode
+renforcée, bloc D305) ; motif (b) **mesuré avant le code** (l'insertion d'un paiement n'attend pas la forme (ii)) ;
+rouge avant correctif et vert après sur PostgreSQL réel ; cinq cibles neuves (`neutralize-rang23.py`, forme β), échecs
+**LUS** ; S5b-2 et S5b-1 réorientées (MD-F1-8, MD-F1-5). **Code : compteur de lots de code non certifiés ZÉRO → UN.** ⇒ **Le rang reste
+ouvert** ; 23a attend la session adverse puis le relecteur. ⇒ **Où il en est** : point d'entrée du rang 23.
 ⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
 23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
 cadrage du rang 23 ne rend PERMIS aucun lot de code** : ses sous-lots attendent le découpage de Ko, la décision du
@@ -1117,6 +1123,8 @@ trois conditions sont LEVÉES — le découpage et le rang, par l'arbitrage ci-d
 la décision du relecteur sur les choix du § 8 du cadrage** — 1 à 4, le 5ᵉ étant tranché par la décision 4 (Ko : « le
 relecteur les tranchera avant 23a »), et
 **R1 attend la sienne sur les choix de son propre cadrage**. ⇒ **Aucun lot de code n'est encore PERMIS.**)*
+⛔ *(D305, 25/09/2026 — passe D277 : les deux décisions sont **arrivées** ; 23a est **codé** (compteur à UN) et attend
+la session adverse. ⚠ Que R1 s'ouvre avant la fin de cette revue n'est écrit nulle part : **à Ko** — point d'entrée.)*
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1204,26 +1212,32 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; 23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE**
+## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; ~~23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE~~ ⛔ 23a CODÉ LE 25/09/2026 (D305) — ATTEND LA SESSION ADVERSE ; COMPTEUR À UN**
 
-### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 24/09/2026 (D304)
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 25/09/2026 (D305)
 
 ⛔ **ORDRE ARBITRÉ PAR KO LE 24/09/2026, mot pour mot** : « tous les sous-lots du rang 23 avancent le rang 23 (règle de
 D302), certifications comprises. Ordre : ce lot → 23a (F1 + F5) → R1 → certification → 23b (F2) → 23c (F6) →
 certification. » Motif (décision du relecteur) : ordre des rangs, ligne D304.
-| étape | objet | état au 24/09/2026 |
+| étape | objet | état au 25/09/2026 |
 |---|---|---|
 | D303 | cadrage de F1, F2, F5, F6 (documentaire) | ✅ fait |
 | **D304** | décisions du relecteur, **cadrage de R1**, les deux inférences du cadrage **mesurées**, carte du chemin de l'argent (documentaire) | ✅ fait |
-| **23a** | F1 + F5, code | ⏸ **attend le relecteur** : les choix 1 à 4 du § 8 du cadrage — le 5ᵉ est tranché (décision 4) ; « le relecteur les tranchera avant 23a » (Ko) |
-| **R1** | la lecture de l'échec dans les harnais, code (`neutralisation/`) | ⏸ après 23a ; attend le relecteur sur les choix de son cadrage (§ 9 de « ⛔ CADRAGE DE R1 ») |
+| **23a** | F1 + F5, code | ~~⏸ **attend le relecteur** : les choix 1 à 4 du § 8 du cadrage — le 5ᵉ est tranché (décision 4) ; « le relecteur les tranchera avant 23a » (Ko)~~ ✅ **CODÉ LE 25/09/2026 (D305)**, décision du relecteur reçue ; ⏸ **attend la session ADVERSE** (forme de revue, D302 : une autre session, à froid, tente de le casser et rapporte), puis la décision du relecteur ; veto de Ko |
+| **R1** | la lecture de l'échec dans les harnais, code (`neutralisation/`) | ⏸ après 23a ; ~~attend le relecteur sur les choix de son cadrage (§ 9 de « ⛔ CADRAGE DE R1 »)~~ ⛔ *(D305 : choix **tranchés**, § 9 ; trois constats de 23a **proposés comme modes**, au relecteur, § 4)* |
 | certification | — | ⏸ **bloquée par R1** (décision 4 du relecteur, D304) |
-| 23b, 23c, certification | F2, puis F6 | ⏸ |
-⇒ **Aucun lot de code n'est PERMIS aujourd'hui** : le compteur est à zéro, l'ordre est arbitré, et la décision du
-relecteur sur le § 8 manque. ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
+| 23b, 23c, certification | F2, puis F6 | ⏸ — ⚠ 23b attend aussi la réponse du relecteur sur la garde « déjà converti » (§ 8, annotation D305) |
+~~⇒ **Aucun lot de code n'est PERMIS aujourd'hui** : le compteur est à zéro, l'ordre est arbitré, et la décision du
+relecteur sur le § 8 manque.~~ ⛔ *(D305 : la décision est arrivée, 23a est codé.)* ⇒ **Compteur de lots de code non
+certifiés : UN** (23a). ⇒ **Ce qui vient ensuite, par la forme de revue** : la **session adverse de 23a** — elle ne code
+rien, elle rejoue et rapporte ; son mode d'emploi est au rapport de fin de lot de D305 et dans la section D305 (fichiers,
+cibles, titres, commandes). ⚠ **Que R1 puisse s'ouvrir AVANT la fin de la revue de 23a n'est écrit nulle part** —
+l'ordre dit « 23a → R1 », la forme de revue dit qu'une autre session casse 23a : **à Ko** ; une permission ne se
+déduit pas (D287). ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
 `FOR UPDATE` (pas l'UPDATE simple) — sans effet sur 23a, dont les rivaux sont des UPDATE simples et dont l'attente est
 un verrou de LIGNE, mesuré ; et les deux prémisses des formes (i) et (ii) du choix 1 du § 8 tiennent. Détail : cadrage,
-annotations D304 des § 3 et § 8.
+annotations D304 des § 3 et § 8. ⛔ *(D305 : et le motif (b) du relecteur est **mesuré** — l'insertion d'un paiement
+n'attend pas (ii) ; section D305, partie B.)*
 
 ### L'état du rang à l'ouverture (D303, 23/09/2026) — ⚠ ses deux dernières phrases sont PÉRIMÉES par D304
 
@@ -1242,7 +1256,7 @@ revue étendue au chemin de l'argent (D303, décision 1) —, notamment sur les 
 prendre** (§ 8). ⛔ *(D304 : cette réponse-là manque TOUJOURS — avant 23a.)*
 ⚠ **Une permission n'est pas un arbitrage** : le compteur à zéro dit qu'un lot de code **peut** s'ouvrir ; **aucun ne
 l'est** tant que ces deux réponses manquent. ⛔ *(D304 : une des deux est arrivée ; l'autre manque — **aucun ne
-l'est encore**.)*
+l'est encore**.)* ⛔ *(D305 : l'autre est arrivée, et 23a est codé — tableau ci-dessus.)*
 
 ## ⛔ CADRAGE DU RANG 23 — transitions atomiques (audit SOLID 09/09 · F1, F2, F5, F6) — écrit le 23/09/2026 (D303), AVANT toute ligne de code
 
@@ -1288,10 +1302,26 @@ révisions. **C'est le trou exact des quatre défauts.** Pièce : `docs/preuves/
   la mesure, pas une supposition.
 - **MD-F1-4** — accept contre accept (D117) : inchangé — un seul aboutit, les autres 409, jamais 500.
 - **MD-F1-5** — accept contre création de blocage (D51) : inchangé. **Borne de Ko : le verrou de salle reste.**
+  ⛔ *(D305, 25/09/2026, écrit AVANT son test : sous la forme (ii), l'écriture conditionnelle sérialise AUSSI accept
+  contre accept — le seul cas que mesurait la cible **S5b-1** (verrou de salle retiré). **Mesuré** : mutation posée,
+  47/47 verts (`docs/preuves/D305/s5b1/`) — **S5b-1 muette**. Ce que ce verrou garde encore, et que la décision du
+  relecteur nomme (« pour la disponibilité »), c'est CE mode, qu'aucun test ne jouait en concurrence. ⇒ Un test T5
+  le mesure (rival : la création de blocage, verrou de salle puis insertion, non commitée) ; S5b-1 se **réoriente**
+  dessus. Même situation que MD-F1-8, **même proposition au relecteur**.)*
 - **MD-F1-6** — **interblocage** : la correction ajoute, au plus, un verrou de LIGNE de réservation après le verrou de
   salle ; `transition` ne prend que la ligne, le blocage ne prend que la salle ; aucun chemin ne prend la ligne puis
   la salle. ⇒ Pas d'inversion. Un 40P01 sortirait en 500 : les tests concurrents le verraient.
 - **MD-F1-7** — ordre séquentiel (refus PUIS accept) : déjà 409 par la relecture D117 — inchangé.
+- ⛔ **MD-F1-8 — AJOUTÉ LE 24/09/2026 (D305), AVANT TOUTE LIGNE DE CODE : le cadrage est ROUVERT pour lui.** Sous la
+  forme (ii), la relecture D117 (le statut lu sous le verrou de salle) **cesse d'être la garde** : c'est l'écriture
+  conditionnelle qui refuse. Il lui reste un rôle, et un seul : **l'ORDRE des refus — statut AVANT blocage.** Retirée,
+  une demande déjà refusée sur une période que le pro a bloquée depuis rendrait 409 `BOOKING_BLOCKED_PERIOD` au lieu de
+  409 `BOOKING_STATUS_CONFLICT` avec son statut réel — un changement de comportement que personne n'a demandé. ⇒
+  **Préservé : inchangé** ; la relecture reste, et un test mesure l'ordre. ⚠ **Pourquoi il est écrit** : sans ce
+  test, la cible existante **S5b-2** (qui neutralise cette relecture) deviendrait **muette** sous (ii) — l'écriture
+  conditionnelle rend le même 409 dans tous les cas qu'elle mesurait (*inférence*, mesurée au lot : section D305). ⇒
+  S5b-2 se **réoriente** sur ce test. ⛔ **Au relecteur (chat)** : la session propose, elle ne tranche pas ; retirer la
+  relecture — et accepter l'ordre changé — reste possible, et déferait ce mode.
 
 **F2 — le devis change sous une conversion ou une révision.**
 - **MD-F2-1** — une annulation commite entre la lecture du devis par `convert` et l'insertion : une réservation
@@ -1453,6 +1483,36 @@ dépassé — **mesuré**, les trois portent « × » (`docs/preuves/D304/r1/sig
 **§ 4 de « ⛔ CADRAGE DE R1 »** ; et ce harnais neuf est **dans la portée de R1** (décision 4 du relecteur, D304).
 « Écrit la sortie de chaque cible » : la décision 4 fixe ce qu'il garde — collectés, test en échec, première ligne de
 l'assertion, pas la sortie entière.)*
+⛔ **(D305, 24/09/2026) LES CIBLES DE 23a, RENOMMÉES POUR LA FORME (ii) — ÉCRIT AVANT TOUTE LIGNE DE CODE**, avec leurs
+**titres attendus** (décisions 3 et 5 du § 9 de R1 : déclarés dès maintenant, **chacun exigé**, pour que R1 les
+reprenne). Harnais : `neutralisation/neutralize-rang23.py` (neuf, **forme (β)** : verdict au code comme les vingt,
+preuve par l'échec **LU** et versé — règle b de D303). Mesures : `int-reservations` (`bookings.int-spec.ts`, base
+réelle) et `unit-transitions` (`booking-transitions.spec.ts`).
+| cible | mutation (forme (ii)) | mesure | titres attendus |
+|---|---|---|---|
+| **R23-F1-a** | l'`updateMany` d'`accept` perd sa condition de statut (`where` sur l'identifiant seul) | int | T1, T2 |
+| **R23-F1-b** | un compte ≠ 1 n'est plus un refus : la ligne relue part comme acceptée | int | T1, T2 |
+| **R23-F5-a** | l'annulation client écrit depuis `allowedFrom(CANCEL_AS_CLIENT)` quel que soit le motif | int | T3 |
+| **R23-F5-b** | après un compte à 0, le refus ne se redécide plus sur le statut relu : toujours 409 | int | T3 |
+| **R23-F5-c** (neuve) | la fonction pure des statuts inscriptibles ignore le motif | unit | U1, U2 |
+| **S5b-2** (réorientée, MD-F1-8) | la relecture D117 ne juge plus | int | T4 |
+| ~~S5b-1~~, -3, -4, -5 | ancres conservées — revérifiées au lot | int | inchangées |
+| **S5b-1** (réorientée, MD-F1-5 — ajouté le 25/09/2026, après que `lancer-campagnes.py` l'a trouvée muette, AVANT le test) | le verrou de salle saute | int | T5 |
+Titres, **mot pour mot** : **T1** « F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut
+réel, la ligne refusée intacte » · **T2** « F1 contre une annulation — une ANNULATION client commite pendant
+l'acceptation : 409 avec le statut réel, la ligne annulée intacte » ⛔ *(renommés le 25/09/2026, AVANT la preuve :
+leur première écriture portait « F1 × refus » et « F1 × annulation » — le glyphe « × » marque un ÉCHEC dans la sortie
+de vitest ; faute n° 1 de D305)* · **T3** « F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+: 400 cancelReasonRequired, la ligne acceptée intacte » · **T4** « MD-F1-8 — l'ORDRE des refus d'accept : une demande
+déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage » · **T5** « MD-F1-5 — un BLOCAGE commite pendant
+l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente » · **U1** « writableFrom — SANS motif, l'annulation
+client n'écrit que depuis les statuts qui ne l'exigent pas (D83) » · **U2** « writableFrom — une chaîne VIDE vaut une
+absence de motif, comme dans la décision ».
+⚠ **Les titres déclarés sont ceux des tests que 23a ÉCRIT, et ils assertent par `expect` de vitest.** Relevé à la
+source (`supertest@7.2.2`, `lib/test.js`, `_assertStatus`) : `.expect(<statut>)` de supertest lève
+`new Error('expected … got …')` — une `Error`, **pas** une `AssertionError`. Sous la lecture de R1, un test qui ne
+rougit que par là n'est **pas** une morsure. ⇒ Un test existant qui rougirait aussi (« le client DOIT un motif pour
+annuler une demande ACCEPTÉE », `.expect(400)`) n'est **pas** déclaré. Constat rapporté à R1 (section D305).
 
 ### 6. Fichiers attendus
 
@@ -1471,7 +1531,14 @@ l'assertion, pas la sortie entière.)*
   ⛔ *(D304 : `neutralize-rang23.py` est **dans la portée de R1** — tout harnais neuf qui mute un fichier du chemin de
   l'argent, décision 4. 23a vient AVANT R1 : que ce harnais naisse à la lecture du cadrage de R1 ou que R1 le corrige
   avec les vingt autres est un **choix du relecteur** — § 9 de « ⛔ CADRAGE DE R1 ». Pour 23a, la règle b de D303
-  suffit à prouver ses gardes : un échec LU, versé.)*
+  suffit à prouver ses gardes : un échec LU, versé.)* ⛔ *(D305 : tranché — **(β)**, décision 3 du § 9 de R1.)*
+- ⛔ **(D305, 24/09/2026) FICHIERS ATTENDUS DE 23a, ÉNUMÉRÉS AVANT D'ÉCRIRE** — SHA de départ **`6e87430`** (provenance,
+  D303) : `booking-locks.prisma.ts` (F1) ; `booking-transitions.ts` (F5, fonction pure des statuts inscriptibles selon
+  le motif) ; `bookings.service.ts` (F5) ; `bookings.int-spec.ts` (T1 à T4) ; **`booking-transitions.spec.ts` (U1, U2)
+  — ÉCART DÉCLARÉ** : le § 6 ne le nomme pas, alors que « neutralisable en millisecondes » l'exige ;
+  `neutralize-rang23.py` (neuf) ; `neutralize-solid-s5b.py` (S5b-2 réorientée, MD-F1-8) ; les `.md` d'autorité ;
+  `docs/preuves/D305/`. **Pas** `booking-locks.types.ts` : la forme du résultat ne change pas. Toute autre ancre que
+  `lancer-campagnes.py` trouverait périmée s'ajoute **par écrit**, section D305.
 - **Aucune migration** (l'audit n'en nomme aucune ; les verrous sont à l'exécution), **aucune dépendance**, aucune clé
   i18n neuve attendue (les codes et messages existent) — un écart se déclare.
 - **Documentaire** : `.md` d'autorité, `docs/preuves/<Dnnn>/`.
@@ -1514,8 +1581,8 @@ classe de défaut des trois autres, et le mêler à une course mélangerait deux
    entrée R1 du backlog ; ~~**à arrêter par le relecteur**~~. ⛔ *(D304 : **arrêtée** par le relecteur — décision 4 :
    les vingt harnais relevés par D303, et tout harnais neuf qui mute un fichier du chemin de l'argent.)*
 
-⛔ **(D304, 24/09/2026) ÉCHÉANCE — Ko : « le relecteur les tranchera avant 23a. »** Les choix 1 à 4 restent OUVERTS ;
-23a ne s'ouvre pas sans eux. Faits **mesurés** par D304 qui les éclairent, écrits ici pour que le relecteur n'ait rien
+⛔ **(D304, 24/09/2026) ÉCHÉANCE — Ko : « le relecteur les tranchera avant 23a. »** ~~Les choix 1 à 4 restent OUVERTS ;
+23a ne s'ouvre pas sans eux.~~ ⛔ *(D305 : tranchés — annotation en fin de section.)* Faits **mesurés** par D304 qui les éclairent, écrits ici pour que le relecteur n'ait rien
 à recouper (pièce : `docs/preuves/D304/sondes/sorties/verrous-resultats.txt`) — **la session ne choisit pas** :
 - **choix 1 (i)** — prémisse **tenue** : un `SELECT … FOR UPDATE` bloqué par un refus en vol, relâché au COMMIT, **lit
   `DECLINED`** ; ⚠ **effet de bord mesuré, non écrit au cadrage** : un `FOR UPDATE` sur une ligne de réservation
@@ -1532,6 +1599,19 @@ classe de défaut des trois autres, et le mêler à une course mélangerait deux
   modifie **0** ligne ;
 - **choix 4** — la technique de 23c est désormais mesurée (§ 3, annotation D304) : passe-plat explicite, nettoyage par
   réaffectation ; **jamais `mockRestore()`**.
+⛔ **(D305, 24/09/2026) TRANCHÉS PAR LE RELECTEUR (chat), délégué par Ko** — 1 : forme **(ii)** ; 2 : le contrôle
+d'avant transaction disparaît comme **garde** (F2, F5) ; 3 : **400 `cancelReasonRequired`** ; 4 : la journalisation
+est une **garde**. Texte et motifs : méthode renforcée, bloc D305. Ce que la session en a mesuré (motif (b)) : section
+D305.
+⚠ **(D305) « DIS-LE AVANT 23b » — LA GARDE « DÉJÀ CONVERTI » PROTÈGE QUELQUE CHOSE QUE L'ÉCRITURE CONDITIONNELLE AU
+STATUT NE COUVRE PAS** — *lecture de code à `6e87430`, non mesurée* : la conversion **ne change pas** le statut du devis
+(il reste `DRAFT`, « il attend l'acompte » — MD-F2-2), donc un devis **déjà converti** satisfait toute condition de
+statut. Ce qui arrête la seconde conversion n'est pas l'écriture conditionnelle mais **l'index unique
+`bookings_quote_id_key`** et la traduction de son P2002 en 409 `QUOTE_ALREADY_CONVERTED` (MD-F2-3) — une garde de
+**base**, que `QuotesService.convert` double aujourd'hui par `current.booking !== null`, lu hors transaction, « pour
+éviter d'écrire pour rien » (commentaire au source). ⇒ Retirer ce contrôle comme garde ne rouvre pas la double
+conversion **tant que l'unique et sa traduction tiennent** ; mais il ne se remplace pas par l'écriture conditionnelle.
+**Au relecteur, avant 23b** ; à mesurer par 23b (MD-F2-3, MD-F2-6).
 
 ### 9. `[BACK][P0]` « traduire `bookings_no_overlap_accepted_confirmed` en conflit propre » — confronté
 
@@ -1618,8 +1698,10 @@ compté mordu aujourd'hui par les vingt (code ≠ 0) :
   ⇒ **NON PROUVÉE**.
 - **MD-R1-4** — plantage dans le test titré (TypeError, erreur qui n'est pas une assertion). ⇒ **NON PROUVÉE** — c'est
   l'exigence « assertion en échec ».
-- **MD-R1-5** — délai dépassé dans le test titré. ⇒ **NON PROUVÉE**, sauf **exception écrite PAR CIBLE** quand la garde
-  EST un délai (forme de `budgets`) — jamais par défaut.
+- **MD-R1-5** — délai dépassé dans le test titré. ⇒ **NON PROUVÉE**~~, sauf **exception écrite PAR CIBLE** quand la garde
+  EST un délai (forme de `budgets`) — jamais par défaut~~. ⛔ *(D305 : clause barrée — décision 4 du relecteur, « aucune
+  exception “délai” » ; une cible qui ne peut mordre que par délai signale un défaut de SON test, et cela se déclare au
+  cadrage du lot qui la crée, jamais dans le harnais.)*
 - **MD-R1-6** — un AUTRE test que celui qu'on attend échoue (la mutation casse un voisin). ⇒ la cible **nomme** son ou
   ses titres attendus ; un échec hors de ces titres ne compte pas.
 - **MD-R1-7** — sortie tronquée, processus tué, pas de ligne `Tests`. ⇒ **NON PROUVÉE** (rien n'est lu).
@@ -1633,9 +1715,28 @@ compté mordu aujourd'hui par les vingt (code ≠ 0) :
   l'agrégateur**) ; les lignes de détail commencent par des espaces et ne contiennent pas « NON MESUR ».
 - **MD-R1-11** — remplacement fantôme : fermé par `verifier-mutations.py` (D286) — **inchangé**, rappelé. ⚠ Cet
   instrument IMPORTE les harnais et lit leurs cibles : un changement de FORME des cibles (un champ de plus dans un tuple
-  qu'il dépaquette) peut le casser — à mesurer dans le sous-lot.
+  qu'il dépaquette) peut le casser — à mesurer dans le sous-lot. ⛔ *(D305 : **mesuré sur un 7ᵉ champ** —
+  `neutralize-rang23.py` porte ses titres attendus en 7ᵉ champ, et `verifier-mutations.py rang23` rend « POSEES 5 ·
+  NON POSEES 0 » : il lit les cinq premiers champs et accepte un tuple plus long. Pièce :
+  `docs/preuves/D305/neutralisation/verifier-mutations-rang23.txt`.)*
 - **MD-R1-12** — la sortie gardée porte une valeur sensible (un message d'assertion qui cite un jeton). ⇒ les journaux
   versés passent par l'audit de secrets (D298, D299) avant tout commit, comme aujourd'hui ; aucune règle neuve.
+⛔ **(D305, 25/09/2026) TROIS CONSTATS MESURÉS PAR 23a, PROPOSÉS COMME MODES — AU RELECTEUR (chat), AVANT R1 ; la
+session ne les ajoute pas d'elle-même :**
+- **supertest** — `.expect(<statut>)` lève une `Error`, **pas** une `AssertionError` : relevé à la source
+  (`supertest@7.2.2`, `lib/test.js`, `_assertStatus`) **et mesuré** — sous R23-F5-a, « le client DOIT un motif pour
+  annuler une demande ACCEPTÉE » échoue par `Error: expected 400 "Bad Request", got 200 "OK"`
+  (`docs/preuves/D305/neutralisation/R23-F5-a-int-reservations.txt`). ⇒ Sous la lecture fermée par défaut, **toute
+  cible des vingt qui ne mord que par un `.expect(<statut>)` de supertest sortira NON PROUVÉE** — ce n'est pas un défaut
+  du lecteur, c'est la forme du test. Combien de cibles en dépendent : **non relevé**.
+- **le glyphe « × » dans un TITRE** — il marque un échec dans la sortie de vitest, et des titres existants le portent
+  (`referentials.int-spec.ts` « seed ×2 », `venue-media.service.spec.ts` « put ×2 », `venues-public.service.spec.ts`
+  « page × salles » — relevé par `grep`, lignes non rejouées). ⇒ Le lecteur ancre « × » en **tête** de ligne, jamais
+  dans la ligne (D275) ; `docs/preuves/D305/lecture/lire-echecs.py` le fait.
+- **« les 8 signatures calibrées par D304 »** (décision 1) — la pièce vérifie **8 cas** (sept dans `tests.cas.ts`, **dont
+  un cas qui PASSE**, et le crochet) ; l'import et la collecte vide y sont jugés au niveau du fichier, **hors** de ce
+  compte ; le § 6 ci-dessous dit « les sept cas du § 3 ». ⇒ Ce que « 8 » désigne est à fixer par la calibration de R1,
+  pas à reprendre d'un de ces trois comptes.
 
 ### 5. Comment le harnais distinguera « assertion en échec » de « rien n'a tourné »
 
@@ -1643,10 +1744,10 @@ Par cible, sur la sortie texte (reporter par défaut ou verbeux), codes ANSI ret
 1. **(a) la ligne `Tests` existe et son total entre parenthèses ÉGALE le nombre attendu pour cette mesure** — relevé au
    témoin, jamais écrit de mémoire. Sinon : NON PROUVÉE (MD-R1-1, -2, -7).
 2. **(b) aucun bloc d'échec de FICHIER** (`FAIL <fichier> [ <fichier> ]`). Sinon : NON PROUVÉE (MD-R1-2, -3).
-3. **(c) au moins un titre attendu figure sur une ligne « × »**. Sinon : MUETTE (vert), ou « rouge sans le titre
-   attendu ».
+3. **(c) ~~au moins un~~ ⛔ *(D305 : **chaque** — décision 5 du relecteur, chacun exigé)* titre attendu figure sur une
+   ligne « × »**. Sinon : MUETTE (vert), ou « rouge sans le titre attendu ».
 4. **(d) pour ce titre, la première ligne non vide du bloc `FAIL … > <titre>` commence par `AssertionError`.** Sinon :
-   NON PROUVÉE (MD-R1-4, -5) — sauf exception écrite par cible.
+   NON PROUVÉE (MD-R1-4, -5)~~ — sauf exception écrite par cible~~. ⛔ *(D305 : barré, décision 4.)*
 5. **(e) code de sortie ≠ 0** — cohérence ; **seul, il ne prouve rien**.
 **Mordue ⇔ (a) ∧ (b) ∧ (c) ∧ (d) ∧ (e).** Trois autres issues, distinctes et nommées : **muette**, **non prouvée**,
 **erreur de script** (ancre). ⇒ Ce qu'il garde, par morsure (décision 4), sur une ligne de détail : collectés, titre en
@@ -1684,7 +1785,8 @@ qui n'avait jamais été établie. Elle se traite comme D286 traite une muette �
 - **Les vingt harnais** : leur lancement rend la sortie ; leur verdict passe par le lecteur ; chaque cible nomme son ou
   ses titres attendus ; ligne de détail par morsure. **`neutralize-e3d1-s8.py`** : en-tête rendu vrai (et sa
   signature `lancer(nom: str) -> int`, qui rend un tuple).
-- **Possibles** : `neutralize-rang23.py` (selon le choix du § 9) ; `verifier-mutations.py` si la forme des cibles
+- **Possibles** : `neutralize-rang23.py` (selon le choix du § 9) ⛔ *(D305 : choix **(β)** — il existe, juge au code, ses
+  titres attendus en 7ᵉ champ ; **R1 le corrige avec les vingt**, il n'est plus « possible » mais **dû**)* ; `verifier-mutations.py` si la forme des cibles
   change (MD-R1-11) ; **`lancer-campagnes.py` : AUCUN changement attendu** (MD-R1-10) — un écart se déclare.
 - **Pièces** : `docs/preuves/<Dnnn>/` — sorties de calibration, et pour chaque harnais la sortie du témoin et du
   pré-vol. **Aucun fichier d'application, aucune spec, aucune migration, aucune dépendance.**
@@ -1702,6 +1804,11 @@ qui n'avait jamais été établie. Elle se traite comme D286 traite une muette �
    sous-lot, et chacune s'écrit.
 5. **Les titres attendus** : un seul par cible, ou plusieurs quand une mutation doit rougir sur plusieurs mesures (cas
    de S11b-8, « les DEUX consommateurs ») — proposé : une LISTE, chacun exigé.
+⛔ **(D305, 24/09/2026) TRANCHÉS PAR LE RELECTEUR (chat), délégué par Ko** — 1 : texte, **fermé par défaut**, lecture
+**liée à vitest 3.2.7** ; 2 : module **partagé** ; 3 : **(β)**, et les cibles de 23a déclarent dès maintenant leurs
+titres attendus ; 4 : **aucune exception « délai »** — ce qui **barre** la clause « sauf exception écrite PAR CIBLE »
+de MD-R1-5 (§ 4) et de l'étape (d) (§ 5) ; 5 : une **liste** de titres par cible, chacun exigé. Texte et motifs :
+méthode renforcée, bloc D305.
 
 ## ~~PROCHAIN LOT~~ — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ ~~**OUVERT LE 23/09/2026 : D302**~~ ⛔ **CLOS LE 23/09/2026 : D302**
 
@@ -4114,6 +4221,278 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 25/09/2026 — D305 · rang 23 (reste ouvert), sous-lot 23a — CODE, CHEMIN DE L'ARGENT : F1 et F5, écritures conditionnées au statut source ; décisions du relecteur sur le § 8 et le § 9 ; motif (b) mesuré avant le code
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D304** ⇒ **D305** ; « D305 » : **0** occurrence dans
+les fichiers suivis à `HEAD` (`git grep`). ⇒ **RANG 23, sous-lot 23a**, dans l'ordre arbitré par Ko (D304). **SHA de
+départ : `6e87430`** (provenance, D303 décision 3) — `HEAD` = `origin/main` après `git fetch`, arbre propre, `a-verser/`
+vide. ⛔ **LOT DE CODE DU CHEMIN DE L'ARGENT** (branche (2) : `accept` ouvre l'obligation de payer, l'annulation client
+l'éteint) : **compteur de lots de code non certifiés : ZÉRO → UN.** Méthode renforcée (D126) et forme de revue de D302 :
+**la session qui a codé ne clôt pas 23a** — une AUTRE session, ouverte à froid, tente de le casser ; le relecteur (chat)
+décide ; Ko garde le veto.
+
+### D305 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 23 **ouvert** ; 23a « ⏸ attend le relecteur » (choix 1 à 4 du § 8) | point d'entrée du rang 23 |
+| numéro | dernière ligne du registre : **D304** ⇒ **D305** | registre |
+| compteur | **ZÉRO** — D304 documentaire | ordre des rangs, ligne D304 |
+| synchronisation | `HEAD` = `origin/main` = `6e87430` ; arbre propre ; `a-verser/` vide | `git` |
+| décision attendue | **reçue** — message de Ko du 24/09/2026, écrite en première écriture (méthode renforcée, bloc D305) | — |
+
+### D305 — la lecture adverse de D304, en entier (son rapport de fin de lot n'est jamais parvenu à Ko)
+
+Relue à `6e87430` : la section D304 (l. 4118-4348 à ce SHA), ses annotations des § 3, § 5 et § 8 du cadrage du rang 23,
+le cadrage de R1, et les pièces `docs/preuves/D304/`.
+**Ce qui tient, confronté aux pièces** :
+- **partie C** — chaque ligne du tableau des verrous est dans `sondes/sorties/verrous-resultats.txt` (calibration deux
+  bras ; six mesures de clé étrangère ; après COMMIT ; cinq verrous de ligne ; cinq issues après COMMIT) ; l'espion :
+  `espion-nettoyage-resultats.txt` rend « TIENT SES TROIS BRAS » ;
+- **la reprise** — `integrite-apres-note.txt` : `ZWADJ_CONTINUITE.md` à **1 014 458** octets (sa taille dans l'arbre, en
+  CRLF, à `6e87430` ; le blob en LF en fait 1 001 922),
+  581 lignes ajoutées, 3 doubles espaces, les trois de la table des signatures ; contrôle Chargily : 61 fichiers,
+  **0** porteur ; audit de la reprise : 914 = 878 + 36, **107** alertes ;
+- **le motif (a) du relecteur** (« vérifie-le ») — `PrismaBookingLocks.transition` écrit par
+  `updateMany({ where: { id, status: { in: from } } })` pour `decline`, `cancelAsPro` et `cancelAsClient` ; seul
+  `accept` écrivait par `update({ where: { id } })`. **Vérifié au source, à `6e87430`.**
+**Ce qui ne tient pas, ou manquait — aucun n'est bloquant pour 23a** :
+1. ⚠ **Le tri de l'audit rejoué par la reprise n'est versé nulle part** (l. 4307-4312 à `6e87430` : « les chiffres de
+   la reprise sont dans ses sorties » — le « 0 nouvelle » n'est dans aucune). **Rejoué ici** : 107 et 107 contextes,
+   **0** nouvelle, calibration deux bras — `docs/preuves/D305/lecture-adverse/tri-reprise-d304.txt`.
+2. ⚠ **« ce qu'un UPDATE simple ne fait pas »** (§ 8, choix 1 (i), l. 1522 à `6e87430`) **généralise UNE mesure** : le
+   rival « UPDATE simple » de l'insertion d'un paiement était le **refus** (`docs/preuves/D304/sondes/test/int/
+   verrous.int-spec.ts`, l. 309 : `rivalRefus`), pas l'écriture de (ii). C'est exactement ce que le relecteur a demandé
+   de mesurer — **fait ici, partie B**, et la généralisation tient.
+3. ⚠ **Trois comptes pour un même ensemble de signatures** : « huit cas de réponse connue » (l. 1593 et 4199) et « les
+   sept cas du § 3 » (l. 1661). La pièce vérifie 8 cas **dont un qui PASSE**, l'import et la collecte vide étant jugés au
+   niveau du fichier, hors de ce compte. La décision 1 du § 9 reprend « 8 » : rapporté au § 4 du cadrage de R1.
+4. ⚠ **D304 a mesuré que « × » + titre ne sépare pas une assertion d'un plantage, sans relever la forme d'échec de
+   supertest** : `.expect(<statut>)` lève une `Error`. Trouvé par 23a (partie C) ; § 4 du cadrage de R1.
+
+### D305 — partie A : les décisions du relecteur — ce qui a atterri, et où
+
+| décision | fichier, endroit |
+|---|---|
+| **§ 8, 1 à 4** et **§ 9, 1 à 5** — texte et motifs, **premières écritures du lot** | méthode renforcée, bloc D305 ; cadrage du rang 23, § 8 (tranchés) ; cadrage de R1, § 9 (tranchés) ; `AGENTS.md`, point E3 ; backlog, tête de la section du chemin de l'argent et entrées F1, F5, R1 |
+| § 9, 4 — aucune exception « délai » | cadrage de R1 : MD-R1-5 et étape (d) **barrées** |
+| § 9, 5 — chaque titre exigé | cadrage de R1 : étape (c) « au moins un » **barré** |
+| § 9, 3 — (β), titres déclarés dès maintenant | cadrage du rang 23, § 5 (cibles et titres, **avant le code**) et § 6 ; cadrage de R1, § 8 |
+| § 8, 2 — « dis-le avant 23b » | cadrage du rang 23, § 8 : la garde « déjà converti » protège ce que l'écriture conditionnelle au statut **ne couvre pas** (lecture de code, non mesurée) |
+
+### D305 — partie B : le motif (b), MESURÉ AVANT LE CODE — il TIENT
+
+Sonde : `docs/preuves/D305/sondes/test/int/fk-rival-ii.int-spec.ts` ; sorties : `sondes/sorties/` (code 0). Même
+discriminant que D304 (`lock_timeout` de 1,5 s ⇒ 55P03 si la requête attend), sur `zwadj_test` recréée vide par le
+`globalSetup` réel ; PostgreSQL 18.4, `read committed` ; secteur (`BatteryStatus=2`), `node` = 0.
+**Calibration, trois bras, tous tenus** : rival `FOR UPDATE` sur la réservation (forme (i)) ⇒ l'insertion **ATTEND** ;
+rival UPDATE qui **modifie une colonne à index unique** (`idempotency_key`) ⇒ **ATTEND** — c'est le mécanisme que cite
+la documentation, donc le discriminant voit le mode de verrou d'un UPDATE ; rival sur une AUTRE réservation ⇒
+**N'ATTEND PAS**.
+| rival | a écrit | `FOR UPDATE` testé (le rival TIENT-il la ligne ?) | `FOR KEY SHARE` testé | **INSERT `payments`** |
+|---|---|---|---|---|
+| (ii) en SQL brut — verrou de salle, puis UPDATE conditionné (`status`, `accepted_at`, `payment_due_at`, `updated_at`) | 1 · 1 · 1 | ATTEND | n'attend pas | **N'ATTEND PAS** |
+| (ii) par **Prisma** — `updateMany` réel, transaction interactive réelle tenue ouverte | 1 · 1 · 1 | ATTEND | n'attend pas | **N'ATTEND PAS** |
+| témoin : l'`update` actuel d'`accept` (Prisma) | 1 · 1 · 1 | ATTEND | n'attend pas | n'attend pas |
+⇒ **L'insertion d'un paiement n'attend pas (ii)** ; elle attend (i) — D304. **Pas d'arrêt.** ⚠ Ce que la sonde **ne**
+mesure **pas** : une écriture de (ii) qui toucherait un jour une colonne à index unique (`quote_id`,
+`idempotency_key`) prendrait `FOR UPDATE` — le bras CAL+c le montre ; `accept` n'en écrit aucune.
+
+### D305 — partie C : 23a, le code et ses preuves
+
+**Le code** (fichiers énumérés AVANT d'écrire, cadrage § 6, annotation D305) :
+- **F1** — `booking-locks.prisma.ts`, `acceptUnderVenueLock` : l'`update` devient un `updateMany` **conditionné à
+  `allowedFrom`** (importé du tableau par le service), **compte = 1 exigé** ; à 0, relecture ⇒ `STATUS_CONFLICT` avec le
+  statut réel ; puis relecture de la ligne (`BOOKING_SELECT`). **Le verrou de salle reste.** La traduction du 23P01 reste
+  dans le même `try/catch` (MD-F1-3). La relecture D117 **reste**, pour l'ordre des refus seulement (MD-F1-8).
+- **F5** — `booking-transitions.ts` : `writableFrom(commande, motif)`, fonction PURE, **dérivée de
+  `decideBookingTransition`** (la comparaison « motif manquant » n'existe qu'à un endroit) ; `bookings.service.ts`,
+  `cancelAsClient` : le contrôle d'avant transaction **disparaît** (la lecture préalable ne sert plus qu'à la propriété —
+  404 indistinct, D47) ; l'écriture passe `writableFrom(CANCEL_AS_CLIENT, motif)` ; sur un compte à 0, la relecture
+  choisit le code — `decideBookingTransition` sur le statut relu : **400 `cancelReasonRequired`** ou 409.
+**Le rouge AVANT le correctif, sur PostgreSQL réel** — patron de `payment-intent-race` : rival `pg` brut non commité,
+requête HTTP réelle, attente **du rival** prouvée par `pg_blocking_pids` (une course qui n'a pas eu lieu lève), puis
+COMMIT. Joué sur les sources de `HEAD` (mises de côté puis restaurées, **3 empreintes vérifiées**) :
+`docs/preuves/D305/rouge-vert/rouge-avant-correctif.txt`, code 1, **48 collectés, 3 en échec, 0 échec de fichier** :
+| titre | 1ʳᵉ ligne lue |
+|---|---|
+| **T1** F1 contre un refus | `AssertionError: {…"status":"ACCEPTED"…}: expected 201 to be 409` — l'acceptation a écrasé le refus |
+| **T2** F1 contre une annulation | `AssertionError: {…"status":"ACCEPTED"…,"cancellationReason":"Changement de date de mariage"…}: expected 201 to be 409` |
+| **T3** F5 | `AssertionError: {…"status":"CANCELLED"…,"cancellationReason":null…}: expected 200 to be 400` — annulée sans motif depuis `ACCEPTED` |
+| **T4** MD-F1-8 | vert (préservation — il n'a pas de rouge à produire) |
+| **T5** MD-F1-5 | vert (préservation) |
+**Le vert APRÈS** : intégration **48/48** (dont « la SECONDE acceptation reçoit 409 via le 23P01 » et « deux demandes
+DIFFÉRENTES acceptées simultanément… » : **MD-F1-3 tient avec `updateMany`**) ; unitaire des transitions **23/23**.
+**La neutralisation** — `neutralisation/neutralize-rang23.py` (forme β), **5 cibles, 5 mordues au code** ; chaque sortie
+écrite, versée octet pour octet (`docs/preuves/D305/neutralisation/`, 8 copies sur 8 identiques par empreinte) ; les
+cinq mutations **posées** (`verifier-mutations.py rang23` : POSEES 5 · NON POSEES 0).
+**La lecture** — `docs/preuves/D305/lecture/lire-echecs.py` (pièce, pas instrument ; calibré sur **six bras** des
+sorties brutes de D304 : assertion ⇒ morsure ; plantage, délai, collecte vide, crochet ⇒ non prouvée ; test vert ⇒
+muette) ; sortie `lecture/lecture-sortie.txt` : **0 verdict attendu manqué** —
+| cible | collectés | titres attendus, tous en `AssertionError` | autre titre en échec |
+|---|---|---|---|
+| R23-F1-a | 48 | T1, T2 | — |
+| R23-F1-b | 48 | T1, T2 (la ligne relue part « acceptée » avec son statut `DECLINED` / `CANCELLED`) | — |
+| R23-F5-a | 48 | T3 | « le client DOIT un motif… » — par `Error: expected 400 "Bad Request", got 200 "OK"` (supertest), **non déclaré** |
+| R23-F5-b | 48 | T3 (`statusCode 409` au lieu de 400) | idem |
+| R23-F5-c | 23 | U1, U2 (`expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]`) | — |
+**S5b-2 — l'inférence du cadrage, MESURÉE** : `docs/preuves/D305/outils/observer-s5b.py 2` pose la mutation de S5b-2
+(ancre et remplacement **importés** du harnais ; ancre 1 → 0, remplacement présent ; source restaurée à l'identique) :
+**48 collectés, UN seul titre en échec — T4**, par `AssertionError: expected 'BOOKING_BLOCKED_PERIOD' to be
+'BOOKING_STATUS_CONFLICT'` (`docs/preuves/D305/s5b2/`). ⇒ **Sans T4, S5b-2 était muette sous (ii)** ; elle est
+**réorientée** dans `neutralize-solid-s5b.py` (même ancre, même mutation, libellé et motif écrits).
+**S5b-1 — NON PRÉVUE, TROUVÉE PAR `lancer-campagnes.py`** : le verrou de SALLE retiré, **muette** — sous (ii), l'UPDATE
+sérialise aussi accept contre accept, le seul cas que sa mesure exerçait. **Mesuré** avant d'écrire le test :
+`observer-s5b.py 1`, mutation posée, **47/47 verts** (`docs/preuves/D305/s5b1/s5b1-avant-T5-*`). Ce que ce verrou garde
+encore — et que la décision du relecteur nomme en le gardant, « pour la disponibilité » — est **MD-F1-5** (accept
+contre une création de blocage concurrente), listé « inchangé » au cadrage et jamais joué en concurrence. ⇒ Écrit au
+cadrage (§ 2, § 5) **avant** le test ; **T5** le mesure — rival : la création de blocage (verrou de salle, puis
+insertion sur la plage de la demande), non commitée ; aide `courirOuAboutir` : si la requête revient **sans** attendre
+le rival, ce n'est pas une course ratée mais la garde absente, et ce sont les **assertions** qui le disent (une
+`Error` levée ne serait pas une morsure sous R1) — un 409 `BOOKING_BLOCKED_PERIOD` n'étant possible qu'après le COMMIT
+du rival, le résultat prouve lui-même l'ordre. **Mesuré** : sous S5b-1, **48 collectés, UN seul titre en échec — T5**,
+`AssertionError: {…"status":"ACCEPTED"…}: expected 201 to be 409` — la date acceptée ET bloquée
+(`docs/preuves/D305/s5b1/s5b1-int-reservations.txt`). S5b-1 **réorientée** dans `neutralize-solid-s5b.py`.
+
+### D305 — les portes, après la dernière modification de code (secteur, `node` = 0 au départ)
+
+⚠ **Passées DEUX fois** : une première fois (00:14–00:24) avant que `lancer-campagnes.py` trouve S5b-1 muette ; T5 a
+modifié `bookings.int-spec.ts` et `neutralize-solid-s5b.py` ; **toutes rejouées** ensuite (00:50–00:59). Seule la
+seconde passe fait foi ; ses journaux remplacent ceux de la première dans `portes/` (même lot, non commités entre les
+deux). Première passe, pour mémoire : mêmes codes, `test:int` 440/440.
+| porte | code | chiffres | pièce |
+|---|---|---|---|
+| `pnpm typecheck` | 0 | `tsc --noEmit` exécuté sur les neuf projets, `apps/api` compris | `docs/preuves/D305/portes/typecheck.*` |
+| `pnpm lint` | 0 | ⚠ `apps/api` : `eslint src prisma` — **`test/int` n'est pas lint** (rapporté) | `portes/lint.*` |
+| `pnpm test` | 0 | API **663/58** · api-client 36/3 · client 287/20 · pro 347/28 | `portes/test.*` |
+| `pnpm build` | 0 | `nest build`, `next build`, `vite build` | `portes/build.*` |
+| `pnpm test:int` | 0 | **441/441, 36 fichiers**, 298,2 s | `portes/test-int.*` |
+| `pnpm test:e2e` | 0 | **34 réussis, 1 ignoré** (A5 « le calendrier d'une salle survit au rechargement » : `test.skip(true, …)` au source, inchangé depuis le 11/08), 1,9 min | `portes/test-e2e-extrait.txt` — **extrait** : le journal complet porte les requêtes des serveurs de dev avec leurs en-têtes ; il reste hors dépôt, son empreinte est dans l'extrait |
+| `lancer-campagnes.py` | 1 | concernées : `rang23` **5/5** · `s11a` **18/18** · `s11b` 9 mordues + **4 non mesurées** (sortie 3 : ses cibles `--int` ne jouent pas sans le drapeau, par conception) · `solid-s3` **6/6** · `solid-s5b` **5/5** — **0 muette** (première passe : S5b-1 muette, partie C) | `docs/preuves/D305/campagnes/` |
+| `neutralize-s11b.py --int` | 0 | **13/13** — les quatre non mesurées ci-dessus comprises | `campagnes/neutralize-s11b-int.txt` |
+⚠ **Ces verdicts sont au CODE de sortie**, sauf `rang23`, S5b-1 et S5b-2, dont l'échec est **lu** (partie C). Les
+autres (`s11a`, `s11b`, `solid-s3`, S5b-3 à -5) sont dans la portée de R1 : ni infirmés ni prouvés (décision 4 de D304).
+Chronologie de la seconde passe : `docs/preuves/D305/portes/chronologie.txt`.
+
+### D305 — les fichiers : énumérés AVANT d'écrire, confrontés au `git diff` depuis `6e87430`
+
+| fichier | énuméré (cadrage § 6, annotation D305) | objet |
+|---|---|---|
+| `apps/api/src/venues/booking-locks.prisma.ts` | oui | F1 : écriture conditionnelle ; en-tête annoté (« n'est plus l'`update` déplacé par S5b ») |
+| `apps/api/src/venues/booking-transitions.ts` | oui | F5 : `writableFrom` |
+| `apps/api/src/venues/bookings.service.ts` | oui | F5 : `cancelAsClient` |
+| `apps/api/src/venues/booking-transitions.spec.ts` | oui — **écart déclaré** (absent du § 6 d'origine) | U1, U2 et deux gardes de bord |
+| `apps/api/test/int/bookings.int-spec.ts` | oui | T1 à T5, rival `pg` brut, attente prouvée par `pg_blocking_pids` |
+| `neutralisation/neutralize-rang23.py` | oui (neuf) | 5 cibles, forme β |
+| `neutralisation/neutralize-solid-s5b.py` | oui | S5b-2 et S5b-1 réorientées (libellés, motifs) |
+| `AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` | oui | décisions, cadrages, section, reports |
+| `docs/preuves/D305/` | oui | sonde, sorties, journaux, lecture, portes, campagnes |
+⇒ **Aucun autre fichier** ; **aucune migration, aucune dépendance, aucune clé i18n** (les codes et messages existent).
+`booking-locks.types.ts` **non touché** : la forme du résultat n'a pas changé.
+
+### D305 — constats croisés, RAPPORTÉS (un lot, un objet)
+
+- **supertest** : `.expect(<statut>)` lève une `Error` — mesuré ; non-morsure sous la lecture de R1 ⇒ § 4 du cadrage de
+  R1 (proposé comme mode) et entrée R1 du backlog. **Combien des 158 cibles en dépendent : non relevé.**
+- **le glyphe « × » dans des titres existants** ⇒ § 4 du cadrage de R1.
+- **« les 8 signatures »** : trois comptes pour un ensemble ⇒ § 4 du cadrage de R1.
+- **le lint de l'API ne couvre pas `test/int`** ⇒ backlog, reports de D305.
+- **la décision 4 (« jamais ») contre `neutralize-budgets.py`**, dont la garde EST un délai ⇒ backlog, au relecteur.
+- **la garde « déjà converti »** ⇒ § 8 du cadrage du rang 23 et backlog : **au relecteur, avant 23b**.
+
+### D305 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D305/passe-d277/balayage.py` — texte APLATI des quatre fichiers d'autorité, à `HEAD`
+et dans l'arbre ; motifs **lus** dans `motifs.txt` (D289) ; calibration T+ / T− ; ventilation par motif et par
+fichier, motifs à zéro imprimés à part ; tri à la main : `passe-d277/tri.txt`. Sortie versée (`balayage-sortie.txt`) :
+rejouée après la dernière écriture des `.md` **qui précède l'audit de secrets** ; le paragraphe d'audit, écrit après
+lui, est rejoué hors dépôt et confronté au rapport de fin de lot.
+**Sens 1 — ce que 23a invalide** : l'état du rang 23 (titre, table, « aucun lot de code n'est PERMIS »), la ligne du
+rang 24 (« n'est encore PERMIS »), l'échéance du § 8 (« restent OUVERTS »), les clauses « sauf exception » et « au
+moins un » du cadrage de R1, la tête du backlog et ses entrées F1, F5, R1 — **barrées ou annotées en place**. Les
+« AUCUNE LIGNE DE CODE » et « compteur … ZÉRO, inchangé » restants sont **datés** (lots antérieurs) — vrais à leur date.
+**Sens 2 — ce que 23a rend permis** : **R1**, « ⏸ après 23a ». 23a est codé, sa **revue** ne l'est pas : la question
+« R1 avant la fin de la revue ? » est écrite **à Ko**, au point d'entrée et à la ligne du rang 24. Les « peut s'ouvrir »
+génériques restent vrais (compteur à UN : deux lots non certifiés sont tenables, D270) et portent déjà l'annotation de
+D304 (« sur le chemin de l'argent, l'arbitrage ne suffit pas »).
+
+### D305 — audit de secrets avant commit (instrument de D298, tri de D299) — écrit APRÈS l'audit, qui ne lit que `docs/preuves/`
+
+1. **Contrôle de forme Chargily**, à part (l'audit en est aveugle — décision 5 de D304) :
+   `docs/preuves/D305/controles/controle-forme-chargily.py` (copie de celui de D304, élargie aux `.md`, à tout
+   `docs/preuves/D305/` et aux fichiers de code et de harnais du diff) — calibration deux bras OK ; **67** fichiers :
+   **0** porteur.
+2. **Passe** (`audit-secrets-d305.txt`, scellée) : **972** = **935** audités + **37** exclus par l'identité de leurs
+   octets ; **108** alertes ; tri contre la dernière sortie scellée (`D304/reprise/audit-secrets-reprise.txt`, 107
+   contextes) : **1** alerte neuve — `[mot-de-passe]` dans `D305/portes/test-int.log`, ligne 224 : **un mot du TITRE** du
+   test `account.int-spec.ts:389` (« forgot-password : … CONSTANTE, mais aucun e-mail ne part »), pas une valeur ; le
+   mot se retrouve dans 102 fichiers suivis. Tri écrit ICI, pas dans une pièce : une pièce qui recopierait le mot serait
+   un écho non scellé. Sortie du tri (sans contexte) : `controles/tri-audit-d305.txt`.
+3. **« 0 valeur réelle »** (outil de D299) : le journal e2e **complet** — hors dépôt, il porte les requêtes des
+   serveurs de dev avec leurs en-têtes — contre `docs/preuves/D305/`, les trois `.md`, le spec et le harnais : **24**
+   valeurs cherchées, **65** fichiers parcourus, **0** porteur ; calibration deux bras OK. (Console, non versée : elle
+   a tourné après l'audit final.)
+4. **Audit final**, dernière écriture dans `docs/preuves/` (`audit-secrets-final.txt`, scellé) : **974** = **936** +
+   **38** exclus ; **108** alertes ; tri contre la passe du point 2 : **0** nouvelle.
+
+### D305 — pour la session ADVERSE (forme de revue, D302) : de quoi tenter de casser 23a sans rien demander
+
+⛔ Elle **ne corrige rien, elle rapporte** ; elle part de ce commit, pas de ce texte. **À relire contre le dépôt** :
+- **les modes** : cadrage du rang 23, § 2 — MD-F1-1 à -8, MD-F5-1 à -4, MD-X-1 ; **les cibles et titres** : § 5,
+  annotation D305 ; **les fichiers** : tableau ci-dessus ; **la décision** : méthode renforcée, bloc D305.
+- **rejouer, depuis la racine, base de développement lancée, secteur** :
+  `cd apps/api && npx vitest run -c vitest.config.int.ts test/int/bookings.int-spec.ts` (48 attendus) ;
+  `cd apps/api && npx vitest run src/venues/booking-transitions.spec.ts` (23 attendus) ;
+  `python3 neutralisation/neutralize-rang23.py` (journaux dans `.neutralisation-journaux/rang23/`) ;
+  `python3 docs/preuves/D305/lecture/lire-echecs.py .neutralisation-journaux/rang23` (lecture, calibration six bras) ;
+  `python3 neutralisation/verifier-mutations.py rang23` ; `python3 neutralisation/neutralize-solid-s5b.py` ;
+  `python3 docs/preuves/D305/outils/observer-s5b.py <1 ou 2> <sortie>` ;
+  la sonde du motif (b) : `cd apps/api && npx vitest run -c vitest.config.int.ts --dir <racine>/docs/preuves/D305/sondes
+  fk-rival-ii`.
+- **titres attendus**, un par ligne « × », chacun en `AssertionError` : T1, T2 (R23-F1-a, -b), T3 (R23-F5-a, -b),
+  U1, U2 (R23-F5-c), T4 (S5b-2), T5 (S5b-1).
+- **ce que ce lot n'a PAS essayé**, et qu'une session adverse peut viser : une cible qui neutraliserait la relecture
+  **après** un compte à 0 (le 409 garderait-il le statut réel ?) — les assertions sur `message.status` la couvrent,
+  aucune cible ne le prouve ; accept contre annulation **pro** (impossible depuis `PENDING` par le tableau — non
+  mesuré) ; l'aide `courirOuAboutir` de T5, qui laisse passer une requête revenue sans attendre (son raisonnement est
+  écrit au-dessus d'elle, il n'est prouvé que par S5b-1) ; un
+  interblocage (MD-F1-6) — aucun test ne force l'ordre inverse des verrous ; la forme de l'erreur du pilote pour un
+  23P01 levé par `updateMany` n'est mesurée que par les deux tests existants, pas par une cible neuve (S5b-4 la couvre).
+
+### ⛔ D305 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **DEUX TITRES PORTAIENT LE GLYPHE « × » QUI MARQUE UN ÉCHEC** — T1 « F1 × refus », T2 « F1 × annulation », écrits
+   au cadrage puis dans le test. C'est D275 (le mot d'échec dans le NOM d'un test qui passe), écrit **dans les titres
+   que R1 doit reprendre**. Vu en relisant avant la preuve ; renommés au cadrage, au test et au harnais ; **rouge,
+   vert et campagne rejoués** avec les nouveaux titres. La première écriture reste **citée** au § 5, avec le motif du
+   renommage.
+2. ⛔ **UN « MESURÉ » ÉCRIT AVANT LA MESURE** — le commentaire de S5b-2 dans `neutralize-solid-s5b.py` disait « Mesuré
+   le 25/09/2026 : … le SEUL titre en échec est celui de MD-F1-8 » avant que `observer-s5b2.py` ait tourné. La mesure a
+   suivi et **confirme** (un seul titre en échec) ; l'ordre était faux. C'est la faute n° 1 de D304 sous une autre
+   forme : un attendu écrit avant la sortie brute.
+3. ⚠ **LES PORTES N'ONT PAS ÉTÉ RELEVÉES À L'ENTRÉE** (`AGENTS.md`, leçon de S11-a). L'état d'entrée est celui de la
+   dernière marque (rang 19, `0a8235d`) plus trois lots documentaires — **inféré, pas mesuré**. Les deltas de compteurs
+   (+4 unitaires, +4 d'intégration) sont ceux des tests écrits, pas une différence mesurée.
+4. ⛔ **UN EXTRACTEUR NON CONFRONTÉ À LA SORTIE BRUTE** — l'extrait du journal e2e retirait les lignes qui commencent par
+   `[WebServer]` sans retirer d'abord les codes ANSI : **0 retirée**. Vu parce que le compte était imprimé ; refait
+   avec l'attendu compté par une autre méthode à côté (666 sur 666). Première version non commitée. D275 et D290,
+   encore.
+5. ⛔ **J'AI PRÉVU UNE MUETTE SUR DEUX.** En renommant les cibles « d'avance », j'ai vu que la relecture D117 cessait
+   d'être la garde (S5b-2) et **pas** que le verrou de salle cessait de l'être pour accept contre accept (S5b-1) — le
+   même raisonnement, appliqué à la ligne d'au-dessus. C'est `lancer-campagnes.py` qui l'a trouvée, **après** que les
+   portes étaient passées : T5 a été écrit ensuite, au cadrage d'abord, et **toute la chaîne a été rejouée** (vert,
+   rouge sur les sources de `HEAD`, campagne, observations, lecture, portes, e2e, campagnes). ⇒ **C'est la raison
+   d'être de ce mécanisme** (D269) : une règle à se rappeler l'aurait manquée — elle venait de la manquer.
+
+### ⛔ D305 — CE QUE CE LOT NE FAIT PAS
+
+- **Il ne clôt pas 23a** : la session adverse, puis le relecteur, puis la certification (bloquée par R1).
+- **Il ne touche ni F2 ni F6** (23b, 23c), ni `DomainEvents`, ni `quotes*`.
+- **Il ne corrige pas R1** : `neutralize-rang23.py` juge au code (β) ; le lecteur de `docs/preuves/D305/lecture/` est une
+  pièce, pas le module de R1.
+- **Il ne relève pas** combien de cibles des vingt ne mordent que par supertest.
+- **Il n'arbitre pas** si R1 peut s'ouvrir avant la fin de la revue de 23a : à Ko.
 
 ## Session du 24/09/2026 — D304 · rang 23 (reste ouvert), lot DOCUMENTAIRE : l'ordre des sous-lots arbitré par Ko, cinq décisions du relecteur, le cadrage de R1, et les deux inférences du cadrage mesurées
 
@@ -11908,6 +12287,42 @@ motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
    documentation Chargily**. Sa calibration utilisera une **valeur synthétique** de cette forme, **assemblée à
    l'exécution** : jamais une vraie clé sur le disque. Entrée `[OUTIL]` du backlog, reports de D303.
 
+#### ⛔ DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 24/09/2026 (D305) — § 8 DU CADRAGE DU RANG 23 ET § 9 DU CADRAGE DE R1
+
+Écrites telles que Ko les a transmises, avec leur motif — **premières écritures du lot D305**, avant toute ligne de
+code. La session ne les a pas prises ; ce qu'elle en a mesuré ou relevé est écrit à part, section D305.
+**§ 8 du cadrage du rang 23** :
+1. **F1 : forme (ii), écriture conditionnelle.** `updateMany` conditionné au statut source, **compte = 1 exigé** ; s'il
+   rend 0 : relecture, puis conflit typé. **Le verrou de salle reste**, pour la disponibilité. Statuts sources
+   **IMPORTÉS** de la table des transitions, jamais recopiés. *Motifs* : **(a)** decline et cancel écrivent déjà sous
+   condition de statut (audit F1 ; « vérifie-le ») : une seule mécanique pour toutes les transitions ; **(b)** (i) bloque
+   l'insertion d'un paiement qui référence la ligne, c'est mesuré par D304 ; d'après la documentation PostgreSQL, un
+   UPDATE qui ne touche pas de colonne de clé ne bloque pas une insertion par clé étrangère ; **(c)** (iii) repose sur un
+   mode de verrou non mesuré. ⚠ **Le motif (b) se MESURE avant le code** : rejouer la sonde de D304 avec (ii) comme
+   rival ; si l'insertion attend aussi, le dire et s'arrêter.
+2. **F2 et F5 : le contrôle d'avant transaction disparaît comme GARDE.** Après une écriture conditionnelle qui rend 0,
+   une relecture ne sert qu'à choisir le code d'erreur. Si la garde « déjà converti » de `convert` protège quelque
+   chose que l'écriture conditionnelle ne couvre pas, **le dire avant 23b** : la décision changerait.
+3. **F5 : 400 `cancelReasonRequired`.** *Motif* : même état, même requête, même réponse, que la course ait eu lieu ou
+   non.
+4. **F6 : la journalisation est une GARDE.** Un test l'exige, une cible la neutralise. *Motif* : le correctif change un
+   échec bruyant en échec silencieux, et le journal en est la seule trace. **Espion** : la technique mesurée par D304
+   (passe-plat explicite, nettoyage par réaffectation, jamais `mockRestore()`).
+**§ 9 du cadrage de R1** :
+1. **Sortie texte, mais FERMÉE PAR DÉFAUT** : une sortie qui ne correspond à aucune des 8 signatures calibrées par D304
+   n'est pas une morsure. La lecture est **liée à la version calibrée de vitest (3.2.7)** : avec une autre version, le
+   harnais refuse de juger jusqu'à recalibration.
+2. **Module partagé.** *Motif* : une copie par harnais diverge (précédent `revealAndFocus`).
+3. **(β), pas (α).** *Motif* : 23a passe avant R1. Sous (α), 23a devrait copier le lecteur (contraire au choix 2) ou
+   construire le module de R1 (fondre deux lots que l'ordre sépare). La règle b couvre les preuves de 23a : la session
+   qui tentera de le casser lira chaque échec. **Les cibles de 23a déclarent DÈS MAINTENANT leurs titres attendus**,
+   pour que R1 les reprenne.
+4. **Aucune exception « délai »** : un délai dépassé n'est jamais une morsure. Une cible qui ne peut mordre que par
+   délai signale un défaut de SON test, qui doit convertir l'attente en assertion. Cela se déclare au cadrage du lot
+   qui la crée, jamais dans le harnais.
+5. **Une liste de titres par cible, chacun exigé : accepté.** Une panne qui fait échouer un autre test ne compte pas
+   pour la cible.
+
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
 ce qui ne vit que dans le navigateur réel, et ce qu'un test vert ne regarde pas.
@@ -12534,3 +12949,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D302 | A | D302 — rang 22 CLOS, lot DOCUMENTAIRE : arbitrages de Ko — « hors rang » rejeté (D301 = rang 21, rétroactivement ; aucun lot hors de l'ordre des rangs) ; E3 codé par Claude Code, décisions de paiement au relecteur (chat), forme de la revue ratifiée (« D39 » ne bloque plus le code E3 ; restent un rang arbitré, l'état des lieux et le cadrage) ; pointeur « ORDRE DES RANGS » sous « État des lots » ; entrées neuves sans priorité par urgence (BLOQUE ou « à ordonner par Ko », COÛT relevable), sort des P0-P3 dû à Ko — puis les deux audits externes du 09/09 versés (SHA-256 égaux) et confrontés par symbole à `HEAD` : tous les constats nommés OUVERTS sauf le montage PG18 (clos par D292) ; relecteur : F1, F2, F6 bloquent E3d, F8 la levée du drapeau, A3 tout nouveau type de tarification, R2 avec le prochain lot `booking-charge` ; `pnpm audit` rejoué (la commande exacte échoue sous pnpm 10.34.4) : 55 avis, 53 GHSA ; compteur ZÉRO inchangé ; rang 23 en attente d'arbitrage de Ko |
 | D303 | A | D303 — rang 23 OUVERT, lot DOCUMENTAIRE (cadrage) : arbitrage de Ko écrit en première ligne (transitions atomiques, audit SOLID 09/09 · F1, F2, F5, F6) — un fait déclaré par Ko : pas de compte Chargily en mode test (E3b-2 et E3c bloqués, E3d et E3e suivent ; E3 attend ce fait, pas une priorité) ; décisions du relecteur (chat) déléguées par Ko : forme de revue sur tout lot de code du chemin de l'argent, R1 (preuve = échec LU ; sa correction dans les harnais du chemin de l'argent bloque la levée du drapeau), provenance du point 10 réécrite, D117 annoté, motifs de F8 (prémisse vérifiée) et R2, `findOrCreatePendingIntent` close par D255 sous réserve de R1, D238 → bloque E3d ; zip de l'auditeur versé (audit de secrets sur copie hors dépôt : l'instrument ne peut pas pointer ailleurs, enveloppant) ; cadrage écrit, 14 cibles neuves, découpage proposé en trois sous-lots, à trancher par Ko ; relevés : 20 harnais sur 27 jugent au seul code de sortie, 0 journal sur 85 ne garde l'échec, l'audit de secrets aveugle aux clés Chargily ; compteur ZÉRO inchangé ; rang 24 en attente d'arbitrage de Ko |
 | D304 | A | D304 — rang 23 (reste ouvert), lot DOCUMENTAIRE : ordre arbitré par Ko (ce lot → 23a F1+F5 → R1 → certification → 23b F2 → 23c F6 → certification, tous au rang 23) ; décisions du relecteur (chat), déléguées par Ko : motif de l'ordre, motif de la décision 1 de D303, « chemin de l'argent » = une RÈGLE (montant, transition, paiement, harnais ; formater ≠ recalculer ; doute ⇒ demander ; carte = pièce datée), R1 (portée 20 + neufs, bloque la prochaine certification qui compte ce chemin), l'audit aveugle aux clés Chargily bloque la reprise d'E3 ; cadrage de R1 (« × » + titre ne prouve pas une assertion — mesuré) ; mesuré : la clé étrangère n'attend que le rival en FOR UPDATE (inférence tenue), l'espion Prisma 7 nu échoue au bras négatif et mockRestore casse le délégué (passe-plat explicite + réaffectation tiennent) ; 23a attend le relecteur (choix 1 à 4 du § 8) ; compteur ZÉRO inchangé ; rang 24 en attente d'arbitrage de Ko |
+| D305 | A | D305 — rang 23 (reste ouvert), sous-lot 23a, CODE, CHEMIN DE L'ARGENT : F1 + F5 ; décisions du relecteur (chat), déléguées par Ko, écrites en premières écritures — § 8 : F1 forme (ii) (updateMany conditionné, compte = 1, relecture ⇒ conflit typé, verrou de salle gardé, statuts importés), le contrôle d'avant transaction n'est pas une garde (F2, F5), F5 en 400 cancelReasonRequired, la journalisation de F6 est une garde ; § 9 de R1 : texte fermé par défaut lié à vitest 3.2.7, module partagé, (β), aucune exception « délai », liste de titres chacun exigé ; motif (b) MESURÉ avant le code (l'insertion d'un paiement n'attend pas (ii), trois bras de calibration) ; rouge avant correctif et vert après sur PostgreSQL réel (T1, T2, T3 en AssertionError ; 47/47) ; writableFrom pure, dérivée de decideBookingTransition ; neutralize-rang23.py (5 cibles, titres en 7ᵉ champ, échecs LUS, 0 verdict manqué) ; MD-F1-8 ajouté avant le code, S5b-2 réorientée (mesurée muette sans T4) ; S5b-1 trouvée MUETTE par lancer-campagnes (le verrou de salle ne garde plus accept contre accept), MD-F1-5 mesuré par T5, S5b-1 réorientée, chaîne entière rejouée ; constats : supertest .expect lève une Error (non-morsure sous R1), glyphe « × » dans des titres, « 8 signatures », lint API hors test/int, décision 4 contre budgets, garde « déjà converti » à dire avant 23b ; compteur ZÉRO → UN ; 23a attend la session adverse ; rang 24 en attente d'arbitrage de Ko |

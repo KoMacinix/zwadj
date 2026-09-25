@@ -1,0 +1,5 @@
+cible : S5b-1. ⚠ LE VERROU DE SALLE SAUTE — deux acceptations concurrentes ne sont plus sérialisées
+ancre : 1 occurrence(s), 1 attendue(s) dans apps/api/src/venues/booking-locks.prisma.ts
+posée : ancre 0 (attendu 0) · remplacement 1 (attendu 1)
+code de sortie : 0 · sortie : docs/preuves/D305/s5b1/s5b1-avant-T5-int-reservations.txt · source restaurée à l'identique : True
+exit=0

@@ -1,0 +1,13 @@
+calibration : 8 bras passent sur 8 · manqués : aucun
+AGENTS.md            HEAD  octets   143311 · CRLF      0 · LF nu   1340 · CR nu 0
+AGENTS.md            arbre octets   146476 · CRLF   1356 · LF nu      0 · CR nu 0
+AGENTS.md            UTF-8 strict : OK
+AGENTS.md            lignes ajoutées examinées : 16 · double espace interne : 0 (attendu 0, candidats à trier) · accents graves accolés : 0 (attendu 0)
+ZWADJ_BACKLOG.md     HEAD  octets   393320 · CRLF      0 · LF nu   4459 · CR nu 0
+ZWADJ_BACKLOG.md     arbre octets   403097 · CRLF   4510 · LF nu      0 · CR nu 0
+ZWADJ_BACKLOG.md     UTF-8 strict : OK
+ZWADJ_BACKLOG.md     lignes ajoutées examinées : 52 · double espace interne : 0 (attendu 0, candidats à trier) · accents graves accolés : 0 (attendu 0)
+ZWADJ_CONTINUITE.md  HEAD  octets  1001922 · CRLF      0 · LF nu  12536 · CR nu 0
+ZWADJ_CONTINUITE.md  arbre octets  1056572 · CRLF  12933 · LF nu      0 · CR nu 0
+ZWADJ_CONTINUITE.md  UTF-8 strict : OK
+ZWADJ_CONTINUITE.md  lignes ajoutées examinées : 418 · double espace interne : 0 (attendu 0, candidats à trier) · accents graves accolés : 0 (attendu 0)

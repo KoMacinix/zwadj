@@ -777,6 +777,11 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   marqueur **sans objet**.
 - ⚠ **UNE CIBLE DEVENUE SANS OBJET SE RÉORIENTE OU SE RETIRE, PAR ÉCRIT.** Quand le décor est passé d'un composant à une image, « le décor disparaît » a cessé d'être la faute possible : c'est devenu « le décor se met à parler » (perte de `alt`). Quatre cibles ont été retirées avec le code qu'elles mesuraient, une réorientée, une ajoutée.
 - ⛔ **« × » + TITRE NE PROUVE PAS UNE ASSERTION, ET UN CODE DE SORTIE NON NUL ENCORE MOINS (D304, mesuré sur vitest 3.2.7).** Un plantage (`TypeError`) et un délai dépassé marquent le test « × » exactement comme une assertion ; seule la **première ligne du bloc `FAIL … > <titre>`** les sépare (`AssertionError: …` contre `TypeError: …`, `Error: Test timed out in …`). Une erreur d'import, une collecte à zéro et un crochet en échec ne marquent **aucun** titre : bloc d'échec **de fichier** (`FAIL <f> [ <f> ]`), ligne `Tests` à « no tests » ou « skipped » — **et code de sortie 1 dans tous ces cas**. ⚠ En JUnit, une collecte ratée produit un `<testcase>` **en échec** : compter les cas du JUnit prend « rien n'a tourné » pour « un test a échoué ». Pièces : `docs/preuves/D304/r1/signatures/` ; la lecture exigée sur le chemin de l'argent est au cadrage de R1.
+  ⚠ **(D305, mesuré) `.expect(<statut>)` de supertest lève une `Error`, pas une `AssertionError`** — « `Error: expected
+  400 "Bad Request", got 200 "OK"` » (`docs/preuves/D305/neutralisation/R23-F5-a-int-reservations.txt`). Un test qui ne
+  rougit que par là n'est pas une morsure sous la lecture de R1. ⇒ *Dérivé par la session, pas une décision du
+  relecteur* : **sur le chemin de l'argent, un verdict s'écrit par `expect` de vitest** ; et **un titre de test ne porte
+  pas le glyphe « × »**, qui marque un échec dans cette sortie (faute n° 1 de D305).
 ## À NE PAS faire
 - Ne pas élargir le périmètre au-delà du MVP demandé, même si le design fourni montre plus.
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).
@@ -845,6 +850,17 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   - ⛔ **L'audit de secrets ne voit pas une clé au format Chargily : cela BLOQUE LA REPRISE D'E3** — tout lot qui
     manipule des clés Chargily. La correction reconnaîtra la valeur **par sa forme**, calibrée sur une valeur
     **synthétique assemblée à l'exécution** — jamais une vraie clé sur le disque.
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 24/09/2026 (D305)** — texte et motifs : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D305 :
+  - **une transition du chemin de l'argent s'écrit sous CONDITION de son statut source** — `updateMany` conditionné,
+    **compte = 1 exigé** ; à 0, une relecture ne sert qu'à **choisir le code d'erreur** ; les statuts sources sont
+    **importés** de la table des transitions ; le contrôle d'avant transaction **n'est pas une garde** (rang 23 : F1,
+    F2, F5 ; F5 refusé en **400 `cancelReasonRequired`**, « même état, même requête, même réponse ») ;
+  - **F6** : la journalisation d'un échec post-commit **est une garde** — un test l'exige, une cible la neutralise ;
+  - **R1** : lecture de la sortie **texte, fermée par défaut** (hors des signatures calibrées par D304, pas de morsure),
+    **liée à vitest 3.2.7** (autre version ⇒ le harnais refuse de juger) ; **un délai dépassé n'est jamais une
+    morsure** ; **une liste de titres attendus par cible, chacun exigé** ; un **module partagé**, pas une copie par
+    harnais ; les harnais nés avant R1 (celui de 23a) jugent au code et sont prouvés par l'échec LU (forme β).
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

@@ -1,0 +1,24 @@
+== typecheck début 2026-09-25T00:50:00-04:00
+== typecheck fin 2026-09-25T00:50:19-04:00 exit=0
+== lint début 2026-09-25T00:50:19-04:00
+== lint fin 2026-09-25T00:50:31-04:00 exit=0
+== test début 2026-09-25T00:50:31-04:00
+== test fin 2026-09-25T00:51:43-04:00 exit=0
+== build début 2026-09-25T00:51:43-04:00
+== build fin 2026-09-25T00:52:19-04:00 exit=0
+== test-int début 2026-09-25T00:52:19-04:00
+== test-int fin 2026-09-25T00:57:20-04:00 exit=0
+== test-e2e début 2026-09-25T00:57:20-04:00
+== test-e2e fin 2026-09-25T00:59:17-04:00 exit=0
+== campagnes début 2026-09-25T00:59:17-04:00
+== campagnes fin 2026-09-25T01:11:01-04:00
+== s11b --int début 2026-09-25T01:11:01-04:00
+== s11b --int fin 2026-09-25T01:15:38-04:00
+ M apps/api/src/venues/booking-locks.prisma.ts
+ M apps/api/src/venues/booking-transitions.spec.ts
+ M apps/api/src/venues/booking-transitions.ts
+ M apps/api/src/venues/bookings.service.ts
+ M apps/api/test/int/bookings.int-spec.ts
+ M neutralisation/neutralize-solid-s5b.py
+?? neutralisation/neutralize-rang23.py
+== FIN 2026-09-25T01:15:38-04:00

@@ -81,7 +81,8 @@ import {
   BookingCommand,
   allowedFrom,
   decideBookingTransition,
-  targetOf
+  targetOf,
+  writableFrom
 } from "./booking-transitions";
 import {
   BOOKING_LOCKS,
@@ -475,38 +476,51 @@ export class BookingsService {
   async cancelAsClient(userId: string, bookingId: string, input: BookingCancelInput): Promise<BookingDTO> {
     if (!UUID_PATTERN.test(bookingId)) this.throwBookingNotFound();
 
+    // Cette lecture est le contrôle de PROPRIÉTÉ (404 indistinct, D47), et rien
+    // d'autre : le statut qu'elle verrait n'est plus lu.
     const row = await this.prisma.booking.findFirst({
       where: { id: bookingId, clientId: userId },
-      select: BOOKING_SELECT
+      select: { id: true }
     });
     if (!row) this.throwBookingNotFound();
 
-    // ⚠ UNE SEULE décision, dans l'ORDRE d'origine : le statut d'abord (409),
-    // le motif ensuite (400). La politique rend le verdict, le service le
-    // traduit en HTTP — elle ne connaît ni Nest ni les codes i18n.
-    const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIENT, row.status, input.reason);
-    if (decision.outcome === "STATUS_CONFLICT") {
+    // ⛔ RANG 23 · F5 (D305) — L'ÉCRITURE EST LA GARDE. La décision se prenait
+    // sur une lecture HORS transaction, puis l'écriture admettait tout le `from`
+    // (PENDING et ACCEPTED) : une acceptation commitée entre les deux faisait
+    // annuler une demande ACCEPTED SANS le motif que D83 exige. Le prédicat de
+    // l'écriture porte désormais la règle du motif (`writableFrom`), et le
+    // contrôle d'avant transaction a disparu — supprimé, pas doublé (D117/D121).
+    const resultat = await this.verrous.transition({
+      bookingId: row.id,
+      from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+      data: {
+        status: targetOf(BookingCommand.CANCEL_AS_CLIENT),
+        cancelledAt: new Date(),
+        cancellationReason: input.reason ?? null
+      }
+    });
+
+    if (resultat.outcome === "STATUS_CONFLICT") {
+      // La relecture ne sert qu'à CHOISIR LE CODE : même état, même requête,
+      // même réponse, que la course ait eu lieu ou non (décision du relecteur,
+      // D305). ⚠ L'ORDRE d'origine tient : le statut d'abord (409), le motif
+      // ensuite (400) — c'est `decideBookingTransition` qui les ordonne.
+      const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIENT, resultat.status, input.reason);
+      if (decision.outcome === "REASON_REQUIRED") {
+        throw new BadRequestException({
+          code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
+          message: "booking.errors.cancelReasonRequired",
+          status: decision.status
+        });
+      }
       throw new ConflictException({
         code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
         message: "booking.errors.statusConflict",
-        status: decision.status
-      });
-    }
-    if (decision.outcome === "REASON_REQUIRED") {
-      throw new BadRequestException({
-        code: BookingErrorCode.BOOKING_STATUS_CONFLICT,
-        message: "booking.errors.cancelReasonRequired",
-        status: decision.status
+        status: resultat.status
       });
     }
 
-    const updated = await this.transitionStatus(row.id, allowedFrom(BookingCommand.CANCEL_AS_CLIENT), {
-      status: decision.to,
-      cancelledAt: new Date(),
-      cancellationReason: input.reason ?? null
-    });
-
-    return this.toDTO(updated);
+    return this.toDTO(resultat.row);
   }
 
   // ───────────────────────────────────────────────────────────────────────────

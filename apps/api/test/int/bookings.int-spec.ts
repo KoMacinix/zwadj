@@ -13,6 +13,7 @@
 //   - qu'un acompte fixe SUPÉRIEUR au total est ÉCRÊTÉ et non refusé (D81/D55) ;
 //   - que des montants périmés rendent 409 BOOKING_PRICE_CHANGED (D75) ;
 //   - que les salles existantes reprennent à 30 % (migration).
+import { Client } from "pg";
 import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { BookingDTO, ProBookingDTO, VenueProDTO } from "@zwadj/types";
@@ -23,6 +24,7 @@ import { createTestApp, loginAs, registerUser, truncateAll, verifyLastRegistered
 //   importent déjà depuis `../../src/`, valeurs comprises.
 import { DAY_MS, HOUR_MS, PAYMENT_WINDOW_HOURS, PRO_RESPONSE_DAYS } from "../../src/venues/bookings.service";
 import { civilTodayAt, formatCivilDate } from "../../src/venues/availability-time";
+import { BookingCommand, allowedFrom, targetOf } from "../../src/venues/booking-transitions";
 
 let ctx: TestContext;
 
@@ -586,6 +588,323 @@ describe("Acceptation CONCURRENTE (D117)", () => {
     expect(results.filter((r) => r.status === 201)).toHaveLength(1);
     expect(results.filter((r) => r.status === 409)).toHaveLength(2);
     expect(results.filter((r) => r.status >= 500)).toHaveLength(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RANG 23 · 23a — DEUX COMMANDES DIFFÉRENTES SUR LA MÊME DEMANDE (audit SOLID
+// 09/09 · F1, F5 ; cadrage du rang 23, § 2 et § 3).
+//
+// Le bloc D117 ci-dessus croise une commande avec ELLE-MÊME (accept contre
+// accept, refus contre refus). Aucun test ne croisait deux commandes
+// DIFFÉRENTES : c'est le trou exact de F1 et F5.
+//
+// ⛔ POSTGRESQL FAIT L'ORDONNANCEUR, PAS UN DOUBLE — patron de
+//   `payment-intent-race.int-spec.ts`. Une connexion `pg` BRUTE (pas un second
+//   client Prisma, qui garderait une connexion du pool) écrit la commande
+//   rivale et NE COMMITE PAS ; la vraie requête HTTP part et se BLOQUE sur le
+//   verrou de ligne du rival ; on PROUVE qu'elle attend CE rival
+//   (`pg_blocking_pids`) ; puis le rival commite. Une course qui n'a pas eu
+//   lieu LÈVE : un rouge — ou un vert — obtenu sans blocage ne mesurerait rien.
+// ⛔ Le prédicat du rival se RELÈVE dans le code qu'il imite : statuts et cible
+//   IMPORTÉS de `booking-transitions.ts`, colonnes celles que la commande écrit
+//   (`updated_at` compris : `@updatedAt` est posé par Prisma).
+// ⚠ Les verdicts passent par `expect` de vitest, jamais par `.expect(<statut>)`
+//   de supertest : celui-ci lève une `Error`, pas une `AssertionError` (relevé
+//   dans `supertest/lib/test.js`), et la lecture de l'échec exigée sur le
+//   chemin de l'argent (R1) ne la compte pas comme une morsure.
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface Rival {
+  pid: number;
+  commit: () => Promise<void>;
+  fermer: () => Promise<void>;
+}
+
+/** Ouvre la transaction rivale, écrit, et NE COMMITE PAS. Lève si ses UPDATE
+ *  et INSERT n'ont pas touché exactement `attendues` lignes : un rival qui n'a
+ *  rien écrit ne tient aucun verrou, et la course n'aurait rien à mesurer. */
+async function rivalNonCommite(etapes: [string, unknown[]][], attendues: number): Promise<Rival> {
+  const c = new Client({ connectionString: process.env.DATABASE_URL });
+  await c.connect();
+  let clos = false;
+  // ⛔ CHEMIN DE SORTIE OBLIGATOIRE : une transaction laissée ouverte garde son
+  // verrou, et la fuite se voit dans le spec SUIVANT, pas dans celui-ci.
+  const fermer = async (): Promise<void> => {
+    if (clos) return;
+    clos = true;
+    try {
+      await c.query("ROLLBACK");
+    } finally {
+      await c.end();
+    }
+  };
+  try {
+    await c.query("BEGIN");
+    const pid = Number((await c.query("SELECT pg_backend_pid() AS pid")).rows[0]?.pid);
+    let lignes = 0;
+    for (const [sql, params] of etapes) {
+      const r = await c.query(sql, params);
+      if (/^\s*(UPDATE|INSERT)/i.test(sql)) lignes += r.rowCount ?? 0;
+    }
+    if (lignes !== attendues) {
+      throw new Error(`LE RIVAL A MODIFIÉ ${lignes} LIGNE(S), ${attendues} attendue(s) : course sans objet.`);
+    }
+    return {
+      pid,
+      commit: async () => {
+        clos = true;
+        try {
+          await c.query("COMMIT");
+        } finally {
+          await c.end();
+        }
+      },
+      fermer
+    };
+  } catch (e) {
+    await fermer();
+    throw e;
+  }
+}
+
+/** Quelqu'un est-il bloqué PAR LE RIVAL — pas par n'importe quel verrou ? */
+async function quelquUnAttend(pid: number): Promise<boolean> {
+  const r = await ctx.prisma.$queryRaw<{ n: bigint }[]>`
+    SELECT count(*)::bigint AS n FROM pg_stat_activity WHERE ${pid}::int = ANY(pg_blocking_pids(pid))`;
+  return Number(r[0]?.n ?? 0) > 0;
+}
+
+/** Attend que QUELQU'UN soit bloqué PAR LE RIVAL. ⛔ Pas de `return`
+ *  silencieux : une course qui n'a pas eu lieu rendrait le test vert (ou
+ *  rouge) sans avoir rien mesuré (D248). */
+async function attendreRival(pid: number): Promise<void> {
+  for (let essai = 0; essai < 200; essai += 1) {
+    if (await quelquUnAttend(pid)) return;
+    await new Promise((r2) => setTimeout(r2, 25));
+  }
+  throw new Error("LA COURSE N'A PAS EU LIEU : personne n'attend le rival. Mesure invalide.");
+}
+
+/** Lance la requête, prouve qu'elle attend le rival, fait commiter le rival,
+ *  et rend la réponse. */
+async function courir<T>(rival: Rival, requete: () => Promise<T>): Promise<T> {
+  const enVol = requete();
+  try {
+    await attendreRival(rival.pid);
+    await rival.commit();
+  } catch (e) {
+    await rival.fermer();
+    await enVol.catch(() => undefined);
+    throw e;
+  }
+  return enVol;
+}
+
+/** Variante de `courir` pour un rival que la requête n'attend QUE si la garde
+ *  mesurée tient (ici, le verrou de SALLE). Si la requête ABOUTIT sans attendre,
+ *  ce n'est pas une course ratée, c'est la garde absente : on fait commiter le
+ *  rival et on laisse les ASSERTIONS le dire, au lieu de lever une `Error` —
+ *  la lecture de R1 ne compte que les `AssertionError`.
+ *  ⚠ Le résultat se prouve lui-même : un 409 BLOCKED_PERIOD n'est possible
+ *  qu'APRÈS le COMMIT du rival, qui n'a lieu qu'une fois la requête bloquée par
+ *  lui (prouvé) ou déjà revenue (et alors elle n'a pas pu voir le blocage). */
+async function courirOuAboutir<T>(rival: Rival, requete: () => Promise<T>): Promise<T> {
+  let revenue = false;
+  const enVol = requete().finally(() => {
+    revenue = true;
+  });
+  try {
+    let bloquee = false;
+    for (let essai = 0; essai < 200 && !revenue && !bloquee; essai += 1) {
+      bloquee = await quelquUnAttend(rival.pid);
+      if (!bloquee) await new Promise((r2) => setTimeout(r2, 25));
+    }
+    if (!revenue && !bloquee) {
+      throw new Error("LA COURSE N'A PAS EU LIEU : la requête n'attend pas le rival et n'est pas revenue. Mesure invalide.");
+    }
+    await rival.commit();
+  } catch (e) {
+    await rival.fermer();
+    await enVol.catch(() => undefined);
+    throw e;
+  }
+  return enVol;
+}
+
+describe("Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)", () => {
+  // ⚠ Aucun titre de ce bloc ne porte le glyphe « × » : c'est celui qui marque
+  // un ÉCHEC dans la sortie de vitest, et un lecteur qui le chercherait dans la
+  // ligne compterait un test vert comme rouge (D275, faute n° 1 de D305).
+  it("F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte", async () => {
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    ctx.emails.length = 0;
+
+    // Le rival : ce que `decline` écrit (check-and-set de `transition`).
+    const rival = await rivalNonCommite(
+      [
+        [
+          `UPDATE bookings SET status = $2::"BookingStatus", declined_at = now(), decline_reason = NULL, updated_at = now()
+            WHERE id = $1::uuid AND status = ANY($3::"BookingStatus"[])`,
+          [a.id, targetOf(BookingCommand.DECLINE), [...allowedFrom(BookingCommand.DECLINE)]]
+        ]
+      ],
+      1
+    );
+    const res = await courir(rival, () =>
+      api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).then((r) => r)
+    );
+
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(res.body.message.status).toBe(targetOf(BookingCommand.DECLINE));
+    // La ligne refusée n'a pas été réécrite en acceptée par-dessus.
+    const ligne = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, acceptedAt: true, paymentDueAt: true, declinedAt: true }
+    });
+    expect(ligne.status).toBe(targetOf(BookingCommand.DECLINE));
+    expect(ligne.acceptedAt).toBeNull();
+    expect(ligne.paymentDueAt).toBeNull();
+    expect(ligne.declinedAt).not.toBeNull();
+    // Et le client n'a pas reçu « acceptée » sur une demande refusée.
+    expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(0);
+  });
+
+  it("F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte", async () => {
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    ctx.emails.length = 0;
+
+    // Le rival : l'annulation client AVEC motif — son prédicat est le `from`
+    // entier de la commande.
+    const rival = await rivalNonCommite(
+      [
+        [
+          `UPDATE bookings SET status = $2::"BookingStatus", cancelled_at = now(), cancellation_reason = $4, updated_at = now()
+            WHERE id = $1::uuid AND status = ANY($3::"BookingStatus"[])`,
+          [
+            a.id,
+            targetOf(BookingCommand.CANCEL_AS_CLIENT),
+            [...allowedFrom(BookingCommand.CANCEL_AS_CLIENT)],
+            "Changement de date de mariage"
+          ]
+        ]
+      ],
+      1
+    );
+    const res = await courir(rival, () =>
+      api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).then((r) => r)
+    );
+
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(res.body.message.status).toBe(targetOf(BookingCommand.CANCEL_AS_CLIENT));
+    const ligne = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, acceptedAt: true, paymentDueAt: true, cancelledAt: true }
+    });
+    expect(ligne.status).toBe(targetOf(BookingCommand.CANCEL_AS_CLIENT));
+    expect(ligne.acceptedAt).toBeNull();
+    expect(ligne.paymentDueAt).toBeNull();
+    expect(ligne.cancelledAt).not.toBeNull();
+    expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(0);
+  });
+
+  it("F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte", async () => {
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+
+    // Le rival : ce que `accept` écrit, sous le verrou de salle qu'il prend.
+    const rival = await rivalNonCommite(
+      [
+        [`SELECT id FROM venues WHERE id = $1::uuid FOR UPDATE`, [f.venue.id]],
+        [
+          `UPDATE bookings SET status = $2::"BookingStatus", accepted_at = now(),
+                               payment_due_at = now() + make_interval(hours => $4::int), updated_at = now()
+            WHERE id = $1::uuid AND status = ANY($3::"BookingStatus"[])`,
+          [a.id, targetOf(BookingCommand.ACCEPT), [...allowedFrom(BookingCommand.ACCEPT)], PAYMENT_WINDOW_HOURS]
+        ]
+      ],
+      1
+    );
+    // ⚠ `.send({})` : la route exige un corps ; SANS motif est le cas mesuré.
+    const res = await courir(rival, () =>
+      api().delete(`/api/v1/bookings/${a.id}`).set(authH(f.clientToken)).send({}).then((r) => r)
+    );
+
+    // Même état, même requête, même réponse que dans l'ordre séquentiel
+    // (« le client DOIT un motif pour annuler une demande ACCEPTÉE ») — décision
+    // 3 du relecteur, D305.
+    expect(res.status, JSON.stringify(res.body)).toBe(400);
+    expect(res.body.message.message).toBe("booking.errors.cancelReasonRequired");
+    const ligne = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, cancelledAt: true, cancellationReason: true }
+    });
+    expect(ligne.status).toBe(targetOf(BookingCommand.ACCEPT));
+    expect(ligne.cancelledAt).toBeNull();
+    expect(ligne.cancellationReason).toBeNull();
+  });
+
+  it("MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage", async () => {
+    // Pas une course : l'ordre séquentiel. Sous l'écriture conditionnelle, la
+    // relecture D117 ne garde plus la transition ; elle décide encore QUEL refus
+    // sort quand deux s'appliquent. Le statut réel remet l'écran d'aplomb ; le
+    // blocage enverrait le pro lever un blocage pour une demande déjà close.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    await api().post(`/api/v1/pro/bookings/${a.id}/decline`).set(authH(f.proToken)).send({}).expect(201);
+    await api()
+      .post(`/api/v1/venues/${f.venue.id}/availability-blocks`)
+      .set(authH(f.proToken))
+      .send({ startsAt: `${EVENT_DATE}T18:00`, endsAt: `${EVENT_DATE}T23:00`, reason: "Travaux" })
+      .expect(201);
+
+    const res = await api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken));
+
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(res.body.message.status).toBe(targetOf(BookingCommand.DECLINE));
+  });
+
+  it("MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente", async () => {
+    // Le verrou de SALLE reste « pour la disponibilité » (décision du relecteur,
+    // D305) : sous l'écriture conditionnelle, c'est lui SEUL qui ordonne accept
+    // et la création d'un blocage — une EXCLUDE ne traverse pas deux tables
+    // (D51). Sans lui, accept ne voit pas le blocage en vol (MVCC), écrit
+    // ACCEPTED, et la date est à la fois bloquée et acceptée.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    ctx.emails.length = 0;
+
+    // Le rival : ce que fait la création de blocage (`availability-blocks.service`) —
+    // verrou de salle, puis insertion sur la plage exacte de la demande.
+    const rival = await rivalNonCommite(
+      [
+        [`SELECT id FROM venues WHERE id = $1::uuid FOR UPDATE`, [f.venue.id]],
+        [
+          `INSERT INTO availability_blocks (venue_id, blocked_from, blocked_until, reason)
+           VALUES ($1::uuid, $2::timestamptz, $3::timestamptz, $4)`,
+          [f.venue.id, a.startsAt, a.endsAt, "Travaux"]
+        ]
+      ],
+      1
+    );
+    const res = await courirOuAboutir(rival, () =>
+      api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).then((r) => r)
+    );
+
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("BOOKING_BLOCKED_PERIOD");
+    const ligne = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, acceptedAt: true }
+    });
+    expect(ligne.status).toBe("PENDING");
+    expect(ligne.acceptedAt).toBeNull();
+    expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(0);
   });
 });
 

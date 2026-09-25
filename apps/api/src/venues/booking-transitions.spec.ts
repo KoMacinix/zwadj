@@ -14,7 +14,8 @@ import {
   BookingCommand,
   allowedFrom,
   decideBookingTransition,
-  targetOf
+  targetOf,
+  writableFrom
 } from "./booking-transitions";
 
 const TOUS = Object.values(BookingStatus);
@@ -143,6 +144,45 @@ describe("Motif d'annulation (D83) — l'asymétrie suit le préjudice", () => {
       null as unknown as undefined
     );
     expect(decision.outcome).toBe("ALLOWED");
+  });
+});
+
+// Rang 23 · F5 (D305) — le prédicat de l'ÉCRITURE porte la règle du motif.
+// ⚠ L'attendu se dérive du TABLEAU (`from` moins `reasonRequiredFrom`) ; la
+// fonction, elle, passe par `decideBookingTransition`. Deux chemins distincts
+// vers la même règle : recalculer l'attendu PAR la fonction mesurée donnerait
+// une garde verte par construction (D241, D223).
+describe("Statuts inscriptibles selon le motif (rang 23 · F5)", () => {
+  const CAC = BookingCommand.CANCEL_AS_CLIENT;
+  const sansMotifExige = (): BookingStatus[] =>
+    BOOKING_TRANSITIONS[CAC].from.filter((s) => !BOOKING_TRANSITIONS[CAC].reasonRequiredFrom.includes(s));
+
+  it("writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)", () => {
+    // Garde-fou du garde-fou : sans statut à motif exigé, les deux listes
+    // seraient égales par accident et le test ne mesurerait rien.
+    expect(BOOKING_TRANSITIONS[CAC].reasonRequiredFrom.length).toBeGreaterThan(0);
+    expect(sansMotifExige().length).toBeGreaterThan(0);
+    expect(writableFrom(CAC, undefined)).toEqual(sansMotifExige());
+    // Le cas qui a coûté (F5) : une demande ACCEPTED ne s'annule pas sans motif.
+    expect(writableFrom(CAC, undefined)).not.toContain(BookingStatus.ACCEPTED);
+  });
+
+  it("writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision", () => {
+    expect(writableFrom(CAC, "")).toEqual(sansMotifExige());
+    expect(writableFrom(CAC, "")).not.toContain(BookingStatus.ACCEPTED);
+  });
+
+  it("writableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`", () => {
+    expect(writableFrom(CAC, "salle inondée")).toEqual([...allowedFrom(CAC)]);
+  });
+
+  it("writableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non", () => {
+    for (const commande of COMMANDES) {
+      if (commande === CAC) continue;
+      for (const motif of [undefined, "", "motif"]) {
+        expect(writableFrom(commande, motif), `${commande} / ${JSON.stringify(motif)}`).toEqual([...allowedFrom(commande)]);
+      }
+    }
   });
 });
 

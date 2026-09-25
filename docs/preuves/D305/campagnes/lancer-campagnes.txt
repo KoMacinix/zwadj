@@ -1,0 +1,43 @@
+59 fichier(s) modifié(s) depuis HEAD → 5 campagne(s) concernée(s) sur 28.
+  · neutralize-rang23.py  (3 fichier(s) en commun)
+      apps/api/src/venues/booking-locks.prisma.ts
+      apps/api/src/venues/booking-transitions.ts
+      apps/api/src/venues/bookings.service.ts
+  · neutralize-s11a.py  (1 fichier(s) en commun)
+      apps/api/src/venues/bookings.service.ts
+  · neutralize-s11b.py  (1 fichier(s) en commun)
+      apps/api/src/venues/bookings.service.ts
+  · neutralize-solid-s3.py  (1 fichier(s) en commun)
+      apps/api/src/venues/booking-transitions.ts
+  · neutralize-solid-s5b.py  (1 fichier(s) en commun)
+      apps/api/src/venues/booking-locks.prisma.ts
+
+[1/5] neutralisation\neutralize-rang23.py …
+    sortie=0  5 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/5] neutralisation\neutralize-s11a.py …
+    sortie=0  18 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/5] neutralisation\neutralize-s11b.py …
+    sortie=3  9 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[4/5] neutralisation\neutralize-solid-s3.py …
+    sortie=0  6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[5/5] neutralisation\neutralize-solid-s5b.py …
+    sortie=0  5 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-rang23.py                    0     5     5     0     0   259
+neutralize-s11a.py                      0    18    18     0     0    62
+neutralize-s11b.py                      3     9     9     0     4    33
+neutralize-solid-s3.py                  0     6     6     0     0    24
+neutralize-solid-s5b.py                 0     —     5     0     0   325
+================================================================================================
+MESURÉ : 43 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 4 non mesurée(s) · 5 campagne(s) · 703s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation\neutralize-s11b.py → sortie 3
+exit=1

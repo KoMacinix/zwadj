@@ -2429,6 +2429,36 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 25/09/2026 — rang 23, sous-lot 23a : F1 et F5 codés (D305)
+
+⚠ **Ce que 23a a croisé se RAPPORTE ici** (un lot, un objet). Détail : section D305 de `ZWADJ_CONTINUITE.md`. Forme de
+Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par Ko** », et son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : tête de la section « chemin de l'argent » (décision reçue, 23a
+codé) ; entrées F1 et F5 (codées, **restent ouvertes**) ; entrée R1 (décisions du § 9, trois constats proposés comme
+modes, `neutralize-rang23.py` dans sa portée).
+
+- [ ] **[OUTIL]** **Le lint de l'API ne couvre pas `test/int`** — `apps/api` lance `eslint src prisma` (relevé dans le
+  journal de la porte, `docs/preuves/D305/portes/lint.log`) : les specs d'intégration, dont celles du chemin de l'argent
+  (`bookings.int-spec.ts`, `payment-intent-race.int-spec.ts`), ne sont vues que par `tsc`. Combien de fautes de lint y
+  dorment : **non relevé**.
+  ⇒ **BLOQUE : à ordonner par Ko.** ⇒ **COÛT** : code (le script ou la configuration eslint de `apps/api`, compte) ;
+  et ce que le premier passage trouvera dans `test/int`, non estimé ; e2e : non ; cadrage chemin de l'argent : non —
+  *dérivé par la session* : un outil de lint ne prouve aucune garde ; migration : non ; dépendance : non.
+- [ ] **[MÉTHODE]** **La décision 4 du § 9 de R1 (« un délai dépassé n'est JAMAIS une morsure ») contre
+  `neutralize-budgets.py`**, dont la garde **EST** un délai (rang 17 : il lit « Test timed out in N ms » dans le
+  JUnit, **par construction**). `budgets` est **hors** de la portée de R1 (décision 4 de D304) : aujourd'hui rien ne
+  se contredit. ⚠ Mais le **module de lecture partagé** (décision 2 du § 9) pourrait un jour servir à `budgets`, et
+  « jamais » y serait faux. Question de portée, **au relecteur**, pas une faute de `budgets`.
+  ⇒ **BLOQUE** : l'usage du module de R1 par un harnais hors de sa portée — rien avant. ⇒ **COÛT** : documentaire (une
+  phrase de portée) ; aucun fichier de code tant que `budgets` n'utilise pas le module.
+- [ ] **[API]** ⚠ **Pour 23b, AVANT son cadrage de code : la garde « déjà converti » de `convert` protège ce que
+  l'écriture conditionnelle au statut ne couvre pas** — la conversion laisse le devis en `DRAFT` (MD-F2-2), donc un
+  devis déjà converti passe toute condition de statut ; ce qui arrête la seconde conversion est l'index unique
+  `bookings_quote_id_key` et la traduction de son P2002 (MD-F2-3). *Lecture de code à `6e87430`, non mesurée* ; écrite
+  au § 8 du cadrage du rang 23, **au relecteur** (« dis-le avant 23b : la décision changerait »).
+  ⇒ **BLOQUE : 23b** (la décision 2 du relecteur pour F2 en dépend). ⇒ **COÛT** : documentaire jusqu'à la décision ;
+  puis dans 23b, sans fichier de plus que ceux du § 6.
+
 ## Reports du 24/09/2026 — rang 23 : ordre des sous-lots, décisions du relecteur, cadrage de R1, deux inférences mesurées (D304)
 
 ⚠ **Lot DOCUMENTAIRE : ce qu'il a croisé se RAPPORTE ici.** Détail : section D304 et « ⛔ CADRAGE DE R1 » de
@@ -2522,7 +2552,10 @@ Ko, `AGENTS.md`, point E3). Un motif non transmis est écrit **non transmis**, p
 ⛔ **(D303, 23/09/2026) F1, F2, F6 ci-dessous — et F5, plus bas — sont CADRÉS AU RANG 23** (arbitrage de Ko) :
 `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 23 ». Aucune ligne de code ; les entrées restent ouvertes jusqu'aux sous-lots.
 ⛔ **(D304, 24/09/2026) ORDRE ARBITRÉ PAR KO** : 23a (F1 + F5) → R1 → certification → 23b (F2) → 23c (F6) →
-certification, tous au rang 23. **23a attend la décision du relecteur sur les choix 1 à 4 du § 8 du cadrage.**
+certification, tous au rang 23. ~~**23a attend la décision du relecteur sur les choix 1 à 4 du § 8 du cadrage.**~~
+⛔ **(D305, 25/09/2026) Décision reçue** (méthode renforcée, bloc D305) **et 23a CODÉ** — F1 et F5 ci-dessous. Elles
+restent **ouvertes** : la forme de revue ratifiée exige encore la session adverse, la décision du relecteur, puis la
+certification (bloquée par R1).
 
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F1 — `accept` peut écrire `ACCEPTED` par-dessus un `DECLINED` ou un
   `CANCELLED` déjà commité** (P1 de l'audit). **OUVERT à `HEAD`** : `PrismaBookingLocks.acceptUnderVenueLock` lit
@@ -2534,6 +2567,12 @@ certification, tous au rang 23. **23a attend la décision du relecteur sur les c
   ⇒ **COÛT** : code API (compte) ; `booking-locks.prisma.ts` et sa mesure d'intégration sur PostgreSQL réel
   (accept contre refus, accept contre annulation) ; e2e exigée (concurrence) ; cadrage chemin de l'argent : oui ;
   migration : aucune nommée par l'audit ; dépendance : non ; mord sous concurrence, pas seulement en production.
+  ⛔ **(D305, 25/09/2026) CODÉ AU SOUS-LOT 23a — forme (ii)** (décision du relecteur) : l'`updateMany` d'`accept` est
+  conditionné au statut source, compte = 1 exigé, verrou de salle conservé. Rouge avant correctif et vert après **sur
+  PostgreSQL réel** ; cibles R23-F1-a et -b, échecs LUS ; la relecture D117 reste pour l'ordre des refus (MD-F1-8, cible
+  S5b-2 réorientée) et le verrou de salle pour la création de blocage concurrente (MD-F1-5, test T5, cible S5b-1
+  réorientée — trouvée muette par `lancer-campagnes.py`). **Reste ouvert** jusqu'à la session adverse, la décision du relecteur et la certification.
+  Détail : `ZWADJ_CONTINUITE.md`, section D305.
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F2 — un devis annulé entre-temps se convertit ; `revise` ne revalide pas le
   statut du parent** (P1 de l'audit). **OUVERT à `HEAD`** : `QuotesService.convert` contrôle le statut
   (`assertStatus`) **avant**, puis `PrismaQuoteStore.convertirEnDemande` crée la réservation **sans transaction ni
@@ -2620,6 +2659,14 @@ certification, tous au rang 23. **23a attend la décision du relecteur sur les c
   ne se comptent pas sans elle ; **par morsure**, le harnais corrigé garde le nombre de tests collectés, le test en
   échec et la première ligne de son assertion — pas la sortie entière ; `neutralize-e3d1-s8.py` : annoté, la
   correction vient avec R1.
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 24/09/2026 (D305) — les choix du § 9 du cadrage de R1 :**
+  texte **fermé par défaut** et **lié à vitest 3.2.7** ; **module partagé** ; **(β)** pour le harnais de 23a ; **aucune
+  exception « délai »** ; une **liste** de titres par cible, chacun exigé. Texte et motifs : méthode renforcée, bloc
+  D305. ⇒ **Le cadrage de R1 est complet côté décisions** ; ⚠ **trois constats mesurés par 23a y sont PROPOSÉS comme
+  modes, au relecteur** (§ 4 du cadrage, annotation D305) : `.expect(<statut>)` de supertest lève une `Error` (non-morsure
+  sous la lecture fermée — combien des 158 cibles en dépendent : non relevé) ; le glyphe « × » dans des titres existants ;
+  ce que désignent « les 8 signatures ». ⇒ **Coût relevé en plus** : `neutralize-rang23.py` (5 cibles, titres déjà
+  déclarés en 7ᵉ champ) entre dans les harnais que R1 corrige.
   ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 23/09/2026 (D303) — R1 SUR LE CHEMIN DE L'ARGENT :**
   1. **tant que le harnais concerné n'est pas corrigé, une garde n'est prouvée que par une neutralisation dont on a
      LU l'échec : tests collectés > 0 ET assertion en échec.** *Motif* : « un code de sortie non nul, seul, ne prouve
@@ -2682,6 +2729,10 @@ certification, tous au rang 23. **23a attend la décision du relecteur sur les c
   condition y passe ; mesure d'intégration ; e2e exigée (concurrence) ; cadrage chemin de l'argent : ~~non posé par
   le relecteur~~ ⛔ *(D304 : **oui** — « F5 relève du (2) », note du relecteur sur la règle de portée, décision 3)* ;
   migration : non ; dépendance : non. ⛔ *(D304 : ordre arbitré par Ko — **23a**, avec F1.)*
+  ⛔ **(D305, 25/09/2026) CODÉ AU SOUS-LOT 23a** : le contrôle d'avant transaction a disparu ; l'écriture porte la règle
+  du motif (`writableFrom`, fonction pure de `booking-transitions.ts`) ; sur un compte à 0, la relecture ne choisit
+  que le code — **400 `cancelReasonRequired`** (décision du relecteur). Rouge et vert sur PostgreSQL réel ; cibles
+  R23-F5-a, -b, -c, échecs LUS. **Reste ouvert** jusqu'à la session adverse, le relecteur et la certification.
 - [ ] **[API]** **audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français** (P2 de
   l'audit). **OUVERT à `HEAD`** : `booking-notification-input.ts` compare `locale === "AR"`, alors que l'énuméré
   `Locale` du schéma est `fr` / `ar` ; et `booking-notification-input.spec.ts` **attend** `["ar", "fr"]` — le test

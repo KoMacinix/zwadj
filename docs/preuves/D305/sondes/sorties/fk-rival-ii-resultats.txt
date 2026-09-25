@@ -1,0 +1,28 @@
+base : zwadj_test · PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1)
+default_transaction_isolation : read committed
+prédicat importé : accept ["PENDING"] → ACCEPTED
+
+── 0. calibration du discriminant (trois bras, abandon si un seul manque)
+CAL+  rival FOR UPDATE sur la réservation (forme (i))      attendu : ATTEND         mesuré : ATTEND (55P03)
+CAL+c rival UPDATE d'une colonne à index unique            attendu : ATTEND         mesuré : ATTEND (55P03) · rival a modifié 1
+CAL-  rival FOR UPDATE sur une AUTRE réservation           attendu : N'ATTEND PAS   mesuré : N'ATTEND PAS (rowCount 1)
+
+── 1. rival = (ii) SQL brut
+(ii) SQL brut — le rival a écrit                           attendu : 1 ligne        mesuré : 1 · 1 · 1
+(ii) SQL brut — SELECT … FOR UPDATE testé (il TIENT la ligne ?) attendu : ATTEND         mesuré : ATTEND (55P03)
+(ii) SQL brut — SELECT … FOR KEY SHARE testé               attendu : N'ATTEND PAS   mesuré : N'ATTEND PAS (rowCount 1)
+(ii) SQL brut — INSERT payments (clé étrangère)            attendu : N'ATTEND PAS   mesuré : N'ATTEND PAS (rowCount 1)
+
+── 1. rival = (ii) Prisma updateMany réel
+(ii) Prisma updateMany réel — le rival a écrit             attendu : 1 ligne        mesuré : 1 · 1 · 1
+(ii) Prisma updateMany réel — SELECT … FOR UPDATE testé (il TIENT la ligne ?) attendu : ATTEND         mesuré : ATTEND (55P03)
+(ii) Prisma updateMany réel — SELECT … FOR KEY SHARE testé attendu : N'ATTEND PAS   mesuré : N'ATTEND PAS (rowCount 1)
+(ii) Prisma updateMany réel — INSERT payments (clé étrangère) attendu : N'ATTEND PAS   mesuré : N'ATTEND PAS (rowCount 1)
+
+── 1. rival = témoin : update actuel d'accept (Prisma)
+témoin : update actuel d'accept (Prisma) — le rival a écrit attendu : 1 ligne        mesuré : 1 · 1 · 1
+témoin : update actuel d'accept (Prisma) — SELECT … FOR UPDATE testé (il TIENT la ligne ?) attendu : ATTEND         mesuré : ATTEND (55P03)
+témoin : update actuel d'accept (Prisma) — SELECT … FOR KEY SHARE testé attendu : N'ATTEND PAS   mesuré : N'ATTEND PAS (rowCount 1)
+témoin : update actuel d'accept (Prisma) — INSERT payments (clé étrangère) attendu : N'ATTEND PAS   mesuré : N'ATTEND PAS (rowCount 1)
+
+fin de la sonde : toutes les mesures ont été jouées (aucune n'a levé).

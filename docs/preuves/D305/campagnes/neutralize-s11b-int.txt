@@ -1,0 +1,18 @@
+✓ Pré-vol : 5 mesure(s) verte(s) — chiffrage, int-reservations, int-devis, echeances, int-migration
+
+✓ S11b-1. ⛔ LE REFUS DU DOUBLON DISPARAÎT — une prestation FIXED est facturée DEUX FOIS  [chiffrage]
+✓ S11b-2. ⛔ L'ORDRE DES REFUS S'INVERSE — l'indisponible passe devant le doublon  [chiffrage]
+✓ S11b-3. ⛔ LA PROPRIÉTÉ CESSE D'ÊTRE VÉRIFIÉE — la prestation d'une AUTRE salle est facturée  [chiffrage]
+✓ S11b-4. ⛔ L'AGRÉGAT PERD LES PRESTATIONS — et la BASE ne dit rien (MD2)  [chiffrage]
+✓ S11b-5. ⛔ L'ACOMPTE SE CALCULE SUR LE PRIX DE SALLE, PAS SUR LE TOTAL  [chiffrage]
+✓ S11b-6. ⛔ LE REFUS D75 REND LES MONTANTS ATTENDUS AU LIEU DES RÉELS  [chiffrage]
+✓ S11b-7. ⛔ LA CONFRONTATION D75 IGNORE L'ACOMPTE — seul le total est comparé  [chiffrage]
+✓ S11b-8. ⛔⛔ LE MODULE PARTAGÉ MUTÉ DOIT ROUGIR CHEZ LES *DEUX* CONSOMMATEURS  [int-reservations, int-devis]
+✓ S11b-9. ⛔ LE CHECK D'AGRÉGAT DEVIENT TRIVIAL — une ligne incohérente entre en base  [int-migration]
+✓ S11b-10. ⛔ L'ÉCRÊTAGE DE L'ÉCHÉANCE DISPARAÎT — elle peut tomber APRÈS la fête  [echeances]
+✓ S11b-11. ⛔ L'ÉCRÊTAGE S'INVERSE — `min` devient `max`  [echeances]
+✓ S11b-12. ⛔ L'ÉCHÉANCE DE RÉPONSE PRO REÇOIT LA FENÊTRE DE PAIEMENT — 7 jours deviennent 48 h  [int-reservations]
+✓ S11b-13. ⛔ L'ÉCHÉANCE D'ACOMPTE REÇOIT LA FENÊTRE DE RÉPONSE PRO — 48 h deviennent 7 jours  [int-reservations]
+
+13 garde(s) mordue(s) sur 13 cible(s) RÉELLEMENT MESURÉE(S).
+exit=0

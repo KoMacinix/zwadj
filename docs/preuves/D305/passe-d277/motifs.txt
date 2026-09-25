@@ -1,0 +1,22 @@
+# sens 1 — ce que 23a INVALIDE (affirmations devenues fausses)
+1|attend le relecteur
+1|n'est PERMIS aujourd'hui
+1|n'est encore PERMIS
+1|restent OUVERTS
+1|sauf exception écrite
+1|au moins un titre attendu
+1|AUCUNE LIGNE DE CODE
+1|23a ne s'ouvre pas
+1|relecteur sur le § 8 manque
+1|Proposé : (α)
+1|F1 × refus
+1|F1 × annulation
+1|compteur de lots de code non certifiés : ZÉRO, inchangé
+# sens 2 — ce que 23a REND PERMIS (permissions dont la condition vient de changer)
+2|après 23a
+2|peut s'ouvrir
+2|R1 s'ouvre
+2|avant R1
+# témoins de calibration : T+ présent à HEAD (attendu > 0), T- absent partout (attendu 0)
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d305-zz

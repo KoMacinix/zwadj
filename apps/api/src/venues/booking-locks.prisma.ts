@@ -12,6 +12,11 @@
 // ConflictException(...)` sont devenus des retours discriminés. Les CONDITIONS
 // qui y menaient sont identiques, dans le même ordre. Le service reconstruit
 // exactement les mêmes exceptions, avec les mêmes codes et les mêmes clés i18n.
+//
+// ⛔ SAUF DEPUIS LE RANG 23 (D305) : l'écriture d'`accept` N'EST PLUS l'`update`
+// déplacé par S5b. Elle est conditionnée au statut source (audit SOLID 09/09 ·
+// F1) — un refus ou une annulation commité pendant l'acceptation n'est plus
+// écrasé. L'ordre des refus, lui, n'a pas bougé : statut, blocage, `EXCLUDE`.
 import { Injectable } from "@nestjs/common";
 import type { BookingStatus } from "@zwadj/types";
 import { Prisma } from "../generated/prisma/client";
@@ -79,6 +84,13 @@ export class PrismaBookingLocks implements BookingLocks {
       // et RENOTIFIAIT le client. Le double accept SÉQUENTIEL rendait bien 409,
       // ce qui a masqué le trou : c'est le cas concurrent, et lui seul, qui
       // passait.
+      //
+      // ⚠ RANG 23 · F1 (D305) — CETTE LECTURE N'EST PLUS LA GARDE. Elle ne voyait
+      // qu'accept contre accept : un REFUS ou une annulation ne prend pas le
+      // verrou de SALLE, et commitait entre elle et l'écriture — qui écrasait
+      // alors DECLINED par ACCEPTED. La garde est désormais l'écriture
+      // conditionnelle, plus bas. Ce qui reste ici décide l'ORDRE des refus —
+      // le statut réel AVANT le blocage (MD-F1-8, mesuré en intégration).
       const fresh = await tx.booking.findUniqueOrThrow({
         where: { id: input.bookingId },
         select: { status: true }
@@ -101,12 +113,29 @@ export class PrismaBookingLocks implements BookingLocks {
       if (block) return { outcome: "BLOCKED_PERIOD" };
 
       try {
-        const row = await tx.booking.update({
-          where: { id: input.bookingId },
-          data: { status: input.to, acceptedAt: input.acceptedAt, paymentDueAt: input.paymentDueAt },
-          select: BOOKING_SELECT
+        // ⛔ RANG 23 · F1 (D305) — L'ÉCRITURE EST CONDITIONNÉE AU STATUT SOURCE,
+        // comme celle de `transition` : une seule mécanique pour toutes les
+        // transitions (décision du relecteur, forme (ii)). Si un refus ou une
+        // annulation tient la ligne, cet UPDATE l'ATTEND ; à son COMMIT,
+        // PostgreSQL réévalue le `WHERE` (READ COMMITTED) et ne modifie rien.
+        // ⚠ Pas de `SELECT … FOR UPDATE` sur la ligne : il bloquerait aussi
+        // l'insertion d'un paiement qui la référence (mesuré, D304) ; cet UPDATE
+        // ne touche aucune colonne de clé et ne la bloque pas (mesuré, D305).
+        // `allowedFrom` vient du tableau des transitions, par le service.
+        const ecrit = await tx.booking.updateMany({
+          where: { id: input.bookingId, status: { in: [...input.allowedFrom] } },
+          data: { status: input.to, acceptedAt: input.acceptedAt, paymentDueAt: input.paymentDueAt }
         });
-        return { outcome: "ACCEPTED", row };
+        // Compte = 1 EXIGÉ. Zéro : quelqu'un a changé le statut entre la lecture
+        // et l'écriture ; la relecture n'est plus une garde, elle nomme le statut
+        // réel que le 409 montrera.
+        if (ecrit.count !== 1) {
+          const relu = await tx.booking.findUniqueOrThrow({
+            where: { id: input.bookingId },
+            select: { status: true }
+          });
+          return { outcome: "STATUS_CONFLICT", status: relu.status };
+        }
       } catch (error) {
         // SEUL chemin vers BOOKING_SLOT_TAKEN. On ne fait que traduire le refus
         // de l'EXCLUDE : l'exclusivité appartient à la base, jamais à un
@@ -114,6 +143,11 @@ export class PrismaBookingLocks implements BookingLocks {
         if (isExclusionViolation(error)) return { outcome: "SLOT_TAKEN" };
         throw error;
       }
+      const row = await tx.booking.findUniqueOrThrow({
+        where: { id: input.bookingId },
+        select: BOOKING_SELECT
+      });
+      return { outcome: "ACCEPTED", row };
     });
   }
 

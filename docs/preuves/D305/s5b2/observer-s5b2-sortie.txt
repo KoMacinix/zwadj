@@ -1,0 +1,5 @@
+cible : S5b-2. ⚠ LA RELECTURE D117 NE DÉCIDE PLUS L'ORDRE DES REFUS — une demande déjà refusée sous un blocage rend le blocage, pas son statut réel
+ancre : 1 occurrence(s), 1 attendue(s) dans apps/api/src/venues/booking-locks.prisma.ts
+posée : ancre 0 (attendu 0) · remplacement 1 (attendu 1)
+code de sortie : 1 · sortie : docs/preuves/D305/s5b2/s5b2-int-reservations.txt · source restaurée à l'identique : True
+exit=0
