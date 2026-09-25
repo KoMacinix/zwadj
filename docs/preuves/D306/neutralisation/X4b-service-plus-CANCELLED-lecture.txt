@@ -1,0 +1,19 @@
+=== X4b-service-plus-CANCELLED — le même, élargi à CANCELLED
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 857ab1f5a70b)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:20:52 duree=56.0s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4b-service-plus-CANCELLED-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4b-service-plus-CANCELLED-int.txt
+LIGNES_EXAMINEES=86
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Acceptation CONCURRENTE (D117) > D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500
+       1re ligne : AssertionError: 200 {"id":"01a0dadf-b90f-777d-9351-0c45b6e65203","venueId":"01a0dadf-b69b-70f5-8c56-07b3da8c096d","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status
+ATTENDU MORD (AssertionError) : D121 — deux annulations CLIENT SIMULTANÉES
+VERDICT=MORSURE LUE

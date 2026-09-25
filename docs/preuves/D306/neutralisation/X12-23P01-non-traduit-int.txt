@@ -1,0 +1,105 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+(node:24320) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node.EXE --trace-deprecation ...` to show where the warning was created)
+ [31m❯[39m test/int/bookings.int-spec.ts [2m([22m[2m48 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 62316[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22mune salle créée sans rien dire reçoit 30 % — les 30 % implicites d'avant [33m 1281[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22ml'acompte est exposé sur la fiche PUBLIQUE, avant la demande [33m 1063[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mcrée une demande PENDING et NE VERROUILLE RIEN [33m 1037[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mexpiresAt vaut la fenêtre de réponse PRO, encadrée par deux instants mesurés ici [33m 1056[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle créneau 20h→02h produit une plage qui finit LE LENDEMAIN (D55/D77) [33m 1034[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mDEUX demandes concurrentes sur la même date coexistent en PENDING [33m 1131[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle pro est notifié — sans notification, la demande expirerait toute seule [33m 1141[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22m⚠ la ligne Notification est RÉSOLUE, pas laissée en QUEUED (S2-bis) [33m 1129[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun envoi qui TOMBE laisse la demande enregistrée (D63) [33m 1003[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mdes montants PÉRIMÉS rendent 409 avec les montants RÉELS (D75) [33m 1065[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun ACOMPTE périmé suffit à refuser, même si le total est bon [33m 951[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mplus d'invités que la capacité : refusé AVANT l'écriture [33m 911[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mune date au-delà de l'horizon de 18 mois se REFUSE, elle ne se déplace pas (D49) [33m 902[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun créneau d'une AUTRE salle : « n'existe pas », pas « est pris » [33m 898[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun acompte fixe SUPÉRIEUR au total est écrêté, la demande passe [33m 966[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse un pourcentage ET un montant à la fois [33m 976[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse la paire incomplète [33m 943[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun taux de 4 % est sous le plancher [33m 891[2mms[22m[39m
+[31m   [31m×[31m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mla SECONDE acceptation reçoit 409 via le 23P01, et la première survit[39m[33m 1137[2mms[22m[39m
+[31m     → expected 409 "Conflict", got 500 "Internal Server Error"[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mannuler la première LIBÈRE le créneau : la seconde passe alors [33m 1154[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22m⚠ le pro NE PEUT PAS annuler une demande encore PENDING — il la REFUSE (S3) [33m 964[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mun BLOCAGE recouvrant refuse l'acceptation — contrôle applicatif sous verrou [33m 1045[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22maccepter deux fois : BOOKING_STATUS_CONFLICT, avec le statut réel [33m 1003[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22ml'acceptation pose paymentDueAt et prévient le client [33m 975[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mpaymentDueAt − acceptedAt vaut EXACTEMENT la fenêtre d'acompte [33m 930[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mdeux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500 [33m 954[2mms[22m[39m
+[31m   [31m×[31m Acceptation CONCURRENTE (D117)[2m > [22mdeux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN[39m[33m 984[2mms[22m[39m
+[31m     → expected [ 201, 500 ] to deeply equal [ 201, 409 ][39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client [33m 979[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit [33m 975[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500 [33m 1031[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mtrois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409 [33m 1426[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte [33m 1628[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte [33m 1868[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte [33m 2278[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage [33m 2178[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente [33m 1922[2mms[22m[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mla plage couvre les 24 heures locales, sans règle applicative en plus [33m 1456[2mms[22m[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mle créneau reste la source du PRIX, même si ses heures sont ignorées [33m 1371[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle pro refuse SANS motif — c'est permis [33m 1196[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle client annule une demande PENDING sans motif [33m 1643[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle client DOIT un motif pour annuler une demande ACCEPTÉE [33m 1494[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22m404 INDISTINCT sur la demande d'un autre client (D47) [33m 1829[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mGET /me/bookings ne rend QUE mes demandes, refusées comprises [33m 1838[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit les CONFLITS, calculés à la lecture [33m 1956[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation ACCEPTÉE dispute ENCORE — `locks()` n'était exercé QUE par des PENDING (S2-bis) [33m 2045[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation CONFIRMED dispute ENCORE — le paiement ne la sort pas de la vue (S2-bis) [33m 1778[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mune demande REFUSÉE ne dispute plus rien : elle sort des conflits [33m 1826[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit le CONTACT — il doit pouvoir rappeler [33m 1749[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/int/bookings.int-spec.ts[2m > [22mAcceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mla SECONDE acceptation reçoit 409 via le 23P01, et la première survit
+[31m[1mError[22m: expected 409 "Conflict", got 500 "Internal Server Error"[39m
+[36m [2m❯[22m test/int/bookings.int-spec.ts:[2m359:96[22m[39m
+    [90m357| [39m
+    [90m358| [39m    await api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(…
+    [90m359| [39m    const res = await api().post(`/api/v1/pro/bookings/${b.id}/accept`…
+    [90m   | [39m                                                                                               [31m^[39m
+    [90m360| [39m    [34mexpect[39m(res[33m.[39mbody[33m.[39mmessage[33m.[39mcode)[33m.[39m[34mtoBe[39m([32m"BOOKING_SLOT_TAKEN"[39m)[33m;[39m
+    [90m361| [39m
+[90m [2m❯[22m Test._assertStatus ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:[2m309:14[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:[2m365:13[22m[39m
+[90m [2m❯[22m Test._assertFunction ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:[2m342:13[22m[39m
+[90m [2m❯[22m Test.assert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:[2m195:23[22m[39m
+[90m [2m❯[22m localAssert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:[2m138:14[22m[39m
+[90m [2m❯[22m Server.<anonymous> ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:[2m152:11[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/int/bookings.int-spec.ts[2m > [22mAcceptation CONCURRENTE (D117)[2m > [22mdeux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN
+[31m[1mAssertionError[22m: expected [ 201, 500 ] to deeply equal [ 201, 409 ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    201,[22m
+[32m-   409,[39m
+[31m+   500,[39m
+[2m  ][22m
+
+[36m [2m❯[22m test/int/bookings.int-spec.ts:[2m518:19[22m[39m
+    [90m516| [39m
+    [90m517| [39m    [35mconst[39m codes [33m=[39m [first[33m.[39mstatus[33m,[39m second[33m.[39mstatus][33m.[39m[34msort[39m((x[33m,[39m y) [33m=>[39m x [33m-[39m y)[33m;[39m
+    [90m518| [39m    [34mexpect[39m(codes)[33m.[39m[34mtoEqual[39m([[34m201[39m[33m,[39m [34m409[39m])[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m519| [39m    [35mconst[39m loser [33m=[39m first[33m.[39mstatus [33m===[39m [34m409[39m [33m?[39m first [33m:[39m second[33m;[39m
+    [90m520| [39m    [34mexpect[39m(loser[33m.[39mbody[33m.[39mmessage[33m.[39mcode)[33m.[39m[34mtoBe[39m([32m"BOOKING_SLOT_TAKEN"[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m46 passed[39m[22m[90m (48)[39m
+[2m   Start at [22m 19:24:40
+[2m   Duration [22m 68.29s[2m (transform 1.71s, setup 34ms, collect 4.73s, tests 62.32s, environment 0ms, prepare 159ms)[22m
+

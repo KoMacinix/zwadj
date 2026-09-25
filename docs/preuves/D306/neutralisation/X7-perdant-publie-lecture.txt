@@ -1,0 +1,25 @@
+=== X7-perdant-publie — le PERDANT d'accept publie « acceptée » avant son 409
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 1 (attendu 1) · marqueur 0 → 1 (attendu 1) · ancre : if (resultat.outcome === "STATUS_CONFLICT") {
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → ae36f83c698f)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:21:49 duree=55.3s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X7-perdant-publie-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X7-perdant-publie-int.txt
+LIGNES_EXAMINEES=124
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  3 failed | 45 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=3   (attendus déclarés : 3)
+  test | AssertionError | Acceptation CONCURRENTE (D117) > deux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500
+       1re ligne : AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: expected [ { to: 'client@example.dz', …(2) } ] to have a length of +0 but got 1
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: expected [ { to: 'client@example.dz', …(2) } ] to have a length of +0 but got 1
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+ATTENDU MORD (AssertionError) : deux acceptations SIMULTANÉES de la MÊME demande
+VERDICT=MORSURE LUE

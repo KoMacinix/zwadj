@@ -1,0 +1,22 @@
+=== R23-F5-b — après un compte 0, toujours 409 : le motif n'est plus redécidé
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (decision.outcome === "REASON_REQUIRED") {
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 06dafd649ede)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:11:39 duree=59.5s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-b-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-b-int.txt
+LIGNES_EXAMINEES=103
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"},"path":"/api/v1/bookings/01a0dad7-63e9-747e-9af7-3966a3bfc5
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 409 "Conflict"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE

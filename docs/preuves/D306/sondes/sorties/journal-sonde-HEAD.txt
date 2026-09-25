@@ -1,0 +1,30 @@
+P1 réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"DECLINED"}
+P1b réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"DECLINED"}
+P2 réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"DECLINED"}
+P2 ligne : {"status":"DECLINED","acceptedAt":null,"declinedAt":"2026-09-25T23:27:48.741Z","cancelledAt":null,"cancellationReason":null}
+P3 réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"DECLINED"}
+P4 réponse : 200 {"id":"01a0dae5-85bf-7b52-a24c-0d9d2595b7e0","venueId":"01a0dae5-841e-7370-82b2-190f8039ecc7","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":"Changement de date de mariage","expiresAt":"2026-10-02T23:27:50.203Z","paymentDueAt":"2026-09-27T23:27:50.234Z","createdAt":"2026-09-25T23:27:50.207Z"}
+P4 ligne : {"status":"CANCELLED","acceptedAt":"2026-09-25T23:27:50.234Z","declinedAt":null,"cancelledAt":"2026-09-25T23:27:50.247Z","cancellationReason":"Changement de date de mariage"}
+P5 réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"}
+P5 e-mails au client : 0 · notifications booking.declined : 0
+P5b réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"DECLINED"}
+P5b notifications booking.accepted : 0 · e-mails : 0 · whatsapps : 0
+P6a — rival qui demande la salle AUSSITÔT : deadlock_timeout=1s · rival=salle obtenue (980 ms) · accept=500 "Internal server error"
+P6a — rival qui demande la salle AUSSITÔT : ligne finale PENDING
+P6b — rival qui demande la salle après 1 500 ms : deadlock_timeout=1s · rival=ERREUR 40P01 (1006 ms) · accept=201 {"id":"01a0dae5-9568-78d4-b91c-1b8ce164ca1d","venueId":"01a0dae5-93c7-7371-9898-9923e1af2d24","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":null,"expiresAt":"2026-10-02T23:27:54.210Z","paymentDueAt":"2026-09-27T23:27:54.266Z","createdAt":"2026-09-25T23:27:54.215Z"}
+P6b — rival qui demande la salle après 1 500 ms : ligne finale ACCEPTED
+P10a — compte 0 APRÈS attente : compte=0 · annulation pro pendant que la requête est ouverte : ERREUR 55P03 · relu=ACCEPTED · décision=REASON_REQUIRED ⇒ 400
+P10b — compte 0 SANS attente : compte=0 · annulation pro pendant que la requête est ouverte : commitée (1 ligne) · relu=CANCELLED · décision=STATUS_CONFLICT ⇒ 409
+P11 réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"CANCELLED"}
+P9 : 120 couples examinés (4 commandes × 5 motifs × 6 statuts) · écarts 0 (attendu 0)
+P9b : 5 arêtes du tableau : PENDING→ACCEPTED PENDING→DECLINED ACCEPTED→CANCELLED PENDING→CANCELLED ACCEPTED→CANCELLED
+P9b motif=undefined · écrit refusé depuis ACCEPTED · relecture possible ACCEPTED→400, CANCELLED→409
+P9b motif=undefined · écrit refusé depuis DECLINED · relecture possible DECLINED→409
+P9b motif=undefined · écrit refusé depuis EXPIRED · relecture possible EXPIRED→409
+P9b motif=undefined · écrit refusé depuis CONFIRMED · relecture possible CONFIRMED→409
+P9b motif=undefined · écrit refusé depuis CANCELLED · relecture possible CANCELLED→409
+P9b motif="motif" · écrit refusé depuis DECLINED · relecture possible DECLINED→409
+P9b motif="motif" · écrit refusé depuis EXPIRED · relecture possible EXPIRED→409
+P9b motif="motif" · écrit refusé depuis CONFIRMED · relecture possible CONFIRMED→409
+P9b motif="motif" · écrit refusé depuis CANCELLED · relecture possible CANCELLED→409
+P9b : cas examinés 9 · statut inscriptible atteignable 0 (attendu 0)

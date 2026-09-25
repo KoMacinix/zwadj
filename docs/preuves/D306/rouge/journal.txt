@@ -1,0 +1,14 @@
+LANCER debut=2026-09-25 19:02:45 duree=58.5s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\rouge\int-reservations-sources-avant.txt
+LANCER debut=2026-09-25 19:03:44 duree=2.8s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\rouge\unit-transitions-sources-avant.txt
+HEAD=b7159438db833836827427ee50f97fca12ae699c
+HEAD^=6e87430f924b73a3720b85c8a844ffd2c109bd1a
+6e87430=6e87430f924b73a3720b85c8a844ffd2c109bd1a
+PARENT_EST_AVANT=OUI
+POSE apps/api/src/venues/booking-locks.prisma.ts : hash-object=433b3daeba50 blob@6e87430=433b3daeba50 IDENTIQUE
+POSE apps/api/src/venues/booking-transitions.ts : hash-object=285f0268f92d blob@6e87430=285f0268f92d IDENTIQUE
+POSE apps/api/src/venues/bookings.service.ts : hash-object=afe77d0f3f15 blob@6e87430=afe77d0f3f15 IDENTIQUE
+RESTAURE apps/api/src/venues/booking-locks.prisma.ts : sha256 avant=7321e60509fabab6 après=7321e60509fabab6 IDENTIQUE
+RESTAURE apps/api/src/venues/booking-transitions.ts : sha256 avant=38a99a9b87f2a8a8 après=38a99a9b87f2a8a8 IDENTIQUE
+RESTAURE apps/api/src/venues/bookings.service.ts : sha256 avant=9f13cfed4f29c3e5 après=9f13cfed4f29c3e5 IDENTIQUE
+GIT_STATUS_FICHIERS=vide
+RESTAURATION=PROUVÉE

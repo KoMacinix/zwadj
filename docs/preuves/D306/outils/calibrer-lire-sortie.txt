@@ -1,0 +1,25 @@
+✓ rouge-avant-correctif.txt ['F1 contre un refus —'] — lu : MORSURE LUE, collectés 48, tests 3, fichier 0, lignes 124 (attendu : MORSURE LUE, 48, 3, 0)
+✓ tests.defaut.txt ['CAS-ASSERTION une assertion'] — lu : MORSURE LUE, collectés 7, tests 6, fichier 0, lignes 126 (attendu : MORSURE LUE, 7, 6, 0)
+✓ tests.defaut.txt ['CAS-ASSERTION-OBJET'] — lu : MORSURE LUE, collectés 7, tests 6, fichier 0, lignes 126 (attendu : MORSURE LUE, 7, 6, 0)
+✓ tests.defaut.txt ['CAS-REJECTS'] — lu : MORSURE LUE, collectés 7, tests 6, fichier 0, lignes 126 (attendu : MORSURE LUE, 7, 6, 0)
+✓ R23-F5-a-int-reservations.txt ["F5 — une ACCEPTATION commite pendant l'annulation client SANS motif"] — lu : MORSURE LUE, collectés 48, tests 2, fichier 0, lignes 111 (attendu : MORSURE LUE, 48, 2, 0)
+✓ vert-apres-correctif.txt [] — lu : VERT, collectés 48, tests 0, fichier 0, lignes 61 (attendu : VERT, 48, 0, 0)
+✓ vert-apres-correctif.txt ['F1 contre un refus —'] — lu : NON PROUVÉE, collectés 48, tests 0, fichier 0, lignes 61 (attendu : NON PROUVÉE, 48, 0, 0)
+✓ tests.defaut.txt ['CAS-PLANTAGE'] — lu : NON PROUVÉE, collectés 7, tests 6, fichier 0, lignes 126 (attendu : NON PROUVÉE, 7, 6, 0)
+✓ tests.defaut.txt ['CAS-ERREUR'] — lu : NON PROUVÉE, collectés 7, tests 6, fichier 0, lignes 126 (attendu : NON PROUVÉE, 7, 6, 0)
+✓ tests.defaut.txt ['CAS-DELAI'] — lu : NON PROUVÉE, collectés 7, tests 6, fichier 0, lignes 126 (attendu : NON PROUVÉE, 7, 6, 0)
+✓ tests.defaut.txt ['CAS-ASSERTION'] — lu : NON PROUVÉE, collectés 7, tests 6, fichier 0, lignes 126 (attendu : NON PROUVÉE, 7, 6, 0)
+✓ import.defaut.txt ["n'importe"] — lu : NON PROUVÉE, collectés 0, tests 0, fichier 1, lignes 27 (attendu : NON PROUVÉE, 0, 0, 1)
+✓ vide.defaut.txt ["n'importe"] — lu : NON PROUVÉE, collectés 0, tests 0, fichier 1, lignes 17 (attendu : NON PROUVÉE, 0, 0, 1)
+✓ crochet.defaut.txt ["n'importe"] — lu : NON PROUVÉE, collectés 1, tests 0, fichier 1, lignes 27 (attendu : NON PROUVÉE, 1, 0, 1)
+✓ R23-F5-a-int-reservations.txt ['le client DOIT un motif pour annuler une demande ACCEPTÉE'] — lu : NON PROUVÉE, collectés 48, tests 2, fichier 0, lignes 111 (attendu : NON PROUVÉE, 48, 2, 0)
+Titres `it(` relevés : {'int': 48, 'unit': 19}
+✓ T1 → 1 test(s) (attendu 1) : F1 contre un refus —
+✓ T2 → 1 test(s) (attendu 1) : F1 contre une annulation —
+✓ T3 → 1 test(s) (attendu 1) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+✓ T4 → 1 test(s) (attendu 1) : MD-F1-8 — l'ORDRE des refus d'accept
+✓ T5 → 1 test(s) (attendu 1) : MD-F1-5 — un BLOCAGE commite pendant l'acceptation
+✓ U1 → 1 test(s) (attendu 1) : writableFrom — SANS motif
+✓ U2 → 1 test(s) (attendu 1) : writableFrom — une chaîne VIDE
+✓ SEQ400 → 1 test(s) (attendu 1) : le client DOIT un motif pour annuler une demande ACCEPTÉE
+CAS=23 MANQUES=0 (attendu 0)

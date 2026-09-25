@@ -1,0 +1,28 @@
+=== X4-sonde — X4 rejouée sur la SONDE (hors suite)
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 703423554d8a)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:28:38 duree=20.7s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4-sonde-sonde.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run -c vitest.config.int.ts --dir C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\sondes adverse-23a
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4-sonde-sonde.txt
+LIGNES_EXAMINEES=177
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  4 failed | 10 passed (14)
+COLLECTES=14   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=4   (attendus déclarés : 4)
+  test | AssertionError | D306 — sonde adverse de 23a > P1 — séquentiel : refus, PUIS annulation client SANS motif — 409 statusConflict avec DECLINED (statut avant motif)
+       1re ligne : AssertionError: expected 200 to be 409 // Object.is equality
+  test | AssertionError | D306 — sonde adverse de 23a > P1b — séquentiel : refus, PUIS annulation client AVEC motif — 409 avec DECLINED
+       1re ligne : AssertionError: expected 200 to be 409 // Object.is equality
+  test | AssertionError | D306 — sonde adverse de 23a > P2 — concurrent : un REFUS commite pendant l'annulation client SANS motif — 409 avec DECLINED, pas 400
+       1re ligne : AssertionError: expected 200 to be 409 // Object.is equality
+  test | AssertionError | D306 — sonde adverse de 23a > P3 — concurrent : un REFUS commite pendant l'annulation client AVEC motif — 409 avec DECLINED
+       1re ligne : AssertionError: expected 200 to be 409 // Object.is equality
+ATTENDU MORD (AssertionError) : P1 — séquentiel : refus, PUIS annulation client SANS motif
+ATTENDU MORD (AssertionError) : P1b — séquentiel : refus, PUIS annulation client AVEC motif
+ATTENDU MORD (AssertionError) : P2 — concurrent : un REFUS commite pendant l'annulation client SANS motif
+ATTENDU MORD (AssertionError) : P3 — concurrent : un REFUS commite pendant l'annulation client AVEC motif
+VERDICT=MORSURE LUE

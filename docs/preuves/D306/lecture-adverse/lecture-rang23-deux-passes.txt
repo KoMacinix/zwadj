@@ -1,0 +1,188 @@
+################ versée par D305 (00:49) — docs/preuves/D305/neutralisation
+SORTIE=docs/preuves/D305/neutralisation\R23-F1-a-int-reservations.txt
+LIGNES_EXAMINEES=112
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0d6e1-7fa2-7732-ac68-3c6a5cea148d","venueId":"01a0d6e1-7d6b-7be3-8e8b-82e7d58b4c18","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: {"id":"01a0d6e1-8360-76db-96be-e4f0049f1d22","venueId":"01a0d6e1-810d-7567-bc89-db580189b230","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D305/neutralisation\R23-F1-b-int-reservations.txt
+LIGNES_EXAMINEES=112
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0d6e2-4327-78a5-94bd-aa879ca240f9","venueId":"01a0d6e2-40e8-738b-8485-e3962f3ba06e","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"D
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: {"id":"01a0d6e2-46e6-79bc-b285-8165c3cc957e","venueId":"01a0d6e2-4499-77a1-af49-7161194ac429","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"C
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D305/neutralisation\R23-F5-a-int-reservations.txt
+LIGNES_EXAMINEES=111
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"id":"01a0d6e3-0d77-7415-96ef-337d43f75f0d","venueId":"01a0d6e3-0b27-7029-af1e-ac5c14be6244","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"C
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 200 "OK"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D305/neutralisation\R23-F5-b-int-reservations.txt
+LIGNES_EXAMINEES=111
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"},"path":"/api/v1/bookings/01a0d6e3-d1e8-72a5-b81b-edc0cc3a20
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 409 "Conflict"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D305/neutralisation\R23-F5-c-unit-transitions.txt
+LIGNES_EXAMINEES=89
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 21 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+ATTENDU MORD (AssertionError) : writableFrom — SANS motif
+ATTENDU MORD (AssertionError) : writableFrom — une chaîne VIDE
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D305/neutralisation\pre-vol-int-reservations.txt
+LIGNES_EXAMINEES=66
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+SORTIE=docs/preuves/D305/neutralisation\pre-vol-unit-transitions.txt
+LIGNES_EXAMINEES=16
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  23 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+################ passe des portes (01:00-01:03) — docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes
+SORTIE=docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes\R23-F1-a-int-reservations.txt
+LIGNES_EXAMINEES=112
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0d6f0-086f-77cb-89b0-a1bab4acd9fb","venueId":"01a0d6f0-061f-75ac-a116-19b3ad87ffdf","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: {"id":"01a0d6f0-0c11-709c-88d4-a0a7ec403510","venueId":"01a0d6f0-09c9-7708-ba96-863bdb3f6f3f","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes\R23-F1-b-int-reservations.txt
+LIGNES_EXAMINEES=112
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0d6f0-c96c-73ee-b73a-2564f7121e17","venueId":"01a0d6f0-c71d-7688-8c3b-c0fe2b9b1365","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"D
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: {"id":"01a0d6f0-cd2e-7169-a6bb-8536f863b0f8","venueId":"01a0d6f0-cadf-7d8f-a545-f76fa661beb5","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"C
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes\R23-F5-a-int-reservations.txt
+LIGNES_EXAMINEES=111
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"id":"01a0d6f1-9416-7c39-b344-8eaa016515d9","venueId":"01a0d6f1-91dd-70a8-9001-89cb41edf108","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"C
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 200 "OK"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes\R23-F5-b-int-reservations.txt
+LIGNES_EXAMINEES=111
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"},"path":"/api/v1/bookings/01a0d6f2-55e1-7a82-aecd-155e90f88d
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 409 "Conflict"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes\R23-F5-c-unit-transitions.txt
+LIGNES_EXAMINEES=89
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 21 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+ATTENDU MORD (AssertionError) : writableFrom — SANS motif
+ATTENDU MORD (AssertionError) : writableFrom — une chaîne VIDE
+VERDICT=MORSURE LUE
+
+SORTIE=docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes\pre-vol-int-reservations.txt
+LIGNES_EXAMINEES=66
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+SORTIE=docs/preuves/D306/lecture-adverse/journaux-rang23-passe-des-portes\pre-vol-unit-transitions.txt
+LIGNES_EXAMINEES=16
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  23 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+

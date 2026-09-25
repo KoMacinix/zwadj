@@ -1,0 +1,30 @@
+D306 — TRI À LA MAIN de la passe D277 (sortie : balayage-apres-ecriture.txt ; avant écriture : balayage-avant-ecriture-v2.txt)
+
+SENS 1 — ce que ce lot INVALIDE : « 23a attend la session adverse ».
+  Point d'entrée du rang 23 :
+    titre            « ATTEND LA SESSION ADVERSE »                      → BARRÉ, annoté D306 (@122830)
+    sous-titre       « rafraîchi le 25/09/2026 (D305) »                 → « (D305, puis D306) »
+    table, 23a       « ⏸ attend la session ADVERSE … »                  → BARRÉ, annoté D306 (@123862, @124008)
+    « Ce qui vient ensuite … la session adverse de 23a »                → BARRÉ, annoté D306 (@125075, @125293)
+  Ordre des rangs :
+    ligne D305       « 23a attend la session adverse puis le relecteur » → BARRÉ, renvoi à la ligne D306 (@113327)
+    passe D277 de D305 sous le rang 24 « … et attend la session adverse » → ANNOTÉ par la ligne D306 qui la suit (@115275)
+  Restent courants, et VRAIS — pas d'écriture :
+    registre, ligne D305 « 23a attend la session adverse »    : ligne de définition d'une décision datée ; le registre ne se reformule pas
+    section D305 (@405546, @406961, @410012)                  : section de session datée, vraie à sa date
+    cadrage § 7 « chacun avec sa session adverse »            : proposition datée, vraie
+    AGENTS.md « une session adverse ouverte à froid … »       : description de la forme de revue, vraie
+    ZWADJ_BACKLOG.md ×3 « reste ouvert jusqu'à la session adverse, la décision du relecteur et la certification »
+                                                              : conjonction de trois conditions ; une est remplie, l'entrée
+                                                                reste ouverte — VRAIE. Hors du périmètre d'écriture de ce lot.
+  « aucune cible ne le prouve », « n'est prouvé que par S5b-1 », « aucun test ne force l'ordre inverse » :
+    section D305, datée ; la section D306 (partie D, points 1 à 3) dit ce qui est désormais prouvé. Pas d'écriture
+    dans une section datée.
+
+SENS 2 — ce que ce lot REND PERMIS : RIEN.
+  La revue de 23a n'est pas finie : la session adverse est faite, la DÉCISION DU RELECTEUR manque.
+    « Que R1 puisse s'ouvrir AVANT la fin de la revue de 23a n'est écrit nulle part » (@125581) : TOUJOURS VRAI.
+    « fin de la revue » (×3), « puis le relecteur » (×2) : vrais, ou barrés (@113343).
+    « avant 23b » (×6) : la question « déjà converti » — sans rapport avec ce lot, inchangée.
+  Aucun « peut s'ouvrir » générique ne change : leur condition est le compteur de lots de code, que ce lot documentaire
+  laisse à UN.

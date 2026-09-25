@@ -1,0 +1,22 @@
+=== R23-F1-a — l'écriture d'accept perd sa condition de statut
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 5 → 6 (attendu 6) · ancre : where: { id: input.bookingId, status: { in: [...input.allowedFrom] } }
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 7f67674c7158)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:08:32 duree=64.4s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F1-a-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F1-a-int.txt
+LIGNES_EXAMINEES=104
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0dad4-82cc-7c3f-8f25-9139b9acf91d","venueId":"01a0dad4-7ecf-7737-b235-3eb50f6ef044","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: {"id":"01a0dad4-8864-7597-9995-2e7a3f31246c","venueId":"01a0dad4-84e7-786a-83ed-402d9d0da687","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE

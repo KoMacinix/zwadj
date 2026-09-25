@@ -1,0 +1,20 @@
+# D306 — motifs de la passe D277. Format : <sens>|<motif>. Lus par balayage.py, jamais passés en ligne de commande (D289).
+# ⚠ Première version (sortie `balayage-avant-ecriture.txt`) : cinq motifs à ZÉRO — le gras Markdown coupe
+#   « la **session adverse de 23a** » ; remplacés par les formes nues ci-dessous. « non mesuré » (55) et
+#   « peut s'ouvrir » (29) RETIRÉS : ils comptent tout et ne mesurent rien (D298) ; la condition des « peut
+#   s'ouvrir » génériques est le compteur de lots de code, que ce lot documentaire ne change pas (UN).
+# sens 1 — ce que la session adverse INVALIDE (affirmations qui deviennent fausses quand elle a rendu son rapport)
+1|SESSION ADVERSE
+1|session ADVERSE
+1|session adverse
+1|aucune cible ne le prouve
+1|n'est prouvé que par S5b-1
+1|aucun test ne force l'ordre inverse
+# sens 2 — ce que la session adverse REND PERMIS (permissions dont la condition change)
+2|puis le relecteur
+2|R1 puisse s'ouvrir
+2|fin de la revue
+2|avant 23b
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d306-qq

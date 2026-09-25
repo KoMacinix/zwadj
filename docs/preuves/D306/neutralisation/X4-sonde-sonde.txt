@@ -1,0 +1,176 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+(node:2704) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node.EXE --trace-deprecation ...` to show where the warning was created)
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP1 — séquentiel : refus, PUIS annulation client SANS motif — 409 statusConflict avec DECLINED (statut avant motif)
+[22m[39mP1 réponse : 200 {"id":"01a0dae6-5b1b-78b9-b494-e366ac13518a","venueId":"01a0dae6-591e-7419-a0f7-67e176940add","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":null,"expiresAt":"2026-10-02T23:28:44.806Z","paymentDueAt":null,"createdAt":"2026-09-25T23:28:44.825Z"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP1b — séquentiel : refus, PUIS annulation client AVEC motif — 409 avec DECLINED
+[22m[39mP1b réponse : 200 {"id":"01a0dae6-5e2c-7bfa-b028-afcb1a8bf28b","venueId":"01a0dae6-5c74-795b-a0b3-94ca7844b566","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":"Changement de plan","expiresAt":"2026-10-02T23:28:45.607Z","paymentDueAt":null,"createdAt":"2026-09-25T23:28:45.611Z"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP2 — concurrent : un REFUS commite pendant l'annulation client SANS motif — 409 avec DECLINED, pas 400
+[22m[39mP2 réponse : 200 {"id":"01a0dae6-6126-7257-bd95-6687fde4165b","venueId":"01a0dae6-5f74-78de-8433-9c7d809bdfc0","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":null,"expiresAt":"2026-10-02T23:28:46.367Z","paymentDueAt":null,"createdAt":"2026-09-25T23:28:46.372Z"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP3 — concurrent : un REFUS commite pendant l'annulation client AVEC motif — 409 avec DECLINED
+[22m[39mP3 réponse : 200 {"id":"01a0dae6-6439-739b-a5a1-e3a38763b9dd","venueId":"01a0dae6-628f-7451-86f7-246c9461c136","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":"Changement de plan","expiresAt":"2026-10-02T23:28:47.156Z","paymentDueAt":null,"createdAt":"2026-09-25T23:28:47.159Z"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP4 — concurrent : une ACCEPTATION commite pendant l'annulation client AVEC motif — 200, annulée avec son motif
+[22m[39mP4 réponse : 200 {"id":"01a0dae6-6715-7b3f-9376-7e52cb177965","venueId":"01a0dae6-6585-7d32-b5f5-4808742f166d","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"CANCELLED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":"Changement de date de mariage","expiresAt":"2026-10-02T23:28:47.888Z","paymentDueAt":"2026-09-27T23:28:47.924Z","createdAt":"2026-09-25T23:28:47.892Z"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP4 — concurrent : une ACCEPTATION commite pendant l'annulation client AVEC motif — 200, annulée avec son motif
+[22m[39mP4 ligne : {"status":"CANCELLED","acceptedAt":"2026-09-25T23:28:47.924Z","declinedAt":null,"cancelledAt":"2026-09-25T23:28:47.937Z","cancellationReason":"Changement de date de mariage"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP5 — concurrent : une ACCEPTATION commite pendant le REFUS — 409 avec ACCEPTED, aucun e-mail ni notification de refus
+[22m[39mP5 réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP5 — concurrent : une ACCEPTATION commite pendant le REFUS — 409 avec ACCEPTED, aucun e-mail ni notification de refus
+[22m[39mP5 e-mails au client : 0 · notifications booking.declined : 0
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP5b — le PERDANT d'accept (contre un refus) n'écrit AUCUNE notification booking.accepted
+[22m[39mP5b réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"DECLINED"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP5b — le PERDANT d'accept (contre un refus) n'écrit AUCUNE notification booking.accepted
+[22m[39mP5b notifications booking.accepted : 0 · e-mails : 0 · whatsapps : 0
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP6a — rival qui demande la salle AUSSITÔT : ordre inverse forcé, qui PostgreSQL désigne-t-il, et que rend accept ?
+[22m[39mP6a — rival qui demande la salle AUSSITÔT : deadlock_timeout=1s · rival=salle obtenue (974 ms) · accept=500 "Internal server error"
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP6a — rival qui demande la salle AUSSITÔT : ordre inverse forcé, qui PostgreSQL désigne-t-il, et que rend accept ?
+[22m[39mP6a — rival qui demande la salle AUSSITÔT : ligne finale PENDING
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP6b — rival qui demande la salle après 1 500 ms : ordre inverse forcé, qui PostgreSQL désigne-t-il, et que rend accept ?
+[22m[39mP6b — rival qui demande la salle après 1 500 ms : deadlock_timeout=1s · rival=ERREUR 40P01 (1007 ms) · accept=201 {"id":"01a0dae6-76fa-7672-b116-9176fa905098","venueId":"01a0dae6-7551-7617-abb1-f9c7a63b8f61","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":null,"expiresAt":"2026-10-02T23:28:51.959Z","paymentDueAt":"2026-09-27T23:28:52.015Z","createdAt":"2026-09-25T23:28:51.962Z"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP6b — rival qui demande la salle après 1 500 ms : ordre inverse forcé, qui PostgreSQL désigne-t-il, et que rend accept ?
+[22m[39mP6b — rival qui demande la salle après 1 500 ms : ligne finale ACCEPTED
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP10a — compte 0 APRÈS attente : la relecture peut-elle voir un état qui a ENCORE changé, et quel code en sort ?
+[22m[39mP10a — compte 0 APRÈS attente : compte=0 · annulation pro pendant que la requête est ouverte : ERREUR 55P03 · relu=ACCEPTED · décision=REASON_REQUIRED ⇒ 400
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP10b — compte 0 SANS attente : la relecture peut-elle voir un état qui a ENCORE changé, et quel code en sort ?
+[22m[39mP10b — compte 0 SANS attente : compte=0 · annulation pro pendant que la requête est ouverte : commitée (1 ligne) · relu=CANCELLED · décision=STATUS_CONFLICT ⇒ 409
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP11 — séquentiel, même état que P10 : accept, annulation PRO, PUIS annulation client SANS motif — 409 CANCELLED, pas 400
+[22m[39mP11 réponse : 409 {"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"CANCELLED"}
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP9 — writableFrom(c, r) contient s ⇔ decideBookingTransition(c, s, r) = ALLOWED, pour toute commande, tout statut, tout motif
+[22m[39mP9 : 120 couples examinés (4 commandes × 5 motifs × 6 statuts) · écarts 0 (attendu 0)
+
+[90mstdout[2m | ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22m[2mD306 — sonde adverse de 23a[2m > [22m[2mP9b — après un compte 0, un statut INSCRIPTIBLE est-il ATTEIGNABLE par le tableau ? (ALLOWED après 0 ⇒ 409 là où l'ordre séquentiel rend 200)
+[22m[39mP9b : 5 arêtes du tableau : PENDING→ACCEPTED PENDING→DECLINED ACCEPTED→CANCELLED PENDING→CANCELLED ACCEPTED→CANCELLED
+P9b motif=undefined · écrit refusé depuis ACCEPTED · relecture possible ACCEPTED→400, CANCELLED→409
+P9b motif=undefined · écrit refusé depuis DECLINED · relecture possible DECLINED→409
+P9b motif=undefined · écrit refusé depuis EXPIRED · relecture possible EXPIRED→409
+P9b motif=undefined · écrit refusé depuis CONFIRMED · relecture possible CONFIRMED→409
+P9b motif=undefined · écrit refusé depuis CANCELLED · relecture possible CANCELLED→409
+P9b motif="motif" · écrit refusé depuis DECLINED · relecture possible DECLINED→409
+P9b motif="motif" · écrit refusé depuis EXPIRED · relecture possible EXPIRED→409
+P9b motif="motif" · écrit refusé depuis CONFIRMED · relecture possible CONFIRMED→409
+P9b motif="motif" · écrit refusé depuis CANCELLED · relecture possible CANCELLED→409
+P9b : cas examinés 9 · statut inscriptible atteignable 0 (attendu 0)
+
+ [31m❯[39m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts [2m([22m[2m14 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[33m 15321[2mms[22m[39m
+[31m   [31m×[31m D306 — sonde adverse de 23a[2m > [22mP1 — séquentiel : refus, PUIS annulation client SANS motif — 409 statusConflict avec DECLINED (statut avant motif)[39m[33m 1048[2mms[22m[39m
+[31m     → expected 200 to be 409 // Object.is equality[39m
+[31m   [31m×[31m D306 — sonde adverse de 23a[2m > [22mP1b — séquentiel : refus, PUIS annulation client AVEC motif — 409 avec DECLINED[39m[33m 765[2mms[22m[39m
+[31m     → expected 200 to be 409 // Object.is equality[39m
+[31m   [31m×[31m D306 — sonde adverse de 23a[2m > [22mP2 — concurrent : un REFUS commite pendant l'annulation client SANS motif — 409 avec DECLINED, pas 400[39m[33m 790[2mms[22m[39m
+[31m     → expected 200 to be 409 // Object.is equality[39m
+[31m   [31m×[31m D306 — sonde adverse de 23a[2m > [22mP3 — concurrent : un REFUS commite pendant l'annulation client AVEC motif — 409 avec DECLINED[39m[33m 775[2mms[22m[39m
+[31m     → expected 200 to be 409 // Object.is equality[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP4 — concurrent : une ACCEPTATION commite pendant l'annulation client AVEC motif — 200, annulée avec son motif [33m 739[2mms[22m[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP5 — concurrent : une ACCEPTATION commite pendant le REFUS — 409 avec ACCEPTED, aucun e-mail ni notification de refus [33m 763[2mms[22m[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP5b — le PERDANT d'accept (contre un refus) n'écrit AUCUNE notification booking.accepted [33m 763[2mms[22m[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP6a — rival qui demande la salle AUSSITÔT : ordre inverse forcé, qui PostgreSQL désigne-t-il, et que rend accept ? [33m 1773[2mms[22m[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP6b — rival qui demande la salle après 1 500 ms : ordre inverse forcé, qui PostgreSQL désigne-t-il, et que rend accept ? [33m 3300[2mms[22m[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP10a — compte 0 APRÈS attente : la relecture peut-elle voir un état qui a ENCORE changé, et quel code en sort ? [33m 2810[2mms[22m[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP10b — compte 0 SANS attente : la relecture peut-elle voir un état qui a ENCORE changé, et quel code en sort ? [33m 740[2mms[22m[39m
+   [33m[2m✓[22m[39m D306 — sonde adverse de 23a[2m > [22mP11 — séquentiel, même état que P10 : accept, annulation PRO, PUIS annulation client SANS motif — 409 CANCELLED, pas 400 [33m 759[2mms[22m[39m
+   [32m✓[39m D306 — sonde adverse de 23a[2m > [22mP9 — writableFrom(c, r) contient s ⇔ decideBookingTransition(c, s, r) = ALLOWED, pour toute commande, tout statut, tout motif[32m 33[2mms[22m[39m
+   [32m✓[39m D306 — sonde adverse de 23a[2m > [22mP9b — après un compte 0, un statut INSCRIPTIBLE est-il ATTEIGNABLE par le tableau ? (ALLOWED après 0 ⇒ 409 là où l'ordre séquentiel rend 200)[32m 31[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 4 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22mD306 — sonde adverse de 23a[2m > [22mP1 — séquentiel : refus, PUIS annulation client SANS motif — 409 statusConflict avec DECLINED (statut avant motif)
+[31m[1mAssertionError[22m: expected 200 to be 409 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+[36m [2m❯[22m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts:[2m228:24[22m[39m
+    [90m226| [39m    [35mconst[39m res [33m=[39m [35mawait[39m [34mannulerClient[39m(f[33m,[39m a[33m.[39mid[33m,[39m {})[33m;[39m
+    [90m227| [39m    [34mnoter[39m([32m`P1 réponse : [39m[36m${[39m[34mvers[39m(res)[36m}[39m[32m`[39m)[33m;[39m
+    [90m228| [39m    [34mexpect[39m(res[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m409[39m)[33m;[39m
+    [90m   | [39m                       [31m^[39m
+    [90m229| [39m    expect(res.body.message?.message).toBe("booking.errors.statusConfl…
+    [90m230| [39m    expect(res.body.message?.status).toBe(targetOf(BookingCommand.DECL…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22mD306 — sonde adverse de 23a[2m > [22mP1b — séquentiel : refus, PUIS annulation client AVEC motif — 409 avec DECLINED
+[31m[1mAssertionError[22m: expected 200 to be 409 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+[36m [2m❯[22m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts:[2m240:24[22m[39m
+    [90m238| [39m    const res = await annulerClient(f, a.id, { reason: "Changement de …
+    [90m239| [39m    [34mnoter[39m([32m`P1b réponse : [39m[36m${[39m[34mvers[39m(res)[36m}[39m[32m`[39m)[33m;[39m
+    [90m240| [39m    [34mexpect[39m(res[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m409[39m)[33m;[39m
+    [90m   | [39m                       [31m^[39m
+    [90m241| [39m    expect(res.body.message?.status).toBe(targetOf(BookingCommand.DECL…
+    [90m242| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22mD306 — sonde adverse de 23a[2m > [22mP2 — concurrent : un REFUS commite pendant l'annulation client SANS motif — 409 avec DECLINED, pas 400
+[31m[1mAssertionError[22m: expected 200 to be 409 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+[36m [2m❯[22m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts:[2m249:24[22m[39m
+    [90m247| [39m    const res = await course([[SQL_REFUS, paramsRefus(a.id)]], () => a…
+    [90m248| [39m    [34mnoter[39m([32m`P2 réponse : [39m[36m${[39m[34mvers[39m(res)[36m}[39m[32m`[39m)[33m;[39m
+    [90m249| [39m    [34mexpect[39m(res[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m409[39m)[33m;[39m
+    [90m   | [39m                       [31m^[39m
+    [90m250| [39m    expect(res.body.message?.message).toBe("booking.errors.statusConfl…
+    [90m251| [39m    expect(res.body.message?.status).toBe(targetOf(BookingCommand.DECL…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts[2m > [22mD306 — sonde adverse de 23a[2m > [22mP3 — concurrent : un REFUS commite pendant l'annulation client AVEC motif — 409 avec DECLINED
+[31m[1mAssertionError[22m: expected 200 to be 409 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 200[39m
+
+[36m [2m❯[22m ../../docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts:[2m263:24[22m[39m
+    [90m261| [39m    const res = await course([[SQL_REFUS, paramsRefus(a.id)]], () => a…
+    [90m262| [39m    [34mnoter[39m([32m`P3 réponse : [39m[36m${[39m[34mvers[39m(res)[36m}[39m[32m`[39m)[33m;[39m
+    [90m263| [39m    [34mexpect[39m(res[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m409[39m)[33m;[39m
+    [90m   | [39m                       [31m^[39m
+    [90m264| [39m    expect(res.body.message?.status).toBe(targetOf(BookingCommand.DECL…
+    [90m265| [39m    [34mexpect[39m(([35mawait[39m [34mligne[39m(a[33m.[39mid))[33m.[39mcancelledAt)[33m.[39m[34mtoBeNull[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m10 passed[39m[22m[90m (14)[39m
+[2m   Start at [22m 19:28:39
+[2m   Duration [22m 19.87s[2m (transform 1.02s, setup 32ms, collect 3.45s, tests 15.32s, environment 0ms, prepare 169ms)[22m
+

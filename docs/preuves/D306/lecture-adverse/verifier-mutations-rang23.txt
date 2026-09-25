@@ -1,0 +1,73 @@
+CALIBRATION — des cas dont la reponse est connue d'avance
+   ✓ 1. positif                       → POSEE
+   ✓ 2. fantome CRLF (sans normal.)   → NON POSEE
+   ✓ 2b. meme motif, harnais normal.  → POSEE
+   ✓ 3. interversion                  → POSEE
+   ✓ 4. taille egale                  → POSEE
+   ✓ 5. marqueur inclus               → POSEE
+   ✓ 6. suppression (apres vide)      → POSEE
+   ✓ 7. insertion (ancre survit)      → POSEE
+   ⇒ les 8 cas rendent leur verdict connu.
+
+==============================================================================
+neutralize-rang23.py
+   normalisation CRLF des motifs par le harnais : OUI
+
+── cible 1 : R23-F1-a. ⛔ L'ÉCRITURE D'ACCEPT PERD SA CONDITION DE STATUT — un refus
+   fichier          : apps/api/src/venues/booking-locks.prisma.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 2 → 3   (hors sites d'ancre)   ⚠ DEJA PRESENT — une assertion naive serait VRAIE AVANT la mutation
+   taille           : 8552 → 8512 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 126 :
+     -  where: { id: input.bookingId, status: { in: [...input.allowedFrom] } },
+     +  where: { id: input.bookingId },
+
+── cible 2 : R23-F1-b. ⛔ UN COMPTE NUL N'EST PLUS UN REFUS — la ligne relue part co
+   fichier          : apps/api/src/venues/booking-locks.prisma.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 8552 → 8540 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 132 :
+     -  if (ecrit.count !== 1) {
+     +  if (false) {
+
+── cible 3 : R23-F5-a. ⛔ L'ANNULATION CLIENT ÉCRIT DEPUIS TOUT SON `from` — une ACC
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33785 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 495 :
+     -  from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+     +  from: allowedFrom(BookingCommand.CANCEL_AS_CLIENT),
+
+── cible 4 : R23-F5-b. Le refus après conflit ne se redécide plus sur le statut rel
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33767 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 509 :
+     -  if (decision.outcome === "REASON_REQUIRED") {
+     +  if (false) {
+
+── cible 5 : R23-F5-c. La fonction pure des statuts inscriptibles IGNORE LE MOTIF —
+   fichier          : apps/api/src/venues/booking-transitions.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 6330 → 6338 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 140 :
+     -  (status) => decideBookingTransition(command, status, reason).outcome === "ALLOWED"
+     +  (status) => decideBookingTransition(command, status, reason).outcome !== "STATUS_CONFLICT"
+
+==============================================================================
+POSEES 5   ·   NON POSEES 0   ·   NON COUVERTES 0
+✓ TOUTES LES MUTATIONS SONT POSEES, ET TOUTES LES CIBLES ONT ETE REGARDEES

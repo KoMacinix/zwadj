@@ -1,0 +1,22 @@
+=== R23-F5-c — la fonction pure des statuts inscriptibles ignore le motif
+FICHIER=apps/api/src/venues/booking-transitions.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : (status) => decideBookingTransition(command, status, reason).outcome =
+  RELU = texte muté, octet pour octet : OUI (sha256 38a99a9b87f2 → 1f79963eb4eb)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:07:33 duree=1.8s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-c-unit.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run src/venues/booking-transitions.spec.ts
+RESTAURE sha256 38a99a9b87f2a8a8 → 38a99a9b87f2a8a8 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-c-unit.txt
+LIGNES_EXAMINEES=81
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 21 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED' ] to deeply equal [ 'PENDING' ]
+ATTENDU MORD (AssertionError) : writableFrom — SANS motif
+ATTENDU MORD (AssertionError) : writableFrom — une chaîne VIDE
+VERDICT=MORSURE LUE

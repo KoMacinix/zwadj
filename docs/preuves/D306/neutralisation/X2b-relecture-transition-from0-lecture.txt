@@ -1,0 +1,22 @@
+=== X2b-relecture-transition-from0 — la relecture de `transition` rend le premier statut source
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : return { outcome: "STATUS_CONFLICT", status: fresh.status };
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 074a47bd5c79)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:18:53 duree=62.1s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X2b-relecture-transition-from0-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X2b-relecture-transition-from0-int.txt
+LIGNES_EXAMINEES=103
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"PENDING"},"path":"/api/v1/bookings/01a0dade-0cd1-704f-b4f4-1e159f3f546
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 409 "Conflict"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE

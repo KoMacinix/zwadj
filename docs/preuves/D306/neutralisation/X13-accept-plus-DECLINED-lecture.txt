@@ -1,0 +1,19 @@
+=== X13-accept-plus-DECLINED — l'écriture d'accept admet DECLINED, et lui seul : T1 seul doit rougir
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : where: { id: input.bookingId, status: { in: [...input.allowedFrom] } }
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 251a42d70473)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:25:49 duree=50.9s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X13-accept-plus-DECLINED-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X13-accept-plus-DECLINED-int.txt
+LIGNES_EXAMINEES=84
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0dae4-3c75-7e91-959d-29d3b670d67b","venueId":"01a0dae4-3a4f-7aff-8552-c098a5c8055b","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+VERDICT=MORSURE LUE

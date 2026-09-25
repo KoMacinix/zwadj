@@ -1,0 +1,14 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D305/audit-secrets-final.txt (108 contextes) · nouvelle docs/preuves/D306/audit-secrets-d306.txt (116 contextes)
+   alertes ABSENTES de la précédente : 8 — à trier au contexte avant le commit
+   [mot-de-passe] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 477 de docs/preuves/D306/audit-secrets-d306.txt
+   [mot-de-passe] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 479 de docs/preuves/D306/audit-secrets-d306.txt
+   [mot-de-passe] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 481 de docs/preuves/D306/audit-secrets-d306.txt
+   [jeton] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 483 de docs/preuves/D306/audit-secrets-d306.txt
+   [jeton] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 485 de docs/preuves/D306/audit-secrets-d306.txt
+   [jeton] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 487 de docs/preuves/D306/audit-secrets-d306.txt
+   [jeton] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 489 de docs/preuves/D306/audit-secrets-d306.txt
+   [jeton] docs/preuves/D306/sondes/test/int/adverse-23a.int-spec.ts — contexte : ligne 491 de docs/preuves/D306/audit-secrets-d306.txt
+   ventilation par motif : mot-de-passe=3 · jeton=5

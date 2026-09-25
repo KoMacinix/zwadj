@@ -1,0 +1,83 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+(node:9396) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node.EXE --trace-deprecation ...` to show where the warning was created)
+ [31m❯[39m test/int/bookings.int-spec.ts [2m([22m[2m48 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 58006[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22mune salle créée sans rien dire reçoit 30 % — les 30 % implicites d'avant [33m 1461[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22ml'acompte est exposé sur la fiche PUBLIQUE, avant la demande [33m 975[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mcrée une demande PENDING et NE VERROUILLE RIEN [33m 1013[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mexpiresAt vaut la fenêtre de réponse PRO, encadrée par deux instants mesurés ici [33m 1242[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle créneau 20h→02h produit une plage qui finit LE LENDEMAIN (D55/D77) [33m 1205[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mDEUX demandes concurrentes sur la même date coexistent en PENDING [33m 1340[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle pro est notifié — sans notification, la demande expirerait toute seule [33m 1134[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22m⚠ la ligne Notification est RÉSOLUE, pas laissée en QUEUED (S2-bis) [33m 1120[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun envoi qui TOMBE laisse la demande enregistrée (D63) [33m 1156[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mdes montants PÉRIMÉS rendent 409 avec les montants RÉELS (D75) [33m 1349[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun ACOMPTE périmé suffit à refuser, même si le total est bon [33m 1664[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mplus d'invités que la capacité : refusé AVANT l'écriture [33m 1138[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mune date au-delà de l'horizon de 18 mois se REFUSE, elle ne se déplace pas (D49) [33m 1179[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun créneau d'une AUTRE salle : « n'existe pas », pas « est pris » [33m 1203[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun acompte fixe SUPÉRIEUR au total est écrêté, la demande passe [33m 1301[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse un pourcentage ET un montant à la fois [33m 1192[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse la paire incomplète [33m 1175[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun taux de 4 % est sous le plancher [33m 942[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mla SECONDE acceptation reçoit 409 via le 23P01, et la première survit [33m 1084[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mannuler la première LIBÈRE le créneau : la seconde passe alors [33m 1207[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22m⚠ le pro NE PEUT PAS annuler une demande encore PENDING — il la REFUSE (S3) [33m 1183[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mun BLOCAGE recouvrant refuse l'acceptation — contrôle applicatif sous verrou [33m 1429[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22maccepter deux fois : BOOKING_STATUS_CONFLICT, avec le statut réel [33m 1294[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22ml'acceptation pose paymentDueAt et prévient le client [33m 1474[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mpaymentDueAt − acceptedAt vaut EXACTEMENT la fenêtre d'acompte [33m 1490[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mdeux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500 [33m 1262[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mdeux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN [33m 1262[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client [33m 1321[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit [33m 1174[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500 [33m 1147[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mtrois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409 [33m 1152[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte [33m 1139[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte [33m 1556[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte [33m 1204[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage [33m 1053[2mms[22m[39m
+[31m   [31m×[31m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente[39m[33m 1182[2mms[22m[39m
+[31m     → {"id":"01a0dad9-5a87-7dc4-9c5d-09c4850ada36","venueId":"01a0dad9-57a1-7792-85d5-6002694b16ee","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":null,"expiresAt":"2026-10-02T23:14:32.705Z","paymentDueAt":"2026-09-27T23:14:32.775Z","createdAt":"2026-09-25T23:14:32.710Z"}: expected 201 to be 409 // Object.is equality[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mla plage couvre les 24 heures locales, sans règle applicative en plus [33m 991[2mms[22m[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mle créneau reste la source du PRIX, même si ses heures sont ignorées [33m 973[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle pro refuse SANS motif — c'est permis [33m 927[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle client annule une demande PENDING sans motif [33m 1022[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle client DOIT un motif pour annuler une demande ACCEPTÉE [33m 1416[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22m404 INDISTINCT sur la demande d'un autre client (D47) [33m 943[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mGET /me/bookings ne rend QUE mes demandes, refusées comprises [33m 1102[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit les CONFLITS, calculés à la lecture [33m 1071[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation ACCEPTÉE dispute ENCORE — `locks()` n'était exercé QUE par des PENDING (S2-bis) [33m 1013[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation CONFIRMED dispute ENCORE — le paiement ne la sort pas de la vue (S2-bis) [33m 1093[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mune demande REFUSÉE ne dispute plus rien : elle sort des conflits [33m 1275[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit le CONTACT — il doit pouvoir rappeler [33m 1406[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/int/bookings.int-spec.ts[2m > [22mRang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente
+[31m[1mAssertionError[22m: {"id":"01a0dad9-5a87-7dc4-9c5d-09c4850ada36","venueId":"01a0dad9-57a1-7792-85d5-6002694b16ee","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"ACCEPTED","paymentMethod":"ONLINE","eventDate":"2027-08-15","startsAt":"2027-08-15T19:00:00.000Z","endsAt":"2027-08-16T01:00:00.000Z","slotNameFr":"Soirée","slotNameAr":"سهرة","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"services":[],"clientMessage":null,"declineReason":null,"cancellationReason":null,"expiresAt":"2026-10-02T23:14:32.705Z","paymentDueAt":"2026-09-27T23:14:32.775Z","createdAt":"2026-09-25T23:14:32.710Z"}: expected 201 to be 409 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 409[39m
+[31m+ 201[39m
+
+[36m [2m❯[22m test/int/bookings.int-spec.ts:[2m899:50[22m[39m
+    [90m897| [39m    )[33m;[39m
+    [90m898| [39m
+    [90m899| [39m    [34mexpect[39m(res[33m.[39mstatus[33m,[39m [33mJSON[39m[33m.[39m[34mstringify[39m(res[33m.[39mbody))[33m.[39m[34mtoBe[39m([34m409[39m)[33m;[39m
+    [90m   | [39m                                                 [31m^[39m
+    [90m900| [39m    [34mexpect[39m(res[33m.[39mbody[33m.[39mmessage[33m.[39mcode)[33m.[39m[34mtoBe[39m([32m"BOOKING_BLOCKED_PERIOD"[39m)[33m;[39m
+    [90m901| [39m    [35mconst[39m ligne [33m=[39m [35mawait[39m ctx[33m.[39mprisma[33m.[39mbooking[33m.[39m[34mfindUniqueOrThrow[39m({
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m47 passed[39m[22m[90m (48)[39m
+[2m   Start at [22m 19:13:42
+[2m   Duration [22m 63.81s[2m (transform 1.56s, setup 35ms, collect 4.51s, tests 58.01s, environment 0ms, prepare 174ms)[22m
+

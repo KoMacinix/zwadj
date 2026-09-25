@@ -1,0 +1,374 @@
+=== R23-F1-a — l'écriture d'accept perd sa condition de statut
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 5 → 6 (attendu 6) · ancre : where: { id: input.bookingId, status: { in: [...input.allowedFrom] } }
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 7f67674c7158)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:08:32 duree=64.4s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F1-a-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F1-a-int.txt
+LIGNES_EXAMINEES=104
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0dad4-82cc-7c3f-8f25-9139b9acf91d","venueId":"01a0dad4-7ecf-7737-b235-3eb50f6ef044","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: {"id":"01a0dad4-8864-7597-9995-2e7a3f31246c","venueId":"01a0dad4-84e7-786a-83ed-402d9d0da687","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE
+
+=== R23-F1-b — un compte 0 n'est plus un refus : la ligne relue part acceptée
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (ecrit.count !== 1) {
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 7ff476a10d5d)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:09:36 duree=63.7s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F1-b-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F1-b-int.txt
+LIGNES_EXAMINEES=104
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0dad5-82a7-7909-862c-b767bffecc33","venueId":"01a0dad5-7fce-7d23-aa53-91a36893e046","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"D
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: {"id":"01a0dad5-8763-717b-97c5-eedffad82253","venueId":"01a0dad5-843c-7ae7-b4a1-da2879f92489","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"C
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE
+
+=== R23-F5-a — l'annulation client écrit depuis tout son from, motif ou non
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 25767ab40ad0)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:10:40 duree=59.3s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-a-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-a-int.txt
+LIGNES_EXAMINEES=103
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"id":"01a0dad6-7703-7533-935d-ded8e03d1d49","venueId":"01a0dad6-73cc-7fcd-93b3-fccf8e041d35","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"C
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 200 "OK"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE
+
+=== R23-F5-b — après un compte 0, toujours 409 : le motif n'est plus redécidé
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (decision.outcome === "REASON_REQUIRED") {
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 06dafd649ede)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:11:39 duree=59.5s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-b-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\R23-F5-b-int.txt
+LIGNES_EXAMINEES=103
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"},"path":"/api/v1/bookings/01a0dad7-63e9-747e-9af7-3966a3bfc5
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 409 "Conflict"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE
+
+=== S5b-2 — la relecture D117 ne juge plus
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (!input.allowedFrom.includes(fresh.status)) {
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 433cecd47e77)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:12:39 duree=61.9s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-2-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-2-int.txt
+LIGNES_EXAMINEES=81
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage
+       1re ligne : AssertionError: expected 'BOOKING_BLOCKED_PERIOD' to be 'BOOKING_STATUS_CONFLICT' // Object.is equality
+ATTENDU MORD (AssertionError) : MD-F1-8 — l'ORDRE des refus d'accept
+VERDICT=MORSURE LUE
+
+=== S5b-1 — le verrou de salle saute
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : await tx.$queryRaw`SELECT id FROM venues WHERE id = ${input.venueId}::
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 736cddbc5925)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:13:41 duree=64.7s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-1-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-1-int.txt
+LIGNES_EXAMINEES=84
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente
+       1re ligne : AssertionError: {"id":"01a0dad9-5a87-7dc4-9c5d-09c4850ada36","venueId":"01a0dad9-57a1-7792-85d5-6002694b16ee","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : MD-F1-5 — un BLOCAGE commite pendant l'acceptation
+VERDICT=MORSURE LUE
+
+=== S5b-1-sans-T5 — S5b-1, T5 exclu par filtre : muette attendue (D305)
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : await tx.$queryRaw`SELECT id FROM venues WHERE id = ${input.venueId}::
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 736cddbc5925)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:14:46 duree=60.1s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-1-sans-T5-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts -t ^(?!.*MD-F1-5 — un BLOCAGE)
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-1-sans-T5-int.txt
+LIGNES_EXAMINEES=60
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  47 passed | 1 skipped (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== S5b-2-sans-T4 — S5b-2, T4 exclu par filtre : muette attendue (D305)
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (!input.allowedFrom.includes(fresh.status)) {
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 433cecd47e77)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:15:46 duree=60.4s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-2-sans-T4-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts -t ^(?!.*MD-F1-8 — l'ORDRE)
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-2-sans-T4-int.txt
+LIGNES_EXAMINEES=60
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  47 passed | 1 skipped (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== X1-relecture-accept — après un compte 0, accept rend le statut PÉRIMÉ (lu avant l'écriture), pas la relecture
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 2 → 3 (attendu 3) · ancre : return { outcome: "STATUS_CONFLICT", status: relu.status };
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 5c31069d5209)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:16:47 duree=60.1s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X1-relecture-accept-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X1-relecture-accept-int.txt
+LIGNES_EXAMINEES=98
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 2)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: expected 'PENDING' to be 'DECLINED' // Object.is equality
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: expected 'PENDING' to be 'CANCELLED' // Object.is equality
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+VERDICT=MORSURE LUE
+
+=== X2a-relecture-transition-const — la relecture de `transition` rend toujours ACCEPTED (hypothèse : rien ne rougit)
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : return { outcome: "STATUS_CONFLICT", status: fresh.status };
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → a3df3d4f169c)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:17:47 duree=65.5s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X2a-relecture-transition-const-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X2a-relecture-transition-const-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== X2b-relecture-transition-from0 — la relecture de `transition` rend le premier statut source
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : return { outcome: "STATUS_CONFLICT", status: fresh.status };
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 074a47bd5c79)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:18:53 duree=62.1s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X2b-relecture-transition-from0-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X2b-relecture-transition-from0-int.txt
+LIGNES_EXAMINEES=103
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+       1re ligne : AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"PENDING"},"path":"/api/v1/bookings/01a0dade-0cd1-704f-b4f4-1e159f3f546
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 400 "Bad Request", got 409 "Conflict"
+ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+AUTRE TITRE EN ÉCHEC (Error) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE
+
+=== X4-service-plus-DECLINED — le prédicat de l'annulation client élargi à DECLINED au site d'appel (hypothèse : rien ne rougit)
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 703423554d8a)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:19:55 duree=57.4s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4-service-plus-DECLINED-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4-service-plus-DECLINED-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== X4b-service-plus-CANCELLED — le même, élargi à CANCELLED
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 857ab1f5a70b)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:20:52 duree=56.0s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4b-service-plus-CANCELLED-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X4b-service-plus-CANCELLED-int.txt
+LIGNES_EXAMINEES=86
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Acceptation CONCURRENTE (D117) > D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500
+       1re ligne : AssertionError: 200 {"id":"01a0dadf-b90f-777d-9351-0c45b6e65203","venueId":"01a0dadf-b69b-70f5-8c56-07b3da8c096d","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status
+ATTENDU MORD (AssertionError) : D121 — deux annulations CLIENT SIMULTANÉES
+VERDICT=MORSURE LUE
+
+=== X7-perdant-publie — le PERDANT d'accept publie « acceptée » avant son 409
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 1 (attendu 1) · marqueur 0 → 1 (attendu 1) · ancre : if (resultat.outcome === "STATUS_CONFLICT") {
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → ae36f83c698f)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:21:49 duree=55.3s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X7-perdant-publie-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X7-perdant-publie-int.txt
+LIGNES_EXAMINEES=124
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  3 failed | 45 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=3   (attendus déclarés : 3)
+  test | AssertionError | Acceptation CONCURRENTE (D117) > deux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500
+       1re ligne : AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: expected [ { to: 'client@example.dz', …(2) } ] to have a length of +0 but got 1
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+       1re ligne : AssertionError: expected [ { to: 'client@example.dz', …(2) } ] to have a length of +0 but got 1
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+ATTENDU MORD (AssertionError) : F1 contre une annulation —
+ATTENDU MORD (AssertionError) : deux acceptations SIMULTANÉES de la MÊME demande
+VERDICT=MORSURE LUE
+
+=== X8-verrou-apres-blocage — le verrou de salle pris APRÈS le contrôle de blocage : la requête ATTEND le rival (branche « bloquée » de courirOuAboutir)
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : await tx.$queryRaw`SELECT id FROM venues WHERE id = ${input.venueId}::
+  POSE ✓ ancre 1 → 1 (attendu 1) · marqueur 0 → 1 (attendu 1) · ancre : if (block) return { outcome: "BLOCKED_PERIOD" };
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 3e6cf05ea695)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:22:44 duree=57.9s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X8-verrou-apres-blocage-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X8-verrou-apres-blocage-int.txt
+LIGNES_EXAMINEES=84
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente
+       1re ligne : AssertionError: {"id":"01a0dae1-849d-7559-aec9-1e98c8812215","venueId":"01a0dae1-81ae-76c6-8d92-89cce16003e8","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : MD-F1-5 — un BLOCAGE commite pendant l'acceptation
+VERDICT=MORSURE LUE
+
+=== X10-decision-sur-ACCEPTED — après un compte 0, le code se choisit comme si le statut relu était ACCEPTED (hypothèse : rien ne rougit)
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIE
+  RELU = texte muté, octet pour octet : OUI (sha256 9f13cfed4f29 → 364cce5b9404)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:23:42 duree=57.3s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X10-decision-sur-ACCEPTED-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X10-decision-sur-ACCEPTED-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== X12-23P01-non-traduit — MD-F1-3 : la traduction du 23P01 levé par updateMany retirée
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (isExclusionViolation(error)) return { outcome: "SLOT_TAKEN" };
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 195ffbb90380)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:24:40 duree=69.2s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X12-23P01-non-traduit-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X12-23P01-non-traduit-int.txt
+LIGNES_EXAMINEES=106
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | Error | Acceptation — l'exclusivité appartient à la BASE (D78) > la SECONDE acceptation reçoit 409 via le 23P01, et la première survit
+       1re ligne : Error: expected 409 "Conflict", got 500 "Internal Server Error"
+  test | AssertionError | Acceptation CONCURRENTE (D117) > deux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN
+       1re ligne : AssertionError: expected [ 201, 500 ] to deeply equal [ 201, 409 ]
+ATTENDU MORD (AssertionError) : deux demandes DIFFÉRENTES acceptées simultanément
+AUTRE TITRE EN ÉCHEC (Error) : Acceptation — l'exclusivité appartient à la BASE (D78) > la SECONDE acceptation reçoit 409 via le 23P01, et la première survit
+VERDICT=MORSURE LUE
+
+=== X13-accept-plus-DECLINED — l'écriture d'accept admet DECLINED, et lui seul : T1 seul doit rougir
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : where: { id: input.bookingId, status: { in: [...input.allowedFrom] } }
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 251a42d70473)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:25:49 duree=50.9s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X13-accept-plus-DECLINED-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X13-accept-plus-DECLINED-int.txt
+LIGNES_EXAMINEES=84
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+       1re ligne : AssertionError: {"id":"01a0dae4-3c75-7e91-959d-29d3b670d67b","venueId":"01a0dae4-3a4f-7aff-8552-c098a5c8055b","venueSlug":"salle-el-ryad","venueNameFr":"Salle El Ryad","venueNameAr":"قاعة","status":"A
+ATTENDU MORD (AssertionError) : F1 contre un refus —
+VERDICT=MORSURE LUE
+
+code=0

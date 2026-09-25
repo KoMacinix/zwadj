@@ -1,0 +1,22 @@
+=== X12-23P01-non-traduit — MD-F1-3 : la traduction du 23P01 levé par updateMany retirée
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (isExclusionViolation(error)) return { outcome: "SLOT_TAKEN" };
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 195ffbb90380)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:24:40 duree=69.2s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X12-23P01-non-traduit-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X12-23P01-non-traduit-int.txt
+LIGNES_EXAMINEES=106
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  2 failed | 46 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=2   (attendus déclarés : 1)
+  test | Error | Acceptation — l'exclusivité appartient à la BASE (D78) > la SECONDE acceptation reçoit 409 via le 23P01, et la première survit
+       1re ligne : Error: expected 409 "Conflict", got 500 "Internal Server Error"
+  test | AssertionError | Acceptation CONCURRENTE (D117) > deux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN
+       1re ligne : AssertionError: expected [ 201, 500 ] to deeply equal [ 201, 409 ]
+ATTENDU MORD (AssertionError) : deux demandes DIFFÉRENTES acceptées simultanément
+AUTRE TITRE EN ÉCHEC (Error) : Acceptation — l'exclusivité appartient à la BASE (D78) > la SECONDE acceptation reçoit 409 via le 23P01, et la première survit
+VERDICT=MORSURE LUE

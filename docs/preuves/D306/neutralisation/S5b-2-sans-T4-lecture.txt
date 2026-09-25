@@ -1,0 +1,16 @@
+=== S5b-2-sans-T4 — S5b-2, T4 exclu par filtre : muette attendue (D305)
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : if (!input.allowedFrom.includes(fresh.status)) {
+  RELU = texte muté, octet pour octet : OUI (sha256 7321e60509fa → 433cecd47e77)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:15:46 duree=60.4s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-2-sans-T4-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts -t ^(?!.*MD-F1-8 — l'ORDRE)
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\S5b-2-sans-T4-int.txt
+LIGNES_EXAMINEES=60
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  47 passed | 1 skipped (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT

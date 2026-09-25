@@ -1,0 +1,28 @@
+=== X3-writableFrom-plus-DECLINED — la fonction pure élargie d'un statut HORS de `from`
+FICHIER=apps/api/src/venues/booking-transitions.ts
+  POSE ✓ ancre 1 → 1 (attendu 1) · marqueur 0 → 2 (attendu 2) · ancre : export function writableFrom(command: BookingCommand, reason?: string)
+  RELU = texte muté, octet pour octet : OUI (sha256 38a99a9b87f2 → 07e37d4b8a9a)
+MUTATION=POSÉE
+LANCER debut=2026-09-25 19:07:35 duree=1.7s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X3-writableFrom-plus-DECLINED-unit.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run src/venues/booking-transitions.spec.ts
+RESTAURE sha256 38a99a9b87f2a8a8 → 38a99a9b87f2a8a8 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D306\neutralisation\X3-writableFrom-plus-DECLINED-unit.txt
+LIGNES_EXAMINEES=126
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  4 failed | 19 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=4   (attendus déclarés : 2)
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       1re ligne : AssertionError: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       1re ligne : AssertionError: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED', 'DECLINED' ] to deeply equal [ 'PENDING', 'ACCEPTED' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non
+       1re ligne : AssertionError: accept / undefined: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+ATTENDU MORD (AssertionError) : writableFrom — SANS motif
+ATTENDU MORD (AssertionError) : writableFrom — une chaîne VIDE
+AUTRE TITRE EN ÉCHEC (AssertionError) : Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`
+AUTRE TITRE EN ÉCHEC (AssertionError) : Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non
+VERDICT=MORSURE LUE
