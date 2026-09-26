@@ -1314,6 +1314,75 @@ un verrou de LIGNE, mesuré ; et les deux prémisses des formes (i) et (ii) du c
 annotations D304 des § 3 et § 8. ⛔ *(D305 : et le motif (b) du relecteur est **mesuré** — l'insertion d'un paiement
 n'attend pas (ii) ; section D305, partie B.)*
 
+### ⛔ LA CERTIFICATION QUI CLÔT LE RANG 23 (D310) — ÉTAPE 0 : PROTOCOLE ÉCRIT ET COMMITÉ AVANT LE RELEVÉ D'OUVERTURE
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne porte **D309** ⇒ **D310**. Partie B de la session de D309, sur
+ordre de Ko (« la CERTIFICATION qui clôt le rang 23, selon le protocole écrit »). **Critère** : « LE CRITÈRE DU RANG 9 »,
+points 1 à 11 — **aucune valeur n'en est recopiée ici** ; la barre de RAM est celle que la sonde imprime. **Patron** :
+la passe 2 de D299 (rang 19). ⇒ **Ce lot ne compte pas** : `.md` d'autorité et `docs/preuves/` seulement (exemption de
+D292) — les procédures vivent sous `docs/preuves/D310/outils/`, comme à D299.
+**LA MARQUE NOMMERA D305 ET D308, RIEN D'AUTRE** — mesuré, pas recopié : des 11 commits depuis `0a8235d` (marque de
+D299), **deux seulement** portent un fichier hors `.md` d'autorité et hors `docs/preuves/` : `b715943` (D305, 23a) et
+`3ac8749` (D308, 23a-2). Aucun en-tête antérieur réécrit — ou le refus motivé.
+**EXIGENCES DE KO POUR CETTE PASSE, en plus du critère** (26/09/2026) :
+1. **TOUTES les campagnes**, pas « les concernées » — le tri de `lancer-campagnes.py` ne voit pas ce qu'une campagne
+   mesure (D308). **Énumérées AVANT de lancer** par `outils/declarees.py` (arbre syntaxique, **rien n'est exécuté** ;
+   calibration deux bras ; sortie `outils/declarees-sortie.txt`) : **28 harnais, 211 cibles déclarées**. La liste jouée
+   se rapproche de la liste versée à la lecture.
+2. **Tout harnais qui a des cibles d'intégration se joue AUSSI en `--int`** : 9 harnais en ont ; **6 sont verrouillés**
+   par `--int` (`e3d1-s8`, `s11b`, `solid-s1`, `solid-s2`, `solid-s3`, `solid-s6`) et sont rejoués ; **3 ne le sont
+   pas** (`r4`, `rang23`, `solid-s5b`) et jouent leur intégration dans `--tout`. ⛔ **Une campagne ne compte que si elle
+   prouve avoir joué ses cibles déclarées** : lignes de verdict = cibles déclarées, dans la passe qui la CERTIFIE
+   (`--int` si verrouillée, `--tout` sinon) ; **et, pour les 9, chaque ligne porte entre crochets EXACTEMENT les mesures
+   que la cible déclare** — sans quoi l'intégration n'a pas tourné et la campagne **ne compte pas** (faute de D308).
+   Lecteur : `outils/lire-campagnes.py`, calibré deux bras (les 186 de D299 ; `solid-s1` de D308 sans `--int` REFUSÉE,
+   avec `--int` acceptée ; sortie `outils/lire-campagnes-calibration.txt`).
+3. **R1 en pause (D307)** : sur le chemin de l'argent (**11 harnais, 91 cibles**, pièce `docs/preuves/D307/carte/tri.txt`),
+   les morsures **LUES** se séparent de celles jugées au seul code : `rang23` se lit par `outils/lire-rang23.py` (copie
+   du lecteur de D308, chemins en paramètres ; calibré deux bras : 13 sur 13 ; 12 sur 13 quand un journal mordu est
+   remplacé par un journal vert — `outils/lire-rang23-calibration.txt`) ; **les dix autres s'écrivent « code de sortie
+   seul, non prouvées (R1) »**.
+4. **Point 11 du critère** (D309) : chaque ligne de la table des portes cite le dossier versé de SA passe,
+   `docs/preuves/D310/passe-<IDENTIFIANT>/`.
+**ORDRE — `outils/passe.py <IDENTIFIANT> <SHA>`, sans retouche de fichier suivi entre le premier relevé et la clôture
+(D270)** :
+0. `pg_isready` dans `zwadj-db` (échec ⇒ rien ne se lance) ; ports **3100, 3101, 5273** libres.
+1. **Relevé d'ouverture** : sonde `-Calibrer`, puis un second relevé. ⛔ **PORTE DURE sur CHACUN** : `CHROME=0`, RAM
+   médiane **et** bande basse au-dessus de la barre, `SECTEUR`, calibration passante. **Un rouge ⇒ rien ne se lance, et
+   Ko est prévenu.** ⚠ Après un refus, **aucun nouveau relevé sans un mouvement d'inventaire nommé** (D299).
+2. Échantillonneur en fond, `-Intervalle 30`, lu **à la clôture** par `-Resume` — **aucun lecteur** sur son journal
+   pendant la fenêtre (amendement de D299) ; on ne suit que `progression.txt`, écrit par Python.
+3. `HEAD` + `git status --porcelain` (vide exigé) — arbre-1.
+4. Six portes dans l'ordre de `CLAUDE.md`, chacune précédée d'un relevé ; code **réel** dans un `.code`. Avant l'e2e :
+   `node` 0 et les trois ports libres.
+5. arbre-2 ; `lancer-campagnes.py --tout` ; copie des journaux de campagne **de cette passe** (horodatage ≥ début de
+   `--tout`, sinon nommés « ANTÉRIEUR-À-LA-PASSE ») ; arbre-3.
+6. Rejeu `--int` des six verrouillés, chacun précédé d'un relevé et de `pg_isready` ; arbre-4.
+7. **Contre-épreuve de `audit-secrets.py`**, à la main (`docs/preuves/D298/contre-epreuve/`) ; arbre-5.
+8. Relevé de clôture, arrêt et lecture de l'échantillonneur.
+**Après la clôture seulement** : lecture (`lire-campagnes.py`, `lire-rang23.py`, portes relues en entier, ANSI retiré),
+versement (`outils/verser.py`, SHA-256 relus, **journal e2e brut refusé**), extrait e2e par
+`docs/preuves/D299/outils/extraire-e2e.py` (liste blanche, point 9), **« 0 valeur réelle » sur le journal e2e de la
+passe, sortie versée AVANT l'audit** (point 10 ; constat 2 de D309), audit scellé, tri différentiel, **second audit en
+dernière écriture**, marque.
+**Règles de lecture** : porte verte ⇔ code réel 0, résumés confrontés au brut, tout « failed » à son contexte (D275) ;
+`--tout` sort en 1 **et c'est attendu** ; arbre immobile aux cinq contrôles ; échantillonneur **homogène**.
+**PRÉDICTIONS, DÉRIVÉES et non critères** — depuis la marque de D299, deux lots de code (D305, D308), mesurés par D308 à
+`3ac8749` ; rien de code depuis : `test` **1 334 / 109** (664/58 · 36/3 · 287/20 · 347/28) ; `test:int` **443 / 36** ;
+e2e **34 passés · 1 ignoré** (`a5-cold-reload-vs-spa`) ; `--tout` **28 campagnes · 198 mordues · 0 muette · 13 non
+mesurées** (`e3d1-s8` 5, `s11b` 4, `solid-s6` 4), sortie 1 ; rejeux `--int` **8, 13, 2, 5, 6, 6** (= 40) ; ⇒ **CERTIFIANT :
+211 mordues · 0 muette · 0 non mesurée, 28 campagnes sur 28 qui comptent** ; R1 : **12 lues** (`rang23`, 13 mesures sur 13)
+· **79 « code de sortie seul, non prouvées (R1) »** · 120 hors chemin de l'argent ; contre-épreuve **5 sur 5**.
+⛔ **Un compte qui s'écarte suspend la marque** jusqu'à explication ; inexpliqué ⇒ refus.
+⛔ **ARRÊT SANS RATTRAPAGE** : un relevé hors `SECTEUR`, `chrome` qui réapparaît, ou un échantillonneur non homogène ⇒ la
+passe s'arrête, c'est dit, **pas de marque**.
+**Limites écrites d'avance** : la base de dev `zwadj` n'est pas re-mesurée ; réserve « zéro `node` pendant la mesure »
+**reconduite** ; les processus étrangers autres que `chrome` **ne sont pas mesurés** pendant la fenêtre (point 7) ;
+**aucune durée ne se compare** ; la contre-épreuve n'a pas de relevé propre.
+⇒ **SI LA CERTIFICATION PASSE** : le rang 23 se clôt, **la pause du chemin de l'argent commence** (D307), et « **RANG 24 :
+EN ATTENTE D'ARBITRAGE DE KO** » s'écrit ici et dans l'ordre des rangs. **SI ELLE ÉCHOUE** : rien ne se clôt ; l'échec
+est décrit, **rien n'est corrigé** (Ko).
+
 ### L'état du rang à l'ouverture (D303, 23/09/2026) — ⚠ ses deux dernières phrases sont PÉRIMÉES par D304
 
 ⛔ **ARBITRÉ PAR KO LE 23/09/2026, mot pour mot** : « Rang 23 : les transitions atomiques de la réservation et du

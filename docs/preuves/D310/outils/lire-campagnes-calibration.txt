@@ -1,0 +1,4 @@
+== CALIBRATION, deux bras (abandon si un seul manque)
+  ✓ positif D299 : 27 journaux · lignes ✓ 186 (attendu 186) · non mesurées {'e3d1-s8': 5, 's11b': 4, 'solid-s6': 4} (attendu e3d1-s8 5, s11b 4, solid-s6 4)
+  ✓ négatif D308 solid-s1 : SANS --int, jouées 2 (attendu 2) mais crochets conformes 0 (attendu 0 : REFUSÉE) · AVEC --int, crochets conformes 2 (attendu 2)
+(calibration seule : aucun dossier de passe donné)

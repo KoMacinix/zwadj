@@ -1,0 +1,6 @@
+== bras POSITIF : journaux de rang23 versés par D308 (docs/preuves/D308/campagnes/rang23/), copiés en scratchpad
+MESURES LUES : 13 · MORSURES LUES : 13 (attendu 13)
+code 0
+== bras NÉGATIF : la même copie, R23-C1-int-reservations.txt remplacé par docs/preuves/D308/neutralisation/avant/R23-C1-int.txt (48 verts)
+✗ R23-C1 [int-reservations] collectés 48 · échecs de fichier 0 · titres exigés 2 ⇒ NON PROUVÉE
+MESURES LUES : 13 · MORSURES LUES : 12 (attendu 13)

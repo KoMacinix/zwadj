@@ -1,0 +1,111 @@
+== CALIBRATION, deux bras
+  ✓ solid-s1 : 2 cibles (attendu 2), verrou True (attendu True), mesures d'intégration 2 (attendu 2)
+  ✓ s11a : 18 cibles (attendu 18), verrou False (attendu False), mesures d'intégration 0 (attendu 0)
+  chemin de l'argent lu dans la pièce de D307 : 11 harnais (attendu 11) : ['booking-status', 'e3d1-s8', 'r4', 'rang23', 's10b', 's11b', 'solid-s3', 'solid-s4', 'solid-s5a', 'solid-s5b', 'solid-s6']
+
+== HARNAIS : 28 fichiers `neutralize-*.py` parcourus
+harnais              cibles  int  verrou  passe qui certifie  argent
+404                      12    0   False  --tout              —
+act-plafonds              4    0   False  --tout              —
+argon2                    3    0   False  --tout              —
+available-on-api         13    0   False  --tout              —
+available-on             10    0   False  --tout              —
+b7                        3    0   False  --tout              —
+booking-status            3    0   False  --tout              OUI
+budgets                   4    0   False  --tout              —
+e3d1-s8                   8    1    True  --int               OUI
+horizon                   6    0   False  --tout              —
+horloge                   2    0   False  --tout              —
+journey                   7    0   False  --tout              —
+maxprice                 10    0   False  --tout              —
+r4                        2    2   False  --tout              OUI
+rang23                   12    1   False  --tout              OUI
+s10a                     13    0   False  --tout              —
+s10b                     20    0   False  --tout              OUI
+s11a                     18    0   False  --tout              —
+s11b                     13    3    True  --int               OUI
+s9                        6    0   False  --tout              —
+solid-s1                  2    2    True  --int               —
+solid-s2                  5    2    True  --int               —
+solid-s3                  6    2    True  --int               OUI
+solid-s4                  7    0   False  --tout              OUI
+solid-s5a                 9    0   False  --tout              OUI
+solid-s5b                 5    1   False  --tout              OUI
+solid-s6                  6    2    True  --int               OUI
+solid-s7                  2    0   False  --tout              —
+
+TOTAL DÉCLARÉ : 211 cibles sur 28 harnais
+HARNAIS À MESURES D'INTÉGRATION : 9 — ['e3d1-s8', 'r4', 'rang23', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s5b', 'solid-s6']
+  dont VERROUILLÉS par --int (rejoués en --int) : ['e3d1-s8', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s6']
+  dont SANS verrou (intégration jouée par --tout) : ['r4', 'rang23', 'solid-s5b']
+CHEMIN DE L'ARGENT : ['booking-status', 'e3d1-s8', 'r4', 'rang23', 's10b', 's11b', 'solid-s3', 'solid-s4', 'solid-s5a', 'solid-s5b', 'solid-s6'] — 91 cibles
+
+== MESURES DÉCLARÉES PAR CIBLE — harnais à mesures d'intégration (la ligne de verdict doit les porter toutes)
+-- e3d1-s8 : mesures {'course': True, 'plafond': False, 'releve': False}
+   E1           ['course']
+   E2           ['course']
+   E3           ['course']
+   E4           ['course']
+   E5           ['course']
+   S8-1         ['plafond']
+   S8-2         ['plafond']
+   S8-3         ['plafond']
+-- r4 : mesures {'migration': True, 'devis': True}
+   R4-1         ['migration', 'devis']
+   R4-2         ['migration', 'devis']
+-- rang23 : mesures {'int-reservations': True, 'unit-transitions': False}
+   R23-F1-a     ['int-reservations']
+   R23-F1-b     ['int-reservations']
+   R23-F5-a     ['int-reservations']
+   R23-F5-b     ['int-reservations']
+   R23-F5-c     ['unit-transitions']
+   R23-C1       ['int-reservations']
+   R23-C1-t     ['unit-transitions', 'int-reservations']
+   R23-C2       ['int-reservations']
+   R23-C3       ['int-reservations']
+   R23-C4       ['int-reservations']
+   R23-C5       ['int-reservations']
+   R23-C6       ['unit-transitions']
+-- s11b : mesures {'chiffrage': False, 'int-reservations': True, 'int-devis': True, 'echeances': False, 'int-migration': True}
+   S11b-1       ['chiffrage']
+   S11b-2       ['chiffrage']
+   S11b-3       ['chiffrage']
+   S11b-4       ['chiffrage']
+   S11b-5       ['chiffrage']
+   S11b-6       ['chiffrage']
+   S11b-7       ['chiffrage']
+   S11b-8       ['int-reservations', 'int-devis']
+   S11b-9       ['int-migration']
+   S11b-10      ['echeances']
+   S11b-11      ['echeances']
+   S11b-12      ['int-reservations']
+   S11b-13      ['int-reservations']
+-- solid-s1 : mesures {'pro': False, 'api': False, 'int-bookings': True, 'int-availability': True}
+   S1-1         ['pro', 'api', 'int-bookings', 'int-availability']
+   S1-2         ['pro', 'api', 'int-bookings', 'int-availability']
+-- solid-s2 : mesures {'coeur': False, 'visites': False, 'int-reservations': True, 'int-visites': True}
+   S2-1         ['coeur']
+   S2-2         ['coeur', 'visites', 'int-reservations', 'int-visites']
+   S2-3         ['coeur', 'visites', 'int-reservations']
+   S2-4         ['coeur']
+   S2-5         ['coeur', 'visites']
+-- solid-s3 : mesures {'politique-reservations': False, 'politique-devis': False, 'int-reservations': True, 'int-devis': True}
+   S3-1         ['politique-reservations', 'int-reservations']
+   S3-2         ['politique-reservations', 'int-reservations']
+   S3-3         ['politique-reservations', 'int-reservations']
+   S3-4         ['politique-reservations', 'int-reservations']
+   S3-5         ['politique-devis', 'int-devis']
+   S3-6         ['politique-devis', 'int-devis']
+-- solid-s5b : mesures {'int-reservations': True}
+   S5b-1        ['int-reservations']
+   S5b-2        ['int-reservations']
+   S5b-3        ['int-reservations']
+   S5b-4        ['int-reservations']
+   S5b-5        ['int-reservations']
+-- solid-s6 : mesures {'couture': False, 'int-reservations': True, 'int-visites': True}
+   S6-1         ['couture']
+   S6-2         ['couture']
+   S6-3         ['int-reservations']
+   S6-4         ['int-reservations']
+   S6-5         ['int-visites']
+   S6-6         ['int-visites']
