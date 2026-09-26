@@ -1,0 +1,14 @@
+✓ Pré-vol : 2 mesure(s) verte(s) — service, adaptateur
+
+✓ S5a-1. ⚠ LE REFUS NE LÈVE PLUS — une intention naît sur une réservation non payable  [service]
+✓ S5a-2. ⚠ LE MONTANT TRANSMIS EST DIVISÉ — l'acompte cesse d'arriver intact au port  [service]
+✓ S5a-3. ⚠ LA TABLE DE CLÉS REDEVIENT UNE INTERPOLATION (le défaut d'origine)  [service]
+✓ S5a-4. L'identité du demandeur cesse d'être transmise au port  [service]
+✓ S5a-5. ⚠ LE PRO PROPRIÉTAIRE PERD L'ACCÈS — 404 sur sa propre réservation  [adaptateur]
+✓ S5a-6. La propriété quitte le `WHERE` : n'importe qui lit n'importe quelle réservation  [adaptateur]
+✓ S5a-7. ⚠ L'IDEMPOTENCE SAUTE — recharger la page crée une seconde intention  [adaptateur]
+✓ S5a-8. Le réutilisable est cherché SANS filtre de statut : un FAILED se rejoue  [adaptateur]
+✓ S5a-9. ⚠ L'ADAPTATEUR ÉCRIT UN MONTANT QU'IL A CHOISI, pas celui qu'il a reçu  [adaptateur]
+
+9 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+

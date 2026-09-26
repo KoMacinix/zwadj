@@ -1,0 +1,1 @@
+ECHANTILLONNAGE vers .neutralisation-journaux\r23c-20260926-0032\etat.csv toutes les 30 s — Ctrl+C pour arreter.

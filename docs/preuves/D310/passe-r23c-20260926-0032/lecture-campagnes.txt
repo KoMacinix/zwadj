@@ -1,0 +1,39 @@
+== CALIBRATION, deux bras (abandon si un seul manque)
+  ✓ positif D299 : 27 journaux · lignes ✓ 186 (attendu 186) · non mesurées {'e3d1-s8': 5, 's11b': 4, 'solid-s6': 4} (attendu e3d1-s8 5, s11b 4, solid-s6 4)
+  ✓ négatif D308 solid-s1 : SANS --int, jouées 2 (attendu 2) mais crochets conformes 0 (attendu 0 : REFUSÉE) · AVEC --int, crochets conformes 2 (attendu 2)
+
+== PASSE : .neutralisation-journaux/r23c-20260926-0032
+`--tout`, ligne MESURÉ : ('198', '0', '13', '28', '2807')
+
+harnais            passe  code décl jouées   ✓   ✗ nonm crochets  compte ?  lecture (R1)
+404                --tout    0   12     12  12   0    0        —  OUI      hors chemin de l'argent — au code
+act-plafonds       --tout    0    4      4   4   0    0        —  OUI      hors chemin de l'argent — au code
+argon2             --tout    0    3      3   3   0    0        —  OUI      hors chemin de l'argent — au code
+available-on-api   --tout    0   13     13  13   0    0        —  OUI      hors chemin de l'argent — au code
+available-on       --tout    0   10     10  10   0    0        —  OUI      hors chemin de l'argent — au code
+b7                 --tout    0    3      3   3   0    0        —  OUI      hors chemin de l'argent — au code
+booking-status     --tout    0    3      3   3   0    0        —  OUI      code de sortie seul, non prouvées (R1)
+budgets            --tout    0    4      4   4   0    0        —  OUI      hors chemin de l'argent — au code
+e3d1-s8            --int     0    8      8   8   0    0      8/8  OUI      code de sortie seul, non prouvées (R1)
+horizon            --tout    0    6      6   6   0    0        —  OUI      hors chemin de l'argent — au code
+horloge            --tout    0    2      2   2   0    0        —  OUI      hors chemin de l'argent — au code
+journey            --tout    0    7      7   7   0    0        —  OUI      hors chemin de l'argent — au code
+maxprice           --tout    0   10     10  10   0    0        —  OUI      hors chemin de l'argent — au code
+r4                 --tout    0    2      2   2   0    0      2/2  OUI      code de sortie seul, non prouvées (R1)
+rang23             --tout    0   12     12  12   0    0    12/12  OUI      LUE (13 sur 13)
+s10a               --tout    0   13     13  13   0    0        —  OUI      hors chemin de l'argent — au code
+s10b               --tout    0   20     20  20   0    0        —  OUI      code de sortie seul, non prouvées (R1)
+s11a               --tout    0   18     18  18   0    0        —  OUI      hors chemin de l'argent — au code
+s11b               --int     0   13     13  13   0    0    13/13  OUI      code de sortie seul, non prouvées (R1)
+s9                 --tout    0    6      6   6   0    0        —  OUI      hors chemin de l'argent — au code
+solid-s1           --int     0    2      2   2   0    0      2/2  OUI      hors chemin de l'argent — au code
+solid-s2           --int     0    5      5   5   0    0      5/5  OUI      hors chemin de l'argent — au code
+solid-s3           --int     0    6      6   6   0    0      6/6  OUI      code de sortie seul, non prouvées (R1)
+solid-s4           --tout    0    7      7   7   0    0        —  OUI      code de sortie seul, non prouvées (R1)
+solid-s5a          --tout    0    9      9   9   0    0        —  OUI      code de sortie seul, non prouvées (R1)
+solid-s5b          --tout    0    5      5   5   0    0      5/5  OUI      code de sortie seul, non prouvées (R1)
+solid-s6           --int     0    6      6   6   0    0      6/6  OUI      code de sortie seul, non prouvées (R1)
+solid-s7           --tout    0    2      2   2   0    0        —  OUI      hors chemin de l'argent — au code
+
+CERTIFIANT : 211 mordues · 0 muettes · 0 non mesurées · 28 campagnes qui COMPTENT sur 28 (attendu 28) · déclarées 211
+R1 (chemin de l'argent) : LUES 12 · code de sortie seul, non prouvées (R1) 79 · hors chemin 120

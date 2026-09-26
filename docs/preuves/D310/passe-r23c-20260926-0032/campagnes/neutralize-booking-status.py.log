@@ -1,0 +1,21 @@
+✓ Pré-vol : 1 mesure(s) verte(s) — conversion
+
+✓ BS-1. ⛔ LE LITTÉRAL REVIENT DANS L'ADAPTATEUR — la garde de SOURCE doit mordre
+   fichier muté   : apps/api/src/venues/quote-store.prisma.ts  (1 occurrence(s), 1 attendue(s))
+   avant → après  : status: BookingStatus.PENDING,  →  status: "PENDING",
+   mesure « conversion » : sortie 1, 1 test(s) rouge(s)
+     ↳ [31m   [31m×[31m Garde de SOURCE — le statut de la demande dérive de l'autorité (D268)[2m > [22m⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus`[39m[32m 17[2mms[22m[39m
+✓ BS-2. ⛔⛔ CHEMIN DE L'ARGENT — la demande naît ACCEPTED : elle verrouille le créneau
+   fichier muté   : apps/api/src/venues/quote-store.prisma.ts  (1 occurrence(s), 1 attendue(s))
+   avant → après  : status: BookingStatus.PENDING,  →  status: BookingStatus.ACCEPTED,
+   mesure « conversion » : sortie 1, 2 test(s) rouge(s)
+     ↳ [31m   [31m×[31m ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT[2m > [22m⛔ les montants sont ÉCRITS TELS QUELS — l'adaptateur ne calcule rien[39m[32m 9[2mms[22m[39m
+     ↳ [31m   [31m×[31m Garde de SOURCE — le statut de la demande dérive de l'autorité (D268)[2m > [22m⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus`[39m[32m 10[2mms[22m[39m
+✓ BS-3. ⛔ LE TÉMOIN INDÉPENDANT EST « NETTOYÉ » — la garde BILATÉRALE doit mordre
+   fichier muté   : apps/api/test/int/quotes.int-spec.ts  (1 occurrence(s), 1 attendue(s))
+   avant → après  : expect(booking.status).toBe("PENDING");  →  expect(booking.status).toBe(BookingStatus.PENDING);
+   mesure « conversion » : sortie 1, 1 test(s) rouge(s)
+     ↳ [31m   [31m×[31m Garde de SOURCE — le statut de la demande dérive de l'autorité (D268)[2m > [22m⛔ le TÉMOIN INDÉPENDANT survit dans `quotes.int-spec.ts` — littéral EXIGÉ[39m[32m 9[2mms[22m[39m
+
+3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+

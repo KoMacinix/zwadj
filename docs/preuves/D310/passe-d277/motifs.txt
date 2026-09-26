@@ -1,0 +1,18 @@
+# D310 — motifs de la passe D277 (certification ÉCHOUÉE). Format : <sens>|<motif>. Lus par balayage.py (copie à
+# l'octet de celui de D306/D308/D309), jamais passés en ligne de commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « certification », « 0 muette », « compteur » — ils comptent tout (D298).
+# sens 1 — ce que l'échec INVALIDE (une clôture, une pause, une permission annoncées comme à venir ou acquises)
+1|qui clôt le rang 23
+1|QUI CLÔT LE RANG
+1|RESTE LA CERTIFICATION
+1|199 mordues
+1|195 mordues
+1|la pause du chemin de l'argent commence
+1|jusqu'à la certification
+# sens 2 — ce que l'échec REND PERMIS (rien ne devrait l'être)
+2|peut s'ouvrir
+2|compteur à ZÉRO
+2|COMPTEUR À ZÉRO
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d310-qq

@@ -2457,6 +2457,40 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 26/09/2026 — rang 23, certification ÉCHOUÉE (D310)
+
+Détail : section D310 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
+Ko** », et son **COÛT**. **Rien n'est corrigé** (consigne de Ko).
+
+- [ ] **[OUTIL]** ⛔ **`neutralize-available-on-api.py` NE LANCE JAMAIS SA MESURE SUR CE POSTE, ET COMPTE L'ÉCHEC « ROUGE ».**
+  `_binaire("apps/api/node_modules/.bin/vitest")` rend un chemin **relatif**, lancé avec `cwd="apps/api"` : « `'apps' is
+  not recognized as an internal or external command` », code 1 en 0,02 s ; sortie capturée **jamais imprimée** ; **pas de
+  pré-vol** ; tout code non nul = « ROUGE ». Reproduit **sans mutation**, 13 cibles sur 13
+  (`docs/preuves/D310/aoa/`) ; avec le binaire en chemin absolu, 13 sur 13 démarrent et passent (15 tests). **Mesuré** à
+  la certification de D310 et dans les passes versées de **D293** et **D299** (13 « mordues » en 0 s) ; **inféré** pour
+  D275, D283, D288 (même code depuis `538b014`, 30/08).
+  ⇒ **BLOQUE : la certification du rang 23** (et toute certification tant que l'exigence « jouées = déclarées » de Ko s'y
+  applique) — ⚠ *dérivé par la session* : le correctif est du **code** de `neutralisation/`, donc un **troisième** lot non
+  certifié (D270, « trois, non ») : **à Ko**. ⇒ **COÛT** : code (compte) — un fichier, `neutralize-available-on-api.py`
+  (binaire absolu, **pré-vol** qui exige un vert sur l'arbre non muté, sortie lue) ; calibration à deux bras (le défaut
+  actuel doit être REFUSÉ par le pré-vol ; le chemin absolu accepté) ; e2e : non ; cadrage chemin de l'argent : **non**
+  (harnais hors de la carte de D307) ; migration : non ; dépendance : non ; ne mord que sous Windows (`cmd.exe`).
+- [ ] **[MÉTHODE]** **« Lignes de verdict = cibles déclarées » ne prouve pas qu'une campagne a JOUÉ ses cibles** — faute n° 2
+  de D310 : le lecteur `docs/preuves/D310/outils/lire-campagnes.py` a rendu « 28 sur 28 » ; c'est la **durée** (0 s) qui a
+  montré l'échec. Tout harnais qui **jette la sortie** de sa mesure et juge au code peut imprimer un verdict sans avoir
+  démarré. ⇒ Question pour Ko : quelle **preuve de démarrage** une certification exige-t-elle (tests collectés > 0 par
+  mesure — c'est R1 sur le chemin de l'argent ; une durée plancher ; un pré-vol par harnais) ?
+  ⇒ **BLOQUE : à ordonner par Ko** (lié à R1 et à l'entrée ci-dessus). ⇒ **COÛT** : documentaire (règle) ; puis code de
+  `neutralisation/` si elle s'outille (compte).
+- [ ] **[MÉTHODE]** **Les marques de D293 (rang 15) et D299 (rang 19) ont compté 13 cibles non jouées** — mesuré dans leurs
+  tables `--tout` versées ; « 195 » était 182 jouées, « 199 » était 186. **Aucun en-tête n'est réécrit** ; les blocs de
+  clôture sont annotés. ⇒ **BLOQUE : à ordonner par Ko** — ce que valent ces marques est sa décision. ⇒ **COÛT** :
+  documentaire.
+- [ ] **[OUTIL]** **Trois harnais n'ont pas de garde `__main__`** (`neutralize-act-plafonds.py`, `-argon2.py`,
+  `-horloge.py`) : les **importer** exécute leur campagne — faute n° 1 de D310, hors de toute fenêtre, arbre restauré.
+  ⇒ **BLOQUE : rien — à ordonner par Ko.** ⇒ **COÛT** : code de `neutralisation/` (compte), trois fichiers ; e2e : non ;
+  chemin de l'argent : non.
+
 ## Reports du 26/09/2026 — rang 23, lecture adverse de D308 et décisions du relecteur (D309)
 
 Détail : section D309 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
@@ -2480,7 +2514,7 @@ reports de D308, **close** (décision 3 du relecteur).
 section D308 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par Ko** », et
 son **COÛT**.
 ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : tête de la section du chemin de l'argent et entrées F1, F5 (23a-2
-fait, **restent ouvertes jusqu'à la certification**).
+fait, **restent ouvertes jusqu'à la certification**). ⛔ *(D310 : certification **échouée** — elles restent ouvertes.)*
 
 - [ ] **[API]** **`assertStatus` (`bookings.service.ts`) n'a AUCUN appelant** — constat de D306, relevé par D307 : né à
   `909702a` (03/08/2026) ; appelé 4 fois, puis 3 (`871aef8`), puis **0 depuis `682ea4c`** (22/08/2026, S5b, qui a déplacé
@@ -2666,7 +2700,9 @@ certification ~~(bloquée par R1)~~.
 ⛔ **(D307, 25/09/2026) Session adverse faite (D306), décision du relecteur REÇUE : comportement de 23a ACCEPTÉ.** F1 et
 F5 restent ouvertes jusqu'à ~~**23a-2** (C1 à C5 de D306) et~~ la **certification**, qui clôt le rang 23 — R1 **ne la bloque
 plus** (décision du relecteur, pause). ⛔ *(D308 : **23a-2 fait** — C1 à C5 gardés, 8 mutations de D306 et une neuve
-rejouées, toutes LUES ; reste la certification.)* ⛔ **PAUSE DU CHEMIN DE L'ARGENT (Ko)** : **F2 (23b), F6 (23c) et R1** sortent du
+rejouées, toutes LUES ; reste la certification.)* ⛔ *(D310, 26/09/2026 : la certification **a ÉCHOUÉ** — une campagne
+hors du chemin de l'argent, `available-on-api`, n'a joué aucune de ses cibles ; rien ne se clôt, F1 et F5 restent
+ouvertes, **la pause ne commence pas** ; reports de D310.)* ⛔ **PAUSE DU CHEMIN DE L'ARGENT (Ko)** : **F2 (23b), F6 (23c) et R1** sortent du
 rang 23 — **bloqués par la reprise du chemin de l'argent, pause décidée par Ko** ; leur reprise sera un rang que Ko
 arbitrera.
 
@@ -2687,7 +2723,7 @@ arbitrera.
   réorientée — trouvée muette par `lancer-campagnes.py`). ~~**Reste ouvert** jusqu'à la session adverse, la décision du relecteur et la certification.~~
   Détail : `ZWADJ_CONTINUITE.md`, section D305. ⛔ *(D307, 25/09/2026 : session adverse **faite** (D306), décision du
   relecteur **reçue** — comportement accepté. **Reste ouvert jusqu'à 23a-2** (C1 à C5 de D306) **et la certification**
-  qui clôt le rang 23.)* ⛔ *(D308 : 23a-2 **fait** — reste ouvert jusqu'à la **certification**.)*
+  qui clôt le rang 23.)* ⛔ *(D308 : 23a-2 **fait** — reste ouvert jusqu'à la **certification**.)* ⛔ *(D310 : la certification a eu lieu et a **ÉCHOUÉ** — reste ouvert.)*
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F2 — un devis annulé entre-temps se convertit ; `revise` ne revalide pas le
   statut du parent** (P1 de l'audit). **OUVERT à `HEAD`** : `QuotesService.convert` contrôle le statut
   (`assertStatus`) **avant**, puis `PrismaQuoteStore.convertirEnDemande` crée la réservation **sans transaction ni
@@ -2870,7 +2906,7 @@ arbitrera.
   R23-F5-a, -b, -c, échecs LUS. ~~**Reste ouvert** jusqu'à la session adverse, le relecteur et la certification.~~
   ⛔ *(D307, 25/09/2026 : session adverse **faite** (D306), relecteur **reçu** — comportement accepté. **Reste ouvert
   jusqu'à 23a-2** (C1 à C5, dont C2, C4, C5 portent sur F5) **et la certification** qui clôt le rang 23.)* ⛔ *(D308 :
-  23a-2 **fait** — reste ouvert jusqu'à la **certification**.)*
+  23a-2 **fait** — reste ouvert jusqu'à la **certification**.)* ⛔ *(D310 : la certification a eu lieu et a **ÉCHOUÉ** — reste ouvert.)*
 - [ ] **[API]** **audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français** (P2 de
   l'audit). **OUVERT à `HEAD`** : `booking-notification-input.ts` compare `locale === "AR"`, alors que l'énuméré
   `Locale` du schéma est `fr` / `ar` ; et `booking-notification-input.spec.ts` **attend** `["ar", "fr"]` — le test

@@ -1,0 +1,13 @@
+CALIBRATION DU LECTEUR — quatre cas dont la reponse est connue d'avance
+   ✓ negatif : serie homogene → 0 transition
+   ✓ negatif : serie homogene → 0 trou
+   ✓ positif : bascule secteur→batterie
+   ✓ positif : trou de huit heures
+ECHANTILLONS=170   dont ECHEC-INSTRUMENT=0
+FENETRE=2026-09-26 00:34:10 → 2026-09-26 02:03:12   (89 min)
+RAM_LIBRE_MO min=4158 max=6539
+CPU_PCT max=100
+NODE max=15
+TRANSITIONS_ALIMENTATION=0
+TROUS_DANS_LA_SERIE=0   (un trou = veille, gel, ou echantillonneur tue)
+✓ FENETRE HOMOGENE : une seule source d'alimentation, aucune interruption de serie.

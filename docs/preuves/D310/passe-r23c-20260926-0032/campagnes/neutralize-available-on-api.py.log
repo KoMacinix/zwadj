@@ -1,0 +1,16 @@
+✓ A1. Le refus de date passée est retiré
+✓ A2. La borne devient `<=` : aujourd'hui est refusé à tort
+✓ A3. `PENDING` est rechargé : une demande en attente grise
+✓ A4. La fenêtre retombe à minuit + 24 h (la soirée 20h→02h ment)
+✓ A5. L'exclusion des salles sans créneau (situation B) quitte le `where`
+✓ A6. Le regroupement par salle saute : les salles se contaminent
+✓ A7. `singleSlot` est câblé en dur à `false`
+✓ A8. L'annotation devient un FILTRE (la salle grisée quitte la page)
+✓ A9. L'écho `availableOn` disparaît de la réponse
+✓ A10. `computeDayAvailability` cesse de déléguer (seconde autorité)
+✓ B1. Le 404 de routage n'est plus normalisé (retour à l'enveloppe brute de Nest)
+✓ B2. TOUS les 404 sont réécrits : le code métier est écrasé
+✓ A13. L'exclusion mord AUSSI sans date (elle retire trop large)
+
+13 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+

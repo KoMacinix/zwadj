@@ -1,0 +1,176 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/booking-transitions.spec.ts
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+ [31m❯[39m src/venues/booking-transitions.spec.ts [2m([22m[2m24 tests[22m[2m | [22m[31m6 failed[39m[2m)[22m[32m 21[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22m« accept » refuse tout statut hors de sa liste, et les accepte tous dedans[32m 2[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22m« decline » refuse tout statut hors de sa liste, et les accepte tous dedans[32m 0[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22m« cancelAsPro » refuse tout statut hors de sa liste, et les accepte tous dedans[32m 0[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22m« cancelAsClient » refuse tout statut hors de sa liste, et les accepte tous dedans[32m 0[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22mun statut INCONNU de l'énumération est refusé, il ne traverse pas[32m 0[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22mle refus rapporte le statut RÉEL — c'est lui que le 409 montre au pro[32m 1[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22mla cible rendue est celle du tableau, jamais le statut source[32m 0[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22m⚠ AUCUNE commande n'écrit PENDING : on n'annule pas une annulation en rouvrant[32m 0[2mms[22m[39m
+   [32m✓[39m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22m⚠ `cancelAsPro` REFUSE une demande PENDING — le pro refuse par `decline`, pas par `cancel`[32m 0[2mms[22m[39m
+[31m   [31m×[31m Tableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22mC1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), toute commande est refusée et rien n'est inscriptible, motif ou non[39m[32m 9[2mms[22m[39m
+[31m     → accept, motif undefined: expected [ 'DECLINED' ] to deeply equal [][39m
+   [32m✓[39m Motif d'annulation (D83) — l'asymétrie suit le préjudice[2m > [22mdepuis PENDING, le client n'a RIEN à justifier[32m 0[2mms[22m[39m
+   [32m✓[39m Motif d'annulation (D83) — l'asymétrie suit le préjudice[2m > [22mdepuis ACCEPTED, le motif est EXIGÉ — le pro a pu refuser d'autres dates[32m 0[2mms[22m[39m
+   [32m✓[39m Motif d'annulation (D83) — l'asymétrie suit le préjudice[2m > [22m⚠ L'ORDRE des refus : le STATUT est jugé AVANT le motif[32m 0[2mms[22m[39m
+   [32m✓[39m Motif d'annulation (D83) — l'asymétrie suit le préjudice[2m > [22mle motif n'est exigé d'AUCUNE autre commande[32m 0[2mms[22m[39m
+   [32m✓[39m Motif d'annulation (D83) — l'asymétrie suit le préjudice[2m > [22m⚠ `null` n'est PAS traité comme un motif manquant — comportement conservé tel quel[32m 0[2mms[22m[39m
+[31m   [31m×[31m Statuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)[39m[32m 1[2mms[22m[39m
+[31m     → expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ][39m
+[31m   [31m×[31m Statuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision[39m[32m 1[2mms[22m[39m
+[31m     → expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ][39m
+[31m   [31m×[31m Statuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`[39m[32m 1[2mms[22m[39m
+[31m     → expected [ 'PENDING', 'ACCEPTED', 'DECLINED' ] to deeply equal [ 'PENDING', 'ACCEPTED' ][39m
+[31m   [31m×[31m Statuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom et decideBookingTransition s'accordent sur TOUS les couples commande, motif, statut (D306, sonde P9)[39m[32m 1[2mms[22m[39m
+[31m     → accept / motif undefined / DECLINED: expected true to be false // Object.is equality[39m
+[31m   [31m×[31m Statuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non[39m[32m 1[2mms[22m[39m
+[31m     → accept / undefined: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ][39m
+   [32m✓[39m Le tableau est l'unique autorité[2m > [22mchaque commande déclarée a une entrée — aucune ne peut être oubliée[32m 0[2mms[22m[39m
+   [32m✓[39m Le tableau est l'unique autorité[2m > [22m`allowedFrom` rend EXACTEMENT le `from` du tableau, sans copie ni tri[32m 0[2mms[22m[39m
+   [32m✓[39m Le tableau est l'unique autorité[2m > [22mtout statut source déclaré appartient à l'énumération[32m 1[2mms[22m[39m
+   [32m✓[39m Le tableau est l'unique autorité[2m > [22mle motif ne peut être exigé que depuis un statut RÉELLEMENT autorisé[32m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m6 failed[39m[22m[2m | [22m[1m[32m18 passed[39m[22m[90m (24)[39m
+[2m   Start at [22m 01:20:19
+[2m   Duration [22m 931ms[2m (transform 191ms, setup 0ms, collect 277ms, tests 21ms, environment 0ms, prepare 192ms)[22m
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/booking-transitions.spec.ts
+
+--- stderr ---
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 6 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/venues/booking-transitions.spec.ts[2m > [22mTableau des transitions — la matrice COMPLÈTE, refus compris[2m > [22mC1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), toute commande est refusée et rien n'est inscriptible, motif ou non
+[31m[1mAssertionError[22m: accept, motif undefined: expected [ 'DECLINED' ] to deeply equal [][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "DECLINED",[39m
+[31m+ ][39m
+
+[36m [2m❯[22m src/venues/booking-transitions.spec.ts:[2m118:78[22m[39m
+    [90m116| [39m        // prédicat, depuis 23a, qui refuse — la décision seule ne suf…
+    [90m117| [39m        const inscriptibles = writableFrom(commande, motif).filter((s)…
+    [90m118| [39m        expect(inscriptibles, `${commande}, motif ${JSON.stringify(mot…
+    [90m   | [39m                                                                             [31m^[39m
+    [90m119| [39m      }
+    [90m120| [39m    }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/venues/booking-transitions.spec.ts[2m > [22mStatuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+[31m[1mAssertionError[22m: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "PENDING",[22m
+[31m+   "DECLINED",[39m
+[2m  ][22m
+
+[36m [2m❯[22m src/venues/booking-transitions.spec.ts:[2m191:42[22m[39m
+    [90m189| [39m    expect(BOOKING_TRANSITIONS[CAC].reasonRequiredFrom.length).toBeGre…
+    [90m190| [39m    [34mexpect[39m([34msansMotifExige[39m()[33m.[39mlength)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+    [90m191| [39m    [34mexpect[39m([34mwritableFrom[39m([33mCAC[39m[33m,[39m undefined))[33m.[39m[34mtoEqual[39m([34msansMotifExige[39m())[33m;[39m
+    [90m   | [39m                                         [31m^[39m
+    [90m192| [39m    // Le cas qui a coûté (F5) : une demande ACCEPTED ne s'annule pas …
+    [90m193| [39m    expect(writableFrom(CAC, undefined)).not.toContain(BookingStatus.A…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/venues/booking-transitions.spec.ts[2m > [22mStatuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+[31m[1mAssertionError[22m: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "PENDING",[22m
+[31m+   "DECLINED",[39m
+[2m  ][22m
+
+[36m [2m❯[22m src/venues/booking-transitions.spec.ts:[2m197:35[22m[39m
+    [90m195| [39m
+    [90m196| [39m  it("writableFrom — une chaîne VIDE vaut une absence de motif, comme …
+    [90m197| [39m    [34mexpect[39m([34mwritableFrom[39m([33mCAC[39m[33m,[39m [32m""[39m))[33m.[39m[34mtoEqual[39m([34msansMotifExige[39m())[33m;[39m
+    [90m   | [39m                                  [31m^[39m
+    [90m198| [39m    expect(writableFrom(CAC, "")).not.toContain(BookingStatus.ACCEPTED…
+    [90m199| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/venues/booking-transitions.spec.ts[2m > [22mStatuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`
+[31m[1mAssertionError[22m: expected [ 'PENDING', 'ACCEPTED', 'DECLINED' ] to deeply equal [ 'PENDING', 'ACCEPTED' ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "PENDING",[22m
+[2m    "ACCEPTED",[22m
+[31m+   "DECLINED",[39m
+[2m  ][22m
+
+[36m [2m❯[22m src/venues/booking-transitions.spec.ts:[2m202:48[22m[39m
+    [90m200| [39m
+    [90m201| [39m  it("writableFrom — AVEC motif, l'annulation client écrit depuis tout…
+    [90m202| [39m    expect(writableFrom(CAC, "salle inondée")).toEqual([...allowedFrom…
+    [90m   | [39m                                               [31m^[39m
+    [90m203| [39m  })[33m;[39m
+    [90m204| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/venues/booking-transitions.spec.ts[2m > [22mStatuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom et decideBookingTransition s'accordent sur TOUS les couples commande, motif, statut (D306, sonde P9)
+[31m[1mAssertionError[22m: accept / motif undefined / DECLINED: expected true to be false // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+[36m [2m❯[22m src/venues/booking-transitions.spec.ts:[2m222:110[22m[39m
+    [90m220| [39m          couples [33m+=[39m [34m1[39m[33m;[39m
+    [90m221| [39m          const permis = decideBookingTransition(commande, statut, mot…
+    [90m222| [39m          expect(inscriptibles.includes(statut), `${commande} / motif …
+    [90m   | [39m                                                                                                             [31m^[39m
+    [90m223| [39m        }
+    [90m224| [39m        [90m// Et rien d'inscriptible hors de l'énumération.[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/venues/booking-transitions.spec.ts[2m > [22mStatuts inscriptibles selon le motif (rang 23 · F5)[2m > [22mwritableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non
+[31m[1mAssertionError[22m: accept / undefined: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "PENDING",[22m
+[31m+   "DECLINED",[39m
+[2m  ][22m
+
+[36m [2m❯[22m src/venues/booking-transitions.spec.ts:[2m236:89[22m[39m
+    [90m234| [39m      [35mif[39m (commande [33m===[39m [33mCAC[39m) [35mcontinue[39m[33m;[39m
+    [90m235| [39m      [35mfor[39m ([35mconst[39m motif [35mof[39m [undefined[33m,[39m [32m""[39m[33m,[39m [32m"motif"[39m]) {
+    [90m236| [39m        expect(writableFrom(commande, motif), `${commande} / ${JSON.st…
+    [90m   | [39m                                                                                        [31m^[39m
+    [90m237| [39m      }
+    [90m238| [39m    }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯[22m[39m
+
+
+--- code de sortie : 1 ---

@@ -1,0 +1,55 @@
+26/09/2026 00:32:34 PASSE r23c-20260926-0032 — HEAD attendu 1e949c312b92077ec07480a1d464e4f6ee76078a
+26/09/2026 00:32:34    pg_isready (ouverture) : code 0
+26/09/2026 00:32:34    ports 3100/3101/5273 à l'écoute : 0 (attendu 0)
+26/09/2026 00:33:32    sonde ouverture-1 : RAM 6393 (bande 6317-6473, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · calibration ✓
+26/09/2026 00:34:08    sonde ouverture-2 : RAM 6487 (bande 6478-6494, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:34:08 ✓ PORTE DURE VERTE sur les deux relevés
+26/09/2026 00:34:08    échantillonneur lancé (PID 12616), -Intervalle 30 — AUCUN lecteur pendant la fenêtre
+26/09/2026 00:34:08    arbre-1 : HEAD 1e949c3 (attendu 1e949c3) · 0 ligne(s) de statut (attendu 0)
+26/09/2026 00:34:43    sonde avant-typecheck : RAM 6460.5 (bande 6425-6469, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:35:01    typecheck : code 0, 18 s
+26/09/2026 00:35:37    sonde avant-lint : RAM 6467 (bande 6463-6473, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:35:49    lint : code 0, 13 s
+26/09/2026 00:36:25    sonde avant-test : RAM 6484 (bande 6467-6502, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:37:28    test : code 0, 64 s
+26/09/2026 00:38:03    sonde avant-build : RAM 6533.5 (bande 6523-6560, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:38:40    build : code 0, 37 s
+26/09/2026 00:39:15    sonde avant-testint : RAM 6521 (bande 6518-6529, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:39:15    pg_isready (avant-testint) : code 0
+26/09/2026 00:44:16    testint : code 0, 301 s
+26/09/2026 00:44:51    sonde avant-e2e : RAM 6371.5 (bande 6347-6438, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:44:51    avant e2e : node 0 (attendu 0) · ports à l'écoute 0 (attendu 0)
+26/09/2026 00:44:51    pg_isready (avant-e2e) : code 0
+26/09/2026 00:46:52    e2e : code 0, 121 s
+26/09/2026 00:47:27    sonde apres-e2e : RAM 6448 (bande 6423-6465, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 00:47:27    après e2e : node 0 · ports à l'écoute 0
+26/09/2026 00:47:27    arbre-2 : HEAD 1e949c3 (attendu 1e949c3) · 0 ligne(s) de statut (attendu 0)
+26/09/2026 00:48:02    sonde avant-campagnes : RAM 6456.5 (bande 6443-6465, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 01:34:49    campagnes-tout : code 1, 2807 s
+26/09/2026 01:34:49    journaux de campagne copiés à l'identique : 43 sur 43 · antérieurs au début de --tout : 0 (attendu 0)
+26/09/2026 01:34:49    arbre-3 : HEAD 1e949c3 (attendu 1e949c3) · 0 ligne(s) de statut (attendu 0)
+26/09/2026 01:35:25    sonde avant-int-e3d1-s8 : RAM 6421 (bande 6408-6429, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 01:35:25    pg_isready (int-e3d1-s8) : code 0
+26/09/2026 01:36:48    int-e3d1-s8 : code 0, 84 s
+26/09/2026 01:37:23    sonde avant-int-s11b : RAM 6340 (bande 5817-6385, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 01:37:24    pg_isready (int-s11b) : code 0
+26/09/2026 01:42:09    int-s11b : code 0, 285 s
+26/09/2026 01:42:44    sonde avant-int-solid-s1 : RAM 6324 (bande 6263-6552, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 01:42:44    pg_isready (int-solid-s1) : code 0
+26/09/2026 01:46:54    int-solid-s1 : code 0, 250 s
+26/09/2026 01:47:29    sonde avant-int-solid-s2 : RAM 6404.5 (bande 6390-6412, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 01:47:29    pg_isready (int-solid-s2) : code 0
+26/09/2026 01:51:43    int-solid-s2 : code 0, 254 s
+26/09/2026 01:52:18    sonde avant-int-solid-s3 : RAM 6371.5 (bande 6358-6391, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 01:52:18    pg_isready (int-solid-s3) : code 0
+26/09/2026 01:57:56    int-solid-s3 : code 0, 338 s
+26/09/2026 01:58:31    sonde avant-int-solid-s6 : RAM 6367.5 (bande 6362-6392, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 01:58:31    pg_isready (int-solid-s6) : code 0
+26/09/2026 02:02:57    int-solid-s6 : code 0, 265 s
+26/09/2026 02:02:57    arbre-4 : HEAD 1e949c3 (attendu 1e949c3) · 0 ligne(s) de statut (attendu 0)
+26/09/2026 02:03:00    contre-epreuve : code 0, 3 s
+26/09/2026 02:03:00    arbre-5 : HEAD 1e949c3 (attendu 1e949c3) · 0 ligne(s) de statut (attendu 0)
+26/09/2026 02:03:35    sonde cloture : RAM 6321 (bande 6311-6329, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+26/09/2026 02:03:35    échantillonneur arrêté
+26/09/2026 02:03:35    -Resume : code 0
+26/09/2026 02:03:35 CLÔTURE ATTEINTE — la lecture se fait APRÈS, sur les journaux de ce dossier

@@ -1,0 +1,7 @@
+== CALIBRATION — trois bras, abandon si un seul manque
+   ✓ échec construit marques {'ok': 1, 'x': 1, '-': 1} (attendu ok 1 · x 1 · - 1) · recompte cohérent True · bloc d'échec gardé avec son message : 1 ligne(s) « Error » (attendu ≥ 1)
+   ✓ garde-fou       lien à deux lignes d'un « failed » : refusé True (attendu True)
+   ✓ réel            rang 15 : 910 lignes (attendu 910, octets 910) · Running [35] · marques {'ok': 34, 'x': 0, '-': 1} · résumé {'skipped': 1, 'passed': 34} · « fail » 4 gardées 4 (attendu 4 · 4) · jetons source 24 (attendu 24), sortie 0 (attendu 0)
+   calibration : 3 bras passent · 0 manqué(s) · réel : rejoué
+== EXTRAIT : 831 lignes parcourues (attendu 831) · 38 gardées · Running [35] · marques {'ok': 34, 'x': 0, '-': 1} · résumé {'skipped': 1, 'passed': 34} · recompte cohérent True · « fail » 0 gardées 0 · jetons dans la source 24, dans la sortie 0 (attendu 0) · relu identique True
+écrit : docs/preuves/D310/passe-r23c-20260926-0032/e2e-EXTRAIT.txt
