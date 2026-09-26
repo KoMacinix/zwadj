@@ -2457,6 +2457,23 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 26/09/2026 — rang 23, lecture adverse de D308 et décisions du relecteur (D309)
+
+Détail : section D309 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
+Ko** », et son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : l'entrée `[MÉTHODE]` « la pièce versée d'une campagne… » des
+reports de D308, **close** (décision 3 du relecteur).
+
+- [ ] **[MÉTHODE]** **Les lots NON certifiants ne tiennent ni le point 9 ni le point 10 du critère du rang 9, et leur
+  « 0 valeur réelle » ne laisse AUCUNE pièce** — constats 2 et 4 de la lecture adverse de D308. D305 et D308 jouent le
+  contrôle « 0 valeur réelle » **après** l'audit final et en renvoient le résultat « au rapport de fin de lot » : il vit
+  dans le chat (D276), aucune reprise ne peut le confronter. Et leur extrait e2e est une liste **noire** (retrait des
+  `[WebServer]`), sans arrêt sur `token=` — celui de D308 porte en plus le `+1` de D294 (« 822 » pour 821, rectifié à
+  côté des pièces). Le critère (points 9 et 10) ne s'impose qu'aux certifications ; D299 et la certification du rang 23
+  le tiennent. ⇒ Question : la forme du critère vaut-elle pour tout lot qui verse un journal e2e ?
+  ⇒ **BLOQUE : rien — à ordonner par Ko.** ⇒ **COÛT** : documentaire (une règle de versement, ou une extension du
+  critère) ; aucun fichier de code ; les outils de D299 (`extraire-e2e.py`, `aucune-valeur-reelle.py`) existent déjà.
+
 ## Reports du 25/09/2026 — rang 23, 23a-2 : les gardes C1 à C5 de D306 (D308)
 
 ⚠ **Les constats de D306 hors de son périmètre d'écriture, TRAITÉS ici sur ordre de Ko** (« traite-les »). Détail :
@@ -2474,7 +2491,12 @@ fait, **restent ouvertes jusqu'à la certification**).
   `booking-transitions.ts` (sa doc) ; e2e : celle du lot porteur ; cadrage chemin de l'argent : **oui** — les deux fichiers
   sont sur la carte, branche (2) ; ⇒ *dérivé par la session* : il attend donc la **reprise du chemin de l'argent** ;
   migration : non ; dépendance : non ; ne mord nulle part (aucun appelant).
-- [ ] **[MÉTHODE]** **La pièce versée d'une campagne doit-elle être celle de la passe dont le chiffre est cité ?** —
+- [x] ⛔ *(D309, 26/09/2026 : **TRANCHÉ par le relecteur (chat), délégué par Ko** — « une ligne de la table des portes
+  cite le dossier versé de SA passe (horodatage ou identifiant de passe). Toute autre passe versée se nomme comme telle. »
+  Motif : « D306 a trouvé chez D305 des sorties versées qui n'étaient pas celles de la passe comptée. » Écrit au **point
+  11 du critère du rang 9** (`ZWADJ_CONTINUITE.md`) et au point E3 d'`AGENTS.md` ; appliqué à la certification du rang 23.
+  Ne pas lire la suite comme l'état courant.)*
+  **[MÉTHODE]** **La pièce versée d'une campagne doit-elle être celle de la passe dont le chiffre est cité ?** —
   constat de D306 (lecture adverse, point 1) : la campagne `rang23` comptée dans la table des portes de D305 (5/5) était
   celle de 01:00, dont les sorties n'étaient pas versées ; les pièces versées venaient d'une passe antérieure, et leurs
   homonymes locaux avaient été réécrits. D306 les a copiées et lues (5 sur 5) : **tient au fond**. Posé par D306 **au

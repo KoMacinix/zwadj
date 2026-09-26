@@ -1,0 +1,24 @@
+== CALIBRATION du détecteur de calcul, deux bras
+  ✓ positif deposit.ts : 3 ligne(s) (attendu > 0) · négatif availability-time.ts : 0 (attendu 0)
+
+===== S11a-7. — 1 cible(s) trouvée(s) dans le harnais (attendu 1)
+  DÉFINITION, MOT POUR MOT (tuple du harnais) :
+    libellé      : S11a-7. ⛔ LE CRÉNEAU NE TRAVERSE PLUS LE VERDICT — il est rétréci à ses bornes
+    fichier      : apps/api/src/venues/booking-admission.ts
+    ancre        : '  return { outcome: "ADMITTED", slot, window: computeBookingWindow(date, wholeDay ? null : slot) };'
+    remplacement : '  return { outcome: "ADMITTED", slot: { startMinutes: slot.startMinutes, endMinutes: slot.endMinutes } as typeof slot, window: computeBookingWindow(date, wholeDay ? null : slot) };'
+    occurrences  : 1 · mesures : ['recevabilite']
+    mesure « recevabilite » : pnpm --filter @zwadj/api exec vitest run src/venues/booking-admission.spec.ts
+  FICHIER MUTÉ : 96 lignes parcourues, 34 hors commentaires ; lignes qui calculent, arrondissent ou valident un montant : 0
+  L'ANCRE nomme un montant : False · porte une opération : False
+
+===== S11a-11. — 1 cible(s) trouvée(s) dans le harnais (attendu 1)
+  DÉFINITION, MOT POUR MOT (tuple du harnais) :
+    libellé      : S11a-11. ⛔⛔ CHEMIN DE L'ARGENT — le TOTAL et l'ACOMPTE s'intervertissent
+    fichier      : apps/api/src/venues/booking-notification-input.ts
+    ancre        : '    totalCents: row.totalCents,\n    depositCents: row.depositCents,'
+    remplacement : '    totalCents: row.depositCents,\n    depositCents: row.totalCents,'
+    occurrences  : 1 · mesures : ['notification']
+    mesure « notification » : pnpm --filter @zwadj/api exec vitest run src/venues/booking-notification-input.spec.ts
+  FICHIER MUTÉ : 90 lignes parcourues, 56 hors commentaires ; lignes qui calculent, arrondissent ou valident un montant : 0
+  L'ANCRE nomme un montant : True · porte une opération : False

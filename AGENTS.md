@@ -885,6 +885,16 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     stockée) fait partie du chemin de l'argent ; une conversion **DEPUIS** le serveur (valeur reçue → texte affiché)
     n'en fait pas partie. **Un harnais se classe par ses CIBLES, jamais par les fichiers qu'il cite.** Classement des
     sept doutes de la carte : pièce datée `docs/preuves/D307/carte/`.
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 26/09/2026 (D309)** — texte et motifs : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D309 :
+  - ⛔ **CRITÈRE DES CIBLES, qui complète le principe de direction** : une cible est **DEDANS** si la garde qu'elle
+    neutralise **calcule, arrondit ou valide un montant** ; **un montant recopié tel quel dans un message n'en fait pas
+    partie** (S11a-7 et S11a-11 : dehors, section D309) ;
+  - ⛔ **PIÈCES DE CAMPAGNE** : une ligne de la table des portes **cite le dossier versé de SA passe** (horodatage ou
+    identifiant de passe) ; toute autre passe versée **se nomme comme telle** — point 11 du critère du rang 9 ;
+  - C3 de 23a-2 : écart **accepté** (la consigne reposait sur une prémisse non vérifiée par le relecteur) ; « compte
+    d'abord combien de cibles en dépendent » : **première étape de R1**, pas d'écart ; `venues-admin.service.ts` et
+    `packages/types/src/venue.ts` : **dedans** (branche 1, ils valident un taux) — déjà sur la carte de D304.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

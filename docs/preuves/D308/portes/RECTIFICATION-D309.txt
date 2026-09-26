@@ -1,0 +1,21 @@
+RECTIFICATION — posée le 26/09/2026 par D309 (lecture adverse de D308), À CÔTÉ des pièces, qui ne sont PAS retouchées.
+
+Pièce concernée : test-e2e-extrait.txt (et l'outil qui l'a produite, ../outils/extraire-e2e.py).
+
+L'en-tête de l'extrait porte « complet : 368171 octets, 822 lignes (découpe sur \n) », et la section D308 de
+ZWADJ_CONTINUITE.md recopie « 665 lignes [WebServer] retirées sur 822 ».
+
+MESURÉ par D309 sur le complet, toujours sur disque hors dépôt (.neutralisation-journaux/d308/test-e2e-complet.log),
+même empreinte que celle que l'extrait annonce (sha256 cc9f88e005b4f765…) : 368171 octets, 821 caractères LF, le
+fichier FINIT par un LF ⇒ 821 lignes. « 822 » est le nombre d'ÉLÉMENTS de bytes.split(b"\n"), dont le dernier est la
+chaîne vide qui suit le LF final : le « +1 » de D294, récidivé dans l'extracteur de D308.
+⇒ 665 lignes retirées sur 821 ; « gardées : 157 » compte le même élément vide (156 lignes).
+
+Pour comparaison : l'extrait de D305 annonce 829 lignes, et son complet (hors dépôt, .neutralisation-journaux/d305/)
+porte 829 LF — juste. Le défaut est propre à l'extracteur neuf de D308.
+
+Ce qui est corrigé : le chiffre, là où il engage une autorité (section D308, table des portes, annoté par D309).
+Ce qui ne l'est PAS, et pourquoi : l'extracteur et l'extrait restent tels quels — « un instrument et la pièce qu'il a
+produite se corrigent ensemble ou pas du tout » (D295). Une certification utilise l'extracteur de D299
+(docs/preuves/D299/outils/extraire-e2e.py), qui compte sur les octets et imprime l'attendu à côté (point 9 du critère).
+Instrument de la mesure : docs/preuves/D309/lecture-adverse/confronter-d308.py, sortie versée à côté de lui.

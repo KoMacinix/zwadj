@@ -1,0 +1,22 @@
+# D309 — motifs de la passe D277 (partie A, documentaire). Format : <sens>|<motif>. Lus par balayage.py (copie à
+# l'octet de celui de D306/D308), jamais passés en ligne de commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « au relecteur », « C3 », « certification » — ils comptent tout (D298).
+# sens 1 — ce que les décisions de D309 INVALIDENT
+1|Attendu du relecteur
+1|PROPOSÉ, AU RELECTEUR
+1|si Ko l'attendait
+1|pièce versée d'une campagne doit-elle
+1|Il ne tranche pas C3
+1|les tests D121 (§ 2, MD-C3)
+1|La session les classe dehors
+1|frôlent un montant
+1|retirées sur 822
+1|822 lignes
+# sens 2 — ce que D309 REND PERMIS ou OBLIGATOIRE
+2|RESTE LA CERTIFICATION
+2|ce qui vient ensuite : la certification
+2|CE QUI VIENT ENSUITE : LA CERTIFICATION
+2|cite le dossier versé
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d309-qq
