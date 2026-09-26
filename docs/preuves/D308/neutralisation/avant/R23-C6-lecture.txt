@@ -1,0 +1,35 @@
+D306/outils/neutraliser.py sha256 c111a78385e3ed94
+D306/outils/lire.py sha256 4994db7274fae3ef
+D306/outils/titres.py sha256 657852dc26e9b3c6
+R23-C1 ← X4-service-plus-DECLINED : éditions IDENTIQUES (même objet)
+R23-C2 ← X10-decision-sur-ACCEPTED : éditions IDENTIQUES (même objet)
+R23-C3 ← X2a-relecture-transition-const : éditions IDENTIQUES (même objet)
+R23-C4 ← X14-statut-du-400 : éditions IDENTIQUES (même objet)
+R23-C5 ← X15-motif-ignore-au-site : éditions IDENTIQUES (même objet)
+R23-C6 ← X3-writableFrom-plus-DECLINED : éditions IDENTIQUES (même objet)
+
+=== R23-C6 (X3 de D306) — phase avant
+FICHIER=apps/api/src/venues/booking-transitions.ts
+  POSE ✓ ancre 1 → 1 (attendu 1) · marqueur 0 → 2 (attendu 2) · ancre : export function writableFrom(command: BookingCommand, reason?: string)
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:30:52 duree=1.8s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C6-unit.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run src/venues/booking-transitions.spec.ts
+RESTAURE sha256 38a99a9b87f2a8a8 → 38a99a9b87f2a8a8 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C6-unit.txt
+LIGNES_EXAMINEES=126
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  4 failed | 19 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=4   (attendus déclarés : 0)
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       1re ligne : AssertionError: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       1re ligne : AssertionError: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED', 'DECLINED' ] to deeply equal [ 'PENDING', 'ACCEPTED' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non
+       1re ligne : AssertionError: accept / undefined: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+VERDICT=NON PROUVÉE

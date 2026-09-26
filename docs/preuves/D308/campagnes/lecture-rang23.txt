@@ -1,0 +1,64 @@
+✓ copié R23-C1-int-reservations.txt
+✓ copié R23-C1-t-int-reservations.txt
+✓ copié R23-C1-t-unit-transitions.txt
+✓ copié R23-C2-int-reservations.txt
+✓ copié R23-C3-int-reservations.txt
+✓ copié R23-C4-int-reservations.txt
+✓ copié R23-C5-int-reservations.txt
+✓ copié R23-C6-unit-transitions.txt
+✓ copié R23-F1-a-int-reservations.txt
+✓ copié R23-F1-b-int-reservations.txt
+✓ copié R23-F5-a-int-reservations.txt
+✓ copié R23-F5-b-int-reservations.txt
+✓ copié R23-F5-c-unit-transitions.txt
+✓ copié pre-vol-int-reservations.txt
+✓ copié pre-vol-unit-transitions.txt
+journaux copiés à l'identique : 15 sur 15
+
+✓ R23-F1-a [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 2 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+     ATTENDU MORD (AssertionError) : F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+✓ R23-F1-b [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 2 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+     ATTENDU MORD (AssertionError) : F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+✓ R23-F5-a [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 1 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+     AUTRE TITRE EN ÉCHEC (AssertionError) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+✓ R23-F5-b [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 1 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+     AUTRE TITRE EN ÉCHEC (AssertionError) : Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+✓ R23-F5-c [unit-transitions] collectés 24 · échecs de fichier 0 · titres exigés 2 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+     ATTENDU MORD (AssertionError) : writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+     AUTRE TITRE EN ÉCHEC (AssertionError) : Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom et decideBookingTransition s'accordent sur TOUS les couples commande, motif, statut (D306, sonde P9)
+✓ R23-C1 [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 2 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte
+     ATTENDU MORD (AssertionError) : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+✓ R23-C1-t [unit-transitions] collectés 24 · échecs de fichier 0 · titres exigés 1 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : C1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), toute commande est refusée et rien n'est inscriptible, motif ou non
+✓ R23-C1-t [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 2 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte
+     ATTENDU MORD (AssertionError) : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+✓ R23-C2 [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 2 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+     ATTENDU MORD (AssertionError) : D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500
+✓ R23-C3 [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 5 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte
+     ATTENDU MORD (AssertionError) : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+     ATTENDU MORD (AssertionError) : D121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client
+     ATTENDU MORD (AssertionError) : D121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit
+     ATTENDU MORD (AssertionError) : D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500
+✓ R23-C4 [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 2 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+     ATTENDU MORD (AssertionError) : le client DOIT un motif pour annuler une demande ACCEPTÉE
+✓ R23-C5 [int-reservations] collectés 50 · échecs de fichier 0 · titres exigés 1 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : le client DOIT un motif pour annuler une demande ACCEPTÉE
+✓ R23-C6 [unit-transitions] collectés 24 · échecs de fichier 0 · titres exigés 4 ⇒ MORSURE LUE
+     ATTENDU MORD (AssertionError) : writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+     ATTENDU MORD (AssertionError) : writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+     ATTENDU MORD (AssertionError) : C1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), toute commande est refusée et rien n'est inscriptible, motif ou non
+     ATTENDU MORD (AssertionError) : writableFrom et decideBookingTransition s'accordent sur TOUS les couples commande, motif, statut (D306, sonde P9)
+     AUTRE TITRE EN ÉCHEC (AssertionError) : Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`
+     AUTRE TITRE EN ÉCHEC (AssertionError) : Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non
+
+MESURES LUES : 13 · MORSURES LUES : 13 (attendu 13)

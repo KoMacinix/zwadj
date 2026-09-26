@@ -2457,6 +2457,58 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 25/09/2026 — rang 23, 23a-2 : les gardes C1 à C5 de D306 (D308)
+
+⚠ **Les constats de D306 hors de son périmètre d'écriture, TRAITÉS ici sur ordre de Ko** (« traite-les »). Détail :
+section D308 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par Ko** », et
+son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : tête de la section du chemin de l'argent et entrées F1, F5 (23a-2
+fait, **restent ouvertes jusqu'à la certification**).
+
+- [ ] **[API]** **`assertStatus` (`bookings.service.ts`) n'a AUCUN appelant** — constat de D306, relevé par D307 : né à
+  `909702a` (03/08/2026) ; appelé 4 fois, puis 3 (`871aef8`), puis **0 depuis `682ea4c`** (22/08/2026, S5b, qui a déplacé
+  la relecture D117 dans l'adaptateur). **Pas retiré par 23a** ⇒ consigne de Ko : « dis d'où il vient et n'y touche
+  pas » — **non touché** par 23a-2. La documentation de `allowedFrom` (`booking-transitions.ts`) le cite encore comme
+  consommateur. Du code mort, et une doc qui l'annonce vivant.
+  ⇒ **BLOQUE : rien — à ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `bookings.service.ts` (la méthode) et
+  `booking-transitions.ts` (sa doc) ; e2e : celle du lot porteur ; cadrage chemin de l'argent : **oui** — les deux fichiers
+  sont sur la carte, branche (2) ; ⇒ *dérivé par la session* : il attend donc la **reprise du chemin de l'argent** ;
+  migration : non ; dépendance : non ; ne mord nulle part (aucun appelant).
+- [ ] **[MÉTHODE]** **La pièce versée d'une campagne doit-elle être celle de la passe dont le chiffre est cité ?** —
+  constat de D306 (lecture adverse, point 1) : la campagne `rang23` comptée dans la table des portes de D305 (5/5) était
+  celle de 01:00, dont les sorties n'étaient pas versées ; les pièces versées venaient d'une passe antérieure, et leurs
+  homonymes locaux avaient été réécrits. D306 les a copiées et lues (5 sur 5) : **tient au fond**. Posé par D306 **au
+  relecteur** ; ⚠ **appliqué de fait par D308** : ses pièces de campagne sont celles de la passe dont les chiffres sont
+  cités (section D308).
+  ⇒ **BLOQUE : à ordonner par Ko — au relecteur.** ⚠ La certification qui clôt le rang 23 cite des chiffres de
+  campagne : la réponse la concerne. ⇒ **COÛT** : documentaire (une règle de versement) ; aucun fichier de code.
+- [ ] **[OUTIL]** ⛔ **`lancer-campagnes.py` NE VOIT PAS CE QU'UNE CAMPAGNE MESURE — mesuré par D308.** Son tri
+  (`fichiers_lus`) relève dans le source de chaque harnais les chaînes qui finissent en `.ts` **et existent depuis la
+  racine** ; or les MESURES des harnais sont écrites **relativement à `apps/api`** (« `test/int/bookings.int-spec.ts` »,
+  « `src/venues/booking-transitions.spec.ts` ») et le fichier du harnais lui-même n'est pas compté. ⇒ **Un lot qui ne
+  touche que des tests ne déclenche AUCUNE campagne.** Cas réel : D308 modifie deux specs et `neutralize-rang23.py` —
+  `--liste` rend « **0 campagne concernée sur 28** », alors que **sept** mesurent par ces specs (`rang23`, `s11b` en
+  `--int`, `solid-s1`, `-s2`, `-s3`, `-s5b`, `-s6`) et que le harnais de l'une d'elles venait de changer. Sa docstring
+  promet « les fichiers que cette campagne mute **ou mesure** ». D308 les a relevées **à la main** et jouées (section
+  D308). ⚠ C'est la classe « un tri qui rate en silence est pire qu'un tri absent » que l'outil signale lui-même pour les
+  campagnes « aveugles » — ici il répond, et sa réponse a la forme d'un « rien à faire ».
+  ⇒ **BLOQUE : à ordonner par Ko** — ⚠ mais toute fin de lot qui ne touche que des tests ou un harnais s'appuie
+  aujourd'hui sur un tri qui ne voit rien. ⇒ **COÛT** : code de `neutralisation/` (compte) — `lancer-campagnes.py`
+  (résoudre les chemins de mesure relatifs à leur paquet ; compter le harnais lui-même) ; calibration à deux bras (une
+  spec seule modifiée doit sélectionner ses campagnes ; un fichier sans rapport, aucune) ; e2e : non ; cadrage chemin de
+  l'argent : *non, dérivé par la session* — il sélectionne des campagnes, il ne prouve aucune garde ; migration : non ;
+  dépendance : non.
+- [ ] **[TEST]** **`pg` avertit « Calling client.query() when the client is already executing a query is deprecated
+  and will be removed in pg@9.0 »** — croisé par D308 dans la sortie de `bookings.int-spec.ts`. **Pas introduit par 23a
+  ni 23a-2** : relevé dans les journaux versés, **14** occurrences par passe `test:int` dès `docs/preuves/D291/portes/`,
+  et de même à D293, D297, D298. Quel code l'émet : **non relevé**. ⚠ Il **mordra** le jour où `pg` passera en 9 : une
+  connexion brute qui empile deux requêtes cessera de marcher — et c'est le mécanisme des rivaux de course (patron de
+  `payment-intent-race.int-spec.ts`, T1 à T5, C2).
+  ⇒ **BLOQUE : à ordonner par Ko** (rien avant une montée de `pg` en 9). ⇒ **COÛT** : d'abord un **relevé** (quel spec,
+  quelle ligne) ; puis code de test (compte) ; cadrage chemin de l'argent : **oui si** l'émetteur est un spec du chemin
+  (`bookings.int-spec.ts`, `payment-intent-race.int-spec.ts`) — *à relever, non tranché* ; e2e : non ; migration : non ;
+  dépendance : non (la montée de `pg` en serait une).
+
 ## Reports du 25/09/2026 — rang 23, sous-lot 23a : F1 et F5 codés (D305)
 
 ⚠ **Ce que 23a a croisé se RAPPORTE ici** (un lot, un objet). Détail : section D305 de `ZWADJ_CONTINUITE.md`. Forme de
@@ -2590,8 +2642,9 @@ certification, tous au rang 23. ⛔ *(D307 : ordre changé par Ko — ci-dessous
 restent **ouvertes** : la forme de revue ratifiée exige encore la session adverse, la décision du relecteur, puis la
 certification ~~(bloquée par R1)~~.
 ⛔ **(D307, 25/09/2026) Session adverse faite (D306), décision du relecteur REÇUE : comportement de 23a ACCEPTÉ.** F1 et
-F5 restent ouvertes jusqu'à **23a-2** (C1 à C5 de D306) et la **certification**, qui clôt le rang 23 — R1 **ne la bloque
-plus** (décision du relecteur, pause). ⛔ **PAUSE DU CHEMIN DE L'ARGENT (Ko)** : **F2 (23b), F6 (23c) et R1** sortent du
+F5 restent ouvertes jusqu'à ~~**23a-2** (C1 à C5 de D306) et~~ la **certification**, qui clôt le rang 23 — R1 **ne la bloque
+plus** (décision du relecteur, pause). ⛔ *(D308 : **23a-2 fait** — C1 à C5 gardés, 8 mutations de D306 et une neuve
+rejouées, toutes LUES ; reste la certification.)* ⛔ **PAUSE DU CHEMIN DE L'ARGENT (Ko)** : **F2 (23b), F6 (23c) et R1** sortent du
 rang 23 — **bloqués par la reprise du chemin de l'argent, pause décidée par Ko** ; leur reprise sera un rang que Ko
 arbitrera.
 
@@ -2612,7 +2665,7 @@ arbitrera.
   réorientée — trouvée muette par `lancer-campagnes.py`). ~~**Reste ouvert** jusqu'à la session adverse, la décision du relecteur et la certification.~~
   Détail : `ZWADJ_CONTINUITE.md`, section D305. ⛔ *(D307, 25/09/2026 : session adverse **faite** (D306), décision du
   relecteur **reçue** — comportement accepté. **Reste ouvert jusqu'à 23a-2** (C1 à C5 de D306) **et la certification**
-  qui clôt le rang 23.)*
+  qui clôt le rang 23.)* ⛔ *(D308 : 23a-2 **fait** — reste ouvert jusqu'à la **certification**.)*
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F2 — un devis annulé entre-temps se convertit ; `revise` ne revalide pas le
   statut du parent** (P1 de l'audit). **OUVERT à `HEAD`** : `QuotesService.convert` contrôle le statut
   (`assertStatus`) **avant**, puis `PrismaQuoteStore.convertirEnDemande` crée la réservation **sans transaction ni
@@ -2794,7 +2847,8 @@ arbitrera.
   que le code — **400 `cancelReasonRequired`** (décision du relecteur). Rouge et vert sur PostgreSQL réel ; cibles
   R23-F5-a, -b, -c, échecs LUS. ~~**Reste ouvert** jusqu'à la session adverse, le relecteur et la certification.~~
   ⛔ *(D307, 25/09/2026 : session adverse **faite** (D306), relecteur **reçu** — comportement accepté. **Reste ouvert
-  jusqu'à 23a-2** (C1 à C5, dont C2, C4, C5 portent sur F5) **et la certification** qui clôt le rang 23.)*
+  jusqu'à 23a-2** (C1 à C5, dont C2, C4, C5 portent sur F5) **et la certification** qui clôt le rang 23.)* ⛔ *(D308 :
+  23a-2 **fait** — reste ouvert jusqu'à la **certification**.)*
 - [ ] **[API]** **audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français** (P2 de
   l'audit). **OUVERT à `HEAD`** : `booking-notification-input.ts` compare `locale === "AR"`, alors que l'énuméré
   `Locale` du schéma est `fr` / `ar` ; et `booking-notification-input.spec.ts` **attend** `["ar", "fr"]` — le test

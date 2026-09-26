@@ -1,0 +1,350 @@
+
+> zwadj@ test:int C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm --filter @zwadj/api test:int
+
+
+> @zwadj/api@0.0.0 test:int C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run -c vitest.config.int.ts
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+(node:25232) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/bookings.int-spec.ts [2m([22m[2m50 tests[22m[2m)[22m[33m 46730[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22mune salle créée sans rien dire reçoit 30 % — les 30 % implicites d'avant [33m 1244[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22ml'acompte est exposé sur la fiche PUBLIQUE, avant la demande [33m 917[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mcrée une demande PENDING et NE VERROUILLE RIEN [33m 922[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mexpiresAt vaut la fenêtre de réponse PRO, encadrée par deux instants mesurés ici [33m 871[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle créneau 20h→02h produit une plage qui finit LE LENDEMAIN (D55/D77) [33m 894[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mDEUX demandes concurrentes sur la même date coexistent en PENDING [33m 945[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle pro est notifié — sans notification, la demande expirerait toute seule [33m 1072[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22m⚠ la ligne Notification est RÉSOLUE, pas laissée en QUEUED (S2-bis) [33m 879[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun envoi qui TOMBE laisse la demande enregistrée (D63) [33m 927[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mdes montants PÉRIMÉS rendent 409 avec les montants RÉELS (D75) [33m 883[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun ACOMPTE périmé suffit à refuser, même si le total est bon [33m 858[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mplus d'invités que la capacité : refusé AVANT l'écriture [33m 909[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mune date au-delà de l'horizon de 18 mois se REFUSE, elle ne se déplace pas (D49) [33m 888[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun créneau d'une AUTRE salle : « n'existe pas », pas « est pris » [33m 891[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun acompte fixe SUPÉRIEUR au total est écrêté, la demande passe [33m 882[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse un pourcentage ET un montant à la fois [33m 804[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse la paire incomplète [33m 870[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun taux de 4 % est sous le plancher [33m 822[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mla SECONDE acceptation reçoit 409 via le 23P01, et la première survit [33m 978[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mannuler la première LIBÈRE le créneau : la seconde passe alors [33m 1046[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22m⚠ le pro NE PEUT PAS annuler une demande encore PENDING — il la REFUSE (S3) [33m 900[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mun BLOCAGE recouvrant refuse l'acceptation — contrôle applicatif sous verrou [33m 900[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22maccepter deux fois : BOOKING_STATUS_CONFLICT, avec le statut réel [33m 895[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22ml'acceptation pose paymentDueAt et prévient le client [33m 883[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mpaymentDueAt − acceptedAt vaut EXACTEMENT la fenêtre d'acompte [33m 882[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mdeux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500 [33m 883[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mdeux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN [33m 985[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client [33m 895[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit [33m 932[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500 [33m 872[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mtrois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409 [33m 913[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte [33m 943[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte [33m 916[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte [33m 1041[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage [33m 959[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente [33m 1150[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mC1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte [33m 1016[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mC2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant [33m 1036[2mms[22m[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mla plage couvre les 24 heures locales, sans règle applicative en plus [33m 855[2mms[22m[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mle créneau reste la source du PRIX, même si ses heures sont ignorées [33m 843[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle pro refuse SANS motif — c'est permis [33m 921[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle client annule une demande PENDING sans motif [33m 874[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle client DOIT un motif pour annuler une demande ACCEPTÉE [33m 943[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22m404 INDISTINCT sur la demande d'un autre client (D47) [33m 899[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mGET /me/bookings ne rend QUE mes demandes, refusées comprises [33m 1028[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit les CONFLITS, calculés à la lecture [33m 988[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation ACCEPTÉE dispute ENCORE — `locks()` n'était exercé QUE par des PENDING (S2-bis) [33m 942[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation CONFIRMED dispute ENCORE — le paiement ne la sort pas de la vue (S2-bis) [33m 898[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mune demande REFUSÉE ne dispute plus rien : elle sort des conflits [33m 924[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit le CONTACT — il doit pouvoir rappeler [33m 846[2mms[22m[39m
+(node:31620) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/quotes.int-spec.ts [2m([22m[2m35 tests[22m[2m)[22m[33m 11859[2mms[22m[39m
+   [33m[2m✓[22m[39m Création et chaîne de versions[2m > [22mun devis naît en DRAFT, v1, sa propre racine de chaîne [33m 537[2mms[22m[39m
+   [33m[2m✓[22m[39m Création et chaîne de versions[2m > [22mle devis existe SANS client : le pro le tape pour quelqu'un qui hésite [33m 319[2mms[22m[39m
+   [33m[2m✓[22m[39m Création et chaîne de versions[2m > [22mune révision crée la v2 de la MÊME chaîne, en DRAFT, sans rien remplacer [33m 374[2mms[22m[39m
+   [33m[2m✓[22m[39m Remise du devis (D160)[2m > [22menregistre le canal et l'horodatage SANS changer le statut [33m 301[2mms[22m[39m
+   [33m[2m✓[22m[39m Remise du devis (D160)[2m > [22mest RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises [33m 334[2mms[22m[39m
+   [33m[2m✓[22m[39m Remise du devis (D160)[2m > [22m⚠ un devis REFUSÉ ne se remet plus au client [33m 313[2mms[22m[39m
+   [33m[2m✓[22m[39m Remise du devis (D160)[2m > [22mdeux remises SIMULTANÉES ne rendent jamais 500 [33m 374[2mms[22m[39m
+   [33m[2m✓[22m[39m Q2 — les statuts LEGACY ne sont plus écrits[2m > [22mle parcours complet ne laisse aucun SENT ni SUPERSEDED en base [33m 418[2mms[22m[39m
+   [33m[2m✓[22m[39m Statuts hérités — lisibles, jamais réécrits[2m > [22ml'index partiel des SENT est TOUJOURS EN BASE, et mord encore [33m 430[2mms[22m[39m
+   [33m[2m✓[22m[39m Statuts hérités — lisibles, jamais réécrits[2m > [22mun devis LEGACY en SENT reste LISIBLE et manipulable [33m 347[2mms[22m[39m
+   [33m[2m✓[22m[39m Statuts hérités — lisibles, jamais réécrits[2m > [22mSUPERSEDED reste distinct de CANCELLED, et le versionnement est CONSERVÉ [33m 342[2mms[22m[39m
+   [33m[2m✓[22m[39m Concurrence (D121)[2m > [22mD121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500 [33m 378[2mms[22m[39m
+   [33m[2m✓[22m[39m Concurrence (D121)[2m > [22mD121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500 [33m 322[2mms[22m[39m
+   [33m[2m✓[22m[39m Concurrence (D121)[2m > [22mdeux RÉVISIONS simultanées de la même chaîne : aucun doublon de version [33m 316[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22m⚠ un BROUILLON SE CONVERTIT, sans remise préalable (D160) [33m 304[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22m⚠ D135 — un client SANS e-mail se convertit : la borne Zod était plus stricte que la base [33m 325[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22mconvertir crée une demande PENDING, et le devis NE BOUGE PAS [33m 324[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22mune PENDING ne verrouille rien : deux devis peuvent viser la MÊME date [33m 407[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22mun devis ne se convertit qu'UNE fois : réviser, pas reconvertir [33m 339[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22mles LIGNES du devis deviennent les lignes de la demande [33m 369[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22mune CLÔTURE n'est pas une supersession [33m 315[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22m⚠ l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité DECLINED [33m 430[2mms[22m[39m
+   [33m[2m✓[22m[39m Conversion — la chaîne complète, dans l'ordre[2m > [22mune chaîne CLOSE ne se révise plus [33m 347[2mms[22m[39m
+   [33m[2m✓[22m[39m Expiration — la colonne a été SUPPRIMÉE (Q4)[2m > [22mle DTO ne porte ni `isExpired` ni `validUntil` [33m 312[2mms[22m[39m
+   [33m[2m✓[22m[39m Expiration — la colonne a été SUPPRIMÉE (Q4)[2m > [22mune conversion aboutit, sans qu'aucune date de validité n'intervienne [33m 343[2mms[22m[39m
+   [33m[2m✓[22m[39m Taux de transformation — la raison d'être de la table[2m > [22mcompte des CHAÎNES, pas des versions : trois révisions sont UNE affaire [33m 436[2mms[22m[39m
+   [33m[2m✓[22m[39m Taux de transformation — la raison d'être de la table[2m > [22mun devis qui n'aboutit PAS existe quand même — c'était impossible avant [33m 369[2mms[22m[39m
+   [33m[2m✓[22m[39m Taux de transformation — la raison d'être de la table[2m > [22mun devis jamais REMIS ne compte pas [33m 327[2mms[22m[39m
+   [33m[2m✓[22m[39m Taux de transformation — la raison d'être de la table[2m > [22m⚠ un devis converti SANS remise n'entre PAS dans l'entonnoir [33m 334[2mms[22m[39m
+   [33m[2m✓[22m[39m Taux de transformation — la raison d'être de la table[2m > [22m⚠ une ligne HÉRITÉE (sentAt posé, sentVia nul) sort du dénominateur [33m 326[2mms[22m[39m
+ [32m✓[39m test/int/migration-non-empty.int-spec.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 6734[2mms[22m[39m
+   [33m[2m✓[22m[39m B9 — la dernière migration sur une base NON VIDE (D123)[2m > [22mprépare une base à l'avant-dernière migration, puis la sème [33m 718[2mms[22m[39m
+(node:27544) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/visit-bookings.int-spec.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 27785[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61)[2m > [22mplage 09:20→10:20 : 09:20 et 09:50 sont réservables, 09:40 est REFUSÉ [33m 1322[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61)[2m > [22m10:00 tombe DANS la plage mais ne rend pas un créneau entier → refusé [33m 927[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61)[2m > [22mun jour SANS plage → refusé ; une plage SUSPENDUE → refusée [33m 1007[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61)[2m > [22mcréneau PASSÉ (dernier dimanche écoulé) et date au-delà de l'horizon 18 mois → refusés [33m 991[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — exclusivité garantie par la BASE (D59)[2m > [22mdeux clients sur le MÊME créneau : le second reçoit 409 VISIT_SLOT_TAKEN, le premier survit [33m 1043[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — exclusivité garantie par la BASE (D59)[2m > [22mle créneau reste RENDU par /visit-slots, marqué taken [33m 992[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — exclusivité garantie par la BASE (D59)[2m > [22mANNULER libère le créneau : le même horaire se réserve à nouveau [33m 1142[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — un rendez-vous à venir par salle (D62)[2m > [22msecond créneau dans la MÊME salle → 409 ; dans une AUTRE salle → 201 [33m 1072[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — un rendez-vous à venir par salle (D62)[2m > [22mun rendez-vous déjà PASSÉ ne bloque rien : le client revient [33m 994[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — visibilité, rôles, contact[2m > [22msalle MASQUÉE ou brouillon → 404 indistinct ; TEMPORAIREMENT INDISPONIBLE → 201 [33m 1012[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — visibilité, rôles, contact[2m > [22mle PRO n'est pas un client : 403 ; anonyme : 401 [33m 940[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/visit-bookings — visibilité, rôles, contact[2m > [22mtéléphone : le corps l'emporte, à défaut le profil, à défaut null (D61) [33m 1050[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /me/visit-bookings[2m > [22mne rend que MES rendez-vous, triés par date croissante, annulés INCLUS [33m 1158[2mms[22m[39m
+   [33m[2m✓[22m[39m DELETE /visit-bookings/:id (D62)[2m > [22mle rendez-vous d'un AUTRE client → 404 indistinct, comme un id inconnu ou malformé [33m 953[2mms[22m[39m
+   [33m[2m✓[22m[39m DELETE /visit-bookings/:id (D62)[2m > [22mannuler DEUX fois rend 204 sans réécrire cancelledAt [33m 971[2mms[22m[39m
+   [33m[2m✓[22m[39m DELETE /visit-bookings/:id (D62)[2m > [22mun rendez-vous déjà PASSÉ ne s'annule plus → 409 VISIT_BOOKING_PAST [33m 912[2mms[22m[39m
+   [33m[2m✓[22m[39m Notifications (D60, D63)[2m > [22mpar défaut : 1 e-mail au pro, 1 confirmation au client, 2 lignes Notification [33m 950[2mms[22m[39m
+   [33m[2m✓[22m[39m Notifications (D60, D63)[2m > [22mpro en notifyBySms : un WhatsApp part sur SON numéro, en plus de l'e-mail [33m 1151[2mms[22m[39m
+   [33m[2m✓[22m[39m Notifications (D60, D63)[2m > [22ml'annulation notifie le pro que le créneau est libéré [33m 1091[2mms[22m[39m
+   [33m[2m✓[22m[39m Notifications (D60, D63)[2m > [22mtransport en PANNE : le rendez-vous est confirmé quand même, la ligne passe FAILED (D63) [33m 961[2mms[22m[39m
+   [33m[2m✓[22m[39m Repère civil (D48, D51)[2m > [22m09:20 à Alger est stocké à 08:20 UTC, et relu 09:20 — le décalage n'apparaît nulle part dans le DTO [33m 961[2mms[22m[39m
+   [33m[2m✓[22m[39m C3b — les rendez-vous vus et annulés par le PRO[2m > [22mle pro lit les rendez-vous de SA salle, triés, annulés inclus et marqués [33m 1103[2mms[22m[39m
+   [33m[2m✓[22m[39m C3b — les rendez-vous vus et annulés par le PRO[2m > [22mla fenêtre isole la salle ET les dates : rien de la salle voisine, rien du lundi [33m 1025[2mms[22m[39m
+   [33m[2m✓[22m[39m C3b — les rendez-vous vus et annulés par le PRO[2m > [22mun CLIENT est REFUSÉ sur la route pro — le @Roles de méthode remplace celui de la classe [33m 943[2mms[22m[39m
+   [33m[2m✓[22m[39m C3b — les rendez-vous vus et annulés par le PRO[2m > [22mle pro annule : le créneau est LIBÉRÉ et le client reçoit un e-mail [33m 1017[2mms[22m[39m
+   [33m[2m✓[22m[39m C3b — les rendez-vous vus et annulés par le PRO[2m > [22mannuler DEUX fois est idempotent : la date d'annulation ne bouge plus [33m 967[2mms[22m[39m
+   [33m[2m✓[22m[39m C3b — les rendez-vous vus et annulés par le PRO[2m > [22m404 INDISTINCT : salle inconnue, id malformé — un pro ne découvre pas ce qui existe ailleurs [33m 921[2mms[22m[39m
+(node:20132) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/availability.int-spec.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 14854[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — forme de la réponse[2m > [22mune salle publiée rend un jour par date, bornes incluses, créneaux dans l'ordre SLOT_ORDER_BY [33m 830[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — forme de la réponse[2m > [22mles métadonnées de créneau sortent UNE fois — days[].slots ne porte ni nom ni minutes [33m 509[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — forme de la réponse[2m > [22maucun ruleId ne sort de l'endpoint public [33m 510[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — forme de la réponse[2m > [22mune soirée 20h→02h expose endMinutes au-delà de 1440, sans être tronquée [33m 531[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — statuts[2m > [22m⚠ une réservation CONFIRMED verrouille AUSSI — le statut d'une réservation payée (S2-bis) [33m 532[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — statuts[2m > [22mune réservation ACCEPTED rend BOOKED ; une PENDING rend REQUESTED sans verrouiller [33m 515[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — statuts[2m > [22mune réservation CANCELLED ne rend rien du tout — le créneau redevient AVAILABLE [33m 528[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — statuts[2m > [22mun walk-in sans slotTemplateId ferme le créneau qu'il recouvre à l'heure [33m 500[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — statuts[2m > [22mune soirée 20h→02h du dernier jour voit une réservation de 00h30 le LENDEMAIN [33m 514[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — statuts[2m > [22mun blocage qui enjambe toute la fenêtre est chargé, alors qu'il ne commence pas dedans [33m 488[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — statuts[2m > [22mSINGLE_SLOT : une réservation dure ferme la journée entière, un BLOCKED n'est pas écrasé [33m 511[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — prix[2m > [22mune règle de saison change le prix rendu, sans changer le statut [33m 503[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — prix[2m > [22mun férié du 1er novembre est marqué isHoliday et applique la règle HOLIDAY [33m 527[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — bornes D49[2m > [22mfrom dans le passé : 200, et le from RENVOYÉ est aujourd'hui [33m 503[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — bornes D49[2m > [22mto au-delà de 18 mois : 200, et le to RENVOYÉ est l'horizon [33m 488[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — bornes D49[2m > [22mune fenêtre entièrement passée rend 200 et zéro jour, jamais une erreur [33m 489[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — bornes D49[2m > [22mfenêtre de 93 jours : 400 · 2027-02-31 : 400 · to < from : 400 [33m 529[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — bornes D49[2m > [22mun jusqu'en 2099 reste un 400 : l'écrêtage ne rattrape pas une fenêtre trop large [33m 489[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — visibilité D33[2m > [22msalle HIDDEN, brouillon, supprimée, slug inconnu : 404 VENUE_NOT_FOUND indistinct [33m 526[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — visibilité D33[2m > [22mun slug hors motif est refusé AVANT la base — même court-circuit que l'uuid pro [33m 502[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — visibilité D33[2m > [22msalle TEMPORARILY_UNAVAILABLE : 200 — même règle de visibilité que le détail [33m 513[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — visibilité D33[2m > [22msalle sans créneau actif : 200, slots vide, jamais 404 [33m 480[2mms[22m[39m
+   [33m[2m✓[22m[39m Disponibilité — visibilité D33[2m > [22mun créneau désactivé disparaît, les autres restent [33m 496[2mms[22m[39m
+   [33m[2m✓[22m[39m ⚠ Porte PRO — le calendrier de SA salle, publiée ou non[2m > [22mMÊME moteur : sur une salle publiée, les deux portes rendent la même chose [33m 492[2mms[22m[39m
+   [33m[2m✓[22m[39m ⚠ Porte PRO — le calendrier de SA salle, publiée ou non[2m > [22mla salle d'un AUTRE pro : 404 indistinct, jamais 403 [33m 643[2mms[22m[39m
+   [33m[2m✓[22m[39m ⚠ Porte PRO — le calendrier de SA salle, publiée ou non[2m > [22mun CLIENT n'entre pas par la porte pro [33m 692[2mms[22m[39m
+   [33m[2m✓[22m[39m ⚠ Porte PRO — le calendrier de SA salle, publiée ou non[2m > [22m⚠ la fenêtre de 92 jours BORNES INCLUSES passe, 93 est refusée [33m 526[2mms[22m[39m
+(node:16236) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/services.int-spec.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 11391[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — le service et son tarif naissent ENSEMBLE (D89)[2m > [22mFIXED : une seule requête rend la prestation ET son prix [33m 946[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — le service et son tarif naissent ENSEMBLE (D89)[2m > [22mTIERED : les paliers naissent avec, et un TIERED n'a PAS de ligne de tarif [33m 671[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — le service et son tarif naissent ENSEMBLE (D89)[2m > [22mun TIERED sans palier est refusé : personne ne pourrait le choisir [33m 696[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — le service et son tarif naissent ENSEMBLE (D89)[2m > [22mun champ étranger au type est refusé : l'union est discriminée [33m 658[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — le service et son tarif naissent ENSEMBLE (D89)[2m > [22mPER_UNIT sans libellé d'unité est refusé : « 3 » sans unité ne veut rien dire [33m 645[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — suppression et retrait de la vente[2m > [22mune prestation JAMAIS utilisée se supprime [33m 671[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — suppression et retrait de la vente[2m > [22mune prestation VENDUE ne se supprime plus : SERVICE_IN_USE [33m 753[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — suppression et retrait de la vente[2m > [22mle retrait de la vente est RÉVERSIBLE et n'efface rien [33m 712[2mms[22m[39m
+   [33m[2m✓[22m[39m Catalogue — suppression et retrait de la vente[2m > [22m404 INDISTINCT sur la prestation d'un autre pro (D47) [33m 701[2mms[22m[39m
+   [33m[2m✓[22m[39m Lignes de devis sur la demande (D91)[2m > [22mPER_GUEST : la quantité EST le nombre d'invités, et le total suit [33m 855[2mms[22m[39m
+   [33m[2m✓[22m[39m Lignes de devis sur la demande (D91)[2m > [22mune quantité SAISIE sur un PER_GUEST est refusée : 10 couverts pour 250 personnes [33m 818[2mms[22m[39m
+   [33m[2m✓[22m[39m Lignes de devis sur la demande (D91)[2m > [22ml'ACOMPTE porte sur le total prestations comprises [33m 753[2mms[22m[39m
+   [33m[2m✓[22m[39m Lignes de devis sur la demande (D91)[2m > [22mun total périmé (prestations non comptées) rend 409 avec le VRAI montant (D75) [33m 781[2mms[22m[39m
+   [33m[2m✓[22m[39m Lignes de devis sur la demande (D91)[2m > [22mune prestation RETIRÉE de la vente ne se commande plus [33m 810[2mms[22m[39m
+   [33m[2m✓[22m[39m Lignes de devis sur la demande (D91)[2m > [22mune demande SANS prestation reste parfaitement valable [33m 713[2mms[22m[39m
+(node:25492) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/visit-slots.int-spec.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 9786[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — projection hebdomadaire[2m > [22mune plage du dimanche ne sort QUE les dimanches [33m 808[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — projection hebdomadaire[2m > [22mun reliquat de plage ne crée PAS de créneau tronqué [33m 507[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — projection hebdomadaire[2m > [22mune plage SUSPENDUE disparaît, sans être supprimée [33m 534[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — projection hebdomadaire[2m > [22msans aucune plage : 200 et zéro créneau, jamais 404 [33m 476[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — rendez-vous pris (D47)[2m > [22mun rendez-vous CONFIRMÉ marque le créneau sans le retirer [33m 635[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — rendez-vous pris (D47)[2m > [22mun rendez-vous ANNULÉ libère son créneau [33m 685[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — bornes et visibilité[2m > [22mfenêtre entièrement passée : 200 et zéro créneau [33m 504[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — bornes et visibilité[2m > [22mfenêtre de 93 jours : 400 · date irréelle : 400 [33m 477[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — bornes et visibilité[2m > [22msalle brouillon, supprimée ou slug inconnu : 404 VENUE_NOT_FOUND indistinct [33m 473[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux de visite — bornes et visibilité[2m > [22mles visites ignorent TOTALEMENT les réservations de fête (D47) [33m 507[2mms[22m[39m
+   [33m[2m✓[22m[39m D59 — un rendez-vous pris est EXCLUSIF (supersède D47)[2m > [22mla base REFUSE un second rendez-vous confirmé sur le même créneau [33m 617[2mms[22m[39m
+   [33m[2m✓[22m[39m D59 — un rendez-vous pris est EXCLUSIF (supersède D47)[2m > [22mune visite ANNULÉE LIBÈRE son créneau : l'index est partiel, pas total [33m 639[2mms[22m[39m
+   [33m[2m✓[22m[39m D59 — un rendez-vous pris est EXCLUSIF (supersède D47)[2m > [22mle même créneau dans une AUTRE salle reste libre [33m 618[2mms[22m[39m
+   [33m[2m✓[22m[39m D59 — un rendez-vous pris est EXCLUSIF (supersède D47)[2m > [22mun créneau pris reste RENDU, marqué taken — il ne disparaît pas de la liste [33m 606[2mms[22m[39m
+   [33m[2m✓[22m[39m D60 — canaux de notification du pro[2m > [22mpar défaut, un pro est notifié par e-mail et pas par SMS [33m 471[2mms[22m[39m
+   [33m[2m✓[22m[39m D60 — canaux de notification du pro[2m > [22mle SMS seul est un choix valide [33m 523[2mms[22m[39m
+   [33m[2m✓[22m[39m D60 — canaux de notification du pro[2m > [22mla base INTERDIT de tout couper — un pro sans canal ne verrait plus rien arriver [33m 493[2mms[22m[39m
+ [32m✓[39m test/int/referentials.int-spec.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 8381[2mms[22m[39m
+   [33m[2m✓[22m[39m prisma/seed.ts — référentiels (Lot A1)[2m > [22mbase vide → comptes exacts décidés : 58 wilayas / 23 villes (Alger seule) / 23 équipements / 4 styles [33m 831[2mms[22m[39m
+   [33m[2m✓[22m[39m prisma/seed.ts — référentiels (Lot A1)[2m > [22midempotent : seed ×2 → mêmes comptes ET mêmes ids (upsert, zéro doublon, zéro recréation) [33m 1371[2mms[22m[39m
+   [33m[2m✓[22m[39m prisma/seed.ts — référentiels (Lot A1)[2m > [22mconvergent : des lignes mutées en base sont RESTAURÉES par re-seed (update de l'upsert) [33m 1497[2mms[22m[39m
+   [33m[2m✓[22m[39m prisma/seed.ts — référentiels (Lot A1)[2m > [22mclé naturelle City EN BASE : un doublon (wilayaId, nameFr) est rejeté par PostgreSQL (P2002) [33m 752[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/wilayas (Lot A1)[2m > [22mSANS aucun token (route publique) : 200, 58 wilayas triées par code, la 16 porte les 23 villes [33m 772[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/wilayas (Lot A1)[2m > [22mvilles triées comme la BASE les trie (orderBy nameFr, collation comprise) et GPS numériques exacts [33m 757[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/wilayas (Lot A1)[2m > [22mforme exacte d'une ville : id/nameFr/nameAr/lat/lng — le wilayaId interne n'est PAS exposé [33m 710[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/amenities (Lot A1)[2m > [22mSANS aucun token (route publique) : 200, les 23 clés verrouillées, triées comme la base (nameFr) [33m 719[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/amenities (Lot A1)[2m > [22mchaque entrée porte sa clé stable, ses libellés FR/AR et son icône lucide (kosha → sofa) [33m 755[2mms[22m[39m
+(node:7064) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/venue-media.int-spec.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 8603[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:id/photos — upload réel[2m > [22m201 : webp large + thumb servis par GET /media/:key (immutable), dimensions du large persistées, append sortOrder [33m 738[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:id/photos — upload réel[2m > [22m400 typés : illisible → MEDIA_UNSUPPORTED_FORMAT, trop petite → MEDIA_TOO_SMALL, sans fichier → MEDIA_FILE_REQUIRED [33m 335[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:id/photos — upload réel[2m > [22mplafond 30 : le 30ᵉ passe, le 31ᵉ → 400 MEDIA_PHOTO_LIMIT_REACHED [33m 581[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:id/photos — upload réel[2m > [22mownership 404 indistinct : la salle d'un autre pro est « introuvable » (jamais un 403) [33m 499[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH photos/order + PATCH photos/:photoId + DELETE[2m > [22mréordonnancement atomique ; la route statique « order » n'est PAS avalée par :photoId [33m 666[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH photos/order + PATCH photos/:photoId + DELETE[2m > [22mensemble incomplet OU photo d'une autre salle → 400 PHOTO_ORDER_MISMATCH, ordre stocké INTACT [33m 665[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH photos/order + PATCH photos/:photoId + DELETE[2m > [22mPATCH alt (null = effacement) ; doublons Zod refusés sur order (orderDuplicate) [33m 415[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH photos/order + PATCH photos/:photoId + DELETE[2m > [22mDELETE : 204, la ligne ET les deux objets disparaissent ; re-DELETE → 404 PHOTO_NOT_FOUND [33m 420[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id/virtual-tour — D45[2m > [22mURL de partage ⇒ ID canonique stocké ; chaîne vide ⇒ null ; l'ID brut donne le même résultat [33m 315[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id/virtual-tour — D45[2m > [22municité EN BASE : le même modèle sur une seconde salle → 409 MATTERPORT_ALREADY_LINKED [33m 389[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id/virtual-tour — D45[2m > [22mownership 404 indistinct : la salle d'un autre pro est « introuvable », jamais un 400 de format [33m 465[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id/virtual-tour — D45[2m > [22mD33 : aucune gate sur `status` — un pro règle la visite d'une salle HIDDEN [33m 339[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id/virtual-tour — D45[2m > [22mNON-RÉGRESSION après migration : upload, réordonnancement et DELETE de VenuePhoto intacts [33m 524[2mms[22m[39m
+   [33m[2m✓[22m[39m Les trois surfaces de lecture (A4-②)[2m > [22mGET /venues : coverThumbUrl = thumb de la 1ʳᵉ photo par sortOrder + photoCount ; GET /venues/:slug : galerie ordonnée + matterportModelId ; détail pro : mêmes données [33m 795[2mms[22m[39m
+   [33m[2m✓[22m[39m Les trois surfaces de lecture (A4-②)[2m > [22msalle sans média : coverThumbUrl null, photoCount 0, photos [], matterportModelId null [33m 515[2mms[22m[39m
+   [33m[2m✓[22m[39m D45 en base : la migration n'a laissé AUCUN résidu, et n'a touché à rien d'autre[2m > [22municité de matterport_model_id garantie PAR LA BASE, pas seulement par le service [33m 342[2mms[22m[39m
+(node:19568) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/account.int-spec.ts [2m([22m[2m18 tests[22m[2m)[22m[33m 7004[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /me/profile[2m > [22mCLIENT : patch partiel, et la réponse est un AuthUserDTO complet (D12) [33m 421[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /me/profile[2m > [22mPRO : businessName + phone2 (D38) ; le CLIENT ne peut pas s'en fabriquer [33m 422[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /me/change-email — l'ancienne adresse reste active jusqu'à la preuve[2m > [22mcycle complet : demande → l'ancien e-mail connecte TOUJOURS → clic → bascule [33m 567[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /me/change-password (D42)[2m > [22mles AUTRES sessions tombent, celle qui a fait l'appel survit (rotée) [33m 448[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /me/change-password (D42)[2m > [22mancien mot de passe faux : 400, et l'ancien reste valide [33m 346[2mms[22m[39m
+   [33m[2m✓[22m[39m admin — décision[2m > [22mreject : compte intact, ACTIVE, et l'utilisateur reçoit le motif [33m 411[2mms[22m[39m
+   [33m[2m✓[22m[39m admin — décision[2m > [22mapprove : compte anonymisé, salles ARCHIVÉES et disparues de la liste publique [33m 529[2mms[22m[39m
+   [33m[2m✓[22m[39m §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT[2m > [22mlogin → 401 INVALID_CREDENTIALS (aucun oracle, D5) [33m 469[2mms[22m[39m
+   [33m[2m✓[22m[39m §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT[2m > [22m/auth/me avec un access token encore valide → 401 [33m 469[2mms[22m[39m
+   [33m[2m✓[22m[39m §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT[2m > [22mrefresh avec le cookie d'avant → 401 (tous les tokens ont été révoqués) [33m 416[2mms[22m[39m
+   [33m[2m✓[22m[39m §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT[2m > [22mforgot-password : réponse CONSTANTE, mais aucun e-mail ne part [33m 457[2mms[22m[39m
+   [33m[2m✓[22m[39m §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT[2m > [22mun lien de reset émis AVANT la décision cesse d'être exploitable [33m 427[2mms[22m[39m
+(node:9124) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/venues-pro.int-spec.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 6301[2mms[22m[39m
+   [33m[2m✓[22m[39m Accès (guards globaux)[2m > [22mCLIENT puis ADMIN sur POST /venues : 403 FORBIDDEN (rôle PRO exigé — l'admin a ses endpoints en A3) [33m 368[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues — création[2m > [22m201 : DRAFT + ACTIVE, slug figé généré, clés EXACTES du DTO pro ; défauts admin EN BASE seulement [33m 316[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues — création[2m > [22mcollision de slug (y compris entre pros différents) : suffixes -2 puis -3 [33m 545[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures pro — GET /pro/venues[/:id][2m > [22misolation stricte : chaque pro ne voit QUE ses salles, tri updatedAt desc [33m 548[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures pro — GET /pro/venues[/:id][2m > [22m404 INDISTINCTS sur le détail : salle d'un autre pro, id malformé, uuid inconnu — réponse identique [33m 474[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id — mise à jour PARTIELLE réelle (A2-③) et D33[2m > [22m{ status } SEUL bascule la visibilité, tout le reste inchangé ; réversible sur les trois états [33m 339[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id — mise à jour PARTIELLE réelle (A2-③) et D33[2m > [22mrenommer ne change JAMAIS le slug (figé) ; déménagement vers une ville existante OK, inexistante → 400 [33m 308[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id — mise à jour PARTIELLE réelle (A2-③) et D33[2m > [22meffacement explicite par null (tagline, coordonnées) ; la salle d'un autre pro → 404 [33m 472[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id — amenityIds (A3-① : remplacement d'ensemble)[2m > [22massigne (avec doublon → dédupliqué), remplace, puis efface — le DTO reflète chaque état, updatedAt bouge [33m 365[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /venues/:id — amenityIds (A3-① : remplacement d'ensemble)[2m > [22mid inconnu du référentiel : 400 AMENITY_NOT_FOUND, sélection existante intacte [33m 305[2mms[22m[39m
+   [33m[2m✓[22m[39m DELETE /venues/:id — soft delete[2m > [22mcycle complet : 204, ligne conservée EN BASE (deletedAt), invisible partout, toute suite → 404 [33m 331[2mms[22m[39m
+   [33m[2m✓[22m[39m DELETE /venues/:id — soft delete[2m > [22msupprimer la salle d'un autre pro : 404, et le propriétaire la voit toujours [33m 449[2mms[22m[39m
+(node:15144) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/slot-templates.int-spec.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 6695[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — création et prix dérivé[2m > [22mle prix de la SALLE devient le minimum des créneaux actifs, écrit dans la même transaction [33m 554[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — création et prix dérivé[2m > [22mles créneaux voyagent dans VenueProDTO.slotTemplates, triés par heure de début [33m 317[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — les trois 409[2m > [22mchevauchement refusé ; deux créneaux qui se TOUCHENT sont acceptés [33m 344[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — les trois 409[2m > [22mSINGLE_SLOT : un second créneau actif est refusé [33m 326[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — les trois 409[2m > [22mune salle PUBLIÉE ne peut pas perdre son dernier créneau actif [33m 516[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — publication admin[2m > [22mpublier une salle SANS créneau actif est refusé : elle serait invisible au calendrier [33m 489[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — suppression et retrait[2m > [22msuppression dure d'un créneau jamais utilisé ; le prix de la salle suit [33m 321[2mms[22m[39m
+   [33m[2m✓[22m[39m Créneaux — suppression et retrait[2m > [22mun créneau DÉSACTIVÉ sort du calcul du prix mais reste dans le DTO [33m 342[2mms[22m[39m
+   [33m[2m✓[22m[39m Règles de prix — B2, D46[2m > [22mles règles voyagent avec leur créneau dans le DTO pro [33m 306[2mms[22m[39m
+   [33m[2m✓[22m[39m Règles de prix — B2, D46[2m > [22mFK COMPOSITE : une règle ne peut pas pointer le créneau d'une AUTRE salle [33m 354[2mms[22m[39m
+   [33m[2m✓[22m[39m Règles de prix — B2, D46[2m > [22msupprimer le CRÉNEAU emporte ses règles, et le « à partir de » repart du bon minimum [33m 416[2mms[22m[39m
+   [33m[2m✓[22m[39m Règles de prix — B2, D46[2m > [22m404 INDISTINCT sur la règle d'un autre créneau [33m 301[2mms[22m[39m
+(node:8716) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/availability-blocks.int-spec.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 5864[2mms[22m[39m
+   [33m[2m✓[22m[39m Blocages pro — écriture et repère de temps[2m > [22mcréation : 201, et le DTO relu porte le MÊME repère civil local que l'écriture [33m 515[2mms[22m[39m
+   [33m[2m✓[22m[39m Blocages pro — écriture et repère de temps[2m > [22mle blocage écrit en base est décalé de 60 minutes — UTC+1 appliqué une seule fois [33m 324[2mms[22m[39m
+   [33m[2m✓[22m[39m Blocages pro — ownership et suppression[2m > [22mla salle d'un autre pro : 404 VENUE_NOT_FOUND indistinct [33m 453[2mms[22m[39m
+   [33m[2m✓[22m[39m Blocages pro — ownership et suppression[2m > [22mDELETE : 204 sans corps, et le créneau redevient AVAILABLE à la relecture publique [33m 631[2mms[22m[39m
+   [33m[2m✓[22m[39m Blocages pro — lecture[2m > [22mGET /pro : ne rend que les blocages recouvrant la fenêtre, triés blockedFrom asc [33m 329[2mms[22m[39m
+   [33m[2m✓[22m[39m Blocages pro — RBAC[2m > [22mCLIENT authentifié : 403 ; anonyme : 401 [33m 415[2mms[22m[39m
+(node:22708) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/visit-availabilities.int-spec.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 5269[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — création[2m > [22mune plage du dimanche matin est créée et relue triée [33m 542[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — création[2m > [22mune visite ne franchit PAS minuit — 1440 est la borne, contrairement aux fêtes [33m 311[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — création[2m > [22mfin ≤ début : 400 [33m 310[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — chevauchement[2m > [22mdeux plages qui se recouvrent le MÊME jour : 409 [33m 304[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — modification[2m > [22mle chevauchement est vérifié sur l'état RÉSULTANT, pas sur le patch seul [33m 301[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — suppression et cloisonnement[2m > [22mDELETE : 204, et un rendez-vous déjà pris SURVIT [33m 393[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — suppression et cloisonnement[2m > [22mla salle d'un autre pro : 404 VENUE_NOT_FOUND indistinct [33m 470[2mms[22m[39m
+   [33m[2m✓[22m[39m Plages de visite — suppression et cloisonnement[2m > [22mCLIENT authentifié : 403 ; anonyme : 401 [33m 440[2mms[22m[39m
+ [32m✓[39m test/int/refresh.int-spec.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 4827[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12)[2m > [22mcookie forgé (43 chars valides mais inconnus) : 401, AUCUNE ligne touchée [33m 320[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12)[2m > [22mRÉUTILISATION (D10, chaîne complète) : rejouer un token consommé → 401 ET l'autre session du user tombe aussi [33m 392[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12)[2m > [22mD116 — dix rechargements à deux onglets ne laissent AUCUN jeton orphelin [33m 573[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12)[2m > [22mD116 — la déconnexion ferme TOUT ce que la fenêtre de grâce a ouvert, pas seulement le dernier jeton [33m 451[2mms[22m[39m
+ [32m✓[39m test/int/throttle.int-spec.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 3370[2mms[22m[39m
+   [33m[2m✓[22m[39m Rate limiting /auth (limites réelles)[2m > [22mlogin (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth [33m 846[2mms[22m[39m
+(node:18416) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/venues-admin.int-spec.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 2806[2mms[22m[39m
+   [33m[2m✓[22m[39m Accès admin (guards)[2m > [22manonyme → 401 ; CLIENT → 403 ; PRO → 403 (même sur SA salle) — publish et taux [33m 694[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /admin/venues/:id/publish — one-way idempotent[2m > [22mrend la salle visible publiquement ; re-publier = 200 sans changer updatedAt [33m 544[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /admin/venues/:id/publish — one-way idempotent[2m > [22m404 indistincts : salle supprimée, uuid inconnu, id malformé — réponse identique [33m 513[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /admin/venues/:id/commission-rate — les deux taux D35[2m > [22mpose les deux, puis un seul (fusion avec l'existant) ; validation applicative du dépassement [33m 538[2mms[22m[39m
+   [33m[2m✓[22m[39m PATCH /admin/venues/:id/commission-rate — les deux taux D35[2m > [22mCHECK SQL venues_cashback_rate_range : Postgres rejette cashback > commission même en écriture directe [33m 306[2mms[22m[39m
+ [32m✓[39m test/int/login.int-spec.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 2646[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/login (intégration, base réelle)[2m > [22mCLIENT non vérifié (D1) : 200, emailVerified:false pour le bandeau, access token + cookie refresh [33m 376[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/login (intégration, base réelle)[2m > [22manti-énumération (D5) : email inconnu et mauvais mot de passe → 401 au corps indistinguable [33m 335[2mms[22m[39m
+(node:25760) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [32m✓[39m test/int/venue-styles-filters.int-spec.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 2597[2mms[22m[39m
+   [33m[2m✓[22m[39m Détail public et écriture pro (D65, D66)[2m > [22mPATCH pro : remplacement d'ensemble des styles + type, et un id inconnu → 400 [33m 413[2mms[22m[39m
+ [32m✓[39m test/int/reset-password.int-spec.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 2278[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/reset-password (intégration — D15/D16/D17)[2m > [22mflux complet : reset → 200, l'ANCIEN mot de passe est refusé, le NOUVEAU connecte [33m 587[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/reset-password (intégration — D15/D16/D17)[2m > [22mD15 : TOUTES les sessions actives tombent au reset — les deux refresh échouent ensuite [33m 415[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/reset-password (intégration — D15/D16/D17)[2m > [22mD16 usage unique : rejouer le MÊME token → 400 TOKEN_INVALID_OR_EXPIRED, le mdp ne rechange pas [33m 373[2mms[22m[39m
+ [32m✓[39m test/int/venues-public.int-spec.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 1928[2mms[22m[39m
+ [32m✓[39m test/int/google.int-spec.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 1694[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/google (intégration, base réelle — Lot 8)[2m > [22mparcours HYBRIDE : compte Google-only → forgot/reset pose un mot de passe → les DEUX voies connectent [33m 332[2mms[22m[39m
+ [32m✓[39m test/int/logout.int-spec.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1581[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/logout (intégration — D11 idempotent)[2m > [22msession valide : 200 {status:'ok'}, ligne révoquée, cookie EFFACÉ aux bons attributs [33m 390[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/logout (intégration — D11 idempotent)[2m > [22mportée D11 : ne révoque QUE la session de ce navigateur — l'autre appareil continue de refresh [33m 318[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/logout (intégration — D11 idempotent)[2m > [22mrejeu d'un token POST-logout sur /refresh : traité en réutilisation (D10) — strict et assumé [33m 312[2mms[22m[39m
+ [32m✓[39m test/int/rbac-all-routes.int-spec.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 1458[2mms[22m[39m
+ [32m✓[39m test/int/me.int-spec.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1630[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/auth/me (intégration — JwtAuthGuard réel + lecture fraîche)[2m > [22mtoken à la signature invalide : 401 — le guard vérifie vraiment HS256 [33m 311[2mms[22m[39m
+ [32m✓[39m test/int/remember-me.int-spec.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 1530[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/login + refresh (intégration — rememberMe / persistent, D27)[2m > [22mrememberMe: false — la ligne créée porte persistent=false EN BASE, cookie SANS Expires/Max-Age [33m 374[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /api/v1/auth/login + refresh (intégration — rememberMe / persistent, D27)[2m > [22mréutilisation détectée (D10) : révocation de TOUTES les sessions, persistent ET session confondues [33m 369[2mms[22m[39m
+ [32m✓[39m test/int/rbac.int-spec.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 1358[2mms[22m[39m
+   [33m[2m✓[22m[39m RolesGuard global (intégration — sonde @Roles)[2m > [22mCLIENT sur une route @Roles('ADMIN') : 403 FORBIDDEN [33m 306[2mms[22m[39m
+ [32m✓[39m test/int/throttle-default.int-spec.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 1374[2mms[22m[39m
+   [33m[2m✓[22m[39m D128 — limiteur global et levier de test[2m > [22mrelâché par le levier, 150 lectures consécutives passent toutes [33m 1020[2mms[22m[39m
+ [32m✓[39m test/int/register.int-spec.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1185[2mms[22m[39m
+ [32m✓[39m test/int/payment-intent-race.int-spec.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 1197[2mms[22m[39m
+ [32m✓[39m test/int/forgot-password.int-spec.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 952[2mms[22m[39m
+ [32m✓[39m test/int/verify-email.int-spec.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 960[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/auth/verify-email/:token (intégration)[2m > [22mflux complet : le lien reçu vérifie l'email (usage unique) [33m 363[2mms[22m[39m
+ [32m✓[39m test/int/contract-api-client.int-spec.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 860[2mms[22m[39m
+ [32m✓[39m test/int/resend-verification.int-spec.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 719[2mms[22m[39m
+ [32m✓[39m test/int/media.int-spec.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 726[2mms[22m[39m
+   [33m[2m✓[22m[39m GET /api/v1/media/:key (Lot A0)[2m > [22msans Bearer ET au-delà du throttle par défaut : la route reste servie (publique, non throttlée) [33m 465[2mms[22m[39m
+ [32m✓[39m test/int/password-hashing.int-spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 295[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m36 passed[39m[22m[90m (36)[39m
+[2m      Tests [22m [1m[32m443 passed[39m[22m[90m (443)[39m
+[2m   Start at [22m 20:43:45
+[2m   Duration [22m 302.77s[2m (transform 1.56s, setup 638ms, collect 72.99s, tests 215.23s, environment 7ms, prepare 5.98s)[22m
+

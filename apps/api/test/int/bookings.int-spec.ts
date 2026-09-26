@@ -543,6 +543,10 @@ describe("Acceptation CONCURRENTE (D117)", () => {
     expect([first.status, second.status].sort((x, y) => x - y)).toEqual([201, 409]);
     const loser = first.status === 409 ? first : second;
     expect(loser.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    // ⛔ 23a-2 (D308) — MD-C3 : le statut que porte le 409 du perdant vient de la
+    // relecture de `transition`. Sans cette assertion, une relecture qui mentirait
+    // (X2a de D306) laissait toute la suite verte.
+    expect(loser.body.message.status).toBe(targetOf(BookingCommand.DECLINE));
     expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(1);
   });
 
@@ -557,6 +561,10 @@ describe("Acceptation CONCURRENTE (D117)", () => {
     const [first, second] = await Promise.all([cancel(), cancel()]);
 
     expect([first.status, second.status].sort((x, y) => x - y)).toEqual([201, 409]);
+    // ⛔ 23a-2 (D308) — MD-C3 : code ET statut du perdant (ce test n'assertait ni l'un ni l'autre).
+    const loser = first.status === 409 ? first : second;
+    expect(loser.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(loser.body.message.status).toBe(targetOf(BookingCommand.CANCEL_AS_PRO));
     expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(1);
   });
 
@@ -574,6 +582,13 @@ describe("Acceptation CONCURRENTE (D117)", () => {
     const detail = results.map((r) => `${r.status} ${JSON.stringify(r.body)}`).join("\n");
     expect(results.filter((r) => r.status >= 500), detail).toHaveLength(0);
     expect(results.filter((r) => r.status < 400), detail).toHaveLength(1);
+    // ⛔ 23a-2 (D308) — MD-C3 : le perdant rend un 409 qui porte le statut RELU.
+    // Compter les réponses < 400 ne voyait pas un perdant en 400 « motif
+    // manquant » sur une demande déjà annulée (X10 et X2a de D306).
+    expect(results.map((r) => r.status).sort((x, y) => x - y), detail).toEqual([200, 409]);
+    const loser = results.find((r) => r.status === 409);
+    expect(loser?.body.message.code, detail).toBe("BOOKING_STATUS_CONFLICT");
+    expect(loser?.body.message.status, detail).toBe(targetOf(BookingCommand.CANCEL_AS_CLIENT));
   });
 
   it("trois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409", async () => {
@@ -839,6 +854,10 @@ describe("Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F
     // 3 du relecteur, D305.
     expect(res.status, JSON.stringify(res.body)).toBe(400);
     expect(res.body.message.message).toBe("booking.errors.cancelReasonRequired");
+    // ⛔ 23a-2 (D308) — MD-C4 : le 400 porte le code et le statut RÉEL de la
+    // demande. Sans ces deux lignes, un statut faux (X14 de D306) passait.
+    expect(res.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(res.body.message.status).toBe(targetOf(BookingCommand.ACCEPT));
     const ligne = await ctx.prisma.booking.findUniqueOrThrow({
       where: { id: a.id },
       select: { status: true, cancelledAt: true, cancellationReason: true }
@@ -906,6 +925,71 @@ describe("Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F
     expect(ligne.acceptedAt).toBeNull();
     expect(ctx.emails.filter((m) => m.to === CLIENT.email)).toHaveLength(0);
   });
+
+  // ── 23a-2 (D308) — les gardes que la session adverse D306 a trouvées absentes (C1 à C5) ──
+  // Aucun comportement ne change : D306 les a vus rendre la bonne réponse. Ce qui manquait,
+  // c'est la MESURE — sous ses mutations, la suite restait verte (cadrage du rang 23, § 2).
+
+  it("C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte", async () => {
+    // MD-C1 (b). Depuis 23a, le prédicat de l'écriture est la SEULE barrière de ce
+    // refus (le contrôle d'avant transaction a disparu) ; élargi à DECLINED au site
+    // d'appel (X4 de D306), il laissait la suite verte. AVEC motif : la mutation qui
+    // ne touche que le choix du code SANS motif (X10) ne l'atteint pas — chaque test
+    // épingle SON défaut.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+    await api().post(`/api/v1/pro/bookings/${a.id}/decline`).set(authH(f.proToken)).send({}).expect(201);
+
+    const res = await api()
+      .delete(`/api/v1/bookings/${a.id}`)
+      .set(authH(f.clientToken))
+      .send({ reason: "Changement de date de mariage" });
+
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(res.body.message.status).toBe(targetOf(BookingCommand.DECLINE));
+    const ligne = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, cancelledAt: true, cancellationReason: true }
+    });
+    expect(ligne.status).toBe(targetOf(BookingCommand.DECLINE));
+    expect(ligne.cancelledAt).toBeNull();
+    expect(ligne.cancellationReason).toBeNull();
+  });
+
+  it("C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant", async () => {
+    // MD-C2 — l'ORDRE des refus après un compte 0 : le statut (409) AVANT le motif
+    // (400), jugé sur le statut RELU. Code choisi comme si le statut était ACCEPTED
+    // (X10 de D306) : 400 « motif manquant » sur une demande refusée, suite verte.
+    const f = await setup();
+    const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
+
+    // Le rival : ce que `decline` écrit (même prédicat que dans T1).
+    const rival = await rivalNonCommite(
+      [
+        [
+          `UPDATE bookings SET status = $2::"BookingStatus", declined_at = now(), decline_reason = NULL, updated_at = now()
+            WHERE id = $1::uuid AND status = ANY($3::"BookingStatus"[])`,
+          [a.id, targetOf(BookingCommand.DECLINE), [...allowedFrom(BookingCommand.DECLINE)]]
+        ]
+      ],
+      1
+    );
+    // ⚠ `.send({})` : la route exige un corps ; SANS motif est le cas mesuré.
+    const res = await courir(rival, () =>
+      api().delete(`/api/v1/bookings/${a.id}`).set(authH(f.clientToken)).send({}).then((r) => r)
+    );
+
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(res.body.message.status).toBe(targetOf(BookingCommand.DECLINE));
+    const ligne = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, cancelledAt: true }
+    });
+    expect(ligne.status).toBe(targetOf(BookingCommand.DECLINE));
+    expect(ligne.cancelledAt).toBeNull();
+  });
 });
 
 describe("SINGLE_SLOT — la journée entière (D77)", () => {
@@ -941,18 +1025,36 @@ describe("Refus et annulations (D83)", () => {
   });
 
   it("le client DOIT un motif pour annuler une demande ACCEPTÉE", async () => {
+    // ⛔ 23a-2 (D308) — MD-C4 et MD-C5. Les deux réponses se jugent par `expect` de
+    // vitest : `.expect(<statut>)` de supertest lève une `Error`, pas une
+    // `AssertionError`, et sous la mutation qui fait ignorer le motif au site d'appel
+    // (X15 de D306) c'était le SEUL rouge de la suite — pas une morsure pour la
+    // lecture de R1. Les `.expect(201)` qui restent sont la MISE EN PLACE, pas le verdict.
     const f = await setup();
     const a = (await post(f.clientToken, f.venue.slug, body(f)).expect(201)).body as BookingDTO;
     await api().post(`/api/v1/pro/bookings/${a.id}/accept`).set(authH(f.proToken)).expect(201);
 
-    const refused = await api().delete(`/api/v1/bookings/${a.id}`).set(authH(f.clientToken)).send({}).expect(400);
+    const refused = await api().delete(`/api/v1/bookings/${a.id}`).set(authH(f.clientToken)).send({});
+    expect(refused.status, JSON.stringify(refused.body)).toBe(400);
     expect(refused.body.message.message).toBe("booking.errors.cancelReasonRequired");
+    // Même état, même requête, même réponse que T3 (décision 3 du relecteur, D305) :
+    // le code et le statut RÉEL de la demande.
+    expect(refused.body.message.code).toBe("BOOKING_STATUS_CONFLICT");
+    expect(refused.body.message.status).toBe(targetOf(BookingCommand.ACCEPT));
 
-    await api()
+    // MD-F5-2 — AVEC un motif, l'annulation d'une demande ACCEPTÉE reste admise.
+    const annulee = await api()
       .delete(`/api/v1/bookings/${a.id}`)
       .set(authH(f.clientToken))
-      .send({ reason: "Changement de date de mariage" })
-      .expect(200);
+      .send({ reason: "Changement de date de mariage" });
+    expect(annulee.status, JSON.stringify(annulee.body)).toBe(200);
+    expect((annulee.body as BookingDTO).status).toBe(targetOf(BookingCommand.CANCEL_AS_CLIENT));
+    const ligne = await ctx.prisma.booking.findUniqueOrThrow({
+      where: { id: a.id },
+      select: { status: true, cancellationReason: true }
+    });
+    expect(ligne.status).toBe(targetOf(BookingCommand.CANCEL_AS_CLIENT));
+    expect(ligne.cancellationReason).toBe("Changement de date de mariage");
   });
 
   it("404 INDISTINCT sur la demande d'un autre client (D47)", async () => {

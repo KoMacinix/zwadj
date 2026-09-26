@@ -34,8 +34,18 @@ et accepte un tuple plus long (relevé : « 5 champs attendus au minimum »).
 campagne joue l'intégration à chaque passage. Un verrou de ligne et la
 réévaluation d'un `WHERE` après attente ne se mesurent pas avec un double.
 
+⛔ SOUS-LOT 23a-2 (D308) — SEPT CIBLES DE PLUS, POUR C1 À C5 ET C6 DE D306.
+Six sont les mutations de la session ADVERSE (D306 : X4, X10, X2a, X14, X15,
+X3), recopiées ici au caractère près — le résultat muté est vérifié ÉGAL À
+L'OCTET à celui de la pièce de D306 (`docs/preuves/D308/outils/`). Une seule
+est neuve : R23-C1-t (la table ouvre l'annulation client depuis DECLINED).
+⚠ X2a vise la SECONDE relecture « STATUS_CONFLICT, status: fresh.status » du
+fichier : D306 la désignait par une région (« après la relecture est
+l'AUTORITÉ ») ; ce harnais, qui exige une ancre UNIQUE, l'étend à ce
+commentaire. La ligne mutée est la même.
+
 Usage :
-    python3 neutralisation/neutralize-rang23.py          # les cinq cibles
+    python3 neutralisation/neutralize-rang23.py          # toutes les cibles
     python3 neutralisation/neutralize-rang23.py 1 2      # une plage
 Depuis : la racine du monorepo, base de développement lancée.
 
@@ -96,6 +106,16 @@ T2 = "F1 contre une annulation — une ANNULATION client commite pendant l'accep
 T3 = "F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte"
 U1 = "writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)"
 U2 = "writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision"
+# 23a-2 (D308) — cadrage du rang 23, § 5, annotation D308, mot pour mot.
+C1U = ("C1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), "
+       "toute commande est refusée et rien n'est inscriptible, motif ou non")
+ACC = "writableFrom et decideBookingTransition s'accordent sur TOUS les couples commande, motif, statut (D306, sonde P9)"
+C1H = "C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte"
+C2 = "C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant"
+D121R = "D121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client"
+D121P = "D121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit"
+D121C = "D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500"
+SEQ400 = "le client DOIT un motif pour annuler une demande ACCEPTÉE"
 
 CIBLES = [
     (
@@ -142,6 +162,83 @@ CIBLES = [
         1,
         ["unit-transitions"],
         [U1, U2],
+    ),
+    # ── 23a-2 (D308) : les mutations de la session adverse D306, et une neuve ─────────────────
+    (
+        "R23-C1. ⛔ LE PRÉDICAT DE L'ANNULATION CLIENT ADMET DECLINED AU SITE D'APPEL — une demande refusée s'annule (X4 de D306)",
+        SERVICE,
+        "from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),",
+        'from: [...writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason), "DECLINED" as BookingStatus],',
+        1,
+        ["int-reservations"],
+        [C1H, C2],
+    ),
+    (
+        "R23-C1-t. ⛔ LA TABLE OUVRE L'ANNULATION CLIENT DEPUIS DECLINED — la matrice dérivée reste verte, la liste écrite à la main doit rougir (neuve, D308)",
+        TRANSITIONS,
+        "    from: [BookingStatus.PENDING, BookingStatus.ACCEPTED],",
+        "    from: [BookingStatus.PENDING, BookingStatus.ACCEPTED, BookingStatus.DECLINED],",
+        1,
+        ["unit-transitions", "int-reservations"],
+        [C1U, C1H, C2],
+    ),
+    (
+        "R23-C2. ⛔ APRÈS UN COMPTE 0, LE CODE SE CHOISIT COMME SI LE STATUT ÉTAIT ACCEPTED — 400 « motif manquant » sur une demande refusée (X10 de D306)",
+        SERVICE,
+        "const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIENT, resultat.status, input.reason);",
+        'const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIENT, "ACCEPTED", input.reason);',
+        1,
+        ["int-reservations"],
+        [C2, D121C],
+    ),
+    (
+        "R23-C3. ⛔ LA RELECTURE DE `transition` REND TOUJOURS ACCEPTED — le 409 d'un perdant ment sur le statut (X2a de D306)",
+        ADAPTATEUR,
+        "        // La relecture est l'AUTORITÉ : elle produit le refus avec le statut réel.\n"
+        "        const fresh = await tx.booking.findUniqueOrThrow({\n"
+        "          where: { id: input.bookingId },\n"
+        "          select: { status: true }\n"
+        "        });\n"
+        '        return { outcome: "STATUS_CONFLICT", status: fresh.status };',
+        "        // La relecture est l'AUTORITÉ : elle produit le refus avec le statut réel.\n"
+        "        const fresh = await tx.booking.findUniqueOrThrow({\n"
+        "          where: { id: input.bookingId },\n"
+        "          select: { status: true }\n"
+        "        });\n"
+        '        return { outcome: "STATUS_CONFLICT", status: "ACCEPTED" };',
+        1,
+        ["int-reservations"],
+        [C1H, C2, D121R, D121P, D121C],
+    ),
+    (
+        "R23-C4. ⛔ LE 400 cancelReasonRequired PORTE UN STATUT FAUX (X14 de D306)",
+        SERVICE,
+        "          status: decision.status\n        });\n      }\n      throw new ConflictException({",
+        '          status: "PENDING"\n        });\n      }\n      throw new ConflictException({',
+        1,
+        ["int-reservations"],
+        [T3, SEQ400],
+    ),
+    (
+        "R23-C5. ⛔ LE SITE D'APPEL IGNORE LE MOTIF — une demande ACCEPTÉE ne s'annule plus, même motivée (X15 de D306)",
+        SERVICE,
+        "from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),",
+        "from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, undefined),",
+        1,
+        ["int-reservations"],
+        [SEQ400],
+    ),
+    (
+        "R23-C6. ⛔ writableFrom ÉLARGI D'UN STATUT HORS DE `from` — l'écriture et la décision divergent (X3 de D306)",
+        TRANSITIONS,
+        "export function writableFrom(command: BookingCommand, reason?: string): readonly BookingStatus[] {",
+        "export function writableFrom(command: BookingCommand, reason?: string): readonly BookingStatus[] {\n"
+        "  return [...writableFromD306(command, reason), BookingStatus.DECLINED];\n"
+        "}\n"
+        "function writableFromD306(command: BookingCommand, reason?: string): readonly BookingStatus[] {",
+        1,
+        ["unit-transitions"],
+        [U1, U2, C1U, ACC],
     ),
 ]
 

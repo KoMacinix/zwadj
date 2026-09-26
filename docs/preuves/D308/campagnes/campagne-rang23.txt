@@ -1,0 +1,57 @@
+✓ Pré-vol : 2 mesure(s) verte(s) — int-reservations, unit-transitions
+
+✓ R23-F1-a. ⛔ L'ÉCRITURE D'ACCEPT PERD SA CONDITION DE STATUT — un refus commité pendant l'acceptation est écrasé  [int-reservations]
+    titre attendu : F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+    titre attendu : F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F1-a-int-reservations.txt
+✓ R23-F1-b. ⛔ UN COMPTE NUL N'EST PLUS UN REFUS — la ligne relue part comme acceptée  [int-reservations]
+    titre attendu : F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte
+    titre attendu : F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F1-b-int-reservations.txt
+✓ R23-F5-a. ⛔ L'ANNULATION CLIENT ÉCRIT DEPUIS TOUT SON `from` — une ACCEPTED s'annule sans motif  [int-reservations]
+    titre attendu : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F5-a-int-reservations.txt
+✓ R23-F5-b. Le refus après conflit ne se redécide plus sur le statut relu — 409 là où l'ordre séquentiel rend 400  [int-reservations]
+    titre attendu : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+    journal à lire : .neutralisation-journaux\rang23\R23-F5-b-int-reservations.txt
+✓ R23-F5-c. La fonction pure des statuts inscriptibles IGNORE LE MOTIF — le prédicat d'écriture redevient le `from` entier  [unit-transitions]
+    titre attendu : writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+    titre attendu : writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+    journal à lire : .neutralisation-journaux\rang23\R23-F5-c-unit-transitions.txt
+✓ R23-C1. ⛔ LE PRÉDICAT DE L'ANNULATION CLIENT ADMET DECLINED AU SITE D'APPEL — une demande refusée s'annule (X4 de D306)  [int-reservations]
+    titre attendu : C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte
+    titre attendu : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+    journal à lire : .neutralisation-journaux\rang23\R23-C1-int-reservations.txt
+✓ R23-C1-t. ⛔ LA TABLE OUVRE L'ANNULATION CLIENT DEPUIS DECLINED — la matrice dérivée reste verte, la liste écrite à la main doit rougir (neuve, D308)  [unit-transitions, int-reservations]
+    titre attendu : C1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), toute commande est refusée et rien n'est inscriptible, motif ou non
+    titre attendu : C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte
+    titre attendu : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+    journal à lire : .neutralisation-journaux\rang23\R23-C1-t-unit-transitions.txt
+    journal à lire : .neutralisation-journaux\rang23\R23-C1-t-int-reservations.txt
+✓ R23-C2. ⛔ APRÈS UN COMPTE 0, LE CODE SE CHOISIT COMME SI LE STATUT ÉTAIT ACCEPTED — 400 « motif manquant » sur une demande refusée (X10 de D306)  [int-reservations]
+    titre attendu : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+    titre attendu : D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500
+    journal à lire : .neutralisation-journaux\rang23\R23-C2-int-reservations.txt
+✓ R23-C3. ⛔ LA RELECTURE DE `transition` REND TOUJOURS ACCEPTED — le 409 d'un perdant ment sur le statut (X2a de D306)  [int-reservations]
+    titre attendu : C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte
+    titre attendu : C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant
+    titre attendu : D121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client
+    titre attendu : D121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit
+    titre attendu : D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500
+    journal à lire : .neutralisation-journaux\rang23\R23-C3-int-reservations.txt
+✓ R23-C4. ⛔ LE 400 cancelReasonRequired PORTE UN STATUT FAUX (X14 de D306)  [int-reservations]
+    titre attendu : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+    titre attendu : le client DOIT un motif pour annuler une demande ACCEPTÉE
+    journal à lire : .neutralisation-journaux\rang23\R23-C4-int-reservations.txt
+✓ R23-C5. ⛔ LE SITE D'APPEL IGNORE LE MOTIF — une demande ACCEPTÉE ne s'annule plus, même motivée (X15 de D306)  [int-reservations]
+    titre attendu : le client DOIT un motif pour annuler une demande ACCEPTÉE
+    journal à lire : .neutralisation-journaux\rang23\R23-C5-int-reservations.txt
+✓ R23-C6. ⛔ writableFrom ÉLARGI D'UN STATUT HORS DE `from` — l'écriture et la décision divergent (X3 de D306)  [unit-transitions]
+    titre attendu : writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+    titre attendu : writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+    titre attendu : C1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), toute commande est refusée et rien n'est inscriptible, motif ou non
+    titre attendu : writableFrom et decideBookingTransition s'accordent sur TOUS les couples commande, motif, statut (D306, sonde P9)
+    journal à lire : .neutralisation-journaux\rang23\R23-C6-unit-transitions.txt
+
+12 garde(s) mordue(s) sur 12 cible(s) RÉELLEMENT MESURÉE(S) — au CODE de sortie (forme β).
+⚠ Un code non nul ne prouve rien seul (règle b de D303) : l'échec se LIT dans les journaux.

@@ -1,0 +1,99 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+(node:24656) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node.EXE --trace-deprecation ...` to show where the warning was created)
+ [31m❯[39m test/int/bookings.int-spec.ts [2m([22m[2m50 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 46778[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22mune salle créée sans rien dire reçoit 30 % — les 30 % implicites d'avant [33m 1222[2mms[22m[39m
+   [33m[2m✓[22m[39m Reprise des salles existantes (migration D81)[2m > [22ml'acompte est exposé sur la fiche PUBLIQUE, avant la demande [33m 940[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mcrée une demande PENDING et NE VERROUILLE RIEN [33m 935[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mexpiresAt vaut la fenêtre de réponse PRO, encadrée par deux instants mesurés ici [33m 962[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle créneau 20h→02h produit une plage qui finit LE LENDEMAIN (D55/D77) [33m 952[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mDEUX demandes concurrentes sur la même date coexistent en PENDING [33m 950[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mle pro est notifié — sans notification, la demande expirerait toute seule [33m 911[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22m⚠ la ligne Notification est RÉSOLUE, pas laissée en QUEUED (S2-bis) [33m 971[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun envoi qui TOMBE laisse la demande enregistrée (D63) [33m 945[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mdes montants PÉRIMÉS rendent 409 avec les montants RÉELS (D75) [33m 901[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun ACOMPTE périmé suffit à refuser, même si le total est bon [33m 818[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mplus d'invités que la capacité : refusé AVANT l'écriture [33m 795[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mune date au-delà de l'horizon de 18 mois se REFUSE, elle ne se déplace pas (D49) [33m 814[2mms[22m[39m
+   [33m[2m✓[22m[39m POST /venues/:slug/bookings — création[2m > [22mun créneau d'une AUTRE salle : « n'existe pas », pas « est pris » [33m 922[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun acompte fixe SUPÉRIEUR au total est écrêté, la demande passe [33m 928[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse un pourcentage ET un montant à la fois [33m 839[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mle PATCH refuse la paire incomplète [33m 792[2mms[22m[39m
+   [33m[2m✓[22m[39m Acompte — le cas limite REEL (D81/D55)[2m > [22mun taux de 4 % est sous le plancher [33m 800[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mla SECONDE acceptation reçoit 409 via le 23P01, et la première survit [33m 978[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mannuler la première LIBÈRE le créneau : la seconde passe alors [33m 1053[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22m⚠ le pro NE PEUT PAS annuler une demande encore PENDING — il la REFUSE (S3) [33m 931[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mun BLOCAGE recouvrant refuse l'acceptation — contrôle applicatif sous verrou [33m 964[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22maccepter deux fois : BOOKING_STATUS_CONFLICT, avec le statut réel [33m 1104[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22ml'acceptation pose paymentDueAt et prévient le client [33m 1157[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation — l'exclusivité appartient à la BASE (D78)[2m > [22mpaymentDueAt − acceptedAt vaut EXACTEMENT la fenêtre d'acompte [33m 1092[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mdeux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500 [33m 975[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mdeux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN [33m 975[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client [33m 908[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit [33m 946[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mD121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500 [33m 893[2mms[22m[39m
+   [33m[2m✓[22m[39m Acceptation CONCURRENTE (D117)[2m > [22mtrois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409 [33m 900[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte [33m 913[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte [33m 919[2mms[22m[39m
+[31m   [31m×[31m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte[39m[33m 954[2mms[22m[39m
+[31m     → expected 'PENDING' to be 'ACCEPTED' // Object.is equality[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage [33m 1006[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mMD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente [33m 929[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mC1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte [33m 896[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mC2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant [33m 921[2mms[22m[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mla plage couvre les 24 heures locales, sans règle applicative en plus [33m 837[2mms[22m[39m
+   [33m[2m✓[22m[39m SINGLE_SLOT — la journée entière (D77)[2m > [22mle créneau reste la source du PRIX, même si ses heures sont ignorées [33m 837[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle pro refuse SANS motif — c'est permis [33m 934[2mms[22m[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22mle client annule une demande PENDING sans motif [33m 880[2mms[22m[39m
+[31m   [31m×[31m Refus et annulations (D83)[2m > [22mle client DOIT un motif pour annuler une demande ACCEPTÉE[39m[33m 875[2mms[22m[39m
+[31m     → expected 'PENDING' to be 'ACCEPTED' // Object.is equality[39m
+   [33m[2m✓[22m[39m Refus et annulations (D83)[2m > [22m404 INDISTINCT sur la demande d'un autre client (D47) [33m 833[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mGET /me/bookings ne rend QUE mes demandes, refusées comprises [33m 911[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit les CONFLITS, calculés à la lecture [33m 903[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation ACCEPTÉE dispute ENCORE — `locks()` n'était exercé QUE par des PENDING (S2-bis) [33m 934[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22m⚠ une réservation CONFIRMED dispute ENCORE — le paiement ne la sort pas de la vue (S2-bis) [33m 957[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mune demande REFUSÉE ne dispute plus rien : elle sort des conflits [33m 911[2mms[22m[39m
+   [33m[2m✓[22m[39m Lectures[2m > [22mle pro voit le CONTACT — il doit pouvoir rappeler [33m 895[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/int/bookings.int-spec.ts[2m > [22mRang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5)[2m > [22mF5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte
+[31m[1mAssertionError[22m: expected 'PENDING' to be 'ACCEPTED' // Object.is equality[39m
+
+Expected: [32m"ACCEPTED"[39m
+Received: [31m"PENDING"[39m
+
+[36m [2m❯[22m test/int/bookings.int-spec.ts:[2m860:37[22m[39m
+    [90m858| [39m    // demande. Sans ces deux lignes, un statut faux (X14 de D306) pas…
+    [90m859| [39m    [34mexpect[39m(res[33m.[39mbody[33m.[39mmessage[33m.[39mcode)[33m.[39m[34mtoBe[39m([32m"BOOKING_STATUS_CONFLICT"[39m)[33m;[39m
+    [90m860| [39m    expect(res.body.message.status).toBe(targetOf(BookingCommand.ACCEP…
+    [90m   | [39m                                    [31m^[39m
+    [90m861| [39m    [35mconst[39m ligne [33m=[39m [35mawait[39m ctx[33m.[39mprisma[33m.[39mbooking[33m.[39m[34mfindUniqueOrThrow[39m({
+    [90m862| [39m      where[33m:[39m { id[33m:[39m a[33m.[39mid }[33m,[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/int/bookings.int-spec.ts[2m > [22mRefus et annulations (D83)[2m > [22mle client DOIT un motif pour annuler une demande ACCEPTÉE
+[31m[1mAssertionError[22m: expected 'PENDING' to be 'ACCEPTED' // Object.is equality[39m
+
+Expected: [32m"ACCEPTED"[39m
+Received: [31m"PENDING"[39m
+
+[36m [2m❯[22m test/int/bookings.int-spec.ts:[2m1043:41[22m[39m
+    [90m1041| [39m    [90m// le code et le statut RÉEL de la demande.[39m
+    [90m1042| [39m    [34mexpect[39m(refused[33m.[39mbody[33m.[39mmessage[33m.[39mcode)[33m.[39m[34mtoBe[39m([32m"BOOKING_STATUS_CONFLICT"[39m)[33m;[39m
+    [90m1043| [39m    expect(refused.body.message.status).toBe(targetOf(BookingCommand.A…
+    [90m   | [39m                                        [31m^[39m
+    [90m1044| [39m
+    [90m1045| [39m    // MD-F5-2 — AVEC un motif, l'annulation d'une demande ACCEPTÉE re…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m48 passed[39m[22m[90m (50)[39m
+[2m   Start at [22m 20:38:03
+[2m   Duration [22m 51.72s[2m (transform 1.16s, setup 56ms, collect 3.68s, tests 46.78s, environment 0ms, prepare 182ms)[22m
+

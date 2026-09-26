@@ -1,0 +1,22 @@
+# D308 — motifs de la passe D277 (23a-2, code). Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui
+# de D306), jamais passés en ligne de commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « certification », « au relecteur », « 48/48 » — ils comptent tout et ne mesurent
+#   rien (D298 : un compte invraisemblablement haut est une hypothèse à vérifier, comme un zéro).
+# sens 1 — ce que 23a-2 INVALIDE
+1|RESTENT 23a-2
+1|CE QUI VIENT ENSUITE : 23a-2
+1|jusqu'à 23a-2
+1|ordonné par Ko le 25/09/2026 (D307)
+1|avant que 23a-2 garde
+1|pas avant 23a-2
+1|Compteur de lots de code non certifiés : UN
+1|compteur de lots de code non certifiés : UN
+1|COMPTEUR À UN
+1|suite : 23a-2
+# sens 2 — ce que 23a-2 REND PERMIS (la certification, dont la condition était « après 23a-2 »)
+2|après 23a-2
+2|puis la certification
+2|PUIS LA CERTIFICATION
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d308-qq

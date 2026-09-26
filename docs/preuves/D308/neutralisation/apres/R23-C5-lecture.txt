@@ -1,0 +1,42 @@
+D306/outils/neutraliser.py sha256 c111a78385e3ed94
+D306/outils/lire.py sha256 4994db7274fae3ef
+D306/outils/titres.py sha256 657852dc26e9b3c6
+R23-C1 ← X4-service-plus-DECLINED : éditions IDENTIQUES (même objet)
+R23-C2 ← X10-decision-sur-ACCEPTED : éditions IDENTIQUES (même objet)
+R23-C3 ← X2a-relecture-transition-const : éditions IDENTIQUES (même objet)
+R23-C4 ← X14-statut-du-400 : éditions IDENTIQUES (même objet)
+R23-C5 ← X15-motif-ignore-au-site : éditions IDENTIQUES (même objet)
+R23-C6 ← X3-writableFrom-plus-DECLINED : éditions IDENTIQUES (même objet)
+titres `it(` relevés : 70
+  ✓ ACC → 1 test(s) (attendu 1) : writableFrom et decideBookingTransition s'accordent
+  ✓ C1H → 1 test(s) (attendu 1) : C1 — un client annule une demande déjà REFUSÉE
+  ✓ C1U → 1 test(s) (attendu 1) : C1 — depuis un statut TERMINAL
+  ✓ C2 → 1 test(s) (attendu 1) : C2 — un REFUS commite pendant l'annulation client SANS motif
+  ✓ D121C → 1 test(s) (attendu 1) : D121 — deux annulations CLIENT SIMULTANÉES
+  ✓ D121P → 1 test(s) (attendu 1) : D121 — deux annulations PRO SIMULTANÉES
+  ✓ D121R → 1 test(s) (attendu 1) : D121 — deux refus SIMULTANÉS
+  ✓ SEQ400 → 1 test(s) (attendu 1) : le client DOIT un motif pour annuler une demande ACCEPTÉE
+  ✓ T3 → 1 test(s) (attendu 1) : F5 — une ACCEPTATION commite pendant l'annulation client SANS motif
+  ✓ U1 → 1 test(s) (attendu 1) : writableFrom — SANS motif
+  ✓ U2 → 1 test(s) (attendu 1) : writableFrom — une chaîne VIDE
+
+=== R23-C5 (X15 de D306) — phase apres
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:38:55 duree=52.5s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\apres\R23-C5-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=SEQ400
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\apres\R23-C5-int.txt
+LIGNES_EXAMINEES=86
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 49 passed (50)
+COLLECTES=50   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 1)
+  test | AssertionError | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : AssertionError: {"statusCode":409,"message":{"code":"BOOKING_STATUS_CONFLICT","message":"booking.errors.statusConflict","status":"ACCEPTED"},"path":"/api/v1/bookings/01a0db27-4ce0-7641-a536-cf70a3c303
+ATTENDU MORD (AssertionError) : le client DOIT un motif pour annuler une demande ACCEPTÉE
+VERDICT=MORSURE LUE

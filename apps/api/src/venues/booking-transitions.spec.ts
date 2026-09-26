@@ -81,15 +81,41 @@ describe("Tableau des transitions — la matrice COMPLÈTE, refus compris", () =
     expect(targetOf(BookingCommand.DECLINE)).not.toBe(targetOf(BookingCommand.CANCEL_AS_PRO));
   });
 
-  it("⚠ AUCUN statut TERMINAL n'autorise quoi que ce soit", () => {
-    // DECLINED, CANCELLED, EXPIRED ferment la demande. Si l'un d'eux rouvrait
-    // une commande, un créneau libéré redeviendrait modifiable.
-    const terminaux = [BookingStatus.DECLINED, BookingStatus.CANCELLED, BookingStatus.EXPIRED];
+  it("C1 — depuis un statut TERMINAL (DECLINED, EXPIRED, CANCELLED : décision produit « Modèle de réservation »), toute commande est refusée et rien n'est inscriptible, motif ou non", () => {
+    // ⛔ RANG 23 · 23a-2 (D308) — MD-C1 (a). Ce test existait (lot S3) avec la
+    // même liste, sans sa source et pour un seul motif ; il DEVIENT le test C1.
+    //
+    // ⚠ LA LISTE EST ÉCRITE À LA MAIN, ET C'EST LE POINT. Dérivée de la table,
+    // elle suivrait la table dans son erreur : la matrice ci-dessus reste VERTE
+    // quand la table ouvre l'annulation client depuis DECLINED (mesuré, D308).
+    //
+    // SOURCE — `AGENTS.md`, « Modèle de réservation » (décisions produit
+    // validées) : `Booking` traverse « pending → accepted/declined/expired →
+    // confirmed → cancelled », précisé par le backlog 6.3 : « pending →
+    // accepted/declined/expired ; accepted → confirmed/cancelled ». Est
+    // TERMINAL un statut d'où ne part AUCUNE flèche.
+    // ⚠ Aucune décision n'écrit le mot « terminal » : la liste se LIT sur les
+    // flèches. CONFIRMED n'en est pas (confirmed → cancelled), même si aucune
+    // commande n'en part aujourd'hui.
+    //
+    // Si l'un d'eux rouvrait une commande, un créneau libéré redeviendrait
+    // modifiable — et un client annulerait une demande REFUSÉE (D306, C1).
+    const terminaux = [BookingStatus.DECLINED, BookingStatus.EXPIRED, BookingStatus.CANCELLED];
+    // Les cinq formes de motif de la sonde P9 de D306 ; `null` que le contrat
+    // Zod ne produit pas, mais que la décision reçoit telle quelle.
+    const motifs = [undefined, "", " ", "motif", null as unknown as undefined];
     for (const commande of COMMANDES) {
-      for (const statut of terminaux) {
-        expect(decideBookingTransition(commande, statut, "motif").outcome, `${commande} depuis ${statut}`).toBe(
-          "STATUS_CONFLICT"
-        );
+      for (const motif of motifs) {
+        for (const statut of terminaux) {
+          expect(
+            decideBookingTransition(commande, statut, motif).outcome,
+            `${commande} depuis ${statut}, motif ${JSON.stringify(motif)}`
+          ).toBe("STATUS_CONFLICT");
+        }
+        // L'écriture ne doit pas pouvoir partir de là non plus : c'est son
+        // prédicat, depuis 23a, qui refuse — la décision seule ne suffit pas.
+        const inscriptibles = writableFrom(commande, motif).filter((s) => (terminaux as readonly string[]).includes(s));
+        expect(inscriptibles, `${commande}, motif ${JSON.stringify(motif)}`).toEqual([]);
       }
     }
   });
@@ -174,6 +200,33 @@ describe("Statuts inscriptibles selon le motif (rang 23 · F5)", () => {
 
   it("writableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`", () => {
     expect(writableFrom(CAC, "salle inondée")).toEqual([...allowedFrom(CAC)]);
+  });
+
+  it("writableFrom et decideBookingTransition s'accordent sur TOUS les couples commande, motif, statut (D306, sonde P9)", () => {
+    // ⛔ RANG 23 · 23a-2 (D308) — MD-C6. D306 l'a vérifié par une sonde hors
+    // suite (120 couples, 0 écart) ; il devient une garde.
+    // ⚠ PAS UNE TAUTOLOGIE : `writableFrom` est DÉRIVÉ de la décision
+    // aujourd'hui, et ce test garde la DÉRIVATION. Une réécriture qui
+    // comparerait le motif autrement ferait écrire depuis un statut que la
+    // décision refuse — ou l'inverse : c'est le défaut F5 lui-même, une
+    // décision prise sur une règle et une écriture faite sur une autre.
+    // Commandes et statuts viennent des énumérations, jamais d'une liste.
+    const motifs = [undefined, "", " ", "motif", null as unknown as undefined];
+    let couples = 0;
+    for (const commande of COMMANDES) {
+      for (const motif of motifs) {
+        const inscriptibles = writableFrom(commande, motif) as readonly string[];
+        for (const statut of TOUS) {
+          couples += 1;
+          const permis = decideBookingTransition(commande, statut, motif).outcome === "ALLOWED";
+          expect(inscriptibles.includes(statut), `${commande} / motif ${JSON.stringify(motif)} / ${statut}`).toBe(permis);
+        }
+        // Et rien d'inscriptible hors de l'énumération.
+        expect(inscriptibles.filter((s) => !(TOUS as readonly string[]).includes(s))).toEqual([]);
+      }
+    }
+    // Garde-fou du garde-fou : une boucle vide serait verte sans rien mesurer (D248).
+    expect(couples).toBeGreaterThan(0);
   });
 
   it("writableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non", () => {

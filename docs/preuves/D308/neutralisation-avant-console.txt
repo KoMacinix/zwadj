@@ -1,0 +1,170 @@
+D306/outils/neutraliser.py sha256 c111a78385e3ed94
+D306/outils/lire.py sha256 4994db7274fae3ef
+D306/outils/titres.py sha256 657852dc26e9b3c6
+R23-C1 ← X4-service-plus-DECLINED : éditions IDENTIQUES (même objet)
+R23-C2 ← X10-decision-sur-ACCEPTED : éditions IDENTIQUES (même objet)
+R23-C3 ← X2a-relecture-transition-const : éditions IDENTIQUES (même objet)
+R23-C4 ← X14-statut-du-400 : éditions IDENTIQUES (même objet)
+R23-C5 ← X15-motif-ignore-au-site : éditions IDENTIQUES (même objet)
+R23-C6 ← X3-writableFrom-plus-DECLINED : éditions IDENTIQUES (même objet)
+
+=== R23-C1 (X4 de D306) — phase avant
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:25:46 duree=52.1s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C1-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C1-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== R23-C1-t-unit (NEUVE (D308)) — phase avant
+FICHIER=apps/api/src/venues/booking-transitions.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre :     from: [BookingStatus.PENDING, BookingStatus.ACCEPTED],
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:26:38 duree=1.9s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C1-t-unit-unit.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run src/venues/booking-transitions.spec.ts
+RESTAURE sha256 38a99a9b87f2a8a8 → 38a99a9b87f2a8a8 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C1-t-unit-unit.txt
+LIGNES_EXAMINEES=54
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 22 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 0)
+  test | AssertionError | Tableau des transitions — la matrice COMPLÈTE, refus compris > ⚠ AUCUN statut TERMINAL n'autorise quoi que ce soit
+       1re ligne : AssertionError: cancelAsClient depuis DECLINED: expected 'ALLOWED' to be 'STATUS_CONFLICT' // Object.is equality
+VERDICT=NON PROUVÉE
+
+=== R23-C1-t-int (NEUVE (D308)) — phase avant
+FICHIER=apps/api/src/venues/booking-transitions.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre :     from: [BookingStatus.PENDING, BookingStatus.ACCEPTED],
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:26:40 duree=49.8s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C1-t-int-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 38a99a9b87f2a8a8 → 38a99a9b87f2a8a8 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C1-t-int-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== R23-C2 (X10 de D306) — phase avant
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIE
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:27:30 duree=50.6s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C2-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C2-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== R23-C3 (X2a de D306) — phase avant
+FICHIER=apps/api/src/venues/booking-locks.prisma.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : return { outcome: "STATUS_CONFLICT", status: fresh.status };
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:28:21 duree=50.7s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C3-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 7321e60509fabab6 → 7321e60509fabab6 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C3-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== R23-C4 (X14 de D306) — phase avant
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre :           status: decision.status
+        });
+      }
+      throw n
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:29:11 duree=50.6s code=0 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C4-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C4-int.txt
+LIGNES_EXAMINEES=61
+LIGNE_TEST_FILES=Test Files  1 passed (1)
+LIGNE_TESTS=Tests  48 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=0   (attendus déclarés : 0)
+VERDICT=VERT
+
+=== R23-C5 (X15 de D306) — phase avant
+FICHIER=apps/api/src/venues/bookings.service.ts
+  POSE ✓ ancre 1 → 0 (attendu 0) · marqueur 0 → 1 (attendu 1) · ancre : from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:30:02 duree=49.9s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C5-int.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run test/int/bookings.int-spec.ts -c vitest.config.int.ts
+RESTAURE sha256 9f13cfed4f29c3e5 → 9f13cfed4f29c3e5 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C5-int.txt
+LIGNES_EXAMINEES=83
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  1 failed | 47 passed (48)
+COLLECTES=48   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=1   (attendus déclarés : 0)
+  test | Error | Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE
+       1re ligne : Error: expected 200 "OK", got 409 "Conflict"
+VERDICT=NON PROUVÉE
+
+=== R23-C6 (X3 de D306) — phase avant
+FICHIER=apps/api/src/venues/booking-transitions.ts
+  POSE ✓ ancre 1 → 1 (attendu 1) · marqueur 0 → 2 (attendu 2) · ancre : export function writableFrom(command: BookingCommand, reason?: string)
+  RELU = texte muté, octet pour octet : OUI
+MUTATION=POSÉE
+LANCER debut=2026-09-25 20:30:52 duree=1.8s code=1 sortie=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C6-unit.txt
+COMMANDE=(apps/api) node node_modules/vitest/vitest.mjs run src/venues/booking-transitions.spec.ts
+RESTAURE sha256 38a99a9b87f2a8a8 → 38a99a9b87f2a8a8 IDENTIQUE · git status vide ⇒ RESTAURATION PROUVÉE
+TITRES_EXIGES=(aucun : phase avant)
+SORTIE=C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D308\neutralisation\avant\R23-C6-unit.txt
+LIGNES_EXAMINEES=126
+LIGNE_TEST_FILES=Test Files  1 failed (1)
+LIGNE_TESTS=Tests  4 failed | 19 passed (23)
+COLLECTES=23   (exigé > 0)
+ECHECS_DE_FICHIER=0   (exigé 0)
+ECHECS_DE_TEST=4   (attendus déclarés : 0)
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — SANS motif, l'annulation client n'écrit que depuis les statuts qui ne l'exigent pas (D83)
+       1re ligne : AssertionError: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une chaîne VIDE vaut une absence de motif, comme dans la décision
+       1re ligne : AssertionError: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — AVEC motif, l'annulation client écrit depuis tout son `from`
+       1re ligne : AssertionError: expected [ 'PENDING', 'ACCEPTED', 'DECLINED' ] to deeply equal [ 'PENDING', 'ACCEPTED' ]
+  test | AssertionError | Statuts inscriptibles selon le motif (rang 23 · F5) > writableFrom — une commande sans motif exigé écrit depuis son `from`, motif ou non
+       1re ligne : AssertionError: accept / undefined: expected [ 'PENDING', 'DECLINED' ] to deeply equal [ 'PENDING' ]
+VERDICT=NON PROUVÉE
+
+code 0

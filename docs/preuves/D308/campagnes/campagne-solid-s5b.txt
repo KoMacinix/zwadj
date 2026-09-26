@@ -1,0 +1,9 @@
+✓ Pré-vol : 1 mesure(s) verte(s) — int-reservations
+
+✓ S5b-1. ⚠ LE VERROU DE SALLE SAUTE — un blocage commité pendant l'acceptation n'est plus vu, la date est bloquée ET acceptée  [int-reservations]
+✓ S5b-2. ⚠ LA RELECTURE D117 NE DÉCIDE PLUS L'ORDRE DES REFUS — une demande déjà refusée sous un blocage rend le blocage, pas son statut réel  [int-reservations]
+✓ S5b-3. Le contrôle de BLOCAGE disparaît — une période bloquée redevient acceptable  [int-reservations]
+✓ S5b-4. ⚠ LE REFUS DE L'EXCLUDE N'EST PLUS TRADUIT — 500 au lieu de 409 sur créneau pris  [int-reservations]
+✓ S5b-5. ⚠ LE CHECK-AND-SET N'EN EST PLUS UN — la transition écrit quel que soit le statut  [int-reservations]
+
+5 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.

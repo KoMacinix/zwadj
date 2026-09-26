@@ -1,0 +1,21 @@
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, les ABONNEMENTS restent NON PROUVÉS : publier dans le vide ne lève pas.
+
+✓ Pré-vol : 1 mesure(s) verte(s) — couture
+
+✓ S6-1. ⚠ LA COUTURE SE MET À LEVER — un gabarit cassé dé-confirmerait un acte écrit (D63)  [couture]
+✓ S6-2. Les handlers cessent d'être ATTENDUS — l'ordre et le déterminisme tombent  [couture]
+⚠ S6-3. ⚠ L'ABONNEMENT « demande reçue » EST COUPÉ — le pro n'est plus prévenu
+   NON MESURÉE — int-reservations hors de cette exécution.
+⚠ S6-4. L'abonnement « acceptée » est coupé — le client ne sait pas que sa date est retenue
+   NON MESURÉE — int-reservations hors de cette exécution.
+⚠ S6-5. ⚠ LE SECOND ABONNÉ DE `visit.booked` DISPARAÎT — le pro est prévenu, pas le client
+   NON MESURÉE — int-visites hors de cette exécution.
+⚠ S6-6. L'ORDRE des deux abonnés de `visit.booked` s'inverse
+   NON MESURÉE — int-visites hors de cette exécution.
+
+2 garde(s) mordue(s) sur 2 cible(s) RÉELLEMENT MESURÉE(S).
+  NON MESURÉE : S6-3. ⚠ L'ABONNEMENT « demande reçue » EST COUPÉ — le pro n'est plus prévenu (hors exécution : int-reservations)
+  NON MESURÉE : S6-4. L'abonnement « acceptée » est coupé — le client ne sait pas que sa date est retenue (hors exécution : int-reservations)
+  NON MESURÉE : S6-5. ⚠ LE SECOND ABONNÉ DE `visit.booked` DISPARAÎT — le pro est prévenu, pas le client (hors exécution : int-visites)
+  NON MESURÉE : S6-6. L'ORDRE des deux abonnés de `visit.booked` s'inverse (hors exécution : int-visites)

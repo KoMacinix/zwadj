@@ -1,0 +1,153 @@
+CALIBRATION — des cas dont la reponse est connue d'avance
+   ✓ 1. positif                       → POSEE
+   ✓ 2. fantome CRLF (sans normal.)   → NON POSEE
+   ✓ 2b. meme motif, harnais normal.  → POSEE
+   ✓ 3. interversion                  → POSEE
+   ✓ 4. taille egale                  → POSEE
+   ✓ 5. marqueur inclus               → POSEE
+   ✓ 6. suppression (apres vide)      → POSEE
+   ✓ 7. insertion (ancre survit)      → POSEE
+   ⇒ les 8 cas rendent leur verdict connu.
+
+==============================================================================
+neutralize-rang23.py
+   normalisation CRLF des motifs par le harnais : OUI
+
+── cible 1 : R23-F1-a. ⛔ L'ÉCRITURE D'ACCEPT PERD SA CONDITION DE STATUT — un refus
+   fichier          : apps/api/src/venues/booking-locks.prisma.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 2 → 3   (hors sites d'ancre)   ⚠ DEJA PRESENT — une assertion naive serait VRAIE AVANT la mutation
+   taille           : 8552 → 8512 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 126 :
+     -  where: { id: input.bookingId, status: { in: [...input.allowedFrom] } },
+     +  where: { id: input.bookingId },
+
+── cible 2 : R23-F1-b. ⛔ UN COMPTE NUL N'EST PLUS UN REFUS — la ligne relue part co
+   fichier          : apps/api/src/venues/booking-locks.prisma.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 8552 → 8540 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 132 :
+     -  if (ecrit.count !== 1) {
+     +  if (false) {
+
+── cible 3 : R23-F5-a. ⛔ L'ANNULATION CLIENT ÉCRIT DEPUIS TOUT SON `from` — une ACC
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33785 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 495 :
+     -  from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+     +  from: allowedFrom(BookingCommand.CANCEL_AS_CLIENT),
+
+── cible 4 : R23-F5-b. Le refus après conflit ne se redécide plus sur le statut rel
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33767 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 509 :
+     -  if (decision.outcome === "REASON_REQUIRED") {
+     +  if (false) {
+
+── cible 5 : R23-F5-c. La fonction pure des statuts inscriptibles IGNORE LE MOTIF —
+   fichier          : apps/api/src/venues/booking-transitions.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 6330 → 6338 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 140 :
+     -  (status) => decideBookingTransition(command, status, reason).outcome === "ALLOWED"
+     +  (status) => decideBookingTransition(command, status, reason).outcome !== "STATUS_CONFLICT"
+
+── cible 6 : R23-C1. ⛔ LE PRÉDICAT DE L'ANNULATION CLIENT ADMET DECLINED AU SITE D'
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33834 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 495 :
+     -  from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+     +  from: [...writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason), "DECLINED" as BookingStatus],
+
+── cible 7 : R23-C1-t. ⛔ LA TABLE OUVRE L'ANNULATION CLIENT DEPUIS DECLINED — la ma
+   fichier          : apps/api/src/venues/booking-transitions.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 6330 → 6354 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 66 :
+     -  from: [BookingStatus.PENDING, BookingStatus.ACCEPTED],
+     +  from: [BookingStatus.PENDING, BookingStatus.ACCEPTED, BookingStatus.DECLINED],
+
+── cible 8 : R23-C2. ⛔ APRÈS UN COMPTE 0, LE CODE SE CHOISIT COMME SI LE STATUT ÉTA
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33795 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 508 :
+     -  const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIENT, resultat.status, input.reason);
+     +  const decision = decideBookingTransition(BookingCommand.CANCEL_AS_CLIENT, "ACCEPTED", input.reason);
+
+── cible 9 : R23-C3. ⛔ LA RELECTURE DE `transition` REND TOUJOURS ACCEPTED — le 409
+   fichier          : apps/api/src/venues/booking-locks.prisma.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 8552 → 8550 octets
+   ⚠ motif multi-lignes : ne correspond qu'en CRLF, et le harnais NORMALISE — legitime
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 171 :
+     -  return { outcome: "STATUS_CONFLICT", status: fresh.status };
+     +  return { outcome: "STATUS_CONFLICT", status: "ACCEPTED" };
+
+── cible 10 : R23-C4. ⛔ LE 400 cancelReasonRequired PORTE UN STATUT FAUX (X14 de D30
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33794 octets
+   ⚠ motif multi-lignes : ne correspond qu'en CRLF, et le harnais NORMALISE — legitime
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 513 :
+     -  status: decision.status
+     +  status: "PENDING"
+
+── cible 11 : R23-C5. ⛔ LE SITE D'APPEL IGNORE LE MOTIF — une demande ACCEPTÉE ne s'
+   fichier          : apps/api/src/venues/bookings.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 33800 → 33797 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 495 :
+     -  from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, input.reason),
+     +  from: writableFrom(BookingCommand.CANCEL_AS_CLIENT, undefined),
+
+── cible 12 : R23-C6. ⛔ writableFrom ÉLARGI D'UN STATUT HORS DE `from` — l'écriture 
+   fichier          : apps/api/src/venues/booking-transitions.ts
+   genre            : insertion
+   ancre            : 1 → 1   (le harnais en attend 1)   ⚠ elle SURVIT, c'est correct pour une insertion
+   marqueur         : SANS OBJET pour une insertion
+   taille           : 6330 → 6501 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 138 :
+     -  export function writableFrom(command: BookingCommand, reason?: string): readonly BookingStatus[] {
+     +  export function writableFrom(command: BookingCommand, reason?: string): readonly BookingStatus[] {
+  return [...writableFromD306(command, re
+
+==============================================================================
+POSEES 12   ·   NON POSEES 0   ·   NON COUVERTES 0
+✓ TOUTES LES MUTATIONS SONT POSEES, ET TOUTES LES CIBLES ONT ETE REGARDEES
