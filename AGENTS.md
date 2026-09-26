@@ -793,7 +793,9 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   relecteur* : **sur le chemin de l'argent, un verdict s'écrit par `expect` de vitest** ; et **un titre de test ne porte
   pas le glyphe « × »**, qui marque un échec dans cette sortie (faute n° 1 de D305).
 - ⛔ **UNE MESURE QUI NE DÉMARRE PAS N'EST JAMAIS UNE MORSURE, ET « EXÉCUTÉS » N'EST PAS « COLLECTÉS » (D312, mesuré sur
-  vitest 3.2.7).** `neutralize-available-on-api.py` a compté « ROUGE », à chaque certification depuis le 30/08, une commande
+  vitest 3.2.7).** `neutralize-available-on-api.py` a compté « ROUGE », ~~à chaque certification depuis le 30/08~~ ⛔ *(D313 :
+  **mesuré** à D293, D299 et D310 ; « **mesuré, sur des journaux dont l'attribution à D288 est inférée** » (Ko) ; **inféré** à D275 et D283 —
+  section D310. La phrase l'écrivait de toutes, au statut de mesure : D291 ; lecture adverse de D313.)*, une commande
   qui ne se lançait pas (D310). ⇒ Une morsure exige **au moins un test EN ÉCHEC** sur la ligne « Tests » ; sans cette
   ligne, ou sans test exécuté, la mesure est **non démarrée** et le harnais refuse de juger. ⚠ **Sous `-t`, le total entre
   parenthèses compte les tests ÉCARTÉS par le filtre** : « `Tests 25 skipped (25)` », code **0**, AUCUN test exécuté —
@@ -865,7 +867,9 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     pas une liste dans un fichier d'autorité ;
     ⛔ *(D311 : **deux branches ajoutées** par le relecteur — (5) la donnée qui entre dans le calcul d'un montant, (6)
     l'instruction de paiement ; ci-dessous, bloc D311.)*
-  - **R1** — portée : les **20** harnais relevés par D303 **et tout harnais neuf** qui mute un fichier de ce chemin ;
+  - **R1** — portée : ~~les **20** harnais relevés par D303 **et tout harnais neuf** qui mute un fichier de ce chemin~~
+    ⛔ *(D313 : **une RÈGLE** — un harnais en fait partie s'il a au moins une cible du chemin de l'argent, branches (1) à
+    (6) ; bloc D313 ci-dessous)* ;
     leurs morsures passées ne sont **ni infirmées ni prouvées** ; ~~**la correction BLOQUE la prochaine certification
     qui compte des cibles de ce chemin** (en plus de la levée du drapeau)~~ ⛔ *(D307 : pendant la pause, les
     certifications sont PERMISES — ci-dessous ; le drapeau reste bloqué)* ; par morsure, le harnais garde **les tests
@@ -925,6 +929,17 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   - **S11a-7 et S11a-11 : DEDANS** — `s11a` entre dans la portée de R1 pour ces deux cibles, et la prochaine certification
     les compte du côté du chemin de l'argent ;
   - la rectification de D308 par D309 : vérifiée, **conforme** (barré et annoté, rien à rétablir).
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 26/09/2026 (D313)** — texte et motifs : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D313 :
+  - ⛔ **LA PORTÉE DE R1 EST UNE RÈGLE, PAS LA LISTE DES VINGT** : « un harnais en fait partie s'il a au moins une cible du
+    chemin de l'argent, branches (1) à (6) » — *motif* : « la liste venait d'une phrase imprécise de D303 (“ceux qui
+    mutent des fichiers du chemin de l'argent”), que `available-on-api` contredit » ; liste barrée, renvoi gardé ;
+  - **`available-on-api` sort de la portée de R1** : « ses cibles sont hors du chemin de l'argent. Depuis D312, il lit
+    d'ailleurs ses échecs » ;
+  - ⛔ **le classement des 209 autres cibles** selon les branches (1) à (6) **BLOQUE LA REPRISE DE R1, pas la
+    certification** — *motif* : « le classement change le poids de l'étiquette, pas la validité de la passe » ; à la
+    certification, « non prouvée (R1) » là où la carte ou une décision classe la cible ou son harnais dans le chemin,
+    « non classée » ailleurs.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

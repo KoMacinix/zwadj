@@ -1,0 +1,23 @@
+# D313 — motifs de la passe D277 (arbitrages de Ko : D288, point 12 ; décisions du relecteur : portée de R1, available-on-api, 209).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D312), jamais passés en ligne de
+# commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « certification », « compteur », « peut s'ouvrir », « vingt » seul — ils comptent tout (D298).
+# sens 1 — ce que D313 INVALIDE ou TRANCHE (le statut de D288, la liste des vingt, la question du relecteur, les onze)
+1|INFÉRÉ** (Ko)
+1|inféré** pour D275, D283
+1|les vingt harnais relevés
+1|harnais relevés par D303
+1|(les vingt + les neufs)
+1|qui dira si R1 le garde
+1|R1 garde-t-il
+1|onze harnais
+1|à chaque certification depuis le 30/08
+1|209 autres
+1|laquelle des deux preuves
+# sens 2 — ce que D313 REND PERMIS (la certification sans le classement des 209 ; rien d'autre ne devrait l'être)
+2|la prochaine certification
+2|de quelque rang que ce soit
+2|troisième lot non certifié
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d313-qq

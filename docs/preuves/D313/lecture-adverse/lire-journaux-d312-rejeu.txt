@@ -1,0 +1,63 @@
+cibles lues dans le harnais : 13 (attendu 13)
+✓ A1   code 1 · exécutés 3 · en échec 2 · blocs lus 2 (attendu 2) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « date passée » : True · 100 lignes
+       « e.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois »
+         AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting
+       « vailableOn : refus de la date passée > une date passée : 400 AVAILABLE_ON_PAST, et AUCUNE requête n'est lancée »
+         AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting
+✓ A2   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « AUJOURD'HUI EST ACCEPTÉ » : True · 67 lignes
+       « la date passée > ⚠ AUJOURD'HUI EST ACCEPTÉ (`<`, pas `<=`) : chercher une salle pour ce soir est le cas normal »
+         AssertionError: promise rejected "BadRequestException: venue.errors.availab… { …(3) }" instead of resolving
+✓ A3   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « PENDING » : True · 71 lignes
+       « — availableOn : ce qui est chargé > ⚠ `PENDING` N'EST PAS CHARGÉ (D101) : une demande en attente ne grise rien »
+         AssertionError: expected { in: [ 'PENDING', 'ACCEPTED', …(1) ] } to deeply equal { in: [ 'ACCEPTED', 'CONFIRMED' ] }
+✓ A4   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « 48 H » : True · 66 lignes
+       «  availableOn : ce qui est chargé > ⚠ LA FENÊTRE VA À +48 H, pas à minuit + 24 h : sinon la soirée 20h→02h ment »
+         AssertionError: expected 1780441200000 to be 1780527600000 // Object.is equality
+✓ A5   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « SITUATION B » : True · 70 lignes
+       « availableOn : ce qui est annoté > ⚠ SITUATION B — salle sans AUCUN créneau : EXCLUE par le `where`, pas grisée »
+         AssertionError: expected undefined to deeply equal { some: { isActive: true } }
+✓ A6   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « CONTAMINENT » : True · 69 lignes
+       «  — availableOn : ce qui est annoté > ⚠ LES SALLES NE SE CONTAMINENT PAS : la réservation de v1 ne grise pas v2 »
+         AssertionError: expected [ false, false ] to deeply equal [ false, true ]
+✓ A7   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « SINGLE_SLOT » : True · 68 lignes
+       « ist — availableOn : ce qui est annoté > ⚠ SINGLE_SLOT : la MÊME réservation ferme la journée entière ⇒ `false` »
+         AssertionError: expected [ true ] to deeply equal [ false ]
+✓ A8   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « ANNOTER N'EST PAS FILTRER » : True · 66 lignes
+       «  ce qui est annoté > ⚠ ANNOTER N'EST PAS FILTRER : la salle grisée reste dans `items`, et `total` ne bouge pas »
+         AssertionError: expected [] to have a length of 1 but got +0
+✓ A9   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « ANNOTER N'EST PAS FILTRER » : True · 66 lignes
+       «  ce qui est annoté > ⚠ ANNOTER N'EST PAS FILTRER : la salle grisée reste dans `items`, et `total` ne bouge pas »
+         AssertionError: expected null to be '2026-06-02' // Object.is equality
+✓ A10  code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « DÉLÈGUE » : True · 411 lignes
+       « é sur « pris ou libre » > ⚠ `computeDayAvailability` DÉLÈGUE, et le fichier n'initialise un statut qu'UNE fois »
+         AssertionError: expected '// Moteur de disponibilité — Lot B3. …' to contain 'return computeDaySlotStatuses({'
+✓ B1   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « ROUTE INCONNUE » : True · 52 lignes
+       « ptionsFilter — 404 de routage > ⚠ ROUTE INCONNUE : l'enveloppe automatique de Nest devient `{ code, message }` »
+         AssertionError: expected { …(3) } to deeply equal { code: 'ROUTE_NOT_FOUND', …(1) }
+✓ B2   code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « 404 MÉTIER » : True · 51 lignes
+       « r — 404 de routage > ⚠ UN 404 MÉTIER N'EST PAS TOUCHÉ : son code est un contrat que les deux fronts consomment »
+         AssertionError: expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+✓ A13  code 1 · exécutés 1 · en échec 1 · blocs lus 1 (attendu 1) · types ['AssertionError'] (attendu ['AssertionError']) · titres portant « SANS `availableOn`, AUCUNE exclusion » : True · 70 lignes
+       « ailableOn : ce qui est annoté > ⚠ SANS `availableOn`, AUCUNE exclusion : la recherche non datée ne retire rien »
+         AssertionError: expected { some: { isActive: true } } to be undefined
+
+== calibration et pré-vol
+✓ calibration-1-defaut-d310.txt              NON DÉMARRÉE (attendu NON DÉMARRÉE) · code 1 · « None »
+✓ calibration-2-commande-introuvable.txt     NON DÉMARRÉE (attendu NON DÉMARRÉE) · code 1 · « None »
+✓ calibration-3-filtre-sans-titre.txt        NON DÉMARRÉE (attendu NON DÉMARRÉE) · code 0 · « 25 skipped (25) »
+✓ calibration-4-mutation-connue.txt          MORDUE (attendu MORDUE) · code 1 · « 2 failed | 1 passed | 22 skipped (25) »
+✓ calibration-5-mutation-neutre.txt          VERTE (attendu VERTE) · code 0 · « 3 passed | 22 skipped (25) »
+✓ pre-vol-1.txt                              VERTE (attendu VERTE) · code 0 · « 3 passed | 22 skipped (25) »
+✓ pre-vol-10.txt                             VERTE (attendu VERTE) · code 0 · « 1 passed | 5 skipped (6) »
+✓ pre-vol-11.txt                             VERTE (attendu VERTE) · code 0 · « 1 passed | 5 skipped (6) »
+✓ pre-vol-12.txt                             VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-2.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-3.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-4.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-5.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-6.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-7.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-8.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 24 skipped (25) »
+✓ pre-vol-9.txt                              VERTE (attendu VERTE) · code 0 · « 1 passed | 17 skipped (18) »
+
+journaux lus : 30 (attendu 30) · pré-vol 12 (attendu 12 : A8 et A9 partagent leur mesure) · lignes parcourues 1554 · écarts 0 (attendu 0)
