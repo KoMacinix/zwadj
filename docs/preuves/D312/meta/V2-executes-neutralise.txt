@@ -1,0 +1,11 @@
+$ python .neutralisation-journaux\d312-meta\V2-executes-neutralise.py 1 1
+  version de vitest : 3.2.7 (lecture calibrée sur 3.2.7)
+  calibration (i) le défaut de D310 rejoué tel quel : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 1 · aucune ligne « Tests » : la mesure n'a pas démarré · OK
+  calibration (ii) commande introuvable : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 1 · aucune ligne « Tests » : la mesure n'a pas démarré · OK
+  calibration (iii) filtre sans titre : VERTE (attendu NON DÉMARRÉE) — code 0 · exécutés 0 · en échec 0 · « Tests 25 skipped (25) » · MANQUÉ
+  calibration (iv) mutation connue (A1) : MORDUE (attendu MORDUE) — code 1 · exécutés 3 · en échec 2 · « Tests 2 failed | 1 passed | 22 skipped (25) » · « VenuesPublicService.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois » · AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting · blocs lus 2, tous en AssertionError : True · OK
+  calibration (v) mutation neutre : VERTE (attendu VERTE) — code 0 · exécutés 3 · en échec 0 · « Tests 3 passed | 22 skipped (25) » · OK
+  calibration : 4 bras sur 5 (attendu 5)
+✗ CALIBRATION : un bras au moins a manqué son verdict — ABANDON, rien n'est jugé (D286).
+
+--- code de sortie : 2 ---

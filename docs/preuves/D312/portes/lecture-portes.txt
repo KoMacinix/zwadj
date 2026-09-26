@@ -1,0 +1,35 @@
+== CALIBRATION : résumé ANSI lu ['Test Files 3 passed (3)', 'Tests 36 passed (36)'] · témoin sans résumé [] · « FAILED » dans un nom compté 0 (attendu 0) · vrai FAIL compté 1 (attendu 1) → ✓
+
+== typecheck : code RÉEL 0 · 21 lignes parcourues · « Done » 8 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 0
+
+== lint : code RÉEL 0 · 21 lignes parcourues · « Done » 8 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 0
+
+== test : code RÉEL 0 · 1545 lignes parcourues · « Done » 0 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   Test Files 58 passed (58)
+   Tests 664 passed (664)
+   Test Files 3 passed (3)
+   Tests 36 passed (36)
+   Test Files 20 passed (20)
+   Tests 287 passed (287)
+   Test Files 28 passed (28)
+   Tests 347 passed (347)
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 2
+     | [Nest] 10832  - 2026-09-26, 9:51:15 a.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001
+     | [Nest] 10832  - 2026-09-26, 9:51:15 a.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001
+
+== build : code RÉEL 0 · 133 lignes parcourues · « Done » 4 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 0
+
+== testint : code RÉEL 0 · 352 lignes parcourues · « Done » 0 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   Test Files 36 passed (36)
+   Tests 443 passed (443)
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 1
+     | ✓ Notifications (D60, D63) > transport en PANNE : le rendez-vous est confirmé quand même, la ligne passe FAILED (D63)  980ms
+
+== e2e : code RÉEL ABSENT
+
+== campagnes-tout : code RÉEL ABSENT
+
+== contre-epreuve : code RÉEL ABSENT

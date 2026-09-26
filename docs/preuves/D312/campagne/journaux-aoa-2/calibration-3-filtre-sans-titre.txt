@@ -1,0 +1,15 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/venues-public.service.spec.ts -t motif-sans-titre-d312-qq
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ↓ src/venues/venues-public.service.spec.ts (25 tests | 25 skipped)
+
+ Test Files  1 skipped (1)
+      Tests  25 skipped (25)
+   Start at  09:58:33
+   Duration  1.78s (transform 318ms, setup 0ms, collect 1.18s, tests 0ms, environment 0ms, prepare 227ms)
+
+
+--- stderr ---
+
+--- code de sortie : 0 ---

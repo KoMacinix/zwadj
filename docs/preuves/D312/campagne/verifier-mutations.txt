@@ -1,0 +1,374 @@
+CALIBRATION — des cas dont la reponse est connue d'avance
+   ✓ 1. positif                       → POSEE
+   ✓ 2. fantome CRLF (sans normal.)   → NON POSEE
+   ✓ 2b. meme motif, harnais normal.  → POSEE
+   ✓ 3. interversion                  → POSEE
+   ✓ 4. taille egale                  → POSEE
+   ✓ 5. marqueur inclus               → POSEE
+   ✓ 6. suppression (apres vide)      → POSEE
+   ✓ 7. insertion (ancre survit)      → POSEE
+   ⇒ les 8 cas rendent leur verdict connu.
+
+==============================================================================
+neutralize-available-on-api.py
+   normalisation CRLF des motifs par le harnais : NON
+
+── cible 1 : A1. Le refus de date passée est retiré
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24196 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 304 :
+     -  if (civilUtcMs(date) < civilUtcMs(aujourdhui)) this.throwAvailableOnPast();
+     +  /* neutralisé */
+
+── cible 2 : A2. La borne devient `<=` : aujourd'hui est refusé à tort
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24256 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 304 :
+     -  if (civilUtcMs(date) < civilUtcMs(aujourdhui)) this.throwAvailableOnPast();
+     +  if (civilUtcMs(date) <= civilUtcMs(aujourdhui)) this.throwAvailableOnPast();
+
+── cible 3 : A3. `PENDING` est rechargé : une demande en attente grise
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24266 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 359 :
+     -  status: { in: [...HARD_BOOKING_STATUSES] },
+     +  status: { in: ["PENDING", ...HARD_BOOKING_STATUSES] },
+
+── cible 4 : A4. La fenêtre retombe à minuit + 24 h (la soirée 20h→02h ment)
+   fichier          : apps/api/src/venues/availability-time.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 9231 → 9215 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 43 :
+     -  return civilDayStartMs(date) + SLOT_END_MAX_MINUTES * MINUTE_MS;
+     +  return civilDayStartMs(date) + 1440 * MINUTE_MS;
+
+── cible 5 : A5. L'exclusion des salles sans créneau (situation B) quitte le `where
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : suppression
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : SANS OBJET pour une suppression
+   taille           : 24255 → 24176 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 213 :
+     -  ...(annotateOn === null ? {} : { slotTemplates: { some: ACTIVE_SLOT } }),
+     +  
+
+── cible 6 : A6. Le regroupement par salle saute : les salles se contaminent
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24256 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 409 :
+     -  bookings: (bookingsByVenue.get(row.id) ?? []) as BookingWindow[],
+     +  bookings: [...bookingsByVenue.values()].flat() as BookingWindow[],
+
+── cible 7 : A7. `singleSlot` est câblé en dur à `false`
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24227 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 413 :
+     -  singleSlot: row.bookingMode === "SINGLE_SLOT"
+     +  singleSlot: false
+
+── cible 8 : A8. L'annotation devient un FILTRE (la salle grisée quitte la page)
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24307 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 268 :
+     -  items: rows.map((row) => this.toSummary(row, availability)),
+     +  items: rows.filter((row) => availability.get(row.id) !== false).map((row) => this.toSummary(row, availability)),
+
+── cible 9 : A9. L'écho `availableOn` disparaît de la réponse
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24234 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 274 :
+     -  availableOn: query.availableOn ?? null
+     +  availableOn: null
+
+── cible 10 : A10. `computeDayAvailability` cesse de déléguer (seconde autorité)
+   fichier          : apps/api/src/venues/availability-engine.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 7712 → 7730 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 105 :
+     -  return computeDaySlotStatuses({ dayStartMs, slots, bookings, blocks, singleSlot }).map((entry) => {
+     +  const st = computeDaySlotStatuses({ dayStartMs, slots, bookings, blocks, singleSlot });
+   ligne 106 :
+     -  const price = resolveSlotPrice(entry.slot.basePriceCents, entry.slot.rules, day);
+     +  return st.map((entry) => {
+   ligne 107 :
+     -  return {
+     +  const price = resolveSlotPrice(entry.slot.basePriceCents, entry.slot.rules, day);
+   ligne 108 :
+     -  slotTemplateId: entry.slot.id,
+     +  return {
+   ligne 109 :
+     -  status: entry.status,
+     +  slotTemplateId: entry.slot.id,
+   ligne 110 :
+     -  priceCents: price.priceCents,
+     +  status: entry.status,
+   ligne 111 :
+     -  ruleId: price.ruleId
+     +  priceCents: price.priceCents,
+   ligne 112 :
+     -  };
+     +  ruleId: price.ruleId
+   ligne 113 :
+     -  });
+     +  };
+   ligne 114 :
+     -  }
+     +  });
+   ligne 115 :
+     -  
+     +  }
+   ligne 116 :
+     -  /** ⚠ L'ENTRÉE PORTE SON CRÉNEAU, elle ne renvoie pas un index.
+     +  
+   ligne 117 :
+     -  *
+     +  /** ⚠ L'ENTRÉE PORTE SON CRÉNEAU, elle ne renvoie pas un index.
+   ligne 118 :
+     -  *  Premier jet : `computeDaySlotStatuses` rendait `{ slotTemplateId, status }`
+     +  *
+   ligne 119 :
+     -  *  et l'appelant relisait `statuses[index]` en parallèle de `slots`. Le
+     +  *  Premier jet : `computeDaySlotStatuses` rendait `{ slotTemplateId, status }`
+   ligne 120 :
+     -  *  compilateur l'a refusé (`noUncheckedIndexedAccess`) — et il avait raison sur
+     +  *  et l'appelant relisait `statuses[index]` en parallèle de `slots`. Le
+   ligne 121 :
+     -  *  le fond, pas seulement sur la forme : « même cardinalité, même ordre » était
+     +  *  compilateur l'a refusé (`noUncheckedIndexedAccess`) — et il avait raison sur
+   ligne 122 :
+     -  *  un invariant écrit en COMMENTAIRE, que rien n'aurait fait rougir le jour où
+     +  *  le fond, pas seulement sur la forme : « même cardinalité, même ordre » était
+   ligne 123 :
+     -  *  un filtrage serait apparu dans le moteur. Renvoyer le créneau LUI-MÊME rend
+     +  *  un invariant écrit en COMMENTAIRE, que rien n'aurait fait rougir le jour où
+   ligne 124 :
+     -  *  l'appariement structurel : il n'y a plus d'invariant à tenir. */
+     +  *  un filtrage serait apparu dans le moteur. Renvoyer le créneau LUI-MÊME rend
+   ligne 125 :
+     -  export interface SlotStatus<S extends SlotForStatus = SlotForStatus> {
+     +  *  l'appariement structurel : il n'y a plus d'invariant à tenir. */
+   ligne 126 :
+     -  slot: S;
+     +  export interface SlotStatus<S extends SlotForStatus = SlotForStatus> {
+   ligne 127 :
+     -  status: SlotAvailabilityStatus;
+     +  slot: S;
+   ligne 128 :
+     -  }
+     +  status: SlotAvailabilityStatus;
+   ligne 129 :
+     -  
+     +  }
+   ligne 130 :
+     -  /**
+     +  
+   ligne 131 :
+     -  * Statut de chaque créneau pour UN jour, SANS prix — le cœur commun au
+     +  /**
+   ligne 132 :
+     -  * calendrier d'une salle (`computeDayAvailability`) et à l'annotation de la
+     +  * Statut de chaque créneau pour UN jour, SANS prix — le cœur commun au
+   ligne 133 :
+     -  * liste publique (`availableOn`).
+     +  * calendrier d'une salle (`computeDayAvailability`) et à l'annotation de la
+   ligne 134 :
+     -  *
+     +  * liste publique (`availableOn`).
+   ligne 135 :
+     -  * `singleSlot` : la salle n'accepte qu'une fête par jour. Une réservation dure
+     +  *
+   ligne 136 :
+     -  * sur n'importe quel créneau ferme donc TOUS les créneaux du jour — sinon le
+     +  * `singleSlot` : la salle n'accepte qu'une fête par jour. Une réservation dure
+   ligne 137 :
+     -  * client choisirait une case que la salle ne peut pas honorer.
+     +  * sur n'importe quel créneau ferme donc TOUS les créneaux du jour — sinon le
+   ligne 138 :
+     -  */
+     +  * client choisirait une case que la salle ne peut pas honorer.
+   ligne 139 :
+     -  export function computeDaySlotStatuses<S extends SlotForStatus>(params: {
+     +  */
+   ligne 140 :
+     -  dayStartMs: number;
+     +  export function computeDaySlotStatuses<S extends SlotForStatus>(params: {
+   ligne 141 :
+     -  slots: readonly S[];
+     +  dayStartMs: number;
+   ligne 142 :
+     -  bookings: readonly BookingWindow[];
+     +  slots: readonly S[];
+   ligne 143 :
+     -  blocks: readonly Interval[];
+     +  bookings: readonly BookingWindow[];
+   ligne 144 :
+     -  singleSlot: boolean;
+     +  blocks: readonly Interval[];
+   ligne 145 :
+     -  }): SlotStatus<S>[] {
+     +  singleSlot: boolean;
+   ligne 146 :
+     -  const { dayStartMs, slots, bookings, blocks, singleSlot } = params;
+     +  }): SlotStatus<S>[] {
+   ligne 147 :
+     -  
+     +  const { dayStartMs, slots, bookings, blocks, singleSlot } = params;
+   ligne 148 :
+     -  const computed = slots.map((slot) => {
+     +  
+   ligne 149 :
+     -  const window: Interval = {
+     +  const computed = slots.map((slot) => {
+   ligne 150 :
+     -  startMs: dayStartMs + slot.startMinutes * MINUTE_MS,
+     +  const window: Interval = {
+   ligne 151 :
+     -  endMs: dayStartMs + slot.endMinutes * MINUTE_MS
+     +  startMs: dayStartMs + slot.startMinutes * MINUTE_MS,
+   ligne 152 :
+     -  };
+     +  endMs: dayStartMs + slot.endMinutes * MINUTE_MS
+   ligne 153 :
+     -  
+     +  };
+   ligne 154 :
+     -  let status: SlotAvailabilityStatus = "AVAILABLE";
+     +  
+   ligne 155 :
+     -  if (blocks.some((block) => intervalsOverlap(window, block))) {
+     +  let status: SlotAvailabilityStatus = "AVAILABLE";
+   ligne 156 :
+     -  status = "BLOCKED";
+     +  if (blocks.some((block) => intervalsOverlap(window, block))) {
+   ligne 157 :
+     -  }
+     +  status = "BLOCKED";
+   ligne 158 :
+     -  for (const booking of bookings) {
+     +  }
+   ligne 159 :
+     -  // Le recouvrement HORAIRE fait foi, pas l'identité du créneau : un
+     +  for (const booking of bookings) {
+   ligne 160 :
+     -  // walk-in saisi de 19h à 23h occupe la soirée même s'il n'est rattaché à
+     +  // Le recouvrement HORAIRE fait foi, pas l'identité du créneau : un
+   ligne 161 :
+     -  // aucun `slotTemplateId`.
+     +  // walk-in saisi de 19h à 23h occupe la soirée même s'il n'est rattaché à
+   ligne 162 :
+     -  if (!intervalsOverlap(window, booking)) continue;
+     +  // aucun `slotTemplateId`.
+   ligne 163 :
+     -  status = worst(status, booking.hard ? "BOOKED" : "REQUESTED");
+     +  if (!intervalsOverlap(window, booking)) continue;
+   ligne 164 :
+     -  }
+     +  status = worst(status, booking.hard ? "BOOKED" : "REQUESTED");
+   ligne 165 :
+     -  
+     +  }
+   ligne 166 :
+     -  return { slot, status };
+     +  
+   ligne 167 :
+     -  });
+     +  return { slot, status };
+   ligne 168 :
+     -  
+     +  });
+   ligne 169 :
+     -  if (singleSlot && computed.some((entry) => entry.status === "BOOKED")) {
+     +  
+   ligne 170 :
+     -  // On ne remonte pas un BLOCKED en BOOKED : un blocage reste un blocage,
+     +  if (singleSlot && computed.some((entry) => entry.status === "BOOKED")) {
+   ligne 171 :
+     -  // il est plus grave et se lève autrement.
+     +  // On ne remonte pas un BLOCKED en BOOKED : un blocage reste un blocage,
+   ligne 172 :
+     -  return computed.map((entry) => (entry.status === "BLOCKED" ? entry : { ...entry, status: "BOOKED" as const }));
+     +  // il est plus grave et se lève autrement.
+   ligne 173 :
+     -  }
+     +  return computed.map((entry) => (entry.status === "BLOCKED" ? entry : { ...entry, status: "BOOKED" as const }));
+   ligne 174 :
+     -  return computed;
+     +  }
+   ligne 175 :
+     -  }
+     +  return computed;
+   ligne 176 :
+     -  
+     +  }
+
+── cible 11 : B1. Le 404 de routage n'est plus normalisé (retour à l'enveloppe brute
+   fichier          : apps/api/src/common/filters/all-exceptions.filter.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 3053 → 3009 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 53 :
+     -  if (exception instanceof NotFoundException && !carriesCode(body)) {
+     +  if (false as boolean) {
+
+── cible 12 : B2. TOUS les 404 sont réécrits : le code métier est écrasé
+   fichier          : apps/api/src/common/filters/all-exceptions.filter.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 3053 → 3031 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 53 :
+     -  if (exception instanceof NotFoundException && !carriesCode(body)) {
+     +  if (exception instanceof NotFoundException) {
+
+── cible 13 : A13. L'exclusion mord AUSSI sans date (elle retire trop large)
+   fichier          : apps/api/src/venues/venues-public.service.ts
+   genre            : substitution
+   ancre            : 1 → 0   (le harnais en attend 1)
+   marqueur         : 0 → 1   (hors sites d'ancre)
+   taille           : 24255 → 24226 octets
+   ✓ MUTATION POSEE — l'ancre disparait, le marqueur progresse, le contenu change
+   ligne 213 :
+     -  ...(annotateOn === null ? {} : { slotTemplates: { some: ACTIVE_SLOT } }),
+     +  ...{ slotTemplates: { some: ACTIVE_SLOT } },
+
+==============================================================================
+POSEES 13   ·   NON POSEES 0   ·   NON COUVERTES 0
+✓ TOUTES LES MUTATIONS SONT POSEES, ET TOUTES LES CIBLES ONT ETE REGARDEES

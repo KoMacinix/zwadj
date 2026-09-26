@@ -1,0 +1,66 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/venues-public.service.spec.ts -t 48 H
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/venues/venues-public.service.spec.ts (25 tests | 1 failed | 24 skipped) 20ms
+   ↓ VenuesPublicService.list — WHERE D33 + filtres > sans filtre : prédicat strict de la liste (PUBLISHED, vivante, ACTIVE) + tri recent + fenêtre
+   ↓ VenuesPublicService.list — WHERE D33 + filtres > filtres combinés : ville + invités (bornes croisées) + fourchette de prix + amenities en ET
+   ↓ VenuesPublicService.bySlug — WHERE D33 détail + court-circuit > slug hors motif (majuscule, espace, underscore…) : 404 sans toucher la base
+   ↓ VenuesPublicService.bySlug — WHERE D33 détail + court-circuit > WHERE du détail : PUBLISHED, vivante, status ∈ {ACTIVE, TEMPORARILY_UNAVAILABLE} — HIDDEN exclu
+   ↓ VenuesPublicService.list — availableOn : refus de la date passée > ⚠ AUJOURD'HUI EST ACCEPTÉ (`<`, pas `<=`) : chercher une salle pour ce soir est le cas normal
+   ↓ VenuesPublicService.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois
+   ↓ VenuesPublicService.list — availableOn : refus de la date passée > une date passée : 400 AVAILABLE_ON_PAST, et AUCUNE requête n'est lancée
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > ⚠ LE JOUR DE L'HORIZON EST ACCEPTÉ (`>`, pas `>=`)
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > le LENDEMAIN de l'horizon : 400 AVAILABLE_ON_BEYOND_HORIZON
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > ⛔ LES DEUX REFUS NE PORTENT PAS LE MÊME CODE — c'est la décision D227
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > ⚠ l'horizon suit la MÊME constante que la demande de visite
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ SANS `availableOn`, AUCUNE des trois lectures n'a lieu, et l'écho vaut `null`
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ TROIS REQUÊTES, bornées par `venueId IN` — O(page), pas O(page × salles)
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ `PENDING` N'EST PAS CHARGÉ (D101) : une demande en attente ne grise rien
+   × VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ LA FENÊTRE VA À +48 H, pas à minuit + 24 h : sinon la soirée 20h→02h ment 16ms
+     → expected 1780441200000 to be 1780527600000 // Object.is equality
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > aucune salle dans la page : aucune requête d'annotation, et pas de `IN ()` vide
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > aucune réservation, aucun blocage ⇒ `true`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ UNE RÉSERVATION DE 00H30 LE LENDEMAIN ferme la soirée 20h→02h ⇒ `false`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > un blocage pro qui ENJAMBE la journée sans y commencer ⇒ `false`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SITUATION B — salle sans AUCUN créneau : EXCLUE par le `where`, pas grisée
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SANS `availableOn`, AUCUNE exclusion : la recherche non datée ne retire rien
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > MULTI_SLOT : un créneau pris, l'autre libre ⇒ `true` — la salle reste disponible
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SINGLE_SLOT : la MÊME réservation ferme la journée entière ⇒ `false`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ LES SALLES NE SE CONTAMINENT PAS : la réservation de v1 ne grise pas v2
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ ANNOTER N'EST PAS FILTRER : la salle grisée reste dans `items`, et `total` ne bouge pas
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 skipped (25)
+   Start at  09:59:39
+   Duration  1.77s (transform 308ms, setup 0ms, collect 1.14s, tests 20ms, environment 0ms, prepare 197ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/venues-public.service.spec.ts -t 48 H
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/venues-public.service.spec.ts > VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ LA FENÊTRE VA À +48 H, pas à minuit + 24 h : sinon la soirée 20h→02h ment
+AssertionError: expected 1780441200000 to be 1780527600000 // Object.is equality
+
+- Expected
++ Received
+
+- 1780527600000
++ 1780441200000
+
+ ❯ src/venues/venues-public.service.spec.ts:358:41
+    356|     // `slot_templates_minutes_valid` (2880 min), jamais recopiées à l…
+    357|     expect(where.endsAt.gt.getTime()).toBe(MINUIT_2_JUIN_2026);
+    358|     expect(where.startsAt.lt.getTime()).toBe(MINUIT_2_JUIN_2026 + 2880…
+       |                                         ^
+    359|   });
+    360| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+--- code de sortie : 1 ---

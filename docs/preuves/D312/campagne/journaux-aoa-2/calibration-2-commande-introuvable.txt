@@ -1,0 +1,10 @@
+$ pnpm --filter @zwadj/api exec vitest-introuvable-d312 run src/venues/venues-public.service.spec.ts
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest-introuvable-d312" not found
+
+--- stderr ---
+'vitest-introuvable-d312' is not recognized as an internal or external command,
+operable program or batch file.
+
+--- code de sortie : 1 ---

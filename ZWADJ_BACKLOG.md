@@ -2457,6 +2457,22 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 26/09/2026 — rang 23, lot de déblocage (D312)
+
+Détail : section D312 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
+Ko** », et son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : entrée `[OUTIL]` d'`available-on-api` (reports de D310, **close**) ;
+entrée `[OUTIL]` du tri de `lancer-campagnes.py` (reports de D308, **reproduit**).
+
+- [ ] **[MÉTHODE]** **Le point 12 du critère, à la certification qui vient : comment chaque AUTRE campagne prouve-t-elle
+  que ses mesures ont DÉMARRÉ ?** Le lot de déblocage le prouve pour `available-on-api` seul, par une sortie lue. Les 27
+  autres harnais ne le font pas tous — ceux qui jettent la sortie de leur mesure (D310, faute n° 2). Le point 12 admet « à
+  défaut, une durée au-dessus d'un plancher déclaré au protocole ». ⇒ **BLOQUE : le protocole de la certification qui
+  clôt le rang 23** — il doit dire, campagne par campagne, laquelle des deux preuves il exige, AVANT toute mesure.
+  ⇒ **COÛT** : documentaire (le protocole ; les durées par campagne sont déjà dans la table de `--tout`, les journaux par
+  mesure là où un harnais les écrit) ; aucun fichier de code ; e2e : non ; chemin de l'argent : non pour la règle, oui pour
+  les onze harnais qu'elle lit.
+
 ## Reports du 26/09/2026 — rang 23, arbitrages de Ko et lecture adverse de D310 (D311)
 
 Détail : section D311 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
@@ -2490,7 +2506,7 @@ Ko** », et son **COÛT**.
 Détail : section D310 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
 Ko** », et son **COÛT**. **Rien n'est corrigé** (consigne de Ko).
 
-- [ ] **[OUTIL]** ⛔ **`neutralize-available-on-api.py` NE LANCE JAMAIS SA MESURE SUR CE POSTE, ET COMPTE L'ÉCHEC « ROUGE ».**
+- [x] **[OUTIL]** ⛔ **`neutralize-available-on-api.py` NE LANCE JAMAIS SA MESURE SUR CE POSTE, ET COMPTE L'ÉCHEC « ROUGE ».**
   `_binaire("apps/api/node_modules/.bin/vitest")` rend un chemin **relatif**, lancé avec `cwd="apps/api"` : « `'apps' is
   not recognized as an internal or external command` », code 1 en 0,02 s ; sortie capturée **jamais imprimée** ; **pas de
   pré-vol** ; tout code non nul = « ROUGE ». Reproduit **sans mutation**, 13 cibles sur 13
@@ -2507,6 +2523,9 @@ Ko** », et son **COÛT**. **Rien n'est corrigé** (consigne de Ko).
   tests qui feraient mordre ses cibles si elles s'avèrent muettes ; aucun code produit ; troisième lot non certifié ; puis
   la certification, protocole neuf. **C'est la partie B de la session de D311**, qui fermera cette entrée ou dira pourquoi
   elle ne le peut pas. Point d'entrée du rang 23, bloc « ARBITRAGE DE KO (D311) ».)*
+  ⛔ *(D312, 26/09/2026 — **FAIT** : lancement des harnais qui fonctionnent, pré-vol par mesure, morsure = un test EN ÉCHEC
+  lu, refus de juger une mesure non démarrée, calibration à cinq bras dont **le défaut de D310 rejoué tel quel ⇒ NON
+  DÉMARRÉE** ; **13 cibles sur 13 MORDUES, LUES** ; aucune muette, aucun test touché. **Close.** Section D312.)*
 - [x] **[MÉTHODE]** **« Lignes de verdict = cibles déclarées » ne prouve pas qu'une campagne a JOUÉ ses cibles** — faute n° 2
   de D310 : le lecteur `docs/preuves/D310/outils/lire-campagnes.py` a rendu « 28 sur 28 » ; c'est la **durée** (0 s) qui a
   montré l'échec. Tout harnais qui **jette la sortie** de sa mesure et juge au code peut imprimer un verdict sans avoir
@@ -2593,6 +2612,9 @@ fait, **restent ouvertes jusqu'à la certification**). ⛔ *(D310 : certificatio
   spec seule modifiée doit sélectionner ses campagnes ; un fichier sans rapport, aucune) ; e2e : non ; cadrage chemin de
   l'argent : *non, dérivé par la session* — il sélectionne des campagnes, il ne prouve aucune garde ; migration : non ;
   dépendance : non.
+  ⛔ *(D312, 26/09/2026 — **REPRODUIT** : le lot de déblocage ne modifie qu'un harnais ; `lancer-campagnes.py` rend « **60
+  fichier(s) modifié(s) depuis HEAD → 0 campagne(s) concernée(s) sur 28** » (`docs/preuves/D312/campagne/lancer-campagnes.txt`).
+  Le harnais du lot a été joué **directement**, deux fois, et lu.)*
 - [ ] **[TEST]** **`pg` avertit « Calling client.query() when the client is already executing a query is deprecated
   and will be removed in pg@9.0 »** — croisé par D308 dans la sortie de `bookings.int-spec.ts`. **Pas introduit par 23a
   ni 23a-2** : relevé dans les journaux versés, **14** occurrences par passe `test:int` dès `docs/preuves/D291/portes/`,

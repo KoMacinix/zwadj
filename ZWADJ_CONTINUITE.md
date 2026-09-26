@@ -1200,6 +1200,14 @@ TROIS, sous l'exception) → LA CERTIFICATION, sous un protocole neuf commité a
 ⚠ *Dérivé par la session* : le lot de déblocage avance le **rang 23** — Ko en fait écrire les modes « au point d'entrée du
 rang 23 » (règle de D302 : aucun lot hors de l'ordre des rangs). ⇒ **Où il en est** : point d'entrée du rang 23, bloc
 « ARBITRAGE DE KO (D311) » ; section D311.
+⛔ **(D312, 26/09/2026) RANG 23 — LE LOT DE DÉBLOCAGE, CODE D'INSTRUMENT** (`neutralisation/`, **aucun code produit**) : modes
+de défaillance écrits et commités **avant** le correctif (`071dfc2`) ; `neutralize-available-on-api.py` lance vitest comme les
+harnais qui fonctionnent, prouve le démarrage par un pré-vol lu, ne compte une morsure que sur un test EN ÉCHEC, refuse de
+juger une mesure qui ne démarre pas ; calibration à cinq bras rejouée à chaque lancement ; **13 cibles sur 13 MORDUES,
+LUES** ; aucune muette, **aucun test touché**. **Code : compteur de lots de code non certifiés DEUX → TROIS**, sous
+l'exception bornée de Ko (D311). ⇒ **Ce qui vient ensuite : la CERTIFICATION**, en session neuve, sur le poste de Ko, sous
+un protocole neuf commité avant toute mesure — **elle clôt le rang 23**. ⇒ **Où il en est** : point d'entrée du rang 23 ;
+section D312.
 ⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
 23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
 cadrage du rang 23 ne rend PERMIS aucun lot de code** : ses sous-lots attendent le découpage de Ko, la décision du
@@ -1228,6 +1236,9 @@ déblocage** (`neutralize-available-on-api.py`, et les tests qui feraient mordre
 **aucun code produit**), **troisième lot non certifié par exception bornée à D270** ; puis la **certification**, sous un
 protocole neuf commité avant toute mesure. ⇒ **Aucun autre lot de code, de quelque rang que ce soit, avant elle** (Ko).
 **L'exception ne fait pas précédent** (Ko). **Le rang 24 reste en attente d'arbitrage de Ko.**)*
+⛔ *(D312, 26/09/2026 — passe D277, sens 2 : le lot de déblocage est **fait** ⇒ l'exception de Ko est **CONSOMMÉE**. Compteur
+**TROIS** ⇒ **aucun lot de code, de quelque rang que ce soit, ne s'ouvre** : il reste la **certification**, qui clôt le rang
+23. **Le rang 24 reste en attente d'arbitrage de Ko.**)*
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1315,9 +1326,9 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; ~~23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE~~ ⛔ 23a CODÉ LE 25/09/2026 (D305) — ~~ATTEND LA SESSION ADVERSE~~ ; ~~COMPTEUR À UN~~ ⛔ SESSION ADVERSE FAITE LE 25/09/2026 (D306) — ~~23a ATTEND LA DÉCISION DU RELECTEUR~~ ⛔ DÉCISION REÇUE LE 25/09/2026, PAUSE DU CHEMIN DE L'ARGENT ARBITRÉE PAR KO (D307) — ~~RESTENT 23a-2 PUIS LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ 23a-2 CODÉ LE 25/09/2026 (D308) — COMPTEUR À DEUX — ~~RESTE LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ CERTIFICATION ÉCHOUÉE LE 26/09/2026 (D310) : UNE CAMPAGNE N'A JOUÉ AUCUNE DE SES 13 CIBLES — RIEN NE SE CLÔT, COMPTEUR À DEUX, ~~EN ATTENTE D'ARBITRAGE DE KO~~ ⛔ ARBITRÉ PAR KO LE 26/09/2026 (D311) : UN LOT DE DÉBLOCAGE (EXCEPTION BORNÉE À D270), PUIS LA CERTIFICATION, QUI CLÔT LE RANG**
+## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; ~~23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE~~ ⛔ 23a CODÉ LE 25/09/2026 (D305) — ~~ATTEND LA SESSION ADVERSE~~ ; ~~COMPTEUR À UN~~ ⛔ SESSION ADVERSE FAITE LE 25/09/2026 (D306) — ~~23a ATTEND LA DÉCISION DU RELECTEUR~~ ⛔ DÉCISION REÇUE LE 25/09/2026, PAUSE DU CHEMIN DE L'ARGENT ARBITRÉE PAR KO (D307) — ~~RESTENT 23a-2 PUIS LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ 23a-2 CODÉ LE 25/09/2026 (D308) — COMPTEUR À DEUX — ~~RESTE LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ CERTIFICATION ÉCHOUÉE LE 26/09/2026 (D310) : UNE CAMPAGNE N'A JOUÉ AUCUNE DE SES 13 CIBLES — RIEN NE SE CLÔT, COMPTEUR À DEUX, ~~EN ATTENTE D'ARBITRAGE DE KO~~ ⛔ ARBITRÉ PAR KO LE 26/09/2026 (D311) : ~~UN LOT DE DÉBLOCAGE (EXCEPTION BORNÉE À D270), PUIS LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ LOT DE DÉBLOCAGE FAIT LE 26/09/2026 (D312) — COMPTEUR À TROIS — RESTE LA CERTIFICATION, QUI CLÔT LE RANG**
 
-### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 25/09/2026 (D305, puis D306, puis D307, puis D308), puis le 26/09/2026 (D309, puis D311)
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 25/09/2026 (D305, puis D306, puis D307, puis D308), puis le 26/09/2026 (D309, puis D311, puis D312)
 
 ⛔ **ORDRE ARBITRÉ PAR KO LE 24/09/2026, mot pour mot** : « tous les sous-lots du rang 23 avancent le rang 23 (règle de
 D302), certifications comprises. Ordre : ce lot → 23a (F1 + F5) → R1 → certification → 23b (F2) → 23c (F6) →
@@ -1334,8 +1345,8 @@ rang que j'arbitrerai. » ⇒ **Ordre restant : 23a-2 → certification (clôtur
 | **23a-2** | C1 à C5 de D306 : les gardes que la suite ne mesurait pas — code (tests, harnais), **second lot de 23a** | ~~⏸ **ordonné par Ko le 25/09/2026 (D307)** ; cadrage : section D306 et la décision du relecteur ; C1 à C5 s'écrivent au § 2 du cadrage **avant tout test** ; la preuve rejoue à l'identique les mutations de D306 (elle tient lieu de session adverse, décision du relecteur)~~ ✅ **CODÉ LE 25/09/2026 (D308)** — C1 à C5 (et C6, l'accord) écrits au § 2 **avant tout test** ; **aucun fichier source touché** ; les mutations de D306 **rejouées à l'identique** (définitions importées de sa pièce) : **8 sur 8 MORSURES LUES**, chaque titre attendu en `AssertionError`, tel que prédit au cadrage. Détail : section D308. ~~⚠ **Au relecteur** : C3 — la prémisse « T1 et T2 » ne recoupait pas X2a ; la session a **proposé** les tests D121 (§ 2, MD-C3)~~ ⛔ *(D309 : C3 **tranché** — écart **accepté** par le relecteur ; bloc D309 de la méthode renforcée)* |
 | **R1** | la lecture de l'échec dans les harnais, code (`neutralisation/`) | ~~⏸ après 23a~~ ; ~~attend le relecteur sur les choix de son cadrage (§ 9 de « ⛔ CADRAGE DE R1 »)~~ ⛔ *(D305 : choix **tranchés**, § 9 ; trois constats de 23a **proposés comme modes**, au relecteur, § 4)* ⛔ *(D307 : **SORT DU RANG 23** — backlog, bloqué par la reprise du chemin de l'argent ; **premier lot à la reprise** ; bloque toujours la levée du drapeau. Les trois modes proposés : **tranchés**, § 9)* |
 | certification | — | ~~⏸ **bloquée par R1** (décision 4 du relecteur, D304)~~ ⛔ *(D307 : ⏸ **après 23a-2** ; R1 **ne la bloque plus** — décision 2b du relecteur : les morsures du chemin de l'argent non lues s'y écrivent « code de sortie seul, non prouvées (R1) » ; **elle clôt le rang 23**, sur le poste de Ko)* ⛔ *(D308 : **C'EST LE PROCHAIN LOT** — 23a et 23a-2 en font partie ; compteur **DEUX**)* ⛔ *(D310 : **ÉCHOUÉE** — passe `r23c-20260926-0032`, toutes les prédictions tenues, mais `neutralize-available-on-api.py` n'a joué **aucune** de ses 13 cibles (binaire relatif lancé depuis `apps/api` : « `'apps' is not recognized` », compté « ROUGE ») ; **aucune marque**, rien ne se clôt ; section D310)* |
-| **lot de déblocage** | `neutralize-available-on-api.py` : sa mesure ne démarre pas sur ce poste (D310) — code d'instrument, **aucun code produit** | ⏸ **ARBITRÉ PAR KO LE 26/09/2026 (D311)** : exception bornée à D270, **troisième lot non certifié** ; partie B de la session ; ses modes de défaillance s'écrivent dans le bloc « ARBITRAGE DE KO (D311) », **avant le correctif** |
-| **certification** (seconde) | — | ⏸ **après le lot de déblocage**, sous un **protocole neuf commité avant toute mesure**, en session neuve, sur le poste de Ko ; **elle clôt le rang 23** |
+| **lot de déblocage** | `neutralize-available-on-api.py` : sa mesure ne démarre pas sur ce poste (D310) — code d'instrument, **aucun code produit** | ~~⏸ **ARBITRÉ PAR KO LE 26/09/2026 (D311)** : exception bornée à D270, **troisième lot non certifié** ; partie B de la session ; ses modes de défaillance s'écrivent dans le bloc « ARBITRAGE DE KO (D311) », **avant le correctif**~~ ✅ **FAIT LE 26/09/2026 (D312)** — modes écrits et commités **avant** le correctif (`071dfc2`) ; lancement des harnais qui fonctionnent, pré-vol, lecture, calibration à cinq bras ; **13 cibles sur 13 MORDUES, LUES** (`AssertionError`, titre visé) ; aucune muette, **aucun test touché** ; **compteur TROIS** |
+| **certification** (seconde) | — | ⏸ **après le lot de déblocage**, sous un **protocole neuf commité avant toute mesure**, en session neuve, sur le poste de Ko ; **elle clôt le rang 23** ⛔ *(D312 : **C'EST LE PROCHAIN LOT** — D305, D308 et D312 en font partie ; compteur **TROIS**)* |
 | 23b, 23c, certification | F2, puis F6 | ~~⏸ — ⚠ 23b attend aussi la réponse du relecteur sur la garde « déjà converti » (§ 8, annotation D305)~~ ⛔ *(D307 : **SORTENT DU RANG 23** — backlog, bloqués par la reprise ; la question « déjà converti » attend avec 23b)* |
 ~~⇒ **Aucun lot de code n'est PERMIS aujourd'hui** : le compteur est à zéro, l'ordre est arbitré, et la décision du
 relecteur sur le § 8 manque.~~ ⛔ *(D305 : la décision est arrivée, 23a est codé.)* ⇒ **Compteur de lots de code non
@@ -1364,6 +1375,10 @@ D'ARBITRAGE DE KO** — bloc « RÉSULTAT (D310) » sous le protocole, ci-dessou
 puis la certification, sous un protocole neuf commité avant toute mesure ; **aucun autre lot de code avant elle**. ⇒ **CE QUI
 VIENT ENSUITE : LE LOT DE DÉBLOCAGE** (partie B de la session), **puis la CERTIFICATION**, en session neuve, sur le poste de
 Ko. Bloc « ARBITRAGE DE KO (D311) », ci-dessous.)*
+⛔ *(D312, 26/09/2026 : **le lot de déblocage est FAIT** — `neutralize-available-on-api.py` démarre sa mesure, refuse de juger
+ce qui ne démarre pas, et ses **13 cibles mordent, LUES** ; **compteur de lots de code non certifiés : TROIS** (D305, D308,
+D312), sous l'exception bornée de Ko. ⇒ **CE QUI VIENT ENSUITE : LA CERTIFICATION**, en session neuve, sur le poste de Ko,
+sous un protocole neuf commité avant toute mesure ; **elle clôt le rang 23**. Aucun autre lot de code avant elle.)*
 ⚠ ~~**Que R1 puisse s'ouvrir AVANT la fin de la revue de 23a n'est écrit nulle part** —
 l'ordre dit « 23a → R1 », la forme de revue dit qu'une autre session casse 23a : **à Ko** ; une permission ne se
 déduit pas (D287).~~ ⛔ *(D307 : sans objet — R1 sort du rang 23, arbitrage de Ko.)* ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
@@ -1466,7 +1481,7 @@ s'avèrent muettes une fois jouées, les tests qui les font mordre. AUCUN code p
 protocole neuf commité avant toute mesure. Aucun autre lot de code ne s'ouvre avant elle. » *Motif* : « sans ce lot,
 aucune certification ne peut passer ; sans certification, aucun lot ne peut s'ouvrir. » ⛔ « **L'exception ne crée pas de
 précédent : un autre blocage de ce type reviendra à moi.** »
-⇒ **CE QUI VIENT ENSUITE** : **(1) le lot de déblocage** — partie B de la session du 26/09/2026, numéro pris au registre
+⇒ **CE QUI VIENT ENSUITE** : ~~**(1) le lot de déblocage**~~ ⛔ *(D312 : **FAIT** — « RÉSULTAT DU LOT DE DÉBLOCAGE (D312) », plus bas)* — partie B de la session du 26/09/2026, numéro pris au registre
 après D311 ; ses **modes de défaillance s'écrivent dans ce bloc AVANT le correctif** (consigne de Ko) ; il porte le compteur
 de lots de code non certifiés de **DEUX à TROIS** ; **(2) la certification**, **en session neuve, sur le poste de Ko**, sous
 un protocole neuf commité avant toute mesure — elle applique le **point 12** du critère du rang 9 (1c : « une cible ne
@@ -1530,6 +1545,24 @@ porte le type d'erreur.
   imprimée et journalisée.
 **Si une cible, jouée, ne mord pas** : son mode s'écrit **ici** avant le test qui la fera mordre, puis on rejoue — rien
 d'autre (Ko).
+
+#### ✅ RÉSULTAT DU LOT DE DÉBLOCAGE (D312) — ce que la certification trouvera
+
+**Aucune cible muette** ⇒ aucun mode neuf, **aucun test touché** ; le seul fichier de code est le harnais. Sur l'arbre de
+la passe finale (`docs/preuves/D312/campagne/`, journaux versés à l'octet) : version **3.2.7** ; calibration **5 bras sur 5**
+(défaut de D310 rejoué, commande introuvable, filtre sans titre ⇒ NON DÉMARRÉE ; A1 ⇒ MORDUE, deux blocs en
+`AssertionError` ; mutation neutre ⇒ VERTE) ; pré-vol **12 mesures** démarrées et vertes (A8 et A9 partagent la leur) ;
+**13 cibles sur 13 MORDUES**, **14 blocs d'échec LUS**, tous en `AssertionError`, tous sur un titre qui porte le filtre de la
+cible — relu par un lecteur indépendant du harnais, **30 journaux, 0 écart**. Les gardes neuves du harnais ont été
+**neutralisées une à une sur des copies** : chacune fait refuser le harnais (`docs/preuves/D312/meta/`, 6 variantes sur 6) —
+dont un **non-démarrage SOUS mutation** (syntaxe cassée : « `Tests no tests` », code 1) jugé « NON DÉMARRÉE — PAS une
+morsure », **0 mordue**, refus.
+⚠ **CE QUE LA CERTIFICATION DEVRA FAIRE POUR LE POINT 12, écrit pour son protocole** — *dérivé par la session* : ce lot
+prouve le démarrage de **ses 13 cibles** par une sortie lue ; **les 27 autres harnais ne le font pas tous** (D310, faute
+n° 2 : ceux qui jettent leur sortie). Le point 12 admet, « à défaut, une durée au-dessus d'un plancher déclaré au
+protocole » : **c'est au protocole neuf de dire, campagne par campagne, laquelle des deux preuves il exige.**
+⚠ **La preuve de démarrage est LOCALE au harnais** : si R1 garde `available-on-api` dans sa portée (question au relecteur,
+reports de D311), son module partagé la remplacera.
 
 ### L'état du rang à l'ouverture (D303, 23/09/2026) — ⚠ ses deux dernières phrases sont PÉRIMÉES par D304
 
@@ -4666,6 +4699,155 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 26/09/2026 — D312 · rang 23 (reste ouvert), LE LOT DE DÉBLOCAGE — code d'instrument : `neutralize-available-on-api.py` démarre sa mesure, et ses 13 cibles mordent, LUES
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D311** ⇒ **D312** ; « D312 » : **0** occurrence à `HEAD`
+(`git grep`). ⇒ **RANG 23**, partie B de la session de D311, **par l'exception bornée à D270 arbitrée par Ko** (D311, 1a).
+**SHA de départ : `6f7d6c5`** — partie A commitée et poussée, `HEAD` = `origin/main`. **Étape 0** — les modes de
+défaillance, **écrits et commités AVANT le correctif** : `071dfc2`. **Fichiers** : `neutralisation/neutralize-available-on-api.py`
+(**le seul fichier de code**) ; `AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` ; `docs/preuves/D312/`. **Aucune spec
+touchée** : aucune cible n'est muette. **Code d'instrument** : **compteur de lots de code non certifiés DEUX → TROIS**, sous
+l'exception (Ko : « un seul LOT DE DÉBLOCAGE est permis comme troisième lot non certifié »). **Hors du chemin de l'argent**
+(constat 3 de D311 : aucune des six branches) ⇒ la pause ne le touche pas.
+**État machine** (verdicts seulement, **aucune durée ne se compare** ici) : `docs/preuves/D312/etat/sonde-avant-harnais.txt` —
+SECTEUR, `node` 0, **`chrome` 17** : non certifiant, déclaré comme tel (point 8 du critère : ce n'est pas une certification).
+
+### D312 — le défaut, reproduit AVANT le correctif
+
+La reproduction non mutante de D310 (`docs/preuves/D310/aoa/repro-aoa-13.py`), rejouée : (a) l'appel tel que le harnais le
+faisait, **13 sur 13 en code 1, 0 test** ; (b) binaire absolu, 13 sur 13 en code 0, 15 tests
+(`docs/preuves/D312/avant/`). **Sondes, sans mutation**, par le lancement des harnais qui fonctionnent
+(`docs/preuves/D312/sondes/`, vitest **3.2.7**) : nominal ⇒ code 0, « `Tests 3 passed | 22 skipped (25)` » ; **filtre sans
+titre ⇒ code 0, « `Tests 25 skipped (25)` »** ; fichier introuvable et commande introuvable ⇒ code 1, **aucune** ligne
+« Tests ». ⇒ Modes MD-AOA-1 à 9 au point d'entrée du rang 23, bloc « ARBITRAGE DE KO (D311) ».
+
+### D312 — le correctif
+
+- **Lancement** (MD-AOA-1) : `pnpm --filter @zwadj/api exec vitest run <spec> -t <filtre>`, `pnpm` par `shutil.which`, depuis
+  la racine, **sans `cwd`** — **relu** dans `neutralize-s11a.py`, `-s11b.py`, `-rang23.py`, pas inventé.
+- **Lecture** (MD-AOA-2, -3) : la dernière ligne « Tests » ; **exécutés = passés + en échec** ; MORDUE ⇔ au moins un test en
+  échec, code non nul, et un bloc « `FAIL … > titre` » LU ; VERTE ⇔ code 0, 0 en échec, aucun bloc d'échec de fichier ;
+  exécutés = 0 ou pas de ligne « Tests » ⇒ **NON DÉMARRÉE** ; le reste ⇒ **PANNE**. Les deux derniers : « ✗ », **jamais
+  comptés**, code 2.
+- **Pré-vol** (MD-AOA-4), une fois par mesure distincte, arbre non muté ; **version** 3.2.7 exigée (MD-AOA-6) ; **calibration à
+  cinq bras à chaque lancement** (MD-AOA-7) ; **sortie entière** de chaque mesure dans `.neutralisation-journaux/available-on-api/`
+  (MD-AOA-5) ; seules les cibles mordues commencent par « ✓ » (MD-AOA-8).
+- **`ENV` et `CIBLES` INCHANGÉES À L'OCTET** (MD-AOA-9) : le fichier est assemblé autour du bloc d'origine recopié tel quel —
+  bloc présent une fois, valeurs identiques par l'arbre syntaxique (13 cibles), 0 LF nu, compilation OK.
+
+### D312 — les 13 cibles jouées, et LUES une à une
+
+Passe finale, **après les portes** (`docs/preuves/D312/campagne/aoa-2.txt`, code **0**) ; ses **30 journaux versés à l'octet**
+(`journaux-aoa-2/`, SHA-256 relus 30 sur 30) ; relus par `lire-journaux.py` — **indépendant du harnais**, cibles lues par
+l'arbre syntaxique — sur les pièces versées : **30 journaux, 1 554 lignes, 0 écart** (`lire-journaux-aoa-2.txt`).
+| cible | test en échec (fin du titre) | première ligne |
+|---|---|---|
+| A1 | « HIER est refusé… » et « une date passée : 400 AVAILABLE_ON_PAST… » (**2 blocs**) | `AssertionError: promise resolved … instead of rejecting` |
+| A2 | « ⚠ AUJOURD'HUI EST ACCEPTÉ (`<`, pas `<=`)… » | `AssertionError: promise rejected "BadRequestException…" instead of resolving` |
+| A3 | « ⚠ `PENDING` N'EST PAS CHARGÉ (D101)… » | `AssertionError: expected { in: [ 'PENDING', … ] } to deeply equal …` |
+| A4 | « ⚠ LA FENÊTRE VA À +48 H… » | `AssertionError: expected 1780441200000 to be 1780527600000` |
+| A5 | « ⚠ SITUATION B — salle sans AUCUN créneau… » | `AssertionError: expected undefined to deeply equal { some: … }` |
+| A6 | « ⚠ LES SALLES NE SE CONTAMINENT PAS… » | `AssertionError: expected [ false, false ] to deeply equal [ false, true ]` |
+| A7 | « ⚠ SINGLE_SLOT : la MÊME réservation ferme la journée… » | `AssertionError: expected [ true ] to deeply equal [ false ]` |
+| A8 | « ⚠ ANNOTER N'EST PAS FILTRER… » | `AssertionError: expected [] to have a length of 1 but got +0` |
+| A9 | « ⚠ ANNOTER N'EST PAS FILTRER… » (même test, **autre assertion** : l'écho) | `AssertionError: expected null to be '2026-06-02'` |
+| A10 | « ⚠ `computeDayAvailability` DÉLÈGUE… » | `AssertionError: expected '// Moteur de disponibilité…' to contain 'return computeDaySlotStatuses({'` |
+| B1 | « ⚠ ROUTE INCONNUE : l'enveloppe automatique de Nest… » | `AssertionError: expected { …(3) } to deeply equal { code: 'ROUTE_NOT_FOUND', … }` |
+| B2 | « ⚠ UN 404 MÉTIER N'EST PAS TOUCHÉ… » | `AssertionError: expected { code: 'ROUTE_NOT_FOUND', … } to deeply equal { code: 'VENUE_NOT_FOUND', … }` |
+| A13 | « ⚠ SANS `availableOn`, AUCUNE exclusion… » | `AssertionError: expected { some: … } to be undefined` |
+⇒ **13 mordues sur 13, 14 blocs, tous `AssertionError`**, chacun sur un titre qui porte le filtre de sa cible. **Aucune muette**
+⇒ aucun mode neuf, **aucun test écrit** (consigne de Ko : « rien d'autre »). La passe 1 (`aoa-1.txt`) rend les mêmes 13 ; ses
+journaux ne sont **pas** versés (faute n° 1). `verifier-mutations.py` : **13 posées, 0 non posée** (`verifier-mutations.txt`).
+
+### D312 — les gardes du harnais, neutralisées une à une
+
+`docs/preuves/D312/meta/preuves-du-harnais.py` — des **copies** du harnais, pose prouvée (ancre et marqueur, D286), jouées
+depuis la racine ; le harnais versionné n'est jamais modifié. **6 variantes sur 6** au verdict attendu :
+V0 témoin ⇒ code 0, A1 mordue ; V1 version autre que 3.2.7 ⇒ **refus** ; V2 « exécutés > 0 » neutralisé ⇒ la calibration (iii)
+le voit (« VERTE, attendu NON DÉMARRÉE ») ⇒ **ABANDON** ; V3 la sémantique de D310 réintroduite (« tout code non nul est une
+morsure ») ⇒ les bras (i) et (ii) le voient ⇒ **ABANDON** ; ⛔ **V4 — NON-DÉMARRAGE SOUS MUTATION** : une cible synthétique casse
+la syntaxe du module testé, « `Tests no tests` », code 1 ⇒ « **NON DÉMARRÉE — PAS une morsure** », **0 mordue**, code 2 — là
+où l'ancien harnais comptait « ROUGE » ; V5 un filtre sans titre ⇒ le **pré-vol refuse**, aucune cible jouée. Arbre intact
+après les six (1 ligne de statut : le harnais, non commité).
+
+### D312 — portes, dans l'ordre, APRÈS la dernière modification du code
+
+| porte | code | chiffres (journaux relus en entier, ANSI retiré, lecteur calibré de D310) | pièce |
+|---|---|---|---|
+| `typecheck` | 0 | 8 « Done », 0 `error TS` | `docs/preuves/D312/portes/typecheck.log` |
+| `lint` | 0 | 8 « Done » | `…/lint.log` |
+| `test` | 0 | 664/58 · 36/3 · 287/20 · 347/28 = **1 334 / 109** | `…/test.log` |
+| `build` | 0 | 4 « Done » | `…/build.log` |
+| `test:int` | 0 | **443 / 36**, PostgreSQL réel (`pg_isready` avant) | `…/testint.log` |
+« fail » confronté au contexte (D275, `lecture-portes.txt`) : `test`, **2** lignes de journal de `ChargilyGateway` (panne exercée
+par sa spec) ; `test:int`, **1**, le nom d'un test vert — les mêmes qu'à D310. **e2e : non lancée** — à la demande, et ce lot ne
+touche ni auth, ni concurrence, ni argent ; **aucune porte ne lit le harnais**. **Harnais du lot** : joué directement, passes 1
+et 2. **`lancer-campagnes.py`** : « 60 fichier(s) modifié(s) depuis HEAD → **0 campagne(s) concernée(s) sur 28** » — le tri ne
+compte pas le harnais lui-même (entrée `[OUTIL]` de D308, **reproduite**) ; `--tout` est l'affaire de la certification.
+
+### D312 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D312/passe-d277/balayage.py`, **copie à l'octet** de celui de D306 à D311 (SHA-256
+`24802faf…`) ; motifs lus dans `motifs.txt` (8 + 2 témoins). **Première passe** (après le point d'entrée, l'ordre des rangs,
+`AGENTS.md` et le backlog, avant cette section — `balayage-1.txt`) : **37** occurrences, **0** motif à zéro. **Après
+écriture** (`balayage-apres-ecriture.txt`) : **40**, **0** motif à zéro — la différence, **3**, est **tout entière**
+dans cette section, qui cite les phrases traitées (comptée ; la ligne du registre était déjà dans la première passe). Tri **à la main**.
+**Sens 1 — ce que D312 invalide** : « le lot de déblocage » annoncé comme **à venir** — titre du point d'entrée (**barré**),
+table (**barrée**), ligne D311 de l'ordre et annotations D311 (**chacune suivie** de celle de D312) ; « UN SEUL lot de code est
+PERMIS » (sous le rang 24 : **suivie** de l'annotation D312, l'exception est **consommée**) ; l'entrée `[OUTIL]`
+d'`available-on-api` (**close**) ; « compteur DEUX » dans les blocs courants (**suivis** des annotations D311 et D312).
+**Laissés, vrais à leur date** : les sections D310 et D311 ; la ligne D311 du registre.
+**Sens 2 — ce que D312 rend permis : RIEN.** Compteur **TROIS** — « trois, non » (D270) sans autre exception ; la certification
+était déjà le lot suivant. ⚠ **Ce qui reste interdit, écrit sous la ligne du rang 24** : tout lot de code avant elle.
+
+### D312 — audit de secrets avant commit — écrit APRÈS l'audit
+
+1. **« 0 valeur réelle »** : **sans objet** — aucun journal de ce lot ne porte de valeur réelle (aucun serveur, aucune e2e ;
+   `.env` non lu) ; les sorties de vitest versées sont celles de specs unitaires.
+2. **Contrôle de forme Chargily**, à part : `controles/controle-forme-chargily.py` (copie de celui de D311, restreinte à ce
+   lot) — calibration deux bras ; **0 porteur sur 77 fichiers**.
+3. **Passe** (`audit-secrets-d312.txt`, scellée) : **1 521** = **1 468** audités + **53** exclus par l'identité de leurs octets ; **123** alertes ; tri contre la dernière sortie scellée
+   (`D312/audit-secrets-etape0.txt`) : **1** neuve, triée au contexte : `[mot-de-passe]` à `portes/testint.log:240`, **un mot du titre** d'un test
+   d'`account.int-spec.ts` (« forgot-password : … CONSTANTE… ») — le cas déjà trié par D299, D305, D308 et D310 : **un
+   mot, pas une valeur** (`controles/tri-audit-d312.txt`). ⚠ À l'étape 0, **1** alerte neuve,
+   triée avant son commit : l'URL **factice** `x:x@localhost` que le harnais passe à vitest — déjà dans
+   `neutralize-available-on-api.py`, pas une valeur.
+4. **Audit final**, dernière écriture dans `docs/preuves/` (`audit-secrets-final.txt`, scellé) : ses chiffres sont **dans sa
+   sortie versée** et au rapport de fin de lot — cette phrase est écrite avant lui.
+
+### ⛔ D312 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⚠ **LES VARIANTES DE `preuves-du-harnais.py` ONT ÉCRASÉ UNE PARTIE DES JOURNAUX DE LA PASSE 1** : elles lancent des copies
+   du harnais, qui écrivent dans le **même** dossier `.neutralisation-journaux/available-on-api/`. Vu avant tout versement. ⇒
+   **La passe versée avec ses journaux est la passe 2**, jouée après les portes et relue sur les pièces versées ; la sortie de
+   la passe 1 est versée **seule**, nommée comme telle (point 11 du critère, par analogie).
+2. ⚠ `verifier-mutations.py` appelé d'abord avec le **chemin** du harnais au lieu de son nom court : refusé par l'outil
+   (« harnais inconnu »), rejoué ; la sortie versée est celle du second appel.
+3. ⛔ **J'AI PASSÉ DES CHIFFRES DESTINÉS À CE FICHIER EN ARGUMENTS DE LIGNE DE COMMANDE** (ceux de la passe D277 :
+   `remplir M=8 N1=37 …`). D289 l'interdit **par la forme** — « jamais un argument de ligne de commande » —, chiffres
+   compris : la règle est vérifiable parce qu'elle ne distingue pas. Aucun caractère interpolable, relu dans le fichier ;
+   **les chiffres de l'audit ont été passés par un fichier**.
+4. ⚠ **DEUX DÉFAUTS DE MES OUTILS D'ÉCRITURE, vus parce que l'attendu était imprimé à côté** (D290) : la relecture d'un
+   remplacement multi-lignes reconvertissait en CRLF un texte déjà converti et accusait **à tort** (« 0 fois ») — confronté
+   aux **octets du fichier** : nouvelle formulation 1 fois, ancienne 0, aucun `\r\r` ; et la copie du contrôle Chargily a
+   d'abord fait citer à son en-tête **sa propre copie** au lieu de sa source (« 4, attendu 3 ») — corrigée, relue, rejouée.
+   Un correctif d'outil qui écrivait de vrais sauts de ligne dans une chaîne a levé une `SyntaxError` : **rien n'a été
+   écrit**.
+   ⛔ **Et le texte même de ce point a d'abord porté DEUX VRAIS RETOURS CHARIOT (octet 13) à la place de la séquence
+   littérale qu'il cite** — un texte passé par un interpréteur : D289, encore. **Le contrôle « 0 LF nu » ne le voit pas** : il
+   compte les sauts de ligne, pas les retours chariot isolés. Vu à l'affichage, compté sur les octets (2, attendu 0),
+   corrigé sur les octets, recompté (0). ⇒ La relecture d'un fichier CRLF compte **les deux** : LF nus **et** CR isolés.
+
+### ⛔ D312 — CE QUE CE LOT NE FAIT PAS, ET SES LIMITES
+
+- **Aucun code produit, aucune spec, aucun autre harnais.** R1 n'est pas fait : la lecture ici est **locale** à ce harnais.
+- **Il ne certifie rien** : compteur **TROIS** ; D305, D308 et D312 attendent la certification — en session neuve, sur le poste
+  de Ko, sous un protocole neuf commité avant toute mesure.
+- **Le point 12 pour les 27 autres harnais** n'est pas outillé ici : backlog, reports de D312 — il bloque le protocole.
+- **Un délai dépassé** compterait comme un test en échec : limite déclarée (MD-AOA), lue dans chaque bloc ; aucune des 14
+  premières lignes lues n'en est un.
+- **État machine non certifiant** (`chrome` 17) : aucun chiffre de ce lot n'est une durée comparée ni une certification.
 
 ## Session du 26/09/2026 — D311 · rang 23 (reste ouvert), lot DOCUMENTAIRE (partie A) : les arbitrages de Ko sur l'échec de D310, deux branches de plus au chemin de l'argent, et la lecture adverse de D310
 
@@ -14514,3 +14696,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D309 | A | D309 — rang 23 (reste ouvert), lot DOCUMENTAIRE, partie A d'une session en deux : décisions du relecteur (chat), déléguées par Ko — C3 de 23a-2 accepté (la consigne reposait sur une prémisse que le relecteur n'avait pas vérifiée ; X2a mord par les trois D121, mesuré) ; « compte d'abord combien de cibles en dépendent » = première étape de R1, pas d'écart ; PIÈCES DE CAMPAGNE : une ligne de la table des portes cite le dossier versé de SA passe, toute autre passe versée se nomme comme telle (point 11 du critère du rang 9, neuf ; AGENTS.md) ; venues-admin.service.ts et venue.ts dedans, branche 1 (déjà sur la carte de D304) ; CRITÈRE DES CIBLES : dedans si la garde calcule, arrondit ou valide un montant, une recopie dans un message n'en est pas — S11a-7 (transport du créneau) et S11a-11 (recopie de deux montants stockés) dehors, relevé calibré ; lecture adverse de D308 : 112 contrôles, 1 écart (« 822 » lignes e2e = 821, le +1 de D294, rectifié à côté des pièces, extracteur non retouché), 3 constats (« 0 valeur réelle » hors de tout fichier, campagne sans identifiant de passe, extrait en liste noire), 1 faute de mon instrument corrigée et rejouée ; compteur DEUX inchangé ; suite : la certification (partie B) |
 | D310 | A | D310 — rang 23 (RESTE OUVERT), CERTIFICATION ÉCHOUÉE, AUCUNE MARQUE : protocole et procédures commités avant le relevé (1e949c3 ; énumération des harnais par l'arbre syntaxique, 28 harnais, 211 cibles ; exigences de Ko : toutes les campagnes, --int pour les six verrouillés, jouées = déclarées et crochets complets pour les 9 à intégration, R1 lues vs code seul, dossier de SA passe) ; passe r23c-20260926-0032 : porte dure verte, six portes à 0 (1 334/109, 443/36, e2e 34 · 1), --tout 28 · 198 · 0 · 13, --int 40, contre-épreuve 5/5, rang23 13/13 lues, arbre immobile, fenêtre homogène — toutes les prédictions ; MAIS neutralize-available-on-api.py n'a joué aucune de ses 13 cibles (vitest par chemin relatif depuis cwd apps/api : « 'apps' is not recognized », code 1 compté ROUGE ; reproduit sans mutation 13/13 ; chemin absolu : 13/13 démarrent, 15 tests) ⇒ 27 campagnes sur 28, 198 cibles jouées sur 211 ; même défaut mesuré dans les passes versées de D293 et D299 (marques à Ko), inféré pour D275, D283, D288 ; R1 : 12 lues, 79 code de sortie seul non prouvées, 107 hors chemin, 13 non jouées ; rien ne se clôt, rien n'est corrigé, pause non commencée, compteur DEUX ; fautes : import de deux harnais qui les a exécutés (hors fenêtre), lecteur aveugle à une mesure qui ne démarre pas ; suite : en attente d'arbitrage de Ko |
 | D311 | A | D311 — rang 23 (reste ouvert), lot DOCUMENTAIRE, partie A d'une session en deux : arbitrages de Ko sur l'échec de D310 — EXCEPTION BORNÉE À D270 : un seul LOT DE DÉBLOCAGE (`neutralize-available-on-api.py`, et les tests qui feraient mordre ses cibles muettes ; aucun code produit) comme troisième lot non certifié, puis la certification sous un protocole neuf commité avant toute mesure ; pas de précédent ; les marques passées valent pour ce qu'elles ont mesuré, annotées (13 cibles d'`available-on-api` jamais jouées — mesuré D293, D299 ; inféré D275, D283, D288) ; critère du rang 9, point 12 (une cible ne compte que si sa mesure a DÉMARRÉ) ; décisions du relecteur : S11a-7 et S11a-11 DEDANS, branches (5) donnée qui entre dans le calcul d'un montant et (6) instruction de paiement ; rectification de D308 par D309 vérifiée, conforme ; lecture adverse de D310 : 94 contrôles, 2 écarts (D288 mesurable par le versement de D293 ; bloc du rang 15 non annoté), constat : la portée écrite de R1 nomme `available-on-api` ; compteur DEUX inchangé ; suite : le lot de déblocage (partie B) |
+| D312 | A | D312 — rang 23 (reste ouvert), LOT DE DÉBLOCAGE, code d'instrument (neutralisation/, aucun code produit), troisième lot non certifié sous l'exception bornée de Ko (D311) : modes de défaillance MD-AOA-1 à 9 écrits et commités avant le correctif (071dfc2) ; défaut reproduit avant (13 sur 13 en code 1, 0 test) ; neutralize-available-on-api.py lance vitest comme les harnais qui fonctionnent (pnpm --filter @zwadj/api exec, depuis la racine), lit la ligne « Tests » (exécutés = passés + en échec, jamais le total : « 25 skipped (25) » en code 0), refuse de juger une mesure non démarrée ou en panne, pré-vol par mesure, version 3.2.7 exigée, calibration à cinq bras à chaque lancement, sortie entière journalisée ; 13 cibles sur 13 MORDUES et LUES (14 blocs, tous AssertionError, titre visé), 30 journaux relus par un lecteur indépendant, 0 écart ; gardes du harnais neutralisées sur copies, 6 variantes sur 6 dont un non-démarrage sous mutation refusé ; verifier-mutations 13 posées ; portes vertes (1 334/109, 443/36) ; compteur DEUX → TROIS ; suite : la certification, qui clôt le rang 23 |

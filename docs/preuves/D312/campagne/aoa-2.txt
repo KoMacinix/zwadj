@@ -1,0 +1,50 @@
+  version de vitest : 3.2.7 (lecture calibrée sur 3.2.7)
+  calibration (i) le défaut de D310 rejoué tel quel : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 1 · aucune ligne « Tests » : la mesure n'a pas démarré · OK
+  calibration (ii) commande introuvable : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 1 · aucune ligne « Tests » : la mesure n'a pas démarré · OK
+  calibration (iii) filtre sans titre : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 0 · exécutés 0 · en échec 0 · « Tests 25 skipped (25) » — collecte à zéro : aucun test exécuté · OK
+  calibration (iv) mutation connue (A1) : MORDUE (attendu MORDUE) — code 1 · exécutés 3 · en échec 2 · « Tests 2 failed | 1 passed | 22 skipped (25) » · « VenuesPublicService.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois » · AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting · blocs lus 2, tous en AssertionError : True · OK
+  calibration (v) mutation neutre : VERTE (attendu VERTE) — code 0 · exécutés 3 · en échec 0 · « Tests 3 passed | 22 skipped (25) » · OK
+  calibration : 5 bras sur 5 (attendu 5)
+  · pré-vol A1 [src/venues/venues-public.service.spec.ts · -t « date passée »] : VERTE — code 0 · exécutés 3 · en échec 0 · « Tests 3 passed | 22 skipped (25) »
+  · pré-vol A2 [src/venues/venues-public.service.spec.ts · -t « AUJOURD'HUI EST ACCEPTÉ »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+  · pré-vol A3 [src/venues/venues-public.service.spec.ts · -t « PENDING »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+  · pré-vol A4 [src/venues/venues-public.service.spec.ts · -t « 48 H »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+  · pré-vol A5 [src/venues/venues-public.service.spec.ts · -t « SITUATION B »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+  · pré-vol A6 [src/venues/venues-public.service.spec.ts · -t « CONTAMINENT »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+  · pré-vol A7 [src/venues/venues-public.service.spec.ts · -t « SINGLE_SLOT »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+  · pré-vol A8 [src/venues/venues-public.service.spec.ts · -t « ANNOTER N'EST PAS FILTRER »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+  · pré-vol A10 [src/venues/availability-engine.spec.ts · -t « DÉLÈGUE »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 17 skipped (18) »
+  · pré-vol B1 [src/common/filters/all-exceptions.filter.spec.ts · -t « ROUTE INCONNUE »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 5 skipped (6) »
+  · pré-vol B2 [src/common/filters/all-exceptions.filter.spec.ts · -t « 404 MÉTIER »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 5 skipped (6) »
+  · pré-vol A13 [src/venues/venues-public.service.spec.ts · -t « SANS `availableOn`, AUCUNE exclusion »] : VERTE — code 0 · exécutés 1 · en échec 0 · « Tests 1 passed | 24 skipped (25) »
+✓ Pré-vol : 12 mesure(s) démarrée(s) et verte(s) sur l'arbre non muté.
+
+✓ A1. Le refus de date passée est retiré
+    code 1 · exécutés 3 · en échec 2 · « Tests 2 failed | 1 passed | 22 skipped (25) » · « VenuesPublicService.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois » · AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting
+✓ A2. La borne devient `<=` : aujourd'hui est refusé à tort
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : refus de la date passée > ⚠ AUJOURD'HUI EST ACCEPTÉ (`<`, pas `<=`) : chercher une salle pour ce soir est le cas normal » · AssertionError: promise rejected "BadRequestException: venue.errors.availab… { …(3) }" instead of resolving
+✓ A3. `PENDING` est rechargé : une demande en attente grise
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ `PENDING` N'EST PAS CHARGÉ (D101) : une demande en attente ne grise rien » · AssertionError: expected { in: [ 'PENDING', 'ACCEPTED', …(1) ] } to deeply equal { in: [ 'ACCEPTED', 'CONFIRMED' ] }
+✓ A4. La fenêtre retombe à minuit + 24 h (la soirée 20h→02h ment)
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ LA FENÊTRE VA À +48 H, pas à minuit + 24 h : sinon la soirée 20h→02h ment » · AssertionError: expected 1780441200000 to be 1780527600000 // Object.is equality
+✓ A5. L'exclusion des salles sans créneau (situation B) quitte le `where`
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SITUATION B — salle sans AUCUN créneau : EXCLUE par le `where`, pas grisée » · AssertionError: expected undefined to deeply equal { some: { isActive: true } }
+✓ A6. Le regroupement par salle saute : les salles se contaminent
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ LES SALLES NE SE CONTAMINENT PAS : la réservation de v1 ne grise pas v2 » · AssertionError: expected [ false, false ] to deeply equal [ false, true ]
+✓ A7. `singleSlot` est câblé en dur à `false`
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SINGLE_SLOT : la MÊME réservation ferme la journée entière ⇒ `false` » · AssertionError: expected [ true ] to deeply equal [ false ]
+✓ A8. L'annotation devient un FILTRE (la salle grisée quitte la page)
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ ANNOTER N'EST PAS FILTRER : la salle grisée reste dans `items`, et `total` ne bouge pas » · AssertionError: expected [] to have a length of 1 but got +0
+✓ A9. L'écho `availableOn` disparaît de la réponse
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ ANNOTER N'EST PAS FILTRER : la salle grisée reste dans `items`, et `total` ne bouge pas » · AssertionError: expected null to be '2026-06-02' // Object.is equality
+✓ A10. `computeDayAvailability` cesse de déléguer (seconde autorité)
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 17 skipped (18) » · « une seule autorité sur « pris ou libre » > ⚠ `computeDayAvailability` DÉLÈGUE, et le fichier n'initialise un statut qu'UNE fois » · AssertionError: expected '// Moteur de disponibilité — Lot B3. …' to contain 'return computeDaySlotStatuses({'
+✓ B1. Le 404 de routage n'est plus normalisé (retour à l'enveloppe brute de Nest)
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 5 skipped (6) » · « AllExceptionsFilter — 404 de routage > ⚠ ROUTE INCONNUE : l'enveloppe automatique de Nest devient `{ code, message }` » · AssertionError: expected { …(3) } to deeply equal { code: 'ROUTE_NOT_FOUND', …(1) }
+✓ B2. TOUS les 404 sont réécrits : le code métier est écrasé
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 5 skipped (6) » · « AllExceptionsFilter — 404 de routage > ⚠ UN 404 MÉTIER N'EST PAS TOUCHÉ : son code est un contrat que les deux fronts consomment » · AssertionError: expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+✓ A13. L'exclusion mord AUSSI sans date (elle retire trop large)
+    code 1 · exécutés 1 · en échec 1 · « Tests 1 failed | 24 skipped (25) » · « VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SANS `availableOn`, AUCUNE exclusion : la recherche non datée ne retire rien » · AssertionError: expected { some: { isActive: true } } to be undefined
+
+13 garde(s) mordue(s) sur 13 cible(s) RÉELLEMENT MESURÉE(S) (déclarées dans la plage : 13) — morsure = au moins un test EN ÉCHEC, bloc LU.
+journaux : .neutralisation-journaux\available-on-api (une sortie entière par mesure)

@@ -1,0 +1,51 @@
+$ pnpm --filter @zwadj/api exec vitest run src/common/filters/all-exceptions.filter.spec.ts -t 404 MÉTIER
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/filters/all-exceptions.filter.spec.ts (6 tests | 1 failed | 5 skipped) 12ms
+   ↓ AllExceptionsFilter — 404 de routage > ⚠ ROUTE INCONNUE : l'enveloppe automatique de Nest devient `{ code, message }`
+   × AllExceptionsFilter — 404 de routage > ⚠ UN 404 MÉTIER N'EST PAS TOUCHÉ : son code est un contrat que les deux fronts consomment 11ms
+     → expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+   ↓ AllExceptionsFilter — 404 de routage > les autres statuts traversent INTACTS, enveloppe automatique comprise
+   ↓ AllExceptionsFilter — 404 de routage > ⚠ UN 404 SANS `code` mais AVEC un corps objet est bien réécrit
+   ↓ AllExceptionsFilter — 404 de routage > une exception NON HTTP reste un 500 opaque : jamais de détail interne en sortie
+   ↓ AllExceptionsFilter — 404 de routage > l'enveloppe garde `path` et `timestamp` — le contrat n'a pas bougé
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  10:00:08
+   Duration  1.04s (transform 59ms, setup 0ms, collect 471ms, tests 12ms, environment 0ms, prepare 212ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/filters/all-exceptions.filter.spec.ts -t 404 MÉTIER
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/filters/all-exceptions.filter.spec.ts > AllExceptionsFilter — 404 de routage > ⚠ UN 404 MÉTIER N'EST PAS TOUCHÉ : son code est un contrat que les deux fronts consomment
+AssertionError: expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "code": "VENUE_NOT_FOUND",
+-   "message": "venue.errors.notFound",
++   "code": "ROUTE_NOT_FOUND",
++   "message": "common.errors.routeNotFound",
+  }
+
+ ❯ src/common/filters/all-exceptions.filter.spec.ts:54:64
+     52|     // traduit — sans qu'aucun test de routage ne s'en aperçoive.
+     53|     const metier = { code: "VENUE_NOT_FOUND", message: "venue.errors.n…
+     54|     expect(rendu(new NotFoundException(metier)).corps.message).toEqual…
+       |                                                                ^
+     55|   });
+     56| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+--- code de sortie : 1 ---

@@ -1,0 +1,15 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/availability-engine.spec.ts -t DÉLÈGUE
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/venues/availability-engine.spec.ts (18 tests | 17 skipped) 5ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 17 skipped (18)
+   Start at  09:59:15
+   Duration  672ms (transform 75ms, setup 0ms, collect 73ms, tests 5ms, environment 0ms, prepare 210ms)
+
+
+--- stderr ---
+
+--- code de sortie : 0 ---

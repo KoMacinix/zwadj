@@ -1,0 +1,100 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/venues-public.service.spec.ts -t date passée
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/venues/venues-public.service.spec.ts (25 tests | 2 failed | 22 skipped) 21ms
+   ↓ VenuesPublicService.list — WHERE D33 + filtres > sans filtre : prédicat strict de la liste (PUBLISHED, vivante, ACTIVE) + tri recent + fenêtre
+   ↓ VenuesPublicService.list — WHERE D33 + filtres > filtres combinés : ville + invités (bornes croisées) + fourchette de prix + amenities en ET
+   ↓ VenuesPublicService.bySlug — WHERE D33 détail + court-circuit > slug hors motif (majuscule, espace, underscore…) : 404 sans toucher la base
+   ↓ VenuesPublicService.bySlug — WHERE D33 détail + court-circuit > WHERE du détail : PUBLISHED, vivante, status ∈ {ACTIVE, TEMPORARILY_UNAVAILABLE} — HIDDEN exclu
+   ✓ VenuesPublicService.list — availableOn : refus de la date passée > ⚠ AUJOURD'HUI EST ACCEPTÉ (`<`, pas `<=`) : chercher une salle pour ce soir est le cas normal 5ms
+   × VenuesPublicService.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois 13ms
+     → promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting
+   × VenuesPublicService.list — availableOn : refus de la date passée > une date passée : 400 AVAILABLE_ON_PAST, et AUCUNE requête n'est lancée 2ms
+     → promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > ⚠ LE JOUR DE L'HORIZON EST ACCEPTÉ (`>`, pas `>=`)
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > le LENDEMAIN de l'horizon : 400 AVAILABLE_ON_BEYOND_HORIZON
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > ⛔ LES DEUX REFUS NE PORTENT PAS LE MÊME CODE — c'est la décision D227
+   ↓ VenuesPublicService.list — availableOn : refus HORS HORIZON (D227) > ⚠ l'horizon suit la MÊME constante que la demande de visite
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ SANS `availableOn`, AUCUNE des trois lectures n'a lieu, et l'écho vaut `null`
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ TROIS REQUÊTES, bornées par `venueId IN` — O(page), pas O(page × salles)
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ `PENDING` N'EST PAS CHARGÉ (D101) : une demande en attente ne grise rien
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > ⚠ LA FENÊTRE VA À +48 H, pas à minuit + 24 h : sinon la soirée 20h→02h ment
+   ↓ VenuesPublicService.list — availableOn : ce qui est chargé > aucune salle dans la page : aucune requête d'annotation, et pas de `IN ()` vide
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > aucune réservation, aucun blocage ⇒ `true`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ UNE RÉSERVATION DE 00H30 LE LENDEMAIN ferme la soirée 20h→02h ⇒ `false`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > un blocage pro qui ENJAMBE la journée sans y commencer ⇒ `false`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SITUATION B — salle sans AUCUN créneau : EXCLUE par le `where`, pas grisée
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SANS `availableOn`, AUCUNE exclusion : la recherche non datée ne retire rien
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > MULTI_SLOT : un créneau pris, l'autre libre ⇒ `true` — la salle reste disponible
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ SINGLE_SLOT : la MÊME réservation ferme la journée entière ⇒ `false`
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ LES SALLES NE SE CONTAMINENT PAS : la réservation de v1 ne grise pas v2
+   ↓ VenuesPublicService.list — availableOn : ce qui est annoté > ⚠ ANNOTER N'EST PAS FILTRER : la salle grisée reste dans `items`, et `total` ne bouge pas
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed | 22 skipped (25)
+   Start at  09:58:37
+   Duration  1.85s (transform 337ms, setup 0ms, collect 1.20s, tests 21ms, environment 0ms, prepare 211ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/venues-public.service.spec.ts -t date passée
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/venues-public.service.spec.ts > VenuesPublicService.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois
+AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "availableOn": "2026-05-31",
++   "items": [],
++   "page": 1,
++   "pageSize": 12,
++   "total": 0,
+  }
+
+ ❯ src/venues/venues-public.service.spec.ts:233:78
+    231|   it("HIER est refusé : la borne est bien au jour près, pas au mois", …
+    232|     const { service } = buildService();
+    233|     await expect(service.list({ ...QUERY_DEFAULTS, availableOn: "2026-…
+       |                                                                              ^
+    234|       BadRequestException
+    235|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/venues/venues-public.service.spec.ts > VenuesPublicService.list — availableOn : refus de la date passée > une date passée : 400 AVAILABLE_ON_PAST, et AUCUNE requête n'est lancée
+AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "availableOn": "2020-01-01",
++   "items": [],
++   "page": 1,
++   "pageSize": 12,
++   "total": 0,
+  }
+
+ ❯ src/venues/venues-public.service.spec.ts:240:78
+    238|   it("une date passée : 400 AVAILABLE_ON_PAST, et AUCUNE requête n'est…
+    239|     const { service, prisma } = buildService();
+    240|     await expect(service.list({ ...QUERY_DEFAULTS, availableOn: "2020-…
+       |                                                                              ^
+    241|       (e: unknown) =>
+    242|         e instanceof BadRequestException && (e.getResponse() as { code…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+--- code de sortie : 1 ---

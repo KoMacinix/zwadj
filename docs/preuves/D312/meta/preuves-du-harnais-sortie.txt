@@ -1,0 +1,14 @@
+✓ V0-temoin : code 0 (attendu 0) · lignes attendues trouvées 3 sur 3
+V1-version : ancre 1 → 0 · marqueur 0 → 1 · substitution · pose PROUVÉE
+✓ V1-version : code 2 (attendu 2) · lignes attendues trouvées 2 sur 2
+V2-executes-neutralise : ancre 1 → 0 · marqueur 0 → 1 · substitution · pose PROUVÉE
+✓ V2-executes-neutralise : code 2 (attendu 2) · lignes attendues trouvées 3 sur 3
+V3-semantique-d310 : ancre 1 → 1 · marqueur 0 → 1 · insertion · pose PROUVÉE
+✓ V3-semantique-d310 : code 2 (attendu 2) · lignes attendues trouvées 3 sur 3
+V4-non-demarrage-sous-mutation : ancre 1 → 1 · marqueur 0 → 1 · insertion · pose PROUVÉE
+✓ V4-non-demarrage-sous-mutation : code 2 (attendu 2) · lignes attendues trouvées 5 sur 5
+V5-pre-vol-sans-demarrage : ancre 1 → 1 · marqueur 0 → 1 · insertion · pose PROUVÉE
+✓ V5-pre-vol-sans-demarrage : code 2 (attendu 2) · lignes attendues trouvées 5 sur 5
+
+arbre après les variantes (apps/, neutralisation/) : 1 ligne(s) de statut (attendu 1 : le harnais corrigé, non commité) · 'M neutralisation/neutralize-available-on-api.py'
+variantes : 6 · écarts 0 (attendu 0)

@@ -1,0 +1,11 @@
+$ python .neutralisation-journaux\d312-meta\V3-semantique-d310.py 1 1
+  version de vitest : 3.2.7 (lecture calibrée sur 3.2.7)
+  calibration (i) le défaut de D310 rejoué tel quel : MORDUE (attendu NON DÉMARRÉE) — code 1 · MANQUÉ
+  calibration (ii) commande introuvable : MORDUE (attendu NON DÉMARRÉE) — code 1 · MANQUÉ
+  calibration (iii) filtre sans titre : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 0 · exécutés 0 · en échec 0 · « Tests 25 skipped (25) » — collecte à zéro : aucun test exécuté · OK
+  calibration (iv) mutation connue (A1) : MORDUE (attendu MORDUE) — code 1 · blocs lus 0, tous en AssertionError : False · MANQUÉ
+  calibration (v) mutation neutre : VERTE (attendu VERTE) — code 0 · exécutés 3 · en échec 0 · « Tests 3 passed | 22 skipped (25) » · OK
+  calibration : 2 bras sur 5 (attendu 5)
+✗ CALIBRATION : un bras au moins a manqué son verdict — ABANDON, rien n'est jugé (D286).
+
+--- code de sortie : 2 ---

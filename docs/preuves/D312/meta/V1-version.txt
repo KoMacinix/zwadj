@@ -1,0 +1,4 @@
+$ python .neutralisation-journaux\d312-meta\V1-version.py 1 1
+✗ VERSION : vitest '3.2.7' résolu par apps/api, lecture calibrée sur 0.0.0 — le harnais REFUSE DE JUGER (MD-AOA-6).
+
+--- code de sortie : 2 ---

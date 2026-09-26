@@ -1,0 +1,52 @@
+$ pnpm --filter @zwadj/api exec vitest run src/common/filters/all-exceptions.filter.spec.ts -t ROUTE INCONNUE
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/filters/all-exceptions.filter.spec.ts (6 tests | 1 failed | 5 skipped) 13ms
+   × AllExceptionsFilter — 404 de routage > ⚠ ROUTE INCONNUE : l'enveloppe automatique de Nest devient `{ code, message }` 12ms
+     → expected { …(3) } to deeply equal { code: 'ROUTE_NOT_FOUND', …(1) }
+   ↓ AllExceptionsFilter — 404 de routage > ⚠ UN 404 MÉTIER N'EST PAS TOUCHÉ : son code est un contrat que les deux fronts consomment
+   ↓ AllExceptionsFilter — 404 de routage > les autres statuts traversent INTACTS, enveloppe automatique comprise
+   ↓ AllExceptionsFilter — 404 de routage > ⚠ UN 404 SANS `code` mais AVEC un corps objet est bien réécrit
+   ↓ AllExceptionsFilter — 404 de routage > une exception NON HTTP reste un 500 opaque : jamais de détail interne en sortie
+   ↓ AllExceptionsFilter — 404 de routage > l'enveloppe garde `path` et `timestamp` — le contrat n'a pas bougé
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  10:00:05
+   Duration  1.15s (transform 53ms, setup 0ms, collect 469ms, tests 13ms, environment 0ms, prepare 192ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/filters/all-exceptions.filter.spec.ts -t ROUTE INCONNUE
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/filters/all-exceptions.filter.spec.ts > AllExceptionsFilter — 404 de routage > ⚠ ROUTE INCONNUE : l'enveloppe automatique de Nest devient `{ code, message }`
+AssertionError: expected { …(3) } to deeply equal { code: 'ROUTE_NOT_FOUND', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "code": "ROUTE_NOT_FOUND",
+-   "message": "common.errors.routeNotFound",
++   "error": "Not Found",
++   "message": "Cannot GET /api/v1/inconnu",
++   "statusCode": 404,
+  }
+
+ ❯ src/common/filters/all-exceptions.filter.spec.ts:46:27
+     44|     const { statut, corps } = rendu(new NotFoundException("Cannot GET …
+     45|     expect(statut).toBe(HttpStatus.NOT_FOUND);
+     46|     expect(corps.message).toEqual({ code: ROUTE_NOT_FOUND, message: "c…
+       |                           ^
+     47|   });
+     48| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+--- code de sortie : 1 ---

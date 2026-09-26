@@ -1,0 +1,19 @@
+$ python .neutralisation-journaux\d312-meta\V4-non-demarrage-sous-mutation.py 2 2
+  version de vitest : 3.2.7 (lecture calibrée sur 3.2.7)
+  calibration (i) le défaut de D310 rejoué tel quel : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 1 · aucune ligne « Tests » : la mesure n'a pas démarré · OK
+  calibration (ii) commande introuvable : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 1 · aucune ligne « Tests » : la mesure n'a pas démarré · OK
+  calibration (iii) filtre sans titre : NON DÉMARRÉE (attendu NON DÉMARRÉE) — code 0 · exécutés 0 · en échec 0 · « Tests 25 skipped (25) » — collecte à zéro : aucun test exécuté · OK
+  calibration (iv) mutation connue (A1) : MORDUE (attendu MORDUE) — code 1 · exécutés 3 · en échec 2 · « Tests 2 failed | 1 passed | 22 skipped (25) » · « VenuesPublicService.list — availableOn : refus de la date passée > HIER est refusé : la borne est bien au jour près, pas au mois » · AssertionError: promise resolved "{ items: [], total: +0, page: 1, …(2) }" instead of rejecting · blocs lus 2, tous en AssertionError : True · OK
+  calibration (v) mutation neutre : VERTE (attendu VERTE) — code 0 · exécutés 3 · en échec 0 · « Tests 3 passed | 22 skipped (25) » · OK
+  calibration : 5 bras sur 5 (attendu 5)
+  · pré-vol S1 [src/venues/venues-public.service.spec.ts · -t « date passée »] : VERTE — code 0 · exécutés 3 · en échec 0 · « Tests 3 passed | 22 skipped (25) »
+✓ Pré-vol : 1 mesure(s) démarrée(s) et verte(s) sur l'arbre non muté.
+
+✗ S1. Synthétique : le module testé ne se charge plus (syntaxe cassée)
+   NON DÉMARRÉE — PAS une morsure : code 1 · exécutés 0 · en échec 0 · « Tests no tests » — collecte à zéro : aucun test exécuté
+
+0 garde(s) mordue(s) sur 0 cible(s) RÉELLEMENT MESURÉE(S) (déclarées dans la plage : 1) — morsure = au moins un test EN ÉCHEC, bloc LU.
+journaux : .neutralisation-journaux\available-on-api (une sortie entière par mesure)
+  NON JUGÉE (non démarrée ou en panne) : S1. Synthétique : le module testé ne se charge plus (syntaxe cassée)
+
+--- code de sortie : 2 ---

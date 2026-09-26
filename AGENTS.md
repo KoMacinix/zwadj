@@ -603,6 +603,8 @@ lot de code ne s'ouvre avant elle. » *Motif (Ko)* : « sans ce lot, aucune cert
 certification, aucun lot ne peut s'ouvrir. » ⛔ « **L'exception ne crée pas de précédent : un autre blocage de ce type
 reviendra à moi.** » ⇒ *Dérivé par la session* : elle est **consommée** par le lot qu'elle nomme ; elle ne se relit pas en
 « trois, oui si… ». Détail : `ZWADJ_CONTINUITE.md`, point d'entrée du rang 23, bloc « ARBITRAGE DE KO (D311) ».
+⛔ *(D312, 26/09/2026 : **exception CONSOMMÉE** — le lot de déblocage est fait ; compteur à **TROIS** ; il reste la
+certification, sans aucun autre lot de code avant elle.)*
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -790,6 +792,13 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   rougit que par là n'est pas une morsure sous la lecture de R1. ⇒ *Dérivé par la session, pas une décision du
   relecteur* : **sur le chemin de l'argent, un verdict s'écrit par `expect` de vitest** ; et **un titre de test ne porte
   pas le glyphe « × »**, qui marque un échec dans cette sortie (faute n° 1 de D305).
+- ⛔ **UNE MESURE QUI NE DÉMARRE PAS N'EST JAMAIS UNE MORSURE, ET « EXÉCUTÉS » N'EST PAS « COLLECTÉS » (D312, mesuré sur
+  vitest 3.2.7).** `neutralize-available-on-api.py` a compté « ROUGE », à chaque certification depuis le 30/08, une commande
+  qui ne se lançait pas (D310). ⇒ Une morsure exige **au moins un test EN ÉCHEC** sur la ligne « Tests » ; sans cette
+  ligne, ou sans test exécuté, la mesure est **non démarrée** et le harnais refuse de juger. ⚠ **Sous `-t`, le total entre
+  parenthèses compte les tests ÉCARTÉS par le filtre** : « `Tests 25 skipped (25)` », code **0**, AUCUN test exécuté —
+  « collectés > 0 » lu sur ce total serait vrai. La quantité est **passés + en échec**. Pièces : `docs/preuves/D312/sondes/`,
+  `docs/preuves/D312/meta/`.
 ## À NE PAS faire
 - Ne pas élargir le périmètre au-delà du MVP demandé, même si le design fourni montre plus.
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).

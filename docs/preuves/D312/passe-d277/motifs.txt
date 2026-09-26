@@ -1,0 +1,17 @@
+# D312 — motifs de la passe D277 (le lot de déblocage est fait ; compteur DEUX → TROIS ; l'exception est consommée).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D311), jamais passés en ligne de
+# commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « certification », « compteur », « peut s'ouvrir » — ils comptent tout (D298).
+# sens 1 — ce que D312 INVALIDE (le lot de déblocage annoncé comme à venir, la permission unique, le défaut ouvert)
+1|LE LOT DE DÉBLOCAGE (partie B
+1|UN SEUL lot de code est PERMIS
+1|suite : le lot de déblocage
+1|NE LANCE JAMAIS SA MESURE
+1|compteur DEUX
+1|COMPTEUR À DEUX
+# sens 2 — ce que D312 REND PERMIS (rien ne devrait l'être : compteur TROIS)
+2|troisième lot non certifié
+2|de quelque rang que ce soit
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d312-qq
