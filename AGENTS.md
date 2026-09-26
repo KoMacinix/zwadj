@@ -605,6 +605,8 @@ reviendra à moi.** » ⇒ *Dérivé par la session* : elle est **consommée** p
 « trois, oui si… ». Détail : `ZWADJ_CONTINUITE.md`, point d'entrée du rang 23, bloc « ARBITRAGE DE KO (D311) ».
 ⛔ *(D312, 26/09/2026 : **exception CONSOMMÉE** — le lot de déblocage est fait ; compteur à **TROIS** ; il reste la
 certification, sans aucun autre lot de code avant elle.)*
+⛔ *(D314, 26/09/2026 : **certification PASSÉE** — marque posée, D305, D308 et D312 en font partie ; **compteur à ZÉRO** ;
+rang 23 clos ; le rang 24 attend l'arbitrage de Ko.)*
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -896,6 +898,8 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   session, pas une parole de Ko* : la pause couvre par son nom **tout lot de code du chemin de l'argent** ; qui en doute
   demande à Ko. Et un fait : les clés de test Chargily ont été **régénérées par Ko le 25/09/2026** (`[SEC][P0]`, partie
   Chargily close sur sa déclaration ; `GOOGLE_CLIENT_SECRET` reste ouvert).
+  ⛔ *(D314, 26/09/2026 : **la certification a eu lieu et elle est PASSÉE** — le rang 23 est clos ⇒ **LA PAUSE DU CHEMIN DE
+  L'ARGENT A COMMENCÉ** ; sa reprise est un rang que Ko arbitrera.)*
   ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 25/09/2026 (D307)** — texte et motifs : tête de « ⛔ E3 —
   MÉTHODE RENFORCÉE », bloc D307 :
   - **23a** : comportement **accepté** (T4, T5 compris) ; il ne se clôt pas avant **23a-2**, qui garde C1 à C5 de D306 ;

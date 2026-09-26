@@ -1,0 +1,12 @@
+échantillons parcourus : 173 · dont ECHEC-INSTRUMENT : 0 (attendu 0)
+alimentation : ['SECTEUR'] (attendu ['SECTEUR']) · chrome max : 0 (attendu 0)
+PERF : min 72.0 · max 167.4 · au-dessus de 100 sur 154 échantillons sur 173
+écarts entre échantillons : 172 · min 31.0 s · max 34.0 s · au-delà de 60 s : 0
+sous la barre (4579 Mo) : 7 échantillon(s) — chacun avec ses node, chrome, nb_proc :
+  2026-09-26 14:47:44 · RAM 4064 · node 14 · chrome 0 · nb_proc 372
+  2026-09-26 14:48:15 · RAM 3752 · node 14 · chrome 0 · nb_proc 376
+  2026-09-26 14:48:47 · RAM 3795 · node 13 · chrome 0 · nb_proc 373
+  2026-09-26 14:59:51 · RAM 3767 · node 12 · chrome 0 · nb_proc 372
+  2026-09-26 15:00:54 · RAM 3914 · node 12 · chrome 0 · nb_proc 371
+  2026-09-26 15:01:26 · RAM 4033 · node 13 · chrome 0 · nb_proc 370
+  2026-09-26 15:02:29 · RAM 3789 · node 12 · chrome 0 · nb_proc 370

@@ -1,0 +1,14 @@
+✓ M1. ⛔ LE DÉFAUT D'ORIGINE : le formulaire d'accueil réémet `maxPriceCents`
+✓ M2. ⛔ LE FACTEUR 100 : les paliers d'accueil repassent en centimes
+✓ M3. L'assistant réémet le nom de l'API dans l'URL publique
+✓ M4. Les deux contrats se remélangent : le compteur passe en dinars
+✓ M5. Le repli disparaît : les anciens liens partagés reperdent leur plafond
+✓ M6. ⛔ LE REPLI PART DANS L'AUTRE SENS (`maxPriceCents` corrige `maxPrice`)
+✓ M7. L'arrondi s'invente : un reste non nul passe quand même
+✓ M8. L'ancien nom se remet à NAÎTRE dans l'URL publique
+✓ M9. ⛔ D254 — UN PALIER REMONTE AU-DESSUS DE LA BUTÉE (le défaut B lui-même)
+✓ M10. ⛔ D254 — LES DEUX BRANCHES DE L'ASSISTANT SE REMETTENT À DIVERGER
+
+10 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+

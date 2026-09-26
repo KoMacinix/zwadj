@@ -1,0 +1,20 @@
+== CALIBRATION, deux bras (abandon si un seul manque)
+  ✓ positif D310 : 13 mesures (attendu 13) · MORSURES LUES 13 (attendu 13) · exécutés > 0 13 (attendu 13)
+  ✓ négatif : « Tests  25 skipped (25) » posé en mémoire dans R23-F1-a-int-reservations.txt ⇒ refusés ['R23-F1-a-int-reservations.txt'] (attendu ['R23-F1-a-int-reservations.txt']) — exécutés 0 (attendu 0)
+
+== PASSE : .neutralisation-journaux/r23d-20260926-1434/rang23 — 15 journaux présents
+✓ R23-F1-a [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-F1-b [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-F5-a [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-F5-b [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-F5-c [unit-transitions] ⇒ MORSURE LUE · exécutés (passés + en échec) 24 · « 3 failed | 21 passed (24) »
+✓ R23-C1 [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-C1-t [unit-transitions] ⇒ MORSURE LUE · exécutés (passés + en échec) 24 · « 1 failed | 23 passed (24) »
+✓ R23-C1-t [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-C2 [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-C3 [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 5 failed | 45 passed (50) »
+✓ R23-C4 [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 2 failed | 48 passed (50) »
+✓ R23-C5 [int-reservations] ⇒ MORSURE LUE · exécutés (passés + en échec) 50 · « 1 failed | 49 passed (50) »
+✓ R23-C6 [unit-transitions] ⇒ MORSURE LUE · exécutés (passés + en échec) 24 · « 6 failed | 18 passed (24) »
+
+MESURES LUES : 13 · MORSURES LUES : 13 · DÉMARRÉES (exécutés > 0) : 13 (attendu 13 et 13)

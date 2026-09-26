@@ -1,0 +1,13 @@
+✓ 1. Le grisé ne mord plus : `false` cesse de produire la classe
+✓ 2. `null` grise comme `false` (le piège du booléen à trois valeurs)
+✓ 3. La date affichée vient de l'URL et non de l'écho du serveur
+✓ 4. Le refus de date passée est replié sur la panne générique
+✓ 5. La date irréelle n'est plus filtrée (février 31 part à l'API)
+✓ 6. `availableOn` cesse d'être transmis à l'API
+✓ 7. La règle SEO ne voit plus la pagination comme une variante
+✓ 8. `noindex` emporte `nofollow` (le chemin vers les fiches est coupé)
+✓ 9. Un champ vide redevient une variante (la page nue se désindexe)
+✓ 10. La carte grisée cesse d'être un lien
+
+10 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+

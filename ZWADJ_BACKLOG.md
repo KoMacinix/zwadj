@@ -2457,6 +2457,28 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 26/09/2026 — rang 23 CLOS, la certification (D314)
+
+Détail : section D314 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
+Ko** », et son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : F1 et F5 (**closes**) ; tête du chemin de l'argent et reports de
+D308 (la certification est **passée**, la pause **a commencé**) ; report `[MÉTHODE]` de D312 sur le point 12 (**close**).
+
+- [ ] **[OUTIL]** **`neutralize-available-on.py` et `neutralize-journey.py` comptent « mordue » une mesure qui n'a PAS
+  démarré — la classe de D310, mesurée.** Sous la cale A de l'étape 0 de D314, `available-on` rend 10 « ✓ » sur 10, code 0,
+  en 0,43 s ; `journey` 7 sur 7, code 0, en 0,36 s (`docs/preuves/D314/plancher/journaux/sim-A-*.log`). Ils jugent au code
+  seul, sans pré-vol qui prouve le démarrage. **Le plancher de D314 les attrape** (P = 36,51 s et 36,57 s) ; un
+  non-démarrage **partiel**, non ; et une certification sans plancher les compterait. ⇒ **BLOQUE : rien — à ordonner par
+  Ko** (le point 12 s'applique par le plancher tant qu'ils ne lisent pas leur sortie). ⇒ **COÛT** : code de `neutralisation/`
+  (compte), deux harnais — lecture de la sortie et pré-vol par mesure, patron de D312 ; calibration à cinq bras ; e2e : non ;
+  chemin de l'argent : non (cibles « non classées », D313) ; migration : non ; dépendance : non.
+- [ ] **[OUTIL]** **Trois harnais laissent leurs copies `.sauvegarde` quand ils meurent avant leur purge** (`act-plafonds` 2,
+  `argon2` 1, `horloge` 1 — mesuré sous la cale de D314) ; `available-on-api` laisse un `.neutralisation-sauvegarde` **vide**
+  quand sa calibration abandonne. Sans perte (chaque copie identique à sa source intacte ; restaurée puis purgée au démarrage
+  suivant), mais une passe où l'un d'eux abandonnerait aurait un arbre non conforme — le contrôle d'arbre le verrait.
+  ⇒ **BLOQUE : rien — à ordonner par Ko.** ⇒ **COÛT** : code de `neutralisation/` (compte), quatre harnais au plus ; e2e :
+  non ; chemin de l'argent : non ; migration : non ; dépendance : non.
+
 ## Reports du 26/09/2026 — rang 23, arbitrages de Ko, décisions du relecteur, lecture adverse de D312 (D313)
 
 Détail : section D313 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
@@ -2485,7 +2507,7 @@ Ko** », et son **COÛT**.
 ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : entrée `[OUTIL]` d'`available-on-api` (reports de D310, **close**) ;
 entrée `[OUTIL]` du tri de `lancer-campagnes.py` (reports de D308, **reproduit**).
 
-- [ ] **[MÉTHODE]** **Le point 12 du critère, à la certification qui vient : comment chaque AUTRE campagne prouve-t-elle
+- [x] **[MÉTHODE]** **Le point 12 du critère, à la certification qui vient : comment chaque AUTRE campagne prouve-t-elle
   que ses mesures ont DÉMARRÉ ?** Le lot de déblocage le prouve pour `available-on-api` seul, par une sortie lue. Les 27
   autres harnais ne le font pas tous — ceux qui jettent la sortie de leur mesure (D310, faute n° 2). Le point 12 admet « à
   défaut, une durée au-dessus d'un plancher déclaré au protocole ». ⇒ **BLOQUE : le protocole de la certification qui
@@ -2498,6 +2520,9 @@ entrée `[OUTIL]` du tri de `lancer-campagnes.py` (reports de D308, **reproduit*
   critère du rang 9, point 12, annotation D313. **Le protocole de la certification (partie B) ferme cette entrée.**
   ⚠ *Lecture adverse de D313* : « les **onze** harnais » était **périmé à l'écriture** — D311 avait fait entrer `s11a`
   (S11a-7, S11a-11) : **douze**.)*
+  ✅ *(D314, 26/09/2026 — **APPLIQUÉ** : plancher mesuré à l'étape 0 et protocole commité avant toute mesure (`0057748`) ;
+  certification **passée**, point 12 tenu : 26 campagnes au-dessus de leur plancher, `rang23` et `available-on-api` LUES.
+  **Close.**)*
 
 ## Reports du 26/09/2026 — rang 23, arbitrages de Ko et lecture adverse de D310 (D311)
 
@@ -2612,6 +2637,7 @@ section D308 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **B
 son **COÛT**.
 ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : tête de la section du chemin de l'argent et entrées F1, F5 (23a-2
 fait, **restent ouvertes jusqu'à la certification**). ⛔ *(D310 : certification **échouée** — elles restent ouvertes.)*
+✅ *(D314 : certification **passée** — elles sont **closes**.)*
 
 - [ ] **[API]** **`assertStatus` (`bookings.service.ts`) n'a AUCUN appelant** — constat de D306, relevé par D307 : né à
   `909702a` (03/08/2026) ; appelé 4 fois, puis 3 (`871aef8`), puis **0 depuis `682ea4c`** (22/08/2026, S5b, qui a déplacé
@@ -2802,11 +2828,12 @@ F5 restent ouvertes jusqu'à ~~**23a-2** (C1 à C5 de D306) et~~ la **certificat
 plus** (décision du relecteur, pause). ⛔ *(D308 : **23a-2 fait** — C1 à C5 gardés, 8 mutations de D306 et une neuve
 rejouées, toutes LUES ; reste la certification.)* ⛔ *(D310, 26/09/2026 : la certification **a ÉCHOUÉ** — une campagne
 hors du chemin de l'argent, `available-on-api`, n'a joué aucune de ses cibles ; rien ne se clôt, F1 et F5 restent
-ouvertes, **la pause ne commence pas** ; reports de D310.)* ⛔ **PAUSE DU CHEMIN DE L'ARGENT (Ko)** : **F2 (23b), F6 (23c) et R1** sortent du
+ouvertes, **la pause ne commence pas** ; reports de D310.)* ✅ *(D314, 26/09/2026 : la seconde certification est
+**PASSÉE** — F1 et F5 **closes** ; le rang 23 est clos ; **LA PAUSE DU CHEMIN DE L'ARGENT A COMMENCÉ** ; section D314.)* ⛔ **PAUSE DU CHEMIN DE L'ARGENT (Ko)** : **F2 (23b), F6 (23c) et R1** sortent du
 rang 23 — **bloqués par la reprise du chemin de l'argent, pause décidée par Ko** ; leur reprise sera un rang que Ko
 arbitrera.
 
-- [ ] **[API]** ⛔ **audit SOLID 09/09 · F1 — `accept` peut écrire `ACCEPTED` par-dessus un `DECLINED` ou un
+- [x] **[API]** ⛔ **audit SOLID 09/09 · F1 — `accept` peut écrire `ACCEPTED` par-dessus un `DECLINED` ou un
   `CANCELLED` déjà commité** (P1 de l'audit). **OUVERT à `HEAD`** : `PrismaBookingLocks.acceptUnderVenueLock` lit
   le statut sous le verrou de **salle**, puis écrit `tx.booking.update({ where: { id } })` **sans condition sur le
   statut de départ** ; `transition` (refus, annulations) écrit par `updateMany` conditionné **sans** prendre ce
@@ -2823,7 +2850,8 @@ arbitrera.
   réorientée — trouvée muette par `lancer-campagnes.py`). ~~**Reste ouvert** jusqu'à la session adverse, la décision du relecteur et la certification.~~
   Détail : `ZWADJ_CONTINUITE.md`, section D305. ⛔ *(D307, 25/09/2026 : session adverse **faite** (D306), décision du
   relecteur **reçue** — comportement accepté. **Reste ouvert jusqu'à 23a-2** (C1 à C5 de D306) **et la certification**
-  qui clôt le rang 23.)* ⛔ *(D308 : 23a-2 **fait** — reste ouvert jusqu'à la **certification**.)* ⛔ *(D310 : la certification a eu lieu et a **ÉCHOUÉ** — reste ouvert.)*
+  qui clôt le rang 23.)* ⛔ *(D308 : 23a-2 **fait** — reste ouvert jusqu'à la **certification**.)* ⛔ *(D310 : la certification a eu lieu et a **ÉCHOUÉ** — reste ouvert.)* ✅ *(D314, 26/09/2026 : la seconde certification
+  est **PASSÉE** — marque posée, D305 et D308 en font partie ; **close**.)*
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F2 — un devis annulé entre-temps se convertit ; `revise` ne revalide pas le
   statut du parent** (P1 de l'audit). **OUVERT à `HEAD`** : `QuotesService.convert` contrôle le statut
   (`assertStatus`) **avant**, puis `PrismaQuoteStore.convertirEnDemande` crée la réservation **sans transaction ni
@@ -3004,7 +3032,7 @@ arbitrera.
   ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; `account-deletion.service.ts` et sa mesure
   d'intégration ; e2e exigée (auth) ; cadrage chemin de l'argent : non ; migration : non ; dépendance : non ; mord
   sous concurrence.
-- [ ] **[API]** **audit SOLID 09/09 · F5 — une annulation client contourne le motif exigé** (P2 de l'audit ; même
+- [x] **[API]** **audit SOLID 09/09 · F5 — une annulation client contourne le motif exigé** (P2 de l'audit ; même
   famille que F1). **OUVERT à `HEAD`** : `BookingsService.cancelAsClient` décide par `decideBookingTransition` sur
   un statut lu **avant**, puis écrit par `transitionStatus(…, allowedFrom(CANCEL_AS_CLIENT), …)`, qui admet **les
   deux** statuts de départ — un `PENDING` devenu `ACCEPTED` entre-temps s'annule sans motif. Reproduit par l'audit.
@@ -3020,7 +3048,8 @@ arbitrera.
   R23-F5-a, -b, -c, échecs LUS. ~~**Reste ouvert** jusqu'à la session adverse, le relecteur et la certification.~~
   ⛔ *(D307, 25/09/2026 : session adverse **faite** (D306), relecteur **reçu** — comportement accepté. **Reste ouvert
   jusqu'à 23a-2** (C1 à C5, dont C2, C4, C5 portent sur F5) **et la certification** qui clôt le rang 23.)* ⛔ *(D308 :
-  23a-2 **fait** — reste ouvert jusqu'à la **certification**.)* ⛔ *(D310 : la certification a eu lieu et a **ÉCHOUÉ** — reste ouvert.)*
+  23a-2 **fait** — reste ouvert jusqu'à la **certification**.)* ⛔ *(D310 : la certification a eu lieu et a **ÉCHOUÉ** — reste ouvert.)* ✅ *(D314, 26/09/2026 : la seconde certification
+  est **PASSÉE** — marque posée, D305 et D308 en font partie ; **close**.)*
 - [ ] **[API]** **audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français** (P2 de
   l'audit). **OUVERT à `HEAD`** : `booking-notification-input.ts` compare `locale === "AR"`, alors que l'énuméré
   `Locale` du schéma est `fr` / `ar` ; et `booking-notification-input.spec.ts` **attend** `["ar", "fr"]` — le test

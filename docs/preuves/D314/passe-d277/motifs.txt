@@ -1,0 +1,24 @@
+# D314 — motifs de la passe D277 (la certification PASSE : marque posée, rang 23 clos, compteur TROIS → ZÉRO, pause du
+# chemin de l'argent commencée). Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D313),
+# jamais passés en ligne de commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « certification », « compteur », « peut s'ouvrir » seul, « pause » seul — ils comptent tout (D298).
+# sens 1 — ce que D314 INVALIDE (la certification annoncée à venir, le rang 23 ouvert, le compteur à trois, la pause pas commencée)
+1|RESTE LA CERTIFICATION
+1|reste la certification
+1|CE QUI VIENT ENSUITE : LA CERTIFICATION
+1|compteur TROIS
+1|COMPTEUR À TROIS
+1|compteur **TROIS**
+1|ne commence pas
+1|jusqu'à la certification
+1|si la certification passe
+1|elle clôt le rang 23
+# sens 2 — ce que D314 REND PERMIS (compteur à zéro : un lot de code PEUT s'ouvrir sur arbitrage, hors du chemin de l'argent en pause)
+2|de quelque rang que ce soit
+2|Aucun autre lot de code
+2|aucun lot de code
+2|compteur à ZÉRO
+2|reprise du chemin de l'argent
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d314-qq

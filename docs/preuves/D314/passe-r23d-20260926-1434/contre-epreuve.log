@@ -1,0 +1,8 @@
+✓ pré-vol : copie NON mutée, code 0 (attendu 0), bras ✓ 5 (attendu 5)
+✓ M1 — exclusion par EMPLACEMENT : le chemin épinglé suffit, l'empreinte n'est plus vérifiée : ancre 1 → 0, marqueur 0 → 1 · code 2 (attendu 2) · bras ✗ ['discrimination'] (attendu ['discrimination'])
+✓ M2 — exclusion par NOM : un fichier nommé comme une sortie d'audit est exclu : ancre 1 → 0, marqueur 0 → 1 · code 2 (attendu 2) · bras ✗ ['discrimination'] (attendu ['discrimination'])
+✓ M3 — sceau PRÉSENT au lieu de sceau VÉRIFIÉ : ancre 1 → 0, marqueur 1 → 2 · code 2 (attendu 2) · bras ✗ ['discrimination'] (attendu ['discrimination'])
+✓ M4 — aucune exclusion des prédécesseurs : le registre est vide : ancre 1 → 0, marqueur 0 → 1 · code 2 (attendu 2) · bras ✗ ['écho'] (attendu ['écho'])
+✓ M5 — exclusion par EXTENSION : les journaux .log ne sont plus audités : ancre 1 → 0, marqueur 0 → 1 · code 2 (attendu 2) · bras ✗ ['positif', 'cas'] (attendu ['positif', 'cas'])
+
+5 garde(s) mordue(s) sur 5 cible(s).
