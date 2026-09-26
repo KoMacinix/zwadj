@@ -1361,7 +1361,7 @@ rang que j'arbitrerai. » ⇒ **Ordre restant : 23a-2 → certification (clôtur
 | **R1** | la lecture de l'échec dans les harnais, code (`neutralisation/`) | ~~⏸ après 23a~~ ; ~~attend le relecteur sur les choix de son cadrage (§ 9 de « ⛔ CADRAGE DE R1 »)~~ ⛔ *(D305 : choix **tranchés**, § 9 ; trois constats de 23a **proposés comme modes**, au relecteur, § 4)* ⛔ *(D307 : **SORT DU RANG 23** — backlog, bloqué par la reprise du chemin de l'argent ; **premier lot à la reprise** ; bloque toujours la levée du drapeau. Les trois modes proposés : **tranchés**, § 9)* |
 | certification | — | ~~⏸ **bloquée par R1** (décision 4 du relecteur, D304)~~ ⛔ *(D307 : ⏸ **après 23a-2** ; R1 **ne la bloque plus** — décision 2b du relecteur : les morsures du chemin de l'argent non lues s'y écrivent « code de sortie seul, non prouvées (R1) » ; **elle clôt le rang 23**, sur le poste de Ko)* ⛔ *(D308 : **C'EST LE PROCHAIN LOT** — 23a et 23a-2 en font partie ; compteur **DEUX**)* ⛔ *(D310 : **ÉCHOUÉE** — passe `r23c-20260926-0032`, toutes les prédictions tenues, mais `neutralize-available-on-api.py` n'a joué **aucune** de ses 13 cibles (binaire relatif lancé depuis `apps/api` : « `'apps' is not recognized` », compté « ROUGE ») ; **aucune marque**, rien ne se clôt ; section D310)* |
 | **lot de déblocage** | `neutralize-available-on-api.py` : sa mesure ne démarre pas sur ce poste (D310) — code d'instrument, **aucun code produit** | ~~⏸ **ARBITRÉ PAR KO LE 26/09/2026 (D311)** : exception bornée à D270, **troisième lot non certifié** ; partie B de la session ; ses modes de défaillance s'écrivent dans le bloc « ARBITRAGE DE KO (D311) », **avant le correctif**~~ ✅ **FAIT LE 26/09/2026 (D312)** — modes écrits et commités **avant** le correctif (`071dfc2`) ; lancement des harnais qui fonctionnent, pré-vol, lecture, calibration à cinq bras ; **13 cibles sur 13 MORDUES, LUES** (`AssertionError`, titre visé) ; aucune muette, **aucun test touché** ; **compteur TROIS** |
-| **certification** (seconde) | — | ⏸ **après le lot de déblocage**, sous un **protocole neuf commité avant toute mesure**, en session neuve, sur le poste de Ko ; **elle clôt le rang 23** ⛔ *(D312 : **C'EST LE PROCHAIN LOT** — D305, D308 et D312 en font partie ; compteur **TROIS**)* ⛔ *(D313 : **point 12 appliqué par Ko** — preuve LUE pour `rang23` et `available-on-api`, plancher de durée mesuré à l'étape 0 pour les autres ; bloc « ARBITRAGES DE KO ET DÉCISIONS DU RELECTEUR (D313) » ; partie B de la session de D313)* |
+| **certification** (seconde) | — | ⏸ **après le lot de déblocage**, sous un **protocole neuf commité avant toute mesure**, en session neuve, sur le poste de Ko ; **elle clôt le rang 23** ⛔ *(D312 : **C'EST LE PROCHAIN LOT** — D305, D308 et D312 en font partie ; compteur **TROIS**)* ⛔ *(D313 : **point 12 appliqué par Ko** — preuve LUE pour `rang23` et `available-on-api`, plancher de durée mesuré à l'étape 0 pour les autres ; bloc « ARBITRAGES DE KO ET DÉCISIONS DU RELECTEUR (D313) » ; partie B de la session de D313)* ⛔ *(D314 : **étape 0 commitée** — plancher mesuré, protocole écrit ; bloc « LA CERTIFICATION QUI CLÔT LE RANG 23 (D314) »)* |
 | 23b, 23c, certification | F2, puis F6 | ~~⏸ — ⚠ 23b attend aussi la réponse du relecteur sur la garde « déjà converti » (§ 8, annotation D305)~~ ⛔ *(D307 : **SORTENT DU RANG 23** — backlog, bloqués par la reprise ; la question « déjà converti » attend avec 23b)* |
 ~~⇒ **Aucun lot de code n'est PERMIS aujourd'hui** : le compteur est à zéro, l'ordre est arbitré, et la décision du
 relecteur sur le § 8 manque.~~ ⛔ *(D305 : la décision est arrivée, 23a est codé.)* ⇒ **Compteur de lots de code non
@@ -1400,6 +1400,9 @@ cette certification ; le statut de D288) et décisions du relecteur (la portée 
 **Compteur TROIS, inchangé.** ⇒ **CE QUI VIENT ENSUITE : LA CERTIFICATION**, partie B de la session, sous un protocole
 neuf commité avant toute mesure ; **elle clôt le rang 23**. Bloc « ARBITRAGES DE KO ET DÉCISIONS DU RELECTEUR (D313) »,
 ci-dessous.)*
+⛔ *(D314, 26/09/2026 : **étape 0 de la certification** — le plancher du point 12 **mesuré** sur un non-démarrage simulé
+(deux harnais, `available-on` et `journey`, rendent une campagne complète **sans avoir démarré**) ; protocole et
+procédures **commités avant toute mesure de la passe**. Bloc « LA CERTIFICATION QUI CLÔT LE RANG 23 (D314) », ci-dessous.)*
 ⚠ ~~**Que R1 puisse s'ouvrir AVANT la fin de la revue de 23a n'est écrit nulle part** —
 l'ordre dit « 23a → R1 », la forme de revue dit qu'une autre session casse 23a : **à Ko** ; une permission ne se
 déduit pas (D287).~~ ⛔ *(D307 : sans objet — R1 sort du rang 23, arbitrage de Ko.)* ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
@@ -1618,6 +1621,108 @@ chaque mesure.
 `argon2`, `budgets`, `horizon`, `maxprice` ; `act-plafonds`, `horloge`). Ko ne les nomme pas parmi les harnais à preuve
 LUE : ils relèvent du **plancher**, et leurs morsures s'écrivent « code de sortie seul », comme à D310. Tous les sept
 sont hors de la carte : l'étiquette ne change le poids d'aucune morsure du chemin.
+
+### ⛔ LA CERTIFICATION QUI CLÔT LE RANG 23 (D314) — ÉTAPE 0 : LE PLANCHER MESURÉ, PUIS LE PROTOCOLE, COMMITÉS AVANT TOUTE MESURE DE LA PASSE
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne porte **D313** ⇒ **D314** ; « D314 » : **0** occurrence dans les
+fichiers d'autorité à `a5a8c55` (`git grep`). Partie B de la session de D313, sur ordre de Ko. **Critère** : « LE CRITÈRE DU
+RANG 9 », points 1 à 12 — le point 12 **appliqué par Ko à cette certification** (annotation D313) ; **aucune valeur n'en
+est recopiée ici**, la barre de RAM est celle que la sonde imprime. **Patron** : le protocole de D310 (bloc plus haut),
+repris point par point ; **ce qui change est écrit ci-dessous**. ⇒ **Ce lot ne compte pas** : `.md` d'autorité et
+`docs/preuves/` seulement (exemption de D292) — procédures sous `docs/preuves/D314/outils/`, plancher sous
+`docs/preuves/D314/plancher/`.
+**LA MARQUE NOMMERA D305, D308 ET D312, RIEN D'AUTRE** — mesuré, pas recopié : des **17** commits de `0a8235d` (marque de
+D299) à `a5a8c55`, bornes incluses, **trois seulement** portent un fichier hors `.md` d'autorité et hors `docs/preuves/` :
+`b715943` (D305, 23a), `3ac8749` (D308, 23a-2), `d37ea64` (D312, le lot de déblocage). Aucun en-tête antérieur réécrit.
+
+**ÉTAPE 0 — LE PLANCHER DU POINT 12, MESURÉ AVANT CE COMMIT** (Ko, 1b ; pièces `docs/preuves/D314/plancher/`) :
+- **Méthode, qui ne modifie aucun harnais** (`simuler-non-demarrage.py`) : une **cale de `PATH`** (hors dépôt) place en
+  tête un `pnpm.cmd` et un `node.cmd` — tous les harnais lancent leur mesure par l'un des deux, résolus par
+  `shutil.which` (relevé dans le source). **Niveau A** : la commande que le harnais lance est introuvable (la classe de
+  D310). **Niveau B** : `pnpm` démarre et la commande qu'il doit exécuter est introuvable (la sonde S4 de D312) — la
+  cale réécrit la cible de `exec`, le script de `run` ou le module de `node`, et lance le **vrai** `pnpm`. Chaque harnais
+  est joué **tel quel**, dans la passe qui le certifie (`--int` s'il est verrouillé), chronométré de l'extérieur comme
+  `lancer-campagnes.py` le fait ; chaque appel qui traverse la cale est journalisé.
+- **État** : SECTEUR, `node` 0, `chrome` 0, RAM 6 702 Mo (`etat-avant-simulation.txt`) — une étape 0, pas une passe.
+- **Calibration, 0 bras manqué** : (a) la cale elle-même (A : code non nul sans ligne « Tests » ; B : `exec vitest`
+  réécrit ; B refuse une forme non reconnue) ; (b) **bras positif** — `available-on-api`, qui LIT sa sortie, constate
+  sous A et sous B « **NON DÉMARRÉE** » pour sa mutation connue ; (c) **bras négatif** — `argon2` joué **sans** cale par la
+  même fonction : 3 « ✓ », 0 appel de cale, **16,6 s** contre 1,48 s de non-démarrage.
+- **Mesure** : 26 harnais × 2 niveaux, **arbre revenu à son état de départ après chacun** — les copies `.sauvegarde` que
+  `act-plafonds` (2), `argon2` (1) et `horloge` (1) laissent quand ils meurent avant leur purge ont été **retirées
+  seulement parce qu'identiques octet pour octet à leur source intacte**, et chaque retrait est journalisé.
+- ⛔ **CE QUE LA MESURE A MONTRÉ : DEUX HARNAIS RENDENT UNE CAMPAGNE COMPLÈTE SANS AVOIR DÉMARRÉ** — **`available-on`**
+  (10 « ✓ » sur 10, code 0, 0,43 s sous A) et **`journey`** (7 sur 7, code 0, 0,36 s) : **la classe exacte de D310**. Sans
+  le point 12, ils compteraient. `404`, `horizon`, `maxprice` rendent un « ✗ » par cible (bruyant) ; les 21 autres
+  s'arrêtent à leur pré-vol.
+- **Le choix, déclaré et motivé** (`deriver-plancher.py`, sortie versée) : **UN PLANCHER PAR CAMPAGNE, P = 3 × T**, T = le
+  non-démarrage le plus long (B, pour les 26). *Motif*, **calculé** : un plancher **absolu** (3 × 14,63 s,
+  `404`) refuserait cinq campagnes réelles de D310 ; un plancher **par cible** (3 × 1,74 s, `journey`) en refuserait
+  quatre. *Marge* : K = 3 absorbe un non-démarrage trois fois plus lent que mesuré, et reste sous la racine du rapport
+  réel / non-démarrage le plus bas des durées versées de D310 (≈ 10,8). **`plancher.txt`** : 26 planchers, de **0,69 s**
+  (`budgets`) à **43,89 s** (`404`).
+- **Limite, écrite telle quelle par Ko** : « une mutation qui empêche la spec de se charger dure autant qu'un démarrage (cas
+  « `Tests no tests` » de D312). Un plancher ne la distingue pas d'une morsure. Ces morsures s'écrivent « code de sortie
+  seul ». Les distinguer est le travail de R1, en pause. » ⚠ *Dérivé par la session* : un plancher **par campagne** ne voit
+  pas non plus une campagne dont une **partie** seulement des mesures n'aurait pas démarré.
+- **Défauts de mon instrument, écrits (D298)** : passage 1 refusé au départ (mes propres pièces non suivies lues comme un
+  arbre sale) ; passage 2 arrêté (la cale B écrivait en cp1252 ; un dossier de sauvegarde **vide** laissé par
+  `available-on-api` lu comme une mutation) — `defaut-instrument-passage-2.txt` ; passage 3 arrêté par le reliquat
+  d'`act-plafonds` — `arret-passage-3.txt`. **Rejeu intégral** au passage 4, **qui fait foi** (`simulation-sortie.txt`,
+  118 journaux versés).
+
+**LE POINT 12, CAMPAGNE PAR CAMPAGNE** (Ko, 1b) :
+- `rang23` : **preuve LUE** — `outils/lire-rang23.py` : le verdict de D306 **et** exécutés = passés + en échec, calculés
+  **à part** (le lecteur de D306 compte le total entre parenthèses) ; exigé : 13 mesures, MORSURES LUES = DÉMARRÉES = 13.
+  Calibration : les 13 journaux de D310 (13 ; 13) ; un « `Tests  25 skipped (25)` » posé en mémoire ⇒ ce journal refusé.
+- `available-on-api` : **preuve LUE** — `outils/lire-aoa.py`, qui lance le lecteur **indépendant** de D312 ; exigé : 30
+  journaux, 0 écart. Calibration : les 30 journaux de D312 (0 écart) ; A1 remplacé par un non-démarrage ⇒ 1 écart.
+- **les 26 autres** : la durée de la passe qui les certifie — colonne « sec » de `--tout`, ou `int-<harnais>.heures` —
+  **≥ P** (`plancher.txt`).
+⇒ **`outils/lire-campagnes.py`** : les exigences 1 à 3 de D310, **plus** le point 12 et les **quatre étiquettes** (bloc D313
+ci-dessus). Calibration, 5 bras : D299 (186) ; D308 (`solid-s1` refusée sans `--int`) ; D310 (`available-on-api`, 0 s, sans
+lecture ⇒ refusé) ; les 26 à leur propre non-démarrage ⇒ **26 refusés** ; `argon2` de D310 (16 s) ⇒ accepté. **Relu sur la
+passe versée de D310** (`lire-campagnes-sur-passe-D310.txt`) : 26 comptent, `rang23` et `available-on-api` refusés faute de
+lecture — la réponse connue.
+
+**EXIGENCES DE KO, reprises de D310** : **toutes** les campagnes ; `--int` pour les six verrouillés ; jouées = déclarées,
+crochets complets pour les neuf à intégration ; **point 11** — chaque ligne de la table des portes cite
+`docs/preuves/D314/passe-<IDENTIFIANT>/`.
+**ORDRE — `outils/passe.py <IDENTIFIANT> <SHA>`**, copie de celle de D310, **sans retouche de fichier suivi entre le premier
+relevé et la clôture** (D270) : 0. `pg_isready`, ports 3100, 3101, 5273 libres ; 1. relevé d'ouverture, **PORTE DURE sur
+chacun** (`CHROME=0`, RAM médiane **et** bande basse au-dessus de la barre, `SECTEUR`, calibration passante) — un rouge ⇒ rien
+ne se lance, Ko est prévenu, **aucun nouveau relevé sans un mouvement d'inventaire nommé** ; 2. échantillonneur en fond,
+`-Intervalle 30`, **aucun lecteur** sur son journal pendant la fenêtre ; 3. arbre-1 ; 4. six portes dans l'ordre de
+`CLAUDE.md`, chacune précédée d'un relevé ; avant l'e2e, `node` 0 et ports libres ; 5. arbre-2 ; `--tout` ; copie des
+journaux de CETTE passe — campagnes, `rang23/` **et `available-on-api/`** (le seul ajout) — ; arbre-3 ; 6. rejeu `--int`
+des six verrouillés ; arbre-4 ; 7. contre-épreuve de `audit-secrets.py` ; arbre-5 ; 8. relevé de clôture, arrêt et
+`-Resume` de l'échantillonneur.
+**Après la clôture seulement**, dans le dossier de la passe, AVANT le versement : `lire-rang23.py`, `lire-aoa.py`,
+`lire-campagnes.py`, `docs/preuves/D310/outils/lire-portes.py`, `docs/preuves/D310/outils/lire-etat.py` ; puis
+`outils/verser.py` (SHA-256 relus, **journal e2e brut refusé**) ; extrait e2e (`docs/preuves/D299/outils/extraire-e2e.py`) ;
+**« 0 valeur réelle » sur le journal e2e de la passe, sortie versée AVANT l'audit** ; audit scellé, tri différentiel,
+**second audit en dernière écriture** ; marque.
+**Règles de lecture** : celles de D310 — porte verte ⇔ code réel 0, résumés confrontés au brut, tout « failed » à son
+contexte (D275) ; `--tout` sort en 1 **et c'est attendu** ; arbre immobile aux cinq contrôles ; échantillonneur homogène.
+**PRÉDICTIONS, DÉRIVÉES et non critères** — depuis D310, un seul lot de code, D312, qui ne touche qu'un harnais ; mesuré par
+D312 à `d37ea64` : `test` **1 334 / 109** (664/58 · 36/3 · 287/20 · 347/28) ; `test:int` **443 / 36** ; e2e **34 passés · 1
+ignoré** ; `--tout` **28 campagnes · 198 mordues · 0 muette · 13 non mesurées**, sortie 1 — ⚠ le même 198 qu'à D310, mais
+les 13 d'`available-on-api` y sont désormais **jouées**, en une durée non nulle ; rejeux `--int` **8, 13, 2, 5, 6, 6** (= 40) ;
+⇒ **CERTIFIANT : 211 mordues · 0 muette · 0 non mesurée, 28 campagnes sur 28 qui comptent, point 12 tenu partout** — 26
+au-dessus de leur plancher (rapport réel / P le plus bas, sur D310 : 3,6, `argon2`), `rang23` 13 mesures démarrées et
+lues, `available-on-api` 30 journaux et 0 écart ; **étiquettes** : lue au chemin **12** · lue hors du chemin **13** · code de
+sortie seul, non prouvée (R1) **81** · code de sortie seul, non classée **105** ; contre-épreuve **5 sur 5**.
+⛔ **Un compte qui s'écarte suspend la marque** jusqu'à explication ; inexpliqué ⇒ refus.
+⛔ **ARRÊT SANS RATTRAPAGE** : un relevé hors `SECTEUR`, `chrome` qui réapparaît, ou un échantillonneur non homogène ⇒ la
+passe s'arrête, c'est dit, **pas de marque**.
+⇒ **SI ELLE PASSE** (Ko) : le rang 23 se clôt, le compteur revient à **ZÉRO**, l'exception de D311 est consommée, et **la
+pause du chemin de l'argent commence** (D307) ; « **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** » s'écrit ici et dans l'ordre
+des rangs. **SI ELLE ÉCHOUE** : rien ne se clôt ; l'échec est décrit, **rien n'est corrigé** ; un nouveau blocage revient à Ko.
+**Limites écrites d'avance** : celles de D310 (base de dev non re-mesurée ; réserve « zéro `node` pendant la mesure »
+reconduite ; processus étrangers autres que `chrome` non mesurés pendant la fenêtre ; **aucune durée ne se compare** — sauf
+au plancher, qui est un **seuil de démarrage**, pas une comparaison de durées ; contre-épreuve sans relevé propre) ; et
+celles du plancher (ci-dessus) ; et les **sept** harnais qui lisent une partie de leur sortie (D303), étiquetés « code de
+sortie seul » (bloc D313).
 
 ### L'état du rang à l'ouverture (D303, 23/09/2026) — ⚠ ses deux dernières phrases sont PÉRIMÉES par D304
 

@@ -1,0 +1,37 @@
+✗ M1. ⛔ LE DÉFAUT D'ORIGINE : le formulaire d'accueil réémet `maxPriceCents`
+   rouge, mais aucun échec ne porte « les champs portent les noms que `/salles` LIT » — ancre à revoir.
+✗ M2. ⛔ LE FACTEUR 100 : les paliers d'accueil repassent en centimes
+   rouge, mais aucun échec ne porte « chaque palier de budget SURVIT » — ancre à revoir.
+✗ M3. L'assistant réémet le nom de l'API dans l'URL publique
+   rouge, mais aucun échec ne porte « les noms et l'encodage que `/salles` LIT » — ancre à revoir.
+✗ M4. Les deux contrats se remélangent : le compteur passe en dinars
+   rouge, mais aucun échec ne porte « interroge le serveur avec les paramètres du CONTRAT » — ancre à revoir.
+✗ M5. Le repli disparaît : les anciens liens partagés reperdent leur plafond
+   rouge, mais aucun échec ne porte « un ancien lien partagé retrouve son plafond » — ancre à revoir.
+✗ M6. ⛔ LE REPLI PART DANS L'AUTRE SENS (`maxPriceCents` corrige `maxPrice`)
+   rouge, mais aucun échec ne porte « coupe le repli » — ancre à revoir.
+✗ M7. L'arrondi s'invente : un reste non nul passe quand même
+   rouge, mais aucun échec ne porte « ABANDONNÉ, jamais arrondi » — ancre à revoir.
+✗ M8. L'ancien nom se remet à NAÎTRE dans l'URL publique
+   rouge, mais aucun échec ne porte « ne réémet JAMAIS l'ancien nom » — ancre à revoir.
+✗ M9. ⛔ D254 — UN PALIER REMONTE AU-DESSUS DE LA BUTÉE (le défaut B lui-même)
+   rouge, mais aucun échec ne porte « AUCUN palier n'atteint la butée » — ancre à revoir.
+✗ M10. ⛔ D254 — LES DEUX BRANCHES DE L'ASSISTANT SE REMETTENT À DIVERGER
+   rouge, mais aucun échec ne porte « arrive intact à l'API ET à l'URL » — ancre à revoir.
+
+0 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+  muette : M1. ⛔ LE DÉFAUT D'ORIGINE : le formulaire d'accueil réémet `maxPriceCents` — rouge sans le titre attendu
+  muette : M2. ⛔ LE FACTEUR 100 : les paliers d'accueil repassent en centimes — rouge sans le titre attendu
+  muette : M3. L'assistant réémet le nom de l'API dans l'URL publique — rouge sans le titre attendu
+  muette : M4. Les deux contrats se remélangent : le compteur passe en dinars — rouge sans le titre attendu
+  muette : M5. Le repli disparaît : les anciens liens partagés reperdent leur plafond — rouge sans le titre attendu
+  muette : M6. ⛔ LE REPLI PART DANS L'AUTRE SENS (`maxPriceCents` corrige `maxPrice`) — rouge sans le titre attendu
+  muette : M7. L'arrondi s'invente : un reste non nul passe quand même — rouge sans le titre attendu
+  muette : M8. L'ancien nom se remet à NAÎTRE dans l'URL publique — rouge sans le titre attendu
+  muette : M9. ⛔ D254 — UN PALIER REMONTE AU-DESSUS DE LA BUTÉE (le défaut B lui-même) — rouge sans le titre attendu
+  muette : M10. ⛔ D254 — LES DEUX BRANCHES DE L'ASSISTANT SE REMETTENT À DIVERGER — rouge sans le titre attendu
+
+--- stderr ---
+
+--- code de sortie : 1 ---

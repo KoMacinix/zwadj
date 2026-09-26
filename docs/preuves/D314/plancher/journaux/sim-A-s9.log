@@ -1,0 +1,8 @@
+✗ PRÉ-VOL : « types » est DÉJÀ ROUGE avant mutation. Campagne abandonnée.
+   commande : pnpm --filter @zwadj/api-client exec tsc --noEmit
+   │ 'zwadj-commande-introuvable-d314' is not recognized as an internal or external command,
+   │ operable program or batch file.
+
+--- stderr ---
+
+--- code de sortie : 2 ---

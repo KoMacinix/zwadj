@@ -1,0 +1,13 @@
+✓ Pré-vol inversé : un run de relevé ROUGIT — releve
+✗ PRÉ-VOL : « course » est DÉJÀ ROUGE avant mutation. Campagne abandonnée.
+   commande : pnpm --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/payment-intent-race.int-spec.ts
+   ── 5 dernière(s) ligne(s) sur 5 ──
+   │ undefined
+   │ C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+   │  ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "zwadj-commande-introuvable-d314" not found
+   │ 'zwadj-commande-introuvable-d314' is not recognized as an internal or external command,
+   │ operable program or batch file.
+
+--- stderr ---
+
+--- code de sortie : 2 ---

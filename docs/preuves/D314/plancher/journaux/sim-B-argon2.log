@@ -1,0 +1,19 @@
+temoin (aucune mutation)
+
+--- stderr ---
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-argon2.py", line 111, in <module>
+    code, sortie = joue()
+                   ~~~~^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-argon2.py", line 72, in joue
+    assert total and int(total.group(1)) == NB_TESTS_ATTENDU, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ERREUR DE SCRIPT : 4 tests attendus dans src/auth/password.service.dummy.spec.ts. Un filtre qui ne correspond plus rend 0 et se lit comme « la garde est inutile » (D144).
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "zwadj-commande-introuvable-d314" not found
+'zwadj-commande-introuvable-d314' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+--- code de sortie : 1 ---

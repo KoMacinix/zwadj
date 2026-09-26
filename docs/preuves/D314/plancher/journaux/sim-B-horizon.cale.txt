@@ -1,0 +1,6 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/api", "run", "test", "--", "src/venues/venues-public.service.spec.ts"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/api", "run", "test", "--", "src/venues/venues-public.service.spec.ts"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/api", "run", "test", "--", "src/venues/venues-public.service.spec.ts"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/lib/api.test.ts"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/search/search-view.test.tsx"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/search/search-view.test.tsx"]}

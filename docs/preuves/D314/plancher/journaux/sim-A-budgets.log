@@ -1,0 +1,19 @@
+témoin (aucune mutation), sous chacune des quatre configurations
+
+--- stderr ---
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 190, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 137, in main
+    code, t, sig = jouer_temoin(ins, paquet)
+                   ~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 107, in jouer_temoin
+    assert len(tests) == 1, (
+           ^^^^^^^^^^^^^^^
+AssertionError: ERREUR DE SCRIPT : 0 test(s) lu(s) dans le rapport du témoin de packages/api-client, attendu 1 — un témoin qui n'a pas tourné se lit comme « la garde est muette » (D144).
+'zwadj-commande-introuvable-d314' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+--- code de sortie : 1 ---

@@ -1,0 +1,36 @@
+non-démarrages lus : 26 (attendu 26)
+
+== POURQUOI PAR CAMPAGNE — les deux formes à un seul nombre, calculées sur ces mesures
+  plancher ABSOLU = 3 × 14.63 s (404) = 43.89 s ⇒ refuserait à D310 : ['argon2', 'booking-status', 'budgets', 'solid-s4', 'solid-s5a']
+  plancher PAR CIBLE = 3 × 1.741 s (journey) = 5.22 s par cible ⇒ refuserait à D310 : ['s10b', 's11a', 'solid-s4', 'solid-s5a']
+
+== PLANCHER PAR CAMPAGNE, P = 3 × T — et la prédiction sur D310 (réel / P)
+  404              tout  T  14.63 s · P  43.89 s · D310 réel  204 s · réel / P    4.6 · réel / T   13.9
+  act-plafonds     tout  T   1.49 s · P   4.47 s · D310 réel   53 s · réel / P   11.9 · réel / T   35.6
+  argon2           tout  T   1.48 s · P   4.44 s · D310 réel   16 s · réel / P    3.6 · réel / T   10.8
+  available-on     tout  T  12.17 s · P  36.51 s · D310 réel  169 s · réel / P    4.6 · réel / T   13.9
+  b7               tout  T   1.41 s · P   4.23 s · D310 réel  211 s · réel / P   49.9 · réel / T  149.6
+  booking-status   tout  T   1.48 s · P   4.44 s · D310 réel   16 s · réel / P    3.6 · réel / T   10.8
+  budgets          tout  T   0.23 s · P   0.69 s · D310 réel   31 s · réel / P   44.9 · réel / T  134.8
+  e3d1-s8          --int T   2.80 s · P   8.40 s · D310 réel   84 s · réel / P   10.0 · réel / T   30.0
+  horizon          tout  T   7.41 s · P  22.23 s · D310 réel   94 s · réel / P    4.2 · réel / T   12.7
+  horloge          tout  T   1.45 s · P   4.35 s · D310 réel   54 s · réel / P   12.4 · réel / T   37.2
+  journey          tout  T  12.19 s · P  36.57 s · D310 réel  227 s · réel / P    6.2 · réel / T   18.6
+  maxprice         tout  T  12.11 s · P  36.33 s · D310 réel  167 s · réel / P    4.6 · réel / T   13.8
+  r4               tout  T   1.50 s · P   4.50 s · D310 réel   76 s · réel / P   16.9 · réel / T   50.7
+  s10a             tout  T   1.53 s · P   4.59 s · D310 réel   68 s · réel / P   14.8 · réel / T   44.4
+  s10b             tout  T   1.44 s · P   4.32 s · D310 réel   92 s · réel / P   21.3 · réel / T   63.9
+  s11a             tout  T   1.40 s · P   4.20 s · D310 réel   62 s · réel / P   14.8 · réel / T   44.3
+  s11b             --int T   1.54 s · P   4.62 s · D310 réel  285 s · réel / P   61.7 · réel / T  185.1
+  s9               tout  T   1.42 s · P   4.26 s · D310 réel   45 s · réel / P   10.6 · réel / T   31.7
+  solid-s1         --int T   1.42 s · P   4.26 s · D310 réel  250 s · réel / P   58.7 · réel / T  176.1
+  solid-s2         --int T   1.43 s · P   4.29 s · D310 réel  254 s · réel / P   59.2 · réel / T  177.6
+  solid-s3         --int T   1.46 s · P   4.38 s · D310 réel  338 s · réel / P   77.2 · réel / T  231.5
+  solid-s4         tout  T   1.39 s · P   4.17 s · D310 réel   28 s · réel / P    6.7 · réel / T   20.1
+  solid-s5a        tout  T   1.49 s · P   4.47 s · D310 réel   38 s · réel / P    8.5 · réel / T   25.5
+  solid-s5b        tout  T   1.43 s · P   4.29 s · D310 réel  313 s · réel / P   73.0 · réel / T  218.9
+  solid-s6         --int T   1.46 s · P   4.38 s · D310 réel  265 s · réel / P   60.5 · réel / T  181.5
+  solid-s7         tout  T   1.29 s · P   3.87 s · D310 réel   96 s · réel / P   24.8 · réel / T   74.4
+
+plancher.txt : 26 lignes P (attendu 26)
+PRÉDICTION : campagnes de D310 sous leur plancher : 0 (attendu 0) · rapport réel / P le plus bas 3.6 (argon2) · rapport réel / T le plus bas 10.8

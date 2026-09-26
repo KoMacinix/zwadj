@@ -1,0 +1,1 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/api", "exec", "vitest", "run", "src/payments/payments.service.spec.ts"]}

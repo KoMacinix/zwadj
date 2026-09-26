@@ -1,0 +1,17 @@
+== ÉNUMÉRATION : 28 harnais (attendu 28) · autres que ['available-on-api', 'rang23'] : 26 (attendu 26)
+   pnpm réel : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD · node réel : C:\Program Files\nodejs\node.EXE · python : C:\Python313\python.exe
+
+== CALIBRATION (a) — la cale elle-même
+  ✓ cale A run src/venues/venues-public.service.spec.ts : code 1, 0.03 s, appels 1, lignes Tests 0 — attendu : code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B run src/venues/venues-public.service.spec.ts : code 1, 1.38 s, appels 1, lignes Tests 0 — attendu : réécrit exec vitest, code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B --version : code 127, 0.08 s, appels 1, lignes Tests 0 — attendu : NON RÉÉCRIT, code 127 · dernière ligne : CALE B : forme d'appel non reconnue, NON RÉÉCRIT — rien n'est lancé
+
+== CALIBRATION (b) — BRAS POSITIF : `available-on-api` (qui LIT sa sortie) constate lui-même le non-démarrage
+  ✓ sous A : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 0.2 s · arbre propre
+  ✓ sous B : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 5.7 s · arbre propre
+
+== MESURE — les 26 harnais « autres », chacun dans la passe qui le certifie, sous A puis sous B
+  · 404              tout  A :    0.45 s · code   1 · « ✓ »  0 · « ✗ » 12 · cibles 12 · appels de cale  12 · non réécrits 0 · lignes Tests 0
+  · 404              tout  B :   14.69 s · code   1 · « ✓ »  0 · « ✗ » 12 · cibles 12 · appels de cale  12 · non réécrits 0 · lignes Tests 0
+⛔ ARRÊT : arbre NON PROPRE après act-plafonds (A) — statut '?? apps/pro/src/dashboard/walkin-journey.test.tsx.sauvegarde\n?? apps/pro/src/test-setup.ts.sauvegarde\n?? docs/preuves/D314/plancher/defaut-instrument-passage-2.txt\n?? docs/preuves/D314/plancher/etat-avant-simulation.txt\n?? docs/preuves/D314/plancher/simuler-non-demarrage.py', sauvegarde False. Rien de plus n'est joué.
+code 3

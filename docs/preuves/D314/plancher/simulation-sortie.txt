@@ -1,0 +1,98 @@
+== ÉNUMÉRATION : 28 harnais (attendu 28) · autres que ['available-on-api', 'rang23'] : 26 (attendu 26)
+   pnpm réel : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD · node réel : C:\Program Files\nodejs\node.EXE · python : C:\Python313\python.exe
+
+== CALIBRATION (a) — la cale elle-même
+  ✓ cale A run src/venues/venues-public.service.spec.ts : code 1, 0.03 s, appels 1, lignes Tests 0 — attendu : code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B run src/venues/venues-public.service.spec.ts : code 1, 1.34 s, appels 1, lignes Tests 0 — attendu : réécrit exec vitest, code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B --version : code 127, 0.12 s, appels 1, lignes Tests 0 — attendu : NON RÉÉCRIT, code 127 · dernière ligne : CALE B : forme d'appel non reconnue, NON RÉÉCRIT — rien n'est lancé
+
+== CALIBRATION (b) — BRAS POSITIF : `available-on-api` (qui LIT sa sortie) constate lui-même le non-démarrage
+  ✓ sous A : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 0.3 s · arbre propre
+  ✓ sous B : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 5.6 s · arbre propre
+
+== MESURE — les 26 harnais « autres », chacun dans la passe qui le certifie, sous A puis sous B
+  · 404              tout  A :    0.46 s · code   1 · « ✓ »  0 · « ✗ » 12 · cibles 12 · appels de cale  12 · non réécrits 0 · lignes Tests 0
+  · 404              tout  B :   14.63 s · code   1 · « ✓ »  0 · « ✗ » 12 · cibles 12 · appels de cale  12 · non réécrits 0 · lignes Tests 0
+  · act-plafonds     tout  A :    0.10 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 2
+  · act-plafonds     tout  B :    1.49 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 2
+  · argon2           tout  A :    0.14 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · argon2           tout  B :    1.48 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · available-on     tout  A :    0.43 s · code   0 · « ✓ » 10 · « ✗ »  0 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · available-on     tout  B :   12.17 s · code   0 · « ✓ » 10 · « ✗ »  0 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · b7               tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · b7               tout  B :    1.41 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · booking-status   tout  A :    0.08 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · booking-status   tout  B :    1.48 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · budgets          tout  A :    0.21 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · budgets          tout  B :    0.23 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · e3d1-s8          --int A :    0.11 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  8 · appels de cale   2 · non réécrits 0 · lignes Tests 0
+  · e3d1-s8          --int B :    2.80 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  8 · appels de cale   2 · non réécrits 0 · lignes Tests 0
+  · horizon          tout  A :    0.25 s · code   1 · « ✓ »  0 · « ✗ »  6 · cibles  6 · appels de cale   6 · non réécrits 0 · lignes Tests 0
+  · horizon          tout  B :    7.41 s · code   1 · « ✓ »  0 · « ✗ »  6 · cibles  6 · appels de cale   6 · non réécrits 0 · lignes Tests 0
+  · horloge          tout  A :    0.11 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · horloge          tout  B :    1.45 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · journey          tout  A :    0.36 s · code   0 · « ✓ »  7 · « ✗ »  0 · cibles  7 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · journey          tout  B :   12.19 s · code   0 · « ✓ »  7 · « ✗ »  0 · cibles  7 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · maxprice         tout  A :    0.40 s · code   1 · « ✓ »  0 · « ✗ » 10 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · maxprice         tout  B :   12.11 s · code   1 · « ✓ »  0 · « ✗ » 10 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · r4               tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r4               tout  B :    1.50 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10a             tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10a             tout  B :    1.53 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10b             tout  A :    0.08 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 20 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10b             tout  B :    1.44 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 20 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11a             tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 18 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11a             tout  B :    1.40 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 18 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11b             --int A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11b             --int B :    1.54 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s9               tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s9               tout  B :    1.42 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s1         --int A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s1         --int B :    1.42 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s2         --int A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s2         --int B :    1.43 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s3         --int A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s3         --int B :    1.46 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s4         tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  7 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s4         tout  B :    1.39 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  7 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5a        tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  9 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5a        tout  B :    1.49 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  9 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5b        tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5b        tout  B :    1.43 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s6         --int A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s6         --int B :    1.46 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s7         tout  A :    0.09 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s7         tout  B :    1.29 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+
+== CALIBRATION (c) — BRAS NÉGATIF : `argon2` SANS cale, par la même fonction
+  ✓ sans cale : code 0 · « ✓ » 3 (attendu 3) · appels de cale 0 (attendu 0) · 16.6 s (attendu > 1.48 s, son plus long non-démarrage simulé)
+
+BRAS ET DÉFAUTS MANQUÉS : 0 (attendu 0) — la simulation vaut mesure
+
+== TABLE — par harnais : non-démarrage simulé le plus long (T = max(A, B)), en secondes
+T 404 tout 12 0.46 14.63 14.63 0
+T act-plafonds tout 4 0.10 1.49 1.49 0
+T argon2 tout 3 0.14 1.48 1.48 0
+T available-on tout 10 0.43 12.17 12.17 10
+T b7 tout 3 0.09 1.41 1.41 0
+T booking-status tout 3 0.08 1.48 1.48 0
+T budgets tout 4 0.21 0.23 0.23 0
+T e3d1-s8 --int 8 0.11 2.80 2.80 0
+T horizon tout 6 0.25 7.41 7.41 0
+T horloge tout 2 0.11 1.45 1.45 0
+T journey tout 7 0.36 12.19 12.19 7
+T maxprice tout 10 0.40 12.11 12.11 0
+T r4 tout 2 0.09 1.50 1.50 0
+T s10a tout 13 0.09 1.53 1.53 0
+T s10b tout 20 0.08 1.44 1.44 0
+T s11a tout 18 0.09 1.40 1.40 0
+T s11b --int 13 0.09 1.54 1.54 0
+T s9 tout 6 0.09 1.42 1.42 0
+T solid-s1 --int 2 0.09 1.42 1.42 0
+T solid-s2 --int 5 0.09 1.43 1.43 0
+T solid-s3 --int 6 0.09 1.46 1.46 0
+T solid-s4 tout 7 0.09 1.39 1.39 0
+T solid-s5a tout 9 0.09 1.49 1.49 0
+T solid-s5b tout 5 0.09 1.43 1.43 0
+T solid-s6 --int 6 0.09 1.46 1.46 0
+T solid-s7 tout 2 0.09 1.29 1.29 0

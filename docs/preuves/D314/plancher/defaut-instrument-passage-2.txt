@@ -1,0 +1,11 @@
+== ÉNUMÉRATION : 28 harnais (attendu 28) · autres que ['available-on-api', 'rang23'] : 26 (attendu 26)
+   pnpm réel : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD · node réel : C:\Program Files\nodejs\node.EXE · python : C:\Python313\python.exe
+
+== CALIBRATION (a) — la cale elle-même
+  ✓ cale A run src/venues/venues-public.service.spec.ts : code 1, 0.03 s, appels 1, lignes Tests 0 — attendu : code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B run src/venues/venues-public.service.spec.ts : code 1, 1.35 s, appels 1, lignes Tests 0 — attendu : réécrit exec vitest, code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✗ cale B --version : code 127, 0.11 s, appels 1, lignes Tests 0 — attendu : NON RÉÉCRIT, code 127 · dernière ligne : CALE B : forme d'appel non reconnue, NON R��CRIT � rien n'est lanc�
+
+== CALIBRATION (b) — BRAS POSITIF : `available-on-api` (qui LIT sa sortie) constate lui-même le non-démarrage
+⛔ ARRÊT : arbre NON PROPRE après available-on-api (A) — statut '?? docs/preuves/D314/plancher/etat-avant-simulation.txt\n?? docs/preuves/D314/plancher/simuler-non-demarrage.py', sauvegarde True. Rien de plus n'est joué.
+code 3

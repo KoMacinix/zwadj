@@ -1,0 +1,25 @@
+✗ H1. Le refus hors horizon disparaît : une date de 2099 est annotée comme les autres
+   rouge, mais aucun échec ne porte « le LENDEMAIN de l'horizon » — ancre à revoir.
+✗ H2. ⛔ LA BORNE GLISSE D'UN JOUR : le jour de l'horizon lui-même est refusé
+   rouge, mais aucun échec ne porte « LE JOUR DE L'HORIZON EST ACCEPTÉ » — ancre à revoir.
+✗ H3. ⛔ LES DEUX REFUS RETOMBENT SOUS LE MÊME CODE — la décision D227 annulée
+   rouge, mais aucun échec ne porte « NE PORTENT PAS LE MÊME CODE » — ancre à revoir.
+✗ H4. Le client range le nouveau refus avec l'ancien
+   rouge, mais aucun échec ne porte « PAS `past-date` » — ancre à revoir.
+✗ H5. L'écran affiche « cette date est déjà passée » pour une date de 2099
+   rouge, mais aucun échec ne porte « l'AUTRE message » — ancre à revoir.
+✗ H6. Une PANNE emprunte le message de date : `unreachable` tombe du mauvais côté
+   rouge, mais aucun échec ne porte « une PANNE reste une panne » — ancre à revoir.
+
+0 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+  muette : H1. Le refus hors horizon disparaît : une date de 2099 est annotée comme les autres — rouge sans le titre attendu
+  muette : H2. ⛔ LA BORNE GLISSE D'UN JOUR : le jour de l'horizon lui-même est refusé — rouge sans le titre attendu
+  muette : H3. ⛔ LES DEUX REFUS RETOMBENT SOUS LE MÊME CODE — la décision D227 annulée — rouge sans le titre attendu
+  muette : H4. Le client range le nouveau refus avec l'ancien — rouge sans le titre attendu
+  muette : H5. L'écran affiche « cette date est déjà passée » pour une date de 2099 — rouge sans le titre attendu
+  muette : H6. Une PANNE emprunte le message de date : `unreachable` tombe du mauvais côté — rouge sans le titre attendu
+
+--- stderr ---
+
+--- code de sortie : 1 ---
