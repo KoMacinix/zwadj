@@ -1,0 +1,90 @@
+D307 — TRI DES SEPT DOUTES DE LA CARTE « chemin de l'argent » (D304) — relevé le 25/09/2026 à HEAD 94f45e2
+=====================================================================================================
+
+⛔ PIÈCE DATÉE, PAS UNE AUTORITÉ — comme la carte qu'elle complète (docs/preuves/D304/carte-chemin-argent/). La RÈGLE
+vit dans AGENTS.md (point E3) et ZWADJ_CONTINUITE.md (méthode renforcée, blocs D304 et D307). Elle se périme au
+premier lot qui ajoute, déplace ou renomme un fichier, ou qui change une cible de harnais.
+
+DÉCISION 2c DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 25/09/2026 — texte transmis :
+  « Principe de direction : une conversion VERS le serveur (saisie → valeur stockée) fait partie du chemin de
+  l'argent ; une conversion DEPUIS le serveur (valeur reçue → texte affiché) n'en fait pas partie. Un harnais se
+  classe par ses cibles, jamais par les fichiers qu'il cite. »
+  Tranchés par le relecteur : pricing-rules.service.ts DEDANS ; deposit-section.tsx DEDANS ; venues.service.ts
+  DEHORS tant qu'il ne fait que transporter, DEDANS s'il valide ou transforme un montant ou un taux ; solid-s6
+  DEDANS. À classer par la session, preuve à l'appui : s11a, solid-s1, s10a.
+  Motif : « les lots d'après la pause toucheront ces fichiers ; la règle doit être écrite avant. »
+
+Preuve mécanique : releve-cibles-sortie.txt (script releve-cibles.py, qui IMPORTE les cibles des harnais — il ne
+les recopie pas). Ce fichier-ci est le TRI À LA MAIN. Chaque ligne cite ce qui a été lu.
+
+-----------------------------------------------------------------------------------------------------
+(1) LES TROIS FICHIERS
+-----------------------------------------------------------------------------------------------------
+DEDANS  apps/api/src/venues/pricing-rules.service.ts
+        Décision du relecteur : « le serveur calcule un montant présenté comme un prix » (« à partir de »).
+DEDANS  apps/pro/src/venues/deposit-section.tsx
+        Décision du relecteur : « le serveur valide les bornes, pas l'intention : une conversion fausse passe sa
+        validation ». Direction : saisie (pourcentage, dinars) → valeur stockée (points de base, centimes) = VERS.
+DEHORS  apps/api/src/venues/venues.service.ts — il ne fait que TRANSPORTER, vérifié :
+        · 240 lignes parcourues, 5 nomment un montant ou un taux : 2 lignes de commentaire d'en-tête (l. 2-3 :
+          commission et cashback « ne QUITTENT JAMAIS la base sur les chemins pro ») et 3 recopies champ à champ
+          dans `toVenueProDTO` (l. 213 basePriceCents, 215 depositRateBps, 216 depositAmountCents) ;
+        · `update` passe `fields` (reçus du schéma Zod) à l'adaptateur sans les lire (l. 86 et 99-103) ; `create`
+          passe `input` tel quel (l. 54) ;
+        · aucune validation, aucune conversion, aucun arrondi.
+        ⇒ DEHORS, avec la clause du relecteur : il ENTRE sur la carte le jour où un lot y valide ou y transforme un
+        montant ou un taux.
+        D35 (cashback ≤ commission) — OÙ VIT LA VALIDATION APPLICATIVE, relevé (124 fichiers source parcourus,
+        calibration deux bras OK) :
+          · apps/api/src/venues/venues-admin.service.ts:87 — `if (cashbackRateBps > commissionRateBps)`, après fusion
+            du PATCH avec l'existant (code CASHBACK_EXCEEDS_COMMISSION, l. 89) ;
+          · packages/types/src/venue.ts:750 — raffinement Zod, quand les deux taux sont fournis ensemble ;
+          · et le CHECK SQL `venues_cashback_rate_range` (migration 20260720160000, relevé par la carte de D304).
+        Les trois sont DÉJÀ sur la carte de D304, branche (1). venues.service.ts n'en porte AUCUN site.
+
+-----------------------------------------------------------------------------------------------------
+(2) LES QUATRE HARNAIS — classés par leurs CIBLES
+-----------------------------------------------------------------------------------------------------
+DEDANS  solid-s6 (6 cibles) — décision du relecteur : « il garde le terrain de F6 ». Ses cibles : la couture
+        `DomainEvents.publish` (S6-1 lève, S6-2 n'attend plus) et les abonnements (S6-3 à S6-6) — la frontière
+        d'erreur post-commit que F6 (23c) touchera.
+
+DEHORS  solid-s1 (2 cibles) — les deux mutent `HARD_BOOKING_STATUSES` (packages/types/src/booking.ts : les statuts
+        qui VERROUILLENT un créneau, doublés par l'EXCLUDE) : S1-1 perd CONFIRMED, S1-2 perd ACCEPTED. Ni un montant
+        (branche 1), ni une transition (branche 2) : une liste de disponibilité. Le fichier est sur la carte par un
+        AUTRE symbole (`expectedTotalCents`, branche 1) qu'AUCUNE cible ne touche — exactement le cas que le principe
+        « par les cibles, jamais par les fichiers cités » écarte.
+
+DEHORS  s10a (13 cibles) — venue-store.prisma.ts (7) : le WHERE d'appartenance (S10a-1, -2), la traduction du P2002
+        de slug (-3, -4), les équipements et styles (-5, -6, -7) ; venues.service.ts (4) : la boucle de slug (-8), la
+        déduplication des équipements (-9), le 404 (-10), l'invariant D3 (-11) ; types du port (-12, -13). AUCUNE
+        cible ne touche la politique d'acompte, le prix de base ou un taux, que le fichier transporte.
+
+DEHORS  s11a (18 cibles) — booking-admission.ts (9) : bornes de date, horizon, capacité, créneau introuvable, ORDRE
+        des refus, journée SINGLE_SLOT, report du créneau, types du verdict ; bookings.service.ts (2) : gardes de
+        SOURCE (le service appelle le module) ; availability-time.ts (1) : date lue en UTC ; booking-notification-
+        input.ts (6) : contenu de la notification (montants, téléphones, locale, walk-in, libellés, nom). Aucune ne
+        calcule, n'arrondit ni ne valide un montant ; aucune n'est une transition qui ouvre, modifie ou éteint une
+        obligation de payer (la création d'une demande PENDING n'en ouvre aucune — c'est `accept`, D305).
+        ⚠ DEUX CIBLES FRÔLENT UN MONTANT — ÉCRITES ICI POUR LE RELECTEUR, CLASSÉES DEHORS PAR LA SESSION :
+          · S11a-7 « le créneau ne traverse plus le verdict » : le créneau rendu par la recevabilité porte
+            `basePriceCents` et `pricingRules`, que `create` passe ensuite à `resolveSlotPrice`
+            (bookings.service.ts:216). La cible garde un TRANSPORT, pas un calcul — même lecture que la décision sur
+            venues.service.ts (« dehors tant qu'il ne fait que transporter »).
+          · S11a-11 « le TOTAL et l'ACOMPTE s'intervertissent » : la notification recopie des montants STOCKÉS dans
+            un message (valeur stockée → texte affiché) — direction DEPUIS le serveur, donc dehors par le principe ;
+            le fichier voisin qui les formate (booking-notifications.service.ts) est déjà DEHORS sur la carte de D304.
+            ⚠ Son libellé porte « ⛔⛔ CHEMIN DE L'ARGENT » : il date du 28/08, avant la règle de D304. Un libellé
+            n'est pas un classement.
+
+-----------------------------------------------------------------------------------------------------
+CE QUE CE CLASSEMENT DÉCIDE, ET CE QU'IL NE DÉCIDE PAS
+-----------------------------------------------------------------------------------------------------
+- Il décide la FORME DE REVUE (D303, décision 1) d'un lot qui toucherait ces fichiers ou ces harnais, et — pendant
+  la pause (décision 2b du relecteur, D307) — l'écriture des morsures à la certification : une morsure d'un harnais
+  du chemin de l'argent qui n'a pas été LUE s'écrit « code de sortie seul, non prouvée (R1) ».
+- Il ne change PAS la portée de R1 : les 20 harnais relevés par D303 (s11a, solid-s1, s10a y sont) et tout harnais
+  neuf qui mute un fichier du chemin (décision 4 de D304) — quel que soit ce classement (même remarque que la carte).
+- HARNAIS DU CHEMIN DE L'ARGENT À HEAD 94f45e2, carte de D304 + ce tri : booking-status, e3d1-s8, r4, s10b, s11b,
+  solid-s3, solid-s4, solid-s5a, solid-s5b, solid-s6 — et rang23 (neuf, D305 : mute booking-locks.prisma.ts,
+  bookings.service.ts, booking-transitions.ts). DEHORS : s11a, solid-s1, s10a.

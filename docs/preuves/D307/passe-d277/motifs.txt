@@ -1,0 +1,44 @@
+# D307 — motifs de la passe D277 (partie A, documentaire). Format : <sens>|<motif>. Lus par balayage.py (copie à
+# l'octet de celui de D306), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que la partie A INVALIDE
+# (a) le fait de D303 : « pas de compte Chargily en mode test »
+1|PAS DE COMPTE CHARGILY
+1|pas de compte Chargily
+1|N'A PAS DE COMPTE CHARGILY
+1|n'a pas de compte Chargily
+1|compte bac à sable
+1|SUR CE FAIT
+1|sur ce fait
+1|ce fait tient
+1|quel compte
+1|captures du 16/08
+# (b) [SEC][P0] : la rotation des clés Chargily
+1|Rotation des identifiants
+1|clés Chargily de test
+# (c) l'ordre du rang 23 (R1, 23b, 23c sortent du rang ; la pause)
+1|23a (F1 + F5) → R1
+1|→ R1 →
+1|23b (F2) → 23c (F6)
+1|après 23a ;
+# (d) R1 qui bloquait la certification
+1|bloquée par R1
+1|prochaine certification qui compte
+1|PROCHAINE CERTIFICATION QUI COMPTE
+# (e) 23a qui attendait le relecteur ; les questions au relecteur que D307 tranche
+1|DÉCISION DU RELECTEUR
+1|décision du relecteur sur ce rapport
+1|avant 23b
+1|en doute, au relecteur
+1|AU RELECTEUR — doute
+1|Question de portée
+1|PROPOSÉS COMME MODES
+1|Ce que « 8 » désigne
+# sens 2 — ce que la partie A REND PERMIS (permissions dont la condition change)
+2|R1 puisse s'ouvrir
+2|R1 s'ouvre avant
+2|lève la pause
+2|n'ouvre ni E3b-2
+2|ne suffit pas à ouvrir E3b-2
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d307-qq

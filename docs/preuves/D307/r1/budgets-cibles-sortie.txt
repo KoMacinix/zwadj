@@ -1,0 +1,21 @@
+===== neutralisation/neutralize-budgets.py cibles: 4
+- packages/api-client : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+    fichier=packages/api-client/vitest.config.ts
+    avant='testTimeout: 5_000'
+    apres='testTimeout: 1_000'
+    mesures=packages/api-client
+- apps/api : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+    fichier=apps/api/vitest.config.ts
+    avant='testTimeout: 5_000'
+    apres='testTimeout: 1_000'
+    mesures=apps/api
+- apps/client : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+    fichier=apps/client/vitest.config.ts
+    avant='testTimeout: 5_000'
+    apres='testTimeout: 1_000'
+    mesures=apps/client
+- apps/pro : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+    fichier=apps/pro/vite.config.ts
+    avant='testTimeout: 5_000'
+    apres='testTimeout: 1_000'
+    mesures=apps/pro

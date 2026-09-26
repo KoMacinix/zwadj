@@ -1,0 +1,29 @@
+✓ calibration du lecteur : mesuré (33, 0) (attendu, section D306 : (33, 0))
+fiches de lecture parcourues : 25
+✓ cibles jouées (fiches) : mesuré 25 (attendu, section D306 : 25)
+✓ éditions posées et prouvées : mesuré 26 (attendu, section D306 : 26)
+✓ restaurations prouvées : mesuré 25 (attendu, section D306 : 25)
+✓ X4-service-plus-DECLINED : mesuré ('VERT', 'Tests  48 passed (48)') (attendu, section D306 : ('VERT', 'Tests  48 passed (48)'))
+✓ X10-decision-sur-ACCEPTED : mesuré ('VERT', 'Tests  48 passed (48)') (attendu, section D306 : ('VERT', 'Tests  48 passed (48)'))
+✓ X2a-relecture-transition-const : mesuré ('VERT', 'Tests  48 passed (48)') (attendu, section D306 : ('VERT', 'Tests  48 passed (48)'))
+✓ X14-statut-du-400 : mesuré ('VERT', 'Tests  48 passed (48)') (attendu, section D306 : ('VERT', 'Tests  48 passed (48)'))
+✓ X15 (C5) : ligne Tests : mesuré 'Tests  1 failed | 47 passed (48)' (attendu, section D306 : 'Tests  1 failed | 47 passed (48)')
+✓ X15 (C5) : classe et titre : mesuré ('Error', 'le client DOIT un motif pour annuler une demande ACCEPTÉE') (attendu, section D306 : ('Error', 'le client DOIT un motif pour annuler une demande ACCEPTÉE'))
+✓ R23-F1-a verdict : mesuré 'MORSURE LUE' (attendu, section D306 : 'MORSURE LUE')
+✓ R23-F1-b verdict : mesuré 'MORSURE LUE' (attendu, section D306 : 'MORSURE LUE')
+✓ R23-F5-a verdict : mesuré 'MORSURE LUE' (attendu, section D306 : 'MORSURE LUE')
+✓ R23-F5-b verdict : mesuré 'MORSURE LUE' (attendu, section D306 : 'MORSURE LUE')
+✓ R23-F5-c verdict : mesuré 'MORSURE LUE' (attendu, section D306 : 'MORSURE LUE')
+✓ S5b-1 verdict : mesuré 'MORSURE LUE' (attendu, section D306 : 'MORSURE LUE')
+✓ S5b-2 verdict : mesuré 'MORSURE LUE' (attendu, section D306 : 'MORSURE LUE')
+✓ S5b-1-sans-T5 ligne Tests : mesuré 'Tests  47 passed | 1 skipped (48)' (attendu, section D306 : 'Tests  47 passed | 1 skipped (48)')
+✓ S5b-2-sans-T4 ligne Tests : mesuré 'Tests  47 passed | 1 skipped (48)' (attendu, section D306 : 'Tests  47 passed | 1 skipped (48)')
+✓ sonde à HEAD : mesuré (14, 14) (attendu, section D306 : (14, 14))
+✓ audit final : mesuré (1117, 1077, 40, 116) (attendu, section D306 : (1117, 1077, 40, 116))
+specs suivies parcourues (hors docs/) : 150
+✓ specs qui appellent l'annulation client : mesuré ['apps/api/test/int/bookings.int-spec.ts'] (attendu, section D306 : ['apps/api/test/int/bookings.int-spec.ts'])
+  D121 — deux refus SIMULTANÉS : `message.code` asserté OUI · `message.status` asserté NON
+  D121 — deux annulations PRO SIMULTANÉES : `message.code` asserté NON · `message.status` asserté NON
+  D121 — deux annulations CLIENT SIMULTANÉES : `message.code` asserté NON · `message.status` asserté NON
+
+ÉCARTS À LA SECTION D306 : 0 (attendu 0)

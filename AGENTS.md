@@ -808,10 +808,13 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (méthode renforcée, D126), **sur lesquels le
   relecteur décide**. ⚠ La pause d'E3c (arbitrage de Ko, 17/08/2026) n'est pas levée par D302 : c'est
   l'arbitrage d'un rang qui la lève.
-  ⛔ **(D303, 23/09/2026) ET UN FAIT, DÉCLARÉ PAR KO : PAS DE COMPTE CHARGILY EN MODE TEST.** E3b-2 est bloqué
+  ~~⛔ **(D303, 23/09/2026) ET UN FAIT, DÉCLARÉ PAR KO : PAS DE COMPTE CHARGILY EN MODE TEST.** E3b-2 est bloqué
   (« compte bac à sable »), E3c aussi (charges utiles capturées du bac à sable réel), E3d et E3e suivent. ⇒ **E3
   attend sur ce fait, pas sur une priorité** : un rang arbitré lève la pause d'E3c, il n'ouvre ni E3b-2 ni E3c tant
-  que ce fait tient. ⛔ *(D304 : et la reprise d'E3 attend AUSSI l'audit de secrets corrigé — décision 5, ci-dessous.)*
+  que ce fait tient.~~ ⛔ *(D304 : et la reprise d'E3 attend AUSSI l'audit de secrets corrigé — décision 5, ci-dessous.)*
+  ⛔ **(D307, 25/09/2026) LE FAIT DE D303 EST FAUX — DÉCLARÉ PAR KO** : « le compte Chargily en mode test est le mien :
+  les clés du 16/08 en venaient » ; le blocage « compte bac à sable » d'E3b-2 **n'est plus actuel**. ⇒ **E3 attend la
+  PAUSE DU CHEMIN DE L'ARGENT**, « et non plus un compte » (Ko) — bloc D307 ci-dessous. Barré, pas effacé (D276).
   ⚠ **« D39 »** : au registre, D39 est « prix par créneau », remplacée par D46 pour le Flux B ; sa dernière phrase —
   « Chemin d'argent ⇒ revue humaine » — est ce que « revue humaine D39 » cite depuis. Précision, pas correction.
   ⚠ **Ce que ces arbitrages NE disent PAS** : ~~ils visent le code **E3**. Les autres chemins critiques (auth,
@@ -828,7 +831,8 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   - **R1** : sur ce chemin, une garde n'est prouvée que par une neutralisation dont on a **LU** l'échec — **tests
     collectés > 0 ET assertion en échec** ; un code de sortie non nul, seul, ne prouve rien. **La correction de R1
     dans les harnais du chemin de l'argent bloque la levée du drapeau des paiements** ⛔ *(D304 : et la prochaine
-    certification qui compte des cibles de ce chemin — ci-dessous)* ;
+    certification qui compte des cibles de ce chemin — ci-dessous)* ⛔ *(D307 : pendant la pause, plus la
+    certification — ci-dessous)* ;
   - **provenance** de chaque sous-lot soumis à la méthode renforcée : **SHA de départ rapporté** à l'ouverture,
     `git diff` depuis lui limité aux **fichiers énumérés au cadrage**, **aucun fichier non suivi hors `a-verser/`**.
   ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 24/09/2026 (D304)** — motifs et détail : tête de « ⛔ E3 —
@@ -843,8 +847,9 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     code.** La carte de la règle vers des fichiers est une **pièce datée** (`docs/preuves/D304/carte-chemin-argent/`),
     pas une liste dans un fichier d'autorité ;
   - **R1** — portée : les **20** harnais relevés par D303 **et tout harnais neuf** qui mute un fichier de ce chemin ;
-    leurs morsures passées ne sont **ni infirmées ni prouvées** ; **la correction BLOQUE la prochaine certification
-    qui compte des cibles de ce chemin** (en plus de la levée du drapeau) ; par morsure, le harnais garde **les tests
+    leurs morsures passées ne sont **ni infirmées ni prouvées** ; ~~**la correction BLOQUE la prochaine certification
+    qui compte des cibles de ce chemin** (en plus de la levée du drapeau)~~ ⛔ *(D307 : pendant la pause, les
+    certifications sont PERMISES — ci-dessous ; le drapeau reste bloqué)* ; par morsure, le harnais garde **les tests
     collectés, le test en échec, la première ligne de son assertion** — pas la sortie entière. Cadrage :
     `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DE R1 » ;
   - ⛔ **L'audit de secrets ne voit pas une clé au format Chargily : cela BLOQUE LA REPRISE D'E3** — tout lot qui
@@ -861,6 +866,25 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     **liée à vitest 3.2.7** (autre version ⇒ le harnais refuse de juger) ; **un délai dépassé n'est jamais une
     morsure** ; **une liste de titres attendus par cible, chacun exigé** ; un **module partagé**, pas une copie par
     harnais ; les harnais nés avant R1 (celui de 23a) jugent au code et sont prouvés par l'échec LU (forme β).
+  ⛔ **(D307, 25/09/2026) ARBITRAGE DE KO — PAUSE DU CHEMIN DE L'ARGENT**, mot pour mot : « Elle commence après 23a, son
+  second lot (partie B), et la certification qui suivra. Le rang 23 se clôt à cette certification. » — « 23b (F2), 23c
+  (F6), R1 et E3 passent au backlog avec pour bloquant “reprise du chemin de l'argent, pause décidée par Ko”. Leur
+  reprise sera un rang que j'arbitrerai. » — « E3 attend sur cette pause, et non plus sur un compte. » ⚠ *Dérivé par la
+  session, pas une parole de Ko* : la pause couvre par son nom **tout lot de code du chemin de l'argent** ; qui en doute
+  demande à Ko. Et un fait : les clés de test Chargily ont été **régénérées par Ko le 25/09/2026** (`[SEC][P0]`, partie
+  Chargily close sur sa déclaration ; `GOOGLE_CLIENT_SECRET` reste ouvert).
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 25/09/2026 (D307)** — texte et motifs : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D307 :
+  - **23a** : comportement **accepté** (T4, T5 compris) ; il ne se clôt pas avant **23a-2**, qui garde C1 à C5 de D306 ;
+    la preuve de 23a-2 **tient lieu de session adverse** : elle rejoue à l'identique les mutations versées par D306, et
+    chacune doit faire échouer son titre attendu par `AssertionError`, échec LU ;
+  - **R1 pendant la pause** : les **certifications sont permises** ; une morsure du chemin de l'argent non lue s'y écrit
+    « **code de sortie seul, non prouvée (R1)** » ; R1 est le **premier lot à la reprise** et **bloque toujours la levée
+    du drapeau** ;
+  - ⛔ **PRINCIPE DE DIRECTION, qui complète la règle de portée** : une conversion **VERS** le serveur (saisie → valeur
+    stockée) fait partie du chemin de l'argent ; une conversion **DEPUIS** le serveur (valeur reçue → texte affiché)
+    n'en fait pas partie. **Un harnais se classe par ses CIBLES, jamais par les fichiers qu'il cite.** Classement des
+    sept doutes de la carte : pièce datée `docs/preuves/D307/carte/`.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

@@ -1,0 +1,226 @@
+
+===== neutralize-s11a.py — 18 cible(s)
+- S11a-1. ⛔ LA BORNE BASSE CESSE D'ÊTRE STRICTE — on réserve pour AUJOURD'HUI
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  if (civilUtcMs(date) <= civilUtcMs(today) || civilUtcMs(date) > civilUtcMs(horizon)) {'
+    remplacé : '  if (civilUtcMs(date) < civilUtcMs(today) || civilUtcMs(date) > civilUtcMs(horizon)) {'
+    mesures  : ['recevabilite']
+- S11a-2. ⛔ L'HORIZON PERD SA BORNE HAUTE — une demande à trente ans passe
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  if (civilUtcMs(date) <= civilUtcMs(today) || civilUtcMs(date) > civilUtcMs(horizon)) {'
+    remplacé : '  if (civilUtcMs(date) <= civilUtcMs(today)) {'
+    mesures  : ['recevabilite']
+- S11a-3. ⛔ LA CAPACITÉ S'INVERSE — une table PILE à la capacité est refusée
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  if (guests > capacityMax) return { outcome: "GUESTS_EXCEED_CAPACITY" };'
+    remplacé : '  if (guests >= capacityMax) return { outcome: "GUESTS_EXCEED_CAPACITY" };'
+    mesures  : ['recevabilite']
+- S11a-4. ⛔ LE CRÉNEAU INTROUVABLE CESSE D'ÊTRE REFUSÉ
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  if (slot === null) return { outcome: "SLOT_UNAVAILABLE" };'
+    remplacé : '  if (slot === null) slot = { startMinutes: 0, endMinutes: 60 } as typeof slot;'
+    mesures  : ['recevabilite']
+- S11a-5. ⛔⛔ L'ORDRE DES REFUS S'INVERSE — la DATE répond à la place de la CAPACITÉ
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  if (guests > capacityMax) return { outcome: "GUESTS_EXCEED_CAPACITY" };\n\n  const horizon = addMonthsCivil(today, BOOKING_HORIZON_MONTHS);\n'
+    remplacé : '  const horizon = addMonthsCivil(today, BOOKING_HORIZON_MONTHS);\n  if (civilUtcMs(date) <= civilUtcMs(today) || civilUtcMs(date) > civilUtcM'
+    mesures  : ['recevabilite']
+- S11a-6. ⛔ SINGLE_SLOT CESSE DE BLOQUER LA JOURNÉE — le reste du jour redevient libre
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  return { outcome: "ADMITTED", slot, window: computeBookingWindow(date, wholeDay ? null : slot) };'
+    remplacé : '  return { outcome: "ADMITTED", slot, window: computeBookingWindow(date, slot) };'
+    mesures  : ['recevabilite']
+- S11a-7. ⛔ LE CRÉNEAU NE TRAVERSE PLUS LE VERDICT — il est rétréci à ses bornes
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  return { outcome: "ADMITTED", slot, window: computeBookingWindow(date, wholeDay ? null : slot) };'
+    remplacé : '  return { outcome: "ADMITTED", slot: { startMinutes: slot.startMinutes, endMinutes: slot.endMinutes } as typeof slot, window: computeBookin'
+    mesures  : ['recevabilite']
+- S11a-8. ⛔ LA DÉCISION D'HORIZON REVIENT DANS LE SERVICE — garde de SOURCE
+    fichier  : apps/api/src/venues/bookings.service.ts
+    ancre    : '    const { slot, window } = this.admitOrThrow(date, nowMs, venue, input.guests);'
+    remplacé : '    const { slot, window } = this.admitOrThrow(date, nowMs, venue, input.guests);\n    void BOOKING_HORIZON_MONTHS;'
+    mesures  : ['recevabilite']
+- S11a-9. ⛔ LE SERVICE N'APPELLE PLUS LE MODULE DE RECEVABILITÉ — garde de SOURCE
+    fichier  : apps/api/src/venues/bookings.service.ts
+    ancre    : 'decideBookingAdmission'
+    remplacé : 'trancherRecevabilite'
+    mesures  : ['recevabilite']
+- S11a-10. ⛔ LA DATE D'ÉVÉNEMENT SE LIT EN LOCAL — elle recule d'un jour à l'ouest
+    fichier  : apps/api/src/venues/availability-time.ts
+    ancre    : '  return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };'
+    remplacé : '  return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };'
+    mesures  : ['notification']
+- S11a-11. ⛔⛔ CHEMIN DE L'ARGENT — le TOTAL et l'ACOMPTE s'intervertissent
+    fichier  : apps/api/src/venues/booking-notification-input.ts
+    ancre    : '    totalCents: row.totalCents,\n    depositCents: row.depositCents,'
+    remplacé : '    totalCents: row.depositCents,\n    depositCents: row.totalCents,'
+    mesures  : ['notification']
+- S11a-12. ⛔ LES DEUX TÉLÉPHONES S'INTERVERTISSENT — le pro reçoit son propre numéro
+    fichier  : apps/api/src/venues/booking-notification-input.ts
+    ancre    : '    contact: row.contactPhone,'
+    remplacé : '    contact: venue.owner.phone,'
+    mesures  : ['notification']
+- S11a-13. ⛔ LA LOCALE NE RETOMBE PLUS SUR « fr » — gabarit arabe pour un pro francophone
+    fichier  : apps/api/src/venues/booking-notification-input.ts
+    ancre    : '      locale: venue.owner.user.locale === "AR" ? "ar" : "fr",'
+    remplacé : '      locale: "ar",'
+    mesures  : ['notification']
+- S11a-14. ⛔ LE WALK-IN CESSE D'ÊTRE UN « PAS DE DESTINATAIRE »
+    fichier  : apps/api/src/venues/booking-notification-input.ts
+    ancre    : '      client === null'
+    remplacé : '      client === undefined'
+    mesures  : ['notification']
+- S11a-15. ⛔ LES LIBELLÉS FR ET AR DE LA SALLE S'INTERVERTISSENT
+    fichier  : apps/api/src/venues/booking-notification-input.ts
+    ancre    : '    venueNameFr: venue.nameFr,\n    venueNameAr: venue.nameAr,'
+    remplacé : '    venueNameFr: venue.nameAr,\n    venueNameAr: venue.nameFr,'
+    mesures  : ['notification']
+- S11a-17. ⛔ LE VERDICT PERD SON PARAMÈTRE DE TYPE — le créneau retombe à sa CONTRAINTE
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '): BookingAdmission<S> {'
+    remplacé : '): BookingAdmission<SlotBounds> {'
+    mesures  : ['types']
+- S11a-18. ⛔ LE CRÉNEAU DISPARAÎT DU TYPE DU VERDICT — invisible à l'exécution
+    fichier  : apps/api/src/venues/booking-admission.ts
+    ancre    : '  | { readonly outcome: "ADMITTED"; readonly slot: S; readonly window: BookingWindow }'
+    remplacé : '  | { readonly outcome: "ADMITTED"; readonly window: BookingWindow }'
+    mesures  : ['types']
+- S11a-16. ⛔ LE NOM DU CLIENT N'EST PLUS DÉBARRASSÉ DE SES ESPACES DE BORD
+    fichier  : apps/api/src/venues/booking-notification-input.ts
+    ancre    : '    clientName: `${row.contactFirstName} ${row.contactLastName}`.trim(),'
+    remplacé : '    clientName: `${row.contactFirstName} ${row.contactLastName}`,'
+    mesures  : ['notification']
+  fichiers mutés : apps/api/src/venues/booking-admission.ts (9) · apps/api/src/venues/bookings.service.ts (2) · apps/api/src/venues/availability-time.ts (1) · apps/api/src/venues/booking-notification-input.ts (6)
+
+===== neutralize-solid-s1.py — 2 cible(s)
+- S1-1. ⚠ L'AUTORITÉ PARTAGÉE PERD `CONFIRMED` — les trois sites doivent le sentir
+    fichier  : packages/types/src/booking.ts
+    ancre    : '[BookingStatus.ACCEPTED, BookingStatus.CONFIRMED] as const'
+    remplacé : '[BookingStatus.ACCEPTED] as const'
+    mesures  : ['pro', 'api', 'int-bookings', 'int-availability']
+- S1-2. L'autorité perd `ACCEPTED` — la ligne verrouillée bascule du mauvais côté
+    fichier  : packages/types/src/booking.ts
+    ancre    : '[BookingStatus.ACCEPTED, BookingStatus.CONFIRMED] as const'
+    remplacé : '[BookingStatus.CONFIRMED] as const'
+    mesures  : ['pro', 'api', 'int-bookings', 'int-availability']
+  fichiers mutés : packages/types/src/booking.ts (2)
+
+===== neutralize-s10a.py — 13 cible(s)
+- S10a-1. ⛔ LE WHERE D'APPARTENANCE PERD SON FILTRE DE PROPRIÉTAIRE
+    fichier  : apps/api/src/venues/venue-store.prisma.ts
+    ancre    : '    return { id: venueId, deletedAt: null, owner: { userId } };'
+    remplacé : '    return { id: venueId, deletedAt: null };'
+    mesures  : ['adaptateur']
+- S10a-2. ⛔ LE WHERE PERD `deletedAt` — une salle archivée redevient lisible
+    fichier  : apps/api/src/venues/venue-store.prisma.ts
+    ancre    : '    return { id: venueId, deletedAt: null, owner: { userId } };'
+    remplacé : '    return { id: venueId, owner: { userId } };'
+    mesures  : ['adaptateur']
+- S10a-3. ⛔ P2002 CESSE D'ÊTRE TRADUIT — le service reverrait un code de driver
+    fichier  : apps/api/src/venues/venue-store.prisma.ts
+    ancre    : '      if (!estViolationUnicite(error)) throw error;\n      return { ok: false, raison: "slugPris" };'
+    remplacé : '      throw error;'
+    mesures  : ['adaptateur']
+- S10a-4. ⛔ N'IMPORTE QUELLE ERREUR DEVIENT « SLUG PRIS » — la panne se déguise
+    fichier  : apps/api/src/venues/venue-store.prisma.ts
+    ancre    : '      if (!estViolationUnicite(error)) throw error;'
+    remplacé : '      void error;'
+    mesures  : ['adaptateur']
+- S10a-5. ⛔ LE REMPLACEMENT D'ENSEMBLE PERD SON `deleteMany` — les équipements s'ACCUMULENT
+    fichier  : apps/api/src/venues/venue-store.prisma.ts
+    ancre    : '{ amenities: { deleteMany: {}, create: maj.equipementIds.map((amenityId) => ({ amenityId })) } }'
+    remplacé : '{ amenities: { create: maj.equipementIds.map((amenityId) => ({ amenityId })) } }'
+    mesures  : ['adaptateur']
+- S10a-6. ⛔ LA LISTE VIDE INTERROGE LA BASE et rend FAUX — effacer une sélection devient impossible
+    fichier  : apps/api/src/venues/venue-store.prisma.ts
+    ancre    : '    if (styleIds.length === 0) return true;'
+    remplacé : '    if (styleIds.length === 0) return false;'
+    mesures  : ['adaptateur']
+- S10a-7. ⛔ LA COMPARAISON DE COMPTE S'INVERSE — un id inconnu passe
+    fichier  : apps/api/src/venues/venue-store.prisma.ts
+    ancre    : '    return trouves === amenityIds.length;'
+    remplacé : '    return trouves >= 0;'
+    mesures  : ['adaptateur']
+- S10a-8. ⛔ LA BOUCLE DE SLUG S'ARRÊTE AU PREMIER REFUS — plus aucune reprise
+    fichier  : apps/api/src/venues/venues.service.ts
+    ancre    : '      if (resultat.ok) return toVenueProDTO(resultat.salle, this.urlOf);'
+    remplacé : '      if (!resultat.ok) break;\n      return toVenueProDTO(resultat.salle, this.urlOf);'
+    mesures  : ['service']
+- S10a-9. ⛔ LA DÉDUPLICATION SAUTE — les doublons partent en base
+    fichier  : apps/api/src/venues/venues.service.ts
+    ancre    : '    const uniqueAmenityIds = amenityIds === undefined ? undefined : [...new Set(amenityIds)];'
+    remplacé : '    const uniqueAmenityIds = amenityIds;'
+    mesures  : ['service']
+- S10a-10. ⛔ LE `null` DU PORT CESSE D'ÊTRE TRADUIT EN 404
+    fichier  : apps/api/src/venues/venues.service.ts
+    ancre    : '    if (!row) this.throwNotFound();'
+    remplacé : '    if (!row) return row as never;'
+    mesures  : ['service']
+- S10a-11. ⛔ LA RUPTURE D'INVARIANT D3 EST AVALÉE
+    fichier  : apps/api/src/venues/venues.service.ts
+    ancre    : '    if (id === null) throw new Error(`Invariant D3 rompu : utilisateur PRO ${userId} sans ProProfile`);'
+    remplacé : '    if (id === null) return "";'
+    mesures  : ['service']
+- S10a-12. ⛔ LE DOUBLE REDEVIENT UN MENSONGE — `satisfies` retiré du port
+    fichier  : apps/api/src/venues/venues.service.spec.ts
+    ancre    : '  } satisfies VenueStore;'
+    remplacé : '  } as unknown as VenueStore;'
+    mesures  : ['types']
+- S10a-13. ⛔ UNE MÉTHODE DISPARAÎT DU PORT — le double ne le dirait plus
+    fichier  : apps/api/src/venues/venue-store.types.ts
+    ancre    : '  trouverIdVivante(userId: string, venueId: string): Promise<string | null>;'
+    remplacé : '  // trouverIdVivante retiré'
+    mesures  : ['types']
+  fichiers mutés : apps/api/src/venues/venue-store.prisma.ts (7) · apps/api/src/venues/venues.service.ts (4) · apps/api/src/venues/venues.service.spec.ts (1) · apps/api/src/venues/venue-store.types.ts (1)
+
+===== neutralize-solid-s6.py — 6 cible(s)
+- S6-1. ⚠ LA COUTURE SE MET À LEVER — un gabarit cassé dé-confirmerait un acte écrit (D63)
+    fichier  : apps/api/src/venues/domain-events.ts
+    ancre    : '      } catch (error) {\n        this.logger.error({ type }, `Handler en échec sur ${type} : ${String(error)}`);\n      }'
+    remplacé : '      } catch (error) {\n        throw error;\n      }'
+    mesures  : ['couture']
+- S6-2. Les handlers cessent d'être ATTENDUS — l'ordre et le déterminisme tombent
+    fichier  : apps/api/src/venues/domain-events.ts
+    ancre    : '        await (handler as (p: PayloadOf<T>) => Promise<void>)(payload);'
+    remplacé : '        void (handler as (p: PayloadOf<T>) => Promise<void>)(payload);'
+    mesures  : ['couture']
+- S6-3. ⚠ L'ABONNEMENT « demande reçue » EST COUPÉ — le pro n'est plus prévenu
+    fichier  : apps/api/src/venues/notification-subscriptions.ts
+    ancre    : '    this.events.subscribe("booking.requested", (p) => this.bookings.notifyProRequested(p));'
+    remplacé : '    void 0;'
+    mesures  : ['int-reservations']
+- S6-4. L'abonnement « acceptée » est coupé — le client ne sait pas que sa date est retenue
+    fichier  : apps/api/src/venues/notification-subscriptions.ts
+    ancre    : '    this.events.subscribe("booking.accepted", (p) => this.bookings.notifyClientAccepted(p));'
+    remplacé : '    void 0;'
+    mesures  : ['int-reservations']
+- S6-5. ⚠ LE SECOND ABONNÉ DE `visit.booked` DISPARAÎT — le pro est prévenu, pas le client
+    fichier  : apps/api/src/venues/notification-subscriptions.ts
+    ancre    : '    this.events.subscribe("visit.booked", (p) => this.visits.confirmToClient(p));'
+    remplacé : '    void 0;'
+    mesures  : ['int-visites']
+- S6-6. L'ORDRE des deux abonnés de `visit.booked` s'inverse
+    fichier  : apps/api/src/venues/notification-subscriptions.ts
+    ancre    : '    this.events.subscribe("visit.booked", (p) => this.visits.notifyProBooked(p));\n    this.events.subscribe("visit.booked", (p) => this.visi'
+    remplacé : '    this.events.subscribe("visit.booked", (p) => this.visits.confirmToClient(p));\n    this.events.subscribe("visit.booked", (p) => this.visi'
+    mesures  : ['int-visites']
+  fichiers mutés : apps/api/src/venues/domain-events.ts (2) · apps/api/src/venues/notification-subscriptions.ts (4)
+
+CIBLES EXAMINÉES : 39 sur 4 harnais
+
+===== apps/api/src/venues/venues.service.ts — lignes parcourues : 240 · lignes qui nomment un montant ou un taux : 5
+  2: // 1) SELECT allow-list (patron AUTH_USER_SELECT) — commissionRateBps,
+  3: //    cashbackRateBps (à venir, A3) et rejectionReason ne QUITTENT JAMAIS la
+  213: basePriceCents: row.basePriceCents,
+  215: depositRateBps: row.depositRateBps,
+  216: depositAmountCents: row.depositAmountCents,
+
+===== D35 — calibration : positif apps/api/src/venues/venues-admin.service.ts → TROUVÉ (attendu TROUVÉ) · négatif apps/api/src/venues/slug.ts → absent (attendu absent)
+fichiers parcourus : 124 · sites : 6 (attendu > 0)
+  apps/api/src/venues/venues-admin.service.ts:87: if (cashbackRateBps > commissionRateBps) {
+  apps/api/src/venues/venues-admin.service.ts:89: code: VenueErrorCode.CASHBACK_EXCEEDS_COMMISSION,
+  packages/types/src/venue.ts:409: /** D35 : fusion PATCH ∪ stocké, cashbackRateBps > commissionRateBps. */
+  packages/types/src/venue.ts:410: CASHBACK_EXCEEDS_COMMISSION: "CASHBACK_EXCEEDS_COMMISSION",
+  packages/types/src/venue.ts:729: * validée côté service (CASHBACK_EXCEEDS_COMMISSION) EN PLUS du CHECK SQL.
+  packages/types/src/venue.ts:750: if (v.commissionRateBps !== undefined && v.cashbackRateBps !== undefined && v.cashbackRateBps > v.commissionRateBps) {
+venues.service.ts parmi les sites : NON

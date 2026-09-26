@@ -1091,7 +1091,9 @@ fichiers attendus, rouge sur PostgreSQL réel — **et aucune ligne de code** (p
 est PROPOSÉ par la session et TRANCHÉ PAR KO.** ⇒ **Où il en est** : section « PROCHAIN LOT — rang 23 » en tête de
 ce fichier.
 ⛔ **(D303, 23/09/2026) RANG 23 — CADRAGE ÉCRIT, RANG OUVERT, AUCUNE LIGNE DE CODE** : partie A — le fait déclaré
-par Ko (pas de compte Chargily en mode test : E3 attend ce fait) et les décisions du relecteur (forme de revue sur tout
+par Ko (~~pas de compte Chargily en mode test : E3 attend ce fait~~ ⛔ *(D307, 25/09/2026 : **FAUX, déclaré par Ko** — le
+compte Chargily en mode test est le sien, les clés du 16/08 en venaient ; E3 attend la **pause du chemin de l'argent**,
+ligne D307 ci-dessous)*) et les décisions du relecteur (forme de revue sur tout
 lot de code du chemin de l'argent ; R1, dont la correction bloque aussi la levée du drapeau ; provenance ; D117 ; motifs
 de F8 et R2 ; deux entrées périmées) ; partie B — le zip de l'auditeur versé, et le **cadrage** de F1, F2, F5, F6.
 **Documentaire : compteur de lots de code non certifiés à ZÉRO, inchangé.** ⇒ **Où il en est** : point d'entrée du
@@ -1109,6 +1111,9 @@ certification et livre le correctif produit un lot plus tôt. » ⚠ *Dérivé p
 l'ordre tient la règle « deux lots non certifiés tenables, trois non » (D270) — 23a et R1 comptent (R1 touche
 `neutralisation/`, D283), la certification ramène à zéro, 23b et 23c comptent, la seconde certification ramène à zéro.
 ⇒ **Où il en est** : point d'entrée du rang 23.
+⛔ *(D307, 25/09/2026 : **ORDRE CHANGÉ PAR KO** — pause du chemin de l'argent ; R1, 23b et 23c **sortent du rang 23**
+vers le backlog ; le rang 23 finit par 23a-2 puis la certification. Ligne D307 ci-dessous. L'ordre ci-dessus reste cité
+tel qu'arbitré le 24/09 — barré nulle part, il était vrai à sa date.)*
 ⛔ **(D305, 25/09/2026) RANG 23 — SOUS-LOT 23a CODÉ (F1 + F5), CHEMIN DE L'ARGENT** : décisions du relecteur (chat) sur
 le § 8 du cadrage du rang 23 et le § 9 du cadrage de R1, reçues de Ko et écrites en premières écritures (méthode
 renforcée, bloc D305) ; motif (b) **mesuré avant le code** (l'insertion d'un paiement n'attend pas la forme (ii)) ;
@@ -1120,8 +1125,26 @@ d'écriture fixé par Ko : `docs/preuves/D306/` et ce fichier) : rouge rejoué i
 réorientées neutralisées à la main, **toutes mordent** ; modes du § 2 rejoués, sonde hors suite ; **cinq gardes
 rapportées** (C1 à C5 : quatre que la suite laisse passer, une qui ne mord qu'au code) ; **aucun comportement faux
 relevé** ; aucun correctif proposé. **Compteur de lots de code non certifiés : UN, inchangé.** ⇒ **Le rang reste
-ouvert** ; 23a attend la **décision du relecteur** sur ce rapport, veto de Ko. ⇒ **Où il en est** : point d'entrée du
-rang 23.
+ouvert** ; ~~23a attend la **décision du relecteur** sur ce rapport, veto de Ko~~ ⛔ *(D307 : décision reçue — ligne
+suivante)*. ⇒ **Où il en est** : point d'entrée du rang 23.
+⛔ **(D307, 25/09/2026) RANG 23 — FAITS ET ARBITRAGES DE KO, DÉCISIONS DU RELECTEUR (chat), lot DOCUMENTAIRE** (partie A
+d'une session en deux parties ; premières écritures du lot). **Faits, déclarés par Ko** : « le compte Chargily en mode
+test est le mien : les clés du 16/08 en venaient » — le fait de D303 (« pas de compte ») est **faux** ; « j'ai régénéré
+les clés de test Chargily ce jour » — la partie Chargily de `[SEC][P0]` se ferme sur cette déclaration.
+⛔ **ARBITRAGE DE KO, mot pour mot — PAUSE DU CHEMIN DE L'ARGENT** : « Elle commence après 23a, son second lot (partie
+B), et la certification qui suivra. Le rang 23 se clôt à cette certification. » — « 23b (F2), 23c (F6), R1 et E3 passent
+au backlog avec pour bloquant “reprise du chemin de l'argent, pause décidée par Ko”. Leur reprise sera un rang que
+j'arbitrerai. » — « E3 attend sur cette pause, et non plus sur un compte. »
+⇒ **ORDRE DU RANG 23 À COMPTER DU 25/09/2026 : 23a (codé, D305 ; session adverse, D306 ; comportement ACCEPTÉ par le
+relecteur, D307) → 23a-2 (C1 à C5 de D306 : code, second lot de 23a) → CERTIFICATION, qui CLÔT le rang 23.** R1, 23b, 23c :
+backlog, bloqués par la reprise. **Décisions du relecteur** (texte et motifs : méthode renforcée, bloc D307) : 23a
+accepté, T4 et T5 compris, **non clos avant 23a-2** ; pendant la pause les **certifications sont permises**, une morsure
+du chemin de l'argent non lue s'y écrit « **code de sortie seul, non prouvée (R1)** », R1 est le **premier lot à la
+reprise** et bloque toujours la levée du drapeau ; les sept doutes de la carte **tranchés** (principe de direction) ; § 9
+de R1 complété. **Documentaire : compteur de lots de code non certifiés : UN, inchangé.** ⇒ **Où il en est** : point
+d'entrée du rang 23. ⚠ *Dérivé par la session, pas une parole de Ko* : « pause du chemin de l'argent » couvre par son nom
+**tout lot de code de ce chemin** (règle de D304) ; Ko nomme les quatre objets qui avaient un ordre ; les autres entrées
+du chemin (F8, A3, R2, l'attente de verrou au-delà du délai d'une transaction) étaient « à ordonner par Ko » et le restent.
 ⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
 23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
 cadrage du rang 23 ne rend PERMIS aucun lot de code** : ses sous-lots attendent le découpage de Ko, la décision du
@@ -1134,6 +1157,11 @@ relecteur les tranchera avant 23a »), et
 la session adverse. ⚠ Que R1 s'ouvre avant la fin de cette revue n'est écrit nulle part : **à Ko** — point d'entrée.)*
 ⛔ *(D306, 25/09/2026 — passe D277 : la session adverse est **faite** ; la revue ne l'est pas — 23a attend la décision
 du relecteur. Que R1 s'ouvre avant cette décision n'est toujours écrit nulle part : **à Ko**.)*
+⛔ *(D307, 25/09/2026 — passe D277 : la question est **sans objet** — R1 sort du rang 23 (pause, arbitrage de Ko) ; la
+décision du relecteur sur 23a est **arrivée**. ⇒ **Le seul lot de code PERMIS dans ce rang est 23a-2**, ordonné par Ko
+et cadré par la section D306 et la décision du relecteur ; puis la certification, que R1 **ne bloque plus** (décision 2b
+du relecteur). ⇒ **Pendant la pause, aucun lot de code du chemin de l'argent ne s'ouvre** (*dérivé par la session, ligne
+D307* : Ko nomme quatre objets, la pause porte le nom du chemin) : la reprise est un rang que Ko arbitre. Ce que le rang 24 sera n'est pas écrit — c'est l'objet de la ligne ci-dessus.)*
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1221,30 +1249,39 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; ~~23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE~~ ⛔ 23a CODÉ LE 25/09/2026 (D305) — ~~ATTEND LA SESSION ADVERSE~~ ; COMPTEUR À UN ⛔ SESSION ADVERSE FAITE LE 25/09/2026 (D306) — 23a ATTEND LA DÉCISION DU RELECTEUR**
+## PROCHAIN LOT — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; ~~23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE~~ ⛔ 23a CODÉ LE 25/09/2026 (D305) — ~~ATTEND LA SESSION ADVERSE~~ ; COMPTEUR À UN ⛔ SESSION ADVERSE FAITE LE 25/09/2026 (D306) — ~~23a ATTEND LA DÉCISION DU RELECTEUR~~ ⛔ DÉCISION REÇUE LE 25/09/2026, PAUSE DU CHEMIN DE L'ARGENT ARBITRÉE PAR KO (D307) — RESTENT 23a-2 PUIS LA CERTIFICATION, QUI CLÔT LE RANG**
 
-### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 25/09/2026 (D305, puis D306)
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 25/09/2026 (D305, puis D306, puis D307)
 
 ⛔ **ORDRE ARBITRÉ PAR KO LE 24/09/2026, mot pour mot** : « tous les sous-lots du rang 23 avancent le rang 23 (règle de
 D302), certifications comprises. Ordre : ce lot → 23a (F1 + F5) → R1 → certification → 23b (F2) → 23c (F6) →
 certification. » Motif (décision du relecteur) : ordre des rangs, ligne D304.
+⛔ **(D307, 25/09/2026) ORDRE CHANGÉ PAR KO — PAUSE DU CHEMIN DE L'ARGENT, mot pour mot** : « Elle commence après 23a, son
+second lot (partie B), et la certification qui suivra. Le rang 23 se clôt à cette certification. » — « 23b (F2), 23c (F6),
+R1 et E3 passent au backlog avec pour bloquant “reprise du chemin de l'argent, pause décidée par Ko”. Leur reprise sera un
+rang que j'arbitrerai. » ⇒ **Ordre restant : 23a-2 → certification (clôture du rang 23).**
 | étape | objet | état au 25/09/2026 |
 |---|---|---|
 | D303 | cadrage de F1, F2, F5, F6 (documentaire) | ✅ fait |
 | **D304** | décisions du relecteur, **cadrage de R1**, les deux inférences du cadrage **mesurées**, carte du chemin de l'argent (documentaire) | ✅ fait |
-| **23a** | F1 + F5, code | ~~⏸ **attend le relecteur** : les choix 1 à 4 du § 8 du cadrage — le 5ᵉ est tranché (décision 4) ; « le relecteur les tranchera avant 23a » (Ko)~~ ✅ **CODÉ LE 25/09/2026 (D305)**, décision du relecteur reçue ; ~~⏸ **attend la session ADVERSE** (forme de revue, D302 : une autre session, à froid, tente de le casser et rapporte), puis la décision du relecteur~~ ⛔ *(D306 : session adverse **FAITE** — section D306 : rouge rejoué, sept gardes neutralisées à la main, toutes mordent ; **cinq gardes rapportées**, C1 à C5 ; aucun comportement faux relevé)* ⏸ **attend la décision du relecteur** sur ce rapport ; veto de Ko |
-| **R1** | la lecture de l'échec dans les harnais, code (`neutralisation/`) | ⏸ après 23a ; ~~attend le relecteur sur les choix de son cadrage (§ 9 de « ⛔ CADRAGE DE R1 »)~~ ⛔ *(D305 : choix **tranchés**, § 9 ; trois constats de 23a **proposés comme modes**, au relecteur, § 4)* |
-| certification | — | ⏸ **bloquée par R1** (décision 4 du relecteur, D304) |
-| 23b, 23c, certification | F2, puis F6 | ⏸ — ⚠ 23b attend aussi la réponse du relecteur sur la garde « déjà converti » (§ 8, annotation D305) |
+| **23a** | F1 + F5, code | ~~⏸ **attend le relecteur** : les choix 1 à 4 du § 8 du cadrage — le 5ᵉ est tranché (décision 4) ; « le relecteur les tranchera avant 23a » (Ko)~~ ✅ **CODÉ LE 25/09/2026 (D305)**, décision du relecteur reçue ; ~~⏸ **attend la session ADVERSE** (forme de revue, D302 : une autre session, à froid, tente de le casser et rapporte), puis la décision du relecteur~~ ⛔ *(D306 : session adverse **FAITE** — section D306 : rouge rejoué, sept gardes neutralisées à la main, toutes mordent ; **cinq gardes rapportées**, C1 à C5 ; aucun comportement faux relevé)* ~~⏸ **attend la décision du relecteur** sur ce rapport ; veto de Ko~~ ⛔ *(D307 : **comportement ACCEPTÉ** par le relecteur, T4 et T5 compris ; **23a ne se clôt pas avant 23a-2** — méthode renforcée, bloc D307)* |
+| **23a-2** | C1 à C5 de D306 : les gardes que la suite ne mesurait pas — code (tests, harnais), **second lot de 23a** | ⏸ **ordonné par Ko le 25/09/2026 (D307)** ; cadrage : section D306 et la décision du relecteur ; C1 à C5 s'écrivent au § 2 du cadrage **avant tout test** ; la preuve rejoue à l'identique les mutations de D306 (elle tient lieu de session adverse, décision du relecteur) |
+| **R1** | la lecture de l'échec dans les harnais, code (`neutralisation/`) | ~~⏸ après 23a~~ ; ~~attend le relecteur sur les choix de son cadrage (§ 9 de « ⛔ CADRAGE DE R1 »)~~ ⛔ *(D305 : choix **tranchés**, § 9 ; trois constats de 23a **proposés comme modes**, au relecteur, § 4)* ⛔ *(D307 : **SORT DU RANG 23** — backlog, bloqué par la reprise du chemin de l'argent ; **premier lot à la reprise** ; bloque toujours la levée du drapeau. Les trois modes proposés : **tranchés**, § 9)* |
+| certification | — | ~~⏸ **bloquée par R1** (décision 4 du relecteur, D304)~~ ⛔ *(D307 : ⏸ **après 23a-2** ; R1 **ne la bloque plus** — décision 2b du relecteur : les morsures du chemin de l'argent non lues s'y écrivent « code de sortie seul, non prouvées (R1) » ; **elle clôt le rang 23**, sur le poste de Ko)* |
+| 23b, 23c, certification | F2, puis F6 | ~~⏸ — ⚠ 23b attend aussi la réponse du relecteur sur la garde « déjà converti » (§ 8, annotation D305)~~ ⛔ *(D307 : **SORTENT DU RANG 23** — backlog, bloqués par la reprise ; la question « déjà converti » attend avec 23b)* |
 ~~⇒ **Aucun lot de code n'est PERMIS aujourd'hui** : le compteur est à zéro, l'ordre est arbitré, et la décision du
 relecteur sur le § 8 manque.~~ ⛔ *(D305 : la décision est arrivée, 23a est codé.)* ⇒ **Compteur de lots de code non
 certifiés : UN** (23a). ~~⇒ **Ce qui vient ensuite, par la forme de revue** : la **session adverse de 23a** — elle ne code
 rien, elle rejoue et rapporte ; son mode d'emploi est au rapport de fin de lot de D305 et dans la section D305 (fichiers,
-cibles, titres, commandes).~~ ⛔ *(D306, 25/09/2026 : la session adverse est **faite**, section D306. ⇒ **Ce qui
+cibles, titres, commandes).~~ ⛔ *(D306, 25/09/2026 : la session adverse est **faite**, section D306. ⇒ ~~**Ce qui
 vient ensuite : la DÉCISION DU RELECTEUR (chat)** sur son rapport — quatre gardes que la suite laisse passer et une
-qui ne mord qu'au code (C1 à C5), et un constat sur les pièces de D305 ; Ko garde le veto. Compteur : UN.)* ⚠ **Que R1 puisse s'ouvrir AVANT la fin de la revue de 23a n'est écrit nulle part** —
+qui ne mord qu'au code (C1 à C5), et un constat sur les pièces de D305 ; Ko garde le veto.~~ Compteur : UN.)*
+⛔ *(D307, 25/09/2026 : la décision est **reçue** — comportement de 23a accepté. ⇒ **CE QUI VIENT ENSUITE : 23a-2**, lot de
+code du chemin de l'argent, **compteur UN → DEUX** ; puis la **certification**, sur le poste de Ko, qui clôt le rang 23.
+Ensuite, la **pause** : aucun lot de code du chemin de l'argent jusqu'au rang de reprise que Ko arbitrera.)*
+⚠ ~~**Que R1 puisse s'ouvrir AVANT la fin de la revue de 23a n'est écrit nulle part** —
 l'ordre dit « 23a → R1 », la forme de revue dit qu'une autre session casse 23a : **à Ko** ; une permission ne se
-déduit pas (D287). ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
+déduit pas (D287).~~ ⛔ *(D307 : sans objet — R1 sort du rang 23, arbitrage de Ko.)* ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
 `FOR UPDATE` (pas l'UPDATE simple) — sans effet sur 23a, dont les rivaux sont des UPDATE simples et dont l'attente est
 un verrou de LIGNE, mesuré ; et les deux prémisses des formes (i) et (ii) du choix 1 du § 8 tiennent. Détail : cadrage,
 annotations D304 des § 3 et § 8. ⛔ *(D305 : et le motif (b) du relecteur est **mesuré** — l'insertion d'un paiement
@@ -1559,6 +1596,10 @@ annuler une demande ACCEPTÉE », `.expect(400)`) n'est **pas** déclaré. Const
 ⛔ **(D304) TRANCHÉ LE 24/09/2026 : trois sous-lots, et R1 intercalé** — « ce lot → 23a (F1 + F5) → R1 → certification
 → 23b (F2) → 23c (F6) → certification », tous au rang 23. Motif : ordre des rangs, ligne D304. La proposition
 ci-dessous reste telle qu'écrite.
+⛔ **(D307, 25/09/2026) CHANGÉ PAR KO — PAUSE DU CHEMIN DE L'ARGENT** : le rang 23 finit par **23a-2** (C1 à C5, second lot
+de 23a) puis la **certification**, qui le clôt ; **R1, 23b et 23c passent au backlog**, bloqués par la « reprise du
+chemin de l'argent, pause décidée par Ko ». Ce cadrage **reste valable pour 23b et 23c** : ils le reprendront au rang de
+reprise que Ko arbitrera. Ordre des rangs, ligne D307.
 
 **Proposition de la session : TROIS sous-lots de code**, chacun avec sa session adverse avant le suivant, les six
 portes, la suite e2e (concurrence, argent) et `lancer-campagnes.py` sur les campagnes touchées :
@@ -1622,7 +1663,8 @@ statut. Ce qui arrête la seconde conversion n'est pas l'écriture conditionnell
 **base**, que `QuotesService.convert` double aujourd'hui par `current.booking !== null`, lu hors transaction, « pour
 éviter d'écrire pour rien » (commentaire au source). ⇒ Retirer ce contrôle comme garde ne rouvre pas la double
 conversion **tant que l'unique et sa traduction tiennent** ; mais il ne se remplace pas par l'écriture conditionnelle.
-**Au relecteur, avant 23b** ; à mesurer par 23b (MD-F2-3, MD-F2-6).
+**Au relecteur, avant 23b** ; à mesurer par 23b (MD-F2-3, MD-F2-6). ⛔ *(D307 : 23b est en pause — la question
+attend avec lui, au rang de reprise ; elle reste due AVANT le code de 23b.)*
 
 ### 9. `[BACK][P0]` « traduire `bookings_no_overlap_accepted_confirmed` en conflit propre » — confronté
 
@@ -1638,7 +1680,10 @@ touche ce `try/catch` — **MD-F1-3**.
 
 ## ⛔ CADRAGE DE R1 — la lecture de l'échec dans les harnais du chemin de l'argent — écrit le 24/09/2026 (D304), AVANT toute ligne de code
 
-⛔ **SOUS-LOT DU RANG 23, entre 23a et la certification (ordre de Ko, D304). CHEMIN DE L'ARGENT par la branche (4)
+⛔ ~~**SOUS-LOT DU RANG 23, entre 23a et la certification (ordre de Ko, D304).**~~ ⛔ *(D307, 25/09/2026 : **R1 SORT DU
+RANG 23** — backlog, bloqué par la « reprise du chemin de l'argent, pause décidée par Ko » ; décision du relecteur : **R1
+est le PREMIER LOT À LA REPRISE**, et il bloque toujours la levée du drapeau. Ce cadrage attend avec lui, § 9 complété.)*
+**CHEMIN DE L'ARGENT par la branche (4)
 de la règle** (décision 3 du relecteur, D304) : **méthode renforcée (D126)** et **forme de revue ratifiée** — une
 session code, une AUTRE ouverte à froid tente de casser et rapporte sans corriger, le relecteur (chat) audite et
 décide, Ko garde le veto. **Provenance** (D303, décision 3) : SHA de départ rapporté à l'ouverture, `git diff` depuis
@@ -1653,8 +1698,11 @@ code pas.** Documentaire : ce cadrage ne contient **aucune ligne de code** ; ses
   qui mute un fichier du chemin de l'argent** (dont `neutralize-rang23.py`, cadrage du rang 23, § 6).
 - **Morsures passées** : ni infirmées ni prouvées ; **la première certification après la correction les rétablit
   sur échec lu.**
-- **La correction BLOQUE la prochaine certification qui compte des cibles du chemin de l'argent**, en plus de la levée
-  du drapeau (D303). *Motif* : par la règle b de D303, ces cibles ne se comptent pas sans elle.
+- ~~**La correction BLOQUE la prochaine certification qui compte des cibles du chemin de l'argent**, en plus de la levée
+  du drapeau (D303). *Motif* : par la règle b de D303, ces cibles ne se comptent pas sans elle.~~ ⛔ *(D307, 25/09/2026 —
+  décision 2b du relecteur (chat), déléguée par Ko : **PENDANT LA PAUSE, LES CERTIFICATIONS SONT PERMISES** ; les
+  morsures du chemin de l'argent qui n'ont pas été lues s'y écrivent « **code de sortie seul, non prouvées (R1)** ». R1
+  **bloque toujours la levée du drapeau**. Motif : méthode renforcée, bloc D307.)*
 - **Ce que le harnais garde, par morsure** : le **nombre de tests collectés**, le **test en échec**, et la **première
   ligne de son assertion**. **Pas la sortie entière.**
 - **`neutralize-e3d1-s8.py`** promet dans son en-tête une lecture qu'il ne fait pas : annoté (entrée R1 du backlog,
@@ -1733,7 +1781,9 @@ compté mordu aujourd'hui par les vingt (code ≠ 0) :
 - **MD-R1-12** — la sortie gardée porte une valeur sensible (un message d'assertion qui cite un jeton). ⇒ les journaux
   versés passent par l'audit de secrets (D298, D299) avant tout commit, comme aujourd'hui ; aucune règle neuve.
 ⛔ **(D305, 25/09/2026) TROIS CONSTATS MESURÉS PAR 23a, PROPOSÉS COMME MODES — AU RELECTEUR (chat), AVANT R1 ; la
-session ne les ajoute pas d'elle-même :**
+session ne les ajoute pas d'elle-même :** ⛔ *(D307, 25/09/2026 : **TRANCHÉS par le relecteur** — § 9, bloc D307 :
+supertest compté comme un contrôle en échec, reconnu par une signature calibrée ; refus de juger un titre qui porte un
+marqueur ; la liste des signatures d'abord, le nombre en découle.)*
 - **supertest** — `.expect(<statut>)` lève une `Error`, **pas** une `AssertionError` : relevé à la source
   (`supertest@7.2.2`, `lib/test.js`, `_assertStatus`) **et mesuré** — sous R23-F5-a, « le client DOIT un motif pour
   annuler une demande ACCEPTÉE » échoue par `Error: expected 400 "Bad Request", got 200 "OK"`
@@ -1747,7 +1797,8 @@ session ne les ajoute pas d'elle-même :**
 - **« les 8 signatures calibrées par D304 »** (décision 1) — la pièce vérifie **8 cas** (sept dans `tests.cas.ts`, **dont
   un cas qui PASSE**, et le crochet) ; l'import et la collecte vide y sont jugés au niveau du fichier, **hors** de ce
   compte ; le § 6 ci-dessous dit « les sept cas du § 3 ». ⇒ Ce que « 8 » désigne est à fixer par la calibration de R1,
-  pas à reprendre d'un de ces trois comptes.
+  pas à reprendre d'un de ces trois comptes. ⛔ *(D307 : décision du relecteur — « la liste d'abord, le nombre en
+  découle » ; § 9, bloc D307.)*
 
 ### 5. Comment le harnais distinguera « assertion en échec » de « rien n'a tourné »
 
@@ -1820,6 +1871,26 @@ qui n'avait jamais été établie. Elle se traite comme D286 traite une muette �
 titres attendus ; 4 : **aucune exception « délai »** — ce qui **barre** la clause « sauf exception écrite PAR CIBLE »
 de MD-R1-5 (§ 4) et de l'étape (d) (§ 5) ; 5 : une **liste** de titres par cible, chacun exigé. Texte et motifs :
 méthode renforcée, bloc D305.
+⛔ **(D307, 25/09/2026) DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO — « pour que ces décisions attendent avec R1 »**
+(R1 est en pause, premier lot à la reprise). Écrites telles que transmises :
+6. **Un échec de `.expect(statut)` de supertest compte comme un contrôle en échec.** Il se reconnaît par une **signature
+   calibrée à deux bras**, pas par sa classe d'erreur (`Error`). **Compte d'abord combien de cibles en dépendent.** ⇒ Cela
+   **amende la lecture fermée** des étapes (d) du § 5 et du choix 1 : une `Error` de supertest dont la signature est
+   calibrée est une morsure ; une `Error` quelconque ne l'est toujours pas. ⚠ *Lecture de la session* : « compte d'abord »
+   est la **première étape de R1** — ce compte exige de lire l'échec de chaque cible des vingt, c'est le coût principal
+   du sous-lot (§ 6) ; **D307 ne l'a pas fait**. Instances déjà mesurées : « le client DOIT un motif pour annuler une
+   demande ACCEPTÉE » (D305, R23-F5-a) et « la SECONDE acceptation reçoit 409 via le 23P01 » (D306, X12) — la première
+   est convertie à `expect` par 23a-2 (C5).
+7. **Le module refuse de juger une cible dont un titre attendu contient un de ses marqueurs** (« × », « ✓ »…). Motif
+   (constat de D305) : le glyphe d'échec dans un titre fait lire un test vert comme rouge (D275).
+8. **Pour les signatures : la liste d'abord, le nombre en découle.** Ce qui clôt « les 8 signatures » du § 4 : on
+   n'écrit plus un nombre qu'une liste ne porte pas.
+9. **`budgets` garde un budget de TEMPS, pas un montant : il reste HORS de R1.** S'il y entre un jour, « délai » se
+   déclare **cible par cible**. ✅ **Vérifié par la session** : `budgets` n'est pas parmi les 20 — liste de D303 (§ 1) et
+   pièce `docs/preuves/D303/releves/verdicts-harnais-sortie.txt` (il lit « Test timed out in », il n'est pas au code
+   seul) ; ses quatre cibles mutent `testTimeout` dans quatre configurations de test
+   (`docs/preuves/D307/r1/budgets-cibles-sortie.txt`, relevé à `94f45e2`). Ce qui clôt l'entrée `[MÉTHODE]` des reports
+   de D305.
 
 ## ~~PROCHAIN LOT~~ — rang 22 · `[DOC]` **arbitrages de Ko (ordre, E3, forme des entrées) et audits externes du 09/09** ⛔ ~~**OUVERT LE 23/09/2026 : D302**~~ ⛔ **CLOS LE 23/09/2026 : D302**
 
@@ -1840,8 +1911,9 @@ Décisions du relecteur, transmises par Ko : **F1, F2 et F6 bloquent E3d ; F8 bl
 paiements ; A3 bloque tout nouveau type de tarification de prestation ; R2 se traite avec le prochain lot qui
 touche `booking-charge`.** Le reste est « à ordonner par Ko ». Entrées : backlog, reports de D302.
 ⛔ *(D303, 23/09/2026 : la levée du drapeau a DEUX bloquants — F8 **et R1** dans les harnais du chemin de l'argent
-(décision du relecteur du 23/09) ; et E3 attend un fait — pas de compte Chargily en mode test. Tête de « ⛔ E3 —
-MÉTHODE RENFORCÉE », bloc D303.)*
+(décision du relecteur du 23/09) ; et E3 attend un fait — ~~pas de compte Chargily en mode test~~. Tête de « ⛔ E3 —
+MÉTHODE RENFORCÉE », bloc D303.)* ⛔ *(D307, 25/09/2026 : le fait est **faux** — déclaré par Ko, le compte est le sien ; E3
+attend la **pause du chemin de l'argent** décidée par Ko. Bloc D307 de la méthode renforcée.)*
 ⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de code
 non certifiés : ZÉRO, inchangé.** Aucune porte lancée : aucune ne lit ces fichiers.
 ⇒ **RANG 23 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la
@@ -4232,6 +4304,138 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session du 25/09/2026 — D307 · rang 23 (reste ouvert), lot DOCUMENTAIRE (partie A) : un fait démenti par Ko, la pause du chemin de l'argent, et les décisions du relecteur sur 23a, R1 et la carte
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D306** ⇒ **D307** ; « D307 » : **0** occurrence dans
+les fichiers suivis à `HEAD` (`git grep`). ⇒ **RANG 23**, sur ordre de Ko : une session en **deux parties** — A,
+documentaire (ce lot) ; B, **23a-2**, le second lot de 23a (lot de code qui suit). **SHA de départ : `94f45e2`** — `HEAD`
+= `origin/main` après `git fetch`, arbre propre. **Documentaire** : `AGENTS.md`, `ZWADJ_CONTINUITE.md`,
+`ZWADJ_BACKLOG.md`, `docs/preuves/D307/` — **compteur de lots de code non certifiés : UN, inchangé** (D283 amendé par
+D292). ⚠ `docs/preuves/D307/` porte des scripts Python JETABLES : aucune porte ne les lit. **Aucune porte, aucune
+campagne** : aucun code n'a changé. **Aucune durée n'est un verdict ici** : l'état machine n'est pas relevé (D270 le
+demande avant une mesure de durée ou d'intermittence ; ce lot n'en prend aucune).
+
+### D307 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 23 **ouvert** ; « 23a ATTEND LA DÉCISION DU RELECTEUR » ; dernière ligne « ⇒ RANG N » : « **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 23, ordre des rangs |
+| numéro | dernière ligne du registre : **D306** ⇒ **D307** | registre |
+| compteur | **UN** (23a) — D306 documentaire | ordre des rangs, ligne D306 |
+| synchronisation | `HEAD` = `origin/main` = `94f45e2` ; arbre propre | `git` |
+
+### D307 — la lecture adverse depuis la clôture de D306, en entier
+
+Relue à `94f45e2` : la section D306, ses pièces (`docs/preuves/D306/`), ses outils (`neutraliser.py`, `lire.py`,
+`titres.py`, `calibrer-lire.py`, `lancer.py`, `balayage.py`), le point d'entrée du rang 23 et l'ordre des rangs.
+**Instrument** : `docs/preuves/D307/lecture-adverse/confronter-d306.py` — chaque chiffre de la section confronté à SA
+pièce, l'attendu imprimé à côté du mesuré (D290) ; sortie `confronter-d306-sortie.txt` : **0 écart sur 23 contrôles**.
+**Ce qui tient** : la calibration du lecteur (33 cas, 0 manqué) ; **25** fiches, **26** poses prouvées, **25**
+restaurations prouvées ; X4, X10, X2a, X14 à **48/48 verts** (C1 à C4) ; X15 **un** échec, par `Error`, sur « le client
+DOIT un motif… » (C5) ; les sept gardes de 23a en **MORSURE LUE** ; S5b-1 sans T5 et S5b-2 sans T4 à **47 verts, 1
+ignoré** ; la sonde à **14/14** ; l'audit final **1 117 = 1 077 + 40, 116 alertes** ; `bookings.int-spec.ts` **seule**
+spec qui appelle l'annulation client (**150** specs suivies parcourues ; l'e2e ne nomme ni « annul » ni « cancel ») ;
+`assertStatus` sans appelant à `6e87430` comme à `HEAD` — et, relevé ici, **né à `909702a` (03/08/2026)**, dernier
+appelant retiré par **`682ea4c` (22/08/2026, S5b)** : compte des `this.assertStatus` 4 → 3 (`871aef8`) → 0 (`682ea4c`).
+**Ce qui ne tient pas, ou manquait** :
+1. ⚠ **« les tests D121 n'assertent que le code » (partie D, point 1) est vrai du refus SEUL.** Relu test par test : les
+   deux refus simultanés assertent `message.code` ; les deux annulations **pro** et les deux annulations **client**
+   n'assertent **ni** le code **ni** le statut de leur perdant — elles comptent des statuts HTTP. Le trou de C3 est donc
+   un peu plus large que D306 ne l'écrit. **Porté à 23a-2.**
+2. ⚠ **Au relecteur, par la partie B** : la décision transmise pour C3 (« T1 et T2 vérifient par assertion le statut
+   porté par le 409 ») ne recoupe pas le C3 de D306 (X2a mute la relecture de `transition`, que T1 et T2 n'exercent pas ;
+   T1 et T2 assertent déjà ce statut, l. 761 et 803). **Traité au cadrage de 23a-2**, pas ici.
+
+### D307 — partie A : ce qui a atterri, et où
+
+| point de Ko | fichier, endroit |
+|---|---|
+| **1a.** le compte Chargily est celui de Ko ; « pas de compte » faux ; E3b-2 non bloqué par un compte | méthode renforcée : tête (annotation D302) et bloc D303 (**barré**, avec motif) ; backlog, PHASE 7 : tête, tableau (E3b-2, E3c), paragraphe du fait (**barré**), écart (**répondu**), pause d'E3c ; `AGENTS.md`, point E3 (**barré**) ; ordre des rangs, ligne D303 ; bloc clos du rang 22. **Sections datées non réécrites** (D303, D304, registre). |
+| **1b.** clés régénérées ; `[SEC][P0]` | backlog : partie Chargily **close sur déclaration**, `GOOGLE_CLIENT_SECRET` **ouvert**. `.env` non lu ; aucune valeur imprimée. |
+| **1c.** pause du chemin de l'argent | ordre des rangs, ligne D307 ; point d'entrée du rang 23 (titre, ordre, table, suite) ; cadrage du rang 23, § 7 et § 8 ; cadrage de R1, tête ; méthode renforcée, bloc D307 ; `AGENTS.md`, point E3 ; backlog : tête de PHASE 7, F2 et F6 (**bloqués par la reprise**), R1, entrée « déjà converti », tête de la section du chemin de l'argent |
+| **2a.** 23a accepté ; T4, T5 ; non clos avant 23a-2 | méthode renforcée, bloc D307 ; point d'entrée ; backlog F1, F5 ; `AGENTS.md` |
+| **2b.** R1 pendant la pause | cadrage de R1, § 1 (**barré**, remplacé) ; méthode renforcée, blocs D303 (2) et D304 (4) annotés, bloc D307 ; `AGENTS.md` (deux puces R1) ; backlog : tête de PHASE 7, entrée R1 |
+| **2c.** les sept doutes | méthode renforcée, bloc D304 (3) et bloc D307 ; `AGENTS.md` (principe de direction) ; backlog, entrée R1 (doutes **tranchés**) ; **pièce datée** `docs/preuves/D307/carte/` |
+| **2d.** § 9 de R1 | cadrage de R1, § 9, points 6 à 9 ; § 4 annoté (trois modes **tranchés**, « 8 » **clos**) ; backlog, entrée `[MÉTHODE]` `budgets` **close**, entrée R1 |
+
+### D307 — ce que la session a vérifié pour les décisions (les décisions ne sont pas les siennes)
+
+- **`venues.service.ts` — il TRANSPORTE** (décision 2c) : **240** lignes parcourues, **5** nomment un montant ou un taux —
+  2 de commentaire d'en-tête, 3 recopies champ à champ dans `toVenueProDTO` ; `update` passe les champs du schéma Zod à
+  l'adaptateur sans les lire. ⇒ **DEHORS**. **La validation applicative de D35 vit ailleurs** (**124** fichiers source
+  parcourus, calibration deux bras) : `venues-admin.service.ts:87`, après fusion avec l'existant, et le raffinement Zod de
+  `packages/types/src/venue.ts:750` — plus le `CHECK` SQL `venues_cashback_rate_range`. Tous déjà sur la carte de D304.
+- **`s11a`, `solid-s1`, `s10a` — classés par leurs CIBLES** (**39** cibles examinées sur les quatre harnais, importées des
+  harnais eux-mêmes) : **DEHORS** tous trois — recevabilité et contenu de notification (`s11a`), statuts qui verrouillent
+  un créneau (`solid-s1`), appartenance, slug, équipements, styles, 404 (`s10a`). ⚠ **Deux cibles de `s11a` frôlent un
+  montant, écrites pour le relecteur** : S11a-7 garde le TRANSPORT du créneau (qui porte le prix) jusqu'à
+  `resolveSlotPrice` ; S11a-11 garde des montants STOCKÉS recopiés dans un message (direction DEPUIS le serveur) — son
+  libellé « ⛔⛔ CHEMIN DE L'ARGENT » date du 28/08, avant la règle. **La session les classe dehors, et le dit.**
+  Pièce : `docs/preuves/D307/carte/` (`releve-cibles.py`, sa sortie, `tri.txt`).
+- **`budgets` n'est pas parmi les 20** (décision 2d) : liste de D303 ; ses quatre cibles mutent `testTimeout`
+  (`docs/preuves/D307/r1/budgets-cibles-sortie.txt`).
+- **« Compte d'abord combien de cibles en dépendent »** (décision 2d, supertest) : **lu comme la PREMIÈRE ÉTAPE DE R1**,
+  écrit ainsi au § 9 — le compte exige de lire l'échec de chaque cible des vingt ; **il n'est pas fait ici**. ⚠ Si Ko
+  l'attendait de ce lot, c'est un écart, déclaré.
+
+### D307 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D307/passe-d277/balayage.py` — **copie à l'octet** de celui de D306 (SHA-256 `24802faf…`
+des deux côtés) ; motifs **lus** dans `motifs.txt` (D289), **32** motifs + 2 témoins ; calibration T+ / T− tenue.
+**Avant écriture** : **92** occurrences, **3** motifs à zéro — tous vérifiés : « PROCHAINE CERTIFICATION QUI COMPTE »
+n'existe qu'en minuscules (le motif minuscule en rend 10) ; « décision du relecteur sur ce rapport » est coupée par le gras
+de D306 (« la **décision du relecteur** sur ce rapport ») ; « AU RELECTEUR — doute » ne vit que dans la pièce de D304, hors
+des fichiers d'autorité. **Après les annotations, avant cette section** : **99** (passe intermédiaire, non versée — elle a
+servi au tri, et le tri l'a relue ligne à ligne) ; **après écriture** : **107**, **0** motif à zéro
+(`balayage-apres-ecriture.txt`) — les **8** de plus sont **tous dans cette section** (compté à part : 8 dans la section,
+0 dans la ligne du registre). ⚠ **L'indice « barré » de
+l'outil se trompe sur un barré qui COMMENCE par « ⛔ »** (il repart du « ⛔ » intérieur) : le tri est **à la main**,
+chaque occurrence relue.
+**Sens 1 — ce que ce lot invalide** : le fait « pas de compte » et ses conséquences (E3b-2, E3c, « E3 attend sur ce
+fait », la question à Ko) ; l'ordre du rang 23 à sept étapes ; « la certification bloquée par R1 » ; « 23a attend la
+décision du relecteur » ; les questions au relecteur que D307 tranche (trois modes, « 8 », `budgets`, les doutes de la
+carte) ; la rotation Chargily de `[SEC][P0]`. **Barrées ou annotées en place** — ordre des rangs, point d'entrée, cadrages,
+méthode renforcée, `AGENTS.md`, backlog. **Laissées telles quelles, et vraies à leur date** : les sections D303 à D306, le
+registre, l'en-tête des reports de D303, la leçon D200 d'`AGENTS.md` (« les clés Chargily de test y ont vécu en clair »).
+**Sens 2 — ce que ce lot rend permis, et ce qu'il interdit** :
+- **PERMIS** : **23a-2** (ordonné par Ko) ; la **certification** qui suit, que R1 ne bloque plus (décision 2b) — c'est
+  la permission qui ne se rattrape pas si elle est mal lue, et elle est écrite partout où « bloquée par R1 » l'était.
+- **PLUS BLOQUÉ PAR UN COMPTE** : E3b-2 et E3c — mais **pas permis** : la pause les retient, et l'audit corrigé reste dû.
+- **INTERDIT pendant la pause** (*dérivé par la session*, écrit comme tel) : tout lot de code du chemin de l'argent, jusqu'au
+  rang de reprise. Les entrées du chemin qui n'avaient pas d'ordre (F8, A3, R2, l'attente de verrou) restent « à ordonner
+  par Ko ».
+
+### D307 — audit de secrets avant commit (instrument de D298, tri de D299) — écrit APRÈS l'audit
+
+1. **Contrôle de forme Chargily**, à part (l'audit en est aveugle — décision 5 de D304 ; ce lot **parle** des clés) :
+   `controles/controle-forme-chargily.py` (copie de celui de D306, élargie aux trois `.md` écrits et restreinte à
+   `docs/preuves/D307/`) — calibration deux bras OK ; **0** porteur. ⚠ Le nombre de fichiers et d'octets parcourus est
+   dans la sortie versée, **pas ici** : ce paragraphe fait partie de ce qu'il parcourt, et le chiffre changeait à chaque
+   écriture (19, puis 22) — la sortie versée est celle de la passe qui suit la dernière écriture des `.md`.
+2. **Passe** (`audit-secrets-d307.txt`, scellée) : **1 134** = **1 093** audités + **41** exclus par l'identité de leurs
+   octets ; **116** alertes ; tri contre la dernière sortie scellée (`D306/audit-secrets-final.txt`, 116 contextes) :
+   **0** alerte neuve (`controles/tri-audit-d307.txt`, calibration deux bras).
+3. **« 0 valeur réelle »** (outil de D299) : **sans objet** — aucun journal de cette session ne porte de valeur réelle
+   (aucune porte, aucun serveur ; `.env` non lu, consigne de Ko).
+4. **Audit final**, dernière écriture dans `docs/preuves/` (`audit-secrets-final.txt`, scellé) : chiffres au rapport de
+   fin de lot — cette phrase est écrite avant lui, et lui seul suit (défaut de D302, évité par D303).
+
+### ⛔ D307 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⚠ **UN RENVOI À UNE PIÈCE QUI N'EXISTAIT PAS** — le point 9 du § 9 de R1 a d'abord été écrit avec un chemin de pièce
+   deviné, corrigé dans la même phrase ; la pièce a été produite (`r1/budgets-cibles-sortie.txt`) et le renvoi réécrit
+   avant tout commit.
+2. ⚠ **UN NUMÉRO DE DÉCISION ANTICIPÉ** — le bloc D307 de la méthode renforcée renvoyait d'abord au « lot D308 » pour
+   23a-2 : un numéro pris hors du registre, ce que `AGENTS.md` interdit. Retiré avant commit (« partie B »).
+
+### ⛔ D307 — CE QUE CE LOT NE FAIT PAS
+
+- **Aucun code, aucun harnais, aucune spec.** 23a-2 est la partie B, lot de code distinct.
+- **Il ne décide rien** : faits et arbitrages de Ko, décisions du relecteur, écrits tels que transmis ; la session a
+  vérifié ce que les décisions lui demandaient de vérifier (D35, cibles des trois harnais, `budgets`).
+- **Il ne compte pas** les cibles qui ne mordent que par supertest (première étape de R1).
+- **Il ne lit pas `.env`** et n'imprime aucune valeur.
 
 ## Session du 25/09/2026 — D306 · rang 23 (reste ouvert), SESSION ADVERSE de 23a, lot DOCUMENTAIRE : le rouge rejoué, chaque garde neutralisée à la main, et quatre gardes que la suite ne mesure pas
 
@@ -12461,8 +12665,10 @@ sont dans `AGENTS.md` (« À NE PAS faire », point E3), que toute session charg
 ⇒ **D39 cesse de bloquer le code E3.** ⛔ **Reste exigé avant toute ligne de code E3** : un **rang que Ko
 arbitre**, **puis** l'état des lieux et le cadrage du sous-lot (§ 1 et 2 ci-dessous), **sur lesquels le relecteur
 décide**. La pause d'E3c (17/08/2026) se lève par cet arbitrage de rang, pas par D302. ⛔ *(D303, 23/09/2026 : la
-condition n'est plus complète — pas de compte Chargily en mode test ; E3b-2 et E3c attendent ce fait, E3d et E3e
-suivent. Bloc D303 ci-dessous.)*
+condition n'est plus complète — ~~pas de compte Chargily en mode test ; E3b-2 et E3c attendent ce fait, E3d et E3e
+suivent~~. Bloc D303 ci-dessous.)* ⛔ *(D307, 25/09/2026 : le fait de D303 est **FAUX** — déclaré par Ko, le compte est
+le sien. **E3 attend la PAUSE DU CHEMIN DE L'ARGENT** décidée par Ko : sa reprise sera un rang que Ko arbitre. Bloc D307
+ci-dessous.)*
 ⚠ ~~**Portée** : le code **E3**. Les autres chemins critiques gardent la règle de revue d'avant ; l'étendre appartient
 à Ko.~~ ⛔ *(D303 : portée ÉTENDUE par le relecteur au chemin de l'argent — décision 1 du bloc ci-dessous.)* ⚠ **Les
 bloquants posés par le relecteur sur les constats de l'audit SOLID du 09/09/2026** — avant E3d, avant
@@ -12470,13 +12676,21 @@ la levée du drapeau des paiements — sont au backlog, reports de D302 (partie 
 
 #### ⛔ UN FAIT, ET LES DÉCISIONS DU RELECTEUR (chat) DU 23/09/2026 (D303) — À LIRE AVEC LE BLOC CI-DESSUS
 
-⛔ **LE FAIT — DÉCLARÉ PAR KO LE 23/09/2026 : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST.** Conséquences, telles que
+~~⛔ **LE FAIT — DÉCLARÉ PAR KO LE 23/09/2026 : KO N'A PAS DE COMPTE CHARGILY EN MODE TEST.** Conséquences, telles que
 Ko les a données : **le blocage d'E3b-2 (« compte bac à sable ») est ACTUEL** ; **E3c est bloqué aussi**, puisque la
 méthode exige des charges utiles **capturées du bac à sable réel** (point 4 ci-dessous) ; **E3d et E3e suivent.**
 ⇒ **E3 ATTEND SUR CE FAIT, PAS SUR UNE PRIORITÉ.** Un arbitrage de rang lève la pause d'E3c (17/08/2026) ; il ne
-donne pas de compte. ⛔ *(D304 : et la reprise d'E3 attend AUSSI l'audit de secrets corrigé — décision 5 du bloc D304.)* Tableau des sous-lots : backlog, PHASE 7. ⚠ Écart relevé en lecture seule, non tranché :
+donne pas de compte.~~ ⛔ *(D304 : et la reprise d'E3 attend AUSSI l'audit de secrets corrigé — décision 5 du bloc D304.)* Tableau des sous-lots : backlog, PHASE 7. ⚠ ~~Écart relevé en lecture seule, non tranché :
 l'adaptateur Chargily et ses fixtures « captures réelles du bac à sable » existent depuis `dc63afb` (16/08/2026) —
-avec quel compte, rien ne le dit ; question posée à Ko, section D303.
+avec quel compte, rien ne le dit ; question posée à Ko, section D303.~~
+⛔ **BARRÉ LE 25/09/2026 (D307) — LE FAIT EST FAUX, DÉCLARÉ PAR KO** : « Le compte Chargily en mode test est le mien :
+les clés du 16/08 en venaient. » ⇒ **Le blocage « compte bac à sable » d'E3b-2 n'est plus actuel** (Ko) ; E3c n'est plus
+bloqué par l'absence de compte ; **E3 attend la PAUSE DU CHEMIN DE L'ARGENT**, « et non plus un compte » (Ko). La
+question de D303 (« de quel compte venaient ces clés et ces captures ») a sa **réponse** ; l'écart relevé se lit donc :
+les captures du 16/08 viennent du compte de Ko. ⇒ **Ce qui reste exigé pour reprendre E3** : le rang de reprise que Ko
+arbitrera, l'audit de secrets corrigé (décision 5 du bloc D304 — toujours due) ; F1, F2 et F6 bloquent E3d, R1 et F8
+la levée du drapeau (D302, D303 — inchangé).
+Barré plutôt qu'effacé (D276) : il a été cru deux jours, et une reprise doit voir qu'il a été démenti.
 
 ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 23/09/2026** — écrites telles que transmises, avec leur
 motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
@@ -12494,7 +12708,9 @@ motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
    par une neutralisation dont on a LU l'échec : tests collectés > 0 ET assertion en échec.** *Motif* : « **un
    code de sortie non nul, seul, ne prouve rien** ». ⇒ **La correction de R1 dans les harnais du chemin de
    l'argent BLOQUE LA LEVÉE DU DRAPEAU DES PAIEMENTS**, avec F8. ⛔ *(D304 : **et la prochaine certification qui
-   compte des cibles du chemin de l'argent** ; portée arrêtée — décision 4 du bloc D304.)* ⚠ Relevé de la session (lecture seule) : **20
+   compte des cibles du chemin de l'argent** ; portée arrêtée — décision 4 du bloc D304.)* ⛔ *(D307 : **pendant la pause,
+   les certifications sont permises** ; une morsure non lue s'y écrit « code de sortie seul, non prouvée (R1) » ; le
+   drapeau, lui, reste bloqué — décision 2b, bloc D307.)* ⚠ Relevé de la session (lecture seule) : **20
    harnais sur 27 jugent par le seul code de sortie**, dont celui des cibles E1 à E5 de D255, et **aucun des 85
    journaux de campagne versés** ne garde la sortie qui montre l'assertion en échec — entrée R1, reports de D302.
    ⇒ Cette décision **complète le point 3** ci-dessous : « prouvée effective » veut dire aussi **lue**.
@@ -12521,7 +12737,8 @@ motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
    tous les sous-lots au rang 23, certifications comprises (arbitrage de Ko). *Motif* : « La règle b de D303 permet de
    prouver les gardes de 23a par un échec LU, sans le harnais corrigé. Le harnais corrigé n'est exigé que par la
    première certification, qui vient de toute façon après deux lots de code. Placer R1 en second ne coûte aucune
-   certification et livre le correctif produit un lot plus tôt. »
+   certification et livre le correctif produit un lot plus tôt. » ⛔ *(D307 : ordre changé par Ko — pause du chemin de
+   l'argent ; R1, 23b, 23c sortent du rang 23. Bloc D307 ci-dessous.)*
 2. **MOTIF DE LA DÉCISION 1 DE D303** (la forme de revue sur tout lot de code du chemin de l'argent), écrit « non
    transmis » le 23/09 : « Sur le chemin de l'argent, une faute fait demander de l'argent à tort, ou n'en fait pas
    demander. Et seule une reproduction y a trouvé des défauts : le point 10 le dit, “une relecture de diff n'a jamais
@@ -12538,12 +12755,14 @@ motif ; un motif non transmis est écrit **non transmis** (règle de D302) :
    code.** ⇒ **La carte de cette règle vers des fichiers est une PIÈCE datée**, pas une liste dans un fichier
    d'autorité : `docs/preuves/D304/carte-chemin-argent/` (script calibré, sortie, tri à la main — relevée à `2b9f8d5`).
    Remplace « à préciser par le relecteur » partout où D303 l'a écrit, y compris la « tarification hors E3 »
-   d'`AGENTS.md`. *Note du relecteur* : **F5 relève du (2).**
+   d'`AGENTS.md`. *Note du relecteur* : **F5 relève du (2).** ⛔ *(D307 : **complétée par le principe de direction** —
+   décision 2c, bloc D307 ci-dessous.)*
 4. **R1** — **portée** : les 20 harnais relevés par D303, et tout harnais neuf qui mute un fichier du chemin de
    l'argent. **Les morsures passées** de ces harnais ne sont ni infirmées ni prouvées ; la première certification
-   après la correction les rétablit sur échec lu. **La correction de R1 BLOQUE la prochaine certification qui compte
+   après la correction les rétablit sur échec lu. ~~**La correction de R1 BLOQUE la prochaine certification qui compte
    des cibles du chemin de l'argent**, en plus de la levée du drapeau — *motif* : par la règle b, ces cibles ne se
-   comptent pas sans elle. **Par morsure, le harnais corrigé garde** le nombre de tests collectés, le test en échec et
+   comptent pas sans elle.~~ ⛔ *(D307 : **pendant la pause, les certifications sont permises** — décision 2b, bloc D307 ;
+   la levée du drapeau reste bloquée.)* **Par morsure, le harnais corrigé garde** le nombre de tests collectés, le test en échec et
    la première ligne de son assertion — pas la sortie entière. **`neutralize-e3d1-s8.py`** promet dans son en-tête une
    lecture qu'il ne fait pas : annoté ; la correction viendra avec R1. Cadrage : « ⛔ CADRAGE DE R1 ».
 5. **L'AUDIT DE SECRETS NE VOIT PAS LES CLÉS AU FORMAT CHARGILY** — cause relevée par D303 : son motif `chargily`
@@ -12590,6 +12809,52 @@ code. La session ne les a pas prises ; ce qu'elle en a mesuré ou relevé est é
    qui la crée, jamais dans le harnais.
 5. **Une liste de titres par cible, chacun exigé : accepté.** Une panne qui fait échouer un autre test ne compte pas
    pour la cible.
+
+#### ⛔ FAITS ET ARBITRAGES DE KO, DÉCISIONS DU RELECTEUR (chat) — 25/09/2026 (D307) — À LIRE AVEC LES BLOCS CI-DESSUS
+
+Écrits tels que Ko les a transmis — **premières écritures du lot D307**. La session ne les a pas pris ; ce qu'elle en a
+vérifié est écrit à part, section D307.
+**Faits, déclarés par Ko :**
+- **a.** « Le compte Chargily en mode test est le mien : les clés du 16/08 en venaient. » ⇒ le fait de D303 (« pas de
+  compte ») est **faux** — barré en tête de cette méthode (bloc D303), en PHASE 7 du backlog et au point E3 d'`AGENTS.md`,
+  sans réécrire les sections datées. ⇒ **Le blocage « compte bac à sable » d'E3b-2 n'est plus actuel.**
+- **b.** « J'ai régénéré les clés de test Chargily ce jour. » ⇒ **la partie Chargily de `[SEC][P0]` se ferme sur cette
+  déclaration** ; la partie `GOOGLE_CLIENT_SECRET` **reste ouverte**. Consigne tenue : `.env` n'a pas été lu, aucune
+  valeur n'a été imprimée.
+**Arbitrage de Ko — c. PAUSE DU CHEMIN DE L'ARGENT**, mot pour mot : « Elle commence après 23a, son second lot (partie B),
+et la certification qui suivra. Le rang 23 se clôt à cette certification. » — « 23b (F2), 23c (F6), R1 et E3 passent au
+backlog avec pour bloquant “reprise du chemin de l'argent, pause décidée par Ko”. Leur reprise sera un rang que
+j'arbitrerai. » — « E3 attend sur cette pause, et non plus sur un compte. »
+**Décisions du relecteur (chat), déléguées par Ko, avec leur motif :**
+1. **23a : le comportement est ACCEPTÉ.** *Motif* : « D306 n'a trouvé aucun comportement faux. Le rouge est reproduit
+   indépendamment, les sept gardes mordent, un perdant ne publie rien, il n'y a aucun chemin d'interblocage, et
+   `writableFrom` s'accorde avec la décision sur 120 couples. » **T4 et T5 sont acceptés** : sans eux, S5b-1 et S5b-2
+   sont muettes (mesuré par D306). ⛔ **23a ne se clôt pas avant que 23a-2 garde C1 à C5.**
+2. **R1 PENDANT LA PAUSE : les certifications sont PERMISES.** Les morsures du chemin de l'argent qui n'ont pas été
+   lues s'y écrivent « **code de sortie seul, non prouvées (R1)** ». **R1 devient le PREMIER LOT À LA REPRISE**, et il
+   **bloque toujours la levée du drapeau.** *Motif* : « la règle supposait que le chemin de l'argent continuait. En
+   pause, elle bloquerait tout troisième lot de code, puisque la certification attendrait R1 et que R1 attendrait la
+   reprise. » ⇒ **Cela remplace**, pour la durée de la pause, « la correction de R1 BLOQUE la prochaine certification
+   qui compte des cibles de ce chemin » (décision 4 du bloc D304).
+3. **LES SEPT DOUTES DE LA CARTE (tri de D304).** ⛔ **Principe de direction** : « une conversion VERS le serveur (saisie
+   → valeur stockée) fait partie du chemin de l'argent ; une conversion DEPUIS le serveur (valeur reçue → texte affiché)
+   n'en fait pas partie. **Un harnais se classe par ses cibles, jamais par les fichiers qu'il cite.** »
+   `pricing-rules.service.ts` (« à partir de ») : **DEDANS** — « le serveur calcule un montant présenté comme un prix ».
+   `deposit-section.tsx` : **DEDANS** — « le serveur valide les bornes, pas l'intention : une conversion fausse passe sa
+   validation ». `venues.service.ts` : **DEHORS tant qu'il ne fait que transporter ; DEDANS s'il valide ou transforme un
+   montant ou un taux** (« vérifie où vit la validation applicative de D35 »). `s11a`, `solid-s1`, `s10a` : « classe-les
+   par leurs cibles, preuve à l'appui ». `solid-s6` : **DEDANS** — « il garde le terrain de F6 ». *Motif* : « les lots
+   d'après la pause toucheront ces fichiers ; la règle doit être écrite avant. » ⇒ Ce que la session a vérifié et
+   classé : section D307 ; pièce datée `docs/preuves/D307/carte/`.
+4. **POUR R1**, « à écrire au § 9 de son cadrage, pour que ces décisions attendent avec lui » : supertest compté comme
+   un contrôle en échec, reconnu par une signature calibrée à deux bras (« compte d'abord combien de cibles en
+   dépendent ») ; refus de juger une cible dont un titre attendu contient un marqueur ; « la liste d'abord, le nombre en
+   découle » ; `budgets` hors de R1. Texte : « ⛔ CADRAGE DE R1 », § 9, points 6 à 9.
+**Décision du relecteur pour 23a-2 (partie B de la session) :** « la preuve de 23a-2 tient lieu de session adverse.
+Rejoue À L'IDENTIQUE les mutations versées par D306 pour C1 à C5. Chacune doit maintenant faire échouer son titre attendu
+par `AssertionError`, et l'échec doit être lu. » *Motif* : « ces mutations viennent de la session adverse, pas de toi ;
+tu ne peux pas avoir écrit tes tests sur mesure pour elles. » ⇒ Cadrage de 23a-2 : section D306 et cette décision ; C1 à
+C5 s'écrivent au § 2 du cadrage du rang 23 **avant tout test** (partie B, lot de code qui suit D307).
 
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
@@ -13219,3 +13484,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D304 | A | D304 — rang 23 (reste ouvert), lot DOCUMENTAIRE : ordre arbitré par Ko (ce lot → 23a F1+F5 → R1 → certification → 23b F2 → 23c F6 → certification, tous au rang 23) ; décisions du relecteur (chat), déléguées par Ko : motif de l'ordre, motif de la décision 1 de D303, « chemin de l'argent » = une RÈGLE (montant, transition, paiement, harnais ; formater ≠ recalculer ; doute ⇒ demander ; carte = pièce datée), R1 (portée 20 + neufs, bloque la prochaine certification qui compte ce chemin), l'audit aveugle aux clés Chargily bloque la reprise d'E3 ; cadrage de R1 (« × » + titre ne prouve pas une assertion — mesuré) ; mesuré : la clé étrangère n'attend que le rival en FOR UPDATE (inférence tenue), l'espion Prisma 7 nu échoue au bras négatif et mockRestore casse le délégué (passe-plat explicite + réaffectation tiennent) ; 23a attend le relecteur (choix 1 à 4 du § 8) ; compteur ZÉRO inchangé ; rang 24 en attente d'arbitrage de Ko |
 | D305 | A | D305 — rang 23 (reste ouvert), sous-lot 23a, CODE, CHEMIN DE L'ARGENT : F1 + F5 ; décisions du relecteur (chat), déléguées par Ko, écrites en premières écritures — § 8 : F1 forme (ii) (updateMany conditionné, compte = 1, relecture ⇒ conflit typé, verrou de salle gardé, statuts importés), le contrôle d'avant transaction n'est pas une garde (F2, F5), F5 en 400 cancelReasonRequired, la journalisation de F6 est une garde ; § 9 de R1 : texte fermé par défaut lié à vitest 3.2.7, module partagé, (β), aucune exception « délai », liste de titres chacun exigé ; motif (b) MESURÉ avant le code (l'insertion d'un paiement n'attend pas (ii), trois bras de calibration) ; rouge avant correctif et vert après sur PostgreSQL réel (T1, T2, T3 en AssertionError ; 47/47) ; writableFrom pure, dérivée de decideBookingTransition ; neutralize-rang23.py (5 cibles, titres en 7ᵉ champ, échecs LUS, 0 verdict manqué) ; MD-F1-8 ajouté avant le code, S5b-2 réorientée (mesurée muette sans T4) ; S5b-1 trouvée MUETTE par lancer-campagnes (le verrou de salle ne garde plus accept contre accept), MD-F1-5 mesuré par T5, S5b-1 réorientée, chaîne entière rejouée ; constats : supertest .expect lève une Error (non-morsure sous R1), glyphe « × » dans des titres, « 8 signatures », lint API hors test/int, décision 4 contre budgets, garde « déjà converti » à dire avant 23b ; compteur ZÉRO → UN ; 23a attend la session adverse ; rang 24 en attente d'arbitrage de Ko |
 | D306 | A | D306 — rang 23 (reste ouvert), SESSION ADVERSE de 23a (forme de revue de D302), lot DOCUMENTAIRE : rouge rejoué indépendamment sur les sources de 6e87430 posées puis restaurées (T1, T2, T3 en AssertionError ; U1, U2 en TypeError, attendu) ; les sept gardes neuves ou réorientées neutralisées à la main par des mutations écrites par la session, aucune ancre importée — 7 morsures lues ; S5b-1 et S5b-2 muettes sans T5 / T4 (inférences de D305 reproduites) ; modes du § 2 rejoués ; sonde hors suite, 14 cas (interblocage forcé : accept victime ⇒ 500 ; après un compte 0 obtenu en attendant, la ligne reste verrouillée et la relecture lit l'état qui a fait échouer l'écriture ; writableFrom ≡ décision sur 120 couples) ; CASSE, cinq gardes : C1 prédicat de l'annulation client élargi à DECLINED, C2 code choisi sans le statut relu, C3 relecture de transition, C4 statut du 400 — 48/48 verts chacune — et C5 MD-F5-2 qui ne mord que par supertest ; chacune observable par la sonde ; aucun comportement faux relevé ; lecture adverse de D305 : les sorties de la campagne rang23 comptée aux portes n'étaient pas versées (copiées et lues ici, 5 sur 5) ; aucun correctif proposé ; compteur UN inchangé ; 23a attend la décision du relecteur ; rang 24 en attente d'arbitrage de Ko |
+| D307 | A | D307 — rang 23 (reste ouvert), lot DOCUMENTAIRE, partie A d'une session en deux : faits déclarés par Ko — le compte Chargily en mode test est le sien (le « pas de compte » de D303 est faux, barré là où il était courant ; E3b-2 non bloqué par un compte), clés de test régénérées (`[SEC][P0]` : partie Chargily close sur déclaration, `GOOGLE_CLIENT_SECRET` ouvert) ; ARBITRAGE DE KO : PAUSE DU CHEMIN DE L'ARGENT après 23a, 23a-2 et la certification qui clôt le rang 23 — R1, 23b, 23c et E3 au backlog, bloqués par la reprise, rang arbitré par Ko ; décisions du relecteur (chat), déléguées par Ko : 23a accepté (T4, T5), non clos avant 23a-2 ; pendant la pause les certifications sont permises, morsure non lue = « code de sortie seul, non prouvée (R1) », R1 premier lot à la reprise, bloque le drapeau ; principe de direction (vers le serveur = dedans ; un harnais se classe par ses cibles) — pricing-rules.service et deposit-section dedans, venues.service dehors (transporte ; D35 validée dans venues-admin.service et le Zod), solid-s6 dedans, s11a, solid-s1, s10a dehors par leurs cibles ; § 9 de R1 : supertest compté par signature calibrée (compter d'abord), refus d'un titre porteur de marqueur, la liste avant le nombre, budgets hors de R1 ; lecture adverse de D306 : 0 écart sur 23 contrôles, D121 plus large que dit ; compteur UN inchangé ; suite : 23a-2 |
