@@ -1,0 +1,15 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/venues-public.service.spec.ts -t date passée
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/venues/venues-public.service.spec.ts (25 tests | 22 skipped) 9ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed | 22 skipped (25)
+   Start at  09:38:49
+   Duration  1.88s (transform 333ms, setup 0ms, collect 1.19s, tests 9ms, environment 0ms, prepare 213ms)
+
+
+--- stderr ---
+
+--- code de sortie : 0 ---

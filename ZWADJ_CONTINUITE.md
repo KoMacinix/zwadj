@@ -1478,6 +1478,59 @@ l'ordre des rangs et dans leurs blocs ; section D311.
 autre harnais que `neutralize-available-on-api.py` ; toucher un fichier de code produit. ⚠ *Dérivé par la session* :
 **l'exception est consommée par le lot qu'elle nomme** — elle ne se relit pas en « trois, oui si… ».
 
+#### ⛔ MODES DE DÉFAILLANCE DU HARNAIS — le lot de déblocage (D312), écrits AVANT le correctif
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne porte **D311** ⇒ **D312** ; « D312 » : **0** occurrence à
+`HEAD` (`git grep`). **SHA de départ : `6f7d6c5`** (partie A commitée et poussée, `HEAD` = `origin/main`). **Fichiers
+attendus** : `neutralisation/neutralize-available-on-api.py` ; `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md` ;
+`docs/preuves/D312/` — et, **seulement si une cible s'avère muette une fois jouée**, la spec API qui la fait mordre
+(périmètre de Ko). **Rien d'autre.**
+**Le défaut, reproduit AVANT tout correctif** (`docs/preuves/D312/avant/`, reproduction non mutante de D310 rejouée) :
+(a) l'appel tel que le harnais le fait, **13 sur 13 en code 1, 0 test** ; (b) binaire absolu, 13 sur 13 en code 0, 15 tests.
+**Ce que rend vitest, MESURÉ** — lancé comme les harnais API qui fonctionnent (`pnpm --filter @zwadj/api exec vitest run
+<spec> -t <filtre>`, `pnpm` résolu par `shutil.which`, depuis la racine, **sans `cwd`** — relu dans `neutralize-s11a.py`,
+`-s11b.py`, `-rang23.py`), vitest **3.2.7** (`docs/preuves/D312/sondes/`) : nominal ⇒ code 0, « `Tests 3 passed | 22
+skipped (25)` » ; **filtre sans titre ⇒ code 0, « `Tests 25 skipped (25)` »** ; fichier introuvable ⇒ code 1, **aucune**
+ligne « Tests » ; commande introuvable ⇒ code 1, **aucune** ligne « Tests ». Et, mesuré par D304
+(`docs/preuves/D304/r1/signatures/`) : import cassé ⇒ code 1, « `Tests no tests` » ; crochet en panne ⇒ code 1, « `Tests 1
+skipped (1)` » ; une assertion ⇒ « `N failed | M passed (T)` » et un bloc « `FAIL … > <titre>` » dont la première ligne
+porte le type d'erreur.
+- **MD-AOA-1 — la commande ne démarre pas, et son code 1 est compté « ROUGE ».** Mesuré (D310, rejoué ici). ⇒ Le
+  lancement devient **celui des harnais qui fonctionnent** ; et **un code non nul SANS test exécuté n'est jamais une
+  morsure** : sans ligne « Tests », la mesure est **NON DÉMARRÉE**.
+- **MD-AOA-2 — la collecte à zéro se lit comme une mesure.** Un `-t` qui ne correspond à aucun titre sort en **0**
+  (D144) : sous mutation, « muette » ; au pré-vol, « vert ». ⚠ **Et « collectés > 0 » lu sur le TOTAL entre parenthèses
+  serait satisfait par 25 tests IGNORÉS** : la quantité qui prouve le démarrage est **exécutés = passés + en échec**,
+  pas le total. ⇒ Exécutés > 0 exigé partout ; sinon **NON DÉMARRÉE**.
+- **MD-AOA-3 — une panne de collecte se lit comme une morsure.** Fichier introuvable, import cassé par une mutation,
+  crochet en panne : code 1, **aucun test en échec**. ⇒ **Morsure ⇔ au moins un test EN ÉCHEC** sur la ligne « Tests » ;
+  un code non nul sans test en échec est une **PANNE**, jamais une morsure.
+- **MD-AOA-4 — aucun pré-vol.** Une mesure déjà rouge, ou qui ne démarre pas, avant mutation, se lirait « mordue » après.
+  ⇒ **Pré-vol par cible, sur l'arbre NON muté** : code 0, exécutés > 0, 0 en échec, aucun bloc d'échec de fichier —
+  sinon le harnais **refuse de juger** (code 2).
+- **MD-AOA-5 — la sortie est jetée.** Un rouge qu'on ne peut plus relire se relance sans être lu (D270). ⇒ La sortie
+  **entière** de chaque mesure s'écrit dans `.neutralisation-journaux/available-on-api/` ; la ligne de verdict porte ce qui
+  la fonde : exécutés, en échec, le titre en échec, la **première ligne** de son bloc.
+- **MD-AOA-6 — le lecteur dépend du format de vitest.** ⇒ La version résolue par `apps/api` est lue
+  (`node_modules/vitest/package.json`) ; **autre que 3.2.7 ⇒ refus de juger** (même règle que R1, § 9 de son cadrage,
+  décision 1 — reprise ici, pas partagée : ce harnais n'est pas le module de R1).
+- **MD-AOA-7 — un lecteur qui répond toujours pareil passe une calibration à un bras.** ⇒ **Calibration rejouée à CHAQUE
+  lancement**, abandon si un bras manque : **(i)** le défaut de D310 **rejoué tel quel** ⇒ NON DÉMARRÉE ; **(ii)** commande
+  introuvable par `pnpm` ⇒ NON DÉMARRÉE ; **(iii)** filtre sans titre ⇒ NON DÉMARRÉE ; **(iv)** une mutation **connue** —
+  celle de A1, qui retire le refus de la date passée, dont deux tests exigent le rejet — ⇒ **MORDUE, échec LU**
+  (`AssertionError`) ; **(v)** une mutation **neutre** (l'ancre remplacée par elle-même) ⇒ **MUETTE**.
+- **MD-AOA-8 — `lancer-campagnes.py` compte les lignes, pas les verdicts** : « mordue » = toute ligne qui commence par
+  « ✓ » sans « vol », « muette » = toute ligne « ✗ ». ⇒ **Aucune ligne de calibration ni de pré-vol ne commence par
+  « ✓ »** sans porter « vol » ; une mesure refusée s'imprime « ✗ » — elle compte, bruyamment, comme erreur.
+- **MD-AOA-9 — la mutation n'est pas posée.** Couvert : compte d'occurrences AVANT (déjà là) ; `verifier-mutations.py`
+  (D286) rejoué APRÈS le correctif. ⇒ Les `CIBLES` gardent leurs sept champs, **inchangées** : `verifier-mutations.py`, la
+  reproduction de D310 et l'énumération de D310 les lisent.
+- ⚠ **LIMITE DÉCLARÉE, pas une parade — un délai dépassé** compte comme un test en échec : hors du chemin de l'argent, rien
+  ne l'exclut (la règle de R1 ne porte que sur son chemin). **Il se LIT** : la première ligne de chaque bloc d'échec est
+  imprimée et journalisée.
+**Si une cible, jouée, ne mord pas** : son mode s'écrit **ici** avant le test qui la fera mordre, puis on rejoue — rien
+d'autre (Ko).
+
 ### L'état du rang à l'ouverture (D303, 23/09/2026) — ⚠ ses deux dernières phrases sont PÉRIMÉES par D304
 
 ⛔ **ARBITRÉ PAR KO LE 23/09/2026, mot pour mot** : « Rang 23 : les transitions atomiques de la réservation et du

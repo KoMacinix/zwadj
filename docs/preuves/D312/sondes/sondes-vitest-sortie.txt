@@ -1,0 +1,6 @@
+pnpm résolu : 'C:\\Users\\benla\\AppData\\Roaming\\npm\\pnpm.CMD'
+version de vitest (apps\api\node_modules\vitest\package.json) : 3.2.7
+S1-nominal               code 0 · Tests ['Tests  3 passed | 22 skipped (25)'] · Test Files ['Test Files  1 passed (1)'] · blocs FAIL 0 · lignes 12
+S2-filtre-sans-titre     code 0 · Tests ['Tests  25 skipped (25)'] · Test Files ['Test Files  1 skipped (1)'] · blocs FAIL 0 · lignes 12
+S3-fichier-introuvable   code 1 · Tests — · Test Files — · blocs FAIL 0 · lignes 14
+S4-commande-introuvable  code 1 · Tests — · Test Files — · blocs FAIL 0 · lignes 7

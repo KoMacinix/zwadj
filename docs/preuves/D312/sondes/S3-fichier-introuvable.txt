@@ -1,0 +1,17 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/n-existe-pas-d312.spec.ts
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/n-existe-pas-d312.spec.ts
+
+--- stderr ---
+No test files found, exiting with code 1
+
+filter: src/venues/n-existe-pas-d312.spec.ts
+include: src/**/*.spec.ts, prisma/**/*.spec.ts
+exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*
+
+
+--- code de sortie : 1 ---

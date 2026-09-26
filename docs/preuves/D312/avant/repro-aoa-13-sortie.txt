@@ -1,0 +1,32 @@
+binaire du harnais : 'apps/api/node_modules/.bin\\vitest.CMD' (absolu : False) · cwd de la mesure : apps/api
+cibles parcourues : 13 (déclarées au harnais)
+  A1   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A1   (b) code 0 en  3.79 s · Tests  3 passed | 22 skipped (25)
+  A2   (a) code 1 en  0.04 s · 'apps' is not recognized as an internal or external command,
+  A2   (b) code 0 en  2.83 s · Tests  1 passed | 24 skipped (25)
+  A3   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A3   (b) code 0 en  2.70 s · Tests  1 passed | 24 skipped (25)
+  A4   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A4   (b) code 0 en  2.69 s · Tests  1 passed | 24 skipped (25)
+  A5   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A5   (b) code 0 en  2.64 s · Tests  1 passed | 24 skipped (25)
+  A6   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A6   (b) code 0 en  2.66 s · Tests  1 passed | 24 skipped (25)
+  A7   (a) code 1 en  0.03 s · 'apps' is not recognized as an internal or external command,
+  A7   (b) code 0 en  2.66 s · Tests  1 passed | 24 skipped (25)
+  A8   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A8   (b) code 0 en  2.84 s · Tests  1 passed | 24 skipped (25)
+  A9   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A9   (b) code 0 en  2.80 s · Tests  1 passed | 24 skipped (25)
+  A10  (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A10  (b) code 0 en  1.57 s · Tests  1 passed | 17 skipped (18)
+  B1   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  B1   (b) code 0 en  1.95 s · Tests  1 passed | 5 skipped (6)
+  B2   (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  B2   (b) code 0 en  1.91 s · Tests  1 passed | 5 skipped (6)
+  A13  (a) code 1 en  0.02 s · 'apps' is not recognized as an internal or external command,
+  A13  (b) code 0 en  2.74 s · Tests  1 passed | 24 skipped (25)
+
+(a) TEL QUE LE HARNAIS : codes non nuls 13 sur 13 — chacun serait compté « ROUGE » s'il suivait une mutation
+(b) BINAIRE ABSOLU      : codes nuls 13 sur 13 — la mesure démarre et ses tests passent sur l'arbre non muté
+    tests PASSÉS relevés sur les lignes « Tests » : (a) 0 · (b) 15 (attendu (a) 0, (b) ≥ 13 : au moins un test par filtre)
