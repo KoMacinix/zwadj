@@ -595,6 +595,14 @@ fusionné rouge a brouillé l'attribution des mesures. ⚠ Deux lots non certifi
 attente sont tenables, **trois non**. Et une porte redevenue verte ne certifie QUE le
 lot mesuré : on écrit « porte verte à cette date, tel lot en fait partie », on ne
 réécrit pas les en-têtes des précédents — ce serait une certification par procuration.
+⛔ **EXCEPTION BORNÉE — UN SEUL LOT DE DÉBLOCAGE, ARBITRÉE PAR KO LE 26/09/2026 (D311).** Mot pour mot : « un seul LOT
+DE DÉBLOCAGE est permis comme troisième lot non certifié. — Périmètre strict :
+`neutralisation/neutralize-available-on-api.py`, et, si ses cibles s'avèrent muettes une fois jouées, les tests qui les
+font mordre. AUCUN code produit. — La certification le suit, sous un protocole neuf commité avant toute mesure. Aucun autre
+lot de code ne s'ouvre avant elle. » *Motif (Ko)* : « sans ce lot, aucune certification ne peut passer ; sans
+certification, aucun lot ne peut s'ouvrir. » ⛔ « **L'exception ne crée pas de précédent : un autre blocage de ce type
+reviendra à moi.** » ⇒ *Dérivé par la session* : elle est **consommée** par le lot qu'elle nomme ; elle ne se relit pas en
+« trois, oui si… ». Détail : `ZWADJ_CONTINUITE.md`, point d'entrée du rang 23, bloc « ARBITRAGE DE KO (D311) ».
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -846,6 +854,8 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     qui RECALCULE une règle du serveur (A3). ⛔ **En cas de doute, la session DEMANDE au relecteur avant d'écrire du
     code.** La carte de la règle vers des fichiers est une **pièce datée** (`docs/preuves/D304/carte-chemin-argent/`),
     pas une liste dans un fichier d'autorité ;
+    ⛔ *(D311 : **deux branches ajoutées** par le relecteur — (5) la donnée qui entre dans le calcul d'un montant, (6)
+    l'instruction de paiement ; ci-dessous, bloc D311.)*
   - **R1** — portée : les **20** harnais relevés par D303 **et tout harnais neuf** qui mute un fichier de ce chemin ;
     leurs morsures passées ne sont **ni infirmées ni prouvées** ; ~~**la correction BLOQUE la prochaine certification
     qui compte des cibles de ce chemin** (en plus de la levée du drapeau)~~ ⛔ *(D307 : pendant la pause, les
@@ -890,11 +900,22 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   - ⛔ **CRITÈRE DES CIBLES, qui complète le principe de direction** : une cible est **DEDANS** si la garde qu'elle
     neutralise **calcule, arrondit ou valide un montant** ; **un montant recopié tel quel dans un message n'en fait pas
     partie** (S11a-7 et S11a-11 : dehors, section D309) ;
+    ⛔ *(D311 : **critère trop étroit**, dit par le relecteur — S11a-7 et S11a-11 sont **DEDANS** ; bloc D311 ci-dessous.)*
   - ⛔ **PIÈCES DE CAMPAGNE** : une ligne de la table des portes **cite le dossier versé de SA passe** (horodatage ou
     identifiant de passe) ; toute autre passe versée **se nomme comme telle** — point 11 du critère du rang 9 ;
   - C3 de 23a-2 : écart **accepté** (la consigne reposait sur une prémisse non vérifiée par le relecteur) ; « compte
     d'abord combien de cibles en dépendent » : **première étape de R1**, pas d'écart ; `venues-admin.service.ts` et
     `packages/types/src/venue.ts` : **dedans** (branche 1, ils valident un taux) — déjà sur la carte de D304.
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 26/09/2026 (D311)** — texte et motifs : tête de « ⛔ E3 —
+  MÉTHODE RENFORCÉE », bloc D311 :
+  - ⛔ **LA RÈGLE DE PORTÉE REÇOIT DEUX BRANCHES** : **(5)** « une donnée qui entre dans le calcul d'un montant (le créneau
+    qui alimente `resolveSlotPrice`, le nombre d'invités, les prestations) : la garde qui la transporte jusqu'au calcul en
+    fait partie » ; **(6)** « l'instruction de paiement : les montants qu'un message ou un écran présente au client comme
+    ce qu'il doit payer. Tant que le paiement est en espèces, la notification EST cette instruction. La correspondance
+    montant ↔ libellé en fait partie ; la mise en forme générique d'un nombre n'en fait pas partie » ;
+  - **S11a-7 et S11a-11 : DEDANS** — `s11a` entre dans la portée de R1 pour ces deux cibles, et la prochaine certification
+    les compte du côté du chemin de l'argent ;
+  - la rectification de D308 par D309 : vérifiée, **conforme** (barré et annoté, rien à rétablir).
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

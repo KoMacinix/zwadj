@@ -1,0 +1,22 @@
+# D311 — motifs de la passe D277 (arbitrages de Ko sur l'échec de D310, décisions du relecteur, lecture adverse).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D310), jamais passés en ligne de
+# commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « peut s'ouvrir », « compteur », « certification » — ils comptent tout (D298) ;
+#   D311 ne change pas le compteur, et la permission qu'il ouvre est NOMMÉE (le lot de déblocage) : les motifs du sens 2
+#   la cherchent par ses mots.
+# sens 1 — ce que D311 INVALIDE ou CONTESTE (une attente d'arbitrage, une interdiction levée, un classement, un statut)
+1|ARBITRAGE DE KO sur l'échec
+1|la suite du rang 23 aussi
+1|R1 ne le couvre pas
+1|S11a-7 et S11a-11
+1|dehors, section D309
+1|inféré pour
+1|rangs 12, 15 et 19
+# sens 2 — ce que D311 REND PERMIS (un troisième lot, par exception bornée)
+2|trois, non
+2|trois non
+2|de quelque rang que ce soit
+2|correctif du harnais
+# témoins de calibration
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d311-qq

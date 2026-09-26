@@ -2457,6 +2457,34 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 26/09/2026 — rang 23, arbitrages de Ko et lecture adverse de D310 (D311)
+
+Détail : section D311 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
+Ko** », et son **COÛT**.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : entrée `[OUTIL]` d'`available-on-api` (reports de D310,
+**arbitrée**) ; entrées `[MÉTHODE]` « lignes de verdict » et « marques » (reports de D310, **closes**) ; entrée R1
+(`s11a` entre dans sa portée pour deux cibles).
+
+- [ ] **[MÉTHODE]** **Les branches (5) et (6) de la règle de portée n'ont été appliquées qu'à DEUX cibles** (S11a-7,
+  S11a-11 — décision du relecteur, D311). Les **209 autres** cibles déclarées n'ont pas été reclassées sous elles ; la
+  carte de D304 et le tri de D307 sont des pièces **datées**, relevées avant ces branches. Une cible qui porte un créneau,
+  un nombre d'invités ou des prestations jusqu'à un calcul, ou un montant présenté au client comme à payer, peut y être
+  classée « hors chemin ». ⇒ **BLOQUE** : la séparation « chemin de l'argent / hors chemin » de la **prochaine
+  certification** n'est exacte que pour les cibles classées — ⚠ *dérivé par la session* ; **à ordonner par Ko** (ou à
+  trancher par le relecteur : reclasser avant la certification, ou certifier sur la carte datée plus les deux cibles).
+  ⇒ **COÛT** : documentaire (une pièce datée : les 211 cibles lues sous les six branches, script calibré, tri à la main) ;
+  aucun fichier de code ; e2e : non ; chemin de l'argent : c'est son objet ; migration : non ; dépendance : non.
+- [ ] **[MÉTHODE]** **La portée ÉCRITE de R1 nomme `available-on-api`, que D310 dit hors de R1** — constat 3 de la lecture
+  adverse de D310. Le harnais est hors du chemin de l'argent par ses cibles ; la portée de R1 est « les vingt » par
+  décision (D304). Le lot de déblocage lui donne une **preuve de démarrage**, pas la lecture fermée de R1. ⇒ Question **au
+  relecteur** : R1 le garde-t-il ? ⇒ **BLOQUE : rien avant la reprise du chemin de l'argent** (R1 est en pause, D307).
+  ⇒ **COÛT** : documentaire (une décision) ; si R1 le garde, un harnais de plus dans son module partagé (code, compte).
+- [ ] **[MÉTHODE]** **D288 : « 13 cibles jamais jouées » est MESURABLE, pas seulement inférable** — constat 1 de la
+  lecture adverse de D310 : le versement de D293 horodate le journal d'`available-on-api` à la même seconde que celui
+  d'`argon2` (00:57:18), sous l'attribution inférée des 26 journaux à D288. L'arbitrage 1b de Ko écrit « inféré » ; la
+  session l'a écrit tel quel, avec le constat. ⇒ **BLOQUE : rien — à Ko** (le statut d'une annotation). ⇒ **COÛT** :
+  documentaire.
+
 ## Reports du 26/09/2026 — rang 23, certification ÉCHOUÉE (D310)
 
 Détail : section D310 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
@@ -2475,17 +2503,28 @@ Ko** », et son **COÛT**. **Rien n'est corrigé** (consigne de Ko).
   (binaire absolu, **pré-vol** qui exige un vert sur l'arbre non muté, sortie lue) ; calibration à deux bras (le défaut
   actuel doit être REFUSÉ par le pré-vol ; le chemin absolu accepté) ; e2e : non ; cadrage chemin de l'argent : **non**
   (harnais hors de la carte de D307) ; migration : non ; dépendance : non ; ne mord que sous Windows (`cmd.exe`).
-- [ ] **[MÉTHODE]** **« Lignes de verdict = cibles déclarées » ne prouve pas qu'une campagne a JOUÉ ses cibles** — faute n° 2
+  ⛔ *(D311, 26/09/2026 — **ARBITRÉ PAR KO** : exception bornée à D270, **un seul lot de déblocage** — ce harnais, et les
+  tests qui feraient mordre ses cibles si elles s'avèrent muettes ; aucun code produit ; troisième lot non certifié ; puis
+  la certification, protocole neuf. **C'est la partie B de la session de D311**, qui fermera cette entrée ou dira pourquoi
+  elle ne le peut pas. Point d'entrée du rang 23, bloc « ARBITRAGE DE KO (D311) ».)*
+- [x] **[MÉTHODE]** **« Lignes de verdict = cibles déclarées » ne prouve pas qu'une campagne a JOUÉ ses cibles** — faute n° 2
   de D310 : le lecteur `docs/preuves/D310/outils/lire-campagnes.py` a rendu « 28 sur 28 » ; c'est la **durée** (0 s) qui a
   montré l'échec. Tout harnais qui **jette la sortie** de sa mesure et juge au code peut imprimer un verdict sans avoir
   démarré. ⇒ Question pour Ko : quelle **preuve de démarrage** une certification exige-t-elle (tests collectés > 0 par
   mesure — c'est R1 sur le chemin de l'argent ; une durée plancher ; un pré-vol par harnais) ?
   ⇒ **BLOQUE : à ordonner par Ko** (lié à R1 et à l'entrée ci-dessus). ⇒ **COÛT** : documentaire (règle) ; puis code de
   `neutralisation/` si elle s'outille (compte).
-- [ ] **[MÉTHODE]** **Les marques de D293 (rang 15) et D299 (rang 19) ont compté 13 cibles non jouées** — mesuré dans leurs
+  ⛔ *(D311, 26/09/2026 — **TRANCHÉ PAR KO** : point 12 du critère du rang 9, mot pour mot — « une cible ne compte que si sa
+  mesure a DÉMARRÉ. Preuve : une sortie lue qui montre des tests collectés, ou, à défaut, une durée au-dessus d'un
+  plancher déclaré au protocole. » Motif : « D310 a vu le défaut par une durée de 0 s, pas par une lecture. » **Close** :
+  la règle est écrite au critère ; l'outillage de la prochaine certification l'applique à son protocole.)*
+- [x] **[MÉTHODE]** **Les marques de D293 (rang 15) et D299 (rang 19) ont compté 13 cibles non jouées** — mesuré dans leurs
   tables `--tout` versées ; « 195 » était 182 jouées, « 199 » était 186. **Aucun en-tête n'est réécrit** ; les blocs de
   clôture sont annotés. ⇒ **BLOQUE : à ordonner par Ko** — ce que valent ces marques est sa décision. ⇒ **COÛT** :
   documentaire.
+  ⛔ *(D311, 26/09/2026 — **TRANCHÉ PAR KO** : « les marques passées valent pour ce qu'elles ont mesuré ». Chacune est
+  annotée « 13 cibles d'`available-on-api` jamais jouées » — **mesuré** pour D293 et D299, **inféré** pour D275, D283 et
+  D288 ; aucune retirée, aucun en-tête réécrit. **Close.** ⚠ Constat pour D288 : entrée des reports de D311.)*
 - [ ] **[OUTIL]** **Trois harnais n'ont pas de garde `__main__`** (`neutralize-act-plafonds.py`, `-argon2.py`,
   `-horloge.py`) : les **importer** exécute leur campagne — faute n° 1 de D310, hors de toute fenêtre, arbre restauré.
   ⇒ **BLOQUE : rien — à ordonner par Ko.** ⇒ **COÛT** : code de `neutralisation/` (compte), trois fichiers ; e2e : non ;
@@ -2860,6 +2899,10 @@ arbitrera.
     `solid-s1`, `s10a` **DEHORS** par leurs cibles (classés par la session, preuve : `docs/preuves/D307/carte/`). ⇒ Harnais
     du chemin de l'argent à `94f45e2` : `booking-status`, `e3d1-s8`, `r4`, `s10b`, `s11b`, `solid-s3`, `solid-s4`,
     `solid-s5a`, `solid-s5b`, `solid-s6`, et `rang23`. La portée de R1 (les vingt + les neufs) ne change pas.)*
+    ⛔ *(D311, 26/09/2026 — décision du relecteur (chat), déléguée par Ko : **S11a-7 et S11a-11 sont DEDANS** (branches
+    (5) et (6) de la règle de portée) ⇒ **`s11a` entre dans la portée de R1 pour ces deux cibles**, et la prochaine
+    certification les compte du côté du chemin de l'argent. ⚠ Constat : `available-on-api`, nommé dans les vingt, est hors
+    du chemin par ses cibles — au relecteur, reports de D311.)*
   - ⛔ **`neutralize-e3d1-s8.py` DIT LE CONTRAIRE DE CE QU'IL FAIT** : son en-tête promet « une cible ne compte que si
     le code de sortie est non nul ET que le titre attendu apparaît sur une ligne d'échec » ; sa boucle fait
     `codes = {m: lancer(m)[0] …}` — la sortie est jetée. C'est le harnais des cibles E1–E5 de D255.

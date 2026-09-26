@@ -1,0 +1,3 @@
+✓ .neutralisation-journaux/r23c-20260926-0032/e2e.log : occurrences stricte 24 · large 24 (doivent s'accorder) · valeurs distinctes 24 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, .neutralisation-journaux/r23c-20260926-0032/e2e.log porte 24 valeur(s) (attendu ≥ 24)
+== valeurs cherchées : 24 (1 journal/journaux) · parcourus : 11 fichiers, 1872193 octets · porteurs : 0 (attendu 0)
