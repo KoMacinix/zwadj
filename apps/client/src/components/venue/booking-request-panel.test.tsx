@@ -9,9 +9,11 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
 import type { BookingsClient } from "@zwadj/api-client";
+import { availabilityWindowQuerySchema } from "@zwadj/types";
 import type { AuthClient } from "../../lib/auth/auth-client";
 import { AuthProvider } from "../../lib/auth/auth-context";
-import { BookingRequestPanel } from "./booking-request-panel";
+import { LOGIN_PATH } from "../../lib/routes";
+import { BookingRequestPanel, WINDOW_DAYS } from "./booking-request-panel";
 
 vi.mock("../../i18n/navigation", () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => <a href={href}>{children}</a>
@@ -30,12 +32,49 @@ const AVAILABILITY = {
   ]
 };
 
-function stubFetch(payload: unknown = AVAILABILITY) {
-  vi.stubGlobal(
-    "fetch",
-    vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve(payload) } as unknown as Response)
-  );
+/**
+ * ⚠ RANG 25 (D316, MD1-g) — LE DOUBLE APPLIQUE LE CONTRAT.
+ *
+ * L'ancien double répondait `ok` QUELLE QUE SOIT L'URL : le panneau demandait
+ * 182 jours, l'API en refuse plus de 92, et ce test restait vert pendant que
+ * l'écran réel affichait « aucune date » (D315). Celui-ci valide la requête par
+ * le schéma que l'API applique (`availabilityWindowQuerySchema`) et répond 400
+ * comme elle ; il ne rend que les jours de la fenêtre DEMANDÉE.
+ * `echoue` rend une fenêtre en 500, pour mesurer le tout-ou-rien.
+ */
+function stubFetch(payload: unknown = AVAILABILITY, echoue: (from: string) => boolean = () => false) {
+  const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+    const url = new URL(String(input));
+    const fenetre = { from: url.searchParams.get("from") ?? "", to: url.searchParams.get("to") ?? "" };
+    if (!availabilityWindowQuerySchema.safeParse(fenetre).success) {
+      return { ok: false, status: 400, json: () => Promise.resolve({ statusCode: 400 }) } as unknown as Response;
+    }
+    if (echoue(fenetre.from)) {
+      return { ok: false, status: 500, json: () => Promise.resolve({ statusCode: 500 }) } as unknown as Response;
+    }
+    const corps = payload as { days?: Array<{ date: string }> };
+    const rendu = Array.isArray(corps.days)
+      ? { ...corps, ...fenetre, days: corps.days.filter((d) => d.date >= fenetre.from && d.date <= fenetre.to) }
+      : payload;
+    return { ok: true, status: 200, json: () => Promise.resolve(rendu) } as unknown as Response;
+  });
+  vi.stubGlobal("fetch", fetchMock);
+  return fetchMock;
 }
+
+// ⚠ L'horloge est FIGÉE (espion sur `Date.now`, idiome du calendrier voisin :
+// pas de faux timers, `waitFor` en a besoin de vrais). Le 1er août 2027, la
+// fenêtre de six mois commence le 2 août : les dates des fixtures y tombent.
+// Jamais une date « dans le futur » : elle cesse de l'être (D213, D227).
+const NOW = Date.parse("2027-08-01T09:00:00Z");
+
+beforeEach(() => {
+  vi.spyOn(Date, "now").mockReturnValue(NOW);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 const CLIENT_CONNECTE = { id: "u9", email: "client@example.dz", role: "CLIENT", emailVerified: true };
 
@@ -88,11 +127,55 @@ describe("Demande de réservation — les dates", () => {
     expect(await screen.findByRole("button", { name: /2027-08-15/ })).toBeEnabled();
   });
 
-  it("GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b)", async () => {
+  it("GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC", async () => {
     stubFetch({ venueId: "v1" });
     renderPanel();
-    // Le panneau se rend, en disant qu'il n'a rien à proposer.
-    expect(await screen.findByText(/aucune date/i)).toBeInTheDocument();
+    // ⚠ INVERSION ÉCRITE (rang 25, D316) : ce test exigeait « aucune date ».
+    // La section échoue toujours SEULE — le panneau se rend, son titre aussi —
+    // mais elle dit ce qui est arrivé : un échec, pas une salle sans dates.
+    // ⚠ `waitFor` + `expect`, pas `findByRole` : sous neutralisation, l'échec
+    // doit se lire comme une ASSERTION, pas comme une erreur de requête (D304).
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeNull());
+    expect(screen.getByRole("alert")).toHaveTextContent(messages.fr.venueDetail.booking.loadFailed);
+    expect(screen.getByRole("heading", { name: messages.fr.venueDetail.booking.title })).toBeInTheDocument();
+    expect(screen.queryByText(messages.fr.venueDetail.booking.none)).toBeNull();
+  });
+});
+
+describe("Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316)", () => {
+  it("D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou", async () => {
+    const fetchMock = stubFetch();
+    renderPanel();
+    // Les fenêtres partent ensemble (`Promise.all`) : dès le premier appel, toutes
+    // sont émises. On juge les REQUÊTES avant le rendu — sous neutralisation,
+    // l'échec se lit sur la requête fautive, pas sur un bouton absent.
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    const fenetres = fetchMock.mock.calls.map(([input]) => {
+      const url = new URL(String(input));
+      return { from: url.searchParams.get("from") ?? "", to: url.searchParams.get("to") ?? "" };
+    });
+    expect(fenetres.length).toBeGreaterThanOrEqual(2);
+    for (const w of fenetres) expect(availabilityWindowQuerySchema.safeParse(w).success).toBe(true);
+    const civil = (ms: number) => new Date(ms + 3_600_000).toISOString().slice(0, 10);
+    expect(fenetres[0]!.from).toBe(civil(NOW + 86_400_000));
+    expect(fenetres[fenetres.length - 1]!.to).toBe(civil(NOW + WINDOW_DAYS * 86_400_000));
+    for (let i = 1; i < fenetres.length; i++) {
+      const lendemain = new Date(Date.parse(`${fenetres[i - 1]!.to}T00:00:00Z`) + 86_400_000).toISOString().slice(0, 10);
+      expect(fenetres[i]!.from).toBe(lendemain);
+    }
+    // Le rendu va à son terme : aucune mise à jour d'état après la fin du test.
+    expect(await screen.findByRole("button", { name: /2027-08-15/ })).toBeEnabled();
+  });
+
+  it("une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien)", async () => {
+    // La SECONDE fenêtre échoue ; la première a ses dates. Afficher la première
+    // seule présenterait un calendrier partiel comme complet.
+    stubFetch(AVAILABILITY, (from) => from > "2027-10-01");
+    renderPanel();
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeNull());
+    expect(screen.getByRole("alert")).toHaveTextContent(messages.fr.venueDetail.booking.loadFailed);
+    expect(screen.queryByText(messages.fr.venueDetail.booking.none)).toBeNull();
+    expect(screen.queryByRole("button", { name: /2027-08-15/ })).toBeNull();
   });
 });
 
@@ -122,7 +205,11 @@ describe("Demande de réservation — sans compte", () => {
     stubFetch();
     renderPanel();
     expect(await screen.findByRole("button", { name: /2027-08-15/ })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Se connecter/ })).toBeInTheDocument();
+    // Rang 25 (D316) : ce lien visait `/connexion`, une 404 (D315). Sa cible est
+    // la constante vérifiée contre le fichier de la page (`lib/routes.test.ts`).
+    // ⚠ Assertion NATIVE (`toBe`), pas le matcher jest-dom `toHaveAttribute` : sous neutralisation, celui-ci
+    // échoue en `Error`, et le harnais du lot ne lit une morsure que sur une `AssertionError` (D304).
+    expect(screen.getByRole("link", { name: /Se connecter/ }).getAttribute("href")).toBe(LOGIN_PATH);
     // Aucun formulaire tant qu'on n'est pas connecté : afficher des champs qui
     // ne partiront pas serait une promesse fausse.
     expect(screen.queryByRole("button", { name: "Envoyer ma demande" })).toBeNull();

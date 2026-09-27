@@ -1237,6 +1237,7 @@
       "intro": "Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.",
       "loading": "Chargement des dates…",
       "none": "Cette salle ne propose aucune date pour le moment.",
+      "loadFailed": "Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.",
       "taken": "prise",
       "total": "Prix : {amount}",
       "deposit": "Acompte : {amount}",

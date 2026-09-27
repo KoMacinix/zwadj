@@ -1294,9 +1294,28 @@ sitemap, CGU vides, **aucune relecture humaine de l'arabe tracée** ; 46 capture
 **117 contrôles, un écart** (section D315). **Documentaire : compteur de lots de code non certifiés ZÉRO, inchangé.** ⇒ **Où
 il en est** : clos — point d'entrée du rang 24 ; section D315. ⇒ La ligne du rang 25, ci-dessous, a été écrite à l'ouverture ;
 **elle est toujours vraie.**
-⇒ **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 24, sur
-consigne de Ko. ⚠ **Une permission n'est pas un arbitrage** ; ⚠ l'ordre des lots suivants « sera proposé par le relecteur
+⇒ ~~**RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 24, sur
+consigne de Ko.~~ ⛔ *(D316 : **arbitré par Ko le 26/09/2026** — ligne « ARBITRÉ LE 26/09/2026 PAR KO — le RANG 25 »
+ci-dessous.)* ⚠ **Une permission n'est pas un arbitrage** ; ⚠ l'ordre des lots suivants « sera proposé par le relecteur
 et arbitré par [Ko] » (arbitrage du rang 24) — la session ne le propose pas.
+⛔ **ARBITRÉ LE 26/09/2026 PAR KO — le RANG 25, mot pour mot : « Rang 25 : réparer les trois défauts vus par D315 — la
+demande de réservation qui ne part pas, le lien de connexion en 404, la suppression de compte en erreur. Chacun est
+prouvé par une spec e2e rouge avant le correctif, verte après. Lot de code. »** Lot D316. ⛔ **C'est la PREMIÈRE écriture
+du lot, et l'ordre est de Ko** (patron de D295) : la session a reçu l'arbitrage, elle ne se l'est pas attribué.
+⇒ **Lot de CODE** : il compte dans les deux/trois (D270 ; D283 amendé par D292) — **compteur de lots de code non
+certifiés : ZÉRO → UN** à sa clôture (Ko). ⇒ **Chemin de l'argent** : décision du relecteur (chat), déléguée par Ko, écrite
+avant tout code — les défauts 1 et 2 n'en sont **pas**, la pause ne s'y applique pas ; texte, motif et borne : méthode
+renforcée, bloc D316. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 25 » en tête de ce fichier.
+⛔ **(D316, 27/09/2026) RANG 25 CLOS — LES TROIS DÉFAUTS DE D315 RÉPARÉS**, chacun prouvé par une spec e2e **rouge lue** avant le
+correctif et **verte** après : la demande de réservation part de l'écran (fenêtre de six mois **découpée** pour le contrat ;
+un échec de chargement ne se dit plus « aucune date ») ; le lien « se connecter pour demander » mène à la page de connexion,
+en français et en arabe ; la section de suppression fonctionne dans les deux applications (l'API émet le JSON `null`).
+Défauts 1 et 2 **hors du chemin de l'argent** (décision du relecteur, **par leur fonction**). Portes à 0 (`test:int`
+**444/36**, e2e **41 · 1**) ; campagne du lot **11 sur 11, lues** ; lecture adverse de D315 : **67 contrôles, 0 écart**.
+**Lot de code : compteur ZÉRO → UN.** ⇒ **Où il en est** : clos — point d'entrée du rang 25 ; section D316. ⇒ La ligne du rang
+26, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie.**
+⇒ **RANG 26 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 25, sur
+consigne de Ko. ⚠ **Une permission n'est pas un arbitrage.**
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1384,6 +1403,124 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## ~~PROCHAIN LOT~~ — rang 25 · `[CODE]` **les trois défauts vus par D315** ⛔ ~~**OUVERT LE 26/09/2026 : D316**~~ ⛔ **CLOS LE 27/09/2026 : D316**
+
+### ⛔ CLÔTURE DU 27/09/2026 (D316) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **ARBITRÉ PAR KO LE 26/09/2026 ET CLOS LE 27/09/2026, DANS LA MÊME SESSION.** ⇒ **QUEL lot : rang 25. OÙ IL EN EST : clos,
+ici.** Titre barré à la clôture ; ce bloc est son rafraîchissement de clôture (règle de D294).
+⇒ **Les trois défauts de D315 sont RÉPARÉS**, chacun dans l'ordre exigé par Ko — mode de défaillance écrit (ci-dessous),
+spec e2e **rouge lue** sur le code tel qu'il était, correctif, **même** spec **verte** :
+1. **La demande de réservation** part de l'écran : la fenêtre de six mois est **découpée** en fenêtres que le contrat accepte
+   (`apps/client/src/lib/availability-windows.ts`, module pur) ; un échec de chargement s'affiche comme un échec, jamais
+   « aucune date ». **182 jours gardés** : aucune décision produit ne fixe un autre horizon (D46, D49, D147, D227 relues).
+2. **Le lien « Se connecter pour demander »** mène à la page de connexion réelle, en français et en arabe (`LOGIN_PATH`,
+   gardé contre le fichier de la page).
+3. **La section « Supprimer mon compte »** fonctionne dans les deux applications : l'API émet le JSON `null` pour « aucune
+   demande » — c'est **elle** qui enfreignait le contrat écrit.
+⇒ **Chemin de l'argent** : décision du relecteur (chat), déléguée par Ko, écrite avant tout code — défauts 1 et 2 **hors** du
+chemin, **par leur fonction** (méthode renforcée, bloc D316) ; **borne tenue** (aucune ligne de l'aperçu d'acompte ni du
+transport de la date touchée, contrôlé au `git diff`). La **pause** du chemin de l'argent **continue**.
+⇒ **Mesures** : portes **toutes à 0** (`test` 664/58 · 39/4 · 308/22 · 347/28 ; `test:int` **444/36** ; e2e **41 · 1 ignoré**) ;
+campagne du lot `neutralisation/neutralize-r25.py` **11 gardes mordues sur 11, toutes LUES** (unitaire, intégration, e2e) ;
+captures d'après correctif à côté de celles de D315. Détail, fautes, limites : section D316.
+⇒ **LOT DE CODE** : **compteur de lots de code non certifiés : ZÉRO → UN** (Ko). « Deux, tenables ; trois, non » (D270).
+⇒ **RANG 26 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**.
+⚠ **Une permission n'est pas un arbitrage.**
+
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D316), AVANT toute ligne de code
+
+⛔ **ARBITRÉ PAR KO LE 26/09/2026** — texte mot pour mot dans l'ordre des rangs (ligne « ARBITRÉ LE 26/09/2026 PAR KO — le RANG
+25 »). ⇒ **QUEL lot : rang 25. OÙ IL EN EST : ici.** **Lot de CODE** : compteur de lots de code non certifiés **ZÉRO → UN** à
+sa clôture (Ko). **SHA de départ : `a7c09fa`** (`HEAD` = `origin/main` après `git fetch`, arbre propre).
+⛔ **Chemin de l'argent** : les défauts 1 et 2 n'en sont **pas** — décision du relecteur (chat), déléguée par Ko, **écrite
+avant tout code** : méthode renforcée, bloc D316. **Borne** : ce lot ne touche **ni l'aperçu d'acompte** (`previewDeposit`,
+`lineTotal`, le total et l'acompte affichés) **ni le transport de la date choisie vers le calcul du prix** (`setChosen`,
+`chosen`, `submit`). S'il le fallait, la session s'arrête et le dit. Le défaut 3 n'est pas sur la carte (reports de D315).
+⛔ **La forme exigée par Ko, pour chaque défaut, dans cet ordre** : le mode de défaillance **écrit** (ci-dessous) ; la spec e2e
+**ROUGE** sur le code actuel, **lue** ; le correctif ; la **même** spec **VERTE**.
+
+#### Fichiers attendus — énumérés AVANT d'écrire (le `git diff` de fin de lot ne doit contenir qu'eux)
+
+| fichier | pour |
+|---|---|
+| `e2e/specs/r25-demande-reservation.e2e.ts` (neuf) | défaut 1 — le parcours client |
+| `e2e/specs/r25-lien-connexion.e2e.ts` (neuf) | défaut 2 — FR et AR |
+| `e2e/specs/r25-suppression-compte.e2e.ts` (neuf) | défaut 3 — deux applications × deux cas |
+| `e2e/fixtures/harness.ts` | aides partagées : appel d'API, salle publiée (formes relevées chez un appelant existant) |
+| `apps/client/src/lib/availability-windows.ts` (neuf) et son test | défaut 1 — découpage et fusion, module PUR (D187, D205) |
+| `apps/client/src/components/venue/booking-request-panel.tsx` et son test | défauts 1 et 2 |
+| `apps/client/src/lib/routes.ts` (neuf) et son test | défaut 2 — la cible de connexion, une constante, et sa garde de routage |
+| `packages/i18n/messages/fr.json`, `ar.json` | défaut 1 — le message d'échec de chargement (aucune chaîne en dur) |
+| `apps/api/src/account/account.controller.ts` | défaut 3 — l'API émet le JSON `null` |
+| `apps/api/test/int/account.int-spec.ts` | défaut 3 — « aucune demande » à l'octet près |
+| `packages/api-client/src/account-client.ts` et `account-client.test.ts` (neuf) | défaut 3 — commentaire faux corrigé ; le client qui lit `null` |
+| `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`, `docs/preuves/D316/` | documentation, pièces |
+| `neutralisation/neutralize-r25.py` (neuf) — ⚠ **ajouté en cours de lot** | le harnais du lot (`CLAUDE.md`, portes) : chaque garde neuve neutralisée, rouge **lu**, restaurée. ⚠ Inscrit ici **après** avoir été écrit — l'inverse de la règle ci-dessous ; faute écrite section D316 |
+
+⚠ Un fichier qui s'avérerait nécessaire hors de cette table s'**écrit ici avec son motif** avant d'être touché.
+
+#### Modes de défaillance — écrits AVANT les specs rouges
+
+**Défaut 1 — la demande de réservation qui ne part pas.**
+- **MD1-a** (mesuré, D315) : le panneau demande `[demain, demain + 181]`, **182 jours bornes incluses** ; le contrat refuse
+  au-delà de `AVAILABILITY_MAX_WINDOW_DAYS` = 92 (D147, D49) ⇒ **400 `windowTooWide`** ⇒ `getVenueAvailability` rend `null`
+  ⇒ « aucune date » ; aucun créneau n'est sélectionnable ; **aucune demande ne part de l'écran**.
+- **MD1-b** : **une erreur d'API s'affiche « aucune date »** — c'est ce qui a caché MD1-a huit semaines. ⇒ Tout échec de
+  chargement (statut non 2xx, réseau, **réponse sans la forme attendue**) produit un **message d'échec distinct**, jamais
+  `none`. ⚠ C'est une **inversion écrite** : le test « GARDE DE FORME » (C5b) exigeait « aucune date » sur une réponse
+  malformée ; il exigera désormais le message d'échec — la section échoue toujours **seule**, la fiche reste debout.
+- **MD1-c** (découpage) : fenêtres qui se **chevauchent** ⇒ un jour en double ; un **trou** ⇒ un jour perdu ; une fenêtre à
+  93 jours (« bornes incluses » mal traduit, D147) ⇒ le 400 revient. ⇒ Module **pur**, borne **IMPORTÉE** du contrat,
+  jamais recopiée ; testé sur les **jointures** et sur un cas **à deux fenêtres au moins** (D209, n° 4).
+- **MD1-d** (fusion) : un morceau échoue, l'autre non ⇒ un calendrier **partiel** présenté comme complet. ⇒ **Tout ou rien** :
+  un seul morceau en échec, et c'est l'échec du chargement (MD1-b).
+- **MD1-e** (borne du relecteur) : la fusion **recalcule ou réécrit** un jour ⇒ un prix affiché qui n'est pas celui du
+  serveur. ⇒ Chaque jour passe **tel que le serveur l'a rendu** (même objet, testé par identité) ; aucune ligne de
+  `previewDeposit`, `lineTotal`, `setChosen`, `submit` ne change — contrôlé sur le `git diff`.
+- **MD1-f** (horizon) : garder 182 jours sans décision qui le fixe ? Relu : **D46** fixe l'horizon de réservation à **18
+  mois**, écrêté côté serveur (**D49**) ; **D147** impose d'importer la borne du contrat ; **D227** refuse un **point** hors
+  horizon dans la recherche. **Aucune décision produit ne fixe l'horizon du panneau** ; 182 jours tient sous D46 ⇒ **gardé**
+  (consigne de Ko : garder l'intention, découper la demande).
+- **MD1-g** (pourquoi aucune porte ne l'a vu) : le double de `fetch` du test du panneau répond `ok` quelle que soit l'URL.
+  ⇒ Le double **valide la requête par le schéma du contrat** (`availabilityWindowQuerySchema`) et répond 400 comme l'API.
+- **Spec e2e** : un client connecté ouvre une salle publiée, choisit une date, remplit le panneau, envoie, **voit la
+  confirmation** — et la demande existe en base.
+
+**Défaut 2 — « Se connecter pour demander » mène à une 404.**
+- **MD2-a** (mesuré, D315) : `href="/connexion"` ; la page est `/auth/connexion` ⇒ **404** (capture 25 = capture 12, octet
+  pour octet).
+- **MD2-b** : un correctif juste en français et faux en arabe (préfixe de locale) ⇒ `Link` localisé de `i18n/navigation`, et
+  l'e2e joue **FR et AR**.
+- **MD2-c** : un chemin écrit en dur qui diverge à nouveau ⇒ la cible devient **une constante** ; sa garde mesure un **NOM DE
+  FICHIER** (D249) : la page `app/[locale]/<cible>/page.tsx` existe. ⚠ **Relevé** : le client n'a **pas** de table de routes ;
+  la seule aide est le `Link` localisé, et ~~**dix**~~ **neuf** autres liens écrivent `"/auth/connexion"` en littéral — ils
+  **ne sont pas touchés** (un lot à la fois) : report au backlog. ⛔ *(« dix » écrit de tête à l'ouverture ; le recompte par
+  fichier rend neuf, plus deux vers la SPA pro — section D316, fautes.)*
+- **MD2-d** : un autre lien vers `/connexion` ailleurs — **cherché dans les deux applications : aucun** (12 liens « connexion »
+  dans le client, un seul fautif ; le pro vise `/auth/connexion` partout).
+- **Spec e2e** : visiteur anonyme, fiche salle, clic sur « Se connecter pour demander » ⇒ la page de connexion **réelle**
+  (statut 200, titre de connexion), en **français et en arabe**.
+
+**Défaut 3 — la section « Supprimer mon compte » en erreur, dans les deux applications.**
+- **MD3-a** (mesuré, D315) : sans demande, `GET /me/deletion-request` rend **200 sans corps** (Nest : `isNil(body)` ⇒
+  `response.send()`) ; le transport partagé (`raw`, `auth-client.ts`) **refuse délibérément** un corps vide hors 204 et lève ;
+  la section affiche « Impossible de vérifier » et ne propose pas la demande (D37).
+  ⇒ **Le côté qui enfreint le contrat : l'API.** Relu : le client d'API type `DeletionRequestDTO | null` (« `null` = aucune
+  demande »), le contrôleur documente `@ApiOkResponse` « `DeletionRequestDTO | null` », le backlog (A11, coché) « demande en
+  cours ou `null` », et le transport exige du JSON sur tout statut autre que 204. **Un 200 vide n'est ni du JSON ni un
+  204.** Correctif : l'API émet le JSON `null` — **pas un contrat nouveau**, le contrat écrit enfin tenu.
+- **MD3-b** : la garde d'intégration actuelle est **tolérante** (« corps vide ou `null` ») : elle reste verte sur le défaut.
+  ⇒ Elle exigera l'**octet exact** : 200, `application/json`, corps `null`.
+- **MD3-c** : contourner `reply()` de Nest (`@Res()` sans `passthrough`) retire le handler du chemin des intercepteurs — **aucun
+  n'est global** (relevé : un seul filtre global, `AllExceptionsFilter`) ; la garde d'authentification s'exécute **avant** le
+  handler (le 401 sans jeton est couvert par `rbac-all-routes`).
+- **MD3-d** : la réponse **avec** demande ne doit pas changer (même DTO) ⇒ intégration et e2e jouent les deux cas.
+- **MD3-e** : `account-client.ts` affirme « l'API répond un corps VIDE » ⇒ commentaire corrigé ; le client est prouvé par un
+  test qui lui sert **la forme exacte du fil** assertée par l'intégration.
+- **Spec e2e** : client et pro, **sans demande** (la section propose la demande, aucune erreur) et **avec une demande** (la
+  section l'affiche en attente).
+
 ## ~~PROCHAIN LOT~~ — rang 24 · `[DOC]` **l'état du produit, parcours par parcours** ⛔ ~~**OUVERT LE 26/09/2026 : D315**~~ ⛔ **CLOS LE 26/09/2026 : D315**
 
 ### ⛔ CLÔTURE DU 26/09/2026 (D315) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -1416,10 +1553,17 @@ D302) ; ce bloc est son rafraîchissement de clôture (règle de D294).
 ⇒ **Chemin de l'argent** : chaque étape porte sa classe (branches 1 à 6) ; les défauts du panneau de demande touchent un
 **fichier sur la carte** (`booking-request-panel.tsx`, branche 1) — la ligne fautive ne calcule aucun montant : **à trancher
 par le relecteur**, et **pendant la pause, ne s'ouvre pas sans Ko**.
+⛔ *(D316, 27/09/2026 — passe D277 : **ce résumé est vrai à sa date, et le premier lot de code a eu lieu.** Rang 25, arbitré
+par Ko : **la demande de réservation, son lien de connexion et la section de suppression sont RÉPARÉS**, chacun prouvé par une
+spec e2e rouge avant, verte après — des specs e2e **exercent désormais trois parcours** et **chargent la fiche salle** ; le
+test du panneau applique le contrat, `account-client.ts` a son test. La question du chemin de l'argent pour le panneau est
+**TRANCHÉE** par le relecteur (hors du chemin, **par sa fonction** ; méthode renforcée, bloc D316). État courant : point
+d'entrée du rang 25.)*
 ⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de code non certifiés :
 ZÉRO, inchangé.** Aucune porte lancée : aucun code n'a changé. Les serveurs de développement ont tourné pour les captures et
 deux mesures, sur la base `zwadj_e2e`.
 ⇒ **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**.
+⛔ *(D316 : **arbitré par Ko le 26/09/2026** — lot de code, clos le 27/09/2026 ; compteur **UN** ; rang 26 en attente.)*
 ⚠ **Une permission n'est pas un arbitrage** ; l'ordre des lots suivants « sera proposé par le relecteur et arbitré par [Ko] ».
 ⚠ **DÉCISIONS DUES À KO** (détail : pièce, § 3.2) : rang 25 ; reprise du chemin de l'argent ; étiquettes P0-P3 ; remise ou
 cashback (B:1801) ; fournisseur WhatsApp ; énumération par `EMAIL_ALREADY_USED` ; conservation des contacts après
@@ -1443,7 +1587,9 @@ session, ligne D307* : aucun lot de code du chemin de l'argent d'ici là.
 code **peut** s'ouvrir ; **aucun ne l'est** avant que Ko arbitre le rang 24. ⛔ *(D315, 26/09/2026 — passe D277, les deux sens :
 **arbitré par Ko** — rang 24, **documentaire**, ouvert et clos le même jour (point d'entrée du rang 24) ; il **n'ouvre aucun lot
 de code** : le prochain est un rang que Ko arbitrera — **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** — et le chemin de l'argent
-reste en pause.)*
+reste en pause.)* ⛔ *(D316, 27/09/2026 — passe D277 : rang 25 **arbitré par Ko — lot de CODE** hors du chemin de l'argent
+(décision du relecteur), clos ; **compteur UN** ; la pause du chemin de l'argent **continue** ; **rang 26 : en attente
+d'arbitrage de Ko**.)*
 ⇒ **La passe `r23d-20260926-1434`** (sur `0057748`) : porte dure verte ; six portes à 0 (**1 334 / 109**, **443 / 36**, e2e
 **34 · 1**) ; `--tout` **28 · 198 · 0 · 13** ; `--int` **40** ; **certifiant 211 · 0 · 0, 28 campagnes sur 28 qui comptent,
 point 12 tenu partout** ; étiquettes **12 · 13 · 81 · 105** ; contre-épreuve **5 sur 5** ; arbre immobile aux cinq contrôles ;
@@ -5057,6 +5203,238 @@ prochain plafond gelé aura le même défaut.
 `neutralisation/neutralize-*.py` · `ZWADJ_CONTINUITE.md` · `ZWADJ_BACKLOG.md`.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
+
+## Session des 26 et 27/09/2026 — D316 · rang 25 CLOS, LOT DE CODE : les trois défauts de D315 réparés, chacun rouge lu avant, vert après ; et la lecture adverse de D315
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D315** ⇒ **D316** ; « D316 » : **0** occurrence dans les
+fichiers suivis à `a7c09fa` (`git grep`, code 1). **SHA de départ : `a7c09fa`** — `HEAD` = `origin/main` après `git fetch`,
+arbre propre. ⇒ **RANG 25**, arbitré par Ko en ouverture de session (première écriture du lot) ; **décision du relecteur
+(chat)**, déléguée par Ko, écrite avant tout code (seconde écriture). **Lot de CODE** : compteur de lots de code non
+certifiés **ZÉRO → UN**.
+
+### D316 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 24 **clos** (D315) ; dernière ligne « ⇒ RANG N » : « **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 24, ordre des rangs |
+| numéro | dernière ligne du registre : **D315** ⇒ **D316** | registre |
+| compteur | **ZÉRO** (D314, inchangé par D315) ; pause du chemin de l'argent **en cours** | point d'entrée du rang 23 ; `AGENTS.md`, règle de D270 |
+| synchronisation | `HEAD` = `origin/main` = `a7c09fa` ; arbre propre | `git` |
+
+### D316 — la lecture adverse depuis la clôture de D315, en entier
+
+Relue à `a7c09fa` : la section D315, le point d'entrée du rang 24, la ligne D315 de l'ordre, les reports de D315 au backlog,
+les deux annotations de `AGENTS.md`, le commit `a7c09fa`, les **83** pièces de `docs/preuves/D315/` et la rectification posée
+chez D314. **Instrument** : `docs/preuves/D316/lecture-adverse/confronter-d315.py` — chaque chiffre confronté à SA pièce,
+l'attendu imprimé à côté du mesuré (D290), rien importé des outils de D315 ; les **six outils de D315 REJOUÉS** sur l'état
+qu'ils ont lu (`ffd32e9`, `carte-routes.py` dans un worktree détaché hors dépôt) et leurs sorties **comparées à l'octet** aux
+sorties versées. Sortie : `confronter-d315-sortie.txt` — **67 contrôles, 0 écart.**
+**Ce qui tient** : provenance `ffd32e9` → `a7c09fa`, 87 fichiers, périmètre documentaire (trois `.md`, `docs/preuves/D315/`, la
+seule rectification **ajoutée** chez D314), commit sur `origin/main` ; **les six rejeux identiques à l'octet** (carte, entrées,
+verdicts, déploiement, arabe, corpus « après écriture ») ; carte recomptée indépendamment — **13** `page.tsx`, **22**
+contrôleurs, **78** routes, **14** chemins pro, aucun contrôleur de paiement ; verdicts **2 · 62 · 25 · 2 · 35 · 10 · 2 · 3 · 2 · 2
+· 1 = 146** ; **46** captures, **3 184 910** octets, chaque taille égale au relevé ; les trois défauts **au code de `ffd32e9`**
+(`booking-request-panel.tsx:36` et `:431`, `venue.ts:988`, `auth-client.ts:155-156`, `main.ts:33`) et **à leurs mesures**
+(P 182 j → 400, T 92 j → 200 ; A 200 vide, B JSON, C : A lève) ; « depuis `909702a` (2026-08-03) » ; le seul lien fautif sur
+**12** liens « connexion » du client ; 1 `<label>` · 7 `<input>` · 1 `<textarea>` · 6 `placeholder` · 8 `aria-label` ; B:571,
+B:781, B:1325, B:843–844, B:853, B:1548 ; `pg-boss` absent des `package.json` ; balayage à l'octet (`24802faf`) ; **le
+balayage « après » de D315 porte le corpus COMMITÉ** (1 825 214 = 1 825 214) — l'écart que D315 a trouvé chez D314 ne se
+reproduit pas chez lui ; contrôle = après ; deux sorties d'audit **scellées**, 127 alertes chacune ; tri **3** neuves ; « 0
+porteur » ×3 ; registre, titre, dernière « ⇒ RANG 25 », `AGENTS.md` ×2 ; **7** reports à la forme de D302 ; aucune entrée
+cochée ni barrée ; **4** lignes supprimées, aucun mot perdu.
+**Constats, sans chiffre de la section** :
+1. · « **M1 et M2** de `releve.txt` » (backlog) : le relevé n'étiquette pas M2 — son résultat est la ligne « CAPTURE 25 » ;
+   le script le définit. Rien de faux, un renvoi imprécis.
+2. · « **Aucun n'était connu** » : à `ffd32e9`, « WINDOW_DAYS » (3) et « deletion-request » (5) apparaissent dans les
+   fichiers d'autorité, **lus à leurs contextes** : aucun ne décrit un défaut. L'un d'eux — l'entrée A11 **cochée** « `GET
+   /me/deletion-request` — demande en cours ou `null` » — est **le contrat** que l'API enfreignait : il a servi à trancher le
+   côté du défaut 3 (point d'entrée du rang 25, MD3-a).
+3. · Un troisième journal de D315 est sur disque, **hors** du contrôle « cookie » (`api-mesure-2.log`) : **0** cookie, **0**
+   jeton (motifs de l'extracteur de D316) — le choix de deux journaux ne laissait passer aucune valeur.
+**Défauts de MON instrument, réparés et REJOUÉS EN ENTIER (D298)** : la première passe rendait **64 contrôles, 1 ✗** — la
+forme de D302 cherchée sur le texte BRUT, alors que l'entrée `[DOC]` porte « À ordonner⏎par Ko » (la leçon de D294, contre
+moi) ; et trois verdicts « introuvables », leurs libellés écrits de tête (« réalisée ») au lieu de ceux de la sortie
+(« RÉALISÉ »). Réparé (texte aplati, calibré sur ses deux bras ; ventilation lue telle qu'imprimée) ⇒ **67 · 0**.
+
+### D316 — rang 25 : les trois défauts, dans l'ordre exigé par Ko
+
+Modes de défaillance écrits d'abord, au point d'entrée du rang 25 (MD1-a à g, MD2-a à d, MD3-a à e). Puis, par défaut, la
+spec e2e **rouge sur le code tel qu'il était, lue** ; le correctif ; la **même** spec **verte**. Captures d'échec versées :
+`docs/preuves/D316/e2e/rouge-*.png` ; extraits des journaux : `docs/preuves/D316/e2e/`.
+1. **La demande de réservation.** Rouge lu : `r25-demande-reservation.e2e.ts` — le client ouvre la salle **depuis la
+   recherche**, et « **Cette salle ne propose aucune date pour le moment.** » est affiché (attendu 0, reçu 1). Correctif :
+   `lib/availability-windows.ts` (module pur : `splitAvailabilityWindow`, borne IMPORTÉE, `mergeAvailabilityWindows`, tout ou
+   rien, chaque jour transmis tel que rendu) ; le panneau garde **182 jours** (MD1-f : **aucune décision produit ne fixe un
+   autre horizon** — D46 fixe 18 mois, écrêtés par D49 ; D147 impose d'importer la borne ; D227 refuse un POINT) et les
+   demande en **deux** fenêtres (92 + 90) ; un échec de chargement s'affiche `loadFailed` (FR et AR), jamais `none`.
+   **Inversion écrite** : le test « GARDE DE FORME » exigeait « aucune date » ; il exige l'échec. Le double de `fetch` du
+   test applique désormais `availabilityWindowQuerySchema` (MD1-g). **Borne du relecteur tenue** : le `git diff` du panneau
+   ne touche aucune ligne de `previewDeposit`, `lineTotal`, du total, de l'acompte, de `setChosen` ni de `submit`. Vert :
+   confirmation affichée, **demande `PENDING` en base**.
+2. **Le lien « Se connecter pour demander ».** Rouge lu : `r25-lien-connexion.e2e.ts`, **FR et AR** — URL reçue
+   `/fr/connexion` et `/ar/connexion`. Correctif : `lib/routes.ts` (`LOGIN_PATH`), gardé contre le **fichier** de la page
+   (D249 ; bras négatif : `/connexion` n'a pas de page — l'attrape-tout `[...rest]` apparie tout, « une route apparie » ne
+   prouve rien) ; le panneau vise la constante par le `Link` localisé. **Aucun autre lien vers `/connexion`** dans les deux
+   applications. Vert : URL, titre de connexion, **200 à froid**, dans les deux langues. ⚠ Le client **n'avait pas** de table
+   de routes : `LOGIN_PATH` ne couvre que le lien fautif ; les **neuf** autres liens littéraux sont reportés.
+3. **La suppression de compte.** Relu : le contrat écrit — client d'API `DeletionRequestDTO | null`, `@ApiOkResponse`,
+   entrée A11 — est du **JSON**, et le transport partagé refuse **délibérément** un corps vide hors 204 ⇒ **le côté qui
+   enfreint est l'API** (MD3-a). Rouge lu : `r25-suppression-compte.e2e.ts` — « Impossible de vérifier l'état de votre
+   demande » dans le **client ET le pro** pour un compte sans demande ; les deux cas « avec demande » verts (MD3-d). Rouge lu
+   aussi en intégration : l'assertion **tolérante** (« vide ou `null` ») remplacée par l'octet exact rend `expected '' to be
+   'null'` — ⚠ premier rouge par un `TypeError` (`toMatch` sur `undefined`), réordonné pour se lire en assertion (D304).
+   Correctif : `account.controller.ts` émet `res.status(200).json(…)` (`@Res()` sans `passthrough` ; aucun intercepteur
+   global, relevé). `account-client.ts` : commentaire faux corrigé (il affirmait normaliser un corps vide que `raw` refusait
+   en amont) ; `account-client.test.ts` (neuf) lit la forme exacte du fil, bras négatif : l'ancien fil fait lever. Vert :
+   **les quatre** cas e2e, intégration **19/19**.
+
+### D316 — les portes, dans l'ordre, APRÈS la dernière modification de code
+
+État machine au départ des portes : **secteur**, 6 380 Mo libres, `node` 0, `chrome` 0, `PERF` 84,4 (relevé avant la
+campagne de développement ; ce lot ne certifie rien et ne compare aucune durée). Extraits versés : `docs/preuves/D316/portes/`
+(lignes `[WebServer]` retirées ; empreinte du journal complet en tête).
+
+| porte | code | chiffres | durée |
+|---|---|---|---|
+| `pnpm typecheck` | 0 | 8 paquets « Done » (e2e compris), **0** `error TS` | 19 s |
+| `pnpm lint` | 0 | 8 paquets « Done », aucune ligne d'erreur ni d'avertissement | 12 s |
+| `pnpm test` | 0 | API **664/58** · api-client **39/4** (+3, +1) · client **308/22** (+21, +2) · pro **347/28** ; les deux « fail » de la sortie sont, lus au contexte, les journaux d'un test Chargily qui simule un fournisseur injoignable | 63 s |
+| `pnpm build` | 0 | 4 « Done » | 38 s |
+| `pnpm test:int` | 0 | **444/444, 36 fichiers** (443 + le cas « avec une demande ») | 306 s |
+| `pnpm test:e2e` | 0 | **41 réussis, 1 ignoré** (A5, `test.skip` au source, inchangé) — 34 + 7 neufs ; B8 (accessibilité) comprise | 127 s |
+
+⚠ Le test du panneau reste à **5** avertissements `act(…)`, son plafond (S8) : les cinq viennent des tests **préexistants**
+qui cliquent par `.click()` ; les tests neufs n'en ajoutent aucun (compté par titre).
+
+### D316 — la campagne du lot : `neutralisation/neutralize-r25.py`
+
+**11 cibles** : 7 unitaires (client), 1 d'intégration (`--int`), 3 e2e (`--e2e`) — chacune des trois dernières **restaure un
+défaut** de D315 et joue la **version finale** de sa spec. Lecture **fermée** : une morsure exige la ligne « Tests » (exécutés
+= passés + en échec > 0), le titre visé en « × », et une **`AssertionError`** en première ligne de son bloc ; côté Playwright,
+le titre en « x » et `expect(` dans son bloc ; vitest **3.2.7** exigé ; mutation prouvée posée (ancre 1 → 0, marqueur n → n +
+1, D286) ; sauvegarde sur disque avant mutation ; **calibration à 10 bras** rejouée à chaque lancement, abandon si un seul
+manque. ⚠ Ce lot n'est pas du chemin de l'argent : cette lecture n'y était pas **exigée** ; elle y est appliquée.
+**Passe officielle, après les portes : 11 mordues sur 11, toutes lues, code 0, 691 s** (`docs/preuves/D316/neutralisation/`).
+⚠ **Une première passe officielle a rendu 10 sur 11** : R25-E2 avait échoué dans son `beforeAll` (API en recompilation,
+`ECONNREFUSED`) et mon lecteur l'avait jugée **muette** — faute n° 4 (c) ; lecteur réparé, calibré, **rejeu intégral**. Les
+journaux de cette première passe sont versés (`premiere-passe-officielle/`), pas remplacés.
+⚠ Après la passe officielle, le harnais n'a changé que d'un **commentaire** (la provenance des échantillons de calibration,
+qui citait un journal écrasé) ; calibration rejouée, 10 · 0.
+`lancer-campagnes.py` (tri) : **1 campagne concernée sur 29**, `neutralize-r25.py` — joué en mode par défaut, **7 mordues, 4 non
+mesurées** (les cibles `--int` et `--e2e`), sortie 3 « incomplète », attendu. **Relevé à la main (D308)** : aucune autre campagne
+ne mute ni ne mesure un fichier de ce lot (`grep` des fichiers touchés et des specs dans `neutralisation/*.py`). ⛔ `--tout`
+**non joué** : lot non certifié (précédent de D308) ; la prochaine certification le jouera.
+
+### D316 — ce qui a atterri, et où
+
+| quoi | fichier, endroit |
+|---|---|
+| **Arbitrage de Ko** — rang 25, mot pour mot ; clôture ; « RANG 26 : EN ATTENTE » | ordre des rangs (« RANG 25 : EN ATTENTE » **barrée**, arbitrage, ligne D316, ligne du rang 26) |
+| **Décision du relecteur** — défauts 1 et 2 hors du chemin de l'argent, borne, principe « par sa fonction » | méthode renforcée, **bloc D316** ; `AGENTS.md`, point E3 (bloc D316) |
+| fichiers attendus, modes de défaillance, clôture | point d'entrée du rang 25 (neuf) |
+| compteur ZÉRO → UN, rang 26 en attente | `AGENTS.md`, règle de D270 (annotation D316) ; point d'entrée du rang 23 et bloc de clôture du rang 24 (**annotés**) |
+| deux signatures vitest mesurées (en-têtes regroupés, matcher jest-dom) | `AGENTS.md`, sous la puce de D304 (annotation D316) |
+| la pièce de D315 périmée sur trois points | `AGENTS.md`, pointeur « état du produit » (annotation D316) ; pièce **non retouchée** |
+| les trois défauts réparés | backlog, reports de D315 : trois entrées **cochées avec leur motif** |
+| neuf liens littéraux, clé arabe non relue, liste de 182 dates, recompilations de l'API en e2e | backlog, **reports de D316** (forme de D302) |
+| l'entrée `[DOC][P3]` « POURQUOI (b) » | backlog (annotée : elle suit désormais « RANG 26 ») |
+| le registre | ligne D316 |
+
+### D316 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D316/passe-d277/balayage.py`, **copie à l'octet** de celui de D306 à D315 (`24802faf…`) ; motifs
+lus dans `motifs.txt` (18 + 2 témoins ; « rang 25 », « relecteur » et « 404 » seuls **écartés avant la première passe**, D298).
+**Première passe** après les écritures de code et de clôture de contenu : `balayage-1.txt`. Tri **à la main** :
+**Sens 1 — ce que D316 invalide** : « RANG 25 : EN ATTENTE », les trois défauts dits présents, « aucune spec e2e n'exerce… /
+ne charge la fiche », « aucun test d'`account-client.ts` », « à trancher par le relecteur … ne s'ouvre pas sans Ko », « compteur
+ZÉRO, inchangé ». **Courants, donc annotés** : le bloc de clôture du **rang 24** (état du produit : réparé, tranché, specs e2e) et
+son « RANG 25 : EN ATTENTE » ; l'annotation D315 du bloc du **rang 23**. **Déjà traités par ce lot** : les trois entrées du
+backlog (cochées), l'entrée `[DOC][P3]`, `AGENTS.md` (règle de D270). **Laissés, vrais à leur date** : la ligne D315 de l'ordre
+(**suivie** de l'arbitrage et de la ligne D316), la section D315, le registre, la table de reprise de cette section.
+**Sens 2 — ce que D316 rend permis** : le compteur passe à **UN** — les « un lot de code peut s'ouvrir » sont **génériques** et
+conditionnés au compteur : **ils restent vrais** (« deux, tenables ; trois, non », D270) ; **rien à barrer**. La permission neuve
+— un fichier de la carte touché **hors** de sa fonction n'est pas du chemin de l'argent — est écrite **là où elle s'applique**
+(bloc D316, `AGENTS.md`) ; ⚠ elle ne décide rien seule : le report sur la liste de 182 dates renvoie la question au relecteur.
+**Un motif à zéro** (D295 : une hypothèse, pas une absence) : « en ERREUR dans les DEUX applications » — cherché plus
+lâchement, la phrase réelle porte « en ERREUR **pour tout compte sans demande,** dans les DEUX applications », dans l'entrée du
+backlog que ce lot a **cochée** : rien de manqué.
+**Après écriture** : `balayage-apres-ecriture.txt`, pris **après la dernière écriture de texte** ; puis `balayage-controle.txt`,
+rejoué sur l'état qui part, doit rendre les mêmes comptes. Chiffres : dans les sorties versées — cette phrase n'en cite aucun.
+
+### D316 — les captures d'après correctif, à côté des anciennes
+
+`docs/preuves/D316/captures/` : script (même configuration e2e que D315, données créées par les mêmes appels), `releve.txt`,
+**7** images **aux noms et numéros de D315** — 04, 16, 25 (FR), **25-ar (neuve)**, 26, 27, 46 — soit **2 430 716 octets**.
+- **M4** : le panneau émet **deux** requêtes `/availability` (`2026-09-28 → 2026-12-28`, `2026-12-29 → 2027-03-28`), **200**
+  toutes deux, à côté de celle du mois du calendrier.
+- **M1** : les deux liens « connexion » de la fiche visent `/fr/auth/connexion`. **M2** : le clic mène à
+  `/fr/auth/connexion` et `/ar/auth/connexion`, **200** à froid.
+- ⚠ **Les captures 25-fr et 25-ar font 58 018 et 51 351 octets — exactement les captures 05 et 17 de D315, la page de
+  connexion** — là où D315 trouvait la 25 égale octet pour octet à la 12, la page inconnue.
+- 27 et 46 : la section « Supprimer mon compte » **propose la demande**, sans erreur, dans les deux applications.
+- ⚠ **Constat neuf, révélé par la réparation, non corrigé** : la fiche fait désormais **14 487 px** de haut (04) — le panneau
+  liste **182 boutons**, un par jour × créneau. L'intention du composant (« assez court pour que la liste reste lisible sur un
+  téléphone ») n'avait jamais pu se voir. Report au backlog.
+
+### D316 — audit de secrets avant commit
+
+⚠ **Ce lot a produit des journaux à valeurs réelles** (hors dépôt) : la sortie des serveurs de développement pendant l'e2e, les
+captures et la campagne porte des jetons de vérification et des valeurs du cookie de rafraîchissement. Rien de brut ne part :
+les pièces versées sont des **extraits** sans lignes `[WebServer]` (`docs/preuves/D316/outils/extraire.py`, qui compte à chaque
+extraction les valeurs restantes — attendu 0, obtenu 0 partout).
+- **« 0 valeur réelle »** (ce qui fait foi, D299), joué sur **tout ce qui part** (fichiers modifiés et neufs) : jetons —
+  **74** valeurs cherchées dans **13** journaux ; cookie — **145** valeurs dans les mêmes 13 ; **85** fichiers parcourus, **0
+  porteur** chacun ; calibration à deux bras par journal. `docs/preuves/D316/controles/`.
+- **Forme Chargily** (copie de D315, cibles : tout ce qui part) : **87** fichiers, **0 porteur**.
+- **Audit scellé** (`neutralisation/audit-secrets.py`) : `audit-secrets-d316.txt` — **135** alertes ; tri contre la sortie
+  scellée de D315 : **8 neuves**, lues au contexte : **des mots**, aucune valeur (une propriété, cinq récitations d'un titre de
+  test d'intégration, deux expressions de mon extracteur) — `controles/tri-audit-d316-lecture.txt`.
+- Second audit en **dernière écriture** : `audit-secrets-final.txt` ; ses chiffres sont au rapport de fin de lot — cette
+  section est écrite avant lui.
+
+### ⛔ D316 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **UNE MUTATION À LA MAIN D'UN FICHIER NON SUIVI, « RESTAURÉE » PAR `git checkout`** — qui ne restaure **rien** hors de
+   l'index : `availability-windows.ts` est resté muté **environ une minute**. Vu à la sortie de `git status` (`??`), rétabli
+   depuis sa sauvegarde, **avec assertion de comptage**, identique à l'octet (`cmp`). Aucune porte ne tournait. ⇒ Une mutation
+   hors harnais se restaure depuis SA sauvegarde, jamais par `git`.
+2. ⛔ **« DIX » LIENS LITTÉRAUX ÉCRITS DE TÊTE**, à trois endroits (point d'entrée, backlog, commentaire de `routes.ts`) ; le
+   recompte par fichier rend **neuf** (plus deux vers la SPA pro). Corrigés, le premier **barré** (section non datée,
+   écrite par ce lot).
+3. ⚠ **Le harnais du lot écrit AVANT d'être inscrit** dans la table des fichiers attendus — l'inverse de la règle posée
+   dans la même table. Inscrit ensuite, avec la mention.
+4. ⚠ **Trois défauts de mon lecteur de campagne, chacun réparé, calibré et REJOUÉ en entier (D298)** : (a) les en-têtes
+   `FAIL` **regroupés** par vitest (deux morsures lues « pas une assertion ») ; (b) des échantillons de calibration écrits
+   **sans relever** la ligne « × » du format réel — la calibration a **abandonné** la passe (ce pour quoi elle existe) ;
+   (c) **un crochet en échec jugé « muette »** : à la campagne officielle, R25-E2 a échoué dans son `beforeAll`
+   (`ECONNREFUSED` : l'API de développement recompilait — « File change detected » ×3), son corps n'a **jamais tourné**, et le
+   lecteur en a fait une garde muette — le faux négatif de D286 et D312. Réparé : « x … (0ms) » ⇒ **NON DÉMARRÉE**, le
+   harnais refuse de juger ; deux bras ajoutés, relevés sur ce journal et sur la signature de crochet de D304.
+5. ⚠ **La spec du défaut 1 a changé APRÈS sa course rouge** — le statut cherché dans la région, qui disparaît une fois la
+   demande envoyée (la capture montrait la confirmation). La ligne changée était **en aval** du point où la course rouge
+   avait échoué ; la version **finale** des trois specs est prouvée rouge par les cibles R25-E1 à E3 (défaut restauré).
+6. ⚠ **Premier rouge d'intégration par un `TypeError`** (`toMatch` sur un en-tête absent), pas par une assertion ;
+   réordonné et rendu comparable avant le correctif (D304).
+7. ⚠ **Un heredoc réinterprété par l'enveloppe de l'outil** (`\\n` devenu retour à la ligne) : l'assertion de comptage l'a
+   arrêté à **0 occurrence**, avant toute écriture. Refait par l'outil d'édition (D289, D295 : le fichier).
+8. ⚠ **Deux libellés de lien tapés à la main** dans le script de captures, et **un contrôle tautologique** dans l'extracteur
+   (« parcourues = retirées + gardées ») — tous deux remplacés avant la première exécution (messages lus ; valeurs sensibles
+   comptées, attendu 0).
+9. ⚠ **Deux défauts de mon instrument de lecture adverse** (section ci-dessus) : une phrase coupée par l'enveloppe cherchée
+   ligne à ligne (D294), des libellés de verdict écrits de tête.
+
+### ⛔ D316 — CE QUE CE LOT NE FAIT PAS, ET SES LIMITES
+
+- **Aucune certification** : le compteur passe à **UN** ; la marque de D314 reste la dernière.
+- Les **neuf** autres liens littéraux vers `/auth/connexion` ne sont **pas** convergés ; le panneau garde **1 `<label>` pour 8
+  champs** (D143, report de D315) ; la **longueur** de la liste de 182 dates n'est ni mesurée sur téléphone ni corrigée.
+- La clé arabe neuve (`loadFailed`) n'est **relue par aucun humain**.
+- Les e2e tournent sur les **serveurs de développement** ; le build de production de ces écrans n'est pas rejoué. ⚠ L'API y
+  **recompile parfois d'elle-même** sous la charge de la pile (vu deux fois : 23:20:58, avant le préchauffage ; 00:14:35,
+  dans un `beforeAll`) — la cause n'est **pas** identifiée : aucun fichier suivi ne change dans ces fenêtres (relevé par
+  horodatage). Ce n'est pas un défaut du produit ; c'est une source d'échecs qui ne mesurent rien, désormais lue comme telle.
+- La pièce de D315 (`ETAT-PRODUIT.md`) est **périmée** sur ses trois défauts ; elle n'est pas retouchée (datée).
+- Le pro n'est capturé et testé qu'en **français**.
 
 ## Session du 26/09/2026 — D315 · rang 24 CLOS, lot DOCUMENTAIRE : l'état du produit parcours par parcours, trois défauts mesurés par les captures, et la lecture adverse de D314
 
@@ -14869,6 +15247,21 @@ qu'elle en a dérivé est écrit à part, section D313.
    carte ou une décision classe déjà la cible, ou son harnais entier, dans le chemin de l'argent, ajoute “non prouvée
    (R1)”. Ailleurs, écris “non classée”. »
 
+#### ⛔ DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 26/09/2026 (D316) — À LIRE AVEC LES BLOCS CI-DESSUS
+
+Écrite telle que Ko l'a transmise, **avant tout code du rang 25** — seconde écriture du lot D316, après l'arbitrage du
+rang. La session ne l'a pas prise ; ce qu'elle en dérive est écrit à part, section D316.
+1. ⛔ **LES DÉFAUTS 1 ET 2 DU RANG 25 NE SONT PAS DU CHEMIN DE L'ARGENT** : « Le fichier du panneau figure sur la carte pour
+   une autre fonction, l'aperçu d'acompte (A3). Le correctif touche la fenêtre de disponibilités et un lien : il ne change
+   aucun montant, ni le transport de la date choisie vers le calcul du prix. La pause ne s'applique donc pas. »
+   (Défaut 1 : la demande de réservation qui ne part pas ; défaut 2 : le lien « se connecter pour demander » en 404.)
+2. ⛔ **BORNE** : « ce lot ne touche ni l'aperçu d'acompte ni ce transport. S'il le faut, arrête-toi et dis-le. »
+   *Motif* : « un changement relève du chemin de l'argent **par sa fonction**, branches (1) à (6), **pas parce que son
+   fichier figure sur la carte**. »
+   ⚠ **Ce que la décision ne dit pas, écrit pour le relecteur** : elle classe **deux défauts** d'un lot ; la carte de D304
+   (pièce datée) n'est pas retouchée. Le défaut 3 (suppression de compte) n'est pas sur la carte — le backlog l'écrit
+   « chemin de l'argent : non » (reports de D315) — et la décision ne le nomme pas.
+
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
 ce qui ne vit que dans le navigateur réel, et ce qu'un test vert ne regarde pas.
@@ -15506,3 +15899,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D313 | A | D313 — rang 23 (reste ouvert), lot DOCUMENTAIRE, partie A d'une session en deux : arbitrages de Ko — D288 s'écrit « mesuré, sur des journaux dont l'attribution à D288 est inférée » ; point 12 appliqué à la certification qui clôt le rang 23 (preuve LUE, passés + en échec > 0, pour rang23 et available-on-api ; plancher de durée mesuré à l'étape 0 sur un non-démarrage simulé pour les autres ; limite écrite telle quelle) ; décisions du relecteur : portée de R1 = une RÈGLE (au moins une cible du chemin de l'argent, branches 1 à 6 ; liste des vingt barrée, renvoi gardé), available-on-api en sort, le classement des 209 autres cibles bloque la reprise de R1 et pas la certification (étiquettes : lue 12 + 13, code de sortie seul non prouvée (R1) 81, non classée 105) ; lecture adverse de D312 : 94 contrôles, 1 écart (« onze » harnais du chemin = douze), constats (AGENTS.md « à chaque certification depuis le 30/08 » au statut de mesure — barré ; « collectés » dans le cadrage de R1 et le lecteur de D306) ; compteur TROIS inchangé ; suite : la certification (partie B) |
 | D314 | A | D314 — rang 23 CLOS, CERTIFICATION PASSÉE, MARQUE POSÉE : étape 0 commitée avant le relevé (0057748) — plancher du point 12 mesuré sur un non-démarrage simulé par une cale de PATH, sans modifier aucun harnais (niveaux A et B, calibration 0 bras manqué ; available-on 10/10 et journey 7/7 rendent une campagne complète sans avoir démarré, la classe de D310) ; un plancher par campagne, P = 3 × T (absolu : 5 refus à D310, par cible : 4) ; lecteurs calibrés (rang23 : passés + en échec, à part ; available-on-api : lecteur de D312 ; campagnes : point 12 et quatre étiquettes, relu sur la passe de D310) ; passe r23d-20260926-1434 : porte dure verte, six portes à 0 (1 334/109, 443/36, e2e 34 · 1), --tout 28 · 198 · 0 · 13, --int 40, certifiant 211 · 0 · 0, 28 campagnes sur 28, point 12 tenu partout, étiquettes 12 · 13 · 81 · 105, contre-épreuve 5/5, arbre immobile, fenêtre homogène — exactement la prédiction ; marque : « Portes vertes AU REPOS le 26/09/2026, et D305, D308 et D312 en font partie » ; compteur TROIS → ZÉRO, exception de D311 consommée, pause du chemin de l'argent commencée ; F1 et F5 closes ; suite : RANG 24, EN ATTENTE D'ARBITRAGE DE KO |
 | D315 | A | D315 — rang 24 ARBITRÉ PAR KO (première écriture : « l'état du produit, parcours par parcours ; lot documentaire : l'état écrit et prouvé, sans classement ; l'ordre des lots suivants sera proposé par le relecteur et arbitré par moi ») et CLOS le même jour, lot DOCUMENTAIRE : pièce datée docs/preuves/D315/etat-produit/ (carte relevée dans le code — client 13 pages, pro 14 routes, API 78 routes / 22 contrôleurs, aucune route de paiement, aucun écran d'administration ; parcours client, pro, admin étape par étape, preuve au niveau dit, renvois, classe au chemin de l'argent ; 146 entrées ouvertes confrontées au code — 62 réalisées et ouvertes à tort ; décisions écrites non réalisées et décisions dues à Ko ; déploiement confronté au code ; coûts sans durée ni classement) ; 46 captures (3 184 910 octets) par un script qui réutilise la configuration e2e ; trois défauts vus sur les captures et MESURÉS — le panneau de demande ne propose aucune date (fenêtre 182 > 92, 400), son lien de connexion mène à une 404, la section de suppression de compte est en erreur dans les deux applications (200 vide) ; lecture adverse de D314 : 117 contrôles, un écart (balayage « après écriture » pris avant la dernière écriture ; rectification à côté des pièces), constat : même forme D311 à D314 ; compteur ZÉRO inchangé ; suite : RANG 25, EN ATTENTE D'ARBITRAGE DE KO |
+| D316 | A | D316 — rang 25 ARBITRÉ PAR KO (première écriture : « réparer les trois défauts vus par D315 — la demande de réservation qui ne part pas, le lien de connexion en 404, la suppression de compte en erreur ; chacun prouvé par une spec e2e rouge avant le correctif, verte après ; lot de code ») et CLOS, LOT DE CODE ; décision du relecteur (chat), déléguée par Ko, écrite avant tout code : les défauts 1 et 2 ne sont pas du chemin de l'argent — « un changement relève du chemin de l'argent par sa fonction, branches (1) à (6), pas parce que son fichier figure sur la carte » — borne tenue (ni l'aperçu d'acompte ni le transport de la date) ; modes de défaillance écrits au point d'entrée avant les specs ; défaut 1 : fenêtre de six mois découpée en fenêtres que le contrat accepte (module pur availability-windows.ts, borne importée, tout ou rien, jours transmis tels que rendus), échec de chargement jamais « aucune date » (inversion écrite de la garde de forme), double de fetch qui applique le schéma du contrat ; 182 jours gardés, aucune décision produit ne fixe un autre horizon (D46, D49, D147, D227) ; défaut 2 : LOGIN_PATH gardé contre le fichier de la page, FR et AR ; défaut 3 : l'API enfreignait le contrat écrit (JSON), elle émet le JSON null ; l'intégration tolérante remplacée par l'octet exact ; chaque spec e2e rouge lue avant, verte après ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 41 · 1) ; neutralize-r25.py 11 gardes mordues sur 11, toutes lues (lecteur réparé trois fois, calibré à 10 bras, rejeux intégraux) ; captures d'après correctif à côté de celles de D315 ; lecture adverse de D315 : 67 contrôles, 0 écart, six outils rejoués à l'octet ; compteur ZÉRO → UN ; suite : RANG 26, EN ATTENTE D'ARBITRAGE DE KO |

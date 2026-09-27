@@ -2457,6 +2457,42 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 26/09/2026 — rang 25, les trois défauts de D315 réparés (D316)
+
+Détail : section D316 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
+Ko** », et son **COÛT**. ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : les trois entrées de D315 qu'il répare,
+**cochées avec leur motif** (reports de D315, ci-dessous) ; l'entrée `[DOC][P3]` « POURQUOI (b) » (annotée : elle suit
+désormais « RANG 26 »).
+
+- [ ] **[CLIENT]** **Neuf liens écrivent encore `href="/auth/connexion"` en littéral** — relevé le 26/09/2026 dans
+  `apps/client/src` (hors tests ; `grep -c` par fichier) : `account-settings-view.tsx`, `auth-ui.tsx`, `recovery-forms.tsx`
+  (×3), `register-form.tsx`, `verify-email-view.tsx`, `site-chrome.tsx`, `visit-booking-panel.tsx` — plus deux liens vers la
+  SPA pro (`${PRO_URL}/auth/connexion`, autre application). **Tous justes aujourd'hui.** ⚠ Ce décompte a d'abord été écrit
+  « dix », de tête ; le recompte l'a démenti (section D316, fautes). Le rang 25 a créé `LOGIN_PATH`
+  (`apps/client/src/lib/routes.ts`), gardé contre le fichier de la page, pour le seul lien fautif — un lot à la fois. Les
+  converger ôterait la classe du défaut 2 (un chemin écrit en dur que rien ne vérifie). ⇒ **À ordonner par Ko.** ⇒ **COÛT** :
+  code client (compte) ; huit fichiers et leurs tests ; e2e : non exigée (les liens sont justes) ; chemin de l'argent : non ;
+  migration : non.
+- [ ] **[I18N]** **Une clé arabe neuve, non relue par un humain : `venueDetail.booking.loadFailed`** (« تعذّر تحميل تواريخ
+  هذه القاعة. أعد المحاولة بعد قليل. »), calquée sur `venueDetail.calendar.error`. Rejoint les clés arabes non relues déjà
+  inscrites ; **aucune relecture humaine de l'arabe n'est tracée** (D315). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : relecture
+  humaine ; `packages/i18n/messages/ar.json` ; e2e : non ; chemin de l'argent : non.
+- [ ] **[CLIENT]** **La fiche salle fait ~14 500 px de haut : le panneau de demande liste 182 boutons, un par jour ×
+  créneau** — MESURÉ sur les captures d'après correctif (`docs/preuves/D316/captures/`, 04 : 1280 × 14 487 ; 26 : 1280 ×
+  14 798). Le composant annonçait une fenêtre « assez courte pour que la liste reste lisible sur un téléphone » ; tant que le
+  panneau était cassé (D315), personne ne pouvait le voir. **Révélé par la réparation, non corrigé** (un lot à la fois).
+  ⇒ **À ordonner par Ko** (question de produit : forme de la liste — par mois, calendrier, pagination). ⇒ **COÛT** : code
+  client (compte) ; `booking-request-panel.tsx` et son test ; e2e : la spec du rang 25 la visite ; chemin de l'argent :
+  **fichier sur la carte** — la forme de la liste ne touche ni montant ni transport de la date, mais c'est au **relecteur**
+  de le dire (principe de D316 : par la fonction) ; migration : non.
+- [ ] **[TEST]** **L'API de développement recompile parfois d'elle-même pendant l'e2e, et tout appel tombé dans la fenêtre
+  échoue en `ECONNREFUSED`** — MESURÉ deux fois le 26-27/09 (« File change detected » : une fois avant le préchauffage, trois
+  fois dans un `beforeAll` — campagne `neutralize-r25.py`, cible R25-E2, jugée désormais NON DÉMARRÉE). **Aucun fichier suivi
+  ne change dans ces fenêtres** (relevé par horodatage) : la cause n'est **pas identifiée**. Ce n'est pas un défaut du
+  produit ; c'est une source d'échecs sans objet, du type que D127 décrit (« un échec qui se déplace »). ⇒ **À ordonner par
+  Ko.** ⇒ **COÛT** : diagnostic d'abord (quel fichier voit `tsc --watch`) ; `e2e/playwright.config.ts` ou la configuration
+  de `nest start --watch` ; e2e exigée ; chemin de l'argent : non ; migration : non.
+
 ## Reports du 26/09/2026 — rang 24 CLOS, l'état du produit (D315)
 
 Détail : section D315 de `ZWADJ_CONTINUITE.md` ; **l'état lui-même est une pièce datée** :
@@ -2466,8 +2502,13 @@ ordonnées entre elles ; l'ordre des lots suivants sera proposé par le relecteu
 ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : l'entrée `[DOC][P3]` « POURQUOI (b) ET PAS (a) » (annotée : elle suit
 désormais « RANG 25 »). **Aucune entrée n'a été cochée ni barrée** : les verdicts vivent dans la pièce (consigne de Ko).
 
-- [ ] **[CLIENT]** ⛔ **La demande de réservation est CASSÉE À L'ÉCRAN : le panneau demande 182 jours de disponibilités, le
-  contrat en refuse plus de 92 — MESURÉ.** `booking-request-panel.tsx:36` (`WINDOW_DAYS = 182`) contre
+- [x] **[CLIENT]** ⛔ **La demande de réservation est CASSÉE À L'ÉCRAN : le panneau demande 182 jours de disponibilités, le
+  contrat en refuse plus de 92 — MESURÉ.** ⛔ **(D316, 26/09/2026) RÉPARÉ AU RANG 25**, arbitré par Ko : la demande de six
+  mois est **découpée** en fenêtres que le contrat accepte (`apps/client/src/lib/availability-windows.ts`, module pur,
+  borne importée) ; tout échec de chargement s'affiche comme un **échec**, jamais « aucune date » ; le double de `fetch`
+  du test applique le schéma du contrat. Spec e2e `e2e/specs/r25-demande-reservation.e2e.ts` : **rouge lue** avant
+  (« aucune date » sur une salle publiée), **verte** après (confirmation affichée, demande `PENDING` en base).
+  *Chemin de l'argent : décision du relecteur, hors du chemin* (méthode renforcée, bloc D316). Section D316. `booking-request-panel.tsx:36` (`WINDOW_DAYS = 182`) contre
   `AVAILABILITY_MAX_WINDOW_DAYS = 92` bornes incluses (`packages/types/src/venue.ts:988`) : **400 `windowTooWide`**, que
   `getVenueAvailability` change en `null`, que le panneau affiche « Cette salle ne propose aucune date pour le moment » ; aucun
   créneau n'est sélectionnable, « Envoyer ma demande » reste inactif. Témoin à 92 jours : 200. L'API accepte la demande (201).
@@ -2479,7 +2520,11 @@ désormais « RANG 25 »). **Aucune entrée n'a été cochée ni barrée** : les
   le fichier est sur la carte (D304, branche 1 : `previewDeposit`) ; la ligne fautive ne calcule aucun montant — **à trancher
   par le relecteur** ; **pendant la pause, ne s'ouvre pas sans Ko**. ⇒ **COÛT** : code client (compte) ; un fichier et son
   test (le double doit refuser la fenêtre fautive) ; e2e : aucune spec ne visite la fiche ; migration : non ; dépendance : non.
-- [ ] **[CLIENT]** ⛔ **« Se connecter pour demander » mène à une 404 — MESURÉ.** Le panneau de demande pointe `/connexion`
+- [x] **[CLIENT]** ⛔ **« Se connecter pour demander » mène à une 404 — MESURÉ.** ⛔ **(D316, 26/09/2026) RÉPARÉ AU RANG
+  25** : la cible est une constante (`apps/client/src/lib/routes.ts`, `LOGIN_PATH`), gardée contre le **fichier** de la page
+  (D249) ; spec e2e `e2e/specs/r25-lien-connexion.e2e.ts`, **français et arabe** : **rouge lue** avant (`/fr/connexion`,
+  `/ar/connexion`), **verte** après (URL, titre de connexion, 200 à froid). Aucun autre lien vers `/connexion` dans les
+  deux applications. Section D316. Le panneau de demande pointe `/connexion`
   (`booking-request-panel.tsx:431`) ; la page est `/auth/connexion` — tous les autres liens de connexion du client, dont celui
   du panneau de visite voisin, visent la bonne. `/fr/connexion` rend **404** (capture 25 ; M1 et M2 de
   `docs/preuves/D315/captures/releve.txt`). Depuis `909702a`. Aucun test ne l'assertit. ⇒ **BLOQUE** : l'entrée du visiteur
@@ -2489,8 +2534,13 @@ désormais « RANG 25 »). **Aucune entrée n'a été cochée ni barrée** : les
   `placeholder`, 8 `aria-label` (compté dans le source ; capture 26). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code client
   (compte) ; même fichier, messages FR/AR ; e2e : B8 ne visite pas la fiche ; chemin de l'argent : même fichier ; migration :
   non.
-- [ ] **[SHARED]** ⛔ **La section « Supprimer mon compte » est en ERREUR pour tout compte sans demande, dans les DEUX
-  applications — MESURÉ.** `GET /api/v1/me/deletion-request` rend **200 avec un corps vide** (`Content-Length: 0`) quand il
+- [x] **[SHARED]** ⛔ **La section « Supprimer mon compte » est en ERREUR pour tout compte sans demande, dans les DEUX
+  applications — MESURÉ.** ⛔ **(D316, 26/09/2026) RÉPARÉ AU RANG 25, CÔTÉ API** — le côté qui enfreignait le contrat
+  écrit (`DeletionRequestDTO | null`, `@ApiOkResponse` ; le transport partagé refuse délibérément un corps vide hors
+  204) : `account.controller.ts` émet le JSON `null`. Intégration `account.int-spec.ts` : l'assertion **tolérante** (« vide
+  ou `null` ») remplacée par l'octet exact, **rouge lue** avant (`expected '' to be 'null'`) ; client d'API prouvé par
+  `account-client.test.ts` (neuf) ; spec e2e `e2e/specs/r25-suppression-compte.e2e.ts`, client et pro × sans et avec
+  demande : **rouge lue** avant (les deux « sans demande »), **verte** après. Section D316. `GET /api/v1/me/deletion-request` rend **200 avec un corps vide** (`Content-Length: 0`) quand il
   n'y a pas de demande ; `authedRequest` (`packages/api-client/src/auth-client.ts:155-156`) ne tolère un corps vide que sur un
   204 et appelle `res.json()`, qui lève ; `DeletionSection` affiche « Impossible de vérifier l'état de votre demande » et **ne
   propose pas la demande** (D37). Le commentaire de `account-client.ts` affirme normaliser ce cas : la normalisation vient
@@ -3300,7 +3350,8 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   s'aggrave d'un paragraphe, il ne change pas de nature ; non corrigé, ce lot n'y touche pas)* ⛔ *(D303, 23/09/2026 :
   il suit désormais « RANG 24 : EN ATTENTE D'ARBITRAGE DE KO », puis la même décision due à Ko — même défaut,
   toujours non corrigé)* ⛔ *(D315, 26/09/2026 : il suit désormais « RANG 25 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut,
-  non corrigé ; ce lot n'y touche pas)* et **se lit comme
+  non corrigé ; ce lot n'y touche pas)* ⛔ *(D316, 26/09/2026 : il suit désormais l'arbitrage du rang 25 et « RANG 26 : EN
+  ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

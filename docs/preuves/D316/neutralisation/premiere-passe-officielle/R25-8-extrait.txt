@@ -1,0 +1,58 @@
+# extrait de .neutralisation-journaux/d316/officielle-1/R25-8.log · sha256 du journal complet 4ea55726ddc737c1f28966dbfb05c7ea98194283700b36b8ccc96f50691adb57 · 57 lignes parcourues · 0 « [WebServer] » retirées · 57 gardées
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/account.int-spec.ts (19 tests | 1 failed) 17351ms
+   ✓ PATCH /me/profile > CLIENT : patch partiel, et la réponse est un AuthUserDTO complet (D12)  844ms
+   ✓ PATCH /me/profile > PRO : businessName + phone2 (D38) ; le CLIENT ne peut pas s'en fabriquer  1921ms
+   ✓ POST /me/change-email — l'ancienne adresse reste active jusqu'à la preuve > cycle complet : demande → l'ancien e-mail connecte TOUJOURS → clic → bascule  2133ms
+   ✓ POST /me/change-email — l'ancienne adresse reste active jusqu'à la preuve > token rejoué : 400 TOKEN_INVALID_OR_EXPIRED (usage unique)  446ms
+   ✓ POST /me/change-password (D42) > compte Google-only : DÉFINIT un mot de passe, puis les DEUX voies connectent  506ms
+   ✓ POST /me/change-password (D42) > les AUTRES sessions tombent, celle qui a fait l'appel survit (rotée)  1016ms
+   ✓ POST /me/change-password (D42) > ancien mot de passe faux : 400, et l'ancien reste valide  849ms
+   ✓ D37 — la demande de suppression ne supprime RIEN > une seule demande en attente : la seconde tape dans l'index unique PARTIEL → 409  659ms
+   ✓ D37 — la demande de suppression ne supprime RIEN > annulation : PENDING → CANCELLED, et une nouvelle demande redevient possible  350ms
+   × D37 — la demande de suppression ne supprime RIEN > GET /me/deletion-request : le JSON `null` quand il n'y en a aucune — à l'octet (rang 25, D316) 372ms
+     → expected '' to be 'null' // Object.is equality
+   ✓ D37 — la demande de suppression ne supprime RIEN > GET /me/deletion-request avec une demande : le DTO, inchangé par le correctif (MD3-d)  321ms
+   ✓ admin — décision > un PRO n'accède pas à la file (403)  364ms
+   ✓ admin — décision > reject : compte intact, ACTIVE, et l'utilisateur reçoit le motif  759ms
+   ✓ admin — décision > approve : compte anonymisé, salles ARCHIVÉES et disparues de la liste publique  1239ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > login → 401 INVALID_CREDENTIALS (aucun oracle, D5)  1053ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > /auth/me avec un access token encore valide → 401  987ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > refresh avec le cookie d'avant → 401 (tous les tokens ont été révoqués)  962ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password : réponse CONSTANTE, mais aucun e-mail ne part  1012ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > un lien de reset émis AVANT la décision cesse d'être exploitable  852ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  00:11:51
+   Duration  25.80s (transform 1.66s, setup 46ms, collect 7.11s, tests 17.35s, environment 0ms, prepare 207ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/account.int-spec.ts
+
+(node:25220) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/account.int-spec.ts > D37 — la demande de suppression ne supprime RIEN > GET /me/deletion-request : le JSON `null` quand il n'y en a aucune — à l'octet (rang 25, D316)
+AssertionError: expected '' to be 'null' // Object.is equality
+
+- Expected
++ Received
+
+- null
+
+ ❯ test/int/account.int-spec.ts:288:25
+    286|     // quoi le défaut rougissait par un `TypeError` de `toMatch` sur `…
+    287|     // — un plantage, pas une assertion lue (D304).
+    288|     expect(aucune.text).toBe("null");
+       |                         ^
+    289|     expect(aucune.headers["content-type"] ?? "").toMatch(/^application…
+    290|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

@@ -1,0 +1,88 @@
+== 1. provenance et périmètre
+✓ parent du commit de D315 : mesuré 'ffd32e9' (attendu, « SHA de départ : ffd32e9 » : 'ffd32e9')
+✓ « D315 » dans les fichiers suivis à ffd32e9 : mesuré 0 (attendu, « 0 occurrence … à ffd32e9 » : 0)
+✓ fichiers hors des trois .md, de docs/preuves/D315/ et de la rectification : mesuré [] (attendu, « Documentaire : AGENTS.md, … docs/preuves/ » : [])
+  · parcouru : 87 fichiers au diff, dont 83 sous docs/preuves/D315/
+✓ pièces de D314 : seul AJOUT, aucune retouche : mesuré [['A', 'docs/preuves/D314/passe-d277/RECTIFICATION-D315.txt']] (attendu, « pièces non retouchées » : [['A', 'docs/preuves/D314/passe-d277/RECTIFICATION-D315.txt']])
+✓ commit de D315 sur origin/main : mesuré True (attendu, clôture poussée : True)
+== 2. les outils de D315 rejoués sur ffd32e9, sorties comparées à l'octet aux sorties versées
+✓ worktree à ffd32e9 : mesuré 'ffd32e9' (attendu, worktree détaché : 'ffd32e9')
+✓ rejeu de carte-routes.py (dans le worktree) = carte-routes-sortie.txt : mesuré (True, True) (attendu, sortie versée : (True, True))
+✓ rejeu de entrees-ouvertes.py ffd32e9 = entrees-ouvertes-sortie.txt : mesuré (True, True) (attendu, sortie versée : (True, True))
+✓ rejeu de compter-verdicts.py = compter-verdicts-sortie.txt : mesuré (True, True) (attendu, sortie versée : (True, True))
+✓ rejeu de verifier-deploiement.py ffd32e9 = verifier-deploiement-sortie.txt : mesuré (True, True) (attendu, sortie versée : (True, True))
+✓ rejeu de relecture-arabe.py ffd32e9 = relecture-arabe-sortie.txt : mesuré (True, True) (attendu, sortie versée : (True, True))
+✓ rejeu de corpus-apres-ecriture.py = corpus-apres-ecriture-sortie.txt : mesuré (True, True) (attendu, sortie versée : (True, True))
+== 3. carte et verdicts : les chiffres écrits contre les sorties versées
+  · fin de la carte versée : parcouru : 22 contrôleur(s), 78 route(s) |  | calibration (+) POST /api/v1/admin/venues/:id/publish en ADMIN : ✓ | calibration (+) GET /api/v1/pro/venues/:id/visit-bookings en PRO — `@Roles` posé après `@Get`, le cas qui a mordu : ✓
+✓ client : fichiers page.tsx (recompte indépendant) : mesuré 13 (attendu, « client 13 pages » : 13)
+✓ API : fichiers *.controller.ts portant @Controller( en début de ligne : mesuré 22 (attendu, « 22 contrôleurs » : 22)
+✓ API : décorateurs de route dans ces contrôleurs : mesuré 78 (attendu, « 78 routes » : 78)
+✓ pro : chemins de <Route> distincts : mesuré 14 (attendu, « pro 14 routes » : 14)
+  · pro : 15 attributs path, dont 2 « * »
+✓ API : contrôleur de paiement à ffd32e9 : mesuré [] (attendu, « aucune route de paiement » : [])
+✓ verdicts versés : ventilation (onze libellés) : mesuré {'RÉALISÉ AUTREMENT': 2, 'RÉALISÉ': 62, 'PARTIEL': 25, "CASSÉ À L'ÉCRAN": 2, 'ABSENT': 35, 'PAUSE': 10, 'BIENTÔT': 2, 'ÉCARTÉ': 3, 'DÉCISION OUVERTE': 2, 'NON CONFRONTÉ': 2, 'périmée': 1} (attendu, « 62 réalisées, 2 réalisées autrement, 25 partielles, 2 cassées … 1 périmée » : {'RÉALISÉ AUTREMENT': 2, 'RÉALISÉ': 62, 'PARTIEL': 25, "CASSÉ À L'ÉCRAN": 2, 'ABSENT': 35, 'PAUSE': 10, 'BIENTÔT': 2, 'ÉCARTÉ': 3, 'DÉCISION OUVERTE': 2, 'NON CONFRONTÉ': 2, 'périmée': 1})
+✓ verdicts : extraction · table · distincts : mesuré ('146', '146', '146') (attendu, « 146 entrées » : ('146', '146', '146'))
+✓ somme des onze verdicts écrits : mesuré 146 (attendu, section D315, « Les 146 entrées ouvertes » : 146)
+== 4. les captures
+✓ nombre d'images : mesuré 46 (attendu, « 46 captures » : 46)
+✓ octets des images : mesuré 3184910 (attendu, « 3 184 910 octets » : 3184910)
+✓ sous 20 Mo : mesuré True (attendu, « sous le seuil de 20 Mo donné par Ko » : True)
+✓ relevé : lignes CAPTURE, chaque taille = celle du fichier versé : mesuré (46, True) (attendu, releve.txt : (46, True))
+✓ relevé : « FIN · 46 capture(s) tentée(s) » et aucun « NE S'OUVRE PAS » : mesuré (True, False) (attendu, releve.txt : (True, False))
+  · capture 25 (cible du lien) et capture 12 (page inconnue) : octets identiques = True — la cible rend la 404
+  · « M2 » (backlog : « M1 et M2 de releve.txt ») : le relevé ne porte pas d'étiquette M2 — son résultat est la ligne « CAPTURE 25 » ; le script définit M2 (True)
+✓ configuration des captures : importe la configuration e2e : mesuré True (attendu, « script versé qui réutilise la configuration e2e » : True)
+== 5. les trois défauts
+✓ apps/client/src/components/venue/booking-request-panel.tsx:36 : mesuré 'const WINDOW_DAYS = 182;' (attendu, backlog, « booking-request-panel.tsx:36 » : 'const WINDOW_DAYS = 182;')
+✓ packages/types/src/venue.ts:988 : mesuré 'export const AVAILABILITY_MAX_WINDOW_DAYS = 92;' (attendu, backlog : 'export const AVAILABILITY_MAX_WINDOW_DAYS = 92;')
+✓ mesure du panneau : bras P (jours, statut) : mesuré ('182', '400') (attendu, « 400 windowTooWide » : ('182', '400'))
+✓ mesure du panneau : bras T (jours, statut, rendus) : mesuré ('92', '200', '92') (attendu, « Témoin à 92 jours : 200 » : ('92', '200', '92'))
+✓ apps/client/src/components/venue/booking-request-panel.tsx:431 : mesuré '<Link className="btn" href="/connexion">' (attendu, backlog, « booking-request-panel.tsx:431 » : '<Link className="btn" href="/connexion">')
+✓ client : liens vers « connexion » qui ne visent pas /auth/connexion : mesuré [('booking-request-panel.tsx', '/connexion')] (attendu, « tous les autres liens de connexion du client … visent la bonne » : [('booking-request-panel.tsx', '/connexion')])
+  · parcouru : 12 liens « connexion » dans le code du client (hors tests)
+✓ premier commit portant WINDOW_DAYS = 182 : mesuré '909702a 2026-08-03' (attendu, « Depuis 909702a (03/08/2026) » : '909702a 2026-08-03')
+✓ M1 : le lien « demander » vise /fr/connexion, celui de la visite /fr/auth/connexion : mesuré (True, True) (attendu, backlog : (True, True))
+✓ capture 25 : /fr/connexion, statut : mesuré ('http://localhost:3100/fr/connexion', '404') (attendu, « rend 404 » : ('http://localhost:3100/fr/connexion', '404'))
+  · auth-client.ts:155-156 à ffd32e9 : if (res.status === 204) return undefined as T; ⏎ return (await res.json()) as T;
+✓ auth-client.ts:155-156 : 204 toléré, puis res.json() : mesuré (True, True) (attendu, backlog, « auth-client.ts:155-156 » : (True, True))
+✓ mesure suppression : bras A (statut, type, longueur) : mesuré ('200', 'None', '0') (attendu, « 200 avec un corps vide » : ('200', 'None', '0'))
+✓ mesure suppression : bras B, corps JSON avec status ; C : A lève, B non : mesuré (True, True, True) (attendu, « deux bras » : (True, True, True))
+✓ api-client : fichiers « account-client » : mesuré ['packages/api-client/src/account-client.ts'] (attendu, « Aucun test de account-client.ts » : ['packages/api-client/src/account-client.ts'])
+  · booking-request-panel.test.tsx, doubles de fetch : stubGlobal( | vi.fn() | vi.fn(), | vi.fn().mockResolvedValue([]),
+  · e2e : specs qui naviguent vers /salles/<slug> : aucune (D315 : « aucune spec e2e ne charge la fiche salle »)
+✓ A5 : test.skip « nécessite une salle de fixture » : mesuré True (attendu, backlog : True)
+✓ panneau : <label · <input · <textarea · placeholder= · aria-label= : mesuré (1, 7, 1, 6, 8) (attendu, « 1 <label> pour 8 champs — 7 <input>, 1 <textarea>, 6 placeholder, 8 aria-label » : (1, 7, 1, 6, 8))
+  · à ffd32e9, dans les trois fichiers d'autorité (aplatis) : {'WINDOW_DAYS': 3, 'href="/connexion"': 0, 'deletion-request': 5} — « aucun n'était connu » se lit à leurs contextes
+✓ B:571 « pg-boss (already installed » · B:781 « aucune méthode pour les visites » · B:1325 « DÉFAUT B » : mesuré (True, True, True) (attendu, backlog : (True, True, True))
+✓ pg-boss dans un package.json à ffd32e9 : mesuré '' (attendu, « absent de tous les package.json » : '')
+✓ visit-bookings-client existe à ffd32e9 : mesuré True (attendu, « visit-bookings-client existe » : True)
+✓ B:843–844 (en-têtes) · B:853 (limiteur) · B:1548 (date) : mesuré (True, True, True) (attendu, fautes n° 4 de D315 : (True, True, True))
+✓ apps/api/src/main.ts:33 : mesuré 'SwaggerModule.setup("api/docs", app, document);' (attendu, « main.ts:33 » : 'SwaggerModule.setup("api/docs", app, document);')
+== 6. passe D277 de D315
+✓ balayage.py : empreinte (préfixe) : mesuré '24802faf' (attendu, « copie à l'octet … (24802faf…) » : '24802faf')
+✓ balayage-après : arbre = corpus commité à a7c09fa : mesuré (1825214, 1825214) (attendu, « pris après la dernière écriture de texte » (l'écart que D315 a trouvé chez D314) : (1825214, 1825214))
+✓ balayage-contrôle = balayage-après (mêmes comptes) : mesuré True (attendu, « doit rendre les mêmes comptes » : True)
+✓ balayage-1 : pris après la seule première écriture (arbre > HEAD) : mesuré True (attendu, « après la seule première écriture » : True)
+== 7. audit de secrets
+✓ audit-secrets-d315.txt : sceau couvre les octets qui le précèdent : mesuré True (attendu, sortie scellée (D298) : True)
+✓ audit-secrets-d315.txt : alertes : mesuré 127 (attendu, commit de D315, « audit 127 » : 127)
+✓ audit-secrets-final.txt : sceau couvre les octets qui le précèdent : mesuré True (attendu, sortie scellée (D298) : True)
+✓ audit-secrets-final.txt : alertes : mesuré 127 (attendu, commit de D315, « audit 127 » : 127)
+✓ tri : neuves : mesuré '3' (attendu, « 3 neuves triées (des mots) » : '3')
+✓ aucune-valeur-reelle.txt : porteurs : mesuré 0 (attendu, « 0 porteur » : 0)
+✓ aucun-cookie-reel.txt : porteurs : mesuré 0 (attendu, « 0 porteur » : 0)
+✓ controle-forme-chargily-sortie.txt : porteurs : mesuré 0 (attendu, « 0 porteur » : 0)
+== 8. écritures de D315 relues à a7c09fa
+✓ registre : dernière ligne D315 : mesuré True (attendu, registre : True)
+✓ titre du rang 24 : CLOS LE 26/09/2026 : D315 : mesuré True (attendu, point d'entrée : True)
+✓ ordre des rangs : dernière ligne « ⇒ RANG N » non barrée : mesuré '25' (attendu, « RANG 25 : EN ATTENTE » : '25')
+✓ AGENTS.md : annotation D315 (règle de D270) et pointeur « pièce datée » : mesuré (True, True) (attendu, « AGENTS.md ×2 » : (True, True))
+✓ calibration forme D302, bras négatif : entrée sans COÛT : mesuré False (attendu, cas connu : False)
+✓ calibration forme D302, bras positif : « ordonner⏎  par Ko » coupé : mesuré True (attendu, cas connu : True)
+✓ reports de D315 : entrées ouvertes, chacune (BLOQUE ou « à ordonner par Ko ») et COÛT, texte aplati : mesuré (7, [True, True, True, True, True, True, True]) (attendu, forme de D302 : (7, [True, True, True, True, True, True, True]))
+✓ backlog : aucune entrée cochée ni barrée par D315 : mesuré (0, 0) (attendu, « Aucune entrée n'a été cochée ni barrée » : (0, 0))
+  · parcouru : 4 lignes supprimées par D315 dans les trois .md
+✓ lignes supprimées dont un mot (≥ 4 lettres) a disparu des trois fichiers : mesuré [] (attendu, D276 : barré, pas effacé : [])
+
+67 contrôles · 0 écart(s) (attendu : ce que la lecture trouve — chaque ✗ se lit à son contexte)

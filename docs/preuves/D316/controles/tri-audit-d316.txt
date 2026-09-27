@@ -1,0 +1,14 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D315/audit-secrets-final.txt (127 contextes) · nouvelle docs/preuves/D316/audit-secrets-d316.txt (135 contextes)
+   alertes ABSENTES de la précédente : 8 — à trier au contexte avant le commit
+   [mot-de-passe] docs/preuves/D316/captures/captures.spec.ts — contexte : ligne 774 de docs/preuves/D316/audit-secrets-d316.txt
+   [mot-de-passe] docs/preuves/D316/integration/rouge-int-defaut3-extrait.txt — contexte : ligne 776 de docs/preuves/D316/audit-secrets-d316.txt
+   [mot-de-passe] docs/preuves/D316/integration/vert-int-defaut3-extrait.txt — contexte : ligne 778 de docs/preuves/D316/audit-secrets-d316.txt
+   [mot-de-passe] docs/preuves/D316/neutralisation/passe-officielle/R25-8-extrait.txt — contexte : ligne 780 de docs/preuves/D316/audit-secrets-d316.txt
+   [mot-de-passe] docs/preuves/D316/neutralisation/premiere-passe-officielle/R25-8-extrait.txt — contexte : ligne 782 de docs/preuves/D316/audit-secrets-d316.txt
+   [jeton] docs/preuves/D316/outils/extraire.py — contexte : ligne 784 de docs/preuves/D316/audit-secrets-d316.txt
+   [jeton] docs/preuves/D316/outils/extraire.py — contexte : ligne 786 de docs/preuves/D316/audit-secrets-d316.txt
+   [mot-de-passe] docs/preuves/D316/portes/test-int-extrait.txt — contexte : ligne 788 de docs/preuves/D316/audit-secrets-d316.txt
+   ventilation par motif : mot-de-passe=6 · jeton=2

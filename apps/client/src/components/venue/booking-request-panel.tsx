@@ -27,13 +27,21 @@ import { createBookingsClient, type BookingsClient } from "@zwadj/api-client";
 import { formatDZD } from "@zwadj/i18n";
 import { ServicePricingType, type ServiceDTO, type VenueAvailabilityResponse } from "@zwadj/types";
 import { getVenueAvailability } from "../../lib/api";
+import { mergeAvailabilityWindows, splitAvailabilityWindow } from "../../lib/availability-windows";
+import { LOGIN_PATH } from "../../lib/routes";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
 
 /** Fenêtre proposée : six mois. Assez pour une saison de mariages, assez court
  *  pour que la liste reste lisible sur un téléphone. L'horizon serveur est de
- *  dix-huit mois (D49) — un visiteur qui vise plus loin passera par la salle. */
-const WINDOW_DAYS = 182;
+ *  dix-huit mois (D46, écrêté par D49) — un visiteur qui vise plus loin passera
+ *  par la salle.
+ *  ⚠ Rang 25 (D316) : le contrat ne rend que `AVAILABILITY_MAX_WINDOW_DAYS`
+ *  jours par requête (D147). Six mois en UNE requête rendaient 400, donc
+ *  « aucune date », donc aucune demande — huit semaines durant (D315). La
+ *  demande est DÉCOUPÉE (`splitAvailabilityWindow`) ; l'intention reste six mois.
+ *  Exportée pour que le test compare à CETTE valeur, jamais à une recopie. */
+export const WINDOW_DAYS = 182;
 
 /** Codes que `POST /venues/:slug/bookings` peut rendre (E1a), et RIEN d'autre.
  *  Table EXPLICITE, jamais une dérivation mécanique du code vers la clé : le
@@ -123,6 +131,9 @@ export function BookingRequestPanel({
    *  suffisante — il n'y a rien d'autre à valider. */
   type Loaded = Pick<VenueAvailabilityResponse, "days" | "slots">;
   const [availability, setAvailability] = useState<Loaded | null>(null);
+  /** Rang 25 (D316) — un ÉCHEC de chargement n'est JAMAIS « aucune date » :
+   *  c'est ce déguisement qui a caché le défaut de D315 huit semaines. */
+  const [loadFailed, setLoadFailed] = useState(false);
   const [chosen, setChosen] = useState<{ date: string; slotTemplateId: string; priceCents: number } | null>(null);
   const [guests, setGuests] = useState("");
   const [picks, setPicks] = useState<Pick_[]>([]);
@@ -137,18 +148,21 @@ export function BookingRequestPanel({
 
   const load = useCallback(async () => {
     const nowMs = Date.now();
-    const res = await getVenueAvailability(
-      slug,
-      civilDate(nowMs + 86_400_000),
-      civilDate(nowMs + WINDOW_DAYS * 86_400_000)
+    // D147 — des fenêtres que le contrat ACCEPTE, bornes importées, jamais
+    // recopiées. Tout ou rien : une seule fenêtre en échec, et c'est l'échec.
+    const windows = splitAvailabilityWindow(civilDate(nowMs + 86_400_000), civilDate(nowMs + WINDOW_DAYS * 86_400_000));
+    const merged = mergeAvailabilityWindows(
+      await Promise.all(windows.map((window) => getVenueAvailability(slug, window.from, window.to)))
     );
     // GARDE DE FORME, et elle n'est pas de la paranoïa : ce panneau est monté
     // sur la fiche salle. S'il lève parce qu'une réponse n'a pas la forme
     // attendue, il emporte la page ENTIÈRE avec lui — description, photos,
     // visite virtuelle. Une section doit échouer SEULE (leçon C5b).
-    setAvailability(
-      res === null || !Array.isArray(res.days) || !Array.isArray(res.slots) ? { days: [], slots: [] } : res
-    );
+    // ⚠ INVERSION ÉCRITE (rang 25, D316) : une réponse sans la forme attendue
+    // s'affichait « aucune date ». Elle s'affiche désormais comme ce qu'elle
+    // est — un échec —, et la section échoue toujours SEULE.
+    setLoadFailed(merged === null);
+    if (merged !== null) setAvailability(merged);
   }, [slug]);
 
   useEffect(() => {
@@ -234,7 +248,11 @@ export function BookingRequestPanel({
       <h2 id="booking-request-heading">{t("title")}</h2>
       <p className="muted">{t("intro")}</p>
 
-      {availability === null ? (
+      {loadFailed ? (
+        <p className="alert alert-error" role="alert">
+          {t("loadFailed")}
+        </p>
+      ) : availability === null ? (
         <p className="muted">{t("loading")}</p>
       ) : availability.days.length === 0 ? (
         <p className="muted">{t("none")}</p>
@@ -428,7 +446,9 @@ export function BookingRequestPanel({
           </button>
         </div>
       ) : (
-        <Link className="btn" href="/connexion">
+        // Rang 25 (D316) : visait `/connexion`, une 404 (D315). La cible vit dans
+        // `lib/routes.ts`, vérifiée contre le fichier de la page.
+        <Link className="btn" href={LOGIN_PATH}>
           {t("loginToBook")}
         </Link>
       )}

@@ -1,0 +1,30 @@
+# D316 — motifs de la passe D277 (rang 25 ARBITRÉ par Ko, LOT DE CODE : les trois défauts de D315 réparés ; décision du
+# relecteur : défauts 1 et 2 hors du chemin de l'argent ; compteur ZÉRO → UN ; rang 26 en attente). Format :
+# <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D315), jamais passés en ligne de commande (D289).
+# Texte APLATI.
+# ⚠ Écartés avant la première passe : « rang 25 » seul, « relecteur » seul, « 404 » seul — ils comptent tout (D298).
+# sens 1 — ce que D316 INVALIDE : le rang 25 en attente ; les trois défauts dits présents ; « aucune spec e2e » ;
+# « aucun test d'account-client » ; la question du chemin de l'argent pour le panneau, « à trancher » ; le compteur à zéro
+1|RANG 25 : EN ATTENTE D'ARBITRAGE DE KO
+1|CASSÉE À L'ÉCRAN
+1|en erreur dans les deux applications
+1|en ERREUR dans les DEUX applications
+1|mène à une **404**
+1|aucune spec e2e n'exerce
+1|aucune spec e2e ne charge
+1|n'est chargée par aucune
+1|Aucun test de `account-client.ts`
+1|ne s'ouvre pas sans Ko
+1|la ligne fautive ne calcule aucun montant
+1|compteur ZÉRO, inchangé
+1|suit désormais « RANG 25
+# sens 2 — ce que D316 REND PERMIS, ou semble rendre permis : un second lot de code (compteur UN : « deux, tenables ») ;
+# des lots touchant un fichier de la carte hors de sa fonction (principe du relecteur)
+2|RANG 26
+2|deux, tenables
+2|PEUT s'ouvrir
+2|peut s'ouvrir
+2|figure sur la carte
+# témoins
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d316-qq

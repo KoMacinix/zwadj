@@ -1,0 +1,41 @@
+# extrait de .neutralisation-journaux/r25/R25-6.log · sha256 du journal complet d1328b6cbc7615ad92f0db05293089e14f1987298b283bd8117c9ab906d4e06b · 40 lignes parcourues · 0 « [WebServer] » retirées · 40 gardées
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/routes.test.ts (3 tests | 1 failed) 11ms
+   ✓ LOGIN_PATH — une page qui existe, dans les deux langues > calibration, bras négatif : l'ancienne cible `/connexion` n'a PAS de page (le défaut de D315 se voit) 2ms
+   × LOGIN_PATH — une page qui existe, dans les deux langues > LOGIN_PATH désigne un `page.tsx` de l'App Router 8ms
+     → expected false to be true // Object.is equality
+   ✓ LOGIN_PATH — une page qui existe, dans les deux langues > LOGIN_PATH est un chemin SANS locale : le `Link` localisé l'ajoute 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  03:27:19
+   Duration  1.95s (transform 91ms, setup 201ms, collect 76ms, tests 11ms, environment 1.06s, prepare 218ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/routes.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/routes.test.ts > LOGIN_PATH — une page qui existe, dans les deux langues > LOGIN_PATH désigne un `page.tsx` de l'App Router
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/lib/routes.test.ts:25:36
+     23| 
+     24|   it("LOGIN_PATH désigne un `page.tsx` de l'App Router", () => {
+     25|     expect(pageExiste(LOGIN_PATH)).toBe(true);
+       |                                    ^
+     26|   });
+     27| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

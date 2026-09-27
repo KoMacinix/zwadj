@@ -50,9 +50,14 @@ export function createAccountClient(request: AuthedRequest): AccountClient {
       await request<{ status: string }>("/me/change-password", { method: "POST", body: input });
     },
     async getDeletionRequest() {
-      // L'API répond un corps VIDE pour « aucune demande » (Nest sérialise un
-      // retour `null` ainsi). On normalise ici, une fois, plutôt que dans
-      // chaque écran : `null` est le contrat côté front.
+      // ⛔ Rang 25 (D316) : ce commentaire affirmait « l'API répond un corps
+      // VIDE pour aucune demande … on normalise ici ». Faux deux fois : la
+      // normalisation venait APRÈS `raw`, qui refuse — délibérément — un corps
+      // vide hors 204 et levait avant elle ; les deux applications affichaient
+      // une erreur à tout compte sans demande (D315). L'API répond désormais le
+      // JSON `null` (`account.controller.ts`, exigé à l'octet par
+      // `account.int-spec.ts`). La garde de forme reste : `null` est le contrat
+      // côté front, et un objet sans `status` n'est pas une demande.
       const res = await request<DeletionRequestDTO | null | Record<string, never>>("/me/deletion-request");
       return res !== null && typeof res === "object" && "status" in res ? (res as DeletionRequestDTO) : null;
     },

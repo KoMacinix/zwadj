@@ -1,0 +1,284 @@
+# extrait de .neutralisation-journaux/d316/officielle-1/R25-5.log · sha256 du journal complet 649d42786354bc1dc0dbf0280127e0a48a4ed9272b5c544ebfa1c42a4c3fc59d · 283 lignes parcourues · 0 « [WebServer] » retirées · 283 gardées
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/components/venue/booking-request-panel.test.tsx (14 tests | 2 failed) 2855ms
+   ✓ Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre 136ms
+   ✓ Demande de réservation — les dates > une date libre est cliquable 37ms
+   × Demande de réservation — les dates > GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC 1027ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <p
+          class="muted"
+        >
+          Chargement des dates…
+        </p>
+        <input
+          aria-label="Nombre d'invités"
+          inputmode="numeric"
+          placeholder="Nombre d'invités"
+          value=""
+        />
+        <a
+          href="/auth/connexion"
+        >
+          Se connecter pour demander
+        </a>
+      </section>
+    </div>
+  </body>
+</html>
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou 24ms
+   × Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien) 1011ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <p
+          class="muted"
+        >
+          Chargement des dates…
+        </p>
+        <input
+          aria-label="Nombre d'invités"
+          inputmode="numeric"
+          placeholder="Nombre d'invités"
+          value=""
+        />
+        <a
+          href="/auth/connexion"
+        >
+          Se connecter pour demander
+        </a>
+      </section>
+    </div>
+  </body>
+</html>
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA 126ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur 45ms
+   ✓ Demande de réservation — sans compte > les dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter 26ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps 86ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > avec un e-mail, il est transmis tel quel 75ms
+   ✓ Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide 35ms
+   ✓ Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie 75ms
+   ✓ Prestations — E2d > l'ACOMPTE suit le total prestations comprises 78ms
+   ✓ Prestations — E2d > décocher retire la prestation du total 70ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 12 passed (14)
+   Start at  00:11:28
+   Duration  7.04s (transform 892ms, setup 280ms, collect 1.81s, tests 2.85s, environment 1.30s, prepare 295ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx
+
+stderr | src/components/venue/booking-request-panel.test.tsx > Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/booking-request-panel.test.tsx > Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/booking-request-panel.test.tsx > Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/booking-request-panel.test.tsx > Prestations — E2d > l'ACOMPTE suit le total prestations comprises
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/booking-request-panel.test.tsx > Prestations — E2d > décocher retire la prestation du total
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — les dates > GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <p
+          class="muted"
+        >
+          Chargement des dates…
+        </p>
+        <input
+          aria-label="Nombre d'invités"
+          inputmode="numeric"
+          placeholder="Nombre d'invités"
+          value=""
+        />
+        <a
+          href="/auth/connexion"
+        >
+          Se connecter pour demander
+        </a>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/components/venue/booking-request-panel.test.tsx:138:65
+    136|     // ⚠ `waitFor` + `expect`, pas `findByRole` : sous neutralisation,…
+    137|     // doit se lire comme une ASSERTION, pas comme une erreur de requê…
+    138|     await waitFor(() => expect(screen.queryByRole("alert")).not.toBeNu…
+       |                                                                 ^
+    139|     expect(screen.getByRole("alert")).toHaveTextContent(messages.fr.ve…
+    140|     expect(screen.getByRole("heading", { name: messages.fr.venueDetail…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien)
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <p
+          class="muted"
+        >
+          Chargement des dates…
+        </p>
+        <input
+          aria-label="Nombre d'invités"
+          inputmode="numeric"
+          placeholder="Nombre d'invités"
+          value=""
+        />
+        <a
+          href="/auth/connexion"
+        >
+          Se connecter pour demander
+        </a>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/components/venue/booking-request-panel.test.tsx:175:65
+    173|     stubFetch(AVAILABILITY, (from) => from > "2027-10-01");
+    174|     renderPanel();
+    175|     await waitFor(() => expect(screen.queryByRole("alert")).not.toBeNu…
+       |                                                                 ^
+    176|     expect(screen.getByRole("alert")).toHaveTextContent(messages.fr.ve…
+    177|     expect(screen.queryByText(messages.fr.venueDetail.booking.none)).t…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

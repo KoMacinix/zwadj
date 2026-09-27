@@ -1,0 +1,19 @@
+D316 — relevé des captures d'après correctif · 2026-09-27T03:55:04.537Z · API http://localhost:3101 · client http://localhost:3100 · pro http://localhost:5273
+SEMIS · salles publiées après db:seed:demo : 6
+COMPTES · PRO, CLIENT, ADMIN (ce dernier par UPDATE users SET role — aucun chemin du produit ne crée un ADMIN)
+API · POST /venues : 201
+API · POST /venues/:id/slot-templates : 201
+API · POST /venues/:id/visit-availabilities ×7 : 201, 201, 201, 201, 201, 201, 201
+API · POST /admin/venues/:id/publish (ADMIN) : 200
+CAPTURE 04-client-fr-salle.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 709910 octets
+M4 · fiche FR, anonyme : réponses /availability : ["200 ?from=2026-09-01&to=2026-09-30","200 ?from=2026-09-28&to=2026-12-28","200 ?from=2026-12-29&to=2027-03-28"]
+M1 · fiche salle, anonyme : liens vers « connexion » : [{"href":"/fr/auth/connexion","texte":"Se connecter pour demander"},{"href":"/fr/auth/connexion","texte":"Se connecter pour réserver"}]
+CAPTURE 16-client-ar-salle.jpg · demandé http://localhost:3100/ar/salles/salle-des-captures · statut 200 · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 696395 octets
+M2 · fr · clic sur « Se connecter pour demander » : URL http://localhost:3100/fr/auth/connexion · statut à froid 200
+CAPTURE 25-client-fr-connexion-cible-du-bouton-reserver.jpg · demandé (clic) · statut — · final http://localhost:3100/fr/auth/connexion · h1 « Connexion » · 58018 octets
+M2 · ar · clic sur « سجّل الدخول لإرسال طلب » : URL http://localhost:3100/ar/auth/connexion · statut à froid 200
+CAPTURE 25-client-ar-connexion-cible-du-bouton-reserver.jpg · demandé (clic) · statut — · final http://localhost:3100/ar/auth/connexion · h1 « تسجيل الدخول » · 51351 octets
+CAPTURE 26-client-fr-salle-connecte.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 733772 octets
+CAPTURE 27-client-fr-compte.jpg · demandé http://localhost:3100/fr/compte · statut 200 · final http://localhost:3100/fr/compte · h1 « Configuration du compte » · 91601 octets
+CAPTURE 46-pro-compte.jpg · demandé http://localhost:5273/compte · statut 200 · final http://localhost:5273/compte · h1 « Configuration du compte » · 89669 octets
+FIN · 7 capture(s) tentée(s)

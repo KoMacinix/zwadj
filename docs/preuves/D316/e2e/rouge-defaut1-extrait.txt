@@ -1,0 +1,154 @@
+# extrait de .neutralisation-journaux/d316/rouge-defaut1.log · sha256 du journal complet 67fc1c38a702c78443c96eb07844116268cdb2ebc7c54cbb3174a7d8c9137b79 · 489 lignes parcourues · 336 « [WebServer] » retirées · 153 gardées
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+27 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 2 tests using 1 worker
+
+  ok 1 [warmup] › specs\warmup.setup.ts:42:5 › préchauffe les routes des deux applications (10.5s)
+  x  2 [chromium] › specs\r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation (12.4s)
+
+
+  1) [chromium] › specs\r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation 
+
+    Error: le panneau affiche « aucune date » sur une salle publiée qui en a
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: getByRole('region', { name: 'Demander cette salle' }).getByText('Cette salle ne propose aucune date pour le moment.')
+    Expected: 0
+    Received: 1
+    Call log:
+      - le panneau affiche « aucune date » sur une salle publiée qui en a with timeout 7000ms
+      - waiting for getByRole('region', { name: 'Demander cette salle' }).getByText('Cette salle ne propose aucune date pour le moment.')
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      46 |   // Le défaut mesuré : le panneau affichait « aucune date » sur une salle qui
+      47 |   // en a. Cette assertion le NOMME au lieu de laisser un clic expirer.
+    > 48 |   await expect(panneau.getByText(B.none), "le panneau affiche « aucune date » sur une salle publiée qui en a").toHaveCount(0);
+         |                                                                                                                ^
+      49 |   const date = panneau.getByRole("button", { name: DATE_EN_TETE }).first();
+      50 |   await expect(date).toBeVisible();
+      51 |   await expect(date).toBeEnabled();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r25-demande-reservation.e2e.ts:48:112
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r25-demande-reservation.e2-0a821-nde-et-voit-la-confirmation-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r25-demande-reservation.e2-0a821-nde-et-voit-la-confirmation-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r25-demande-reservation.e2-0a821-nde-et-voit-la-confirmation-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › specs\r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation 
+  1 passed (1.1m)
+
+To open last HTML report run:
+
+  pnpm exec playwright show-report
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/r25-demande-reservation.e2e.ts

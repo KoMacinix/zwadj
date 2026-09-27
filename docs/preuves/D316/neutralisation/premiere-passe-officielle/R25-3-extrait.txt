@@ -1,0 +1,62 @@
+# extrait de .neutralisation-journaux/d316/officielle-1/R25-3.log · sha256 du journal complet d6347ec5f879258fe923a27b5757ac5cc7abb4d859110543c26cdc5c7d149017 · 61 lignes parcourues · 0 « [WebServer] » retirées · 61 gardées
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/availability-windows.test.ts (16 tests | 1 failed) 18ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 1 jour(s) : chaque fenêtre passe le schéma du contrat 3ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 92 jour(s) : chaque fenêtre passe le schéma du contrat 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 93 jour(s) : chaque fenêtre passe le schéma du contrat 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 182 jour(s) : chaque fenêtre passe le schéma du contrat 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 281 jour(s) : chaque fenêtre passe le schéma du contrat 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 1 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 92 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 93 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 182 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 281 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > les six mois du panneau font DEUX requêtes, la première à la borne pile 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > franchit une fin d'année et un 29 février sans perdre un jour 0ms
+   ✓ mergeAvailabilityWindows — tout ou rien, et rien de recalculé > deux fenêtres : les jours dans l'ordre, les créneaux dédoublonnés 0ms
+   × mergeAvailabilityWindows — tout ou rien, et rien de recalculé > chaque jour est l'objet RENDU PAR LE SERVEUR, pas une copie (MD1-e : aucun prix réécrit) 8ms
+     → expected { date: '2026-09-27', …(2) } to be { date: '2026-09-27', …(2) } // Object.is equality
+
+If it should pass with deep equality, replace "toBe" with "toStrictEqual"
+
+Expected: { date: '2026-09-27', …(2) }
+Received: serializes to the same string
+
+   ✓ mergeAvailabilityWindows — tout ou rien, et rien de recalculé > UNE fenêtre en échec (null) — la seconde — et c'est l'échec du chargement, pas un calendrier partiel 0ms
+   ✓ mergeAvailabilityWindows — tout ou rien, et rien de recalculé > UNE fenêtre sans la forme attendue — la première — et c'est l'échec du chargement 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  00:11:06
+   Duration  2.22s (transform 191ms, setup 235ms, collect 243ms, tests 18ms, environment 1.13s, prepare 194ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/availability-windows.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/availability-windows.test.ts > mergeAvailabilityWindows — tout ou rien, et rien de recalculé > chaque jour est l'objet RENDU PAR LE SERVEUR, pas une copie (MD1-e : aucun prix réécrit)
+AssertionError: expected { date: '2026-09-27', …(2) } to be { date: '2026-09-27', …(2) } // Object.is equality
+
+If it should pass with deep equality, replace "toBe" with "toStrictEqual"
+
+Expected: { date: '2026-09-27', …(2) }
+Received: serializes to the same string
+
+
+Compared values have no visual difference.
+
+ ❯ src/lib/availability-windows.test.ts:72:29
+     70|     const b = reponse(["2026-12-28"]);
+     71|     const fusion = mergeAvailabilityWindows([a, b]);
+     72|     expect(fusion?.days[0]).toBe(a.days[0]);
+       |                             ^
+     73|     expect(fusion?.days[1]).toBe(b.days[0]);
+     74|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

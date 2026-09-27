@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import type { BrowserContext, Page, Request } from "@playwright/test";
 import { Client } from "pg";
@@ -258,4 +259,91 @@ export async function markPage(page: Page): Promise<void> {
  */
 export async function pageStillAlive(page: Page): Promise<boolean> {
   return page.evaluate(() => (window as unknown as Record<string, unknown>).__zwadjSpaTemoin === true);
+}
+
+// ── Rang 25 (D316) — les PARCOURS ─────────────────────────────────────────────
+//
+// ⚠ Jusqu'ici, aucune spec n'exerçait un parcours fonctionnel : aucune ne
+// chargeait la fiche salle (D315). Les trois défauts du rang 25 vivaient à côté
+// d'une suite verte. Les aides ci-dessous préparent les DONNÉES d'un parcours
+// par l'API réelle, comme le ferait chaque rôle ; seules deux écritures passent
+// par la base, et chacune dit un état du produit : la vérification d'e-mail
+// (patron de `createVerifiedAccount`) et l'élévation ADMIN — aucun chemin du
+// produit ne crée un ADMIN (décision n° 4, « endpoints protégés + DBeaver »).
+
+/** Appel d'API BRUT : statut, corps texte, corps JSON s'il en est un. Le texte
+ *  est gardé tel quel — un corps VIDE n'est pas un corps `null` (D315, défaut 3). */
+export async function apiCall(
+  method: string,
+  path: string,
+  token?: string,
+  body?: unknown
+): Promise<{ status: number; text: string; json: unknown }> {
+  const res = await fetch(`${API}/api/v1${path}`, {
+    method,
+    headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}) },
+    body: body === undefined ? undefined : JSON.stringify(body),
+    signal: AbortSignal.timeout(30_000)
+  });
+  const text = await res.text();
+  let json: unknown = undefined;
+  try {
+    json = JSON.parse(text);
+  } catch {
+    /* corps non JSON : `json` reste `undefined`, `text` dit ce qui est venu */
+  }
+  return { status: res.status, text, json };
+}
+
+/** Jeton d'accès d'un compte, par la connexion réelle. */
+export async function accessTokenOf(account: Account): Promise<string> {
+  const res = await apiCall("POST", "/auth/login", undefined, { email: account.email, password: account.password });
+  if (res.status !== 200) throw new Error(`login ${account.role} e2e a échoué (${res.status}) : ${res.text}`);
+  return (res.json as { accessToken: string }).accessToken;
+}
+
+/** Référentiels (wilayas, communes…) par le seed de PRODUCTION, idempotent
+ *  (upsert par clé naturelle) : `global-setup` recrée une base vide, et une
+ *  salle exige une commune. Même geste que les captures de D315. */
+export function seedReferentials(): void {
+  execFileSync("pnpm", ["--filter", "@zwadj/api", "run", "db:seed"], {
+    env: { ...process.env, DATABASE_URL },
+    shell: process.platform === "win32", // ⚠ sans ça, `pnpm` n'est pas résolu sous Windows
+    stdio: ["ignore", "pipe", "pipe"]
+  });
+}
+
+/** Une salle PUBLIÉE, avec un créneau « Soirée », créée comme le feraient ses
+ *  rôles : le PRO la crée, l'ADMIN la publie (la garde « au moins un créneau
+ *  actif » s'applique). Formes RELEVÉES chez un appelant existant
+ *  (`apps/api/test/int/bookings.int-spec.ts`, `makeVenue` et `setup`), jamais
+ *  écrites de mémoire. Exige `seedReferentials()` au préalable. */
+export async function createPublishedVenue(): Promise<{ id: string; slug: string; nameFr: string }> {
+  const pro = await createVerifiedAccount("PRO");
+  const admin = await createVerifiedAccount("CLIENT");
+  const db = new Client({ connectionString: DATABASE_URL });
+  await db.connect();
+  let cityId: string;
+  try {
+    await db.query(`UPDATE users SET role = 'ADMIN' WHERE email = $1`, [admin.email]);
+    const { rows } = await db.query<{ id: string }>(`SELECT id FROM cities ORDER BY name_fr LIMIT 1`);
+    if (rows[0] === undefined) throw new Error("Aucune commune : seedReferentials() n'a pas été appelé.");
+    cityId = rows[0].id;
+  } finally {
+    await db.end();
+  }
+  const [tPro, tAdmin] = [await accessTokenOf(pro), await accessTokenOf(admin)];
+  const nameFr = `Salle e2e ${randomUUID().slice(0, 8)}`;
+  const venue = await apiCall("POST", "/venues", tPro, {
+    cityId, nameFr, nameAr: "قاعة", capacityMax: 400, basePriceCents: 18_000_000, bookingMode: "MULTI_SLOT"
+  });
+  if (venue.status !== 201) throw new Error(`POST /venues : ${venue.status} ${venue.text}`);
+  const { id, slug } = venue.json as { id: string; slug: string };
+  const slot = await apiCall("POST", `/venues/${id}/slot-templates`, tPro, {
+    nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560, basePriceCents: 18_000_000
+  });
+  if (slot.status !== 201) throw new Error(`POST slot-templates : ${slot.status} ${slot.text}`);
+  const pub = await apiCall("POST", `/admin/venues/${id}/publish`, tAdmin);
+  if (pub.status !== 200) throw new Error(`publication : ${pub.status} ${pub.text}`);
+  return { id, slug, nameFr };
 }

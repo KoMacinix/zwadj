@@ -1,0 +1,22 @@
+D316 — tri À LA MAIN des alertes neuves de l'audit de secrets (règle de D299 : toute alerte absente de la sortie scellée
+précédente se trie au contexte avant le commit). Aucun contexte n'est recopié ici : renvoi aux lignes de la sortie scellée.
+
+Sortie scellée précédente : docs/preuves/D315/audit-secrets-final.txt (127 contextes).
+Nouvelle : docs/preuves/D316/audit-secrets-d316.txt (135 contextes). Tri mécanique : controles/tri-audit-d316.txt → 8 neuves.
+
+1. [mot-de-passe] captures/captures.spec.ts:71 — ligne 774 de la sortie : le champ `password` du corps de connexion reçoit
+   une PROPRIÉTÉ (15 caractères masqués = le nom de la propriété du compte de fixture), pas une valeur. MOT. (Même forme que
+   la n° 1 de D315, script de captures de D315.)
+2. à 5. et 8. [mot-de-passe] integration/rouge-int-defaut3-extrait.txt:26, integration/vert-int-defaut3-extrait.txt:18,
+   neutralisation/passe-officielle/R25-8-extrait.txt:24, neutralisation/premiere-passe-officielle/R25-8-extrait.txt:24,
+   portes/test-int-extrait.txt:172 — lignes 776, 778, 780, 782, 788 : le TITRE d'un test d'intégration préexistant
+   (« forgot-password : … CONSTANTE ») recité par les extraits de journaux ; les 7 caractères masqués sont le mot qui suit
+   les deux-points dans ce titre, « présent dans 103 fichiers suivis hors preuves » selon l'audit. MOT. (Même cas que la
+   neuve de D314 à `testint.log:255`.)
+6. et 7. [jeton] outils/extraire.py:28 — lignes 784 et 786 : les EXPRESSIONS RÉGULIÈRES par lesquelles l'extracteur compte
+   les valeurs sensibles restantes dans ses extraits — l'outil nomme ce qu'il cherche (classe décrite par D298). MOT.
+
+⇒ 8 neuves, 0 valeur. Ce qui fait foi sur l'absence de VALEURS, ce sont les deux contrôles « 0 valeur réelle » (D299) :
+  controles/aucune-valeur-reelle.txt (jetons de vérification, 74 valeurs cherchées, 13 journaux) et
+  controles/aucun-cookie-reel.txt (cookie de rafraîchissement, 145 valeurs, 13 journaux) — 0 porteur sur 85 fichiers qui
+  partent ; et le contrôle de forme Chargily (controles/controle-forme-chargily-sortie.txt) — 0 porteur sur 87.

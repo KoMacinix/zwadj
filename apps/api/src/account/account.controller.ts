@@ -111,8 +111,18 @@ export class AccountController {
   @Get("deletion-request")
   @ApiOperation({ summary: "Demande de suppression en cours (ou la plus récente), sinon null" })
   @ApiOkResponse({ description: "DeletionRequestDTO | null — A11 en dérive ses trois états d'écran" })
-  getDeletionRequest(@CurrentUser() user: AuthenticatedUser): Promise<DeletionRequestDTO | null> {
-    return this.deletion.current(user.userId);
+  async getDeletionRequest(@CurrentUser() user: AuthenticatedUser, @Res() res: Response): Promise<void> {
+    // ⛔ Rang 25 (D316) — `@Res()` SANS `passthrough`, et c'est le correctif.
+    // Rendre `null` au routeur, c'était un 200 SANS CORPS : Nest répond ainsi à
+    // tout retour nul (`isNil(body) ⇒ response.send()`). Le contrat écrit
+    // ci-dessus est du JSON, et le transport partagé (`raw`, `auth-client.ts`)
+    // refuse — délibérément — un corps vide hors 204 : les deux applications
+    // affichaient une ERREUR à tout compte sans demande (D315). « Aucune
+    // demande » est un état NORMAL, et il se dit `null`, en JSON.
+    // ⚠ Hors du chemin de réponse de Nest, donc des intercepteurs : il n'y en a
+    // aucun de global (seul `AllExceptionsFilter` l'est, et une exception levée
+    // ici lui parvient toujours). La garde d'authentification s'exécute AVANT.
+    res.status(HttpStatus.OK).json(await this.deletion.current(user.userId));
   }
 
   @Post("deletion-request")

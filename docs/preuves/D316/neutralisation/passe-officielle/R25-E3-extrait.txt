@@ -1,0 +1,198 @@
+# extrait de .neutralisation-journaux/r25/R25-E3.log · sha256 du journal complet 419e42bcb3a0e352f1170653c231c0d7f4dd6ce751be841544287d0d8f387004 · 429 lignes parcourues · 232 « [WebServer] » retirées · 197 gardées
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+27 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 5 tests using 1 worker
+
+  ok 1 [warmup] › specs\warmup.setup.ts:42:5 › préchauffe les routes des deux applications (19.2s)
+  x  2 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur (9.7s)
+  ok 3 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › client — avec une demande : la section l'affiche en attente (2.7s)
+  x  4 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur (8.6s)
+  ok 5 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › pro — avec une demande : la section l'affiche en attente (1.4s)
+
+
+  1) [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur 
+
+    Error: la section de suppression est en ERREUR pour un compte sans demande
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: getByText('Impossible de vérifier l\'état de votre demande. Rechargez la page.')
+    Expected: 0
+    Received: 1
+    Call log:
+      - la section de suppression est en ERREUR pour un compte sans demande with timeout 7000ms
+      - waiting for getByText('Impossible de vérifier l\'état de votre demande. Rechargez la page.')
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      40 |     // La section a fini de charger — dans un sens ou dans l'autre.
+      41 |     await expect(echec.or(demander)).toBeVisible();
+    > 42 |     await expect(echec, "la section de suppression est en ERREUR pour un compte sans demande").toHaveCount(0);
+         |                                                                                                ^
+      43 |     await expect(demander).toBeVisible();
+      44 |     await contexte.close();
+      45 |   });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r25-suppression-compte.e2e.ts:42:96
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r25-suppression-compte.e2e-f936d-pose-la-demande-sans-erreur-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r25-suppression-compte.e2e-f936d-pose-la-demande-sans-erreur-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r25-suppression-compte.e2e-f936d-pose-la-demande-sans-erreur-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur 
+
+    Error: la section de suppression est en ERREUR pour un compte sans demande
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: getByText('Impossible de vérifier l\'état de votre demande. Rechargez la page.')
+    Expected: 0
+    Received: 1
+    Call log:
+      - la section de suppression est en ERREUR pour un compte sans demande with timeout 7000ms
+      - waiting for getByText('Impossible de vérifier l\'état de votre demande. Rechargez la page.')
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      40 |     // La section a fini de charger — dans un sens ou dans l'autre.
+      41 |     await expect(echec.or(demander)).toBeVisible();
+    > 42 |     await expect(echec, "la section de suppression est en ERREUR pour un compte sans demande").toHaveCount(0);
+         |                                                                                                ^
+      43 |     await expect(demander).toBeVisible();
+      44 |     await contexte.close();
+      45 |   });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r25-suppression-compte.e2e.ts:42:96
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r25-suppression-compte.e2e-f654b-pose-la-demande-sans-erreur-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r25-suppression-compte.e2e-f654b-pose-la-demande-sans-erreur-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r25-suppression-compte.e2e-f654b-pose-la-demande-sans-erreur-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [warmup] › specs\warmup.setup.ts (19.2s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  2 failed
+    [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur 
+    [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur 
+  3 passed (1.6m)
+
+To open last HTML report run:
+
+  pnpm exec playwright show-report
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/r25-suppression-compte.e2e.ts
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.

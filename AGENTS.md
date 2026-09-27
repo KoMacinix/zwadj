@@ -608,7 +608,9 @@ certification, sans aucun autre lot de code avant elle.)*
 ⛔ *(D314, 26/09/2026 : **certification PASSÉE** — marque posée, D305, D308 et D312 en font partie ; **compteur à ZÉRO** ;
 rang 23 clos ; le rang 24 attend l'arbitrage de Ko.)*
 ⛔ *(D315, 26/09/2026 : rang 24 **arbitré par Ko — documentaire**, clos le même jour ; il n'ouvre aucun lot de code ; **compteur
-ZÉRO, inchangé** ; **rang 25 : en attente d'arbitrage de Ko**.)*
+ZÉRO, inchangé** ; ~~**rang 25 : en attente d'arbitrage de Ko**~~.)*
+⛔ *(D316, 26/09/2026 : rang 25 **arbitré par Ko — lot de CODE**, les trois défauts de D315 réparés ; **compteur ZÉRO → UN** ;
+**rang 26 : en attente d'arbitrage de Ko**.)*
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -796,6 +798,12 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   rougit que par là n'est pas une morsure sous la lecture de R1. ⇒ *Dérivé par la session, pas une décision du
   relecteur* : **sur le chemin de l'argent, un verdict s'écrit par `expect` de vitest** ; et **un titre de test ne porte
   pas le glyphe « × »**, qui marque un échec dans cette sortie (faute n° 1 de D305).
+  ⚠ **(D316, mesuré sur vitest 3.2.7) DEUX SIGNATURES DE PLUS, relevées en neutralisant.** (1) vitest **REGROUPE** sous un
+  seul message les tests qui échouent de la même façon : plusieurs en-têtes `FAIL … > <titre>` **d'affilée**, PUIS l'erreur ;
+  la « première ligne du bloc » est la première qui **n'est pas un en-tête** — lire la ligne suivant l'en-tête a déclaré
+  « pas une assertion » une vraie morsure. (2) un matcher **jest-dom** (`toHaveAttribute`…) échoue en `Error: expect(element)…`,
+  **pas** en `AssertionError` : sous une lecture fermée, un verdict s'écrit en assertion native (`toBe`…). Pièces :
+  `docs/preuves/D316/neutralisation/` ; calibration du lecteur : `neutralisation/neutralize-r25.py`.
 - ⛔ **UNE MESURE QUI NE DÉMARRE PAS N'EST JAMAIS UNE MORSURE, ET « EXÉCUTÉS » N'EST PAS « COLLECTÉS » (D312, mesuré sur
   vitest 3.2.7).** `neutralize-available-on-api.py` a compté « ROUGE », ~~à chaque certification depuis le 30/08~~ ⛔ *(D313 :
   **mesuré** à D293, D299 et D310 ; « **mesuré, sur des journaux dont l'attribution à D288 est inférée** » (Ko) ; **inféré** à D275 et D283 —
@@ -946,6 +954,14 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     certification** — *motif* : « le classement change le poids de l'étiquette, pas la validité de la passe » ; à la
     certification, « non prouvée (R1) » là où la carte ou une décision classe la cible ou son harnais dans le chemin,
     « non classée » ailleurs.
+  ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 26/09/2026 (D316)** — texte et motif : tête de « ⛔ E3 — MÉTHODE
+  RENFORCÉE », bloc D316 :
+  - **les défauts 1 et 2 du rang 25 ne sont PAS du chemin de l'argent** : « Le fichier du panneau figure sur la carte pour
+    une autre fonction, l'aperçu d'acompte (A3). Le correctif touche la fenêtre de disponibilités et un lien : il ne change
+    aucun montant, ni le transport de la date choisie vers le calcul du prix. La pause ne s'applique donc pas. » **Borne** :
+    « ce lot ne touche ni l'aperçu d'acompte ni ce transport. S'il le faut, arrête-toi et dis-le. » ;
+  - ⛔ **PRINCIPE, qui complète la règle de portée et le principe de direction** : « un changement relève du chemin de
+    l'argent **par sa fonction**, branches (1) à (6), **pas parce que son fichier figure sur la carte**. »
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 
@@ -985,7 +1001,8 @@ vient (D283 : deux questions, deux endroits). ⛔ *Pointeur AJOUTÉ le 23/09/202
 Ko) : ce bloc ne le nommait pas — relevé par D301 ; aucun pointeur retiré.*
 ⇒ **ET L'ÉTAT DU PRODUIT, parcours par parcours : une PIÈCE DATÉE**, jamais une table ici (rang 24, D315, arbitrage de Ko :
 « un état se périme ») — `docs/preuves/D315/etat-produit/ETAT-PRODUIT.md`, relevé au 26/09/2026 sur `ffd32e9`, **périmé au
-premier lot de code**. ⛔ *Pointeur AJOUTÉ le 26/09/2026 (D315).*
+premier lot de code**. ⛔ *Pointeur AJOUTÉ le 26/09/2026 (D315).* ⛔ *(D316, 26/09/2026 : **ce premier lot de code a eu
+lieu** — la pièce est PÉRIMÉE sur ses trois défauts, réparés au rang 25 ; elle n'est pas retouchée, elle reste datée.)*
 
 | Lot | Objet | État |
 |---|---|---|

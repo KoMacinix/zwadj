@@ -1,0 +1,2503 @@
+# extrait de .neutralisation-journaux/d316/officielle-1/R25-4.log · sha256 du journal complet 6334d318adf5d999ce4dbc42f07972b285144adeafcb80fd03fca6cda1624934 · 2502 lignes parcourues · 0 « [WebServer] » retirées · 2502 gardées
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+stdout | src/components/venue/booking-request-panel.test.tsx
+PLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ❯ src/components/venue/booking-request-panel.test.tsx (14 tests | 12 failed) 11342ms
+   × Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre 1049ms
+     → Unable to find role="button" and name `/2027-08-16/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   × Demande de réservation — les dates > une date libre est cliquable 1018ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   ✓ Demande de réservation — les dates > GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC 69ms
+   × Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou 8ms
+     → expected 1 to be greater than or equal to 2
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien) 13ms
+   × Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA 1017ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   × Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur 1012ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   × Demande de réservation — sans compte > les dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter 1015ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   × Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps 1021ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+   × Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > avec un e-mail, il est transmis tel quel 1015ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+   × Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide 1013ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   × Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie 1049ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   × Prestations — E2d > l'ACOMPTE suit le total prestations comprises 1018ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+   × Prestations — E2d > décocher retire la prestation du total 1018ms
+     → Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+ Test Files  1 failed (1)
+      Tests  12 failed | 2 passed (14)
+   Start at  00:11:11
+   Duration  14.00s (transform 326ms, setup 204ms, collect 772ms, tests 11.34s, environment 1.03s, prepare 209ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-16/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:119:32
+    117|     stubFetch();
+    118|     renderPanel();
+    119|     const taken = await screen.findByRole("button", { name: /2027-08-1…
+       |                                ^
+    120|     expect(taken).toBeDisabled();
+    121|     expect(taken).toHaveTextContent(/prise/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — les dates > une date libre est cliquable
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:127:25
+    125|     stubFetch();
+    126|     renderPanel();
+    127|     expect(await screen.findByRole("button", { name: /2027-08-15/ })).…
+       |                         ^
+    128|   });
+    129| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou
+AssertionError: expected 1 to be greater than or equal to 2
+ ❯ src/components/venue/booking-request-panel.test.tsx:157:29
+    155|       return { from: url.searchParams.get("from") ?? "", to: url.searc…
+    156|     });
+    157|     expect(fenetres.length).toBeGreaterThanOrEqual(2);
+       |                             ^
+    158|     for (const w of fenetres) expect(availabilityWindowQuerySchema.saf…
+    159|     const civil = (ms: number) => new Date(ms + 3_600_000).toISOString…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:186:19
+    184|     stubFetch();
+    185|     renderPanel();
+    186|     (await screen.findByRole("button", { name: /2027-08-15/ })).click(…
+       |                   ^
+    187|     await waitFor(() =>
+    188|       expect(screen.getByText((text) => /Acompte/.test(text) && /60.?0…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:196:19
+    194|     // 500 000 DA d'acompte fixe sur une date à 200 000 DA.
+    195|     renderPanel({ depositRateBps: null, depositAmountCents: 50_000_000…
+    196|     (await screen.findByRole("button", { name: /2027-08-15/ })).click(…
+       |                   ^
+    197|     await waitFor(() =>
+    198|       expect(screen.getByText((text) => /Acompte/.test(text) && /200.?…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — sans compte > les dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:207:25
+    205|     stubFetch();
+    206|     renderPanel();
+    207|     expect(await screen.findByRole("button", { name: /2027-08-15/ })).…
+       |                         ^
+    208|     // Rang 25 (D316) : ce lien visait `/connexion`, une 404 (D315). S…
+    209|     // la constante vérifiée contre le fichier de la page (`lib/routes…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ remplir src/components/venue/booking-request-panel.test.tsx:241:34
+    239| describe("Demande de réservation — D135 : l'e-mail est facultatif, le …
+    240|   async function remplir() {
+    241|     fireEvent.click(await screen.findByRole("button", { name: /2027-08…
+       |                                  ^
+    242|     fireEvent.change(screen.getByLabelText("Nombre d'invités"), { targ…
+    243|     fireEvent.change(screen.getByPlaceholderText("Prénom"), { target: …
+ ❯ src/components/venue/booking-request-panel.test.tsx:250:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > avec un e-mail, il est transmis tel quel
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <div
+        style="display: grid; gap: 8px;"
+      >
+        <input
+          aria-label="Prénom"
+          autocomplete="given-name"
+          placeholder="Prénom"
+          value=""
+        />
+        <input
+          aria-label="Nom"
+          autocomplete="family-name"
+          placeholder="Nom"
+          value=""
+        />
+        <input
+          aria-label="Téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          placeholder="Téléphone"
+          value=""
+        />
+        <input
+          aria-label="E-mail (facultatif)"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="E-mail (facultatif)"
+          value=""
+        />
+        <textarea
+          aria-label="Message à la salle (facultatif)"
+          maxlength="1000"
+          placeholder="Message à la salle (facultatif)"
+          rows="3"
+        />
+        <button
+          class="btn btn-accent"
+          disabled=""
+          type="button"
+        >
+          Envoyer ma demande
+        </button>
+      </div>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ remplir src/components/venue/booking-request-panel.test.tsx:241:34
+    239| describe("Demande de réservation — D135 : l'e-mail est facultatif, le …
+    240|   async function remplir() {
+    241|     fireEvent.click(await screen.findByRole("button", { name: /2027-08…
+       |                                  ^
+    242|     fireEvent.change(screen.getByLabelText("Nombre d'invités"), { targ…
+    243|     fireEvent.change(screen.getByPlaceholderText("Prénom"), { target: …
+ ❯ src/components/venue/booking-request-panel.test.tsx:270:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:285:18
+    283|     stubFetch();
+    284|     renderPanel();
+    285|     await screen.findByRole("button", { name: /2027-08-15/ });
+       |                  ^
+    286|     expect(screen.queryByText("Prestations en plus")).toBeNull();
+    287|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:292:19
+    290|     stubFetch();
+    291|     renderPanel({ services: [TRAITEUR] });
+    292|     (await screen.findByRole("button", { name: /2027-08-15/ })).click(…
+       |                   ^
+    293|     // 250 invités × 2 000 DA = 500 000 DA, à ajouter aux 200 000 de l…
+    294|     fireEvent.change(screen.getByLabelText("Nombre d'invités"), { targ…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Prestations — E2d > l'ACOMPTE suit le total prestations comprises
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:304:19
+    302|     stubFetch();
+    303|     renderPanel({ services: [TRAITEUR] });
+    304|     (await screen.findByRole("button", { name: /2027-08-15/ })).click(…
+       |                   ^
+    305|     fireEvent.change(screen.getByLabelText("Nombre d'invités"), { targ…
+    306|     fireEvent.click(screen.getByRole("checkbox"));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Prestations — E2d > décocher retire la prestation du total
+TestingLibraryElementError: Unable to find role="button" and name `/2027-08-15/`
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="booking-request-heading"
+      class="card"
+    >
+      <h2
+        id="booking-request-heading"
+      >
+        Demander cette salle
+      </h2>
+      <p
+        class="muted"
+      >
+        Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+      </p>
+      <p
+        class="alert alert-error"
+        role="alert"
+      >
+        Les dates de cette salle n'ont pas pu être chargées. Réessayez dans un instant.
+      </p>
+      <input
+        aria-label="Nombre d'invités"
+        inputmode="numeric"
+        placeholder="Nombre d'invités"
+        value=""
+      />
+      <fieldset
+        style="border: 0px; padding: 0px; margin: 0px 0px 12px;"
+      >
+        <legend>
+          Prestations en plus
+        </legend>
+        <ul
+          style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 6px;"
+        >
+          <li>
+            <label>
+              <input
+                type="checkbox"
+              />
+               
+              Traiteur
+               
+              <span
+                class="muted"
+              >
+                2 000 DA par invité
+              </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+      <a
+        href="/auth/connexion"
+      >
+        Se connecter pour demander
+      </a>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/venue/booking-request-panel.test.tsx:316:19
+    314|     stubFetch();
+    315|     renderPanel({ services: [TRAITEUR] });
+    316|     (await screen.findByRole("button", { name: /2027-08-15/ })).click(…
+       |                   ^
+    317|     fireEvent.change(screen.getByLabelText("Nombre d'invités"), { targ…
+    318|     fireEvent.click(screen.getByRole("checkbox"));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+

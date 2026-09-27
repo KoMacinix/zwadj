@@ -1,0 +1,25 @@
+# extrait de .neutralisation-journaux/d316/vert-int-defaut3.log · sha256 du journal complet f09ca5be6a0023d2835434ee476218f9e8b197f8bccca0d251320fdde04299aa · 24 lignes parcourues · 0 « [WebServer] » retirées · 24 gardées
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:30540) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/account.int-spec.ts (19 tests) 7303ms
+   ✓ PATCH /me/profile > CLIENT : patch partiel, et la réponse est un AuthUserDTO complet (D12)  404ms
+   ✓ PATCH /me/profile > PRO : businessName + phone2 (D38) ; le CLIENT ne peut pas s'en fabriquer  446ms
+   ✓ POST /me/change-email — l'ancienne adresse reste active jusqu'à la preuve > cycle complet : demande → l'ancien e-mail connecte TOUJOURS → clic → bascule  566ms
+   ✓ POST /me/change-password (D42) > les AUTRES sessions tombent, celle qui a fait l'appel survit (rotée)  475ms
+   ✓ POST /me/change-password (D42) > ancien mot de passe faux : 400, et l'ancien reste valide  350ms
+   ✓ admin — décision > reject : compte intact, ACTIVE, et l'utilisateur reçoit le motif  437ms
+   ✓ admin — décision > approve : compte anonymisé, salles ARCHIVÉES et disparues de la liste publique  553ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > login → 401 INVALID_CREDENTIALS (aucun oracle, D5)  490ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > /auth/me avec un access token encore valide → 401  428ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > refresh avec le cookie d'avant → 401 (tous les tokens ont été révoqués)  416ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password : réponse CONSTANTE, mais aucun e-mail ne part  419ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > un lien de reset émis AVANT la décision cesse d'être exploitable  444ms
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  23:36:38
+   Duration  11.96s (transform 1.03s, setup 30ms, collect 3.51s, tests 7.30s, environment 0ms, prepare 162ms)
+

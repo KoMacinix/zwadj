@@ -269,16 +269,35 @@ describe("D37 — la demande de suppression ne supprime RIEN", () => {
     expect((await api().post("/api/v1/me/deletion-request").set(auth(token)).send({})).status).toBe(201);
   });
 
-  it("GET /me/deletion-request : null quand il n'y en a aucune (les 3 états d'A11)", async () => {
+  it("GET /me/deletion-request : le JSON `null` quand il n'y en a aucune — à l'octet (rang 25, D316)", async () => {
     const token = await clientSession();
-    const empty = await api().get("/api/v1/me/deletion-request").set(auth(token));
-    expect(empty.status).toBe(200);
-    // Assertion volontairement tolérante : Nest répond un corps VIDE pour un
-    // handler qui retourne `null` (`isNil(body) ⇒ response.send()`), et
-    // supertest le présente alors comme `{}` — mais un corps littéral `null`
-    // serait tout aussi correct côté contrat. Ce qui compte ici, et qui est
-    // asserté, c'est « aucune demande », pas la sérialisation exacte du vide.
-    expect(empty.body === null || Object.keys(empty.body as object).length === 0).toBe(true);
+    const aucune = await api().get("/api/v1/me/deletion-request").set(auth(token));
+    expect(aucune.status).toBe(200);
+    // ⛔ CETTE ASSERTION ÉTAIT « VOLONTAIREMENT TOLÉRANTE » (corps vide OU `null`),
+    // au motif que « la sérialisation exacte du vide » ne comptait pas. Elle est
+    // restée VERTE pendant que les deux applications affichaient une ERREUR à
+    // tout compte sans demande (D315) : Nest répondait un corps VIDE pour un
+    // handler qui retourne `null` (`isNil(body) ⇒ response.send()`), et le
+    // transport partagé (`raw`, `auth-client.ts`) refuse — délibérément — un
+    // corps vide hors 204. La sérialisation EST le contrat : `DeletionRequestDTO
+    // | null`, en JSON (`@ApiOkResponse`). « Aucune demande » est un état
+    // NORMAL, et il se dit `null`.
+    // ⚠ Le corps d'abord, et l'en-tête ABSENT rendu comparable (`?? ""`) : sans
+    // quoi le défaut rougissait par un `TypeError` de `toMatch` sur `undefined`
+    // — un plantage, pas une assertion lue (D304).
+    expect(aucune.text).toBe("null");
+    expect(aucune.headers["content-type"] ?? "").toMatch(/^application\/json/);
+  });
+
+  it("GET /me/deletion-request avec une demande : le DTO, inchangé par le correctif (MD3-d)", async () => {
+    const token = await clientSession();
+    const deposee = await api().post("/api/v1/me/deletion-request").set(auth(token)).send({});
+    expect(deposee.status).toBe(201);
+    const lue = await api().get("/api/v1/me/deletion-request").set(auth(token));
+    expect(lue.status).toBe(200);
+    expect(lue.headers["content-type"]).toMatch(/^application\/json/);
+    expect(lue.body).toEqual(deposee.body);
+    expect((lue.body as DeletionRequestDTO).status).toBe("PENDING");
   });
 });
 

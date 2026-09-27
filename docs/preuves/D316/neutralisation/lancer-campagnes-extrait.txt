@@ -1,0 +1,19 @@
+# extrait de .neutralisation-journaux/d316/lancer-campagnes.log · sha256 du journal complet 947987e53facc186207dfeb41327e81f1842c468a0423ebd32e9c0ee1c5e4de9 · 18 lignes parcourues · 0 « [WebServer] » retirées · 18 gardées
+54 fichier(s) modifié(s) depuis HEAD → 1 campagne(s) concernée(s) sur 29.
+  · neutralize-r25.py  (4 fichier(s) en commun)
+      apps/api/src/account/account.controller.ts
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/availability-windows.ts
+
+[1/1] neutralisation\neutralize-r25.py …
+    sortie=3  7 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-r25.py                       3     7     7     0     4    61
+================================================================================================
+MESURÉ : 7 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 4 non mesurée(s) · 1 campagne(s) · 61s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation\neutralize-r25.py → sortie 3
