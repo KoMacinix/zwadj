@@ -1,0 +1,6 @@
+login : statut 200 (attendu 200)
+(A, sans demande) GET /me/deletion-request : statut 200 · Content-Type None · Content-Length '0' · 0 octet(s) de corps · corps b''
+(B) POST /me/deletion-request : statut 201 (attendu 201)
+(B, avec demande) GET /me/deletion-request : statut 200 · Content-Type 'application/json; charset=utf-8' · Content-Length '156' · 156 octet(s) de corps · corps b'{"id":"01a0dfbf-f15d-7521-8532-0ff772300511","status":"PENDING","reason":null,"requestedAt":"2026-09-26T22:04:53.466Z","'
+(C) décodage JSON du corps A : LÈVE — Expecting value (l'équivalent de `res.json()` rejette)
+(C) décodage JSON du corps B : ne lève pas · valeur de type dict · clé status présente

@@ -1,0 +1,59 @@
+D315 — relevé des captures · 2026-09-26T22:00:40.191Z · API http://localhost:3101 · client http://localhost:3100 · pro http://localhost:5273
+SEMIS · salles publiées après db:seed:demo : 6
+COMPTES · PRO, CLIENT, ADMIN (ce dernier par UPDATE users SET role — aucun chemin du produit ne crée un ADMIN)
+API · POST /venues : 201
+API · POST /venues/:id/slot-templates : 201
+API · POST /venues/:id/visit-availabilities ×7 : 201, 201, 201, 201, 201, 201, 201
+API · POST /admin/venues/:id/publish (ADMIN) : 200
+API · GET /venues/:slug/availability : 200 · jour choisi 2026-10-16
+API · POST /venues/:slug/bookings : 409 (BOOKING_PRICE_CHANGED) puis 201 avec les montants rendus par le 409
+API · POST /venues/:slug/visit-bookings : 201
+CAPTURE 01-client-fr-accueil.jpg · demandé http://localhost:3100/fr · statut 200 · final http://localhost:3100/fr · h1 « La salle de vos noces, choisie sans y courir » · 239774 octets
+CAPTURE 02-client-fr-recherche.jpg · demandé http://localhost:3100/fr/salles · statut 200 · final http://localhost:3100/fr/salles · h1 « Salles à Alger » · 89928 octets
+CAPTURE 03-client-fr-assistant.jpg · demandé http://localhost:3100/fr/assistant · statut 200 · final http://localhost:3100/fr/assistant · h1 « Trouvons votre salle » · 45848 octets
+CAPTURE 04-client-fr-salle.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 242115 octets
+CAPTURE 05-client-fr-connexion.jpg · demandé http://localhost:3100/fr/auth/connexion · statut 200 · final http://localhost:3100/fr/auth/connexion · h1 « Connexion » · 58018 octets
+CAPTURE 06-client-fr-inscription.jpg · demandé http://localhost:3100/fr/auth/inscription · statut 200 · final http://localhost:3100/fr/auth/inscription · h1 « Inscription » · 68115 octets
+CAPTURE 07-client-fr-mot-de-passe-oublie.jpg · demandé http://localhost:3100/fr/auth/mot-de-passe-oublie · statut 200 · final http://localhost:3100/fr/auth/mot-de-passe-oublie · h1 « Mot de passe oublié » · 45044 octets
+CAPTURE 08-client-fr-reinitialisation-sans-jeton.jpg · demandé http://localhost:3100/fr/auth/reinitialisation · statut 200 · final http://localhost:3100/fr/auth/reinitialisation · h1 « Ce lien est incomplet ou invalide. » · 40902 octets
+CAPTURE 09-client-fr-verification-email-sans-jeton.jpg · demandé http://localhost:3100/fr/auth/verification-email · statut 200 · final http://localhost:3100/fr/auth/verification-email · h1 « Lien invalide ou expiré » · 43997 octets
+CAPTURE 10-client-fr-cgu.jpg · demandé http://localhost:3100/fr/cgu · statut 200 · final http://localhost:3100/fr/cgu · h1 « Conditions générales d'utilisation » · 28090 octets
+CAPTURE 11-client-fr-confidentialite.jpg · demandé http://localhost:3100/fr/confidentialite · statut 200 · final http://localhost:3100/fr/confidentialite · h1 « Politique de confidentialité » · 27576 octets
+CAPTURE 12-client-fr-page-inconnue.jpg · demandé http://localhost:3100/fr/page-qui-n-existe-pas · statut 404 · final http://localhost:3100/fr/page-qui-n-existe-pas · h1 « Cette page n'existe pas » · 44808 octets
+CAPTURE 13-client-ar-accueil.jpg · demandé http://localhost:3100/ar · statut 200 · final http://localhost:3100/ar · h1 « قاعة عرسكم، تختارونها دون تعب » · 188941 octets
+CAPTURE 14-client-ar-recherche.jpg · demandé http://localhost:3100/ar/salles · statut 200 · final http://localhost:3100/ar/salles · h1 « قاعات في الجزائر » · 77756 octets
+CAPTURE 15-client-ar-assistant.jpg · demandé http://localhost:3100/ar/assistant · statut 200 · final http://localhost:3100/ar/assistant · h1 « لنجد قاعتكم » · 36984 octets
+CAPTURE 16-client-ar-salle.jpg · demandé http://localhost:3100/ar/salles/salle-des-captures · statut 200 · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 226577 octets
+CAPTURE 17-client-ar-connexion.jpg · demandé http://localhost:3100/ar/auth/connexion · statut 200 · final http://localhost:3100/ar/auth/connexion · h1 « تسجيل الدخول » · 51351 octets
+CAPTURE 18-client-ar-inscription.jpg · demandé http://localhost:3100/ar/auth/inscription · statut 200 · final http://localhost:3100/ar/auth/inscription · h1 « إنشاء حساب » · 60010 octets
+CAPTURE 19-client-ar-mot-de-passe-oublie.jpg · demandé http://localhost:3100/ar/auth/mot-de-passe-oublie · statut 200 · final http://localhost:3100/ar/auth/mot-de-passe-oublie · h1 « نسيت كلمة المرور » · 38411 octets
+CAPTURE 20-client-ar-reinitialisation-sans-jeton.jpg · demandé http://localhost:3100/ar/auth/reinitialisation · statut 200 · final http://localhost:3100/ar/auth/reinitialisation · h1 « هذا الرابط ناقص أو غير صالح. » · 34317 octets
+CAPTURE 21-client-ar-verification-email-sans-jeton.jpg · demandé http://localhost:3100/ar/auth/verification-email · statut 200 · final http://localhost:3100/ar/auth/verification-email · h1 « رابط غير صالح أو منتهي » · 39307 octets
+CAPTURE 22-client-ar-cgu.jpg · demandé http://localhost:3100/ar/cgu · statut 200 · final http://localhost:3100/ar/cgu · h1 « شروط الاستخدام العامة » · 23813 octets
+CAPTURE 23-client-ar-confidentialite.jpg · demandé http://localhost:3100/ar/confidentialite · statut 200 · final http://localhost:3100/ar/confidentialite · h1 « سياسة الخصوصية » · 23329 octets
+CAPTURE 24-client-ar-page-inconnue.jpg · demandé http://localhost:3100/ar/page-qui-n-existe-pas · statut 404 · final http://localhost:3100/ar/page-qui-n-existe-pas · h1 « هذه الصفحة غير موجودة » · 42047 octets
+M1 · fiche salle, anonyme : liens vers « connexion » : [{"href":"/fr/connexion","texte":"Se connecter pour demander"},{"href":"/fr/auth/connexion","texte":"Se connecter pour réserver"}]
+CAPTURE 25-client-fr-connexion-cible-du-bouton-reserver.jpg · demandé http://localhost:3100/fr/connexion · statut 404 · final http://localhost:3100/fr/connexion · h1 « Cette page n'existe pas » · 44808 octets
+M3 · accueil arabe, formulaire de recherche envoyé sans saisie : URL finale http://localhost:3100/ar/salles?guests=&maxPrice=
+CAPTURE 26-client-fr-salle-connecte.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 264862 octets
+CAPTURE 27-client-fr-compte.jpg · demandé http://localhost:3100/fr/compte · statut 200 · final http://localhost:3100/fr/compte · h1 « Configuration du compte » · 87545 octets
+CAPTURE 28-pro-connexion.jpg · demandé http://localhost:5273/auth/connexion · statut 200 · final http://localhost:5273/auth/connexion · h1 « Connexion » · 40483 octets
+CAPTURE 29-pro-inscription.jpg · demandé http://localhost:5273/auth/inscription · statut 200 · final http://localhost:5273/auth/inscription · h1 « Inscription » · 50433 octets
+CAPTURE 30-pro-mot-de-passe-oublie.jpg · demandé http://localhost:5273/auth/mot-de-passe-oublie · statut 200 · final http://localhost:5273/auth/mot-de-passe-oublie · h1 « Mot de passe oublié » · 29221 octets
+CAPTURE 31-pro-reinitialisation-sans-jeton.jpg · demandé http://localhost:5273/auth/reinitialisation · statut 200 · final http://localhost:5273/auth/reinitialisation · h1 « Ce lien est incomplet ou invalide. » · 25387 octets
+CAPTURE 32-pro-verification-email-sans-jeton.jpg · demandé http://localhost:5273/auth/verification-email · statut 200 · final http://localhost:5273/auth/verification-email · h1 « Lien invalide ou expiré » · 29098 octets
+CAPTURE 33-pro-tableau-de-bord.jpg · demandé http://localhost:5273/ · statut 200 · final http://localhost:5273/ · h1 « Nouvelle réservation » · 58945 octets
+CAPTURE 34-pro-salles.jpg · demandé http://localhost:5273/salles · statut 200 · final http://localhost:5273/salles · h1 « Mes salles » · 25676 octets
+CAPTURE 35-pro-nouvelle-salle.jpg · demandé http://localhost:5273/salles/nouvelle · statut 200 · final http://localhost:5273/salles/nouvelle · h1 « Nouvelle salle » · 46559 octets
+CAPTURE 36-pro-salle-etape-1.jpg · demandé http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=1 · statut 200 · final http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=1 · h1 « Modifier la salle » · 56944 octets
+CAPTURE 37-pro-salle-etape-2.jpg · demandé http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=2 · statut 200 · final http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=2 · h1 « Modifier la salle » · 49289 octets
+CAPTURE 38-pro-salle-etape-3.jpg · demandé http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=3 · statut 200 · final http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=3 · h1 « Modifier la salle » · 92692 octets
+CAPTURE 39-pro-salle-etape-4.jpg · demandé http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=4 · statut 200 · final http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=4 · h1 « Modifier la salle » · 97387 octets
+CAPTURE 40-pro-salle-etape-5.jpg · demandé http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=5 · statut 200 · final http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=5 · h1 « Modifier la salle » · 67939 octets
+CAPTURE 41-pro-salle-etape-6.jpg · demandé http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=6 · statut 200 · final http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=6 · h1 « Modifier la salle » · 62789 octets
+CAPTURE 42-pro-salle-etape-7.jpg · demandé http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=7 · statut 200 · final http://localhost:5273/salles/01a0dfbc-309e-775e-bb6c-d3bae8d748f8?etape=7 · h1 « Modifier la salle » · 47422 octets
+CAPTURE 43-pro-demandes.jpg · demandé http://localhost:5273/demandes · statut 200 · final http://localhost:5273/demandes · h1 « Demandes » · 47133 octets
+CAPTURE 44-pro-calendrier.jpg · demandé http://localhost:5273/calendrier · statut 200 · final http://localhost:5273/calendrier · h1 « Calendrier de la salle » · 35350 octets
+CAPTURE 45-pro-reservations.jpg · demandé http://localhost:5273/reservations · statut 200 · final http://localhost:5273/reservations · h1 « Réservations » · 31809 octets
+CAPTURE 46-pro-compte.jpg · demandé http://localhost:5273/compte · statut 200 · final http://localhost:5273/compte · h1 « Configuration du compte » · 76081 octets
+FIN · 46 capture(s) tentée(s)

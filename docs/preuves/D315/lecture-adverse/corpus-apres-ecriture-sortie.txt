@@ -1,0 +1,6 @@
+calibration, bras négatif : balayage-1 de D314 contre 0057748 : écart 0 (attendu 0)
+D311 : commit de clôture 6f7d6c5 · arbre du balayage-après 1698276 car. · corpus commité 1698687 car. · écrit APRÈS le balayage : 411 car.
+D312 : commit de clôture d37ea64 · arbre du balayage-après 1723775 car. · corpus commité 1725625 car. · écrit APRÈS le balayage : 1850 car.
+D313 : commit de clôture a5a8c55 · arbre du balayage-après 1756732 car. · corpus commité 1758318 car. · écrit APRÈS le balayage : 1586 car.
+D314 : commit de clôture ffd32e9 · arbre du balayage-après 1791680 car. · corpus commité 1793451 car. · écrit APRÈS le balayage : 1771 car.
+parcouru : 4 lots sur 4

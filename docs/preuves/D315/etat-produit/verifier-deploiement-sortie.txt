@@ -1,0 +1,93 @@
+commit ffd32e9 · fichiers suivis 2391 · sources de code parcourues (hors tests, docs, générés) 300 · lignes 41869
+calibration en-têtes, positif : True (attendu True)
+calibration en-têtes, négatif : False (attendu False)
+calibration robots/sitemap, positif : True (attendu True)
+calibration robots/sitemap, négatif : False (attendu False)
+calibration relecture faite, positif : True (attendu True)
+calibration relecture faite, négatif : False (attendu False)
+
+== SÉCURITÉ
+
+[1] en-têtes de sécurité HTTP ou helmet, dans le code des trois applications — ABSENTS (0 occurrence(s))
+
+[2] « trust proxy » configuré (API) — PRÉSENT — lire le contexte (une note n'est pas une configuration) (1 occurrence(s))
+     apps/api/src/main.ts:17: // NOTE prod : derrière un reverse proxy, activer trust proxy pour que le
+
+[3] Swagger monté (API) — et sous quelle condition — voir les lignes : un `NODE_ENV` voisin du montage dirait une condition (1 occurrence(s))
+     apps/api/src/main.ts:33: SwaggerModule.setup("api/docs", app, document);
+
+[4] MFA / TOTP / WebAuthn — ABSENT (0 occurrence(s))
+
+[5] `.gitignore` : motifs qui couvrent `.env.production` / `.env.staging` — voir les motifs (1 occurrence(s))
+     .gitignore:7: .env
+
+== CONFIGURATION DE PRODUCTION
+
+[6] adaptateur e-mail lié par `EmailModule` — voir (1 occurrence(s))
+     apps/api/src/common/email/email.module.ts:7: providers: [{ provide: EMAIL_SENDER, useClass: DevLoggerEmailSender }],
+
+[7] adaptateur WhatsApp lié par `WhatsAppModule` — voir (1 occurrence(s))
+     apps/api/src/common/whatsapp/whatsapp.module.ts:10: providers: [{ provide: WHATSAPP_SENDER, useClass: DevLoggerWhatsAppSender }],
+
+[8] adaptateurs d'e-mail / WhatsApp / stockage AUTRES que le journal de dev et le disque — AUCUN — seuls `dev-logger.*` et `disk-storage.adapter.ts` existent (0 occurrence(s))
+
+[9] liste des variables EXIGÉES en production (`PROD_REQUIRED_EXPLICIT`) — voir (CORS_ORIGINS y figure-t-il ?) (5 occurrence(s))
+     apps/api/src/config/env.ts:151: "CLIENT_URL",
+     apps/api/src/config/env.ts:152: "PRO_URL",
+     apps/api/src/config/env.ts:153: "AUTH_COOKIE_SECURE",
+     apps/api/src/config/env.ts:154: "GOOGLE_CLIENT_ID",
+     apps/api/src/config/env.ts:160: "PAYMENTS_ENABLED"
+
+[10] défaut de `CORS_ORIGINS` — voir (2 occurrence(s))
+     apps/api/src/config/env.ts:14: CORS_ORIGINS: z
+     apps/api/src/config/env.ts:16: .default("http://localhost:3000,http://localhost:5173")
+
+[11] dépendance `pg-boss` (file de tâches, expiration) — ABSENTE de tous les package.json (0 occurrence(s))
+
+[12] écriture du statut `EXPIRED` d'une réservation (code API hors tests) — ABSENTE (0 occurrence(s))
+
+[13] Dockerfile, CI ou fichier d'hébergement suivis — AUCUN (0 occurrence(s))
+
+[14] route HTTP qui appelle `PaymentsService` — AUCUNE — le service n'est exposé par aucun contrôleur (0 occurrence(s))
+
+== SEO
+
+[15] `robots` ou `sitemap` sous `apps/client/src/app/` — ABSENTS (0 occurrence(s))
+
+[16] `alternates.languages` (hreflang) dans les métadonnées — ABSENT (0 occurrence(s))
+
+[17] `NEXT_PUBLIC_SITE_URL` : repli et garde de production — voir (un `throw` voisin dirait une garde) (1 occurrence(s))
+     apps/client/src/lib/seo.ts:39: export const SITE_ORIGIN = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
+
+[18] données structurées schema.org (`ld+json`) — ABSENTES (0 occurrence(s))
+
+== CONFORMITÉ
+
+[19] page `cgu` : contenu « Bientôt disponible » — PLACEHOLDER (1 occurrence(s))
+     apps/client/src/app/[locale]/cgu/page.tsx:25: <p>{t("comingSoon")} / قريباً</p>
+
+[20] page `confidentialite` : contenu « Bientôt disponible » — PLACEHOLDER (1 occurrence(s))
+     apps/client/src/app/[locale]/confidentialite/page.tsx:22: <p>{t("comingSoon")} / قريباً</p>
+
+[21] inscription : case d'acceptation et ce qui part vers l'API — voir (12 occurrence(s))
+     apps/client/src/components/auth/register-form.tsx:15: // confirmation et acceptation CGU — l'API ne les reçoit pas (contrat Lot 1).
+     apps/client/src/components/auth/register-form.tsx:19: accept: z.literal(true, { errorMap: () => ({ message: "auth.validation.acceptRequired" }) })
+     apps/client/src/components/auth/register-form.tsx:41: accept: false
+     apps/client/src/components/auth/register-form.tsx:69: // Payload = champs du contrat UNIQUEMENT (confirm/accept restent au front)
+     apps/client/src/components/auth/register-form.tsx:186: <input type="checkbox" checked={form.accept} onChange={(e) => set("accept", e.target.checked)} />
+     apps/client/src/components/auth/register-form.tsx:188: {t("signup.acceptPrefix")}
+     apps/client/src/components/auth/register-form.tsx:189: <Link href="/cgu" className="link-accent">
+     apps/client/src/components/auth/register-form.tsx:190: {t("signup.terms")}
+     … 4 de plus
+
+[22] anonymisation d'un compte : écritures sur `bookings` — AUCUNE — les instantanés de contact restent (0 occurrence(s))
+
+== ARABE
+
+[23] clés i18n : FR 1094 · AR 1094 · symétriques True
+[24] relecture humaine de l'arabe : phrases « … relues/validées par … » dans les trois fichiers d'autorité (texte aplati, 1788245 car.) : 0 · entrées OUVERTES du backlog qui parlent de relire l'arabe (première ligne) : 5
+     - [ ] **[I18N][P1]** Trois clés arabes neuves non relues :
+     - [ ] **[I18N][P1]** ~17 clés arabes neuves non relues (`search.availableOn.*`,
+     - [ ] ⚠ **Relecture humaine de l'arabe** du message `auth.validation.phoneInvalid`
+     - [ ] **[I18N][P1]** ⚠ **~136 clés arabes ajoutées cette session ne sont pas
+     - [ ] **[I18N][P1]** Relecture humaine de l'arabe : **16 clés de Q2 + 3 de Q3a**

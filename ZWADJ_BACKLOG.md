@@ -2457,6 +2457,65 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 26/09/2026 — rang 24 CLOS, l'état du produit (D315)
+
+Détail : section D315 de `ZWADJ_CONTINUITE.md` ; **l'état lui-même est une pièce datée** :
+`docs/preuves/D315/etat-produit/ETAT-PRODUIT.md` (et `ENTREES-CONFRONTEES.md`). Forme de Ko (D302) : ce que l'entrée
+**BLOQUE** ou « **à ordonner par Ko** », et son **COÛT**. ⚠ Ko (rang 24) : **aucun classement** — ces entrées ne sont pas
+ordonnées entre elles ; l'ordre des lots suivants sera proposé par le relecteur et arbitré par Ko.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : l'entrée `[DOC][P3]` « POURQUOI (b) ET PAS (a) » (annotée : elle suit
+désormais « RANG 25 »). **Aucune entrée n'a été cochée ni barrée** : les verdicts vivent dans la pièce (consigne de Ko).
+
+- [ ] **[CLIENT]** ⛔ **La demande de réservation est CASSÉE À L'ÉCRAN : le panneau demande 182 jours de disponibilités, le
+  contrat en refuse plus de 92 — MESURÉ.** `booking-request-panel.tsx:36` (`WINDOW_DAYS = 182`) contre
+  `AVAILABILITY_MAX_WINDOW_DAYS = 92` bornes incluses (`packages/types/src/venue.ts:988`) : **400 `windowTooWide`**, que
+  `getVenueAvailability` change en `null`, que le panneau affiche « Cette salle ne propose aucune date pour le moment » ; aucun
+  créneau n'est sélectionnable, « Envoyer ma demande » reste inactif. Témoin à 92 jours : 200. L'API accepte la demande (201).
+  Pièces : `docs/preuves/D315/mesures/mesurer-fenetre-panneau-sortie.txt`, capture 26. Depuis `909702a` (03/08/2026) ; la
+  règle qui l'interdit (D147, « toute borne côté front est IMPORTÉE du contrat ») date du 16/08 et a été appliquée aux
+  visites seulement. ⚠ **Pourquoi aucune porte ne l'a vu** : le double de `fetch` de `booking-request-panel.test.tsx` répond
+  `ok` quelle que soit l'URL ; aucune spec e2e ne charge la fiche salle (A5 : `test.skip`, « nécessite une salle de
+  fixture »). ⇒ **BLOQUE** : le parcours client « demande » depuis l'écran — **à ordonner par Ko**. ⛔ **Chemin de l'argent** :
+  le fichier est sur la carte (D304, branche 1 : `previewDeposit`) ; la ligne fautive ne calcule aucun montant — **à trancher
+  par le relecteur** ; **pendant la pause, ne s'ouvre pas sans Ko**. ⇒ **COÛT** : code client (compte) ; un fichier et son
+  test (le double doit refuser la fenêtre fautive) ; e2e : aucune spec ne visite la fiche ; migration : non ; dépendance : non.
+- [ ] **[CLIENT]** ⛔ **« Se connecter pour demander » mène à une 404 — MESURÉ.** Le panneau de demande pointe `/connexion`
+  (`booking-request-panel.tsx:431`) ; la page est `/auth/connexion` — tous les autres liens de connexion du client, dont celui
+  du panneau de visite voisin, visent la bonne. `/fr/connexion` rend **404** (capture 25 ; M1 et M2 de
+  `docs/preuves/D315/captures/releve.txt`). Depuis `909702a`. Aucun test ne l'assertit. ⇒ **BLOQUE** : l'entrée du visiteur
+  anonyme dans le parcours de demande — **à ordonner par Ko**. ⇒ **COÛT** : code client (compte) ; même fichier, et un test ;
+  e2e : idem ; chemin de l'argent : même fichier — **à trancher par le relecteur**, pause ; migration : non.
+- [ ] **[CLIENT]** **Le panneau de demande porte 1 `<label>` pour 8 champs (D143)** — 7 `<input>` et 1 `<textarea>`, 6
+  `placeholder`, 8 `aria-label` (compté dans le source ; capture 26). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code client
+  (compte) ; même fichier, messages FR/AR ; e2e : B8 ne visite pas la fiche ; chemin de l'argent : même fichier ; migration :
+  non.
+- [ ] **[SHARED]** ⛔ **La section « Supprimer mon compte » est en ERREUR pour tout compte sans demande, dans les DEUX
+  applications — MESURÉ.** `GET /api/v1/me/deletion-request` rend **200 avec un corps vide** (`Content-Length: 0`) quand il
+  n'y a pas de demande ; `authedRequest` (`packages/api-client/src/auth-client.ts:155-156`) ne tolère un corps vide que sur un
+  204 et appelle `res.json()`, qui lève ; `DeletionSection` affiche « Impossible de vérifier l'état de votre demande » et **ne
+  propose pas la demande** (D37). Le commentaire de `account-client.ts` affirme normaliser ce cas : la normalisation vient
+  **après** le `res.json()` qui a levé. Pièces : `docs/preuves/D315/mesures/mesurer-deletion-request-sortie.txt` (deux bras),
+  captures 27 et 46. Aucun test de `account-client.ts`. ⇒ **BLOQUE** : le droit à l'effacement par l'écran — **à ordonner par
+  Ko**. ⇒ **COÛT** : code (compte) — soit le client partagé (`auth-client.ts` ou `account-client.ts`, les deux applications à
+  la fois), soit l'API (`account.controller.ts` : changer la réponse est un **contrat d'API**, à demander avant, `CLAUDE.md`) ;
+  e2e exigée (auth, compte) ; chemin de l'argent : non ; migration : non.
+- [ ] **[DOC]** **62 entrées ouvertes des phases 6, 8, 9, 10 et 12 sont RÉALISÉES dans le code**, et quelques-unes portent un
+  constat faux (B:571 « pg-boss already installed » : absent de tous les `package.json` ; B:781 « aucune méthode pour les
+  visites » : `visit-bookings-client` existe). Hors de ces phases, au moins « DÉFAUT B » (B:1325, résolu par D254) est dans le
+  même cas. Verdicts un à un : `docs/preuves/D315/etat-produit/ENTREES-CONFRONTEES.md` (renvois à `ffd32e9`). ⇒ **À ordonner
+  par Ko** — le sort de ces entrées (cocher, barrer avec leur motif, ou laisser) est une décision de forme, **voisine de celle
+  des étiquettes P0-P3** (D302). ⇒ **COÛT** : documentaire (ne compte pas) ; `ZWADJ_BACKLOG.md` seul ; e2e : non.
+- [ ] **[SÉCU]** **Swagger (`/api/docs`) est monté sans condition d'environnement** (`apps/api/src/main.ts:33` ;
+  `docs/preuves/D315/etat-produit/verifier-deploiement-sortie.txt`, [3]) — le backlog ne le relevait que comme documentation à
+  publier (PHASE 20). **Constat, non un audit** : aucune source externe ne le classe. ⇒ **À ordonner par Ko.** ⇒ **COÛT** :
+  code API (compte) ; `main.ts` ; e2e : non ; chemin de l'argent : non ; ne mord qu'en production.
+- [ ] **[MÉTHODE]** **Le balayage D277 « après écriture » est pris AVANT la dernière écriture, dans quatre lots de suite —
+  MESURÉ.** Le texte commité est plus long que l'arbre balayé de 411 (D311), 1 850 (D312), 1 586 (D313) et 1 771 (D314)
+  caractères aplatis (`docs/preuves/D315/lecture-adverse/corpus-apres-ecriture-sortie.txt`) ; pour D314, les comptes écrits
+  (« 133 », « cette section (11) ») ne sont pas ceux du texte commité (136, 14) — la phrase qui rapporte la ventilation cite
+  elle-même trois motifs (`docs/preuves/D314/passe-d277/RECTIFICATION-D315.txt`). ⇒ **À ordonner par Ko.** ⇒ **COÛT** :
+  documentaire (ne compte pas) ; forme de la passe D277 (rejouer après la dernière écriture, ou écrire l'écart) ; e2e : non.
+
 ## Reports du 26/09/2026 — rang 23 CLOS, la certification (D314)
 
 Détail : section D314 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
@@ -3240,7 +3299,8 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   il suit désormais la ligne « RANG 23 : EN ATTENTE » et la décision due à Ko sur les étiquettes P0-P3 — le défaut
   s'aggrave d'un paragraphe, il ne change pas de nature ; non corrigé, ce lot n'y touche pas)* ⛔ *(D303, 23/09/2026 :
   il suit désormais « RANG 24 : EN ATTENTE D'ARBITRAGE DE KO », puis la même décision due à Ko — même défaut,
-  toujours non corrigé)* et **se lit comme
+  toujours non corrigé)* ⛔ *(D315, 26/09/2026 : il suit désormais « RANG 25 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut,
+  non corrigé ; ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

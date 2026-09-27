@@ -1,0 +1,24 @@
+D315 — RECTIFICATION posée à côté des pièces de la passe D277 de D314 (précédent de D294 et D295 : une pièce ne se
+retouche pas ; « le chiffre se rectifie là où il engage une AUTORITÉ ; la rectification se pose À CÔTÉ des pièces »).
+Ni `balayage.py`, ni `motifs.txt`, ni `balayage-1.txt`, ni `balayage-apres-ecriture.txt` ne sont modifiés.
+
+CE QUI EST ÉCRIT (section D314 de ZWADJ_CONTINUITE.md, « passe D277, les deux sens ») :
+  « Après écriture (balayage-apres-ecriture.txt) : 133, 0 motif à zéro — la différence, 18 : cette section (11) et la
+  ligne du registre (1) […] ; et 6 dans les écritures de clôture […] »
+
+CE QUE DIT LA MESURE (docs/preuves/D315/lecture-adverse/confronter-d314-sortie.txt, section 8) :
+  · les chiffres 133 et 18 sont EXACTS pour la pièce `balayage-apres-ecriture.txt` ;
+  · mais cette pièce a été prise AVANT la dernière écriture : son en-tête porte un arbre de 1 791 680 caractères aplatis,
+    le texte commité à ffd32e9 en porte 1 793 451 — 1 771 caractères écrits APRÈS le balayage ;
+  · sur le texte commité, les mêmes 15 motifs donnent 136 occurrences (différence 21 avec 0057748), dont 14 dans la section
+    D314 et 1 dans la ligne du registre ; les « écritures de clôture » hors section restent exactement 1, 3, 2 ;
+  · les TROIS occurrences de plus sont toutes dans la phrase qui rapporte la ventilation : « « de quelque rang que ce soit »
+    (1), « aucun lot de code » (3), « compteur à ZÉRO » (2 : … » — elle cite trois motifs, et elle a été écrite après le
+    balayage qu'elle décrit.
+
+⇒ « cette section (11) » est vrai de l'arbre au moment du balayage, faux de la section commitée (14). Rien d'autre ne
+  s'écarte : 115, la ventilation par motif, les 6 écritures de clôture, la calibration T+ / T− (20 ; 0).
+⚠ CE N'EST PAS UN CAS ISOLÉ — mesuré (docs/preuves/D315/lecture-adverse/corpus-apres-ecriture-sortie.txt) : les balayages
+  « après écriture » de D311, D312, D313 et D314 précèdent tous le texte commité (411, 1 850, 1 586 et 1 771 caractères
+  écrits après). Seul D314 a été recompté ici ; pour les trois autres, l'écart de taille est mesuré, l'effet sur les
+  comptes ne l'est pas.

@@ -1,0 +1,3 @@
+lu dans le source : WINDOW_DAYS = 182 (panneau) · AVAILABILITY_MAX_WINDOW_DAYS = 92 (contrat)
+(P, fenêtre du panneau) from=2026-09-27 to=2027-03-27 · 182 jours bornes incluses · statut 400 · corps b'{"statusCode":400,"message":{"message":"Validation \xc3\xa9chou\xc3\xa9e","issues":[{"path":"to","message":"venue.validation.windowTooWide"}]},"path":"/api/v1/venues/salle-'
+(T, témoin) from=2026-09-27 to=2026-12-27 · 92 jours bornes incluses · statut 200 · 92 jour(s) rendus

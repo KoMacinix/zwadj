@@ -1,0 +1,152 @@
+== 1. provenance, périmètre, marque
+✓ parent de l'étape 0 : mesuré 'a5a8c55' (attendu, section D314 : 'a5a8c55')
+✓ parent du commit de clôture : mesuré '0057748' (attendu, section D314 : '0057748')
+✓ « D314 » dans les fichiers d'autorité à SHA de départ : mesuré 0 (attendu, section D314 : 0)
+✓ étape 0 : fichiers hors ZWADJ_CONTINUITE.md et docs/preuves/D314/ : mesuré [] (attendu, section D314 : [])
+✓ clôture : fichiers hors des trois .md et docs/preuves/D314/ : mesuré [] (attendu, section D314 : [])
+  · parcouru : 139 fichiers à l'étape 0, 171 à la clôture
+✓ étape 0 poussée avant le relevé d'ouverture-1 (reflog local d'origin/main) : mesuré ('2026-09-26 14:34:20', '2026-09-26 14:35:30', True) (attendu, « commitée et poussée AVANT le relevé d'ouverture » : ('2026-09-26 14:34:20', '2026-09-26 14:35:30', True))
+✓ commits de la marque de D299 à a5a8c55, bornes incluses : mesuré 17 (attendu, bloc de l'étape 0 : 17)
+✓ ceux qui portent un fichier hors .md d'autorité et hors docs/preuves/ : mesuré ['3ac8749', 'b715943', 'd37ea64'] (attendu, bloc de l'étape 0 : ['3ac8749', 'b715943', 'd37ea64'])
+✓ leurs sujets nomment D305, D308, D312 : mesuré [True, True, True] (attendu, marque : [True, True, True])
+== 2. étape 0 : le plancher
+✓ état avant simulation : alim, node, chrome, RAM : mesuré ('SECTEUR', '0', '0', '6702') (attendu, bloc de l'étape 0 : ('SECTEUR', '0', '0', '6702'))
+✓ simulation : bras et défauts manqués : mesuré '0' (attendu, section D314 : '0')
+✓ énumération : harnais, autres : mesuré ('28', '26') (attendu, section D314 : ('28', '26'))
+✓ lignes de mesure lues (26 harnais × A, B) : mesuré 52 (attendu, section D314 : 52)
+✓ available-on sous A : s, code, ✓, cibles : mesuré (0.43, 0, 10, 10) (attendu, section D314 : (0.43, 0, 10, 10))
+✓ journey sous A : s, code, ✓, cibles : mesuré (0.36, 0, 7, 7) (attendu, section D314 : (0.36, 0, 7, 7))
+✓ « un ✗ par cible » sous A et B : mesuré ['404', 'horizon', 'maxprice'] (attendu, section D314 : ['404', 'horizon', 'maxprice'])
+✓ les autres : nombre, codes sous A et B : mesuré (21, [1, 2]) (attendu, section D314 : (21, [1, 2]))
+✓ reliquats .sauvegarde retirés (A, B) : mesuré {'act-plafonds': (2, 2), 'argon2': (1, 1), 'horloge': (1, 1)} (attendu, section D314 : {'act-plafonds': (2, 2), 'argon2': (1, 1), 'horloge': (1, 1)})
+✓ bras négatif argon2 sans cale : code, ✓, appels, s : mesuré ('0', '3', '0', '16.6') (attendu, section D314 : ('0', '3', '0', '16.6'))
+✓ plancher.txt : lignes P, table T : mesuré (26, 26) (attendu, section D314 : (26, 26))
+✓ P = 3 × T pour chaque campagne (recalculé) : mesuré [] (attendu, section D314 : [])
+✓ plancher le plus bas, le plus haut : mesuré (('budgets', 0.69), ('404', 43.89)) (attendu, section D314 : (('budgets', 0.69), ('404', 43.89)))
+✓ absolu : refus à D310 (recalculé) : mesuré ['argon2', 'booking-status', 'budgets', 'solid-s4', 'solid-s5a'] (attendu, « cinq », deriver-plancher-sortie : ['argon2', 'booking-status', 'budgets', 'solid-s4', 'solid-s5a'])
+✓ par cible : refus à D310 (recalculé) : mesuré ['s10b', 's11a', 'solid-s4', 'solid-s5a'] (attendu, « quatre » : ['s10b', 's11a', 'solid-s4', 'solid-s5a'])
+✓ racine du rapport réel / T le plus bas, K = 3 en dessous : mesuré (10.8, True) (attendu, « ≈ 10,8 » : (10.8, True))
+✓ campagnes de D310 sous leur plancher : mesuré [] (attendu, prédiction de l'étape 0 : [])
+✓ journaux de la simulation versés : mesuré 118 (attendu, « 118 journaux versés » : 118)
+✓ sim-A-available-on.log et sim-A-journey.log présents : mesuré True (attendu, backlog, reports de D314 : True)
+== 3. la passe : versement, sondes, arbre
+✓ pièces du dossier de la passe : total, produites après le versement : mesuré (160, 2) (attendu, « 158 … 2 » : (160, 2))
+✓ source sur disque : fichiers, refusés (e2e brut), versés identiques par SHA-256 (rejoué) : mesuré (159, ['e2e.log'], 158) (attendu, « 158 pièces relues identiques … journal e2e brut refusé » : (159, ['e2e.log'], 158))
+✓ pièces versées sans source (hors les deux produites après) : mesuré [] (attendu, section D314 : [])
+✓ porte dure : mesuré 'VERTE' (attendu, section D314 : 'VERTE')
+✓ relevés de sonde : mesuré 17 (attendu, « 17 relevés de sonde » : 17)
+✓ ouverture-1, ouverture-2 : médiane, bande : mesuré [(6394.0, 6347, 6434), (6440.0, 6419, 6506)] (attendu, RÉSULTAT (D314) : [(6394.0, 6347, 6434), (6440.0, 6419, 6506)])
+✓ tous : SECTEUR, node 0, chrome 0, barre 4579 : mesuré [('SECTEUR', '0', '0', 4579)] (attendu, section D314 : [('SECTEUR', '0', '0', 4579)])
+✓ tous : médiane ET bande basse au-dessus de la barre : mesuré [] (attendu, section D314 : [])
+✓ bande basse la plus basse : mesuré ('avant-int-solid-s6', 5969) (attendu, section D314 : ('avant-int-solid-s6', 5969))
+✓ calibration de la sonde d'ouverture : rendement : mesuré '0.95' (attendu, section D314 : '0.95')
+✓ arbre-1 : HEAD, lignes de statut : mesuré ('0057748', 0) (attendu, section D314 : ('0057748', 0))
+✓ arbre-2 : HEAD, lignes de statut : mesuré ('0057748', 0) (attendu, section D314 : ('0057748', 0))
+✓ arbre-3 : HEAD, lignes de statut : mesuré ('0057748', 0) (attendu, section D314 : ('0057748', 0))
+✓ arbre-4 : HEAD, lignes de statut : mesuré ('0057748', 0) (attendu, section D314 : ('0057748', 0))
+✓ arbre-5 : HEAD, lignes de statut : mesuré ('0057748', 0) (attendu, section D314 : ('0057748', 0))
+== 4. la table des portes
+✓ typecheck : code réel : mesuré '0' (attendu, section D314 : '0')
+✓ lint : code réel : mesuré '0' (attendu, section D314 : '0')
+✓ test : code réel : mesuré '0' (attendu, section D314 : '0')
+✓ build : code réel : mesuré '0' (attendu, section D314 : '0')
+✓ testint : code réel : mesuré '0' (attendu, section D314 : '0')
+✓ e2e : code réel : mesuré '0' (attendu, section D314 : '0')
+✓ campagnes-tout : code réel : mesuré '1' (attendu, section D314 : '1')
+✓ contre-epreuve : code réel : mesuré '0' (attendu, section D314 : '0')
+✓ typecheck : « Done », error TS : mesuré (8, 0) (attendu, section D314 : (8, 0))
+✓ lint : « Done » : mesuré 8 (attendu, section D314 : 8)
+✓ build : « Done » : mesuré 4 (attendu, section D314 : 4)
+✓ test : Tests / Test Files par paquet : mesuré [(664, 58), (36, 3), (287, 20), (347, 28)] (attendu, section D314 : [(664, 58), (36, 3), (287, 20), (347, 28)])
+✓ test:int : Tests, Test Files : mesuré (['443'], ['36']) (attendu, section D314 : (['443'], ['36']))
+✓ « fail » toute casse : test, test:int : mesuré (2, 1) (attendu, D275, RÉSULTAT (D314) : (2, 1))
+✓ « fail » de test : lignes ChargilyGateway : mesuré 2 (attendu, section D314 : 2)
+✓ « fail » de test:int : le nom d'un test vert (« passe FAILED ») : mesuré [(True, True)] (attendu, section D314 : [(True, True)])
+✓ FAIL casse exacte, ELIFECYCLE, timed out (six journaux de porte) : mesuré 0 (attendu, section D314 : 0)
+✓ e2e : lignes parcourues, attendu, gardées : mesuré ('822', '822', '38') (attendu, section D314 : ('822', '822', '38'))
+✓ e2e : résumé, Running : mesuré ("{'skipped': 1, 'passed': 34}", '35') (attendu, section D314 : ("{'skipped': 1, 'passed': 34}", '35'))
+✓ e2e : lignes « ok » gardées, « fail » du journal : mesuré (34, '0') (attendu, section D314 : (34, '0'))
+✓ --tout, ligne MESURÉ : mesuré ('198', '0', '13', '28', '2893') (attendu, section D314 : ('198', '0', '13', '28', '2893'))
+✓ --tout, table : lignes, Σ mordues, Σ non mesurées (recomptés) : mesuré (28, 198, 13) (attendu, section D314 : (28, 198, 13))
+✓ journaux de CETTE passe copiés : campagnes + rang23 + available-on-api : mesuré (28, 15, 30) (attendu, « 73 » : (28, 15, 30))
+✓ progression : copiés, antérieurs au début de --tout : mesuré ('73', '73', '0') (attendu, section D314 : ('73', '73', '0'))
+✓ --int ×6 : mordues, cibles, code : mesuré {'e3d1-s8': (8, 8, '0'), 's11b': (13, 13, '0'), 'solid-s1': (2, 2, '0'), 'solid-s2': (5, 5, '0'), 'solid-s3': (6, 6, '0'), 'solid-s6': (6, 6, '0')} (attendu, section D314 : {'e3d1-s8': (8, 8, '0'), 's11b': (13, 13, '0'), 'solid-s1': (2, 2, '0'), 'solid-s2': (5, 5, '0'), 'solid-s3': (6, 6, '0'), 'solid-s6': (6, 6, '0')})
+✓ --int : somme : mesuré 40 (attendu, section D314 : 40)
+✓ contre-épreuve : bras du pré-vol, mordues sur cibles : mesuré ('5', ('5', '5')) (attendu, section D314 : ('5', ('5', '5')))
+== 5. rang23 et available-on-api, relus par ma propre expression
+✓ rang23 : mesures, exécutés > 0, en échec > 0 : mesuré (13, 13, 13) (attendu, « 13 · 13 · 13 » : (13, 13, 13))
+  · rang23 : types d'erreur des blocs FAIL relus : ['AssertionError'] (la section ne les chiffre pas ; R1 exigerait AssertionError)
+✓ available-on-api : journaux, pré-vols : mesuré (30, 12) (attendu, section D314 : (30, 12))
+✓ available-on-api : 13 cibles en échec lu, types : mesuré (13, ['AssertionError']) (attendu, section D314 : (13, ['AssertionError']))
+== 6. point 12, étiquettes, échantillonneur
+✓ 26 campagnes : durée de SA passe ≥ plancher (recalculé) : mesuré (26, []) (attendu, « 26 au-dessus de leur plancher » : (26, []))
+✓ point 12, argon2 : durée, plancher : mesuré (16, 4.44) (attendu, « les plus serrés » : (16, 4.44))
+✓ point 12, booking-status : durée, plancher : mesuré (16, 4.44) (attendu, « les plus serrés » : (16, 4.44))
+✓ point 12, available-on : durée, plancher : mesuré (169, 36.51) (attendu, « les plus serrés » : (169, 36.51))
+✓ point 12, journey : durée, plancher : mesuré (227, 36.57) (attendu, « les plus serrés » : (227, 36.57))
+  · rapports durée / plancher, les six plus bas : [(3.6, 'argon2'), (3.6, 'booking-status'), (4.2, 'horizon'), (4.6, '404'), (4.6, 'available-on'), (4.6, 'maxprice')]
+  · rang de journey dans cet ordre : 7 sur 26 ; d'available-on : 5
+✓ lecture des campagnes : CERTIFIANT : mesuré ('211', '0', '0', '28', '28') (attendu, section D314 : ('211', '0', '0', '28', '28'))
+✓ étiquettes, somme recalculée : mesuré ([12, 13, 81, 105], 211) (attendu, décision 2c, D313 : ([12, 13, 81, 105], 211))
+✓ etat.csv : échantillons, alim, chrome max : mesuré (173, ['SECTEUR'], 0) (attendu, section D314 : (173, ['SECTEUR'], 0))
+✓ etat.csv : PERF > 100 : mesuré 154 (attendu, section D314 : 154)
+✓ etat.csv : sous la barre 4579, min RAM : mesuré (7, 3752) (attendu, point 7 : (7, 3752))
+✓ etat.csv : écarts au-delà de 60 s : mesuré 0 (attendu, « 0 trou » : 0)
+✓ creux dans la fenêtre de test:e2e : mesuré ['14:47:44', '14:48:15', '14:48:47'] (attendu, section D314 : ['14:47:44', '14:48:15', '14:48:47'])
+✓ fenêtre de b7 dérivée des durées cumulées de --tout : mesuré ('14:59:08', '15:02:40') (attendu, section D314 : ('14:59:08', '15:02:40'))
+✓ creux dans la fenêtre de b7 : mesuré ['14:59:51', '15:00:54', '15:01:26', '15:02:29'] (attendu, section D314 : ['14:59:51', '15:00:54', '15:01:26', '15:02:29'])
+✓ creux : node : mesuré [12, 13, 14] (attendu, « node 13 à 14 », « 12 à 13 » : [12, 13, 14])
+✓ « 0 valeur réelle » : valeurs, fichiers, porteurs : mesuré ('24', '1913', '0') (attendu, section D314 : ('24', '1913', '0'))
+== 7. audits de secrets et contrôle de forme Chargily
+✓ audit de l'étape 0 : alertes : mesuré '123' (attendu, section D314 : '123')
+✓ audit scellé de clôture : parcourus, audités, exclus, alertes : mesuré ('1839', '1781', '58', '124') (attendu, section D314 : ('1839', '1781', '58', '124'))
+  · audit final : parcourus, audités, exclus, alertes = ('1841', '1782', '59', '124') (la section ne les chiffre pas)
+  · audit final contre audit de clôture : 124 et 124 contextes, identiques (numéros de ligne retirés) : True
+✓ tri : neuves, et sa cible : mesuré ('1', True) (attendu, section D314 : ('1', True))
+✓ la ligne 721 de l'audit pointe testint.log:255, un titre de test « forgot-password » : mesuré (True, True, True) (attendu, « un mot, pas une valeur » : (True, True, True))
+✓ Chargily (controle-forme-chargily-cloture.txt) : parcourus, porteurs : mesuré ('306', '0') (attendu, section D314 : ('306', '0'))
+  · Chargily à l'étape 0 : parcourus, porteurs = ('141', '0')
+== 8. passe D277
+✓ balayage.py : SHA-256 préfixe, et égal à celui de D313 : mesuré ('24802faf', True) (attendu, section D314 : ('24802faf', True))
+✓ motifs, témoins : mesuré (15, 2) (attendu, section D314 : (15, 2))
+✓ balayage-1.txt : occurrences, motifs à zéro : mesuré ('115', '0') (attendu, section D314 : ('115', '0'))
+✓ balayage-1.txt : calibration T+, T- : mesuré ('20', '0') (attendu, section D314 : ('20', '0'))
+✓ balayage-apres-ecriture.txt : occurrences, motifs à zéro : mesuré ('133', '0') (attendu, section D314 : ('133', '0'))
+✓ balayage-apres-ecriture.txt : calibration T+, T- : mesuré ('20', '0') (attendu, section D314 : ('20', '0'))
+✗ corpus aplati : 0057748 = HEAD de balayage-1 ; ffd32e9 = arbre de balayage-après : mesuré (1769213, 1793451) (attendu, en-têtes des deux balayages : (1769213, 1791680))
+✗ différence totale : mesuré 21 (attendu, section D314 : 18)
+✗ dans la section D314, dans la ligne du registre : mesuré (14, 1) (attendu, section D314 : (11, 1))
+  · section D314, « RESTE LA CERTIFICATION » sous « ### D314 — passe D277, les deux sens *… » : …i **à la main**. **Sens 1 — ce que la marque invalide** : « RESTE LA CERTIFICATION, QUI CLÔT LE RANG…
+  · section D314, « reste la certification » sous « ### D314 — passe D277, les deux sens *… » : …F1, F5 : **closes** ; reports de D308 : **annotés**) ; « il reste la certification » (`AGENTS.md`, r…
+  · section D314, « CE QUI VIENT ENSUITE : LA CERTIFICATION » sous « ### D314 — passe D277, les deux sens *… » : … RANG » (titre du point d'entrée : **barré**, « CLOS ») ; « CE QUI VIENT ENSUITE : LA CERTIFICATION …
+  · section D314, « compteur TROIS » sous « ### D314 — passe D277, les deux sens *… » : …S.md`, règle de D270 : **suivie** de l'annotation D314) ; « compteur TROIS » (lignes D312, D313 de l…
+  · section D314, « ne commence pas » sous « ### D314 — passe D277, les deux sens *… » : …l'ordre : **suivies** d'une annotation D314) ; « la pause … ne commence pas » (ligne D310 de l'ordre…
+  · section D314, « jusqu'à la certification » sous « ### D314 — passe D277, les deux sens *… » : … backlog : **annotés**, elle commence) ; « restent ouvertes jusqu'à la certification » (F1, F5 : **c…
+  · section D314, « elle clôt le rang 23 » sous « ### D314 — passe D277, les deux sens *… » : … CLOS ») ; « CE QUI VIENT ENSUITE : LA CERTIFICATION » et « elle clôt le rang 23 » (annotations D312…
+  · section D314, « de quelque rang que ce soit » sous « ### D314 — passe D277, les deux sens *… » : …les écritures de clôture faites après la première passe — « de quelque rang que ce soit » (1), « auc…
+  · section D314, « de quelque rang que ce soit » sous « ### D314 — passe D277, les deux sens *… » : … CHEMIN DE L'ARGENT.** Les annotations « aucun lot de code, de quelque rang que ce soit, ne s'ouvre …
+  · section D314, « aucun lot de code » sous « ### D314 — passe D277, les deux sens *… » : … la première passe — « de quelque rang que ce soit » (1), « aucun lot de code » (3), « compteur à ZÉ…
+  · section D314, « aucun lot de code » sous « ### D314 — passe D277, les deux sens *… » : …le rang 24, HORS DU CHEMIN DE L'ARGENT.** Les annotations « aucun lot de code, de quelque rang que c…
+  · section D314, « compteur à ZÉRO » sous « ### D314 — passe D277, les deux sens *… » : …uelque rang que ce soit » (1), « aucun lot de code » (3), « compteur à ZÉRO » (2 : sous le rang 24 e…
+  · section D314, « compteur à ZÉRO » sous « ### D314 — passe D277, les deux sens *… » : … : le bloquant de R1, 23b, 23c et E3, **toujours vrai** ; « compteur à ZÉRO » (22) : mentions datées…
+  · section D314, « reprise du chemin de l'argent » sous « ### D314 — passe D277, les deux sens *… » : …s elles — **sauf** pour le chemin de l'argent, en pause ; « reprise du chemin de l'argent » (18 occu…
+✓ écritures de clôture hors section et registre, par motif : mesuré {'de quelque rang que ce soit': 1, 'aucun lot de code': 3, 'compteur à ZÉRO': 2} (attendu, section D314 : {'de quelque rang que ce soit': 1, 'aucun lot de code': 3, 'compteur à ZÉRO': 2})
+== 9. écritures de D314, relues dans les fichiers à ffd32e9
+✓ titre du point d'entrée : « CLOS LE 26/09/2026 : D314 » : mesuré True (attendu, section D314 : True)
+✓ ordre des rangs : ligne D314 : mesuré True (attendu, section D314 : True)
+✓ sous le rang 24 : annotation D314 (permission, hors chemin de l'argent) : mesuré True (attendu, section D314 : True)
+✓ dernière ligne « ⇒ RANG N » de l'ordre : RANG 24 EN ATTENTE : mesuré 1 (attendu, section D314 : 1)
+✓ registre : ligne D314, dernière ligne : mesuré True (attendu, section D314 : True)
+✓ AGENTS.md : deux annotations D314 (règle de D270, point E3) : mesuré (True, True) (attendu, section D314 : (True, True))
+✓ backlog : F1 et F5, ouvertes à l'étape 0, closes à la clôture : mesuré ((' ', ' '), ('x', 'x')) (attendu, section D314 : ((' ', ' '), ('x', 'x')))
+✓ backlog : section des reports de D314 : mesuré True (attendu, section D314 : True)
+✓ reports de D314 : entrées ouvertes, chacune avec BLOQUE et COÛT (forme de D302) : mesuré [True, True] (attendu, section D314 : [True, True])
+  · « D314 » dans le backlog aplati : 12 occurrences (reports de D314 compris) — parcouru
+== 10. lignes supprimées par la clôture : leur texte survit-il ?
+✓ calibration, bras positif : un mot retiré est vu : mesuré 'reste' (attendu, cas connu : 'reste')
+✓ calibration, bras négatif : barré + annotation insérée au milieu, rien de perdu : mesuré '' (attendu, cas connu : '')
+  · parcouru : 15 lignes supprimées
+✓ lignes supprimées dont le texte (hors ~~) ne survit pas dans le même bloc : mesuré [] (attendu, D276 : barré, pas effacé : [])
+✓ lignes supprimées dans une section DATÉE de ZWADJ_CONTINUITE.md : mesuré [] (attendu, « aucune section datée réécrite » : [])
+
+117 contrôles · 3 écart(s) (attendu : ce que la lecture trouve — chaque ✗ se lit à son contexte)

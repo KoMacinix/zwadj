@@ -1,0 +1,20 @@
+extraction : 146 renvois · table : 146 lignes, 146 renvois distincts
+absents de la table : [] (attendu [])
+absents de l'extraction : [] (attendu [])
+en double : [] (attendu [])
+calibration (+) B:356 → 'ABSENT' (attendu 'ABSENT') · (−) B:830 → 'RÉALISÉ' (attendu autre que 'ABSENT')
+
+ventilation par verdict :
+  RÉALISÉ AUTREMENT    2
+  RÉALISÉ              62
+  PARTIEL              25
+  CASSÉ À L'ÉCRAN      2
+  ABSENT               35
+  PAUSE                10
+  BIENTÔT              2
+  ÉCARTÉ               3
+  DÉCISION OUVERTE     2
+  NON CONFRONTÉ        2
+  périmée              1
+  verdicts INCONNUS : {} (attendu {})
+  total 146 (attendu 146)

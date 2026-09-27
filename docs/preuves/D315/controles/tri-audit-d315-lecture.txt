@@ -1,0 +1,16 @@
+D315 — TRI À LA MAIN des alertes neuves de l'audit scellé (règle de D299 : toute alerte absente de la sortie scellée
+précédente se trie au contexte avant le commit). Aucun contexte n'est recopié ici : renvoi aux lignes de la sortie scellée.
+
+Sortie scellée précédente : docs/preuves/D314/audit-secrets-final.txt (124 contextes).
+Nouvelle : docs/preuves/D315/audit-secrets-d315.txt (127 contextes). Tri mécanique : controles/tri-audit-d315.txt → 3 neuves.
+
+1. [mot-de-passe] captures/captures.spec.ts:80 — ligne 727 de la sortie : le champ `password` du corps de connexion reçoit
+   une PROPRIÉTÉ (15 caractères masqués = le nom de la propriété du compte de fixture), pas une valeur. MOT.
+2. [mot-de-passe] mesures/mesurer-deletion-request.py:21 — ligne 729 : l'expression qui LIT la constante de mot de passe
+   de fixture dans `e2e/fixtures/harness.ts` (fichier suivi depuis août) ; les 3 caractères masqués sont un fragment de
+   l'expression, pas la valeur. MOT.
+3. [mot-de-passe] mesures/mesurer-deletion-request.py:36 — ligne 731 : le champ `password` reçoit une VARIABLE
+   (3 caractères masqués = son nom). MOT.
+
+⇒ 3 neuves, 0 valeur. La valeur de fixture elle-même n'est écrite dans aucune pièce de D315 : le script de mesure la lit
+  à l'exécution, et le script de captures passe par le harnais.

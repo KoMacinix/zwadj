@@ -607,6 +607,8 @@ reviendra à moi.** » ⇒ *Dérivé par la session* : elle est **consommée** p
 certification, sans aucun autre lot de code avant elle.)*
 ⛔ *(D314, 26/09/2026 : **certification PASSÉE** — marque posée, D305, D308 et D312 en font partie ; **compteur à ZÉRO** ;
 rang 23 clos ; le rang 24 attend l'arbitrage de Ko.)*
+⛔ *(D315, 26/09/2026 : rang 24 **arbitré par Ko — documentaire**, clos le même jour ; il n'ouvre aucun lot de code ; **compteur
+ZÉRO, inchangé** ; **rang 25 : en attente d'arbitrage de Ko**.)*
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -981,6 +983,9 @@ d'être livré et mesuré, et la table du registre pour le dernier numéro de d�
 est sa dernière ligne « ⇒ RANG N ». « PROCHAIN LOT » dit **OÙ EN EST** un rang, pas **lequel**
 vient (D283 : deux questions, deux endroits). ⛔ *Pointeur AJOUTÉ le 23/09/2026 (D302, consigne de
 Ko) : ce bloc ne le nommait pas — relevé par D301 ; aucun pointeur retiré.*
+⇒ **ET L'ÉTAT DU PRODUIT, parcours par parcours : une PIÈCE DATÉE**, jamais une table ici (rang 24, D315, arbitrage de Ko :
+« un état se périme ») — `docs/preuves/D315/etat-produit/ETAT-PRODUIT.md`, relevé au 26/09/2026 sur `ffd32e9`, **périmé au
+premier lot de code**. ⛔ *Pointeur AJOUTÉ le 26/09/2026 (D315).*
 
 | Lot | Objet | État |
 |---|---|---|

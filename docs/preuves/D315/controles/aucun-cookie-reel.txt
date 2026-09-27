@@ -1,0 +1,5 @@
+✓ captures-console.log : valeurs strictes 21 · larges 21 (doivent s'accorder)
+  calibration : positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ api-mesure.log : valeurs strictes 1 · larges 1 (doivent s'accorder)
+  calibration : positif 1 (attendu 1) · négatif 0 (attendu 0)
+== valeurs cherchées : 22 (2 journal/journaux) · parcourus : 1999 fichiers, 20268822 octets · porteurs : 0 (attendu 0)

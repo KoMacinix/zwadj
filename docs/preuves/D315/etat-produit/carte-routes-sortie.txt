@@ -1,0 +1,144 @@
+HEAD : ffd32e9 · fichiers suivis parcourus : 2391
+
+== 1. apps/client — pages (App Router)
+  /[locale]/[...rest]                            ← apps/client/src/app/[locale]/[...rest]/page.tsx
+  /[locale]/assistant                            ← apps/client/src/app/[locale]/assistant/page.tsx
+  /[locale]/auth/connexion                       ← apps/client/src/app/[locale]/auth/connexion/page.tsx
+  /[locale]/auth/inscription                     ← apps/client/src/app/[locale]/auth/inscription/page.tsx
+  /[locale]/auth/mot-de-passe-oublie             ← apps/client/src/app/[locale]/auth/mot-de-passe-oublie/page.tsx
+  /[locale]/auth/reinitialisation                ← apps/client/src/app/[locale]/auth/reinitialisation/page.tsx
+  /[locale]/auth/verification-email              ← apps/client/src/app/[locale]/auth/verification-email/page.tsx
+  /[locale]/cgu                                  ← apps/client/src/app/[locale]/cgu/page.tsx
+  /[locale]/compte                               ← apps/client/src/app/[locale]/compte/page.tsx
+  /[locale]/confidentialite                      ← apps/client/src/app/[locale]/confidentialite/page.tsx
+  /[locale]                                      ← apps/client/src/app/[locale]/page.tsx
+  /[locale]/salles                               ← apps/client/src/app/[locale]/salles/(recherche)/page.tsx
+  /[locale]/salles/[slug]                        ← apps/client/src/app/[locale]/salles/[slug]/page.tsx
+  parcouru : 13 page(s)
+  (spécial) apps/client/src/app/[locale]/layout.tsx
+  (spécial) apps/client/src/app/[locale]/not-found.tsx
+  (spécial) apps/client/src/app/[locale]/salles/(recherche)/loading.tsx
+  (spécial) apps/client/src/app/not-found.tsx
+
+== 2. apps/pro — routes (src/App.tsx)
+  /auth/connexion              garde RedirectIfSession  écran LoginPage
+  /auth/inscription            garde RedirectIfSession  écran RegisterPage
+  /auth/mot-de-passe-oublie    garde RedirectIfSession  écran ForgotPage
+  /auth/reinitialisation       garde aucune             écran ResetPage
+  /auth/verification-email     garde aucune             écran VerifyEmailPage
+  /                            garde RequireProSession  écran DashboardPage
+  /demandes                    garde RequireProSession  écran RequestsPage
+  /calendrier                  garde RequireProSession  écran CalendarPage
+  /reservations                garde RequireProSession  écran BookingsPage
+  /compte                      garde RequireProSession  écran AccountSettingsPage
+  /salles                      garde RequireProSession  écran VenueListPage
+  /salles/nouvelle             garde RequireProSession  écran CreateVenuePage
+  /salles/:id                  garde RequireProSession  écran EditVenuePage
+  *                            garde aucune             écran Navigate
+  parcouru : 14 route(s)
+
+== 3. apps/api — routes HTTP (préfixe api/v1)
+  -- AccountAdminController (apps/api/src/account/account-admin.controller.ts) : @Controller("admin/deletion-requests"), rôle de classe UserRole.ADMIN
+     GET    /api/v1/admin/deletion-requests                                 UserRole.ADMIN               list
+     POST   /api/v1/admin/deletion-requests/:id/approve                     UserRole.ADMIN               approve
+     POST   /api/v1/admin/deletion-requests/:id/reject                      UserRole.ADMIN               reject
+  -- AccountPublicController (apps/api/src/account/account-public.controller.ts) : @Controller("auth"), rôle de classe —
+     GET    /api/v1/auth/confirm-email-change/:token                        PUBLIC                       confirm
+  -- AccountController (apps/api/src/account/account.controller.ts) : @Controller("me"), rôle de classe —
+     PATCH  /api/v1/me/profile                                              authentifié, sans @Roles     updateProfile
+     POST   /api/v1/me/change-email                                         authentifié, sans @Roles     changeEmail
+     POST   /api/v1/me/change-password                                      authentifié, sans @Roles     changePassword
+     GET    /api/v1/me/deletion-request                                     authentifié, sans @Roles     getDeletionRequest
+     POST   /api/v1/me/deletion-request                                     authentifié, sans @Roles     requestDeletion
+     POST   /api/v1/me/deletion-request/cancel                              authentifié, sans @Roles     cancelDeletion
+  -- AuthController (apps/api/src/auth/auth.controller.ts) : @Controller("auth"), rôle de classe —
+     POST   /api/v1/auth/register                                           PUBLIC                       register
+     GET    /api/v1/auth/verify-email/:token                                PUBLIC                       verifyEmail
+     POST   /api/v1/auth/resend-verification                                PUBLIC                       resend
+     POST   /api/v1/auth/login                                              PUBLIC                       login
+     POST   /api/v1/auth/google                                             PUBLIC                       google
+     GET    /api/v1/auth/me                                                 authentifié, sans @Roles     me
+     POST   /api/v1/auth/forgot-password                                    PUBLIC                       forgotPassword
+     POST   /api/v1/auth/reset-password                                     PUBLIC                       resetPassword
+     POST   /api/v1/auth/refresh                                            PUBLIC                       refresh
+     POST   /api/v1/auth/logout                                             PUBLIC                       logout
+  -- HealthController (apps/api/src/health/health.controller.ts) : @Controller("health"), rôle de classe — · @Public
+     GET    /api/v1/health                                                  PUBLIC                       health
+  -- MediaController (apps/api/src/media/media.controller.ts) : @Controller("media"), rôle de classe — · @Public
+     GET    /api/v1/media/:key                                              PUBLIC                       serve
+  -- ReferentialsController (apps/api/src/referentials/referentials.controller.ts) : @Controller(""), rôle de classe — · @Public
+     GET    /api/v1/wilayas                                                 PUBLIC                       listWilayas
+     GET    /api/v1/amenities                                               PUBLIC                       listAmenities
+     GET    /api/v1/venue-styles                                            PUBLIC                       listVenueStyles
+  -- AvailabilityBlocksController (apps/api/src/venues/availability-blocks.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     GET    /api/v1/pro/venues/:id/availability-blocks                      UserRole.PRO                 list
+     POST   /api/v1/venues/:id/availability-blocks                          UserRole.PRO                 create
+     DELETE /api/v1/venues/:id/availability-blocks/:blockId                 UserRole.PRO                 remove
+  -- AvailabilityController (apps/api/src/venues/availability.controller.ts) : @Controller("venues"), rôle de classe — · @Public
+     GET    /api/v1/venues/:slug/availability                               PUBLIC                       bySlug
+     GET    /api/v1/venues/:id/availability                                 UserRole.PRO                 byId
+  -- BookingsProController (apps/api/src/venues/bookings-pro.controller.ts) : @Controller("pro"), rôle de classe UserRole.PRO
+     GET    /api/v1/pro/venues/:id/bookings                                 UserRole.PRO                 listForVenue
+     POST   /api/v1/pro/bookings/:id/accept                                 UserRole.PRO                 accept
+     POST   /api/v1/pro/bookings/:id/decline                                UserRole.PRO                 decline
+     POST   /api/v1/pro/bookings/:id/cancel                                 UserRole.PRO                 cancel
+  -- BookingsController (apps/api/src/venues/bookings.controller.ts) : @Controller(""), rôle de classe UserRole.CLIENT
+     POST   /api/v1/venues/:slug/bookings                                   UserRole.CLIENT              create
+     GET    /api/v1/me/bookings                                             UserRole.CLIENT              listMine
+     DELETE /api/v1/bookings/:id                                            UserRole.CLIENT              cancel
+  -- PricingRulesController (apps/api/src/venues/pricing-rules.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     POST   /api/v1/venues/:id/slot-templates/:slotId/pricing-rules         UserRole.PRO                 create
+     PATCH  /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId UserRole.PRO                 update
+     DELETE /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId UserRole.PRO                 remove
+  -- QuotesController (apps/api/src/venues/quotes.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     GET    /api/v1/pro/venues/:id/quotes                                   UserRole.PRO                 list
+     GET    /api/v1/pro/venues/:id/quotes/conversion                        UserRole.PRO                 conversion
+     POST   /api/v1/venues/:id/quotes                                       UserRole.PRO                 create
+     POST   /api/v1/quotes/:id/deliver                                      UserRole.PRO                 deliver
+     POST   /api/v1/quotes/:id/revise                                       UserRole.PRO                 revise
+     POST   /api/v1/quotes/:id/convert                                      UserRole.PRO                 convert
+     POST   /api/v1/quotes/:id/cancel                                       UserRole.PRO                 cancel
+  -- ServicesController (apps/api/src/venues/services.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     GET    /api/v1/pro/venues/:id/services                                 UserRole.PRO                 list
+     POST   /api/v1/venues/:id/services                                     UserRole.PRO                 create
+     PATCH  /api/v1/services/:id                                            UserRole.PRO                 update
+     DELETE /api/v1/services/:id                                            UserRole.PRO                 remove
+  -- SlotTemplatesController (apps/api/src/venues/slot-templates.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     POST   /api/v1/venues/:id/slot-templates                               UserRole.PRO                 create
+     PATCH  /api/v1/venues/:id/slot-templates/:slotId                       UserRole.PRO                 update
+     DELETE /api/v1/venues/:id/slot-templates/:slotId                       UserRole.PRO                 remove
+  -- VenueMediaController (apps/api/src/venues/venue-media.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     POST   /api/v1/venues/:id/photos                                       UserRole.PRO                 addPhoto
+     PATCH  /api/v1/venues/:id/photos/order                                 UserRole.PRO                 reorder
+     PATCH  /api/v1/venues/:id/photos/:photoId                              UserRole.PRO                 updateAlt
+     DELETE /api/v1/venues/:id/photos/:photoId                              UserRole.PRO                 removePhoto
+     PATCH  /api/v1/venues/:id/virtual-tour                                 UserRole.PRO                 updateVirtualTour
+  -- VenuesAdminController (apps/api/src/venues/venues-admin.controller.ts) : @Controller("admin/venues"), rôle de classe UserRole.ADMIN
+     POST   /api/v1/admin/venues/:id/publish                                UserRole.ADMIN               publish
+     PATCH  /api/v1/admin/venues/:id/commission-rate                        UserRole.ADMIN               setRates
+  -- VenuesPublicController (apps/api/src/venues/venues-public.controller.ts) : @Controller("venues"), rôle de classe — · @Public
+     GET    /api/v1/venues                                                  PUBLIC                       list
+     GET    /api/v1/venues/:slug                                            PUBLIC                       bySlug
+  -- VenuesController (apps/api/src/venues/venues.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     POST   /api/v1/venues                                                  UserRole.PRO                 create
+     GET    /api/v1/pro/venues                                              UserRole.PRO                 listMine
+     GET    /api/v1/pro/venues/:id                                          UserRole.PRO                 getMine
+     PATCH  /api/v1/venues/:id                                              UserRole.PRO                 update
+     DELETE /api/v1/venues/:id                                              UserRole.PRO                 remove
+  -- VisitAvailabilitiesController (apps/api/src/venues/visit-availabilities.controller.ts) : @Controller(""), rôle de classe UserRole.PRO
+     GET    /api/v1/pro/venues/:id/visit-availabilities                     UserRole.PRO                 list
+     POST   /api/v1/venues/:id/visit-availabilities                         UserRole.PRO                 create
+     PATCH  /api/v1/venues/:id/visit-availabilities/:availabilityId         UserRole.PRO                 update
+     DELETE /api/v1/venues/:id/visit-availabilities/:availabilityId         UserRole.PRO                 remove
+  -- VisitBookingsController (apps/api/src/venues/visit-bookings.controller.ts) : @Controller(""), rôle de classe UserRole.CLIENT
+     POST   /api/v1/venues/:slug/visit-bookings                             UserRole.CLIENT              create
+     GET    /api/v1/me/visit-bookings                                       UserRole.CLIENT              listMine
+     DELETE /api/v1/visit-bookings/:id                                      UserRole.CLIENT              cancel
+     GET    /api/v1/pro/venues/:id/visit-bookings                           UserRole.PRO                 listForVenue
+     DELETE /api/v1/pro/venues/:id/visit-bookings/:bookingId                UserRole.PRO                 cancelAsPro
+  -- VisitSlotsController (apps/api/src/venues/visit-slots.controller.ts) : @Controller("venues"), rôle de classe — · @Public
+     GET    /api/v1/venues/:slug/visit-slots                                PUBLIC                       bySlug
+  parcouru : 22 contrôleur(s), 78 route(s)
+
+calibration (+) POST /api/v1/admin/venues/:id/publish en ADMIN : ✓
+calibration (+) GET /api/v1/pro/venues/:id/visit-bookings en PRO — `@Roles` posé après `@Get`, le cas qui a mordu : ✓

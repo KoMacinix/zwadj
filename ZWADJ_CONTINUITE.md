@@ -1228,8 +1228,9 @@ homogène — **exactement la prédiction**. **Marque** : « Portes vertes AU RE
 partie ». ⇒ **Compteur TROIS → ZÉRO** ; l'exception de D311 est **consommée** ; **la pause du chemin de l'argent COMMENCE**
 (D307) — R1, 23b, 23c et E3 attendent le rang de reprise que Ko arbitrera. ⇒ **Où il en est** : point d'entrée du rang 23,
 bloc de clôture ; section D314.
-⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
-23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
+⇒ ~~**RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang
+23, pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⛔ *(D315 : **arbitré par Ko le 26/09/2026** — ligne
+« ARBITRÉ LE 26/09/2026 PAR KO — le RANG 24 », après l'annotation D314 ci-dessous.)* ⚠ **Une permission n'est pas un arbitrage.** ⚠ **Le
 cadrage du rang 23 ne rend PERMIS aucun lot de code** : ses sous-lots attendent le découpage de Ko, la décision du
 relecteur (chat) sur le cadrage, et un rang arbitré (D302). ⛔ *(D304, 24/09/2026 — passe D277, sens 2 : deux des
 trois conditions sont LEVÉES — le découpage et le rang, par l'arbitrage ci-dessus. La troisième TIENT : **23a attend
@@ -1269,6 +1270,33 @@ code **PEUT** s'ouvrir — **dès que Ko arbitre le rang 24**, et **hors du chem
 annotations « aucun lot de code, de quelque rang que ce soit, ne s'ouvre » ci-dessus (D308, D310, D311, D312, D313) sont
 **levées** par cette marque — **sauf** pour le chemin de l'argent. ⚠ **Une permission n'est pas un arbitrage.** ⇒ **RANG 24 :
 EN ATTENTE D'ARBITRAGE DE KO.**)*
+⛔ **ARBITRÉ LE 26/09/2026 PAR KO — le RANG 24, mot pour mot : « Rang 24 : l'état du produit, parcours par parcours. Lot
+documentaire : l'état écrit et prouvé, sans classement. L'ordre des lots suivants sera proposé par le relecteur et arbitré
+par moi. »** Lot D315. ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de Ko** (patron de D295) : la session a reçu
+l'arbitrage, elle ne se l'est pas attribué.
+⇒ **Documentaire** (`.md` d'autorité et `docs/preuves/` seulement) : il ne compte pas dans les deux/trois (D283, amendé par
+D292) — **compteur de lots de code non certifiés : ZÉRO, inchangé.** ⚠ *Dérivé par la session — passe D277, sens 2* : le rang
+24 est arbitré **documentaire** ; la permission de l'annotation D314 ci-dessus (« un lot de code **PEUT** s'ouvrir — dès que
+Ko arbitre le rang 24 ») **ne s'exerce pas par lui** : il n'ouvre aucun lot de code. Le prochain lot de code est un rang que
+Ko arbitrera, et le chemin de l'argent reste en pause.
+⇒ **Ce qu'il produit** (Ko) : une **PIÈCE DATÉE**, « pas une liste dans un fichier d'autorité, parce qu'un état se
+périme » — `docs/preuves/D315/etat-produit/` ; les fichiers d'autorité n'en reçoivent qu'un **résumé** et le **renvoi**.
+⇒ **Où il en est** : section « PROCHAIN LOT — rang 24 » en tête de ce fichier.
+⛔ **(D315, 26/09/2026) RANG 24 CLOS — L'ÉTAT DU PRODUIT, ÉCRIT ET PROUVÉ, SANS CLASSEMENT.** Pièce datée :
+`docs/preuves/D315/etat-produit/ETAT-PRODUIT.md` (et `ENTREES-CONFRONTEES.md`, captures, mesures). **Résumé** : carte relevée
+dans le code (client 13 pages, pro 14 routes, API 78 routes dans 22 contrôleurs ; **aucune route de paiement, aucun écran
+d'administration**) ; **trois défauts MESURÉS**, neufs au backlog — le panneau de demande de réservation ne propose **aucune
+date** (fenêtre de 182 jours refusée en 400 : **aucune demande ne part de l'écran**, l'API l'accepte), son lien de connexion
+mène à une **404**, et la section de suppression de compte est **en erreur dans les deux applications** (corps vide) ;
+**aucune spec e2e n'exerce un parcours fonctionnel** ; 146 entrées ouvertes des phases de parcours confrontées au code, dont
+**62 réalisées et ouvertes à tort** ; déploiement : e-mail et WhatsApp sur journal de dev, ni Dockerfile ni CI, ni robots ni
+sitemap, CGU vides, **aucune relecture humaine de l'arabe tracée** ; 46 captures (3 184 910 octets). Lecture adverse de D314 :
+**117 contrôles, un écart** (section D315). **Documentaire : compteur de lots de code non certifiés ZÉRO, inchangé.** ⇒ **Où
+il en est** : clos — point d'entrée du rang 24 ; section D315. ⇒ La ligne du rang 25, ci-dessous, a été écrite à l'ouverture ;
+**elle est toujours vraie.**
+⇒ **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 24, sur
+consigne de Ko. ⚠ **Une permission n'est pas un arbitrage** ; ⚠ l'ordre des lots suivants « sera proposé par le relecteur
+et arbitré par [Ko] » (arbitrage du rang 24) — la session ne le propose pas.
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1356,6 +1384,48 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## ~~PROCHAIN LOT~~ — rang 24 · `[DOC]` **l'état du produit, parcours par parcours** ⛔ ~~**OUVERT LE 26/09/2026 : D315**~~ ⛔ **CLOS LE 26/09/2026 : D315**
+
+### ⛔ CLÔTURE DU 26/09/2026 (D315) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **OUVERT, ARBITRÉ ET CLOS LE 26/09/2026, DANS LA SESSION DE LA REPRISE À FROID, SUR ORDRE DE KO** — arbitrage écrit en
+**première** ligne dans l'ordre des rangs, mot pour mot : « Rang 24 : l'état du produit, parcours par parcours. Lot
+documentaire : l'état écrit et prouvé, sans classement. L'ordre des lots suivants sera proposé par le relecteur et arbitré
+par moi. » ⇒ **QUEL lot : rang 24 de l'ordre des rangs. OÙ IL EN EST : clos, ici.** Titre barré à la clôture (patron de
+D302) ; ce bloc est son rafraîchissement de clôture (règle de D294).
+⛔ **L'ÉTAT NE VIT PAS ICI : il vit dans une PIÈCE DATÉE** (Ko : « un état se périme ») —
+`docs/preuves/D315/etat-produit/ETAT-PRODUIT.md`, au commit `ffd32e9`, **périmée au premier lot de code**. Ici, le résumé :
+- **Client** : accueil, recherche, fiche salle, prise de visite, suivi — **fonctionnent** ; ⛔ **la DEMANDE DE RÉSERVATION est
+  CASSÉE À L'ÉCRAN** — mesuré : le panneau demande 182 jours, le contrat en refuse plus de 92 (D147), la réponse 400 devient
+  « aucune date », rien n'est sélectionnable ; l'API, elle, accepte la demande. Son lien « se connecter pour demander » mène à
+  une **404**. Paiement de l'acompte : **pause**. Expiration : **absente**.
+- **Pro** : salles (assistant en 7 étapes), demandes, calendrier, réservations — **fonctionnent** ; devis **partiels** (seul le
+  parcours « client sur place » ; l'écran des devis existants n'est plus monté) ; le pro **ne peut pas publier**.
+- **Admin** : **aucun écran** ; publier, taux de commission, demandes de suppression — **par l'API** ; aucun chemin du produit
+  ne crée un ADMIN.
+- **Les deux applications** : la section de suppression de compte est **en erreur pour tout compte sans demande** — mesuré
+  (`GET /me/deletion-request` rend un 200 vide, le client HTTP lève) ; la demande de suppression (D37) n'est proposée à
+  personne.
+- **Preuves** : **aucune spec e2e n'exerce un parcours fonctionnel** ; la fiche salle n'est chargée par aucune ; le test du
+  panneau de demande a un double de `fetch` qui répond `ok` quelle que soit l'URL.
+- **Déploiement** : e-mail et WhatsApp sur journal de dev (rien ne part), pas de file de tâches, stockage disque, ni
+  Dockerfile ni CI, en-têtes de sécurité absents, Swagger monté sans condition, ni robots ni sitemap ni hreflang, CGU et
+  confidentialité vides, **aucune relecture humaine de l'arabe tracée**.
+- **Backlog** : 146 entrées ouvertes des phases de parcours confrontées au code (`ENTREES-CONFRONTEES.md`) — **62 réalisées
+  et ouvertes à tort** ; leur sort, et l'ordre des défauts neufs, sont à Ko (reports de D315).
+⇒ **Chemin de l'argent** : chaque étape porte sa classe (branches 1 à 6) ; les défauts du panneau de demande touchent un
+**fichier sur la carte** (`booking-request-panel.tsx`, branche 1) — la ligne fautive ne calcule aucun montant : **à trancher
+par le relecteur**, et **pendant la pause, ne s'ouvre pas sans Ko**.
+⇒ **DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement — exemption D292) : **compteur de lots de code non certifiés :
+ZÉRO, inchangé.** Aucune porte lancée : aucun code n'a changé. Les serveurs de développement ont tourné pour les captures et
+deux mesures, sur la base `zwadj_e2e`.
+⇒ **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**.
+⚠ **Une permission n'est pas un arbitrage** ; l'ordre des lots suivants « sera proposé par le relecteur et arbitré par [Ko] ».
+⚠ **DÉCISIONS DUES À KO** (détail : pièce, § 3.2) : rang 25 ; reprise du chemin de l'argent ; étiquettes P0-P3 ; remise ou
+cashback (B:1801) ; fournisseur WhatsApp ; énumération par `EMAIL_ALREADY_USED` ; conservation des contacts après
+anonymisation ; `THROTTLE_*` contre D128 ; structure des 404 ; **et le sort des 62 entrées réalisées mais ouvertes**.
+Détail, lecture adverse, fautes et limites : section D315.
+
 ## ~~PROCHAIN LOT~~ — rang 23 · `[API]` **les transitions atomiques de la réservation et du devis — audit SOLID 09/09 · F1, F2, F5, F6** ⛔ **OUVERT LE 23/09/2026 (D303) — CADRAGE ÉCRIT ; ORDRE DES SOUS-LOTS ARBITRÉ LE 24/09/2026 (D304) ; ~~23a ATTEND LE RELECTEUR ; AUCUNE LIGNE DE CODE~~ ⛔ 23a CODÉ LE 25/09/2026 (D305) — ~~ATTEND LA SESSION ADVERSE~~ ; ~~COMPTEUR À UN~~ ⛔ SESSION ADVERSE FAITE LE 25/09/2026 (D306) — ~~23a ATTEND LA DÉCISION DU RELECTEUR~~ ⛔ DÉCISION REÇUE LE 25/09/2026, PAUSE DU CHEMIN DE L'ARGENT ARBITRÉE PAR KO (D307) — ~~RESTENT 23a-2 PUIS LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ 23a-2 CODÉ LE 25/09/2026 (D308) — COMPTEUR À DEUX — ~~RESTE LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ CERTIFICATION ÉCHOUÉE LE 26/09/2026 (D310) : UNE CAMPAGNE N'A JOUÉ AUCUNE DE SES 13 CIBLES — RIEN NE SE CLÔT, COMPTEUR À DEUX, ~~EN ATTENTE D'ARBITRAGE DE KO~~ ⛔ ARBITRÉ PAR KO LE 26/09/2026 (D311) : ~~UN LOT DE DÉBLOCAGE (EXCEPTION BORNÉE À D270), PUIS LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ LOT DE DÉBLOCAGE FAIT LE 26/09/2026 (D312) — COMPTEUR À TROIS — ~~RESTE LA CERTIFICATION, QUI CLÔT LE RANG~~ ⛔ CLOS LE 26/09/2026 : D314 — CERTIFICATION PASSÉE, MARQUE POSÉE, COMPTEUR À ZÉRO**
 
 ### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — rafraîchi le 25/09/2026 (D305, puis D306, puis D307, puis D308), puis le 26/09/2026 (D309, puis D311, puis D312, puis D313, puis D314 — CLÔTURE)
@@ -1370,7 +1440,10 @@ CHEMIN DE L'ARGENT COMMENCE** (D307, Ko : « elle commence après 23a, son secon
 suivra ») : R1, 23b (F2), 23c (F6) et E3 attendent au backlog le rang de reprise que Ko arbitrera ; ⚠ *dérivé par la
 session, ligne D307* : aucun lot de code du chemin de l'argent d'ici là.
 ⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO.** ⚠ Une permission n'est pas un arbitrage : le compteur à zéro dit qu'un lot de
-code **peut** s'ouvrir ; **aucun ne l'est** avant que Ko arbitre le rang 24.
+code **peut** s'ouvrir ; **aucun ne l'est** avant que Ko arbitre le rang 24. ⛔ *(D315, 26/09/2026 — passe D277, les deux sens :
+**arbitré par Ko** — rang 24, **documentaire**, ouvert et clos le même jour (point d'entrée du rang 24) ; il **n'ouvre aucun lot
+de code** : le prochain est un rang que Ko arbitrera — **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** — et le chemin de l'argent
+reste en pause.)*
 ⇒ **La passe `r23d-20260926-1434`** (sur `0057748`) : porte dure verte ; six portes à 0 (**1 334 / 109**, **443 / 36**, e2e
 **34 · 1**) ; `--tout` **28 · 198 · 0 · 13** ; `--int` **40** ; **certifiant 211 · 0 · 0, 28 campagnes sur 28 qui comptent,
 point 12 tenu partout** ; étiquettes **12 · 13 · 81 · 105** ; contre-épreuve **5 sur 5** ; arbre immobile aux cinq contrôles ;
@@ -1439,6 +1512,7 @@ ci-dessous.)*
 procédures **commités avant toute mesure de la passe**. Bloc « LA CERTIFICATION QUI CLÔT LE RANG 23 (D314) », ci-dessous.)*
 ⛔ *(D314, 26/09/2026 : **certification PASSÉE — marque posée ; le RANG 23 EST CLOS** ; compteur **ZÉRO** ; la pause du chemin
 de l'argent **commence** ; **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO**. Bloc de clôture en tête de cette section.)*
+⛔ *(D315, 26/09/2026 : le rang 24 est **arbitré et clos** — point d'entrée du rang 24 ; RANG 25 en attente.)*
 ⚠ ~~**Que R1 puisse s'ouvrir AVANT la fin de la revue de 23a n'est écrit nulle part** —
 l'ordre dit « 23a → R1 », la forme de revue dit qu'une autre session casse 23a : **à Ko** ; une permission ne se
 déduit pas (D287).~~ ⛔ *(D307 : sans objet — R1 sort du rang 23, arbitrage de Ko.)* ⚠ **Ce que D304 a MESURÉ et qui touche 23a** : la clé étrangère n'attend que le rival en
@@ -1809,6 +1883,7 @@ calibration : rendement 0,95 ; son lecteur rend « fenêtre homogène ») ; **z�
 déblocage, `d37ea64`) en font partie** ». **Trois lots, rien d'autre** ; aucun en-tête antérieur réécrit (point 4).
 ⇒ **CE QUI SE CLÔT** (Ko) : **le rang 23** ; le compteur de lots de code non certifiés **revient à ZÉRO** ; **l'exception de
 D311 est consommée** ; **la pause du chemin de l'argent commence** (D307). ⇒ **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO.**
+⛔ *(D315 : arbitré par Ko le 26/09/2026 — ordre des rangs, ligne « ARBITRÉ LE 26/09/2026 PAR KO — le RANG 24 ».)*
 ⚠ **Ce que la marque ne couvre pas** : la base de dev `zwadj` (non re-mesurée) ; **aucune durée certifiée** — le plancher est
 un seuil de démarrage, pas une comparaison de durées ; les processus étrangers autres que `chrome` pendant la fenêtre ; la
 contre-épreuve sans relevé propre ; les **81** morsures « non prouvées (R1) » et les **105** « non classées » — leur poids
@@ -4983,6 +5058,169 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session du 26/09/2026 — D315 · rang 24 CLOS, lot DOCUMENTAIRE : l'état du produit parcours par parcours, trois défauts mesurés par les captures, et la lecture adverse de D314
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D314** ⇒ **D315** ; « D315 » : **0** occurrence dans les
+fichiers suivis à `ffd32e9` (`git grep`, code 1). **SHA de départ : `ffd32e9`** — `HEAD` = `origin/main` après `git fetch`,
+arbre propre. ⇒ **RANG 24**, arbitré par Ko en ouverture de session (première écriture du lot, ordre des rangs).
+**Documentaire** : `AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `docs/preuves/` (D315, et une rectification posée
+à côté des pièces de D314) — **compteur de lots de code non certifiés : ZÉRO, inchangé** (D283 amendé par D292). **Aucune
+porte** : aucun code n'a changé. Des serveurs de développement ont tourné (captures, deux mesures), sur la base `zwadj_e2e`.
+
+### D315 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 23 **clos** (D314, marque posée) ; dernière ligne « ⇒ RANG N » : « **RANG 24 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 23, ordre des rangs |
+| numéro | dernière ligne du registre : **D314** ⇒ **D315** | registre |
+| compteur | **ZÉRO** — un lot de code **peut** s'ouvrir dès l'arbitrage du rang 24, **hors du chemin de l'argent** (pause) | point d'entrée du rang 23, bloc de clôture ; annotation D314 sous le rang 24 |
+| synchronisation | `HEAD` = `origin/main` = `ffd32e9` ; arbre propre | `git` |
+
+### D315 — la lecture adverse depuis la clôture de D314, en entier
+
+Relue à `ffd32e9` : la section D314, les blocs « LA CERTIFICATION QUI CLÔT LE RANG 23 (D314) » et « RÉSULTAT (D314) », les
+deux commits (`0057748`, `ffd32e9`), les **306** pièces suivies de `docs/preuves/D314/`, les journaux de la passe encore sur
+disque (`.neutralisation-journaux/r23d-20260926-1434/`, hors dépôt), et les écritures que D314 dit avoir faites.
+**Instrument** : `docs/preuves/D315/lecture-adverse/confronter-d314.py` — chaque chiffre confronté à SA pièce, l'attendu
+imprimé à côté du mesuré (D290), rien importé des lecteurs de D314 ; sortie `confronter-d314-sortie.txt` : **117 contrôles,
+3 ✗, UNE cause**.
+**Ce qui tient** : provenance `a5a8c55` → `0057748` → `ffd32e9` ; « D314 » absent au départ ; étape 0 bornée à
+`ZWADJ_CONTINUITE.md` et `docs/preuves/D314/`, clôture aux trois `.md` et à `docs/preuves/D314/` ; étape 0 **poussée avant le
+relevé d'ouverture** (reflog local d'`origin/main` 14:34:20, relevé 14:35:30) ; la marque — **17** commits de `0a8235d` à
+`a5a8c55`, **trois** hors `.md` et `docs/preuves/` (`b715943`, `3ac8749`, `d37ea64`), sujets D305, D308, D312 ; le
+plancher — 26 lignes, **P = 3 × T recalculé pour chacune**, 0,69 s (`budgets`) à 43,89 s (`404`), refus **recalculés** sur
+les durées de la passe versée de D310 (absolu : 5, par cible : 4, les noms mêmes), racine du rapport le plus bas 10,8 ;
+`available-on` et `journey` sous la cale A (10 et 7 « ✓ », code 0, 0,43 et 0,36 s), `404` / `horizon` / `maxprice` un « ✗ »
+par cible, 21 autres en code 1 ou 2, reliquats 2 · 1 · 1, bras négatif `argon2` 16,6 s, 118 journaux ; la passe — **158
+pièces identiques par SHA-256 à leur source sur disque, REJOUÉ** (e2e brut seul refusé), 160 = 158 + 2 ; porte dure,
+**17** sondes (SECTEUR, `node` 0, `chrome` 0, médiane et bande basse au-dessus de 4 579 ; la plus basse 5 969,
+`avant-int-solid-s6`), arbres 1 à 5 vides sur `0057748` ; codes des huit mesures ; 8 · 8 · 4 « Done », 0 `error TS` ;
+**1 334 / 109** et **443 / 36** relus ; « fail » 2 + 1 à leur contexte ; e2e 822 / 822, 38 gardées, 34 · 1, 35 ; `--tout`
+**198 · 0 · 13 · 28 · 2 893 s** et sa table recomptée ; 73 journaux, 0 antérieur ; `--int` 8, 13, 2, 5, 6, 6 = 40 ;
+contre-épreuve 5 bras, 5 / 5 ; **`rang23` relu par ma propre expression** (13 mesures, 13 exécutées, 13 en échec, blocs
+`AssertionError`) ; **`available-on-api` relu** (30 journaux, 12 pré-vols, 13 cibles en échec lu, `AssertionError`) ;
+**point 12 recalculé** (26 au-dessus de leur plancher) ; étiquettes 12 · 13 · 81 · 105 = 211 ; échantillonneur 173,
+SECTEUR, `chrome` 0, `PERF` > 100 sur 154, 7 creux (min 3 752), 0 écart > 60 s, **fenêtres de l'e2e et de `b7` recalculées**
+(la seconde par les durées cumulées de `--tout` : 14:59:08 → 15:02:40), creux dedans 3 et 4 ; « 0 valeur réelle » 24 · 1 913 ·
+0 ; audits 123, puis 1 839 = 1 781 + 58, 124, tri 1 neuve à `testint.log:255` (un titre de test) ; audit final 1 841 =
+1 782 + 59, 124, **contextes identiques** ; Chargily 306 · 0 ; `balayage.py` à l'octet (`24802faf`) ; motifs 15 + 2 ;
+calibration 20 ; 0 ; 115 ; écritures relues (titre, ordre, annotation sous le rang 24, dernière « ⇒ RANG N », registre,
+`AGENTS.md` ×2, F1 et F5 ouvertes à l'étape 0 et closes à la clôture, reports de D314 à la forme de D302) ; **15 lignes
+supprimées par la clôture, aucune perdue** (alignement caractère par caractère), **aucune dans une section datée**.
+**Ce qui ne tient pas** :
+1. ✗ **La passe D277 de D314 : « après écriture : 133 … cette section (11) » décrit l'arbre AVANT la dernière écriture.** Le
+   balayage « après » porte un arbre de 1 791 680 caractères aplatis ; le texte commité en porte 1 793 451. Sur le texte
+   commité : 136, différence 21, **14** dans la section — les trois de plus sont **la phrase même qui rapporte la
+   ventilation**, écrite après le balayage qu'elle décrit. Le reste s'accorde (115, 6 écritures de clôture hors section,
+   ventilation par motif). ⇒ **Rectification posée à côté des pièces** (`docs/preuves/D314/passe-d277/RECTIFICATION-D315.txt`,
+   précédent de D294 et D295) et **annotation** dans la section D314 ; pièces non retouchées.
+**Constats, sans chiffre de la section** :
+2. ⚠ **Ce n'est pas un cas isolé — MESURÉ** (`corpus-apres-ecriture-sortie.txt`) : le balayage « après écriture » de D311,
+   D312, D313 et D314 précède le texte commité de 411, 1 850, 1 586 et 1 771 caractères. L'effet sur leurs comptes n'est
+   mesuré que pour D314. ⇒ Backlog, reports de D315 (`[MÉTHODE]`).
+3. ⚠ **« Point 12, les plus serrés : `argon2` et `booking-status` … ; `available-on` … ; `journey` … »** (bloc « RÉSULTAT
+   (D314) ») : les chiffres sont justes, le qualificatif ne l'est que pour les deux premiers — par rapport durée / plancher,
+   `horizon` (4,2), `404` et `maxprice` (4,6) sont plus serrés que `journey` (6,2, septième sur 26). La phrase juxtapose les
+   plus serrés et les deux harnais qui « mordent » sans démarrer. Non annoté : aucune décision n'en dépend.
+
+### D315 — rang 24 : ce qui a été fait
+
+- **La carte** (`docs/preuves/D315/etat-produit/outils/carte-routes.py`) : client 13 pages, pro 14 routes, API **78 routes /
+  22 contrôleurs**, relevées dans le code ; aucune route de paiement, aucun écran d'administration.
+- **Les parcours** — client, pro, admin — étape par étape : état, preuve (niveau dit : test, intégration, e2e, capture,
+  mesure, ou lu dans le code), renvois au backlog, classe au chemin de l'argent.
+- **Les 146 entrées ouvertes** des phases 6, 8, 9, 10, 12, confrontées au code une à une (`ENTREES-CONFRONTEES.md`) ; le
+  décompte vient de `compter-verdicts.py`, qui croise ses deux entrées : **62** réalisées (ouvertes à tort), 2 réalisées
+  autrement, 25 partielles, **2 cassées à l'écran**, 35 absentes, 10 en pause, 2 « Bientôt », 3 écartées, 2 décisions
+  ouvertes, 2 non confrontées, 1 périmée.
+- **Le déploiement confronté au code** (`verifier-deploiement.py`, calibré sur des cas synthétiques) ; la relecture de
+  l'arabe par un balayage large lu à la main (`relecture-arabe.py`).
+- **Les écrans en image** : **46** captures, **3 184 910 octets** — sous le seuil de 20 Mo donné par Ko ; script versé qui
+  réutilise la configuration e2e ; toutes ouvertes.
+- ⛔ **Trois défauts VUS sur les captures, MESURÉS avant d'être écrits** (règle « un défaut se reproduit par une mesure ») :
+  (a) le panneau de demande demande **182** jours, le contrat en refuse plus de **92** → 400 → « aucune date » : **aucune
+  demande de réservation ne part de l'écran** (deux bras : 400 / 200) ; (b) son lien de connexion mène à **`/fr/connexion`,
+  404** ; (c) `GET /me/deletion-request` rend un **200 vide** que le client HTTP ne sait pas lire : la section de suppression
+  est **en erreur dans les deux applications** (deux bras). **Aucun n'était connu** des trois fichiers d'autorité (balayage
+  aplati). Ils vivaient à côté d'une suite verte : aucune spec e2e ne charge la fiche salle, le test du panneau a un double de
+  `fetch` indifférent à l'URL, `account-client.ts` n'a pas de test.
+
+### D315 — ce qui a atterri, et où
+
+| quoi | fichier, endroit |
+|---|---|
+| **Arbitrage de Ko** — rang 24, mot pour mot ; puis la clôture ; « RANG 25 : EN ATTENTE » | ordre des rangs (ligne « RANG 24 : EN ATTENTE » **barrée**, arbitrage, ligne D315, ligne du rang 25) |
+| l'état du produit | **pièce datée** `docs/preuves/D315/etat-produit/ETAT-PRODUIT.md` ; résumé au point d'entrée du rang 24 (neuf) et à la ligne D315 de l'ordre ; renvoi dans `AGENTS.md`, sous « État des lots » |
+| rang 24 arbitré, rang 25 en attente | `AGENTS.md`, règle de D270 (annotation D315) ; point d'entrée du rang 23 (bloc de clôture, annotation D314, bloc « RÉSULTAT (D314) » : **annotés**) |
+| les trois défauts, les 62 entrées, Swagger, la passe D277 | backlog, reports de D315 (forme de D302, **sans classement**) |
+| l'écart de la lecture adverse | `docs/preuves/D314/passe-d277/RECTIFICATION-D315.txt` ; annotation dans la section D314 |
+| l'entrée `[DOC][P3]` « POURQUOI (b) » | backlog (annotée : elle suit désormais le rang 25) |
+| le registre | ligne D315 |
+
+### D315 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D315/passe-d277/balayage.py`, **copie à l'octet** de celui de D306 à D314 (`24802faf…`) ;
+motifs lus dans `motifs.txt`, trois motifs trop larges écartés avant la première passe (D298). **Première passe** après la
+seule première écriture du lot (l'arbitrage) : `balayage-1.txt`. Tri **à la main** :
+**Sens 1 — ce que D315 invalide : le rang 24 « en attente ».** Courants, donc **annotés** : le bloc de clôture du point
+d'entrée du rang 23, son annotation D314, le bloc « RÉSULTAT (D314) », `AGENTS.md` (règle de D270), l'entrée `[DOC][P3]` du
+backlog ; la ligne de l'ordre : **barrée**. **Laissés, vrais à leur date** : les annotations D310 à D314 sous l'ancienne ligne
+du rang 24 (**suivies** de l'arbitrage), les protocoles de D310 et D314 (conditionnels), les tables de reprise des sections
+datées, « il n'arbitre pas le rang 24 » (section D314).
+**Sens 2 — ce que D315 rend permis, ou semble rendre permis : RIEN.** La permission de D314 — un lot de code peut s'ouvrir
+dès l'arbitrage du rang 24 — **ne s'exerce pas** par un rang documentaire : écrit sous l'arbitrage et dans le bloc de clôture
+du rang 23. ⚠ Un motif de ce sens rendait **zéro** : la phrase existait, son gras la coupait — trouvée en la cherchant
+avec son balisage, et annotée (règle de D295 : un motif à zéro est une hypothèse). Les « peut s'ouvrir » restants sont
+génériques, barrés ou datés.
+**Après écriture** : `balayage-apres-ecriture.txt`, pris **après la dernière écriture de texte** ; puis
+`balayage-controle.txt`, rejoué sur l'état qui part, doit rendre les mêmes comptes — ⚠ **cette phrase ne cite aucun motif**,
+précisément pour que la décrire ne change pas ce qu'elle décrit (écart 1 ci-dessus). Chiffres : dans les sorties versées.
+
+### D315 — audit de secrets avant commit
+
+Ordre du point 10, et ⚠ **ce lot a produit des journaux à valeurs réelles** (hors dépôt) : la sortie console des captures
+et les journaux de l'API de mesure portent des jetons de vérification et des valeurs du cookie de rafraîchissement (l'audit
+du 09/09 : `Set-Cookie` non masqué). ⇒ **Deux contrôles « 0 valeur réelle »**, joués sur tout ce qui part : celui de D299
+(jetons de vérification) et un **jumeau** pour le cookie (`docs/preuves/D315/controles/aucun-cookie-reel.py`, même forme,
+calibré sur ses deux bras) ; puis le contrôle de forme Chargily ; l'audit scellé et son tri ; le second audit en dernière
+écriture. Chiffres : dans les sorties versées sous `docs/preuves/D315/controles/` et `docs/preuves/D315/`, et au rapport de fin
+de lot — cette section est écrite avant eux.
+
+### ⛔ D315 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **UNE TABLE DE DÉCOMPTE ÉCRITE DE TÊTE, AVANT TOUT COMPTAGE**, dans la première version de `ENTREES-CONFRONTEES.md` —
+   58 réalisées, 30 partielles, 9 en pause… Le compteur a rendu **62, 25, 10**, et presque aucune ligne ne tenait. Retirée
+   avant le commit ; le fichier dit désormais qu'aucun chiffre n'y est écrit à la main. **C'est très exactement la règle
+   « aucune valeur attendue ne s'écrit de mémoire »**, enfreinte dans le lot qui produit un état « prouvé ».
+2. ⚠ **Les sept étapes de l'assistant de salle, écrites de mémoire** dans la pièce (« informations, photos, créneaux… ») :
+   fausses ; relevées dans `fr.json` et corrigées avant le commit.
+3. ⚠ **« date (`availableOn`) » écrite parmi les filtres de la recherche** : aucun sélecteur de date n'existe ; le seul
+   `type="date"` d'`apps/client` est le **commentaire** qui le dit (D275, encore). Corrigé.
+4. ⚠ **Deux renvois au backlog écrits sans relevé** (B:853 pour les en-têtes, qui est le limiteur ; B:1546 pour la date) —
+   corrigés (B:843–844, B:1548).
+5. ⚠ **Quatre défauts d'instruments, tous réparés et REJOUÉS en entier (D298)** : la lecture adverse cherchait « début … fin »
+   sur une ligne (`.heures` en porte deux) puis testait l'**inclusion** des lignes supprimées (neuf faux « perdus », démentis
+   par `git diff --word-diff`) ; la carte prenait un décorateur pour le nom de méthode et ratait un `@Roles` posé après
+   `@Get` ; l'extracteur du backlog avait un bras négatif **tautologique** (D223). Chacun est écrit dans l'en-tête de son
+   script.
+6. ⚠ **« TVA » : 18 fichiers** — le motif trouvait `setValues`. Vu au contexte (D275) avant d'écrire quoi que ce soit.
+7. ⚠ Les scripts de correction de mes **outils** sont passés par des heredocs à délimiteur quoté ; aucun texte d'autorité
+   (tous par l'outil d'écriture). D295 recommande le fichier.
+
+### ⛔ D315 — CE QUE CE LOT NE FAIT PAS, ET SES LIMITES
+
+- **Aucun code, aucune correction**, pas même des trois défauts mesurés ; **aucune entrée du backlog cochée ou barrée** ;
+  **aucun classement** (Ko).
+- **Aucune porte** : aucune n'est concernée ; la dernière marque est celle de D314.
+- Captures en **serveurs de développement**, une largeur (bureau), thème clair, pro en français seulement ; les constats de
+  build de production (404 à HTML vide) ne sont **pas** re-mesurés ; `pnpm audit` non rejoué.
+- La **carte du chemin de l'argent** est celle de D304 (`2b9f8d5`) complétée par D307 et D311 ; elle n'a pas été rederivée
+  après le rang 23. Là où la session doute, elle écrit « à trancher par le relecteur ».
+- Les entrées ouvertes **hors** des phases 6, 8, 9, 10, 12 ne sont confrontées qu'à l'endroit où un parcours les touche.
+- Le contrôle `corpus-apres-ecriture.py` n'a qu'un bras de calibration **négatif** (un balayage pris sur un arbre égal à
+  `HEAD`) ; son cas positif est D314, recompté par la lecture adverse.
+- Les données de capture vivent dans `zwadj_e2e`, que la prochaine e2e recrée ; la base de dev `zwadj` n'a pas été touchée.
+
 ## Session du 26/09/2026 — D314 · rang 23 CLOS : LA CERTIFICATION PASSE — un plancher mesuré sur un non-démarrage simulé, deux harnais qui « mordent » sans démarrer, et la marque
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D313** ⇒ **D314** ; « D314 » : **0** occurrence dans les
@@ -5034,6 +5272,9 @@ certification, **avant toute écriture de clôture** — `balayage-1.txt`) : **1
 ligne du registre (**1**), qui citent les phrases traitées ; et **6** dans les écritures de clôture faites après la première
 passe — « de quelque rang que ce soit » (1), « aucun lot de code » (3), « compteur à ZÉRO » (2 : sous le rang 24 et dans
 `AGENTS.md`) —, **toutes du sens 2** : elles énoncent la permission et ses bornes. Comptés. Tri **à la main**.
+⛔ *(D315, lecture adverse : ces chiffres sont exacts pour `balayage-apres-ecriture.txt`, pris **avant** la dernière écriture ;
+le texte commité en porte **136** (différence **21**), dont **14** dans cette section — les trois de plus sont la phrase
+ci-dessus, qui cite trois motifs. `docs/preuves/D314/passe-d277/RECTIFICATION-D315.txt` ; section D315.)*
 **Sens 1 — ce que la marque invalide** : « RESTE LA CERTIFICATION, QUI CLÔT LE RANG » (titre du point d'entrée : **barré**,
 « CLOS ») ; « CE QUI VIENT ENSUITE : LA CERTIFICATION » et « elle clôt le rang 23 » (annotations D312 et D313 du point d'entrée,
 lignes D312 et D313 de l'ordre : **suivies** d'une annotation D314) ; « la pause … ne commence pas » (ligne D310 de l'ordre,
@@ -15264,3 +15505,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D312 | A | D312 — rang 23 (reste ouvert), LOT DE DÉBLOCAGE, code d'instrument (neutralisation/, aucun code produit), troisième lot non certifié sous l'exception bornée de Ko (D311) : modes de défaillance MD-AOA-1 à 9 écrits et commités avant le correctif (071dfc2) ; défaut reproduit avant (13 sur 13 en code 1, 0 test) ; neutralize-available-on-api.py lance vitest comme les harnais qui fonctionnent (pnpm --filter @zwadj/api exec, depuis la racine), lit la ligne « Tests » (exécutés = passés + en échec, jamais le total : « 25 skipped (25) » en code 0), refuse de juger une mesure non démarrée ou en panne, pré-vol par mesure, version 3.2.7 exigée, calibration à cinq bras à chaque lancement, sortie entière journalisée ; 13 cibles sur 13 MORDUES et LUES (14 blocs, tous AssertionError, titre visé), 30 journaux relus par un lecteur indépendant, 0 écart ; gardes du harnais neutralisées sur copies, 6 variantes sur 6 dont un non-démarrage sous mutation refusé ; verifier-mutations 13 posées ; portes vertes (1 334/109, 443/36) ; compteur DEUX → TROIS ; suite : la certification, qui clôt le rang 23 |
 | D313 | A | D313 — rang 23 (reste ouvert), lot DOCUMENTAIRE, partie A d'une session en deux : arbitrages de Ko — D288 s'écrit « mesuré, sur des journaux dont l'attribution à D288 est inférée » ; point 12 appliqué à la certification qui clôt le rang 23 (preuve LUE, passés + en échec > 0, pour rang23 et available-on-api ; plancher de durée mesuré à l'étape 0 sur un non-démarrage simulé pour les autres ; limite écrite telle quelle) ; décisions du relecteur : portée de R1 = une RÈGLE (au moins une cible du chemin de l'argent, branches 1 à 6 ; liste des vingt barrée, renvoi gardé), available-on-api en sort, le classement des 209 autres cibles bloque la reprise de R1 et pas la certification (étiquettes : lue 12 + 13, code de sortie seul non prouvée (R1) 81, non classée 105) ; lecture adverse de D312 : 94 contrôles, 1 écart (« onze » harnais du chemin = douze), constats (AGENTS.md « à chaque certification depuis le 30/08 » au statut de mesure — barré ; « collectés » dans le cadrage de R1 et le lecteur de D306) ; compteur TROIS inchangé ; suite : la certification (partie B) |
 | D314 | A | D314 — rang 23 CLOS, CERTIFICATION PASSÉE, MARQUE POSÉE : étape 0 commitée avant le relevé (0057748) — plancher du point 12 mesuré sur un non-démarrage simulé par une cale de PATH, sans modifier aucun harnais (niveaux A et B, calibration 0 bras manqué ; available-on 10/10 et journey 7/7 rendent une campagne complète sans avoir démarré, la classe de D310) ; un plancher par campagne, P = 3 × T (absolu : 5 refus à D310, par cible : 4) ; lecteurs calibrés (rang23 : passés + en échec, à part ; available-on-api : lecteur de D312 ; campagnes : point 12 et quatre étiquettes, relu sur la passe de D310) ; passe r23d-20260926-1434 : porte dure verte, six portes à 0 (1 334/109, 443/36, e2e 34 · 1), --tout 28 · 198 · 0 · 13, --int 40, certifiant 211 · 0 · 0, 28 campagnes sur 28, point 12 tenu partout, étiquettes 12 · 13 · 81 · 105, contre-épreuve 5/5, arbre immobile, fenêtre homogène — exactement la prédiction ; marque : « Portes vertes AU REPOS le 26/09/2026, et D305, D308 et D312 en font partie » ; compteur TROIS → ZÉRO, exception de D311 consommée, pause du chemin de l'argent commencée ; F1 et F5 closes ; suite : RANG 24, EN ATTENTE D'ARBITRAGE DE KO |
+| D315 | A | D315 — rang 24 ARBITRÉ PAR KO (première écriture : « l'état du produit, parcours par parcours ; lot documentaire : l'état écrit et prouvé, sans classement ; l'ordre des lots suivants sera proposé par le relecteur et arbitré par moi ») et CLOS le même jour, lot DOCUMENTAIRE : pièce datée docs/preuves/D315/etat-produit/ (carte relevée dans le code — client 13 pages, pro 14 routes, API 78 routes / 22 contrôleurs, aucune route de paiement, aucun écran d'administration ; parcours client, pro, admin étape par étape, preuve au niveau dit, renvois, classe au chemin de l'argent ; 146 entrées ouvertes confrontées au code — 62 réalisées et ouvertes à tort ; décisions écrites non réalisées et décisions dues à Ko ; déploiement confronté au code ; coûts sans durée ni classement) ; 46 captures (3 184 910 octets) par un script qui réutilise la configuration e2e ; trois défauts vus sur les captures et MESURÉS — le panneau de demande ne propose aucune date (fenêtre 182 > 92, 400), son lien de connexion mène à une 404, la section de suppression de compte est en erreur dans les deux applications (200 vide) ; lecture adverse de D314 : 117 contrôles, un écart (balayage « après écriture » pris avant la dernière écriture ; rectification à côté des pièces), constat : même forme D311 à D314 ; compteur ZÉRO inchangé ; suite : RANG 25, EN ATTENTE D'ARBITRAGE DE KO |
