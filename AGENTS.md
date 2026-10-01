@@ -10,7 +10,7 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 - Paiement : **Chargily uniquement au MVP** (agrège CIB + Edahabia ; BaridiMob différé, intégration séparée à évaluer plus tard).
 - i18n : **next-intl** côté apps/client (SSR), i18next côté apps/pro. packages/i18n contient messages + formatters, pas le runtime.
 - Validation : Zod (partagé front/back). Tests : Vitest (+ Playwright pour l'e2e).
-- **Pas d'apps/admin au MVP.** Validation/publication des salles via endpoints admin protégés + accès direct DB (DBeaver) en interne. ⛔ *(D318, 01/10/2026 : **révisée par arbitrage de Ko** — « Je veux une page d'administration. » Décision produit n°4 ANNOTÉE, pas réécrite : `ZWADJ_CONTINUITE.md`, « Les décisions produit tranchées », item 4. Périmètre, emplacement et création du premier compte admin : lot de cadrage À VENIR, dû à l'arbitrage de Ko — rien n'est codé par cette phrase.)*
+- **Pas d'apps/admin au MVP.** Validation/publication des salles via endpoints admin protégés + accès direct DB (DBeaver) en interne. ⛔ *(D318, 01/10/2026 : **révisée par arbitrage de Ko** — « Je veux une page d'administration. » Décision produit n°4 ANNOTÉE, pas réécrite : `ZWADJ_CONTINUITE.md`, « Les décisions produit tranchées », item 4. Périmètre, emplacement et création du premier compte admin : lot de cadrage À VENIR, dû à l'arbitrage de Ko — rien n'est codé par cette phrase.)* ⛔ *(D320, 01/10/2026 : **cadrage écrit** — `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 28 » ; l'emplacement (dont une application séparée), la langue, le premier admin, le rejet, la sécurité et le découpage sont des **décisions dues à Ko** (D-1 à D-10). Toujours rien de codé.)*
 
 ## Palette & design tokens
 - **Palette double, une par app** (pivot décidé après la tranche Auth — remplace l'ancien accent unique) :
@@ -618,7 +618,12 @@ UN → DEUX** — Ko : « un troisième lot de code exigera une certification »
 arbitrages de Ko (page d'administration, ordre de reprise du chemin de l'argent) et décision du relecteur (neutralisation
 permise pendant la pause) ; lot documentaire, **compteur DEUX, inchangé** ; suite : la certification, partie B.)*
 ⛔ *(D319, 01/10/2026 : **certification PASSÉE** — marque posée, D316 et D317 en font partie ; **compteur DEUX → ZÉRO** ;
-rang 27 clos ; le rang 28 attend l'arbitrage de Ko.)*
+rang 27 clos ; ~~le rang 28 attend l'arbitrage de Ko~~.)*
+⛔ *(D320, 01/10/2026 : rang 28 **arbitré par Ko — documentaire** (le cadrage de la page d'administration), clos le même
+jour ; **compteur ZÉRO, inchangé** — ⚠ **sous réserve de la décision D-11, due à Ko** : la lecture adverse de D320 a trouvé
+que la certification de D319 s'est écartée de la forme que Ko avait écrite (lecture adverse de D317 omise, planchers
+réutilisés sans le dire) ; si Ko retire la marque, le compteur revient à DEUX. **Rang 29 : en attente d'arbitrage de
+Ko.**)*
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -824,6 +829,10 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
 ## À NE PAS faire
 - Ne pas élargir le périmètre au-delà du MVP demandé, même si le design fourni montre plus.
 - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP).
+  ⛔ *(D320, 01/10/2026 : « pas d'app admin » est **révisé par l'arbitrage de Ko de D318** — « Je veux une page
+  d'administration » — ; qu'elle soit une **application séparée** ou une section d'une app existante est la décision D-1,
+  due à Ko (`ZWADJ_CONTINUITE.md`, cadrage du rang 28). D318 n'avait pas annoté cette ligne — écart 4 de la lecture
+  adverse de D320.)*
 - Ne pas coder les chemins d'argent sans tests + demande de revue. ⛔ *(D302, 23/09/2026 : toujours vrai. Pour E3, la
   « revue » a désormais la forme ratifiée par Ko — une session adverse ouverte à froid, le relecteur (chat) qui
   décide, le veto de Ko —, et E3 n'est plus codé par Ko : point E3 juste en dessous.)* ⛔ *(D303 : cette forme de
@@ -988,6 +997,12 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   `E3d-2 — expiration des PENDING`, `ZWADJ_BACKLOG.md:728`) sans les y lier par écrit, faute de certitude suffisante.
   Texte complet, motifs : `ZWADJ_CONTINUITE.md`, section D318 ; ordre des rangs ; bloc de la pause (annotation sous
   l'arbitrage de Ko de D307).
+  ⛔ *(D320, 01/10/2026 : **RATTACHÉS, sur consigne de Ko** — **F7** ⇒ `ZWADJ_BACKLOG.md`, `[API]` « audit SOLID 09/09 · F7 —
+  les notifications de réservation en arabe partent en français » ; **gestion des devis** ⇒ « Remonter `QuotesSection`,
+  démontée par la refonte… » ; **expiration des demandes** ⇒ « Implement pending-request expiration job (pending →
+  expired…) via pg-boss » ; **B:728** ⇒ « B4 devra DIRE au pro que le prix saisi… est écrasé dès le premier créneau ».
+  ⚠ **`E3d-2` n'en est pas** : il porte sur les intentions de PAIEMENT, pas sur les demandes — la retenue ci-dessus était
+  fondée. Correspondance établie contre la table des coûts de D315 : `ZWADJ_CONTINUITE.md`, section D320.)*
 - ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D318) — UNE NEUTRALISATION DE MESURE N'EST PAS UN
   CHANGEMENT, MÊME PENDANT LA PAUSE.** « Pendant la pause, une NEUTRALISATION qui mute un comportement du chemin de
   l'argent le temps d'une mesure, puis le restaure (restauration prouvée), est une mesure, pas un changement : elle est
@@ -995,6 +1010,12 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   garde sans preuve de morsure n'est qu'une moitié de garde. » ⇒ **Conséquence** : la neutralisation côté CLIENT des
   assertions de `r26` (dont la branche 6, « Acceptée — acompte à régler »), que D317 avait laissée en question, est
   **permise** — elle reste **à ordonner par Ko**, non faite par ce lot.
+- ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D320) — DANS LA PREMIÈRE VERSION DE LA PAGE
+  D'ADMINISTRATION, LE TAUX DE COMMISSION EST EN LECTURE SEULE** jusqu'à la reprise du chemin de l'argent. *Motif* : « le
+  modifier valide un taux (branche 1, `venues-admin.service.ts`), et le chemin de l'argent est en pause. » ⇒ *Dérivé par la
+  session, pas une parole du relecteur* : la page n'appelle **jamais** `PATCH /admin/venues/:id/commission-rate` ; la route
+  reste dans l'API, inchangée. ⚠ **Question ouverte au relecteur** : journaliser le réglage des taux modifierait `setRates`
+  (branche 1) — en pause ou non ? Texte et motif : `ZWADJ_CONTINUITE.md`, méthode renforcée, bloc D320 ; cadrage du rang 28.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

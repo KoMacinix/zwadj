@@ -1,0 +1,2 @@
+✗ .neutralisation-journaux/d317/portes/typecheck.log : occurrences stricte 0 · large 0 (doivent s'accorder) · valeurs distinctes 0 · positif 0 (attendu 1) · négatif 0 (attendu 0)
+ABANDON : un bras de la calibration manque son verdict, ou une forme inattendue échappe à l'expression stricte

@@ -1,0 +1,37 @@
+# D320 — motifs de la passe D277 (rang 28 ARBITRÉ par Ko, lot DOCUMENTAIRE : le cadrage de la page d'administration ;
+# décision du relecteur : taux de commission en lecture seule dans la v1 ; quatre points de D318 rattachés ; lecture
+# adverse de D317-D319 : neuf écarts ; compteur ZÉRO sous réserve de D-11 ; rang 29 en attente).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D317, 24802faf…), jamais passés en ligne
+# de commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « admin » seul, « administration » seul, « cadrage » seul, « commission » seul — ils
+# comptent tout (D298 ; D295 dans les deux sens).
+# sens 1 — ce que D320 INVALIDE : le rang 28 en attente ; « pas d'app admin » comme règle courante ; un cadrage « à venir » ;
+# les quatre points « non cross-référencés » ; le renvoi au bloc D318 ; les deux chiffres faux de D319 ; « après réponse du
+# relecteur » (D318 a répondu).
+1|RANG 28 : EN ATTENTE
+1|rang 28 attend
+1|rang 28 : en attente
+1|pas d'app admin
+1|Pas d'apps/admin
+1|No `apps/admin`
+1|NO SEPARATE APP
+1|4th application
+1|lot de cadrage À VENIR
+1|lot de CADRAGE futur
+1|aucun cadrage de son périmètre
+1|cross-référencés
+1|méthode renforcée, bloc D318
+1|le plus serré
+1|2 324 fichiers
+1|après réponse du **relecteur**
+# sens 2 — ce que D320 REND PERMIS, ou dont la CONDITION change : un lot de code qui « peut s'ouvrir » au rang 28 (il passe
+# au rang 29, sous réserve de D-11) ; le compteur ZÉRO lu comme acquis ; la neutralisation côté client de r26 (permise par
+# D318, toujours à ordonner) ; le taux de commission modifiable par une page.
+2|dès que Ko arbitre le rang 28
+2|PEUT** s'ouvrir
+2|compteur DEUX → ZÉRO
+2|à ordonner par Ko**, non faite
+2|commission-rate
+# témoins (calibration de l'outil) : un motif présent partout, un motif absent
+T+|ZWADJ
+T-|zzz-motif-absent-d320

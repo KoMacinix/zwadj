@@ -1,0 +1,12 @@
+D320 — lecture, au contexte, des alertes neuves du tri différentiel (controles/tri-audit-d320.txt).
+Précédente : docs/preuves/D319/audit-secrets-final.txt (150 contextes) · nouvelle : docs/preuves/D320/audit-secrets-d320.txt (151).
+Alertes neuves : 1. Aucun contexte n'est recopié ici (renvoi aux lignes de la sortie scellée), pour ne pas créer d'écho.
+
+1. [jeton] — sortie scellée, lignes 906 et 907.
+   Fichier visé : docs/preuves/D320/etat-des-lieux/releve-admin-sortie.txt, ligne 31.
+   Ce que c'est : la signature d'une méthode d'apps/api/src/auth/auth.service.ts (ligne 501), récitée par le relevé
+   de l'état des lieux ; la partie masquée est le NOM D'UN TYPE TypeScript (six caractères), pas une valeur.
+   La sortie scellée le dit elle-même : « valeur deja presente dans 327 fichier(s) suivi(s) hors preuves ».
+   Verdict : un mot, aucune valeur. Rien à retirer.
+
+Bilan : 1 alerte neuve, 1 lue, 0 valeur.

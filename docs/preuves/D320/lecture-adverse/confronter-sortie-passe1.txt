@@ -1,0 +1,89 @@
+== CALIBRATION
+  calibration ✓ comptes vitest, positif : [(12, 3)] (attendu [(12, 3)])
+  calibration ✓ comptes vitest, négatif (échec, aucun « N passed » contigu) : [] (attendu [])
+  calibration ✓ code/durée, positif : (0, 37) (attendu (0, 37))
+  calibration ✓ code/durée, négatif : None (attendu None)
+  calibration ✓ délai de fiche, positif : [7.4] (attendu [7.4])
+  calibration ✓ délai de fiche, négatif : [] (attendu [])
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+
+== T0 — préalable aux re-mesures : rien hors .md d'autorité et docs/preuves n'a changé depuis a922537
+✓ T0    fichiers hors .md/docs/preuves changés a922537..HEAD (189 examinés) — attendu [] · mesuré []
+
+== D317 — provenance (objets git)
+✓ P1    parent de a922537 — attendu 'a65d40d' · mesuré 'a65d40d'
+✓ P2    fichiers hors docs/preuves = table des fichiers attendus (68 examinés) — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'e2e/fixtures/harness.ts', 'e2e/playwright.config.ts', 'e2e/specs/r26-parcours-reservation.e2e.ts', 'e2e/specs/warmup.setup.ts', 'neutralisation/neutralize-r26.py'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'e2e/fixtures/harness.ts', 'e2e/playwright.config.ts', 'e2e/specs/r26-parcours-reservation.e2e.ts', 'e2e/specs/warmup.setup.ts', 'neutralisation/neutralize-r26.py']
+✓ P3    pièces : toutes sous D317/ ou la rectification posée à côté de D316 — attendu [] · mesuré []
+✓ P3b   nombre de pièces (59 sous D317/ + 1 rectification) — attendu 60 · mesuré 60
+✓ P4    aucun fichier de code produit (apps/, packages/) au commit — attendu [] · mesuré []
+✓ P5    a922537 ancêtre de origin/main — attendu 0 · mesuré 0
+✓ P6    createPublishedVenue garde ses trois champs et AJOUTE pro (« ajout seul ») — attendu True · mesuré True
+
+== D317 — les portes (extraits versés, journaux bruts)
+✓ G1    typecheck : code et durée — attendu (0, 37) · mesuré (0, 37)
+✓ G1    lint : code et durée — attendu (0, 17) · mesuré (0, 17)
+✓ G1    test : code et durée — attendu (0, 90) · mesuré (0, 90)
+✓ G1    build : code et durée — attendu (0, 81) · mesuré (0, 81)
+✓ G1    test-int : code et durée — attendu (0, 525) · mesuré (0, 525)
+✓ G1    test-e2e : code et durée — attendu (0, 212) · mesuré (0, 212)
+✓ G2    typecheck : « Done » — attendu 8 · mesuré 8
+✓ G2b   typecheck : « error TS » — attendu 0 · mesuré 0
+✓ G3    lint : « Done » — attendu 8 · mesuré 8
+✓ G4    test : 664/58 · 39/4 · 308/22 · 347/28 — attendu [(664, 58), (39, 4), (308, 22), (347, 28)] · mesuré [(664, 58), (39, 4), (308, 22), (347, 28)]
+✓ G5    build : « Done » — attendu 4 · mesuré 4
+✓ G6    test:int : 444/36 — attendu [(444, 36)] · mesuré [(444, 36)]
+✓ G7    e2e : 43 réussis · 1 ignoré — attendu ('43', '1') · mesuré ('43', '1')
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/typecheck.log — attendu 'c43259bb878a92f4253adbdd0004da08b30234ed9428e8ce2c77bbf66798bd5e' · mesuré 'c43259bb878a92f4253adbdd0004da08b30234ed9428e8ce2c77bbf66798bd5e'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/lint.log — attendu 'a5c2896d444957d71911986eff88564f5fc75dc45fa4555e775f91faed50a1bf' · mesuré 'a5c2896d444957d71911986eff88564f5fc75dc45fa4555e775f91faed50a1bf'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/test.log — attendu 'a825bfd1fed0c12d83c08f48b091371a2dbb2a2c374032958d3705355d91d827' · mesuré 'a825bfd1fed0c12d83c08f48b091371a2dbb2a2c374032958d3705355d91d827'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/build.log — attendu 'c3642f64268d88dffcb9fb82678625b4f77eab1d54e9ef480b8d996b548fe5e5' · mesuré 'c3642f64268d88dffcb9fb82678625b4f77eab1d54e9ef480b8d996b548fe5e5'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/test-int.log — attendu 'be2fbec1f1f2cd7c9923bdcaba21127cb63a265a768e0e701674a17234eae344' · mesuré 'be2fbec1f1f2cd7c9923bdcaba21127cb63a265a768e0e701674a17234eae344'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/test-e2e.log — attendu '353a914a9048c827fc5f1ccd3f7d630bcbccd09228f1ebb1ff90902ca7c736ed' · mesuré '353a914a9048c827fc5f1ccd3f7d630bcbccd09228f1ebb1ff90902ca7c736ed'
+✓ G8    journal e2e BRUT : « File change detected » (l'extrait a retiré les lignes [WebServer]) — attendu 0 · mesuré 0
+✓ G9    état machine avant les portes : RAM · PERF · secteur · node · chrome — attendu ('3645', '68.5', 'SECTEUR', '0', '30') · mesuré ('3645', '68.5', 'SECTEUR', '0', '30')
+
+== D317 — la campagne du lot et le rejeu de r25
+✓ C1    r26 : mordues / jouées — attendu '2 garde(s) mordue(s) sur 2' · mesuré '2 garde(s) mordue(s) sur 2'
+✓ C1b   r26 : code et durée — attendu (0, 386) · mesuré (0, 386)
+✓ C1c   r26 : Playwright exigé — attendu '1.50.1' · mesuré '1.50.1'
+✓ C1d   r26 : calibration — attendu '6 bras · 0 manqué(s)' · mesuré '6 bras · 0 manqué(s)'
+✓ C1e   r26 : mutations prouvées posées dans la campagne (ancre 1→0 · marqueur 0→1) — attendu 2 · mesuré 2
+✓ C2    verifier-mutations.py r26, REJOUÉ (aucune pièce versée par D317) : posées · non posées — attendu ('2', '0') · mesuré ('2', '0')
+✓ C2b   arbre identique avant/après verifier-mutations — attendu 'M ZWADJ_CONTINUITE.md\n?? docs/preuves/D320/' · mesuré 'M ZWADJ_CONTINUITE.md\n?? docs/preuves/D320/'
+✓ C3    rejeu r25 --e2e : mordues / jouées · non mesurées — attendu ('10 garde(s) mordue(s) sur 10', '1') · mesuré ('10 garde(s) mordue(s) sur 10', '1')
+✓ C3b   rejeu r25 : code et durée — attendu (3, 783) · mesuré (3, 783)
+✓ C3c   rejeu r25 : R25-E1 à E3 mordues — attendu 3 · mesuré 3
+✓ C4    lancer-campagnes : campagnes concernées — attendu '0 campagne(s) concernée(s) sur 30' · mesuré '0 campagne(s) concernée(s) sur 30'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/campagne-r26.log — attendu '9e2753f75f541a4a94a6164eaf6d2f850f26c5e655aaa26f4e789a9994e5bca6' · mesuré '9e2753f75f541a4a94a6164eaf6d2f850f26c5e655aaa26f4e789a9994e5bca6'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/campagne-r25-e2e.log — attendu '5588d38652de597690b22e58980056972341bcbc1ccc49fb61bde1ae3695f51a' · mesuré '5588d38652de597690b22e58980056972341bcbc1ccc49fb61bde1ae3695f51a'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/lancer-campagnes.log — attendu 'f74e2a3d74683a1913852c44005f725c1ca88bd70e876d53bb07860d5b4a32d1' · mesuré 'f74e2a3d74683a1913852c44005f725c1ca88bd70e876d53bb07860d5b4a32d1'
+
+== D317 — étape 1 (recompilations de l'API)
+✓ E1    rouge : (sondes, en échec) T, L, W, W — attendu [(105, 0), (107, 0), (106, 21), (105, 23)] · mesuré [(105, 0), (107, 0), (106, 21), (105, 23)]
+✓ E2    vert : (sondes, en échec) — attendu [(103, 0), (106, 0), (106, 0), (106, 0)] · mesuré [(103, 0), (106, 0), (106, 0), (106, 0)]
+✓ BRUT  empreinte de .neutralisation-journaux/d317/mesure-rouge.log — attendu '025f469c955ea0082aba655d6af782cedb91298caa4fee243ddf6fd515e830f6' · mesuré '025f469c955ea0082aba655d6af782cedb91298caa4fee243ddf6fd515e830f6'
+✓ E3    rouge, journal brut : « File change detected » — attendu 2 · mesuré 2
+✓ E3b   rouge, journal brut : heures des deux recompilations — attendu ['11:37:47', '11:37:59'] · mesuré ['11:37:47', '11:37:59']
+✓ E3c   rouge, journal brut : démarrages de l'application — attendu 3 · mesuré 3
+✓ BRUT  empreinte de .neutralisation-journaux/d317/mesure-vert.log — attendu 'ec40612b2d47c31d8441b829e230386a16dde40e7744fb38fa1ae0e533689f95' · mesuré 'ec40612b2d47c31d8441b829e230386a16dde40e7744fb38fa1ae0e533689f95'
+✓ E4    vert, journal brut : « File change detected » · démarrages — attendu (0, 1) · mesuré (0, 1)
+✓ E5    observateur : recompilations T · W · S1 · S2 · A* · S1* — attendu (0, 2, 0, 0, 0, 0) · mesuré (0, 2, 0, 0, 0, 0)
+✓ E5b   observateur : TypeScript — attendu '5.9.3' · mesuré '5.9.3'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/observateur-tsc.log — attendu 'eabc9b2a99028616641f53f7a080208c33c722e2e8da28aad1179e3cb0a0e5b7' · mesuré 'eabc9b2a99028616641f53f7a080208c33c722e2e8da28aad1179e3cb0a0e5b7'
+✗ E6    « les surveillants se déclenchent (97 fois) » sur les RECULS du dernier accès (97 déclenchements FileWatcher parcourus ; aucune pièce versée par D317) — attendu 97 · mesuré 96
+· E6    CONSTAT : 97 = TOUS les déclenchements FileWatcher du journal ; 1 vient de l'écriture zz-sonde (bras W, qui recompile) — l'attribution aux reculs compte un déclenchement de trop ; conclusion (aucune recompilation sur un recul) inchangée
+✓ E7    programme surveillé, re-mesuré (tsc --listFilesOnly ; aucune pièce versée par D317) : apps/api/src · dont generated · packages/types/src · messages — attendu (158, 47, 13, ['ar.json', 'fr.json']) · mesuré (158, 47, 13, ['ar.json', 'fr.json'])
+✓ E7b   programme surveillé, total (1072 lignes parcourues) — attendu 1072 · mesuré 1072
+✓ E8    correctif : l'API de l'e2e lancée par `exec nest start`, plus par `run dev` — attendu (True, False) · mesuré (True, False)
+
+== D317 — étape 2 (le parcours)
+✓ S1    deux tests — attendu 2 · mesuré 2
+✓ S2    libellés tirés de fr.json (import du fichier de messages) — attendu True · mesuré True
+✓ S3    aucun attribut de test dans la spec — attendu 0 · mesuré 0
+✓ S4    le préchauffage visite la route dynamique — attendu True · mesuré True
+✗ S5    délais : premier passage · rouge · vert-1 · vert-2 (fiche 1, fiche 2) — attendu [7.4, 2.0, 5.4, 1.6, 1.7, 1.7, 1.7, 1.7] · mesuré []
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D320\lecture-adverse\confronter-d317-d319.py", line 282, in <module>
+    if d[5] != 1.7:
+       ~^^^
+IndexError: list index out of range

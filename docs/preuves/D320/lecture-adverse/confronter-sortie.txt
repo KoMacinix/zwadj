@@ -1,0 +1,146 @@
+== CALIBRATION
+  calibration ✓ comptes vitest, positif : [(12, 3)] (attendu [(12, 3)])
+  calibration ✓ comptes vitest, négatif (échec, aucun « N passed » contigu) : [] (attendu [])
+  calibration ✓ code/durée, positif : (0, 37) (attendu (0, 37))
+  calibration ✓ code/durée, négatif : None (attendu None)
+  calibration ✓ délai de fiche, positif : [7.4] (attendu [7.4])
+  calibration ✓ délai de fiche, positif CRLF (ajouté après la passe 1) : [7.4] (attendu [7.4])
+  calibration ✓ délai de fiche, négatif : [] (attendu [])
+  calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+== T0 — préalable aux re-mesures : rien hors .md d'autorité et docs/preuves n'a changé depuis a922537
+✓ T0    fichiers hors .md/docs/preuves changés a922537..HEAD (189 examinés) — attendu [] · mesuré []
+
+== D317 — provenance (objets git)
+✓ P1    parent de a922537 — attendu 'a65d40d' · mesuré 'a65d40d'
+✓ P2    fichiers hors docs/preuves = table des fichiers attendus (68 examinés) — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'e2e/fixtures/harness.ts', 'e2e/playwright.config.ts', 'e2e/specs/r26-parcours-reservation.e2e.ts', 'e2e/specs/warmup.setup.ts', 'neutralisation/neutralize-r26.py'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'e2e/fixtures/harness.ts', 'e2e/playwright.config.ts', 'e2e/specs/r26-parcours-reservation.e2e.ts', 'e2e/specs/warmup.setup.ts', 'neutralisation/neutralize-r26.py']
+✓ P3    pièces : toutes sous D317/ ou la rectification posée à côté de D316 — attendu [] · mesuré []
+✓ P3b   nombre de pièces (59 sous D317/ + 1 rectification) — attendu 60 · mesuré 60
+✓ P4    aucun fichier de code produit (apps/, packages/) au commit — attendu [] · mesuré []
+✓ P5    a922537 ancêtre de origin/main — attendu 0 · mesuré 0
+✓ P6    createPublishedVenue garde ses trois champs et AJOUTE pro (« ajout seul ») — attendu True · mesuré True
+
+== D317 — les portes (extraits versés, journaux bruts)
+✓ G1    typecheck : code et durée — attendu (0, 37) · mesuré (0, 37)
+✓ G1    lint : code et durée — attendu (0, 17) · mesuré (0, 17)
+✓ G1    test : code et durée — attendu (0, 90) · mesuré (0, 90)
+✓ G1    build : code et durée — attendu (0, 81) · mesuré (0, 81)
+✓ G1    test-int : code et durée — attendu (0, 525) · mesuré (0, 525)
+✓ G1    test-e2e : code et durée — attendu (0, 212) · mesuré (0, 212)
+✓ G2    typecheck : « Done » — attendu 8 · mesuré 8
+✓ G2b   typecheck : « error TS » — attendu 0 · mesuré 0
+✓ G3    lint : « Done » — attendu 8 · mesuré 8
+✓ G4    test : 664/58 · 39/4 · 308/22 · 347/28 — attendu [(664, 58), (39, 4), (308, 22), (347, 28)] · mesuré [(664, 58), (39, 4), (308, 22), (347, 28)]
+✓ G5    build : « Done » — attendu 4 · mesuré 4
+✓ G6    test:int : 444/36 — attendu [(444, 36)] · mesuré [(444, 36)]
+✓ G7    e2e : 43 réussis · 1 ignoré — attendu ('43', '1') · mesuré ('43', '1')
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/typecheck.log — attendu 'c43259bb878a92f4253adbdd0004da08b30234ed9428e8ce2c77bbf66798bd5e' · mesuré 'c43259bb878a92f4253adbdd0004da08b30234ed9428e8ce2c77bbf66798bd5e'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/lint.log — attendu 'a5c2896d444957d71911986eff88564f5fc75dc45fa4555e775f91faed50a1bf' · mesuré 'a5c2896d444957d71911986eff88564f5fc75dc45fa4555e775f91faed50a1bf'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/test.log — attendu 'a825bfd1fed0c12d83c08f48b091371a2dbb2a2c374032958d3705355d91d827' · mesuré 'a825bfd1fed0c12d83c08f48b091371a2dbb2a2c374032958d3705355d91d827'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/build.log — attendu 'c3642f64268d88dffcb9fb82678625b4f77eab1d54e9ef480b8d996b548fe5e5' · mesuré 'c3642f64268d88dffcb9fb82678625b4f77eab1d54e9ef480b8d996b548fe5e5'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/test-int.log — attendu 'be2fbec1f1f2cd7c9923bdcaba21127cb63a265a768e0e701674a17234eae344' · mesuré 'be2fbec1f1f2cd7c9923bdcaba21127cb63a265a768e0e701674a17234eae344'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/portes/test-e2e.log — attendu '353a914a9048c827fc5f1ccd3f7d630bcbccd09228f1ebb1ff90902ca7c736ed' · mesuré '353a914a9048c827fc5f1ccd3f7d630bcbccd09228f1ebb1ff90902ca7c736ed'
+✓ G8    journal e2e BRUT : « File change detected » (l'extrait a retiré les lignes [WebServer]) — attendu 0 · mesuré 0
+✓ G9    état machine avant les portes : RAM · PERF · secteur · node · chrome — attendu ('3645', '68.5', 'SECTEUR', '0', '30') · mesuré ('3645', '68.5', 'SECTEUR', '0', '30')
+
+== D317 — la campagne du lot et le rejeu de r25
+✓ C1    r26 : mordues / jouées — attendu '2 garde(s) mordue(s) sur 2' · mesuré '2 garde(s) mordue(s) sur 2'
+✓ C1b   r26 : code et durée — attendu (0, 386) · mesuré (0, 386)
+✓ C1c   r26 : Playwright exigé — attendu '1.50.1' · mesuré '1.50.1'
+✓ C1d   r26 : calibration — attendu '6 bras · 0 manqué(s)' · mesuré '6 bras · 0 manqué(s)'
+✓ C1e   r26 : mutations prouvées posées dans la campagne (ancre 1→0 · marqueur 0→1) — attendu 2 · mesuré 2
+✓ C2    verifier-mutations.py r26, REJOUÉ (aucune pièce versée par D317) : posées · non posées — attendu ('2', '0') · mesuré ('2', '0')
+✓ C2b   arbre identique avant/après verifier-mutations — attendu 'M ZWADJ_CONTINUITE.md\n?? docs/preuves/D320/' · mesuré 'M ZWADJ_CONTINUITE.md\n?? docs/preuves/D320/'
+✓ C3    rejeu r25 --e2e : mordues / jouées · non mesurées — attendu ('10 garde(s) mordue(s) sur 10', '1') · mesuré ('10 garde(s) mordue(s) sur 10', '1')
+✓ C3b   rejeu r25 : code et durée — attendu (3, 783) · mesuré (3, 783)
+✓ C3c   rejeu r25 : R25-E1 à E3 mordues — attendu 3 · mesuré 3
+✓ C4    lancer-campagnes : campagnes concernées — attendu '0 campagne(s) concernée(s) sur 30' · mesuré '0 campagne(s) concernée(s) sur 30'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/campagne-r26.log — attendu '9e2753f75f541a4a94a6164eaf6d2f850f26c5e655aaa26f4e789a9994e5bca6' · mesuré '9e2753f75f541a4a94a6164eaf6d2f850f26c5e655aaa26f4e789a9994e5bca6'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/campagne-r25-e2e.log — attendu '5588d38652de597690b22e58980056972341bcbc1ccc49fb61bde1ae3695f51a' · mesuré '5588d38652de597690b22e58980056972341bcbc1ccc49fb61bde1ae3695f51a'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/lancer-campagnes.log — attendu 'f74e2a3d74683a1913852c44005f725c1ca88bd70e876d53bb07860d5b4a32d1' · mesuré 'f74e2a3d74683a1913852c44005f725c1ca88bd70e876d53bb07860d5b4a32d1'
+
+== D317 — étape 1 (recompilations de l'API)
+✓ E1    rouge : (sondes, en échec) T, L, W, W — attendu [(105, 0), (107, 0), (106, 21), (105, 23)] · mesuré [(105, 0), (107, 0), (106, 21), (105, 23)]
+✓ E2    vert : (sondes, en échec) — attendu [(103, 0), (106, 0), (106, 0), (106, 0)] · mesuré [(103, 0), (106, 0), (106, 0), (106, 0)]
+✓ BRUT  empreinte de .neutralisation-journaux/d317/mesure-rouge.log — attendu '025f469c955ea0082aba655d6af782cedb91298caa4fee243ddf6fd515e830f6' · mesuré '025f469c955ea0082aba655d6af782cedb91298caa4fee243ddf6fd515e830f6'
+✓ E3    rouge, journal brut : « File change detected » — attendu 2 · mesuré 2
+✓ E3b   rouge, journal brut : heures des deux recompilations — attendu ['11:37:47', '11:37:59'] · mesuré ['11:37:47', '11:37:59']
+✓ E3c   rouge, journal brut : démarrages de l'application — attendu 3 · mesuré 3
+✓ BRUT  empreinte de .neutralisation-journaux/d317/mesure-vert.log — attendu 'ec40612b2d47c31d8441b829e230386a16dde40e7744fb38fa1ae0e533689f95' · mesuré 'ec40612b2d47c31d8441b829e230386a16dde40e7744fb38fa1ae0e533689f95'
+✓ E4    vert, journal brut : « File change detected » · démarrages — attendu (0, 1) · mesuré (0, 1)
+✓ E5    observateur : recompilations T · W · S1 · S2 · A* · S1* — attendu (0, 2, 0, 0, 0, 0) · mesuré (0, 2, 0, 0, 0, 0)
+✓ E5b   observateur : TypeScript — attendu '5.9.3' · mesuré '5.9.3'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/observateur-tsc.log — attendu 'eabc9b2a99028616641f53f7a080208c33c722e2e8da28aad1179e3cb0a0e5b7' · mesuré 'eabc9b2a99028616641f53f7a080208c33c722e2e8da28aad1179e3cb0a0e5b7'
+✗ E6    « les surveillants se déclenchent (97 fois) » sur les RECULS du dernier accès (97 déclenchements FileWatcher parcourus ; aucune pièce versée par D317) — attendu 97 · mesuré 96
+· E6    CONSTAT : 97 = TOUS les déclenchements FileWatcher du journal ; 1 vient de l'écriture zz-sonde (bras W, qui recompile) — l'attribution aux reculs compte un déclenchement de trop ; conclusion (aucune recompilation sur un recul) inchangée
+✓ E7    programme surveillé, re-mesuré (tsc --listFilesOnly ; aucune pièce versée par D317) : apps/api/src · dont generated · packages/types/src · messages — attendu (158, 47, 13, ['ar.json', 'fr.json']) · mesuré (158, 47, 13, ['ar.json', 'fr.json'])
+✓ E7b   programme surveillé, total (1072 lignes parcourues) — attendu 1072 · mesuré 1072
+✓ E8    correctif : l'API de l'e2e lancée par `exec nest start`, plus par `run dev` — attendu (True, False) · mesuré (True, False)
+
+== D317 — étape 2 (le parcours)
+✓ S1    deux tests — attendu 2 · mesuré 2
+✓ S2    libellés tirés de fr.json (import du fichier de messages) — attendu True · mesuré True
+✓ S3    aucun attribut de test dans la spec — attendu 0 · mesuré 0
+✓ S4    le préchauffage visite la route dynamique — attendu True · mesuré True
+✓ S5    délais : premier passage · rouge · vert-1 · vert-2 (fiche 1, fiche 2) — attendu [7.4, 2.0, 5.4, 1.6, 1.7, 1.7, 1.7, 1.7] · mesuré [7.4, 2.0, 5.4, 1.6, 1.7, 1.8, 1.7, 1.7]
+· S5    CONSTAT : « Vert, deux passages : 1,7 s au premier test comme au second » — vert-1, second test : 1.8 s (les trois autres valeurs : 1,7) ; la conclusion (7,4 / 5,4 → 1,7 / 1,7 au premier test) tient
+  · S6 occurrence : docs/preuves/D317/etape2/delai-fiche-sortie-passe1.txt …'1 : recherche 12:13:33.075000 → données de la fiche 12:13:33.639000 : 0.6 s\r\n   fiche n°2 : rec'…
+✗ S6    MD2-g « 6,2 s après le clic, contre 0,6 s » : pièces qui portent LES DEUX valeurs (59 parcourues) — attendu '≥ 1' · mesuré 0
+✓ BRUT  empreinte de .neutralisation-journaux/d317/r26-premier.log — attendu '86427dfb35557bfd' · mesuré '86427dfb35557bfd'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/r26-rouge-prechauffage.log — attendu '695bcc5fbfd70eb6' · mesuré '695bcc5fbfd70eb6'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/r26-vert-prechauffage-1.log — attendu 'ea9cfad3a044bc45' · mesuré 'ea9cfad3a044bc45'
+✓ BRUT  empreinte de .neutralisation-journaux/d317/r26-vert-prechauffage-2.log — attendu '6d3ec26314151c3f' · mesuré '6d3ec26314151c3f'
+
+== D317 — contrôles « 0 valeur réelle », Chargily, audits
+✓ K1    jetons, premier passage : valeurs · journaux · fichiers · porteurs — attendu ('92', '11', '55', '0') · mesuré ('92', '11', '55', '0')
+✓ K2    cookie, premier passage — attendu ('215', '11', '55', '0') · mesuré ('215', '11', '55', '0')
+✓ K3    forme Chargily, premier passage : fichiers · porteurs — attendu ('56', '0') · mesuré ('56', '0')
+✓ K4    tri REJOUÉ D316 final → D317 : contextes · nouvelles — attendu (136, 142, 6) · mesuré (136, 142, 6)
+✓ K5    tri REJOUÉ D317 → D317 final — attendu (142, 148, 6) · mesuré (142, 148, 6)
+
+== D318
+✓ Q1    parent de e4bb432 — attendu 'a922537' · mesuré 'a922537'
+✓ Q2    fichiers du commit (4 examinés) — attendu ['AGENTS.md', 'ZWADJ_CONTINUITE.md', 'docs/preuves/D318/audit-secrets-d318.txt', 'docs/preuves/D318/audit-secrets-final.txt'] · mesuré ['AGENTS.md', 'ZWADJ_CONTINUITE.md', 'docs/preuves/D318/audit-secrets-d318.txt', 'docs/preuves/D318/audit-secrets-final.txt']
+✓ Q3    tri REJOUÉ D317 final → D318 : contextes · nouvelles (aucune pièce de tri versée par D318) — attendu (148, 148, 0) · mesuré (148, 148, 0)
+· Q4    CONSTAT : section D318 (3703 caractères parcourus) : « lecture adverse » 0 occurrence(s) — la forme de Ko la plaçait en PARTIE B (D319), pas en partie A : D318 n'en devait pas
+✗ Q5    section D318 : une passe D277 écrite (« passe D277 » ou « D277 ») — attendu '≥ 1' · mesuré 0
+✗ Q6    AGENTS.md à e4bb432 : « pas d'app admin » non annoté par D318 (1 occurrence(s) parcourue(s)) — attendu 0 · mesuré 1
+· Q6    CONSTAT : …mandé, même si le design fourni montre plus. - Ne pas introduire de dépendance lourde sans justification (pas de Redis, pas d'app admin, pas de 2ᵉ provider de paiement au MVP). - N…
+✗ Q7    renvoi « méthode renforcée, bloc D318 » (2 fois à e4bb432) : blocs titrés « (D318) » dans la méthode renforcée (10 blocs parcourus) — attendu '≥ 1' · mesuré 0
+  · backlog à e4bb432 : « apps/admin » 2 (relevé pour la passe D277 de D320, trié à la main)
+  · backlog à e4bb432 : « app admin » 0 (relevé pour la passe D277 de D320, trié à la main)
+  · backlog à e4bb432 : « App Admin » 0 (relevé pour la passe D277 de D320, trié à la main)
+  · backlog à e4bb432 : « page d'administration » 0 (relevé pour la passe D277 de D320, trié à la main)
+  · backlog à e4bb432 : « écran d'administration » 0 (relevé pour la passe D277 de D320, trié à la main)
+
+== D319
+✓ R1    parent de 91e0922 · de a53943e — attendu ('e4bb432', '91e0922') · mesuré ('e4bb432', '91e0922')
+✓ R2    91e0922 : hors docs/preuves — attendu ['ZWADJ_CONTINUITE.md'] · mesuré ['ZWADJ_CONTINUITE.md']
+✓ R2b   91e0922 : pièces toutes sous D319/ — attendu [] · mesuré []
+✓ R3    a53943e : hors docs/preuves — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']
+✓ R3b   a53943e : pièces toutes sous D319/ — attendu [] · mesuré []
+✓ R4    pièces de SA passe : 171 versées + 2 produites après — attendu 173 · mesuré 173
+✓ R5    réemploi du plancher : harnais changés 0057748..91e0922 — attendu ['neutralisation/neutralize-r25.py', 'neutralisation/neutralize-r26.py'] · mesuré ['neutralisation/neutralize-r25.py', 'neutralisation/neutralize-r26.py']
+✓ R5b   environnement du plancher : fichiers de dépendances changés 0057748..91e0922 (le motif écrit ne le dit pas) — attendu [] · mesuré []
+✓ R6    forme de Ko écrite par D318 : « planchers du point 12, mesurés avant tout commit de protocole » — attendu 1 · mesuré 1
+✓ R6b   motif du réemploi écrit AVANT la mesure (91e0922) — attendu 1 · mesuré 1
+✗ R6c   D319 nomme son réemploi comme un écart à la forme de Ko (26171 caractères parcourus, motifs : « forme de Ko », « forme exigée », « au lieu de les mesurer », « au lieu d'une mesure », « écart à la forme », « mesurés avant tout commit ») — attendu '≥ 1' · mesuré 0
+✗ R7    D319 : lecture adverse de D317 faite ou déclarée non faite — attendu '≥ 1' · mesuré 0
+✗ R8    « le plus serré : e3d1-s8, 80 s contre 8,4 s » (26 harnais à plancher parcourus) : le plus serré par rapport · par marge — attendu ('e3d1-s8', 'e3d1-s8') · mesuré ('booking-status', 'booking-status')
+· R8    CONSTAT : trois plus serrés (rapport, marge, harnais) : booking-status ×3.38 (+10.6 s) ; argon2 ×3.60 (+11.6 s) ; horizon ×4.41 (+75.8 s)
+✓ R9    int-r25.log : « une seule occurrence de [ dans tout le fichier » — attendu 1 · mesuré 1
+✗ R10   « 0 valeur réelle » : valeurs · fichiers parcourus · porteurs — attendu ('39', '2324', '0') · mesuré ('39', '2325', '0')
+✓ R11   échantillonneur (194 lignes parcourues) : échantillons · écart min · écart max · chrome max — attendu (194, 31, 34, 0) · mesuré (194, 31, 34, 0)
+✓ R12   échantillons sous la barre 4 579 · minimum — attendu (44, 2966) · mesuré (44, 2966)
+✓ R13   tri REJOUÉ D318 final → D319 (aucune pièce de tri versée par D319) — attendu (148, 150, 2) · mesuré (148, 150, 2)
+✓ R13b  tri REJOUÉ D319 → D319 final — attendu (150, 150, 0) · mesuré (150, 150, 0)
+· R14   CONSTAT : aucune pièce de tri versée par D319 (D317 en versait) ; tri rejoué identique (R13), le « 106 fichiers » est lu dans la sortie scellée `audit-secrets-resultat.txt`, ligne de contexte de la 2ᵉ alerte — concordant
+✓ R15   pré-vol : harnais e2e-verrouillés — attendu "['r25', 'r26']" · mesuré "['r25', 'r26']"
+✓ R15b  r25 rejoué à l'étape 6 avec les deux drapeaux (« cibles : 11 déclarées · 11 jouées (e2e, int, unit) ») — attendu True · mesuré True
+✓ R15c  cibles e2e de r25 jouées et mordues à l'étape 6 (R25-E1 à E3) — attendu 3 · mesuré 3
+✓ R15d  cibles e2e de r26 jouées et mordues à l'étape 6b (R26-1, R26-2) — attendu 2 · mesuré 2
+✓ R15e  --tout : cibles de r25 non mesurées (R25-8 int, R25-E1 à E3 e2e) — attendu ['R25-8', 'R25-E1', 'R25-E2', 'R25-E3'] · mesuré ['R25-8', 'R25-E1', 'R25-E2', 'R25-E3']
+· R16   CONSTAT : l'étape 6 rejoue r25 AVEC --e2e sans relever les ports 3100/3101/5273 (l'étape 6b le fait pour r26) ; la sonde qui la précède porte « node 0 » (progression), et le pré-vol e2e de r25 est passé — la condition est tenue de fait, pas vérifiée
+✓ R17   registre : lignes D317, D318, D319 — attendu (1, 1, 1) · mesuré (1, 1, 1)
+
+104 contrôles · 9 écart(s) · 7 constat(s) (attendu : ce que la lecture trouve — chaque ✗ se lit à son contexte)

@@ -1,0 +1,117 @@
+  calibration ✓ route ADMIN par décorateur de classe : positif True (attendu True) · négatif False (attendu False)
+  calibration ✓ écriture d'AuditLog : positif True (attendu True) · négatif False (attendu False)
+  calibration ✓ méthode HTTP Nest : positif True (attendu True) · négatif False (attendu False)
+  calibration : 3 motifs · 0 manqué(s) (attendu 0)
+
+== 1. ROUTES ADMIN (décorateurs, sources hors tests)
+  apps/api/src/account/account-admin.controller.ts — @Controller("admin/deletion-requests") ; rôle : @Roles(UserRole.ADMIN) (ligne 25)
+     ligne  30 : @Get()
+     ligne  39 : @Post(":id/approve")
+     ligne  55 : @Post(":id/reject")
+  apps/api/src/venues/venues-admin.controller.ts — @Controller("admin/venues") ; rôle : @Roles(UserRole.ADMIN) (ligne 18)
+     ligne  23 : @Post(":id/publish")
+     ligne  32 : @Patch(":id/commission-rate")
+  ⇒ 2 contrôleur(s) ADMIN, 5 route(s), sur 111 fichiers source parcourus (plancher asserté par rbac-all-routes.int-spec.ts : ≥ 5)
+
+== 2. GARDES ET VÉRIFICATION DU RÔLE
+  apps/api/src/app.module.ts:2 : import { APP_GUARD } from "@nestjs/core";
+  apps/api/src/app.module.ts:65 : { provide: APP_GUARD, useClass: ThrottlerGuard },
+  apps/api/src/app.module.ts:66 : { provide: APP_GUARD, useClass: JwtAuthGuard },
+  apps/api/src/app.module.ts:67 : { provide: APP_GUARD, useClass: RolesGuard }
+  apps/api/src/auth/auth.types.ts:4 : * Claims du JWT d'accès (D4) : le strict minimum — `sub` (id utilisateur) et
+  apps/api/src/auth/auth.types.ts:13 : role: UserRole;
+  apps/api/src/auth/auth.types.ts:20 : role: UserRole;
+  apps/api/src/auth/jwt-auth.guard.ts:40 : payload = await this.jwt.verifyAsync<AccessTokenPayload>(token);
+  apps/api/src/auth/jwt-auth.guard.ts:45 : request.user = { userId: payload.sub, role: payload.role };
+  apps/api/src/auth/roles.guard.ts:43 : if (!requiredRoles.includes(user.role)) {
+  apps/api/src/auth/auth.service.ts:271 : if (user.status !== "ACTIVE") {
+  apps/api/src/auth/auth.service.ts:298 : const payload: AccessTokenPayload = { sub: user.id, role: user.role };
+  apps/api/src/auth/auth.service.ts:405 : if (user.status !== "ACTIVE") {
+  apps/api/src/auth/auth.service.ts:470 : if (!user || user.status !== "ACTIVE") throw this.unauthenticated();
+  apps/api/src/auth/auth.service.ts:501 : async refresh(rawToken: string | undefined): Promise<RefreshResult> {
+  apps/api/src/auth/auth.service.ts:538 : if (!user || user.status !== "ACTIVE") throw this.unauthenticated();
+  apps/api/src/auth/auth.service.ts:580 : const payload: AccessTokenPayload = { sub: user.id, role: user.role };
+  apps/api/src/auth/auth.service.ts:621 : const payload: AccessTokenPayload = { sub: user.id, role: user.role };
+  apps/api/src/auth/auth.service.ts:763 : if (!token || token.user.status !== "ACTIVE") {
+  apps/api/src/auth/auth.module.ts:26 : expiresIn: config.getOrThrow<string>("JWT_ACCESS_TTL") as JwtSignOptions["expiresIn"]
+  apps/api/src/config/env.ts:14 : CORS_ORIGINS: z
+  apps/api/src/config/env.ts:16 : .default("http://localhost:3000,http://localhost:5173")
+  apps/api/src/config/env.ts:23 : JWT_ACCESS_TTL: z
+  apps/api/src/config/env.ts:25 : .regex(/^\d+(s|m|h|d)$/, "JWT_ACCESS_TTL doit être de la forme 900s / 15m / 1h")
+  apps/api/src/config/env.ts:28 : REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().min(1).max(365).default(30),
+  apps/api/src/config/env.ts:30 : CLIENT_URL: z.string().url().default("http://localhost:3000"),
+  apps/api/src/config/env.ts:31 : PRO_URL: z.string().url().default("http://localhost:5173"),
+  apps/api/src/config/env.spec.ts:20 : expect(env.JWT_ACCESS_TTL).toBe("15m");
+
+== 3. COOKIE DE RAFRAÎCHISSEMENT, CORS, ACCÈS DES FRONTS À L'API
+  apps/api/src/auth/auth.constants.ts:9 : REFRESH_COOKIE_NAME: "zwadj_rt",
+  apps/api/src/auth/auth.constants.ts:11 : REFRESH_COOKIE_PATH: "/api/v1/auth",
+  apps/api/src/auth/auth.controller.ts:93 : @ApiOperation({ summary: "Connexion (D1 par rôle) — access token dans le corps, refresh en cookie httpOnly" })
+  apps/api/src/auth/auth.controller.ts:94 : @ApiOkResponse({ description: "{ accessToken, user } + Set-Cookie zwadj_rt (httpOnly, path /api/v1/auth)" })
+  apps/api/src/auth/auth.controller.ts:206 : * Attributs du cookie refresh (D2/D7) : httpOnly (inaccessible au JS),
+  apps/api/src/auth/auth.controller.ts:222 : httpOnly: true,
+  apps/api/src/auth/auth.controller.ts:223 : sameSite: "lax",
+  apps/api/src/auth/auth.controller.ts:224 : secure: this.config.getOrThrow<boolean>("AUTH_COOKIE_SECURE"),
+  apps/api/src/auth/auth.controller.ts:225 : path: AUTH.REFRESH_COOKIE_PATH
+  apps/api/src/main.ts:23 : app.enableCors({ origin: config.get<string[]>("CORS_ORIGINS"), credentials: true });
+  apps/client/src/lib/api.ts:16 : const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+  apps/pro/src/lib/auth-client.ts:9 : export const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
+  apps/pro/src/auth/require-pro.tsx:29 : // D23 : un compte CLIENT connecté ici est refusé EXPLICITEMENT (pas de
+  apps/pro/src/auth/require-pro.tsx:31 : if (user.role !== "PRO") {
+  proxy /api dans next.config.ts ou vite.config.ts : 0 sur 2 fichiers parcourus (0 ⇒ appels DIRECTS, CORS)
+  attribut `domain:` d'un cookie dans les sources API : 0 sur 111 fichiers (0 ⇒ cookie limité à l'hôte de l'API)
+
+== 4. CRÉER UN ADMIN — ce que le produit permet
+  packages/types/src/auth.ts:161 : export const registerSchema = z.discriminatedUnion("role", [
+  packages/types/src/auth.ts:162 : registerClientSchema.extend({ role: z.literal("CLIENT") }),
+  packages/types/src/auth.ts:163 : registerProSchema.extend({ role: z.literal("PRO") })
+  packages/types/src/auth.ts:165 : export type RegisterInput = z.infer<typeof registerSchema>;
+  apps/api/src/auth/auth.service.ts:278 : if (user.role !== "CLIENT" && !user.emailVerifiedAt) {
+  apps/api/src/auth/auth.service.ts:360 : role: "CLIENT", // cadrage OAuth : la création Google ne produit JAMAIS un PRO/ADMIN
+  fabrications d'un ADMIN hors produit (tests, seed) : 17
+     e2e/fixtures/harness.ts:330 : await db.query(`UPDATE users SET role = 'ADMIN' WHERE email = $1`, [admin.email]);
+     apps/api/test/int/account.int-spec.ts:58 : await ctx.prisma.user.update({ where: { email: ADMIN.email }, data: { role: "ADMIN" } });
+     apps/api/test/int/availability-blocks.int-spec.ts:83 : await ctx.prisma.user.update({ where: { email: ADMIN.email }, data: { role: "ADMIN" } });
+     apps/api/test/int/availability.int-spec.ts:88 : await ctx.prisma.user.update({ where: { email: ADMIN.email }, data: { role: "ADMIN" } });
+  seed qui crée un ADMIN : 0 sur 1 seed(s) parcouru(s)
+
+== 5. JOURNAL DES ACTIONS, STATUTS DE PUBLICATION, TRACES EXISTANTES
+  apps/api/prisma/schema.prisma:59 : enum UserStatus {
+  apps/api/prisma/schema.prisma:61 : SUSPENDED
+  apps/api/prisma/schema.prisma:69 : PENDING
+  apps/api/prisma/schema.prisma:81 : enum VenuePublicationStatus {
+  apps/api/prisma/schema.prisma:82 : DRAFT
+  apps/api/prisma/schema.prisma:83 : PENDING
+  apps/api/prisma/schema.prisma:84 : PUBLISHED
+  apps/api/prisma/schema.prisma:166 : DRAFT
+  apps/api/prisma/schema.prisma:186 : PENDING
+  apps/api/prisma/schema.prisma:210 : PENDING
+  apps/api/prisma/schema.prisma:216 : PENDING
+  apps/api/prisma/schema.prisma:377 : decidedById  String?   @map("decided_by_id") @db.Uuid
+  apps/api/prisma/schema.prisma:381 : decidedBy User?                          @relation("DeletionDecider", fields: [decidedById], references: [id], onDelete: SetNull)
+  apps/api/prisma/schema.prisma:1357 : model AuditLog {
+  apps/api/prisma/schema.prisma:1361 : action     String // ex: "venue.publish", "commission_rate.update"
+  écrivains d'AuditLog dans apps/api/src : 0 sur 111 fichiers parcourus
+  migrations qui créent/touchent audit_logs : ['20260707000000_init'] sur 27 parcourues
+  apps/api/src/venues/venues-admin.service.ts:44 : * Publication ONE-WAY (arbitrage A3-④) : DRAFT → PUBLISHED directement
+  apps/api/src/venues/venues-admin.service.ts:45 : * (PENDING inutilisé au MVP, verrouillé). Re-publier une salle déjà publiée
+  apps/api/src/venues/venues-admin.service.ts:63 : code: VenueErrorCode.SLOT_TEMPLATE_REQUIRED,
+  apps/api/src/venues/venues-admin.service.ts:96 : data: { ...input },
+  « reject » dans le contrôleur et le service des salles ADMIN : 0 (2 fichiers parcourus)
+
+== 6. CLIENT D'API PARTAGÉ, PARITÉ i18n, e2e
+  « /admin » dans packages/api-client/src : 0 sur 9 fichiers parcourus
+  clés fr.json 1095 · ar.json 1095 · orphelines 0 · espace « admin. » 0
+  apps/api/src/common/i18n-parity.spec.ts:13 : const MESSAGES_DIR = join(process.cwd(), "..", "..", "packages", "i18n", "messages");
+  apps/api/src/common/i18n-parity.spec.ts:38 : expect({ frOnly, arOnly }).toEqual({ frOnly: [], arOnly: [] });
+  apps/api/src/common/i18n-parity.spec.ts:44 : ...[...fr.entries()].filter(([, v]) => v.trim() === "").map(([k]) => `fr:${k}`),
+  apps/api/src/common/i18n-parity.spec.ts:45 : ...[...ar.entries()].filter(([, v]) => v.trim() === "").map(([k]) => `ar:${k}`)
+  apps/api/src/common/i18n-parity.spec.ts:95 : expect(fr.size).toBeGreaterThanOrEqual(943);
+  e2e/playwright.config.ts:30 : const API_PORT = Number(process.env.E2E_API_PORT ?? 3101);
+  e2e/playwright.config.ts:31 : const CLIENT_PORT = Number(process.env.E2E_CLIENT_PORT ?? 3100);
+  e2e/playwright.config.ts:32 : const PRO_PORT = Number(process.env.E2E_PRO_PORT ?? 5273);
+  e2e/playwright.config.ts:161 : command: "pnpm --filter @zwadj/api exec nest start",
+  e2e/playwright.config.ts:181 : command: `pnpm --filter @zwadj/client exec next dev --port ${CLIENT_PORT}`,
+  e2e/playwright.config.ts:188 : command: `pnpm --filter @zwadj/pro exec vite --port ${PRO_PORT} --strictPort`,
+
+FIN DU RELEVÉ

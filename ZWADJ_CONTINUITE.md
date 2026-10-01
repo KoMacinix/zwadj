@@ -168,6 +168,9 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
    veux une page d'administration. » **Annotée, pas réécrite** : le reste de cette phrase décrivait l'état au MVP initial
    et n'est plus l'intention produit. Périmètre, emplacement et création du premier compte admin : lot de CADRAGE à
    venir, dû à l'arbitrage de Ko — aucun code n'est permis par cette annotation seule. Texte complet : section D318.)*
+   ⛔ *(D320, 01/10/2026 : **le cadrage est écrit** — « ⛔ CADRAGE DU RANG 28 » ; emplacement, langue, premier admin, rejet,
+   sécurité et découpage sont **dix décisions dues à Ko** (D-1 à D-10) ; dans la v1, le taux de commission est **en lecture
+   seule** (décision du relecteur). Toujours aucun code permis.)*
 5. **Paiement** : Chargily seul (agrège CIB+Edahabia), BaridiMob différé.
 6. ~~**Visite 360°** : une seule photo équirectangulaire par salle.~~ **SUPERSÉDÉE — voir D34.**
 7. **Cashback anti-fuite** : demande de réservation Zwadj obligatoire au préalable pour être éligible. Montants remplacés par **D35** (taux variable par salle). Toujours prélevé sur la commission de la salle, jamais sur les fonds Zwadj — D35 en fait une garantie mécanique.
@@ -1161,6 +1164,12 @@ pause et passe en tout dernier. » ⇒ **R1 → 23b → 23c → E3 forme le DERN
 bloqué. « Les autres points du chemin de l'argent (F7, gestion des devis, expiration des demandes, B:728) s'ouvrent un
 par un quand je les arbitre, sous la méthode renforcée » — chacun un rang distinct, avant le dernier. Texte complet,
 motifs : `AGENTS.md`, point E3 ; section D318.)*
+⛔ *(D320, 01/10/2026 : **les quatre points RATTACHÉS à leurs entrées du backlog**, sur consigne de Ko — **F7** ⇒ `[API]`
+« audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français » ; **gestion des devis** ⇒
+« Remonter `QuotesSection`, démontée par la refonte… » ; **expiration des demandes** ⇒ « Implement pending-request
+expiration job (pending → expired…) via pg-boss » — ⚠ **pas** E3d-2, qui porte sur les intentions de paiement ; **B:728** ⇒
+« B4 devra DIRE au pro que le prix saisi… est écrasé dès le premier créneau ». Correspondance établie contre la table des
+coûts de D315, d'où viennent les libellés : section D320. Le rattachement n'en ouvre **aucun**.)*
 ⇒ **ORDRE DU RANG 23 À COMPTER DU 25/09/2026 : 23a (codé, D305 ; session adverse, D306 ; comportement ACCEPTÉ par le
 relecteur, D307) → 23a-2 (C1 à C5 de D306 : code, second lot de 23a) → CERTIFICATION, qui CLÔT le rang 23.** R1, 23b, 23c :
 backlog, bloqués par la reprise. **Décisions du relecteur** (texte et motifs : méthode renforcée, bloc D307) : 23a
@@ -1358,7 +1367,9 @@ pas attribué.
 ⇒ **Documentaire** (partie A : arbitrages de Ko sur la page d'administration et sur l'ordre de reprise du chemin de
 l'argent, décision du relecteur sur la neutralisation permise pendant la pause) : il ne compte pas dans les deux/trois
 (D283 amendé par D292) — **compteur de lots de code non certifiés : DEUX, inchangé.** ⇒ **Chemin de l'argent** :
-arbitrage de Ko et décision du relecteur, écrits avant toute mesure — méthode renforcée, bloc D318. ⇒ **Partie B, la
+arbitrage de Ko et décision du relecteur, écrits avant toute mesure — méthode renforcée, bloc D318 ⛔ *(D320 : **ce bloc
+n'existe pas** ; le texte vit dans `AGENTS.md`, point E3, le bloc de la pause et la section D318 — écart 5 de la lecture
+adverse de D320)*. ⇒ **Partie B, la
 certification** : si elle passe, le compteur revient à **ZÉRO** et le rang 27 se clôt ; si elle échoue, rien ne se clôt,
 l'échec est décrit, rien n'est corrigé, et le blocage revient à Ko (Ko). ⇒ **Où il en est** : section « PROCHAIN LOT —
 rang 27 » en tête de ce fichier.
@@ -1370,8 +1381,29 @@ la prédiction**. Deux défauts d'instrument (pas de comportement) trouvés et c
 excluait `r25` à tort, `verser.py` aurait refusé un digest propre avec le journal brut ; les deux recalibrés,
 rejoués intégralement. **Marque** : « Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie ».
 ⇒ **Compteur DEUX → ZÉRO.** ⇒ **Où il en est** : point d'entrée du rang 27, bloc de clôture ; section D319.
-⇒ **RANG 28 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **CLÔTURE** du rang 27,
-pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.**
+⇒ ~~**RANG 28 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **CLÔTURE** du rang 27,
+pour qu'aucune reprise ne tombe sur une liste qui s'arrête.~~ ⛔ *(D320 : **arbitré par Ko le 01/10/2026** — ligne
+« ARBITRÉ LE 01/10/2026 PAR KO — le RANG 28 » ci-dessous.)* ⚠ **Une permission n'est pas un arbitrage.**
+⛔ **ARBITRÉ LE 01/10/2026 PAR KO — le RANG 28, mot pour mot : « Rang 28 : le cadrage de la page d'administration. Lot
+documentaire : les options et leur coût ; je tranche. »** Lot D320. ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est
+de Ko** (patron de D295) : la session a reçu l'arbitrage, elle ne se l'est pas attribué.
+⇒ **Documentaire** (D283 amendé par D292 : `.md` d'autorité et `docs/preuves/` seuls, aucune ligne de code) : il ne compte
+pas dans les deux/trois — **compteur de lots de code non certifiés : ZÉRO, inchangé.** ⇒ **Où il en est** : section
+« PROCHAIN LOT — rang 28 » en tête de ce fichier.
+⛔ **(D320, 01/10/2026) RANG 28 CLOS — LE CADRAGE DE LA PAGE D'ADMINISTRATION** : état des lieux relevé dans le code (5 routes
+ADMIN, rôle cru jusqu'à l'expiration du jeton — `15m` par défaut —, une seule session par navigateur, `audit_logs` sans
+écrivain, aucun chemin du produit ne crée un ADMIN), options a à e avec leurs coûts, 17 modes de défaillance, découpage en
+deux lots de code, et **onze décisions qui attendent Ko (D-1 à D-11)** ; aucune recommandation, aucune ligne de code.
+Décision du relecteur : taux **en lecture seule** dans la v1. Les quatre points de D318 rattachés. **Lecture adverse de D317,
+D318, D319 : 104 contrôles, 9 écarts, 7 constats** — aucun bloquant pour un lot documentaire. **Documentaire : compteur ZÉRO,
+inchangé** (sous réserve de D-11). ⇒ **Où il en est** : clos — point d'entrée du rang 28 ; cadrage ; section D320. ⇒ La ligne
+du rang 29, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie.**
+⚠ **DÉCISIONS DUES À KO, SANS RANG (D320)** : **D-1 à D-10**, celles du cadrage — chaque lot de l'administration attend
+celles qu'il porte ; et **D-11**, la conformité de la certification de D319 à la forme que Ko avait écrite — elle dit si le
+compteur est ZÉRO ou DEUX, donc si le prochain lot de code peut s'ouvrir sans certification. Texte mot pour mot : cadrage du
+rang 28, § 5.
+⇒ **RANG 29 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 28, sur
+consigne de Ko. ⚠ **Une permission n'est pas un arbitrage.**
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1459,6 +1491,514 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## ~~PROCHAIN LOT~~ — rang 28 · `[DOC]` **le cadrage de la page d'administration** ⛔ ~~**OUVERT LE 01/10/2026 : D320**~~ ⛔ **CLOS LE 01/10/2026 : D320**
+
+### ⛔ CLÔTURE DU 01/10/2026 (D320) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **ARBITRÉ PAR KO LE 01/10/2026, CLOS LE 01/10/2026, DANS LA MÊME SESSION.** ⇒ **QUEL lot : rang 28. OÙ IL EN EST : clos,
+ici.** Titre barré à la clôture ; ce bloc est son rafraîchissement de clôture (règle de D294).
+⇒ **Le cadrage est écrit** — section « ⛔ CADRAGE DU RANG 28 », juste en dessous : état des lieux relevé dans le code (pièce
+rejouable), options et coûts, modes de défaillance, découpage, et **onze décisions qui attendent Ko (D-1 à D-11)**. ⛔ **Il
+ne recommande rien** (Ko : « le relecteur recommande, je tranche »). **Aucune ligne de code** n'est permise par ce cadrage
+seul : chaque lot de l'administration attend l'arbitrage des décisions qu'il porte.
+⇒ **Partie A** : décision du relecteur (taux de commission **en lecture seule** dans la v1) — méthode renforcée, bloc D320 ;
+`AGENTS.md`, point E3. Les **quatre points du chemin de l'argent** de D318 rattachés à leurs entrées du backlog (bloc de la
+pause, et `AGENTS.md`, point E3) — ⚠ « expiration des demandes » n'est **pas** E3d-2.
+⇒ **Lecture adverse de D317, D318 et D319** — exigée par la forme de Ko au rang 27, **faite par personne** jusqu'ici : **104
+contrôles, 9 écarts, 7 constats** ; aucun ne touche le code ni les mesures des portes. Deux portent sur la **forme** que Ko
+avait écrite pour la certification de D319 (lecture adverse omise ; planchers réutilisés au lieu d'être mesurés, sans que
+l'écart soit nommé) : **décision due à Ko (D-11)**. Détail : section D320.
+⇒ **LOT DOCUMENTAIRE : compteur ZÉRO, inchangé** — sous réserve de D-11. ⇒ **RANG 29 : EN ATTENTE D'ARBITRAGE DE KO** (D284)
+— dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**. ⚠ **Une permission n'est pas un arbitrage.**
+
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D320), AVANT toute écriture du cadrage
+
+⛔ **ARBITRÉ PAR KO LE 01/10/2026** — texte mot pour mot dans l'ordre des rangs (ligne « ARBITRÉ LE 01/10/2026 PAR KO — le RANG
+28 »), **première écriture du lot**. **Lot DOCUMENTAIRE** (D283 amendé par D292). **SHA de départ : `a53943e`** (`HEAD` =
+`origin/main` après `git fetch`, arbre propre).
+⛔ **La forme exigée par Ko** : avant le rang, la **lecture adverse depuis la clôture de D317** (D318 et D319), et en
+particulier : la lecture adverse de D317 par D318, le motif du réemploi des planchers de D314, le passage de « 2 harnais
+verrouillés `--e2e` » à « `--e2e` (1) » ; **puis le rang 28, sauf défaut bloquant**. Partie A : la décision du relecteur
+(taux en lecture seule), le rattachement des quatre points de D318. Partie B : le cadrage — état des lieux relevé dans le
+code, options a à e avec leurs coûts relevables, modes de défaillance **avant tout**, découpage compatible avec le compteur,
+décisions **mot pour mot**, **aucune recommandation**. `git diff` : `.md` d'autorité et `docs/preuves/` seulement.
+⛔ **Pourquoi aucun défaut n'a été jugé bloquant** : les neuf écarts portent sur des **chiffres** et sur la **forme** ; aucun
+ne touche le code ni une mesure de porte ; et un lot **documentaire** ne dépend pas du compteur (D283). Ce qu'ils
+pourraient bloquer — l'ouverture du **prochain lot de code** — est la décision D-11, due à Ko.
+
+#### Fichiers attendus — énumérés AVANT d'écrire (le `git diff` de fin de lot ne doit contenir qu'eux)
+
+| fichier | pour |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | arbitrage, rang 29, ce point d'entrée, le cadrage, la section D320, le bloc D320 de la méthode renforcée, annotations des écarts, registre |
+| `AGENTS.md` | point E3 (décision du relecteur, rattachement des quatre points) ; « pas d'app admin » (Stack, À NE PAS faire) ; règle de D270 |
+| `ZWADJ_BACKLOG.md` | « No `apps/admin` » et PHASE 12 (passe D277) ; renvois des quatre points ; entrées de l'administration ; reports de D320 |
+| `docs/preuves/D320/` | lecture adverse (instrument, sorties), état des lieux (relevé, sortie), contrôles, passe D277, audits |
+
+## ⛔ CADRAGE DU RANG 28 — la page d'administration — écrit le 01/10/2026 (D320), AVANT toute ligne de code
+
+⛔ **Lot DOCUMENTAIRE, AUCUNE LIGNE DE CODE.** Ce cadrage **expose** l'état relevé, les options et leur coût, les modes de
+défaillance, un découpage et les décisions qui attendent Ko. ⛔ **Il ne recommande rien** — « le relecteur recommande, je
+tranche » (Ko) ; l'ordre où une option est écrite ne vaut pas préférence.
+**Pièce** : `docs/preuves/D320/etat-des-lieux/releve-admin.py` et `releve-admin-sortie.txt` — chaque fait du § 1 y porte son
+`fichier:ligne` et ce que la recherche a parcouru ; rejouable, lecture seule.
+**Coûts** : à la forme de D302 — code ou documentaire (compte ou non), fichiers, contrat d'API, migration, e2e, hébergement,
+CORS, cookies, dépendance. ⛔ **Aucune durée.**
+
+### 0. Ce qui est déjà tranché, et par qui
+
+- **Ko (D318)** : « Je veux une page d'administration. » — décision produit n° 4, annotée.
+- **Ko (D320)** : « Rang 28 : le cadrage de la page d'administration. Lot documentaire : les options et leur coût ; je
+  tranche. »
+- **Ko (consigne de ce lot)** : langue **français seul** ; premier admin **sans mot de passe par défaut** ; le rejet d'une
+  salle et l'information du pro sont une **décision produit, à Ko**.
+- **Relecteur (chat), délégué par Ko (D320)** : dans la première version de la page, le **taux de commission est EN LECTURE
+  SEULE** jusqu'à la reprise du chemin de l'argent. *Motif* : « le modifier valide un taux (branche 1,
+  `venues-admin.service.ts`), et le chemin de l'argent est en pause. » Méthode renforcée, bloc D320.
+
+### 1. État des lieux — relevé dans le code
+
+**1.1 Les routes ADMIN** : **2 contrôleurs, 5 routes**, sur 111 fichiers source parcourus — exactement le plancher
+qu'asserte `rbac-all-routes.int-spec.ts` (≥ 5).
+
+| route | effet | qui l'a fait |
+|---|---|---|
+| `POST /admin/venues/:id/publish` | `DRAFT` → `PUBLISHED`, sens unique (A3-④), idempotent ; 409 `SLOT_TEMPLATE_REQUIRED` sans créneau actif | **aucune trace** |
+| `PATCH /admin/venues/:id/commission-rate` | règle `commissionRateBps` et/ou `cashbackRateBps` (D35) — ⛔ **chemin de l'argent, branche 1** | **aucune trace** |
+| `GET /admin/deletion-requests` | file des demandes de suppression (défaut `PENDING`) | — |
+| `POST /admin/deletion-requests/:id/approve` | anonymise le compte, archive ses salles — **irréversible** (D41) | `decided_by_id` |
+| `POST /admin/deletion-requests/:id/reject` | aucun effet sur le compte ; motif transmis à l'utilisateur | `decided_by_id` |
+
+**1.2 Les gardes, et comment le rôle est vérifié.**
+- Trois gardes **globales**, dans cet ordre (`app.module.ts:65-67`) : `ThrottlerGuard`, `JwtAuthGuard` (fermé par défaut,
+  `@Public()` ouvre — D6), `RolesGuard` (lit `@Roles`). Les deux contrôleurs portent `@Roles(UserRole.ADMIN)` **au niveau de
+  la classe** (lignes 25 et 18) : toute route ajoutée dans ces fichiers en hérite.
+- **D4 — le rôle est une claim du jeton d'accès** (`auth.types.ts:4`, `{ sub, role }`). `JwtAuthGuard` vérifie la
+  **signature** et pose `request.user` **sans lire la base** (`jwt-auth.guard.ts:40-45`) ; `RolesGuard` compare
+  (`roles.guard.ts:43`). ⇒ **Le rôle est cru jusqu'à l'expiration du jeton.** Durée : `JWT_ACCESS_TTL`, **`15m`** par défaut
+  (`env.spec.ts:20`).
+- Le **rafraîchissement relit la base** : statut (`auth.service.ts:538` — non `ACTIVE` ⇒ 401) et rôle (`:580`). ⇒ Une
+  rétrogradation ou une suspension **prend effet au plus tard à l'expiration du jeton d'accès en cours**.
+- La **connexion d'un ADMIN exige un e-mail vérifié** (`auth.service.ts:278`, D1) ; Google ne crée **jamais** un ADMIN
+  (`:360`).
+- `rbac-all-routes.int-spec.ts` vérifie qu'un CLIENT et qu'un PRO ne franchissent **aucune** route ADMIN : une route ADMIN
+  neuve y entre d'elle-même — **à condition de porter `@Roles(ADMIN)`** (D119).
+- ⚠ **Homonymie relevée** : au registre, « D4 » est « Passes UI (D1 → D4) » ; dans le code, « (D4) » désigne les claims du
+  jeton (tranche Auth). C'est celle-ci que vise Ko. Rapportée au backlog (reports de D320).
+
+**1.3 Sessions, cookie, CORS.**
+- **Un seul** cookie de rafraîchissement, `zwadj_rt` : `httpOnly`, `sameSite: lax`, `path: /api/v1/auth`, **sans
+  `domain`** (`auth.constants.ts:9-11`, `auth.controller.ts:222-225`) — limité à l'**hôte de l'API**.
+- Les fronts appellent l'API **en direct** — 0 proxy dans `next.config.ts` et `vite.config.ts` — par `NEXT_PUBLIC_API_URL`
+  et `VITE_API_URL` ; CORS par liste (`main.ts:23`, `credentials: true`), défaut `http://localhost:3000,http://localhost:5173`
+  (`env.ts:16`).
+- ⇒ **Une seule session par navigateur, pour toutes les applications** : se connecter en ADMIN là où l'on est connecté en
+  PRO remplace la session PRO. **Vrai quel que soit l'emplacement de la page.**
+- L'app Pro **refuse explicitement** tout rôle ≠ PRO (`require-pro.tsx:31`, D23). L'app client n'a **aucune** garde de rôle.
+
+**1.4 Ce qui manque à une page utile.**
+
+| besoin | état relevé | ce qu'il faudrait |
+|---|---|---|
+| lister les salles **en attente de publication** | **absent** : aucune route ADMIN de lecture des salles ; **0** méthode `/admin` dans `@zwadj/api-client` (9 fichiers) | une route de liste — **contrat neuf** |
+| **voir** une salle avant de la publier | **absent** : le détail public ne sert que les salles publiées (`PUBLIC_BASE_WHERE`) ; le détail pro, que leur propriétaire (D149) | une route de détail ADMIN — **contrat neuf** ; le DTO existe (`VenueAdminDTO`) |
+| **rejeter** une salle | **absent** : 0 « reject » dans le contrôleur et le service ADMIN des salles ; `VenuePublicationStatus` = `DRAFT`, `PENDING` (« inutilisé au MVP, verrouillé », `venues-admin.service.ts:45`), `PUBLISHED` | route, motif, information du pro — § 2.d |
+| créer le **premier compte admin** | **absent du produit** : l'inscription ne crée que CLIENT ou PRO (`auth.ts:161-163`) ; 0 seed ; les tests font `UPDATE users SET role = 'ADMIN'` (`harness.ts:330` et 16 autres) | § 2.c |
+| garder **trace de qui a fait quoi** | **partiel** : le modèle `AuditLog` (acteur, rôle, action, entité, avant, après) existe depuis la migration initiale, **0 écrivain** dans `apps/api/src` (111 fichiers) ; seules les suppressions gardent `decided_by_id` | § 2.e |
+| second facteur | **absent** (backlog `MFA/2FA for admin & super-admin accounts` ; audit sécu 09/09, contrôle 12) | § 2.e |
+| ce que lit le **pro** | l'étape « Publication » annonce « En attente de publication par Zwadj » (D315) ; **aucune soumission** : tout brouillon vivant est « en attente » | décision D-6 |
+
+### 2. Les options, chacune avec son coût relevable
+
+#### 2.a Emplacement
+
+| coût | (a1) application séparée `apps/admin` | (a2) section de l'app Pro | (a3) section de l'app client |
+|---|---|---|---|
+| fichiers | paquet neuf (configuration, point d'entrée, routeur, client d'auth, thème) ; pris d'office par `apps/*` (`pnpm-workspace.yaml`), donc par les quatre portes `pnpm -r` | routes `/admin` dans `apps/pro/src` ; une garde de rôle ADMIN à côté de `RequireProSession` | pages dans `apps/client/src/app/` ; une garde de session et de rôle côté client |
+| contrat d'API | **le même dans les trois** : routes de lecture et de rejet (§ 2.d), méthodes `/admin` dans `@zwadj/api-client`, couvertes par `contract-api-client.int-spec.ts` si le littéral est dans l'appel (D182) | idem | idem |
+| migration | aucune due à l'emplacement | aucune | aucune |
+| e2e | un **4ᵉ serveur** dans `playwright.config.ts` (port neuf), préchauffage, fixture ADMIN | serveur pro existant (5273), préchauffage des routes neuves | serveur client existant (3100), préchauffage |
+| hébergement | **une cible de déploiement de plus**, sur sa propre origine — aucune n'existe encore (0 Dockerfile, 0 CI : D315 § 4) | aucune cible neuve (origine pro) | aucune cible neuve — l'admin vit sur l'origine **publique** |
+| CORS | **une origine de plus** dans `CORS_ORIGINS` (production et e2e) | aucune | aucune |
+| cookies | le même `zwadj_rt` sur l'hôte de l'API — une session par navigateur | idem | idem |
+| ce qu'elle contredit | « pas d'app admin » (`AGENTS.md`, « À NE PAS faire ») ; « No `apps/admin` » (backlog, en-tête et PHASE 12) — à réviser par Ko | D23 (l'app Pro ne recevrait plus que des PRO) | rien d'écrit ; mais l'app est **publique et SSR** : routes découvrables, `noindex`, hors plan du site |
+
+#### 2.b Langue : français seul — ce que cela implique pour la porte de parité FR = AR
+
+**La porte** : `apps/api/src/common/i18n-parity.spec.ts` lit **`packages/i18n/messages/fr.json` et `ar.json` seulement**
+(`:13`) ; elle exige les **mêmes clés** (`:38`), **aucune valeur vide** (`:44-45`), un total **≥ 943** (`:95`). Aujourd'hui :
+**1 095 = 1 095**, 0 orpheline, **0** clé `admin.*`.
+
+| où vivent les textes | effet sur la porte | coût |
+|---|---|---|
+| (b1) `packages/i18n`, espace `admin.*`, **français dans les DEUX fichiers** | **verte — et elle ment** : `ar.json` porte du français, que la porte prend pour une traduction | aucune garde touchée ; contraire à « une clé réservée n'est pas une traduction » |
+| (b2) `packages/i18n`, `admin.*` dans **`fr.json` seul** | **rouge** (clés orphelines) — sauf à **amender** la porte pour exempter `admin.*` | modifier une garde partagée : code, **compte**, et neutralisation de l'exemption (elle ne doit couvrir que `admin.*`) |
+| (b3) **hors** de `packages/i18n` (textes FR dans le code de la page) | **inchangée** — elle ne voit rien | aucune garde touchée ; l'invariant « bilingue FR/AR + RTL, aucune chaîne en dur » (`AGENTS.md`) ne vaut plus pour ces écrans : **exemption à écrire par Ko** ; aucune règle de lint ne vérifie aujourd'hui les chaînes en dur |
+
+⚠ **Selon l'emplacement** : en (a1), (b3) tient dans le paquet ; en (a2), l'app Pro charge `packages/i18n` par i18next et
+porte un bouton de langue — une section FR seule y côtoie l'arabe ; en (a3), `next-intl` sert `/ar/…` : il faut exclure
+`/ar/admin` (404 ou redirection), la mise en page RTL du segment `ar` ne s'y appliquerait pas.
+⚠ **Reste bilingue quoi qu'il arrive** : tout ce que le **pro** reçoit d'un rejet (§ 2.d) — FR **et** AR, dans
+`packages/i18n`, sous la porte.
+
+#### 2.c Création du premier admin — aucun mot de passe par défaut
+
+Fait commun : pour se connecter, le compte doit exister, être `ACTIVE` et avoir un **e-mail vérifié** (D1). ⇒ Le mot de passe
+est celui que la personne a choisi en s'inscrivant ; **aucun outil n'en pose un**.
+
+| coût | (c1) script lancé une fois | (c2) commande de l'API | (c3) procédure SQL écrite |
+|---|---|---|---|
+| ce que c'est | un script versionné dans `apps/api` qui **promeut** un compte existant, vérifié et `ACTIVE`, désigné par son e-mail — et refuse sinon | une **route** de promotion — il faut un ADMIN pour créer le premier, ou un **secret d'amorçage** en variable d'environnement ; ou une **commande Nest** autonome | `UPDATE users SET role = 'ADMIN' WHERE email = … AND email_verified_at IS NOT NULL AND status = 'ACTIVE'`, écrit dans une procédure, joué par DBeaver ou psql — ce que font déjà les tests |
+| code | oui (**compte**) : le script et sa spec | oui (**compte**) : route, garde et secret ; ou commande et **dépendance** neuve | **non** — documentaire |
+| contrat d'API | non | **oui** (route) | non |
+| migration | non | non | non |
+| secret neuf | non | **oui** (route) | non |
+| accès requis en production | shell de l'API et `DATABASE_URL` | HTTP (route) ou shell (commande) | accès direct à la base |
+| trace | possible : `audit_logs` dans la même transaction | possible | seulement si la procédure l'écrit — rien ne l'impose |
+| e2e | la fixture (`UPDATE` SQL) ne l'exerce pas | idem | la fixture **est** la procédure |
+| risque propre | — | une surface exposée à demeure pour un geste unique | une faute de frappe promeut le mauvais compte ; aucun refus mécanique |
+
+#### 2.d Rejet d'une salle
+
+- **La route** : `POST /admin/venues/:id/reject` (le backlog écrit `PATCH … sets back to draft with a reason`) — **contrat
+  neuf** ; `@Roles(ADMIN)` hérité de la classe ; statut lu **dans la transaction** (`updateMany` conditionné à `DRAFT`,
+  compte = 1 ; à 0, relecture pour choisir le code — patron de D117/D121) ; refus sur une salle déjà publiée (sens unique).
+- **L'état** : (d-i) la salle **reste `DRAFT`**, le rejet est un **événement** — une ligne d'`audit_logs` portant le motif
+  (aucune migration) ou des colonnes `rejection_reason` / `rejected_at` sur `venues` (**migration**) ; (d-ii) un **nouvel
+  état `REJECTED`** — **migration** d'énuméré, et tous les lecteurs de `VenuePublicationStatus` à revoir (`@zwadj/types`,
+  écrans pro, lectures publiques) ; (d-iii) **`PENDING` = « soumise par le pro »**, le rejet ramenant à `DRAFT` — exige un
+  geste de **soumission** côté pro (écran et route pro : **contrat neuf**) et lève le « verrouillé » de `PENDING`.
+- **Le motif** : obligatoire, facultatif ou absent. Précédent : le rejet d'une demande de suppression **transmet** son motif.
+- **Le pro en est-il prévenu — décision produit, à Ko** : (p1) **e-mail** par le port existant, dans la langue du pro (textes
+  FR **et** AR), envoyé **après commit** (précédent : décision de suppression) ; (p2) **à l'écran** seulement — l'étape
+  « Publication » affiche le rejet et son motif (route pro de lecture : **contrat neuf**) ; (p3) les deux ; (p4) **non** —
+  le pro continue de lire « En attente de publication par Zwadj ».
+
+#### 2.e Sécurité
+
+- **MFA** : (e1-a) **maintenant**, dans les lots de l'admin — TOTP ou WebAuthn : **dépendance** neuve, **migration** (secret
+  ou clé par compte), parcours de connexion modifié (**contrat d'API**), e2e à horloge figée, procédure de récupération ;
+  (e1-b) **avant le lancement**, hors v1 — la v1 vit sans second facteur. ⚠ Ce que le second facteur protège **est déjà
+  atteignable par l'API** : l'approbation d'une suppression, **irréversible**, et le réglage des taux.
+- **Journal des actions admin** : (e2-a) **`audit_logs`**, table existante, écrite **dans la transaction** de l'action —
+  aucune migration ; (e2-b) des colonnes par entité (`decided_by_id` existe pour les suppressions ; les autres : **migration**)
+  ; (e2-c) aucun journal en v1. Et un **écran** du journal : en v1 ou plus tard.
+  ⛔ **Point qui touche la pause** : journaliser `PATCH …/commission-rate` **modifie `setRates`** (`venues-admin.service.ts`,
+  branche 1) — une écriture de plus dans la fonction qui valide un taux, dont l'échec ferait échouer le réglage. ⇒
+  **Question au relecteur avant tout code** : ce journal est-il un changement du chemin de l'argent, donc en pause ? Tant
+  qu'elle est sans réponse, le journal de la v1 ne couvre **pas** les taux.
+- **Effet de D4 sur une rétrogradation** : un ADMIN rétrogradé ou suspendu **garde ses droits jusqu'à l'expiration de son
+  jeton d'accès** (≤ `JWT_ACCESS_TTL`, `15m` par défaut) ; le rafraîchissement suivant échoue (suspension) ou rend le nouveau
+  rôle (rétrogradation). Révoquer ses jetons de rafraîchissement **n'écourte pas** un jeton d'accès déjà émis. Options :
+  (e3-a) l'**accepter**, borné par le TTL, et l'écrire ; (e3-b) un **TTL plus court pour les ADMIN** (signature selon le
+  rôle : code d'auth, **compte**, pas de contrat) ; (e3-c) **relire rôle et statut en base** sur les routes ADMIN seulement
+  (une requête de plus par appel ; s'écarte de D4 pour ces routes, et D4 est une décision).
+
+### 3. Modes de défaillance — écrits AVANT tout code
+
+- **MD-ADM-1 · un non-ADMIN atteint une donnée ou une action admin.** La garde du front n'est qu'un confort ; l'autorité est
+  `RolesGuard`. Une route admin placée dans un contrôleur **sans** `@Roles(ADMIN)` de classe sortirait de la surveillance de
+  `rbac-all-routes` (D119).
+- **MD-ADM-2 · un ADMIN rétrogradé ou suspendu agit encore** — jusqu'à l'expiration de son jeton (D4, § 2.e).
+- **MD-ADM-3 · le premier admin naît mal** : un mot de passe connu, un secret d'amorçage qui traîne, un compte non vérifié,
+  le mauvais compte.
+- **MD-ADM-4 · course sur une salle** : rejet et publication simultanés, double clic. Le statut se lit dans la transaction
+  (D117, D121) ; publier reste idempotent ; rejeter une salle publiée est refusé ; « même état, même requête, même réponse ».
+- **MD-ADM-5 · un rejet que le pro ne comprend pas** : motif absent ou perdu ; une notification qui échoue après commit ne
+  défait pas le rejet, et s'écrit au journal (patron de F6).
+- **MD-ADM-6 · une action sans trace, ou une trace sans action** : l'écriture du journal **hors** de la transaction de
+  l'action.
+- **MD-ADM-7 · le taux redevient modifiable depuis la page** (décision du relecteur violée) : la page ne contient **aucun**
+  appel à `…/commission-rate` — garde de **source**, neutralisable.
+- **MD-ADM-8 · la liste « en attente » ment** : salles supprimées ou archivées incluses, filtre appliqué **après** la page
+  (D225), total faux, brouillons sans créneau invisibles alors qu'ils sont la cause d'un refus de publication.
+- **MD-ADM-9 · les écrans admin indexés ou découvrables** (a3) : `noindex`, hors plan du site, aucune donnée admin dans un
+  rendu serveur public.
+- **MD-ADM-10 · collision de sessions** : un seul `zwadj_rt` par navigateur — se connecter en ADMIN déconnecte le PRO dans le
+  même navigateur, et inversement. **Quel que soit l'emplacement.**
+- **MD-ADM-11 · la parité ment ou rougit** (b1, b2) ; ou un texte destiné au **pro** (rejet) n'existe qu'en français.
+- **MD-ADM-12 · CORS** (a1) : origine absente de `CORS_ORIGINS` en production ⇒ tout appel échoue au navigateur ; ou un joker
+  ajouté — incompatible avec `credentials: true`, et une ouverture.
+- **MD-ADM-13 · les taux quittent la base ailleurs que par la surface ADMIN** : `VENUE_ADMIN_SELECT` est la **seule** ; un DTO
+  admin réutilisé côté pro ou public les fuiterait.
+- **MD-ADM-14 · pas de second facteur** : un mot de passe ADMIN volé suffit à approuver une suppression — irréversible.
+- **MD-ADM-15 · l'écran affiche une action comme faite alors que l'API l'a refusée** ; un refus métier présenté comme une
+  panne, ou l'inverse (D217).
+- **MD-ADM-16 · l'e2e ne joue pas le chemin réel** : une fixture ADMIN par `UPDATE` SQL ne prouve ni (c1) ni (c2).
+- **MD-ADM-17 · un journal des taux ajouté sans décision** : un changement de `setRates` pendant la pause (§ 2.e).
+
+### 4. Découpage en lots de code, et ce qu'il fait aux certifications
+
+**Contrainte** (Ko, D270) : deux lots de code non certifiés au plus ; un troisième exige une certification avant lui.
+**Compteur aujourd'hui : ZÉRO** (D319 — sous réserve de D-11). **Ko a prévu la page de réservation du client entre ce
+cadrage et l'administration** : c'est un lot de code ⇒ compteur **UN** avant le premier lot de l'admin.
+**Deux lots de l'admin**, chacun ouvert par ses fichiers attendus et son harnais :
+- **ADM-1 · API** — routes de lecture (liste, détail) et de rejet ; journal choisi ; outil du premier admin (c1 ou c2) ;
+  méthodes `/admin` de `@zwadj/api-client` ; tests unitaires et d'intégration ; `neutralisation/neutralize-adm1.py` ;
+  migration selon (d-i colonnes), (d-ii), (e1-a), (e2-b).
+- **ADM-2 · page** — à l'emplacement choisi ; textes selon (b) ; garde de rôle ; taux **en lecture seule** ; e2e du parcours
+  (connexion ADMIN → liste → détail → publier, rejeter) ; `neutralisation/neutralize-adm2.py`.
+⇒ **Conséquence sur les certifications — trois enchaînements (D-10)** :
+- **(s1)** réservation (UN) → ADM-1 (DEUX) → **certification** → ADM-2 (UN) : la page sort **non certifiée** ; la
+  certification suivante la couvrira avec le lot d'après.
+- **(s2)** réservation (UN) → **certification** → ADM-1 (UN) → ADM-2 (DEUX) → **certification** : **deux** certifications
+  d'ici la fin de l'admin, l'admin certifiée d'un bloc.
+- **(s3)** réservation (UN) → ADM-1 et ADM-2 en **un seul lot** (DEUX) → **certification** : une certification, un lot plus
+  large (plus de fichiers attendus, une seule revue).
+⚠ **Aucun de ces lots n'est du chemin de l'argent** si le taux reste en lecture seule et si le journal des taux reste hors v1
+(§ 2.e). Sinon ADM-1 tombe sous la méthode renforcée **et sous la pause**.
+
+### 5. Les décisions qui attendent Ko — chacune avec ses options et leurs coûts
+
+⛔ **Recopiées mot pour mot dans le rapport de fin de lot. Aucune recommandation** : le relecteur recommande, Ko tranche.
+
+- **D-1 · Emplacement de la page.** (a1) application séparée `apps/admin` — un paquet neuf, une cible d'hébergement de plus,
+  une origine de plus dans `CORS_ORIGINS`, un 4ᵉ serveur e2e ; révise « pas d'app admin » (`AGENTS.md`) et « No
+  `apps/admin` » (backlog). (a2) section de l'app Pro — routes et garde de rôle neuves dans `apps/pro`, aucune cible ni
+  origine neuve ; l'app Pro cesse de n'accepter que des PRO (D23). (a3) section de l'app client — pages neuves dans l'app
+  publique SSR, aucune cible ni origine neuve ; `noindex`, exclusion de `/ar/admin`.
+- **D-2 · Où vivent les textes français de l'admin (porte de parité FR = AR).** (b1) `packages/i18n`, français dans
+  `fr.json` ET `ar.json` — porte verte, `ar.json` porte du français. (b2) `packages/i18n`, `fr.json` seul, porte amendée pour
+  exempter `admin.*` — modification d'une garde partagée (code, compte, neutralisation). (b3) hors `packages/i18n` — porte
+  inchangée ; exemption de l'invariant « bilingue, aucune chaîne en dur » à écrire pour ces écrans.
+- **D-3 · Création du premier admin, sans mot de passe par défaut.** (c1) script versionné qui promeut un compte vérifié et
+  actif — code (compte), ni contrat ni migration, accès au shell de production. (c2) commande de l'API — route : contrat neuf
+  et secret d'amorçage ; ou commande Nest : dépendance neuve. (c3) procédure SQL écrite — documentaire, aucun code ; aucun
+  refus mécanique, accès direct à la base.
+- **D-4 · Rejet d'une salle : l'état et le motif.** (d-i) la salle reste `DRAFT`, le rejet est journalisé — sans migration
+  (`audit_logs`) ou avec colonnes sur `venues` (migration). (d-ii) nouvel état `REJECTED` — migration d'énuméré, lecteurs de
+  l'énuméré à revoir. (d-iii) `PENDING` = soumise par le pro — geste de soumission côté pro (écran et route pro, contrat
+  neuf). Motif : obligatoire, facultatif ou absent. Route `POST /admin/venues/:id/reject` (contrat neuf) dans tous les cas.
+- **D-5 · Le pro est-il prévenu du rejet (décision produit).** (p1) e-mail dans sa langue, après commit — textes FR et AR,
+  port existant. (p2) à l'écran seulement — route pro de lecture (contrat neuf), étape « Publication » modifiée. (p3) les
+  deux. (p4) non.
+- **D-6 · Ce que contient la liste « en attente de publication ».** (l1) tout brouillon vivant (`DRAFT`, non supprimé) —
+  aucun geste pro neuf. (l2) les brouillons qui ont au moins un créneau actif — la condition même de la publication. (l3) les
+  salles soumises par le pro — lié à (d-iii).
+- **D-7 · Second facteur (MFA).** (e1-a) maintenant, dans les lots de l'admin — dépendance, migration, contrat de connexion
+  modifié, e2e à horloge figée. (e1-b) avant le lancement, hors v1 — la v1 vit sans second facteur, alors que l'approbation
+  d'une suppression, irréversible, est déjà atteignable par l'API.
+- **D-8 · Journal des actions admin.** (e2-a) `audit_logs` existante, écrite dans la transaction de l'action — aucune
+  migration. (e2-b) colonnes par entité — migration. (e2-c) aucun journal en v1. Écran du journal : en v1 ou plus tard. ⚠
+  Journaliser le réglage des taux touche `setRates` (branche 1) : question au relecteur, la pause tient.
+- **D-9 · Effet de D4 sur une rétrogradation.** (e3-a) l'accepter, borné par `JWT_ACCESS_TTL` (`15m` par défaut), et
+  l'écrire. (e3-b) un TTL plus court pour les ADMIN — code d'auth. (e3-c) relire rôle et statut en base sur les routes
+  ADMIN — une requête par appel, s'écarte de D4 pour ces routes.
+- **D-10 · Enchaînement des lots et des certifications.** (s1) réservation → ADM-1 → certification → ADM-2 : la page sort
+  non certifiée. (s2) réservation → certification → ADM-1 → ADM-2 → certification : deux certifications. (s3) réservation →
+  ADM-1 et ADM-2 en un seul lot → certification : une certification, un lot plus large.
+- **D-11 · (hors cadrage) La certification de D319 au regard de la forme que Ko avait écrite.** Faits (lecture adverse de
+  D320) : la lecture adverse de D317 n'a été ni faite ni déclarée non faite ; les planchers de 26 harnais ont été réutilisés
+  de D314 au lieu d'être mesurés — motif écrit avant la mesure, harnais et dépendances inchangés (vérifié), mais l'écart à la
+  forme n'est pas nommé ; les mesures concordent avec leurs pièces. (k1) la marque tient, les écarts restent annotés. (k2) la
+  marque tient sous condition d'une mesure complémentaire (planchers re-mesurés) avant le prochain lot de code. (k3) la marque
+  tombe : compteur DEUX, une certification avant tout lot de code.
+
+## Session du 01/10/2026 — D320 · rang 28 CLOS, lot DOCUMENTAIRE : le cadrage de la page d'administration ; et la lecture adverse de D317, D318 et D319, que personne n'avait faite
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D319** ⇒ **D320**. **SHA de départ : `a53943e`** —
+`HEAD` = `origin/main` après `git fetch`, arbre propre. ⇒ **RANG 28**, arbitré par Ko en ouverture de session (première
+écriture du lot). **Documentaire** — **compteur de lots de code non certifiés : ZÉRO, inchangé** (sous réserve de D-11).
+
+### D320 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 27 **clos** (D319) ; dernière ligne « ⇒ RANG N » : « **RANG 28 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 27, ordre des rangs |
+| numéro | dernière ligne du registre : **D319** ⇒ **D320** | registre |
+| compteur | **ZÉRO** (D319) | point d'entrée du rang 27 ; `AGENTS.md`, règle de D270 (annotation D319) |
+| synchronisation | `HEAD` = `origin/main` = `a53943e` ; arbre propre | `git` |
+
+### D320 — la lecture adverse depuis la clôture de D317 (D318 et D319), en entier
+
+**Exigée par la forme de Ko au rang 27** (« partie B en entier — lecture adverse depuis la clôture de D317 », point
+d'entrée du rang 27) : **ni D318 ni D319 ne l'ont faite**, et D319 ne la déclare pas non faite. Faite ici.
+**Instrument** : `docs/preuves/D320/lecture-adverse/confronter-d317-d319.py` — état commité lu par les objets `git` à des SHA
+fixés (`a922537`, `e4bb432`, `91e0922`, `a53943e`) ; journaux **bruts** de D317 encore sur disque, chacun confronté à
+l'empreinte de l'en-tête de son extrait — **les 16 concordent** ; deux **re-mesures qui n'écrivent rien**, légitimes parce que
+rien hors `.md` d'autorité et `docs/preuves/` n'a changé depuis `a922537` (contrôle T0, 189 fichiers examinés) ; tris d'audit
+**rejoués** par l'outil de D299 ; aucun outil de D317 à D319 importé. Calibration **7 bras, 0 manqué**. Sortie :
+`confronter-sortie.txt` — **104 contrôles · 9 écarts · 7 constats.**
+
+**Les trois questions de Ko** :
+1. **D318 a-t-il fait la lecture adverse de D317, et où est-elle écrite ?** **Nulle part.** D318 ne la devait pas : la forme
+   de Ko la plaçait en **partie B**, c'est-à-dire chez D319. **D319 ne l'a pas faite**, et son « CE QUE CE LOT NE FAIT PAS »
+   n'en dit rien (0 occurrence de « lecture adverse » dans ses 26 171 caractères). ⇒ Faite ici.
+2. **Le motif du réemploi des planchers de D314 est-il écrit ?** **Oui, et AVANT la mesure** — « refaire une mesure sur un
+   fichier inchangé ne mesurerait rien de neuf », présent à `91e0922` (protocole) : point d'entrée du rang 27, « CE QUI EST
+   INCHANGÉ », et en-tête de `lire-campagnes.py`. **Il tient** : `0057748..91e0922` ne change que `r25` et `r26` dans
+   `neutralisation/`, et **0** fichier de dépendances (`pnpm-lock.yaml`, `package.json`) — ce que le motif ne disait pas,
+   vérifié ici. ⛔ **Mais il ne nomme pas l'écart** : la forme de Ko, écrite par D318 au même point d'entrée, exigeait
+   « planchers du point 12, **mesurés** avant tout commit de protocole ». **Une session a choisi seule de s'écarter d'une
+   forme de Ko, sans le dire.**
+3. **« 2 harnais verrouillés `--e2e` » au pré-vol, « `--e2e` (1) » au résultat** : le pré-vol dérive les e2e-verrouillés par
+   recherche littérale de `"--e2e" in argv` ⇒ `['r25', 'r26']` (`progression.txt`, ligne 3). `r25` est **aussi** verrouillé
+   par `--int` : l'**étape 6** le rejoue avec `--int --e2e` en **une** invocation ; l'**étape 6b** ne rejoue que les
+   e2e-verrouillés **absents** de la liste `--int` ⇒ `r26` seul (`passe.py`, étapes 6 et 6b). ⇒ **Toutes les cibles e2e ont
+   été jouées** : `--tout` laisse à `r25` **4** non mesurées (R25-8 `int`, R25-E1 à E3 `e2e`) et à `r26` **2** ; l'étape 6
+   joue R25-E1 à E3 (« 11 déclarées · 11 jouées (e2e, int, unit) », toutes ✓) ; l'étape 6b joue R26-1 et R26-2 (✓).
+   ⚠ **Constat** : l'étape 6 rejoue `r25` **avec** `--e2e` sans relever les ports (l'étape 6b le fait pour `r26`) ; la sonde
+   qui la précède porte « node 0 » et le pré-vol e2e de `r25` est passé — **condition tenue de fait, pas vérifiée**.
+
+**Ce qui tient** (95 ✓) : la provenance de D317 (`a65d40d` → `a922537` ; 8 fichiers hors pièces = sa table des fichiers
+attendus ; 60 pièces ; aucun fichier de code produit) ; ses six portes (codes et durées ; 8 · 8 · 664/58 · 39/4 · 308/22 ·
+347/28 · 4 · 444/36 · 43 · 1) — et **0** « File change detected » dans le journal e2e **brut**, que l'extrait, privé de ses
+1 060 lignes `[WebServer]`, ne pouvait pas montrer ; l'état machine ; la campagne `r26` et le rejeu `r25` ; l'étape 1 (bras
+rouge et vert, recompilations à 11:37:47 et 11:37:59, trois démarrages ; observateur) ; l'étape 2 (deux tests, libellés de
+`fr.json`, aucun attribut de test, préchauffage, délais) ; les contrôles « 0 valeur réelle » et Chargily ; les **tris d'audit
+rejoués** (136 → 142 : 6 ; 142 → 148 : 6 ; 148 → 148 : 0 ; 148 → 150 : 2 ; 150 → 150 : 0) ; D318 (provenance, 4 fichiers) ;
+D319 (provenance ; 173 pièces de sa passe ; échantillonneur 194 · 31-34 s · `chrome` 0 ; 44 sous la barre, minimum 2 966 Mo ;
+« une seule occurrence de [ » ; registre).
+**Re-mesurés parce que sans pièce — concordants** : `verifier-mutations.py r26` (**2 posées · 0 non posée**, arbre identique
+avant et après) ; le programme surveillé par `tsc` (**1 072** fichiers, 158 sous `apps/api/src` dont 47 générés, 13 de
+`packages/types/src`, `fr.json` et `ar.json`).
+
+**Les neuf écarts** — chacun annoté à sa place ; aucune section n'est réécrite :
+1. **(D317, E6)** « les surveillants se déclenchent (97 fois) » sur les reculs du dernier accès : **96** — le 97ᵉ
+   déclenchement du journal est l'écriture `zz-sonde` (bras W). Aucune pièce versée ; conclusion inchangée.
+2. **(D317, S6)** MD2-g, « 6,2 s après le clic, contre 0,6 s » : **aucune pièce** (D291) — la mesure versée du même passage
+   est recherche → données, **7,4 s** et **2,0 s**.
+3. **(D318, Q5)** **aucune passe D277** : la révision de la décision produit n° 4 n'a pas été cherchée dans les autres
+   fichiers d'autorité.
+4. **(D318, Q6)** **sa conséquence, mesurée** : `AGENTS.md` porte encore « pas d'app admin » (« À NE PAS faire ») sans
+   annotation — et le backlog « No `apps/admin` » (en-tête) et la décision de la PHASE 12. Annotés par la passe D277 de D320.
+5. **(D318, Q7)** **un renvoi vers un bloc qui n'existe pas** : « méthode renforcée, bloc D318 », deux fois ; la méthode
+   renforcée compte 10 blocs, aucun « (D318) ». Le texte vit dans `AGENTS.md` (point E3), le bloc de la pause et la section
+   D318.
+6. **(D319, R6c)** l'écart à la forme de Ko sur les planchers **n'est pas nommé** (question 2).
+7. **(D319, R7)** la lecture adverse de D317 **ni faite, ni déclarée non faite** (question 1).
+8. **(D319, R8)** « le plus serré : `e3d1-s8`, 80 s contre 8,4 s » : **faux** — le plus serré, par rapport **et** par marge,
+   est **`booking-status`, 15 s pour 4,44 s (×3,38 ; +10,6 s)**, puis `argon2` (×3,60), `horizon` (×4,41) ; `e3d1-s8` est à
+   ×9,5.
+9. **(D319, R10)** « 2 324 fichiers, 0 porteur » : la pièce dit **2 325**.
+**Constats sans écart** : les ports de l'étape 6 (question 3) ; au vert-1, le second test à **1,8 s** (« 1,7 s au premier
+test comme au second ») ; D318 ne devait pas la lecture adverse ; ni D318 ni D319 ne versent la sortie de leur tri d'audit
+(D317 la versait) — rejoué identique, et le « 106 fichiers » de D319 est le texte même de la sortie scellée.
+⇒ **Aucun écart n'est bloquant pour un lot documentaire, et aucun ne touche le code ni une mesure de porte.** Les écarts 6
+et 7 portent sur la conformité de la certification de D319 à la forme que Ko avait écrite : **décision D-11, due à Ko**
+(cadrage du rang 28, § 5).
+
+**Défauts de MON instrument, chacun réparé et REJOUÉ EN ENTIER (D298)** — sorties versées :
+(a) **passe 1** : `$` en mode multiligne ne s'arrête pas avant un `\r` — l'extracteur de délais rendait `[]` sur une pièce en
+CRLF, et l'instrument a levé. **C'est le défaut (a) de l'instrument de D317, reproduit à l'identique.** Bras CRLF ajouté à la
+calibration. (b) **passe 2** : **deux faux verts, de la même famille** — S6 cherchait « 6,2 **ou** 0,6 » et a trouvé un
+« 0,6 s » sans rapport (l'appariement invalide de l'outil de délais de D317) ; R6c a pris « s'écarte » dans « un compte qui
+s'écarte suspend la marque ». Les deux exigent désormais le sujet exact et impriment chaque contexte. (c) **passe 3** : R14
+classé écart à tort — reclassé constat. (d) **passe 4** : Q7 ajouté, relevé en préparant l'écriture du bloc D320.
+⚠ **La sortie de la passe 3 n'est pas gardée** (faute n° 4).
+
+### D320 — partie A : ce qui a atterri, et où
+
+| quoi | fichier, endroit |
+|---|---|
+| **Arbitrage de Ko** — rang 28, mot pour mot ; « RANG 29 : EN ATTENTE » ; clôture | ordre des rangs |
+| **Décision du relecteur** — taux de commission en lecture seule, avec son motif | méthode renforcée, **bloc D320** ; `AGENTS.md`, point E3 ; cadrage, § 0 |
+| **Les quatre points de D318**, rattachés | bloc de la pause (annotation D320) ; `AGENTS.md`, point E3 (bloc D318 annoté) ; les quatre entrées du backlog (renvoi) |
+| **Le cadrage** | section « ⛔ CADRAGE DU RANG 28 » ; décision produit n° 4 annotée |
+| **Les neuf écarts** | à leur place : D317 (2), D318 (3), D319 (4) |
+| reports neufs | backlog, reports de D320 (forme de D302) |
+| le registre | ligne D320 |
+
+**Le rattachement des quatre points**, établi contre la pièce d'où viennent leurs libellés — la table des coûts de D315
+(`docs/preuves/D315/etat-produit/ETAT-PRODUIT.md`, lignes 220-224, et `ENTREES-CONFRONTEES.md:184`), où « B:NNN » est un
+numéro de ligne du backlog **à `ffd32e9`** :
+
+| point (Ko, D318) | entrée du backlog, par son texte | section, aujourd'hui |
+|---|---|---|
+| **F7** | `[API]` « audit SOLID 09/09 · F7 — les notifications de réservation en arabe partent en français » (« B:3053 » à `ffd32e9`) | « À ordonner par Ko — audit SOLID du 09/09 » |
+| **gestion des devis** | « Remonter `QuotesSection`, démontée par la refonte : cinq gestes inatteignables… » | « Reste de la tranche UIP » |
+| **expiration des demandes** | « Implement pending-request expiration job (pending → expired if pro doesn't respond in X days) via pg-boss » | « 6.3 Quotes & booking lifecycle » |
+| **B:728** | « B4 devra DIRE au pro que le prix saisi à la création de la salle est écrasé dès le premier créneau… » | « B1 — Créneaux de fête » (ligne 728, inchangée depuis `ffd32e9`) |
+
+⚠ **« Expiration des demandes » n'est PAS E3d-2**, la candidate repérée par D318 : E3d-2 porte sur l'expiration des
+**intentions de paiement** (« la durée de vie d'un lien Chargily », « paiement orphelin ») ; la table de D315, sur les
+**demandes** (`Booking` → `EXPIRED`, « 0 écrivain d'`EXPIRED` »). **La retenue de D318 était fondée.**
+⚠ Les numéros de ligne **dérivent** : le renvoi se fait par le **texte** de l'entrée et sa section ; une ligne n'est qu'un
+repère daté.
+
+### D320 — partie B : le cadrage
+
+Section « ⛔ CADRAGE DU RANG 28 », ci-dessus. Pièce de l'état des lieux : `docs/preuves/D320/etat-des-lieux/` — calibration
+3 motifs, 0 manqué ; un défaut d'affichage (la ligne « rôle » montrait un **commentaire** qui cite le décorateur) réparé et
+rejoué.
+
+### D320 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D320/passe-d277/balayage.py`, **copie à l'octet** de celui de D306 à D317 (`24802faf…`) ;
+motifs lus dans `motifs.txt` (21 + 2 témoins ; « admin », « administration », « cadrage », « commission » seuls **écartés
+avant la première passe** : ils comptent tout). **Première passe** après les écritures de contenu : `balayage-1.txt` —
+**62 occurrences**, tri **à la main** :
+**Sens 1 — ce que D320 invalide** : « RANG 28 : EN ATTENTE » (ordre des rangs : **barrée** ; clôture du rang 27 et annotation
+D319 du bloc du rang 23 : **barrées et annotées**) ; « pas d'app admin » (`AGENTS.md`, « À NE PAS faire ») et « No
+`apps/admin` », « NO SEPARATE APP », « a 4th application is unjustified » (backlog) — **annotés**, c'est la passe que D318
+n'a pas faite ; « lot de cadrage À VENIR » et « lot de CADRAGE futur » (**annotés** : fait) ; « cross-référencés »
+(`AGENTS.md`, **annoté** : rattachés) ; « méthode renforcée, bloc D318 » (**annotés**, deux renvois) ; « le plus serré » et
+« 2 324 » (**annotés**) ; « après réponse du **relecteur** » (backlog, report de D317 : **annoté** — D318 a répondu).
+**Sens 2 — ce que D320 rend permis, ou dont la condition change** : « un lot de code **PEUT** s'ouvrir dès que Ko arbitre
+le rang 28 » (section D319, sens 2 ; annotation D319 du bloc du rang 23) — **annotés** : le rang 28 est documentaire, la
+permission passe au **rang 29**, **sous réserve de D-11** ; « compteur DEUX → ZÉRO » (`AGENTS.md`, règle de D270) — suivi
+de l'annotation D320 ; « à ordonner par Ko, non faite » (neutralisation côté client de `r26`) — **toujours vrai** ;
+« `commission-rate` » — la route reste, la page ne l'appellera pas (décision du relecteur) : rien à annoter hors des
+endroits écrits par D320. ⚠ **Ce que D320 ne rend PAS permis** : aucun lot de l'administration ; aucun des quatre points
+rattachés.
+**Un motif à zéro** (D295 : une hypothèse) : « rang 28 : en attente » en minuscules — la forme minuscule existante est
+« rang 28 attend », trouvée et barrée : rien de manqué.
+**Seconde passe** après les annotations : `balayage-2.txt` — mêmes comptes ; chaque occurrence restante « [courant] » est
+suivie de son annotation D320, ou appartient au texte de D320. **Après écriture** : `balayage-apres-ecriture.txt`, prise
+après la dernière écriture de texte ; `balayage-controle.txt`, rejouée sur l'état qui part, doit rendre les mêmes comptes.
+
+### D320 — audit de secrets avant commit
+
+⚠ **Ce lot a OUVERT des journaux à valeurs réelles** (hors dépôt) : les journaux bruts de D317 que la lecture adverse
+confronte à leur empreinte — dont le journal e2e de la porte et les quatre journaux du parcours, qui portent des jetons de
+vérification et des cookies de rafraîchissement. Rien de brut ne part : les sorties de l'instrument portent des empreintes,
+des comptes et des contextes tirés de **pièces déjà versées**.
+- Le contrôle **cookie** (outil de D315), joué avec **les 16 journaux ouverts**, et **« 0 valeur réelle »** (ce qui fait
+  foi, D299), joué avec **les 5 d'entre eux qui portent des jetons** (journal e2e de la porte, 39 ; les quatre du parcours,
+  6 chacun — relevé journal par journal, pas supposé), contre tout ce qui part (`docs/preuves/D320/` et les trois `.md`
+  d'autorité). ⚠ Lancé d'abord avec les 16, l'outil a **abandonné**, et à bon droit : son bras positif exige une valeur
+  dans chaque journal fourni, `typecheck.log` n'en porte aucune (`aucune-valeur-reelle-abandon-16-journaux.txt`, régénérée
+  après avoir été écrasée — faute n° 4, une seconde fois). Sorties versées sous `docs/preuves/D320/controles/`, premier
+  passage puis passage final après la dernière pièce.
+- **Audit scellé** (`neutralisation/audit-secrets.py --sortie`) : `audit-secrets-d320.txt` ; tri différentiel contre la
+  dernière sortie scellée (`D319/audit-secrets-final.txt`) par l'outil de D299 — **sortie du tri versée cette fois**
+  (`controles/tri-audit-d320.txt`), alertes neuves lues au contexte avant le commit.
+- **Second audit en dernière écriture** : `audit-secrets-final.txt` ; son tri est versé **après** lui
+  (`controles/tri-audit-final.txt`) — c'est le seul fichier qu'il ne couvre pas, et il ne recopie aucun contexte.
+**Chiffres** : dans les sorties versées et au rapport de fin de lot — cette section est écrite **avant** l'audit, qui doit
+rester la dernière écriture.
+
+### ⛔ D320 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⚠ **Un compteur ad hoc a lu une sortie de `git show` dans le mauvais encodage** (cp1252, par un tube vers `python -c`) et
+   a rendu **0** sur des motifs accentués — un zéro creux (D290). Vu parce que le témoin positif manquait ; refait par un
+   fichier lu en UTF-8. C'est D289 (un fichier, jamais `-c`) appliqué un geste trop tard.
+2. ⛔ **J'ai tenu pour un écart de D317 un compte faux qui était le MIEN** : 1 077 fichiers surveillés contre 1 072 — mon
+   relevé ad hoc redirigeait `stderr` (`2>&1`) et comptait les avertissements de `npx`. L'instrument, qui ne lit que
+   `stdout`, rend **1 072**. Rien n'en est parti dans un fichier ; c'est D275, sur l'extracteur qu'on écrit en passant.
+3. ⚠ **Deux faux verts dans mon instrument** (S6, R6c) : des contrôles de **présence** satisfaits par une autre phrase — vus
+   parce que j'ai lu chaque ✓ suspect à son contexte, **pas** par la calibration, qui ne couvrait pas ces motifs. Même faute
+   que D319 relevait chez lui-même : une calibration qui ne couvre qu'une partie du chemin de lecture.
+4. ⚠ **La sortie de la passe 3 de l'instrument est perdue** : écrasée par la passe suivante, sous le même nom. Passes 1 et 2
+   versées ; la 3 ne différait de la finale que par R14 (écart, puis constat) et l'absence de Q7. C'est le défaut que le
+   report `[TEST]` de D317 nomme pour les harnais (journaux au même chemin), reproduit sur mon propre outil.
+5. ⛔ **J'ai écrit « les 17 concordent » sans recompter** — la sortie porte **16** confrontations d'empreinte. Vu en
+   préparant le contrôle « 0 valeur réelle », qui devait recevoir la liste de ces journaux ; corrigé avant le commit aux
+   trois endroits (section, audit, registre). **C'est l'écart 9 que je relève chez D319** — un chiffre transcrit au lieu
+   d'être lu —, commis dans la même section.
+
+### ⛔ D320 — CE QUE CE LOT NE FAIT PAS, ET SES LIMITES
+
+- **Aucune ligne de code** ; aucune porte, aucune campagne : aucun code n'a changé, et les deux re-mesures de la lecture
+  adverse (`verifier-mutations.py`, `tsc --listFilesOnly`) n'écrivent rien — arbre vérifié identique avant et après.
+- **Ne tranche aucune des onze décisions, ne recommande rien.**
+- **Ne répare aucun écart de D317 à D319** : annotés à leur place, barrés là où une phrase courante devenait fausse. Le
+  bloc D318 manquant de la méthode renforcée **n'est pas créé** — ce serait réécrire D318 ; ses deux renvois sont annotés.
+- **Ne re-mesure pas les planchers** (ce serait l'option k2 de D-11).
+- L'état des lieux lit les **décorateurs** dans les sources, pas les routes montées au démarrage (il faudrait PostgreSQL) —
+  confronté au plancher de `rbac-all-routes` (≥ 5) : égal.
+- Les quatre points rattachés restent **dans la pause** ; le rattachement n'en ouvre aucun.
+
 ## ~~PROCHAIN LOT~~ — rang 27 · la certification qui couvre D316 et D317 ⛔ ~~**OUVERT LE 01/10/2026 : D318 (partie A)**~~ ⛔ **CLOS LE 01/10/2026 : D319**
 
 ### ⛔ CLÔTURE DU 01/10/2026 (D319) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -1474,8 +2014,10 @@ excluait à tort `r25` (détail par cible hors crochets) ; le filtre à sous-cha
 `e2e-r26.log`, un digest propre, avec le journal brut. Les deux recalibrés, rejoués intégralement — détail :
 section D319.
 ✅ **MARQUE** : « Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie ».
-⇒ **LOT DE TESTS ET LOT DOCUMENTAIRE CERTIFIÉS : COMPTEUR DEUX → ZÉRO.** ⇒ **RANG 28 : EN ATTENTE D'ARBITRAGE DE
-KO.** ⚠ Une permission n'est pas un arbitrage.
+⇒ **LOT DE TESTS ET LOT DOCUMENTAIRE CERTIFIÉS : COMPTEUR DEUX → ZÉRO.** ⇒ ~~**RANG 28 : EN ATTENTE D'ARBITRAGE DE
+KO.**~~ ⛔ *(D320 : rang 28 **arbitré par Ko le 01/10/2026** — documentaire, clos ; rang 29 en attente. Et la lecture
+adverse de D320 a trouvé deux écarts à la forme que Ko avait écrite pour cette certification — décision D-11, due à Ko.)*
+⚠ Une permission n'est pas un arbitrage.
 
 ### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D318), AVANT toute mesure
 
@@ -1485,7 +2027,8 @@ suivre.** **Lot DOCUMENTAIRE** (D283 amendé par D292) : il ne compte pas dans l
 code non certifiés : DEUX, inchangé.** **SHA de départ : `a922537`** (`HEAD` = `origin/main` après `git fetch`, arbre
 propre).
 ⛔ **Chemin de l'argent** — arbitrage de Ko et décision du relecteur (chat), déléguée par Ko, écrits avant toute
-mesure : méthode renforcée, bloc D318. L'arbitrage fixe l'ORDRE de la reprise du chemin de l'argent (R1 → 23b → 23c →
+mesure : méthode renforcée, bloc D318 ⛔ *(D320 : **ce bloc n'existe pas** — texte dans `AGENTS.md`, point E3, le bloc de
+la pause et la section D318 ; écart 5 de la lecture adverse de D320)*. L'arbitrage fixe l'ORDRE de la reprise du chemin de l'argent (R1 → 23b → 23c →
 E3, DERNIER rang de l'ordre ; F7, gestion des devis, expiration des demandes, B:728 ouverts un par un, chacun sous un
 arbitrage distinct de Ko) — il n'ouvre AUCUN lot de code du chemin de l'argent. La décision du relecteur permet,
 pendant la pause, une neutralisation de mesure du chemin de l'argent qui se restaure (restauration prouvée) ;
@@ -1493,6 +2036,7 @@ conséquence nommée : la neutralisation côté client des assertions de `r26` (
 régler ») est permise, mais reste **à ordonner par Ko** — ni faite ni entamée par ce lot.
 ⛔ **Ce que ce lot ne touche pas** : aucune page d'administration n'est codée — l'arbitrage de Ko sur ce point révise la
 décision produit n°4 (annotée, pas réécrite) et renvoie à un lot de CADRAGE futur, dû à un arbitrage de Ko à venir.
+⛔ *(D320 : ce cadrage est **fait** — rang 28, « ⛔ CADRAGE DU RANG 28 ».)*
 ⇒ **La forme exigée par Ko** : partie A **courte** (ce lot, D318) ; partie B **en entier** — lecture adverse depuis la
 clôture de D317, étape 0 (planchers du point 12, mesurés avant tout commit de protocole), protocole commité avant toute
 mesure avec ses prédictions chiffrées, `--tout` + `--int` pour chaque harnais à cibles d'intégration + `--e2e` pour
@@ -1511,7 +2055,10 @@ de D292) — outils sous `docs/preuves/D319/outils/`.
 (`0057748` = le commit d'étape 0 de D314) rend **exactement deux fichiers** : `neutralize-r25.py`, `neutralize-r26.py`.
 **Les 26 autres harnais de `neutralisation/` sont OCTET POUR OCTET ceux dont D314 a mesuré le plancher de
 non-démarrage.** ⇒ `docs/preuves/D314/plancher/plancher.txt` (26 lignes) est donc **réutilisé TEL QUEL**, sans
-nouvelle simulation — refaire une mesure sur un fichier inchangé ne mesurerait rien de neuf.
+nouvelle simulation — refaire une mesure sur un fichier inchangé ne mesurerait rien de neuf. ⛔ *(D320 : motif écrit avant
+la mesure, et il tient — dépendances inchangées aussi, vérifié par D320. **Mais la forme de Ko, écrite au point d'entrée
+ci-dessus, disait « planchers du point 12, MESURÉS avant tout commit de protocole »** : l'écart n'est nommé nulle part —
+écart 6 de la lecture adverse de D320 ; décision D-11, due à Ko.)*
 
 **CE QUI EST NEUF : `r25` ET `r26`.** Ni l'un ni l'autre n'existaient à D314 ; ni l'un ni l'autre n'a de plancher
 déclaré. Choix, déclaré et motivé avant toute mesure (texte complet et motif détaillé : en-tête de
@@ -1642,7 +2189,7 @@ après le versement (extrait e2e, « 0 valeur réelle »). **Porte dure VERTE** 
 | lecture d'`available-on-api` | 0 | **30 journaux · 12 pré-vols · 0 écart** (lecteur de D312) | `P/lecture-available-on-api.txt` |
 | lecture des campagnes | 0 | **224 · 0 · 0, 30 campagnes sur 30 qui COMPTENT** ; point 12 : **26** au-dessus de leur plancher, **4** LUES (`rang23`, `available-on-api`, `r25`, `r26`) | `P/lecture-campagnes.txt` |
 | échantillonneur | 0 | **homogène** : 194 échantillons, 0 échec-instrument, 0 transition hors SECTEUR, écarts 31-34 s (0 au-delà de 60 s), `chrome` max 0 | `P/etat-resume.txt` |
-| « 0 valeur réelle » | 0 | 39 valeurs cherchées (journal e2e de la passe), **2 324 fichiers, 0 porteur** | `P/aucune-valeur-reelle.txt` |
+| « 0 valeur réelle » | 0 | 39 valeurs cherchées (journal e2e de la passe), **2 324 fichiers, 0 porteur** ⛔ *(D320 : la pièce dit **2 325** — écart 9)* | `P/aucune-valeur-reelle.txt` |
 
 ⇒ **EXACTEMENT LA PRÉDICTION DE L'ÉTAPE 0, CHIFFRE POUR CHIFFRE** — `--tout` 205/0/19 ; `--int` 51 ; `--e2e` 2 ;
 certifiant 224/0/0 ; étiquettes **12 · 26 · 81 · 105**. **Arbre immobile sur `91e0922` aux SIX contrôles**
@@ -1724,6 +2271,10 @@ Et : l'ordre des rangs (arbitrage du rang 27, ligne D318) ; le registre.
   comme établies : Ko nommera lui-même ces points à leur arbitrage, et une fausse correspondance coûterait plus qu'une
   absence (D231 : vérifier la prémisse avant de coder la demande — ici, avant de l'écrire comme un fait).
 - **Aucune page d'administration, aucun cadrage de son périmètre.** L'arbitrage de Ko ouvre un lot FUTUR, distinct.
+- ⛔ *(D320, lecture adverse — écarts 3 et 4 : **aucune passe D277 n'est écrite pour ce lot**, et elle aurait trouvé ce qu'il
+  laissait courant : `AGENTS.md`, « À NE PAS faire », « pas d'app admin » ; le backlog, « No `apps/admin` » (en-tête) et la
+  décision de la PHASE 12, « a 4th application is unjustified ». Annotés par la passe D277 de D320. Et écart 5 : le renvoi
+  « méthode renforcée, bloc D318 » vise un bloc qui n'existe pas.)*
 - **Aucune neutralisation de `r26` n'a été faite ni commencée** : la décision du relecteur la rend possible, Ko doit
   encore l'ordonner.
 
@@ -1734,7 +2285,8 @@ harnais inchangés, preuve lue étendue à `r25`/`r26`, deux défauts d'instrume
 
 - **Le réemploi du plancher de D314 tenait** : `git diff --name-only 0057748 HEAD -- neutralisation/` rendait
   exactement deux fichiers avant la passe (`r25`, `r26`) ; la passe l'a confirmé en pratique — les 26 durées
-  mesurées sont toutes largement au-dessus de leur plancher (le plus serré : `e3d1-s8`, 80 s contre 8,4 s).
+  mesurées sont toutes largement au-dessus de leur plancher (le plus serré : `e3d1-s8`, 80 s contre 8,4 s). ⛔ *(D320 : **faux** —
+  le plus serré, par rapport et par marge, est `booking-status`, 15 s pour 4,44 s (×3,38) ; `e3d1-s8` est à ×9,5 ; écart 8.)*
 - **`crochets()` ne généralise pas à tout format de verdict.** Écrite pour les harnais vitest d'origine (un
   « ✓ <cible> [mesure1, mesure2] » sur UNE ligne), elle a d'abord rejeté les 11 cibles de `r25` — pourtant mordues
   et LUES — parce que son détail par cible vit sur la ligne SUIVANTE, sans crochets du tout. Vue au premier rejeu
@@ -1760,12 +2312,15 @@ rangs, `AGENTS.md`, point d'entrée du rang 26 — **annotés**) ; le backlog `[
 **Sens 2 — ce que D319 rend permis** : compteur **ZÉRO** ⇒ un lot de code **PEUT** s'ouvrir dès que Ko arbitre le
 rang 28 — **hors du chemin de l'argent**, qui reste en pause (D307 ; aucune décision n'en a levé le blocage, et
 l'arbitrage de Ko sur l'ordre de reprise, D318, confirme qu'elle reste le DERNIER rang de l'ordre, pas le prochain).
+⛔ *(D320 — passe D277, sens 2 : le rang 28 a été arbitré **documentaire** ; la permission passe au **rang 29**, et elle est
+**sous réserve de D-11** — la lecture adverse de D320 a trouvé que cette certification s'est écartée de la forme que Ko
+avait écrite, sans le dire.)*
 
 ### D319 — audit de secrets avant commit — écrit APRÈS l'audit
 
 1. **« 0 valeur réelle »** : contrôle dédié joué sur le journal e2e BRUT de la passe (`e2e.log`, 39 valeurs
    trouvées dans sa propre source, calibration positive confirmée) contre `docs/preuves/`, `neutralisation/` et
-   les `.md` d'autorité — **2 324 fichiers, 0 porteur**. Complété par une vérification manuelle ciblée sur
+   les `.md` d'autorité — **2 324 fichiers, 0 porteur** ⛔ *(D320 : la pièce dit **2 325** — écart 9)*. Complété par une vérification manuelle ciblée sur
    `int-r25.log` et `e2e-r26.log` (motifs usuels : jeton, cookie, mot de passe, sortie `[WebServer]`) — 0
    occurrence dans les deux, avant de les verser.
 2. **Passe** (`audit-secrets-resultat.txt`, scellée) : **150** contextes. Tri différentiel contre `D318/
@@ -1791,6 +2346,9 @@ l'arbitrage de Ko sur l'ordre de reprise, D318, confirme qu'elle reste le DERNIE
 
 ### ⛔ D319 — CE QUE CE LOT NE FAIT PAS
 
+- ⛔ *(D320, lecture adverse — écart 7 : **la lecture adverse depuis la clôture de D317, exigée par la forme de Ko pour cette
+  partie B, n'a été ni faite ni déclarée non faite** ici. Faite par D320 : 104 contrôles, 9 écarts. Décision D-11, due à
+  Ko.)*
 - **Ne classe aucune des 81 cibles « non prouvée (R1) » ni des 105 « non classée »** : R1 reste en pause, premier
   lot de la reprise (D307, D318).
 - **Ne rouvre aucun lot de code du chemin de l'argent** : la certification confirme les portes et les deux lots
@@ -1889,7 +2447,8 @@ lu, correctif, vert ; sinon la spec se verse en pièce avec son rouge lu, et **n
   `warmup.setup.ts` exige « toutes les routes que la suite visite » (D127). Le premier test qui clique vers elle paie sa
   compilation dans sa mesure. **Mesuré** au premier passage de la spec seule : le test d'acceptation — le premier à ouvrir
   une fiche — rouge à `toHaveURL` (7 s) ; la fiche a demandé ses données **6,2 s** après le clic, contre **0,6 s** au test
-  suivant, vert de bout en bout. Pas un défaut du produit ; un échec qui se déplace selon l'ordre (D127). ⇒ Correctif dans
+  suivant, vert de bout en bout. ⛔ *(D320 : « 6,2 s » et « 0,6 s » n'ont **aucune pièce** ; la mesure versée du même passage
+  est recherche → données, **7,4 s** et **2,0 s** (`etape2/delai-fiche-sortie.txt`) — écart 2 de la lecture adverse de D320)* Pas un défaut du produit ; un échec qui se déplace selon l'ordre (D127). ⇒ Correctif dans
   le fichier fautif : le préchauffage visite la route dynamique sur un identifiant qui n'existe pas — la route se compile,
   la page répond **404**, et ce 404-là est l'attendu. ⚠ Les r25 cliquent la même fiche : le défaut était latent depuis
   D316, masqué par l'ordre des fichiers.
@@ -2093,7 +2652,10 @@ relecteur sur la neutralisation permise pendant la pause) ; **compteur DEUX, inc
 certification ; la pause **continue** ; suite : la certification (partie B).)*
 ⛔ *(D319, 01/10/2026 — passe D277 : **la certification est PASSÉE, le rang 27 est CLOS, compteur DEUX → ZÉRO** ⇒ un lot de
 code **PEUT** s'ouvrir — dès que Ko arbitre le rang 28, et **hors du chemin de l'argent**, toujours en pause (D307 ; aucune
-décision n'a levé la pause). **RANG 28 : EN ATTENTE D'ARBITRAGE DE KO.**)*
+décision n'a levé la pause). ~~**RANG 28 : EN ATTENTE D'ARBITRAGE DE KO.**~~)* ⛔ *(D320, 01/10/2026 — passe D277 : le rang
+28 a été **arbitré documentaire** (cadrage de la page d'administration) et clos ; la permission « un lot de code peut
+s'ouvrir » passe au **rang 29**, en attente d'arbitrage de Ko, et elle est **sous réserve de D-11** — la conformité de cette
+certification à la forme que Ko avait écrite.)*
 ⇒ **La passe `r23d-20260926-1434`** (sur `0057748`) : porte dure verte ; six portes à 0 (**1 334 / 109**, **443 / 36**, e2e
 **34 · 1**) ; `--tout` **28 · 198 · 0 · 13** ; `--int` **40** ; **certifiant 211 · 0 · 0, 28 campagnes sur 28 qui comptent,
 point 12 tenu partout** ; étiquettes **12 · 13 · 81 · 105** ; contre-épreuve **5 sur 5** ; arbre immobile aux cinq contrôles ;
@@ -5799,7 +6361,9 @@ jour NTFS du **dernier accès** est **activée** (`fsutil behavior query disable
 **Mesure 1 — un observateur** (`docs/preuves/D317/etape1/sonde-surveillance.py`) : le même compilateur (TypeScript 5.9.3), la
 même configuration, en surveillance, avec `--extendedDiagnostics`, qui NOMME ce qui déclenche. Calibration à deux bras : témoin
 **0**, écriture **2** recompilations (déclencheur nommé : `apps/api/src/generated/zz-sonde-d317.ts`) — OK. Lecture d'un fichier
-du programme : 0 ; **recul du dernier accès** (1 fichier, puis les 47 générés) : les surveillants **se déclenchent** (97 fois),
+du programme : 0 ; **recul du dernier accès** (1 fichier, puis les 47 générés) : les surveillants **se déclenchent** (97 fois)
+⛔ *(D320 : **96** sur les reculs — le 97ᵉ déclenchement du journal brut est l'écriture `zz-sonde`, bras W ; aucune pièce
+versée ; conclusion inchangée — écart 1 de la lecture adverse de D320)*,
 **aucune** recompilation ; lecture après recul : aucun événement ; **`prisma db seed`** (ce que fait `seedReferentials()`) et
 **`prisma migrate deploy`** (ce que fait le `global-setup`) : **0**, et 0 encore sur un client généré au dernier accès ancien.
 **Mesure 2 — le serveur de l'e2e lui-même** (`etape1/mesure.config.ts`, qui importe la configuration e2e et n'en garde que
@@ -16052,6 +16616,27 @@ rang. La session ne les a pas prises ; ce qu'elle en dérive est écrit à part,
    (branches 1, 5, 6) ; ses cibles sont des **lectures** (ce qu'un écran montre d'un statut, ce qu'une liste retient). Un
    doute sur une cible ⇒ la session la retire et le dit, elle ne la tranche pas.
 
+⚠ *(D320, 01/10/2026 : **il n'existe AUCUN bloc « D318 » dans cette section**, alors que le point d'entrée du rang 27 et la
+ligne D318 de l'ordre des rangs y renvoient — « méthode renforcée, bloc D318 », deux fois. L'arbitrage de Ko sur l'ordre de
+reprise et la décision du relecteur sur la neutralisation de mesure vivent dans `AGENTS.md` (point E3), dans le bloc de la
+pause (ordre des rangs) et dans la section D318. Écart 5 de la lecture adverse de D320 ; **le bloc n'est pas créé ici** — ce
+serait réécrire D318.)*
+
+#### ⛔ DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D320) — À LIRE AVEC LES BLOCS CI-DESSUS
+
+Écrite telle que Ko l'a transmise, **avant le cadrage du rang 28** — partie A du lot D320, après l'arbitrage du rang. La
+session ne l'a pas prise ; ce qu'elle en dérive est écrit à part.
+1. ⛔ **DANS LA PREMIÈRE VERSION DE LA PAGE D'ADMINISTRATION, LE TAUX DE COMMISSION EST EN LECTURE SEULE** jusqu'à la reprise
+   du chemin de l'argent.
+   *Motif* : « le modifier valide un taux (branche 1, `venues-admin.service.ts`), et le chemin de l'argent est en pause. »
+   ⇒ *Dérivé par la session, pas une parole du relecteur* : afficher un taux **reçu du serveur** est une conversion
+   **depuis** le serveur (principe de direction, D307) — permis ; la page ne contient **aucun** appel à
+   `PATCH /admin/venues/:id/commission-rate` (mode de défaillance MD-ADM-7 du cadrage). La route, elle, **reste** dans
+   l'API, inchangée.
+   ⚠ **Question ouverte, écrite pour le relecteur** (cadrage du rang 28, § 2.e) : journaliser le réglage des taux
+   modifierait `setRates` — une écriture de plus dans la fonction qui valide un taux. Est-ce un changement du chemin de
+   l'argent, donc en pause ? Sans réponse, le journal de la v1 ne couvre pas les taux.
+
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
 ce qui ne vit que dans le navigateur réel, et ce qu'un test vert ne regarde pas.
@@ -16693,3 +17278,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D317 | A | D317 — rang 26 ARBITRÉ PAR KO (première écriture : « le parcours de réservation joué de bout en bout en e2e — le client envoie sa demande, le pro la voit, l'accepte ou la refuse, le client voit le résultat ; lot de tests ») et CLOS ; décisions du relecteur (chat), déléguées par Ko, écrites avec leur motif avant tout code : les 182 boutons de date ne sont pas du chemin de l'argent (« c'est la présentation des choix », même borne que D316, correctif à ordonner par Ko) ; pendant la pause, un test qui exerce le chemin sans le modifier est permis (un défaut révélé se rapporte) ; étape 1 : l'API de l'e2e recompilait et redémarrait sur toute ÉCRITURE d'un fichier de son programme (apps/api/src, packages/types/src, packages/i18n/messages), jamais sur une lecture — mesuré par un observateur tsc qui nomme le déclencheur puis sur le serveur de l'e2e lui-même (rouge 21 + 23 sondes en ECONNREFUSED, vert 0) ; hypothèse confirmée pour son mécanisme, origine des fenêtres de D316 non identifiée ; correctif dans la seule configuration e2e (nest start, compilée une fois) ; étape 2 : r26-parcours-reservation.e2e.ts, acceptation et refus, assertions par rôles et libellés, deux bras par statut côté client, aucun attribut de test ; une étape cassée hors du chemin (fiche non préchauffée, 7,4 / 5,4 s → 1,7 / 1,7 s) réparée dans warmup.setup.ts ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 43 · 1) ; neutralize-r26.py 2 gardes mordues sur 2, lues, aucune cible du chemin de l'argent ; lecture adverse de D316 : 96 contrôles, 4 écarts (codes et durées de quatre portes, état machine et « relevé par horodatage » sans pièce ; sept extraits de passe-officielle venus du tri — rectification à côté des pièces), outils de D316 rejoués à l'octet ; compteur UN → DEUX, un troisième lot de code exigera une certification ; suite : RANG 27, EN ATTENTE D'ARBITRAGE DE KO |
 | D318 | A | D318 — rang 27 ARBITRÉ PAR KO (première écriture : « la certification qui couvre D316 et D317 »), partie A, lot DOCUMENTAIRE (forme allégée) : arbitrage de Ko sur une page d'administration (révise la décision produit n°4, annotée et non réécrite ; périmètre, emplacement et premier compte admin dus à un lot de cadrage futur) ; arbitrage de Ko sur l'ordre de reprise du chemin de l'argent (R1→23b→23c→E3 devient le DERNIER rang de l'ordre ; F7, gestion des devis, expiration des demandes, B:728 ouverts un par un sous arbitrage de Ko) ; décision du relecteur (chat), déléguée par Ko : pendant la pause, une neutralisation de mesure du chemin de l'argent qui se restaure (restauration prouvée) est permise, non un changement — conséquence : la neutralisation côté client des assertions de r26 (dont la branche 6) est permise, à ordonner par Ko ; aucune cross-référence ferme écrite entre les quatre points nommés et le backlog (candidats repérés, non affirmés) ; compteur DEUX inchangé ; suite : la certification (partie B), qui clôt le rang 27 si elle passe |
 | D319 | A | D319 — rang 27 CLOS, CERTIFICATION PASSÉE, MARQUE POSÉE : étape 0 commitée avant le relevé (`91e0922`) — réutilise le plancher de D314 pour 26 harnais inchangés (vérifié par git diff depuis `0057748`), preuve LUE directe neuve pour `r25`/`r26` (calibration embarquée + collecte par cible, deux bras de calibration ajoutés, 7 sur 7) ; passe `r27a-20261001-0155` : six portes à 0 (1 334/109, 444/36, e2e 43 · 1), `--tout` 30 · 205 · 0 · 19, `--int` ×7 = 51 (`r25` par les deux drapeaux combinés), `--e2e` ×1 (`r26`) = 2 ⇒ 224 mordues · 0 muette · 0 non mesurée, 30 campagnes sur 30, point 12 tenu partout, étiquettes 12 · 26 · 81 · 105, contre-épreuve 5/5, arbre immobile aux six contrôles — exactement la prédiction ; deux défauts d'instrument trouvés et corrigés EN LISANT (D298) : `crochets()` de `lire-campagnes.py` excluait `r25` à tort (son détail par cible n'est jamais en crochets), `verser.py` aurait refusé le digest propre `e2e-r26.log` avec le journal brut par un filtre en sous-chaîne — les deux recalibrés et rejoués intégralement, aucun comportement mesuré n'a changé ; marque « Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie » ; compteur DEUX → ZÉRO ; audit de secrets 150 contextes aux deux passes scellées, 2 alertes nouvelles triées au contexte (bénignes : un motif de recherche cité dans un docstring, une valeur déjà vue 106 fois ailleurs) ; suite : RANG 28, EN ATTENTE D'ARBITRAGE DE KO |
+| D320 | A | D320 — rang 28 ARBITRÉ PAR KO (première écriture : « le cadrage de la page d'administration. Lot documentaire : les options et leur coût ; je tranche ») et CLOS, lot DOCUMENTAIRE ; lecture adverse depuis la clôture de D317, exigée par la forme de Ko au rang 27 et faite par personne : instrument versé (objets git à SHA fixés, 16 journaux bruts confrontés à leur empreinte, deux re-mesures sans écriture, tris d'audit rejoués), 104 contrôles, 9 écarts, 7 constats — D317 : « 97 fois » = 96 sur les reculs, « 6,2 s / 0,6 s » sans pièce ; D318 : aucune passe D277 (« pas d'app admin » resté courant), renvoi à un bloc « D318 » inexistant ; D319 : lecture adverse de D317 ni faite ni déclarée, planchers réutilisés sans nommer l'écart à la forme de Ko (motif écrit avant la mesure, et il tient), « le plus serré » faux (booking-status ×3,38), « 2 324 » pour 2 325 — aucun bloquant pour un lot documentaire ; quatre défauts de l'instrument réparés et rejoués ; partie A : décision du relecteur (taux de commission en lecture seule dans la v1, motif : branche 1, pause), les quatre points de D318 rattachés au backlog contre la table de D315 (expiration des demandes ≠ E3d-2) ; partie B : cadrage (état des lieux relevé et versé — 5 routes ADMIN, rôle cru jusqu'à l'expiration du jeton, une session par navigateur, audit_logs sans écrivain, aucun ADMIN créé par le produit ; options emplacement, langue et parité, premier admin, rejet, sécurité, avec coûts relevables ; 17 modes de défaillance ; deux lots de code et trois enchaînements de certification) ; onze décisions dues à Ko (D-1 à D-11), aucune recommandation ; compteur ZÉRO, inchangé, sous réserve de D-11 ; suite : RANG 29, EN ATTENTE D'ARBITRAGE DE KO |

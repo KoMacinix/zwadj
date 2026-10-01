@@ -5,7 +5,7 @@
 
 ## Assumptions (updated after design/stack/task audit — supersedes earlier defaults)
 
-- **Repo:** monorepo with pnpm workspaces (`apps/client`, `apps/pro`, `apps/api`, `packages/ui`, `packages/i18n`, `packages/types`, `packages/config`). **No `apps/admin`** — validation/publishing handled via protected endpoints + direct DB access (DBeaver) at MVP scale.
+- **Repo:** monorepo with pnpm workspaces (`apps/client`, `apps/pro`, `apps/api`, `packages/ui`, `packages/i18n`, `packages/types`, `packages/config`). **No `apps/admin`** — validation/publishing handled via protected endpoints + direct DB access (DBeaver) at MVP scale. ⛔ *(D320, 01/10/2026 : **révisé par l'arbitrage de Ko de D318** — « Je veux une page d'administration » ; application séparée ou section d'une app existante : décision D-1, due à Ko — `ZWADJ_CONTINUITE.md`, cadrage du rang 28. D318 n'avait pas annoté cette ligne.)*
 - **Frontend (client, public):** **Next.js (App Router, SSR/SSG)** — corrected from Vite CSR for SEO (Google ≈97% share in Algeria). `next-intl` for i18n.
 - **Frontend (pro):** React + Vite (SPA, behind auth, no SEO need). i18next for i18n.
 - **Backend:** Node.js + NestJS + TypeScript; REST + OpenAPI; validation via Zod/class-validator.
@@ -191,7 +191,7 @@
 - [ ] Model `Review` + `ReviewModeration` [DB][P1]
 - [ ] Model `Favorite` (client ↔ venue) [DB][P2]
 - [ ] Model `Notification` + `NotificationPreference` [DB][P1]
-- [ ] Model `AuditLog` (actor, action, entity, before/after) [DB][P1]
+- [ ] Model `AuditLog` (actor, action, entity, before/after) [DB][P1] ⛔ *(D320 : le MODÈLE existe depuis la migration initiale (`20260707000000_init`) ; **0 écrivain** dans `apps/api/src`, relevé le 01/10/2026 — journal des actions admin : décision D-8, due à Ko ; cadrage du rang 28, § 2.e.)*
 
 ### 3.8 Migrations, indexes, seeds
 - [x] Add unique index on `User.email` [DB][P0] — migration initiale ; ⚠ Lot A10 : c'est cette contrainte qui tranche l'unicité à la CONSOMMATION d'un token de changement d'e-mail, le pré-contrôle n'est qu'une courtoisie
@@ -356,7 +356,7 @@
 - [ ] Require idempotency key on `POST /bookings` (prevent double-submit) [BACK][P0] (dep: 4 idempotency middleware)
 - [ ] `POST /bookings/:id/accept` (pro) — transition pending → accepted; this is what actually locks the slot via the DB constraint; on constraint violation, return conflict [BACK][P0]
 - [ ] `POST /bookings/:id/decline` (pro) — transition pending → declined [BACK][P0]
-- [ ] Implement pending-request expiration job (pending → expired if pro doesn't respond in X days) via pg-boss [BACK][P0]
+- [ ] Implement pending-request expiration job (pending → expired if pro doesn't respond in X days) via pg-boss [BACK][P0] ⛔ *(D320 : **point du chemin de l'argent « expiration des demandes » nommé par Ko (D318)** — s'ouvre seul, sur son arbitrage, sous la méthode renforcée ; la pause tient. ⚠ Distinct d'E3d-2, qui porte sur les intentions de paiement. Renvoi : `AGENTS.md`, point E3.)*
 - [ ] `POST /bookings/:id/confirm` (system, triggered by successful payment) — transition accepted → confirmed [BACK][P0] (dep: Phase 7)
 - [ ] Implement orphaned-payment recovery: payment succeeded but confirm failed → auto-refund or manual reconciliation queue [BACK][P0]
 - [ ] `PATCH /bookings/:id` (modify guests/services, pending only) [BACK][P1]
@@ -725,7 +725,7 @@
 - [x] Garde de publication admin : ≥ 1 créneau actif [BACK][P0]
 - ⚠ **LEÇON** : j'avais plafonné `endMinutes` à 1440, ce qui **interdisait la soirée de mariage algérienne**. Le CHECK `slot_templates_minutes_valid` (posé en `20260707000001`) autorise 2880 et donne l'exemple « 20h→02h = 1200→1560 ». **Le schéma existant fait autorité sur une intuition.**
 - ⚠ **LEÇON** : ma migration redéclarait une contrainte existante ⇒ `42710` au rejeu. **Grepper les migrations avant d'ajouter une contrainte nommée.**
-- [ ] B4 devra DIRE au pro que le prix saisi à la création de la salle est écrasé dès le premier créneau, sinon il croira à un bug [PRO][P1]
+- [ ] B4 devra DIRE au pro que le prix saisi à la création de la salle est écrasé dès le premier créneau, sinon il croira à un bug [PRO][P1] ⛔ *(D320 : **point du chemin de l'argent « B:728 » nommé par Ko (D318)** — « B:728 » est la ligne de cette entrée à `ffd32e9` (table de D315) ; s'ouvre seul, sur son arbitrage, sous la méthode renforcée ; la pause tient. Renvoi : `AGENTS.md`, point E3.)*
 
 **B2 — Moteur de prix ✅** (migration destructive relue par Ko)
 - [x] `DELETE FROM pricing_rules` (table jamais utilisée) ; `multiplier_bps` → `price_cents` ABSOLU ; `slot_template_id` NOT NULL ; `CHECK > 0` [BACK][P0]
@@ -827,12 +827,18 @@
 ## PHASE 12 — Back-office / Admin — **NO SEPARATE APP AT MVP**
 > Decision: at MVP scale (a handful of venues in one city), a 4th application is unjustified surface area. Validation/publishing is done via protected API endpoints + direct DB access (DBeaver) for internal use. Revisit once volume or a non-technical team member needs a guided UI.
 
+⛔ *(D320, 01/10/2026 : **cette décision est RÉVISÉE par l'arbitrage de Ko de D318** — « Je veux une page d'administration »
+(décision produit n° 4, annotée). Le titre et la décision ci-dessus ne sont **pas** réécrits : ils disent ce qui valait au
+MVP initial. Le cadrage est écrit (`ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 28 ») : emplacement — dont une 4ᵉ application
+—, langue, premier admin, rejet, sécurité, découpage = **décisions D-1 à D-10, dues à Ko**. Rien n'est ouvert par cette
+annotation. D318 ne l'avait pas écrite — écart 4 de la lecture adverse de D320.)*
+
 - [ ] `POST /admin/venues/:id/publish` — protected endpoint (already listed in 6.1) [BACK][P0]
-- [ ] `PATCH /admin/venues/:id/reject` — protected endpoint, sets back to draft with a reason [BACK][P1]
+- [ ] `PATCH /admin/venues/:id/reject` — protected endpoint, sets back to draft with a reason [BACK][P1] ⛔ *(D320 : route, état, motif et information du pro cadrés — décisions D-4 et D-5, dues à Ko ; cadrage du rang 28, § 2.d.)*
 - [ ] `PATCH /admin/venues/:id/commission-rate` — protected endpoint (already listed in Phase 7) [BACK][P0]
 - [ ] `POST /admin/cashback-claims/:id/verify` and `/pay` — protected endpoints (already listed in 6.5) [BACK][P0]
 - [ ] Admin role + guard reused from Phase 5 RBAC (no separate admin auth system) [BACK][P0]
-- [ ] Document the DBeaver-based workflow for internal use (which tables, which fields to check before publishing, verifying cashback claims) [SHARED][P1]
+- [ ] Document the DBeaver-based workflow for internal use (which tables, which fields to check before publishing, verifying cashback claims) [SHARED][P1] ⛔ *(D320 : la création du premier admin par procédure SQL écrite est l'option (c3) de la décision D-3, due à Ko ; cadrage du rang 28, § 2.c.)*
 
 > Deferred to post-MVP (build a real `apps/admin` only if/when justified): users management UI, review moderation queue UI, dispute/refund handling UI, promo-code management, editorial CMS, BI/KPI dashboards, audit-log viewer.
 
@@ -1074,7 +1080,7 @@ cookies n'est pas à elle seule une preuve de non-conformité » (audit).)*
 - [ ] Downloadable revenue statements/exports for venues (accounting) [PRO][P2]
 
 ### 23.6 Account & admin security hardening (was thin)
-- [ ] MFA/2FA for admin & super-admin accounts [ADMIN][P0] ⛔ *(D302 : absent à `HEAD` — audit sécu 09/09, contrôle 12 ; reports de D302, « audit sécu 09/09 · divers », 3.)*
+- [ ] MFA/2FA for admin & super-admin accounts [ADMIN][P0] ⛔ *(D302 : absent à `HEAD` — audit sécu 09/09, contrôle 12 ; reports de D302, « audit sécu 09/09 · divers », 3.)* ⛔ *(D320 : maintenant ou avant le lancement — décision D-7, due à Ko ; cadrage du rang 28, § 2.e.)*
 - [ ] Optional 2FA for pro accounts [PRO][P1]
 - [ ] Active-sessions list + "log out everywhere" [SHARED][P2]
 - [ ] Phone OTP verification (primary contact in Algeria) [BACK][P1]
@@ -1924,7 +1930,7 @@ Trois régressions constatées sur le zip de Ko, **un seul mécanisme** : UI-D5 
 ### Reste de la tranche UIP
 - [ ] **UIP-D — PDF de devis** (génération serveur). ⚠ Mini-cadrage écrit AVANT code : bibliothèque, endpoint, `@Roles`, **PDF bilingue FR/AR** (polices embarquées + façonnage RTL — LA difficulté, à prouver sur un devis réel), montants venus du serveur, stockage à trancher [BACK][P1]
 - [ ] **UIP-E — Fiche client** : entrée « Clients » dans le menu du profil, rattachement d'un devis à une fiche, saisie à la volée au clic sur « Envoyer ». ⚠ Mini-cadrage écrit avant code [BACK][PRO][P1]
-- [ ] **Remonter `QuotesSection`**, démontée par la refonte : cinq gestes inatteignables (envoyer un brouillon existant, marquer refusé, convertir un devis ancien, historique des versions, réviser hors session) [PRO][P0]
+- [ ] **Remonter `QuotesSection`**, démontée par la refonte : cinq gestes inatteignables (envoyer un brouillon existant, marquer refusé, convertir un devis ancien, historique des versions, réviser hors session) [PRO][P0] ⛔ *(D320 : **point du chemin de l'argent « gestion des devis » nommé par Ko (D318)** — table de D315, « gestion des devis existants (`QuotesSection` non montée) », branches 1 et 2 ; s'ouvre seul, sur son arbitrage, sous la méthode renforcée ; la pause tient. Renvoi : `AGENTS.md`, point E3.)*
 
 ### Ce que cette tranche apprend, à appliquer désormais
 - [ ] **Un script de neutralisation compte ses EXÉCUTIONS, pas seulement ses remplacements.** `vitest -t <filtre>` sort en 0 quand rien ne correspond : trois gardes ont été lues « inutiles » alors qu'elles n'avaient jamais été mesurées (D144) [PROCESS][P0]
@@ -2462,6 +2468,28 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 01/10/2026 — rang 28, le cadrage de la page d'administration (D320)
+
+Détail : section D320 et « ⛔ CADRAGE DU RANG 28 » de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302). ⚠ **Ce que ce lot a écrit
+AILLEURS dans ce fichier** : « No `apps/admin` » (en-tête) et la décision de la PHASE 12, **annotés** (passe D277 — D318 ne
+l'avait pas faite) ; les entrées de la PHASE 12 (rejet, procédure DBeaver), `AuditLog` (3.7) et la MFA admin (23.6),
+**annotées** d'un renvoi au cadrage ; les **quatre points du chemin de l'argent** de D318 (F7, `QuotesSection`, expiration
+des demandes, B4), **annotés** d'un renvoi ; le report `[TEST]` « côté CLIENT » de D317, **annoté** (le relecteur a répondu,
+D318) ; l'entrée `[DOC][P3]` « POURQUOI (b) » (annotée : elle suit désormais « RANG 29 »).
+⚠ **Les onze décisions du cadrage ne sont PAS des entrées de ce fichier** : elles attendent Ko dans l'ordre des rangs
+(« DÉCISIONS DUES À KO, SANS RANG (D320) ») — une décision n'est pas un travail à venir.
+
+- [ ] **[DOC]** **« D4 » désigne deux décisions différentes** — au registre de `ZWADJ_CONTINUITE.md`, « D4 | F | Passes UI
+  (D1 → D4) » ; dans le code de l'auth (`auth.types.ts:4`, « Claims du JWT d'accès (D4) ») et dans les arbitrages de Ko
+  (« D4 : rôle valide jusqu'à l'expiration du jeton »), les claims du jeton de la tranche Auth. Une reprise qui cherche « D4 »
+  au registre lit une décision d'interface. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : documentaire (ne compte pas) — le registre
+  ou une note de correspondance ; aucun code ; e2e : non ; migration : non.
+- [ ] **[INFRA]** **Le protocole de certification de D319 rejoue `r25` AVEC `--e2e` sans relever les ports** —
+  `docs/preuves/D319/outils/passe.py`, étape 6 : `sonde` et `pg_isready` seulement, alors que l'étape 6b relève les ports
+  3100/3101/5273 et `node` avant `r26`. Tenu de fait à `r27a-20261001-0155` (sonde « node 0 », pré-vol e2e de `r25` passé),
+  **pas vérifié**. ⇒ **BLOQUE** : rien d'ouvert ; à reprendre par le **protocole de la prochaine certification** qui joue un
+  harnais à drapeaux combinés. ⇒ **COÛT** : documentaire (outil sous `docs/preuves/`, exemption de D292) ; e2e : non.
+
 ## Reports du 27/09/2026 — rang 26, le parcours de réservation joué de bout en bout (D317)
 
 Détail : section D317 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
@@ -2480,6 +2508,10 @@ D316, **cochée avec son motif** ; l'entrée `[CLIENT]` des 182 boutons, **annot
   réponse du **relecteur** : une mutation temporaire et restaurée d'un code du chemin de l'argent est-elle permise pendant la
   pause ? ⇒ **COÛT** : harnais (compte) ; `neutralisation/neutralize-r26.py` ; e2e exigée ; chemin de l'argent : **oui**
   (les cibles) ; migration : non.
+  ⛔ *(D320, 01/10/2026 : **le relecteur a répondu le 01/10/2026 (D318)** — « une NEUTRALISATION qui mute un comportement du
+  chemin de l'argent le temps d'une mesure, puis le restaure (restauration prouvée), est une mesure, pas un changement :
+  elle est permise » (`AGENTS.md`, point E3). Reste **à ordonner par Ko**. D318 n'avait pas annoté cette entrée — passe
+  D277 de D320, sens « ce qui devient permis ».)*
 - [ ] **[TEST]** **Les harnais écrivent leurs journaux par cible au MÊME chemin à chaque passe : un tri ou un rejeu écrase
   ceux de la passe comptée** — MESURÉ : chez D316, le tri `lancer-campagnes.py` (7 cibles, 03:26:42 → 03:27:23) a écrasé
   `.neutralisation-journaux/r25/R25-1.log` à `R25-7.log` de la passe officielle, et ce sont ses journaux qui ont été versés
@@ -3211,6 +3243,10 @@ arbitrera.
   entérine le défaut. Reproduit par l'audit.
   ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code API (compte) ; le module et sa spec, corrigés ensemble ; e2e : non ;
   cadrage chemin de l'argent : non ; migration : non ; dépendance : non ; mord à chaque notification d'un compte `ar`.
+  ⛔ *(D320 : **point du chemin de l'argent « F7 » nommé par Ko (D318)** — « B:3053 » dans la table de D315 (ligne de cette
+  entrée à `ffd32e9`), classé **branche 6** (S11a-11) ; s'ouvre seul, sur son arbitrage, **sous la méthode renforcée** — le
+  « cadrage chemin de l'argent : non » ci-dessus date d'avant D311, qui a fait entrer la notification dans le chemin. La
+  pause tient. Renvoi : `AGENTS.md`, point E3.)*
 - [ ] **[API]** **audit SOLID 09/09 · A1 — des contrats de persistance exprimés en types Prisma.** **OUVERT à `HEAD`,
   aux contrats que l'audit NOMME** : `booking-locks.types.ts` (`BookingRow = Prisma.BookingGetPayload`, et
   `transition` qui prend un `Record<string, unknown>` que l'adaptateur coule en
@@ -3400,7 +3436,9 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D317, 27/09/2026 : il suit
   désormais l'arbitrage du rang 26 et « RANG 27 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot
   n'y touche pas)* ⛔ *(D319, 01/10/2026 : il suit désormais la clôture du rang 27 et « RANG 28 : EN ATTENTE
-  D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
+  D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D320, 01/10/2026 : il suit désormais
+  l'arbitrage et la clôture du rang 28, les décisions dues à Ko de D320 et « RANG 29 : EN ATTENTE D'ARBITRAGE DE KO » —
+  même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.
