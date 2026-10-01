@@ -171,6 +171,9 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
    ⛔ *(D320, 01/10/2026 : **le cadrage est écrit** — « ⛔ CADRAGE DU RANG 28 » ; emplacement, langue, premier admin, rejet,
    sécurité et découpage sont **dix décisions dues à Ko** (D-1 à D-10) ; dans la v1, le taux de commission est **en lecture
    seule** (décision du relecteur). Toujours aucun code permis.)*
+   ⛔ *(D321, 01/10/2026 : **D-1 à D-10 arbitrées par Ko** — cadrage du rang 28, § 6. Emplacement, mot pour mot : « a2. Une
+   section `/admin` dans l'app Pro. » — **pas d'application séparée** ; « pas d'app admin » **tient**. Aucun code n'est
+   ouvert par l'arbitrage : ADM-1 et ADM-2 attendent chacun un rang.)*
 5. **Paiement** : Chargily seul (agrège CIB+Edahabia), BaridiMob différé.
 6. ~~**Visite 360°** : une seule photo équirectangulaire par salle.~~ **SUPERSÉDÉE — voir D34.**
 7. **Cashback anti-fuite** : demande de réservation Zwadj obligatoire au préalable pour être éligible. Montants remplacés par **D35** (taux variable par salle). Toujours prélevé sur la commission de la salle, jamais sur les fonds Zwadj — D35 en fait une garantie mécanique.
@@ -1306,7 +1309,7 @@ d'administration**) ; **trois défauts MESURÉS**, neufs au backlog — le panne
 date** (fenêtre de 182 jours refusée en 400 : **aucune demande ne part de l'écran**, l'API l'accepte), son lien de connexion
 mène à une **404**, et la section de suppression de compte est **en erreur dans les deux applications** (corps vide) ;
 **aucune spec e2e n'exerce un parcours fonctionnel** ; 146 entrées ouvertes des phases de parcours confrontées au code, dont
-**62 réalisées et ouvertes à tort** ; déploiement : e-mail et WhatsApp sur journal de dev, ni Dockerfile ni CI, ni robots ni
+**62 réalisées et ouvertes à tort** ⛔ *(D321 : re-confrontées à `b5bd382` — **61 cochées**, B:650 ouverte)* ; déploiement : e-mail et WhatsApp sur journal de dev, ni Dockerfile ni CI, ni robots ni
 sitemap, CGU vides, **aucune relecture humaine de l'arabe tracée** ; 46 captures (3 184 910 octets). Lecture adverse de D314 :
 **117 contrôles, un écart** (section D315). **Documentaire : compteur de lots de code non certifiés ZÉRO, inchangé.** ⇒ **Où
 il en est** : clos — point d'entrée du rang 24 ; section D315. ⇒ La ligne du rang 25, ci-dessous, a été écrite à l'ouverture ;
@@ -1396,13 +1399,37 @@ ADMIN, rôle cru jusqu'à l'expiration du jeton — `15m` par défaut —, une s
 deux lots de code, et **onze décisions qui attendent Ko (D-1 à D-11)** ; aucune recommandation, aucune ligne de code.
 Décision du relecteur : taux **en lecture seule** dans la v1. Les quatre points de D318 rattachés. **Lecture adverse de D317,
 D318, D319 : 104 contrôles, 9 écarts, 7 constats** — aucun bloquant pour un lot documentaire. **Documentaire : compteur ZÉRO,
-inchangé** (sous réserve de D-11). ⇒ **Où il en est** : clos — point d'entrée du rang 28 ; cadrage ; section D320. ⇒ La ligne
+inchangé** (sous réserve de D-11). ⛔ *(D321 : **D-11 arbitrée par Ko — k1**, la marque de D319 tient : ZÉRO était juste.)* ⇒ **Où il en est** : clos — point d'entrée du rang 28 ; cadrage ; section D320. ⇒ La ligne
 du rang 29, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie.**
-⚠ **DÉCISIONS DUES À KO, SANS RANG (D320)** : **D-1 à D-10**, celles du cadrage — chaque lot de l'administration attend
+⚠ ~~**DÉCISIONS DUES À KO, SANS RANG (D320)** : **D-1 à D-10**, celles du cadrage — chaque lot de l'administration attend
 celles qu'il porte ; et **D-11**, la conformité de la certification de D319 à la forme que Ko avait écrite — elle dit si le
 compteur est ZÉRO ou DEUX, donc si le prochain lot de code peut s'ouvrir sans certification. Texte mot pour mot : cadrage du
-rang 28, § 5.
-⇒ **RANG 29 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 28, sur
+rang 28, § 5.~~ ⛔ *(D321, 01/10/2026 : **TOUTES ARBITRÉES PAR KO** — texte mot pour mot au cadrage du rang 28, § 6. **D-11 :
+k1**, la marque de D319 tient, le compteur était ZÉRO. **D-10 : s1**, mot pour mot « Réservation (ce rang) → ADM-1 →
+certification → ADM-2 ».)* ⚠ *Dérivé par la session* : D-10 fixe l'**enchaînement** ; il n'arbitre **aucun rang** — Ko a écrit
+lui-même « RANG 30 : EN ATTENTE D'ARBITRAGE DE KO ». ADM-1, ADM-2 et la certification d'entre eux attendent chacun le sien.
+⇒ ~~**RANG 29 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 28, sur
+consigne de Ko.~~ ⛔ *(D321 : **arbitré par Ko le 01/10/2026** — ligne « ARBITRÉ LE 01/10/2026 PAR KO — le RANG 29 »
+ci-dessous.)* ⚠ **Une permission n'est pas un arbitrage.**
+⛔ **ARBITRÉ LE 01/10/2026 PAR KO — le RANG 29, mot pour mot : « Rang 29 : la page de réservation du client — un
+calendrier à la place des 182 boutons, des libellés sur chaque champ, l'adresse de connexion définie une seule fois, et
+les deux gardes laissées par D317. Lot de code. »** Lot D321. ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de
+Ko** (patron de D295) : la session a reçu l'arbitrage, elle ne se l'est pas attribué.
+⇒ **Lot de CODE** : **compteur de lots de code non certifiés : ZÉRO → UN** à sa clôture (D-11 arbitré en k1 par Ko dans la
+même consigne : la marque de D319 tient, le compteur était bien ZÉRO). ⇒ **Chemin de l'argent** : borne de D316 inchangée —
+ni l'aperçu d'acompte, ni le transport de la date choisie vers le calcul du prix ; la neutralisation côté client de `r26`
+est permise par la décision du relecteur de D318. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 29 » en tête de ce
+fichier.
+⛔ **(D321, 01/10/2026) RANG 29 CLOS — LA PAGE DE RÉSERVATION DU CLIENT** : un calendrier par mois à la place des 182 boutons
+(fiche **14 487 → 4 950 px**), un `<label>` visible par champ, `LOGIN_PATH` défini une fois par application avec **sa garde**
+(rouge lu : 21 adresses), la garde du mode surveillance de l'API de l'e2e, la neutralisation côté client de `r26` — chaque
+point rouge lu avant, vert après ; borne de D316 **tenue**. Partie A : arbitrages D-1 à D-11 écrits, décision du relecteur
+(taux non journalisé), 61 des 62 entrées cochées. Lecture adverse de D320 : **69 contrôles, 1 écart**. Portes à 0 ; campagnes
+`r29` 15/15, `r26` 4/4, `r25` 10/10 jouées — **lues**. **Lot de code : compteur ZÉRO → UN.** ⇒ **Où il en est** : clos — point
+d'entrée du rang 29 ; section D321. ⇒ La ligne du rang 30, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie.**
+⛔ *Passe D277, sens 2 — ce que la clôture REND PERMIS* : compteur **UN** ⇒ **un** lot de code de plus peut s'ouvrir avant une
+certification (D270) ; par D-10 (s1), c'est **ADM-1** — **s'il est arbitré** ; un troisième en exigera une.
+⇒ **RANG 30 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 29, sur
 consigne de Ko. ⚠ **Une permission n'est pas un arbitrage.**
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
@@ -1491,6 +1518,373 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## ~~PROCHAIN LOT~~ — rang 29 · `[CODE]` **la page de réservation du client** ⛔ ~~**OUVERT LE 01/10/2026 : D321**~~ ⛔ **CLOS LE 01/10/2026 : D321**
+
+### ⛔ CLÔTURE DU 01/10/2026 (D321) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **ARBITRÉ PAR KO LE 01/10/2026, CLOS LE 01/10/2026, DANS LA MÊME SESSION.** ⇒ **QUEL lot : rang 29. OÙ IL EN EST : clos,
+ici.** Titre barré à la clôture ; ce bloc est son rafraîchissement de clôture (règle de D294).
+⇒ **Lecture adverse de D320** : 69 contrôles, **1 écart** (« 17 » fabrications d'ADMIN pour 16), 5 constats — aucun bloquant.
+⇒ **Partie A** : D-1 à D-11 écrits mot pour mot (cadrage du rang 28, § 6 ; `AGENTS.md` ; ordre des rangs) ; ce qu'ils
+repoussent ouvert au backlog (MFA et e3-c **bloquent tout déploiement**) ; décision du relecteur (taux **non journalisé**
+pendant la pause) ; **61 des 62** entrées « RÉALISÉ » cochées, B:650 laissée ouverte.
+⇒ **Partie B** : le calendrier (fiche **14 487 → 4 950 px**), un `<label>` visible par champ, `LOGIN_PATH` une fois par
+application et **sa garde**, les deux gardes de D317 — chaque point : rouge lu, correctif, vert. Portes à 0 (`test` 667/59 ·
+39/4 · 333/24 · 349/29 ; `test:int` 444/36 ; e2e 43 · 1) ; campagnes : `r29` **15/15**, `r26` **4/4**, `r25` **10/10 jouées**
+(R25-8 hors exécution), toutes **lues**. Borne de D316 **tenue**. Section D321.
+⇒ **LOT DE CODE : compteur ZÉRO → UN.** ⇒ **RANG 30 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à
+l'ouverture, **vrai à la clôture**. ⚠ **Une permission n'est pas un arbitrage** : par D-10, le lot de code suivant de
+l'administration est ADM-1 ; il attend que Ko en fasse le rang 30 ou un autre.
+
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D321), AVANT toute ligne de code
+
+⛔ **ARBITRÉ PAR KO LE 01/10/2026** — texte mot pour mot dans l'ordre des rangs (ligne « ARBITRÉ LE 01/10/2026 PAR KO — le RANG
+29 »), **première écriture du lot**. **Lot de CODE** : compteur **ZÉRO → UN** à sa clôture. **SHA de départ : `b5bd382`**
+(`HEAD` = `origin/main` après `git fetch`, arbre propre).
+⛔ **La forme exigée par Ko** : reprise courte ; **lecture adverse depuis la clôture de D320, en entier** ; puis le rang,
+**sauf défaut bloquant**. **Partie A, documentaire** — ses arbitrages D-1 à D-11, mot pour mot, chacun à sa place ; la décision
+du relecteur (journal des taux) ; les 62 entrées « RÉALISÉ » de D315 re-confrontées à `HEAD`. **Partie B, code** — pour
+chaque point : mode de défaillance écrit, rouge lu, correctif, vert. ⚠ **Si la limite de contexte approche après la partie
+A : commit, poussée, le dire, s'arrêter** (Ko).
+⚠ **Lecture de « depuis la clôture de D320 »** : aucun commit n'existe après celui de D320 (`b5bd382` = `HEAD`) ; la
+dernière lecture adverse (D320) couvrait D317 à D319. ⇒ **Lue comme : la lecture adverse de D320**, seul lot clos et non lu.
+Interprétation de la session, écrite pour que Ko la corrige.
+⛔ **Borne de D316, inchangée** : ce lot ne touche **ni l'aperçu d'acompte** (`previewDeposit`, `lineTotal`, `total`,
+`deposit`), **ni le transport de la date choisie vers le calcul du prix** — la ligne `setChosen({ date: day.date,
+slotTemplateId: slot.slotTemplateId, priceCents: slot.priceCents })` reste **identique à l'octet**, `submit` aussi. Le
+calendrier change **la présentation des choix** (décision du relecteur de D317). S'il fallait toucher l'une de ces deux
+choses : arrêt, et le dire.
+
+#### Fichiers attendus — énumérés AVANT d'écrire (le `git diff` de fin de lot ne doit contenir qu'eux)
+
+| fichier | pour |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | arbitrage, rang 30, ce point d'entrée, arbitrages D-1 à D-11 (cadrage du rang 28, ordre des rangs), section D321, registre |
+| `AGENTS.md` | arbitrages D-1 à D-3, D-7, D-9 ; décision du relecteur (journal des taux) ; règle de D270 (compteur) ; règle de D-11 |
+| `ZWADJ_BACKLOG.md` | entrées repoussées par les arbitrages ; homonymie « D4 » ; les 62 entrées confrontées ; reports de D321 |
+| `apps/client/src/lib/booking-calendar.ts` *(neuf)* + `.test.ts` *(neuf)* | module PUR du calendrier : mois de la fenêtre, jour choisissable, déplacement au clavier |
+| `apps/client/src/components/venue/booking-date-picker.tsx` *(neuf)* | la vue par mois (présentation seule) |
+| `apps/client/src/components/venue/booking-request-panel.tsx` + `.test.tsx` | le calendrier monté ; un `<label>` visible par champ |
+| `apps/client/src/lib/routes.ts` | son en-tête (« neuf autres liens… » devient faux) |
+| `apps/client/src/lib/login-path-guard.test.ts` *(neuf)* | LA garde : aucune adresse de connexion hors des deux constantes |
+| client — `account/account-settings-view.tsx`, `auth/auth-ui.tsx`, `auth/google-signin.tsx`, `auth/recovery-forms.tsx`, `auth/register-form.tsx`, `auth/verify-email-view.tsx`, `site-chrome.tsx`, `venue/visit-booking-panel.tsx` (sous `components/`), `app/[locale]/auth/connexion/page.tsx` | les liens écrits en dur passent par `LOGIN_PATH` |
+| `apps/pro/src/routes.ts` *(neuf)* + `routes.test.tsx` *(neuf)* | la constante du pro, vérifiée contre sa page (la route qui rend `LoginPage`) |
+| pro — `App.tsx`, `auth/auth-ui.tsx`, `auth/recovery-pages.tsx`, `auth/register-page.tsx`, `auth/require-pro.tsx` | les liens écrits en dur passent par `LOGIN_PATH` |
+| `packages/i18n/messages/fr.json`, `ar.json` | textes neufs du calendrier (clés arabes « non relues ») |
+| `apps/api/src/common/e2e-api-sans-surveillance.spec.ts` *(neuf)* | garde de D317 : le mode surveillance ne revient pas dans le serveur d'API de l'e2e |
+| `e2e/specs/r25-demande-reservation.e2e.ts`, `e2e/specs/r26-parcours-reservation.e2e.ts` | ils cliquaient un bouton de date |
+| `e2e/fixtures/panneau-reservation.ts` *(neuf)* | le choix d'une date, écrit UNE fois pour les deux specs |
+| `neutralisation/neutralize-r29.py` *(neuf)* | le harnais du lot |
+| `neutralisation/neutralize-r26.py` | garde de D317 : la neutralisation côté client de ses assertions (permise par D318) |
+| `docs/preuves/D321/` | lecture adverse, entrées confrontées, relevé des adresses écrites en dur, portes, campagnes, captures, passe D277, audits |
+
+#### Modes de défaillance — écrits AVANT tout code
+
+**Calendrier (C)** — C-a · une date **libre** (au moins un créneau `AVAILABLE`) rendue inactive, ou dans un mois que la
+navigation n'atteint pas. C-b · une date **prise** (aucun créneau `AVAILABLE`), passée ou hors de la fenêtre, **activable**.
+C-c · la navigation **sort** de la fenêtre de 182 jours, ou n'atteint pas son dernier mois. C-d · **le jour vu n'est pas
+celui qu'on envoie** : choisir un créneau doit transporter le jour affiché, par la ligne `setChosen` inchangée (borne de
+D316). C-e · **clavier** : pas d'arrêt de tabulation dans la grille, flèches inertes, **inversées en arabe** (droite à
+gauche), ou qui atterrissent sur une date inactive ou hors fenêtre. C-f · **lecteur d'écran** : le nom d'un jour ne dit ni la
+date entière ni son état, le mois affiché n'est pas annoncé, la grille n'a pas d'en-têtes. C-g · **mobile** : la grille
+déborde à 360 px. C-h · **semaine algérienne** (D56) : la grille ne commence pas dimanche. C-i · **un échec de chargement
+redevient « aucune date »** (D316) — conservé tel quel. C-j · **toujours 182 boutons** : le panneau rend plus d'un mois à la
+fois.
+**Libellés (L)** — L-a · un champ du panneau sans `<label>` **visible** associé (D143). L-b · l'astérisque dans le nom
+accessible, ou `required` absent d'un champ obligatoire (D32). L-c · un texte neuf écrit en dur, ou d'un seul côté (parité).
+**Adresse de connexion (P)** — P-a · un lien écrit en dur hors de la constante, **invisible à la garde** : confondu avec un
+commentaire, caché dans un gabarit `${…}/auth/connexion`, dans un texte JSX. P-b · la constante désigne une route **sans
+page** (client : le fichier ; pro : la route qui rend la page). P-c · le lien du client vers la connexion **pro** diverge de
+la route du pro. P-d · la garde rend « 0 » sur **zéro fichier parcouru** (D290).
+**Gardes de D317 (G)** — G-a · le mode surveillance revient (`run dev`, `--watch`, `-w`, ou un script qui y mène) **sans
+qu'aucune porte rougisse**. G-b · la neutralisation côté client de `r26` **ne mord pas**, ou **n'est pas restaurée** — elle
+mute l'affichage d'une instruction de paiement (branche 6) : la restauration se prouve, elle ne se suppose pas.
+
+## Session du 01/10/2026 — D321 · rang 29 : la page de réservation du client — un calendrier, des libellés, l'adresse de connexion définie une fois, les deux gardes de D317 ; partie A : les arbitrages de Ko sur l'administration, et les 62 entrées confrontées
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D320** ⇒ **D321**. **SHA de départ : `b5bd382`** —
+`HEAD` = `origin/main` après `git fetch`, arbre propre. ⇒ **RANG 29**, arbitré par Ko en ouverture de session (première
+écriture du lot). **Lot de CODE** — compteur **ZÉRO → UN** à sa clôture.
+
+### D321 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 28 **clos** (D320) ; dernière ligne « ⇒ RANG N » : « **RANG 29 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 28, ordre des rangs |
+| numéro | dernière ligne du registre : **D320** ⇒ **D321** | registre |
+| compteur | **ZÉRO**, sous réserve de D-11 (D320) — **D-11 arbitrée k1 dans la consigne** : ZÉRO | point d'entrée du rang 28 ; `AGENTS.md`, règle de D270 |
+| synchronisation | `HEAD` = `origin/main` = `b5bd382` ; arbre propre | `git` |
+
+### D321 — la lecture adverse depuis la clôture de D320, en entier
+
+⚠ **Lue comme la lecture adverse de D320** : aucun commit n'existe après `b5bd382` (contrôle P4), et la lecture adverse de
+D320 couvrait D317 à D319. Interprétation de la session, écrite au point d'entrée pour que Ko la corrige.
+**Instrument** : `docs/preuves/D321/lecture-adverse/confronter-d320.py` — objets `git` à des SHA fixés (`a53943e`, `b5bd382`,
+`ffd32e9`), un seul rejeu sur l'arbre (`releve-admin.py` de D320, légitime par T0 : 0 fichier hors `.md` et `docs/preuves`
+changé). Calibration **16 bras, 0 manqué**. Sortie : `confronter-sortie.txt` — **69 contrôles · 1 écart · 5 constats.**
+**Ce qui tient** (68 ✓) : la provenance (parent `a53943e`, 25 fichiers = 3 `.md` + 22 pièces, conforme à sa table) ; ses
+propres comptes (104 · 9 · 7 ; 95 ✓ + 9 ✗ ; calibration 7 bras ; **16** empreintes concordantes ; T0 « 189 examinés » ;
+passe 3 non versée, comme elle le déclare) ; ses écarts re-vérifiés à leur source (écart 3 : aucune passe D277 de D318 ;
+écart 4 : « pas d'app admin » non annoté à `a53943e` ; écart 5 : aucun bloc « (D318) » ; écart 7 : 0 « lecture adverse »
+dans la section D319 ; écart 8 **re-dérivé indépendamment** sur 26 harnais à plancher : `booking-status` le plus serré par
+rapport et par marge, `e3d1-s8` à ×9,5 ; écart 9 : 2 325) ; **quinze faits fichier:ligne** de l'état des lieux, ligne par
+ligne (gardes `app.module.ts:65-67`, `@Roles(ADMIN)` de classe, D4 `auth.types.ts:4`, `jwt-auth.guard.ts:40-45`,
+`env.spec.ts:20` « 15m », `auth.service.ts:538/580/278/360`, cookie, CORS, `require-pro.tsx:31`, plancher 943) ; parité
+**1 095 = 1 095**, 0 clé `admin.*` ; 0 méthode `/admin` dans `@zwadj/api-client` ; 0 écrivain d'`AuditLog` sur **111** fichiers
+source ; **le relevé de D320 rejoué donne une sortie identique à sa pièce** ; partie A (bloc D320 de la méthode renforcée,
+`AGENTS.md`, quatre renvois au backlog, E3d-2 bien un sujet de paiement, homonymie « D4 » rapportée) ; **aucun mot perdu**
+dans les 24 lignes que D320 a modifiées ; passe D277 (instrument à l'octet `24802faf…`, 21 + 2 motifs, 62 occurrences,
+contrôle = après écriture, motif par motif, 21 motifs lus) ; audits (tri final 151 → 151 : 0 ; « 0 valeur réelle » 63
+valeurs, 5 journaux, 0 porteur ; sortie scellée) ; registre et ordre.
+**L'écart** — annoté à sa place (cadrage du rang 28, § 1.4), la section n'est pas réécrite :
+1. **(D320, cadrage § 1.4)** « les tests font `UPDATE users SET role = 'ADMIN'` (`harness.ts:330` et 16 autres) » : **16
+   fabrications, pas 17** — la définition de `releve-admin.py:126` compte aussi `register.int-spec.ts:143`, le test qui
+   prouve que l'inscription **REFUSE** le rôle ADMIN (400) ; et 15 des 16 passent par `prisma.user.update`, pas par du SQL.
+   Aucune conséquence sur une décision : D-3 (c1) ne dépend pas de ce nombre.
+**Constats sans écart** : D320 ajoute son renvoi à la ligne 728 du backlog dans le commit même où il l'écrit « inchangée » (la
+position et l'entrée tiennent) ; « 0 valeur réelle » parcourt 22 fichiers, nombre que la section ne cite pas ; les paroles de
+Ko au § 0 du cadrage ne sont vérifiables que dans le chat (non vérifiables ici, non cochées).
+⇒ **Aucun défaut bloquant** : le rang s'ouvre.
+**Défauts de MON instrument, chacun réparé et REJOUÉ EN ENTIER (D298)** — sorties versées : (a) **passe 1** — A3 comparait la
+ligne 728 entière alors que D320 y avait ajouté son renvoi ; A7 cherchait « homonymie », mot que l'entrée n'emploie pas ; C19 ne
+comptait que la forme SQL ; D3 et D4 rendaient des listes **vides** des deux côtés — une égalité sur zéro élément (D290) ;
+quatre bras ajoutés. (b) **passe 2** — C19 exigeait l'accolade fermante et manquait les `update` qui posent aussi
+`emailVerifiedAt` ; deux bras ajoutés, dont « inscription refusée » au négatif. (c) passe 3 — deux libellés (C19c disait encore
+« le compte tient » ; D2 en contrôle). ⚠ **La sortie de la passe 3 n'est pas gardée** (faute n° 1 ci-dessous).
+
+### D321 — partie A : ce qui a atterri, et où
+
+| quoi | fichier, endroit |
+|---|---|
+| **Arbitrage de Ko** — rang 29, mot pour mot ; « RANG 30 : EN ATTENTE » | ordre des rangs |
+| **D-1 à D-11, mot pour mot** | cadrage du rang 28, **§ 6** (neuf) ; ordre des rangs (bloc D320 barré et annoté) ; décision produit n° 4 |
+| D-1 (section `/admin` de l'app Pro ; D23 change ; « pas d'app admin » et « 4ᵉ application » TIENNENT) | `AGENTS.md` (Stack, routes de l'app Pro, « À NE PAS faire ») ; backlog (en-tête, PHASE 12, D23 l. « Pro auth + role-gated routing ») |
+| D-2 (exemption bilingue bornée à `/admin`) | `AGENTS.md`, invariant « Bilingue FR/AR » |
+| D-3, D-7, D-9 (premier admin, MFA, rétrogradation **écrite**) ; « aucun déploiement » | `AGENTS.md`, invariants, bloc « ADMINISTRATION » |
+| D-11 (k1) et **la règle pour la suite** | `AGENTS.md`, règle de D270 ; annotations « sous réserve de D-11 » (passe D277) |
+| **Ce que les arbitrages repoussent** — MFA, e3-c (**bloquent tout déploiement**), e-mail du rejet (avec le lot de l'e-mail réel), écran du journal (à ordonner) | backlog, « Reports de D321 » ; MFA (PHASE 23) et « Integrate transactional email provider » annotées |
+| homonymie « D4 » | **déjà rapportée par D320** — non dupliquée (dit aux reports de D321) |
+| **Décision du relecteur** — taux non journalisé pendant la pause, avec son motif | méthode renforcée, **bloc D321** ; `AGENTS.md`, point E3 ; cadrage § 2.e et D-8 (question répondue) |
+| **Les 62 entrées** | backlog : **61 cochées** avec renvoi, **1 annotée** (B:650) ; l'entrée `[DOC]` des 62 cochée ; pièce `docs/preuves/D321/entrees/` |
+
+**Les 62 entrées « RÉALISÉ » de D315, re-confrontées au code** — `docs/preuves/D321/entrees/confronter-62.py` : chaque entrée
+retrouvée à `ffd32e9` par son numéro, puis au backlog courant **par son texte** (les numéros dérivent : B:830, 832, 834 sont aux
+lignes 836, 838, 840), et ses **sondes jouées à `b5bd382`** — une route dans la carte relevée des décorateurs (**78 routes, 22
+contrôleurs**, comme D315), ou un motif dans un fichier, **lignes de commentaire exclues**. Calibration **10 bras, 0 manqué**.
+⇒ **61 tiennent, 1 ne tient pas** : **B:650** « Guest count selector (±, min/max) » — le panneau porte un champ numérique libre,
+ni « ± » ni bornes ; D315 l'avait noté (« sans ± ») et pourtant classé RÉALISÉ. Annotée, **laissée ouverte**.
+⚠ **Sept passes**, six défauts de MON instrument réparés et rejoués (D298), sorties versées (`confronter-62-sortie-passe1.txt`
+à `-passe6.txt`, finale `confronter-62-sortie.txt`) : un fichier absent levait une trace ; deux chemins faux ; la sonde de B:344
+posée sur `booking-charge.ts`, qui DÉLÈGUE la résolution par type à `service-pricing.ts` ; ses motifs nus trouvaient l'en-tête
+**commenté** ; puis, en cherchant si ce défaut se répétait, **neuf sondes satisfaites par un commentaire** — d'où l'exclusion des
+commentaires (bras ajoutés) ; la sonde de B:695 ne trouvait plus que le code d'erreur… **en commentaire** : le traitement de
+l'échec est en code (`catch` → message → rechargement), lu à la main l. 83-96 et écrit comme jugement.
+**Coches** : `docs/preuves/D321/entrees/cocher-61.py` — lit la liste dans la sortie versée (jamais recopiée), exige chaque ligne
+OUVERTE et au texte de `ffd32e9`, écrit en CRLF, **relit** : 61 renvois, 1 « NE TIENT PAS », 0 LF nu.
+⚠ **Confronté à `b5bd382`, avant la partie B**, qui retouche le panneau : B:649, B:654, B:657 restent tenues par ses tests (les
+dates prises inactives, le formulaire et ses libellés, l'écran « envoyée »).
+
+### D321 — partie B : la page de réservation, point par point
+
+**Borne de D316, tenue** — vérifiée dans le `git diff` du panneau : la ligne `setChosen({ date: day.date, slotTemplateId:
+slot.slotTemplateId, priceCents: slot.priceCents })` est **inchangée** (seule son indentation bouge, sous le jour regardé) ;
+`previewDeposit`, `lineTotal`, `total`, `deposit`, `submit` et `load` ne sont pas touchés.
+
+**1. Le calendrier** (modes C-a à C-j, point d'entrée). **Rouge lu** avant tout correctif —
+`docs/preuves/D321/rouges/C-j-rouge.txt` : « `AssertionError: expected 182 to be less than or equal to 33` ». **Correctif** :
+`lib/booking-calendar.ts`, **module pur** (D187, D205) — mois de la fenêtre bornés par les jours **rendus** (D49), jour
+choisissable = au moins un créneau `AVAILABLE` (la règle d'avant, inchangée), mois d'ouverture = premier jour libre, arrêt de
+tabulation, déplacement au clavier (flèches **inversées en arabe**, Début/Fin sur la semaine algérienne D56, Page préc./suiv.,
+jours inactifs sautés, jamais hors fenêtre), date longue et numéro du jour **par le même formateur** (WCAG 2.5.3) ;
+`booking-date-picker.tsx`, la vue — une grille `role="grid"` nommée par le mois (`aria-live`), en-têtes longs pour les
+lecteurs d'écran, classes `cal-*` de `packages/ui/styles.css` (propriétés logiques, sept colonnes fixes) ; le panneau montre
+les créneaux **du jour regardé** (`fieldset` nommé « Créneaux du … »), et rappelle le choix fait (« Votre choix : … ») quand on
+regarde ailleurs. **Vert** : module **13/13**, panneau **21/21**.
+**2. Les libellés** (L-a à L-c). **Rouge lu** : `rouges/L-a-rouge.txt` — **8 champs** sans `<label>` visible (invités,
+palier, quantité, prénom, nom, téléphone, e-mail, message ; les cases à cocher en avaient un). **Correctif** : le `Field` du
+client (label visible, astérisque **hors** du label, `required` posé — D32, D143) ; palier et quantité reçoivent un `<label>`
+associé. **Trois clés neuves**, FR et AR (`dayFree`, `dayFull`, `chosen`) — **arabes non relues** (backlog) ; parité **1 098 =
+1 098**. **Vert.**
+**3. L'adresse de connexion** (P-a à P-d). **Rouge lu** : `rouges/P-a-rouge.txt` — **21 adresses** hors constantes (client 12 :
+les neuf liens, les deux vers la connexion du pro, la métadonnée canonique de la page ; pro 9 : huit liens et la route), et la
+constante du pro absente. **Correctif** : `apps/pro/src/routes.ts` (neuf), **21 remplacements** par un script qui compte et
+relit (`docs/preuves/D321/outils/converger-login.py`, versé avec `adapter-tests-panneau.py`, celui des tests du panneau) ; le
+client envoie ses pros vers `${PRO_URL}${LOGIN_PATH}`. **LA garde**,
+`login-path-guard.test.ts` : lit l'**AST** TypeScript des sources des deux applications (chaînes, gabarits, texte JSX, jamais un
+commentaire), rend ce qu'elle a parcouru (D290 : plus de 20 fichiers par application, et **chaque constante vue une fois** —
+bras positif sur l'arbre réel), et compare les deux constantes (P-c). **Calibration à deux bras** (Ko) : un littéral posé
+ailleurs → rouge (bras synthétique + R29-12 sur l'arbre réel, lu) ; l'arbre corrigé → vert. La constante pro est **vérifiée
+contre sa page** (`routes.test.tsx` : à `LOGIN_PATH`, la page de connexion se rend ET l'adresse reste ; bras négatif : une
+adresse sans route est quittée). **Vert** : garde **5/5**, pro **2/2**.
+**Relevé en lecture seule** (consigne de Ko) — `docs/preuves/D321/adresses/` (AST, calibration 5 bras) : client **38**
+occurrences de **13** adresses, pro **40** de **15** (dont chaque constante, et `/auth/me`, une route d'API — faux positif lu au
+contexte). Non corrigées ; reportées.
+**4. Les deux gardes de D317.** (a) **La neutralisation côté client de `r26`** — cibles **R26-3** (le libellé de statut que lit
+le client, dont « Acceptée — acompte à régler », branche 6) et **R26-4** (sa liste), dans `neutralize-r26.py`, permises par la
+décision du relecteur de D318 ; mutations prouvées posées (`verifier-mutations.py r26` : **4 posées, 0 non posée**) ; résultat
+de la campagne : section « campagnes », ci-dessous. (b) **La garde du mode surveillance** —
+`apps/api/src/common/e2e-api-sans-surveillance.spec.ts` : lit `e2e/playwright.config.ts` par l'AST (sans ses commentaires, qui
+citent `--watch`), trouve l'entrée de l'API (**3 serveurs lus**, une API) et **résout** ce que `pnpm` lancera dans
+`apps/api/package.json` — le retour le plus probable, `run dev`, ne contient pas le mot « watch ». Calibrée sur la
+configuration d'avant D317 et trois variantes (rouge), deux formes saines et un commentaire (vert). **Vert 3/3** ; rouge lu par
+R29-15.
+
+### D321 — le harnais du lot
+
+`neutralisation/neutralize-r29.py` : **15 cibles, 15 mordues, toutes LUES** (`AssertionError` en première ligne de bloc, titre
+attendu en « × »), pré-vol vert sur ses cinq mesures, **empreintes des 7 fichiers ciblés identiques au départ et à
+l'arrivée**, code 0, 141 s. Calibration du lecteur **7 bras** (ceux de `r25`, plus un). Pièce :
+`docs/preuves/D321/neutralisation/campagne-r29.log`.
+**Deux défauts de MON harnais, lus au premier lancement, rien mesuré avant leur réparation (D298)** : (a) le bras que j'avais
+ajouté prenait pour titre « t », sous-chaîne de « autre » — défaut de l'**échantillon** : abandon à la calibration ; (b) ma
+vérification d'arbre exigeait « marqueur ×0 », faux pour R29-14 dont le marqueur `<ForgotPage />` **préexiste** dans `App.tsx`
+(D286) — remplacée par « ancre ×1 » et l'**empreinte à l'octet** de chaque fichier ciblé. Les deux journaux d'abandon sont
+versés.
+**Assertions rendues natives avant la campagne** (D316 : un matcher jest-dom ou un `findByRole` échouent en `Error`, pas en
+`AssertionError`) : « une date PRISE… », « C-d », et la vérification de la page pro.
+
+### D321 — les portes, après la dernière modification
+
+**État machine avant les portes** (relevé, `PowerShell`, 18:37) : **secteur**, RAM libre **2 781 Mo** — **sous la barre de
+D273 : non certifiant**, déclaré (ce lot ne certifie rien) ; `PERF` 68 au repos ; 0 `node`. Chaque extrait porte son code et sa
+durée, et l'empreinte du journal complet (`docs/preuves/D321/portes/`, extracteur de D317 copié à l'octet ; le journal e2e brut
+porte 88 cookies et 39 jetons, l'extrait **0**). ⚠ `typecheck` a d'abord rendu **2** (faute n° 5) ; corrigé, puis les fichiers
+neufs normalisés en CRLF — `typecheck` et `lint` **rejoués après**, les autres portes lancées ensuite.
+
+| porte | code | chiffres | durée |
+|---|---|---|---|
+| `pnpm typecheck` | 0 | 8 « Done » (e2e compris), **0** `error TS` | 15 s |
+| `pnpm lint` | 0 | 8 « Done » | 13 s |
+| `pnpm test` | 0 | API **667/59** · api-client **39/4** · client **333/24** · pro **349/29** — +3/+1, 0, +25/+2, +2/+1 : les tests du lot | 75 s |
+| `pnpm build` | 0 | 4 « Done » | 43 s |
+| `pnpm test:int` | 0 | **444/444, 36 fichiers** — inchangé | 316 s |
+| `pnpm test:e2e` | 0 | **43 réussis, 1 ignoré** (A5, inchangé) ; `r25` et `r26` passent par le calendrier ; **0** « File change detected », 1 démarrage Nest | 166 s |
+
+### D321 — les campagnes que le lot touche (D308 : relevé à la main)
+
+`lancer-campagnes.py --liste` : **2 campagnes concernées sur 31** — `r25` (le panneau, `routes.ts`) et `r29` (le lot). **Relevé
+à la main** : `r26` aussi — sa spec et son harnais changent, mais le tri ne voit pas ses chemins (la spec est écrite relative à
+`e2e/`). `b7` (CSS client) : non touché — ni CSS ni jeton dans ce lot ; **non rejoué**, motif écrit.
+
+| campagne | joué | résultat | durée | pièces |
+|---|---|---|---|---|
+| `neutralize-r29.py` | unitaire (5 mesures) | **15 mordues sur 15, toutes LUES** ; empreintes des 7 fichiers ciblés identiques départ / arrivée ; code 0 | 141 s | `neutralisation/campagne-r29.log`, `neutralisation/r29/` (20 journaux, copiés à l'octet, empreintes comparées) |
+| `neutralize-r26.py --e2e` | e2e | **4 mordues sur 4, toutes LUES** — R26-1 et R26-2 (pro) inchangées ; **R26-3** (client, branche 6 : mesure) rougit sur « le client ne voit pas l'acceptation » / « … le refus » ; **R26-4** sur la ligne en attente ; arbre vérifié ; code 0 | 459 s | `neutralisation/campagne-r26.txt`, `neutralisation/r26/` (extraits) |
+| `neutralize-r25.py --e2e` | unitaire + e2e | **10 mordues sur 10 jouées, toutes LUES** — R25-E1 rougit désormais dans la fixture du calendrier (« le calendrier du panneau ne propose aucun jour libre ») ; R25-8 **non mesurée** (`--int` : le contrôleur qu'elle mute n'est pas touché ; précédent de D317) ; code 3, attendu | 501 s | `neutralisation/campagne-r25.txt`, `neutralisation/r25/` (extraits ; `R25-8` retiré : journal d'une passe antérieure, 03:06) |
+
+⚠ Les journaux par cible s'écrivent **au même chemin à chaque passe** (report `[TEST]` de D317) : ceux de `r26` et `r25` ont
+été **copiés avant** toute autre passe (`.neutralisation-journaux/d321/r26-copie/`, `r25-copie/`), puis extraits.
+
+### D321 — les captures de la fiche salle (D315), FR et AR
+
+`docs/preuves/D321/captures/` — script et configuration (patron de D316 : même semis, mêmes appels), `releve.txt`, **8
+images** (04, 16, 26 sous le numéro de D315 ; 04m et 16m à **360 px** ; le panneau seul, FR, AR et connecté), code 0, 61 s. La
+sortie console (jetons du serveur de développement) **n'est pas versée**.
+
+| mesure (M5, M6) | avant (D316, `releve.txt`) | après (D321) |
+|---|---|---|
+| hauteur de la fiche, FR, 1280 px (04) | **14 487 px** | **4 950 px** |
+| hauteur, FR connecté (26) | **14 798 px** | **5 721 px** — un jour ET un créneau choisis, formulaire ouvert |
+| boutons du panneau, anonyme | 182 (D317) | **33** = 31 jours d'octobre + 2 flèches ; **35** une fois un jour choisi (son créneau, l'envoi) |
+| débordement à 360 px, AR | — | **non** (360 px) |
+| débordement à 360 px, FR | — | **4 px** (364 px) — **HORS du panneau** |
+
+⚠ **Le débordement FR, nommé avant de conclure** — sonde versée (`debordement.spec.ts`, `debordement.txt`) : les éléments qui
+sortent sont l'en-tête du site — `.header-auth` (« العربية · Connexion · Inscription », 20 → 364 px) et les rubriques
+« Bientôt » de la navigation, dans leur bandeau ; **dans le panneau : 0 élément, FR comme AR** (C-g tenu). Ce lot n'a changé
+dans l'en-tête que l'**attribut `href`** du lien de connexion (aucune mise en page) ; que le débordement **préexiste** est une
+**inférence**, non mesurée sur l'arbre d'avant. Rapporté au backlog.
+⚠ **L'orientation des flèches en arabe, MESURÉE et non lue sur l'image** : « الشهر السابق » (précédent) à droite (x = 294),
+« الشهر التالي » (suivant) à gauche (x = 20), les deux chevrons miroités (`matrix(-1, 0, 0, 1, 0, 0)`) — ma première lecture de
+la capture réduite les disait à l'envers ; la mesure l'a démentie.
+Ce que les images montrent, relu : la grille commence **dimanche**, à gauche en français, **à droite en arabe** ; vendredi et
+samedi mis en avant ; les jours passés et le jour même **inactifs** ; le jour choisi encadré, son créneau, « Votre choix : samedi
+3 octobre 2026 · Soirée », et **un libellé visible au-dessus de chaque champ**, astérisque sur les quatre obligatoires.
+
+### D321 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D321/passe-d277/balayage.py`, **copie à l'octet** de celui de D306 à D320 (`24802faf…`) ;
+motifs lus dans `motifs.txt` (23 + 2 témoins ; « calendrier », « connexion », « admin », « label » seuls **écartés avant la
+première passe** : ils comptent tout). **Première passe** après les écritures de la partie A et le gros de la partie B :
+`balayage-1.txt`, tri **à la main** ; **seconde** après les annotations : `balayage-2.txt`.
+**Sens 1 — ce que D321 invalide** : « RANG 29 : EN ATTENTE » (ordre des rangs : **barrée** ; point d'entrée du rang 28 :
+**barrée et annotée**) ; « sous réserve de D-11 » (ordre des rangs, point d'entrée du rang 28, cadrage § 4, deux annotations de
+D320 dans le bloc du rang 23 et la section D319, `AGENTS.md` : **annotés**, D-11 = k1) ; « D-1 à D-10 dues à Ko » (bloc de
+l'ordre des rangs : **barré et annoté**) ; « question au relecteur » (cadrage § 2.e, D-8 ; `AGENTS.md` point E3 : **annotés**,
+répondue) ; les liens littéraux, les 182 boutons, l'absence de garde du mode surveillance, l'absence de neutralisation côté
+client, le panneau à 1 `<label>` : **les entrées ouvertes du backlog cochées avec leur renvoi** (cinq), la décision du relecteur
+de D317 (« le correctif est à ordonner par moi ») **annotée** dans la méthode renforcée et `AGENTS.md` ; « 62 réalisées et
+ouvertes à tort » (ligne D315 de l'ordre, point d'entrée du rang 24 : **annotés** ; l'entrée `[DOC]` du backlog : cochée) ;
+D23 « refuse explicitement » (cadrage § 1.2 : **annoté** — vrai du code, change par ADM-2).
+**Sens 2 — ce que D321 rend permis, ou dont la condition change** : le compteur passe à **UN** — écrit à la clôture (ordre des
+rangs, point d'entrée, `AGENTS.md`, règle de D270) avec ce qu'il permet : **un** lot de code de plus avant une certification,
+**ADM-1 par D-10, s'il est arbitré** ; « à ordonner par Ko, non faite » (neutralisation côté client, `AGENTS.md`) : **annoté**,
+faite ; `LOGIN_PATH` : la règle écrite dans `AGENTS.md` (routes de l'app Pro) **après** que sa garde a mordu (faute n° 2).
+⚠ **Ce que D321 ne rend PAS permis** : aucun lot de l'administration sans rang ; aucun des points du chemin de l'argent.
+**Les occurrences laissées telles quelles** sont dans des sections **datées** (D315 à D320, registre) : elles disent ce qui
+était vrai à leur date, et ne se réécrivent pas.
+**Après écriture** : `balayage-apres-ecriture.txt`, prise après la dernière écriture de texte ; `balayage-controle.txt`,
+rejouée sur l'état qui part, doit rendre les mêmes comptes.
+
+### D321 — audit de secrets avant commit
+
+⚠ **Ce lot a OUVERT des journaux à valeurs réelles** (hors dépôt) : le journal e2e de la porte (88 cookies, 39 jetons), ceux des
+campagnes `r26` (5) et `r25` (3 journaux e2e), la sortie console des captures et de la sonde du débordement. **Rien de brut ne
+part** : les portes et les campagnes sont versées en **extraits** (lignes `[WebServer]` retirées, 0 valeur sensible vérifiée à
+chaque extraction), les captures par ce que le script écrit lui-même.
+- Le contrôle **cookie** (outil de D315) et **« 0 valeur réelle »** (outil de D299, ce qui fait foi) joués avec les journaux qui
+  portent des valeurs, contre tout ce qui part (`docs/preuves/D321/`, les trois `.md` d'autorité et les fichiers de code du lot).
+- **Audit scellé** (`neutralisation/audit-secrets.py --sortie`) : `audit-secrets-d321.txt` ; tri différentiel contre la dernière
+  sortie scellée (`D320/audit-secrets-final.txt`) par l'outil de D299, **sortie du tri versée** ; alertes neuves lues au contexte.
+- **Second audit en dernière écriture** : `audit-secrets-final.txt`, et son tri versé après lui.
+**Chiffres** : dans les sorties versées (`docs/preuves/D321/controles/`) et au rapport de fin de lot — cette section est écrite
+**avant** l'audit, qui doit rester la dernière écriture.
+
+### ⛔ D321 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⚠ **La sortie de la passe 3 de ma lecture adverse est perdue** : rejouée sous le même nom — **la faute même que je relevais
+   chez D320** (n° 4), reproduite le jour même sur mon outil. Elle ne différait de la finale que par deux libellés.
+2. ⛔ **J'ai écrit dans `AGENTS.md` une phrase AU PRÉSENT sur une garde qui n'existait pas encore** (« une garde rougit si… »,
+   écrite en partie A, la garde est de la partie B) — retirée aussitôt, réécrite après la campagne. Un invariant écrit au
+   présent alors qu'il n'est pas tenu (`AGENTS.md`, idempotence) : si le lot s'était arrêté après la partie A, il partait ainsi.
+3. ⚠ **J'ai écrit au backlog « vu sur les captures AR » avant de les prendre** — et elles ne pouvaient pas le montrer
+   (anonymes, aucun créneau ouvert). Corrigé avant tout commit en « relevé dans le code ». **C'est D291** : une affirmation au
+   statut d'observation sans la pièce qui la porte.
+4. ⚠ **Deux scripts de rapiéçage passés par une couche qui interprète** : un `\\n` écrit dans un heredoc est arrivé comme un vrai
+   saut de ligne. Les deux se sont **arrêtés avant d'écrire** (ancre comptée) — la garde a tenu ; la règle de D289 (le texte dans
+   un FICHIER) aurait évité le détour, et je l'ai appliquée ensuite.
+5. ⚠ **Vitest transpile sans typer** : ma fixture de palier omettait `isActive`, verte sous Vitest, rouge sous `tsc` — vue par la
+   porte, corrigée, portes rejouées.
+6. ⛔ **Un chiffre écrit DE TÊTE dans un script de mesure** : mon script de captures finissait par « FIN · 9 capture(s)
+   tentée(s) » pour **8** appels. Vu en relisant le relevé contre la section ; le script compte désormais, les captures ont été
+   **rejouées** (mêmes mesures, « FIN · 8 ») pour que la pièce et son script concordent (D295) ; le relevé de la première passe
+   est gardé hors dépôt (`.neutralisation-journaux/d321/releve-captures-passe1.txt`). C'est l'écart 9 de D320 et la faute 5 de
+   D320, une troisième fois en deux jours.
+7. ⚠ **J'ai d'abord lu à l'envers les flèches du calendrier arabe sur une capture réduite** : la mesure (transformation
+   calculée, position) les a dites justes. Rien n'en est parti dans un fichier ; c'est la raison pour laquelle la section des
+   captures cite la mesure, pas l'image.
+
+### ⛔ D321 — CE QUE CE LOT NE FAIT PAS, ET SES LIMITES
+
+- **Aucune certification** : le compteur passe à **UN**. Par D-10 (s1), le lot de code suivant de l'administration est ADM-1,
+  puis une certification — **chacun attend son rang** ; « RANG 30 : EN ATTENTE D'ARBITRAGE DE KO ».
+- **Aucun code de l'administration** : les arbitrages D-1 à D-11 sont écrits, rien n'est codé (ni migration, ni route, ni
+  script de promotion).
+- **Le chemin de l'argent n'est pas changé** : borne de D316 tenue (vérifiée au diff) ; les seules mutations de ce chemin sont
+  les **neutralisations** R26-3 (et R26-4, voisine), permises par D318, restaurées et vérifiées.
+- **Mobile** : aucune mesure unitaire de la largeur ; la seule pièce est la capture à 360 px et sa mesure de débordement
+  (section « captures »). **Lecteur d'écran** : prouvé par les noms et rôles du DOM (jsdom, Playwright), **pas** par un
+  lecteur d'écran réel.
+- **En arabe, les noms de créneaux, de prestations et de paliers restent en FRANÇAIS** dans le panneau — relevé, non corrigé
+  (hors de la demande ; reports de D321). Les trois clés arabes neuves sont **non relues**.
+- **LA garde de l'adresse de connexion ne lit pas les tests** (portée écrite) ; des tests et une spec e2e écrivent encore
+  l'adresse (reports). Les **autres** adresses de pages restent en dur (relevé versé, non corrigé — consigne).
+- **Le comportement « `REQUESTED` non choisissable »** est celui d'avant, conservé par la borne ; s'il contredit la décision
+  produit sur les chevauchements en attente est une question reportée, pas tranchée.
+- **Deux calendriers** sur la fiche (B5 et celui du panneau) : reporté à Ko.
+- Les 62 entrées sont confrontées à `b5bd382`, **avant** la partie B (qui retouche le panneau) ; B:650 reste ouverte.
+- `--tout` non joué : lot non certifié (précédent de D308, D317).
+
 ## ~~PROCHAIN LOT~~ — rang 28 · `[DOC]` **le cadrage de la page d'administration** ⛔ ~~**OUVERT LE 01/10/2026 : D320**~~ ⛔ **CLOS LE 01/10/2026 : D320**
 
 ### ⛔ CLÔTURE DU 01/10/2026 (D320) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -1508,8 +1902,10 @@ pause, et `AGENTS.md`, point E3) — ⚠ « expiration des demandes » n'est **p
 contrôles, 9 écarts, 7 constats** ; aucun ne touche le code ni les mesures des portes. Deux portent sur la **forme** que Ko
 avait écrite pour la certification de D319 (lecture adverse omise ; planchers réutilisés au lieu d'être mesurés, sans que
 l'écart soit nommé) : **décision due à Ko (D-11)**. Détail : section D320.
-⇒ **LOT DOCUMENTAIRE : compteur ZÉRO, inchangé** — sous réserve de D-11. ⇒ **RANG 29 : EN ATTENTE D'ARBITRAGE DE KO** (D284)
-— dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**. ⚠ **Une permission n'est pas un arbitrage.**
+⇒ **LOT DOCUMENTAIRE : compteur ZÉRO, inchangé** — sous réserve de D-11. ⇒ ~~**RANG 29 : EN ATTENTE D'ARBITRAGE DE KO** (D284)
+— dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**.~~ ⚠ **Une permission n'est pas un arbitrage.**
+⛔ *(D321, 01/10/2026 : **D-11 arbitrée — k1** (ZÉRO était juste) ; **rang 29 arbitré par Ko** — lot de CODE, la page de
+réservation du client ; point d'entrée « PROCHAIN LOT — rang 29 », au-dessus.)*
 
 ### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D320), AVANT toute écriture du cadrage
 
@@ -1595,6 +1991,8 @@ qu'asserte `rbac-all-routes.int-spec.ts` (≥ 5).
 - ⇒ **Une seule session par navigateur, pour toutes les applications** : se connecter en ADMIN là où l'on est connecté en
   PRO remplace la session PRO. **Vrai quel que soit l'emplacement de la page.**
 - L'app Pro **refuse explicitement** tout rôle ≠ PRO (`require-pro.tsx:31`, D23). L'app client n'a **aucune** garde de rôle.
+  ⛔ *(D321 : vrai du code aujourd'hui ; **D23 change** par l'arbitrage D-1 — « un ADMIN sous `/admin` seulement » —, à
+  réaliser par ADM-2 ; § 6.)*
 
 **1.4 Ce qui manque à une page utile.**
 
@@ -1603,7 +2001,7 @@ qu'asserte `rbac-all-routes.int-spec.ts` (≥ 5).
 | lister les salles **en attente de publication** | **absent** : aucune route ADMIN de lecture des salles ; **0** méthode `/admin` dans `@zwadj/api-client` (9 fichiers) | une route de liste — **contrat neuf** |
 | **voir** une salle avant de la publier | **absent** : le détail public ne sert que les salles publiées (`PUBLIC_BASE_WHERE`) ; le détail pro, que leur propriétaire (D149) | une route de détail ADMIN — **contrat neuf** ; le DTO existe (`VenueAdminDTO`) |
 | **rejeter** une salle | **absent** : 0 « reject » dans le contrôleur et le service ADMIN des salles ; `VenuePublicationStatus` = `DRAFT`, `PENDING` (« inutilisé au MVP, verrouillé », `venues-admin.service.ts:45`), `PUBLISHED` | route, motif, information du pro — § 2.d |
-| créer le **premier compte admin** | **absent du produit** : l'inscription ne crée que CLIENT ou PRO (`auth.ts:161-163`) ; 0 seed ; les tests font `UPDATE users SET role = 'ADMIN'` (`harness.ts:330` et 16 autres) | § 2.c |
+| créer le **premier compte admin** | **absent du produit** : l'inscription ne crée que CLIENT ou PRO (`auth.ts:161-163`) ; 0 seed ; les tests font `UPDATE users SET role = 'ADMIN'` (`harness.ts:330` et 16 autres) ⛔ *(D321 : **16 fabrications, pas 17** — le relevé compte aussi `register.int-spec.ts:143`, le test qui prouve que l'inscription REFUSE le rôle ADMIN ; et 15 des 16 passent par `prisma.user.update`, pas par du SQL. Écart de la lecture adverse de D321.)* | § 2.c |
 | garder **trace de qui a fait quoi** | **partiel** : le modèle `AuditLog` (acteur, rôle, action, entité, avant, après) existe depuis la migration initiale, **0 écrivain** dans `apps/api/src` (111 fichiers) ; seules les suppressions gardent `decided_by_id` | § 2.e |
 | second facteur | **absent** (backlog `MFA/2FA for admin & super-admin accounts` ; audit sécu 09/09, contrôle 12) | § 2.e |
 | ce que lit le **pro** | l'étape « Publication » annonce « En attente de publication par Zwadj » (D315) ; **aucune soumission** : tout brouillon vivant est « en attente » | décision D-6 |
@@ -1686,7 +2084,8 @@ est celui que la personne a choisi en s'inscrivant ; **aucun outil n'en pose un*
   ⛔ **Point qui touche la pause** : journaliser `PATCH …/commission-rate` **modifie `setRates`** (`venues-admin.service.ts`,
   branche 1) — une écriture de plus dans la fonction qui valide un taux, dont l'échec ferait échouer le réglage. ⇒
   **Question au relecteur avant tout code** : ce journal est-il un changement du chemin de l'argent, donc en pause ? Tant
-  qu'elle est sans réponse, le journal de la v1 ne couvre **pas** les taux.
+  qu'elle est sans réponse, le journal de la v1 ne couvre **pas** les taux. ⛔ *(D321 : **répondue** — le réglage des taux
+  **n'est pas journalisé pendant la pause** ; méthode renforcée, bloc D321 ; § 6.)*
 - **Effet de D4 sur une rétrogradation** : un ADMIN rétrogradé ou suspendu **garde ses droits jusqu'à l'expiration de son
   jeton d'accès** (≤ `JWT_ACCESS_TTL`, `15m` par défaut) ; le rafraîchissement suivant échoue (suspension) ou rend le nouveau
   rôle (rétrogradation). Révoquer ses jetons de rafraîchissement **n'écourte pas** un jeton d'accès déjà émis. Options :
@@ -1730,7 +2129,9 @@ est celui que la personne a choisi en s'inscrivant ; **aucun outil n'en pose un*
 ### 4. Découpage en lots de code, et ce qu'il fait aux certifications
 
 **Contrainte** (Ko, D270) : deux lots de code non certifiés au plus ; un troisième exige une certification avant lui.
-**Compteur aujourd'hui : ZÉRO** (D319 — sous réserve de D-11). **Ko a prévu la page de réservation du client entre ce
+**Compteur aujourd'hui : ZÉRO** (D319 — sous réserve de D-11) ⛔ *(D321 : D-11 arbitrée **k1** — ZÉRO était juste ; le rang 29,
+la page de réservation, est le lot de code qui le porte à **UN** ; D-10 arbitrée **s1** : ADM-1 ensuite, puis une
+certification)*. **Ko a prévu la page de réservation du client entre ce
 cadrage et l'administration** : c'est un lot de code ⇒ compteur **UN** avant le premier lot de l'admin.
 **Deux lots de l'admin**, chacun ouvert par ses fichiers attendus et son harnais :
 - **ADM-1 · API** — routes de lecture (liste, détail) et de rejet ; journal choisi ; outil du premier admin (c1 ou c2) ;
@@ -1780,7 +2181,8 @@ cadrage et l'administration** : c'est un lot de code ⇒ compteur **UN** avant l
   d'une suppression, irréversible, est déjà atteignable par l'API.
 - **D-8 · Journal des actions admin.** (e2-a) `audit_logs` existante, écrite dans la transaction de l'action — aucune
   migration. (e2-b) colonnes par entité — migration. (e2-c) aucun journal en v1. Écran du journal : en v1 ou plus tard. ⚠
-  Journaliser le réglage des taux touche `setRates` (branche 1) : question au relecteur, la pause tient.
+  Journaliser le réglage des taux touche `setRates` (branche 1) : question au relecteur, la pause tient. ⛔ *(D321 :
+  répondue — non journalisé pendant la pause ; § 6.)*
 - **D-9 · Effet de D4 sur une rétrogradation.** (e3-a) l'accepter, borné par `JWT_ACCESS_TTL` (`15m` par défaut), et
   l'écrire. (e3-b) un TTL plus court pour les ADMIN — code d'auth. (e3-c) relire rôle et statut en base sur les routes
   ADMIN — une requête par appel, s'écarte de D4 pour ces routes.
@@ -1793,6 +2195,44 @@ cadrage et l'administration** : c'est un lot de code ⇒ compteur **UN** avant l
   forme n'est pas nommé ; les mesures concordent avec leurs pièces. (k1) la marque tient, les écarts restent annotés. (k2) la
   marque tient sous condition d'une mesure complémentaire (planchers re-mesurés) avant le prochain lot de code. (k3) la marque
   tombe : compteur DEUX, une certification avant tout lot de code.
+
+### 6. ⛔ ARBITRÉ PAR KO LE 01/10/2026 (D321) — MOT POUR MOT, À SA PLACE
+
+Transmis en ouverture du rang 29 (partie A, point 1). **Aucune décision ci-dessus n'est réécrite** : chacune garde ses
+options ; voici le choix de Ko. ⛔ **Rien n'est codé par ces arbitrages** : ADM-1 et ADM-2 attendent chacun un rang arbitré.
+- **D-11** : « k1. La marque de D319 tient ; les écarts restent annotés. Règle pour la suite : une certification qui
+  s'écarte de la forme que j'ai écrite nomme cet écart dans son protocole, avant la mesure. » ⇒ **compteur : ZÉRO était
+  juste** (avant le rang 29). Règle écrite dans `AGENTS.md` (règle de D270).
+- **D-1** : « a2. Une section `/admin` dans l'app Pro. D23 devient : l'app Pro accepte un PRO hors de `/admin`, et un ADMIN
+  sous `/admin` seulement. Annote « pas d'app admin » et la décision « une 4ᵉ application n'est pas justifiée » : elles
+  tiennent. »
+- **D-2** : « b3. Les textes de l'admin vivent hors de `packages/i18n`, en français seul. Exemption écrite de l'invariant
+  bilingue, bornée aux écrans `/admin`. »
+- **D-3** : « c1. Un script versionné qui promeut un compte existant, vérifié et actif, et refuse sinon. Aucun mot de passe
+  manipulé. »
+- **D-4** : « d-i. La salle rejetée reste en brouillon. Motif obligatoire, stocké sur la salle (migration) pour que le pro
+  le lise. Le rejet est aussi journalisé (D-8). »
+- **D-5** : « p2 maintenant : le pro lit le refus et son motif à l'étape « Publication ». L'e-mail (p1) est REPOUSSÉ au lot
+  de l'e-mail réel. »
+- **D-6** : « l2. La liste « en attente » = les brouillons vivants qui ont au moins un créneau actif. »
+- **D-7** : « e1-b. La MFA est REPOUSSÉE, PAS ANNULÉE : avant le lancement, hors v1. Elle BLOQUE tout déploiement. »
+- **D-8** : « e2-a. `audit_logs`, écrit dans la transaction de l'action : publier, rejeter, approuver ou rejeter une
+  suppression. L'écran du journal est REPOUSSÉ. »
+- **D-9** : « e3-a pour la v1, borné par `JWT_ACCESS_TTL`, et écrit. e3-c (relire rôle et statut en base sur les routes
+  ADMIN) est REPOUSSÉ, PAS ANNULÉ : avant le lancement, avec la MFA. Il BLOQUE tout déploiement. »
+- **D-10** : « s1. Réservation (ce rang) → ADM-1 → certification → ADM-2. »
+**Ce que ces arbitrages REPOUSSENT devient une entrée OUVERTE du backlog** (Ko), avec ce qu'elle bloque — `ZWADJ_BACKLOG.md`,
+« Reports de D321 » : la MFA (D-7) et e3-c (D-9) **bloquent tout déploiement** ; l'e-mail du rejet (D-5, p1) se fait **avec
+le lot de l'e-mail réel** ; l'écran du journal (D-8) est **à ordonner par Ko**.
+**La question au relecteur du § 2.e est RÉPONDUE** : le réglage des taux **n'est pas journalisé pendant la pause** (méthode
+renforcée, bloc D321) — MD-ADM-17 est donc tenu par **l'absence** de journal des taux, pas par un journal.
+⇒ *Dérivé par la session, pas une parole de Ko* — **ce que D-1 à D-10 fixent pour ADM-1** : routes ADMIN de liste (D-6 :
+brouillons vivants avec au moins un créneau actif), de détail et de **rejet** (D-4 : reste `DRAFT`, motif **obligatoire**
+stocké sur `venues` — **migration**), écriture d'`audit_logs` **dans la transaction** de publier, rejeter, approuver ou
+rejeter une suppression (D-8), le script de promotion (D-3), une route pro de lecture du refus et de son motif (D-5 :
+**contrat neuf**) ; **pour ADM-2** : une section `/admin` dans `apps/pro` derrière une garde ADMIN (D-1), textes français
+hors `packages/i18n` (D-2), taux en lecture seule (relecteur, D320), l'étape « Publication » du pro qui affiche le refus
+(D-5). ⚠ Le compteur de D270 le veut : après ce rang (UN), ADM-1 fait **DEUX**, puis une certification (D-10).
 
 ## Session du 01/10/2026 — D320 · rang 28 CLOS, lot DOCUMENTAIRE : le cadrage de la page d'administration ; et la lecture adverse de D317, D318 et D319, que personne n'avait faite
 
@@ -2314,7 +2754,8 @@ rang 28 — **hors du chemin de l'argent**, qui reste en pause (D307 ; aucune d�
 l'arbitrage de Ko sur l'ordre de reprise, D318, confirme qu'elle reste le DERNIER rang de l'ordre, pas le prochain).
 ⛔ *(D320 — passe D277, sens 2 : le rang 28 a été arbitré **documentaire** ; la permission passe au **rang 29**, et elle est
 **sous réserve de D-11** — la lecture adverse de D320 a trouvé que cette certification s'est écartée de la forme que Ko
-avait écrite, sans le dire.)*
+avait écrite, sans le dire.)* ⛔ *(D321 : D-11 arbitrée **k1**, la marque tient ; la permission a servi au **rang 29** (lot de
+code) — compteur **UN** à sa clôture.)*
 
 ### D319 — audit de secrets avant commit — écrit APRÈS l'audit
 
@@ -2603,7 +3044,8 @@ D302) ; ce bloc est son rafraîchissement de clôture (règle de D294).
   Dockerfile ni CI, en-têtes de sécurité absents, Swagger monté sans condition, ni robots ni sitemap ni hreflang, CGU et
   confidentialité vides, **aucune relecture humaine de l'arabe tracée**.
 - **Backlog** : 146 entrées ouvertes des phases de parcours confrontées au code (`ENTREES-CONFRONTEES.md`) — **62 réalisées
-  et ouvertes à tort** ; leur sort, et l'ordre des défauts neufs, sont à Ko (reports de D315).
+  et ouvertes à tort** ; leur sort, et l'ordre des défauts neufs, sont à Ko (reports de D315). ⛔ *(D321 : leur sort ordonné
+  par Ko — re-confrontées à `b5bd382`, **61 cochées**, B:650 ouverte ; section D321.)*
 ⇒ **Chemin de l'argent** : chaque étape porte sa classe (branches 1 à 6) ; les défauts du panneau de demande touchent un
 **fichier sur la carte** (`booking-request-panel.tsx`, branche 1) — la ligne fautive ne calcule aucun montant : **à trancher
 par le relecteur**, et **pendant la pause, ne s'ouvre pas sans Ko**.
@@ -2655,7 +3097,8 @@ code **PEUT** s'ouvrir — dès que Ko arbitre le rang 28, et **hors du chemin d
 décision n'a levé la pause). ~~**RANG 28 : EN ATTENTE D'ARBITRAGE DE KO.**~~)* ⛔ *(D320, 01/10/2026 — passe D277 : le rang
 28 a été **arbitré documentaire** (cadrage de la page d'administration) et clos ; la permission « un lot de code peut
 s'ouvrir » passe au **rang 29**, en attente d'arbitrage de Ko, et elle est **sous réserve de D-11** — la conformité de cette
-certification à la forme que Ko avait écrite.)*
+certification à la forme que Ko avait écrite.)* ⛔ *(D321, 01/10/2026 : D-11 arbitrée **k1** ; le rang 29, lot de code, a pris
+la permission — compteur **UN** à sa clôture.)*
 ⇒ **La passe `r23d-20260926-1434`** (sur `0057748`) : porte dure verte ; six portes à 0 (**1 334 / 109**, **443 / 36**, e2e
 **34 · 1**) ; `--tout` **28 · 198 · 0 · 13** ; `--int` **40** ; **certifiant 211 · 0 · 0, 28 campagnes sur 28 qui comptent,
 point 12 tenu partout** ; étiquettes **12 · 13 · 81 · 105** ; contre-épreuve **5 sur 5** ; arbre immobile aux cinq contrôles ;
@@ -16603,6 +17046,7 @@ rang. La session ne les a pas prises ; ce qu'elle en dérive est écrit à part,
 1. ⛔ **LES 182 BOUTONS DE DATE NE SONT PAS DU CHEMIN DE L'ARGENT** : « Les 182 boutons de date (fiche d'environ 14 500 px,
    report de D316) ne sont PAS du chemin de l'argent : c'est la présentation des choix. La date choisie et son transport vers
    le calcul du prix ne changent pas. Même borne que D316. Le correctif (un calendrier) est à ordonner par moi. »
+   ⛔ *(D321 : **ordonné par Ko (rang 29) et fait** — borne tenue, la ligne `setChosen` inchangée ; section D321.)*
    *Motif* : « c'est la présentation des choix. La date choisie et son transport vers le calcul du prix ne changent pas. »
    ⇒ La borne est celle du bloc D316 : ni l'aperçu d'acompte, ni le transport de la date choisie vers le calcul du prix.
 2. ⛔ **PENDANT LA PAUSE, UN TEST QUI EXERCE UN COMPORTEMENT DU CHEMIN DE L'ARGENT SANS LE MODIFIER EST PERMIS** : « Pendant
@@ -16636,6 +17080,18 @@ session ne l'a pas prise ; ce qu'elle en dérive est écrit à part.
    ⚠ **Question ouverte, écrite pour le relecteur** (cadrage du rang 28, § 2.e) : journaliser le réglage des taux
    modifierait `setRates` — une écriture de plus dans la fonction qui valide un taux. Est-ce un changement du chemin de
    l'argent, donc en pause ? Sans réponse, le journal de la v1 ne couvre pas les taux.
+   ⛔ *(D321, 01/10/2026 : **question RÉPONDUE par le relecteur** — bloc D321, juste en dessous : **non journalisé pendant
+   la pause**.)*
+
+#### ⛔ DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D321) — À LIRE AVEC LES BLOCS CI-DESSUS
+
+Transmise par Ko en ouverture du rang 29 (partie A, point 2), écrite telle quelle ; la session ne l'a pas prise.
+1. ⛔ **LE RÉGLAGE DES TAUX N'EST PAS JOURNALISÉ PENDANT LA PAUSE.**
+   *Motif* : « écrire le journal dans `setRates` change la transaction d'une écriture d'argent (branche 1) : un journal en
+   échec annulerait le taux. De plus, la v1 n'appelle pas cette route, puisque le taux y est en lecture seule. »
+   ⇒ *Dérivé par la session, pas une parole du relecteur* : le journal arbitré par Ko (D-8, `audit_logs` dans la transaction
+   de l'action) couvre **publier, rejeter, approuver ou rejeter une suppression** — la liste de Ko ne nomme pas les taux, et
+   cette décision les en tient dehors tant que la pause dure. `setRates` reste **inchangé** ; ADM-1 ne le touche pas.
 
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
@@ -17279,3 +17735,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D318 | A | D318 — rang 27 ARBITRÉ PAR KO (première écriture : « la certification qui couvre D316 et D317 »), partie A, lot DOCUMENTAIRE (forme allégée) : arbitrage de Ko sur une page d'administration (révise la décision produit n°4, annotée et non réécrite ; périmètre, emplacement et premier compte admin dus à un lot de cadrage futur) ; arbitrage de Ko sur l'ordre de reprise du chemin de l'argent (R1→23b→23c→E3 devient le DERNIER rang de l'ordre ; F7, gestion des devis, expiration des demandes, B:728 ouverts un par un sous arbitrage de Ko) ; décision du relecteur (chat), déléguée par Ko : pendant la pause, une neutralisation de mesure du chemin de l'argent qui se restaure (restauration prouvée) est permise, non un changement — conséquence : la neutralisation côté client des assertions de r26 (dont la branche 6) est permise, à ordonner par Ko ; aucune cross-référence ferme écrite entre les quatre points nommés et le backlog (candidats repérés, non affirmés) ; compteur DEUX inchangé ; suite : la certification (partie B), qui clôt le rang 27 si elle passe |
 | D319 | A | D319 — rang 27 CLOS, CERTIFICATION PASSÉE, MARQUE POSÉE : étape 0 commitée avant le relevé (`91e0922`) — réutilise le plancher de D314 pour 26 harnais inchangés (vérifié par git diff depuis `0057748`), preuve LUE directe neuve pour `r25`/`r26` (calibration embarquée + collecte par cible, deux bras de calibration ajoutés, 7 sur 7) ; passe `r27a-20261001-0155` : six portes à 0 (1 334/109, 444/36, e2e 43 · 1), `--tout` 30 · 205 · 0 · 19, `--int` ×7 = 51 (`r25` par les deux drapeaux combinés), `--e2e` ×1 (`r26`) = 2 ⇒ 224 mordues · 0 muette · 0 non mesurée, 30 campagnes sur 30, point 12 tenu partout, étiquettes 12 · 26 · 81 · 105, contre-épreuve 5/5, arbre immobile aux six contrôles — exactement la prédiction ; deux défauts d'instrument trouvés et corrigés EN LISANT (D298) : `crochets()` de `lire-campagnes.py` excluait `r25` à tort (son détail par cible n'est jamais en crochets), `verser.py` aurait refusé le digest propre `e2e-r26.log` avec le journal brut par un filtre en sous-chaîne — les deux recalibrés et rejoués intégralement, aucun comportement mesuré n'a changé ; marque « Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie » ; compteur DEUX → ZÉRO ; audit de secrets 150 contextes aux deux passes scellées, 2 alertes nouvelles triées au contexte (bénignes : un motif de recherche cité dans un docstring, une valeur déjà vue 106 fois ailleurs) ; suite : RANG 28, EN ATTENTE D'ARBITRAGE DE KO |
 | D320 | A | D320 — rang 28 ARBITRÉ PAR KO (première écriture : « le cadrage de la page d'administration. Lot documentaire : les options et leur coût ; je tranche ») et CLOS, lot DOCUMENTAIRE ; lecture adverse depuis la clôture de D317, exigée par la forme de Ko au rang 27 et faite par personne : instrument versé (objets git à SHA fixés, 16 journaux bruts confrontés à leur empreinte, deux re-mesures sans écriture, tris d'audit rejoués), 104 contrôles, 9 écarts, 7 constats — D317 : « 97 fois » = 96 sur les reculs, « 6,2 s / 0,6 s » sans pièce ; D318 : aucune passe D277 (« pas d'app admin » resté courant), renvoi à un bloc « D318 » inexistant ; D319 : lecture adverse de D317 ni faite ni déclarée, planchers réutilisés sans nommer l'écart à la forme de Ko (motif écrit avant la mesure, et il tient), « le plus serré » faux (booking-status ×3,38), « 2 324 » pour 2 325 — aucun bloquant pour un lot documentaire ; quatre défauts de l'instrument réparés et rejoués ; partie A : décision du relecteur (taux de commission en lecture seule dans la v1, motif : branche 1, pause), les quatre points de D318 rattachés au backlog contre la table de D315 (expiration des demandes ≠ E3d-2) ; partie B : cadrage (état des lieux relevé et versé — 5 routes ADMIN, rôle cru jusqu'à l'expiration du jeton, une session par navigateur, audit_logs sans écrivain, aucun ADMIN créé par le produit ; options emplacement, langue et parité, premier admin, rejet, sécurité, avec coûts relevables ; 17 modes de défaillance ; deux lots de code et trois enchaînements de certification) ; onze décisions dues à Ko (D-1 à D-11), aucune recommandation ; compteur ZÉRO, inchangé, sous réserve de D-11 ; suite : RANG 29, EN ATTENTE D'ARBITRAGE DE KO |
+| D321 | A | D321 — rang 29 ARBITRÉ PAR KO (première écriture : « la page de réservation du client — un calendrier à la place des 182 boutons, des libellés sur chaque champ, l'adresse de connexion définie une seule fois, et les deux gardes laissées par D317. Lot de code. ») et CLOS ; lecture adverse de D320 (lue comme telle : aucun commit après b5bd382) : instrument versé, objets git à SHA fixés, calibration 16 bras, 69 contrôles, 1 écart (« harness.ts:330 et 16 autres » : 16 fabrications d'ADMIN, la 17e est le test qui prouve que l'inscription REFUSE le rôle), 5 constats, aucun bloquant ; partie A : arbitrages de Ko D-1 à D-11 écrits mot pour mot (cadrage du rang 28, § 6 ; AGENTS.md ; ordre des rangs) — section /admin dans l'app Pro, D23 change, « pas d'app admin » et « 4e application » tiennent, textes admin en français hors packages/i18n (exemption bornée), script de promotion, rejet en brouillon avec motif stocké, p2 maintenant, liste = brouillons à créneau actif, MFA et relecture en base repoussées et BLOQUANT tout déploiement, audit_logs dans la transaction, s1 ; règle : une certification qui s'écarte de la forme de Ko le nomme dans son protocole ; décision du relecteur : le réglage des taux n'est pas journalisé pendant la pause ; 62 entrées « RÉALISÉ » de D315 re-confrontées à b5bd382 (78 routes / 22 contrôleurs, commentaires exclus) : 61 cochées, B:650 ne tient pas ; partie B : calendrier par mois (module pur, grille role=grid, tabulation itinérante, flèches inversées en arabe, semaine dimanche), fiche 14 487 → 4 950 px, rouge lu 182 > 33 ; un <label> visible par champ, rouge lu 8 champs ; LOGIN_PATH une fois par application (pro neuf), 21 adresses converties, une garde par l'AST des deux applications, calibrée sur ses deux bras ; garde du mode surveillance de l'API de l'e2e (résout run dev) ; neutralisation côté client de r26 (R26-3, R26-4) ; borne de D316 tenue (setChosen inchangé) ; portes à 0 (667/59, 39/4, 333/24, 349/29 ; test:int 444/36 ; e2e 43 · 1) ; campagnes r29 15/15, r26 4/4, r25 10/10 jouées, toutes lues ; captures FR, AR, 360 px (débordement de 4 px en FR, hors du panneau : l'en-tête) ; compteur ZÉRO → UN ; suite : RANG 30, EN ATTENTE D'ARBITRAGE DE KO |

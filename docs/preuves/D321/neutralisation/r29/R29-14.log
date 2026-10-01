@@ -1,0 +1,1365 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/routes.test.tsx (2 tests | 2 failed) 2115ms
+   × LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > à LOGIN_PATH, la page de connexion se rend, et l'adresse RESTE celle demandée 1076ms
+     → expected 'Mot de passe oublié' to be 'Connexion' // Object.is equality
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <main
+        class="auth-main"
+      >
+        <div
+          class="auth-card"
+        >
+          <aside
+            class="auth-decor"
+          >
+            <div
+              style="position: relative;"
+            >
+              <div
+                style="display: flex; align-items: center; justify-content: space-between; margin-block-end: 24px;"
+              >
+                <span
+                  class="brand-lockup brand-lockup--lg"
+                >
+                  <svg
+                    aria-hidden="true"
+                    fill="none"
+                    height="30"
+                    viewBox="0 0 32 32"
+                    width="30"
+                  >
+                    <circle
+                      cx="12"
+                      cy="16"
+                      fill="none"
+                      r="7"
+                      stroke="var(--accent)"
+                      stroke-width="1.6"
+                    />
+                    <path
+                      d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+                      fill="none"
+                      stroke="var(--accent)"
+                      stroke-linecap="round"
+                      stroke-width="1.6"
+                    />
+                    <path
+                      d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+                      fill="none"
+                      stroke="var(--accent)"
+                      stroke-linecap="round"
+                      stroke-width="1.6"
+                    />
+                  </svg>
+                  <span>
+                    <span
+                      class="brand-word"
+                    >
+                      ZWADJ
+                      <span
+                        class="brand-suffix"
+                      >
+                         · 
+                        PRO
+                      </span>
+                    </span>
+                  </span>
+                </span>
+                <div
+                  style="display: flex; align-items: center; gap: 8px;"
+                >
+                  <button
+                    aria-label="Changer de thème"
+                    class="theme-toggle"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="icon-moon"
+                      fill="none"
+                      height="15"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      viewBox="0 0 24 24"
+                      width="15"
+                    >
+                      <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                      />
+                    </svg>
+                    <svg
+                      aria-hidden="true"
+                      class="icon-sun"
+                      fill="none"
+                      height="15"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      viewBox="0 0 24 24"
+                      width="15"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="4"
+                      />
+                      <path
+                        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    aria-label="Langue"
+                    class="btn btn-ghost"
+                    type="button"
+                  >
+                    العربية
+                  </button>
+                </div>
+              </div>
+              <h2
+                class="auth-title"
+              >
+                Ça arrive à tout le monde.
+              </h2>
+              <p
+                class="auth-subtitle"
+              >
+                Indiquez votre email : nous vous envoyons un lien pour réinitialiser votre mot de passe.
+              </p>
+            </div>
+          </aside>
+          <section
+            class="auth-formpane"
+          >
+            <a
+              class="backlink"
+              data-discover="true"
+              href="/auth/connexion"
+            >
+              <svg
+                aria-hidden="true"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="14"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                viewBox="0 0 16 16"
+                width="14"
+              >
+                <path
+                  d="M13 8H3"
+                />
+                <path
+                  d="M7 4 3 8l4 4"
+                />
+              </svg>
+              ← 
+              Retour à la connexion
+            </a>
+            <form
+              class="form"
+              novalidate=""
+            >
+              <h1>
+                Mot de passe oublié
+              </h1>
+              <div
+                class="field"
+              >
+                <div
+                  class="field-head"
+                >
+                  <span>
+                    <label
+                      for="_r_0_"
+                    >
+                      Email
+                    </label>
+                    <span
+                      aria-hidden="true"
+                      class="req"
+                    >
+                      *
+                    </span>
+                  </span>
+                </div>
+                <input
+                  autocomplete="email"
+                  dir="ltr"
+                  id="_r_0_"
+                  placeholder="contact@salle.dz"
+                  required=""
+                  type="email"
+                  value=""
+                />
+              </div>
+              <button
+                class="btn btn-accent"
+                type="submit"
+              >
+                Envoyer le lien
+              </button>
+            </form>
+          </section>
+        </div>
+      </main>
+      <p>
+        adresse=/auth/connexion
+      </p>
+    </div>
+  </body>
+</html>
+   × LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > calibration, bras négatif : une adresse SANS route est quittée (l'ancienne cible `/connexion` du client) 1036ms
+     → Unable to find role="heading" and name "Connexion"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="auth-main"
+    >
+      <div
+        class="auth-card"
+      >
+        <aside
+          class="auth-decor"
+        >
+          <div
+            style="position: relative;"
+          >
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; margin-block-end: 24px;"
+            >
+              <span
+                class="brand-lockup brand-lockup--lg"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  height="30"
+                  viewBox="0 0 32 32"
+                  width="30"
+                >
+                  <circle
+                    cx="12"
+                    cy="16"
+                    fill="none"
+                    r="7"
+                    stroke="var(--accent)"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                </svg>
+                <span>
+                  <span
+                    class="brand-word"
+                  >
+                    ZWADJ
+                    <span
+                      class="brand-suffix"
+                    >
+                       · 
+                      PRO
+                    </span>
+                  </span>
+                </span>
+              </span>
+              <div
+                style="display: flex; align-items: center; gap: 8px;"
+              >
+                <button
+                  aria-label="Changer de thème"
+                  class="theme-toggle"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon-moon"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <path
+                      d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                    />
+                  </svg>
+                  <svg
+                    aria-hidden="true"
+                    class="icon-sun"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4"
+                    />
+                    <path
+                      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Langue"
+                  class="btn btn-ghost"
+                  type="button"
+                >
+                  العربية
+                </button>
+              </div>
+            </div>
+            <h2
+              class="auth-title"
+            >
+              Ça arrive à tout le monde.
+            </h2>
+            <p
+              class="auth-subtitle"
+            >
+              Indiquez votre email : nous vous envoyons un lien pour réinitialiser votre mot de passe.
+            </p>
+          </div>
+        </aside>
+        <section
+          class="auth-formpane"
+        >
+          <a
+            class="backlink"
+            data-discover="true"
+            href="/auth/connexion"
+          >
+            <svg
+              aria-hidden="true"
+              data-mirror-rtl=""
+              fill="none"
+              focusable="false"
+              height="14"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              viewBox="0 0 16 16"
+              width="14"
+            >
+              <path
+                d="M13 8H3"
+              />
+              <path
+                d="M7 4 3 8l4 4"
+              />
+            </svg>
+            ← 
+            Retour à la connexion
+          </a>
+          <form
+            class="form"
+            novalidate=""
+          >
+            <h1>
+              Mot de passe oublié
+            </h1>
+            <div
+              class="field"
+            >
+              <div
+                class="field-head"
+              >
+                <span>
+                  <label
+                    for="_r_1_"
+                  >
+                    Email
+                  </label>
+                  <span
+                    aria-hidden="true"
+                    class="req"
+                  >
+                    *
+                  </span>
+                </span>
+              </div>
+              <input
+                autocomplete="email"
+                dir="ltr"
+                id="_r_1_"
+                placeholder="contact@salle.dz"
+                required=""
+                type="email"
+                value=""
+              />
+            </div>
+            <button
+              class="btn btn-accent"
+              type="submit"
+            >
+              Envoyer le lien
+            </button>
+          </form>
+        </section>
+      </div>
+    </main>
+    <p>
+      adresse=/auth/connexion
+    </p>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="auth-main"
+    >
+      <div
+        class="auth-card"
+      >
+        <aside
+          class="auth-decor"
+        >
+          <div
+            style="position: relative;"
+          >
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; margin-block-end: 24px;"
+            >
+              <span
+                class="brand-lockup brand-lockup--lg"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  height="30"
+                  viewBox="0 0 32 32"
+                  width="30"
+                >
+                  <circle
+                    cx="12"
+                    cy="16"
+                    fill="none"
+                    r="7"
+                    stroke="var(--accent)"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                </svg>
+                <span>
+                  <span
+                    class="brand-word"
+                  >
+                    ZWADJ
+                    <span
+                      class="brand-suffix"
+                    >
+                       · 
+                      PRO
+                    </span>
+                  </span>
+                </span>
+              </span>
+              <div
+                style="display: flex; align-items: center; gap: 8px;"
+              >
+                <button
+                  aria-label="Changer de thème"
+                  class="theme-toggle"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon-moon"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <path
+                      d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                    />
+                  </svg>
+                  <svg
+                    aria-hidden="true"
+                    class="icon-sun"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4"
+                    />
+                    <path
+                      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Langue"
+                  class="btn btn-ghost"
+                  type="button"
+                >
+                  العربية
+                </button>
+              </div>
+            </div>
+            <h2
+              class="auth-title"
+            >
+              Ça arrive à tout le monde.
+            </h2>
+            <p
+              class="auth-subtitle"
+            >
+              Indiquez votre email : nous vous envoyons un lien pour réinitialiser votre mot de passe.
+            </p>
+          </div>
+        </aside>
+        <section
+          class="auth-formpane"
+        >
+          <a
+            class="backlink"
+            data-discover="true"
+            href="/auth/connexion"
+          >
+            <svg
+              aria-hidden="true"
+              data-mirror-rtl=""
+              fill="none"
+              focusable="false"
+              height="14"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              viewBox="0 0 16 16"
+              width="14"
+            >
+              <path
+                d="M13 8H3"
+              />
+              <path
+                d="M7 4 3 8l4 4"
+              />
+            </svg>
+            ← 
+            Retour à la connexion
+          </a>
+          <form
+            class="form"
+            novalidate=""
+          >
+            <h1>
+              Mot de passe oublié
+            </h1>
+            <div
+              class="field"
+            >
+              <div
+                class="field-head"
+              >
+                <span>
+                  <label
+                    for="_r_1_"
+                  >
+                    Email
+                  </label>
+                  <span
+                    aria-hidden="true"
+                    class="req"
+                  >
+                    *
+                  </span>
+                </span>
+              </div>
+              <input
+                autocomplete="email"
+                dir="ltr"
+                id="_r_1_"
+                placeholder="contact@salle.dz"
+                required=""
+                type="email"
+                value=""
+              />
+            </div>
+            <button
+              class="btn btn-accent"
+              type="submit"
+            >
+              Envoyer le lien
+            </button>
+          </form>
+        </section>
+      </div>
+    </main>
+    <p>
+      adresse=/auth/connexion
+    </p>
+  </div>
+</body>
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  18:37:18
+   Duration  5.74s (transform 818ms, setup 235ms, collect 1.63s, tests 2.12s, environment 1.24s, prepare 199ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/routes.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/routes.test.tsx > LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > à LOGIN_PATH, la page de connexion se rend, et l'adresse RESTE celle demandée
+AssertionError: expected 'Mot de passe oublié' to be 'Connexion' // Object.is equality
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <main
+        class="auth-main"
+      >
+        <div
+          class="auth-card"
+        >
+          <aside
+            class="auth-decor"
+          >
+            <div
+              style="position: relative;"
+            >
+              <div
+                style="display: flex; align-items: center; justify-content: space-between; margin-block-end: 24px;"
+              >
+                <span
+                  class="brand-lockup brand-lockup--lg"
+                >
+                  <svg
+                    aria-hidden="true"
+                    fill="none"
+                    height="30"
+                    viewBox="0 0 32 32"
+                    width="30"
+                  >
+                    <circle
+                      cx="12"
+                      cy="16"
+                      fill="none"
+                      r="7"
+                      stroke="var(--accent)"
+                      stroke-width="1.6"
+                    />
+                    <path
+                      d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+                      fill="none"
+                      stroke="var(--accent)"
+                      stroke-linecap="round"
+                      stroke-width="1.6"
+                    />
+                    <path
+                      d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+                      fill="none"
+                      stroke="var(--accent)"
+                      stroke-linecap="round"
+                      stroke-width="1.6"
+                    />
+                  </svg>
+                  <span>
+                    <span
+                      class="brand-word"
+                    >
+                      ZWADJ
+                      <span
+                        class="brand-suffix"
+                      >
+                         · 
+                        PRO
+                      </span>
+                    </span>
+                  </span>
+                </span>
+                <div
+                  style="display: flex; align-items: center; gap: 8px;"
+                >
+                  <button
+                    aria-label="Changer de thème"
+                    class="theme-toggle"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="icon-moon"
+                      fill="none"
+                      height="15"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      viewBox="0 0 24 24"
+                      width="15"
+                    >
+                      <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                      />
+                    </svg>
+                    <svg
+                      aria-hidden="true"
+                      class="icon-sun"
+                      fill="none"
+                      height="15"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      viewBox="0 0 24 24"
+                      width="15"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="4"
+                      />
+                      <path
+                        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    aria-label="Langue"
+                    class="btn btn-ghost"
+                    type="button"
+                  >
+                    العربية
+                  </button>
+                </div>
+              </div>
+              <h2
+                class="auth-title"
+              >
+                Ça arrive à tout le monde.
+              </h2>
+              <p
+                class="auth-subtitle"
+              >
+                Indiquez votre email : nous vous envoyons un lien pour réinitialiser votre mot de passe.
+              </p>
+            </div>
+          </aside>
+          <section
+            class="auth-formpane"
+          >
+            <a
+              class="backlink"
+              data-discover="true"
+              href="/auth/connexion"
+            >
+              <svg
+                aria-hidden="true"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="14"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                viewBox="0 0 16 16"
+                width="14"
+              >
+                <path
+                  d="M13 8H3"
+                />
+                <path
+                  d="M7 4 3 8l4 4"
+                />
+              </svg>
+              ← 
+              Retour à la connexion
+            </a>
+            <form
+              class="form"
+              novalidate=""
+            >
+              <h1>
+                Mot de passe oublié
+              </h1>
+              <div
+                class="field"
+              >
+                <div
+                  class="field-head"
+                >
+                  <span>
+                    <label
+                      for="_r_0_"
+                    >
+                      Email
+                    </label>
+                    <span
+                      aria-hidden="true"
+                      class="req"
+                    >
+                      *
+                    </span>
+                  </span>
+                </div>
+                <input
+                  autocomplete="email"
+                  dir="ltr"
+                  id="_r_0_"
+                  placeholder="contact@salle.dz"
+                  required=""
+                  type="email"
+                  value=""
+                />
+              </div>
+              <button
+                class="btn btn-accent"
+                type="submit"
+              >
+                Envoyer le lien
+              </button>
+            </form>
+          </section>
+        </div>
+      </main>
+      <p>
+        adresse=/auth/connexion
+      </p>
+    </div>
+  </body>
+</html>
+
+Expected: "Connexion"
+Received: "Mot de passe oublié"
+
+ ❯ src/routes.test.tsx:53:90
+     51|     rendreA(LOGIN_PATH);
+     52|     // `waitFor` + assertion NATIVE : sous neutralisation, l'échec se …
+     53|     await waitFor(() => expect(screen.queryByRole("heading", { level: …
+       |                                                                                          ^
+     54|     expect(screen.getByText(/^adresse=/).textContent).toBe(`adresse=${…
+     55|   });
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/routes.test.tsx > LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > calibration, bras négatif : une adresse SANS route est quittée (l'ancienne cible `/connexion` du client)
+TestingLibraryElementError: Unable to find role="heading" and name "Connexion"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="auth-main"
+    >
+      <div
+        class="auth-card"
+      >
+        <aside
+          class="auth-decor"
+        >
+          <div
+            style="position: relative;"
+          >
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; margin-block-end: 24px;"
+            >
+              <span
+                class="brand-lockup brand-lockup--lg"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  height="30"
+                  viewBox="0 0 32 32"
+                  width="30"
+                >
+                  <circle
+                    cx="12"
+                    cy="16"
+                    fill="none"
+                    r="7"
+                    stroke="var(--accent)"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                </svg>
+                <span>
+                  <span
+                    class="brand-word"
+                  >
+                    ZWADJ
+                    <span
+                      class="brand-suffix"
+                    >
+                       · 
+                      PRO
+                    </span>
+                  </span>
+                </span>
+              </span>
+              <div
+                style="display: flex; align-items: center; gap: 8px;"
+              >
+                <button
+                  aria-label="Changer de thème"
+                  class="theme-toggle"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon-moon"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <path
+                      d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                    />
+                  </svg>
+                  <svg
+                    aria-hidden="true"
+                    class="icon-sun"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4"
+                    />
+                    <path
+                      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Langue"
+                  class="btn btn-ghost"
+                  type="button"
+                >
+                  العربية
+                </button>
+              </div>
+            </div>
+            <h2
+              class="auth-title"
+            >
+              Ça arrive à tout le monde.
+            </h2>
+            <p
+              class="auth-subtitle"
+            >
+              Indiquez votre email : nous vous envoyons un lien pour réinitialiser votre mot de passe.
+            </p>
+          </div>
+        </aside>
+        <section
+          class="auth-formpane"
+        >
+          <a
+            class="backlink"
+            data-discover="true"
+            href="/auth/connexion"
+          >
+            <svg
+              aria-hidden="true"
+              data-mirror-rtl=""
+              fill="none"
+              focusable="false"
+              height="14"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              viewBox="0 0 16 16"
+              width="14"
+            >
+              <path
+                d="M13 8H3"
+              />
+              <path
+                d="M7 4 3 8l4 4"
+              />
+            </svg>
+            ← 
+            Retour à la connexion
+          </a>
+          <form
+            class="form"
+            novalidate=""
+          >
+            <h1>
+              Mot de passe oublié
+            </h1>
+            <div
+              class="field"
+            >
+              <div
+                class="field-head"
+              >
+                <span>
+                  <label
+                    for="_r_1_"
+                  >
+                    Email
+                  </label>
+                  <span
+                    aria-hidden="true"
+                    class="req"
+                  >
+                    *
+                  </span>
+                </span>
+              </div>
+              <input
+                autocomplete="email"
+                dir="ltr"
+                id="_r_1_"
+                placeholder="contact@salle.dz"
+                required=""
+                type="email"
+                value=""
+              />
+            </div>
+            <button
+              class="btn btn-accent"
+              type="submit"
+            >
+              Envoyer le lien
+            </button>
+          </form>
+        </section>
+      </div>
+    </main>
+    <p>
+      adresse=/auth/connexion
+    </p>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="auth-main"
+    >
+      <div
+        class="auth-card"
+      >
+        <aside
+          class="auth-decor"
+        >
+          <div
+            style="position: relative;"
+          >
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; margin-block-end: 24px;"
+            >
+              <span
+                class="brand-lockup brand-lockup--lg"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  height="30"
+                  viewBox="0 0 32 32"
+                  width="30"
+                >
+                  <circle
+                    cx="12"
+                    cy="16"
+                    fill="none"
+                    r="7"
+                    stroke="var(--accent)"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-linecap="round"
+                    stroke-width="1.6"
+                  />
+                </svg>
+                <span>
+                  <span
+                    class="brand-word"
+                  >
+                    ZWADJ
+                    <span
+                      class="brand-suffix"
+                    >
+                       · 
+                      PRO
+                    </span>
+                  </span>
+                </span>
+              </span>
+              <div
+                style="display: flex; align-items: center; gap: 8px;"
+              >
+                <button
+                  aria-label="Changer de thème"
+                  class="theme-toggle"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon-moon"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <path
+                      d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                    />
+                  </svg>
+                  <svg
+                    aria-hidden="true"
+                    class="icon-sun"
+                    fill="none"
+                    height="15"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="15"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4"
+                    />
+                    <path
+                      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Langue"
+                  class="btn btn-ghost"
+                  type="button"
+                >
+                  العربية
+                </button>
+              </div>
+            </div>
+            <h2
+              class="auth-title"
+            >
+              Ça arrive à tout le monde.
+            </h2>
+            <p
+              class="auth-subtitle"
+            >
+              Indiquez votre email : nous vous envoyons un lien pour réinitialiser votre mot de passe.
+            </p>
+          </div>
+        </aside>
+        <section
+          class="auth-formpane"
+        >
+          <a
+            class="backlink"
+            data-discover="true"
+            href="/auth/connexion"
+          >
+            <svg
+              aria-hidden="true"
+              data-mirror-rtl=""
+              fill="none"
+              focusable="false"
+              height="14"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              viewBox="0 0 16 16"
+              width="14"
+            >
+              <path
+                d="M13 8H3"
+              />
+              <path
+                d="M7 4 3 8l4 4"
+              />
+            </svg>
+            ← 
+            Retour à la connexion
+          </a>
+          <form
+            class="form"
+            novalidate=""
+          >
+            <h1>
+              Mot de passe oublié
+            </h1>
+            <div
+              class="field"
+            >
+              <div
+                class="field-head"
+              >
+                <span>
+                  <label
+                    for="_r_1_"
+                  >
+                    Email
+                  </label>
+                  <span
+                    aria-hidden="true"
+                    class="req"
+                  >
+                    *
+                  </span>
+                </span>
+              </div>
+              <input
+                autocomplete="email"
+                dir="ltr"
+                id="_r_1_"
+                placeholder="contact@salle.dz"
+                required=""
+                type="email"
+                value=""
+              />
+            </div>
+            <button
+              class="btn btn-accent"
+              type="submit"
+            >
+              Envoyer le lien
+            </button>
+          </form>
+        </section>
+      </div>
+    </main>
+    <p>
+      adresse=/auth/connexion
+    </p>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/routes.test.tsx:59:18
+     57|   it("calibration, bras négatif : une adresse SANS route est quittée (…
+     58|     rendreA("/connexion");
+     59|     await screen.findByRole("heading", { level: 1, name: messages.fr.a…
+       |                  ^
+     60|     expect(screen.getByText(/^adresse=/).textContent).not.toBe("adress…
+     61|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

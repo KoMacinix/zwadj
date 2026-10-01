@@ -8,6 +8,7 @@ import { ApiError } from "../lib/auth-client";
 import { issuesToFieldErrors, validate, type FieldErrors } from "@zwadj/api-client";
 import { useAuth } from "./auth-context";
 import { Field, FormError, PasswordField, ProAuthShell, useApiErrorMessage, useValidationMessage } from "./auth-ui";
+import { LOGIN_PATH } from "../routes";
 
 export function ForgotPage() {
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ export function ForgotPage() {
 
   return (
     <ProAuthShell title={t("auth.ui.shell.forgotTitle")} subtitle={t("auth.ui.shell.forgotSubtitle")}>
-      <Link to="/auth/connexion" className="backlink">
+      <Link to={LOGIN_PATH} className="backlink">
         <ArrowBackIcon />
         ← {t("auth.ui.forgot.back")}
       </Link>
@@ -128,7 +129,7 @@ export function ResetPage() {
           </div>
           <h1>{t("auth.ui.reset.successTitle")}</h1>
           <p>{t("auth.ui.reset.successBody")}</p>
-          <Link to="/auth/connexion" className="btn btn-accent">
+          <Link to={LOGIN_PATH} className="btn btn-accent">
             {t("auth.ui.reset.goLogin")}
           </Link>
         </div>
@@ -159,7 +160,7 @@ export function ResetPage() {
 
   return (
     <ProAuthShell title={t("auth.ui.shell.resetTitle")} subtitle={t("auth.ui.shell.resetSubtitle")}>
-      <Link to="/auth/connexion" className="backlink">
+      <Link to={LOGIN_PATH} className="backlink">
         <ArrowBackIcon />
         ← {t("auth.ui.forgot.back")}
       </Link>
@@ -231,7 +232,7 @@ export function VerifyEmailPage() {
           </div>
           <h1>{t("auth.ui.verify.successTitle")}</h1>
           <p>{t("auth.ui.verify.successBody")}</p>
-          <Link to={status === "authenticated" ? "/" : "/auth/connexion"} className="btn btn-accent">
+          <Link to={status === "authenticated" ? "/" : LOGIN_PATH} className="btn btn-accent">
             {status === "authenticated" ? t("auth.ui.verify.goHome") : t("auth.ui.verify.goLogin")}
           </Link>
         </div>

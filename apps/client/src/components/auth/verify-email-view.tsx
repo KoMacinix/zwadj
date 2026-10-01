@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "../../i18n/navigation";
 import { useAuth } from "../../lib/auth/auth-context";
 import { AuthShell } from "./auth-ui";
+import { LOGIN_PATH } from "../../lib/routes";
 
 /** Page cible des liens d'email (contrat AUTH.VERIFY_EMAIL_PATH, Lot 0).
  *  Un lien peut être ouvert connecté (même navigateur) ou non (autre appareil) :
@@ -54,7 +55,7 @@ export function VerifyEmailView({ token }: { token: string | null }) {
               {t("goHome")}
             </Link>
           ) : (
-            <Link href="/auth/connexion" className="btn btn-accent">
+            <Link href={LOGIN_PATH} className="btn btn-accent">
               {t("goLogin")}
             </Link>
           )}

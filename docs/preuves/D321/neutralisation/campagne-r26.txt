@@ -1,0 +1,23 @@
+# extrait de .neutralisation-journaux/d321/campagne-r26.log · sha256 du journal complet e7c0e42c6672c9a38a98ee2fe5cda6de53e1d917f9c460ba3a763ac267162254 · 22 lignes parcourues · 0 « [WebServer] » retirées · 22 gardées
+  calibration ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+cibles : 4 déclarées · 4 jouées (e2e, unit) · 0 hors exécution
+  playwright : Version 1.50.1
+  pré-vol e2e-parcours : code 0 · ok 2 · x 0
+✓ R26-1. Le pro ne voit plus AUCUNE demande : la liste chargée est jetée
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: le pro ne voit pas la demande du client dans ses demandes | Error: le pro ne voit pas la demande du client dans ses demandes
+✓ R26-2. Le pro lit « En attente » quel que soit le statut : sa réponse ne s'affiche jamais
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible() | Error: le pro ne voit pas son refus
+✓ R26-3. ⛔ CHEMIN DE L'ARGENT (branche 6), MESURE : le client lit « En attente » quel que soit le statut — ni « Acceptée — acompte à régler », ni le refus
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: le client ne voit pas l'acceptation | Error: le client ne voit pas le refus
+✓ R26-4. Le client ne voit plus AUCUNE de ses demandes : la liste chargée est jetée
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected) | Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+4 garde(s) mordue(s) sur 4 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 4 sur 4)
+arbre rendu à son état de départ : vérifié.
+campagne r26 code=0 durée=459s

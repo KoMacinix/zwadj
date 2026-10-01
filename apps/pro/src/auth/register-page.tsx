@@ -7,6 +7,7 @@ import { ApiError, CLIENT_SITE_URL } from "../lib/auth-client";
 import { issuesToFieldErrors, validate, type FieldErrors } from "@zwadj/api-client";
 import { useAuth } from "./auth-context";
 import { Field, FormError, PasswordField, ProAuthShell, useApiErrorMessage, useValidationMessage } from "./auth-ui";
+import { LOGIN_PATH } from "../routes";
 
 // Schéma API (source de vérité) + contrôles purement front (confirmation, CGU).
 const registerProFormSchema = registerProSchema
@@ -92,7 +93,7 @@ export function RegisterPage() {
               {t("auth.ui.pro.resendCta")}
             </button>
           )}
-          <Link to="/auth/connexion" className="btn btn-accent">
+          <Link to={LOGIN_PATH} className="btn btn-accent">
             {t("auth.ui.verify.goLogin")}
           </Link>
         </div>
@@ -200,7 +201,7 @@ export function RegisterPage() {
 
         <p className="form-foot">
           {t("auth.ui.signup.hasAccount")}{" "}
-          <Link to="/auth/connexion" className="link-accent">
+          <Link to={LOGIN_PATH} className="link-accent">
             {t("auth.ui.signup.goLogin")}
           </Link>
         </p>

@@ -40,6 +40,7 @@ import { DashboardPage } from "./dashboard/dashboard-page";
 import { RequestsPage } from "./venues/requests-page";
 import { CalendarPage } from "./venues/calendar-page";
 import { BookingsPage } from "./venues/bookings-page";
+import { LOGIN_PATH } from "./routes";
 
 export function AppProviders({
   children,
@@ -81,7 +82,7 @@ export function AppRoutes() {
           connecté qui tapait `/auth/connexion` voyait le formulaire et pouvait se
           reconnecter par-dessus lui-même. */}
       <Route
-        path="/auth/connexion"
+        path={LOGIN_PATH}
         element={
           <RedirectIfSession>
             <LoginPage />

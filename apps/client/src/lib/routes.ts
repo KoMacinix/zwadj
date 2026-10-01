@@ -10,10 +10,13 @@
 // ⚠ Chemins SANS locale : le `Link` de `i18n/navigation` ajoute `/fr` ou `/ar`.
 // Un préfixe écrit ici casserait l'une des deux langues (MD2-b).
 //
-// ⚠ Ce fichier ne recense PAS toutes les routes du client : neuf autres liens
-// écrivent encore `href="/auth/connexion"` en littéral (relevé du 26/09/2026).
-// Les converger est un lot à part (backlog, reports de D316), pas un geste en
-// passant.
+// ⚠ Ce fichier ne recense PAS toutes les routes du client. Il portait ici : « neuf
+// autres liens écrivent encore `href="/auth/connexion"` en littéral (relevé du
+// 26/09/2026) ». ⛔ Faux depuis le rang 29 (D321) : les neuf, les deux liens vers
+// la connexion du Pro et la métadonnée canonique de la page passent par
+// `LOGIN_PATH`, et `login-path-guard.test.ts` rougit si l'adresse réapparaît
+// ailleurs dans le code du client ou du pro. Les AUTRES adresses de pages restent
+// écrites en dur — relevées au rapport de D321, non corrigées (consigne de Ko).
 
 /** Page de connexion du client : `src/app/[locale]/auth/connexion/page.tsx`. */
 export const LOGIN_PATH = "/auth/connexion";

@@ -5,7 +5,7 @@
 
 ## Assumptions (updated after design/stack/task audit — supersedes earlier defaults)
 
-- **Repo:** monorepo with pnpm workspaces (`apps/client`, `apps/pro`, `apps/api`, `packages/ui`, `packages/i18n`, `packages/types`, `packages/config`). **No `apps/admin`** — validation/publishing handled via protected endpoints + direct DB access (DBeaver) at MVP scale. ⛔ *(D320, 01/10/2026 : **révisé par l'arbitrage de Ko de D318** — « Je veux une page d'administration » ; application séparée ou section d'une app existante : décision D-1, due à Ko — `ZWADJ_CONTINUITE.md`, cadrage du rang 28. D318 n'avait pas annoté cette ligne.)*
+- **Repo:** monorepo with pnpm workspaces (`apps/client`, `apps/pro`, `apps/api`, `packages/ui`, `packages/i18n`, `packages/types`, `packages/config`). **No `apps/admin`** — validation/publishing handled via protected endpoints + direct DB access (DBeaver) at MVP scale. ⛔ *(D320, 01/10/2026 : **révisé par l'arbitrage de Ko de D318** — « Je veux une page d'administration » ; application séparée ou section d'une app existante : décision D-1, due à Ko — `ZWADJ_CONTINUITE.md`, cadrage du rang 28. D318 n'avait pas annoté cette ligne.)* ⛔ *(D321, 01/10/2026 : **D-1 arbitrée par Ko — « a2. Une section `/admin` dans l'app Pro. »** ⇒ « No `apps/admin` » **TIENT** : aucune application séparée.)*
 - **Frontend (client, public):** **Next.js (App Router, SSR/SSG)** — corrected from Vite CSR for SEO (Google ≈97% share in Algeria). `next-intl` for i18n.
 - **Frontend (pro):** React + Vite (SPA, behind auth, no SEO need). i18next for i18n.
 - **Backend:** Node.js + NestJS + TypeScript; REST + OpenAPI; validation via Zod/class-validator.
@@ -328,7 +328,7 @@
 - [ ] `GET /vendor-categories` (directory listing only, no booking flow) [BACK][P1] — explicitement hors périmètre Flux A, page "Bientôt disponible" inchangée
 
 ### 6.2 Slots, availability & pricing engine
-- [ ] Decide/confirm per-venue `bookingMode` at creation (single_slot vs multi_slot) [BACK][P0]
+- [x] Decide/confirm per-venue `bookingMode` at creation (single_slot vs multi_slot) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:331 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [x] ~~`GET /venues/:id/slot-templates`~~ — **pas d'endpoint dédié** : les créneaux voyagent dans `VenueProDTO.slotTemplates` (Lot B1). Un créneau sans sa salle n'a pas de sens. [BACK][P0]
 - [x] `POST` / `PATCH` / `DELETE /venues/:id/slot-templates[/:slotId]` — **Lot B1**. Chevauchement semi-ouvert (deux créneaux qui se TOUCHENT ne se chevauchent pas), 409 `SLOT_TEMPLATE_OVERLAP` / `SLOT_TEMPLATE_SINGLE_MODE` / `SLOT_TEMPLATE_IN_USE`. ⚠ `endMinutes` va jusqu'à **2880** : la soirée 20h→02h est le cas NORMAL (D52). [BACK][P0]
 - [x] `GET /venues/:slug/availability?from=&to=` — **Lot B3, public, par SLUG** (pas par id). Fenêtre ≤ **92 jours rendus**, bornes du passé et de l'horizon **écrêtées** et non rejetées (D49). Pas de `ruleId` dans la réponse (D50). [BACK][P0]
@@ -336,43 +336,43 @@
 - [x] Prix par date — **Lot B2**, `pricing-engine.ts` PUR. Résolution HOLIDAY > WEEKDAY > SEASON, puis priorité décroissante, puis date de création, puis **`id`** (sans ce dernier départage, deux règles créées dans la même transaction donnent un résultat non déterministe). ⚠ `Holiday.date` est `@db.Date` rendu à **minuit UTC** : interroger la table avec `dayStartMs` décalerait la fenêtre d'un jour (D50). [BACK][P0]
 - [ ] **D39 — CONTRAINTE DE CONCEPTION (à intégrer AVANT d'écrire le moteur, pas après) : le prix doit pouvoir varier PAR CRÉNEAU** (matin/soir), pas seulement par date. Aujourd'hui `PricingRule` n'a aucun lien vers `SlotTemplate` et `SlotTemplate` ne porte aucun prix — décider ici de la forme (`PricingRule.slotTemplateId` nullable + nouveau `PricingRuleType`, ou override de prix porté par `SlotTemplate`) et la poser dans le même mouvement que le résolveur. Chemin d'argent (base de calcul de la commission) ⇒ tests + revue humaine [BACK][P0]
 - [x] ~~`POST /venues/:id/availability/block`~~ **ROUTE PÉRIMÉE.** La vraie API (Lot B3, D51) est : `POST /venues/:id/availability-blocks`, `DELETE /venues/:id/availability-blocks/:blockId`, `GET /pro/venues/:id/availability-blocks?from=&to=`. Ressource **plurielle** (elle se liste et se supprime) et topologie A2 : écritures **nues**, lectures préfixées **`/pro`**. Corps en date-heure civile LOCALE `YYYY-MM-DDTHH:mm` **sans offset** — l'API applique UTC+1 elle-même. [BACK][P0]
-- [ ] Implement overlap detection for `pending` requests (allowed, surfaced as a conflict list — not rejected) [BACK][P0]
-- [ ] Implement double-booking prevention for `accepted`/`confirmed` via the DB exclusion constraint (dep: 3.4) — catch the constraint violation and return a clean conflict error, don't just rely on app-level checks [BACK][P0]
-- [ ] `GET /venues/:id/services` (each service includes its `pricingType` + resolved pricing/tiers) [BACK][P0]
-- [ ] `POST /venues/:id/services` (pro creates a service, picks a `pricingType`, fills price/tiers accordingly) [BACK][P0]
-- [ ] `PATCH /venues/:id/services/:serviceId` (pro edits price/tiers) [BACK][P1]
-- [ ] Implement per-type price resolution: `fixed` → flat price; `per_guest` → price × guest count from the quote; `tiered` → selected tier's price; `per_unit` → price × client-chosen quantity [BACK][P0]
-- [ ] Implement quote total calculation (venue base price + resolved services total) [BACK][P0]
+- [x] Implement overlap detection for `pending` requests (allowed, surfaced as a conflict list — not rejected) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:339 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Implement double-booking prevention for `accepted`/`confirmed` via the DB exclusion constraint (dep: 3.4) — catch the constraint violation and return a clean conflict error, don't just rely on app-level checks [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:340 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `GET /venues/:id/services` (each service includes its `pricingType` + resolved pricing/tiers) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:341 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `POST /venues/:id/services` (pro creates a service, picks a `pricingType`, fills price/tiers accordingly) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:342 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `PATCH /venues/:id/services/:serviceId` (pro edits price/tiers) [BACK][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:343 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Implement per-type price resolution: `fixed` → flat price; `per_guest` → price × guest count from the quote; `tiered` → selected tier's price; `per_unit` → price × client-chosen quantity [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:344 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Implement quote total calculation (venue base price + resolved services total) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:345 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Implement deposit (30%) calculation, **minus 1000 DA if paid online** (dep: Phase 7 discount logic) [BACK][P0]
 - [ ] Display TVA + platform/service fee breakdown to client on the quote [BACK][P0]
 - [ ] Implement promo-code application + validation [BACK][P2]
 
 ### 6.3 Quotes & booking lifecycle (request-to-book)
-- [ ] `POST /quotes` (build quote snapshot — **snapshot resolved service prices**, since a `per_guest`/`tiered` price depends on the guest count and Service prices can change later) [BACK][P0]
+- [x] `POST /quotes` (build quote snapshot — **snapshot resolved service prices**, since a `per_guest`/`tiered` price depends on the guest count and Service prices can change later) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:351 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] `GET /quotes/:id` [BACK][P0]
-- [ ] Define booking status enum + allowed transitions (pending → accepted/declined/expired ; accepted → confirmed/cancelled) [BACK][P0]
-- [ ] Build a generic transition guard (rejects any move not in the allowed-transitions map) [BACK][P0]
-- [ ] `POST /bookings` (create as "pending" — this is the client's request, not yet a hold on the slot) [BACK][P0]
+- [x] Define booking status enum + allowed transitions (pending → accepted/declined/expired ; accepted → confirmed/cancelled) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:353 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Build a generic transition guard (rejects any move not in the allowed-transitions map) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:354 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `POST /bookings` (create as "pending" — this is the client's request, not yet a hold on the slot) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:355 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Require idempotency key on `POST /bookings` (prevent double-submit) [BACK][P0] (dep: 4 idempotency middleware)
-- [ ] `POST /bookings/:id/accept` (pro) — transition pending → accepted; this is what actually locks the slot via the DB constraint; on constraint violation, return conflict [BACK][P0]
-- [ ] `POST /bookings/:id/decline` (pro) — transition pending → declined [BACK][P0]
+- [x] `POST /bookings/:id/accept` (pro) — transition pending → accepted; this is what actually locks the slot via the DB constraint; on constraint violation, return conflict [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:357 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `POST /bookings/:id/decline` (pro) — transition pending → declined [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:358 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Implement pending-request expiration job (pending → expired if pro doesn't respond in X days) via pg-boss [BACK][P0] ⛔ *(D320 : **point du chemin de l'argent « expiration des demandes » nommé par Ko (D318)** — s'ouvre seul, sur son arbitrage, sous la méthode renforcée ; la pause tient. ⚠ Distinct d'E3d-2, qui porte sur les intentions de paiement. Renvoi : `AGENTS.md`, point E3.)*
 - [ ] `POST /bookings/:id/confirm` (system, triggered by successful payment) — transition accepted → confirmed [BACK][P0] (dep: Phase 7)
 - [ ] Implement orphaned-payment recovery: payment succeeded but confirm failed → auto-refund or manual reconciliation queue [BACK][P0]
 - [ ] `PATCH /bookings/:id` (modify guests/services, pending only) [BACK][P1]
 - [ ] `POST /bookings/:id/cancel` + cancellation policy [BACK][P1]
 - [ ] Implement refund eligibility logic [BACK][P1]
-- [ ] `GET /bookings` (client list, with status) [BACK][P0]
-- [ ] `GET /pro/bookings` (pro list w/ filters, surfacing overlapping-pending conflicts) [BACK][P0]
+- [x] `GET /bookings` (client list, with status) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:365 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `GET /pro/bookings` (pro list w/ filters, surfacing overlapping-pending conflicts) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:366 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [x] ~~`POST /pro/bookings` (walk-in manual booking, created directly as `confirmed`…)~~ — **RETIRÉE, pas faite : elle n'est pas nécessaire.** Le parcours sur place se compose d'endpoints déjà livrés : `POST /venues/:id/quotes` (PRO, `clientId` facultatif) → `send` → `convert` (le corps porte le contact) → `POST /pro/bookings/:id/accept`. ⚠ Et son énoncé était **périmé face à D101** : « created directly as `confirmed` » est exactement la logique séparée que D101 interdit — en ligne comme en présentiel, mêmes lignes, mêmes statuts, mêmes transitions. Vérifié dans les contrôleurs avant d'écrire une ligne (tranche UIP) [BACK][P0]
 
 ### 6.4 Visits (separate flow, no venue approval, no double-booking constraint)
-- [ ] `GET /venues/:id/visit-availability` [BACK][P0]
-- [ ] `POST /venues/:id/visit-availability` (pro sets day-of-week + time ranges dedicated to visits) [BACK][P0]
-- [ ] `POST /venues/:id/visits` (client books a visit slot — **auto-confirmed immediately**, no pro approval step) [BACK][P0]
+- [x] `GET /venues/:id/visit-availability` [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:370 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `POST /venues/:id/visit-availability` (pro sets day-of-week + time ranges dedicated to visits) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:371 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `POST /venues/:id/visits` (client books a visit slot — **auto-confirmed immediately**, no pro approval step) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:372 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Notify pro on new visit booking (message and/or email) [BACK][P0] (dep: Phase 8)
-- [ ] `POST /visits/:id/cancel` (pro-initiated, for unforeseen conflicts — pro contacts client directly, this just updates status) [BACK][P1]
-- [ ] `GET /pro/visits` (pro's upcoming visit bookings) [BACK][P0]
+- [x] `POST /visits/:id/cancel` (pro-initiated, for unforeseen conflicts — pro contacts client directly, this just updates status) [BACK][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:374 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] `GET /pro/visits` (pro's upcoming visit bookings) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:375 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 
 ### 6.5 Cashback & online-payment discount (anti-leakage incentive)
 > **Préparatoire livré (Lot A3, D35)** : `Venue.cashbackRateBps` (% du prix de base, défaut 0, réglable par l'admin dans le même geste que la commission), contrainte bloquante `cashback ≤ commission` (CHECK SQL + validation applicative, message explicite). Remplace les montants fixes -1000/+1000 DA ci-dessous par un taux variable par salle — la mécanique de réservation/paiement elle-même reste à construire (items ci-dessous, Phase 7).
@@ -564,8 +564,8 @@
 ## PHASE 8 — Notifications & communication
 
 ### 8.1 Infrastructure
-- [ ] Create notification service abstraction (port/adapter — swappable provider) [BACK][P0]
-- [ ] Integrate transactional email provider [BACK][P0] ⛔ *(D302 : à `HEAD`, `EmailModule` lie `DevLoggerEmailSender` SANS CONDITION, production comprise — audit sécu 09/09 · journaux, reports de D302. Le jeton du journal de DEV, lui, est arbitré (D294) et ne se rouvre pas.)*
+- [x] Create notification service abstraction (port/adapter — swappable provider) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:567 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [ ] Integrate transactional email provider [BACK][P0] ⛔ *(D302 : à `HEAD`, `EmailModule` lie `DevLoggerEmailSender` SANS CONDITION, production comprise — audit sécu 09/09 · journaux, reports de D302. Le jeton du journal de DEV, lui, est arbitré (D294) et ne se rouvre pas.)* ⛔ *(D321, 01/10/2026 : **c'est « le lot de l'e-mail réel »** de l'arbitrage de Ko D-5 — l'e-mail du rejet d'une salle (p1) « est REPOUSSÉ au lot de l'e-mail réel » ; il se fait avec celui-ci. Entrée « Reports de D321 ».)*
 - [ ] Configure SPF, DKIM, DMARC for the sending domain — **do this now**: the very first email (account verification) depends on it, and without it everything lands in spam [INFRA][P0]
 - [ ] Create email template engine + layout (FR/AR, RTL) [BACK][P0]
 - [ ] Use `pg-boss` (already installed, Phase 3) for the async send queue + retry/backoff — no separate BullMQ/Redis at MVP [BACK][P0]
@@ -602,7 +602,7 @@
 - [x] Configure App Router structure + locale segment (`/fr`, `/ar`) [CLIENT][P0] — ✅ squelette, renforcé Lot 5 (`dir` RTL réel vérifié au build)
 - [~] Build header (...) [CLIENT][P0] — **partiel** : seul le volet état de session (marque, Connexion/Inscription ↔ compte+déconnexion) est livré (Lot 5). La vraie nav (Salles/Prestataires/etc.) est explicitement hors périmètre de la tranche Auth — appartient à la tranche Accueil/nav, pas encore commencée.
 - [ ] Build a single reusable "Bientôt disponible / قريباً" page (FR/AR) [CLIENT][P0]
-- [ ] Build footer [CLIENT][P1]
+- [x] Build footer [CLIENT][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:605 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Add global toast/notification host [CLIENT][P1]
 - [x] Add auth context + protected routes — ⚠ **« middleware-based » est une hypothèse ERRONÉE, corrigée au Lot A11b** [CLIENT][P0] : contexte auth ✅ Lot 5 ; la protection est **côté client** parce que le middleware ne peut voir aucun signal de session (access token en mémoire D2, cookie refresh restreint au path `/api/v1/auth`). Première page protégée : `/compte` (A11b)
 - [ ] Add scroll-restore on route change [CLIENT][P2]
@@ -617,48 +617,48 @@
 
 ### 9.3 Home (SSG/ISR)
 - [ ] Hero + structured search bar (place/date/guests/budget) [CLIENT][P0]
-- [ ] Map placeholder: blurred Alger map background image + "Carte à venir / قريباً الخريطة" overlay (FR/AR) — no map library, no tile provider decision needed at MVP [CLIENT][P0]
+- [x] Map placeholder: blurred Alger map background image + "Carte à venir / قريباً الخريطة" overlay (FR/AR) — no map library, no tile provider decision needed at MVP [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:620 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Featured venues grid + photo carousel (`next/image`) [CLIENT][P0]
-- [ ] "How it works" / "Why Zwadj" sections [CLIENT][P2]
+- [x] "How it works" / "Why Zwadj" sections [CLIENT][P2] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:622 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 
 ### 9.4 Search & filters (SSR)
-- [ ] Results list bound to `GET /venues` (server-rendered) [CLIENT][P0]
-- [ ] Map placeholder (same component as 9.3, above or beside the results list) [CLIENT][P0]
-- [ ] Capacity slider filter [CLIENT][P0]
-- [ ] Budget slider filter [CLIENT][P0]
-- [ ] Amenities multi-select filter [CLIENT][P0]
+- [x] Results list bound to `GET /venues` (server-rendered) [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:625 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Map placeholder (same component as 9.3, above or beside the results list) [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:626 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Capacity slider filter [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:627 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Budget slider filter [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:628 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Amenities multi-select filter [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:629 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Sort control (recommended/price/rating) [CLIENT][P0]
-- [ ] Reset filters [CLIENT][P1]
-- [ ] Results count + empty/loading/error states [CLIENT][P0]
-- [ ] URL-synced filter state (search params — natural fit for SSR) [CLIENT][P1]
+- [x] Reset filters [CLIENT][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:631 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Results count + empty/loading/error states [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:632 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] URL-synced filter state (search params — natural fit for SSR) [CLIENT][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:633 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 
 ### 9.5 Venue detail (SSG/ISR)
 - [ ] Magazine gallery (5 photos) + lightbox [CLIENT][P0]
-- [ ] Visite virtuelle Matterport : iframe montée **au geste utilisateur uniquement** (D45 — même principe que l'ancien viewer 360° envisagé), depuis `matterportModelId` du DTO public. Aucune bibliothèque de viewer à intégrer côté Zwadj (contrairement à Photo Sphere Viewer/Pannellum envisagés initialement) — Matterport sert son propre embed [CLIENT][P0]
+- [x] Visite virtuelle Matterport : iframe montée **au geste utilisateur uniquement** (D45 — même principe que l'ancien viewer 360° envisagé), depuis `matterportModelId` du DTO public. Aucune bibliothèque de viewer à intégrer côté Zwadj (contrairement à Photo Sphere Viewer/Pannellum envisagés initialement) — Matterport sert son propre embed [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:637 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Rating/reviews count, capacity, base price [CLIENT][P0]
-- [ ] Amenities icons [CLIENT][P0]
+- [x] Amenities icons [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:639 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Tabs: description / services / reviews [CLIENT][P1]
 - [ ] Save ♥ button [CLIENT][P2]
-- [ ] "Réserver une visite" button → visit slot picker (dep: 6.4) — separate CTA from the party-booking sticky panel [CLIENT][P0]
+- [x] "Réserver une visite" button → visit slot picker (dep: 6.4) — separate CTA from the party-booking sticky panel [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:642 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Sticky booking panel → shows venue's slot templates → opens calendar [CLIENT][P0]
 
 ### 9.6 Calendar, quote & request submission (request-to-book, not instant-book)
 - [ ] Slot selector: show available `SlotTemplate`s for the date/venue (not just a single day toggle) [CLIENT][P0]
 - [ ] Dual-month calendar with per-date pricing [CLIENT][P0]
 - [ ] Season color legend + cheapest-months strip [CLIENT][P1]
-- [ ] Block past/fully-booked dates; show partially-available dates when in multi-slot mode [CLIENT][P0]
-- [ ] Guest count selector (±, min/max) [CLIENT][P0]
+- [x] Block past/fully-booked dates; show partially-available dates when in multi-slot mode [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:649 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [ ] Guest count selector (±, min/max) [CLIENT][P0] ⚠ *(D321, 01/10/2026 : **NE TIENT PAS — reste ouverte.** D315 l'avait classée RÉALISÉ « sans ± » ; re-confrontée à `b5bd382` : le panneau porte un champ numérique libre, ni « ± » ni bornes min/max — c'est ce que l'entrée demande. `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Service selection UI adapted per `pricingType`: checkbox for `fixed`, auto-computed total (× guests) for `per_guest`, tier radio-select for `tiered`, quantity stepper for `per_unit` — live total updates on every change [CLIENT][P0]
 - [ ] Quote summary panel + deposit (30%) + TVA/fee breakdown [CLIENT][P0]
 - [ ] Payment-method choice on the request form: "online (−1000 DA)" vs "cash on-site" — sets `Booking.paymentMethod`, informational only at request stage since payment happens after acceptance [CLIENT][P0]
-- [ ] Request form (contact details) + validation [CLIENT][P0]
+- [x] Request form (contact details) + validation [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:654 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Submit as **booking request** (not payment) — `POST /bookings` [CLIENT][P0]
-- [ ] **CTA label must read "Envoyer la demande" (or equivalent), never "Procéder au paiement"** at this step — the quote screen submits a request, it never triggers Chargily checkout. A "Procéder au paiement" button here is a request-to-book regression (caught once already in a redesigned mockup) [CLIENT][P0]
-- [ ] "Request sent" confirmation screen — explains the venue must accept before payment, and links to "Mes réservations" showing the request as "En attente" [CLIENT][P0]
+- [x] **CTA label must read "Envoyer la demande" (or equivalent), never "Procéder au paiement"** at this step — the quote screen submits a request, it never triggers Chargily checkout. A "Procéder au paiement" button here is a request-to-book regression (caught once already in a redesigned mockup) [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:656 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] "Request sent" confirmation screen — explains the venue must accept before payment, and links to "Mes réservations" showing the request as "En attente" [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:657 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 
 ### 9.7 Post-request client screens (previously missing)
-- [ ] "My requests/bookings" page listing all statuses (pending, accepted, declined, expired, confirmed, cancelled) [CLIENT][P0]
-- [ ] "My visits" page listing booked visit slots [CLIENT][P0]
+- [x] "My requests/bookings" page listing all statuses (pending, accepted, declined, expired, confirmed, cancelled) [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:660 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] "My visits" page listing booked visit slots [CLIENT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:661 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Request detail view showing current status + next action [CLIENT][P0]
 - [ ] Payment step screen — reached only after a request is accepted (via email deep link or from "my requests") [CLIENT][P0] (dep: Phase 7)
 - [ ] On the payment step: clear online-payment CTA showing the −1000 DA discount already applied [CLIENT][P0]
@@ -687,19 +687,19 @@
 > Each screen below must be responsive and keyboard/focus-navigable **before it's considered done** — not as a separate pass at the end.
 
 - [x] Wire shared packages into pro app [PRO][P0] — ✅ Lot 6 (`@zwadj/api-client`, `@zwadj/i18n` via i18next, `@zwadj/ui`)
-- [x] Pro auth + role-gated routing [PRO][P0] — ✅ Lot 6 (`RequireProSession` : anonyme→login, CLIENT connecté→écran de refus explicite D23, PRO→coquille protégée)
+- [x] Pro auth + role-gated routing [PRO][P0] — ✅ Lot 6 (`RequireProSession` : anonyme→login, CLIENT connecté→écran de refus explicite D23, PRO→coquille protégée) ⛔ *(D321, 01/10/2026 : **D23 CHANGE** — arbitrage de Ko D-1, mot pour mot : « D23 devient : l'app Pro accepte un PRO hors de `/admin`, et un ADMIN sous `/admin` seulement. » Réalisé par ADM-2, qui attend son rang ; aujourd'hui tout rôle ≠ PRO reste refusé.)*
 - [ ] Dashboard overview (bookings, revenue, KPIs) [PRO][P0]
-- [ ] Booking requests inbox — list `pending` requests + status filters [PRO][P0]
-- [ ] Request detail view + **accept/decline actions** [PRO][P0]
-- [ ] Surface overlapping-pending-requests warning when viewing/accepting a request (dep: 6.2 overlap detection) — this is where the pro makes the manual call your booking model requires [PRO][P0]
-- [ ] Handle accept failure cleanly (DB exclusion constraint rejected it — another request was already accepted for that slot) [PRO][P0]
-- [ ] Calendar view of accepted/confirmed bookings, per slot [PRO][P0]
-- [ ] Availability blocking UI [PRO][P0]
-- [ ] Slot template editor (create/edit custom slots, pick from the 3 standard examples) [PRO][P0]
-- [ ] Dynamic pricing rules editor [PRO][P1]
-- [ ] **Service editor**: create a service, choose `pricingType` (fixed/per_guest/tiered/per_unit), fill price/tiers accordingly [PRO][P0]
-- [ ] **Visit availability editor**: set day-of-week + time ranges dedicated to visits (dep: 6.4) [PRO][P0]
-- [ ] "My visits" list — upcoming visit bookings, with client contact info to reach out on conflicts [PRO][P0]
+- [x] Booking requests inbox — list `pending` requests + status filters [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:692 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Request detail view + **accept/decline actions** [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:693 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Surface overlapping-pending-requests warning when viewing/accepting a request (dep: 6.2 overlap detection) — this is where the pro makes the manual call your booking model requires [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:694 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Handle accept failure cleanly (DB exclusion constraint rejected it — another request was already accepted for that slot) [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:695 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Calendar view of accepted/confirmed bookings, per slot [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:696 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Availability blocking UI [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:697 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Slot template editor (create/edit custom slots, pick from the 3 standard examples) [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:698 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] Dynamic pricing rules editor [PRO][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:699 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] **Service editor**: create a service, choose `pricingType` (fixed/per_guest/tiered/per_unit), fill price/tiers accordingly [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:700 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] **Visit availability editor**: set day-of-week + time ranges dedicated to visits (dep: 6.4) [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:701 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] "My visits" list — upcoming visit bookings, with client contact info to reach out on conflicts [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:702 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Walk-in booking creation form (creates as `confirmed` directly), **using the same service-picking UI as the client quote** (dep: 6.3) [PRO][P0]
 - [ ] Client management view [PRO][P1]
 - [ ] Revenue dashboard + commission breakdown — **commission rate shown read-only** (set by Zwadj admin, not editable by the pro) [PRO][P1]
@@ -735,7 +735,7 @@
 - [x] **UNE SEULE formule du « à partir de »**, `syncVenueBasePrice`, partagée par les deux services — minimum des créneaux actifs ET de leurs règles actives, sinon une promotion de basse saison ne se voit jamais en recherche [BACK][P0]
 - [x] Type de règle NON modifiable ; champs requis dépendants du type (une règle muette se saisirait sans erreur puis ne s'appliquerait jamais) [BACK][P0]
 - [x] `roundToDinar` écrite et testée mais **jamais appelée** : la résolution ne fait aucune arithmétique. Elle attend le premier calcul dérivé — **commission** [BACK][P1]
-- [ ] B4 devra montrer au pro le **prix résolu par date**, pas seulement sa grille : c'est le seul moyen qu'il vérifie que « une seule règle gagne » produit ce qu'il croyait saisir [PRO][P1]
+- [x] B4 devra montrer au pro le **prix résolu par date**, pas seulement sa grille : c'est le seul moyen qu'il vérifie que « une seule règle gagne » produit ce qu'il croyait saisir [PRO][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:738 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 
 **B3 — Disponibilité 🟡**
 - [x] `availability-engine.ts` PUR (13 tests). **Aucune migration nécessaire** : `AvailabilityBlock` + index GiST existent déjà [BACK][P0]
@@ -774,10 +774,10 @@
   - ⚠ **D59 SUPERSÈDE D47** : le chevauchement n'est **plus toléré**. Index unique **PARTIEL** `visit_bookings_no_double_confirmed` sur `(venue_id, scheduled_at) WHERE status = 'CONFIRMED'`. Garanti **en base** — une vérification applicative laisse une fenêtre entre le test et l'insertion, et deux clients qui cliquent sur le même créneau à la même seconde sont le cas **probable**. Le filtre partiel est ce qui permet à une **annulation de LIBÉRER** le créneau.
   - Un créneau pris reste **RENDU**, marqué `taken`, plutôt que retiré : une liste qui se contracte donne l'impression que la salle ne fait pas de visites ce jour-là.
 - [x] **D60 — canal de notification TRANCHÉ.** ~~⚠ canal SMS NON tranché~~ → `ProProfile.notifyByEmail` / `notifyBySms`, **deux booléens** (un enum `{EMAIL,SMS,BOTH}` exploserait dès le troisième canal). `CHECK pro_profiles_one_channel_required` **interdit de tout couper** — un pro sans canal ne verrait plus jamais une demande arriver. `NotificationChannel += SMS`, **transport WhatsApp** (ce que les pros algériens utilisent réellement), destinataire `ProProfile.phone`. [OPS][P0]
-- [ ] ⛔ **C3 — PROCHAIN LOT : prise de rendez-vous par le client.** Auto-confirmée ; **409 si le créneau est pris** — la base le garantit déjà (D59), le service doit **traduire le `P2002`** en conflit propre et **jamais le redoubler** d'une vérification applicative ; notification du pro selon D60. Reste à concevoir : corps de la demande, annulation par le client, service d'envoi WhatsApp. [BACK][P0]
+- [x] ⛔ **C3 — PROCHAIN LOT : prise de rendez-vous par le client.** Auto-confirmée ; **409 si le créneau est pris** — la base le garantit déjà (D59), le service doit **traduire le `P2002`** en conflit propre et **jamais le redoubler** d'une vérification applicative ; notification du pro selon D60. Reste à concevoir : corps de la demande, annulation par le client, service d'envoi WhatsApp. [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:777 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] ⚠ **À DÉCIDER AVANT C3** : fournisseur WhatsApp (API Cloud de Meta ? agrégateur local ?) et envoi **synchrone ou via pg-boss**. [OPS][P0]
-- [ ] **C4 — écran pro des plages de visite** [PRO][P0]
-- [ ] **C5 — écran client de prise de rendez-vous** [FRONT][P0]
+- [x] **C4 — écran pro des plages de visite** [PRO][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:779 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
+- [x] **C5 — écran client de prise de rendez-vous** [FRONT][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:780 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] `@zwadj/api-client` n'a **aucune** méthode pour les visites : volontaire, elles appartiennent à C4/C5. Ne pas les inventer avant. [FRONT][P1]
 
 ### A8 — Détail salle Client (livré)
@@ -788,7 +788,7 @@
 - [x] Galerie sans visionneuse JS (lien vers l'original) ; couverture en `loading="eager"` (LCP), suivantes en `lazy` ; alt du pro faisant foi [FRONT][P0]
 - [x] CTA réservation/visite présents et réellement `disabled`, avec la raison écrite (Flux B/C) [FRONT][P0]
 - [x] `generateMetadata` : titre, description (accroche du pro, jamais la description longue tronquée), image OG depuis la couverture [FRONT][P1]
-- [ ] Page **404 bilingue** dédiée aux salles (aujourd'hui `_not-found` par défaut) [FRONT][P1]
+- [x] Page **404 bilingue** dédiée aux salles (aujourd'hui `_not-found` par défaut) [FRONT][P1] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:791 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Données structurées schema.org sur le détail (backlog 23.8) [FRONT][P1]
 - [x] Rond à initiales + menu de compte (Lot A11a) — `useDismissLayer` EXTRAIT de `ConfirmDialog` et partagé (un seul piège de focus dans le dépôt) ; `ConfirmDialog` recâblé dessus, ses tests A5 servant de filet de régression [PRO][P0]
 - [x] Page « Configuration du compte » (Lot A11a) — profil (`businessName`/`phone`/`phone2`), e-mail, mot de passe (D42 : AUCUN champ « ancien » quand il n'en existe pas), demande de suppression (TROIS états, formulation verrouillée « validée par Zwadj ») [PRO][P0]
@@ -832,12 +832,16 @@
 MVP initial. Le cadrage est écrit (`ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 28 ») : emplacement — dont une 4ᵉ application
 —, langue, premier admin, rejet, sécurité, découpage = **décisions D-1 à D-10, dues à Ko**. Rien n'est ouvert par cette
 annotation. D318 ne l'avait pas écrite — écart 4 de la lecture adverse de D320.)*
+⛔ *(D321, 01/10/2026 : **D-1 arbitrée par Ko** — « a2. Une section `/admin` dans l'app Pro. » Et, mot pour mot : « Annote
+« pas d'app admin » et la décision « une 4ᵉ application n'est pas justifiée » : elles tiennent. » ⇒ **la décision ci-dessus
+(« a 4th application is unjustified ») TIENT** ; ce qui change, c'est qu'une **page** d'administration existera, comme
+section de l'app Pro. Les autres arbitrages (D-2 à D-10) : `ZWADJ_CONTINUITE.md`, cadrage du rang 28, § 6.)*
 
-- [ ] `POST /admin/venues/:id/publish` — protected endpoint (already listed in 6.1) [BACK][P0]
+- [x] `POST /admin/venues/:id/publish` — protected endpoint (already listed in 6.1) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:830 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] `PATCH /admin/venues/:id/reject` — protected endpoint, sets back to draft with a reason [BACK][P1] ⛔ *(D320 : route, état, motif et information du pro cadrés — décisions D-4 et D-5, dues à Ko ; cadrage du rang 28, § 2.d.)*
-- [ ] `PATCH /admin/venues/:id/commission-rate` — protected endpoint (already listed in Phase 7) [BACK][P0]
+- [x] `PATCH /admin/venues/:id/commission-rate` — protected endpoint (already listed in Phase 7) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:832 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] `POST /admin/cashback-claims/:id/verify` and `/pay` — protected endpoints (already listed in 6.5) [BACK][P0]
-- [ ] Admin role + guard reused from Phase 5 RBAC (no separate admin auth system) [BACK][P0]
+- [x] Admin role + guard reused from Phase 5 RBAC (no separate admin auth system) [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:834 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Document the DBeaver-based workflow for internal use (which tables, which fields to check before publishing, verifying cashback claims) [SHARED][P1] ⛔ *(D320 : la création du premier admin par procédure SQL écrite est l'option (c3) de la décision D-3, due à Ko ; cadrage du rang 28, § 2.c.)*
 
 > Deferred to post-MVP (build a real `apps/admin` only if/when justified): users management UI, review moderation queue UI, dispute/refund handling UI, promo-code management, editorial CMS, BI/KPI dashboards, audit-log viewer.
@@ -1080,7 +1084,7 @@ cookies n'est pas à elle seule une preuve de non-conformité » (audit).)*
 - [ ] Downloadable revenue statements/exports for venues (accounting) [PRO][P2]
 
 ### 23.6 Account & admin security hardening (was thin)
-- [ ] MFA/2FA for admin & super-admin accounts [ADMIN][P0] ⛔ *(D302 : absent à `HEAD` — audit sécu 09/09, contrôle 12 ; reports de D302, « audit sécu 09/09 · divers », 3.)* ⛔ *(D320 : maintenant ou avant le lancement — décision D-7, due à Ko ; cadrage du rang 28, § 2.e.)*
+- [ ] MFA/2FA for admin & super-admin accounts [ADMIN][P0] ⛔ *(D321, 01/10/2026 : **arbitrée par Ko, D-7** — « e1-b. La MFA est REPOUSSÉE, PAS ANNULÉE : avant le lancement, hors v1. Elle BLOQUE tout déploiement. » Entrée de suivi : « Reports de D321 ».)* ⛔ *(D302 : absent à `HEAD` — audit sécu 09/09, contrôle 12 ; reports de D302, « audit sécu 09/09 · divers », 3.)* ⛔ *(D320 : maintenant ou avant le lancement — décision D-7, due à Ko ; cadrage du rang 28, § 2.e.)*
 - [ ] Optional 2FA for pro accounts [PRO][P1]
 - [ ] Active-sessions list + "log out everywhere" [SHARED][P2]
 - [ ] Phone OTP verification (primary contact in Algeria) [BACK][P1]
@@ -2468,6 +2472,82 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 01/10/2026 — rang 29, la page de réservation du client (D321)
+
+Détail : section D321 et cadrage du rang 28, § 6, de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302). ⚠ **Ce que ce lot a écrit
+AILLEURS dans ce fichier** : **61 entrées cochées** avec renvoi et **1 annotée sans être cochée** (B:650, « ± » et bornes
+absents) — les 62 « RÉALISÉ » de D315 re-confrontées au code à `b5bd382` (`docs/preuves/D321/entrees/`) ; l'en-tête « No
+`apps/admin` » et la décision de la PHASE 12 (**tiennent**, D-1) ; D23 (« Pro auth + role-gated routing », D-1) ; la MFA
+admin (D-7) ; « Integrate transactional email provider » (le lot de l'e-mail réel, D-5).
+⛔ **TOUT CE QUE LES ARBITRAGES DE KO REPOUSSENT DEVIENT UNE ENTRÉE OUVERTE** (Ko) — les quatre premières ci-dessous.
+⚠ **L'homonymie « D4 »**, que Ko demande de signaler « si ce n'est pas déjà fait » : **déjà faite** par D320 — entrée
+`[DOC]` « « D4 » désigne deux décisions différentes », section des reports de D320, juste en dessous ; **non dupliquée**.
+
+- [ ] **[SEC]** **Second facteur (MFA) pour les comptes ADMIN — REPOUSSÉ, PAS ANNULÉ** (arbitrage de Ko D-7 : « avant le
+  lancement, hors v1 »). ⇒ ⛔ **BLOQUE : TOUT DÉPLOIEMENT** (Ko : « Elle BLOQUE tout déploiement. »). Entrée historique :
+  « MFA/2FA for admin & super-admin accounts » (PHASE 23, annotée). ⇒ **COÛT** : code (compte) ; **dépendance** neuve (TOTP
+  ou WebAuthn) ; **migration** (secret ou clé par compte) ; **contrat d'API** de connexion modifié ; e2e exigée (auth),
+  horloge figée ; procédure de récupération à écrire. Options : cadrage du rang 28, § 2.e.
+- [ ] **[SEC]** **Relire rôle et statut EN BASE sur les routes ADMIN (e3-c) — REPOUSSÉ, PAS ANNULÉ** (arbitrage de Ko D-9 :
+  « avant le lancement, avec la MFA »). Aujourd'hui (e3-a, arbitré pour la v1) : un ADMIN rétrogradé ou suspendu garde ses
+  droits jusqu'à l'expiration de son jeton d'accès, ≤ `JWT_ACCESS_TTL` (`15m` par défaut) — écrit dans `AGENTS.md`,
+  invariants, bloc « ADMINISTRATION ». ⇒ ⛔ **BLOQUE : TOUT DÉPLOIEMENT** (Ko : « Il BLOQUE tout déploiement. »). ⇒
+  **COÛT** : code d'auth (compte) — une lecture de plus par appel ADMIN ; s'écarte de D4 (claims du jeton) pour ces routes ;
+  ni contrat ni migration ; e2e exigée (auth).
+- [ ] **[ADMIN]** **L'e-mail au pro quand sa salle est rejetée (D-5, p1) — REPOUSSÉ** (Ko : « L'e-mail (p1) est REPOUSSÉ au
+  lot de l'e-mail réel. »). ⇒ **BLOQUE** : rien ; **se fait AVEC le lot de l'e-mail réel** — « Integrate transactional email
+  provider » (8.1, annotée). Ce qui vient avant, en v1 : le pro lit le refus et son motif à l'étape « Publication » (p2,
+  ADM-1/ADM-2). ⇒ **COÛT** : code (compte) ; textes FR **et** AR dans `packages/i18n` (sous la porte de parité — l'exemption
+  de D-2 ne couvre pas ce que lit le pro) ; envoi **après commit** (patron de la décision de suppression) ; e2e : non.
+- [ ] **[ADMIN]** **L'écran du journal des actions admin (D-8) — REPOUSSÉ** (Ko : « L'écran du journal est REPOUSSÉ. »). Le
+  journal lui-même (`audit_logs`, écrit dans la transaction de publier, rejeter, approuver ou rejeter une suppression) est
+  dans ADM-1. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code (compte) ; une route ADMIN de lecture (**contrat neuf**) ; un écran
+  sous `/admin` (textes français hors `packages/i18n`, D-2) ; ni migration ; e2e à décider.
+
+**Partie B (code) — ce que le lot a VU sans le corriger** (un défaut croisé se rapporte, il ne se corrige pas en passant) :
+- [ ] **[I18N]** **Trois clés arabes neuves, NON RELUES par un humain** : `venueDetail.booking.dayFree` (« {date}، متاح »),
+  `dayFull` (« {date}، غير متاح »), `chosen` (« اختيارك: {date} · {slot} ») — les deux premières reprennent les mots de
+  `venueDetail.calendar.status.AVAILABLE` / `BLOCKED`. Rejoignent les clés arabes non relues déjà inscrites. ⇒ **BLOQUE** :
+  rien d'ouvert ; à faire **avant la production**. ⇒ **COÛT** : documentaire hors dépôt (relecture) puis une ligne par clé ;
+  e2e : non.
+- [ ] **[CLIENT]** **En arabe, le panneau de demande affiche les noms de créneaux, de prestations, de paliers et d'unités EN
+  FRANÇAIS** — `slotNames` lit `nameFr` (`booking-request-panel.tsx`), et les prestations `nameFr`, `labelFr`, `unitNameFr` ;
+  le DTO porte pourtant `nameAr`, `labelAr`, `unitNameAr`. **Relevé dans le code**, pas sur une capture (les captures AR de
+  D321 sont anonymes : aucun créneau n'y est ouvert) ; **non corrigé** : hors de la demande de Ko (calendrier, libellés, adresse, gardes) — un changement de comportement non
+  demandé s'arrête et se demande (`CLAUDE.md`). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code (compte) ; client seul ; aucun
+  contrat ; e2e AR à étendre ; ⚠ les libellés de prestation touchent l'**instruction de paiement** (branche 6) — classement
+  par le relecteur avant tout code.
+- [ ] **[CLIENT]** **La fiche salle porte DEUX calendriers** — celui de disponibilité et de prix (B5, `availability-calendar.tsx`,
+  18 mois, un appel par mois) et celui du panneau de demande (rang 29, la fenêtre de six mois déjà chargée). Même grille,
+  mêmes classes, deux sources. ⇒ **À ordonner par Ko** (fusion, retrait de l'un, ou statu quo). ⇒ **COÛT** : code (compte) ;
+  client seul ; e2e : la fiche ; ⚠ le calendrier B5 affiche des prix (formatés, reçus du serveur — hors du chemin de l'argent
+  par le principe de direction, D307).
+- [ ] **[CLIENT]** **Un créneau `REQUESTED` n'est pas choisissable dans le panneau**, alors que le serveur accepte qu'une
+  demande en chevauche une autre en attente (décision produit, `AGENTS.md`) — comportement d'AVANT ce lot (`free = status ===
+  "AVAILABLE"`), conservé tel quel par la borne de D316. Écart ou choix ? **Non tranché ici.** ⇒ **À ordonner par Ko.** ⇒
+  **COÛT** : décision d'abord ; puis code (compte), une ligne et ses tests ; ⚠ transport de la date vers le prix : classement
+  par le relecteur.
+- [ ] **[CLIENT][PRO]** **Les autres adresses de pages écrites en dur** — relevé en lecture seule, consigne de Ko : client
+  **38** occurrences de **13** adresses (dont la constante de connexion), pro **40** de **15** (dont la constante, et `/auth/me`
+  qui est une route d'API — faux positif lu au contexte). Détail : `docs/preuves/D321/adresses/releve.txt`. Les plus
+  fréquentes : `/salles` (12 côté client, 9 côté pro), `/calendrier`, `/salles/nouvelle` (4 chacune côté pro). ⇒ **À ordonner
+  par Ko.** ⇒ **COÛT** : code (compte) ; les deux applications ; patron prêt (`LOGIN_PATH` et sa garde).
+- [ ] **[TEST]** **Des tests écrivent encore l'adresse de connexion en dur** — hors de la portée de LA garde, qui ne lit que
+  les sources (écrit dans son en-tête) : `apps/client/src/components/auth/google-signin.test.tsx` (attendu
+  `"http://localhost:5173/auth/connexion"`), `login-form.test.tsx` (`usePathname`), `apps/pro/src/App.test.tsx` (quatre
+  `renderAt("/auth/connexion")`), `e2e/specs/r25-lien-connexion.e2e.ts` (l'URL attendue). Un attendu écrit de mémoire (D209,
+  n° 6). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code de test (compte) ; e2e : une spec.
+- [ ] **[CLIENT]** **À 360 px, la fiche salle FRANÇAISE déborde de 4 px — par l'en-tête du site** : `.header-auth`
+  (« العربية · Connexion · Inscription ») va de 20 à 364 px ; l'arabe ne déborde pas ; **le panneau de demande : 0 élément**.
+  MESURÉ (`docs/preuves/D321/captures/debordement.txt`). Préexistant : **inférence** — ce lot n'a changé dans l'en-tête que
+  l'attribut `href` d'un lien. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code client (compte) ; CSS de l'en-tête ; e2e : à
+  360 px ; chemin de l'argent : non.
+- [ ] **[DOC]** **Trois entrées du backlog portent un constat FAUX, relevé par D315 et resté** : B:571 (à `ffd32e9`)
+  « pg-boss already installed » — absent de tous les `package.json` ; B:781 « aucune méthode pour les visites » —
+  `visit-bookings-client` existe ; « DÉFAUT B » (B:1325, résolu par D254). Elles n'étaient pas dans la consigne du rang 29
+  (« les 62 réalisées et ouvertes ») : non touchées. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : documentaire (ne compte pas) ;
+  `ZWADJ_BACKLOG.md` seul ; re-confronter à `HEAD` avant d'écrire (le patron : `docs/preuves/D321/entrees/`).
+
 ## Reports du 01/10/2026 — rang 28, le cadrage de la page d'administration (D320)
 
 Détail : section D320 et « ⛔ CADRAGE DU RANG 28 » de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302). ⚠ **Ce que ce lot a écrit
@@ -2498,7 +2578,13 @@ D316, **cochée avec son motif** ; l'entrée `[CLIENT]` des 182 boutons, **annot
 `[E2E][P0]` `fetch failed` de D265, **annotée** (sa seconde piste, mesurée) ; l'entrée `[DOC][P3]` « POURQUOI (b) »
 (annotée : elle suit désormais « RANG 27 »).
 
-- [ ] **[TEST]** **Côté CLIENT, les gardes du parcours ne sont prouvées que par leurs DEUX BRAS dans la spec, pas par une
+- [x] ✅ *(D321, 01/10/2026 : **FAIT au rang 29, ordonné par Ko**, permis par la décision du relecteur de D318 — cibles
+  **R26-3** (le libellé de statut que lit le client, dont « Acceptée — acompte à régler », branche 6 : MESURE, pas changement)
+  et **R26-4** (sa liste) dans `neutralisation/neutralize-r26.py` : **4 gardes mordues sur 4, toutes lues** — R26-3 rougit sur
+  « le client ne voit pas l'acceptation » et « le client ne voit pas le refus » ; arbre restauré, vérifié au départ et à
+  l'arrivée. Pièces : `docs/preuves/D321/neutralisation/r26/`. ⚠ La sortie de « Demandes » après acceptation (branche 2,
+  partage « Demandes » / « Réservations ») n'est **toujours pas** neutralisée : non ordonné.)*
+  **[TEST]** **Côté CLIENT, les gardes du parcours ne sont prouvées que par leurs DEUX BRAS dans la spec, pas par une
   neutralisation** — `e2e/specs/r26-parcours-reservation.e2e.ts` exige le libellé du résultat ABSENT pendant l'attente, puis
   PRÉSENT après la réponse du pro, par le même localisateur. La mutation qui ferait rougir ces assertions toucherait la section
   « Mes réservations », qui présente les montants et « Acceptée — acompte à régler » (**une instruction de paiement, branche
@@ -2520,7 +2606,10 @@ D316, **cochée avec son motif** ; l'entrée `[CLIENT]` des 182 boutons, **annot
   vérifiées). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code d'instruments (compte) — un dossier par passe dans les harnais, ou
   dans `lancer-campagnes.py` ; les harnais du chemin de l'argent en font partie (branche 4) : pause ; e2e : non ; migration :
   non.
-- [ ] **[TEST]** **Aucune garde ne tient l'API de l'e2e hors surveillance** — le correctif de l'étape 1 est une ligne de
+- [x] ✅ *(D321, 01/10/2026 : **FAIT au rang 29, ordonné par Ko** — `apps/api/src/common/e2e-api-sans-surveillance.spec.ts`
+  lit la configuration par l'AST et RÉSOUT le script que `pnpm` lancera (`run dev` ⇒ `nest start --watch`) ; jouée à chaque
+  `pnpm test` ; calibrée sur la configuration d'avant D317 ; neutralisée par R29-15, rouge lu.)*
+  **[TEST]** **Aucune garde ne tient l'API de l'e2e hors surveillance** — le correctif de l'étape 1 est une ligne de
   `e2e/playwright.config.ts` (`nest start` au lieu de `run dev`) ; si `--watch` y revient, **rien ne rougit** avant la
   prochaine écriture concurrente. La mesure qui l'a prouvé est versée et rejouable (`docs/preuves/D317/etape1/`, rouge 21 + 23
   sondes en échec, vert 0), elle n'est pas une porte. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : e2e (compte) — le paquet `e2e`
@@ -2534,7 +2623,12 @@ Ko** », et son **COÛT**. ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier
 **cochées avec leur motif** (reports de D315, ci-dessous) ; l'entrée `[DOC][P3]` « POURQUOI (b) » (annotée : elle suit
 désormais « RANG 26 »).
 
-- [ ] **[CLIENT]** **Neuf liens écrivent encore `href="/auth/connexion"` en littéral** — relevé le 26/09/2026 dans
+- [x] ✅ *(D321, 01/10/2026 : **FAIT au rang 29, ordonné par Ko** — les neuf, les deux vers la SPA pro
+  (`${PRO_URL}${LOGIN_PATH}`) et la métadonnée canonique de la page passent par `LOGIN_PATH` ; le Pro reçoit SA constante
+  (`apps/pro/src/routes.ts`, huit liens et la route) ; **une garde** (`apps/client/src/lib/login-path-guard.test.ts`, AST des
+  sources des deux applications) rougit si l'adresse réapparaît ailleurs — rouge lu sur l'arbre d'avant (21 adresses),
+  neutralisée par R29-12 à R29-14.)*
+  **[CLIENT]** **Neuf liens écrivent encore `href="/auth/connexion"` en littéral** — relevé le 26/09/2026 dans
   `apps/client/src` (hors tests ; `grep -c` par fichier) : `account-settings-view.tsx`, `auth-ui.tsx`, `recovery-forms.tsx`
   (×3), `register-form.tsx`, `verify-email-view.tsx`, `site-chrome.tsx`, `visit-booking-panel.tsx` — plus deux liens vers la
   SPA pro (`${PRO_URL}/auth/connexion`, autre application). **Tous justes aujourd'hui.** ⚠ Ce décompte a d'abord été écrit
@@ -2547,7 +2641,10 @@ désormais « RANG 26 »).
   هذه القاعة. أعد المحاولة بعد قليل. »), calquée sur `venueDetail.calendar.error`. Rejoint les clés arabes non relues déjà
   inscrites ; **aucune relecture humaine de l'arabe n'est tracée** (D315). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : relecture
   humaine ; `packages/i18n/messages/ar.json` ; e2e : non ; chemin de l'argent : non.
-- [ ] **[CLIENT]** **La fiche salle fait ~14 500 px de haut : le panneau de demande liste 182 boutons, un par jour ×
+- [x] ✅ *(D321, 01/10/2026 : **FAIT au rang 29, ordonné par Ko** — un calendrier par mois dans la même fenêtre de 182 jours
+  (`booking-date-picker.tsx`, module pur `lib/booking-calendar.ts`), dates indisponibles inactives, clavier, lecteur d'écran,
+  arabe de droite à gauche ; hauteur de la fiche mesurée sur les captures de D321 ; neutralisé par `neutralize-r29.py`.)*
+  **[CLIENT]** **La fiche salle fait ~14 500 px de haut : le panneau de demande liste 182 boutons, un par jour ×
   créneau** — MESURÉ sur les captures d'après correctif (`docs/preuves/D316/captures/`, 04 : 1280 × 14 487 ; 26 : 1280 ×
   14 798). Le composant annonçait une fenêtre « assez courte pour que la liste reste lisible sur un téléphone » ; tant que le
   panneau était cassé (D315), personne ne pouvait le voir. **Révélé par la réparation, non corrigé** (un lot à la fois).
@@ -2608,7 +2705,10 @@ désormais « RANG 25 »). **Aucune entrée n'a été cochée ni barrée** : les
   `docs/preuves/D315/captures/releve.txt`). Depuis `909702a`. Aucun test ne l'assertit. ⇒ **BLOQUE** : l'entrée du visiteur
   anonyme dans le parcours de demande — **à ordonner par Ko**. ⇒ **COÛT** : code client (compte) ; même fichier, et un test ;
   e2e : idem ; chemin de l'argent : même fichier — **à trancher par le relecteur**, pause ; migration : non.
-- [ ] **[CLIENT]** **Le panneau de demande porte 1 `<label>` pour 8 champs (D143)** — 7 `<input>` et 1 `<textarea>`, 6
+- [x] ✅ *(D321, 01/10/2026 : **FAIT au rang 29, ordonné par Ko** — chaque champ du panneau a un `<label>` VISIBLE associé
+  (`Field` du client : astérisque hors du label, `required` sur les obligatoires — D32) ; palier et quantité compris ; rouge
+  lu avant (8 champs sans libellé), vert après ; neutralisé par R29-10 et R29-11. Aucun texte neuf : les libellés existaient.)*
+  **[CLIENT]** **Le panneau de demande porte 1 `<label>` pour 8 champs (D143)** — 7 `<input>` et 1 `<textarea>`, 6
   `placeholder`, 8 `aria-label` (compté dans le source ; capture 26). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code client
   (compte) ; même fichier, messages FR/AR ; e2e : B8 ne visite pas la fiche ; chemin de l'argent : même fichier ; migration :
   non.
@@ -2627,7 +2727,11 @@ désormais « RANG 25 »). **Aucune entrée n'a été cochée ni barrée** : les
   Ko**. ⇒ **COÛT** : code (compte) — soit le client partagé (`auth-client.ts` ou `account-client.ts`, les deux applications à
   la fois), soit l'API (`account.controller.ts` : changer la réponse est un **contrat d'API**, à demander avant, `CLAUDE.md`) ;
   e2e exigée (auth, compte) ; chemin de l'argent : non ; migration : non.
-- [ ] **[DOC]** **62 entrées ouvertes des phases 6, 8, 9, 10 et 12 sont RÉALISÉES dans le code**, et quelques-unes portent un
+- [x] ✅ *(D321, 01/10/2026 : **ordonné par Ko et FAIT pour les 62** — « Re-confronte chacune à HEAD… Coche celles qui
+  tiennent, avec renvoi » : **61 cochées**, **1 ne tient pas** (B:650, ni « ± » ni bornes — annotée, laissée ouverte) ;
+  `docs/preuves/D321/entrees/`. ⚠ Les **constats faux** nommés ci-dessous (B:571, B:781, « DÉFAUT B ») ne sont pas dans la
+  consigne : ils restent, entrée neuve aux reports de D321.)*
+  **[DOC]** **62 entrées ouvertes des phases 6, 8, 9, 10 et 12 sont RÉALISÉES dans le code**, et quelques-unes portent un
   constat faux (B:571 « pg-boss already installed » : absent de tous les `package.json` ; B:781 « aucune méthode pour les
   visites » : `visit-bookings-client` existe). Hors de ces phases, au moins « DÉFAUT B » (B:1325, résolu par D254) est dans le
   même cas. Verdicts un à un : `docs/preuves/D315/etat-produit/ENTREES-CONFRONTEES.md` (renvois à `ffd32e9`). ⇒ **À ordonner
@@ -3438,7 +3542,8 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   n'y touche pas)* ⛔ *(D319, 01/10/2026 : il suit désormais la clôture du rang 27 et « RANG 28 : EN ATTENTE
   D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D320, 01/10/2026 : il suit désormais
   l'arbitrage et la clôture du rang 28, les décisions dues à Ko de D320 et « RANG 29 : EN ATTENTE D'ARBITRAGE DE KO » —
-  même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
+  même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D321, 01/10/2026 : il suit désormais l'arbitrage du rang 29 et
+  « RANG 30 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

@@ -10,6 +10,7 @@ import { useAuth } from "../../lib/auth/auth-context";
 import { issuesToFieldErrors, validate, type FieldErrors } from "../../lib/auth/form-validation";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
 import { GoogleSignIn } from "./google-signin";
+import { LOGIN_PATH } from "../../lib/routes";
 
 // Le schéma API (source de vérité) + deux contrôles PUREMENT front :
 // confirmation et acceptation CGU — l'API ne les reçoit pas (contrat Lot 1).
@@ -211,7 +212,7 @@ export function RegisterForm() {
 
         <p className="form-foot">
           {t("signup.hasAccount")}{" "}
-          <Link href="/auth/connexion" className="link-accent">
+          <Link href={LOGIN_PATH} className="link-accent">
             {t("signup.goLogin")}
           </Link>
         </p>

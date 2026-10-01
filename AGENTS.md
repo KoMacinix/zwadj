@@ -10,7 +10,7 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 - Paiement : **Chargily uniquement au MVP** (agrège CIB + Edahabia ; BaridiMob différé, intégration séparée à évaluer plus tard).
 - i18n : **next-intl** côté apps/client (SSR), i18next côté apps/pro. packages/i18n contient messages + formatters, pas le runtime.
 - Validation : Zod (partagé front/back). Tests : Vitest (+ Playwright pour l'e2e).
-- **Pas d'apps/admin au MVP.** Validation/publication des salles via endpoints admin protégés + accès direct DB (DBeaver) en interne. ⛔ *(D318, 01/10/2026 : **révisée par arbitrage de Ko** — « Je veux une page d'administration. » Décision produit n°4 ANNOTÉE, pas réécrite : `ZWADJ_CONTINUITE.md`, « Les décisions produit tranchées », item 4. Périmètre, emplacement et création du premier compte admin : lot de cadrage À VENIR, dû à l'arbitrage de Ko — rien n'est codé par cette phrase.)* ⛔ *(D320, 01/10/2026 : **cadrage écrit** — `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 28 » ; l'emplacement (dont une application séparée), la langue, le premier admin, le rejet, la sécurité et le découpage sont des **décisions dues à Ko** (D-1 à D-10). Toujours rien de codé.)*
+- **Pas d'apps/admin au MVP.** Validation/publication des salles via endpoints admin protégés + accès direct DB (DBeaver) en interne. ⛔ *(D318, 01/10/2026 : **révisée par arbitrage de Ko** — « Je veux une page d'administration. » Décision produit n°4 ANNOTÉE, pas réécrite : `ZWADJ_CONTINUITE.md`, « Les décisions produit tranchées », item 4. Périmètre, emplacement et création du premier compte admin : lot de cadrage À VENIR, dû à l'arbitrage de Ko — rien n'est codé par cette phrase.)* ⛔ *(D320, 01/10/2026 : **cadrage écrit** — `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 28 » ; l'emplacement (dont une application séparée), la langue, le premier admin, le rejet, la sécurité et le découpage sont des **décisions dues à Ko** (D-1 à D-10). Toujours rien de codé.)* ⛔ *(D321, 01/10/2026 : **D-1 arbitrée par Ko**, mot pour mot : « a2. Une section `/admin` dans l'app Pro. » ⇒ **« pas d'app admin » TIENT** — aucune application séparée, aucun paquet `apps/admin`. Les autres arbitrages : bloc « ADMINISTRATION » des invariants, ci-dessous ; texte complet : `ZWADJ_CONTINUITE.md`, cadrage du rang 28, § 6.)*
 
 ## Palette & design tokens
 - **Palette double, une par app** (pivot décidé après la tranche Auth — remplace l'ancien accent unique) :
@@ -185,6 +185,25 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 - **UN CHAMP DE SAISIE PORTE UN `<label>` VISIBLE (D143).** `aria-label` seul sert les tests et la voix, et laisse des cases nues indistinguables à l'œil.
 - Argent en entiers (centimes)/Decimal, jamais de float. Dates en UTC. IDs en UUIDv7.
 - Bilingue FR/AR + RTL, aucune chaîne en dur. Propriétés CSS logiques (pas physiques) pour le support RTL. Pages publiques en SSR/SSG. Accessibilité AA.
+  ⛔ *(D321, 01/10/2026 — **EXEMPTION ÉCRITE, BORNÉE AUX ÉCRANS `/admin`**, arbitrage de Ko D-2, mot pour mot : « b3. Les
+  textes de l'admin vivent hors de `packages/i18n`, en français seul. Exemption écrite de l'invariant bilingue, bornée aux
+  écrans `/admin`. » ⚠ *Dérivé par la session* : tout ce que le **pro** lit d'un rejet (D-5) reste **bilingue**, dans
+  `packages/i18n`, sous la porte de parité — l'exemption ne couvre que ce que l'ADMIN lit.)*
+- ⛔ **ADMINISTRATION — ARBITRAGES DE KO DU 01/10/2026 (D321)**, mot pour mot ; options et coûts : `ZWADJ_CONTINUITE.md`,
+  cadrage du rang 28 (§ 6 pour les arbitrages). ⛔ **Rien n'est codé par eux** : ADM-1 et ADM-2 attendent chacun un rang.
+  - **Emplacement (D-1)** : « a2. Une section `/admin` dans l'app Pro. D23 devient : l'app Pro accepte un PRO hors de
+    `/admin`, et un ADMIN sous `/admin` seulement. »
+  - **Premier admin (D-3)** : « c1. Un script versionné qui promeut un compte existant, vérifié et actif, et refuse sinon.
+    Aucun mot de passe manipulé. »
+  - **Second facteur (D-7)** : « e1-b. La MFA est REPOUSSÉE, PAS ANNULÉE : avant le lancement, hors v1. Elle BLOQUE tout
+    déploiement. »
+  - **Rétrogradation (D-9)** : « e3-a pour la v1, borné par `JWT_ACCESS_TTL`, et écrit. e3-c (relire rôle et statut en base
+    sur les routes ADMIN) est REPOUSSÉ, PAS ANNULÉ : avant le lancement, avec la MFA. Il BLOQUE tout déploiement. »
+    ⇒ **ÉCRIT, comme Ko l'exige** : un ADMIN rétrogradé ou suspendu **garde ses droits jusqu'à l'expiration de son jeton
+    d'accès** — au plus `JWT_ACCESS_TTL` (`15m` par défaut, `env.spec.ts:20`) ; le rôle est une claim du jeton, que
+    `JwtAuthGuard` croit sans relire la base, et révoquer le rafraîchissement n'écourte pas un jeton d'accès déjà émis.
+  - ⛔ **AUCUN DÉPLOIEMENT TANT QUE LA MFA (D-7) ET LA RELECTURE EN BASE SUR LES ROUTES ADMIN (D-9, e3-c) NE SONT PAS
+    FAITES** — entrées ouvertes de `ZWADJ_BACKLOG.md`, « Reports de D321 ».
 - Aucun secret dans le code. Entrées validées/assainies. ORM paramétré, pas de SQL concaténé.
 - D32 — Champs obligatoires : l'astérisque visuel est aria-hidden et vit hors du `<label>` ; l'attribut natif `required` est TOUJOURS posé sur l'input réel correspondant ; les formulaires restent `noValidate` avec erreurs Zod localisées — jamais de validation native navigateur.
 - OAuth Google (Lot 8) : ne JAMAIS créer ni lier un compte sans `email_verified === true` dans le token vérifié. La création via Google produit TOUJOURS role=CLIENT ; PRO/ADMIN ne sont jamais connectables via Google. Le cookie refresh du flux Google est TOUJOURS persistant (D30). Un compte sans mot de passe (`passwordHash` null, impossible via register) répond au login classique par le MÊME 401 INVALID_CREDENTIALS avec coût argon2 factice (D5 étendu). La vérification du token passe par le port GOOGLE_TOKEN_VERIFIER (adapter `google-auth-library`, audience = GOOGLE_CLIENT_ID) — jamais de décodage maison du JWT Google.
@@ -243,6 +262,19 @@ laissaient le libellé au pluriel après la suppression d'une seconde salle (D78
 ⚠ Ce provider **ne charge rien avant qu'un PRO soit connecté** — monté au-dessus
 de toutes les routes, il tirait sinon un `GET /pro/venues` en 401 sur l'écran de
 connexion (famille D115).
+
+⛔ **(D321, 01/10/2026) D23 CHANGE — arbitrage de Ko D-1, mot pour mot : « D23 devient : l'app Pro accepte un PRO hors de
+`/admin`, et un ADMIN sous `/admin` seulement. »** Aujourd'hui `RequireProSession` refuse tout rôle ≠ PRO
+(`require-pro.tsx`) : c'est **ADM-2** qui écrira la garde ADMIN de `/admin` — **rien n'est codé par cette ligne**. ⚠ *Dérivé
+par la session* : un ADMIN hors de `/admin` reste refusé, un PRO sous `/admin` aussi ; l'autorité reste `RolesGuard` côté
+API (MD-ADM-1), la garde du front n'est qu'un confort.
+⛔ **(D321, 01/10/2026) L'ADRESSE DE CONNEXION EST DÉFINIE UNE SEULE FOIS PAR APPLICATION — `LOGIN_PATH`** :
+`apps/pro/src/routes.ts`, vérifiée contre la route qui rend `LoginPage` (`routes.test.tsx`), et
+`apps/client/src/lib/routes.ts`, vérifiée contre le fichier de la page (`routes.test.ts`). **UNE garde**,
+`apps/client/src/lib/login-path-guard.test.ts`, lit l'arbre TypeScript des sources des DEUX applications (chaînes, gabarits,
+texte JSX — jamais un commentaire) et rougit si une adresse de connexion apparaît ailleurs que dans ces deux constantes, ou
+si elles divergent (le client envoie ses pros vers `${PRO_URL}${LOGIN_PATH}`). Mesurée par `neutralize-r29.py` (R29-12 à
+R29-14). ⚠ Portée écrite : hors tests. Les AUTRES adresses de pages restent écrites en dur (relevé : backlog, reports de D321).
 
 ## Méthode
 - Livrer par tranches verticales fines (schéma → API → tests → UI). Écrire les tests et les faire passer.
@@ -622,8 +654,16 @@ rang 27 clos ; ~~le rang 28 attend l'arbitrage de Ko~~.)*
 ⛔ *(D320, 01/10/2026 : rang 28 **arbitré par Ko — documentaire** (le cadrage de la page d'administration), clos le même
 jour ; **compteur ZÉRO, inchangé** — ⚠ **sous réserve de la décision D-11, due à Ko** : la lecture adverse de D320 a trouvé
 que la certification de D319 s'est écartée de la forme que Ko avait écrite (lecture adverse de D317 omise, planchers
-réutilisés sans le dire) ; si Ko retire la marque, le compteur revient à DEUX. **Rang 29 : en attente d'arbitrage de
-Ko.**)*
+réutilisés sans le dire) ; si Ko retire la marque, le compteur revient à DEUX. ~~**Rang 29 : en attente d'arbitrage de
+Ko.**~~)* ⛔ *(D321, 01/10/2026 : **D-11 arbitrée par Ko — k1** : « La marque de D319 tient ; les écarts restent annotés. » ⇒
+le compteur **était ZÉRO**. Rang 29 **arbitré par Ko — lot de CODE** (la page de réservation du client) : compteur **ZÉRO →
+UN** à sa clôture.)* ⛔ *(D321, 01/10/2026 : **rang 29 CLOS — compteur UN** ; **rang 30 : en attente d'arbitrage de Ko** ; par
+D-10, le prochain lot de code de l'administration est ADM-1, puis une certification.)*
+⛔ **UNE CERTIFICATION QUI S'ÉCARTE DE LA FORME ÉCRITE PAR KO NOMME CET ÉCART DANS SON PROTOCOLE, AVANT LA MESURE — règle de
+Ko, 01/10/2026 (D321, arbitrage D-11), mot pour mot : « Règle pour la suite : une certification qui s'écarte de la forme que
+j'ai écrite nomme cet écart dans son protocole, avant la mesure. »** *Motif, dérivé par la session* : D319 avait écrit le
+**motif** de son réemploi des planchers avant la mesure, sans écrire qu'il s'**écartait** de la forme de Ko — et c'est une
+lecture adverse, après coup, qui l'a vu (D320).
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -832,7 +872,9 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   ⛔ *(D320, 01/10/2026 : « pas d'app admin » est **révisé par l'arbitrage de Ko de D318** — « Je veux une page
   d'administration » — ; qu'elle soit une **application séparée** ou une section d'une app existante est la décision D-1,
   due à Ko (`ZWADJ_CONTINUITE.md`, cadrage du rang 28). D318 n'avait pas annoté cette ligne — écart 4 de la lecture
-  adverse de D320.)*
+  adverse de D320.)* ⛔ *(D321, 01/10/2026 : **D-1 arbitrée — « a2. Une section `/admin` dans l'app Pro. »** Ko : « Annote
+  « pas d'app admin » et la décision « une 4ᵉ application n'est pas justifiée » : elles tiennent. » ⇒ **« pas d'app admin »
+  TIENT** : la page d'administration est une section de l'app Pro, pas une application.)*
 - Ne pas coder les chemins d'argent sans tests + demande de revue. ⛔ *(D302, 23/09/2026 : toujours vrai. Pour E3, la
   « revue » a désormais la forme ratifiée par Ko — une session adverse ouverte à froid, le relecteur (chat) qui
   décide, le veto de Ko —, et E3 n'est plus codé par Ko : point E3 juste en dessous.)* ⛔ *(D303 : cette forme de
@@ -983,7 +1025,8 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   RENFORCÉE », bloc D317 :
   - **les 182 boutons de date (fiche d'environ 14 500 px) ne sont PAS du chemin de l'argent** : « c'est la présentation des
     choix. La date choisie et son transport vers le calcul du prix ne changent pas. Même borne que D316. Le correctif (un
-    calendrier) est à ordonner par moi. » ;
+    calendrier) est à ordonner par moi. » ; ⛔ *(D321 : **ordonné par Ko et fait** — rang 29, calendrier par mois, borne de
+    D316 tenue : la ligne `setChosen` est inchangée.)*
   - ⛔ **PENDANT LA PAUSE, un test qui EXERCE un comportement du chemin de l'argent sans le modifier est PERMIS** : « il
     ajoute une garde, il ne change ni montant ni transition. Un défaut du chemin de l'argent qu'il révèle se rapporte ; il ne
     se corrige pas. » ⚠ *Dérivé par la session, pas une parole du relecteur* : une **neutralisation** modifie le code qu'elle
@@ -1009,13 +1052,21 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   permise. » *Motif* : « la pause arrête les changements du comportement de l'argent, pas la preuve de ses gardes. Une
   garde sans preuve de morsure n'est qu'une moitié de garde. » ⇒ **Conséquence** : la neutralisation côté CLIENT des
   assertions de `r26` (dont la branche 6, « Acceptée — acompte à régler »), que D317 avait laissée en question, est
-  **permise** — elle reste **à ordonner par Ko**, non faite par ce lot.
+  **permise** — elle reste **à ordonner par Ko**, non faite par ce lot. ⛔ *(D321 : **ordonnée par Ko et faite** — cibles
+  R26-3 (le libellé de statut du client, dont « Acceptée — acompte à régler ») et R26-4 (sa liste) de
+  `neutralisation/neutralize-r26.py` ; restauration prouvée par la vérification de l'arbre au départ et à l'arrivée.)*
 - ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D320) — DANS LA PREMIÈRE VERSION DE LA PAGE
   D'ADMINISTRATION, LE TAUX DE COMMISSION EST EN LECTURE SEULE** jusqu'à la reprise du chemin de l'argent. *Motif* : « le
   modifier valide un taux (branche 1, `venues-admin.service.ts`), et le chemin de l'argent est en pause. » ⇒ *Dérivé par la
   session, pas une parole du relecteur* : la page n'appelle **jamais** `PATCH /admin/venues/:id/commission-rate` ; la route
   reste dans l'API, inchangée. ⚠ **Question ouverte au relecteur** : journaliser le réglage des taux modifierait `setRates`
   (branche 1) — en pause ou non ? Texte et motif : `ZWADJ_CONTINUITE.md`, méthode renforcée, bloc D320 ; cadrage du rang 28.
+  ⛔ *(D321 : question **répondue** — bloc suivant.)*
+- ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D321) — LE RÉGLAGE DES TAUX N'EST PAS JOURNALISÉ PENDANT
+  LA PAUSE.** *Motif* : « écrire le journal dans `setRates` change la transaction d'une écriture d'argent (branche 1) : un
+  journal en échec annulerait le taux. De plus, la v1 n'appelle pas cette route, puisque le taux y est en lecture seule. »
+  ⇒ *Dérivé par la session* : le journal arbitré par Ko (D-8) couvre publier, rejeter, approuver ou rejeter une suppression ;
+  `setRates` reste **inchangé**. Texte : `ZWADJ_CONTINUITE.md`, méthode renforcée, bloc D321.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 

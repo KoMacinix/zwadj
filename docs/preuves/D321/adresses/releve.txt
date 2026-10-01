@@ -1,0 +1,116 @@
+  calibration ✓ positif : lien JSX : 1 (attendu 1)
+  calibration ✓ positif : gabarit : 1 (attendu 1)
+  calibration ✓ négatif : commentaire : 0 (attendu 0)
+  calibration ✓ négatif : import : 0 (attendu 0)
+  calibration ✓ négatif : API et fichier : 0 (attendu 0)
+  calibration : 5 bras · 0 manqué(s) (attendu 0)
+
+== apps/client/src : 59 fichiers parcourus · 38 occurrence(s) · 13 adresse(s) distincte(s)
+   12 × /salles
+        apps/client/src/app/[locale]/not-found.tsx:72 — attribut href=
+        apps/client/src/app/[locale]/salles/(recherche)/page.tsx:52 — propriété canonicalPath:
+        apps/client/src/components/filter-wizard.tsx:214 — appel router.push(…)
+        apps/client/src/components/home-view.tsx:117 — attribut action=
+        apps/client/src/components/home-view.tsx:195 — attribut href=
+        apps/client/src/components/search/search-view.tsx:238 — gabarit
+        apps/client/src/components/search/search-view.tsx:294 — gabarit
+        apps/client/src/components/search/search-view.tsx:308 — gabarit
+        apps/client/src/components/search/search-view.tsx:323 — gabarit
+        apps/client/src/components/search/search-view.tsx:382 — attribut href=
+        apps/client/src/components/site-nav.tsx:32 — propriété href:
+        apps/client/src/components/venue/venue-detail-view.tsx:52 — attribut href=
+    4 × /auth/inscription
+        apps/client/src/app/[locale]/auth/inscription/page.tsx:14 — propriété canonicalPath:
+        apps/client/src/components/auth/auth-ui.tsx:59 — attribut href=
+        apps/client/src/components/auth/login-form.tsx:105 — attribut href=
+        apps/client/src/components/site-chrome.tsx:60 — attribut href=
+    3 × /auth/mot-de-passe-oublie
+        apps/client/src/app/[locale]/auth/mot-de-passe-oublie/page.tsx:14 — propriété canonicalPath:
+        apps/client/src/components/auth/login-form.tsx:91 — attribut href=
+        apps/client/src/components/auth/recovery-forms.tsx:122 — attribut href=
+    3 × /cgu
+        apps/client/src/app/[locale]/cgu/page.tsx:15 — propriété canonicalPath:
+        apps/client/src/components/auth/register-form.tsx:190 — attribut href=
+        apps/client/src/components/site-footer.tsx:31 — attribut href=
+    3 × /compte
+        apps/client/src/components/site-chrome.tsx:50 — appel router.push(…)
+        apps/client/src/components/venue/booking-request-panel.tsx:242 — attribut href=
+        apps/client/src/components/venue/visit-booking-panel.tsx:116 — attribut href=
+    3 × /confidentialite
+        apps/client/src/app/[locale]/confidentialite/page.tsx:12 — propriété canonicalPath:
+        apps/client/src/components/auth/register-form.tsx:194 — attribut href=
+        apps/client/src/components/site-footer.tsx:34 — attribut href=
+    3 × /salles/
+        apps/client/src/app/[locale]/salles/[slug]/page.tsx:56 — gabarit
+        apps/client/src/components/account/visit-bookings-section.tsx:102 — gabarit
+        apps/client/src/components/venue-card.tsx:59 — gabarit
+    2 × /assistant
+        apps/client/src/app/[locale]/assistant/page.tsx:16 — propriété canonicalPath:
+        apps/client/src/components/home-view.tsx:168 — attribut href=
+    1 × /ar
+        apps/client/src/app/not-found.tsx:106 — attribut href=
+    1 × /auth/connexion
+        apps/client/src/lib/routes.ts:22 — VariableDeclaration
+    1 × /auth/reinitialisation
+        apps/client/src/app/[locale]/auth/reinitialisation/page.tsx:14 — propriété canonicalPath:
+    1 × /auth/verification-email
+        apps/client/src/app/[locale]/auth/verification-email/page.tsx:14 — propriété canonicalPath:
+    1 × /fr
+        apps/client/src/app/not-found.tsx:98 — attribut href=
+
+== apps/pro/src : 49 fichiers parcourus · 40 occurrence(s) · 15 adresse(s) distincte(s)
+    9 × /salles
+        apps/pro/src/App.tsx:156 — attribut path=
+        apps/pro/src/dashboard/dashboard-aside.tsx:165 — propriété to:
+        apps/pro/src/shell/pro-nav.tsx:48 — propriété to:
+        apps/pro/src/venues/create-venue-page.tsx:90 — attribut to=
+        apps/pro/src/venues/create-venue-page.tsx:143 — attribut to=
+        apps/pro/src/venues/edit-venue-page.tsx:142 — appel navigate(…)
+        apps/pro/src/venues/edit-venue-page.tsx:170 — attribut to=
+        apps/pro/src/venues/edit-venue-page.tsx:364 — attribut to=
+        apps/pro/src/venues/edit-venue-page.tsx:428 — attribut to=
+    4 × /calendrier
+        apps/pro/src/App.tsx:131 — attribut path=
+        apps/pro/src/dashboard/dashboard-aside.tsx:167 — propriété to:
+        apps/pro/src/shell/pro-nav.tsx:50 — propriété to:
+        apps/pro/src/venues/edit-venue-page.tsx:422 — gabarit
+    4 × /salles/nouvelle
+        apps/pro/src/App.tsx:166 — attribut path=
+        apps/pro/src/shell/pro-header.tsx:30 — appel navigate(…)
+        apps/pro/src/shell/venue-scope.tsx:53 — attribut to=
+        apps/pro/src/venues/venue-list-page.tsx:127 — attribut to=
+    3 × /auth/inscription
+        apps/pro/src/App.tsx:93 — attribut path=
+        apps/pro/src/auth/auth-ui.tsx:75 — attribut to=
+        apps/pro/src/auth/login-page.tsx:120 — attribut to=
+    3 × /auth/mot-de-passe-oublie
+        apps/pro/src/App.tsx:101 — attribut path=
+        apps/pro/src/auth/login-page.tsx:109 — attribut to=
+        apps/pro/src/auth/recovery-pages.tsx:115 — attribut to=
+    3 × /demandes
+        apps/pro/src/App.tsx:123 — attribut path=
+        apps/pro/src/dashboard/dashboard-aside.tsx:166 — propriété to:
+        apps/pro/src/shell/pro-nav.tsx:49 — propriété to:
+    3 × /reservations
+        apps/pro/src/App.tsx:139 — attribut path=
+        apps/pro/src/dashboard/dashboard-aside.tsx:168 — propriété to:
+        apps/pro/src/shell/pro-nav.tsx:51 — propriété to:
+    3 × /salles/
+        apps/pro/src/venues/create-venue-page.tsx:76 — gabarit
+        apps/pro/src/venues/edit-venue-page.tsx:422 — gabarit
+        apps/pro/src/venues/venue-list-page.tsx:210 — gabarit
+    2 × /compte
+        apps/pro/src/App.tsx:147 — attribut path=
+        apps/pro/src/shell/pro-header.tsx:31 — appel navigate(…)
+    1 × /auth/connexion
+        apps/pro/src/routes.ts:12 — VariableDeclaration
+    1 × /auth/me
+        apps/pro/src/auth/auth-context.tsx:81 — appel api.authedRequest(…)
+    1 × /auth/reinitialisation
+        apps/pro/src/App.tsx:112 — attribut path=
+    1 × /auth/verification-email
+        apps/pro/src/App.tsx:113 — attribut path=
+    1 × /cgu
+        apps/pro/src/auth/register-page.tsx:182 — gabarit
+    1 × /confidentialite
+        apps/pro/src/auth/register-page.tsx:186 — gabarit

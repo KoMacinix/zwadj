@@ -20,6 +20,7 @@ import { formatSlotRange, VISIT_DURATION_MINUTES, type VisitSlotDTO } from "@zwa
 import { getVisitSlots } from "../../lib/api";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
+import { LOGIN_PATH } from "../../lib/routes";
 
 /** Fenêtre proposée. Trente jours : au-delà, un rendez-vous de visite se
  *  reprogramme plus souvent qu'il ne se tient. */
@@ -184,7 +185,7 @@ export function VisitBookingPanel({ slug, client }: { slug: string; client?: Vis
         // Pas connecté : on ne cache pas les créneaux, on demande la session au
         // moment où elle devient nécessaire.
         <p style={{ marginBlockStart: 14 }}>
-          <Link href="/auth/connexion" className="btn btn-accent">
+          <Link href={LOGIN_PATH} className="btn btn-accent">
             {t("loginToBook")}
           </Link>
         </p>

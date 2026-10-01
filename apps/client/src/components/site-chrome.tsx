@@ -16,6 +16,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "../i18n/navigation";
 import { useAuth } from "../lib/auth/auth-context";
 import { SiteNav } from "./site-nav";
+import { LOGIN_PATH } from "../lib/routes";
 
 export function SiteHeader() {
   const t = useTranslations("auth.ui.header");
@@ -53,7 +54,7 @@ export function SiteHeader() {
           />
         ) : status === "anonymous" ? (
           <>
-            <Link href="/auth/connexion" className="btn btn-ghost">
+            <Link href={LOGIN_PATH} className="btn btn-ghost">
               {t("login")}
             </Link>
             <Link href="/auth/inscription" className="btn btn-accent" style={{ paddingBlock: 8, paddingInline: 14 }}>

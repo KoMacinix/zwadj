@@ -1,0 +1,44 @@
+# extrait de .neutralisation-journaux/d321/campagne-r25.log · sha256 du journal complet 7c3a4eb0dd08b54646624d7ef76e117b3070a82259fe12039878485d68d252c7 · 43 lignes parcourues · 0 « [WebServer] » retirées · 43 gardées
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 11 déclarées · 10 jouées (e2e, unit) · 1 hors exécution
+  pré-vol e2e-demande : code 0 · ok 1 · x 0
+  pré-vol e2e-lien : code 0 · ok 2 · x 0
+  pré-vol e2e-suppression : code 0 · ok 4 · x 0
+  pré-vol fenetres : code 0 · passés 16 · en échec 0
+  pré-vol panneau : code 0 · passés 21 · en échec 0
+  pré-vol routes : code 0 · passés 3 · en échec 0
+✓ R25-1. ⛔ « BORNES INCLUSES » MAL TRADUIT : une fenêtre de 93 jours repart (D147)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 7 · AssertionError: expected false to be true // Object.is equality
+✓ R25-2. TOUT OU RIEN levé : une fenêtre en échec est sautée, le calendrier partiel passe pour complet
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 14 · en échec 2 · AssertionError: expected { days: [ { …(3) } ], …(1) } to be null
+✓ R25-3. La fusion RECOPIE les jours au lieu de transmettre ceux du serveur (MD1-e)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected { date: '2026-09-27', …(2) } to be { date: '2026-09-27', …(2) } // Object.is equality
+✓ R25-4. ⛔ LE DÉFAUT 1 RESTAURÉ : six mois en UNE requête
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 3 · en échec 18 · AssertionError: expected 1 to be greater than or equal to 2
+✓ R25-5. ⛔ L'ÉCHEC REDEVIENT MUET : `loadFailed` jamais levé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 19 · en échec 2 · AssertionError: expected null not to be null
+✓ R25-6. La constante de connexion vise une route sans page
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 2 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ R25-7. ⛔ LE DÉFAUT 2 RESTAURÉ : le panneau réécrit `/connexion` en dur
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 20 · en échec 1 · AssertionError: expected '/connexion' to be '/auth/connexion' // Object.is equality
+✓ R25-E1. ⛔ DÉFAUT 1 RESTAURÉ, vu par le navigateur : le parcours client n'aboutit plus
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: le calendrier du panneau ne propose aucun jour libre
+✓ R25-E2. ⛔ DÉFAUT 2 RESTAURÉ, vu par le navigateur : le lien mène à la 404
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: le lien du panneau ne mène pas à la page de connexion
+✓ R25-E3. ⛔ DÉFAUT 3 RESTAURÉ, vu par le navigateur : la section redevient une erreur
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 2 · Error: la section de suppression est en ERREUR pour un compte sans demande
+  NON MESURÉE : R25-8. ⛔ LE DÉFAUT 3 RESTAURÉ : « aucune demande » repart en 200 SANS CORPS — mesure « int-compte », relancer avec --int
+
+10 garde(s) mordue(s) sur 10 cible(s) jouée(s) · 1 non mesurée(s) (attendu : 10 sur 10)
+arbre rendu à son état de départ : vérifié.
+campagne r25 code=3 durée=501s

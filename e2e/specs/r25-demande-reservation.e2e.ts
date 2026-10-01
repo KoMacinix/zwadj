@@ -3,6 +3,7 @@ import { Client } from "pg";
 import fr from "../../packages/i18n/messages/fr.json";
 import { CLIENT, DATABASE_URL } from "../playwright.config";
 import { createPublishedVenue, createVerifiedAccount, loginContext, seedReferentials } from "../fixtures/harness";
+import { choisirUneDate } from "../fixtures/panneau-reservation";
 
 /**
  * RANG 25 (D316), DÉFAUT 1 — LA DEMANDE DE RÉSERVATION QUI NE PART PAS.
@@ -23,7 +24,6 @@ import { createPublishedVenue, createVerifiedAccount, loginContext, seedReferent
  * s'écrit de mémoire »).
  */
 const B = fr.venueDetail.booking;
-const DATE_EN_TETE = /^\s*\d{4}-\d{2}-\d{2} · /;
 
 test.beforeAll(() => {
   seedReferentials();
@@ -46,10 +46,8 @@ test("un client ouvre une salle, choisit une date, envoie sa demande et voit la 
   // Le défaut mesuré : le panneau affichait « aucune date » sur une salle qui
   // en a. Cette assertion le NOMME au lieu de laisser un clic expirer.
   await expect(panneau.getByText(B.none), "le panneau affiche « aucune date » sur une salle publiée qui en a").toHaveCount(0);
-  const date = panneau.getByRole("button", { name: DATE_EN_TETE }).first();
-  await expect(date).toBeVisible();
-  await expect(date).toBeEnabled();
-  await date.click();
+  // Rang 29 (D321) : un JOUR du calendrier, puis son créneau — plus une liste de 182 boutons.
+  await choisirUneDate(panneau);
 
   await panneau.getByLabel(B.guests, { exact: true }).fill("150");
   await panneau.getByLabel(B.firstName, { exact: true }).fill("Amina");

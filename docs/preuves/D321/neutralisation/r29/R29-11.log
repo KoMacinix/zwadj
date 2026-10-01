@@ -1,0 +1,61 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+stdout | src/components/venue/booking-request-panel.test.tsx
+PLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ❯ src/components/venue/booking-request-panel.test.tsx (21 tests | 1 failed) 2568ms
+   ✓ Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre 203ms
+   ✓ Demande de réservation — les dates > une date libre est cliquable 63ms
+   ✓ Demande de réservation — les dates > GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC 21ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-j : UN mois à la fois — jamais les 182 jours d'un coup 39ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas 165ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-f et C-h : une grille nommée par le mois, la semaine commence DIMANCHE (D56) 32ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : UN arrêt de tabulation dans la grille, et la flèche droite avance d'un jour 81ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : EN ARABE, la flèche GAUCHE avance d'un jour — la grille se lit de droite à gauche 35ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif 284ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou 42ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien) 16ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA 124ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur 96ms
+   ✓ Demande de réservation — sans compte > les dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter 106ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps 291ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > avec un e-mail, il est transmis tel quel 270ms
+   × Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32) 142ms
+     → expected false to be true // Object.is equality
+   ✓ Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide 52ms
+   ✓ Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie 117ms
+   ✓ Prestations — E2d > l'ACOMPTE suit le total prestations comprises 150ms
+   ✓ Prestations — E2d > décocher retire la prestation du total 232ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  18:36:59
+   Duration  5.89s (transform 512ms, setup 243ms, collect 1.14s, tests 2.57s, environment 1.19s, prepare 256ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32)
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/booking-request-panel.test.tsx:450:129
+    448|     const B = messages.fr.venueDetail.booking;
+    449|     // Le nom accessible est le libellé EXACT : l'astérisque vit hors …
+    450|     for (const nom of [B.guests, B.firstName, B.lastName, B.phone]) ex…
+       |                                                                                                                                 ^
+    451|     for (const nom of [B.email, B.message]) expect(screen.getByLabelTe…
+    452|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

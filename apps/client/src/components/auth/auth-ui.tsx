@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "../../i18n/navigation";
 import { ZwadjLogo } from "@zwadj/ui";
 import { ApiError, NetworkError } from "../../lib/auth/auth-client";
+import { LOGIN_PATH } from "../../lib/routes";
 
 /** Cible du lien « Accès entreprises » (7.2) : connexion de la SPA Pro.
  *  Même motif de repli que NEXT_PUBLIC_API_URL (lib/api.ts). Exportée depuis
@@ -52,7 +53,7 @@ export function AuthShell({
         <section className="auth-formpane">
           {tabs && (
             <nav className="tabbar" aria-label={t("header.account")}>
-              <Link href="/auth/connexion" className="tab" aria-current={mode === "login" ? "page" : undefined}>
+              <Link href={LOGIN_PATH} className="tab" aria-current={mode === "login" ? "page" : undefined}>
                 {t("header.login")}
               </Link>
               <Link href="/auth/inscription" className="tab" aria-current={mode === "signup" ? "page" : undefined}>
@@ -66,7 +67,7 @@ export function AuthShell({
              pas de préfixe locale) → <a> natif, jamais le Link next-intl. */}
           <p className="form-foot" style={{ marginBlockStart: 20 }}>
             {t("shell.proPrompt")}{" "}
-            <a href={`${PRO_URL}/auth/connexion`} className="link-accent">
+            <a href={`${PRO_URL}${LOGIN_PATH}`} className="link-accent">
               {t("shell.proCta")}
             </a>
           </p>

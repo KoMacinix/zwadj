@@ -1257,7 +1257,10 @@
       "perGuest": "{amount} par invité",
       "perUnit": "{amount} par {unit}",
       "tier": "Formule",
-      "quantity": "Quantité"
+      "quantity": "Quantité",
+      "dayFree": "{date}, disponible",
+      "dayFull": "{date}, indisponible",
+      "chosen": "Votre choix : {date} · {slot}"
     },
     "bookingHint": "Envoyez votre demande ci-dessous : la salle vous répond, rien n'est débité maintenant."
   },

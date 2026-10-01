@@ -11,13 +11,21 @@ Usage, depuis la RACINE du monorepo :
 Codes de sortie : 0 = tout joué, tout a mordu ; 1 = au moins une garde MUETTE ; 2 = pré-vol rouge, ERREUR DE SCRIPT,
 Playwright non attendu, calibration manquée ou arbre non conforme ; 3 = campagne INCOMPLÈTE (cibles hors exécution).
 
-⛔ CHEMIN DE L'ARGENT — CE HARNAIS N'EN MUTE RIEN (décision 2 du relecteur, D317 ; dérivé par la session : une
+⛔ CHEMIN DE L'ARGENT — CE HARNAIS N'EN MUTE RIEN [⛔ D321 : PÉRIMÉ pour R26-3 — paragraphe « (D321, rang 29) » ci-dessous] (décision 2 du relecteur, D317 ; dérivé par la session : une
 neutralisation MODIFIE le code qu'elle vise, la décision ne la couvre pas). Ses deux cibles sont des LECTURES côté pro :
 la liste chargée et le libellé de statut que le PRO lit. Il ne touche ni la section client « Mes réservations » (elle
 présente les montants et « Acceptée — acompte à régler », une instruction de paiement : branche 6), ni un bouton qui
 déclenche une transition (branche 2), ni le partage « Demandes » / « Réservations » (il décide d'où une réservation
 s'annule). ⇒ Ce que la spec affirme côté CLIENT, et la sortie de « Demandes » après acceptation, sont prouvés par leurs
 DEUX BRAS dans la spec elle-même (absent avant, présent après, même localisateur) — pas ici. Limite écrite, section D317.
+⛔ (D321, rang 29) CETTE LIMITE EST LEVÉE POUR LE CÔTÉ CLIENT — garde laissée par D317, ordonnée par Ko. La décision du
+relecteur de D318 le permet, mot pour mot : « Pendant la pause, une NEUTRALISATION qui mute un comportement du chemin de
+l'argent le temps d'une mesure, puis le restaure (restauration prouvée), est une mesure, pas un changement : elle est
+permise. » Deux cibles CLIENT s'ajoutent : R26-3 fige le libellé de statut que lit le client — celui qui porte « Acceptée —
+acompte à régler », une instruction de paiement (branche 6) — et R26-4 jette la liste qu'il charge. ⇒ La RESTAURATION SE
+PROUVE : `verifier_arbre` exige chaque ancre une fois et aucun marqueur, AU DÉPART et À L'ARRIVÉE ; une exécution tuée est
+restaurée au démarrage suivant par le manifeste sur disque. Le partage « Demandes » / « Réservations » et les boutons de
+transition restent hors de ce harnais.
 
 ⛔ UNE MORSURE SE LIT, ELLE NE SE DÉDUIT PAS D'UN CODE DE SORTIE (D304, D305, D312, D316). Pour chaque cible, une LISTE DE
 TITRES attendus (D305 : chacun exigé) ; pour chaque titre : une ligne « x » du projet `chromium` porte ce titre, elle ne
@@ -57,6 +65,7 @@ ANSI = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 PLAYWRIGHT_ATTENDU = "Version 1.50.1"
 
 SECTION_PRO = "apps/pro/src/venues/booking-requests-section.tsx"
+SECTION_CLIENT = "apps/client/src/components/account/bookings-section.tsx"  # D321 : « Mes réservations », côté client
 SPEC = "specs/r26-parcours-reservation.e2e.ts"
 ACCEPTE = "le pro ACCEPTE : la demande quitte ses demandes pour ses réservations, et le client la voit acceptée"
 REFUSE = "le pro REFUSE : la demande reste dans ses demandes, refusée, et le client voit le refus"
@@ -71,6 +80,14 @@ CIBLES = [
     {"libelle": "R26-2. Le pro lit « En attente » quel que soit le statut : sa réponse ne s'affiche jamais",
      "fichier": SECTION_PRO, "avant": "t(`venue.ui.requests.st_${row.status}`)",
      "apres": 't("venue.ui.requests.st_PENDING")',
+     "mesure": "e2e-parcours", "titres": [ACCEPTE, REFUSE]},
+    # ── D321 (rang 29) — côté CLIENT, permis par la décision du relecteur de D318 (mesure, pas changement).
+    {"libelle": "R26-3. ⛔ CHEMIN DE L'ARGENT (branche 6), MESURE : le client lit « En attente » quel que soit le statut — "
+                "ni « Acceptée — acompte à régler », ni le refus",
+     "fichier": SECTION_CLIENT, "avant": "t(`st_${row.status}`)", "apres": 't("st_PENDING")',
+     "mesure": "e2e-parcours", "titres": [ACCEPTE, REFUSE]},
+    {"libelle": "R26-4. Le client ne voit plus AUCUNE de ses demandes : la liste chargée est jetée",
+     "fichier": SECTION_CLIENT, "avant": "setRows(Array.isArray(list) ? list : []);", "apres": "setRows([]);",
      "mesure": "e2e-parcours", "titres": [ACCEPTE, REFUSE]},
 ]
 

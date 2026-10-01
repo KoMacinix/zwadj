@@ -1,0 +1,36 @@
+# D321 — motifs de la passe D277 (rang 29 ARBITRÉ par Ko, lot de CODE : la page de réservation du client ; partie A : les
+# arbitrages D-1 à D-11, la décision du relecteur sur le journal des taux, les 62 entrées « RÉALISÉ » de D315 confrontées).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D320, 24802faf…), jamais passés en ligne
+# de commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « calendrier » seul, « connexion » seul, « admin » seul, « label » seul — ils comptent
+# tout (D298 ; D295 dans les deux sens).
+# sens 1 — ce que D321 INVALIDE : le rang 29 en attente ; D-11 et les décisions D-1 à D-10 « dues » ; la question au
+# relecteur sur le journal des taux ; les liens de connexion littéraux ; les 182 boutons ; l'absence de garde du mode
+# surveillance ; l'absence de neutralisation côté client de r26 ; les champs sans <label> ; les 62 entrées ouvertes à tort.
+1|RANG 29 : EN ATTENTE
+1|Rang 29 : en attente
+1|rang 29 : en attente
+1|sous réserve de D-11
+1|sous réserve de la décision D-11
+1|dues à Ko (D-1 à D-10)
+1|Question ouverte au relecteur
+1|question au relecteur
+1|neuf autres liens
+1|liens littéraux
+1|182 boutons
+1|Aucune garde permanente
+1|aucune neutralisation
+1|<label>` visibles
+1|ouvertes à tort
+1|refuse explicitement
+# sens 2 — ce que D321 REND PERMIS, ou dont la CONDITION change : le compteur (ZÉRO → UN) ; ce qui « peut s'ouvrir » ; ADM-1
+# (premier lot de l'administration, après ce rang, par D-10) ; la neutralisation côté client de r26 (faite) ; LOGIN_PATH.
+2|compteur ZÉRO
+2|compteur de lots de code non certifiés : ZÉRO
+2|s'ouvrir dès que Ko
+2|PEUT** s'ouvrir
+2|ADM-1
+2|à ordonner par Ko**, non fai
+2|LOGIN_PATH
+T+|ZWADJ
+T-|zzz-motif-absent-d321

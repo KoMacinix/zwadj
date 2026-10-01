@@ -1,0 +1,158 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+  calibration ✓ carte des routes, positif : True (attendu True)
+  calibration ✓ carte des routes, négatif (route inventée) : False (attendu False)
+  calibration ✓ sonde de motif, positif : True (attendu True)
+  calibration ✓ sonde de motif, négatif : False (attendu False)
+  calibration ✓ fichier absent, négatif (ajouté passe 2) : None (attendu None)
+  calibration ✓ fichier absent, positif (ajouté passe 2) : True (attendu True)
+  calibration ✓ relevé des entrées, positif (la pièce) : 62 (attendu 62)
+  calibration ✓ relevé des entrées, négatif (verdict voisin) : 0 (attendu 0)
+  calibration : 8 bras · 0 manqué(s) (attendu 0)
+  carte : 78 routes sur 22 contrôleurs (D315 : 78 / 22)
+
+== 62 entrées « RÉALISÉ » relevées dans docs/preuves/D315/etat-produit/ENTREES-CONFRONTEES.md ; 449 fichiers changés ffd32e9..b5bd382
+✓ B:331 → ligne 331 à HEAD (ouverte) · `bookingMode` à la création · TIENT — sondes
+      ✓ POST /venues · carte
+      ✓ packages/types/src/venue.ts · l.28 : bookingMode: BookingMode;
+✓ B:339 → ligne 339 à HEAD (ouverte) · détection des chevauchements `pending` · TIENT — sondes
+      ✓ apps/api/src/venues/bookings.service.ts · l.345 : *  ⚠ `conflictIds` n'est jamais persisté : une réservation acceptée pe
+      ✓ apps/pro/src/venues/booking-requests-section.tsx · l.15 : // ⚠ `conflictIds` vient de l'API, calculé à la lecture. On ne le reca
+✓ B:340 → ligne 340 à HEAD (ouverte) · double réservation par la contrainte d'exclusion · TIENT — la contrainte d'exclusion (`bookings_no_overlap_accepted_confirmed`) est dans les migrations et sa violation rend `BOOKING_SLOT_TAKEN` (rang 23, F1)
+      ✓ 27 migrations · apps/api/prisma/migrations/20260707000001_booking_constraints/migration.sql
+      ✓ apps/api/src/venues/bookings.service.ts · l.18 : // PROBABLE, pas l'exception. Le seul chemin vers `BOOKING_SLOT_TAKEN`
+✓ B:341 → ligne 341 à HEAD (ouverte) · `GET` des prestations · TIENT — sondes
+      ✓ GET /pro/venues/:id/services · carte
+✓ B:342 → ligne 342 à HEAD (ouverte) · `POST` des prestations · TIENT — sondes
+      ✓ POST /venues/:id/services · carte
+✓ B:343 → ligne 343 à HEAD (ouverte) · `PATCH` des prestations · TIENT — sondes
+      ✓ PATCH /services/:id · carte
+✓ B:344 → ligne 344 à HEAD (ouverte) · résolution du prix par type · TIENT — sondes
+      ✓ apps/api/src/venues/booking-charge.ts · l.121 : const resolved = resolveServiceLine(found, choice, input.guests);
+      ✓ apps/api/src/venues/service-pricing.ts · l.10 : //   PER_GUEST → le nombre d'INVITÉS de la demande, jamais une saisie 
+      ✓ apps/api/src/venues/service-pricing.ts · l.9 : //   TIERED    → 1, au prix du palier choisi.
+      ✓ apps/api/src/venues/service-pricing.ts · l.13 : //   PER_UNIT  → la quantité saisie, bornée par minUnits/maxUnits.
+      ✓ apps/api/src/venues/service-pricing.ts · l.8 : //   FIXED     → 1. Un forfait ne se multiplie pas.
+✓ B:345 → ligne 345 à HEAD (ouverte) · total du devis · TIENT — sondes
+      ✓ apps/api/src/venues/booking-charge.ts · l.58 : totalCents: number;
+✓ B:351 → ligne 351 à HEAD (ouverte) · `POST /quotes` · TIENT — sondes
+      ✓ POST /venues/:id/quotes · carte
+✓ B:353 → ligne 353 à HEAD (ouverte) · énuméré et transitions · TIENT — sondes
+      ✓ apps/api/src/venues/booking-transitions.ts · l.39 : *  Une demande encore `PENDING` ne verrouille rien : le client ne doit
+✓ B:354 → ligne 354 à HEAD (ouverte) · garde générique de transition · TIENT — sondes
+      ✓ apps/api/src/venues/booking-transitions.ts · l.23 : export const BookingCommand = {
+      ✓ apps/api/src/venues/quote-transitions.ts · l.26 : export const QuoteCommand = {
+✓ B:355 → ligne 355 à HEAD (ouverte) · `POST /bookings` · TIENT — sondes
+      ✓ POST /venues/:slug/bookings · carte
+✓ B:357 → ligne 357 à HEAD (ouverte) · acceptation · TIENT — sondes
+      ✓ POST /pro/bookings/:id/accept · carte
+✓ B:358 → ligne 358 à HEAD (ouverte) · refus · TIENT — sondes
+      ✓ POST /pro/bookings/:id/decline · carte
+✓ B:365 → ligne 365 à HEAD (ouverte) · liste client · TIENT — sondes
+      ✓ GET /me/bookings · carte
+✓ B:366 → ligne 366 à HEAD (ouverte) · liste pro avec conflits · TIENT — sondes
+      ✓ GET /pro/venues/:id/bookings · carte
+✓ B:370 → ligne 370 à HEAD (ouverte) · plages de visite (lecture) · TIENT — sondes
+      ✓ GET /pro/venues/:id/visit-availabilities · carte
+✓ B:371 → ligne 371 à HEAD (ouverte) · plages de visite (écriture) · TIENT — sondes
+      ✓ POST /venues/:id/visit-availabilities · carte
+✓ B:372 → ligne 372 à HEAD (ouverte) · prise de visite · TIENT — sondes
+      ✓ POST /venues/:slug/visit-bookings · carte
+✓ B:374 → ligne 374 à HEAD (ouverte) · annulation d'une visite par le pro · TIENT — sondes
+      ✓ DELETE /pro/venues/:id/visit-bookings/:bookingId · carte
+✓ B:375 → ligne 375 à HEAD (ouverte) · visites à venir (pro) · TIENT — sondes
+      ✓ GET /pro/venues/:id/visit-bookings · carte
+✓ B:567 → ligne 567 à HEAD (ouverte) · abstraction port / adaptateur · TIENT — sondes
+      ✓ EMAIL_SENDER dans apps/api/src/ (111 fichiers) · apps/api/src/account/account-emails.service.ts : import { EMAIL_SENDER, type EmailSender } from "../common/email/email.
+      ✓ WHATSAPP_SENDER dans apps/api/src/ (111 fichiers) · apps/api/src/common/whatsapp/whatsapp.module.ts : import { WHATSAPP_SENDER } from "./whatsapp.types";
+✓ B:605 → ligne 605 à HEAD (ouverte) · pied de page · TIENT — sondes
+      ✓ apps/client/src/components/site-footer.tsx · l.25 : <footer className="site-footer">
+✓ B:620 → ligne 620 à HEAD (ouverte) · carte à venir (accueil) · TIENT — sondes
+      ✓ apps/client/src/components/home-view.tsx · l.173 : <section className="hm-section hm-map" aria-labelledby="hm-map-h">
+      ✓ apps/client/src/components/home-view.tsx · l.180 : <p className="hm-map-soon">{t("map.soon")}</p>
+✓ B:622 → ligne 622 à HEAD (ouverte) · « Comment ça marche » · TIENT — sondes
+      ✓ apps/client/src/components/home-view.tsx · l.304 : <section className="hm-section hm-how" aria-labelledby="hm-how-h">
+✓ B:625 → ligne 625 à HEAD (ouverte) · résultats liés à `GET /venues` · TIENT — sondes
+      ✓ apps/client/src/app/[locale]/salles/(recherche)/page.tsx · l.10 : import { previewVenuesFor } from "../../../../lib/preview-venues";
+✓ B:626 → ligne 626 à HEAD (ouverte) · carte à venir (recherche) · TIENT — sondes
+      ✓ apps/client/src/components/search/search-view.tsx · l.212 : {view === "map" ? (
+✓ B:627 → ligne 627 à HEAD (ouverte) · curseur de capacité · TIENT — sondes
+      ✓ apps/client/src/components/search/search-view.tsx · l.407 : lowName="guests"
+✓ B:628 → ligne 628 à HEAD (ouverte) · curseur de budget · TIENT — sondes
+      ✓ apps/client/src/components/search/search-view.tsx · l.421 : highName="maxPrice"
+✓ B:629 → ligne 629 à HEAD (ouverte) · équipements · TIENT — sondes
+      ✓ apps/client/src/components/search/search-view.tsx · l.502 : <AmenityIcon icon={amenity.icon} />
+✓ B:631 → ligne 631 à HEAD (ouverte) · réinitialiser · TIENT — sondes
+      ✓ apps/client/src/components/search/search-view.tsx · l.383 : {t("filters.reset")}
+✓ B:632 → ligne 632 à HEAD (ouverte) · compte et états vides / erreur · TIENT — sondes
+      ✓ apps/client/src/components/search/search-view.tsx · l.245 : <h2>{t("results.errorTitle")}</h2>
+✓ B:633 → ligne 633 à HEAD (ouverte) · filtres dans l'URL · TIENT — sondes
+      ✓ apps/client/src/components/search/search-view.tsx · l.9 : //   - les filtres sont un vrai `<form method="get">`, le navigateur n
+✓ B:637 → ligne 637 à HEAD (ouverte) · Matterport au geste · TIENT — sondes
+      ✓ apps/client/src/components/venue/matterport-embed.tsx · l.63 : <button type="button" className="btn btn-accent" onClick={() => setMou
+✓ B:639 → ligne 639 à HEAD (ouverte) · icônes d'équipements · TIENT — sondes
+      ✓ packages/ui/src/amenity-icon.tsx · l.71 : export function AmenityIcon({ icon, size = 16 }: { icon: string | null
+✓ B:642 → ligne 642 à HEAD (ouverte) · réserver une visite · TIENT — sondes
+      ✓ apps/client/src/components/venue/visit-booking-panel.tsx · l.50 : export function VisitBookingPanel({ slug, client }: { slug: string; cl
+✓ B:649 → ligne 649 à HEAD (ouverte) · dates passées / prises bloquées · TIENT — sondes
+      ✓ apps/client/src/components/venue/booking-request-panel.tsx (fichier changé depuis ffd32e9 : relu) · l.263 : const free = slot.status === "AVAILABLE";
+      ✓ apps/client/src/components/venue/booking-request-panel.tsx (fichier changé depuis ffd32e9 : relu) · l.273 : disabled={!free}
+✗ B:650 → ligne 650 à HEAD (ouverte) · nombre d'invités · NE TIENT PAS — l'entrée demande un sélecteur « ±, min/max » ; le panneau porte un champ numérique libre, sans ± ni bornes — D315 l'a noté (« sans ± ») et l'a pourtant classé RÉALISÉ : partiel, pas réalisé
+      ✓ apps/client/src/components/venue/booking-request-panel.tsx (fichier changé depuis ffd32e9 : relu) · l.297 : placeholder={t("guests")}
+✓ B:654 → ligne 654 à HEAD (ouverte) · formulaire de contact · TIENT — sondes
+      ✓ apps/client/src/components/venue/booking-request-panel.tsx (fichier changé depuis ffd32e9 : relu) · l.425 : autoComplete="tel"
+      ✓ apps/client/src/components/venue/booking-request-panel.tsx (fichier changé depuis ffd32e9 : relu) · l.239 : const complete =
+✓ B:656 → ligne 656 à HEAD (ouverte) · libellé « Envoyer la demande » · TIENT — sondes
+      ✓ packages/i18n/messages/fr.json (fichier changé depuis ffd32e9 : relu) · l.1250 : "submit": "Envoyer ma demande",
+✓ B:657 → ligne 657 à HEAD (ouverte) · écran « demande envoyée » · TIENT — sondes
+      ✓ apps/client/src/components/venue/booking-request-panel.tsx (fichier changé depuis ffd32e9 : relu) · l.230 : <p className="muted">{t("sentHint")}</p>
+      ✓ apps/client/src/components/venue/booking-request-panel.tsx (fichier changé depuis ffd32e9 : relu) · l.231 : <Link href="/compte">{t("seeMine")}</Link>
+✓ B:660 → ligne 660 à HEAD (ouverte) · mes demandes, tous statuts · TIENT — sondes
+      ✓ apps/client/src/components/account/bookings-section.tsx · l.118 : <div className="muted">{t(`st_${row.status}`)}</div>
+✓ B:661 → ligne 661 à HEAD (ouverte) · mes visites · TIENT — sondes
+      ✓ apps/client/src/components/account/visit-bookings-section.tsx · l.35 : const list = await bookings.listMine();
+✓ B:692 → ligne 692 à HEAD (ouverte) · boîte des demandes · TIENT — sondes
+      ✓ apps/pro/src/App.tsx · l.122 : path="/demandes"
+      ✓ apps/pro/src/venues/booking-requests-section.tsx · l.150 : <span className="field-hint">{t("venue.ui.requests.status", { status: 
+✓ B:693 → ligne 693 à HEAD (ouverte) · accepter / refuser · TIENT — sondes
+      ✓ apps/pro/src/venues/booking-requests-section.tsx · l.188 : {t("venue.ui.requests.accept")}
+      ✓ apps/pro/src/venues/booking-requests-section.tsx · l.196 : {t("venue.ui.requests.decline")}
+✓ B:694 → ligne 694 à HEAD (ouverte) · avertissement de chevauchement · TIENT — sondes
+      ✓ apps/pro/src/venues/booking-requests-section.tsx · l.15 : // ⚠ `conflictIds` vient de l'API, calculé à la lecture. On ne le reca
+✓ B:695 → ligne 695 à HEAD (ouverte) · échec d'acceptation propre · TIENT — sondes
+      ✓ apps/pro/src/venues/booking-requests-section.tsx · l.91 : // On recharge MÊME en cas d'échec : un 409 `BOOKING_SLOT_TAKEN` signi
+✓ B:696 → ligne 696 à HEAD (ouverte) · calendrier · TIENT — sondes
+      ✓ apps/pro/src/App.tsx · l.130 : path="/calendrier"
+      ✓ apps/pro/src/venues/venue-calendar.tsx · l.288 : <span className="cal-status">{t(`venue.ui.calendar.status.${entry.stat
+✓ B:697 → ligne 697 à HEAD (ouverte) · blocages · TIENT — sondes
+      ✓ apps/pro/src/venues/blocks-section.tsx · l.51 : export function BlocksSection({ venueId }: { venueId: string }) {
+✓ B:698 → ligne 698 à HEAD (ouverte) · éditeur de créneaux · TIENT — sondes
+      ✓ apps/pro/src/venues/slots-section.tsx · l.64 : export function SlotsSection({ venueId, initialSlots }: { venueId: str
+✓ B:699 → ligne 699 à HEAD (ouverte) · règles de prix · TIENT — sondes
+      ✓ apps/pro/src/venues/pricing-rules-editor.tsx · l.86 : export function PricingRulesEditor({
+✓ B:700 → ligne 700 à HEAD (ouverte) · éditeur de prestations · TIENT — sondes
+      ✓ apps/pro/src/venues/services-section.tsx · l.24 : pricingType: ServicePricingType;
+✓ B:701 → ligne 701 à HEAD (ouverte) · plages de visite · TIENT — sondes
+      ✓ apps/pro/src/venues/visits-section.tsx · l.42 : export function VisitsSection({ venueId }: { venueId: string }) {
+✓ B:702 → ligne 702 à HEAD (ouverte) · mes visites (pro) · TIENT — sondes
+      ✓ apps/pro/src/venues/requests-page.tsx · l.8 : // ⚠ MAIS ELLES NE FUSIONNENT PAS (D47). Visites et réservations de fê
+✓ B:738 → ligne 738 à HEAD (ouverte) · prix résolu par date (pro) · TIENT — sondes
+      ✓ apps/pro/src/venues/venue-calendar.tsx · l.287 : <span className="cal-slot-price">{formatDZD(entry.priceCents)}</span>
+✓ B:777 → ligne 777 à HEAD (ouverte) · C3 — prise de rendez-vous client · TIENT — sondes
+      ✓ POST /venues/:slug/visit-bookings · carte
+✓ B:779 → ligne 779 à HEAD (ouverte) · C4 — écran pro des plages · TIENT — sondes
+      ✓ apps/pro/src/venues/visits-section.tsx · l.42 : export function VisitsSection({ venueId }: { venueId: string }) {
+✓ B:780 → ligne 780 à HEAD (ouverte) · C5 — écran client de rendez-vous · TIENT — sondes
+      ✓ apps/client/src/components/venue/visit-booking-panel.tsx · l.50 : export function VisitBookingPanel({ slug, client }: { slug: string; cl
+✓ B:791 → ligne 791 à HEAD (ouverte) · 404 bilingue · TIENT — sondes
+      ✓ apps/client/src/app/[locale]/not-found.tsx · l.43 : export default function LocaleNotFound() {
+      ✓ apps/client/src/app/[locale]/[...rest]/page.tsx · l.4 : // rend JAMAIS pour une URL inconnue : il ne couvre que les `notFound(
+✓ B:830 → ligne 836 à HEAD (ouverte) · publier une salle · TIENT — sondes
+      ✓ POST /admin/venues/:id/publish · carte
+✓ B:832 → ligne 838 à HEAD (ouverte) · taux de commission · TIENT — sondes
+      ✓ PATCH /admin/venues/:id/commission-rate · carte
+✓ B:834 → ligne 840 à HEAD (ouverte) · rôle et garde ADMIN · TIENT — sondes
+      ✓ apps/api/src/venues/venues-admin.controller.ts · l.18 : @Roles(UserRole.ADMIN)
+      ✓ apps/api/src/auth/roles.guard.ts · l.21 : export class RolesGuard implements CanActivate {
+
+62 entrées · TIENT 61 · NE TIENT PAS 1 [650] · introuvables 0 [] (attendu : total = 62)
+LIGNES À COCHER (HEAD, b5bd382) : 331:331 339:339 340:340 341:341 342:342 343:343 344:344 345:345 351:351 353:353 354:354 355:355 357:357 358:358 365:365 366:366 370:370 371:371 372:372 374:374 375:375 567:567 605:605 620:620 622:622 625:625 626:626 627:627 628:628 629:629 631:631 632:632 633:633 637:637 639:639 642:642 649:649 654:654 656:656 657:657 660:660 661:661 692:692 693:693 694:694 695:695 696:696 697:697 698:698 699:699 700:700 701:701 702:702 738:738 777:777 779:779 780:780 791:791 830:836 832:838 834:840

@@ -1,0 +1,30 @@
+D321 — sonde du débordement à 360 px · 2026-10-01T23:13:12.208Z · salle domaine-du-jardin-d-essai
+== fr : fenêtre 360 px · scrollWidth 364 px · 386 éléments parcourus · 14 qui sortent
+   [hors panneau] <li class=""> 215→429 « PrestatairesBientôt »
+   [hors panneau] <span class="site-nav-link is-soon"> 215→429 « PrestatairesBientôt »
+   [hors panneau] <span class="site-nav-soon"> 342→411 « Bientôt »
+   [hors panneau] <li class=""> 433→650 « InspirationsBientôt »
+   [hors panneau] <span class="site-nav-link is-soon"> 433→650 « InspirationsBientôt »
+   [hors panneau] <span class="site-nav-soon"> 563→632 « Bientôt »
+   [hors panneau] <li class=""> 654→851 « Mes outilsBientôt »
+   [hors panneau] <span class="site-nav-link is-soon"> 654→851 « Mes outilsBientôt »
+   [hors panneau] <span class="site-nav-soon"> 764→833 « Bientôt »
+   [hors panneau] <li class=""> 855→1067 « CommunautéBientôt »
+   [hors panneau] <span class="site-nav-link is-soon"> 855→1067 « CommunautéBientôt »
+   [hors panneau] <span class="site-nav-soon"> 979→1049 « Bientôt »
+   [hors panneau] <div class="header-auth"> 20→364 « العربيةConnexionInscription »
+   [hors panneau] <a class="btn btn-accent"> 256→364 « Inscription »
+   chevron « Mois précédent » à x=20 · transform none
+   chevron « Mois suivant » à x=294 · transform none
+== ar : fenêtre 360 px · scrollWidth 360 px · 382 éléments parcourus · 9 qui sortent
+   [hors panneau] <li class=""> -116→14 « إلهاماتقريباً »
+   [hors panneau] <span class="site-nav-link is-soon"> -116→14 « إلهاماتقريباً »
+   [hors panneau] <span class="site-nav-soon"> -98→-57 « قريباً »
+   [hors panneau] <li class=""> -242→-120 « أدواتيقريباً »
+   [hors panneau] <span class="site-nav-link is-soon"> -242→-120 « أدواتيقريباً »
+   [hors panneau] <span class="site-nav-soon"> -224→-184 « قريباً »
+   [hors panneau] <li class=""> -381→-246 « المجتمعقريباً »
+   [hors panneau] <span class="site-nav-link is-soon"> -381→-246 « المجتمعقريباً »
+   [hors panneau] <span class="site-nav-soon"> -363→-322 « قريباً »
+   chevron « الشهر السابق » à x=294 · transform matrix(-1, 0, 0, 1, 0, 0)
+   chevron « الشهر التالي » à x=20 · transform matrix(-1, 0, 0, 1, 0, 0)

@@ -25,6 +25,7 @@ import { ApiError, NetworkError } from "../../lib/auth/auth-client";
 import { Link } from "../../i18n/navigation";
 import { BookingsSection } from "./bookings-section";
 import { VisitBookingsSection } from "./visit-bookings-section";
+import { LOGIN_PATH } from "../../lib/routes";
 
 function useSubmitError() {
   const t = useTranslations();
@@ -478,7 +479,7 @@ export function AccountSettingsView({ client }: { client?: AccountClient }) {
       <main className="account-main">
         <h1>{t("account.ui.title")}</h1>
         <p className="account-hint">{t("account.ui.signedOut")}</p>
-        <Link href="/auth/connexion" className="btn btn-accent">
+        <Link href={LOGIN_PATH} className="btn btn-accent">
           {t("auth.ui.header.login")}
         </Link>
       </main>

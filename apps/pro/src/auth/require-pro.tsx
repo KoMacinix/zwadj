@@ -6,6 +6,7 @@ import { Navigate } from "react-router";
 import { BrandLoader } from "@zwadj/ui";
 import { useAuth } from "./auth-context";
 import { LangToggle } from "./auth-ui";
+import { LOGIN_PATH } from "../routes";
 
 export function RequireProSession({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
@@ -23,7 +24,7 @@ export function RequireProSession({ children }: { children: React.ReactNode }) {
   }
 
   if (status === "anonymous" || !user) {
-    return <Navigate to="/auth/connexion" replace />;
+    return <Navigate to={LOGIN_PATH} replace />;
   }
 
   // D23 : un compte CLIENT connecté ici est refusé EXPLICITEMENT (pas de

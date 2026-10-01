@@ -1257,7 +1257,10 @@
       "perGuest": "{amount} لكل مدعو",
       "perUnit": "{amount} لكل {unit}",
       "tier": "الصيغة",
-      "quantity": "الكمية"
+      "quantity": "الكمية",
+      "dayFree": "{date}، متاح",
+      "dayFull": "{date}، غير متاح",
+      "chosen": "اختيارك: {date} · {slot}"
     },
     "bookingHint": "أرسل طلبك أدناه: تردّ عليك القاعة، ولا يُخصم شيء الآن."
   },

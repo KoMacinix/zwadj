@@ -1,0 +1,47 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/client[39m
+
+[90mstdout[2m | src/components/venue/booking-request-panel.test.tsx[2m > [22m[2mPrestations — E2d
+[22m[39mPLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ [31m❯[39m src/components/venue/booking-request-panel.test.tsx [2m([22m[2m15 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m14 skipped[39m[2m)[22m[32m 223[2mms[22m[39m
+   [2m[90m↓[39m[22m Demande de réservation — les dates[2m > [22mune date PRISE reste affichée, désactivée : ça aide à en choisir une autre
+   [2m[90m↓[39m[22m Demande de réservation — les dates[2m > [22mune date libre est cliquable
+   [2m[90m↓[39m[22m Demande de réservation — les dates[2m > [22mGARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC
+[31m   [31m×[31m Demande de réservation — un calendrier, pas une liste (rang 29, D321)[2m > [22mC-j : UN mois à la fois — jamais les 182 jours d'un coup[39m[32m 221[2mms[22m[39m
+[31m     → expected 182 to be less than or equal to 33[39m
+   [2m[90m↓[39m[22m Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316)[2m > [22mD147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou
+   [2m[90m↓[39m[22m Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316)[2m > [22mune ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien)
+   [2m[90m↓[39m[22m Demande de réservation — l'acompte annoncé AVANT l'envoi (D81)[2m > [22m30 % de 200 000 DA = 60 000 DA
+   [2m[90m↓[39m[22m Demande de réservation — l'acompte annoncé AVANT l'envoi (D81)[2m > [22mun acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur
+   [2m[90m↓[39m[22m Demande de réservation — sans compte[2m > [22mles dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter
+   [2m[90m↓[39m[22m Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non[2m > [22m⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps
+   [2m[90m↓[39m[22m Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non[2m > [22mavec un e-mail, il est transmis tel quel
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22mune salle SANS catalogue n'affiche aucun bloc vide
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22mPER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22ml'ACOMPTE suit le total prestations comprises
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22mdécocher retire la prestation du total
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/components/venue/booking-request-panel.test.tsx[2m > [22mDemande de réservation — un calendrier, pas une liste (rang 29, D321)[2m > [22mC-j : UN mois à la fois — jamais les 182 jours d'un coup
+[31m[1mAssertionError[22m: expected 182 to be less than or equal to 33[39m
+[36m [2m❯[22m src/components/venue/booking-request-panel.test.tsx:[2m164:55[22m[39m
+    [90m162| [39m    await waitFor(() => expect(panneau.querySelectorAll("button").leng…
+    [90m163| [39m    // Un mois a au plus 31 jours, plus les deux boutons de navigation…
+    [90m164| [39m    expect(panneau.querySelectorAll("button").length).toBeLessThanOrEq…
+    [90m   | [39m                                                      [31m^[39m
+    [90m165| [39m  })[33m;[39m
+    [90m166| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m14 skipped[39m[90m (15)[39m
+[2m   Start at [22m 18:18:24
+[2m   Duration [22m 4.01s[2m (transform 422ms, setup 345ms, collect 1.04s, tests 223ms, environment 1.66s, prepare 266ms)[22m
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx -t C-j

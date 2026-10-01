@@ -2,6 +2,7 @@ import { expect, test, type Browser, type BrowserContext, type Locator, type Pag
 import fr from "../../packages/i18n/messages/fr.json";
 import { CLIENT, PRO } from "../playwright.config";
 import { createPublishedVenue, createVerifiedAccount, loginContext, seedReferentials } from "../fixtures/harness";
+import { choisirUneDate } from "../fixtures/panneau-reservation";
 
 /**
  * RANG 26 (D317) — LE PARCOURS DE RÉSERVATION, JOUÉ DE BOUT EN BOUT.
@@ -27,7 +28,6 @@ import { createPublishedVenue, createVerifiedAccount, loginContext, seedReferent
 const B = fr.venueDetail.booking;
 const SUIVI = fr.account.ui.bookings;
 const DEMANDES = fr.venue.ui.requests;
-const DATE_EN_TETE = /^\s*\d{4}-\d{2}-\d{2} · /;
 const CONTACT = { prenom: "Amina", nom: "Bensalem" };
 
 /** Ce que le pro lit dans la ligne : « Statut : {status} », interpolé comme l'application le fait (accolade simple,
@@ -74,9 +74,8 @@ async function demandeEnAttente(browser: Browser): Promise<EnAttente> {
   await expect(pageClient).toHaveURL(new RegExp(`/fr/salles/${salle.slug}$`));
   const panneau = pageClient.getByRole("region", { name: B.title });
   await expect(panneau.getByText(B.loading)).toHaveCount(0);
-  const date = panneau.getByRole("button", { name: DATE_EN_TETE }).first();
-  await expect(date).toBeEnabled();
-  await date.click();
+  // Rang 29 (D321) : un JOUR du calendrier, puis son créneau — plus une liste de 182 boutons.
+  await choisirUneDate(panneau);
   await panneau.getByLabel(B.guests, { exact: true }).fill("150");
   await panneau.getByLabel(B.firstName, { exact: true }).fill(CONTACT.prenom);
   await panneau.getByLabel(B.lastName, { exact: true }).fill(CONTACT.nom);

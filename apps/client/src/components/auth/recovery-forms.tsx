@@ -10,6 +10,7 @@ import { ApiError } from "../../lib/auth/auth-client";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
 import { z } from "zod";
 import { ArrowBackIcon } from "@zwadj/ui";
+import { LOGIN_PATH } from "../../lib/routes";
 
 export function ForgotForm() {
   const t = useTranslations("auth.ui");
@@ -45,7 +46,7 @@ export function ForgotForm() {
 
   return (
     <AuthShell mode="forgot">
-      <Link href="/auth/connexion" className="backlink">
+      <Link href={LOGIN_PATH} className="backlink">
         <ArrowBackIcon />
         ← {t("forgot.back")}
       </Link>
@@ -135,7 +136,7 @@ export function ResetForm({ token }: { token: string | null }) {
           </div>
           <h1>{t("reset.successTitle")}</h1>
           <p>{t("reset.successBody")}</p>
-          <Link href="/auth/connexion" className="btn btn-accent">
+          <Link href={LOGIN_PATH} className="btn btn-accent">
             {t("reset.goLogin")}
           </Link>
         </div>
@@ -166,7 +167,7 @@ export function ResetForm({ token }: { token: string | null }) {
 
   return (
     <AuthShell mode="reset">
-      <Link href="/auth/connexion" className="backlink">
+      <Link href={LOGIN_PATH} className="backlink">
         <ArrowBackIcon />
         ← {t("forgot.back")}
       </Link>

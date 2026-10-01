@@ -23,6 +23,7 @@ import { ApiError } from "../../lib/auth/auth-client";
 import { useAuth } from "../../lib/auth/auth-context";
 import { loadGis } from "../../lib/auth/gis";
 import { FormError, PRO_URL, useApiErrorMessage } from "./auth-ui";
+import { LOGIN_PATH } from "../../lib/routes";
 
 /** GIS borne la largeur du bouton à [200, 400] px. */
 const BUTTON_MIN_WIDTH = 200;
@@ -130,7 +131,7 @@ export function GoogleSignIn() {
       {error?.kind === "pro" ? (
         <p className="alert alert-error" role="alert">
           {tErrors("googleAccountNotClient")}{" "}
-          <a href={`${PRO_URL}/auth/connexion`} className="link-accent">
+          <a href={`${PRO_URL}${LOGIN_PATH}`} className="link-accent">
             {t("proCta")}
           </a>
         </p>

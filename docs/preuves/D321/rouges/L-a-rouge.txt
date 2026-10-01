@@ -1,0 +1,64 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/client[39m
+
+[90mstdout[2m | src/components/venue/booking-request-panel.test.tsx[2m > [22m[2mPrestations — E2d
+[22m[39mPLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ [31m❯[39m src/components/venue/booking-request-panel.test.tsx [2m([22m[2m16 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m15 skipped[39m[2m)[22m[32m 222[2mms[22m[39m
+   [2m[90m↓[39m[22m Demande de réservation — les dates[2m > [22mune date PRISE reste affichée, désactivée : ça aide à en choisir une autre
+   [2m[90m↓[39m[22m Demande de réservation — les dates[2m > [22mune date libre est cliquable
+   [2m[90m↓[39m[22m Demande de réservation — les dates[2m > [22mGARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC
+   [2m[90m↓[39m[22m Demande de réservation — un calendrier, pas une liste (rang 29, D321)[2m > [22mC-j : UN mois à la fois — jamais les 182 jours d'un coup
+   [2m[90m↓[39m[22m Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316)[2m > [22mD147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou
+   [2m[90m↓[39m[22m Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316)[2m > [22mune ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien)
+   [2m[90m↓[39m[22m Demande de réservation — l'acompte annoncé AVANT l'envoi (D81)[2m > [22m30 % de 200 000 DA = 60 000 DA
+   [2m[90m↓[39m[22m Demande de réservation — l'acompte annoncé AVANT l'envoi (D81)[2m > [22mun acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur
+   [2m[90m↓[39m[22m Demande de réservation — sans compte[2m > [22mles dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter
+   [2m[90m↓[39m[22m Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non[2m > [22m⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps
+   [2m[90m↓[39m[22m Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non[2m > [22mavec un e-mail, il est transmis tel quel
+[31m   [31m×[31m Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143)[2m > [22mL-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32)[39m[32m 220[2mms[22m[39m
+[31m     → expected [ 'Nombre d\'invités', …(7) ] to deeply equal [][39m
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22mune salle SANS catalogue n'affiche aucun bloc vide
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22mPER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22ml'ACOMPTE suit le total prestations comprises
+   [2m[90m↓[39m[22m Prestations — E2d[2m > [22mdécocher retire la prestation du total
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/components/venue/booking-request-panel.test.tsx[2m > [22mDemande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143)[2m > [22mL-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32)
+[31m[1mAssertionError[22m: expected [ 'Nombre d\'invités', …(7) ] to deeply equal [][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "Nombre d'invités",[39m
+[31m+   "Décoration — Formule",[39m
+[31m+   "Chaises — Quantité",[39m
+[31m+   "Prénom",[39m
+[31m+   "Nom",[39m
+[31m+   "Téléphone",[39m
+[31m+   "E-mail (facultatif)",[39m
+[31m+   "Message à la salle (facultatif)",[39m
+[31m+ ][39m
+
+[36m [2m❯[22m src/components/venue/booking-request-panel.test.tsx:[2m339:30[22m[39m
+    [90m337| [39m      })
+    [90m338| [39m      .map((champ) => champ.getAttribute("aria-label") ?? champ.getAtt…
+    [90m339| [39m    [34mexpect[39m(sansLabelVisible)[33m.[39m[34mtoEqual[39m([])[33m;[39m
+    [90m   | [39m                             [31m^[39m
+    [90m340| [39m    [35mconst[39m [33mB[39m [33m=[39m messages[33m.[39mfr[33m.[39mvenueDetail[33m.[39mbooking[33m;[39m
+    [90m341| [39m    // Le nom accessible est le libellé EXACT : l'astérisque vit hors …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m15 skipped[39m[90m (16)[39m
+[2m   Start at [22m 18:21:49
+[2m   Duration [22m 3.21s[2m (transform 375ms, setup 236ms, collect 860ms, tests 222ms, environment 1.23s, prepare 218ms)[22m
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx -t L-a

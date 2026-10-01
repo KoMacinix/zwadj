@@ -1,0 +1,59 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/login-path-guard.test.ts (5 tests | 2 failed) 17ms
+   ✓ LOGIN_PATH — calibration du relevé, deux bras (D286) > bras ROUGE : un littéral posé ailleurs se voit — attribut JSX, gabarit, texte JSX, ancienne cible 3ms
+   ✓ LOGIN_PATH — calibration du relevé, deux bras (D286) > bras VERT : un commentaire qui la cite, une déconnexion, un chemin voisin — rien 1ms
+   × LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > le relevé a parcouru les deux applications et y a trouvé leurs constantes (D290 : un zéro sur zéro ne mesure rien) 9ms
+     → expected +0 to be 1 // Object.is equality
+   ✓ LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > P-a : aucune adresse de connexion ailleurs que dans les deux constantes 0ms
+   × LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > P-c : le lien du client vers la connexion PRO vise la route que le pro déclare 3ms
+     → expected '/auth/se-connecter' to be '/auth/connexion' // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  18:37:13
+   Duration  3.07s (transform 72ms, setup 222ms, collect 942ms, tests 17ms, environment 1.21s, prepare 232ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/login-path-guard.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/login-path-guard.test.ts > LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > le relevé a parcouru les deux applications et y a trouvé leurs constantes (D290 : un zéro sur zéro ne mesure rien)
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/lib/login-path-guard.test.ts:120:45
+    118|       expect(parcourus).toContain(constante);
+    119|       // Bras positif SUR L'ARBRE RÉEL : le relevé voit l'adresse là o…
+    120|       expect(releve.get(constante)?.length).toBe(1);
+       |                                             ^
+    121|     }
+    122|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/login-path-guard.test.ts > LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > P-c : le lien du client vers la connexion PRO vise la route que le pro déclare
+AssertionError: expected '/auth/se-connecter' to be '/auth/connexion' // Object.is equality
+
+Expected: "/auth/connexion"
+Received: "/auth/se-connecter"
+
+ ❯ src/lib/login-path-guard.test.ts:135:36
+    133|     expect(existsSync(pro)).toBe(true);
+    134|     // Le client construit `${PRO_URL}${LOGIN_PATH}` : il n'a de sens …
+    135|     expect(valeurDeLoginPath(pro)).toBe(LOGIN_PATH);
+       |                                    ^
+    136|   });
+    137| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

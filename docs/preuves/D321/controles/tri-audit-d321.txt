@@ -1,0 +1,10 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D320/audit-secrets-final.txt (151 contextes) · nouvelle docs/preuves/D321/audit-secrets-d321.txt (155 contextes)
+   alertes ABSENTES de la précédente : 4 — à trier au contexte avant le commit
+   [mot-de-passe] docs/preuves/D321/captures/captures.spec.ts — contexte : ligne 957 de docs/preuves/D321/audit-secrets-d321.txt
+   [jeton] docs/preuves/D321/outils/extraire.py — contexte : ligne 959 de docs/preuves/D321/audit-secrets-d321.txt
+   [jeton] docs/preuves/D321/outils/extraire.py — contexte : ligne 961 de docs/preuves/D321/audit-secrets-d321.txt
+   [mot-de-passe] docs/preuves/D321/portes/test-int.txt — contexte : ligne 963 de docs/preuves/D321/audit-secrets-d321.txt
+   ventilation par motif : mot-de-passe=2 · jeton=2

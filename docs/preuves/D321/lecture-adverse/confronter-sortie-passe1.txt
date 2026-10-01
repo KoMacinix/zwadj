@@ -1,0 +1,102 @@
+== CALIBRATION — deux bras par famille, abandon si un seul manque
+  calibration ✓ registre, positif : 'D320' (attendu 'D320')
+  calibration ✓ registre, négatif (SHA de départ) : 'D319' (attendu 'D319')
+  calibration ✓ annotation « (D320, » dans AGENTS.md, positif : 4 (attendu 4)
+  calibration ✓ annotation « (D320, » dans AGENTS.md, négatif : 0 (attendu 0)
+  calibration ✓ fichier:ligne, positif (env.spec.ts:20 porte 15m) : True (attendu True)
+  calibration ✓ fichier:ligne, négatif (env.spec.ts:19) : False (attendu False)
+  calibration ✓ mot perdu, positif (synthétique) : ['disparu'] (attendu ['disparu'])
+  calibration ✓ mot perdu, négatif (barré) : [] (attendu [])
+  calibration : 8 bras · 0 manqué(s) (attendu 0)
+
+== P — provenance de D320
+✓ P1     parent de b5bd382 = SHA de départ déclaré — attendu 'a53943e' · mesuré 'a53943e'
+✓ P2     fichiers du commit hors .md d'autorité et docs/preuves/D320 (25 examinés) — attendu [] · mesuré []
+✓ P3     pièces versées sous docs/preuves/D320/ — attendu 22 · mesuré 22
+✓ P4     commits après b5bd382 (« depuis la clôture de D320 ») — attendu [] · mesuré []
+✓ T0     fichiers hors .md d'autorité / docs/preuves changés depuis b5bd382 dans l'arbre (préalable au rejeu) — attendu [] · mesuré []
+
+== S — D320 contre ses propres sorties
+✓ S1     « 104 contrôles · 9 écarts · 7 constats » (dernière ligne de sa sortie) — attendu ('104', '9', '7') · mesuré ('104', '9', '7')
+✓ S2     lignes ✓ / ✗ / · de sa sortie (95 + 9 = 104) — attendu (95, 9, 7) · mesuré (95, 9, 7)
+✓ S3     calibration « 7 bras, 0 manqué » — attendu True · mesuré True
+✓ S4     « les 16 concordent » : empreintes de journaux bruts confrontées — attendu 16 · mesuré 16
+✓ S5     aucune empreinte en écart — attendu 0 · mesuré 0
+✓ S6     contrôle T0 « 189 fichiers examinés » — attendu True · mesuré True
+✓ S7     faute n° 4 : la passe 3 n'est pas versée (passe1, passe2, finale seulement) — attendu 3 · mesuré 3
+✓ S8     écart 9 de D320 : la pièce de D319 dit 2325 fichiers — attendu True · mesuré True
+✓ S9     écart 8 de D320 re-dérivé : plus serré par rapport et par marge (26 harnais à plancher) — attendu ('booking-status', 'booking-status') · mesuré ('booking-status', 'booking-status')
+✓ S10    … et e3d1-s8 n'est PAS le plus serré (rapport ≈ 9,5) — attendu True · mesuré True
+
+== E — écarts de D320 re-vérifiés à leur source (au SHA de départ)
+✓ E4     écart 4 : à a53943e, « pas d'app admin » (À NE PAS faire) sans annotation — attendu (1, False) · mesuré (1, False)
+✓ E5     écart 5 : à a53943e, aucun bloc « (D318) » dans la méthode renforcée — attendu 0 · mesuré 0
+✓ E3     écart 3 : D318 n'a versé aucune passe D277 — attendu [] · mesuré []
+✓ E7     écart 7 : la section D319 ne porte pas « lecture adverse » — attendu 0 · mesuré 0
+
+== C — faits de l'état des lieux (cadrage du rang 28, § 1), ligne par ligne à b5bd382
+✓ C1     app.module.ts:65-67 — trois gardes globales dans l'ordre — attendu [(65, True), (66, True), (67, True)] · mesuré [(65, True), (66, True), (67, True)]
+✓ C2     account-admin.controller.ts:25 — @Roles(ADMIN) de classe — attendu [(25, True)] · mesuré [(25, True)]
+✓ C3     venues-admin.controller.ts:18 — @Roles(ADMIN) de classe — attendu [(18, True)] · mesuré [(18, True)]
+✓ C4     auth.types.ts:4 — claims du jeton (D4) — attendu [(4, True)] · mesuré [(4, True)]
+✓ C5     jwt-auth.guard.ts:40-45 — signature vérifiée, user posé sans base — attendu [(40, True), (45, True)] · mesuré [(40, True), (45, True)]
+✓ C6     roles.guard.ts:43 — comparaison du rôle — attendu [(43, True)] · mesuré [(43, True)]
+✓ C7     env.spec.ts:20 — JWT_ACCESS_TTL « 15m » — attendu [(20, True)] · mesuré [(20, True)]
+✓ C8     auth.service.ts:538 — rafraîchissement : statut non ACTIVE ⇒ 401 — attendu [(538, True)] · mesuré [(538, True)]
+✓ C9     auth.service.ts:580 — rafraîchissement : rôle relu — attendu [(580, True)] · mesuré [(580, True)]
+✓ C10    auth.constants.ts:9-11 — cookie zwadj_rt, chemin /api/v1/auth — attendu [(9, True), (11, True)] · mesuré [(9, True), (11, True)]
+✓ C11    auth.controller.ts:222-225 — httpOnly, lax, sans domain — attendu [(222, True), (223, True), (225, True)] · mesuré [(222, True), (223, True), (225, True)]
+✓ C12    main.ts:23 — CORS par liste, credentials — attendu [(23, True)] · mesuré [(23, True)]
+✓ C13    env.ts:16 — origines par défaut — attendu [(16, True)] · mesuré [(16, True)]
+✓ C14    require-pro.tsx:31 — l'app Pro refuse tout rôle ≠ PRO (D23) — attendu [(31, True)] · mesuré [(31, True)]
+✓ C15    i18n-parity.spec.ts:95 — plancher ≥ 943 — attendu [(95, True)] · mesuré [(95, True)]
+✓ C16    auth.service.ts:278 — un ADMIN non vérifié ne se connecte pas (D1) — attendu True · mesuré True
+✓ C17    auth.service.ts:360 — Google ne crée jamais un ADMIN — attendu True · mesuré True
+✓ C18    venues-admin.service.ts:45 — PENDING « inutilisé au MVP, verrouillé » — attendu True · mesuré True
+✗ C19    « harness.ts:330 et 16 autres » : occurrences de SET role = 'ADMIN' dans les tests — attendu 17 · mesuré 1
+✓ C19b   … dont e2e/fixtures/harness.ts:330 — attendu True · mesuré True
+✓ C20    parité « 1 095 = 1 095 », 0 clé admin.* — attendu (1095, 1095, 0) · mesuré (1095, 1095, 0)
+✓ C21    « 0 méthode /admin dans @zwadj/api-client » (9 fichiers source) — attendu 0 · mesuré 0
+✓ C22    AuditLog : 0 écrivain dans apps/api/src (111 fichiers source parcourus ; D320 : 111) — attendu (111, []) · mesuré (111, [])
+✓ C23    0 proxy dans next.config.ts et vite.config.ts — attendu (0, 0) · mesuré (0, 0)
+✓ C24    releve-admin.py REJOUÉ : sortie identique à la pièce versée (fins de ligne normalisées) — attendu True · mesuré True
+
+== A — partie A de D320 : ce qui devait atterrir, et où
+✓ A1     bloc D320 dans la méthode renforcée (taux en lecture seule) — attendu True · mesuré True
+✓ A2     AGENTS.md, point E3 : décision du relecteur D320 — attendu 1 · mesuré 1
+✗ A3     B:728 — même texte à ffd32e9 et à b5bd382 (« inchangée depuis ») — attendu True · mesuré False
+✓ A4.1   entrée « audit SOLID 09/09 · F7… » : renvoi D320 dans son entrée — attendu True · mesuré True
+✓ A4.2   entrée « Remonter `QuotesSection`… » : renvoi D320 dans son entrée — attendu True · mesuré True
+✓ A4.3   entrée « Implement pending-request expirati… » : renvoi D320 dans son entrée — attendu True · mesuré True
+✓ A4.4   entrée « B4 devra DIRE au pro… » : renvoi D320 dans son entrée — attendu True · mesuré True
+✓ A5     E3d-2 porte sur le paiement (« Chargily » ou « paiement » dans son entrée) — attendu True · mesuré True
+✓ A6     ENTREES-CONFRONTEES.md:184 cite les points rattachés — attendu True · mesuré True
+✗ A7     homonymie « D4 » rapportée au backlog (reports de D320) — attendu True · mesuré False
+
+== W — aucun mot perdu dans les lignes que D320 a modifiées
+✓ W.ZWADJ ZWADJ_CONTINUITE.md : 13 ligne(s) retirée(s), mots perdus — attendu [] · mesuré []
+✓ W.AGENT AGENTS.md : 2 ligne(s) retirée(s), mots perdus — attendu [] · mesuré []
+✓ W.ZWADJ ZWADJ_BACKLOG.md : 9 ligne(s) retirée(s), mots perdus — attendu [] · mesuré []
+
+== D — passe D277 de D320
+✓ D1     balayage.py : copie à l'octet de celui de D317 (empreinte 24802faf…) — attendu (True, True) · mesuré (True, True)
+· D2     CONSTAT : motifs.txt : 23 ligne(s) non vides hors commentaires (D320 : « 21 + 2 témoins ») — détail à la ligne suivante
+         ['1|RANG 28 : EN ATTENTE', '1|rang 28 attend', '1|rang 28 : en attente', "1|pas d'app admin", "1|Pas d'apps/admin", '1|No `apps/admin`', '1|NO SEPARATE APP', '1|4th application', '1|lot de cadrage À VENIR', '1|lot de CADRAGE futur', '1|aucun cadrage de son périmèt', '1|cross-référencés', '1|méthode renforcée, bloc D318', '1|le plus serré', '1|2 324 fichiers', '1|après réponse du **relecteur', '2|dès que Ko arbitre le rang 2', "2|PEUT** s'ouvrir", '2|compteur DEUX → ZÉRO', '2|à ordonner par Ko**, non fai', '2|commission-rate', 'T+|ZWADJ', 'T-|zzz-motif-absent-d320']
+· D3     CONSTAT : balayage-1 : totaux lus [] (D320 : « 62 occurrences »)
+✓ D4     balayage-controle rend les mêmes comptes que balayage-apres-ecriture — attendu [] · mesuré []
+
+== X — audits et contrôles de D320
+✓ X1     tri final : 151 → 151, 0 alerte neuve — attendu ('151', '151', '0') · mesuré ('151', '151', '0')
+✓ X2     « 0 valeur réelle » final : 63 valeurs (39 + 4 × 6), 5 journaux, 0 porteur — attendu ('63', '5', '0') · mesuré ('63', '5', '0')
+· X3     CONSTAT : « 0 valeur réelle » final : 22 fichiers parcourus — D320 n'écrit pas ce nombre dans sa section
+✓ X4     audit-secrets-final.txt porte un SCEAU (sortie scellée, D298) — attendu True · mesuré True
+
+== R — registre, ordre, point d'entrée
+✓ R1     dernière ligne du registre à b5bd382 — attendu 'D320' · mesuré 'D320'
+✓ R2     ordre des rangs : « RANG 29 : EN ATTENTE D'ARBITRAGE DE KO » présent à b5bd382 — attendu True · mesuré True
+✓ R3     titre du rang 28 « CLOS LE 01/10/2026 : D320 » — attendu True · mesuré True
+✓ R4     décisions D-1 à D-11 écrites au cadrage, § 5 — attendu ['D-1', 'D-2', 'D-3', 'D-4', 'D-5', 'D-6', 'D-7', 'D-8', 'D-9', 'D-10', 'D-11'] · mesuré ['D-1', 'D-2', 'D-3', 'D-4', 'D-5', 'D-6', 'D-7', 'D-8', 'D-9', 'D-10', 'D-11']
+✓ R5     cadrage : « aucune recommandation » (« recommande » hors citation de Ko) — attendu 0 · mesuré 0
+· N1     CONSTAT : NON VÉRIFIABLE dans le dépôt : les paroles de Ko rapportées au § 0 du cadrage (« français seul », « sans mot de passe par défaut », rejet = décision produit) — elles vivent dans le chat
+
+67 contrôles · 3 écart(s) · 4 constat(s) (attendu : ce que la lecture trouve — chaque ✗ se lit à son contexte)

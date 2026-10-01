@@ -1,0 +1,11 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/common/e2e-api-sans-surveillance.spec.ts (3 tests) 24ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  18:35:20
+   Duration  1.26s (transform 45ms, setup 0ms, collect 586ms, tests 24ms, environment 0ms, prepare 234ms)
+
+

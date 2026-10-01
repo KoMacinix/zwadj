@@ -1,0 +1,44 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/e2e-api-sans-surveillance.spec.ts (3 tests | 1 failed) 35ms
+   ✓ e2e — l'API n'y tourne PAS en surveillance (garde laissée par D317, rang 29, D321) > calibration, bras ROUGE : la configuration d'AVANT D317 (`run dev`) et ses variantes sont vues 11ms
+   ✓ e2e — l'API n'y tourne PAS en surveillance (garde laissée par D317, rang 29, D321) > calibration, bras VERT : une API compilée une fois, et un commentaire qui cite `--watch`, ne sont pas vus 2ms
+   × e2e — l'API n'y tourne PAS en surveillance (garde laissée par D317, rang 29, D321) > G-a : dans `e2e/playwright.config.ts`, l'entrée de l'API existe, UNE fois, et ne surveille pas 21ms
+     → expected [ …(3) ] to deeply equal [ …(3) ]
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  18:37:26
+   Duration  1.32s (transform 54ms, setup 0ms, collect 608ms, tests 35ms, environment 0ms, prepare 240ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/e2e-api-sans-surveillance.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/e2e-api-sans-surveillance.spec.ts > e2e — l'API n'y tourne PAS en surveillance (garde laissée par D317, rang 29, D321) > G-a : dans `e2e/playwright.config.ts`, l'entrée de l'API existe, UNE fois, et ne surveille pas
+AssertionError: expected [ …(3) ] to deeply equal [ …(3) ]
+
+- Expected
++ Received
+
+  [
+    "pnpm --filter @zwadj/api run dev",
+    "nest start --watch",
+-   false,
++   true,
+  ]
+
+ ❯ src/common/e2e-api-sans-surveillance.spec.ts:102:73
+    100|     const api = commandes.filter((c) => c.includes("@zwadj/api"));
+    101|     expect(api).toHaveLength(1);
+    102|     expect([api[0], commandeResolue(api[0]!), enSurveillance(api[0]!)]…
+       |                                                                         ^
+    103|   });
+    104| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

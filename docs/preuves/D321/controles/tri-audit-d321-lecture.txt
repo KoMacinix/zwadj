@@ -1,0 +1,16 @@
+D321 — lecture au contexte des alertes NEUVES du tri `tri-audit-d321.txt` (précédente : D320/audit-secrets-final.txt, 151 contextes ;
+nouvelle : D321/audit-secrets-d321.txt, 155 contextes ; 4 absentes de la précédente). Règle de D299 : l'audit garantit l'absence de
+VALEURS, pas de MOTS. Cette lecture RENVOIE aux lignes de la sortie scellée et ne recopie aucun contexte (sinon elle serait un écho
+non scellé).
+
+ligne 957 (mot-de-passe · captures/captures.spec.ts) : une EXPRESSION — le nom d'une propriété d'un compte de test créé par le
+  script, pas une valeur. Même forme que le script de captures de D316. Bénigne.
+ligne 959 (jeton · outils/extraire.py) : un MOTIF DE RECHERCHE — l'extracteur nomme ce qu'il retire (copie à l'octet de celui de
+  D317, empreinte b12c5652…). Bénigne.
+ligne 961 (jeton · outils/extraire.py) : le même motif, seconde lecture du même fragment. Bénigne.
+ligne 963 (mot-de-passe · portes/test-int.txt) : un TITRE DE TEST récité par le journal de la porte d'intégration ; la sortie dit
+  la valeur déjà présente dans 106 fichiers suivis hors preuves — c'est le libellé du test, vu par D319 et D320. Bénigne.
+
+Verdict : 4 sur 4 bénignes (des mots), 0 valeur. Ce qui fait foi sur l'absence de VALEURS : controles/aucune-valeur-reelle.txt
+(83 valeurs de 10 journaux, 122 fichiers parcourus, 0 porteur) et controles/aucun-cookie-reel.txt (183, 16 journaux, 123 fichiers,
+0 porteur).

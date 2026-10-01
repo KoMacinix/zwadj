@@ -1,0 +1,27 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+  calibration ✓ carte des routes, positif : True (attendu True)
+  calibration ✓ carte des routes, négatif (route inventée) : False (attendu False)
+  calibration ✓ sonde de motif, positif : True (attendu True)
+  calibration ✓ sonde de motif, négatif : False (attendu False)
+  calibration ✓ relevé des entrées, positif (la pièce) : 62 (attendu 62)
+  calibration ✓ relevé des entrées, négatif (verdict voisin) : 0 (attendu 0)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+  carte : 78 routes sur 22 contrôleurs (D315 : 78 / 22)
+
+== 62 entrées « RÉALISÉ » relevées dans docs/preuves/D315/etat-produit/ENTREES-CONFRONTEES.md ; 449 fichiers changés ffd32e9..b5bd382
+✓ B:331 → ligne 331 à HEAD (ouverte) · `bookingMode` à la création · TIENT — sondes
+      ✓ POST /venues · carte
+      ✓ packages/types/src/venue.ts · l.28 : bookingMode: BookingMode;
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D321\entrees\confronter-62.py", line 210, in <module>
+    lignes = show(CODE, f).split("\n")
+             ~~~~^^^^^^^^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D321\entrees\confronter-62.py", line 46, in show
+    return git("show", f"{sha}:{p}")
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D321\entrees\confronter-62.py", line 42, in git
+    return subprocess.run(["git", *a], capture_output=True, check=True).stdout.decode("utf-8").replace("\r\n", "\n")
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\benla\AppData\Local\Python\pythoncore-3.14-64\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'show', 'b5bd382:apps/api/src/venues/bookings-pro.service.ts']' returned non-zero exit status 128.

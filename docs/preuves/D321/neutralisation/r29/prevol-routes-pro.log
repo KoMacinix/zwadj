@@ -1,0 +1,14 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/routes.test.tsx (2 tests) 175ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  18:35:31
+   Duration  4.18s (transform 972ms, setup 250ms, collect 1.98s, tests 175ms, environment 1.25s, prepare 180ms)
+
+

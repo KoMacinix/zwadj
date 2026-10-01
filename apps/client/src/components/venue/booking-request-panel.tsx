@@ -21,16 +21,19 @@
 // que le serveur a résolu avec le moteur B3. Refaire l'arithmétique dans le
 // navigateur créerait une seconde vérité tarifaire — et c'est justement ce que
 // D75 cherche à rendre impossible.
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { createBookingsClient, type BookingsClient } from "@zwadj/api-client";
 import { formatDZD } from "@zwadj/i18n";
 import { ServicePricingType, type ServiceDTO, type VenueAvailabilityResponse } from "@zwadj/types";
 import { getVenueAvailability } from "../../lib/api";
 import { mergeAvailabilityWindows, splitAvailabilityWindow } from "../../lib/availability-windows";
+import { longDate } from "../../lib/booking-calendar";
 import { LOGIN_PATH } from "../../lib/routes";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
+import { Field } from "../auth/auth-ui";
+import { BookingDatePicker } from "./booking-date-picker";
 
 /** Fenêtre proposée : six mois. Assez pour une saison de mariages, assez court
  *  pour que la liste reste lisible sur un téléphone. L'horizon serveur est de
@@ -122,7 +125,10 @@ export function BookingRequestPanel({
   client
 }: BookingRequestPanelProps) {
   const t = useTranslations("venueDetail.booking");
+  const tCal = useTranslations("venueDetail.calendar");
   const tError = useTranslations("booking.errors");
+  const locale = useLocale();
+  const champId = useId();
   const { status, api } = useAuth();
   const bookings = useMemo(() => client ?? createBookingsClient(api.authedRequest), [client, api]);
 
@@ -135,6 +141,9 @@ export function BookingRequestPanel({
    *  c'est ce déguisement qui a caché le défaut de D315 huit semaines. */
   const [loadFailed, setLoadFailed] = useState(false);
   const [chosen, setChosen] = useState<{ date: string; slotTemplateId: string; priceCents: number } | null>(null);
+  /** Rang 29 (D321) — le jour REGARDÉ dans le calendrier : il dit quels créneaux afficher, rien d'autre. Ce n'est pas
+   *  `chosen` — seul le clic sur un créneau, ci-dessous, choisit (borne de D316). */
+  const [viewDate, setViewDate] = useState<string | null>(null);
   const [guests, setGuests] = useState("");
   const [picks, setPicks] = useState<Pick_[]>([]);
   const [firstName, setFirstName] = useState("");
@@ -174,6 +183,8 @@ export function BookingRequestPanel({
     for (const slot of availability?.slots ?? []) map.set(slot.id, slot.nameFr);
     return map;
   }, [availability]);
+
+  const day = viewDate === null ? undefined : availability?.days.find((row) => row.date === viewDate);
 
   const guestCount = Number(guests) || 0;
   const servicesTotal = picks.reduce((sum, pick) => {
@@ -257,33 +268,48 @@ export function BookingRequestPanel({
       ) : availability.days.length === 0 ? (
         <p className="muted">{t("none")}</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", display: "grid", gap: 6 }}>
-          {availability.days.map((day) =>
-            day.slots.map((slot) => {
-              const free = slot.status === "AVAILABLE";
-              const picked =
-                chosen !== null && chosen.date === day.date && chosen.slotTemplateId === slot.slotTemplateId;
-              return (
-                <li key={`${day.date}-${slot.slotTemplateId}`}>
-                  <button
-                    type="button"
-                    className={picked ? "btn btn-accent" : "btn"}
-                    // Un créneau pris RESTE affiché, désactivé : c'est une
-                    // information utile pour choisir, pas un déchet à masquer.
-                    disabled={!free}
-                    aria-pressed={picked}
-                    onClick={() =>
-                      setChosen({ date: day.date, slotTemplateId: slot.slotTemplateId, priceCents: slot.priceCents })
-                    }
-                  >
-                    {day.date} · {slotNames.get(slot.slotTemplateId) ?? ""} · {formatDZD(slot.priceCents)}
-                    {free ? "" : ` · ${t("taken")}`}
-                  </button>
-                </li>
-              );
-            })
+        // Rang 29 (D321) — UN MOIS à la fois, dans la même fenêtre de six mois (D317 : 182 boutons d'affilée). Le
+        // calendrier dit quel JOUR on regarde ; les créneaux de ce jour, et eux seuls, se choisissent juste en dessous.
+        <>
+          <BookingDatePicker days={availability.days} selected={viewDate} onSelect={setViewDate} />
+          {day === undefined ? null : (
+            <fieldset className="cal-slots" style={{ border: 0, padding: 0, margin: "0 0 16px" }}>
+              <legend>{tCal("slotsFor", { date: longDate(day.date, locale) })}</legend>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 6 }}>
+                {day.slots.map((slot) => {
+                  const free = slot.status === "AVAILABLE";
+                  const picked =
+                    chosen !== null && chosen.date === day.date && chosen.slotTemplateId === slot.slotTemplateId;
+                  return (
+                    <li key={`${day.date}-${slot.slotTemplateId}`}>
+                      <button
+                        type="button"
+                        className={picked ? "btn btn-accent" : "btn"}
+                        // Un créneau pris RESTE affiché, désactivé : c'est une
+                        // information utile pour choisir, pas un déchet à masquer.
+                        disabled={!free}
+                        aria-pressed={picked}
+                        onClick={() =>
+                          setChosen({ date: day.date, slotTemplateId: slot.slotTemplateId, priceCents: slot.priceCents })
+                        }
+                      >
+                        {slotNames.get(slot.slotTemplateId) ?? ""} · {formatDZD(slot.priceCents)}
+                        {free ? "" : ` · ${t("taken")}`}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </fieldset>
           )}
-        </ul>
+        </>
+      )}
+
+      {/* Rang 29 (D321) — le choix fait reste LISIBLE quand on regarde un autre jour ou un autre mois : la liste le
+          montrait d'office, le calendrier ne montre que le jour regardé. Affichage seul : il lit `chosen`, il ne
+          l'écrit pas. */}
+      {chosen === null ? null : (
+        <p>{t("chosen", { date: longDate(chosen.date, locale), slot: slotNames.get(chosen.slotTemplateId) ?? "" })}</p>
       )}
 
       {/* ⚠ Le nombre d'invités vit ICI, HORS du bloc connecté, et ce n'est pas un
@@ -291,13 +317,19 @@ export function BookingRequestPanel({
           invité. Le laisser derrière la connexion afficherait « 0 DA » sur un
           traiteur à 2 000 DA le couvert — soit un prix faux montré à quelqu'un
           qui n'a pas encore de compte, donc au pire moment. */}
-      <input
-        value={guests}
-        onChange={(e) => setGuests(e.target.value.replace(/[^0-9]/g, ""))}
-        placeholder={t("guests")}
-        aria-label={t("guests")}
-        inputMode="numeric"
-      />
+      {/* Rang 29 (D321, D143) — un <label> VISIBLE par champ : `aria-label` seul laissait des cases nues à l'œil. `Field`
+          porte l'astérisque HORS du label et pose `required` sur le champ réel (D32). */}
+      <Field label={t("guests")} required>
+        {({ id, required }) => (
+          <input
+            id={id}
+            value={guests}
+            onChange={(e) => setGuests(e.target.value.replace(/[^0-9]/g, ""))}
+            required={required}
+            inputMode="numeric"
+          />
+        )}
+      </Field>
 
       {/* E2d — les prestations. Affichées APRÈS les dates : on choisit d'abord
           quand, puis avec quoi. Une salle sans catalogue n'affiche rien du tout
@@ -353,8 +385,13 @@ export function BookingRequestPanel({
                       est cochée : des champs pour une chose qu'on n'a pas prise
                       encombrent sans rien apprendre. */}
                   {chosenNow && service.pricingType === ServicePricingType.TIERED ? (
+                    <label htmlFor={`${champId}-${service.id}-palier`} style={{ display: "block" }}>
+                      {`${service.nameFr} — ${t("tier")}`}
+                    </label>
+                  ) : null}
+                  {chosenNow && service.pricingType === ServicePricingType.TIERED ? (
                     <select
-                      aria-label={`${service.nameFr} — ${t("tier")}`}
+                      id={`${champId}-${service.id}-palier`}
                       value={pick?.tierId ?? ""}
                       onChange={(e) =>
                         setPicks((current) =>
@@ -371,8 +408,13 @@ export function BookingRequestPanel({
                   ) : null}
 
                   {chosenNow && service.pricingType === ServicePricingType.PER_UNIT ? (
+                    <label htmlFor={`${champId}-${service.id}-quantite`} style={{ display: "block" }}>
+                      {`${service.nameFr} — ${t("quantity")}`}
+                    </label>
+                  ) : null}
+                  {chosenNow && service.pricingType === ServicePricingType.PER_UNIT ? (
                     <input
-                      aria-label={`${service.nameFr} — ${t("quantity")}`}
+                      id={`${champId}-${service.id}-quantite`}
                       inputMode="numeric"
                       value={String(pick?.quantity ?? "")}
                       onChange={(e) => {
@@ -402,44 +444,63 @@ export function BookingRequestPanel({
         <div style={{ display: "grid", gap: 8 }}>
           {/* Les quatre champs de contact sont OBLIGATOIRES : le profil ne les
               garantit pas (`firstName`, `lastName` et `phone` sont nullable). */}
-          <input
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder={t("firstName")}
-            aria-label={t("firstName")}
-            autoComplete="given-name"
-          />
-          <input
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder={t("lastName")}
-            aria-label={t("lastName")}
-            autoComplete="family-name"
-          />
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder={t("phone")}
-            aria-label={t("phone")}
-            inputMode="tel"
-            autoComplete="tel"
-          />
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t("email")}
-            aria-label={t("email")}
-            inputMode="email"
-            autoComplete="email"
-          />
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={t("message")}
-            aria-label={t("message")}
-            maxLength={1000}
-            rows={3}
-          />
+          <Field label={t("firstName")} required>
+            {({ id, required }) => (
+              <input
+                id={id}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required={required}
+                autoComplete="given-name"
+              />
+            )}
+          </Field>
+          <Field label={t("lastName")} required>
+            {({ id, required }) => (
+              <input
+                id={id}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required={required}
+                autoComplete="family-name"
+              />
+            )}
+          </Field>
+          <Field label={t("phone")} required>
+            {({ id, required }) => (
+              <input
+                id={id}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required={required}
+                inputMode="tel"
+                autoComplete="tel"
+              />
+            )}
+          </Field>
+          {/* D135 — l'e-mail est FACULTATIF : ni astérisque, ni `required`. Son libellé le dit déjà. */}
+          <Field label={t("email")}>
+            {({ id }) => (
+              <input
+                id={id}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                inputMode="email"
+                autoComplete="email"
+              />
+            )}
+          </Field>
+          <Field label={t("message")}>
+            {({ id }) => (
+              <textarea
+                id={id}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                maxLength={1000}
+                rows={3}
+              />
+            )}
+          </Field>
 
           <button type="button" className="btn btn-accent" disabled={!complete || busy} onClick={submit}>
             {t("submit")}

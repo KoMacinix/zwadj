@@ -1,0 +1,21 @@
+D321 — relevé des captures de la fiche salle · 2026-10-01T23:14:52.050Z · API http://localhost:3101 · client http://localhost:3100
+SEMIS · salles publiées après db:seed:demo : 6
+COMPTES · PRO, CLIENT, ADMIN (ce dernier par UPDATE users SET role — aucun chemin du produit ne crée un ADMIN)
+API · POST /venues : 201
+API · POST /venues/:id/slot-templates : 201
+API · POST /venues/:id/visit-availabilities ×7 : 201, 201, 201, 201, 201, 201, 201
+API · POST /admin/venues/:id/publish (ADMIN) : 200
+CAPTURE 04-client-fr-salle.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 272755 octets
+M5/M6 · fiche FR, anonyme, 1280 px : hauteur 4950 px · largeur 1280 px pour une fenêtre de 1280 px · débordement non · boutons du panneau 33
+CAPTURE panneau-fr.jpg · demandé (sur place) · statut — · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 32027 octets
+CAPTURE 16-client-ar-salle.jpg · demandé http://localhost:3100/ar/salles/salle-des-captures · statut 200 · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 258783 octets
+M5/M6 · fiche AR, anonyme, 1280 px : hauteur 4950 px · largeur 1280 px pour une fenêtre de 1280 px · débordement non · boutons du panneau 33
+CAPTURE panneau-ar.jpg · demandé (sur place) · statut — · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 30300 octets
+CAPTURE 04m-client-fr-salle-360.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 229850 octets
+M5/M6 · fiche FR, anonyme, 360 px : hauteur 6964 px · largeur 364 px pour une fenêtre de 360 px · débordement OUI · boutons du panneau 33
+CAPTURE 16m-client-ar-salle-360.jpg · demandé http://localhost:3100/ar/salles/salle-des-captures · statut 200 · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 217552 octets
+M5/M6 · fiche AR, anonyme, 360 px : hauteur 6864 px · largeur 360 px pour une fenêtre de 360 px · débordement non · boutons du panneau 33
+CAPTURE 26-client-fr-salle-connecte.jpg · demandé (sur place) · statut — · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 307578 octets
+M5/M6 · fiche FR, connecté, un jour et un créneau choisis : hauteur 5721 px · largeur 1280 px pour une fenêtre de 1280 px · débordement non · boutons du panneau 35
+CAPTURE panneau-fr-connecte.jpg · demandé (sur place) · statut — · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 59511 octets
+FIN · 8 capture(s) tentée(s)
