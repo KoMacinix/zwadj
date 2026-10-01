@@ -1,0 +1,128 @@
+== 0. état de départ
+✓ calibration : commentaires retirés (lien en prose, `/connexion` cité, `passthrough` en bloc) · code gardé (lien, URL) · « x … (0ms) » trouvé malgré « \r » · « x … (3.1s) » non pris pour 0 ms : mesuré (1, False, False, True, True, False) (attendu, cas construits, deux bras (D286) : (1, False, False, True, True, False))
+✓ fichiers lus dans l'arbre, différents de a65d40d : mesuré [] (attendu, lecture de l'état commité par D316 : [])
+  · parcouru : 79 fichiers lus dans l'arbre · HEAD courant a65d40d
+== 1. provenance et périmètre
+✓ parent du commit de D316 : mesuré 'a7c09fa' (attendu, « SHA de départ : a7c09fa » : 'a7c09fa')
+✓ « D316 » dans les fichiers suivis à a7c09fa : mesuré 0 (attendu, « 0 occurrence … à a7c09fa » : 0)
+✓ fichiers au diff hors de la table des fichiers attendus et de docs/preuves/D316/ : mesuré [] (attendu, table « Fichiers attendus » du rang 25 : [])
+✓ fichiers de la table absents du diff : mesuré [] (attendu, table « Fichiers attendus » : [])
+  · parcouru : 93 fichiers au diff, dont 73 sous docs/preuves/D316/ et 20 de la table
+✓ pièces d'autres décisions touchées : mesuré [] (attendu, aucune rectification annoncée par D316 : [])
+✓ commit de D316 sur origin/main : mesuré True (attendu, clôture poussée : True)
+== 2. les outils de D316 rejoués sur l'état qu'ils ont lu, sorties comparées à l'octet
+✓ worktree du premier argument : mesuré 'ffd32e9' (attendu, worktree détaché : 'ffd32e9')
+✓ worktree du balayage : HEAD : mesuré 'a7c09fa' (attendu, HEAD du dernier passage du balayage (a7c09fa) : 'a7c09fa')
+✓ worktree du balayage : fichiers d'autorité égaux à ceux de a65d40d (fins de ligne normalisées) : mesuré 4 (attendu, arbre du dernier passage = état qui part : 4)
+✓ rejeu de confronter-d315.py = confronter-d315-sortie.txt : mesuré (True, True) (attendu, sortie versée : (True, True))
+✓ confronter-d315-sortie.txt : contrôles · écarts : mesuré ('67', '0') (attendu, « 67 contrôles, 0 écart » : ('67', '0'))
+✓ rejeu de balayage.py (HEAD a7c09fa, arbre a65d40d) = balayage-controle.txt : mesuré (True, 0) (attendu, « balayage-controle.txt, rejoué sur l'état qui part » : (True, 0))
+  · parcouru : 42 extraits versés
+✓ extraits dont le journal brut manque sur disque : mesuré [] (attendu, journaux de travail hors dépôt (D291) : [])
+✓ extraits dont le rejeu d'extraire.py diffère à l'octet : mesuré [] (attendu, chaque extrait se rattache à SON journal : [])
+✓ rejeux d'extraire.py sortis non nuls (valeur sensible restée dans l'extrait) : mesuré [] (attendu, « attendu 0, obtenu 0 partout » : [])
+== 3. les portes
+✓ typecheck : paquets « Done », e2e compris : mesuré (8, True) (attendu, « 8 paquets « Done » (e2e compris) » : (8, True))
+✓ typecheck : « error TS » : mesuré 0 (attendu, « 0 error TS » : 0)
+✓ lint : paquets « Done » · lignes d'erreur ou d'avertissement : mesuré (8, 0) (attendu, « 8 paquets « Done », aucune ligne d'erreur ni d'avertissement » : (8, 0))
+✓ test : paquet → (tests, fichiers) : mesuré {'api': (664, 58), 'api-client': (39, 4), 'client': (308, 22), 'pro': (347, 28)} (attendu, « API 664/58 · api-client 39/4 · client 308/22 · pro 347/28 » : {'api': (664, 58), 'api-client': (39, 4), 'client': (308, 22), 'pro': (347, 28)})
+✓ test : lignes « fail », toutes des journaux du test Chargily « injoignable » : mesuré (2, True) (attendu, « les deux « fail » … un test Chargily qui simule un fournisseur injoignable » : (2, True))
+✓ test : écart à la marque de D314 (pièce de sa passe) : mesuré {'api': (0, 0), 'api-client': (3, 1), 'client': (21, 2), 'pro': (0, 0)} (attendu, « (+3, +1) · (+21, +2) » : {'api': (0, 0), 'api-client': (3, 1), 'client': (21, 2), 'pro': (0, 0)})
+✓ build : paquets « Done » : mesuré 4 (attendu, « 4 « Done » » : 4)
+✓ test:int : tests · fichiers · code · durée : mesuré ('444', '36', ('0', '306')) (attendu, « 444/444, 36 fichiers » · 0 · 306 s : ('444', '36', ('0', '306')))
+✓ e2e : réussis · ignorés · code · durée : mesuré ('41', '1', ('0', '127')) (attendu, « 41 réussis, 1 ignoré » · 0 · 127 s : ('41', '1', ('0', '127')))
+✓ e2e : titres r25 réussis · B8 réussis (≥ 1) · titres en « x » : mesuré (7, True, 0) (attendu, « 34 + 7 neufs ; B8 comprise » : (7, True, 0))
+✗ portes dont la pièce porte le code et la durée : mesuré ['test-e2e-extrait.txt', 'test-int-extrait.txt'] (attendu, table des portes : code et durée écrits pour les SIX (D291 : une mesure nomme sa pièce) : ['build-extrait.txt', 'lint-extrait.txt', 'test-e2e-extrait.txt', 'test-extrait.txt', 'test-int-extrait.txt', 'typecheck-extrait.txt'])
+  · journaux bruts des portes (hors dépôt) portant « durée= » : ['test-e2e.log', 'test-int.log'] sur 6 — les codes 0 de typecheck, lint et build s'INFÈRENT des « Done », celui de test des « passed » ; les durées 19, 12, 63 et 38 s n'ont aucune pièce
+✗ pièce portant l'état machine au départ des portes (6 380 Mo, PERF 84,4) : mesuré False (attendu, « État machine au départ des portes … (relevé …) » — D291 : une mesure nomme sa pièce : True)
+✓ plafond act(…) du test du panneau (S8) : mesuré True (attendu, « reste à 5 avertissements act(…), son plafond (S8) » : True)
+== 4. la campagne neutralize-r25.py
+✓ CIBLES : total · unitaires · intégration · e2e : mesuré (11, 7, 1, 3) (attendu, « 11 cibles : 7 unitaires, 1 d'intégration, 3 e2e » : (11, 7, 1, 3))
+✓ vitest exigé : mesuré 'v3.2.7' (attendu, « vitest 3.2.7 exigé » : 'v3.2.7')
+✓ passe officielle : verdicts des 11 cibles : mesuré {'R25-1': '✓', 'R25-2': '✓', 'R25-3': '✓', 'R25-4': '✓', 'R25-5': '✓', 'R25-6': '✓', 'R25-7': '✓', 'R25-8': '✓', 'R25-E1': '✓', 'R25-E2': '✓', 'R25-E3': '✓'} (attendu, « 11 mordues sur 11 » : {'R25-1': '✓', 'R25-2': '✓', 'R25-3': '✓', 'R25-4': '✓', 'R25-5': '✓', 'R25-6': '✓', 'R25-7': '✓', 'R25-8': '✓', 'R25-E1': '✓', 'R25-E2': '✓', 'R25-E3': '✓'})
+✓ passe officielle : mutations prouvées posées (ancre 1→0 · marqueur 0→1) : mesuré 11 (attendu, « ancre 1 → 0, marqueur n → n + 1 » : 11)
+✓ passe officielle : cibles vitest lues en AssertionError, au moins un test en échec : mesuré 8 (attendu, « une AssertionError en première ligne de son bloc » : 8)
+✓ passe officielle : cibles e2e avec au moins un titre en « x » : mesuré 3 (attendu, « le titre en « x » » : 3)
+✓ passe officielle : synthèse · code · durée · calibration : mesuré (('11', '11', '0'), ('0', '691'), ('10', '0')) (attendu, « 11 sur 11, code 0, 691 s » · « calibration à 10 bras » : (('11', '11', '0'), ('0', '691'), ('10', '0')))
+✓ première passe : synthèse · verdict de R25-E2 : mesuré (('10', '11'), '✗') (attendu, « une première passe officielle a rendu 10 sur 11 » : (('10', '11'), '✗'))
+  · première passe : 1 · 520 (code · durée ; non écrits par la section)
+✓ R25-E2 de la première passe (brut, hors dépôt) : titres « x » à 0 ms · ECONNREFUSED · recompilations : mesuré (True, True, ['12:14:35', '12:14:37', '12:14:39']) (attendu, « beforeAll … ECONNREFUSED … File change detected ×3 » ; « 00:14:35 » : (True, True, ['12:14:35', '12:14:37', '12:14:39']))
+✓ rouge du défaut 1 (brut) : recompilations · la première AVANT le préchauffage : mesuré (['11:20:58'], True) (attendu, « vu deux fois : 23:20:58, avant le préchauffage » : (['11:20:58'], True))
+  · heures de départ vitest des extraits versés sous passe-officielle/ : R25-1 03:26:42 · R25-2 03:26:46 · R25-3 03:26:50 · R25-4 03:26:55 · R25-5 03:27:11 · R25-6 03:27:19 · R25-7 03:27:23 · R25-8 03:20:50
+✗ passe-officielle/ : extraits R25-1 à R25-7 lancés AVANT R25-8, dans l'ordre de la campagne (CIBLES) : mesuré [] (attendu, « Passe officielle … (docs/preuves/D316/neutralisation/) » ; D309, point 3 : une pièce cite SA passe : ['R25-1', 'R25-2', 'R25-3', 'R25-4', 'R25-5', 'R25-6', 'R25-7'])
+  · fin des journaux (mtime, hors dépôt) : campagne officielle 03:26:17 · tri lancer-campagnes 03:27:27 — les départs de R25-1 à R25-7 tombent dans la fenêtre du TRI (mode par défaut, 7 cibles)
+✓ tri : concernées · total · sortie · mordues · muettes · non mesurées : mesuré (('1', '29'), ('3', '7', '0', '4')) (attendu, « 1 campagne concernée sur 29 … 7 mordues, 4 non mesurées … sortie 3 » : (('1', '29'), ('3', '7', '0', '4')))
+✓ harnais neutralize-*.py à a65d40d : mesuré 29 (attendu, « sur 29 » : 29)
+✓ autres harnais citant un fichier du lot : mesuré {} (attendu, « aucune autre campagne ne mute ni ne mesure un fichier de ce lot » : {})
+  · parcouru : 28 harnais × 11 motifs
+  · sections du dossier non citées par la section : campagne-r25-complete (11/11, avant les portes), campagne-r25-unit, forme-groupee — noms neutres, aucune ne se donne pour la passe comptée
+== 5. les captures d'après correctif
+✓ images · octets : mesuré (7, 2430716) (attendu, « 7 images … 2 430 716 octets » : (7, 2430716))
+✓ relevé : lignes CAPTURE, chaque taille = celle du fichier versé · FIN : mesuré (7, True, True) (attendu, releve.txt : (7, True, True))
+✓ images absentes de D315 (noms) : mesuré ['25-client-ar-connexion-cible-du-bouton-reserver.jpg'] (attendu, « aux noms et numéros de D315 … 25-ar (neuve) » : ['25-client-ar-connexion-cible-du-bouton-reserver.jpg'])
+✓ calibration du lecteur JPEG : bras positif (largeur 1280 sur les 7) · bras négatif (octets tronqués) : mesuré (True, None) (attendu, fenêtre « Desktop Chrome » de la configuration e2e : (True, None))
+✓ dimensions des captures 04 et 26 : mesuré ((1280, 14487), (1280, 14798)) (attendu, « 04 : 1280 × 14 487 ; 26 : 1280 × 14 798 » (backlog) ; « 14 487 px » (section) : ((1280, 14487), (1280, 14798)))
+✓ 25-fr et 25-ar : octets identiques aux captures 05 et 17 de D315 : mesuré (True, True) (attendu, « 58 018 et 51 351 octets — exactement les captures 05 et 17 de D315 » : (True, True))
+✓ M4 : les deux fenêtres du panneau (statut, bornes) et leurs largeurs bornes incluses : mesuré ([('200', '2026-09-28', '2026-12-28'), ('200', '2026-12-29', '2027-03-28')], [92, 90]) (attendu, « deux requêtes … 200 toutes deux » ; « deux fenêtres (92 + 90) » : ([('200', '2026-09-28', '2026-12-28'), ('200', '2026-12-29', '2027-03-28')], [92, 90]))
+✓ M1 : liens « connexion » de la fiche : mesuré ['/fr/auth/connexion'] (attendu, « les deux liens … visent /fr/auth/connexion » : ['/fr/auth/connexion'])
+✓ M2 : FR et AR : mesuré [('fr', 'http://localhost:3100/fr/auth/connexion', '200'), ('ar', 'http://localhost:3100/ar/auth/connexion', '200')] (attendu, « /fr/auth/connexion et /ar/auth/connexion, 200 à froid » : [('fr', 'http://localhost:3100/fr/auth/connexion', '200'), ('ar', 'http://localhost:3100/ar/auth/connexion', '200')])
+== 6. le code à a65d40d
+✓ panneau : lignes ajoutées ou retirées qui touchent l'aperçu d'acompte ou le transport de la date : mesuré [] (attendu, « le git diff du panneau ne touche aucune ligne de previewDeposit, lineTotal, du total, de l'acompte, de setChosen ni de submit » : [])
+  · parcouru : 42 lignes ajoutées ou retirées du panneau
+✓ panneau : WINDOW_DAYS : mesuré '182' (attendu, « 182 jours gardés » : '182')
+✓ availability-windows.ts : borne IMPORTÉE du contrat : mesuré True (attendu, « borne IMPORTÉE » : True)
+✓ routes.ts : LOGIN_PATH : mesuré '/auth/connexion' (attendu, « LOGIN_PATH » : '/auth/connexion')
+✓ routes.test.ts : la garde lit un FICHIER page.tsx : mesuré (True, True) (attendu, « gardé contre le fichier de la page (D249) » : (True, True))
+✓ client : liens littéraux href="/auth/connexion" par fichier (hors tests) : mesuré {'account-settings-view.tsx': 1, 'auth-ui.tsx': 1, 'recovery-forms.tsx': 3, 'register-form.tsx': 1, 'verify-email-view.tsx': 1, 'site-chrome.tsx': 1, 'visit-booking-panel.tsx': 1} (attendu, backlog, « neuf liens … recovery-forms.tsx (×3) » : {'account-settings-view.tsx': 1, 'auth-ui.tsx': 1, 'recovery-forms.tsx': 3, 'register-form.tsx': 1, 'verify-email-view.tsx': 1, 'site-chrome.tsx': 1, 'visit-booking-panel.tsx': 1})
+✓ client : liens vers la SPA pro (${PRO_URL}/auth/connexion) : mesuré 2 (attendu, « plus deux liens vers la SPA pro » : 2)
+✓ client et pro : un lien vers /connexion sans /auth (hors tests) : mesuré [] (attendu, « Aucun autre lien vers /connexion » : [])
+  · parcouru : 58 fichiers client, 50 fichiers pro
+✓ account.controller.ts, handler GET deletion-request, code hors commentaires : @Res() · res.status(200 ou HttpStatus.OK).json( · passthrough : mesuré (True, True, False) (attendu, « res.status(200).json(…) (@Res() sans passthrough) » : (True, True, False))
+  · dans le reste du fichier, « passthrough: true » : 1 — un autre handler, non visé par D316
+  · D316 écrit « res.status(200).json(…) » ; le code porte « res.status(HttpStatus.OK).json(…) » — même statut, autre graphie
+✓ API : intercepteurs globaux : mesuré 0 (attendu, « aucun intercepteur global, relevé » : 0)
+  · parcouru : 168 fichiers de apps/api/src (hors generated) ; useGlobalFilters : 1
+✓ account-client.test.ts : absent à a7c09fa, présent à a65d40d : mesuré (False, True) (attendu, « account-client.test.ts (neuf) » : (False, True))
+✓ i18n : venueDetail.booking.loadFailed (fr, ar) à a7c09fa puis a65d40d : mesuré {('fr', 'a7c09fa'): False, ('fr', 'a65d40d'): True, ('ar', 'a7c09fa'): False, ('ar', 'a65d40d'): True} (attendu, « loadFailed (FR et AR) » : {('fr', 'a7c09fa'): False, ('fr', 'a65d40d'): True, ('ar', 'a7c09fa'): False, ('ar', 'a65d40d'): True})
+== 7. audit de secrets et contrôles « 0 valeur réelle »
+✓ audit-secrets-d316.txt : le sceau couvre les octets qui le précèdent : mesuré True (attendu, sortie scellée (D298) : True)
+✓ audit-secrets-d316.txt : alertes : mesuré 135 (attendu, « 135 alertes » ; commit a65d40d : « audit 135 puis 136 » : 135)
+✓ audit-secrets-final.txt : le sceau couvre les octets qui le précèdent : mesuré True (attendu, sortie scellée (D298) : True)
+✓ audit-secrets-final.txt : alertes : mesuré 136 (attendu, « 135 alertes » ; commit a65d40d : « audit 135 puis 136 » : 136)
+✓ tri de l'audit : neuves · ventilation : mesuré ('8', 'mot-de-passe=6 · jeton=2') (attendu, « 8 neuves … une propriété, cinq récitations …, deux expressions de mon extracteur » : ('8', 'mot-de-passe=6 · jeton=2'))
+  · audit final contre audit-d316 (D299, rejoué) : 1 neuve(s) — [mot-de-passe] docs/preuves/D316/controles/tri-audit-d316-lecture.txt — contexte : ligne 778 de docs/preuves/D
+  · pièce de tri de l'audit FINAL : aucune — l'alerte neuve se lit à sa ligne de l'audit final : le fichier de tri qui récite un titre de test (« valeur trop courte pour une recherche ») ; un mot
+✓ aucune-valeur-reelle.txt : valeurs · journaux · fichiers · porteurs : mesuré ('74', '13', '85', '0') (attendu, « 74 valeurs … 13 journaux ; cookie — 145 … ; 85 fichiers parcourus, 0 porteur » : ('74', '13', '85', '0'))
+✓ aucun-cookie-reel.txt : valeurs · journaux · fichiers · porteurs : mesuré ('145', '13', '85', '0') (attendu, « 74 valeurs … 13 journaux ; cookie — 145 … ; 85 fichiers parcourus, 0 porteur » : ('145', '13', '85', '0'))
+✓ forme Chargily : fichiers · porteurs : mesuré ('87', '0') (attendu, « 87 fichiers, 0 porteur » : ('87', '0'))
+✓ journaux bruts qui portent une valeur (motifs d'extraire.py) = les 13 contrôlés : mesuré ['.neutralisation-journaux\\d316\\captures-console.log', '.neutralisation-journaux\\d316\\officielle-1\\R25-E1.log', '.neutralisation-journaux\\d316\\officielle-1\\R25-E3.log', '.neutralisation-journaux\\d316\\portes\\test-e2e.log', '.neutralisation-journaux\\d316\\rouge-defaut1.log', '.neutralisation-journaux\\d316\\rouge-defaut2.log', '.neutralisation-journaux\\d316\\rouge-defaut3.log', '.neutralisation-journaux\\d316\\vert-defaut1.log', '.neutralisation-journaux\\d316\\vert-defaut2.log', '.neutralisation-journaux\\d316\\vert-defaut3.log', '.neutralisation-journaux\\r25\\R25-E1.log', '.neutralisation-journaux\\r25\\R25-E2.log', '.neutralisation-journaux\\r25\\R25-E3.log'] (attendu, « 74 valeurs cherchées dans 13 journaux » — le choix des journaux laisse-t-il passer une valeur ? : ['.neutralisation-journaux\\d316\\captures-console.log', '.neutralisation-journaux\\d316\\officielle-1\\R25-E1.log', '.neutralisation-journaux\\d316\\officielle-1\\R25-E3.log', '.neutralisation-journaux\\d316\\portes\\test-e2e.log', '.neutralisation-journaux\\d316\\rouge-defaut1.log', '.neutralisation-journaux\\d316\\rouge-defaut2.log', '.neutralisation-journaux\\d316\\rouge-defaut3.log', '.neutralisation-journaux\\d316\\vert-defaut1.log', '.neutralisation-journaux\\d316\\vert-defaut2.log', '.neutralisation-journaux\\d316\\vert-defaut3.log', '.neutralisation-journaux\\r25\\R25-E1.log', '.neutralisation-journaux\\r25\\R25-E2.log', '.neutralisation-journaux\\r25\\R25-E3.log'])
+  · parcouru : 45 journaux bruts de D316 (d316/ et r25/)
+✓ « 0 valeur réelle » (jetons), rejoué sur les 93 fichiers qu'a fait partir a65d40d : valeurs · journaux · fichiers · porteurs · code : mesuré (('74', '13', '93', '0'), 0) (attendu, « 74 valeurs … 13 journaux … 0 porteur » (sur 85 fichiers alors ; ici tout ce qui est parti) : (('74', '13', '93', '0'), 0))
+✓ « 0 valeur réelle » (cookie), rejoué sur les 93 fichiers qu'a fait partir a65d40d : valeurs · journaux · fichiers · porteurs · code : mesuré (('145', '13', '93', '0'), 0) (attendu, « 145 valeurs … 13 journaux … 0 porteur » (sur 85 fichiers alors ; ici tout ce qui est parti) : (('145', '13', '93', '0'), 0))
+✓ forme Chargily, calibration : synthétique trouvée · trop courte non trouvée : mesuré (True, False) (attendu, cas construits : (True, False))
+✓ forme Chargily sur les 93 fichiers partis : mesuré [] (attendu, « 0 porteur » : [])
+== 8. passe D277 de D316
+✓ balayage.py : empreinte (préfixe) : mesuré '24802faf' (attendu, « copie à l'octet … (24802faf…) » : '24802faf')
+✓ motifs : sens 1 et 2 · témoins : mesuré (18, 2) (attendu, « 18 + 2 témoins » : (18, 2))
+✓ motifs : « rang 25 », « relecteur », « 404 » seuls absents des motifs : mesuré [] (attendu, « écartés avant la première passe » : [])
+✓ balayage-après : arbre = corpus commité à a65d40d : mesuré 1871787 (attendu, « pris après la dernière écriture de texte » : 1871787)
+✓ balayage-contrôle = balayage-après (octets) : mesuré True (attendu, « doit rendre les mêmes comptes » : True)
+✓ balayage-1 pris avant la dernière écriture (arbre plus petit) : mesuré True (attendu, « première passe » : True)
+== 9. écritures de D316 relues à a65d40d
+✓ registre : dernière ligne D316 : mesuré True (attendu, registre : True)
+✓ titre du rang 25 : CLOS LE 27/09/2026 : D316 : mesuré True (attendu, point d'entrée : True)
+✓ ordre des rangs : dernière ligne « ⇒ RANG N » non barrée : mesuré '26' (attendu, « RANG 26 : EN ATTENTE » : '26')
+✓ point d'entrée du rang 25 : « dix » barré, « neuf » écrit : mesuré True (attendu, fautes, n° 2 : True)
+✓ méthode renforcée : bloc D316 : mesuré True (attendu, « méthode renforcée, bloc D316 » : True)
+✓ AGENTS.md : quatre annotations D316 : mesuré [True, True, True, True] (attendu, table « ce qui a atterri » : règle de D270, signatures, pointeur d'état, point E3 : [True, True, True, True])
+✓ calibration forme D302 : bras négatif (sans COÛT) · bras positif (« ordonner⏎par Ko ») : mesuré (False, True) (attendu, cas connus : (False, True))
+✓ reports de D316 : entrées ouvertes, chacune (BLOQUE ou « à ordonner par Ko ») et COÛT, texte aplati : mesuré (4, [True, True, True, True]) (attendu, « neuf liens, clé arabe, 182 dates, recompilations » : (4, [True, True, True, True]))
+✓ reports de D315 : entrées cochées avec leur motif D316 : mesuré 3 (attendu, « trois entrées cochées avec leur motif » : 3)
+✓ [DOC][P3] « POURQUOI (b) » annoté D316 : mesuré True (attendu, « annotée : elle suit désormais « RANG 26 » » : True)
+  · parcouru : 11 lignes supprimées par D316 dans les trois .md
+✓ lignes supprimées dont un mot (≥ 4 lettres) a disparu des trois fichiers : mesuré [] (attendu, D276 : barré, pas effacé : [])
+== 10. limites écrites par D316
+✗ pièce portant le relevé « aucun fichier suivi ne change dans ces fenêtres (relevé par horodatage) » : mesuré False (attendu, D291 : une mesure nomme sa pièce : True)
+  · pièces de D316 qui portent une recompilation et l'heure d'une des deux fenêtres : aucune
+
+96 contrôles · 4 écart(s) (attendu : ce que la lecture trouve — chaque ✗ se lit à son contexte)

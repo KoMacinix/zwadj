@@ -2016,6 +2016,11 @@ ancrées que par leur section.
       par `context.request` et ne tombe pas). Seconde piste : `nest start --watch`
       redémarre l'API pendant la suite — à écarter en lisant les journaux `webServer`
       (« Nest application successfully started » ne doit apparaître qu'UNE fois).
+      ⛔ *(D317, 27/09/2026 : la **seconde piste est un mécanisme MESURÉ** — une écriture d'un
+      fichier du programme de l'API pendant une suite la recompile et la redémarre (~2 s de
+      `ECONNREFUSED`, un « successfully started » de plus par redémarrage) ; l'API de l'e2e ne
+      tourne plus en surveillance depuis le rang 26. **La cause des échecs du 28/08 n'est pas
+      établie pour autant** : section D317, étape 1.)*
       ⚠ **Arbitrage en attente** : si la cause est bien la socket, faut-il une nouvelle
       tentative sur les erreurs de CONNEXION dans le harnais ? Le `retries: 0` de la
       config vise les ASSERTIONS ; réessayer une mise en place n'est pas la même chose.
@@ -2457,6 +2462,39 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 27/09/2026 — rang 26, le parcours de réservation joué de bout en bout (D317)
+
+Détail : section D317 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
+Ko** », et son **COÛT**. ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : l'entrée `[TEST]` des recompilations de
+D316, **cochée avec son motif** ; l'entrée `[CLIENT]` des 182 boutons, **annotée** (décision 1 du relecteur) ; l'entrée
+`[E2E][P0]` `fetch failed` de D265, **annotée** (sa seconde piste, mesurée) ; l'entrée `[DOC][P3]` « POURQUOI (b) »
+(annotée : elle suit désormais « RANG 27 »).
+
+- [ ] **[TEST]** **Côté CLIENT, les gardes du parcours ne sont prouvées que par leurs DEUX BRAS dans la spec, pas par une
+  neutralisation** — `e2e/specs/r26-parcours-reservation.e2e.ts` exige le libellé du résultat ABSENT pendant l'attente, puis
+  PRÉSENT après la réponse du pro, par le même localisateur. La mutation qui ferait rougir ces assertions toucherait la section
+  « Mes réservations », qui présente les montants et « Acceptée — acompte à régler » (**une instruction de paiement, branche
+  6**) ; de même, la sortie de la demande hors de « Demandes » après acceptation n'est prouvée que par ses deux bras : le
+  partage « Demandes » / « Réservations » décide d'où une réservation s'annule (**branche 2**). Le harnais du lot n'y touche
+  pas : la décision 2 permet un TEST, elle ne dit rien d'une neutralisation (bloc D317). ⇒ **À ordonner par Ko**, après
+  réponse du **relecteur** : une mutation temporaire et restaurée d'un code du chemin de l'argent est-elle permise pendant la
+  pause ? ⇒ **COÛT** : harnais (compte) ; `neutralisation/neutralize-r26.py` ; e2e exigée ; chemin de l'argent : **oui**
+  (les cibles) ; migration : non.
+- [ ] **[TEST]** **Les harnais écrivent leurs journaux par cible au MÊME chemin à chaque passe : un tri ou un rejeu écrase
+  ceux de la passe comptée** — MESURÉ : chez D316, le tri `lancer-campagnes.py` (7 cibles, 03:26:42 → 03:27:23) a écrasé
+  `.neutralisation-journaux/r25/R25-1.log` à `R25-7.log` de la passe officielle, et ce sont ses journaux qui ont été versés
+  sous `passe-officielle/` (rectification posée à côté des pièces, D317) ; chez D317, le rejeu de `neutralize-r25.py --e2e`
+  aurait écrasé ceux de D316 — copiés deux minutes après son lancement, avant la première cible (11 sur 11, empreintes
+  vérifiées). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code d'instruments (compte) — un dossier par passe dans les harnais, ou
+  dans `lancer-campagnes.py` ; les harnais du chemin de l'argent en font partie (branche 4) : pause ; e2e : non ; migration :
+  non.
+- [ ] **[TEST]** **Aucune garde ne tient l'API de l'e2e hors surveillance** — le correctif de l'étape 1 est une ligne de
+  `e2e/playwright.config.ts` (`nest start` au lieu de `run dev`) ; si `--watch` y revient, **rien ne rougit** avant la
+  prochaine écriture concurrente. La mesure qui l'a prouvé est versée et rejouable (`docs/preuves/D317/etape1/`, rouge 21 + 23
+  sondes en échec, vert 0), elle n'est pas une porte. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : e2e (compte) — le paquet `e2e`
+  n'a pas de tests unitaires ; une garde de source sur la configuration, ou la mesure promue en spec ; chemin de l'argent :
+  non ; migration : non.
+
 ## Reports du 26/09/2026 — rang 25, les trois défauts de D315 réparés (D316)
 
 Détail : section D316 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : ce que l'entrée **BLOQUE** ou « **à ordonner par
@@ -2485,8 +2523,16 @@ désormais « RANG 26 »).
   client (compte) ; `booking-request-panel.tsx` et son test ; e2e : la spec du rang 25 la visite ; chemin de l'argent :
   **fichier sur la carte** — la forme de la liste ne touche ni montant ni transport de la date, mais c'est au **relecteur**
   de le dire (principe de D316 : par la fonction) ; migration : non.
-- [ ] **[TEST]** **L'API de développement recompile parfois d'elle-même pendant l'e2e, et tout appel tombé dans la fenêtre
-  échoue en `ECONNREFUSED`** — MESURÉ deux fois le 26-27/09 (« File change detected » : une fois avant le préchauffage, trois
+  ⛔ *(D317, 27/09/2026 — **DIT par le relecteur** (décision 1, bloc D317) : ce n'est **pas** du chemin de l'argent, « c'est
+  la présentation des choix. La date choisie et son transport vers le calcul du prix ne changent pas. Même borne que D316 » ;
+  le correctif, **un calendrier**, est à ordonner par Ko. L'entrée reste ouverte.)*
+- [x] **[TEST]** **L'API de développement recompile parfois d'elle-même pendant l'e2e, et tout appel tombé dans la fenêtre
+  échoue en `ECONNREFUSED`** ⛔ **(D317, 27/09/2026) RÉPARÉ AU RANG 26, ÉTAPE 1**, arbitré par Ko : **mesuré** — une ÉCRITURE
+  d'un fichier du programme de l'API (`apps/api/src`, `packages/types/src`, `packages/i18n/messages/*.json`) la recompile et
+  la REDÉMARRE, ~2 s de `ECONNREFUSED` ; une lecture, un recul du dernier accès, `prisma db seed`, `prisma migrate deploy` : non.
+  L'API de l'e2e est lancée par `nest start`, compilée une fois (`e2e/playwright.config.ts`) : rouge 21 + 23 sondes en échec,
+  vert 0. ⚠ Les écrivains des deux fenêtres de D316 ne sont **pas** identifiés, et « aucun fichier suivi ne change » n'avait
+  pas de pièce (lecture adverse de D317). Section D317. — MESURÉ deux fois le 26-27/09 (« File change detected » : une fois avant le préchauffage, trois
   fois dans un `beforeAll` — campagne `neutralize-r25.py`, cible R25-E2, jugée désormais NON DÉMARRÉE). **Aucun fichier suivi
   ne change dans ces fenêtres** (relevé par horodatage) : la cause n'est **pas identifiée**. Ce n'est pas un défaut du
   produit ; c'est une source d'échecs sans objet, du type que D127 décrit (« un échec qui se déplace »). ⇒ **À ordonner par
@@ -3351,7 +3397,9 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   il suit désormais « RANG 24 : EN ATTENTE D'ARBITRAGE DE KO », puis la même décision due à Ko — même défaut,
   toujours non corrigé)* ⛔ *(D315, 26/09/2026 : il suit désormais « RANG 25 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut,
   non corrigé ; ce lot n'y touche pas)* ⛔ *(D316, 26/09/2026 : il suit désormais l'arbitrage du rang 25 et « RANG 26 : EN
-  ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
+  ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D317, 27/09/2026 : il suit
+  désormais l'arbitrage du rang 26 et « RANG 27 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot
+  n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

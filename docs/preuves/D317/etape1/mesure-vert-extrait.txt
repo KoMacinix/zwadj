@@ -1,0 +1,108 @@
+# extrait de .neutralisation-journaux/d317/mesure-vert.log · sha256 du journal complet ec40612b2d47c31d8441b829e230386a16dde40e7744fb38fa1ae0e533689f95 · 650 lignes parcourues · 543 « [WebServer] » retirées · 107 gardées (dont 1 « [WebServer] » de statut du compilateur ou du démarrage)
+[WebServer] [11:39:15.252] INFO (13756): Nest application successfully started {"context":"NestApplication"}
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+27 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 1 test using 1 worker
+
+  ok 1 [mesure] › ..\docs\preuves\D317\etape1\mesure-surveillance.spec.ts:52:5 › relevé : le serveur d'API recompile-t-il sur lecture, sur écriture ? (48.3s)
+
+  Slow test file: [mesure] › ..\docs\preuves\D317\etape1\mesure-surveillance.spec.ts (48.3s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  1 passed (1.3m)

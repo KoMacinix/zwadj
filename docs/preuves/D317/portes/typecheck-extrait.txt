@@ -1,0 +1,23 @@
+# extrait de .neutralisation-journaux/d317/portes/typecheck.log · sha256 du journal complet c43259bb878a92f4253adbdd0004da08b30234ed9428e8ce2c77bbf66798bd5e · 22 lignes parcourues · 0 « [WebServer] » retirées · 22 gardées
+
+> zwadj@ typecheck C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run typecheck
+
+Scope: 9 of 10 workspace projects
+packages/types typecheck$ tsc --noEmit
+e2e typecheck$ tsc --noEmit
+packages/ui typecheck$ tsc --noEmit
+packages/i18n typecheck$ tsc --noEmit
+packages/i18n typecheck: Done
+packages/types typecheck: Done
+packages/ui typecheck: Done
+e2e typecheck: Done
+apps/api typecheck$ tsc --noEmit
+packages/api-client typecheck$ tsc --noEmit
+packages/api-client typecheck: Done
+apps/api typecheck: Done
+apps/client typecheck$ tsc --noEmit
+apps/pro typecheck$ tsc --noEmit
+apps/client typecheck: Done
+apps/pro typecheck: Done
+code=0 durée=37s début=11:58:12

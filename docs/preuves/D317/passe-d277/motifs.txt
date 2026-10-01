@@ -1,0 +1,30 @@
+# D317 — motifs de la passe D277 (rang 26 ARBITRÉ par Ko, lot de TESTS qui compte : le parcours de réservation en e2e ;
+# étape 1 : l'API de l'e2e ne tourne plus en surveillance ; décisions du relecteur : 182 boutons hors du chemin de l'argent,
+# un test qui EXERCE le chemin sans le modifier est permis pendant la pause ; compteur UN → DEUX ; rang 27 en attente).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D316), jamais passés en ligne de commande
+# (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « rang 26 » seul, « relecteur » seul, « e2e » seul, « watch » seul — ils comptent tout
+# (D298, et la leçon inverse de D295 : un motif au compte invraisemblablement haut ne mesure rien).
+# sens 1 — ce que D317 INVALIDE : le rang 26 en attente ; la cause des recompilations « non identifiée » ; l'API lancée par
+# `run dev` ; la question des 182 boutons « au relecteur de le dire » ; le compteur à UN ; « suit l'arbitrage du rang 25 »
+1|RANG 26 : EN ATTENTE D'ARBITRAGE DE KO
+1|rang 26 : en attente d'arbitrage de Ko
+1|recompile parfois d'elle-même
+1|la cause n'est **pas** identifiée
+1|la cause n'est pas identifiée
+1|pnpm --filter @zwadj/api run dev
+1|c'est au **relecteur** de le dire
+1|compteur ZÉRO → UN
+1|suit désormais l'arbitrage du rang 25
+1|Seconde piste : `nest start --watch`
+# sens 2 — ce que D317 REND PERMIS, ou semble rendre permis : un test qui exerce le chemin de l'argent ; un lot de code
+# « permis » alors que le compteur passe à DEUX (un troisième exige une certification) ; le rang 27
+2|RANG 27
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|deux, tenables
+2|Deux, tenables
+2|EXERCE
+# témoins
+T+|MÉTHODE RENFORCÉE
+T-|motif-témoin-absent-d317-qq

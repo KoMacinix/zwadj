@@ -610,7 +610,10 @@ rang 23 clos ; le rang 24 attend l'arbitrage de Ko.)*
 ⛔ *(D315, 26/09/2026 : rang 24 **arbitré par Ko — documentaire**, clos le même jour ; il n'ouvre aucun lot de code ; **compteur
 ZÉRO, inchangé** ; ~~**rang 25 : en attente d'arbitrage de Ko**~~.)*
 ⛔ *(D316, 26/09/2026 : rang 25 **arbitré par Ko — lot de CODE**, les trois défauts de D315 réparés ; **compteur ZÉRO → UN** ;
-**rang 26 : en attente d'arbitrage de Ko**.)*
+~~**rang 26 : en attente d'arbitrage de Ko**~~.)*
+⛔ *(D317, 27/09/2026 : rang 26 **arbitré par Ko — lot de tests, qui COMPTE** (le parcours de réservation en e2e) ; **compteur
+UN → DEUX** — Ko : « un troisième lot de code exigera une certification » ⇒ **aucun lot de code ne s'ouvre avant elle** ;
+**rang 27 : en attente d'arbitrage de Ko**.)*
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut
@@ -962,6 +965,15 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     « ce lot ne touche ni l'aperçu d'acompte ni ce transport. S'il le faut, arrête-toi et dis-le. » ;
   - ⛔ **PRINCIPE, qui complète la règle de portée et le principe de direction** : « un changement relève du chemin de
     l'argent **par sa fonction**, branches (1) à (6), **pas parce que son fichier figure sur la carte**. »
+  ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 27/09/2026 (D317)** — texte et motifs : tête de « ⛔ E3 — MÉTHODE
+  RENFORCÉE », bloc D317 :
+  - **les 182 boutons de date (fiche d'environ 14 500 px) ne sont PAS du chemin de l'argent** : « c'est la présentation des
+    choix. La date choisie et son transport vers le calcul du prix ne changent pas. Même borne que D316. Le correctif (un
+    calendrier) est à ordonner par moi. » ;
+  - ⛔ **PENDANT LA PAUSE, un test qui EXERCE un comportement du chemin de l'argent sans le modifier est PERMIS** : « il
+    ajoute une garde, il ne change ni montant ni transition. Un défaut du chemin de l'argent qu'il révèle se rapporte ; il ne
+    se corrige pas. » ⚠ *Dérivé par la session, pas une parole du relecteur* : une **neutralisation** modifie le code qu'elle
+    vise — la décision ne la couvre pas ; le harnais du rang 26 ne mute **aucun** code du chemin de l'argent.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 
@@ -1393,6 +1405,12 @@ note d'environnement porte le nom de l'environnement mesuré, ou elle ment.**
   pas pareil — **ne jamais conclure sur un seul des deux**.
 - ⛔ **UNE E2E INTERROMPUE LAISSE SES SERVEURS SUR 3100/3101** (et la mémoire) : la
   suivante meurt en 8 s sur « already used ». Purger node et les ports AVANT.
+- ✅ **L'API DE L'E2E EST LANCÉE PAR `nest start`, COMPILÉE UNE FOIS (D317, 27/09/2026).** En
+  `nest start --watch`, toute ÉCRITURE d'un fichier de son programme — `apps/api/src`,
+  `packages/types/src`, et `packages/i18n/messages/*.json` — la recompilait et la REDÉMARRAIT en
+  pleine suite : mesuré, ~2 s de `ECONNREFUSED` par écriture ; une lecture, rien. ⚠ Le client
+  (`next dev`) et le pro (`vite`) restent des serveurs de développement, surveillance comprise :
+  éditer un fichier pendant une e2e reste proscrit (D270).
 - ⛔ **UN `tail -f` (Git Bash) SUR LE JOURNAL DE L'ÉCHANTILLONNEUR L'AVEUGLE (D299, 21/09/2026).**
   `Add-Content` (PowerShell) refuse d'écrire un fichier qu'un `tail -f` tient ouvert : **62 `IOException`,
   aucun échantillon pendant 2 023 s**, toute la fenêtre de `--tout` d'une certification — qui n'a donc

@@ -1,0 +1,20 @@
+D317 — tri À LA MAIN des alertes neuves de l'audit de secrets (règle de D299 : toute alerte absente de la sortie scellée
+précédente se trie au contexte avant le commit). Aucun contexte n'est recopié ici : renvoi aux lignes de la sortie scellée
+docs/preuves/D317/audit-secrets-d317.txt. Tri différentiel : controles/tri-audit-d317.txt (précédente : l'audit final de D316,
+136 contextes ; nouvelle : 142 ; 6 absentes de la précédente).
+
+1. [url-avec-identifiants] etape1/sonde-surveillance.py — ligne 816 : l'URL PAR DÉFAUT de la base e2e locale (celle que
+   e2e/playwright.config.ts déclare quand E2E_DATABASE_URL manque), déjà présente dans 3 fichiers suivis hors preuves. Ni une
+   clé ni un compte réel : la base Docker de développement. UN DÉFAUT CONNU, PAS UNE VALEUR NEUVE.
+2. [jeton] lecture-adverse/confronter-d316.py — ligne 818 : l'EXPRESSION qui cherche un jeton (motif de l'extracteur). UN MOT.
+3. [jeton] outils/extraire.py — ligne 820 : le NOM de la clé d'un dictionnaire de motifs. UN MOT.
+4. [jeton] outils/extraire.py — ligne 822 : la même EXPRESSION que (2). UN MOT.
+5. [mot-de-passe] portes/test-int-extrait.txt — ligne 824 : un TITRE de test d'intégration récité par l'extrait de la porte
+   (« forgot-password : réponse CONSTANTE… »), le même que D316 a trié. UN MOT.
+6. [jeton] portes/test-int-extrait.txt — ligne 826 : un TITRE de test d'intégration (« … après émission du token : 401 … »).
+   UN MOT.
+
+⇒ 6 neuves, 0 valeur. Ce qui fait foi sur l'absence de VALEURS, ce sont les deux contrôles « 0 valeur réelle » (D299) :
+  controles/aucune-valeur-reelle.txt (jetons de vérification, 92 valeurs cherchées, 11 journaux) et
+  controles/aucun-cookie-reel.txt (cookie de rafraîchissement, 215 valeurs, 11 journaux) — 0 porteur sur 55 fichiers qui
+  partent ; et le contrôle de forme Chargily (controles/controle-forme-chargily-sortie.txt) — 0 porteur sur 56.

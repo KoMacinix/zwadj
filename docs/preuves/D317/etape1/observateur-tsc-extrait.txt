@@ -1,0 +1,310 @@
+# extrait filtré de .neutralisation-journaux/d317/observateur-tsc.log · sha256 du journal complet eabc9b2a99028616641f53f7a080208c33c722e2e8da28aad1179e3cb0a0e5b7 · 2089 lignes parcourues · 309 gardées (déclencheurs, statuts du compilateur, planifications, exclusions) · racine du dépôt retirée des chemins
+11:31:03 a.m. - Starting compilation in watch mode...
+11:31:17 a.m. - Found 0 errors. Watching for file changes.
+FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.6230999999970663ms FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.06799999999930151ms FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Failed Lookup Locations
+Scheduling invalidateFailedLookup
+Elapsed:: 1.3577000000077533ms DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Failed Lookup Locations
+DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Wild card directory
+Scheduling update
+Elapsed:: 2.2776000000012573ms DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Wild card directory
+11:32:10 a.m. - File change detected. Starting incremental compilation...
+11:32:10 a.m. - Found 0 errors. Watching for file changes.
+FileWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts 2:: WatchInfo: apps/api/src/generated/zz-sonde-d317.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.8454000000056112ms FileWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts 2:: WatchInfo: apps/api/src/generated/zz-sonde-d317.ts 250 undefined Source file
+DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Failed Lookup Locations
+Scheduling invalidateFailedLookup
+Elapsed:: 0.8528999999980442ms DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Failed Lookup Locations
+DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Wild card directory
+Scheduling update
+Elapsed:: 0.7868000000016764ms DirectoryWatcher:: Triggered with apps/api/src/generated/zz-sonde-d317.ts :: WatchInfo: apps/api/src 1 undefined Wild card directory
+11:32:16 a.m. - File change detected. Starting incremental compilation...
+11:32:16 a.m. - Found 0 errors. Watching for file changes.
+FileWatcher:: Triggered with apps/api/src/generated/prisma/browser.ts 1:: WatchInfo: apps/api/src/generated/prisma/browser.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.174299999998766ms FileWatcher:: Triggered with apps/api/src/generated/prisma/browser.ts 1:: WatchInfo: apps/api/src/generated/prisma/browser.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.37850000000617ms FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/class.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/class.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.21309999999357387ms FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/class.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/class.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/enums.ts 1:: WatchInfo: apps/api/src/generated/prisma/enums.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.13300000000162981ms FileWatcher:: Triggered with apps/api/src/generated/prisma/enums.ts 1:: WatchInfo: apps/api/src/generated/prisma/enums.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models.ts 1:: WatchInfo: apps/api/src/generated/prisma/models.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.2437999999965541ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models.ts 1:: WatchInfo: apps/api/src/generated/prisma/models.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/commonInputTypes.ts 1:: WatchInfo: apps/api/src/generated/prisma/commonInputTypes.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.10229999999864958ms FileWatcher:: Triggered with apps/api/src/generated/prisma/commonInputTypes.ts 1:: WatchInfo: apps/api/src/generated/prisma/commonInputTypes.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.06769999999960419ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespace.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespace.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.07559999999648426ms FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespace.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespace.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.24069999999483116ms FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/User.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/User.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.12049999998998828ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/User.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/User.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/RefreshToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/RefreshToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.036399999997229315ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/RefreshToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/RefreshToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailVerificationToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailVerificationToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03290000000561122ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailVerificationToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailVerificationToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PasswordResetToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PasswordResetToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03130000000237487ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PasswordResetToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PasswordResetToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailChangeToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailChangeToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03250000000116415ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailChangeToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailChangeToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.031099999992875382ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ProProfile.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ProProfile.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.035299999988637865ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ProProfile.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ProProfile.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Wilaya.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Wilaya.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03179999999701977ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Wilaya.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Wilaya.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/City.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/City.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03190000000176951ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/City.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/City.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Venue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Venue.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03910000000905711ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Venue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Venue.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenuePhoto.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenuePhoto.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.0390999999945052ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenuePhoto.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenuePhoto.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyle.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyle.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.031199999997625127ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyle.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyle.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyleLink.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyleLink.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.04370000000926666ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyleLink.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyleLink.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Amenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Amenity.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.033100000000558794ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Amenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Amenity.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueAmenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueAmenity.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03200000000651926ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueAmenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueAmenity.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/SlotTemplate.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/SlotTemplate.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03250000000116415ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/SlotTemplate.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/SlotTemplate.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AvailabilityBlock.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AvailabilityBlock.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030100000003585592ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AvailabilityBlock.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AvailabilityBlock.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PricingRule.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PricingRule.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030199999993783422ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PricingRule.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PricingRule.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Holiday.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Holiday.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030200000008335337ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Holiday.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Holiday.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Service.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Service.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03140000000712462ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Service.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Service.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServicePricing.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServicePricing.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030199999993783422ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServicePricing.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServicePricing.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServiceTier.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServiceTier.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03190000000176951ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServiceTier.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServiceTier.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitAvailability.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitAvailability.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030299999998533167ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitAvailability.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitAvailability.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitBooking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitBooking.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030700000002980232ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitBooking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitBooking.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Quote.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Quote.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.031099999992875382ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Quote.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Quote.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Booking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Booking.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03269999999611173ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Booking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Booking.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/BookingService.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/BookingService.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030899999997927807ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/BookingService.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/BookingService.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Payment.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Payment.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03209999999671709ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Payment.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Payment.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/WebhookEvent.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/WebhookEvent.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.2644000000000233ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/WebhookEvent.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/WebhookEvent.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Commission.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Commission.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.0458000000071479ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Commission.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Commission.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/CashbackClaim.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/CashbackClaim.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.11250000000291038ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/CashbackClaim.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/CashbackClaim.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Invoice.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Invoice.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03969999999389984ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Invoice.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Invoice.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Refund.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Refund.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03230000000621658ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Refund.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Refund.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Review.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Review.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.030700000002980232ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Review.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Review.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ReviewModeration.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ReviewModeration.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.02959999999438878ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ReviewModeration.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ReviewModeration.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Favorite.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Favorite.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.029399999999441206ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Favorite.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Favorite.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Notification.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Notification.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.0415999999968335ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Notification.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Notification.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AuditLog.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AuditLog.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.037800000005518086ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AuditLog.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AuditLog.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/enums.ts 1:: WatchInfo: apps/api/src/generated/prisma/enums.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.08349999999336433ms FileWatcher:: Triggered with apps/api/src/generated/prisma/enums.ts 1:: WatchInfo: apps/api/src/generated/prisma/enums.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/User.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/User.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.1797999999980675ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/User.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/User.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespace.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespace.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.052499999990686774ms FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespace.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespace.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.046300000001792796ms FileWatcher:: Triggered with apps/api/src/generated/prisma/client.ts 1:: WatchInfo: apps/api/src/generated/prisma/client.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models.ts 1:: WatchInfo: apps/api/src/generated/prisma/models.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.045199999993201345ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models.ts 1:: WatchInfo: apps/api/src/generated/prisma/models.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/commonInputTypes.ts 1:: WatchInfo: apps/api/src/generated/prisma/commonInputTypes.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.04349999999976717ms FileWatcher:: Triggered with apps/api/src/generated/prisma/commonInputTypes.ts 1:: WatchInfo: apps/api/src/generated/prisma/commonInputTypes.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/browser.ts 1:: WatchInfo: apps/api/src/generated/prisma/browser.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.07850000000325963ms FileWatcher:: Triggered with apps/api/src/generated/prisma/browser.ts 1:: WatchInfo: apps/api/src/generated/prisma/browser.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/RefreshToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/RefreshToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.07980000000679865ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/RefreshToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/RefreshToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailVerificationToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailVerificationToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.036399999997229315ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailVerificationToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailVerificationToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PasswordResetToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PasswordResetToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.0868999999947846ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PasswordResetToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PasswordResetToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailChangeToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailChangeToken.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03359999999520369ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/EmailChangeToken.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/EmailChangeToken.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.05550000000221189ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionRequest.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03380000000470318ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AccountDeletionArchivedVenue.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ProProfile.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ProProfile.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03290000000561122ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ProProfile.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ProProfile.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Wilaya.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Wilaya.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03290000000561122ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Wilaya.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Wilaya.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/City.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/City.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.0313999999925727ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/City.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/City.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Venue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Venue.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03140000000712462ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Venue.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Venue.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenuePhoto.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenuePhoto.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03190000000176951ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenuePhoto.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenuePhoto.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyle.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyle.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03320000000530854ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyle.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyle.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyleLink.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyleLink.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.033100000000558794ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueStyleLink.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueStyleLink.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Amenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Amenity.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03889999999955762ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Amenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Amenity.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueAmenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueAmenity.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03299999999580905ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VenueAmenity.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VenueAmenity.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/SlotTemplate.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/SlotTemplate.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.032100000011269ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/SlotTemplate.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/SlotTemplate.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AvailabilityBlock.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AvailabilityBlock.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03250000000116415ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AvailabilityBlock.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AvailabilityBlock.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PricingRule.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PricingRule.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.042499999995925464ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/PricingRule.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/PricingRule.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Holiday.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Holiday.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03240000001096632ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Holiday.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Holiday.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Service.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Service.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.033100000000558794ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Service.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Service.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServicePricing.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServicePricing.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03250000000116415ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServicePricing.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServicePricing.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServiceTier.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServiceTier.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.0328999999910593ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ServiceTier.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ServiceTier.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitAvailability.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitAvailability.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.06309999999939464ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitAvailability.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitAvailability.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitBooking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitBooking.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.034299999999348074ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/VisitBooking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/VisitBooking.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Quote.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Quote.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03320000000530854ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Quote.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Quote.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Booking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Booking.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03389999999490101ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Booking.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Booking.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/BookingService.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/BookingService.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03259999999136198ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/BookingService.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/BookingService.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Payment.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Payment.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.033600000009755604ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Payment.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Payment.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/WebhookEvent.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/WebhookEvent.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.033400000000256114ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/WebhookEvent.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/WebhookEvent.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Commission.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Commission.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.0326000000059139ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Commission.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Commission.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/CashbackClaim.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/CashbackClaim.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03280000000086147ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/CashbackClaim.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/CashbackClaim.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Invoice.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Invoice.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03440000000409782ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Invoice.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Invoice.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Refund.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Refund.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.12510000000474975ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Refund.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Refund.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Review.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Review.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03650000000197906ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Review.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Review.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ReviewModeration.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ReviewModeration.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.033900000009452924ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/ReviewModeration.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/ReviewModeration.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Favorite.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Favorite.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03839999999036081ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Favorite.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Favorite.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Notification.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Notification.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03329999999550637ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/Notification.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/Notification.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AuditLog.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AuditLog.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03240000001096632ms FileWatcher:: Triggered with apps/api/src/generated/prisma/models/AuditLog.ts 1:: WatchInfo: apps/api/src/generated/prisma/models/AuditLog.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/class.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/class.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.03259999999136198ms FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/class.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/class.ts 250 undefined Source file
+FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 250 undefined Source file
+Scheduling update
+Elapsed:: 0.054499999998370185ms FileWatcher:: Triggered with apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 1:: WatchInfo: apps/api/src/generated/prisma/internal/prismaNamespaceBrowser.ts 250 undefined Source file

@@ -1,0 +1,12 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D316/audit-secrets-final.txt (136 contextes) · nouvelle docs/preuves/D317/audit-secrets-d317.txt (142 contextes)
+   alertes ABSENTES de la précédente : 6 — à trier au contexte avant le commit
+   [url-avec-identifiants] docs/preuves/D317/etape1/sonde-surveillance.py — contexte : ligne 816 de docs/preuves/D317/audit-secrets-d317.txt
+   [jeton] docs/preuves/D317/lecture-adverse/confronter-d316.py — contexte : ligne 818 de docs/preuves/D317/audit-secrets-d317.txt
+   [jeton] docs/preuves/D317/outils/extraire.py — contexte : ligne 820 de docs/preuves/D317/audit-secrets-d317.txt
+   [jeton] docs/preuves/D317/outils/extraire.py — contexte : ligne 822 de docs/preuves/D317/audit-secrets-d317.txt
+   [mot-de-passe] docs/preuves/D317/portes/test-int-extrait.txt — contexte : ligne 824 de docs/preuves/D317/audit-secrets-d317.txt
+   [jeton] docs/preuves/D317/portes/test-int-extrait.txt — contexte : ligne 826 de docs/preuves/D317/audit-secrets-d317.txt
+   ventilation par motif : url-avec-identifiants=1 · jeton=4 · mot-de-passe=1

@@ -1,0 +1,21 @@
+D317 — tri À LA MAIN de ce que la passe « après écriture » trouve de plus que la première passe. Pièce, pas un fichier
+d'autorité : l'écrire dans ZWADJ_CONTINUITE.md rouvrirait une passe « après écriture » de plus.
+
+balayage-1.txt : 80 occurrences, 1 motif à zéro · balayage-apres-ecriture.txt : 87 occurrences, 0 motif à zéro ·
+balayage-controle.txt = balayage-apres-ecriture.txt, à l'octet. Écart : +7, sur SIX motifs (lignes « [sens …] » comparées) :
+
+1. « rang 26 : en attente d'arbitrage de Ko » 2 → 3 : +1, une CITATION dans la sous-section « passe D277 » de D317, qui
+   rapporte le traitement. ⚠ Et l'occurrence du bloc du rang 23 n'est pas neuve : elle est passée de [courant] à [barré] —
+   c'est le traitement lui-même (le seul endroit COURANT trouvé par la première passe).
+2. « la cause n'est **pas** identifiée » 1 → 2 : +1, CITATION, même sous-section.
+3. « la cause n'est pas identifiée » 0 → 1 : +1, CITATION, même sous-section — d'où plus aucun motif à zéro.
+4. « compteur ZÉRO → UN » 5 → 6 : +1, CITATION, même sous-section.
+5. « peut s'ouvrir » 42 → 44 : +2, CITATIONS, même sous-section (« la permission « un lot de code peut s'ouvrir » est
+   ÉPUISÉE… » ; « les « peut s'ouvrir » des rangs clos… »).
+6. « EXERCE » 5 → 6 : +1, l'annotation D317 du bloc du rang 23 (« il EXERCE le chemin de l'argent sans le modifier »).
+⚠ « RANG 27 » : 7 → 7, inchangé — une de ses occurrences a un CONTEXTE différent (le texte écrit à côté d'elle), pas une
+occurrence neuve. ⚠ Premier jet de cette pièce : « cinq motifs », la ligne du rang 23 comptée « +1 » et « RANG 27 » comptée
+neuve — relevé contre la sortie, corrigé avant le commit.
+
+⇒ Toutes les nouvelles occurrences sont dans ce que D317 a écrit pour rapporter sa passe, ou dans l'annotation du rang 23 déjà
+comptée au traitement. Aucune phrase courante neuve à barrer ou annoter.

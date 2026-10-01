@@ -1,0 +1,17 @@
+.neutralisation-journaux/d317/r26-premier.log · sha256 86427dfb35557bfd… · requêtes lues 83 · ouvertures de fiche 2
+   fiche n°1 : recherche 11:45:08.721000 → données de la fiche 11:45:16.127000 : 7.4 s
+   fiche n°2 : recherche 11:45:28.116000 → données de la fiche 11:45:30.093000 : 2.0 s
+.neutralisation-journaux/d317/r26-rouge-prechauffage.log · sha256 695bcc5fbfd70eb6… · requêtes lues 108 · ouvertures de fiche 2
+   fiche n°1 : recherche 11:48:54.520000 → données de la fiche 11:48:59.898000 : 5.4 s
+   fiche n°2 : recherche 11:49:13.425000 → données de la fiche 11:49:15.013000 : 1.6 s
+.neutralisation-journaux/d317/r26-vert-prechauffage-1.log · sha256 ea9cfad3a044bc45… · requêtes lues 110 · ouvertures de fiche 2
+   fiche n°1 : recherche 11:52:16.155000 → données de la fiche 11:52:17.896000 : 1.7 s
+   fiche n°2 : recherche 11:52:30.701000 → données de la fiche 11:52:32.481000 : 1.8 s
+.neutralisation-journaux/d317/r26-vert-prechauffage-2.log · sha256 6d3ec26314151c3f… · requêtes lues 111 · ouvertures de fiche 2
+   fiche n°1 : recherche 11:54:12.921000 → données de la fiche 11:54:14.597000 : 1.7 s
+   fiche n°2 : recherche 11:54:27.707000 → données de la fiche 11:54:29.438000 : 1.7 s
+.neutralisation-journaux/d317/portes/test-e2e.log · sha256 353a914a9048c827… · requêtes lues 430 · ouvertures de fiche 4
+   fiche n°1 : APPARIEMENT INVALIDE — la recherche de 12:13:33.075000 précède 2 fiches (tests entrelacés, ou fiche ouverte sans recherche) — non mesuré
+   fiche n°2 : APPARIEMENT INVALIDE — la recherche de 12:13:33.075000 précède 2 fiches (tests entrelacés, ou fiche ouverte sans recherche) — non mesuré
+   fiche n°3 : recherche 12:14:11.263000 → données de la fiche 12:14:12.928000 : 1.7 s
+   fiche n°4 : recherche 12:14:25.266000 → données de la fiche 12:14:27.010000 : 1.7 s

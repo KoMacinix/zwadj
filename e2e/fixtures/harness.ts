@@ -317,8 +317,10 @@ export function seedReferentials(): void {
  *  rôles : le PRO la crée, l'ADMIN la publie (la garde « au moins un créneau
  *  actif » s'applique). Formes RELEVÉES chez un appelant existant
  *  (`apps/api/test/int/bookings.int-spec.ts`, `makeVenue` et `setup`), jamais
- *  écrites de mémoire. Exige `seedReferentials()` au préalable. */
-export async function createPublishedVenue(): Promise<{ id: string; slug: string; nameFr: string }> {
+ *  écrites de mémoire. Exige `seedReferentials()` au préalable.
+ *  Rang 26 (D317) : rend AUSSI le compte PRO qui possède la salle — le parcours
+ *  de réservation se joue des deux côtés, et le pro répond depuis SA salle. */
+export async function createPublishedVenue(): Promise<{ id: string; slug: string; nameFr: string; pro: Account }> {
   const pro = await createVerifiedAccount("PRO");
   const admin = await createVerifiedAccount("CLIENT");
   const db = new Client({ connectionString: DATABASE_URL });
@@ -345,5 +347,5 @@ export async function createPublishedVenue(): Promise<{ id: string; slug: string
   if (slot.status !== 201) throw new Error(`POST slot-templates : ${slot.status} ${slot.text}`);
   const pub = await apiCall("POST", `/admin/venues/${id}/publish`, tAdmin);
   if (pub.status !== 200) throw new Error(`publication : ${pub.status} ${pub.text}`);
-  return { id, slug, nameFr };
+  return { id, slug, nameFr, pro };
 }

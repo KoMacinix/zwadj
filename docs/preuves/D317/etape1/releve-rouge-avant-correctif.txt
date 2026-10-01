@@ -1,0 +1,6 @@
+D317 — étape 1 — relevé in situ · étiquette rouge-avant-correctif · 2026-09-27T15:37:22.660Z
+BRAS T témoin · début 11:37:22 · sondes 105 · en échec 0 · première cause —
+BRAS L recul du dernier accès puis lecture · début 11:37:34 · sondes 107 · en échec 0 · première cause —
+BRAS W création d'un .ts sous src/generated · début 11:37:46 · sondes 106 · en échec 21 · première cause ECONNREFUSED
+BRAS W suppression de ce .ts · début 11:37:58 · sondes 105 · en échec 23 · première cause ECONNREFUSED
+FIN

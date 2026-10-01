@@ -1,0 +1,23 @@
+D317 — RECTIFICATION POSÉE À CÔTÉ DES PIÈCES (règle de D295 : « la rectification se pose À CÔTÉ des pièces » ; précédent :
+RECTIFICATION-D315 chez D314). Les pièces de ce dossier ne sont PAS retouchées.
+
+CE QU'ÉCRIT LA SECTION D316 : « Passe officielle, après les portes : 11 mordues sur 11, toutes lues, code 0, 691 s
+(docs/preuves/D316/neutralisation/) » — et ce dossier se nomme « passe-officielle ».
+
+CE QUE PORTENT LES PIÈCES, MESURÉ :
+- R25-8, R25-E1, R25-E2, R25-E3 : extraits de la passe officielle. R25-8 : vitest « Start at 03:20:50 » ; E1, E2, E3 : premiers
+  horodatages de l'API 03:21:35, 03:23:09, 03:25:02 ; le journal de la campagne s'arrête à 03:26:17 (sa date de modification).
+- R25-1 à R25-7 : extraits du TRI `lancer-campagnes.py`, joué en mode par défaut (les 7 cibles unitaires) APRÈS la passe
+  officielle. Leurs départs vitest : 03:26:42, 03:26:46, 03:26:50, 03:26:55, 03:27:11, 03:27:19, 03:27:23 — tous après la fin de
+  la passe (03:26:17), et tous après le départ de R25-8 (03:20:50), qui les SUIT dans l'ordre de la campagne (liste CIBLES).
+  Le tri écrit au MÊME chemin que la campagne (`.neutralisation-journaux/r25/R25-N.log`) : les journaux par cible de la passe
+  officielle, pour R25-1 à R25-7, ont été écrasés avant l'extraction. Ils n'existent plus.
+- Ce qui reste de la passe officielle pour R25-1 à R25-7 : leurs lignes dans `../campagne-r25-officielle-extrait.txt`
+  (verdict, ancre et marqueur, passés et en échec, première ligne de l'assertion), extraites du journal de la campagne elle-même.
+  Le compte « 11 mordues sur 11, toutes lues » repose sur elles ; il n'est pas démenti.
+
+RÈGLE ENFREINTE : décision 3 du relecteur (D309) — « une ligne de la table des portes cite le dossier versé de SA passe ; toute
+autre passe versée se nomme comme telle ». Sept pièces d'une autre passe portent ici le nom de la passe comptée.
+
+MESURÉ PAR : docs/preuves/D317/lecture-adverse/confronter-d316.py, section 4 — sortie docs/preuves/D317/lecture-adverse/
+confronter-d316-sortie.txt (heures de départ imprimées ; contrôle « extraits R25-1 à R25-7 lancés AVANT R25-8 » : 0 sur 7).

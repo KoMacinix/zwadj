@@ -1,0 +1,7 @@
+D317 — calibration de docs/preuves/D317/outils/extraire.py, rejouée le 27/09/2026 12:40:56. Entrées SYNTHÉTIQUES assemblées à l'exécution hors dépôt (un jeton inventé de 22 caractères) ; la sortie ne porte que des comptes.
+bras NÉGATIF — une ligne serveur porteuse d'un jeton (retirée), une ligne de statut (gardée), une ligne libre : attendu code 0
+cal-d317-extrait.txt : 3 parcourues · 1 retirées · 2 gardées (dont 1 de statut) · valeurs sensibles : journal {'cookie zwadj_rt=': 0, 'jeton ?token=': 1} → extrait {'cookie zwadj_rt=': 0, 'jeton ?token=': 0} (attendu 0 partout dans l'extrait)
+code=0
+bras POSITIF — une ligne de STATUT qui porterait un jeton (gardée, donc la valeur resterait) : attendu code 1
+cal2-d317-extrait.txt : 1 parcourues · 0 retirées · 1 gardées (dont 1 de statut) · valeurs sensibles : journal {'cookie zwadj_rt=': 0, 'jeton ?token=': 1} → extrait {'cookie zwadj_rt=': 0, 'jeton ?token=': 1} (attendu 0 partout dans l'extrait)
+code=1

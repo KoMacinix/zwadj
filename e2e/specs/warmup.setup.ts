@@ -37,6 +37,18 @@ const ROUTES = [
   `${PRO}/salles/nouvelle`
 ];
 
+/**
+ * ⚠ RANG 26 (D317) — LES ROUTES DYNAMIQUES QUE LA SUITE VISITE. La fiche salle,
+ * `/[locale]/salles/[slug]`, manquait ici : le premier test qui l'ouvrait payait
+ * sa compilation DANS sa mesure. Mesuré sur deux passages : au premier test, la
+ * fiche demandait ses données 7,4 s après la recherche (rouge à `toHaveURL`),
+ * puis 5,4 s ; au second, 2,0 et 1,6 s — un échec qui se déplace (D127).
+ * Aucune salle n'existe au préchauffage : on la visite sur un identifiant qui
+ * n'existe PAS. La route se compile, la page répond 404 — et ce 404-là est
+ * l'attendu ; tout autre statut est un échec du préchauffage.
+ */
+const ROUTES_404 = [`${CLIENT}/fr/salles/prechauffage-route-dynamique`];
+
 test.describe.configure({ mode: "serial" });
 
 test("préchauffe les routes des deux applications", async ({ page }) => {
@@ -53,6 +65,16 @@ test("préchauffe les routes des deux applications", async ({ page }) => {
       // en croyant l'avoir supprimée.
       if (!reponse || reponse.status() >= 400) {
         echecs.push(`${url} → ${reponse?.status() ?? "aucune réponse"}`);
+      }
+    } catch (error) {
+      echecs.push(`${url} → ${(error as Error).message.split("\n")[0]}`);
+    }
+  }
+  for (const url of ROUTES_404) {
+    try {
+      const reponse = await page.goto(url, { waitUntil: "load", timeout: 120_000 });
+      if (reponse?.status() !== 404) {
+        echecs.push(`${url} → ${reponse?.status() ?? "aucune réponse"} (404 attendu : la route compilée, l'identifiant inconnu)`);
       }
     } catch (error) {
       echecs.push(`${url} → ${(error as Error).message.split("\n")[0]}`);

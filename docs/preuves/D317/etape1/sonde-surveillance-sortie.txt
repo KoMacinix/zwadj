@@ -1,0 +1,14 @@
+observateur : Version 5.9.3 · node_modules\.pnpm\typescript@5.9.3\node_modules\typescript\bin\tsc · -p tsconfig.build.json --watch --noEmit --incremental false --extendedDiagnostics --preserveWatchOutput
+observateur prêt en 15 s · journal 337906 octets
+[T  témoin, 15 s sans rien]  23.0 s · journal lu 0 octets · recompilations 0 (attendu 0)
+[L1 lecture de src/generated/prisma/client.ts (lu au démarrage)]   8.0 s · journal lu 0 octets · recompilations 0 (attendu à mesurer)
+[A  recul du dernier accès de ce fichier (mtime gardé)]   8.0 s · journal lu 1055 octets · recompilations 0 (attendu à mesurer)
+[L2 lecture du même fichier, dernier accès ancien]   8.0 s · journal lu 0 octets · recompilations 0 (attendu à mesurer)
+[W  création puis suppression de src/generated/zz-sonde-d317.ts]  14.0 s · journal lu 33644 octets · recompilations 2 (attendu ≥ 1)
+      déclencheur : apps/api/src/generated/zz-sonde-d317.ts
+[S1 prisma db seed (seedReferentials)]  16.5 s · journal lu 0 octets · recompilations 0 (attendu à mesurer) · retour 0
+[S2 prisma migrate deploy (global-setup)]  14.0 s · journal lu 0 octets · recompilations 0 (attendu à mesurer) · retour 0
+[A* recul du dernier accès de tout src/generated/]  12.0 s · journal lu 51839 octets · recompilations 0 (attendu à mesurer) · retour 47
+[S1* prisma db seed, client généré au dernier accès ancien]  15.0 s · journal lu 0 octets · recompilations 0 (attendu à mesurer) · retour 0
+journal de l'observateur : .neutralisation-journaux\d317\observateur-tsc.log · 424444 octets
+calibration : bras négatif T = 0 OK · bras positif W ≥ 1 OK

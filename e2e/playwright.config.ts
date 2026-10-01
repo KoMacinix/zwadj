@@ -145,7 +145,20 @@ export default defineConfig({
    */
   webServer: [
     {
-      command: "pnpm --filter @zwadj/api run dev",
+      /**
+       * ⚠ RANG 26 (D317) — L'API NE TOURNE PLUS EN SURVEILLANCE. Elle tournait par
+       * `run dev`, soit `nest start --watch` : TOUTE écriture d'un fichier de son
+       * programme — `apps/api/src`, `packages/types/src`, et les messages de
+       * `packages/i18n` — la recompilait et la REDÉMARRAIT en pleine suite.
+       * Mesuré sur ce serveur même : une écriture ⇒ « File change detected » une
+       * seconde après, puis ~2 s de `ECONNREFUSED` ; une lecture, rien. D316 en a
+       * payé une cible jugée muette à tort (`beforeAll` en `ECONNREFUSED`).
+       * Une suite n'a rien à recharger pendant qu'elle tourne : `nest start`
+       * compile UNE fois, au lancement — ce qui est muté AVANT (harnais `--e2e`)
+       * est donc bien servi. Le double montage de `StrictMode`, raison d'être des
+       * serveurs de développement (ci-dessus), vit côté client et pro : intact.
+       */
+      command: "pnpm --filter @zwadj/api exec nest start",
       url: `${API}/api/v1/health`,
       reuseExistingServer: false,
       timeout: 180_000,

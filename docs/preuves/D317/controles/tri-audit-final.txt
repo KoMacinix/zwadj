@@ -1,0 +1,12 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D317/audit-secrets-d317.txt (142 contextes) · nouvelle docs/preuves/D317/audit-secrets-final.txt (148 contextes)
+   alertes ABSENTES de la précédente : 6 — à trier au contexte avant le commit
+   [mot-de-passe] docs/preuves/D317/controles/tri-audit-d317-lecture.txt — contexte : ligne 819 de docs/preuves/D317/audit-secrets-final.txt
+   [jeton] docs/preuves/D317/controles/tri-audit-d317-lecture.txt — contexte : ligne 821 de docs/preuves/D317/audit-secrets-final.txt
+   [jeton] docs/preuves/D317/outils/calibration-extraire.txt — contexte : ligne 827 de docs/preuves/D317/audit-secrets-final.txt
+   [jeton] docs/preuves/D317/outils/calibration-extraire.txt — contexte : ligne 829 de docs/preuves/D317/audit-secrets-final.txt
+   [jeton] docs/preuves/D317/outils/calibration-extraire.txt — contexte : ligne 831 de docs/preuves/D317/audit-secrets-final.txt
+   [jeton] docs/preuves/D317/outils/calibration-extraire.txt — contexte : ligne 833 de docs/preuves/D317/audit-secrets-final.txt
+   ventilation par motif : mot-de-passe=1 · jeton=5

@@ -1314,7 +1314,33 @@ Défauts 1 et 2 **hors du chemin de l'argent** (décision du relecteur, **par le
 **444/36**, e2e **41 · 1**) ; campagne du lot **11 sur 11, lues** ; lecture adverse de D315 : **67 contrôles, 0 écart**.
 **Lot de code : compteur ZÉRO → UN.** ⇒ **Où il en est** : clos — point d'entrée du rang 25 ; section D316. ⇒ La ligne du rang
 26, ci-dessous, a été écrite à l'ouverture ; **elle est toujours vraie.**
-⇒ **RANG 26 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 25, sur
+⇒ ~~**RANG 26 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 25, sur
+consigne de Ko.~~ ⛔ *(D317 : **arbitré par Ko le 27/09/2026** — ligne « ARBITRÉ LE 27/09/2026 PAR KO — le RANG 26 »
+ci-dessous.)* ⚠ **Une permission n'est pas un arbitrage.**
+⛔ **ARBITRÉ LE 27/09/2026 PAR KO — le RANG 26, mot pour mot : « Rang 26 : le parcours de réservation joué de bout en bout
+en e2e — le client envoie sa demande, le pro la voit, l'accepte ou la refuse, le client voit le résultat. Lot de tests. »**
+Lot D317. ⛔ **C'est la PREMIÈRE écriture du lot, et l'ordre est de Ko** (patron de D295) : la session a reçu l'arbitrage,
+elle ne se l'est pas attribué.
+⇒ **Lot de tests, donc de CODE au sens de la règle** (D283 amendé par D292 : « un lot qui touche un harnais, un test, un
+script ou une migration COMPTE ») — **compteur de lots de code non certifiés : UN → DEUX** à sa clôture ; Ko : « un
+troisième lot de code exigera une certification ». ⇒ **Chemin de l'argent** : deux décisions du relecteur (chat), déléguées
+par Ko, écrites avant tout code — méthode renforcée, bloc D317. ⇒ **Où il en est** : section « PROCHAIN LOT — rang 26 » en
+tête de ce fichier.
+⛔ **(D317, 01/10/2026) RANG 26 CLOS — LE PARCOURS DE RÉSERVATION JOUÉ DE BOUT EN BOUT EN E2E** : le client envoie sa demande
+et la voit en attente ; le pro la voit, l'accepte ou la refuse ; le client voit le résultat — deux tests, assertions par
+rôles et libellés visibles, aucun défaut du chemin de l'argent révélé. **Étape 1** : l'API de l'e2e ne tourne plus en
+surveillance — hypothèse du relecteur **confirmée pour son mécanisme** (rouge : 21 + 23 sondes en `ECONNREFUSED` sur deux
+écritures ; vert : 0), l'origine des recompilations de D316 non identifiée. **Étape 2** : une étape cassée hors du chemin (la
+fiche salle, non préchauffée), réparée dans son fichier, rouge lu puis vert. Portes à 0 (`test:int` **444/36**, e2e **43 ·
+1**) ; campagne du lot **2 sur 2, lues**. Lecture adverse de D316 : **96 contrôles, 4 écarts** (trois mesures sans pièce ; sept
+pièces d'une autre passe, rectification à côté des pièces). **Lot de tests : compteur UN → DEUX.** ⇒ **Où il en est** : clos
+— point d'entrée du rang 26 ; section D317. ⇒ La ligne du rang 27, ci-dessous, a été écrite à l'ouverture ; **elle est
+toujours vraie.**
+⛔ *Passe D277, sens 2 — ce que la clôture REND PERMIS, et ce qu'elle retire* : compteur **DEUX** ⇒ Ko, « un troisième lot de
+code exigera une certification » ⇒ **aucun lot de code, de quelque rang que ce soit, ne s'ouvre avant une certification** ;
+un lot documentaire, si (D283). Pendant la pause, un **test** qui exerce le chemin de l'argent sans le modifier est permis
+(décision 2) — une **neutralisation** de ce chemin, non (bloc D317).
+⇒ **RANG 27 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 26, sur
 consigne de Ko. ⚠ **Une permission n'est pas un arbitrage.**
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
@@ -1403,6 +1429,100 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## ~~PROCHAIN LOT~~ — rang 26 · `[TEST]` **le parcours de réservation joué de bout en bout** ⛔ ~~**OUVERT LE 27/09/2026 : D317**~~ ⛔ **CLOS LE 01/10/2026 : D317**
+
+### ⛔ CLÔTURE DU 01/10/2026 (D317) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **ARBITRÉ PAR KO LE 27/09/2026, CLOS LE 01/10/2026, DANS LA MÊME SESSION** — interrompue après l'audit, reprise sur un
+arbre vérifié identique (section D317). ⇒ **QUEL lot : rang 26. OÙ IL EN EST : clos, ici.** Titre
+barré à la clôture ; ce bloc est son rafraîchissement de clôture (règle de D294).
+⇒ **Le parcours de réservation est joué de bout en bout** — `e2e/specs/r26-parcours-reservation.e2e.ts`, deux tests :
+**acceptation** (la demande quitte « Demandes », paraît dans « Réservations » ; le client lit « Acceptée — acompte à
+régler ») et **refus** (la demande reste, « Refusée », sans bouton ; le client lit « Refusée par la salle »). Côté client,
+deux bras par statut (absent pendant l'attente, présent après). Aucun attribut de test dans le code produit.
+⇒ **Étape 1** : l'API de l'e2e est lancée par `nest start`, compilée une fois ; mesuré sur son serveur même — rouge 21 + 23
+sondes en `ECONNREFUSED` sur deux écritures, vert 0 ; une lecture, un recul du dernier accès, `db:seed`, `migrate deploy`
+ne déclenchent rien. **Étape 2** : MD2-g, la fiche salle non préchauffée — `warmup.setup.ts` la visite désormais (404 attendu)
+: 7,4 / 5,4 s → 1,7 / 1,7 s.
+⇒ **Chemin de l'argent** : décisions du relecteur, bloc D317 ; les specs exercent accepter, refuser et l'instruction « acompte à
+régler » **sans les modifier** ; le harnais n'en mute rien ; **aucun défaut du chemin révélé**. La **pause continue**.
+⇒ **Mesures** : portes **toutes à 0** (`test` 664/58 · 39/4 · 308/22 · 347/28 ; `test:int` **444/36** ; e2e **43 · 1 ignoré**) ;
+campagne `neutralisation/neutralize-r26.py` **2 sur 2, lues**. Détail, fautes, limites : section D317.
+⇒ **LOT DE TESTS, QUI COMPTE** : **compteur UN → DEUX** — **un troisième lot de code exigera une certification** (Ko).
+⇒ **RANG 27 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**.
+⚠ **Une permission n'est pas un arbitrage.**
+
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D317), AVANT toute mesure et toute spec
+
+⛔ **ARBITRÉ PAR KO LE 27/09/2026** — texte mot pour mot dans l'ordre des rangs (ligne « ARBITRÉ LE 27/09/2026 PAR KO — le RANG
+26 »). ⇒ **QUEL lot : rang 26. OÙ IL EN EST : ici.** **Lot de tests, qui COMPTE** (D283 amendé par D292) : compteur de lots de
+code non certifiés **UN → DEUX** à sa clôture (Ko). **SHA de départ : `a65d40d`** (`HEAD` = `origin/main` après `git fetch`,
+arbre propre).
+⛔ **Chemin de l'argent** — décisions du relecteur (chat), déléguées par Ko, écrites avant tout code : méthode renforcée, bloc
+D317. Les specs **EXERCENT** des comportements du chemin — accepter et refuser (branche 2), et le libellé que le client lit
+après acceptation, « Acceptée — acompte à régler » (`account.ui.bookings.st_ACCEPTED`), qui **est** une instruction de paiement
+(branche 6) — **sans les modifier** : décision 2. Un défaut du chemin qu'elles révèlent **se rapporte, il ne se corrige pas**.
+⛔ **Le harnais du lot ne mute AUCUN code du chemin de l'argent** (dérivé par la session, bloc D317) : ni la section client
+« Mes réservations » (elle présente les montants et l'instruction — branche 6), ni un bouton qui déclenche une transition
+(branche 2). Ses cibles sont deux **lectures côté pro** : la liste chargée et le libellé de statut que le pro lit.
+⛔ **La forme exigée par Ko** : étape 1 (recompilations de l'API pendant l'e2e) **avant** la moindre spec ; étape 2, les specs
+du parcours sur les comptes et la salle de fixture, assertions par rôles et libellés visibles ; le devis **dehors** (section
+démontée, liste de D301). Une étape cassée hors du chemin, réparable dans le fichier fautif : mode de défaillance écrit, rouge
+lu, correctif, vert ; sinon la spec se verse en pièce avec son rouge lu, et **ne se commite pas en échec**.
+
+#### Fichiers attendus — énumérés AVANT d'écrire (le `git diff` de fin de lot ne doit contenir qu'eux)
+
+| fichier | pour |
+|---|---|
+| `e2e/specs/r26-parcours-reservation.e2e.ts` (neuf) | étape 2 — acceptation, puis refus |
+| `e2e/fixtures/harness.ts` | `createPublishedVenue` rend AUSSI le compte PRO qui possède la salle : le parcours pro en a besoin (ajout, rien de retiré) |
+| `e2e/playwright.config.ts` | étape 1 — **seulement si** l'hypothèse est confirmée **et** que le correctif ne touche que la configuration de l'e2e |
+| `neutralisation/neutralize-r26.py` (neuf) | le harnais du lot (`CLAUDE.md`, portes) |
+| `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`, `docs/preuves/D317/` | documentation, pièces |
+| `docs/preuves/D316/neutralisation/passe-officielle/RECTIFICATION-D317.txt` (neuf) | lecture adverse de D316, écart des extraits : posé À CÔTÉ des pièces (précédent : D315 chez D314), pièces non retouchées |
+| `e2e/specs/warmup.setup.ts` — ⚠ **ajouté en cours de lot, AVANT d'être touché** | étape 2 cassée au premier passage (MD2-g) : la fiche salle, route dynamique, n'est pas préchauffée ; le correctif tient dans ce fichier — « toutes les routes que la suite visite », dit-il |
+
+⚠ Un fichier qui s'avérerait nécessaire hors de cette table s'**écrit ici avec son motif** avant d'être touché.
+
+#### Modes de défaillance — écrits AVANT la mesure et les specs
+
+**Étape 1 — l'API recompile d'elle-même pendant l'e2e.**
+- **MD1-a** (relevé, D316) : deux fenêtres — 23:20:58, au démarrage du `global-setup` (`prisma migrate deploy` lancé dans
+  `apps/api`) ; 00:14:35, :37, :39, dans le `beforeAll` d'une spec (`seedReferentials()` lance `prisma db seed` dans
+  `apps/api`). Chaque recompilation redémarre l'application ⇒ `ECONNREFUSED`.
+- **MD1-b** (hypothèse du relecteur, **non établie**) : le serveur tourne en surveillance (`nest start --watch`, relevé :
+  `pnpm --filter @zwadj/api run dev`) et réagit à des fichiers **écrits** pendant les tests. ⚠ **Relevé sur ce poste, qui
+  ouvre une seconde explication à départager** : la mise à jour NTFS du **dernier accès** est **ACTIVÉE**
+  (`fsutil behavior query disablelastaccess` = 0) — une simple **lecture** peut produire une notification de changement. La
+  mesure doit donc séparer **écriture** et **lecture**, et nommer le fichier qui déclenche.
+- **MD1-c** : un « vert » après correctif n'en est un que sous la **même condition de déclenchement** que le rouge — sinon
+  l'intermittence suffit à le fabriquer.
+- **MD1-d** : retirer la surveillance change-t-il ce que l'e2e mesure ? Le double montage de `StrictMode` (motif des serveurs
+  de développement) est côté client et pro ; les harnais mutent l'API **avant** de lancer Playwright.
+
+**Étape 2 — le parcours de réservation.**
+- **MD2-a** : une spec qui échoue pour une raison d'environnement (recompilation, `ECONNREFUSED`) n'a rien mesuré du produit ⇒
+  l'échec se **lit** avant toute conclusion (signatures de D304 et D316).
+- **MD2-b** : une assertion de statut qui ne discrimine pas. ⇒ Le libellé cherché après l'action est **d'abord exigé absent**,
+  par le même localisateur, dans l'état qui précède (demande en attente) : deux bras dans la même spec. **C'est la seule
+  preuve de morsure côté client** : le harnais n'y mute rien (branche 6).
+- **MD2-c** : le partage du pro (`/demandes` = tout sauf verrouillé ; `/reservations` = `ACCEPTED` et `CONFIRMED`, D131) :
+  après acceptation la demande **quitte** `/demandes` et **paraît** dans `/reservations` ; après refus elle **reste** dans
+  `/demandes`, « Refusée », sans bouton. Les attentes suivent ce partage, relevé dans le code — pas inventé.
+- **MD2-d** : une ligne qui n'est pas celle du test ⇒ chaque test crée sa salle, son pro et son client ; la ligne se choisit
+  par ce que le test a écrit (nom de la salle, nom du contact), jamais par `first()` dans une liste partagée.
+- **MD2-e** : un libellé tapé à la main accuse à tort ⇒ tout libellé vient de `packages/i18n/messages/fr.json`.
+- **MD2-f** : un attribut de test dans le code produit **seulement si rien d'autre ne suffit**, jamais une logique (Ko).
+- **MD2-g** — ⚠ **écrit APRÈS le premier passage, AVANT le correctif** (forme de Ko pour une étape cassée hors du chemin) :
+  la fiche salle, `/[locale]/salles/[slug]`, est une route DYNAMIQUE que le préchauffage ne visite pas — alors que
+  `warmup.setup.ts` exige « toutes les routes que la suite visite » (D127). Le premier test qui clique vers elle paie sa
+  compilation dans sa mesure. **Mesuré** au premier passage de la spec seule : le test d'acceptation — le premier à ouvrir
+  une fiche — rouge à `toHaveURL` (7 s) ; la fiche a demandé ses données **6,2 s** après le clic, contre **0,6 s** au test
+  suivant, vert de bout en bout. Pas un défaut du produit ; un échec qui se déplace selon l'ordre (D127). ⇒ Correctif dans
+  le fichier fautif : le préchauffage visite la route dynamique sur un identifiant qui n'existe pas — la route se compile,
+  la page répond **404**, et ce 404-là est l'attendu. ⚠ Les r25 cliquent la même fiche : le défaut était latent depuis
+  D316, masqué par l'ordre des fichiers.
+
 ## ~~PROCHAIN LOT~~ — rang 25 · `[CODE]` **les trois défauts vus par D315** ⛔ ~~**OUVERT LE 26/09/2026 : D316**~~ ⛔ **CLOS LE 27/09/2026 : D316**
 
 ### ⛔ CLÔTURE DU 27/09/2026 (D316) — L'ÉTAT DU RANG, À LIRE EN PREMIER
@@ -1427,6 +1547,8 @@ captures d'après correctif à côté de celles de D315. Détail, fautes, limite
 ⇒ **LOT DE CODE** : **compteur de lots de code non certifiés : ZÉRO → UN** (Ko). « Deux, tenables ; trois, non » (D270).
 ⇒ **RANG 26 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — dans l'ordre des rangs, écrit à l'ouverture, **vrai à la clôture**.
 ⚠ **Une permission n'est pas un arbitrage.**
+⛔ *(D317, 27/09/2026 : rang 26 **arbitré par Ko** — le parcours de réservation en e2e, lot de tests, **clos le 01/10/2026** ;
+compteur **DEUX** ; rang 27 en attente ; point d'entrée du rang 26.)*
 
 ### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D316), AVANT toute ligne de code
 
@@ -1588,8 +1710,10 @@ code **peut** s'ouvrir ; **aucun ne l'est** avant que Ko arbitre le rang 24. ⛔
 **arbitré par Ko** — rang 24, **documentaire**, ouvert et clos le même jour (point d'entrée du rang 24) ; il **n'ouvre aucun lot
 de code** : le prochain est un rang que Ko arbitrera — **RANG 25 : EN ATTENTE D'ARBITRAGE DE KO** — et le chemin de l'argent
 reste en pause.)* ⛔ *(D316, 27/09/2026 — passe D277 : rang 25 **arbitré par Ko — lot de CODE** hors du chemin de l'argent
-(décision du relecteur), clos ; **compteur UN** ; la pause du chemin de l'argent **continue** ; **rang 26 : en attente
-d'arbitrage de Ko**.)*
+(décision du relecteur), clos ; **compteur UN** ; la pause du chemin de l'argent **continue** ; ~~**rang 26 : en attente
+d'arbitrage de Ko**~~.)* ⛔ *(D317, 27/09/2026 — passe D277 : rang 26 **arbitré par Ko — lot de tests** (le parcours de
+réservation en e2e ; il EXERCE le chemin de l'argent sans le modifier, décision 2 du relecteur), clos ; **compteur DEUX** —
+aucun lot de code avant une certification ; la pause **continue** ; **rang 27 : en attente d'arbitrage de Ko**.)*
 ⇒ **La passe `r23d-20260926-1434`** (sur `0057748`) : porte dure verte ; six portes à 0 (**1 334 / 109**, **443 / 36**, e2e
 **34 · 1**) ; `--tout` **28 · 198 · 0 · 13** ; `--int` **40** ; **certifiant 211 · 0 · 0, 28 campagnes sur 28 qui comptent,
 point 12 tenu partout** ; étiquettes **12 · 13 · 81 · 105** ; contre-épreuve **5 sur 5** ; arbre immobile aux cinq contrôles ;
@@ -5204,6 +5328,259 @@ prochain plafond gelé aura le même défaut.
 ⛔ **Aucun composant de production n'est touché.**
 ⚠ Le harnais **doit** se nommer `neutralize-*.py`, sinon le tri ne le jouera jamais.
 
+## Session des 27/09 et 01/10/2026 — D317 · rang 26 CLOS, LOT DE TESTS : le parcours de réservation joué de bout en bout ; l'API de l'e2e ne tourne plus en surveillance ; et la lecture adverse de D316
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D316** ⇒ **D317** ; « D317 » : **0** occurrence dans les
+fichiers suivis à `a65d40d` (`git grep`, code 1). **SHA de départ : `a65d40d`** — `HEAD` = `origin/main` après `git fetch`,
+arbre propre. ⇒ **RANG 26**, arbitré par Ko en ouverture de session (première écriture du lot) ; **deux décisions du
+relecteur (chat)**, déléguées par Ko, écrites avec leur motif avant tout code (seconde écriture). **Lot de tests, qui
+compte** (D283 amendé par D292) : compteur de lots de code non certifiés **UN → DEUX**.
+⚠ **SESSION INTERROMPUE le 27/09/2026 après l'audit scellé (12:41), REPRISE le 01/10/2026.** Avant tout geste, l'arbre vérifié
+identique : `HEAD` = `origin/main` = `a65d40d`, mêmes fichiers modifiés et non suivis, **aucun** écrit après le 27/09 à 12:45,
+comptes de lignes égaux au dernier contrôle, journaux de travail présents. **Les portes ne sont pas rejouées** : mesurées après
+la dernière modification de code, et aucun code n'a changé depuis — ce sont celles du code qui part. ⚠ Elles datent donc du
+27/09, pas du jour du commit ; le lot, lui, n'est **clos** qu'à sa poussée (D288) : le 01/10/2026.
+
+### D317 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 25 **clos** (D316) ; dernière ligne « ⇒ RANG N » : « **RANG 26 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 25, ordre des rangs |
+| numéro | dernière ligne du registre : **D316** ⇒ **D317** | registre |
+| compteur | **UN** (D316) ; pause du chemin de l'argent **en cours** | `AGENTS.md`, règle de D270 (annotation D316) |
+| synchronisation | `HEAD` = `origin/main` = `a65d40d` ; arbre propre | `git` |
+
+### D317 — la lecture adverse depuis la clôture de D316, en entier
+
+Relue à `a65d40d` : la section D316, le point d'entrée du rang 25, la ligne D316 de l'ordre, les reports de D316 au backlog,
+les quatre annotations de `AGENTS.md`, le commit `a65d40d` et les **73** pièces de `docs/preuves/D316/`. **Instrument** :
+`docs/preuves/D317/lecture-adverse/confronter-d316.py` — chaque chiffre confronté à SA pièce, l'attendu imprimé à côté du
+mesuré (D290), rien importé des outils de D316, l'état commité lu par les objets `git` (rejouable à un `HEAD` ultérieur) ; les
+outils de D316 **REJOUÉS** sur l'état qu'ils ont lu et comparés **à l'octet** — `confronter-d315.py` (worktree détaché à
+`ffd32e9`, hors dépôt) = sa sortie versée, **67 · 0** ; `balayage.py` (worktree à `a7c09fa` portant les fichiers d'autorité de
+`a65d40d` : le `HEAD` et l'arbre de son dernier passage) = `balayage-controle.txt` ; `extraire.py` sur les journaux bruts
+encore sur disque = **42 extraits sur 42** (dont **10** lus, par leur empreinte, dans la copie faite avant le rejeu de r25) ;
+les deux contrôles « 0 valeur réelle » sur les **93** fichiers partis (74 et 145
+valeurs, 13 journaux, **0 porteur**) ; forme Chargily, 0. Sortie : `confronter-d316-sortie.txt` — **96 contrôles, 4 écarts.**
+**Ce qui tient** : provenance `a7c09fa` → `a65d40d`, **93** fichiers = les **20** de la table des fichiers attendus + les
+**73** pièces, aucune autre pièce touchée, commit sur `origin/main` ; les portes telles qu'écrites (8 « Done » e2e compris et
+0 `error TS` ; 8 « Done » ; **664/58 · 39/4 · 308/22 · 347/28**, soit (+3, +1) et (+21, +2) sur la pièce de D314 ; 4 « Done » ;
+**444/36**, code 0, 306 s ; **41 · 1**, code 0, 127 s, 7 titres r25, B8) ; les deux « fail » sont les journaux Chargily ;
+plafond `act(…)` à 5 ; la campagne (11 cibles, 7 · 1 · 3 ; vitest 3.2.7 exigé ; 11 ✓, 11 mutations posées, 8 `AssertionError`,
+3 « x » ; 11 · 11 · 0, code 0, 691 s ; calibration 10 · 0) ; la première passe, 10 sur 11, R25-E2 en ✗ — et son journal brut
+porte bien les titres « x … (0ms) », `ECONNREFUSED`, et les trois recompilations 00:14:35/37/39 ; le rouge du défaut 1 porte
+celle de 23:20:58, avant le préchauffage ; le tri, 1 campagne sur **29**, 7 · 0 · 4, sortie 3 ; aucun autre harnais ne cite
+un fichier du lot ; les captures (**7**, **2 430 716** octets, tailles = relevé ; 04 et 26 : **1280 × 14 487** et
+**1280 × 14 798** ; 25-fr et 25-ar **identiques à l'octet** aux captures 05 et 17 de D315 ; M4 : deux fenêtres, **92 + 90**
+jours, 200 ; M1 ; M2) ; le code (le `git diff` du panneau — 42 lignes — ne touche ni l'aperçu d'acompte ni le transport de la
+date ; `WINDOW_DAYS` 182 ; borne importée ; `LOGIN_PATH` gardé par le fichier de la page ; **neuf** liens littéraux et deux
+vers la SPA pro ; aucun `/connexion` nu ; le handler `GET deletion-request` en `@Res()` sans `passthrough`, 0 intercepteur
+global ; `account-client.test.ts` neuf ; `loadFailed` en FR et AR) ; les deux audits scellés, **135** puis **136** ; le tri,
+**8** neuves (6 + 2) ; les contrôles **74 · 145 · 85 · 0** et Chargily **87 · 0** ; **les 13 journaux contrôlés sont
+exactement ceux qui portent une valeur**, sur 45 parcourus ; la passe D277 (`24802faf`, 18 + 2 motifs, « après » = corpus
+commité, contrôle = après) ; les écritures (registre, titre, « ⇒ RANG 26 », « dix » barré, bloc D316, quatre annotations
+d'`AGENTS.md`, 4 reports à la forme de D302, 3 entrées cochées, `[DOC][P3]`, 11 lignes supprimées, aucun mot perdu).
+**Les quatre écarts** (chacun annoté à sa place dans la section D316, qui n'est pas réécrite) :
+1. ⛔ **Codes et durées de `typecheck`, `lint`, `test`, `build` : aucune pièce** — les extraits n'ont « code=… durée=… » que
+   pour `test:int` et `test:e2e` ; les codes 0 s'INFÈRENT des « Done » et des « passed », les durées 19, 12, 63, 38 s de rien
+   (D291).
+2. ⛔ **L'état machine au départ des portes (6 380 Mo, `PERF` 84,4) : aucune pièce**, ni au dépôt ni dans les journaux (D291).
+3. ⛔ **Sept pièces de `passe-officielle/` — `R25-1` à `R25-7` — sont des extraits du TRI**, joué après la passe : départs vitest
+   03:26:42 → 03:27:23, la passe finit à 03:26:17 et `R25-8`, qui les SUIT dans l'ordre de la campagne, part à 03:20:50 ; le tri
+   écrit au même chemin et a écrasé les journaux de la passe. Le compte « 11 sur 11, toutes lues » tient par les lignes de la
+   campagne elle-même. Décision 3 du relecteur, D309. **Rectification posée à côté des pièces** :
+   `docs/preuves/D316/neutralisation/passe-officielle/RECTIFICATION-D317.txt` (pièces non retouchées).
+4. ⛔ **« Aucun fichier suivi ne change dans ces fenêtres (relevé par horodatage) » : aucune pièce** (D291) — et l'étape 1
+   ci-dessous mesure ce qui se passait.
+**Constats, sans chiffre de la section** : l'alerte neuve de l'audit final (136ᵉ) n'a **pas de pièce de tri** — relue ici à sa
+ligne : le fichier de tri qui récite un titre de test, **un mot** ; D316 écrit « `res.status(200).json(…)` », le code porte
+`res.status(HttpStatus.OK).json(…)` — même statut, autre graphie ; trois autres passes versées (`campagne-r25-complete`,
+`-unit`, `forme-groupee`) ne sont pas décrites par la section, sous des noms neutres.
+**Défauts de MON instrument, chacun réparé et REJOUÉ EN ENTIER (D298)** — sorties de chaque passe versées :
+(a) `$` en mode multiligne ne s'arrête pas avant un `\r` : la ligne « x … (0ms) » du journal brut était introuvable ;
+(b) liens et `passthrough` cherchés dans les **commentaires** (`routes.ts` cite `href="/auth/connexion"` en prose, le panneau
+cite `/connexion` pour dire ce qu'il visait) ; (c) « `.status(200)` » cherché à la lettre, le code écrit `HttpStatus.OK` ;
+(d) un constat prenait l'audit final **de D315** pour une pièce de tri ; — passe 2 — (e) `passthrough` cherché dans **tout** le
+fichier : un autre handler le déclare, légitimement ; — passe 4 — (f) les deux rejeux « 0 valeur réelle » ne lisaient pas le
+nombre de **valeurs cherchées** : un « 0 porteur » sur zéro valeur aurait été un zéro creux (D290). Deux changements ensuite,
+pour la rejouabilité, suivis chacun d'un rejeu intégral : l'état commité lu par les objets `git` ; les journaux de
+`.neutralisation-journaux/r25/` lus, **par leur empreinte**, dans la copie faite avant que le rejeu de r25 (ci-dessous) ne les
+écrase. Passes 1 → finale : 8 ✗ (dont 4 miens), 5, 4, 4, 4, 4.
+
+### D317 — rang 26, étape 1 : l'API recompilait-elle d'elle-même ? (report de D316)
+
+**Relevé** : la commande de `webServer` était `pnpm --filter @zwadj/api run dev`, soit `nest start --watch` — CLI Nest
+11.0.23, constructeur `tsc`, `tsconfig.build.json` (il existe ; son `exclude` REMPLACE celui de `tsconfig.json`, donc
+`src/generated` y est). Programme surveillé (`tsc --listFilesOnly`) : **1 072** fichiers, dont **158** sous `apps/api/src`
+(47 du client Prisma généré), **13** de `packages/types/src`, et **`packages/i18n/messages/fr.json` et `ar.json`** — que l'API
+importe pour ses notifications, et que D316 a modifiés (dernière écriture datée 23:24:39 et 23:24:43, hors des deux fenêtres ;
+une écriture antérieure ne laisse pas de trace). Sur ce poste, la mise à
+jour NTFS du **dernier accès** est **activée** (`fsutil behavior query disablelastaccess` = 0).
+**Mesure 1 — un observateur** (`docs/preuves/D317/etape1/sonde-surveillance.py`) : le même compilateur (TypeScript 5.9.3), la
+même configuration, en surveillance, avec `--extendedDiagnostics`, qui NOMME ce qui déclenche. Calibration à deux bras : témoin
+**0**, écriture **2** recompilations (déclencheur nommé : `apps/api/src/generated/zz-sonde-d317.ts`) — OK. Lecture d'un fichier
+du programme : 0 ; **recul du dernier accès** (1 fichier, puis les 47 générés) : les surveillants **se déclenchent** (97 fois),
+**aucune** recompilation ; lecture après recul : aucun événement ; **`prisma db seed`** (ce que fait `seedReferentials()`) et
+**`prisma migrate deploy`** (ce que fait le `global-setup`) : **0**, et 0 encore sur un client généré au dernier accès ancien.
+**Mesure 2 — le serveur de l'e2e lui-même** (`etape1/mesure.config.ts`, qui importe la configuration e2e et n'en garde que
+l'entrée de l'API ; `etape1/mesure-surveillance.spec.ts`, qui applique les bras pendant qu'il tourne et sonde `/health` toutes
+les 100 ms). **Rouge**, configuration d'avant : témoin 0 sonde en échec sur 105, lecture 0 sur 107, **écriture : 21 sur 106
+puis 23 sur 105 en `ECONNREFUSED`**, « File change detected » à 11:37:47 et 11:37:59, **trois** démarrages de l'application.
+⇒ **L'HYPOTHÈSE DU RELECTEUR EST CONFIRMÉE POUR SON MÉCANISME** : le serveur tournait en surveillance et réagissait aux
+fichiers **écrits** — et, sur ce poste, **seulement** à eux. ⚠ **Pas pour son origine** : les deux commandes que lancent les
+tests n'écrivent rien (mesuré) ; **qui a écrit dans les deux fenêtres de D316 n'est pas identifié** (aucune pièce ; toute
+écriture concurrente d'un fichier du programme suffit — session, harnais).
+**Correctif, dans la seule configuration de l'e2e** : `e2e/playwright.config.ts` lance l'API par
+`pnpm --filter @zwadj/api exec nest start`, compilée une fois au lancement (MD1-d : le double montage de `StrictMode` vit côté
+client et pro ; ce qu'un harnais `--e2e` mute AVANT de lancer Playwright est compilé). **Vert**, même procédure, mêmes bras :
+**0** sonde en échec sur 103, 106, 106, 106 ; **0** recompilation ; **un** démarrage (MD1-c : même condition de déclenchement).
+Pièces : `etape1/` — relevés `releve-rouge-avant-correctif.txt`, `releve-vert-apres-correctif.txt`, extraits
+`mesure-rouge-extrait.txt` et `mesure-vert-extrait.txt` (lignes de statut du compilateur gardées par l'extracteur de D317,
+calibré sur ses deux bras), extrait filtré du journal de l'observateur, états machine.
+
+### D317 — rang 26, étape 2 : le parcours de réservation
+
+`e2e/specs/r26-parcours-reservation.e2e.ts`, **deux tests** sur un tronc commun : le client ouvre la salle depuis la
+recherche, envoie sa demande, la retrouve **EN ATTENTE** dans « Mes réservations » ; le pro la voit dans **ses** demandes,
+« Statut : En attente », avec « Accepter » et « Refuser ». **Acceptation** : la ligne **quitte** « Demandes » et **paraît**
+dans « Réservations », « Statut : Acceptée » ; le client lit « **Acceptée — acompte à régler** ». **Refus** : la ligne **reste**,
+« Statut : Refusée », sans bouton ; le client lit « **Refusée par la salle** ». Assertions par **rôles et libellés visibles**,
+tous tirés de `fr.json` ; **aucun attribut de test** ajouté au code produit ; chaque test crée sa salle, son pro, son client
+(`createPublishedVenue` rend désormais aussi le compte PRO — ajout seul). **Côté client, deux bras par statut** (MD2-b) : le
+libellé attendu après la réponse est exigé ABSENT pendant l'attente, par le même localisateur. Le devis reste dehors.
+⛔ **Chemin de l'argent** : les specs EXERCENT accepter et refuser (branche 2) et l'instruction « acompte à régler »
+(branche 6) **sans les modifier** (décision 2) ; **aucun défaut du chemin révélé**.
+**Une étape cassée au premier passage — MD2-g, hors du chemin de l'argent, réparée dans son fichier fautif** : le test
+d'acceptation, le premier à ouvrir une fiche, **rouge** à `toHaveURL` (7 s) ; le refus, vert. La fiche salle est une route
+DYNAMIQUE que le préchauffage ne visitait pas, alors que `warmup.setup.ts` exige « toutes les routes que la suite visite »
+(D127). Mode écrit au point d'entrée **avant** le correctif ; mesuré dans le journal de l'API
+(`etape2/delai-fiche.py`) : recherche → données de la fiche **7,4 s** (rouge) puis **5,4 s** (vert à 1,6 s près) au premier
+test, **2,0** et **1,6 s** au second. Correctif : le préchauffage visite `/fr/salles/prechauffage-route-dynamique` — la route
+se compile, la page répond **404**, et ce 404-là est l'attendu. **Vert**, deux passages : **1,7 s** au premier test comme au
+second. ⚠ Les specs du rang 25 cliquent la même fiche : le défaut était latent depuis D316.
+
+### D317 — les portes, dans l'ordre, APRÈS la dernière modification de code
+
+État machine au départ, **versé** cette fois (`docs/preuves/D317/portes/etat-machine-avant-portes.txt`) : **secteur**, RAM
+médiane **3 645 Mo** — sous la barre de D273 (4 579) —, `PERF` 68,5, `node` 0, `chrome` **30**. ⚠ Ce lot ne certifie rien et
+ne compare aucune durée. Chaque extrait porte **son code et sa durée** (`docs/preuves/D317/portes/`) — l'écart 1 de la lecture
+adverse, non reproduit.
+
+| porte | code | chiffres | durée |
+|---|---|---|---|
+| `pnpm typecheck` | 0 | 8 « Done » (e2e compris), **0** `error TS` | 37 s |
+| `pnpm lint` | 0 | 8 « Done » | 17 s |
+| `pnpm test` | 0 | API **664/58** · api-client **39/4** · client **308/22** · pro **347/28** — inchangés : aucun test unitaire touché | 90 s |
+| `pnpm build` | 0 | 4 « Done » | 81 s |
+| `pnpm test:int` | 0 | **444/444, 36 fichiers** | 525 s |
+| `pnpm test:e2e` | 0 | **43 réussis, 1 ignoré** (A5, inchangé) — 41 + les 2 du parcours ; **aucune** « File change detected » | 212 s |
+
+### D317 — la campagne du lot, et les campagnes que le lot touche
+
+`neutralisation/neutralize-r26.py --e2e` : **2 cibles, 2 mordues, toutes LUES**, pré-vol vert, arbre rendu, code 0, 386 s
+(`docs/preuves/D317/neutralisation/`). Deux **lectures côté pro**, hors du chemin de l'argent : R26-1, la liste chargée jetée
+⇒ les deux tests rouges à « le pro ne voit pas la demande du client dans ses demandes » ; R26-2, le libellé de statut figé à
+« En attente » ⇒ l'acceptation rouge à « Statut : Acceptée », le refus à « le pro ne voit pas son refus ». Lecture **fermée** :
+une LISTE de titres par cible, chacun exigé (D305) ; chaque titre en « x », pas en « (0ms) », `expect(` dans SON bloc — les
+blocs découpés sur leurs en-têtes, jamais par une expression gloutonne ; Playwright **1.50.1** exigé ; mutations prouvées
+posées (ancre 1 → 0, marqueur 0 → 1 ; `verifier-mutations.py r26` : 2 posées, 0 non posée) ; calibration à **6 bras**.
+`lancer-campagnes.py` : **0 campagne concernée sur 30** — son critère est « fichiers lus », et `playwright.config.ts` n'est cité
+par aucun harnais. **Relevé à la main (D308)** : deux autres harnais lancent Playwright. `neutralize-b7.py` ne mute que du CSS
+client et sa spec — le mode de l'API ne touche pas son mécanisme : **non rejoué**, motif écrit. `neutralize-r25.py` a une cible
+e2e qui mute l'**API** (R25-E3) : **rejoué** avec `--e2e` — **10 gardes mordues sur 10 jouées, toutes lues**, dont R25-E1 à
+E3 sous la nouvelle configuration, **R25-E3 compris** (l'API mutée AVANT Playwright est bien celle que `nest start` compile) ;
+R25-8 non mesurée (`--int` non passé), sortie 3, attendue ; 783 s. Pièces, sous le nom de **sa** passe (D309, point 3) :
+`docs/preuves/D317/neutralisation/rejeu-r25-e2e-20260927-1222/`. ⛔ `--tout` non joué : lot non certifié (précédent de D308).
+
+### D317 — ce qui a atterri, et où
+
+| quoi | fichier, endroit |
+|---|---|
+| **Arbitrage de Ko** — rang 26, mot pour mot ; « RANG 27 : EN ATTENTE » ; clôture | ordre des rangs (« RANG 26 : EN ATTENTE » **barrée**, arbitrage, ligne du rang 27, ligne D317) |
+| **Décisions du relecteur** — 182 boutons hors du chemin ; un test qui exerce le chemin sans le modifier est permis | méthode renforcée, **bloc D317** ; `AGENTS.md`, point E3 (bloc D317) |
+| fichiers attendus, modes de défaillance (MD1-a à d, MD2-a à g), clôture | point d'entrée du rang 26 (neuf) |
+| compteur UN → DEUX, rang 27 en attente, aucun lot de code avant une certification | `AGENTS.md`, règle de D270 (annotation D317 ; « rang 26 : en attente » de D316 **barré**) ; point d'entrée du rang 25 (**annoté**) |
+| l'API de l'e2e hors surveillance | `AGENTS.md`, notes du poste de Ko ; `e2e/playwright.config.ts` (commentaire au lieu du correctif) |
+| les quatre écarts de la lecture adverse | section D316, **annotée** aux quatre endroits ; `RECTIFICATION-D317.txt` à côté des pièces de D316 |
+| les recompilations réparées ; les 182 boutons tranchés ; la seconde piste de D265 mesurée | backlog : entrée **cochée avec son motif**, deux entrées **annotées** |
+| trois reports neufs (preuve côté client, journaux écrasés, garde de la configuration) | backlog, **reports de D317** (forme de D302) |
+| l'entrée `[DOC][P3]` « POURQUOI (b) » | backlog (annotée : elle suit désormais « RANG 27 ») |
+| le registre | ligne D317 |
+
+### D317 — passe D277, les deux sens
+
+**L'instrument** : `docs/preuves/D317/passe-d277/balayage.py`, **copie à l'octet** de celui de D306 à D316 (`24802faf…`) ; motifs
+lus dans `motifs.txt` (16 + 2 témoins ; « rang 26 », « relecteur », « e2e », « watch » seuls **écartés avant la première
+passe** : ils comptent tout, D298 et D295). **Première passe** après les écritures de contenu : `balayage-1.txt`. Tri **à la
+main** :
+**Sens 1 — ce que D317 invalide** : « RANG 26 : EN ATTENTE » (ordre des rangs : **barrée** ; point d'entrée du rang 25 et
+`[DOC][P3]` : **annotés**) ; « rang 26 : en attente d'arbitrage de Ko » (`AGENTS.md` : **barré** ; ⚠ **bloc du rang 23 :
+trouvé COURANT par la passe**, barré et annoté) ; la cause des recompilations « non identifiée » et le « relevé par
+horodatage » (section D316 : annotés ; backlog : cochée) ; « c'est au relecteur de le dire » (182 boutons : annotée) ; la
+« seconde piste » de D265 (annotée) ; « compteur ZÉRO → UN » : vrai à sa date, suivi de l'annotation D317 partout où il se lit
+comme courant.
+**Sens 2 — ce que D317 rend permis, et ce qu'il RETIRE** : compteur **DEUX** ⇒ la permission « un lot de code peut s'ouvrir »
+est **ÉPUISÉE** jusqu'à une certification — écrit là où la reprise le lit (ligne D317 de l'ordre, `AGENTS.md` règle de D270,
+bloc du rang 23, point d'entrée du rang 26) ; les « peut s'ouvrir » des rangs clos (12, 14, 15, 16) et de l'ordre portent leur
+prémisse (« compteur à ZÉRO »), fausse aujourd'hui : laissés, vrais à leur date — traitement de D316. La permission neuve — un
+**test** qui exerce le chemin de l'argent — est écrite là où elle s'applique (bloc D317, `AGENTS.md`), avec sa borne : pas une
+neutralisation.
+**Un motif à zéro** (D295 : une hypothèse) : « la cause n'est pas identifiée » sans gras — la phrase réelle porte le gras,
+« la cause n'est **pas** identifiée », cherchée par le motif voisin : rien de manqué.
+**Après écriture** : `balayage-apres-ecriture.txt`, pris **après la dernière écriture de texte** ; puis
+`balayage-controle.txt`, rejoué sur l'état qui part, doit rendre les mêmes comptes. Chiffres : dans les sorties versées.
+
+### D317 — audit de secrets avant commit
+
+⚠ **Ce lot a produit des journaux à valeurs réelles** (hors dépôt) : les e2e — le parcours, la porte, les campagnes r26 et r25
+— portent des jetons de vérification et des valeurs du cookie de rafraîchissement ; **11 journaux** sur 30. Rien de brut ne
+part : les pièces sont des **extraits** sans les lignes `[WebServer]`, hors les lignes de statut du compilateur à l'étape 1
+(`docs/preuves/D317/outils/extraire.py`, qui recompte à chaque extraction les valeurs restantes — attendu 0, obtenu 0 partout ;
+calibré sur ses deux bras, `outils/calibration-extraire.txt`).
+- **« 0 valeur réelle »** (ce qui fait foi, D299), joué sur **tout ce qui part** : jetons — **92** valeurs cherchées dans **11**
+  journaux ; cookie — **215** valeurs dans les mêmes 11 ; **55** fichiers parcourus, **0 porteur** chacun ; bras positif réussi
+  pour les 11 journaux. `docs/preuves/D317/controles/`.
+- **Forme Chargily** (l'outil de D316, rejoué tel quel ; cibles : ce qui part) : **56** fichiers, **0 porteur**.
+- **Audit scellé** (`neutralisation/audit-secrets.py`) : `audit-secrets-d317.txt` — **142** alertes ; tri contre la sortie
+  scellée précédente (l'audit final de D316, 136) : **6 neuves**, lues au contexte : **aucune valeur** — l'URL PAR DÉFAUT de la
+  base e2e locale (déjà dans 3 fichiers suivis), trois fois l'expression de mon extracteur, deux titres de tests
+  d'intégration récités (`controles/tri-audit-d317-lecture.txt`).
+- En **dernière écriture**, dans cet ordre : les deux contrôles « 0 valeur réelle » et la forme Chargily **rejoués** sur tout ce
+  qui part (`controles/*-final.txt`) — les pièces écrites depuis les premiers passages comprises ; puis le second audit.
+- Second audit en **dernière écriture** : `audit-secrets-final.txt`. ⚠ **Son tri est versé APRÈS lui**
+  (`controles/tri-audit-final.txt`) — le constat de la lecture adverse chez D316 ; il ne recopie aucun contexte (renvois aux
+  lignes), c'est le seul fichier que l'audit final ne couvre pas, et ses chiffres sont au rapport de fin de lot.
+
+### ⛔ D317 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⛔ **J'AI LANCÉ LE REJEU DE r25 SANS METTRE D'ABORD À L'ABRI LES JOURNAUX BRUTS QU'IL ÉCRASE** — ceux de D316, que ma lecture
+   adverse venait de rejouer par leurs empreintes. Vu deux minutes après le lancement, **avant** que la première cible n'écrive :
+   copie octet pour octet, **11 empreintes sur 11** conformes aux en-têtes des extraits
+   (`.neutralisation-journaux/d316/r25-copie-avant-d317/`, hors dépôt). C'est la faute même que la lecture adverse reproche à
+   D316 (écart 3), à un geste près. ⇒ Report au backlog (journaux par passe).
+2. ⚠ **Six défauts de mon instrument de lecture adverse**, chacun réparé et suivi d'un rejeu intégral (D298) — détail
+   ci-dessus ; les sorties de toutes les passes sont versées, pas remplacées.
+3. ⚠ **Un défaut de mon outil de délai** (`etape2/delai-fiche.py`) : sur la porte e2e — deux workers, des fiches ouvertes sans
+   recherche —, il appariait deux fiches à la même recherche et rendait 0,6 et 10,9 s sur une suite verte. Réparé (« APPARIEMENT
+   INVALIDE », jamais un chiffre), rejoué ; ses deux sorties versées. Seules les passes d'une spec sur un worker mesurent.
+4. ⚠ **MD2-g écrit APRÈS le premier rouge**, dans l'ordre de Ko pour une étape cassée : le rouge lu venait d'abord ; rejoué
+   après l'écriture du mode, le rouge **ne s'est pas reproduit** (5,4 s sous le budget de 7 s) — un échec qui se déplace. La
+   quantité mesurée avant/après est donc le **délai**, pas le seul verdict : 7,4 et 5,4 s contre 1,7 et 1,7 s.
+5. ⚠ **Mon observateur n'est pas le serveur de l'e2e** : même compilateur, même configuration, mais un autre processus. D'où la
+   mesure 2, sur le serveur lui-même — c'est elle qui porte le rouge et le vert.
+
+### ⛔ D317 — CE QUE CE LOT NE FAIT PAS, ET SES LIMITES
+
+- **Aucune certification** : le compteur passe à **DEUX** ; un troisième lot de code en exigera une (Ko). La marque de D314
+  reste la dernière.
+- **Côté client, aucune neutralisation** : les assertions du suivi — et la sortie de « Demandes » après acceptation — ne sont
+  prouvées que par leurs deux bras dans la spec (branche 6, branche 2) ; question renvoyée au relecteur (backlog).
+- Les **écrivains** des deux fenêtres de recompilation de D316 ne sont pas identifiés ; le correctif supprime la réaction, pas
+  la cause. **Aucune garde permanente** ne tient l'API hors surveillance (backlog).
+- Le pro n'est joué qu'en **français** ; les montants que voient le client et le pro ne sont pas assertés (non demandé).
+- `neutralize-b7.py` **non rejoué** sous la nouvelle configuration ; `--tout` non joué.
+- Machine sous la barre de RAM de D273 pendant les portes (3 645 Mo) : non certifiant, déclaré.
+
 ## Session des 26 et 27/09/2026 — D316 · rang 25 CLOS, LOT DE CODE : les trois défauts de D315 réparés, chacun rouge lu avant, vert après ; et la lecture adverse de D315
 
 ⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D315** ⇒ **D316** ; « D316 » : **0** occurrence dans les
@@ -5293,6 +5670,10 @@ spec e2e **rouge sur le code tel qu'il était, lue** ; le correctif ; la **même
 État machine au départ des portes : **secteur**, 6 380 Mo libres, `node` 0, `chrome` 0, `PERF` 84,4 (relevé avant la
 campagne de développement ; ce lot ne certifie rien et ne compare aucune durée). Extraits versés : `docs/preuves/D316/portes/`
 (lignes `[WebServer]` retirées ; empreinte du journal complet en tête).
+⛔ *(D317, 27/09/2026 — lecture adverse : **aucune pièce ne porte cet état machine**, ni au dépôt ni dans les journaux de
+travail ; et les extraits de `typecheck`, `lint`, `test` et `build` ne portent **ni code ni durée** — seuls ceux de
+`test:int` et `test:e2e` ont leur « code=… durée=… ». Les codes 0 s'INFÈRENT des « Done » et des « passed » ; les quatre
+durées ci-dessous n'ont **aucune pièce**. Règle de D291 : une mesure nomme sa pièce. Section D317.)*
 
 | porte | code | chiffres | durée |
 |---|---|---|---|
@@ -5315,6 +5696,11 @@ le titre en « x » et `expect(` dans son bloc ; vitest **3.2.7** exigé ; mutat
 1, D286) ; sauvegarde sur disque avant mutation ; **calibration à 10 bras** rejouée à chaque lancement, abandon si un seul
 manque. ⚠ Ce lot n'est pas du chemin de l'argent : cette lecture n'y était pas **exigée** ; elle y est appliquée.
 **Passe officielle, après les portes : 11 mordues sur 11, toutes lues, code 0, 691 s** (`docs/preuves/D316/neutralisation/`).
+⛔ *(D317, 27/09/2026 — lecture adverse : **sept** pièces versées sous `passe-officielle/` — `R25-1` à `R25-7` — sont des
+extraits du **TRI** `lancer-campagnes.py` joué APRÈS la passe (départs 03:26:42 → 03:27:23 ; fin de la passe 03:26:17) ; le
+tri écrit au même chemin et a écrasé leurs journaux. Le compte « 11 sur 11, toutes lues » tient par les lignes de la
+campagne elle-même. Rectification posée à côté des pièces (`passe-officielle/RECTIFICATION-D317.txt`) ; décision 3 du
+relecteur, D309. Section D317.)*
 ⚠ **Une première passe officielle a rendu 10 sur 11** : R25-E2 avait échoué dans son `beforeAll` (API en recompilation,
 `ECONNREFUSED`) et mon lecteur l'avait jugée **muette** — faute n° 4 (c) ; lecteur réparé, calibré, **rejeu intégral**. Les
 journaux de cette première passe sont versés (`premiere-passe-officielle/`), pas remplacés.
@@ -5433,6 +5819,10 @@ extraction les valeurs restantes — attendu 0, obtenu 0 partout).
   **recompile parfois d'elle-même** sous la charge de la pile (vu deux fois : 23:20:58, avant le préchauffage ; 00:14:35,
   dans un `beforeAll`) — la cause n'est **pas** identifiée : aucun fichier suivi ne change dans ces fenêtres (relevé par
   horodatage). Ce n'est pas un défaut du produit ; c'est une source d'échecs qui ne mesurent rien, désormais lue comme telle.
+  ⛔ *(D317, 27/09/2026 : le « relevé par horodatage » n'a **aucune pièce** (D291). **Mesuré depuis** (rang 26, étape 1) :
+  l'API de l'e2e recompilait et redémarrait sur une **ÉCRITURE** d'un fichier de son programme — y compris
+  `packages/i18n/messages/*.json` —, jamais sur une lecture ; elle ne tourne plus en surveillance. Les écrivains des deux
+  fenêtres ne sont pas identifiés. Section D317.)*
 - La pièce de D315 (`ETAT-PRODUIT.md`) est **périmée** sur ses trois défauts ; elle n'est pas retouchée (datée).
 - Le pro n'est capturé et testé qu'en **français**.
 
@@ -15262,6 +15652,26 @@ rang. La session ne l'a pas prise ; ce qu'elle en dérive est écrit à part, se
    (pièce datée) n'est pas retouchée. Le défaut 3 (suppression de compte) n'est pas sur la carte — le backlog l'écrit
    « chemin de l'argent : non » (reports de D315) — et la décision ne le nomme pas.
 
+#### ⛔ DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 27/09/2026 (D317) — À LIRE AVEC LES BLOCS CI-DESSUS
+
+Écrites telles que Ko les a transmises, **avant tout code du rang 26** — seconde écriture du lot D317, après l'arbitrage du
+rang. La session ne les a pas prises ; ce qu'elle en dérive est écrit à part, section D317.
+1. ⛔ **LES 182 BOUTONS DE DATE NE SONT PAS DU CHEMIN DE L'ARGENT** : « Les 182 boutons de date (fiche d'environ 14 500 px,
+   report de D316) ne sont PAS du chemin de l'argent : c'est la présentation des choix. La date choisie et son transport vers
+   le calcul du prix ne changent pas. Même borne que D316. Le correctif (un calendrier) est à ordonner par moi. »
+   *Motif* : « c'est la présentation des choix. La date choisie et son transport vers le calcul du prix ne changent pas. »
+   ⇒ La borne est celle du bloc D316 : ni l'aperçu d'acompte, ni le transport de la date choisie vers le calcul du prix.
+2. ⛔ **PENDANT LA PAUSE, UN TEST QUI EXERCE UN COMPORTEMENT DU CHEMIN DE L'ARGENT SANS LE MODIFIER EST PERMIS** : « Pendant
+   la pause, un test qui EXERCE un comportement du chemin de l'argent sans le modifier est permis : il ajoute une garde, il
+   ne change ni montant ni transition. Un défaut du chemin de l'argent qu'il révèle se rapporte ; il ne se corrige pas. »
+   *Motif* : « il ajoute une garde, il ne change ni montant ni transition. »
+   ⚠ **Ce que la décision ne dit pas, écrit pour le relecteur** : elle permet un **test** ; elle ne dit rien d'une
+   **neutralisation** — une mutation, même temporaire et restaurée, MODIFIE le code qu'elle vise, et un harnais qui
+   prouve une garde du chemin de l'argent en fait partie (bloc D304, branche 4). *Dérivé par la session, pas une parole du
+   relecteur* : le harnais du rang 26 ne mute **aucun** code du chemin de l'argent — ni transition (branche 2), ni montant
+   (branches 1, 5, 6) ; ses cibles sont des **lectures** (ce qu'un écran montre d'un statut, ce qu'une liste retient). Un
+   doute sur une cible ⇒ la session la retire et le dit, elle ne la tranche pas.
+
 E3 touche l'argent. La campagne qualité a montré que le processus habituel — six
 portes, un lot, une revue — **laisse passer deux classes entières de défauts** :
 ce qui ne vit que dans le navigateur réel, et ce qu'un test vert ne regarde pas.
@@ -15900,3 +16310,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D314 | A | D314 — rang 23 CLOS, CERTIFICATION PASSÉE, MARQUE POSÉE : étape 0 commitée avant le relevé (0057748) — plancher du point 12 mesuré sur un non-démarrage simulé par une cale de PATH, sans modifier aucun harnais (niveaux A et B, calibration 0 bras manqué ; available-on 10/10 et journey 7/7 rendent une campagne complète sans avoir démarré, la classe de D310) ; un plancher par campagne, P = 3 × T (absolu : 5 refus à D310, par cible : 4) ; lecteurs calibrés (rang23 : passés + en échec, à part ; available-on-api : lecteur de D312 ; campagnes : point 12 et quatre étiquettes, relu sur la passe de D310) ; passe r23d-20260926-1434 : porte dure verte, six portes à 0 (1 334/109, 443/36, e2e 34 · 1), --tout 28 · 198 · 0 · 13, --int 40, certifiant 211 · 0 · 0, 28 campagnes sur 28, point 12 tenu partout, étiquettes 12 · 13 · 81 · 105, contre-épreuve 5/5, arbre immobile, fenêtre homogène — exactement la prédiction ; marque : « Portes vertes AU REPOS le 26/09/2026, et D305, D308 et D312 en font partie » ; compteur TROIS → ZÉRO, exception de D311 consommée, pause du chemin de l'argent commencée ; F1 et F5 closes ; suite : RANG 24, EN ATTENTE D'ARBITRAGE DE KO |
 | D315 | A | D315 — rang 24 ARBITRÉ PAR KO (première écriture : « l'état du produit, parcours par parcours ; lot documentaire : l'état écrit et prouvé, sans classement ; l'ordre des lots suivants sera proposé par le relecteur et arbitré par moi ») et CLOS le même jour, lot DOCUMENTAIRE : pièce datée docs/preuves/D315/etat-produit/ (carte relevée dans le code — client 13 pages, pro 14 routes, API 78 routes / 22 contrôleurs, aucune route de paiement, aucun écran d'administration ; parcours client, pro, admin étape par étape, preuve au niveau dit, renvois, classe au chemin de l'argent ; 146 entrées ouvertes confrontées au code — 62 réalisées et ouvertes à tort ; décisions écrites non réalisées et décisions dues à Ko ; déploiement confronté au code ; coûts sans durée ni classement) ; 46 captures (3 184 910 octets) par un script qui réutilise la configuration e2e ; trois défauts vus sur les captures et MESURÉS — le panneau de demande ne propose aucune date (fenêtre 182 > 92, 400), son lien de connexion mène à une 404, la section de suppression de compte est en erreur dans les deux applications (200 vide) ; lecture adverse de D314 : 117 contrôles, un écart (balayage « après écriture » pris avant la dernière écriture ; rectification à côté des pièces), constat : même forme D311 à D314 ; compteur ZÉRO inchangé ; suite : RANG 25, EN ATTENTE D'ARBITRAGE DE KO |
 | D316 | A | D316 — rang 25 ARBITRÉ PAR KO (première écriture : « réparer les trois défauts vus par D315 — la demande de réservation qui ne part pas, le lien de connexion en 404, la suppression de compte en erreur ; chacun prouvé par une spec e2e rouge avant le correctif, verte après ; lot de code ») et CLOS, LOT DE CODE ; décision du relecteur (chat), déléguée par Ko, écrite avant tout code : les défauts 1 et 2 ne sont pas du chemin de l'argent — « un changement relève du chemin de l'argent par sa fonction, branches (1) à (6), pas parce que son fichier figure sur la carte » — borne tenue (ni l'aperçu d'acompte ni le transport de la date) ; modes de défaillance écrits au point d'entrée avant les specs ; défaut 1 : fenêtre de six mois découpée en fenêtres que le contrat accepte (module pur availability-windows.ts, borne importée, tout ou rien, jours transmis tels que rendus), échec de chargement jamais « aucune date » (inversion écrite de la garde de forme), double de fetch qui applique le schéma du contrat ; 182 jours gardés, aucune décision produit ne fixe un autre horizon (D46, D49, D147, D227) ; défaut 2 : LOGIN_PATH gardé contre le fichier de la page, FR et AR ; défaut 3 : l'API enfreignait le contrat écrit (JSON), elle émet le JSON null ; l'intégration tolérante remplacée par l'octet exact ; chaque spec e2e rouge lue avant, verte après ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 41 · 1) ; neutralize-r25.py 11 gardes mordues sur 11, toutes lues (lecteur réparé trois fois, calibré à 10 bras, rejeux intégraux) ; captures d'après correctif à côté de celles de D315 ; lecture adverse de D315 : 67 contrôles, 0 écart, six outils rejoués à l'octet ; compteur ZÉRO → UN ; suite : RANG 26, EN ATTENTE D'ARBITRAGE DE KO |
+| D317 | A | D317 — rang 26 ARBITRÉ PAR KO (première écriture : « le parcours de réservation joué de bout en bout en e2e — le client envoie sa demande, le pro la voit, l'accepte ou la refuse, le client voit le résultat ; lot de tests ») et CLOS ; décisions du relecteur (chat), déléguées par Ko, écrites avec leur motif avant tout code : les 182 boutons de date ne sont pas du chemin de l'argent (« c'est la présentation des choix », même borne que D316, correctif à ordonner par Ko) ; pendant la pause, un test qui exerce le chemin sans le modifier est permis (un défaut révélé se rapporte) ; étape 1 : l'API de l'e2e recompilait et redémarrait sur toute ÉCRITURE d'un fichier de son programme (apps/api/src, packages/types/src, packages/i18n/messages), jamais sur une lecture — mesuré par un observateur tsc qui nomme le déclencheur puis sur le serveur de l'e2e lui-même (rouge 21 + 23 sondes en ECONNREFUSED, vert 0) ; hypothèse confirmée pour son mécanisme, origine des fenêtres de D316 non identifiée ; correctif dans la seule configuration e2e (nest start, compilée une fois) ; étape 2 : r26-parcours-reservation.e2e.ts, acceptation et refus, assertions par rôles et libellés, deux bras par statut côté client, aucun attribut de test ; une étape cassée hors du chemin (fiche non préchauffée, 7,4 / 5,4 s → 1,7 / 1,7 s) réparée dans warmup.setup.ts ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 43 · 1) ; neutralize-r26.py 2 gardes mordues sur 2, lues, aucune cible du chemin de l'argent ; lecture adverse de D316 : 96 contrôles, 4 écarts (codes et durées de quatre portes, état machine et « relevé par horodatage » sans pièce ; sept extraits de passe-officielle venus du tri — rectification à côté des pièces), outils de D316 rejoués à l'octet ; compteur UN → DEUX, un troisième lot de code exigera une certification ; suite : RANG 27, EN ATTENTE D'ARBITRAGE DE KO |

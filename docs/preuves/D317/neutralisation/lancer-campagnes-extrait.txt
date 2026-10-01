@@ -1,0 +1,5 @@
+# extrait de .neutralisation-journaux/d317/lancer-campagnes.log · sha256 du journal complet f74e2a3d74683a1913852c44005f725c1ca88bd70e876d53bb07860d5b4a32d1 · 4 lignes parcourues · 0 « [WebServer] » retirées · 4 gardées
+24 fichier(s) modifié(s) depuis HEAD → 0 campagne(s) concernée(s) sur 30.
+  (aucune — mais ce n'est PAS une preuve de livraison :
+   avant de livrer, relancer avec --tout.)
+code=0 durée=0s début=12:21:34
