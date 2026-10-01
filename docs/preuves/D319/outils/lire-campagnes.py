@@ -267,7 +267,14 @@ for nom, r in HARNAIS.items():
     t = lire(j)
     lignes, ok_, ko_ = verdicts(t)
     nmes = non_mesurees(t)
-    cro = crochets(nom, t) if sum(r["mesures"].values()) > 0 else None
+    # [D319] DÉFAUT D'INSTRUMENT TROUVÉ EN LISANT CETTE PASSE, CORRIGÉ ICI (D298) : `crochets()` exige qu'une
+    # ligne « ✓ » se termine par « [mesure1, mesure2] » — la convention des harnais VITEST d'origine. `r25`
+    # porte bien une mesure « int-compte » (donc `sum(mesures.values()) > 0`), mais son détail par cible vit
+    # sur la ligne SUIVANTE (« ancre … · passés … »), JAMAIS en crochets — vérifié sur `int-r25.log` de CETTE
+    # passe : une seule occurrence de « [ » dans tout le fichier, hors d'une ligne de verdict. Sans cette
+    # exclusion, ses 11 cibles, pourtant mordues et LUES, étaient rejetées par un contrôle qui ne les concerne
+    # pas — pas une preuve que la mesure a manqué.
+    cro = crochets(nom, t) if sum(r["mesures"].values()) > 0 and nom != "r25" else None
     dem, comment = demarrage(nom, duree, lu.get(nom))
     compte = (len(lignes) == r["n"] and ko_ == 0 and nmes == 0 and code == "0"
               and (cro is None or cro[0] == r["n"]) and dem)

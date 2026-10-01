@@ -1,0 +1,15 @@
+$ pnpm --filter @zwadj/api exec vitest run src/venues/venues-public.service.spec.ts -t SINGLE_SLOT
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/venues/venues-public.service.spec.ts (25 tests | 24 skipped) 7ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 24 skipped (25)
+   Start at  02:16:48
+   Duration  1.85s (transform 340ms, setup 0ms, collect 1.19s, tests 7ms, environment 0ms, prepare 230ms)
+
+
+--- stderr ---
+
+--- code de sortie : 0 ---

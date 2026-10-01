@@ -1,0 +1,65 @@
+01/10/2026 01:56:05 PASSE r27a-20261001-0155 — HEAD attendu 91e0922adb5af13fa69f543db12cf5d90e3bea68
+01/10/2026 01:56:05    harnais VERROUILLÉS (--int), dérivés de l'AST : ['e3d1-s8', 'r25', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s6']
+01/10/2026 01:56:05    harnais E2E-VERROUILLÉS (--e2e), dérivés par recherche littérale : ['r25', 'r26']
+01/10/2026 01:56:06    pg_isready (ouverture) : code 0
+01/10/2026 01:56:06    ports 3100/3101/5273 à l'écoute : 0 (attendu 0)
+01/10/2026 01:57:04    sonde ouverture-1 : RAM 5546 (bande 5504-5572, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · calibration ✓
+01/10/2026 01:57:39    sonde ouverture-2 : RAM 5570.5 (bande 5556-5579, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 01:57:39 ✓ PORTE DURE VERTE sur les deux relevés
+01/10/2026 01:57:39    échantillonneur lancé (PID 33144), -Intervalle 30 — AUCUN lecteur pendant la fenêtre
+01/10/2026 01:57:39    arbre-1 : HEAD 91e0922 (attendu 91e0922) · 0 ligne(s) de statut (attendu 0)
+01/10/2026 01:58:15    sonde avant-typecheck : RAM 5523 (bande 5515-5542, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 01:58:32    typecheck : code 0, 17 s
+01/10/2026 01:59:07    sonde avant-lint : RAM 5549 (bande 5532-5562, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 01:59:20    lint : code 0, 13 s
+01/10/2026 01:59:55    sonde avant-test : RAM 5549 (bande 5539-5559, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 02:01:00    test : code 0, 65 s
+01/10/2026 02:01:35    sonde avant-build : RAM 5508.5 (bande 5478-5525, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 02:02:16    build : code 0, 41 s
+01/10/2026 02:02:51    sonde avant-testint : RAM 5469.5 (bande 5422-5502, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 02:02:51    pg_isready (avant-testint) : code 0
+01/10/2026 02:07:23    testint : code 0, 272 s
+01/10/2026 02:07:58    sonde avant-e2e : RAM 5496 (bande 5490-5508, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 02:07:58    avant e2e : node 0 (attendu 0) · ports à l'écoute 0 (attendu 0)
+01/10/2026 02:07:58    pg_isready (avant-e2e) : code 0
+01/10/2026 02:10:17    e2e : code 0, 138 s
+01/10/2026 02:10:52    sonde apres-e2e : RAM 5397.5 (bande 5381-5429, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 02:10:52    après e2e : node 0 · ports à l'écoute 0
+01/10/2026 02:10:52    arbre-2 : HEAD 91e0922 (attendu 91e0922) · 0 ligne(s) de statut (attendu 0)
+01/10/2026 02:11:27    sonde avant-campagnes : RAM 5421.5 (bande 5416-5438, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 02:59:48    campagnes-tout : code 1, 2901 s
+01/10/2026 02:59:48    journaux de campagne copiés à l'identique : 75 sur 75 · antérieurs au début de --tout : 0 (attendu 0)
+01/10/2026 02:59:48    arbre-3 : HEAD 91e0922 (attendu 91e0922) · 0 ligne(s) de statut (attendu 0)
+01/10/2026 03:00:23    sonde avant-int-e3d1-s8 : RAM 5439.5 (bande 5410-5446, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:00:24    pg_isready (int-e3d1-s8) : code 0
+01/10/2026 03:01:43    int-e3d1-s8 : code 0, 80 s
+01/10/2026 03:02:18    sonde avant-int-r25 : RAM 5307.5 (bande 5264-5325, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:02:18    pg_isready (int-r25) : code 0
+01/10/2026 03:10:11    int-r25 : code 0, 473 s
+01/10/2026 03:10:46    sonde avant-int-s11b : RAM 5315 (bande 5284-5324, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:10:47    pg_isready (int-s11b) : code 0
+01/10/2026 03:15:02    int-s11b : code 0, 255 s
+01/10/2026 03:15:37    sonde avant-int-solid-s1 : RAM 5376.5 (bande 5369-5387, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:15:37    pg_isready (int-solid-s1) : code 0
+01/10/2026 03:19:24    int-solid-s1 : code 0, 227 s
+01/10/2026 03:19:59    sonde avant-int-solid-s2 : RAM 5343 (bande 5324-5358, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:19:59    pg_isready (int-solid-s2) : code 0
+01/10/2026 03:23:50    int-solid-s2 : code 0, 231 s
+01/10/2026 03:24:25    sonde avant-int-solid-s3 : RAM 5394.5 (bande 5375-5413, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:24:26    pg_isready (int-solid-s3) : code 0
+01/10/2026 03:29:30    int-solid-s3 : code 0, 304 s
+01/10/2026 03:30:05    sonde avant-int-solid-s6 : RAM 5389.5 (bande 5364-5404, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:30:05    pg_isready (int-solid-s6) : code 0
+01/10/2026 03:34:05    int-solid-s6 : code 0, 240 s
+01/10/2026 03:34:05    arbre-4 : HEAD 91e0922 (attendu 91e0922) · 0 ligne(s) de statut (attendu 0)
+01/10/2026 03:34:41    sonde avant-e2e-r26 : RAM 5289 (bande 5254-5296, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:34:41    pg_isready (e2e-r26) : code 0
+01/10/2026 03:38:40    e2e-r26 : code 0, 239 s
+01/10/2026 03:39:15    sonde apres-e2e-r26 : RAM 5274 (bande 5247-5288, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:39:15    arbre-5 : HEAD 91e0922 (attendu 91e0922) · 0 ligne(s) de statut (attendu 0)
+01/10/2026 03:39:18    contre-epreuve : code 0, 3 s
+01/10/2026 03:39:18    arbre-6 : HEAD 91e0922 (attendu 91e0922) · 0 ligne(s) de statut (attendu 0)
+01/10/2026 03:39:53    sonde cloture : RAM 5285 (bande 5279-5293, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+01/10/2026 03:39:53    échantillonneur arrêté
+01/10/2026 03:39:53    -Resume : code 0
+01/10/2026 03:39:53 CLÔTURE ATTEINTE — la lecture se fait APRÈS, sur les journaux de ce dossier

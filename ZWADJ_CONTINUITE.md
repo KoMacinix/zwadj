@@ -1362,6 +1362,16 @@ arbitrage de Ko et décision du relecteur, écrits avant toute mesure — métho
 certification** : si elle passe, le compteur revient à **ZÉRO** et le rang 27 se clôt ; si elle échoue, rien ne se clôt,
 l'échec est décrit, rien n'est corrigé, et le blocage revient à Ko (Ko). ⇒ **Où il en est** : section « PROCHAIN LOT —
 rang 27 » en tête de ce fichier.
+⛔ **(D319, 01/10/2026) RANG 27 — LA CERTIFICATION : MARQUE POSÉE, LE RANG 27 EST CLOS.** Protocole commité avant
+toute mesure (`91e0922`). Passe `r27a-20261001-0155` : six portes à 0 (1 334/109, 444/36, e2e 43 · 1), `--tout`
+30 · 205 · 0 · 19, `--int` ×7 = 51, `--e2e` ×1 = 2 ⇒ **224 · 0 · 0, 30 campagnes sur 30 qui comptent, point 12 tenu
+partout** ; étiquettes 12 · 26 · 81 · 105 ; contre-épreuve 5 sur 5 ; arbre immobile aux six contrôles — **exactement
+la prédiction**. Deux défauts d'instrument (pas de comportement) trouvés et corrigés en lisant : `crochets()`
+excluait `r25` à tort, `verser.py` aurait refusé un digest propre avec le journal brut ; les deux recalibrés,
+rejoués intégralement. **Marque** : « Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie ».
+⇒ **Compteur DEUX → ZÉRO.** ⇒ **Où il en est** : point d'entrée du rang 27, bloc de clôture ; section D319.
+⇒ **RANG 28 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à la **CLÔTURE** du rang 27,
+pour qu'aucune reprise ne tombe sur une liste qui s'arrête. ⚠ **Une permission n'est pas un arbitrage.**
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1449,7 +1459,23 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 27 · la certification qui couvre D316 et D317 ⛔ **OUVERT LE 01/10/2026 : D318 (partie A)**
+## ~~PROCHAIN LOT~~ — rang 27 · la certification qui couvre D316 et D317 ⛔ ~~**OUVERT LE 01/10/2026 : D318 (partie A)**~~ ⛔ **CLOS LE 01/10/2026 : D319**
+
+### ⛔ CLÔTURE DU 01/10/2026 (D319) — L'ÉTAT DU RANG, À LIRE EN PREMIER
+
+⛔ **ARBITRÉ PAR KO LE 01/10/2026, CLOS LE 01/10/2026, DANS LA MÊME SESSION.** ⇒ **QUEL lot : rang 27. OÙ IL EN
+EST : clos, ici.** Titre barré à la clôture ; ce bloc est son rafraîchissement de clôture (règle de D294).
+⇒ **La certification est PASSÉE** — passe `r27a-20261001-0155` sur `91e0922` : porte dure verte, six portes à 0
+(1 334/109, 444/36, e2e 43 · 1), `--tout` 30 · 205 · 0 · 19, `--int` ×7 = 51, `--e2e` ×1 (`r26`) = 2, certifiant
+**224 mordues · 0 muette · 0 non mesurée, 30 campagnes sur 30**, point 12 tenu partout (26 au-dessus de leur
+plancher, 4 LUES), étiquettes **12 · 26 · 81 · 105**, contre-épreuve 5 sur 5, arbre immobile aux six contrôles.
+⇒ **Deux défauts d'instrument trouvés et corrigés en lisant** (D298) : le filtre à crochets de `lire-campagnes.py`
+excluait à tort `r25` (détail par cible hors crochets) ; le filtre à sous-chaîne de `verser.py` aurait refusé
+`e2e-r26.log`, un digest propre, avec le journal brut. Les deux recalibrés, rejoués intégralement — détail :
+section D319.
+✅ **MARQUE** : « Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie ».
+⇒ **LOT DE TESTS ET LOT DOCUMENTAIRE CERTIFIÉS : COMPTEUR DEUX → ZÉRO.** ⇒ **RANG 28 : EN ATTENTE D'ARBITRAGE DE
+KO.** ⚠ Une permission n'est pas un arbitrage.
 
 ### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D318), AVANT toute mesure
 
@@ -1590,6 +1616,67 @@ relevé propre) ; les **sept** harnais qui lisent une partie de leur sortie (D30
 (bloc D313) ; et la profondeur MOINDRE de la preuve lue de `r25`/`r26` par rapport à celle d'`available-on-api`
 (déclarée ci-dessus, pas cachée).
 
+### ✅ RÉSULTAT (D319, 01/10/2026) — CERTIFICATION PASSÉE, MARQUE POSÉE, RANG 27 CLOS
+
+**Passe `r27a-20261001-0155`** (01:56:05 → 03:39:53, sur `91e0922`). **Dossier versé de SA passe** (point 11) :
+`docs/preuves/D319/passe-r27a-20261001-0155/` — noté **`P/`** dans la table ; **171 pièces** versées et RELUES
+identiques par SHA-256 (`outils/verser.py`, D319), journal e2e brut **refusé** (`e2e.log`, hors dépôt — `e2e-r26.log`
+et `int-r25.log`, vérifiés sans trace de sortie serveur ni jeton avant d'être versés, le SONT) ; **2** produites
+après le versement (extrait e2e, « 0 valeur réelle »). **Porte dure VERTE** aux deux relevés d'ouverture
+(`P/porte-dure.txt`) : RAM **5 546** (bande 5 504-5 572) puis **5 570,5** (5 556-5 579), barre imprimée **4 579**,
+`chrome` 0, `node` 0, SECTEUR, calibration ✓.
+
+| mesure | code RÉEL | chiffres (journaux relus en entier, ANSI retiré, lecteurs calibrés) | pièce de SA passe |
+|---|---|---|---|
+| `typecheck` | 0 | 8 « Done », 0 `error TS` | `P/typecheck.log`, `.code` |
+| `lint` | 0 | 8 « Done » | `P/lint.log` |
+| `test` | 0 | 664/58 · 39/4 · 308/22 · 347/28 = **1 334 / 109** | `P/test.log` |
+| `build` | 0 | 4 « Done » | `P/build.log` |
+| `test:int` | 0 | **444 / 36**, PostgreSQL réel | `P/testint.log` |
+| `test:e2e` | 0 | **43 passés · 1 ignoré** sur 44, journal brut refusé (point 9) | `P/e2e.code`, `P/e2e-EXTRAIT.txt` (1 225 lignes parcourues, attendu 1 225 ; 47 gardées ; 39 jetons source, 0 sortie) |
+| `--tout` | **1 (attendu)** | **30 campagnes · 205 mordues · 0 muette · 19 non mesurées**, 2 901 s ; 75 journaux de CETTE passe copiés, **0 antérieur** | `P/campagnes-tout.log`, `P/campagnes/`, `P/rang23/`, `P/available-on-api/` |
+| `--int` ×7 | 0 ×7 | `e3d1-s8` **8**, `r25` **11** (drapeaux combinés), `s11b` **13**, `solid-s1` **2**, `solid-s2` **5**, `solid-s3` **6**, `solid-s6` **6** = **51** | `P/int-*.log`, `.code`, `.heures` |
+| `--e2e` ×1 (`r26`) | 0 | **2** | `P/e2e-r26.log`, `.code`, `.heures` |
+| contre-épreuve de `audit-secrets.py` | 0 | pré-vol ✓ · **5 mordues sur 5** | `P/contre-epreuve.log` |
+| lecture de `rang23` | 0 | **13 mesures : MORSURES LUES 13 · DÉMARRÉES (passés + en échec > 0) 13** | `P/lecture-rang23.txt` |
+| lecture d'`available-on-api` | 0 | **30 journaux · 12 pré-vols · 0 écart** (lecteur de D312) | `P/lecture-available-on-api.txt` |
+| lecture des campagnes | 0 | **224 · 0 · 0, 30 campagnes sur 30 qui COMPTENT** ; point 12 : **26** au-dessus de leur plancher, **4** LUES (`rang23`, `available-on-api`, `r25`, `r26`) | `P/lecture-campagnes.txt` |
+| échantillonneur | 0 | **homogène** : 194 échantillons, 0 échec-instrument, 0 transition hors SECTEUR, écarts 31-34 s (0 au-delà de 60 s), `chrome` max 0 | `P/etat-resume.txt` |
+| « 0 valeur réelle » | 0 | 39 valeurs cherchées (journal e2e de la passe), **2 324 fichiers, 0 porteur** | `P/aucune-valeur-reelle.txt` |
+
+⇒ **EXACTEMENT LA PRÉDICTION DE L'ÉTAPE 0, CHIFFRE POUR CHIFFRE** — `--tout` 205/0/19 ; `--int` 51 ; `--e2e` 2 ;
+certifiant 224/0/0 ; étiquettes **12 · 26 · 81 · 105**. **Arbre immobile sur `91e0922` aux SIX contrôles**
+(`P/arbre-1.txt` à `P/arbre-6.txt`, un de plus qu'à D314 : l'étape 6b), 0 ligne à chacun.
+**« failed » confronté à son contexte (D275)** : `test`, **2** lignes de `ChargilyGateway` (panne exercée par sa
+spec) ; `test:int`, **1**, le nom d'un test vert (« la ligne passe FAILED ») — les mêmes qu'à D314 et D317.
+**Point 7 — 44 échantillons sous la barre** (min 2 966 Mo) : tous pendant `test:int`, l'e2e, `--tout` ou les rejeux
+`--int`/`--e2e`, `chrome` **0** à chacun, `node` 0 aux relevés qui encadrent ⇒ charge de la mesure, fenêtre **non
+disqualifiée** (motif de D310).
+
+⛔ **DEUX DÉFAUTS D'INSTRUMENT TROUVÉS EN LISANT CETTE PASSE, CORRIGÉS, REJEU INTÉGRAL (D298)** — aucun des deux
+n'a touché le COMPORTEMENT mesuré, les deux sont dans les outils écrits par cette session même :
+1. `lire-campagnes.py` (D319) exigeait, pour tout harnais à mesure d'intégration, un bracket `[mesure1, mesure2]`
+   en fin de ligne « ✓ » (convention des harnais vitest d'origine). `r25` porte une mesure d'intégration mais ne
+   l'écrit JAMAIS en crochets — son détail par cible vit sur la ligne SUIVANTE. Toutes ses 11 cibles, pourtant
+   mordues et LUES, étaient rejetées à tort (« 29 campagnes qui comptent sur 30 »). Vérifié sur `int-r25.log` de
+   CETTE passe avant de corriger (une seule occurrence de « [ » dans tout le fichier) : `crochets()` exclut
+   désormais `r25` par son nom, avec le motif écrit dans le code. Recalibré (7 bras sur 7, inchangé), **rejoué
+   intégralement** : 30 campagnes sur 30.
+2. `verser.py` (D319) excluait par SOUS-CHAÎNE (« e2e » dans le nom) : avec `e2e-r26.log` ajouté par cette
+   certification, DEUX fichiers auraient été refusés au lieu d'un. Vérifié avant de corriger : `e2e-r26.log` et
+   `int-r25.log` ne portent ni sortie de serveur ni jeton (grep ciblé, zéro occurrence). Le filtre exclut
+   désormais le nom EXACT `e2e.log`. Rejoué : 171 sur 171 versés et identiques.
+
+✅ **LA MARQUE, MOT POUR MOT** : « **Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie** ».
+⇒ **CE QUI SE CLÔT** (Ko) : **le rang 27** ; le compteur de lots de code non certifiés **revient à ZÉRO**.
+⚠ **Ce que la marque ne couvre pas** : la base de dev `zwadj` (non re-mesurée) ; aucune durée certifiée (le
+plancher est un seuil de démarrage, pas une comparaison) ; les processus étrangers autres que `chrome` pendant la
+fenêtre ; la contre-épreuve sans relevé propre ; les **81** morsures « non prouvées (R1) » et les **105** « non
+classées » — leur poids attend R1, en pause, dernier rang de l'ordre (D318) ; la profondeur de preuve de `r25`/
+`r26`, moindre que celle d'`available-on-api` (déclarée à l'étape 0) ; aucun défaut du chemin de l'argent n'a été
+cherché au-delà de ce que D316/D317 avaient déjà exercé — cette certification confirme les PORTES, elle ne reprend
+pas le chemin de l'argent, toujours en pause.
+
 ## Session du 01/10/2026 — D318 · rang 27 (partie A, documentaire, forme allégée) : arbitrages de Ko (page
 d'administration, ordre de reprise du chemin de l'argent) et décision du relecteur (neutralisation permise pendant la
 pause)
@@ -1639,6 +1726,79 @@ Et : l'ordre des rangs (arbitrage du rang 27, ligne D318) ; le registre.
 - **Aucune page d'administration, aucun cadrage de son périmètre.** L'arbitrage de Ko ouvre un lot FUTUR, distinct.
 - **Aucune neutralisation de `r26` n'a été faite ni commencée** : la décision du relecteur la rend possible, Ko doit
   encore l'ordonner.
+
+## Session du 01/10/2026 — D319 · rang 27 (partie B) CLOS : LA CERTIFICATION PASSE — plancher réutilisé pour 26
+harnais inchangés, preuve lue étendue à `r25`/`r26`, deux défauts d'instrument trouvés et corrigés en lisant
+
+### D319 — ce que la mesure a appris, au-delà de la prédiction
+
+- **Le réemploi du plancher de D314 tenait** : `git diff --name-only 0057748 HEAD -- neutralisation/` rendait
+  exactement deux fichiers avant la passe (`r25`, `r26`) ; la passe l'a confirmé en pratique — les 26 durées
+  mesurées sont toutes largement au-dessus de leur plancher (le plus serré : `e3d1-s8`, 80 s contre 8,4 s).
+- **`crochets()` ne généralise pas à tout format de verdict.** Écrite pour les harnais vitest d'origine (un
+  « ✓ <cible> [mesure1, mesure2] » sur UNE ligne), elle a d'abord rejeté les 11 cibles de `r25` — pourtant mordues
+  et LUES — parce que son détail par cible vit sur la ligne SUIVANTE, sans crochets du tout. Vue au premier rejeu
+  de `lire-campagnes.py` sur la vraie passe (« 29 campagnes qui comptent sur 30 »), pas en calibrant : ma
+  calibration à deux bras neufs (positif/négatif sur `collecte`) ne couvrait que `lecture_directe`, jamais
+  `crochets()` — un angle mort de ma propre calibration, qu'une passe réelle a rattrapé. Corrigée (exclusion de
+  `r25`, motif écrit dans le code), recalibrée (7 sur 7, inchangé), **rejouée intégralement** (D298) : 30 sur 30.
+- **Un filtre par sous-chaîne attrape plus que ce qu'il visait.** Le `"e2e" in n` de `verser.py` (D314) visait le
+  SEUL fichier qui portait ce nom à l'époque (`e2e.log`, le journal brut). Avec `e2e-r26.log` (un digest produit
+  par le harnais lui-même, aussi propre que les autres), le même filtre aurait refusé DEUX fichiers au lieu d'un —
+  dont un qui n'a rien de dangereux. Vérifié avant de corriger (grep ciblé sur les deux nouveaux fichiers, zéro
+  trace de sortie serveur ou de jeton), puis le filtre resserré au nom EXACT.
+- **Aucun des deux défauts n'a changé un seul chiffre du COMPORTEMENT mesuré** (D298) : les 224 cibles, les six
+  portes, la contre-épreuve étaient déjà ce qu'elles sont avant la correction — seule la LECTURE de deux d'entre
+  elles (le compte de campagnes qui comptent, le compte de pièces versées) était fautive.
+
+### D319 — passe D277, les deux sens
+
+**Sens 1 — ce que D319 invalide** : « rang 27 : en attente d'arbitrage de Ko » (ordre des rangs, bloc de la pause,
+point d'entrée du rang 26 — **annotés**, jamais réécrits) ; « compteur DEUX » couru depuis D317/D318 (ordre des
+rangs, `AGENTS.md`, point d'entrée du rang 26 — **annotés**) ; le backlog `[DOC][P3]` sur le paragraphe déplacé
+(une occurrence de plus, **annotée**).
+**Sens 2 — ce que D319 rend permis** : compteur **ZÉRO** ⇒ un lot de code **PEUT** s'ouvrir dès que Ko arbitre le
+rang 28 — **hors du chemin de l'argent**, qui reste en pause (D307 ; aucune décision n'en a levé le blocage, et
+l'arbitrage de Ko sur l'ordre de reprise, D318, confirme qu'elle reste le DERNIER rang de l'ordre, pas le prochain).
+
+### D319 — audit de secrets avant commit — écrit APRÈS l'audit
+
+1. **« 0 valeur réelle »** : contrôle dédié joué sur le journal e2e BRUT de la passe (`e2e.log`, 39 valeurs
+   trouvées dans sa propre source, calibration positive confirmée) contre `docs/preuves/`, `neutralisation/` et
+   les `.md` d'autorité — **2 324 fichiers, 0 porteur**. Complété par une vérification manuelle ciblée sur
+   `int-r25.log` et `e2e-r26.log` (motifs usuels : jeton, cookie, mot de passe, sortie `[WebServer]`) — 0
+   occurrence dans les deux, avant de les verser.
+2. **Passe** (`audit-secrets-resultat.txt`, scellée) : **150** contextes. Tri différentiel contre `D318/
+   audit-secrets-final.txt` (148) : **2** alertes nouvelles, triées au contexte avant le commit — un motif de
+   recherche cité dans le docstring de `verser.py` (« token= », jamais une valeur), une ligne déjà présente dans
+   106 fichiers suivis hors `docs/preuves/` (un libellé de test constant, déjà vu identique dans D317).
+3. **Audit final**, dernière écriture (`audit-secrets-final.txt`, scellé) : **150** contextes, identiques au point
+   2 — 0 alerte de plus.
+
+### ⛔ D319 — FAUTES DE MÉTHODE DE LA SESSION, À MON COMPTE
+
+1. ⚠ **DEUX DÉFAUTS DANS LES INSTRUMENTS QUE J'AI ÉCRITS POUR CETTE CERTIFICATION, TROUVÉS SEULEMENT EN LES
+   FAISANT LIRE LA VRAIE PASSE** — pas en calibrant (détail : « D319 — ce que la mesure a appris », ci-dessus).
+   Ma calibration à deux bras neufs était réelle mais **incomplète** : elle prouvait que `lecture_directe` sait
+   distinguer un démarrage d'un non-démarrage, elle ne disait rien de `crochets()`, que je réutilisais sans
+   re-questionner son hypothèse de format. **Une calibration qui ne couvre qu'une partie du chemin de lecture
+   laisse l'autre partie non calibrée**, même quand le total déclaré « 7 bras » donne l'impression du contraire.
+2. ⚠ **LE PROTOCOLE COMMITÉ AVANT MESURE DÉCLARAIT `verser.py` « réutilisé directement... non retouché »** — faux
+   dès la première exécution réelle. L'erreur venait d'avoir vérifié la RÉUTILISABILITÉ de `declarees.py`,
+   `lire-rang23.py` et `lire-aoa.py` (dont aucun ne regarde les noms de fichiers de la passe) sans vérifier la
+   MÊME question pour `verser.py`, dont le filtre EST un nom de fichier. **Une pièce réutilisée sans modification
+   déclarée se vérifie quand même contre ce qui a changé depuis**, pas seulement contre ce qui semble inchangé.
+
+### ⛔ D319 — CE QUE CE LOT NE FAIT PAS
+
+- **Ne classe aucune des 81 cibles « non prouvée (R1) » ni des 105 « non classée »** : R1 reste en pause, premier
+  lot de la reprise (D307, D318).
+- **Ne rouvre aucun lot de code du chemin de l'argent** : la certification confirme les portes et les deux lots
+  qu'elle couvre (D316, D317), elle ne reprend pas le chemin de l'argent.
+- **Ne cadre pas la page d'administration** ni les quatre points nommés par Ko à ouvrir un par un (F7, gestion
+  des devis, expiration des demandes, B:728) : tous restent dus à un arbitrage de Ko.
+- **N'exécute aucune neutralisation côté client de `r26`** : permise par la décision du relecteur (D318), jamais
+  ordonnée par Ko dans cette session.
 
 ## ~~PROCHAIN LOT~~ — rang 26 · `[TEST]` **le parcours de réservation joué de bout en bout** ⛔ ~~**OUVERT LE 27/09/2026 : D317**~~ ⛔ **CLOS LE 01/10/2026 : D317**
 
@@ -1760,6 +1920,8 @@ captures d'après correctif à côté de celles de D315. Détail, fautes, limite
 ⚠ **Une permission n'est pas un arbitrage.**
 ⛔ *(D317, 27/09/2026 : rang 26 **arbitré par Ko** — le parcours de réservation en e2e, lot de tests, **clos le 01/10/2026** ;
 compteur **DEUX** ; rang 27 en attente ; point d'entrée du rang 26.)*
+⛔ *(D319, 01/10/2026 : rang 27 **arbitré par Ko puis CLOS le même jour** — la certification qui couvre D316 et D317,
+PASSÉE ; compteur **DEUX → ZÉRO** ; rang 28 en attente d'arbitrage de Ko ; point d'entrée du rang 27.)*
 
 ### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D316), AVANT toute ligne de code
 
@@ -1924,7 +2086,14 @@ reste en pause.)* ⛔ *(D316, 27/09/2026 — passe D277 : rang 25 **arbitré par
 (décision du relecteur), clos ; **compteur UN** ; la pause du chemin de l'argent **continue** ; ~~**rang 26 : en attente
 d'arbitrage de Ko**~~.)* ⛔ *(D317, 27/09/2026 — passe D277 : rang 26 **arbitré par Ko — lot de tests** (le parcours de
 réservation en e2e ; il EXERCE le chemin de l'argent sans le modifier, décision 2 du relecteur), clos ; **compteur DEUX** —
-aucun lot de code avant une certification ; la pause **continue** ; **rang 27 : en attente d'arbitrage de Ko**.)*
+aucun lot de code avant une certification ; la pause **continue** ; ~~**rang 27 : en attente d'arbitrage de Ko**~~.)*
+⛔ *(D318, 01/10/2026 — passe D277 : rang 27 **arbitré par Ko — « la certification qui couvre D316 et D317 »**, partie A
+documentaire (arbitrages de Ko sur la page d'administration et l'ordre de reprise du chemin de l'argent, décision du
+relecteur sur la neutralisation permise pendant la pause) ; **compteur DEUX, inchangé** — aucun lot de code avant la
+certification ; la pause **continue** ; suite : la certification (partie B).)*
+⛔ *(D319, 01/10/2026 — passe D277 : **la certification est PASSÉE, le rang 27 est CLOS, compteur DEUX → ZÉRO** ⇒ un lot de
+code **PEUT** s'ouvrir — dès que Ko arbitre le rang 28, et **hors du chemin de l'argent**, toujours en pause (D307 ; aucune
+décision n'a levé la pause). **RANG 28 : EN ATTENTE D'ARBITRAGE DE KO.**)*
 ⇒ **La passe `r23d-20260926-1434`** (sur `0057748`) : porte dure verte ; six portes à 0 (**1 334 / 109**, **443 / 36**, e2e
 **34 · 1**) ; `--tout` **28 · 198 · 0 · 13** ; `--int` **40** ; **certifiant 211 · 0 · 0, 28 campagnes sur 28 qui comptent,
 point 12 tenu partout** ; étiquettes **12 · 13 · 81 · 105** ; contre-épreuve **5 sur 5** ; arbre immobile aux cinq contrôles ;
@@ -16523,3 +16692,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D316 | A | D316 — rang 25 ARBITRÉ PAR KO (première écriture : « réparer les trois défauts vus par D315 — la demande de réservation qui ne part pas, le lien de connexion en 404, la suppression de compte en erreur ; chacun prouvé par une spec e2e rouge avant le correctif, verte après ; lot de code ») et CLOS, LOT DE CODE ; décision du relecteur (chat), déléguée par Ko, écrite avant tout code : les défauts 1 et 2 ne sont pas du chemin de l'argent — « un changement relève du chemin de l'argent par sa fonction, branches (1) à (6), pas parce que son fichier figure sur la carte » — borne tenue (ni l'aperçu d'acompte ni le transport de la date) ; modes de défaillance écrits au point d'entrée avant les specs ; défaut 1 : fenêtre de six mois découpée en fenêtres que le contrat accepte (module pur availability-windows.ts, borne importée, tout ou rien, jours transmis tels que rendus), échec de chargement jamais « aucune date » (inversion écrite de la garde de forme), double de fetch qui applique le schéma du contrat ; 182 jours gardés, aucune décision produit ne fixe un autre horizon (D46, D49, D147, D227) ; défaut 2 : LOGIN_PATH gardé contre le fichier de la page, FR et AR ; défaut 3 : l'API enfreignait le contrat écrit (JSON), elle émet le JSON null ; l'intégration tolérante remplacée par l'octet exact ; chaque spec e2e rouge lue avant, verte après ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 41 · 1) ; neutralize-r25.py 11 gardes mordues sur 11, toutes lues (lecteur réparé trois fois, calibré à 10 bras, rejeux intégraux) ; captures d'après correctif à côté de celles de D315 ; lecture adverse de D315 : 67 contrôles, 0 écart, six outils rejoués à l'octet ; compteur ZÉRO → UN ; suite : RANG 26, EN ATTENTE D'ARBITRAGE DE KO |
 | D317 | A | D317 — rang 26 ARBITRÉ PAR KO (première écriture : « le parcours de réservation joué de bout en bout en e2e — le client envoie sa demande, le pro la voit, l'accepte ou la refuse, le client voit le résultat ; lot de tests ») et CLOS ; décisions du relecteur (chat), déléguées par Ko, écrites avec leur motif avant tout code : les 182 boutons de date ne sont pas du chemin de l'argent (« c'est la présentation des choix », même borne que D316, correctif à ordonner par Ko) ; pendant la pause, un test qui exerce le chemin sans le modifier est permis (un défaut révélé se rapporte) ; étape 1 : l'API de l'e2e recompilait et redémarrait sur toute ÉCRITURE d'un fichier de son programme (apps/api/src, packages/types/src, packages/i18n/messages), jamais sur une lecture — mesuré par un observateur tsc qui nomme le déclencheur puis sur le serveur de l'e2e lui-même (rouge 21 + 23 sondes en ECONNREFUSED, vert 0) ; hypothèse confirmée pour son mécanisme, origine des fenêtres de D316 non identifiée ; correctif dans la seule configuration e2e (nest start, compilée une fois) ; étape 2 : r26-parcours-reservation.e2e.ts, acceptation et refus, assertions par rôles et libellés, deux bras par statut côté client, aucun attribut de test ; une étape cassée hors du chemin (fiche non préchauffée, 7,4 / 5,4 s → 1,7 / 1,7 s) réparée dans warmup.setup.ts ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 43 · 1) ; neutralize-r26.py 2 gardes mordues sur 2, lues, aucune cible du chemin de l'argent ; lecture adverse de D316 : 96 contrôles, 4 écarts (codes et durées de quatre portes, état machine et « relevé par horodatage » sans pièce ; sept extraits de passe-officielle venus du tri — rectification à côté des pièces), outils de D316 rejoués à l'octet ; compteur UN → DEUX, un troisième lot de code exigera une certification ; suite : RANG 27, EN ATTENTE D'ARBITRAGE DE KO |
 | D318 | A | D318 — rang 27 ARBITRÉ PAR KO (première écriture : « la certification qui couvre D316 et D317 »), partie A, lot DOCUMENTAIRE (forme allégée) : arbitrage de Ko sur une page d'administration (révise la décision produit n°4, annotée et non réécrite ; périmètre, emplacement et premier compte admin dus à un lot de cadrage futur) ; arbitrage de Ko sur l'ordre de reprise du chemin de l'argent (R1→23b→23c→E3 devient le DERNIER rang de l'ordre ; F7, gestion des devis, expiration des demandes, B:728 ouverts un par un sous arbitrage de Ko) ; décision du relecteur (chat), déléguée par Ko : pendant la pause, une neutralisation de mesure du chemin de l'argent qui se restaure (restauration prouvée) est permise, non un changement — conséquence : la neutralisation côté client des assertions de r26 (dont la branche 6) est permise, à ordonner par Ko ; aucune cross-référence ferme écrite entre les quatre points nommés et le backlog (candidats repérés, non affirmés) ; compteur DEUX inchangé ; suite : la certification (partie B), qui clôt le rang 27 si elle passe |
+| D319 | A | D319 — rang 27 CLOS, CERTIFICATION PASSÉE, MARQUE POSÉE : étape 0 commitée avant le relevé (`91e0922`) — réutilise le plancher de D314 pour 26 harnais inchangés (vérifié par git diff depuis `0057748`), preuve LUE directe neuve pour `r25`/`r26` (calibration embarquée + collecte par cible, deux bras de calibration ajoutés, 7 sur 7) ; passe `r27a-20261001-0155` : six portes à 0 (1 334/109, 444/36, e2e 43 · 1), `--tout` 30 · 205 · 0 · 19, `--int` ×7 = 51 (`r25` par les deux drapeaux combinés), `--e2e` ×1 (`r26`) = 2 ⇒ 224 mordues · 0 muette · 0 non mesurée, 30 campagnes sur 30, point 12 tenu partout, étiquettes 12 · 26 · 81 · 105, contre-épreuve 5/5, arbre immobile aux six contrôles — exactement la prédiction ; deux défauts d'instrument trouvés et corrigés EN LISANT (D298) : `crochets()` de `lire-campagnes.py` excluait `r25` à tort (son détail par cible n'est jamais en crochets), `verser.py` aurait refusé le digest propre `e2e-r26.log` avec le journal brut par un filtre en sous-chaîne — les deux recalibrés et rejoués intégralement, aucun comportement mesuré n'a changé ; marque « Portes vertes AU REPOS le 01/10/2026, et D316 et D317 en font partie » ; compteur DEUX → ZÉRO ; audit de secrets 150 contextes aux deux passes scellées, 2 alertes nouvelles triées au contexte (bénignes : un motif de recherche cité dans un docstring, une valeur déjà vue 106 fois ailleurs) ; suite : RANG 28, EN ATTENTE D'ARBITRAGE DE KO |

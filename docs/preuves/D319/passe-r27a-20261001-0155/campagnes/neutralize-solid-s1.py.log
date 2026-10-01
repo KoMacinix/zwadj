@@ -1,0 +1,10 @@
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, `locks()` et le WHERE du calendrier restent NON PROUVÉS.
+
+✓ Pré-vol : 2 mesure(s) verte(s) avant mutation — pro, api
+
+✓ S1-1. ⚠ L'AUTORITÉ PARTAGÉE PERD `CONFIRMED` — les trois sites doivent le sentir  [pro, api]
+✓ S1-2. L'autorité perd `ACCEPTED` — la ligne verrouillée bascule du mauvais côté  [pro, api]
+
+2 garde(s) mordue(s) sur 2 cible(s) RÉELLEMENT MESURÉE(S).
+

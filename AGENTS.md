@@ -613,7 +613,12 @@ ZÉRO, inchangé** ; ~~**rang 25 : en attente d'arbitrage de Ko**~~.)*
 ~~**rang 26 : en attente d'arbitrage de Ko**~~.)*
 ⛔ *(D317, 27/09/2026 : rang 26 **arbitré par Ko — lot de tests, qui COMPTE** (le parcours de réservation en e2e) ; **compteur
 UN → DEUX** — Ko : « un troisième lot de code exigera une certification » ⇒ **aucun lot de code ne s'ouvre avant elle** ;
-**rang 27 : en attente d'arbitrage de Ko**.)*
+~~**rang 27 : en attente d'arbitrage de Ko**~~.)*
+⛔ *(D318, 01/10/2026 : rang 27 **arbitré par Ko — « la certification qui couvre D316 et D317 »**, partie A documentaire :
+arbitrages de Ko (page d'administration, ordre de reprise du chemin de l'argent) et décision du relecteur (neutralisation
+permise pendant la pause) ; lot documentaire, **compteur DEUX, inchangé** ; suite : la certification, partie B.)*
+⛔ *(D319, 01/10/2026 : **certification PASSÉE** — marque posée, D316 et D317 en font partie ; **compteur DEUX → ZÉRO** ;
+rang 27 clos ; le rang 28 attend l'arbitrage de Ko.)*
 
 ⛔ **UN LOT DOCUMENTAIRE NE COMPTE PAS DANS CES DEUX/TROIS — arbitré par Ko le 09/09/2026,
 et ÉCRIT ICI le 09/09/2026 (D283).** Motif de Ko : il ne touche aucun code et **ne peut

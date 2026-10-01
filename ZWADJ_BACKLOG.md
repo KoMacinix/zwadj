@@ -3399,7 +3399,8 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   non corrigé ; ce lot n'y touche pas)* ⛔ *(D316, 26/09/2026 : il suit désormais l'arbitrage du rang 25 et « RANG 26 : EN
   ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D317, 27/09/2026 : il suit
   désormais l'arbitrage du rang 26 et « RANG 27 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot
-  n'y touche pas)* et **se lit comme
+  n'y touche pas)* ⛔ *(D319, 01/10/2026 : il suit désormais la clôture du rang 27 et « RANG 28 : EN ATTENTE
+  D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

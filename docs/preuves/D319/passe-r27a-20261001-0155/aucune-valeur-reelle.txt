@@ -1,0 +1,3 @@
+✓ .neutralisation-journaux/r27a-20261001-0155/e2e.log : occurrences stricte 39 · large 39 (doivent s'accorder) · valeurs distinctes 39 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, .neutralisation-journaux/r27a-20261001-0155/e2e.log porte 39 valeur(s) (attendu ≥ 39)
+== valeurs cherchées : 39 (1 journal/journaux) · parcourus : 2325 fichiers, 26113598 octets · porteurs : 0 (attendu 0)
