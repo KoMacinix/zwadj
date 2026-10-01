@@ -164,7 +164,10 @@ Monorepo pnpm : `apps/api` (NestJS), `apps/client` (Next.js App Router, SSR), `a
 1. **Créneaux** : `SlotTemplate` personnalisables par salle, mode `single_slot`/`multi_slot`. Chevauchement autorisé entre demandes `pending`, interdit entre `accepted/confirmed` (contrainte BDD `EXCLUDE USING gist`).
 2. **Carte interactive** : reportée post-MVP, placeholder "Carte à venir/قريباً" sur Accueil + Recherche.
 3. **Redis** : reporté, pg-boss au MVP.
-4. **App Admin** : aucune, endpoints protégés + DBeaver.
+4. **App Admin** : aucune, endpoints protégés + DBeaver. ⛔ *(D318, 01/10/2026 : **révisée par arbitrage de Ko** — « Je
+   veux une page d'administration. » **Annotée, pas réécrite** : le reste de cette phrase décrivait l'état au MVP initial
+   et n'est plus l'intention produit. Périmètre, emplacement et création du premier compte admin : lot de CADRAGE à
+   venir, dû à l'arbitrage de Ko — aucun code n'est permis par cette annotation seule. Texte complet : section D318.)*
 5. **Paiement** : Chargily seul (agrège CIB+Edahabia), BaridiMob différé.
 6. ~~**Visite 360°** : une seule photo équirectangulaire par salle.~~ **SUPERSÉDÉE — voir D34.**
 7. **Cashback anti-fuite** : demande de réservation Zwadj obligatoire au préalable pour être éligible. Montants remplacés par **D35** (taux variable par salle). Toujours prélevé sur la commission de la salle, jamais sur les fonds Zwadj — D35 en fait une garantie mécanique.
@@ -1153,6 +1156,11 @@ les clés de test Chargily ce jour » — la partie Chargily de `[SEC][P0]` se f
 B), et la certification qui suivra. Le rang 23 se clôt à cette certification. » — « 23b (F2), 23c (F6), R1 et E3 passent
 au backlog avec pour bloquant “reprise du chemin de l'argent, pause décidée par Ko”. Leur reprise sera un rang que
 j'arbitrerai. » — « E3 attend sur cette pause, et non plus sur un compte. »
+⛔ *(D318, 01/10/2026 : Ko a fixé l'ORDRE de cette reprise — « Le paiement en ligne sera dans le produit ; il reste en
+pause et passe en tout dernier. » ⇒ **R1 → 23b → 23c → E3 forme le DERNIER rang de l'ordre**, pas seulement un groupe
+bloqué. « Les autres points du chemin de l'argent (F7, gestion des devis, expiration des demandes, B:728) s'ouvrent un
+par un quand je les arbitre, sous la méthode renforcée » — chacun un rang distinct, avant le dernier. Texte complet,
+motifs : `AGENTS.md`, point E3 ; section D318.)*
 ⇒ **ORDRE DU RANG 23 À COMPTER DU 25/09/2026 : 23a (codé, D305 ; session adverse, D306 ; comportement ACCEPTÉ par le
 relecteur, D307) → 23a-2 (C1 à C5 de D306 : code, second lot de 23a) → CERTIFICATION, qui CLÔT le rang 23.** R1, 23b, 23c :
 backlog, bloqués par la reprise. **Décisions du relecteur** (texte et motifs : méthode renforcée, bloc D307) : 23a
@@ -1340,8 +1348,20 @@ toujours vraie.**
 code exigera une certification » ⇒ **aucun lot de code, de quelque rang que ce soit, ne s'ouvre avant une certification** ;
 un lot documentaire, si (D283). Pendant la pause, un **test** qui exerce le chemin de l'argent sans le modifier est permis
 (décision 2) — une **neutralisation** de ce chemin, non (bloc D317).
-⇒ **RANG 27 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 26, sur
-consigne de Ko. ⚠ **Une permission n'est pas un arbitrage.**
+⇒ ~~**RANG 27 : EN ATTENTE D'ARBITRAGE DE KO** (D284), aucun candidat arbitré — écrit à l'**OUVERTURE** du rang 26, sur
+consigne de Ko.~~ ⛔ *(D318 : **arbitré par Ko le 01/10/2026** — ligne « ARBITRÉ LE 01/10/2026 PAR KO — le RANG 27 »
+ci-dessous.)* ⚠ **Une permission n'est pas un arbitrage.**
+⛔ **ARBITRÉ LE 01/10/2026 PAR KO — le RANG 27, mot pour mot : « Rang 27 : la certification qui couvre D316 et D317. »**
+Lot D318 (partie A, documentaire) ; la certification (partie B) prend son numéro au registre après celui-ci. ⛔ **C'est
+la PREMIÈRE écriture du lot, et l'ordre est de Ko** (patron de D295) : la session a reçu l'arbitrage, elle ne se l'est
+pas attribué.
+⇒ **Documentaire** (partie A : arbitrages de Ko sur la page d'administration et sur l'ordre de reprise du chemin de
+l'argent, décision du relecteur sur la neutralisation permise pendant la pause) : il ne compte pas dans les deux/trois
+(D283 amendé par D292) — **compteur de lots de code non certifiés : DEUX, inchangé.** ⇒ **Chemin de l'argent** :
+arbitrage de Ko et décision du relecteur, écrits avant toute mesure — méthode renforcée, bloc D318. ⇒ **Partie B, la
+certification** : si elle passe, le compteur revient à **ZÉRO** et le rang 27 se clôt ; si elle échoue, rien ne se clôt,
+l'échec est décrit, rien n'est corrigé, et le blocage revient à Ko (Ko). ⇒ **Où il en est** : section « PROCHAIN LOT —
+rang 27 » en tête de ce fichier.
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
@@ -1428,6 +1448,81 @@ porte redeviendra rouge, un matin, sans qu'une ligne ait bougé — et la procha
 session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ, pas
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
+
+## PROCHAIN LOT — rang 27 · la certification qui couvre D316 et D317 ⛔ **OUVERT LE 01/10/2026 : D318 (partie A)**
+
+### ⛔ L'ÉTAT DU RANG, À LIRE EN PREMIER — écrit à l'ouverture (D318), AVANT toute mesure
+
+⛔ **ARBITRÉ PAR KO LE 01/10/2026** — texte mot pour mot dans l'ordre des rangs (ligne « ARBITRÉ LE 01/10/2026 PAR KO —
+le RANG 27 »). ⇒ **QUEL lot : rang 27. OÙ IL EN EST : partie A faite (ce lot, D318) ; partie B (la certification) à
+suivre.** **Lot DOCUMENTAIRE** (D283 amendé par D292) : il ne compte pas dans les deux/trois — **compteur de lots de
+code non certifiés : DEUX, inchangé.** **SHA de départ : `a922537`** (`HEAD` = `origin/main` après `git fetch`, arbre
+propre).
+⛔ **Chemin de l'argent** — arbitrage de Ko et décision du relecteur (chat), déléguée par Ko, écrits avant toute
+mesure : méthode renforcée, bloc D318. L'arbitrage fixe l'ORDRE de la reprise du chemin de l'argent (R1 → 23b → 23c →
+E3, DERNIER rang de l'ordre ; F7, gestion des devis, expiration des demandes, B:728 ouverts un par un, chacun sous un
+arbitrage distinct de Ko) — il n'ouvre AUCUN lot de code du chemin de l'argent. La décision du relecteur permet,
+pendant la pause, une neutralisation de mesure du chemin de l'argent qui se restaure (restauration prouvée) ;
+conséquence nommée : la neutralisation côté client des assertions de `r26` (dont la branche 6, « Acceptée — acompte à
+régler ») est permise, mais reste **à ordonner par Ko** — ni faite ni entamée par ce lot.
+⛔ **Ce que ce lot ne touche pas** : aucune page d'administration n'est codée — l'arbitrage de Ko sur ce point révise la
+décision produit n°4 (annotée, pas réécrite) et renvoie à un lot de CADRAGE futur, dû à un arbitrage de Ko à venir.
+⇒ **La forme exigée par Ko** : partie A **courte** (ce lot, D318) ; partie B **en entier** — lecture adverse depuis la
+clôture de D317, étape 0 (planchers du point 12, mesurés avant tout commit de protocole), protocole commité avant toute
+mesure avec ses prédictions chiffrées, `--tout` + `--int` pour chaque harnais à cibles d'intégration + `--e2e` pour
+chaque harnais à cibles e2e (`r25`, `r26`, et tout autre trouvé), étiquettes de R1 comme à D314, pièces de SA passe
+(point 11). **Si la certification passe** : compteur → ZÉRO, rang 27 clos. **Si elle échoue** : rien ne se clôt,
+l'échec est décrit, rien n'est corrigé, le blocage revient à Ko.
+
+## Session du 01/10/2026 — D318 · rang 27 (partie A, documentaire, forme allégée) : arbitrages de Ko (page
+d'administration, ordre de reprise du chemin de l'argent) et décision du relecteur (neutralisation permise pendant la
+pause)
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D317** ⇒ **D318**. **SHA de départ : `a922537`**
+— `HEAD` = `origin/main` après `git fetch`, arbre propre. **Documentaire** (`AGENTS.md`, `ZWADJ_CONTINUITE.md` seuls —
+`ZWADJ_BACKLOG.md` non touché, Ko n'ayant nommé que trois endroits : ordre des rangs, bloc de la pause, point E3
+d'`AGENTS.md`) — **compteur de lots de code non certifiés : DEUX, inchangé** (D283 amendé par D292). **Aucune porte,
+aucune campagne** : aucun code n'a changé.
+
+### D318 — la reprise (forme allégée)
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | 26 **clos** (D317) ; dernière ligne « ⇒ RANG N » : « **RANG 27 : EN ATTENTE D'ARBITRAGE DE KO** » | point d'entrée du rang 26, ordre des rangs |
+| numéro | dernière ligne du registre : **D317** ⇒ **D318** | registre |
+| compteur | **DEUX** (D316, D317) — « un troisième lot de code exigera une certification » (Ko) | ordre des rangs, annotation sous le rang 27 |
+| synchronisation | `HEAD` = `origin/main` = `a922537` ; arbre propre | `git` |
+
+### D318 — partie A : ce qui a atterri, et où
+
+| arbitrage ou décision | fichier, endroit |
+|---|---|
+| **Ko a** — page d'administration, révise la décision produit n°4 | `ZWADJ_CONTINUITE.md`, « Les décisions produit tranchées », item 4 (annoté, pas réécrit) ; `AGENTS.md`, Stack, puce « Pas d'apps/admin au MVP » (annotée) |
+| **Ko b** — ordre de reprise du chemin de l'argent (R1→23b→23c→E3 dernier rang ; F7/gestion des devis/expiration des demandes/B:728 un par un) | ordre des rangs (bloc de la pause, annotation sous l'arbitrage de D307) ; `AGENTS.md`, point E3 |
+| **Relecteur** — neutralisation de mesure permise pendant la pause, conséquence sur `r26` | `AGENTS.md`, point E3 ; cette section |
+Et : l'ordre des rangs (arbitrage du rang 27, ligne D318) ; le registre.
+
+### D318 — audit de secrets avant commit — écrit APRÈS le premier audit, AVANT le dernier
+
+1. **« 0 valeur réelle »** : **sans objet** — aucun journal à valeurs réelles n'a été lu ni produit par ce lot (aucun
+   serveur, aucune e2e, aucune commande exécutant du code applicatif).
+2. **Passe** (`audit-secrets-d318.txt`, scellée) : **148** contextes — identique au compte de la dernière sortie
+   scellée (`D317/audit-secrets-final.txt`, 148). Tri différentiel (`docs/preuves/D299/outils/alertes-nouvelles.py`,
+   calibré deux bras) : **0** alerte nouvelle.
+3. **Audit final**, dernière écriture dans `docs/preuves/` : sa sortie versée fait foi ; cette phrase est écrite avant
+   lui.
+
+### D318 — ce que la session n'a pas fait, et pourquoi
+
+- **Aucune cross-référence ferme** entre les quatre points nommés par Ko (F7, gestion des devis, expiration des
+  demandes, B:728) et des entrées précises de `ZWADJ_BACKLOG.md`. La session a repéré des candidats plausibles —
+  `[API] audit SOLID 09/09 · F7` (notifications en arabe parties en français), `E3d-2 — expiration des PENDING`,
+  `ZWADJ_BACKLOG.md:728` (B4 doit dire au pro que le prix salle est écrasé par le premier créneau) — sans les écrire
+  comme établies : Ko nommera lui-même ces points à leur arbitrage, et une fausse correspondance coûterait plus qu'une
+  absence (D231 : vérifier la prémisse avant de coder la demande — ici, avant de l'écrire comme un fait).
+- **Aucune page d'administration, aucun cadrage de son périmètre.** L'arbitrage de Ko ouvre un lot FUTUR, distinct.
+- **Aucune neutralisation de `r26` n'a été faite ni commencée** : la décision du relecteur la rend possible, Ko doit
+  encore l'ordonner.
 
 ## ~~PROCHAIN LOT~~ — rang 26 · `[TEST]` **le parcours de réservation joué de bout en bout** ⛔ ~~**OUVERT LE 27/09/2026 : D317**~~ ⛔ **CLOS LE 01/10/2026 : D317**
 
@@ -16311,3 +16406,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D315 | A | D315 — rang 24 ARBITRÉ PAR KO (première écriture : « l'état du produit, parcours par parcours ; lot documentaire : l'état écrit et prouvé, sans classement ; l'ordre des lots suivants sera proposé par le relecteur et arbitré par moi ») et CLOS le même jour, lot DOCUMENTAIRE : pièce datée docs/preuves/D315/etat-produit/ (carte relevée dans le code — client 13 pages, pro 14 routes, API 78 routes / 22 contrôleurs, aucune route de paiement, aucun écran d'administration ; parcours client, pro, admin étape par étape, preuve au niveau dit, renvois, classe au chemin de l'argent ; 146 entrées ouvertes confrontées au code — 62 réalisées et ouvertes à tort ; décisions écrites non réalisées et décisions dues à Ko ; déploiement confronté au code ; coûts sans durée ni classement) ; 46 captures (3 184 910 octets) par un script qui réutilise la configuration e2e ; trois défauts vus sur les captures et MESURÉS — le panneau de demande ne propose aucune date (fenêtre 182 > 92, 400), son lien de connexion mène à une 404, la section de suppression de compte est en erreur dans les deux applications (200 vide) ; lecture adverse de D314 : 117 contrôles, un écart (balayage « après écriture » pris avant la dernière écriture ; rectification à côté des pièces), constat : même forme D311 à D314 ; compteur ZÉRO inchangé ; suite : RANG 25, EN ATTENTE D'ARBITRAGE DE KO |
 | D316 | A | D316 — rang 25 ARBITRÉ PAR KO (première écriture : « réparer les trois défauts vus par D315 — la demande de réservation qui ne part pas, le lien de connexion en 404, la suppression de compte en erreur ; chacun prouvé par une spec e2e rouge avant le correctif, verte après ; lot de code ») et CLOS, LOT DE CODE ; décision du relecteur (chat), déléguée par Ko, écrite avant tout code : les défauts 1 et 2 ne sont pas du chemin de l'argent — « un changement relève du chemin de l'argent par sa fonction, branches (1) à (6), pas parce que son fichier figure sur la carte » — borne tenue (ni l'aperçu d'acompte ni le transport de la date) ; modes de défaillance écrits au point d'entrée avant les specs ; défaut 1 : fenêtre de six mois découpée en fenêtres que le contrat accepte (module pur availability-windows.ts, borne importée, tout ou rien, jours transmis tels que rendus), échec de chargement jamais « aucune date » (inversion écrite de la garde de forme), double de fetch qui applique le schéma du contrat ; 182 jours gardés, aucune décision produit ne fixe un autre horizon (D46, D49, D147, D227) ; défaut 2 : LOGIN_PATH gardé contre le fichier de la page, FR et AR ; défaut 3 : l'API enfreignait le contrat écrit (JSON), elle émet le JSON null ; l'intégration tolérante remplacée par l'octet exact ; chaque spec e2e rouge lue avant, verte après ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 41 · 1) ; neutralize-r25.py 11 gardes mordues sur 11, toutes lues (lecteur réparé trois fois, calibré à 10 bras, rejeux intégraux) ; captures d'après correctif à côté de celles de D315 ; lecture adverse de D315 : 67 contrôles, 0 écart, six outils rejoués à l'octet ; compteur ZÉRO → UN ; suite : RANG 26, EN ATTENTE D'ARBITRAGE DE KO |
 | D317 | A | D317 — rang 26 ARBITRÉ PAR KO (première écriture : « le parcours de réservation joué de bout en bout en e2e — le client envoie sa demande, le pro la voit, l'accepte ou la refuse, le client voit le résultat ; lot de tests ») et CLOS ; décisions du relecteur (chat), déléguées par Ko, écrites avec leur motif avant tout code : les 182 boutons de date ne sont pas du chemin de l'argent (« c'est la présentation des choix », même borne que D316, correctif à ordonner par Ko) ; pendant la pause, un test qui exerce le chemin sans le modifier est permis (un défaut révélé se rapporte) ; étape 1 : l'API de l'e2e recompilait et redémarrait sur toute ÉCRITURE d'un fichier de son programme (apps/api/src, packages/types/src, packages/i18n/messages), jamais sur une lecture — mesuré par un observateur tsc qui nomme le déclencheur puis sur le serveur de l'e2e lui-même (rouge 21 + 23 sondes en ECONNREFUSED, vert 0) ; hypothèse confirmée pour son mécanisme, origine des fenêtres de D316 non identifiée ; correctif dans la seule configuration e2e (nest start, compilée une fois) ; étape 2 : r26-parcours-reservation.e2e.ts, acceptation et refus, assertions par rôles et libellés, deux bras par statut côté client, aucun attribut de test ; une étape cassée hors du chemin (fiche non préchauffée, 7,4 / 5,4 s → 1,7 / 1,7 s) réparée dans warmup.setup.ts ; portes à 0 (664/58, 39/4, 308/22, 347/28 ; test:int 444/36 ; e2e 43 · 1) ; neutralize-r26.py 2 gardes mordues sur 2, lues, aucune cible du chemin de l'argent ; lecture adverse de D316 : 96 contrôles, 4 écarts (codes et durées de quatre portes, état machine et « relevé par horodatage » sans pièce ; sept extraits de passe-officielle venus du tri — rectification à côté des pièces), outils de D316 rejoués à l'octet ; compteur UN → DEUX, un troisième lot de code exigera une certification ; suite : RANG 27, EN ATTENTE D'ARBITRAGE DE KO |
+| D318 | A | D318 — rang 27 ARBITRÉ PAR KO (première écriture : « la certification qui couvre D316 et D317 »), partie A, lot DOCUMENTAIRE (forme allégée) : arbitrage de Ko sur une page d'administration (révise la décision produit n°4, annotée et non réécrite ; périmètre, emplacement et premier compte admin dus à un lot de cadrage futur) ; arbitrage de Ko sur l'ordre de reprise du chemin de l'argent (R1→23b→23c→E3 devient le DERNIER rang de l'ordre ; F7, gestion des devis, expiration des demandes, B:728 ouverts un par un sous arbitrage de Ko) ; décision du relecteur (chat), déléguée par Ko : pendant la pause, une neutralisation de mesure du chemin de l'argent qui se restaure (restauration prouvée) est permise, non un changement — conséquence : la neutralisation côté client des assertions de r26 (dont la branche 6) est permise, à ordonner par Ko ; aucune cross-référence ferme écrite entre les quatre points nommés et le backlog (candidats repérés, non affirmés) ; compteur DEUX inchangé ; suite : la certification (partie B), qui clôt le rang 27 si elle passe |

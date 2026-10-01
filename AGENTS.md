@@ -10,7 +10,7 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 - Paiement : **Chargily uniquement au MVP** (agrège CIB + Edahabia ; BaridiMob différé, intégration séparée à évaluer plus tard).
 - i18n : **next-intl** côté apps/client (SSR), i18next côté apps/pro. packages/i18n contient messages + formatters, pas le runtime.
 - Validation : Zod (partagé front/back). Tests : Vitest (+ Playwright pour l'e2e).
-- **Pas d'apps/admin au MVP.** Validation/publication des salles via endpoints admin protégés + accès direct DB (DBeaver) en interne.
+- **Pas d'apps/admin au MVP.** Validation/publication des salles via endpoints admin protégés + accès direct DB (DBeaver) en interne. ⛔ *(D318, 01/10/2026 : **révisée par arbitrage de Ko** — « Je veux une page d'administration. » Décision produit n°4 ANNOTÉE, pas réécrite : `ZWADJ_CONTINUITE.md`, « Les décisions produit tranchées », item 4. Périmètre, emplacement et création du premier compte admin : lot de cadrage À VENIR, dû à l'arbitrage de Ko — rien n'est codé par cette phrase.)*
 
 ## Palette & design tokens
 - **Palette double, une par app** (pivot décidé après la tranche Auth — remplace l'ancien accent unique) :
@@ -974,6 +974,22 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     ajoute une garde, il ne change ni montant ni transition. Un défaut du chemin de l'argent qu'il révèle se rapporte ; il ne
     se corrige pas. » ⚠ *Dérivé par la session, pas une parole du relecteur* : une **neutralisation** modifie le code qu'elle
     vise — la décision ne la couvre pas ; le harnais du rang 26 ne mute **aucun** code du chemin de l'argent.
+- ⛔ **ARBITRAGES DE KO LE 01/10/2026 (D318) — L'ORDRE DE REPRISE DU CHEMIN DE L'ARGENT.** Mot pour mot : « Le paiement en
+  ligne sera dans le produit ; il reste en pause et passe en tout dernier. » ⇒ **La reprise du chemin de l'argent (R1, puis
+  23b, 23c, E3) forme le DERNIER rang de l'ordre.** « Les autres points du chemin de l'argent (F7, gestion des devis,
+  expiration des demandes, B:728) s'ouvrent un par un quand je les arbitre, sous la méthode renforcée. » ⚠ *Dérivé par la
+  session, pas une parole de Ko* : ces quatre points ne sont pas cross-référencés un à un ici — Ko les nommera lui-même à
+  leur arbitrage ; la session a seulement repéré des candidats plausibles au backlog (`[API] audit SOLID 09/09 · F7`,
+  `E3d-2 — expiration des PENDING`, `ZWADJ_BACKLOG.md:728`) sans les y lier par écrit, faute de certitude suffisante.
+  Texte complet, motifs : `ZWADJ_CONTINUITE.md`, section D318 ; ordre des rangs ; bloc de la pause (annotation sous
+  l'arbitrage de Ko de D307).
+- ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D318) — UNE NEUTRALISATION DE MESURE N'EST PAS UN
+  CHANGEMENT, MÊME PENDANT LA PAUSE.** « Pendant la pause, une NEUTRALISATION qui mute un comportement du chemin de
+  l'argent le temps d'une mesure, puis le restaure (restauration prouvée), est une mesure, pas un changement : elle est
+  permise. » *Motif* : « la pause arrête les changements du comportement de l'argent, pas la preuve de ses gardes. Une
+  garde sans preuve de morsure n'est qu'une moitié de garde. » ⇒ **Conséquence** : la neutralisation côté CLIENT des
+  assertions de `r26` (dont la branche 6, « Acceptée — acompte à régler »), que D317 avait laissée en question, est
+  **permise** — elle reste **à ordonner par Ko**, non faite par ce lot.
 - Ne pas copier le flux "instant-book" du prototype : toujours request-to-book.
 - ⛔ **NE JAMAIS LIVRER DU CODE DONT LA PROVENANCE N'EST PAS CERTIFIABLE.** Du code non retracé est apparu **deux fois** dans l'arbre de travail (D232). Devant ce cas : arrêter, le dire, ne pas emballer. Une note de livraison qui annonce « mesuré » sur du code d'origine inconnue est le défaut de D218 en pire. **Contrôle de fin de lot** : le diff livré ne doit contenir que des fichiers attendus, énumérés AVANT l'emballage.
 
