@@ -1,0 +1,13 @@
+  calibration ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+cibles : 2 déclarées · 0 jouées (unit) · 2 hors exécution
+  NON MESURÉE : R26-1. Le pro ne voit plus AUCUNE demande : la liste chargée est jetée — mesure « e2e-parcours », relancer avec --e2e
+  NON MESURÉE : R26-2. Le pro lit « En attente » quel que soit le statut : sa réponse ne s'affiche jamais — mesure « e2e-parcours », relancer avec --e2e
+
+0 garde(s) mordue(s) sur 0 cible(s) jouée(s) · 2 non mesurée(s) (attendu : 0 sur 0)
+arbre rendu à son état de départ : vérifié.

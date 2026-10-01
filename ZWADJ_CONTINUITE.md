@@ -1474,6 +1474,122 @@ chaque harnais à cibles e2e (`r25`, `r26`, et tout autre trouvé), étiquettes 
 (point 11). **Si la certification passe** : compteur → ZÉRO, rang 27 clos. **Si elle échoue** : rien ne se clôt,
 l'échec est décrit, rien n'est corrigé, le blocage revient à Ko.
 
+### ⛔ LA CERTIFICATION QUI CLÔT LE RANG 27 (D319) — ÉTAPE 0 : LE PÉRIMÈTRE RÉUTILISÉ, LA LECTURE LUE ÉTENDUE À `r25`/`r26`, PUIS LE PROTOCOLE, COMMITÉS AVANT TOUTE MESURE DE LA PASSE
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne porte **D318** ⇒ **D319**. Partie B de la session de D318,
+sur ordre de Ko. **Patron** : le protocole de D314 (section D314 ci-dessus), repris point par point — **ce qui
+change est écrit ci-dessous**. ⇒ **Ce lot ne compte pas** : `.md` d'autorité et `docs/preuves/` seulement (exemption
+de D292) — outils sous `docs/preuves/D319/outils/`.
+
+**CE QUI EST INCHANGÉ, VÉRIFIÉ AVANT DE LE RÉUTILISER** : `git diff --name-only 0057748 HEAD -- neutralisation/`
+(`0057748` = le commit d'étape 0 de D314) rend **exactement deux fichiers** : `neutralize-r25.py`, `neutralize-r26.py`.
+**Les 26 autres harnais de `neutralisation/` sont OCTET POUR OCTET ceux dont D314 a mesuré le plancher de
+non-démarrage.** ⇒ `docs/preuves/D314/plancher/plancher.txt` (26 lignes) est donc **réutilisé TEL QUEL**, sans
+nouvelle simulation — refaire une mesure sur un fichier inchangé ne mesurerait rien de neuf.
+
+**CE QUI EST NEUF : `r25` ET `r26`.** Ni l'un ni l'autre n'existaient à D314 ; ni l'un ni l'autre n'a de plancher
+déclaré. Choix, déclaré et motivé avant toute mesure (texte complet et motif détaillé : en-tête de
+`docs/preuves/D319/outils/lire-campagnes.py`, qui l'applique) :
+- **Ni une nouvelle simulation de non-démarrage** (la cale PATH de D314 résout `pnpm run <script>` / `node <fichier>`
+  — `r25` et `r26` invoquent `pnpm --filter @zwadj/e2e exec playwright test <spec>`, une forme que la cale n'a
+  jamais éprouvée : l'étendre sans la reprouver serait écrire une valeur de mémoire sur un instrument) **ni un
+  plancher emprunté à un harnais sans rapport** ;
+- **PREUVE LUE DIRECTE**, sur deux pièces déjà présentes dans leur propre journal, SANS instrument externe
+  supplémentaire : (a) leur calibration EMBARQUÉE (6 à 10 bras, imprimée avant toute cible) à **0 manqué** ; (b)
+  CHAQUE ligne « ✓ » porte en clair son compte de tests COLLECTÉS (« passés X · en échec Y » ou « ok X · x Y »),
+  exigé **> 0** — le critère de R1 (« une sortie lue qui montre des tests collectés ») appliqué CIBLE PAR CIBLE.
+- ⚠ **Profondeur assumée, MOINDRE que `lire-aoa.py`** : pas de rejeu sur 30 journaux indépendants. `available-on-api`
+  a eu cette profondeur parce que son histoire l'exigeait (D310 : 13 cibles comptées MORDUES sans qu'aucune n'ait
+  démarré). `r25`/`r26` sont nés APRÈS cette leçon, avec elle déjà incorporée (ancre/marqueur, calibration
+  embarquée) ; leur exiger la même profondeur reviendrait à ignorer que ce qu'elle visait à corriger n'est pas
+  leur défaut.
+- **UN SEUL CAS, ET IL N'EST PAS CELUI DE `lire-aoa.py`** : `r25` est verrouillé par `--int` ET par `--e2e` — son
+  propre docstring : « les deux drapeaux se combinent ». Il est donc rejoué en **UNE SEULE** invocation
+  (`--int --e2e` ensemble), dans le MÊME journal (`int-r25.log`, ses 11 cibles déclarées) : deux rejeux partiels
+  dans deux journaux séparés auraient laissé le lecteur générique (qui compare `cibles jouées` au total DÉCLARÉ
+  d'UN SEUL journal) incapable de les recoller. `r26` n'a AUCUNE cible `--int` (verrou `--int` = False) : il est
+  rejoué seul avec `--e2e`, dans un journal NEUF (`e2e-r26.log`) — troisième forme de « passe qui certifie »,
+  à côté de `--tout` et `--int`, qui n'existait pas à D314.
+
+**OUTILS, COPIES DE D314/D310 SAUF CES DEUX AJOUTS DÉCLARÉS** (`docs/preuves/D319/outils/`) :
+- `passe.py` — copie de celle de D314, corps non retouché, PLUS l'étape 6b (rejeu `--e2e` des harnais e2e-verrouillés
+  qui ne le sont pas déjà par `--int`, dérivés par recherche littérale de `"--e2e" in argv`, même méthode que
+  `declarees.py` pour `--int`) et le cas spécial de `r25` (drapeaux combinés à l'étape 6) ;
+- `lire-campagnes.py` — copie de celle de D314, logique d'origine non retouchée, PLUS : `LUS` étendu à `r25`/`r26` ;
+  une troisième résolution de journal (`e2e-<nom>.log`) pour les harnais e2e-seuls ; la fonction `lecture_directe`
+  (calibration embarquée + collecte par cible) ; deux bras de calibration NEUFS (6 et 7), sur un journal RÉEL versé
+  à côté du script (`calibration-r25-positif.log`, produit par cette session, `r25 --int --e2e`) et sa copie mutée
+  (une ligne « ✓ » privée de son compte de collecte) ;
+- `declarees.py`, `lire-rang23.py`, `lire-aoa.py`, `verser.py` — **réutilisés directement depuis `D310`/`D314`, non
+  copiés, non retouchés** : `rang23` et `available-on-api` sont inchangés, leur preuve lue l'est aussi.
+
+**CALIBRATION DE `lire-campagnes.py` (D319), DEUX BRAS DE PLUS SUR LES CINQ DE D314** :
+- Les cinq bras de D314, REJOUÉS sur ses propres pièces (inchangées) : **5 sur 5**, chiffres IDENTIQUES à D314 (186 ·
+  solid-s1 0/2 · available-on-api refusé sans lecture · 26 refusés à leur non-démarrage · argon2 accepté) ;
+- Positif D319 : `calibration-r25-positif.log` (journal réel, `r25 --int --e2e`, produit AVANT le commit de ce
+  protocole) ⇒ lecture ACCEPTÉE ;
+- Négatif D319 : la même ligne « ✓ R25-1 » réécrite en mémoire avec « passés 0 · en échec 0 » ⇒ lecture REFUSÉE sur
+  cette cible.
+⇒ Sortie exacte, versée AVANT le commit : `docs/preuves/D319/outils/calibration-sortie.txt`.
+
+**LE POINT 12, CAMPAGNE PAR CAMPAGNE (30 harnais)** :
+- `rang23`, `available-on-api` : preuve LUE — **inchangée**, mêmes lecteurs (`lire-rang23.py`, `lire-aoa.py` de
+  D314, non retouchés), mêmes exigences (13 démarrées pour `rang23` ; 30 journaux, 0 écart pour `available-on-api`) ;
+- `r25`, `r26` : preuve LUE DIRECTE — `lecture_directe()` ci-dessus, dans `lire-campagnes.py` ;
+- **les 26 autres** : la durée de la passe qui les certifie **≥** leur plancher, RÉUTILISÉ de
+  `docs/preuves/D314/plancher/plancher.txt` (fichiers inchangés, vérifié ci-dessus).
+
+**EXIGENCES DE KO, reprises de D310/D314** : **toutes** les campagnes (`--tout`) ; `--int` pour chaque harnais à
+cibles d'intégration (7, dérivés de l'AST : `e3d1-s8`, `r25`, `s11b`, `solid-s1`, `solid-s2`, `solid-s3`,
+`solid-s6`) ; `--e2e` pour chaque harnais à cibles e2e non couvert par `--int` (`r26` seul — `r25` l'est déjà, deux
+drapeaux combinés) ; jouées = déclarées ; **point 11** — chaque ligne de la table des portes cite
+`docs/preuves/D319/passe-<IDENTIFIANT>/`.
+**ORDRE — `outils/passe.py <IDENTIFIANT> <SHA>`**, copie de celle de D314, **sans retouche de fichier suivi entre
+le premier relevé et la clôture** (D270) : 0. `pg_isready`, ports 3100/3101/5273 libres ; 1. relevé d'ouverture,
+**PORTE DURE** sur chacun (`CHROME=0`, RAM médiane et bande basse au-dessus de la barre, `SECTEUR`, calibration
+passante) ; 2. échantillonneur en fond, `-Intervalle 30`, **aucun lecteur** sur son journal pendant la fenêtre ;
+3. arbre-1 ; 4. six portes dans l'ordre de `CLAUDE.md`, chacune précédée d'un relevé ; avant l'e2e, `node` 0 et
+ports libres ; 5. arbre-2 ; `--tout` ; copie des journaux de CETTE passe — campagnes, `rang23/` et
+`available-on-api/` ; arbre-3 ; 6. rejeu `--int` des 7 verrouillés (`r25` avec `--int --e2e` combinés) ; arbre-4 ;
+6b. [AJOUT D319] rejeu `--e2e` de `r26` seul ; arbre-5 ; 7. contre-épreuve de `audit-secrets.py` ; arbre-6 ;
+8. relevé de clôture, arrêt et `-Resume` de l'échantillonneur.
+**Après la clôture seulement** : `lire-rang23.py`, `lire-aoa.py` (D314, non retouchés), `lire-campagnes.py` (D319),
+`docs/preuves/D310/outils/lire-portes.py`, `docs/preuves/D310/outils/lire-etat.py` ; puis `outils/verser.py` (D314,
+réutilisé, SHA-256 relus, journal e2e brut refusé) ; extrait e2e (`docs/preuves/D299/outils/extraire-e2e.py`) ;
+**« 0 valeur réelle » sur le journal e2e de la passe**, sortie versée AVANT l'audit ; audit scellé, tri
+différentiel, **second audit en dernière écriture** ; marque.
+**Règles de lecture** : celles de D310/D314 — porte verte ⇔ code réel 0, résumés confrontés au brut, tout
+« failed » à son contexte (D275) ; `--tout` sort en 1 **et c'est attendu** ; arbre immobile aux six contrôles
+(un de plus qu'à D314 : l'arbre-5 de l'étape 6b) ; échantillonneur homogène.
+
+**PRÉDICTIONS, DÉRIVÉES et non critères** — aucun code applicatif n'a changé depuis D317 (`a65d40d`/`a922537`) ; le
+seul delta mesurable est l'AJOUT de `r25`/`r26` au compte des campagnes (déjà présents au code depuis D316/D317,
+simplement jamais encore certifiés par une passe officielle) :
+- six portes **IDENTIQUES à D317** : `test` **664/58 · 39/4 · 308/22 · 347/28 = 1 334/109** ; `test:int` **444/36** ;
+  `test:e2e` **43 passés · 1 ignoré** ; `typecheck`/`lint`/`build` : 0, « Done » ;
+- `--tout` (30 campagnes, DÉRIVÉ par mesure directe de `r25`/`r26` en mode par défaut, avant ce commit — journaux
+  `docs/preuves/D319/outils/r25-defaut.log`, `r26-defaut.log`) : **205 mordues · 0 muette · 19 non mesurées**
+  (198 + 7 + 0 ; 13 + 4 + 2), total **224** — EXACTEMENT le `TOTAL DÉCLARÉ` de `declarees.py` rejoué à `HEAD` (30
+  harnais, 224 cibles) ;
+- `--int` ×7 : `e3d1-s8` **8**, `r25` **11** (les deux drapeaux combinés — PAS 8), `s11b` **13**, `solid-s1` **2**,
+  `solid-s2` **5**, `solid-s3` **6**, `solid-s6` **6** = **51** ;
+- `--e2e` × 1 (`r26` seul, `r25` déjà couvert) : **2** ;
+- ⇒ **CERTIFIANT : 224 mordues · 0 muette · 0 non mesurée, 30 campagnes sur 30 qui comptent, point 12 tenu
+  partout** (26 au-dessus de leur plancher, `rang23`/`available-on-api`/`r25`/`r26` LUES) ; **étiquettes** : lue au
+  chemin **12** · lue hors du chemin **26** (13 + 11 + 2) · code de sortie seul, non prouvée (R1) **81** · code de
+  sortie seul, non classée **105** ; somme **224** ; contre-épreuve **5 sur 5**.
+⛔ **Un compte qui s'écarte suspend la marque** jusqu'à explication ; inexpliqué ⇒ refus.
+⛔ **ARRÊT SANS RATTRAPAGE** : un relevé hors `SECTEUR`, `chrome` qui réapparaît, ou un échantillonneur non
+homogène ⇒ la passe s'arrête, c'est dit, **pas de marque**.
+⇒ **SI ELLE PASSE** (Ko) : le rang 27 se clôt, le compteur revient à **ZÉRO**. ⇒ **SI ELLE ÉCHOUE** : rien ne se
+clôt ; l'échec est décrit, **rien n'est corrigé** ; un nouveau blocage revient à Ko.
+**Limites écrites d'avance** : celles de D310/D314 (base de dev non re-mesurée ; réserve « zéro `node` pendant la
+mesure » reconduite ; processus étrangers autres que `chrome` non mesurés pendant la fenêtre ; **aucune durée ne se
+compare** — sauf au plancher, qui est un seuil de démarrage, pas une comparaison de durées ; contre-épreuve sans
+relevé propre) ; les **sept** harnais qui lisent une partie de leur sortie (D303), étiquetés « code de sortie seul »
+(bloc D313) ; et la profondeur MOINDRE de la preuve lue de `r25`/`r26` par rapport à celle d'`available-on-api`
+(déclarée ci-dessus, pas cachée).
+
 ## Session du 01/10/2026 — D318 · rang 27 (partie A, documentaire, forme allégée) : arbitrages de Ko (page
 d'administration, ordre de reprise du chemin de l'argent) et décision du relecteur (neutralisation permise pendant la
 pause)

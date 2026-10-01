@@ -1,0 +1,9 @@
+== CALIBRATION (abandon si un seul bras manque)
+  ✓ positif D299 : lignes ✓ 186 (attendu 186) · non mesurées {'e3d1-s8': 5, 's11b': 4, 'solid-s6': 4}
+  ✓ négatif D308 solid-s1 : crochets SANS --int 0 (attendu 0) · AVEC --int 2 (attendu 2)
+  ✓ négatif D310 : available-on-api 0 s, sans lecture ⇒ REFUSÉ (attendu REFUSÉ) — lecture ABSENTE ou en défaut
+  ✓ négatif ÉTAPE 0 : chacun des 26 harnais (attendu 26), à SA durée de non-démarrage la plus longue (arrondie comme la table de --tout), REFUSÉ : 26 (attendu 26)
+  ✓ positif D310 : argon2 ⇒ ACCEPTÉ (attendu ACCEPTÉ) — 16 s ≥ plancher 4.44 s
+  ✓ positif D319 : journal réel r25 ⇒ ACCEPTÉ (attendu ACCEPTÉ) — calibration 10 bras 0 manqué · collecte > 0 sur 11 cible(s)
+  ✓ négatif D319 : même journal, R25-1 sans collecte ⇒ REFUSÉ (attendu REFUSÉ) — collecte absente ou nulle sur ['✓ R25-1']
+(calibration seule : aucun dossier de passe donné)
