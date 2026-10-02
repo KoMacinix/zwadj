@@ -1,0 +1,107 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/booking-calendar.test.ts (13 tests | 4 failed) 41ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > couvre la fenêtre de 182 jours mois par mois, ni plus ni moins 4ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > les bornes viennent des jours RENDUS, quel que soit leur ordre (D49) 0ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > C-a : un seul créneau AVAILABLE suffit — un jour à moitié pris reste choisissable 0ms
+   × booking-calendar — quel jour se choisit (MD C-a, C-b) > C-b : aucun créneau AVAILABLE, ou un jour absent de la réponse — inactif 8ms
+     → expected true to be false // Object.is equality
+   × booking-calendar — quel jour se choisit (MD C-a, C-b) > le mois ouvert d'abord est celui du premier jour LIBRE, pas un mois tout pris 3ms
+     → expected { year: 2027, month: 8 } to deeply equal { year: 2027, month: 9 }
+   ✓ booking-calendar — le clavier (MD C-e) > flèche droite = jour suivant de gauche à droite, jour PRÉCÉDENT en arabe (la grille se lit à l'envers) 1ms
+   × booking-calendar — le clavier (MD C-e) > une date inactive est SAUTÉE dans le sens du mouvement 1ms
+     → expected '2027-08-16' to be '2027-08-17' // Object.is equality
+   ✓ booking-calendar — le clavier (MD C-e) > rien hors de la fenêtre : au premier jour, reculer ne bouge pas 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Début / Fin : la ligne commence DIMANCHE et finit samedi (D56) 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Page suivante : premier jour libre du mois d'après 0ms
+   × booking-calendar — le clavier (MD C-e) > l'arrêt de tabulation : le jour vu s'il est libre dans ce mois, sinon le premier jour libre 1ms
+     → expected '2027-08-16' to be '2027-08-02' // Object.is equality
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > fr : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 18ms
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > ar : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 1ms
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 9 passed (13)
+   Start at  16:28:14
+   Duration  3.20s (transform 536ms, setup 240ms, collect 1.00s, tests 41ms, environment 1.20s, prepare 255ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/booking-calendar.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/booking-calendar.test.ts > booking-calendar — quel jour se choisit (MD C-a, C-b) > C-b : aucun créneau AVAILABLE, ou un jour absent de la réponse — inactif
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/lib/booking-calendar.test.ts:57:83
+     55| 
+     56|   it("C-b : aucun créneau AVAILABLE, ou un jour absent de la réponse —…
+     57|     expect(isDaySelectable(jour("2027-08-16", "BOOKED", "REQUESTED", "…
+       |                                                                                   ^
+     58|     expect(isDaySelectable(jour("2027-08-17"))).toBe(false);
+     59|     expect(isDaySelectable(undefined)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/lib/booking-calendar.test.ts > booking-calendar — quel jour se choisit (MD C-a, C-b) > le mois ouvert d'abord est celui du premier jour LIBRE, pas un mois tout pris
+AssertionError: expected { year: 2027, month: 8 } to deeply equal { year: 2027, month: 9 }
+
+- Expected
++ Received
+
+  {
+-   "month": 9,
++   "month": 8,
+    "year": 2027,
+  }
+
+ ❯ src/lib/booking-calendar.test.ts:64:61
+     62|   it("le mois ouvert d'abord est celui du premier jour LIBRE, pas un m…
+     63|     const pris = Array.from({ length: 30 }, (_, i) => addDays("2027-08…
+     64|     expect(initialMonth(fenetre("2027-08-02", pris), null)).toEqual({ …
+       |                                                             ^
+     65|     expect(initialMonth(fenetre("2027-08-02"), "2027-11-20")).toEqual(…
+     66|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/lib/booking-calendar.test.ts > booking-calendar — le clavier (MD C-e) > une date inactive est SAUTÉE dans le sens du mouvement
+AssertionError: expected '2027-08-16' to be '2027-08-17' // Object.is equality
+
+Expected: "2027-08-17"
+Received: "2027-08-16"
+
+ ❯ src/lib/booking-calendar.test.ts:82:73
+     80| 
+     81|   it("une date inactive est SAUTÉE dans le sens du mouvement", () => {
+     82|     expect(moveFocus("2027-08-15", "ArrowRight", false, libre, bornes)…
+       |                                                                         ^
+     83|     expect(moveFocus("2027-08-09", "ArrowDown", false, libre, bornes))…
+     84|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/lib/booking-calendar.test.ts > booking-calendar — le clavier (MD C-e) > l'arrêt de tabulation : le jour vu s'il est libre dans ce mois, sinon le premier jour libre
+AssertionError: expected '2027-08-16' to be '2027-08-02' // Object.is equality
+
+Expected: "2027-08-02"
+Received: "2027-08-16"
+
+ ❯ src/lib/booking-calendar.test.ts:104:72
+    102|   it("l'arrêt de tabulation : le jour vu s'il est libre dans ce mois, …
+    103|     expect(focusTarget({ year: 2027, month: 8 }, "2027-08-20", libre))…
+    104|     expect(focusTarget({ year: 2027, month: 8 }, "2027-08-16", libre))…
+       |                                                                        ^
+    105|     expect(focusTarget({ year: 2027, month: 8 }, null, libre)).toBe("2…
+    106|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+

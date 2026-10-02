@@ -1,0 +1,33 @@
+# D322 — motifs de la passe D277 (rang 30 ARBITRÉ par Ko, lot de CODE : le calendrier, suite ; D-10 révisée ; partie A :
+# quatre constats d'une session à froid). Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306
+# à D321, 24802faf…), jamais passés en ligne de commande (D289). Texte APLATI.
+# ⚠ Écartés avant la première passe : « calendrier » seul, « week-end » seul, « arabe » seul — ils comptent tout (D298 ;
+# D295 dans les deux sens).
+# sens 1 — ce que D322 INVALIDE : le rang 30 en attente ; l'enchaînement s1 de D-10 ; « identique à l'octet » pour la ligne
+# `setChosen` ; le lien mort vers `/salles/:id/calendrier` ; « REQUESTED non choisissable » non tranché (désormais mesuré et
+# rapporté) ; les 61 entrées « réalisées » sans niveau de preuve ; la décision du relecteur non écrite mot pour mot.
+1|RANG 30 : EN ATTENTE
+1|Rang 30 : en attente
+1|rang 30 : en attente
+1|par D-10
+1|D-10 (s1)
+1|reste **identique à l'octet**
+1|/salles/:id/calendrier
+1|/calendrier`
+1|lien mort
+1|n'est pas choisissable
+1|non choisissable
+1|61 cochées
+1|61 des 62
+1|N'EST PAS JOURNALISÉ PENDANT LA PAUSE
+# sens 2 — ce que D322 REND PERMIS, ou dont la CONDITION change : le compteur (UN → DEUX) ⇒ plus aucun lot de code avant une
+# certification ; ADM-1 n'est plus le lot de code suivant (D-10 révisée) ; « un lot de code de plus peut s'ouvrir ».
+2|compteur UN
+2|compteur **UN**
+2|ZÉRO → UN
+2|ADM-1
+2|un** lot de code de plus
+2|s'il est arbitré
+2|peut s'ouvrir avant une
+T+|ZWADJ
+T-|zzz-motif-absent-d322

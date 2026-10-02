@@ -1,0 +1,78 @@
+== CALIBRATION
+  bras positif « export const WEEKEND_DAYS » : 1 (attendu 1) · bras négatif : 0 (attendu 0)
+
+== POINT 1 — les noms de jours et de mois en arabe
+  section D321 : 27540 caractères parcourus
+  limite déclarée sur l'arabe : « noms de créneaux, de prestations et de paliers restent en FRANÇAIS » présente : True
+  une limite sur les noms de JOURS ou de MOIS en français : 0 occurrence(s) (la prémisse du point 1 la cite)
+  source des noms — apps/client/src/lib/calendar.ts @5a362d7 : 143 lignes parcourues · 2 portent « new Intl.DateTimeFormat(locale » (attendu ≥ 1)
+      l.52 : const fmt = new Intl.DateTimeFormat(locale, { weekday: format, timeZone: "UTC" });
+      l.128 : return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(
+  source des noms — apps/client/src/lib/booking-calendar.ts @5a362d7 : 151 lignes parcourues · 2 portent « new Intl.DateTimeFormat(locale » (attendu ≥ 1)
+      l.139 : return new Intl.DateTimeFormat(locale, { day: "numeric", timeZone: "UTC" }).format(Date.parse(`${date}T00:00:00Z`));
+      l.143 : return new Intl.DateTimeFormat(locale, {
+  source des noms — apps/client/src/components/venue/booking-date-picker.tsx @5a362d7 : 175 lignes parcourues · 7 portent « locale » (attendu ≥ 1)
+      l.49 : const locale = useLocale();
+      l.50 : const rtl = locale === "ar";
+      l.83 : const courts = weekdayHeaders(locale, "short");
+      l.84 : const longs = weekdayHeaders(locale, "long");
+      l.111 : {monthLabel(shown, locale)}
+      l.156 : aria-label={t(ok ? "dayFree" : "dayFull", { date: longDate(date, locale) })}
+  source des noms — apps/client/src/app/[locale]/layout.tsx @5a362d7 : 68 lignes parcourues · 1 portent « <html lang={locale} » (attendu ≥ 1)
+      l.49 : <html lang={locale} dir={dir} suppressHydrationWarning>
+
+== POINT 2 — le jour déjà demandé (`REQUESTED`)
+  (a) le panneau à sa CRÉATION — apps/client/src/components/venue/booking-request-panel.tsx @909702a : 440 lignes parcourues · 1 portent « const free = slot.status === "AVAILABLE" » (attendu ≥ 1)
+      l.241 : const free = slot.status === "AVAILABLE";
+  (a) le panneau AVANT D321 — apps/client/src/components/venue/booking-request-panel.tsx @b5bd382 : 464 lignes parcourues · 1 portent « const free = slot.status === "AVAILABLE" » (attendu ≥ 1)
+      l.263 : const free = slot.status === "AVAILABLE";
+  (a) le module de D321 — apps/client/src/lib/booking-calendar.ts @5a362d7 : 151 lignes parcourues · 1 portent « slot.status === "AVAILABLE" » (attendu ≥ 1)
+      l.52 : return day !== undefined && day.slots.some((slot) => slot.status === "AVAILABLE");
+  (b) l'API accepte une seconde demande en attente — apps/api/test/int/bookings.int-spec.ts @5a362d7 : 1155 lignes parcourues · 1 portent « DEUX demandes concurrentes sur la même date coexistent en PE » (attendu ≥ 1)
+      l.233 : it("DEUX demandes concurrentes sur la même date coexistent en PENDING", async () => {
+  (b) …les deux réponses attendues — apps/api/test/int/bookings.int-spec.ts @5a362d7 : 1155 lignes parcourues · 32 portent « .expect(201); » (attendu ≥ 1)
+      l.91 : .expect(201);
+      l.97 : .expect(201);
+      l.180 : const res = await post(f.clientToken, f.venue.slug, body(f)).expect(201);
+      l.212 : const res = await post(f.clientToken, f.venue.slug, body(f, { eventDate })).expect(201);
+      l.224 : const res = await post(f.clientToken, f.venue.slug, body(f)).expect(201);
+      l.235 : await post(f.clientToken, f.venue.slug, body(f)).expect(201);
+  (c) décision produit — AGENTS.md @5a362d7 : 1573 lignes parcourues · 1 portent « Chevauchement de créneaux entre demandes » (attendu ≥ 1)
+      l.39 : - **Chevauchement de créneaux entre demandes "pending" est autorisé** (la salle tranche manuellement laquelle accepter).
+  (c) B3 — l'état REQUESTED — docs/history/CONTINUITE-flux-A-E.md @5a362d7 : 342 lignes parcourues · 1 portent « `REQUESTED` ne verrouille rien » (attendu ≥ 1)
+      l.93 : - **Quatre états par gravité : `BLOCKED` > `BOOKED` > `REQUESTED` > `AVAILABLE`.** `REQUESTED` ne verrouille rien mais **on le dit** — laisser croire à une case libre pui
+  (c) le statut dur — packages/types/src/booking.ts @5a362d7 : 220 lignes parcourues · 1 portent « ne grise RIEN » (attendu ≥ 1)
+      l.25 : * elle ne grise RIEN dans la liste publique, où l'annotation dit « pris », pas
+  ⇒ aucune de ces décisions ne dit ce que le PANNEAU du client doit offrir sur un créneau REQUESTED : rien ne tranche.
+
+== POINT 3 — le week-end mis en avant
+  la vue — apps/client/src/components/venue/booking-date-picker.tsx @5a362d7 : 175 lignes parcourues · 1 portent « is-weekend » (attendu ≥ 1)
+      l.143 : <td key={date} className={cell.isWeekend ? "cal-cell is-weekend" : "cal-cell"}>
+  la grille — apps/client/src/lib/calendar.ts @5a362d7 : 143 lignes parcourues · 3 portent « isWeekend: isWeekend(dayOfWeek) » (attendu ≥ 3)
+      l.79 : cells.push({ date: null, dayOfWeek, isWeekend: isWeekend(dayOfWeek) });
+      l.86 : isWeekend: isWeekend(dayOfWeek)
+      l.91 : cells.push({ date: null, dayOfWeek, isWeekend: isWeekend(dayOfWeek) });
+  l'autorité (D56) — apps/client/src/lib/calendar.ts @5a362d7 : 143 lignes parcourues · 1 portent « export const WEEKEND_DAYS » (attendu ≥ 1)
+      l.35 : export const WEEKEND_DAYS: readonly number[] = [5, 6];
+  la décision produit D56 — ZWADJ_CONTINUITE.md @5a362d7 : 17739 lignes parcourues · 1 portent « Le repos hebdomadaire est **vendredi-samedi** » (attendu ≥ 1)
+      l.261 : - **D56 — La semaine algérienne commence le DIMANCHE, et se termine par le week-end.** Le repos hebdomadaire est **vendredi-samedi** ; le premier jour de travail et d'éco
+  les règles de prix WEEKDAY : pas de week-end produit — apps/api/src/venues/pricing-engine.ts @5a362d7 : 160 lignes parcourues · 1 portent « c'est le pro qui coche » (attendu ≥ 1)
+      l.36 : *  ici, c'est le pro qui coche. */
+  la seconde copie (pro) — apps/pro/src/venues/pro-calendar.ts @5a362d7 : 152 lignes parcourues · 1 portent « export const WEEKEND_DAYS » (attendu ≥ 1)
+      l.44 : export const WEEKEND_DAYS: readonly number[] = [5, 6];
+
+== POINT 4 — le lien mort de l'app Pro
+  le lien — apps/pro/src/venues/edit-venue-page.tsx @5a362d7 : 451 lignes parcourues · 1 portent « /calendrier » (attendu ≥ 1)
+      l.422 : <Link to={`/salles/${state.venue.id}/calendrier`} className="btn">
+  sa condition d'affichage : la salle chargée — apps/pro/src/venues/edit-venue-page.tsx @5a362d7 : 451 lignes parcourues · 1 portent « const venue = state.venue; » (attendu ≥ 1)
+      l.198 : const venue = state.venue;
+  routes déclarées dans App.tsx @5a362d7 : 15 — ['*', 'LOGIN_PATH', '/auth/inscription', '/auth/mot-de-passe-oublie', '/auth/reinitialisation', '/auth/verification-email', '/', '/demandes', '/calendrier', '/reservations', '/compte', '/salles', '/salles/nouvelle', '/salles/:id', '*']
+  `/salles/:id/calendrier` déclarée : False · `/calendrier` déclarée : True · attrape-tout `*` : True
+  l'attrape-tout redirige vers / — apps/pro/src/App.tsx @5a362d7 : 195 lignes parcourues · 1 portent « <Route path="*" element={<Navigate to="/" replace />} /> » (attendu ≥ 1)
+      l.181 : <Route path="*" element={<Navigate to="/" replace />} />
+  le calendrier existant : la salle COURANTE du sélecteur — apps/pro/src/venues/calendar-page.tsx @5a362d7 : 39 lignes parcourues · 1 portent « <VenueCalendar venueId={venue.id} /> » (attendu ≥ 1)
+      l.31 : <VenueCalendar venueId={venue.id} />
+  …dont la sélection survit tant que la salle existe, sinon la première — apps/pro/src/shell/pro-venues-context.tsx @5a362d7 : 107 lignes parcourues · 1 portent « venues.find((v) => v.id === selectedId) ?? venues[0]! » (attendu ≥ 1)
+      l.89 : return venues.find((v) => v.id === selectedId) ?? venues[0]!;
+  le libellé du lien — packages/i18n/messages/fr.json @5a362d7 : 1329 lignes parcourues · 1 portent « "title": "Calendrier de la salle" » (attendu ≥ 1)
+      l.907 : "title": "Calendrier de la salle",

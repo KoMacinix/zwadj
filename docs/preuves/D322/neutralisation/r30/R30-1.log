@@ -1,0 +1,90 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/components/venue/booking-date-picker.test.tsx (11 tests | 2 failed) 294ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > les attendus discriminent : le 1er août 2027 est un dimanche, et chaque nom diffère entre français et arabe 4ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 150ms
+   × Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > ar : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 35ms
+     → expected [ Array(7) ] to deeply equal [ Array(7) ]
+   × Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > arabe : aucun nom de mois ni de jour en lettres latines — un contrôle qui ne doit rien à `Intl` 22ms
+     → expected [ 'dim.dimanche', 'lun.lundi', …(5) ] to deeply equal []
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > français : aucun nom en écriture arabe — le bras symétrique 20ms
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras ROUGE : une liste de jours en français, un mois en arabe, un nom dans un gabarit et dans du texte JSX se voient 6ms
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras VERT : un commentaire qui cite les jours, des mots voisins, des clés — rien 7ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > le relevé a lu les cinq fichiers, et des littéraux dans chacun (D290) 0ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > N-b : aucun littéral ne porte un nom de jour ou de mois — ils viennent d'`Intl`, dans la langue de la page 0ms
+   ✓ Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > fr : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 26ms
+   ✓ Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > ar : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 20ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  16:26:52
+   Duration  3.85s (transform 255ms, setup 235ms, collect 1.44s, tests 294ms, environment 1.17s, prepare 277ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-date-picker.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-date-picker.test.tsx > Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > ar : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page
+AssertionError: expected [ Array(7) ] to deeply equal [ Array(7) ]
+
+- Expected
++ Received
+
+  [
+-   "الأحد",
+-   "الاثنين",
+-   "الثلاثاء",
+-   "الأربعاء",
+-   "الخميس",
+-   "الجمعة",
+-   "السبت",
++   "dim.",
++   "lun.",
++   "mar.",
++   "mer.",
++   "jeu.",
++   "ven.",
++   "sam.",
+  ]
+
+ ❯ src/components/venue/booking-date-picker.test.tsx:71:88
+     69|     expect(titre?.textContent).toBe(MOIS(l));
+     70|     const entetes = Array.from(grille.querySelectorAll("th"));
+     71|     expect(entetes.map((th) => th.querySelector("[aria-hidden='true']"…
+       |                                                                                        ^
+     72|       Array.from({ length: 7 }, (_, c) => JOUR(l, c, "short"))
+     73|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/venue/booking-date-picker.test.tsx > Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > arabe : aucun nom de mois ni de jour en lettres latines — un contrôle qui ne doit rien à `Intl`
+AssertionError: expected [ 'dim.dimanche', 'lun.lundi', …(5) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "dim.dimanche",
++   "lun.lundi",
++   "mar.mardi",
++   "mer.mercredi",
++   "jeu.jeudi",
++   "ven.vendredi",
++   "sam.samedi",
++ ]
+
+ ❯ src/components/venue/booking-date-picker.test.tsx:85:47
+     83|     const titre = document.getElementById(grille.getAttribute("aria-la…
+     84|     const noms = [titre, ...Array.from(grille.querySelectorAll("th"), …
+     85|     expect(noms.filter((n) => LATIN.test(n))).toEqual([]);
+       |                                               ^
+     86|     expect(noms.every((n) => ARABE.test(n))).toBe(true);
+     87|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

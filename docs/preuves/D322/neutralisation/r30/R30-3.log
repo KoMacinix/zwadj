@@ -1,0 +1,67 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/components/venue/booking-date-picker.test.tsx (11 tests | 2 failed) 288ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > les attendus discriminent : le 1er août 2027 est un dimanche, et chaque nom diffère entre français et arabe 5ms
+   × Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 113ms
+     → expected 'أغسطس 2027' to be 'août 2027' // Object.is equality
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > ar : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 67ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > arabe : aucun nom de mois ni de jour en lettres latines — un contrôle qui ne doit rien à `Intl` 19ms
+   × Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > français : aucun nom en écriture arabe — le bras symétrique 25ms
+     → expected [ 'أغسطس 2027' ] to deeply equal []
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras ROUGE : une liste de jours en français, un mois en arabe, un nom dans un gabarit et dans du texte JSX se voient 6ms
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras VERT : un commentaire qui cite les jours, des mots voisins, des clés — rien 7ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > le relevé a lu les cinq fichiers, et des littéraux dans chacun (D290) 0ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > N-b : aucun littéral ne porte un nom de jour ou de mois — ils viennent d'`Intl`, dans la langue de la page 0ms
+   ✓ Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > fr : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 24ms
+   ✓ Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > ar : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 19ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  16:27:05
+   Duration  3.92s (transform 263ms, setup 240ms, collect 1.42s, tests 288ms, environment 1.30s, prepare 271ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-date-picker.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-date-picker.test.tsx > Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page
+AssertionError: expected 'أغسطس 2027' to be 'août 2027' // Object.is equality
+
+Expected: "août 2027"
+Received: "أغسطس 2027"
+
+ ❯ src/components/venue/booking-date-picker.test.tsx:69:32
+     67|     expect(grille.getAttribute("aria-labelledby") !== null).toBe(true);
+     68|     const titre = document.getElementById(grille.getAttribute("aria-la…
+     69|     expect(titre?.textContent).toBe(MOIS(l));
+       |                                ^
+     70|     const entetes = Array.from(grille.querySelectorAll("th"));
+     71|     expect(entetes.map((th) => th.querySelector("[aria-hidden='true']"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/venue/booking-date-picker.test.tsx > Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > français : aucun nom en écriture arabe — le bras symétrique
+AssertionError: expected [ 'أغسطس 2027' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "أغسطس 2027",
++ ]
+
+ ❯ src/components/venue/booking-date-picker.test.tsx:93:47
+     91|     const titre = document.getElementById(grille.getAttribute("aria-la…
+     92|     const noms = [titre, ...Array.from(grille.querySelectorAll("th"), …
+     93|     expect(noms.filter((n) => ARABE.test(n))).toEqual([]);
+       |                                               ^
+     94|     expect(noms.every((n) => LATIN.test(n))).toBe(true);
+     95|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

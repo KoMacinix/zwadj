@@ -1,0 +1,14 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+stdout | src/components/venue/booking-request-panel.test.tsx
+PLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ✓ src/components/venue/booking-request-panel.test.tsx (21 tests) 2426ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  16:28:00
+   Duration  5.70s (transform 494ms, setup 243ms, collect 1.11s, tests 2.43s, environment 1.24s, prepare 284ms)
+
+

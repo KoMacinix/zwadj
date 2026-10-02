@@ -11,6 +11,7 @@ import { ArrowBackIcon, ConfirmDialog } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import type { VenueProDTO } from "@zwadj/types";
 import { ProHeader } from "../shell/pro-header";
+import { useProVenues } from "../shell/pro-venues-context";
 import { Field, FormError, useApiErrorMessage, useValidationMessage } from "../auth/auth-ui";
 import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { isVenueNotFound, venueFieldErrors } from "./venue-errors";
@@ -53,6 +54,7 @@ export function EditVenuePage() {
   const { id = "" } = useParams();
   const navigate = useNavigate();
   const venuesApi = useVenueCrud();
+  const { select: selectVenue } = useProVenues();
   const apiErrorMessage = useApiErrorMessage();
   const tval = useValidationMessage();
   const referentials = useReferentialsData();
@@ -418,8 +420,13 @@ export function EditVenuePage() {
             suivent, avec leurs propres boutons). Le lien discret du haut reste,
             il sert la navigation ; celui-ci clôt la tâche. */}
         <div style={{ marginBlockStart: 18, display: "flex", flexWrap: "wrap", gap: 10 }}>
-          {/* B6 — accès au calendrier de la salle, en lecture. */}
-          <Link to={`/salles/${state.venue.id}/calendrier`} className="btn">
+          {/* B6 — accès au calendrier de la salle, en lecture.
+              ⚠ Rang 30 (D322) : ce lien visait `/salles/<id>/calendrier`, route SUPPRIMÉE par UIP-A (D130) — son clic
+              tombait sur `<Route path="*">`, redirigé vers `/`, sans 404. Le calendrier vit à `/calendrier`, sur la salle
+              COURANTE du sélecteur de portée : le lien y SÉLECTIONNE la salle éditée, sans quoi « Calendrier de la salle »
+              montrerait, dès deux salles, celui d'une autre. Gardé par `calendar-link.test.tsx` (la cible est une route
+              déclarée, sur la bonne salle) ; vérifié dans un navigateur par `docs/preuves/D322/navigateur/`. */}
+          <Link to="/calendrier" className="btn" onClick={() => selectVenue(venue.id)}>
             {t("venue.ui.calendar.title")}
           </Link>
           {/* ⚠ `/salles` et non `/` : depuis UIP-A, « / » est le tableau de bord.

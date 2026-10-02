@@ -1,0 +1,11 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ✓ src/lib/login-path-guard.test.ts (5 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  16:27:51
+   Duration  3.14s (transform 79ms, setup 224ms, collect 951ms, tests 8ms, environment 1.20s, prepare 284ms)
+
+

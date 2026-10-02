@@ -1,0 +1,13 @@
+serveur : PRET keepAliveTimeout=5000
+blocage 4600 ms : succès en 7 ms | succès en 3 ms | succès en 3 ms
+blocage 4700 ms : succès en 4 ms | succès en 3 ms | succès en 3 ms
+blocage 4800 ms : succès en 2 ms | succès en 2 ms | succès en 2 ms
+blocage 4900 ms : succès en 2 ms | succès en 2 ms | succès en 3 ms
+blocage 5000 ms : succès en 2 ms | succès en 2 ms | succès en 2 ms
+blocage 5100 ms : succès en 2 ms | succès en 2 ms | succès en 3 ms
+blocage 5200 ms : succès en 2 ms | succès en 2 ms | succès en 2 ms
+blocage 5300 ms : succès en 4 ms | succès en 3 ms | succès en 2 ms
+blocage 5400 ms : succès en 3 ms | succès en 2 ms | succès en 3 ms
+blocage 5500 ms : succès en 2 ms | succès en 2 ms | succès en 3 ms
+blocage 5600 ms : succès en 2 ms | succès en 3 ms | succès en 1 ms
+node v22.14.0 · 33 essais parcourus · 0 échec(s)

@@ -1,0 +1,18 @@
+== CALIBRATION — deux bras par famille, abandon si un seul manque
+  calibration ✓ résumé vitest, positif : [(4, 39)] (attendu [(4, 39)])
+  calibration ✓ résumé vitest, négatif (échec) : [] (attendu [])
+  calibration ✓ code de porte, positif : (0, 13) (attendu (0, 13))
+  calibration ✓ code de porte, négatif (autre porte) : None (attendu None)
+  calibration ✓ tests d'un fichier, positif : 13 (attendu 13)
+  calibration ✓ tests d'un fichier, négatif : None (attendu None)
+  calibration ✓ feuilles JSON, positif : 3 (attendu 3)
+  calibration ✓ feuilles JSON, négatif (vide) : 0 (attendu 0)
+  calibration ✓ dimensions JPEG, positif (synthétique) : (1280, 14487) (attendu (1280, 14487))
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D322\lecture-adverse\confronter-d321.py", line 166, in <module>
+    calib("dimensions JPEG, n�gatif (pas de SOF)", dimensions_jpeg(b"\xff\xd8\xff\xd9"), None)
+                                                   ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D322\lecture-adverse\confronter-d321.py", line 123, in dimensions_jpeg
+    longueur = struct.unpack(">H", octets[i + 2:i + 4])[0]
+               ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+struct.error: unpack requires a buffer of 2 bytes

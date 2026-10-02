@@ -1,0 +1,6 @@
+serveur : PRET keepAliveTimeout=5000
+✗ bras A · blocage synchrone 7 s : succès 200 en 8 ms (attendu ÉCHEC)
+✓ bras B · attente asynchrone 7 s : succès 200 en 8 ms (attendu succès)
+✓ bras C · blocage synchrone 1 s : succès 200 en 3 ms (attendu succès)
+✓ bras D · blocage 7 s, premier appel en Connection: close : succès 200 en 4 ms (attendu succès)
+node v22.14.0 · 4 bras · 1 manqué(s) (attendu 0)

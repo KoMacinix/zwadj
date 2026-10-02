@@ -1,0 +1,14 @@
+# extrait de .neutralisation-journaux/d322/K-vert-unitaire.log · sha256 du journal complet b95c74f6d7a902edb1d4663d0495531c2afb42f266d68906ad6aa002f63d77d0 · 13 lignes parcourues · 0 « [WebServer] » retirées · 13 gardées
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/calendar-link.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/calendar-link.test.tsx (3 tests) 339ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:40:20
+   Duration  4.00s (transform 857ms, setup 243ms, collect 1.74s, tests 339ms, environment 1.19s, prepare 185ms)
+

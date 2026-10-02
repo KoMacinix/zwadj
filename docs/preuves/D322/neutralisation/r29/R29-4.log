@@ -1,0 +1,53 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/booking-calendar.test.ts (13 tests | 1 failed) 37ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > couvre la fenêtre de 182 jours mois par mois, ni plus ni moins 3ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > les bornes viennent des jours RENDUS, quel que soit leur ordre (D49) 0ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > C-a : un seul créneau AVAILABLE suffit — un jour à moitié pris reste choisissable 0ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > C-b : aucun créneau AVAILABLE, ou un jour absent de la réponse — inactif 0ms
+   × booking-calendar — quel jour se choisit (MD C-a, C-b) > le mois ouvert d'abord est celui du premier jour LIBRE, pas un mois tout pris 9ms
+     → expected { year: 2027, month: 8 } to deeply equal { year: 2027, month: 9 }
+   ✓ booking-calendar — le clavier (MD C-e) > flèche droite = jour suivant de gauche à droite, jour PRÉCÉDENT en arabe (la grille se lit à l'envers) 1ms
+   ✓ booking-calendar — le clavier (MD C-e) > une date inactive est SAUTÉE dans le sens du mouvement 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > rien hors de la fenêtre : au premier jour, reculer ne bouge pas 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Début / Fin : la ligne commence DIMANCHE et finit samedi (D56) 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Page suivante : premier jour libre du mois d'après 1ms
+   ✓ booking-calendar — le clavier (MD C-e) > l'arrêt de tabulation : le jour vu s'il est libre dans ce mois, sinon le premier jour libre 0ms
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > fr : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 19ms
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > ar : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  16:28:30
+   Duration  3.20s (transform 495ms, setup 234ms, collect 945ms, tests 37ms, environment 1.18s, prepare 390ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/booking-calendar.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/booking-calendar.test.ts > booking-calendar — quel jour se choisit (MD C-a, C-b) > le mois ouvert d'abord est celui du premier jour LIBRE, pas un mois tout pris
+AssertionError: expected { year: 2027, month: 8 } to deeply equal { year: 2027, month: 9 }
+
+- Expected
++ Received
+
+  {
+-   "month": 9,
++   "month": 8,
+    "year": 2027,
+  }
+
+ ❯ src/lib/booking-calendar.test.ts:64:61
+     62|   it("le mois ouvert d'abord est celui du premier jour LIBRE, pas un m…
+     63|     const pris = Array.from({ length: 30 }, (_, i) => addDays("2027-08…
+     64|     expect(initialMonth(fenetre("2027-08-02", pris), null)).toEqual({ …
+       |                                                             ^
+     65|     expect(initialMonth(fenetre("2027-08-02"), "2027-11-20")).toEqual(…
+     66|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

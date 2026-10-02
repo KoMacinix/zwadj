@@ -1,0 +1,47 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/booking-calendar.test.ts (13 tests | 1 failed) 37ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > couvre la fenêtre de 182 jours mois par mois, ni plus ni moins 3ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > les bornes viennent des jours RENDUS, quel que soit leur ordre (D49) 0ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > C-a : un seul créneau AVAILABLE suffit — un jour à moitié pris reste choisissable 0ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > C-b : aucun créneau AVAILABLE, ou un jour absent de la réponse — inactif 0ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > le mois ouvert d'abord est celui du premier jour LIBRE, pas un mois tout pris 1ms
+   × booking-calendar — le clavier (MD C-e) > flèche droite = jour suivant de gauche à droite, jour PRÉCÉDENT en arabe (la grille se lit à l'envers) 9ms
+     → expected '2027-08-11' to be '2027-08-09' // Object.is equality
+   ✓ booking-calendar — le clavier (MD C-e) > une date inactive est SAUTÉE dans le sens du mouvement 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > rien hors de la fenêtre : au premier jour, reculer ne bouge pas 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Début / Fin : la ligne commence DIMANCHE et finit samedi (D56) 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Page suivante : premier jour libre du mois d'après 1ms
+   ✓ booking-calendar — le clavier (MD C-e) > l'arrêt de tabulation : le jour vu s'il est libre dans ce mois, sinon le premier jour libre 0ms
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > fr : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 19ms
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > ar : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  16:28:19
+   Duration  3.11s (transform 515ms, setup 239ms, collect 962ms, tests 37ms, environment 1.21s, prepare 251ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/booking-calendar.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/booking-calendar.test.ts > booking-calendar — le clavier (MD C-e) > flèche droite = jour suivant de gauche à droite, jour PRÉCÉDENT en arabe (la grille se lit à l'envers)
+AssertionError: expected '2027-08-11' to be '2027-08-09' // Object.is equality
+
+Expected: "2027-08-09"
+Received: "2027-08-11"
+
+ ❯ src/lib/booking-calendar.test.ts:77:72
+     75|   it("flèche droite = jour suivant de gauche à droite, jour PRÉCÉDENT …
+     76|     expect(moveFocus("2027-08-10", "ArrowRight", false, libre, bornes)…
+     77|     expect(moveFocus("2027-08-10", "ArrowRight", true, libre, bornes))…
+       |                                                                        ^
+     78|     expect(moveFocus("2027-08-10", "ArrowLeft", true, libre, bornes)).…
+     79|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

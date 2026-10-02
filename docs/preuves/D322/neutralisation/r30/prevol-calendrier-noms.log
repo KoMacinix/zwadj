@@ -1,0 +1,11 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ✓ src/components/venue/booking-date-picker.test.tsx (11 tests) 324ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  16:26:39
+   Duration  3.95s (transform 260ms, setup 238ms, collect 1.46s, tests 324ms, environment 1.24s, prepare 270ms)
+
+

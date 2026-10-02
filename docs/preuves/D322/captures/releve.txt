@@ -1,0 +1,27 @@
+D322 — relevé des captures de la fiche salle · 2026-10-02T20:25:40.647Z · API http://localhost:3101 · client http://localhost:3100
+SEMIS · salles publiées après db:seed:demo : 6
+COMPTES · PRO, CLIENT, ADMIN (ce dernier par UPDATE users SET role — aucun chemin du produit ne crée un ADMIN)
+API · POST /venues : 201
+API · POST /venues/:id/slot-templates : 201
+API · POST /venues/:id/visit-availabilities ×7 : 201, 201, 201, 201, 201, 201, 201
+API · POST /admin/venues/:id/publish (ADMIN) : 200
+CAPTURE 04-client-fr-salle.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 266987 octets
+M5/M6 · fiche FR, anonyme, 1280 px : hauteur 4858 px · largeur 1280 px pour une fenêtre de 1280 px · débordement non · boutons du panneau 33
+M7 · fiche FR, anonyme, 1280 px : lang=fr · mois « octobre 2026 » = Intl(fr) : oui · en-têtes courts = Intl : oui · en-têtes longs = Intl : oui · textes 15 : latins 15, arabes 0
+M8 · fiche FR, anonyme, 1280 px : colonnes mises en avant [5,6] (0 = dimanche, D56) · leurs jours ["vendredi","samedi"]
+CAPTURE panneau-fr.jpg · demandé (sur place) · statut — · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 32027 octets
+CAPTURE 16-client-ar-salle.jpg · demandé http://localhost:3100/ar/salles/salle-des-captures · statut 200 · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 253757 octets
+M5/M6 · fiche AR, anonyme, 1280 px : hauteur 4858 px · largeur 1280 px pour une fenêtre de 1280 px · débordement non · boutons du panneau 33
+M7 · fiche AR, anonyme, 1280 px : lang=ar · mois « أكتوبر 2026 » = Intl(ar) : oui · en-têtes courts = Intl : oui · en-têtes longs = Intl : oui · textes 15 : latins 0, arabes 15
+M8 · fiche AR, anonyme, 1280 px : colonnes mises en avant [5,6] (0 = dimanche, D56) · leurs jours ["الجمعة","السبت"]
+CAPTURE panneau-ar.jpg · demandé (sur place) · statut — · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 30300 octets
+CAPTURE 04m-client-fr-salle-360.jpg · demandé http://localhost:3100/fr/salles/salle-des-captures · statut 200 · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 224262 octets
+M5/M6 · fiche FR, anonyme, 360 px : hauteur 6816 px · largeur 364 px pour une fenêtre de 360 px · débordement OUI · boutons du panneau 33
+CAPTURE 16m-client-ar-salle-360.jpg · demandé http://localhost:3100/ar/salles/salle-des-captures · statut 200 · final http://localhost:3100/ar/salles/salle-des-captures · h1 « قاعة » · 212268 octets
+M5/M6 · fiche AR, anonyme, 360 px : hauteur 6716 px · largeur 360 px pour une fenêtre de 360 px · débordement non · boutons du panneau 33
+M7 · fiche AR, anonyme, 360 px : lang=ar · mois « أكتوبر 2026 » = Intl(ar) : oui · en-têtes courts = Intl : oui · en-têtes longs = Intl : oui · textes 15 : latins 0, arabes 15
+M8 · fiche AR, anonyme, 360 px : colonnes mises en avant [5,6] (0 = dimanche, D56) · leurs jours ["الجمعة","السبت"]
+CAPTURE 26-client-fr-salle-connecte.jpg · demandé (sur place) · statut — · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 302819 octets
+M5/M6 · fiche FR, connecté, un jour et un créneau choisis : hauteur 5629 px · largeur 1280 px pour une fenêtre de 1280 px · débordement non · boutons du panneau 35
+CAPTURE panneau-fr-connecte.jpg · demandé (sur place) · statut — · final http://localhost:3100/fr/salles/salle-des-captures · h1 « Salle des captures » · 59627 octets
+FIN · 8 capture(s) tentée(s)

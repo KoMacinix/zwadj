@@ -1,0 +1,60 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/components/venue/booking-date-picker.test.tsx (11 tests | 2 failed) 310ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > les attendus discriminent : le 1er août 2027 est un dimanche, et chaque nom diffère entre français et arabe 4ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 140ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > ar : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 57ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > arabe : aucun nom de mois ni de jour en lettres latines — un contrôle qui ne doit rien à `Intl` 19ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > français : aucun nom en écriture arabe — le bras symétrique 23ms
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras ROUGE : une liste de jours en français, un mois en arabe, un nom dans un gabarit et dans du texte JSX se voient 7ms
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras VERT : un commentaire qui cite les jours, des mots voisins, des clés — rien 5ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > le relevé a lu les cinq fichiers, et des littéraux dans chacun (D290) 0ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > N-b : aucun littéral ne porte un nom de jour ou de mois — ils viennent d'`Intl`, dans la langue de la page 0ms
+   × Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > fr : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 30ms
+     → expected [ 1, 6, 8, 13, 15, 20, 22, 27, 29 ] to deeply equal []
+   × Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > ar : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 20ms
+     → expected [ 1, 6, 8, 13, 15, 20, 22, 27, 29 ] to deeply equal []
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  16:27:23
+   Duration  3.85s (transform 260ms, setup 224ms, collect 1.45s, tests 310ms, environment 1.21s, prepare 246ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-date-picker.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-date-picker.test.tsx > Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > fr : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit
+ FAIL  src/components/venue/booking-date-picker.test.tsx > Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > ar : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit
+AssertionError: expected [ 1, 6, 8, 13, 15, 20, 22, 27, 29 ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   1,
++   6,
++   8,
++   13,
++   15,
++   20,
++   22,
++   27,
++   29,
++ ]
+
+ ❯ src/components/venue/booking-date-picker.test.tsx:221:94
+    219|     });
+    220|     expect(lus.map((c) => c.jour)).toEqual(Array.from({ length: 31 }, …
+    221|     expect(lus.filter((c) => c.weekend !== WEEKEND_DAYS.includes(c.dow…
+       |                                                                                              ^
+    222|     // Deux bras dans le même mois : des jours mis en avant, et des jo…
+    223|     const attendus = lus.filter((c) => WEEKEND_DAYS.includes(c.dow)).l…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+

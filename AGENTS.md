@@ -248,7 +248,7 @@ Deux apps : Client (public, SSR) et Pro (offline-first plus tard). Périmètre a
 | `/salles/nouvelle` | Assistant, étape 1 — **crée la salle** puis part sur `?etape=2` | STATIQUE avant PARAM |
 | `/salles/:id` | Assistant, 7 étapes, `?etape=N` | Édition et création convergent après l'étape 1 |
 | `/demandes` | Demandes de date (hors verrouillées) + rendez-vous de visite | Deux volets, **jamais** une liste unique (D47) |
-| `/calendrier` | Calendrier de la salle | ⚠ `/salles/:id/calendrier` **supprimée** |
+| `/calendrier` | Calendrier de la salle | ⚠ `/salles/:id/calendrier` **supprimée** ⛔ *(D322 : son DERNIER lien vivait encore dans l'assistant d'une salle — `<Route path="*">` le renvoyait vers `/`, sans 404 ; il vise désormais `/calendrier` et y sélectionne la salle éditée, gardé par `calendar-link.test.tsx` ; vérifié dans un navigateur par `docs/preuves/D322/navigateur/`)* |
 | `/reservations` | Dates **verrouillées** (`ACCEPTED` + `CONFIRMED`) | D131 — devient « payées/confirmées » à E3 sans retouche |
 | `/compte` | Salle & profil | |
 | `/auth/connexion`, `/auth/inscription`, `/auth/mot-de-passe-oublie` | Entrées — **fermées à une session ouverte** (D148) | |
@@ -657,8 +657,8 @@ que la certification de D319 s'est écartée de la forme que Ko avait écrite (l
 réutilisés sans le dire) ; si Ko retire la marque, le compteur revient à DEUX. ~~**Rang 29 : en attente d'arbitrage de
 Ko.**~~)* ⛔ *(D321, 01/10/2026 : **D-11 arbitrée par Ko — k1** : « La marque de D319 tient ; les écarts restent annotés. » ⇒
 le compteur **était ZÉRO**. Rang 29 **arbitré par Ko — lot de CODE** (la page de réservation du client) : compteur **ZÉRO →
-UN** à sa clôture.)* ⛔ *(D321, 01/10/2026 : **rang 29 CLOS — compteur UN** ; **rang 30 : en attente d'arbitrage de Ko** ; par
-D-10, le prochain lot de code de l'administration est ADM-1, puis une certification.)*
+UN** à sa clôture.)* ⛔ *(D321, 01/10/2026 : **rang 29 CLOS — compteur UN** ; ~~**rang 30 : en attente d'arbitrage de Ko**~~ ; par
+D-10, le prochain lot de code de l'administration est ADM-1, puis une certification.)* ⛔ *(D322, 02/10/2026 : **rang 30 arbitré par Ko — lot de CODE** (le calendrier, suite) : compteur **UN → DEUX** à sa clôture ⇒ **une certification avant tout autre lot de code** ; **D-10 révisée par Ko**, mot pour mot : « D-10 est révisée : calendrier (ce rang) → certification → ADM-1 → ADM-2 → certification. » ; **rang 31 : en attente d'arbitrage de Ko**.)* ⛔ *(D322, 02/10/2026 : **rang 30 CLOS — compteur DEUX** ⇒ **aucun lot de code ne s'ouvre avant une certification** ; **rang 31 : en attente d'arbitrage de Ko**.)*
 ⛔ **UNE CERTIFICATION QUI S'ÉCARTE DE LA FORME ÉCRITE PAR KO NOMME CET ÉCART DANS SON PROTOCOLE, AVANT LA MESURE — règle de
 Ko, 01/10/2026 (D321, arbitrage D-11), mot pour mot : « Règle pour la suite : une certification qui s'écarte de la forme que
 j'ai écrite nomme cet écart dans son protocole, avant la mesure. »** *Motif, dérivé par la session* : D319 avait écrit le
@@ -1063,7 +1063,7 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   (branche 1) — en pause ou non ? Texte et motif : `ZWADJ_CONTINUITE.md`, méthode renforcée, bloc D320 ; cadrage du rang 28.
   ⛔ *(D321 : question **répondue** — bloc suivant.)*
 - ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D321) — LE RÉGLAGE DES TAUX N'EST PAS JOURNALISÉ PENDANT
-  LA PAUSE.** *Motif* : « écrire le journal dans `setRates` change la transaction d'une écriture d'argent (branche 1) : un
+  LA PAUSE.** ⛔ *(D322, 02/10/2026 — **mot pour mot**, Ko : « le réglage des taux n'est PAS journalisé pendant la pause ». Cette ligne l'a capitalisée en entier ; même correction dans le bloc D321 de `ZWADJ_CONTINUITE.md`.)* *Motif* : « écrire le journal dans `setRates` change la transaction d'une écriture d'argent (branche 1) : un
   journal en échec annulerait le taux. De plus, la v1 n'appelle pas cette route, puisque le taux y est en lecture seule. »
   ⇒ *Dérivé par la session* : le journal arbitré par Ko (D-8) couvre publier, rejeter, approuver ou rejeter une suppression ;
   `setRates` reste **inchangé**. Texte : `ZWADJ_CONTINUITE.md`, méthode renforcée, bloc D321.

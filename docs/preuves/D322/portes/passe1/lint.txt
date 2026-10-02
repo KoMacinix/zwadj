@@ -1,0 +1,23 @@
+# extrait de .neutralisation-journaux/d322/portes/passe1/lint.log · sha256 du journal complet 06f1094de75446466e35fb1f456f4403565f3ae48f2fce037d3f89a1125a75c4 · 22 lignes parcourues · 0 « [WebServer] » retirées · 22 gardées
+
+> zwadj@ lint C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run lint
+
+Scope: 9 of 10 workspace projects
+e2e lint$ eslint .
+packages/i18n lint$ eslint src
+packages/types lint$ eslint src
+packages/ui lint$ eslint src
+packages/i18n lint: Done
+packages/ui lint: Done
+packages/types lint: Done
+e2e lint: Done
+apps/api lint$ eslint src prisma
+packages/api-client lint$ eslint src
+packages/api-client lint: Done
+apps/api lint: Done
+apps/client lint$ eslint src
+apps/pro lint$ eslint src
+apps/client lint: Done
+apps/pro lint: Done
+lint code=0 durée=14s

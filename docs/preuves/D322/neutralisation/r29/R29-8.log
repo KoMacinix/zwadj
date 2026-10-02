@@ -1,0 +1,109 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+stdout | src/components/venue/booking-request-panel.test.tsx
+PLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ❯ src/components/venue/booking-request-panel.test.tsx (21 tests | 2 failed) 2468ms
+   ✓ Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre 221ms
+   ✓ Demande de réservation — les dates > une date libre est cliquable 70ms
+   ✓ Demande de réservation — les dates > GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC 26ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-j : UN mois à la fois — jamais les 182 jours d'un coup 36ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas 183ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-f et C-h : une grille nommée par le mois, la semaine commence DIMANCHE (D56) 29ms
+   × Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : UN arrêt de tabulation dans la grille, et la flèche droite avance d'un jour 55ms
+     → expected [ …(31) ] to deeply equal [ 'lundi 2 août 2027, disponible' ]
+   × Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : EN ARABE, la flèche GAUCHE avance d'un jour — la grille se lit de droite à gauche 32ms
+     → expected 'الأحد، 1 أغسطس 2027، غير متاح' to be 'الاثنين، 2 أغسطس 2027، متاح' // Object.is equality
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif 252ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou 45ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien) 16ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA 110ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur 140ms
+   ✓ Demande de réservation — sans compte > les dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter 101ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps 244ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > avec un e-mail, il est transmis tel quel 279ms
+   ✓ Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32) 122ms
+   ✓ Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide 50ms
+   ✓ Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie 113ms
+   ✓ Prestations — E2d > l'ACOMPTE suit le total prestations comprises 174ms
+   ✓ Prestations — E2d > décocher retire la prestation du total 164ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 19 passed (21)
+   Start at  16:29:12
+   Duration  6.05s (transform 575ms, setup 244ms, collect 1.27s, tests 2.47s, environment 1.32s, prepare 279ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : UN arrêt de tabulation dans la grille, et la flèche droite avance d'un jour
+AssertionError: expected [ …(31) ] to deeply equal [ 'lundi 2 août 2027, disponible' ]
+
+- Expected
++ Received
+
+  [
++   "dimanche 1 août 2027, indisponible",
+    "lundi 2 août 2027, disponible",
++   "mardi 3 août 2027, disponible",
++   "mercredi 4 août 2027, disponible",
++   "jeudi 5 août 2027, disponible",
++   "vendredi 6 août 2027, disponible",
++   "samedi 7 août 2027, disponible",
++   "dimanche 8 août 2027, disponible",
++   "lundi 9 août 2027, disponible",
++   "mardi 10 août 2027, disponible",
++   "mercredi 11 août 2027, disponible",
++   "jeudi 12 août 2027, disponible",
++   "vendredi 13 août 2027, disponible",
++   "samedi 14 août 2027, disponible",
++   "dimanche 15 août 2027, disponible",
++   "lundi 16 août 2027, disponible",
++   "mardi 17 août 2027, disponible",
++   "mercredi 18 août 2027, disponible",
++   "jeudi 19 août 2027, disponible",
++   "vendredi 20 août 2027, disponible",
++   "samedi 21 août 2027, disponible",
++   "dimanche 22 août 2027, disponible",
++   "lundi 23 août 2027, disponible",
++   "mardi 24 août 2027, disponible",
++   "mercredi 25 août 2027, disponible",
++   "jeudi 26 août 2027, disponible",
++   "vendredi 27 août 2027, disponible",
++   "samedi 28 août 2027, disponible",
++   "dimanche 29 août 2027, disponible",
++   "lundi 30 août 2027, disponible",
++   "mardi 31 août 2027, disponible",
+  ]
+
+ ❯ src/components/venue/booking-request-panel.test.tsx:221:61
+    219|     const grille = await screen.findByRole("grid", { name: monthLabel(…
+    220|     const arrets = Array.from(grille.querySelectorAll("button")).filte…
+    221|     expect(arrets.map((b) => b.getAttribute("aria-label"))).toEqual([n…
+       |                                                             ^
+    222|     arrets[0]!.focus();
+    223|     fireEvent.keyDown(arrets[0]!, { key: "ArrowRight" });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : EN ARABE, la flèche GAUCHE avance d'un jour — la grille se lit de droite à gauche
+AssertionError: expected 'الأحد، 1 أغسطس 2027، غير متاح' to be 'الاثنين، 2 أغسطس 2027، متاح' // Object.is equality
+
+Expected: "الاثنين، 2 أغسطس 2027، متاح"
+Received: "الأحد، 1 أغسطس 2027، غير متاح"
+
+ ❯ src/components/venue/booking-request-panel.test.tsx:235:47
+    233|     const grille = await screen.findByRole("grid", { name: monthLabel(…
+    234|     const depart = Array.from(grille.querySelectorAll("button")).find(…
+    235|     expect(depart.getAttribute("aria-label")).toBe(nomJour("2027-08-02…
+       |                                               ^
+    236|     depart.focus();
+    237|     fireEvent.keyDown(depart, { key: "ArrowLeft" });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

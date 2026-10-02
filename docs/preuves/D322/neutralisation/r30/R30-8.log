@@ -1,0 +1,405 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/calendar-link.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/venues/calendar-link.test.tsx (3 tests | 1 failed) 1362ms
+   ✓ Le lien « Calendrier de la salle » de l'assistant (rang 30, D322, K-a à K-c) > K-a, K-c : sa cible est une route DÉCLARÉE — la table de routes y rend le calendrier, et l'adresse reste 248ms
+   × Le lien « Calendrier de la salle » de l'assistant (rang 30, D322, K-a à K-c) > K-b : le calendrier ouvert est celui de la salle ÉDITÉE, pas de la première de la liste 1090ms
+     → expected 'v1' to be 'v2' // Object.is equality
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/salles"
+            >
+              Mes salles
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=...
+   ✓ Le lien « Calendrier de la salle » de l'assistant (rang 30, D322, K-a à K-c) > calibration, bras négatif : l'ANCIENNE cible `/salles/<id>/calendrier` n'est pas une route — elle est quittée 22ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  16:27:37
+   Duration  4.99s (transform 852ms, setup 228ms, collect 1.69s, tests 1.36s, environment 1.18s, prepare 172ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/calendar-link.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/calendar-link.test.tsx > Le lien « Calendrier de la salle » de l'assistant (rang 30, D322, K-a à K-c) > K-b : le calendrier ouvert est celui de la salle ÉDITÉE, pas de la première de la liste
+AssertionError: expected 'v1' to be 'v2' // Object.is equality
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/salles"
+            >
+              Mes salles
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=...
+
+Expected: "v2"
+Received: "v1"
+
+ ❯ src/venues/calendar-link.test.tsx:115:128
+    113|     const venues = rendreA(`/salles/${EDITEE.id}?etape=1`);
+    114|     fireEvent.click(await screen.findByRole("link", { name: TITRE }));
+    115|     await waitFor(() => expect((screen.queryByLabelText(messages.fr.ve…
+       |                                                                                                                                ^
+    116|     // Et la disponibilité demandée est la sienne : le calendrier a bi…
+    117|     await waitFor(() => expect(vi.mocked(venues.availability).mock.cal…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

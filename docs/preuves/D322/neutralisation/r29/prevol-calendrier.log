@@ -1,0 +1,11 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ✓ src/lib/booking-calendar.test.ts (13 tests) 29ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  16:27:45
+   Duration  3.30s (transform 546ms, setup 261ms, collect 957ms, tests 29ms, environment 1.36s, prepare 276ms)
+
+

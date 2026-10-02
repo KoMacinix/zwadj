@@ -1,0 +1,120 @@
+# extrait de .neutralisation-journaux/d322/r25-copie/R25-2.log · sha256 du journal complet 6dc0bf2cc84955d78a3881bbc9c30ee0a6aa7fb31d7e933958be736f7af58a89 · 119 lignes parcourues · 0 « [WebServer] » retirées · 119 gardées (dont 0 « [WebServer] » de statut du compilateur ou du démarrage)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/availability-windows.test.ts (16 tests | 2 failed) 19ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 1 jour(s) : chaque fenêtre passe le schéma du contrat 3ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 92 jour(s) : chaque fenêtre passe le schéma du contrat 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 93 jour(s) : chaque fenêtre passe le schéma du contrat 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 182 jour(s) : chaque fenêtre passe le schéma du contrat 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 281 jour(s) : chaque fenêtre passe le schéma du contrat 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 1 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 92 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 93 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 182 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > 281 jour(s) : ni trou ni chevauchement, et la couverture est EXACTE 0ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > les six mois du panneau font DEUX requêtes, la première à la borne pile 1ms
+   ✓ splitAvailabilityWindow — des fenêtres que le contrat accepte > franchit une fin d'année et un 29 février sans perdre un jour 0ms
+   ✓ mergeAvailabilityWindows — tout ou rien, et rien de recalculé > deux fenêtres : les jours dans l'ordre, les créneaux dédoublonnés 0ms
+   ✓ mergeAvailabilityWindows — tout ou rien, et rien de recalculé > chaque jour est l'objet RENDU PAR LE SERVEUR, pas une copie (MD1-e : aucun prix réécrit) 0ms
+   × mergeAvailabilityWindows — tout ou rien, et rien de recalculé > UNE fenêtre en échec (null) — la seconde — et c'est l'échec du chargement, pas un calendrier partiel 8ms
+     → expected { days: [ { …(3) } ], …(1) } to be null
+   × mergeAvailabilityWindows — tout ou rien, et rien de recalculé > UNE fenêtre sans la forme attendue — la première — et c'est l'échec du chargement 1ms
+     → expected { days: [ { …(3) } ], …(1) } to be null
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 14 passed (16)
+   Start at  16:34:44
+   Duration  2.39s (transform 189ms, setup 230ms, collect 232ms, tests 19ms, environment 1.21s, prepare 257ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/availability-windows.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/availability-windows.test.ts > mergeAvailabilityWindows — tout ou rien, et rien de recalculé > UNE fenêtre en échec (null) — la seconde — et c'est l'échec du chargement, pas un calendrier partiel
+AssertionError: expected { days: [ { …(3) } ], …(1) } to be null
+
+- Expected: 
+null
+
++ Received: 
+{
+  "days": [
+    {
+      "date": "2026-09-27",
+      "isHoliday": false,
+      "slots": [
+        {
+          "priceCents": 18000000,
+          "slotTemplateId": "s1",
+          "status": "AVAILABLE",
+        },
+      ],
+    },
+  ],
+  "slots": [
+    {
+      "endMinutes": 1560,
+      "id": "s1",
+      "nameAr": "s1",
+      "nameFr": "s1",
+      "startMinutes": 1200,
+    },
+  ],
+}
+
+ ❯ src/lib/availability-windows.test.ts:77:71
+     75| 
+     76|   it("UNE fenêtre en échec (null) — la seconde — et c'est l'échec du c…
+     77|     expect(mergeAvailabilityWindows([reponse(["2026-09-27"]), null])).…
+       |                                                                       ^
+     78|   });
+     79| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/availability-windows.test.ts > mergeAvailabilityWindows — tout ou rien, et rien de recalculé > UNE fenêtre sans la forme attendue — la première — et c'est l'échec du chargement
+AssertionError: expected { days: [ { …(3) } ], …(1) } to be null
+
+- Expected: 
+null
+
++ Received: 
+{
+  "days": [
+    {
+      "date": "2026-12-28",
+      "isHoliday": false,
+      "slots": [
+        {
+          "priceCents": 18000000,
+          "slotTemplateId": "s1",
+          "status": "AVAILABLE",
+        },
+      ],
+    },
+  ],
+  "slots": [
+    {
+      "endMinutes": 1560,
+      "id": "s1",
+      "nameAr": "s1",
+      "nameFr": "s1",
+      "startMinutes": 1200,
+    },
+  ],
+}
+
+ ❯ src/lib/availability-windows.test.ts:82:76
+     80|   it("UNE fenêtre sans la forme attendue — la première — et c'est l'éc…
+     81|     const malformee = { venueId: "v1" } as unknown as VenueAvailabilit…
+     82|     expect(mergeAvailabilityWindows([malformee, reponse(["2026-12-28"]…
+       |                                                                            ^
+     83|   });
+     84| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

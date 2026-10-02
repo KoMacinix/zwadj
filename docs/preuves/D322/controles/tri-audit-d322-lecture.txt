@@ -1,0 +1,17 @@
+D322 — lecture au contexte des alertes NEUVES de l'audit scellé (D299 : toute alerte absente de la sortie scellée précédente
+se trie au contexte avant le commit). Tri : controles/tri-audit-d322.txt (précédente : D321/audit-secrets-final.txt, 155
+contextes ; nouvelle : D322/audit-secrets-d322.txt, 160 contextes ; 5 neuves). Contextes lus dans la sortie scellée, lignes
+1034 à 1042 — non recopiés ici (la sortie du tri renvoie aux lignes, elle ne recopie aucun contexte).
+
+1. ligne 1034 · captures/captures.spec.ts:73 — l'appel de connexion du script de captures passe le champ du compte créé par
+   le test (une EXPRESSION de code, `compte.<champ>`), pas une valeur. Même ligne que la pièce de D321, copiée.
+2. ligne 1036 · outils/extraire.py:43 — l'expression régulière qui CHERCHE les jetons dans les journaux (un motif, pas une
+   valeur). Copie à l'octet de l'extracteur de D321 (empreinte b12c5652…, identique).
+3. ligne 1038 · outils/extraire.py:43 — la même ligne, seconde alerte du même motif.
+4. ligne 1040 · portes/passe1/test-int.txt:235 — le TITRE d'un test d'intégration (« … CONSTANTE, mais aucun e-mail ne part »),
+   présent dans 108 fichiers suivis hors preuves.
+5. ligne 1042 · portes/test-int.txt:267 — le même titre, passe 2.
+
+Verdict : 5 sur 5 bénignes (des mots), 0 valeur. Ce qui fait foi sur l'absence de VALEURS : controles/aucune-valeur-reelle.txt
+(171 valeurs de 15 journaux, 109 fichiers parcourus, 0 porteur) et controles/aucun-cookie-reel.txt (381, 15 journaux, 109
+fichiers, 0 porteur).

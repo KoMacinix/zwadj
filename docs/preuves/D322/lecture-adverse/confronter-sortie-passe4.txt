@@ -1,0 +1,129 @@
+== CALIBRATION — deux bras par famille, abandon si un seul manque
+  calibration ✓ résumé vitest, positif : [(4, 39)] (attendu [(4, 39)])
+  calibration ✓ résumé vitest, négatif (échec) : [] (attendu [])
+  calibration ✓ code de porte, positif : (0, 13) (attendu (0, 13))
+  calibration ✓ code de porte, négatif (autre porte) : None (attendu None)
+  calibration ✓ tests d'un fichier, positif : 13 (attendu 13)
+  calibration ✓ tests d'un fichier, négatif : None (attendu None)
+  calibration ✓ feuilles JSON, positif : 3 (attendu 3)
+  calibration ✓ feuilles JSON, négatif (vide) : 0 (attendu 0)
+  calibration ✓ dimensions JPEG, positif (synthétique) : (1280, 14487) (attendu (1280, 14487))
+  calibration ✓ dimensions JPEG, négatif (pas de SOF) : None (attendu None)
+  calibration ✓ indentation, positif : 6 (attendu 6)
+  calibration ✓ indentation, négatif : 0 (attendu 0)
+  calibration ✓ coches D321, positif : (1, 0) (attendu (1, 0))
+  calibration ✓ coches D321, négatif (renvoi absent) : (0, 0) (attendu (0, 0))
+  calibration ✓ corps de fonction, positif : 3 (attendu 3)
+  calibration ✓ corps de fonction, négatif (absent) : [] (attendu [])
+  calibration : 16 bras · 0 manqué(s) (attendu 0)
+
+== P · provenance
+✓ P1    parent du commit de D321 — attendu 'b5bd382' · mesuré 'b5bd382'
+✓ P2    commits après D321 sur origin/main — attendu 0 · mesuré 0
+   fichiers du commit : 129 parcourus · 34 hors docs/preuves/D321/ · table développée : 34
+✓ P3    fichiers hors pièces = table d'ouverture développée (rien de plus, rien de moins) — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'apps/api/src/common/e2e-api-sans-surveillance.spec.ts', 'apps/client/src/app/[locale]/auth/connexion/page.tsx', 'apps/client/src/components/account/account-settings-view.tsx', 'apps/client/src/components/auth/auth-ui.tsx', 'apps/client/src/components/auth/google-signin.tsx', 'apps/client/src/components/auth/recovery-forms.tsx', 'apps/client/src/components/auth/register-form.tsx', 'apps/client/src/components/auth/verify-email-view.tsx', 'apps/client/src/components/site-chrome.tsx', 'apps/client/src/components/venue/booking-date-picker.tsx', 'apps/client/src/components/venue/booking-request-panel.test.tsx', 'apps/client/src/components/venue/booking-request-panel.tsx', 'apps/client/src/components/venue/visit-booking-panel.tsx', 'apps/client/src/lib/booking-calendar.test.ts', 'apps/client/src/lib/booking-calendar.ts', 'apps/client/src/lib/login-path-guard.test.ts', 'apps/client/src/lib/routes.ts', 'apps/pro/src/App.tsx', 'apps/pro/src/auth/auth-ui.tsx', 'apps/pro/src/auth/recovery-pages.tsx', 'apps/pro/src/auth/register-page.tsx', 'apps/pro/src/auth/require-pro.tsx', 'apps/pro/src/routes.test.tsx', 'apps/pro/src/routes.ts', 'e2e/fixtures/panneau-reservation.ts', 'e2e/specs/r25-demande-reservation.e2e.ts', 'e2e/specs/r26-parcours-reservation.e2e.ts', 'neutralisation/neutralize-r26.py', 'neutralisation/neutralize-r29.py', 'packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'apps/api/src/common/e2e-api-sans-surveillance.spec.ts', 'apps/client/src/app/[locale]/auth/connexion/page.tsx', 'apps/client/src/components/account/account-settings-view.tsx', 'apps/client/src/components/auth/auth-ui.tsx', 'apps/client/src/components/auth/google-signin.tsx', 'apps/client/src/components/auth/recovery-forms.tsx', 'apps/client/src/components/auth/register-form.tsx', 'apps/client/src/components/auth/verify-email-view.tsx', 'apps/client/src/components/site-chrome.tsx', 'apps/client/src/components/venue/booking-date-picker.tsx', 'apps/client/src/components/venue/booking-request-panel.test.tsx', 'apps/client/src/components/venue/booking-request-panel.tsx', 'apps/client/src/components/venue/visit-booking-panel.tsx', 'apps/client/src/lib/booking-calendar.test.ts', 'apps/client/src/lib/booking-calendar.ts', 'apps/client/src/lib/login-path-guard.test.ts', 'apps/client/src/lib/routes.ts', 'apps/pro/src/App.tsx', 'apps/pro/src/auth/auth-ui.tsx', 'apps/pro/src/auth/recovery-pages.tsx', 'apps/pro/src/auth/register-page.tsx', 'apps/pro/src/auth/require-pro.tsx', 'apps/pro/src/routes.test.tsx', 'apps/pro/src/routes.ts', 'e2e/fixtures/panneau-reservation.ts', 'e2e/specs/r25-demande-reservation.e2e.ts', 'e2e/specs/r26-parcours-reservation.e2e.ts', 'neutralisation/neutralize-r26.py', 'neutralisation/neutralize-r29.py', 'packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json']
+   (information, aucun attendu affirmé par D321) pièces versées sous docs/preuves/D321/ : 95
+
+== B · borne de D316
+✓ B1    la ligne `setChosen` : une à chaque SHA, CONTENU identique — attendu (1, 1, True) · mesuré (1, 1, True)
+✓ B2    son indentation (constat 1 de la session à froid) — attendu (22, 26) · mesuré (22, 26)
+   le point d'entrée du rang 29 écrit « reste **identique à l'octet** » : True
+✗ B3    « reste identique à l'octet » (point d'entrée du rang 29) tient À LA LETTRE — attendu True · mesuré False
+· B3    CONSTAT : le CONTENU est identique (B1) et la section D321 dit juste — « inchangée (seule son indentation bouge, sous le jour regardé) » ; l'octet ne l'est pas (22 → 26 espaces). Annotation : partie A, point 1 (point d'entrée du rang 29).
+✓ B4    lignes portant « previewDeposit( » : mêmes contenus aux deux SHA (≥ 1 vue) — attendu (True, True) · mesuré (True, True)
+   corps « const submit = async () => { » : 36 ligne(s) à b5bd382 · 36 à 5a362d7
+✓ B5    corps de « const submit = async () => { » : mêmes lignes aux deux SHA (> 1 ligne vue) — attendu (True, True) · mesuré (True, True)
+   corps « const load = useCallback(async () => { » : 18 ligne(s) à b5bd382 · 18 à 5a362d7
+✓ B6    corps de « const load = useCallback(async () => { » : mêmes lignes aux deux SHA (> 1 ligne vue) — attendu (True, True) · mesuré (True, True)
+
+== G · portes
+✓ G1    typecheck : code, « Done » — attendu ((0, 15), 8) · mesuré ((0, 15), 8)
+✓ G2    lint : code, « Done » — attendu ((0, 13), 8) · mesuré ((0, 13), 8)
+✓ G3    test : résumés API · api-client · client · pro — attendu [(59, 667), (4, 39), (24, 333), (29, 349)] · mesuré [(59, 667), (4, 39), (24, 333), (29, 349)]
+✓ G4    test : code et durée — attendu (0, 75) · mesuré (0, 75)
+✓ G5    build : code, « Done » — attendu ((0, 43), 4) · mesuré ((0, 43), 4)
+✓ G6    test:int : 444 sur 36 fichiers, code — attendu ([(36, 444)], (0, 316)) · mesuré ([(36, 444)], (0, 316))
+✓ G7    e2e : 43 réussis, 1 ignoré, code — attendu (True, True, (0, 166)) · mesuré (True, True, (0, 166))
+✓ G8    e2e : 0 « File change detected », 1 démarrage Nest — attendu (0, 1) · mesuré (0, 1)
+✓ G9    tests de src/lib/booking-calendar.test.ts dans l'extrait (« vert » de la section) — attendu 13 · mesuré 13
+✓ G10   tests de src/components/venue/booking-request-panel.test.tsx dans l'extrait (« vert » de la section) — attendu 21 · mesuré 21
+✓ G11   tests de src/lib/login-path-guard.test.ts dans l'extrait (« vert » de la section) — attendu 5 · mesuré 5
+✓ G12   tests de src/routes.test.tsx dans l'extrait (« vert » de la section) — attendu 2 · mesuré 2
+✓ G13   tests de src/common/e2e-api-sans-surveillance.spec.ts dans l'extrait (« vert » de la section) — attendu 3 · mesuré 3
+· G14   CONSTAT : « Avertissement de build Next sur `outputFileTracingRoot` » présent dans l'extrait de build : oui — non mentionné par la section D321 (partie A, point 4).
+
+== N · campagnes
+✓ N1    r29 : 15 mordues sur 15, chacune LUE (AssertionError) — attendu (True, 15) · mesuré (True, 15)
+✗ N2    r29 : la durée « 141 s » figure dans la pièce — attendu True · mesuré False
+✓ N3    r26 : 4 mordues sur 4, code et durée — attendu (True, True) · mesuré (True, True)
+✓ N4    r25 : 10 mordues sur 10 jouées, 1 non mesurée, code 3 — attendu (True, True, True) · mesuré (True, True, True)
+✓ N5    R26-4 se lit par l'expiration d'une assertion Playwright à réessai — attendu True · mesuré True
+· N5    CONSTAT : R26-4 « mord » par `Timed out 7000ms waiting for expect(locator).toHaveCount` : le lecteur de `r26` le compte assertion PAR CONSTRUCTION (bras `_EXPECT` de sa calibration) — c'est la sémantique de Playwright (l'assertion réessaie jusqu'à son délai). La règle R1 « un délai dépassé n'est jamais une morsure » (D305) a été écrite sur vitest ; son extension aux assertions à réessai de Playwright n'est écrite NULLE PART. Sans conséquence ici (R26-4 n'est pas classée au chemin de l'argent) ; question pour le relecteur si une cible de ce chemin mord ainsi.
+✓ T1    fichiers ciblés par r26 inchangés depuis D321 (rejeu légitime) — attendu (True, 2) · mesuré (True, 2)
+   rejeu verifier-mutations r26 : ============================================================================== | POSEES 4   ·   NON POSEES 0   ·   NON COUVERTES 0 | ✓ TOUTES LES MUTATIONS SONT POSEES, ET TOUTES LES CIBLES ONT ETE REGARDEES
+✓ N6    rejeu `verifier-mutations.py r26` : « 4 posées, 0 non posée » (affirmé par D321) — attendu ('4', '0') · mesuré ('4', '0')
+✗ N7    pièce versée portant la sortie de `verifier-mutations.py r26` — attendu True · mesuré False
+✓ T2    harnais : mêmes noms qu'à D321, aucun modifié depuis (rejeu du tri légitime) — attendu (['neutralisation/neutralize-404.py', 'neutralisation/neutralize-act-plafonds.py', 'neutralisation/neutralize-argon2.py', 'neutralisation/neutralize-available-on-api.py', 'neutralisation/neutralize-available-on.py', 'neutralisation/neutralize-b7.py', 'neutralisation/neutralize-booking-status.py', 'neutralisation/neutralize-budgets.py', 'neutralisation/neutralize-e3d1-s8.py', 'neutralisation/neutralize-horizon.py', 'neutralisation/neutralize-horloge.py', 'neutralisation/neutralize-journey.py', 'neutralisation/neutralize-maxprice.py', 'neutralisation/neutralize-r25.py', 'neutralisation/neutralize-r26.py', 'neutralisation/neutralize-r29.py', 'neutralisation/neutralize-r4.py', 'neutralisation/neutralize-rang23.py', 'neutralisation/neutralize-s10a.py', 'neutralisation/neutralize-s10b.py', 'neutralisation/neutralize-s11a.py', 'neutralisation/neutralize-s11b.py', 'neutralisation/neutralize-s9.py', 'neutralisation/neutralize-solid-s1.py', 'neutralisation/neutralize-solid-s2.py', 'neutralisation/neutralize-solid-s3.py', 'neutralisation/neutralize-solid-s4.py', 'neutralisation/neutralize-solid-s5a.py', 'neutralisation/neutralize-solid-s5b.py', 'neutralisation/neutralize-solid-s6.py', 'neutralisation/neutralize-solid-s7.py'], 0) · mesuré (['neutralisation/neutralize-404.py', 'neutralisation/neutralize-act-plafonds.py', 'neutralisation/neutralize-argon2.py', 'neutralisation/neutralize-available-on-api.py', 'neutralisation/neutralize-available-on.py', 'neutralisation/neutralize-b7.py', 'neutralisation/neutralize-booking-status.py', 'neutralisation/neutralize-budgets.py', 'neutralisation/neutralize-e3d1-s8.py', 'neutralisation/neutralize-horizon.py', 'neutralisation/neutralize-horloge.py', 'neutralisation/neutralize-journey.py', 'neutralisation/neutralize-maxprice.py', 'neutralisation/neutralize-r25.py', 'neutralisation/neutralize-r26.py', 'neutralisation/neutralize-r29.py', 'neutralisation/neutralize-r4.py', 'neutralisation/neutralize-rang23.py', 'neutralisation/neutralize-s10a.py', 'neutralisation/neutralize-s10b.py', 'neutralisation/neutralize-s11a.py', 'neutralisation/neutralize-s11b.py', 'neutralisation/neutralize-s9.py', 'neutralisation/neutralize-solid-s1.py', 'neutralisation/neutralize-solid-s2.py', 'neutralisation/neutralize-solid-s3.py', 'neutralisation/neutralize-solid-s4.py', 'neutralisation/neutralize-solid-s5a.py', 'neutralisation/neutralize-solid-s5b.py', 'neutralisation/neutralize-solid-s6.py', 'neutralisation/neutralize-solid-s7.py'], 0)
+✓ N8    tri rejoué : campagnes concernées par les fichiers de D321 (« 2 sur 31 : r25 et r29 ») — attendu (['neutralize-r25.py', 'neutralize-r29.py'], 31) · mesuré (['neutralize-r25.py', 'neutralize-r29.py'], 31)
+✗ N9    pièce versée portant la sortie de `lancer-campagnes.py --liste` — attendu True · mesuré False
+
+== R · rouges lus avant correctif
+✓ R1    C-j : « expected 182 to be less than or equal to 33 » en AssertionError — attendu True · mesuré True
+✓ R2    L-a : 8 champs sans <label> visible (1 nommé + …(7)) — attendu 8 · mesuré 8
+✓ R3    P-a : 21 adresses hors constantes — attendu True · mesuré True
+
+== A · relevé des adresses écrites en dur
+✓ A1    client : fichiers, occurrences, adresses — attendu ('59', '38', '13') · mesuré ('59', '38', '13')
+✓ A2    pro : fichiers, occurrences, adresses — attendu ('49', '40', '15') · mesuré ('49', '40', '15')
+✓ A3    le relevé range la cible du lien mort (`edit-venue-page.tsx:422`, gabarit) parmi « 4 × /calendrier » — attendu True · mesuré True
+· A3    CONSTAT : le lien mort du point 4 du rang 30 était DANS une pièce versée de D321, compté avec la vraie route `/calendrier` — un relevé par TEXTE d'adresse ne dit pas si l'adresse est une route déclarée. Non reproché à D321 (le relevé était en lecture seule, par consigne) ; c'est l'argument de l'entrée « adresses de pages écrites en dur ».
+
+== C · captures de la fiche salle
+✓ C1    fiche FR anonyme 1280 px : 4 950 px, 33 boutons — attendu True · mesuré True
+✓ C2    fiche FR connectée : 5 721 px, 35 boutons — attendu True · mesuré True
+✓ C3    360 px : FR 364 px débordement OUI · AR 360 px non — attendu (True, True) · mesuré (True, True)
+✓ C4    « FIN · 8 » et 8 images versées — attendu (True, 8) · mesuré (True, 8)
+✓ C5    « avant » : dimensions des images 04 et 26 de D316 — attendu ((1280, 14487), (1280, 14798)) · mesuré ((1280, 14487), (1280, 14798))
+✗ C6    la source citée par D321 — « avant (D316, `releve.txt`) » — porte 14 487 — attendu True · mesuré False
+✓ C7    l'en-tête de colonne de D321 cite bien `releve.txt` de D316 — attendu True · mesuré True
+
+== E · les 62 entrées « RÉALISÉ »
+   backlog à 5a362d7 : 5131 lignes parcourues
+✓ E1    renvois « réalisé — re-confronté » de D321 : cochés / non cochés — attendu (61, 0) · mesuré (61, 0)
+✓ E2    B:650 annotée « NE TIENT PAS », laissée ouverte — attendu 1 · mesuré 1
+✓ E3    sortie versée : TIENT 61 · NE TIENT PAS 1 — attendu True · mesuré True
+   sondes : 81 parcourues · carte des routes 18 · motif dans un fichier 60 · migrations 1 · autres 2 · exécution d'un test 0 (attendu 0)
+✓ E4    aucune sonde n'EXERCE un comportement (constat 2 de la session à froid) — attendu 0 · mesuré 0
+· E4    CONSTAT : la preuve des 61 est la PRÉSENCE d'ancres dans le code — une route dans la carte des décorateurs, un motif hors commentaire, une migration : c'est le niveau `L` de D315 (« lu dans le code, non exercé »). Les mots « réalisé » et « tiennent » ne le disent pas. Annotation : partie A, point 2.
+
+== I · parité FR = AR
+✓ I1    feuilles FR / AR à D321, FR avant — attendu (1098, 1098, 1095) · mesuré (1098, 1098, 1095)
+✓ I2    les trois clés neuves, FR et AR, absentes avant — attendu (True, True, False) · mesuré (True, True, False)
+
+== M · décision du relecteur
+   bloc D321 : forme en capitales présente : True
+✗ M1    bloc D321 : la phrase de Ko y est MOT POUR MOT (« le réglage des taux n'est PAS journalisé pendant la pause ») — attendu True · mesuré False
+· M1    CONSTAT : mêmes mots, casse différente : la phrase de Ko porte « PAS » seul en capitales ; le bloc l'a entièrement capitalisée (« écrite telle quelle », dit-il). Partie A, point 3 : la forme de Ko s'écrit mot pour mot dans le bloc.
+
+== D · passe D277 et audits
+✓ D1    instrument de la passe D277 : copie à l'octet (24802faf…) — attendu '24802faf' · mesuré '24802faf'
+   motifs comptés : après écriture 20 · contrôle 20
+✓ D2    « contrôle » rend les mêmes comptes que « après écriture » (sur > 0 motifs) — attendu (True, True) · mesuré (True, True)
+✓ D3    « 0 valeur réelle » : 0 porteur ; cookies : 0 porteur — attendu (True, True) · mesuré (True, True)
+✓ D4    tri de l'audit final : 0 alerte neuve — attendu True · mesuré True
+
+== L · la lecture adverse de D320, faite par D321
+✓ L1    « 69 contrôles · 1 écart · 5 constats » — attendu True · mesuré True
+✓ L2    sorties versées : passes 1, 2 et finale — la passe 3 perdue, comme D321 le déclare (faute n° 1) — attendu ['confronter-sortie-passe1.txt', 'confronter-sortie-passe2.txt', 'confronter-sortie.txt'] · mesuré ['confronter-sortie-passe1.txt', 'confronter-sortie-passe2.txt', 'confronter-sortie.txt']
+
+== O · ordre des rangs et registre
+✓ O1    dernière ligne du registre — attendu 'D321' · mesuré 'D321'
+✓ O2    « ⇒ **RANG 30 : EN ATTENTE D'ARBITRAGE DE KO** » non barrée dans l'ordre des rangs — attendu True · mesuré True
+✓ O3    compteur écrit à la clôture : « ZÉRO → UN » — attendu True · mesuré True
+✓ O4    limite de D321 sur l'arabe : les noms de CRÉNEAUX, prestations, paliers — pas de jours ni de mois — attendu (True, False) · mesuré (True, False)
+· O4    CONSTAT : la prémisse du point 1 du rang 30 (« en arabe, ils sont en français — limite déclarée par D321 ») ne se trouve PAS dans D321 : sa limite porte sur les noms de créneaux, de prestations et de paliers.
+
+== BILAN
+   ventilation par famille : A 3 · B 6 · C 7 · D 4 · E 4 · G 13 · I 2 · L 2 · M 1 · N 9 · O 4 · P 3 · R 3 · T 2
+   63 contrôles · 6 écart(s) ['B3', 'N2', 'N7', 'N9', 'C6', 'M1'] · 7 constat(s) ['B3', 'G14', 'N5', 'A3', 'E4', 'M1', 'O4']
+   NON VÉRIFIABLE ici (chat seulement) : les paroles de Ko et du relecteur transmises en ouverture du rang 29 ; le récit de la session à froid.

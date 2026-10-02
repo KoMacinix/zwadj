@@ -1,0 +1,31 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration : 7 bras · 0 manqué(s) (attendu 0)
+cibles : 8 déclarées · 8 jouées (unit)
+  pré-vol calendrier-noms : code 0 · passés 11 · en échec 0
+  pré-vol lien-pro : code 0 · passés 3 · en échec 0
+✓ R30-1. N-a : les en-têtes de jours ignorent la langue de la page — toujours en FRANÇAIS (vu en arabe)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 2 · AssertionError: expected [ Array(7) ] to deeply equal [ Array(7) ]
+✓ R30-2. N-a : les en-têtes de jours ignorent la langue de la page — toujours en ARABE (vu en français)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 2 · AssertionError: expected [ Array(7) ] to deeply equal [ Array(7) ]
+✓ R30-3. N-a : le nom du mois sort toujours en ARABE (vu en français)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 2 · AssertionError: expected 'أغسطس 2027' to be 'août 2027' // Object.is equality
+✓ R30-4. N-a : la date longue — le nom accessible d'un jour — sort toujours en FRANÇAIS (vu en arabe)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 10 · en échec 1 · AssertionError: expected +0 to be 1 // Object.is equality
+✓ R30-5. ⛔ N-b : une LISTE de jours écrite en dur dans la vue — juste en français, fausse en arabe
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 8 · en échec 3 · AssertionError: expected [ …(7) ] to deeply equal []
+✓ R30-6. W-a, W-b : le week-end mis en avant est écrit dans la vue, samedi-dimanche (la convention CLDR, pas D56)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 2 · AssertionError: expected [ 1, 6, 8, 13, 15, 20, 22, 27, 29 ] to deeply equal []
+✓ R30-7. ⛔ K-a : LE DÉFAUT RESTAURÉ — le lien vise `/salles/<id>/calendrier`, route supprimée par D130
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 1 · en échec 2 · AssertionError: expected 'Nouvelle réservation' to be 'Calendrier de la salle' // Object.is equality
+✓ R30-8. K-b : le lien ne sélectionne plus la salle éditée — le calendrier ouvert est celui de la PREMIÈRE salle
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 2 · en échec 1 · AssertionError: expected 'v1' to be 'v2' // Object.is equality
+  empreintes : 4 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+8 garde(s) mordue(s) sur 8 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 8 sur 8)
+arbre rendu à son état de départ : vérifié.

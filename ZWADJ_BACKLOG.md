@@ -753,7 +753,7 @@
 - [x] **B4c** — variantes de prix par créneau (`pricing-rules-editor.tsx`). **D53 : une saison PEUT enjamber décembre** (nov→fév) — aucune validation d'ordre côté écran, les mois couverts sont affichés. Type non modifiable, ordre de résolution ANNONCÉ (sinon le pro croit à un cumul). [PRO][P0]
 - [x] **B4d** — volet blocages (`blocks-section.tsx`). **D54 : la date de fin est INCLUSIVE à l'écran**, exclusive dans l'API — « du 3 au 10 » doit bloquer le 10. [PRO][P0]
 - [x] **B5** — calendrier client (prix par date × créneau, sélection). **D56 : semaine du DIMANCHE au samedi**, week-end vendredi-samedi. Le prix d'une case est le minimum des créneaux **réellement libres**. [FRONT][P0]
-- [x] **B6** — calendrier de la salle côté PRO (l'écran du design), route `/salles/:id/calendrier`. **LECTURE SEULE**, consomme l'endpoint **public** : un endpoint pro parallèle finirait par répondre autrement et le pro verrait autre chose que ses clients. ⚠ La légende « Acompte reçu » du design appartient au **lot Réservations**, pas ici. [PRO][P0]
+- [x] **B6** — calendrier de la salle côté PRO (l'écran du design), route `/salles/:id/calendrier`. **LECTURE SEULE** ⛔ *(D322 : route **supprimée par UIP-A (D130)** ; son dernier lien, dans l'assistant d'une salle, menait encore vers elle — réparé au rang 30, il vise `/calendrier`)*, consomme l'endpoint **public** : un endpoint pro parallèle finirait par répondre autrement et le pro verrait autre chose que ses clients. ⚠ La légende « Acompte reçu » du design appartient au **lot Réservations**, pas ici. [PRO][P0]
 - [x] **UI-N1** — navigation principale du site client (`site-nav.tsx`). ⚠ `usePathname` DOIT venir de `../i18n/navigation` (rend `/salles`) et non de `next/navigation` (rend `/fr/salles`) : l'erreur casserait l'onglet actif **en arabe seulement**. [FRONT][P0]
 - [x] **Dette de test soldée** — `apps/pro/src/test-support/client-doubles.ts` : `VenueProClient` était recopié dans **sept** fichiers, ~230 lignes supprimées. [FRONT][P1]
 
@@ -1991,7 +1991,8 @@ ancrées que par leur section.
       n'est pas fermée** — l'absence est même compatible avec l'hypothèse de tête (course
       keep-alive undici ↔ serveur Node, qui dépend du délai entre appels et de la charge).
       L'instrumentation reste armée : à la prochaine occurrence, relever la CHAÎNE DES
-      CAUSES et rouvrir avec elle. Arbitrage toujours en attente sur une nouvelle
+      CAUSES et rouvrir avec elle.
+      ⛔ *(D322, 02/10/2026 : **RÉAPPARU, chaîne des causes relevée** — détail dans l'entrée `[E2E][P0]` ci-dessous.)* Arbitrage toujours en attente sur une nouvelle
       tentative en mise en place.
 
 - [x] **[E2E]** Les quinze tests B7/B8 masqués ont réellement tourné — compte réconcilié
@@ -2035,6 +2036,7 @@ ancrées que par leur section.
       tentative sur les erreurs de CONNEXION dans le harnais ? Le `retries: 0` de la
       config vise les ASSERTIONS ; réessayer une mise en place n'est pas la même chose.
       Décision non prise.
+      ⛔ *(D322, 02/10/2026 — **DEUX OCCURRENCES, ET L'INSTRUMENTATION A PARLÉ** : « `TypeError: fetch failed` ← `Error [ECONNRESET]: read ECONNRESET` », sur `POST /auth/register` (le `fetch` global), après **4 puis 7 ms**, au premier appel de la spec neuve du rang 30 (`r30-lien-calendrier-pro`, dans `beforeAll` → `createPublishedVenue`), dans la suite COMPLÈTE à deux workers, **deux passes sur deux** ; l'API **n'a pas redémarré** (« Nest application successfully started » ×1, « File change detected » ×0) ⇒ **la seconde piste est écartée pour ces deux occurrences**. **Jouée seule** (×2), ou **après la même spec voisine sur un seul worker** (×1) : **verte**. Hypothèse mise à l'épreuve : le semis (`seedReferentials`, `execFileSync`, **5,2 à 5,4 s** mesurés, au ras du `keepAliveTimeout` de 5 s du serveur) figerait la boucle et laisserait réutiliser une socket que le serveur ferme — **NON reproduite** dans un montage isolé (bras « blocage 7 s » négatif ; **0 échec sur 33 essais** de 4,6 à 5,6 s). **La cause reste inconnue** ; ce qui est établi : elle dépend de la suite complète, pas de la spec seule. La spec a **quitté `e2e/specs/`** pour ne pas rendre la suite rouge avant la certification (versée, `docs/preuves/D322/navigateur/`). Pièces : `docs/preuves/D322/navigateur/` (extraits des passes) et `docs/preuves/D322/mesures/` (montages, durée du semis). ⇒ **BLOQUE** : le retour de cette spec dans la suite ; ⇒ l'arbitrage sur une nouvelle tentative reste **dû à Ko**.)*
 
 - [ ] **[A11Y][P1]** **`.filters-reset` et `.range-value` sont TOLÉRÉES depuis toujours**
       dans `a11y.json` (`client recherche de salles`). `--accent-text` (D264) les rend
@@ -2472,10 +2474,65 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 02/10/2026 — rang 30, le calendrier, suite (D322)
+
+Détail : section D322 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302). ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** :
+les **61 entrées** cochées par D321 annotées « niveau `L` » (en-tête des reports de D321 et entrée `[DOC]` des 62) ; les
+entrées de D321 « `REQUESTED` », « deux calendriers » et « adresses de pages écrites en dur », annotées ; les deux entrées du `fetch failed` de D265 (`[E2E][P1]` et `[E2E][P0]`), **annotées** de ses deux occurrences et de leur chaîne des causes ; l'entrée B6 (`/salles/:id/calendrier`) et l'entrée `[DOC][P3]` « POURQUOI (b) », annotées.
+
+**Partie A (documentaire)** :
+- [ ] **[INFRA]** **L'avertissement de build Next « inferred your workspace root » / `outputFileTracingRoot`** — à chaque `next
+  build` : « We detected multiple lockfiles and selected the directory of `C:\Users\benla\package-lock.json` as the root
+  directory ». **Cause, lue dans le message** : un `package-lock.json` **hors dépôt**, dans le dossier personnel du poste de Ko,
+  daté du 24/03/2026 (`stat`, hors `git`) ; Next prend ce dossier pour racine de l'espace de travail. **Ancienneté relevée par
+  `git`** : présent dans **14 journaux de build Next versés sur 14** (`docs/preuves/D291` → `D321`) ; le plus ancien est celui de
+  D291, commit `0fd62fb` du **13/09/2026** — et `docs/preuves/` n'existe que depuis `f8b578d` (13/09/2026) : **aucune pièce
+  antérieure ne peut dire s'il précède**, l'ancienneté réelle peut être plus grande. Jamais mentionné par une section avant
+  ce lot (contrôle G14 de la lecture adverse de D321). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : soit retirer le lockfile **hors
+  dépôt** (aucun fichier du dépôt, aucune porte touchée — geste sur le poste) ; soit poser `outputFileTracingRoot` dans
+  `apps/client/next.config.ts` (**code, compte** ; client seul ; `pnpm build` à relire) ; ⚠ **ne mord que sur ce poste** tant
+  que le build de production se fait ailleurs — mais une racine fausse change ce que Next **trace** pour un déploiement
+  `standalone`, s'il est un jour choisi.
+
+**Partie B (code) — ce que le lot a VU sans le corriger** (un défaut croisé se rapporte, il ne se corrige pas en passant) :
+- [ ] **[CLIENT]** **Le jour déjà demandé (`REQUESTED`) — DÉCISION PRODUIT DUE À KO** (point 2 du rang 30, arrêté sur consigne) :
+  mesures et citations dans l'entrée de D321 « Un créneau `REQUESTED` n'est pas choisissable », annotée. ⇒ **BLOQUE** : rien
+  d'ouvert. ⇒ **COÛT** (si Ko l'ouvre) : code (compte) — le prédicat du jour choisissable (`apps/client/src/lib/booking-calendar.ts`)
+  et celui du créneau (`booking-request-panel.tsx`), un texte au catalogue FR et AR (parité), leurs tests ; e2e : `r25`/`r26`
+  à relire ; ⚠ `booking-request-panel.tsx` porte `setChosen` (borne de D316) : la ligne ne bouge pas, mais le relecteur classe
+  le changement avant tout code (D304 : en cas de doute, demander).
+- [ ] **[CLIENT][PRO]** **Le week-end est défini DEUX fois** — `WEEK_START_DAY` et `WEEKEND_DAYS` dans
+  `apps/client/src/lib/calendar.ts` ET dans `apps/pro/src/venues/pro-calendar.ts`, chacun avec sa spec (`calendar.spec.ts`,
+  `pro-calendar.spec.ts`). Les deux codent D56 et disent la même chose aujourd'hui ; « un seul endroit par formule »
+  (`AGENTS.md`) — le jour où l'une bouge, l'autre non, et aucun test ne rougit. Relevé au point 3 du rang 30, **non
+  corrigé** (hors de la demande). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code (compte) ; la constante monte dans
+  `@zwadj/types` (comme le fuseau, D48), les deux applications l'importent, les deux specs s'y confrontent ; e2e : non.
+- [ ] **[I18N][CLIENT]** **En arabe, les noms de mois sont ceux de l'arabe GÉNÉRAL, pas de l'Algérie** — la page déclare
+  `lang="ar"`, et `Intl` rend pour `ar` « يناير · فبراير · مارس · أبريل · مايو · يونيو · يوليو · أغسطس… », pour `ar-DZ`
+  « جانفي · فيفري · مارس · أفريل · ماي · جوان · جويلية · أوت… » (mesuré, Node 22.14, ICU 76.1 ; le navigateur suit la même
+  donnée CLDR). La consigne du rang 30 — « dans la langue de la page » — est **tenue** ; quelle langue la page DOIT
+  déclarer (`ar` ou `ar-DZ`) est une **décision produit**, qui touche aussi les nombres et les dates de toute l'application
+  arabe, pas le seul calendrier. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : décision d'abord ; puis code (compte) — la locale
+  passée à `Intl` (et peut-être à next-intl), les deux applications ; relecture arabe ; e2e AR à relire.
+- [ ] **[TEST][MÉTHODE]** **Une assertion Playwright qui EXPIRE compte-t-elle comme une morsure sur le chemin de
+  l'argent ?** — R26-4 (D321) « mord » par « `Timed out 7000ms waiting for expect(locator).toHaveCount` » : le lecteur de
+  `neutralize-r26.py` la range parmi les assertions **par construction** (bras `_EXPECT` de sa calibration), et c'est la
+  sémantique de Playwright (l'assertion réessaie jusqu'à son délai). Mais la règle R1 « **un délai dépassé n'est jamais une
+  morsure** » (D305) a été écrite sur vitest, et son extension aux assertions à réessai de Playwright n'est écrite **nulle
+  part**. Sans conséquence aujourd'hui (R26-4 n'est pas classée au chemin de l'argent) ; relevé par la lecture adverse de
+  D321 (constat N5). ⇒ **BLOQUE** : la reprise de R1, pour ses harnais e2e (`r25`, `r26`) ; **question au relecteur**. ⇒
+  **COÛT** : décision d'abord ; puis documentaire, ou code d'instrument (le lecteur de `r26` et de `r25`) qui compte.
+- [ ] **[E2E]** **La vérification navigateur du lien « Calendrier de la salle » est une PIÈCE, pas une spec de la suite** —
+  `docs/preuves/D322/navigateur/r30-lien-calendrier-pro.e2e.ts` a donné son rouge et son vert jouée seule ; dans la suite
+  complète elle est tombée **deux fois sur deux** dans sa mise en place (`ECONNRESET` sur `POST /auth/register` — le `fetch
+  failed` de D265, annoté ci-dessus). Sortie de `e2e/specs/` pour ne pas rendre la suite rouge avant la certification. ⇒
+  **BLOQUE** : rien d'ouvert ; **son retour dans la suite attend la cause de D265** (ou l'arbitrage de Ko sur une nouvelle
+  tentative). ⇒ **COÛT** : un fichier de test e2e (compte) ; e2e : la suite complète, deux workers.
+
 ## Reports du 01/10/2026 — rang 29, la page de réservation du client (D321)
 
 Détail : section D321 et cadrage du rang 28, § 6, de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302). ⚠ **Ce que ce lot a écrit
-AILLEURS dans ce fichier** : **61 entrées cochées** avec renvoi et **1 annotée sans être cochée** (B:650, « ± » et bornes
+AILLEURS dans ce fichier** : **61 entrées cochées** avec renvoi ⛔ *(D322 : preuve de niveau `L` de D315 — la PRÉSENCE d'ancres dans le code, **aucun comportement exercé** ; contrôle E4, `docs/preuves/D322/lecture-adverse/`.)* et **1 annotée sans être cochée** (B:650, « ± » et bornes
 absents) — les 62 « RÉALISÉ » de D315 re-confrontées au code à `b5bd382` (`docs/preuves/D321/entrees/`) ; l'en-tête « No
 `apps/admin` » et la décision de la PHASE 12 (**tiennent**, D-1) ; D23 (« Pro auth + role-gated routing », D-1) ; la MFA
 admin (D-7) ; « Integrate transactional email provider » (le lot de l'e-mail réel, D-5).
@@ -2519,7 +2576,7 @@ admin (D-7) ; « Integrate transactional email provider » (le lot de l'e-mail r
   par le relecteur avant tout code.
 - [ ] **[CLIENT]** **La fiche salle porte DEUX calendriers** — celui de disponibilité et de prix (B5, `availability-calendar.tsx`,
   18 mois, un appel par mois) et celui du panneau de demande (rang 29, la fenêtre de six mois déjà chargée). Même grille,
-  mêmes classes, deux sources. ⇒ **À ordonner par Ko** (fusion, retrait de l'un, ou statu quo). ⇒ **COÛT** : code (compte) ;
+  mêmes classes, deux sources. ⇒ **À ordonner par Ko** (fusion, retrait de l'un, ou statu quo). ⛔ *(D322 : toujours vrai à `5a362d7` ; **non traité au rang 30**, consigne de Ko : « Ne les traite pas dans ce lot ». Le rang 30 a ajouté une GARDE sur la vue du panneau (noms, week-end) ; celle de B5 partage la grille (`lib/calendar.ts`) et la garde de source des noms la lit aussi.)* ⇒ **COÛT** : code (compte) ;
   client seul ; e2e : la fiche ; ⚠ le calendrier B5 affiche des prix (formatés, reçus du serveur — hors du chemin de l'argent
   par le principe de direction, D307).
 - [ ] **[CLIENT]** **Un créneau `REQUESTED` n'est pas choisissable dans le panneau**, alors que le serveur accepte qu'une
@@ -2527,11 +2584,13 @@ admin (D-7) ; « Integrate transactional email provider » (le lot de l'e-mail r
   "AVAILABLE"`), conservé tel quel par la borne de D316. Écart ou choix ? **Non tranché ici.** ⇒ **À ordonner par Ko.** ⇒
   **COÛT** : décision d'abord ; puis code (compte), une ligne et ses tests ; ⚠ transport de la date vers le prix : classement
   par le relecteur.
+  ⛔ *(D322, 02/10/2026 — **point 2 du rang 30 : MESURÉ, puis ARRÊTÉ ET RAPPORTÉ**, consigne de Ko, mot pour mot : « Si rien ne tranche : arrête ce point et rapporte-le-moi. C'est une décision produit. » (a) **L'ancien panneau ne le permettait pas** : à `b5bd382`, `const free = slot.status === "AVAILABLE"` désactivait le créneau `REQUESTED` (affiché « pris »), et c'est sa ligne d'origine (`909702a`, création du fichier) ⇒ **pas une régression** ; (b) **l'API l'accepte** : test d'intégration « DEUX demandes concurrentes sur la même date coexistent en PENDING » (201 puis 201), rejoué vert par `test:int` de D322 ; (c) **les décisions écrites règlent le MODÈLE et l'affichage, pas ce que le PANNEAU offre** — `AGENTS.md` : « Chevauchement de créneaux entre demandes "pending" est autorisé (la salle tranche manuellement laquelle accepter) » ; B3 : « `REQUESTED` ne verrouille rien mais **on le dit** » ; D101 de `booking.ts` (une demande en attente « ne grise RIEN dans la liste publique ») ⇒ **rien ne tranche**. **Aucun code.** ⇒ **BLOQUE** : rien d'ouvert ; **décision produit due à Ko** (rendre le créneau choisissable avec un avis « d'autres demandes sont en attente », ou le garder fermé — par écrit). Mesures : `docs/preuves/D322/mesures/`.)*
 - [ ] **[CLIENT][PRO]** **Les autres adresses de pages écrites en dur** — relevé en lecture seule, consigne de Ko : client
   **38** occurrences de **13** adresses (dont la constante de connexion), pro **40** de **15** (dont la constante, et `/auth/me`
   qui est une route d'API — faux positif lu au contexte). Détail : `docs/preuves/D321/adresses/releve.txt`. Les plus
   fréquentes : `/salles` (12 côté client, 9 côté pro), `/calendrier`, `/salles/nouvelle` (4 chacune côté pro). ⇒ **À ordonner
-  par Ko.** ⇒ **COÛT** : code (compte) ; les deux applications ; patron prêt (`LOGIN_PATH` et sa garde).
+  par Ko.**
+  ⛔ *(D322, 02/10/2026 — **UN EXEMPLE MESURÉ DE CE QUE COÛTE UNE ADRESSE ÉCRITE EN DUR**, consigne de Ko : le lien « Calendrier de la salle » de l'assistant pro (`apps/pro/src/venues/edit-venue-page.tsx:422` à `5a362d7`, gabarit `` `/salles/${state.venue.id}/calendrier` ``) visait une route **supprimée par UIP-A (D130)** ; `<Route path="*">` le redirigeait vers `/`, **sans 404** — rouge lu dans Chromium : « Expected …/calendrier · Received …/ ». ⚠ **Il figurait DANS ce relevé**, compté parmi « 4 × /calendrier » avec la vraie route (`docs/preuves/D321/adresses/releve.txt`) : un relevé par TEXTE ne dit pas si l'adresse est une route déclarée. **Réparé au rang 30** (point 4) ; le patron de sa garde — la table de routes RÉELLE rend la page À l'adresse du lien, sans la quitter (`apps/pro/src/venues/calendar-link.test.tsx`) — vaut pour les autres adresses. L'entrée reste **à ordonner par Ko**.)* ⇒ **COÛT** : code (compte) ; les deux applications ; patron prêt (`LOGIN_PATH` et sa garde).
 - [ ] **[TEST]** **Des tests écrivent encore l'adresse de connexion en dur** — hors de la portée de LA garde, qui ne lit que
   les sources (écrit dans son en-tête) : `apps/client/src/components/auth/google-signin.test.tsx` (attendu
   `"http://localhost:5173/auth/connexion"`), `login-form.test.tsx` (`usePathname`), `apps/pro/src/App.test.tsx` (quatre
@@ -2728,7 +2787,7 @@ désormais « RANG 25 »). **Aucune entrée n'a été cochée ni barrée** : les
   la fois), soit l'API (`account.controller.ts` : changer la réponse est un **contrat d'API**, à demander avant, `CLAUDE.md`) ;
   e2e exigée (auth, compte) ; chemin de l'argent : non ; migration : non.
 - [x] ✅ *(D321, 01/10/2026 : **ordonné par Ko et FAIT pour les 62** — « Re-confronte chacune à HEAD… Coche celles qui
-  tiennent, avec renvoi » : **61 cochées**, **1 ne tient pas** (B:650, ni « ± » ni bornes — annotée, laissée ouverte) ;
+  tiennent, avec renvoi » : **61 cochées**, **1 ne tient pas** (B:650, ni « ± » ni bornes — annotée, laissée ouverte) ; ⛔ *(D322 : preuve de niveau `L` de D315 — la PRÉSENCE d'ancres dans le code, **aucun comportement exercé** ; contrôle E4, `docs/preuves/D322/lecture-adverse/`.)*
   `docs/preuves/D321/entrees/`. ⚠ Les **constats faux** nommés ci-dessous (B:571, B:781, « DÉFAUT B ») ne sont pas dans la
   consigne : ils restent, entrée neuve aux reports de D321.)*
   **[DOC]** **62 entrées ouvertes des phases 6, 8, 9, 10 et 12 sont RÉALISÉES dans le code**, et quelques-unes portent un
@@ -3543,7 +3602,7 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D320, 01/10/2026 : il suit désormais
   l'arbitrage et la clôture du rang 28, les décisions dues à Ko de D320 et « RANG 29 : EN ATTENTE D'ARBITRAGE DE KO » —
   même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D321, 01/10/2026 : il suit désormais l'arbitrage du rang 29 et
-  « RANG 30 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
+  « RANG 30 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D322, 02/10/2026 : il suit désormais l'arbitrage du rang 30 et « RANG 31 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

@@ -1,0 +1,54 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+stdout | src/components/venue/booking-request-panel.test.tsx
+PLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ❯ src/components/venue/booking-request-panel.test.tsx (21 tests | 1 failed) 3098ms
+   ✓ Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre 211ms
+   ✓ Demande de réservation — les dates > une date libre est cliquable 58ms
+   ✓ Demande de réservation — les dates > GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC 26ms
+   × Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-j : UN mois à la fois — jamais les 182 jours d'un coup 92ms
+     → expected 186 to be less than or equal to 33
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas  554ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-f et C-h : une grille nommée par le mois, la semaine commence DIMANCHE (D56) 42ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : UN arrêt de tabulation dans la grille, et la flèche droite avance d'un jour 190ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : EN ARABE, la flèche GAUCHE avance d'un jour — la grille se lit de droite à gauche 143ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif 245ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou 48ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien) 17ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA 94ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur 92ms
+   ✓ Demande de réservation — sans compte > les dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter 99ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps 268ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > avec un e-mail, il est transmis tel quel 255ms
+   ✓ Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32) 130ms
+   ✓ Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide 54ms
+   ✓ Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie 153ms
+   ✓ Prestations — E2d > l'ACOMPTE suit le total prestations comprises 171ms
+   ✓ Prestations — E2d > décocher retire la prestation du total 152ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  16:28:36
+   Duration  6.43s (transform 500ms, setup 233ms, collect 1.14s, tests 3.10s, environment 1.20s, prepare 301ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-j : UN mois à la fois — jamais les 182 jours d'un coup
+AssertionError: expected 186 to be less than or equal to 33
+ ❯ src/components/venue/booking-request-panel.test.tsx:183:55
+    181|     await waitFor(() => expect(panneau.querySelectorAll("button").leng…
+    182|     // Un mois a au plus 31 jours, plus les deux boutons de navigation…
+    183|     expect(panneau.querySelectorAll("button").length).toBeLessThanOrEq…
+       |                                                       ^
+    184|   });
+    185| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

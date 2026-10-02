@@ -1,0 +1,44 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/login-path-guard.test.ts (5 tests | 1 failed) 16ms
+   ✓ LOGIN_PATH — calibration du relevé, deux bras (D286) > bras ROUGE : un littéral posé ailleurs se voit — attribut JSX, gabarit, texte JSX, ancienne cible 3ms
+   ✓ LOGIN_PATH — calibration du relevé, deux bras (D286) > bras VERT : un commentaire qui la cite, une déconnexion, un chemin voisin — rien 1ms
+   ✓ LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > le relevé a parcouru les deux applications et y a trouvé leurs constantes (D290 : un zéro sur zéro ne mesure rien) 1ms
+   × LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > P-a : aucune adresse de connexion ailleurs que dans les deux constantes 8ms
+     → expected [ Array(1) ] to deeply equal []
+   ✓ LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > P-c : le lien du client vers la connexion PRO vise la route que le pro déclare 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  16:29:44
+   Duration  3.20s (transform 79ms, setup 255ms, collect 987ms, tests 16ms, environment 1.27s, prepare 259ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/login-path-guard.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/login-path-guard.test.ts > LOGIN_PATH — l'adresse de connexion n'est écrite QUE dans la constante (rang 29, D321) > P-a : aucune adresse de connexion ailleurs que dans les deux constantes
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "apps/client/src/components/site-chrome.tsx:57 « /auth/connexion »",
++ ]
+
+ ❯ src/lib/login-path-guard.test.ts:128:22
+    126|       .filter(([chemin]) => !(CONSTANTES as readonly string[]).include…
+    127|       .flatMap(([chemin, occ]) => occ.map((o) => `${chemin}:${o.ligne}…
+    128|     expect(ailleurs).toEqual([]);
+       |                      ^
+    129|   });
+    130| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
