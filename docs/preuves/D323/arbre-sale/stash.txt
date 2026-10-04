@@ -1,0 +1,21 @@
+D323 — LE STASH, ET LA VÉRIFICATION « ARBRE PROPRE » (04/10/2026, après le versement de ORIGINE.txt et du diff)
+================================================================================================================
+
+commande   git stash push -m "D323 : 8 lignes de Ko, edit-venue-page.tsx, création de salle, 02/10" -- apps/pro/src/venues/edit-venue-page.tsx
+sortie     « Saved working directory and index state On main: D323 : 8 lignes de Ko, edit-venue-page.tsx, création de salle, 02/10 »  (code 0)
+liste      stash@{0}: On main: D323 : 8 lignes de Ko, edit-venue-page.tsx, création de salle, 02/10     (1 stash ; 0 avant la commande)
+sha        85a7f052e902835c943d78335a0d34ea1af5f39a
+contenu    `git show --stat stash@{0}` : « apps/pro/src/venues/edit-venue-page.tsx | 8 ++++++++ — 1 file changed, 8 insertions(+) »
+
+ARBRE PROPRE — vérifié, chaque mesure avec son attendu à côté
+  fichiers SUIVIS modifiés (git status --short --untracked-files=no)        : 0       (attendu 0)
+  git hash-object du fichier de travail                                      : 3c6218b849d128a62f3c228aa9c7ee307fb7eccf
+  git rev-parse HEAD:apps/pro/src/venues/edit-venue-page.tsx                 : 3c6218b849d128a62f3c228aa9c7ee307fb7eccf  (identiques — attendu : identiques)
+  fichiers non suivis à cet instant                                          : docs/preuves/D323/arbre-sale/ seulement (la pièce, avant son commit)
+
+LE DIFF VERSÉ EST UN PATCH FIDÈLE — calibré à DEUX BRAS sur l'arbre propre (D286)
+  git apply --check docs/preuves/D323/arbre-sale/edit-venue-page.diff        : code 0  (attendu 0 : le patch s'applique à l'arbre propre)
+  git apply --check -R docs/preuves/D323/arbre-sale/edit-venue-page.diff     : code 1, « patch does not apply »  (attendu ≠ 0 : le patch
+                                                                               inverse ne s'applique PAS à un arbre où il n'est pas appliqué)
+
+LIMITE, ÉCRITE : un stash est local. Il ne se pousse pas. C'est ce dossier — le diff, ses empreintes, son origine — qui survit à un clone.

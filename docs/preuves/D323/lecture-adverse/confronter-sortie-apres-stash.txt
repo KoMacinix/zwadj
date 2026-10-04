@@ -1,0 +1,155 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ vitest, résumé positif (ANSI, 2 fichiers) : [(59, 667)] (attendu [(59, 667)])
+   ✓ vitest, négatif (échec : aucun « passed » en tête de ligne) : [] (attendu [])
+   ✓ code_porte, positif : (0, 75) (attendu (0, 75))
+   ✓ code_porte, négatif (autre porte) : None (attendu None)
+   ✓ tests_de, positif : 11 (attendu 11)
+   ✓ tests_de, négatif (✗) : None (attendu None)
+   ✓ bilan_campagne, positif : (8, 8, 0, 0, 66) (attendu (8, 8, 0, 0, 66))
+   ✓ bilan_campagne, négatif (7 sur 8) : (7, 8, 1, 3, 9) (attendu (7, 8, 1, 3, 9))
+   ✓ detail_par_cible, positif : {'R30-1': '   ancre 1→0 · AssertionError: y'} (attendu {'R30-1': '   ancre 1→0 · AssertionError: y'})
+   ✓ detail_par_cible, négatif (cible non mordue : « ✗ ») : {} (attendu {})
+   ✓ fichiers_attendus, positif/négatif (barré exclu, `(neuf)` ôté) : {'a.md', 'c.py'} (attendu {'a.md', 'c.py'})
+   ✓ jour_semaine_js, positif (6 août 2027 = vendredi = 5) : 5 (attendu 5)
+   ✓ jour_semaine_js, négatif (1 août 2027 = dimanche = 0, et ≠ 5) : 0 (attendu 0)
+   ✓ resoudre, positif : 'x' (attendu 'x')
+   ✓ resoudre, négatif (chemin absent) : None (attendu None)
+   ✓ feuilles, positif : 3 (attendu 3)
+   ✓ feuilles, négatif (≠ nombre de clés de tête) : True (attendu True)
+   ✓ weekend_days, positif (déclaration typée) : [5, 6] (attendu [5, 6])
+   ✓ weekend_days, négatif (aucune déclaration) : None (attendu None)
+   calibration : 19 bras · 0 manqué(s) (attendu 0)
+
+== P — provenance (objets git)
+✓ P1    le parent du commit de D322 est le SHA de départ déclaré — attendu '5a362d7' · mesuré '5a362d7'
+✓ P2    les fichiers du commit hors `docs/preuves/D322/` sont EXACTEMENT ceux de la table d'ouverture (dérivée du texte) — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'apps/client/src/components/venue/booking-date-picker.test.tsx', 'apps/pro/src/venues/calendar-link.test.tsx', 'apps/pro/src/venues/edit-venue-page.tsx', 'neutralisation/neutralize-r30.py'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'apps/client/src/components/venue/booking-date-picker.test.tsx', 'apps/pro/src/venues/calendar-link.test.tsx', 'apps/pro/src/venues/edit-venue-page.tsx', 'neutralisation/neutralize-r30.py']
+      (121 fichiers au commit · 7 hors pièces · 7 dans la table, lignes barrées exclues)
+✓ P3    la spec e2e du lien n'est PAS dans `e2e/specs/` à `0e7a9f2` (barrée de la table) et sa copie versée existe — attendu (False, True) · mesuré (False, True)
+✓ P4    aucune migration, aucun `schema.prisma`, aucun fichier de l'API dans le diff (lot sans chemin de l'argent) — attendu [] · mesuré []
+
+== B — borne de D316 (la date choisie et son transport vers le calcul du prix)
+✓ B1    `booking-request-panel.tsx` identique entre `5a362d7` et `0e7a9f2` (octets) — attendu b'347e11604a1272e3cb9ab4ff45865c69a626f9c1\n' · mesuré b'347e11604a1272e3cb9ab4ff45865c69a626f9c1\n'
+✓ B2    `booking-calendar.ts` identique entre `5a362d7` et `0e7a9f2` (octets) — attendu b'70f90c8f36334b8017b3ea59d9dc6456da428599\n' · mesuré b'70f90c8f36334b8017b3ea59d9dc6456da428599\n'
+✓ B3    `booking-date-picker.tsx` identique entre `5a362d7` et `0e7a9f2` (octets) — attendu b'9538aa0c70e269df460660ad2ab3492972b665d0\n' · mesuré b'9538aa0c70e269df460660ad2ab3492972b665d0\n'
+✓ B4    le diff du code produit du lot se réduit à `edit-venue-page.tsx` — attendu ['apps/pro/src/venues/edit-venue-page.tsx'] · mesuré ['apps/pro/src/venues/edit-venue-page.tsx']
+✓ B5    D322 : « un lien et une sélection » — les lignes de CODE ajoutées à `edit-venue-page.tsx` sont l'import, le hook et le lien — attendu 3 · mesuré 3
+      (9 lignes ajoutées au total, commentaires compris)
+
+== G — portes (extraits versés à `0e7a9f2`, passe 2)
+✓ G1    typecheck : code 0, durée 19 s, 8 « Done », 0 `error TS` — attendu (0, 19, 8, 0) · mesuré (0, 19, 8, 0)
+✓ G2    lint : code 0, durée 14 s, 8 « Done » — attendu (0, 14, 8) · mesuré (0, 14, 8)
+✓ G3    test : code 0, durée 75 s — attendu (0, 75) · mesuré (0, 75)
+✓ G4    test : les quatre résumés vitest (API, api-client, client, pro) — fichiers/tests — attendu [(59, 667), (4, 39), (25, 344), (30, 352)] · mesuré [(59, 667), (4, 39), (25, 344), (30, 352)]
+✓ G5    build : code 0, durée 39 s, 4 « Done » — attendu (0, 39, 4) · mesuré (0, 39, 4)
+✓ G6    build : l'avertissement `outputFileTracingRoot` est dans l'extrait (partie A de D322) — attendu True · mesuré True
+✓ G7    test:int : code 0, durée 339 s, 36 fichiers, 444 tests — attendu (0, 339, [(36, 444)]) · mesuré (0, 339, [(36, 444)])
+✓ G8    test:int : « DEUX demandes concurrentes … coexistent en PENDING » est vert (✓) — attendu 1 · mesuré 1
+✓ G9    e2e : code 0, durée 158 s, 43 réussis, 1 ignoré — attendu (0, 158, 43, 1) · mesuré (0, 158, 43, 1)
+✓ G10   e2e : 0 « File change detected », 1 « successfully started » (l'API n'a pas redémarré, D317) — attendu (0, 1) · mesuré (0, 1)
+✓ G11   les deux tests neufs : 11 tests (sélecteur de date) et 3 tests (lien) dans `test.txt` — attendu (11, 3) · mesuré (11, 3)
+✓ G12   les deltas annoncés « +11/+1 » (client) et « +3/+1 » (pro) = résumé de D321 → résumé de D322 — attendu [(11, 1), (3, 1)] · mesuré [(11, 1), (3, 1)]
+      (résumés de D321 lus : [(59, 667), (4, 39), (24, 333), (29, 349)])
+✓ G13   passe 1 : typecheck 0 (19 s), lint 0 (14 s), test 0 (78 s), build 0 (40 s), test:int 0 (344 s) — attendu [(0, 19), (0, 14), (0, 78), (0, 40), (0, 344)] · mesuré [(0, 19), (0, 14), (0, 78), (0, 40), (0, 344)]
+✓ G14   passe 1 : test:int 444/36, test 667/59 · 39/4 · 344/25 · 352/30 (« mêmes comptes ») — attendu ([(36, 444)], [(59, 667), (4, 39), (25, 344), (30, 352)]) · mesuré ([(36, 444)], [(59, 667), (4, 39), (25, 344), (30, 352)])
+✓ G15   passe 1 : deux échecs e2e, durées 152 s et 143 s — attendu [152, 143] · mesuré [152, 143]
+
+== N — campagnes (journaux versés à `0e7a9f2`)
+✓ N1    r30, passe 2 : 8 mordues sur 8, 0 non mesurée, code 0, 66 s — attendu (8, 8, 0, 0, 66) · mesuré (8, 8, 0, 0, 66)
+✗ N1b   r30, passe 1 : « 8 sur 8 » ET « 66 s chacune » (D322) — la pièce porte-t-elle la durée de la passe 1 ? — attendu ((8, 8, 0), 66) · mesuré ((8, 8, 0), None)
+✓ N2    r30 : les 8 cibles sont mordues et chacune est LUE en `AssertionError` — attendu (8, 8) · mesuré (8, 8)
+✓ N3    r29 : 15 sur 15, code 0, 142 s ; 15 cibles, toutes en `AssertionError` — attendu ((15, 15, 0, 0, 142), (15, 15)) · mesuré ((15, 15, 0, 0, 142), (15, 15))
+✓ N4    r25 : 10 sur 10 jouées, 1 non mesurée, code 3, 519 s — attendu (10, 10, 1, 3, 519) · mesuré (10, 10, 1, 3, 519)
+✓ N5    r25 : « 7 en `AssertionError`, 3 par bloc `expect(` » (D322) — attendu (10, 7, 3) · mesuré (10, 7, 3)
+✓ N6    r26 : 4 sur 4, code 0, 465 s ; aucune des 4 n'est en `AssertionError` (bloc `expect(`/Error) — attendu ((4, 4, 0, 0, 465), (4, 0)) · mesuré ((4, 4, 0, 0, 465), (4, 0))
+✓ N7    r26 : l'expiration d'une assertion à réessai (`Timed out 7000ms waiting for expect(`) est dans R26-2 ET R26-4 — et dans elles seules — attendu ['R26-2', 'R26-4'] · mesuré ['R26-2', 'R26-4']
+✓ N8    r26 : R26-1 et R26-3 mordent par un `Error:` d'assertion maison (« le pro/client ne voit pas… »), PAS par une expiration — attendu [True, True] · mesuré [True, True]
+✓ N9    les empreintes de départ/arrivée : r30 4 fichiers, r29 7 fichiers, 0 différent — attendu [('4', '0'), ('7', '0')] · mesuré [('4', '0'), ('7', '0')]
+✓ N10   journaux copiés : r30 10, r29 20, r25 10, r26 5 (les nombres de D322) — attendu (10, 20, 10, 5) · mesuré (10, 20, 10, 5)
+✓ N11   le tri : « 1 campagne concernée sur 32 » = `r30`, par `edit-venue-page.tsx` — attendu (1, 32, True) · mesuré (1, 32, True)
+✓ N12   les 32 de « sur 32 » = les `neutralize-*.py` présents à `0e7a9f2` (autorité : `git ls-tree`) — attendu 32 · mesuré 32
+      (le tri affiche « 106 fichier(s) modifié(s) depuis HEAD » : aucun commit ne le rend vérifiable après coup — mesuré sur l'arbre de travail du moment)
+
+== R — les rouges que D322 cite, mot pour mot
+✓ R1    R30-3 : « expected 'أغسطس 2027' to be 'août 2027' » — attendu True · mesuré True
+✓ R2    R30-6 : « expected [ 1, 6, 8, 13, 15, 20, 22, 27, 29 ] to deeply equal [] » — attendu True · mesuré True
+✓ R3    R30-6 : la liste du rouge = les jours d'août 2027 où `WEEKEND_DAYS` (autorité) et samedi-dimanche DIFFÈRENT (dérivée du calendrier) — attendu [1, 6, 8, 13, 15, 20, 22, 27, 29] · mesuré [1, 6, 8, 13, 15, 20, 22, 27, 29]
+✓ R4    R30-7 : « expected 'Nouvelle réservation' to be 'Calendrier de la salle' » ; R30-8 : « expected 'v1' to be 'v2' » — attendu (True, True) · mesuré (True, True)
+✓ R5    rouge unitaire du lien : les deux messages dans `K-rouge-unitaire.txt` ; vert : 3/3 — attendu (True, True, [(1, 3)]) · mesuré (True, True, [(1, 3)])
+✓ R6    rouge navigateur : « Expected … :5273/calendrier » / « Received … :5273/ » — attendu True · mesuré True
+✓ R7    vert navigateur : la spec du lien est « ok », aucune ligne « x », « 2 passed » (la spec et le préchauffage) — attendu (1, 0, '2 passed') · mesuré (1, 0, '2 passed')
+
+== K — la spec du lien hors de la suite, `fetch failed` (D265), mesures
+✓ K1    l'empreinte `2f11ca72…` de D322 est celle des octets VERSÉS (CRLF) ; la version LF a une AUTRE empreinte — attendu ('2f11ca72', True, '9e5ba7a2') · mesuré ('2f11ca72', True, '9e5ba7a2')
+· K7    CONSTAT : D322 écrit « empreinte 2f11ca72… avant et après le déplacement » ET « les deux passes ont lu sa version en LF, normalisée en CRLF ensuite » : 2f11ca72… est l'empreinte des octets CRLF versés ; la version LF qui a produit les deux lectures (9e5ba7a2…, calculée ici) n'est portée par AUCUNE pièce. « Même contenu » est exact (LF et CRLF ne diffèrent que par les fins de ligne) ; « avant et après » ne peut pas valoir pour les mêmes octets. Annotation, pas un défaut de comportement.
+✓ K2    les deux échecs de la passe 1 : « après 4 ms » / « après 7 ms », chaîne `fetch failed` ← `ECONNRESET` — attendu ([True, True], ['4', '7']) · mesuré ([True, True], ['4', '7'])
+✓ K3    mesures du semis : « 5,2 à 5,4 s » = les trois durées versées — attendu '5.2-5.4' · mesuré '5.2-5.4'
+✓ K4    « 0 échec sur 33 essais de 4,6 à 5,6 s » : 33 essais parcourus, 0 échec, fenêtre 4600–5600 ms — attendu (33, 0, 4600, 5600) · mesuré (33, 0, 4600, 5600)
+✓ K5    le montage isolé : 4 bras, le bras A (blocage 7 s) ne produit PAS d'échec — « NON reproduite » — attendu (4, 1, True) · mesuré (4, 1, True)
+· K6    CONSTAT : le montage isolé n'a PAS son bras positif : le bras A, seul bras censé échouer si l'hypothèse « socket keep-alive réutilisée après un blocage » était vraie, rend « succès » — la sortie imprime « 1 manqué(s) (attendu 0) ». D322 en tire « NON reproduite » ; c'est exact, mais une hypothèse non reproduite dans un montage qui n'a pas montré qu'il savait la reproduire n'est pas ÉCARTÉE — elle reste ouverte (D322 dit « cause inconnue »). Pas un écart de D322 : un cadrage pour la décision (c) de Ko.
+
+== C — captures (relevé versé, images par leur taille git)
+✓ C1    FR anonyme 1280 px : 4 858 ; FR connecté : 5 629 — attendu (4858, 5629) · mesuré (4858, 5629)
+✓ C2    « les deux hauteurs baissent de 92 px » = D321 (4 950 ; 5 721) − D322 (4 858 ; 5 629), tiré des deux relevés — attendu (92, 92) · mesuré (92, 92)
+      (hauteurs D321 : [4950, 4950, 6964, 6864, 5721] · D322 : [4858, 4858, 6816, 6716, 5629] — 5 et 5 mesures parcourues)
+· C7    CONSTAT : D322 dit « les deux hauteurs baissent de 92 px » (celles à 1280 px). Les deux hauteurs à 360 px (FR, AR) baissent AUSSI, de [148, 148] px — non mentionné ; même cause non attribuée (aucun code produit du client n'a changé dans ce lot). Les cinq mesures parcourues de chaque côté sont imprimées ci-dessus.
+✓ C3    boutons du panneau : 33 partout, 35 sur la SEULE ligne « connecté, un jour et un créneau choisis » ; à 360 px : FR 364 px OUI, AR 360 px non — attendu ({'fiche FR, connecté, un jour et un créneau choisis': 35}, 4, ('364', 'OUI'), ('360', 'non')) · mesuré ({'fiche FR, connecté, un jour et un créneau choisis': 35}, 4, ('364', 'OUI'), ('360', 'non'))
+✓ C4    M7 : FR « 15 latins, 0 arabe » ; AR (1280 et 360) « 0 latin, 15 arabes » ; M8 : colonnes [5,6] partout — attendu (['latins 15, arabes 0', 'latins 0, arabes 15', 'latins 0, arabes 15'], 3) · mesuré (['latins 15, arabes 0', 'latins 0, arabes 15', 'latins 0, arabes 15'], 3)
+✓ C5    les 8 images : la taille imprimée au relevé = la taille de l'objet git — attendu {'04-client-fr-salle.jpg': 266987, 'panneau-fr.jpg': 32027, '16-client-ar-salle.jpg': 253757, 'panneau-ar.jpg': 30300, '04m-client-fr-salle-360.jpg': 224262, '16m-client-ar-salle-360.jpg': 212268, '26-client-fr-salle-connecte.jpg': 302819, 'panneau-fr-connecte.jpg': 59627} · mesuré {'04-client-fr-salle.jpg': 266987, 'panneau-fr.jpg': 32027, '16-client-ar-salle.jpg': 253757, 'panneau-ar.jpg': 30300, '04m-client-fr-salle-360.jpg': 224262, '16m-client-ar-salle-360.jpg': 212268, '26-client-fr-salle-connecte.jpg': 302819, 'panneau-fr-connecte.jpg': 59627}
+✓ C6    « FIN · 8 capture(s) tentée(s) » ; 8 images versées — attendu (True, 8) · mesuré (True, 8)
+
+== D — passe D277 (les deux sens)
+✓ D1    l'instrument est la copie à l'octet de celui de D306 à D321 (`24802faf…` en sha256, version LF) — attendu '24802faf' · mesuré '24802faf'
+✓ D2    même objet git que celui de D321 (instrument inchangé) — attendu b'585a3769bdab7e54f0b2a5702fc3ec1842835616\n' · mesuré b'585a3769bdab7e54f0b2a5702fc3ec1842835616\n'
+✓ D3    motifs : 21 + 2 témoins (T+, T-) — attendu (21, 2) · mesuré (21, 2)
+✓ D4    le contrôle rejoué sur l'état qui part rend les MÊMES lignes que la passe « après écriture » (lignes de comptes) — attendu ['[sens 1] « RANG 30 : EN ATTENTE » — HEAD 6 → arbre 8 (ZWADJ_CONTINUITE.md 5→7 · ZWADJ_BACKLOG.md 1→1)', '[sens 1] « rang 30 : en attente » — HEAD 1 → arbre 1 (AGENTS.md 1→1)', '[sens 1] « par D-10 » — HEAD 4 → arbre 10 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 3→9)', '[sens 1] « D-10 (s1) » — HEAD 2 → arbre 3 (ZWADJ_CONTINUITE.md 2→3)', "[sens 1] « reste **identique à l'octet** » — HEAD 1 → arbre 2 (ZWADJ_CONTINUITE.md 1→2)", '[sens 1] « /salles/:id/calendrier » — HEAD 2 → arbre 4 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 0→1 · ZWADJ_BACKLOG.md 1→2)', '[sens 1] « /calendrier` » — HEAD 5 → arbre 19 (AGENTS.md 2→3 · ZWADJ_CONTINUITE.md 0→10 · ZWADJ_BACKLOG.md 3→6)', '[sens 1] « lien mort » — HEAD 2 → arbre 14 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 1→13)', "[sens 1] « n'est pas choisissable » — HEAD 1 → arbre 2 (ZWADJ_BACKLOG.md 1→2)", '[sens 1] « non choisissable » — HEAD 1 → arbre 3 (ZWADJ_CONTINUITE.md 1→3)', '[sens 1] « 61 cochées » — HEAD 5 → arbre 6 (ZWADJ_CONTINUITE.md 4→5 · ZWADJ_BACKLOG.md 1→1)', '[sens 1] « 61 des 62 » — HEAD 2 → arbre 2 (ZWADJ_CONTINUITE.md 2→2)', "[sens 1] « N'EST PAS JOURNALISÉ PENDANT LA PAUSE » — HEAD 2 → arbre 2 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 1→1)", '[sens 2] « compteur UN » — HEAD 11 → arbre 14 (AGENTS.md 2→2 · ZWADJ_CONTINUITE.md 9→12)', '[sens 2] « compteur **UN** » — HEAD 5 → arbre 5 (ZWADJ_CONTINUITE.md 5→5)', '[sens 2] « ZÉRO → UN » — HEAD 19 → arbre 19 (AGENTS.md 2→2 · ZWADJ_CONTINUITE.md 17→17)', '[sens 2] « ADM-1 » — HEAD 36 → arbre 52 (AGENTS.md 3→4 · ZWADJ_CONTINUITE.md 31→46 · ZWADJ_BACKLOG.md 2→2)', '[sens 2] « un** lot de code de plus » — HEAD 2 → arbre 2 (ZWADJ_CONTINUITE.md 2→2)', "[sens 2] « s'il est arbitré » — HEAD 3 → arbre 4 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 2→3)", "[sens 2] « peut s'ouvrir avant une » — HEAD 1 → arbre 1 (ZWADJ_CONTINUITE.md 1→1)", "OCCURRENCES DANS L'ARBRE : 173 · motifs examinés 21", 'MOTIFS À ZÉRO (HEAD et arbre) : 1 — hypothèses à vérifier, pas des absences constatées'] · mesuré ['[sens 1] « RANG 30 : EN ATTENTE » — HEAD 6 → arbre 8 (ZWADJ_CONTINUITE.md 5→7 · ZWADJ_BACKLOG.md 1→1)', '[sens 1] « rang 30 : en attente » — HEAD 1 → arbre 1 (AGENTS.md 1→1)', '[sens 1] « par D-10 » — HEAD 4 → arbre 10 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 3→9)', '[sens 1] « D-10 (s1) » — HEAD 2 → arbre 3 (ZWADJ_CONTINUITE.md 2→3)', "[sens 1] « reste **identique à l'octet** » — HEAD 1 → arbre 2 (ZWADJ_CONTINUITE.md 1→2)", '[sens 1] « /salles/:id/calendrier » — HEAD 2 → arbre 4 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 0→1 · ZWADJ_BACKLOG.md 1→2)', '[sens 1] « /calendrier` » — HEAD 5 → arbre 19 (AGENTS.md 2→3 · ZWADJ_CONTINUITE.md 0→10 · ZWADJ_BACKLOG.md 3→6)', '[sens 1] « lien mort » — HEAD 2 → arbre 14 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 1→13)', "[sens 1] « n'est pas choisissable » — HEAD 1 → arbre 2 (ZWADJ_BACKLOG.md 1→2)", '[sens 1] « non choisissable » — HEAD 1 → arbre 3 (ZWADJ_CONTINUITE.md 1→3)', '[sens 1] « 61 cochées » — HEAD 5 → arbre 6 (ZWADJ_CONTINUITE.md 4→5 · ZWADJ_BACKLOG.md 1→1)', '[sens 1] « 61 des 62 » — HEAD 2 → arbre 2 (ZWADJ_CONTINUITE.md 2→2)', "[sens 1] « N'EST PAS JOURNALISÉ PENDANT LA PAUSE » — HEAD 2 → arbre 2 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 1→1)", '[sens 2] « compteur UN » — HEAD 11 → arbre 14 (AGENTS.md 2→2 · ZWADJ_CONTINUITE.md 9→12)', '[sens 2] « compteur **UN** » — HEAD 5 → arbre 5 (ZWADJ_CONTINUITE.md 5→5)', '[sens 2] « ZÉRO → UN » — HEAD 19 → arbre 19 (AGENTS.md 2→2 · ZWADJ_CONTINUITE.md 17→17)', '[sens 2] « ADM-1 » — HEAD 36 → arbre 52 (AGENTS.md 3→4 · ZWADJ_CONTINUITE.md 31→46 · ZWADJ_BACKLOG.md 2→2)', '[sens 2] « un** lot de code de plus » — HEAD 2 → arbre 2 (ZWADJ_CONTINUITE.md 2→2)', "[sens 2] « s'il est arbitré » — HEAD 3 → arbre 4 (AGENTS.md 1→1 · ZWADJ_CONTINUITE.md 2→3)", "[sens 2] « peut s'ouvrir avant une » — HEAD 1 → arbre 1 (ZWADJ_CONTINUITE.md 1→1)", "OCCURRENCES DANS L'ARBRE : 173 · motifs examinés 21", 'MOTIFS À ZÉRO (HEAD et arbre) : 1 — hypothèses à vérifier, pas des absences constatées']
+      (contrôle : 221 lignes parcourues ; « MOTIFS À ZÉRO » = 1 — D322 : un motif à zéro est une hypothèse, pas une absence)
+
+== A — audits de secrets
+✓ A1    les deux contrôles dédiés : « porteurs : 0 (attendu 0) » sur 109 fichiers — attendu (True, True, 109) · mesuré (True, True, 109)
+✓ A2    les trois sorties d'audit portent un sceau — attendu [True, True, True] · mesuré [True, True, True]
+      (sceau recalculé sur le corps avant la ligne de sceau, brut / LF : {'audit-secrets-d322.txt': (True, True), 'audit-secrets-final.txt': (True, True), 'audit-secrets-cloture.txt': (True, True)})
+✓ A3    tri différentiel : 5 alertes neuves au premier audit (vs D321), 0 aux deux suivants — attendu (5, 0, 0) · mesuré (5, 0, 0)
+
+== L — la lecture adverse de D321 que D322 verse
+✓ L1    « 63 contrôles · 6 écarts · 7 constats » dans la sortie versée — attendu (63, 6, 7) · mesuré (63, 6, 7)
+✓ L2    la ventilation par famille se somme à 63 (l'arithmétique de D322 est interne-cohérente) — attendu 63 · mesuré 63
+✓ L3    calibration « 16 bras, 0 manqué » (D322) dans la sortie — attendu True · mesuré True
+✓ L4    les cinq passes : quatre sorties intermédiaires + la finale — attendu 5 · mesuré 5
+✓ L5    les six écarts écrits dans la section de D322 = ceux de la sortie versée (dérivés des deux textes) — attendu ['B3', 'C6', 'M1', 'N2', 'N7', 'N9'] · mesuré ['B3', 'C6', 'M1', 'N2', 'N7', 'N9']
+      (6 dans la sortie · 6 dans la section)
+
+== I — catalogue i18n (« aucune clé au catalogue »)
+✓ I1    `packages/i18n` : aucun fichier modifié entre `5a362d7` et `0e7a9f2` — attendu [] · mesuré []
+✓ I2    parité de feuilles FR = AR à `0e7a9f2` (D321 : 1 098 = 1 098) — attendu (1098, 1098) · mesuré (1098, 1098)
+
+== M — la partie A de D322 : ce qu'elle dit avoir écrit, et où
+✓ M1    la limite de D321 sur l'arabe, relue à `5a362d7` : « les noms de créneaux, de prestations et de paliers restent en FRANÇAIS » — et NI les jours NI les mois — attendu (True, False) · mesuré (True, False)
+· M2    CONSTAT : la limite de D321 est un DÉFAUT DE PRODUIT ouvert, toujours vrai : en arabe, les noms de créneaux, de prestations et de paliers sortent en français dans le panneau de réservation. D322 ne le traite pas (hors de sa demande) et le rappelle ; il n'est pas non plus dans les décisions de Ko du rang 31 (partie A) — à ordonner par Ko (reports de D321).
+
+== O — ordre des rangs, registre, compteur
+✓ O1    la dernière ligne « ⇒ RANG N » de l'ordre des rangs est le rang 31 EN ATTENTE (écrite à l'ouverture, vraie à la clôture) — attendu True · mesuré True
+✓ O2    le registre : dernière ligne D322 ; aucune ligne D323 à `0e7a9f2` — attendu ('D322', 0) · mesuré ('D322', 0)
+✓ O3    `AGENTS.md` : le compteur DEUX est écrit à la clôture (« **rang 30 CLOS — compteur DEUX** ») et la règle « aucun lot de code ne s'ouvre avant une certification » — attendu True · mesuré True
+✓ O4    l'arbitrage de Ko du rang 30, MOT POUR MOT, est écrit dans l'ordre des rangs — attendu True · mesuré True
+
+== X — l'arbre de travail à l'ouverture de cette session (git status / git diff, LUS EN DIRECT)
+      (5 fichier(s) suivi(s) modifié(s) au total · 3 d'autorité écrit(s) par ce lot, écartés · 2 jugé(s))
+✗ X1    après D322, `git status` (fichiers SUIVIS, hors les trois autorités que ce lot écrit) ne liste RIEN : l'arbre est propre — attendu [] · mesuré [' M docs/preuves/D323/passe-d277/balayage-apres-ecriture.txt', ' M docs/preuves/D323/passe-d277/balayage-controle.txt']
+✓ X1b   aucun fichier NON SUIVI hors de `docs/preuves/D323/` (la pièce de cette session) — attendu [] · mesuré []
+      · docs/preuves/D323/passe-d277/balayage-apres-ecriture.txt : 123 ligne(s) ajoutée(s), sha256 du diff 97d7c6cbbe92c9e5…
+        mtime 2026-10-04T18:02:34 · commit de D322 2026-10-02 16:57:34 -0400
+✗ X2    `docs/preuves/D323/passe-d277/balayage-apres-ecriture.txt` figurait dans la table d'ouverture de D322 (donc un contrôle PAR NOM de fichier la laisserait passer) — attendu True · mesuré False
+✓ X3    le contenu des lignes ajoutées à `docs/preuves/D323/passe-d277/balayage-apres-ecriture.txt` est décrit par D322 (« un lien et une sélection ») — attendu True · mesuré True
+      · clés de catalogue référencées par les lignes ajoutées : []
+✗ X5    AUCUN des trois fichiers d'autorité, lus À `HEAD`, ne mentionne ce changement (✓ = confirmé non mentionné : c'est le constat) — attendu {'ZWADJ_CONTINUITE.md': 0, 'ZWADJ_BACKLOG.md': 0, 'AGENTS.md': 0} · mesuré {'ZWADJ_CONTINUITE.md': 3, 'ZWADJ_BACKLOG.md': 2, 'AGENTS.md': 0}
+      · docs/preuves/D323/passe-d277/balayage-controle.txt : 123 ligne(s) ajoutée(s), sha256 du diff 4b922f870badc16d…
+        mtime 2026-10-04T18:02:35 · commit de D322 2026-10-02 16:57:34 -0400
+✗ X2    `docs/preuves/D323/passe-d277/balayage-controle.txt` figurait dans la table d'ouverture de D322 (donc un contrôle PAR NOM de fichier la laisserait passer) — attendu True · mesuré False
+✓ X3    le contenu des lignes ajoutées à `docs/preuves/D323/passe-d277/balayage-controle.txt` est décrit par D322 (« un lien et une sélection ») — attendu True · mesuré True
+      · clés de catalogue référencées par les lignes ajoutées : []
+✗ X5    AUCUN des trois fichiers d'autorité, lus À `HEAD`, ne mentionne ce changement (✓ = confirmé non mentionné : c'est le constat) — attendu {'ZWADJ_CONTINUITE.md': 0, 'ZWADJ_BACKLOG.md': 0, 'AGENTS.md': 0} · mesuré {'ZWADJ_CONTINUITE.md': 3, 'ZWADJ_BACKLOG.md': 2, 'AGENTS.md': 0}
+
+== BILAN
+   ventilation par famille : A 3 · B 5 · C 6 · D 4 · G 15 · I 2 · K 5 · L 5 · M 1 · N 13 · O 4 · P 4 · R 7 · X 8
+   82 contrôles · 1 écart(s) DE D322 ['N1b'] · 5 écart(s) DE L'ARBRE (famille X, lus en direct — pas une affirmation de D322) ['X1', 'X2', 'X5', 'X2', 'X5'] · 4 constat(s) ['K7', 'K6', 'C7', 'M2']
+   NON VÉRIFIABLE ici (chat seulement) : les paroles de Ko et du relecteur transmises à l'ouverture du rang 30 ; l'état machine (secteur, RAM libre, PERF) relevé avant les portes de D322 — aucune pièce versée ne le porte.

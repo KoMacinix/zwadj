@@ -1,0 +1,49 @@
+D323 — PIÈCE : les 8 lignes de `apps/pro/src/venues/edit-venue-page.tsx` trouvées non commitées à l'ouverture du rang 31 (04/10/2026)
+=====================================================================================================================================
+
+POURQUOI CETTE PIÈCE EXISTE
+  Ko a demandé, avant que ces lignes soient mises de côté (git stash), que leur DIFF COMPLET soit versé en pièce du lot, avec son
+  mtime, son empreinte et son origine. Un stash est LOCAL : il ne survit ni à un clone, ni à un `git stash clear`, ni à `git gc`
+  d'un objet inaccessible. Ce dossier est ce qui survit.
+
+LE DIFF (versé OCTET POUR OCTET, `.gitattributes` coupe toute conversion de fin de ligne sous `docs/preuves/`)
+  fichier           docs/preuves/D323/arbre-sale/edit-venue-page.diff
+  commande          git diff HEAD -- apps/pro/src/venues/edit-venue-page.tsx   (redirection bash, jamais PowerShell — D298)
+  taille            914 octets · 24 fins de ligne, toutes LF (git normalise : core.autocrlf=true sur le poste, le fichier de travail est en CRLF)
+  sha256            9e6e03bce67fc52437d468e340e9a8d96388f4793ecfd588c3273920b2a9fd19
+  nature            8 lignes AJOUTÉES, 0 retirée, dans `saveAndGo` de l'assistant d'édition d'une salle
+
+LE FICHIER DE TRAVAIL, AVANT LE STASH (relevé en direct)
+  mtime             2026-10-02 20:21:29.619502100 -0400   (ns epoch 1790986889619502100)
+  taille            18551 octets (CRLF)
+  sha256            cf7353620d380ec262ce05372e8d9da0d36c776a2ad519c0011d4e026190447e
+  git hash-object   1573ac757b1651644ea81a0794498573e2e49176   (= l'objet `index 3c6218b..1573ac7` de l'en-tête du diff)
+  blob à HEAD       3c6218b849d128a62f3c228aa9c7ee307fb7eccf   (HEAD = 0e7a9f2 à l'ouverture, puis 30a548d)
+  commit de D322    0e7a9f2 du 2026-10-02 16:57:34 -0400 → le fichier a été écrit 3 h 24 plus tard.
+
+ORIGINE — DÉCLARÉE PAR KO, 04/10/2026, dans le chat, en réponse à la question de la session (mot pour mot) :
+  « Origine connue : ces 8 lignes sont de Ko, écrites le 02/10 pour repeupler la base de dev et corriger un défaut à la création
+  d'une salle. Mets-les de côté, avec deux garde-fous : […] Puis lance la partie B. Rien de ces lignes n'entre dans la
+  certification. »
+  ⚠ Écrit comme une DÉCLARATION de Ko, pas comme une mesure : la session n'a aucune pièce indépendante de l'auteur (le fichier ne porte
+  ni signature ni message). Ce que la session a MESURÉ : le diff, ses empreintes, le mtime, l'absence de toute mention dans les trois
+  fichiers d'autorité à HEAD, et l'existence des deux clés de catalogue (confronter-sortie.txt, famille X).
+
+CE QUE FONT LES 8 LIGNES (lues dans le diff, pas dans la déclaration)
+  - branche « erreurs » de `saveAndGo` : `setFormError(t("venue.ui.wizard.step1Invalid"))` et `window.scrollTo({ top: 0 })` ;
+  - branche « rien à enregistrer » sans étape suivante : `setNotice(t("venue.ui.form.saved"))` et `window.scrollTo({ top: 0 })` ;
+  - commentaire : « étape 7 : « Enregistrer » ne faisait RIEN, sans requête ni message ».
+  Ko les décrit comme un correctif « à la création d'une salle » : l'assistant de création converge vers cet écran après l'étape 1
+  (`AGENTS.md`, table des routes de l'app Pro). Les deux descriptions ne se contredisent pas ; la session n'a pas rejoué le défaut.
+
+CE QUI EN A ÉTÉ FAIT (décision de Ko, 04/10/2026)
+  1. ce dossier, AVANT le stash ;
+  2. `git stash push -m "D323 : 8 lignes de Ko, edit-venue-page.tsx, création de salle, 02/10" -- apps/pro/src/venues/edit-venue-page.tsx` ;
+     l'identifiant du stash et la vérification « arbre propre » sont dans `stash.txt`, à côté ;
+  3. une entrée ouverte au backlog (« Reports du 04/10/2026 ») : correctif esquissé par Ko, en stash, contenu versé ici, à reprendre avec le
+     défaut « Enregistrer à l'étape 7 » dans le lot des réparations de l'app Pro.
+  ⛔ Rien de ces lignes n'entre dans la certification du rang 31.
+
+POUR RETROUVER LE TRAVAIL
+  Si le stash a disparu : `git apply docs/preuves/D323/arbre-sale/edit-venue-page.diff` sur un arbre à `3c6218b` pour ce fichier
+  (c'est-à-dire tout arbre où `git rev-parse HEAD:apps/pro/src/venues/edit-venue-page.tsx` rend `3c6218b…`) ; sinon, le diff se rejoue à la main.
