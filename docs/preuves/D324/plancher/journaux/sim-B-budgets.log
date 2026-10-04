@@ -1,0 +1,29 @@
+témoin (aucune mutation), sous chacune des quatre configurations
+
+--- stderr ---
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 190, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 137, in main
+    code, t, sig = jouer_temoin(ins, paquet)
+                   ~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-budgets.py", line 107, in jouer_temoin
+    assert len(tests) == 1, (
+           ^^^^^^^^^^^^^^^
+AssertionError: ERREUR DE SCRIPT : 0 test(s) lu(s) dans le rapport du témoin de packages/api-client, attendu 1 — un témoin qui n'a pas tourné se lit comme « la garde est muette » (D144).
+ module 'C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client\node_modules\vitest\zwadj-module-introuvable-d324.mjs'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+    at Function._load (node:internal/modules/cjs/loader:1055:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.14.0
+
+
+--- code de sortie : 1 ---

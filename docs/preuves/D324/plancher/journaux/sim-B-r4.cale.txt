@@ -1,0 +1,1 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/api", "exec", "vitest", "run", "-c", "vitest.config.int.ts", "test/int/migration-non-empty.int-spec.ts"]}

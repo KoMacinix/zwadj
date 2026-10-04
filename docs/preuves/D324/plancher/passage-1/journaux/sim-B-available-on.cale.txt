@@ -1,0 +1,10 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/search/search-view.test.tsx", "-t", "carte GRISÉE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/search/search-view.test.tsx", "-t", "NE GRISE PAS"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/search/search-view.test.tsx", "-t", "VIENT DE L'ÉCHO"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/lib/api.test.ts", "-t", "DATE PASSÉE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/lib/search-query.test.ts", "-t", "IRRÉELLE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/lib/search-query.test.ts", "-t", "CAS RÉEL"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/lib/seo.test.ts", "-t", "PROBLÈME EXISTAIT DÉJÀ"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/lib/seo.test.ts", "-t", "follow"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/lib/seo.test.ts", "-t", "clé VIDE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/search/search-view.test.tsx", "-t", "RESTE UN LIEN"]}

@@ -1,0 +1,30 @@
+# D324 — état machine relevé AVANT la simulation de plancher (étape 0, ce n'est pas une passe). Sonde `neutralisation/sonde-etat-machine.ps1`, sans -Calibrer (la calibration est rejouée à l'ouverture de la passe).
+CALIBRATION_REJOUEE=NON REJOUEE DANS CETTE INVOCATION (lancer -Calibrer)
+HORODATAGE=2026-10-04 18:41:26
+ECHANTILLONS=6 x 5 s
+RAM_MEDIANE_MO=5547.5
+RAM_BANDE_MO=5523-5596
+CPU_MEDIANE_PCT=12
+CPU_BANDE_PCT=1-24
+PERF_MEDIANE_PCT=75.1   (>100 = turbo, donc non bride)
+ALIM_SOURCE=SECTEUR
+ALIM_CHARGE_PCT=100
+ALIM_OVERLAY_AC_DC=IDENTIQUES (961cc777-2547-4f9d-8174-7d86181b8a7a)
+NODE=0
+CHROME=0
+TOTAL_MO=11747
+NB_PROCESSUS=337
+BARRE_D273_MO=4579
+ECART_A_LA_BARRE_MO=968.5
+--- INVENTAIRE > 150 Mo (nom / nb / Mo) ---
+Code 19 2982
+svchost 103 1522
+Memory Compression 1 743
+explorer 1 397
+vmmemWSL 1 373
+claude 1 301
+msedge 5 264
+Docker Desktop 4 236
+msedgewebview2 6 230
+powershell 3 216
+com.docker.backend 2 196

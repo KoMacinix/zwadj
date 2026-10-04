@@ -1,0 +1,1 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/client", "exec", "vitest", "run", "src/components/venue/booking-date-picker.test.tsx"]}

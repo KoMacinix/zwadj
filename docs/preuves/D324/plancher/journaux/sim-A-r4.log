@@ -1,0 +1,6 @@
+✗ PRÉ-VOL : « migration » est DÉJÀ ROUGE avant mutation. Campagne abandonnée.
+  (base lancée ? ALLOW_PG_LT18_POLYFILL requis sous PostgreSQL < 18.)
+
+--- stderr ---
+
+--- code de sortie : 2 ---

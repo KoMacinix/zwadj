@@ -1,0 +1,8 @@
+✗ PRÉ-VOL : « chiffrage » est DÉJÀ ROUGE avant mutation. Campagne abandonnée.
+   commande : pnpm --filter @zwadj/api exec vitest run src/venues/booking-charge.spec.ts
+   │ 'zwadj-commande-introuvable-d324' is not recognized as an internal or external command,
+   │ operable program or batch file.
+
+--- stderr ---
+
+--- code de sortie : 2 ---

@@ -1,0 +1,20 @@
+pre-vol : le spec n'est plus exempte dans PLAFONDS
+temoin (aucune mutation)
+
+--- stderr ---
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-act-plafonds.py", line 164, in <module>
+    assert joue() == 0, "le temoin doit etre VERT avant toute mutation"
+           ~~~~^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-act-plafonds.py", line 113, in joue
+    assert total and int(total.group(1)) == NB_TESTS_ATTENDU, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ERREUR DE SCRIPT : 41 tests attendus dans src/dashboard/walkin-journey.test.tsx. Un filtre qui ne correspond plus rend 0 et se lit comme « la garde est inutile » (D144).
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "zwadj-commande-introuvable-d324" not found
+'zwadj-commande-introuvable-d324' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+--- code de sortie : 1 ---

@@ -1,0 +1,1 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test"]}

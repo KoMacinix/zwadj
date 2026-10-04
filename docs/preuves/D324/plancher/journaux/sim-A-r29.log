@@ -1,0 +1,18 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration : 7 bras · 0 manqué(s) (attendu 0)
+cibles : 15 déclarées · 15 jouées (unit)
+✗ PRÉ-VOL calendrier : code 1, VERSION — vitest introuvable, v3.2.7 attendu
+
+'zwadj-commande-introuvable-d324' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+--- stderr ---
+
+--- code de sortie : 2 ---

@@ -1,0 +1,11 @@
+✗ PRÉ-VOL : « conversion » est DÉJÀ ROUGE avant mutation. Campagne abandonnée.
+   commande : pnpm --filter @zwadj/api exec vitest run src/venues/quote-store.prisma.spec.ts
+   │ undefined
+   │ C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+   │  ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "zwadj-commande-introuvable-d324" not found
+   │ 'zwadj-commande-introuvable-d324' is not recognized as an internal or external command,
+   │ operable program or batch file.
+
+--- stderr ---
+
+--- code de sortie : 2 ---

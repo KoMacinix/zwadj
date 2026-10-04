@@ -1,0 +1,4 @@
+== CALIBRATION, deux bras (abandon si un seul manque)
+  ✓ positif D310 : 13 mesures (attendu 13) · MORSURES LUES 13 (attendu 13) · exécutés > 0 13 (attendu 13)
+  ✓ négatif : « Tests  25 skipped (25) » posé en mémoire dans R23-F1-a-int-reservations.txt ⇒ refusés ['R23-F1-a-int-reservations.txt'] (attendu ['R23-F1-a-int-reservations.txt']) — exécutés 0 (attendu 0)
+(calibration seule : aucun dossier de passe donné)

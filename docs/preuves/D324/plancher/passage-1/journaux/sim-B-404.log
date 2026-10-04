@@ -1,0 +1,43 @@
+✗ C1. ⛔ LE DÉFAUT D'ORIGINE, À L'IDENTIQUE : la 404 racine reprend son tiret bas
+   rouge, mais sans « Failed Suites » : l'échec vient d'ailleurs
+✗ C2. Une COPIE `_not-found.tsx` est laissée à côté du bon fichier
+   rouge, mais aucun échec ne porte le titre « sans tiret bas » — ancre à revoir
+✗ C3. L'attrape-tout est SUPPRIMÉ (la 404 localisée redevient inatteignable)
+   rouge, mais sans « Failed to resolve import "./[...rest]/page" » : l'échec vient d'ailleurs
+✗ C4. L'attrape-tout RETOURNE au lieu de LEVER (page vide en statut 200)
+   rouge, mais aucun échec ne porte le titre « il lève `notFound()` » — ancre à revoir
+✗ C5. Les deux sorties sont INVERSÉES (le cas fréquent renvoyé à la case départ)
+   rouge, mais aucun échec ne porte le titre « la première mène aux salles » — ancre à revoir
+✗ C6. Le « 404 » revient à l'écran, au-dessus du titre
+   rouge, mais aucun échec ne porte le titre « AUCUN « 404 » à l'écran » — ancre à revoir
+✗ C6b. Le décor perd son `alt=""` — il redevient annoncé aux lecteurs d'écran
+   rouge, mais aucun échec ne porte le titre « le décor EST là » — ancre à revoir
+✗ C6c. L'image du décor n'est plus livrée (`src` qui ne pointe sur rien)
+   rouge, mais aucun échec ne porte le titre « faite de TRACÉS » — ancre à revoir
+✗ C7. La ligne arabe de la 404 racine perd sa direction (`dir="rtl"`)
+   rouge, mais aucun échec ne porte le titre « DEUX langues » — ancre à revoir
+✗ C8. La 404 localisée lit le MAUVAIS espace de noms de traduction
+   rouge, mais aucun échec ne porte le titre « que la page n'existe pas » — ancre à revoir
+✗ C9. ⛔ LE SOFT-404 REVIENT : `loading.tsx` remonte en `[locale]/`
+   rouge, mais aucun échec ne porte le titre « AUCUNE `loading.tsx` ne surplombe » — ancre à revoir
+✗ C10. La remontée À MI-CHEMIN : `salles/loading.tsx` (recouvre la fiche)
+   rouge, mais aucun échec ne porte le titre « AUCUNE `loading.tsx` ne surplombe » — ancre à revoir
+
+0 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+  muette : C1. ⛔ LE DÉFAUT D'ORIGINE, À L'IDENTIQUE : la 404 racine reprend son tiret bas — rouge, mais sans « Failed Suites » : l'échec vient d'ailleurs
+  muette : C2. Une COPIE `_not-found.tsx` est laissée à côté du bon fichier — rouge, mais aucun échec ne porte le titre « sans tiret bas » — ancre à revoir
+  muette : C3. L'attrape-tout est SUPPRIMÉ (la 404 localisée redevient inatteignable) — rouge, mais sans « Failed to resolve import "./[...rest]/page" » : l'échec vient d'ailleurs
+  muette : C4. L'attrape-tout RETOURNE au lieu de LEVER (page vide en statut 200) — rouge, mais aucun échec ne porte le titre « il lève `notFound()` » — ancre à revoir
+  muette : C5. Les deux sorties sont INVERSÉES (le cas fréquent renvoyé à la case départ) — rouge, mais aucun échec ne porte le titre « la première mène aux salles » — ancre à revoir
+  muette : C6. Le « 404 » revient à l'écran, au-dessus du titre — rouge, mais aucun échec ne porte le titre « AUCUN « 404 » à l'écran » — ancre à revoir
+  muette : C6b. Le décor perd son `alt=""` — il redevient annoncé aux lecteurs d'écran — rouge, mais aucun échec ne porte le titre « le décor EST là » — ancre à revoir
+  muette : C6c. L'image du décor n'est plus livrée (`src` qui ne pointe sur rien) — rouge, mais aucun échec ne porte le titre « faite de TRACÉS » — ancre à revoir
+  muette : C7. La ligne arabe de la 404 racine perd sa direction (`dir="rtl"`) — rouge, mais aucun échec ne porte le titre « DEUX langues » — ancre à revoir
+  muette : C8. La 404 localisée lit le MAUVAIS espace de noms de traduction — rouge, mais aucun échec ne porte le titre « que la page n'existe pas » — ancre à revoir
+  muette : C9. ⛔ LE SOFT-404 REVIENT : `loading.tsx` remonte en `[locale]/` — rouge, mais aucun échec ne porte le titre « AUCUNE `loading.tsx` ne surplombe » — ancre à revoir
+  muette : C10. La remontée À MI-CHEMIN : `salles/loading.tsx` (recouvre la fiche) — rouge, mais aucun échec ne porte le titre « AUCUNE `loading.tsx` ne surplombe » — ancre à revoir
+
+--- stderr ---
+
+--- code de sortie : 1 ---

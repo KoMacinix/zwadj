@@ -1,0 +1,30 @@
+# D324 — état machine relevé APRÈS les deux passages de la simulation de plancher et les mesures par défaut de r25/r26, juste avant le commit du protocole. Sonde sans -Calibrer.
+CALIBRATION_REJOUEE=NON REJOUEE DANS CETTE INVOCATION (lancer -Calibrer)
+HORODATAGE=2026-10-04 18:49:27
+ECHANTILLONS=6 x 5 s
+RAM_MEDIANE_MO=5464
+RAM_BANDE_MO=5316-5470
+CPU_MEDIANE_PCT=14
+CPU_BANDE_PCT=2-19
+PERF_MEDIANE_PCT=74.1   (>100 = turbo, donc non bride)
+ALIM_SOURCE=SECTEUR
+ALIM_CHARGE_PCT=100
+ALIM_OVERLAY_AC_DC=IDENTIQUES (961cc777-2547-4f9d-8174-7d86181b8a7a)
+NODE=0
+CHROME=0
+TOTAL_MO=11829
+NB_PROCESSUS=335
+BARRE_D273_MO=4579
+ECART_A_LA_BARRE_MO=885
+--- INVENTAIRE > 150 Mo (nom / nb / Mo) ---
+Code 19 3121
+svchost 102 1506
+Memory Compression 1 737
+explorer 1 400
+vmmemWSL 1 385
+claude 1 311
+msedge 5 261
+Docker Desktop 4 236
+msedgewebview2 6 230
+powershell 3 216
+com.docker.backend 2 192

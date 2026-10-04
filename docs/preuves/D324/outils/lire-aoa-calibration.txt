@@ -1,0 +1,4 @@
+== CALIBRATION, deux bras (abandon si un seul manque)
+  ✓ positif D312 : journaux, pré-vol, écarts = (30, 12, 0) (attendu (30, 12, 0))
+  ✓ négatif : A1 remplacé par un non-démarrage ⇒ journaux, pré-vol, écarts = (30, 12, 1) (attendu écarts ≥ 1) · ligne « ✗ A1 » : True (attendu True)
+(calibration seule : aucun dossier de passe donné)

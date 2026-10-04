@@ -1,0 +1,2 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/client", "exec", "vitest", "run", "src/components/filter-wizard.test.tsx"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/api", "exec", "vitest", "run", "-c", "vitest.config.int.ts", "test/int/payment-intent-race.int-spec.ts"]}

@@ -1,0 +1,10 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/filter-wizard.test.tsx", "-t", "REMONTÉE À CHAQUE ÉTAPE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/pro", "run", "test", "--", "src/dashboard/walkin-journey.test.tsx", "-t", "REMONTÉE À CHAQUE ÉTAPE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/filter-wizard.test.tsx", "-t", "coche du rail"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/filter-wizard.test.tsx", "-t", "TRAIT DE LIAISON"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/filter-wizard.test.tsx", "-t", "DÉCORATIF"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/filter-wizard.test.tsx", "-t", "Modifier"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/pro", "run", "test", "--", "src/dashboard/walkin-journey.test.tsx", "-t", "Modifier"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/client", "run", "test", "--", "src/components/filter-wizard.test.tsx", "-t", "MISE EN PAGE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/pro", "run", "test", "--", "src/dashboard/walkin-journey.test.tsx", "-t", "MISE EN PAGE"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["run", "test"], "args": ["--filter", "@zwadj/pro", "run", "test", "--", "src/dashboard/walkin-journey.test.tsx", "-t", "TRAIT DE LIAISON"]}

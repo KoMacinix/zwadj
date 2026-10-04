@@ -1,0 +1,1 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/api", "exec", "vitest", "run", "src/venues/pricing-engine.spec.ts"]}

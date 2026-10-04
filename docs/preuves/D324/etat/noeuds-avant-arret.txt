@@ -1,0 +1,29 @@
+D324 — les processus node relevés à l'ouverture de la partie B (04/10/2026), et ce qu'il en est advenu
+=========================================================================================================
+
+PREMIER RELEVÉ — sonde `neutralisation/sonde-etat-machine.ps1 -Calibrer`, 2026-10-04 18:06:19 : NODE=9, CHROME=0, SECTEUR,
+RAM médiane 4 595,5 Mo (bande 4 586-4 609) pour une barre de 4 579. Puis `Get-CimInstance Win32_Process -Filter "Name='node.exe'"`
+(lignes de commande tronquées à 200 caractères par l'affichage ; copiées ici telles qu'affichées) :
+
+  PID    Mo   parent  ligne de commande
+  11868   35  28112   "C:\Program Files\nodejs\node.exe" C:\Users\benla\AppData\Roaming\npm/node_modules/pnpm/bin/pnpm.mjs dev
+  10556   32  13072   node "C:\Users\benla\AppData\Local\pnpm\store\v11\links\@\pnpm\10.34.4\e5c75368…\bin\\..\node_modules\pnpm\bin\pnpm.cjs" "dev"
+  33744  100  24660   node "…\pnpm\10.34.4\e5c75368…\pnpm.cjs" --parallel -r run dev
+   4836   40  19340   node "C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client\node_modules\.bin\\..\next\dist\bin\next" dev --port 3000
+  19176   91  14276   node "C:\Users\benla\Desktop\MyProjct\Zwadj\packages\types\node_modules\.bin\\..\typescript\bin\tsc" -p tsconfig.build.json --watch --preserveWatchOutput
+  28760   54  13736   node "C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro\node_modules\.bin\\..\vite\bin\vite.js"
+  22292  529  18620   node "C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api\node_modules\.bin\\..\@nestjs\cli\bin\nest.js" start --watch
+   6984  342   4836   "C:\Program Files\nodejs\node.exe" C:\Users\benla\Desktop\MyProjct\Zwadj\node_modules\.pnpm\next@15.5.20_…\next\dist\server\lib\start-server.
+  12396  140  25952   node --enable-source-maps C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api\dist\main
+
+  Ce sont les serveurs de DEV de Ko (`pnpm dev` : next dev :3000, vite de l'app Pro, `nest start --watch`, `tsc --watch` de
+  `packages/types`, l'API compilée) — le contraire de l'état exigé par le protocole (node 0 : les observateurs recompilent pendant
+  que les harnais mutent des fichiers, D270/D274).
+
+LA QUESTION ET LA RÉPONSE (chat, 04/10/2026) : « Puis-je arrêter ces 9 processus node ? » — Ko : « Oui, arrêtez-les ».
+
+SECOND RELEVÉ — au moment où la session a voulu les arrêter (Get-CimInstance, quelques minutes après le premier) : **0 processus
+node.exe**. Le script de versement a donc écrit « 0 processus » (première version de ce fichier, remplacée par celle-ci), et sa
+boucle `Stop-Process` n'avait **aucun identifiant à arrêter**. ⚠ **La session n'a donc arrêté AUCUN processus** : ils avaient disparu
+entre les deux relevés — la session ne sait pas par quel geste (très probablement celui de Ko, après avoir lu la question ; la
+session n'a aucune pièce qui le dise). Les ports 3000, 3001, 3100, 3101, 5173 et 5273 n'étaient plus à l'écoute au second relevé.

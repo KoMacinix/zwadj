@@ -1,0 +1,9 @@
+✗ PRÉ-VOL : B7 est DÉJÀ ROUGE avant mutation. Campagne abandonnée.
+  ⚠ Si c'est l'ajout de `--accent-text` (D264), régénérer la référence
+    D'ABORD : UPDATE_TOKEN_BASELINE=1 pnpm test:e2e, puis RELIRE le fichier.
+   │ 'zwadj-commande-introuvable-d324' is not recognized as an internal or external command,
+   │ operable program or batch file.
+
+--- stderr ---
+
+--- code de sortie : 2 ---

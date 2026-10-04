@@ -1,0 +1,1 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "playwright"], "args": ["--filter", "@zwadj/e2e", "exec", "playwright", "test", "--grep", "B7", "--reporter", "line"]}

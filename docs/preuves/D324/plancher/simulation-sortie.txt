@@ -1,0 +1,104 @@
+== ÉNUMÉRATION : 32 harnais (attendu 32) · autres que ['available-on-api', 'r25', 'r26', 'rang23'] : 28 (attendu 28)
+   pnpm réel : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD · node réel : C:\Program Files\nodejs\node.EXE · python : C:\Users\benla\AppData\Local\Python\pythoncore-3.14-64\python.exe
+
+== CALIBRATION (a) — la cale elle-même
+  ✓ cale A run src/venues/venues-public.service.spec.ts : code 1, 0.04 s, appels 1, lignes Tests 0 — attendu : code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B run src/venues/venues-public.service.spec.ts : code 1, 1.47 s, appels 1, lignes Tests 0 — attendu : réécrit exec vitest, code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B --version : code 127, 0.15 s, appels 1, lignes Tests 0 — attendu : NON RÉÉCRIT, code 127 · dernière ligne : CALE B : forme d'appel non reconnue, NON RÉÉCRIT — rien n'est lancé
+
+== CALIBRATION (b) — BRAS POSITIF : `available-on-api` (qui LIT sa sortie) constate lui-même le non-démarrage
+  ✓ sous A : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 0.3 s · arbre propre
+  ✓ sous B : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 5.9 s · arbre propre
+
+== MESURE — les 28 harnais « autres », chacun dans la passe qui le certifie, sous A puis sous B
+  · 404              tout  A :    0.58 s · code   1 · « ✓ »  0 · « ✗ » 12 · cibles 12 · appels de cale  12 · non réécrits 0 · lignes Tests 0
+  · 404              tout  B :   15.48 s · code   1 · « ✓ »  0 · « ✗ » 12 · cibles 12 · appels de cale  12 · non réécrits 0 · lignes Tests 0
+  · act-plafonds     tout  A :    0.14 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 2
+  · act-plafonds     tout  B :    1.64 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 2
+  · argon2           tout  A :    0.14 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · argon2           tout  B :    1.61 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · available-on     tout  A :    0.47 s · code   0 · « ✓ » 10 · « ✗ »  0 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · available-on     tout  B :   12.91 s · code   0 · « ✓ » 10 · « ✗ »  0 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · b7               tout  A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · b7               tout  B :    1.67 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · booking-status   tout  A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · booking-status   tout  B :    1.63 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  3 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · budgets          tout  A :    0.19 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · budgets          tout  B :    0.28 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · e3d1-s8          --int A :    0.15 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  8 · appels de cale   2 · non réécrits 0 · lignes Tests 0
+  · e3d1-s8          --int B :    2.90 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  8 · appels de cale   2 · non réécrits 0 · lignes Tests 0
+  · horizon          tout  A :    0.35 s · code   1 · « ✓ »  0 · « ✗ »  6 · cibles  6 · appels de cale   6 · non réécrits 0 · lignes Tests 0
+  · horizon          tout  B :    7.64 s · code   1 · « ✓ »  0 · « ✗ »  6 · cibles  6 · appels de cale   6 · non réécrits 0 · lignes Tests 0
+  · horloge          tout  A :    0.15 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · horloge          tout  B :    1.48 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · journey          tout  A :    0.45 s · code   0 · « ✓ »  7 · « ✗ »  0 · cibles  7 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · journey          tout  B :   12.85 s · code   0 · « ✓ »  7 · « ✗ »  0 · cibles  7 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · maxprice         tout  A :    0.59 s · code   1 · « ✓ »  0 · « ✗ » 10 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · maxprice         tout  B :   12.71 s · code   1 · « ✓ »  0 · « ✗ » 10 · cibles 10 · appels de cale  10 · non réécrits 0 · lignes Tests 0
+  · r29              tout  A :    0.13 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 15 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r29              tout  B :    1.55 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 15 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r30              tout  A :    0.12 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  8 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r30              tout  B :    1.54 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  8 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r4               tout  A :    0.11 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r4               tout  B :    1.50 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10a             tout  A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10a             tout  B :    1.47 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10b             tout  A :    0.11 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 20 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s10b             tout  B :    1.53 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 20 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11a             tout  A :    0.11 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 18 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11a             tout  B :    1.49 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 18 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11b             --int A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s11b             --int B :    1.48 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 13 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s9               tout  A :    0.13 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · s9               tout  B :    1.48 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s1         --int A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s1         --int B :    1.49 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s2         --int A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s2         --int B :    1.59 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s3         --int A :    0.12 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s3         --int B :    1.49 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s4         tout  A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  7 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s4         tout  B :    1.52 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  7 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5a        tout  A :    0.11 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  9 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5a        tout  B :    1.71 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  9 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5b        tout  A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s5b        tout  B :    1.50 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  5 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s6         --int A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s6         --int B :    1.48 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  6 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s7         tout  A :    0.10 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · solid-s7         tout  B :    1.41 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+
+== CALIBRATION (c) — BRAS NÉGATIF : `argon2` SANS cale, par la même fonction
+  ✓ sans cale : code 0 · « ✓ » 3 (attendu 3) · appels de cale 0 (attendu 0) · 16.7 s (attendu > 1.61 s, son plus long non-démarrage simulé)
+
+BRAS ET DÉFAUTS MANQUÉS : 0 (attendu 0) — la simulation vaut mesure
+
+== TABLE — par harnais : non-démarrage simulé le plus long (T = max(A, B)), en secondes
+T 404 tout 12 0.58 15.48 15.48 0
+T act-plafonds tout 4 0.14 1.64 1.64 0
+T argon2 tout 3 0.14 1.61 1.61 0
+T available-on tout 10 0.47 12.91 12.91 10
+T b7 tout 3 0.10 1.67 1.67 0
+T booking-status tout 3 0.10 1.63 1.63 0
+T budgets tout 4 0.19 0.28 0.28 0
+T e3d1-s8 --int 8 0.15 2.90 2.90 0
+T horizon tout 6 0.35 7.64 7.64 0
+T horloge tout 2 0.15 1.48 1.48 0
+T journey tout 7 0.45 12.85 12.85 7
+T maxprice tout 10 0.59 12.71 12.71 0
+T r29 tout 15 0.13 1.55 1.55 0
+T r30 tout 8 0.12 1.54 1.54 0
+T r4 tout 2 0.11 1.50 1.50 0
+T s10a tout 13 0.10 1.47 1.47 0
+T s10b tout 20 0.11 1.53 1.53 0
+T s11a tout 18 0.11 1.49 1.49 0
+T s11b --int 13 0.10 1.48 1.48 0
+T s9 tout 6 0.13 1.48 1.48 0
+T solid-s1 --int 2 0.10 1.49 1.49 0
+T solid-s2 --int 5 0.10 1.59 1.59 0
+T solid-s3 --int 6 0.12 1.49 1.49 0
+T solid-s4 tout 7 0.10 1.52 1.52 0
+T solid-s5a tout 9 0.11 1.71 1.71 0
+T solid-s5b tout 5 0.10 1.50 1.50 0
+T solid-s6 --int 6 0.10 1.48 1.48 0
+T solid-s7 tout 2 0.10 1.41 1.41 0
