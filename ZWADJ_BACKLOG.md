@@ -1994,6 +1994,7 @@ ancrées que par leur section.
       CAUSES et rouvrir avec elle.
       ⛔ *(D322, 02/10/2026 : **RÉAPPARU, chaîne des causes relevée** — détail dans l'entrée `[E2E][P0]` ci-dessous.)* Arbitrage toujours en attente sur une nouvelle
       tentative en mise en place.
+      ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO** : « aucune nouvelle tentative automatique » ; « L'enquête sur D265 sera un lot à part, avant le lancement. » Texte complet : entrée « `fetch failed` / `ECONNRESET` (D265) », « Reports du 04/10/2026 ». **L'arbitrage qui était « en attente » est RENDU.**)*
 
 - [x] **[E2E]** Les quinze tests B7/B8 masqués ont réellement tourné — compte réconcilié
       (17 + 2 + 1 + 15 = 35 = 34 + 1). Les trois violations de contraste de D264 ont
@@ -2037,6 +2038,7 @@ ancrées que par leur section.
       config vise les ASSERTIONS ; réessayer une mise en place n'est pas la même chose.
       Décision non prise.
       ⛔ *(D322, 02/10/2026 — **DEUX OCCURRENCES, ET L'INSTRUMENTATION A PARLÉ** : « `TypeError: fetch failed` ← `Error [ECONNRESET]: read ECONNRESET` », sur `POST /auth/register` (le `fetch` global), après **4 puis 7 ms**, au premier appel de la spec neuve du rang 30 (`r30-lien-calendrier-pro`, dans `beforeAll` → `createPublishedVenue`), dans la suite COMPLÈTE à deux workers, **deux passes sur deux** ; l'API **n'a pas redémarré** (« Nest application successfully started » ×1, « File change detected » ×0) ⇒ **la seconde piste est écartée pour ces deux occurrences**. **Jouée seule** (×2), ou **après la même spec voisine sur un seul worker** (×1) : **verte**. Hypothèse mise à l'épreuve : le semis (`seedReferentials`, `execFileSync`, **5,2 à 5,4 s** mesurés, au ras du `keepAliveTimeout` de 5 s du serveur) figerait la boucle et laisserait réutiliser une socket que le serveur ferme — **NON reproduite** dans un montage isolé (bras « blocage 7 s » négatif ; **0 échec sur 33 essais** de 4,6 à 5,6 s). **La cause reste inconnue** ; ce qui est établi : elle dépend de la suite complète, pas de la spec seule. La spec a **quitté `e2e/specs/`** pour ne pas rendre la suite rouge avant la certification (versée, `docs/preuves/D322/navigateur/`). Pièces : `docs/preuves/D322/navigateur/` (extraits des passes) et `docs/preuves/D322/mesures/` (montages, durée du semis). ⇒ **BLOQUE** : le retour de cette spec dans la suite ; ⇒ l'arbitrage sur une nouvelle tentative reste **dû à Ko**.)*
+      ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO** : « aucune nouvelle tentative automatique » ; « L'enquête sur D265 sera un lot à part, avant le lancement. » Texte complet : entrée « `fetch failed` / `ECONNRESET` (D265) », « Reports du 04/10/2026 ». **L'arbitrage qui était « en attente » est RENDU.**)*
 
 - [ ] **[A11Y][P1]** **`.filters-reset` et `.range-value` sont TOLÉRÉES depuis toujours**
       dans `a11y.json` (`client recherche de salles`). `--accent-text` (D264) les rend
@@ -2474,6 +2476,79 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 04/10/2026 — rang 31, la certification qui couvre D321 et D322 (D323)
+
+Détail : section D323 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : **ce que l'entrée bloque** (ou « à ordonner par Ko ») et **son coût**, sans
+durée. ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : les entrées de D322 « `REQUESTED` », « le week-end est défini DEUX fois », « les noms
+de mois… `ar` / `ar-DZ` », « une assertion Playwright qui EXPIRE… », « la vérification navigateur du lien… » et « l'avertissement de build…
+`outputFileTracingRoot` », l'entrée de D321 « Un créneau `REQUESTED` n'est pas choisissable » et les deux entrées du `fetch failed` de D265,
+**annotées** de l'arbitrage de Ko qui les tranche ; les entrées de D321 « les deux calendriers » et « les autres adresses de pages écrites en dur »,
+annotées du lot « source unique » ; l'entrée `[DOC][P3]` « POURQUOI (b) ».
+⛔ **« TOUT CE QUE LES ARBITRAGES DE KO REPOUSSENT DEVIENT UNE ENTRÉE OUVERTE »** (Ko, D321) — les cinq premières ci-dessous, mot pour mot.
+
+- [ ] **[CLIENT]** **Le jour déjà demandé (`REQUESTED`) devient SÉLECTIONNABLE, avec un avis** — ⛔ **ARBITRÉ PAR KO le 04/10/2026, mot pour mot :
+  « Le jour déjà demandé (`REQUESTED`) devient sélectionnable, avec un avis indiquant que d'autres demandes sont en attente. Motif : l'API accepte
+  plusieurs demandes sur une même date, et le pro voit le conflit. Bloquer la date sur une simple demande fait perdre des demandes. Se fait au
+  prochain lot client. »** ⇒ **BLOQUE** : rien d'ouvert — « au prochain lot client » ne **donne** pas de rang ; **aucun lot de code ne s'ouvre avant
+  la certification** (compteur DEUX). ⇒ **COÛT** : **code (compte)** — le prédicat du jour choisissable (`apps/client/src/lib/booking-calendar.ts`)
+  et celui du créneau (`booking-request-panel.tsx`), un texte d'avis au catalogue **FR et AR** (parité, relecture arabe), leurs tests ; e2e : `r25`,
+  `r26`, `r29` à relire. ⚠ *Dérivé par la session* : `booking-request-panel.tsx` porte `setChosen` (borne de D316) — **le relecteur classe le
+  changement avant tout code** (D304) ; l'avis dit « d'autres demandes sont en attente » : il est **affiché** par le client, donc la source du
+  « autres demandes » (la disponibilité, `availability-engine.ts`) se **relève** avant d'être promise.
+- [ ] **[I18N][CLIENT][PRO]** **Les dates et les nombres en arabe se formatent en `ar-DZ` ; le catalogue et les routes restent `ar`** — ⛔ **ARBITRÉ
+  PAR KO le 04/10/2026, mot pour mot : « Les dates et les nombres en arabe se formatent en `ar-DZ`. Le catalogue et les routes restent `ar`. Le lot
+  qui le fera relèvera d'abord, dans le navigateur, ce que `ar` et `ar-DZ` affichent pour un mois, une date et un prix. Avant le lancement ; à
+  ordonner par moi. »** ⇒ **BLOQUE : LE LANCEMENT** (Ko : « Avant le lancement ») ; **à ordonner par Ko**. ⇒ **COÛT** : un **relevé navigateur
+  d'abord** (mois, date, prix, en `ar` et en `ar-DZ`, les deux apps), **puis code (compte)** — la locale passée à `Intl` pour les dates et les
+  nombres, `formatDZD` et ses appelants, les deux applications ; relecture arabe ; e2e AR à relire. ⚠ *Dérivé par la session* : **D56 tient** —
+  `Intl.Locale("ar-DZ").getWeekInfo()` rend `firstDay` samedi ; formater en `ar-DZ` ne doit **pas** ré-importer la semaine CLDR (le calendrier ne
+  se dérive jamais de la locale). ⚠ Le prix change : un formateur de montant **calcule-t-il ou affiche-t-il** ? `formatDZD` reçoit un montant du
+  serveur — conversion **depuis** le serveur (D307), donc hors chemin de l'argent ; **le relecteur le confirme avant tout code** (D304).
+- [ ] **[E2E]** **`fetch failed` / `ECONNRESET` (D265) : aucune nouvelle tentative automatique ; l'enquête est un LOT À PART, avant le lancement** —
+  ⛔ **ARBITRÉ PAR KO le 04/10/2026, mot pour mot : « `fetch failed` / `ECONNRESET` (D265) : aucune nouvelle tentative automatique. La spec du lien
+  reste hors de la suite, versée en pièce ; le test unitaire garde le lien. L'enquête sur D265 sera un lot à part, avant le lancement. Elle bloque le
+  retour de la spec dans la suite. »** ⇒ **BLOQUE : LE LANCEMENT** (l'enquête est « avant le lancement ») **et le retour de la spec du lien dans la
+  suite** (`docs/preuves/D322/navigateur/r30-lien-calendrier-pro.e2e.ts`). ⇒ **COÛT** : l'enquête — documentaire **ou** code selon ce qu'elle
+  trouve ; ⚠ *Dérivé par la session, d'après la lecture adverse de D322 (constat K6)* : le montage isolé de l'hypothèse « socket keep-alive »
+  **n'a pas montré qu'il savait la reproduire** (son bras positif rend « succès ») — elle est **non reproduite, pas écartée** ; l'enquête part de
+  là, et d'un montage dont **les deux bras** sont calibrés. Le test unitaire (`calendar-link.test.tsx`) et les cibles R30-7 et R30-8 gardent le
+  lien dans la suite.
+- [ ] **[CLIENT][PRO]** **Le week-end : UNE SEULE définition, partagée par le client et le pro** — ⛔ **ARBITRÉ PAR KO le 04/10/2026, mot pour mot :
+  « Le week-end : une seule définition, partagée par le client et le pro. Se fait avec un lot « source unique » : adresses de pages, deux
+  calendriers, week-end. »** ⇒ **BLOQUE** : rien d'ouvert ; le **lot « source unique »** (adresses de pages, deux calendriers, week-end) est **à
+  ordonner par Ko**. ⇒ **COÛT** : **code (compte)** — `WEEK_START_DAY` et `WEEKEND_DAYS` montent dans `@zwadj/types` (comme le fuseau, D48), les deux
+  applications les importent, `calendar.spec.ts` et `pro-calendar.spec.ts` s'y confrontent ; les **deux calendriers** et les **adresses de pages
+  écrites en dur** (entrées de D321, ci-dessous) sont le **même lot** ; e2e : non pour le week-end, à relire pour les adresses.
+- [ ] **[INFRA]** **`outputFileTracingRoot` : Ko retire le lockfile égaré hors dépôt ; la racine est fixée explicitement dans `next.config`** — ⛔
+  **ARBITRÉ PAR KO le 04/10/2026, mot pour mot : « `outputFileTracingRoot` : je vérifie et retire moi-même, hors dépôt, le `package-lock.json`
+  égaré de mon dossier personnel. La racine sera fixée explicitement dans `next.config`, avec la piste du déploiement. »** ⇒ **DEUX gestes** :
+  **(i)** celui de Ko, **hors dépôt**, sur `C:\Users\benla\package-lock.json` — **aucun fichier du dépôt, aucune porte touchée, aucun lot** ;
+  **(ii)** `outputFileTracingRoot` dans `apps/client/next.config.ts` — **code (compte)**, client seul, `pnpm build` à relire, **rattaché à la piste du
+  déploiement** (pas à un lot client). ⇒ **BLOQUE** : le **déploiement** (une racine fausse change ce que Next trace pour un déploiement
+  `standalone`) ; **à ordonner par Ko**. ⚠ *Dérivé par la session* : tant que le lockfile égaré est là, **chaque `pnpm build`** (donc chaque certification)
+  porte l'avertissement ; **le retirer ne change aucune garde** et ne se prouve que par un build sans l'avertissement.
+- [ ] **[TEST][MÉTHODE]** **Relever et calibrer les signatures Playwright, puis les coder dans les lecteurs de `r25`, `r26` et `r29`** — décision du
+  relecteur (chat), **déléguée par Ko le 04/10/2026** (bloc D323 de la méthode renforcée, `AGENTS.md` point E3) : une assertion web-first qui expire
+  EST une morsure **si l'échec lu montre l'appel `expect` avec l'attendu et le reçu** ; le délai d'un test ou d'une action N'EST PAS une morsure ;
+  « les signatures se RELÈVENT et se calibrent à deux bras avant d'être codées […] dans un futur lot de code ». ⇒ **BLOQUE** : **la reprise de R1,
+  pour ses harnais e2e** ; **à ordonner par Ko**. ⇒ **COÛT** : **code d'instrument (compte)** — `neutralisation/neutralize-r25.py`, `r26`, `r29` ;
+  un relevé des signatures **d'abord** (deux bras par signature) ; `--e2e` exigée pour la preuve. ⚠ **Dans la certification du rang 31, R26-2 et R26-4
+  se vérifient À LA MAIN**, sur leur sortie lue — ce lot-ci ne touche à aucun lecteur.
+- [ ] **[PRO][MÉTHODE]** **8 lignes non commitées, sans origine écrite, dans `apps/pro/src/venues/edit-venue-page.tsx`, trouvées à l'ouverture du
+  rang 31** — `setFormError(t("venue.ui.wizard.step1Invalid"))` + `scrollTo` sur les erreurs, `setNotice(t("venue.ui.form.saved"))` + `scrollTo` sur un
+  diff vide sans étape suivante ; commentaire : « étape 7 : « Enregistrer » ne faisait RIEN, sans requête ni message ». `mtime` 02/10/2026 20:21:29,
+  3 h 24 après le commit de D322 ; **0** mention dans les trois fichiers d'autorité. ⇒ **BLOQUE : LA PARTIE B DU RANG 31 (la certification)** — une
+  certification ne part pas d'un arbre dont la provenance n'est pas certifiable ; **décision due à Ko (D323-1)** : point d'entrée du rang 31, options
+  (a) à (d). ⇒ **COÛT** : **(b) ou (c)** — un geste de Ko, **aucun lot** ; **(a)** — **code (compte) sans rang** et **compteur DEUX → TROIS** (aucune
+  certification sans exception, D311), donc un rang à arbitrer **avant** la certification ; dans tous les cas, **le défaut que ces lignes corrigent**
+  (« Enregistrer » à l'étape 7 : sans requête ni message) **reste un défaut ouvert** tant qu'il n'est pas entré par un rang. ⚠ **Même classe que
+  D262 et D232** : le contrôle de fin de lot par **nom de fichier** ne voit pas ces lignes (le fichier figure à la table de D322) ; **il faudrait un
+  contrôle par CONTENU** — lot de code ou documentaire, à ordonner par Ko (« le `git diff` ne contient que les fichiers attendus » ne suffit pas).
+- [ ] **[DOC]** **Trois constats de la lecture adverse de D322, annotés dans la section D322** : **N1b** (« 66 s chacune » sans pièce pour la passe 1),
+  **K7** (l'empreinte `2f11ca72…` est celle des octets CRLF versés ; la version LF n'a pas de pièce), **C7** (les hauteurs à 360 px baissent aussi, de
+  148 px). ⇒ **BLOQUE** : rien. ⇒ **COÛT** : aucun (annotés) ; le **K6** est repris dans l'entrée `fetch failed` ci-dessus.
+
+
 ## Reports du 02/10/2026 — rang 30, le calendrier, suite (D322)
 
 Détail : section D322 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302). ⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** :
@@ -2493,6 +2568,7 @@ entrées de D321 « `REQUESTED` », « deux calendriers » et « adresses de pag
   `apps/client/next.config.ts` (**code, compte** ; client seul ; `pnpm build` à relire) ; ⚠ **ne mord que sur ce poste** tant
   que le build de production se fait ailleurs — mais une racine fausse change ce que Next **trace** pour un déploiement
   `standalone`, s'il est un jour choisi.
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO**, mot pour mot : « `outputFileTracingRoot` : je vérifie et retire moi-même, hors dépôt, le `package-lock.json` égaré de mon dossier personnel. La racine sera fixée explicitement dans `next.config`, avec la piste du déploiement. » Entrée « `outputFileTracingRoot` », « Reports du 04/10/2026 » : **les deux** options de cette entrée sont retenues, chacune à sa place.)*
 
 **Partie B (code) — ce que le lot a VU sans le corriger** (un défaut croisé se rapporte, il ne se corrige pas en passant) :
 - [ ] **[CLIENT]** **Le jour déjà demandé (`REQUESTED`) — DÉCISION PRODUIT DUE À KO** (point 2 du rang 30, arrêté sur consigne) :
@@ -2501,12 +2577,14 @@ entrées de D321 « `REQUESTED` », « deux calendriers » et « adresses de pag
   et celui du créneau (`booking-request-panel.tsx`), un texte au catalogue FR et AR (parité), leurs tests ; e2e : `r25`/`r26`
   à relire ; ⚠ `booking-request-panel.tsx` porte `setChosen` (borne de D316) : la ligne ne bouge pas, mais le relecteur classe
   le changement avant tout code (D304 : en cas de doute, demander).
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO**, mot pour mot : « Le jour déjà demandé (`REQUESTED`) devient sélectionnable, avec un avis indiquant que d'autres demandes sont en attente. Motif : l'API accepte plusieurs demandes sur une même date, et le pro voit le conflit. Bloquer la date sur une simple demande fait perdre des demandes. Se fait au prochain lot client. » Entrée « Le jour déjà demandé (`REQUESTED`) devient SÉLECTIONNABLE, avec un avis », « Reports du 04/10/2026 », ci-dessus : **elle** porte ce que la décision bloque et coûte. Cette entrée-ci n'est plus « décision due à Ko » : elle garde les **mesures**.)*
 - [ ] **[CLIENT][PRO]** **Le week-end est défini DEUX fois** — `WEEK_START_DAY` et `WEEKEND_DAYS` dans
   `apps/client/src/lib/calendar.ts` ET dans `apps/pro/src/venues/pro-calendar.ts`, chacun avec sa spec (`calendar.spec.ts`,
   `pro-calendar.spec.ts`). Les deux codent D56 et disent la même chose aujourd'hui ; « un seul endroit par formule »
   (`AGENTS.md`) — le jour où l'une bouge, l'autre non, et aucun test ne rougit. Relevé au point 3 du rang 30, **non
   corrigé** (hors de la demande). ⇒ **À ordonner par Ko.** ⇒ **COÛT** : code (compte) ; la constante monte dans
   `@zwadj/types` (comme le fuseau, D48), les deux applications l'importent, les deux specs s'y confrontent ; e2e : non.
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO**, mot pour mot : « Le week-end : une seule définition, partagée par le client et le pro. Se fait avec un lot « source unique » : adresses de pages, deux calendriers, week-end. » Entrée « Le week-end : UNE SEULE définition », « Reports du 04/10/2026 ». Ce n'est plus « à ordonner par Ko » pour le **choix** ; le **lot** « source unique » reste à ordonner.)*
 - [ ] **[I18N][CLIENT]** **En arabe, les noms de mois sont ceux de l'arabe GÉNÉRAL, pas de l'Algérie** — la page déclare
   `lang="ar"`, et `Intl` rend pour `ar` « يناير · فبراير · مارس · أبريل · مايو · يونيو · يوليو · أغسطس… », pour `ar-DZ`
   « جانفي · فيفري · مارس · أفريل · ماي · جوان · جويلية · أوت… » (mesuré, Node 22.14, ICU 76.1 ; le navigateur suit la même
@@ -2514,6 +2592,7 @@ entrées de D321 « `REQUESTED` », « deux calendriers » et « adresses de pag
   déclarer (`ar` ou `ar-DZ`) est une **décision produit**, qui touche aussi les nombres et les dates de toute l'application
   arabe, pas le seul calendrier. ⇒ **À ordonner par Ko.** ⇒ **COÛT** : décision d'abord ; puis code (compte) — la locale
   passée à `Intl` (et peut-être à next-intl), les deux applications ; relecture arabe ; e2e AR à relire.
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO**, mot pour mot : « Les dates et les nombres en arabe se formatent en `ar-DZ`. Le catalogue et les routes restent `ar`. Le lot qui le fera relèvera d'abord, dans le navigateur, ce que `ar` et `ar-DZ` affichent pour un mois, une date et un prix. Avant le lancement ; à ordonner par moi. » Entrée « Les dates et les nombres en arabe se formatent en `ar-DZ` », « Reports du 04/10/2026 ». La « décision produit » de cette entrée est **tranchée** ; reste le lot, **avant le lancement**.)*
 - [ ] **[TEST][MÉTHODE]** **Une assertion Playwright qui EXPIRE compte-t-elle comme une morsure sur le chemin de
   l'argent ?** — R26-4 (D321) « mord » par « `Timed out 7000ms waiting for expect(locator).toHaveCount` » : le lecteur de
   `neutralize-r26.py` la range parmi les assertions **par construction** (bras `_EXPECT` de sa calibration), et c'est la
@@ -2522,12 +2601,14 @@ entrées de D321 « `REQUESTED` », « deux calendriers » et « adresses de pag
   part**. Sans conséquence aujourd'hui (R26-4 n'est pas classée au chemin de l'argent) ; relevé par la lecture adverse de
   D321 (constat N5). ⇒ **BLOQUE** : la reprise de R1, pour ses harnais e2e (`r25`, `r26`) ; **question au relecteur**. ⇒
   **COÛT** : décision d'abord ; puis documentaire, ou code d'instrument (le lecteur de `r26` et de `r25`) qui compte.
+  ⛔ *(D323, 04/10/2026 — **question RÉPONDUE par le relecteur (chat), déléguée par Ko** : une assertion web-first qui expire après ses réessais EST une morsure si l'échec lu montre l'appel `expect` avec l'attendu et le reçu ; le délai d'un test ou d'une action N'EST PAS une morsure. Bloc D323 de la méthode renforcée ; `AGENTS.md`, point E3. **Ce que la reprise de R1 bloque** reste vrai pour les harnais e2e : les signatures se relèvent et se calibrent à deux bras **avant** d'être codées — entrée « Relever et calibrer les signatures Playwright », « Reports du 04/10/2026 ».)*
 - [ ] **[E2E]** **La vérification navigateur du lien « Calendrier de la salle » est une PIÈCE, pas une spec de la suite** —
   `docs/preuves/D322/navigateur/r30-lien-calendrier-pro.e2e.ts` a donné son rouge et son vert jouée seule ; dans la suite
   complète elle est tombée **deux fois sur deux** dans sa mise en place (`ECONNRESET` sur `POST /auth/register` — le `fetch
   failed` de D265, annoté ci-dessus). Sortie de `e2e/specs/` pour ne pas rendre la suite rouge avant la certification. ⇒
   **BLOQUE** : rien d'ouvert ; **son retour dans la suite attend la cause de D265** (ou l'arbitrage de Ko sur une nouvelle
   tentative). ⇒ **COÛT** : un fichier de test e2e (compte) ; e2e : la suite complète, deux workers.
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO**, mot pour mot : « `fetch failed` / `ECONNRESET` (D265) : aucune nouvelle tentative automatique. La spec du lien reste hors de la suite, versée en pièce ; le test unitaire garde le lien. L'enquête sur D265 sera un lot à part, avant le lancement. Elle bloque le retour de la spec dans la suite. » L'« arbitrage de Ko sur une nouvelle tentative » de cette entrée est **rendu : non**.)*
 
 ## Reports du 01/10/2026 — rang 29, la page de réservation du client (D321)
 
@@ -2579,18 +2660,21 @@ admin (D-7) ; « Integrate transactional email provider » (le lot de l'e-mail r
   mêmes classes, deux sources. ⇒ **À ordonner par Ko** (fusion, retrait de l'un, ou statu quo). ⛔ *(D322 : toujours vrai à `5a362d7` ; **non traité au rang 30**, consigne de Ko : « Ne les traite pas dans ce lot ». Le rang 30 a ajouté une GARDE sur la vue du panneau (noms, week-end) ; celle de B5 partage la grille (`lib/calendar.ts`) et la garde de source des noms la lit aussi.)* ⇒ **COÛT** : code (compte) ;
   client seul ; e2e : la fiche ; ⚠ le calendrier B5 affiche des prix (formatés, reçus du serveur — hors du chemin de l'argent
   par le principe de direction, D307).
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO** : le lot « source unique » — « adresses de pages, deux calendriers, week-end ». Entrée « Le week-end : UNE SEULE définition », « Reports du 04/10/2026 » : même lot.)*
 - [ ] **[CLIENT]** **Un créneau `REQUESTED` n'est pas choisissable dans le panneau**, alors que le serveur accepte qu'une
   demande en chevauche une autre en attente (décision produit, `AGENTS.md`) — comportement d'AVANT ce lot (`free = status ===
   "AVAILABLE"`), conservé tel quel par la borne de D316. Écart ou choix ? **Non tranché ici.** ⇒ **À ordonner par Ko.** ⇒
   **COÛT** : décision d'abord ; puis code (compte), une ligne et ses tests ; ⚠ transport de la date vers le prix : classement
   par le relecteur.
   ⛔ *(D322, 02/10/2026 — **point 2 du rang 30 : MESURÉ, puis ARRÊTÉ ET RAPPORTÉ**, consigne de Ko, mot pour mot : « Si rien ne tranche : arrête ce point et rapporte-le-moi. C'est une décision produit. » (a) **L'ancien panneau ne le permettait pas** : à `b5bd382`, `const free = slot.status === "AVAILABLE"` désactivait le créneau `REQUESTED` (affiché « pris »), et c'est sa ligne d'origine (`909702a`, création du fichier) ⇒ **pas une régression** ; (b) **l'API l'accepte** : test d'intégration « DEUX demandes concurrentes sur la même date coexistent en PENDING » (201 puis 201), rejoué vert par `test:int` de D322 ; (c) **les décisions écrites règlent le MODÈLE et l'affichage, pas ce que le PANNEAU offre** — `AGENTS.md` : « Chevauchement de créneaux entre demandes "pending" est autorisé (la salle tranche manuellement laquelle accepter) » ; B3 : « `REQUESTED` ne verrouille rien mais **on le dit** » ; D101 de `booking.ts` (une demande en attente « ne grise RIEN dans la liste publique ») ⇒ **rien ne tranche**. **Aucun code.** ⇒ **BLOQUE** : rien d'ouvert ; **décision produit due à Ko** (rendre le créneau choisissable avec un avis « d'autres demandes sont en attente », ou le garder fermé — par écrit). Mesures : `docs/preuves/D322/mesures/`.)*
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO**, mot pour mot : « Le jour déjà demandé (`REQUESTED`) devient sélectionnable, avec un avis indiquant que d'autres demandes sont en attente. Motif : l'API accepte plusieurs demandes sur une même date, et le pro voit le conflit. Bloquer la date sur une simple demande fait perdre des demandes. Se fait au prochain lot client. » Entrée « Le jour déjà demandé (`REQUESTED`) devient SÉLECTIONNABLE, avec un avis », « Reports du 04/10/2026 », ci-dessus : **elle** porte ce que la décision bloque et coûte. Cette entrée-ci n'est plus « décision due à Ko » : elle garde les **mesures**.)*
 - [ ] **[CLIENT][PRO]** **Les autres adresses de pages écrites en dur** — relevé en lecture seule, consigne de Ko : client
   **38** occurrences de **13** adresses (dont la constante de connexion), pro **40** de **15** (dont la constante, et `/auth/me`
   qui est une route d'API — faux positif lu au contexte). Détail : `docs/preuves/D321/adresses/releve.txt`. Les plus
   fréquentes : `/salles` (12 côté client, 9 côté pro), `/calendrier`, `/salles/nouvelle` (4 chacune côté pro). ⇒ **À ordonner
   par Ko.**
   ⛔ *(D322, 02/10/2026 — **UN EXEMPLE MESURÉ DE CE QUE COÛTE UNE ADRESSE ÉCRITE EN DUR**, consigne de Ko : le lien « Calendrier de la salle » de l'assistant pro (`apps/pro/src/venues/edit-venue-page.tsx:422` à `5a362d7`, gabarit `` `/salles/${state.venue.id}/calendrier` ``) visait une route **supprimée par UIP-A (D130)** ; `<Route path="*">` le redirigeait vers `/`, **sans 404** — rouge lu dans Chromium : « Expected …/calendrier · Received …/ ». ⚠ **Il figurait DANS ce relevé**, compté parmi « 4 × /calendrier » avec la vraie route (`docs/preuves/D321/adresses/releve.txt`) : un relevé par TEXTE ne dit pas si l'adresse est une route déclarée. **Réparé au rang 30** (point 4) ; le patron de sa garde — la table de routes RÉELLE rend la page À l'adresse du lien, sans la quitter (`apps/pro/src/venues/calendar-link.test.tsx`) — vaut pour les autres adresses. L'entrée reste **à ordonner par Ko**.)* ⇒ **COÛT** : code (compte) ; les deux applications ; patron prêt (`LOGIN_PATH` et sa garde).
+  ⛔ *(D323, 04/10/2026 — **ARBITRÉ PAR KO** : le lot « source unique » — « adresses de pages, deux calendriers, week-end ». Entrée « Le week-end : UNE SEULE définition », « Reports du 04/10/2026 » : même lot.)*
 - [ ] **[TEST]** **Des tests écrivent encore l'adresse de connexion en dur** — hors de la portée de LA garde, qui ne lit que
   les sources (écrit dans son en-tête) : `apps/client/src/components/auth/google-signin.test.tsx` (attendu
   `"http://localhost:5173/auth/connexion"`), `login-form.test.tsx` (`usePathname`), `apps/pro/src/App.test.tsx` (quatre
@@ -3602,7 +3686,7 @@ sur le compte des `node` (annotée : la règle du point 7 s'y adosse).
   D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D320, 01/10/2026 : il suit désormais
   l'arbitrage et la clôture du rang 28, les décisions dues à Ko de D320 et « RANG 29 : EN ATTENTE D'ARBITRAGE DE KO » —
   même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D321, 01/10/2026 : il suit désormais l'arbitrage du rang 29 et
-  « RANG 30 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D322, 02/10/2026 : il suit désormais l'arbitrage du rang 30 et « RANG 31 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
+  « RANG 30 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D322, 02/10/2026 : il suit désormais l'arbitrage du rang 30 et « RANG 31 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* ⛔ *(D323, 04/10/2026 : il suit désormais l'arbitrage du rang 31 et « RANG 32 : EN ATTENTE D'ARBITRAGE DE KO » — même défaut, non corrigé ; ce lot n'y touche pas)* et **se lit comme
   le motif du rang courant**. Même famille, juste en dessous : « ⚠ ET « SUIVANT » VOULAIT DIRE LE RANG 13 » et
   « CETTE LIGNE EST LA RÈGLE… », qui visent une ligne « rang suivant » écrite plus haut, et dont les
   insertions des rangs suivants les ont éloignées.

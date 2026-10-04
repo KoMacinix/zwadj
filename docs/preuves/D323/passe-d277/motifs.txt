@@ -1,0 +1,32 @@
+# D323 — motifs de la passe D277 (rang 31 ARBITRÉ par Ko : la certification qui couvre D321 et D322 ; partie A : arbitrages a à e,
+# décision du relecteur sur R1 et Playwright, lecture adverse de D322, arbre de travail sale à l'ouverture).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D322, 24802faf…), jamais passés en ligne de
+# commande (D289). Texte APLATI.
+# sens 1 — ce que D323 INVALIDE : le rang 31 en attente ; chaque « décision due à Ko » que Ko vient de trancher ; la question
+# posée au relecteur sur Playwright ; la prémisse du point 1 du rang 30.
+# sens 2 — ce que D323 REND PERMIS, ou dont la CONDITION change : la certification attendait son rang ; « prochain lot client » ;
+# la reprise de R1 pour les harnais e2e.
+1|RANG 31 : EN ATTENTE
+1|Rang 31 : en attente
+1|rang 31 : en attente
+1|n'est pas choisissable
+1|non choisissable
+1|DÉCISION PRODUIT DUE À KO
+1|décision produit due à Ko
+1|ar-DZ
+1|`ar` ou `ar-DZ`
+1|question au relecteur
+1|extension aux assertions à réessai
+1|outputFileTracingRoot
+1|limite déclarée par D321
+1|en arabe, ils sont en français
+1|l'arbitrage de D265 reste dû à Ko
+1|arbitrage de Ko sur une nouvelle tentative
+1|défini DEUX fois
+2|attend que Ko en fasse le rang 31
+2|prochain lot client
+2|la reprise de R1, pour ses harnais e2e
+2|aucun lot de code ne s'ouvre avant une certification
+2|certification qui couvre D321 et D322
+T+|ZWADJ
+T-|zzz-motif-absent-d323
