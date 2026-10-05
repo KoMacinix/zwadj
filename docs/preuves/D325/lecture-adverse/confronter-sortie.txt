@@ -1,0 +1,141 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ vitest positif (ANSI) : [(59, 667)] (attendu [(59, 667)])
+   ✓ vitest négatif (un échec : pas de « passed » seul) : [] (attendu [])
+   ✓ entier avec espace insécable étroit : 3313 (attendu 3313)
+   ✓ entier simple : 228 (attendu 228)
+   ✓ heures positif : (18, 0) (attendu (18, 0))
+   ✓ heures négatif (ligne de fin absente) : None (attendu None)
+   ✓ bilan positif : (11, 11, 0) (attendu (11, 11, 0))
+   ✓ bilan positif, seconde forme (RÉELLEMENT MESURÉE) : (2, 2, 0) (attendu (2, 2, 0))
+   ✓ bilan négatif : None (attendu None)
+   ✓ sceau positif : True (attendu True)
+   ✓ sceau négatif (un octet changé) : False (attendu False)
+   ✓ état CSV : lignes lues : 2 (attendu 2)
+   ✓ compte de motif : 2 (attendu 2)
+
+texte de D324 lu à 9a295a2 : 1628954 caractères, 18739 lignes
+
+== P — PROVENANCE (objets git)
+✓ P1     le parent de la clôture est le protocole de l'étape 0 — attendu '257471d3ca5ca718cda7c7e1becd0755e2685fe0' · mesuré '257471d3ca5ca718cda7c7e1becd0755e2685fe0'
+✓ P2     le parent du protocole est le dernier commit de D323 — attendu '4d36199e08ad304d6f7e95d6c429ffd3d4eab380' · mesuré '4d36199e08ad304d6f7e95d6c429ffd3d4eab380'
+✓ P3     la clôture touche, hors `docs/preuves/`, les trois `.md` d'autorité et rien d'autre — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']
+✓ P4     le protocole ne touche, hors `docs/preuves/`, que des `.md` d'autorité (sous-ensemble des trois) — attendu True · mesuré True
+· P4b    CONSTAT : fichiers que le protocole touche hors `docs/preuves/` : ['ZWADJ_CONTINUITE.md'] — le commit n'a pas touché `AGENTS.md` ni le backlog
+✓ P5     le code mesuré par la passe = celui de D322 : aucun fichier hors `.md` d'autorité et `docs/preuves/` entre `0e7a9f2` et le protocole — attendu [] · mesuré []
+✓ P6     D321 et D322 (`5a362d7`, `0e7a9f2`) sont ANCÊTRES du commit mesuré — attendu (True, True) · mesuré (True, True)
+✓ P7     la passe annonce son HEAD attendu : le SHA complet du protocole — attendu '257471d3ca5ca718cda7c7e1becd0755e2685fe0' · mesuré '257471d3ca5ca718cda7c7e1becd0755e2685fe0'
+✓ P8     les six pièces d'arbre : HEAD = le SHA complet du protocole, bloc de statut VIDE (lu dans la pièce, pas dans `progression.txt`) — attendu [('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True)] · mesuré [('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True), ('257471d3ca5ca718cda7c7e1becd0755e2685fe0', True)]
+✓ P9     les six lignes d'arbre de `progression.txt` : « 0 ligne(s) de statut (attendu 0) » — attendu 6 · mesuré 6
+✓ P10    « 183 pièces » : les fichiers du dossier de SA passe à la clôture — attendu 183 · mesuré 183
+
+== G — LES SIX PORTES (pièces de SA passe contre le tableau de D324)
+✓ G-typecheck code RÉEL 0 ; durée du tableau = durée écrite dans `.heures` — attendu (0, 18) · mesuré (0, 18)
+✓ G-typecheckb la durée écrite dans `.heures` = (fin − début) des horodatages, à ±1 s près (troncature) — attendu True · mesuré True
+✓ G-lint code RÉEL 0 ; durée du tableau = durée écrite dans `.heures` — attendu (0, 13) · mesuré (0, 13)
+✓ G-lintb la durée écrite dans `.heures` = (fin − début) des horodatages, à ±1 s près (troncature) — attendu True · mesuré True
+✓ G-test code RÉEL 0 ; durée du tableau = durée écrite dans `.heures` — attendu (0, 70) · mesuré (0, 70)
+✓ G-testb la durée écrite dans `.heures` = (fin − début) des horodatages, à ±1 s près (troncature) — attendu True · mesuré True
+✓ G-build code RÉEL 0 ; durée du tableau = durée écrite dans `.heures` — attendu (0, 36) · mesuré (0, 36)
+✓ G-buildb la durée écrite dans `.heures` = (fin − début) des horodatages, à ±1 s près (troncature) — attendu True · mesuré True
+✓ G-test:int code RÉEL 0 ; durée du tableau = durée écrite dans `.heures` — attendu (0, 277) · mesuré (0, 277)
+✓ G-test:intb la durée écrite dans `.heures` = (fin − début) des horodatages, à ±1 s près (troncature) — attendu True · mesuré True
+✓ G-test:e2e code RÉEL 0 ; durée du tableau = durée écrite dans `.heures` — attendu (0, 141) · mesuré (0, 141)
+✓ G-test:e2eb la durée écrite dans `.heures` = (fin − début) des horodatages, à ±1 s près (troncature) — attendu True · mesuré True
+✓ G1     typecheck : « Done » et `error TS` — attendu (8, 0) · mesuré (8, 0)
+✓ G2     lint : « Done » — attendu 8 · mesuré 8
+✓ G3     build : « Done » — attendu 4 · mesuré 4
+✓ G4     test : les quatre paires (fichiers, tests) du tableau, lues dans le journal en entier — attendu [(59, 667), (4, 39), (25, 344), (30, 352)] · mesuré [(59, 667), (4, 39), (25, 344), (30, 352)]
+✓ G5     test : « = 1 402 / 118 » = la somme des paires lues — attendu (1402, 118) · mesuré (1402, 118)
+✓ G6     test:int : 444 tests / 36 fichiers — attendu [(36, 444)] · mesuré [(36, 444)]
+✓ G7     test:e2e : « 43 passés · 1 ignoré sur 44 » = le résumé de l'extrait — attendu {'skipped': 1, 'passed': 43} · mesuré {'skipped': 1, 'passed': 43}
+✓ G8     e2e : « 1 221 lignes parcourues » écrit AVEC son attendu à côté — attendu ('1221', '1221') · mesuré ('1221', '1221')
+✓ G9     e2e : « 47 gardées » — attendu 47 · mesuré 47
+✓ G10    le tableau dit « sur 44 » : `Running` de l'extrait — attendu 44 · mesuré 44
+
+== C — LES CAMPAGNES
+✓ C1     `--tout` : campagnes · mordues · muettes · non mesurées · secondes, tableau contre journal — attendu (32, 228, 0, 21, 3313) · mesuré (32, 228, 0, 21, 3313)
+✓ C2     `--tout` : code de sortie 1, attendu par D324 — attendu 1 · mesuré 1
+✓ C3     `--tout` : 228 + 21 = 249 = le total déclaré — attendu 249 · mesuré 249
+✓ C4     « 77 journaux de CETTE passe copiés » = campagnes + rang23 + available-on-api versés — attendu 77 · mesuré 77
+✓ C4b    ventilation : 32 campagnes · 15 `rang23` · 30 `available-on-api` — attendu {'campagnes': 32, 'rang23': 15, 'available-on-api': 30} · mesuré {'campagnes': 32, 'rang23': 15, 'available-on-api': 30}
+✓ C5     `--int` ×7 : (harnais, mordues, secondes) du tableau contre les journaux de la passe — attendu [('e3d1-s8', 8, 81), ('r25', 11, 498), ('s11b', 13, 260), ('solid-s1', 2, 230), ('solid-s2', 5, 234), ('solid-s3', 6, 309), ('solid-s6', 6, 242)] · mesuré [('e3d1-s8', 8, 81), ('r25', 11, 498), ('s11b', 13, 260), ('solid-s1', 2, 230), ('solid-s2', 5, 234), ('solid-s3', 6, 309), ('solid-s6', 6, 242)]
+✓ C6     `--int` ×7 : la somme 8 + 11 + 13 + 2 + 5 + 6 + 6 = 51 — attendu 51 · mesuré 51
+✓ C7     `--int` : sept harnais énumérés par le tableau — attendu 7 · mesuré 7
+✓ C8     `--e2e` ×1 (`r26`) : 4 mordues, 416 s — attendu (4, 416) · mesuré (4, 416)
+✓ C9     contre-épreuve : « 5 garde(s) mordue(s) sur 5 cible(s) » — attendu (5, 5) · mesuré (5, 5)
+
+== L — LES LECTURES
+✓ L1     CERTIFIANT 249 · 0 · 0, 32 sur 32 — attendu (249, 0, 0, 32, 32) · mesuré (249, 0, 0, 32, 32)
+✓ L2     le tableau de la lecture : 32 lignes de campagne (parcourues) — attendu 32 · mesuré 32
+✓ L3     les étiquettes 13 · 27 · 81 · 128, SOMMÉES depuis les 32 lignes (pas depuis la ligne de total) — attendu (13, 27, 81, 128) · mesuré (13, 27, 81, 128)
+✓ L4     la somme des étiquettes = 249 — attendu 249 · mesuré 249
+✓ L5     la colonne « mordues » des 32 lignes se somme à 249 — attendu 249 · mesuré 249
+✓ L6     28 planchers dans `plancher.txt` — attendu 28 · mesuré 28
+✓ L7     « 28 au-dessus de leur plancher » : les lignes qui portent « ≥ plancher » — attendu 28 · mesuré 28
+✓ L8     « 4 LUES » : `rang23`, `available-on-api`, `r25`, `r26` — attendu ['available-on-api', 'r25', 'r26', 'rang23'] · mesuré ['available-on-api', 'r25', 'r26', 'rang23']
+✓ L9     chaque ligne « durée ≥ plancher » : le plancher imprimé = celui de `plancher.txt`, et la durée l'atteint — attendu [] · mesuré []
+✓ L10    « les plus serrés » (durée, plancher) écrits par D324, contre la lecture — attendu {'argon2': (16, 4.83), 'booking-status': (16, 4.89), 'horizon': (114, 22.92), 'available-on': (213, 38.73), 'maxprice': (213, 38.13), 'r29': (131, 4.65), 'r30': (60, 4.62)} · mesuré {'argon2': (16, 4.83), 'booking-status': (16, 4.89), 'horizon': (114, 22.92), 'available-on': (213, 38.73), 'maxprice': (213, 38.13), 'r29': (131, 4.65), 'r30': (60, 4.62)}
+✓ L11    « ×3,3 » pour `argon2` et `booking-status`, « ×5,0 » pour `horizon` : le rapport durée / plancher, arrondi à 0,1 — attendu (3.3, 3.3, 5.0) · mesuré (3.3, 3.3, 5.0)
+✓ L12    `rang23` : « MESURES LUES : 13 · MORSURES LUES : 13 · DÉMARRÉES : 13 » — attendu (13, 13, 13) · mesuré (13, 13, 13)
+✓ L13    `available-on-api` : 30 journaux · 12 pré-vols · 0 écart — attendu (30, 12, 0) · mesuré (30, 12, 0)
+· L14    CONSTAT : la lecture à la main de R26-2 et R26-4 : pièce de 58 lignes ; lecture des quatre extraits : ['R26-1.txt', 'R26-2.txt', 'R26-3.txt', 'R26-4.txt']
+
+== S — L'ÉCHANTILLONNEUR (`etat.csv`, relu en entier)
+✓ S1     215 échantillons parcourus — attendu 215 · mesuré 215
+✓ S2     fenêtre de l'échantillonneur : 112,8 min — attendu 112.8 · mesuré 112.8
+✓ S3     PERF : min 75,9 · max 168,1 · au-dessus de 100 sur 196 — attendu (75.9, 168.1, 196) · mesuré (75.9, 168.1, 196)
+✓ S4     RAM : min 2 847 · 57 échantillons sous la barre 4 579 — attendu (2847.0, 57) · mesuré (2847.0, 57)
+✓ S5     alimentation : SECTEUR seul ; chrome max 0 ; node max 19 — attendu ({'SECTEUR'}, 0, 19) · mesuré ({'SECTEUR'}, 0, 19)
+✓ S6     écarts entre échantillons : 214, de 31 à 33 s, aucun au-delà de 60 s — attendu (214, 31.0, 33.0, 0) · mesuré (214, 31.0, 33.0, 0)
+✓ S7     « les 20 relevés de sonde » : les fichiers `sonde-*.txt` — attendu 20 · mesuré 20
+✓ S8     « la plus basse bande basse : 5 090, `apres-e2e-r26` » — attendu (5090, 'sonde-apres-e2e-r26.txt') · mesuré (5090, 'sonde-apres-e2e-r26.txt')
+
+== Z — LES PLANCHERS (`simulation-sortie.txt` relu en entier)
+✓ Z1     « 56 mesures (28 × 2) » : lignes de mesure parcourues, A puis B — attendu (56, 28, 28) · mesuré (56, 28, 28)
+✓ Z2     « 0 bras manqué » : la ligne de bilan de la simulation — attendu 0 · mesuré 0
+✓ Z3     chaque plancher de `plancher.txt` = 3 × T (le non-démarrage le plus long, A ou B), à 0,01 s près — 28 vérifiés — attendu {'404': 46.44, 'act-plafonds': 4.92, 'argon2': 4.83, 'available-on': 38.73, 'b7': 5.01, 'booking-status': 4.89, 'budgets': 0.84, 'e3d1-s8': 8.7, 'horizon': 22.92, 'horloge': 4.44, 'journey': 38.55, 'maxprice': 38.13, 'r29': 4.65, 'r30': 4.62, 'r4': 4.5, 's10a': 4.41, 's10b': 4.59, 's11a': 4.47, 's11b': 4.44, 's9': 4.44, 'solid-s1': 4.47, 'solid-s2': 4.77, 'solid-s3': 4.47, 'solid-s4': 4.56, 'solid-s5a': 5.13, 'solid-s5b': 4.5, 'solid-s6': 4.44, 'solid-s7': 4.23} · mesuré {'404': 46.44, 'act-plafonds': 4.92, 'argon2': 4.83, 'available-on': 38.73, 'b7': 5.01, 'booking-status': 4.89, 'budgets': 0.84, 'e3d1-s8': 8.7, 'horizon': 22.92, 'horloge': 4.44, 'journey': 38.55, 'maxprice': 38.13, 'r29': 4.65, 'r30': 4.62, 'r4': 4.5, 's10a': 4.41, 's10b': 4.59, 's11a': 4.47, 's11b': 4.44, 's9': 4.44, 'solid-s1': 4.47, 'solid-s2': 4.77, 'solid-s3': 4.47, 'solid-s4': 4.56, 'solid-s5a': 5.13, 'solid-s5b': 4.5, 'solid-s6': 4.44, 'solid-s7': 4.23}
+✓ Z4     « vingt-deux harnais rendent un ou plusieurs ✗, quatre s'arrêtent à leur pré-vol » + les deux qui rendent une campagne complète — attendu (22, ['act-plafonds', 'argon2', 'budgets', 'horloge'], ['available-on', 'journey']) · mesuré (22, ['act-plafonds', 'argon2', 'budgets', 'horloge'], ['available-on', 'journey'])
+✓ Z5     les plus petit et plus grand planchers : `budgets` 0,84 s ; `404` 46,44 s — attendu (('budgets', 0.84), ('404', 46.44)) · mesuré (('budgets', 0.84), ('404', 46.44))
+
+== D — LA DURÉE DE LA PASSE (une valeur que le texte répète quatre fois)
+✗ D1     « 18:52:02 → 20:46:33, 113 min » : les deux horodatages de `progression.txt`, soustraits — attendu 113 · mesuré 115
+· D2     CONSTAT : 18:52:02 → 20:46:33 = 114.52 min (6871 s) ; « 113 min » est répété 2 fois dans la section ; la fenêtre de l'échantillonneur, elle, est de 112,8 min — le texte semble avoir pris l'une pour l'autre
+
+== A — LES AUDITS DE SECRETS
+✓ A1     « 80 valeurs cherchées (9 journaux), 3 028 fichiers, 0 porteur » — attendu (80, 9, 3028, 0) · mesuré (80, 9, 3028, 0)
+✓ A2     « contrôle cookie : 179 valeurs, 3 029 fichiers, 0 porteur » — attendu (179, 3029, 0) · mesuré (179, 3029, 0)
+✓ A3     les sorties d'audit de D324 portent un sceau qui couvre EXACTEMENT leurs octets (recalculé) — attendu {'docs/preuves/D324/audit-secrets-cloture.txt': True, 'docs/preuves/D324/audit-secrets-etape0.txt': True, 'docs/preuves/D324/audit-secrets-final.txt': True} · mesuré {'docs/preuves/D324/audit-secrets-cloture.txt': True, 'docs/preuves/D324/audit-secrets-etape0.txt': True, 'docs/preuves/D324/audit-secrets-final.txt': True}
+✓ A4     trois sorties d'audit à la racine de D324 (étape 0, clôture, final) — attendu 3 · mesuré 3
+✓ A5     le tri différentiel final : « alertes ABSENTES de la précédente : 0 » — attendu 0 · mesuré 0
+
+== F — LES CHEMINS QUE D324 CITE existent à la clôture
+✓ F1     chemins `docs/preuves/D324/…` et `P/…` cités par D324 (parcourus 34, globs/gabarits écartés 2) : absents à la clôture — attendu [] · mesuré []
+
+== T — LE TEXTE : l'état courant que D324 a laissé
+✓ T1     la dernière ligne du registre porte D324 (le prochain numéro est D325) — attendu 'D324' · mesuré 'D324'
+✓ T2     la dernière ligne « ⇒ RANG N » de l'ordre des rangs : rang 32, en attente d'arbitrage — attendu ('32', "EN ATTENTE D'ARBITRAGE DE KO") · mesuré ('32', "EN ATTENTE D'ARBITRAGE DE KO")
+✓ T3     `AGENTS.md` : l'annotation de D324 (« rang 31 CLOS — LA CERTIFICATION PASSE », « compteur DEUX → ZÉRO ») est écrite — attendu (True, True) · mesuré (True, True)
+✓ T4     la passe D277 de D324 : son contrôle (« rejouée sur l'état qui part ») compte les occurrences que le texte livré porte (comptées ICI de nouveau) — attendu 181 · mesuré 181
+✓ T5     les motifs de la passe D277 examinés (hors témoins) : parcourus 19 · le contrôle en annonce — attendu 19 · mesuré 19
+· T6     CONSTAT : occurrences « compteur DEUX » non barrées dans les endroits où l'on lit le courant (ordre des rangs, `AGENTS.md`, `CLAUDE.md`), dont le contexte de 150 car. ne porte ni « ZÉRO », ni « LEVÉ », ni « périmé », ni D323/D324 : {'ordre': 4, 'AGENTS.md': 2, 'CLAUDE.md': 0} (sur {'ordre': 5, 'AGENTS.md': 5, 'CLAUDE.md': 0} non barrées)
+         ordre : …`+1` de D294), rectifié à côté des pièces. **Documentaire : compteur DEUX, inchangé.** ⇒ **Ce qui vient ensuite : la CERTIFICATION** (partie B), qui c…
+         ordre : …, dans les passes versées de D293 et D299. **Documentaire : compteur DEUX, inchangé** ; D305 et D308 **non certifiés** ; **la pause du chemin de l'arg…
+         ordre : …erse de D310 : **94 contrôles, 2 écarts**. **Documentaire : compteur DEUX, inchangé.** ⇒ **ORDRE DU RANG 23 À COMPTER DU 26/09/2026 : LE LOT DE DÉBLOC…
+         ordre : … LE LOT DE DÉBLOCAGE (partie B, code de `neutralisation/` — compteur DEUX → TROIS, sous l'exception) → LA CERTIFICATION, sous un protocole neuf commit…
+         AGENTS.md : …tralisation permise pendant la pause) ; lot documentaire, **compteur DEUX, inchangé** ; suite : la certification, partie B.)* ⛔ *(D319, 01/10/2026 : *…
+         AGENTS.md : …rbitrage de Ko**.)* ⛔ *(D322, 02/10/2026 : **rang 30 CLOS — compteur DEUX** ⇒ **aucun lot de code ne s'ouvre avant une certification** ; **rang 31 : e…
+
+== X — L'ÉTAT LIVE (lu en direct : c'est lui qui dit ce que la session a reçu)
+✓ X1     fichiers SUIVIS modifiés à l'ouverture — attendu [] · mesuré []
+· X2     CONSTAT : fichiers non suivis à cet instant : ['?? docs/preuves/D325/lecture-adverse/confronter-d324.py', '?? docs/preuves/D325/lecture-adverse/confronter-sortie.txt']
+✓ X3     HEAD = clôture de D324 — attendu '9a295a264e0bb26cd087bfb86b089497690f9fa3' · mesuré '9a295a264e0bb26cd087bfb86b089497690f9fa3'
+✓ X4     HEAD = origin/main après `git fetch` — attendu '9a295a264e0bb26cd087bfb86b089497690f9fa3' · mesuré '9a295a264e0bb26cd087bfb86b089497690f9fa3'
+✓ X5     un stash, celui de D323, message exact — attendu ['stash@{0}: On main: D323 : 8 lignes de Ko, edit-venue-page.tsx, création de salle, 02/10'] · mesuré ['stash@{0}: On main: D323 : 8 lignes de Ko, edit-venue-page.tsx, création de salle, 02/10']
+✓ X6     l'identifiant du stash : 85a7f052e902835c943d78335a0d34ea1af5f39a — attendu '85a7f052e902835c943d78335a0d34ea1af5f39a' · mesuré '85a7f052e902835c943d78335a0d34ea1af5f39a'
+✓ X7     le diff versé en pièce (D323) = le contenu du stash (octets, LF) — attendu '9e6e03bce67fc52437d468e340e9a8d96388f4793ecfd588c3273920b2a9fd19' · mesuré '9e6e03bce67fc52437d468e340e9a8d96388f4793ecfd588c3273920b2a9fd19'
+✓ X8     sha256 du diff versé = celui qu'écrit D323 (`9e6e03bc…`) — attendu '9e6e03bce67fc524' · mesuré '9e6e03bce67fc524'
+· X9     CONSTAT : ports de développement ou d'e2e à l'écoute à cet instant (3000, 3001, 5173, 3100, 3101, 5273) : aucun ; D324 dit que les serveurs de Ko étaient arrêtés pendant la passe
+
+== 87 contrôles · 1 écart(s) de D324 · 0 écart(s) de l'état live · 6 constat(s)
+ventilation par famille : A 5 · C 10 · D 1 · F 1 · G 22 · L 13 · P 10 · S 8 · T 5 · X 7 · Z 5 (somme 87)
+ÉCARTS DE D324 : D1

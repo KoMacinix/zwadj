@@ -658,7 +658,10 @@ réutilisés sans le dire) ; si Ko retire la marque, le compteur revient à DEUX
 Ko.**~~)* ⛔ *(D321, 01/10/2026 : **D-11 arbitrée par Ko — k1** : « La marque de D319 tient ; les écarts restent annotés. » ⇒
 le compteur **était ZÉRO**. Rang 29 **arbitré par Ko — lot de CODE** (la page de réservation du client) : compteur **ZÉRO →
 UN** à sa clôture.)* ⛔ *(D321, 01/10/2026 : **rang 29 CLOS — compteur UN** ; ~~**rang 30 : en attente d'arbitrage de Ko**~~ ; par
-D-10, le prochain lot de code de l'administration est ADM-1, puis une certification.)* ⛔ *(D322, 02/10/2026 : **rang 30 arbitré par Ko — lot de CODE** (le calendrier, suite) : compteur **UN → DEUX** à sa clôture ⇒ **une certification avant tout autre lot de code** ; **D-10 révisée par Ko**, mot pour mot : « D-10 est révisée : calendrier (ce rang) → certification → ADM-1 → ADM-2 → certification. » ; **rang 31 : en attente d'arbitrage de Ko**.)* ⛔ *(D322, 02/10/2026 : **rang 30 CLOS — compteur DEUX** ⇒ **aucun lot de code ne s'ouvre avant une certification** ; **rang 31 : en attente d'arbitrage de Ko**.)* ⛔ *(D323, 04/10/2026 : **rang 31 arbitré par Ko — la certification qui couvre D321 et D322** ; les deux « rang 31 : en attente » ci-dessus sont **périmés** ; **compteur DEUX, inchangé** — la partie B n'a pas démarré : **arbre de travail sale à l'ouverture** (8 lignes non commitées dans `apps/pro/src/venues/edit-venue-page.tsx`, origine inconnue), décision due à Ko, `ZWADJ_CONTINUITE.md`, point d'entrée du rang 31 ; **rang 32 : en attente d'arbitrage de Ko**.)* ⛔ *(D323, suite, 04/10/2026 : **levé** — origine déclarée par Ko, les 8 lignes mises de côté (stash, pièce versée), arbre propre vérifié ; la partie B part, section D324.)* ⛔ *(D324, 04/10/2026 : **rang 31 CLOS — LA CERTIFICATION PASSE** — marque « Portes vertes AU REPOS le 04/10/2026, et D321 et D322 en font partie » ; **compteur DEUX → ZÉRO** ⇒ « aucun lot de code ne s'ouvre avant une certification » est **LEVÉ** ; un lot de code PEUT s'ouvrir dès que Ko arbitre le **rang 32** (**en attente d'arbitrage de Ko**) — hors du chemin de l'argent, en pause ; section D324.)*
+D-10, le prochain lot de code de l'administration est ADM-1, puis une certification.)* ⛔ *(D322, 02/10/2026 : **rang 30 arbitré par Ko — lot de CODE** (le calendrier, suite) : compteur **UN → DEUX** à sa clôture ⇒ **une certification avant tout autre lot de code** ; **D-10 révisée par Ko**, mot pour mot : « D-10 est révisée : calendrier (ce rang) → certification → ADM-1 → ADM-2 → certification. » ; **rang 31 : en attente d'arbitrage de Ko**.)* ⛔ *(D322, 02/10/2026 : **rang 30 CLOS — compteur DEUX** ⇒ **aucun lot de code ne s'ouvre avant une certification** ; **rang 31 : en attente d'arbitrage de Ko**.)* ⛔ *(D323, 04/10/2026 : **rang 31 arbitré par Ko — la certification qui couvre D321 et D322** ; les deux « rang 31 : en attente » ci-dessus sont **périmés** ; **compteur DEUX, inchangé** — la partie B n'a pas démarré : **arbre de travail sale à l'ouverture** (8 lignes non commitées dans `apps/pro/src/venues/edit-venue-page.tsx`, origine inconnue), décision due à Ko, `ZWADJ_CONTINUITE.md`, point d'entrée du rang 31 ; **rang 32 : en attente d'arbitrage de Ko**.)* ⛔ *(D323, suite, 04/10/2026 : **levé** — origine déclarée par Ko, les 8 lignes mises de côté (stash, pièce versée), arbre propre vérifié ; la partie B part, section D324.)* ⛔ *(D324, 04/10/2026 : **rang 31 CLOS — LA CERTIFICATION PASSE** — marque « Portes vertes AU REPOS le 04/10/2026, et D321 et D322 en font partie » ; **compteur DEUX → ZÉRO** ⇒ « aucun lot de code ne s'ouvre avant une certification » est **LEVÉ** ; un lot de code PEUT s'ouvrir dès que Ko arbitre le **rang 32** (**en attente d'arbitrage de Ko**) — hors du chemin de l'argent, en pause ; section D324.)* ⛔ *(D325, 04/10/2026 : **rang 32 arbitré par Ko — lot de CODE** (réparations de l'app Pro) ;
+**compteur ZÉRO → UN** à sa clôture ; **D-10 RÉVISÉE de nouveau**, mot pour mot : « L'ordre : réparations Pro (ce rang) → PDF de l'acompte (rang 33) → certification →
+ADM-1 → ADM-2 → certification. » ⇒ **ADM-1 n'est plus le lot de code suivant** ; **la pause du chemin de l'argent se réduit au paiement en ligne** (E3, avec R1) ;
+**rang 33 : en attente d'arbitrage de Ko** — candidat désigné par Ko, pas arbitré.)*
 ⛔ **UNE CERTIFICATION QUI S'ÉCARTE DE LA FORME ÉCRITE PAR KO NOMME CET ÉCART DANS SON PROTOCOLE, AVANT LA MESURE — règle de
 Ko, 01/10/2026 (D321, arbitrage D-11), mot pour mot : « Règle pour la suite : une certification qui s'écarte de la forme que
 j'ai écrite nomme cet écart dans son protocole, avant la mesure. »** *Motif, dérivé par la session* : D319 avait écrit le
@@ -879,6 +882,8 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   « revue » a désormais la forme ratifiée par Ko — une session adverse ouverte à froid, le relecteur (chat) qui
   décide, le veto de Ko —, et E3 n'est plus codé par Ko : point E3 juste en dessous.)* ⛔ *(D303 : cette forme de
   revue vaut pour **tout lot de code du chemin de l'argent**, pas seulement E3 — décision du relecteur (chat).)*
+  ⛔ *(D325 : pour décider la **MÉTHODE** — dont cette forme de revue —, « le chemin de l'argent » se lit désormais par « ce que le lot touche » (décision du relecteur, annotation de la
+  portée plus bas) : la méthode **renforcée** couvre le paiement Chargily, ce que le serveur calcule/enregistre/valide comme montant et les changements de statut côté serveur.)*
 - ⛔ **NE PAS LIVRER E3 (paiement Chargily) COMME UN LOT ORDINAIRE.** La méthode est **durcie (D126)** et décrite dans `ZWADJ_CONTINUITE.md` → « ⛔ E3 — MÉTHODE RENFORCÉE » : **cinq sous-lots** avec arrêt franc entre chacun, cadrage listant les **modes de défaillance** avant tout code, **toute garde neutralisée pour prouver que son test mord**, **aucune valeur écrite de mémoire** (charges utiles Chargily capturées du bac à sable, aucun montant en dur), **aucune référence gelée** sur le chemin de l'argent (la seule valeur acceptable est zéro), webhook **mince** (signature → dédup → file → 200 : un handler lent fait retenter Chargily et multiplie les courses), **livraison sombre** derrière un drapeau. Un mode de défaillance non listé au cadrage **ne se code pas**.
 - ⛔ **E3 — QUI CODE, QUI DÉCIDE, ET LA FORME DE LA REVUE : arbitrages de Ko du 23/09/2026 (D302), À LIRE AVANT DE
   TOUCHER AU PAIEMENT.** Portée : **le lot argent, c'est-à-dire E3, paiement Chargily.**
@@ -938,6 +943,13 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     pas une liste dans un fichier d'autorité ;
     ⛔ *(D311 : **deux branches ajoutées** par le relecteur — (5) la donnée qui entre dans le calcul d'un montant, (6)
     l'instruction de paiement ; ci-dessous, bloc D311.)*
+    ⛔ *(D325, 04/10/2026 — **décision du relecteur, déléguée par Ko** : pour décider la **MÉTHODE** d'un lot, cette règle (1) à (6) est
+    **REMPLACÉE** par « ce que le lot touche » — **renforcée** : le paiement Chargily ; ce que le SERVEUR calcule, enregistre ou valide
+    comme montant ; les changements de statut d'une réservation ou d'un devis côté serveur — **normale, avec UNE règle en plus** : tout ce
+    qui affiche, imprime, envoie ou saisit un montant (le montant vient du serveur, jamais recalculé dans le navigateur ; un test prouve que
+    le montant affiché, imprimé ou envoyé est celui du serveur, et pour une saisie que la valeur enregistrée est celle saisie). Annoté, pas
+    réécrit. ⚠ *Dérivé par la session — à confirmer* : les branches continuent à **classer les cibles d'un harnais** pour les étiquettes de
+    R1 (D313). Texte et motif : `ZWADJ_CONTINUITE.md`, méthode renforcée, bloc D325.)*
   - **R1** — portée : ~~les **20** harnais relevés par D303 **et tout harnais neuf** qui mute un fichier de ce chemin~~
     ⛔ *(D313 : **une RÈGLE** — un harnais en fait partie s'il a au moins une cible du chemin de l'argent, branches (1) à
     (6) ; bloc D313 ci-dessous)* ;
@@ -967,6 +979,11 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   session, pas une parole de Ko* : la pause couvre par son nom **tout lot de code du chemin de l'argent** ; qui en doute
   demande à Ko. Et un fait : les clés de test Chargily ont été **régénérées par Ko le 25/09/2026** (`[SEC][P0]`, partie
   Chargily close sur sa déclaration ; `GOOGLE_CLIENT_SECRET` reste ouvert).
+  ⛔ *(D325, 04/10/2026 — **LA PAUSE SE RÉDUIT AU PAIEMENT EN LIGNE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le
+  paiement par carte via Chargily (E3), avec R1 qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des
+  demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ ce que la phrase ci-dessus disait de **« tout lot de code du chemin de l'argent »** est
+  **périmé** : ces sept points **ne sont plus interdits par la pause** — chacun reste un lot qui attend le rang que Ko lui donne. **E3 et R1
+  restent en pause** ; le drapeau des paiements reste bloqué. Annoté, pas réécrit.)*
   ⛔ *(D314, 26/09/2026 : **la certification a eu lieu et elle est PASSÉE** — le rang 23 est clos ⇒ **LA PAUSE DU CHEMIN DE
   L'ARGENT A COMMENCÉ** ; sa reprise est un rang que Ko arbitrera.)*
   ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 25/09/2026 (D307)** — texte et motifs : tête de « ⛔ E3 —
@@ -1021,6 +1038,8 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
     « ce lot ne touche ni l'aperçu d'acompte ni ce transport. S'il le faut, arrête-toi et dis-le. » ;
   - ⛔ **PRINCIPE, qui complète la règle de portée et le principe de direction** : « un changement relève du chemin de
     l'argent **par sa fonction**, branches (1) à (6), **pas parce que son fichier figure sur la carte**. »
+    ⛔ *(D325 : les branches (1) à (6) ne décident plus la **méthode** — voir l'annotation de la portée, plus haut ; le principe « par sa fonction, pas par son
+    fichier » reste, lui, vrai.)*
   ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 27/09/2026 (D317)** — texte et motifs : tête de « ⛔ E3 — MÉTHODE
   RENFORCÉE », bloc D317 :
   - **les 182 boutons de date (fiche d'environ 14 500 px) ne sont PAS du chemin de l'argent** : « c'est la présentation des
@@ -1040,6 +1059,9 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   `E3d-2 — expiration des PENDING`, `ZWADJ_BACKLOG.md:728`) sans les y lier par écrit, faute de certitude suffisante.
   Texte complet, motifs : `ZWADJ_CONTINUITE.md`, section D318 ; ordre des rangs ; bloc de la pause (annotation sous
   l'arbitrage de Ko de D307).
+  ⛔ *(D325, 04/10/2026 : **ce que la pause garde est réduit** — 23b, 23c, F7, la gestion des devis, l'expiration des demandes et B:728 **sortent de
+  la pause** (arbitrage de Ko, mot pour mot ci-dessus, bloc D307) ; « sous la méthode renforcée » vaut **pour ce que le point touche** (décision du
+  relecteur de D325). ⚠ *Dérivé par la session* : de la reprise décrite ici, la pause ne garde que **R1, puis E3** — « le DERNIER rang de l'ordre ».)*
   ⛔ *(D320, 01/10/2026 : **RATTACHÉS, sur consigne de Ko** — **F7** ⇒ `ZWADJ_BACKLOG.md`, `[API]` « audit SOLID 09/09 · F7 —
   les notifications de réservation en arabe partent en français » ; **gestion des devis** ⇒ « Remonter `QuotesSection`,
   démontée par la refonte… » ; **expiration des demandes** ⇒ « Implement pending-request expiration job (pending →
@@ -1056,7 +1078,7 @@ la liste, et annoncer un nombre clos fait arrêter de lire au cinquième point.
   R26-3 (le libellé de statut du client, dont « Acceptée — acompte à régler ») et R26-4 (sa liste) de
   `neutralisation/neutralize-r26.py` ; restauration prouvée par la vérification de l'arbre au départ et à l'arrivée.)*
 - ⛔ **DÉCISION DU RELECTEUR (chat), DÉLÉGUÉE PAR KO LE 01/10/2026 (D320) — DANS LA PREMIÈRE VERSION DE LA PAGE
-  D'ADMINISTRATION, LE TAUX DE COMMISSION EST EN LECTURE SEULE** jusqu'à la reprise du chemin de l'argent. *Motif* : « le
+  D'ADMINISTRATION, LE TAUX DE COMMISSION EST EN LECTURE SEULE** jusqu'à la reprise du chemin de l'argent. ⛔ *(D325, 04/10/2026 — **LA CONDITION CHANGE, LA DÉCISION NON** : la pause se réduit au paiement en ligne ; « jusqu'à la reprise du chemin de l'argent » ne se lit donc plus « jusqu'à la fin de la pause d'aujourd'hui ». **Rien n'est levé par cette note** : le taux reste en lecture seule et `setRates` non journalisé tant que Ko ou le relecteur n'a pas dit ce que devient la condition — **décision due, avant ADM-1** ; backlog, « Reports du 04/10/2026 — rang 32 ».)* *Motif* : « le
   modifier valide un taux (branche 1, `venues-admin.service.ts`), et le chemin de l'argent est en pause. » ⇒ *Dérivé par la
   session, pas une parole du relecteur* : la page n'appelle **jamais** `PATCH /admin/venues/:id/commission-rate` ; la route
   reste dans l'API, inchangée. ⚠ **Question ouverte au relecteur** : journaliser le réglage des taux modifierait `setRates`

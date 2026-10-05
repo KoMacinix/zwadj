@@ -357,6 +357,10 @@
 - [x] `POST /bookings/:id/accept` (pro) — transition pending → accepted; this is what actually locks the slot via the DB constraint; on constraint violation, return conflict [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:357 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [x] `POST /bookings/:id/decline` (pro) — transition pending → declined [BACK][P0] ✅ *(D321, 01/10/2026 : **réalisé** — re-confronté au code à `b5bd382` ; entrée « RÉALISÉ » de D315 (B:358 à `ffd32e9`) ; `docs/preuves/D321/entrees/confronter-62-sortie.txt`.)*
 - [ ] Implement pending-request expiration job (pending → expired if pro doesn't respond in X days) via pg-boss [BACK][P0] ⛔ *(D320 : **point du chemin de l'argent « expiration des demandes » nommé par Ko (D318)** — s'ouvre seul, sur son arbitrage, sous la méthode renforcée ; la pause tient. ⚠ Distinct d'E3d-2, qui porte sur les intentions de paiement. Renvoi : `AGENTS.md`, point E3.)*
+  ⛔ *(D325, 04/10/2026 : **SORT DE LA PAUSE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+  qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ cette entrée **n'est plus
+  bloquée par la pause** ; elle **attend le rang** que Ko lui donnera ; la méthode se décide **par ce que le point touche** (décision du relecteur de D325 : méthode renforcée,
+  bloc D325).)*
 - [ ] `POST /bookings/:id/confirm` (system, triggered by successful payment) — transition accepted → confirmed [BACK][P0] (dep: Phase 7)
 - [ ] Implement orphaned-payment recovery: payment succeeded but confirm failed → auto-refund or manual reconciliation queue [BACK][P0]
 - [ ] `PATCH /bookings/:id` (modify guests/services, pending only) [BACK][P1]
@@ -428,6 +432,9 @@
 >   certification qui suivra, qui clôt le rang 23 ; **23b (F2), 23c (F6), R1 et E3** passent au backlog avec pour
 >   bloquant « **reprise du chemin de l'argent, pause décidée par Ko** » ; leur reprise sera un rang que Ko arbitrera ;
 >   « **E3 attend sur cette pause, et non plus sur un compte** » ;
+>   ⛔ *(D325, 04/10/2026 : **LA PAUSE SE RÉDUIT AU PAIEMENT EN LIGNE** — Ko : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+>   qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ **23b et 23c sortent** de la
+>   liste ci-dessus ; **R1 et E3 y restent**. Annoté, pas réécrit. Bloc D325 de la méthode renforcée.)*
 > - **décisions du relecteur** : pendant la pause, les **certifications sont permises** (une morsure du chemin non lue
 >   s'y écrit « code de sortie seul, non prouvée (R1) ») ; R1 est le **premier lot à la reprise** et **bloque toujours
 >   la levée du drapeau** ; principe de direction pour la portée du chemin. Texte : `AGENTS.md`, point E3 ; motifs : tête
@@ -726,6 +733,10 @@
 - ⚠ **LEÇON** : j'avais plafonné `endMinutes` à 1440, ce qui **interdisait la soirée de mariage algérienne**. Le CHECK `slot_templates_minutes_valid` (posé en `20260707000001`) autorise 2880 et donne l'exemple « 20h→02h = 1200→1560 ». **Le schéma existant fait autorité sur une intuition.**
 - ⚠ **LEÇON** : ma migration redéclarait une contrainte existante ⇒ `42710` au rejeu. **Grepper les migrations avant d'ajouter une contrainte nommée.**
 - [ ] B4 devra DIRE au pro que le prix saisi à la création de la salle est écrasé dès le premier créneau, sinon il croira à un bug [PRO][P1] ⛔ *(D320 : **point du chemin de l'argent « B:728 » nommé par Ko (D318)** — « B:728 » est la ligne de cette entrée à `ffd32e9` (table de D315) ; s'ouvre seul, sur son arbitrage, sous la méthode renforcée ; la pause tient. Renvoi : `AGENTS.md`, point E3.)*
+  ⛔ *(D325, 04/10/2026 : **SORT DE LA PAUSE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+  qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ cette entrée **n'est plus
+  bloquée par la pause** ; elle **attend le rang** que Ko lui donnera ; la méthode se décide **par ce que le point touche** (décision du relecteur de D325 : méthode renforcée,
+  bloc D325).)*
 
 **B2 — Moteur de prix ✅** (migration destructive relue par Ko)
 - [x] `DELETE FROM pricing_rules` (table jamais utilisée) ; `multiplier_bps` → `price_cents` ABSOLU ; `slot_template_id` NOT NULL ; `CHECK > 0` [BACK][P0]
@@ -1932,9 +1943,13 @@ Trois régressions constatées sur le zip de Ko, **un seul mécanisme** : UI-D5 
 - [ ] **Vérification visuelle** de la refonte contre les maquettes : proportions dérivées des images, jamais comparées à un rendu réel [PRO][P1]
 
 ### Reste de la tranche UIP
-- [ ] **UIP-D — PDF de devis** (génération serveur). ⚠ Mini-cadrage écrit AVANT code : bibliothèque, endpoint, `@Roles`, **PDF bilingue FR/AR** (polices embarquées + façonnage RTL — LA difficulté, à prouver sur un devis réel), montants venus du serveur, stockage à trancher [BACK][P1]
+- [ ] **UIP-D — PDF de devis** (génération serveur). ⚠ Mini-cadrage écrit AVANT code : bibliothèque, endpoint, `@Roles`, **PDF bilingue FR/AR** (polices embarquées + façonnage RTL — LA difficulté, à prouver sur un devis réel), montants venus du serveur, stockage à trancher [BACK][P1] ⛔ *(D325, 04/10/2026 : **demande de Ko, mot pour mot, pour le PDF RÉCAPITULATIF DE L'ACOMPTE et les boutons de remise — le LOT SUIVANT, rang 33** : « Reports du 04/10/2026 — rang 32 », première entrée. Le PDF de **devis** d'ici et le PDF **récapitulatif de l'acompte** de Ko ne sont pas nécessairement le même objet : la difficulté, elle, est la même (polices FR et AR, façonnage RTL, montants venus du serveur) — à trancher au cadrage du rang 33.)*
 - [ ] **UIP-E — Fiche client** : entrée « Clients » dans le menu du profil, rattachement d'un devis à une fiche, saisie à la volée au clic sur « Envoyer ». ⚠ Mini-cadrage écrit avant code [BACK][PRO][P1]
 - [ ] **Remonter `QuotesSection`**, démontée par la refonte : cinq gestes inatteignables (envoyer un brouillon existant, marquer refusé, convertir un devis ancien, historique des versions, réviser hors session) [PRO][P0] ⛔ *(D320 : **point du chemin de l'argent « gestion des devis » nommé par Ko (D318)** — table de D315, « gestion des devis existants (`QuotesSection` non montée) », branches 1 et 2 ; s'ouvre seul, sur son arbitrage, sous la méthode renforcée ; la pause tient. Renvoi : `AGENTS.md`, point E3.)*
+  ⛔ *(D325, 04/10/2026 : **SORT DE LA PAUSE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+  qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ cette entrée **n'est plus
+  bloquée par la pause** ; elle **attend le rang** que Ko lui donnera ; la méthode se décide **par ce que le point touche** (décision du relecteur de D325 : méthode renforcée,
+  bloc D325).)*
 
 ### Ce que cette tranche apprend, à appliquer désormais
 - [ ] **Un script de neutralisation compte ses EXÉCUTIONS, pas seulement ses remplacements.** `vitest -t <filtre>` sort en 0 quand rien ne correspond : trois gardes ont été lues « inutiles » alors qu'elles n'avaient jamais été mesurées (D144) [PROCESS][P0]
@@ -2475,6 +2490,54 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       ⛔ Et la preuve manquait : j'avais mesuré la stabilité de DEUX FICHIERS, jamais
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
+
+## Reports du 04/10/2026 — rang 32, réparations de l'app Pro (D325)
+
+Détail : section D325 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : **ce que l'entrée bloque** (ou « à ordonner par Ko ») et **son coût**, sans durée.
+⚠ **Ce que ce lot a écrit AILLEURS dans ce fichier** : l'entrée `UIP-D — PDF de devis` (phase 10), **annotée** de la demande de Ko ci-dessous ; l'entrée du stash
+(« Correctif esquissé par Ko… ») et l'entrée « Remonter `QuotesSection` », **annotées** à la clôture.
+
+- [ ] **[PRO][CLIENT]** **LE PDF RÉCAPITULATIF DE L'ACOMPTE, LES BOUTONS DE REMISE (SMS, E-MAIL, CINQUIÈME BOUTON) ET LE RETRAIT D'UNE PHRASE — le LOT SUIVANT (rang 33)** —
+  ⛔ **DEMANDE D'ORIGINE DE KO, MOT POUR MOT (04/10/2026) :**
+  « Les quatre boutons actuels (« Imprimé et remis », « Envoyé par SMS », « Annoncé de vive voix », « Convenu par téléphone ») doivent chacun : télécharger un PDF
+  récapitulatif de l'acompte, ET afficher une pop-up de confirmation, en plus du texte déjà affiché. Envoyé par SMS : télécharge le PDF + envoie un SMS au client avec
+  les détails du devis (fonctionnalité SMS complète à prévoir plus tard — pour l'instant, prévoir juste le branchement, pas l'envoi réel). Ajouter un cinquième bouton
+  manquant : « Envoyé par e-mail », avec le même comportement (téléchargement PDF + pop-up). Retirer la phrase « Zwadj n'imprime rien et n'envoie rien à votre place. »
+  **Ajouté par Ko : tant que l'envoi réel n'existe pas, aucun écran ne dit que Zwadj a envoyé quoi que ce soit.**
+  ⇒ **BLOQUE** : le **rang 33** — **candidat DÉSIGNÉ par Ko** (« forment le LOT SUIVANT (rang 33), sous la méthode normale avec la règle des montants »), **pas encore arbitré** :
+  « RANG 33 : EN ATTENTE D'ARBITRAGE DE KO ». ⇒ **COÛT** : **code (compte)** ; **méthode normale, avec la règle des montants** (décision 2 du relecteur, D325) — le PDF
+  **imprime** un montant, il vient du **serveur**, jamais recalculé dans le navigateur, et un test prouve que le montant imprimé est celui du serveur ; fichiers : l'écran du
+  devis (`apps/pro/src/dashboard/walkin-journey.tsx`), le catalogue FR/AR (`packages/i18n/messages/`), une **génération de PDF** — **dépendance à justifier** (bibliothèque,
+  polices **FR et AR** avec façonnage RTL : la difficulté de `UIP-D`) ; **e2e** : oui (le téléchargement et la fenêtre) ; **le « branchement » du SMS sans envoi réel** : **un nouveau
+  contrat d'API ? — s'arrêter et demander** (`CLAUDE.md`) ; **migration** : non ; **cadrage chemin de l'argent** : non (la pause se réduit au paiement en ligne, arbitrage de Ko de D325).
+  ⚠ **Ce que le lot DOIT garder** : « **tant que l'envoi réel n'existe pas, aucun écran ne dit que Zwadj a envoyé quoi que ce soit** » — ce qui touche le texte actuel du parcours
+  (« Remise enregistrée : {canal} », « Ces boutons enregistrent comment vous avez remis le devis. Zwadj n'imprime rien et n'envoie rien à votre place. »).
+- [ ] **[API][MÉTHODE RENFORCÉE]** **POINT 12 DU RANG 32 — LE CRÉNEAU 20 h → 2 h COLORE DEUX JOURS : ARRÊTÉ ET RAPPORTÉ, pas corrigé** — **mesuré**
+  (`docs/preuves/D325/ouverture/sonde-minuit.ts`, sortie versée) : sur la base de dev de Ko (salle `SINGLE_SLOT`, créneau 1200 → 1560), **6 réservations qui bloquent
+  colorent 11 jours** — le moteur dilate une réservation de journée entière sur la VEILLE, parce que le créneau de la veille va jusqu'à 2 h. **Deux jeux de réservations différents
+  rendent la même réponse** ({18, 19} et {17, 18, 19}) : la réponse ne dit pas quel jour porte la réservation ⇒ **un correctif d'affichage seul est impossible sans cacher une
+  réservation réelle ou en inventer une**. Ko demandait « un changement d'affichage seul : le calcul de disponibilité et de chevauchement ne change pas » ; **la borne de Ko ferme
+  ce qui le permettrait**. ⇒ **BLOQUE** : le point 12 du rang 32 ; **à ordonner par Ko**, avec son choix entre (a) un champ de plus dans la réponse de disponibilité (un **nouveau
+  contrat d'API**, qui dit le jour où la réservation COMMENCE) et (b) un autre modèle de plage en `SINGLE_SLOT` (la plage de la journée entière devient la plage du créneau). ⇒ **COÛT** :
+  **code serveur — le calcul de disponibilité** (`apps/api/src/venues/availability-engine.ts`, `availability.service.ts`) — **méthode renforcée** (décision 2 : le blocage de la date côté
+  serveur), **un cadrage avec ses modes de défaillance d'abord** ; e2e : oui ; migration : **non pour (a), à étudier pour (b)** (les plages stockées) ; dépendance : non. ⚠ **À vérifier,
+  pas affirmé** : en `SINGLE_SLOT`, le moteur d'admission d'une NOUVELLE réservation et l'affichage appliquent-ils le même recouvrement ? (la contrainte de base compare des plages de
+  journée qui ne se chevauchent pas, le moteur compare des fenêtres de créneau qui, elles, se chevauchent) — c'est la question de (b).
+- [ ] **[PRO]** **`QuotesSection` (non montée) porte trois champs de contact SANS validation** — nom, prénom, téléphone (champ libre) et e-mail du formulaire de conversion ; **hors du
+  produit** tant qu'elle n'est pas remontée, donc **non modifiée par le rang 32** (« un défaut croisé se rapporte »). ⇒ **BLOQUE** : « Remonter `QuotesSection` » (entrée ci-dessus,
+  point « gestion des devis » de D318 ; **sort de la pause** par l'arbitrage de Ko de D325) — **elle devra reprendre le champ de téléphone partagé, la règle du nom et celle de
+  l'e-mail** que le rang 32 pose. ⇒ **COÛT** : code (compte) avec l'entrée à laquelle elle se rattache ; aucun fichier de plus.
+- [ ] **[CLIENT][MONTANTS]** **`booking-request-panel.tsx` RECALCULE un aperçu d'acompte dans le navigateur** (`previewDeposit`, `lineTotal`, A3) — ce que la **règle des montants** de
+  la décision 2 du relecteur (D325) interdit : « le montant vient du serveur, jamais recalculé dans le navigateur ». **Relevé en lisant le fichier** pour y changer le champ du
+  téléphone ; **non modifié** (la borne de D316 est tenue : ni l'aperçu d'acompte, ni le transport de la date). ⇒ **BLOQUE** : rien d'ouvert — **à ordonner par Ko**. ⇒ **COÛT** :
+  **code (compte)** ; **méthode normale avec la règle des montants** ; **un endpoint d'aperçu serait un nouveau contrat d'API — s'arrêter et demander** ; e2e : oui (`r25`, `r26` lisent le
+  panneau) ; migration : non.
+
+- [ ] **[ADMIN][DOC]** **LE TAUX DE COMMISSION « EN LECTURE SEULE JUSQU'À LA REPRISE DU CHEMIN DE L'ARGENT » (D320) ET « LE RÉGLAGE DES TAUX N'EST PAS JOURNALISÉ PENDANT LA PAUSE » (D321) — LEUR CONDITION A CHANGÉ**
+  — la **pause se réduit au paiement en ligne** (arbitrage de Ko, D325) ; le motif écrit par le relecteur — « le modifier valide un taux (branche 1), et le chemin de l'argent est en pause »
+  — **ne tient plus tel quel**. **Rien n'est levé** : le taux reste en lecture seule et `setRates` non journalisé. ⇒ **BLOQUE** : **ADM-1** (la page d'administration et son journal) ; **décision
+  due à Ko ou au relecteur** : que devient la condition ? ⇒ **COÛT** : **documentaire** (une décision à écrire) ; si le taux devient éditable ou journalisé : **code qui valide un montant (le taux)
+  — méthode renforcée** (décision 2 de D325), cadrage d'abord.
 
 ## Reports du 04/10/2026 — rang 31, partie B : la certification (D324)
 
@@ -3092,6 +3155,9 @@ fait, **restent ouvertes jusqu'à la certification**). ⛔ *(D310 : certificatio
   `booking-transitions.ts` (sa doc) ; e2e : celle du lot porteur ; cadrage chemin de l'argent : **oui** — les deux fichiers
   sont sur la carte, branche (2) ; ⇒ *dérivé par la session* : il attend donc la **reprise du chemin de l'argent** ;
   migration : non ; dépendance : non ; ne mord nulle part (aucun appelant).
+  ⛔ *(D325, 04/10/2026 : **la pause se réduit au paiement en ligne** (Ko : « seulement le paiement par carte via Chargily (E3), avec R1 qui le précède »). Cette entrée
+  n'est **pas nommée** par Ko parmi ce qui sort de la pause ; **la phrase « reprise du chemin de l'argent » ci-dessus ne se lit plus comme un bloquant** — elle attend un rang,
+  et sa méthode se décide par ce qu'elle touche (méthode renforcée, bloc D325).)*
 - [x] ⛔ *(D309, 26/09/2026 : **TRANCHÉ par le relecteur (chat), délégué par Ko** — « une ligne de la table des portes
   cite le dossier versé de SA passe (horodatage ou identifiant de passe). Toute autre passe versée se nomme comme telle. »
   Motif : « D306 a trouvé chez D305 des sorties versées qui n'étaient pas celles de la passe comptée. » Écrit au **point
@@ -3169,6 +3235,10 @@ modes, `neutralize-rang23.py` dans sa portée).
   ⇒ **BLOQUE : 23b** (la décision 2 du relecteur pour F2 en dépend). ⇒ **COÛT** : documentaire jusqu'à la décision ;
   puis dans 23b, sans fichier de plus que ceux du § 6. ⛔ *(D307 : 23b est en pause — **bloqué par la reprise du chemin
   de l'argent, pause décidée par Ko** ; la question attend avec lui et reste due avant son code.)*
+  ⛔ *(D325, 04/10/2026 : **SORT DE LA PAUSE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+  qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ cette entrée **n'est plus
+  bloquée par la pause** ; elle **attend le rang** que Ko lui donnera ; la méthode se décide **par ce que le point touche** (décision du relecteur de D325 : méthode renforcée,
+  bloc D325).)*
 
 ## Reports du 24/09/2026 — rang 23 : ordre des sous-lots, décisions du relecteur, cadrage de R1, deux inférences mesurées (D304)
 
@@ -3311,6 +3381,10 @@ arbitrera.
   ⛔ **(D307, 25/09/2026) 23b — BLOQUÉ PAR : reprise du chemin de l'argent, pause décidée par Ko.** Sorti du rang 23 ;
   sa reprise sera un rang que Ko arbitrera. Son cadrage reste celui du rang 23 (§ 2, § 3, § 5), et la question « déjà
   converti » (§ 8) reste due avant son code.
+  ⛔ *(D325, 04/10/2026 : **SORT DE LA PAUSE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+  qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ cette entrée **n'est plus
+  bloquée par la pause** ; elle **attend le rang** que Ko lui donnera ; la méthode se décide **par ce que le point touche** (décision du relecteur de D325 : méthode renforcée,
+  bloc D325).)*
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F6 — l'enrichissement de notification, attendu après le commit et hors du
   `catch` du publieur, fait échouer une opération déjà faite** (P2 de l'audit). **OUVERT à `HEAD`** :
   `BookingsService.accept`, `.decline` et `.cancelAsPro` écrivent
@@ -3324,6 +3398,10 @@ arbitrera.
   ⛔ **(D307, 25/09/2026) 23c — BLOQUÉ PAR : reprise du chemin de l'argent, pause décidée par Ko.** Sorti du rang 23 ;
   sa reprise sera un rang que Ko arbitrera. Son cadrage reste celui du rang 23 (MD-F6-1 à -5, technique de l'espion
   mesurée par D304) ; `solid-s6`, qui garde son terrain, est **dans** le chemin de l'argent (décision du relecteur, D307).
+  ⛔ *(D325, 04/10/2026 : **SORT DE LA PAUSE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+  qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ cette entrée **n'est plus
+  bloquée par la pause** ; elle **attend le rang** que Ko lui donnera ; la méthode se décide **par ce que le point touche** (décision du relecteur de D325 : méthode renforcée,
+  bloc D325).)*
 - [ ] **[API]** ⛔ **audit SOLID 09/09 · F8 — un `null` JSON du fournisseur échappe à `PAYMENT_PROVIDER_MALFORMED`**
   (P2 de l'audit). **OUVERT à `HEAD`** : `ChargilyGateway.readSession` fait
   `body = (await response.json()) as ChargilyCheckoutResponse` ; le `catch` ne couvre que l'échec d'analyse — un
@@ -3458,6 +3536,8 @@ arbitrera.
     « ✓ » ; **0** porte un marqueur d'échec Vitest (croix ou `FAIL` sur une ligne de spec, `AssertionError`,
     `expected … to`, `Tests N failed`) — calibration deux bras. Chaque cible y tient en une ligne
     « ✓ <cible> [mesure] ».
+  ⛔ *(D325, 04/10/2026 : **R1 RESTE EN PAUSE** — Ko : « le paiement par carte via Chargily (E3), avec R1 qui le précède ». R1 est le premier lot à la reprise d'E3 ; la pause ne
+  garde que ces deux-là.)*
 - [ ] **[API]** **audit SOLID 09/09 · F3 — un jeton de réinitialisation se consomme deux fois ; même forme sur la
   vérification d'e-mail et le changement d'e-mail** (P1 de l'audit ; l'audit sécu le reprend en P1). **OUVERT à
   `HEAD`, les trois** : `AuthService.resetPassword`, `AuthService.verifyEmail` et `AccountService.confirmEmailChange`
@@ -3504,6 +3584,10 @@ arbitrera.
   entrée à `ffd32e9`), classé **branche 6** (S11a-11) ; s'ouvre seul, sur son arbitrage, **sous la méthode renforcée** — le
   « cadrage chemin de l'argent : non » ci-dessus date d'avant D311, qui a fait entrer la notification dans le chemin. La
   pause tient. Renvoi : `AGENTS.md`, point E3.)*
+  ⛔ *(D325, 04/10/2026 : **SORT DE LA PAUSE** — Ko, mot pour mot : « Le chemin de l'argent en pause, c'est seulement le paiement par carte via Chargily (E3), avec R1
+  qui le précède. Tout le reste sort de la pause : F7, la gestion des devis, l'expiration des demandes, B:728, 23b, 23c, le PDF de l'acompte. » ⇒ cette entrée **n'est plus
+  bloquée par la pause** ; elle **attend le rang** que Ko lui donnera ; la méthode se décide **par ce que le point touche** (décision du relecteur de D325 : méthode renforcée,
+  bloc D325).)*
 - [ ] **[API]** **audit SOLID 09/09 · A1 — des contrats de persistance exprimés en types Prisma.** **OUVERT à `HEAD`,
   aux contrats que l'audit NOMME** : `booking-locks.types.ts` (`BookingRow = Prisma.BookingGetPayload`, et
   `transition` qui prend un `Record<string, unknown>` que l'adaptateur coule en

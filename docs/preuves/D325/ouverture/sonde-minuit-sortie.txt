@@ -1,0 +1,37 @@
+salle de dev : mode SINGLE_SLOT · créneau 1200 → 1560 minutes (FRANCHIT minuit)
+réservations qui bloquent (lues en base) : 6
+  PENDING  2026-10-13 (plage UTC 2026-10-12T23:00:00Z → 2026-10-13T23:00:00Z, soit 24 h)
+  PENDING  2026-10-15 (plage UTC 2026-10-14T23:00:00Z → 2026-10-15T23:00:00Z, soit 24 h)
+  ACCEPTED 2026-10-18 (plage UTC 2026-10-17T23:00:00Z → 2026-10-18T23:00:00Z, soit 24 h)
+  ACCEPTED 2026-10-20 (plage UTC 2026-10-19T23:00:00Z → 2026-10-20T23:00:00Z, soit 24 h)
+  ACCEPTED 2026-10-21 (plage UTC 2026-10-20T23:00:00Z → 2026-10-21T23:00:00Z, soit 24 h)
+  ACCEPTED 2026-10-23 (plage UTC 2026-10-22T23:00:00Z → 2026-10-23T23:00:00Z, soit 24 h)
+
+statut RENDU PAR LE MOTEUR, jour par jour (celui que le calendrier colore) :
+  2026-10-10  AVAILABLE  
+  2026-10-11  AVAILABLE  
+  2026-10-12  REQUESTED  
+  2026-10-13  REQUESTED  ← réservation qui COMMENCE ce jour
+  2026-10-14  REQUESTED  
+  2026-10-15  REQUESTED  ← réservation qui COMMENCE ce jour
+  2026-10-16  AVAILABLE  
+  2026-10-17  BOOKED     
+  2026-10-18  BOOKED     ← réservation qui COMMENCE ce jour
+  2026-10-19  BOOKED     
+  2026-10-20  BOOKED     ← réservation qui COMMENCE ce jour
+  2026-10-21  BOOKED     ← réservation qui COMMENCE ce jour
+  2026-10-22  BOOKED     
+  2026-10-23  BOOKED     ← réservation qui COMMENCE ce jour
+  2026-10-24  AVAILABLE  
+  2026-10-25  AVAILABLE  
+
+jours colorés (non libres) : 11 · jours où une réservation COMMENCE : 6
+
+NON-IDENTIFIABILITÉ (SINGLE_SLOT, créneau 20 h → 2 h) — la fenêtre (17, 18, 19, 20), trois jeux de réservations de journée entière :
+  {18, 19}     → BOOKED,BOOKED,BOOKED,AVAILABLE
+  {17, 18, 19} → BOOKED,BOOKED,BOOKED,AVAILABLE
+  {19}         → AVAILABLE,BOOKED,BOOKED,AVAILABLE
+  {18, 19} et {17, 18, 19} rendent la MÊME suite : true — une réservation du 17 est INVISIBLE dans la réponse, couverte par
+  la dilatation de celle du 18 ; et dans {19}, le 18 est « réservé » alors qu'il ne porte aucune réservation.
+  ⇒ la réponse du moteur (jour × créneau × statut) ne permet PAS de retrouver quel jour porte la réservation : un correctif d'AFFICHAGE seul
+    — retirer le statut du jour qui ne COMMENCE pas la réservation — cacherait une réservation réelle (ici le 17) ou en laisserait une fausse.

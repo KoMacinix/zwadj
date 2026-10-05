@@ -1,0 +1,38 @@
+# D325 — motifs de la passe D277 (rang 32 ARBITRÉ par Ko ; la pause du chemin de l'argent SE RÉDUIT au paiement en ligne ; D-10 RÉVISÉE de nouveau ;
+# la méthode se décide par ce que le lot touche ; le rang 33 est désigné, pas arbitré).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D324, 24802faf…), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que D325 INVALIDE : « le rang 32 est en attente » ; ADM-1 « lot de code suivant » ; « la pause couvre tout lot de code du chemin de l'argent » ;
+#          « les branches (1) à (6) décident la méthode ».
+# sens 2 — ce que D325 REND PERMIS, ou dont la condition change : F7, gestion des devis, expiration des demandes, B:728, 23b, 23c, PDF de l'acompte ne sont plus
+#          interdits par la pause ; « leur reprise sera un rang que Ko arbitre » ; « un lot de code PEUT s'ouvrir » ; « aucun lot de code ne s'ouvre ».
+1|RANG 32 : EN ATTENTE
+1|rang 32 : en attente
+1|le rang 32 attend
+1|dès que Ko arbitre le rang 32
+1|dès que Ko arbitre le **rang 32**
+1|en fasse le rang 32
+1|c'est **ADM-1
+1|c'est ADM-1
+1|le prochain lot de code de l'administration est ADM-1
+1|lot de code de l'administration (ADM-1)
+1|le chemin de l'argent reste en pause
+1|tout lot de code du chemin de l'argent
+1|reprise du chemin de l'argent
+1|pause du chemin de l'argent
+1|chemin de l'argent, en pause
+1|la pause tient
+1|branches (1) à (6)
+1|branches 1 à 6
+2|s'ouvrent un par un
+2|sous la méthode renforcée
+2|un rang que j'arbitrerai
+2|un rang que Ko arbitrera
+2|un lot de code PEUT s'ouvrir
+2|aucun lot de code ne s'ouvre
+2|23b
+2|F7
+2|B:728
+2|expiration des demandes
+2|PDF de l'acompte
+T+|ZWADJ
+T-|zzz-motif-absent-d325
