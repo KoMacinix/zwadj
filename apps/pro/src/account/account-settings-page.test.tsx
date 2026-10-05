@@ -12,7 +12,8 @@ import { beforeAll, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import type { AccountClient } from "@zwadj/api-client";
-import type { AuthUserDTO, DeletionRequestDTO } from "@zwadj/types";
+import { messages } from "@zwadj/i18n";
+import { DEFAULT_PHONE_COUNTRY, PHONE_COUNTRIES, type AuthUserDTO, type DeletionRequestDTO } from "@zwadj/types";
 import { AccountMenu, initialsOf } from "@zwadj/ui";
 import { AppProviders } from "../App";
 import type { AuthClient } from "../lib/auth-client";
@@ -344,5 +345,64 @@ describe("Canaux de notification — D60", () => {
         expect.objectContaining({ notifyByEmail: true, notifyBySms: false })
       )
     );
+  });
+});
+
+// ══ RANG 32 (D325) — les DEUX numéros du pro (D38) sont le champ partagé : mobile seulement, +213, 9 chiffres, premier chiffre 5, 6 ou 7 ═════════
+// ⚠ AUCUNE RÈGLE RECOPIÉE : l'indicatif, la longueur et les premiers chiffres viennent du modèle de pays ; les messages, du catalogue.
+describe("écran profil — les deux numéros du pro (D38) sont le champ de téléphone PARTAGÉ", () => {
+  const PAYS = PHONE_COUNTRIES[DEFAULT_PHONE_COUNTRY];
+  const FR_PHONE = messages.fr.common.phone;
+  const mauvaisPremier = [..."0123456789"].find((c) => !PAYS.leadingDigits.includes(c)) as string;
+
+  it("les numéros enregistrés s'affichent en chiffres NATIONAUX, l'indicatif et le drapeau devant — chaque champ a les siens", async () => {
+    renderPage(makeClient(), {
+      ...PRO_USER,
+      proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: "+213770000001", notifyByEmail: true, notifyBySms: false }
+    });
+    const premier = (await screen.findByLabelText("Téléphone")) as HTMLInputElement;
+    const second = screen.getByLabelText("Second téléphone (facultatif)") as HTMLInputElement;
+    expect(premier.value).toBe("551234567");
+    expect(second.value).toBe("770000001");
+    expect(screen.getAllByRole("img", { name: `${FR_PHONE.country[DEFAULT_PHONE_COUNTRY]}, ${PAYS.dialCode}` })).toHaveLength(2);
+  });
+
+  it("⚠ des lettres, un dixième chiffre, un premier chiffre refusé : rien de tout cela n'entre dans l'un ni l'autre champ", async () => {
+    renderPage(makeClient(), { ...PRO_USER, proProfile: { businessName: "Salle El Ryad", phone: "+213551234567", phone2: null, notifyByEmail: true, notifyBySms: false } });
+    const second = (await screen.findByLabelText("Second téléphone (facultatif)")) as HTMLInputElement;
+    for (const caractere of `${PAYS.leadingDigits.charAt(0)}ab12345678901`) fireEvent.change(second, { target: { value: second.value + caractere } });
+    expect(second.value).toMatch(new RegExp(`^\\d{${PAYS.nationalLength}}$`));
+    fireEvent.change(second, { target: { value: "" } });
+    fireEvent.change(second, { target: { value: mauvaisPremier } });
+    expect(second.value).toBe(mauvaisPremier);
+    expect(screen.getByRole("alert")).toHaveTextContent(FR_PHONE.leadingDigit[DEFAULT_PHONE_COUNTRY]);
+  });
+
+  it("⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : l'indicatif puis les chiffres saisis, pour les deux numéros", async () => {
+    const client = makeClient();
+    renderPage(client);
+    const second = (await screen.findByLabelText("Second téléphone (facultatif)")) as HTMLInputElement;
+    fireEvent.change(second, { target: { value: "0770 00 00 01" } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+    await waitFor(() =>
+      expect(client.updateProfile).toHaveBeenCalledWith({
+        businessName: "Salle El Ryad",
+        phone: `${PAYS.dialCode}551234567`,
+        phone2: `${PAYS.dialCode}770000001`,
+        notifyByEmail: true,
+        notifyBySms: false
+      })
+    );
+  });
+
+  it("⚠ un numéro INCOMPLET est refusé AVANT l'envoi, par le schéma partagé : aucun appel", async () => {
+    const client = makeClient();
+    renderPage(client);
+    const premier = (await screen.findByLabelText("Téléphone")) as HTMLInputElement;
+    fireEvent.change(premier, { target: { value: "" } });
+    for (const caractere of PAYS.leadingDigits.charAt(0) + "123") fireEvent.change(premier, { target: { value: premier.value + caractere } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }));
+    expect(await screen.findByText(messages.fr.auth.validation.phoneInvalid)).toBeInTheDocument();
+    expect(client.updateProfile).not.toHaveBeenCalled();
   });
 });

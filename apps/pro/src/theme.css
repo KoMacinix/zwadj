@@ -14,6 +14,11 @@
   --cal-requested: #fff4d6;
   --cal-booked: #d8e9d8;
   --cal-blocked: #e6e3e1;
+  /* Rang 32 (D325) : le week-end prend un fond PLUS CLAIR que l'ancien `--accent-soft` (#f1efee, que la règle partagée lui posait et qui
+     le rapprochait du « bloqué » #e6e3e1), et le JOUR BLOQUÉ se double d'un HACHURAGE — la couleur seule ne le distingue plus. `--cal-hatch`
+     est le trait du hachurage : posé sur chaque fond, il laisse le chiffre du jour à plus de 4,5:1 (mesuré par `calendar-style.test.ts`). */
+  --cal-weekend: #f9f8f7;
+  --cal-hatch: rgba(24, 24, 27, 0.2);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -44,6 +49,8 @@
   --dark-cal-requested: #3a2f10;
   --dark-cal-booked: #17301c;
   --dark-cal-blocked: #2b2724;
+  --dark-cal-weekend: #2a2625;
+  --dark-cal-hatch: rgba(240, 240, 240, 0.22);
 }
 
 :root[data-theme="dark"] {
@@ -55,6 +62,8 @@
   --cal-requested: var(--dark-cal-requested);
   --cal-booked: var(--dark-cal-booked);
   --cal-blocked: var(--dark-cal-blocked);
+  --cal-weekend: var(--dark-cal-weekend);
+  --cal-hatch: var(--dark-cal-hatch);
 }
 
 /* ── Calendrier de la salle (Lot B6) ────────────────────────────────────────
@@ -78,6 +87,22 @@
 .cal-chip.is-requested, .cal-day.is-requested { background: var(--cal-requested); }
 .cal-chip.is-booked, .cal-day.is-booked { background: var(--cal-booked); }
 .cal-chip.is-blocked, .cal-day.is-blocked { background: var(--cal-blocked); }
+/* Rang 32 (D325) — TROIS retouches du calendrier, chacune mesurée (`calendar-style.test.ts`, et la page dans un navigateur) :
+   ① LE STATUT L'EMPORTE SUR LE WEEK-END. La règle partagée `.cal-cell.is-weekend .cal-day` (spécificité 0,3,0) battait les remplissages de statut
+      (0,2,0) : un vendredi ou un samedi RÉSERVÉ, DEMANDÉ ou BLOQUÉ s'affichait de la teinte du week-end — le statut disparaissait le jour même où la
+      demande est la plus forte. Les quatre règles ci-dessous (0,4,0) rendent chaque statut à sa couleur ; seul un jour LIBRE ou sans donnée prend la teinte du week-end.
+   ② LE WEEK-END A UN FOND PLUS CLAIR (`--cal-weekend`), et garde sa bordure en tirets — le signe qui ne dépend pas de la couleur.
+   ③ UN JOUR BLOQUÉ SE DISTINGUE PAR AUTRE CHOSE QUE LA COULEUR : un hachurage en diagonale, repris par la pastille de la légende. */
+.cal-cell.is-weekend .cal-day.is-available,
+.cal-cell.is-weekend .cal-day.is-empty { background: var(--cal-weekend); }
+.cal-cell.is-weekend .cal-day.is-requested { background: var(--cal-requested); }
+.cal-cell.is-weekend .cal-day.is-booked { background: var(--cal-booked); }
+.cal-cell.is-weekend .cal-day.is-blocked { background: var(--cal-blocked); }
+.cal-chip.is-blocked,
+.cal-day.is-blocked,
+.cal-cell.is-weekend .cal-day.is-blocked {
+  background-image: repeating-linear-gradient(135deg, transparent 0 5px, var(--cal-hatch) 5px 6px);
+}
 .cal-pad { padding: 2px; }
 .cal-slots ul { list-style: none; margin: 8px 0 0; padding: 0; }
 .cal-slot { display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -656,10 +681,16 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   margin-block-start: 20px;
   padding-block-start: 16px;
   border-block-start: 1px solid var(--line);
+}
+/* « Précédent » à l'extrémité de DÉBUT de la ligne (la gauche en français), « Continuer » à celle de FIN (la droite) : `flex` suit la direction de la
+   page, donc l'arabe REFLÈTE la disposition sans une propriété physique. Seul, « Continuer » se pousse à la fin. */
+.wk-actions .wk-btn-next {
+  margin-inline-start: auto;
 }
 .wk-outcome-actions {
   display: flex;
@@ -712,6 +743,45 @@
   margin: 6px 0 0;
   font-size: 12px;
   line-height: 1.5;
+  color: var(--ink-2);
+}
+/* Rang 32 (D325). ① ESPACEMENT : deux rangées de champs se SUIVAIENT sans aucun intervalle — le libellé « Téléphone » touchait le champ
+   « Prénom » du dessus, aussi près de lui que de son propre champ (6px), et l'œil l'associait au mauvais. L'intervalle entre deux rangées
+   est maintenant plusieurs fois celui qui sépare un libellé de SON champ (mesuré dans le navigateur par `r32-nouvelle-reservation.e2e.ts`). */
+.wk-pair + .wk-pair {
+  margin-block-start: 24px;
+}
+/* ② LE TEXTE D'EXEMPLE se lit : `--ink-2` (mesuré 7,03 au plus bas en clair, 6,68 en sombre pour `.wk-hint`), `opacity: 1` — les navigateurs la baissent d'eux-mêmes. */
+.wk-input::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+.wk-input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.wk-field-error {
+  margin: 6px 0 0;
+}
+/* Le champ de téléphone partagé porte la hauteur, la bordure et le corps de texte des autres champs du parcours. */
+.wk-field .phone-field {
+  min-block-size: 44px;
+  padding-block: 0;
+  padding-inline: 12px;
+  border-radius: 2px;
+  font-size: 14px;
+}
+/* « Continuer » grisé : ce qui retient, en liste, sous la ligne des boutons. */
+.wk-blockers {
+  margin-block-start: 10px;
+}
+.wk-blockers .wk-hint {
+  margin: 0 0 4px;
+}
+.wk-blockers ul {
+  margin: 0;
+  padding-inline-start: 20px;
+  font-size: 12px;
+  line-height: 1.6;
   color: var(--ink-2);
 }
 

@@ -16,8 +16,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { createAccountClient, type AccountClient } from "@zwadj/api-client";
-import { BrandLoader, ConfirmDialog } from "@zwadj/ui";
-import { changeEmailSchema, changePasswordSchema, profileUpdateSchema, type DeletionRequestDTO } from "@zwadj/types";
+import { BrandLoader, ConfirmDialog, PhoneField } from "@zwadj/ui";
+import {
+  DEFAULT_PHONE_COUNTRY,
+  changeEmailSchema,
+  changePasswordSchema,
+  nationalDigitsOf,
+  profileUpdateSchema,
+  toE164,
+  type DeletionRequestDTO
+} from "@zwadj/types";
 import { useAuth } from "../../lib/auth/auth-context";
 import { validate, type FieldErrors } from "../../lib/auth/form-validation";
 import { Field } from "../auth/auth-ui";
@@ -53,7 +61,8 @@ function ProfileSection({ client }: { client: AccountClient }) {
   const [values, setValues] = useState({
     firstName: user?.firstName ?? "",
     lastName: user?.lastName ?? "",
-    phone: user?.phone ?? ""
+    // Rang 32 (D325) : les chiffres NATIONAUX du champ partagé ; `toE164` les remet au format du contrat à l'envoi.
+    phone: nationalDigitsOf(DEFAULT_PHONE_COUNTRY, user?.phone)
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [banner, setBanner] = useState<{ kind: "ok" | "ko"; text: string } | null>(null);
@@ -67,7 +76,7 @@ function ProfileSection({ client }: { client: AccountClient }) {
     const checked = validate(profileUpdateSchema, {
       firstName: values.firstName,
       lastName: values.lastName,
-      phone: values.phone.trim() === "" ? null : values.phone
+      phone: values.phone === "" ? null : toE164(DEFAULT_PHONE_COUNTRY, values.phone)
     });
     if (checked.errors) {
       setErrors(checked.errors);
@@ -129,16 +138,15 @@ function ProfileSection({ client }: { client: AccountClient }) {
             l'inscription client (correctif 7.2). */}
         <Field label={t("account.ui.profile.phoneOptional")} error={errors.phone && t(errors.phone)}>
           {({ id, describedBy, invalid }) => (
-            <input
+            <PhoneField
               id={id}
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
               value={values.phone}
-              onChange={(e) => setValues((v) => ({ ...v, phone: e.target.value }))}
-              aria-describedby={describedBy}
-              aria-invalid={invalid || undefined}
-              dir="ltr"
+              onChange={(digits) => setValues((v) => ({ ...v, phone: digits }))}
+              countryName={t(`common.phone.country.${DEFAULT_PHONE_COUNTRY}`)}
+              placeholder={t(`common.phone.placeholder.${DEFAULT_PHONE_COUNTRY}`)}
+              leadingDigitMessage={t(`common.phone.leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
+              describedBy={describedBy}
+              invalid={invalid}
             />
           )}
         </Field>

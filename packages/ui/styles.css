@@ -885,6 +885,49 @@ button {
   border-color: transparent;
 }
 
+/* Champ de téléphone partagé (`phone-field.tsx`, rang 32, D325) : la boîte `.input-affix`, avec le drapeau et l'indicatif devant les
+   chiffres. L'`<input>` y est neutralisé comme celui de l'unité « DA » — mais ses chiffres restent au DÉBUT (la boîte est `dir="ltr"`). */
+.phone-field > input,
+.field .phone-field > input {
+  flex: 1;
+  min-inline-size: 0;
+  inline-size: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  text-align: start;
+}
+.phone-field > input:focus-visible,
+.field .phone-field > input:focus-visible {
+  outline: none;
+  border-color: transparent;
+}
+/* Le gabarit d'exemple se lit : `--ink-2` (7,03 au plus bas en clair, 6,68 en sombre, mesurés pour `.field-hint`), jamais `--ink-mute`
+   (2,46) — et `opacity: 1`, que les navigateurs baissent d'eux-mêmes sur un texte indicatif. */
+.phone-field > input::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+.phone-field-country {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+.phone-field-flag {
+  inline-size: 24px;
+  block-size: 16px;
+  border-radius: 2px;
+  /* La bande blanche se perdrait sur une surface blanche : un filet gris la cerne. */
+  box-shadow: 0 0 0 1px var(--line);
+}
+
 .input-affix-unit {
   flex: none;
   font-size: 13px;
@@ -1462,6 +1505,31 @@ button {
 }
 .zj-rail-btn:hover {
   border-color: var(--ink);
+}
+/* Rang 32 (D325) : la pastille ET son libellé sont UN seul bouton. Il occupe toute la ligne de la grille du `<li>` et la
+   REDÉCOUPE comme elle (32px puis le reste) : la mise en page de l'étape non modifiable, un `<span>` et un `<span>`, ne bouge pas. */
+.zj-rail-step {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  inline-size: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.zj-rail-step:hover .zj-rail-n {
+  border-color: var(--ink);
+}
+.zj-rail-step:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius);
 }
 .zj-rail-label {
   font-size: 12px;

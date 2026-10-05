@@ -78,18 +78,25 @@ export function JourneyRail({
             aria-current={step.state === "current" ? "step" : undefined}
           >
             {step.editLabel === undefined ? (
-              <span className="zj-rail-n" aria-hidden="true">
-                {step.state === "done" ? <Check size={14} strokeWidth={2.5} aria-hidden="true" /> : index + 1}
-              </span>
+              <>
+                <span className="zj-rail-n" aria-hidden="true">
+                  {step.state === "done" ? <Check size={14} strokeWidth={2.5} aria-hidden="true" /> : index + 1}
+                </span>
+                <span className="zj-rail-label">{step.label}</span>
+              </>
             ) : (
-              // Cliquer la pastille vaut « Modifier » — mais seulement là où
-              // « Modifier » existerait. Un bouton qui n'agit pas est pire
-              // qu'un élément inerte.
-              <button type="button" className="zj-rail-n zj-rail-btn" aria-label={step.editLabel} onClick={() => onEdit(step.id)}>
-                {step.state === "done" ? <Check size={14} strokeWidth={2.5} aria-hidden="true" /> : index + 1}
+              // Cliquer la pastille OU son libellé vaut « Modifier » (rang 32, D325) — mais seulement là où « Modifier »
+              // existerait : un bouton qui n'agit pas est pire qu'un élément inerte. UN SEUL bouton porte les deux, pas deux
+              // boutons de même nom côte à côte (deux arrêts de tabulation pour une action) : son nom accessible est
+              // `editLabel`, la pastille et le libellé qu'il contient sont décoratifs pour un lecteur d'écran. Les deux
+              // suivent donc la MÊME règle — celle de `editLabel`, posée par l'appelant : on ne saute pas une étape sans réponse.
+              <button type="button" className="zj-rail-step" aria-label={step.editLabel} onClick={() => onEdit(step.id)}>
+                <span className="zj-rail-n zj-rail-btn" aria-hidden="true">
+                  {step.state === "done" ? <Check size={14} strokeWidth={2.5} aria-hidden="true" /> : index + 1}
+                </span>
+                <span className="zj-rail-label">{step.label}</span>
               </button>
             )}
-            <span className="zj-rail-label">{step.label}</span>
           </li>
         ))}
       </ol>

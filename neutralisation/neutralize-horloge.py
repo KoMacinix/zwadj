@@ -44,7 +44,7 @@ assert SRC.exists(), "ERREUR DE SCRIPT : " + SPEC_DEPUIS_RACINE + " introuvable"
 PNPM = shutil.which("pnpm")
 assert PNPM, "ERREUR DE SCRIPT : pnpm introuvable"
 
-NB_TESTS_ATTENDU = 41
+NB_TESTS_ATTENDU = 76  # 41 jusqu'au rang 32 (D325) : le lot ajoute 35 tests au fichier, relevés (41 déclarations à HEAD, 76 dans l'arbre, « Tests 76 passed (76) »)
 
 CIBLES = [
     ("C1  le gel d'horloge est retire",

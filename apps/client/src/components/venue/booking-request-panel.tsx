@@ -25,7 +25,15 @@ import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { createBookingsClient, type BookingsClient } from "@zwadj/api-client";
 import { formatDZD } from "@zwadj/i18n";
-import { ServicePricingType, type ServiceDTO, type VenueAvailabilityResponse } from "@zwadj/types";
+import {
+  DEFAULT_PHONE_COUNTRY,
+  ServicePricingType,
+  isPhoneComplete,
+  toE164,
+  type ServiceDTO,
+  type VenueAvailabilityResponse
+} from "@zwadj/types";
+import { PhoneField } from "@zwadj/ui";
 import { getVenueAvailability } from "../../lib/api";
 import { mergeAvailabilityWindows, splitAvailabilityWindow } from "../../lib/availability-windows";
 import { longDate } from "../../lib/booking-calendar";
@@ -126,6 +134,7 @@ export function BookingRequestPanel({
 }: BookingRequestPanelProps) {
   const t = useTranslations("venueDetail.booking");
   const tCal = useTranslations("venueDetail.calendar");
+  const tPhone = useTranslations("common.phone");
   const tError = useTranslations("booking.errors");
   const locale = useLocale();
   const champId = useId();
@@ -148,6 +157,7 @@ export function BookingRequestPanel({
   const [picks, setPicks] = useState<Pick_[]>([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  // Rang 32 (D325) : les chiffres NATIONAUX du champ partagé ; `toE164` les remet au format du contrat à l'envoi.
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -206,7 +216,7 @@ export function BookingRequestPanel({
         paymentMethod: "CASH",
         contactFirstName: firstName.trim(),
         contactLastName: lastName.trim(),
-        contactPhone: phone.trim(),
+        contactPhone: toE164(DEFAULT_PHONE_COUNTRY, phone),
         // Clé OMISE si vide : `.email()` refuse la chaîne vide, et il n'y a rien
         // à déclarer quand le client n'a pas d'adresse.
         ...(email.trim() === "" ? {} : { contactEmail: email.trim() }),
@@ -252,7 +262,7 @@ export function BookingRequestPanel({
     guests.trim() !== "" &&
     firstName.trim() !== "" &&
     lastName.trim() !== "" &&
-    phone.trim() !== "";
+    isPhoneComplete(DEFAULT_PHONE_COUNTRY, phone);
 
   return (
     <section className="card" aria-labelledby="booking-request-heading">
@@ -468,13 +478,14 @@ export function BookingRequestPanel({
           </Field>
           <Field label={t("phone")} required>
             {({ id, required }) => (
-              <input
+              <PhoneField
                 id={id}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={setPhone}
+                countryName={tPhone(`country.${DEFAULT_PHONE_COUNTRY}`)}
+                placeholder={tPhone(`placeholder.${DEFAULT_PHONE_COUNTRY}`)}
+                leadingDigitMessage={tPhone(`leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
                 required={required}
-                inputMode="tel"
-                autoComplete="tel"
               />
             )}
           </Field>

@@ -9,7 +9,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { formatDZD, messages } from "@zwadj/i18n";
 import type { BookingsClient } from "@zwadj/api-client";
-import { availabilityWindowQuerySchema } from "@zwadj/types";
+import { DEFAULT_PHONE_COUNTRY, PHONE_COUNTRIES, availabilityWindowQuerySchema } from "@zwadj/types";
 import type { AuthClient } from "../../lib/auth/auth-client";
 import { AuthProvider } from "../../lib/auth/auth-context";
 import { longDate } from "../../lib/booking-calendar";
@@ -494,5 +494,66 @@ describe("Prestations — E2d", () => {
     await waitFor(() =>
       expect(screen.getByText((text) => /Prix/.test(text) && /200.?000/.test(text))).toBeInTheDocument()
     );
+  });
+});
+
+// ══ RANG 32 (D325) — le téléphone de la demande est le champ PARTAGÉ ═════════════════════════════════════════════════════
+// ⚠ Ce bloc ne touche NI l'aperçu d'acompte NI le transport de la date choisie (borne de D316) : il n'exerce que le champ du téléphone.
+describe("Demande de réservation — le téléphone est le champ partagé (rang 32)", () => {
+  const PAYS = PHONE_COUNTRIES[DEFAULT_PHONE_COUNTRY];
+  const FR_PHONE = messages.fr.common.phone;
+
+  async function remplirSansTelephone() {
+    await choisir("2027-08-15");
+    fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: "200" } });
+    fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amina" } });
+    fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Bensalem" } });
+  }
+
+  it("l'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansTelephone();
+    expect(screen.getByRole("img", { name: `${FR_PHONE.country[DEFAULT_PHONE_COUNTRY]}, ${PAYS.dialCode}` })).toBeInTheDocument();
+    const champ = screen.getByLabelText("Téléphone") as HTMLInputElement;
+    expect(champ.placeholder).toBe(FR_PHONE.placeholder[DEFAULT_PHONE_COUNTRY]);
+    expect(champ.placeholder.replace(/\D/g, "").length).toBeLessThan(PAYS.nationalLength);
+  });
+
+  it("⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part en forme canonique", async () => {
+    stubFetch();
+    const client = renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansTelephone();
+    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "0550 00 00 01" } });
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer ma demande" }));
+    await waitFor(() => expect(client.create).toHaveBeenCalled());
+    const corps = vi.mocked(client.create).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+    expect(corps.contactPhone).toBe(`${PAYS.dialCode}550000001`);
+  });
+
+  it("⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suffit plus", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansTelephone();
+    const champ = screen.getByLabelText("Téléphone") as HTMLInputElement;
+    for (const caractere of PAYS.leadingDigits.charAt(0) + "1".repeat(PAYS.nationalLength - 2)) {
+      fireEvent.change(champ, { target: { value: champ.value + caractere } });
+    }
+    expect(champ.value.length).toBe(PAYS.nationalLength - 1);
+    // Verdicts en assertions NATIVES (`.disabled`) : un matcher jest-dom lève `Error`, pas `AssertionError` (D304, D316) — c'est ce que mesure la cible Q-2.
+    expect((screen.getByRole("button", { name: "Envoyer ma demande" }) as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.change(champ, { target: { value: champ.value + "1" } });
+    expect((screen.getByRole("button", { name: "Envoyer ma demande" }) as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansTelephone();
+    const champ = screen.getByLabelText("Téléphone") as HTMLInputElement;
+    for (const caractere of "0212") fireEvent.change(champ, { target: { value: champ.value + caractere } });
+    expect(champ.value).toBe("0");
+    expect(screen.getByText(FR_PHONE.leadingDigit[DEFAULT_PHONE_COUNTRY])).toBeInTheDocument();
+    expect((screen.getByRole("button", { name: "Envoyer ma demande" }) as HTMLButtonElement).disabled).toBe(true);
   });
 });

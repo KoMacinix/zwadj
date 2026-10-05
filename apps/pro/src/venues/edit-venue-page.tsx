@@ -105,11 +105,26 @@ export function EditVenuePage() {
     const diff = buildUpdateDiff(values, state.venue);
     if (diff.kind === "errors") {
       setFieldErrors(diff.errors);
+      // ⚠ Rang 32 (D325), point 14 — correctif ESQUISSÉ PAR KO (02/10/2026, mis de côté par D323), repris tel quel. Les champs fautifs peuvent vivre
+      // sur une AUTRE étape que celle affichée (reload à l'étape 7 sur une salle dont le prix n'est pas un dinar entier : l'erreur s'inscrit
+      // sous le champ de l'étape 1) : sans ce message, « Enregistrer » ne faisait RIEN — ni requête, ni mot. `step1Invalid` nomme les cinq
+      // champs de l'étape 1 ; c'est exact pour ce cas, et c'est une limite écrite : une erreur d'un autre champ (coordonnées, description) le
+      // serait moins — aucun chemin d'interface ne l'atteint aujourd'hui (on ne quitte pas une étape fautive).
+      setFormError(t("venue.ui.wizard.step1Invalid"));
+      window.scrollTo({ top: 0 });
       return;
     }
     if (diff.kind === "empty") {
       setFieldErrors({});
-      if (next !== null) goStep(next);
+      if (next !== null) {
+        goStep(next);
+      } else {
+        // ⚠ CORRIGÉ PAR RAPPORT À L'ESQUISSE DE KO, qui posait « Modifications enregistrées » (`venue.ui.form.saved`). Ici AUCUNE requête n'est
+        // partie : l'écran dirait qu'il a écrit ce qu'il n'a pas écrit — le défaut de D133 (« l'écran dit ce que le serveur a écrit, il ne le
+        // suppose pas »). Le message dit ce qui est vrai : il n'y avait rien à enregistrer, la salle est à jour.
+        setNotice(t("venue.ui.form.nothingToSave"));
+        window.scrollTo({ top: 0 });
+      }
       return;
     }
 

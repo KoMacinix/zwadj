@@ -274,7 +274,7 @@
         "bullet3": "واجهة ثنائية اللغة فرنسية · عربية",
         "businessName": "اسم القاعة",
         "phone": "الهاتف",
-        "phoneHint": "الصيغة الدولية: ‎+213 متبوعاً بـ 8 إلى 9 أرقام.",
+        "phoneHint": "الصيغة الدولية: ‎+213 متبوعاً بـ 9 أرقام.",
         "checkEmailTitle": "تحققوا من بريدكم",
         "checkEmailBody": "تم إنشاء حسابكم المهني. أُرسل رابط تفعيل إلى {email} — فعّلوا فضاءكم ثم سجّلوا الدخول.",
         "resendCta": "إعادة إرسال بريد التفعيل",
@@ -330,7 +330,8 @@
       "reasonRequired": "السبب إلزامي.",
       "reasonTooLong": "السبب طويل جداً (500 حرف كحد أقصى).",
       "unknownKey": "حقل غير معروف.",
-      "tooManyServices": "عشرون خدمة كحد أقصى لكل طلب."
+      "tooManyServices": "عشرون خدمة كحد أقصى لكل طلب.",
+      "contactInvalid": "حروف ومسافات وشرطات وفواصل عليا فقط."
     }
   },
   "common": {
@@ -362,6 +363,18 @@
     },
     "errors": {
       "routeNotFound": "هذا العنوان غير موجود على الخادم."
+    },
+    "phone": {
+      "country": {
+        "DZ": "الجزائر"
+      },
+      "placeholder": {
+        "DZ": "5XX XX XX XX"
+      },
+      "leadingDigit": {
+        "DZ": "رقم الهاتف المحمول الجزائري يبدأ بـ 5 أو 6 أو 7."
+      },
+      "incomplete": "الرقم غير مكتمل: المطلوب {length} أرقام."
     }
   },
   "footer": {
@@ -496,7 +509,8 @@
       "tooManyServices": "عشرون خدمة كحد أقصى لكل عرض.",
       "emailInvalid": "بريد إلكتروني غير صالح.",
       "paymentMethodInvalid": "طريقة دفع غير صالحة.",
-      "unknownKey": "حقل غير معروف."
+      "unknownKey": "حقل غير معروف.",
+      "nameInvalid": "حروف ومسافات وشرطات وفواصل عليا فقط."
     }
   },
   "search": {
@@ -789,7 +803,8 @@
         "stylesHint": "تُستعمل هذه المعلومات في عوامل تصفية البحث العمومي.",
         "ceremonyType": "نوع الزفاف",
         "ceremonyTypeHint": "اتركه فارغًا ما دمت لم تقرر بعد.",
-        "ceremonyTypeNone": "غير محدد"
+        "ceremonyTypeNone": "غير محدد",
+        "nothingToSave": "لا شيء لحفظه: القاعة محدّثة."
       },
       "notFound": {
         "title": "القاعة غير موجودة",
@@ -1113,7 +1128,7 @@
         "noServicesPicked": "بدون خدمات",
         "outcomeHint": "«احجز التاريخ» يجعله غير متاح فوراً. «التسجيل دون حجز» يتركه متاحاً: قد يأخذه زبون آخر قبل الدفع.",
         "phone": "الهاتف",
-        "phoneHint": "الصيغة الدولية: ‎+213 متبوعاً بـ 8 إلى 9 أرقام.",
+        "phoneHint": "الصيغة الدولية: ‎+213 متبوعاً بـ 9 أرقام.",
         "pickedDate": "المحدَّد",
         "progressLabel": "تقدّم الحجز",
         "pt_FIXED": "جزافي",
@@ -1154,7 +1169,31 @@
         "stepSlot": "الفترة",
         "title": "حجز جديد",
         "total": "المجموع المطلوب",
-        "totalTitle": "المجموع المطلوب فوترته"
+        "totalTitle": "المجموع المطلوب فوترته",
+        "firstNamePlaceholder": "مثال: أمينة",
+        "lastNamePlaceholder": "مثال: بن علي",
+        "emailPlaceholder": "name@example.com",
+        "guestsPlaceholder": "مثال: 150",
+        "firstNameInvalid": "يجب أن يحتوي الاسم على حروف ومسافات وشرطات وفواصل عليا فقط.",
+        "lastNameInvalid": "يجب أن يحتوي اللقب على حروف ومسافات وشرطات وفواصل عليا فقط.",
+        "emailInvalid": "بريد إلكتروني غير صالح. مثال: name@example.com.",
+        "continueBlockedLead": "زر «متابعة» غير متاح:",
+        "needFirstName": "الاسم إلزامي",
+        "needLastName": "اللقب إلزامي",
+        "needFirstNameValid": "الاسم يحتوي على حرف غير مسموح",
+        "needLastNameValid": "اللقب يحتوي على حرف غير مسموح",
+        "needPhone": "رقم الهاتف إلزامي",
+        "needPhoneIncomplete": "يجب أن يتكون رقم الهاتف المحمول من {length} أرقام",
+        "needPhoneLeading": "يجب أن يبدأ رقم الهاتف المحمول بـ 5 أو 6 أو 7",
+        "needGuests": "عدد المدعوين إلزامي",
+        "needEmailValid": "البريد الإلكتروني غير صالح (أو اتركه فارغاً)",
+        "previous": "السابق",
+        "newQuote": "عرض سعر جديد",
+        "doneTitleLocked": "تم حجز التاريخ",
+        "doneTitleStandby": "تم تسجيل التاريخ",
+        "doneDialogLocked": "تم حجز تاريخ {date} باسم {client}.",
+        "doneDialogStandby": "تم تسجيل تاريخ {date} باسم {client} دون حجزه.",
+        "doneDialogClose": "إغلاق"
       },
       "wizard": {
         "stepsLabel": "خطوات إعداد القاعة",

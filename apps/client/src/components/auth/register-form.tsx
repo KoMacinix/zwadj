@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { z } from "zod";
-import { registerClientSchema } from "@zwadj/types";
+import { DEFAULT_PHONE_COUNTRY, registerClientSchema, toE164 } from "@zwadj/types";
+import { PhoneField } from "@zwadj/ui";
 import { ApiError } from "../../lib/auth/auth-client";
 import { Link, useRouter } from "../../i18n/navigation";
 import { useAuth } from "../../lib/auth/auth-context";
@@ -27,6 +28,7 @@ const registerFormSchema = registerClientSchema
 export function RegisterForm() {
   const t = useTranslations("auth.ui");
   const tv = useTranslations("auth.validation");
+  const tp = useTranslations("common.phone");
   const locale = useLocale() as "fr" | "ar";
   const { registerClient } = useAuth();
   const router = useRouter();
@@ -57,7 +59,8 @@ export function RegisterForm() {
       // 7.2 : prénom/nom désormais REQUIS par le contrat (le schéma trim et
       // renvoie firstNameRequired/lastNameRequired si vide) ; le téléphone,
       // lui, est optionnel : champ laissé vide → omis, jamais envoyé en "".
-      phone: form.phone.trim() || undefined,
+      // Rang 32 (D325) : `form.phone` est la suite de chiffres NATIONAUX du champ partagé ; le contrat reçoit la forme canonique.
+      phone: form.phone === "" ? undefined : toE164(DEFAULT_PHONE_COUNTRY, form.phone),
       locale
     });
     if (checked.errors) {
@@ -151,16 +154,15 @@ export function RegisterForm() {
            pro.phoneHint (déjà FR/AR, formulation neutre) — zéro clé nouvelle. */}
         <Field label={t("pro.phone")} hint={t("pro.phoneHint")} error={tval(fieldErrors.phone)}>
           {({ id, describedBy, invalid }) => (
-            <input
+            <PhoneField
               id={id}
-              type="tel"
               value={form.phone}
-              onChange={(e) => set("phone", e.target.value)}
-              autoComplete="tel"
-              placeholder="+213551234567"
-              aria-describedby={describedBy}
-              aria-invalid={invalid || undefined}
-              dir="ltr"
+              onChange={(digits) => set("phone", digits)}
+              countryName={tp(`country.${DEFAULT_PHONE_COUNTRY}`)}
+              placeholder={tp(`placeholder.${DEFAULT_PHONE_COUNTRY}`)}
+              leadingDigitMessage={tp(`leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
+              describedBy={describedBy}
+              invalid={invalid}
             />
           )}
         </Field>

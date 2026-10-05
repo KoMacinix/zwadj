@@ -153,6 +153,26 @@ describe("Le récapitulatif ne se replie pas", () => {
     poser();
     expect(within(rail()).queryAllByRole("button")).toHaveLength(0);
   });
+
+  // ── Rang 32 (D325) — le LIBELLÉ du rail est cliquable comme sa pastille (chrome partagée : garde côté Client ET côté Pro) ─────────────
+  it("⚠ cliquer le LIBELLÉ d'une étape répondue vaut « Modifier », comme sa pastille", async () => {
+    poser();
+    await repondreTout();
+    fireEvent.click(within(rail()).getByText("Invités"));
+    expect(question()).toBe("Combien d'invités ?");
+    expect(screen.getByLabelText("Invités")).toHaveValue(250);
+  });
+
+  it("⚠ la pastille et le libellé sont UN seul bouton ; le libellé d'une étape sans réponse n'est dans aucun bouton (on ne saute pas une étape incomplète)", async () => {
+    poser();
+    await repondreTout();
+    expect(within(rail()).getAllByRole("button", { name: /Modifier.*Invités/ })).toHaveLength(1);
+    expect(within(rail()).getByText("Invités").closest("button")).not.toBeNull();
+    // L'étape COURANTE n'est pas modifiable non plus : son libellé n'est dans aucun bouton.
+    const courante = rail().querySelector("li.is-current .zj-rail-label");
+    expect(courante).not.toBeNull();
+    expect((courante as HTMLElement).closest("button")).toBeNull();
+  });
 });
 
 describe("Le compteur vient du SERVEUR", () => {

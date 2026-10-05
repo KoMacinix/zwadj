@@ -16,7 +16,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { createVisitBookingsClient, type VisitBookingsClient } from "@zwadj/api-client";
-import { formatSlotRange, VISIT_DURATION_MINUTES, type VisitSlotDTO } from "@zwadj/types";
+import {
+  DEFAULT_PHONE_COUNTRY,
+  PHONE_COUNTRIES,
+  VISIT_DURATION_MINUTES,
+  formatSlotRange,
+  isPhoneComplete,
+  toE164,
+  type VisitSlotDTO
+} from "@zwadj/types";
+import { PhoneField } from "@zwadj/ui";
 import { getVisitSlots } from "../../lib/api";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
@@ -51,12 +60,15 @@ function civilDate(ms: number): string {
 export function VisitBookingPanel({ slug, client }: { slug: string; client?: VisitBookingsClient }) {
   const t = useTranslations("venueDetail.visit");
   const tError = useTranslations("venue.errors");
+  const tPhone = useTranslations("common.phone");
   const { status, api } = useAuth();
   const bookings = useMemo(() => client ?? createVisitBookingsClient(api.authedRequest), [client, api]);
 
   const [slots, setSlots] = useState<VisitSlotDTO[] | null>(null);
   const [chosen, setChosen] = useState<VisitSlotDTO | null>(null);
+  // Rang 32 (D325) : les chiffres NATIONAUX du champ partagé. Facultatif (D61) — mais un numéro COMMENCÉ doit être complet : le contrat le refuserait.
   const [phone, setPhone] = useState("");
+  const phoneIncomplete = phone !== "" && !isPhoneComplete(DEFAULT_PHONE_COUNTRY, phone);
   const [error, setError] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -91,7 +103,7 @@ export function VisitBookingPanel({ slug, client }: { slug: string; client?: Vis
         startMinutes: chosen.startMinutes,
         // Téléphone FACULTATIF (D61) : l'exiger ici coûterait des rendez-vous,
         // et le pro dispose toujours de l'e-mail.
-        ...(phone.trim() === "" ? {} : { phone: phone.trim() })
+        ...(phone === "" ? {} : { phone: toE164(DEFAULT_PHONE_COUNTRY, phone) })
       });
       setConfirmed(true);
     } catch (cause) {
@@ -168,16 +180,29 @@ export function VisitBookingPanel({ slug, client }: { slug: string; client?: Vis
       {status === "authenticated" ? (
         <div style={{ marginBlockStart: 14, display: "grid", gap: 8, maxInlineSize: 320 }}>
           <label htmlFor="visit-phone">{t("phoneLabel")}</label>
-          <input
+          <PhoneField
             id="visit-phone"
-            type="tel"
-            inputMode="tel"
-            placeholder="+213…"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={setPhone}
+            countryName={tPhone(`country.${DEFAULT_PHONE_COUNTRY}`)}
+            placeholder={tPhone(`placeholder.${DEFAULT_PHONE_COUNTRY}`)}
+            leadingDigitMessage={tPhone(`leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
+            describedBy="visit-phone-hint"
           />
-          <p className="field-hint">{t("phoneHint")}</p>
-          <button type="button" className="btn btn-accent" disabled={chosen === null || busy} onClick={() => void submit()}>
+          <p id="visit-phone-hint" className="field-hint">
+            {t("phoneHint")}
+          </p>
+          {phoneIncomplete ? (
+            <p className="field-hint" role="status">
+              {tPhone("incomplete", { length: PHONE_COUNTRIES[DEFAULT_PHONE_COUNTRY].nationalLength })}
+            </p>
+          ) : null}
+          <button
+            type="button"
+            className="btn btn-accent"
+            disabled={chosen === null || busy || phoneIncomplete}
+            onClick={() => void submit()}
+          >
             {t("submit")}
           </button>
         </div>

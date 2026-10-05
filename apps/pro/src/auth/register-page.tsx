@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { z } from "zod";
-import { registerProSchema } from "@zwadj/types";
+import { DEFAULT_PHONE_COUNTRY, registerProSchema, toE164 } from "@zwadj/types";
+import { PhoneField } from "@zwadj/ui";
 import { ApiError, CLIENT_SITE_URL } from "../lib/auth-client";
 import { issuesToFieldErrors, validate, type FieldErrors } from "@zwadj/api-client";
 import { useAuth } from "./auth-context";
@@ -42,7 +43,8 @@ export function RegisterPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
-    const checked = validate(registerProFormSchema, { ...form, locale: lang });
+    // Rang 32 (D325) : `form.phone` est la suite de chiffres NATIONAUX du champ partagé ; le contrat reçoit la forme canonique (`toE164`).
+    const checked = validate(registerProFormSchema, { ...form, phone: toE164(DEFAULT_PHONE_COUNTRY, form.phone), locale: lang });
     if (checked.errors) {
       setFieldErrors(checked.errors);
       return;
@@ -125,17 +127,16 @@ export function RegisterPage() {
 
         <Field label={t("auth.ui.pro.phone")} required error={tval(fieldErrors.phone)} hint={t("auth.ui.pro.phoneHint")}>
           {({ id, describedBy, invalid, required }) => (
-            <input
+            <PhoneField
               id={id}
-              type="tel"
               value={form.phone}
-              onChange={(e) => set("phone", e.target.value)}
-              autoComplete="tel"
-              placeholder="+213551234567"
-              aria-describedby={describedBy}
-              aria-invalid={invalid || undefined}
+              onChange={(digits) => set("phone", digits)}
+              countryName={t(`common.phone.country.${DEFAULT_PHONE_COUNTRY}`)}
+              placeholder={t(`common.phone.placeholder.${DEFAULT_PHONE_COUNTRY}`)}
+              leadingDigitMessage={t(`common.phone.leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
+              describedBy={describedBy}
+              invalid={invalid}
               required={required}
-              dir="ltr"
             />
           )}
         </Field>

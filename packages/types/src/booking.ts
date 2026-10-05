@@ -8,6 +8,7 @@
 // devis ne porterait rien que `Booking` ne snapshote déjà.
 import { z } from "zod";
 import { dzPhoneSchema } from "./auth";
+import { contactEmailSchema, personNameSchema } from "./contact";
 import { BookingStatus, PaymentMethod } from "./enums";
 import type { BookingServiceDTO } from "./service";
 import { bookingServiceChoiceSchema } from "./service";
@@ -78,11 +79,13 @@ export type BookingErrorCode = (typeof BookingErrorCode)[keyof typeof BookingErr
 // Création — POST /venues/:slug/bookings
 // ─────────────────────────────────────────────────────────────────────────────
 
-const contactNameSchema = z
-  .string()
-  .trim()
-  .min(1, "booking.validation.contactRequired")
-  .max(80, "booking.validation.contactTooLong");
+/** ⚠ Le nom et le prénom suivent la règle PARTAGÉE du contrat (`./contact`, rang 32) : des lettres de toute écriture,
+ *  des espaces, « - » et « ' » — c'est la même fonction que celle de l'écran, donc le serveur refuse ce que l'écran refuse. */
+const contactNameSchema = personNameSchema({
+  required: "booking.validation.contactRequired",
+  tooLong: "booking.validation.contactTooLong",
+  invalid: "booking.validation.contactInvalid"
+});
 
 /** D75 — le client ANNONCE les montants qu'il a vus ; le serveur recalcule et
  *  compare. Les deux sont obligatoires : un pro peut changer sa politique
@@ -116,12 +119,10 @@ export const bookingCreateSchema = z
     contactFirstName: contactNameSchema,
     contactLastName: contactNameSchema,
     contactPhone: dzPhoneSchema,
-    contactEmail: z
-      .string()
-      .trim()
-      .email("booking.validation.emailInvalid")
-      .max(180, "booking.validation.emailTooLong")
-      .optional(),
+    contactEmail: contactEmailSchema({
+      invalid: "booking.validation.emailInvalid",
+      tooLong: "booking.validation.emailTooLong"
+    }).optional(),
     /** D79 — facultatif, plafonné par Zod SEULEMENT : pas de `CHECK` SQL, D55
      *  interdit de valider deux fois la même borne. */
     clientMessage: z.string().trim().max(1000, "booking.validation.messageTooLong").optional(),

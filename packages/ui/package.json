@@ -22,6 +22,7 @@
     "typescript": "^5.8.0"
   },
   "dependencies": {
+    "@zwadj/types": "workspace:*",
     "lucide-react": "^0.563.0"
   }
 }

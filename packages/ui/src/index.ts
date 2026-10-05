@@ -2,6 +2,8 @@ export { AccountMenu, initialsOf, type AccountMenuItem, type AccountMenuProps } 
 export { BrandLoader, BrandLoaderIcon, BRAND_LOADER_PATH, type BrandLoaderProps } from "./brand-loader";
 export { Button, type ButtonProps } from "./button";
 export { ConfirmDialog, type ConfirmDialogProps } from "./confirm-dialog";
+export { NoticeDialog, type NoticeDialogProps } from "./notice-dialog";
+export { DzFlag, PHONE_COUNTRY_FLAGS, PhoneField, type PhoneFieldProps, type PhoneFlagProps } from "./phone-field";
 export { SectionErrorBoundary, type SectionErrorBoundaryProps } from "./section-error-boundary";
 export {
   ArrowBackIcon,

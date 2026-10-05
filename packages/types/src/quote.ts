@@ -22,6 +22,7 @@
 import { z } from "zod";
 import { bookingServiceChoiceSchema, type BookingServiceDTO } from "./service";
 import { dzPhoneSchema } from "./auth";
+import { contactEmailSchema, personNameSchema } from "./contact";
 import { isRealCivilDate } from "./venue";
 
 export const QuoteStatus = {
@@ -236,7 +237,12 @@ export type QuoteErrorCode = (typeof QuoteErrorCode)[keyof typeof QuoteErrorCode
  *  version est un instantané — puis, dès Q3, par l'immuabilité en base d'un
  *  devis rattaché à une réservation. */
 
-const text = (max: number) => z.string().trim().min(1, "quote.validation.required").max(max, "quote.validation.tooLong");
+/** ⚠ Rang 32 (D325) : le nom et le prénom du contact suivent la règle PARTAGÉE (`./contact`), la même fonction que celle de l'écran. */
+const contactName = personNameSchema({
+  required: "quote.validation.required",
+  tooLong: "quote.validation.tooLong",
+  invalid: "quote.validation.nameInvalid"
+});
 
 /** Création d'un devis — la v1 d'une chaîne.
  *
@@ -275,8 +281,8 @@ export type QuoteReviseInput = QuoteCreateInput;
  *  de l'acompte — et il est posé par le lot Paiement. */
 export const quoteConvertSchema = z
   .object({
-    contactFirstName: text(80),
-    contactLastName: text(80),
+    contactFirstName: contactName,
+    contactLastName: contactName,
     contactPhone: dzPhoneSchema,
     /** ⚠ FACULTATIF — et c'est le SCHÉMA qui le dit, pas une préférence d'écran.
      *  `bookings.contact_email` est `String?` depuis toujours ; seule cette borne
@@ -290,7 +296,7 @@ export const quoteConvertSchema = z
      *
      *  Le TÉLÉPHONE reste obligatoire, et c'est cohérent : `contact_phone` est
      *  NOT NULL, et c'est par là que le pro rappelle. */
-    contactEmail: z.string().trim().email("quote.validation.emailInvalid").max(180).optional(),
+    contactEmail: contactEmailSchema({ invalid: "quote.validation.emailInvalid" }).optional(),
     paymentMethod: z.enum(["ONLINE", "CASH"], { errorMap: () => ({ message: "quote.validation.paymentMethodInvalid" }) })
   })
   .strict("quote.validation.unknownKey");

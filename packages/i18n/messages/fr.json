@@ -274,7 +274,7 @@
         "bullet3": "Interface bilingue français · arabe",
         "businessName": "Nom de l'établissement",
         "phone": "Téléphone",
-        "phoneHint": "Format international : +213 suivi de 8 à 9 chiffres.",
+        "phoneHint": "Format international : +213 suivi de 9 chiffres.",
         "checkEmailTitle": "Vérifiez votre boîte mail",
         "checkEmailBody": "Votre compte professionnel est créé. Un lien de vérification vient d'être envoyé à {email} — activez votre espace, puis connectez-vous.",
         "resendCta": "Renvoyer l'email de vérification",
@@ -330,7 +330,8 @@
       "reasonRequired": "La raison est obligatoire.",
       "reasonTooLong": "Raison trop longue (500 caractères maximum).",
       "unknownKey": "Champ inconnu.",
-      "tooManyServices": "Vingt prestations au maximum par demande."
+      "tooManyServices": "Vingt prestations au maximum par demande.",
+      "contactInvalid": "Lettres, espaces, tirets et apostrophes uniquement."
     }
   },
   "common": {
@@ -362,6 +363,18 @@
     },
     "errors": {
       "routeNotFound": "Cette adresse n'existe pas sur le serveur."
+    },
+    "phone": {
+      "country": {
+        "DZ": "Algérie"
+      },
+      "placeholder": {
+        "DZ": "5XX XX XX XX"
+      },
+      "leadingDigit": {
+        "DZ": "Un numéro de mobile algérien commence par 5, 6 ou 7."
+      },
+      "incomplete": "Numéro incomplet : {length} chiffres attendus."
     }
   },
   "footer": {
@@ -496,7 +509,8 @@
       "tooManyServices": "Vingt prestations au maximum par devis.",
       "emailInvalid": "Adresse e-mail invalide.",
       "paymentMethodInvalid": "Mode de paiement invalide.",
-      "unknownKey": "Champ inconnu."
+      "unknownKey": "Champ inconnu.",
+      "nameInvalid": "Lettres, espaces, tirets et apostrophes uniquement."
     }
   },
   "search": {
@@ -789,7 +803,8 @@
         "stylesHint": "Ces informations alimentent les filtres de la recherche publique.",
         "ceremonyType": "Type de mariage",
         "ceremonyTypeHint": "Laissez vide tant que vous ne l'avez pas décidé.",
-        "ceremonyTypeNone": "Non précisé"
+        "ceremonyTypeNone": "Non précisé",
+        "nothingToSave": "Rien à enregistrer : la salle est à jour."
       },
       "notFound": {
         "title": "Salle introuvable",
@@ -1113,7 +1128,7 @@
         "noServicesPicked": "Aucune prestation",
         "outcomeHint": "« Bloquer la date » la rend indisponible immédiatement. « Enregistrer sans bloquer » la laisse libre : un autre client peut la prendre d'ici au paiement.",
         "phone": "Téléphone",
-        "phoneHint": "Format international : +213 suivi de 8 à 9 chiffres.",
+        "phoneHint": "Format international : +213 suivi de 9 chiffres.",
         "pickedDate": "Sélectionnée",
         "progressLabel": "Avancement de la réservation",
         "pt_FIXED": "Forfait",
@@ -1154,7 +1169,31 @@
         "stepSlot": "Créneau",
         "title": "Nouvelle réservation",
         "total": "Total à payer",
-        "totalTitle": "Total à facturer"
+        "totalTitle": "Total à facturer",
+        "firstNamePlaceholder": "Ex. : Amina",
+        "lastNamePlaceholder": "Ex. : Benali",
+        "emailPlaceholder": "nom@example.com",
+        "guestsPlaceholder": "Ex. : 150",
+        "firstNameInvalid": "Le prénom ne peut contenir que des lettres, des espaces, des tirets et des apostrophes.",
+        "lastNameInvalid": "Le nom ne peut contenir que des lettres, des espaces, des tirets et des apostrophes.",
+        "emailInvalid": "Adresse e-mail invalide. Exemple : nom@example.com.",
+        "continueBlockedLead": "« Continuer » est inactif :",
+        "needFirstName": "le prénom est obligatoire",
+        "needLastName": "le nom est obligatoire",
+        "needFirstNameValid": "le prénom contient un caractère non admis",
+        "needLastNameValid": "le nom contient un caractère non admis",
+        "needPhone": "le téléphone est obligatoire",
+        "needPhoneIncomplete": "le numéro de mobile doit compter {length} chiffres",
+        "needPhoneLeading": "le numéro de mobile doit commencer par 5, 6 ou 7",
+        "needGuests": "le nombre d'invités est obligatoire",
+        "needEmailValid": "l'adresse e-mail est invalide (ou laissez-la vide)",
+        "previous": "Précédent",
+        "newQuote": "Nouveau devis",
+        "doneTitleLocked": "Date bloquée",
+        "doneTitleStandby": "Date enregistrée",
+        "doneDialogLocked": "La date du {date} est bloquée pour {client}.",
+        "doneDialogStandby": "La date du {date} est enregistrée pour {client}, sans être bloquée.",
+        "doneDialogClose": "Fermer"
       },
       "wizard": {
         "stepsLabel": "Étapes de configuration de la salle",

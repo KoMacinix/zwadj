@@ -14,8 +14,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createAccountClient, validate, type AccountClient, type FieldErrors } from "@zwadj/api-client";
-import { ConfirmDialog } from "@zwadj/ui";
-import { changeEmailSchema, changePasswordSchema, profileUpdateSchema, type DeletionRequestDTO } from "@zwadj/types";
+import { ConfirmDialog, PhoneField } from "@zwadj/ui";
+import {
+  DEFAULT_PHONE_COUNTRY,
+  changeEmailSchema,
+  changePasswordSchema,
+  nationalDigitsOf,
+  profileUpdateSchema,
+  toE164,
+  type DeletionRequestDTO
+} from "@zwadj/types";
 import { useAuth } from "../auth/auth-context";
 import { Field } from "../auth/auth-ui";
 import { ApiError, NetworkError } from "../lib/auth-client";
@@ -59,8 +67,10 @@ function ProfileSection({ client }: { client: AccountClient }) {
 
   const [values, setValues] = useState({
     businessName: user?.proProfile?.businessName ?? "",
-    phone: user?.proProfile?.phone ?? "",
-    phone2: user?.proProfile?.phone2 ?? "",
+    // Rang 32 (D325) : les deux numéros sont des chiffres NATIONAUX (le champ partagé affiche l'indicatif devant) ; `toE164` les remet au format
+    // du contrat à l'envoi. Une valeur enregistrée qui n'est pas un mobile se relit VIDE — jamais réparée au jugé.
+    phone: nationalDigitsOf(DEFAULT_PHONE_COUNTRY, user?.proProfile?.phone),
+    phone2: nationalDigitsOf(DEFAULT_PHONE_COUNTRY, user?.proProfile?.phone2),
     // D60 (F1) — canaux. Défauts alignés sur la base : e-mail oui, SMS non.
     notifyByEmail: user?.proProfile?.notifyByEmail ?? true,
     notifyBySms: user?.proProfile?.notifyBySms ?? false
@@ -76,8 +86,8 @@ function ProfileSection({ client }: { client: AccountClient }) {
     // refusé par le format +213 du schéma partagé.
     const checked = validate(profileUpdateSchema, {
       businessName: values.businessName,
-      phone: values.phone,
-      phone2: values.phone2.trim() === "" ? null : values.phone2,
+      phone: toE164(DEFAULT_PHONE_COUNTRY, values.phone),
+      phone2: values.phone2 === "" ? null : toE164(DEFAULT_PHONE_COUNTRY, values.phone2),
       notifyByEmail: values.notifyByEmail,
       notifyBySms: values.notifyBySms
     });
@@ -125,16 +135,16 @@ function ProfileSection({ client }: { client: AccountClient }) {
         <div className="field-row">
           <Field label={t("account.ui.profile.phone")} required error={tval(errors.phone)}>
             {({ id, describedBy, invalid, required }) => (
-              <input
+              <PhoneField
                 id={id}
-                type="tel"
-                inputMode="tel"
                 value={values.phone}
-                onChange={(e) => setValues((v) => ({ ...v, phone: e.target.value }))}
-                aria-describedby={describedBy}
-                aria-invalid={invalid || undefined}
+                onChange={(digits) => setValues((v) => ({ ...v, phone: digits }))}
+                countryName={t(`common.phone.country.${DEFAULT_PHONE_COUNTRY}`)}
+                placeholder={t(`common.phone.placeholder.${DEFAULT_PHONE_COUNTRY}`)}
+                leadingDigitMessage={t(`common.phone.leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
+                describedBy={describedBy}
+                invalid={invalid}
                 required={required}
-                dir="ltr"
               />
             )}
           </Field>
@@ -175,15 +185,15 @@ function ProfileSection({ client }: { client: AccountClient }) {
 
           <Field label={t("account.ui.profile.phone2")} error={tval(errors.phone2)}>
             {({ id, describedBy, invalid }) => (
-              <input
+              <PhoneField
                 id={id}
-                type="tel"
-                inputMode="tel"
                 value={values.phone2}
-                onChange={(e) => setValues((v) => ({ ...v, phone2: e.target.value }))}
-                aria-describedby={describedBy}
-                aria-invalid={invalid || undefined}
-                dir="ltr"
+                onChange={(digits) => setValues((v) => ({ ...v, phone2: digits }))}
+                countryName={t(`common.phone.country.${DEFAULT_PHONE_COUNTRY}`)}
+                placeholder={t(`common.phone.placeholder.${DEFAULT_PHONE_COUNTRY}`)}
+                leadingDigitMessage={t(`common.phone.leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
+                describedBy={describedBy}
+                invalid={invalid}
               />
             )}
           </Field>

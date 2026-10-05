@@ -363,6 +363,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@zwadj/types':
+        specifier: workspace:*
+        version: link:../types
       lucide-react:
         specifier: ^0.563.0
         version: 0.563.0(react@19.2.7)

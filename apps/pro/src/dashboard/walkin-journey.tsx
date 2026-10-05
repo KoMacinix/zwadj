@@ -59,7 +59,7 @@
 // `VenueCalendar` rend la disponibilité réelle, le tarif du jour calculé par le
 // moteur (B2/B3) et les créneaux avec leur prix. Une date déjà vendue ne peut
 // pas être saisie à la main.
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 // ⚠ `lucide-react` N'EST PLUS IMPORTÉ ICI. La coche du rail vivait dans ce
 // fichier ET, sous forme de glyphe texte `✓`, dans l'assistant client — deux
@@ -68,24 +68,46 @@ import { useTranslation } from "react-i18next";
 // sans que le client ait à ajouter le paquet.
 import { formatDZD } from "@zwadj/i18n";
 import {
+  DEFAULT_PHONE_COUNTRY,
+  PHONE_COUNTRIES,
   QUOTE_SENT_VIA_ORDER,
-  normalizeDzPhone,
+  isPhoneComplete,
   quoteSentViaNeedsPhone,
+  toE164,
   type QuoteDTO,
   type QuoteSentVia,
   type ServiceDTO,
   type VenueProDTO
 } from "@zwadj/types";
-import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap } from "@zwadj/ui";
+import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap, NoticeDialog, PhoneField } from "@zwadj/ui";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { revealAndFocus } from "../lib/reveal";
 import { useBookingsPro, useQuotes, useServices } from "../venues/venue-client-context";
 import { VenueCalendar } from "../venues/venue-calendar";
-
-type Contact = { firstName: string; lastName: string; phone: string; email: string };
-const NO_CONTACT: Contact = { firstName: "", lastName: "", phone: "", email: "" };
+import {
+  NO_CONTACT,
+  clientBlockers,
+  contactBlockers,
+  contactPayload,
+  fieldErrors,
+  type Blocker,
+  type Contact
+} from "./walkin-contact";
 
 type Outcome = { kind: "locked" } | { kind: "standby" } | null;
+/** Rang 32 (D325) — ce que la fenêtre de confirmation dit : l'action, la date, le client. Posé APRÈS la réponse du serveur,
+ *  jamais avant : c'est un instantané de ce qui vient d'être ÉCRIT, pas de ce qui est à l'écran. */
+type Done = { kind: "locked" | "standby"; date: string; client: string } | null;
+
+/** « 2027-08-14 » → « 14 août 2027 » dans la langue de la page. `Intl` est licite ici (D57 interdit l'HEURE, pas la date) ;
+ *  la date civile se lit en UTC pour ne dépendre ni du fuseau de la machine ni de celui de la salle. */
+function longDate(civil: string, language: string): string {
+  const [y, m, d] = civil.split("-").map(Number);
+  if (!y || !m || !d) return civil;
+  return new Intl.DateTimeFormat(language, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
+    new Date(Date.UTC(y, m - 1, d))
+  );
+}
 type Catalogue = { kind: "loading" } | { kind: "error" } | { kind: "ready"; rows: ServiceDTO[] };
 
 /** Les cinq étapes, dans l'ordre. ⚠ L'ordre n'est pas cosmétique : le nombre
@@ -103,21 +125,40 @@ const STEP_LABEL: Record<Step, string> = {
   quote: "venue.ui.walkin.stepQuote"
 };
 
+/**
+ * Un champ du parcours : libellé VISIBLE, saisie, exemple, indication, erreur.
+ *
+ * ⚠ L'IDENTIFIANT VIENT DE `useId()`, PAS DU LIBELLÉ. Il était dérivé du libellé en n'en gardant que les lettres latines
+ * (`label.replace(/[^a-zA-Z]/g, "")`) : en arabe il ne reste RIEN, et les quatre champs du formulaire portaient le MÊME `id` —
+ * « wk- ». Cliquer un libellé arabe mettait le focus sur le premier champ, et un lecteur d'écran annonçait le même nom partout.
+ *
+ * ⚠ L'EXEMPLE (`placeholder`) NE REMPLACE JAMAIS LE LIBELLÉ (D143) : le `<label>` reste visible et lié. L'exemple montre le FORMAT
+ * attendu — un gabarit, jamais une vraie donnée.
+ */
 function Champ({
   label,
   value,
   onChange,
   hint,
-  mode
+  mode,
+  placeholder,
+  error,
+  children
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   hint?: string;
   mode?: "tel" | "email" | "numeric";
+  placeholder?: string;
+  error?: string;
+  /** Un autre contrôle à la place de la saisie texte (le champ de téléphone) : il reçoit l'`id` et les descriptions. */
+  children?: (aria: { id: string; describedBy: string | undefined; invalid: boolean }) => ReactNode;
 }) {
-  const id = `wk-${label.replace(/[^a-zA-Z]/g, "")}`;
+  const id = `wk-${useId()}`;
   const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = error ? `${id}-error` : undefined;
+  const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
   return (
     <div className="wk-field">
       {/* ⚠ Un vrai `<label>` VISIBLE, pas un `aria-label` seul : quatre cases
@@ -127,17 +168,28 @@ function Champ({
       <label className="wk-label" htmlFor={id}>
         {label}
       </label>
-      <input
-        id={id}
-        className="wk-input"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        aria-describedby={hintId}
-        inputMode={mode}
-      />
+      {children ? (
+        children({ id, describedBy, invalid: error !== undefined })
+      ) : (
+        <input
+          id={id}
+          className="wk-input"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          aria-describedby={describedBy}
+          aria-invalid={error !== undefined ? true : undefined}
+          inputMode={mode}
+        />
+      )}
       {hint ? (
         <p id={hintId} className="wk-hint">
           {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p id={errorId} className="wk-field-error field-error" role="alert">
+          {error}
         </p>
       ) : null}
     </div>
@@ -166,6 +218,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [chainQuoteId, setChainQuoteId] = useState<string | null>(null);
   const [stale, setStale] = useState(false);
   const [outcome, setOutcome] = useState<Outcome>(null);
+  const [done, setDone] = useState<Done>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -207,11 +260,13 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   }, []);
 
   // D135 — nom, prénom et TÉLÉPHONE. Pas l'e-mail : `contact_email` est nullable
-  // en base, et le client au comptoir n'en a souvent pas.
-  const contactReady =
-    contact.firstName.trim() !== "" && contact.lastName.trim() !== "" && contact.phone.trim() !== "";
+  // en base, et le client au comptoir n'en a souvent pas. ⚠ Rang 32 (D325) : « prêt » ne veut plus dire « non vide » — le nom,
+  // le téléphone et l'e-mail passent les règles du CONTRAT (`walkin-contact.ts`), les mêmes que celles du serveur.
+  const contactReady = contactBlockers(contact).length === 0;
+  const blockers = clientBlockers(contact, guests);
   const guestsReady = Number(guests) > 0;
-  const clientAnswered = contactReady && guestsReady;
+  const clientAnswered = blockers.length === 0;
+  const invalidFields = fieldErrors(contact);
   const termsReady = eventDate !== null && slotId !== null && guestsReady;
 
   /** ⚠ RÉPONDU SE LIT DANS LES DONNÉES. Aucun compteur ne peut diverger de
@@ -270,6 +325,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setChainQuoteId(null);
     setStale(false);
     setOutcome(null);
+    setDone(null);
     setError(null);
     setServicesAnswered(false);
     setSlotCleared(false);
@@ -364,17 +420,18 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       // ⚠ AUCUN appel intermédiaire. Le devis part tel quel : un brouillon se
       // convertit (D160).
       const converted = await quotes.convert(quote.id, {
-        contactFirstName: contact.firstName.trim(),
-        contactLastName: contact.lastName.trim(),
-        contactPhone: contact.phone.trim(),
-        // ⚠ Clé OMISE si vide : `.email()` refuserait la chaîne vide.
-        ...(contact.email.trim() === "" ? {} : { contactEmail: contact.email.trim() }),
+        // ⚠ Le corps vient de `contactPayload` : noms rognés, téléphone `+213` + les chiffres saisis, e-mail OMIS s'il est vide
+        // (`.email()` refuserait la chaîne vide). La valeur envoyée est celle saisie, et le format est celui que le contrat attend.
+        ...contactPayload(contact),
         // Dette documentée : figé à CASH, à rouvrir avec E3.
         paymentMethod: "CASH"
       });
       setQuote(converted);
+      // ⚠ Rang 32 (D325) : la fenêtre de confirmation se prépare ICI, avec ce que le serveur vient d'écrire — jamais avant la réponse.
+      const client = `${contact.firstName.trim()} ${contact.lastName.trim()}`;
       if (!lock) {
         setOutcome({ kind: "standby" });
+        setDone({ kind: "standby", date: eventDate as string, client });
         return;
       }
       // ⚠ Le verrouillage appartient à la BASE. On appelle `accept` et on laisse
@@ -382,6 +439,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       // date est libre — ce serait une seconde autorité sur la question (D78).
       if (converted.bookingId !== null) await bookings.accept(converted.bookingId);
       setOutcome({ kind: "locked" });
+      setDone({ kind: "locked", date: eventDate as string, client });
     });
 
   /** ⚠ D160/D158 — LA GARDE DU TÉLÉPHONE, ET SON PÉRIMÈTRE EXACT.
@@ -390,7 +448,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    *  `PRINT` et `IN_PERSON` ne l'exigent pas.
    *  ⚠ Et la validité se demande à `normalizeDzPhone`, jamais à une expression
    *  régulière écrite ici. */
-  const telOk = normalizeDzPhone(contact.phone) !== null;
+  const telOk = isPhoneComplete(DEFAULT_PHONE_COUNTRY, contact.phone);
   const canalBloque = (canal: QuoteSentVia) => quoteSentViaNeedsPhone(canal) && !telOk;
 
   /** ⚠ L'ÉCRAN DIT CE QUE LE SERVEUR A ÉCRIT, il ne le suppose pas. */
@@ -409,7 +467,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     switch (s) {
       case "client": {
         const nom = `${contact.firstName.trim()} ${contact.lastName.trim()}`.trim();
-        const tel = contact.phone.trim();
+        const tel = toE164(DEFAULT_PHONE_COUNTRY, contact.phone);
         return [nom, tel, t("venue.ui.walkin.guestsSummary", { count: Number(guests) })]
           .filter((part) => part !== "")
           .join(" · ");
@@ -442,6 +500,21 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     quote: { q: "venue.ui.walkin.qQuote", hint: "venue.ui.walkin.qQuoteHint" }
   };
 
+  /** Rang 32 (D325) — « Précédent » : l'étape d'avant, sans rien effacer (les réponses survivent, D-maquette de la refonte). Il
+   *  n'existe pas à la première étape, et il disparaît une fois l'affaire conclue — comme le rail et « Modifier », qui ne proposent
+   *  plus de modifier ce qui est écrit. Il est rendu EN PREMIER dans sa ligne : à gauche en français, reflété en arabe par le sens
+   *  de la page (`flex`), pas par une propriété physique. */
+  const previousStep = stepIndex > 0 ? STEPS[stepIndex - 1] : undefined;
+  const previousButton =
+    previousStep === undefined || conclu ? null : (
+      <button type="button" className="wk-btn wk-btn-previous" onClick={() => goTo(previousStep)}>
+        {t("venue.ui.walkin.previous")}
+      </button>
+    );
+  const phoneText = (kind: "country" | "placeholder" | "leadingDigit") => t(`common.phone.${kind}.${DEFAULT_PHONE_COUNTRY}`);
+  const reasonText = (blocker: Blocker) =>
+    t(`venue.ui.walkin.${blocker}`, { length: PHONE_COUNTRIES[DEFAULT_PHONE_COUNTRY].nationalLength });
+
   return (
     <>
       <header className="wk-head">
@@ -451,12 +524,12 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         </p>
         <h1 className="wk-title">{t("venue.ui.walkin.title")}</h1>
         <p className="wk-lede">{t("venue.ui.walkin.lede")}</p>
-        {/* Disparaît une fois l'affaire conclue — voir `reset`. */}
-        {conclu ? null : (
-          <button type="button" className="wk-btn wk-head-reset" onClick={reset}>
-            {t("venue.ui.walkin.reset")}
-          </button>
-        )}
+        {/* « Annuler » disparaît une fois l'affaire conclue — voir `reset` : il n'annulerait rien. Rang 32 (D325) : à sa place,
+            « Nouveau devis » — qui repart de l'étape 1, formulaire vidé (c'est la même remise à zéro, `reset`, et elle ne touche
+            pas au serveur : la demande conclue y reste). Un seul bouton à cet emplacement, jamais les deux. */}
+        <button type="button" className="wk-btn wk-head-reset" onClick={reset}>
+          {conclu ? t("venue.ui.walkin.newQuote") : t("venue.ui.walkin.reset")}
+        </button>
       </header>
 
       {/* ⚠ UNE LISTE ORDONNÉE, PAS CINQ `<div>`. La maquette n'a aucune
@@ -530,27 +603,48 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                 label={t("venue.ui.walkin.firstName")}
                 value={contact.firstName}
                 onChange={(v) => setContact({ ...contact, firstName: v })}
+                placeholder={t("venue.ui.walkin.firstNamePlaceholder")}
+                error={invalidFields.firstName ? t("venue.ui.walkin.firstNameInvalid") : undefined}
               />
               <Champ
                 label={t("venue.ui.walkin.lastName")}
                 value={contact.lastName}
                 onChange={(v) => setContact({ ...contact, lastName: v })}
+                placeholder={t("venue.ui.walkin.lastNamePlaceholder")}
+                error={invalidFields.lastName ? t("venue.ui.walkin.lastNameInvalid") : undefined}
               />
             </div>
             <div className="wk-pair">
+              {/* ⚠ Le téléphone est le champ PARTAGÉ (`@zwadj/ui`) : indicatif et drapeau devant, chiffres seuls, au plus neuf,
+                  premier chiffre 5, 6 ou 7. La valeur du formulaire est la suite de chiffres NATIONAUX ; `contactPayload` la convertit. */}
               <Champ
                 label={t("venue.ui.walkin.phone")}
                 value={contact.phone}
                 onChange={(v) => setContact({ ...contact, phone: v })}
                 hint={t("venue.ui.walkin.phoneHint")}
-                mode="tel"
-              />
+              >
+                {({ id, describedBy, invalid }) => (
+                  <PhoneField
+                    id={id}
+                    value={contact.phone}
+                    onChange={(digits) => setContact({ ...contact, phone: digits })}
+                    country={DEFAULT_PHONE_COUNTRY}
+                    countryName={phoneText("country")}
+                    placeholder={phoneText("placeholder")}
+                    leadingDigitMessage={phoneText("leadingDigit")}
+                    describedBy={describedBy}
+                    invalid={invalid}
+                  />
+                )}
+              </Champ>
               <Champ
                 label={t("venue.ui.walkin.email")}
                 value={contact.email}
                 onChange={(v) => setContact({ ...contact, email: v })}
                 hint={t("venue.ui.walkin.emailHint")}
                 mode="email"
+                placeholder={t("venue.ui.walkin.emailPlaceholder")}
+                error={invalidFields.email ? t("venue.ui.walkin.emailInvalid") : undefined}
               />
             </div>
 
@@ -573,6 +667,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                   inputMode="numeric"
                   value={guests}
                   onChange={(e) => setGuestsSafe(e.target.value)}
+                  placeholder={t("venue.ui.walkin.guestsPlaceholder")}
                   aria-describedby="wk-guests-hint"
                 />
                 <button
@@ -590,11 +685,31 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
             </div>
 
             <div className="wk-actions">
-              <button type="button" className="wk-btn wk-btn-primary" disabled={!clientAnswered} onClick={confirmStep}>
+              {previousButton}
+              {/* ⚠ Rang 32 (D325) : « Continuer » grisé DIT POURQUOI. Une phrase générique (« prénom, nom, téléphone et nombre d'invités
+                  sont nécessaires ») ne dit pas lequel manque ; la liste ci-dessous nomme ce qui retient — et `aria-describedby` la lie au
+                  bouton, sans quoi un lecteur d'écran entend un bouton inactif sans motif. Un seul bouton à droite : « Précédent » n'existe
+                  pas à la première étape. */}
+              <button
+                type="button"
+                className="wk-btn wk-btn-primary wk-btn-next"
+                disabled={!clientAnswered}
+                aria-describedby={clientAnswered ? undefined : "wk-continue-reason"}
+                onClick={confirmStep}
+              >
                 {t("venue.ui.walkin.continue")}
               </button>
-              {clientAnswered ? null : <p className="wk-hint">{t("venue.ui.walkin.clientNeeded")}</p>}
             </div>
+            {clientAnswered ? null : (
+              <div id="wk-continue-reason" className="wk-blockers">
+                <p className="wk-hint">{t("venue.ui.walkin.continueBlockedLead")}</p>
+                <ul>
+                  {blockers.map((blocker) => (
+                    <li key={blocker}>{reasonText(blocker)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </>
         ) : null}
 
@@ -629,6 +744,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
               compact
               show={step === "date" ? "month" : "slots"}
             />
+            {/* Ces deux étapes n'ont pas de « Continuer » : choisir un jour, puis un créneau, avance. « Précédent » est donc seul. */}
+            {previousButton === null ? null : <div className="wk-actions">{previousButton}</div>}
           </>
         ) : null}
 
@@ -667,11 +784,12 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
               </fieldset>
             )}
             <div className="wk-actions">
-              <button type="button" className="wk-btn wk-btn-primary" onClick={confirmStep}>
+              {previousButton}
+              <button type="button" className="wk-btn wk-btn-primary wk-btn-next" onClick={confirmStep}>
                 {t("venue.ui.walkin.seeQuote")}
               </button>
-              <p className="wk-hint">{t("venue.ui.walkin.noAmountsYet")}</p>
             </div>
+            <p className="wk-hint">{t("venue.ui.walkin.noAmountsYet")}</p>
           </>
         ) : null}
 
@@ -790,9 +908,29 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                 <p className="wk-hint">{t("venue.ui.walkin.outcomeHint")}</p>
               </div>
             )}
+            {/* « Précédent » : l'étape des prestations. Absent une fois l'affaire conclue (`previousButton` est alors nul). */}
+            {previousButton === null ? null : <div className="wk-actions">{previousButton}</div>}
           </>
         ) : null}
       </JourneyCard>
+
+      {/* ⚠ Rang 32 (D325) : la fenêtre ne s'ouvre qu'APRÈS la réponse du serveur (`done` est posé par `conclude`, après `convert` et,
+          pour « Bloquer la date », après `accept`) ; un échec la laisse fermée et dit l'erreur à la place. Elle nomme la date, l'action
+          (bloquée ou enregistrée) et le client — ce que le serveur vient d'écrire. */}
+      <NoticeDialog
+        open={done !== null}
+        title={done === null ? "" : t(done.kind === "locked" ? "venue.ui.walkin.doneTitleLocked" : "venue.ui.walkin.doneTitleStandby")}
+        description={
+          done === null
+            ? ""
+            : t(done.kind === "locked" ? "venue.ui.walkin.doneDialogLocked" : "venue.ui.walkin.doneDialogStandby", {
+                date: longDate(done.date, i18n.language),
+                client: done.client
+              })
+        }
+        closeLabel={t("venue.ui.walkin.doneDialogClose")}
+        onClose={() => setDone(null)}
+      />
     </>
   );
 }

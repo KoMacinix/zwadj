@@ -9,6 +9,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { MemoryRouter } from "react-router";
 import { vi } from "vitest";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
+import { messages } from "@zwadj/i18n";
+import { DEFAULT_PHONE_COUNTRY, PHONE_COUNTRIES } from "@zwadj/types";
 import { ApiError, type AuthClient } from "./lib/auth-client";
 import { makeVenueClientDouble } from "./test-support/client-doubles";
 import { initI18n } from "./i18n";
@@ -262,5 +264,41 @@ describe("Inscription PRO — D21 (pas d'auto-login)", () => {
     // justement plus demander à l'utilisateur de composer l'indicatif.
     expect(await screen.findByText(/mobile invalide/i)).toBeInTheDocument();
     expect(client.register).not.toHaveBeenCalled();
+  });
+});
+
+// ══ RANG 32 (D325) — l'inscription du pro : le téléphone est le champ PARTAGÉ ═══════════════════════════════════════════
+describe("Inscription PRO — le téléphone est le champ partagé (rang 32)", () => {
+  const PAYS = PHONE_COUNTRIES[DEFAULT_PHONE_COUNTRY];
+
+  it("l'indicatif et le drapeau sont devant, et le gabarit d'exemple n'est PLUS un numéro qui ressemble à un vrai", async () => {
+    renderAt("/auth/inscription", makeClient());
+    const champ = (await screen.findByLabelText("Téléphone")) as HTMLInputElement;
+    expect(screen.getByRole("img", { name: `${messages.fr.common.phone.country[DEFAULT_PHONE_COUNTRY]}, ${PAYS.dialCode}` })).toBeInTheDocument();
+    expect(champ.placeholder).toBe(messages.fr.common.phone.placeholder[DEFAULT_PHONE_COUNTRY]);
+    // L'ancien exemple était un numéro COMPLET et plausible (« +213551234567 ») : aucune vraie donnée dans un exemple.
+    expect(champ.placeholder.replace(/\D/g, "").length).toBeLessThan(PAYS.nationalLength);
+  });
+
+  it("⚠ un numéro collé à la locale part au format canonique — le format envoyé n'a pas changé", async () => {
+    const client = makeClient({ register: vi.fn().mockResolvedValue({ id: "u2", email: "contact@salle.dz" }) });
+    renderAt("/auth/inscription", client);
+    fireEvent.change(await screen.findByLabelText("Nom de l'établissement"), { target: { value: "Salle El Ryad" } });
+    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "0551 22 33 44" } });
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "contact@salle.dz" } });
+    fireEvent.change(screen.getByLabelText("Mot de passe"), { target: { value: "Motdepasse1" } });
+    fireEvent.change(screen.getByLabelText("Confirmer le mot de passe"), { target: { value: "Motdepasse1" } });
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("button", { name: "Créer mon compte" }));
+    await screen.findByRole("heading", { name: "Vérifiez votre boîte mail" });
+    expect(client.register).toHaveBeenCalledWith(expect.objectContaining({ phone: `${PAYS.dialCode}551223344` }));
+  });
+
+  it("⚠ un fixe ne se TAPE même pas : le premier chiffre refusé reste seul, avec son message", async () => {
+    renderAt("/auth/inscription", makeClient());
+    const champ = (await screen.findByLabelText("Téléphone")) as HTMLInputElement;
+    for (const caractere of "0212") fireEvent.change(champ, { target: { value: champ.value + caractere } });
+    expect(champ.value).toBe("0");
+    expect(screen.getByRole("alert")).toHaveTextContent(messages.fr.common.phone.leadingDigit[DEFAULT_PHONE_COUNTRY]);
   });
 });
