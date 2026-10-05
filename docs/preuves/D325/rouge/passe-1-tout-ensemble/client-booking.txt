@@ -1,0 +1,5 @@
+# ROUGE LU — client-booking : @zwadj/client · src/components/venue/booking-request-panel.test.tsx
+# sources de HEAD (16 fichiers), tests NEUFS du lot, i18n et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : no tests
+# échecs lus : 0 (AssertionError : 0 · autre : 0) — « autre » = TypeError, import, attente non aboutie : PAS une assertion
+

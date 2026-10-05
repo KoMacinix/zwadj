@@ -1,0 +1,99 @@
+# EXTRAIT de porte-e2e-2.log — produit par docs/preuves/D325/e2e/extraire.py
+# 1453 lignes examinées, 1236 lignes de serveur écartées, 49 résultats, 1 blocs d'échec
+# Les lignes ci-dessous sont COPIÉES telles quelles (codes ANSI retirés) ; rien n'est reformulé.
+
+  ok 1 [warmup] › specs\warmup.setup.ts:54:5 › préchauffe les routes des deux applications (27.2s)
+  ok 3 [chromium] › specs\a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token) (2.7s)
+  ok 2 [chromium] › specs\a1-session-bootstrap.e2e.ts:27:7 › A1 — bootstrap de session › Pro : rechargement direct d'une route protégée = UN SEUL POST /auth/refresh (2.8s)
+  ok 4 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas (3.8s)
+  ok 5 [chromium] › specs\a1-session-bootstrap.e2e.ts:43:7 › A1 — bootstrap de session › Client : rechargement d'une page publique déclenche aussi UN SEUL refresh (3.8s)
+  ok 6 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities (4.0s)
+  ok 7 [chromium] › specs\a1-session-bootstrap.e2e.ts:60:7 › A1 — bootstrap de session › deux onglets rechargés quasi simultanément : AUCUN ne perd la session (4.9s)
+  ok 8 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles (3.9s)
+  ok 9 [chromium] › specs\a1-session-bootstrap.e2e.ts:96:7 › A1 — bootstrap de session › cookie refresh invalide : redirection propre vers la connexion, SANS boucle (4.0s)
+  ok 10 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings (3.6s)
+  ok 11 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › tableau de bord : même empreinte d'appels par les deux chemins (4.7s)
+  ok 12 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings (2.8s)
+  ok 14 [chromium] › specs\a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session (3.4s)
+  ok 13 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mes salles : même empreinte d'appels par les deux chemins (4.7s)
+  ok 16 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mon compte : même empreinte d'appels par les deux chemins (4.7s)
+  ok 15 [chromium] › specs\a2-mount-effects.e2e.ts:161:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée (7.2s)
+  ok 18 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-light : les tokens résolus n'ont pas bougé (2.2s)
+  ok 17 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › nouvelle salle : même empreinte d'appels par les deux chemins (4.6s)
+  ok 19 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-dark : les tokens résolus n'ont pas bougé (2.5s)
+  -  20 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:175:7 › A5 — parité navigation interne / rechargement › le calendrier d'une salle survit au rechargement (deux effets enchaînés)
+  ok 21 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-light : les tokens résolus n'ont pas bougé (1.6s)
+  ok 23 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-dark : les tokens résolus n'ont pas bougé (1.6s)
+  ok 24 [chromium] › specs\b7-token-contract.e2e.ts:250:7 › B7 — contrat des tokens résolus (D124) › un token partagé a la MÊME valeur dans les deux apps, au même thème (10ms)
+  ok 22 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (clair) : aucune NOUVELLE violation (3.7s)
+  ok 26 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (sombre) : aucune NOUVELLE violation (4.1s)
+  ok 27 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (arabe, RTL) : aucune NOUVELLE violation (5.4s)
+  ok 25 [chromium] › specs\r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation (6.7s)
+  ok 28 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation (3.8s)
+  ok 30 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client compte : aucune NOUVELLE violation (3.7s)
+  ok 31 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (clair) : aucune NOUVELLE violation (3.0s)
+  ok 32 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (sombre) : aucune NOUVELLE violation (3.0s)
+  ok 33 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro liste des salles : aucune NOUVELLE violation (3.7s)
+  ok 29 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › fr — « Se connecter pour demander » mène à la page de connexion réelle (11.3s)
+  ok 34 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro tableau de bord : aucune NOUVELLE violation (3.3s)
+  ok 35 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › ar — « سجّل الدخول لإرسال طلب » mène à la page de connexion réelle (5.8s)
+  ok 36 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro nouvelle salle : aucune NOUVELLE violation (3.8s)
+  ok 37 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur (3.1s)
+  ok 38 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro compte : aucune NOUVELLE violation (3.6s)
+  ok 40 [chromium] › specs\b8-accessibility.e2e.ts:204:7 › B8 — accessibilité automatisée (D125) › écrit la référence si demandé, et refuse de la deviner sinon (5ms)
+  ok 39 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › client — avec une demande : la section l'affiche en attente (2.7s)
+  ok 42 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur (1.3s)
+  ok 43 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › pro — avec une demande : la section l'affiche en attente (1.4s)
+  x  44 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:94:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » (15ms)
+  ok 41 [chromium] › specs\r26-parcours-reservation.e2e.ts:108:5 › le pro ACCEPTE : la demande quitte ses demandes pour ses réservations, et le client la voit acceptée (12.5s)
+  ok 45 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:236:5 › « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit (6.5s)
+  ok 47 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:249:5 › un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche (5.5s)
+  ok 46 [chromium] › specs\r26-parcours-reservation.e2e.ts:129:5 › le pro REFUSE : la demande reste dans ses demandes, refusée, et le client voit le refus (14.5s)
+  ok 48 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:270:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair (3.4s)
+  ok 49 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:328:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde (4.1s)
+  1) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:94:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » 
+
+    Error: POST http://localhost:3101/api/v1/auth/register a échoué après 7 ms.
+    Chaîne des causes (la DERNIÈRE est la vraie) :
+      TypeError: fetch failed
+      Error [ECONNRESET]: read ECONNRESET
+
+       at ..\fixtures\harness.ts:65
+
+      63 |       courante = courante.cause;
+      64 |     }
+    > 65 |     throw new Error(
+         |           ^
+      66 |       `POST ${url} a échoué après ${Date.now() - debut} ms.\n` +
+      67 |         `Chaîne des causes (la DERNIÈRE est la vraie) :\n  ${causes.join("\n  ")}`,
+      68 |       { cause: erreur }
+        at postJson (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\fixtures\harness.ts:65:11)
+        at createVerifiedAccount (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\fixtures\harness.ts:88:15)
+        at createPublishedVenue (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\fixtures\harness.ts:324:15)
+        at ouvrir (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:41:17)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:95:37
+    [cause]: TypeError: fetch failed
+        at postJson (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\fixtures\harness.ts:49:12)
+        at createVerifiedAccount (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\fixtures\harness.ts:88:15)
+        at createPublishedVenue (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\fixtures\harness.ts:324:15)
+        at ouvrir (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:41:17)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:95:37
+    [cause]: Error: read ECONNRESET
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r32-nouvelle-reservation.e-dfdfd-a-réponse-«-Nouveau-devis-»-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-dfdfd-a-réponse-«-Nouveau-devis-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [chromium] › specs\b8-accessibility.e2e.ts (41.2s)
+  Slow test file: [chromium] › specs\a2-mount-effects.e2e.ts (31.3s)
+  Slow test file: [warmup] › specs\warmup.setup.ts (27.2s)
+  Slow test file: [chromium] › specs\r26-parcours-reservation.e2e.ts (27.0s)
+  Slow test file: [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts (20.9s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  1 failed
+  1 skipped
+  47 passed (3.1m)

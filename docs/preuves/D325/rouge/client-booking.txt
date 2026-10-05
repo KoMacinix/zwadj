@@ -1,0 +1,13 @@
+# ROUGE LU — client-booking : @zwadj/client · src/components/venue/booking-request-panel.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/client/src/components/venue/booking-request-panel.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 4 failed | 21 passed (25)
+# échecs lus : 4 (AssertionError : 3 · autre : 1) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[autre] FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "img" and name "Algérie, +213"
+[AssertionError] FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part en forme canonique
+      ↳ AssertionError: expected '0550 00 00 01' to be '+213550000001' // Object.is equality
+[AssertionError] FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suffit plus
+      ↳ AssertionError: expected false to be true // Object.is equality
+[AssertionError] FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message
+      ↳ AssertionError: expected '0212' to be '0' // Object.is equality

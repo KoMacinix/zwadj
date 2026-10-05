@@ -1,0 +1,9 @@
+# ROUGE LU — client-filter-wizard-rail : @zwadj/client · src/components/filter-wizard.test.tsx
+# sources ramenées à `HEAD` pour ce test : packages/ui/src/journey.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 2 failed | 25 passed (27)
+# échecs lus : 2 (AssertionError : 2 · autre : 0) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/components/filter-wizard.test.tsx > Le récapitulatif ne se replie pas > ⚠ cliquer le LIBELLÉ d'une étape répondue vaut « Modifier », comme sa pastille
+      ↳ AssertionError: expected 'Un style, des équipements ?' to be 'Combien d\'invités ?' // Object.is equality
+[AssertionError] FAIL  src/components/filter-wizard.test.tsx > Le récapitulatif ne se replie pas > ⚠ la pastille et le libellé sont UN seul bouton ; le libellé d'une étape sans réponse n'est dans aucun bouton (on ne saute pas une étape incomplète)
+      ↳ AssertionError: expected null not to be null

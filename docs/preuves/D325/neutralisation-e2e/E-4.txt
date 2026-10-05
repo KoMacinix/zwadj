@@ -1,0 +1,29 @@
+# E-4 — un jour BLOQUÉ de week-end reprend la teinte du week-end (le statut ne l'emporte plus)
+# fichier : apps/pro/src/theme.css · ancre 1→0 · marqueur 0→1 · genre substitution · test joué : « le calendrier du parcours (point 7) »
+# restauration prouvée par l'empreinte : OUI · code de sortie e2e : 1
+# 312 lignes examinées, dont 171 lignes de serveur écartées (attendu > 0), 24 gardées — extrait COPIÉ tel quel, ANSI retirés
+
+  x  1 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:277:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair (4.0s)
+  1) [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:277:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+
+    Error: un vendredi bloqué s'affiche de la teinte du week-end
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(230, 227, 225)"
+    Received: "rgb(249, 248, 247)"
+
+      311 |   const bloque = await mesure(jourBloque);
+      312 |   // W-a : le STATUT l'emporte — le fond est celui du « bloqué », pas la teinte du week-end.
+    > 313 |   expect(bloque.fond, "un vendredi bloqué s'affiche de la teinte du week-end").toBe(bloque.bloque);
+          |                                                                                ^
+      314 |   expect(bloque.fond).not.toBe(bloque.weekend);
+      315 |   // W-c : un hachurage, indépendant de la couleur.
+      316 |   expect(bloque.image).toContain("repeating-linear-gradient");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:313:80
+
+
+
+
+
+  1 failed

@@ -1,0 +1,29 @@
+# E-1 — l'espacement entre deux champs disparaît (`.wk-pair + .wk-pair`)
+# fichier : apps/pro/src/theme.css · ancre 1→0 · marqueur 0→1 · genre substitution · test joué : « le parcours de bout en bout »
+# restauration prouvée par l'empreinte : OUI · code de sortie e2e : 1
+# 308 lignes examinées, dont 167 lignes de serveur écartées (attendu > 0), 24 gardées — extrait COPIÉ tel quel, ANSI retirés
+
+  x  1 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:101:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » (4.1s)
+  1) [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:101:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » 
+
+    Error: le libellé touche le champ du dessus
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    0
+
+      161 |   const intervalleDuDessus = (await haut(libelleTel)) - (await bas(prenom));
+      162 |   const intervallePropre = (await haut(page.locator(".wk-field", { has: libelleTel }).locator(".phone-field"))) - (await bas(libelleTel));
+    > 163 |   expect(intervalleDuDessus, "le libellé touche le champ du dessus").toBeGreaterThanOrEqual(16);
+          |                                                                      ^
+      164 |   expect(intervalleDuDessus / intervallePropre, "le libellé est aussi près du champ du dessus que du sien").toBeGreaterThanOrEqual(2);
+      165 |
+      166 |   // ── Il reste le nombre d'invités : « Continuer » ne dit plus QUE lui.
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:163:70
+
+
+
+
+
+  1 failed

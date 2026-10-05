@@ -1,0 +1,9 @@
+# ROUGE LU — pro-account : @zwadj/pro · src/account/account-settings-page.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/pro/src/account/account-settings-page.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 2 failed | 29 passed (31)
+# échecs lus : 2 (AssertionError : 2 · autre : 0) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/account/account-settings-page.test.tsx > écran profil — les deux numéros du pro (D38) sont le champ de téléphone PARTAGÉ > les numéros enregistrés s'affichent en chiffres NATIONAUX, l'indicatif et le drapeau devant — chaque champ a les siens
+      ↳ AssertionError: expected '+213551234567' to be '551234567' // Object.is equality
+[AssertionError] FAIL  src/account/account-settings-page.test.tsx > écran profil — les deux numéros du pro (D38) sont le champ de téléphone PARTAGÉ > ⚠ des lettres, un dixième chiffre, un premier chiffre refusé : rien de tout cela n'entre dans l'un ni l'autre champ
+      ↳ AssertionError: expected '5ab12345678901' to match /^\d{9}$/

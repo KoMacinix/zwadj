@@ -1,0 +1,79 @@
+# EXTRAIT de essai-1.log — produit par docs/preuves/D325/e2e/extraire.py
+# 548 lignes examinées, 364 lignes de serveur écartées, 6 résultats, 2 blocs d'échec
+# Les lignes ci-dessous sont COPIÉES telles quelles (codes ANSI retirés) ; rien n'est reformulé.
+
+  ok 1 [warmup] › specs\warmup.setup.ts:54:5 › préchauffe les routes des deux applications (14.9s)
+  x  2 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:94:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » (9.6s)
+  ok 3 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:235:5 › « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit (4.4s)
+  ok 4 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:248:5 › un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche (4.7s)
+  ok 5 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:269:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair (2.1s)
+  x  6 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:327:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde (1.5s)
+  1) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:94:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » 
+
+    Error: seuls les chiffres passent, au plus neuf
+
+    Timed out 7000ms waiting for expect(locator).toHaveValue(expected)
+
+    Locator: getByLabel('Téléphone', { exact: true })
+    Expected string: "550000001"
+    Received string: "550000012"
+    Call log:
+      - seuls les chiffres passent, au plus neuf with timeout 7000ms
+      - waiting for getByLabel('Téléphone', { exact: true })
+        11 × locator resolved to <input type="tel" id="wk-_r_3_" value="550000012" inputmode="numeric" placeholder="5XX XX XX XX" autocomplete="tel-national" aria-describedby="wk-_r_3_-hint"/>
+           - unexpected value "550000012"
+
+
+      121 |   await tel.fill("");
+      122 |   await tel.pressSequentially("55a0000b01234");
+    > 123 |   await expect(tel, "seuls les chiffres passent, au plus neuf").toHaveValue(SALLE_CLIENT.chiffres);
+          |                                                                 ^
+      124 |   await expect(page.getByRole("alert")).toHaveCount(0);
+      125 |
+      126 |   // ── E-mail (point 3) : une adresse à moitié tapée est refusée par la règle du contrat ; vide, il ne retient rien.
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:123:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r32-nouvelle-reservation.e-dfdfd-a-réponse-«-Nouveau-devis-»-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r32-nouvelle-reservation.e-dfdfd-a-réponse-«-Nouveau-devis-»-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-dfdfd-a-réponse-«-Nouveau-devis-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:327:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+
+    Error: la page déborde à 360 px
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 0
+    Received:    58
+
+      342 |   // Aucun débordement horizontal à 360 px.
+      343 |   const debordement = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    > 344 |   expect(debordement, "la page déborde à 360 px").toBeLessThanOrEqual(0);
+          |                                                   ^
+      345 |
+      346 |   // « Précédent » est à DROITE de « Voir le devis » en arabe : la disposition se reflète.
+      347 |   await remplirClient(page, WA);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:344:51
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r32-nouvelle-reservation.e-9306b-e-son-champ-rien-ne-déborde-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r32-nouvelle-reservation.e-9306b-e-son-champ-rien-ne-déborde-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-9306b-e-son-champ-rien-ne-déborde-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+  4 passed (1.4m)

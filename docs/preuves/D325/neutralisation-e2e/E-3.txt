@@ -1,0 +1,36 @@
+# E-3 — la fenêtre de confirmation s'ouvre AVANT la réponse du serveur
+# fichier : apps/pro/src/dashboard/walkin-journey.tsx · ancre 1→1 · marqueur 0→1 · genre insertion · test joué : « le parcours de bout en bout »
+# restauration prouvée par l'empreinte : OUI · code de sortie e2e : 1
+# 321 lignes examinées, dont 173 lignes de serveur écartées (attendu > 0), 31 gardées — extrait COPIÉ tel quel, ANSI retirés
+
+  x  1 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:101:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » (14.8s)
+  1) [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:101:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » 
+
+    Error: la fenêtre s'est ouverte AVANT la réponse du serveur
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: getByRole('dialog')
+    Expected: 0
+    Received: 1
+    Call log:
+      - la fenêtre s'est ouverte AVANT la réponse du serveur with timeout 7000ms
+      - waiting for getByRole('dialog')
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      206 |   await page.getByRole("button", { name: W.standby, exact: true }).click();
+      207 |   await page.waitForTimeout(400);
+    > 208 |   await expect(page.getByRole("dialog"), "la fenêtre s'est ouverte AVANT la réponse du serveur").toHaveCount(0);
+          |                                                                                                  ^
+      209 |   await conversion;
+      210 |   const fenetre = page.getByRole("dialog", { name: W.doneTitleStandby });
+      211 |   await expect(fenetre).toBeVisible();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:208:98
+
+
+
+
+
+  1 failed

@@ -1,0 +1,273 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 8 bras · 0 manqué(s) (attendu 0)
+cibles : 66 déclarées · 18 jouées (unit) · 9 mesure(s) distincte(s) · 9 fichier(s) muté(s)
+  pré-vol client-account : code 0 · passés 10 · en échec 0
+  pré-vol client-booking : code 0 · passés 25 · en échec 0
+  pré-vol client-register : code 0 · passés 5 · en échec 0
+  pré-vol client-visit : code 0 · passés 5 · en échec 0
+  pré-vol pro-account : code 0 · passés 31 · en échec 0
+  pré-vol pro-app : code 0 · passés 18 · en échec 0
+  pré-vol pro-css : code 0 · passés 26 · en échec 0
+  pré-vol pro-edit : code 0 · passés 6 · en échec 0
+  pré-vol pro-journey : code 0 · passés 76 · en échec 0
+■ N-11. l'erreur d'un champ n'est plus une alerte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · ROUGE — passés 75 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le d
+         ↳ AssertionError: expected [] to deeply equal [ Array(1) ]
+■ N-12. le libellé d'un champ n'est plus LIÉ à son champ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · ROUGE — passés 8 · en échec 68
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > chaque champ client porte un LABEL visible — quatre cases nues ne se distinguent pas
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > le fil de progression NOMME l'étape courante pour un lecteur d'écran
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Récapitulatif — des réponses, JAMAIS des montants > fige la réponse validée en ligne de récapitulatif
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Récapitulatif — des réponses, JAMAIS des montants > ⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Récapitulatif — des réponses, JAMAIS des montants > n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > « Modifier » ramène à l'étape, sans rien effacer
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > « Annuler » remet tout à zéro et ramène à la première question
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Date et créneau sont DEUX écrans > l'étape date montre la grille du mois, jamais les créneaux
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Date et créneau sont DEUX écrans > ⚠ l'étape créneau montre les créneaux, PAS la grille du mois
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > La date vient du calendrier réel > une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Le focus suit la question (R2d, désormais structurel) > emmène le focus sur la carte de l'étape à chaque transition
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Le focus suit la question (R2d, désormais structurel) > fait aussi défiler, en une seule fois
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > les quatre canaux sont RENDUS et ACTIFS une fois le devis calculé
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > le catalogue affiché est celui de la SALLE — aucune prestation inventée
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > ⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133)
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > ⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > le bouton « Modifier » est le composant partagé, identique au client
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > ⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > la coche du rail est une icône, la même que côté client
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > l'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape 
+         ↳ TestingLibraryElementError: Found a label with the text of: Téléphone, however no form control was found associated to that label. Make sure you're us
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > seuls les chiffres passent, au plus la longueur du modèle
+         ↳ TestingLibraryElementError: Found a label with the text of: Téléphone, however no form control was found associated to that label. Make sure you're us
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloq
+         ↳ TestingLibraryElementError: Found a label with the text of: Téléphone, however no form control was found associated to that label. Make sure you're us
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la co
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le d
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > le français accentué, les noms composés, l'apostrophe et L'ARABE passent — 
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction
+         ↳ TestingLibraryElementError: Found a label with the text of: E-mail (facultatif), however no form control was found associated to that label. Make sure
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison
+         ↳ TestingLibraryElementError: Found a label with the text of: E-mail (facultatif), however no form control was found associated to that label. Make sure
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > ⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mai
+         ↳ TestingLibraryElementError: Found a label with the text of: Téléphone, however no form control was found associated to that label. Make sure you're us
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle
+         ↳ TestingLibraryElementError: Found a label with the text of: Téléphone, however no form control was found associated to that label. Make sure you're us
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout répondu : plus de liste, plus de description, le bouton s'active
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Libellés liés aux champs — en arabe aussi > ⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé
+         ↳ TestingLibraryElementError: Found a label with the text of: الاسم, however no form control was found associated to that label. Make sure you're using 
+      FAIL  src/dashboard/walkin-journey.test.tsx > Libellés liés aux champs — en arabe aussi > ⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent j
+         ↳ AssertionError: fr: expected null to be truthy
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effac
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ le libellé et la pastille sont UN seul bouton — deux command
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ on ne saute PAS une étape incomplète : le libellé d'une étap
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > l'étape COURANTE n'est pas cliquable non plus : « Modifier » n
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien ef
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » 
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur :
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi,
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregis
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et l
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, av
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : l
+         ↳ TestingLibraryElementError: Found a label with the text of: Prénom, however no form control was found associated to that label. Make sure you're using
+■ U-2. un champ fautif d'une autre étape ne dit plus rien : « Enregistrer » se tait
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-edit] code 1 · ROUGE — passés 5 · en échec 1
+      FAIL  src/venues/edit-venue-save.test.tsx > Point 14 — « Enregistrer » à la dernière étape dit TOUJOURS ce qu'il a fait > U-b : un champ fautif d'une AUTRE étape (ici le prix, à l'étape 1) — l'étape 7
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ S-6. le jour bloqué n'est plus HACHURÉ (plus aucun dégradé)
+   ancre 1→0 · marqueur 15→16 · genre substitution
+   [pro-css] code 1 · ROUGE — passés 24 · en échec 2
+      FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > un hachurage en diagonale sur le jour bloqué, sur sa pastille de légende, et sur le jour bl
+         ↳ AssertionError: expected undefined to be defined
+      FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > aucun autre état n'est hachuré : un hachurage partout ne distinguerait plus rien
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+■ S-7. le trait du hachurage devient presque OPAQUE (clair) : le chiffre du jour n'est plus lisible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · ROUGE — passés 20 · en échec 6
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « available »
+         ↳ AssertionError: expected 1.3275184397123532 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « requested »
+         ↳ AssertionError: expected 1.3086082908052434 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « booked »
+         ↳ AssertionError: expected 1.2802674879987053 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « blocked »
+         ↳ AssertionError: expected 1.2763644491925494 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « weekend »
+         ↳ AssertionError: expected 1.312741228423369 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > le hachurage est un TRAIT, pas un remplissage : le jeton est translucide
+         ↳ AssertionError: expected 0.9 to be less than 0.5
+■ S-8. le trait du hachurage devient presque OPAQUE (sombre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · ROUGE — passés 20 · en échec 6
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « available »
+         ↳ AssertionError: expected 1.214921604340251 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « requested »
+         ↳ AssertionError: expected 1.1918680926312526 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « booked »
+         ↳ AssertionError: expected 1.2007473897691778 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « blocked »
+         ↳ AssertionError: expected 1.2033106178769228 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « weekend »
+         ↳ AssertionError: expected 1.2033106178769228 to be greater than or equal to 4.5
+      FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > le hachurage est un TRAIT, pas un remplissage : le jeton est translucide
+         ↳ AssertionError: expected 0.9 to be less than 0.5
+■ S-9. le week-end perd sa bordure en TIRETS (le signe qui ne dépend pas de la couleur)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · ROUGE — passés 25 · en échec 1
+      FAIL  src/venues/calendar-style.test.ts > W-b — le week-end a un fond PLUS CLAIR que celui qu'il avait > le week-end reste DISTINGUABLE sans la couleur : sa bordure en tirets est conservée
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+■ S-10. ⛔ UN JETON ABSENT D'UN THÈME : en sombre, `--cal-hatch` ne vient plus de `--dark-cal-hatch` (D129)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · ROUGE — passés 25 · en échec 1
+      FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > le jeton `--cal-hatch` existe dans les DEUX thèmes (un jeton absent d'un thème retombe sur 
+         ↳ AssertionError: expected '--accent: var(--dark-pro-accent);\r\n…' to match /--cal-hatch:\s*var\(--dark-cal-hatch\)/
+■ Q-1. ⚠ RÈGLE DES MONTANTS — la demande du client part avec un téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-booking] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps
+         ↳ AssertionError: expected '550000001' to be '+213550000001' // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part 
+         ↳ AssertionError: expected '550000001' to be '+213550000001' // Object.is equality
+■ Q-2. la demande du client s'envoie avec un numéro INCOMPLET
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-booking] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suf
+         ↳ Error: expect(element).toBeDisabled()
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec
+         ↳ Error: expect(element).toBeDisabled()
+■ Q-3. le rendez-vous de visite se confirme avec un numéro INCOMPLET
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-visit] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/components/venue/visit-booking-panel.test.tsx > VisitBookingPanel — le téléphone (facultatif) est le champ partagé (rang 32) > ⚠ un numéro COMMENCÉ doit être complet : incomplet, « Confirmer
+         ↳ Error: expect(element).toBeDisabled()
+■ Q-4. le rendez-vous de visite envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-visit] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/components/venue/visit-booking-panel.test.tsx > VisitBookingPanel — le téléphone (facultatif) est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale
+         ↳ AssertionError: expected '550000001' to be '+213550000001' // Object.is equality
+■ Q-5. l'inscription du client envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-register] code 0 · VERT — passés 5 · en échec 0
+■ Q-6. le compte client n'affiche plus les chiffres NATIONAUX d'un numéro enregistré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-account] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/components/account/account-settings-view.test.tsx > profil CLIENT — le téléphone (facultatif) est le champ partagé : mobile seulement > un numéro enregistré s'affiche en chiffres NATIONAUX, 
+         ↳ AssertionError: expected '+213770000001' to be '770000001' // Object.is equality
+■ Q-7. le compte client enregistre le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-account] code 0 · VERT — passés 10 · en échec 0
+■ Q-8. le compte pro enregistre son téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-account] code 0 · VERT — passés 31 · en échec 0
+■ Q-9. le compte pro n'affiche plus les chiffres NATIONAUX d'un numéro enregistré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-account] code 1 · ROUGE — passés 26 · en échec 5
+      FAIL  src/account/account-settings-page.test.tsx > écran profil > second téléphone vidé ⇒ null EXPLICITE (effacement D38), pas une chaîne vide
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { …(5) } ]
+      FAIL  src/account/account-settings-page.test.tsx > Canaux de notification — D60 > les canaux partent avec le profil, jamais dans un appel séparé
+         ↳ AssertionError: expected "spy" to be called with arguments: [ ObjectContaining{…} ]
+      FAIL  src/account/account-settings-page.test.tsx > écran profil — les deux numéros du pro (D38) sont le champ de téléphone PARTAGÉ > les numéros enregistrés s'affichent en chiffres NATIONAUX, l'indica
+         ↳ AssertionError: expected '+213551234567' to be '551234567' // Object.is equality
+      FAIL  src/account/account-settings-page.test.tsx > écran profil — les deux numéros du pro (D38) sont le champ de téléphone PARTAGÉ > ⚠ des lettres, un dixième chiffre, un premier chiffre refusé : rien
+         ↳ TestingLibraryElementError: Found multiple elements with the role "alert"
+      FAIL  src/account/account-settings-page.test.tsx > écran profil — les deux numéros du pro (D38) sont le champ de téléphone PARTAGÉ > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : l'indicatif puis les chiffres s
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { …(5) } ]
+■ Q-10. l'inscription du pro envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-app] code 0 · VERT — passés 18 · en échec 0
+  empreintes : 16 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 18 cible(s) jouée(s) sur 66, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

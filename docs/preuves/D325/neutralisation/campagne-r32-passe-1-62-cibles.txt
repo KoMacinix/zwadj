@@ -1,0 +1,221 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 8 bras · 0 manqué(s) (attendu 0)
+cibles : 62 déclarées · 62 jouées (unit) · 13 mesure(s) distincte(s) · 14 fichier(s) muté(s)
+  pré-vol client-account : code 0 · passés 10 · en échec 0
+  pré-vol client-booking : code 0 · passés 25 · en échec 0
+  pré-vol client-champ : code 0 · passés 4 · en échec 0
+  pré-vol client-visit : code 0 · passés 5 · en échec 0
+  pré-vol client-wizard : code 0 · passés 27 · en échec 0
+  pré-vol pro-account : code 0 · passés 31 · en échec 0
+  pré-vol pro-champ : code 0 · passés 17 · en échec 0
+  pré-vol pro-contact : code 0 · passés 14 · en échec 0
+  pré-vol pro-css : code 0 · passés 26 · en échec 0
+  pré-vol pro-edit : code 0 · passés 6 · en échec 0
+  pré-vol pro-journey : code 0 · passés 76 · en échec 0
+  pré-vol types-contact : code 0 · passés 38 · en échec 0
+  pré-vol types-phone : code 0 · passés 55 · en échec 0
+✓ T-1. la saisie n'est reconnue en COLLAGE que si plusieurs chiffres arrivent d'un coup : ici la règle est INVERSÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 44 · en échec 11 · AssertionError: expected '0' to be '555123456' // Object.is equality
+✓ T-2. le champ accepte UN chiffre de trop (dix au lieu de neuf)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 53 · en échec 2 · AssertionError: expected '5555555555' to be '555555555' // Object.is equality
+✓ T-3. les lettres passent dans le champ (plus de « chiffres seuls »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 49 · en échec 6 · AssertionError: expected '5a5-5 5!5' to be '55555' // Object.is equality
+✓ T-4. tout premier chiffre est admis (la règle 5, 6 ou 7 disparaît de la saisie)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 51 · en échec 4 · AssertionError: premier chiffre 0: expected { digits: '0', …(1) } to deeply equal { digits: '0', …(1) }
+✓ T-5. un premier chiffre refusé n'est plus ramené à lui SEUL : le collage « 0123456789 » garde ses neuf chiffres
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 54 · en échec 1 · AssertionError: expected { digits: '123456789', …(1) } to deeply equal { digits: '1', …(1) }
+✓ T-6. la valeur ENVOYÉE n'a plus d'indicatif : les chiffres nationaux partent seuls
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 53 · en échec 2 · AssertionError: expected '555123456' to be '+213555123456' // Object.is equality
+✓ T-7. un numéro est « complet » sans que son premier chiffre soit contrôlé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 52 · en échec 3 · AssertionError: expected '+213455123456' to be null
+✓ T-8. un collage n'est JAMAIS reconnu : « +213 555… » reste tel quel
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 47 · en échec 8 · AssertionError: expected '0' to be '555123456' // Object.is equality
+✓ C-1. un nom accepte les CHIFFRES
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 34 · en échec 4 · AssertionError: expected true to be false // Object.is equality
+✓ C-2. un nom peut COMMENCER par un tiret ou une apostrophe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 32 · en échec 6 · AssertionError: expected true to be false // Object.is equality
+✓ C-3. un nom perd ses marques combinantes : voyelles brèves de l'arabe, accent décomposé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 36 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ C-4. le schéma d'un nom ne regarde plus son motif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 34 · en échec 4 · AssertionError: réservation « Amina123 »: expected true to be false // Object.is equality
+✓ C-5. un nom VIDE est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 36 · en échec 2 · AssertionError: expected true to deeply equal [ Array(1) ]
+✓ C-6. le plafond du nom saute (80 → 1080)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 37 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ C-7. l'e-mail n'est plus contrôlé par `.email()`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 37 · en échec 1 · AssertionError: expected true to deeply equal [ 'i' ]
+✓ B-1. la route de réservation reprend sa règle de nom LÂCHE (« non vide » tient lieu de « valide »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 34 · en échec 4 · AssertionError: réservation « Amina123 »: expected true to be false // Object.is equality
+✓ B-2. la route du devis reprend sa règle de nom LÂCHE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 35 · en échec 3 · AssertionError: conversion « Amina123 »: expected true to be false // Object.is equality
+✓ B-3. la route du devis n'applique plus la règle d'e-mail du contrat
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 37 · en échec 1 · AssertionError: conversion « amina@ »: expected true to be false // Object.is equality
+✓ W-1. le premier chiffre refusé ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 13 · en échec 1 · AssertionError: expected [ 'needPhoneIncomplete' ] to deeply equal [ 'needPhoneLeading' ]
+✓ W-2. un numéro INCOMPLET ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 13 · en échec 1 · AssertionError: expected [] to deeply equal [ 'needPhoneIncomplete' ]
+✓ W-3. un e-mail invalide ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 13 · en échec 1 · AssertionError: expected [] to deeply equal [ 'needEmailValid' ]
+✓ W-4. le nombre d'invités ne retient plus l'étape Client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 12 · en échec 2 · AssertionError: expected [] to deeply equal [ 'needGuests' ]
+✓ W-5. ⚠ RÈGLE DES MONTANTS — le téléphone ENVOYÉ n'a plus son indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 12 · en échec 2 · AssertionError: expected { contactFirstName: 'Amine', …(2) } to deeply equal { contactFirstName: 'Amine', …(2) }
+✓ W-6. un e-mail VIDE part quand même (la clé n'est plus omise : `.email()` refuserait la chaîne vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 12 · en échec 2 · AssertionError: expected { contactFirstName: 'Amine', …(3) } to deeply equal { contactFirstName: 'Amine', …(2) }
+✓ W-7. les noms ENVOYÉS ne sont plus rognés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 13 · en échec 1 · AssertionError: expected { contactFirstName: '  Amine ', …(2) } to deeply equal { contactFirstName: 'Amine', …(2) }
+✓ P-1. le champ ne passe plus par la règle de saisie : il remonte ce que le navigateur lui donne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 14 · en échec 3 · AssertionError: expected '5a5b5-5 5!5 5 5 5 5 5' to be '555555555' // Object.is equality
+   [client-champ] code 1 · passés 2 · en échec 2 · AssertionError: expected '5a5b5-5 5!5 5 5 5 5 5' to be '555555555' // Object.is equality
+✓ P-2. la boîte n'est plus LTR : en arabe le drapeau passerait à droite des chiffres
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected null to be 'ltr' // Object.is equality
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: expected null to be 'ltr' // Object.is equality
+✓ P-3. le message du premier chiffre n'est plus une ALERTE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected [] to deeply equal [ Array(1) ]
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected [] to deeply equal [ Array(1) ]
+✓ P-4. le champ ne se déclare plus invalide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected null to be 'true' // Object.is equality
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected null to be 'true' // Object.is equality
+✓ P-5. le premier chiffre n'est plus jamais refusé par le champ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 15 · en échec 2 · AssertionError: expected null to be truthy
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected [] to deeply equal [ Array(1) ]
+✓ P-6. le nom accessible du drapeau perd l'indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected [] to have a length of 1 but got +0
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected [] to have a length of 1 but got +0
+✓ R-1. le rail ne réagit plus au clic : le bouton existe, il ne fait rien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 74 · en échec 2 · AssertionError: expected 'Quel créneau ?' to be 'Qui est le client ?' // Object.is equality
+   [client-wizard] code 1 · passés 25 · en échec 2 · AssertionError: expected 'Un style, des équipements ?' to be 'Combien d\'invités ?' // Object.is equality
+✓ N-1. « Continuer » ne dit plus POURQUOI il est grisé : la liste des raisons est vide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 68 · en échec 8 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ N-2. la liste des raisons n'est plus LIÉE au bouton (`aria-describedby`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 70 · en échec 6 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ N-3. ⚠ RÈGLE DES MONTANTS — la conversion du devis envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 75 · en échec 1 · AssertionError: expected '550000002' to be '+213550000002' // Object.is equality
+✓ N-4. la fenêtre de confirmation s'ouvre AVANT la réponse du serveur
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-journey] code 1 · passés 73 · en échec 3 · AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ N-5. « Précédent » reste proposé une fois l'affaire conclue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 75 · en échec 1 · AssertionError: expected <button type="button" …(1)></button> to be null
+✓ N-6. « Précédent » mène à l'étape SUIVANTE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 73 · en échec 3 · AssertionError: expected 'Quel créneau ?' to be 'Qui est le client ?' // Object.is equality
+✓ N-7. la fenêtre de confirmation ne se ferme plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 75 · en échec 1 · AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ N-8. ⛔ LE DÉFAUT RESTAURÉ — l'identifiant d'un champ ne garde que les lettres LATINES du libellé : en arabe, quatre champs, un seul `id`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 74 · en échec 2 · AssertionError: expected 1 to be 4 // Object.is equality
+✓ N-9. l'exemple du prénom disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 75 · en échec 1 · AssertionError: prénom: expected '' to be 'Ex. : Amina' // Object.is equality
+✓ N-10. l'exemple du téléphone disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 74 · en échec 2 · AssertionError: téléphone: expected '' to be '5XX XX XX XX' // Object.is equality
+✓ N-11. l'erreur d'un champ n'est plus une alerte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 75 · en échec 1 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ N-12. le libellé d'un champ n'est plus LIÉ à son champ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 8 · en échec 68 · AssertionError: fr: expected null to be truthy
+✓ U-1. ⛔ UN DIFF VIDE DIT « ENREGISTRÉ » alors qu'aucune requête n'est partie
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-edit] code 1 · passés 4 · en échec 2 · AssertionError: expected 'Modifications enregistrées.' not to be 'Modifications enregistrées.' // Object.is equality
+✓ U-2. un champ fautif d'une autre étape ne dit plus rien : « Enregistrer » se tait
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-edit] code 1 · passés 5 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ S-1. le week-end reprend l'ancienne teinte, plus FONCÉE (clair)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 0.8660682269472966 to be greater than 0.8660682269472966
+✓ S-2. le week-end n'est plus plus clair que l'ancien fond (sombre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 0.015070206860170158 to be greater than 0.015070206860170158
+✓ S-3. un jour RÉSERVÉ de week-end reprend la teinte du week-end
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 'background: var(--cal-weekend);' to match /background:\s*var\(--cal-booked\)/
+✓ S-4. un jour DEMANDÉ de week-end reprend la teinte du week-end
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 'background: var(--cal-weekend);' to match /background:\s*var\(--cal-requested\)/
+✓ S-5. un jour BLOQUÉ de week-end reprend la teinte du week-end
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 'background: var(--cal-weekend);' to match /background:\s*var\(--cal-blocked\)/
+✓ S-6. le jour bloqué n'est plus HACHURÉ (plus aucun dégradé)
+   ancre 1→0 · marqueur 15→16 · genre substitution
+   [pro-css] code 1 · passés 24 · en échec 2 · AssertionError: expected undefined to be defined
+✓ S-7. le trait du hachurage devient presque OPAQUE (clair) : le chiffre du jour n'est plus lisible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 20 · en échec 6 · AssertionError: expected 1.3275184397123532 to be greater than or equal to 4.5
+✓ S-8. le trait du hachurage devient presque OPAQUE (sombre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 20 · en échec 6 · AssertionError: expected 1.214921604340251 to be greater than or equal to 4.5
+✓ S-9. le week-end perd sa bordure en TIRETS (le signe qui ne dépend pas de la couleur)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected [] to have a length of 1 but got +0
+✓ S-10. ⛔ UN JETON ABSENT D'UN THÈME : en sombre, `--cal-hatch` ne vient plus de `--dark-cal-hatch` (D129)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected '--accent: var(--dark-pro-accent);\r\n…' to match /--cal-hatch:\s*var\(--dark-cal-hatch\)/
+✓ Q-1. ⚠ RÈGLE DES MONTANTS — la demande du client part avec un téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-booking] code 1 · passés 23 · en échec 2 · AssertionError: expected '550000001' to be '+213550000001' // Object.is equality
+✓ Q-2. la demande du client s'envoie avec un numéro INCOMPLET
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-booking] code 1 · passés 23 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ Q-3. le rendez-vous de visite se confirme avec un numéro INCOMPLET
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-visit] code 1 · passés 4 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ Q-4. le rendez-vous de visite envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-visit] code 1 · passés 4 · en échec 1 · AssertionError: expected '550000001' to be '+213550000001' // Object.is equality
+✓ Q-6. le compte client n'affiche plus les chiffres NATIONAUX d'un numéro enregistré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-account] code 1 · passés 9 · en échec 1 · AssertionError: expected '+213770000001' to be '770000001' // Object.is equality
+✓ Q-9. le compte pro n'affiche plus les chiffres NATIONAUX d'un numéro enregistré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-account] code 1 · passés 26 · en échec 5 · AssertionError: expected '+213551234567' to be '551234567' // Object.is equality
+  empreintes : 14 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+62 garde(s) mordue(s) sur 62 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 62 sur 62)
+arbre rendu à son état de départ : vérifié.
+exit=0

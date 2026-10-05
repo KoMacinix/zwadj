@@ -1,0 +1,77 @@
+# ROUGE LU — api-contact-serveur : @zwadj/api · src/common/contact.spec.ts
+# sources de HEAD (16 fichiers), tests NEUFS du lot, i18n et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 36 failed | 2 passed (38)
+# échecs lus : 36 (AssertionError : 3 · autre : 33) — « autre » = TypeError, import, attente non aboutie : PAS une assertion
+
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Amine » — un prénom simple
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Belkacem » — un nom simple
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Éloïse » — français accentué
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Éloïse » — les mêmes accents, DÉCOMPOSÉS (lettre + marque combinante)
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Jean-Pierre » — composé, avec un tiret
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « O'Brien » — apostrophe droite
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « N’Diaye » — apostrophe typographique
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Marie Claire » — deux mots séparés par une espace
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « أمينة » — arabe
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « بن علي » — arabe, deux mots
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « أَمِينَة » — arabe avec voyelles brèves (marques combinantes)
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Ben Aïssa-El Hadj » — français, composé, accentué
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > les espaces autour sont ignorés : le schéma rogne avant de juger
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine1 » — un chiffre à la fin
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « 4mine » — un chiffre au début
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « 12 » — des chiffres seuls
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « ٣٤٥ » — des chiffres ARABES-INDIENS : ce sont des chiffres
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « A@B » — un arobase
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Ben_Ali » — un tiret bas
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Jean.Pierre » — un point
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine! » — un point d'exclamation
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine<script> » — une balise
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « -Jean » — commence par un tiret
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « 'Jean » — commence par une apostrophe
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «  - » — un tiret seul
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «  » — chaîne vide
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «     » — des espaces seulement
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine 😀 » — un émoji
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[autre] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`isValidPersonName`)
+      ↳ TypeError: (0 , isValidPersonName) is not a function
+[AssertionError] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le NOM de famille suit la même règle que le PRÉNOM, sur les deux routes
+      ↳ AssertionError: expected true to be false // Object.is equality
+[AssertionError] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le refus porte une CLÉ de catalogue propre à sa route — `booking.validation.contactInvalid`, `quote.validation.nameInvalid`
+      ↳ AssertionError: expected true to deeply equal [ 'booking.validation.contactInvalid' ]
+[AssertionError] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le plafond reste celui des deux routes d'avant : 80 caractères, bornes incluses
+      ↳ AssertionError: expected undefined to be 80 // Object.is equality
+[autre] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > `personNameSchema` : la fabrique rend la règle avec LES messages de l'appelant
+      ↳ TypeError: (0 , personNameSchema) is not a function
+[autre] FAIL  src/common/contact.spec.ts > l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > l'écran (`isValidContactEmail`), la réservation et la conversion rendent le MÊME verdict, sur douze adresses
+      ↳ TypeError: (0 , isValidContactEmail) is not a function
+[autre] FAIL  src/common/contact.spec.ts > l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > le verdict n'est pas toujours « oui » ni toujours « non » : la comparaison ci-dessus discrimine
+      ↳ TypeError: undefined is not a function
+[autre] FAIL  src/common/contact.spec.ts > l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > `contactEmailSchema` : la fabrique rend la règle avec LES messages de l'appelant, 180 caractères au plus
+      ↳ TypeError: (0 , contactEmailSchema) is not a function

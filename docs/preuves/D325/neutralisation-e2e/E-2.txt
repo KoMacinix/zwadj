@@ -1,0 +1,34 @@
+# E-2 — la boîte du téléphone n'est plus LTR : en arabe, le drapeau passe à droite des chiffres
+# fichier : packages/ui/src/phone-field.tsx · ancre 1→0 · marqueur 0→1 · genre substitution · test joué : « en ARABE, à 360 px »
+# restauration prouvée par l'empreinte : OUI · code de sortie e2e : 1
+# 313 lignes examinées, dont 167 lignes de serveur écartées (attendu > 0), 29 gardées — extrait COPIÉ tel quel, ANSI retirés
+
+  x  1 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:335:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde (9.6s)
+  1) [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:335:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: locator('.phone-field').first()
+    Expected string: "ltr"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for locator('.phone-field').first()
+        11 × locator resolved to <div class="input-affix phone-field">…</div>
+           - unexpected value "null"
+
+
+      358 |   // Le numéro se lit de gauche à droite : le drapeau est à GAUCHE des chiffres, même dans une page arabe.
+      359 |   const boite = page.locator(".phone-field").first();
+    > 360 |   await expect(boite).toHaveAttribute("dir", "ltr");
+          |                       ^
+      361 |   const drapeau = (await boite.locator("svg").boundingBox()) as { x: number };
+      362 |   const chiffres = (await boite.locator("input").boundingBox()) as { x: number };
+      363 |   expect(drapeau.x).toBeLessThan(chiffres.x);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:360:23
+
+
+
+
+
+  1 failed

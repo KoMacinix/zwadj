@@ -1,0 +1,94 @@
+# EXTRAIT de porte-e2e-3.log — produit par docs/preuves/D325/e2e/extraire.py
+# 1295 lignes examinées, 1083 lignes de serveur écartées, 44 résultats, 1 blocs d'échec
+# Les lignes ci-dessous sont COPIÉES telles quelles (codes ANSI retirés) ; rien n'est reformulé.
+
+  ok 1 [warmup] › specs\warmup.setup.ts:54:5 › préchauffe les routes des deux applications (24.8s)
+  ok 3 [chromium] › specs\a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token) (2.7s)
+  ok 2 [chromium] › specs\a1-session-bootstrap.e2e.ts:27:7 › A1 — bootstrap de session › Pro : rechargement direct d'une route protégée = UN SEUL POST /auth/refresh (2.9s)
+  ok 4 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas (3.8s)
+  ok 5 [chromium] › specs\a1-session-bootstrap.e2e.ts:43:7 › A1 — bootstrap de session › Client : rechargement d'une page publique déclenche aussi UN SEUL refresh (3.9s)
+  ok 6 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities (4.0s)
+  ok 7 [chromium] › specs\a1-session-bootstrap.e2e.ts:60:7 › A1 — bootstrap de session › deux onglets rechargés quasi simultanément : AUCUN ne perd la session (4.7s)
+  ok 8 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles (3.9s)
+  ok 9 [chromium] › specs\a1-session-bootstrap.e2e.ts:96:7 › A1 — bootstrap de session › cookie refresh invalide : redirection propre vers la connexion, SANS boucle (4.1s)
+  ok 10 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings (2.8s)
+  ok 11 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › tableau de bord : même empreinte d'appels par les deux chemins (4.8s)
+  ok 12 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings (3.1s)
+  ok 14 [chromium] › specs\a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session (3.6s)
+  ok 13 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mes salles : même empreinte d'appels par les deux chemins (4.9s)
+  ok 16 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mon compte : même empreinte d'appels par les deux chemins (4.6s)
+  ok 15 [chromium] › specs\a2-mount-effects.e2e.ts:161:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée (7.1s)
+  ok 18 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-light : les tokens résolus n'ont pas bougé (2.3s)
+  ok 17 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › nouvelle salle : même empreinte d'appels par les deux chemins (4.4s)
+  ok 19 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-dark : les tokens résolus n'ont pas bougé (2.3s)
+  -  20 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:175:7 › A5 — parité navigation interne / rechargement › le calendrier d'une salle survit au rechargement (deux effets enchaînés)
+  ok 21 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-light : les tokens résolus n'ont pas bougé (1.7s)
+  ok 23 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-dark : les tokens résolus n'ont pas bougé (1.6s)
+  ok 24 [chromium] › specs\b7-token-contract.e2e.ts:250:7 › B7 — contrat des tokens résolus (D124) › un token partagé a la MÊME valeur dans les deux apps, au même thème (9ms)
+  ok 22 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (clair) : aucune NOUVELLE violation (5.2s)
+  ok 26 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (sombre) : aucune NOUVELLE violation (3.9s)
+  ok 27 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (arabe, RTL) : aucune NOUVELLE violation (3.6s)
+  ok 25 [chromium] › specs\r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation (7.2s)
+  ok 28 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation (5.2s)
+  ok 30 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client compte : aucune NOUVELLE violation (6.9s)
+  ok 31 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (clair) : aucune NOUVELLE violation (2.9s)
+  ok 32 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (sombre) : aucune NOUVELLE violation (2.9s)
+  x  29 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › fr — « Se connecter pour demander » mène à la page de connexion réelle (9.5s)
+  ok 33 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro liste des salles : aucune NOUVELLE violation (3.1s)
+  ok 35 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro tableau de bord : aucune NOUVELLE violation (2.9s)
+  ok 36 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro nouvelle salle : aucune NOUVELLE violation (3.4s)
+  ok 37 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro compte : aucune NOUVELLE violation (3.5s)
+  ok 38 [chromium] › specs\b8-accessibility.e2e.ts:204:7 › B8 — accessibilité automatisée (D125) › écrit la référence si demandé, et refuse de la deviner sinon (7ms)
+  ok 39 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur (3.2s)
+  ok 34 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › ar — « سجّل الدخول لإرسال طلب » mène à la page de connexion réelle (9.6s)
+  ok 40 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › client — avec une demande : la section l'affiche en attente (2.4s)
+  ok 42 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur (1.4s)
+  ok 43 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › pro — avec une demande : la section l'affiche en attente (1.5s)
+  ok 41 [chromium] › specs\r26-parcours-reservation.e2e.ts:108:5 › le pro ACCEPTE : la demande quitte ses demandes pour ses réservations, et le client la voit acceptée (13.4s)
+  ok 44 [chromium] › specs\r26-parcours-reservation.e2e.ts:129:5 › le pro REFUSE : la demande reste dans ses demandes, refusée, et le client voit le refus (11.1s)
+  1) [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › fr — « Se connecter pour demander » mène à la page de connexion réelle 
+
+    Error: le lien du panneau ne mène pas à la page de connexion
+
+    Timed out 7000ms waiting for expect(locator).toHaveURL(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /\/fr\/auth\/connexion$/
+    Received string:  "http://localhost:3100/fr/salles/salle-e2e-c07ed95d"
+    Call log:
+      - le lien du panneau ne mène pas à la page de connexion with timeout 7000ms
+      - waiting for locator(':root')
+        10 × locator resolved to <html lang="fr" dir="ltr">…</html>
+           - unexpected value "http://localhost:3100/fr/salles/salle-e2e-c07ed95d"
+
+
+      35 |     await lien.click();
+      36 |
+    > 37 |     await expect(page, "le lien du panneau ne mène pas à la page de connexion").toHaveURL(
+         |                                                                                 ^
+      38 |       new RegExp(`/${locale}/auth/connexion$`)
+      39 |     );
+      40 |     await expect(page.getByRole("heading", { level: 1 })).toHaveText(m.auth.ui.login.title);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r25-lien-connexion.e2e.ts:37:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r25-lien-connexion.e2e.ts--2c82b-la-page-de-connexion-réelle-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r25-lien-connexion.e2e.ts--2c82b-la-page-de-connexion-réelle-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r25-lien-connexion.e2e.ts--2c82b-la-page-de-connexion-réelle-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [chromium] › specs\b8-accessibility.e2e.ts (43.4s)
+  Slow test file: [chromium] › specs\a2-mount-effects.e2e.ts (31.2s)
+  Slow test file: [warmup] › specs\warmup.setup.ts (24.8s)
+  Slow test file: [chromium] › specs\r26-parcours-reservation.e2e.ts (24.6s)
+  Slow test file: [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts (20.7s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  1 failed
+  1 skipped
+  42 passed (3.1m)

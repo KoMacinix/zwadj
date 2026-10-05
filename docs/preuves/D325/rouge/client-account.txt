@@ -1,0 +1,9 @@
+# ROUGE LU — client-account : @zwadj/client · src/components/account/account-settings-view.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/client/src/components/account/account-settings-view.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 2 failed | 8 passed (10)
+# échecs lus : 2 (AssertionError : 2 · autre : 0) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/components/account/account-settings-view.test.tsx > profil CLIENT — le téléphone (facultatif) est le champ partagé : mobile seulement > un numéro enregistré s'affiche en chiffres NATIONAUX, l'indicatif et le drapeau devant
+      ↳ AssertionError: expected '+213770000001' to be '770000001' // Object.is equality
+[AssertionError] FAIL  src/components/account/account-settings-view.test.tsx > profil CLIENT — le téléphone (facultatif) est le champ partagé : mobile seulement > ⚠ un premier chiffre refusé reste SEUL avec son message — un fixe ne se tape pas
+      ↳ AssertionError: expected '0212' to be '0' // Object.is equality

@@ -1,0 +1,33 @@
+# RÉSUMÉ DES PORTES — rang 32 (D325) — produit par docs/preuves/D325/portes/extraire-portes.py ; les journaux bruts ne sont pas versés (journaux de serveur).
+
+## Codes et durées (relevés par la commande qui a lancé chaque porte)
+porte typecheck (finale) : code 0 · 37 s
+porte lint (finale) : code 0 · 18 s
+porte test (finale) : code 0 · 98 s
+porte build (finale) : code 0 · 74 s
+
+## typecheck : 22 lignes examinées · paquets lancés 8 · finis « Done » 8 · égaux : OUI (attendu OUI)
+   apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui
+
+## lint : 22 lignes examinées · paquets lancés 8 · finis « Done » 8 · égaux : OUI (attendu OUI)
+   apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui
+
+## build : 128 lignes examinées · paquets lancés 4 · finis « Done » 4 · égaux : OUI (attendu OUI)
+   apps/api, apps/client, apps/pro, packages/types
+
+## test : 1614 lignes examinées
+   [apps/api] Test Files  60 passed (60)
+   [apps/api] Tests  729 passed (729)
+   [packages/api-client] Test Files  4 passed (4)
+   [packages/api-client] Tests  39 passed (39)
+   [apps/client] Test Files  29 passed (29)
+   [apps/client] Tests  372 passed (372)
+   [apps/pro] Test Files  34 passed (34)
+   [apps/pro] Tests  457 passed (457)
+   lignes RUN 4 · « Test Files » 4 · « Tests » 4 · égaux : OUI (attendu OUI)
+
+## test:int : 436 lignes examinées
+   [apps/api] Test Files  36 passed (36)
+   [apps/api] Tests  444 passed (444)
+   lignes RUN 1 · « Test Files » 1 · « Tests » 1 · égaux : OUI (attendu OUI)
+

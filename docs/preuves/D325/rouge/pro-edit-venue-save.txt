@@ -1,0 +1,11 @@
+# ROUGE LU — pro-edit-venue-save : @zwadj/pro · src/venues/edit-venue-save.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/pro/src/venues/edit-venue-page.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 3 failed | 3 passed (6)
+# échecs lus : 3 (AssertionError : 1 · autre : 2) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[autre] FAIL  src/venues/edit-venue-save.test.tsx > Point 14 — « Enregistrer » à la dernière étape dit TOUJOURS ce qu'il a fait > U-a : sans rien de modifié, aucune requête ne part — et l'écran le DIT, au lieu de se taire
+      ↳ TestingLibraryElementError: Unable to find role="status"
+[autre] FAIL  src/venues/edit-venue-save.test.tsx > Point 14 — « Enregistrer » à la dernière étape dit TOUJOURS ce qu'il a fait > ⚠ U-c : le message d'un diff vide ne dit PAS « enregistré » — rien n'a été écrit, l'écran ne le suppose pas
+      ↳ TestingLibraryElementError: Unable to find role="status"
+[AssertionError] FAIL  src/venues/edit-venue-save.test.tsx > Point 14 — « Enregistrer » à la dernière étape dit TOUJOURS ce qu'il a fait > U-b : un champ fautif d'une AUTRE étape (ici le prix, à l'étape 1) — l'étape 7 le DIT, rien n'est envoyé
+      ↳ AssertionError: expected false to be true // Object.is equality

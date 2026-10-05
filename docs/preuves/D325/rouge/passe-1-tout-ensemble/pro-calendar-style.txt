@@ -1,0 +1,45 @@
+# ROUGE LU — pro-calendar-style : @zwadj/pro · src/venues/calendar-style.test.ts
+# sources de HEAD (16 fichiers), tests NEUFS du lot, i18n et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 20 failed | 6 passed (26)
+# échecs lus : 20 (AssertionError : 6 · autre : 14) — « autre » = TypeError, import, attente non aboutie : PAS une assertion
+
+[autre] FAIL  src/venues/calendar-style.test.ts > W-b — le week-end a un fond PLUS CLAIR que celui qu'il avait > clair : `--cal-weekend` est plus clair que `--accent-soft` (#f1efee), que la règle partagée lui posait
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > W-b — le week-end a un fond PLUS CLAIR que celui qu'il avait > sombre : `--dark-cal-weekend` est plus clair que `--dark-pro-accent-soft`
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « available »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « requested »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « booked »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « blocked »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « available »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « requested »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « booked »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « blocked »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > clair · fond « weekend »
+      ↳ Error: couleur illisible : null
+[autre] FAIL  src/venues/calendar-style.test.ts > Le contraste du chiffre du jour reste d'au moins 4,5:1 — sur chaque fond, hachurage compris, en clair et en sombre > sombre · fond « weekend »
+      ↳ Error: couleur illisible : null
+[AssertionError] FAIL  src/venues/calendar-style.test.ts > W-a — le STATUT l'emporte sur le week-end > un jour « requested » un vendredi ou un samedi prend la couleur de son statut, par une règle PLUS spécifique que la règle partagée
+      ↳ AssertionError: règle week-end requested: expected undefined to be defined
+[AssertionError] FAIL  src/venues/calendar-style.test.ts > W-a — le STATUT l'emporte sur le week-end > un jour « booked » un vendredi ou un samedi prend la couleur de son statut, par une règle PLUS spécifique que la règle partagée
+      ↳ AssertionError: règle week-end booked: expected undefined to be defined
+[AssertionError] FAIL  src/venues/calendar-style.test.ts > W-a — le STATUT l'emporte sur le week-end > un jour « blocked » un vendredi ou un samedi prend la couleur de son statut, par une règle PLUS spécifique que la règle partagée
+      ↳ AssertionError: règle week-end blocked: expected undefined to be defined
+[autre] FAIL  src/venues/calendar-style.test.ts > W-a — le STATUT l'emporte sur le week-end > seuls un jour LIBRE ou sans donnée prennent la teinte du week-end
+      ↳ TypeError: .toMatch() expects to receive a string, but got undefined
+[AssertionError] FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > un hachurage en diagonale sur le jour bloqué, sur sa pastille de légende, et sur le jour bloqué d'un week-end
+      ↳ AssertionError: expected undefined to be defined
+[autre] FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > le hachurage est un TRAIT, pas un remplissage : le jeton est translucide
+      ↳ Error: couleur illisible : null
+[AssertionError] FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > aucun autre état n'est hachuré : un hachurage partout ne distinguerait plus rien
+      ↳ AssertionError: expected [] to have a length of 1 but got +0
+[AssertionError] FAIL  src/venues/calendar-style.test.ts > W-c — un jour bloqué se distingue par AUTRE CHOSE que la couleur > le jeton `--cal-hatch` existe dans les DEUX thèmes (un jeton absent d'un thème retombe sur `inherit` et rend l'écran pire, D129)
+      ↳ AssertionError: expected null not to be null

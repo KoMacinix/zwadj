@@ -1,0 +1,33 @@
+# D325 — motifs de la passe D277 de la CLÔTURE du rang 32 (lot de CODE clos ; compteur ZÉRO → UN ; la spec e2e du rang 32 SORT de la suite ; le stash de D323 est supprimé ;
+# le rang 33 reste désigné, pas arbitré). Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de la partie A), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que la CLÔTURE invalide : « le rang 32 est ouvert / en cours / sa partie B n'est pas faite » ; « le compteur est ZÉRO » (il est UN) ; « le stash existe » ;
+#          « le lot des réparations de l'app Pro n'a pas de rang » ; « la spec e2e du rang 32 vit dans e2e/specs » ; « Précédent n'existe pas » (le lot l'a créé).
+# sens 2 — ce que la clôture REND PERMIS, ou dont la CONDITION change : « un lot de code PEUT s'ouvrir » (condition : le rang 32 arbitré — consommée), « aucun lot de code ne s'ouvre avant
+#          une certification » (levé à ZÉRO ; à UN, un seul lot de plus est tenable), toute phrase qui compte les lots non certifiés.
+1|OÙ IL EN EST : ouvert
+1|partie B (code) en cours
+1|partie B en cours
+1|partie A (documentaire) faite
+1|compteur ZÉRO, inchangé
+1|ZÉRO → UN
+1|compteur de lots de code non certifiés : ZÉRO
+1|à sa clôture
+1|n'a pas de rang
+1|EN STASH
+1|85a7f052
+1|e2e/specs/r32
+1|n'EXISTE PAS
+1|à reprendre avec le défaut
+1|RANG 33 : EN ATTENTE
+2|un lot de code PEUT s'ouvrir
+2|un lot de code peut s'ouvrir
+2|aucun lot de code ne s'ouvre
+2|compteur ZÉRO
+2|compteur **ZÉRO**
+2|compteur à ZÉRO
+2|compteur DEUX
+2|compteur UN
+2|trois non
+2|PDF de l'acompte
+T+|ZWADJ
+T-|zzz-motif-absent-d325c

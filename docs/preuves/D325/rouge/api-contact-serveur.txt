@@ -1,0 +1,11 @@
+# ROUGE LU — api-contact-serveur : @zwadj/api · src/common/contact.spec.ts
+# sources ramenées à `HEAD` pour ce test : packages/types/src/booking.ts, packages/types/src/quote.ts (2 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 3 failed | 35 passed (38)
+# échecs lus : 3 (AssertionError : 3 · autre : 0) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`isValidPersonName`)
+      ↳ AssertionError: réservation « Amina123 »: expected true to be false // Object.is equality
+[AssertionError] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le NOM de famille suit la même règle que le PRÉNOM, sur les deux routes
+      ↳ AssertionError: expected true to be false // Object.is equality
+[AssertionError] FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le refus porte une CLÉ de catalogue propre à sa route — `booking.validation.contactInvalid`, `quote.validation.nameInvalid`
+      ↳ AssertionError: expected true to deeply equal [ 'booking.validation.contactInvalid' ]

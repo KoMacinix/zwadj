@@ -1,0 +1,242 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 8 bras · 0 manqué(s) (attendu 0)
+cibles : 66 déclarées · 66 jouées (unit) · 15 mesure(s) distincte(s) · 16 fichier(s) muté(s)
+  pré-vol client-account : code 0 · passés 10 · en échec 0
+  pré-vol client-booking : code 0 · passés 25 · en échec 0
+  pré-vol client-champ : code 0 · passés 4 · en échec 0
+  pré-vol client-register : code 0 · passés 5 · en échec 0
+  pré-vol client-visit : code 0 · passés 5 · en échec 0
+  pré-vol client-wizard : code 0 · passés 27 · en échec 0
+  pré-vol pro-account : code 0 · passés 31 · en échec 0
+  pré-vol pro-app : code 0 · passés 18 · en échec 0
+  pré-vol pro-champ : code 0 · passés 17 · en échec 0
+  pré-vol pro-contact : code 0 · passés 14 · en échec 0
+  pré-vol pro-css : code 0 · passés 26 · en échec 0
+  pré-vol pro-edit : code 0 · passés 6 · en échec 0
+  pré-vol pro-journey : code 0 · passés 75 · en échec 0
+  pré-vol types-contact : code 0 · passés 38 · en échec 0
+  pré-vol types-phone : code 0 · passés 55 · en échec 0
+■ T-1. la saisie n'est reconnue en COLLAGE que si plusieurs chiffres arrivent d'un coup : ici la règle est INVERSÉE
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 44 · en échec 11
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 0555 12 34 56 » (avec le zéro de ligne nationale et des espaces) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 0555123456 » (avec le zéro) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 00213555123456 » (préfixe composé à l'ancienne) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « +213 555 12 34 56 » (avec l'indicatif et des espaces) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '2' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « +213555123456 » (canonique) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '2' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 213555123456 » (l'indicatif sans le +) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '2' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > ⚠ UN PREMIER CHIFFRE REFUSÉ reste affiché, SEUL, avec son drapeau d'erreur — chacun des chiffres que le modèle ne lis
+         ↳ AssertionError: premier chiffre 0: expected { digits: '', …(1) } to deeply equal { digits: '0', …(1) }
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > ⚠ LA SAISIE SUIVANTE EST BLOQUÉE tant que le premier chiffre est refusé : taper n'ajoute rien
+         ↳ AssertionError: expected { digits: '555123456', …(1) } to deeply equal { digits: '0', …(1) }
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > effacer le chiffre refusé, ou le REMPLACER, rend la main — la saisie n'est pas coincée
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage dont le numéro national commence mal reste refusé : « 0123456789 » → « 1 », refusé
+         ↳ AssertionError: expected { digits: '0', …(1) } to deeply equal { digits: '1', …(1) }
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > une FRAPPE n'est jamais réinterprétée : un « 0 » tapé en premier est un premier chiffre refusé, pas un zéro retiré
+         ↳ AssertionError: expected { digits: '', …(1) } to deeply equal { digits: '0', …(1) }
+■ T-2. le champ accepte UN chiffre de trop (dix au lieu de neuf)
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 53 · en échec 2
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > AU PLUS neuf chiffres : le dixième est écarté, à la frappe comme au collage
+         ↳ AssertionError: expected '5555555555' to be '555555555' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > l'état rendu est toujours une suite de chiffres d'au plus la longueur du modèle (propriété, 200 entrées)
+         ↳ AssertionError: expected 10 to be less than or equal to 9
+■ T-3. les lettres passent dans le champ (plus de « chiffres seuls »)
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 49 · en échec 6
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 0555 12 34 56 » (avec le zéro de ligne nationale et des espaces) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '555 12 34' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « +213 555 12 34 56 » (avec l'indicatif et des espaces) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '+' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « +213555123456 » (canonique) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '+' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > SEULS LES CHIFFRES passent : lettres, symboles et espaces tapés sont écartés
+         ↳ AssertionError: expected '5a5-5 5!5' to be '55555' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > effacer le chiffre refusé, ou le REMPLACER, rend la main — la saisie n'est pas coincée
+         ↳ AssertionError: expected '555 12 34' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > l'état rendu est toujours une suite de chiffres d'au plus la longueur du modèle (propriété, 200 entrées)
+         ↳ AssertionError: "0a39 9 8": expected 'a' to match /^\d*$/
+■ T-4. tout premier chiffre est admis (la règle 5, 6 ou 7 disparaît de la saisie)
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 51 · en échec 4
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > ⚠ UN PREMIER CHIFFRE REFUSÉ reste affiché, SEUL, avec son drapeau d'erreur — chacun des chiffres que le modèle ne lis
+         ↳ AssertionError: premier chiffre 0: expected { digits: '0', …(1) } to deeply equal { digits: '0', …(1) }
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > ⚠ LA SAISIE SUIVANTE EST BLOQUÉE tant que le premier chiffre est refusé : taper n'ajoute rien
+         ↳ AssertionError: expected { digits: '055512345', …(1) } to deeply equal { digits: '0', …(1) }
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage dont le numéro national commence mal reste refusé : « 0123456789 » → « 1 », refusé
+         ↳ AssertionError: expected { digits: '123456789', …(1) } to deeply equal { digits: '1', …(1) }
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > une FRAPPE n'est jamais réinterprétée : un « 0 » tapé en premier est un premier chiffre refusé, pas un zéro retiré
+         ↳ AssertionError: expected { digits: '0', …(1) } to deeply equal { digits: '0', …(1) }
+■ T-5. après un premier chiffre refusé, la saisie SUIVANTE n'est plus bloquée
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 0 · VERT — passés 55 · en échec 0
+■ T-6. la valeur ENVOYÉE n'a plus d'indicatif : les chiffres nationaux partent seuls
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 53 · en échec 2
+      FAIL  src/common/phone.spec.ts > toE164 et nationalDigitsOf — la valeur ENVOYÉE, et celle qu'on relit > le format envoyé à l'API est celui que le contrat attend : l'indicatif du modèle puis les chiffr
+         ↳ AssertionError: expected '555123456' to be '+213555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > toE164 et nationalDigitsOf — la valeur ENVOYÉE, et celle qu'on relit > une valeur enregistrée se relit en chiffres nationaux, et l'aller-retour est exact
+         ↳ AssertionError: expected '661223344' to be '+213661223344' // Object.is equality
+■ T-7. un numéro est « complet » sans que son premier chiffre soit contrôlé
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 52 · en échec 3
+      FAIL  src/common/phone.spec.ts > normalizeDzPhone — ce qu'elle doit REFUSER > "0455123456" — préfixe 4 : aucun opérateur mobile
+         ↳ AssertionError: expected '+213455123456' to be null
+      FAIL  src/common/phone.spec.ts > normalizeDzPhone — ce qu'elle doit REFUSER > "0855123456" — préfixe 8 : idem
+         ↳ AssertionError: expected '+213855123456' to be null
+      FAIL  src/common/phone.spec.ts > PHONE_COUNTRIES — le modèle de pays, UNE source > DZ_MOBILE_E164, normalizePhone et isPhoneComplete s'accordent, pour chaque premier chiffre et chaque longueur
+         ↳ AssertionError: complet 011111111: expected true to be false // Object.is equality
+■ T-8. un collage n'est JAMAIS reconnu : « +213 555… » reste tel quel
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 47 · en échec 8
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 0555 12 34 56 » (avec le zéro de ligne nationale et des espaces) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 0555123456 » (avec le zéro) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 00213555123456 » (préfixe composé à l'ancienne) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « +213 555 12 34 56 » (avec l'indicatif et des espaces) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '2' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « +213555123456 » (canonique) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '2' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage « 213555123456 » (l'indicatif sans le +) devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '2' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > effacer le chiffre refusé, ou le REMPLACER, rend la main — la saisie n'est pas coincée
+         ↳ AssertionError: expected '0' to be '555123456' // Object.is equality
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage dont le numéro national commence mal reste refusé : « 0123456789 » → « 1 », refusé
+         ↳ AssertionError: expected { digits: '0', …(1) } to deeply equal { digits: '1', …(1) }
+■ C-1. un nom accepte les CHIFFRES
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 34 · en échec 4
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine1 » — un chiffre à la fin
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le NOM de famille suit la même règle que le PRÉNOM, sur les deux routes
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le refus porte une CLÉ de catalogue propre à sa route — `booking.validation.contactInvalid`
+         ↳ AssertionError: expected true to deeply equal [ 'booking.validation.contactInvalid' ]
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > `personNameSchema` : la fabrique rend la règle avec LES messages de l'appelant
+         ↳ AssertionError: expected true to deeply equal [ 'i' ]
+■ C-2. un nom peut COMMENCER par un tiret ou une apostrophe
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 32 · en échec 6
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « -Jean » — commence par un tiret
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « 'Jean » — commence par une apostrophe
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «  - » — un tiret seul
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «  » — chaîne vide
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «     » — des espaces seulement
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`is
+         ↳ AssertionError: réservation «  »: expected false to be true // Object.is equality
+■ C-3. un nom perd ses marques combinantes : voyelles brèves de l'arabe, accent décomposé
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 36 · en échec 2
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « Éloïse » — les mêmes accents, DÉCOMPOSÉS (lettre + marque combinante)
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/common/contact.spec.ts > isValidPersonName — ce qu'elle doit ACCEPTER > « أَمِينَة » — arabe avec voyelles brèves (marques combinantes)
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ C-4. le schéma d'un nom ne regarde plus son motif
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 34 · en échec 4
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`is
+         ↳ AssertionError: réservation « Amina123 »: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le NOM de famille suit la même règle que le PRÉNOM, sur les deux routes
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le refus porte une CLÉ de catalogue propre à sa route — `booking.validation.contactInvalid`
+         ↳ AssertionError: expected true to deeply equal [ 'booking.validation.contactInvalid' ]
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > `personNameSchema` : la fabrique rend la règle avec LES messages de l'appelant
+         ↳ AssertionError: expected true to deeply equal [ 'i' ]
+■ C-5. un nom VIDE est accepté
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 36 · en échec 2
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`is
+         ↳ AssertionError: réservation «  »: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > un champ simplement VIDE dit « obligatoire » seul — pas aussi « invalide »
+         ↳ AssertionError: expected true to deeply equal [ Array(1) ]
+■ C-6. le plafond du nom saute (80 → 1080)
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 37 · en échec 1
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le plafond reste celui des deux routes d'avant : 80 caractères, bornes incluses
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-7. l'e-mail n'est plus contrôlé par `.email()`
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 37 · en échec 1
+      FAIL  src/common/contact.spec.ts > l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > `contactEmailSchema` : la fabrique rend la règle avec LES messages de l'appelant, 180 caract
+         ↳ AssertionError: expected true to deeply equal [ 'i' ]
+■ B-1. la route de réservation reprend sa règle de nom LÂCHE (« non vide » tient lieu de « valide »)
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 34 · en échec 4
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`is
+         ↳ AssertionError: réservation « Amina123 »: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le refus porte une CLÉ de catalogue propre à sa route — `booking.validation.contactInvalid`
+         ↳ AssertionError: expected true to deeply equal [ 'booking.validation.contactInvalid' ]
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > un champ simplement VIDE dit « obligatoire » seul — pas aussi « invalide »
+         ↳ AssertionError: expected [ Array(1) ] to deeply equal [ Array(1) ]
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le plafond reste celui des deux routes d'avant : 80 caractères, bornes incluses
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ B-2. la route du devis reprend sa règle de nom LÂCHE
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 35 · en échec 3
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`is
+         ↳ AssertionError: conversion « Amina123 »: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le refus porte une CLÉ de catalogue propre à sa route — `booking.validation.contactInvalid`
+         ↳ AssertionError: expected true to deeply equal [ 'quote.validation.nameInvalid' ]
+      FAIL  src/common/contact.spec.ts > le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le plafond reste celui des deux routes d'avant : 80 caractères, bornes incluses
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ B-3. la route du devis n'applique plus la règle d'e-mail du contrat
+   ancre 1→0 · marqueur 0→1
+   [types-contact] code 1 · ROUGE — passés 37 · en échec 1
+      FAIL  src/common/contact.spec.ts > l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > l'écran (`isValidContactEmail`), la réservation et la conversion rendent le MÊME verdict, su
+         ↳ AssertionError: conversion « amina@ »: expected true to be false // Object.is equality
+■ W-1. le premier chiffre refusé ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1
+   [pro-contact] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > contactBlockers — ce qui empêche de CONCLURE > ⚠ le téléphone : vide ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états
+         ↳ AssertionError: expected [ 'needPhoneIncomplete' ] to deeply equal [ 'needPhoneLeading' ]
+■ W-2. un numéro INCOMPLET ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1
+   [pro-contact] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > contactBlockers — ce qui empêche de CONCLURE > ⚠ le téléphone : vide ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états
+         ↳ AssertionError: expected [] to deeply equal [ 'needPhoneIncomplete' ]
+■ W-3. un e-mail invalide ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1
+   [pro-contact] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > contactBlockers — ce qui empêche de CONCLURE > l'e-mail SAISI doit passer la règle du contrat ; vide, il ne retient rien
+         ↳ AssertionError: expected [] to deeply equal [ 'needEmailValid' ]
+■ W-4. le nombre d'invités ne retient plus l'étape Client
+   ancre 1→0 · marqueur 0→1
+   [pro-contact] code 1 · ROUGE — passés 12 · en échec 2
+      FAIL  src/dashboard/walkin-contact.test.ts > clientBlockers — ce qui empêche de CONTINUER : le contact, PUIS le nombre d'invités > un seul manque : « le nombre d'invités est obligatoire », et rien d'a
+         ↳ AssertionError: expected [] to deeply equal [ 'needGuests' ]
+      FAIL  src/dashboard/walkin-contact.test.ts > clientBlockers — ce qui empêche de CONTINUER : le contact, PUIS le nombre d'invités > tout manque : les raisons s'énumèrent TOUTES, le nombre d'invités en 
+         ↳ AssertionError: expected [ 'needFirstName', …(2) ] to deeply equal [ 'needFirstName', …(3) ]
+■ W-5. ⚠ RÈGLE DES MONTANTS — le téléphone ENVOYÉ n'a plus son indicatif
+   ancre 1→0 · marqueur 0→1
+   [pro-contact] code 1 · ROUGE — passés 12 · en échec 2
+      FAIL  src/dashboard/walkin-contact.test.ts > contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis
+         ↳ AssertionError: expected { contactFirstName: 'Amine', …(2) } to deeply equal { contactFirstName: 'Amine', …(2) }
+      FAIL  src/dashboard/walkin-contact.test.ts > contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > le corps passe le schéma du SERVEUR tel quel, et son téléphone se re
+         ↳ AssertionError: expected '+213533333333' to be '533333333' // Object.is equality
+✗ W-6. un e-mail VIDE part quand même (la clé n'est plus omise : `.email()` refuserait la chaîne vide)
+   MUTATION NON POSÉE : ancre 1→0, marqueur 1→1 (attendu 1→0 et 1→2)
+  empreintes : 16 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 66 cible(s) jouée(s), aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

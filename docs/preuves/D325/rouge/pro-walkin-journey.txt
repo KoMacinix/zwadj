@@ -1,0 +1,57 @@
+# ROUGE LU — pro-walkin-journey : @zwadj/pro · src/dashboard/walkin-journey.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/pro/src/dashboard/walkin-journey.tsx, packages/ui/src/journey.tsx (2 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 26 failed | 50 passed (76)
+# échecs lus : 26 (AssertionError : 11 · autre : 15) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > l'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape ne les contient pas
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "img" and name "Algérie, +213"
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > seuls les chiffres passent, au plus la longueur du modèle
+      ↳ AssertionError: expected '5a1b2c3d4e5f6g7h8i9' to match /^\d{9}$/
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloquée ; « Continuer » dit pourquoi
+      ↳ AssertionError: expected '055' to be '0' // Object.is equality
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit
+      ↳ Error: expect(element).toHaveAttribute("aria-invalid", "true") // element.getAttribute("aria-invalid") === "true"
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction
+      ↳ AssertionError: amine@: expected false to be true // Object.is equality
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison
+      ↳ AssertionError: expected [] to include 'l\'adresse e-mail est invalide (ou la…'
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143)
+      ↳ AssertionError: prénom: expected '' to be 'Ex. : Amina' // Object.is equality
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > ⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne
+      ↳ AssertionError: expected '' to match /X/
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme les quatre manques, et le bouton la désigne par `aria-describedby`
+      ↳ Error: expect(element).toHaveAccessibleDescription()
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre
+      ↳ AssertionError: expected [] to deeply equal [ Array(1) ]
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle
+      ↳ AssertionError: expected [] to include 'le numéro de mobile doit compter 9 ch…'
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Libellés liés aux champs — en arabe aussi > ⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé)
+      ↳ AssertionError: expected 1 to be 4 // Object.is equality
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Libellés liés aux champs — en arabe aussi > ⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe
+      ↳ AssertionError: ar: expected 2 to be 5 // Object.is equality
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer
+      ↳ AssertionError: expected 'Quel créneau ?' to be 'Qui est le client ?' // Object.is equality
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation
+      ↳ TestingLibraryElementError: Unable to find an element with the text: Client. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your m
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Précédent"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Précédent"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique)
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Précédent"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Précédent"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Date enregistrée"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et le client
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Date bloquée"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "تم تسجيل التاريخ"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran
+      ↳ TestingLibraryElementError: Unable to find role="dialog"

@@ -1,0 +1,152 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 8 bras · 0 manqué(s) (attendu 0)
+cibles : 66 déclarées · 44 jouées (unit) · 14 mesure(s) distincte(s) · 13 fichier(s) muté(s)
+  pré-vol client-account : code 0 · passés 10 · en échec 0
+  pré-vol client-booking : code 0 · passés 25 · en échec 0
+  pré-vol client-champ : code 0 · passés 4 · en échec 0
+  pré-vol client-register : code 0 · passés 5 · en échec 0
+  pré-vol client-visit : code 0 · passés 5 · en échec 0
+  pré-vol client-wizard : code 0 · passés 27 · en échec 0
+  pré-vol pro-account : code 0 · passés 31 · en échec 0
+  pré-vol pro-app : code 0 · passés 18 · en échec 0
+  pré-vol pro-champ : code 0 · passés 17 · en échec 0
+  pré-vol pro-contact : code 0 · passés 14 · en échec 0
+  pré-vol pro-css : code 0 · passés 26 · en échec 0
+  pré-vol pro-edit : code 0 · passés 6 · en échec 0
+  pré-vol pro-journey : code 0 · passés 75 · en échec 0
+  pré-vol types-phone : code 0 · passés 55 · en échec 0
+■ T-5. un premier chiffre refusé n'est plus ramené à lui SEUL : le collage « 0123456789 » garde ses neuf chiffres
+   ancre 1→0 · marqueur 0→1
+   [types-phone] code 1 · ROUGE — passés 54 · en échec 1
+      FAIL  src/common/phone.spec.ts > applyPhoneInput — la règle de SAISIE d'un champ > un collage dont le numéro national commence mal reste refusé : « 0123456789 » → « 1 », refusé
+         ↳ AssertionError: expected { digits: '123456789', …(1) } to deeply equal { digits: '1', …(1) }
+■ W-6. un e-mail VIDE part quand même (la clé n'est plus omise : `.email()` refuserait la chaîne vide)
+   ancre 1→0 · marqueur 0→1
+   [pro-contact] code 1 · ROUGE — passés 12 · en échec 2
+      FAIL  src/dashboard/walkin-contact.test.ts > contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis
+         ↳ AssertionError: expected { contactFirstName: 'Amine', …(3) } to deeply equal { contactFirstName: 'Amine', …(2) }
+      FAIL  src/dashboard/walkin-contact.test.ts > contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > le corps passe le schéma du SERVEUR tel quel, et son téléphone se re
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ W-7. les noms ENVOYÉS ne sont plus rognés
+   ancre 1→0 · marqueur 0→1
+   [pro-contact] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis
+         ↳ AssertionError: expected { contactFirstName: '  Amine ', …(2) } to deeply equal { contactFirstName: 'Amine', …(2) }
+■ P-1. le champ ne passe plus par la règle de saisie : il remonte ce que le navigateur lui donne
+   ancre 1→0 · marqueur 0→1
+   [pro-champ] code 1 · ROUGE — passés 14 · en échec 3
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > seuls les chiffres passent, et au plus la longueur du modèle
+         ↳ AssertionError: expected '5a5b5-5 5!5 5 5 5 5 5' to be '555555555' // Object.is equality
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > un collage « 0555 12 34 56 » ou « +213 555 12 34 56 » devient les neuf chiffres nationaux
+         ↳ AssertionError: expected '0555 12 34 56' to be '555123456' // Object.is equality
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > ⚠ UN PREMIER CHIFFRE REFUSÉ : il reste, SEUL ; son message s'affiche ; le champ est invalide ; la saisie suivante 
+         ↳ AssertionError: expected '055' to be '0' // Object.is equality
+   [client-champ] code 1 · ROUGE — passés 2 · en échec 2
+      FAIL  src/components/ui-phone-field.test.tsx > PhoneField côté Client — la même règle, les mêmes textes > seuls les chiffres passent, au plus la longueur du modèle ; un collage complet devient les chi
+         ↳ AssertionError: expected '5a5b5-5 5!5 5 5 5 5 5' to be '555555555' // Object.is equality
+      FAIL  src/components/ui-phone-field.test.tsx > PhoneField côté Client — la même règle, les mêmes textes > ⚠ un premier chiffre refusé : seul, avec son message dans la langue de la page ; la saisie sui
+         ↳ AssertionError: fr: expected '055' to be '0' // Object.is equality
+■ P-2. la boîte n'est plus LTR : en arabe le drapeau passerait à droite des chiffres
+   ancre 1→0 · marqueur 0→1
+   [pro-champ] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > la boîte est LTR même dans une page arabe : un numéro se lit de gauche à droite
+         ↳ Error: expect(element).toHaveAttribute("dir", "ltr") // element.getAttribute("dir") === "ltr"
+   [client-champ] code 1 · ROUGE — passés 3 · en échec 1
+      FAIL  src/components/ui-phone-field.test.tsx > PhoneField côté Client — la même règle, les mêmes textes > la boîte reste LTR en arabe : un numéro se lit de gauche à droite
+         ↳ Error: expect(element).toHaveAttribute("dir", "ltr") // element.getAttribute("dir") === "ltr"
+■ P-3. le message du premier chiffre n'est plus une ALERTE
+   ancre 1→0 · marqueur 0→1
+   [pro-champ] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > ⚠ UN PREMIER CHIFFRE REFUSÉ : il reste, SEUL ; son message s'affiche ; le champ est invalide ; la saisie suivante 
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+   [client-champ] code 1 · ROUGE — passés 3 · en échec 1
+      FAIL  src/components/ui-phone-field.test.tsx > PhoneField côté Client — la même règle, les mêmes textes > ⚠ un premier chiffre refusé : seul, avec son message dans la langue de la page ; la saisie sui
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+■ P-4. le champ ne se déclare plus invalide
+   ancre 1→0 · marqueur 0→1
+   [pro-champ] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > ⚠ UN PREMIER CHIFFRE REFUSÉ : il reste, SEUL ; son message s'affiche ; le champ est invalide ; la saisie suivante 
+         ↳ Error: expect(element).toHaveAttribute("aria-invalid", "true") // element.getAttribute("aria-invalid") === "true"
+   [client-champ] code 0 · VERT — passés 4 · en échec 0
+■ P-5. le premier chiffre n'est plus jamais refusé par le champ
+   ancre 1→0 · marqueur 0→1
+   [pro-champ] code 1 · ROUGE — passés 15 · en échec 2
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > ⚠ UN PREMIER CHIFFRE REFUSÉ : il reste, SEUL ; son message s'affiche ; le champ est invalide ; la saisie suivante 
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — la règle de saisie, vue au clavier > le message du premier chiffre est LIÉ au champ pour un lecteur d'écran (`aria-describedby`)
+         ↳ AssertionError: expected null to be truthy
+   [client-champ] code 1 · ROUGE — passés 3 · en échec 1
+      FAIL  src/components/ui-phone-field.test.tsx > PhoneField côté Client — la même règle, les mêmes textes > ⚠ un premier chiffre refusé : seul, avec son message dans la langue de la page ; la saisie sui
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+■ P-6. le nom accessible du drapeau perd l'indicatif
+   ancre 1→0 · marqueur 0→1
+   [pro-champ] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/ui-phone-field.test.tsx > PhoneField — l'indicatif et le drapeau viennent du MODÈLE de pays > le drapeau et l'indicatif portent le nom accessible du pays : « Algérie, +213 »
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "img" and name "Algérie, +213"
+   [client-champ] code 1 · ROUGE — passés 3 · en échec 1
+      FAIL  src/components/ui-phone-field.test.tsx > PhoneField côté Client — la même règle, les mêmes textes > l'indicatif du modèle est affiché devant, nommé avec le pays, en français comme en arabe
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "img" and name "Algérie, +213"
+■ R-1. le rail ne réagit plus au clic : le bouton existe, il ne fait rien
+   ancre 1→0 · marqueur 0→1
+   [pro-journey] code 1 · ROUGE — passés 73 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »
+         ↳ AssertionError: expected 'Quel créneau ?' to be 'Qui est le client ?' // Object.is equality
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effac
+         ↳ AssertionError: expected 'Quel créneau ?' to be 'Qui est le client ?' // Object.is equality
+   [client-wizard] code 1 · ROUGE — passés 25 · en échec 2
+      FAIL  src/components/filter-wizard.test.tsx > Le récapitulatif ne se replie pas > cliquer le numéro du rail vaut « Modifier »
+         ↳ AssertionError: expected 'Un style, des équipements ?' to be 'Combien d\'invités ?' // Object.is equality
+      FAIL  src/components/filter-wizard.test.tsx > Le récapitulatif ne se replie pas > ⚠ cliquer le LIBELLÉ d'une étape répondue vaut « Modifier », comme sa pastille
+         ↳ AssertionError: expected 'Un style, des équipements ?' to be 'Combien d\'invités ?' // Object.is equality
+■ N-1. « Continuer » ne dit plus POURQUOI il est grisé : la liste des raisons est vide
+   ancre 1→0 · marqueur 0→1
+   [pro-journey] code 1 · ROUGE — passés 67 · en échec 8
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte
+         ↳ Error: expect(element).toBeDisabled()
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations
+         ↳ Error: expect(element).toBeDisabled()
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloq
+         ↳ AssertionError: expected [] to include 'le numéro de mobile doit commencer pa…'
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le d
+         ↳ AssertionError: expected [] to deeply equal ArrayContaining{…}
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison
+         ↳ AssertionError: expected [] to include 'l\'adresse e-mail est invalide (ou la…'
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme les quatre manques, et le bouton la désigne par `aria-d
+         ↳ Error: expect(element).toBeDisabled()
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre
+         ↳ AssertionError: expected [] to deeply equal [ Array(1) ]
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle
+         ↳ AssertionError: expected [] to include 'le numéro de mobile doit compter 9 ch…'
+■ N-2. la liste des raisons n'est plus LIÉE au bouton (`aria-describedby`)
+   ancre 1→0 · marqueur 0→1
+   [pro-journey] code 1 · ROUGE — passés 69 · en échec 6
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloq
+         ↳ AssertionError: expected [] to include 'le numéro de mobile doit commencer pa…'
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le d
+         ↳ AssertionError: expected [] to deeply equal ArrayContaining{…}
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison
+         ↳ AssertionError: expected [] to include 'l\'adresse e-mail est invalide (ou la…'
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme les quatre manques, et le bouton la désigne par `aria-d
+         ↳ Error: expect(element).toHaveAccessibleDescription()
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre
+         ↳ AssertionError: expected [] to deeply equal [ Array(1) ]
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle
+         ↳ AssertionError: expected [] to include 'le numéro de mobile doit compter 9 ch…'
+■ N-3. ⚠ RÈGLE DES MONTANTS — la conversion du devis envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1
+   [pro-journey] code 1 · ROUGE — passés 74 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la co
+         ↳ AssertionError: expected '550000002' to be '+213550000002' // Object.is equality
+✗ N-4. la fenêtre de confirmation s'ouvre AVANT la réponse du serveur
+   MUTATION NON POSÉE : ancre 1→1, marqueur 0→1 (attendu 1→0 et 0→1)
+  empreintes : 16 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 44 cible(s) jouée(s) sur 66, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

@@ -1,0 +1,64 @@
+115 fichier(s) modifié(s) depuis HEAD → 8 campagne(s) concernée(s) sur 33.
+  · neutralize-act-plafonds.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.test.tsx
+  · neutralize-horloge.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.test.tsx
+  · neutralize-journey.py  (2 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+      packages/ui/src/journey.tsx
+  · neutralize-r25.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r29.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r30.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/edit-venue-page.tsx
+  · neutralize-r32.py  (14 fichier(s) en commun)
+      apps/client/src/components/account/account-settings-view.tsx
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/components/venue/visit-booking-panel.tsx
+  · neutralize-solid-s1.py  (1 fichier(s) en commun)
+      packages/types/src/booking.ts
+
+[1/8] neutralisation\neutralize-act-plafonds.py …
+    sortie=1  0 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/8] neutralisation\neutralize-horloge.py …
+    sortie=1  0 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/8] neutralisation\neutralize-journey.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[4/8] neutralisation\neutralize-r25.py …
+    sortie=3  7 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[5/8] neutralisation\neutralize-r29.py …
+    sortie=0  15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[6/8] neutralisation\neutralize-r30.py …
+    sortie=0  8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[7/8] neutralisation\neutralize-r32.py …
+    sortie=0  62 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[8/8] neutralisation\neutralize-solid-s1.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-act-plafonds.py              1     —     0     0     0    27
+neutralize-horloge.py                   1     —     0     0     0    26
+neutralize-journey.py                   0     —     7     0     0   414
+neutralize-r25.py                       3     7     7     0     4    99
+neutralize-r29.py                       0    15    15     0     0   190
+neutralize-r30.py                       0     8     8     0     0    77
+neutralize-r32.py                       0    62    62     0     0   700
+neutralize-solid-s1.py                  0     2     2     0     0    39
+================================================================================================
+MESURÉ : 101 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 4 non mesurée(s) · 8 campagne(s) · 1572s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation\neutralize-act-plafonds.py → sortie 1
+  ⚠ neutralisation\neutralize-horloge.py → sortie 1
+  ⚠ neutralisation\neutralize-r25.py → sortie 3
+exit=1

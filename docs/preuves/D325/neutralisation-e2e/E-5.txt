@@ -1,0 +1,27 @@
+# E-5 — le jour bloqué n'est plus HACHURÉ
+# fichier : apps/pro/src/theme.css · ancre 1→0 · marqueur 15→16 · genre substitution · test joué : « le calendrier du parcours (point 7) »
+# restauration prouvée par l'empreinte : OUI · code de sortie e2e : 1
+# 310 lignes examinées, dont 171 lignes de serveur écartées (attendu > 0), 22 gardées — extrait COPIÉ tel quel, ANSI retirés
+
+  x  1 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:277:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair (3.9s)
+  1) [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:277:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "repeating-linear-gradient"
+    Received string:    "none"
+
+      314 |   expect(bloque.fond).not.toBe(bloque.weekend);
+      315 |   // W-c : un hachurage, indépendant de la couleur.
+    > 316 |   expect(bloque.image).toContain("repeating-linear-gradient");
+          |                        ^
+      317 |   // Le week-end garde sa bordure en tirets (le signe qui ne dépend pas de la couleur).
+      318 |   expect(bloque.bordure).toBe("dashed");
+      319 |
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:316:24
+
+
+
+
+
+  1 failed

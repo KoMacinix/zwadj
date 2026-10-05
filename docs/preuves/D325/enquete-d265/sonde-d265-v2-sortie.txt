@@ -1,0 +1,13 @@
+node v22.14.0 · serveur dans SON processus (PORT 8713 keepAliveTimeout=5000) · 5 essais par bras, un processus client neuf chacun
+
+■ NÉGATIF 1 — aucun blocage
+  essais lus : 5 (attendu 5) · échecs : 0 · succès : 5 · illisibles : 0 (attendu 0)
+  succès : de 4 à 5 ms
+
+■ NÉGATIF 2 — blocage 3 000 ms (< keepAliveTimeout 5 000)
+  essais lus : 5 (attendu 5) · échecs : 0 · succès : 5 · illisibles : 0 (attendu 0)
+  succès : de 8 à 11 ms
+
+■ POSITIF — blocage 6 500 ms (> keepAliveTimeout 5 000)
+  essais lus : 5 (attendu 5) · échecs : 0 · succès : 5 · illisibles : 0 (attendu 0)
+  succès : de 13 à 15 ms

@@ -1,0 +1,9 @@
+# ROUGE LU — pro-app-register : @zwadj/pro · src/App.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/pro/src/auth/register-page.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 2 failed | 16 passed (18)
+# échecs lus : 2 (AssertionError : 1 · autre : 1) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[autre] FAIL  src/App.test.tsx > Inscription PRO — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant, et le gabarit d'exemple n'est PLUS un numéro qui ressemble à un vrai
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "img" and name "Algérie, +213"
+[AssertionError] FAIL  src/App.test.tsx > Inscription PRO — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se TAPE même pas : le premier chiffre refusé reste seul, avec son message
+      ↳ AssertionError: expected '0212' to be '0' // Object.is equality

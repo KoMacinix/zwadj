@@ -1,0 +1,9 @@
+# ROUGE LU — client-register : @zwadj/client · src/components/auth/register-form.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/client/src/components/auth/register-form.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 2 failed | 3 passed (5)
+# échecs lus : 2 (AssertionError : 1 · autre : 1) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[autre] FAIL  src/components/auth/register-form.test.tsx > RegisterForm — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant, le gabarit d'exemple n'est pas un numéro
+      ↳ TestingLibraryElementError: Unable to find an accessible element with the role "img" and name "Algérie, +213"
+[AssertionError] FAIL  src/components/auth/register-form.test.tsx > RegisterForm — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message
+      ↳ AssertionError: expected '0212' to be '0' // Object.is equality

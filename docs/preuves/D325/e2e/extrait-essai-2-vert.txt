@@ -1,0 +1,11 @@
+# EXTRAIT de essai-2.log — produit par docs/preuves/D325/e2e/extraire.py
+# 485 lignes examinées, 373 lignes de serveur écartées, 6 résultats, 0 blocs d'échec
+# Les lignes ci-dessous sont COPIÉES telles quelles (codes ANSI retirés) ; rien n'est reformulé.
+
+  ok 1 [warmup] › specs\warmup.setup.ts:54:5 › préchauffe les routes des deux applications (14.4s)
+  ok 2 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:94:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » (8.4s)
+  ok 3 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:236:5 › « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit (4.2s)
+  ok 4 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:249:5 › un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche (4.6s)
+  ok 5 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:270:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair (2.1s)
+  ok 6 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:328:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde (2.9s)
+  6 passed (1.2m)

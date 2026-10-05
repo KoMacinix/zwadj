@@ -1,0 +1,7 @@
+✓ C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/56588507-0dd9-4c8e-9006-0082afb6312d/scratchpad/porte-e2e.log : occurrences stricte 47 · large 47 (doivent s'accorder) · valeurs distinctes 47 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/56588507-0dd9-4c8e-9006-0082afb6312d/scratchpad/porte-e2e-2.log : occurrences stricte 47 · large 47 (doivent s'accorder) · valeurs distinctes 47 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/56588507-0dd9-4c8e-9006-0082afb6312d/scratchpad/porte-e2e-3.log : occurrences stricte 41 · large 41 (doivent s'accorder) · valeurs distinctes 41 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/56588507-0dd9-4c8e-9006-0082afb6312d/scratchpad/porte-e2e.log porte 47 valeur(s) (attendu ≥ 47)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/56588507-0dd9-4c8e-9006-0082afb6312d/scratchpad/porte-e2e-2.log porte 47 valeur(s) (attendu ≥ 47)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/56588507-0dd9-4c8e-9006-0082afb6312d/scratchpad/porte-e2e-3.log porte 41 valeur(s) (attendu ≥ 41)
+== valeurs cherchées : 135 (3 journal/journaux) · parcourus : 151 fichiers, 6458060 octets · porteurs : 0 (attendu 0)
