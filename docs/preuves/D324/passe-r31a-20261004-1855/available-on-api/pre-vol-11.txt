@@ -1,0 +1,15 @@
+$ pnpm --filter @zwadj/api exec vitest run src/common/filters/all-exceptions.filter.spec.ts -t 404 MÉTIER
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/common/filters/all-exceptions.filter.spec.ts (6 tests | 5 skipped) 6ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  19:13:52
+   Duration  1.16s (transform 59ms, setup 0ms, collect 529ms, tests 6ms, environment 0ms, prepare 237ms)
+
+
+--- stderr ---
+
+--- code de sortie : 0 ---

@@ -1,0 +1,23 @@
+✓ Pré-vol : 3 mesure(s) verte(s) — recevabilite, notification, types
+
+✓ S11a-1. ⛔ LA BORNE BASSE CESSE D'ÊTRE STRICTE — on réserve pour AUJOURD'HUI  [recevabilite]
+✓ S11a-2. ⛔ L'HORIZON PERD SA BORNE HAUTE — une demande à trente ans passe  [recevabilite]
+✓ S11a-3. ⛔ LA CAPACITÉ S'INVERSE — une table PILE à la capacité est refusée  [recevabilite]
+✓ S11a-4. ⛔ LE CRÉNEAU INTROUVABLE CESSE D'ÊTRE REFUSÉ  [recevabilite]
+✓ S11a-5. ⛔⛔ L'ORDRE DES REFUS S'INVERSE — la DATE répond à la place de la CAPACITÉ  [recevabilite]
+✓ S11a-6. ⛔ SINGLE_SLOT CESSE DE BLOQUER LA JOURNÉE — le reste du jour redevient libre  [recevabilite]
+✓ S11a-7. ⛔ LE CRÉNEAU NE TRAVERSE PLUS LE VERDICT — il est rétréci à ses bornes  [recevabilite]
+✓ S11a-8. ⛔ LA DÉCISION D'HORIZON REVIENT DANS LE SERVICE — garde de SOURCE  [recevabilite]
+✓ S11a-9. ⛔ LE SERVICE N'APPELLE PLUS LE MODULE DE RECEVABILITÉ — garde de SOURCE  [recevabilite]
+✓ S11a-10. ⛔ LA DATE D'ÉVÉNEMENT SE LIT EN LOCAL — elle recule d'un jour à l'ouest  [notification]
+✓ S11a-11. ⛔⛔ CHEMIN DE L'ARGENT — le TOTAL et l'ACOMPTE s'intervertissent  [notification]
+✓ S11a-12. ⛔ LES DEUX TÉLÉPHONES S'INTERVERTISSENT — le pro reçoit son propre numéro  [notification]
+✓ S11a-13. ⛔ LA LOCALE NE RETOMBE PLUS SUR « fr » — gabarit arabe pour un pro francophone  [notification]
+✓ S11a-14. ⛔ LE WALK-IN CESSE D'ÊTRE UN « PAS DE DESTINATAIRE »  [notification]
+✓ S11a-15. ⛔ LES LIBELLÉS FR ET AR DE LA SALLE S'INTERVERTISSENT  [notification]
+✓ S11a-17. ⛔ LE VERDICT PERD SON PARAMÈTRE DE TYPE — le créneau retombe à sa CONTRAINTE  [types]
+✓ S11a-18. ⛔ LE CRÉNEAU DISPARAÎT DU TYPE DU VERDICT — invisible à l'exécution  [types]
+✓ S11a-16. ⛔ LE NOM DU CLIENT N'EST PLUS DÉBARRASSÉ DE SES ESPACES DE BORD  [notification]
+
+18 garde(s) mordue(s) sur 18 cible(s) RÉELLEMENT MESURÉE(S).
+

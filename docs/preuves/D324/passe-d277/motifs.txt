@@ -1,0 +1,28 @@
+# D324 — motifs de la passe D277 (rang 31, partie B : la certification qui couvre D321 et D322 PASSE ; compteur DEUX -> ZÉRO).
+# Format : <sens>|<motif>. Lus par balayage.py (copie à l'octet de celui de D306 à D323, 24802faf…), jamais passés en ligne de commande
+# (D289). Texte APLATI.
+# sens 1 — ce que D324 INVALIDE : le compteur DEUX ; « aucun lot de code ne s'ouvre avant une certification » ; « la partie B n'a pas démarré » ;
+# « la passe n'a pas encore eu lieu » ; le rang 31 « ouvert ».
+# sens 2 — ce que D324 REND PERMIS, ou dont la condition change : « un lot de code peut s'ouvrir » dès que Ko arbitre le rang 32 ; ADM-1 (D-10 révisée :
+# calendrier → certification → ADM-1) ; « après une certification ».
+1|compteur **DEUX**
+1|compteur DEUX
+1|compteur à DEUX
+1|DEUX, inchangé
+1|aucun lot de code ne s'ouvre avant une certification
+1|aucun lot de code ne s'ouvre avant la certification
+1|PARTIE B NON DÉMARRÉE
+1|partie B n'a pas démarré
+1|partie B NON démarrée
+1|LA PASSE N'A PAS ENCORE EU LIEU
+1|RANG 31 OUVERT
+1|un troisième en exigera une
+1|un troisième lot de code
+2|un lot de code PEUT s'ouvrir
+2|un lot de code de plus peut s'ouvrir
+2|ADM-1
+2|dès que Ko arbitre
+2|le rang 32
+2|rang 32 : en attente
+T+|ZWADJ
+T-|zzz-motif-absent-d324

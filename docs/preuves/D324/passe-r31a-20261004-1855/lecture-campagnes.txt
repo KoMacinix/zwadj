@@ -1,0 +1,48 @@
+== CALIBRATION (abandon si un seul bras manque)
+  ✓ positif D299 : lignes ✓ 186 (attendu 186) · non mesurées {'e3d1-s8': 5, 's11b': 4, 'solid-s6': 4}
+  ✓ négatif D308 solid-s1 : crochets SANS --int 0 (attendu 0) · AVEC --int 2 (attendu 2)
+  ✓ négatif D310 : available-on-api 0 s, sans lecture ⇒ REFUSÉ (attendu REFUSÉ) — lecture ABSENTE ou en défaut
+  ✓ négatif ÉTAPE 0 : chacun des 28 harnais (attendu 28), à SA durée de non-démarrage la plus longue (arrondie comme la table de --tout), REFUSÉ : 28 (attendu 28)
+  ✓ positif D310 : argon2 ⇒ ACCEPTÉ (attendu ACCEPTÉ) — 16 s ≥ plancher 4.83 s
+  ✓ positif D319 : journal réel r25 ⇒ ACCEPTÉ (attendu ACCEPTÉ) — calibration 10 bras 0 manqué · collecte > 0 sur 11 cible(s)
+  ✓ négatif D319 : même journal, R25-1 sans collecte ⇒ REFUSÉ (attendu REFUSÉ) — collecte absente ou nulle sur ['✓ R25-1']
+
+== PASSE : .neutralisation-journaux/r31a-20261004-1855
+`--tout`, ligne MESURÉ : ('228', '0', '21', '32', '3313')
+
+harnais            passe  code décl joué   ✓   ✗ nonm    cro  démarrage (point 12)                         compte
+404                --tout    0   12   12  12   0    0      —  258 s ≥ plancher 46.44 s                     OUI  non classée 12
+act-plafonds       --tout    0    4    4   4   0    0      —  53 s ≥ plancher 4.92 s                       OUI  non classée 4
+argon2             --tout    0    3    3   3   0    0      —  16 s ≥ plancher 4.83 s                       OUI  non classée 3
+available-on-api   --tout    0   13   13  13   0    0      —  LUE                                          OUI  lue hors chemin 13
+available-on       --tout    0   10   10  10   0    0      —  213 s ≥ plancher 38.73 s                     OUI  non classée 10
+b7                 --tout    0    3    3   3   0    0      —  213 s ≥ plancher 5.01 s                      OUI  non classée 3
+booking-status     --tout    0    3    3   3   0    0      —  16 s ≥ plancher 4.89 s                       OUI  non prouvée (R1) 3
+budgets            --tout    0    4    4   4   0    0      —  32 s ≥ plancher 0.84 s                       OUI  non classée 4
+e3d1-s8            --int     0    8    8   8   0    0    8/8  81 s ≥ plancher 8.7 s                        OUI  non prouvée (R1) 8
+horizon            --tout    0    6    6   6   0    0      —  114 s ≥ plancher 22.92 s                     OUI  non classée 6
+horloge            --tout    0    2    2   2   0    0      —  54 s ≥ plancher 4.44 s                       OUI  non classée 2
+journey            --tout    0    7    7   7   0    0      —  266 s ≥ plancher 38.55 s                     OUI  non classée 7
+maxprice           --tout    0   10   10  10   0    0      —  213 s ≥ plancher 38.13 s                     OUI  non classée 10
+r25                --int     0   11   11  11   0    0      —  LUE                                          OUI  lue hors chemin 11
+r26                --e2e     0    4    4   4   0    0      —  LUE                                          OUI  lue chemin 1 · lue hors chemin 3
+r29                --tout    0   15   15  15   0    0      —  131 s ≥ plancher 4.65 s                      OUI  non classée 15
+r30                --tout    0    8    8   8   0    0      —  60 s ≥ plancher 4.62 s                       OUI  non classée 8
+r4                 --tout    0    2    2   2   0    0    2/2  67 s ≥ plancher 4.5 s                        OUI  non prouvée (R1) 2
+rang23             --tout    0   12   12  12   0    0  12/12  LUE                                          OUI  lue chemin 12
+s10a               --tout    0   13   13  13   0    0      —  70 s ≥ plancher 4.41 s                       OUI  non classée 13
+s10b               --tout    0   20   20  20   0    0      —  96 s ≥ plancher 4.59 s                       OUI  non prouvée (R1) 20
+s11a               --tout    0   18   18  18   0    0      —  64 s ≥ plancher 4.47 s                       OUI  non prouvée (R1) 2 · non classée 16
+s11b               --int     0   13   13  13   0    0  13/13  260 s ≥ plancher 4.44 s                      OUI  non prouvée (R1) 13
+s9                 --tout    0    6    6   6   0    0      —  46 s ≥ plancher 4.44 s                       OUI  non classée 6
+solid-s1           --int     0    2    2   2   0    0    2/2  230 s ≥ plancher 4.47 s                      OUI  non classée 2
+solid-s2           --int     0    5    5   5   0    0    5/5  234 s ≥ plancher 4.77 s                      OUI  non classée 5
+solid-s3           --int     0    6    6   6   0    0    6/6  309 s ≥ plancher 4.47 s                      OUI  non prouvée (R1) 6
+solid-s4           --tout    0    7    7   7   0    0      —  29 s ≥ plancher 4.56 s                       OUI  non prouvée (R1) 7
+solid-s5a          --tout    0    9    9   9   0    0      —  39 s ≥ plancher 5.13 s                       OUI  non prouvée (R1) 9
+solid-s5b          --tout    0    5    5   5   0    0    5/5  283 s ≥ plancher 4.5 s                       OUI  non prouvée (R1) 5
+solid-s6           --int     0    6    6   6   0    0    6/6  242 s ≥ plancher 4.44 s                      OUI  non prouvée (R1) 6
+solid-s7           --tout    0    2    2   2   0    0      —  109 s ≥ plancher 4.23 s                      OUI  non classée 2
+
+CERTIFIANT : 249 mordues · 0 muettes · 0 non mesurées · 32 campagnes qui COMPTENT sur 32 (attendu 32) · déclarées 249
+ÉTIQUETTES : lue chemin 13 · lue hors chemin 27 · non prouvée (R1) 81 · non classée 128 · somme 249

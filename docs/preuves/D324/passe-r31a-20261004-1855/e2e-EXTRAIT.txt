@@ -1,0 +1,60 @@
+EXTRAIT DÉRIVÉ de .neutralisation-journaux/r31a-20261004-1855/e2e.log — PAS la pièce brute (critère du rang 9, point 9 ; D294, D299).
+Le journal brut reste HORS DÉPÔT : il porte des jetons de vérification d'e-mail imprimés par le
+serveur de développement. Une preuve ne se caviarde pas (D291) : ceci est une LISTE BLANCHE — Running,
+chaque ligne de résultat, le résumé, les blocs d'échec, et 3 lignes autour de toute ligne « fail ».
+Codes ANSI retirés. En tête de chaque ligne gardée : son numéro dans le journal.
+lignes parcourues : 1221 (attendu 1221, par les octets de saut de ligne) · gardées : 47
+Running : [44] · résumé : {'skipped': 1, 'passed': 43}
+recompte : `ok` 43 ⇔ passed 43 → ✓
+recompte : `x` 0 ⇔ failed + interrupted 0 → ✓
+recompte : `-` 1 ⇔ skipped 1 → ✓
+recompte : lignes de résultat 44 ⇔ Running − did not run 44 → ✓
+lignes « fail » du journal : 0 · gardées avec leur fenêtre : 0 (attendu 0)
+--- lignes gardées ---
+00233 | Running 44 tests using 2 workers
+00252 |   ok 1 [warmup] › specs\warmup.setup.ts:54:5 › préchauffe les routes des deux applications (14.6s)
+00284 |   ok 3 [chromium] › specs\a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token) (2.7s)
+00285 |   ok 2 [chromium] › specs\a1-session-bootstrap.e2e.ts:27:7 › A1 — bootstrap de session › Pro : rechargement direct d'une route protégée = UN SEUL POST /auth/refresh (2.7s)
+00324 |   ok 5 [chromium] › specs\a1-session-bootstrap.e2e.ts:43:7 › A1 — bootstrap de session › Client : rechargement d'une page publique déclenche aussi UN SEUL refresh (3.2s)
+00325 |   ok 4 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas (3.3s)
+00374 |   ok 7 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities (3.4s)
+00375 |   ok 6 [chromium] › specs\a1-session-bootstrap.e2e.ts:60:7 › A1 — bootstrap de session › deux onglets rechargés quasi simultanément : AUCUN ne perd la session (3.7s)
+00413 |   ok 8 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles (3.2s)
+00414 |   ok 9 [chromium] › specs\a1-session-bootstrap.e2e.ts:96:7 › A1 — bootstrap de session › cookie refresh invalide : redirection propre vers la connexion, SANS boucle (3.4s)
+00452 |   ok 10 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings (2.1s)
+00475 |   ok 12 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings (2.2s)
+00476 |   ok 11 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › tableau de bord : même empreinte d'appels par les deux chemins (4.1s)
+00527 |   ok 13 [chromium] › specs\a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session (2.9s)
+00551 |   ok 14 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mes salles : même empreinte d'appels par les deux chemins (3.8s)
+00611 |   ok 16 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mon compte : même empreinte d'appels par les deux chemins (3.6s)
+00625 |   ok 15 [chromium] › specs\a2-mount-effects.e2e.ts:161:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée (5.3s)
+00637 |   ok 18 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-light : les tokens résolus n'ont pas bougé (1.9s)
+00648 |   ok 17 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › nouvelle salle : même empreinte d'appels par les deux chemins (3.7s)
+00649 |   ok 19 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-dark : les tokens résolus n'ont pas bougé (1.5s)
+00673 |   ok 21 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-light : les tokens résolus n'ont pas bougé (1.3s)
+00674 |   -  20 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:175:7 › A5 — parité navigation interne / rechargement › le calendrier d'une salle survit au rechargement (deux effets enchaînés)
+00678 |   ok 22 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-dark : les tokens résolus n'ont pas bougé (1.4s)
+00679 |   ok 24 [chromium] › specs\b7-token-contract.e2e.ts:250:7 › B7 — contrat des tokens résolus (D124) › un token partagé a la MÊME valeur dans les deux apps, au même thème (3ms)
+00681 |   ok 23 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (clair) : aucune NOUVELLE violation (3.2s)
+00728 |   ok 26 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (sombre) : aucune NOUVELLE violation (3.3s)
+00744 |   ok 27 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (arabe, RTL) : aucune NOUVELLE violation (3.3s)
+00762 |   ok 25 [chromium] › specs\r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation (5.1s)
+00764 |   ok 28 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation (3.1s)
+00785 |   ok 30 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client compte : aucune NOUVELLE violation (2.7s)
+00817 |   ok 31 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (clair) : aucune NOUVELLE violation (2.3s)
+00824 |   ok 32 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (sombre) : aucune NOUVELLE violation (2.4s)
+00846 |   ok 33 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro liste des salles : aucune NOUVELLE violation (2.6s)
+00847 |   ok 29 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › fr — « Se connecter pour demander » mène à la page de connexion réelle (6.9s)
+00869 |   ok 34 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro tableau de bord : aucune NOUVELLE violation (2.8s)
+00892 |   ok 35 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › ar — « سجّل الدخول لإرسال طلب » mène à la page de connexion réelle (3.7s)
+00906 |   ok 36 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro nouvelle salle : aucune NOUVELLE violation (2.8s)
+00907 |   ok 37 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur (2.1s)
+00954 |   ok 39 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › client — avec une demande : la section l'affiche en attente (2.2s)
+00955 |   ok 38 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro compte : aucune NOUVELLE violation (2.7s)
+00968 |   ok 41 [chromium] › specs\b8-accessibility.e2e.ts:204:7 › B8 — accessibilité automatisée (D125) › écrit la référence si demandé, et refuse de la deviner sinon (3ms)
+00974 |   ok 40 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur (958ms)
+00994 |   ok 43 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › pro — avec une demande : la section l'affiche en attente (1.2s)
+01104 |   ok 42 [chromium] › specs\r26-parcours-reservation.e2e.ts:108:5 › le pro ACCEPTE : la demande quitte ses demandes pour ses réservations, et le client la voit acceptée (7.3s)
+01209 |   ok 44 [chromium] › specs\r26-parcours-reservation.e2e.ts:129:5 › le pro REFUSE : la demande reste dans ses demandes, refusée, et le client voit le refus (7.3s)
+01215 |   1 skipped
+01216 |   43 passed (2.3m)

@@ -1,0 +1,9 @@
+temoin (aucune mutation)
+pre-vol de la DETECTION (mutation connue rouge)
+✓ le verify contre le hash factice est retire (le chemin devient GRATUIT)
+✓ la memoisation est retiree (le hash factice est recalcule a chaque appel)
+✓ la preimage devient le mot de passe soumis (la comparaison pourrait etre VRAIE)
+
+3 garde(s) mordue(s) sur 3 cible(s).
+arbre rendu a son etat de depart : verifie.
+

@@ -1,0 +1,58 @@
+D324 — LECTURE À LA MAIN DE R26-2 ET R26-4 (ET, EN PLUS, R26-1 ET R26-3), sous la règle du relecteur (chat) déléguée par Ko le 04/10/2026
+=============================================================================================================================================
+
+LA RÈGLE (bloc D323 de la méthode renforcée ; `AGENTS.md`, point E3), mot pour mot :
+  1. « Une assertion Playwright web-first (`expect(...)`) qui expire après ses réessais EST un échec d'assertion, donc une morsure, si l'échec lu
+     montre l'appel `expect` avec l'attendu et le reçu. »
+  2. « Le délai global d'un test, ou le délai d'une action (`click`, `goto`…), N'EST PAS une morsure. »
+  4. « Dans cette certification, R26-2 et R26-4 se vérifient À LA MAIN sous cette règle, sur leur sortie lue. »
+
+SUR QUOI LA LECTURE PORTE — la sortie de CETTE passe, pas celle de D322
+  Passe `r31a-20261004-1855`, étape 6b : `neutralize-r26.py --e2e`, du 20:38:23 au 20:45:19 (`e2e-r26.heures`, code 0, 416 s). Les journaux par
+  cible que le harnais écrit lui-même (`.neutralisation-journaux/r26/R26-n.log`, hors dépôt : ils portent des cookies et des jetons) ont pour
+  dates de modification 20:41:00 (R26-1), 20:42:27 (R26-2), 20:43:56 (R26-3) et 20:45:19 (R26-4) — **tous dans la fenêtre** de l'étape 6b. Ils sont
+  lus à la main dans leur EXTRAIT (`D322/outils/extraire.py`, copie de D316/D317 : retire les lignes `[WebServer]` et les codes ANSI, garde le
+  reste tel quel ; **0 valeur sensible dans chaque extrait**, imprimé par l'outil) : `lecture-r26/R26-1.txt` à `R26-4.txt`, versés avec ce fichier.
+
+CE QUE CHAQUE BLOC D'ÉCHEC MONTRE (numéros de ligne = ceux de l'extrait ; chaque cible joue deux tests, ACCEPTE et REFUSE, qui échouent TOUS LES DEUX ;
+le préchauffage `warmup.setup.ts` passe : « 2 failed · 1 passed »)
+
+  R26-2 — le pro lit « En attente » quel que soit le statut — extrait `lecture-r26/R26-2.txt`
+    test ACCEPTE (l. 105-119) : « Error: Timed out 7000ms waiting for expect(locator).toBeVisible() » · « Expected: visible » · « Received: <element(s) not
+      found> » · journal d'appel « waiting for getByRole('listitem').filter({ hasText: 'Amina Bensalem' }).getByText('Statut : Acceptée', { exact: true }) »
+      · ligne source « > 118 | await expect(reservee.getByText(statutPro(DEMANDES.st_ACCEPTED), { exact: true })).toBeVisible(); ».
+    test REFUSE (l. 142-160) : « Error: le pro ne voit pas son refus » puis « Timed out 7000ms waiting for expect(locator).toBeVisible() » · « Expected:
+      visible » · « Received: <element(s) not found> » · ligne source « > 134 | await expect(d.lignePro.getByText(statutPro(DEMANDES.st_DECLINED), { exact: true }),
+      "le pro ne voit pas son refus").toBeVisible(); ».
+    ⇒ **Règle 1 : SATISFAITE aux deux tests** — l'appel `expect` est nommé (`expect(locator).toBeVisible()`), l'attendu (« visible ») et le reçu (« élément
+      introuvable ») sont imprimés, et la ligne source est une assertion `expect(...)`. **Règle 2 : sans objet** — voir le contrôle des signatures, ci-dessous.
+
+  R26-4 — le client ne voit plus AUCUNE de ses demandes — extrait `lecture-r26/R26-4.txt`
+    test ACCEPTE (l. 105-125) : « Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected) » · « Expected: 1 » · « Received: 0 » · journal
+      d'appel « waiting for getByRole('region', { name: 'Mes réservations' }).getByRole('listitem').filter({ hasText: 'Salle e2e b7e62322' }) » · ligne
+      source « > 88 | await expect(avant).toHaveCount(1); ».
+    test REFUSE (l. 141-161) : « Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected) » · « Expected: 1 » · « Received: 0 » · même journal
+      d'appel avec la salle « Salle e2e 7662b2da » · ligne source « > 88 | await expect(avant).toHaveCount(1); ».
+    ⇒ **Règle 1 : SATISFAITE aux deux tests.** Règle 2 : sans objet.
+
+  Pour mémoire — lues aussi, ce que la décision n'exige pas :
+  R26-1 (extrait `R26-1.txt`) : « Error: le pro ne voit pas la demande du client dans ses demandes » puis « Timed out 7000ms waiting for
+    expect(locator).toHaveCount(expected) · Expected: 1 · Received: 0 », ligne source « > 100 | await expect(lignePro, "…").toHaveCount(1); » (deux tests).
+  R26-3 (extrait `R26-3.txt`) : « Error: le client ne voit pas l'acceptation » / « … le refus » puis « Timed out 7000ms waiting for
+    expect(locator).toBeVisible() · Expected: visible · Received: <element(s) not found> », lignes sources « > 122 | await expect(apres.getByText(SUIVI.st_ACCEPTED, …), "le
+    client ne voit pas l'acceptation").toBeVisible(); » et « > 140 | … st_DECLINED … ».
+  ⚠ **R26-1 et R26-3 s'ouvrent sur un message MAISON** (`expect(locator, "message")`), pas sur « Timed out » : c'est ce qui les range, pour le lecteur de `r26`,
+    « bloc `expect(` » ; le **même appel** `expect(locator)…` avec son attendu et son reçu est imprimé sous le message. La règle 1 est satisfaite pour eux aussi.
+
+CONTRÔLE DES SIGNATURES DE LA RÈGLE 2 — compté sur les quatre extraits, attendu 0 partout
+  motifs : « Test timeout of », « Test ended », `locator.click|fill|press`, `page.goto|waitFor`, « Timeout Nms exceeded », « exceeded while » (sans casse) →
+  **0, 0, 0, 0** (R26-1 à R26-4). Le seul délai présent est « Timed out 7000ms waiting for expect(locator)… » : le délai d'une **assertion web-first**, pas d'un
+  test ni d'une action.
+
+CE QUE CETTE LECTURE NE FAIT PAS
+  - Elle ne modifie **aucun lecteur** : le lecteur de `r26` (bras `_EXPECT` de sa calibration) range toujours l'expiration parmi les assertions *par construction*,
+    sans lire « l'attendu et le reçu » — c'est le **futur lot de code** du point 3 de la décision (relever et calibrer les signatures, puis les coder). La lecture à
+    la main **tient lieu** de ce lecteur pour cette passe, sur ces quatre cibles.
+  - Elle porte sur **une** exécution. Une autre exécution du même harnais peut échouer autrement (délai de test, d'action) — c'est précisément ce que la règle 2 sépare,
+    et que le lecteur futur devra séparer **sans** lecture humaine.
+  - Elle n'établit pas que R26-2 et R26-4 sont « du chemin de l'argent » : leur classement est celui du protocole (R26-3 seule, branche 6, **écart n° 3**).

@@ -1,0 +1,15 @@
+$ pnpm --filter @zwadj/api exec vitest run src/common/filters/all-exceptions.filter.spec.ts -t ROUTE INCONNUE
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/common/filters/all-exceptions.filter.spec.ts (6 tests | 5 skipped) 4ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  19:13:49
+   Duration  1.12s (transform 59ms, setup 0ms, collect 491ms, tests 4ms, environment 0ms, prepare 259ms)
+
+
+--- stderr ---
+
+--- code de sortie : 0 ---

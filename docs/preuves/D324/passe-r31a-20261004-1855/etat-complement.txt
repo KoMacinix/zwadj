@@ -1,0 +1,62 @@
+échantillons parcourus : 215 · dont ECHEC-INSTRUMENT : 0 (attendu 0)
+alimentation : ['SECTEUR'] (attendu ['SECTEUR']) · chrome max : 0 (attendu 0)
+PERF : min 75.9 · max 168.1 · au-dessus de 100 sur 196 échantillons sur 215
+écarts entre échantillons : 214 · min 31.0 s · max 33.0 s · au-delà de 60 s : 0
+sous la barre (4579 Mo) : 57 échantillon(s) — chacun avec ses node, chrome, nb_proc :
+  2026-10-04 19:04:38 · RAM 3640 · node 13 · chrome 0 · nb_proc 360
+  2026-10-04 19:05:09 · RAM 3169 · node 15 · chrome 0 · nb_proc 370
+  2026-10-04 19:05:41 · RAM 2847 · node 19 · chrome 0 · nb_proc 378
+  2026-10-04 19:06:13 · RAM 3156 · node 14 · chrome 0 · nb_proc 367
+  2026-10-04 19:07:47 · RAM 4100 · node 14 · chrome 0 · nb_proc 354
+  2026-10-04 19:08:51 · RAM 4129 · node 14 · chrome 0 · nb_proc 355
+  2026-10-04 19:09:54 · RAM 3912 · node 14 · chrome 0 · nb_proc 354
+  2026-10-04 19:10:59 · RAM 3997 · node 14 · chrome 0 · nb_proc 355
+  2026-10-04 19:15:43 · RAM 4011 · node 14 · chrome 0 · nb_proc 359
+  2026-10-04 19:16:46 · RAM 3988 · node 14 · chrome 0 · nb_proc 358
+  2026-10-04 19:17:49 · RAM 3810 · node 14 · chrome 0 · nb_proc 356
+  2026-10-04 19:18:21 · RAM 4539 · node 2 · chrome 0 · nb_proc 344
+  2026-10-04 19:18:52 · RAM 3593 · node 13 · chrome 0 · nb_proc 367
+  2026-10-04 19:19:24 · RAM 4417 · node 5 · chrome 0 · nb_proc 350
+  2026-10-04 19:19:55 · RAM 3100 · node 12 · chrome 0 · nb_proc 366
+  2026-10-04 19:20:27 · RAM 3780 · node 9 · chrome 0 · nb_proc 355
+  2026-10-04 19:20:59 · RAM 3254 · node 9 · chrome 0 · nb_proc 358
+  2026-10-04 19:21:30 · RAM 3565 · node 12 · chrome 0 · nb_proc 363
+  2026-10-04 19:23:05 · RAM 4541 · node 1 · chrome 0 · nb_proc 338
+  2026-10-04 19:23:37 · RAM 4419 · node 14 · chrome 0 · nb_proc 354
+  2026-10-04 19:24:08 · RAM 4029 · node 14 · chrome 0 · nb_proc 354
+  2026-10-04 19:24:40 · RAM 3957 · node 14 · chrome 0 · nb_proc 354
+  2026-10-04 19:26:15 · RAM 4076 · node 14 · chrome 0 · nb_proc 354
+  2026-10-04 19:27:51 · RAM 4009 · node 14 · chrome 0 · nb_proc 356
+  2026-10-04 19:29:25 · RAM 4372 · node 7 · chrome 0 · nb_proc 351
+  2026-10-04 19:29:57 · RAM 4330 · node 7 · chrome 0 · nb_proc 350
+  2026-10-04 19:30:29 · RAM 4559 · node 14 · chrome 0 · nb_proc 357
+  2026-10-04 19:31:00 · RAM 3979 · node 14 · chrome 0 · nb_proc 357
+  2026-10-04 19:32:04 · RAM 3959 · node 14 · chrome 0 · nb_proc 360
+  2026-10-04 19:33:07 · RAM 4005 · node 14 · chrome 0 · nb_proc 358
+  2026-10-04 19:34:42 · RAM 4502 · node 14 · chrome 0 · nb_proc 361
+  2026-10-04 20:01:03 · RAM 4120 · node 14 · chrome 0 · nb_proc 362
+  2026-10-04 20:02:06 · RAM 4102 · node 14 · chrome 0 · nb_proc 359
+  2026-10-04 20:05:47 · RAM 3662 · node 12 · chrome 0 · nb_proc 360
+  2026-10-04 20:06:50 · RAM 3530 · node 12 · chrome 0 · nb_proc 364
+  2026-10-04 20:07:53 · RAM 3488 · node 12 · chrome 0 · nb_proc 363
+  2026-10-04 20:09:28 · RAM 4531 · node 2 · chrome 0 · nb_proc 340
+  2026-10-04 20:10:00 · RAM 4578 · node 5 · chrome 0 · nb_proc 346
+  2026-10-04 20:10:31 · RAM 3384 · node 13 · chrome 0 · nb_proc 364
+  2026-10-04 20:11:34 · RAM 3394 · node 12 · chrome 0 · nb_proc 365
+  2026-10-04 20:12:06 · RAM 3607 · node 16 · chrome 0 · nb_proc 367
+  2026-10-04 20:12:37 · RAM 4060 · node 9 · chrome 0 · nb_proc 354
+  2026-10-04 20:13:09 · RAM 3418 · node 12 · chrome 0 · nb_proc 365
+  2026-10-04 20:15:15 · RAM 4533 · node 4 · chrome 0 · nb_proc 345
+  2026-10-04 20:29:29 · RAM 4549 · node 4 · chrome 0 · nb_proc 347
+  2026-10-04 20:38:59 · RAM 3729 · node 13 · chrome 0 · nb_proc 366
+  2026-10-04 20:39:30 · RAM 3151 · node 13 · chrome 0 · nb_proc 368
+  2026-10-04 20:40:02 · RAM 3181 · node 14 · chrome 0 · nb_proc 366
+  2026-10-04 20:40:34 · RAM 3199 · node 12 · chrome 0 · nb_proc 364
+  2026-10-04 20:41:37 · RAM 3376 · node 12 · chrome 0 · nb_proc 365
+  2026-10-04 20:42:08 · RAM 3754 · node 14 · chrome 0 · nb_proc 364
+  2026-10-04 20:42:40 · RAM 4275 · node 6 · chrome 0 · nb_proc 351
+  2026-10-04 20:43:11 · RAM 3016 · node 12 · chrome 0 · nb_proc 366
+  2026-10-04 20:43:43 · RAM 3287 · node 13 · chrome 0 · nb_proc 367
+  2026-10-04 20:44:15 · RAM 3848 · node 9 · chrome 0 · nb_proc 356
+  2026-10-04 20:44:46 · RAM 3339 · node 12 · chrome 0 · nb_proc 365
+  2026-10-04 20:45:18 · RAM 3231 · node 12 · chrome 0 · nb_proc 367

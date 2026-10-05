@@ -1,0 +1,9 @@
+✓ Pré-vol : 4 mesure(s) verte(s) — coeur, visites, int-reservations, int-visites
+
+✓ S2-1. ⚠ LA TRACE S'ÉCRIT APRÈS L'ENVOI — un process tué ne laisse plus rien à rejouer  [coeur]
+✓ S2-2. La résolution SENT saute : la ligne reste QUEUED pour toujours  [coeur, visites, int-reservations, int-visites]
+✓ S2-3. L'échec d'envoi n'écrit plus FAILED — l'échec devient invisible en base  [coeur, visites, int-reservations]
+✓ S2-4. La TRONCATURE à 500 saute : un motif à rallonge part entier vers la colonne  [coeur]
+✓ S2-5. ⚠ LE SILENCE TOMBE : l'échec d'écriture de la trace REMONTE à l'appelant (D63)  [coeur, visites]
+
+5 garde(s) mordue(s) sur 5 cible(s) RÉELLEMENT MESURÉE(S).

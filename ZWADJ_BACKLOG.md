@@ -2476,6 +2476,13 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 04/10/2026 — rang 31, partie B : la certification (D324)
+
+Détail : section D324 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302).
+
+- [ ] **[MÉTHODE]** **`r25` et `r26` n'ont AUCUN plancher mesuré** — écart n° 1 de D324, reconduit de D319 : preuve de démarrage LUE (calibration embarquée + collecte par cible), **moins profonde** que celle d'`available-on-api`, parce que la cale de `PATH` n'a **jamais été éprouvée** sur la forme `pnpm … exec playwright test`. ⇒ **BLOQUE** : rien d'ouvert ; **à ordonner par Ko**. ⇒ **COÛT** : **documentaire** — procédure archivée comme preuve sous `docs/preuves/` (ne compte pas, D292) : prouver d'abord la cale sur cette forme (deux bras), puis simuler le non-démarrage de `r25` (`--int --e2e`) et de `r26` (`--e2e`) ; ⚠ l'e2e exige la base et des ports libres, et un non-démarrage doit s'arrêter à leur pré-vol — **à mesurer, pas à supposer**.
+- [ ] **[INFRA]** **La sonde d'état machine COMPTE les `node` sans les NOMMER** — à l'ouverture de la partie B elle a rendu « `NODE=9` » ; il a fallu un `Get-CimInstance` à part pour voir que ce sont les serveurs de dev de Ko (`pnpm dev` : next, vite, nest `--watch`, `tsc --watch`). Une session ne devrait pas avoir à deviner si elle peut les arrêter. ⇒ **BLOQUE** : rien ; **à ordonner par Ko**. ⇒ **COÛT** : **code d'instrument qui COMPTE** (`neutralisation/sonde-etat-machine.ps1` : un inventaire des `node` avec leur ligne de commande, comme celui du détail > 150 Mo) ; calibration à deux bras ; la marque de D324 vaut pour un poste **sans** serveurs de dev, ce que la sonde pourrait dire.
+
 ## Reports du 04/10/2026 — rang 31, la certification qui couvre D321 et D322 (D323)
 
 Détail : section D323 de `ZWADJ_CONTINUITE.md`. Forme de Ko (D302) : **ce que l'entrée bloque** (ou « à ordonner par Ko ») et **son coût**, sans
@@ -2484,7 +2491,7 @@ de mois… `ar` / `ar-DZ` », « une assertion Playwright qui EXPIRE… », « l
 `outputFileTracingRoot` », l'entrée de D321 « Un créneau `REQUESTED` n'est pas choisissable » et les deux entrées du `fetch failed` de D265,
 **annotées** de l'arbitrage de Ko qui les tranche ; les entrées de D321 « les deux calendriers » et « les autres adresses de pages écrites en dur »,
 annotées du lot « source unique » ; l'entrée `[DOC][P3]` « POURQUOI (b) ».
-⛔ **« TOUT CE QUE LES ARBITRAGES DE KO REPOUSSENT DEVIENT UNE ENTRÉE OUVERTE »** (Ko, D321) — les cinq premières ci-dessous, mot pour mot.
+⛔ **« TOUT CE QUE LES ARBITRAGES DE KO REPOUSSENT DEVIENT UNE ENTRÉE OUVERTE »** (Ko, D321) — les cinq premières ci-dessous, mot pour mot. ⛔ *(D324, 04/10/2026 : **compteur ZÉRO** — la certification est passée ; « aucun lot de code ne s'ouvre avant la certification », écrit dans des entrées ci-dessous, est **LEVÉ**. Chaque entrée garde ce qu'elle bloque et son coût ; **aucune n'a de rang**.)*
 
 - [ ] **[CLIENT]** **Le jour déjà demandé (`REQUESTED`) devient SÉLECTIONNABLE, avec un avis** — ⛔ **ARBITRÉ PAR KO le 04/10/2026, mot pour mot :
   « Le jour déjà demandé (`REQUESTED`) devient sélectionnable, avec un avis indiquant que d'autres demandes sont en attente. Motif : l'API accepte
@@ -2534,6 +2541,7 @@ annotées du lot « source unique » ; l'entrée `[DOC][P3]` « POURQUOI (b) ».
   pour ses harnais e2e** ; **à ordonner par Ko**. ⇒ **COÛT** : **code d'instrument (compte)** — `neutralisation/neutralize-r25.py`, `r26`, `r29` ;
   un relevé des signatures **d'abord** (deux bras par signature) ; `--e2e` exigée pour la preuve. ⚠ **Dans la certification du rang 31, R26-2 et R26-4
   se vérifient À LA MAIN**, sur leur sortie lue — ce lot-ci ne touche à aucun lecteur.
+  ⛔ *(D324, 04/10/2026 — **LECTURE À LA MAIN FAITE**, sur la sortie de la passe de certification : R26-2 et R26-4 (et R26-1, R26-3) satisfont la règle 1 — l'appel `expect(locator)…` avec son attendu et son reçu est imprimé — ; **aucune signature de délai de test ou d'action** (`P/lecture-main-r26.txt`, rang 31). **Ce que le futur lecteur devra séparer** : DEUX formes d'ouverture de bloc — « Error: Timed out 7000ms waiting for expect(locator)… » (R26-2 ACCEPTE, R26-4) et « Error: <message maison> » suivi du même « Timed out … » (R26-1, R26-3, R26-2 REFUSE) — **et** le délai d'un test ou d'une action, absent ici. L'entrée reste ouverte : le lecteur n'est pas codé.)*
 - [ ] **[PRO][MÉTHODE]** **8 lignes non commitées, sans origine écrite, dans `apps/pro/src/venues/edit-venue-page.tsx`, trouvées à l'ouverture du
   rang 31** — `setFormError(t("venue.ui.wizard.step1Invalid"))` + `scrollTo` sur les erreurs, `setNotice(t("venue.ui.form.saved"))` + `scrollTo` sur un
   diff vide sans étape suivante ; commentaire : « étape 7 : « Enregistrer » ne faisait RIEN, sans requête ni message ». `mtime` 02/10/2026 20:21:29,
