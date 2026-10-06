@@ -1,0 +1,7 @@
+   ✓ page VIDE : zéro pixel non blanc (négatif) — 400×200, 0 non blancs
+   ✓ PDF de la preuve : des milliers de pixels non blancs (positif) — 1190×1684, 55138 non blancs
+== calibration : 2 bras, 0 manqué
+
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D326\arabe\pages\devis-ar-avec-police-p1.png — 952×1348 px · 38976 pixels non blancs parcourus sur 1283296
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D326\arabe\pages\devis-ar-temoin-sans-police-p1.png — 952×1348 px · 31738 pixels non blancs parcourus sur 1283296
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D326\arabe\pages\devis-fr-avec-police-p1.png — 952×1348 px · 40878 pixels non blancs parcourus sur 1283296

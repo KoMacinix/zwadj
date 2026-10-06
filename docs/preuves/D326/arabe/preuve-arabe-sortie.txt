@@ -1,0 +1,6 @@
+# EXTRAIT de preuve-arabe.log — produit par docs/preuves/D325/e2e/extraire.py
+# 282 lignes examinées, 176 lignes de serveur écartées, 1 résultats, 0 blocs d'échec
+# Les lignes ci-dessous sont COPIÉES telles quelles (codes ANSI retirés) ; rien n'est reformulé.
+
+  ok 1 [chromium] › ..\docs\preuves\D326\arabe\preuve-arabe.capture.ts:182:5 › preuve de l'arabe : un devis RÉEL, créé par l'API, rendu en PDF par le Chromium de Playwright (13.8s)
+  1 passed (44.5s)

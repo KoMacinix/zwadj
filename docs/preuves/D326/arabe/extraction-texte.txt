@@ -1,0 +1,69 @@
+== CALIBRATION — deux bras par classe, abandon si un seul manque
+   ✓ telle quelle (positif) : 'telle quelle' (attendu 'telle quelle')
+   ✓ telle quelle (négatif : un autre texte) : 'absente' (attendu 'absente')
+   ✓ après NFKC (positif : « ﻗ » U+FED7 pour « ق » U+0642) : 'après NFKC' (attendu 'après NFKC')
+   ✓ après NFKC (négatif : la lettre de base est la seule présente) : 'absente' (attendu 'absente')
+   ✓ à l'envers (positif) : "à l'envers" (attendu "à l'envers")
+   ✓ à l'envers (négatif : le texte n'est ni l'un ni l'autre) : 'absente' (attendu 'absente')
+   ✓ mots seuls (positif) : 'mots seuls' (attendu 'mots seuls')
+   ✓ mots seuls (négatif : un mot manque) : 'absente' (attendu 'absente')
+== calibration : 8 bras, 0 manqué
+
+## docs/preuves/D326/arabe/sortie/devis-ar-avec-police.pdf
+  pdftotext -raw : 479 caractères · 31 lignes non vides · 17 chaînes source parcourues → absente 1 · mots seuls 7 · à l'envers 9
+     - salle : à l'envers   source « قاعة الياسمين للأفراح والمناسبات »
+     - client : à l'envers   source « آمنة بن سالم »
+     - créneau (nom) : à l'envers   source « سهرة »
+     - prestation 1 : absente   source « تنشيط موسيقي بفرقة حيّة »
+     - prestation 2 : à l'envers   source « بوفيه مفتوح للضيوف »
+     - prestation 3 : à l'envers   source « تصوير فوتوغرافي وفيديو للحفل »
+     - libellé 1 : à l'envers   source « عرض السعر »
+     - libellé 2 : à l'envers   source « العربون »
+     - libellé 3 : à l'envers   source « كراء القاعة »
+     - libellé 4 : à l'envers   source « الخدمات »
+     - montant 1 : mots seuls   source « 180 000 DA »
+     - montant 2 : mots seuls   source « 450 000 DA »
+     - montant 3 : mots seuls   source « 630 000 DA »
+     - montant 4 : mots seuls   source « 189 000 DA »
+     - montant 5 : mots seuls   source « 45 000 DA »
+     - montant 6 : mots seuls   source « 375 000 DA »
+     - montant 7 : mots seuls   source « 30 000 DA »
+  pdftotext -layout : 1219 caractères · 18 lignes non vides · 17 chaînes source parcourues → absente 1 · mots seuls 7 · telle quelle 9
+     - prestation 1 : absente   source « تنشيط موسيقي بفرقة حيّة »
+     - montant 1 : mots seuls   source « 180 000 DA »
+     - montant 2 : mots seuls   source « 450 000 DA »
+     - montant 3 : mots seuls   source « 630 000 DA »
+     - montant 4 : mots seuls   source « 189 000 DA »
+     - montant 5 : mots seuls   source « 45 000 DA »
+     - montant 6 : mots seuls   source « 375 000 DA »
+     - montant 7 : mots seuls   source « 30 000 DA »
+
+## docs/preuves/D326/arabe/sortie/devis-ar-temoin-sans-police.pdf
+  pdftotext -raw : 479 caractères · 31 lignes non vides · 17 chaînes source parcourues → absente 1 · mots seuls 7 · à l'envers 9
+     - salle : à l'envers   source « قاعة الياسمين للأفراح والمناسبات »
+     - client : à l'envers   source « آمنة بن سالم »
+     - créneau (nom) : à l'envers   source « سهرة »
+     - prestation 1 : absente   source « تنشيط موسيقي بفرقة حيّة »
+     - prestation 2 : à l'envers   source « بوفيه مفتوح للضيوف »
+     - prestation 3 : à l'envers   source « تصوير فوتوغرافي وفيديو للحفل »
+     - libellé 1 : à l'envers   source « عرض السعر »
+     - libellé 2 : à l'envers   source « العربون »
+     - libellé 3 : à l'envers   source « كراء القاعة »
+     - libellé 4 : à l'envers   source « الخدمات »
+     - montant 1 : mots seuls   source « 180 000 DA »
+     - montant 2 : mots seuls   source « 450 000 DA »
+     - montant 3 : mots seuls   source « 630 000 DA »
+     - montant 4 : mots seuls   source « 189 000 DA »
+     - montant 5 : mots seuls   source « 45 000 DA »
+     - montant 6 : mots seuls   source « 375 000 DA »
+     - montant 7 : mots seuls   source « 30 000 DA »
+  pdftotext -layout : 1218 caractères · 18 lignes non vides · 17 chaînes source parcourues → absente 1 · mots seuls 7 · telle quelle 9
+     - prestation 1 : absente   source « تنشيط موسيقي بفرقة حيّة »
+     - montant 1 : mots seuls   source « 180 000 DA »
+     - montant 2 : mots seuls   source « 450 000 DA »
+     - montant 3 : mots seuls   source « 630 000 DA »
+     - montant 4 : mots seuls   source « 189 000 DA »
+     - montant 5 : mots seuls   source « 45 000 DA »
+     - montant 6 : mots seuls   source « 375 000 DA »
+     - montant 7 : mots seuls   source « 30 000 DA »
+

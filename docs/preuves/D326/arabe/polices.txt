@@ -1,0 +1,39 @@
+== CALIBRATION — deux bras par cas, abandon si un seul manque
+   ✓ police composite embarquée (positif : le type 0 ET son descendant se lisent embarqués) : [('AAAAAA+ReadexPro-Regular', 'Type0', True), ('AAAAAA+ReadexPro-Regular', 'CIDFontType2', True)] (attendu [('AAAAAA+ReadexPro-Regular', 'Type0', True), ('AAAAAA+ReadexPro-Regular', 'CIDFontType2', True)])
+   ✓ police composite dont le descripteur ne référence AUCUN fichier de police (négatif : non embarquée) : [False, False] (attendu [False, False])
+   ✓ police de base non embarquée (négatif : se lit « non embarquée ») : [('Helvetica', 'Type1', False)] (attendu [('Helvetica', 'Type1', False)])
+   ✓ PDF sans police (négatif : aucune) : [] (attendu [])
+   ✓ même police composite dans un flux d'objets compressé : [('AAAAAA+ReadexPro-Regular', 'Type0', True)] (attendu [('AAAAAA+ReadexPro-Regular', 'Type0', True)])
+   ✓ préfixe de sous-ensemble retiré : 'ReadexPro-Regular' (attendu 'ReadexPro-Regular')
+   ✓ pas de préfixe : inchangé : 'Helvetica' (attendu 'Helvetica')
+== calibration : 7 bras, 0 manqué
+
+docs/preuves/D326/arabe/sortie/devis-ar-avec-police.pdf — 30430 octets · 36 objets lus · 1 page(s) · 12 police(s) :
+   EMBARQUÉE  Type0          AAAAAA+ReadexPro-SemiBold
+   EMBARQUÉE  Type0          BAAAAA+ReadexPro-SemiBold
+   EMBARQUÉE  Type0          CAAAAA+ReadexPro-Regular
+   EMBARQUÉE  Type0          DAAAAA+ReadexPro-Regular
+   EMBARQUÉE  Type0          DAAAAA+ReadexPro-Regular
+   EMBARQUÉE  Type0          CAAAAA+ReadexPro-Regular
+   EMBARQUÉE  CIDFontType2   AAAAAA+ReadexPro-SemiBold
+   EMBARQUÉE  CIDFontType2   BAAAAA+ReadexPro-SemiBold
+   EMBARQUÉE  CIDFontType2   CAAAAA+ReadexPro-Regular
+   EMBARQUÉE  CIDFontType2   DAAAAA+ReadexPro-Regular
+   EMBARQUÉE  CIDFontType2   DAAAAA+ReadexPro-Regular
+   EMBARQUÉE  CIDFontType2   CAAAAA+ReadexPro-Regular
+docs/preuves/D326/arabe/sortie/devis-ar-temoin-sans-police.pdf — 53915 octets · 21 objets lus · 1 page(s) · 6 police(s) :
+   EMBARQUÉE  Type0          AAAAAA+SegoeUI-Semibold
+   EMBARQUÉE  Type0          BAAAAA+SegoeUI
+   EMBARQUÉE  Type0          BAAAAA+SegoeUI
+   EMBARQUÉE  CIDFontType2   AAAAAA+SegoeUI-Semibold
+   EMBARQUÉE  CIDFontType2   BAAAAA+SegoeUI
+   EMBARQUÉE  CIDFontType2   BAAAAA+SegoeUI
+docs/preuves/D326/arabe/sortie/devis-fr-avec-police.pdf — 20905 octets · 26 objets lus · 1 page(s) · 8 police(s) :
+   EMBARQUÉE  Type0          AAAAAA+ReadexPro-SemiBold
+   EMBARQUÉE  Type0          BAAAAA+ReadexPro-Regular
+   EMBARQUÉE  Type0          CAAAAA+ReadexPro-Regular
+   EMBARQUÉE  Type0          BAAAAA+ReadexPro-Regular
+   EMBARQUÉE  CIDFontType2   AAAAAA+ReadexPro-SemiBold
+   EMBARQUÉE  CIDFontType2   BAAAAA+ReadexPro-Regular
+   EMBARQUÉE  CIDFontType2   CAAAAA+ReadexPro-Regular
+   EMBARQUÉE  CIDFontType2   BAAAAA+ReadexPro-Regular
