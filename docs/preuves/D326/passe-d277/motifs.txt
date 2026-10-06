@@ -1,0 +1,35 @@
+# D326 — motifs de la passe D277 de la PARTIE A du rang 33 (documentaire : arbitrage de Ko, quatorze décisions du relecteur, lecture adverse de D325, relevés, table). Format : <sens>|<motif>.
+# Lus par balayage.py (copie à l'octet de celui de D325, `cmp` identique), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que la partie A INVALIDE : « le rang 33 est en attente d'arbitrage / seulement désigné » ; « le PDF de l'acompte est un candidat » ; les six décisions de D325 « à ratifier » (ratifiées) ;
+#          « la relecture des 31 clés arabes / le drapeau / Précédent à faire vérifier » (faits par Ko) ; « la liste d'étapes de l'assistant : à ordonner par Ko » (elle entre au rang 33) ;
+#          les deux réparations bonus « à ordonner par Ko » (préchauffage, 360 px : entrent au rang 33) ; « Zwadj n'imprime rien et n'envoie rien » (à retirer par le CODE du lot, quatre endroits).
+# sens 2 — ce que la partie A REND PERMIS, ou dont la CONDITION change : « un lot de code de plus est tenable » (le rang 33 le consomme à sa clôture) ; « le rang 33 le porterait à DEUX » ;
+#          « aucun lot de code ne s'ouvre avant une certification » ; « ADM-1 … lot de code suivant » ; « le moteur de rechange » (la preuve de l'arabe peut le faire revenir à Ko).
+1|RANG 33 : EN ATTENTE
+1|rang 33 : en attente
+1|candidat DÉSIGNÉ
+1|candidat désigné
+1|à RATIFIER PAR KO
+1|à ratifier par Ko
+1|À RATIFIER PAR KO
+1|31 clés arabes
+1|À FAIRE VÉRIFIER PAR KO
+1|liste d'étapes de l'assistant
+1|« 1. 01L'essentiel »
+1|ajoutées au rang 33
+1|n'imprime rien
+1|le PDF récapitulatif de l'acompte
+1|LE PDF DE L'ACOMPTE
+2|un lot de code de plus est tenable
+2|un seul lot de code de plus
+2|le rang 33 le porterait à DEUX
+2|aucun lot de code ne s'ouvre
+2|compteur UN
+2|compteur **UN**
+2|compteur DEUX
+2|trois non
+2|ADM-1 n'est plus
+2|lot de code suivant
+2|moteur de rechange
+T+|ZWADJ
+T-|zzz-motif-absent-d326a

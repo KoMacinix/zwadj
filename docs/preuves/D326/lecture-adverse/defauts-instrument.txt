@@ -1,0 +1,43 @@
+DÉFAUTS DE MON INSTRUMENT — première passe complète de `confronter-d325.py` (calibration 29 bras, 0 manqué ; abandon d'abord à 28 bras sur 29 : voir (0)).
+Chaque ✗ a été confronté à la SORTIE BRUTE avant d'être attribué (D275). Les lignes ci-dessous sont celles de la première passe, COPIÉES de la console ; l'instrument a ensuite
+été réparé, ses bras de calibration relus, et REJOUÉ EN ENTIER (D298) — la sortie versée (`confronter-sortie.txt`) est celle du rejeu final.
+
+(0) CALIBRATION, premier lancement : « ✗ tableau attendu positif : ['/', 'W'] (attendu ['a/b.ts', 'ZW.md']) » — l'instrument a REFUSÉ de juger (« CALIBRATION : 1 bras manqué »).
+    Cause : `re.findall` avec UN groupe rend des chaînes, et `r[1]` prenait le deuxième CARACTÈRE. Réparé, relancé : 29 bras, 0 manqué. La garde de calibration a fait son travail.
+
+PREMIÈRE PASSE COMPLÈTE : 99 contrôles · 9 écarts, dont 7 sont des défauts de l'INSTRUMENT et 2 des écarts de D325. PASSE FINALE : 109 contrôles · 3 écarts de D325 · 0 de l'état reçu · 2 constats.
+
+DÉFAUTS D'INSTRUMENT (7) :
+✗ P6d    attendu ['apps/pro/src/venues/venue-wizard.test.tsx', 'e2e/specs/r32-nouvelle-reservation.e2e.ts'] · mesuré [+ 'apps/client/src/lib/login-path-guard.test.ts', + 'docs/preuves/D325/navigateur/r32-nouvelle-reservation.e2e.ts', + 'neutralisation/lancer-campagnes.py']
+         → mon attendu était INCOMPLET. Deux jetons sont CITÉS par une extension (« patron de `login-path-guard.test.ts` », « par `lancer-campagnes.py` »), pas déclarés ; et la
+           destination du déplacement (extension 10) entre par la CLÔTURE, pas par le commit de code. Réparé : les jetons cités se prouvent dans le texte (P6e), la destination
+           se prouve absente du commit de code et présente à la clôture (P6f).
+✗ G-base attendu [(4, 39), (25, 344), (30, 352), (59, 667)] · mesuré [(39, 4), (344, 25), (352, 30), (667, 59)]
+         → ORIENTATION inversée entre deux extracteurs : le résumé vitest se lit (fichiers, tests), le texte de D325 écrit « tests/fichiers ». Les quatre paires sont les mêmes.
+✗ G-deltas attendu [(62, 1), (0,), (28, 4), (105, 4)] · mesuré [(670, -607), (35,), (347, -315), (427, -318)]
+         → la MÊME inversion (tests − fichiers : « 729 − 59 »). Un écart de −607 aurait dû se voir comme absurde à la première lecture ; il a été confronté à la sortie brute.
+✗ E7     attendu [1, 1] · mesuré [2, 2]
+         → l'attendu « 1 » n'était écrit NULLE PART — je l'avais supposé. Le bloc d'échec de r32 écrit « read ECONNRESET » DEUX fois (l'erreur et sa « [cause] »). Réparé : présence (≥ 1)
+           dans les passes 1 et 2, ABSENCE dans la passe 3, comptes imprimés.
+✗ K3     paires fr/ar « de même dimension » : 8 paires sur 13 diffèrent
+         → mon attendu était faux : la HAUTEUR d'une pleine page dépend de la langue (le texte arabe est plus court de 1 à 200 px). Réparé : même LARGEUR ; les dimensions s'impriment.
+✗ T2     attendu '33' · mesuré '20'
+         → l'expression « ⇒ RANG N : EN ATTENTE » était cherchée dans TOUT le fichier, dont les sections anciennes (rang 20) : restreinte à la section « ## ORDRE DES RANGS ».
+✗ T3     le bloc de clôture écrit « COMPTEUR UN » → False
+         → la phrase réelle est « compteur de lots de code non certifiés ZÉRO → UN » ; mes deux chaînes littérales ne la contenaient pas. Réparé par une expression.
+
+ÉCARTS DE D325 (2 à la première passe, 3 à la finale), conservés tels quels dans la sortie versée :
+✗ R7     « restauration 12 sur 12 » (rouge) : AUCUNE pièce versée ne porte la ligne « restauration : 12 fichier(s) identique(s) au départ sur 12 » — `rouge.py` l'imprime, mais les pièces
+         de `rouge/` sont les sorties PAR TEST. Le nombre 12 est exact par construction (R6 : 12 sources distinctes dans `rouge.py`) ; il n'est pas une SORTIE versée.
+✗ A2     le texte écrit « 149 fichiers, 6 451 423 octets » ; la pièce `aucune-valeur-reelle-final.txt` écrit « 151 fichiers, 6458060 octets ».
+
+DÉFAUT D'INSTRUMENT (8), apparu à l'ajout du contrôle T8 (après la première passe complète) :
+✗ T8     attendu 7 · mesuré 1
+         → première version : elle comptait `**(n) ` (le chiffre précédé de deux étoiles) ; seul « (1) » est en gras dans le bloc de clôture. Mesuré 1 au lieu de 6.
+           Réparé (`\((\d)\) `), REJOUÉ EN ENTIER : « attendu 7 · mesuré 6 » — c'est alors un ÉCART DE D325, pas de l'instrument (troisième écart ci-dessous).
+
+ÉCART DE D325 (3e) :
+✗ T8     le bloc de clôture écrit SIX décisions « À RATIFIER PAR KO » ; la section « Ce que la session a décidé SEULE » en numérote SEPT (la 7e : « Neuf gardes réécrites en assertions
+         natives… et un test ajouté côté Client »). Ko a ratifié « les six décisions telles quelles » : la septième n'a pas de ratification nommée.
+
+CONSTATS (2, aucun un défaut) : P14b (l'antériorité des dix extensions n'est pas démontrable par git : un seul commit) ; K5 (la capture « client-01-demande-360 » est celle d'un élément de 320 px).
