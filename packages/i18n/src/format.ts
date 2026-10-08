@@ -4,18 +4,13 @@ import type { AppLocale } from "./index";
  * Formate un montant en CENTIMES de DZD (invariant : argent en entiers)
  * vers une chaîne localisée. Le formatage locale n'intervient qu'à
  * l'affichage — jamais dans les calculs.
+ *
+ * ⚠ RÉEXPORTÉ DEPUIS `@zwadj/types` (rang 33, D326) : la formule y vit, UNE fois, parce que
+ * l'API — qui imprime des montants dans le PDF du devis — ne peut importer que du code
+ * compilé, et qu'une seconde formule serait deux endroits pour le même calcul. Le nom et la
+ * signature n'ont pas changé : aucun consommateur ne touche à son import.
  */
-export function formatDZD(amountCents: number, locale: AppLocale = "fr"): string {
-  if (!Number.isInteger(amountCents)) {
-    throw new TypeError("formatDZD attend des centimes entiers (jamais de float).");
-  }
-  const intlLocale = locale === "ar" ? "ar-DZ" : "fr-DZ";
-  return new Intl.NumberFormat(intlLocale, {
-    style: "currency",
-    currency: "DZD",
-    maximumFractionDigits: 0
-  }).format(amountCents / 100);
-}
+export { formatDZD } from "@zwadj/types";
 
 /**
  * Note moyenne d'une salle, sur 5, TOUJOURS à deux décimales (UI-D5).

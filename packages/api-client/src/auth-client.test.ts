@@ -272,3 +272,69 @@ describe("createAuthClient — session & refresh", () => {
     expect(client.getAccessToken()).toBeNull();
   });
 });
+
+// Rang 33 (D326) — la primitive authentifiée lit un FICHIER (le PDF d'un devis) : `responseType: "blob"`. Ce qui se mesure : le succès rend un Blob aux mêmes octets, une
+// ERREUR reste du JSON (`ApiError` avec son code), et le rejeu après un 401 — le mutex n'est pas touché — GARDE le type de réponse : un rejeu qui retombait sur le JSON ferait
+// parser un PDF comme du JSON et tomber le téléchargement, uniquement après une expiration de jeton.
+describe("createAuthClient — réponse binaire (responseType: blob)", () => {
+  const OCTETS = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x00, 0xff, 0x10]); // « %PDF-1.4 » puis des octets qui ne sont PAS du texte UTF-8
+  const pdf = () => new Response(OCTETS, { status: 200, headers: { "Content-Type": "application/pdf" } });
+  const octetsDe = async (blob: Blob) => new Uint8Array(await blob.arrayBuffer());
+
+  it("un succès rend un Blob aux MÊMES octets ; la requête est un GET authentifié, sans corps ni Content-Type", async () => {
+    const calls: { url: string; init?: RequestInit }[] = [];
+    const impl = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      calls.push({ url: String(input), init });
+      if (String(input).endsWith("/auth/login")) return new Response(JSON.stringify({ accessToken: "jwt-1", user: USER }), { status: 200 });
+      return pdf();
+    }) as unknown as typeof fetch;
+    const client = createAuthClient(BASE, impl);
+    await client.login({ email: "aya@example.dz", password: "Motdepasse1" });
+
+    // Capté puis ASSERTÉ : sans `responseType`, la lecture JSON lève une SyntaxError — un plantage, pas une assertion (D304).
+    const blob = (await client.authedRequest<Blob>("/quotes/q1/document?locale=ar", { responseType: "blob" }).catch((e: unknown) => e)) as Blob;
+    expect(blob).toBeInstanceOf(Blob);
+    expect(Array.from(await octetsDe(blob))).toEqual(Array.from(OCTETS));
+    const appel = calls.at(-1)!;
+    expect(appel.url).toBe(`${BASE}/api/v1/quotes/q1/document?locale=ar`);
+    expect(appel.init?.method).toBe("GET");
+    expect(appel.init?.body).toBeUndefined();
+    expect(appel.init?.headers).toEqual({ Authorization: "Bearer jwt-1" });
+  });
+
+  it("une ERREUR reste du JSON : 409 QUOTE_VERSION_NOT_ACTIVE se lit en ApiError avec son code, même quand on attendait un fichier", async () => {
+    const impl = (async () =>
+      new Response(JSON.stringify({ statusCode: 409, message: { code: "QUOTE_VERSION_NOT_ACTIVE", message: "quote.errors.versionNotActive", latestVersion: 3 } }), {
+        status: 409,
+        headers: { "Content-Type": "application/json" }
+      })) as unknown as typeof fetch;
+    const err = await createAuthClient(BASE, impl).authedRequest<Blob>("/quotes/q1/document?locale=fr", { responseType: "blob" }).catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(ApiError);
+    expect((err as ApiError).status).toBe(409);
+    expect((err as ApiError).code).toBe("QUOTE_VERSION_NOT_ACTIVE");
+  });
+
+  it("le rejeu après 401 GARDE le type de réponse : UN refresh, UN rejeu, et le second succès est bien un Blob", async () => {
+    let essais = 0;
+    const calls: string[] = [];
+    const impl = (async (input: RequestInfo | URL) => {
+      const url = String(input);
+      calls.push(url);
+      if (url.endsWith("/auth/refresh")) return new Response(JSON.stringify({ accessToken: "jwt-2", user: USER }), { status: 200 });
+      essais += 1;
+      return essais === 1
+        ? new Response(JSON.stringify(businessError("UNAUTHENTICATED", "auth.errors.unauthenticated")), { status: 401 })
+        : pdf();
+    }) as unknown as typeof fetch;
+    const blob = (await createAuthClient(BASE, impl).authedRequest<Blob>("/quotes/q1/document?locale=fr", { responseType: "blob" }).catch((e: unknown) => e)) as Blob;
+    expect(blob).toBeInstanceOf(Blob);
+    expect(Array.from(await octetsDe(blob))).toEqual(Array.from(OCTETS));
+    expect(essais).toBe(2);
+    expect(calls.filter((u) => u.endsWith("/auth/refresh"))).toHaveLength(1);
+  });
+
+  it("sans `responseType`, rien ne change : la réponse JSON se parse toujours (aucun appelant existant n'est touché)", async () => {
+    const impl = (async () => new Response(JSON.stringify({ ok: 1 }), { status: 200 })) as unknown as typeof fetch;
+    await expect(createAuthClient(BASE, impl).authedRequest<{ ok: number }>("/x")).resolves.toEqual({ ok: 1 });
+  });
+});

@@ -1,4 +1,4 @@
-// Assistant de salle par étapes — Lot UIP-C.
+// Assistant de salle par étapes — Lot UIP-C ; stepper refondu au rang 33 (D326).
 //
 // ── Pourquoi l'étape 1 est « L'essentiel » et non « Informations » ───────────
 // Ko a tranché (a) : la salle est créée dès la fin de l'étape 1, pour que TOUTES
@@ -29,6 +29,17 @@
 // l'édition, une salle existante a par construction satisfait l'étape 1, donc
 // toutes les étapes sont ouvertes. À la création, il n'y a qu'une étape — la
 // suite se joue après le POST, sur `/salles/:id`.
+//
+// ── ⛔ LE STEPPER EST CELUI DU PARCOURS SUR PLACE (rang 33, D326) ───────────────
+// Il était une `<ol>` du navigateur SANS aucune règle de feuille de style dans le dépôt : « 1. » du navigateur, puis le « 01 » du libellé, collé au texte
+// (« 1. 01L'essentiel » — CONSTATÉ dans un navigateur, `list-style-type: decimal`). Ko : « un stepper visuellement cohérent avec celui du parcours sur place ». C'est
+// désormais LE MÊME composant, `JourneyRail` de `@zwadj/ui` — pastilles, trait de liaison, coche, états `done` / `current` / `todo`, libellé cliquable. Il n'est donc plus
+// recopié : la chrome partagée a déjà divergé une fois quand elle était dupliquée entre le Pro et le Client (`journey.tsx`).
+// ⚠ Ce que le composant impose, et que ce fichier respecte : l'étape COURANTE n'est pas un bouton (elle porte `aria-current="step"` sur son `<li>`) ; une étape
+// n'est un bouton que si elle est franchissable ET n'est pas la courante ; et « franchie » (coche) veut dire franchissable ET AVANT la courante — une étape ouverte
+// mais située APRÈS ne se coche pas : à l'édition toutes sont ouvertes, et cocher des photos qu'on n'a pas encore ajoutées serait un mensonge.
+// Le comportement du parcours sur place n'a PAS changé : `journey.tsx` n'est pas touché, ses campagnes (`journey`, `r32`) se rejouent.
+import { JourneyRail, type JourneyStep } from "@zwadj/ui";
 import { useTranslation } from "react-i18next";
 
 export interface WizardStep {
@@ -70,64 +81,54 @@ export function VenueWizard({
   const previous = steps[index - 1];
   const next = steps[index + 1];
 
+  const railSteps: JourneyStep[] = steps.map((s) => ({
+    id: String(s.n),
+    label: s.title,
+    // « franchie » = franchissable ET avant la courante (voir l'en-tête) ; une étape ouverte mais située après reste « à faire ».
+    state: s.n === step.n ? "current" : s.reachable && s.n < step.n ? "done" : "todo",
+    // Le nom accessible du bouton est le TITRE de l'étape — celui qu'avait l'ancien bouton (son « 01 » était `aria-hidden`).
+    ...(s.reachable && s.n !== step.n ? { editLabel: s.title } : {})
+  }));
+
   return (
     <div className="wizard">
-      {/* La barre de progression est une VRAIE liste de liens/boutons, pas une
-          frise décorative : un lecteur d'écran doit pouvoir énumérer les étapes
-          et savoir laquelle est la sienne. */}
-      <nav className="wizard-steps" aria-label={t("venue.ui.wizard.stepsLabel")}>
-        <ol>
-          {steps.map((s) => {
-            const etat = s.n === step.n ? "is-current" : s.reachable ? "is-open" : "is-locked";
-            return (
-              <li key={s.n} className={`wizard-step-item ${etat}`}>
-                <button
-                  type="button"
-                  onClick={() => onGo(s.n)}
-                  disabled={!s.reachable || s.n === step.n}
-                  aria-current={s.n === step.n ? "step" : undefined}
-                >
-                  <span className="wizard-step-n" aria-hidden="true">
-                    {String(s.n).padStart(2, "0")}
-                  </span>
-                  <span>{s.title}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+      {/* Le rail est une VRAIE liste ordonnée de boutons, pas une frise décorative : un lecteur d'écran énumère les étapes et sait laquelle est la sienne.
+          Il reste le PREMIER élément du DOM (on sait où l'on en est avant de lire le contenu) ; sa place à gauche est affaire de `grid-area`, pas de DOM. */}
+      <JourneyRail
+        className="wizard-rail"
+        label={t("venue.ui.wizard.stepsLabel")}
+        steps={railSteps}
+        onEdit={(id) => onGo(Number(id))}
+      />
 
-      <p className="field-hint wizard-progress">
-        {t("venue.ui.wizard.progress", { n: step.n, total: steps.length })}
-      </p>
+      <div className="wizard-flow">
+        <p className="field-hint wizard-progress">{t("venue.ui.wizard.progress", { n: step.n, total: steps.length })}</p>
 
-      <h2 className="wizard-title">{step.title}</h2>
+        <h2 className="wizard-title">{step.title}</h2>
 
-      <div className="wizard-body">{step.body}</div>
+        <div className="wizard-body">{step.body}</div>
 
-      <div className="wizard-actions">
-        {previous === undefined ? null : (
-          <button type="button" className="btn" onClick={() => onGo(previous.n)} disabled={busy}>
-            {t("venue.ui.wizard.previous")}
+        <div className="wizard-actions">
+          {previous === undefined ? null : (
+            <button type="button" className="btn" onClick={() => onGo(previous.n)} disabled={busy}>
+              {t("venue.ui.wizard.previous")}
+            </button>
+          )}
+          <button type="button" className="btn btn-accent" onClick={onNext} disabled={busy || !step.valid}>
+            {nextLabel}
           </button>
+        </div>
+
+        {/* ⚠ La raison s'affiche APRÈS le bouton et en `role="status"` : elle
+            apparaît au moment où l'on cherche pourquoi rien ne se passe. */}
+        {step.valid ? null : (
+          <p className="field-hint" role="status">
+            {invalidHint}
+          </p>
         )}
-        <button type="button" className="btn btn-accent" onClick={onNext} disabled={busy || !step.valid}>
-          {nextLabel}
-        </button>
+
+        {next === undefined && step.valid ? <p className="field-hint">{t("venue.ui.wizard.lastStep")}</p> : null}
       </div>
-
-      {/* ⚠ La raison s'affiche APRÈS le bouton et en `role="status"` : elle
-          apparaît au moment où l'on cherche pourquoi rien ne se passe. */}
-      {step.valid ? null : (
-        <p className="field-hint" role="status">
-          {invalidHint}
-        </p>
-      )}
-
-      {next === undefined && step.valid ? (
-        <p className="field-hint">{t("venue.ui.wizard.lastStep")}</p>
-      ) : null}
     </div>
   );
 }

@@ -1,0 +1,15 @@
+# ROUGE LU — api-client-quotes : @zwadj/api-client · src/quotes-client.test.ts
+# sources ramenées à `HEAD` pour ce test : packages/api-client/src/quotes-client.ts (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 5 failed (5)
+# échecs lus : 5 (AssertionError : 0 · autre : 5) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[autre] FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > ⛔ lit la réponse en FICHIER (`responseType: "blob"`) : un PDF lu comme du JSON planterait à la première lecture
+      ↳ TypeError: (0 , createQuotesClient)(...).document is not a function
+[autre] FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > GET : ni méthode ni corps — une lecture, rien d'écrit
+      ↳ TypeError: (0 , createQuotesClient)(...).document is not a function
+[autre] FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > la langue de repli voyage dans l'adresse, pour les DEUX langues : `?locale=fr` et `?locale=ar`
+      ↳ TypeError: client.document is not a function
+[autre] FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > l'identifiant est ENCODÉ : un identifiant qui porte « / » ou « ? » ne peut pas changer la route appelée
+      ↳ TypeError: (0 , createQuotesClient)(...).document is not a function
+[autre] FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > rend le fichier tel que la primitive l'a lu : le MÊME Blob, sans le copier ni le retoucher
+      ↳ TypeError: (0 , createQuotesClient)(...).document is not a function

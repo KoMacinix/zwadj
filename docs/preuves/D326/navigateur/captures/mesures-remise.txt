@@ -1,0 +1,37 @@
+MESURE boutons fr 1280 : 5 boutons, « Envoyé par e-mail » inactif, raison : « L'e-mail demande une adresse valide dans les informations client. »
+MESURE débordement fr 1280 boutons : scrollWidth 1280 · clientWidth 1280 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-fr-1280-boutons.png
+MESURE téléchargement fr 1280 : devis-2026-10-08-v1-01a11c43.pdf
+MESURE débordement fr 1280 fenêtre ok : scrollWidth 1280 · clientWidth 1280 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-fr-1280-fenetre-ok.png
+MESURE fenêtre refus fr 1280 : « Remise enregistrée, PDF non téléchargéRemise enregistrée : Envoyé par e-mail. Le PDF n'a pas pu être téléchargé : Une version plus récente de ce devis existe : le PDF ne se télécharge que pour la dernière version. Zwadj n'envoie pas encore d'e-mail : envoyez-le vous-même au client, avec le PDF en pièce jointe.Fermer »
+MESURE débordement fr 1280 fenêtre refus : scrollWidth 1280 · clientWidth 1280 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-fr-1280-fenetre-pdf-refuse.png
+MESURE boutons fr 360 : 5 boutons, « Envoyé par e-mail » inactif, raison : « L'e-mail demande une adresse valide dans les informations client. »
+MESURE débordement fr 360 boutons : scrollWidth 360 · clientWidth 360 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-fr-360-boutons.png
+MESURE téléchargement fr 360 : devis-2026-10-08-v1-01a11c44.pdf
+MESURE débordement fr 360 fenêtre ok : scrollWidth 360 · clientWidth 360 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-fr-360-fenetre-ok.png
+MESURE fenêtre refus fr 360 : « Remise enregistrée, PDF non téléchargéRemise enregistrée : Envoyé par e-mail. Le PDF n'a pas pu être téléchargé : Une version plus récente de ce devis existe : le PDF ne se télécharge que pour la dernière version. Zwadj n'envoie pas encore d'e-mail : envoyez-le vous-même au client, avec le PDF en pièce jointe.Fermer »
+MESURE débordement fr 360 fenêtre refus : scrollWidth 360 · clientWidth 360 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-fr-360-fenetre-pdf-refuse.png
+MESURE boutons ar 1280 : 5 boutons, « مُرسَل بالبريد الإلكتروني » inactif, raison : « البريد الإلكتروني يتطلب عنواناً صالحاً في معلومات الزبون. »
+MESURE débordement ar 1280 boutons : scrollWidth 1280 · clientWidth 1280 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-ar-1280-boutons.png
+MESURE téléchargement ar 1280 : devis-2026-10-08-v1-01a11c44.pdf
+MESURE débordement ar 1280 fenêtre ok : scrollWidth 1280 · clientWidth 1280 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-ar-1280-fenetre-ok.png
+MESURE fenêtre refus ar 1280 : « سُجِّل التسليم ولم يُنزَّل ملف PDFسُجِّل التسليم: مُرسَل بالبريد الإلكتروني. تعذّر تنزيل ملف PDF: توجد نسخة أحدث من هذا العرض: لا يُنزَّل ملف PDF إلا لآخر نسخة. زواج لا يرسل البريد الإلكتروني بعد: أرسله بنفسك إلى الزبون مع ملف PDF مرفقاً.إغلاق »
+MESURE débordement ar 1280 fenêtre refus : scrollWidth 1280 · clientWidth 1280 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-ar-1280-fenetre-pdf-refuse.png
+MESURE boutons ar 360 : 5 boutons, « مُرسَل بالبريد الإلكتروني » inactif, raison : « البريد الإلكتروني يتطلب عنواناً صالحاً في معلومات الزبون. »
+MESURE débordement ar 360 boutons : scrollWidth 360 · clientWidth 360 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-ar-360-boutons.png
+MESURE téléchargement ar 360 : devis-2026-10-08-v1-01a11c44.pdf
+MESURE débordement ar 360 fenêtre ok : scrollWidth 360 · clientWidth 360 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-ar-360-fenetre-ok.png
+MESURE fenêtre refus ar 360 : « سُجِّل التسليم ولم يُنزَّل ملف PDFسُجِّل التسليم: مُرسَل بالبريد الإلكتروني. تعذّر تنزيل ملف PDF: توجد نسخة أحدث من هذا العرض: لا يُنزَّل ملف PDF إلا لآخر نسخة. زواج لا يرسل البريد الإلكتروني بعد: أرسله بنفسك إلى الزبون مع ملف PDF مرفقاً.إغلاق »
+MESURE débordement ar 360 fenêtre refus : scrollWidth 360 · clientWidth 360 · excédent 0 px (attendu ≤ 0)
+CAPTURE apres/remise-ar-360-fenetre-pdf-refuse.png
+  8 passed (1.4m)

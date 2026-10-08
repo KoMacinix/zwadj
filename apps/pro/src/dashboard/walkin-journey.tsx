@@ -72,7 +72,8 @@ import {
   PHONE_COUNTRIES,
   QUOTE_SENT_VIA_ORDER,
   isPhoneComplete,
-  quoteSentViaNeedsPhone,
+  isValidContactEmail,
+  quoteDocumentFilename,
   toE164,
   type QuoteDTO,
   type QuoteSentVia,
@@ -93,6 +94,9 @@ import {
   type Blocker,
   type Contact
 } from "./walkin-contact";
+import { channelBlockers, describeRemittance, wantsRealSending, type RemitOutcome, type RemitView } from "./remittance";
+import { onQuoteRemitted } from "./remittance-hook";
+import { saveBlob } from "./save-file";
 
 type Outcome = { kind: "locked" } | { kind: "standby" } | null;
 /** Rang 32 (D325) — ce que la fenêtre de confirmation dit : l'action, la date, le client. Posé APRÈS la réponse du serveur,
@@ -219,6 +223,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [stale, setStale] = useState(false);
   const [outcome, setOutcome] = useState<Outcome>(null);
   const [done, setDone] = useState<Done>(null);
+  /** Rang 33 (D326) — ce que la fenêtre de REMISE dit : l'instantané des deux issues (canal enregistré, PDF téléchargé), posé APRÈS les deux réponses. */
+  const [remit, setRemit] = useState<RemitView | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -326,6 +332,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setStale(false);
     setOutcome(null);
     setDone(null);
+    setRemit(null);
     setError(null);
     setServicesAnswered(false);
     setSlotCleared(false);
@@ -449,14 +456,60 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    *  ⚠ Et la validité se demande à `normalizeDzPhone`, jamais à une expression
    *  régulière écrite ici. */
   const telOk = isPhoneComplete(DEFAULT_PHONE_COUNTRY, contact.phone);
-  const canalBloque = (canal: QuoteSentVia) => quoteSentViaNeedsPhone(canal) && !telOk;
+  /** Rang 33 (D326) : l'e-mail, FACULTATIF à la conclusion (D135), est EXIGÉ pour le canal « e-mail » — on ne remet pas par e-mail une adresse qu'on n'a pas.
+   *  ⚠ Sa validité se demande au CONTRAT (`isValidContactEmail`), jamais à une expression écrite ici. */
+  const emailOk = contact.email.trim() !== "" && isValidContactEmail(contact.email);
+  const canalBloque = (canal: QuoteSentVia) => channelBlockers(canal, { phoneOk: telOk, emailOk }).length > 0;
+  const raisonsDeBlocage = [telOk ? null : "deliverPhoneRequired", emailOk ? null : "deliverEmailRequired"].filter((r): r is string => r !== null);
+  /** La langue de repli du PDF : celle de l'interface AU MOMENT DU CLIC. Le serveur imprime dans la langue du CLIENT quand le devis est lié à un compte —
+   *  ce qu'un devis du parcours sur place n'est jamais (il est créé sans `clientId`) : ici, c'est donc toujours le repli qui joue. */
+  const documentLocale = isAr ? "ar" : "fr";
 
-  /** ⚠ L'ÉCRAN DIT CE QUE LE SERVEUR A ÉCRIT, il ne le suppose pas. */
+  /**
+   * ⛔ RANG 33 (D326) — UN BOUTON DE REMISE FAIT DEUX CHOSES INDÉPENDANTES, ET DIT CE QUI A RÉELLEMENT EU LIEU :
+   *   1. ENREGISTRER le canal (`POST /quotes/:id/deliver`) — l'écran dit ce que le SERVEUR a écrit, il ne le suppose pas ;
+   *   2. TÉLÉCHARGER le PDF du devis (`GET /quotes/:id/document`) — généré CÔTÉ SERVEUR, valeurs STOCKÉES, jamais un calcul d'ici.
+   * Les deux partent ENSEMBLE et se règlent SÉPARÉMENT (`allSettled`) : l'un peut réussir quand l'autre échoue, et la fenêtre le DIT (`describeRemittance`).
+   * La fenêtre s'ouvre APRÈS les deux réponses, jamais avant.
+   *
+   * ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT (Ko, 04/10/2026) : pour le SMS et l'e-mail, la fenêtre dit même l'inverse — Zwadj n'envoie
+   * pas encore. `onQuoteRemitted` est le point UNIQUE du futur envoi : il ne fait rien aujourd'hui, et n'est appelé que pour ces deux canaux, une fois la remise enregistrée.
+   *
+   * ⚠ `busy` verrouille les boutons pendant le travail : un double clic ne fait ni deux remises ni deux téléchargements.
+   */
   const remettre = (canal: QuoteSentVia) =>
-    void run(async () => {
+    void (async () => {
       if (quote === null) return;
-      setQuote(await quotes.deliver(quote.id, { sentVia: canal }));
-    });
+      const courant = quote;
+      setBusy(true);
+      setError(null);
+      try {
+        const [enregistre, fichier] = await Promise.allSettled([
+          quotes.deliver(courant.id, { sentVia: canal }),
+          quotes.document(courant.id, documentLocale)
+        ]);
+        if (enregistre.status === "fulfilled") setQuote(enregistre.value);
+        let pdf: RemitOutcome["pdf"] = { ok: false, failure: fichier.status === "rejected" ? fichier.reason : undefined };
+        if (fichier.status === "fulfilled") {
+          try {
+            saveBlob(fichier.value, quoteDocumentFilename(courant));
+            pdf = { ok: true };
+          } catch (cause) {
+            pdf = { ok: false, failure: cause };
+          }
+        }
+        if (enregistre.status === "fulfilled" && wantsRealSending(canal)) onQuoteRemitted(canal, enregistre.value);
+        setRemit(
+          describeRemittance({
+            channel: canal,
+            recorded: enregistre.status === "fulfilled" ? { ok: true } : { ok: false, failure: enregistre.reason },
+            pdf
+          })
+        );
+      } finally {
+        setBusy(false);
+      }
+    })();
 
   const conclu = outcome !== null;
 
@@ -847,12 +900,10 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                   <strong>{formatDZD(quote.depositCents)}</strong>
                 </div>
 
-                {/* ── ⚠ LES QUATRE CANAUX SONT DÉCLARATIFS, ET LE TEXTE LE DIT.
-                       Zwadj n'imprime rien et n'envoie rien : il n'existe ni
-                       générateur de PDF ni transport SMS dans le dépôt. Ces
-                       boutons enregistrent COMMENT le pro a remis le devis avec
-                       ses propres moyens. La maquette n'en montre que deux, et
-                       ils ne font rien. ── */}
+                {/* ── ⚠ LES CINQ CANAUX SONT DÉCLARATIFS, ET LE TEXTE LE DIT.
+                       Rang 33 (D326) : chaque bouton ENREGISTRE comment le pro a remis le devis ET télécharge son PDF récapitulatif (généré côté
+                       serveur, valeurs stockées). Zwadj n'envoie RIEN : aucun transport SMS ni e-mail n'existe encore, et aucun écran ne dit que Zwadj
+                       a envoyé quoi que ce soit. La maquette n'en montre que deux, et ils ne font rien. ── */}
                 <fieldset className="wk-total-actions">
                   <legend className="sr-only">{t("venue.ui.walkin.deliverLegend")}</legend>
                   {QUOTE_SENT_VIA_ORDER.map((canal) => (
@@ -868,9 +919,12 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                     </button>
                   ))}
                 </fieldset>
-                <p id="wk-deliver-reason" className="wk-hint">
-                  {telOk ? t("venue.ui.walkin.deliverHint") : t("venue.ui.walkin.deliverPhoneRequired")}
-                </p>
+                <p className="wk-hint">{t("venue.ui.walkin.deliverHint")}</p>
+                {raisonsDeBlocage.length === 0 ? null : (
+                  <p id="wk-deliver-reason" className="wk-hint">
+                    {raisonsDeBlocage.map((raison) => t(`venue.ui.walkin.${raison}`)).join(" ")}
+                  </p>
+                )}
                 {quote.sentVia === null ? null : (
                   <p className="wk-hint" role="status">
                     {t("venue.ui.walkin.delivered", { channel: t(`venue.ui.quotes.sv_${quote.sentVia}`) })}
@@ -930,6 +984,27 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         }
         closeLabel={t("venue.ui.walkin.doneDialogClose")}
         onClose={() => setDone(null)}
+      />
+
+      {/* ⚠ Rang 33 (D326) : la fenêtre de REMISE. Elle ne s'ouvre qu'APRÈS les deux réponses (l'enregistrement du canal ET le PDF) et dit ce qui a RÉELLEMENT eu lieu,
+          issue par issue — jamais « tout est fait » quand l'un des deux a échoué. Aucune ligne ne dit que Zwadj a envoyé quoi que ce soit. */}
+      <NoticeDialog
+        open={remit !== null}
+        title={remit === null ? "" : t(`venue.ui.walkin.${remit.titleKey}`)}
+        description={
+          remit === null
+            ? ""
+            : remit.lines
+                .map((ligne) =>
+                  t(`venue.ui.walkin.${ligne.key}`, {
+                    channel: ligne.channel === undefined ? undefined : t(`venue.ui.quotes.sv_${ligne.channel}`),
+                    reason: ligne.failure === undefined ? undefined : toMessage(ligne.failure)
+                  })
+                )
+                .join(" ")
+        }
+        closeLabel={t("venue.ui.walkin.doneDialogClose")}
+        onClose={() => setRemit(null)}
       />
     </>
   );

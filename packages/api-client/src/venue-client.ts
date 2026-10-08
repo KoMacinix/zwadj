@@ -43,7 +43,7 @@ import type {
 import { NetworkError, toApiError } from "./auth-client";
 
 /** Primitive authentifiée générique (implémentée par `AuthClient.authedRequest`). */
-export type AuthedRequest = <T>(path: string, init?: { method?: string; body?: unknown }) => Promise<T>;
+export type AuthedRequest = <T>(path: string, init?: { method?: string; body?: unknown; responseType?: "json" | "blob" }) => Promise<T>;
 
 /**
  * Topologie A2, volontairement asymétrique — NE PAS « harmoniser » :

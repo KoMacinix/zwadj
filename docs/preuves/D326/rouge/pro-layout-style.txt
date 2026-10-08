@@ -1,0 +1,9 @@
+# ROUGE LU — pro-layout-style : @zwadj/pro · src/venues/layout-style.test.ts
+# sources ramenées à `HEAD` pour ce test : apps/pro/src/theme.css (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 2 failed | 6 passed (8)
+# échecs lus : 2 (AssertionError : 2 · autre : 0) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/venues/layout-style.test.ts > ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 360 px la valeur qui GAGNE n'a qu'UNE piste — le défaut mesuré rendait « 292px minmax(0, 1fr) »
+      ↳ AssertionError: valeur gagnante à 360 px : 292px minmax(0, 1fr): expected 2 to be 1 // Object.is equality
+[AssertionError] FAIL  src/venues/layout-style.test.ts > ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 320 px, à la frontière 860 px et sur toute largeur ≤ 860 px, une seule colonne
+      ↳ AssertionError: 320 px: expected 2 to be 1 // Object.is equality

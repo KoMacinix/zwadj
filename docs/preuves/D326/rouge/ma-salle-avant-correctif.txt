@@ -1,0 +1,9 @@
+     → expected null not to be null
+     → expected "spy" to be called 2 times, but got 1 times
+ FAIL  src/venues/create-venue-page.test.tsx > « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle
+AssertionError: expected null not to be null
+ FAIL  src/venues/create-venue-page.test.tsx > « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > le fournisseur RELIT la liste après la création — une seule source (D78), pas une liste propre à l
+AssertionError: expected "spy" to be called 2 times, but got 1 times
+      Tests  2 failed | 1 passed (3)
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/create-venue-page.test.tsx
+code de sortie vitest : 1

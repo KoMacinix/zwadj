@@ -1,0 +1,113 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 9 bras · 0 manqué(s) (attendu 0)
+cibles : 102 déclarées · 13 jouées (unit + int) · 0 non jouée(s) (sans --int) · 4 mesure(s) distincte(s) · 5 fichier(s) muté(s)
+  pré-vol api-modele : code 0 · passés 18 · en échec 0
+  pré-vol api-rendu : code 0 · passés 12 · en échec 0
+  pré-vol int-document : code 0 · passés 13 · en échec 0
+  pré-vol int-rendu : code 0 · passés 11 · en échec 0
+■ F-1. les faces perdent leur `unicode-range` : la dernière face déclarée servirait tout, l'arabe retomberait sur le système
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles et deux graisses — en `data:`, chacune avec sa plage `unicode-range`
+         ↳ AssertionError: expected +0 to be 4 // Object.is equality
+   [int-rendu] code 0 · VERT — passés 11 · en échec 0
+■ RD-1. garde 1 — JavaScript n'est plus coupé dans la page de rendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ AssertionError: expected [ { javaScriptEnabled: true } ] to deeply equal [ { javaScriptEnabled: false } ]
+   [int-rendu] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  test/int/pdf-renderer.int-spec.ts > PlaywrightPdfRenderer — le vrai Chromium > garde 1 — JavaScript est COUPÉ : le script qui change le titre ne le change pas
+         ↳ AssertionError: expected 'apres' to be 'avant' // Object.is equality
+■ RD-2. garde 2 — les requêtes de la page ne sont plus avortées : elles PARTENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+   [int-rendu] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  test/int/pdf-renderer.int-spec.ts > PlaywrightPdfRenderer — le vrai Chromium > garde 2 — le RÉSEAU est muet : ni l'image ni la feuille de style n'atteignent le serveur local
+         ↳ PdfRenderUnavailableError: Le moteur de rendu PDF n'a pas rendu le document.
+■ RD-3. garde 3 — le navigateur n'est plus fermé à la fin (erreur, délai ou succès)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 5 · en échec 7
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand la PAGE est refusée
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le RENDU échoue
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le rendu DÉPASSE son délai
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > une fermeture qui échoue à son tour ne MASQUE pas l'erreur d'origine
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — jamais plus de N rendus simultanés, et N est ATTEINT (une borne à 1 passerait le p
+         ↳ AssertionError: expected 6 to be 2 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — la borne se règle : à 1, les rendus passent un par un
+         ↳ AssertionError: expected 3 to be 1 // Object.is equality
+   [int-rendu] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  test/int/pdf-renderer.int-spec.ts > PlaywrightPdfRenderer — le vrai Chromium > garde 3 — le navigateur est FERMÉ après un rendu réussi, et après un rendu qui dépasse son délai
+         ↳ AssertionError: expected [ true, false ] to deeply equal [ false, false ]
+■ T-2. ⛔ le schéma du serveur redevient une liste recopiée, sans « e-mail » : l'écran l'accepte, le serveur le refuse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  test/int/quote-document.int-spec.ts > Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > chaque canal de la liste d'autorité est accepté ET rel
+         ↳ Error: expected 201 "Created", got 400 "Bad Request"
+      FAIL  test/int/quote-document.int-spec.ts > Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > l'entonnoir COMPTE le canal e-mail : un devis remis pa
+         ↳ Error: expected 201 "Created", got 400 "Bad Request"
+■ I-1. ⛔ la propriété d'un devis ne passe plus par la relation : tout pro lit le devis de tous
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > ⛔ un AUTRE pro est refusé en 404 indistinct — rien n'est rendu : un identifiant deviné ne livre pas les 
+         ↳ Error: expected 404 "Not Found", got 200 "OK"
+■ I-2. une salle SUPPRIMÉE sert encore son devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404
+         ↳ Error: expected 404 "Not Found", got 200 "OK"
+■ I-3. la version la plus haute n'est plus cherchée dans la CHAÎNE : l'ancienne version reste servie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  test/int/quote-document.int-spec.ts > ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > après une révision, le PDF de la v1 est REFUSÉ 
+         ↳ Error: expected 409 "Conflict", got 200 "OK"
+      FAIL  test/int/quote-document.int-spec.ts > ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > une chaîne dont la dernière version est ANNULÉE
+         ↳ AssertionError: expected '{"statusCode":409,"message":{"code":"…' to contain 'QUOTE_VERSION_NOT_ACTIVE'
+■ I-4. ⛔ RÈGLE DES MONTANTS — l'adaptateur de lecture RECALCULE l'acompte (30 % du total) au lieu de lire la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 1 — l'acompte stocké, qui n'est PAS 30 %
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '123\u202f450 DA'
+■ I-5. la réponse est mise en cache partagé : un PDF porte le nom d'un client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > le propriétaire télécharge : application/pdf, pièce jointe, non mise en cache, langue appliquée — et la 
+         ↳ AssertionError: expected 'public, max-age=3600' to be 'private, no-store' // Object.is equality
+■ I-6. `Content-Language` dit la langue DEMANDÉE, pas la langue APPLIQUÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  test/int/quote-document.int-spec.ts > La langue du PDF (décision 7) — celle du client quand elle est lisible, sinon celle du pro > un devis lié à un client `ar` : PDF ARABE, même si le pro cliqu
+         ↳ AssertionError: expected 'fr' to be 'ar' // Object.is equality
+      FAIL  test/int/quote-document.int-spec.ts > La langue du PDF (décision 7) — celle du client quand elle est lisible, sinon celle du pro > un client `fr` depuis une interface arabe : PDF français ; sans
+         ↳ AssertionError: expected 'ar' to be 'fr' // Object.is equality
+■ I-7. un CLIENT peut télécharger le PDF d'un devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404
+         ↳ Error: expected 403 "Forbidden", got 404 "Not Found"
+■ I-8. la langue de repli n'est plus validée : absente ou inconnue, elle passe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > la langue de repli est OBLIGATOIRE et se limite à fr / ar : absente ou autre, 400
+         ↳ Error: expected 400 "Bad Request", got 500 "Internal Server Error"
+  empreintes : 19 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 13 cible(s) jouée(s) sur 102, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+FIN code 0

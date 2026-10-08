@@ -1,0 +1,351 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 9 bras · 0 manqué(s) (attendu 0)
+cibles : 102 déclarées · 102 jouées (unit + int) · 0 non jouée(s) (sans --int) · 15 mesure(s) distincte(s) · 19 fichier(s) muté(s)
+  pré-vol api-html : code 0 · passés 8 · en échec 0
+  pré-vol api-modele : code 0 · passés 18 · en échec 0
+  pré-vol api-parite : code 0 · passés 5 · en échec 0
+  pré-vol api-politique : code 0 · passés 12 · en échec 0
+  pré-vol api-rendu : code 0 · passés 12 · en échec 0
+  pré-vol api-service : code 0 · passés 12 · en échec 0
+  pré-vol client-auth : code 0 · passés 17 · en échec 0
+  pré-vol client-devis : code 0 · passés 5 · en échec 0
+  pré-vol int-document : code 0 · passés 13 · en échec 0
+  pré-vol int-rendu : code 0 · passés 11 · en échec 0
+  pré-vol pro-assistant : code 0 · passés 19 · en échec 0
+  pré-vol pro-creation : code 0 · passés 3 · en échec 0
+  pré-vol pro-feuille : code 0 · passés 8 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 95 · en échec 0
+  pré-vol pro-remise : code 0 · passés 11 · en échec 0
+✓ H-1. `escapeHtml` ne remplace plus rien : la saisie passe telle quelle
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · passés 3 · en échec 5 · AssertionError: expected '<script>alert("x")</script> & \'y\'' to be '&lt;script&gt;alert(&quot;x&quot;)&lt…' // Object.is equality
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<body>\n<h1><script>window.x=1</scrip…' not to contain '<script>'
+✓ H-2. `escapeHtml` oublie « & » : « &lt; » saisi redevient une balise à la relecture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · passés 4 · en échec 4 · AssertionError: expected '&lt;' to be '&amp;lt;' // Object.is equality
+✓ H-3. une chaîne interpolée n'est plus échappée (le défaut que le module existe pour empêcher)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · passés 5 · en échec 3 · AssertionError: expected '<p><script>alert("x")</script> & \'y\…' to be '<p>&lt;script&gt;alert(&quot;x&quot;)…' // Object.is equality
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<body>\n<h1><script>window.x=1</scrip…' not to contain '<script>'
+✓ H-4. un fragment déjà sûr est échappé une SECONDE fois
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · passés 5 · en échec 3 · AssertionError: expected '<p>&lt;b&gt;x &amp;amp; y&lt;/b&gt;</…' to be '<p><b>x &amp; y</b></p>' // Object.is equality
+✓ H-5. une valeur non insérable est stringifiée en silence au lieu de LEVER
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · passés 6 · en échec 2 · AssertionError: expected [Function] to throw an error
+✓ H-6. les éléments d'un tableau ne sont plus rendus un à un : le tableau est joint tel quel
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · passés 7 · en échec 1 · AssertionError: expected '<ul>[object Object][object Object]</u…' to be '<ul><li>&lt;a&gt;</li><li>b</li></ul>' // Object.is equality
+✓ H-7. un imposteur à la forme d'un fragment passe pour un fragment sûr
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · passés 7 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ M-1. ⛔ RÈGLE DES MONTANTS — l'acompte imprimé est RECALCULÉ (30 % du total) au lieu d'être la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 13 · en échec 5 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '123\u202f450 DA'
+✓ M-2. ⛔ RÈGLE DES MONTANTS — le total imprimé est RECOMPOSÉ (base + prestations) au lieu d'être la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '610\u202f000 DA'
+✓ M-3. ⛔ RÈGLE DES MONTANTS — le montant d'une ligne est RECALCULÉ (× quantité)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '375\u202f000 DA'
+✓ M-4. le nom de la salle s'insère SANS échappement (`raw`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<body>\n<h1><script>window.x=1</scrip…' not to contain '<script>'
+✓ M-5. le nom du client s'insère SANS échappement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<body>\n<h1>&lt;script&gt;window.x=1&…' not to contain '<script>'
+✓ M-6. le nom d'une prestation s'insère SANS échappement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<body>\n<h1>&lt;script&gt;window.x=1&…' not to contain '<script>'
+✓ M-7. le document arabe n'est plus de droite à gauche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain '<html lang="ar" dir="rtl">'
+✓ M-8. le nom de la salle est toujours le nom FRANÇAIS
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain 'قاعة الياسمين للأفراح'
+✓ M-9. le CSS des polices n'est plus inséré dans le document (une police absente retombe sur le système)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain '@font-face { /* marqueur-de-test */ }'
+✓ M-10. le créneau n'est plus mis en forme par `formatSlotRange` (24 h) : des minutes brutes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '20:00'
+✓ M-11. la référence imprimée ne dit plus QUELLE version est imprimée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '01a10f0a' to be '01a10f0a-v2' // Object.is equality
+✓ M-12. la date d'un événement dérive du fuseau du serveur (la date civile n'est pas un instant)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected '4 décembre 2026' to match /5\s+décembre\s+2026/
+✓ M-13. ⛔ une garde de SOURCE : le modèle importe le moteur de prix
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected { f: 'quote-document.ts', …(1) } to deeply equal { f: 'quote-document.ts', motif: null }
+✓ M-14. ⛔ une garde de SOURCE : le modèle MULTIPLIE (il calcule au lieu de mettre en forme)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected 'Cents * 2' to be null
+✓ F-1. les faces perdent leur `unicode-range` (leur PRÉSENCE est gardée ; leur NÉCESSITÉ ne l'est pas — l'intégration reste VERTE sans elles, mesuré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected +0 to be 4 // Object.is equality
+✓ F-2. une graisse disparaît : « quatre faces » devient deux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected 2 to be 4 // Object.is equality
+✓ RD-1. garde 1 — JavaScript n'est plus coupé dans la page de rendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · passés 11 · en échec 1 · AssertionError: expected [ { javaScriptEnabled: true } ] to deeply equal [ { javaScriptEnabled: false } ]
+   [int-rendu] code 1 · passés 10 · en échec 1 · AssertionError: expected 'apres' to be 'avant' // Object.is equality
+✓ RD-2. garde 2 — les requêtes de la page ne sont plus avortées : elles PARTENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · passés 11 · en échec 1 · AssertionError: expected "spy" to be called 1 times, but got 0 times
+   [int-rendu] code 1 · passés 10 · en échec 1 · AssertionError: expected [ '/style.css', '/pixel.png' ] to deeply equal []
+✓ RD-3. garde 3 — le navigateur n'est plus fermé à la fin (erreur, délai ou succès)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · passés 5 · en échec 7 · AssertionError: expected +0 to be 1 // Object.is equality
+   [int-rendu] code 1 · passés 10 · en échec 1 · AssertionError: expected [ true, false ] to deeply equal [ false, false ]
+✓ RD-4. garde 3 — un lancement qui finit APRÈS le délai n'est plus fermé : le navigateur est orphelin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · passés 11 · en échec 1 · AssertionError: expected 1 to be +0 // Object.is equality
+✓ RD-5. garde 3 — le drapeau « abandonné » n'est jamais levé par le `finally`
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-rendu] code 1 · passés 11 · en échec 1 · AssertionError: expected 1 to be +0 // Object.is equality
+✓ RD-6. garde 4 — la borne des rendus simultanés dépasse d'UN : N + 1 rendus à la fois
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · passés 9 · en échec 3 · AssertionError: expected 3 to be 2 // Object.is equality
+✓ RD-7. une place n'est plus rendue à la file quand le travail se termine
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · passés 9 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+✓ RD-8. une panne du moteur n'est plus une panne dite : l'erreur d'origine remonte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · passés 6 · en échec 6 · AssertionError: expected Error: navigateur introuvable to be an instance of PdfRenderUnavailableError
+✓ PO-1. la version la plus récente n'est plus comparée dans le bon sens : l'ancienne est SERVIE, la dernière REFUSÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · passés 10 · en échec 2 · AssertionError: expected { outcome: 'ALLOWED' } to deeply equal { outcome: 'VERSION_NOT_ACTIVE', …(1) }
+   [api-service] code 1 · passés 10 · en échec 2 · AssertionError: expected null to be an instance of ConflictException
+✓ PO-2. ⛔ l'ORDRE des refus s'inverse : une ancienne version ANNULÉE est refusée comme « clos », pas comme « pas la version active »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · passés 11 · en échec 1 · AssertionError: expected { outcome: 'STATUS_CONFLICT', …(1) } to deeply equal { outcome: 'VERSION_NOT_ACTIVE', …(1) }
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected { code: 'QUOTE_STATUS_CONFLICT', …(2) } to match object { …(2) }
+✓ PO-3. un devis ACCEPTÉ n'est plus imprimable (le document qui compte le plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · passés 10 · en échec 2 · AssertionError: expected { outcome: 'STATUS_CONFLICT', …(1) } to deeply equal { outcome: 'ALLOWED' }
+✓ PO-4. une affaire PERDUE devient imprimable
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · passés 10 · en échec 2 · AssertionError: expected { outcome: 'ALLOWED' } to deeply equal { outcome: 'STATUS_CONFLICT', …(1) }
+✓ PO-5. ⛔ la langue du compte est lue en MAJUSCULES (la faute de F7) : « AR » redevient l'arabe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · passés 11 · en échec 1 · AssertionError: expected { locale: 'ar', branch: 'CLIENT' } to deeply equal { locale: 'fr', branch: 'FALLBACK' }
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected { …(4) } to match object { locale: 'fr', branch: 'FALLBACK' }
+✓ PO-6. la langue du client n'est jamais lue : toujours le repli
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · passés 9 · en échec 3 · AssertionError: expected { locale: 'fr', branch: 'FALLBACK' } to deeply equal { locale: 'ar', branch: 'CLIENT' }
+   [api-service] code 1 · passés 10 · en échec 2 · AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'CLIENT' }
+✓ PO-7. la branche dit « FALLBACK » quand c'est la langue du client qui a servi
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · passés 9 · en échec 3 · AssertionError: expected { locale: 'ar', branch: 'FALLBACK' } to deeply equal { locale: 'ar', branch: 'CLIENT' }
+   [api-service] code 1 · passés 10 · en échec 2 · AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'CLIENT' }
+✓ SV-1. un identifiant mal formé atteint la base (il ne rend plus le 404 sans lire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected "spy" to be called 1 times, but got 2 times
+✓ SV-2. le propriétaire n'est plus transmis à la lecture : tout pro lit n'importe quel devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 3 · en échec 9 · AssertionError: expected NotFoundException: quote.errors.notFound { …(3) } to be an instance of ConflictException
+✓ SV-3. le refus d'une ancienne version ne dit plus laquelle est active
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 10 · en échec 2 · AssertionError: expected { …(3) } to match object { …(3) }
+✓ SV-4. le refus d'une ancienne version porte le code d'un devis CLOS
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-service] code 1 · passés 10 · en échec 2 · AssertionError: expected { code: 'QUOTE_STATUS_CONFLICT', …(2) } to match object { …(3) }
+✓ SV-5. une PANNE du moteur n'est plus un 503 : elle remonte comme une erreur quelconque
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected PdfRenderUnavailableError: Le moteur de r… to be an instance of ServiceUnavailableException
+✓ SV-6. la langue de l'interface du pro n'est plus le repli : toujours le français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'FALLBACK' }
+✓ SV-7. la langue du compte du client n'est jamais transmise
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 10 · en échec 2 · AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'CLIENT' }
+✓ SV-8. le nom du fichier porte une donnée PERSONNELLE (le nom de la salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected 'devis-Salle des Jasmins.pdf' to be 'devis-2026-12-05-v2-01a10f0a.pdf' // Object.is equality
+✓ SV-9. la date d'émission est celle du fuseau UTC du serveur, pas celle d'Alger
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected '2026-10-05' to be '2026-10-06' // Object.is equality
+✓ T-1. le canal « e-mail » n'exige plus d'adresse : il s'active sans destinataire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: expected [] to deeply equal [ 'needEmail' ]
+   [pro-parcours] code 1 · passés 82 · en échec 13 · AssertionError: Imprimé et remis: expected true to be false // Object.is equality
+✓ T-2. ⛔ le schéma du serveur redevient une liste recopiée, sans « e-mail » : l'écran l'accepte, le serveur le refuse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 11 · en échec 2 · AssertionError: expected 400 to be 201 // Object.is equality
+✓ T-3. le nom du fichier ne dit plus la version
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 17 · en échec 1 · AssertionError: expected 'devis-2026-12-05-01a10f0a.pdf' to match /^devis-\d{4}-\d{2}-\d{2}-v\d+-[0-9a-f…/
+   [api-service] code 1 · passés 11 · en échec 1 · AssertionError: expected 'devis-2026-12-05-01a10f0a.pdf' to be 'devis-2026-12-05-v2-01a10f0a.pdf' // Object.is equality
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected 'devis-2026-08-15-q1.pdf' to match /^devis-\d{4}-\d{2}-\d{2}-v1-q1\.pdf$/
+✓ Q-1. `quotes.document` lit la réponse comme du JSON : le PDF planterait à la première lecture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-devis] code 1 · passés 4 · en échec 1 · AssertionError: expected undefined to be 'blob' // Object.is equality
+✓ Q-2. la langue de repli ne voyage plus dans l'adresse
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [client-devis] code 1 · passés 3 · en échec 2 · AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]
+✓ Q-3. l'identifiant du devis n'est plus encodé dans l'adresse du document
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-devis] code 1 · passés 4 · en échec 1 · AssertionError: expected '/quotes/a/b?c=d/document?locale=fr' to be '/quotes/a%2Fb%3Fc%3Dd/document?locale…' // Object.is equality
+✓ Q-4. la primitive ne rend plus un fichier : la réponse binaire est parsée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-auth] code 1 · passés 15 · en échec 2 · AssertionError: expected SyntaxError: Unexpected token '%', "%PDF-… to be an instance of Blob
+✓ Q-5. le rejeu après 401 perd le type de réponse : le second succès n'est plus un fichier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-auth] code 1 · passés 16 · en échec 1 · AssertionError: expected SyntaxError: Unexpected token '%', "%PDF-… to be an instance of Blob
+✓ R-1. le SMS ne figure plus parmi les canaux d'un envoi à venir
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: expected [ 'EMAIL' ] to deeply equal [ 'SMS', 'EMAIL' ]
+   [pro-parcours] code 1 · passés 93 · en échec 2 · AssertionError: expected 'Remise enregistréeRemise enregistrée …' to contain 'Zwadj n\'envoie pas encore de SMS : e…'
+✓ R-2. « Zwadj n'envoie pas encore » s'affiche aussi quand l'enregistrement a ÉCHOUÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: SMS après échec: expected true to be false // Object.is equality
+✓ R-3. « Remise enregistrée » est le titre d'une remise enregistrée dont le PDF a ÉCHOUÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 9 · en échec 2 · AssertionError: expected 'remitTitleDone' to be 'remitTitleRecordedOnly' // Object.is equality
+✓ R-4. « Remise enregistrée » est le titre d'un échec TOTAL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 9 · en échec 2 · AssertionError: expected 'remitTitleDone' to be 'remitTitleNone' // Object.is equality
+✓ R-5. la ligne d'enregistrement dit « enregistrée » même quand l'enregistrement a échoué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: expected [ 'remitRecorded', 'remitPdfDone' ] to deeply equal [ 'remitRecordFailed', 'remitPdfDone' ]
+✓ R-6. la ligne du PDF dit « téléchargé » même quand le PDF a échoué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: expected [ 'remitRecorded', 'remitPdfDone' ] to deeply equal [ 'remitRecorded', 'remitPdfFailed' ]
+✓ R-7. le canal « e-mail » ne retient plus personne faute d'adresse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 9 · en échec 2 · AssertionError: EMAIL phone=false email=false: expected [] to deeply equal [ 'needEmail' ]
+✓ R-8. le SMS et le téléphone ne retiennent plus personne faute de mobile
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 9 · en échec 2 · AssertionError: SMS phone=false email=false: expected [] to deeply equal [ 'needPhone' ]
+✓ R-9. ⛔ le point de branchement fait un APPEL RÉSEAU : le contrat réel serait inventé sans interlocuteur
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: expected 'fetch' to be null
+✓ J-1. la langue de repli envoyée n'est plus celle de l'interface : toujours le français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+✓ J-2. le bouton enregistre toujours « impression », quel que soit le bouton cliqué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: SMS: expected "spy" to be called with arguments: [ 'q1', { sentVia: 'SMS' } ]
+✓ J-3. un échec de l'un des deux appels emporte l'autre : plus de règlement SÉPARÉ (`all` au lieu d'`allSettled`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 82 · en échec 13 · AssertionError: PRINT: expected "spy" to be called 1 times, but got 0 times
+✓ J-4. le devis enregistré n'est plus relu dans l'écran après la remise
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 93 · en échec 2 · AssertionError: le texte d'état de la remise est affiché: expected null not to be null
+✓ J-5. le point de branchement est appelé pour TOUS les canaux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: PRINT: expected "spy" to not be called at all, but actually been called 1 times
+✓ J-6. le point de branchement est appelé même quand l'enregistrement a ÉCHOUÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ J-7. le point de branchement n'est plus appelé du tout
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: SMS: expected "spy" to be called 1 times, but got 0 times
+✓ J-8. le point de branchement reçoit le devis d'AVANT le clic, pas celui du serveur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: SMS: expected "spy" to be called with arguments: [ 'SMS', …(1) ]
+✓ J-9. les boutons restent actifs pendant le travail : un double clic fait deux remises
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ J-10. la fenêtre se ferme sans fermer (`onClose` ne fait rien)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ J-11. la fenêtre s'ouvre PENDANT le travail, avant les deux réponses
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 92 · en échec 3 · AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ J-12. un téléchargement qui échoue est dit « téléchargé »
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected 'Remise enregistréeRemise enregistrée …' to contain 'Remise enregistrée, PDF non téléchargé'
+✓ J-13. le fichier téléchargé porte un nom écrit à la main, pas celui de la formule partagée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected 'devis.pdf' to be 'devis-2026-08-15-v1-q1.pdf' // Object.is equality
+✓ J-14. le canal « e-mail » est actif quelle que soit l'adresse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 93 · en échec 2 · AssertionError: Envoyé par e-mail: expected false to be true // Object.is equality
+✓ J-15. la raison du blocage « e-mail » n'est plus affichée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: la raison liée au bouton existe dans la page: expected null not to be null
+✓ J-16. ⛔ LA PHRASE RETIRÉE REVIENT sur l'écran : « Zwadj n'imprime rien et n'envoie rien à votre place »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 94 · en échec 1 · AssertionError: expected 'Client présent sur placeNouvelle rése…' not to match /n'imprime rien/
+✓ K-1. une clé neuve n'existe plus que dans UN catalogue (le français)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-parite] code 1 · passés 4 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+✓ K-2. ⛔ la phrase retirée revient dans le catalogue français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: expected 'Zwadj n\'imprime rien et n\'envoie ri…' not to match /n'imprime rien/
+✓ K-3. ⛔ la ligne du SMS, en arabe, dit que Zwadj ENVOIE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: expected 'زواج يرسل الرسالة القصيرة إلى الزبون.' to match /لا يرسل.*بعد/
+✓ K-4. ⛔ la ligne de l'e-mail, en français, dit que Zwadj ENVOIE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 9 · en échec 2 · AssertionError: expected 'Zwadj envoie l\'e-mail au client, ave…' to match /n'envoie pas encore/
+✓ K-5. le cinquième canal perd son libellé arabe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 1 · AssertionError: ar sv_EMAIL: expected '' to match /\S/
+✓ W-1. les étapes avant la courante ne sont plus « franchies » : toute étape ouverte est cochée, même après elle
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · passés 18 · en échec 1 · AssertionError: expected [ 'is-done', 'is-done', …(5) ] to deeply equal [ 'is-done', 'is-done', …(5) ]
+✓ W-2. une étape non franchissable devient un BOUTON
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · passés 18 · en échec 1 · AssertionError: expected [ <button …(3)>…(2)</button>, …(5) ] to have a length of +0 but got 6
+✓ W-3. cliquer une étape ouvre la SUIVANTE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · passés 18 · en échec 1 · AssertionError: expected '/salles/v1?etape=6' to contain '?etape=5'
+✓ W-4. la classe de mise en page propre au Pro n'est plus posée sur le rail
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · passés 18 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ W-5. le nom accessible du bouton d'étape n'est plus le TITRE de l'étape
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · passés 18 · en échec 1 · AssertionError: le bouton de l'étape porte le TITRE de l'étape pour nom accessible: expected null not to be null
+✓ W-6. le rail perd son nom accessible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · passés 9 · en échec 10 · AssertionError: le rail est une navigation nommée: expected null not to be null
+✓ W-7. la mise en page du rail ne le place plus dans sa zone de grille
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · passés 18 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ C-1. la salle créée n'est plus signalée au fournisseur : la liste reste celle d'avant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-creation] code 1 · passés 1 · en échec 2 · AssertionError: expected null not to be null
+✓ L-1. ⛔ LE DÉFAUT RESTAURÉ — la colonne du panneau est redéclarée APRÈS le repli à une colonne
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-feuille] code 1 · passés 6 · en échec 2 · AssertionError: valeur gagnante à 360 px : 292px minmax(0, 1fr): expected 2 to be 1 // Object.is equality
+✓ I-1. ⛔ la propriété d'un devis ne passe plus par la relation : tout pro lit le devis de tous
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 12 · en échec 1 · AssertionError: expected 200 to be 404 // Object.is equality
+✓ I-2. une salle SUPPRIMÉE sert encore son devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 12 · en échec 1 · AssertionError: expected 200 to be 404 // Object.is equality
+✓ I-3. la version la plus haute n'est plus cherchée dans la CHAÎNE : l'ancienne version reste servie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 11 · en échec 2 · AssertionError: expected 200 to be 409 // Object.is equality
+✓ I-4. ⛔ RÈGLE DES MONTANTS — l'adaptateur de lecture RECALCULE l'acompte (30 % du total) au lieu de lire la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 12 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '123\u202f450 DA'
+✓ I-5. la réponse est mise en cache partagé : un PDF porte le nom d'un client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 12 · en échec 1 · AssertionError: expected 'public, max-age=3600' to be 'private, no-store' // Object.is equality
+✓ I-6. `Content-Language` dit la langue DEMANDÉE, pas la langue APPLIQUÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 11 · en échec 2 · AssertionError: expected 'fr' to be 'ar' // Object.is equality
+✓ I-7. un CLIENT peut télécharger le PDF d'un devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 12 · en échec 1 · AssertionError: expected 404 to be 403 // Object.is equality
+✓ I-8. la langue de repli n'est plus validée : absente ou inconnue, elle passe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 12 · en échec 1 · AssertionError: expected 500 to be 400 // Object.is equality
+  empreintes : 19 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+102 garde(s) mordue(s) sur 102 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 102 sur 102, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.
+FIN code 0

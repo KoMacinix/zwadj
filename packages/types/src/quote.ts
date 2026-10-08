@@ -146,17 +146,26 @@ export function isQuoteOpen(status: QuoteStatus): boolean {
  * une réservation. L'indicateur sous-compterait précisément les affaires
  * gagnées, ce qui est le pire sens dans lequel se tromper.
  *
- * ⚠ ET LES QUATRE SONT DÉCLARATIFS À CE LOT, `PRINT` ET `SMS` COMPRIS. Zwadj
- * n'imprime rien et n'envoie rien : il n'existe ni générateur de PDF ni
- * transport SMS dans le dépôt. Le pro déclare COMMENT il a remis le devis, avec
- * ses propres moyens. Un bouton qui prétendrait envoyer serait un mensonge
- * d'écran ; les libellés disent donc « remis par », jamais « envoyer ».
+ * ⚠ ET LES CINQ SONT DÉCLARATIFS, `PRINT`, `SMS` ET `EMAIL` COMPRIS (rang 33, D326).
+ * Zwadj PRODUIT désormais un PDF du devis (`GET /quotes/:id/document`, que le pro
+ * télécharge), mais il n'IMPRIME rien et n'ENVOIE rien : aucun transport SMS ni e-mail
+ * n'existe dans le dépôt. Le pro déclare COMMENT il a remis le devis, avec ses propres
+ * moyens. Un bouton qui prétendrait envoyer serait un mensonge d'écran ; les libellés
+ * disent donc « remis par », jamais « envoyer » — et AUCUN écran ne dit que Zwadj a
+ * envoyé quoi que ce soit tant que l'envoi réel n'existe pas (Ko, 04/10/2026).
+ *
+ * ⚠ LA BASE NE LISTE PAS LES VALEURS : `quotes_sent_via_not_blank` n'interdit que le vide
+ * et le blanc (`sent_via IS NULL OR btrim(sent_via) <> ''`). Ajouter `EMAIL` n'a exigé
+ * AUCUNE migration — l'autorité des valeurs est CE fichier, et `quoteSentViaSchema`
+ * ci-dessous est dérivé de `QUOTE_SENT_VIA_ORDER`, pas écrit une seconde fois.
  */
 export const QUOTE_SENT_VIA = {
   /** Le devis a été imprimé et remis sur papier. */
   PRINT: "PRINT",
   /** Le devis a été envoyé par SMS. */
   SMS: "SMS",
+  /** Le devis a été envoyé par e-mail. */
+  EMAIL: "EMAIL",
   /** Montant annoncé au comptoir, sans rien imprimer. */
   IN_PERSON: "IN_PERSON",
   /** Convenu par téléphone, hors de la salle. */
@@ -175,6 +184,8 @@ export type QuoteSentVia = (typeof QUOTE_SENT_VIA)[keyof typeof QUOTE_SENT_VIA];
 export const QUOTE_SENT_VIA_ORDER = [
   QUOTE_SENT_VIA.PRINT,
   QUOTE_SENT_VIA.SMS,
+  // L'e-mail est rangé À CÔTÉ du SMS : deux remises numériques, mêmes exigences (un contact qu'on a) — rang 33 (D326).
+  QUOTE_SENT_VIA.EMAIL,
   QUOTE_SENT_VIA.IN_PERSON,
   QUOTE_SENT_VIA.PHONE
 ] as const;
@@ -203,10 +214,24 @@ export function quoteSentViaNeedsPhone(sentVia: QuoteSentVia): boolean {
   return (QUOTE_SENT_VIA_NEEDS_PHONE as readonly string[]).includes(sentVia);
 }
 
-export const quoteSentViaSchema = z.enum(
-  [QUOTE_SENT_VIA.PRINT, QUOTE_SENT_VIA.SMS, QUOTE_SENT_VIA.IN_PERSON, QUOTE_SENT_VIA.PHONE],
-  { errorMap: () => ({ message: "quote.validation.sentViaInvalid" }) }
-);
+/**
+ * Canaux qui exigent une ADRESSE E-MAIL valide (rang 33, D326) — même raisonnement que ci-dessus : on ne remet pas
+ * par e-mail une adresse qu'on n'a pas. ⚠ Elle ne vit, elle aussi, QUE dans les écrans qui portent l'adresse
+ * (`Quote` n'en porte aucune : `contact_email` est sur `Booking`) ; et l'adresse du parcours est FACULTATIVE (D135 :
+ * le client algérien au comptoir n'en a souvent pas) — un canal « e-mail » cliquable sans adresse se déclarerait
+ * pour un destinataire qui n'existe pas.
+ */
+export const QUOTE_SENT_VIA_NEEDS_EMAIL = [QUOTE_SENT_VIA.EMAIL] as const;
+
+export function quoteSentViaNeedsEmail(sentVia: QuoteSentVia): boolean {
+  return (QUOTE_SENT_VIA_NEEDS_EMAIL as readonly string[]).includes(sentVia);
+}
+
+// ⚠ DÉRIVÉ de `QUOTE_SENT_VIA_ORDER` : la liste des valeurs n'est écrite qu'UNE fois (rang 33, D326) — la version précédente
+// recopiait les quatre littéraux, et un cinquième canal ajouté à l'un sans l'autre aurait été accepté par l'écran et refusé par le serveur.
+export const quoteSentViaSchema = z.enum(QUOTE_SENT_VIA_ORDER, {
+  errorMap: () => ({ message: "quote.validation.sentViaInvalid" })
+});
 
 /** Corps de `POST /quotes/:id/deliver`. Un seul champ, et il est OBLIGATOIRE :
  *  une remise sans canal ne compte dans aucun entonnoir, elle serait un clic
@@ -226,9 +251,42 @@ export const QuoteErrorCode = {
   /** 409 — le devis a déjà été converti en demande. `bookings.quote_id` est
    *  UNIQUE : une nouvelle négociation passe par une nouvelle VERSION, pas par
    *  une seconde conversion. */
-  QUOTE_ALREADY_CONVERTED: "QUOTE_ALREADY_CONVERTED"
+  QUOTE_ALREADY_CONVERTED: "QUOTE_ALREADY_CONVERTED",
+  /** 409 — `GET /quotes/:id/document` : une version PLUS RÉCENTE existe dans la chaîne. Le serveur ne sert ni l'ancienne valeur ni une autre
+   *  version à sa place ; la réponse porte `latestVersion` (rang 33, D326). Distinct de `QUOTE_STATUS_CONFLICT` : ici le devis est ouvert,
+   *  c'est sa PLACE dans la chaîne qui a changé. */
+  QUOTE_VERSION_NOT_ACTIVE: "QUOTE_VERSION_NOT_ACTIVE",
+  /** 503 — le MOTEUR de rendu du PDF a échoué (navigateur absent, délai). Une PANNE, jamais un refus : « un refus métier ne se replie pas
+   *  sur une panne », et l'inverse — l'écran doit pouvoir inviter à réessayer l'une et pas l'autre (rang 33, D326). */
+  QUOTE_DOCUMENT_UNAVAILABLE: "QUOTE_DOCUMENT_UNAVAILABLE"
 } as const;
 export type QuoteErrorCode = (typeof QuoteErrorCode)[keyof typeof QuoteErrorCode];
+
+/**
+ * Requête de `GET /quotes/:id/document` (rang 33, D326) — UN paramètre, OBLIGATOIRE.
+ *
+ * `locale` est la langue de l'interface du pro AU MOMENT DU CLIC : le REPLI. Elle n'est utilisée que si la langue du
+ * client n'est pas lisible pour ce devis (`users.locale`, seulement quand `clientId` n'est pas nul) — le PDF est dans la
+ * langue du client QUAND elle est disponible « facilement » (Ko, 05/10/2026). ⚠ Pas `localeSchema` : celui-ci a un défaut
+ * (`fr`), et une langue ABSENTE doit refuser, pas se taire en français. `.strict()` : aucune autre clé.
+ */
+export const QUOTE_DOCUMENT_LOCALES = ["fr", "ar"] as const;
+export type QuoteDocumentLocale = (typeof QUOTE_DOCUMENT_LOCALES)[number];
+export const quoteDocumentQuerySchema = z
+  .object({
+    locale: z.enum(QUOTE_DOCUMENT_LOCALES, { errorMap: () => ({ message: "quote.validation.documentLocaleInvalid" }) })
+  })
+  .strict("quote.validation.unknownKey");
+export type QuoteDocumentQuery = z.infer<typeof quoteDocumentQuerySchema>;
+
+/**
+ * Le NOM du fichier du PDF d'un devis — UNE formule, pour le serveur (`Content-Disposition`) et pour l'écran (l'attribut `download` du lien temporaire) : deux copies
+ * produiraient, un jour, deux noms pour le même fichier (rang 33, D326). ⚠ **Aucune donnée personnelle** : ni salle, ni client — la date de l'événement, la version et les
+ * huit premiers caractères de l'identifiant. Ce nom ne contient que des caractères sûrs pour un nom de fichier.
+ */
+export function quoteDocumentFilename(quote: { readonly id: string; readonly version: number; readonly eventDate: string }): string {
+  return `devis-${quote.eventDate}-v${quote.version}-${quote.id.slice(0, 8)}.pdf`;
+}
 
 /** ⚠ `QUOTE_EXPIRED` A DISPARU AVEC `validUntil` (D160). Rien n'engage tant que
  *  l'acompte n'est pas payé : une date de validité sur un document qui n'engage

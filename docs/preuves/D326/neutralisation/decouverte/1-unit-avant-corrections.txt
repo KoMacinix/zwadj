@@ -1,0 +1,726 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 9 bras · 0 manqué(s) (attendu 0)
+cibles : 102 déclarées · 93 jouées (unit) · 9 non jouée(s) (sans --int) · 13 mesure(s) distincte(s) · 17 fichier(s) muté(s)
+  pré-vol api-html : code 0 · passés 8 · en échec 0
+  pré-vol api-modele : code 0 · passés 17 · en échec 0
+  pré-vol api-parite : code 0 · passés 5 · en échec 0
+  pré-vol api-politique : code 0 · passés 12 · en échec 0
+  pré-vol api-rendu : code 0 · passés 11 · en échec 0
+  pré-vol api-service : code 0 · passés 12 · en échec 0
+  pré-vol client-auth : code 0 · passés 17 · en échec 0
+  pré-vol client-devis : code 0 · passés 5 · en échec 0
+  pré-vol pro-assistant : code 0 · passés 18 · en échec 0
+  pré-vol pro-creation : code 0 · passés 3 · en échec 0
+  pré-vol pro-feuille : code 0 · passés 8 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 95 · en échec 0
+  pré-vol pro-remise : code 0 · passés 11 · en échec 0
+■ H-1. `escapeHtml` ne remplace plus rien : la saisie passe telle quelle
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · ROUGE — passés 3 · en échec 5
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > escapeHtml remplace les cinq caractères actifs, et RIEN d'autre
+         ↳ AssertionError: expected '<script>alert("x")</script> & \'y\'' to be '&lt;script&gt;alert(&quot;x&quot;)&lt…' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > escapeHtml échappe « & » EN PREMIER : « &lt; » saisi ne devient pas « < »
+         ↳ AssertionError: expected '&lt;' to be '&amp;lt;' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > une valeur interpolée est ÉCHAPPÉE sans que l'appelant l'ait demandé
+         ↳ AssertionError: expected '<p><script>alert("x")</script> & \'y\…' to be '<p>&lt;script&gt;alert(&quot;x&quot;)…' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un nombre est inséré ; un tableau est rendu élément par élément, chacun échappé
+         ↳ AssertionError: expected '<ul><li><a></li><li>b</li></ul>' to be '<ul><li>&lt;a&gt;</li><li>b</li></ul>' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un fragment déjà sûr n'est PAS échappé une seconde fois
+         ↳ AssertionError: expected '<p><b>x & y</b></p>' to be '<p><b>x &amp; y</b></p>' // Object.is equality
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestat
+         ↳ AssertionError: expected '<body>\n<h1><script>window.x=1</scrip…' not to contain '<script>'
+■ H-2. `escapeHtml` oublie « & » : « &lt; » saisi redevient une balise à la relecture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · ROUGE — passés 4 · en échec 4
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > escapeHtml remplace les cinq caractères actifs, et RIEN d'autre
+         ↳ AssertionError: expected '&lt;script&gt;alert(&quot;x&quot;)&lt…' to be '&lt;script&gt;alert(&quot;x&quot;)&lt…' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > escapeHtml échappe « & » EN PREMIER : « &lt; » saisi ne devient pas « < »
+         ↳ AssertionError: expected '&lt;' to be '&amp;lt;' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > une valeur interpolée est ÉCHAPPÉE sans que l'appelant l'ait demandé
+         ↳ AssertionError: expected '<p>&lt;script&gt;alert(&quot;x&quot;)…' to be '<p>&lt;script&gt;alert(&quot;x&quot;)…' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un fragment déjà sûr n'est PAS échappé une seconde fois
+         ↳ AssertionError: expected '<p><b>x & y</b></p>' to be '<p><b>x &amp; y</b></p>' // Object.is equality
+■ H-3. une chaîne interpolée n'est plus échappée (le défaut que le module existe pour empêcher)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · ROUGE — passés 5 · en échec 3
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > une valeur interpolée est ÉCHAPPÉE sans que l'appelant l'ait demandé
+         ↳ AssertionError: expected '<p><script>alert("x")</script> & \'y\…' to be '<p>&lt;script&gt;alert(&quot;x&quot;)…' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un nombre est inséré ; un tableau est rendu élément par élément, chacun échappé
+         ↳ AssertionError: expected '<ul><li><a></li><li>b</li></ul>' to be '<ul><li>&lt;a&gt;</li><li>b</li></ul>' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un fragment déjà sûr n'est PAS échappé une seconde fois
+         ↳ AssertionError: expected '<p><b>x & y</b></p>' to be '<p><b>x &amp; y</b></p>' // Object.is equality
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestat
+         ↳ AssertionError: expected '<body>\n<h1><script>window.x=1</scrip…' not to contain '<script>'
+■ H-4. un fragment déjà sûr est échappé une SECONDE fois
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · ROUGE — passés 5 · en échec 3
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un nombre est inséré ; un tableau est rendu élément par élément, chacun échappé
+         ↳ AssertionError: expected '<ul>&lt;li&gt;&amp;lt;a&amp;gt;&lt;/l…' to be '<ul><li>&lt;a&gt;</li><li>b</li></ul>' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > raw() est le SEUL moyen d'insérer du balisage, et il est exempt d'échappement
+         ↳ AssertionError: expected '<style>a &gt; b { color: red }</style>' to be '<style>a > b { color: red }</style>' // Object.is equality
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un fragment déjà sûr n'est PAS échappé une seconde fois
+         ↳ AssertionError: expected '<p>&lt;b&gt;x &amp;amp; y&lt;/b&gt;</…' to be '<p><b>x &amp; y</b></p>' // Object.is equality
+■ H-5. une valeur non insérable est stringifiée en silence au lieu de LEVER
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · ROUGE — passés 6 · en échec 2
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un objet qui N'est PAS un fragment sûr ne passe pas pour tel — même s'il en a la forme
+         ↳ AssertionError: expected function to throw an error, but it didn't
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > une valeur non insérable LÈVE au lieu d'imprimer « [object Object] » ou « null »
+         ↳ AssertionError: expected [Function] to throw an error
+■ H-6. les éléments d'un tableau ne sont plus rendus un à un : le tableau est joint tel quel
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un nombre est inséré ; un tableau est rendu élément par élément, chacun échappé
+         ↳ AssertionError: expected '<ul>[object Object][object Object]</u…' to be '<ul><li>&lt;a&gt;</li><li>b</li></ul>' // Object.is equality
+■ H-7. un imposteur à la forme d'un fragment passe pour un fragment sûr
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-html] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un objet qui N'est PAS un fragment sûr ne passe pas pour tel — même s'il en a la forme
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ M-1. ⛔ RÈGLE DES MONTANTS — l'acompte imprimé est RECALCULÉ (30 % du total) au lieu d'être la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 12 · en échec 5
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `forma
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '123\u202f450 DA'
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ l'acompte imprimé est la valeur stockée, et PAS 30 % du total : 
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '123\u202f450 DA'
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > modifier la valeur STOCKÉE change le montant imprimé — le seul moy
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '200\u202f000 DA'
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > en arabe les montants sont ceux de l'ÉCRAN du Pro (`formatDZD(cent
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain '123\u202f450 DA'
+      FAIL  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > le modèle ne contient aucune multiplication ni divisi
+         ↳ AssertionError: expected 'Math.round' to be null
+■ M-2. ⛔ RÈGLE DES MONTANTS — le total imprimé est RECOMPOSÉ (base + prestations) au lieu d'être la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 0 · VERT — passés 17 · en échec 0
+■ M-3. ⛔ RÈGLE DES MONTANTS — le montant d'une ligne est RECALCULÉ (× quantité)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `forma
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '375\u202f000 DA'
+■ M-4. le nom de la salle s'insère SANS échappement (`raw`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestat
+         ↳ AssertionError: expected '<body>\n<h1><script>window.x=1</scrip…' not to contain '<script>'
+■ M-5. le nom du client s'insère SANS échappement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestat
+         ↳ AssertionError: expected '<body>\n<h1>&lt;script&gt;window.x=1&…' not to contain '<script>'
+■ M-6. le nom d'une prestation s'insère SANS échappement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestat
+         ↳ AssertionError: expected '<body>\n<h1>&lt;script&gt;window.x=1&…' not to contain '<script>'
+■ M-7. le document arabe n'est plus de droite à gauche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > arabe : `lang=ar`, `dir=rtl`, noms et libellés arabes — tirés des catalogues, jamais écrits dans le modèle
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain '<html lang="ar" dir="rtl">'
+■ M-8. le nom de la salle est toujours le nom FRANÇAIS
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > arabe : `lang=ar`, `dir=rtl`, noms et libellés arabes — tirés des catalogues, jamais écrits dans le modèle
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain 'قاعة الياسمين للأفراح'
+■ M-9. le CSS des polices n'est plus inséré dans le document (une police absente retombe sur le système)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > le CSS des polices est inséré tel quel dans le `<style>` du document (une police absente retomberait sur
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain '@font-face { /* marqueur-de-test */ }'
+■ M-10. le créneau n'est plus mis en forme par `formatSlotRange` (24 h) : des minutes brutes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > le créneau s'imprime par `formatSlotRange` (24 h), et un devis sans créneau ou sans client imprime « — » sans casser
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '20:00'
+■ M-11. la référence imprimée ne dit plus QUELLE version est imprimée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > le client s'imprime quand le devis y est lié ; la référence dit QUELLE version est imprimée
+         ↳ AssertionError: expected '01a10f0a' to be '01a10f0a-v2' // Object.is equality
+■ M-12. la date d'un événement dérive du fuseau du serveur (la date civile n'est pas un instant)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > la date de l'événement est en toutes lettres, dans la langue du document ; elle ne dérive pas d'un fuseau (date civile)
+         ↳ AssertionError: expected '4 décembre 2026' to match /5\s+décembre\s+2026/
+■ M-13. ⛔ une garde de SOURCE : le modèle importe le moteur de prix
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > aucun n'importe le moteur de prix, l'acompte, le chif
+         ↳ AssertionError: expected { f: 'quote-document.ts', …(1) } to deeply equal { f: 'quote-document.ts', motif: null }
+■ M-14. ⛔ une garde de SOURCE : le modèle MULTIPLIE (il calcule au lieu de mettre en forme)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > le modèle ne contient aucune multiplication ni divisi
+         ↳ AssertionError: expected 'Cents * 2' to be null
+■ F-1. les faces perdent leur `unicode-range` : la dernière face déclarée servirait tout, l'arabe retomberait sur le système
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles × deux graisses — en `data:`, chacune avec sa plage `unicode-range`
+         ↳ AssertionError: expected +0 to be 4 // Object.is equality
+■ F-2. une graisse disparaît : « quatre faces » devient deux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles × deux graisses — en `data:`, chacune avec sa plage `unicode-range`
+         ↳ AssertionError: expected 2 to be 4 // Object.is equality
+■ RD-1. garde 1 — JavaScript n'est plus coupé dans la page de rendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ AssertionError: expected [ { javaScriptEnabled: true } ] to deeply equal [ { javaScriptEnabled: false } ]
+■ RD-2. garde 2 — les requêtes de la page ne sont plus avortées : elles PARTENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 7 · en échec 4
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ PdfRenderUnavailableError: Le moteur de rendu PDF n'a pas rendu le document.
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > une fermeture qui échoue à son tour ne MASQUE pas l'erreur d'origine
+         ↳ AssertionError: expected 'route.continue is not a function' to be 'page refusée' // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — jamais plus de N rendus simultanés, et N est ATTEINT (une borne à 1 passerait le p
+         ↳ PdfRenderUnavailableError: Le moteur de rendu PDF n'a pas rendu le document.
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — la borne se règle : à 1, les rendus passent un par un
+         ↳ PdfRenderUnavailableError: Le moteur de rendu PDF n'a pas rendu le document.
+■ RD-3. garde 3 — le navigateur n'est plus fermé à la fin (erreur, délai ou succès)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 4 · en échec 7
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand la PAGE est refusée
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le RENDU échoue
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le rendu DÉPASSE son délai
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > une fermeture qui échoue à son tour ne MASQUE pas l'erreur d'origine
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — jamais plus de N rendus simultanés, et N est ATTEINT (une borne à 1 passerait le p
+         ↳ AssertionError: expected 6 to be 2 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — la borne se règle : à 1, les rendus passent un par un
+         ↳ AssertionError: expected 3 to be 1 // Object.is equality
+■ RD-4. garde 3 — un lancement qui finit APRÈS le délai n'est plus fermé : le navigateur est orphelin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — un délai qui tombe PENDANT le lancement ne laisse PAS le navigateur orphelin
+         ↳ AssertionError: expected 1 to be +0 // Object.is equality
+■ RD-5. garde 3 — le drapeau « abandonné » n'est jamais levé par le `finally`
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — un délai qui tombe PENDANT le lancement ne laisse PAS le navigateur orphelin
+         ↳ AssertionError: expected 1 to be +0 // Object.is equality
+■ RD-6. garde 4 — la borne des rendus simultanés dépasse d'UN : N + 1 rendus à la fois
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — jamais plus de N rendus simultanés, et N est ATTEINT (une borne à 1 passerait le p
+         ↳ AssertionError: expected 3 to be 2 // Object.is equality
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — la borne se règle : à 1, les rendus passent un par un
+         ↳ AssertionError: expected 2 to be 1 // Object.is equality
+■ RD-7. une place n'est plus rendue à la file quand le travail se termine
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — jamais plus de N rendus simultanés, et N est ATTEINT (une borne à 1 passerait le p
+         ↳ Error: Test timed out in 5000ms.
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — la borne se règle : à 1, les rendus passent un par un
+         ↳ Error: Test timed out in 5000ms.
+■ RD-8. une panne du moteur n'est plus une panne dite : l'erreur d'origine remonte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 5 · en échec 6
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand la PAGE est refusée
+         ↳ AssertionError: expected Error: page refusée to be an instance of PdfRenderUnavailableError
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le RENDU échoue
+         ↳ AssertionError: expected Error: pdf impossible to be an instance of PdfRenderUnavailableError
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le rendu DÉPASSE son délai
+         ↳ AssertionError: expected Error: rendu PDF : délai de 20 ms dépassé to be an instance of PdfRenderUnavailableError
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — un délai qui tombe PENDANT le lancement ne laisse PAS le navigateur orphelin
+         ↳ AssertionError: expected Error: rendu PDF : délai de 20 ms dépassé to be an instance of PdfRenderUnavailableError
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > un lancement qui ÉCHOUE est une panne du moteur (PdfRenderUnavailableError), sans rien à fer
+         ↳ AssertionError: expected Error: navigateur introuvable to be an instance of PdfRenderUnavailableError
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > une fermeture qui échoue à son tour ne MASQUE pas l'erreur d'origine
+         ↳ AssertionError: expected Error: page refusée to be an instance of PdfRenderUnavailableError
+■ PO-1. la version la plus récente n'est plus comparée dans le bon sens : l'ancienne est SERVIE, la dernière REFUSÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > une version plus ancienne est REFUSÉE et la réponse dit q
+         ↳ AssertionError: expected { outcome: 'ALLOWED' } to deeply equal { outcome: 'VERSION_NOT_ACTIVE', …(1) }
+      FAIL  src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > ⛔ UN CAS DOUBLEMENT FAUTIF : une ancienne version ANNULÉE
+         ↳ AssertionError: expected { outcome: 'STATUS_CONFLICT', …(1) } to deeply equal { outcome: 'VERSION_NOT_ACTIVE', …(1) }
+   [api-service] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > une version qui n'est plus la dernière : 409 QUOTE_VERSION_NOT_ACTIVE, `latestVersion` dans 
+         ↳ AssertionError: expected null to be an instance of ConflictException
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version 
+         ↳ AssertionError: expected { code: 'QUOTE_STATUS_CONFLICT', …(2) } to match object { …(2) }
+■ PO-2. ⛔ l'ORDRE des refus s'inverse : une ancienne version ANNULÉE est refusée comme « clos », pas comme « pas la version active »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > ⛔ UN CAS DOUBLEMENT FAUTIF : une ancienne version ANNULÉE
+         ↳ AssertionError: expected { outcome: 'STATUS_CONFLICT', …(1) } to deeply equal { outcome: 'VERSION_NOT_ACTIVE', …(1) }
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version 
+         ↳ AssertionError: expected { code: 'QUOTE_STATUS_CONFLICT', …(2) } to match object { …(2) }
+■ PO-3. un devis ACCEPTÉ n'est plus imprimable (le document qui compte le plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > un devis ACCEPTÉ — la version dont l'acompte est réglé — 
+         ↳ AssertionError: expected { outcome: 'STATUS_CONFLICT', …(1) } to deeply equal { outcome: 'ALLOWED' }
+      FAIL  src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > l'ensemble des statuts est PARTAGÉ sans reste : chaque st
+         ↳ AssertionError: expected { DRAFT: 'ALLOWED', …(5) } to deeply equal { DRAFT: 'ALLOWED', …(5) }
+■ PO-4. une affaire PERDUE devient imprimable
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > la dernière version d'une affaire PERDUE, ou d'un statut 
+         ↳ AssertionError: expected { outcome: 'ALLOWED' } to deeply equal { outcome: 'STATUS_CONFLICT', …(1) }
+      FAIL  src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > l'ensemble des statuts est PARTAGÉ sans reste : chaque st
+         ↳ AssertionError: expected { DRAFT: 'ALLOWED', …(5) } to deeply equal { DRAFT: 'ALLOWED', …(5) }
+■ PO-5. ⛔ la langue du compte est lue en MAJUSCULES (la faute de F7) : « AR » redevient l'arabe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document-policy.spec.ts > chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7) > ⛔ la comparaison est au MINUSCULE de l'énuméré 
+         ↳ AssertionError: expected { locale: 'ar', branch: 'CLIENT' } to deeply equal { locale: 'fr', branch: 'FALLBACK' }
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > une langue de compte INCONNUE (« AR », « en ») est le repli : jamais devin
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'fr', branch: 'FALLBACK' }
+■ PO-6. la langue du client n'est jamais lue : toujours le repli
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · ROUGE — passés 9 · en échec 3
+      FAIL  src/documents/quote-document-policy.spec.ts > chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7) > un client `ar` reçoit un PDF ARABE, même si le 
+         ↳ AssertionError: expected { locale: 'fr', branch: 'FALLBACK' } to deeply equal { locale: 'ar', branch: 'CLIENT' }
+      FAIL  src/documents/quote-document-policy.spec.ts > chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7) > un client `fr` reçoit un PDF français, même si 
+         ↳ AssertionError: expected { locale: 'ar', branch: 'FALLBACK' } to deeply equal { locale: 'fr', branch: 'CLIENT' }
+      FAIL  src/documents/quote-document-policy.spec.ts > chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7) > chaque langue de la liste d'autorité est reconn
+         ↳ AssertionError: expected { locale: 'ar', branch: 'FALLBACK' } to deeply equal { locale: 'fr', branch: 'CLIENT' }
+   [api-service] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `ar` reçoit un PDF ARABE même quand le pro clique depuis une int
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'CLIENT' }
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `fr` reçoit un PDF français depuis une interface arabe ; sans cl
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'fr', branch: 'CLIENT' }
+■ PO-7. la branche dit « FALLBACK » quand c'est la langue du client qui a servi
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-politique] code 1 · ROUGE — passés 9 · en échec 3
+      FAIL  src/documents/quote-document-policy.spec.ts > chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7) > un client `ar` reçoit un PDF ARABE, même si le 
+         ↳ AssertionError: expected { locale: 'ar', branch: 'FALLBACK' } to deeply equal { locale: 'ar', branch: 'CLIENT' }
+      FAIL  src/documents/quote-document-policy.spec.ts > chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7) > un client `fr` reçoit un PDF français, même si 
+         ↳ AssertionError: expected { locale: 'fr', branch: 'FALLBACK' } to deeply equal { locale: 'fr', branch: 'CLIENT' }
+      FAIL  src/documents/quote-document-policy.spec.ts > chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7) > chaque langue de la liste d'autorité est reconn
+         ↳ AssertionError: expected { locale: 'fr', branch: 'FALLBACK' } to deeply equal { locale: 'fr', branch: 'CLIENT' }
+   [api-service] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `ar` reçoit un PDF ARABE même quand le pro clique depuis une int
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'CLIENT' }
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `fr` reçoit un PDF français depuis une interface arabe ; sans cl
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'fr', branch: 'CLIENT' }
+■ SV-1. un identifiant mal formé atteint la base (il ne rend plus le 404 sans lire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la propriété et le 404 indistinct (décision 4) > un devis inexistant et un identifiant mal formé rendent la MÊME réponse — c
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 2 times
+■ SV-2. le propriétaire n'est plus transmis à la lecture : tout pro lit n'importe quel devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 3 · en échec 9
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > une version qui n'est plus la dernière : 409 QUOTE_VERSION_NOT_ACTIVE, `latestVersion` dans 
+         ↳ AssertionError: expected NotFoundException: quote.errors.notFound { …(3) } to be an instance of ConflictException
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > une affaire perdue : 409 QUOTE_STATUS_CONFLICT avec le statut RÉEL, rien n'est rendu
+         ↳ AssertionError: expected { code: 'QUOTE_NOT_FOUND', …(1) } to match object { code: 'QUOTE_STATUS_CONFLICT', …(1) }
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version 
+         ↳ AssertionError: expected { code: 'QUOTE_NOT_FOUND', …(1) } to match object { …(2) }
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeu
+         ↳ NotFoundException: quote.errors.notFound
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `ar` reçoit un PDF ARABE même quand le pro clique depuis une int
+         ↳ NotFoundException: quote.errors.notFound
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `fr` reçoit un PDF français depuis une interface arabe ; sans cl
+         ↳ NotFoundException: quote.errors.notFound
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > une langue de compte INCONNUE (« AR », « en ») est le repli : jamais devin
+         ↳ NotFoundException: quote.errors.notFound
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE — et JAMAIS un 409
+         ↳ AssertionError: expected NotFoundException: quote.errors.notFound { …(3) } to be an instance of ServiceUnavailableException
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > toute AUTRE erreur du moteur remonte telle quelle : le service ne la déguise pas
+         ↳ AssertionError: expected NotFoundException: quote.errors.notFound { …(3) } to be an instance of RangeError
+■ SV-3. le refus d'une ancienne version ne dit plus laquelle est active
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > une version qui n'est plus la dernière : 409 QUOTE_VERSION_NOT_ACTIVE, `latestVersion` dans 
+         ↳ AssertionError: expected { …(3) } to match object { …(3) }
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version 
+         ↳ AssertionError: expected { …(3) } to match object { …(2) }
+■ SV-4. le refus d'une ancienne version porte le code d'un devis CLOS
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-service] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > une version qui n'est plus la dernière : 409 QUOTE_VERSION_NOT_ACTIVE, `latestVersion` dans 
+         ↳ AssertionError: expected { code: 'QUOTE_STATUS_CONFLICT', …(2) } to match object { …(3) }
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version 
+         ↳ AssertionError: expected { code: 'QUOTE_STATUS_CONFLICT', …(2) } to match object { …(2) }
+■ SV-5. une PANNE du moteur n'est plus un 503 : elle remonte comme une erreur quelconque
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE — et JAMAIS un 409
+         ↳ AssertionError: expected PdfRenderUnavailableError: Le moteur de r… to be an instance of ServiceUnavailableException
+■ SV-6. la langue de l'interface du pro n'est plus le repli : toujours le français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `fr` reçoit un PDF français depuis une interface arabe ; sans cl
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'FALLBACK' }
+■ SV-7. la langue du compte du client n'est jamais transmise
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `ar` reçoit un PDF ARABE même quand le pro clique depuis une int
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'ar', branch: 'CLIENT' }
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > un client `fr` reçoit un PDF français depuis une interface arabe ; sans cl
+         ↳ AssertionError: expected { …(4) } to match object { locale: 'fr', branch: 'CLIENT' }
+■ SV-8. le nom du fichier porte une donnée PERSONNELLE (le nom de la salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeu
+         ↳ AssertionError: expected 'devis-Salle des Jasmins.pdf' to be 'devis-2026-12-05-v2-01a10f0a.pdf' // Object.is equality
+■ SV-9. la date d'émission est celle du fuseau UTC du serveur, pas celle d'Alger
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > algiersToday — la date d'émission est celle d'Alger (UTC+1, D48) > à 23 h 30 UTC il est déjà le lendemain à Alger : le fuseau n'est pas celui du se
+         ↳ AssertionError: expected '2026-10-05' to be '2026-10-06' // Object.is equality
+■ T-1. le canal « e-mail » n'exige plus d'adresse : il s'active sans destinataire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > channelBlockers — ce qui retient un canal vient du CONTRAT (décision 8) > l'e-mail exige l'ADRESSE et rien d'autre ; le SMS et le téléphone exigent le MOBILE ;
+         ↳ AssertionError: expected [] to deeply equal [ 'needEmail' ]
+   [pro-parcours] code 1 · ROUGE — passés 82 · en échec 13
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse
+         ↳ AssertionError: Imprimé et remis: expected true to be false // Object.is equality
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours
+         ↳ AssertionError: expected "spy" to be called with arguments: [ 'q1', { sentVia: Any<String> } ]
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SM
+         ↳ Error: expect(element).toBeDisabled()
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF
+         ↳ TestingLibraryElementError: Unable to find role="dialog"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affic
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le mot
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée, PDF non téléchargé"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "PDF téléchargé, remise non enregistrée"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Rien n'a pu être fait"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jam
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée, PDF non téléchargé"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+         ↳ TestingLibraryElementError: Unable to find role="dialog"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la langue de repli `ar` envoyée au serveur, et la fenêtre dans la 
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "سُجِّل التسليم"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la langue de repli envoyée est celle de l'interface AU MOMENT DU CLIC : `ar` depuis une page arabe, `fr` d
+         ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'fr' ]
+■ T-3. le nom du fichier ne dit plus la version
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom du fichier ne porte AUCUNE donnée personnelle, mê
+         ↳ AssertionError: expected 'devis-2026-12-05-01a10f0a.pdf' to match /^devis-\d{4}-\d{2}-\d{2}-v\d+-[0-9a-f…/
+   [api-service] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeu
+         ↳ AssertionError: expected 'devis-2026-12-05-01a10f0a.pdf' to be 'devis-2026-12-05-v2-01a10f0a.pdf' // Object.is equality
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+         ↳ AssertionError: expected 'devis-2026-08-15-q1.pdf' to match /^devis-\d{4}-\d{2}-\d{2}-v1-q1\.pdf$/
+■ Q-1. `quotes.document` lit la réponse comme du JSON : le PDF planterait à la première lecture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-devis] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > ⛔ lit la réponse en FICHIER (`responseType: "blob"`) : un PDF lu comme du JSON planterait à la première lecture
+         ↳ AssertionError: expected undefined to be 'blob' // Object.is equality
+■ Q-2. la langue de repli ne voyage plus dans l'adresse
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [client-devis] code 1 · ROUGE — passés 3 · en échec 2
+      FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > la langue de repli voyage dans l'adresse, pour les DEUX langues : `?locale=fr` et `?locale=ar`
+         ↳ AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]
+      FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > l'identifiant est ENCODÉ : un identifiant qui porte « / » ou « ? » ne peut pas changer la route appelée
+         ↳ AssertionError: expected '/quotes/a%2Fb%3Fc%3Dd/document' to be '/quotes/a%2Fb%3Fc%3Dd/document?locale…' // Object.is equality
+■ Q-3. l'identifiant du devis n'est plus encodé dans l'adresse du document
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-devis] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/quotes-client.test.ts > quotes.document — la route du PDF > l'identifiant est ENCODÉ : un identifiant qui porte « / » ou « ? » ne peut pas changer la route appelée
+         ↳ AssertionError: expected '/quotes/a/b?c=d/document?locale=fr' to be '/quotes/a%2Fb%3Fc%3Dd/document?locale…' // Object.is equality
+■ Q-4. la primitive ne rend plus un fichier : la réponse binaire est parsée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-auth] code 1 · ROUGE — passés 15 · en échec 2
+      FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > un succès rend un Blob aux MÊMES octets ; la requête est un GET authentifié, sans corps ni Content-Type
+         ↳ SyntaxError: Unexpected token '%', "%PDF-1.4 �" is not valid JSON
+      FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > le rejeu après 401 GARDE le type de réponse : UN refresh, UN rejeu, et le second succès est bien un Blob
+         ↳ SyntaxError: Unexpected token '%', "%PDF-1.4 �" is not valid JSON
+■ Q-5. le rejeu après 401 perd le type de réponse : le second succès n'est plus un fichier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-auth] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > le rejeu après 401 GARDE le type de réponse : UN refresh, UN rejeu, et le second succès est bien un Blob
+         ↳ SyntaxError: Unexpected token '%', "%PDF-1.4 �" is not valid JSON
+■ R-1. le SMS ne figure plus parmi les canaux d'un envoi à venir
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > la ligne « Zwadj n'envoie pas encore » n'existe que pour le SMS et l'e-mail ENRE
+         ↳ AssertionError: expected [ 'EMAIL' ] to deeply equal [ 'SMS', 'EMAIL' ]
+   [pro-parcours] code 1 · ROUGE — passés 93 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie
+         ↳ AssertionError: expected 'Remise enregistréeRemise enregistrée …' to contain 'Zwadj n\'envoie pas encore de SMS : e…'
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu 
+         ↳ AssertionError: SMS: expected "spy" to be called 1 times, but got 0 times
+■ R-2. « Zwadj n'envoie pas encore » s'affiche aussi quand l'enregistrement a ÉCHOUÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > la ligne « Zwadj n'envoie pas encore » n'existe que pour le SMS et l'e-mail ENRE
+         ↳ AssertionError: SMS après échec: expected true to be false // Object.is equality
+■ R-3. « Remise enregistrée » est le titre d'une remise enregistrée dont le PDF a ÉCHOUÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > les QUATRE issues rendent quatre titres différents, dans l'ordre enregistrement 
+         ↳ AssertionError: expected 'remitTitleDone' to be 'remitTitleRecordedOnly' // Object.is equality
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > ⛔ aucune issue ne dit « tout est fait » quand l'une des deux a échoué : le titre
+         ↳ AssertionError: expected 'remitTitleDone' not to be 'remitTitleDone' // Object.is equality
+■ R-4. « Remise enregistrée » est le titre d'un échec TOTAL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > les QUATRE issues rendent quatre titres différents, dans l'ordre enregistrement 
+         ↳ AssertionError: expected 'remitTitleDone' to be 'remitTitleNone' // Object.is equality
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > ⛔ aucune issue ne dit « tout est fait » quand l'une des deux a échoué : le titre
+         ↳ AssertionError: expected 'remitTitleDone' not to be 'remitTitleDone' // Object.is equality
+■ R-5. la ligne d'enregistrement dit « enregistrée » même quand l'enregistrement a échoué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > les QUATRE issues rendent quatre titres différents, dans l'ordre enregistrement 
+         ↳ AssertionError: expected [ 'remitRecorded', 'remitPdfDone' ] to deeply equal [ 'remitRecordFailed', 'remitPdfDone' ]
+■ R-6. la ligne du PDF dit « téléchargé » même quand le PDF a échoué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (décision 9) > les QUATRE issues rendent quatre titres différents, dans l'ordre enregistrement 
+         ↳ AssertionError: expected [ 'remitRecorded', 'remitPdfDone' ] to deeply equal [ 'remitRecorded', 'remitPdfFailed' ]
+■ R-7. le canal « e-mail » ne retient plus personne faute d'adresse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/dashboard/remittance.test.ts > channelBlockers — ce qui retient un canal vient du CONTRAT (décision 8) > chaque canal est retenu par exactement ce que les prédicats du contrat disent, pour c
+         ↳ AssertionError: EMAIL phone=false email=false: expected [] to deeply equal [ 'needEmail' ]
+      FAIL  src/dashboard/remittance.test.ts > channelBlockers — ce qui retient un canal vient du CONTRAT (décision 8) > l'e-mail exige l'ADRESSE et rien d'autre ; le SMS et le téléphone exigent le MOBILE ;
+         ↳ AssertionError: expected [] to deeply equal [ 'needEmail' ]
+■ R-8. le SMS et le téléphone ne retiennent plus personne faute de mobile
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/dashboard/remittance.test.ts > channelBlockers — ce qui retient un canal vient du CONTRAT (décision 8) > chaque canal est retenu par exactement ce que les prédicats du contrat disent, pour c
+         ↳ AssertionError: SMS phone=false email=false: expected [] to deeply equal [ 'needPhone' ]
+      FAIL  src/dashboard/remittance.test.ts > channelBlockers — ce qui retient un canal vient du CONTRAT (décision 8) > l'e-mail exige l'ADRESSE et rien d'autre ; le SMS et le téléphone exigent le MOBILE ;
+         ↳ AssertionError: expected [] to deeply equal [ 'needPhone' ]
+■ R-9. ⛔ le point de branchement fait un APPEL RÉSEAU : le contrat réel serait inventé sans interlocuteur
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > remittance-hook — le point de branchement NE FAIT RIEN (décision 10) > ⛔ aucun appel d'API, aucun contrat neuf : le fichier n'importe RIEN à l'exécution et n'a
+         ↳ AssertionError: expected 'fetch' to be null
+■ J-1. la langue de repli envoyée n'est plus celle de l'interface : toujours le français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la langue de repli envoyée est celle de l'interface AU MOMENT DU CLIC : `ar` depuis une page arabe, `fr` d
+         ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+■ J-2. le bouton enregistre toujours « impression », quel que soit le bouton cliqué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses : enregistre le canal sur le devis en cours ET demande le PDF de CE devis —
+         ↳ AssertionError: SMS: expected "spy" to be called with arguments: [ 'q1', { sentVia: 'SMS' } ]
+■ J-3. un échec de l'un des deux appels emporte l'autre : plus de règlement SÉPARÉ (`all` au lieu d'`allSettled`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 82 · en échec 13
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses : enregistre le canal sur le devis en cours ET demande le PDF de CE devis —
+         ↳ AssertionError: PRINT: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affic
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le mot
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée, PDF non téléchargé"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "PDF téléchargé, remise non enregistrée"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Rien n'a pu être fait"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jam
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée, PDF non téléchargé"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie
+         ↳ AssertionError: expected 'Rien n\'a pu être faitLa remise n\'a …' to contain 'Zwadj n\'envoie pas encore de SMS : e…'
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu 
+         ↳ AssertionError: SMS: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveu
+         ↳ TestingLibraryElementError: Unable to find role="dialog"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux télécharg
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "status"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la langue de repli `ar` envoyée au serveur, et la fenêtre dans la 
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "سُجِّل التسليم"
+■ J-4. le devis enregistré n'est plus relu dans l'écran après la remise
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 93 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affic
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "status"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "status"
+■ J-5. le point de branchement est appelé pour TOUS les canaux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu 
+         ↳ AssertionError: PRINT: expected "spy" to not be called at all, but actually been called 1 times
+■ J-6. le point de branchement est appelé même quand l'enregistrement a ÉCHOUÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveu
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+■ J-7. le point de branchement n'est plus appelé du tout
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu 
+         ↳ AssertionError: SMS: expected "spy" to be called 1 times, but got 0 times
+■ J-8. le point de branchement reçoit le devis d'AVANT le clic, pas celui du serveur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu 
+         ↳ AssertionError: SMS: expected "spy" to be called with arguments: [ 'SMS', …(1) ]
+■ J-9. les boutons restent actifs pendant le travail : un double clic fait deux remises
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux télécharg
+         ↳ Error: expect(element).toBeDisabled()
+■ J-10. la fenêtre se ferme sans fermer (`onClose` ne fait rien)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+         ↳ AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+■ J-11. la fenêtre s'ouvre PENDANT le travail, avant les deux réponses
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 92 · en échec 3
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur :
+         ↳ AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi,
+         ↳ AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF
+         ↳ AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+■ J-12. un téléchargement qui échoue est dit « téléchargé »
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jam
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée, PDF non téléchargé"
+■ J-13. le fichier téléchargé porte un nom écrit à la main, pas celui de la formule partagée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+         ↳ AssertionError: expected 'devis.pdf' to be 'devis-2026-08-15-v1-q1.pdf' // Object.is equality
+■ J-14. le canal « e-mail » est actif quelle que soit l'adresse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 93 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse
+         ↳ AssertionError: Envoyé par e-mail: expected false to be true // Object.is equality
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SM
+         ↳ Error: expect(element).toBeDisabled()
+■ J-15. la raison du blocage « e-mail » n'est plus affichée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SM
+         ↳ TypeError: Cannot read properties of null (reading 'textContent')
+■ J-16. ⛔ LA PHRASE RETIRÉE REVIENT sur l'écran : « Zwadj n'imprime rien et n'envoie rien à votre place »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que
+         ↳ AssertionError: expected 'Client présent sur placeNouvelle rése…' not to match /n'imprime rien/
+■ K-1. une clé neuve n'existe plus que dans UN catalogue (le français)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-parite] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/common/i18n-parity.spec.ts > Parité i18n FR/AR (invariant produit) > les DEUX ensembles de clés sont identiques — toute clé orpheline est nommée dans l'échec
+         ↳ AssertionError: expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT (Ko, 04/10/2026) — mesuré sur les catalogues, les deux langues > chaque ligne que la fenêtre peut affi
+         ↳ TypeError: .toMatch() expects to receive a string, but got undefined
+■ K-2. ⛔ la phrase retirée revient dans le catalogue français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT (Ko, 04/10/2026) — mesuré sur les catalogues, les deux langues > la phrase retirée n'existe plus, ni e
+         ↳ AssertionError: expected 'Zwadj n\'imprime rien et n\'envoie ri…' not to match /n'imprime rien/
+■ K-3. ⛔ la ligne du SMS, en arabe, dit que Zwadj ENVOIE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT (Ko, 04/10/2026) — mesuré sur les catalogues, les deux langues > chaque ligne que la fenêtre peut affi
+         ↳ AssertionError: expected 'زواج يرسل الرسالة القصيرة إلى الزبون.' to match /لا يرسل.*بعد/
+■ K-4. ⛔ la ligne de l'e-mail, en français, dit que Zwadj ENVOIE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/dashboard/remittance.test.ts > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT (Ko, 04/10/2026) — mesuré sur les catalogues, les deux langues > la phrase retirée n'existe plus, ni e
+         ↳ AssertionError: expected '{"basePrice":"Location de la salle","…' not to match /\bZwadj\s+(?:a\s+(?:envoy|imprim)|en…/i
+      FAIL  src/dashboard/remittance.test.ts > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT (Ko, 04/10/2026) — mesuré sur les catalogues, les deux langues > chaque ligne que la fenêtre peut affi
+         ↳ AssertionError: expected 'Zwadj envoie l\'e-mail au client, ave…' to match /n'envoie pas encore/
+■ K-5. le cinquième canal perd son libellé arabe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/dashboard/remittance.test.ts > D181 — tout canal de la liste d'autorité a un libellé FR et AR, MESURÉ > `venue.ui.quotes.sv_<canal>` existe, non vide, dans les DEUX catalogues, pour chacun d
+         ↳ AssertionError: ar sv_EMAIL: expected '' to match /\S/
+■ W-1. les étapes avant la courante ne sont plus « franchies » : toute étape ouverte est cochée, même après elle
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > les états sont ceux du rail partagé : avant la courante « franchie » (coche), la courante, après elle
+         ↳ AssertionError: expected [ 'is-done', 'is-done', …(5) ] to deeply equal [ 'is-done', 'is-done', …(5) ]
+■ W-2. une étape non franchissable devient un BOUTON
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > ⚠ vider un champ requis REFERME les étapes suivantes
+         ↳ AssertionError: expected [ <button …(3)>…(2)</button>, …(5) ] to have a length of +0 but got 6
+■ W-3. cliquer une étape ouvre la SUIVANTE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > cliquer une étape du rail l'ouvre — l'étape vit dans l'URL (« ?etape=5 »), et le nom accessible du bo
+         ↳ Error: expect(element).toHaveTextContent()
+■ W-4. la classe de mise en page propre au Pro n'est plus posée sur le rail
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⛔ S-b — c'est `JourneyRail` de `@zwadj/ui`, pas une seconde copie : la classe partagée est posée, et 
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ W-5. le nom accessible du bouton d'étape n'est plus le TITRE de l'étape
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > cliquer une étape du rail l'ouvre — l'étape vit dans l'URL (« ?etape=5 »), et le nom accessible du bo
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Prestations"
+■ W-6. le rail perd son nom accessible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 9 · en échec 9
+      FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > une salle existante ouvre les SEPT étapes : corriger une photo ne demande pas six « Suivant »
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > ⚠ vider un champ requis REFERME les étapes suivantes
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > l'étape courante porte aria-current=step — l'état n'est pas qu'une couleur
+         ↳ TestingLibraryElementError: Unable to find role="navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⛔ S-b — c'est `JourneyRail` de `@zwadj/ui`, pas une seconde copie : la classe partagée est posée, et 
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⛔ S-a — plus de « 01 » doublé et collé au libellé : chaque entrée est une pastille (rang ou coche) et
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > les états sont ceux du rail partagé : avant la courante « franchie » (coche), la courante, après elle
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⚠ S-d — une étape non franchie n'est PAS un bouton : à la création il n'y a qu'une étape, la courante
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > cliquer une étape du rail l'ouvre — l'étape vit dans l'URL (« ?etape=5 »), et le nom accessible du bo
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > le rail reste le PREMIER élément du DOM : on sait où l'on en est avant de lire le contenu (sa place à
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+■ W-7. la mise en page du rail ne le place plus dans sa zone de grille
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > la feuille du Pro pose la grille rail | flux et son repli, sur les mêmes mesures que le parcours sur 
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ C-1. la salle créée n'est plus signalée au fournisseur : la liste reste celle d'avant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-creation] code 1 · ROUGE — passés 1 · en échec 2
+      FAIL  src/venues/create-venue-page.test.tsx > « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/create-venue-page.test.tsx > « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > le fournisseur RELIT la liste après la création — une seule source (D78), pas une 
+         ↳ AssertionError: expected "spy" to be called 2 times, but got 1 times
+■ L-1. ⛔ LE DÉFAUT RESTAURÉ — la colonne du panneau est redéclarée APRÈS le repli à une colonne
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-feuille] code 1 · ROUGE — passés 6 · en échec 2
+      FAIL  src/venues/layout-style.test.ts > ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 360 px la valeur qui GAGNE n'a qu'UNE piste —
+         ↳ AssertionError: valeur gagnante à 360 px : 292px minmax(0, 1fr): expected 2 to be 1 // Object.is equality
+      FAIL  src/venues/layout-style.test.ts > ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 320 px, à la frontière 860 px et sur toute la
+         ↳ AssertionError: 320 px: expected 2 to be 1 // Object.is equality
+  empreintes : 19 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 93 cible(s) jouée(s) sur 102, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+FIN code 0

@@ -30,6 +30,9 @@ const ROUTES = [
   `${CLIENT}/ar`,
   `${CLIENT}/fr/salles`,
   `${CLIENT}/fr/compte`,
+  // ⛔ Rang 33 (D326) : la connexion du CLIENT manquait ici. `r25-lien-connexion` (fr) la compilait dans SA mesure et vivait à la limite de son attente de 7 s
+  // (6,9 s à D324, 10,1 s et 11,3 s à D325, rouge à la 3ᵉ passe) — « un échec qui se déplace » (D127). Le coût se paie désormais ICI, hors de toute mesure.
+  `${CLIENT}/fr/auth/connexion`,
   `${PRO}/`,
   `${PRO}/auth/connexion`,
   `${PRO}/compte`,

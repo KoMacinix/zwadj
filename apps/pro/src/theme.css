@@ -178,7 +178,10 @@
 /* Panneau gauche — tableau de bord UNIQUEMENT (décision ⑨). */
 .pro-layout {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
+  /* ⛔ Rang 33 (D326) : LA colonne du panneau se déclare ICI, UNE fois, AVANT le repli à une colonne de `@media (max-width: 860px)` ci-dessous. Elle était
+     redéclarée (`292px`) PLUS BAS dans la feuille, donc APRÈS le repli : à spécificité égale la dernière gagne, et à 360 px la grille gardait deux colonnes
+     (« 292px 68px », 110 px de débordement en français, 58 en arabe — mesuré, D325). `layout-style.test.ts` lit l'ORDRE et rougit si ce défaut revient. */
+  grid-template-columns: 292px minmax(0, 1fr);
   align-items: start;
   max-inline-size: 1280px;
   margin-inline: auto;
@@ -375,7 +378,7 @@
 
 /* ── Panneau gauche ─────────────────────────────────────────────────────── */
 .pro-layout {
-  grid-template-columns: 292px minmax(0, 1fr);
+  /* ⚠ La colonne n'est PLUS redéclarée ici (voir la première règle de `.pro-layout`) : une déclaration plus bas que le repli le défait. */
   max-inline-size: none;
 }
 .pro-aside {
@@ -671,6 +674,59 @@
    `border-inline-start` et non `border-left`, sinon la bordure reste à gauche
    en arabe. Rien n'est laissé « au cas où » — une règle sans objet est du bruit
    que le prochain lecteur croira utile. */
+/* ── L'assistant de salle : LE MÊME rail que le parcours sur place (rang 33, D326) ───────────────────────────────────────────────────────────────
+   Le stepper de l'assistant était une `<ol>` du navigateur sans aucune règle de feuille de style (« 1. 01L'essentiel »). C'est désormais `JourneyRail` de
+   `@zwadj/ui` — la chrome du parcours sur place — et cette feuille ne porte que sa MISE EN PAGE : la grille rail | flux, et le repli sur écran étroit, calqués sur
+   `.wk-main` / `.wk-rail` (mêmes mesures : colonne de 168 px, écart de 34 px, seuil à 900 px). Aucune couleur n'est écrite ici : les pastilles viennent de `@zwadj/ui`. */
+.wizard {
+  display: grid;
+  /* Un peu d'air sous ce qui précède (le badge de publication, à l'édition) : le rail ne doit pas coller au premier élément du panneau. */
+  margin-block-start: 16px;
+  gap: 0 34px;
+  grid-template-columns: minmax(0, 168px) minmax(0, 1fr);
+  grid-template-areas: "rail flow";
+  align-items: start;
+}
+.wizard-rail {
+  grid-area: rail;
+  position: sticky;
+  top: 24px;
+}
+.wizard-flow {
+  grid-area: flow;
+  min-inline-size: 0;
+}
+.wizard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block-start: 20px;
+}
+/* Sur écran étroit le rail repasse AU-DESSUS du flux et redevient horizontal — comme `.wk-rail` : à 168 px de colonne il mangerait la moitié de la largeur utile. */
+@media (max-width: 900px) {
+  .wizard {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "rail"
+      "flow";
+  }
+  .wizard-rail {
+    position: static;
+    margin-block-end: 22px;
+  }
+  .wizard-rail ol {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+  .wizard-rail li {
+    padding-block-end: 0;
+  }
+  .wizard-rail li:not(:last-child)::before {
+    display: none;
+  }
+}
+
 .wk-question {
   margin: 0 0 6px;
   font-size: 26px;

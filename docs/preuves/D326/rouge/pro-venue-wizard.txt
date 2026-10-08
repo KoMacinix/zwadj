@@ -1,0 +1,17 @@
+# ROUGE LU — pro-venue-wizard : @zwadj/pro · src/venues/venue-wizard.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/pro/src/venues/venue-wizard.tsx, apps/pro/src/theme.css (2 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 6 failed | 13 passed (19)
+# échecs lus : 6 (AssertionError : 6 · autre : 0) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > l'étape courante porte aria-current=step — l'état n'est pas qu'une couleur
+      ↳ AssertionError: expected [] to have a length of 1 but got +0
+[AssertionError] FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⛔ S-b — c'est `JourneyRail` de `@zwadj/ui`, pas une seconde copie : la classe partagée est posée, et le fichier n'écrit plus de `<ol>` ni de « 01 »
+      ↳ AssertionError: expected false to be true // Object.is equality
+[AssertionError] FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⛔ S-a — plus de « 01 » doublé et collé au libellé : chaque entrée est une pastille (rang ou coche) et le TITRE seul, jamais « 0N »
+      ↳ AssertionError: entrée 1: expected undefined to be 'L\'essentiel' // Object.is equality
+[AssertionError] FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > les états sont ceux du rail partagé : avant la courante « franchie » (coche), la courante, après elle « à faire » — et toutes restent cliquables à l'édition
+      ↳ AssertionError: expected [ 'wizard-step-item is-open', …(6) ] to deeply equal [ 'is-done', 'is-done', …(5) ]
+[AssertionError] FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⚠ S-d — une étape non franchie n'est PAS un bouton : à la création il n'y a qu'une étape, la courante, et aucune commande dans le rail
+      ↳ AssertionError: expected [ 'wizard-step-item is-current' ] to deeply equal [ 'is-current' ]
+[AssertionError] FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > la feuille du Pro pose la grille rail | flux et son repli, sur les mêmes mesures que le parcours sur place (colonne de 168 px, seuil de 900 px)
+      ↳ AssertionError: expected false to be true // Object.is equality

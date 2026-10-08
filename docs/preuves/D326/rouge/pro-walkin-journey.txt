@@ -1,0 +1,39 @@
+# ROUGE LU — pro-walkin-journey : @zwadj/pro · src/dashboard/walkin-journey.test.tsx
+# sources ramenées à `HEAD` pour ce test : apps/pro/src/dashboard/walkin-journey.tsx (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 17 failed | 78 passed (95)
+# échecs lus : 17 (AssertionError : 7 · autre : 10) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33)
+      ↳ AssertionError: Envoyé par e-mail: expected false to be true // Object.is equality
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone
+      ↳ AssertionError: expected false to be true // Object.is equality
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses : enregistre le canal sur le devis en cours ET demande le PDF de CE devis — avec la langue de l'interface, et rien d'autre
+      ↳ AssertionError: PRINT: expected "spy" to be called with arguments: [ 'q1', 'fr' ]
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+      ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Remise enregistrée, PDF non téléchargé"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "PDF téléchargé, remise non enregistrée"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Rien n'a pu être fait"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal
+      ↳ AssertionError: SMS: expected "spy" to be called 1 times, but got 0 times
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements
+      ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+      ↳ TestingLibraryElementError: Unable to find role="dialog"
+[autre] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la langue de repli `ar` envoyée au serveur, et la fenêtre dans la langue de la page
+      ↳ TestingLibraryElementError: Unable to find role="dialog" and name "سُجِّل التسليم"
+[AssertionError] FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la langue de repli envoyée est celle de l'interface AU MOMENT DU CLIC : `ar` depuis une page arabe, `fr` depuis une page française
+      ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'fr' ]

@@ -161,6 +161,9 @@ export function makeQuotesDouble(overrides: Partial<QuotesClient> = {}): QuotesC
     revise: vi.fn(),
     convert: vi.fn(),
     cancel: vi.fn(),
+    // Rang 33 (D326) : le PDF du devis. Le défaut REND un Blob (un test qui clique un bouton de remise n'a pas à connaître le transport) ;
+    // un test qui veut un ÉCHEC le remplace par `vi.fn().mockRejectedValue(new ApiError(…))`.
+    document: vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" })),
     ...overrides
   };
 }

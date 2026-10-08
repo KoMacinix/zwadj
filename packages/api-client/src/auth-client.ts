@@ -84,6 +84,9 @@ export async function toApiError(res: Response): Promise<ApiError> {
 export interface AuthedRequestInit {
   method?: string;
   body?: unknown;
+  /** Rang 33 (D326) — `"blob"` : la réponse de SUCCÈS est un fichier (le PDF d'un devis), lue en `Blob` au lieu d'être parsée en JSON. Les ERREURS restent du JSON, lues
+   *  par `toApiError` comme toujours. Défaut `"json"` : aucun appelant existant ne change. Le mutex et le rejeu après 401 ne sont pas touchés. */
+  responseType?: "json" | "blob";
 }
 
 export interface AuthClient {
@@ -125,7 +128,10 @@ export function createAuthClient(
    *  le boot d'app comme le rejeu après 401. Remise à `null` au règlement. */
   let refreshInFlight: Promise<LoginResponse | null> | null = null;
 
-  async function raw<T>(path: string, init: { method?: string; body?: unknown; bearer?: boolean } = {}): Promise<T> {
+  async function raw<T>(
+    path: string,
+    init: { method?: string; body?: unknown; bearer?: boolean; responseType?: "json" | "blob" } = {}
+  ): Promise<T> {
     // A6a-P — PASSE-PLAT multipart : un FormData part tel quel et SANS
     // Content-Type. Le poser à la main casse le multipart (la boundary est
     // générée par le navigateur et doit figurer dans l'en-tête). `typeof` en
@@ -153,6 +159,8 @@ export function createAuthClient(
     // VOLONTAIREMENT limitée à ce cas : toute autre réponse doit porter du JSON,
     // un corps vide inattendu reste une erreur (et non un `undefined` silencieux).
     if (res.status === 204) return undefined as T;
+    // Rang 33 (D326) : un fichier (PDF) se lit en `Blob`. Une réponse de SUCCÈS seulement : une erreur est sortie plus haut, en JSON.
+    if (init.responseType === "blob") return (await res.blob()) as T;
     return (await res.json()) as T;
   }
 
@@ -187,7 +195,7 @@ export function createAuthClient(
 
   /** Requête authentifiée : Bearer en mémoire, et sur 401 UNAUTHENTICATED,
    *  UN refresh puis UN rejeu — jamais de boucle. */
-  async function authed<T>(path: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
+  async function authed<T>(path: string, init: { method?: string; body?: unknown; responseType?: "json" | "blob" } = {}): Promise<T> {
     try {
       return await raw<T>(path, { ...init, bearer: true });
     } catch (e) {

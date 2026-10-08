@@ -1,0 +1,45 @@
+# D326 — motifs de la passe D277 de la CLÔTURE du rang 33 (lot de CODE : le PDF du devis, les cinq boutons, le stepper, « Ma salle », le préchauffage, le 360 px). Format : <sens>|<motif>.
+# Lus par balayage.py (copie à l'octet de celui de la partie A, `cmp` identique), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que la CLÔTURE invalide : « le rang 33 est ouvert / son code est en cours » ; « le PDF est à construire » ; « la preuve de l'arabe précède le code » dans un état courant ; les entrées
+#          ouvertes du backlog que le lot FERME (boutons, préchauffage, 360 px, liste d'étapes, « Ma salle ») ; « un nouveau contrat d'API pour le branchement SMS » (il n'y en a pas : un point
+#          unique qui ne fait rien) ; « n'imprime rien » (la phrase de l'écran est retirée ; il en reste UNE dans la description de la route, qui dit l'inverse d'un envoi) ; la clé retirée.
+# sens 2 — ce que la clôture REND PERMIS, ou dont la CONDITION change : le compteur passe de UN à DEUX (« un lot de code de plus est tenable » est CONSOMMÉ ; « aucun lot de code avant la
+#          certification » devient la règle courante) ; « un lot de code PEUT s'ouvrir » ; « troisième lot » ; la suite de l'ordre (certification, puis ADM-1) ; « moteur de rechange ».
+1|PROCHAIN LOT — rang 33
+1|OUVERT LE 05/10/2026 : D326
+1|CODE EN COURS
+1|OÙ IL EN EST : ouvert
+1|le CODE commence
+1|le rang 33 est ouvert
+1|rang 33 : ouvert
+1|PREUVE DE L'ARABE FAITE
+1|attend le regard de Ko
+1|À FAIRE VÉRIFIER PAR KO
+1|UIP-D — PDF de devis
+1|télécharger un PDF
+1|PDF récapitulatif
+1|branchement du SMS
+1|point de branchement
+1|préchauffage de `/fr/auth/connexion`
+1|préchauffage
+1|à 360 px
+1|À 360 PX
+1|liste d'étapes
+1|stepper
+1|n'imprime rien
+1|clientNeeded
+1|1129 → 1127
+1|NB_TESTS_ATTENDU
+2|un lot de code de plus est tenable
+2|un seul lot de code de plus
+2|lot de code PEUT s'ouvrir
+2|aucun lot de code ne s'ouvre
+2|troisième lot
+2|trois non
+2|compteur DEUX
+2|compteur **DEUX**
+2|UN → DEUX
+2|ADM-1 n'est plus
+2|moteur de rechange
+T+|ZWADJ
+T-|zzz-motif-absent-d326c

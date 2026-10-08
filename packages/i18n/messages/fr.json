@@ -498,7 +498,9 @@
       "notFound": "Ce devis est introuvable.",
       "statusConflict": "Ce devis a changé d'état entre-temps.",
       "expired": "Ce devis a dépassé sa date de validité. Créez-en une nouvelle version.",
-      "alreadyConverted": "Ce devis a déjà donné lieu à une demande de réservation. Créez une nouvelle version pour repartir sur d'autres bases."
+      "alreadyConverted": "Ce devis a déjà donné lieu à une demande de réservation. Créez une nouvelle version pour repartir sur d'autres bases.",
+      "versionNotActive": "Une version plus récente de ce devis existe : le PDF ne se télécharge que pour la dernière version.",
+      "documentUnavailable": "Le PDF n'a pas pu être généré pour le moment. Réessayez dans un instant."
     },
     "validation": {
       "required": "Ce champ est obligatoire.",
@@ -510,7 +512,25 @@
       "emailInvalid": "Adresse e-mail invalide.",
       "paymentMethodInvalid": "Mode de paiement invalide.",
       "unknownKey": "Champ inconnu.",
-      "nameInvalid": "Lettres, espaces, tirets et apostrophes uniquement."
+      "nameInvalid": "Lettres, espaces, tirets et apostrophes uniquement.",
+      "documentLocaleInvalid": "Langue du document invalide."
+    },
+    "document": {
+      "title": "Devis",
+      "reference": "Référence",
+      "issuedOn": "Établi le",
+      "client": "Client",
+      "eventDate": "Date de l'événement",
+      "slot": "Créneau",
+      "guests": "Invités",
+      "service": "Prestation",
+      "quantity": "Qté",
+      "amount": "Montant",
+      "basePrice": "Location de la salle",
+      "servicesTotal": "Prestations",
+      "total": "Total à payer",
+      "deposit": "Acompte",
+      "note": "Ce document récapitule les valeurs enregistrées pour ce devis au moment de son téléchargement."
     }
   },
   "search": {
@@ -1041,6 +1061,7 @@
         "create": "Créer le devis",
         "sv_PRINT": "Imprimé et remis",
         "sv_SMS": "Envoyé par SMS",
+        "sv_EMAIL": "Envoyé par e-mail",
         "sv_IN_PERSON": "Annoncé de vive voix",
         "sv_PHONE": "Convenu par téléphone",
         "deliver": "Enregistrer la remise",
@@ -1092,15 +1113,15 @@
       },
       "walkin": {
         "basePrice": "Location de la salle",
-        "clientNeeded": "Prénom, nom, téléphone et nombre d'invités sont nécessaires pour continuer.",
         "compute": "Calculer le devis",
         "computeBlocked": "Renseignez la date, le créneau et le nombre d'invités pour obtenir un montant.",
         "contactRequired": "Nom, prénom et téléphone du client sont nécessaires pour conclure.",
         "continue": "Continuer",
         "dayPrice": "Tarif jour",
-        "deliverHint": "Ces boutons enregistrent comment vous avez remis le devis. Zwadj n'imprime rien et n'envoie rien à votre place.",
+        "deliverHint": "Chaque bouton enregistre comment vous avez remis le devis et télécharge son PDF récapitulatif.",
         "deliverLegend": "Remise du devis au client",
         "deliverPhoneRequired": "SMS et téléphone demandent un numéro de mobile valide dans les informations client.",
+        "deliverEmailRequired": "L'e-mail demande une adresse valide dans les informations client.",
         "delivered": "Remise enregistrée : {channel}",
         "deposit": "Acompte",
         "doneLocked": "La date est bloquée. Elle restera prise jusqu'à ce que vous l'annuliez vous-même.",
@@ -1193,7 +1214,17 @@
         "doneTitleStandby": "Date enregistrée",
         "doneDialogLocked": "La date du {date} est bloquée pour {client}.",
         "doneDialogStandby": "La date du {date} est enregistrée pour {client}, sans être bloquée.",
-        "doneDialogClose": "Fermer"
+        "doneDialogClose": "Fermer",
+        "remitTitleDone": "Remise enregistrée",
+        "remitTitleRecordedOnly": "Remise enregistrée, PDF non téléchargé",
+        "remitTitlePdfOnly": "PDF téléchargé, remise non enregistrée",
+        "remitTitleNone": "Rien n'a pu être fait",
+        "remitRecorded": "Remise enregistrée : {channel}.",
+        "remitPdfDone": "Le PDF du devis est téléchargé.",
+        "remitPdfFailed": "Le PDF n'a pas pu être téléchargé : {reason}",
+        "remitRecordFailed": "La remise n'a pas pu être enregistrée : {reason}",
+        "remitNotSentSMS": "Zwadj n'envoie pas encore de SMS : envoyez-le vous-même au client.",
+        "remitNotSentEMAIL": "Zwadj n'envoie pas encore d'e-mail : envoyez-le vous-même au client, avec le PDF en pièce jointe."
       },
       "wizard": {
         "stepsLabel": "Étapes de configuration de la salle",

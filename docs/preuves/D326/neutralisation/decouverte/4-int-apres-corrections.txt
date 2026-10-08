@@ -1,0 +1,78 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 9 bras · 0 manqué(s) (attendu 0)
+cibles : 102 déclarées · 10 jouées (unit + int) · 0 non jouée(s) (sans --int) · 3 mesure(s) distincte(s) · 4 fichier(s) muté(s)
+  pré-vol api-rendu : code 0 · passés 12 · en échec 0
+  pré-vol int-document : code 0 · passés 13 · en échec 0
+  pré-vol int-rendu : code 0 · passés 11 · en échec 0
+■ RD-2. garde 2 — les requêtes de la page ne sont plus avortées : elles PARTENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+   [int-rendu] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  test/int/pdf-renderer.int-spec.ts > PlaywrightPdfRenderer — le vrai Chromium > garde 2 — le RÉSEAU est muet : ni l'image ni la feuille de style n'atteignent le serveur local
+         ↳ AssertionError: expected [ '/style.css', '/pixel.png' ] to deeply equal []
+■ T-2. ⛔ le schéma du serveur redevient une liste recopiée, sans « e-mail » : l'écran l'accepte, le serveur le refuse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  test/int/quote-document.int-spec.ts > Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > chaque canal de la liste d'autorité est accepté ET rel
+         ↳ AssertionError: expected 400 to be 201 // Object.is equality
+      FAIL  test/int/quote-document.int-spec.ts > Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > l'entonnoir COMPTE le canal e-mail : un devis remis pa
+         ↳ AssertionError: expected 400 to be 201 // Object.is equality
+■ I-1. ⛔ la propriété d'un devis ne passe plus par la relation : tout pro lit le devis de tous
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > ⛔ un AUTRE pro est refusé en 404 indistinct — rien n'est rendu : un identifiant deviné ne livre pas les 
+         ↳ AssertionError: expected 200 to be 404 // Object.is equality
+■ I-2. une salle SUPPRIMÉE sert encore son devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404
+         ↳ AssertionError: expected 200 to be 404 // Object.is equality
+■ I-3. la version la plus haute n'est plus cherchée dans la CHAÎNE : l'ancienne version reste servie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  test/int/quote-document.int-spec.ts > ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > après une révision, le PDF de la v1 est REFUSÉ 
+         ↳ AssertionError: expected 200 to be 409 // Object.is equality
+      FAIL  test/int/quote-document.int-spec.ts > ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > une chaîne dont la dernière version est ANNULÉE
+         ↳ AssertionError: expected '{"statusCode":409,"message":{"code":"…' to contain 'QUOTE_VERSION_NOT_ACTIVE'
+■ I-4. ⛔ RÈGLE DES MONTANTS — l'adaptateur de lecture RECALCULE l'acompte (30 % du total) au lieu de lire la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 1 — l'acompte stocké, qui n'est PAS 30 %
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '123\u202f450 DA'
+■ I-5. la réponse est mise en cache partagé : un PDF porte le nom d'un client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > le propriétaire télécharge : application/pdf, pièce jointe, non mise en cache, langue appliquée — et la 
+         ↳ AssertionError: expected 'public, max-age=3600' to be 'private, no-store' // Object.is equality
+■ I-6. `Content-Language` dit la langue DEMANDÉE, pas la langue APPLIQUÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  test/int/quote-document.int-spec.ts > La langue du PDF (décision 7) — celle du client quand elle est lisible, sinon celle du pro > un devis lié à un client `ar` : PDF ARABE, même si le pro cliqu
+         ↳ AssertionError: expected 'fr' to be 'ar' // Object.is equality
+      FAIL  test/int/quote-document.int-spec.ts > La langue du PDF (décision 7) — celle du client quand elle est lisible, sinon celle du pro > un client `fr` depuis une interface arabe : PDF français ; sans
+         ↳ AssertionError: expected 'ar' to be 'fr' // Object.is equality
+■ I-7. un CLIENT peut télécharger le PDF d'un devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404
+         ↳ AssertionError: expected 404 to be 403 // Object.is equality
+■ I-8. la langue de repli n'est plus validée : absente ou inconnue, elle passe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > la langue de repli est OBLIGATOIRE et se limite à fr / ar : absente ou autre, 400
+         ↳ AssertionError: expected 500 to be 400 // Object.is equality
+  empreintes : 19 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 10 cible(s) jouée(s) sur 102, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+FIN code 0

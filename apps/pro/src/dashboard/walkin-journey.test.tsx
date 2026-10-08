@@ -15,12 +15,23 @@
 // les quatre endroits où l'écran pourrait mentir : un total périmé, une date
 // qu'on dirait bloquée sans l'avoir bloquée, un devis de plus à chaque clic, et
 // un montant affiché avant que le serveur ait chiffré.
-import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import i18next from "i18next";
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { ApiError } from "@zwadj/api-client";
 import { formatDZD, messages } from "@zwadj/i18n";
-import { DEFAULT_PHONE_COUNTRY, PHONE_COUNTRIES, isValidContactEmail, type QuoteDTO, type VenueProDTO } from "@zwadj/types";
+import {
+  DEFAULT_PHONE_COUNTRY,
+  PHONE_COUNTRIES,
+  QUOTE_SENT_VIA,
+  QUOTE_SENT_VIA_ORDER,
+  isValidContactEmail,
+  quoteDocumentFilename,
+  type QuoteDTO,
+  type QuoteSentVia,
+  type VenueProDTO
+} from "@zwadj/types";
 import { AppProviders } from "../App";
 import { initI18n } from "../i18n";
 import {
@@ -30,7 +41,14 @@ import {
   makeServicesDouble,
   makeVenueClientDouble
 } from "../test-support/client-doubles";
+import { onQuoteRemitted } from "./remittance-hook";
+import { saveBlob } from "./save-file";
 import { WalkinJourney } from "./walkin-journey";
+
+// Rang 33 (D326) : les DEUX frontières que le test REMPLACE — le téléchargement navigateur (jsdom n'a ni `createObjectURL` ni téléchargement ; la spec e2e du lot le mesure,
+// dans un vrai navigateur) et le point de branchement de l'envoi réel (il ne fait rien : le test mesure QUI l'appelle, et quand).
+vi.mock("./save-file", () => ({ saveBlob: vi.fn() }));
+vi.mock("./remittance-hook", () => ({ onQuoteRemitted: vi.fn() }));
 
 initI18n();
 
@@ -671,12 +689,16 @@ describe("La remise par canal (Q2) et le catalogue", () => {
     return outils;
   }
 
-  it("les quatre canaux sont RENDUS et ACTIFS une fois le devis calculé", async () => {
+  it("les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33)", async () => {
     await jusquAuTotal();
     const groupe = screen.getByRole("group", { name: /remis/i });
     const boutons = Array.from(groupe.querySelectorAll("button"));
-    expect(boutons).toHaveLength(4);
-    for (const bouton of boutons) expect(bouton).toBeEnabled();
+    expect(boutons).toHaveLength(QUOTE_SENT_VIA_ORDER.length);
+    expect(boutons).toHaveLength(5);
+    const libelles = messages.fr.venue.ui.quotes as Record<string, string>;
+    for (const bouton of boutons) {
+      expect(bouton.disabled, bouton.textContent as string).toBe(bouton.textContent === libelles[`sv_${QUOTE_SENT_VIA.EMAIL}`]);
+    }
   });
 
   it("enregistre le canal cliqué sur le devis en cours", async () => {
@@ -1200,4 +1222,300 @@ describe("Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(screen.getByRole("status")).toBeInTheDocument();
   });
+});
+
+// ══ RANG 33 (D326) — LES BOUTONS DE REMISE : ENREGISTRER LE CANAL ET TÉLÉCHARGER LE PDF, EN DISANT CE QUI A RÉELLEMENT EU LIEU ═══════════════════════════════════════
+// Chaque test répond à une phrase de Ko ou à une décision du relecteur, en français d'abord. ⚠ AUCUN MONTANT n'est calculé ici ni dans le composant : le PDF vient du
+// SERVEUR (`quotes.document`), le test ne vérifie que ce que l'écran lui DEMANDE, ce qu'il en FAIT et ce qu'il en DIT. Les libellés viennent du catalogue.
+describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
+  async function jusquAuTotal(over: Parameters<typeof setup>[0] = {}) {
+    const outils = await setup(over);
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    return outils;
+  }
+  /** Les cinq boutons, dans l'ordre de la liste d'AUTORITÉ, chacun par son libellé de catalogue. */
+  const bouton = (canal: QuoteSentVia, langue: "fr" | "ar" = "fr") =>
+    screen.getByRole("button", { name: (messages[langue].venue.ui.quotes as Record<string, string>)[`sv_${canal}`] as string });
+  /** Un clic, puis le temps de recevoir les deux réponses : l'enregistrement ET le PDF partent ensemble et se règlent hors du clic. */
+  async function cliquer(canal: QuoteSentVia, langue: "fr" | "ar" = "fr") {
+    await act(async () => {
+      fireEvent.click(bouton(canal, langue));
+    });
+    await laisserRetomber();
+    await laisserRetomber();
+  }
+  const echec = (code: string, cle: string, status = 409) => new ApiError(status, code, cle, []);
+  const fichier = () => new Blob(["%PDF-1.4"], { type: "application/pdf" });
+
+  beforeEach(() => {
+    vi.mocked(saveBlob).mockClear();
+    vi.mocked(onQuoteRemitted).mockClear();
+  });
+
+  it("cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS", async () => {
+    await jusquAuTotal();
+    const groupe = screen.getByRole("group", { name: /remis/i });
+    const boutons = Array.from(groupe.querySelectorAll("button")).map((b) => b.textContent);
+    const libelles = messages.fr.venue.ui.quotes as Record<string, string>;
+    expect(boutons).toEqual(QUOTE_SENT_VIA_ORDER.map((canal) => libelles[`sv_${canal}`]));
+    expect(boutons).toHaveLength(5);
+    expect(boutons).toContain("Envoyé par e-mail");
+  });
+
+  it("le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone", async () => {
+    await jusquAuTotal();
+    expect((bouton(QUOTE_SENT_VIA.EMAIL) as HTMLButtonElement).disabled).toBe(true);
+    const raison = bouton(QUOTE_SENT_VIA.EMAIL).getAttribute("aria-describedby");
+    expect(raison).not.toBeNull();
+    const zoneRaison = document.getElementById(raison as string);
+    expect(zoneRaison, "la raison liée au bouton existe dans la page").not.toBeNull();
+    expect(zoneRaison?.textContent).toContain(FR.deliverEmailRequired);
+    // Le mobile a été saisi (étape Client) : ces deux-là sont actifs, et la raison de l'e-mail n'est PAS liée à eux.
+    for (const canal of [QUOTE_SENT_VIA.PRINT, QUOTE_SENT_VIA.SMS, QUOTE_SENT_VIA.IN_PERSON, QUOTE_SENT_VIA.PHONE]) {
+      expect((bouton(canal) as HTMLButtonElement).disabled, canal).toBe(false);
+      expect(bouton(canal).getAttribute("aria-describedby"), canal).toBeNull();
+    }
+  });
+
+  it("avec une adresse valide à l'étape Client, le canal « e-mail » est ACTIF", async () => {
+    await setup();
+    fireEvent.change(screen.getByLabelText(FR.email), { target: { value: "amine@example.com" } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    expect((bouton(QUOTE_SENT_VIA.EMAIL) as HTMLButtonElement).disabled).toBe(false);
+    expect(bouton(QUOTE_SENT_VIA.EMAIL).getAttribute("aria-describedby")).toBeNull();
+  });
+
+  it("⛔ chaque bouton fait DEUX choses : enregistre le canal sur le devis en cours ET demande le PDF de CE devis — avec la langue de l'interface, et rien d'autre", async () => {
+    for (const canal of QUOTE_SENT_VIA_ORDER) {
+      const deliver = vi.fn().mockResolvedValue(draft({ sentVia: canal }));
+      const document = vi.fn().mockResolvedValue(fichier());
+      await jusquAuTotalAvecEmail({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document } });
+      await cliquer(canal);
+      expect(deliver, canal).toHaveBeenCalledWith("q1", { sentVia: canal });
+      // Le client n'envoie AUCUN montant au serveur : le PDF imprime les valeurs STOCKÉES (règle des montants).
+      expect(document, canal).toHaveBeenCalledWith("q1", "fr");
+      expect(saveBlob, canal).toHaveBeenCalledTimes(1);
+      cleanup();
+      vi.mocked(saveBlob).mockClear();
+    }
+  });
+
+  it("le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle", async () => {
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    expect(saveBlob).toHaveBeenCalledTimes(1);
+    const [blob, nom] = vi.mocked(saveBlob).mock.calls[0] as [Blob, string];
+    expect(blob).toBeInstanceOf(Blob);
+    expect(nom).toBe(quoteDocumentFilename(draft()));
+    expect(nom).toMatch(/^devis-\d{4}-\d{2}-\d{2}-v1-q1\.pdf$/);
+    expect(nom).not.toMatch(/Amine|Belkacem|El Ryad/);
+  });
+
+  it("⚠ la fenêtre ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF", async () => {
+    let finDeliver: (q: QuoteDTO) => void = () => undefined;
+    let finDocument: (b: Blob) => void = () => undefined;
+    await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        deliver: vi.fn().mockReturnValue(new Promise<QuoteDTO>((ok) => (finDeliver = ok))),
+        document: vi.fn().mockReturnValue(new Promise<Blob>((ok) => (finDocument = ok)))
+      }
+    });
+    await act(async () => {
+      fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
+    });
+    expect(screen.queryByRole("dialog")).toBeNull();
+    await act(async () => finDeliver(draft({ sentVia: "PRINT" })));
+    expect(screen.queryByRole("dialog"), "l'enregistrement est revenu, pas le PDF").toBeNull();
+    await act(async () => finDocument(fichier()));
+    await laisserRetomber();
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)", async () => {
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    const fenetre = await screen.findByRole("dialog", { name: FR.remitTitleDone });
+    expect(fenetre.textContent).toContain(FR.remitRecorded.replace("{channel}", "Imprimé et remis"));
+    expect(fenetre.textContent).toContain(FR.remitPdfDone);
+    // Le texte d'état déjà affiché dans la page : celui de `delivered`, inchangé.
+    const etat = screen.queryByRole("status");
+    expect(etat, "le texte d'état de la remise est affiché").not.toBeNull();
+    expect(etat?.textContent).toBe(FR.delivered.replace("{channel}", "Imprimé et remis"));
+  });
+
+  it("issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé", async () => {
+    await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })),
+        document: vi.fn().mockRejectedValue(echec("QUOTE_VERSION_NOT_ACTIVE", "quote.errors.versionNotActive"))
+      }
+    });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    const fenetre = await screen.findByRole("dialog", { name: FR.remitTitleRecordedOnly });
+    expect(fenetre.textContent).toContain(FR.remitRecorded.replace("{channel}", "Imprimé et remis"));
+    expect(fenetre.textContent).toContain(FR.remitPdfFailed.replace("{reason}", messages.fr.quote.errors.versionNotActive));
+    expect(fenetre.textContent).not.toContain(FR.remitPdfDone);
+    expect(saveBlob).not.toHaveBeenCalled();
+  });
+
+  it("issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise", async () => {
+    await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        deliver: vi.fn().mockRejectedValue(echec("QUOTE_STATUS_CONFLICT", "quote.errors.statusConflict")),
+        document: vi.fn().mockResolvedValue(fichier())
+      }
+    });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    const fenetre = await screen.findByRole("dialog", { name: FR.remitTitlePdfOnly });
+    expect(fenetre.textContent).toContain(FR.remitPdfDone);
+    expect(fenetre.textContent).toContain(FR.remitRecordFailed.replace("{reason}", messages.fr.quote.errors.statusConflict));
+    expect(fenetre.textContent).not.toContain(FR.remitRecorded.replace("{channel}", "Imprimé et remis"));
+    expect(saveBlob).toHaveBeenCalledTimes(1);
+    // L'écran ne prétend pas qu'une remise a eu lieu : le serveur n'a rien écrit.
+    expect(screen.queryByRole("status")).toBeNull();
+  });
+
+  it("issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)", async () => {
+    await jusquAuTotal({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        deliver: vi.fn().mockRejectedValue(echec("QUOTE_STATUS_CONFLICT", "quote.errors.statusConflict")),
+        document: vi.fn().mockRejectedValue(echec("QUOTE_DOCUMENT_UNAVAILABLE", "quote.errors.documentUnavailable", 503))
+      }
+    });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    const fenetre = await screen.findByRole("dialog", { name: FR.remitTitleNone });
+    expect(fenetre.textContent).toContain(messages.fr.quote.errors.statusConflict);
+    expect(fenetre.textContent).toContain(messages.fr.quote.errors.documentUnavailable);
+    expect(saveBlob).not.toHaveBeenCalled();
+  });
+
+  it("un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »", async () => {
+    vi.mocked(saveBlob).mockImplementationOnce(() => {
+      throw new Error("lien refusé");
+    });
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    const fenetre = await screen.findByRole("dialog");
+    expect(fenetre.textContent).toContain(FR.remitTitleRecordedOnly);
+    expect(fenetre.textContent).not.toContain(FR.remitPdfDone);
+  });
+
+  it("⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel", async () => {
+    for (const canal of QUOTE_SENT_VIA_ORDER) {
+      await jusquAuTotalAvecEmail({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: canal })), document: vi.fn().mockResolvedValue(fichier()) } });
+      await cliquer(canal);
+      const texte = (await screen.findByRole("dialog")).textContent as string;
+      if (canal === QUOTE_SENT_VIA.SMS) expect(texte).toContain(FR.remitNotSentSMS);
+      else if (canal === QUOTE_SENT_VIA.EMAIL) expect(texte).toContain(FR.remitNotSentEMAIL);
+      else expect(texte, canal).not.toMatch(/n'envoie pas/);
+      expect(texte, canal).not.toMatch(/Zwadj a envoy|Zwadj envoie\b(?! pas)|envoyé par Zwadj/i);
+      cleanup();
+      vi.mocked(saveBlob).mockClear();
+    }
+  });
+
+  it("la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons", async () => {
+    await jusquAuTotal();
+    expect(document.body.textContent).not.toMatch(/n'imprime rien/);
+    expect(document.body.textContent).not.toMatch(/n'envoie rien à votre place/);
+    expect(document.body.textContent).toContain(FR.deliverHint);
+  });
+
+  it("⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal", async () => {
+    for (const canal of QUOTE_SENT_VIA_ORDER) {
+      const rendu = draft({ sentVia: canal });
+      await jusquAuTotalAvecEmail({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(rendu), document: vi.fn().mockResolvedValue(fichier()) } });
+      await cliquer(canal);
+      if (canal === QUOTE_SENT_VIA.SMS || canal === QUOTE_SENT_VIA.EMAIL) {
+        expect(onQuoteRemitted, canal).toHaveBeenCalledTimes(1);
+        expect(onQuoteRemitted, canal).toHaveBeenCalledWith(canal, rendu);
+      } else {
+        expect(onQuoteRemitted, canal).not.toHaveBeenCalled();
+      }
+      cleanup();
+      vi.mocked(onQuoteRemitted).mockClear();
+      vi.mocked(saveBlob).mockClear();
+    }
+  });
+
+  it("le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré", async () => {
+    await jusquAuTotalAvecEmail({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft()),
+        deliver: vi.fn().mockRejectedValue(echec("QUOTE_STATUS_CONFLICT", "quote.errors.statusConflict")),
+        document: vi.fn().mockResolvedValue(fichier())
+      }
+    });
+    await cliquer(QUOTE_SENT_VIA.SMS);
+    await screen.findByRole("dialog");
+    expect(onQuoteRemitted).not.toHaveBeenCalled();
+  });
+
+  it("⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements", async () => {
+    let fin: (q: QuoteDTO) => void = () => undefined;
+    const deliver = vi.fn().mockReturnValue(new Promise<QuoteDTO>((ok) => (fin = ok)));
+    const document = vi.fn().mockResolvedValue(fichier());
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document } });
+    await act(async () => {
+      fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
+    });
+    expect((bouton(QUOTE_SENT_VIA.PRINT) as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
+    fireEvent.click(bouton(QUOTE_SENT_VIA.SMS));
+    await act(async () => fin(draft({ sentVia: "PRINT" })));
+    await laisserRetomber();
+    expect(deliver).toHaveBeenCalledTimes(1);
+    expect(document).toHaveBeenCalledTimes(1);
+    expect(saveBlob).toHaveBeenCalledTimes(1);
+  });
+
+  it("la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran", async () => {
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    await screen.findByRole("dialog");
+    fireEvent.click(screen.getByRole("button", { name: FR.doneDialogClose }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    const etat = screen.queryByRole("status");
+    expect(etat, "la remise reste inscrite à l'écran").not.toBeNull();
+    expect(etat?.textContent).toContain("Imprimé et remis");
+  });
+
+  it("en ARABE : le libellé du cinquième canal, la langue de repli `ar` envoyée au serveur, et la fenêtre dans la langue de la page", async () => {
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    expect(bouton(QUOTE_SENT_VIA.EMAIL, "ar").textContent).toBe(messages.ar.venue.ui.quotes.sv_EMAIL);
+    await cliquer(QUOTE_SENT_VIA.PRINT, "ar");
+    const fenetre = await screen.findByRole("dialog", { name: AR.remitTitleDone });
+    expect(fenetre.textContent).toContain(AR.remitPdfDone);
+    expect(fenetre.textContent).toContain(AR.remitRecorded.replace("{channel}", messages.ar.venue.ui.quotes.sv_PRINT));
+  });
+
+  it("⚠ la langue de repli envoyée est celle de l'interface AU MOMENT DU CLIC : `ar` depuis une page arabe, `fr` depuis une page française", async () => {
+    const document = vi.fn().mockResolvedValue(fichier());
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    expect(document).toHaveBeenLastCalledWith("q1", "fr");
+    fireEvent.click(screen.getByRole("button", { name: FR.doneDialogClose }));
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    await cliquer(QUOTE_SENT_VIA.PRINT, "ar");
+    expect(document).toHaveBeenLastCalledWith("q1", "ar");
+  });
+
+  /** Comme `jusquAuTotal`, avec une ADRESSE valide à l'étape Client : le canal « e-mail » est actif. */
+  async function jusquAuTotalAvecEmail(over: Parameters<typeof setup>[0] = {}) {
+    const outils = await setup(over);
+    fireEvent.change(screen.getByLabelText(FR.email), { target: { value: "amine@example.com" } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    return outils;
+  }
 });

@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router";
 import { ArrowBackIcon } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
 import { ProHeader } from "../shell/pro-header";
+import { useProVenues } from "../shell/pro-venues-context";
 import { FormError, useApiErrorMessage } from "../auth/auth-ui";
 import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { venueFieldErrors } from "./venue-errors";
@@ -40,6 +41,8 @@ export function CreateVenuePage() {
   const venuesApi = useVenueCrud();
   const apiErrorMessage = useApiErrorMessage();
   const referentials = useReferentialsData();
+  /** Rang 33 (D326) : la liste « Ma salle » vit dans `ProVenuesProvider` (UNE source, D78) ; la salle créée doit lui être SIGNALÉE, sinon la liste reste celle d'avant. */
+  const { reload: reloadVenues } = useProVenues();
 
   const [values, setValues] = useState<VenueFormValues>(emptyVenueForm);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -72,7 +75,9 @@ export function CreateVenuePage() {
     setSubmitting(true);
     try {
       const created = await venuesApi.create(checked.data);
-      // La salle existe : l'assistant reprend à l'étape 2, sur un id réel.
+      // La salle existe : on demande au fournisseur de RELIRE la liste (⛔ rang 33 : sans cela « Ma salle » restait celle d'avant, jusqu'à un rechargement de la page) —
+      // puis l'assistant reprend à l'étape 2, sur un id réel. ⚠ Ni avant la création (rien à relire), ni quand elle échoue (le `catch` ci-dessous).
+      reloadVenues();
       void navigate(`/salles/${created.id}?etape=2`);
     } catch (err) {
       const mapped = venueFieldErrors(err);
@@ -86,7 +91,7 @@ export function CreateVenuePage() {
   return (
     <>
       <ProHeader />
-      <main style={{ padding: 20, maxInlineSize: 720, marginInline: "auto" }}>
+      <main style={{ padding: 20, maxInlineSize: 960, marginInline: "auto" }}>
         <Link to="/salles" className="backlink">
           <ArrowBackIcon />
           {t("venue.ui.form.back")}

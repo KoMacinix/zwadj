@@ -1,0 +1,17 @@
+# Constat « après » : l'état courant de l'arbre (assistant-ar/fr 1280 et 360, « Ma salle »)
+MESURE assistant apres fr 1280 : {"classes":"zj-rail wizard-rail","listStyleType":"none","premierItemListStyle":"none","entrees":["L'essentiel","Emplacement","3Présentation","4Réservation","5Prestations","6Photos·et·visite·virtuelle","7Publication"],"textesParEntree":["L'essentiel","Emplacement","3Présentation","4Réservation","5Prestations","6Photos et visite virtuelle","7Publication"],"boutons":6,"dernier":7}
+CAPTURE apres/assistant-fr-1280.png
+CAPTURE apres/assistant-liste-fr-1280.png
+MESURE assistant apres fr 360 : {"classes":"zj-rail wizard-rail","listStyleType":"none","premierItemListStyle":"none","entrees":["L'essentiel","Emplacement","3Présentation","4Réservation","5Prestations","6Photos·et·visite·virtuelle","7Publication"],"textesParEntree":["L'essentiel","Emplacement","3Présentation","4Réservation","5Prestations","6Photos et visite virtuelle","7Publication"],"boutons":6,"dernier":7}
+CAPTURE apres/assistant-fr-360.png
+CAPTURE apres/assistant-liste-fr-360.png
+MESURE assistant apres ar 1280 : {"classes":"zj-rail wizard-rail","listStyleType":"none","premierItemListStyle":"none","entrees":["الأساسيات","الموقع","3العرض","4الحجز","5الخدمات","6الصور·والزيارة·الافتراضية","7النشر"],"textesParEntree":["الأساسيات","الموقع","3العرض","4الحجز","5الخدمات","6الصور والزيارة الافتراضية","7النشر"],"boutons":6,"dernier":7}
+CAPTURE apres/assistant-ar-1280.png
+CAPTURE apres/assistant-liste-ar-1280.png
+MESURE assistant apres ar 360 : {"classes":"zj-rail wizard-rail","listStyleType":"none","premierItemListStyle":"none","entrees":["الأساسيات","الموقع","3العرض","4الحجز","5الخدمات","6الصور·والزيارة·الافتراضية","7النشر"],"textesParEntree":["الأساسيات","الموقع","3العرض","4الحجز","5الخدمات","6الصور والزيارة الافتراضية","7النشر"],"boutons":6,"dernier":7}
+CAPTURE apres/assistant-ar-360.png
+CAPTURE apres/assistant-liste-ar-360.png
+MESURE ma-salle apres : la salle créée est dans la liste sans rafraîchir = true · libellé de la navigation = « Ma salle » · URL = /salles
+CAPTURE apres/ma-salle-apres-creation.png
+MESURE ma-salle apres : la salle est dans la liste APRÈS rechargement = true
+  5 passed (47.1s)

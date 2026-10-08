@@ -10,7 +10,8 @@ import type {
   QuoteConvertInput,
   QuoteCreateInput,
   QuoteDTO,
-  QuoteDeliverInput
+  QuoteDeliverInput,
+  QuoteDocumentLocale
 } from "@zwadj/types";
 import type { AuthedRequest } from "./venue-client";
 
@@ -38,6 +39,12 @@ export interface QuotesClient {
   /** Clôt un devis qui n'aboutira pas. ⚠ Remplace `decline()` (D161) : un seul
    *  état pour « le client a refusé » et « le pro a renoncé ». */
   cancel(quoteId: string): Promise<QuoteDTO>;
+  /** Le PDF du devis (rang 33, D326), généré CÔTÉ SERVEUR à la demande — `GET /quotes/:id/document`.
+   *
+   *  ⛔ Les montants imprimés sont les valeurs STOCKÉES du devis : le client n'en calcule aucun. `locale` est la langue de l'interface du pro AU MOMENT DU CLIC — le
+   *  REPLI ; le serveur imprime dans la langue du CLIENT quand le devis est lié à un compte. Erreurs (JSON, `ApiError`) : 409 `QUOTE_VERSION_NOT_ACTIVE` (une version plus
+   *  récente existe — porte `latestVersion`), 409 `QUOTE_STATUS_CONFLICT`, 503 `QUOTE_DOCUMENT_UNAVAILABLE` (une PANNE : réessayer a un sens, pas pour les 409). */
+  document(quoteId: string, locale: QuoteDocumentLocale): Promise<Blob>;
 }
 
 export function createQuotesClient(request: AuthedRequest): QuotesClient {
@@ -67,6 +74,8 @@ export function createQuotesClient(request: AuthedRequest): QuotesClient {
     convert: (quoteId, input) =>
       request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/convert`, { method: "POST", body: input }),
     cancel: (quoteId) =>
-      request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/cancel`, { method: "POST", body: {} })
+      request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/cancel`, { method: "POST", body: {} }),
+    document: (quoteId, locale) =>
+      request<Blob>(`/quotes/${encodeURIComponent(quoteId)}/document?locale=${locale}`, { responseType: "blob" })
   };
 }

@@ -1,0 +1,17 @@
+# Constat « avant » REJOUÉ contre les sources de HEAD (apps/pro/src/venues/venue-wizard.tsx, apps/pro/src/venues/create-venue-page.tsx, apps/pro/src/venues/edit-venue-page.tsx, apps/pro/src/theme.css) — code de sortie 0
+MESURE assistant avant-rejoue fr 1280 : {"classes":"wizard-steps","listStyleType":"decimal","premierItemListStyle":"decimal","entrees":["01L'essentiel","02Emplacement","03Présentation","04Réservation","05Prestations","06Photos·et·visite·virtuelle","07Publication"],"textesParEntree":["01L'essentiel","02Emplacement","03Présentation","04Réservation","05Prestations","06Photos et visite virtuelle","07Publication"],"boutons":7,"dernier":7}
+CAPTURE avant-rejoue/assistant-fr-1280.png
+CAPTURE avant-rejoue/assistant-liste-fr-1280.png
+MESURE assistant avant-rejoue fr 360 : {"classes":"wizard-steps","listStyleType":"decimal","premierItemListStyle":"decimal","entrees":["01L'essentiel","02Emplacement","03Présentation","04Réservation","05Prestations","06Photos·et·visite·virtuelle","07Publication"],"textesParEntree":["01L'essentiel","02Emplacement","03Présentation","04Réservation","05Prestations","06Photos et visite virtuelle","07Publication"],"boutons":7,"dernier":7}
+CAPTURE avant-rejoue/assistant-fr-360.png
+CAPTURE avant-rejoue/assistant-liste-fr-360.png
+MESURE assistant avant-rejoue ar 1280 : {"classes":"wizard-steps","listStyleType":"decimal","premierItemListStyle":"decimal","entrees":["01الأساسيات","02الموقع","03العرض","04الحجز","05الخدمات","06الصور·والزيارة·الافتراضية","07النشر"],"textesParEntree":["01الأساسيات","02الموقع","03العرض","04الحجز","05الخدمات","06الصور والزيارة الافتراضية","07النشر"],"boutons":7,"dernier":7}
+CAPTURE avant-rejoue/assistant-ar-1280.png
+CAPTURE avant-rejoue/assistant-liste-ar-1280.png
+MESURE assistant avant-rejoue ar 360 : {"classes":"wizard-steps","listStyleType":"decimal","premierItemListStyle":"decimal","entrees":["01الأساسيات","02الموقع","03العرض","04الحجز","05الخدمات","06الصور·والزيارة·الافتراضية","07النشر"],"textesParEntree":["01الأساسيات","02الموقع","03العرض","04الحجز","05الخدمات","06الصور والزيارة الافتراضية","07النشر"],"boutons":7,"dernier":7}
+CAPTURE avant-rejoue/assistant-ar-360.png
+CAPTURE avant-rejoue/assistant-liste-ar-360.png
+MESURE ma-salle avant-rejoue : la salle créée est dans la liste sans rafraîchir = false · libellé de la navigation = « Ma salle » · URL = /salles
+CAPTURE avant-rejoue/ma-salle-apres-creation.png
+MESURE ma-salle avant-rejoue : la salle est dans la liste APRÈS rechargement = true
+  5 passed (47.3s)

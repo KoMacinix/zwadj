@@ -8,7 +8,9 @@
 //   - l'étape vit dans l'URL, pas dans un état local ;
 //   - « Suivant » est inactif quand l'étape est invalide, ET la raison s'affiche ;
 //   - un champ REMPLI mais invalide montre son message sans attendre un clic.
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import type { VenueProDTO, WilayaDTO } from "@zwadj/types";
@@ -234,10 +236,102 @@ describe("Assistant — à l'édition, tout est ouvert", () => {
   it("l'étape courante porte aria-current=step — l'état n'est pas qu'une couleur", async () => {
     renderEdit(3);
     const barre = await screen.findByRole("navigation", { name: "Étapes de configuration de la salle" });
-    const courante = Array.from(barre.querySelectorAll("button")).filter(
-      (b) => b.getAttribute("aria-current") === "step"
-    );
+    // ⛔ Rang 33 (D326) : le stepper est le rail PARTAGÉ du parcours sur place, où l'étape courante n'est PAS un bouton — `aria-current="step"` est posé sur son `<li>`
+    // (le test visait un bouton, parce que l'ancien assistant en faisait un, désactivé). Test déclaré à la table avant d'être retouché.
+    const courante = Array.from(barre.querySelectorAll("li")).filter((li) => li.getAttribute("aria-current") === "step");
     expect(courante).toHaveLength(1);
     expect(courante[0]).toHaveTextContent("Présentation");
+    expect(within(courante[0] as HTMLElement).queryByRole("button")).toBeNull();
+  });
+});
+
+// ══ RANG 33 (D326) — LE STEPPER DE L'ASSISTANT EST CELUI DU PARCOURS SUR PLACE ═════════════════════════════════════════════════════════════════════════════════════
+// Arbitrage de Ko du 05/10/2026 : « 1. 01L'essentiel : corrige-le maintenant [...] Le fil d'Ariane de l'assistant doit devenir un stepper visuellement cohérent avec celui du
+// parcours client "sur place" du tableau de bord (réutiliser le même composant si possible) ». Le défaut a été CONSTATÉ dans un navigateur avant d'être corrigé
+// (`docs/preuves/D326/navigateur/captures/avant/`) : `list-style-type: decimal` sur l'`<ol>`, « 01L'essentiel » collé. jsdom n'applique pas la feuille — ce qui se mesure ici est
+// le BALISAGE (c'est le composant partagé) et la règle de feuille qui ôte la numérotation du navigateur (garde de SOURCE) ; l'affichage, lui, est dans la capture.
+describe("Rang 33 — le stepper de l'assistant est le rail PARTAGÉ", () => {
+  const STYLES = readFileSync(resolve(__dirname, "../../../../packages/ui/styles.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  const SOURCE = readFileSync(resolve(__dirname, "venue-wizard.tsx"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+  const barre = () => screen.getByRole("navigation", { name: "Étapes de configuration de la salle" });
+
+  it("le rail porte son NOM ACCESSIBLE : « Étapes de configuration de la salle » (un lecteur d'écran annonce la liste avant ses entrées)", async () => {
+    renderEdit(3);
+    await screen.findByText("Étape 3 sur 7");
+    const rail = screen.queryByRole("navigation", { name: "Étapes de configuration de la salle" });
+    expect(rail, "le rail est une navigation nommée").not.toBeNull();
+    expect(rail?.querySelectorAll("li")).toHaveLength(7);
+  });
+
+  it("⛔ S-b — c'est `JourneyRail` de `@zwadj/ui`, pas une seconde copie : la classe partagée est posée, et le fichier n'écrit plus de `<ol>` ni de « 01 »", async () => {
+    renderEdit(3);
+    await screen.findByText("Étape 3 sur 7");
+    expect(barre().classList.contains("zj-rail")).toBe(true);
+    expect(barre().classList.contains("wizard-rail")).toBe(true); // la mise en page propre au Pro
+    expect(SOURCE).toMatch(/\bJourneyRail\b/);
+    expect(/<ol\b/.test(SOURCE)).toBe(false);
+    expect(/padStart/.test(SOURCE)).toBe(false);
+  });
+
+  it("⛔ S-a — plus de « 01 » doublé et collé au libellé : chaque entrée est une pastille (rang ou coche) et le TITRE seul, jamais « 0N »", async () => {
+    renderEdit(3);
+    await screen.findByText("Étape 3 sur 7");
+    const entrees = Array.from(barre().querySelectorAll("li"));
+    expect(entrees).toHaveLength(7);
+    const titres = ["L'essentiel", "Emplacement", "Présentation", "Réservation", "Prestations", "Photos et visite virtuelle", "Publication"];
+    entrees.forEach((li, i) => {
+      expect(li.querySelector(".zj-rail-label")?.textContent, `entrée ${i + 1}`).toBe(titres[i]);
+      expect(li.querySelector(".zj-rail-n")).not.toBeNull();
+    });
+    expect(barre().textContent).not.toMatch(/\b0\d/);
+  });
+
+  it("⛔ S-a (feuille) — la numérotation du NAVIGATEUR est ôtée par `.zj-rail ol { list-style: none }` : la règle existe dans la feuille partagée", () => {
+    // C'est CETTE règle que le constat dans le navigateur (« list-style-type: decimal ») prouvait absente pour l'ancienne `<ol>`.
+    const regle = /\.zj-rail ol\s*\{([^}]*)\}/.exec(STYLES);
+    expect(regle).not.toBeNull();
+    expect(regle?.[1]).toMatch(/list-style\s*:\s*none/);
+  });
+
+  it("les états sont ceux du rail partagé : avant la courante « franchie » (coche), la courante, après elle « à faire » — et toutes restent cliquables à l'édition", async () => {
+    renderEdit(3);
+    await screen.findByText("Étape 3 sur 7");
+    const classes = Array.from(barre().querySelectorAll("li")).map((li) => li.className);
+    expect(classes).toEqual(["is-done", "is-done", "is-current", "is-todo", "is-todo", "is-todo", "is-todo"]);
+    // Ouvertes ET après la courante : cliquables (la salle existe, toutes les étapes sont franchissables) — mais jamais COCHÉES.
+    const boutons = Array.from(barre().querySelectorAll("button"));
+    expect(boutons).toHaveLength(6);
+    expect(boutons.every((b) => !b.disabled)).toBe(true);
+  });
+
+  it("⚠ S-d — une étape non franchie n'est PAS un bouton : à la création il n'y a qu'une étape, la courante, et aucune commande dans le rail", async () => {
+    renderCreate();
+    await screen.findByLabelText("Nom (français)");
+    expect(Array.from(barre().querySelectorAll("li")).map((li) => li.className)).toEqual(["is-current"]);
+    expect(barre().querySelectorAll("button")).toHaveLength(0);
+  });
+
+  it("cliquer une étape du rail l'ouvre — l'étape vit dans l'URL (« ?etape=5 »), et le nom accessible du bouton est le TITRE de l'étape", async () => {
+    renderEdit(1);
+    await screen.findByText("Étape 1 sur 7");
+    const cible = within(barre()).queryByRole("button", { name: "Prestations" });
+    expect(cible, "le bouton de l'étape porte le TITRE de l'étape pour nom accessible").not.toBeNull();
+    fireEvent.click(cible as HTMLElement);
+    await waitFor(() => expect(screen.getByTestId("url").textContent).toContain("?etape=5"));
+    expect(await screen.findByText("Étape 5 sur 7")).toBeInTheDocument();
+  });
+
+  it("le rail reste le PREMIER élément du DOM : on sait où l'on en est avant de lire le contenu (sa place à gauche est affaire de `grid-area`)", async () => {
+    renderEdit(2);
+    await screen.findByText("Étape 2 sur 7");
+    const titre = screen.getByRole("heading", { level: 2, name: "Emplacement" });
+    expect(barre().compareDocumentPosition(titre) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("la feuille du Pro pose la grille rail | flux et son repli, sur les mêmes mesures que le parcours sur place (colonne de 168 px, seuil de 900 px)", () => {
+    const theme = readFileSync(resolve(__dirname, "../theme.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(/\.wizard\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*168px\)\s+minmax\(0,\s*1fr\)/.test(theme)).toBe(true);
+    expect(/\.wizard-rail\s*\{[^}]*grid-area:\s*rail/.test(theme)).toBe(true);
+    expect(/@media \(max-width: 900px\)\s*\{\s*\.wizard\s*\{/.test(theme)).toBe(true);
   });
 });

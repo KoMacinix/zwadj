@@ -89,7 +89,8 @@ export class QuotesController {
       "transition — il n'existe plus d'état « remis » qui conditionnerait la conversion. `sentVia` dit PAR QUOI " +
       "le devis est parti, `sentAt` QUAND, et c'est `sentVia` qui décide de l'entrée dans l'entonnoir (D162). " +
       "L'appel est RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises, la seconde écrase la première. " +
-      "Les quatre canaux (PRINT, SMS, IN_PERSON, PHONE) sont DÉCLARATIFS : Zwadj n'imprime rien et n'envoie rien."
+      "Les cinq canaux (PRINT, SMS, EMAIL, IN_PERSON, PHONE) sont DÉCLARATIFS : Zwadj produit le PDF du devis (`GET /quotes/:id/document`) " +
+      "mais n'imprime rien et n'envoie rien — aucun transport SMS ni e-mail n'existe encore (rang 33, D326)."
   })
   @ApiCreatedResponse({ description: "QuoteDTO inchangé, `sentVia` et `sentAt` désormais renseignés." })
   @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT — un devis refusé ou remplacé ne se remet pas." })

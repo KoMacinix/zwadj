@@ -1,0 +1,9 @@
+# ROUGE LU — api-client-auth-blob : @zwadj/api-client · src/auth-client.test.ts
+# sources ramenées à `HEAD` pour ce test : packages/api-client/src/auth-client.ts (1 différente(s) de l'arbre) ; tests, i18n, contrats et modules neufs conservés
+# code de sortie 1 · ligne « Tests » : 2 failed | 15 passed (17)
+# échecs lus : 2 (AssertionError : 2 · autre : 0) — « autre » = TypeError, requête Testing Library, matcher jest-dom, import : PAS une assertion native
+
+[AssertionError] FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > un succès rend un Blob aux MÊMES octets ; la requête est un GET authentifié, sans corps ni Content-Type
+      ↳ AssertionError: expected SyntaxError: Unexpected token '%', "%PDF-… to be an instance of Blob
+[AssertionError] FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > le rejeu après 401 GARDE le type de réponse : UN refresh, UN rejeu, et le second succès est bien un Blob
+      ↳ AssertionError: expected SyntaxError: Unexpected token '%', "%PDF-… to be an instance of Blob

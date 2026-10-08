@@ -11,6 +11,7 @@ import { EmailModule } from "./common/email/email.module";
 import { PaymentsModule } from "./payments/payments.module";
 import { WhatsAppModule } from "./common/whatsapp/whatsapp.module";
 import { ConfigModule } from "./config/config.module";
+import { DocumentsModule } from "./documents/documents.module";
 import { HealthModule } from "./health/health.module";
 import { MediaModule } from "./media/media.module";
 import { PrismaModule } from "./prisma/prisma.module";
@@ -54,7 +55,9 @@ import { VenuesModule } from "./venues/venues.module";
     HealthModule,
     MediaModule,
     ReferentialsModule,
-    VenuesModule
+    VenuesModule,
+    // Rang 33 (D326) — le PDF du devis. Enregistré dans le même geste que son contrôleur (leçon R1).
+    DocumentsModule
   ],
   providers: [
     // Guards GLOBAUX — l'ordre d'enregistrement EST l'ordre d'exécution (D6) :

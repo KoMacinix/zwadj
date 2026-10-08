@@ -1,0 +1,15 @@
+   ✓ la cascade de `.pro-layout` — le calibrage de l'instrument, DEUX BRAS > bras positif — la forme DÉFECTUEUSE (la base déclarée APRÈS le repli) est lue comme DEUX colonnes à 360 px, et une colonne à 1280 px… non :
+   ✓ la cascade de `.pro-layout` — le calibrage de l'instrument, DEUX BRAS > bras négatif — la forme RÉPARÉE est lue comme UNE colonne à 360 px et DEUX à 1280 px 1ms
+   ✓ la cascade de `.pro-layout` — le calibrage de l'instrument, DEUX BRAS > `minmax(0, 1fr)` compte pour UNE piste (la virgule n'en ajoute pas), `292px minmax(0, 1fr)` pour DEUX 0ms
+   ✓ la cascade de `.pro-layout` — le calibrage de l'instrument, DEUX BRAS > une feuille sans la règle ne dit RIEN : `null`, pas une valeur inventée 0ms
+   ✓ ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > la feuille déclare le repli : au moins une déclaration de `.pro-layout` est dans un `@media (max-widt
+   × ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 360 px la valeur qui GAGNE n'a qu'UNE piste — le défaut mesuré rendait « 292px minmax(0, 1fr) »
+   × ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 320 px, à la frontière 860 px et sur toute largeur ≤ 860 px, une seule colonne 1ms
+   ✓ ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > au-dessus de 860 px, le panneau et le contenu restent CÔTE À CÔTE (la règle de bureau n'a pas été
+ FAIL  src/venues/layout-style.test.ts > ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 360 px la valeur qui GAGNE n'a qu'UNE piste — le défaut mesuré
+AssertionError: valeur gagnante à 360 px : 292px minmax(0, 1fr): expected 2 to be 1 // Object.is equality
+ FAIL  src/venues/layout-style.test.ts > ⛔ `.pro-layout` à 360 px — le repli à UNE colonne GAGNE, et le bureau garde ses DEUX colonnes (feuille réelle) > à 320 px, à la frontière 860 px et sur toute largeur ≤ 860 px, u
+AssertionError: 320 px: expected 2 to be 1 // Object.is equality
+      Tests  2 failed | 6 passed (8)
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/layout-style.test.ts
+code de sortie vitest : 1

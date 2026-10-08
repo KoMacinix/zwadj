@@ -61,6 +61,9 @@ importers:
       pino-http:
         specifier: ^10.4.0
         version: 10.5.0
+      playwright-core:
+        specifier: 1.50.1
+        version: 1.50.1
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -334,6 +337,10 @@ importers:
         version: 8.63.0(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
 
   packages/i18n:
+    dependencies:
+      '@zwadj/types':
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@zwadj/config':
         specifier: workspace:*

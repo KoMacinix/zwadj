@@ -377,7 +377,7 @@ export function EditVenuePage() {
   return (
     <>
       <ProHeader />
-      <main style={{ padding: 20, maxInlineSize: 720, marginInline: "auto" }}>
+      <main style={{ padding: 20, maxInlineSize: 960, marginInline: "auto" }}>
         <Link to="/salles" className="backlink">
           <ArrowBackIcon />
           {t("venue.ui.form.back")}

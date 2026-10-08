@@ -1,0 +1,117 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 9 bras · 0 manqué(s) (attendu 0)
+cibles : 102 déclarées · 14 jouées (unit) · 9 non jouée(s) (sans --int) · 5 mesure(s) distincte(s) · 6 fichier(s) muté(s)
+  pré-vol api-modele : code 0 · passés 18 · en échec 0
+  pré-vol api-rendu : code 0 · passés 12 · en échec 0
+  pré-vol client-auth : code 0 · passés 17 · en échec 0
+  pré-vol pro-assistant : code 0 · passés 19 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 95 · en échec 0
+■ M-2. ⛔ RÈGLE DES MONTANTS — le total imprimé est RECOMPOSÉ (base + prestations) au lieu d'être la valeur stockée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le total imprimé est la valeur STOCKÉE, et PAS base + prestation
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '610\u202f000 DA'
+■ F-1. les faces perdent leur `unicode-range` : la dernière face déclarée servirait tout, l'arabe retomberait sur le système
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles et deux graisses — en `data:`, chacune avec sa plage `unicode-range`
+         ↳ AssertionError: expected +0 to be 4 // Object.is equality
+■ F-2. une graisse disparaît : « quatre faces » devient deux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles et deux graisses — en `data:`, chacune avec sa plage `unicode-range`
+         ↳ AssertionError: expected 2 to be 4 // Object.is equality
+■ RD-2. garde 2 — les requêtes de la page ne sont plus avortées : elles PARTENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+■ RD-7. une place n'est plus rendue à la file quand le travail se termine
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-rendu] code 1 · ROUGE — passés 9 · en échec 3
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — jamais plus de N rendus simultanés, et N est ATTEINT (une borne à 1 passerait le p
+         ↳ Error: Test timed out in 5000ms.
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — la borne se règle : à 1, les rendus passent un par un
+         ↳ Error: Test timed out in 5000ms.
+      FAIL  src/documents/playwright-pdf.renderer.spec.ts > Gate > ⛔ la place rendue est TRANSMISE à celui qui attend : le second travail démarre quand le premier se termine — mesuré par une course bornée, 
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ Q-4. la primitive ne rend plus un fichier : la réponse binaire est parsée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-auth] code 1 · ROUGE — passés 15 · en échec 2
+      FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > un succès rend un Blob aux MÊMES octets ; la requête est un GET authentifié, sans corps ni Content-Type
+         ↳ AssertionError: expected SyntaxError: Unexpected token '%', "%PDF-… to be an instance of Blob
+      FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > le rejeu après 401 GARDE le type de réponse : UN refresh, UN rejeu, et le second succès est bien un Blob
+         ↳ AssertionError: expected SyntaxError: Unexpected token '%', "%PDF-… to be an instance of Blob
+■ Q-5. le rejeu après 401 perd le type de réponse : le second succès n'est plus un fichier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-auth] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/auth-client.test.ts > createAuthClient — réponse binaire (responseType: blob) > le rejeu après 401 GARDE le type de réponse : UN refresh, UN rejeu, et le second succès est bien un Blob
+         ↳ AssertionError: expected SyntaxError: Unexpected token '%', "%PDF-… to be an instance of Blob
+■ J-4. le devis enregistré n'est plus relu dans l'écran après la remise
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 93 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affic
+         ↳ AssertionError: le texte d'état de la remise est affiché: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+         ↳ AssertionError: la remise reste inscrite à l'écran: expected null not to be null
+■ J-9. les boutons restent actifs pendant le travail : un double clic fait deux remises
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux télécharg
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ J-12. un téléchargement qui échoue est dit « téléchargé »
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jam
+         ↳ AssertionError: expected 'Remise enregistréeRemise enregistrée …' to contain 'Remise enregistrée, PDF non téléchargé'
+■ J-15. la raison du blocage « e-mail » n'est plus affichée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 94 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SM
+         ↳ AssertionError: la raison liée au bouton existe dans la page: expected null not to be null
+■ W-3. cliquer une étape ouvre la SUIVANTE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > cliquer une étape du rail l'ouvre — l'étape vit dans l'URL (« ?etape=5 »), et le nom accessible du bo
+         ↳ AssertionError: expected '/salles/v1?etape=6' to contain '?etape=5'
+■ W-5. le nom accessible du bouton d'étape n'est plus le TITRE de l'étape
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > cliquer une étape du rail l'ouvre — l'étape vit dans l'URL (« ?etape=5 »), et le nom accessible du bo
+         ↳ AssertionError: le bouton de l'étape porte le TITRE de l'étape pour nom accessible: expected null not to be null
+■ W-6. le rail perd son nom accessible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-assistant] code 1 · ROUGE — passés 9 · en échec 10
+      FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > une salle existante ouvre les SEPT étapes : corriger une photo ne demande pas six « Suivant »
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > ⚠ vider un champ requis REFERME les étapes suivantes
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Assistant — à l'édition, tout est ouvert > l'étape courante porte aria-current=step — l'état n'est pas qu'une couleur
+         ↳ TestingLibraryElementError: Unable to find role="navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > le rail porte son NOM ACCESSIBLE : « Étapes de configuration de la salle » (un lecteur d'écran annonc
+         ↳ AssertionError: le rail est une navigation nommée: expected null not to be null
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⛔ S-b — c'est `JourneyRail` de `@zwadj/ui`, pas une seconde copie : la classe partagée est posée, et 
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⛔ S-a — plus de « 01 » doublé et collé au libellé : chaque entrée est une pastille (rang ou coche) et
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > les états sont ceux du rail partagé : avant la courante « franchie » (coche), la courante, après elle
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > ⚠ S-d — une étape non franchie n'est PAS un bouton : à la création il n'y a qu'une étape, la courante
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > cliquer une étape du rail l'ouvre — l'étape vit dans l'URL (« ?etape=5 »), et le nom accessible du bo
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+      FAIL  src/venues/venue-wizard.test.tsx > Rang 33 — le stepper de l'assistant est le rail PARTAGÉ > le rail reste le PREMIER élément du DOM : on sait où l'on en est avant de lire le contenu (sa place à
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "navigation" and name "Étapes de configuration de la salle"
+  empreintes : 19 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 14 cible(s) jouée(s) sur 102, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+FIN code 0

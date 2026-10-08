@@ -7,6 +7,7 @@ export * from "./quote";
 export * from "./api";
 export * from "./auth";
 export * from "./phone";
+export * from "./money";
 export * from "./contact";
 export * from "./account";
 export * from "./media";
