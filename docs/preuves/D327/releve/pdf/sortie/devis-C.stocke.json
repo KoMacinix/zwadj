@@ -1,0 +1,59 @@
+{
+  "id": "01a11ec3-2a5e-7030-8f88-84aa6f16750e",
+  "venueId": "01a11ec3-28b0-73a9-8cb1-467bdf9d93a4",
+  "clientId": null,
+  "status": "DRAFT",
+  "version": 1,
+  "chainId": "01a11ec3-2a5e-7030-8f88-84aa6f16750e",
+  "parentQuoteId": null,
+  "eventDate": "2026-12-10",
+  "slotTemplateId": "01a11ec3-28cb-7a15-9805-882f43f4e38e",
+  "guests": 150,
+  "basePriceCents": 18000000,
+  "servicesTotalCents": 41100000,
+  "totalCents": 59100000,
+  "depositCents": 17730000,
+  "lines": [
+    {
+      "nameAr": "بوفيه مفتوح للضيوف",
+      "nameFr": "Buffet ouvert",
+      "tierId": null,
+      "quantity": 150,
+      "serviceId": "01a11ec3-29c2-7f2f-9335-bbb67088fadc",
+      "pricingType": "PER_GUEST",
+      "tierLabelAr": null,
+      "tierLabelFr": null,
+      "lineTotalCents": 37500000,
+      "unitPriceCents": 250000
+    },
+    {
+      "nameAr": "سيارة الموكب",
+      "nameFr": "Voiture de cortège",
+      "tierId": null,
+      "quantity": 3,
+      "serviceId": "01a11ec3-29da-78be-81af-5e86842a9109",
+      "pricingType": "PER_UNIT",
+      "tierLabelAr": null,
+      "tierLabelFr": null,
+      "lineTotalCents": 2400000,
+      "unitPriceCents": 800000
+    },
+    {
+      "nameAr": "كعكة الزفاف",
+      "nameFr": "Gâteau de mariage",
+      "tierId": "01a11ec3-29f2-7f5a-9fe4-7c1175ecf088",
+      "quantity": 1,
+      "serviceId": "01a11ec3-29ee-7592-ac5c-894a0654574c",
+      "pricingType": "TIERED",
+      "tierLabelAr": "ثلاثة طوابق",
+      "tierLabelFr": "Trois étages",
+      "lineTotalCents": 1200000,
+      "unitPriceCents": 1200000
+    }
+  ],
+  "sentAt": null,
+  "sentVia": null,
+  "acceptedAt": null,
+  "createdAt": "2026-10-09T03:44:29.276Z",
+  "bookingId": null
+}

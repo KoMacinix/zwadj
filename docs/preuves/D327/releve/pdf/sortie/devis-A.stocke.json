@@ -1,0 +1,22 @@
+{
+  "id": "01a11ec3-2a2d-7162-9e2e-42f88a8f0df1",
+  "venueId": "01a11ec3-28b0-73a9-8cb1-467bdf9d93a4",
+  "clientId": null,
+  "status": "DRAFT",
+  "version": 1,
+  "chainId": "01a11ec3-2a2d-7162-9e2e-42f88a8f0df1",
+  "parentQuoteId": null,
+  "eventDate": "2026-12-08",
+  "slotTemplateId": "01a11ec3-28cb-7a15-9805-882f43f4e38e",
+  "guests": 150,
+  "basePriceCents": 18000000,
+  "servicesTotalCents": 0,
+  "totalCents": 18000000,
+  "depositCents": 5400000,
+  "lines": [],
+  "sentAt": null,
+  "sentVia": null,
+  "acceptedAt": null,
+  "createdAt": "2026-10-09T03:44:29.227Z",
+  "bookingId": null
+}

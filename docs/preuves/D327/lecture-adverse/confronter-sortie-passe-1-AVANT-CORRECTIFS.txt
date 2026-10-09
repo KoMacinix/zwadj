@@ -1,0 +1,225 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ liste d'une constante positif : ['DRAFT', 'SENT'] (attendu ['DRAFT', 'SENT'])
+   ✓ liste d'une constante négatif (constante absente) : None (attendu None)
+   ✓ tableau de campagnes positif (une ligne à « — ») : {'r30': (0, 8, 8, 0, 0, 60), 'journey': (0, None, 7, 0, 0, 311)} (attendu {'r30': (0, 8, 8, 0, 0, 60), 'journey': (0, None, 7, 0, 0, 311)})
+   ✓ tableau de campagnes négatif (aucun tableau) : {} (attendu {})
+   ✓ ligne « Tests » d'un rouge positif : (2, 1, 3) (attendu (2, 1, 3))
+   ✓ ligne « Tests » d'un rouge, forme sans « passed » : (5, None, 5) (attendu (5, None, 5))
+   ✓ ligne « Tests » négatif (absente) : None (attendu None)
+   ✓ échecs lus positif : (17, 7, 10) (attendu (17, 7, 10))
+   ✓ échecs lus négatif : None (attendu None)
+   ✓ cibles de découverte positif : ['F-1', 'M-2'] (attendu ['F-1', 'M-2'])
+   ✓ cibles de découverte négatif (une ligne indentée, un ✓) : [] (attendu [])
+   ✓ en-tête de cibles positif : (102, 93) (attendu (102, 93))
+   ✓ en-tête de cibles négatif : None (attendu None)
+   ✓ tableau attendu positif : ['a/b.ts', 'ZW.md'] (attendu ['a/b.ts', 'ZW.md'])
+   ✓ tableau attendu négatif (pas de table) : [] (attendu [])
+   ✓ extensions positif : {1: ['a/b.ts'], 2: ['c/d.json']} (attendu {1: ['a/b.ts'], 2: ['c/d.json']})
+   ✓ extensions négatif : {} (attendu {})
+   ✓ png positif (24×7) : (24, 7) (attendu (24, 7))
+   ✓ png négatif (pas un PNG) : None (attendu None)
+   ✓ sceau positif : True (attendu True)
+   ✓ sceau négatif (un octet changé) : False (attendu False)
+   ✓ clés JSON positif : ['a.b', 'a.c.d', 'e'] (attendu ['a.b', 'a.c.d', 'e'])
+   ✓ clés JSON négatif (un JSON vide) : [] (attendu [])
+   ✓ fins de ligne : CRLF pur : (2, 0) (attendu (2, 0))
+   ✓ fins de ligne : un LF nu repéré : (1, 1) (attendu (1, 1))
+   ✓ déclarations de tests positif (it, test, indentés) : 3 (attendu 3)
+   ✓ déclarations de tests négatif (un appel qui n'en est pas une) : 0 (attendu 0)
+   ✓ statut HTTP positif (un 200) : (200, None) (attendu (200, None))
+   ✓ statut HTTP positif (un 409 et son code) : (409, 'QUOTE_STATUS_CONFLICT') (attendu (409, 'QUOTE_STATUS_CONFLICT'))
+   ✓ statut HTTP négatif (étiquette absente) : None (attendu None)
+   ✓ listes « Ma salle » positif : {'SANS rechargement': ['A'], 'APRÈS rechargement': ['B']} (attendu {'SANS rechargement': ['A'], 'APRÈS rechargement': ['B']})
+   ✓ listes « Ma salle » négatif (scénario absent) : {} (attendu {})
+== calibration : 32 bras, 0 manqué
+
+== texte lu à 470e607 : bloc de clôture 8320 caractères · section D326 54017 caractères (aplatis)
+
+== P — provenance : les commits de D326 et ce que chacun touche
+✓ P1a    parent de la clôture = le commit de code — attendu ['a9840bda54c5ee9997bb4a73768b8f1e8d6d943c'] · mesuré ['a9840bda54c5ee9997bb4a73768b8f1e8d6d943c']
+✓ P1b    parent du commit de code = la preuve de l'arabe — attendu ['8524658b2a61c4097b6bf7ab94f4024b5b5bf94a'] · mesuré ['8524658b2a61c4097b6bf7ab94f4024b5b5bf94a']
+✓ P1c    parent de la preuve de l'arabe = l'ouverture — attendu ['2cb69156a08c2c8ac84fda906cad7b0e9e5d4a6a'] · mesuré ['2cb69156a08c2c8ac84fda906cad7b0e9e5d4a6a']
+✓ P1d    parent de l'ouverture = le SHA de départ — attendu ['12593c130fa0ede9d5a406c342245a47d27cb47c'] · mesuré ['12593c130fa0ede9d5a406c342245a47d27cb47c']
+✓ P2     commits de D326 (DEBUT..FIN) — attendu 4 · mesuré 4
+✓ P3     la clôture touche, hors docs/preuves, les trois .md d'autorité et rien d'autre — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']
+✓ P4     l'ouverture touche, hors docs/preuves, les trois .md d'autorité et rien d'autre — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']
+✓ P5     la preuve de l'arabe ne touche, hors docs/preuves, que ZWADJ_BACKLOG.md et ZWADJ_CONTINUITE.md (aucun fichier de code) — attendu ['ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré ['ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']
+   (table lue à 470e607 : 47 lignes ; extensions lues : [1, 2, 3, 4, 5] — 19 jetons chemin)
+✓ P6a    la table compte des lignes (l'extracteur a parcouru quelque chose) — attendu True · mesuré True
+✓ P6b    cinq extensions lues, numérotées 1 à 5 — attendu [1, 2, 3, 4, 5] · mesuré [1, 2, 3, 4, 5]
+✓ P6c    le texte de D326 écrit « 64 fichiers dont 54 dans la table, 3 par extension (1, 3 et 4), 7 seconds membres » (la phrase est trouvée) — attendu True · mesuré True
+✓ P6d    fichiers hors docs/preuves/D326 du diff DEBUT..FIN = « 64 » — attendu 64 · mesuré 64
+✗ P6e    dont dans la table (première colonne ; répertoires par préfixe) = « 54 » — attendu 54 · mesuré 52
+✗ P6f    dont par extension (1, 3, 4) seulement = « 3 » — attendu 3 · mesuré 4
+✗ P6g    dont seconds membres de paire (extension 5) = « 7 » — attendu 7 · mesuré 5
+✗ P6h    fichiers du diff NON DÉCLARÉS (ni table, ni extension, ni second membre) — « 0 non déclaré » — attendu [] · mesuré ['apps/api/src/documents/html.spec.ts', 'apps/api/test/int/pdf-inspect.ts', 'apps/pro/src/dashboard/remittance.test.ts']
+✗ P6i    classement exhaustif : table + extension + seconds membres = tout le diff hors preuves — attendu 64 · mesuré 61
+✓ P7a    seul fichier de apps/api/src/venues/ touché : quotes.controller.ts (le texte d'une description de route) — attendu ['apps/api/src/venues/quotes.controller.ts'] · mesuré ['apps/api/src/venues/quotes.controller.ts']
+✓ P7b    quotes.controller.ts : « trois lignes de chaîne » = 2 ajoutées + 1 retirée — attendu (2, 1) · mesuré (2, 1)
+✓ P7c    aucune migration touchée (apps/api/prisma/migrations) — attendu [] · mesuré []
+✗ P8a    apps/api/package.json : l'annonce est UNE dépendance (1 ajoutée, 0 retirée) — le diff compte 2 ajoutées et 1 retirée — attendu (1, 0) · mesuré (2, 1)
+✓ P8b    la ligne en plus du diff est la réécriture de `prisma:migrate:dev` (la ligne retirée aussi) — attendu (1, 1) · mesuré (1, 1)
+✓ P8c    …et cette réécriture est ÉQUIVALENTE (la chaîne analysée est identique : `\u2014` devenu « — » dans le texte du JSON) — attendu True · mesuré True
+✓ P8d    pnpm-lock.yaml : 7 lignes ajoutées, 0 retirée (playwright-core et le lien de workspace) — attendu (7, 0) · mesuré (7, 0)
+✓ P8e    playwright-core de l'API = @playwright/test de l'e2e (même version, relevée) — attendu True · mesuré True
+✓ P9a    aucun des fichiers de code du lot ne mêle CRLF et LF nu (octets, hors images et polices) — attendu [] · mesuré []
+   (fins de ligne parcourues : 60 fichiers · LF pur : ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md', 'apps/api/nest-cli.json', 'apps/api/package.json', 'apps/api/src/app.module.ts', 'apps/api/src/documents/documents.module.ts', 'apps/api/src/documents/fonts/OFL-readex-pro.txt', 'apps/api/src/documents/fonts/README.txt', 'apps/api/src/documents/html.spec.ts', 'apps/api/src/documents/html.ts', 'apps/api/src/documents/pdf-renderer.port.ts', 'apps/api/src/documents/playwright-pdf.renderer.spec.ts', 'apps/api/src/documents/playwright-pdf.renderer.ts', 'apps/api/src/documents/quote-document-fonts.ts', 'apps/api/src/documents/quote-document-policy.spec.ts', 'apps/api/src/documents/quote-document-policy.ts', 'apps/api/src/documents/quote-document-source.prisma.ts', 'apps/api/src/documents/quote-document-source.ts', 'apps/api/src/documents/quote-document.controller.ts', 'apps/api/src/documents/quote-document.service.spec.ts', 'apps/api/src/documents/quote-document.service.ts', 'apps/api/src/documents/quote-document.spec.ts', 'apps/api/src/documents/quote-document.ts', 'apps/api/src/venues/quotes.controller.ts', 'apps/api/test/int/pdf-inspect.ts', 'apps/api/test/int/pdf-renderer.int-spec.ts', 'apps/api/test/int/quote-document.int-spec.ts', 'apps/pro/src/dashboard/remittance-hook.ts', 'apps/pro/src/dashboard/remittance.test.ts', 'apps/pro/src/dashboard/remittance.ts', 'apps/pro/src/dashboard/save-file.ts', 'apps/pro/src/dashboard/walkin-journey.test.tsx', 'apps/pro/src/dashboard/walkin-journey.tsx', 'apps/pro/src/test-support/client-doubles.ts', 'apps/pro/src/theme.css', 'apps/pro/src/venues/create-venue-page.test.tsx', 'apps/pro/src/venues/create-venue-page.tsx', 'apps/pro/src/venues/edit-venue-page.tsx', 'apps/pro/src/venues/layout-style.test.ts', 'apps/pro/src/venues/venue-wizard.test.tsx', 'apps/pro/src/venues/venue-wizard.tsx', 'e2e/specs/r33-remise-devis.e2e.ts', 'e2e/specs/warmup.setup.ts', 'neutralisation/neutralize-act-plafonds.py', 'neutralisation/neutralize-horloge.py', 'neutralisation/neutralize-r33.py', 'packages/api-client/src/auth-client.test.ts', 'packages/api-client/src/auth-client.ts', 'packages/api-client/src/quotes-client.test.ts', 'packages/api-client/src/quotes-client.ts', 'packages/api-client/src/venue-client.ts', 'packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json', 'packages/i18n/package.json', 'packages/i18n/src/format.ts', 'packages/types/src/index.ts', 'packages/types/src/money.ts', 'packages/types/src/quote.ts', 'pnpm-lock.yaml'])
+✗ P9b    « trois restent en LF pur » (apps/api/package.json, pnpm-lock.yaml, la licence de la police) — attendu 3 · mesuré 60
+
+== G — les portes : les chiffres de D326 contre ce que le dépôt peut en dire
+✗ G1     pièces versées de D326 qui portent un RÉSUMÉ VITEST des portes (« Test Files N passed » / « Tests N passed ») — la règle de D291 exige une pièce brute pour une mesure écrite — attendu True · mesuré False
+   (pièces de D326 parcourues : 106 ; avec un résumé vitest : [])
+✓ G2a    les chiffres des quatre paquets sont lisibles dans le bloc de clôture (API, api-client, client, pro) — attendu 4 · mesuré 4
+✓ G2b    la base d'entrée est celle de la clôture de D325 (729/60 · 39/4 · 372/29 · 457/34 ; 444/36) — la phrase est trouvée — attendu True · mesuré True
+✓ G3-api l'écart de tests écrit pour « api » (porte − base) est retrouvé par COMPTAGE des déclarations `it(`/`test(` entre DEBUT et FIN (déclarations 625 → 687) — attendu 62 · mesuré 62
+✓ G3-api-client l'écart de tests écrit pour « api-client » (porte − base) est retrouvé par COMPTAGE des déclarations `it(`/`test(` entre DEBUT et FIN (déclarations 39 → 48) — attendu 9 · mesuré 9
+✓ G3-client l'écart de tests écrit pour « client » (porte − base) est retrouvé par COMPTAGE des déclarations `it(`/`test(` entre DEBUT et FIN (déclarations 323 → 323) — attendu 0 · mesuré 0
+✓ G3-pro l'écart de tests écrit pour « pro » (porte − base) est retrouvé par COMPTAGE des déclarations `it(`/`test(` entre DEBUT et FIN (déclarations 384 → 434) — attendu 50 · mesuré 50
+✓ G3-int l'écart de tests écrit pour « int » (porte − base) est retrouvé par COMPTAGE des déclarations `it(`/`test(` entre DEBUT et FIN (déclarations 442 → 466) — attendu 24 · mesuré 24
+   (⚠ les valeurs de base et de fin sont CELLES DU TEXTE de D326, recopiées ici ; ce comptage ne dit pas qu'un test passe — il dit que le NOMBRE écrit est cohérent avec le diff)
+✓ G3-texte les quatre écarts du texte (API +62, api-client +9, client 0, pro +50) = les écarts lus ci-dessus — attendu {'api': 62, 'api-client': 9, 'client': 0, 'pro': 50} · mesuré {'api': 62, 'api-client': 9, 'client': 0, 'pro': 50}
+? G4     NON VÉRIFIABLE : que `typecheck`, `lint`, `test`, `build`, `test:int` aient rendu 0 aux durées écrites (15, 12, 82, 34, 303 s), et que l'e2e ait rendu « 48 passés, 1 ignoré, 0 échec » trois fois : AUCUNE pièce brute n'est versée pour les portes de D326 (G1) ; seule la COHÉRENCE des écarts de tests avec le diff est établie (G3)
+
+== C — les campagnes : ce que D326 écrit contre les journaux du lanceur et du harnais
+   (tableau du lanceur : 7 lignes parcourues : ['act-plafonds', 'horloge', 'journey', 'r30', 'r32', 'r33', 's9'])
+✓ C1a    le lanceur a joué SEPT campagnes (lignes du tableau final) — attendu 7 · mesuré 7
+✓ C1b    noms des sept campagnes lues dans le journal — attendu ['act-plafonds', 'horloge', 'journey', 'r30', 'r32', 'r33', 's9'] · mesuré ['act-plafonds', 'horloge', 'journey', 'r30', 'r32', 'r33', 's9']
+✓ C1c    le bloc de clôture écrit un compte « N/N » pour CHACUNE des sept — attendu 7 · mesuré 7
+✓ C1d    chaque compte écrit (« 4/4 », « 2/2 », « 7/7 », « 8/8 », « 65/65 », « 93/93 », « 6/6 ») = mordues/jouées du journal (mordues = mordues + muettes + non mesurées) — attendu {'act-plafonds': (4, 4), 'horloge': (2, 2), 'journey': (7, 7), 'r30': (8, 8), 'r32': (65, 65), 'r33': (93, 93), 's9': (6, 6)} · mesuré {'act-plafonds': (4, 4), 'horloge': (2, 2), 'journey': (7, 7), 'r30': (8, 8), 'r32': (65, 65), 'r33': (93, 93), 's9': (6, 6)}
+✓ C1e    aucune muette ni non mesurée dans les sept (journal) — attendu 0 · mesuré 0
+✓ C1f    code de sortie 0 des sept — attendu [0, 0, 0, 0, 0, 0, 0] · mesuré [0, 0, 0, 0, 0, 0, 0]
+✓ C1g    ligne de total du journal : 185 mordues · 0 · 0 · 7 campagnes · 2057 s — attendu (185, 0, 0, 7, 2057) · mesuré (185, 0, 0, 7, 2057)
+✓ C1h    la somme des mordues du tableau = le total imprimé (parcouru : 7 lignes) — attendu 185 · mesuré 185
+✓ C1i    « 185 mordues » est écrit dans le bloc de clôture (la phrase est trouvée) — attendu True · mesuré True
+✓ C1j    journey et r32 font partie des sept — attendu (True, True) · mesuré (True, True)
+✓ C1k    le journal annonce « 7 campagne(s) concernée(s) sur 34 » — attendu True · mesuré True
+✓ C2a    campagne finale r33 : « 102 déclarées · 102 jouées » — attendu (102, 102) · mesuré (102, 102)
+✓ C2b    campagne finale r33 : 102 lignes « ✓ » (une par cible mordue), parcouru — attendu 102 · mesuré 102
+✓ C2c    campagne finale r33 : « 19 fichier(s) muté(s) » et « 0 différent(s) » à la restauration — attendu True · mesuré True
+✓ C2d    le texte de D326 écrit « 102 gardes mordues sur 102 cibles » et « 19 fichiers mutés, restauration 19/19 » — attendu True · mesuré True
+✓ C3     le harnais neutralize-r33.py déclare 102 cibles (appels `cible(` en début de ligne, au commit de code) — attendu 102 · mesuré 102
+✓ C4a    découverte : « 93 cibles unitaires jouées » (pièce 1 : lignes « ■ ») — attendu 93 · mesuré 93
+✓ C4b    découverte : « puis 13 d'intégration » (pièce 3 : lignes « ■ ») — attendu 13 · mesuré 13
+✓ C4c    93 + 13 ne font pas 102 : l'union des deux pièces les fait — QUATRE cibles ont les deux mesures (93 + 13 − 4) — attendu (4, 102) · mesuré (4, 102)
+✓ C4d    en-têtes de découverte : 102 déclarées dans chacune des quatre pièces — attendu [102, 102, 102, 102] · mesuré [102, 102, 102, 102]
+✓ C5     pré-vol des neutralisations e2e : « 6 passed » dans la pièce versée — attendu True · mesuré True
+? C6     NON VÉRIFIABLE : que la restauration des 19 fichiers ait eu lieu À L'OCTET pendant la campagne : la pièce porte « 0 différent(s) » (C2c), c'est le HARNAIS qui l'affirme, la lecture ne le rejoue pas
+
+== R — le rouge lu : les pièces de rouge/ contre les chiffres de D326
+✓ R-pro-venue-wizard assistant 6/6 : échoués/total lus dans l'en-tête de la pièce — attendu (6, 19) · mesuré (6, 19)
+✓ R-pro-layout-style feuille 2/2 : échoués/total lus dans l'en-tête de la pièce — attendu (2, 8) · mesuré (2, 8)
+✓ R-api-client-auth-blob blob 2/2 : échoués/total lus dans l'en-tête de la pièce — attendu (2, 17) · mesuré (2, 17)
+✓ R-pro-walkin-journey remise 17 échecs : échoués/total lus dans l'en-tête de la pièce — attendu (17, 95) · mesuré (17, 95)
+✓ R-api-client-quotes quotes.document 5 échecs : échoués/total lus dans l'en-tête de la pièce — attendu (5, 5) · mesuré (5, 5)
+✓ R-wj-a parcours de remise : « 17 échecs (7 assertions, 10 requêtes) » = 7 AssertionError et 10 autres lus — attendu (17, 7, 10) · mesuré (17, 7, 10)
+✓ R-ma   « Ma salle » : rouge « 2 sur 3 » (2 en échec, 1 passé) — la ligne « Tests » de la pièce — attendu True · mesuré True
+✓ R-ma-b « Ma salle » : le TROISIÈME test (la relecture n'a pas lieu quand la création échoue) PASSE avant le correctif — un test vert sans la réparation, il ne mesure pas la réparation — attendu True · mesuré True
+✓ R-360  « Pro à 360 px » : 2 sur 2 — la pièce porte des lignes ✓ de calibrage (ce n'est pas une sortie vitest du rouge) — attendu True · mesuré True
+
+== K — captures : images lues à FIN
+✓ K1     captures « après » : 21 images (12 de la remise + 8 de l'assistant + « Ma salle ») — attendu 21 · mesuré 21
+✓ K2     …dont 12 images de la remise — attendu 12 · mesuré 12
+✓ K3     …dont 8 images de l'assistant — attendu 8 · mesuré 8
+✓ K4     toutes les images (apres, avant, avant-rejoue) sont des PNG valides (en-tête lu) — attendu [] · mesuré []
+✓ K5     9 images « avant » et 9 « avant rejouées » — attendu (9, 9) · mesuré (9, 9)
+✓ K6     les 9 images « avant » (prises le 05/10) sont IDENTIQUES à l'octet à celles rejouées le 08/10 contre les sources de HEAD (le rejeu reproduit l'original) — attendu 9 · mesuré 9
+✓ K7     débordement horizontal : « 0 px sur les douze mesures » — attendu (12, True) · mesuré (12, True)
+
+== T — registre, ordre des rangs, parité des catalogues, décisions
+✓ T1     dernière ligne du registre à FIN = D326 — attendu 'D326' · mesuré 'D326'
+✗ T2     dernière ligne « ⇒ RANG N » de l'ordre des rangs à FIN = RANG 34 (« EN ATTENTE D'ARBITRAGE DE KO ») — attendu '34' · mesuré '20'
+✓ T3a    parité des catalogues à DEBUT : 1 129 = 1 129 (clés feuilles) — attendu (1129, 1129) · mesuré (1129, 1129)
+✓ T3b    parité des catalogues à FIN : 1 158 = 1 158 (clés feuilles) — attendu (1158, 1158) · mesuré (1158, 1158)
+✓ T3c    « +30 −1 par langue » (ajoutées, retirées) en français puis en arabe — attendu ((30, 1), (30, 1)) · mesuré ((30, 1), (30, 1))
+✓ T3d    la clé retirée est venue.ui.walkin.clientNeeded (les deux langues) — attendu ({'venue.ui.walkin.clientNeeded'}, {'venue.ui.walkin.clientNeeded'}) · mesuré ({'venue.ui.walkin.clientNeeded'}, {'venue.ui.walkin.clientNeeded'})
+✓ T3e    `quote.validation.sentViaInvalid` est absente des DEUX catalogues (le texte la signale) — attendu (False, False) · mesuré (False, False)
+✓ T4     décisions « à ratifier » : le bloc de clôture numérote (7) à (11) ; la section de la partie B numérote 7 à 12 — la douzième (« playwright-core n'est pas dans e2e/package.json ») n'est pas dans le bloc — attendu ([7, 8, 9, 10, 11], [7, 8, 9, 10, 11, 12]) · mesuré ([7, 8, 9, 10, 11], [7, 8, 9, 10, 11, 12])
+✓ T5     AGENTS.md à FIN porte l'invariant du PDF (« LE PDF D'UN DEVIS IMPRIME LA VALEUR STOCKÉE ») — attendu True · mesuré True
+✓ T6     le backlog à FIN porte « Reports de la PARTIE B du rang 33 » — attendu True · mesuré True
+
+== Q — les cinq questions de Ko, chacune avec sa pièce
+-- Q1 « MA SALLE » : quel test le couvrait, pourquoi est-il vert, et le défaut reproduit dans un navigateur
+✓ Q1a    le test de D326 (create-venue-page.test.tsx) compte TROIS `it(` — attendu 3 · mesuré 3
+✓ Q1b    le double du serveur y fabrique la salle AVANT de répondre : `creees.push(NOUVELLE)` dans `create` (la liste lue ensuite la contient par construction) — attendu 1 · mesuré 1
+✓ Q1c    ce fichier ne simule NI édition NI suppression : aucun appel `update(`, `softDelete(` ni `PATCH` dans ses déclarations — attendu 0 · mesuré 0
+   (fichiers de test de l'app Pro parcourus : 34 ; qui parlent de `listMine` ET d'une édition/suppression : ['apps/pro/src/venues/venue-list.test.tsx'])
+✓ Q1d    aucun test de l'app Pro ne relie « la liste relue » à une ÉDITION ou une SUPPRESSION depuis l'assistant (jsdom ne les couvre pas) — attendu [] · mesuré []
+✓ Q1e    D326 DISAIT la limite : « la liste « Ma salle » n'est relue qu'à la CRÉATION (une édition ou une publication ne la relit pas — lu dans le code, non reproduit dans un navigateur) » — attendu True · mesuré True
+✓ Q1f    l'assistant d'édition n'appelle jamais la relecture du fournisseur : `reload` / `useProVenues().reload` absents de edit-venue-page.tsx (il n'importe que `select`) — attendu 0 · mesuré 0
+✓ Q1g    seule la page de CRÉATION appelle la relecture (`reloadVenues()`), une fois, après `venuesApi.create` — attendu 1 · mesuré 1
+✓ Q1-S1  créée, sans salle avant : la salle créée est dans la liste SANS rechargement (la création n'est PAS reproduite) — attendu True · mesuré True
+✓ Q1-S2  créée, avec une salle (menu de compte) : la salle créée est dans la liste SANS rechargement (la création n'est PAS reproduite) — attendu True · mesuré True
+✓ Q1-S3  créée, retour par le lien de l'étape 2 : la salle créée est dans la liste SANS rechargement (la création n'est PAS reproduite) — attendu True · mesuré True
+✓ Q1-S4  éditée (PATCH 200) : la liste SANS rechargement ≠ la liste APRÈS rechargement (la liste est périmée) — attendu True · mesuré True
+✓ Q1-S8  créée puis corrigée dans la même session : la liste SANS rechargement ≠ la liste APRÈS rechargement (la liste est périmée) — attendu True · mesuré True
+✓ Q1-S6  supprimée depuis l'assistant : la liste SANS rechargement montre ENCORE la salle supprimée, APRÈS rechargement elle est vide — attendu (True, []) · mesuré (True, [])
+✓ Q1-S7  contrôle — supprimée depuis la LISTE : la liste est à jour sans rechargement (le fournisseur y relit) — attendu [] · mesuré []
+✓ Q1-S5  publiée par l'administrateur : le badge de la liste est périmé SANS rechargement (« En attente de publication ») et à jour après (« Publiée ») — attendu (True, True) · mesuré (True, True)
+· Q1-C1  CONSTAT : LE GESTE EXACT DE KO N'EST PAS CONNU : la création seule n'est reproduite dans aucun des trois parcours rejoués (S1 à S3) ; ce que Ko décrit (« une salle créée n'apparaît qu'après actualisation ») est reproduit pour l'ÉDITION, la CORRECTION après création, la PUBLICATION et la SUPPRESSION DEPUIS L'ASSISTANT (S4, S5, S6, S8). La base de développement de Ko porte, pour « salle koceilaaaaaa » (la seule vivante), une création le 09/10 à 02:23:25 UTC et une modification à 02:32:13 UTC — une INFÉRENCE, pas une preuve, que ce soit ce qu'il a vu.
+-- Q2 « 1. 01L'essentiel » : le constat dans un navigateur, exigé AVANT le correctif (décision 11 (a))
+✓ Q2a    la consigne (point d'entrée du rang 33) : le défaut est « à CONSTATER dans un navigateur d'abord (décision 11 a), pas à déduire d'une lecture » — attendu True · mesuré True
+✓ Q2b    pièces « avant » versées : 9 images dont 8 de l'assistant (4 pleines pages, 4 de la liste d'étapes) — attendu (9, 8) · mesuré (9, 8)
+✓ Q2c    pièce TEXTE du constat : `mesures-avant-rejoue.txt` mesure `listStyleType` « decimal » sur les 4 lectures (fr/ar × 1280/360) — attendu ['decimal', 'decimal', 'decimal', 'decimal'] · mesuré ['decimal', 'decimal', 'decimal', 'decimal']
+✓ Q2d    …et le texte de chaque entrée y est « 01L'essentiel » (numéro collé au libellé) — attendu True · mesuré True
+✓ Q2e    la mesure TEXTE du constat d'origine (05/10) n'est PAS versée : D326 l'écrit lui-même (`rejouer-avant.py` : « seules ses IMAGES ont été versées ») ; le texte versé est un REJEU du 08/10 contre les sources de HEAD — attendu True · mesuré True
+✓ Q2f    la pièce de rejeu dit contre QUOI elle rejoue : « les sources de HEAD » (en-tête : « Constat « avant » REJOUÉ contre les sources de HEAD ») — attendu True · mesuré True
+? Q2g    NON VÉRIFIABLE : QUAND les 9 images « avant » ont été prises par rapport au correctif : git ne porte que la date du COMMIT qui les ajoute (le commit de code, qui porte aussi le correctif) ; l'identité à l'octet avec le rejeu (K6) en fait la preuve que les images montrent l'état d'AVANT, pas qu'elles aient été prises avant
+-- Q3 LA VERSION ACTIVE : `QUOTE_OPEN_STATUSES`, et ce que rend le PDF d'un devis ACCEPTED puis CANCELLED
+✓ Q3a    liste EXACTE de QUOTE_OPEN_STATUSES à FIN (lue dans packages/types/src/quote.ts) — attendu ['DRAFT', 'SENT'] · mesuré ['DRAFT', 'SENT']
+✓ Q3b    liste de QUOTE_LOST_STATUSES (affaires perdues) — attendu ['CANCELLED', 'DECLINED'] · mesuré ['CANCELLED', 'DECLINED']
+✓ Q3c    le prédicat d'impression de la politique : `isQuoteOpen(status) || status === QuoteStatus.ACCEPTED` (l'ouvert OU l'accepté) — attendu 1 · mesuré 1
+✓ Q3d    le RELEVÉ D'OUVERTURE écrivait « plus haute `version` de sa chaîne ET un statut OUVERT (`QUOTE_OPEN_STATUSES`) » — l'expression est trouvée à l'ouverture — attendu True · mesuré True
+✓ Q3e    le CONTRAT d'ouverture écrivait « 409 QUOTE_STATUS_CONFLICT : devis clos (statut non ouvert) » — sans ACCEPTED — attendu True · mesuré True
+✓ Q3f    la décision de la session à ratifier n° 1 écrit « un statut ouvert » (sans ACCEPTED) à FIN — attendu True · mesuré True
+✓ Q3g    le tableau de la partie B (ligne 3) écrit « un statut ouvert ou accepté » — l'ACCEPTED n'y est dit qu'ICI, au rapport — attendu True · mesuré True
+✓ Q3h    le TEST de la politique porte ACCEPTED « ALLOWED » (quote-document-policy.spec.ts) et la cible PO-3 la neutralise — attendu (True, True) · mesuré (True, True)
+✓ Q3i    AUCUN code de production n'ÉCRIT un statut ACCEPTED sur un devis (`nouveauStatut: ACCEPTED` / `status: ACCEPTED` hors specs) — l'ACCEPTED n'est pas atteignable par le produit aujourd'hui — attendu [] · mesuré []
+✓ Q3-DRAFT relevé réel (route du produit, Chromium) : le PDF d'un devis DRAFT → HTTP 200 — attendu (200, None) · mesuré (200, None)
+✓ Q3-SENT relevé réel (route du produit, Chromium) : le PDF d'un devis SENT (hérité) → HTTP 200 — attendu (200, None) · mesuré (200, None)
+✓ Q3-ACCEPTED relevé réel (route du produit, Chromium) : le PDF d'un devis ACCEPTED → HTTP 200 — attendu (200, None) · mesuré (200, None)
+✓ Q3-CANCELLED relevé réel (route du produit, Chromium) : le PDF d'un devis CANCELLED → HTTP 409 QUOTE_STATUS_CONFLICT — attendu (409, 'QUOTE_STATUS_CONFLICT') · mesuré (409, 'QUOTE_STATUS_CONFLICT')
+✓ Q3-DECLINED relevé réel (route du produit, Chromium) : le PDF d'un devis DECLINED (hérité) → HTTP 409 QUOTE_STATUS_CONFLICT — attendu (409, 'QUOTE_STATUS_CONFLICT') · mesuré (409, 'QUOTE_STATUS_CONFLICT')
+✓ Q3-SUPERSEDED relevé réel (route du produit, Chromium) : le PDF d'un devis SUPERSEDED (hérité) → HTTP 409 QUOTE_STATUS_CONFLICT — attendu (409, 'QUOTE_STATUS_CONFLICT') · mesuré (409, 'QUOTE_STATUS_CONFLICT')
+· Q3-C1  CONSTAT : ÉCART : le code (et la spec) impriment un devis ACCEPTED ; le CONTRAT et le relevé d'OUVERTURE disaient « statut ouvert » seulement, et la décision soumise à ratification (n° 1) aussi — l'ACCEPTED n'est dit qu'au tableau de clôture. Il n'est pas atteignable par le produit (Q3i) : il l'a été par SQL dans le relevé (posé, dit).
+-- Q4 LES SEPT CAMPAGNES : leurs noms et leurs comptes, lus dans leur journal (`neutralisation/lancer-campagnes.txt`)
+   · neutralize-act-plafonds.py : sortie 0 · déclarées 4 · mordues 4 · muettes 0 · non mesurées 0 · 110 s
+   · neutralize-horloge.py : sortie 0 · déclarées 2 · mordues 2 · muettes 0 · non mesurées 0 · 113 s
+   · neutralize-journey.py : sortie 0 · déclarées — (non déclarées par le harnais) · mordues 7 · muettes 0 · non mesurées 0 · 311 s
+   · neutralize-r30.py : sortie 0 · déclarées 8 · mordues 8 · muettes 0 · non mesurées 0 · 60 s
+   · neutralize-r32.py : sortie 0 · déclarées 65 · mordues 65 · muettes 0 · non mesurées 0 · 604 s
+   · neutralize-r33.py : sortie 0 · déclarées 93 · mordues 93 · muettes 0 · non mesurées 0 · 814 s
+   · neutralize-s9.py : sortie 0 · déclarées 6 · mordues 6 · muettes 0 · non mesurées 0 · 46 s
+   · total du journal : 185 mordues · 0 muettes · 0 non mesurées · 7 campagnes · 2057 s
+· Q4-C1  CONSTAT : `journey` et `r32` SONT dans les sept (ligne [3/7] et [5/7] du journal) ; `journey` ne déclare pas son compte (« — » dans la colonne « décl ») : « 7/7 » est mordues/jouées, pas mordues/déclarées. `r33` y est à 93 (la partie UNITAIRE), la campagne complète (102) est la pièce `campagne-r33-finale.txt`. `r25`, `r26`, `r29` ne sont pas jouées (le tri ne les cite pas — le journal le dit : « 7 campagne(s) concernée(s) sur 34 »).
+-- Q5 L'EXTENSION 5 : quand a-t-elle été écrite par rapport aux fichiers qu'elle couvre ? ce que git en dit, et ce qu'il n'en dit pas
+✓ Q5a    le texte de l'extension 5 (« Précision de la table — les sept SECONDS MEMBRES ») entre dans git UNE seule fois, au commit de CLÔTURE — attendu ['470e607'] · mesuré ['470e607']
+✓ Q5b    les sept fichiers que l'extension couvre entrent dans git au commit de CODE (un seul commit chacun) — attendu {'apps/api/src/documents/playwright-pdf.renderer.spec.ts': ['a9840bd'], 'apps/api/src/documents/quote-document-policy.spec.ts': ['a9840bd'], 'apps/api/src/documents/quote-document-source.prisma.ts': ['a9840bd'], 'apps/api/src/documents/quote-document.service.spec.ts': ['a9840bd'], 'apps/api/src/documents/quote-document.spec.ts': ['a9840bd']} · mesuré {'apps/api/src/documents/playwright-pdf.renderer.spec.ts': ['a9840bd'], 'apps/api/src/documents/quote-document-policy.spec.ts': ['a9840bd'], 'apps/api/src/documents/quote-document-source.prisma.ts': ['a9840bd'], 'apps/api/src/documents/quote-document.service.spec.ts': ['a9840bd'], 'apps/api/src/documents/quote-document.spec.ts': ['a9840bd']}
+✗ Q5c    sept fichiers couverts, résolus par leur nom dans le diff — attendu 7 · mesuré 5
+   (dates de commit : code 2026-10-08 12:39:25 -0400 · clôture 2026-10-08 12:39:33 -0400)
+✓ Q5d    l'extension 5 dit elle-même « Écrit APRÈS coup » (la phrase est trouvée dans son texte) — attendu True · mesuré True
+✗ Q5e    les extensions 1 à 4, que D326 dit « déclarées AVANT d'écrire le fichier », entrent TOUTES dans git au commit de CLÔTURE aussi (le texte de chacune n'existe dans aucun commit antérieur) — attendu {1: ['470e607'], 2: ['470e607'], 3: ['470e607'], 4: ['470e607']} · mesuré {1: ['470e607'], 2: [], 3: ['470e607'], 4: ['470e607']}
+✓ Q5f    à l'OUVERTURE, la section « Extensions de la table » existe mais VIDE : « aucune à l'ouverture ; chaque extension s'ajoute ici avec son motif, avant le fichier » — attendu True · mesuré True
+? Q5g    NON VÉRIFIABLE : L'ORDRE D'ÉCRITURE : git ne connaît que l'ordre des COMMITS (code 12:39:25, clôture 12:39:33, huit secondes d'écart) ; il ne sait ni quand le texte de l'extension 5 (ni des extensions 1 à 4) a été TAPÉ, ni si le fichier a été écrit avant ou après. « Avant l'écriture » (extensions 1 à 4) est donc non vérifiable ; « après coup » (extension 5) est AVOUÉ par son texte et compatible avec l'ordre des commits, sans qu'il le prouve
+· Q5-C1  CONSTAT : même limite qu'à D325 (P14b de D326) : la déclaration « AVANT d'écrire le fichier » ne laisse aucune trace que git puisse lire, parce que le texte et le code sont commités ENSEMBLE à quelques secondes d'écart. Une règle dont le respect ne peut pas se lire dans l'historique ne se vérifie que sur déclaration.
+
+== X — état LIVE (lu maintenant, pas à un SHA fixé)
+✓ X1     HEAD local = la clôture de D326 — attendu '470e6071f0a3623b4d948d87235164d28c32953a' · mesuré '470e6071f0a3623b4d948d87235164d28c32953a'
+✓ X2     origin/main = la clôture de D326 (après git fetch) — attendu '470e6071f0a3623b4d948d87235164d28c32953a' · mesuré '470e6071f0a3623b4d948d87235164d28c32953a'
+✓ X3     arbre propre à l'entrée : aucune entrée de `git status` hors `docs/preuves/D327/` (les pièces de CE lot, non commitées) — attendu [] · mesuré []
+✓ X4     aucun stash — attendu '' · mesuré ''
+✓ X5     la bannière de `pdftotext` dit « Glyph & Cog » (Xpdf), pas « poppler » — D326 écrit « pdftotext (poppler 4.00) » — attendu (True, True) · mesuré (True, True)
+· X5-C1  CONSTAT : le `pdftotext` du poste est un XPDF 4.00 (bannière « Copyright 1996-2017 Glyph & Cog, LLC »), sans `-bbox` ni `-bbox-layout` ; D326 l'appelle « poppler 4.00 » (section D326, preuve de l'arabe, critère c). Sans conséquence sur ce qu'il a conclu (« rien n'en est conclu »).
+· G1-C1  CONSTAT : D326 ne verse AUCUNE pièce brute pour les résultats de ses portes (typecheck, lint, test, build, test:int, e2e) : contrairement à D325 (`resume-portes.txt`). Les écarts de tests sont retrouvés par comptage (G3), les durées et les « 0 » ne le sont pas (G4).
+· P8-C1  CONSTAT : `apps/api/package.json` : pnpm a RÉÉCRIT la ligne `prisma:migrate:dev` (le caractère « — » écrit `\u2014` devenu littéral) en ajoutant `playwright-core` ; le diff compte 2 ajoutées pour 1 retirée alors que D326 annonce UNE dépendance. Équivalent à l'exécution (P8c) ; non déclaré, et c'est la ligne qui porte l'INTERDIT de `migrate dev`.
+· A-C1   CONSTAT : l'audit de secrets final (`audit-secrets-d326d.txt`) est commité AVEC le code ; les trois `.md` d'autorité, eux, changent dans le commit SUIVANT (clôture, 8 secondes plus tard) : git ne dit pas si l'audit a vu leurs octets FINAUX.
+? A-N1   NON VÉRIFIABLE : que le dernier audit de secrets de D326 ait couvert les octets finaux des trois `.md` (constat A-C1)
+
+== A — sceaux des audits scellés de D326
+✓ A-a    le sceau de audit-secrets-d326a.txt est recalculé et juste — attendu True · mesuré True
+✓ A-b    le sceau de audit-secrets-d326b.txt est recalculé et juste — attendu True · mesuré True
+✓ A-c    le sceau de audit-secrets-d326c.txt est recalculé et juste — attendu True · mesuré True
+✓ A-d    le sceau de audit-secrets-d326d.txt est recalculé et juste — attendu True · mesuré True
+
+== BILAN : 134 contrôles · 11 écart(s) de D326 ['P6e', 'P6f', 'P6g', 'P6h', 'P6i', 'P8a', 'P9b', 'G1', 'T2', 'Q5c', 'Q5e'] · 0 écart(s) de l'état reçu [] · 8 constat(s) · 5 non vérifiable(s)
+   ventilation par famille : A 4 · C 21 · G 9 · K 7 · P 27 · Q 42 · R 9 · T 10 · X 5  (somme 134)
+   familles à zéro (hypothèse à vérifier, D295) : []

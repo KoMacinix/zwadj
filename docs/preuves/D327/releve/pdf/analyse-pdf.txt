@@ -1,0 +1,125 @@
+== CALIBRATION — deux bras par extracteur, abandon si un seul manque
+   ✓ analyseur de lignes, positif : deux fragments à la même hauteur → UNE ligne triée par x : [['Allo', 'Bonjour']] (attendu [['Allo', 'Bonjour']])
+   ✓ analyseur de lignes, négatif : aucune entrée → aucune ligne : [] (attendu [])
+   ✓ analyseur de lignes, négatif : un fragment d'ESPACES (largeur 250) n'est pas du texte : [(10, [('Total', 100, 130)])] (attendu [(10, [('Total', 100, 130)])])
+   ✓ analyseur de lignes, positif : un NUL de ligature est rendu « ␀ » : [['␀']] (attendu [['␀']])
+   ✓ témoin D326 FR (page LTR) : « Prestation » à GAUCHE de « Montant » : True (attendu True)
+   ✓ témoin D326 AR (page RTL) : « الخدمة » à DROITE de « المبلغ » : True (attendu True)
+   ✓ négatif : « ZZZZ » est absent du témoin : None (attendu None)
+== calibration : 7 bras, 0 manqué
+
+RÉSUMÉ (x en points ; début = x0 du fragment, fin = x1) — le détail ligne à ligne suit, par PDF
+
+devis A · fr : montants imprimés (chiffres) = valeurs STOCKÉES en dinars (centimes / 100) : Location 180000 · Prestations 0 · Total 180000 · Acompte 54000 (4 sur 4 égaux) ; 0 ligne(s) de table (attendu 0) · en-têtes x0–x1 : Prestation 40.5–96.0 · Qté 342.9–362.4 · Montant 510.1–555.0 · quantités (texte, x0, x1) : [] · montants de la table : [] · récapitulatif (début–fin de ligne) : {'Location': (286.5, 555.7), 'Prestations': (286.5, 555.7), 'Total': (286.5, 555.7), 'Acompte': (286.5, 555.7)} · référence imprimée : « Devis · Référence 01a11ec3-v1 · Établi le 9 octobre 2026 »
+
+devis A · ar : montants imprimés (chiffres) = valeurs STOCKÉES en dinars (centimes / 100) : Location 180000 · Prestations 0 · Total 180000 · Acompte 54000 (4 sur 4 égaux) ; 0 ligne(s) de table (attendu 0) · en-têtes x0–x1 : Prestation 520.3–554.8 · Qté 199.3–230.2 · Montant 40.3–69.2 · quantités (texte, x0, x1) : [] · montants de la table : [] · récapitulatif (début–fin de ligne) : {'Location': (39.5, 308.8), 'Prestations': (39.5, 308.8), 'Total': (39.5, 308.8), 'Acompte': (39.5, 308.8)} · référence imprimée : « 01a11ec3-v1 »
+
+devis B · fr : montants imprimés (chiffres) = valeurs STOCKÉES en dinars (centimes / 100) : Location 180000 · Prestations 75000 · Total 255000 · Acompte 76500 (4 sur 4 égaux) ; 2 ligne(s) de table (attendu 2) · en-têtes x0–x1 : Prestation 40.5–96.0 · Qté 417.9–437.5 · Montant 510.1–555.0 · quantités (texte, x0, x1) : [('1', 432.0, 437.5), ('1', 432.0, 437.5)] · montants de la table : [('000 DA', 516.2, 555.0), ('000 DA', 516.2, 555.0)] · récapitulatif (début–fin de ligne) : {'Location': (286.5, 555.7), 'Prestations': (286.5, 555.7), 'Total': (286.5, 555.7), 'Acompte': (286.5, 555.7)} · référence imprimée : « Devis · Référence 01a11ec3-v1 · Établi le 9 octobre 2026 »
+
+devis B · ar : montants imprimés (chiffres) = valeurs STOCKÉES en dinars (centimes / 100) : Location 180000 · Prestations 75000 · Total 255000 · Acompte 76500 (4 sur 4 égaux) ; 2 ligne(s) de table (attendu 2) · en-têtes x0–x1 : Prestation 520.3–554.8 · Qté 158.1–189.0 · Montant 40.3–69.2 · quantités (texte, x0, x1) : [('1', 158.1, 163.6), ('1', 158.1, 163.6)] · montants de la table : [('DA 45', 40.3, 72.1), ('DA 30', 40.3, 71.6)] · récapitulatif (début–fin de ligne) : {'Location': (39.5, 308.8), 'Prestations': (39.5, 308.8), 'Total': (39.5, 308.8), 'Acompte': (39.5, 308.8)} · référence imprimée : « 01a11ec3-v1 »
+
+devis C · fr : montants imprimés (chiffres) = valeurs STOCKÉES en dinars (centimes / 100) : Location 180000 · Prestations 411000 · Total 591000 · Acompte 177300 (4 sur 4 égaux) ; 3 ligne(s) de table (attendu 3) · en-têtes x0–x1 : Prestation 40.5–96.0 · Qté 365.9–385.5 · Montant 510.1–555.0 · quantités (texte, x0, x1) : [('150', 367.1, 385.5), ('3', 379.7, 385.5), ('1', 380.0, 385.5)] · montants de la table : [('000 DA', 516.2, 555.0), ('000 DA', 516.2, 555.0), ('000 DA', 516.2, 555.0)] · récapitulatif (début–fin de ligne) : {'Location': (286.5, 555.7), 'Prestations': (286.5, 555.7), 'Total': (286.5, 555.7), 'Acompte': (286.5, 555.7)} · référence imprimée : « Devis · Référence 01a11ec3-v1 · Établi le 9 octobre 2026 »
+
+devis C · ar : montants imprimés (chiffres) = valeurs STOCKÉES en dinars (centimes / 100) : Location 180000 · Prestations 411000 · Total 591000 · Acompte 177300 (4 sur 4 égaux) ; 3 ligne(s) de table (attendu 3) · en-têtes x0–x1 : Prestation 520.3–554.8 · Qté 197.7–228.6 · Montant 40.3–69.2 · quantités (texte, x0, x1) : [('150', 197.7, 216.1), ('3', 197.7, 203.5), ('1', 197.7, 203.2)] · montants de la table : [('DA 375', 40.3, 77.1), ('DA 24', 40.3, 71.7), ('DA 12', 40.3, 70.6)] · récapitulatif (début–fin de ligne) : {'Location': (39.5, 308.8), 'Prestations': (39.5, 308.8), 'Total': (39.5, 308.8), 'Acompte': (39.5, 308.8)} · référence imprimée : « 01a11ec3-v1 »
+
+
+== DÉTAIL, PDF par PDF
+
+══ devis A · fr · docs/preuves/D327/releve/pdf/pages/devis-A-fr.positions.json — 1 page, 594.95996 × 841.91998 pt, 34 fragments, 12 lignes visuelles
+   y=   69.7 │ [Dune et Plage 40–192]
+   y=   96.7 │ [Devis · Référence 01a11ec3-v1 · Établi le 9 octobre 2026 40–330]
+   y=  134.2 │ [Client 40–65] [Date de l'événement 309–398]
+   y=  150.7 │ [— 40–49] [8 décembre 2026 309–400]
+   y=  178.5 │ [Créneau 40–75] [Invités 309–339]
+   y=  195.0 │ [Soirée · 20:00 – 02:00 40–151] [150 309–327]
+   y=  245.2 │ [Prestation 40–96] [Qté 343–362] [Montant 510–555]
+   y=  290.2 │ [Location de la salle 286–386] [180 497–515] [000 DA 517–556]
+   y=  315.7 │ [Prestations 286–345] [0 DA 530–556]
+   y=  341.2 │ [Total à payer 286–353] [180 497–515] [000 DA 517–556]
+   y=  379.5 │ [Acompte 286–344] [54 490–506] [000 DA 508–556]
+   y=  433.5 │ [Ce document récapitule les valeurs enregistrées pour ce devis au moment de son téléchargement. 40–463]
+
+══ devis A · ar · docs/preuves/D327/releve/pdf/pages/devis-A-ar.positions.json — 1 page, 594.95996 × 841.91998 pt, 97 fragments, 13 lignes visuelles
+   y=   69.7 │ [والشاطئ 393–483] [الكثيب 490–556]
+   y=   96.7 │ [2026 275–300] [أكتوبر 303–330] [9 333–340] [في 343–358] [ر 361–365] [ر 365–371] [ّ 366–366] [␀ 371–379] [ُ 372–372] [· 382–385] [01a11ec3-v1 388–451] [المرجع 454–488] [· 491–493] [السعر 496–525] [عرض 528–556]
+   y=  134.2 │ [المناسبة 231–265] [تاريخ 267–286] [الزبون 532–556]
+   y=  150.7 │ [2026 212–237] [ديسمبر 240–277] [8 280–286] [— 546–556]
+   y=  178.5 │ [الضيوف 237–269] [عدد 272–286] [الفترة 533–556]
+   y=  195.0 │ [150 268–286] [02:00 451–480] [– 483–488] [20:00 491–520] [· 523–526] [سهرة 529–556]
+   y=  245.2 │ [المبلغ 40–69] [الكمية 199–230] [الخدمة 520–555]
+   y=  290.2 │ [DA 180 40–77] [000 78–98] [القاعة 260–288] [كراء 291–309]
+   y=  315.7 │ [DA 0 40–65] [الخدمات 268–309]
+   y=  341.2 │ [DA 180 40–77] [000 78–98] [المطلوب 223–265] [المجموع 268–309]
+   y=  379.5 │ [DA 54 40–78] [000 80–106] [العربون 266–309]
+   y=  431.8 │ [. 327–329] [تنزيلها 329–353] [وقت 356–374] [العرض 376–404] [لهذا 407–422] [لة 424–432] [ج 432–439] [المس 439–458] [القيم 461–480] [الوثيقة 483–509] [هذه 512–527] [ص 529–543] [خ 543–549] [ّ 543–543] [تل 549–556]
+   y=  434.3 │ [ّ 433–433]
+
+══ devis B · fr · docs/preuves/D327/releve/pdf/pages/devis-B-fr.positions.json — 1 page, 594.95996 × 841.91998 pt, 50 fragments, 14 lignes visuelles
+   y=   69.7 │ [Dune et Plage 40–192]
+   y=   96.7 │ [Devis · Référence 01a11ec3-v1 · Établi le 9 octobre 2026 40–330]
+   y=  134.2 │ [Client 40–65] [Date de l'événement 309–398]
+   y=  150.7 │ [— 40–49] [9 décembre 2026 309–400]
+   y=  178.5 │ [Créneau 40–75] [Invités 309–339]
+   y=  195.0 │ [Soirée · 20:00 – 02:00 40–151] [150 309–327]
+   y=  245.2 │ [Prestation 40–96] [Qté 418–437] [Montant 510–555]
+   y=  274.5 │ [Animation musicale (orchestre) 40–204] [1 432–437] [45 502–515] [000 DA 516–555]
+   y=  303.7 │ [Photographie et vidéo 40–158] [1 432–437] [30 502–515] [000 DA 516–555]
+   y=  348.0 │ [Location de la salle 286–386] [180 497–515] [000 DA 517–556]
+   y=  373.5 │ [Prestations 286–345] [75 503–515] [000 DA 517–556]
+   y=  399.0 │ [Total à payer 286–353] [255 497–515] [000 DA 517–556]
+   y=  438.0 │ [Acompte 286–344] [76 492–507] [500 DA 509–556]
+   y=  492.0 │ [Ce document récapitule les valeurs enregistrées pour ce devis au moment de son téléchargement. 40–463]
+
+══ devis B · ar · docs/preuves/D327/releve/pdf/pages/devis-B-ar.positions.json — 1 page, 594.95996 × 841.91998 pt, 124 fragments, 15 lignes visuelles
+   y=   69.7 │ [والشاطئ 393–483] [الكثيب 490–556]
+   y=   96.7 │ [2026 275–300] [أكتوبر 303–330] [9 333–340] [في 343–358] [ر 361–365] [ر 365–371] [ّ 366–366] [ح 371–379] [ُ 372–372] [· 382–385] [01a11ec3-v1 388–451] [المرجع 454–488] [· 491–493] [السعر 496–525] [عرض 528–556]
+   y=  134.2 │ [المناسبة 231–265] [تاريخ 267–286] [الزبون 532–556]
+   y=  150.7 │ [2026 213–238] [ديسمبر 241–277] [9 280–286] [— 546–556]
+   y=  178.5 │ [الضيوف 237–269] [عدد 272–286] [الفترة 533–556]
+   y=  195.0 │ [150 268–286] [02:00 451–480] [– 483–488] [20:00 491–520] [· 523–526] [سهرة 529–556]
+   y=  245.2 │ [المبلغ 40–69] [الكمية 158–189] [الخدمة 520–555]
+   y=  274.5 │ [DA 45 40–72] [000 74–94] [1 158–164] [ة 425–431] [ي 431–435] [ّ 432–432] [ح 435–444] [بفرقة 447–474] [موسيقي 477–519] [تنشيط 522–555]
+   y=  303.7 │ [DA 30 40–72] [000 73–93] [1 158–164] [للحفل 403–433] [وفيديو 436–468] [فوتوغرافي 471–522] [تصوير 525–555]
+   y=  348.0 │ [DA 180 40–77] [000 78–98] [القاعة 260–288] [كراء 291–309]
+   y=  373.5 │ [DA 75 40–71] [000 72–92] [الخدمات 268–309]
+   y=  399.0 │ [DA 255 40–77] [000 78–98] [المطلوب 223–265] [المجموع 268–309]
+   y=  438.0 │ [DA 76 40–77] [500 79–103] [العربون 266–309]
+   y=  490.3 │ [. 327–329] [تنزيلها 329–353] [وقت 356–374] [العرض 376–404] [لهذا 407–422] [لة 424–432] [ج 432–439] [المس 439–458] [القيم 461–480] [الوثيقة 483–509] [هذه 512–527] [ص 529–543] [خ 543–549] [ّ 543–543] [تل 549–556]
+   y=  492.8 │ [ّ 433–433]
+
+══ devis C · fr · docs/preuves/D327/releve/pdf/pages/devis-C-fr.positions.json — 1 page, 594.95996 × 841.91998 pt, 57 fragments, 15 lignes visuelles
+   y=   69.7 │ [Dune et Plage 40–192]
+   y=   96.7 │ [Devis · Référence 01a11ec3-v1 · Établi le 9 octobre 2026 40–330]
+   y=  134.2 │ [Client 40–65] [Date de l'événement 309–398]
+   y=  150.7 │ [— 40–49] [10 décembre 2026 309–406]
+   y=  178.5 │ [Créneau 40–75] [Invités 309–339]
+   y=  195.0 │ [Soirée · 20:00 – 02:00 40–151] [150 309–327]
+   y=  245.2 │ [Prestation 40–96] [Qté 366–385] [Montant 510–555]
+   y=  274.5 │ [Buffet ouvert 40–112] [150 367–385] [375 497–515] [000 DA 516–555]
+   y=  303.7 │ [Voiture de cortège 40–140] [3 380–385] [24 502–515] [000 DA 516–555]
+   y=  333.0 │ [Gâteau de mariage 40–140] [1 380–385] [12 503–515] [000 DA 516–555]
+   y=  377.2 │ [Location de la salle 286–386] [180 497–515] [000 DA 517–556]
+   y=  402.7 │ [Prestations 286–345] [411 498–515] [000 DA 517–556]
+   y=  428.2 │ [Total à payer 286–353] [591 498–515] [000 DA 517–556]
+   y=  467.2 │ [Acompte 286–344] [177 485–507] [300 DA 509–556]
+   y=  520.5 │ [Ce document récapitule les valeurs enregistrées pour ce devis au moment de son téléchargement. 40–463]
+
+══ devis C · ar · docs/preuves/D327/releve/pdf/pages/devis-C-ar.positions.json — 1 page, 594.95996 × 841.91998 pt, 122 fragments, 16 lignes visuelles
+   y=   69.7 │ [والشاطئ 393–483] [الكثيب 490–556]
+   y=   96.7 │ [2026 275–300] [أكتوبر 303–330] [9 333–340] [في 343–358] [ر 361–365] [ر 365–371] [ّ 366–366] [␀ 371–379] [ُ 372–372] [· 382–385] [01a11ec3-v1 388–451] [المرجع 454–488] [· 491–493] [السعر 496–525] [عرض 528–556]
+   y=  134.2 │ [المناسبة 231–265] [تاريخ 267–286] [الزبون 532–556]
+   y=  150.7 │ [2026 207–231] [ديسمبر 235–271] [10 274–286] [— 546–556]
+   y=  178.5 │ [الضيوف 237–269] [عدد 272–286] [الفترة 533–556]
+   y=  195.0 │ [150 268–286] [02:00 451–480] [– 483–488] [20:00 491–520] [· 523–526] [سهرة 529–556]
+   y=  245.2 │ [المبلغ 40–69] [الكمية 198–229] [الخدمة 520–555]
+   y=  274.5 │ [DA 375 40–77] [000 79–99] [150 198–216] [للضيوف 452–492] [مفتوح 495–526] [بوفيه 529–555]
+   y=  303.7 │ [DA 24 40–72] [000 73–93] [3 198–203] [الموكب 489–524] [سيارة 527–555]
+   y=  333.0 │ [DA 12 40–71] [000 72–92] [1 198–203] [الزفاف 495–528] [كعكة 531–555]
+   y=  377.2 │ [DA 180 40–77] [000 78–98] [القاعة 260–288] [كراء 291–309]
+   y=  402.7 │ [DA 411 40–76] [000 78–98] [الخدمات 268–309]
+   y=  428.2 │ [DA 591 40–76] [000 78–98] [المطلوب 223–265] [المجموع 268–309]
+   y=  467.2 │ [DA 177 40–84] [300 86–110] [العربون 266–309]
+   y=  518.8 │ [. 327–329] [تنزيلها 329–353] [وقت 356–374] [العرض 376–404] [لهذا 407–422] [لة 424–432] [ج 432–439] [المس 439–458] [القيم 461–480] [الوثيقة 483–509] [هذه 512–527] [ص 529–543] [خ 543–549] [ّ 543–543] [تل 549–556]
+   y=  521.3 │ [ّ 433–433]
+
+== PDF parcourus : 6 (attendu 6) · fragments parcourus : 484

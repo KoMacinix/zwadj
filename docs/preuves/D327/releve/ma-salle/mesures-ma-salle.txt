@@ -1,0 +1,21 @@
+# Passe 1 (S1 à S5 ; S6 et S7 ont échoué à cette passe sur un sélecteur ambigu — le bouton « Supprimer » existe deux fois — et sont rejoués à la passe 2)
+MESURE S1 · SANS rechargement · liste : ["S1 Première salle"] · état vide affiché : false
+MESURE S1 · APRÈS rechargement · liste : ["S1 Première salle"]
+MESURE S2 · avant · liste : ["Salle e2e 48294e9c"] · libellé de la navigation : « Ma salle »
+MESURE S2 · SANS rechargement · liste : ["S2 Seconde salle","Salle e2e 48294e9c"] · libellé de la navigation : « Mes salles »
+MESURE S2 · APRÈS rechargement · liste : ["S2 Seconde salle","Salle e2e 48294e9c"] · libellé : « Mes salles »
+MESURE S3 · lien « Retour à mes salles » · SANS rechargement · liste : ["S3 Troisième salle","Salle e2e f823e3db"]
+MESURE S3 · après deux « Précédent » du navigateur · URL : /salles/nouvelle
+MESURE S3 · contrôle APRÈS chargement complet · liste : ["S3 Troisième salle","Salle e2e f823e3db"]
+MESURE S4 · avant : ["Salle e2e d65af9e3"] · après l'édition (PATCH 200), SANS rechargement : ["Salle e2e d65af9e3"]
+MESURE S4 · APRÈS rechargement : ["S4 Nom modifié"]
+MESURE S5 · AVANT la publication · carte : ["Aucune photoS5 Salle à publierAïn BenianJusqu'à 400 invités150 000 DAPublicationEn attente de publication par ZwadjVisibilitéVisibleMasquéeTemporairement indisp"]
+MESURE S5 · publication par la route admin → HTTP 200
+MESURE S5 · APRÈS la publication, navigation INTERNE vers la liste (sans rechargement) : ["Aucune photoS5 Salle à publierAïn BenianJusqu'à 400 invités150 000 DAPublicationEn attente de publication par ZwadjVisibilitéVisibleMasquéeTemporairement indisp"]
+MESURE S5 · APRÈS rechargement : ["Aucune photoS5 Salle à publierAïn BenianJusqu'à 400 invités150 000 DAPublicationPubliéeVisibilitéVisibleMasquéeTemporairement indisponibleModifierSupprimer"]
+# Passe 2 (S6 et S7 avec le sélecteur corrigé ; S8 ajouté) — base JETABLE recréée, autres salles
+MESURE S6 · supprimée depuis l'assistant · liste SANS rechargement : ["Salle e2e 99e2ec5b"] · état vide affiché : false
+MESURE S6 · APRÈS rechargement : [] · état vide affiché : true
+MESURE S7 · supprimée depuis la liste · SANS rechargement : [] · état vide affiché : true
+MESURE S8 · créée « S8 nom à la création », corrigée en « S8 nom corrigé » (PATCH 200) · liste SANS rechargement : ["S8 nom à la création"]
+MESURE S8 · APRÈS rechargement : ["S8 nom corrigé"]

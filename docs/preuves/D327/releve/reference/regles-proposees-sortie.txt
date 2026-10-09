@@ -1,0 +1,62 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ positif · salle « Koceila » → ko (Ko) : 'ko' (attendu 'ko')
+   ✓ positif · salle « Dune et Plage » → dp (Ko) : 'dp' (attendu 'dp')
+   ✓ positif · cliente « Amel Bentaleb » → ab (Ko) : 'ab' (attendu 'ab')
+   ✓ négatif · la dérivation naïve (deux premières lettres du nom entier) donne « du » — la règle doit s'en distinguer : ('dp', 'du') (attendu ('dp', 'du'))
+   ✓ négatif · un nom sans lettre latine n'a pas d'initiales inventées : None (attendu None)
+== calibration : 5 bras, 0 manqué
+
+== données parcourues : salles de dev 5 · salles du semis 6 · noms de contact distincts 1 · comptes 1 · devis 15
+
+== SALLES DE LA BASE DE DÉVELOPPEMENT (les supprimées sont comptées : elles gardent leur numéro, une suppression est douce)
+   01a0ff18 · « KOCEILA » · normalisé « koceila » · initiales `ko` · supprimée true · créée 2026-10-03 00:09:50
+   01a0ff18 · « koceila » · normalisé « koceila » · initiales `ko` · supprimée true · créée 2026-10-03 00:10:23
+   01a0ff1c · « koceila » · normalisé « koceila » · initiales `ko` · supprimée true · créée 2026-10-03 00:14:29
+   01a10ec3 · « salle des fetes koceila » · normalisé « salle des fetes koceila » · initiales `ko` · supprimée true · créée 2026-10-06 01:11:20
+   01a11e78 · « salle koceilaaaaaa » · normalisé « salle koceilaaaaaa » · initiales `ko` · supprimée false · créée 2026-10-09 02:23:25
+
+   pro 01a0fed5 : 5 salles · initiales par salle {'ko': 5} · COLLISIONS (même initiales, même pro) {'ko': 5} · parmi les salles non supprimées : {'ko': 1}
+
+   pro 01a0fed5 : référence du PREMIER devis de chacune des 5 salles (client absent) : ['ko_01_xx_v1', 'ko_01_xx_v1', 'ko_01_xx_v1', 'ko_01_xx_v1', 'ko_01_xx_v1'] → 1 référence(s) distincte(s) pour 5 salles
+
+== SALLES DU SEMIS (`apps/api/prisma/seed-demo.ts`, un seul pro de démonstration)
+   « Salle El Aurassi Royale » · jetons conservés ['el', 'aurassi', 'royale'] · initiales `ea`
+   « Domaine du Jardin d'Essai » · jetons conservés ['domaine', 'jardin', 'essai'] · initiales `dj`
+   « Villa Marina Sidi Fredj » · jetons conservés ['villa', 'marina', 'sidi', 'fredj'] · initiales `vm`
+   « Palais des Raïs » · jetons conservés ['palais', 'rais'] · initiales `pr`
+   « Résidence Les Oliviers » · jetons conservés ['residence', 'oliviers'] · initiales `ro`
+   « Espace Bab Ezzouar » · jetons conservés ['espace', 'bab', 'ezzouar'] · initiales `eb`
+   collisions parmi les 6 salles du semis : {}
+   toutes salles confondues (dev + semis, tous propriétaires) : 10 noms distincts, 7 initiales distinctes, collisions entre propriétaires possibles : {'ko': ['KOCEILA', 'koceila', 'salle des fetes koceila', 'salle koceilaaaaaa']}
+
+== NOMS DE CLIENT DE LA BASE DE DÉVELOPPEMENT (contacts des réservations ; les comptes `users` n'ont aucun nom)
+   « K****** B** L***** » (nom MASQUÉ ; 3 mot(s)) (×8 réservations) · règle proposée sur le nom entier `kb` · variante prénom/nom `kb`
+   comptes users : [('PRO', False, False)] (rôle, prénom présent, nom présent)
+   noms de contact à lettres NON latines : 0 sur 1
+
+== LE NUMÉRO — par salle et par DEVIS (une chaîne de révisions = un devis) : ce que donnerait la numérotation des devis EXISTANTS par ordre de création
+   salle 01a0ff1c (« koceila », initiales `ko`) : 14 devis
+      chaîne 01a0ff26 · 1 version(s) · créée 2026-10-03 00:25:19 → `ko_01_xx_v1` (nom de client lu sur la réservation liée : non — aucune)
+      chaîne 01a0ff27 · 1 version(s) · créée 2026-10-03 00:26:07 → `ko_02_xx_v1` (nom de client lu sur la réservation liée : non — aucune)
+      chaîne 01a0ff28 · 1 version(s) · créée 2026-10-03 00:26:54 → `ko_03_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a0ff29 · 1 version(s) · créée 2026-10-03 00:28:08 → `ko_04_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a0ff2a · 1 version(s) · créée 2026-10-03 00:29:38 → `ko_05_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a0ff2b · 1 version(s) · créée 2026-10-03 00:30:16 → `ko_06_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a0ff2c · 1 version(s) · créée 2026-10-03 00:31:13 → `ko_07_xx_v1` (nom de client lu sur la réservation liée : non — aucune)
+      chaîne 01a10886 · 1 version(s) · créée 2026-10-04 20:06:34 → `ko_08_xx_v1` (nom de client lu sur la réservation liée : non — aucune)
+      chaîne 01a10886 · 2 version(s) · créée 2026-10-04 20:06:48 → `ko_09_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a1088c · 1 version(s) · créée 2026-10-04 20:13:02 → `ko_10_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a1089d · 1 version(s) · créée 2026-10-04 20:31:13 → `ko_11_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a10e98 · 1 version(s) · créée 2026-10-06 00:23:54 → `ko_12_kb_v1` (nom de client lu sur la réservation liée : oui)
+      chaîne 01a10e99 · 1 version(s) · créée 2026-10-06 00:24:37 → `ko_13_xx_v1` (nom de client lu sur la réservation liée : non — aucune)
+      chaîne 01a11e6d · 1 version(s) · créée 2026-10-09 02:10:35 → `ko_14_xx_v1` (nom de client lu sur la réservation liée : non — aucune)
+   devis parcourus : 15 · chaînes : 14 · devis liés à un compte (`client_id`) : 0
+   ⇒ à la CRÉATION le serveur ne reçoit aucun nom (le contrat de création n'en porte pas) : « absent : xx » s'appliquerait à 14 chaînes sur 14
+
+== LA RÉFÉRENCE ACTUELLE : les huit premiers caractères d'un UUIDv7 — ce qu'ils discriminent
+   base de développement : 15 devis, 13 préfixes distincts de 8 caractères ; préfixes partagés : {'01a10886': 3}
+   sonde du relevé n° 1 : les trois devis A, B, C créés à quelques secondes d'écart → préfixes ['01a11ec3', '01a11ec3', '01a11ec3'] (distincts : 1)
+   mécanisme (RFC 9562) : 48 bits d'horodatage en ms ; les 8 premiers caractères hexadécimaux en sont les 32 bits de poids fort ⇒ le préfixe ne change que tous les 65536 ms = 65.536 s
+   ⇒ deux devis créés dans la même fenêtre de 65.536 s portent la même référence imprimée ; pour un jour de 86400 s : au plus 1319 références distinctes
+
+== FIN — PARCOURU : salles dev 5, salles semis 6, contacts 1, devis 15 (attendu : 5, 6, ≥1, 15 à la date du relevé)

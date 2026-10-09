@@ -1,0 +1,57 @@
+PHASE 1 PRINT/standby · formulaire : prénom, nom, mobile, e-mail, invités saisis (rien n'est encore parti vers l'API)
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/visit-bookings?from=2026-10-09&to=2026-10-09
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/bookings
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/quotes/conversion
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/services
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/visit-bookings?from=2026-10-09&to=2026-10-09
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/bookings
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/quotes/conversion
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/services
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/availability?from=2026-10-01&to=2026-10-31
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/availability?from=2026-10-01&to=2026-10-31
+PHASE 2 PRINT/standby · date, créneau, prestations (le calendrier lit les disponibilités)
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/availability?from=2026-10-01&to=2026-10-31
+REQ GET /api/v1/pro/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/availability?from=2026-10-01&to=2026-10-31
+PHASE 3 PRINT/standby · « Calculer le devis » : création du devis
+REQ POST /api/v1/venues/01a11ec7-aeb3-7fc8-9c0f-2db4bf05728e/quotes corps={"eventDate":"2026-10-09","slotTemplateId":"01a11ec7-aecd-7f88-9e05-49bca34076a7","guests":150}
+PHASE 4 PRINT/standby · remise : le bouton « PRINT » (enregistre le canal ET télécharge le PDF)
+REQ POST /api/v1/quotes/01a11ec7-bf15-7d07-9bb5-641f8f931528/deliver corps={"sentVia":"PRINT"}
+REQ GET /api/v1/quotes/01a11ec7-bf15-7d07-9bb5-641f8f931528/document?locale=fr
+MESURE PRINT/standby · PDF téléchargé À LA REMISE (avant toute conclusion) : devis-2026-10-09-v1-01a11ec7.pdf · 16719 octets
+MESURE PRINT/standby · en base APRÈS la remise : devis {"statut":"DRAFT","client_id":null,"sent_via":"PRINT"} · réservations liées : 0
+PHASE 5 PRINT/standby · conclusion : « Enregistrer sans bloquer »
+REQ POST /api/v1/quotes/01a11ec7-bf15-7d07-9bb5-641f8f931528/convert corps={"contactFirstName":"Amina","contactLastName":"Bensalem","contactPhone":"+213550000001","contactEmail":"amina@example.com","paymentMethod":"CASH"}
+MESURE PRINT/standby · en base APRÈS la conclusion : devis {"statut":"DRAFT","client_id":null,"sent_via":"PRINT"}
+MESURE PRINT/standby · en base APRÈS la conclusion : réservation {"statut":"PENDING","source":"WALK_IN","client_id":null,"contact_first_name":"Amina","contact_last_name":"Bensalem","contact_phone":"+213550000001","contact_email":"amina@example.com"}
+MESURE PRINT/standby · comptes users à l'adresse saisie : 0
+MESURE PRINT/standby · GET document fr APRÈS la conclusion → HTTP 200 · 16719 octets
+MESURE PRINT/standby · GET document ar APRÈS la conclusion → HTTP 200 · 27155 octets
+PHASE 6 SMS/lock · formulaire : prénom, nom, mobile, e-mail, invités saisis (rien n'est encore parti vers l'API)
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/visit-bookings?from=2026-10-09&to=2026-10-09
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/bookings
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/quotes/conversion
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/services
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/visit-bookings?from=2026-10-09&to=2026-10-09
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/bookings
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/quotes/conversion
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/services
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/availability?from=2026-10-01&to=2026-10-31
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/availability?from=2026-10-01&to=2026-10-31
+PHASE 7 SMS/lock · date, créneau, prestations (le calendrier lit les disponibilités)
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/availability?from=2026-10-01&to=2026-10-31
+REQ GET /api/v1/pro/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/availability?from=2026-10-01&to=2026-10-31
+PHASE 8 SMS/lock · « Calculer le devis » : création du devis
+REQ POST /api/v1/venues/01a11ec7-d5dd-79ea-a738-c8f5338ac455/quotes corps={"eventDate":"2026-10-09","slotTemplateId":"01a11ec7-d5f0-7ac2-bb23-fa18ed9025da","guests":150}
+PHASE 9 SMS/lock · remise : le bouton « SMS » (enregistre le canal ET télécharge le PDF)
+REQ POST /api/v1/quotes/01a11ec7-e10a-7f7d-b4a9-6dcc7b83a9e2/deliver corps={"sentVia":"SMS"}
+REQ GET /api/v1/quotes/01a11ec7-e10a-7f7d-b4a9-6dcc7b83a9e2/document?locale=fr
+MESURE SMS/lock · PDF téléchargé À LA REMISE (avant toute conclusion) : devis-2026-10-09-v1-01a11ec7.pdf · 16652 octets
+MESURE SMS/lock · en base APRÈS la remise : devis {"statut":"DRAFT","client_id":null,"sent_via":"SMS"} · réservations liées : 0
+PHASE 10 SMS/lock · conclusion : « Bloquer la date »
+REQ POST /api/v1/quotes/01a11ec7-e10a-7f7d-b4a9-6dcc7b83a9e2/convert corps={"contactFirstName":"Amina","contactLastName":"Bensalem","contactPhone":"+213550000001","contactEmail":"amina@example.com","paymentMethod":"CASH"}
+REQ POST /api/v1/pro/bookings/01a11ec7-e794-74cf-8b19-6888fd06f3ad/accept corps={}
+MESURE SMS/lock · en base APRÈS la conclusion : devis {"statut":"DRAFT","client_id":null,"sent_via":"SMS"}
+MESURE SMS/lock · en base APRÈS la conclusion : réservation {"statut":"ACCEPTED","source":"WALK_IN","client_id":null,"contact_first_name":"Amina","contact_last_name":"Bensalem","contact_phone":"+213550000001","contact_email":"amina@example.com"}
+MESURE SMS/lock · comptes users à l'adresse saisie : 0
+MESURE SMS/lock · GET document fr APRÈS la conclusion → HTTP 200 · 16652 octets
+MESURE SMS/lock · GET document ar APRÈS la conclusion → HTTP 200 · 27155 octets

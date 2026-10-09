@@ -1,0 +1,21 @@
+MESURE salle : nameFr « Dune et Plage » · nameAr « الكثيب والشاطئ » · créneau Soirée 1200→1560
+MESURE parcours-sur-place · PER_UNIT sans quantity → HTTP 409 {"statusCode":409,"message":{"code":"SERVICE_QUANTITY_OUT_OF_RANGE","message":"service.errors.SERVICE_QUANTITY_OUT_OF_RANGE"},"path":"/api/v1/venues/01a11ec3-28
+MESURE parcours-sur-place · TIERED sans tierId → HTTP 409 {"statusCode":409,"message":{"code":"SERVICE_TIER_MISMATCH","message":"service.errors.SERVICE_TIER_MISMATCH"},"path":"/api/v1/venues/01a11ec3-28b0-73a9-8cb1-467
+MESURE devis A · stocké : v1 DRAFT clientId=null · base 18000000 · prestations 0 · total 18000000 · acompte 5400000 · 0 ligne(s) : 
+MESURE devis B · stocké : v1 DRAFT clientId=null · base 18000000 · prestations 7500000 · total 25500000 · acompte 7650000 · 2 ligne(s) : FIXED×1=4500000, FIXED×1=3000000
+MESURE devis C · stocké : v1 DRAFT clientId=null · base 18000000 · prestations 41100000 · total 59100000 · acompte 17730000 · 3 ligne(s) : PER_GUEST×150=37500000, PER_UNIT×3=2400000, TIERED×1=1200000
+MESURE devis A · document fr → HTTP 200 · application/pdf · 16338 octets · magique « %PDF- » · Content-Language fr · attachment; filename="devis-2026-12-08-v1-01a11ec3.pdf"
+MESURE devis A · document ar → HTTP 200 · application/pdf · 27921 octets · magique « %PDF- » · Content-Language ar · attachment; filename="devis-2026-12-08-v1-01a11ec3.pdf"
+MESURE devis B · document fr → HTTP 200 · application/pdf · 17350 octets · magique « %PDF- » · Content-Language fr · attachment; filename="devis-2026-12-09-v1-01a11ec3.pdf"
+MESURE devis B · document ar → HTTP 200 · application/pdf · 29722 octets · magique « %PDF- » · Content-Language ar · attachment; filename="devis-2026-12-09-v1-01a11ec3.pdf"
+MESURE devis C · document fr → HTTP 200 · application/pdf · 17808 octets · magique « %PDF- » · Content-Language fr · attachment; filename="devis-2026-12-10-v1-01a11ec3.pdf"
+MESURE devis C · document ar → HTTP 200 · application/pdf · 29518 octets · magique « %PDF- » · Content-Language ar · attachment; filename="devis-2026-12-10-v1-01a11ec3.pdf"
+MESURE statut DRAFT (lu en base : DRAFT ; créé par la route du produit) → HTTP 200 · application/pdf · 17350 octets · magique « %PDF- »
+MESURE statut SENT (hérité) (lu en base : SENT ; posé par SQL) → HTTP 200 · application/pdf · 16882 octets · magique « %PDF- »
+MESURE statut ACCEPTED (lu en base : ACCEPTED ; posé par SQL) → HTTP 200 · application/pdf · 16987 octets · magique « %PDF- »
+MESURE statut DECLINED (hérité) (lu en base : DECLINED ; posé par SQL) → HTTP 409 · {"statusCode":409,"message":{"code":"QUOTE_STATUS_CONFLICT","message":"quote.errors.statusConflict","status":"DECLINED"},"path":"/api/v1/quotes/01a11ec3-482d-7e46-ab32-6e181556c540/document?locale=fr","timestamp":"2026-10-09T03:44:41.368Z"}
+MESURE statut SUPERSEDED (hérité) (lu en base : SUPERSEDED ; posé par SQL) → HTTP 409 · {"statusCode":409,"message":{"code":"QUOTE_STATUS_CONFLICT","message":"quote.errors.statusConflict","status":"SUPERSEDED"},"path":"/api/v1/quotes/01a11ec3-488e-707e-87e1-2045356038ff/document?locale=fr","timestamp":"2026-10-09T03:44:41.435Z"}
+MESURE statut CANCELLED (lu en base : CANCELLED ; obtenu par POST /quotes/:id/cancel (la route du produit)) → HTTP 409 · {"statusCode":409,"message":{"code":"QUOTE_STATUS_CONFLICT","message":"quote.errors.statusConflict","status":"CANCELLED"},"path":"/api/v1/quotes/01a11ec3-4901-790b-9a9b-bc098259a957/document?locale=fr","timestamp":"2026-10-09T03:44:41.505Z"}
+MESURE ancienne version v1 d'une chaîne qui a une v2 → HTTP 409 · {"statusCode":409,"message":{"code":"QUOTE_VERSION_NOT_ACTIVE","message":"quote.errors.versionNotActive","latestVersion":2},"path":"/api/v1/quotes/01a11ec3-2a49-7654-a9dc-20b4635eee42/document?locale=fr","timestamp":"2026-10-09T03:44:41.558Z"}
+MESURE dernière version v2 → HTTP 200 · 17369 octets
+MESURE colonnes de quotes (19) : id, venue_id, client_id, slot_template_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines, created_at, status, version, chain_id, parent_quote_id, sent_at, accepted_at, sent_via

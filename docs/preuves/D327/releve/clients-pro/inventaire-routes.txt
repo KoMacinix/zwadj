@@ -1,0 +1,106 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ positif · contrôleur à préfixe : [('POST', '/auth/login', '—')] (attendu [('POST', '/auth/login', '—')])
+   ✓ positif · contrôleur sans préfixe + rôle de classe : [('GET', '/pro/venues/:id/quotes', 'UserRole.PRO')] (attendu [('GET', '/pro/venues/:id/quotes', 'UserRole.PRO')])
+   ✓ négatif · un fichier sans décorateur : [] (attendu [])
+   ✓ positif · routes d'une app : un littéral, une constante : ['/a', '{LOGIN_PATH}'] (attendu ['/a', '{LOGIN_PATH}'])
+   ✓ négatif · un `<Route path="*">` cité dans un commentaire (de ligne ou de bloc) n'est pas une route : ['/c'] (attendu ['/c'])
+   ✓ sur le dépôt · contrôleurs parcourus = contrôleurs trouvés par `grep -rl @Controller` : 23 (attendu 23)
+== calibration : 6 bras, 0 manqué
+
+== API : 23 contrôleurs parcourus · 79 routes
+   GET    /admin/deletion-requests                                   UserRole.ADMIN              
+   POST   /admin/deletion-requests/:id/approve                       UserRole.ADMIN              
+   POST   /admin/deletion-requests/:id/reject                        UserRole.ADMIN              
+   PATCH  /admin/venues/:id/commission-rate                          UserRole.ADMIN              
+   POST   /admin/venues/:id/publish                                  UserRole.ADMIN              
+   GET    /amenities                                                 —                           
+   GET    /auth/confirm-email-change/:token                          —                           
+   POST   /auth/forgot-password                                      —                           
+   POST   /auth/google                                               —                           
+   POST   /auth/login                                                —                           
+   POST   /auth/logout                                               —                           
+   GET    /auth/me                                                   —                           
+   POST   /auth/refresh                                              —                           
+   POST   /auth/register                                             —                           
+   POST   /auth/resend-verification                                  —                           
+   POST   /auth/reset-password                                       —                           
+   GET    /auth/verify-email/:token                                  —                           
+   DELETE /bookings/:id                                              UserRole.CLIENT             
+   GET    /health                                                    —                           
+   GET    /me/bookings                                               UserRole.CLIENT             
+   POST   /me/change-email                                           —                           
+   POST   /me/change-password                                        —                           
+   GET    /me/deletion-request                                       —                           
+   POST   /me/deletion-request                                       —                           
+   POST   /me/deletion-request/cancel                                —                           
+   PATCH  /me/profile                                                —                           
+   GET    /me/visit-bookings                                         UserRole.CLIENT             
+   GET    /media/:key                                                —                           
+   POST   /pro/bookings/:id/accept                                   UserRole.PRO                
+   POST   /pro/bookings/:id/cancel                                   UserRole.PRO                
+   POST   /pro/bookings/:id/decline                                  UserRole.PRO                
+   GET    /pro/venues                                                UserRole.PRO                
+   GET    /pro/venues/:id                                            UserRole.PRO                
+   GET    /pro/venues/:id/availability-blocks                        UserRole.PRO                
+   GET    /pro/venues/:id/bookings                                   UserRole.PRO                
+   GET    /pro/venues/:id/quotes                                     UserRole.PRO                
+   GET    /pro/venues/:id/quotes/conversion                          UserRole.PRO                
+   GET    /pro/venues/:id/services                                   UserRole.PRO                
+   GET    /pro/venues/:id/visit-availabilities                       UserRole.PRO                
+   GET    /pro/venues/:id/visit-bookings                             UserRole.CLIENT             
+   DELETE /pro/venues/:id/visit-bookings/:bookingId                  UserRole.CLIENT             
+   POST   /quotes/:id/cancel                                         UserRole.PRO                
+   POST   /quotes/:id/convert                                        UserRole.PRO                
+   POST   /quotes/:id/deliver                                        UserRole.PRO                
+   GET    /quotes/:id/document                                       UserRole.PRO                
+   POST   /quotes/:id/revise                                         UserRole.PRO                
+   PATCH  /services/:id                                              UserRole.PRO                
+   DELETE /services/:id                                              UserRole.PRO                
+   GET    /venue-styles                                              —                           
+   GET    /venues                                                    —                           
+   POST   /venues                                                    UserRole.PRO                
+   PATCH  /venues/:id                                                UserRole.PRO                
+   DELETE /venues/:id                                                UserRole.PRO                
+   GET    /venues/:id/availability                                   —                           
+   POST   /venues/:id/availability-blocks                            UserRole.PRO                
+   DELETE /venues/:id/availability-blocks/:blockId                   UserRole.PRO                
+   POST   /venues/:id/photos                                         UserRole.PRO                
+   PATCH  /venues/:id/photos/:photoId                                UserRole.PRO                
+   DELETE /venues/:id/photos/:photoId                                UserRole.PRO                
+   PATCH  /venues/:id/photos/order                                   UserRole.PRO                
+   POST   /venues/:id/quotes                                         UserRole.PRO                
+   POST   /venues/:id/services                                       UserRole.PRO                
+   POST   /venues/:id/slot-templates                                 UserRole.PRO                
+   PATCH  /venues/:id/slot-templates/:slotId                         UserRole.PRO                
+   DELETE /venues/:id/slot-templates/:slotId                         UserRole.PRO                
+   POST   /venues/:id/slot-templates/:slotId/pricing-rules           UserRole.PRO                
+   PATCH  /venues/:id/slot-templates/:slotId/pricing-rules/:ruleId   UserRole.PRO                
+   DELETE /venues/:id/slot-templates/:slotId/pricing-rules/:ruleId   UserRole.PRO                
+   PATCH  /venues/:id/virtual-tour                                   UserRole.PRO                
+   POST   /venues/:id/visit-availabilities                           UserRole.PRO                
+   PATCH  /venues/:id/visit-availabilities/:availabilityId           UserRole.PRO                
+   DELETE /venues/:id/visit-availabilities/:availabilityId           UserRole.PRO                
+   GET    /venues/:slug                                              —                           
+   GET    /venues/:slug/availability                                 —                           
+   POST   /venues/:slug/bookings                                     UserRole.CLIENT             
+   POST   /venues/:slug/visit-bookings                               UserRole.CLIENT             
+   GET    /venues/:slug/visit-slots                                  —                           
+   DELETE /visit-bookings/:id                                        UserRole.CLIENT             
+   GET    /wilayas                                                   —                           
+
+   routes dont le CHEMIN porte « client / customer / contact / search / recherche / annuaire » : 0 → []
+   (le chemin d'une route d'un compte CLIENT, `me/...`, est le seul endroit où le mot rôle apparaît : ce sont les réservations du client connecté, pas une liste de clients du pro)
+   routes `/me/…` (le compte CLIENT lit ses PROPRES données) : 8 → [('PATCH', '/me/profile'), ('POST', '/me/change-email'), ('POST', '/me/change-password'), ('GET', '/me/deletion-request'), ('POST', '/me/deletion-request'), ('POST', '/me/deletion-request/cancel'), ('GET', '/me/bookings'), ('GET', '/me/visit-bookings')]
+
+== DTO qui portent un CONTACT (packages/types/src) : packages/types/src/booking.ts:119; packages/types/src/booking.ts:206; packages/types/src/quote.ts:342
+
+== @Query lus : 8 dans 7 contrôleurs ; ceux des contrôleurs de la zone PRO (bookings-pro, quotes, visit-bookings, venues) :
+   availability-blocks.controller.ts : @Query(new ZodValidationPipe(availabilityWindowQuerySchema)
+   visit-bookings.controller.ts : @Query(new ZodValidationPipe(availabilityWindowQuerySchema)
+
+== APP PRO : 14 routes déclarées dans apps/pro/src/App.tsx : ['{LOGIN_PATH}', '/auth/inscription', '/auth/mot-de-passe-oublie', '/auth/reinitialisation', '/auth/verification-email', '/', '/demandes', '/calendrier', '/reservations', '/compte', '/salles', '/salles/nouvelle', '/salles/:id', '*']
+   routes qui portent « client » : []
+   entrées de la navigation (pro-nav.tsx) : ['/', '/salles', '/demandes', '/calendrier', '/reservations']
+   entrées du menu de compte (pro-header.tsx) : ['add-venue', 'settings', 'logout']
+
+== FIN — parcouru : 23 contrôleurs, 79 routes d'API, 14 routes de l'app Pro

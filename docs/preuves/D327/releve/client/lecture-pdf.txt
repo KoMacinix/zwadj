@@ -1,0 +1,12 @@
+   ✓ pixels, négatif : page VIDE → zéro pixel non blanc — 400×200, 0 non blancs
+   ✓ pixels, positif : PDF réel → des milliers de pixels non blancs — 1190×1684, 40631 non blancs
+   ✓ positions, négatif : page VIDE → zéro fragment de texte — 0 fragment(s)
+   ✓ positions, positif : PDF réel → plusieurs fragments de texte — 34 fragment(s)
+== calibration : 4 bras, 0 manqué
+
+pdf-telecharge-PRINT-standby-avant-conclusion-p1.png — 952×1348 px · 28842 pixels non blancs parcourus sur 1283296 · 34 fragments de texte
+pdf-apres-conclusion-PRINT-standby-fr-p1.png — 952×1348 px · 28842 pixels non blancs parcourus sur 1283296 · 34 fragments de texte
+pdf-apres-conclusion-PRINT-standby-ar-p1.png — 952×1348 px · 21420 pixels non blancs parcourus sur 1283296 · 95 fragments de texte
+pdf-telecharge-SMS-lock-avant-conclusion-p1.png — 952×1348 px · 28712 pixels non blancs parcourus sur 1283296 · 34 fragments de texte
+pdf-apres-conclusion-SMS-lock-fr-p1.png — 952×1348 px · 28712 pixels non blancs parcourus sur 1283296 · 34 fragments de texte
+pdf-apres-conclusion-SMS-lock-ar-p1.png — 952×1348 px · 21420 pixels non blancs parcourus sur 1283296 · 95 fragments de texte

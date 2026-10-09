@@ -1,0 +1,13 @@
+== CALIBRATION
+   ✓ positif · le PDF témoin de D326 porte un NOM (61 fragments parcourus)
+   ✓ négatif · un devis sans client lit « — » (34 fragments parcourus)
+== calibration : 2 bras, 0 manqué
+
+pdf-telecharge-PRINT-standby-avant-conclusion : champ « Client » = « — » (34 fragments parcourus)
+pdf-apres-conclusion-PRINT-standby-fr : champ « Client » = « — » (34 fragments parcourus)
+pdf-apres-conclusion-PRINT-standby-ar : champ « الزبون » = « — » (95 fragments parcourus)
+pdf-telecharge-SMS-lock-avant-conclusion : champ « Client » = « — » (34 fragments parcourus)
+pdf-apres-conclusion-SMS-lock-fr : champ « Client » = « — » (34 fragments parcourus)
+pdf-apres-conclusion-SMS-lock-ar : champ « الزبون » = « — » (95 fragments parcourus)
+
+== PDF lus : 6 (attendu 6)

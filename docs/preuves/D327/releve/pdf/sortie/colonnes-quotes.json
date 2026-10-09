@@ -1,0 +1,97 @@
+[
+  {
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "venue_id",
+    "data_type": "uuid",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "client_id",
+    "data_type": "uuid",
+    "is_nullable": "YES"
+  },
+  {
+    "column_name": "slot_template_id",
+    "data_type": "uuid",
+    "is_nullable": "YES"
+  },
+  {
+    "column_name": "event_date",
+    "data_type": "date",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "guests",
+    "data_type": "integer",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "base_price_cents",
+    "data_type": "integer",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "services_total_cents",
+    "data_type": "integer",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "total_cents",
+    "data_type": "integer",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "deposit_cents",
+    "data_type": "integer",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "lines",
+    "data_type": "jsonb",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "status",
+    "data_type": "USER-DEFINED",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "version",
+    "data_type": "integer",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "chain_id",
+    "data_type": "uuid",
+    "is_nullable": "NO"
+  },
+  {
+    "column_name": "parent_quote_id",
+    "data_type": "uuid",
+    "is_nullable": "YES"
+  },
+  {
+    "column_name": "sent_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES"
+  },
+  {
+    "column_name": "accepted_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES"
+  },
+  {
+    "column_name": "sent_via",
+    "data_type": "text",
+    "is_nullable": "YES"
+  }
+]

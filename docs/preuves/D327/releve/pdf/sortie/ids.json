@@ -1,0 +1,38 @@
+{
+  "A": "01a11ec3-2a2d-7162-9e2e-42f88a8f0df1",
+  "B": "01a11ec3-2a49-7654-a9dc-20b4635eee42",
+  "C": "01a11ec3-2a5e-7030-8f88-84aa6f16750e",
+  "v2": "01a11ec3-5a44-7d80-aa0d-2fe2be888921",
+  "statuts": [
+    {
+      "etiquette": "DRAFT",
+      "origine": "créé par la route du produit",
+      "id": "01a11ec3-2a49-7654-a9dc-20b4635eee42"
+    },
+    {
+      "etiquette": "SENT (hérité)",
+      "origine": "posé par SQL",
+      "id": "01a11ec3-474c-7a60-9c6e-d185d516e694"
+    },
+    {
+      "etiquette": "ACCEPTED",
+      "origine": "posé par SQL",
+      "id": "01a11ec3-47b4-74ba-8e5a-8be618217e81"
+    },
+    {
+      "etiquette": "DECLINED (hérité)",
+      "origine": "posé par SQL",
+      "id": "01a11ec3-482d-7e46-ab32-6e181556c540"
+    },
+    {
+      "etiquette": "SUPERSEDED (hérité)",
+      "origine": "posé par SQL",
+      "id": "01a11ec3-488e-707e-87e1-2045356038ff"
+    },
+    {
+      "etiquette": "CANCELLED",
+      "origine": "obtenu par POST /quotes/:id/cancel (la route du produit)",
+      "id": "01a11ec3-4901-790b-9a9b-bc098259a957"
+    }
+  ]
+}

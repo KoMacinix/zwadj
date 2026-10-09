@@ -1,0 +1,48 @@
+# D327 — motifs de la passe D277 du rang 34 (lot DOCUMENTAIRE : le relevé du PDF, du nom du client, de la référence, de « Ma salle » ; lecture adverse de D326 ; arbitrages de Ko du 08/10/2026). Format : <sens>|<motif>.
+# Lus par balayage.py (copie à l'octet de celui de D326, `cmp` identique), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que le lot INVALIDE : « RANG 34 : EN ATTENTE » (il est arbitré) ; « le rang est clos sur le code, pas sur ce regard » (le regard a eu lieu : la condition est OUVERTE) ; « Ma salle » relue / réparée / « non reproduit »
+#          (Ko l'a reproduit ; D327 le reproduit pour l'édition, la publication, la suppression) ; la règle de langue « client sinon pro » (remplacée par la décision A de Ko) ; la prémisse de la décision 8 du relecteur
+#          (un CHECK en liste sur `quotes.sent_via` : fausse) ; « aucune donnée personnelle » dans le nom du fichier (la décision B de Ko y met des initiales) ; la référence « huit premiers caractères » (elle
+#          ne distingue pas deux devis créés dans la même fenêtre de 65 s) ; « statut ouvert » seul pour la version active (le code imprime aussi ACCEPTED) ; « poppler » (l'outil est un Xpdf).
+# sens 2 — ce que le lot REND PERMIS ou dont la CONDITION change : « un lot documentaire ne compte pas » (le rang 34 en est un) ; « aucun lot de code ne s'ouvre avant une certification » (inchangé : compteur DEUX) ;
+#          « candidat désigné » et « cadrage DOCUMENTAIRE du point 12 » (il n'est PAS le rang 34 arbitré) ; « UIP-E » / « Fiche client » (la base clients : Ko veut en parler juste après ce lot) ;
+#          « lot correctif » (un correctif placé avant ADM-1 ferait d'ADM-2 un troisième lot non certifié) ; « enquête D265 » ; la suite de l'ordre (certification, ADM-1, ADM-2).
+1|RANG 34 : EN ATTENTE
+1|le rang est clos sur le code, pas sur ce regard
+1|À FAIRE REGARDER PAR KO
+1|Reste dû à Ko : le REGARD
+1|attend le regard de Ko
+1|le regard n'a pas eu lieu
+1|relit sa liste après la création
+1|n'est relue qu'à la CRÉATION
+1|lu dans le code, non reproduit
+1|« Ma salle » sans la salle
+1|sans rafraîchir
+1|la langue du client
+1|langue du PRO au moment du clic
+1|langue de l'interface du pro
+1|le « sinon » s'applique
+1|décision 7 du relecteur
+1|migration déclarée
+1|contrainte `CHECK`
+1|la contrainte n'a pas cette forme
+1|aucune donnée personnelle
+1|huit premiers caractères
+1|ouvert ou accepté
+1|statut ouvert
+1|poppler
+2|un lot documentaire ne compte pas
+2|Un lot documentaire ne compte pas
+2|aucun lot de code ne s'ouvre avant une certification
+2|candidat désigné
+2|Candidat DÉSIGNÉ
+2|cadrage DOCUMENTAIRE du point 12
+2|UIP-E
+2|Fiche client
+2|lot correctif
+2|enquête D265
+2|ADM-1 → ADM-2
+2|un troisième lot de code
+2|troisième lot non certifié
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D327

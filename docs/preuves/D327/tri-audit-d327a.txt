@@ -1,0 +1,14 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D326/audit-secrets-d326d.txt (165 contextes) · nouvelle docs/preuves/D327/audit-secrets-d327a.txt (173 contextes)
+   alertes ABSENTES de la précédente : 8 — à trier au contexte avant le commit
+   [url-avec-identifiants] docs/preuves/D327/releve/client/walkin-flux.capture.ts — contexte : ligne 1190 de docs/preuves/D327/audit-secrets-d327a.txt
+   [jeton] docs/preuves/D327/releve/client/walkin-flux.capture.ts — contexte : ligne 1192 de docs/preuves/D327/audit-secrets-d327a.txt
+   [url-avec-identifiants] docs/preuves/D327/releve/clients-pro/client-deux-fois.capture.ts — contexte : ligne 1194 de docs/preuves/D327/audit-secrets-d327a.txt
+   [jeton] docs/preuves/D327/releve/clients-pro/client-deux-fois.capture.ts — contexte : ligne 1196 de docs/preuves/D327/audit-secrets-d327a.txt
+   [url-avec-identifiants] docs/preuves/D327/releve/ma-salle/ma-salle.capture.ts — contexte : ligne 1198 de docs/preuves/D327/audit-secrets-d327a.txt
+   [url-avec-identifiants] docs/preuves/D327/releve/pdf/releve-pdf.capture.ts — contexte : ligne 1200 de docs/preuves/D327/audit-secrets-d327a.txt
+   [jeton] docs/preuves/D327/releve/pdf/releve-pdf.capture.ts — contexte : ligne 1202 de docs/preuves/D327/audit-secrets-d327a.txt
+   [jeton] docs/preuves/D327/releve/pdf/releve-pdf.capture.ts — contexte : ligne 1204 de docs/preuves/D327/audit-secrets-d327a.txt
+   ventilation par motif : url-avec-identifiants=4 · jeton=4

@@ -1,0 +1,13 @@
+   ✓ pixels, négatif : page VIDE → zéro pixel non blanc — 400×200, 0 non blancs
+   ✓ pixels, positif : PDF réel → des milliers de pixels non blancs — 1190×1684, 38934 non blancs
+   ✓ positions, négatif : page VIDE → zéro fragment de texte — 0 fragment(s)
+   ✓ positions, positif : PDF réel → plusieurs fragments de texte — 34 fragment(s)
+== calibration : 4 bras, 0 manqué
+
+devis-A-fr-p1.png — 952×1348 px · 27720 pixels non blancs parcourus sur 1283296 · 34 fragments de texte
+devis-A-ar-p1.png — 952×1348 px · 23682 pixels non blancs parcourus sur 1283296 · 97 fragments de texte
+devis-B-fr-p1.png — 952×1348 px · 35760 pixels non blancs parcourus sur 1283296 · 50 fragments de texte
+devis-B-ar-p1.png — 952×1348 px · 31462 pixels non blancs parcourus sur 1283296 · 124 fragments de texte
+devis-C-fr-p1.png — 952×1348 px · 38379 pixels non blancs parcourus sur 1283296 · 57 fragments de texte
+devis-C-ar-p1.png — 952×1348 px · 33706 pixels non blancs parcourus sur 1283296 · 122 fragments de texte
+devis-ACCEPTED-fr-p1.png — 952×1348 px · 32209 pixels non blancs parcourus sur 1283296 · 43 fragments de texte

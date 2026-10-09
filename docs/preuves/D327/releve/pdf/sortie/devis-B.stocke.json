@@ -1,0 +1,47 @@
+{
+  "id": "01a11ec3-2a49-7654-a9dc-20b4635eee42",
+  "venueId": "01a11ec3-28b0-73a9-8cb1-467bdf9d93a4",
+  "clientId": null,
+  "status": "DRAFT",
+  "version": 1,
+  "chainId": "01a11ec3-2a49-7654-a9dc-20b4635eee42",
+  "parentQuoteId": null,
+  "eventDate": "2026-12-09",
+  "slotTemplateId": "01a11ec3-28cb-7a15-9805-882f43f4e38e",
+  "guests": 150,
+  "basePriceCents": 18000000,
+  "servicesTotalCents": 7500000,
+  "totalCents": 25500000,
+  "depositCents": 7650000,
+  "lines": [
+    {
+      "nameAr": "تنشيط موسيقي بفرقة حيّة",
+      "nameFr": "Animation musicale (orchestre)",
+      "tierId": null,
+      "quantity": 1,
+      "serviceId": "01a11ec3-298f-78a0-9175-48acb7b67f88",
+      "pricingType": "FIXED",
+      "tierLabelAr": null,
+      "tierLabelFr": null,
+      "lineTotalCents": 4500000,
+      "unitPriceCents": 4500000
+    },
+    {
+      "nameAr": "تصوير فوتوغرافي وفيديو للحفل",
+      "nameFr": "Photographie et vidéo",
+      "tierId": null,
+      "quantity": 1,
+      "serviceId": "01a11ec3-29ab-7c03-8a3d-31cabf291376",
+      "pricingType": "FIXED",
+      "tierLabelAr": null,
+      "tierLabelFr": null,
+      "lineTotalCents": 3000000,
+      "unitPriceCents": 3000000
+    }
+  ],
+  "sentAt": null,
+  "sentVia": null,
+  "acceptedAt": null,
+  "createdAt": "2026-10-09T03:44:29.256Z",
+  "bookingId": null
+}

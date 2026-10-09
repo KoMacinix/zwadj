@@ -1,0 +1,8 @@
+   ✓ pixels, négatif : page VIDE → zéro pixel non blanc — 400×200, 0 non blancs
+   ✓ pixels, positif : PDF réel → des milliers de pixels non blancs — 1190×1684, 57068 non blancs
+   ✓ positions, négatif : page VIDE → zéro fragment de texte — 0 fragment(s)
+   ✓ positions, positif : PDF réel → plusieurs fragments de texte — 61 fragment(s)
+== calibration : 4 bras, 0 manqué
+
+devis-fr-avec-police-p1.png — 952×1348 px · 40878 pixels non blancs parcourus sur 1283296 · 61 fragments de texte
+devis-ar-avec-police-p1.png — 952×1348 px · 38976 pixels non blancs parcourus sur 1283296 · 137 fragments de texte

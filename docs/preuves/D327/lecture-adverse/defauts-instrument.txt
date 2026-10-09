@@ -1,0 +1,24 @@
+D327 — DÉFAUTS DE L'INSTRUMENT `confronter-d326.py`, chacun vu en confrontant le ✗ à la SORTIE BRUTE (D275), réparé, l'instrument REJOUÉ EN ENTIER (D298).
+La sortie brute de la PREMIÈRE passe (11 ✗ de D326 annoncés, dont 9 faux — les deux vrais sont P8a et G1) est versée à côté : `confronter-sortie-passe-1-AVANT-CORRECTIFS.txt`. La passe finale : `confronter-sortie.txt`.
+La calibration (32 bras puis 36) n'a refusé aucun lancement : les défauts ci-dessous sont de la LOGIQUE DE CONFRONTATION, que la calibration d'un extracteur ne voit pas — elle prouve que l'extracteur lit, pas que l'attendu est le bon.
+
+1. P6e à P6i — « 54 / 3 / 7 / 0 non déclaré » annoncés faux (mesuré 52 / 4 / 5 / 3 non déclarés : html.spec.ts, pdf-inspect.ts, remittance.test.ts).
+   CAUSE : `tableau_attendu` ne prenait que le PREMIER jeton entre accents graves de chaque ligne de la table ; le second membre d'une paire écrit AVEC son chemin complet (`apps/api/test/int/pdf-inspect.ts`,
+   `neutralisation/neutralize-horloge.py`) était perdu, donc classé « par extension » ou « non déclaré » ; et deux des sept seconds membres de l'extension 5 sont écrits avec leur chemin complet dans l'extension,
+   donc introuvables par leur nom de base. Mon attendu était incomplet — la faute que la règle « aucune valeur attendue ne s'écrit de mémoire » nomme.
+   RÉPARATION : `lignes_table` (tous les jetons de la première cellule ; complet ou nu), deux bras de calibration ajoutés ; la classification part de la TABLE, l'extension 5 est confrontée aux seconds membres nus (P6j).
+   ⇒ rejoué : 64 · 54 · 3 · 7 · 0 non déclaré, EXACTEMENT les chiffres de D326.
+
+2. P9b — « 60 fichiers en LF pur » (D326 en annonce TROIS). Soixante sur soixante est absurde, et c'est ce qui l'a montré.
+   CAUSE : `core.autocrlf=true` sur ce poste : les OBJETS git sont normalisés en LF ; lire les fins de ligne dans `git show` est AVEUGLE. (L'instrument de D326, lui, lisait l'ARBRE : sa ligne 582 ouvre `open(n, "rb")` — pas de défaut là.)
+   RÉPARATION : lecture de l'arbre de travail (qui est celui de la clôture : X1 et X3) ; P9a PROUVE l'aveuglement des objets (aucun CRLF dans aucun des 60 objets) au lieu de le supposer.
+
+3. T2 — « dernière ligne ⇒ RANG N = 20 » (attendu 34). CAUSE : l'expression cherchait dans TOUT le fichier, où une section datée plus bas porte un « ⇒ **RANG 20 : ». RÉPARATION : la recherche se borne à la section « ORDRE DES RANGS ».
+4. Q5c — « 5 fichiers couverts » (attendu 7) : même cause que 1 (chemin complet dans l'extension, nom de base cherché). Réparé avec 1.
+5. Q5e — l'extension 2 était cherchée par une chaîne que j'avais devinée (« La constante `NB_TESTS_ATTENDU`, 76 → 95 ») : mesuré [] ; le texte réel dit « … la constante `NB_TESTS_ATTENDU`, 76 → 95 » après un tiret. Une chaîne cherchée est une valeur attendue : elle se LIT dans le texte. Remplacée par « 76 → 95 ».
+6. X5 — la mesure de la seconde moitié était `"poppler" in ban.lower() or True` : **toujours vraie**, un contrôle qui ne peut pas rougir. Retiré ; deux contrôles distincts (X5a la bannière de l'outil, X5b la mention de D326).
+7. P9c — j'attendais 60 fichiers HORS les trois .md ; D326 dit « 60 fichiers de code (hors images et polices) » et ses 60 INCLUENT les .md (57 + 3). Mon attendu modélisait mal la phrase : corrigé en (60, 57), et dit.
+8. Q3d, Q3f — deux contrôles à `A or B` : un côté vrai suffisait, le contrôle ne pouvait pas échouer sur l'autre. Remplacés par la phrase EXACTE (relevée dans le texte aplati).
+9. G3 — les attendus (729, 39, 372, 457, 444 / 791, 48, 372, 507, 468) étaient écrits dans l'instrument « à partir du texte » : des valeurs recopiées. Remplacés par l'extraction des écarts ÉCRITS dans le bloc de clôture de D326 (cinq portées, `+62/+9/0/+50/+24`), confrontés au COMPTAGE des déclarations.
+10. T4 et Q3j — ils étaient d'abord écrits pour PASSER en décrivant l'écart (T4 : attendu ([7..11], [7..12]) ; Q3j : un constat). Un écart se montre par un ✗ sur l'attendu que le texte se donne à lui-même (la numérotation de la section ; QUOTE_OPEN_STATUSES), il ne se décrit pas par un ✓. Réécrits.
+Aucun de ces défauts n'a changé un comportement MESURÉ de D326 : ce sont des attendus faux de l'instrument. Les dix ont été vus sur la sortie brute, aucun par relecture.
