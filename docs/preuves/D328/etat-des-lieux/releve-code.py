@@ -200,3 +200,39 @@ print(f"   champs de coordonnées effacés (compte + profil pro) : {len(ano)} �
 titre("9. LE SEMIS DE DÉMONSTRATION")
 r = grep(r"\+213\d{9}|phone:", sous=("apps/api/prisma",), prod=True)
 print(f"   numéros / champs `phone:` du semis : {len(r)} ligne(s) → {sorted({f for f, _, _ in r})}")
+
+# ══ 10. COÛT RELEVÉ PAR LOT PRESSENTI (comptes de fichiers qui TOUCHENT l'objet — pas une estimation de durée) ═══════════
+titre("10. COÛT RELEVÉ DES LOTS PRESSENTIS : fichiers de production, de test, e2e, harnais qui nomment l'objet")
+
+
+def cout(nom, symboles, harnais_chemins):
+    motif = re.compile("|".join(symboles))
+    prod = sorted(f for f in PROD if f.startswith(("apps/", "packages/")) and any(motif.search(l) for l in lire(f)))
+    tests = sorted(f for f in FICHIERS if TESTS.search("/" + f) and re.search(r"\.(test|spec|int-spec)\.(ts|tsx)$", f) and f.startswith(("apps/", "packages/")) and any(motif.search(l) for l in lire(f)))
+    e2e = sorted(f for f in FICHIERS if f.startswith("e2e/specs/") and any(motif.search(l) for l in lire(f)))
+    harn = sorted(f for f in subprocess.run(["git", "ls-files", "neutralisation"], capture_output=True).stdout.decode().split("\n") if re.search(r"neutralize-[\w-]+\.py$", f) and any(h in "\n".join(lire_py(f)) for h in harnais_chemins))
+    print(f"   {nom} : {len(prod)} fichier(s) de production · {len(tests)} fichier(s) de test · {len(e2e)} spec(s) e2e · {len(harn)} harnais de neutralisation citant ses fichiers")
+    for f in prod:
+        print(f"      prod  {f}")
+    if e2e:
+        print(f"      e2e   {', '.join(e2e)}")
+    if harn:
+        print(f"      harn  {', '.join(h.split('/')[-1] for h in harn)}")
+    return prod
+
+
+def lire_py(f):
+    with open(f, encoding="utf-8", errors="replace") as fh:
+        return fh.read().replace("\r\n", "\n").split("\n")
+
+
+# calibration : un symbole connu rend au moins trois fichiers de production (`quoteDocumentFilename`), un symbole forgé zéro
+cal_cout = len(grep(r"quoteDocumentFilename")) >= 3 and len(grep(r"ZZZ_INTROUVABLE_D328_QQQ")) == 0
+print(f"   calibration du compteur de coût : {'✓' if cal_cout else '✗'} (symbole connu ≥ 3 fichiers ; symbole forgé 0)")
+if not cal_cout:
+    sys.exit("CALIBRATION : le compteur de coût ne juge pas")
+cout("LC-A numérotation + référence + nom de fichier", [r"quoteReference", r"quoteDocumentFilename", r"creerTeteDeChaine", r"creerRevision", r"QuoteDTO\b"], ["quote-document.ts", "quote-store.prisma.ts", "walkin-journey.tsx", "quotes.service.ts"])
+cout("LC-B tableau du PDF + boîte de langue", [r"quoteDocument", r"\bsaveBlob\b", r"document\?locale", r"QuoteDocumentRecord"], ["quote-document.ts", "walkin-journey.tsx", "remittance.ts"])
+cout("LC-C fiche client + nom sur le devis (contacts copiés aujourd'hui)", [r"contactFirstName", r"contactLastName", r"contactEmail", r"contact_first_name"], ["walkin-journey.tsx", "quotes.service.ts", "quote-store.prisma.ts", "bookings.service.ts"])
+cout("LC-D vérification du téléphone du compte (écrit/lu aujourd'hui sans code)", [r"data\.phone\s*=", r"input\.phone", r"AuthUserDTO", r"\bphone2?:\s*dzPhoneSchema"], ["auth.service.ts", "account.service.ts"])
+cout("LC-G « Ma salle » (liste des salles du fournisseur)", [r"useProVenues", r"ProVenuesProvider", r"pro-venues-context"], ["create-venue-page.tsx", "edit-venue-page.tsx", "venue-list-page.tsx", "pro-venues-context.tsx"])

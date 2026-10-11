@@ -5,7 +5,7 @@
    ✓ bras 3b — un fichier de production connu est GARDÉ
 == calibration : 4 bras, 0 manqué
 == fichiers suivis lus : 636 · dont production (hors tests, node_modules, dist, generated) : 438
-== provenance : HEAD 630a6c5 ; fichiers de code (apps/ packages/ e2e/ neutralisation/) modifiés depuis la clôture de D327 (`ab8e6f6`) : 0 (attendu 0) []
+== provenance : HEAD d96cbe0 ; fichiers de code (apps/ packages/ e2e/ neutralisation/) modifiés depuis la clôture de D327 (`ab8e6f6`) : 0 (attendu 0) []
 
 == 1. OÙ UN TÉLÉPHONE EST SAISI AUJOURD'HUI (composant partagé `<PhoneField`)
    8 usage(s) de `<PhoneField` dans 7 fichier(s) de production :
@@ -123,3 +123,76 @@
 
 == 9. LE SEMIS DE DÉMONSTRATION
    numéros / champs `phone:` du semis : 1 ligne(s) → ['apps/api/prisma/seed-demo.ts']
+
+== 10. COÛT RELEVÉ DES LOTS PRESSENTIS : fichiers de production, de test, e2e, harnais qui nomment l'objet
+   calibration du compteur de coût : ✓ (symbole connu ≥ 3 fichiers ; symbole forgé 0)
+   LC-A numérotation + référence + nom de fichier : 12 fichier(s) de production · 8 fichier(s) de test · 0 spec(s) e2e · 5 harnais de neutralisation citant ses fichiers
+      prod  apps/api/src/documents/quote-document.service.ts
+      prod  apps/api/src/documents/quote-document.ts
+      prod  apps/api/src/venues/quote-store.prisma.ts
+      prod  apps/api/src/venues/quote-store.types.ts
+      prod  apps/api/src/venues/quotes.controller.ts
+      prod  apps/api/src/venues/quotes.service.ts
+      prod  apps/pro/src/dashboard/remittance-hook.ts
+      prod  apps/pro/src/dashboard/save-file.ts
+      prod  apps/pro/src/dashboard/walkin-journey.tsx
+      prod  apps/pro/src/venues/quotes-section.tsx
+      prod  packages/api-client/src/quotes-client.ts
+      prod  packages/types/src/quote.ts
+      harn  neutralize-booking-status.py, neutralize-journey.py, neutralize-r32.py, neutralize-r33.py, neutralize-s10b.py
+   LC-B tableau du PDF + boîte de langue : 9 fichier(s) de production · 6 fichier(s) de test · 1 spec(s) e2e · 3 harnais de neutralisation citant ses fichiers
+      prod  apps/api/src/documents/quote-document-source.prisma.ts
+      prod  apps/api/src/documents/quote-document-source.ts
+      prod  apps/api/src/documents/quote-document.controller.ts
+      prod  apps/api/src/documents/quote-document.service.ts
+      prod  apps/api/src/documents/quote-document.ts
+      prod  apps/pro/src/dashboard/save-file.ts
+      prod  apps/pro/src/dashboard/walkin-journey.tsx
+      prod  packages/api-client/src/quotes-client.ts
+      prod  packages/types/src/quote.ts
+      e2e   e2e/specs/r33-remise-devis.e2e.ts
+      harn  neutralize-journey.py, neutralize-r32.py, neutralize-r33.py
+   LC-C fiche client + nom sur le devis (contacts copiés aujourd'hui) : 15 fichier(s) de production · 20 fichier(s) de test · 0 spec(s) e2e · 9 harnais de neutralisation citant ses fichiers
+      prod  apps/api/prisma/migrations/20260707000000_init/migration.sql
+      prod  apps/api/prisma/schema.prisma
+      prod  apps/api/src/venues/booking-locks.types.ts
+      prod  apps/api/src/venues/booking-notification-input.ts
+      prod  apps/api/src/venues/bookings.service.ts
+      prod  apps/api/src/venues/quote-store.prisma.ts
+      prod  apps/api/src/venues/quote-store.types.ts
+      prod  apps/api/src/venues/quotes.service.ts
+      prod  apps/client/src/components/venue/booking-request-panel.tsx
+      prod  apps/pro/src/dashboard/walkin-contact.ts
+      prod  apps/pro/src/venues/booking-requests-section.tsx
+      prod  apps/pro/src/venues/quotes-section.tsx
+      prod  packages/types/src/booking.ts
+      prod  packages/types/src/contact.ts
+      prod  packages/types/src/quote.ts
+      harn  neutralize-booking-status.py, neutralize-journey.py, neutralize-r32.py, neutralize-r33.py, neutralize-rang23.py, neutralize-s10b.py, neutralize-s11a.py, neutralize-s11b.py, neutralize-solid-s1.py
+   LC-D vérification du téléphone du compte (écrit/lu aujourd'hui sans code) : 15 fichier(s) de production · 11 fichier(s) de test · 0 spec(s) e2e · 0 harnais de neutralisation citant ses fichiers
+      prod  apps/api/src/account/account.controller.ts
+      prod  apps/api/src/account/account.module.ts
+      prod  apps/api/src/account/account.service.ts
+      prod  apps/api/src/auth/auth.controller.ts
+      prod  apps/api/src/auth/auth.module.ts
+      prod  apps/api/src/auth/auth.service.ts
+      prod  apps/api/src/venues/visit-bookings.service.ts
+      prod  apps/client/src/lib/auth/auth-context.tsx
+      prod  apps/pro/src/account/account-settings-page.tsx
+      prod  apps/pro/src/auth/auth-context.tsx
+      prod  packages/api-client/src/account-client.ts
+      prod  packages/api-client/src/auth-client.ts
+      prod  packages/types/src/account.ts
+      prod  packages/types/src/auth.ts
+      prod  packages/types/src/venue.ts
+   LC-G « Ma salle » (liste des salles du fournisseur) : 8 fichier(s) de production · 4 fichier(s) de test · 2 spec(s) e2e · 3 harnais de neutralisation citant ses fichiers
+      prod  apps/pro/src/App.tsx
+      prod  apps/pro/src/dashboard/dashboard-page.tsx
+      prod  apps/pro/src/shell/pro-nav.tsx
+      prod  apps/pro/src/shell/pro-venues-context.tsx
+      prod  apps/pro/src/shell/venue-scope.tsx
+      prod  apps/pro/src/venues/create-venue-page.tsx
+      prod  apps/pro/src/venues/edit-venue-page.tsx
+      prod  apps/pro/src/venues/venue-list-page.tsx
+      e2e   e2e/specs/a2-mount-effects.e2e.ts, e2e/specs/a5-cold-reload-vs-spa.e2e.ts
+      harn  neutralize-r30.py, neutralize-r32.py, neutralize-r33.py
