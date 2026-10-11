@@ -1,0 +1,125 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ bras 1 — un motif connu présent (`class DevLoggerWhatsAppSender`) est trouvé
+   ✓ bras 2 — un motif forgé, absent par construction, rend 0
+   ✓ bras 3a — un fichier de test connu est ÉCARTÉ des relevés de production
+   ✓ bras 3b — un fichier de production connu est GARDÉ
+== calibration : 4 bras, 0 manqué
+== fichiers suivis lus : 636 · dont production (hors tests, node_modules, dist, generated) : 438
+== provenance : HEAD 630a6c5 ; fichiers de code (apps/ packages/ e2e/ neutralisation/) modifiés depuis la clôture de D327 (`ab8e6f6`) : 0 (attendu 0) []
+
+== 1. OÙ UN TÉLÉPHONE EST SAISI AUJOURD'HUI (composant partagé `<PhoneField`)
+   8 usage(s) de `<PhoneField` dans 7 fichier(s) de production :
+      apps/client/src/components/account/account-settings-view.tsx:141  <PhoneField
+      apps/client/src/components/auth/register-form.tsx:157  <PhoneField
+      apps/client/src/components/venue/booking-request-panel.tsx:481  <PhoneField
+      apps/client/src/components/venue/visit-booking-panel.tsx:183  <PhoneField
+      apps/pro/src/account/account-settings-page.tsx:138  <PhoneField
+      apps/pro/src/account/account-settings-page.tsx:188  <PhoneField
+      apps/pro/src/auth/register-page.tsx:130  <PhoneField
+      apps/pro/src/dashboard/walkin-journey.tsx:680  <PhoneField
+   `type="tel"` dans la production : 1 (attendu 1 : le champ partagé) → ['packages/ui/src/phone-field.tsx:113']
+
+== 2. COMMENT IL EST NORMALISÉ (contrat partagé), et OÙ le contrat l'exige
+   `dzPhoneSchema` : 12 ligne(s) dans 5 fichier(s) :
+      packages/types/src/account.ts:2  import { dzPhoneSchema, emailSchema, passwordSchema } from "./auth";
+      packages/types/src/account.ts:38  phone: dzPhoneSchema.nullable().optional(),
+      packages/types/src/account.ts:39  phone2: dzPhoneSchema.nullable().optional(),
+      packages/types/src/auth.ts:51  export const dzPhoneSchema = z
+      packages/types/src/auth.ts:82  phone: dzPhoneSchema.optional(),
+      packages/types/src/auth.ts:97  phone: dzPhoneSchema,
+      packages/types/src/booking.ts:10  import { dzPhoneSchema } from "./auth";
+      packages/types/src/booking.ts:121  contactPhone: dzPhoneSchema,
+      packages/types/src/quote.ts:24  import { dzPhoneSchema } from "./auth";
+      packages/types/src/quote.ts:344  contactPhone: dzPhoneSchema,
+      packages/types/src/venue.ts:6  import { dzPhoneSchema } from "./auth";
+      packages/types/src/venue.ts:1334  phone: dzPhoneSchema.optional()
+   normalisation DANS un service de l'API (`normalizeDzPhone` / `normalizePhone(`) : 0 ligne(s) — attendu 0 (la normalisation vit dans le contrat Zod, pas dans les services) : []
+   champs `phone` facultatifs dans les contrats : 4 :
+      packages/types/src/account.ts:38  phone: dzPhoneSchema.nullable().optional(),
+      packages/types/src/account.ts:39  phone2: dzPhoneSchema.nullable().optional(),
+      packages/types/src/auth.ts:82  phone: dzPhoneSchema.optional(),
+      packages/types/src/venue.ts:1334  phone: dzPhoneSchema.optional()
+
+== 3. QUI ÉCRIT UN TÉLÉPHONE EN BASE (services de l'API, production)
+   27 ligne(s) d'écriture probable, dans 11 fichier(s) :
+      apps/api/src/account/account-deletion.service.ts:233  phone: null,
+      apps/api/src/account/account-deletion.service.ts:268  data: { phone: "", phone2: null }
+      apps/api/src/account/account.service.ts:109  if (input.phone !== undefined) data.phone = input.phone;
+      apps/api/src/account/account.service.ts:117  if (input.phone === null) {
+      apps/api/src/account/account.service.ts:125  if (input.phone !== undefined) data.phone = input.phone;
+      apps/api/src/account/account.service.ts:126  if (input.phone2 !== undefined) data.phone2 = input.phone2; // null = effacement (D38 : nullable)
+      apps/api/src/auth/auth.service.ts:150  { firstName: input.firstName, lastName: input.lastName, phone: input.phone ?? null }
+      apps/api/src/auth/auth.service.ts:158  data: { userId: created.id, businessName: input.businessName, phone: input.phone }
+      apps/api/src/auth/auth.service.ts:687  phone: user.phone,
+      apps/api/src/auth/auth.service.ts:696  phone: user.proProfile.phone,
+      apps/api/src/auth/auth.service.ts:697  phone2: user.proProfile.phone2,
+      apps/api/src/venues/booking-notification-input.ts:31  phone: string;
+      apps/api/src/venues/booking-notification-input.ts:81  phone: venue.owner.phone,
+      apps/api/src/venues/booking-notifications.service.ts:61  pro: BookingNotificationParty & { phone: string; notifyByEmail: boolean; notifyBySms: boolean };
+      apps/api/src/venues/bookings.service.ts:288  contactPhone: input.contactPhone,
+      apps/api/src/venues/bookings.service.ts:365  contactPhone: row.contactPhone,
+      apps/api/src/venues/quote-store.prisma.ts:163  contactPhone: donnees.contactPhone,
+      apps/api/src/venues/quote-store.types.ts:105  readonly contactPhone: string;
+      apps/api/src/venues/quotes.service.ts:345  contactPhone: input.contactPhone,
+      apps/api/src/venues/visit-bookings.service.ts:73  contactPhone: string | null;
+      apps/api/src/venues/visit-bookings.service.ts:156  const contactPhone = input.phone ?? client.phone ?? null;
+      apps/api/src/venues/visit-bookings.service.ts:271  contactPhone: row.contactPhone,
+      apps/api/src/venues/visit-bookings.service.ts:442  contactPhone: row.contactPhone,
+      apps/api/src/venues/visit-bookings.service.ts:455  phone: string;
+      apps/api/src/venues/visit-bookings.service.ts:462  contactPhone: string | null,
+      apps/api/src/venues/visit-bookings.service.ts:484  phone: venue.owner.phone,
+      apps/api/src/venues/visit-notifications.service.ts:65  pro: VisitNotificationParty & { phone: string; notifyByEmail: boolean; notifyBySms: boolean };
+   RECHERCHE par téléphone (`where: { … phone … }`) dans l'API : 0 (attendu 0 — aucune route ne retrouve quelqu'un par son numéro) : []
+   visite : le numéro de la VISITE retombe sur celui du COMPTE (`input.phone ?? client.phone`) : 1 ligne(s) → ['apps/api/src/venues/visit-bookings.service.ts:156']
+   profil : le numéro du compte se modifie par `PATCH /me` SANS code de vérification : 2 site(s) d'écriture directe → ['apps/api/src/account/account.service.ts:109', 'apps/api/src/account/account.service.ts:125']
+   vérification d'un numéro (`phoneVerif…`, `otp`) : 0 ligne(s) — attendu 0 : []
+
+== 4. LA COMMISSION : MODÈLE, ÉCRITURE
+   écritures du modèle `Commission` dans la production de l'API : 0 — []
+   (bras positif : `commissionRateBps` — le taux de la SALLE — apparaît 6 fois dans 3 fichier(s) : le taux existe, la ligne `Commission` n'est écrite par personne)
+   écritures de `CashbackClaim` : 0 (attendu 0 aussi : le flux de remboursement n'est pas écrit)
+   (le CHECK `commissions_rate_range` 100–500 pb vit dans les migrations : 1 occurrence(s) ; un taux de 0 n'est donc PAS représentable : « pas de commission » = pas de ligne)
+
+== 5. L'ORIGINE : CE QUI DIT QU'UNE DEMANDE VIENT DE ZWADJ
+   écritures de `source` (CLIENT | WALK_IN) : 2 ligne(s) dans 2 fichier(s) :
+      apps/api/src/venues/bookings.service.ts:272  source: "CLIENT",
+      apps/api/src/venues/quotes.service.ts:331  source: current.clientId === null ? "WALK_IN" : "CLIENT",
+   ⚠ `source` est DÉRIVÉE de `quote.clientId` (nul ⇒ WALK_IN, non nul ⇒ CLIENT) : 1 site(s) → ['apps/api/src/venues/quotes.service.ts:331'] — un devis rattaché à un compte devient `CLIENT` même si la relation est née chez le pro
+   `clientId` dans quotes.service.ts : 4 ligne(s) → [329, 331, 471, 527] — aucune ne vérifie le rôle du compte ni un lien avec la salle (seule la clé étrangère de la base garantit l'existence)
+   affectations de `clientId` dans la production de l'API : 10 :
+      apps/api/src/payments/payment-store.prisma.ts:72  where: { id: bookingId, OR: [{ clientId: userId }, { venue: { owner: { userId } } }] },
+      apps/api/src/venues/bookings.service.ts:270  clientId: userId,
+      apps/api/src/venues/bookings.service.ts:336  where: { clientId: userId },
+      apps/api/src/venues/bookings.service.ts:482  where: { id: bookingId, clientId: userId },
+      apps/api/src/venues/quotes.service.ts:471  clientId: input.clientId ?? null,
+      apps/api/src/venues/quotes.service.ts:527  clientId: row.clientId,
+      apps/api/src/venues/visit-bookings.service.ts:166  clientId: userId,
+      apps/api/src/venues/visit-bookings.service.ts:181  data: { venueId: venue.id, clientId: userId, scheduledAt, contactPhone },
+      apps/api/src/venues/visit-bookings.service.ts:215  where: { clientId: userId },
+      apps/api/src/venues/visit-bookings.service.ts:362  where: { id: bookingId, clientId: userId },
+   `POST /venues/:slug/bookings` (la demande venue du client, Zwadj) exige un utilisateur connecté : 2 signature(s) `create(userId: string, slug…` → ['apps/api/src/venues/bookings.service.ts:160', 'apps/api/src/venues/visit-bookings.service.ts:87']
+
+== 6. LES NOMS
+   `PERSON_NAME_PATTERN` : 3 ligne(s) dans 1 fichier(s) :
+      packages/types/src/contact.ts:27  export const PERSON_NAME_PATTERN = /^[\p{L}\p{M}][\p{L}\p{M} '’-]*$/u;
+      packages/types/src/contact.ts:30  return PERSON_NAME_PATTERN.test(raw.trim());
+      packages/types/src/contact.ts:52  .refine((valeur) => valeur === "" || PERSON_NAME_PATTERN.test(valeur), messages.invalid);
+   contrats portant un nom de contact : 6 ligne(s) → ['packages/types/src/booking.ts', 'packages/types/src/quote.ts']
+   contrats portant `firstName` / `lastName` (comptes) : 14 ligne(s) → ['packages/types/src/account.ts', 'packages/types/src/auth.ts', 'packages/types/src/user.ts']
+   précédent d'une PAIRE FR/AR dans les contrats : `nameFr`/`nameAr` : 40 ligne(s) → ['packages/types/src/referentials.ts', 'packages/types/src/service.ts', 'packages/types/src/venue.ts']
+   précédent d'une COPIE (snapshot) d'un nom sur une réservation : `slotNameFr/Ar` écrits dans 7 fichier(s)
+
+== 7. LES PORTS ET L'INFRASTRUCTURE DONT DÉPENDENT LA VÉRIFICATION ET LA FUSION
+   adaptateurs du port WhatsApp : 1 → ['apps/api/src/common/whatsapp/dev-logger.whatsapp.ts:16'] (attendu 1 : le logueur de développement)
+   variables d'environnement WhatsApp : 0 ligne(s) dans 4 fichier(s) d'environnement parcouru(s) ['apps/api/.env.example', 'apps/api/src/config/env.ts', 'apps/client/.env.example', 'apps/pro/.env.example'] (attendu 0 : aucun fournisseur réel, D63) []
+   (bras positif : le jeton d'injection `WHATSAPP_SENDER` n'est PAS une variable d'environnement et apparaît 8 fois — c'est ce qu'un motif trop large comptait)
+   jetons de vérification d'e-mail (modèle + écritures) : 5 → ['apps/api/prisma/schema.prisma', 'apps/api/src/account/account-deletion.service.ts', 'apps/api/src/auth/auth.service.ts']
+   pg-boss importé ou instancié dans la production de l'API : 0 ligne(s) (attendu 0) · dépendance déclarée dans `apps/api/package.json` : 0 (attendu 0 : AGENTS.md le prescrit, le dépôt ne l'a pas encore)
+   limiteurs nommés : 2 → ['export const DEFAULT_THROTTLE = {', 'export const AUTH_THROTTLE = {']
+
+== 8. CE QUE LA SUPPRESSION D'UN COMPTE FAIT AUX COORDONNÉES COPIÉES (D37)
+   apps/api/src/account/account-deletion.service.ts : 271 ligne(s) de code parcourue(s) · lignes touchant une réservation, un contact copié, une visite ou un devis : 0 (attendu 0 si l'anonymisation ne les traite pas) []
+   champs de coordonnées effacés (compte + profil pro) : 4 → ['firstName: null,', 'lastName: null,', 'phone: null,', 'data: { phone: "", phone2: null }']
+
+== 9. LE SEMIS DE DÉMONSTRATION
+   numéros / champs `phone:` du semis : 1 ligne(s) → ['apps/api/prisma/seed-demo.ts']

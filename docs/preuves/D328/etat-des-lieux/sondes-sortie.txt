@@ -1,0 +1,168 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ bras 1 — `SELECT 1` répond
+   ✓ bras 2 — une écriture est REFUSÉE par la session (code non nul et « read-only »)
+   ✓ bras 3a — doublons : trois valeurs dont deux identiques → 1 groupe
+   ✓ bras 3b — doublons : deux valeurs distinctes → 0 groupe
+   ✓ bras 4a — forme conforme : `+213550000001` accepté
+   ✓ bras 4b — forme conforme : `0550000001` refusé
+== calibration : 6 bras, 0 manqué
+
+== 1. LES COLONNES (information_schema ; nullabilité = ce que la BASE impose, pas Prisma)
+
+   users — 13 colonne(s) retenue(s)
+      id | uuid | NO | uuidv7()
+      email | text | NO | 
+      password_hash | text | YES | 
+      role | USER-DEFINED | NO | 'CLIENT'::"UserRole"
+      locale | USER-DEFINED | NO | 'fr'::"Locale"
+      status | USER-DEFINED | NO | 'ACTIVE'::"UserStatus"
+      first_name | text | YES | 
+      last_name | text | YES | 
+      phone | text | YES | 
+      email_verified_at | timestamp with time zone | YES | 
+      created_at | timestamp with time zone | NO | CURRENT_TIMESTAMP
+      updated_at | timestamp with time zone | NO | 
+      google_sub | text | YES |
+
+   pro_profiles — 10 colonne(s) retenue(s)
+      id | uuid | NO | uuidv7()
+      user_id | uuid | NO | 
+      business_name | text | NO | 
+      phone | text | NO | 
+      registration_number | text | YES | 
+      created_at | timestamp with time zone | NO | CURRENT_TIMESTAMP
+      updated_at | timestamp with time zone | NO | 
+      phone2 | text | YES | 
+      notify_by_email | boolean | NO | true
+      notify_by_sms | boolean | NO | false
+
+   bookings — 10 colonne(s) retenue(s)
+      client_id | uuid | YES | 
+      quote_id | uuid | YES | 
+      source | USER-DEFINED | NO | 'CLIENT'::"BookingSource"
+      slot_name_fr | text | YES | 
+      slot_name_ar | text | YES | 
+      contact_first_name | text | NO | 
+      contact_last_name | text | NO | 
+      contact_phone | text | NO | 
+      contact_email | text | YES | 
+      idempotency_key | text | YES | 
+
+   visit_bookings — 8 colonne(s) retenue(s)
+      id | uuid | NO | uuidv7()
+      venue_id | uuid | NO | 
+      client_id | uuid | NO | 
+      scheduled_at | timestamp with time zone | NO | 
+      status | USER-DEFINED | NO | 'CONFIRMED'::"VisitStatus"
+      cancelled_at | timestamp with time zone | YES | 
+      created_at | timestamp with time zone | NO | CURRENT_TIMESTAMP
+      contact_phone | text | YES |
+
+   quotes — 9 colonne(s) retenue(s)
+      id | uuid | NO | uuidv7()
+      venue_id | uuid | NO | 
+      client_id | uuid | YES | 
+      created_at | timestamp with time zone | NO | CURRENT_TIMESTAMP
+      status | USER-DEFINED | NO | 'DRAFT'::"QuoteStatus"
+      version | integer | NO | 1
+      chain_id | uuid | NO | 
+      parent_quote_id | uuid | YES | 
+      sent_via | text | YES |
+
+   venues — 8 colonne(s) retenue(s)
+      owner_id | uuid | NO | 
+      slug | text | NO | 
+      name_fr | text | NO | 
+      name_ar | text | NO | 
+      commission_rate_bps | integer | NO | 100
+      created_at | timestamp with time zone | NO | CURRENT_TIMESTAMP
+      deleted_at | timestamp with time zone | YES | 
+      cashback_rate_bps | integer | NO | 0
+
+   commissions — 12 colonne(s) retenue(s)
+      id | uuid | NO | uuidv7()
+      booking_id | uuid | NO | 
+      venue_id | uuid | NO | 
+      rate_bps | integer | NO | 
+      base_amount_cents | integer | NO | 
+      gross_amount_cents | integer | NO | 
+      incentive_deduction_cents | integer | NO | 0
+      net_amount_cents | integer | NO | 
+      status | USER-DEFINED | NO | 'PENDING'::"CommissionStatus"
+      settled_at | timestamp with time zone | YES | 
+      created_at | timestamp with time zone | NO | CURRENT_TIMESTAMP
+      updated_at | timestamp with time zone | NO |
+
+== 2. GARANTIES DE LA BASE SUR LES TÉLÉPHONES ET LES NOMS (la migration est l'autorité, D186 : on lit la base qu'elle a produite)
+   index mentionnant `phone`, `contact_*` ou un nom : 0 (parcouru : tous les index du schéma public) — attendu 0 : []
+   CHECK mentionnant `phone`, `contact_*` ou un prénom : 0 (parcouru : tous les CHECK) — attendu 0 : []
+   contraintes UNIQUE (hors index) sur users, bookings, visit_bookings, pro_profiles : 0 — []
+   index UNIQUE de ces cinq tables (12 lus) : ['bookings : bookings_idempotency_key_key', 'bookings : bookings_pkey', 'bookings : bookings_quote_id_key', 'commissions : commissions_booking_id_key', 'commissions : commissions_pkey', 'pro_profiles : pro_profiles_pkey', 'pro_profiles : pro_profiles_user_id_key', 'users : users_email_key', 'users : users_google_sub_key', 'users : users_pkey', 'visit_bookings : visit_bookings_no_double_confirmed', 'visit_bookings : visit_bookings_pkey']
+
+== 3. LES FORMES STOCKÉES (conforme = `+213` puis un mobile `5|6|7` et huit chiffres)
+   users.phone : 1 ligne(s) parcourue(s) · nul 1 · chaîne vide 0 · conforme 0 · autre forme 0 (somme 1 = 1) — attendu : somme = parcourues ✓
+   bookings.contact_phone : 8 ligne(s) parcourue(s) · nul 0 · chaîne vide 0 · conforme 8 · autre forme 0 (somme 8 = 8) — attendu : somme = parcourues ✓
+   visit_bookings.contact_phone : 0 ligne(s) parcourue(s) · nul 0 · chaîne vide 0 · conforme 0 · autre forme 0 (somme 0 = 0) — attendu : somme = parcourues ✓
+   pro_profiles.phone : 1 ligne(s) parcourue(s) · nul 0 · chaîne vide 0 · conforme 1 · autre forme 0 (somme 1 = 1) — attendu : somme = parcourues ✓
+   pro_profiles.phone2 : 1 ligne(s) parcourue(s) · nul 1 · chaîne vide 0 · conforme 0 · autre forme 0 (somme 1 = 1) — attendu : somme = parcourues ✓
+
+== 4. LES DOUBLONS DE TÉLÉPHONE (étape R7(4) — AVANT de poser une règle d'unicité) ; numéros masqués
+   users.phone : 0 valeur(s) non vide(s) parcourue(s) → 0 groupe(s) en double
+   bookings.contact_phone : 8 valeur(s) non vide(s) parcourue(s) → 1 groupe(s) en double : +21366*** ×6
+   visit_bookings.contact_phone : 0 valeur(s) non vide(s) parcourue(s) → 0 groupe(s) en double
+   pro_profiles.phone : 1 valeur(s) non vide(s) parcourue(s) → 0 groupe(s) en double
+   pro_profiles.phone2 : 0 valeur(s) non vide(s) parcourue(s) → 0 groupe(s) en double
+   users.phone : 0 valeur(s) distincte(s) en texte, 0 en chiffres seuls — attendu égaux (une seule forme stockée) : ✓
+   bookings.contact_phone : 3 valeur(s) distincte(s) en texte, 3 en chiffres seuls — attendu égaux (une seule forme stockée) : ✓
+   visit_bookings.contact_phone : 0 valeur(s) distincte(s) en texte, 0 en chiffres seuls — attendu égaux (une seule forme stockée) : ✓
+   numéros communs à users.phone et bookings.contact_phone : 0 ligne(s) jointe(s)
+   numéros communs à users.phone et visit_bookings.contact_phone : 0 ligne(s) jointe(s)
+   numéros communs à users.phone et pro_profiles.phone|phone2 : 0 ligne(s) jointe(s)
+   numéros communs à bookings.contact_phone et pro_profiles.phone|phone2 : 6 ligne(s) jointe(s)
+   bookings : 8 réservation(s) parcourue(s) · 3 téléphone(s) distinct(s) · 1 nom(s) distinct(s) (prénom+nom, casse et bords ignorés) · 3 couple(s) (téléphone, nom)
+   par téléphone (masqué) : réservations · noms distincts : +21366*** 6 · 1 ; +21366*** 1 · 1 ; +21366*** 1 · 1
+   par nom (jamais imprimé) : réservations · téléphones distincts : [nom 1] 8 · 3
+
+== 5. LA COMMISSION (modèle, garanties, lignes)
+   commissions : 0 ligne(s) · cashback_claims : 0 ligne(s) · payments : 0 ligne(s)
+      commissions_amounts_valid : CHECK (((base_amount_cents >= 0) AND (gross_amount_cents >= 0) AND (incentive_deduction_cents >= 0) AND (net_amount_cents >= 0) AND (net_amount_cents = (gross_amount_cents - incentive_deduction_cents))))
+      commissions_booking_id_fkey : FOREIGN KEY (booking_id) REFERENCES bookings(id) ON UPDATE CASCADE ON DELETE RESTRICT
+      commissions_rate_range : CHECK (((rate_bps >= 100) AND (rate_bps <= 500)))
+      commissions_venue_id_fkey : FOREIGN KEY (venue_id) REFERENCES venues(id) ON UPDATE CASCADE ON DELETE RESTRICT
+      commissions_booking_id_key : CREATE UNIQUE INDEX commissions_booking_id_key ON public.commissions USING btree (booking_id)
+      commissions_pkey : CREATE UNIQUE INDEX commissions_pkey ON public.commissions USING btree (id)
+      commissions_venue_id_status_idx : CREATE INDEX commissions_venue_id_status_idx ON public.commissions USING btree (venue_id, status)
+   énumérations : BookingSource = CLIENT,WALK_IN ; BookingStatus = PENDING,ACCEPTED,DECLINED,EXPIRED,CONFIRMED,CANCELLED ; CashbackClaimStatus = PENDING_REVIEW,VERIFIED,PAID,REJECTED ; CommissionStatus = PENDING,DUE,SETTLED,CANCELLED ; PaymentMethod = ONLINE,CASH ; VisitStatus = CONFIRMED,CANCELLED
+   salles : taux de commission et de cashback (points de base) : 100/0 ×1 vivante(s) ; 100/0 ×4 supprimée(s)
+
+== 6. L'ORIGINE D'UNE RÉSERVATION OU D'UN DEVIS : que dit la base ?
+   bookings par (source, statut) — 8 parcourue(s) : ['WALK_IN / ACCEPTED : 4', 'WALK_IN / CANCELLED : 1', 'WALK_IN / PENDING : 3']
+   bookings dont `client_id` est NUL : 8 sur 8 · dont `source = CLIENT` : 0
+   bookings liées à un devis (`quote_id`) : 8 · devis dont `client_id` est NUL : 16 sur 16
+   visites : 0 ligne(s) ; `client_id` NOT NULL en base : NO (attendu NO : une visite exige un compte)
+   FK `bookings.client_id` : FOREIGN KEY (client_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+
+== 7. LES NOMS
+   comptes : 1 · avec prénom 0 · avec nom 0 · par rôle : ['PRO ×1']
+   bookings.contact_first_name : 8 valeur(s) non nulle(s) parcourue(s) · avec une lettre arabe 0 · avec une lettre latine 8
+   bookings.contact_last_name : 8 valeur(s) non nulle(s) parcourue(s) · avec une lettre arabe 0 · avec une lettre latine 8
+   users.first_name : 0 valeur(s) non nulle(s) parcourue(s) · avec une lettre arabe 0 · avec une lettre latine 0
+   users.last_name : 0 valeur(s) non nulle(s) parcourue(s) · avec une lettre arabe 0 · avec une lettre latine 0
+   salles : `name_fr` et `name_ar` — NOT NULL tous deux : name_ar=NO,name_fr=NO
+
+== 7b. LA NUMÉROTATION (R3) APPLIQUÉE AUX DONNÉES EXISTANTES — ce que la migration numéroterait (calcul, aucune écriture)
+   salles parcourues : 5 (supprimées COMPRISES — R3 : « y compris les salles supprimées ») · numéros 1..5 : attendu 5 lignes ✓
+      n° 1 | 01a0ff18 | true | 2026-10-03
+      n° 2 | 01a0ff18 | true | 2026-10-03
+      n° 3 | 01a0ff1c | true | 2026-10-03
+      n° 4 | 01a10ec3 | true | 2026-10-06
+      n° 5 | 01a11e78 | false | 2026-10-09
+   salles dont `created_at` est identique à celui d'une autre (le départage par identifiant sert) : 0 groupe(s) — attendu 0 ici, mais l'identifiant est un UUIDv7 donc ordonné par le temps : le départage ne change pas l'ordre de création
+   devis parcourus : 16 · chaînes (`chain_id` distincts) : 15 · versions 1 : 15 (attendu : égal aux chaînes ✓) · révisions (version > 1) : 1
+   premières versions par (n° de salle, année à l'heure d'Alger) : 2 couple(s) : salle 3 / 2026 → 14 devis (numéros 1..14) ; salle 5 / 2026 → 1 devis (numéros 1..1)
+   devis dont l'année UTC diffère de l'année d'Alger (16 parcourus) : 0 (attendu 0 sur ces données ; l'écart n'existe qu'entre 23:00 UTC le 31/12 et minuit)
+   révisions écrites une AUTRE année que leur première version : 0 (R3 : la révision garde année et numéro ; seul `v` change)
+
+== 8. LIMITES
+   • la base lue est la base de DÉVELOPPEMENT de Ko (1 compte, 1 pro, 5 salles) ; aucune base de production n'est lue ici : les doublons de PRODUCTION ne sont pas relevés (étape R7(4) reste à rejouer sur elle avant toute migration d'unicité) ;
+   • une valeur absente de cette base n'est pas absente des autres : « 0 doublon de compte » est vrai pour UN compte.
