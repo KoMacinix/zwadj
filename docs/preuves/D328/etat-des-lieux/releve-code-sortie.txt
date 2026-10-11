@@ -5,7 +5,7 @@
    ✓ bras 3b — un fichier de production connu est GARDÉ
 == calibration : 4 bras, 0 manqué
 == fichiers suivis lus : 636 · dont production (hors tests, node_modules, dist, generated) : 438
-== provenance : HEAD d96cbe0 ; fichiers de code (apps/ packages/ e2e/ neutralisation/) modifiés depuis la clôture de D327 (`ab8e6f6`) : 0 (attendu 0) []
+== provenance : HEAD 064383c ; fichiers de code (apps/ packages/ e2e/ neutralisation/) modifiés depuis la clôture de D327 (`ab8e6f6`) : 0 (attendu 0) []
 
 == 1. OÙ UN TÉLÉPHONE EST SAISI AUJOURD'HUI (composant partagé `<PhoneField`)
    8 usage(s) de `<PhoneField` dans 7 fichier(s) de production :
@@ -126,7 +126,7 @@
 
 == 10. COÛT RELEVÉ DES LOTS PRESSENTIS : fichiers de production, de test, e2e, harnais qui nomment l'objet
    calibration du compteur de coût : ✓ (symbole connu ≥ 3 fichiers ; symbole forgé 0)
-   LC-A numérotation + référence + nom de fichier : 12 fichier(s) de production · 8 fichier(s) de test · 0 spec(s) e2e · 5 harnais de neutralisation citant ses fichiers
+   LC-A numérotation + référence + nom de fichier : 12 fichier(s) de production · 8 fichier(s) de test · 1 spec(s) e2e · 5 harnais de neutralisation citant ses fichiers
       prod  apps/api/src/documents/quote-document.service.ts
       prod  apps/api/src/documents/quote-document.ts
       prod  apps/api/src/venues/quote-store.prisma.ts
@@ -139,6 +139,7 @@
       prod  apps/pro/src/venues/quotes-section.tsx
       prod  packages/api-client/src/quotes-client.ts
       prod  packages/types/src/quote.ts
+      e2e   e2e/specs/r33-remise-devis.e2e.ts
       harn  neutralize-booking-status.py, neutralize-journey.py, neutralize-r32.py, neutralize-r33.py, neutralize-s10b.py
    LC-B tableau du PDF + boîte de langue : 9 fichier(s) de production · 6 fichier(s) de test · 1 spec(s) e2e · 3 harnais de neutralisation citant ses fichiers
       prod  apps/api/src/documents/quote-document-source.prisma.ts

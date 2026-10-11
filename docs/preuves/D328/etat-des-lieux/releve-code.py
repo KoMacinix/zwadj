@@ -231,7 +231,7 @@ cal_cout = len(grep(r"quoteDocumentFilename")) >= 3 and len(grep(r"ZZZ_INTROUVAB
 print(f"   calibration du compteur de coût : {'✓' if cal_cout else '✗'} (symbole connu ≥ 3 fichiers ; symbole forgé 0)")
 if not cal_cout:
     sys.exit("CALIBRATION : le compteur de coût ne juge pas")
-cout("LC-A numérotation + référence + nom de fichier", [r"quoteReference", r"quoteDocumentFilename", r"creerTeteDeChaine", r"creerRevision", r"QuoteDTO\b"], ["quote-document.ts", "quote-store.prisma.ts", "walkin-journey.tsx", "quotes.service.ts"])
+cout("LC-A numérotation + référence + nom de fichier", [r"quoteReference", r"quoteDocumentFilename", r"creerTeteDeChaine", r"creerRevision", r"QuoteDTO\b", r"NOM_DE_FICHIER"], ["quote-document.ts", "quote-store.prisma.ts", "walkin-journey.tsx", "quotes.service.ts"])
 cout("LC-B tableau du PDF + boîte de langue", [r"quoteDocument", r"\bsaveBlob\b", r"document\?locale", r"QuoteDocumentRecord"], ["quote-document.ts", "walkin-journey.tsx", "remittance.ts"])
 cout("LC-C fiche client + nom sur le devis (contacts copiés aujourd'hui)", [r"contactFirstName", r"contactLastName", r"contactEmail", r"contact_first_name"], ["walkin-journey.tsx", "quotes.service.ts", "quote-store.prisma.ts", "bookings.service.ts"])
 cout("LC-D vérification du téléphone du compte (écrit/lu aujourd'hui sans code)", [r"data\.phone\s*=", r"input\.phone", r"AuthUserDTO", r"\bphone2?:\s*dzPhoneSchema"], ["auth.service.ts", "account.service.ts"])
