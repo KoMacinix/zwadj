@@ -1,0 +1,52 @@
+# D328 — motifs de la passe D277 du rang 35 (lot DOCUMENTAIRE : le cadrage de la base de données client et de tout ce que le lot correctif doit porter ; lecture adverse de D327 ; arbitrages de Ko des 10 et 11/10/2026).
+# Lus par balayage.py (copie à l'octet de celui de D327, `cmp` identique, même objet git), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que le lot INVALIDE : « RANG 35 : EN ATTENTE » (il est arbitré) ; « candidat désigné » : le cadrage de la base clients (il est arbitré) ; les règles PROPOSÉES de B (initiales de la salle et du client dans le nom du fichier :
+#          retirées par Ko) ; « aucune donnée personnelle » dans le nom du fichier (D-o : intacte, l'exception sur les initiales est retirée) ; « statut ouvert » / « ouvert ou accepté » (ratifié) ; la question due à Ko sur le lot
+#          correctif avant ADM-1 (répondue) ; les décisions « à ratifier » de D326 et de D327 (ratifiées par Ko) ; « UIP-E » / « Fiche client » (la base clients est cadrée) ; l'ordre « réparations Pro → PDF de l'acompte →
+#          certification → ADM-1 → ADM-2 → certification » (le lot correctif s'y insère) ; « Ma salle » (le correctif relit la liste après toute modification) ; « la langue du client » / « langue du PRO » (la décision A et la boîte de dialogue).
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « un lot documentaire ne compte pas » (le rang 35 en est un) ; « aucun lot de code ne s'ouvre avant une certification » (inchangé : compteur DEUX) ; « lot correctif »
+#          (sa place est arbitrée) ; « troisième lot de code » (ADM-2) ; « cadrage DOCUMENTAIRE du point 12 » et « enquête D265 » (restent à placer par Ko) ; « RANG 36 » (nouveau) ; « peut s'ouvrir » ; « la certification qui couvre D325 et D326 ».
+1|RANG 35 : EN ATTENTE
+1|rang 35 : en attente
+1|candidat DÉSIGNÉ
+1|Candidat DÉSIGNÉ
+1|cadrage DOCUMENTAIRE de la base de données client
+1|ko_01_ab
+1|initiales de la salle
+1|initiales du client
+1|règles PROPOSÉES
+1|règles proposées
+1|aucune donnée personnelle
+1|statut ouvert
+1|ouvert ou accepté
+1|un devis ACCEPTED est imprimable
+1|ferait d'ADM-2 un TROISIÈME lot
+1|question due à Ko
+1|QUESTION DUE À KO
+1|À RATIFIER PAR KO
+1|à ratifier ou à renverser par Ko
+1|UIP-E
+1|Fiche client
+1|réparations Pro → PDF de l'acompte → certification → ADM-1 → ADM-2 → certification
+1|relit sa liste
+1|n'est relue qu'à la CRÉATION
+1|la langue du client
+1|langue du PRO au moment du clic
+1|décisions A, B et C
+1|DÉCISION C
+2|un lot documentaire ne compte pas
+2|Un lot documentaire ne compte pas
+2|aucun lot de code ne s'ouvre avant une certification
+2|lot correctif
+2|troisième lot de code
+2|un troisième lot
+2|cadrage DOCUMENTAIRE du point 12
+2|enquête D265
+2|RANG 36
+2|peut s'ouvrir
+2|la certification qui couvre D325 et D326
+2|ADM-1 → ADM-2
+2|pause du chemin de l'argent
+2|à ordonner par Ko
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D328
