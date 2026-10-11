@@ -1,0 +1,180 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ bilan positif : None (attendu None)
+   ✓ bilan texte positif : (139, 4, 0, 8, 5) (attendu (139, 4, 0, 8, 5))
+   ✓ bilan texte négatif : None (attendu None)
+   ✓ ventilation positive : ({'A': 4, 'C': 21, 'X': 6}, 31) (attendu ({'A': 4, 'C': 21, 'X': 6}, 31))
+   ✓ ventilation négative : None (attendu None)
+   ✓ tally positif : (2, 1, 1, 1, 1) (attendu (2, 1, 1, 1, 1))
+   ✓ tally négatif (texte vide) : (0, 0, 0, 0, 0) (attendu (0, 0, 0, 0, 0))
+   ✓ liste d'une constante positif : ['DRAFT', 'SENT'] (attendu ['DRAFT', 'SENT'])
+   ✓ liste d'une constante négatif : None (attendu None)
+   ✓ écriture de ACCEPTED positif : True (attendu True)
+   ✓ écriture de ACCEPTED négatif (une comparaison) : False (attendu False)
+   ✓ lignes de positif : 'b\nc' (attendu 'b\nc')
+   ✓ lignes de négatif (hors borne) : '' (attendu '')
+   ✓ décorateurs de route positif (trois, indentés) : 3 (attendu 3)
+   ✓ décorateurs de route négatif (un commentaire, un @Controller) : 0 (attendu 0)
+   ✓ champs scalaires positif (relation et @@ écartés) : ['id', 'status', 'venueId', 'note'] (attendu ['id', 'status', 'venueId', 'note'])
+   ✓ champs scalaires négatif (modèle absent) : None (attendu None)
+   ✓ listes « Ma salle » positif : {'SANS rechargement': ['A'], 'APRÈS rechargement': ['B']} (attendu {'SANS rechargement': ['A'], 'APRÈS rechargement': ['B']})
+   ✓ listes « Ma salle » négatif (scénario absent) : {} (attendu {})
+   ✓ statut HTTP positif (un 200) : 200 (attendu 200)
+   ✓ statut HTTP positif (étiquette suivie de « (hérité) ») : 200 (attendu 200)
+   ✓ statut HTTP négatif (étiquette absente) : None (attendu None)
+   ✓ préfixe d'un UUID : '01a11ec3' (attendu '01a11ec3')
+   ✓ fenêtres par jour, bras bas (début aligné sur une fenêtre) : 1319 (attendu 1319)
+   ✓ fenêtres par jour, bras haut (début tard dans une fenêtre : 65 000 ms) : 1320 (attendu 1320)
+   ✓ png positif (24×7) : (24, 7) (attendu (24, 7))
+   ✓ png négatif : None (attendu None)
+   ✓ sceau positif : True (attendu True)
+   ✓ sceau négatif (un octet changé) : False (attendu False)
+   ✓ fins de ligne : CRLF pur : (2, 0) (attendu (2, 0))
+   ✓ fins de ligne : un LF nu repéré : (1, 1) (attendu (1, 1))
+   ✓ dernier rang en attente positif (gras, puis plus bas) : 35 (attendu 35)
+   ✓ dernier rang en attente négatif : None (attendu None)
+   ✓ registre positif : ['D1', 'D2'] (attendu ['D1', 'D2'])
+   ✓ registre négatif : [] (attendu [])
+== calibration : 35 bras, 0 manqué
+
+== texte lu à ab8e6f6 : section D327 49497 caractères · bloc de clôture 6010 · ordre des rangs 124715 (aplatis)
+
+== X — état live (D328)
+✓ X1     branche courante — attendu 'main' · mesuré 'main'
+✓ X2     `origin/main` après `git fetch` = la clôture de D327 — attendu 'ab8e6f6e1f2612dbb4d8bf2c493f1ee1d9ac0fe3' · mesuré 'ab8e6f6e1f2612dbb4d8bf2c493f1ee1d9ac0fe3'
+✓ X3     `git status --porcelain` hors `docs/preuves/D328/` (les fichiers de CE lot) : vide — attendu [] · mesuré []
+✓ X4     aucun stash — attendu [] · mesuré []
+✓ X5     le commit de la table d'ouverture ne contient QUE `docs/preuves/D328/table-ouverture.md` — attendu ['docs/preuves/D328/table-ouverture.md'] · mesuré ['docs/preuves/D328/table-ouverture.md']
+✓ X6     le parent de la table d'ouverture est la clôture de D327 — attendu 'ab8e6f6e1f2612dbb4d8bf2c493f1ee1d9ac0fe3' · mesuré 'ab8e6f6e1f2612dbb4d8bf2c493f1ee1d9ac0fe3'
+
+== P — provenance : les commits de D327 et ce que chacun touche
+✓ P1     commits entre la clôture de D326 et celle de D327 (ordre chronologique : les pièces, puis la clôture) — attendu ['4743d797dc188ad749fab9f6ffd4b308fc175ceb', 'ab8e6f6e1f2612dbb4d8bf2c493f1ee1d9ac0fe3'] · mesuré ['4743d797dc188ad749fab9f6ffd4b308fc175ceb', 'ab8e6f6e1f2612dbb4d8bf2c493f1ee1d9ac0fe3']
+✓ P2     chaîne : le parent du commit des pièces est la clôture de D326 — attendu '470e6071f0a3623b4d948d87235164d28c32953a' · mesuré '470e6071f0a3623b4d948d87235164d28c32953a'
+✓ P3     chaîne : le parent de la clôture de D327 est le commit des pièces — attendu '4743d797dc188ad749fab9f6ffd4b308fc175ceb' · mesuré '4743d797dc188ad749fab9f6ffd4b308fc175ceb'
+✓ P4     fichiers du diff (93) hors les trois `.md` et hors `docs/preuves/D327/` : aucun — attendu [] · mesuré []
+✓ P5     statuts du diff (93 lignes parcourues) : les fichiers MODIFIÉS sont exactement les trois `.md` — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']
+✓ P6     aucune suppression — attendu [] · mesuré []
+✓ P7     tout le reste est AJOUTÉ (90 fichiers) : D327 n'a retouché aucune pièce d'une autre décision — attendu 90 · mesuré 90
+✓ P8     le commit des pièces ne touche AUCUN fichier d'autorité — attendu [] · mesuré []
+✓ P9     le commit de clôture ne touche QUE les trois `.md` — attendu ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']
+✓ P10    aucun fichier de `apps/`, `packages/`, `e2e/`, `neutralisation/`, `docs/` hors preuves, ni migration, dans le diff — attendu [] · mesuré []
+✓ P11    aucune pièce de D326 touchée — attendu [] · mesuré []
+✓ P12    la sortie de la lecture adverse de D327 est dans le commit des pièces (avant toute écriture d'autorité) — attendu (False, True) · mesuré (False, True)
+✓ P13    `balayage.py` de D327 est la copie à l'octet de celui de D326 (même objet git) — attendu '585a3769bdab7e54f0b2a5702fc3ec1842835616' · mesuré '585a3769bdab7e54f0b2a5702fc3ec1842835616'
+✓ P14    motifs de la passe D277 (39 lignes parcourues) : le nombre écrit par D327 — attendu 39 · mesuré 39
+✓ P15    dont les motifs de calibration (`T+`, `T-`) : le nombre écrit par D327 — attendu 2 · mesuré 2
+✓ P16a   balayage-1-AVANT-ECRITURE.txt : « OCCURRENCES DANS L'ARBRE » (le chiffre écrit par D327 : 171) — attendu 171 · mesuré 171
+✓ P16b   balayage-apres-ecriture.txt : « OCCURRENCES DANS L'ARBRE » (le chiffre écrit par D327 : 240) — attendu 240 · mesuré 240
+✓ P16c   balayage-final.txt : « OCCURRENCES DANS L'ARBRE » (le chiffre écrit par D327 : 264) — attendu 264 · mesuré 264
+✓ P17    balayage final : motifs à zéro (D327 : 0) — attendu 0 · mesuré 0
+✓ P18a   AGENTS.md (arbre : 1625 CRLF parcourues) : aucun LF nu — attendu 0 · mesuré 0
+✓ P18b   ZWADJ_BACKLOG.md (arbre : 5456 CRLF parcourues) : aucun LF nu — attendu 0 · mesuré 0
+✓ P18c   ZWADJ_CONTINUITE.md (arbre : 19872 CRLF parcourues) : aucun LF nu — attendu 0 · mesuré 0
+✓ P19    la table des fichiers de D327 compte 4 lignes parcourues : quatre, dont une par PRÉFIXE (`tout chemin commençant par`) — attendu (4, 1) · mesuré (4, 1)
+· P-C1   CONSTAT : la table de D327 nomme les trois `.md` et UN PRÉFIXE (docs/preuves/D327/) : les 90 fichiers ajoutés ne sont donc comparables à aucune ligne — « 0 non déclaré » est vrai par construction, pour tout fichier qui commence par ce préfixe. D327 l'écrit lui-même (faute n° 1 : la table est écrite à la clôture, depuis le diff). C'est la raison de la règle acceptée par Ko le 11/10/2026 (chemins complets, table commitée seule en premier).
+
+== C — les comptes que D327 écrit sur sa propre lecture adverse
+✓ C1     bilan écrit par D327 (contrôles · écarts · état reçu · constats · non vérifiables) = les lignes de sa sortie — attendu (139, 4, 0, 8, 5) · mesuré (139, 4, 0, 8, 5)
+✗ C2     ventilation par famille écrite dans la section = celle de la sortie — attendu None · mesuré ({'A': 4, 'C': 21, 'G': 9, 'K': 7, 'P': 30, 'Q': 43, 'R': 9, 'T': 10, 'X': 6}, 139)
+✓ C3     somme de la ventilation = nombre de contrôles — attendu 139 · mesuré 139
+✓ C4     tous les ✗ de la sortie sont ceux que D327 nomme (P8a, G1, T4, Q3j) — attendu ['P8a', 'G1', 'T4', 'Q3j'] · mesuré ['P8a', 'G1', 'T4', 'Q3j']
+✓ C5     bras de calibration écrits par D327 = lignes `   ✓` de la sortie — attendu 36 · mesuré 36
+✓ C6     « (236 lignes) » : le nombre de lignes de la sortie — attendu 236 · mesuré 236
+✓ C7     première passe : ✗ de la pièce versée = « 11 ✗ » — attendu 11 · mesuré 11
+✓ C8     défauts de l'instrument listés dans la pièce (écrits « DIX » par D327) — attendu 10 · mesuré 10
+✗ C9     la pièce des défauts dit « 11 ✗ … dont 9 faux » comme la section — attendu (11, 9) · mesuré None
+✓ C10a   sceau de audit-secrets-d327a.txt recalculé — attendu True · mesuré True
+✓ C10b   sceau de audit-secrets-d327b.txt recalculé — attendu True · mesuré True
+✓ C11    taille de audit-secrets-d327a.txt = « 143 534 octets » écrits — attendu 143534 · mesuré 143534
+✗ C12    tri de l'audit : « 8 alertes ABSENTES de la précédente » (D327) — la pièce dit 8 — attendu True · mesuré False
+? C-N1   NON VÉRIFIABLE : que le dernier audit de secrets (`d327b`) ait couvert les octets FINAUX des trois `.md` : les deux commits partent après lui, mais `git` ne dit ni quand il a été lancé ni quand le texte final a été tapé (même limite que A-N1 de la lecture adverse de D327).
+? C-N2   NON VÉRIFIABLE : les 8 « alertes triées au contexte » : la pièce `tri-audit-d327a.txt` renvoie aux lignes de la sortie scellée, elle ne recopie aucun contexte (c'est voulu, D299) ; que la session les ait LUES ne se vérifie pas.
+
+== R — registre, ordre des rangs, compteur
+✓ R1     dernière ligne du registre (281 lignes parcourues) = D327, précédée de D326 — attendu ('D326', 'D327') · mesuré ('D326', 'D327')
+✓ R2     « D327 » avant le lot dans les quatre fichiers d'autorité (D327 écrit 0, 0, 0, 0) — attendu [0, 0, 0, 0] · mesuré [0, 0, 0, 0]
+✓ R3     dernière ligne « RANG N : EN ATTENTE D'ARBITRAGE DE KO » de l'ordre des rangs — attendu 35 · mesuré 35
+✓ R4     titre du point d'entrée du rang 34 : barré et « COMPTEUR DEUX, INCHANGÉ » — attendu (True, True) · mesuré (True, True)
+✗ R5     `AGENTS.md` porte la clôture du rang 34 et « RANG 35 : EN ATTENTE » — attendu (True, True) · mesuré (False, True)
+✓ R6     le backlog porte « Reports du 09/10/2026 — rang 34 » — attendu True · mesuré True
+✗ R7     le compteur écrit au bloc de clôture de D327 : DEUX (rangs 32 et 33) — attendu True · mesuré False
+✓ R8     la condition de clôture du rang 33 est écrite OUVERTE au bloc de clôture du rang 34 — attendu True · mesuré True
+✓ R9     la question due à Ko (un correctif avant ADM-1 ferait d'ADM-2 un troisième lot) est dans l'ordre des rangs — attendu True · mesuré True
+✓ R10    la ligne de registre de D327 écrit les mêmes comptes que la section (139 contrôles · 4 écarts · 8 constats · 5 non vérifiables) — attendu True · mesuré True
+? R-N1   NON VÉRIFIABLE : que les textes de Ko (08/10/2026) soient reproduits MOT POUR MOT : ils n'existent que dans le chat ; le fichier ne peut être confronté qu'à lui-même (ordre des rangs et bloc D327 de la méthode renforcée portent les mêmes quatre décisions du relecteur).
+✓ R11    les quatre décisions du relecteur : une phrase-témoin présente à l'identique dans l'ordre des rangs ET dans le bloc de la méthode renforcée (≥ 2 occurrences) — attendu True · mesuré True
+
+== Q — ce que D327 cite du code (à la ligne) et de ses pièces
+✓ Q1     `quoteReference` (quote-document.ts:52-54) = `id.slice(0, 8)` + `-v` + version — attendu True · mesuré True
+✓ Q2     la référence est imprimée à `:77` (balise title) et `:84` (sous-titre) — attendu (True, True) · mesuré (True, True)
+✓ Q3     `quoteDocumentFilename` (quote.ts:287-289) : `devis-<date>-v<version>-<8 caractères de l'id>.pdf` — attendu True · mesuré True
+✓ Q4     appelée par quote-document.service.ts:63 — attendu True · mesuré True
+✓ Q5     appelée par walkin-journey.tsx:495 — attendu True · mesuré True
+✓ Q6     testée : quote-document.spec.ts:111 « 01a10f0a-v2 » — attendu True · mesuré True
+✓ Q7     testée : quote-document.service.spec.ts:98 — attendu True · mesuré True
+✓ Q8     testée : quote-document.int-spec.ts:113 et walkin-journey.test.tsx:1313 — attendu (True, True) · mesuré (True, True)
+✗ Q9     e2e r33 : `NOM_DE_FICHIER` aux lignes 65, 80, 81 — attendu True · mesuré False
+✓ Q10    `neutralize-r33.py` : M-11 (177), SV-8 (231), T-3 (240), J-13 (290) — attendu (True, True, True, True) · mesuré (True, True, True, True)
+✓ Q11    `quote.document.reference` aux lignes 520 des deux catalogues (clé « reference » du bloc « document ») — attendu (True, True) · mesuré (True, True)
+✓ Q12    `creerTeteDeChaine` : lignes 65-78 (début à la ligne 65 ou 64) — attendu True · mesuré True
+✓ Q13    `creerRevision` : lignes 80-100 (début à la ligne 80 ou 79) — attendu True · mesuré True
+✓ Q14    `verrouillerChaine` : lignes 36-38, un `FOR UPDATE` — attendu True · mesuré True
+✓ Q15    booking-locks.prisma.ts:76 verrouille `venues` `FOR UPDATE` — attendu True · mesuré True
+✓ Q16    availability-blocks.service.ts:116 verrouille la salle `FOR UPDATE` — attendu True · mesuré True
+✓ Q17    venue-store.prisma.ts:81 : clé de tri `updatedAt` — attendu True · mesuré True
+✓ Q18    quotes-section.tsx:180 : « version N » — attendu True · mesuré True
+✓ Q19    `QUOTE_OPEN_STATUSES` = [DRAFT, SENT] — attendu ['DRAFT', 'SENT'] · mesuré ['DRAFT', 'SENT']
+✓ Q20    `QUOTE_LOST_STATUSES` = [CANCELLED, DECLINED] — attendu ['CANCELLED', 'DECLINED'] · mesuré ['CANCELLED', 'DECLINED']
+✓ Q21    fichiers de production de l'API parcourus (122) : D327 écrit « 122 » — attendu 122 · mesuré 122
+✓ Q22    dont écrivant un statut ACCEPTED de devis : aucun (D327 : 0) — attendu [] · mesuré []
+✓ Q23    contrôleurs parcourus (23) : 23 — attendu 23 · mesuré 23
+✓ Q24    routes (décorateurs `@Get/@Post/@Put/@Patch/@Delete`) : D327 écrit « 79 routes d'API » — attendu 79 · mesuré 79
+✓ Q25    colonnes scalaires du modèle `Quote` (19 lues) : la pièce `colonnes-quotes.json` en liste 19 — attendu 19 · mesuré 19
+✓ Q26    les NOMS des 19 colonnes de la pièce = les champs scalaires de `Quote` (au nom de colonne près : `@map`) — attendu True · mesuré True
+✓ Q27    index uniques de `users` créés par les migrations (27 fichiers parcourus) : D327 écrit email, google_sub (+ la clé primaire) — aucun sur `phone` — attendu True · mesuré True
+   (index uniques `users_*` relevés : ['users_email_key', 'users_google_sub_key'])
+✓ Q28    le schéma : `User.phone` sans `@unique` — attendu False · mesuré False
+✓ Q29Dr  route du PDF, devis DRAFT : statut HTTP de la pièce (D327) — attendu 200 · mesuré 200
+✓ Q29Se  route du PDF, devis SENT : statut HTTP de la pièce (D327) — attendu 200 · mesuré 200
+✓ Q29Ac  route du PDF, devis ACCEPTED : statut HTTP de la pièce (D327) — attendu 200 · mesuré 200
+✓ Q29Ca  route du PDF, devis CANCELLED : statut HTTP de la pièce (D327) — attendu 409 · mesuré 409
+✓ Q29De  route du PDF, devis DECLINED : statut HTTP de la pièce (D327) — attendu 409 · mesuré 409
+✓ Q29Su  route du PDF, devis SUPERSEDED : statut HTTP de la pièce (D327) — attendu 409 · mesuré 409
+✓ Q30    ancienne version d'une chaîne : 409 `QUOTE_VERSION_NOT_ACTIVE` avec `latestVersion: 2` — attendu True · mesuré True
+✓ Q31A   devis A · fr : montants imprimés = stockés (la pièce), égaux à ceux du tableau de D327 — attendu True · mesuré True
+✓ Q31B   devis B · fr : montants imprimés = stockés (la pièce), égaux à ceux du tableau de D327 — attendu True · mesuré True
+✓ Q31C   devis C · fr : montants imprimés = stockés (la pièce), égaux à ceux du tableau de D327 — attendu True · mesuré True
+✓ Q32    « Qté » : x0–x1 = 343–362 (A), 418–437 (B), 366–386 (C) — arrondis de la pièce de D327 (342,9–362,4 · 417,9–437,5 · 365,9–385,5) — attendu (True, True) · mesuré (True, True)
+✓ Q33    la référence imprimée est la MÊME pour A, B et C : `01a11ec3-v1` (balise du texte) — trois devis, trois ids, un seul préfixe — attendu ['01a11ec3', '01a11ec3', '01a11ec3'] · mesuré ['01a11ec3', '01a11ec3', '01a11ec3']
+✓ Q34    images PNG de D327 (21 parcourues) : toutes valides — attendu [] · mesuré []
+✓ Q35    pages rastérisées du relevé 1 (7 parcourues) : 952×1348 (D327) — les 7 images — attendu [(952, 1348), (952, 1348), (952, 1348), (952, 1348), (952, 1348), (952, 1348), (952, 1348)] · mesuré [(952, 1348), (952, 1348), (952, 1348), (952, 1348), (952, 1348), (952, 1348), (952, 1348)]
+✓ Q36    S1, S2 : la liste SANS rechargement = APRÈS rechargement (D327 : la contient) — attendu (True, True) · mesuré (True, True)
+✓ Q37    S4 (édition), S8 (correction) : SANS ≠ APRÈS (D327 : périmée) — attendu (True, True) · mesuré (True, True)
+✓ Q38    S6 (suppression depuis l'assistant) : encore listée SANS rechargement, vide APRÈS — attendu (True, True) · mesuré (True, True)
+✓ Q39    S7 (suppression depuis la liste, témoin) : vide SANS rechargement — attendu [] · mesuré []
+✓ Q40    S5 : « En attente de publication par Zwadj » avant ET après la navigation interne, « Publiée » après rechargement — attendu (True, True, True) · mesuré (True, True, True)
+✓ Q41    un UUIDv7 : les 8 premiers caractères = les 32 bits de poids fort des 48 de l'horodatage ⇒ pas de 2^16 ms = 65 536 ms (A, B, C : même préfixe ⇒ même fenêtre) — attendu (65536, 1) · mesuré (65536, 1)
+✗ Q42    « au plus 1319 références distinctes par jour » (D327) : le maximum de fenêtres de 65 536 ms qu'un jour de 86 400 000 ms recoupe, tous alignements essayés (pas de 60 s) — attendu 1319 · mesuré 1320
+   (jours UTC alignés : 1320 fenêtres · tous alignements au pas de 60 s : 1320 — 86 400 000 / 65 536 = 1318.3594)
+✓ Q43    « 15 devis, 13 préfixes distincts » : la pièce du relevé 3 — attendu True · mesuré True
+✓ Q44    « cinq salles du même pro, toutes `ko` » : la pièce — attendu True · mesuré True
+✓ Q45    « 14 chaînes de devis » pour la salle 01a0ff1c : la pièce — attendu True · mesuré True
+✓ Q46    les quatre PDF du relevé 2 (avant/après la conclusion) : mêmes pixels non blancs avant/après (28 842 · 28 712) — attendu True · mesuré True
+✓ Q47    relevé 5 : « 23 contrôleurs · 79 routes » dans la pièce — attendu True · mesuré True
+✗ Q48    relevé 5 : « 4 réservations, 0 avec client_id, 2 téléphones distincts, 2 couples (prénom, nom) distincts, 0 compte » — attendu True · mesuré False
+✓ Q49    backlog : `UIP-E` — « Fiche client » — est une entrée ouverte à la ligne 1947 de la version PRÉCÉDENTE de D327 (écrite telle quelle) ; à FIN elle est annotée et se trouve à — attendu True · mesuré True
+   (lignes de `UIP-E` à ab8e6f6 : [1947, 2496, 2504] ; à 470e607 : [1947])
+✓ Q50    les règles proposées de B (non arbitrées) sont recopiées à l'identique dans la section D327 ET dans le backlog — attendu (True, True) · mesuré (True, True)
+· Q-C1   CONSTAT : les règles proposées de B (initiales de la salle et du client dans le NOM DE FICHIER) sont RETIRÉES par Ko le 11/10/2026 (« plus d'initiales du client, de la salle ni de code commune : le nom du fichier ne contient aucune donnée personnelle ») : la section D327, le backlog (entrée B) et le contrat de la route les portent encore comme « proposées » — à annoter, ce que fait la passe D277 de ce lot.
+· Q-C2   CONSTAT : le relevé 3 de D327 a mesuré les règles proposées sur la base de développement ET le semis seulement (deux jeux, un pro chacun) : « aucune collision entre propriétaires n'y est mesurable » (limite écrite par D327). Les règles arbitrées le 11/10 (numéro de salle par séquence, numéro de devis par compteur) n'ont pas cette limite : l'unicité se garantit en base, pas par un relevé.
+? Q-N1   NON VÉRIFIABLE : que les trois devis A, B, C du relevé 1 aient été créés « à quelques secondes d'écart » sur une base jetable : les ids (UUIDv7) montrent le même préfixe `01a11ec3` ET des horodatages à quelques dizaines de ms ; la base jetable n'existe plus, la création ne se rejoue pas ici.
+
+== L — base de développement (état vivant, `SELECT` seulement, session en lecture seule)
+✓ L0     la base de développement répond (calibration : `SELECT 1`) — attendu (0, '1') · mesuré (0, '1')
+✓ L0b    calibration NÉGATIVE : une écriture est REFUSÉE par la session en lecture seule — attendu True · mesuré True
+   (mesuré maintenant : 16 devis, 14 préfixes ; D327 : 15 et 13 — la base a pu bouger depuis le 09/10)
+✗ L1     devis de la base de développement : D327 écrit 15 (relevé du 09/10) — attendu 15 · mesuré 16
+✗ L2     préfixes distincts de 8 caractères : D327 écrit 13 — attendu 13 · mesuré 14
+
+== BILAN : 114 contrôles · 8 écart(s) de D327 ['C2', 'C9', 'C12', 'R5', 'R7', 'Q9', 'Q42', 'Q48'] · 2 écart(s) de l'état vivant ['L1', 'L2'] · 3 constat(s) · 4 non vérifiable(s)
+   ventilation par famille : C 13 · L 4 · P 23 · Q 57 · R 11 · X 6  (somme 114)
+   familles à zéro (hypothèse à vérifier, D295) : []
