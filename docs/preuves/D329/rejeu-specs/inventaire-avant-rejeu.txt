@@ -1,0 +1,14 @@
+calibration : positif (powershell compté ≥ 1) ✓ · négatif (nom forgé = 0) ✓
+HORODATAGE 12/10/2026 19:45:42 · relevé « avant-rejeu-specs » · code 0
+COMPTE chrome=0
+COMPTE headless_shell=0
+COMPTE chromium=0
+COMPTE chrome_crashpad_handler=0
+COMPTE node=0
+COMPTE msedge=5
+  msedge PID 18564 début 2026-10-12 16:08:53 mémoire_Mo 59.7
+  msedge PID 19076 début 2026-10-12 16:08:53 mémoire_Mo 43
+  msedge PID 32580 début 2026-10-12 16:08:53 mémoire_Mo 16.8
+  msedge PID 34504 début 2026-10-12 16:08:53 mémoire_Mo 143.8
+  msedge PID 36800 début 2026-10-12 16:08:53 mémoire_Mo 23.3
+RÉSUMÉ chrome=0 headless_shell=0 chromium=0 node=0 msedge=5 (noms parcourus : 6, attendu 6) — relevé, pas une porte

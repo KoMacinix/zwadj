@@ -1,0 +1,44 @@
+== CALIBRATION : résumé ANSI lu ['Test Files 3 passed (3)', 'Tests 36 passed (36)'] · témoin sans résumé [] · « FAILED » dans un nom compté 0 (attendu 0) · vrai FAIL compté 1 (attendu 1) → ✓
+
+== typecheck : code RÉEL 0 · 21 lignes parcourues · « Done » 8 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 0
+
+== lint : code RÉEL 0 · 21 lignes parcourues · « Done » 8 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 0
+
+== test : code RÉEL 0 · 1595 lignes parcourues · « Done » 0 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   Test Files 5 passed (5)
+   Tests 48 passed (48)
+   Test Files 65 passed (65)
+   Tests 791 passed (791)
+   Test Files 29 passed (29)
+   Tests 372 passed (372)
+   Test Files 37 passed (37)
+   Tests 507 passed (507)
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 2
+     | [Nest] 36324  - 2026-10-12, 4:55:12 p.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001
+     | [Nest] 36324  - 2026-10-12, 4:55:12 p.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001
+
+== build : code RÉEL 0 · 127 lignes parcourues · « Done » 4 · FAIL (casse exacte) 0 · error TS 0 · ELIFECYCLE 0 · timed out 0
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 0
+
+== testint : code RÉEL 1 · 473 lignes parcourues · « Done » 0 · FAIL (casse exacte) 2 · error TS 0 · ELIFECYCLE 1 · timed out 0
+   Test Files 2 failed | 36 passed (38)
+   Tests 2 failed | 466 passed (468)
+   lignes portant « fail » (toute casse), À CONFRONTER AU CONTEXTE : 10
+     | ✓ Notifications (D60, D63) > transport en PANNE : le rendez-vous est confirmé quand même, la ligne passe FAILED (D63)  1194ms
+     | ❯ test/int/register.int-spec.ts (6 tests | 1 failed) 1450ms
+     | ❯ test/int/forgot-password.int-spec.ts (4 tests | 1 failed) 1150ms
+     | ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+     | FAIL  test/int/forgot-password.int-spec.ts > POST /api/v1/auth/forgot-password (intégration — D14 anti-énumération) > le lien pointe vers le bon front : CLIENT 
+     | FAIL  test/int/register.int-spec.ts > POST /api/v1/auth/register (intégration, base réelle) > inscrit un CLIENT : 201, hash argon2 en base, token créé, email FR
+     | Test Files  2 failed | 36 passed (38)
+     | Tests  2 failed | 466 passed (468)
+     | ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @zwadj/api@0.0.0 test:int: `vitest run -c vitest.config.int.ts`
+     | ELIFECYCLE  Command failed with exit code 1.
+
+== e2e : code RÉEL 0
+
+== campagnes-tout : code RÉEL 1
+
+== contre-epreuve : code RÉEL 0

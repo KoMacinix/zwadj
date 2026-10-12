@@ -1,0 +1,148 @@
+
+[1/34] neutralisation\neutralize-404.py …
+    sortie=0  12 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/34] neutralisation\neutralize-act-plafonds.py …
+    sortie=0  4 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/34] neutralisation\neutralize-argon2.py …
+    sortie=0  3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[4/34] neutralisation\neutralize-available-on-api.py …
+    sortie=0  13 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[5/34] neutralisation\neutralize-available-on.py …
+    sortie=0  10 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[6/34] neutralisation\neutralize-b7.py …
+    sortie=0  3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[7/34] neutralisation\neutralize-booking-status.py …
+    sortie=0  3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[8/34] neutralisation\neutralize-budgets.py …
+    sortie=0  4 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[9/34] neutralisation\neutralize-e3d1-s8.py …
+    sortie=3  3 mordue(s), 0 muette(s)/erreur(s), 5 non mesurée(s)
+
+[10/34] neutralisation\neutralize-horizon.py …
+    sortie=0  6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[11/34] neutralisation\neutralize-horloge.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[12/34] neutralisation\neutralize-journey.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[13/34] neutralisation\neutralize-maxprice.py …
+    sortie=0  10 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[14/34] neutralisation\neutralize-r25.py …
+    sortie=3  7 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[15/34] neutralisation\neutralize-r26.py …
+    sortie=3  0 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[16/34] neutralisation\neutralize-r29.py …
+    sortie=0  15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[17/34] neutralisation\neutralize-r30.py …
+    sortie=0  8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[18/34] neutralisation\neutralize-r32.py …
+    sortie=0  65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[19/34] neutralisation\neutralize-r33.py …
+    sortie=0  93 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[20/34] neutralisation\neutralize-r4.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[21/34] neutralisation\neutralize-rang23.py …
+    sortie=0  12 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[22/34] neutralisation\neutralize-s10a.py …
+    sortie=0  13 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[23/34] neutralisation\neutralize-s10b.py …
+    sortie=0  20 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[24/34] neutralisation\neutralize-s11a.py …
+    sortie=0  18 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[25/34] neutralisation\neutralize-s11b.py …
+    sortie=3  9 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[26/34] neutralisation\neutralize-s9.py …
+    sortie=0  6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[27/34] neutralisation\neutralize-solid-s1.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[28/34] neutralisation\neutralize-solid-s2.py …
+    sortie=0  5 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[29/34] neutralisation\neutralize-solid-s3.py …
+    sortie=0  6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[30/34] neutralisation\neutralize-solid-s4.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[31/34] neutralisation\neutralize-solid-s5a.py …
+    sortie=0  9 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[32/34] neutralisation\neutralize-solid-s5b.py …
+    sortie=0  5 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[33/34] neutralisation\neutralize-solid-s6.py …
+    sortie=3  2 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[34/34] neutralisation\neutralize-solid-s7.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-404.py                       0     —    12     0     0   304
+neutralize-act-plafonds.py              0     4     4     0     0   118
+neutralize-argon2.py                    0     3     3     0     0    16
+neutralize-available-on-api.py          0    13    13     0     0   109
+neutralize-available-on.py              0     —    10     0     0   255
+neutralize-b7.py                        0     3     3     0     0   274
+neutralize-booking-status.py            0     3     3     0     0    16
+neutralize-budgets.py                   0     4     4     0     0    33
+neutralize-e3d1-s8.py                   3     3     3     0     5    37
+neutralize-horizon.py                   0     —     6     0     0   125
+neutralize-horloge.py                   0     2     2     0     0   118
+neutralize-journey.py                   0     —     7     0     0   337
+neutralize-maxprice.py                  0     —    10     0     0   255
+neutralize-r25.py                       3     7     7     0     4    85
+neutralize-r26.py                       3     0     0     0     4     0
+neutralize-r29.py                       0    15    15     0     0   152
+neutralize-r30.py                       0     8     8     0     0    67
+neutralize-r32.py                       0    65    65     0     0   674
+neutralize-r33.py                       0    93    93     0     0   915
+neutralize-r4.py                        0     —     2     0     0    74
+neutralize-rang23.py                    0    12    12     0     0   622
+neutralize-s10a.py                      0    13    13     0     0    78
+neutralize-s10b.py                      0    20    20     0     0   100
+neutralize-s11a.py                      0    18    18     0     0    66
+neutralize-s11b.py                      3     9     9     0     4    35
+neutralize-s9.py                        0     6     6     0     0    47
+neutralize-solid-s1.py                  0     2     2     0     0    31
+neutralize-solid-s2.py                  0     5     5     0     0    33
+neutralize-solid-s3.py                  0     6     6     0     0    25
+neutralize-solid-s4.py                  0     —     7     0     0    30
+neutralize-solid-s5a.py                 0     —     9     0     0    39
+neutralize-solid-s5b.py                 0     —     5     0     0   288
+neutralize-solid-s6.py                  3     2     2     0     4    10
+neutralize-solid-s7.py                  0     —     2     0     0   135
+================================================================================================
+MESURÉ : 386 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 21 non mesurée(s) · 34 campagne(s) · 5504s
+journaux : .neutralisation-journaux/ (ignoré par git)
+  ⚠ neutralisation\neutralize-e3d1-s8.py → sortie 3
+  ⚠ neutralisation\neutralize-r25.py → sortie 3
+  ⚠ neutralisation\neutralize-r26.py → sortie 3
+  ⚠ neutralisation\neutralize-s11b.py → sortie 3
+  ⚠ neutralisation\neutralize-solid-s6.py → sortie 3

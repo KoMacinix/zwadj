@@ -1,0 +1,20 @@
+EXTRAIT DÉRIVÉ de .neutralisation-journaux/r36a-20261012-1651-rejeu/r32-nouvelle-reservation.log — PAS la pièce brute (critère du rang 9, point 9 ; D294, D299).
+Le journal brut reste HORS DÉPÔT : il porte des jetons de vérification d'e-mail imprimés par le
+serveur de développement. Une preuve ne se caviarde pas (D291) : ceci est une LISTE BLANCHE — Running,
+chaque ligne de résultat, le résumé, les blocs d'échec, et 3 lignes autour de toute ligne « fail ».
+Codes ANSI retirés. En tête de chaque ligne gardée : son numéro dans le journal.
+lignes parcourues : 471 (attendu 471, par les octets de saut de ligne) · gardées : 7
+Running : [5] · résumé : {'passed': 5}
+recompte : `ok` 5 ⇔ passed 5 → ✓
+recompte : `x` 0 ⇔ failed + interrupted 0 → ✓
+recompte : `-` 0 ⇔ skipped 0 → ✓
+recompte : lignes de résultat 5 ⇔ Running − did not run 5 → ✓
+lignes « fail » du journal : 0 · gardées avec leur fenêtre : 0 (attendu 0)
+--- lignes gardées ---
+00228 | Running 5 tests using 1 worker
+00280 |   ok 1 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:101:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » (8.6s)
+00325 |   ok 2 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:243:5 › « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit (4.3s)
+00375 |   ok 3 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:256:5 › un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche (4.4s)
+00421 |   ok 4 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:277:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair (2.1s)
+00466 |   ok 5 [chromium] › ..\docs\preuves\D325\navigateur\r32-nouvelle-reservation.e2e.ts:335:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde (2.8s)
+00470 |   5 passed (57.5s)

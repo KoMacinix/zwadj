@@ -1,0 +1,7 @@
+$ apps/api/node_modules/.bin/vitest run src/venues/venues-public.service.spec.ts -t date passée   (cwd : apps/api)
+
+--- stderr ---
+'apps' is not recognized as an internal or external command,
+operable program or batch file.
+
+--- code de sortie : 1 ---

@@ -1,0 +1,71 @@
+12/10/2026 16:51:08 PASSE r36a-20261012-1651 — HEAD attendu 4202dd4882b62336aa2be70e0593612722c7a81b
+12/10/2026 16:51:08    harnais VERROUILLÉS (--int), dérivés de l'AST : ['e3d1-s8', 'r25', 'r33', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s6']
+12/10/2026 16:51:08    harnais E2E-VERROUILLÉS (--e2e), dérivés par recherche littérale : ['r25', 'r26']
+12/10/2026 16:51:08    pg_isready (ouverture) : code 0
+12/10/2026 16:51:08    ports 3100/3101/5273 à l'écoute : 0 (attendu 0)
+12/10/2026 16:51:09    inventaire ouverture : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 5 (relevé, pas une porte) · code 0
+12/10/2026 16:52:05    sonde ouverture-1 : RAM 4897.5 (bande 4880-4933, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · calibration ✓
+12/10/2026 16:52:40    sonde ouverture-2 : RAM 4929.5 (bande 4924-4945, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 16:52:40 ✓ PORTE DURE VERTE sur les deux relevés
+12/10/2026 16:52:40    échantillonneur lancé (PID 12300), -Intervalle 30 — AUCUN lecteur pendant la fenêtre
+12/10/2026 16:52:40    arbre-1 : HEAD 4202dd4 (attendu 4202dd4) · 0 ligne(s) de statut (attendu 0)
+12/10/2026 16:53:16    sonde avant-typecheck : RAM 5028 (bande 4906-5058, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 16:53:39    typecheck : code 0, 23 s
+12/10/2026 16:54:14    sonde avant-lint : RAM 5058 (bande 5001-5066, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 16:54:28    lint : code 0, 14 s
+12/10/2026 16:55:05    sonde avant-test : RAM 5031 (bande 5027-5043, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 16:56:33    test : code 0, 88 s
+12/10/2026 16:57:08    sonde avant-build : RAM 4995 (bande 4987-5007, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 16:57:47    build : code 0, 39 s
+12/10/2026 16:58:23    sonde avant-testint : RAM 4924.5 (bande 4904-4945, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 16:58:23    pg_isready (avant-testint) : code 0
+12/10/2026 17:04:22    testint : code 1, 359 s
+12/10/2026 17:04:57    sonde avant-e2e : RAM 4530 (bande 4521-4542, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 17:04:57    avant e2e : node 0 (attendu 0) · ports à l'écoute 0 (attendu 0)
+12/10/2026 17:04:57    pg_isready (avant-e2e) : code 0
+12/10/2026 17:08:07    e2e : code 0, 190 s
+12/10/2026 17:08:42    sonde apres-e2e : RAM 4893.5 (bande 4844-4971, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 17:08:43    inventaire apres-e2e : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 5 (relevé, pas une porte) · code 0
+12/10/2026 17:08:43    après e2e : node 0 · ports à l'écoute 0
+12/10/2026 17:08:43    arbre-2 : HEAD 4202dd4 (attendu 4202dd4) · 0 ligne(s) de statut (attendu 0)
+12/10/2026 17:09:18    sonde avant-campagnes : RAM 4871.5 (bande 4837-4875, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 18:41:02    campagnes-tout : code 1, 5504 s
+12/10/2026 18:41:02    journaux de campagne copiés à l'identique : 79 sur 79 · antérieurs au début de --tout : 0 (attendu 0)
+12/10/2026 18:41:02    arbre-3 : HEAD 4202dd4 (attendu 4202dd4) · 0 ligne(s) de statut (attendu 0)
+12/10/2026 18:41:38    sonde avant-int-e3d1-s8 : RAM 4622 (bande 4587-4637, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+12/10/2026 18:41:38    pg_isready (int-e3d1-s8) : code 0
+12/10/2026 18:43:03    int-e3d1-s8 : code 0, 86 s
+12/10/2026 18:43:39    sonde avant-int-r25 : RAM 4584.5 (bande 4569-4588, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 18:43:39    pg_isready (int-r25) : code 0
+12/10/2026 18:52:32    int-r25 : code 0, 533 s
+12/10/2026 18:53:07    sonde avant-int-r33 : RAM 4580 (bande 4536-4588, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 18:53:08    pg_isready (int-r33) : code 0
+12/10/2026 19:10:33    int-r33 : code 0, 1046 s
+12/10/2026 19:11:09    sonde avant-int-s11b : RAM 4166 (bande 4153-4176, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:11:09    pg_isready (int-s11b) : code 0
+12/10/2026 19:15:35    int-s11b : code 0, 266 s
+12/10/2026 19:16:10    sonde avant-int-solid-s1 : RAM 4430 (bande 4407-4441, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:16:10    pg_isready (int-solid-s1) : code 0
+12/10/2026 19:20:06    int-solid-s1 : code 0, 236 s
+12/10/2026 19:20:41    sonde avant-int-solid-s2 : RAM 4417.5 (bande 4410-4428, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:20:42    pg_isready (int-solid-s2) : code 0
+12/10/2026 19:24:41    int-solid-s2 : code 0, 239 s
+12/10/2026 19:25:16    sonde avant-int-solid-s3 : RAM 4399.5 (bande 4382-4412, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:25:16    pg_isready (int-solid-s3) : code 0
+12/10/2026 19:30:33    int-solid-s3 : code 0, 317 s
+12/10/2026 19:31:08    sonde avant-int-solid-s6 : RAM 4380.5 (bande 4357-4395, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:31:08    pg_isready (int-solid-s6) : code 0
+12/10/2026 19:35:15    int-solid-s6 : code 0, 246 s
+12/10/2026 19:35:15    arbre-4 : HEAD 4202dd4 (attendu 4202dd4) · 0 ligne(s) de statut (attendu 0)
+12/10/2026 19:35:50    sonde avant-e2e-r26 : RAM 4360.5 (bande 4350-4383, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:35:50    pg_isready (e2e-r26) : code 0
+12/10/2026 19:43:17    e2e-r26 : code 0, 446 s
+12/10/2026 19:43:52    sonde apres-e2e-r26 : RAM 4366 (bande 4350-4379, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:43:52    arbre-5 : HEAD 4202dd4 (attendu 4202dd4) · 0 ligne(s) de statut (attendu 0)
+12/10/2026 19:43:55    contre-epreuve : code 0, 3 s
+12/10/2026 19:43:55    arbre-6 : HEAD 4202dd4 (attendu 4202dd4) · 0 ligne(s) de statut (attendu 0)
+12/10/2026 19:44:30    sonde cloture : RAM 4368.5 (bande 4357-4376, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+12/10/2026 19:44:30    inventaire cloture : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 5 (relevé, pas une porte) · code 0
+12/10/2026 19:44:30    échantillonneur arrêté
+12/10/2026 19:44:31    -Resume : code 0
+12/10/2026 19:44:31 CLÔTURE ATTEINTE — la lecture se fait APRÈS, sur les journaux de ce dossier

@@ -1,0 +1,10 @@
+✓ Pré-vol : 3 mesure(s) verte(s) — couture, int-reservations, int-visites
+
+✓ S6-1. ⚠ LA COUTURE SE MET À LEVER — un gabarit cassé dé-confirmerait un acte écrit (D63)  [couture]
+✓ S6-2. Les handlers cessent d'être ATTENDUS — l'ordre et le déterminisme tombent  [couture]
+✓ S6-3. ⚠ L'ABONNEMENT « demande reçue » EST COUPÉ — le pro n'est plus prévenu  [int-reservations]
+✓ S6-4. L'abonnement « acceptée » est coupé — le client ne sait pas que sa date est retenue  [int-reservations]
+✓ S6-5. ⚠ LE SECOND ABONNÉ DE `visit.booked` DISPARAÎT — le pro est prévenu, pas le client  [int-visites]
+✓ S6-6. L'ORDRE des deux abonnés de `visit.booked` s'inverse  [int-visites]
+
+6 garde(s) mordue(s) sur 6 cible(s) RÉELLEMENT MESURÉE(S).

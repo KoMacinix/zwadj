@@ -1,0 +1,14 @@
+# EXTRAIT du journal de `pnpm test:int` — empreinte SHA-256 du journal COMPLET : 4a24e5c2bdfc33b954af10c1fe76042b736b8d943aa4f171a07938c16e249f30 (620 octets, 12 lignes)
+# 0 ligne(s) retirée(s) (jeton `token=…` ou hôte `devtunnels.ms`), aucune retouchée ; codes ANSI retirés. Par docs/preuves/D329/outils/extraire-testint.py.
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/register.int-spec.ts (6 tests) 1135ms
+ ✓ test/int/forgot-password.int-spec.ts (4 tests) 902ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  19:49:48
+   Duration  9.88s (transform 1.06s, setup 47ms, collect 6.62s, tests 2.04s, environment 0ms, prepare 333ms)
+
+code=0

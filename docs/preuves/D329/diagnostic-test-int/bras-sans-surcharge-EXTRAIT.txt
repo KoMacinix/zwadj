@@ -1,0 +1,82 @@
+# EXTRAIT du journal de `pnpm test:int` — empreinte SHA-256 du journal COMPLET : 1b39d083a0b115392ff7200f143aa615126e4a48573cd1087bfe571699a4e11b (6490 octets, 82 lignes)
+# 2 ligne(s) retirée(s) (jeton `token=…` ou hôte `devtunnels.ms`), aucune retouchée ; codes ANSI retirés. Par docs/preuves/D329/outils/extraire-testint.py.
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/register.int-spec.ts (6 tests | 1 failed) 1122ms
+   × POST /api/v1/auth/register (intégration, base réelle) > inscrit un CLIENT : 201, hash argon2 en base, token créé, email FR avec lien /fr 269ms
+     → expected 'Bonjour,\n\nBienvenue sur Zwadj ! Pou…' to match /http:\/\/localhost:3000\/fr\/auth\/v…/\
+   ✓ POST /api/v1/auth/register (intégration, base réelle) > 7.2 — CLIENT : refuse sans prénom/nom (clés i18n, rien créé) ; accepte téléphone fourni (persisté) ou omis (null) 226ms
+   ✓ POST /api/v1/auth/register (intégration, base réelle) > inscrit un PRO (D3) : User + ProProfile en transaction, email AR, lien vers PRO_URL 122ms
+   ✓ POST /api/v1/auth/register (intégration, base réelle) > doublon d'email (insensible à la casse) : 409 EMAIL_ALREADY_USED, rien de créé en plus 206ms
+   ✓ POST /api/v1/auth/register (intégration, base réelle) > payloads invalides : 400 avec les clés i18n dans issues[] (email, mot de passe, businessName) 43ms
+   ✓ POST /api/v1/auth/register (intégration, base réelle) > le rôle ADMIN est inéligible à l'inscription (union discriminée) 33ms
+ ❯ test/int/forgot-password.int-spec.ts (4 tests | 1 failed) 889ms
+   ✓ POST /api/v1/auth/forgot-password (intégration — D14 anti-énumération) > email inconnu : 202 { status: 'ok' } constant, AUCUN email, AUCUNE ligne 160ms
+   ✓ POST /api/v1/auth/forgot-password (intégration — D14 anti-énumération) > compte existant : 202 IDENTIQUE, email de reset envoyé, hash (jamais le brut) en base, TTL ~30 min 167ms
+   ✓ POST /api/v1/auth/forgot-password (intégration — D14 anti-énumération) > deux demandes d'affilée : seul le DERNIER lien reste valide (les précédents non consommés tombent) 136ms
+   × POST /api/v1/auth/forgot-password (intégration — D14 anti-énumération) > le lien pointe vers le bon front : CLIENT → CLIENT_URL/{locale}/…, PRO → PRO_URL sans préfixe 221ms
+     → expected 'Bonjour,\n\nPour choisir un nouveau m…' to contain 'http://localhost:3000/fr/auth/reiniti…'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/forgot-password.int-spec.ts > POST /api/v1/auth/forgot-password (intégration — D14 anti-énumération) > le lien pointe vers le bon front : CLIENT → CLIENT_URL/{locale}/…, PRO → PRO_URL sans préfixe
+AssertionError: expected 'Bonjour,\n\nPour choisir un nouveau m…' to contain 'http://localhost:3000/fr/auth/reiniti…'
+
+- Expected
++ Received
+
+- http://localhost:3000/fr/auth/reinitialisation?token=
++ Bonjour,
++
++ Pour choisir un nouveau mot de passe, ouvrez ce lien :
++
++ Ce lien expire dans 30 minutes.
++
++ Si vous n'avez pas demandé cette réinitialisation, ignorez cet email : votre mot de passe reste inchangé.
+
+ ❯ test/int/forgot-password.int-spec.ts:80:37
+     78| 
+     79|     await forgot(CLIENT.email);
+     80|     expect(ctx.emails.at(-1)!.text).toContain("http://localhost:3000/f…
+       |                                     ^
+     81|     await forgot(PRO.email);
+     82|     expect(ctx.emails.at(-1)!.text).toContain("http://localhost:5173/a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/int/register.int-spec.ts > POST /api/v1/auth/register (intégration, base réelle) > inscrit un CLIENT : 201, hash argon2 en base, token créé, email FR avec lien /fr
+AssertionError: expected 'Bonjour,\n\nBienvenue sur Zwadj ! Pou…' to match /http:\/\/localhost:3000\/fr\/auth\/v…/\
+
+- Expected: 
+/http:\/\/localhost:3000\/fr\/auth\/verification-email\?token=[A-Za-z0-9_-]{43}/
+
++ Received: 
+"Bonjour,
+
+Bienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+
+Ce lien expire dans 48 heures.
+
+Si vous n'êtes pas à l'origine de cette inscription, ignorez cet email."
+
+ ❯ test/int/register.int-spec.ts:39:33
+     37|     expect(ctx.emails[0]!.to).toBe("aya@example.dz");
+     38|     expect(ctx.emails[0]!.subject).toContain("Confirmez");
+     39|     expect(ctx.emails[0]!.text).toMatch(/http:\/\/localhost:3000\/fr\/…
+       |                                 ^
+     40|   });
+     41| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 8 passed (10)
+   Start at  19:49:36
+   Duration  10.04s (transform 1.08s, setup 50ms, collect 6.70s, tests 2.01s, environment 0ms, prepare 328ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/register.int-spec.ts test/int/forgot-password.int-spec.ts
+code=1
