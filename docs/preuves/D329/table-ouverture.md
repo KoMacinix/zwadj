@@ -45,3 +45,54 @@ Lot : **la certification qui couvre D325 et D326** (rang 36, à arbitrer par Ko 
 ### Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+#### Extension 1
+
+**Motif** : les pièces de l'ÉTAPE 0 (planchers, outils de la passe, relevés de la machine, audit scellé « a ») portent des noms qui dépendent de la mesure ; elles sont déclarées ici, une par une, **avant** le commit qui les verse, et **avant** le commit du protocole (qui précède toute mesure de la passe). Chemins COMPLETS — jamais un préfixe. Ce commit n'ajoute que cette extension.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D329/etat/inventaire-avant-protocole.txt` | pièce de l'étape |
+| `docs/preuves/D329/etat/inventaire-avant-simulation.txt` | pièce de l'étape |
+| `docs/preuves/D329/etat/sonde-avant-protocole.txt` | pièce de l'étape |
+| `docs/preuves/D329/etat/sonde-avant-simulation.txt` | pièce de l'étape |
+| `docs/preuves/D329/outils/inventaire.py` | pièce de l'étape |
+| `docs/preuves/D329/outils/lire-campagnes-calibration.txt` | pièce de l'étape |
+| `docs/preuves/D329/outils/lire-campagnes.py` | pièce de l'étape |
+| `docs/preuves/D329/outils/passe.py` | pièce de l'étape |
+| `docs/preuves/D329/outils/verser.py` | pièce de l'étape |
+| `docs/preuves/D329/plancher/deriver-plancher-sortie.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/deriver-plancher.py` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/cale-A/node.cmd` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/cale-A/pnpm.cmd` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/cale-B/node.cmd` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/cale-B/pnpm.cmd` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/cale_b.py` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-a-A-6.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-a-B-1.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-a-B-6.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-b-A-available-on-api.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-b-A-available-on-api.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-b-B-available-on-api.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-b-B-available-on-api.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-c-argon2.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/calib-c-argon2.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-act-plafonds.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-act-plafonds.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-horloge.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-horloge.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-r32.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-r32.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-r33-int.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-A-r33-int.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-act-plafonds.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-act-plafonds.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-horloge.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-horloge.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-r32.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-r32.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-r33-int.cale.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/journaux/sim-B-r33-int.log` | pièce de l'étape |
+| `docs/preuves/D329/plancher/plancher.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/simulation-sortie.txt` | pièce de l'étape |
+| `docs/preuves/D329/plancher/simuler-non-demarrage.py` | pièce de l'étape |
