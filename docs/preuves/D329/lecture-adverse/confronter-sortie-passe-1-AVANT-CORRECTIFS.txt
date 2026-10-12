@@ -1,0 +1,170 @@
+== CALIBRATION — deux bras par extracteur, abandon si un seul manque
+   ✓ chemins_table, cas vrai : 3 chemins d'un tableau (dont une ligne à deux chemins)
+   ✓ chemins_table, cas faux : un texte sans tableau rend 0
+   ✓ ids_numerotes, cas vrai : M-1, M-2, M-3 → [1, 2, 3], consécutifs
+   ✓ ids_numerotes, cas faux : un trou (M-1, M-3) n'est PAS consécutif ; un doublon est gardé
+   ✓ bloc_entre, cas vrai : le texte entre deux repères
+   ✓ bloc_entre, cas faux : un début absent rend None
+   ✓ tally_sortie, cas vrai : 2 ✓ de contrôle, 1 ✗, 1 bras, 1 constat, 1 non vérifiable
+   ✓ tally_sortie, cas faux : un texte vide rend cinq zéros
+   ✓ aplati, cas vrai : les retours à la ligne et les espaces multiples deviennent UNE espace
+   ✓ ligne, cas vrai : la ligne 331 de `quotes.service.ts` est lisible
+   ✓ ligne, cas faux : une ligne hors fichier rend ''
+   ✓ existe, cas vrai : la table de D328 existe à `220557e` ; cas faux : un chemin forgé n'existe pas
+   ✓ fichiers_production, cas vrai/faux : `account.service.ts` gardé, `account.service.spec.ts` écarté
+   ✓ lignes_qui_matchent, cas vrai : « WALK_IN » dans `quotes.service.ts` ≥ 1 ; cas faux : un jeton forgé rend 0
+   ✓ psql, bras positif : `SELECT 1` répond 1
+   ✓ psql, bras négatif : une écriture est REFUSÉE par la session (code non nul et « read-only »)
+   ✓ psql, garde de l'instrument : une requête contenant un mot d'écriture est refusée avant l'envoi
+== calibration : 17 bras, 0 manqué
+
+== X — état LIVE (git status, stash, fetch, rev-parse)
+✗ X1     `HEAD` = `origin/main` après `git fetch` — attendu 'd4680647ac67e5adcb05f97a2b229eb18cdf27b5' · mesuré '7e8f9481fe17f9c1ab4d018656ffbf5dc128cabb'
+✓ X2     `HEAD` est la table d'ouverture de ce lot (`7e8f948`), seule — attendu ['7e8f948'] · mesuré ['7e8f948']
+✓ X3     le parent de `HEAD` est la clôture de D328 (`d468064`) — attendu 'd468064' · mesuré 'd468064'
+✓ X4     aucun fichier suivi modifié (les fichiers non suivis sont les pièces de CETTE lecture, `docs/preuves/D329/`) — attendu [] · mesuré []
+✓ X5     tout fichier non suivi est sous `docs/preuves/D329/lecture-adverse/` (aucun fichier hors du lot) — attendu [] · mesuré []
+✓ X6     aucun stash — attendu [] · mesuré []
+✓ X7     branche `main` — attendu 'main' · mesuré 'main'
+
+== P — provenance et ordre des commits de D328 (objets git)
+✓ P1     D328 = 8 commits entre la clôture de D327 et la sienne — attendu 8 · mesuré 8
+✓ P2     le premier commit de D328 est `220557e`, et son parent est la clôture de D327 — attendu ('220557e', 'ab8e6f6') · mesuré ('220557e', 'ab8e6f6')
+✓ P3     le premier commit ne contient QUE `table-ouverture.md` (1 fichier, ajouté) — attendu ['A\tdocs/preuves/D328/table-ouverture.md'] · mesuré ['A\tdocs/preuves/D328/table-ouverture.md']
+✓ P4     le diff de D328 : 20 fichiers, dont les 3 `.md` d'autorité et rien d'autre hors de `docs/preuves/D328/` — attendu (20, ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md']) · mesuré (20, ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'])
+✓ P5     aucun fichier de code, de test, de harnais, de migration ni `docker-compose.yml` au diff (lot documentaire) — attendu [] · mesuré []
+✓ P6     17 fichiers ajoutés sous `docs/preuves/D328/`, 3 modifiés (les `.md`), 0 supprimé — attendu (17, 3, 0) · mesuré (17, 3, 0)
+✓ P7     la table d'ouverture déclare 22 chemins (18 attendus + 2 conditionnels + ligne `table-ouverture.md` comprise), extraits par l'instrument — attendu 20 · mesuré 20
+✓ P8     diff ⊆ table (chemins COMPLETS) : fichiers du diff que la table ne déclare pas — attendu [] · mesuré []
+✓ P9     table ⊆ diff : fichiers déclarés que le diff ne contient pas (les deux conditionnels doivent exister) — attendu [] · mesuré []
+✓ P10    calibration de P8 sur un diff forgé : un fichier de plus est détecté comme non déclaré — attendu ['docs/preuves/D328/ZZZ-forge.md'] · mesuré ['docs/preuves/D328/ZZZ-forge.md']
+✓ P11    la table n'est PAS écrite par préfixe : aucune ligne de la table ne déclare un chemin qui finit par `/` — attendu [] · mesuré []
+✓ P12    la table recopiée dans le point d'entrée : même nombre de lignes de tableau que la table d'origine — attendu 20 · mesuré 20
+✓ P13    chaque ligne de la table d'origine se retrouve MOT POUR MOT dans la table recopiée — attendu [] · mesuré []
+✓ P14    inversement : chaque ligne recopiée existe dans la table d'origine — attendu [] · mesuré []
+✓ P15    la table d'origine annonce « Aucune à l'ouverture » et aucun commit de D328 ne la modifie après `220557e` — attendu 0 · mesuré 0
+✓ P16    la sortie de la lecture adverse entre dans le 2ᵉ commit (`630a6c5`) — attendu '630a6c5' · mesuré '630a6c5'
+✓ P17    les trois `.md` d'autorité n'entrent QUE dans le dernier commit (`d468064`) — attendu ['d468064', 'd468064', 'd468064'] · mesuré ['d468064', 'd468064', 'd468064']
+✓ P18    l'ordre : sortie de la lecture adverse < tout `.md` d'autorité (index de commit) — attendu True · mesuré True
+✓ P19    l'état des lieux (sondes, relevé du code) et la première passe D277 précèdent aussi tout `.md` — attendu True · mesuré True
+✓ P20    les `.md` sont modifiés par UN seul commit : 3 fichiers, 1 commit — attendu 1 · mesuré 1
+✓ P21    le message du dernier commit annonce « RANG 36 : EN ATTENTE D'ARBITRAGE DE KO » — attendu True · mesuré True
+✓ P22a   `AGENTS.md` : 0 LF nu sur l'arbre (CRLF parcourus : 1635) — attendu 0 · mesuré 0
+✓ P22b   `ZWADJ_BACKLOG.md` : 0 LF nu sur l'arbre (CRLF parcourus : 5481) — attendu 0 · mesuré 0
+✓ P22c   `ZWADJ_CONTINUITE.md` : 0 LF nu sur l'arbre (CRLF parcourus : 20340) — attendu 0 · mesuré 0
+✓ P23    `balayage.py` de D328 est LE MÊME OBJET git que celui de D327 — attendu '585a3769bdab7e54f0b2a5702fc3ec1842835616' · mesuré '585a3769bdab7e54f0b2a5702fc3ec1842835616'
+
+== R — les textes de l'arbitrage et les décisions à ratifier
+✓ R1     R1 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R2     R2 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R3     R3 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R4     R4 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R5     R5 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R6     R6 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R7     R7 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R8     R8 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R9     R9 est écrite avec la marque « proposition du relecteur, adoptée par Ko le 11/10/2026 » — attendu True · mesuré True
+✓ R10    R1 à R9 : exactement 9 propositions numérotées, consécutives, dans le bloc d'arbitrage — attendu (9, True) · mesuré (9, True)
+✓ R11    D1 : 6 puces + un motif, dans l'ordre des rangs — attendu 7 · mesuré 7
+✓ R12    D1 : les puces de l'ordre des rangs = celles du bloc de la méthode renforcée (mot pour mot) — attendu ['la base clients ;', 'le nom du client sur le devis ;', 'la numérotation (R3) ;', 'le tableau du PDF (constat 1 de Ko du 08/10) ;', 'la boîte de dialogue de langue (décision A) et le retrait de la branche « langue du client » ;', '« Ma salle » sur tous ses chemins (point 3 du premier texte).', 'Motif : tout dépend de la base clients ou part dans le même lot ; deux cadrages feraient deux découpages incohérents.'] · mesuré ['la base clients ;', 'le nom du client sur le devis ;', 'la numérotation (R3) ;', 'le tableau du PDF (constat 1 de Ko du 08/10) ;', 'la boîte de dialogue de langue (décision A) et le retrait de la branche « langue du client » ;', '« Ma salle » sur tous ses chemins (point 3 du premier texte).', 'Motif : tout dépend de la base clients ou part dans le même lot ; deux cadrages feraient deux découpages incohérents.']
+✓ R13    D2 : 4 puces de méthode + un motif, dans l'ordre des rangs — attendu 5 · mesuré 5
+✓ R14    D2 : les puces de l'ordre des rangs = celles du bloc de la méthode renforcée (mot pour mot) — attendu ['RENFORCÉE pour la commission par origine (ce que le serveur calcule et enregistre comme montant).', "RENFORCÉE pour la numérotation, parce qu'elle s'écrit dans la transaction qui enregistre les montants du devis : un verrou ou un échec y bloque la création d'un devis.", "Les chemins d'identité (vérification du téléphone, fusion) suivent la règle de la tranche A10 : chemins sensibles, revue humaine obligatoire.", 'Le reste en NORMALE, avec la règle des montants pour le PDF.', 'Motif : la méthode se décide par ce que le point touche (décision du relecteur de D325).'] · mesuré ['RENFORCÉE pour la commission par origine (ce que le serveur calcule et enregistre comme montant).', "RENFORCÉE pour la numérotation, parce qu'elle s'écrit dans la transaction qui enregistre les montants du devis : un verrou ou un échec y bloque la création d'un devis.", "Les chemins d'identité (vérification du téléphone, fusion) suivent la règle de la tranche A10 : chemins sensibles, revue humaine obligatoire.", 'Le reste en NORMALE, avec la règle des montants pour le PDF.', 'Motif : la méthode se décide par ce que le point touche (décision du relecteur de D325).']
+✗ R15    la section D328 porte HUIT décisions de la session numérotées (1) à (8), consécutives — attendu (8, True) · mesuré (9, False)
+✗ R16    le bloc D328 de la méthode renforcée porte UN paragraphe « à confirmer » de 5 points (i) à (v) — attendu (1, ['i', 'ii', 'iii', 'iv', 'v']) · mesuré (0, [])
+✗ R17    le point « à confirmer » (ii) est la lecture de « A10 » comme la ligne de `AGENTS.md` « chemins critiques → revue humaine » ; aucune autre définition trouvée — attendu True · mesuré False
+✓ R18    la ligne de `AGENTS.md` que (ii) cite existe : « requiert revue humaine » (chemins critiques : paiement, auth, concurrence) — attendu True · mesuré True
+✓ R19    aucun des trois fichiers n'écrit « neuf décisions » : le chiffre « neuf » n'est PAS dans l'état — attendu [] · mesuré []
+✓ R20    le mot « huit décisions de la session » n'est pas écrit non plus (le compte est celui de la numérotation (1)-(8)), occurrences trouvées — attendu [] · mesuré []
+· R-C1   CONSTAT : le fichier numérote HUIT décisions de la session ((1) à (8) : ['1', '2', '3', '4', '5', '5', '6', '7', '8']) ; le bloc D328 de la méthode renforcée porte en plus UN paragraphe « à confirmer » de CINQ points dont (ii) = « A10 » (le seul que l'italique *à confirmer* marque en propre). 8 + 1 = 9 : le « neuf » du rapport se retrouve SI l'on compte (ii) comme une neuvième ; il n'est écrit nulle part. L'état du fichier : huit numérotées, plus cinq points dérivés « à confirmer » dont un seul est une lecture de règle. Le rapport lui-même n'est pas au dépôt.
+
+== C — les comptes que le cadrage écrit, confrontés à ce qu'il énumère
+✗ C0     le cadrage est lu en entier (de son titre au titre `##` suivant), caractères parcourus — attendu True · mesuré False
+✓ C1     modes de défaillance M-1 à M-24 : 24, consécutifs, sans doublon — attendu (24, True) · mesuré (24, True)
+✓ C2     contrats d'API K-1 à K-11 : 11, consécutifs — attendu (11, True) · mesuré (11, True)
+✓ C3     lots L35-1 à L35-7 : 7, consécutifs — attendu (7, True) · mesuré (7, True)
+✓ C4     décisions dues DB-1 à DB-17 : 17, consécutives — attendu (17, True) · mesuré (17, True)
+✓ C5     questions pour le juriste J-1 à J-7 : 7, consécutives — attendu (7, True) · mesuré (7, True)
+✓ C6     le texte écrit « vingt-quatre modes de défaillance » (ou 24) et le compte réel est 24 — attendu True · mesuré True
+✓ C7     le texte écrit « dix-sept décisions » et le compte réel est 17 — attendu True · mesuré True
+✓ C8     le texte écrit « onze contrats » et le compte réel est 11 — attendu True · mesuré True
+✓ C9     le texte écrit « sept lots » et « sept questions pour le juriste », les comptes réels sont 7 et 7 — attendu True · mesuré True
+✓ C10    arithmétique de Ko (12/10) : 7 ratifiées avec le conseil + DB-8 et DB-17 = 9 traitées ; « les huit autres » = 17 − 9 — attendu (9, 8, [1, 2, 5, 6, 7, 12, 13, 14]) · mesuré (9, 8, [1, 2, 5, 6, 7, 12, 13, 14])
+   (relevé) DB-1 — lots L35-1..4 cités dans son texte : aucun
+   (relevé) DB-2 — lots L35-1..4 cités dans son texte : aucun
+   (relevé) DB-5 — lots L35-1..4 cités dans son texte : aucun
+   (relevé) DB-6 — lots L35-1..4 cités dans son texte : aucun
+   (relevé) DB-7 — lots L35-1..4 cités dans son texte : aucun
+   (relevé) DB-12 — lots L35-1..4 cités dans son texte : aucun
+   (relevé) DB-13 — lots L35-1..4 cités dans son texte : aucun
+   (relevé) DB-14 — lots L35-1..4 cités dans son texte : aucun
+✓ C11    L35-4 (la fiche) cite l'exception R4 — « K-1 … l'exception R4 (demande ou visite en cours) » — alors que la décision du relecteur du 12/10 la rattache à L35-5 — attendu True · mesuré True
+✓ C12    M-6 écrit toujours « une révision reprend le nom **courant** de la fiche (R8) » — à AMENDER par la décision 1 du relecteur du 12/10 — attendu True · mesuré True
+✓ C13    R8 écrit « Une révision reprend le nom courant de la fiche » — à BARRER (décision 1 du 12/10) — attendu True · mesuré True
+✓ C14    DB-8 « le pro qui tape son propre numéro » est dans le cadrage sans recommandation, et M-11 le rappelle — attendu True · mesuré True
+· C-C1   CONSTAT : le cadrage compare « le téléphone du CLIENT est facultatif » à **D61** (ligne du tableau du § 1). D61 est, au registre, « corps de la demande. { date, startMinutes, phone? } strict » — le corps de la demande de VISITE (`visitBookingCreateSchema`, `phone: dzPhoneSchema.optional()`, venue.ts:1334). La demande de réservation d'une FÊTE (`bookingCreateSchema`) exige `contactPhone: dzPhoneSchema` (booking.ts:121, NOT NULL en base). La décision 2 du relecteur du 12/10 dit « la demande en ligne d'un client qui a un compte ne crée pas de fiche, son téléphone y reste facultatif » : vrai pour la visite, FAUX pour la demande de réservation.
+✓ C15    D61 au registre = le corps de la demande de VISITE (`phone?`) — attendu True · mesuré True
+✓ C16    `bookingCreateSchema.contactPhone` est REQUIS (`dzPhoneSchema` sans `.optional()`) — attendu True · mesuré True
+✓ C17    `visitBookingCreateSchema.phone` est FACULTATIF (`dzPhoneSchema.optional()`) — attendu True · mesuré True
+
+== Q — le code cité à la ligne et les faits F-1 à F-6, relevés par des expressions écrites ICI
+✓ Q1     apps/api/src/venues/quotes.service.ts:331 — F-3 : `bookings.source` dérivée de `quotes.client_id` — attendu True · mesuré True
+✓ Q2     apps/api/src/venues/quotes.service.ts:471 — M-4 / DB-15 : `clientId` accepté sans vérification — attendu True · mesuré True
+✓ Q3     apps/api/src/account/account.service.ts:109 — F-4 : `PATCH /me` écrit le numéro sans code — attendu True · mesuré True
+✓ Q4     apps/api/src/account/account.service.ts:125 — F-4 (profil pro) — attendu True · mesuré True
+✓ Q5     apps/api/src/venues/bookings.service.ts:272 — F-3 : la demande directe écrit CLIENT — attendu True · mesuré True
+✓ Q6     apps/api/src/venues/visit-bookings.service.ts:156 — le numéro de la visite retombe sur celui du compte — attendu True · mesuré True
+✓ Q7     apps/api/src/venues/booking-locks.prisma.ts:76 — M-14 : verrou existant de la ligne `venues` — attendu True · mesuré True
+✓ Q8     apps/api/src/venues/availability-blocks.service.ts:116 — M-14 : le second verrou existant — attendu True · mesuré True
+✓ Q9     apps/api/src/venues/venue-store.prisma.ts:81 — M-14 : `updated_at` est la clé de tri de la liste — attendu True · mesuré True
+✓ Q10    F-2 : 0 écriture du modèle `Commission` dans la production de l'API (122 fichiers parcourus) — attendu [] · mesuré []
+✓ Q11    F-1 : 0 écriture de `CashbackClaim` dans la production de l'API — attendu [] · mesuré []
+✓ Q12    bras positif de Q10 : le taux de la salle (`commissionRateBps`) apparaît dans ≥ 3 lignes de production (le motif voit ce qui existe) — attendu True · mesuré True
+✗ Q13    F-2 : `commissions_rate_range` : CHECK (rate_bps >= 100 AND rate_bps <= 500) dans les migrations (27 fichiers `.sql` lus) — attendu True · mesuré False
+✓ Q14    F-2 : `commissions_booking_id_key` — unique sur `booking_id` (une ligne par réservation) — attendu True · mesuré True
+✓ Q15    F-4 : aucun index ni contrainte UNIQUE sur un téléphone dans les migrations (hors NOT NULL) — attendu [] · mesuré []
+✓ Q16    le cadrage écrit « 8 usages dans 7 fichiers » de `<PhoneField` : relevé indépendant — attendu (8, 7) · mesuré (8, 7)
+✓ Q17    F-4 : `pg-boss` n'est pas déclaré dans `apps/api/package.json` — attendu False · mesuré False
+✓ Q18    F-4 : un seul adaptateur du port WhatsApp (le logueur de développement) — attendu 1 · mesuré 1
+✓ Q19    la contradiction du § 0 : l'en-tête de `phone.ts` écrit « (venueId, phone) » — attendu True · mesuré True
+✓ Q20    DB-15 : `quoteCreateSchema` porte `clientId` — attendu True · mesuré True
+✓ Q21    F-6 : la suppression d'un compte ne touche ni réservation, ni visite, ni devis (aucun accès `booking`/`visitBooking`/`quote` dans le service) — attendu [] · mesuré []
+✓ Q22    la sortie de la lecture adverse de D328 : 120 contrôles (✓ + ✗), 2 ✗ de D327 + 2 d'état vivant, 39 bras, 3 constats, 4 non vérifiables — attendu (120, 4, 39, 3, 4) · mesuré (120, 4, 39, 3, 4)
+✓ Q23    la ventilation que D328 écrit (C 13 · L 4 · P 23 · Q 63 · R 11 · X 6) : somme 120, aucune famille à zéro — attendu (120, {'C': 13, 'L': 4, 'P': 23, 'Q': 63, 'R': 11, 'X': 6}) · mesuré (120, {'C': 13, 'L': 4, 'P': 23, 'Q': 63, 'R': 11, 'X': 6})
+✓ Q24    la ventilation RECOMPTÉE sur les lignes de la sortie = celle qu'elle imprime — attendu {'C': 13, 'L': 4, 'P': 23, 'Q': 63, 'R': 11, 'X': 6} · mesuré {'X': 6, 'P': 23, 'C': 13, 'R': 11, 'Q': 63, 'L': 4}
+✓ Q25    `defauts-instrument.txt` : 10 défauts numérotés — attendu 10 · mesuré 10
+✓ Q26    la première passe versée : 10 ✗ — attendu 10 · mesuré 10
+✓ Q27    première passe D277 : 468 occurrences, 42 motifs examinés, 3 motifs à zéro — attendu (468, 42, 3) · mesuré (468, 42, 3)
+✓ Q28    dernière passe D277 : 615 occurrences, 42 motifs examinés, 0 motif à zéro — attendu (615, 42, 0) · mesuré (615, 42, 0)
+✗ Q29    le corpus de la dernière passe (arbre, caractères aplatis) = celui des `.md` commités à `d468064` — attendu 2702026 · mesuré 2704348
+· Q-C1   CONSTAT : la dernière passe D277 de D328 porte sur 2702026 caractères aplatis ; les quatre fichiers commités en portent 2704348 : 2322 caractères (0.09 %) ont été écrits APRÈS elle. D328 le déclare (« rejouée après toutes les écritures sauf la présente ligne et le bloc d'audit qui suit »), mais la taille de l'écart est plus que « la présente ligne » : la limite est écrite, sa mesure ne l'était pas.
+   (relevé) audit-secrets-d328a.txt : 144004 octets
+   (relevé) audit-secrets-d328b.txt : 144193 octets
+✓ Q30    D328 écrit « 144 004 octets » pour `audit-secrets-d328a.txt` — attendu 144004 · mesuré 144004
+✓ Q31    les deux tris différentiels : « 0 alerte ABSENTE de la précédente » (a et b) — attendu (True, True) · mesuré (True, True)
+✗ Q32    le backlog porte une entrée par lot du correctif : L35-1 à L35-7 toutes nommées dans « Reports du 11/10/2026 — rang 35 » — attendu ['1', '2', '3', '4', '5', '6', '7'] · mesuré []
+✗ Q33    le backlog porte les 17 décisions dues DB-1 à DB-17 (aucune manquante) — attendu [] · mesuré ['DB-1', 'DB-2', 'DB-3', 'DB-4', 'DB-5', 'DB-6', 'DB-7', 'DB-8', 'DB-9', 'DB-10', 'DB-11', 'DB-12', 'DB-13', 'DB-14', 'DB-15', 'DB-16', 'DB-17']
+✓ Q34    le backlog porte les 7 questions pour le juriste J-1 à J-7 — attendu [] · mesuré []
+✓ Q35    le registre : la dernière ligne est D328 ; D329 n'existe nulle part — attendu ('D328', 0) · mesuré ('D328', 0)
+✓ Q36    RANG 36 : EN ATTENTE est écrit dans l'ordre des rangs (au moins une occurrence « RANG 36 : EN ATTENTE D'ARBITRAGE DE KO ») — attendu True · mesuré True
+
+== L — état VIVANT de la base de développement (SELECT seulement, session en lecture seule)
+✗ L1     D328 relevait 1 compte, 1 pro, 5 salles dont 4 supprimées — attendu (1, 1, 5, 4) · mesuré (1, 1, 6, 5)
+✗ L2     D328 relevait 16 devis, tous sans `client_id` — attendu (16, 16) · mesuré (20, 20)
+✗ L3     D328 relevait 8 réservations, toutes `WALK_IN`, dont 6 avec le numéro du PRO comme contact du client — attendu (8, 8, 6) · mesuré (10, 10, 6)
+✓ L4     D328 relevait 0 ligne `commissions` et 0 ligne `cashback_claims` — attendu (0, 0) · mesuré (0, 0)
+
+== N — NON VÉRIFIABLE (déclaré, pas coché)
+? N1     NON VÉRIFIABLE : que les textes de Ko des 10 et 11/10 (ordre des rangs) soient reproduits MOT POUR MOT : ils n'existent que dans le chat (même limite que R-N1 de D328).
+? N2     NON VÉRIFIABLE : que le « rapport de D328 » annonce NEUF décisions : ce rapport est un message de chat de la session précédente, il n'est pas au dépôt ; le compte de ce qui est au dépôt est dans R15, R16 et R-C1.
+? N3     NON VÉRIFIABLE : que les arbitrages de Ko soient la PREMIÈRE écriture d'autorité de D328 : les trois `.md` entrent dans UN seul commit (P20), `git` ne montre pas l'ordre des écritures à l'intérieur d'un commit. La règle prouve l'ordre ENTRE commits (P18), pas dans un fichier.
+? N4     NON VÉRIFIABLE : que le dernier audit de secrets de D328 (`d328b`) ait couvert les octets FINAUX des trois `.md` : il est commité (d56cfae) AVANT les `.md` (d468064) ; l'écart de corpus de Q-C1 montre que les `.md` ont changé après la dernière passe D277 (même limite que C-N1 de D328).
+? N5     NON VÉRIFIABLE : que « six faits nuancent une prémisse, aucun ne contredit un arbitrage » (§ 0) soit exhaustif : c'est un jugement sur ce que le relevé n'a pas cherché.
+
+== BILAN
+110 contrôles · 8 écarts de D328 · 4 écarts de l'état vivant · 3 constats · 5 non vérifiables
+ventilation par famille : C 18 · L 4 · P 25 · Q 36 · R 20 · X 7  (somme 110)
+écarts de D328 : ['R15', 'R16', 'R17', 'C0', 'Q13', 'Q29', 'Q32', 'Q33']
+écarts de l'état vivant : ['X1', 'L1', 'L2', 'L3']
+constats : ['R-C1', 'C-C1', 'Q-C1']
+non vérifiables : ['N1', 'N2', 'N3', 'N4', 'N5']
+familles à zéro : ['N']
