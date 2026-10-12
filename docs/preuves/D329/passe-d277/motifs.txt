@@ -1,0 +1,52 @@
+# D329 — motifs de la passe D277 du rang 36 (la certification qui couvre D325 et D326 ; lecture adverse de D328 ; arbitrages de Ko du 12/10/2026 ; décisions du relecteur).
+# Lus par balayage.py (copie à l'octet de celui de D328, `cmp` identique, même objet git), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que le lot INVALIDE : « RANG 36 : EN ATTENTE » (il est arbitré) ; « candidat désigné : la certification » (arbitrée) ; l'ordre « certification → lot correctif → ADM-1 → certification → ADM-2 → certification »
+#          (révisé : le correctif se découpe, L35-1 à L35-4 sont placés, L35-5 à L35-7 ne le sont pas) ; « sept lots » / « cinq certifications » / la découpe en quatre ; « Une révision reprend le nom courant de la fiche » (R8 amendée) ;
+#          « téléphone facultatif » / D61 (DB-8 : numéro obligatoire pour toute fiche) ; « dix-sept décisions » (neuf traitées) ; « l'exception R4 » (rattachée à L35-5) ; « aucune autre définition » (la règle A10 a un titre au backlog) ;
+#          « À RATIFIER PAR KO » (les décisions de D328 restent à ratifier) ; « clientId » retiré (DB-15) ; « deux champs de nom » ; la condition de clôture du rang 33.
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « aucun lot de code ne s'ouvre avant une certification » (levé SI la marque est posée) ; « compteur DEUX » ; « troisième lot de code » ; « peut s'ouvrir » ;
+#          « lot de code de plus est tenable » ; « un lot de code PEUT s'ouvrir » ; « RANG 37 » (nouveau) ; « L35-1 » à « L35-4 » (désignés, sans rang) ; « tenable ».
+1|RANG 36 : EN ATTENTE
+1|rang 36 : en attente
+1|candidat DÉSIGNÉ
+1|Candidat DÉSIGNÉ
+1|CANDIDAT DÉSIGNÉ DU RANG 36
+1|la certification qui couvre D325 et D326
+1|certification → lot correctif → ADM-1 → certification → ADM-2 → certification
+1|cinq certifications
+1|sept lots
+1|Une révision reprend le nom courant de la fiche
+1|une révision reprend le nom **courant** de la fiche
+1|téléphone facultatif
+1|le téléphone du CLIENT est facultatif
+1|dix-sept décisions
+1|l'exception R4
+1|exception R4
+1|aucune autre définition
+1|À RATIFIER PAR KO
+1|à ratifier ou à renverser par Ko
+1|condition de clôture du rang 33
+1|clientId` retiré
+1|deux champs de nom
+1|n'ont ni rang ni place
+1|n'a ni rang ni place
+2|aucun lot de code ne s'ouvre avant une certification
+2|Aucun lot de code ne s'ouvre avant une certification
+2|compteur DEUX
+2|compteur **DEUX**
+2|troisième lot de code
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|lot de code de plus est tenable
+2|RANG 37
+2|L35-1
+2|L35-2
+2|L35-3
+2|L35-4
+2|tenable
+2|à ordonner par Ko
+2|lot correctif
+2|ADM-1
+2|pause du chemin de l'argent
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D329
