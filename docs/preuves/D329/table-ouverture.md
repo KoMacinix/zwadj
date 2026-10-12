@@ -96,3 +96,208 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D329/plancher/plancher.txt` | pièce de l'étape |
 | `docs/preuves/D329/plancher/simulation-sortie.txt` | pièce de l'étape |
 | `docs/preuves/D329/plancher/simuler-non-demarrage.py` | pièce de l'étape |
+
+#### Extension 2
+
+**Motif** : les pièces de **SA** passe (point 11) — le dossier `docs/preuves/D329/passe-r36a-20261012-1651/`, versé par `outils/verser.py` : **191 fichiers copiés et RELUS identiques par SHA-256** (192 parcourus, **1 refusé : le journal brut `e2e.log`**, qui porte des jetons et des cookies) —, plus les pièces qui naissent APRÈS la passe et qui ne sont pas les siennes : le rejeu des deux specs sorties de la suite (ajout (b) du relecteur), le diagnostic non certifiant de l'échec de `test:int`, l'extracteur de ce diagnostic. Chemins COMPLETS, un par un — jamais un préfixe. ⚠ Le journal brut de `pnpm test:int` n'est PAS versé (il porte deux jetons et un hôte de tunnel de développement) : son extrait, `passe-r36a-20261012-1651/testint-EXTRAIT.txt`, l'est. Les deux contrôles « 0 valeur réelle » et « 0 cookie » sont déjà déclarés (fichiers conditionnels) et existent. Ce commit n'ajoute que cette extension.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D329/diagnostic-test-int/bras-avec-client-url-EXTRAIT.txt` | pièce de l'étape |
+| `docs/preuves/D329/diagnostic-test-int/bras-sans-surcharge-EXTRAIT.txt` | pièce de l'étape |
+| `docs/preuves/D329/outils/extraire-testint.py` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/arbre-1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/arbre-2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/arbre-3.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/arbre-4.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/arbre-5.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/arbre-6.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A10.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A13.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A3.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A4.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A5.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A6.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A7.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A8.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/A9.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/B1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/B2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/calibration-1-defaut-d310.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/calibration-2-commande-introuvable.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/calibration-3-filtre-sans-titre.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/calibration-4-mutation-connue.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/calibration-5-mutation-neutre.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-10.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-11.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-12.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-3.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-4.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-5.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-6.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-7.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-8.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/available-on-api/pre-vol-9.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/build.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/build.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/build.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes-tout.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes-tout.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes-tout.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-404.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-act-plafonds.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-argon2.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-available-on-api.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-available-on.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-b7.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-booking-status.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-budgets.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-e3d1-s8.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-horizon.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-horloge.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-journey.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-maxprice.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-r25.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-r26.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-r29.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-r30.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-r32.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-r33.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-r4.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-rang23.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-s10a.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-s10b.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-s11a.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-s11b.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-s9.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s1.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s2.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s3.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s4.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s5a.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s5b.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s6.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/campagnes/neutralize-solid-s7.py.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/contre-epreuve.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/contre-epreuve.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/contre-epreuve.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/e2e-EXTRAIT.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/e2e-r26.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/e2e-r26.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/e2e-r26.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/e2e.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/e2e.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/echantillonneur-sortie.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/etat-resume.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/etat.csv` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-e3d1-s8.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-e3d1-s8.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-e3d1-s8.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-r25.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-r25.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-r25.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-r33.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-r33.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-r33.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-s11b.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-s11b.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-s11b.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s1.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s1.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s1.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s2.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s2.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s2.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s3.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s3.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s3.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s6.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s6.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/int-solid-s6.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/inventaire-apres-e2e.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/inventaire-cloture.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/inventaire-ouverture.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-available-on-api.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-campagnes.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-etat.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-main-r26.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-portes.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-r26/R26-1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-r26/R26-2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-r26/R26-3.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-r26/R26-4.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lecture-rang23.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lint.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lint.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/lint.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-avant-e2e.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-avant-testint.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-e2e-r26.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-e3d1-s8.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-r25.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-r33.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-s11b.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-solid-s1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-solid-s2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-solid-s3.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-int-solid-s6.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/pg-ouverture.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/porte-dure.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/ports-apres-e2e.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/ports-avant-e2e-r26.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/ports-avant-e2e.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/ports-ouverture.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/progression.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C1-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C1-t-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C1-t-unit-transitions.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C2-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C3-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C4-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C5-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-C6-unit-transitions.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-F1-a-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-F1-b-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-F5-a-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-F5-b-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/R23-F5-c-unit-transitions.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/pre-vol-int-reservations.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/rang23/pre-vol-unit-transitions.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-apres-e2e-r26.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-apres-e2e.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-build.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-campagnes.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-e2e-r26.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-e2e.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-e3d1-s8.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-r25.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-r33.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-s11b.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-solid-s1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-solid-s2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-solid-s3.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-int-solid-s6.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-lint.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-test.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-testint.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-avant-typecheck.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-cloture.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-ouverture-1.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/sonde-ouverture-2.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/test.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/test.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/test.log` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/testint-EXTRAIT.txt` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/testint.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/testint.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/typecheck.code` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/typecheck.heures` | pièce de l'étape |
+| `docs/preuves/D329/passe-r36a-20261012-1651/typecheck.log` | pièce de l'étape |
+| `docs/preuves/D329/rejeu-specs/inventaire-apres-rejeu.txt` | pièce de l'étape |
+| `docs/preuves/D329/rejeu-specs/inventaire-avant-rejeu.txt` | pièce de l'étape |
+| `docs/preuves/D329/rejeu-specs/r30-lien-calendrier-pro-EXTRAIT.txt` | pièce de l'étape |
+| `docs/preuves/D329/rejeu-specs/r32-nouvelle-reservation-EXTRAIT.txt` | pièce de l'étape |
