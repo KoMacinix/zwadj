@@ -1,0 +1,4 @@
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest-introuvable-d312"], "args": ["--filter", "@zwadj/api", "exec", "vitest-introuvable-d312", "run", "src/venues/venues-public.service.spec.ts"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/api", "exec", "vitest", "run", "src/venues/venues-public.service.spec.ts", "-t", "motif-sans-titre-d312-qq"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/api", "exec", "vitest", "run", "src/venues/venues-public.service.spec.ts", "-t", "date passée"]}
+{"niveau": "B", "outil": "pnpm", "reecrit": ["exec", "vitest"], "args": ["--filter", "@zwadj/api", "exec", "vitest", "run", "src/venues/venues-public.service.spec.ts", "-t", "date passée"]}

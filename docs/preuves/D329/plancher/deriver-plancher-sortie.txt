@@ -1,0 +1,40 @@
+harnais à 257471d : 32 (attendu 32) · à HEAD : 34 (attendu 34)
+  inchangés (blob identique) : 30 · changés : ['act-plafonds', 'horloge'] · neufs : ['r32', 'r33'] · disparus : []
+  ✓ calibration : positif — act-plafonds (changé à D325/D326) est REFUSÉ
+  ✓ calibration : négatif — argon2 (inchangé) est ACCEPTÉ
+planchers de D324 lus : 28 (attendu 28)
+non-démarrages MESURÉS à D329 lus : 4 → ['act-plafonds', 'horloge', 'r32', 'r33'] (attendu 4 : act-plafonds, horloge, r32, r33)
+pièces de `neutralisation/` AUTRES que les harnais, changées depuis 257471d : 0 (attendu 0) []
+harnais LUS (preuve lue, hors plancher) : ['available-on-api', 'r25', 'r26', 'rang23'] · changés depuis 257471d : [] (attendu [])
+planchers composés : 30 (attendu 30 = 34 − 4 lus) · mesurés 4 (attendu 4) · repris 26 (attendu 26)
+  404              tout  P  46.44 s · REPRIS de D324 (blob identique)
+  act-plafonds     tout  P   4.62 s · MESURÉ à D329
+  argon2           tout  P   4.83 s · REPRIS de D324 (blob identique)
+  available-on     tout  P  38.73 s · REPRIS de D324 (blob identique)
+  b7               tout  P   5.01 s · REPRIS de D324 (blob identique)
+  booking-status   tout  P   4.89 s · REPRIS de D324 (blob identique)
+  budgets          tout  P   0.84 s · REPRIS de D324 (blob identique)
+  e3d1-s8          --int P   8.70 s · REPRIS de D324 (blob identique)
+  horizon          tout  P  22.92 s · REPRIS de D324 (blob identique)
+  horloge          tout  P   4.53 s · MESURÉ à D329
+  journey          tout  P  38.55 s · REPRIS de D324 (blob identique)
+  maxprice         tout  P  38.13 s · REPRIS de D324 (blob identique)
+  r29              tout  P   4.65 s · REPRIS de D324 (blob identique)
+  r30              tout  P   4.62 s · REPRIS de D324 (blob identique)
+  r32              tout  P   4.56 s · MESURÉ à D329
+  r33              --int P   4.59 s · MESURÉ à D329
+  r4               tout  P   4.50 s · REPRIS de D324 (blob identique)
+  s10a             tout  P   4.41 s · REPRIS de D324 (blob identique)
+  s10b             tout  P   4.59 s · REPRIS de D324 (blob identique)
+  s11a             tout  P   4.47 s · REPRIS de D324 (blob identique)
+  s11b             --int P   4.44 s · REPRIS de D324 (blob identique)
+  s9               tout  P   4.44 s · REPRIS de D324 (blob identique)
+  solid-s1         --int P   4.47 s · REPRIS de D324 (blob identique)
+  solid-s2         --int P   4.77 s · REPRIS de D324 (blob identique)
+  solid-s3         --int P   4.47 s · REPRIS de D324 (blob identique)
+  solid-s4         tout  P   4.56 s · REPRIS de D324 (blob identique)
+  solid-s5a        tout  P   5.13 s · REPRIS de D324 (blob identique)
+  solid-s5b        tout  P   4.50 s · REPRIS de D324 (blob identique)
+  solid-s6         --int P   4.44 s · REPRIS de D324 (blob identique)
+  solid-s7         tout  P   4.23 s · REPRIS de D324 (blob identique)
+plancher.txt écrit : 30 lignes P (attendu 30)

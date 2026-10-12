@@ -1,0 +1,32 @@
+== ÉNUMÉRATION : 34 harnais (attendu 34) · à simuler : ['act-plafonds', 'horloge', 'r32', 'r33'] (4, attendu 4) · cibles lues : [('act-plafonds', 4), ('horloge', 2), ('r32', 65), ('r33', 102)]
+   pnpm réel : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD · node réel : C:\Program Files\nodejs\node.EXE · python : C:\Users\benla\AppData\Local\Python\pythoncore-3.14-64\python.exe
+
+== CALIBRATION (a) — la cale elle-même
+  ✓ cale A run src/venues/venues-public.service.spec.ts : code 1, 0.05 s, appels 1, lignes Tests 0 — attendu : code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B run src/venues/venues-public.service.spec.ts : code 1, 1.52 s, appels 1, lignes Tests 0 — attendu : réécrit exec vitest, code≠0, pas de Tests · dernière ligne : operable program or batch file.
+  ✓ cale B --version : code 127, 0.10 s, appels 1, lignes Tests 0 — attendu : NON RÉÉCRIT, code 127 · dernière ligne : CALE B : forme d'appel non reconnue, NON RÉÉCRIT — rien n'est lancé
+
+== CALIBRATION (b) — BRAS POSITIF : `available-on-api` (qui LIT sa sortie) constate lui-même le non-démarrage
+  ✓ sous A : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 0.3 s · arbre propre
+  ✓ sous B : (iv) mutation connue « NON DÉMARRÉE » (attendu « NON DÉMARRÉE » ; sans cale, « MORDUE », D312) · code 2 · appels de cale 4 · « ✓ » 0 (attendu 0) · 6.2 s · arbre propre
+
+== MESURE — les 4 harnais à mesurer (act-plafonds, horloge, r32, r33), chacun dans la passe qui le certifie, sous A puis sous B
+  · act-plafonds     tout  A :    0.15 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 2
+  · act-plafonds     tout  B :    1.54 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  4 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 2
+  · horloge          tout  A :    0.13 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · horloge          tout  B :    1.51 s · code   1 · « ✓ »  0 · « ✗ »  0 · cibles  2 · appels de cale   1 · non réécrits 0 · lignes Tests 0 · reliquats identiques retirés 1
+  · r32              tout  A :    0.14 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 65 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r32              tout  B :    1.52 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 65 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r33              --int A :    0.14 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 102 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+  · r33              --int B :    1.53 s · code   2 · « ✓ »  0 · « ✗ »  1 · cibles 102 · appels de cale   1 · non réécrits 0 · lignes Tests 0
+
+== CALIBRATION (c) — BRAS NÉGATIF : `argon2` SANS cale, par la même fonction
+  ✓ sans cale : code 0 · « ✓ » 3 (attendu 3) · appels de cale 0 (attendu 0) · 17.3 s (attendu > 1.61 s, son plus long non-démarrage simulé À D324)
+
+BRAS ET DÉFAUTS MANQUÉS : 0 (attendu 0) — la simulation vaut mesure
+
+== TABLE — par harnais : non-démarrage simulé le plus long (T = max(A, B)), en secondes
+T act-plafonds tout 4 0.15 1.54 1.54 0
+T horloge tout 2 0.13 1.51 1.51 0
+T r32 tout 65 0.14 1.52 1.52 0
+T r33 --int 102 0.14 1.53 1.53 0
