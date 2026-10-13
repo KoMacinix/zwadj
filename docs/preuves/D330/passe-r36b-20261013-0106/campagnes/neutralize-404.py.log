@@ -1,0 +1,16 @@
+✓ C1. ⛔ LE DÉFAUT D'ORIGINE, À L'IDENTIQUE : la 404 racine reprend son tiret bas
+✓ C2. Une COPIE `_not-found.tsx` est laissée à côté du bon fichier
+✓ C3. L'attrape-tout est SUPPRIMÉ (la 404 localisée redevient inatteignable)
+✓ C4. L'attrape-tout RETOURNE au lieu de LEVER (page vide en statut 200)
+✓ C5. Les deux sorties sont INVERSÉES (le cas fréquent renvoyé à la case départ)
+✓ C6. Le « 404 » revient à l'écran, au-dessus du titre
+✓ C6b. Le décor perd son `alt=""` — il redevient annoncé aux lecteurs d'écran
+✓ C6c. L'image du décor n'est plus livrée (`src` qui ne pointe sur rien)
+✓ C7. La ligne arabe de la 404 racine perd sa direction (`dir="rtl"`)
+✓ C8. La 404 localisée lit le MAUVAIS espace de noms de traduction
+✓ C9. ⛔ LE SOFT-404 REVIENT : `loading.tsx` remonte en `[locale]/`
+✓ C10. La remontée À MI-CHEMIN : `salles/loading.tsx` (recouvre la fiche)
+
+12 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+

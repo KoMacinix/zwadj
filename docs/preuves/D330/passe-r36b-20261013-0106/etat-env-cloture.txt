@@ -1,0 +1,15 @@
+ÉTAT DES FICHIERS .env — relevé « cloture » — HORODATAGE 13/10/2026 03:52:03 — AUCUNE VALEUR
+calibration : 4 bras, tous ✓
+FICHIER apps/api/.env · octets 2686 · SHA256 813afbfcf834b9a4392316ff043d7aef7931281556a9fcac6606eb90db4680e1 · modifié 2026-10-13 00:10:07 · 12 variable(s) dont 4 d'URL
+   URL DATABASE_URL : localhost
+   URL CORS_ORIGINS : localhost, localhost
+   URL CLIENT_URL : localhost
+   URL PRO_URL : localhost
+FICHIER apps/client/.env · octets 698 · SHA256 479b06e808c6218b31e9fc3d858a62858ac45cd77fc35c83f0373681e20d7311 · modifié 2026-10-13 00:10:23 · 3 variable(s) dont 2 d'URL
+   URL NEXT_PUBLIC_API_URL : localhost
+   URL NEXT_PUBLIC_PRO_URL : localhost
+FICHIER apps/pro/.env · octets 214 · SHA256 d2d5e00c083ed3ef08d023add33d1e74106432427a9e8ae226a84f6a96f515a8 · modifié 2026-07-15 17:35:23 · 2 variable(s) dont 2 d'URL
+   URL VITE_API_URL : localhost
+   URL VITE_CLIENT_URL : localhost
+RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : []
+PORTE : VERTE

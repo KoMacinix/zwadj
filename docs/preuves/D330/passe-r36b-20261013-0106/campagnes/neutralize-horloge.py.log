@@ -1,0 +1,7 @@
+temoin (aucune mutation)
+✓ C1  le gel d'horloge est retire  (attendu rouge, obtenu rouge)
+✓ C2  l'ancre MAINTENANT est deplacee de dix ans  (attendu vert, obtenu vert)
+
+2 garde(s) mordue(s) sur 2 cible(s).
+arbre rendu a son etat de depart : verifie.
+
