@@ -1,0 +1,24 @@
+=== CAS 1 — tout local : la passe PEUT démarrer
+code=0 (attendu 0)
+   URL NEXT_PUBLIC_API_URL : localhost
+RÉSUMÉ fichiers 2 · variables d'URL 4 · hôtes non locaux 0 (attendu 0) : []
+PORTE : VERTE
+=== CAS 2 — CLIENT_URL sur un tunnel : la passe NE DÉMARRE PAS
+code=3 (attendu 3)
+FICHIER apps/client/.env · octets 42 · SHA256 097cd4b48dffd8c4e882781aa5ba74fb4fbbe524fc66a11942b36bfb6e5cec47 · modifié 2026-10-13 00:55:47 · 1 variable(s) dont 1 d'URL
+   URL NEXT_PUBLIC_API_URL : localhost
+RÉSUMÉ fichiers 2 · variables d'URL 4 · hôtes non locaux 2 (attendu 0) : ['apps/api/.env:CLIENT_URL', 'apps/api/.env:CORS_ORIGINS']
+PORTE : ROUGE — un hôte n'est pas local
+    l'hôte distant ni le secret ne figurent NI dans la sortie NI dans le fichier écrit :
+cas2.txt:0 sortie/etat-env-ouverture-distante.txt:0 cas1.txt:0 sortie/etat-env-ouverture.txt:0 (attendu 0 partout)
+=== CAS 3 — comparaison ouverture / clôture : identique, puis un octet de plus
+ouverture : 2 fichier(s) · clôture : 2 fichier(s)
+COMPARAISON : IDENTIQUE — mêmes fichiers, mêmes empreintes, hôtes locaux (attendu)
+code=0 (attendu 0)
+ouverture : 2 fichier(s) · clôture : 2 fichier(s)
+⛔ apps/api/.env : EMPREINTE DIFFÉRENTE
+COMPARAISON : DIFFÉRENCE — la marque est refusée
+code=4 (attendu 4)
+=== CAS 4 — apps/api/.env ABSENT
+✗ apps/api/.env est ABSENT : le seul fichier que `test:int` lit par un `dotenv` explicite manque.
+code=2 (attendu 2)

@@ -1,0 +1,27 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D329/audit-secrets-d329b.txt (190 contextes) · nouvelle docs/preuves/D330/audit-secrets-d330a.txt (202 contextes)
+   alertes ABSENTES de la précédente : 12 — à trier au contexte avant le commit
+   [url-avec-identifiants] docs/preuves/D330/lecture-adverse/confronter-d329.py — contexte : ligne 1320 de docs/preuves/D330/audit-secrets-d330a.txt
+   [url-avec-identifiants] docs/preuves/D330/lecture-adverse/confronter-d329.py — contexte : ligne 1322 de docs/preuves/D330/audit-secrets-d330a.txt
+   [jeton] docs/preuves/D330/lecture-adverse/confronter-d329.py — contexte : ligne 1324 de docs/preuves/D330/audit-secrets-d330a.txt
+   [jeton] docs/preuves/D330/lecture-adverse/confronter-d329.py — contexte : ligne 1326 de docs/preuves/D330/audit-secrets-d330a.txt
+   [jeton] docs/preuves/D330/lecture-adverse/confronter-sortie.txt — contexte : ligne 1328 de docs/preuves/D330/audit-secrets-d330a.txt
+   [url-avec-identifiants] docs/preuves/D330/outils/etat-env-bout-en-bout.sh — contexte : ligne 1330 de docs/preuves/D330/audit-secrets-d330a.txt
+   [url-avec-identifiants] docs/preuves/D330/outils/etat-env-bout-en-bout.sh — contexte : ligne 1332 de docs/preuves/D330/audit-secrets-d330a.txt
+   [url-avec-identifiants] docs/preuves/D330/outils/etat-env-bout-en-bout.sh — contexte : ligne 1334 de docs/preuves/D330/audit-secrets-d330a.txt
+   [url-avec-identifiants] docs/preuves/D330/outils/etat-env.py — contexte : ligne 1336 de docs/preuves/D330/audit-secrets-d330a.txt
+   [url-avec-identifiants] docs/preuves/D330/outils/etat-env.py — contexte : ligne 1338 de docs/preuves/D330/audit-secrets-d330a.txt
+   [jeton] docs/preuves/D330/outils/verser.py — contexte : ligne 1340 de docs/preuves/D330/audit-secrets-d330a.txt
+   [jeton] docs/preuves/D330/passe-d277/balayage-1-AVANT-ECRITURE.txt — contexte : ligne 1342 de docs/preuves/D330/audit-secrets-d330a.txt
+   ventilation par motif : url-avec-identifiants=7 · jeton=5
+
+== TRI AU CONTEXTE (humain, D330) — chacune des 12 alertes ABSENTES de la précédente, lue dans la sortie scellée (`audit-secrets-d330a.txt`, lignes 1320 à 1342) ; AUCUN contexte n'est recopié ici (ce serait un écho non scellé)
+   1 et 2. confronter-d329.py (lignes 1320, 1322) : les fixtures SYNTHÉTIQUES de la calibration de `variables_url` — une URL à identifiants dont le « secret » est la sentinelle `SENTINELLE_SECRET_ZW330` (un f-string `{S_SECRET}`), et l'astuce `localhost@distant` ; aucune valeur réelle.
+   3, 4 et 5. confronter-d329.py (1324, 1326) et confronter-sortie.txt (1328) : l'expression régulière qui CHERCHE un jeton de 43 caractères (`token=[A-Za-z0-9_-]{43}`), et son libellé dans le contrôle S2 et son écho dans la sortie versée ; ce sont des motifs, pas des valeurs.
+   6, 7 et 8. etat-env-bout-en-bout.sh (1330, 1332, 1334) : le faux dépôt jetable écrit un `.env` dont l'URL de base de données porte la sentinelle `SENTINELLE_SECRET_ZW330` ; aucune valeur réelle (le faux dépôt vit hors du dépôt).
+   9 et 10. etat-env.py (1336, 1338) : les mêmes fixtures synthétiques de la calibration (sentinelle, `localhost@distant`).
+   11. verser.py (1340) : le docstring hérité de D319 cite la commande `grep -iE "verification-email|token=…"` qui prouvait l'absence de jeton dans deux journaux ; c'est du texte, pas une valeur.
+   12. balayage-1-AVANT-ECRITURE.txt (1342) : l'écho d'un contexte de `ZWADJ_CONTINUITE.md` (« …porte encore `token=… ») ; texte de documentation.
+   BILAN DU TRI : 12 sur 12 = fixtures synthétiques (7 « url-avec-identifiants »), motifs d'expressions régulières ou libellés qui nomment `token=` (5 « jeton ») ; AUCUNE valeur réelle. (Le contrôle dédié « 0 valeur réelle sur N fichiers » de D299 est joué APRÈS la passe, sur les journaux à valeurs réelles qu'elle aura produits, s'il y en a.)

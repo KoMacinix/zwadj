@@ -1,0 +1,11 @@
+D330 — dérivation du plancher · HEAD 739c941 · D324 257471d · D329 4202dd4
+  ✓ calibration : positif — act-plafonds (changé entre D324 et D329) serait REFUSÉ comme « repris de D324 » (objets 15972c6 contre 47f6e42)
+  ✓ calibration : négatif — argon2 (inchangé) est ACCEPTÉ
+planchers lus : 30 (attendu 30) · origine connue pour 30 (attendu 30) · REPRIS de D324 : 26 (attendu 26) · MESURÉS à D329 : 4 → ['act-plafonds', 'horloge', 'r32', 'r33'] (attendu 4 : act-plafonds, horloge, r32, r33)
+harnais repris dont l'objet est identique à D324, à D329 et à HEAD : 26 sur 26 · harnais mesurés identiques à D329 et à HEAD : 4 sur 4
+pièces de `neutralisation/` AUTRES que les harnais, changées depuis D324 : 0 (attendu 0) [] · harnais LUS changés depuis D324 : 0 (attendu 0) [] · pièces parcourues : 41
+harnais à HEAD : 34 (attendu 34) · changés ou neufs depuis D329 : 0 (attendu 0) []
+diff 4202dd4..HEAD : 214 fichier(s), dont HORS `docs/preuves/` et hors les trois `.md` : 0 (attendu 0) []
+plancher.txt écrit : 30 lignes P (attendu 30) · identiques à D329 ligne pour ligne : True
+
+TOUT TIENT : les 30 planchers de D329 sont repris, la preuve est dans les objets git.
