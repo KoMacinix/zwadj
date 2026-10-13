@@ -1,0 +1,22 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D329/audit-secrets-d329a.txt (174 contextes) · nouvelle docs/preuves/D329/audit-secrets-d329b.txt (190 contextes)
+   alertes ABSENTES de la précédente : 16 — à trier au contexte avant le commit
+   [jeton] docs/preuves/D329/diagnostic-test-int/bras-avec-client-url-EXTRAIT.txt — contexte : ligne 1279 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/diagnostic-test-int/bras-sans-surcharge-EXTRAIT.txt — contexte : ligne 1281 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/diagnostic-test-int/bras-sans-surcharge-EXTRAIT.txt — contexte : ligne 1283 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/diagnostic-test-int/bras-sans-surcharge-EXTRAIT.txt — contexte : ligne 1285 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/outils/extraire-testint.py — contexte : ligne 1287 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/outils/extraire-testint.py — contexte : ligne 1289 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/outils/extraire-testint.py — contexte : ligne 1291 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/outils/extraire-testint.py — contexte : ligne 1293 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/outils/extraire-testint.py — contexte : ligne 1295 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/outils/extraire-testint.py — contexte : ligne 1297 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/passe-r36a-20261012-1651/lecture-main-r26.txt — contexte : ligne 1301 de docs/preuves/D329/audit-secrets-d329b.txt
+   [mot-de-passe] docs/preuves/D329/passe-r36a-20261012-1651/testint-EXTRAIT.txt — contexte : ligne 1303 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/passe-r36a-20261012-1651/testint-EXTRAIT.txt — contexte : ligne 1305 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/passe-r36a-20261012-1651/testint-EXTRAIT.txt — contexte : ligne 1307 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/passe-r36a-20261012-1651/testint-EXTRAIT.txt — contexte : ligne 1309 de docs/preuves/D329/audit-secrets-d329b.txt
+   [jeton] docs/preuves/D329/passe-r36a-20261012-1651/testint-EXTRAIT.txt — contexte : ligne 1311 de docs/preuves/D329/audit-secrets-d329b.txt
+   ventilation par motif : jeton=15 · mot-de-passe=1
