@@ -1,0 +1,20 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D330/audit-secrets-d330a.txt (202 contextes) · nouvelle docs/preuves/D330/audit-secrets-d330b.txt (209 contextes)
+   alertes ABSENTES de la précédente : 7 — à trier au contexte avant le commit
+   [jeton] docs/preuves/D330/passe-d277/balayage-final.txt — contexte : ligne 1401 de docs/preuves/D330/audit-secrets-d330b.txt
+   [jeton] docs/preuves/D330/passe-r36b-20261013-0106/lecture-main-r26.txt — contexte : ligne 1403 de docs/preuves/D330/audit-secrets-d330b.txt
+   [mot-de-passe] docs/preuves/D330/passe-r36b-20261013-0106/testint.log — contexte : ligne 1405 de docs/preuves/D330/audit-secrets-d330b.txt
+   [jeton] docs/preuves/D330/tri-audit-d330a.txt — contexte : ligne 1407 de docs/preuves/D330/audit-secrets-d330b.txt
+   [jeton] docs/preuves/D330/tri-audit-d330a.txt — contexte : ligne 1409 de docs/preuves/D330/audit-secrets-d330b.txt
+   [jeton] docs/preuves/D330/tri-audit-d330a.txt — contexte : ligne 1411 de docs/preuves/D330/audit-secrets-d330b.txt
+   [jeton] docs/preuves/D330/tri-audit-d330a.txt — contexte : ligne 1413 de docs/preuves/D330/audit-secrets-d330b.txt
+   ventilation par motif : jeton=6 · mot-de-passe=1
+
+== TRI AU CONTEXTE (humain, D330) — chacune des 7 alertes ABSENTES de la précédente (`audit-secrets-d330a.txt`), lue dans la sortie scellée (`audit-secrets-d330b.txt`, lignes 1401 à 1413) ; AUCUN contexte n'est recopié ici (ce serait un écho non scellé)
+   1. balayage-final.txt (1401) : l'écho d'un contexte de `ZWADJ_CONTINUITE.md` (« …porte encore `token=… ») ; texte de documentation, même nature que l'alerte n° 12 du tri « a ».
+   2. lecture-main-r26.txt (1403) : la phrase qui compte les valeurs sensibles des journaux de `r26` (« 10 à 17 `zwadj_rt=` … et 6 `?token=` dans chaque journal, 0 dans chaque extrait ») ; texte, aucune valeur (la phrase est celle de D329, reprise).
+   3. testint.log (1405) : un TITRE de test d'intégration (« §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT › forgot-password : … CONSTANTE, mais aucun e-mail ne part ») dont une partie est prise pour un mot de passe par le motif « mot-de-passe » ; c'est le journal VERT de `test:int`, versé tel quel, qui ne porte aucune valeur (balayé : 0 jeton de 20 caractères ou plus, 0 `zwadj_rt=`).
+   4, 5, 6 et 7. tri-audit-d330a.txt (1407, 1409, 1411, 1413) : le tri humain de l'audit « a », qui NOMME `token=` en décrivant les alertes qu'il a triées (les fixtures, l'expression régulière, le docstring de `verser.py`, l'écho du balayage) ; texte.
+   BILAN DU TRI : 7 sur 7 = du texte qui nomme `token=` (6 « jeton ») ou un titre de test (1 « mot-de-passe ») ; AUCUNE valeur réelle. Contrôles dédiés « 0 valeur réelle » (jetons) et cookie, joués sur les 11 journaux qui portent des valeurs : 0 porteur (`aucune-valeur-reelle.txt`, `aucun-cookie-reel.txt`).

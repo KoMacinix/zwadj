@@ -1770,7 +1770,7 @@ Lot D329. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 - **DB-17** *(proposition du relecteur, adoptée par Ko le 12/10/2026)* : une fiche par numéro et par pro ; à la création du devis, le nom est prérempli depuis la fiche et modifiable pour ce devis.
 - **Découpe** *(proposition du relecteur, adoptée par Ko le 12/10/2026)* : L35-1 à L35-4 sont DÉSIGNÉS dans cet ordre ; aucun n'a de rang (règle de D302), chacun attend l'arbitrage de Ko. L35-5 à L35-7 n'ont ni rang ni place.
 
-⇒ **Ce que Ko n'a PAS ratifié** (point 3 de son texte, mot pour mot : « Les décisions de la session D328 restent À RATIFIER ») : le relecteur les a expliquées à Ko le 12/10 ; **aucune n'est ratifiée par ce texte** — ni les huit de la section D328 (« Décisions de la session, À RATIFIER PAR KO »), ni le point « à confirmer » sur la règle de la tranche A10. La liste, une phrase chacune, est au rapport de fin de lot de D329 ; ce qui est ratifié, Ko l'écrit.
+⇒ **Ce que Ko n'a PAS ratifié** (point 3 de son texte, mot pour mot : « Les décisions de la session D328 restent À RATIFIER ») : le relecteur les a expliquées à Ko le 12/10 ; **aucune n'est ratifiée par ce texte** — ni les huit de la section D328 (« Décisions de la session, À RATIFIER PAR KO »), ni le point « à confirmer » sur la règle de la tranche A10. La liste, une phrase chacune, est au rapport de fin de lot de D329 ; ce qui est ratifié, Ko l'écrit. ⛔ *(D330, 13/10/2026 : **depuis RATIFIÉES par Ko** — premier texte du 12/10 : décisions 1 à 6 et 8 de D328, la 7 comme proposition, la 9 tranchée ; second texte, point 2 : les dix de D329 ; bloc « ARBITRÉ LE 12/10/2026 PAR KO — LA REPRISE DU RANG 36 ».)*
 
 ⛔ **DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 12/10/2026 (D329)** — mot pour mot, avec leur motif ; la session ne les a pas prises. Texte aussi à la tête de « ⛔ E3 — MÉTHODE RENFORCÉE », bloc D329 :
 
@@ -2693,8 +2693,8 @@ le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c 
 | 8 | `77de612` | **le protocole** — commité à 01:05:50, **poussé à 01:05:53** (reflog local), **la passe démarre à 01:06:24** |
 | 9 | `b355733` | **extension 2** : les 198 pièces de la passe et de ses suites, chemins complets — avant leur versement |
 | 10 | `97a5402` | les pièces de la passe `r36b-20261013-0106` (188 fichiers relus identiques par SHA-256 + extrait e2e + lecture de R26) et le rejeu des deux specs |
-| 11 | (le suivant) | les écritures d'autorité du résultat : la marque, l'ordre des rangs, la section D330, le registre |
-| 12 | (le suivant) | la passe D277 finale, le dernier audit de secrets scellé, les deux contrôles « 0 valeur réelle » |
+| 11 | `152419b` | les écritures d'autorité du résultat : la marque, l'ordre des rangs, la section D330, le registre, l'état de fin de session, le backlog, les sites périmés annotés, **les deux contrôles « 0 valeur réelle »** |
+| 12 | (le suivant) | la passe D277 finale et le dernier audit de secrets scellé avec son tri — **en DERNIÈRE écriture** (et les retouches de texte qui les précèdent) |
 
 ⚠ **Différence avec D329** : la table est **recopiée** dans un `.md` d'autorité (règle 3 de l'ordre des commits ; constat T1 de la lecture adverse : D329 ne l'avait pas fait), et **aucune extension n'a de chemin avec un retour chariot** (le défaut de l'extension 2 de D329 : les deux extensions de ce lot ont été écrites avec des fins de ligne LF vérifiées avant le commit, 0 octet CR).
 
