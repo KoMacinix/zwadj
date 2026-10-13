@@ -101,6 +101,42 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D331/vert/vert-entree.txt` | le vert du chemin « entrée de la liste » |
 | `docs/preuves/D331/vert/vert-creation.txt` | le vert du chemin « création », après le correctif (le témoin était vert avant) |
 
+#### Extension 3 — les pièces des portes, des campagnes et des captures (déclarées AVANT leur versement, en chemins complets)
+
+*Motif* : la table de base nommait ces familles (« les portes », « les campagnes », « les captures ») sans en écrire les chemins ; la règle exige des chemins COMPLETS, un par un, avant le versement. Les 16 images sont l'ensemble {création, édition, suppression, publication} × {français, arabe} × {1 280, 360 px}.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D331/navigateur/ma-salle.capture.ts` | la sonde : les quatre chemins, jouée en français et en arabe, à 1 280 et 360 px, sans rechargement (un témoin sur `window` le prouve à chaque image) |
+| `docs/preuves/D331/navigateur/playwright.capture.config.ts` | sa configuration (mêmes ports dédiés, même base jetable que l'e2e) |
+| `docs/preuves/D331/navigateur/mesures-ma-salle.txt` | les lignes `MESURE …` de la sonde : ce que la liste affiche, le mot du menu, le témoin « document non rechargé » |
+| `docs/preuves/D331/navigateur/images/creation-fr-1280.png` | la liste « Ma salle » après la création, français, 1280 px |
+| `docs/preuves/D331/navigateur/images/creation-fr-360.png` | la liste « Ma salle » après la création, français, 360 px |
+| `docs/preuves/D331/navigateur/images/creation-ar-1280.png` | la liste « Ma salle » après la création, arabe, 1280 px |
+| `docs/preuves/D331/navigateur/images/creation-ar-360.png` | la liste « Ma salle » après la création, arabe, 360 px |
+| `docs/preuves/D331/navigateur/images/edition-fr-1280.png` | la liste « Ma salle » après l'édition (nom et prix modifiés), français, 1280 px |
+| `docs/preuves/D331/navigateur/images/edition-fr-360.png` | la liste « Ma salle » après l'édition (nom et prix modifiés), français, 360 px |
+| `docs/preuves/D331/navigateur/images/edition-ar-1280.png` | la liste « Ma salle » après l'édition (nom et prix modifiés), arabe, 1280 px |
+| `docs/preuves/D331/navigateur/images/edition-ar-360.png` | la liste « Ma salle » après l'édition (nom et prix modifiés), arabe, 360 px |
+| `docs/preuves/D331/navigateur/images/suppression-fr-1280.png` | la liste « Ma salle » après la suppression depuis l'assistant (une salle restante), français, 1280 px |
+| `docs/preuves/D331/navigateur/images/suppression-fr-360.png` | la liste « Ma salle » après la suppression depuis l'assistant (une salle restante), français, 360 px |
+| `docs/preuves/D331/navigateur/images/suppression-ar-1280.png` | la liste « Ma salle » après la suppression depuis l'assistant (une salle restante), arabe, 1280 px |
+| `docs/preuves/D331/navigateur/images/suppression-ar-360.png` | la liste « Ma salle » après la suppression depuis l'assistant (une salle restante), arabe, 360 px |
+| `docs/preuves/D331/navigateur/images/publication-fr-1280.png` | la liste « Ma salle » après la publication faite ailleurs, français, 1280 px |
+| `docs/preuves/D331/navigateur/images/publication-fr-360.png` | la liste « Ma salle » après la publication faite ailleurs, français, 360 px |
+| `docs/preuves/D331/navigateur/images/publication-ar-1280.png` | la liste « Ma salle » après la publication faite ailleurs, arabe, 1280 px |
+| `docs/preuves/D331/navigateur/images/publication-ar-360.png` | la liste « Ma salle » après la publication faite ailleurs, arabe, 360 px |
+| `docs/preuves/D331/portes/typecheck.txt` | `pnpm typecheck` : code, nombre de tâches « Done », erreurs TS — extrait, avec ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/portes/lint.txt` | `pnpm lint` — extrait, avec ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/portes/test.txt` | `pnpm test` : les quatre résumés vitest — extrait, avec ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/portes/build.txt` | `pnpm build` — extrait, avec ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/portes/test-int.txt` | `pnpm test:int` : résumé — extrait, avec ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/portes/e2e.txt` | `pnpm test:e2e` : résumé (le journal brut n'entre pas) — extrait, avec ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/portes/etat-machine.txt` | l'état de la machine aux portes : source d'alimentation (secteur / batterie), `chrome`, `headless_shell`, `node`, RAM libre |
+| `docs/preuves/D331/neutralisation/r37-campagne.txt` | la sortie de `neutralize-r37.py`, lue : une ligne par cible, la première ligne du bloc d'échec de chaque mesure |
+| `docs/preuves/D331/neutralisation/campagnes-touchees.txt` | la sortie de `lancer-campagnes.py` : les campagnes que le diff touche, jouées et lues |
+| `docs/preuves/D331/neutralisation/e2e-a-la-main.txt` | la neutralisation À LA MAIN des specs e2e (la relecture d'entrée retirée), sortie lue : ce qu'aucun test de composant ne voit |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json`, les montants viennent du formateur partagé (`formatDZD`).
