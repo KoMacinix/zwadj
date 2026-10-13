@@ -54,7 +54,7 @@ export function EditVenuePage() {
   const { id = "" } = useParams();
   const navigate = useNavigate();
   const venuesApi = useVenueCrud();
-  const { select: selectVenue } = useProVenues();
+  const { select: selectVenue, reload: reloadVenues } = useProVenues();
   const apiErrorMessage = useApiErrorMessage();
   const tval = useValidationMessage();
   const referentials = useReferentialsData();
@@ -135,6 +135,9 @@ export function EditVenuePage() {
       setState({ kind: "ready", venue: updated });
       setValues(venueToForm(updated));
       setNotice(t("venue.ui.form.saved"));
+      // ⛔ Rang 37 (D331) : la salle est ENREGISTRÉE — on demande au fournisseur de RELIRE (sans cela « Ma salle », le libellé et la salle courante restaient ceux d'avant, jusqu'à un
+      // rechargement de la page : relevé 4 de D327, S4 et S8). Après l'écriture réussie seulement : ni un diff vide (rien n'a changé), ni un refus du serveur (le `catch`) n'y passent.
+      reloadVenues();
       if (next !== null) goStep(next);
     } catch (err) {
       if (isVenueNotFound(err)) {
@@ -156,6 +159,9 @@ export function EditVenuePage() {
     setConfirmingDelete(false);
     try {
       await venuesApi.softDelete(state.venue.id);
+      // ⛔ Rang 37 (D331) : la salle est SUPPRIMÉE — le fournisseur relit AVANT qu'on arrive sur la liste (sinon elle montrait, et le libellé comptait, la salle qu'on vient de supprimer :
+      // relevé 4 de D327, S6). La relecture est VOULUE (visible) : la carte périmée ne doit jamais être montrée comme présente. Une suppression refusée (`catch`) ne relit rien.
+      reloadVenues();
       void navigate("/salles");
     } catch {
       setFormError(t("venue.ui.delete.error"));

@@ -7,13 +7,17 @@
 //
 // ⚠ LA LISTE ET LE LIBELLÉ « Ma salle / Mes salles » RESTENT LUS À UNE SEULE SOURCE, `ProVenuesProvider` (D78) : le correctif demande au fournisseur de relire (`reload`), il ne
 // donne pas à la page de création une liste à elle. Ce que le test mesure : le fournisseur relit APRÈS la création, la liste le montre, et le libellé de la navigation suit.
+//
+// ⛔ RANG 37 (D331) — LE FAUX SERVEUR EST CORRIGÉ. Celui de D326 enregistrait la salle AU MOMENT DE L'APPEL de `create` (`creees.push(NOUVELLE)` dans la fonction), donc AVANT de répondre :
+// une relecture partie trop tôt aurait VU la salle, et le test serait resté vert (D327, question 1 : « vert parce que son double fabrique la salle avant de répondre »). Le serveur est
+// désormais `makeVenueServerDouble` : la salle n'entre dans la liste qu'À LA RÉPONSE. Le dernier test le prouve — la relecture ne part pas tant que la réponse est retenue.
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import type { VenueProDTO, WilayaDTO } from "@zwadj/types";
 import { AppProviders } from "../App";
 import { initI18n } from "../i18n";
-import { makeAuthDouble, makeReferentialsDouble, makeVenueClientDouble } from "../test-support/client-doubles";
+import { laisserPasser, makeAuthDouble, makeReferentialsDouble, makeVenueServerDouble } from "../test-support/client-doubles";
 import { CreateVenuePage } from "./create-venue-page";
 import { EditVenuePage } from "./edit-venue-page";
 import { VenueListPage } from "./venue-list-page";
@@ -64,19 +68,11 @@ function VersLaListe() {
   );
 }
 
-function monde() {
-  // Le serveur : la liste est VIDE tant qu'aucune salle n'a été créée, puis contient la nouvelle — comme le ferait `GET /pro/venues`.
-  const creees: VenueProDTO[] = [];
-  const venues = makeVenueClientDouble(NOUVELLE, {
-    listMine: vi.fn(async () => [...creees]),
-    create: vi.fn(async () => {
-      creees.push(NOUVELLE);
-      return NOUVELLE;
-    })
-  });
+function monde(serveur = makeVenueServerDouble([], { onCreate: () => NOUVELLE })) {
+  // Le serveur est HONNÊTE : la liste est VIDE tant que `create` n'a pas RÉPONDU, puis contient la nouvelle — comme `GET /pro/venues`.
   render(
     <MemoryRouter initialEntries={["/salles/nouvelle"]}>
-      <AppProviders client={makeAuthDouble()} venues={venues} referentials={makeReferentialsDouble(WILAYAS)}>
+      <AppProviders client={makeAuthDouble()} venues={serveur.client} referentials={makeReferentialsDouble(WILAYAS)}>
         <VersLaListe />
         <Routes>
           <Route path="/salles/nouvelle" element={<CreateVenuePage />} />
@@ -86,15 +82,19 @@ function monde() {
       </AppProviders>
     </MemoryRouter>
   );
-  return venues;
+  return serveur;
 }
 
-async function creer() {
+async function remplir() {
   fireEvent.change(await screen.findByLabelText("Nom (français)"), { target: { value: "Salle Nouvelle" } });
   fireEvent.change(screen.getByLabelText("Nom (arabe)"), { target: { value: "قاعة جديدة" } });
   fireEvent.change(screen.getByLabelText("Commune"), { target: { value: CITY_ID } });
   fireEvent.change(screen.getByLabelText("Capacité maximale"), { target: { value: "400" } });
   fireEvent.change(screen.getByLabelText("Prix de base"), { target: { value: "150000" } });
+}
+
+async function creer() {
+  await remplir();
   fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
   // L'assistant reprend à l'étape 2 : la salle existe.
   await screen.findByText("Étape 2 sur 7");
@@ -102,9 +102,9 @@ async function creer() {
 
 describe("« Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir", () => {
   it("⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle", async () => {
-    const venues = monde();
+    const serveur = monde();
     await creer();
-    expect(vi.mocked(venues.create)).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(serveur.client.create)).toHaveBeenCalledTimes(1);
 
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: "aller à la liste" }));
@@ -113,37 +113,38 @@ describe("« Ma salle » — la salle créée apparaît dans la liste, sans rafr
   });
 
   it("le fournisseur RELIT la liste après la création — une seule source (D78), pas une liste propre à la page de création", async () => {
-    const venues = monde();
-    await waitFor(() => expect(vi.mocked(venues.listMine)).toHaveBeenCalledTimes(1)); // la lecture de la connexion
+    const serveur = monde();
+    await waitFor(() => expect(vi.mocked(serveur.client.listMine)).toHaveBeenCalledTimes(1)); // la lecture de la connexion
     await creer();
-    await waitFor(() => expect(vi.mocked(venues.listMine)).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(vi.mocked(serveur.client.listMine)).toHaveBeenCalledTimes(2));
+  });
+
+  it("⛔ la relecture part APRÈS la réponse de `create`, pas avant (D331 : le faux serveur de D326 enregistrait à l'appel) — tant que le serveur n'a pas répondu, la liste n'est pas relue", async () => {
+    const serveur = monde();
+    await waitFor(() => expect(vi.mocked(serveur.client.listMine)).toHaveBeenCalledTimes(1));
+    const retenue = serveur.hold("create");
+    await remplir();
+    fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
+    await waitFor(() => expect(vi.mocked(serveur.client.create)).toHaveBeenCalledTimes(1));
+    // On laisse passer un tour : une relecture partie avant la réponse aurait eu le temps de partir — et de ne rien voir, le serveur n'ayant pas encore enregistré.
+    await laisserPasser();
+    expect(vi.mocked(serveur.client.listMine)).toHaveBeenCalledTimes(1);
+    expect(serveur.stored()).toEqual([]);
+    retenue.release();
+    await screen.findByText("Étape 2 sur 7");
+    await waitFor(() => expect(vi.mocked(serveur.client.listMine)).toHaveBeenCalledTimes(2));
+    expect(serveur.stored().map((v) => v.nameFr)).toEqual(["Salle Nouvelle"]);
   });
 
   it("la relecture ne se fait PAS quand la création ÉCHOUE : une salle qui n'existe pas n'a aucune raison de faire relire la liste", async () => {
-    const venues = makeVenueClientDouble(NOUVELLE, {
-      listMine: vi.fn().mockResolvedValue([]),
-      create: vi.fn().mockRejectedValue(new Error("boom"))
-    });
-    render(
-      <MemoryRouter initialEntries={["/salles/nouvelle"]}>
-        <AppProviders client={makeAuthDouble()} venues={venues} referentials={makeReferentialsDouble(WILAYAS)}>
-          <Routes>
-            <Route path="/salles/nouvelle" element={<CreateVenuePage />} />
-          </Routes>
-        </AppProviders>
-      </MemoryRouter>
-    );
-    fireEvent.change(await screen.findByLabelText("Nom (français)"), { target: { value: "Salle Nouvelle" } });
-    fireEvent.change(screen.getByLabelText("Nom (arabe)"), { target: { value: "قاعة جديدة" } });
-    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: CITY_ID } });
-    fireEvent.change(screen.getByLabelText("Capacité maximale"), { target: { value: "400" } });
-    fireEvent.change(screen.getByLabelText("Prix de base"), { target: { value: "150000" } });
-    await waitFor(() => expect(vi.mocked(venues.listMine)).toHaveBeenCalledTimes(1));
+    const serveur = monde(makeVenueServerDouble([], { overrides: { create: vi.fn().mockRejectedValue(new Error("boom")) } }));
+    await remplir();
+    await waitFor(() => expect(vi.mocked(serveur.client.listMine)).toHaveBeenCalledTimes(1));
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: "Créer la salle et continuer" }));
     });
     await screen.findByRole("alert");
-    expect(vi.mocked(venues.create)).toHaveBeenCalledTimes(1);
-    expect(vi.mocked(venues.listMine)).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(serveur.client.create)).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(serveur.client.listMine)).toHaveBeenCalledTimes(1);
   });
 });

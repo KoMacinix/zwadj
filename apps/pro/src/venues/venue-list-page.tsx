@@ -10,7 +10,7 @@
 //    lectures indépendantes, supprimer sa seconde salle laissait la liste à jour
 //    et le libellé bloqué au pluriel jusqu'au rechargement complet de la page.
 //    Une question, une autorité (D78).
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { ConfirmDialog } from "@zwadj/ui";
@@ -30,7 +30,13 @@ export function VenueListPage() {
   const isAr = i18n.language === "ar";
   const locale = isAr ? "ar" : "fr";
 
-  const { state, reload: load } = useProVenues();
+  const { state, reload: load, revalidate } = useProVenues();
+  // ⛔ Rang 37 (D331) — la liste est RELUE à l'ENTRÉE. Une salle publiée (ou modifiée) dans une AUTRE session — l'administrateur n'a pas d'écran, il publie ailleurs — ne peut pas
+  // notifier ce pro : l'entrée dans « Ma salle » est le seul moment où il la regarde. La relecture est SILENCIEUSE (la liste connue reste affichée, un échec la laisse) et SANS
+  // EFFET pendant un chargement ou sur l'état `error` : le fournisseur le garantit (`idleRef`), c'est ce qui laisse l'entrée à froid sur `/salles` à UNE requête (e2e A2).
+  useEffect(() => {
+    revalidate();
+  }, [revalidate]);
   /** Bascule OPTIMISTE locale : le provider porte la vérité venue du réseau,
    *  cet état ne porte que l'affichage tant que l'appel n'a pas répondu. */
   const [pendingStatus, setPendingStatus] = useState<Record<string, VenueAvailabilityStatus>>({});

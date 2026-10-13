@@ -15,9 +15,10 @@
 // l'autre et rendrait les compteurs faux dans l'ordre d'exécution seulement —
 // le genre d'échec qui n'apparaît qu'en CI.
 import { vi } from "vitest";
+import { act } from "@testing-library/react";
 import type { BookingsProClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
 import type { AmenityDTO, VenueProDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
-import type { AuthClient } from "../lib/auth-client";
+import { ApiError, type AuthClient } from "../lib/auth-client";
 
 export interface AuthenticatedProUser {
   id: string;
@@ -119,6 +120,93 @@ export function makeVenueClientDouble(
     listVisitBookings: vi.fn().mockResolvedValue([]),
     cancelVisitBooking: vi.fn().mockResolvedValue(undefined).mockResolvedValue(undefined),
     ...overrides
+  };
+}
+
+/** Laisse passer `ms` millisecondes DANS `act` : une absence de requête se prouve en laissant à une requête le temps de partir, et une mise à jour d'état qui tombe pendant une attente
+ *  NON enveloppée est un « not wrapped in act(...) » que le plafond de console du dépôt refuse (`src/test-setup.ts`). */
+export const laisserPasser = (ms = 30) =>
+  act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, ms));
+  });
+
+/** Faux SERVEUR des salles du pro — HONNÊTE (rang 37, D331). ⚠ Le défaut qu'il corrige : le double de `create-venue-page.test.tsx` enregistrait la salle AU MOMENT DE L'APPEL
+ *  de `create`, c'est-à-dire AVANT de répondre ; une relecture lancée trop tôt (avant la réponse) aurait donc VU la salle, et le test serait resté vert (D326 : « Ma salle
+ *  réparée », que Ko a ensuite reproduite comme non réparée). Ici :
+ *   · une ÉCRITURE (`create`, `update`, `softDelete`) n'enregistre qu'À LA RÉPONSE, jamais à l'appel : au moins un tour de boucle plus tard, plus tard encore si le test retient la réponse ;
+ *   · `listMine` fige l'état du serveur À L'APPEL (comme un serveur qui lit à l'arrivée de la requête) : une réponse retenue puis relâchée plus tard porte un état ANCIEN,
+ *     ce qui est exactement ce que fait une réponse lente qui arrive après une plus fraîche ;
+ *   · `actElsewhere` change le serveur SANS qu'aucune méthode de ce client soit appelée : l'administrateur qui publie, une autre session qui modifie.
+ *  Les cinq méthodes sont des `vi.fn()` : un test compte leurs appels. Les autres méthodes du contrat sont celles de `makeVenueClientDouble`. */
+export interface VenueServerDouble {
+  /** Le client à passer à `AppProviders` (`venues`). */
+  client: VenueProClient;
+  /** Ce que le serveur contient MAINTENANT (une copie) — jamais ce que le client croit. */
+  stored: () => VenueProDTO[];
+  /** Un acte fait AILLEURS : le serveur change, aucune requête de CE client ne part. */
+  actElsewhere: (change: (venues: VenueProDTO[]) => VenueProDTO[]) => void;
+  /** Retient la RÉPONSE du prochain appel de cette méthode jusqu'à `release()` (plusieurs retenues d'une même méthode s'empilent, dans l'ordre des appels). */
+  hold: (method: "listMine" | "getMine" | "create" | "update" | "softDelete") => { release: () => void };
+}
+
+export function makeVenueServerDouble(
+  initial: VenueProDTO[] = [],
+  options: { onCreate?: (input: unknown) => VenueProDTO; overrides?: Partial<VenueProClient> } = {}
+): VenueServerDouble {
+  let venues: VenueProDTO[] = initial.map((v) => ({ ...v }));
+  const waiting: Record<string, Promise<void>[]> = {};
+  const hold = (method: string) => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    (waiting[method] ??= []).push(gate);
+    return { release };
+  };
+  /** Attend la libération de la retenue la plus ancienne, sinon UN tour de boucle : une écriture n'est jamais synchrone avec son appel. */
+  const attendre = async (method: string) => {
+    await (waiting[method]?.shift() ?? Promise.resolve());
+  };
+  const copie = () => venues.map((v) => ({ ...v }));
+  const client = makeVenueClientDouble(null, {
+    listMine: vi.fn().mockImplementation(async () => {
+      const etatALAppel = copie();
+      await attendre("listMine");
+      return etatALAppel;
+    }),
+    getMine: vi.fn().mockImplementation(async (id: string) => {
+      await attendre("getMine");
+      const trouvee = venues.find((v) => v.id === id);
+      if (!trouvee) throw new ApiError(404, "VENUE_NOT_FOUND", undefined);
+      return { ...trouvee };
+    }),
+    create: vi.fn().mockImplementation(async (input: unknown) => {
+      await attendre("create");
+      if (!options.onCreate) throw new Error("makeVenueServerDouble : `onCreate` est requis pour créer une salle");
+      const creee = options.onCreate(input);
+      venues = [...venues, creee];
+      return { ...creee };
+    }),
+    update: vi.fn().mockImplementation(async (id: string, patch: Partial<VenueProDTO>) => {
+      await attendre("update");
+      const i = venues.findIndex((v) => v.id === id);
+      if (i < 0) throw new ApiError(404, "VENUE_NOT_FOUND", undefined);
+      venues = venues.map((v, k) => (k === i ? { ...v, ...patch } : v));
+      return { ...venues[i]! };
+    }),
+    softDelete: vi.fn().mockImplementation(async (id: string) => {
+      await attendre("softDelete");
+      venues = venues.filter((v) => v.id !== id);
+    }),
+    ...options.overrides
+  });
+  return {
+    client,
+    stored: copie,
+    actElsewhere: (change) => {
+      venues = change(copie());
+    },
+    hold
   };
 }
 

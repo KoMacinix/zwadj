@@ -139,6 +139,8 @@ test.describe("A2 — un seul appel par montage", () => {
     const net = NetworkCounter.watch(page);
     await spaNavigate(page, "/compte");
     await settle(page);
+    // ⛔ RANG 37 (D331) — QUITTER la liste ne la relit PAS : ce 0 est la moitié de la décision UIP-A qui TIENT (la liste ne repart pas à chaque écran).
+    expect(net.count("/api/v1/pro/venues"), `appels observés en QUITTANT la liste :\n${net.dump()}`).toBe(0);
     await spaNavigate(page, "/salles");
     await settle(page);
 
@@ -151,10 +153,13 @@ test.describe("A2 — un seul appel par montage", () => {
     // écran qui rappelle. Ce qu'on interdit, c'est la cascade.
     expect(net.count("/api/v1/wilayas"), `appels observés :\n${net.dump()}`).toBe(MONTAGES_PAR_RENDU);
 
-    // Et l'autre moitié de la décision UIP-A, dans le même aller-retour : la
-    // liste des salles NE repart PAS. C'est ce qui rend le provider utile ; si
-    // ce 0 devenait 2, on aurait quatre allers-retours pour une seule réponse.
-    expect(net.count("/api/v1/pro/venues"), `appels observés :\n${net.dump()}`).toBe(0);
+    // ⛔ RANG 37 (D331) — CETTE ASSERTION VALAIT 0 ; ELLE EST RÉVISÉE À 1, PAR ÉCRIT, ET C'EST UNE DÉCISION, PAS UN ASSOUPLISSEMENT. « La liste des salles NE repart PAS » à l'aller-retour
+    // mesurait le contraire de ce que Ko a arbitré (13/10/2026, rang 37, avec la décision 2 du relecteur) : la relecture se fait à l'ENTRÉE de « Ma salle », parce qu'une salle publiée par
+    // l'administrateur — qui n'a pas d'écran — ne peut pas notifier ce pro. Revenir sur `/salles` relit donc la liste UNE fois (et pas davantage : ce n'est pas une cascade).
+    // Ce qui reste vrai d'UIP-A, mesuré plus haut : QUITTER la liste ne la relit pas.
+    // MESURÉ À LA MAIN (`docs/preuves/D331/neutralisation/e2e-a-la-main.txt`) : retirer de la liste la demande de relecture d'entrée fait tomber CE 1 à 0 ; la remplacer par une relecture VOULUE
+    // (`reload`) ne change PAS ce compte, mais fait passer à 2 celui de l'entrée à froid sur `/salles` (test « la coquille charge la liste… », plus bas).
+    expect(net.count("/api/v1/pro/venues"), `appels observés :\n${net.dump()}`).toBe(1);
     await context.close();
   });
 
