@@ -1,0 +1,223 @@
+== CALIBRATION — deux bras par extracteur, abandon si un seul manque
+   ✓ chemins_table, cas vrai : 3 chemins d'un tableau (dont une ligne à deux chemins)
+   ✓ chemins_table, cas vrai : un retour chariot DANS un chemin est CONSERVÉ (c'est le défaut de l'extension 2)
+   ✓ chemins_table, cas faux : un texte sans tableau rend 0
+   ✓ lignes_de_table, cas vrai : 2 lignes dont la 1ʳᵉ cellule est un chemin ; cas faux : un en-tête sans chemin rend 0
+   ✓ bloc_entre, cas vrai : le texte entre deux repères ; cas faux : un début absent rend None
+   ✓ entiers, cas vrai : « 1 718 / 136 (88 s) » → [1718, 136, 88] et « 5 504 s » → [5504]
+   ✓ entiers, cas faux : une décimale à virgule n'est PAS coupée en deux entiers ; un texte sans nombre rend []
+   ✓ bilans_vitest, cas vrai : un résumé avec échecs, en ANSI → ((36, 2, 38), (466, 2, 468))
+   ✓ bilans_vitest, cas faux : un texte sans résumé rend [] ; deux résumés → deux couples dans l'ordre
+   ✓ compte_done, cas vrai : 2 lignes « …: Done » ; cas faux : « Done with it » en milieu de ligne rend 0
+   ✓ erreurs_ts, cas vrai : « error TS2304 » compté 1 ; cas faux : « 0 errors » rend 0
+   ✓ duree_code, cas vrai : « fin … · 359 s · code 1 » → (359, 1) ; cas faux : un texte sans durée rend None
+   ✓ resume_tout, cas vrai : la ligne MESURÉ du tri → (386, 0, 21, 34, 5504) ; cas faux : une ligne tronquée rend None
+   ✓ gardes_mordues, cas vrai : « 102 garde(s) mordue(s) sur 102 cible(s) jouée(s) » → (102, 102) ; cas faux : « 8 garde(s) muette(s) » rend None
+   ✓ comptes_inventaire, cas vrai : deux noms comptés ; cas faux : un texte sans « COMPTE » rend {}
+   ✓ sous_la_barre, cas vrai : médiane et bande au-dessus → False ; cas faux (un creux) : médiane sous la barre → True ; bande basse sous la barre malgré une médiane au-dessus → True
+   ✓ tally_sortie, cas vrai : 2 ✓ de contrôle, 1 ✗, 1 bras, 1 constat, 1 non vérifiable ; cas faux : un texte vide rend cinq zéros
+   ✓ aplati, cas vrai : les retours à la ligne et les espaces multiples deviennent UNE espace
+   ✓ variables_url, cas vrai (tout local) : 3 variables d'URL (le commentaire et la variable sans URL ignorés), toutes classées locales ; l'identifiant secret n'est PAS dans le résultat
+   ✓ variables_url, cas faux (distant) : CLIENT_URL, l'un des deux hôtes de CORS_ORIGINS, `localhost@distant`, `localhost.distant` et `?h=localhost` sont NON LOCAL ; [::1] et 0.0.0.0 restent locaux ; l'hôte distant n'est PAS dans le résultat
+   ✓ empreinte, cas vrai : mêmes octets → même empreinte ; cas faux : UN octet de plus (LF/CRLF compris) → empreinte différente
+   ✓ existe, cas vrai : la table d'ouverture de D329 existe à son commit ; cas faux : un chemin forgé n'existe pas
+== calibration : 22 bras, 0 manqué
+
+== X — état LIVE (git status, stash, fetch, rev-parse)
+✓ X1      `origin/main` (après `git fetch`) contient la clôture de D329 et est un ancêtre-ou-égal de `HEAD` — attendu (True, True) · mesuré (True, True)
+✓ X2      `HEAD` est la table d'ouverture de ce lot (`12de7c2`), seule — attendu '12de7c2' · mesuré '12de7c2'
+✓ X3      le parent de `HEAD` est la clôture de D329 (`8f53011`) — attendu '8f53011' · mesuré '8f53011'
+✓ X4      le commit `HEAD` ne contient QUE `docs/preuves/D330/table-ouverture.md` — attendu ['docs/preuves/D330/table-ouverture.md'] · mesuré ['docs/preuves/D330/table-ouverture.md']
+✓ X5      aucun fichier SUIVI modifié ou ajouté à l'index — attendu [] · mesuré []
+✓ X6      tout fichier non suivi est sous `docs/preuves/D330/` (aucun fichier hors du lot) — attendu [] · mesuré []
+✓ X7      aucun stash — attendu [] · mesuré []
+✓ X8      branche `main` — attendu 'main' · mesuré 'main'
+   (parcouru : 3 ligne(s) de statut dont 3 non suivie(s) ; stash 0)
+
+== E — fichiers `.env` que lit une porte (empreinte, taille, date, classe d'hôte des variables d'URL ; aucune valeur, aucun hôte non local)
+   fichiers `.env` trouvés : 3 → ['apps/api/.env', 'apps/client/.env', 'apps/pro/.env']
+✓ E1      les fichiers `.env` d'une porte sont ceux des applications de `apps/` (un `.env` chacune ; aucun à la racine, aucun `.env.local` ou `.env.test`) — attendu ['apps/api/.env', 'apps/client/.env', 'apps/pro/.env'] · mesuré ['apps/api/.env', 'apps/client/.env', 'apps/pro/.env']
+   apps/api/.env : 2686 octets · modifié 2026-10-13 00:10:07 · SHA-256 813afbfcf834b9a4392316ff043d7aef7931281556a9fcac6606eb90db4680e1 · 12 variable(s) dont 4 d'URL : DATABASE_URL=localhost ; CORS_ORIGINS=localhost+localhost ; CLIENT_URL=localhost ; PRO_URL=localhost
+✓ E20     `apps/api/.env` est ignoré par git et non suivi — attendu (True, False) · mesuré (True, False)
+✓ E30     `apps/api/.env` : aucune variable d'URL n'a un hôte non local (état VIVANT : Ko l'a remis à sa valeur locale) — attendu [] · mesuré []
+   apps/client/.env : 698 octets · modifié 2026-10-13 00:10:23 · SHA-256 479b06e808c6218b31e9fc3d858a62858ac45cd77fc35c83f0373681e20d7311 · 3 variable(s) dont 2 d'URL : NEXT_PUBLIC_API_URL=localhost ; NEXT_PUBLIC_PRO_URL=localhost
+✓ E21     `apps/client/.env` est ignoré par git et non suivi — attendu (True, False) · mesuré (True, False)
+✓ E31     `apps/client/.env` : aucune variable d'URL n'a un hôte non local (état VIVANT : Ko l'a remis à sa valeur locale) — attendu [] · mesuré []
+   apps/pro/.env : 214 octets · modifié 2026-07-15 17:35:23 · SHA-256 d2d5e00c083ed3ef08d023add33d1e74106432427a9e8ae226a84f6a96f515a8 · 2 variable(s) dont 2 d'URL : VITE_API_URL=localhost ; VITE_CLIENT_URL=localhost
+✓ E22     `apps/pro/.env` est ignoré par git et non suivi — attendu (True, False) · mesuré (True, False)
+✓ E32     `apps/pro/.env` : aucune variable d'URL n'a un hôte non local (état VIVANT : Ko l'a remis à sa valeur locale) — attendu [] · mesuré []
+
+== P — provenance et ordre des commits de D329 (objets git)
+✓ P1      tout commit entre la clôture de D328 et celle de D329 porte « docs(rang-36): D329 » dans son sujet — attendu 15 · mesuré 15
+   (parcouru : 15 commit(s) : 7e8f948 f13f751 f257f5f 36be635 3a7d0ae 360b739 6169917 4202dd4 0eb8e9e 75f78e3 b5d9b44 9761565 1235ef4 6ac43e7 8f53011)
+✓ P2      le premier commit de D329 est la table d'ouverture, et il ne contient QUE `table-ouverture.md` — attendu (['7e8f948'], ['docs/preuves/D329/table-ouverture.md']) · mesuré (['7e8f948'], ['docs/preuves/D329/table-ouverture.md'])
+✓ P3      le parent du premier commit de D329 est la clôture de D328 — attendu 'd468064' · mesuré 'd468064'
+✓ P4      le diff de D329 ne contient AUCUN fichier de code, de test, de harnais, de migration ni `docker-compose.yml` (les trois `.md` et `docs/preuves/` seulement) — attendu [] · mesuré []
+   (parcouru : 260 fichier(s) du diff DEPART..FIN dont 3 `.md` d'autorité et 257 sous `docs/preuves/D329/`)
+✓ P5      le diff est inclus dans la table, en chemins COMPLETS (0 fichier du diff non déclaré) — attendu [] · mesuré []
+✓ P6      aucun fichier déclaré n'est absent de l'arbre à la clôture (les quatre conditionnels existent) — attendu [] · mesuré []
+✓ P7      aucun chemin déclaré ne finit par « / » (aucun préfixe) et aucun ne porte de caractère de contrôle — attendu [] · mesuré []
+   (parcouru : 260 chemin(s) déclaré(s) à la clôture ; 260 fichier(s) du diff ; les trois `.md` y sont déclarés : True)
+✓ P8      à un retour chariot près, chaque fichier est déclaré dans la table par un commit STRICTEMENT antérieur à celui qui l'ajoute (hors la table elle-même) — attendu [] · mesuré []
+   (parcouru : 4 version(s) de la table : 7e8f948 360b739 0eb8e9e 1235ef4 ; 257 fichier(s) ajouté(s))
+✓ P9      la sortie de la lecture adverse ET la première passe D277 entrent dans des commits antérieurs à tout `.md` d'autorité — attendu (True, True) · mesuré (True, True)
+✓ P10     le premier commit qui touche un `.md` d'autorité ne touche QUE `ZWADJ_CONTINUITE.md` (les arbitrages de Ko, seuls dans leur commit) — attendu ['ZWADJ_CONTINUITE.md'] · mesuré ['ZWADJ_CONTINUITE.md']
+✓ P11     ce commit apporte les premiers mots de Ko (« Rang 36 : j'arbitre la certification. » et « Je renvoie après l'attente ») — attendu (True, True) · mesuré (True, True)
+✓ P12     le texte de Ko du 12/10 est IDENTIQUE à la clôture et dans le commit qui l'a posé (non retouché depuis) — attendu True · mesuré True
+   (parcouru : 15 ligne(s) ajoutée(s) par ce commit ; bloc de Ko 1398 / 1398 caractère(s))
+✓ P13     le protocole (`4202dd4`) est commité AVANT le premier horodatage du journal de la passe (même fuseau local) — attendu True · mesuré True
+   (commit 2026-10-12T16:50:33-04:00 · début de la passe 2026-10-12T16:51:08)
+✓ P14     le reflog LOCAL de `origin/main` date la poussée de `4202dd4` AVANT le début de la passe — attendu True · mesuré True
+   (reflog : 2026-10-12 16:50:58)
+? N1      NON VÉRIFIABLE : que la poussée de `4202dd4` ait eu lieu à l'heure du reflog : le reflog est LOCAL et modifiable ; seul le distant le dirait, et il ne date pas ses mises à jour de référence
+
+== C — le correctif `1235ef4` (un retour chariot dans chacun des chemins de l'extension 2)
+✓ C1      `1235ef4` est dans la chaîne de D329, après le commit des pièces de la passe — attendu True · mesuré True
+✓ C2      `1235ef4` ne contient QUE `table-ouverture.md` — attendu ['docs/preuves/D329/table-ouverture.md'] · mesuré ['docs/preuves/D329/table-ouverture.md']
+✓ C3      AVANT le correctif, chaque chemin de l'extension 2 porte un retour chariot (compte = lignes de l'extension 2 après) — attendu 198 · mesuré 198
+✓ C4      APRÈS le correctif, aucun chemin de la table ne porte de caractère de contrôle — attendu [] · mesuré []
+✓ C5      le correctif ne retire QUE les retours chariot : les mêmes chemins, à un `\r` près, avant et après (les deux listes triées, comparées terme à terme) — attendu True · mesuré True
+✓ C6      le diff du correctif = autant de lignes retirées qu'ajoutées = les lignes de l'extension 2 (hors le paragraphe d'introduction) — attendu (198, 198) · mesuré (198, 198)
+   (parcouru : 260 chemin(s) avant · 260 après · 198 ligne(s) d'extension 2)
+✓ C7      chacun des chemins de l'extension 2 EXISTE à la clôture et a été ajouté au dépôt par un commit de la chaîne — attendu [] · mesuré []
+✓ C8      À L'OCTET, le chemin exact de chaque fichier de l'extension 2 est déclaré APRÈS son versement (le correctif suit le commit des pièces) : tous les chemins exacts sont tardifs — attendu 198 · mesuré 198
+✓ C9      à un retour chariot près, l'extension 2 précède pourtant le versement de chacun de ses fichiers — attendu 198 · mesuré 198
+· C-C1    CONSTAT : la LETTRE de la règle de D328 (« toute extension : un commit propre qui l'ajoute, AVANT le commit du fichier qu'elle couvre », en chemins COMPLETS) n'est pas tenue à l'octet pour 198 fichiers : le chemin exact n'entre dans la table qu'à `1235ef4`, APRÈS le commit qui les verse ; l'ESPRIT l'est (l'extension 2 précède, à un `\r` près, 198 versements) et D329 l'écrit lui-même (faute n° 6). Le correctif est un commit propre, sans autre fichier. Ce n'est pas un défaut de comportement ; c'est un écart à la lettre, déjà déclaré.
+
+== T — la table recopiée « à l'identique » dans un `.md` d'autorité (AGENTS.md, ordre des commits, point 3)
+✗ T1      chaque ligne du tableau « Fichiers attendus » de la table d'ouverture de D329 se retrouve, mot pour mot, dans l'un des trois `.md` d'autorité à la clôture — attendu 17 · mesuré 0
+   (parcouru : 17 ligne(s) de tableau de la table d'ouverture ; retrouvées 0)
+✓ T2      CONTRE-ÉPREUVE : la table d'ouverture de D328 était, elle, recopiée mot pour mot dans `ZWADJ_CONTINUITE.md` (tableau « Fichiers attendus » : toutes ses lignes s'y retrouvent) — attendu 18 · mesuré 18
+   (parcouru : 18 ligne(s) de tableau de la table de D328 ; retrouvées 18)
+· T-C1    CONSTAT : la table d'ouverture de D329 n'est PAS recopiée dans un `.md` d'autorité : 0 ligne(s) sur 17 s'y retrouvent. La règle 3 de l'ordre des commits (`AGENTS.md`, D328) dit « la table y est recopiée à l'identique » ; D328 l'avait fait (point d'entrée du rang 35, tableau « Fichiers attendus — chemins COMPLETS »). Mesure : D329 la cite par son chemin et ses extensions, jamais par ses lignes. Ce lot-ci la recopie.
+
+== R — le tableau « prédit / mesuré » de D329 (« RÉSULTAT DE LA PASSE »), ligne par ligne, contre les pièces versées et contre le protocole
+   (RÈGLE de cette famille : tout ATTENDU est lu dans le TEXTE de D329 ou du protocole, puis confronté à la PIÈCE ; aucun attendu n'est tapé ici)
+✓ R0      le tableau de D329 a 5 cellules par ligne — attendu [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5] · mesuré [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+   (parcouru : 20 ligne(s) de tableau : typecheck | lint | test | build | test:int | test:e2e | --tout | --int ×8 | --e2e ×1 (r26) | contre-épreuve de audi | lecture de rang23 | lecture d'available-on | lecture des campagnes | étiquettes | lecture à la main de R | échantillonneur | arbre | « 0 valeur réelle » | rejeu des deux specs s | inventaires chrome / h)
+✓ R1      les prédictions du protocole (`4202dd4`) sont extraites du texte du protocole : neuf clés (portes, test:int, e2e, --tout, --int, r26, certifiant, étiquettes, « Done ») — attendu [True, True, True, True, True, True, True, True, True] · mesuré [True, True, True, True, True, True, True, True, True]
+   (prédictions lues : {'test': ([(48, 5), (372, 29), (507, 37), (791, 65)], (1718, 136)), 'testint': (468, 38), 'e2e': (48, 1, 49), 'tout': (34, 386, 0, 21), 'int_valeurs': [8, 11, 102, 13, 2, 5, 6, 6], 'int_somme': 153, 'r26': 4, 'certifiant': (416, 0, 0, 34, 34), 'etiq': (13, 27, 81, 295), 'done': [8, 8, 4]})
+✓ R1b     le protocole prédit HUIT valeurs `--int` (une par harnais verrouillé) dont la somme est celle qu'il écrit (153) — attendu (8, 153) · mesuré (8, 153)
+✓ R2      `typecheck` : le texte [8, 0, 23] = « Done » / error TS / durée recomptés dans `typecheck.log` et `typecheck.heures` ; le code du texte = `typecheck.code` — attendu ([8, 0, 23], '0') · mesuré ([8, 0, 23], '0')
+✓ R3      `lint` : le texte [8, 14] = « Done » / error TS / durée recomptés dans `lint.log` et `lint.heures` ; le code du texte = `lint.code` — attendu ([8, 14], '0') · mesuré ([8, 14], '0')
+✓ R4      `build` : le texte [4, 39] = « Done » / error TS / durée recomptés dans `build.log` et `build.heures` ; le code du texte = `build.code` — attendu ([4, 39], '0') · mesuré ([4, 39], '0')
+✓ R5      les « Done » du texte (8, 8, 4) sont ceux que le protocole prédit (« 8 / 8 / 4 « Done » ») — attendu [8, 8, 4] · mesuré [8, 8, 4]
+✓ R6      `test` : les quatre couples tests/fichiers du texte = ceux des quatre résumés vitest de `test.log` ; leur somme (« 1 718 / 136 ») et la durée = `test.log` et `test.heures` — attendu ([(48, 5), (372, 29), (507, 37), (791, 65)], (1718, 136), 88) · mesuré ([(48, 5), (372, 29), (507, 37), (791, 65)], (1718, 136), 88)
+✓ R7      `test` : aucun test en échec dans les quatre résumés ; le mesuré (couples, somme) est ce que le protocole prédit, et le tableau le marque « ✓ exact » — attendu (0, ([(48, 5), (372, 29), (507, 37), (791, 65)], (1718, 136)), True) · mesuré (0, ([(48, 5), (372, 29), (507, 37), (791, 65)], (1718, 136)), True)
+✓ R8      `test` : le code RÉEL du tableau = `test.code` — attendu '0' · mesuré '0'
+✓ R9      `test:int` : les sept entiers du texte (466 passés, 2 échecs, 468 ; 36 fichiers passés, 2 en échec, 38 ; 359 s) = le résumé de `testint-EXTRAIT.txt` et `testint.heures` ; le code du tableau = `testint.code` — attendu ([466, 2, 468, 36, 2, 38, 359], '1') · mesuré ([466, 2, 468, 36, 2, 38, 359], '1')
+✓ R11     `test:int` : la prédiction du protocole (468 tests, 38 fichiers) ≠ le mesuré (466 passés + 2 échecs) ; le tableau le marque « ✗ » — la marque et l'inégalité s'accordent — attendu (True, True) · mesuré (True, True)
+✓ R11b    `test:int` : la SOMME passés + échecs (468 tests, 38 fichiers) est la prédiction : le total prévu était exact, c'est le partage passés/échecs qui ne l'était pas — attendu (468, 38) · mesuré (468, 38)
+✓ R12     `test:e2e` : le texte (48 passés · 1 ignoré sur 49, 190 s) = le résumé de `e2e-EXTRAIT.txt` et `e2e.heures` ; le code du tableau = `e2e.code` — attendu ([48, 1, 49, 190], '0') · mesuré ([48, 1, 49, 190], '0')
+✓ R13     `test:e2e` : la prédiction du protocole (passés · ignoré · total) = le mesuré — attendu (48, 1, 49) · mesuré (48, 1, 49)
+✓ R14     `test:e2e` : « 1 478 lignes parcourues, attendu 1 478 ; 52 gardées » (colonne pièces du tableau) = l'en-tête de l'extrait — attendu [1478, 1478, 52] · mesuré [1478, 1478, 52]
+? N2      NON VÉRIFIABLE : « 49 jetons dans la source, 0 dans l'extrait » (e2e) : la source est le journal brut de l'e2e, HORS dépôt (il porte des jetons) ; l'extrait versé ne porte pas ce décompte (le mot « jeton » y figure : oui)
+✓ R15     `--tout` : (campagnes, mordues, muettes, non mesurées, secondes, journaux copiés, antérieurs) du texte = la ligne MESURÉ de `campagnes-tout.log`, `campagnes-tout.heures` et les fichiers de la passe — attendu [34, 386, 0, 21, 5504, 79, 0] · mesuré [34, 386, 0, 21, 5504, 79, 0]
+✓ R16     `--tout` : le code RÉEL du tableau (« 1 (attendu) ») = `campagnes-tout.code` — attendu 1 · mesuré 1
+✓ R17     `--tout` : la prédiction du protocole (campagnes · mordues · muette · non mesurées) = le mesuré — attendu (34, 386, 0, 21) · mesuré (34, 386, 0, 21)
+   (parcouru : campagnes/ 34 · rang23/ 15 · available-on-api/ 30 · « ANTERIEUR-A-LA-PASSE » 0)
+✓ R18     `--int` ×8 : les huit couples (harnais, gardes mordues, secondes) du texte = ceux des `int-<harnais>.log` / `.heures` (les noms « -s2 », « -s3 », « -s6 » complétés par « solid ») — attendu [('e3d1-s8', 8, 86), ('r25', 11, 533), ('r33', 102, 1046), ('s11b', 13, 266), ('solid-s1', 2, 236), ('solid-s2', 5, 239), ('solid-s3', 6, 317), ('solid-s6', 6, 246)] · mesuré [('e3d1-s8', 8, 86), ('r25', 11, 533), ('r33', 102, 1046), ('s11b', 13, 266), ('solid-s1', 2, 236), ('solid-s2', 5, 239), ('solid-s3', 6, 317), ('solid-s6', 6, 246)]
+✓ R19     `--int` ×8 : mordues = cibles jouées pour chaque harnais ; le code du tableau (« 0 ×8 ») = les huit `int-<harnais>.code` — attendu (True, ['0', '0', '0', '0', '0', '0', '0', '0']) · mesuré (True, ['0', '0', '0', '0', '0', '0', '0', '0'])
+✓ R20     `--int` ×8 : la somme du texte (153) = la somme des mesurées ; les valeurs prédites par le protocole, une à une, sont les mesurées — attendu (153, [8, 11, 102, 13, 2, 5, 6, 6]) · mesuré (153, [8, 11, 102, 13, 2, 5, 6, 6])
+   (parcouru : 8 harnais --int : ['e3d1-s8', 'r25', 'r33', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s6'])
+✓ R21     `--e2e` ×1 (r26) : « 4 (446 s) » = `e2e-r26.log` (mordues = cibles) et `e2e-r26.heures` ; le code du tableau = `e2e-r26.code` ; la prédiction du protocole = le mesuré — attendu [4, 446, '0', 4] · mesuré [4, 446, '0', 4]
+✓ R21b    `--e2e` ×1 (r26) : les 4 gardes mordues sont les 4 cibles jouées — attendu 4 · mesuré 4
+✓ R22     contre-épreuve : « 5 mordues sur 5 (3 s) » = `contre-epreuve.log` et `.heures` ; le code du tableau = `contre-epreuve.code` — attendu [5, 5, 3, '0'] · mesuré [5, 5, 3, '0']
+✓ R23     lecture de `rang23` : « 13 mesures : MORSURES LUES 13 · DÉMARRÉES 13 » = la dernière ligne de `lecture-rang23.txt` — attendu [13, 13, 13] · mesuré [13, 13, 13]
+✓ R24     lecture d'`available-on-api` : « 30 journaux · 12 pré-vols · 0 écart » = `lecture-available-on-api.txt` ; autant de fichiers que de journaux lus dans `available-on-api/` — attendu ([30, 12, 0], 30) · mesuré ([30, 12, 0], 30)
+✓ R25     lecture des campagnes : « 416 mordues · 0 muettes · 0 non mesurées, 34 campagnes sur 34 qui COMPTENT » = la ligne CERTIFIANT de `lecture-campagnes.txt` (qui dit aussi : attendu 34, déclarées 416) — attendu ([416, 0, 0, 34, 34], 34, 416) · mesuré ([416, 0, 0, 34, 34], 34, 416)
+✓ R26     lecture des campagnes : « point 12 : 30 au-dessus de leur plancher (26 repris, 4 mesurés), 4 LUES ; calibration 12 bras sur 12 » = lignes « ≥ plancher » / REPRIS / MESURÉ / LUE / bras ✓ recomptés dans les pièces — attendu [30, 26, 4, 4, 12] · mesuré [30, 26, 4, 4, 12]
+✓ R27     lecture des campagnes : les lignes de campagne du tableau de lecture sont au nombre des « campagnes sur N » du texte, et toutes « OUI » (elles comptent) — attendu (34, 34) · mesuré (34, 34)
+   (parcouru : 55 ligne(s) de `lecture-campagnes.txt`, dont 34 de campagne)
+✓ R28     étiquettes : le texte (13 · 27 · 81 · 295, somme 416) = la ligne ÉTIQUETTES de la pièce = la somme RECOMPTÉE sur les 34 lignes de campagne ; les quatre premières valeurs = la prédiction du protocole — attendu ([13, 27, 81, 295, 416], [13, 27, 81, 295, 416], [13, 27, 81, 295]) · mesuré ([13, 27, 81, 295, 416], [13, 27, 81, 295, 416], [13, 27, 81, 295])
+✓ R28b    étiquettes : la somme des étiquettes = les mordues certifiantes (416) — attendu 416 · mesuré 416
+✓ R29     lecture à la main de R26 : « 0 signature de la règle 2 sur les quatre extraits » — les quatre extraits existent et les six motifs (délai de test, d'action) comptent 0 chacun, RECOMPTÉ ici sur les extraits — attendu ([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], 4) · mesuré ([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], 4)
+✓ R30     lecture à la main de R26 : la pièce dit « règle 1 satisfaite » et « 0, 0, 0, 0, 0, 0 pour chacun des quatre extraits » — attendu (True, True) · mesuré (True, True)
+✓ R31     échantillonneur : « 326 échantillons sur 171,4 min », SECTEUR seul, `chrome` max 0, écarts 31-34 s, `PERF` > 100 sur 295 sur 326 = `etat.csv` RECOMPTÉ ligne à ligne (pas le résumé) — attendu [326, 171.4, ['SECTEUR'], 0, 31, 34, 295, 326] · mesuré [326, 171.4, ['SECTEUR'], 0, 31, 34, 295, 326]
+✓ R32     échantillonneur : « 0 échec-instrument, 0 transition, 0 trou » (texte) = `etat-resume.txt` ; l'effectif (326) = ECHANTILLONS ; aucun écart entre deux échantillons au-delà de 60 s (recomptage) — attendu [326, 0, 0, 0, 0] · mesuré [326, 0, 0, 0, 0]
+✓ R33     la passe : « 16:51:08 → 19:44:31 (173,4 min) » = premier et dernier horodatages de `progression.txt` — attendu ('16:51:08', '19:44:31', 173.4) · mesuré ('16:51:08', '19:44:31', 173.4)
+✓ R34     arbre : « immobile sur 4202dd4 aux SIX contrôles, 0 ligne de statut à chacun » = `arbre-1.txt` à `arbre-6.txt` (HEAD et statut) — attendu [('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0)] · mesuré [('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0), ('4202dd4', 0)]
+✓ R35     arbre : aucun fichier « …-NON-CONFORME » dans la passe — attendu [] · mesuré []
+   (parcouru : 191 fichier(s) de la passe ; 6 fichier(s) `arbre-N.txt`)
+✓ R36     « 0 valeur réelle » : (valeurs, journaux, fichiers, porteurs) du texte = les deux dernières lignes des pièces (jetons, puis cookies) — attendu [104, 13, 3615, 0, 230, 21, 3615, 0] · mesuré [104, 13, 3615, 0, 230, 21, 3615, 0]
+✓ R37     rejeu des deux specs : « 5 passés (57,5 s) » et « 2 passés (55,5 s) » = les `N passed (…s)` des deux extraits — attendu [5, 57.5, 2, 55.5] · mesuré [5, 57.5, 2, 55.5]
+✓ R38     inventaires : « chrome 0 et headless_shell 0 … node 0 à chacun ; msedge 5 » = les cinq relevés (ouverture, après e2e, clôture, avant et après le rejeu) — attendu [(0, 0, 0, 5), (0, 0, 0, 5), (0, 0, 0, 5), (0, 0, 0, 5), (0, 0, 0, 5)] · mesuré [(0, 0, 0, 5), (0, 0, 0, 5), (0, 0, 0, 5), (0, 0, 0, 5), (0, 0, 0, 5)]
+✓ R39     porte dure à l'ouverture : « RAM 4 897,5 (4 880-4 933) puis 4 929,5 (4 924-4 945), barre 4 579 » = `sonde-ouverture-1/2.txt` ; `porte-dure.txt` = VERTE ; `chrome` 0, `node` 0, SECTEUR aux deux relevés — attendu ([4897.5, 4880.0, 4933.0, 4929.5, 4924.0, 4945.0, 4579.0], 'VERTE', ('0', '0', 'SECTEUR'), ('0', '0', 'SECTEUR')) · mesuré ([4897.5, 4880, 4933, 4929.5, 4924, 4945, 4579.0], 'VERTE', ('0', '0', 'SECTEUR'), ('0', '0', 'SECTEUR'))
+✓ R40     l'ambiant : « 11 relevés de sonde sur 21 sont sous 4 579 Mo, dont la clôture (4 368,5, 4 357-4 376), et 12 échantillons sur 23 à node = 0 (min 3 888) ; 310 sur 326 sous la barre, 298 avec des node » = RECOMPTÉ sur les 21 sondes et `etat.csv` — attendu [11.0, 21.0, 4579.0, 4368.5, 4357.0, 4376.0, 12.0, 23.0, 3888.0, 310.0, 326.0, 298.0] · mesuré [11.0, 21.0, 4579.0, 4368.5, 4357.0, 4376.0, 12.0, 23.0, 3888.0, 310.0, 326.0, 298.0]
+✗ R41     ce qui a bougé entre l'ouverture et la clôture : « vmmemWSL 395 → 792, powershell 357 → 590, l'IDE +110 » = les inventaires > 150 Mo des deux sondes (`Code` = l'IDE) — attendu [395, 792, 357, 590, 110] · mesuré [395, 792, 357, 590, 111]
+✓ R42     « 5 504 s (92 min) contre 3 313 s à D324 » = `campagnes-tout.heures` des deux passes (les minutes arrondies) — attendu [5504, 92, 3313] · mesuré [5504, 92, 3313]
+
+== D — le diagnostic non certifiant de `test:int` (deux bras, deux fichiers de test) contre ses pièces
+✓ D1      bras SANS surcharge : le texte (2 échecs, 8 passés, 10, code 1) = le résumé de l'extrait (tests en échec, passés, total) et la ligne d'erreur de pnpm « exit code 1 » — attendu [2, 8, 10, 1] · mesuré [2, 8, 10, 1]
+✓ D2      bras AVEC `CLIENT_URL` : le texte (10 passés sur 10, code 0) = le résumé de l'extrait ; aucun échec, aucune ligne d'erreur de pnpm (le code 0 n'est pas imprimé : son absence est la mesure) — attendu [10, 10, 0] · mesuré [10, 10, 0]
+✓ D3      les deux fichiers de test de l'extrait SANS surcharge sont ceux que le texte nomme, chacun avec UN test en échec (un titre par fichier dans le texte) ; l'extrait AVEC surcharge n'a aucun test en échec — attendu ([('forgot-password.int-spec.ts', 1), ('register.int-spec.ts', 1)], 0) · mesuré ([('forgot-password.int-spec.ts', 1), ('register.int-spec.ts', 1)], 0)
+✓ D4      les deux tests en échec ont les titres du texte (chacun est contenu dans une ligne « × » de l'extrait) — attendu [True, True] · mesuré [True, True]
+✓ D5      les deux assertions en échec attendent `http://localhost:3000` : une ligne « → expected … » par test, qui nomme l'hôte local — attendu 2 · mesuré 2
+✓ D6      l'extrait SANS surcharge : lignes du journal complet (82, écrit dans son en-tête) = lignes de l'extrait après l'en-tête + lignes retirées (2) — attendu 82 · mesuré 82
+   (parcouru : 82 ligne(s) de l'extrait SANS, 14 de l'extrait AVEC ; en-tête : 2 ligne(s) ; corps : 80 ; retirées : 2)
+? N3      NON VÉRIFIABLE : l'empreinte SHA-256 du journal COMPLET du bras SANS surcharge (1b39d083a0b1…), ses 6490 octets et ses 82 lignes : le journal brut est HORS dépôt (il portait deux jetons et un hôte de tunnel)
+? N4      NON VÉRIFIABLE : la VALEUR du `.env` à l'époque (`CLIENT_URL` sur un tunnel, modifié le 12/10 à 11:43:41) : elle n'est dans aucune pièce — l'hôte a été retiré de l'extrait, et le fichier a été modifié depuis (état LIVE ci-dessus). Seul le diagnostic (2 échecs sur 10 contre 10 sur 10, mêmes fichiers de test) en porte la trace, et il ne prouve que « une variable `CLIENT_URL` non locale suffit à faire échouer ces deux tests »
+✓ D7      « `dotenv` ne l'écrase pas » (état VIVANT de la dépendance de l'API, `dotenv@16.6.1`) : `override` vaut faux sauf option explicite, et une variable déjà définie n'est réécrite que si `override === true` — attendu (True, True) · mesuré (True, True)
+✓ D8      l'API déclare bien `dotenv` en 16.x (c'est la version dont le comportement vient d'être lu) — attendu True · mesuré True
+✓ D9      `apps/api/test/int/setup-env.ts` importe `dotenv/config` ET ne fixe PAS `CLIENT_URL` (c'est le défaut que D329 décrit : le `.env` entre dans `test:int`) — attendu (True, False) · mesuré (True, False)
+   (parcouru : 28 ligne(s) de `setup-env.ts` à la clôture)
+
+== O — les copies d'outillage de D329 contre leurs originaux (différences comptées et classées)
+   ✓ hunks, cas vrai : « b » remplacé par « B » et « d » ajouté → [replace, insert] ; cas faux : deux textes identiques → []
+✓ O1      `passe.py` (D329) contre son original D319 : TOUS les morceaux sont classés par l'en-tête de la copie (en-tête ; (1) la dérivation `--int` ; (2) l'inventaire) — et chaque modification que l'en-tête déclare a au moins un morceau — attendu (['1', '2'], 0) · mesuré (['1', '2'], 0)
+✓ O2      `passe.py` : les lignes de l'original qui DISPARAISSENT sont toutes des lignes de la condition de dérivation des harnais verrouillés (« Tout le reste est le texte de D319, intact ») — attendu True · mesuré True
+   (parcouru : 319 ligne(s) de l'original, 352 de la copie ; 7 morceau(x) : lignes retirées 1, ajoutées 34 ; classes ['(1) _RE_INT', '(1) condition', '(2) appel', '(2) appel', '(2) appel', '(2) def inventaire', 'en-tête'])
+✓ O3      `verser.py` (D329) contre D324 : l'en-tête et la ligne `DST` sont les seuls morceaux ; `DST` ne diffère que par `D324` → `D329`, et cette ligne est la SEULE occurrence de code (« une occurrence de code, comptée ») — attendu (['DST', 'en-tête'], True, 1) · mesuré (['DST', 'en-tête'], True, 1)
+✓ O4      `lire-campagnes.py` (D329) contre D324 : six morceaux, tous classés par les modifications déclarées (en-tête ; (1) chemin du plancher, simulation composée, 28 → 30 ; (2) import r32/r33 ; (3) les bras de plus) ; aucun non classé — attendu ['(1) 28 → 30', '(1) chemin du plancher', '(1) simulation composée', '(2) import r32/r33', '(3) bras de plus', 'en-tête'] · mesuré ['(1) 28 → 30', '(1) chemin du plancher', '(1) simulation composée', '(2) import r32/r33', '(3) bras de plus', 'en-tête']
+✗ O5      le nombre de bras que `lire-campagnes.py` ajoute est celui que son en-tête déclare (« DEUX bras … sur `r33` … et deux sur `r32` », donc 4) — attendu 4 · mesuré 5
+✓ O6      les sorties de calibration versées disent ce que le code compte (bras `bN = …` du source) : D324 et D329 — attendu (7, 12) · mesuré (7, 12)
+· O-C1    CONSTAT : D329 écrit « quatre bras de calibration de plus … 12 bras sur 12 » (texte trouvé) : D324 en avait 7 (pas 8), D329 en compte 12 — soit 5 de plus, dont QUATRE à deux issues (positif/négatif sur r33 et r32) et UN contrôle de déclaration (`b12` : r32 65 cibles non verrouillé, r33 102 cibles verrouillé), qui n'a pas de bras négatif. Le total « 12 sur 12 » est exact ; le « +4 » ne l'est pas. Écart d'exactitude d'un compte écrit dans un texte, sans effet sur une porte ni sur un chiffre certifiant.
+✓ O7      `simuler-non-demarrage.py` (D329) contre D324 : chaque morceau qui n'est pas un renommage `D324` → `D329` porte une marque de modification déclarée (`[D329 (n)]`, `MESURER`, `ARGV_PAR_HARNAIS`, « À D324 », « à mesurer », l'en-tête) — attendu [] · mesuré []
+✓ O8      le nombre « 16 » de l'en-tête (« comptées par `grep -c` avant et après : 16 → 0, puis 16 ») = les lignes de l'original ENTIER qui portent `d324` (`grep -c -i`) — attendu 16 · mesuré 16
+   (parcouru : 18 morceau(x) ; renommages purs 9 = 12 ligne(s), 17 occurrence(s) ; original : 16 ligne(s) au total dont 13 de code hors les huit lignes de son en-tête (18 occurrence(s)) ; copie : 20 ligne(s) portent `d329`, dont 17 hors l'en-tête ; autres morceaux 9)
+· O-C2    CONSTAT : l'en-tête de `simuler-non-demarrage.py` (D329) écrit « tout nom `D324`/`d324` du CODE … — 16 occurrences, comptées par `grep -c` avant et après (16 → 0, puis 16) » : le `grep -c -i` sur l'original ENTIER rend bien 16, mais il compte aussi les lignes de l'en-tête de D324 (3 lignes) que la copie remplace ; les lignes de CODE sont 13 (18 occurrences). Le « 16 » est un compte de lignes du fichier entier, pas du seul code ; le « puis 16 » ne se recompte pas (20 lignes portent `d329` aujourd'hui, nouvelles lignes comprises). Imprécision d'un commentaire d'outil, sans effet sur la mesure (la passe a prouvé les noms cohérents en s'exécutant).
+✓ O9      `balayage.py` (D329) est la copie à l'OCTET de celui de D328 (même objet git) — attendu '585a3769bdab7e54f0b2a5702fc3ec1842835616' · mesuré '585a3769bdab7e54f0b2a5702fc3ec1842835616'
+✓ O10     la dérivation des planchers : harnais inchangés / changés / neufs RECALCULÉS sur les objets git (D324 contre la clôture) = ce que `deriver-plancher-sortie.txt` dit — attendu (30, ['act-plafonds', 'horloge'], ['r32', 'r33']) · mesuré (30, ['act-plafonds', 'horloge'], ['r32', 'r33'])
+✓ O11     aucune pièce de `neutralisation/` AUTRE qu'un harnais n'a changé entre D324 et la clôture de D329 — attendu [] · mesuré []
+   (parcouru : 32 harnais à D324 · 34 à la clôture ; 39 / 41 pièces de `neutralisation/`)
+✓ O12     `plancher.txt` (D329) : (composés, mesurés, repris) de la dérivation = ses lignes ; les repris sont ceux de D324 chiffre pour chiffre ; les mesurés valent 3 × T (T lu dans la table de la simulation), arrondi à deux décimales — attendu ([30, 4, 26], True, True) · mesuré ([30, 4, 26], True, True)
+✓ O13     la simulation de l'étape 0 : « calibration à trois bras, 0 bras manqué » (texte) = trois sections « CALIBRATION (a/b/c) » et « BRAS ET DÉFAUTS MANQUÉS : 0 » dans `simulation-sortie.txt` — attendu (3, 0) · mesuré (3, 0)
+   (parcouru : 32 ligne(s) de `simulation-sortie.txt` ; 30 planchers ; 28 planchers de D324)
+✓ O14     `extraire-testint.py` (outil NEUF de D329) : sa calibration rejouée depuis l'objet git de la clôture rend « positif ✓ · négatif ✓ » (le script sort ensuite en erreur d'usage : aucun journal ne lui est donné) — attendu (True, True) · mesuré (True, True)
+✓ O15     `inventaire.py` (outil NEUF de D329) : sa calibration rejouée (un processus connu compté, un nom forgé à 0) rend ✓ ✓ et le relevé compte six noms ; il sort en 0 — attendu (True, True, True, 0) · mesuré (True, True, True, 0)
+✓ O16     `deriver-plancher.py` (outil NEUF) : la sortie versée porte ses deux bras de calibration, positif (un harnais changé est REFUSÉ) et négatif (un harnais inchangé est ACCEPTÉ), tous deux ✓ — attendu (1, 1) · mesuré (1, 1)
+   (rejoués : extraire-testint.py 2 ligne(s) de sortie · inventaire.py 25 ligne(s) ; dossier temporaire hors dépôt)
+
+== Q — les textes de D329 (les trois `.md` à la clôture) et ses pièces
+✓ Q1      la dernière ligne du registre est la dernière session datée du fichier (D329) ; « D330 » n'existe dans aucun des trois `.md` à la clôture — attendu ('D329', [0, 0, 0]) · mesuré ('D329', [0, 0, 0])
+✓ Q2      les décisions de la session D329 « à ratifier » sont numérotées de 1 à N sans trou (Ko : « les dix décisions de la session D329 » — N doit valoir 10) — attendu [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] · mesuré [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+✓ Q3      les fautes de la session sont numérotées de 1 à N sans trou (la dernière est le retour chariot de l'extension 2 : N = 6) — attendu [1, 2, 3, 4, 5, 6] · mesuré [1, 2, 3, 4, 5, 6]
+✓ Q4      les défauts de l'instrument de la lecture adverse de D329 : leur nombre écrit en toutes lettres dans le texte (« TREIZE ») = les entrées numérotées de `defauts-instrument.txt` — attendu [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] · mesuré [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+✓ Q5      la sortie de la lecture adverse de D329 : (contrôles, écarts + variations, bras, constats, non vérifiables), la ventilation par famille et le nombre de bras = ce que le texte annonce — attendu ([121, 4, 19, 7, 5], {'C': 22, 'L': 4, 'P': 25, 'Q': 40, 'R': 23, 'X': 7}) · mesuré ([121, 4, 19, 7, 5], {'C': 22, 'L': 4, 'P': 25, 'Q': 40, 'R': 23, 'X': 7})
+✓ Q6      la passe D277 de D329 : (occurrences, motifs examinés, motifs à zéro) de la première passe (714 · 42 · 3) et de la dernière (890 · 42 · 0) dans le texte = les dernières lignes des deux sorties — attendu ([714, 42, 3], [890, 42, 0]) · mesuré ([714, 42, 3], [890, 42, 0])
+✓ Q7      l'ordre des rangs à la clôture : la dernière ligne « ⇒ RANG N » est « RANG 36 : OUVERT, NON CLOS » ; aucune ligne « ⇒ **RANG 37 » n'est écrite dans la section (le rang 37 n'existe pas) — attendu (True, 0) · mesuré (True, 0)
+   (parcouru : 1382 ligne(s) de la section « ORDRE DES RANGS » ; 6 ligne(s) « ⇒ RANG 3x »)
+✓ Q8      `AGENTS.md` à la clôture porte l'annotation de D329 « LA PASSE A EU LIEU — MARQUE REFUSÉE » et le compteur DEUX inchangé — attendu True · mesuré True
+✓ Q9      les pièces de la passe : « 191 pièces versées » (texte) = les fichiers de `passe-r36a-20261012-1651/` ; l'extension 2 en déclare autant PLUS ceux qui naissent après la passe (diagnostic, extracteur, rejeu) — attendu (191, True) · mesuré (191, True)
+   (extension 2 : 198 chemin(s) dont 191 dans le dossier de la passe et 7 ailleurs : diagnostic-test-int, outils, rejeu-specs)
+✓ Q10     le journal brut de l'e2e et celui de `test:int` ne sont PAS dans le dépôt (aucun `e2e.log`, aucun `testint.log` sous `docs/preuves/D329/`) — attendu [] · mesuré []
+   (parcouru : 257 fichier(s) sous `docs/preuves/D329/` ; les extraits `e2e-EXTRAIT.txt` et `testint-EXTRAIT.txt` y sont : 2 sur 2)
+✓ Q11     le dernier audit scellé de D329 : « 16 alertes absentes de la précédente, toutes triées au contexte » (texte) = la ligne du tri différentiel ; le tri versé en cite autant (une ligne `[…] chemin — contexte`) — attendu (16, True) · mesuré (16, True)
+
+== S — fuites : un hôte de tunnel, un jeton, dans les pièces et les `.md` de D329
+✓ S1      les seuls hôtes de tunnel présents dans les pièces de D329 et les trois `.md` sont la SENTINELLE de calibration de `extraire-testint.py` (`https://…/fr/auth/verification-email` construit dans le script) — aucun hôte réel — attendu ['abc-3000.devtunnels.ms'] · mesuré ['abc-3000.devtunnels.ms']
+✓ S2      aucun jeton de vérification (`token=` suivi de 43 caractères) dans les pièces de D329 ni dans les trois `.md` — attendu [] · mesuré []
+   (parcouru : 260 fichier(s) ; hôtes d'URL distincts rencontrés : ['abc-3000.devtunnels.ms', 'binaries.prisma.sh', 'localhost', 'locize.com', 'nextjs.org', 'pay.chargily.dz', 'playwright.dev', 'react.dev', 'rollupjs.org'])
+
+== CE QUE LA LECTURE NE PEUT PAS DIRE
+? N5      NON VÉRIFIABLE : que les textes de Ko du 12/10 (18 h 39, 23 h 57) et la proposition du relecteur soient reproduits mot pour mot dans les fichiers de ce lot : ils n'existent que dans le chat ; la lecture ne peut vérifier que ce que D329 a déjà écrit
+? N6      NON VÉRIFIABLE : que le dernier audit de secrets de D329 (`d329b`) ait couvert les octets FINAUX des trois `.md` : D329 le déclare lui-même (même limite que A-N1 de D327, C-N1 de D328) ; sa sortie est scellée, pas l'état final des fichiers
+? N7      NON VÉRIFIABLE : que la durée des harnais repris de D324 (26 planchers) soit encore celle d'un démarrage sur ce poste : D329 l'écrit comme limite (« la vérification porte sur `neutralisation/`, pas sur la durée de `pnpm` ou de `vitest` »)
+   (la base de développement n'est PAS lue : aucune affirmation de D329 n'en dépend ; aucune porte, aucune campagne n'est rejouée)
+· V-C1    CONSTAT : la RAM est tombée sous la barre en cours de fenêtre à D329 (310 échantillons sur 326, dont 12 à `node` = 0 ; la clôture à 4 368,5 Mo) et le point 7 du critère du rang 9 ne disqualifie que `chrome` > 0 : D329 l'a PORTÉ au backlog sans le juger. Une seconde passe qui réussirait devrait dire, AVANT la mesure, comment ce point se lit ; ce n'est pas un défaut de D329, c'est une question laissée ouverte et qui se posera de nouveau.
+· V-C2    CONSTAT : D329 décrit le trou de l'arbre immobile (un fichier ignoré par git qui est une ENTRÉE de `test:int`) comme sa faute n° 1. L'état LIVE (famille E) montre que Ko a remis les trois `.env` à des hôtes locaux ; aucune pièce de D329 ne relevait l'empreinte ni les hôtes des `.env` avant ou après la passe : la décision 2 du relecteur (relever empreinte et hôtes à l'ouverture et à la clôture) comble ce trou pour la seconde passe.
+
+== BILAN
+124 contrôles (121 ✓) · 3 écart(s) de D329 : ['T1', 'R41', 'O5'] · 0 variation(s) de l'état vivant : [] · 6 constat(s) : ['C-C1', 'T-C1', 'O-C1', 'O-C2', 'V-C1', 'V-C2'] · 7 non vérifiable(s) : ['N1', 'N2', 'N3', 'N4', 'N5', 'N6', 'N7']
+ventilation : C 9 · D 9 · E 7 · O 16 · P 14 · Q 11 · R 46 · S 2 · T 2 · X 8 (somme 124) — aucune famille à zéro : True
+calibration : 23 bras, 0 manqué
