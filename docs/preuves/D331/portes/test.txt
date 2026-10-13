@@ -1,0 +1,14 @@
+# D331 — porte `test` : pnpm test
+# HEAD au lancement du paquet de portes : d19935c (code du lot dans l'arbre de travail, non commité au moment des portes — rapporté au commit de code)
+# code de sortie RÉEL : 0 · durée : 87 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; source d'alimentation relevée dans `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 3c1993efeb782037992d0b6df3d92835e7bb6fac3e3738ee00770ea6b9547a43 · 89002 octets · 1558 lignes
+
+parcouru : 1558 ligne(s)
+résumés vitest lus : 4 (attendu : 4)
+  résumé 1 : fichiers passés 5 · en échec 0 · total 5 ; tests passés 48 · en échec 0 · total 48
+  résumé 2 : fichiers passés 65 · en échec 0 · total 65 ; tests passés 791 · en échec 0 · total 791
+  résumé 3 : fichiers passés 29 · en échec 0 · total 29 ; tests passés 372 · en échec 0 · total 372
+  résumé 4 : fichiers passés 38 · en échec 0 · total 38 ; tests passés 537 · en échec 0 · total 537
+somme : 1748 tests / 137 fichiers passés ; en échec : 0
+base de la passe de D330 : 1718 tests / 136 fichiers
+écart : +30 tests, +1 fichier — le lot ajoute `ma-salle-relecture.test.tsx` (19 tests), 10 tests au fournisseur, 1 test à la création (attendu : +30 tests, +1 fichier)

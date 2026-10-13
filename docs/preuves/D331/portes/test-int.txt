@@ -1,0 +1,7 @@
+# D331 — porte `test-int` : pnpm test:int
+# HEAD au lancement du paquet de portes : d19935c (code du lot dans l'arbre de travail, non commité au moment des portes — rapporté au commit de code)
+# code de sortie RÉEL : 0 · durée : 307 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; source d'alimentation relevée dans `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 48eadea64a7535fd9d3e6051ca1bb590a0ecd1c10238142747b306e7223002b0 · 52555 octets · 313 lignes
+
+parcouru : 313 ligne(s)
+résumé : [((38, 0, 38), (468, 0, 468))] (attendu : [((38, 0, 38), (468, 0, 468))] — l'API n'est pas touchée par ce lot)

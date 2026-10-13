@@ -1,0 +1,12 @@
+# D331 — VERT — chemin « création », après le correctif (le témoin était déjà vert avant)
+# état du code : CODE DE PRODUCTION = CELUI DU LOT (arbre de travail, non commité au moment de la mesure) ; les tests sont ceux du lot (versions FINALES, le même fichier que celui des rouges)
+# journal brut (hors dépôt) : SHA-256 7f04d9951fbb8e5688f448d5c0bf5a892b8da64fc68422369948cd864241123d · 1869 octets · 17 lignes · EXTRAIT versé : verdicts du chemin (filtre « la salle créée apparaît ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et son cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du chemin : 4 vert(s) · 0 rouge(s) · 0 morsure(s) par assertion native (attendu : toutes les rouges)
+
+VERT   « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle
+VERT   « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > le fournisseur RELIT la liste après la création — une seule source (D78), pas une liste propre à la page de création
+VERT   « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ la relecture part APRÈS la réponse de `create`, pas avant (D331 : le faux serveur de D326 enregistrait à l'appel) — tant que le serveur n'a pas répondu, la liste n'est pas relue
+VERT   « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > la relecture ne se fait PAS quand la création ÉCHOUE : une salle qui n'existe pas n'a aucune raison de faire relire la liste
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les chemins du fichier) : Test Files  1 passed (1) | Tests  4 passed (4)

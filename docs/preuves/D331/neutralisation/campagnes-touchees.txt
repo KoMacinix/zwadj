@@ -1,0 +1,30 @@
+17 fichier(s) modifié(s) depuis HEAD → 3 campagne(s) concernée(s) sur 35.
+  · neutralize-r30.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/edit-venue-page.tsx
+  · neutralize-r32.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/edit-venue-page.tsx
+  · neutralize-r37.py  (4 fichier(s) en commun)
+      apps/pro/src/shell/pro-venues-context.tsx
+      apps/pro/src/test-support/client-doubles.ts
+      apps/pro/src/venues/edit-venue-page.tsx
+
+[1/3] neutralisation\neutralize-r30.py …
+    sortie=0  8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/3] neutralisation\neutralize-r32.py …
+    sortie=0  65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/3] neutralisation\neutralize-r37.py …
+    sortie=0  21 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-r30.py                       0     8     8     0     0    64
+neutralize-r32.py                       0    65    65     0     0   623
+neutralize-r37.py                       0    21    21     0     0   231
+================================================================================================
+MESURÉ : 94 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 3 campagne(s) · 918s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+code=0 durée=919 s

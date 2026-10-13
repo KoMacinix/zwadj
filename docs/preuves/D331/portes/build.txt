@@ -1,0 +1,8 @@
+# D331 — porte `build` : pnpm build
+# HEAD au lancement du paquet de portes : d19935c (code du lot dans l'arbre de travail, non commité au moment des portes — rapporté au commit de code)
+# code de sortie RÉEL : 0 · durée : 31 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; source d'alimentation relevée dans `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 e2ea82d3f040f8fee7b0cf96f63ec7ddc26fe4ec7edaf5de63e3ce3c800b12c2 · 10486 octets · 127 lignes
+
+parcouru : 127 ligne(s)
+« …: Done » : 4 (attendu : 4, le même nombre de tâches que la passe de D330 — aucune tâche ajoutée ni retirée)
+`error TS` : 0 (attendu : 0)

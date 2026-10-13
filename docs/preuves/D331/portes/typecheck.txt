@@ -1,0 +1,8 @@
+# D331 — porte `typecheck` : pnpm typecheck
+# HEAD au lancement du paquet de portes : d19935c (code du lot dans l'arbre de travail, non commité au moment des portes — rapporté au commit de code)
+# code de sortie RÉEL : 0 · durée : 18 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; source d'alimentation relevée dans `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 496b6fa25f47dd407ba9b379800780a186895649a19c3f139fff9e933ce62e97 · 627 octets · 21 lignes
+
+parcouru : 21 ligne(s)
+« …: Done » : 8 (attendu : 8, le même nombre de tâches que la passe de D330 — aucune tâche ajoutée ni retirée)
+`error TS` : 0 (attendu : 0)

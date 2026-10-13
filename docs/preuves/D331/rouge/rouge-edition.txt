@@ -1,0 +1,60 @@
+# D331 — ROUGE LU — chemin « édition » (relire la liste après un enregistrement réussi de l'assistant), contre l'état d'AVANT
+# état du code : CODE DE PRODUCTION = CELUI D'AVANT (les trois fichiers de production repris de HEAD d19935c, qui ne diffère de afdfcb1 — clôture de D330 — par AUCUN fichier hors docs/ ; vérifié par git diff --name-only) ; les tests sont ceux du lot (versions FINALES, le même fichier que celui des verts)
+# journal brut (hors dépôt) : SHA-256 27abaea3ac0587b893e683c46b889d506930127f1a4f4a399b62957e5db3a223 · 334734 octets · 7655 lignes · EXTRAIT versé : verdicts du chemin (filtre « ÉDITION ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et son cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du chemin : 2 vert(s) · 5 rouge(s) · 5 morsure(s) par assertion native (attendu : toutes les rouges)
+
+ROUGE  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ la salle courante et le compte sont ceux du SERVEUR après l'enregistrement, sans visiter la liste (S4 de D327)
+ROUGE  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ RÈGLE DES MONTANTS : la liste montre le prix TEL QUE LE SERVEUR L'A ENREGISTRÉ (formaté par le formateur partagé), pas l'ancien, après un retour sans rechargement (S8 de D327)
+ROUGE  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ F-4 : la relecture part APRÈS la réponse du serveur, pas avant — tant que la réponse est retenue, la liste n'est pas relue (le serveur n'a rien enregistré)
+ROUGE  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-17 : le libellé « Mes salles » ne retombe PAS à « Ma salle » pendant la relecture qui suit l'enregistrement (le compte connu est conservé)
+ROUGE  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-10 : si la relecture qui suit l'enregistrement ÉCHOUE, l'état est « error » — l'écran ne dit pas « à jour » ce qu'il ne sait pas
+VERT   « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-11 : un enregistrement sans rien à enregistrer ne relit PAS la liste (une salle qui n'a pas changé n'a aucune raison de la faire relire)
+VERT   « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-11 : un enregistrement REFUSÉ par le serveur ne relit PAS la liste, et l'écran le dit
+
+ÉCHEC  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ la salle courante et le compte sont ceux du SERVEUR après l'enregistrement, sans visiter la liste (S4 de D327)
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:131:83
+      129|     await waitFor(() => expect(vi.mocked(serveur.client.update)).toHav…
+      130|     // Verdict en assertion NATIVE : la salle courante du fournisseur …
+      131|     await waitFor(() => expect(screen.queryByText("courante:Salle Reno…
+         |                                                                                   ^
+      132|     expect(serveur.stored().map((v) => v.nameFr)).toContain("Salle Ren…
+
+ÉCHEC  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ RÈGLE DES MONTANTS : la liste montre le prix TEL QUE LE SERVEUR L'A ENREGISTRÉ (formaté par le formateur partagé), pas l'ancien, après un retour sans rechargement (S8 de D327)
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:149:63
+      147|     const apres = formatDZD(serveur.stored()[0]!.basePriceCents, "fr");
+      148|     expect(apres).not.toBe(avant);
+      149|     await waitFor(() => expect(carteDe("Salle Corrigée")).not.toBeNull…
+         |                                                               ^
+      150|     expect(carteDe("Salle Une")).toBeNull();
+
+ÉCHEC  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ F-4 : la relecture part APRÈS la réponse du serveur, pas avant — tant que la réponse est retenue, la liste n'est pas relue (le serveur n'a rien enregistré)
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:169:83
+      167|     expect(serveur.stored().map((v) => v.nameFr)).toEqual(["Salle Une"…
+      168|     retenue.release();
+      169|     await waitFor(() => expect(screen.queryByText("courante:Salle Reno…
+         |                                                                                   ^
+      170|     expect(lectures(serveur)).toBe(2);
+
+ÉCHEC  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-17 : le libellé « Mes salles » ne retombe PAS à « Ma salle » pendant la relecture qui suit l'enregistrement (le compte connu est conservé)
+  1ʳᵉ ligne : AssertionError: expected 1 to be 2 // Object.is equality
+   ❯ src/venues/ma-salle-relecture.test.tsx:183:51
+      181|     await waitFor(() => expect(vi.mocked(serveur.client.update)).toHav…
+      182|     // La relecture est PARTIE et retenue : le fournisseur est en char…
+      183|     await waitFor(() => expect(lectures(serveur)).toBe(2));
+         |                                                   ^
+      184|     await waitFor(() => expect(screen.queryByText("état:loading")).not…
+
+ÉCHEC  « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-10 : si la relecture qui suit l'enregistrement ÉCHOUE, l'état est « error » — l'écran ne dit pas « à jour » ce qu'il ne sait pas
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:198:70
+      196|     fireEvent.change(screen.getByLabelText(FORM.nameFr), { target: { v…
+      197|     enregistrer();
+      198|     await waitFor(() => expect(screen.queryByText("état:error")).not.t…
+         |                                                                      ^
+      199|   });
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les chemins du fichier) : Test Files  1 failed (1) | Tests  12 failed | 7 passed (19)

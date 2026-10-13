@@ -1,0 +1,176 @@
+# D331 — ÉTAT DE LA MACHINE ET DE L'ARBRE AUX PORTES (typecheck, lint, test, build, test:int, test:e2e) — pièce versée, relevé, PAS une certification.
+# Les six portes ont été lancées l'une après l'autre, UN seul paquet, après la dernière modification de code (aucune source n'a été éditée pendant le paquet ; aucun test ne lit les trois .md d'autorité, relevé par grep).
+# ⚠ LA RAM LIBRE À L'OUVERTURE ÉTAIT SOUS LA BARRE D273 (4 125 Mo contre 4 579, écart −454 Mo) : ce paquet n'est donc PAS une fenêtre certifiante, et aucune durée n'en est comparée (D290). Les portes sont vertes ; une porte verte sous la barre est un résultat, pas une certification.
+# L'alimentation (SECTEUR) n'est relevée qu'à l'OUVERTURE (la sonde n'a pas été rejouée à la clôture) ; l'inventaire des processus, l'état des .env et l'arbre le sont aux DEUX bouts.
+
+## HEAD au lancement : d19935c
+
+## arbre (git status --short) AVANT le paquet, puis APRÈS (identiques : OUI) — lignes : 15
+ M apps/pro/src/shell/pro-venues-context.test.tsx
+ M apps/pro/src/shell/pro-venues-context.tsx
+ M apps/pro/src/test-support/client-doubles.ts
+ M apps/pro/src/venues/create-venue-page.test.tsx
+ M apps/pro/src/venues/edit-venue-page.tsx
+ M apps/pro/src/venues/venue-list-page.tsx
+ M e2e/specs/a2-mount-effects.e2e.ts
+ M neutralisation/neutralize-r33.py
+?? apps/pro/src/venues/ma-salle-relecture.test.tsx
+?? docs/preuves/D331/navigateur/
+?? docs/preuves/D331/neutralisation/
+?? docs/preuves/D331/rouge/
+?? docs/preuves/D331/vert/
+?? e2e/specs/r37-ma-salle.e2e.ts
+?? neutralisation/neutralize-r37.py
+
+## empreintes SHA-256 des fichiers de code du lot, relevées APRÈS le paquet (le commit de code doit les porter À L'OCTET : vérifié au commit)
+d7d2c840c338808094d6a7f673bf6830abb834a5da8b7a91d478839c2e71df7e  apps/pro/src/shell/pro-venues-context.test.tsx
+346f331dc219d6984c313a0cfe6f5fdadd6d3f69896fdae4f39c2fc6eec7f168  apps/pro/src/shell/pro-venues-context.tsx
+6488af7665fbca1edba0c3a134c4f3562023c1cf70a48824d16cfcfada579803  apps/pro/src/test-support/client-doubles.ts
+f17601147ab87e396ed3ee32447a1a86815421a93c6d95b5455e88c6d8679e7d  apps/pro/src/venues/create-venue-page.test.tsx
+3f3664efcc83902b1c614009830d2edfecdc9fe98e67c358c98ffefa1640363b  apps/pro/src/venues/edit-venue-page.tsx
+f8d759491958dc84d09a6f5bd4020fec6c82e1f45766326d9e8def18c6316743  apps/pro/src/venues/venue-list-page.tsx
+4016735980de2951754a7d61eb772ee7779aeab7ab419d1ccd49d5a4ab4b6e35  apps/pro/src/venues/ma-salle-relecture.test.tsx
+ef77e0d527224e5d9562764b37e4a7943f8eeb7264792c1bd96e60535c09bd60  e2e/specs/a2-mount-effects.e2e.ts
+300929bb301349bb21f50d67f68c8e538d46f4975c6f3c8273960f7f6d10e123  e2e/specs/r37-ma-salle.e2e.ts
+7656d3c3ebd2ea96dd750401de5983f96ff986af156492f420d91508af6131d3  neutralisation/neutralize-r33.py
+d77eb0eaff7d39888906fd19c409196dd48ca4176a5035f30fdc7831f21664be  neutralisation/neutralize-r37.py
+
+## état des .env — OUVERTURE (docs/preuves/D330/outils/etat-env.py : aucune valeur, empreinte et classe d'hôte)
+ÉTAT DES FICHIERS .env — relevé « d331-portes-ouverture » — HORODATAGE 13/10/2026 16:58:57 — AUCUNE VALEUR (empreinte et classe d'hôte seulement)
+   ✓ calibration positif : un fichier tout local → 3 variables d'URL, toutes locales, ni le secret ni le commentaire dans le résultat
+   ✓ calibration négatif : CLIENT_URL, un élément de CORS_ORIGINS, `localhost@distant`, `localhost.distant`, `?h=localhost` → NON LOCAL ; [::1] et 0.0.0.0 → locaux ; l'hôte distant n'est PAS dans le résultat
+   ✓ calibration empreinte : mêmes octets → même empreinte ; un octet de plus (LF → CRLF, ou un chiffre) → empreinte différente
+   ✓ calibration comptage : 4 variables dans le fichier local synthétique (le commentaire n'en est pas une)
+FICHIER apps/api/.env · octets 2686 · SHA256 813afbfcf834b9a4392316ff043d7aef7931281556a9fcac6606eb90db4680e1 · modifié 2026-10-13 00:10:07 · 12 variable(s) dont 4 d'URL
+   URL DATABASE_URL : localhost
+   URL CORS_ORIGINS : localhost, localhost
+   URL CLIENT_URL : localhost
+   URL PRO_URL : localhost
+FICHIER apps/client/.env · octets 698 · SHA256 479b06e808c6218b31e9fc3d858a62858ac45cd77fc35c83f0373681e20d7311 · modifié 2026-10-13 00:10:23 · 3 variable(s) dont 2 d'URL
+   URL NEXT_PUBLIC_API_URL : localhost
+   URL NEXT_PUBLIC_PRO_URL : localhost
+FICHIER apps/pro/.env · octets 214 · SHA256 d2d5e00c083ed3ef08d023add33d1e74106432427a9e8ae226a84f6a96f515a8 · modifié 2026-07-15 17:35:23 · 2 variable(s) dont 2 d'URL
+   URL VITE_API_URL : localhost
+   URL VITE_CLIENT_URL : localhost
+RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : []
+PORTE : VERTE
+code=0
+
+## état des .env — CLÔTURE
+ÉTAT DES FICHIERS .env — relevé « d331-portes-cloture » — HORODATAGE 13/10/2026 17:09:29 — AUCUNE VALEUR (empreinte et classe d'hôte seulement)
+   ✓ calibration positif : un fichier tout local → 3 variables d'URL, toutes locales, ni le secret ni le commentaire dans le résultat
+   ✓ calibration négatif : CLIENT_URL, un élément de CORS_ORIGINS, `localhost@distant`, `localhost.distant`, `?h=localhost` → NON LOCAL ; [::1] et 0.0.0.0 → locaux ; l'hôte distant n'est PAS dans le résultat
+   ✓ calibration empreinte : mêmes octets → même empreinte ; un octet de plus (LF → CRLF, ou un chiffre) → empreinte différente
+   ✓ calibration comptage : 4 variables dans le fichier local synthétique (le commentaire n'en est pas une)
+FICHIER apps/api/.env · octets 2686 · SHA256 813afbfcf834b9a4392316ff043d7aef7931281556a9fcac6606eb90db4680e1 · modifié 2026-10-13 00:10:07 · 12 variable(s) dont 4 d'URL
+   URL DATABASE_URL : localhost
+   URL CORS_ORIGINS : localhost, localhost
+   URL CLIENT_URL : localhost
+   URL PRO_URL : localhost
+FICHIER apps/client/.env · octets 698 · SHA256 479b06e808c6218b31e9fc3d858a62858ac45cd77fc35c83f0373681e20d7311 · modifié 2026-10-13 00:10:23 · 3 variable(s) dont 2 d'URL
+   URL NEXT_PUBLIC_API_URL : localhost
+   URL NEXT_PUBLIC_PRO_URL : localhost
+FICHIER apps/pro/.env · octets 214 · SHA256 d2d5e00c083ed3ef08d023add33d1e74106432427a9e8ae226a84f6a96f515a8 · modifié 2026-07-15 17:35:23 · 2 variable(s) dont 2 d'URL
+   URL VITE_API_URL : localhost
+   URL VITE_CLIENT_URL : localhost
+RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : []
+PORTE : VERTE
+code=0
+
+## état des .env — COMPARAISON ouverture / clôture
+   ✓ calibration comparaison : deux relevés identiques → identiques ; une empreinte changée → différents
+ouverture : 3 fichier(s) · clôture : 3 fichier(s)
+COMPARAISON : IDENTIQUE — mêmes fichiers, mêmes empreintes, hôtes locaux (attendu)
+code=0
+
+## processus — OUVERTURE (docs/preuves/D329/outils/inventaire.py : chrome ET headless_shell)
+calibration : positif (powershell compté ≥ 1) ✓ · négatif (nom forgé = 0) ✓
+HORODATAGE 13/10/2026 16:58:58 · relevé « ouverture-portes » · code 0
+COMPTE chrome=0
+
+COMPTE headless_shell=0
+
+COMPTE chromium=0
+
+COMPTE chrome_crashpad_handler=0
+
+COMPTE node=0
+
+COMPTE msedge=5
+
+  msedge PID 7160 début 2026-10-13 10:08:54 mémoire_Mo 72.5
+
+  msedge PID 18224 début 2026-10-13 10:08:54 mémoire_Mo 164.2
+
+  msedge PID 25776 début 2026-10-13 10:08:54 mémoire_Mo 23.9
+
+  msedge PID 26856 début 2026-10-13 10:08:54 mémoire_Mo 16.6
+
+  msedge PID 38224 début 2026-10-13 10:08:54 mémoire_Mo 45.6
+
+RÉSUMÉ chrome=0 headless_shell=0 chromium=0 node=0 msedge=5 (noms parcourus : 6, attendu 6) — relevé, pas une porte
+code=0
+
+## processus — CLÔTURE
+calibration : positif (powershell compté ≥ 1) ✓ · négatif (nom forgé = 0) ✓
+HORODATAGE 13/10/2026 17:09:29 · relevé « cloture-portes » · code 0
+COMPTE chrome=0
+
+COMPTE headless_shell=0
+
+COMPTE chromium=0
+
+COMPTE chrome_crashpad_handler=0
+
+COMPTE node=0
+
+COMPTE msedge=5
+
+  msedge PID 7160 début 2026-10-13 10:08:54 mémoire_Mo 72.5
+
+  msedge PID 18224 début 2026-10-13 10:08:54 mémoire_Mo 163.7
+
+  msedge PID 25776 début 2026-10-13 10:08:54 mémoire_Mo 23.9
+
+  msedge PID 26856 début 2026-10-13 10:08:54 mémoire_Mo 16.6
+
+  msedge PID 38224 début 2026-10-13 10:08:54 mémoire_Mo 45.6
+
+RÉSUMÉ chrome=0 headless_shell=0 chromium=0 node=0 msedge=5 (noms parcourus : 6, attendu 6) — relevé, pas une porte
+code=0
+
+## sonde d'état machine — OUVERTURE (neutralisation/sonde-etat-machine.ps1, 3 échantillons)
+CALIBRATION_REJOUEE=NON REJOUEE DANS CETTE INVOCATION (lancer -Calibrer)
+HORODATAGE=2026-10-13 16:59:11
+ECHANTILLONS=3 x 2 s
+RAM_MEDIANE_MO=4125
+RAM_BANDE_MO=4120-4177
+CPU_MEDIANE_PCT=6
+CPU_BANDE_PCT=0-22
+PERF_MEDIANE_PCT=97.5   (>100 = turbo, donc non bride)
+ALIM_SOURCE=SECTEUR
+ALIM_CHARGE_PCT=100
+ALIM_OVERLAY_AC_DC=IDENTIQUES (961cc777-2547-4f9d-8174-7d86181b8a7a)
+NODE=0
+CHROME=0
+TOTAL_MO=13940
+NB_PROCESSUS=341
+BARRE_D273_MO=4579
+ECART_A_LA_BARRE_MO=-454
+--- INVENTAIRE > 150 Mo (nom / nb / Mo) ---
+Code 21 3770
+svchost 101 1802
+vmmemWSL 1 831
+explorer 1 454
+claude 1 367
+powershell 4 353
+msedge 5 323
+Docker Desktop 4 256
+msedgewebview2 6 236
+PSExpressCore 1 221
+com.docker.backend 2 204
+AdobeCollabSync 2 199
+SnippingTool 2 185
+CrossDeviceService 1 182
+code=0
+

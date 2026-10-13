@@ -1,0 +1,40 @@
+# D331 — ROUGE LU — chemin « entrée de la liste » (la publication faite ailleurs apparaît sans rechargement), contre l'état d'AVANT
+# état du code : CODE DE PRODUCTION = CELUI D'AVANT (les trois fichiers de production repris de HEAD d19935c, qui ne diffère de afdfcb1 — clôture de D330 — par AUCUN fichier hors docs/ ; vérifié par git diff --name-only) ; les tests sont ceux du lot (versions FINALES, le même fichier que celui des verts)
+# journal brut (hors dépôt) : SHA-256 27abaea3ac0587b893e683c46b889d506930127f1a4f4a399b62957e5db3a223 · 334734 octets · 7655 lignes · EXTRAIT versé : verdicts du chemin (filtre « ENTRÉE ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et son cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du chemin : 2 vert(s) · 3 rouge(s) · 3 morsure(s) par assertion native (attendu : toutes les rouges)
+
+ROUGE  « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > ⛔ le serveur change SANS requête de ce client (l'administrateur publie), et l'entrée dans la liste montre « Publiée » (S5 de D327)
+ROUGE  « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > F-7 : pendant la relecture d'entrée la liste CONNUE reste affichée (aucun « Chargement » ne la masque) et le compte ne bouge pas
+ROUGE  « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > F-5 : sous `StrictMode` (montage doublé), UNE entrée dans la liste produit UNE seule relecture
+VERT   « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > F-5/F-6 : à FROID sur la liste (la coquille charge, la page monte en même temps), la relecture d'entrée n'ajoute AUCUNE requête — une seule lecture, comme avant
+VERT   « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > F-6 : si la lecture de démarrage ÉCHOUE (état « error »), entrer dans la liste ne la rejoue PAS — le bouton « Réessayer » reste la voie
+
+ÉCHEC  « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > ⛔ le serveur change SANS requête de ce client (l'administrateur publie), et l'entrée dans la liste montre « Publiée » (S5 de D327)
+  1ʳᵉ ligne : AssertionError: expected 0 to be greater than 0
+   ❯ src/venues/ma-salle-relecture.test.tsx:294:88
+      292|     fireEvent.click(screen.getByRole("button", { name: "aller à la lis…
+      293|     await screen.findByRole("heading", { level: 2, name: "Salle Une" }…
+      294|     await waitFor(() => expect(screen.queryAllByText(UI.publication.pu…
+         |                                                                                        ^
+      295|     expect(screen.queryByText(UI.publication.draft)).toBeNull();
+
+ÉCHEC  « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > F-7 : pendant la relecture d'entrée la liste CONNUE reste affichée (aucun « Chargement » ne la masque) et le compte ne bouge pas
+  1ʳᵉ ligne : AssertionError: expected 1 to be 2 // Object.is equality
+   ❯ src/venues/ma-salle-relecture.test.tsx:304:51
+      302|     const retenue = serveur.hold("listMine");
+      303|     fireEvent.click(screen.getByRole("button", { name: "aller à la lis…
+      304|     await waitFor(() => expect(lectures(serveur)).toBe(2));
+         |                                                   ^
+      305|     expect(present("état:ready")).toBe(true);
+
+ÉCHEC  « Ma salle » — ENTRÉE de la liste : la publication faite ailleurs apparaît sans rechargement > F-5 : sous `StrictMode` (montage doublé), UNE entrée dans la liste produit UNE seule relecture
+  1ʳᵉ ligne : AssertionError: expected 1 to be 2 // Object.is equality
+   ❯ src/venues/ma-salle-relecture.test.tsx:319:51
+      317|     fireEvent.click(screen.getByRole("button", { name: "aller à la lis…
+      318|     await screen.findByRole("heading", { level: 2, name: "Salle Une" }…
+      319|     await waitFor(() => expect(lectures(serveur)).toBe(2));
+         |                                                   ^
+      320|     // On laisse passer un tour : une seconde relecture tardive aurait…
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les chemins du fichier) : Test Files  1 failed (1) | Tests  12 failed | 7 passed (19)

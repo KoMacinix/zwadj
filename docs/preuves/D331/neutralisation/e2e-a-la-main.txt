@@ -1,0 +1,70 @@
+# D331 — neutralisation À LA MAIN des specs e2e du lot (rang 37). SORTIE d'une procédure jetable, versée comme PIÈCE ; la procédure n'est PAS promue en instrument (D291).
+# Procédure (non versée) : pour chaque mutation, sauvegarde du fichier, remplacement PROUVÉ POSÉ (ancre 1 -> 0 et marqueur n -> n + 1, relus), lancement de Playwright sur la spec visée, restauration, empreinte relue.
+# MUTATION 1 — fichier apps/pro/src/venues/venue-list-page.tsx : ancre `revalidate();`  ->  `void revalidate;`   (la liste ne demande plus la relecture à son entrée)
+# MUTATION 2 — fichier apps/pro/src/venues/venue-list-page.tsx : ancre `revalidate();`  ->  `load();`            (la liste demande une relecture VOULUE à son entrée)
+# Specs jouées : mutation 1 -> specs/r37-ma-salle.e2e.ts + specs/a2-mount-effects.e2e.ts ; mutation 2 -> specs/a2-mount-effects.e2e.ts.
+# LECTURE (faite ici, à la main, sur la sortie ci-dessous — pas par un lecteur) :
+#   mutation 1 : 2 échecs, l'un et l'autre par une ASSERTION `expect` avec l'attendu et le reçu — a2-mount-effects.e2e.ts:161 `expect(received).toBe(expected)`, Expected 1, Received 0 ; r37-ma-salle.e2e.ts:186
+#                `expect(locator).toBeVisible()` (assertion web-first expirée, attendu « Publiée » : décision du relecteur D323, une assertion `expect` qui expire EST un échec d'assertion si l'échec lu montre l'appel `expect`).
+#   mutation 2 : 1 échec — a2-mount-effects.e2e.ts:191 `expect(received).toBe(expected)`, Expected 1, Received 2 (entrée à froid sur /salles). ⚠ le test de l'aller-retour (ligne 161) reste VERT sous cette mutation : il ne mesure pas la relecture VOULUE.
+#   Les deux fichiers restaurés : « empreinte identique au départ = True ».
+# ----- sortie brute de la procédure -----
+=== MUTATION 1 — L-1 — la liste ne demande plus la relecture à son entrée
+    ancre 1->0 · marqueur 0->1 · sauvegarde apps/pro/src/venues/venue-list-page.tsx.r37-sauvegarde
+    restauré : empreinte identique au départ = True
+    code de sortie Playwright : 1
+    ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (17.6s)
+    ok 2 [chromium] › specs\a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token) (2.4s)
+    ok 4 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas (3.3s)
+    ok 3 [chromium] › specs\r37-ma-salle.e2e.ts:100:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER : la salle créée est dans la liste quand on revient à « Ma salle » (menu du haut), sans rechargement (2.5s)
+    ok 5 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities (3.6s)
+    ok 6 [chromium] › specs\r37-ma-salle.e2e.ts:113:7 › R37 — « Ma salle » est relue sans rechargement › MODIFIER : le nouveau nom est dans la liste quand on revient par « Retour à mes salles », sans rechargement (et le nom de l'assis
+    ok 8 [chromium] › specs\r37-ma-salle.e2e.ts:131:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER puis CORRIGER dans la même session (S8 de D327) : la liste porte le nom corrigé, pas celui de la création (2.2s)
+    ok 7 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles (3.4s)
+    ok 9 [chromium] › specs\r37-ma-salle.e2e.ts:148:7 › R37 — « Ma salle » est relue sans rechargement › SUPPRIMER depuis l'assistant : la salle supprimée n'est plus dans la liste, et le libellé du menu repasse au singulier, sans rech
+    ok 10 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings (2.4s)
+    ok 12 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings (3.0s)
+    x  13 [chromium] › specs\a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session (2.6s)
+    x  11 [chromium] › specs\r37-ma-salle.e2e.ts:168:7 › R37 — « Ma salle » est relue sans rechargement › PUBLIER (par un autre compte, pendant que le pro est dans l'application) : l'entrée dans « Ma salle » montre « Publiée », sans r
+    ok 14 [chromium] › specs\a2-mount-effects.e2e.ts:165:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée (5.9s)
+    Error: appels observés :
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1
+    Received: 0
+    > 161 |     expect(net.count("/api/v1/pro/venues"), `appels observés :\n${net.dump()}`).toBe(1);
+    test-results\a2-mount-effects.e2e.ts-A2-02161--MONTAGE-pas-un-par-session-chromium\test-failed-1.png
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+    Expected: visible
+    Received: <element(s) not found>
+    - expect.toBeVisible with timeout 7000ms
+    - waiting for getByText('Publiée')
+    > 186 |     await expect(page.getByText(V.publication.published)).toBeVisible();
+    187 |     await expect(page.getByText(V.publication.draft)).toHaveCount(0);
+    188 |     expect(await pageStillAlive(page), "le document a été rechargé : la liste serait fraîche pour la mauvaise raison").toBe(true);
+    test-results\r37-ma-salle.e2e.ts-R37-—--13eec-Publiée-»-sans-rechargement-chromium\test-failed-1.png
+    2 failed
+    12 passed (1.3m)
+    ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/r37-ma-salle.e2e.ts specs/a2-mount-effects.e2e.ts --reporter=list
+=== MUTATION 2 — L-2 — la liste demande une relecture VOULUE à son entrée
+    ancre 1->0 · marqueur 2->3 · sauvegarde apps/pro/src/venues/venue-list-page.tsx.r37-sauvegarde
+    restauré : empreinte identique au départ = True
+    code de sortie Playwright : 1
+    ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (17.3s)
+    ok 2 [chromium] › specs\a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token) (2.4s)
+    ok 3 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas (3.0s)
+    ok 4 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities (3.1s)
+    ok 5 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles (3.0s)
+    ok 6 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings (2.6s)
+    ok 7 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings (2.5s)
+    ok 8 [chromium] › specs\a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session (2.7s)
+    x  9 [chromium] › specs\a2-mount-effects.e2e.ts:165:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée (3.5s)
+    Error: entrée /salles — appels observés :
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1
+    Received: 2
+    > 191 |       expect(net.count("/api/v1/pro/venues"), `entrée ${entree} — appels observés :\n${net.dump()}`).toBe(1);
+    test-results\a2-mount-effects.e2e.ts-A2-6fe71-l-que-soit-l-écran-d-entrée-chromium\test-failed-1.png
+    test-results\a2-mount-effects.e2e.ts-A2-6fe71-l-que-soit-l-écran-d-entrée-chromium\test-failed-2.png
+    1 failed
+    8 passed (1.2m)
+    ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/a2-mount-effects.e2e.ts --reporter=list

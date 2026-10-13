@@ -1,0 +1,23 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 9 bras · 0 manqué(s) (attendu 0)
+cibles : 102 déclarées · 1 jouées (unit) · 9 non jouée(s) (sans --int) · 1 mesure(s) distincte(s) · 1 fichier(s) muté(s)
+  pré-vol pro-creation : code 0 · passés 4 · en échec 0
+■ C-1. la salle créée n'est plus signalée au fournisseur : la liste reste celle d'avant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-creation] code 1 · ROUGE — passés 2 · en échec 2
+      FAIL  src/venues/create-venue-page.test.tsx > « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > le fournisseur RELIT la liste après la création — une seule source (D78), pas une 
+         ↳ AssertionError: expected "spy" to be called 2 times, but got 1 times
+      FAIL  src/venues/create-venue-page.test.tsx > « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ la relecture part APRÈS la réponse de `create`, pas avant (D331 : le faux serveu
+         ↳ AssertionError: expected "spy" to be called 2 times, but got 1 times
+  empreintes : 19 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 1 cible(s) jouée(s) sur 102, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

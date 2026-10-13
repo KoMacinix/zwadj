@@ -1,0 +1,18 @@
+# D331 — les lignes MESURE de la sonde docs/preuves/D331/navigateur/ma-salle.capture.ts (16 lignes attendues : 4 chemins x 2 langues x 2 largeurs), extraites du journal brut de la passe (hors dépôt : il porte des jetons).
+# Chaque ligne dit : la liste affichée, si l'état vide s'affiche, le mot du menu, et si le DOCUMENT n'a PAS été rechargé (témoin sur window). Passe : 16 passed, code 0.
+MESURE creation · fr · 1280 px · liste : ["Salle Alger Centre"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE edition · fr · 1280 px · liste : ["Salle Les Jasmins"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE suppression · fr · 1280 px · liste : ["Salle e2e c49dd708"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE publication · fr · 1280 px · liste : ["Salle à publier"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE creation · fr · 360 px · liste : ["Salle Alger Centre"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE edition · fr · 360 px · liste : ["Salle Les Jasmins"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE suppression · fr · 360 px · liste : ["Salle e2e fb9b46ee"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE publication · fr · 360 px · liste : ["Salle à publier"] · état vide affiché : false · menu : « Ma salle » · document NON rechargé : true
+MESURE creation · ar · 1280 px · liste : ["قاعة تجريبية"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true
+MESURE edition · ar · 1280 px · liste : ["قاعة الياسمين"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true
+MESURE suppression · ar · 1280 px · liste : ["قاعة"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true
+MESURE publication · ar · 1280 px · liste : ["قاعة"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true
+MESURE creation · ar · 360 px · liste : ["قاعة تجريبية"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true
+MESURE edition · ar · 360 px · liste : ["قاعة الياسمين"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true
+MESURE suppression · ar · 360 px · liste : ["قاعة"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true
+MESURE publication · ar · 360 px · liste : ["قاعة"] · état vide affiché : false · menu : « قاعتي » · document NON rechargé : true

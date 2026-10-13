@@ -1,0 +1,8 @@
+# D331 — porte `e2e` : pnpm test:e2e
+# HEAD au lancement du paquet de portes : d19935c (code du lot dans l'arbre de travail, non commité au moment des portes — rapporté au commit de code)
+# code de sortie RÉEL : 0 · durée : 161 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; source d'alimentation relevée dans `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 bc951ce924c9e4fbf8b11bc491d8bf6ee5f1d2c1e1874f57ad4e34aecef87cfb · 986844 octets · 1735 lignes
+
+parcouru : 1735 ligne(s) (le journal brut n'entre pas : il porte des jetons, D299)
+résumé Playwright : 1 skipped · 53 passed
+base de la passe de D330 : 48 passed · 1 skipped — le lot ajoute 5 tests (`r37-ma-salle.e2e.ts`) : attendu 53 passed · 1 skipped

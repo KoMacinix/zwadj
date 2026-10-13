@@ -1,0 +1,49 @@
+# D331 — ROUGE LU — chemin « suppression depuis l'assistant » (relire la liste après une suppression réussie), contre l'état d'AVANT
+# état du code : CODE DE PRODUCTION = CELUI D'AVANT (les trois fichiers de production repris de HEAD d19935c, qui ne diffère de afdfcb1 — clôture de D330 — par AUCUN fichier hors docs/ ; vérifié par git diff --name-only) ; les tests sont ceux du lot (versions FINALES, le même fichier que celui des verts)
+# journal brut (hors dépôt) : SHA-256 27abaea3ac0587b893e683c46b889d506930127f1a4f4a399b62957e5db3a223 · 334734 octets · 7655 lignes · EXTRAIT versé : verdicts du chemin (filtre « SUPPRESSION ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et son cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du chemin : 1 vert(s) · 4 rouge(s) · 4 morsure(s) par assertion native (attendu : toutes les rouges)
+
+ROUGE  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ le compte et la salle courante sont ceux du SERVEUR après la suppression (S6 de D327)
+ROUGE  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ la salle SUPPRIMÉE n'est jamais montrée comme présente dans la liste pendant la relecture (« Chargement », pas la carte périmée)
+ROUGE  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ F-4 : la relecture part APRÈS la réponse du serveur, pas avant — tant que la suppression est retenue, la liste n'est pas relue et la salle est encore là
+ROUGE  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > à la dernière salle supprimée, la liste dit « aucune salle » sans rechargement (S6 de D327, le cas où le pro n'en a qu'une)
+VERT   « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > F-11 : une suppression REFUSÉE ne relit PAS la liste, ne quitte pas l'écran et le dit
+
+ÉCHEC  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ le compte et la salle courante sont ceux du SERVEUR après la suppression (S6 de D327)
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:236:68
+      234|     fireEvent.click(await ouvrirLaSuppression());
+      235|     await waitFor(() => expect(vi.mocked(serveur.client.softDelete)).t…
+      236|     await waitFor(() => expect(screen.queryByText("compte:1")).not.toB…
+         |                                                                    ^
+      237|     expect(present("courante:Salle Deux")).toBe(true);
+
+ÉCHEC  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ la salle SUPPRIMÉE n'est jamais montrée comme présente dans la liste pendant la relecture (« Chargement », pas la carte périmée)
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:247:73
+      245|     fireEvent.click(confirmer);
+      246|     // La liste est montée (on a quitté l'assistant) et elle est EN CH…
+      247|     await waitFor(() => expect(screen.queryByText(UI.list.loading)).no…
+         |                                                                         ^
+      248|     expect(carteDe("Salle Une")).toBeNull();
+
+ÉCHEC  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ F-4 : la relecture part APRÈS la réponse du serveur, pas avant — tant que la suppression est retenue, la liste n'est pas relue et la salle est encore là
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:265:68
+      263|     expect(serveur.stored().map((v) => v.id)).toEqual(["v1", "v2"]);
+      264|     retenue.release();
+      265|     await waitFor(() => expect(screen.queryByText("compte:1")).not.toB…
+         |                                                                    ^
+      266|     expect(lectures(serveur)).toBe(2);
+
+ÉCHEC  « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > à la dernière salle supprimée, la liste dit « aucune salle » sans rechargement (S6 de D327, le cas où le pro n'en a qu'une)
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/venues/ma-salle-relecture.test.tsx:273:77
+      271|     fireEvent.click(await ouvrirLaSuppression());
+      272|     // Verdict en assertion NATIVE : `findByText` lève une erreur de R…
+      273|     await waitFor(() => expect(screen.queryByText(UI.list.empty.title)…
+         |                                                                             ^
+      274|     expect(present("courante:aucune")).toBe(true);
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les chemins du fichier) : Test Files  1 failed (1) | Tests  12 failed | 7 passed (19)
