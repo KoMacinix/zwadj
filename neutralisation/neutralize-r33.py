@@ -118,6 +118,7 @@ MESURES = {
     "pro-parcours": _vitest("@zwadj/pro", "src/dashboard/walkin-journey.test.tsx"),
     "pro-assistant": _vitest("@zwadj/pro", "src/venues/venue-wizard.test.tsx"),
     "pro-creation": _vitest("@zwadj/pro", "src/venues/create-venue-page.test.tsx"),
+    "pro-creation-reponse": _vitest("@zwadj/pro", "src/venues/create-venue-page.test.tsx"),
     "pro-feuille": _vitest("@zwadj/pro", "src/venues/layout-style.test.ts"),
     "client-auth": _vitest("@zwadj/api-client", "src/auth-client.test.ts"),
     "client-devis": _vitest("@zwadj/api-client", "src/quotes-client.test.ts"),
@@ -319,7 +320,7 @@ cible("W-6. le rail perd son nom accessible", ASSISTANT, 'label={t("venue.ui.wiz
 cible("W-7. la mise en page du rail ne le place plus dans sa zone de grille", THEME, ".wizard-rail {\n  grid-area: rail;", ".wizard-rail {\n  grid-area: flow;", {"pro-assistant": "la feuille du Pro pose la grille rail | flux"})
 
 # ── C — « Ma salle » relit sa liste.
-cible("C-1. la salle créée n'est plus signalée au fournisseur : la liste reste celle d'avant", CREATION, "      reloadVenues();", "      void 0;", {"pro-creation": "après la création, une navigation INTERNE vers la liste montre la nouvelle salle"})
+cible("C-1. la salle créée n'est plus signalée au fournisseur : la liste reste celle d'avant", CREATION, "      reloadVenues();", "      void 0;", {"pro-creation": "le fournisseur RELIT la liste après la création", "pro-creation-reponse": "la relecture part APRÈS la réponse de `create`"})
 
 # ── L — `.pro-layout` à 360 px.
 cible("L-1. ⛔ LE DÉFAUT RESTAURÉ — la colonne du panneau est redéclarée APRÈS le repli à une colonne", THEME,
