@@ -137,6 +137,16 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D331/neutralisation/campagnes-touchees.txt` | la sortie de `lancer-campagnes.py` : les campagnes que le diff touche, jouées et lues |
 | `docs/preuves/D331/neutralisation/e2e-a-la-main.txt` | la neutralisation À LA MAIN des specs e2e (la relecture d'entrée retirée), sortie lue : ce qu'aucun test de composant ne voit |
 
+#### Extension 4 — la cible C-1 de `neutralize-r33.py` est périmée par ce lot (déclarée AVANT la modification du harnais, en chemins complets)
+
+*Motif* : la famille conditionnelle de la base nommait `neutralisation/neutralize-r33.py` « si une ancre est périmée par ce diff ». **Elle l'est, et ce n'est pas une ancre : c'est un TITRE.** La cible C-1 de ce harnais retire `reloadVenues();` de `create-venue-page.tsx` et exige que le test « après la création, une navigation INTERNE vers la liste montre la nouvelle salle » rougisse. Rejouée en mode découverte sur le test réécrit (`R33_DECOUVERTE=1 R33_FILTRE='C-'`, rien n'est écrit par ce mode), **ce test ne rougit plus** : la liste relit désormais à son entrée (décision de Ko du 13/10/2026), donc la navigation interne montre la salle créée même sans la relecture qui suit la création. Ce sont **deux autres tests** du même fichier qui rougissent — « le fournisseur RELIT la liste après la création… » et « ⛔ la relecture part APRÈS la réponse de `create`… » : `AssertionError: expected "spy" to be called 2 times, but got 1 times`. La cible mord toujours ; **c'est le titre attendu qui n'est plus celui qui rougit** — exactement le cas que le harnais appelle « SANS-TITRE » (le titre attendu n'échoue pas, un autre si). Le harnais lit les titres, il ne les devine pas : la cible se **réoriente**, par écrit (« une cible devenue sans objet se réoriente ou se retire, par écrit », `AGENTS.md`), avec les deux titres relevés par la découverte — aucun écrit de mémoire. ⚠ *Le tri `lancer-campagnes.py` n'a PAS retenu `neutralize-r33.py` pour ce diff* (ses mesures se déclarent relativement au paquet, `src/venues/create-venue-page.test.tsx`, que le croisement avec `git diff --name-only` ne rapproche pas d'un chemin de la racine) : **angle mort du tri, rapporté au backlog, non corrigé dans ce lot** (un défaut croisé se rapporte).
+
+| fichier | pour |
+|---|---|
+| `neutralisation/neutralize-r33.py` | la cible C-1 : le titre attendu de la mesure `pro-creation` devient les deux titres que la découverte a relevés (une ligne) |
+| `docs/preuves/D331/neutralisation/r33-c1-decouverte.txt` | la sortie de la découverte qui a montré le titre périmé (le test nommé ne rougit pas ; deux autres, si) |
+| `docs/preuves/D331/neutralisation/r33-campagne.txt` | la campagne `neutralize-r33.py` rejouée en entier après la réorientation, lue : une ligne par cible, mordues / muettes / non mesurées |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json`, les montants viennent du formateur partagé (`formatDZD`).
