@@ -81,6 +81,14 @@ Lot : **L35-1, « Ma salle »** (rang 37, arbitré par Ko le 13/10/2026 : « 6. 
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
 
+#### Extension 1 — la copie de la version d'origine du premier commit de D330
+
+*Motif* : la lecture adverse de D330 (constat P-C2, fait pendant ce lot) trouve que la faute n° 1 de D330 — « le premier commit a été réécrit (`git commit --amend`) avant toute poussée ; ce qui prouvait la faute n'existe plus dans `git` » — est vraie de l'histoire et du distant, et **fausse de la base d'objets locale** : le commit d'origine (`0b74877`) y est encore, retenu par le reflog, qui expire. La copie est versée pour que la preuve ne dépende plus d'un reflog. *Une seule ligne, un seul fichier, déclarée AVANT son versement.*
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D331/lecture-adverse/d330-table-avant-amend-0b74877.md` | copie, octet pour octet, de `docs/preuves/D330/table-ouverture.md` à `0b74877` (la version d'origine, avec sa ligne de répertoire à la ligne 36), lue par `git show 0b74877:docs/preuves/D330/table-ouverture.md` |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json`, les montants viennent du formateur partagé (`formatDZD`).
