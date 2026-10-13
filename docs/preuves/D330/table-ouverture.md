@@ -47,3 +47,24 @@ Lot : **la seconde passe de la certification qui couvre D325 et D326** (rang 36,
 ### Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+#### Extension 1
+
+**Motif** : les pièces de l'ÉTAPE 0 (outils copiés de D329 avec leurs modifications comptées, outils neufs — l'état des `.env` et la dérivation des planchers —, leurs calibrations et leurs relevés, l'état de la machine, la dérivation des planchers) portent des noms qui dépendent de la mesure ; elles sont déclarées ici, une par une, **avant** le commit qui les verse, et **avant** le commit du protocole (qui précède toute mesure de la passe). Chemins COMPLETS — jamais un préfixe. Ce commit n'ajoute que cette extension.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D330/etat/etat-env-avant-protocole.txt` | pièce de l'étape |
+| `docs/preuves/D330/etat/etat-env-bout-en-bout.txt` | pièce de l'étape |
+| `docs/preuves/D330/etat/inventaire-avant-protocole.txt` | pièce de l'étape |
+| `docs/preuves/D330/etat/sonde-avant-protocole.txt` | pièce de l'étape |
+| `docs/preuves/D330/outils/etat-env-bout-en-bout.sh` | pièce de l'étape |
+| `docs/preuves/D330/outils/etat-env.py` | pièce de l'étape |
+| `docs/preuves/D330/outils/lire-campagnes-calibration.txt` | pièce de l'étape |
+| `docs/preuves/D330/outils/lire-campagnes-sur-passe-D329.txt` | pièce de l'étape |
+| `docs/preuves/D330/outils/lire-campagnes.py` | pièce de l'étape |
+| `docs/preuves/D330/outils/passe.py` | pièce de l'étape |
+| `docs/preuves/D330/outils/verser.py` | pièce de l'étape |
+| `docs/preuves/D330/plancher/deriver-plancher-sortie.txt` | pièce de l'étape |
+| `docs/preuves/D330/plancher/deriver-plancher.py` | pièce de l'étape |
+| `docs/preuves/D330/plancher/plancher.txt` | pièce de l'étape |
