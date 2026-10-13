@@ -89,6 +89,18 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 |---|---|
 | `docs/preuves/D331/lecture-adverse/d330-table-avant-amend-0b74877.md` | copie, octet pour octet, de `docs/preuves/D330/table-ouverture.md` à `0b74877` (la version d'origine, avec sa ligne de répertoire à la ligne 36), lue par `git show 0b74877:docs/preuves/D330/table-ouverture.md` |
 
+#### Extension 2 — les pièces des rouges, des verts et leur extracteur (déclarées AVANT leur versement)
+
+*Motif* : la table de base déclare les quatre extraits de rouge (`rouge-edition.txt`, `rouge-suppression.txt`, `rouge-entree.txt`, `temoin-creation-avant-correctif.txt`) ; elle ne déclarait ni **l'outil** qui les extrait des journaux bruts (les journaux de vitest portent des centaines de lignes de DOM, hors dépôt), ni les **verts** correspondants (« chaque chemin avec son rouge lu ET son vert »). L'extracteur est versé avec ses calibrations (cas vrai, cas faux) ; les verts sont extraits par le même outil, sur les mêmes titres.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D331/rouge/extraire-rouge.py` | l'extracteur : titres et verdicts d'un journal vitest, première ligne et cadre de code de chaque échec, calibré sur un cas vrai et un cas faux ; sa sortie dit ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/vert/vert-edition.txt` | le vert du chemin « édition » (mêmes tests que `rouge-edition.txt`), après le correctif |
+| `docs/preuves/D331/vert/vert-suppression.txt` | le vert du chemin « suppression depuis l'assistant » |
+| `docs/preuves/D331/vert/vert-entree.txt` | le vert du chemin « entrée de la liste » |
+| `docs/preuves/D331/vert/vert-creation.txt` | le vert du chemin « création », après le correctif (le témoin était vert avant) |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json`, les montants viennent du formateur partagé (`formatDZD`).
