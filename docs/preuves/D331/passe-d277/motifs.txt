@@ -1,0 +1,62 @@
+# D331 — motifs de la passe D277 du rang 37 (L35-1, « Ma salle » : lot de CODE, compteur ZÉRO → UN ; lecture adverse de D330 ; arbitrages de Ko du 13/10/2026 : la marque de D330 gardée, la RAM jugée à l'ouverture et à la clôture, l'état des `.env` règle permanente, `headless_shell` = 0 porte dure, les quatorze décisions de D330 ratifiées, rang 37).
+# Lus par balayage.py (copie à l'octet de celui de D330, même objet git), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que le lot INVALIDE : « RANG 37 : EN ATTENTE D'ARBITRAGE DE KO » (le rang est arbitré par Ko) ; « candidat désigné » (L35-1 devient le rang 37) ; « compteur ZÉRO » (UN à la clôture) ; « dès que Ko arbitre le rang 37 » (permission consommée) ;
+#          « ne pas rendre l'état des `.env` règle permanente » / « la permanence est à Ko » (point 3 de Ko : règle permanente) ; « headless_shell … relevé, pas une porte » / « en faire une porte revient à Ko » (point 4 : porte dure) ;
+#          « seul un échantillon avec chrome > 0 disqualifie la fenêtre » (point 2 : annoté) ; « L'AMBIANT A PASSÉ SOUS LA BARRE » et « MALGRÉ UNE RAM SOUS LA BARRE » (entrées du backlog fermées avec renvoi) ; « retire la marque » (point 1 : gardée) ;
+#          « À RATIFIER PAR KO » (les quatorze décisions de D330 : ratifiées, point 5) ; « n'est relue qu'à la CRÉATION » / « N'EST PAS RÉPARÉE » (les trois entrées du backlog sur « Ma salle ») ; « NE repart PAS » (la garde A2).
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « peut s'ouvrir » / « PEUT s'ouvrir » ; « troisième lot de code » ; « compteur UN » ; « deux lots de code non certifiés » ; « tenable » ; « avant une certification » ; « RANG 38 » (nouveau) ; « L35-2 » à « L35-4 » ;
+#          « lot correctif » ; « ADM-1 » ; « pause du chemin de l'argent » ; « à ordonner par Ko » ; « condition de clôture » (le constat de Ko, précédent du rang 33) ; « règle permanente » ; « porte dure ».
+1|RANG 37 : EN ATTENTE D'ARBITRAGE DE KO
+1|RANG 37 : EN ATTENTE
+1|candidat désigné
+1|candidat DÉSIGNÉ
+1|compteur ZÉRO
+1|compteur **ZÉRO**
+1|compteur à ZÉRO
+1|dès que Ko arbitre le rang 37
+1|ne pas rendre l'état des
+1|la permanence est à Ko
+1|permanente
+1|relevé, pas une porte
+1|n'arrête rien
+1|en faire une porte revient à Ko
+1|seul un échantillon avec
+1|disqualifie la fenêtre
+1|barre tenue à l'ouverture
+1|L'AMBIANT A PASSÉ SOUS LA BARRE
+1|MALGRÉ UNE RAM SOUS LA BARRE
+1|retire la marque
+1|À RATIFIER PAR KO
+1|à ratifier ou à renverser par Ko
+1|RATIFIER PAR KO
+1|n'est relue qu'à la CRÉATION
+1|N'EST RELUE QU'À LA CRÉATION
+1|N'EST PAS RÉPARÉE
+1|NE repart PAS
+1|lecture adverse de D330
+1|REPRISE DU 13/10/2026
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|troisième lot de code
+2|compteur UN
+2|compteur **UN**
+2|deux lots de code non certifiés
+2|deux lots non certifiés
+2|lot de code de plus est tenable
+2|tenable
+2|avant une certification
+2|RANG 38
+2|L35-1
+2|L35-2
+2|L35-3
+2|L35-4
+2|lot correctif
+2|ADM-1
+2|pause du chemin de l'argent
+2|à ordonner par Ko
+2|condition de clôture
+2|règle permanente
+2|porte dure
+2|headless_shell
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D331
