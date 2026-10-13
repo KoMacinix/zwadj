@@ -1,0 +1,64 @@
+# D330 — motifs de la passe D277 du rang 36 (reprise : la seconde passe de la certification qui couvre D325 et D326 ; lecture adverse de D329 ; arbitrages de Ko du 12/10/2026, 18 h 39, la suite du relecteur adoptée, 23 h 57 ; décisions du relecteur).
+# Lus par balayage.py (copie à l'octet de celui de D329, `cmp` identique, même objet git), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que le lot INVALIDE : « RANG 36 : OUVERT, NON CLOS » / « LE BLOCAGE REVIENT À KO » / « À REPRENDRE PAR KO » (Ko a remis les URL à leur valeur locale : option (a)) ; l'option (b) de D329 (un lot de code qui fixe les URL
+#          dans `setup-env.ts`) — fermée avec renvoi ; « À RATIFIER PAR KO » (les décisions de D328 : 1 à 6 et 8 ratifiées, la 7 comme proposition, la 9 tranchée ; les dix de D329 ratifiées) ; « A10 » / « revue humaine » (la lecture
+#          de la règle de la tranche A10 est remplacée, pour L35-5 et L35-6, par la forme B plus les essais de Ko) ; « D61 est inchangé » (erratum) ; « Une révision reprend le nom DU DEVIS PRÉCÉDENT » / « dans la fiche et dans la copie » (R8,
+#          seconde amendement) ; « au moins UN des deux noms » (de décision du relecteur à confirmation de Ko) ; « DB-11 » (un contrat neuf à nommer) ; l'ordre des rangs (« quatrième révision » de D-10, exécutée par la marque) ;
+#          « Reports du 12/10/2026 » ; le trou de l'arbre immobile (le `.env` est une entrée de `test:int`).
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « aucun lot de code ne s'ouvre avant une certification » (levé SI la marque est posée) ; « compteur DEUX » ; « troisième lot de code » ; « peut s'ouvrir » ; « PEUT s'ouvrir » ;
+#          « lot de code de plus est tenable » ; « RANG 37 » (nouveau, à la clôture) ; « L35-1 » à « L35-7 » ; « tenable » ; « lot correctif » ; « ADM-1 » ; « pause du chemin de l'argent » ; « mise en service réelle » (la relecture humaine
+#          extérieure la bloque pour L35-5 et L35-6) ; « forme B » ; « à ordonner par Ko ».
+1|RANG 36 : OUVERT, NON CLOS
+1|OUVERT, NON CLOS
+1|LE BLOCAGE REVIENT À KO
+1|le blocage revient à Ko
+1|À REPRENDRE PAR KO
+1|CE QUI REVIENT À KO
+1|fixe ces URL dans
+1|fixe les URL dans
+1|arbitrer un lot de code
+1|À RATIFIER PAR KO
+1|à ratifier ou à renverser par Ko
+1|RATIFIER PAR KO
+1|ratifié
+1|la règle de la tranche A10
+1|tranche A10
+1|chemins sensibles, revue humaine obligatoire
+1|revue humaine
+1|D61 est inchangé
+1|une révision reprend le nom DU DEVIS PRÉCÉDENT
+1|Une révision reprend le nom courant de la fiche
+1|dans la fiche et dans la copie
+1|au moins UN des deux noms
+1|au moins un des deux noms
+1|DB-11
+1|quatrième révision
+1|Reports du 12/10/2026
+1|arbre immobile
+1|MARQUE REFUSÉE
+1|marque refusée
+2|aucun lot de code ne s'ouvre avant une certification
+2|Aucun lot de code ne s'ouvre avant une certification
+2|compteur DEUX
+2|compteur **DEUX**
+2|troisième lot de code
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|lot de code de plus est tenable
+2|RANG 37
+2|L35-1
+2|L35-2
+2|L35-3
+2|L35-4
+2|L35-5
+2|L35-6
+2|L35-7
+2|tenable
+2|lot correctif
+2|ADM-1
+2|pause du chemin de l'argent
+2|mise en service réelle
+2|forme B
+2|à ordonner par Ko
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D330
