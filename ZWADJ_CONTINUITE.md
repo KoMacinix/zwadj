@@ -1858,6 +1858,19 @@ Lot D330. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 ⛔ **Ce que la clôture REND PERMIS, ou dont la condition change (passe D277, sens 2)** : « aucun lot de code ne s'ouvre avant une certification » est **LEVÉ** (compteur ZÉRO) ; **un lot de code PEUT s'ouvrir dès que Ko arbitre le rang 37** — le correctif (L35-1 à L35-4) par **paires** : [L35-1, L35-2], certification, [L35-3, L35-4], certification, puis ADM-1, certification, ADM-2, certification (D-10, quatrième révision, **exécutée**) ; **deux lots de code non certifiés sont tenables, un troisième ne l'est pas** (D270) ; **aucun lot sans rang** (D302) ; **la pause du chemin de l'argent est INCHANGÉE** (E3 et R1) ; L35-5 à L35-7 n'ont **ni rang ni place**.
 ⇒ **RANG 37 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la **CLÔTURE** du rang 36, mot pour mot de la consigne (« Puis, dans l'ordre des rangs : « RANG 37 : EN ATTENTE D'ARBITRAGE DE KO » ; candidat désigné : L35-1 (« Ma salle ») »). ⚠ **Candidat DÉSIGNÉ, pas arbitré** (la distinction est tout) : **L35-1, « Ma salle »** — relire la liste après toute modification (création, édition, publication, suppression), décision 3 de Ko du 10/10/2026 ; lot de **code**, qui **compte** (compteur ZÉRO → UN à sa clôture). L35-2 à L35-4, désignés par Ko, **sans rang**, suivent dans l'ordre ci-dessus. **Ko arbitre ; la session ne choisit pas.**
 
+⛔ **ARBITRÉ LE 13/10/2026 PAR KO — LE RANG 37, mot pour mot (première écriture d'autorité du lot D331 ; la table d'ouverture, la sortie de la lecture adverse et la première passe D277 l'ont précédée dans `git`) :**
+
+**Texte proposé par le relecteur, adopté par Ko tel quel (13/10/2026) :**
+
+« 1. La marque de D330 est gardée.
+2. Pour les prochaines certifications, la RAM se juge ainsi : l'ouverture et la clôture doivent être au-dessus de la barre ; `chrome` > 0 disqualifie toujours la fenêtre ; un relevé intermédiaire sous la barre est noté, il ne disqualifie pas.
+3. Le contrôle des `.env` de D330 (empreinte et hôte de chaque variable d'URL, sans aucune valeur ; hôte non local à l'ouverture = la passe ne démarre pas ; empreintes différentes à la clôture = marque refusée) devient une règle permanente de toute certification.
+4. `headless_shell` = 0 devient une porte dure de toute certification, comme `chrome` = 0.
+5. Je ratifie les quatorze décisions de la session D330.
+6. Rang 37 : L35-1, « Ma salle ». Lot de code. »
+
+Lot D331. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est de Ko** (patron de D295, D327, D328, D329, D330) : la session a reçu ce texte, elle ne s'est rien attribué. ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que ce texte. Les décisions du relecteur, les annotations des sites que ces six points rendent périmés, les règles permanentes de `AGENTS.md` et la table recopiée suivent dans des commits postérieurs.
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
