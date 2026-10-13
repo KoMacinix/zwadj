@@ -1799,6 +1799,29 @@ Lot D329. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 ⇒ **Le rang suivant (D284)** n'est PAS écrit à ce commit : « RANG 37 : EN ATTENTE D'ARBITRAGE DE KO » s'écrit à la **CLÔTURE** du rang 36 (consigne de Ko et du relecteur), après la passe — si elle échoue, rien ne se clôt et le blocage revient à Ko.
 ⇒ **RANG 36 : OUVERT, NON CLOS — LA PASSE A EU LIEU LE 12/10/2026 ET LA MARQUE EST REFUSÉE (`test:int` ROUGE, 2 tests ; cause locale mesurée) ; LE BLOCAGE REVIENT À KO** (D284) — écrit en **FIN DE SESSION** de D329, mot pour mot de la consigne (« Si une porte est rouge ou une cible muette : PAS de marque, rapport, retour à moi »). ⚠ **« RANG 37 : EN ATTENTE D'ARBITRAGE DE KO » n'est PAS écrit** : il suppose le rang 36 clos. **Compteur : DEUX, inchangé** ⇒ **aucun lot de code ne s'ouvre avant une certification** (D270) ; L35-1 à L35-4, désignés par Ko, **restent sans rang et non ouvrables**. Point d'entrée : « PROCHAIN LOT — rang 36 » ; section D329 ; backlog, « Reports du 12/10/2026 ».
 
+⛔ **ARBITRÉ LE 12/10/2026 PAR KO — LA REPRISE DU RANG 36, mot pour mot (première écriture d'autorité du lot D330 ; la table d'ouverture, la sortie de la lecture adverse et la première passe D277 l'ont précédée dans `git`) :**
+
+**Premier texte (12/10/2026, 18 h 39) :**
+
+« Décisions de D328 :
+- Je ratifie les n° 1 à 6 et la n° 8.
+- N° 7 : je ratifie comme proposition, à trancher dans L35-4.
+- N° 9 : je ne ratifie pas encore. Je ne lis pas le code. Explique-moi en langage simple ce que « revue humaine » exigerait concrètement de moi pour L35-5 et L35-6, et quelles autres façons existent de la faire. Je répondrai quand j'aurai compris.
+
+Autre point : je confirme qu'au moins un des deux noms (arabe ou latin) est obligatoire à la création de la fiche. »
+
+**Second texte (proposé par le relecteur, adopté par Ko tel quel) :**
+
+« 1. La suite de la certification : option (a). J'ai remis `CLIENT_URL` et `CORS_ORIGINS` à leur valeur locale ; la passe se rejoue en entier.
+2. Je ratifie les dix décisions de la session D329.
+3. C-C3 : la boîte de dialogue de langue complète toujours la copie du nom sur le devis ; elle ne complète la fiche que si le nom du devis est le même que celui de la fiche. »
+
+**Troisième texte (12/10/2026, 23 h 57) :**
+
+« j'ai oublier de mentionner que N° 9 : revue de L35-5 et L35-6 : forme B (D302) plus mes essais dans le navigateur (C) ; D au backlog, piste du déploiement. »
+
+Lot D330. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est de Ko** (patron de D295, D327, D328, D329) : la session a reçu les trois textes, elle ne s'est rien attribué. ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que ces trois textes. Les propositions du relecteur adoptées par Ko, ses décisions, les annotations des sites que ces textes rendent périmés, la table d'ouverture recopiée, le protocole et la suite viennent dans les commits suivants — chacun APRÈS celui-ci.
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
