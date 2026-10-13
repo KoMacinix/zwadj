@@ -1,0 +1,23 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D330/audit-secrets-d330b.txt (209 contextes) · nouvelle docs/preuves/D331/audit-secrets-d331a.txt (219 contextes)
+   alertes ABSENTES de la précédente : 10 — à trier au contexte avant le commit
+   [mot-de-passe] docs/preuves/D330/tri-audit-d330b.txt — contexte : ligne 1419 de docs/preuves/D331/audit-secrets-d331a.txt
+   [jeton] docs/preuves/D330/tri-audit-d330b.txt — contexte : ligne 1421 de docs/preuves/D331/audit-secrets-d331a.txt
+   [jeton] docs/preuves/D330/tri-audit-d330b.txt — contexte : ligne 1423 de docs/preuves/D331/audit-secrets-d331a.txt
+   [jeton] docs/preuves/D330/tri-audit-d330b.txt — contexte : ligne 1425 de docs/preuves/D331/audit-secrets-d331a.txt
+   [jeton] docs/preuves/D330/tri-audit-d330b.txt — contexte : ligne 1427 de docs/preuves/D331/audit-secrets-d331a.txt
+   [url-avec-identifiants] docs/preuves/D331/lecture-adverse/confronter-d330.py — contexte : ligne 1429 de docs/preuves/D331/audit-secrets-d331a.txt
+   [url-avec-identifiants] docs/preuves/D331/lecture-adverse/confronter-d330.py — contexte : ligne 1431 de docs/preuves/D331/audit-secrets-d331a.txt
+   [jeton] docs/preuves/D331/lecture-adverse/confronter-d330.py — contexte : ligne 1433 de docs/preuves/D331/audit-secrets-d331a.txt
+   [jeton] docs/preuves/D331/lecture-adverse/confronter-d330.py — contexte : ligne 1435 de docs/preuves/D331/audit-secrets-d331a.txt
+   [jeton] docs/preuves/D331/lecture-adverse/confronter-sortie.txt — contexte : ligne 1437 de docs/preuves/D331/audit-secrets-d331a.txt
+   ventilation par motif : mot-de-passe=1 · jeton=7 · url-avec-identifiants=2
+
+== TRI AU CONTEXTE (humain, D331) — chacune des 10 alertes ABSENTES de la précédente, lue dans la sortie scellée (`audit-secrets-d331a.txt`, lignes 1419 à 1437) ; AUCUN contexte n'est recopié ici (ce serait un écho non scellé)
+   1. tri-audit-d330b.txt (ligne 1419, motif « mot-de-passe ») : un TITRE de test d'intégration cité par le tri de D330 (« …forgot-password : … CONSTANTE, mais aucun e-mail ne part ») ; du texte, pas une valeur.
+   2 à 5. tri-audit-d330b.txt (lignes 1421, 1423, 1425, 1427, motif « jeton ») : le tri humain de D330 « b », qui NOMME `token=` en décrivant les alertes qu'il a triées (l'écho d'un contexte de `ZWADJ_CONTINUITE.md`, la phrase de la lecture de `r26`, le bilan du tri) ; du texte de documentation, même nature que l'alerte n° 12 du tri « a » de D330 ; aucune valeur.
+   6 et 7. confronter-d330.py (lignes 1429, 1431, motif « url-avec-identifiants ») : les fixtures SYNTHÉTIQUES de la calibration de `variables_url` — des URL à identifiants dont le « secret » est la sentinelle `SENTINELLE_SECRET_ZW331` et l'hôte `zw331-tunnel.exemple-invalide` (un f-string `{S_SECRET}`, `{S_TUNNEL}`), et l'astuce `localhost@distant` ; aucune valeur réelle.
+   8, 9 et 10. confronter-d330.py (1433, 1435) et confronter-sortie.txt (1437) : l'expression régulière qui CHERCHE un jeton de 43 caractères (`token=[A-Za-z0-9_-]{43}`), son libellé dans le contrôle S2 et son écho dans la sortie versée ; ce sont des motifs, pas des valeurs.
+   BILAN DU TRI : 10 sur 10 = fixtures synthétiques (2 « url-avec-identifiants »), motifs d'expressions régulières ou libellés qui nomment `token=` (7 « jeton »), un titre de test (1 « mot-de-passe ») ; AUCUNE valeur réelle. (Le contrôle dédié « 0 valeur réelle sur N fichiers » de D299 n'a pas d'objet à ce stade : cette lecture n'a ouvert aucun journal à valeurs réelles — ni jeton, ni cookie ; il est joué si la passe de code en produit un.)
