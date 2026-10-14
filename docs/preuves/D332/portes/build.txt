@@ -1,0 +1,9 @@
+# D332 — porte `build`
+# HEAD au lancement : b13cc5c (arbre de travail : seuls `docs/preuves/D332/{navigateur,vert}` non suivis, aucun fichier de code modifié — vérifié par `git status` avant la passe)
+# code de sortie RÉEL de la commande : 0 · durée : 38 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 8bdb5f9f939bf039c00120eb26e962ae699154fcdfbc4bd37366553c8609c2fa · 10671 octets · 128 lignes
+
+parcouru : 128 ligne(s)
+paquets « Done » : 4 (apps/api, apps/client, apps/pro, packages/types) ; « Failed » : 0 (attendu : 0)
+paquets dont le package.json déclare le script `build` : 4 (apps/api, apps/client, apps/pro, packages/types) (attendu : les mêmes que les « Done » : égaux)
+code de sortie lu : 0 (attendu : 0)

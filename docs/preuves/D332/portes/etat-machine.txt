@@ -1,0 +1,10 @@
+# D332 — état de la machine à la fin du paquet de portes (relevé le 14/10/2026 à 17:16:14, par PowerShell, juste après `test:e2e`)
+# ⚠ CE PAQUET N'EST PAS UNE FENÊTRE CERTIFIANTE : ce lot est un lot de code qui précède sa certification (limite de CINQ, D332) ; aucune durée de `portes/*.txt` n'est comparée à une autre, et aucune ne décide quoi que ce soit (D290).
+
+alimentation : PowerOnline=True · Charging=False · Discharging=False · charge=100 %   → SECTEUR, pas batterie (la règle de D290 : aucune mesure qui entre dans une décision ne se prend sur batterie)
+RAM libre : 3 091 Mo sur 16 095 Mo  → inférieure à la barre d'une fenêtre certifiante (Docker Desktop, démarré pour ce paquet, la tient) : c'est une raison de plus de ne rien certifier ici
+% Processor Performance : 89 · % Processor Utility : 7,7  (une lecture au repos après la passe ; « > 100 sous charge ⇒ non bridé », la réciproque n'est pas démontrée — D290)
+processus : com.docker.backend=2 · Docker Desktop=5   (aucun `chrome`, aucun `headless_shell`, aucun `msedge`, aucun `node` à la fin de la passe)
+
+# Ce que ce relevé ne dit PAS : l'état au début de chaque porte (un seul relevé, à la fin) ; la RAM pendant `test:int` et `test:e2e` (aucun échantillonneur n'a tourné) ; l'état des fichiers `.env` (le contrôle de D330 est une règle de CERTIFICATION, ce paquet n'en est pas une).
+# Docker Desktop était arrêté au début de la session (moteur absent, `docker ps` en erreur) ; il a été démarré par la session pour que PostgreSQL (`pnpm db:up`) serve `test:int` et la pile e2e, et il tourne encore. Rien d'autre n'a été arrêté ni démarré.

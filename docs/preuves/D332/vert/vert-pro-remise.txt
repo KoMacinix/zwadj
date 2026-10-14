@@ -1,0 +1,111 @@
+# D332 — VERT — les cinq boutons de remise ouvrent d'abord la boîte de langue ; annuler n'enregistre rien ; la langue envoyée est celle choisie (apps/pro, walkin-journey.test.tsx)
+# état du code : CODE DE PRODUCTION = CELUI DU LOT, commité (HEAD b13cc5c, arbre propre hors docs/preuves non suivis au moment du relevé) ; CATALOGUES = ceux du lot (clés retirées : quote.document.quantity, venue.ui.list.title) ; TESTS = versions FINALES du lot — deux retouches APRÈS les rouges, déclarées : (1) ui-choice-dialog.test.tsx remplace document.body.innerHTML par cleanup() (le test vidait le corps de page sous le portail de React), (2) l'ancien test Q2 « enregistre le canal cliqué » de walkin-journey.test.tsx passe par la boîte de langue (il cliquait un canal et attendait l'enregistrement sans choix) ; et une troisième, hors rouges : quote-document.spec.ts remplace une déstructuration inutilisée par Object.fromEntries (règle de lint no-unused-vars)
+# journal brut (hors dépôt) : SHA-256 1ddc445f3fc7029b56f036d0f211ed836c59d18a6155bab18f52b2d71932c050 · 37225 octets · 163 lignes · EXTRAIT versé : verdicts du point (filtre « walkin-journey.test.tsx ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 102 vert(s) · 0 rouge(s) · 0 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+VERT   src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > s'ouvre sur la question du client, et sur elle seule
+VERT   src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité
+VERT   src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré
+VERT   src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte
+VERT   src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations
+VERT   src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > chaque champ client porte un LABEL visible — quatre cases nues ne se distinguent pas
+VERT   src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > le fil de progression NOMME l'étape courante pour un lecteur d'écran
+VERT   src/dashboard/walkin-journey.test.tsx > Récapitulatif — des réponses, JAMAIS des montants > fige la réponse validée en ligne de récapitulatif
+VERT   src/dashboard/walkin-journey.test.tsx > Récapitulatif — des réponses, JAMAIS des montants > ⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis
+VERT   src/dashboard/walkin-journey.test.tsx > Récapitulatif — des réponses, JAMAIS des montants > n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran
+VERT   src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > « Modifier » ramène à l'étape, sans rien effacer
+VERT   src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette
+VERT   src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse
+VERT   src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »
+VERT   src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > ⚠ une étape SANS réponse n'est pas cliquable dans le rail
+VERT   src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > « Annuler » remet tout à zéro et ramène à la première question
+VERT   src/dashboard/walkin-journey.test.tsx > Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien
+VERT   src/dashboard/walkin-journey.test.tsx > Date et créneau sont DEUX écrans > l'étape date montre la grille du mois, jamais les créneaux
+VERT   src/dashboard/walkin-journey.test.tsx > Date et créneau sont DEUX écrans > ⚠ l'étape créneau montre les créneaux, PAS la grille du mois
+VERT   src/dashboard/walkin-journey.test.tsx > La date vient du calendrier réel > une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide
+VERT   src/dashboard/walkin-journey.test.tsx > La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question
+VERT   src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus
+VERT   src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré
+VERT   src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près
+VERT   src/dashboard/walkin-journey.test.tsx > Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge
+VERT   src/dashboard/walkin-journey.test.tsx > Le focus suit la question (R2d, désormais structurel) > ⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé
+VERT   src/dashboard/walkin-journey.test.tsx > Le focus suit la question (R2d, désormais structurel) > emmène le focus sur la carte de l'étape à chaque transition
+VERT   src/dashboard/walkin-journey.test.tsx > Le focus suit la question (R2d, désormais structurel) > fait aussi défiler, en une seule fois
+VERT   src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille
+VERT   src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien
+VERT   src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »
+VERT   src/dashboard/walkin-journey.test.tsx > Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)
+VERT   src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33)
+VERT   src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours
+VERT   src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > le catalogue affiché est celui de la SALLE — aucune prestation inventée
+VERT   src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > ⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133)
+VERT   src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > ⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation
+VERT   src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro
+VERT   src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > le bouton « Modifier » est le composant partagé, identique au client
+VERT   src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > ⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite
+VERT   src/dashboard/walkin-journey.test.tsx > Point D — chrome partagée > la coche du rail est une icône, la même que côté client
+VERT   src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > l'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape ne les contient pas
+VERT   src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > seuls les chiffres passent, au plus la longueur du modèle
+VERT   src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloquée ; « Continuer » dit pourquoi
+VERT   src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > le texte d'aide dit la longueur du modèle (plus de « 8 à 9 »)
+VERT   src/dashboard/walkin-journey.test.tsx > Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion
+VERT   src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit
+VERT   src/dashboard/walkin-journey.test.tsx > Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > le français accentué, les noms composés, l'apostrophe et L'ARABE passent — le champ n'est pas en erreur
+VERT   src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction
+VERT   src/dashboard/walkin-journey.test.tsx > Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison
+VERT   src/dashboard/walkin-journey.test.tsx > Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143)
+VERT   src/dashboard/walkin-journey.test.tsx > Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > ⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne
+VERT   src/dashboard/walkin-journey.test.tsx > Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > le même exemple existe en ARABE, pour chacun des cinq champs
+VERT   src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme les quatre manques, et le bouton la désigne par `aria-describedby`
+VERT   src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre
+VERT   src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle
+VERT   src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout répondu : plus de liste, plus de description, le bouton s'active
+VERT   src/dashboard/walkin-journey.test.tsx > Libellés liés aux champs — en arabe aussi > ⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé)
+VERT   src/dashboard/walkin-journey.test.tsx > Libellés liés aux champs — en arabe aussi > ⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe
+VERT   src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer
+VERT   src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation
+VERT   src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ on ne saute PAS une étape incomplète : le libellé d'une étape sans réponse n'est dans aucun bouton
+VERT   src/dashboard/walkin-journey.test.tsx > Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > l'étape COURANTE n'est pas cliquable non plus : « Modifier » n'existerait pas
+VERT   src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer
+VERT   src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT
+VERT   src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique)
+VERT   src/dashboard/walkin-journey.test.tsx > Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et le client
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue
+VERT   src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > avec une adresse valide à l'étape Client, le canal « e-mail » est ACTIF
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir`
+VERT   src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et IDENTIQUES dans les deux catalogues (« Français » ne se traduit pas en arabe)
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  5 passed (5) | Tests  145 passed (145)

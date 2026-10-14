@@ -1,0 +1,13 @@
+# D332 — rastérisation des six PDF des trois devis réels, par un lecteur INDÉPENDANT de celui qui les a écrits (pdf.js 4.10.38, installé HORS du dépôt par `npm install pdfjs-dist@4.10.38 --ignore-scripts`).
+# Outil : docs/preuves/D326/arabe/rasteriser.mjs (inchangé) — commande : node docs/preuves/D326/arabe/rasteriser.mjs <pdfjs-dist> docs/preuves/D332/navigateur/pages <six pdf de docs/preuves/D332/navigateur/sortie/>
+# Chaque ligne dit la taille de la toile et le NOMBRE de pixels non blancs parcourus (D290) ; la calibration (page vide = 0, PDF de preuve = des milliers) est rejouée à chaque lancement.
+   ✓ page VIDE : zéro pixel non blanc (négatif) — 400×200, 0 non blancs
+   ✓ PDF de la preuve : des milliers de pixels non blancs (positif) — 1190×1684, 46896 non blancs
+== calibration : 2 bras, 0 manqué
+
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D332\navigateur\pages\devis-sans-prestation-fr-p1.png — 952×1348 px · 33484 pixels non blancs parcourus sur 1283296
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D332\navigateur\pages\devis-sans-prestation-ar-p1.png — 952×1348 px · 25909 pixels non blancs parcourus sur 1283296
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D332\navigateur\pages\devis-prestations-fixes-fr-p1.png — 952×1348 px · 41939 pixels non blancs parcourus sur 1283296
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D332\navigateur\pages\devis-prestations-fixes-ar-p1.png — 952×1348 px · 33629 pixels non blancs parcourus sur 1283296
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D332\navigateur\pages\devis-quantites-palier-fr-p1.png — 952×1348 px · 50811 pixels non blancs parcourus sur 1283296
+C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D332\navigateur\pages\devis-quantites-palier-ar-p1.png — 952×1348 px · 41818 pixels non blancs parcourus sur 1283296

@@ -1,0 +1,10 @@
+# D332 — porte `e2e`
+# HEAD au lancement : b13cc5c (arbre de travail : seuls `docs/preuves/D332/{navigateur,vert}` non suivis, aucun fichier de code modifié — vérifié par `git status` avant la passe)
+# code de sortie RÉEL de la commande : 1 · durée : 39 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 6fdb2d07bfc3192d38523014830a153f45c7364434675ca283f497b64a1e4691 · 27182 octets · 247 lignes
+# ⚠ CE PASSAGE N'A RIEN JOUÉ : la commande `pnpm test:e2e -- --reporter=list` a transmis « -- » à Playwright, qui l'a lu comme un FILTRE DE FICHIER (« Error: No tests found », 39 s, après les migrations). Ce n'est pas un échec du code, c'est une commande mal formée ; la passe qui compte est `e2e.txt` (`pnpm --filter @zwadj/e2e exec playwright test --reporter=list`, 54 passés, 1 ignoré). Versé parce qu'un « exit 1 » non expliqué se relit comme un rouge.
+
+parcouru : 247 ligne(s)
+résumé Playwright : {} (attendu : aucun « failed »)
+verdicts lus : 0 ; total du résumé : 0 (attendu : égaux — D275)
+

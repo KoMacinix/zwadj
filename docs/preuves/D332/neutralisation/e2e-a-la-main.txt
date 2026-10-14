@@ -1,0 +1,33 @@
+départ : apps/pro/src/dashboard/walkin-journey.tsx · 50536 octets · sha256 1da0e5ebef5d5dca…
+
+■ E-1. ANNULER la boîte remet quand même (le canal est enregistré, le PDF téléchargé) — la spec d'annulation doit rougir
+   ancre 1→0 · marqueur 0→1 · filtre « ANNULER la boîte de langue » · code 1
+   tests en échec : 1 · résumé Playwright : ['1 failed', '1 passed (1.2m)'] · empreinte restaurée : identique
+   x  2 [chromium] › specs\r33-remise-devis.e2e.ts:136:5 › ⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise : aucune requête ne part, le serveur n'a aucun 
+   bloc d'échec lu (les lignes qui suivent l'en-tête « 1) ») :
+          Error: bouton : aucune requête `deliver` ni `document` n'est partie
+          expect(received).toEqual(expected) // deep equality
+          - Expected  - 1
+          + Received  + 4
+          - Array []
+          + Array [
+          +   "POST /api/v1/quotes/01a13c32-d6fa-74a3-bab7-9f3c73eee04a/deliver",
+          +   "GET /api/v1/quotes/01a13c32-d6fa-74a3-bab7-9f3c73eee04a/document",
+          + ]
+
+■ E-2. la langue envoyée est toujours le français — la spec « PRINT, page fr, PDF ar » doit rougir (Content-Language et paramètre `locale`)
+   ancre 1→0 · marqueur 0→1 · filtre « « PRINT », page fr, PDF ar » · code 1
+   tests en échec : 1 · résumé Playwright : ['1 failed', '1 passed (1.1m)'] · empreinte restaurée : identique
+   x  2 [chromium] › specs\r33-remise-devis.e2e.ts:78:7 › « PRINT », page fr, PDF ar : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (5.8s)
+   bloc d'échec lu (les lignes qui suivent l'en-tête « 1) ») :
+          Error: expect(received).toBe(expected) // Object.is equality
+          Expected: "ar"
+          Received: "fr"
+            102 |
+            103 |     // La langue DEMANDÉE est la langue choisie, la langue APPLIQUÉE est la même (le compte du client n'y est pour rien).
+          > 104 |     expect(new URL(document.url()).searchParams.get("locale")).toBe(langueDuPdf);
+                |                                                                ^
+            105 |     expect(document.headers()["content-language"]).toBe(langueDuPdf);
+            106 |
+
+BILAN : E-1. : 1 échec(s), code 1, restauré oui · E-2. : 1 échec(s), code 1, restauré oui (attendu : ≥ 1 échec chacun, code ≠ 0, restauré oui)

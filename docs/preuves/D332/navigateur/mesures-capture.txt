@@ -1,0 +1,12 @@
+MESURE dialogue fr 1280px : panneau {"largeur":420,"debordeHorizontalement":false} · boutons [{"texte":"Annuler","lang":null,"dir":null,"largeur":84,"hauteur":49},{"texte":"Français","lang":"fr","dir":"ltr","largeur":103,"hauteur":49},{"texte":"العربية","lang":"ar","dir":"rtl","largeur":89,"hauteur":49}]
+MESURE dialogue fr 360px : panneau {"largeur":320,"debordeHorizontalement":false} · boutons [{"texte":"Annuler","lang":null,"dir":null,"largeur":84,"hauteur":49},{"texte":"Français","lang":"fr","dir":"ltr","largeur":103,"hauteur":49},{"texte":"العربية","lang":"ar","dir":"rtl","largeur":89,"hauteur":49}]
+MESURE dialogue ar 1280px : panneau {"largeur":420,"debordeHorizontalement":false} · boutons [{"texte":"إلغاء","lang":null,"dir":null,"largeur":58,"hauteur":49},{"texte":"Français","lang":"fr","dir":"ltr","largeur":103,"hauteur":49},{"texte":"العربية","lang":"ar","dir":"rtl","largeur":89,"hauteur":49}]
+MESURE dialogue ar 360px : panneau {"largeur":320,"debordeHorizontalement":false} · boutons [{"texte":"إلغاء","lang":null,"dir":null,"largeur":58,"hauteur":49},{"texte":"Français","lang":"fr","dir":"ltr","largeur":103,"hauteur":49},{"texte":"العربية","lang":"ar","dir":"rtl","largeur":89,"hauteur":49}]
+MESURE salles fr : titre « Ma salle » · lien du menu « Ma salle » (attendu : le même mot, une salle)
+MESURE salles ar : titre « قاعتي » · lien du menu « قاعتي » (attendu : le même mot, une salle)
+MESURE pdf sans-prestation fr : 17246 octets · Content-Language « fr »
+MESURE pdf sans-prestation ar : 28297 octets · Content-Language « ar »
+MESURE pdf prestations-fixes fr : 18055 octets · Content-Language « fr »
+MESURE pdf prestations-fixes ar : 29572 octets · Content-Language « ar »
+MESURE pdf quantites-palier fr : 24624 octets · Content-Language « fr »
+MESURE pdf quantites-palier ar : 38465 octets · Content-Language « ar »

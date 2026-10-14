@@ -1,0 +1,9 @@
+# D332 — porte `typecheck`
+# HEAD au lancement : b13cc5c (arbre de travail : seuls `docs/preuves/D332/{navigateur,vert}` non suivis, aucun fichier de code modifié — vérifié par `git status` avant la passe)
+# code de sortie RÉEL de la commande : 0 · durée : 22 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 82dc520e505dc8322c70d80a7f19f0e7cb12c3590abfd67e2ac29a3a367cbcd1 · 627 octets · 21 lignes
+
+parcouru : 21 ligne(s)
+paquets « Done » : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) ; « Failed » : 0 (attendu : 0)
+paquets dont le package.json déclare le script `typecheck` : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) (attendu : les mêmes que les « Done » : égaux)
+code de sortie lu : 0 (attendu : 0)

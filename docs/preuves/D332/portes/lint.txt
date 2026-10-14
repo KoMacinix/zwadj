@@ -1,0 +1,9 @@
+# D332 — porte `lint`
+# HEAD au lancement : b13cc5c (arbre de travail : seuls `docs/preuves/D332/{navigateur,vert}` non suivis, aucun fichier de code modifié — vérifié par `git status` avant la passe)
+# code de sortie RÉEL de la commande : 0 · durée : 13 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 98f589e4e363a903c948a4b699267e5d8e6427276699b8d9ac13774eca47eea7 · 526 octets · 21 lignes
+
+parcouru : 21 ligne(s)
+paquets « Done » : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) ; « Failed » : 0 (attendu : 0)
+paquets dont le package.json déclare le script `lint` : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) (attendu : les mêmes que les « Done » : égaux)
+code de sortie lu : 0 (attendu : 0)

@@ -1,0 +1,14 @@
+# D332 — porte `test`
+# HEAD au lancement : b13cc5c (arbre de travail : seuls `docs/preuves/D332/{navigateur,vert}` non suivis, aucun fichier de code modifié — vérifié par `git status` avant la passe)
+# code de sortie RÉEL de la commande : 0 · durée : 95 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 076430d796dec7b55b98cc1182e1385266280dcfff67bb55decd52a893e2670a · 101206 octets · 1612 lignes
+
+parcouru : 1612 ligne(s)
+résumés vitest lus : 4 (attendu : 4)
+  résumé 1 : fichiers passés 5 · en échec 0 · total 5 ; tests passés 48 · en échec 0 · total 48
+  résumé 2 : fichiers passés 65 · en échec 0 · total 65 ; tests passés 808 · en échec 0 · total 808
+  résumé 3 : fichiers passés 29 · en échec 0 · total 29 ; tests passés 372 · en échec 0 · total 372
+  résumé 4 : fichiers passés 40 · en échec 0 · total 40 ; tests passés 562 · en échec 0 · total 562
+base de D331 (LUE dans docs/preuves/D331/portes/test.txt) : [(5, 48), (65, 791), (29, 372), (38, 537)]
+mesuré : [(5, 48), (65, 808), (29, 372), (40, 562)]
+somme : 1790 tests / 139 fichiers ; en échec : 0 · base 1748 tests / 137 fichiers · écart +42 tests, +2 fichiers

@@ -1,0 +1,100 @@
+{
+  "sans-prestation": {
+    "id": "01a13c37-02a8-763d-87ea-6d209047159d",
+    "basePriceCents": 18000000,
+    "servicesTotalCents": 0,
+    "totalCents": 18000000,
+    "depositCents": 5400000,
+    "lines": []
+  },
+  "prestations-fixes": {
+    "id": "01a13c37-0ace-765f-902e-1bfc195b57a7",
+    "basePriceCents": 18000000,
+    "servicesTotalCents": 11500000,
+    "totalCents": 29500000,
+    "depositCents": 8850000,
+    "lines": [
+      {
+        "nameAr": "ديكور الزهور",
+        "nameFr": "Décoration florale",
+        "tierId": null,
+        "quantity": 1,
+        "serviceId": "01a13c37-0242-7853-903c-449b6780fc05",
+        "pricingType": "FIXED",
+        "tierLabelAr": null,
+        "tierLabelFr": null,
+        "lineTotalCents": 8000000,
+        "unitPriceCents": 8000000
+      },
+      {
+        "nameAr": "ألعاب الإضاءة",
+        "nameFr": "Jeux de lumières",
+        "tierId": null,
+        "quantity": 1,
+        "serviceId": "01a13c37-025e-7bef-b2f3-7b84188ea231",
+        "pricingType": "FIXED",
+        "tierLabelAr": null,
+        "tierLabelFr": null,
+        "lineTotalCents": 3500000,
+        "unitPriceCents": 3500000
+      }
+    ]
+  },
+  "quantites-palier": {
+    "id": "01a13c37-11c8-7979-8b6e-4b678dbe0088",
+    "basePriceCents": 18000000,
+    "servicesTotalCents": 59100000,
+    "totalCents": 77100000,
+    "depositCents": 23130000,
+    "lines": [
+      {
+        "nameAr": "بوفيه مفتوح",
+        "nameFr": "Buffet ouvert",
+        "tierId": null,
+        "quantity": 150,
+        "serviceId": "01a13c37-026e-7022-95cd-7e66f4770f3f",
+        "pricingType": "PER_GUEST",
+        "tierLabelAr": null,
+        "tierLabelFr": null,
+        "lineTotalCents": 37500000,
+        "unitPriceCents": 250000
+      },
+      {
+        "nameAr": "كراسي إضافية",
+        "nameFr": "Chaises supplémentaires",
+        "tierId": null,
+        "quantity": 40,
+        "serviceId": "01a13c37-027d-7f57-b7a2-e6f4c9c75b51",
+        "pricingType": "PER_UNIT",
+        "tierLabelAr": null,
+        "tierLabelFr": null,
+        "lineTotalCents": 1600000,
+        "unitPriceCents": 40000
+      },
+      {
+        "nameAr": "الفرقة الموسيقية",
+        "nameFr": "Animation musicale",
+        "tierId": "01a13c37-0293-77ab-9751-c1528aca4321",
+        "quantity": 1,
+        "serviceId": "01a13c37-028f-7418-ab5f-6b19759fea73",
+        "pricingType": "TIERED",
+        "tierLabelAr": "أوركسترا أندلسية",
+        "tierLabelFr": "Orchestre andalou",
+        "lineTotalCents": 12000000,
+        "unitPriceCents": 12000000
+      },
+      {
+        "nameAr": "ديكور الزهور",
+        "nameFr": "Décoration florale",
+        "tierId": null,
+        "quantity": 1,
+        "serviceId": "01a13c37-0242-7853-903c-449b6780fc05",
+        "pricingType": "FIXED",
+        "tierLabelAr": null,
+        "tierLabelFr": null,
+        "lineTotalCents": 8000000,
+        "unitPriceCents": 8000000
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+# D332 — VERT — S-11 : le titre de la page « Ma salle / Mes salles » suit le menu (apps/pro, venue-list.test.tsx)
+# état du code : CODE DE PRODUCTION = CELUI DU LOT, commité (HEAD b13cc5c, arbre propre hors docs/preuves non suivis au moment du relevé) ; CATALOGUES = ceux du lot (clés retirées : quote.document.quantity, venue.ui.list.title) ; TESTS = versions FINALES du lot — deux retouches APRÈS les rouges, déclarées : (1) ui-choice-dialog.test.tsx remplace document.body.innerHTML par cleanup() (le test vidait le corps de page sous le portail de React), (2) l'ancien test Q2 « enregistre le canal cliqué » de walkin-journey.test.tsx passe par la boîte de langue (il cliquait un canal et attendait l'enregistrement sans choix) ; et une troisième, hors rouges : quote-document.spec.ts remplace une déstructuration inutilisée par Object.fromEntries (règle de lint no-unused-vars)
+# journal brut (hors dépôt) : SHA-256 1ddc445f3fc7029b56f036d0f211ed836c59d18a6155bab18f52b2d71932c050 · 37225 octets · 163 lignes · EXTRAIT versé : verdicts du point (filtre « venue-list.test.tsx ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 13 vert(s) · 0 rouge(s) · 0 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+VERT   src/venues/venue-list.test.tsx > Liste des salles — rendu des cartes > affiche nom, commune (data), capacité et prix formaté depuis les CENTIMES
+VERT   src/venues/venue-list.test.tsx > Liste des salles — rendu des cartes > état VIDE : titre, explication et appel à l'action
+VERT   src/venues/venue-list.test.tsx > Liste des salles — rendu des cartes > état ERREUR : message + « Réessayer » qui relance réellement l'appel
+VERT   src/venues/venue-list.test.tsx > Liste — statut D33 (3 entrées, sans confirmation) > rend les TROIS états et envoie PATCH { status } sans ouvrir de dialogue
+VERT   src/venues/venue-list.test.tsx > Liste — statut D33 (3 entrées, sans confirmation) > échec du PATCH : REVERT de la valeur + message d'erreur
+VERT   src/venues/venue-list.test.tsx > Liste — suppression (soft delete) > « Supprimer » ouvre le ConfirmDialog ; confirmer appelle softDelete puis recharge
+VERT   src/venues/venue-list.test.tsx > Liste — suppression (soft delete) > annuler ferme le dialogue SANS rien supprimer
+VERT   src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > UNE salle : « Ma salle », le mot du menu — et non « Mes salles »
+VERT   src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > DEUX salles : « Mes salles » ; le menu du haut dit le même mot
+VERT   src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > AUCUNE salle (état vide) : « Ma salle » comme le menu — un compte de zéro est un singulier
+VERT   src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > en ARABE : « قاعتي » pour une salle, « قاعاتي » pour deux
+VERT   src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : supprimer la SECONDE salle ramène le titre à « Ma salle » SANS recharger la page (le compte vient du fournisseur, comme le menu)
+VERT   src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : la règle vit UNE fois — la page ET le menu importent `venuesLabelKey` et ne portent plus les clés du libellé ni l'ancien titre
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  5 passed (5) | Tests  145 passed (145)
