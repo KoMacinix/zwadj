@@ -64,17 +64,45 @@ async function jusquAuDevis(page: Page, libelles: typeof W = W): Promise<string>
 
 const NOM_DE_FICHIER = /^devis-\d{4}-\d{2}-\d{2}-v\d+-[0-9a-f]{8}\.pdf$/;
 
-for (const [canal, langue] of [["PRINT", "fr"], ["EMAIL", "fr"], ["SMS", "ar"]] as const) {
-  test(`« ${canal} » en ${langue} : le navigateur TÉLÉCHARGE un vrai PDF, le serveur ENREGISTRE le canal, la fenêtre le DIT`, async ({ browser }) => {
-    const libelles = langue === "fr" ? W : WA;
-    const catalogue = langue === "fr" ? fr : ar;
-    const { salle, contexte, page } = await ouvrir(browser, langue);
+/**
+ * RANG 38 (D332) — chaque bouton de remise ouvre D'ABORD la boîte de langue ; l'enregistrement du canal ET le téléchargement partent au CHOIX du pro. Les libellés de la boîte sont dans la
+ * langue de l'INTERFACE (les catalogues) ; le choix est celui du PDF. Les trois cas croisent les deux langues : la langue du PDF n'est jamais celle de l'interface par défaut.
+ * La langue APPLIQUÉE par le serveur se lit dans l'en-tête `Content-Language` de la réponse du navigateur — pas dans le texte du PDF (illisible sans moteur), et pas dans un mock.
+ */
+const LANGUES = {
+  fr: { interface: fr.venue.ui.walkin, libelle: fr.venue.ui.walkin.langFrench },
+  ar: { interface: ar.venue.ui.walkin, libelle: ar.venue.ui.walkin.langArabic }
+} as const;
+
+for (const [canal, langueInterface, langueDuPdf] of [["PRINT", "fr", "ar"], ["EMAIL", "fr", "fr"], ["SMS", "ar", "fr"]] as const) {
+  test(`« ${canal} », page ${langueInterface}, PDF ${langueDuPdf} : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT`, async ({ browser }) => {
+    const libelles = LANGUES[langueInterface].interface;
+    const catalogue = langueInterface === "fr" ? fr : ar;
+    const { salle, contexte, page } = await ouvrir(browser, langueInterface);
     const devisId = await jusquAuDevis(page, libelles);
 
     const libelle = (catalogue.venue.ui.quotes as Record<string, string>)[`sv_${canal}`] as string;
-    const telechargement = page.waitForEvent("download");
     await page.getByRole("button", { name: libelle, exact: true }).click();
+
+    // La boîte : dans la langue de l'INTERFACE, avec ses trois boutons. Rien n'est encore parti : le choix n'est pas fait.
+    const boite = page.getByRole("dialog", { name: libelles.langDialogTitle });
+    await expect(boite).toBeVisible();
+    await expect(boite).toContainText(libelles.langDialogDescription);
+    for (const nom of [libelles.langDialogCancel, fr.venue.ui.walkin.langFrench, ar.venue.ui.walkin.langArabic]) {
+      await expect(boite.getByRole("button", { name: nom, exact: true })).toBeVisible();
+    }
+    const avant = ((await apiCall("GET", `/pro/venues/${salle.id}/quotes`, await accessTokenOf(salle.pro))).json as { id: string; sentVia: string | null }[]).find((q) => q.id === devisId);
+    expect(avant?.sentVia, "la boîte est ouverte, aucun canal n'est encore enregistré").toBeNull();
+
+    const reponse = page.waitForResponse((r) => new URL(r.url()).pathname.endsWith(`/quotes/${devisId}/document`));
+    const telechargement = page.waitForEvent("download");
+    await boite.getByRole("button", { name: LANGUES[langueDuPdf].libelle, exact: true }).click();
+    const document = await reponse;
     const fichier = await telechargement;
+
+    // La langue DEMANDÉE est la langue choisie, la langue APPLIQUÉE est la même (le compte du client n'y est pour rien).
+    expect(new URL(document.url()).searchParams.get("locale")).toBe(langueDuPdf);
+    expect(document.headers()["content-language"]).toBe(langueDuPdf);
 
     // Le fichier : un nom sans donnée personnelle, des octets de PDF, la police du dépôt embarquée (ce n'est pas une page d'erreur enregistrée sous .pdf).
     expect(fichier.suggestedFilename()).toMatch(NOM_DE_FICHIER);
@@ -83,9 +111,10 @@ for (const [canal, langue] of [["PRINT", "fr"], ["EMAIL", "fr"], ["SMS", "ar"]] 
     expect(octets.subarray(0, 5).toString("latin1")).toBe("%PDF-");
     expect(octets.toString("latin1")).toContain("ReadexPro");
 
-    // La fenêtre dit les DEUX issues, et — pour le SMS et l'e-mail — que Zwadj n'envoie PAS encore : aucun écran ne dit que Zwadj a envoyé quoi que ce soit.
+    // La fenêtre de remise (dans la langue de l'INTERFACE) dit les DEUX issues, et — pour le SMS et l'e-mail — que Zwadj n'envoie PAS encore.
     const fenetre = page.getByRole("dialog", { name: libelles.remitTitleDone });
     await expect(fenetre).toBeVisible();
+    await expect(boite).toHaveCount(0);
     await expect(fenetre).toContainText(libelles.remitPdfDone);
     await expect(fenetre).toContainText(libelles.remitRecorded.replace("{channel}", libelle));
     if (canal === "SMS") await expect(fenetre).toContainText(libelles.remitNotSentSMS);
@@ -93,8 +122,7 @@ for (const [canal, langue] of [["PRINT", "fr"], ["EMAIL", "fr"], ["SMS", "ar"]] 
     if (canal === "PRINT") await expect(fenetre).not.toContainText("n'envoie pas");
 
     // Le SERVEUR a écrit le canal — la fenêtre dit ce qui a eu lieu, elle ne le suppose pas.
-    const token = await accessTokenOf(salle.pro);
-    const liste = await apiCall("GET", `/pro/venues/${salle.id}/quotes`, token);
+    const liste = await apiCall("GET", `/pro/venues/${salle.id}/quotes`, await accessTokenOf(salle.pro));
     expect(liste.status).toBe(200);
     const devis = (liste.json as { id: string; sentVia: string | null }[]).find((q) => q.id === devisId);
     expect(devis?.sentVia).toBe(canal);
@@ -104,6 +132,41 @@ for (const [canal, langue] of [["PRINT", "fr"], ["EMAIL", "fr"], ["SMS", "ar"]] 
     await contexte.close();
   });
 }
+
+test("⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise : aucune requête ne part, le serveur n'a aucun canal", async ({ browser }) => {
+  const { salle, contexte, page } = await ouvrir(browser);
+  const devisId = await jusquAuDevis(page);
+  const requetes: string[] = [];
+  page.on("request", (r) => {
+    const chemin = new URL(r.url()).pathname;
+    if (chemin.endsWith("/document") || chemin.endsWith("/deliver")) requetes.push(`${r.method()} ${chemin}`);
+  });
+  const telechargements: string[] = [];
+  page.on("download", (d) => telechargements.push(d.suggestedFilename()));
+
+  const libelle = fr.venue.ui.quotes.sv_PRINT;
+  for (const geste of ["bouton", "echap"] as const) {
+    await page.getByRole("button", { name: libelle, exact: true }).click();
+    const boite = page.getByRole("dialog", { name: W.langDialogTitle });
+    await expect(boite).toBeVisible();
+    if (geste === "bouton") await boite.getByRole("button", { name: W.langDialogCancel, exact: true }).click();
+    else await page.keyboard.press("Escape");
+    await expect(boite, `${geste} : la boîte est fermée`).toHaveCount(0);
+    await expect(page.getByRole("dialog", { name: W.remitTitleDone }), `${geste} : aucune fenêtre de remise`).toHaveCount(0);
+    // Les boutons ne sont pas verrouillés : rien n'a été lancé, on peut recommencer.
+    await expect(page.getByRole("button", { name: libelle, exact: true })).toBeEnabled();
+  }
+  // Une attente BORNÉE pour que d'éventuelles requêtes en vol arrivent : sans elles, « aucune requête » serait vrai trop tôt.
+  await page.waitForTimeout(800);
+  expect(requetes, "aucune requête `deliver` ni `document` n'est partie").toEqual([]);
+  expect(telechargements, "aucun téléchargement").toEqual([]);
+
+  const liste = await apiCall("GET", `/pro/venues/${salle.id}/quotes`, await accessTokenOf(salle.pro));
+  expect(liste.status).toBe(200);
+  const devis = (liste.json as { id: string; sentVia: string | null }[]).find((q) => q.id === devisId);
+  expect(devis?.sentVia, "le serveur n'a enregistré aucun canal").toBeNull();
+  await contexte.close();
+});
 
 test("le canal « e-mail » est INACTIF sans adresse, ACTIF avec — et rien n'est téléchargé tant qu'il est grisé", async ({ browser }) => {
   const { contexte, page } = await ouvrir(browser);
