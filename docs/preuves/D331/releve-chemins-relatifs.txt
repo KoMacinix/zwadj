@@ -1,0 +1,38 @@
+   ✓ calibration — positif : une mesure `_vitest("@zwadj/pro", "src/venues/create-venue-page.test.tsx")` rend 1 chemin relatif
+   ✓ calibration — positif : `neutralisation/neutralize-r33.py` (le cas connu) en rend au moins 1
+   ✓ calibration — négatif : le même chemin écrit depuis la RACINE rend 0
+   ✓ calibration — négatif : un chemin qui n'existe nulle part rend 0
+   calibration : 4 bras, 0 manqué
+parcouru : 35 campagne(s) (attendu : autant que de `neutralisation/neutralize-*.py`, soit 35) ; 267 chemin(s) entre guillemets lus ; 8 paquet(s) cherchés
+RÉSULTAT : 30 campagne(s) sur 35 déclarent au moins un chemin relatif au paquet ; 5 n'en déclarent aucun
+  neutralize-404.py : 1 chemin(s)
+  neutralize-act-plafonds.py : 1 chemin(s)
+  neutralize-available-on-api.py : 3 chemin(s)
+  neutralize-available-on.py : 4 chemin(s)
+  neutralize-booking-status.py : 1 chemin(s)
+  neutralize-e3d1-s8.py : 3 chemin(s)
+  neutralize-horizon.py : 3 chemin(s)
+  neutralize-journey.py : 2 chemin(s)
+  neutralize-maxprice.py : 3 chemin(s)
+  neutralize-r25.py : 5 chemin(s)
+  neutralize-r29.py : 5 chemin(s)
+  neutralize-r30.py : 2 chemin(s)
+  neutralize-r32.py : 15 chemin(s)
+  neutralize-r33.py : 16 chemin(s)
+  neutralize-r37.py : 3 chemin(s)
+  neutralize-r4.py : 3 chemin(s)
+  neutralize-rang23.py : 3 chemin(s)
+  neutralize-s10a.py : 2 chemin(s)
+  neutralize-s10b.py : 2 chemin(s)
+  neutralize-s11a.py : 4 chemin(s)
+  neutralize-s11b.py : 6 chemin(s)
+  neutralize-s9.py : 2 chemin(s)
+  neutralize-solid-s1.py : 5 chemin(s)
+  neutralize-solid-s2.py : 5 chemin(s)
+  neutralize-solid-s3.py : 5 chemin(s)
+  neutralize-solid-s4.py : 3 chemin(s)
+  neutralize-solid-s5a.py : 2 chemin(s)
+  neutralize-solid-s5b.py : 2 chemin(s)
+  neutralize-solid-s6.py : 4 chemin(s)
+  neutralize-solid-s7.py : 2 chemin(s)
+sans aucun chemin relatif : neutralize-argon2.py, neutralize-b7.py, neutralize-budgets.py, neutralize-horloge.py, neutralize-r26.py
