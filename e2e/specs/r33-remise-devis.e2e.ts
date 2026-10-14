@@ -152,14 +152,15 @@ test("⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistr
     if (geste === "bouton") await boite.getByRole("button", { name: W.langDialogCancel, exact: true }).click();
     else await page.keyboard.press("Escape");
     await expect(boite, `${geste} : la boîte est fermée`).toHaveCount(0);
+    // Une attente BORNÉE, PUIS les verdicts, À CHAQUE GESTE : sans elle « aucune requête » serait vrai trop tôt, et — mesuré à la main (E-1) — une annulation qui remet quand même ferait échouer
+    // la spec sur le CLIC SUIVANT (un délai d'action, qui n'est pas une morsure, D323) avant qu'aucune assertion ne la voie.
+    await page.waitForTimeout(800);
+    expect(requetes, `${geste} : aucune requête \`deliver\` ni \`document\` n'est partie`).toEqual([]);
+    expect(telechargements, `${geste} : aucun téléchargement`).toEqual([]);
     await expect(page.getByRole("dialog", { name: W.remitTitleDone }), `${geste} : aucune fenêtre de remise`).toHaveCount(0);
     // Les boutons ne sont pas verrouillés : rien n'a été lancé, on peut recommencer.
     await expect(page.getByRole("button", { name: libelle, exact: true })).toBeEnabled();
   }
-  // Une attente BORNÉE pour que d'éventuelles requêtes en vol arrivent : sans elles, « aucune requête » serait vrai trop tôt.
-  await page.waitForTimeout(800);
-  expect(requetes, "aucune requête `deliver` ni `document` n'est partie").toEqual([]);
-  expect(telechargements, "aucun téléchargement").toEqual([]);
 
   const liste = await apiCall("GET", `/pro/venues/${salle.id}/quotes`, await accessTokenOf(salle.pro));
   expect(liste.status).toBe(200);
