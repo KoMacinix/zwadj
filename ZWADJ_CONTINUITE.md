@@ -1883,6 +1883,27 @@ Lot D331. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 ⛔ **Ce que la clôture REND PERMIS, ou ne rend plus permis (passe D277, sens 2)** : compteur **ZÉRO → UN** ⇒ **UN seul lot de code de plus est tenable** avant la certification suivante (deux lots de code non certifiés sont tenables, un troisième ne l'est pas, D270) : la séquence de D-10 (quatrième révision) est « certification, **[L35-1, L35-2]**, certification, … » ⇒ **L35-2 (le PDF) est le seul lot de code que ce compteur laisse ouvrir, et seulement s'il reçoit un rang de Ko** (D302) ; « un lot de code PEUT s'ouvrir dès que Ko arbitre le rang 37 » est **CONSOMMÉ** par ce rang ; **la pause du chemin de l'argent est INCHANGÉE** (E3 et R1) ; un lot **documentaire** ne compte pas (D283, D292) ; L35-3 et L35-4 attendent la certification qui suit L35-2 ; L35-5 à L35-7 n'ont **ni rang ni place**.
 ⇒ **RANG 38 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la **CLÔTURE** du rang 37, mot pour mot de la consigne (« Puis, dans l'ordre des rangs : « RANG 38 : EN ATTENTE D'ARBITRAGE DE KO » ; candidat désigné : L35-2 (le PDF : tableau, boîte de dialogue de langue) »). ⚠ **Candidat DÉSIGNÉ, pas arbitré** (la distinction est tout) : **L35-2, le PDF** — tableau sans colonne vide, récapitulatif en bloc séparé, règle d'affichage de la quantité (DB-9) ; boîte de dialogue de langue aux cinq boutons ; retrait de la branche « langue du client » (cadrage du rang 35, § 5) ; lot de **code**, qui **compte** (compteur UN → DEUX à sa clôture ⇒ **la certification suit**, D-10). **Ko arbitre ; la session ne choisit pas.**
 
+⛔ **ARBITRÉ LE 14/10/2026 PAR KO — LE RANG 38, mot pour mot (première écriture d'autorité du lot D332 ; la table d'ouverture, la sortie de la lecture adverse et la première passe D277 l'ont précédée dans `git`) :**
+
+**Premier texte (14/10/2026, 1 h 30) :**
+
+« J'ai joué les trois scénarios de « Ma salle » (créer, modifier, supprimer, sans recharger) : ils sont bons, et le menu passe bien de « Mes salles » à « Ma salle » quand il n'en reste qu'une. La condition de clôture du rang 37 est levée.
+
+Je ratifie S-1 à S-10. S-11 : le titre de la page suit le menu, corrigé dans le prochain lot.
+
+Autre point : la certification prend beaucoup de temps et ralentit la progression. Je veux relever à 5 le nombre de lots de code non certifiés avant d'en exiger une. »
+
+**Second texte (proposé par le relecteur, adopté par Ko tel quel) :**
+
+« 1. La limite passe à 5 lots de code non certifiés, avec trois conditions :
+   - un lot à méthode renforcée, ou un lot d'un chemin d'identité (vérification du téléphone, fusion), est suivi d'une certification immédiate, quel que soit le compteur ;
+   - chaque lot de code garde ses six portes vertes avant sa clôture ;
+   - si une certification rougit, la session trouve d'abord quel lot a introduit le rouge, en rejouant le test fautif sur le commit de chaque lot, avant toute correction.
+2. La séquence devient : L35-2 → L35-3 → certification → L35-4 → ADM-1 → ADM-2 → certification. ADM-1 et ADM-2 sont classés à leur cadrage ; s'ils touchent la connexion, la première condition s'applique.
+3. Rang 38 : L35-2, le PDF. Lot de code. »
+
+Lot D332. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est de Ko** (patron de D295, D327, D328, D329, D330, D331) : la session a reçu ces textes, elle ne s'est rien attribué. ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que ce texte. Les décisions du relecteur, les annotations des sites que ces arbitrages rendent périmés, la règle de D270 annotée dans `AGENTS.md` et la table recopiée suivent dans des commits postérieurs.
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
