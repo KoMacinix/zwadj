@@ -524,8 +524,10 @@
       "slot": "الفترة",
       "guests": "عدد الضيوف",
       "service": "الخدمة",
-      "quantity": "الكمية",
+      "detail": "التفاصيل",
       "amount": "المبلغ",
+      "noServices": "لم يتم اختيار أي خدمة.",
+      "recap": "ملخّص الحساب",
       "basePrice": "كراء القاعة",
       "servicesTotal": "الخدمات",
       "total": "المجموع المطلوب",
@@ -737,7 +739,6 @@
     },
     "ui": {
       "list": {
-        "title": "قاعاتي",
         "new": "قاعة جديدة",
         "loading": "جارٍ تحميل قاعاتك…",
         "loadError": "تعذّر تحميل قاعاتك.",
@@ -1224,6 +1225,11 @@
         "remitPdfFailed": "تعذّر تنزيل ملف PDF: {reason}",
         "remitRecordFailed": "تعذّر تسجيل التسليم: {reason}",
         "remitNotSentSMS": "زواج لا يرسل الرسائل القصيرة بعد: أرسلها بنفسك إلى الزبون.",
+        "langDialogTitle": "لغة المستند",
+        "langDialogDescription": "بأي لغة تريد ملف PDF الخاص بالعرض؟ ينطبق هذا الاختيار على هذا التنزيل فقط.",
+        "langDialogCancel": "إلغاء",
+        "langFrench": "Français",
+        "langArabic": "العربية",
         "remitNotSentEMAIL": "زواج لا يرسل البريد الإلكتروني بعد: أرسله بنفسك إلى الزبون مع ملف PDF مرفقاً."
       },
       "wizard": {

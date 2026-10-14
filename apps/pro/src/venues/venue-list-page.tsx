@@ -20,6 +20,7 @@ import { ProHeader } from "../shell/pro-header";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { mediaSrc } from "../lib/media-url";
 import { useProVenues } from "../shell/pro-venues-context";
+import { venuesLabelKey } from "../shell/venues-label";
 import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { PublicationBadge, StatusSelect } from "./venue-form";
 
@@ -30,7 +31,7 @@ export function VenueListPage() {
   const isAr = i18n.language === "ar";
   const locale = isAr ? "ar" : "fr";
 
-  const { state, reload: load, revalidate } = useProVenues();
+  const { state, count, reload: load, revalidate } = useProVenues();
   // ⛔ Rang 37 (D331) — la liste est RELUE à l'ENTRÉE. Une salle publiée (ou modifiée) dans une AUTRE session — l'administrateur n'a pas d'écran, il publie ailleurs — ne peut pas
   // notifier ce pro : l'entrée dans « Ma salle » est le seul moment où il la regarde. La relecture est SILENCIEUSE (la liste connue reste affichée, un échec la laisse) et SANS
   // EFFET pendant un chargement ou sur l'état `error` : le fournisseur le garantit (`idleRef`), c'est ce qui laisse l'entrée à froid sur `/salles` à UNE requête (e2e A2).
@@ -95,7 +96,8 @@ export function VenueListPage() {
             marginBlockEnd: 18
           }}
         >
-          <h1 style={{ fontWeight: 500, fontSize: 24, margin: 0 }}>{t("venue.ui.list.title")}</h1>
+          {/* ⛔ Rang 38 (D332, S-11) : le titre suit le menu — la MÊME règle (`venuesLabelKey`), le MÊME compte (celui du fournisseur). Il disait « Mes salles » pour une salle. */}
+          <h1 style={{ fontWeight: 500, fontSize: 24, margin: 0 }}>{t(venuesLabelKey(count))}</h1>
           {/* A11a — « Nouvelle salle » est DÉPLACÉ dans le menu de compte : il
               n'existe plus qu'à un seul endroit. Le lien de l'état VIDE, plus
               bas, est conservé : c'est l'appel à l'action d'un premier usage,

@@ -712,6 +712,10 @@ describe("La remise par canal (Q2) et le catalogue", () => {
     const premier = Array.from(groupe.querySelectorAll("button"));
     expect(premier.length).toBeGreaterThan(0);
     fireEvent.click(premier[0] as HTMLButtonElement);
+    // ⛔ Rang 38 (D332) : le clic ouvre la boîte de langue ; l'enregistrement part au CHOIX de la langue.
+    const boite = await screen.findByRole("dialog", { name: messages.fr.venue.ui.walkin.langDialogTitle });
+    expect(quotes.deliver).not.toHaveBeenCalled();
+    fireEvent.click(within(boite).getByRole("button", { name: messages.fr.venue.ui.walkin.langFrench }));
     await waitFor(() => expect(quotes.deliver).toHaveBeenCalledWith("q1", { sentVia: expect.any(String) }));
   });
 
@@ -1227,6 +1231,7 @@ describe("Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation
 // ══ RANG 33 (D326) — LES BOUTONS DE REMISE : ENREGISTRER LE CANAL ET TÉLÉCHARGER LE PDF, EN DISANT CE QUI A RÉELLEMENT EU LIEU ═══════════════════════════════════════
 // Chaque test répond à une phrase de Ko ou à une décision du relecteur, en français d'abord. ⚠ AUCUN MONTANT n'est calculé ici ni dans le composant : le PDF vient du
 // SERVEUR (`quotes.document`), le test ne vérifie que ce que l'écran lui DEMANDE, ce qu'il en FAIT et ce qu'il en DIT. Les libellés viennent du catalogue.
+// ⛔ RANG 38 (D332) : chaque bouton ouvre D'ABORD la boîte de langue (décision A de Ko, D327) ; ce qui suit — l'enregistrement, le PDF, la fenêtre — part au CHOIX du pro.
 describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
   async function jusquAuTotal(over: Parameters<typeof setup>[0] = {}) {
     const outils = await setup(over);
@@ -1238,13 +1243,27 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
   /** Les cinq boutons, dans l'ordre de la liste d'AUTORITÉ, chacun par son libellé de catalogue. */
   const bouton = (canal: QuoteSentVia, langue: "fr" | "ar" = "fr") =>
     screen.getByRole("button", { name: (messages[langue].venue.ui.quotes as Record<string, string>)[`sv_${canal}`] as string });
-  /** Un clic, puis le temps de recevoir les deux réponses : l'enregistrement ET le PDF partent ensemble et se règlent hors du clic. */
-  async function cliquer(canal: QuoteSentVia, langue: "fr" | "ar" = "fr") {
+  /** La boîte de langue, dans la langue de l'INTERFACE. ⚠ Verdict NATIF : `queryByRole` rend `null` quand la boîte est absente (un `getByRole` lèverait une erreur de requête, pas une assertion — D304). */
+  const boiteDeLangue = (langueInterface: "fr" | "ar" = "fr") =>
+    screen.queryByRole("dialog", { name: messages[langueInterface].venue.ui.walkin.langDialogTitle });
+  const etiquetteLangue = (langueDuPdf: "fr" | "ar", langueInterface: "fr" | "ar" = "fr") =>
+    messages[langueInterface].venue.ui.walkin[langueDuPdf === "fr" ? "langFrench" : "langArabic"];
+  /** Choisit la langue du PDF dans la boîte ouverte, puis laisse retomber le travail lancé. */
+  async function choisir(langueDuPdf: "fr" | "ar", langueInterface: "fr" | "ar" = "fr") {
+    const boite = boiteDeLangue(langueInterface);
+    expect(boite, "la boîte de langue est ouverte").not.toBeNull();
     await act(async () => {
-      fireEvent.click(bouton(canal, langue));
+      fireEvent.click(within(boite as HTMLElement).getByRole("button", { name: etiquetteLangue(langueDuPdf, langueInterface) }));
     });
     await laisserRetomber();
     await laisserRetomber();
+  }
+  /** Un clic sur le canal (la boîte s'ouvre), puis le choix de la langue du PDF : l'enregistrement ET le PDF partent ensemble et se règlent hors du clic. */
+  async function cliquer(canal: QuoteSentVia, langueDuPdf: "fr" | "ar" = "fr", langueInterface: "fr" | "ar" = "fr") {
+    await act(async () => {
+      fireEvent.click(bouton(canal, langueInterface));
+    });
+    await choisir(langueDuPdf, langueInterface);
   }
   const echec = (code: string, cle: string, status = 409) => new ApiError(status, code, cle, []);
   const fichier = () => new Blob(["%PDF-1.4"], { type: "application/pdf" });
@@ -1289,12 +1308,12 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     expect(bouton(QUOTE_SENT_VIA.EMAIL).getAttribute("aria-describedby")).toBeNull();
   });
 
-  it("⛔ chaque bouton fait DEUX choses : enregistre le canal sur le devis en cours ET demande le PDF de CE devis — avec la langue de l'interface, et rien d'autre", async () => {
+  it("⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre", async () => {
     for (const canal of QUOTE_SENT_VIA_ORDER) {
       const deliver = vi.fn().mockResolvedValue(draft({ sentVia: canal }));
       const document = vi.fn().mockResolvedValue(fichier());
       await jusquAuTotalAvecEmail({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document } });
-      await cliquer(canal);
+      await cliquer(canal, "fr");
       expect(deliver, canal).toHaveBeenCalledWith("q1", { sentVia: canal });
       // Le client n'envoie AUCUN montant au serveur : le PDF imprime les valeurs STOCKÉES (règle des montants).
       expect(document, canal).toHaveBeenCalledWith("q1", "fr");
@@ -1315,7 +1334,7 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     expect(nom).not.toMatch(/Amine|Belkacem|El Ryad/);
   });
 
-  it("⚠ la fenêtre ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF", async () => {
+  it("⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)", async () => {
     let finDeliver: (q: QuoteDTO) => void = () => undefined;
     let finDocument: (b: Blob) => void = () => undefined;
     await jusquAuTotal({
@@ -1328,6 +1347,7 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     await act(async () => {
       fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
     });
+    await choisir("fr");
     expect(screen.queryByRole("dialog")).toBeNull();
     await act(async () => finDeliver(draft({ sentVia: "PRINT" })));
     expect(screen.queryByRole("dialog"), "l'enregistrement est revenu, pas le PDF").toBeNull();
@@ -1467,9 +1487,11 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     await act(async () => {
       fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
     });
+    await choisir("fr");
     expect((bouton(QUOTE_SENT_VIA.PRINT) as HTMLButtonElement).disabled).toBe(true);
     fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
     fireEvent.click(bouton(QUOTE_SENT_VIA.SMS));
+    expect(boiteDeLangue(), "aucune nouvelle boîte pendant le travail").toBeNull();
     await act(async () => fin(draft({ sentVia: "PRINT" })));
     await laisserRetomber();
     expect(deliver).toHaveBeenCalledTimes(1);
@@ -1488,25 +1510,22 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     expect(etat?.textContent).toContain("Imprimé et remis");
   });
 
-  it("en ARABE : le libellé du cinquième canal, la langue de repli `ar` envoyée au serveur, et la fenêtre dans la langue de la page", async () => {
-    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+  it("en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte", async () => {
+    const document = vi.fn().mockResolvedValue(fichier());
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
     await act(async () => void (await i18next.changeLanguage("ar")));
     expect(bouton(QUOTE_SENT_VIA.EMAIL, "ar").textContent).toBe(messages.ar.venue.ui.quotes.sv_EMAIL);
-    await cliquer(QUOTE_SENT_VIA.PRINT, "ar");
+    await act(async () => {
+      fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT, "ar"));
+    });
+    const boite = boiteDeLangue("ar");
+    expect(boite, "la boîte de langue est dans la langue de la page").not.toBeNull();
+    expect(boite?.textContent).toContain(AR.langDialogDescription);
+    await choisir("ar", "ar");
+    expect(document).toHaveBeenLastCalledWith("q1", "ar");
     const fenetre = await screen.findByRole("dialog", { name: AR.remitTitleDone });
     expect(fenetre.textContent).toContain(AR.remitPdfDone);
     expect(fenetre.textContent).toContain(AR.remitRecorded.replace("{channel}", messages.ar.venue.ui.quotes.sv_PRINT));
-  });
-
-  it("⚠ la langue de repli envoyée est celle de l'interface AU MOMENT DU CLIC : `ar` depuis une page arabe, `fr` depuis une page française", async () => {
-    const document = vi.fn().mockResolvedValue(fichier());
-    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
-    await cliquer(QUOTE_SENT_VIA.PRINT);
-    expect(document).toHaveBeenLastCalledWith("q1", "fr");
-    fireEvent.click(screen.getByRole("button", { name: FR.doneDialogClose }));
-    await act(async () => void (await i18next.changeLanguage("ar")));
-    await cliquer(QUOTE_SENT_VIA.PRINT, "ar");
-    expect(document).toHaveBeenLastCalledWith("q1", "ar");
   });
 
   /** Comme `jusquAuTotal`, avec une ADRESSE valide à l'étape Client : le canal « e-mail » est actif. */
@@ -1518,4 +1537,130 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     await screen.findByText(montant(478_600_000));
     return outils;
   }
+
+  // ══ RANG 38 (D332, L35-2) — LA BOÎTE DE LANGUE : le pro choisit français ou arabe à CHAQUE téléchargement (décision A de Ko, D327) ═══════════════════════════════════
+  // Modes de défaillance P-10 à P-14. Les verdicts sont NATIFS (`queryByRole` + `expect`) : une boîte absente rend `null`, pas une erreur de requête.
+  describe("Rang 38 — la boîte de langue", () => {
+    it("⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi", async () => {
+      for (const canal of QUOTE_SENT_VIA_ORDER) {
+        const deliver = vi.fn().mockResolvedValue(draft({ sentVia: canal }));
+        const document = vi.fn().mockResolvedValue(fichier());
+        await jusquAuTotalAvecEmail({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document } });
+        await act(async () => {
+          fireEvent.click(bouton(canal));
+        });
+        const boite = boiteDeLangue();
+        expect(boite, canal).not.toBeNull();
+        for (const nom of [FR.langFrench, FR.langArabic, FR.langDialogCancel]) {
+          expect(within(boite as HTMLElement).queryByRole("button", { name: nom }), `${canal} — ${nom}`).not.toBeNull();
+        }
+        expect(deliver, canal).not.toHaveBeenCalled();
+        expect(document, canal).not.toHaveBeenCalled();
+        expect(saveBlob, canal).not.toHaveBeenCalled();
+        cleanup();
+        vi.mocked(saveBlob).mockClear();
+      }
+    });
+
+    it("⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)", async () => {
+      for (const geste of ["bouton", "echap", "fond"] as const) {
+        const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" }));
+        const document = vi.fn().mockResolvedValue(fichier());
+        await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document } });
+        await act(async () => {
+          fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
+        });
+        const boite = boiteDeLangue() as HTMLElement;
+        expect(boite, geste).not.toBeNull();
+        await act(async () => {
+          if (geste === "bouton") fireEvent.click(within(boite).getByRole("button", { name: FR.langDialogCancel }));
+          if (geste === "echap") fireEvent.keyDown(boite, { key: "Escape" });
+          if (geste === "fond") fireEvent.mouseDown(boite.parentElement as HTMLElement);
+        });
+        await laisserRetomber();
+        expect(screen.queryByRole("dialog"), `${geste} : aucune boîte, aucune fenêtre`).toBeNull();
+        expect(deliver, geste).not.toHaveBeenCalled();
+        expect(document, geste).not.toHaveBeenCalled();
+        expect(saveBlob, geste).not.toHaveBeenCalled();
+        expect(screen.queryByRole("status"), `${geste} : aucune remise inscrite à l'écran`).toBeNull();
+        expect((bouton(QUOTE_SENT_VIA.PRINT) as HTMLButtonElement).disabled, `${geste} : les boutons ne sont pas verrouillés`).toBe(false);
+        cleanup();
+      }
+    });
+
+    it("⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`", async () => {
+      const document = vi.fn().mockResolvedValue(fichier());
+      await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
+      await cliquer(QUOTE_SENT_VIA.PRINT, "ar", "fr");
+      expect(document).toHaveBeenLastCalledWith("q1", "ar");
+      fireEvent.click(screen.getByRole("button", { name: FR.doneDialogClose }));
+      await act(async () => void (await i18next.changeLanguage("ar")));
+      await cliquer(QUOTE_SENT_VIA.PRINT, "fr", "ar");
+      expect(document).toHaveBeenLastCalledWith("q1", "fr");
+    });
+
+    it("⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois", async () => {
+      const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" }));
+      await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document: vi.fn().mockResolvedValue(fichier()) } });
+      await act(async () => {
+        fireEvent.click(bouton(QUOTE_SENT_VIA.SMS));
+      });
+      const boiteSms = boiteDeLangue();
+      expect(boiteSms, "la boîte du SMS est ouverte").not.toBeNull();
+      await act(async () => {
+        fireEvent.click(within(boiteSms as HTMLElement).getByRole("button", { name: FR.langDialogCancel }));
+      });
+      await cliquer(QUOTE_SENT_VIA.PRINT, "fr");
+      expect(deliver).toHaveBeenCalledTimes(1);
+      expect(deliver).toHaveBeenCalledWith("q1", { sentVia: QUOTE_SENT_VIA.PRINT });
+    });
+
+    it("P-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule", async () => {
+      await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+      fireEvent.click(bouton(QUOTE_SENT_VIA.EMAIL));
+      expect(boiteDeLangue(), "e-mail grisé").toBeNull();
+      await act(async () => {
+        fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
+        fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
+      });
+      expect(screen.queryAllByRole("dialog")).toHaveLength(1);
+    });
+
+    it("P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu", async () => {
+      let fin: (q: QuoteDTO) => void = () => undefined;
+      await jusquAuTotal({
+        quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockReturnValue(new Promise<QuoteDTO>((ok) => (fin = ok))), document: vi.fn().mockResolvedValue(fichier()) }
+      });
+      await cliquer(QUOTE_SENT_VIA.PRINT, "fr");
+      expect(boiteDeLangue(), "la boîte est fermée pendant le travail").toBeNull();
+      expect((bouton(QUOTE_SENT_VIA.PRINT) as HTMLButtonElement).disabled).toBe(true);
+      await act(async () => fin(draft({ sentVia: "PRINT" })));
+      await laisserRetomber();
+    });
+
+    it("⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir`", async () => {
+      await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+      await act(async () => {
+        fireEvent.click(bouton(QUOTE_SENT_VIA.PRINT));
+      });
+      const boite = boiteDeLangue() as HTMLElement;
+      expect(boite).not.toBeNull();
+      expect(boite.getAttribute("aria-modal")).toBe("true");
+      expect(document.getElementById(boite.getAttribute("aria-describedby") as string)?.textContent).toBe(FR.langDialogDescription);
+      const annuler = within(boite).getByRole("button", { name: FR.langDialogCancel });
+      expect(document.activeElement === annuler, "le focus initial est « Annuler » : une frappe Entrée distraite n'enregistre rien").toBe(true);
+      const francais = within(boite).getByRole("button", { name: FR.langFrench });
+      const arabe = within(boite).getByRole("button", { name: FR.langArabic });
+      expect([francais.getAttribute("lang"), francais.getAttribute("dir")]).toEqual(["fr", "ltr"]);
+      expect([arabe.getAttribute("lang"), arabe.getAttribute("dir")]).toEqual(["ar", "rtl"]);
+    });
+
+    it("P-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et IDENTIQUES dans les deux catalogues (« Français » ne se traduit pas en arabe)", () => {
+      expect([typeof FR.langFrench, typeof FR.langArabic, typeof AR.langFrench, typeof AR.langArabic]).toEqual(["string", "string", "string", "string"]);
+      expect(AR.langFrench).toBe(FR.langFrench);
+      expect(AR.langArabic).toBe(FR.langArabic);
+      expect(FR.langFrench).toMatch(/^[A-Za-zÀ-ÿ]+$/u);
+      expect(FR.langArabic).toMatch(/^\p{Script=Arabic}+$/u);
+    });
+  });
 });

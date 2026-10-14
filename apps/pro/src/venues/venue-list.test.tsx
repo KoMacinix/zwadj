@@ -2,9 +2,13 @@
 //  - D33 : trois états rendus, PATCH { status } déclenché, AUCUNE confirmation ;
 //  - suppression : elle, exige le ConfirmDialog, puis recharge la liste ;
 //  - états vide / chargement / erreur + retry.
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import i18next from "i18next";
 import { MemoryRouter } from "react-router";
-import { vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { messages } from "@zwadj/i18n";
 import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
 import type { VenueProDTO, WilayaDTO } from "@zwadj/types";
 import { ApiError, type AuthClient } from "../lib/auth-client";
@@ -219,5 +223,77 @@ describe("Liste — suppression (soft delete)", () => {
 
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     expect(venues.softDelete).not.toHaveBeenCalled();
+  });
+});
+
+// ══ RANG 38 (D332), S-11 — LE TITRE DE LA PAGE SUIT LE MENU ══════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// Observé par D331 sur ses captures : avec UNE salle, le menu du haut disait « Ma salle » et le `<h1>` de la page « Mes salles ». Ko (14/10/2026) : « le titre de la page suit le menu ».
+// La règle (« Ma salle » jusqu'à une salle, « Mes salles » dès la seconde) vit UNE fois, dans `venuesLabelKey` ; le menu et la page l'importent. Verdicts NATIFS (`expect` sur `textContent`).
+describe("Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles »", () => {
+  const VENUE_B: VenueProDTO = { ...VENUE, id: "v2", slug: "salle-b", nameFr: "Salle B", nameAr: "قاعة ب" };
+  const titre = () => screen.queryByRole("heading", { level: 1 })?.textContent;
+  const sansCommentaires = (t: string) => t.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\s\/\/\s.*$/gm, "");
+  const source = (f: string) => sansCommentaires(readFileSync(resolve(process.cwd(), f), "utf8"));
+
+  /** La langue revient au français APRÈS le démontage : changer la langue d'un arbre monté mettrait à jour ses composants hors `act` (la garde de console du fichier le refuse). */
+  afterEach(async () => {
+    cleanup();
+    await act(async () => {
+      await i18next.changeLanguage("fr");
+    });
+  });
+
+  it("UNE salle : « Ma salle », le mot du menu — et non « Mes salles »", async () => {
+    renderList(makeVenues());
+    await screen.findByRole("heading", { name: "Salle El Ryad" });
+    expect(titre()).toBe(messages.fr.venue.ui.nav.myVenue);
+    expect(titre()).not.toBe(messages.fr.venue.ui.nav.myVenues);
+  });
+
+  it("DEUX salles : « Mes salles » ; le menu du haut dit le même mot", async () => {
+    renderList(makeVenues({ listMine: vi.fn().mockResolvedValue([VENUE, VENUE_B]) }));
+    await screen.findByRole("heading", { name: "Salle B" });
+    expect(titre()).toBe(messages.fr.venue.ui.nav.myVenues);
+    expect(screen.queryByRole("link", { name: messages.fr.venue.ui.nav.myVenues }), "le menu dit le même mot que le titre").not.toBeNull();
+  });
+
+  it("AUCUNE salle (état vide) : « Ma salle » comme le menu — un compte de zéro est un singulier", async () => {
+    renderList(makeVenues({ listMine: vi.fn().mockResolvedValue([]) }));
+    await screen.findByRole("heading", { name: "Aucune salle pour le moment" });
+    expect(titre()).toBe(messages.fr.venue.ui.nav.myVenue);
+  });
+
+  it("en ARABE : « قاعتي » pour une salle, « قاعاتي » pour deux", async () => {
+    await act(async () => {
+      await i18next.changeLanguage("ar");
+    });
+    renderList(makeVenues());
+    await screen.findByRole("heading", { name: VENUE.nameAr });
+    expect(titre()).toBe(messages.ar.venue.ui.nav.myVenue);
+    cleanup();
+    renderList(makeVenues({ listMine: vi.fn().mockResolvedValue([VENUE, VENUE_B]) }));
+    await screen.findByRole("heading", { name: VENUE_B.nameAr });
+    expect(titre()).toBe(messages.ar.venue.ui.nav.myVenues);
+  });
+
+  it("⛔ P-16 : supprimer la SECONDE salle ramène le titre à « Ma salle » SANS recharger la page (le compte vient du fournisseur, comme le menu)", async () => {
+    const listMine = vi.fn().mockResolvedValueOnce([VENUE, VENUE_B]).mockResolvedValue([VENUE]);
+    renderList(makeVenues({ listMine }));
+    await screen.findByRole("heading", { name: "Salle B" });
+    expect(titre()).toBe(messages.fr.venue.ui.nav.myVenues);
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Supprimer" })[1] as HTMLElement);
+    const dialog = await screen.findByRole("dialog");
+    fireEvent.click(within(dialog).getByRole("button", { name: "Supprimer" }));
+
+    await waitFor(() => expect(titre()).toBe(messages.fr.venue.ui.nav.myVenue));
+  });
+
+  it("⛔ P-16 : la règle vit UNE fois — la page ET le menu importent `venuesLabelKey` et ne portent plus les clés du libellé ni l'ancien titre", () => {
+    for (const f of ["src/venues/venue-list-page.tsx", "src/shell/pro-nav.tsx"]) {
+      expect(source(f), f).toMatch(/\bvenuesLabelKey\b/);
+      expect(source(f), f).not.toMatch(/venue\.ui\.nav\.myVenue/);
+    }
+    expect(source("src/venues/venue-list-page.tsx")).not.toMatch(/venue\.ui\.list\.title/);
   });
 });

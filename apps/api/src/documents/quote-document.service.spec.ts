@@ -1,5 +1,5 @@
 import { ConflictException, NotFoundException, ServiceUnavailableException } from "@nestjs/common";
-import { formatDZD, QuoteErrorCode } from "@zwadj/types";
+import { formatDZD, QuoteErrorCode, ServicePricingType } from "@zwadj/types";
 import { describe, expect, it, vi } from "vitest";
 import { PdfRenderUnavailableError, type PdfRenderer } from "./pdf-renderer.port";
 import { algiersToday, QuoteDocumentService } from "./quote-document.service";
@@ -24,7 +24,7 @@ function record(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
     servicesTotalCents: 45_000_000,
     totalCents: 63_000_000,
     depositCents: 12_345_000,
-    lines: [{ nameFr: "Buffet", nameAr: "بوفيه", quantity: 150, lineTotalCents: 37_500_000 }],
+    lines: [{ nameFr: "Buffet", nameAr: "بوفيه", pricingType: ServicePricingType.PER_GUEST, quantity: 150, tierLabelFr: null, tierLabelAr: null, lineTotalCents: 37_500_000 }],
     venue: { nameFr: "Salle des Jasmins", nameAr: "قاعة الياسمين" },
     slot: { nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560 },
     client: null,
@@ -101,25 +101,23 @@ describe("QuoteDocumentService — la valeur stockée, la langue (décisions 1 e
     expect(html).not.toContain(formatDZD(Math.round(63_000_000 * 0.3)));
   });
 
-  it("un client `ar` reçoit un PDF ARABE même quand le pro clique depuis une interface française — branche CLIENT", async () => {
-    const m = monde(record({ client: { firstName: "آمنة", lastName: "بن سالم", locale: "ar" } }));
-    const sortie = await m.service.render(OWNER, ID, "fr");
-    expect(sortie).toMatchObject({ locale: "ar", branch: "CLIENT" });
+  it("rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le pro la choisit à chaque téléchargement, dans les deux sens", async () => {
+    for (const demandee of ["fr", "ar"] as const) {
+      const sortie = await monde(record()).service.render(OWNER, ID, demandee);
+      expect(sortie.locale).toBe(demandee);
+    }
+    const m = monde(record());
+    await m.service.render(OWNER, ID, "ar");
     expect(m.render.mock.calls[0]![0]).toContain('<html lang="ar" dir="rtl">');
   });
 
-  it("un client `fr` reçoit un PDF français depuis une interface arabe ; sans client, le REPLI : la langue de l'interface du pro, dans les deux sens", async () => {
-    const fr = await monde(record({ client: { firstName: "A", lastName: "B", locale: "fr" } })).service.render(OWNER, ID, "ar");
-    expect(fr).toMatchObject({ locale: "fr", branch: "CLIENT" });
-    const repliAr = await monde(record()).service.render(OWNER, ID, "ar");
-    expect(repliAr).toMatchObject({ locale: "ar", branch: "FALLBACK" });
-    const repliFr = await monde(record()).service.render(OWNER, ID, "fr");
-    expect(repliFr).toMatchObject({ locale: "fr", branch: "FALLBACK" });
-  });
-
-  it("une langue de compte INCONNUE (« AR », « en ») est le repli : jamais devinée", async () => {
-    const sortie = await monde(record({ client: { firstName: "A", lastName: "B", locale: "AR" } })).service.render(OWNER, ID, "fr");
-    expect(sortie).toMatchObject({ locale: "fr", branch: "FALLBACK" });
+  it("⛔ rang 38 (P-15) : un devis LIÉ À UN COMPTE ne change pas la langue — le compte du client n'a plus de langue dans le port de lecture, et le résultat n'a plus de `branch`", async () => {
+    // La fixture du port n'a PLUS de champ `locale` pour le client (le type l'interdit) : la langue d'un compte ne peut donc plus servir.
+    const m = monde(record({ client: { firstName: "آمنة", lastName: "بن سالم" } }));
+    const sortie = await m.service.render(OWNER, ID, "fr");
+    expect(sortie.locale).toBe("fr");
+    expect(sortie).not.toHaveProperty("branch");
+    expect(m.render.mock.calls[0]![0]).toContain('<html lang="fr" dir="ltr">');
   });
 });
 

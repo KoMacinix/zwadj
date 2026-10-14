@@ -9,6 +9,7 @@
 // Le test n'a pas besoin de la base, mais `test:int` la prépare pour tous : il n'y touche pas.
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
+import { ServicePricingType } from "@zwadj/types";
 import { chromium, type Browser } from "playwright-core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { PdfRenderUnavailableError } from "../../src/documents/pdf-renderer.port";
@@ -31,10 +32,10 @@ const devisArabe: QuoteDocumentRecord = {
   servicesTotalCents: 45_000_000,
   totalCents: 63_000_000,
   depositCents: 12_345_000,
-  lines: [{ nameFr: "Buffet ouvert", nameAr: "بوفيه مفتوح للضيوف", quantity: 150, lineTotalCents: 37_500_000 }],
+  lines: [{ nameFr: "Buffet ouvert", nameAr: "بوفيه مفتوح للضيوف", pricingType: ServicePricingType.PER_GUEST, quantity: 150, tierLabelFr: null, tierLabelAr: null, lineTotalCents: 37_500_000 }],
   venue: { nameFr: "Salle des Jasmins", nameAr: "قاعة الياسمين للأفراح والمناسبات" },
   slot: { nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560 },
-  client: { firstName: "آمنة", lastName: "بن سالم", locale: "ar" }
+  client: { firstName: "آمنة", lastName: "بن سالم" }
 };
 
 describe("pdf-inspect — le lecteur de PDF est calibré à deux bras (un lecteur qui répondrait « embarquée » à tout passerait le cas positif seul)", () => {

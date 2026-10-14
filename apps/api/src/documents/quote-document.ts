@@ -15,12 +15,21 @@
 //
 // ⚠ Le moteur n'est pas écrit pour ce seul document (décision 6) : la page, les polices et l'échappement sont ici ; `UIP-D` aura son modèle et
 // passera par le même port `PdfRenderer`.
-import { formatDZD, formatSlotRange, type QuoteDocumentLocale } from "@zwadj/types";
+//
+// ⛔ RANG 38 (D332, L35-2) — LE TABLEAU, LE DÉTAIL, LE RÉCAPITULATIF (constat 1 de Ko, 08/10/2026 : « un tableau sans colonne vide et aligné : les prestations
+// choisies en lignes, avec une quantité seulement quand elle existe, et le récapitulatif dans un bloc séparé ») :
+//   · le tableau des prestations n'a AUCUNE colonne vide : la colonne de DÉTAIL n'existe que si au moins une ligne a un détail ; sans prestation il n'y a PAS de tableau,
+//     une phrase dit qu'aucune prestation n'est choisie ;
+//   · DB-9 : le détail suit le TYPE de tarification de la ligne STOCKÉE, jamais la valeur de la quantité — « par invité » et « à l'unité » : la quantité ; « à paliers » :
+//     le nom du palier, lu SUR LA LIGNE (jamais dans le catalogue actuel de la salle) ; « fixe » : rien. Une ligne « à paliers » sans nom de palier LÈVE, elle ne s'imprime pas à moitié ;
+//   · le récapitulatif (location, prestations, total, acompte) est un bloc SÉPARÉ, de toute la largeur : libellés alignés au début, montants à la fin — des propriétés LOGIQUES,
+//     donc le même rendu, inversé, en arabe. Le DOM l'énumère dans l'ordre de lecture ; la feuille de style ne fait que le placer.
+import { formatDZD, formatSlotRange, ServicePricingType, type QuoteDocumentLocale } from "@zwadj/types";
 import arMessages from "@zwadj/i18n/messages/ar.json";
 import frMessages from "@zwadj/i18n/messages/fr.json";
 import { DOCUMENT_FONT_FAMILY } from "./quote-document-fonts";
 import { html, raw, toHtmlString } from "./html";
-import type { QuoteDocumentRecord } from "./quote-document-source";
+import type { QuoteDocumentLine, QuoteDocumentRecord } from "./quote-document-source";
 
 const MESSAGES = { fr: frMessages, ar: arMessages } as const;
 
@@ -29,17 +38,27 @@ const CSS = `
 * { box-sizing: border-box; }
 body { margin: 0; font-family: "${DOCUMENT_FONT_FAMILY}", sans-serif; font-size: 11pt; color: #18181b; line-height: 1.55; }
 h1 { font-size: 22pt; font-weight: 600; margin: 0 0 2mm; }
+h2 { font-size: 12pt; font-weight: 600; margin: 0 0 3mm; }
 .sous { color: #52525b; margin: 0 0 8mm; }
 .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 8mm; margin-block-end: 8mm; }
 .champ { border-block-end: 0.3mm solid #d4d4d8; padding-block-end: 1.5mm; }
 .champ small { display: block; color: #52525b; font-size: 9pt; }
-table { width: 100%; border-collapse: collapse; margin-block-end: 6mm; }
+.prestations { margin-block-end: 8mm; }
+table { width: 100%; border-collapse: collapse; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
 th { text-align: start; font-weight: 600; border-block-end: 0.4mm solid #18181b; padding-block: 2mm; }
-td { padding-block: 2mm; border-block-end: 0.2mm solid #e4e4e7; }
-td.num, th.num { text-align: end; white-space: nowrap; }
-.totaux { margin-inline-start: auto; inline-size: 95mm; }
-.totaux div { display: flex; justify-content: space-between; padding-block: 1.5mm; }
-.totaux .acompte { font-weight: 600; font-size: 13pt; border-block-start: 0.4mm solid #18181b; margin-block-start: 2mm; padding-block-start: 3mm; }
+td { padding-block: 2mm; border-block-end: 0.2mm solid #e4e4e7; vertical-align: top; }
+th.det, td.det { padding-inline-start: 5mm; color: #3f3f46; }
+td.num, th.num { text-align: end; white-space: nowrap; padding-inline-start: 5mm; }
+.aucune { color: #52525b; margin: 0 0 8mm; }
+.recap { break-inside: avoid; border: 0.3mm solid #d4d4d8; border-radius: 1.5mm; padding: 4mm 6mm; }
+.recap dl { margin: 0; }
+.ligne { display: flex; justify-content: space-between; gap: 6mm; padding-block: 1.5mm; }
+.ligne dt, .ligne dd { margin: 0; }
+.ligne dd { white-space: nowrap; }
+.ligne.total { border-block-start: 0.3mm solid #d4d4d8; margin-block-start: 1.5mm; padding-block-start: 3mm; font-weight: 600; }
+.ligne.acompte { font-weight: 600; font-size: 13pt; }
 .note { margin-block-start: 12mm; color: #52525b; font-size: 9pt; }
 `;
 
@@ -51,6 +70,28 @@ export function longDate(isoDate: string, locale: QuoteDocumentLocale): string {
 /** La référence imprimée : huit premiers caractères de l'identifiant et la version — elle dit QUELLE version a été imprimée. */
 export function quoteReference(record: Pick<QuoteDocumentRecord, "id" | "version">): string {
   return `${record.id.slice(0, 8)}-v${record.version}`;
+}
+
+/**
+ * LE DÉTAIL d'une ligne (DB-9, ratifiée par Ko le 12/10/2026) : « la quantité n'est imprimée que pour les prestations « à l'unité » et « par invité » ; pour « à paliers », le
+ * nom du palier ; rien pour « fixe » ». La règle suit le TYPE de tarification stocké sur la ligne, jamais la valeur de la quantité (une prestation « à l'unité » de quantité 1
+ * imprime « × 1 » ; une « fixe » de quantité 7 n'imprime rien). `null` = aucun détail.
+ * ⚠ Le nom du palier est celui de la LIGNE stockée, dans la langue du document ; sa valeur est PASSÉE par l'appelant, ce module ne lit pas le catalogue. Une ligne « à paliers » dont
+ * le nom manque LÈVE : elle ne s'imprime pas à moitié (l'adaptateur de lecture la refuse déjà, c'est la seconde barrière d'une même question posée à deux endroits du chemin).
+ */
+export function lineDetail(line: QuoteDocumentLine, locale: QuoteDocumentLocale): string | null {
+  switch (line.pricingType) {
+    case ServicePricingType.PER_GUEST:
+    case ServicePricingType.PER_UNIT:
+      return `× ${line.quantity}`;
+    case ServicePricingType.TIERED: {
+      const nom = locale === "ar" ? line.tierLabelAr : line.tierLabelFr;
+      if (nom === null || nom.trim() === "") throw new TypeError(`la ligne « ${line.nameFr} » est « à paliers » mais ne porte pas le nom de son palier (${locale})`);
+      return nom;
+    }
+    case ServicePricingType.FIXED:
+      return null;
+  }
 }
 
 export function buildQuoteDocumentHtml(input: {
@@ -73,6 +114,21 @@ export function buildQuoteDocumentHtml(input: {
   const nom = record.client === null ? [] : [record.client.firstName, record.client.lastName].filter((p): p is string => p !== null && p.trim() !== "");
   const client = nom.length === 0 ? "—" : nom.join(" ");
 
+  // Le détail de CHAQUE ligne est calculé une fois ; la colonne de détail n'existe que si l'une d'elles en a un (aucune colonne vide).
+  const details = record.lines.map((l) => lineDetail(l, locale));
+  const avecDetail = details.some((d) => d !== null);
+  const prestations =
+    record.lines.length === 0
+      ? html`<p class="aucune">${L.noServices}</p>`
+      : html`<section class="prestations">
+<table>
+  <thead><tr><th>${L.service}</th>${avecDetail ? html`<th class="det">${L.detail}</th>` : ""}<th class="num">${L.amount}</th></tr></thead>
+  <tbody>
+${record.lines.map((l, i) => html`    <tr><td>${rtl ? l.nameAr : l.nameFr}</td>${avecDetail ? html`<td class="det">${details[i] ?? ""}</td>` : ""}<td class="num">${formatDZD(l.lineTotalCents)}</td></tr>\n`)}
+  </tbody>
+</table>
+</section>`;
+
   const page = html`<!doctype html>
 <html lang="${locale}" dir="${rtl ? "rtl" : "ltr"}"><head><meta charset="utf-8"><title>${L.title} ${quoteReference(record)}</title>
 <style>
@@ -88,18 +144,16 @@ ${raw(CSS)}
   <div class="champ"><small>${L.slot}</small>${creneau}</div>
   <div class="champ"><small>${L.guests}</small>${record.guests}</div>
 </div>
-<table>
-  <thead><tr><th>${L.service}</th><th class="num">${L.quantity}</th><th class="num">${L.amount}</th></tr></thead>
-  <tbody>
-${record.lines.map((l) => html`    <tr><td>${rtl ? l.nameAr : l.nameFr}</td><td class="num">${l.quantity}</td><td class="num">${formatDZD(l.lineTotalCents)}</td></tr>\n`)}
-  </tbody>
-</table>
-<div class="totaux">
-  <div><span>${L.basePrice}</span><span>${formatDZD(record.basePriceCents)}</span></div>
-  <div><span>${L.servicesTotal}</span><span>${formatDZD(record.servicesTotalCents)}</span></div>
-  <div><span>${L.total}</span><span>${formatDZD(record.totalCents)}</span></div>
-  <div class="acompte"><span>${L.deposit}</span><span>${formatDZD(record.depositCents)}</span></div>
-</div>
+${prestations}
+<section class="recap">
+  <h2>${L.recap}</h2>
+  <dl>
+    <div class="ligne"><dt>${L.basePrice}</dt><dd>${formatDZD(record.basePriceCents)}</dd></div>
+    <div class="ligne"><dt>${L.servicesTotal}</dt><dd>${formatDZD(record.servicesTotalCents)}</dd></div>
+    <div class="ligne total"><dt>${L.total}</dt><dd>${formatDZD(record.totalCents)}</dd></div>
+    <div class="ligne acompte"><dt>${L.deposit}</dt><dd>${formatDZD(record.depositCents)}</dd></div>
+  </dl>
+</section>
 <p class="note">${L.note}</p>
 </body></html>`;
   return toHtmlString(page);

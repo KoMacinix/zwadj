@@ -24,8 +24,8 @@ export class QuoteDocumentController {
     summary: "Le PDF du devis, généré à la demande",
     description:
       "Imprime les valeurs STOCKÉES du devis (`deposit_cents`, `total_cents`, `lines`…), jamais un recalcul à partir des règles de prix actuelles. " +
-      "Langue : celle du CLIENT quand le devis est lié à un compte (`users.locale`), sinon `locale` — la langue de l'interface du pro au moment du clic. " +
-      "`Content-Language` dit la langue APPLIQUÉE. Aucun binaire n'est stocké."
+      "Langue : `locale` (fr ou ar), exigée — celle que le pro choisit à CE téléchargement (rang 38, décision A de Ko) ; la langue du compte du client n'est plus lue. " +
+      "`Content-Language` dit la langue APPLIQUÉE, qui est la langue demandée. Aucun binaire n'est stocké."
   })
   @ApiOkResponse({ description: "application/pdf — `Content-Disposition: attachment`, `Cache-Control: private, no-store`." })
   @ApiNotFoundResponse({ description: "404 indistinct : devis inexistant ou salle d'un autre pro." })

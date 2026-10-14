@@ -1,14 +1,34 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { formatDZD, quoteDocumentFilename } from "@zwadj/types";
+import arMessages from "@zwadj/i18n/messages/ar.json";
+import frMessages from "@zwadj/i18n/messages/fr.json";
+import { formatDZD, quoteDocumentFilename, ServicePricingType } from "@zwadj/types";
 import { describe, expect, it } from "vitest";
 import { buildQuoteDocumentHtml, longDate, quoteReference } from "./quote-document";
 import { DOCUMENT_FONT_FAMILY, DOCUMENT_FONT_SUBSETS, DOCUMENT_FONT_WEIGHTS, loadDocumentFontCss } from "./quote-document-fonts";
-import type { QuoteDocumentRecord } from "./quote-document-source";
+import type { QuoteDocumentLine, QuoteDocumentRecord } from "./quote-document-source";
+import { parseStoredLines } from "./quote-document-source.prisma";
 
 // Rang 33 (D326) — le MODÈLE du document, module pur. Trois choses se mesurent ici : la règle des montants (valeur STOCKÉE, jamais recalculée),
 // l'échappement (décision 3) et l'absence de tout chemin de calcul ou d'écriture dans les fichiers du document.
+// Rang 38 (D332, L35-2) — le tableau sans colonne vide, le détail selon DB-9 (le TYPE de tarification, jamais la valeur), le nom du palier lu sur la ligne
+// STOCKÉE, le récapitulatif en bloc séparé, et la lecture des lignes stockées.
 const ID = "01a10f0a-5931-7a99-b800-a2cac272855a";
+const LIBELLES = { fr: frMessages.quote.document, ar: arMessages.quote.document } as const;
+
+/** Une ligne de devis STOCKÉE : le type de tarification, la quantité, le nom du palier (FR et AR) — ce que `ResolvedLine` écrit dans `quotes.lines`. */
+function ligne(over: Partial<QuoteDocumentLine> = {}): QuoteDocumentLine {
+  return {
+    nameFr: "Prestation",
+    nameAr: "خدمة",
+    pricingType: ServicePricingType.FIXED,
+    quantity: 1,
+    tierLabelFr: null,
+    tierLabelAr: null,
+    lineTotalCents: 1_000_000,
+    ...over
+  };
+}
 
 /** Un devis dont l'acompte N'EST PAS 30 % du total : deux fixtures « pile à 30 % » ne prouveraient rien contre un `Math.round(total * 0.3)` côté PDF (AGENTS.md). */
 function devis(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
@@ -24,18 +44,28 @@ function devis(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
     totalCents: 63_000_000, // 630 000 DA ; 30 % = 189 000 DA
     depositCents: 12_345_000, // 123 450 DA — ni 30 %, ni rien de calculable depuis les règles
     lines: [
-      { nameFr: "Animation musicale", nameAr: "تنشيط موسيقي بفرقة حيّة", quantity: 1, lineTotalCents: 4_500_000 },
-      { nameFr: "Buffet ouvert", nameAr: "بوفيه مفتوح للضيوف", quantity: 150, lineTotalCents: 37_500_000 }
+      ligne({ nameFr: "Animation musicale", nameAr: "تنشيط موسيقي بفرقة حيّة", lineTotalCents: 4_500_000 }),
+      ligne({ nameFr: "Buffet ouvert", nameAr: "بوفيه مفتوح للضيوف", pricingType: ServicePricingType.PER_GUEST, quantity: 150, lineTotalCents: 37_500_000 })
     ],
     venue: { nameFr: "Salle des Jasmins", nameAr: "قاعة الياسمين للأفراح" },
     slot: { nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560 },
-    client: { firstName: "Amina", lastName: "Bensalem", locale: "fr" },
+    client: { firstName: "Amina", lastName: "Bensalem" },
     ...over
   };
 }
 const FONTS = "/* polices du test */";
 const rendre = (record: QuoteDocumentRecord, locale: "fr" | "ar" = "fr") =>
   buildQuoteDocumentHtml({ record, locale, issuedOn: "2026-10-06", fontCss: FONTS });
+
+/** Les cellules d'en-tête du tableau (`<th>`) et les lignes de son corps (`<tr>` de `<tbody>`) — comptées dans le HTML rendu, jamais devinées. */
+const entetes = (page: string) => (page.match(/<th\b/g) ?? []).length;
+const lignesDuCorps = (page: string) => {
+  const debut = page.indexOf("<tbody>");
+  if (debut === -1) return [];
+  return page.slice(debut, page.indexOf("</tbody>")).split("<tr").slice(1);
+};
+/** La ligne du corps qui porte `nom` (un nom unique par fixture). */
+const ligneDe = (page: string, nom: string) => lignesDuCorps(page).find((l) => l.includes(nom)) ?? "";
 
 describe("le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1)", () => {
   it("chaque montant imprimé est celui du devis, mis en forme par `formatDZD` — l'attendu vient du formateur, pas d'un texte tapé à la main", () => {
@@ -71,11 +101,171 @@ describe("le modèle imprime la valeur STOCKÉE — précision de Ko, règle des
     expect(page).not.toContain(formatDZD(r.basePriceCents + r.servicesTotalCents));
   });
 
+  it("⛔ le montant d'une LIGNE est la valeur stockée, et PAS prix unitaire × quantité : le total de ligne de la fixture n'est pas le produit (P-4)", () => {
+    const l = ligne({ nameFr: "Menu", pricingType: ServicePricingType.PER_GUEST, quantity: 150, lineTotalCents: 33_333_300 });
+    const produit = 150 * 250_000; // un prix unitaire plausible : 2 500 DA × 150 = 375 000 DA, que la fixture ne stocke PAS
+    expect(l.lineTotalCents).not.toBe(produit);
+    const page = rendre(devis({ lines: [l] }));
+    expect(ligneDe(page, "Menu")).toContain(formatDZD(33_333_300));
+    expect(page).not.toContain(formatDZD(produit));
+  });
+
   it("en arabe les montants sont ceux de l'ÉCRAN du Pro (`formatDZD(cents)` sans locale) — pas une seconde mise en forme", () => {
     const r = devis();
     const page = rendre(r, "ar");
     expect(page).toContain(formatDZD(r.depositCents));
     expect(page).not.toContain(formatDZD(r.depositCents, "ar"));
+  });
+});
+
+describe("rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko)", () => {
+  it("sans prestation : AUCUN tableau, et une phrase dit qu'aucune prestation n'est choisie — dans les deux langues", () => {
+    for (const locale of ["fr", "ar"] as const) {
+      const page = rendre(devis({ lines: [], servicesTotalCents: 0, totalCents: 18_000_000 }), locale);
+      expect(page).not.toContain("<table");
+      expect(page).not.toContain("<th");
+      expect(page).toContain(LIBELLES[locale].noServices);
+    }
+  });
+
+  it("des prestations TOUTES « fixe » : un tableau à DEUX colonnes (prestation, montant) — pas de colonne de détail, ni vide ni autre", () => {
+    const page = rendre(
+      devis({
+        lines: [ligne({ nameFr: "Décoration" }), ligne({ nameFr: "Photographe" })]
+      })
+    );
+    expect(entetes(page)).toBe(2);
+    expect(page).not.toContain(`>${LIBELLES.fr.detail}<`);
+    expect(page).not.toContain("×");
+    expect(lignesDuCorps(page)).toHaveLength(2);
+  });
+
+  it("une prestation qui a un détail : un tableau à TROIS colonnes, l'en-tête « Détail » en français comme en arabe", () => {
+    for (const locale of ["fr", "ar"] as const) {
+      const page = rendre(
+        devis({ lines: [ligne({ nameFr: "Décoration" }), ligne({ nameFr: "Menu", pricingType: ServicePricingType.PER_GUEST, quantity: 150 })] }),
+        locale
+      );
+      expect(entetes(page)).toBe(3);
+      expect(page).toContain(`>${LIBELLES[locale].detail}<`);
+    }
+  });
+
+  it("une ligne de tableau par prestation choisie — ni plus, ni moins", () => {
+    const lignes = [1, 2, 3, 4].map((n) => ligne({ nameFr: `Prestation ${n}`, pricingType: n % 2 === 0 ? ServicePricingType.PER_UNIT : ServicePricingType.FIXED, quantity: n }));
+    expect(lignesDuCorps(rendre(devis({ lines: lignes })))).toHaveLength(4);
+  });
+});
+
+describe("rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2)", () => {
+  const AUTRES = ligne({ nameFr: "Témoin fixe" }); // une ligne « fixe » qui garde la colonne de détail ouverte quand elle existe
+
+  it("« par invité » imprime la quantité stockée (le nombre d'invités)", () => {
+    const page = rendre(devis({ lines: [AUTRES, ligne({ nameFr: "Menu", pricingType: ServicePricingType.PER_GUEST, quantity: 150 })] }));
+    expect(ligneDe(page, "Menu")).toContain("× 150");
+  });
+
+  it("« à l'unité » imprime la quantité — y compris 1 : la règle suit le TYPE, pas la valeur", () => {
+    for (const q of [1, 7]) {
+      const page = rendre(devis({ lines: [AUTRES, ligne({ nameFr: "Chaises", pricingType: ServicePricingType.PER_UNIT, quantity: q })] }));
+      expect(ligneDe(page, "Chaises")).toContain(`× ${q}`);
+    }
+  });
+
+  it("« fixe » n'imprime RIEN, même quand sa quantité stockée n'est pas 1 (la règle suit le type)", () => {
+    const page = rendre(devis({ lines: [ligne({ nameFr: "Forfait", quantity: 7 }), ligne({ nameFr: "Menu", pricingType: ServicePricingType.PER_GUEST, quantity: 150 })] }));
+    expect(ligneDe(page, "Forfait")).not.toContain("×");
+    expect(ligneDe(page, "Forfait")).not.toContain("7");
+  });
+
+  it("« à paliers » imprime le NOM du palier, pas une quantité (la quantité stockée d'un palier est 1)", () => {
+    const page = rendre(devis({ lines: [ligne({ nameFr: "Gâteau", pricingType: ServicePricingType.TIERED, quantity: 1, tierLabelFr: "Formule Prestige", tierLabelAr: "الصيغة الفاخرة" })] }));
+    expect(ligneDe(page, "Gâteau")).toContain("Formule Prestige");
+    expect(ligneDe(page, "Gâteau")).not.toContain("×");
+  });
+
+  it("les quatre types ensemble : une colonne de détail, chaque ligne dit ce que DB-9 veut", () => {
+    const page = rendre(
+      devis({
+        lines: [
+          ligne({ nameFr: "Forfait" }),
+          ligne({ nameFr: "Menu", pricingType: ServicePricingType.PER_GUEST, quantity: 150 }),
+          ligne({ nameFr: "Chaises", pricingType: ServicePricingType.PER_UNIT, quantity: 40 }),
+          ligne({ nameFr: "Gâteau", pricingType: ServicePricingType.TIERED, tierLabelFr: "Formule Prestige", tierLabelAr: "الصيغة الفاخرة" })
+        ]
+      })
+    );
+    expect(entetes(page)).toBe(3);
+    expect(ligneDe(page, "Forfait")).not.toMatch(/×|Formule/);
+    expect(ligneDe(page, "Menu")).toContain("× 150");
+    expect(ligneDe(page, "Chaises")).toContain("× 40");
+    expect(ligneDe(page, "Gâteau")).toContain("Formule Prestige");
+  });
+});
+
+describe("rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7)", () => {
+  const PALIER = ligne({ nameFr: "Gâteau", nameAr: "كعكة", pricingType: ServicePricingType.TIERED, tierLabelFr: "Formule Prestige", tierLabelAr: "الصيغة الفاخرة" });
+
+  it("français : le nom FRANÇAIS du palier ; arabe : le nom ARABE — l'autre langue ne s'imprime pas", () => {
+    const fr = rendre(devis({ lines: [PALIER] }), "fr");
+    expect(ligneDe(fr, "Gâteau")).toContain("Formule Prestige");
+    expect(fr).not.toContain("الصيغة الفاخرة");
+    const ar = rendre(devis({ lines: [PALIER] }), "ar");
+    expect(ligneDe(ar, "كعكة")).toContain("الصيغة الفاخرة");
+    expect(ar).not.toContain("Formule Prestige");
+  });
+
+  it("⛔ une ligne « à paliers » SANS nom de palier stocké LÈVE : elle ne s'imprime pas à moitié", () => {
+    expect(() => rendre(devis({ lines: [{ ...PALIER, tierLabelFr: null }] }), "fr")).toThrow(TypeError);
+    expect(() => rendre(devis({ lines: [{ ...PALIER, tierLabelAr: null }] }), "ar")).toThrow(TypeError);
+  });
+
+  it("un nom de palier HOSTILE devient du texte, jamais du balisage", () => {
+    const HOSTILE = `<script>window.x=1</script><img src=x onerror=alert(1)>"'&`;
+    const page = rendre(devis({ lines: [{ ...PALIER, tierLabelFr: HOSTILE }] }), "fr");
+    const corps = page.slice(page.indexOf("<body>"));
+    expect(corps).not.toContain("<script>");
+    expect(corps).not.toContain("<img");
+    expect(corps).toContain("&lt;script&gt;window.x=1&lt;/script&gt;");
+  });
+});
+
+describe("rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko)", () => {
+  it("une section titrée « Récapitulatif », APRÈS le tableau, qui porte les quatre lignes dans l'ordre location, prestations, total, acompte", () => {
+    for (const locale of ["fr", "ar"] as const) {
+      const L = LIBELLES[locale];
+      const page = rendre(devis(), locale);
+      const debut = page.indexOf('<section class="recap">');
+      expect(debut).toBeGreaterThan(page.indexOf("</table>"));
+      const bloc = page.slice(debut, page.indexOf("</section>", debut));
+      expect(bloc).toContain(`<h2>${L.recap}</h2>`);
+      const rang = [L.basePrice, L.servicesTotal, L.total, L.deposit].map((libelle) => bloc.indexOf(`<dt>${libelle}</dt>`));
+      expect(rang.every((i) => i >= 0)).toBe(true);
+      expect([...rang].sort((a, b) => a - b)).toEqual(rang);
+    }
+  });
+
+  it("les libellés du récapitulatif ne sont PAS dans le tableau des prestations (deux blocs, pas un seul mélangé)", () => {
+    const page = rendre(devis());
+    const tableau = page.slice(page.indexOf("<table"), page.indexOf("</table>"));
+    for (const libelle of [LIBELLES.fr.basePrice, LIBELLES.fr.servicesTotal, LIBELLES.fr.total, LIBELLES.fr.deposit]) {
+      expect(tableau).not.toContain(libelle);
+    }
+  });
+
+  it("sans prestation, le récapitulatif est là quand même — la location, un total de prestations à zéro, le total, l'acompte (les valeurs stockées)", () => {
+    const r = devis({ lines: [], servicesTotalCents: 0, totalCents: 18_000_000, depositCents: 5_400_000 });
+    const page = rendre(r);
+    const bloc = page.slice(page.indexOf('<section class="recap">'));
+    for (const cents of [r.basePriceCents, r.servicesTotalCents, r.totalCents, r.depositCents]) {
+      expect(bloc).toContain(formatDZD(cents));
+    }
+  });
+
+  it("les montants et les libellés s'alignent par des propriétés LOGIQUES : aucune propriété physique (left, right, margin-left…) dans la feuille du document", () => {
+    const page = rendre(devis());
+    const feuille = page.slice(page.indexOf("<style>"), page.indexOf("</style>"));
+    expect(/\b(?:margin|padding|border)-(?:left|right)\b|\b(?:left|right)\s*:|text-align\s*:\s*(?:left|right)/.exec(feuille)?.[0] ?? null).toBeNull();
   });
 });
 
@@ -129,9 +319,9 @@ describe("⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré d
     const page = rendre(
       devis({
         venue: { nameFr: HOSTILE, nameAr: HOSTILE },
-        client: { firstName: HOSTILE, lastName: HOSTILE, locale: "fr" },
+        client: { firstName: HOSTILE, lastName: HOSTILE },
         slot: { nameFr: HOSTILE, nameAr: HOSTILE, startMinutes: 1200, endMinutes: 1560 },
-        lines: [{ nameFr: HOSTILE, nameAr: HOSTILE, quantity: 1, lineTotalCents: 100 }]
+        lines: [ligne({ nameFr: HOSTILE, nameAr: HOSTILE, lineTotalCents: 100 })]
       })
     );
     const corps = page.slice(page.indexOf("<body>"));
@@ -151,9 +341,56 @@ describe("⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré d
   });
 
   it("le nom du fichier ne porte AUCUNE donnée personnelle, même quand les noms sont hostiles", () => {
-    const f = quoteDocumentFilename(devis({ venue: { nameFr: HOSTILE, nameAr: HOSTILE }, client: { firstName: HOSTILE, lastName: HOSTILE, locale: "ar" } }));
+    const f = quoteDocumentFilename(devis({ venue: { nameFr: HOSTILE, nameAr: HOSTILE }, client: { firstName: HOSTILE, lastName: HOSTILE } }));
     expect(f).toMatch(/^devis-\d{4}-\d{2}-\d{2}-v\d+-[0-9a-f]{8}\.pdf$/);
     expect(f).toBe("devis-2026-12-05-v2-01a10f0a.pdf");
+  });
+});
+
+describe("rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3)", () => {
+  const STOCKEE = {
+    serviceId: "01a1314b-2a98-7f11-9bdd-e6754ff47268",
+    tierId: null,
+    nameFr: "Traiteur",
+    nameAr: "مطعم",
+    pricingType: "FIXED",
+    tierLabelFr: null,
+    tierLabelAr: null,
+    unitPriceCents: 2_300_000,
+    quantity: 1,
+    lineTotalCents: 2_300_000
+  };
+
+  it("les quatre types de tarification sont lus avec leur type, leur quantité et le nom du palier (FR et AR) tels que stockés", () => {
+    const lues = parseStoredLines([
+      STOCKEE,
+      { ...STOCKEE, pricingType: "PER_GUEST", quantity: 150, lineTotalCents: 37_500_000 },
+      { ...STOCKEE, pricingType: "PER_UNIT", quantity: 40, lineTotalCents: 800_000 },
+      { ...STOCKEE, pricingType: "TIERED", tierId: "t1", tierLabelFr: "Formule Prestige", tierLabelAr: "الصيغة الفاخرة", lineTotalCents: 5_000_000 }
+    ]);
+    expect(lues.map((l) => l.pricingType)).toEqual(["FIXED", "PER_GUEST", "PER_UNIT", "TIERED"]);
+    expect(lues.map((l) => l.quantity)).toEqual([1, 150, 40, 1]);
+    expect(lues[3]).toMatchObject({ tierLabelFr: "Formule Prestige", tierLabelAr: "الصيغة الفاخرة", lineTotalCents: 5_000_000 });
+    expect(lues[0]).toMatchObject({ tierLabelFr: null, tierLabelAr: null });
+  });
+
+  it("un type de tarification INCONNU ou ABSENT lève", () => {
+    expect(() => parseStoredLines([{ ...STOCKEE, pricingType: "AU_FORFAIT" }])).toThrow(TypeError);
+    const sans = Object.fromEntries(Object.entries(STOCKEE).filter(([cle]) => cle !== "pricingType"));
+    expect(() => parseStoredLines([sans])).toThrow(TypeError);
+  });
+
+  it("⛔ une ligne « à paliers » dont le nom du palier n'est pas stocké (FR ou AR) lève", () => {
+    const palier = { ...STOCKEE, pricingType: "TIERED", tierId: "t1" };
+    expect(() => parseStoredLines([{ ...palier, tierLabelFr: "Formule", tierLabelAr: null }])).toThrow(TypeError);
+    expect(() => parseStoredLines([{ ...palier, tierLabelFr: null, tierLabelAr: "صيغة" }])).toThrow(TypeError);
+    expect(() => parseStoredLines([{ ...palier, tierLabelFr: "", tierLabelAr: "صيغة" }])).toThrow(TypeError);
+  });
+
+  it("tout le reste de la forme garde sa garde (un non-tableau, une quantité non entière, un total absent)", () => {
+    expect(() => parseStoredLines({})).toThrow(TypeError);
+    expect(() => parseStoredLines([{ ...STOCKEE, quantity: 1.5 }])).toThrow(TypeError);
+    expect(() => parseStoredLines([{ ...STOCKEE, lineTotalCents: undefined }])).toThrow(TypeError);
   });
 });
 
@@ -199,5 +436,19 @@ describe("⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du documen
     const code = lire("quote-document.ts");
     expect(/\bMath\.(round|floor|ceil|trunc)\b/.exec(code)?.[0] ?? null).toBeNull();
     expect(/Cents\s*[*/]\s*\d|\d\s*[*/]\s*\w*Cents/.exec(code)?.[0] ?? null).toBeNull();
+  });
+
+  it("⛔ rang 38 (P-3) : le nom du palier est lu sur la LIGNE — le modèle, la politique, le service et le port n'importent ni Prisma ni un catalogue (seul l'adaptateur de lecture parle à la base)", () => {
+    for (const f of FICHIERS.filter((x) => x !== "quote-document-source.prisma.ts")) {
+      const code = lire(f);
+      expect({ f, motif: /prisma|catalogue|ServicePricing\b|unitName/i.exec(code)?.[0] ?? null }).toEqual({ f, motif: null });
+    }
+  });
+
+  it("⛔ rang 38 (P-15) : la branche « langue du client » est RETIRÉE sans code mort — plus de `chooseDocumentLocale`, de `DocumentLocaleBranch`, de `branch`, ni de `users.locale` lue", () => {
+    for (const f of FICHIERS) {
+      const code = lire(f);
+      expect({ f, motif: /chooseDocumentLocale|DocumentLocaleBranch|clientLocale|\bbranch\b|locale:\s*true|client\??\.locale/.exec(code)?.[0] ?? null }).toEqual({ f, motif: null });
+    }
   });
 });

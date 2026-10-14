@@ -70,17 +70,19 @@ import { formatDZD } from "@zwadj/i18n";
 import {
   DEFAULT_PHONE_COUNTRY,
   PHONE_COUNTRIES,
+  QUOTE_DOCUMENT_LOCALES,
   QUOTE_SENT_VIA_ORDER,
   isPhoneComplete,
   isValidContactEmail,
   quoteDocumentFilename,
   toE164,
+  type QuoteDocumentLocale,
   type QuoteDTO,
   type QuoteSentVia,
   type ServiceDTO,
   type VenueProDTO
 } from "@zwadj/types";
-import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap, NoticeDialog, PhoneField } from "@zwadj/ui";
+import { ChoiceDialog, JourneyCard, JourneyConnector, JourneyRail, JourneyRecap, NoticeDialog, PhoneField } from "@zwadj/ui";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { revealAndFocus } from "../lib/reveal";
 import { useBookingsPro, useQuotes, useServices } from "../venues/venue-client-context";
@@ -99,6 +101,12 @@ import { onQuoteRemitted } from "./remittance-hook";
 import { saveBlob } from "./save-file";
 
 type Outcome = { kind: "locked" } | { kind: "standby" } | null;
+
+/** Rang 38 (D332) — ce que la boîte de langue présente pour chaque langue de document. Un `Record` sur `QuoteDocumentLocale` : ajouter une langue au contrat sans écrire son entrée ne COMPILE pas. */
+const LANGUE_DU_PDF = {
+  fr: { labelKey: "venue.ui.walkin.langFrench", dir: "ltr" },
+  ar: { labelKey: "venue.ui.walkin.langArabic", dir: "rtl" }
+} as const satisfies Record<QuoteDocumentLocale, { labelKey: string; dir: "ltr" | "rtl" }>;
 /** Rang 32 (D325) — ce que la fenêtre de confirmation dit : l'action, la date, le client. Posé APRÈS la réponse du serveur,
  *  jamais avant : c'est un instantané de ce qui vient d'être ÉCRIT, pas de ce qui est à l'écran. */
 type Done = { kind: "locked" | "standby"; date: string; client: string } | null;
@@ -225,6 +233,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [done, setDone] = useState<Done>(null);
   /** Rang 33 (D326) — ce que la fenêtre de REMISE dit : l'instantané des deux issues (canal enregistré, PDF téléchargé), posé APRÈS les deux réponses. */
   const [remit, setRemit] = useState<RemitView | null>(null);
+  /** Rang 38 (D332) — le canal dont la boîte de LANGUE est ouverte. `null` = aucune boîte. Un clic sur un canal ne remet RIEN : il ouvre la boîte, et c'est le CHOIX de la langue qui lance la remise. */
+  const [langueDe, setLangueDe] = useState<QuoteSentVia | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -333,6 +343,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setOutcome(null);
     setDone(null);
     setRemit(null);
+    setLangueDe(null);
     setError(null);
     setServicesAnswered(false);
     setSlotCleared(false);
@@ -461,10 +472,6 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const emailOk = contact.email.trim() !== "" && isValidContactEmail(contact.email);
   const canalBloque = (canal: QuoteSentVia) => channelBlockers(canal, { phoneOk: telOk, emailOk }).length > 0;
   const raisonsDeBlocage = [telOk ? null : "deliverPhoneRequired", emailOk ? null : "deliverEmailRequired"].filter((r): r is string => r !== null);
-  /** La langue de repli du PDF : celle de l'interface AU MOMENT DU CLIC. Le serveur imprime dans la langue du CLIENT quand le devis est lié à un compte —
-   *  ce qu'un devis du parcours sur place n'est jamais (il est créé sans `clientId`) : ici, c'est donc toujours le repli qui joue. */
-  const documentLocale = isAr ? "ar" : "fr";
-
   /**
    * ⛔ RANG 33 (D326) — UN BOUTON DE REMISE FAIT DEUX CHOSES INDÉPENDANTES, ET DIT CE QUI A RÉELLEMENT EU LIEU :
    *   1. ENREGISTRER le canal (`POST /quotes/:id/deliver`) — l'écran dit ce que le SERVEUR a écrit, il ne le suppose pas ;
@@ -476,8 +483,10 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * pas encore. `onQuoteRemitted` est le point UNIQUE du futur envoi : il ne fait rien aujourd'hui, et n'est appelé que pour ces deux canaux, une fois la remise enregistrée.
    *
    * ⚠ `busy` verrouille les boutons pendant le travail : un double clic ne fait ni deux remises ni deux téléchargements.
+   * ⛔ Rang 38 (D332, décision A de Ko) : la langue du PDF est celle que le pro CHOISIT, dans la boîte que chaque bouton ouvre, à CHAQUE téléchargement — ni celle de
+   * l'interface, ni celle du compte du client. Annuler la boîte n'enregistre rien et ne télécharge rien : `remettre` n'est appelée qu'au choix.
    */
-  const remettre = (canal: QuoteSentVia) =>
+  const remettre = (canal: QuoteSentVia, documentLocale: QuoteDocumentLocale) =>
     void (async () => {
       if (quote === null) return;
       const courant = quote;
@@ -913,7 +922,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                       className="wk-btn"
                       disabled={busy || canalBloque(canal)}
                       aria-describedby={canalBloque(canal) ? "wk-deliver-reason" : undefined}
-                      onClick={() => remettre(canal)}
+                      onClick={() => setLangueDe(canal)}
                     >
                       {t(`venue.ui.quotes.sv_${canal}`)}
                     </button>
@@ -984,6 +993,22 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         }
         closeLabel={t("venue.ui.walkin.doneDialogClose")}
         onClose={() => setDone(null)}
+      />
+
+      {/* ⛔ Rang 38 (D332) : la boîte de LANGUE. Chaque bouton de remise l'ouvre ; le choix lance l'enregistrement ET le PDF dans la langue choisie, « Annuler » (le bouton, Échap, le fond)
+          ne lance RIEN. Les libellés de langue sont écrits dans leur propre langue et déclarent leur `lang` et leur `dir`. */}
+      <ChoiceDialog
+        open={langueDe !== null}
+        title={t("venue.ui.walkin.langDialogTitle")}
+        description={t("venue.ui.walkin.langDialogDescription")}
+        options={QUOTE_DOCUMENT_LOCALES.map((locale) => ({ id: locale, label: t(LANGUE_DU_PDF[locale].labelKey), lang: locale, dir: LANGUE_DU_PDF[locale].dir }))}
+        cancelLabel={t("venue.ui.walkin.langDialogCancel")}
+        onChoose={(locale) => {
+          const canal = langueDe;
+          setLangueDe(null);
+          if (canal !== null) remettre(canal, locale);
+        }}
+        onCancel={() => setLangueDe(null)}
       />
 
       {/* ⚠ Rang 33 (D326) : la fenêtre de REMISE. Elle ne s'ouvre qu'APRÈS les deux réponses (l'enregistrement du canal ET le PDF) et dit ce qui a RÉELLEMENT eu lieu,

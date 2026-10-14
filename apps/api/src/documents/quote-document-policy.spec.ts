@@ -1,8 +1,10 @@
-import { QuoteStatus, QUOTE_DOCUMENT_LOCALES } from "@zwadj/types";
+import { QuoteStatus } from "@zwadj/types";
 import { describe, expect, it } from "vitest";
-import { chooseDocumentLocale, decideQuoteDocument } from "./quote-document-policy";
+import { decideQuoteDocument } from "./quote-document-policy";
 
-// Rang 33 (D326) — décisions 1 et 7 du relecteur, module PUR : aucune base, aucun navigateur.
+// Rang 33 (D326) — décision 1 du relecteur, module PUR : aucune base, aucun navigateur.
+// Rang 38 (D332) — la décision 7 (la langue du client, sinon celle du pro) est REMPLACÉE par la décision A de Ko (le pro choisit la langue à chaque
+// téléchargement) : `chooseDocumentLocale` et ses tests sont retirés avec elle, et `quote-document.spec.ts` garde qu'il n'en reste rien.
 describe("decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1)", () => {
   it("la dernière version d'une chaîne ouverte est servie", () => {
     expect(decideQuoteDocument({ status: QuoteStatus.DRAFT, version: 3, latestVersion: 3 })).toEqual({ outcome: "ALLOWED" });
@@ -53,32 +55,5 @@ describe("decideQuoteDocument — le PDF d'une version qui n'est plus active est
       outcome: "VERSION_NOT_ACTIVE",
       latestVersion: 3
     });
-  });
-});
-
-describe("chooseDocumentLocale — la langue du client quand elle est lisible, sinon celle du pro (décision 7)", () => {
-  it("un client `ar` reçoit un PDF ARABE, même si le pro clique depuis une interface française", () => {
-    expect(chooseDocumentLocale({ clientLocale: "ar", fallback: "fr" })).toEqual({ locale: "ar", branch: "CLIENT" });
-  });
-
-  it("un client `fr` reçoit un PDF français, même si le pro clique depuis une interface arabe", () => {
-    expect(chooseDocumentLocale({ clientLocale: "fr", fallback: "ar" })).toEqual({ locale: "fr", branch: "CLIENT" });
-  });
-
-  it("sans client (le parcours sur place), c'est le REPLI : la langue de l'interface du pro, dans les deux sens", () => {
-    expect(chooseDocumentLocale({ clientLocale: null, fallback: "ar" })).toEqual({ locale: "ar", branch: "FALLBACK" });
-    expect(chooseDocumentLocale({ clientLocale: null, fallback: "fr" })).toEqual({ locale: "fr", branch: "FALLBACK" });
-  });
-
-  it("⛔ la comparaison est au MINUSCULE de l'énuméré : « AR » (la faute de F7) n'est PAS lu comme l'arabe — c'est le repli, jamais une langue devinée", () => {
-    expect(chooseDocumentLocale({ clientLocale: "AR", fallback: "fr" })).toEqual({ locale: "fr", branch: "FALLBACK" });
-    expect(chooseDocumentLocale({ clientLocale: "en", fallback: "ar" })).toEqual({ locale: "ar", branch: "FALLBACK" });
-    expect(chooseDocumentLocale({ clientLocale: "", fallback: "fr" })).toEqual({ locale: "fr", branch: "FALLBACK" });
-  });
-
-  it("chaque langue de la liste d'autorité est reconnue (la liste est celle du contrat, pas une copie)", () => {
-    for (const l of QUOTE_DOCUMENT_LOCALES) {
-      expect(chooseDocumentLocale({ clientLocale: l, fallback: l === "fr" ? "ar" : "fr" })).toEqual({ locale: l, branch: "CLIENT" });
-    }
   });
 });

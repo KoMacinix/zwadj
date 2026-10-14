@@ -524,8 +524,10 @@
       "slot": "Créneau",
       "guests": "Invités",
       "service": "Prestation",
-      "quantity": "Qté",
+      "detail": "Détail",
       "amount": "Montant",
+      "noServices": "Aucune prestation choisie.",
+      "recap": "Récapitulatif",
       "basePrice": "Location de la salle",
       "servicesTotal": "Prestations",
       "total": "Total à payer",
@@ -737,7 +739,6 @@
     },
     "ui": {
       "list": {
-        "title": "Mes salles",
         "new": "Nouvelle salle",
         "loading": "Chargement de vos salles…",
         "loadError": "Impossible de charger vos salles.",
@@ -1224,6 +1225,11 @@
         "remitPdfFailed": "Le PDF n'a pas pu être téléchargé : {reason}",
         "remitRecordFailed": "La remise n'a pas pu être enregistrée : {reason}",
         "remitNotSentSMS": "Zwadj n'envoie pas encore de SMS : envoyez-le vous-même au client.",
+        "langDialogTitle": "Langue du document",
+        "langDialogDescription": "Dans quelle langue voulez-vous le PDF du devis ? Le choix s'applique à ce téléchargement seulement.",
+        "langDialogCancel": "Annuler",
+        "langFrench": "Français",
+        "langArabic": "العربية",
         "remitNotSentEMAIL": "Zwadj n'envoie pas encore d'e-mail : envoyez-le vous-même au client, avec le PDF en pièce jointe."
       },
       "wizard": {

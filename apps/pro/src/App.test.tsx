@@ -118,7 +118,8 @@ describe("Coquille protégée (D23/D24)", () => {
     const venues = makeVenues({ listMine: vi.fn().mockResolvedValue([]) });
     renderAt("/salles", makeClient({ bootstrap: vi.fn().mockResolvedValue(PRO_USER) }), venues, makeReferentials());
 
-    expect(await screen.findByRole("heading", { name: "Mes salles" })).toBeInTheDocument();
+    // ⛔ Rang 38 (D332, S-11) : sans salle, le titre dit « Ma salle » comme le menu (un compte de zéro est un singulier) — il disait « Mes salles ».
+    await waitFor(() => expect(screen.queryByRole("heading", { name: "Ma salle" })).not.toBeNull());
     expect(await screen.findByRole("heading", { name: "Aucune salle pour le moment" })).toBeInTheDocument();
     expect(venues.listMine).toHaveBeenCalled();
   });

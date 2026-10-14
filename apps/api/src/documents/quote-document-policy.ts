@@ -1,11 +1,14 @@
-// Politique du DOCUMENT du devis — module PUR. Rang 33 (D326), décisions 1 et 7 du relecteur.
+// Politique du DOCUMENT du devis — module PUR. Rang 33 (D326), décision 1 du relecteur.
 //
-// Deux décisions, aucune dépendance (ni Prisma, ni Nest, ni navigateur) : elles se rejouent en millisecondes, c'est ce qui permet de les
-// neutraliser et de les rejouer à chaque passage (D187 : le motif qui tient est la vitesse, pas l'exécutabilité).
+// Une décision, aucune dépendance (ni Prisma, ni Nest, ni navigateur) : elle se rejoue en millisecondes, c'est ce qui permet de la
+// neutraliser et de la rejouer à chaque passage (D187 : le motif qui tient est la vitesse, pas l'exécutabilité).
+// ⛔ Rang 38 (D332) : la SECONDE décision de ce module — la langue du PDF (« celle du client quand elle est lisible, sinon celle du pro », décision 7 de D326) —
+// est RETIRÉE. Ko l'a remplacée (décision A de D327) par un choix du pro à chaque téléchargement : la langue appliquée est la langue demandée, il n'y a plus
+// de règle à rendre ici. `chooseDocumentLocale`, `DocumentLocaleBranch` et la lecture de `users.locale` disparaissent ensemble (« une règle remplacée ne laisse pas de code mort »).
 //
 // ⛔ CE MODULE NE CALCULE AUCUN MONTANT et n'importe NI `pricing-engine` NI `deposit` : le PDF imprime la valeur STOCKÉE (précision de Ko,
 // 05/10/2026 : « il ne doit jamais recalculer tout seul à partir des règles de prix actuelles »). `quote-document.spec.ts` garde cette absence.
-import { isQuoteOpen, QUOTE_DOCUMENT_LOCALES, QuoteStatus, type QuoteDocumentLocale } from "@zwadj/types";
+import { isQuoteOpen, QuoteStatus } from "@zwadj/types";
 
 export type QuoteDocumentDecision =
   | { readonly outcome: "ALLOWED" }
@@ -43,23 +46,4 @@ export function decideQuoteDocument(input: {
  */
 function isPrintable(status: QuoteStatus): boolean {
   return isQuoteOpen(status) || status === QuoteStatus.ACCEPTED;
-}
-
-export type DocumentLocaleBranch = "CLIENT" | "FALLBACK";
-
-/**
- * LA LANGUE DU PDF (décision 7) : celle du CLIENT quand elle est lisible « facilement » — pour CE devis, dans une colonne existante
- * (`users.locale`, seulement si le devis a un `clientId`) — sinon celle de l'interface du pro au moment du clic (le REPLI arbitré par Ko pour
- * cette première version). Un PDF, une langue.
- *
- * ⛔ LA COMPARAISON EST AU MINUSCULE, PARCE QUE L'ÉNUMÉRÉ LE EST. `booking-notification-input.ts` teste `"AR"` alors que `Locale` vaut `ar`
- * (F7, ouvert) : un client arabophone y reçoit du français sans qu'aucun test rougisse. Ici la valeur du compte est confrontée à la liste
- * `QUOTE_DOCUMENT_LOCALES` — l'autorité — et une valeur inconnue n'est PAS devinée : c'est le repli.
- */
-export function chooseDocumentLocale(input: {
-  readonly clientLocale: string | null;
-  readonly fallback: QuoteDocumentLocale;
-}): { readonly locale: QuoteDocumentLocale; readonly branch: DocumentLocaleBranch } {
-  const lisible = QUOTE_DOCUMENT_LOCALES.find((l) => l === input.clientLocale);
-  return lisible === undefined ? { locale: input.fallback, branch: "FALLBACK" } : { locale: lisible, branch: "CLIENT" };
 }

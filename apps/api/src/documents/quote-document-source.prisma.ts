@@ -1,11 +1,15 @@
 // Adaptateur Prisma du port `QuoteDocumentSource` — LECTURE SEULE (aucun `create`, `update`, `delete`, `upsert`, aucune transaction).
 // Rang 33 (D326). Voir `quote-document-source.ts` pour les raisons : propriété par la relation (D149), montants lus tels que stockés.
 import { Injectable } from "@nestjs/common";
-import type { QuoteStatus } from "@zwadj/types";
+import { ServicePricingType, type QuoteStatus } from "@zwadj/types";
 import { PrismaService } from "../prisma/prisma.service";
 import type { QuoteDocumentLine, QuoteDocumentRecord, QuoteDocumentSource } from "./quote-document-source";
 
-/** Les lignes d'un devis sont un instantané JSON (`quotes.lines`) : une forme inattendue LÈVE, elle ne s'imprime pas à moitié. */
+/**
+ * Les lignes d'un devis sont un instantané JSON (`quotes.lines`) : une forme inattendue LÈVE, elle ne s'imprime pas à moitié.
+ * ⛔ Rang 38 (D332, DB-9 et décision 3 du relecteur) : le type de tarification doit être l'un des quatre connus, et une ligne « à paliers » doit porter le nom de son palier dans
+ * les DEUX langues — sinon le PDF ne pourrait l'imprimer qu'en lisant le catalogue actuel de la salle, c'est-à-dire une valeur que le devis ne porte pas.
+ */
 export function parseStoredLines(raw: unknown): QuoteDocumentLine[] {
   if (!Array.isArray(raw)) throw new TypeError("quotes.lines n'est pas un tableau");
   return raw.map((ligne: unknown, i: number) => {
@@ -20,7 +24,23 @@ export function parseStoredLines(raw: unknown): QuoteDocumentLine[] {
     ) {
       throw new TypeError(`quotes.lines[${i}] n'a pas la forme d'une ligne de devis`);
     }
-    return { nameFr: l.nameFr, nameAr: l.nameAr, quantity: l.quantity as number, lineTotalCents: l.lineTotalCents as number };
+    // La liste des types est celle du contrat (`ServicePricingType`), jamais recopiée ici ; `find` rend l'élément de l'union, pas une chaîne quelconque.
+    const pricingType = Object.values(ServicePricingType).find((type) => type === l.pricingType);
+    if (pricingType === undefined) throw new TypeError(`quotes.lines[${i}].pricingType n'est pas un type de tarification connu`);
+    const tierLabelFr = typeof l.tierLabelFr === "string" ? l.tierLabelFr : null;
+    const tierLabelAr = typeof l.tierLabelAr === "string" ? l.tierLabelAr : null;
+    if (pricingType === ServicePricingType.TIERED && (tierLabelFr === null || tierLabelFr.trim() === "" || tierLabelAr === null || tierLabelAr.trim() === "")) {
+      throw new TypeError(`quotes.lines[${i}] est « à paliers » mais ne porte pas le nom de son palier en français ET en arabe`);
+    }
+    return {
+      nameFr: l.nameFr,
+      nameAr: l.nameAr,
+      pricingType,
+      quantity: l.quantity as number,
+      tierLabelFr,
+      tierLabelAr,
+      lineTotalCents: l.lineTotalCents as number
+    };
   });
 }
 
@@ -45,7 +65,7 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
         lines: true,
         venue: { select: { nameFr: true, nameAr: true } },
         slotTemplate: { select: { nameFr: true, nameAr: true, startMinutes: true, endMinutes: true } },
-        client: { select: { firstName: true, lastName: true, locale: true } }
+        client: { select: { firstName: true, lastName: true } }
       }
     });
     if (row === null) return null;

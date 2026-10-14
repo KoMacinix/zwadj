@@ -5,7 +5,8 @@
 //   - le PDF d'une version qui n'est plus active est REFUSÉ ; le serveur ne sert ni l'ancienne valeur ni une autre version à sa place ;
 //   - ⛔ LE MONTANT IMPRIMÉ EST LA VALEUR STOCKÉE : une ligne dont `deposit_cents` n'est PAS 30 % du total (écriture directe, comme l'état d'une ligne
 //     ancienne) s'imprime telle quelle ; et ⛔ UN CHANGEMENT DES RÈGLES DE PRIX APRÈS LE DEVIS NE CHANGE PAS LE MONTANT IMPRIMÉ ;
-//   - la langue : celle du compte client quand le devis y est lié, sinon celle que le pro envoie ;
+//   - la langue : celle que le pro DEMANDE à ce téléchargement (rang 38, décision A de Ko) — jamais celle du compte du client ;
+//   - rang 38 (L35-2) : le détail des lignes selon DB-9 (le TYPE de tarification), et le nom du palier lu sur la LIGNE stockée (renommer le palier après le devis ne change pas le PDF) ;
 //   - la route n'écrit RIEN (la ligne du devis est identique avant et après) ;
 //   - le canal « e-mail » est ÉCRIT en base puis relu — la base n'en liste pas les valeurs (`quotes_sent_via_not_blank`), l'énuméré de `@zwadj/types` est seule autorité.
 //
@@ -14,7 +15,7 @@
 // `pdf-renderer.int-spec.ts` (script inerte, réseau muet, police embarquée) et par la preuve de l'arabe (les pages rastérisées).
 import request from "supertest";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { formatDZD, QUOTE_SENT_VIA_ORDER, QuoteErrorCode, type QuoteConversionDTO, type QuoteDTO, type VenueProDTO } from "@zwadj/types";
+import { formatDZD, QUOTE_SENT_VIA_ORDER, QuoteErrorCode, type QuoteConversionDTO, type QuoteDTO, type ServiceDTO, type VenueProDTO } from "@zwadj/types";
 import { PlaywrightPdfRenderer } from "../../src/documents/playwright-pdf.renderer";
 import { createTestApp, loginAs, registerUser, truncateAll, verifyLastRegistered, type TestContext } from "./helpers";
 import { pdfFonts } from "./pdf-inspect";
@@ -273,8 +274,8 @@ describe("⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jama
   });
 });
 
-describe("La langue du PDF (décision 7) — celle du client quand elle est lisible, sinon celle du pro", () => {
-  it("un devis lié à un client `ar` : PDF ARABE, même si le pro clique depuis une interface française — et le HTML porte le nom du client", async () => {
+describe("La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client", () => {
+  it("⛔ un devis lié à un client `ar`, demandé en `fr` : PDF FRANÇAIS (l'ancienne règle de D326 rendait l'arabe) — et le HTML porte le nom du client", async () => {
     const city = await seedGeographie();
     const f = await pro(PRO, city.id);
     await registerUser(ctx, CLIENT_AR);
@@ -284,13 +285,13 @@ describe("La langue du PDF (décision 7) — celle du client quand elle est lisi
     const { vus } = espionner();
 
     const res = await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(200));
-    expect(res.headers["content-language"]).toBe("ar");
+    expect(res.headers["content-language"]).toBe("fr");
     const html = vus()[0] as string;
-    expect(html).toContain('<html lang="ar" dir="rtl">');
+    expect(html).toContain('<html lang="fr" dir="ltr">');
     expect(html).toContain("آمنة بن سالم");
   });
 
-  it("un client `fr` depuis une interface arabe : PDF français ; sans client (le parcours sur place), le REPLI suit la langue envoyée, dans les deux sens", async () => {
+  it("dans les deux sens, avec ou sans client lié : `Content-Language` et la langue du HTML sont la langue DEMANDÉE", async () => {
     const city = await seedGeographie();
     const f = await pro(PRO, city.id);
     await registerUser(ctx, CLIENT_FR);
@@ -298,12 +299,90 @@ describe("La langue du PDF (décision 7) — celle du client quand elle est lisi
     const client = await ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT_FR.email } });
     const avecClient = (await makeQuote(f, { clientId: client.id }).expect(statut(201))).body as QuoteDTO;
     const surPlace = (await makeQuote(f).expect(statut(201))).body as QuoteDTO;
-    espionner();
+    const { vus } = espionner();
 
-    expect((await documentDe(f.token, avecClient.id, { locale: "ar" }).expect(statut(200))).headers["content-language"]).toBe("fr");
-    expect((await documentDe(f.token, surPlace.id, { locale: "ar" }).expect(statut(200))).headers["content-language"]).toBe("ar");
-    expect((await documentDe(f.token, surPlace.id, { locale: "fr" }).expect(statut(200))).headers["content-language"]).toBe("fr");
+    for (const devis of [avecClient, surPlace]) {
+      for (const demandee of ["fr", "ar"] as const) {
+        expect((await documentDe(f.token, devis.id, { locale: demandee }).expect(statut(200))).headers["content-language"]).toBe(demandee);
+      }
+    }
+    expect(vus().map((h) => /<html lang="(fr|ar)"/.exec(h as string)?.[1])).toEqual(["fr", "ar", "fr", "ar"]);
   });
+});
+
+describe("rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE", () => {
+  /** Une salle, quatre prestations (une de chaque type de tarification) et un devis qui les choisit toutes ; chaque ligne rendue par le serveur est lue dans la réponse du devis. */
+  async function devisAQuatreTypes() {
+    const city = await seedGeographie();
+    const f = await pro(PRO, city.id);
+    const creer = async (corps: Record<string, unknown>) =>
+      (await api().post(`/api/v1/venues/${f.venue.id}/services`).set(authH(f.token)).send(corps).expect(statut(201))).body as ServiceDTO;
+    const fixe = await creer({ pricingType: "FIXED", nameFr: "Décoration", nameAr: "زينة", fixedPriceCents: 5_000_000 });
+    const parInvite = await creer({ pricingType: "PER_GUEST", nameFr: "Traiteur", nameAr: "تموين", perGuestPriceCents: 200_000 });
+    const parUnite = await creer({ pricingType: "PER_UNIT", nameFr: "Tables", nameAr: "طاولات", perUnitPriceCents: 300_000, unitNameFr: "table", unitNameAr: "طاولة", minUnits: 1, maxUnits: 50 });
+    const palier = await creer({
+      pricingType: "TIERED",
+      nameFr: "Gâteau",
+      nameAr: "كعكة",
+      tiers: [
+        { labelFr: "Standard", labelAr: "عادي", priceCents: 800_000 },
+        { labelFr: "Premium", labelAr: "ممتاز", priceCents: 1_200_000 }
+      ]
+    });
+    const premium = palier.tiers.find((t) => t.labelFr === "Premium") as ServiceDTO["tiers"][number];
+    const q = (
+      await makeQuote(f, {
+        guests: 120,
+        services: [{ serviceId: fixe.id }, { serviceId: parInvite.id }, { serviceId: parUnite.id, quantity: 6 }, { serviceId: palier.id, tierId: premium.id }]
+      }).expect(statut(201))
+    ).body as QuoteDTO;
+    return { f, q, premium };
+  }
+  const ligneDe = (html: string, nom: string) => html.slice(html.indexOf("<tbody>"), html.indexOf("</tbody>")).split("<tr").find((l) => l.includes(nom)) ?? "";
+
+  it("le détail suit le TYPE : « par invité » et « à l'unité » la quantité stockée, « à paliers » le nom du palier choisi (FR et AR), « fixe » rien — et chaque montant est celui du devis", async () => {
+    const { f, q } = await devisAQuatreTypes();
+    const { vus } = espionner();
+
+    await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(200));
+    await documentDe(f.token, q.id, { locale: "ar" }).expect(statut(200));
+    const [fr, ar] = vus() as [string, string];
+
+    expect((fr.match(/<th\b/g) ?? []).length).toBe(3);
+    expect(ligneDe(fr, "Décoration")).not.toMatch(/×|Premium/);
+    expect(ligneDe(fr, "Traiteur")).toContain("× 120");
+    expect(ligneDe(fr, "Tables")).toContain("× 6");
+    expect(ligneDe(fr, "Gâteau")).toContain("Premium");
+    expect(ligneDe(ar, "كعكة")).toContain("ممتاز");
+    expect(ar).not.toContain("Premium");
+    // Les montants de ligne sont ceux que le serveur a ÉCRITS dans le devis (la réponse de création les rend tels que stockés), jamais un produit recalculé.
+    for (const l of q.lines) expect(fr).toContain(formatDZD(l.lineTotalCents));
+  });
+
+  it("⛔ le nom du palier est celui de la LIGNE stockée : renommer le palier dans le catalogue APRÈS le devis ne change PAS le PDF (P-3)", async () => {
+    const { f, q, premium } = await devisAQuatreTypes();
+    await ctx.prisma.serviceTier.update({ where: { id: premium.id }, data: { labelFr: "Renommé après le devis", labelAr: "أُعيدت تسميته" } });
+    const { vus } = espionner();
+
+    await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(200));
+    await documentDe(f.token, q.id, { locale: "ar" }).expect(statut(200));
+    const [fr, ar] = vus() as [string, string];
+    expect(ligneDe(fr, "Gâteau")).toContain("Premium");
+    expect(fr).not.toContain("Renommé après le devis");
+    expect(ligneDe(ar, "كعكة")).toContain("ممتاز");
+    expect(ar).not.toContain("أُعيدت تسميته");
+  });
+
+  it("le VRAI moteur rend ce devis dans les deux langues : un PDF valide, la police du dépôt embarquée et seule", async () => {
+    const { f, q } = await devisAQuatreTypes();
+    espionner(true);
+
+    for (const langue of ["fr", "ar"] as const) {
+      const pdf = (await documentDe(f.token, q.id, { locale: langue }).expect(statut(200))).body as Buffer;
+      expect(pdf.subarray(0, 5).toString("latin1")).toBe("%PDF-");
+      expect(pdfFonts(pdf).filter((p) => !p.embedded || !/ReadexPro/.test(p.name))).toEqual([]);
+    }
+  }, 120_000);
 });
 
 describe("Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir", () => {

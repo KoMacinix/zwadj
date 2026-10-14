@@ -11,12 +11,22 @@
 // ⚠ LA PROPRIÉTÉ SE TRAVERSE PAR LA RELATION (D149) : `Venue.ownerId` référence `ProProfile.id`, PAS `User.id` — l'idiome est
 // `venue: { deletedAt: null, owner: { userId } }`. Un autre pro, une salle supprimée ou un identifiant inexistant rendent la MÊME réponse, `null` :
 // le contrôleur répond 404 indistinct, et un identifiant de devis deviné ne livre pas les données d'un client.
-import type { QuoteStatus } from "@zwadj/types";
+import type { QuoteStatus, ServicePricingType } from "@zwadj/types";
 
+/**
+ * Une ligne de devis TELLE QUE STOCKÉE (`quotes.lines` : l'instantané de `ResolvedLine`). ⛔ Rang 38 (D332, DB-9 et décision 3 du relecteur) : le type de tarification et le
+ * nom du palier (FR et AR) sont des champs de la LIGNE — le PDF n'imprime que ce qui est stocké, il ne relit RIEN dans le catalogue actuel de la salle. Le nom de l'UNITÉ
+ * n'est pas stocké (il vit sur `ServicePricing`) et DB-9 ne l'exige pas : « par invité » et « à l'unité » n'impriment que la quantité.
+ */
 export interface QuoteDocumentLine {
   readonly nameFr: string;
   readonly nameAr: string;
+  /** Le type de tarification de la ligne : ce que DB-9 imprime en détail suit ce TYPE, jamais la valeur de la quantité. */
+  readonly pricingType: ServicePricingType;
   readonly quantity: number;
+  /** Le nom du palier choisi, dans les deux langues — `null` hors « à paliers » (l'adaptateur de lecture refuse une ligne « à paliers » qui n'en porte pas). */
+  readonly tierLabelFr: string | null;
+  readonly tierLabelAr: string | null;
   readonly lineTotalCents: number;
 }
 
@@ -36,8 +46,8 @@ export interface QuoteDocumentRecord {
   readonly lines: readonly QuoteDocumentLine[];
   readonly venue: { readonly nameFr: string; readonly nameAr: string };
   readonly slot: { readonly nameFr: string; readonly nameAr: string; readonly startMinutes: number; readonly endMinutes: number } | null;
-  /** Le compte client QUAND le devis y est lié (`clientId`), sinon `null` — le devis du parcours sur place n'en a pas. `locale` : `users.locale`, tel que stocké. */
-  readonly client: { readonly firstName: string | null; readonly lastName: string | null; readonly locale: string } | null;
+  /** Le compte client QUAND le devis y est lié (`clientId`), sinon `null` — le devis du parcours sur place n'en a pas. ⛔ Rang 38 (D332) : la langue du compte n'est PLUS lue — la langue du PDF est celle que le pro choisit (décision A de Ko). */
+  readonly client: { readonly firstName: string | null; readonly lastName: string | null } | null;
 }
 
 export const QUOTE_DOCUMENT_SOURCE = Symbol("QUOTE_DOCUMENT_SOURCE");
