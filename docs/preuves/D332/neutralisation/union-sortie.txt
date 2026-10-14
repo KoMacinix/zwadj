@@ -1,0 +1,54 @@
+   ✓ calibration — positif R : un chemin depuis la racine retient le fichier du diff
+   ✓ calibration — positif P : un chemin relatif au paquet retient le fichier du diff
+   ✓ calibration — positif N : le seul nom du fichier retient le fichier du diff
+   ✓ calibration — positif, cas CONNU : `neutralize-r37.py` cite `src/venues/ma-salle-relecture.test.tsx` — (b) le retient pour ce fichier modifié
+   ✓ calibration — positif, cas CONNU : le tri (a) ne retient AUCUNE campagne pour ce même fichier (l'angle mort que l'union couvre)
+   ✓ calibration — négatif : un chemin qui ne désigne aucun fichier du diff ne retient rien, ni par R ni par P ni par N
+   ✓ calibration — négatif : un nom absent du diff ne retient rien, ni par R ni par P ni par N
+   calibration : 7 bras, 0 manqué
+départ : dd41fbd (dd41fbdab2ad) · HEAD 1f7b85f21beb
+parcouru : 36 campagne(s) (attendu : autant que de `neutralisation/neutralize-*.py`, soit 36) ; 29 fichier(s) dans le diff du lot (hors `docs/preuves/`)
+   diff · AGENTS.md
+   diff · ZWADJ_CONTINUITE.md
+   diff · apps/api/src/documents/quote-document-policy.spec.ts
+   diff · apps/api/src/documents/quote-document-policy.ts
+   diff · apps/api/src/documents/quote-document-source.prisma.ts
+   diff · apps/api/src/documents/quote-document-source.ts
+   diff · apps/api/src/documents/quote-document.controller.ts
+   diff · apps/api/src/documents/quote-document.service.spec.ts
+   diff · apps/api/src/documents/quote-document.service.ts
+   diff · apps/api/src/documents/quote-document.spec.ts
+   diff · apps/api/src/documents/quote-document.ts
+   diff · apps/api/test/int/pdf-renderer.int-spec.ts
+   diff · apps/api/test/int/quote-document.int-spec.ts
+   diff · apps/pro/src/App.test.tsx
+   diff · apps/pro/src/dashboard/walkin-journey.test.tsx
+   diff · apps/pro/src/dashboard/walkin-journey.tsx
+   diff · apps/pro/src/shell/pro-nav.tsx
+   diff · apps/pro/src/shell/venues-label.test.ts
+   diff · apps/pro/src/shell/venues-label.ts
+   diff · apps/pro/src/ui-choice-dialog.test.tsx
+   diff · apps/pro/src/venues/venue-list-page.tsx
+   diff · apps/pro/src/venues/venue-list.test.tsx
+   diff · e2e/specs/r33-remise-devis.e2e.ts
+   diff · neutralisation/neutralize-r33.py
+   diff · neutralisation/neutralize-r38.py
+   diff · packages/i18n/messages/ar.json
+   diff · packages/i18n/messages/fr.json
+   diff · packages/ui/src/choice-dialog.tsx
+   diff · packages/ui/src/index.ts
+(a) retenues par les fonctions du tri sur le diff DU LOT : 7 · le tri tel que lancé (contre HEAD, 10 fichier(s) modifié(s) depuis HEAD) : 0
+(b) campagnes qui citent un fichier du diff : 7 — R 7 · P 5 · N 7
+
+campagne                              (a)   R   P   N  fichiers du diff cités
+neutralize-act-plafonds.py            oui   1   1   1  apps/pro/src/dashboard/walkin-journey.test.tsx
+neutralize-horloge.py                 oui   1   0   1  apps/pro/src/dashboard/walkin-journey.test.tsx
+neutralize-journey.py                 oui   1   1   2  apps/pro/src/dashboard/walkin-journey.test.tsx, apps/pro/src/dashboard/walkin-journey.tsx
+neutralize-r32.py                     oui   1   1   2  apps/pro/src/dashboard/walkin-journey.test.tsx, apps/pro/src/dashboard/walkin-journey.tsx
+neutralize-r33.py                     oui   3  11  14  apps/api/src/documents/quote-document-policy.spec.ts, apps/api/src/documents/quote-document-policy.ts, apps/api/src/documents/quote-document
+neutralize-r37.py                     oui   1   0   1  apps/pro/src/venues/venue-list-page.tsx
+neutralize-r38.py                     oui  10   7  17  apps/api/src/documents/quote-document-policy.ts, apps/api/src/documents/quote-document-source.prisma.ts, apps/api/src/documents/quote-docume
+
+UNION : 7 campagne(s) sur 36 ; (a) seul en aurait retenu 7 ; le tri tel que lancé en retient 0 ; (b) ajoute 0
+non retenues : neutralize-404.py, neutralize-argon2.py, neutralize-available-on-api.py, neutralize-available-on.py, neutralize-b7.py, neutralize-booking-status.py, neutralize-budgets.py, neutralize-e3d1-s8.py, neutralize-horizon.py, neutralize-maxprice.py, neutralize-r25.py, neutralize-r26.py, neutralize-r29.py, neutralize-r30.py, neutralize-r4.py, neutralize-rang23.py, neutralize-s10a.py, neutralize-s10b.py, neutralize-s11a.py, neutralize-s11b.py, neutralize-s9.py, neutralize-solid-s1.py, neutralize-solid-s2.py, neutralize-solid-s3.py, neutralize-solid-s4.py, neutralize-solid-s5a.py, neutralize-solid-s5b.py, neutralize-solid-s6.py, neutralize-solid-s7.py
+UNION: neutralize-act-plafonds.py,neutralize-horloge.py,neutralize-journey.py,neutralize-r32.py,neutralize-r33.py,neutralize-r37.py,neutralize-r38.py
