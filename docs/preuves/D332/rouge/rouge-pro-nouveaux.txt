@@ -1,0 +1,45 @@
+# D332 — TÉMOIN — composants NEUFS (ChoiceDialog, venuesLabelKey) : leur rouge est un IMPORT absent, pas une assertion — il n'y a pas de comportement d'avant à reproduire (apps/pro, ui-choice-dialog.test.tsx ; venues-label.test.ts échoue à la collecte)
+# état du code : CODE DE PRODUCTION = CELUI D'AVANT (les fichiers de production du lot sont repris de HEAD 6ca5287, qui ne diffère de la clôture de D331 dd41fbd par aucun fichier de code ; vérifié par git diff --name-only) ; CATALOGUES = HEAD plus les clés ADDITIVES du lot (la boîte de langue ; quote.document.detail, noServices, recap) — les clés que le lot retire (quote.document.quantity, venue.ui.list.title) sont GARDÉES, pour que l'ancien code rende ce qu'il rendait ; TESTS = versions FINALES du lot
+# journal brut (hors dépôt) : SHA-256 95ff25ba9888a60e36a3bb64e4b2c75823bfcfb116055445dfe4ce30fb045806 · 132462 octets · 1892 lignes · EXTRAIT versé : verdicts du point (filtre « ui-choice-dialog.test.tsx ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 0 vert(s) · 9 rouge(s) · 0 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > fermée, elle ne rend rien
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > ouverte : une fenêtre modale nommée par son titre et décrite par sa description
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > « Annuler » d'abord, puis les options dans l'ordre reçu
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > chaque option déclare sa langue et sa direction — un lecteur d'écran ne lit pas l'arabe en lettres non liées
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > une option sans `lang` ni `dir` n'en pose pas (rien n'est deviné)
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > choisir une option appelle `onChoose` avec son identifiant, UNE fois, et n'annule pas
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > annuler : le bouton, Échap, le clic sur le fond — chacun appelle `onCancel` et jamais `onChoose`
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > un clic DANS la fenêtre n'annule pas (une sélection de texte relâchée dehors non plus : seul `mousedown` sur le fond compte)
+ROUGE  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > le focus initial est « Annuler » — une frappe Entrée distraite ne choisit aucune option
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > fermée, elle ne rend rien
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > ouverte : une fenêtre modale nommée par son titre et décrite par sa description
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > « Annuler » d'abord, puis les options dans l'ordre reçu
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > chaque option déclare sa langue et sa direction — un lecteur d'écran ne lit pas l'arabe en lettres non liées
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > une option sans `lang` ni `dir` n'en pose pas (rien n'est deviné)
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > choisir une option appelle `onChoose` avec son identifiant, UNE fois, et n'annule pas
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > annuler : le bouton, Échap, le clic sur le fond — chacun appelle `onCancel` et jamais `onChoose`
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > un clic DANS la fenêtre n'annule pas (une sélection de texte relâchée dehors non plus : seul `mousedown` sur le fond compte)
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+ÉCHEC  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > le focus initial est « Annuler » — une frappe Entrée distraite ne choisit aucune option
+  1ʳᵉ ligne : Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  5 failed (5) | Tests  35 failed | 107 passed (142)

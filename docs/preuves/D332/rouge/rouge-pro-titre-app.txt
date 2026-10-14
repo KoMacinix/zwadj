@@ -1,0 +1,36 @@
+# D332 — ROUGE — S-11 : le titre de /salles sans salle est « Ma salle » (apps/pro, App.test.tsx)
+# état du code : CODE DE PRODUCTION = CELUI D'AVANT (les fichiers de production du lot sont repris de HEAD 6ca5287, qui ne diffère de la clôture de D331 dd41fbd par aucun fichier de code ; vérifié par git diff --name-only) ; CATALOGUES = HEAD plus les clés ADDITIVES du lot (la boîte de langue ; quote.document.detail, noServices, recap) — les clés que le lot retire (quote.document.quantity, venue.ui.list.title) sont GARDÉES, pour que l'ancien code rende ce qu'il rendait ; TESTS = versions FINALES du lot
+# journal brut (hors dépôt) : SHA-256 95ff25ba9888a60e36a3bb64e4b2c75823bfcfb116055445dfe4ce30fb045806 · 132462 octets · 1892 lignes · EXTRAIT versé : verdicts du point (filtre « src/App.test.tsx ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 17 vert(s) · 1 rouge(s) · 1 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+VERT   src/App.test.tsx > Coquille protégée (D23/D24) > anonyme sur / : redirigé vers la page de connexion
+VERT   src/App.test.tsx > Coquille protégée (D23/D24) > UI-D2 — la bascule de thème est présente sur l'écran de CONNEXION, pas seulement après login
+VERT   src/App.test.tsx > Coquille protégée (D23/D24) > session CLIENT sur / : refus explicite « espace réservé aux professionnels »
+VERT   src/App.test.tsx > Coquille protégée (D23/D24) > session PRO sur / : l'écran « Nouvelle réservation », plus la liste des salles
+ROUGE  src/App.test.tsx > Coquille protégée (D23/D24) > session PRO sur /salles : la LISTE, sur une route enfin DÉCLARÉE (dette fermée)
+VERT   src/App.test.tsx > Coquille protégée (D23/D24) > le TOP PANEL porte les cinq entrées, et une seule pour les salles
+VERT   src/App.test.tsx > Coquille protégée (D23/D24) > l'entrée active est annoncée par aria-current, jamais par la seule couleur
+VERT   src/App.test.tsx > ⚠ Portes d'entrée fermées à une session ouverte > un PRO connecté sur /auth/connexion est renvoyé au tableau de bord
+VERT   src/App.test.tsx > ⚠ Portes d'entrée fermées à une session ouverte > un CLIENT connecté y est renvoyé aussi, et lit le refus EXPLICITE
+VERT   src/App.test.tsx > ⚠ Portes d'entrée fermées à une session ouverte > l'inscription est fermée elle aussi : on ne crée pas un compte par-dessus le sien
+VERT   src/App.test.tsx > ⚠ Portes d'entrée fermées à une session ouverte > ⚠ la VÉRIFICATION D'E-MAIL reste ouverte — c'est son cas nominal
+VERT   src/App.test.tsx > ⚠ Portes d'entrée fermées à une session ouverte > un ANONYME voit toujours le formulaire — aucune régression
+VERT   src/App.test.tsx > Connexion PRO — D22 (403 EMAIL_NOT_VERIFIED) > montre l'action de renvoi, qui déclenche resend-verification avec l'email saisi
+VERT   src/App.test.tsx > Inscription PRO — D21 (pas d'auto-login) > succès : écran « vérifiez votre boîte mail » avec l'email, AUCUN login enchaîné
+VERT   src/App.test.tsx > Inscription PRO — D21 (pas d'auto-login) > téléphone non joignable : erreur de validation partagée, AUCUN appel API
+VERT   src/App.test.tsx > Inscription PRO — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant, et le gabarit d'exemple n'est PLUS un numéro qui ressemble à un vrai
+VERT   src/App.test.tsx > Inscription PRO — le téléphone est le champ partagé (rang 32) > ⚠ un numéro collé à la locale part au format canonique — le format envoyé n'a pas changé
+VERT   src/App.test.tsx > Inscription PRO — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se TAPE même pas : le premier chiffre refusé reste seul, avec son message
+
+ÉCHEC  src/App.test.tsx > Coquille protégée (D23/D24) > session PRO sur /salles : la LISTE, sur une route enfin DÉCLARÉE (dette fermée)
+  1ʳᵉ ligne : AssertionError: expected null not to be null
+   ❯ src/App.test.tsx:122:89
+      120|
+      121|     // ⛔ Rang 38 (D332, S-11) : sans salle, le titre dit « Ma salle » …
+      122|     await waitFor(() => expect(screen.queryByRole("heading", { name: "…
+         |                                                                                         ^
+      123|     expect(await screen.findByRole("heading", { name: "Aucune salle po…
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  5 failed (5) | Tests  35 failed | 107 passed (142)
