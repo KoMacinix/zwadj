@@ -184,6 +184,14 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D332/navigateur/pages/devis-quantites-palier-fr-p1.png` | la page rastérisée du devis à quantités et à palier, français |
 | `docs/preuves/D332/navigateur/pages/devis-quantites-palier-ar-p1.png` | la page rastérisée du devis à quantités et à palier, arabe |
 
+#### Extension 4 — le contrôle dédié « aucune valeur réelle » (déclaré AVANT son versement)
+
+*Motif* : la règle de D299 (« ce qui fait foi sur l'absence de valeurs, c'est le contrôle dédié ») veut qu'il soit joué quand la session a produit des journaux qui portent des valeurs réelles — ici les liens de vérification d'e-mail de la pile e2e jetable, dans le journal de `test:e2e`, les deux passes de la spec de remise et la sonde de captures. La table de base nommait l'audit scellé et son tri, pas ce contrôle ; D331 l'avait déclaré conditionnel et ne l'a pas produit. Il est produit ici : sa sortie ne contient que des comptes.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D332/aucune-valeur-reelle.txt` | la sortie du contrôle : 87 valeurs cherchées dans quatre journaux, 16 913 fichiers parcourus, 0 porteur ; calibré à deux bras par journal |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json` et `ar.json`, les montants viennent du formateur partagé (`formatDZD`), les types de tarification de l'énumération partagée (`ServicePricingType`).
