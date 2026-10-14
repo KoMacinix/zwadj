@@ -1,0 +1,12 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D331/audit-secrets-d331b.txt (223 contextes) · nouvelle docs/preuves/D332/audit-secrets-d332a.txt (224 contextes)
+   alertes ABSENTES de la précédente : 1 — à trier au contexte avant le commit
+   [jeton] docs/preuves/D331/tri-audit-d331b.txt — contexte : ligne 1451 de docs/preuves/D332/audit-secrets-d332a.txt
+   ventilation par motif : jeton=1
+
+== TRI AU CONTEXTE (humain, D332) — l'unique alerte ABSENTE de la précédente, lue dans la sortie scellée (`audit-secrets-d332a.txt`, ligne 1451) ; AUCUN contexte n'est recopié ici (ce serait un écho non scellé)
+   1. tri-audit-d331b.txt (ligne 1451, motif « jeton ») : le tri humain de l'audit « b » de D331, qui NOMME `token=` en décrivant les quatre alertes qu'il a triées (l'écho du tri de l'audit « a » de D331) ; du texte de documentation, pas une valeur. C'est exactement ce que ce tri-là écrivait de lui-même (« Limite écrite : ce tri-ci sera lu par l'audit du lot suivant, qui le trouvera comme alertes nouvelles du même ordre »).
+   BILAN DU TRI : 1 sur 1 = l'écho du tri de l'audit « b » de D331 (le même mécanisme que D330 et D331 : le tri d'un audit est lu par l'audit suivant) ; AUCUNE valeur réelle. Les pièces de D332 versées jusqu'ici (la table d'ouverture, l'instrument de la lecture adverse, sa sortie et la liste de ses défauts, la première passe D277 et ses motifs) ne produisent aucune alerte nouvelle. (Le contrôle dédié « 0 valeur réelle sur N fichiers » de D299 n'a pas d'objet à ce stade : aucun journal à valeurs réelles n'est versé — les journaux bruts des portes restent hors dépôt.)
+   Limite écrite : ce tri-ci sera lu par l'audit du lot suivant (le « b » de ce lot), qui le trouvera comme alerte nouvelle du même ordre ; l'audit « a » n'a pas couvert les octets de ce fichier.
