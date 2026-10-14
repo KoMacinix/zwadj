@@ -121,6 +121,28 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D332/neutralisation/union-sortie.txt` | sa sortie, versée AVANT de jouer une seule campagne : le diff parcouru, les trois critères, l'union, ce que le tri tel que lancé en aurait retenu |
 | `docs/preuves/D332/neutralisation/jouer-union.py` | le lanceur : lit la liste versée (jamais une liste recalculée) et joue chaque campagne en série, `neutralize-r33.py` aussi avec `--int` |
 
+#### Extension 2 — deux campagnes de l'union dont le pré-vol a rougi (fichiers hors table), et les sorties de toutes les campagnes jouées (déclarées AVANT leur versement, en chemins complets)
+
+*Motif* : l'union des campagnes (décision 1 du relecteur), jouée après le commit du code, a rendu **« ERREUR DE SCRIPT : 95 tests attendus dans src/dashboard/walkin-journey.test.tsx »** pour `neutralize-act-plafonds.py` et `neutralize-horloge.py` : le fichier de test en compte désormais 102 (+8 tests de la boîte de langue, −1 test de la langue de repli ; relevés : 102 déclarations `it(` et « Tests 102 passed (102) »). Ces deux campagnes ne figuraient NI dans la table de base NI dans ses fichiers conditionnels : le tri de `lancer-campagnes.py` ne les aurait pas retenues (il compare à `HEAD`, et le code était commité), l'union les a retenues par le chemin de leur mesure. La constante SEULE change, comme à D326. Les sorties de chaque passage de l'union sont déclarées ici, une par une ; la première passe de `neutralize-r38.py` (trois mesures de trop, corrigées par écrit) et sa découverte sont versées avec leur état d'avant, comme les deux premières passes rouges des campagnes de pré-vol.
+
+| fichier | pour |
+|---|---|
+| `neutralisation/neutralize-act-plafonds.py` | (hors table, produit) le nombre de tests attendus passe de 95 à 102 ; la constante SEULE a changé |
+| `neutralisation/neutralize-horloge.py` | (hors table, produit) idem |
+| `docs/preuves/D332/neutralisation/union-jeu.txt` | la sortie du lanceur : huit passages, 3 965 s, le tableau final |
+| `docs/preuves/D332/neutralisation/act-plafonds-1-AVANT-CONSTANTE.txt` | la première passe de `neutralize-act-plafonds.py` : « ERREUR DE SCRIPT », 95 attendus pour 102 |
+| `docs/preuves/D332/neutralisation/act-plafonds.txt` | sa passe après la constante : 4 gardes mordues sur 4 |
+| `docs/preuves/D332/neutralisation/horloge-1-AVANT-CONSTANTE.txt` | la première passe de `neutralize-horloge.py` : « ERREUR DE SCRIPT », 95 attendus pour 102 |
+| `docs/preuves/D332/neutralisation/horloge.txt` | sa passe après la constante : 2 gardes mordues sur 2 |
+| `docs/preuves/D332/neutralisation/journey.txt` | `neutralize-journey.py` : 7 gardes mordues |
+| `docs/preuves/D332/neutralisation/r32.txt` | `neutralize-r32.py` : 65 gardes mordues sur 65 |
+| `docs/preuves/D332/neutralisation/r33.txt` | `neutralize-r33.py` : 87 gardes mordues sur 87 (mode unitaire) |
+| `docs/preuves/D332/neutralisation/r33-int.txt` | `neutralize-r33.py --int` : 95 gardes mordues sur 95 (PostgreSQL réel, le vrai Chromium) |
+| `docs/preuves/D332/neutralisation/r37.txt` | `neutralize-r37.py` : 21 gardes mordues sur 21 |
+| `docs/preuves/D332/neutralisation/r38-decouverte.txt` | `R38_DECOUVERTE=1` : par cible, les tests qui rougissent et leur première ligne — c'est de là que viennent les titres attendus |
+| `docs/preuves/D332/neutralisation/r38-campagne-1-AVANT-CORRECTIF.txt` | la première passe de `neutralize-r38.py` : 43 mordues, 3 muettes (M-9, V-1, J-3 : une mesure de trop chacune) |
+| `docs/preuves/D332/neutralisation/r38.txt` | la passe finale de `neutralize-r38.py` : 46 gardes mordues sur 46 |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json` et `ar.json`, les montants viennent du formateur partagé (`formatDZD`), les types de tarification de l'énumération partagée (`ServicePricingType`).
