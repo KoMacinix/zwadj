@@ -94,7 +94,32 @@ Lot : **L35-2, le PDF** (rang 38, arbitré par Ko le 14/10/2026 : « 3. Rang 38 
 
 ### Extensions de la table
 
-Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre.
+
+#### Extension 1 — les rouges, les verts et leur extracteur ; un fichier conditionnel qui s'est produit ; l'union des campagnes (déclarés AVANT leur versement, en chemins complets)
+
+*Motif* : la table de base nommait les familles « les rouges et les verts » et « les campagnes » sans en écrire les chemins ; la règle exige des chemins COMPLETS, un par un, avant le versement. Elle ne déclarait pas non plus **l'outil** qui extrait les rouges et les verts des journaux bruts de vitest (des centaines de lignes de DOM par échec : le dépôt garde l'EXTRAIT, calibré, et le hachage du journal brut). Un fichier **conditionnel** de la table s'est produit : `typecheck` a rougi sur la forme du devis de `pdf-renderer.int-spec.ts` (la ligne porte désormais `pricingType` et les noms de palier ; le client ne porte plus de langue) — il est déclaré ici, avec la mesure qui le prouve (`apps/api typecheck` : dans ce fichier, 1 erreur TS2739 et 1 erreur TS2353 avant, 0 après ; le même passage a aussi relevé une erreur TS2739 dans `quote-document.service.spec.ts`, fichier de la table de base). Les trois pièces de l'union des campagnes (décision 1 du relecteur) sont déclarées **avant** d'être produites : le script qui calcule, sa sortie versée AVANT de jouer, et le lanceur qui rejoue la liste versée. Les sorties de chaque campagne jouée, les portes et les captures feront l'objet d'extensions ultérieures, chacune AVANT son versement.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D332/rouge/extraire-rouge.py` | l'extracteur : titres et verdicts d'un journal vitest, première ligne et cadre de code de chaque échec ; calibré sur six bras (deux verts, un rouge par assertion, un rouge par erreur de requête, un fichier `.spec.ts`, un texte sans verdict) ; sa sortie dit ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D332/rouge/rouge-api-modele.txt` | le rouge du modèle du document, de la lecture des lignes stockées, de la politique et du service (API, 18 morsures par assertion) |
+| `docs/preuves/D332/rouge/rouge-api-int.txt` | le rouge de l'intégration du PDF sur base réelle (4 morsures par assertion) |
+| `docs/preuves/D332/rouge/rouge-pro-remise.txt` | le rouge des cinq boutons de remise : la boîte de langue, l'annulation, la langue choisie (20 morsures) |
+| `docs/preuves/D332/rouge/rouge-pro-titre-liste.txt` | le rouge du titre de la page « Ma salle / Mes salles » (5 morsures) |
+| `docs/preuves/D332/rouge/rouge-pro-titre-app.txt` | le rouge du titre de `/salles` sans salle (1 morsure) |
+| `docs/preuves/D332/rouge/rouge-pro-nouveaux.txt` | le témoin des composants NEUFS : leur rouge est un import absent, pas une assertion (9 rouges, 0 morsure — écrit comme tel) |
+| `docs/preuves/D332/vert/vert-api-modele.txt` | le vert du même ensemble que `rouge-api-modele.txt`, après le correctif |
+| `docs/preuves/D332/vert/vert-api-int.txt` | le vert de l'intégration du PDF, extrait du journal de `test:int` |
+| `docs/preuves/D332/vert/vert-pro-remise.txt` | le vert des boutons de remise |
+| `docs/preuves/D332/vert/vert-pro-nouveaux.txt` | le vert de la fenêtre de choix partagée |
+| `docs/preuves/D332/vert/vert-pro-venues-label.txt` | le vert de la règle du libellé « Ma salle / Mes salles » |
+| `docs/preuves/D332/vert/vert-pro-titre-liste.txt` | le vert du titre de la page de la liste |
+| `docs/preuves/D332/vert/vert-pro-titre-app.txt` | le vert du titre de `/salles` sans salle |
+| `apps/api/test/int/pdf-renderer.int-spec.ts` | (conditionnel de la table, produit) la forme du devis de test suit le port : une ligne typée, un client sans langue |
+| `docs/preuves/D332/neutralisation/union-campagnes.py` | le script CALIBRÉ qui calcule l'union des campagnes à rejouer : (a) les fonctions du tri appliquées au diff du lot, (b) toute campagne qui cite un fichier du diff — par chemin depuis la racine, par chemin relatif au paquet, par nom de fichier, chaque critère rapporté séparément |
+| `docs/preuves/D332/neutralisation/union-sortie.txt` | sa sortie, versée AVANT de jouer une seule campagne : le diff parcouru, les trois critères, l'union, ce que le tri tel que lancé en aurait retenu |
+| `docs/preuves/D332/neutralisation/jouer-union.py` | le lanceur : lit la liste versée (jamais une liste recalculée) et joue chaque campagne en série, `neutralize-r33.py` aussi avec `--int` |
 
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
