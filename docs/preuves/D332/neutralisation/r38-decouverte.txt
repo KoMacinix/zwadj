@@ -1,0 +1,368 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 46 déclarées · 46 jouées · 7 mesure(s) distincte(s) · 10 fichier(s) muté(s)
+  pré-vol api-modele : code 0 · passés 41 · en échec 0
+  pré-vol api-service : code 0 · passés 11 · en échec 0
+  pré-vol pro-app : code 0 · passés 18 · en échec 0
+  pré-vol pro-choix : code 0 · passés 9 · en échec 0
+  pré-vol pro-libelle : code 0 · passés 3 · en échec 0
+  pré-vol pro-liste : code 0 · passés 13 · en échec 0
+  pré-vol pro-remise : code 0 · passés 102 · en échec 0
+■ M-1. ⛔ le détail suit la VALEUR de la quantité : une prestation « à l'unité » de quantité 1 n'imprime plus rien (DB-9 : la règle suit le TYPE)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à l'unité » imprime la quantité — y compris 1 : la règle suit le TYPE, 
+         ↳ AssertionError: expected '><td>Chaises</td><td class="num">10\u…' to contain '× 1'
+■ M-2. ⛔ une prestation « fixe » de quantité stockée 7 imprime « × 7 » : le détail suit la valeur, pas le type
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « fixe » n'imprime RIEN, même quand sa quantité stockée n'est pas 1 (la r
+         ↳ AssertionError: expected '><td>Forfait</td><td class="det">× 7<…' not to contain '×'
+■ M-3. une prestation « à paliers » imprime une QUANTITÉ au lieu du nom de son palier
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 37 · en échec 4
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à paliers » imprime le NOM du palier, pas une quantité (la quantité sto
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="det">× 1</…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > les quatre types ensemble : une colonne de détail, chaque ligne dit ce qu
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="det">× 1</…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > français : le nom FRANÇAIS du palier ; arabe : le nom ARA
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="det">× 1</…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du bali
+         ↳ AssertionError: expected '<body>\n<h1>Salle des Jasmins</h1>\n<…' to contain '&lt;script&gt;window.x=1&lt;/script&g…'
+■ M-4. ⛔ le nom du palier est pris dans l'AUTRE langue : le document arabe imprime le nom français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 36 · en échec 5
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à paliers » imprime le NOM du palier, pas une quantité (la quantité sto
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="det">الصيغ…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > les quatre types ensemble : une colonne de détail, chaque ligne dit ce qu
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="det">الصيغ…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > français : le nom FRANÇAIS du palier ; arabe : le nom ARA
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="det">الصيغ…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > ⛔ une ligne « à paliers » SANS nom de palier stocké LÈVE 
+         ↳ AssertionError: expected function to throw an error, but it didn't
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du bali
+         ↳ AssertionError: expected '<body>\n<h1>Salle des Jasmins</h1>\n<…' to contain '&lt;script&gt;window.x=1&lt;/script&g…'
+■ M-5. ⛔ une ligne « à paliers » SANS nom de palier ne lève plus : elle s'imprime à moitié
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > ⛔ une ligne « à paliers » SANS nom de palier stocké LÈVE 
+         ↳ AssertionError: expected function to throw an error, but it didn't
+■ M-6. ⛔ la colonne de détail s'imprime TOUJOURS : une colonne vide quand toutes les prestations sont « fixe » (le défaut du constat 1 de Ko)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > des prestations TOUTES « fixe » : un tableau à DEUX colonnes (prestat
+         ↳ AssertionError: expected 3 to be 2 // Object.is equality
+■ M-7. la colonne de détail ne s'imprime JAMAIS : la quantité et le palier disparaissent du tableau
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 34 · en échec 7
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une prestation qui a un détail : un tableau à TROIS colonnes, l'en-tê
+         ↳ AssertionError: expected 2 to be 3 // Object.is equality
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « par invité » imprime la quantité stockée (le nombre d'invités)
+         ↳ AssertionError: expected '><td>Menu</td><td class="num">10\u202…' to contain '× 150'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à l'unité » imprime la quantité — y compris 1 : la règle suit le TYPE, 
+         ↳ AssertionError: expected '><td>Chaises</td><td class="num">10\u…' to contain '× 1'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à paliers » imprime le NOM du palier, pas une quantité (la quantité sto
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="num">10\u2…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > les quatre types ensemble : une colonne de détail, chaque ligne dit ce qu
+         ↳ AssertionError: expected 2 to be 3 // Object.is equality
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > français : le nom FRANÇAIS du palier ; arabe : le nom ARA
+         ↳ AssertionError: expected '><td>Gâteau</td><td class="num">10\u2…' to contain 'Formule Prestige'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du bali
+         ↳ AssertionError: expected '<body>\n<h1>Salle des Jasmins</h1>\n<…' to contain '&lt;script&gt;window.x=1&lt;/script&g…'
+■ M-8. sans prestation, le tableau s'imprime quand même (vide) au lieu de n'imprimer aucun tableau
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > sans prestation : AUCUN tableau, et une phrase dit qu'aucune prestati
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' not to contain '<table'
+■ M-9. ⛔ le montant d'une ligne est RECALCULÉ (total × quantité) au lieu d'être la valeur stockée (la règle des montants)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 38 · en échec 3
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `forma
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '375\u202f000 DA'
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le montant d'une LIGNE est la valeur stockée, et PAS prix unitai
+         ↳ AssertionError: expected '><td>Menu</td><td class="det">× 150</…' to contain '333\u202f333 DA'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « fixe » n'imprime RIEN, même quand sa quantité stockée n'est pas 1 (la r
+         ↳ AssertionError: expected '><td>Forfait</td><td class="det"></td…' not to contain '7'
+■ M-10. le récapitulatif perd son titre « Récapitulatif » (il porte celui d'une autre ligne)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > une section titrée « Récapitulatif », APRÈS le tableau, qui porte les quatre
+         ↳ AssertionError: expected '<section class="recap">\n  <h2>Total …' to contain '<h2>Récapitulatif</h2>'
+■ M-11. ⛔ le récapitulatif répète la ligne des prestations à la place de la location : l'ordre location, prestations, total, acompte est rompu
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 39 · en échec 2
+      FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `forma
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '180\u202f000 DA'
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > une section titrée « Récapitulatif », APRÈS le tableau, qui porte les quatre
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ M-12. ⛔ une propriété PHYSIQUE (`margin-left`) dans l'alignement du récapitulatif : en arabe il serait du mauvais côté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les montants et les libellés s'alignent par des propriétés LOGIQUES : aucune
+         ↳ AssertionError: expected 'margin-left' to be null
+■ M-13. ⛔ le nom du palier est inséré SANS échappement (`raw`) : un nom hostile devient du balisage
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du bali
+         ↳ AssertionError: expected '<body>\n<h1>Salle des Jasmins</h1>\n<…' not to contain '<script>'
+■ M-14. l'en-tête de la colonne de détail porte un autre libellé que « Détail »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une prestation qui a un détail : un tableau à TROIS colonnes, l'en-tê
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '>Détail<'
+■ M-17. la phrase « aucune prestation choisie » dit autre chose
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > sans prestation : AUCUN tableau, et une phrase dit qu'aucune prestati
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain 'Aucune prestation choisie.'
+■ S-1. ⛔ un type de tarification INCONNU ne lève plus : la ligne s'imprime avec un détail deviné
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > un type de tarification INCONNU ou ABSENT lève
+         ↳ AssertionError: expected function to throw an error, but it didn't
+■ S-2. ⛔ le nom ARABE du palier n'est plus exigé : le document arabe imprimerait un palier sans nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > ⛔ une ligne « à paliers » dont le nom du palie
+         ↳ AssertionError: expected function to throw an error, but it didn't
+■ S-3. ⛔ la langue du compte du client est LUE de nouveau (`locale: true`) : la branche retirée revient
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-15) : la branche « langue du client » es
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ V-1. ⛔ le document est construit dans une langue FIXE, quelle que soit la langue demandée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le 
+         ↳ AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '<html lang="ar" dir="rtl">'
+■ V-2. ⛔ la langue APPLIQUÉE que la réponse annonce (`Content-Language`) n'est plus la langue demandée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le 
+         ↳ AssertionError: expected 'fr' to be 'ar' // Object.is equality
+■ Y-1. ⛔ `chooseDocumentLocale` REVIENT dans la politique : la règle remplacée laisse du code mort
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [api-modele] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-15) : la branche « langue du client » es
+         ↳ AssertionError: expected { f: 'quote-document-policy.ts', …(1) } to deeply equal { f: 'quote-document-policy.ts', …(1) }
+■ C-1. la fenêtre fermée se rend quand même
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > fermée, elle ne rend rien
+         ↳ AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+■ C-2. elle n'est plus modale pour la technologie d'assistance (`aria-modal`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > ouverte : une fenêtre modale nommée par son titre et décrite par sa description
+         ↳ AssertionError: expected 'false' to be 'true' // Object.is equality
+■ C-3. ⛔ « Annuler » n'est plus le premier bouton : les options passent devant lui (et le focus d'entrée ne serait plus « Annuler »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > « Annuler » d'abord, puis les options dans l'ordre reçu
+         ↳ AssertionError: expected [ 'Annuler', 'العربية', 'Français' ] to deeply equal [ 'Annuler', 'Français', 'العربية' ]
+■ C-4. ⛔ choisir une option ANNULE aussi : l'appelant recevrait le choix puis l'annulation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > choisir une option appelle `onChoose` avec son identifiant, UNE fois, et n'annule pas
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+■ C-5. choisir une option rend l'identifiant de la PREMIÈRE, quelle que soit celle cliquée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > choisir une option appelle `onChoose` avec son identifiant, UNE fois, et n'annule pas
+         ↳ AssertionError: expected "spy" to be called with arguments: [ 'ar' ]
+■ C-6. ⛔ Échap n'annule plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > annuler : le bouton, Échap, le clic sur le fond — chacun appelle `onCancel` et jamais `onChoose`
+         ↳ AssertionError: echap: expected "spy" to be called 1 times, but got 0 times
+■ C-7. ⛔ un clic DANS la fenêtre annule (le fond n'est plus distingué du panneau)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — choisir, annuler, focus > un clic DANS la fenêtre n'annule pas (une sélection de texte relâchée dehors non plus : seul `mousedown` sur le fond comp
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 2 times
+■ C-8. ⛔ la direction de l'option n'est plus déclarée : l'arabe est lu sans sa direction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > chaque option déclare sa langue et sa direction — un lecteur d'écran ne lit pas l'arabe en lettres non liées
+         ↳ AssertionError: expected [ 'fr', null ] to deeply equal [ 'fr', 'ltr' ]
+■ C-9. ⛔ une langue est DEVINÉE quand l'appelant n'en donne pas (`lang` « fr » et `dir` « ltr » par défaut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/ui-choice-dialog.test.tsx > ChoiceDialog — rôle, nom, description, boutons > une option sans `lang` ni `dir` n'en pose pas (rien n'est deviné)
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ J-1. ⛔ le bouton de remise ne passe plus par la boîte : il enregistre et télécharge tout de suite, en français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 81 · en échec 21
+      FAIL  src/dashboard/walkin-journey.test.tsx > La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours
+         ↳ TestingLibraryElementError: Unable to find role="dialog" and name "Langue du document"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte 
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affic
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le mot
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jam
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu 
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveu
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux télécharg
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la pa
+         ↳ AssertionError: la boîte de langue est dans la langue de la page: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annule
+         ↳ AssertionError: PRINT: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'en
+         ↳ AssertionError: bouton: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « الع
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impre
+         ↳ AssertionError: la boîte du SMS est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les bout
+         ↳ AssertionError: la boîte de langue est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus i
+         ↳ AssertionError: expected null not to be null
+■ J-2. ⛔ ANNULER la boîte remet quand même (le canal est enregistré, le PDF téléchargé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 100 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'en
+         ↳ AssertionError: bouton : aucune boîte, aucune fenêtre: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impre
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 2 times
+■ J-3. ⛔ ANNULER ne ferme plus la boîte : elle reste ouverte, et le canal du SMS reste retenu pour le clic suivant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 101 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'en
+         ↳ AssertionError: bouton : aucune boîte, aucune fenêtre: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+■ J-4. ⛔ la langue envoyée est celle de l'INTERFACE : choisir « العربية » sur une page française envoie `fr`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 101 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « الع
+         ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+■ J-5. ⛔ la langue envoyée est toujours le français : le choix « العربية » est ignoré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 100 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la pa
+         ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « الع
+         ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+■ J-6. ⛔ choisir une langue ne ferme pas la boîte avant le travail : elle reste ouverte pendant l'enregistrement et le téléchargement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 95 · en échec 7
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte 
+         ↳ AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jam
+         ↳ TestingLibraryElementError: Found multiple elements with the role "dialog"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie
+         ↳ TestingLibraryElementError: Found multiple elements with the role "dialog"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveu
+         ↳ TestingLibraryElementError: Found multiple elements with the role "dialog"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux télécharg
+         ↳ AssertionError: aucune nouvelle boîte pendant le travail: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+         ↳ TestingLibraryElementError: Found multiple elements with the role "dialog"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les bout
+         ↳ AssertionError: la boîte est fermée pendant le travail: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+■ J-7. ⛔ le libellé arabe déclare la direction `ltr` : l'arabe est présenté de gauche à droite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 101 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus i
+         ↳ AssertionError: expected [ 'ar', 'ltr' ] to deeply equal [ 'ar', 'rtl' ]
+■ J-8. ⛔ le bouton arabe déclare la langue `fr`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 101 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus i
+         ↳ AssertionError: expected [ 'fr', 'rtl' ] to deeply equal [ 'ar', 'rtl' ]
+■ J-9. la boîte ne propose que le français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 98 · en échec 4
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la pa
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "العربية"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annule
+         ↳ AssertionError: PRINT — العربية: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « الع
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "العربية"
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus i
+         ↳ TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "العربية"
+■ J-10. ⛔ le PDF est demandé au serveur dans une langue FIXE (le paramètre de `remettre` est ignoré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 100 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la pa
+         ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « الع
+         ↳ AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+■ K-1. « Français » est traduit dans le catalogue arabe : le libellé n'est plus écrit dans sa propre langue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · ROUGE — passés 101 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et ID
+         ↳ AssertionError: expected 'الفرنسية' to be 'Français' // Object.is equality
+■ T-1. le seuil du pluriel passe à TROIS salles : deux salles disent encore « Ma salle »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-libelle] code 1 · ROUGE — passés 2 · en échec 1
+      FAIL  src/shell/venues-label.test.ts > venuesLabelKey — « Ma salle » jusqu'à une salle, « Mes salles » dès la seconde > deux salles et plus : le pluriel — le seuil est à DEUX, ni à un ni à trois
+         ↳ AssertionError: 2: expected 'venue.ui.nav.myVenue' to be 'venue.ui.nav.myVenues' // Object.is equality
+■ T-2. le seuil tombe à zéro : pendant le chargement le libellé dit « Mes salles » puis se rétracte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-libelle] code 1 · ROUGE — passés 2 · en échec 1
+      FAIL  src/shell/venues-label.test.ts > venuesLabelKey — « Ma salle » jusqu'à une salle, « Mes salles » dès la seconde > zéro et une salle : le singulier (pendant le chargement le compte vaut 0 : affic
+         ↳ AssertionError: expected 'venue.ui.nav.myVenues' to be 'venue.ui.nav.myVenue' // Object.is equality
+■ T-3. ⛔ le menu écrit son propre libellé (la règle existe deux fois)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-liste] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > DEUX salles : « Mes salles » ; le menu du haut dit le même mot
+         ↳ AssertionError: le menu dit le même mot que le titre: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : la règle vit UNE fois — la page ET le menu importent `venuesLabelK
+         ↳ AssertionError: src/shell/pro-nav.tsx: expected '\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\…' not to match /venue\.ui\.nav\.myVenue/
+■ T-4. ⛔ le titre de la page dit toujours « Mes salles » (le défaut observé par D331)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-app] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/App.test.tsx > Coquille protégée (D23/D24) > session PRO sur /salles : la LISTE, sur une route enfin DÉCLARÉE (dette fermée)
+         ↳ AssertionError: expected null not to be null
+   [pro-liste] code 1 · ROUGE — passés 8 · en échec 5
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > UNE salle : « Ma salle », le mot du menu — et non « Mes salles »
+         ↳ AssertionError: expected 'Mes salles' to be 'Ma salle' // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > AUCUNE salle (état vide) : « Ma salle » comme le menu — un compte de zéro e
+         ↳ AssertionError: expected 'Mes salles' to be 'Ma salle' // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > en ARABE : « قاعتي » pour une salle, « قاعاتي » pour deux
+         ↳ AssertionError: expected 'قاعاتي' to be 'قاعتي' // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : supprimer la SECONDE salle ramène le titre à « Ma salle » SANS rec
+         ↳ AssertionError: expected 'Mes salles' to be 'Ma salle' // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : la règle vit UNE fois — la page ET le menu importent `venuesLabelK
+         ↳ AssertionError: src/venues/venue-list-page.tsx: expected '\r\r\r\r\r\r\r\r\r\r\r\r\nimport { us…' not to match /venue\.ui\.nav\.myVenue/
+■ T-5. le titre de la page dit toujours « Ma salle » : deux salles disent le singulier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-liste] code 1 · ROUGE — passés 9 · en échec 4
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > DEUX salles : « Mes salles » ; le menu du haut dit le même mot
+         ↳ AssertionError: expected 'Ma salle' to be 'Mes salles' // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > en ARABE : « قاعتي » pour une salle, « قاعاتي » pour deux
+         ↳ AssertionError: expected 'قاعتي' to be 'قاعاتي' // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : supprimer la SECONDE salle ramène le titre à « Ma salle » SANS rec
+         ↳ AssertionError: expected 'Ma salle' to be 'Mes salles' // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : la règle vit UNE fois — la page ET le menu importent `venuesLabelK
+         ↳ AssertionError: src/venues/venue-list-page.tsx: expected '\r\r\r\r\r\r\r\r\r\r\r\r\nimport { us…' not to match /venue\.ui\.nav\.myVenue/
+  empreintes : 10 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 46 cible(s) jouée(s) sur 46, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

@@ -1,0 +1,41 @@
+liste versée : 7 campagne(s) · jouées dans ce lancement : 7
+
+[1] neutralize-act-plafonds.py …
+    sortie=1 · 0 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[2] neutralize-horloge.py …
+    sortie=1 · 0 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[3] neutralize-journey.py …
+    sortie=0 · 7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[4] neutralize-r32.py …
+    sortie=0 · 65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 65 garde(s) mordue(s) sur 65 cible
+
+[5] neutralize-r33.py …
+    sortie=0 · 87 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 87 garde(s) mordue(s) sur 87 cible
+
+[6] neutralize-r33.py --int …
+    sortie=0 · 95 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 95 garde(s) mordue(s) sur 95 cible
+
+[7] neutralize-r37.py …
+    sortie=0 · 21 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 21 garde(s) mordue(s) sur 21 cible
+
+[8] neutralize-r38.py …
+    sortie=0 · 46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 46 garde(s) mordue(s) sur 46 cible
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-act-plafonds.py              1     0     0     0    35  — (aucun résumé écrit)
+neutralize-horloge.py                   1     0     0     0    35  — (aucun résumé écrit)
+neutralize-journey.py                   0     7     0     0   338  — (aucun résumé écrit)
+neutralize-r32.py                       0    65     0     0   682  65 garde(s) mordue(s) sur 65 cible
+neutralize-r33.py                       0    87     0     0   956  87 garde(s) mordue(s) sur 87 cible
+neutralize-r33.py --int                 0    95     0     0  1152  95 garde(s) mordue(s) sur 95 cible
+neutralize-r37.py                       0    21     0     0   241  21 garde(s) mordue(s) sur 21 cible
+neutralize-r38.py                       0    46     0     0   525  46 garde(s) mordue(s) sur 46 cible
+========================================================================================================================
+PARCOURU : 8 passage(s) pour 7 campagne(s) (attendu : 7 + 1 pour `neutralize-r33.py --int` s'il est dans la liste) · 3965s
+MESURÉ : 321 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 2 sortie(s) non nulle(s) (attendu : 0, 0, 0)
+  ⚠ neutralize-act-plafonds.py → sortie 1
+  ⚠ neutralize-horloge.py → sortie 1
