@@ -143,6 +143,47 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D332/neutralisation/r38-campagne-1-AVANT-CORRECTIF.txt` | la première passe de `neutralize-r38.py` : 43 mordues, 3 muettes (M-9, V-1, J-3 : une mesure de trop chacune) |
 | `docs/preuves/D332/neutralisation/r38.txt` | la passe finale de `neutralize-r38.py` : 46 gardes mordues sur 46 |
 
+#### Extension 3 — les portes, la neutralisation à la main de l'e2e, les captures et les pages rastérisées de trois devis réels (déclarés AVANT leur versement, en chemins complets)
+
+*Motif* : la table de base nommait les familles « les portes » et « les captures » sans en écrire les chemins. Les six portes sont déclarées avec leur EXTRACTEUR (le journal brut d'`e2e` porte des liens à jeton de la pile e2e : il reste hors dépôt, son empreinte seule est versée) et avec le passage d'`e2e` qui n'a RIEN joué (une commande mal formée : `--` lu par Playwright comme un filtre de fichier) — versé parce qu'un « exit 1 » non expliqué se relit comme un rouge. La neutralisation à la main de la spec e2e (`e2e-a-la-main.py` et sa sortie) est versée COMME PROCÉDURE, ce que la lecture adverse de D331 avait relevé comme non vérifiable (N5, S-9). Les trois devis réels sont l'ensemble {sans prestation ; prestations fixes seulement ; quantités et palier} × {français, arabe} ; la boîte de langue est {français, arabe} × {1 280, 360 px}, plus le titre de la page « Ma salle » en français et en arabe à 1 280 px.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D332/portes/extraire-portes.py` | l'extracteur des six portes : code de sortie réel, ce qu'il a parcouru et l'attendu à côté, totaux confrontés à ceux de D331 LUS dans sa pièce ; calibré sur trois bras |
+| `docs/preuves/D332/portes/typecheck.txt` | la porte `typecheck` : code 0, 8 paquets « Done » = les 8 paquets qui déclarent le script |
+| `docs/preuves/D332/portes/lint.txt` | la porte `lint` : code 0, 8 paquets |
+| `docs/preuves/D332/portes/test.txt` | la porte `test` : 1 790 tests · 139 fichiers, 0 échec, écart +42 / +2 contre D331 |
+| `docs/preuves/D332/portes/build.txt` | la porte `build` : code 0, 4 paquets |
+| `docs/preuves/D332/portes/test-int.txt` | la porte `test:int` : 471 tests · 38 fichiers, écart +3 contre D331 |
+| `docs/preuves/D332/portes/e2e.txt` | la porte `test:e2e` : 54 passés, 1 ignoré, les 55 verdicts |
+| `docs/preuves/D332/portes/e2e-1-MAUVAISE-COMMANDE.txt` | le passage d'`e2e` qui n'a rien joué (commande mal formée), expliqué |
+| `docs/preuves/D332/portes/etat-machine.txt` | l'état de la machine à la fin du paquet : secteur, RAM, processus ; dit que ce n'est PAS une fenêtre certifiante |
+| `docs/preuves/D332/neutralisation/e2e-a-la-main.py` | la procédure : deux mutations de `walkin-journey.tsx` (annuler remet quand même ; langue toujours « fr »), la spec e2e ciblée jouée dans un vrai navigateur, le fichier restauré à l'octet (empreinte comparée) |
+| `docs/preuves/D332/neutralisation/e2e-a-la-main.txt` | sa sortie LUE : E-1 rougit par `expect(received).toEqual(expected)` (deliver et document dans les requêtes) ; E-2 par `expect(received).toBe(expected)` (`locale` « fr » reçu pour « ar » attendu) |
+| `docs/preuves/D332/navigateur/pdf-devis.capture.ts` | la sonde : la boîte de langue en français et en arabe à 1 280 et 360 px, le titre « Ma salle », puis trois devis RÉELS créés par l'API (salle, prestations de chaque type de tarification, devis) et leur PDF téléchargé du serveur dans les deux langues |
+| `docs/preuves/D332/navigateur/playwright.capture.config.ts` | sa configuration : la pile e2e à l'identique, seuls les fichiers `*.capture.ts` de ce dossier sont joués |
+| `docs/preuves/D332/navigateur/mesures-capture.txt` | les lignes `MESURE …` de la sonde : largeur du panneau, boutons avec leur `lang` et leur `dir`, titre et mot du menu, octets et `Content-Language` de chaque PDF |
+| `docs/preuves/D332/navigateur/rasterisation.txt` | la sortie du rastériseur indépendant (pdf.js) : calibration et pixels non blancs parcourus par page |
+| `docs/preuves/D332/navigateur/sortie/devis-sans-prestation-fr.pdf` | le PDF du devis sans prestation, français |
+| `docs/preuves/D332/navigateur/sortie/devis-sans-prestation-ar.pdf` | le PDF du devis sans prestation, arabe |
+| `docs/preuves/D332/navigateur/sortie/devis-prestations-fixes-fr.pdf` | le PDF du devis à deux prestations fixes, français |
+| `docs/preuves/D332/navigateur/sortie/devis-prestations-fixes-ar.pdf` | le PDF du devis à deux prestations fixes, arabe |
+| `docs/preuves/D332/navigateur/sortie/devis-quantites-palier-fr.pdf` | le PDF du devis par invité, à l'unité, à paliers et fixe, français |
+| `docs/preuves/D332/navigateur/sortie/devis-quantites-palier-ar.pdf` | le PDF du devis par invité, à l'unité, à paliers et fixe, arabe |
+| `docs/preuves/D332/navigateur/sortie/devis-sources.json` | les valeurs STOCKÉES des trois devis, relues de l'API (montants, lignes) : ce que les PDF doivent imprimer |
+| `docs/preuves/D332/navigateur/sortie/dialogue-fr-1280.png` | la boîte de langue, français, 1 280 px |
+| `docs/preuves/D332/navigateur/sortie/dialogue-fr-360.png` | la boîte de langue, français, 360 px |
+| `docs/preuves/D332/navigateur/sortie/dialogue-ar-1280.png` | la boîte de langue, arabe, 1 280 px |
+| `docs/preuves/D332/navigateur/sortie/dialogue-ar-360.png` | la boîte de langue, arabe, 360 px |
+| `docs/preuves/D332/navigateur/sortie/salles-fr-1280.png` | la page « Ma salle » avec une salle, français, 1 280 px : le titre dit le mot du menu |
+| `docs/preuves/D332/navigateur/sortie/salles-ar-1280.png` | la page « قاعتي » avec une salle, arabe, 1 280 px |
+| `docs/preuves/D332/navigateur/pages/devis-sans-prestation-fr-p1.png` | la page rastérisée du devis sans prestation, français |
+| `docs/preuves/D332/navigateur/pages/devis-sans-prestation-ar-p1.png` | la page rastérisée du devis sans prestation, arabe |
+| `docs/preuves/D332/navigateur/pages/devis-prestations-fixes-fr-p1.png` | la page rastérisée du devis à prestations fixes, français |
+| `docs/preuves/D332/navigateur/pages/devis-prestations-fixes-ar-p1.png` | la page rastérisée du devis à prestations fixes, arabe |
+| `docs/preuves/D332/navigateur/pages/devis-quantites-palier-fr-p1.png` | la page rastérisée du devis à quantités et à palier, français |
+| `docs/preuves/D332/navigateur/pages/devis-quantites-palier-ar-p1.png` | la page rastérisée du devis à quantités et à palier, arabe |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json` et `ar.json`, les montants viennent du formateur partagé (`formatDZD`), les types de tarification de l'énumération partagée (`ServicePricingType`).
