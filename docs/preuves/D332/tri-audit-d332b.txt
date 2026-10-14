@@ -1,0 +1,15 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D332/audit-secrets-d332a.txt (224 contextes) · nouvelle docs/preuves/D332/audit-secrets-d332b.txt (226 contextes)
+   alertes ABSENTES de la précédente : 2 — à trier au contexte avant le commit
+   [mot-de-passe] docs/preuves/D332/releve-lignes/sonde-lignes.py — contexte : ligne 1459 de docs/preuves/D332/audit-secrets-d332b.txt
+   [jeton] docs/preuves/D332/tri-audit-d332a.txt — contexte : ligne 1461 de docs/preuves/D332/audit-secrets-d332b.txt
+   ventilation par motif : mot-de-passe=1 · jeton=1
+
+== TRI AU CONTEXTE (humain, D332) — les DEUX alertes ABSENTES de la précédente, lues dans la sortie scellée (`audit-secrets-d332b.txt`, lignes 1459 et 1461) ; AUCUN contexte n'est recopié ici (ce serait un écho non scellé)
+   1. `docs/preuves/D332/releve-lignes/sonde-lignes.py`, ligne 47 (motif « mot-de-passe ») : l'appel `docker exec` de la sonde de lecture des lignes de devis passe le mot de passe de la base de développement à `psql` par l'ENVIRONNEMENT du processus — le texte est une f-string qui INTERPOLE une variable (`MDP`) lue, au lancement, dans `DATABASE_URL` de `apps/api/.env` (fichier non suivi par git) ; **aucune valeur n'est écrite dans le fichier** (le sceau l'a vu comme « valeur déjà présente dans 0 fichier suivi hors preuves »). Le fichier est versé depuis le commit `2c90808` ; il est nouveau pour l'audit « b » parce que l'audit « a » l'a précédé.
+   2. `docs/preuves/D332/tri-audit-d332a.txt`, ligne 10 (motif « jeton ») : le tri humain de l'audit « a » de ce lot, qui NOMME `token=` en décrivant l'alerte qu'il a triée (l'écho du tri de l'audit « b » de D331) ; du texte de documentation, pas une valeur. C'est exactement ce que la « limite écrite » de l'audit « a » annonçait : le tri d'un audit est lu par l'audit suivant.
+   BILAN DU TRI : 2 sur 2 = (1) une variable interpolée, aucune valeur ; (2) l'écho du tri de l'audit « a » ; AUCUNE valeur réelle.
+   ⛔ CE QUI FAIT FOI SUR L'ABSENCE DE VALEURS (règle de D299, arbitrage de Ko) est le contrôle dédié, et il a été joué : `docs/preuves/D332/aucune-valeur-reelle.txt` — **87 valeurs réelles cherchées** (les liens de vérification d'e-mail de la pile e2e jetable, dans les quatre journaux de cette session qui en portent), **16 913 fichiers parcourus**, **0 porteur** ; calibré à deux bras par journal.
+   Limite écrite : ce tri-ci sera lu par l'audit du lot suivant, qui le trouvera comme alerte nouvelle du même ordre (le tri d'un audit nomme `token=`) ; l'audit « b » n'a pas couvert les octets de ce fichier, ni ceux du dernier commit du lot (la sous-section des résultats de `ZWADJ_CONTINUITE.md`, qui ne porte que des nombres et des noms de pièces).

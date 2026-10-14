@@ -1,0 +1,13 @@
+# D332 — contrôle DÉDIÉ « aucune valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py), joué le 14/10/2026 sur `e58b373` + le tri de la passe D277 : les valeurs des QUATRE journaux de cette session qui en portent (le journal de `test:e2e`, les deux passes de la spec `r33-remise-devis` et la sonde de captures : liens de vérification d'e-mail de la pile e2e jetable)
+# cherchées dans `docs/preuves/D332`, les trois `.md` d'autorité, `neutralisation`, `e2e`, `apps/pro/src`, `apps/api/src`, `packages`. N'imprime JAMAIS une valeur : des comptes seulement. Le journal du passage d'e2e mal formé n'en porte aucune (la calibration d'un journal sans valeur abandonne) : il n'est pas un des quatre.
+# Les chemins du dossier de travail de la session sont remplacés par <scratchpad>.
+
+✓ <scratchpad>/portes/e2e.brut : occurrences stricte 59 · large 59 (doivent s'accorder) · valeurs distinctes 59 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ <scratchpad>/e2e-r33-1.txt : occurrences stricte 12 · large 12 (doivent s'accorder) · valeurs distinctes 12 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ <scratchpad>/e2e-r33-2.txt : occurrences stricte 12 · large 12 (doivent s'accorder) · valeurs distinctes 12 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ <scratchpad>/capture-1.txt : occurrences stricte 4 · large 4 (doivent s'accorder) · valeurs distinctes 4 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, <scratchpad>/portes/e2e.brut porte 59 valeur(s) (attendu ≥ 59)
+✓ lu comme une cible, <scratchpad>/e2e-r33-1.txt porte 12 valeur(s) (attendu ≥ 12)
+✓ lu comme une cible, <scratchpad>/e2e-r33-2.txt porte 12 valeur(s) (attendu ≥ 12)
+✓ lu comme une cible, <scratchpad>/capture-1.txt porte 4 valeur(s) (attendu ≥ 4)
+== valeurs cherchées : 87 (4 journal/journaux) · parcourus : 16913 fichiers, 324901278 octets · porteurs : 0 (attendu 0)
