@@ -147,6 +147,15 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D331/neutralisation/r33-c1-decouverte.txt` | la sortie de la découverte qui a montré le titre périmé (le test nommé ne rougit pas ; deux autres, si) |
 | `docs/preuves/D331/neutralisation/r33-campagne.txt` | la campagne `neutralize-r33.py` rejouée en entier après la réorientation, lue : une ligne par cible, mordues / muettes / non mesurées |
 
+#### Extension 5 — le relevé des chemins relatifs au paquet (déclaré AVANT son versement, en chemins complets)
+
+*Motif* : en écrivant l'entrée du backlog sur l'angle mort du tri `lancer-campagnes.py` (extension 4), la session a écrit que l'étendue du défaut n'était **pas relevée** ; elle l'a ensuite relevée, par un script jetable calibré sur son cas positif connu (`neutralize-r33.py`) et sur deux cas négatifs. Une affirmation écrite comme mesurée nomme la pièce brute qui la porte (`AGENTS.md`, D291) : le script est archivé comme **preuve** — jamais promu en instrument — et sa sortie est versée. Le relevé ne modifie ni le tri ni aucune campagne : il en **compte** les chemins.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D331/outils/releve-chemins-relatifs.py` | le relevé : pour chacune des campagnes `neutralisation/neutralize-*.py`, les chemins entre guillemets (mêmes extensions que le tri) absents de la racine et présents sous un paquet de `apps/` ou `packages/` ; calibré à deux bras ; sa sortie dit ce qu'il a parcouru et l'attendu à côté |
+| `docs/preuves/D331/releve-chemins-relatifs.txt` | sa sortie |
+
 ## Modes de défaillance — écrits AVANT toute ligne de code
 
 Chacun nomme ce qui peut mal tourner, le test qui le mesure, et le sort de la cible de neutralisation. Aucune valeur attendue ne s'écrit de mémoire : les textes d'écran sont relevés dans `packages/i18n/messages/fr.json`, les montants viennent du formateur partagé (`formatDZD`).
