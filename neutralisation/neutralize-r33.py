@@ -6,8 +6,8 @@ Ce que le lot ajoute, et que chaque cible neutralise (une garde neuve dont on n'
     échappé, sauf un `raw()` écrit — le CSS et les polices du dépôt (H-*, M-*) ;
   · l'ADAPTATEUR du moteur de rendu (`playwright-pdf.renderer.ts`) : JavaScript coupé, réseau bloqué, navigateur fermé sur tous les chemins, rendus simultanés bornés,
     une panne dite panne (RD-*) ;
-  · la POLITIQUE du document (`quote-document-policy.ts`) : une version qui n'est plus la dernière est REFUSÉE, l'ordre des refus, la langue du client avant celle du pro,
-    comparée au MINUSCULE de l'énuméré (PO-*) ; l'ORCHESTRATION (`quote-document.service.ts`) : propriétaire, 404 indistinct, 409, 503, fuseau d'Alger (SV-*) ;
+  · la POLITIQUE du document (`quote-document-policy.ts`) : une version qui n'est plus la dernière est REFUSÉE, l'ordre des refus, (PO-1 à PO-4 ; ⛔ PO-5 à PO-7 RETIRÉES au rang 38, D332 :
+    la branche « langue du client » n'existe plus) ; l'ORCHESTRATION (`quote-document.service.ts`) : propriétaire, 404 indistinct, 409, 503, fuseau d'Alger (SV-*) ;
   · la RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (M-1 à M-3, I-4) ; les POLICES du dépôt, avec leurs plages (F-*) ;
   · la REMISE du devis (`remittance.ts`, `remittance-hook.ts`, `walkin-journey.tsx`) : ce que la fenêtre DIT selon les deux issues, aucun texte ne dit que Zwadj a envoyé,
     le point de branchement SMS / e-mail, le canal « e-mail » exigeant une adresse, les boutons verrouillés pendant le travail (R-*, J-*) ;
@@ -160,11 +160,11 @@ cible("H-7. un imposteur à la forme d'un fragment passe pour un fragment sûr",
 
 # ── M — le MODÈLE du devis : la valeur STOCKÉE s'imprime, tout est échappé.
 cible("M-1. ⛔ RÈGLE DES MONTANTS — l'acompte imprimé est RECALCULÉ (30 % du total) au lieu d'être la valeur stockée", MODELE,
-      '<div class="acompte"><span>${L.deposit}</span><span>${formatDZD(record.depositCents)}</span></div>',
-      '<div class="acompte"><span>${L.deposit}</span><span>${formatDZD(Math.round(record.totalCents * 0.3))}</span></div>', {"api-modele": "l'acompte imprimé est la valeur stockée, et PAS 30 % du total"})
+      '<div class="ligne acompte"><dt>${L.deposit}</dt><dd>${formatDZD(record.depositCents)}</dd></div>',
+      '<div class="ligne acompte"><dt>${L.deposit}</dt><dd>${formatDZD(Math.round(record.totalCents * 0.3))}</dd></div>', {"api-modele": "l'acompte imprimé est la valeur stockée, et PAS 30 % du total"})
 cible("M-2. ⛔ RÈGLE DES MONTANTS — le total imprimé est RECOMPOSÉ (base + prestations) au lieu d'être la valeur stockée", MODELE,
-      "<div><span>${L.total}</span><span>${formatDZD(record.totalCents)}</span></div>",
-      "<div><span>${L.total}</span><span>${formatDZD(record.basePriceCents + record.servicesTotalCents)}</span></div>", {"api-modele": "le total imprimé est la valeur STOCKÉE, et PAS base + prestations"})
+      '<div class="ligne total"><dt>${L.total}</dt><dd>${formatDZD(record.totalCents)}</dd></div>',
+      '<div class="ligne total"><dt>${L.total}</dt><dd>${formatDZD(record.basePriceCents + record.servicesTotalCents)}</dd></div>', {"api-modele": "le total imprimé est la valeur STOCKÉE, et PAS base + prestations"})
 cible("M-3. ⛔ RÈGLE DES MONTANTS — le montant d'une ligne est RECALCULÉ (× quantité)", MODELE,
       "formatDZD(l.lineTotalCents)", "formatDZD(l.lineTotalCents * l.quantity)", {"api-modele": "chaque montant imprimé est celui du devis"})
 cible("M-4. le nom de la salle s'insère SANS échappement (`raw`)", MODELE, "<h1>${salle}</h1>", "<h1>${raw(salle)}</h1>", {"api-modele": "le nom de la salle, du client, du créneau et des prestat"})
@@ -211,12 +211,9 @@ cible("PO-2. ⛔ l'ORDRE des refus s'inverse : une ancienne version ANNULÉE est
 cible("PO-3. un devis ACCEPTÉ n'est plus imprimable (le document qui compte le plus)", POLITIQUE,
       "return isQuoteOpen(status) || status === QuoteStatus.ACCEPTED;", "return isQuoteOpen(status);", {"api-politique": "un devis ACCEPTÉ — la version dont l'acompte est réglé"})
 cible("PO-4. une affaire PERDUE devient imprimable", POLITIQUE, "return isQuoteOpen(status) || status === QuoteStatus.ACCEPTED;", "return true;", {"api-politique": "la dernière version d'une affaire PERDUE"})
-cible("PO-5. ⛔ la langue du compte est lue en MAJUSCULES (la faute de F7) : « AR » redevient l'arabe", POLITIQUE,
-      "QUOTE_DOCUMENT_LOCALES.find((l) => l === input.clientLocale)", "QUOTE_DOCUMENT_LOCALES.find((l) => l === input.clientLocale?.toLowerCase())",
-      {"api-politique": "la comparaison est au MINUSCULE de l'énuméré", "api-service": "une langue de compte INCONNUE"})
-cible("PO-6. la langue du client n'est jamais lue : toujours le repli", POLITIQUE, "lisible === undefined ?", "true ?", {"api-politique": "un client `ar` reçoit un PDF ARABE, même si le pro clique", "api-service": "un client `ar` reçoit un PDF ARABE même quand le pro clique"})
-cible("PO-7. la branche dit « FALLBACK » quand c'est la langue du client qui a servi", POLITIQUE,
-      '{ locale: lisible, branch: "CLIENT" }', '{ locale: lisible, branch: "FALLBACK" }', {"api-politique": "un client `ar` reçoit un PDF ARABE, même si le pro clique", "api-service": "un client `ar` reçoit un PDF ARABE même quand le pro clique"})
+# ⛔ PO-5 RETIRÉE (rang 38, D332) — la branche « langue du client » n'existe plus : la langue du PDF est celle que le pro choisit à chaque téléchargement (décision A de Ko, D327) ; `chooseDocumentLocale`, `branch` et la lecture de `users.locale` sont retirés, gardés par la garde de SOURCE du modèle (cible Y-1 et S-3 de `neutralize-r38.py`) (cible d'avant : « ⛔ la langue du compte est lue en MAJUSCULES (la faute de F7) : « AR » redevient l'arabe… »).
+# ⛔ PO-6 RETIRÉE (rang 38, D332) — la branche « langue du client » n'existe plus : la langue du PDF est celle que le pro choisit à chaque téléchargement (décision A de Ko, D327) ; `chooseDocumentLocale`, `branch` et la lecture de `users.locale` sont retirés, gardés par la garde de SOURCE du modèle (cible Y-1 et S-3 de `neutralize-r38.py`) (cible d'avant : « la langue du client n'est jamais lue : toujours le repli… »).
+# ⛔ PO-7 RETIRÉE (rang 38, D332) — la branche « langue du client » n'existe plus : la langue du PDF est celle que le pro choisit à chaque téléchargement (décision A de Ko, D327) ; `chooseDocumentLocale`, `branch` et la lecture de `users.locale` sont retirés, gardés par la garde de SOURCE du modèle (cible Y-1 et S-3 de `neutralize-r38.py`) (cible d'avant : « la branche dit « FALLBACK » quand c'est la langue du client qui a servi… »).
 
 # ── SV — l'ORCHESTRATION : propriétaire, 404 indistinct, 409, 503, fuseau.
 cible("SV-1. un identifiant mal formé atteint la base (il ne rend plus le 404 sans lire)", SERVICE, "if (!UUID_PATTERN.test(quoteId)) this.throwNotFound();", "if (false) this.throwNotFound();",
@@ -227,8 +224,8 @@ cible("SV-3. le refus d'une ancienne version ne dit plus laquelle est active", S
 cible("SV-4. le refus d'une ancienne version porte le code d'un devis CLOS", SERVICE, "code: QuoteErrorCode.QUOTE_VERSION_NOT_ACTIVE,", "code: QuoteErrorCode.QUOTE_STATUS_CONFLICT,",
       {"api-service": "une version qui n'est plus la dernière : 409"})
 cible("SV-5. une PANNE du moteur n'est plus un 503 : elle remonte comme une erreur quelconque", SERVICE, "if (erreur instanceof PdfRenderUnavailableError) {", "if (false) {", {"api-service": "le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE"})
-cible("SV-6. la langue de l'interface du pro n'est plus le repli : toujours le français", SERVICE, 'fallback: fallbackLocale })', 'fallback: "fr" })', {"api-service": "un client `fr` reçoit un PDF français depuis une interface arabe"})
-cible("SV-7. la langue du compte du client n'est jamais transmise", SERVICE, "clientLocale: record.client?.locale ?? null,", "clientLocale: null,", {"api-service": "un client `ar` reçoit un PDF ARABE même quand le pro clique"})
+# ⛔ SV-6 RETIRÉE (rang 38, D332) — la branche « langue du client » n'existe plus : la langue du PDF est celle que le pro choisit à chaque téléchargement (décision A de Ko, D327) ; `chooseDocumentLocale`, `branch` et la lecture de `users.locale` sont retirés, gardés par la garde de SOURCE du modèle (cible Y-1 et S-3 de `neutralize-r38.py`) ; la langue appliquée est la langue demandée (V-1, V-2 de `neutralize-r38.py`) (cible d'avant : « la langue de l'interface du pro n'est plus le repli : toujours le français… »).
+# ⛔ SV-7 RETIRÉE (rang 38, D332) — la branche « langue du client » n'existe plus : la langue du PDF est celle que le pro choisit à chaque téléchargement (décision A de Ko, D327) ; `chooseDocumentLocale`, `branch` et la lecture de `users.locale` sont retirés, gardés par la garde de SOURCE du modèle (cible Y-1 et S-3 de `neutralize-r38.py`) (cible d'avant : « la langue du compte du client n'est jamais transmise… »).
 cible("SV-8. le nom du fichier porte une donnée PERSONNELLE (le nom de la salle)", SERVICE, "filename: quoteDocumentFilename(record)", "filename: `devis-${record.venue.nameFr}.pdf`",
       {"api-service": "rend le PDF de la version active ; le HTML confié au moteur"})
 cible("SV-9. la date d'émission est celle du fuseau UTC du serveur, pas celle d'Alger", SERVICE, '{ timeZone: "Africa/Algiers" }', '{ timeZone: "UTC" }', {"api-service": "à 23 h 30 UTC il est déjà le lendemain à Alger"})
@@ -269,8 +266,7 @@ cible("R-9. ⛔ le point de branchement fait un APPEL RÉSEAU : le contrat réel
       {"pro-remise": "aucun appel d'API, aucun contrat neuf"}, genre="insertion")
 
 # ── J — le parcours : un bouton fait DEUX choses, et la fenêtre dit ce qui a eu lieu.
-cible("J-1. la langue de repli envoyée n'est plus celle de l'interface : toujours le français", WK, 'const documentLocale = isAr ? "ar" : "fr";', 'const documentLocale = "fr";',
-      {"pro-parcours": "la langue de repli envoyée est celle de l'interface AU MOMENT DU CLIC"})
+# ⛔ J-1 RETIRÉE (rang 38, D332) — REORIENTÉE : `documentLocale` n'est plus la langue de l'interface au moment du clic mais la langue CHOISIE dans la boîte (J-4, J-5, J-10 de `neutralize-r38.py`) (cible d'avant : « la langue de repli envoyée n'est plus celle de l'interface : toujours le français… »).
 cible("J-2. le bouton enregistre toujours « impression », quel que soit le bouton cliqué", WK, "quotes.deliver(courant.id, { sentVia: canal })", 'quotes.deliver(courant.id, { sentVia: "PRINT" })',
       {"pro-parcours": "chaque bouton fait DEUX choses"})
 cible("J-3. un échec de l'un des deux appels emporte l'autre : plus de règlement SÉPARÉ (`all` au lieu d'`allSettled`)", WK, "Promise.allSettled([", "Promise.all([",
@@ -286,7 +282,7 @@ cible("J-8. le point de branchement reçoit le devis d'AVANT le clic, pas celui 
       {"pro-parcours": "le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois"})
 cible("J-9. les boutons restent actifs pendant le travail : un double clic fait deux remises", WK, "disabled={busy || canalBloque(canal)}", "disabled={canalBloque(canal)}", {"pro-parcours": "pendant le travail les boutons sont VERROUILLÉS"})
 cible("J-10. la fenêtre se ferme sans fermer (`onClose` ne fait rien)", WK, "onClose={() => setRemit(null)}", "onClose={() => undefined}", {"pro-parcours": "la fenêtre se ferme par son bouton"})
-cible("J-11. la fenêtre s'ouvre PENDANT le travail, avant les deux réponses", WK, "open={remit !== null}", "open={remit !== null || busy}", {"pro-parcours": "la fenêtre ne s'ouvre PAS avant les réponses"})
+cible("J-11. la fenêtre s'ouvre PENDANT le travail, avant les deux réponses", WK, "open={remit !== null}", "open={remit !== null || busy}", {"pro-parcours": "la fenêtre de remise ne s'ouvre PAS avant les réponses"})
 cible("J-12. un téléchargement qui échoue est dit « téléchargé »", WK, "pdf = { ok: false, failure: cause };", "pdf = { ok: true };", {"pro-parcours": "un échec du TÉLÉCHARGEMENT lui-même"})
 cible("J-13. le fichier téléchargé porte un nom écrit à la main, pas celui de la formule partagée", WK, "saveBlob(fichier.value, quoteDocumentFilename(courant));",
       'saveBlob(fichier.value, "devis.pdf");', {"pro-parcours": "le fichier téléchargé porte le nom que le SERVEUR donne"})
@@ -337,8 +333,7 @@ cible("I-4. ⛔ RÈGLE DES MONTANTS — l'adaptateur de lecture RECALCULE l'acom
       "depositCents: Math.round(row.totalCents * 0.3),", {"int-document": "test 1 — l'acompte stocké, qui n'est PAS 30 %"})
 cible("I-5. la réponse est mise en cache partagé : un PDF porte le nom d'un client", CONTROLEUR, '"Cache-Control": "private, no-store",', '"Cache-Control": "public, max-age=3600",',
       {"int-document": "le propriétaire télécharge : application/pdf"})
-cible("I-6. `Content-Language` dit la langue DEMANDÉE, pas la langue APPLIQUÉE", CONTROLEUR, '"Content-Language": document.locale,', '"Content-Language": query.locale,',
-      {"int-document": "un devis lié à un client `ar` : PDF ARABE"})
+# ⛔ I-6 RETIRÉE (rang 38, D332) — MUTATION ÉQUIVALENTE : depuis le rang 38 la langue appliquée EST la langue demandée (le service rend `locale` tel que reçu) — `document.locale` et `query.locale` valent la même chose, aucun test ne peut les distinguer ; la garde vit sur le service (V-2 de `neutralize-r38.py`) (cible d'avant : « `Content-Language` dit la langue DEMANDÉE, pas la langue APPLIQUÉE… »).
 cible("I-7. un CLIENT peut télécharger le PDF d'un devis", CONTROLEUR, "@Roles(UserRole.PRO)", "@Roles(UserRole.PRO, UserRole.CLIENT)", {"int-document": "un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE"})
 cible("I-8. la langue de repli n'est plus validée : absente ou inconnue, elle passe", CONTROLEUR, "@Query(new ZodValidationPipe(quoteDocumentQuerySchema))", "@Query()",
       {"int-document": "la langue de repli est OBLIGATOIRE et se limite à fr / ar"})
