@@ -1,0 +1,15 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ négatif  D298 contre elle-même : 92 contextes lus · nouvelles 0 (attendu 0)
+   ✓ positif  D298 contre D297 : 244 et 92 contextes lus · nouvelles 2 (attendu 2) · chemins ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'] (attendu ['docs/preuves/D298/passe-d277/sortie-audit.txt', 'docs/preuves/D298/portes/porte-test-int.log'])
+== TRI DIFFÉRENTIEL : précédente docs/preuves/D331/audit-secrets-d331a.txt (219 contextes) · nouvelle docs/preuves/D331/audit-secrets-d331b.txt (223 contextes)
+   alertes ABSENTES de la précédente : 4 — à trier au contexte avant le commit
+   [mot-de-passe] docs/preuves/D331/tri-audit-d331a.txt — contexte : ligne 1441 de docs/preuves/D331/audit-secrets-d331b.txt
+   [jeton] docs/preuves/D331/tri-audit-d331a.txt — contexte : ligne 1443 de docs/preuves/D331/audit-secrets-d331b.txt
+   [jeton] docs/preuves/D331/tri-audit-d331a.txt — contexte : ligne 1445 de docs/preuves/D331/audit-secrets-d331b.txt
+   [jeton] docs/preuves/D331/tri-audit-d331a.txt — contexte : ligne 1447 de docs/preuves/D331/audit-secrets-d331b.txt
+   ventilation par motif : mot-de-passe=1 · jeton=3
+
+== TRI AU CONTEXTE (humain, D331) — chacune des 4 alertes ABSENTES de la précédente, lue dans la sortie scellée (`audit-secrets-d331b.txt`, lignes 1441 à 1447) ; AUCUN contexte n'est recopié ici (ce serait un écho non scellé)
+   1 à 4. tri-audit-d331a.txt (lignes 1441, 1443, 1445, 1447 ; motifs « mot-de-passe » ×1, « jeton » ×3) : ce sont les lignes 19, 20, 22 et 23 du tri humain de l'audit « a » de ce lot — il NOMME `token=` et un titre de test (« …forgot-password… ») en décrivant les alertes qu'il a triées, et l'une de ces lignes cite l'expression régulière qui CHERCHE un jeton de 43 caractères. Du texte de documentation ; aucune valeur : « valeur trop courte pour une recherche » (3 sur 4), « valeur déjà présente dans 7 fichiers suivis hors preuves » (1 sur 4, l'expression régulière, déjà au dépôt par le code de l'instrument).
+   BILAN DU TRI : 4 sur 4 = l'écho du tri de l'audit « a » (le même mécanisme que D330 : le tri d'un audit est lu par l'audit suivant) ; AUCUNE valeur réelle. **Les pièces et les écritures d'autorité de D331 (le code, les harnais, les 16 images, les extraits des portes, l'état machine, les rouges et les verts, les campagnes, le relevé des chemins, les .md) ne produisent AUCUNE alerte nouvelle** : 223 alertes contre 219, la différence est exactement ces quatre lignes. (Le contrôle dédié « 0 valeur réelle sur N fichiers » de D299 n'est pas joué : aucun journal à valeurs réelles n'a été versé par ce lot, le journal brut de l'e2e restant hors dépôt.)
+   Limite écrite : ce tri-ci sera lu par l'audit du lot suivant, qui le trouvera comme alertes nouvelles du même ordre ; l'audit « b » n'a pas couvert les octets de ce fichier ni du paragraphe de clôture de `ZWADJ_CONTINUITE.md` écrit après lui (même limite que D330, D327).
