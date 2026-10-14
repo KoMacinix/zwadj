@@ -44,7 +44,7 @@ assert SRC.exists(), "ERREUR DE SCRIPT : " + SPEC_DEPUIS_RACINE + " introuvable"
 PNPM = shutil.which("pnpm")
 assert PNPM, "ERREUR DE SCRIPT : pnpm introuvable"
 
-NB_TESTS_ATTENDU = 95  # 41 jusqu'au rang 32 (D325, 76 après : +35), 95 au rang 33 (D326 : +19) — relevés : 95 déclarations `it(`, « Tests 95 passed (95) » ; la constante SEULE a changé
+NB_TESTS_ATTENDU = 102  # 41 jusqu'au rang 32 (D325, 76 après : +35), 95 au rang 33 (D326 : +19), 102 au rang 38 (D332 : +8 tests de la boîte de langue, −1 test de la langue de repli) — relevés : 102 déclarations `it(`, « Tests 102 passed (102) » ; la constante SEULE a changé
 
 CIBLES = [
     ("C1  le gel d'horloge est retire",
