@@ -1,0 +1,40 @@
+== CALIBRATION — deux bras, abandon si un seul manque
+   ✓ positif : `SELECT 1` en lecture seule rend 1 (code 0)
+   ✓ positif : le jeu de clés d'une ligne synthétique est lu tel qu'écrit : ['a', 'b']
+   ✓ négatif : l'ÉCRITURE en transaction lecture seule est REFUSÉE (code 3 ; message : « ERROR:  cannot execute CREATE TABLE in a read-only transaction »)
+   calibration : 3 bras, 0 manqué
+
+== (1) LE SCHÉMA — commentaire de `Quote.lines` (`apps/api/prisma/schema.prisma`)
+   parcouru : 1378 lignes ; commentaire trouvé : True
+   clés annoncées par le commentaire : ['serviceId', 'nameFr', 'nameAr', 'pricingType', 'unitPriceCents', 'quantity', 'tierId', 'lineTotalCents']
+   ⚠ le commentaire du schéma n'annonce PAS `tierLabelFr` ni `tierLabelAr` : il est INCOMPLET (le code (2) et les données (3) les portent) — un commentaire de schéma n'est pas l'autorité sur la forme stockée
+
+== (2) LE CODE — champs de `ResolvedLine` (`apps/api/src/venues/service-pricing.ts`), écrits tels quels dans `quotes.lines` par `quotes.service.ts`
+   parcouru : 188 lignes ; interface trouvée : True
+   · serviceId : string
+   · tierId : string | null
+   · nameFr : string
+   · nameAr : string
+   · pricingType : string
+   · tierLabelFr : string | null
+   · tierLabelAr : string | null
+   · unitPriceCents : number
+   · quantity : number
+   · lineTotalCents : number
+   `quotes.service.ts` écrit `lines: lines as unknown as Prisma.InputJsonValue` : True
+   le NOM DU PALIER est un champ de la ligne : tierLabelFr True · tierLabelAr True · identifiant du palier (tierId) True
+   le NOM DE L'UNITÉ est un champ de la ligne : unitNameFr False · unitNameAr False  (il vit sur `ServicePricing`, le catalogue : `unitNameFr` dans `ServicePricingDTO`)
+
+== (3) LES DONNÉES — base de développement, `SELECT` seulement, transaction en lecture seule
+   parcouru : 20 devis ; 1 avec au moins une ligne ; 1 ligne(s) lue(s)
+   1 × clés : lineTotalCents,nameAr,nameFr,pricingType,quantity,serviceId,tierId,tierLabelAr,tierLabelFr,unitPriceCents
+   `pricingType` : {'FIXED': 1}
+   exemple (devis 01a1314e v1 DRAFT, 40 invités) : {"lineTotalCents": 2300000, "nameAr": "مطعم", "nameFr": "Traiteur", "pricingType": "FIXED", "quantity": 1, "serviceId": "01a1314b-2a98-7f11-9bdd-e6754ff47268", "tierId": null, "tierLabelAr": null, "tierLabelFr": null, "unitPriceCents": 2300000}
+
+== CONFRONTATION
+   clés des lignes réelles == champs de `ResolvedLine` : True  (attendu True ; écart : [])
+   le nom du palier (FR et AR) est stocké sur la ligne : True  (attendu True)
+   le nom de l'unité est stocké sur la ligne : False  (attendu False — DB-9 ne l'exige pas : « par invité » et « à l'unité » n'impriment que la quantité)
+   lignes « à paliers » réelles dans la base : 0 · lignes « par invité » : 0 · « à l'unité » : 0 · « fixe » : 1
+   ⇒ la CONDITION D'ARRÊT de la décision 3 (« le nom du palier n'est pas stocké ») NE JOUE PAS ; le lot ne lit rien dans le catalogue actuel.
+   ⚠ LIMITE : la base de développement ne porte AUCUNE ligne « à paliers », « par invité » ou « à l'unité » — la forme de ces lignes se lit dans le CODE (2), pas dans une donnée réelle ; les trois devis que Ko regardera sont créés par l'API réelle.
