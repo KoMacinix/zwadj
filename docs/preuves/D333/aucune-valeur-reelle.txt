@@ -1,0 +1,11 @@
+# D333 — contrôle DÉDIÉ « aucune valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py), joué le 15/10/2026 sur l'arbre de la clôture (HEAD `bd13bb0` + les annotations de la passe D277, non commitées au lancement) : les valeurs des TROIS journaux de cette session qui en portent (le journal brut de `test:e2e` du paquet de portes, et les deux journaux de la sonde de capture)
+# cherchées dans `docs/preuves/D333`, les trois `.md` d'autorité, `CLAUDE.md`, `neutralisation`, `e2e`, `apps/pro/src`, `apps/api/src`, `packages`. N'imprime JAMAIS une valeur : des comptes seulement. Les chemins du dossier de travail de la session sont remplacés par <scratchpad>.
+# Deux autres journaux (la sortie de l'e2e neutralisée à la main, les cinq passes de concurrence) NE portent AUCUNE valeur de ce genre (`grep -c` = 0 chacun) : l'outil abandonne à la calibration quand un journal n'en porte aucune (positif 0, attendu 1), il n'a donc pas été lancé sur eux ; ce fait est écrit ici, pas déduit.
+
+✓ <scratchpad>/portes/e2e.log : occurrences stricte 61 · large 61 (doivent s'accorder) · valeurs distinctes 61 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ <scratchpad>/capture.log : occurrences stricte 2 · large 2 (doivent s'accorder) · valeurs distinctes 2 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ <scratchpad>/capture2.log : occurrences stricte 2 · large 2 (doivent s'accorder) · valeurs distinctes 2 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, <scratchpad>/portes/e2e.log porte 61 valeur(s) (attendu ≥ 61)
+✓ lu comme une cible, <scratchpad>/capture.log porte 2 valeur(s) (attendu ≥ 2)
+✓ lu comme une cible, <scratchpad>/capture2.log porte 2 valeur(s) (attendu ≥ 2)
+== valeurs cherchées : 65 (3 journal/journaux) · parcourus : 16924 fichiers, 327696592 octets · porteurs : 0 (attendu 0)
