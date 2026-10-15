@@ -168,3 +168,45 @@ Les chemins de code ci-dessous sont ceux que la lecture du code, faite AVANT le 
 | fichier | pour |
 |---|---|
 | `neutralisation/neutralize-s10b.py` | trois cibles réorientées par écrit (S10b1-1, S10b1-2, S10b1-5) : 20 gardes sur 20 mordues après |
+
+#### Extension 6 — les pièces de clôture : les verts, les six portes, la neutralisation à la main de l'e2e, les premiers jeux des campagnes réparées, la concurrence rejouée, les captures (déclarées AVANT leur versement)
+
+*Motif* : ces fichiers existent dans l'arbre de travail, NON suivis, au moment où cette extension s'écrit ; ils sont versés par le commit qui suit, jamais avant elle. Les sorties finales des quatorze campagnes et le rapport `union-jeu.txt` sont déjà déclarés par l'extension 4 ; les fichiers de la section « conditionnels » (passe D277, audits « b », contrôle « aucune valeur réelle ») restent déclarés par la table d'origine et seront ou non créés selon le cas, ce que le rapport dit.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D333/concurrence/concurrence-5-passes.txt` | la concurrence rejouée cinq fois sur PostgreSQL réel (18 tests sur 18, code 0, chaque fois) |
+| `docs/preuves/D333/navigateur/images/reference-ar-1280.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/images/reference-ar-360.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/images/reference-fr-1280.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/images/reference-fr-360.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/images/remise-ar-1280.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/images/remise-ar-360.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/images/remise-fr-1280.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/images/remise-fr-360.png` | capture (français ou arabe, 1 280 ou 360 px) |
+| `docs/preuves/D333/navigateur/mesures-capture.txt` | les lignes `MESURE …` de la sonde : référence du serveur, texte à l'écran, débordement, nom du fichier, fenêtre de remise |
+| `docs/preuves/D333/navigateur/playwright.capture.config.ts` | configuration de la sonde de capture (copie de celle de D332, chemin du dossier changé) |
+| `docs/preuves/D333/navigateur/reference-devis.capture.ts` | la sonde : joue le parcours, capture, relève ; ne juge rien |
+| `docs/preuves/D333/neutralisation/e2e-a-la-main.py` | la neutralisation à la main de la spec e2e (E-1 à E-4), archivée comme preuve, jamais promue en instrument |
+| `docs/preuves/D333/neutralisation/e2e-a-la-main.txt` | sa sortie : quatre mutations, quatre échecs `expect` lus, fichiers restaurés à l'octet |
+| `docs/preuves/D333/neutralisation/premier-jeu/act-plafonds.txt` | le PREMIER jeu de la campagne, avant réparation de ses ancres ou de ses constantes (la sortie finale est à côté, déclarée par l'extension 4) |
+| `docs/preuves/D333/neutralisation/premier-jeu/e3d1-s8.txt` | le PREMIER jeu de la campagne, avant réparation de ses ancres ou de ses constantes (la sortie finale est à côté, déclarée par l'extension 4) |
+| `docs/preuves/D333/neutralisation/premier-jeu/horloge.txt` | le PREMIER jeu de la campagne, avant réparation de ses ancres ou de ses constantes (la sortie finale est à côté, déclarée par l'extension 4) |
+| `docs/preuves/D333/neutralisation/premier-jeu/r33.txt` | le PREMIER jeu de la campagne, avant réparation de ses ancres ou de ses constantes (la sortie finale est à côté, déclarée par l'extension 4) |
+| `docs/preuves/D333/neutralisation/premier-jeu/r39.txt` | le PREMIER jeu de la campagne, avant réparation de ses ancres ou de ses constantes (la sortie finale est à côté, déclarée par l'extension 4) |
+| `docs/preuves/D333/neutralisation/premier-jeu/s10b.txt` | le PREMIER jeu de la campagne, avant réparation de ses ancres ou de ses constantes (la sortie finale est à côté, déclarée par l'extension 4) |
+| `docs/preuves/D333/neutralisation/premier-jeu/s11b.txt` | le PREMIER jeu de la campagne, avant réparation de ses ancres ou de ses constantes (la sortie finale est à côté, déclarée par l'extension 4) |
+| `docs/preuves/D333/portes/build.txt` | la porte, ses chiffres extraits (jamais le journal brut) |
+| `docs/preuves/D333/portes/e2e.txt` | la porte, ses chiffres extraits (jamais le journal brut) |
+| `docs/preuves/D333/portes/etat-machine.txt` | l'état de la machine à la fin du paquet de portes — NON certifiant, écrit comme tel |
+| `docs/preuves/D333/portes/extraire-portes.py` | l'extracteur des portes (copie de celui de D332 ; seule la lecture de la base de `test-int` change) |
+| `docs/preuves/D333/portes/lint.txt` | la porte, ses chiffres extraits (jamais le journal brut) |
+| `docs/preuves/D333/portes/test-int.txt` | la porte, ses chiffres extraits (jamais le journal brut) |
+| `docs/preuves/D333/portes/test.txt` | la porte, ses chiffres extraits (jamais le journal brut) |
+| `docs/preuves/D333/portes/typecheck.txt` | la porte, ses chiffres extraits (jamais le journal brut) |
+| `docs/preuves/D333/vert/vert-api-documents.txt` | le VERT de ce point, lu contre le rouge de `rouge/` |
+| `docs/preuves/D333/vert/vert-api-ecriture.txt` | le VERT de ce point, lu contre le rouge de `rouge/` |
+| `docs/preuves/D333/vert/vert-api-int.txt` | le VERT de ce point, lu contre le rouge de `rouge/` |
+| `docs/preuves/D333/vert/vert-api-pur.txt` | le VERT de ce point, lu contre le rouge de `rouge/` |
+| `docs/preuves/D333/vert/vert-api-service.txt` | le VERT de ce point, lu contre le rouge de `rouge/` |
+| `docs/preuves/D333/vert/vert-pro.txt` | le VERT de ce point, lu contre le rouge de `rouge/` |
