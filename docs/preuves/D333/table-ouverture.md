@@ -160,3 +160,11 @@ Les chemins de code ci-dessous sont ceux que la lecture du code, faite AVANT le 
 | `docs/preuves/D333/neutralisation/s10b.txt` | sortie de `neutralize-s10b.py` |
 | `docs/preuves/D333/neutralisation/s11b.txt` | sortie de `neutralize-s11b.py` |
 | `docs/preuves/D333/neutralisation/solid-s3.txt` | sortie de `neutralize-solid-s3.py` |
+
+#### Extension 5 — une campagne de plus que l'union a retenue et dont une ancre était périmée
+
+*Motif* : l'union (extension 4) a retenu `neutralize-s10b.py` ; son ancre « le verrou de chaîne disparaît » (`await this.verrouillerChaine(tx, args.chainId);`) et celle des « deux écritures de la tête » visaient du code que le lot a changé (le verrou rend désormais la tête dont la révision recopie la référence ; la tête naît en UNE écriture). Le fichier n'était ni dans la base ni dans les conditionnels de la table : il est déclaré ici, AVANT son commit, avec la mesure qui le prouve (la campagne s'arrêtait sur « ERREUR DE SCRIPT : 0 occurrence(s), 1 attendue(s) »).
+
+| fichier | pour |
+|---|---|
+| `neutralisation/neutralize-s10b.py` | trois cibles réorientées par écrit (S10b1-1, S10b1-2, S10b1-5) : 20 gardes sur 20 mordues après |
