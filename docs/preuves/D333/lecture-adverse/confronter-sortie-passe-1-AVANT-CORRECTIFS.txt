@@ -1,0 +1,180 @@
+=== PASSE 1a — ABANDON À LA CALIBRATION (un bras manqué : 'cibles déclarées, positif' comptait chaque appel sur une ligne DEUX fois) ===
+== CALIBRATION (deux bras par extracteur ; abandon si un seul manque)
+   ✓ calibration comptes du point, positif : (79, 0, 0) (attendu (79, 0, 0))
+   ✓ calibration comptes du point, négatif (ligne absente) : None (attendu None)
+   ✓ calibration titres, positif : ['f.ts > a > b'] (attendu ['f.ts > a > b'])
+   ✓ calibration titres, négatif (autre étiquette) : [] (attendu [])
+   ✓ calibration résumés vitest, positif : ([(65, 808)], 0) (attendu ([(65, 808)], 0))
+   ✓ calibration résumés vitest, négatif (un échec compté) : ([(65, 808)], 2) (attendu ([(65, 808)], 2))
+   ✓ calibration ids de garde mordue, positif : ['H-1', 'PO-5'] (attendu ['H-1', 'PO-5'])
+   ✓ calibration ids de garde mordue, négatif (une ligne de calibration seule) : [] (attendu [])
+   ✗ calibration cibles déclarées, positif : ['A-1', 'B-2', 'A-1'] (attendu ['A-1', 'B-2'])
+   ✓ calibration cibles déclarées, négatif (la définition n'est pas un appel) : [] (attendu [])
+   ✓ calibration chemins déclarés, positif : {'NEUF.md', 'a/b.ts'} (attendu {'NEUF.md', 'a/b.ts'})
+   ✓ calibration chemins déclarés, négatif (un identifiant, pas un fichier) : set() (attendu set())
+   ✓ calibration campagne cite, chemin complet : 'R' (attendu 'R')
+   ✓ calibration campagne cite, chemin relatif au paquet : 'P' (attendu 'P')
+   ✓ calibration campagne cite, le nom seul : 'N' (attendu 'N')
+   ✓ calibration campagne cite, négatif : None (attendu None)
+   ✓ calibration commit d'un fichier, positif (la table de D332 ouvre à e644a98) : ['docs/preuves/D332/table-ouverture.md'] (attendu ['docs/preuves/D332/table-ouverture.md'])
+   ✓ calibration commit d'un fichier, négatif (e644a98 ne touche aucune autorité) : [] (attendu [])
+   calibration : 18 bras, 1 manqué(s)
+
+=== PASSE 1b — PASSE COMPLÈTE après réparation de ce seul défaut, AVANT les autres correctifs (neuf ✗ et constats dont plusieurs sont des défauts de l'INSTRUMENT : voir defauts-instrument.txt) ===
+== CALIBRATION (deux bras par extracteur ; abandon si un seul manque)
+   ✓ calibration comptes du point, positif : (79, 0, 0) (attendu (79, 0, 0))
+   ✓ calibration comptes du point, négatif (ligne absente) : None (attendu None)
+   ✓ calibration titres, positif : ['f.ts > a > b'] (attendu ['f.ts > a > b'])
+   ✓ calibration titres, négatif (autre étiquette) : [] (attendu [])
+   ✓ calibration résumés vitest, positif : ([(65, 808)], 0) (attendu ([(65, 808)], 0))
+   ✓ calibration résumés vitest, négatif (un échec compté) : ([(65, 808)], 2) (attendu ([(65, 808)], 2))
+   ✓ calibration ids de garde mordue, positif : ['H-1', 'PO-5'] (attendu ['H-1', 'PO-5'])
+   ✓ calibration ids de garde mordue, négatif (une ligne de calibration seule) : [] (attendu [])
+   ✓ calibration cibles déclarées, positif : ['A-1', 'B-2'] (attendu ['A-1', 'B-2'])
+   ✓ calibration cibles déclarées, négatif (la définition n'est pas un appel) : [] (attendu [])
+   ✓ calibration chemins déclarés, positif : {'NEUF.md', 'a/b.ts'} (attendu {'NEUF.md', 'a/b.ts'})
+   ✓ calibration chemins déclarés, négatif (un identifiant, pas un fichier) : set() (attendu set())
+   ✓ calibration campagne cite, chemin complet : 'R' (attendu 'R')
+   ✓ calibration campagne cite, chemin relatif au paquet : 'P' (attendu 'P')
+   ✓ calibration campagne cite, le nom seul : 'N' (attendu 'N')
+   ✓ calibration campagne cite, négatif : None (attendu None)
+   ✓ calibration commit d'un fichier, positif (la table de D332 ouvre à e644a98) : ['docs/preuves/D332/table-ouverture.md'] (attendu ['docs/preuves/D332/table-ouverture.md'])
+   ✓ calibration commit d'un fichier, négatif (e644a98 ne touche aucune autorité) : [] (attendu [])
+   calibration : 18 bras, 0 manqué(s)
+
+== C — l'ordre des commits de D332, prouvé par git
+✓ C1      le premier commit de D332 ne contient que sa table d'ouverture — attendu ['docs/preuves/D332/table-ouverture.md'] · mesuré ['docs/preuves/D332/table-ouverture.md']
+✓ C2      …et son parent est le SHA de départ — attendu 'dd41fbd' · mesuré 'dd41fbd'
+✓ C3      de dd41fbd à 2782be9 : 22 commits (21 jusqu'à 5e007fc, plus le dernier) — attendu (22, '5e007fc', '2782be9') · mesuré (22, '5e007fc', '2782be9')
+✓ C4      la sortie de la lecture adverse précède la première écriture d'autorité — attendu True · mesuré True
+✓ C5      …et la première écriture d'autorité ne touche que le fichier de continuité — attendu ['ZWADJ_CONTINUITE.md'] · mesuré ['ZWADJ_CONTINUITE.md']
+✓ C6      aucun commit AVANT la première écriture d'autorité ne touche un des trois fichiers d'autorité — attendu [] · mesuré []
+✓ C7      la table « ordre des commits » de la section D332 a 22 lignes, les 21 premières portent les SHA réels dans l'ordre de git — attendu (22, ['e644a98', '83b2892', '78e541b', 'fd451fc', '2c90808', '6ca5287', '35d6efe', '9d54357', '4ca7b9f', '1f7b85f', '3eb9278', '70c361e', '68ed478', '9057754', '970b7fa', 'b13cc5c', '58ad55f', '6e95e1c', 'e58b373', '386ce97', '5e007fc']) · mesuré (22, ['e644a98', '83b2892', '78e541b', 'fd451fc', '2c90808', '6ca5287', '35d6efe', '9d54357', '4ca7b9f', '1f7b85f', '3eb9278', '70c361e', '68ed478', '9057754', '970b7fa', 'b13cc5c', '58ad55f', '6e95e1c', 'e58b373', '386ce97', '5e007fc'])
+✓ C8      le diff de D332 compte 112 fichiers (le contrôle de fin de lot dit 112), tous déclarés par chemin COMPLET dans la table finale — attendu (112, []) · mesuré (112, [])
+✓ C9      chaque fichier du diff est déclaré par une version de la table commitée AVANT (ou au) commit qui le touche pour la première fois — attendu [] · mesuré []
+✗ C10     …et le nombre de fichiers déclarés par une extension (le contrôle de fin de lot dit 68) — attendu 68 · mesuré 67
+✓ C11     aucun fichier sous packages/types, packages/api-client, apps/api/prisma au diff (aucun contrat neuf, aucune migration) — attendu [] · mesuré []
+✓ C12     après b13cc5c (où les portes ont tourné), AUCUN fichier hors docs/preuves/ et hors les trois d'autorité n'a changé : les portes valent pour le dernier commit — attendu [] · mesuré []
+✓ C13     b13cc5c est le dernier commit de la liste qui touche du code, une spec ou un harnais — attendu 'b13cc5c' · mesuré 'b13cc5c'
+✓ C14     6ca5287 ne diffère de dd41fbd par AUCUN fichier de code (l'en-tête de chaque rouge : « le code de production est celui d'avant ») — attendu [] · mesuré []
+
+== P — les six portes de D332, extraits contre section
+✓ P-typecheck-sortie porte typecheck : le code de sortie réel — attendu 0 · mesuré 0
+✓ P-typecheck-head porte typecheck : lancée sur le dernier commit de code — attendu 'b13cc5c' · mesuré 'b13cc5c'
+✓ P-lint-sortie porte lint : le code de sortie réel — attendu 0 · mesuré 0
+✓ P-lint-head porte lint : lancée sur le dernier commit de code — attendu 'b13cc5c' · mesuré 'b13cc5c'
+✓ P-test-sortie porte test : le code de sortie réel — attendu 0 · mesuré 0
+✓ P-test-head porte test : lancée sur le dernier commit de code — attendu 'b13cc5c' · mesuré 'b13cc5c'
+✓ P-build-sortie porte build : le code de sortie réel — attendu 0 · mesuré 0
+✓ P-build-head porte build : lancée sur le dernier commit de code — attendu 'b13cc5c' · mesuré 'b13cc5c'
+✓ P-test-int-sortie porte test-int : le code de sortie réel — attendu 0 · mesuré 0
+✓ P-test-int-head porte test-int : lancée sur le dernier commit de code — attendu 'b13cc5c' · mesuré 'b13cc5c'
+✓ P-e2e-sortie porte e2e : le code de sortie réel — attendu 0 · mesuré 0
+✓ P-e2e-head porte e2e : lancée sur le dernier commit de code — attendu 'b13cc5c' · mesuré 'b13cc5c'
+✓ P-typecheck-paquets porte typecheck : paquets terminés / en échec — attendu (8, 0) · mesuré (8, 0)
+✓ P-lint-paquets porte lint : paquets terminés / en échec — attendu (8, 0) · mesuré (8, 0)
+✓ P-build-paquets porte build : paquets terminés / en échec — attendu (4, 0) · mesuré (4, 0)
+✓ P1      porte test : quatre résumés vitest, aucun échec — attendu (4, 0) · mesuré (4, 0)
+✓ P2      porte test : (fichiers, tests) par paquet — api-client 5/48 · api 65/808 · client 29/372 · pro 40/562 — attendu [(5, 48), (65, 808), (29, 372), (40, 562)] · mesuré [(5, 48), (65, 808), (29, 372), (40, 562)]
+✓ P3      porte test : la somme est 1 790 tests / 139 fichiers — attendu (1790, 139) · mesuré (1790, 139)
+✓ P4      la base de D331, LUE dans sa pièce à dd41fbd : 1 748 tests / 137 fichiers — attendu (1748, 137) · mesuré (1748, 137)
+✓ P5      l'écart +42 tests / +2 fichiers, et sa décomposition : API 808−791 = +17 (23−5−1), Pro 562−537 = +25 (9+3+6+7) — attendu (42, 2, 17, 25, 17, 25) · mesuré (42, 2, 17, 25, 17, 25)
+✗ P6      porte test:int : 471 tests / 38 fichiers, base de D331 468 / 38 (+3, 0 fichier) — attendu ([(38, 471)], 0, [(38, 468)]) · mesuré ([(38, 471)], 0, [])
+✗ P7      porte e2e : 54 passés, 1 ignoré, et les lignes « ok » de la pièce sont 54 ; base de D331 53 · 1 — attendu ((54, 1), 54, (53, 1)) · mesuré ((54, 1), 54, None)
+✓ P8      la pièce de la mauvaise commande e2e est versée ET dit qu'elle n'a rien joué — attendu True · mesuré True
+✓ P9      recompte INDÉPENDANT des déclarations `it(`/`test(` entre dd41fbd et b13cc5c : API +17, Pro +25 — attendu (17, 25) · mesuré (17, 25)
+
+== R — le tableau des points de D332 (rouge contre l'état d'avant, vert), contre ses pièces
+✓ R-modèle-rouge modèle : rouge — l'en-tête dit 18 morsure(s) et la pièce porte autant de lignes ROUGE — attendu (18, 18, 18) · mesuré (18, 18, 18)
+✓ R-modèle-vert modèle : vert — 79 vert(s), 0 rouge, et autant de lignes VERT — attendu (79, 0, 79) · mesuré (79, 0, 79)
+✓ R-modèle-passe modèle : chaque test qui a mordu contre l'état d'avant est VERT dans la pièce du lot — attendu [] · mesuré []
+✓ R-intégration-rouge intégration : rouge — l'en-tête dit 4 morsure(s) et la pièce porte autant de lignes ROUGE — attendu (4, 4, 4) · mesuré (4, 4, 4)
+✓ R-intégration-vert intégration : vert — 16 vert(s), 0 rouge, et autant de lignes VERT — attendu (16, 0, 16) · mesuré (16, 0, 16)
+✓ R-intégration-passe intégration : chaque test qui a mordu contre l'état d'avant est VERT dans la pièce du lot — attendu [] · mesuré []
+✓ R-remise-rouge remise : rouge — l'en-tête dit 20 morsure(s) et la pièce porte autant de lignes ROUGE — attendu (20, 20, 20) · mesuré (20, 20, 20)
+✓ R-remise-vert remise : vert — 102 vert(s), 0 rouge, et autant de lignes VERT — attendu (102, 0, 102) · mesuré (102, 0, 102)
+✓ R-remise-passe remise : chaque test qui a mordu contre l'état d'avant est VERT dans la pièce du lot — attendu [] · mesuré []
+✓ R-titre liste-rouge titre liste : rouge — l'en-tête dit 5 morsure(s) et la pièce porte autant de lignes ROUGE — attendu (5, 5, 5) · mesuré (5, 5, 5)
+✓ R-titre liste-vert titre liste : vert — 13 vert(s), 0 rouge, et autant de lignes VERT — attendu (13, 0, 13) · mesuré (13, 0, 13)
+✓ R-titre liste-passe titre liste : chaque test qui a mordu contre l'état d'avant est VERT dans la pièce du lot — attendu [] · mesuré []
+✓ R-titre app-rouge titre app : rouge — l'en-tête dit 1 morsure(s) et la pièce porte autant de lignes ROUGE — attendu (1, 1, 1) · mesuré (1, 1, 1)
+✓ R-titre app-vert titre app : vert — 18 vert(s), 0 rouge, et autant de lignes VERT — attendu (18, 0, 18) · mesuré (18, 0, 18)
+✓ R-titre app-passe titre app : chaque test qui a mordu contre l'état d'avant est VERT dans la pièce du lot — attendu [] · mesuré []
+✓ R-nouveaux-rouge composants NEUFS : 0 vert, 9 rouges, 0 morsure (rouge = import absent) — attendu (0, 9, 0) · mesuré (0, 9, 0)
+✓ R-nouveaux-vert composants NEUFS : 9 verts (fenêtre de choix) + 3 verts (règle du libellé) — attendu (9, 3) · mesuré (9, 3)
+✓ R-nouveaux-correspondance les 9 rouges d'import absent sont ceux de la fenêtre de choix (9 titres retrouvés verts) ; ceux de la règle du libellé (3 verts) n'y figurent pas — attendu (9, 0) · mesuré (9, 0)
+· R-C1    CONSTAT : le tableau de D332 écrit « la fenêtre de choix partagée ; la règle `venuesLabelKey` : 9 rouges, 0 morsure » — mais les 9 rouges d'import absent sont TOUS ceux de la fenêtre de choix ; les 3 tests de la règle du libellé n'ont AUCUNE pièce de rouge (leur vert, lui, est versé). Imprécision d'exactitude du tableau, sans effet sur une porte
+✓ R-tableau la section D332 de la continuité porte le tableau « point par point » avec 18 · 4 · 20 · 5 + 1 · 9 morsures/rouges — attendu True · mesuré True
+? R-N1    NON VÉRIFIABLE : que les rouges aient été mesurés CONTRE LE CODE D'AVANT à la minute dite : les journaux bruts (SHA-256 cités dans chaque en-tête) sont HORS dépôt ; la lecture montre que 6ca5287 ne diffère de dd41fbd par aucun fichier de code (C14) et que les titres des rouges sont verts dans les pièces du lot — pas que le journal a été produit dans cet état
+
+== N — l'union des campagnes, les campagnes jouées, les cibles retirées de r33
+✓ N1      union-sortie : 7 bras de calibration, 0 manqué — attendu (7, True) · mesuré (7, True)
+✓ N2      union-sortie : 7 campagnes sur 36 — attendu (7, 36) · mesuré (7, 36)
+✓ N3      il y a 36 campagnes `neutralize-*.py` au dernier commit de D332 — attendu 36 · mesuré 36
+✓ N4      …et au commit où l'union a été calculée (3eb9278 : r38 y est déjà) — attendu 36 · mesuré 36
+✗ N5      l'union RECALCULÉE par une autre implémentation (le diff final, 29 fichiers de code ou de spec hors .md) donne les mêmes campagnes que celle versée — attendu ['neutralize-act-plafonds.py', 'neutralize-horloge.py', 'neutralize-journey.py', 'neutralize-r32.py', 'neutralize-r33.py', 'neutralize-r37.py', 'neutralize-r38.py'] · mesuré ['neutralize-act-plafonds.py', 'neutralize-horloge.py', 'neutralize-journey.py', 'neutralize-r32.py', 'neutralize-r33.py', 'neutralize-r37.py', 'neutralize-r38.py', 'neutralize-solid-s7.py']
+✗ N6      …et le diff recalculé compte 29 fichiers hors docs/preuves/ et hors les trois d'autorité (la sortie versée en liste 29, dont deux d'autorité) — attendu (29, 27) · mesuré (31, 29)
+✓ N7      le script d'union et sa sortie sont versés AVANT de jouer la première campagne (3eb9278 précède 9057754) — attendu True · mesuré True
+✓ N8-r38  sortie r38 : 46 gardes mordues (lignes ✓ de la pièce) — attendu 46 · mesuré 46
+✓ N9-r38  sortie r38 : la ligne de bilan dit 46 sur 46 — attendu (46, 46) · mesuré (46, 46)
+✓ N10-r38 sortie r38 : « arbre rendu à son état de départ : vérifié » — attendu True · mesuré True
+✓ N8-r32  sortie r32 : 65 gardes mordues (lignes ✓ de la pièce) — attendu 65 · mesuré 65
+✓ N9-r32  sortie r32 : la ligne de bilan dit 65 sur 65 — attendu (65, 65) · mesuré (65, 65)
+✓ N10-r32 sortie r32 : « arbre rendu à son état de départ : vérifié » — attendu True · mesuré True
+✓ N8-r33  sortie r33 : 87 gardes mordues (lignes ✓ de la pièce) — attendu 87 · mesuré 87
+✓ N9-r33  sortie r33 : la ligne de bilan dit 87 sur 87 — attendu (87, 87) · mesuré (87, 87)
+✓ N10-r33 sortie r33 : « arbre rendu à son état de départ : vérifié » — attendu True · mesuré True
+✓ N8-r33-int sortie r33-int : 95 gardes mordues (lignes ✓ de la pièce) — attendu 95 · mesuré 95
+✓ N9-r33-int sortie r33-int : la ligne de bilan dit 95 sur 95 — attendu (95, 95) · mesuré (95, 95)
+✓ N10-r33-int sortie r33-int : « arbre rendu à son état de départ : vérifié » — attendu True · mesuré True
+✓ N8-r37  sortie r37 : 21 gardes mordues (lignes ✓ de la pièce) — attendu 21 · mesuré 21
+✓ N9-r37  sortie r37 : la ligne de bilan dit 21 sur 21 — attendu (21, 21) · mesuré (21, 21)
+✓ N10-r37 sortie r37 : « arbre rendu à son état de départ : vérifié » — attendu True · mesuré True
+✓ N8-journey sortie journey : 7 gardes mordues (lignes ✓ de la pièce) — attendu 7 · mesuré 7
+✓ N8-act-plafonds sortie act-plafonds : 4 gardes mordues (lignes ✓ de la pièce) — attendu 4 · mesuré 4
+✓ N8-horloge sortie horloge : 2 gardes mordues (lignes ✓ de la pièce) — attendu 2 · mesuré 2
+✓ N11     la somme annoncée « 321 gardes mordues » (journey 7 + r32 65 + r33 87 + r33 --int 95 + r37 21 + r38 46) — attendu 321 · mesuré 321
+· N-C1    CONSTAT : « 321 gardes mordues » additionne la passe SANS --int de r33 (87) ET la passe AVEC --int (95), alors que les 87 identifiants de la première sont TOUS des 95 de la seconde (sous-ensemble, vérifié identifiant par identifiant) : le nombre de gardes DISTINCTES est 95 pour r33 et 234 pour l'union (7 + 65 + 95 + 21 + 46), pas 321 ; 321 compte des MESURES (passes), pas des gardes. Deux passes qui se soustraient comptent la même chose, ou elles ne se soustraient pas (D290) — ici, deux passes qui s'ADDITIONNENT comptent deux fois la même garde. Imprécision de comptage de D332, sans effet sur une porte
+✓ N12     neutralize-r33.py : les cibles déclarées en moins entre dd41fbd et le dernier commit sont EXACTEMENT PO-5, PO-6, PO-7, SV-6, SV-7, J-1 et I-6 — attendu ['I-6', 'J-1', 'PO-5', 'PO-6', 'PO-7', 'SV-6', 'SV-7'] · mesuré ['I-6', 'J-1', 'PO-5', 'PO-6', 'PO-7', 'SV-6', 'SV-7']
+✓ N13     neutralize-r33.py : le nombre de cibles déclarées au dernier commit est 95, celui d'avant 102 — attendu (102, 95) · mesuré (102, 95)
+✓ N14     chaque cible retirée porte, dans le fichier, une ligne « RETIRÉE » qui la nomme (aucun retrait sans écrit) — attendu [] · mesuré []
+✓ N15     la cible I-6 est dite MUTATION ÉQUIVALENTE dans sa ligne de retrait — attendu True · mesuré True
+✓ N16     les cibles M-1 et M-2 de r33 sont toujours déclarées (ré-ancrées, pas retirées) — attendu True · mesuré True
+✗ N17     P-15 : plus aucune occurrence de `chooseDocumentLocale` ni de `DocumentLocaleBranch` dans `apps/api/src` hors commentaires (code mort) — attendu [] · mesuré ["2782be9:apps/api/src/documents/quote-document-policy.spec.ts:7:// téléchargement) : `chooseDocumentLocale` et ses tests sont retirés avec elle, et `quote-document.spec.ts` garde qu'il n'en reste rien.", '2782be9:apps/api/src/documents/quote-document-policy.ts:7:// de règle à rendre ici. `chooseDocumentLocale`, `DocumentLocaleBranch` et la lecture de `users.locale` disparaissent ensemble (« une règle remplacée ne laisse pas de code mort »).', '2782be9:apps/api/src/documents/quote-document.spec.ts:448:  it("⛔ rang 38 (P-15) : la branche « langue du client » est RETIRÉE sans code mort — plus de `chooseDocumentLocale`, de `DocumentLocaleBranch`, de `branch`, ni de `users.locale` lue", () => {', '2782be9:apps/api/src/documents/quote-document.spec.ts:451:      expect({ f, motif: /chooseDocumentLocale|DocumentLocaleBranch|clientLocale|\\bbranch\\b|locale:\\s*true|client\\??\\.locale/.exec(code)?.[0] ?? null }).toEqual({ f, motif: null });']
+✓ N18     neutralize-r38.py déclare 46 cibles — attendu 46 · mesuré 46
+✓ N19     …et les identifiants de ses gardes mordues sont ceux de ses cibles (aucune mordue hors déclaration, aucune déclarée sans morsure) — attendu ([], []) · mesuré ([], [])
+✓ N20     neutralize-r32.py déclare 65 cibles, neutralize-r37.py 21 (les nombres des sorties jouées) — attendu (65, 21) · mesuré (65, 21)
+✓ N21     act-plafonds / horloge : `walkin-journey.test.tsx` compte 102 déclarations `it(` à b13cc5c, et les deux harnais attendent 102 — attendu (102, 102, 102) · mesuré (102, 102, 102)
+✓ N22     neutralisation à la main de l'e2e : E-1 et E-2 portent chacune un `expect(received)` dans le bloc d'échec lu, et « empreinte restaurée : identique » deux fois — attendu (2, 2) · mesuré (2, 2)
+✓ N23     …et la première passe de E-1 (délai d'action) est dite NON-morsure dans la section — attendu True · mesuré True
+? N-N1    NON VÉRIFIABLE : que les campagnes aient mordu dans l'état exact du commit où elles sont dites jouées : les sorties sont versées, pas rejouées (« aucune campagne rejouée »)
+? N-N2    NON VÉRIFIABLE : que la neutralisation à la main de l'e2e ait été faite dans l'ordre décrit : la procédure est versée comme pièce (e2e-a-la-main.py), pas promue en instrument (S-16) ; la lecture vérifie que la sortie porte une assertion lue et une empreinte restaurée
+
+== T — les affirmations de la section D332 et des fichiers d'autorité, contre le dépôt
+✓ T1      le registre finit sur D332 (dernière ligne) et ne contient pas encore D333 — attendu ('D332', False) · mesuré ('D332', False)
+✓ T2      la dernière ligne « ⇒ RANG N » de l'ordre des rangs est « RANG 39 : EN ATTENTE D'ARBITRAGE DE KO » — attendu True · mesuré True
+✓ T3      le point d'entrée du rang 38 se dit CLOS SUR LE CODE, compteur DEUX, condition de clôture OUVERTE — attendu True · mesuré True
+✓ T4      AGENTS.md porte la limite de CINQ (annotation de D332) et la périmé de « un seul lot de code de plus est tenable » — attendu True · mesuré True
+✓ T5      le contrôle de fin de lot de D332 dit « 112 fichiers, 0 non déclaré » : la même chose que C8 — attendu True · mesuré True
+✗ T6      le backlog porte « Reports du 14/10/2026 — rang 38 » et l'entrée « la cellule de détail vide d'une ligne « fixe » » encore OUVERTE (ce lot la fermera, Ko l'a acceptée) — attendu (True, True) · mesuré (True, False)
+✗ T7      les trois fichiers d'autorité sont en CRLF pur au dernier commit de D332 (octets : CRLF = LF) — attendu True · mesuré False
+✓ T8      la section D332 ne dit pas que la condition de clôture du rang 33 est levée (elle reste ouverte) — attendu True · mesuré True
+
+== X — l'état VIVANT (seule famille qui lit l'arbre de travail)
+✓ X1      HEAD = origin/main (après le fetch du début de session) — attendu 'a5475fd12eacf7e0e1cbd2442844736d628cd631' · mesuré 'a5475fd12eacf7e0e1cbd2442844736d628cd631'
+✓ X2      le dépôt ne diffère de la fin de D332 que par la table d'ouverture de ce lot : `git diff 2782be9..HEAD --name-only` — attendu ['docs/preuves/D333/table-ouverture.md'] · mesuré ['docs/preuves/D333/table-ouverture.md']
+✓ X3      aucun stash — attendu '' · mesuré ''
+✓ X4      branche main — attendu 'main' · mesuré 'main'
+✓ X5      l'arbre de travail ne porte aucune modification hors des pièces de ce lot (docs/preuves/D333, non suivies jusqu'à leur commit) — attendu [] · mesuré []
+✓ X6      le commit courant est la table d'ouverture de ce lot, seule — attendu (['a5475fd'], ['docs/preuves/D333/table-ouverture.md']) · mesuré (['a5475fd'], ['docs/preuves/D333/table-ouverture.md'])
+· S-C1    CONSTAT : le tableau « point par point » de D332 écrit « 79 verts (`src/documents/`) » pour le modèle : le filtre de la pièce est celui du dossier, pas du fichier ; le nombre de VERT de la pièce (79) est celui des tests du dossier `src/documents/` — pas du seul `quote-document.spec.ts`. Lu ainsi, il est exact
+? N1      NON VÉRIFIABLE : les journaux BRUTS des six portes de D332 (empreintes, octets, lignes de l'en-tête de chaque extrait) : ils sont HORS dépôt (ils portent des jetons) ; la lecture confronte les extraits entre eux et à la section, pas au journal
+? N3      NON VÉRIFIABLE : que la RAM libre 3 091 Mo et l'absence de `chrome`/`headless_shell` relevées dans `etat-machine.txt` soient celles de la fenêtre des portes : l'échantillonneur n'a pas tourné pendant le paquet (S-10 de D331, repris)
+? N4      NON VÉRIFIABLE : que les six pages rastérisées et les quatre captures de la boîte montrent ce que la section dit : la lecture vérifie que ce sont des PNG, pas leur contenu — Ko a regardé les six pages le 15/10/2026 (ses mots sont au rang 39), la session ne peut ni le prouver ni le réfuter
+? N5      NON VÉRIFIABLE : que Docker Desktop ait été démarré par la session de D332 (S-18) : c'est un fait du poste de Ko, sans pièce
+? N7      NON VÉRIFIABLE : que le fil de discussion (les deux textes de Ko du 14/10) soit reproduit à l'identique dans les fichiers : la lecture compare les fichiers entre eux, pas au fil
+
+== BILAN
+109 contrôles (101 ✓) · 8 écart(s) de D332 : ['C10', 'P6', 'P7', 'N5', 'N6', 'N17', 'T6', 'T7'] · 0 variation(s) de l'état vivant : [] · 3 constat(s) : ['R-C1', 'N-C1', 'S-C1'] · 8 non vérifiable(s) : ['R-N1', 'N-N1', 'N-N2', 'N1', 'N3', 'N4', 'N5', 'N7']
+ventilation : C 14 · N 38 · P 24 · R 19 · T 8 · X 6 (somme 109) — aucune famille à zéro : True
+calibration : 18 bras, 0 manqué
