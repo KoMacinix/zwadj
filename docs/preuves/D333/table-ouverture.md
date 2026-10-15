@@ -103,3 +103,11 @@ Les chemins de code ci-dessous sont ceux que la lecture du code, faite AVANT le 
 ### Extensions de la table
 
 *(Aucune à l'ouverture. Chaque extension s'ajoute ici, en chemins complets, par un commit propre qui précède le commit du fichier qu'elle couvre.)*
+
+#### Extension 1 — la liste de scénarios pour Ko (décision 4 du relecteur), déclarée AVANT d'être écrite
+
+*Motif* : la famille « la liste de scénarios pour Ko » de la table d'ouverture nommait un chemin sans passer par une extension ; la règle exige une extension commitée avant le fichier. Le fichier est écrit **avant le code** (décision 4 : « écris pour Ko, avant le code, une courte liste de scénarios en langage simple »).
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D333/scenarios-ko.md` | les scénarios de Ko, en langage simple : la référence après « Calculer le devis », dans la fenêtre de remise, le nom du fichier téléchargé, le deuxième devis de la salle, la révision |
