@@ -1,0 +1,39 @@
+== PRÉMISSES DE POSTGRESQL (base jetable)
+   serveur : PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu
+
+[1] une tête naît avec chain_id = id, en UNE écriture, sous une clé étrangère composite IMMÉDIATE
+   ✓ la tête (chain_id = id) est ACCEPTÉE — attendu ('t', '') · mesuré ('t', '')
+   ✓ …et la tête à chain_id PROVISOIRE (l'ancien code) est REFUSÉE par la même clé (c'est la raison de S-22) — attendu '23503' · mesuré '23503'
+
+[2] la clé composite refuse une version qui n'est pas celle de sa tête
+   ✓ une version 2 qui recopie année et numéro de sa tête est ACCEPTÉE — attendu ('2', '') · mesuré ('2', '')
+   ✓ une version 3 avec un autre NUMÉRO est REFUSÉE — attendu '23503' · mesuré '23503'
+   ✓ une version 3 avec une autre ANNÉE est REFUSÉE — attendu '23503' · mesuré '23503'
+   ✓ une version 3 avec une autre SALLE est REFUSÉE — attendu '23503' · mesuré '23503'
+
+[3] l'index unique partiel (version = 1)
+   ✓ une SECONDE tête de même (salle, année, numéro) est REFUSÉE — attendu '23505' · mesuré '23505'
+   ✓ …alors que la tête ET sa version 2 portent le même numéro sans conflit (le filtre est ce qui le permet) — attendu ('2', '') · mesuré ('2', '')
+
+[4] le compteur : INSERT … ON CONFLICT DO UPDATE … RETURNING
+   ✓ trois incréments successifs donnent 1, 2, 3 — attendu ['1', '2', '3'] · mesuré ['1', '2', '3']
+   ✓ un incrément ANNULÉ ne bouge pas le compteur (la sortie : la valeur rendue dans la transaction, puis la valeur relue) — attendu ['4', '3'] · mesuré ['4', '3']
+   ✓ une AUTRE année repart à 1 (une ligne par salle et année) — attendu '1' · mesuré '1'
+
+[5] l'année d'Alger
+   ✓ 2026-12-31 22:59:59+00 ⇒ année d'Alger — attendu '2026' · mesuré '2026'
+   ✓ 2026-12-31 23:00:00+00 ⇒ année d'Alger — attendu '2027' · mesuré '2027'
+   ✓ 2026-12-31 23:30:00+00 ⇒ année d'Alger — attendu '2027' · mesuré '2027'
+   ✓ 2027-01-01 00:00:00+00 ⇒ année d'Alger — attendu '2027' · mesuré '2027'
+   ✓ 2026-06-15 12:00:00+00 ⇒ année d'Alger — attendu '2026' · mesuré '2026'
+   ✓ Africa/Algiers = UTC + 1 heure à cette date (D48 : sans heure d'été) — attendu 't' · mesuré 't'
+
+[6] la séquence, et l'immuabilité
+   ✓ un nextval ANNULÉ laisse un TROU (le numéro suivant saute une valeur, il ne se répète pas) — attendu 3 · mesuré 3
+   ✓ un numéro déjà pris est REFUSÉ par l'unicité — attendu '23505' · mesuré '23505'
+   ✓ modifier le numéro est REFUSÉ par le déclencheur — attendu 'P0001' · mesuré 'P0001'
+   ✓ …et modifier une AUTRE colonne reste ACCEPTÉ — attendu ('C2', '') · mesuré ('C2', '')
+
+   base jetable supprimée : oui (attendu : oui)
+
+== BILAN : 0 prémisse(s) manquée(s) (attendu 0)
