@@ -1221,6 +1221,8 @@
         "remitTitlePdfOnly": "PDF téléchargé, remise non enregistrée",
         "remitTitleNone": "Rien n'a pu être fait",
         "remitRecorded": "Remise enregistrée : {channel}.",
+        "reference": "Référence",
+        "remitReference": "Référence du devis : {reference}.",
         "remitPdfDone": "Le PDF du devis est téléchargé.",
         "remitPdfFailed": "Le PDF n'a pas pu être téléchargé : {reason}",
         "remitRecordFailed": "La remise n'a pas pu être enregistrée : {reason}",

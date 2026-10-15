@@ -23,6 +23,8 @@ const RENDU = 90_000;
 
 const devisArabe: QuoteDocumentRecord = {
   id: "01a10f0a-5931-7a99-b800-a2cac272855a",
+  // Rang 39 (D333) : la référence STOCKÉE du devis — le type du port l'exige désormais.
+  reference: "DEVIS-2026-0003-0014 v1",
   version: 1,
   latestVersion: 1,
   status: "DRAFT",

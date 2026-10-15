@@ -280,12 +280,54 @@ export const quoteDocumentQuerySchema = z
 export type QuoteDocumentQuery = z.infer<typeof quoteDocumentQuerySchema>;
 
 /**
- * Le NOM du fichier du PDF d'un devis — UNE formule, pour le serveur (`Content-Disposition`) et pour l'écran (l'attribut `download` du lien temporaire) : deux copies
- * produiraient, un jour, deux noms pour le même fichier (rang 33, D326). ⚠ **Aucune donnée personnelle** : ni salle, ni client — la date de l'événement, la version et les
- * huit premiers caractères de l'identifiant. Ce nom ne contient que des caractères sûrs pour un nom de fichier.
+ * LA RÉFÉRENCE D'UN DEVIS (rang 39, D333, L35-3 ; K-6) — `DEVIS-2026-0001-0089 v1` : l'ANNÉE d'Alger de la création de la version 1, le NUMÉRO DE LA SALLE (une séquence sur toute la
+ * plateforme), le NUMÉRO DU DEVIS dans cette salle et cette année (un compteur), et la VERSION. UNE formule, pour le serveur (le DTO, le PDF) : l'application Pro n'en bâtit AUCUNE, elle affiche
+ * celle que le serveur rend. Les deux numéros ont QUATRE CHIFFRES AU MOINS et jamais de troncature (`10000` reste `10000`) ; une révision garde l'année et les deux numéros, SEULE la version change.
+ * ⛔ Une référence fausse ne s'imprime pas : une partie qui n'est pas un entier ≥ 1 (ou une année hors de la plage de la base, 2000 à 9999) LÈVE — jamais `NaN`, jamais `-1`.
+ * ⚠ Aucune donnée personnelle : ni client, ni nom de salle.
  */
-export function quoteDocumentFilename(quote: { readonly id: string; readonly version: number; readonly eventDate: string }): string {
-  return `devis-${quote.eventDate}-v${quote.version}-${quote.id.slice(0, 8)}.pdf`;
+export interface QuoteReferenceParts {
+  readonly year: number;
+  readonly venueNumber: number;
+  readonly quoteNumber: number;
+  readonly version: number;
+}
+
+/** Les bornes de l'année : celles du `CHECK` de la base (`quotes_reference_year_range`). */
+export const QUOTE_REFERENCE_YEAR_MIN = 2000;
+export const QUOTE_REFERENCE_YEAR_MAX = 9999;
+
+function referencePart(valeur: number, nom: string): number {
+  if (!Number.isInteger(valeur) || valeur < 1) {
+    throw new RangeError(`la référence d'un devis exige un entier ≥ 1 pour « ${nom} » (reçu ${String(valeur)})`);
+  }
+  return valeur;
+}
+
+const padReference = (n: number): string => String(n).padStart(4, "0");
+
+export function formatQuoteReference(parts: QuoteReferenceParts): string {
+  const year = referencePart(parts.year, "year");
+  if (year < QUOTE_REFERENCE_YEAR_MIN || year > QUOTE_REFERENCE_YEAR_MAX) {
+    throw new RangeError(`l'année d'une référence de devis doit être comprise entre ${QUOTE_REFERENCE_YEAR_MIN} et ${QUOTE_REFERENCE_YEAR_MAX} (reçu ${year})`);
+  }
+  const salle = padReference(referencePart(parts.venueNumber, "venueNumber"));
+  const devis = padReference(referencePart(parts.quoteNumber, "quoteNumber"));
+  return `DEVIS-${year}-${salle}-${devis} v${referencePart(parts.version, "version")}`;
+}
+
+/** La FORME d'une référence — sert à dériver le nom du fichier ; jamais à en bâtir une. */
+const QUOTE_REFERENCE_PATTERN = /^(DEVIS-\d{4}-\d{4,}-\d{4,}) v(\d+)$/u;
+
+/**
+ * Le NOM du fichier du PDF d'un devis (K-7) — `DEVIS-2026-0001-0089_fr_v1.pdf` : la référence du devis, la langue du document et la version. UNE formule, pour le serveur (`Content-Disposition`) et pour
+ * l'écran (l'attribut `download` du lien temporaire) : deux copies produiraient, un jour, deux noms pour le même fichier (rang 33, D326). ⛔ Il se DÉRIVE de la référence stockée (une seule formule) :
+ * une chaîne qui n'en est pas une LÈVE, elle ne devient pas un nom de fichier. ⚠ **Aucune donnée personnelle** : ni salle, ni client. Il ne contient que des caractères sûrs (`A-Z`, chiffres, `-`, `_`, `.`).
+ */
+export function quoteDocumentFilename(quote: { readonly reference: string }, locale: QuoteDocumentLocale): string {
+  const m = QUOTE_REFERENCE_PATTERN.exec(quote.reference);
+  if (m === null) throw new TypeError(`« ${quote.reference} » n'est pas une référence de devis`);
+  return `${m[1]}_${locale}_v${m[2]}.pdf`;
 }
 
 /** ⚠ `QUOTE_EXPIRED` A DISPARU AVEC `validUntil` (D160). Rien n'engage tant que
@@ -366,6 +408,8 @@ export interface QuoteDTO {
   clientId: string | null;
   status: QuoteStatus;
   version: number;
+  /** K-6 (rang 39) — la référence du devis, rendue par le serveur : `DEVIS-2026-0001-0089 v1`. L'application ne la bâtit jamais ; une révision garde le numéro, SEULE la version change. */
+  reference: string;
   chainId: string;
   parentQuoteId: string | null;
   eventDate: string;

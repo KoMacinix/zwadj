@@ -55,9 +55,12 @@ export class QuoteDocumentService {
     }
 
     const document = buildQuoteDocumentHtml({ record, locale, issuedOn: algiersToday(now), fontCss: loadDocumentFontCss() });
+    // ⛔ Rang 39 (K-7) : le nom du fichier se DÉRIVE de la référence stockée et de la langue DEMANDÉE ; il est calculé AVANT le rendu — une référence stockée qui n'en est pas une LÈVE sans
+    // payer un rendu, et aucun fichier ne part avec un nom faux.
+    const filename = quoteDocumentFilename(record, locale);
 
     try {
-      return { pdf: await this.renderer.render(document), locale, filename: quoteDocumentFilename(record) };
+      return { pdf: await this.renderer.render(document), locale, filename };
     } catch (erreur) {
       // Une PANNE du moteur n'est pas un refus métier : 503, code distinct (« un refus métier ne se replie pas sur une panne », et l'inverse).
       if (erreur instanceof PdfRenderUnavailableError) {

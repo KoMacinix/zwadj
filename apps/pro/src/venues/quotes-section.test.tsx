@@ -37,6 +37,8 @@ const BASE: QuoteDTO = {
   clientId: null,
   status: "DRAFT",
   version: 1,
+  // Rang 39 (D333, K-6) : la référence est un champ REQUIS du contrat.
+  reference: "DEVIS-2026-0003-0014 v1",
   chainId: "q1",
   parentQuoteId: null,
   eventDate: "2027-09-18",

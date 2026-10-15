@@ -67,11 +67,6 @@ export function longDate(isoDate: string, locale: QuoteDocumentLocale): string {
   return new Intl.DateTimeFormat(locale === "ar" ? "ar-DZ" : "fr-DZ", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${isoDate}T00:00:00Z`));
 }
 
-/** La référence imprimée : huit premiers caractères de l'identifiant et la version — elle dit QUELLE version a été imprimée. */
-export function quoteReference(record: Pick<QuoteDocumentRecord, "id" | "version">): string {
-  return `${record.id.slice(0, 8)}-v${record.version}`;
-}
-
 /**
  * LE DÉTAIL d'une ligne (DB-9, ratifiée par Ko le 12/10/2026) : « la quantité n'est imprimée que pour les prestations « à l'unité » et « par invité » ; pour « à paliers », le
  * nom du palier ; rien pour « fixe » ». La règle suit le TYPE de tarification stocké sur la ligne, jamais la valeur de la quantité (une prestation « à l'unité » de quantité 1
@@ -130,14 +125,14 @@ ${record.lines.map((l, i) => html`    <tr><td>${rtl ? l.nameAr : l.nameFr}</td>$
 </section>`;
 
   const page = html`<!doctype html>
-<html lang="${locale}" dir="${rtl ? "rtl" : "ltr"}"><head><meta charset="utf-8"><title>${L.title} ${quoteReference(record)}</title>
+<html lang="${locale}" dir="${rtl ? "rtl" : "ltr"}"><head><meta charset="utf-8"><title>${L.title} ${record.reference}</title>
 <style>
 ${raw(fontCss)}
 ${raw(CSS)}
 </style></head>
 <body>
 <h1>${salle}</h1>
-<p class="sous">${L.title} · ${L.reference} ${quoteReference(record)} · ${L.issuedOn} ${longDate(issuedOn, locale)}</p>
+<p class="sous">${L.title} · ${L.reference} <bdi dir="ltr">${record.reference}</bdi> · ${L.issuedOn} ${longDate(issuedOn, locale)}</p>
 <div class="grille">
   <div class="champ"><small>${L.client}</small>${client}</div>
   <div class="champ"><small>${L.eventDate}</small>${longDate(record.eventDate, locale)}</div>

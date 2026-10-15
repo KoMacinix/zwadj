@@ -1,7 +1,7 @@
 // Adaptateur Prisma du port `QuoteDocumentSource` — LECTURE SEULE (aucun `create`, `update`, `delete`, `upsert`, aucune transaction).
 // Rang 33 (D326). Voir `quote-document-source.ts` pour les raisons : propriété par la relation (D149), montants lus tels que stockés.
 import { Injectable } from "@nestjs/common";
-import { ServicePricingType, type QuoteStatus } from "@zwadj/types";
+import { ServicePricingType, formatQuoteReference, type QuoteStatus } from "@zwadj/types";
 import { PrismaService } from "../prisma/prisma.service";
 import type { QuoteDocumentLine, QuoteDocumentRecord, QuoteDocumentSource } from "./quote-document-source";
 
@@ -63,7 +63,10 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
         totalCents: true,
         depositCents: true,
         lines: true,
-        venue: { select: { nameFr: true, nameAr: true } },
+        // Rang 39 (K-6) : de quoi bâtir la référence STOCKÉE — l'année et le numéro du devis, le numéro de la salle.
+        referenceYear: true,
+        referenceNumber: true,
+        venue: { select: { nameFr: true, nameAr: true, number: true } },
         slotTemplate: { select: { nameFr: true, nameAr: true, startMinutes: true, endMinutes: true } },
         client: { select: { firstName: true, lastName: true } }
       }
@@ -72,6 +75,7 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
     const plusHaute = await this.prisma.quote.aggregate({ where: { chainId: row.chainId }, _max: { version: true } });
     return {
       id: row.id,
+      reference: formatQuoteReference({ year: row.referenceYear, venueNumber: row.venue.number, quoteNumber: row.referenceNumber, version: row.version }),
       version: row.version,
       // `_max` d'une chaîne dont la ligne vient d'être lue n'est jamais nul ; le repli n'existe que pour le typage et vaut « cette version ».
       latestVersion: plusHaute._max.version ?? row.version,
@@ -83,7 +87,7 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
       totalCents: row.totalCents,
       depositCents: row.depositCents,
       lines: parseStoredLines(row.lines),
-      venue: row.venue,
+      venue: { nameFr: row.venue.nameFr, nameAr: row.venue.nameAr },
       slot: row.slotTemplate,
       client: row.client
     };

@@ -42,8 +42,15 @@ async function ouvrir(browser: Browser, langue: "fr" | "ar" = "fr"): Promise<{ s
   return { salle, contexte, page };
 }
 
-/** Du formulaire client — AVEC une adresse, pour que le canal « e-mail » soit actif — jusqu'au devis CALCULÉ ; rend l'identifiant du devis créé par le serveur. */
-async function jusquAuDevis(page: Page, libelles: typeof W = W): Promise<string> {
+/** Rang 39 (D333) — lit une référence `DEVIS-AAAA-SSSS-QQQQ vN` en nombres : la FORME de R3, pas une valeur attendue. */
+function lire(reference: string) {
+  const m = /^DEVIS-(\d{4})-(\d{4,})-(\d{4,}) v(\d+)$/u.exec(reference);
+  if (m === null) throw new Error(`pas une référence : ${reference}`);
+  return { annee: Number(m[1]), salle: Number(m[2]), devis: Number(m[3]), version: Number(m[4]) };
+}
+
+/** Du formulaire client — AVEC une adresse, pour que le canal « e-mail » soit actif — jusqu'au devis CALCULÉ ; rend l'identifiant ET la référence du devis créé par le serveur (la référence est celle de la RÉPONSE de l'API, jamais une valeur écrite ici ; elle doit être à l'écran). */
+async function jusquAuDevis(page: Page, libelles: typeof W = W): Promise<{ id: string; reference: string }> {
   await page.getByLabel(libelles.firstName, { exact: true }).fill(CLIENT.prenom);
   await page.getByLabel(libelles.lastName, { exact: true }).fill(CLIENT.nom);
   await page.getByLabel(libelles.phone, { exact: true }).pressSequentially(CLIENT.chiffres);
@@ -59,10 +66,13 @@ async function jusquAuDevis(page: Page, libelles: typeof W = W): Promise<string>
   await page.getByRole("button", { name: libelles.seeQuote, exact: true }).click();
   const reponse = page.waitForResponse((r) => /\/venues\/[^/]+\/quotes$/.test(new URL(r.url()).pathname) && r.request().method() === "POST");
   await page.getByRole("button", { name: libelles.compute, exact: true }).click();
-  return ((await (await reponse).json()) as { id: string }).id;
+  const devis = (await (await reponse).json()) as { id: string; reference: string };
+  // Rang 39 (DB-10) : la référence rendue par le serveur s'affiche juste après le calcul, isolée de gauche à droite.
+  await expect(page.locator('bdi[dir="ltr"]', { hasText: devis.reference }), "la référence du devis est à l'écran").toBeVisible();
+  return { id: devis.id, reference: devis.reference };
 }
 
-const NOM_DE_FICHIER = /^devis-\d{4}-\d{2}-\d{2}-v\d+-[0-9a-f]{8}\.pdf$/;
+const NOM_DE_FICHIER = /^DEVIS-\d{4}-\d{4,}-\d{4,}_(fr|ar)_v\d+\.pdf$/;
 
 /**
  * RANG 38 (D332) — chaque bouton de remise ouvre D'ABORD la boîte de langue ; l'enregistrement du canal ET le téléchargement partent au CHOIX du pro. Les libellés de la boîte sont dans la
@@ -79,7 +89,7 @@ for (const [canal, langueInterface, langueDuPdf] of [["PRINT", "fr", "ar"], ["EM
     const libelles = LANGUES[langueInterface].interface;
     const catalogue = langueInterface === "fr" ? fr : ar;
     const { salle, contexte, page } = await ouvrir(browser, langueInterface);
-    const devisId = await jusquAuDevis(page, libelles);
+    const { id: devisId, reference } = await jusquAuDevis(page, libelles);
 
     const libelle = (catalogue.venue.ui.quotes as Record<string, string>)[`sv_${canal}`] as string;
     await page.getByRole("button", { name: libelle, exact: true }).click();
@@ -106,7 +116,8 @@ for (const [canal, langueInterface, langueDuPdf] of [["PRINT", "fr", "ar"], ["EM
 
     // Le fichier : un nom sans donnée personnelle, des octets de PDF, la police du dépôt embarquée (ce n'est pas une page d'erreur enregistrée sous .pdf).
     expect(fichier.suggestedFilename()).toMatch(NOM_DE_FICHIER);
-    expect(fichier.suggestedFilename()).toContain(devisId.slice(0, 8));
+    // Rang 39 (K-7) : le nom est la référence du devis (celle de la réponse de l'API), la langue CHOISIE et la version — construit par de simples chaînes.
+    expect(fichier.suggestedFilename()).toBe(`${reference.replace(" v1", `_${langueDuPdf}_v1`)}.pdf`);
     const octets = readFileSync((await fichier.path()) as string);
     expect(octets.subarray(0, 5).toString("latin1")).toBe("%PDF-");
     expect(octets.toString("latin1")).toContain("ReadexPro");
@@ -117,6 +128,8 @@ for (const [canal, langueInterface, langueDuPdf] of [["PRINT", "fr", "ar"], ["EM
     await expect(boite).toHaveCount(0);
     await expect(fenetre).toContainText(libelles.remitPdfDone);
     await expect(fenetre).toContainText(libelles.remitRecorded.replace("{channel}", libelle));
+    // Rang 39 (DB-10) : la fenêtre de remise porte la référence du devis remis.
+    await expect(fenetre).toContainText(reference);
     if (canal === "SMS") await expect(fenetre).toContainText(libelles.remitNotSentSMS);
     if (canal === "EMAIL") await expect(fenetre).toContainText(libelles.remitNotSentEMAIL);
     if (canal === "PRINT") await expect(fenetre).not.toContainText("n'envoie pas");
@@ -135,7 +148,7 @@ for (const [canal, langueInterface, langueDuPdf] of [["PRINT", "fr", "ar"], ["EM
 
 test("⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise : aucune requête ne part, le serveur n'a aucun canal", async ({ browser }) => {
   const { salle, contexte, page } = await ouvrir(browser);
-  const devisId = await jusquAuDevis(page);
+  const { id: devisId } = await jusquAuDevis(page);
   const requetes: string[] = [];
   page.on("request", (r) => {
     const chemin = new URL(r.url()).pathname;
@@ -191,7 +204,7 @@ test("le canal « e-mail » est INACTIF sans adresse, ACTIF avec — et rien n'e
 
 test("⛔ une révision rend le PDF de l'ancienne version REFUSÉ (409) et celui de la nouvelle servi — la décision 1, de bout en bout", async ({ browser }) => {
   const { salle, contexte, page } = await ouvrir(browser);
-  const v1 = await jusquAuDevis(page);
+  const { id: v1, reference: referenceV1 } = await jusquAuDevis(page);
   await contexte.close();
   const token = await accessTokenOf(salle.pro);
   const avant = await apiCall("GET", `/quotes/${v1}/document?locale=fr`, token);
@@ -201,9 +214,25 @@ test("⛔ une révision rend le PDF de l'ancienne version REFUSÉ (409) et celui
   const revision = await apiCall("POST", `/quotes/${v1}/revise`, token, { eventDate: lue.eventDate, slotTemplateId: lue.slotTemplateId, guests: 120 });
   expect(revision.status).toBe(201);
   const v2 = (revision.json as { id: string }).id;
+  // Rang 39 : une révision garde l'année et les deux numéros de sa tête ; SEULE la version change (v1 → v2).
+  expect(lire((revision.json as { reference: string }).reference)).toEqual({ ...lire(referenceV1), version: 2 });
   const ancienne = await apiCall("GET", `/quotes/${v1}/document?locale=fr`, token);
   expect(ancienne.status, "la v1 n'est plus la version active").toBe(409);
   expect(ancienne.text).toContain("QUOTE_VERSION_NOT_ACTIVE");
   const nouvelle = await apiCall("GET", `/quotes/${v2}/document?locale=fr`, token);
   expect(nouvelle.status).toBe(200);
+});
+
+test("⛔ rang 39 — un DEUXIÈME devis de la même salle prend le numéro SUIVANT, avec le même numéro de salle et la version 1 ; la référence de la liste est celle de la création", async ({ browser }) => {
+  const { salle, contexte, page } = await ouvrir(browser);
+  const { id: premier, reference: referencePremier } = await jusquAuDevis(page);
+  await contexte.close();
+  const token = await accessTokenOf(salle.pro);
+  const lue = ((await apiCall("GET", `/pro/venues/${salle.id}/quotes`, token)).json as { id: string; reference: string; eventDate: string; slotTemplateId: string }[]).find((q) => q.id === premier)!;
+  expect(lue.reference, "la liste du pro rend la référence de la création").toBe(referencePremier);
+  const second = await apiCall("POST", `/venues/${salle.id}/quotes`, token, { eventDate: lue.eventDate, slotTemplateId: lue.slotTemplateId, guests: 90 });
+  expect(second.status).toBe(201);
+  const a = lire(referencePremier);
+  const b = lire((second.json as { reference: string }).reference);
+  expect(b).toEqual({ ...a, devis: a.devis + 1, version: 1 });
 });

@@ -35,11 +35,22 @@ export function wantsRealSending(channel: QuoteSentVia): boolean {
   return CHANNELS_WITH_FUTURE_SENDING.includes(channel);
 }
 
-/** Une ligne de la fenêtre : une clé de catalogue `venue.ui.walkin.<key>`, le canal à nommer, et l'ÉCHEC dont le motif se traduira. */
+/** Une ligne de la fenêtre : une clé de catalogue `venue.ui.walkin.<key>`, le canal à nommer, l'ÉCHEC dont le motif se traduira, et — pour la première ligne — la RÉFÉRENCE du devis remis. */
 export interface RemitLine {
   readonly key: string;
   readonly channel?: QuoteSentVia;
   readonly failure?: unknown;
+  /** Rang 39 (D333, DB-10) : la référence du devis, telle que le SERVEUR l'a rendue — jamais bâtie ici. */
+  readonly reference?: string;
+}
+
+/**
+ * Isole une chaîne LATINE dans une phrase arabe (rang 39, F-16) : sans isolat, l'algorithme bidirectionnel inverse les groupes de chiffres d'une référence `DEVIS-2026-0001-0089 v1`
+ * autour de ses tirets. U+2066 (LRI) et U+2069 (PDI) ne s'affichent pas et n'ajoutent rien d'autre ; en français ils sont sans effet visible. La fenêtre reçoit un TEXTE (pas un nœud),
+ * c'est pourquoi l'isolat est un caractère et non un `<bdi>` : à l'écran de la page, c'est `<bdi dir="ltr">`.
+ */
+export function isolateLtr(texte: string): string {
+  return `\u2066${texte}\u2069`;
 }
 
 export interface RemitView {
@@ -53,6 +64,8 @@ export interface RemitOutcome {
   readonly channel: QuoteSentVia;
   readonly recorded: { readonly ok: true } | { readonly ok: false; readonly failure: unknown };
   readonly pdf: { readonly ok: true } | { readonly ok: false; readonly failure: unknown };
+  /** Rang 39 (D333, DB-10) : la référence du devis remis (`QuoteDTO.reference`) — la fenêtre la dit EN PREMIER, quelle que soit l'issue. */
+  readonly reference: string;
 }
 
 /**
@@ -62,7 +75,7 @@ export interface RemitOutcome {
  * la ligne l'alourdirait ; dès qu'il a réussi, elle lui dit ce qui reste À SA CHARGE.
  */
 export function describeRemittance(outcome: RemitOutcome): RemitView {
-  const { channel, recorded, pdf } = outcome;
+  const { channel, recorded, pdf, reference } = outcome;
   const titleKey = recorded.ok
     ? pdf.ok
       ? "remitTitleDone"
@@ -71,6 +84,7 @@ export function describeRemittance(outcome: RemitOutcome): RemitView {
       ? "remitTitlePdfOnly"
       : "remitTitleNone";
   const lines: RemitLine[] = [
+    { key: "remitReference", reference },
     recorded.ok ? { key: "remitRecorded", channel } : { key: "remitRecordFailed", failure: recorded.failure },
     pdf.ok ? { key: "remitPdfDone" } : { key: "remitPdfFailed", failure: pdf.failure }
   ];

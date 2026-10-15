@@ -35,6 +35,11 @@ export const QUOTE_SELECT = {
   sentVia: true,
   acceptedAt: true,
   createdAt: true,
+  // Rang 39 (D333, K-6) — de quoi bâtir la RÉFÉRENCE : l'année et le numéro du devis (colonnes du devis) et le numéro de la SALLE (une relation). Le service les assemble par
+  // `formatQuoteReference` ; ni le port ni l'adaptateur n'en bâtissent une.
+  referenceYear: true,
+  referenceNumber: true,
+  venue: { select: { number: true } },
   booking: { select: { id: true } }
 } satisfies Prisma.QuoteSelect;
 
@@ -121,18 +126,27 @@ export type ResultatConversion =
 
 export const QUOTE_STORE = Symbol("QUOTE_STORE");
 
+/** Rang 39 (D333, S-21) — ce que le SERVICE décide de la naissance d'une tête de chaîne : l'ANNÉE d'Alger de sa référence et l'INSTANT de sa création, issus du MÊME appel de
+ *  l'horloge. Le port ne lit pas l'horloge (D48 : seul le service le peut) ; passer les deux ensemble rend vrai, à la milliseconde, que `reference_year` est l'année d'Alger de
+ *  `created_at` — sans quoi une création à 23 h 59 min 59,999 s pourrait porter 2026 avec une date de création de 2027. */
+export interface ReferenceDeCreation {
+  readonly annee: number;
+  readonly creeLe: Date;
+}
+
 export interface QuoteStore {
-  /** Crée la v1 ET la désigne tête de sa propre chaîne. ⚠ DEUX ÉCRITURES, UNE
-   *  TRANSACTION : `chainId` vaut son propre id, que seule la base connaît
-   *  (`uuidv7()`). En deux requêtes, un échec de la seconde laisserait un devis
-   *  sans chaîne (MD4). */
-  creerTeteDeChaine(venueId: string, chiffre: DevisChiffre): Promise<QuoteRow>;
+  /** Crée la v1 ET la désigne tête de sa propre chaîne, en UNE écriture : l'identifiant est PRÉ-GÉNÉRÉ par la base (`SELECT uuidv7()`), donc `chain_id = id` dès l'insertion
+   *  (rang 39, S-22 — la clé étrangère composite des versions vers leur tête est IMMÉDIATE ; l'ancienne écriture, `chain_id` provisoire puis `UPDATE`, est refusée par elle).
+   *  ⛔ LE NUMÉRO DU DEVIS s'alloue DANS CETTE TRANSACTION, par un compteur `(salle, année)` incrémenté atomiquement (`INSERT … ON CONFLICT DO UPDATE … + 1 … RETURNING`) : jamais
+   *  « lire le plus grand puis ajouter 1 » (R3), et un échec ultérieur de la transaction RENDRAIT le numéro (F-7). */
+  creerTeteDeChaine(venueId: string, chiffre: DevisChiffre, reference: ReferenceDeCreation): Promise<QuoteRow>;
 
   /** ⛔ VERROU DE CHAÎNE OBLIGATOIRE. `MAX(version)` puis `version + 1` est une
    *  perte de mise à jour classique : deux révisions simultanées lisent le même
    *  maximum et `quotes_chain_version_unique` refuse la seconde. Le
    *  `SELECT … FOR UPDATE` sur la racine les sérialise — sans lui, la garde
-   *  disparaît sans qu'aucun test unitaire ne le voie (MD3). */
+   *  disparaît sans qu'aucun test unitaire ne le voie (MD3).
+   *  ⛔ Rang 39 : la révision RECOPIE l'année et le numéro de la tête qu'elle verrouille déjà — elle ne touche AUCUN compteur ; la clé étrangère composite le garde en base. */
   creerRevision(args: {
     readonly venueId: string;
     readonly chainId: string;

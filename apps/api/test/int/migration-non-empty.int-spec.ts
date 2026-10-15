@@ -29,6 +29,10 @@ import { Client } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 const API_DIR = join(__dirname, "../..");
+// ⛔ Rang 39 (D333) — LA MIGRATION DE D282 EST ÉPINGLÉE PAR SON NOM. Ce fichier suivait « la dernière migration » ; deux migrations (la numérotation des salles et des devis) la suivent
+// maintenant, et le semis d'agrégats FAUX de D282 ne peut vivre QUE tant qu'elle n'est pas appliquée. Les tests D282 restent donc pointés sur ELLE (préparation = tout ce qui la précède) ;
+// les migrations du lot sont mesurées par le bloc « L35-3 » en bas de ce fichier, qui commence par rendre le semis cohérent et appliquer D282.
+const NOM_D282 = "20260909120000_booking_quote_total_coherent";
 const MIGRATIONS_DIR = join(API_DIR, "prisma/migrations");
 
 const BASE_URL = process.env.DATABASE_URL ?? "postgresql://zwadj:zwadj@localhost:5432/zwadj_test?schema=public";
@@ -327,7 +331,8 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     expect(migrationsOrdonnees().length).toBeGreaterThan(1);
 
     const toutes = migrationsOrdonnees();
-    await appliquerMigrations(toutes.slice(0, -1));
+    expect(toutes.includes(NOM_D282), "la migration de D282 a changé de nom ou disparu").toBe(true);
+    await appliquerMigrations(toutes.slice(0, toutes.indexOf(NOM_D282)));
 
     await semerDonnees();
     const semees = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM refresh_tokens`);
@@ -450,7 +455,7 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     // rouge utile.
     let erreur: (Error & { code?: string }) | null = null;
     try {
-      await appliquerMigrations([migrationsOrdonnees().at(-1)!]);
+      await appliquerMigrations([NOM_D282]);
     } catch (error) {
       erreur = error as Error & { code?: string };
     }
@@ -673,3 +678,194 @@ describe("B9 — la dernière migration sur une base NON VIDE (D123)", () => {
     expect(idx, "index partiel disparu : un migrate dev est passé par là").toHaveLength(1);
   });
 });
+
+// ══ RANG 39 (D333, L35-3) — LA NUMÉROTATION, SUR UNE BASE NON VIDE (D123) ═════════════════════════════════════════════════════════════════════════════
+// Les deux migrations du lot (`venue_number`, `quote_reference`) suivent celle de D282. Le semis de D282 (des lignes d'agrégat FAUX) ne peut plus vivre « avant la dernière migration » :
+// D282 s'applique désormais pendant la PRÉPARATION de CES tests-ci. Ce bloc commence donc par RENDRE COHÉRENTES les deux lignes fautives, applique D282 (qui doit ALORS passer — un
+// second cas, jamais mesuré), sème les salles et les devis du lot, puis applique les migrations de numérotation UNE PAR UNE.
+// ⚠ L'ATTENDU EST DÉRIVÉ DU SEMIS, par un algorithme écrit ICI et indépendant du SQL de la migration (un `row_number()` recopié se validerait lui-même) : l'ordre `created_at, id`,
+// l'année d'ALGER (UTC + 1) de la date de création, le départage par identifiant sur des dates identiques.
+
+/** L'année d'Alger d'un instant (D48 : UTC + 1, sans heure d'été) — l'algorithme du TEST, volontairement distinct de `algiersYear` et du SQL de la migration. */
+const anneeAlger = (instant: Date): number => new Date(instant.getTime() + 3_600_000).getUTCFullYear();
+
+describe("L35-3 — la numérotation des salles et des devis sur une base NON VIDE", () => {
+  interface SalleSemee { id: string; slug: string; creeLe: string; supprimee: boolean }
+  interface DevisSeme { id: string; salle: string; creeLe: string; chaine: string | null; version: number }
+  const ID = (n: number) => `018f0000-0000-7000-8000-${String(n).padStart(12, "0")}`;
+  // Trois salles (dont une SUPPRIMÉE) ; deux ont la MÊME date de création (le départage se fait par identifiant, et l'identifiant le plus PETIT est écrit en DEUXIÈME exprès : un
+  // départage oublié ou inversé s'y verrait).
+  const SALLES: SalleSemee[] = [
+    { id: ID(300), slug: "s-la-plus-ancienne", creeLe: "2026-01-10T09:00:00Z", supprimee: true },
+    { id: ID(902), slug: "s-egalite-b", creeLe: "2026-03-01T08:00:00Z", supprimee: false },
+    { id: ID(901), slug: "s-egalite-a", creeLe: "2026-03-01T08:00:00Z", supprimee: false }
+  ];
+  // Les devis : têtes (version 1, `chaine` = null ⇒ chain_id = id) et révisions. Dates aux BORNES de l'année d'Alger : 22 h 59 UTC (2026) et 23 h 00 UTC (2027) le 31/12 ; deux têtes à la
+  // même seconde (départage par id) ; une chaîne de trois versions dont la v2 est écrite l'année SUIVANTE.
+  const DEVIS: DevisSeme[] = [
+    { id: ID(1002), salle: ID(901), creeLe: "2026-12-31T22:59:59Z", chaine: null, version: 1 },
+    { id: ID(1001), salle: ID(901), creeLe: "2026-12-31T22:59:59Z", chaine: null, version: 1 },
+    { id: ID(1003), salle: ID(901), creeLe: "2026-12-31T23:00:00Z", chaine: null, version: 1 },
+    { id: ID(1004), salle: ID(901), creeLe: "2026-05-04T10:00:00Z", chaine: null, version: 1 },
+    { id: ID(1005), salle: ID(901), creeLe: "2027-01-10T10:00:00Z", chaine: ID(1004), version: 2 },
+    { id: ID(1006), salle: ID(901), creeLe: "2027-02-10T10:00:00Z", chaine: ID(1004), version: 3 },
+    { id: ID(1007), salle: ID(902), creeLe: "2026-06-01T10:00:00Z", chaine: null, version: 1 },
+    { id: ID(1008), salle: ID(300), creeLe: "2026-02-01T10:00:00Z", chaine: null, version: 1 }
+  ];
+  let suite: string[] = [];
+
+  it("prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot", async () => {
+    const toutes = migrationsOrdonnees();
+    const i282 = toutes.indexOf(NOM_D282);
+    suite = toutes.slice(i282 + 1);
+    expect(suite.map((n) => n.replace(/^\d+_/u, "")), "les migrations qui SUIVENT D282 sont celles du lot : un lot de plus doit re-pointer ce bloc").toEqual(["venue_number", "quote_reference"]);
+
+    // D282 refusait l'agrégat faux (test précédent) : on rend les deux lignes cohérentes, puis on l'applique — le chemin FAVORABLE, que ce fichier n'avait jamais joué.
+    await sql(`UPDATE bookings SET total_cents = base_price_cents + services_total_cents WHERE total_cents <> base_price_cents + services_total_cents`);
+    await sql(`UPDATE quotes SET total_cents = base_price_cents + services_total_cents WHERE total_cents <> base_price_cents + services_total_cents`);
+    await appliquerMigrations([NOM_D282]);
+    const posees = await sql<{ conname: string }>(`SELECT conname FROM pg_constraint WHERE conname IN ('bookings_total_coherent', 'quotes_total_coherent') ORDER BY conname`);
+    expect(posees.map((r) => r.conname), "D282 s'est appliquée sur une base cohérente").toEqual(["bookings_total_coherent", "quotes_total_coherent"]);
+
+    // Le semis du lot : on SUPPRIME les salles et devis du semis général (ils ne portent pas les dates voulues), puis on sème les nôtres.
+    await sql(`DELETE FROM payments; DELETE FROM bookings; DELETE FROM quotes; DELETE FROM venues;`);
+    for (const s of SALLES) {
+      await sql(
+        `INSERT INTO venues (id, owner_id, city_id, slug, name_fr, name_ar, capacity_max, base_price_cents, publication_status, created_at, updated_at, deleted_at)
+         SELECT $1::uuid, p.id, c.id, $2, 'Salle', 'قاعة', 300, 150000000, 'PUBLISHED', $3::timestamptz, $3::timestamptz, CASE WHEN $4::boolean THEN now() ELSE NULL END
+           FROM pro_profiles p CROSS JOIN cities c LIMIT 1`,
+        [s.id, s.slug, s.creeLe, s.supprimee]
+      );
+    }
+    for (const d of DEVIS) {
+      await sql(
+        `INSERT INTO quotes (id, venue_id, status, version, chain_id, parent_quote_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines, created_at)
+         VALUES ($1::uuid, $2::uuid, 'DRAFT', $3, COALESCE($4::uuid, $1::uuid), $4::uuid, current_date + 30, 100, 150000000, 0, 150000000, 45000000, '[]'::jsonb, $5::timestamptz)`,
+        [d.id, d.salle, d.version, d.chaine, d.creeLe]
+      );
+    }
+    const n = await sql<{ salles: string; devis: string; supprimees: string }>(
+      `SELECT (SELECT count(*) FROM venues)::text AS salles, (SELECT count(*) FROM quotes)::text AS devis, (SELECT count(*) FROM venues WHERE deleted_at IS NOT NULL)::text AS supprimees`
+    );
+    expect(n[0], "sans salles (dont une SUPPRIMÉE) ni devis semés, la migration s'appliquerait sur du vide").toEqual({ salles: String(SALLES.length), devis: String(DEVIS.length), supprimees: "1" });
+    // garde-fou : les migrations du lot ne sont PAS encore appliquées
+    const colonne = await sql(`SELECT 1 FROM information_schema.columns WHERE table_name = 'venues' AND column_name = 'number'`);
+    expect(colonne, "la colonne `number` existe déjà : le test ne prouverait rien").toHaveLength(0);
+  });
+
+  it("⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans l'ordre de création, départage par identifiant ; la séquence repart du maximum", async () => {
+    await appliquerMigrations([suite[0]!]);
+    const attendu = [...SALLES]
+      .sort((a, b) => new Date(a.creeLe).getTime() - new Date(b.creeLe).getTime() || (a.id < b.id ? -1 : 1))
+      .map((s, i) => ({ id: s.id, number: i + 1 }));
+    const lu = await sql<{ id: string; number: number }>(`SELECT id, number FROM venues ORDER BY number`);
+    expect(lu.map((r) => ({ id: r.id, number: r.number }))).toEqual(attendu);
+    // la salle supprimée porte bien un numéro, et c'est le premier (la plus ancienne)
+    expect(attendu[0]!.id).toBe(ID(300));
+    // …et l'égalité de dates est départagée par l'identifiant : 901 avant 902, alors que 902 est écrit avant dans le semis
+    expect(attendu.map((a) => a.id)).toEqual([ID(300), ID(901), ID(902)]);
+
+    // la séquence repart du MAXIMUM : la prochaine salle prend max + 1, sans heurter une salle existante
+    // `resolves` : un `setval` en retard ferait entrer la salle neuve en collision (23505) ; sous `resolves` ce refus est une ASSERTION, pas une erreur de requête (D305).
+    await expect(
+      sql(
+        `INSERT INTO venues (id, owner_id, city_id, slug, name_fr, name_ar, capacity_max, base_price_cents, publication_status, created_at, updated_at)
+         SELECT uuidv7(), owner_id, city_id, 'neuve', 'Neuve', 'جديدة', 100, 100, 'PUBLISHED', now(), now() FROM venues LIMIT 1`
+      )
+    ).resolves.toBeDefined();
+    const neuve = await sql<{ number: number }>(`SELECT number FROM venues WHERE slug = 'neuve'`);
+    expect(neuve[0]!.number).toBe(SALLES.length + 1);
+    await sql(`DELETE FROM venues WHERE slug = 'neuve'`);
+
+    // les garanties : NOT NULL, défaut, unicité, immuabilité
+    const col = await sql<{ is_nullable: string; column_default: string | null }>(`SELECT is_nullable, column_default FROM information_schema.columns WHERE table_name = 'venues' AND column_name = 'number'`);
+    expect(col[0]!.is_nullable).toBe("NO");
+    expect(col[0]!.column_default ?? "").toContain("venue_number_seq");
+    await expect(sql(`UPDATE venues SET number = number + 100`)).rejects.toThrow(/immuable/iu);
+  });
+
+  it("⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER) dans l'ordre de création ; les révisions recopient leur tête ; les compteurs valent le maximum", async () => {
+    await appliquerMigrations([suite[1]!]);
+    const tetes = DEVIS.filter((d) => d.version === 1);
+    const groupes = new Map<string, DevisSeme[]>();
+    for (const d of tetes) {
+      const cle = `${d.salle}|${anneeAlger(new Date(d.creeLe))}`;
+      groupes.set(cle, [...(groupes.get(cle) ?? []), d]);
+    }
+    const attendu = new Map<string, { annee: number; numero: number }>();
+    for (const [cle, liste] of groupes) {
+      liste.sort((a, b) => new Date(a.creeLe).getTime() - new Date(b.creeLe).getTime() || (a.id < b.id ? -1 : 1));
+      liste.forEach((d, i) => attendu.set(d.id, { annee: Number(cle.split("|")[1]), numero: i + 1 }));
+    }
+    for (const d of DEVIS.filter((x) => x.version > 1)) attendu.set(d.id, attendu.get(d.chaine!)!);
+
+    const lu = await sql<{ id: string; reference_year: number; reference_number: number }>(`SELECT id, reference_year, reference_number FROM quotes`);
+    const obtenu = new Map(lu.map((r) => [r.id, { annee: r.reference_year, numero: r.reference_number }]));
+    expect(Object.fromEntries(obtenu)).toEqual(Object.fromEntries(attendu));
+
+    // les cas qui comptent, nommés (l'attendu ci-dessus les contient, ceci les rend lisibles à l'échec)
+    expect(obtenu.get(ID(1001)), "à égalité de date : l'identifiant le plus petit prend le numéro le plus petit").toEqual({ annee: 2026, numero: 2 });
+    expect(obtenu.get(ID(1002))).toEqual({ annee: 2026, numero: 3 });
+    expect(obtenu.get(ID(1003)), "23 h 00 UTC le 31/12 est déjà l'ANNÉE SUIVANTE à Alger").toEqual({ annee: 2027, numero: 1 });
+    expect(obtenu.get(ID(1005)), "une révision écrite l'année suivante garde l'année de sa tête").toEqual(obtenu.get(ID(1004)));
+    expect(obtenu.get(ID(1006))).toEqual(obtenu.get(ID(1004)));
+
+    // les compteurs = le maximum par (salle, année) ; une ligne par groupe, et AUCUNE de plus
+    const compteurs = await sql<{ venue_id: string; year: number; last_number: number }>(`SELECT venue_id, year, last_number FROM quote_number_counters ORDER BY venue_id, year`);
+    const maxi = new Map<string, number>();
+    for (const [id, v] of attendu) {
+      const d = DEVIS.find((x) => x.id === id)!;
+      if (d.version !== 1) continue;
+      const cle = `${d.salle}|${v.annee}`;
+      maxi.set(cle, Math.max(maxi.get(cle) ?? 0, v.numero));
+    }
+    expect(compteurs.map((c) => `${c.venue_id}|${c.year}|${c.last_number}`)).toEqual([...maxi].map(([cle, m]) => `${cle}|${m}`).sort());
+
+    // les garanties : NOT NULL, unicité de la première version, clé composite vers la tête
+    const nonNul = await sql<{ column_name: string; is_nullable: string }>(`SELECT column_name, is_nullable FROM information_schema.columns WHERE table_name = 'quotes' AND column_name IN ('reference_year', 'reference_number') ORDER BY 1`);
+    expect(nonNul.map((c) => c.is_nullable)).toEqual(["NO", "NO"]);
+    const gardes = await sql<{ conname: string }>(`SELECT conname FROM pg_constraint WHERE conrelid = 'quotes'::regclass AND conname IN ('quotes_chain_head_fkey', 'quotes_head_reference_key') ORDER BY 1`);
+    expect(gardes.map((g) => g.conname)).toEqual(["quotes_chain_head_fkey", "quotes_head_reference_key"]);
+    const idx = await sql<{ indexdef: string }>(`SELECT indexdef FROM pg_indexes WHERE indexname = 'quotes_reference_head_unique'`);
+    expect(idx).toHaveLength(1);
+    expect(idx[0]!.indexdef).toContain("UNIQUE");
+    expect(idx[0]!.indexdef).toMatch(/WHERE \(?\(?version = 1/u);
+  });
+
+  it("⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle", async () => {
+    // On repart d'une base RECRÉÉE, migrée jusqu'à AVANT la numérotation des salles, avec UNE révision dont la tête n'existe pas.
+    await recreerBase();
+    const toutes = migrationsOrdonnees();
+    await appliquerMigrations(toutes.slice(0, toutes.indexOf(suite[0]!)));
+    await sql(`INSERT INTO wilayas (id, code, name_fr, name_ar) VALUES (uuidv7(), 16, 'Alger', 'الجزائر')`);
+    await sql(`INSERT INTO cities (id, wilaya_id, name_fr, name_ar, lat, lng) SELECT uuidv7(), id, 'Hydra', 'حيدرة', 36.7, 3.0 FROM wilayas`);
+    await sql(`INSERT INTO users (id, email, password_hash, role, status, email_verified_at, locale, created_at, updated_at) VALUES (uuidv7(), 'p@example.dz', '$argon2id$fake', 'PRO', 'ACTIVE', now(), 'fr', now(), now())`);
+    await sql(`INSERT INTO pro_profiles (id, user_id, business_name, phone, created_at, updated_at) SELECT uuidv7(), id, 'P', '+213550000001', now(), now() FROM users`);
+    await sql(`INSERT INTO venues (id, owner_id, city_id, slug, name_fr, name_ar, capacity_max, base_price_cents, publication_status, created_at, updated_at) SELECT uuidv7(), p.id, c.id, 's', 'S', 'ق', 100, 100, 'PUBLISHED', now(), now() FROM pro_profiles p CROSS JOIN cities c LIMIT 1`);
+    await sql(
+      `INSERT INTO quotes (id, venue_id, status, version, chain_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines)
+       SELECT uuidv7(), v.id, 'DRAFT', 1, uuidv7(), current_date + 5, 100, 150000000, 0, 150000000, 45000000, '[]'::jsonb FROM venues v LIMIT 1`
+    );
+    // …et une révision ORPHELINE : sa tête (`chain_id`) n'existe pas ; son parent, lui, existe (le `CHECK` exige un parent à toute version ≥ 2).
+    await sql(
+      `INSERT INTO quotes (id, venue_id, status, version, chain_id, parent_quote_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines)
+       SELECT uuidv7(), q.venue_id, 'DRAFT', 2, uuidv7(), q.id, current_date + 5, 100, 150000000, 0, 150000000, 45000000, '[]'::jsonb FROM quotes q WHERE q.version = 1 LIMIT 1`
+    );
+    await appliquerMigrations([suite[0]!]);
+    const avant = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes`);
+    let erreur: Error | null = null;
+    try {
+      await appliquerMigrations([suite[1]!]);
+    } catch (e) {
+      erreur = e as Error;
+    }
+    expect(erreur, "la migration s'est APPLIQUÉE avec une révision sans tête : une ligne resterait sans numéro").not.toBeNull();
+    const apres = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes`);
+    expect(apres).toEqual(avant);
+    const colonne = await sql(`SELECT 1 FROM information_schema.columns WHERE table_name = 'quotes' AND column_name = 'reference_number'`);
+    expect(colonne, "la migration refusée a laissé une colonne derrière elle").toHaveLength(0);
+    const table = await sql(`SELECT 1 FROM information_schema.tables WHERE table_name = 'quote_number_counters'`);
+    expect(table, "la migration refusée a laissé la table des compteurs").toHaveLength(0);
+  });
+});
+

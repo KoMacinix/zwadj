@@ -17,6 +17,12 @@ import { QUOTE_SELECT } from "./quote-store.types";
 const VENUE_ID = "018f0000-0000-7000-8000-00000000eeee";
 const QUOTE_ID = "018f0000-0000-7000-8000-00000000dddd";
 const CHAINE = "018f0000-0000-7000-8000-00000000cccc";
+// Rang 39 (D333, L35-3) — des valeurs DISTINCTES pour ce que le compteur rend (89), ce que la tête porte (2026 / 42) et l'identifiant pré-généré : une interversion ne passe pas inaperçue.
+const NOUVEL_ID = "018f0000-0000-7000-8000-00000000bbbb";
+const COMPTEUR = 89;
+const TETE_ANNEE = 2026;
+const TETE_NUMERO = 42;
+const REFERENCE = { annee: 2027, creeLe: new Date("2027-01-01T00:30:00.000Z") };
 
 const CHIFFRE = {
   clientId: null,
@@ -65,14 +71,30 @@ function build() {
         return { _max: { version: 3 } };
       })
     },
-    $queryRaw: vi.fn(async (..._args: unknown[]): Promise<unknown[]> => {
+    // ⚠ Le double reconnaît la REQUÊTE qu'il reçoit (le gabarit SQL), il ne répond pas « vide » à tout : le compteur rend son numéro, `uuidv7()` un identifiant, le verrou de
+    // chaîne la TÊTE (id, année, numéro) qu'il verrouille. Un double qui répondrait pareil aux trois ne distinguerait pas une interversion.
+    $queryRaw: vi.fn(async (strings: TemplateStringsArray, ..._valeurs: unknown[]): Promise<unknown[]> => {
+      const sql = strings.join("?");
+      if (sql.includes("quote_number_counters")) {
+        journal.push("compteur");
+        return [{ last_number: COMPTEUR }];
+      }
+      if (sql.includes("uuidv7()")) {
+        journal.push("uuid");
+        return [{ id: NOUVEL_ID }];
+      }
       journal.push("FOR UPDATE");
-      return [];
+      return [{ id: CHAINE, reference_year: TETE_ANNEE, reference_number: TETE_NUMERO }];
     })
   };
   type Charge2 = Record<string, unknown>;
   const prisma = {
     $transaction: vi.fn(async (cb: (t: unknown) => unknown) => cb(tx)),
+    // ⛔ Tout SQL brut lancé HORS transaction s'inscrit ici : le compteur y serait avancé sans que le devis le soit (F-7).
+    $queryRaw: vi.fn(async (..._args: unknown[]): Promise<unknown[]> => {
+      journal.push("HORS-TX");
+      return [];
+    }),
     quote: { findMany: vi.fn().mockResolvedValue([]), findFirst: vi.fn().mockResolvedValue(null) },
     venue: { findFirst: vi.fn().mockResolvedValue(null) },
     booking: {
@@ -83,24 +105,68 @@ function build() {
   return { store: new PrismaQuoteStore(prisma as unknown as PrismaService), prisma, tx, journal };
 }
 
-describe("PrismaQuoteStore.creerTeteDeChaine — deux écritures, UNE transaction", () => {
-  it("⛔ `create` PUIS `update(chainId)` dans le MÊME bloc transactionnel", async () => {
-    // En deux transactions, un échec du second laisserait un devis sans chaîne.
+describe("PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction", () => {
+  it("⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui", async () => {
+    // Rang 39 (D333, F-7) : le compteur est écrit DANS la transaction du devis. Hors d'elle, un échec de l'insertion laisserait le compteur avancé seul — un numéro de devis perdu.
+    // Et la tête naît en UNE écriture (`id = chain_id`) : plus de `UPDATE chain_id` (S-22).
     const { store, prisma, journal } = build();
-    await store.creerTeteDeChaine(VENUE_ID, CHIFFRE);
+    await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE);
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(journal).toEqual(["create", "update", "findUniqueOrThrow"]);
+    expect(journal).toEqual(["compteur", "uuid", "create", "findUniqueOrThrow"]);
+    expect(prisma.$queryRaw).not.toHaveBeenCalled();
   });
 
-  it("⚠ la version 1 et le chainId provisoire sont écrits, les montants passent TELS QUELS", async () => {
+  it("⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 … RETURNING` — JAMAIS « lire le plus grand puis ajouter 1 » (R3)", async () => {
+    const { store, tx } = build();
+    await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE);
+    const [strings, ...valeurs] = tx.$queryRaw.mock.calls[0]! as unknown as [TemplateStringsArray, ...unknown[]];
+    const sql = strings.join("?").replace(/\s+/gu, " ");
+    expect(sql).toContain("INSERT INTO quote_number_counters");
+    expect(sql).toContain("ON CONFLICT (venue_id, year) DO UPDATE SET last_number = quote_number_counters.last_number + 1");
+    expect(sql).toContain("RETURNING last_number");
+    expect(sql).not.toMatch(/\bMAX\s*\(/iu);
+    // les paramètres sont LIÉS (jamais concaténés) : la salle puis l'année passée par le service
+    expect(valeurs).toEqual([VENUE_ID, REFERENCE.annee]);
+  });
+
+  it("⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, l'année PASSÉE, le numéro RENDU par le compteur, et la date de création PASSÉE", async () => {
+    const { store, tx } = build();
+    await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE);
+    const data = (tx.quote.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data.id).toBe(NOUVEL_ID);
+    expect(data.chainId).toBe(NOUVEL_ID);
+    expect(data.version).toBe(1);
+    expect(data.referenceYear).toBe(2027);
+    expect(data.referenceNumber).toBe(COMPTEUR);
+    expect(data.createdAt).toEqual(REFERENCE.creeLe);
+    expect(tx.quote.update).not.toHaveBeenCalled();
+  });
+
+  it("⚠ les montants passent TELS QUELS", async () => {
     // Aucune arithmétique monétaire dans l'adaptateur : il persiste ce que
     // `price()` a calculé, sans y toucher.
     const { store, tx } = build();
-    await store.creerTeteDeChaine(VENUE_ID, CHIFFRE);
+    await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE);
     const data = (tx.quote.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
-    expect(data.version).toBe(1);
     expect(data.totalCents).toBe(18_000_000);
     expect(data.depositCents).toBe(5_400_000);
+  });
+
+  it("⛔ un échec de l'insertion APRÈS le compteur : la création échoue, et le compteur n'a été touché que DANS la transaction (qui l'annule)", async () => {
+    const { store, tx, prisma, journal } = build();
+    tx.quote.create.mockRejectedValueOnce(new Error("clé étrangère"));
+    await expect(store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE)).rejects.toThrow("clé étrangère");
+    expect(journal).toEqual(["compteur", "uuid"]);
+    expect(prisma.$queryRaw).not.toHaveBeenCalled();
+  });
+
+  it("⛔ un compteur qui ne rend PAS exactement une ligne entière positive : la création LÈVE, aucun numéro n'est inventé", async () => {
+    for (const rendu of [[], [{ last_number: 0 }], [{ last_number: "3" }], [{ last_number: 1 }, { last_number: 2 }]]) {
+      const { store, tx } = build();
+      tx.$queryRaw.mockResolvedValueOnce(rendu);
+      await expect(store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE)).rejects.toThrow();
+      expect(tx.quote.create).not.toHaveBeenCalled();
+    }
   });
 });
 
@@ -112,6 +178,24 @@ describe("PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maxim
     const { store, journal } = build();
     await store.creerRevision({ venueId: VENUE_ID, chainId: CHAINE, parentQuoteId: QUOTE_ID, chiffre: CHIFFRE });
     expect(journal).toEqual(["FOR UPDATE", "aggregate", "create"]);
+  });
+
+  it("⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà", async () => {
+    const { store, tx, journal } = build();
+    await store.creerRevision({ venueId: VENUE_ID, chainId: CHAINE, parentQuoteId: QUOTE_ID, chiffre: CHIFFRE });
+    expect(journal).not.toContain("compteur");
+    const data = (tx.quote.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data.referenceYear).toBe(TETE_ANNEE);
+    expect(data.referenceNumber).toBe(TETE_NUMERO);
+    // la date de création est celle de la base : seule la tête reçoit celle du service
+    expect(data).not.toHaveProperty("createdAt");
+  });
+
+  it("⛔ la tête introuvable (le verrou ne rend aucune ligne) : la révision LÈVE, rien n'est créé", async () => {
+    const { store, tx } = build();
+    tx.$queryRaw.mockResolvedValueOnce([]);
+    await expect(store.creerRevision({ venueId: VENUE_ID, chainId: CHAINE, parentQuoteId: QUOTE_ID, chiffre: CHIFFRE })).rejects.toThrow();
+    expect(tx.quote.create).not.toHaveBeenCalled();
   });
 
   it("⚠ la version suivante est MAX + 1, et le parent est désigné", async () => {

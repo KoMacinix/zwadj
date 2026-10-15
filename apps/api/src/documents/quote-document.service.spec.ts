@@ -15,6 +15,8 @@ const PDF = Buffer.from("%PDF-test");
 function record(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
   return {
     id: ID,
+    // Rang 39 (D333) — la référence STOCKÉE du devis : le nom du fichier s'en DÉRIVE (K-7), il ne se recompose pas depuis l'identifiant ni depuis la date.
+    reference: "DEVIS-2026-0003-0014 v2",
     version: 2,
     latestVersion: 2,
     status: "DRAFT",
@@ -95,10 +97,23 @@ describe("QuoteDocumentService — la valeur stockée, la langue (décisions 1 e
     const m = monde(record());
     const sortie = await m.service.render(OWNER, ID, "fr", new Date("2026-10-06T10:00:00Z"));
     expect(sortie.pdf).toBe(PDF);
-    expect(sortie.filename).toBe("devis-2026-12-05-v2-01a10f0a.pdf");
+    expect(sortie.filename).toBe("DEVIS-2026-0003-0014_fr_v2.pdf");
     const html = m.render.mock.calls[0]![0];
     expect(html).toContain(formatDZD(12_345_000));
     expect(html).not.toContain(formatDZD(Math.round(63_000_000 * 0.3)));
+  });
+
+  it("⛔ rang 39 (K-7, F-15) : le nom du fichier porte la langue DEMANDÉE — `_fr_` pour le français, `_ar_` pour l'arabe — et la version de la référence stockée", async () => {
+    for (const demandee of ["fr", "ar"] as const) {
+      const sortie = await monde(record({ reference: "DEVIS-2027-0011-0102 v5" })).service.render(OWNER, ID, demandee);
+      expect(sortie.filename).toBe(`DEVIS-2027-0011-0102_${demandee}_v5.pdf`);
+    }
+  });
+
+  it("⛔ rang 39 : une référence stockée qui n'en est pas une LÈVE — le moteur de rendu n'est pas appelé, aucun fichier ne porte un nom faux", async () => {
+    const m = monde(record({ reference: "01a10f0a-v2" }));
+    expect(await refus(m.service.render(OWNER, ID, "fr"))).toBeInstanceOf(TypeError);
+    expect(m.render).not.toHaveBeenCalled();
   });
 
   it("rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le pro la choisit à chaque téléchargement, dans les deux sens", async () => {

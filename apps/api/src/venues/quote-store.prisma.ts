@@ -14,6 +14,7 @@ import {
   QUOTE_SELECT,
   type QuoteRow,
   type QuoteStore,
+  type ReferenceDeCreation,
   type ResultatTransition
 } from "./quote-store.types";
 
@@ -32,9 +33,49 @@ export class PrismaQuoteStore implements QuoteStore {
   /** ⛔ SÉRIALISE LES ÉCRITURES D'UNE CHAÎNE. Le verrou porte sur la RACINE
    *  (`chainId`), qui est une vraie ligne : la v1 elle-même. Sans lui,
    *  `MAX(version)` puis `version + 1` perd une mise à jour et
-   *  `quotes_chain_version_unique` refuse la seconde révision simultanée. */
-  private async verrouillerChaine(tx: Prisma.TransactionClient, chainId: string): Promise<void> {
-    await tx.$queryRaw`SELECT id FROM quotes WHERE id = ${chainId}::uuid FOR UPDATE`;
+   *  `quotes_chain_version_unique` refuse la seconde révision simultanée.
+   *  ⚠ Rang 39 : le même `SELECT … FOR UPDATE` rend l'ANNÉE et le NUMÉRO de la tête — la révision les recopie, sans une requête de plus. Une tête introuvable LÈVE. */
+  private async verrouillerChaine(
+    tx: Prisma.TransactionClient,
+    chainId: string
+  ): Promise<{ readonly referenceYear: number; readonly referenceNumber: number }> {
+    const lignes = await tx.$queryRaw<
+      { id: string; reference_year: number; reference_number: number }[]
+    >`SELECT id, reference_year, reference_number FROM quotes WHERE id = ${chainId}::uuid FOR UPDATE`;
+    const tete = lignes[0];
+    if (
+      lignes.length !== 1 ||
+      tete === undefined ||
+      !Number.isInteger(tete.reference_year) ||
+      !Number.isInteger(tete.reference_number)
+    ) {
+      throw new Error(`tête de chaîne introuvable ou sans référence : ${chainId}`);
+    }
+    return { referenceYear: tete.reference_year, referenceNumber: tete.reference_number };
+  }
+
+  /** ⛔ LE COMPTEUR DES NUMÉROS DE DEVIS (rang 39, R3). Une ligne par (salle, année) ; l'incrément est ATOMIQUE (`ON CONFLICT … DO UPDATE … + 1 … RETURNING`) et se fait DANS la
+   *  transaction de création : jamais « lire le plus grand puis ajouter 1 », et un échec ultérieur de la transaction rend le numéro. Il ne passe JAMAIS par `venues`. Une réponse qui
+   *  n'est pas exactement UNE ligne d'entier ≥ 1 LÈVE : aucun numéro n'est inventé. */
+  private async incrementerCompteur(tx: Prisma.TransactionClient, venueId: string, annee: number): Promise<number> {
+    const lignes = await tx.$queryRaw<{ last_number: number }[]>`
+      INSERT INTO quote_number_counters (venue_id, year, last_number)
+      VALUES (${venueId}::uuid, ${annee}::smallint, 1)
+      ON CONFLICT (venue_id, year) DO UPDATE SET last_number = quote_number_counters.last_number + 1
+      RETURNING last_number`;
+    const numero = lignes[0]?.last_number;
+    if (lignes.length !== 1 || typeof numero !== "number" || !Number.isInteger(numero) || numero < 1) {
+      throw new Error(`le compteur de devis de la salle ${venueId} (${annee}) n'a pas rendu un numéro valide`);
+    }
+    return numero;
+  }
+
+  /** L'identifiant d'une tête, généré par la base (`uuidv7()`, D-IDs) AVANT l'insertion : la tête naît avec `chain_id = id` (S-22). */
+  private async genererIdentifiant(tx: Prisma.TransactionClient): Promise<string> {
+    const lignes = await tx.$queryRaw<{ id: string }[]>`SELECT uuidv7() AS id`;
+    const id = lignes[0]?.id;
+    if (lignes.length !== 1 || typeof id !== "string") throw new Error("la base n'a pas généré d'identifiant");
+    return id;
   }
 
   /** ⛔ LE CHECK-AND-SET, ÉCRIT UNE SEULE FOIS. `marquerRemis` et
@@ -62,18 +103,28 @@ export class PrismaQuoteStore implements QuoteStore {
     });
   }
 
-  async creerTeteDeChaine(venueId: string, chiffre: DevisChiffre): Promise<QuoteRow> {
+  async creerTeteDeChaine(venueId: string, chiffre: DevisChiffre, reference: ReferenceDeCreation): Promise<QuoteRow> {
     return this.prisma.$transaction(async (tx) => {
-      const created = await tx.quote.create({
-        data: { venueId, ...chiffre, chainId: "00000000-0000-0000-0000-000000000000", version: 1 },
+      // ⛔ DANS CET ORDRE, ET TOUT DANS LA MÊME TRANSACTION (rang 39, cadrage § 2) : (1) le compteur — le verrou d'écriture de SA ligne sérialise les créations d'une même salle
+      // et d'une même année, le temps de la transaction ; (2) l'identifiant ; (3) la tête, en UNE écriture ; (4) la relecture. Un échec de (3) annule (1) : le numéro est rendu.
+      const numero = await this.incrementerCompteur(tx, venueId, reference.annee);
+      const id = await this.genererIdentifiant(tx);
+      // ⚠ `chainId` = son propre id dès l'insertion (S-22) : l'ancienne écriture (`chain_id` provisoire puis `UPDATE`) est REFUSÉE par la clé étrangère composite des versions vers
+      // leur tête. `createdAt` est l'instant que le SERVICE a lu (S-21), le même qui a donné l'année : `reference_year` est l'année d'Alger de `created_at`.
+      await tx.quote.create({
+        data: {
+          id,
+          venueId,
+          ...chiffre,
+          chainId: id,
+          version: 1,
+          referenceYear: reference.annee,
+          referenceNumber: numero,
+          createdAt: reference.creeLe
+        },
         select: { id: true }
       });
-      // ⚠ `chainId` = son propre id, impossible à écrire en une passe : l'id est
-      // généré par la base (`uuidv7()`). Le second UPDATE est dans la MÊME
-      // transaction, donc aucune ligne n'est jamais visible avec la valeur
-      // temporaire.
-      await tx.quote.update({ where: { id: created.id }, data: { chainId: created.id } });
-      return tx.quote.findUniqueOrThrow({ where: { id: created.id }, select: QUOTE_SELECT });
+      return tx.quote.findUniqueOrThrow({ where: { id }, select: QUOTE_SELECT });
     });
   }
 
@@ -84,7 +135,8 @@ export class PrismaQuoteStore implements QuoteStore {
     chiffre: DevisChiffre;
   }): Promise<QuoteRow> {
     return this.prisma.$transaction(async (tx) => {
-      await this.verrouillerChaine(tx, args.chainId);
+      // Rang 39 : le verrou de la tête rend aussi l'année et le numéro de sa référence, que la version RECOPIE — aucun compteur n'est touché.
+      const tete = await this.verrouillerChaine(tx, args.chainId);
       const max = await tx.quote.aggregate({ where: { chainId: args.chainId }, _max: { version: true } });
       return tx.quote.create({
         data: {
@@ -92,6 +144,8 @@ export class PrismaQuoteStore implements QuoteStore {
           ...args.chiffre,
           chainId: args.chainId,
           version: (max._max.version ?? 1) + 1,
+          referenceYear: tete.referenceYear,
+          referenceNumber: tete.referenceNumber,
           parentQuoteId: args.parentQuoteId
         },
         select: QUOTE_SELECT

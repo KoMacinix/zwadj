@@ -15,6 +15,8 @@
 // les quatre endroits où l'écran pourrait mentir : un total périmé, une date
 // qu'on dirait bloquée sans l'avoir bloquée, un devis de plus à chaque clic, et
 // un montant affiché avant que le serveur ait chiffré.
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import i18next from "i18next";
@@ -142,6 +144,8 @@ function draft(over: Partial<QuoteDTO> = {}): QuoteDTO {
     status: "DRAFT",
     isExpired: false,
     version: 1,
+    // Rang 39 (D333, K-6) — la référence que le SERVEUR rend : salle 3, devis 14, version 1. Les fixtures de ce fichier n'en calculent jamais une, elles la REÇOIVENT.
+    reference: "DEVIS-2026-0003-0014 v1",
     chainId: "c1",
     parentQuoteId: null,
     eventDate: LIBRE,
@@ -539,6 +543,55 @@ describe("La date vient du calendrier réel", () => {
     const recapEl = recap();
     expect(recapEl.textContent).not.toContain("Soirée");
     expect(recapEl.textContent).toContain(AUTRE);
+  });
+});
+
+describe("⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »", () => {
+  /** Verdict NATIF (D304, D316) : `findByText` échoue par une `TestingLibraryElementError`, qui n'est pas une assertion ; `waitFor(expect(queryByText…))` échoue par une `AssertionError`. */
+  async function referenceAffichee(reference: string): Promise<HTMLElement> {
+    await waitFor(() => expect(screen.queryByText(reference)).not.toBeNull());
+    return screen.getByText(reference);
+  }
+
+  it("⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite", async () => {
+    await setup();
+    await allerAuDevis();
+    expect(screen.queryByText(draft().reference), "aucune référence avant que le serveur ait chiffré").toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    const valeur = await referenceAffichee(draft().reference);
+    expect(valeur.tagName.toLowerCase()).toBe("bdi");
+    expect(valeur.getAttribute("dir")).toBe("ltr");
+    expect(screen.queryByText(FR.reference)).not.toBeNull();
+  });
+
+  it("⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse", async () => {
+    const v2 = draft({ id: "q2", version: 2, reference: "DEVIS-2026-0003-0014 v2" });
+    const { quotes } = await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), revise: vi.fn().mockResolvedValue(v2) } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await referenceAffichee(draft().reference);
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(quotes.revise).toHaveBeenCalledTimes(1));
+    await referenceAffichee(v2.reference);
+    expect(screen.queryByText(draft().reference), "l'ancienne référence ne reste pas à l'écran").toBeNull();
+  });
+
+  it("⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite", async () => {
+    await setup();
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await referenceAffichee(draft().reference);
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    const valeur = screen.getByText(draft().reference);
+    expect(valeur.getAttribute("dir")).toBe("ltr");
+    expect(screen.queryByText(AR.reference)).not.toBeNull();
+    expect(FR.reference).not.toBe(AR.reference);
+  });
+
+  it("⛔ GARDE DE SOURCE — l'application Pro ne bâtit AUCUNE référence : ni `DEVIS-` ni `padStart` dans le parcours (la référence vient du serveur)", () => {
+    const code = readFileSync(resolve(__dirname, "walkin-journey.tsx"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+    expect(/DEVIS-|padStart|formatQuoteReference/.exec(code)?.[0] ?? null).toBeNull();
+    expect(code).toContain("quote.reference");
   });
 });
 
@@ -1329,9 +1382,34 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     expect(saveBlob).toHaveBeenCalledTimes(1);
     const [blob, nom] = vi.mocked(saveBlob).mock.calls[0] as [Blob, string];
     expect(blob).toBeInstanceOf(Blob);
-    expect(nom).toBe(quoteDocumentFilename(draft()));
-    expect(nom).toMatch(/^devis-\d{4}-\d{2}-\d{2}-v1-q1\.pdf$/);
+    expect(nom).toBe(quoteDocumentFilename(draft(), "fr"));
+    // Rang 39 (K-7) : le nom est la référence du devis, la langue CHOISIE et la version — construit ici par de simples chaînes, sans la fonction testée.
+    expect(nom).toBe(`${draft().reference.replace(" v1", "_fr_v1")}.pdf`);
     expect(nom).not.toMatch(/Amine|Belkacem|El Ryad/);
+  });
+
+  it("⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`", async () => {
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await cliquer(QUOTE_SENT_VIA.PRINT, "ar", "fr");
+    expect(vi.mocked(saveBlob).mock.calls[0]![1]).toBe(`${draft().reference.replace(" v1", "_ar_v1")}.pdf`);
+    cleanup();
+    vi.mocked(saveBlob).mockClear();
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    await cliquer(QUOTE_SENT_VIA.PRINT, "fr", "ar");
+    expect(vi.mocked(saveBlob).mock.calls[0]![1]).toBe(`${draft().reference.replace(" v1", "_fr_v1")}.pdf`);
+  });
+
+  it("⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF", async () => {
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await cliquer(QUOTE_SENT_VIA.PRINT);
+    const fenetre = await screen.findByRole("dialog", { name: FR.remitTitleDone });
+    // L'attendu est écrit avec les DEUX caractères d'isolat (LRI U+2066, PDI U+2069), pas avec `isolateLtr` : une garde qui se calcule avec la fonction qu'elle teste est tautologique.
+    const ligneReference = FR.remitReference.replace("{reference}", `⁦${draft().reference}⁩`);
+    const texte = fenetre.textContent ?? "";
+    expect(texte).toContain(ligneReference);
+    expect(texte.indexOf(ligneReference), "la référence précède le canal enregistré").toBeLessThan(texte.indexOf(FR.remitRecorded.replace("{channel}", "Imprimé et remis")));
+    expect(texte.indexOf(ligneReference), "…et le PDF").toBeLessThan(texte.indexOf(FR.remitPdfDone));
   });
 
   it("⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)", async () => {

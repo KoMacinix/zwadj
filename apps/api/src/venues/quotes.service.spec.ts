@@ -9,6 +9,7 @@
 // dépendant plus de Prisma pour son cycle de vie, il n'y avait aucune raison de
 // naître avec le défaut que S10a vient de corriger ailleurs.
 import { ConflictException, NotFoundException } from "@nestjs/common";
+import { formatQuoteReference } from "@zwadj/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { PrismaService } from "../prisma/prisma.service";
 import { QuotesService } from "./quotes.service";
@@ -41,6 +42,10 @@ const devisRow = (overrides: Record<string, unknown> = {}) =>
     acceptedAt: null,
     createdAt: new Date("2027-01-01T00:00:00.000Z"),
     booking: null,
+    // Rang 39 (D333, L35-3) — la référence est bâtie sur la ligne STOCKÉE : l'année, le numéro du devis, et le numéro de la SALLE (une relation). Trois valeurs distinctes.
+    referenceYear: 2026,
+    referenceNumber: 89,
+    venue: { number: 7 },
     ...overrides
   }) as unknown as QuoteRow;
 
@@ -165,6 +170,38 @@ describe("QuotesService.deliver — une remise est RÉPÉTABLE (D160)", () => {
   });
 });
 
+describe("⛔ QuotesService — la référence du devis (K-6, rang 39)", () => {
+  it("⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro de la salle, numéro du devis, version — une seule formule (`formatQuoteReference`)", async () => {
+    const { service, devis } = build();
+    devis.listerDeLaSalle.mockResolvedValue([devisRow()]);
+    const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    expect(dto!.reference).toBe(formatQuoteReference({ year: 2026, venueNumber: 7, quoteNumber: 89, version: 1 }));
+    expect(dto!.reference).toBe("DEVIS-2026-0007-0089 v1");
+  });
+
+  it("⛔ une révision garde l'année et les deux numéros de sa tête ; SEULE la version change", async () => {
+    const { service, devis } = build();
+    devis.listerDeLaSalle.mockResolvedValue([devisRow(), devisRow({ id: "v2", version: 2 }), devisRow({ id: "v3", version: 3 })]);
+    const dtos = await service.listForVenue(USER_ID, VENUE_ID);
+    expect(dtos.map((d) => d.reference)).toEqual(["DEVIS-2026-0007-0089 v1", "DEVIS-2026-0007-0089 v2", "DEVIS-2026-0007-0089 v3"]);
+  });
+
+  it("⛔ l'ancienne référence (les huit premiers caractères de l'identifiant) a DISPARU", async () => {
+    const { service, devis } = build();
+    devis.listerDeLaSalle.mockResolvedValue([devisRow()]);
+    const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    expect(dto!.reference).not.toContain(QUOTE_ID.slice(0, 8));
+  });
+
+  it("⛔ la référence rendue par une transition (remise, annulation) est celle du devis, pas une autre", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow());
+    devis.marquerRemis.mockResolvedValue({ ok: true, devis: devisRow({ sentVia: "SMS", referenceNumber: 90, version: 1 }) });
+    const dto = await service.deliver(USER_ID, QUOTE_ID, { sentVia: "SMS" });
+    expect(dto.reference).toBe("DEVIS-2026-0007-0090 v1");
+  });
+});
+
 // ⛔ CE QUI N'EST PAS MESURÉ ICI, ET POURQUOI — `revise`.
 //
 // Sa propagation de chaîne (hériter `chainId`, désigner `parentQuoteId`) passe
@@ -181,6 +218,10 @@ describe("QuotesService.deliver — une remise est RÉPÉTABLE (D160)", () => {
 // vraie base — et le VERROU qui la protège est mesuré dans
 // `quote-store.prisma.spec.ts`. Elle reviendra ici le jour où `price()` aura
 // son propre port, pas avant.
+//
+// ⛔ Rang 39 (D333) — MÊME RAISON POUR `create` : l'année d'Alger et l'instant de création que le service passe au magasin (`algiersYear(maintenant)`) sont mesurés par
+// `quote-numbering.int-spec.ts`, horloge FIGÉE aux deux côtés du passage de l'année, contre PostgreSQL ; la fonction pure l'est par `quote-reference.spec.ts` ; la séquence
+// de la transaction par `quote-store.prisma.spec.ts`. Ne PAS la rejouer ici derrière un faux Prisma casté.
 
 describe("⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2)", () => {
   const CONTACT = { contactFirstName: "Amina", contactLastName: "Bensalem", contactPhone: "+213550000001" };

@@ -111,11 +111,15 @@ describe("La route — rôles, propriété, contrat (décision 4)", () => {
 
     const res = await documentDe(f.token, q.id, { locale: "ar" }).expect(statut(200));
     expect(res.headers["content-type"]).toMatch(/^application\/pdf/);
-    expect(res.headers["content-disposition"]).toBe(`attachment; filename="devis-${EVENT_DATE}-v1-${q.id.slice(0, 8)}.pdf"`);
+    // Rang 39 (D333, K-7) : le nom du fichier est la référence du devis, la langue DEMANDÉE et la version — construit ici par de simples chaînes, sans la fonction testée.
+    expect(q.reference).toMatch(/^DEVIS-\d{4}-\d{4,}-\d{4,} v1$/u);
+    expect(res.headers["content-disposition"]).toBe(`attachment; filename="${q.reference.replace(" v1", "_ar_v1")}.pdf"`);
     expect(res.headers["cache-control"]).toBe("private, no-store");
     expect(res.headers["x-content-type-options"]).toBe("nosniff");
     expect(res.headers["content-language"]).toBe("ar");
     expect(vus()).toHaveLength(1);
+    // Rang 39 : la référence imprimée dans le document est CELLE du devis (celle du DTO, bâtie sur la ligne stockée), dans le document confié au moteur.
+    expect(vus()[0]).toContain(q.reference);
 
     const apres = await ctx.prisma.quote.findUniqueOrThrow({ where: { id: q.id } });
     expect(apres).toEqual(avant);

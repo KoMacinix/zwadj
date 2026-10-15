@@ -4,7 +4,7 @@ import arMessages from "@zwadj/i18n/messages/ar.json";
 import frMessages from "@zwadj/i18n/messages/fr.json";
 import { formatDZD, quoteDocumentFilename, ServicePricingType } from "@zwadj/types";
 import { describe, expect, it } from "vitest";
-import { buildQuoteDocumentHtml, longDate, quoteReference } from "./quote-document";
+import { buildQuoteDocumentHtml, longDate } from "./quote-document";
 import { DOCUMENT_FONT_FAMILY, DOCUMENT_FONT_SUBSETS, DOCUMENT_FONT_WEIGHTS, loadDocumentFontCss } from "./quote-document-fonts";
 import type { QuoteDocumentLine, QuoteDocumentRecord } from "./quote-document-source";
 import { parseStoredLines } from "./quote-document-source.prisma";
@@ -34,6 +34,8 @@ function ligne(over: Partial<QuoteDocumentLine> = {}): QuoteDocumentLine {
 function devis(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
   return {
     id: ID,
+    // Rang 39 (D333, L35-3) — la référence STOCKÉE du devis (année, salle 3, devis 14, version 2) : trois nombres distincts, aucun ne vient de l'identifiant.
+    reference: "DEVIS-2026-0003-0014 v2",
     version: 2,
     latestVersion: 2,
     status: "DRAFT",
@@ -296,10 +298,37 @@ describe("le modèle — langue, sens, contenu", () => {
     expect(nu).not.toContain("Amina");
   });
 
-  it("le client s'imprime quand le devis y est lié ; la référence dit QUELLE version est imprimée", () => {
+  it("le client s'imprime quand le devis y est lié", () => {
     expect(rendre(devis())).toContain("Amina Bensalem");
-    expect(quoteReference(devis())).toBe("01a10f0a-v2");
-    expect(rendre(devis())).toContain("01a10f0a-v2");
+  });
+
+  it("⛔ rang 39 : la référence imprimée est la référence STOCKÉE du devis (année, salle, devis, version) — dans le titre du document ET dans l'en-tête, dans les deux langues", () => {
+    for (const locale of ["fr", "ar"] as const) {
+      const page = rendre(devis(), locale);
+      expect(page).toContain("<title>");
+      expect(page.slice(page.indexOf("<title>"), page.indexOf("</title>"))).toContain("DEVIS-2026-0003-0014 v2");
+      expect(page.slice(page.indexOf('<p class="sous">'), page.indexOf("</p>", page.indexOf('<p class="sous">')))).toContain("DEVIS-2026-0003-0014 v2");
+    }
+  });
+
+  it("⛔ rang 39 : la référence imprimée change AVEC la ligne stockée — rien n'est recalculé depuis l'identifiant", () => {
+    const page = rendre(devis({ reference: "DEVIS-2027-0011-0102 v5" }));
+    expect(page).toContain("DEVIS-2027-0011-0102 v5");
+    expect(page).not.toContain("DEVIS-2026-0003-0014");
+    // l'ancienne formule (les huit premiers caractères de l'identifiant) a disparu
+    expect(page).not.toContain(ID.slice(0, 8));
+  });
+
+  it("⛔ rang 39 (F-16) : la référence est isolée de GAUCHE À DROITE dans l'en-tête, même dans une page arabe — sinon l'algorithme bidirectionnel inverse ses groupes de chiffres", () => {
+    for (const locale of ["fr", "ar"] as const) {
+      const page = rendre(devis(), locale);
+      expect(page).toContain('<bdi dir="ltr">DEVIS-2026-0003-0014 v2</bdi>');
+    }
+  });
+
+  it("⛔ rang 39 : une référence hostile devient du TEXTE (le champ vient d'une ligne de base, pas d'une saisie, mais l'échappement ne dépend pas de la confiance)", () => {
+    const page = rendre(devis({ reference: `<script>window.x=1</script> v1` }));
+    expect(page.slice(page.indexOf("<body>"))).not.toContain("<script>");
   });
 
   it("la date de l'événement est en toutes lettres, dans la langue du document ; elle ne dérive pas d'un fuseau (date civile)", () => {
@@ -341,9 +370,9 @@ describe("⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré d
   });
 
   it("le nom du fichier ne porte AUCUNE donnée personnelle, même quand les noms sont hostiles", () => {
-    const f = quoteDocumentFilename(devis({ venue: { nameFr: HOSTILE, nameAr: HOSTILE }, client: { firstName: HOSTILE, lastName: HOSTILE } }));
-    expect(f).toMatch(/^devis-\d{4}-\d{2}-\d{2}-v\d+-[0-9a-f]{8}\.pdf$/);
-    expect(f).toBe("devis-2026-12-05-v2-01a10f0a.pdf");
+    const f = quoteDocumentFilename(devis({ venue: { nameFr: HOSTILE, nameAr: HOSTILE }, client: { firstName: HOSTILE, lastName: HOSTILE } }), "fr");
+    expect(f).toMatch(/^DEVIS-\d{4}-\d{4,}-\d{4,}_(fr|ar)_v\d+\.pdf$/);
+    expect(f).toBe("DEVIS-2026-0003-0014_fr_v2.pdf");
   });
 });
 
@@ -443,6 +472,19 @@ describe("⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du documen
       const code = lire(f);
       expect({ f, motif: /prisma|catalogue|ServicePricing\b|unitName/i.exec(code)?.[0] ?? null }).toEqual({ f, motif: null });
     }
+  });
+
+  it("⛔ rang 39 (F-10) : l'ancienne référence (les huit premiers caractères de l'identifiant) a disparu du document, de son service, de sa source ET du contrat partagé", () => {
+    for (const f of [...FICHIERS, "../../../../packages/types/src/quote.ts"]) {
+      const code = lire(f);
+      expect({ f, motif: /\.slice\(\s*0\s*,\s*8\s*\)|\bquoteReference\b/.exec(code)?.[0] ?? null }).toEqual({ f, motif: null });
+    }
+  });
+
+  it("⛔ rang 39 : le modèle IMPRIME la référence lue (`record.reference`) — il n'en bâtit pas une, il n'importe pas la formule", () => {
+    const code = lire("quote-document.ts");
+    expect(code).toContain("record.reference");
+    expect(/formatQuoteReference/.exec(code)?.[0] ?? null).toBeNull();
   });
 
   it("⛔ rang 38 (P-15) : la branche « langue du client » est RETIRÉE sans code mort — plus de `chooseDocumentLocale`, de `DocumentLocaleBranch`, de `branch`, ni de `users.locale` lue", () => {

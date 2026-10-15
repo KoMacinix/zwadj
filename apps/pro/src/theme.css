@@ -1019,6 +1019,17 @@
   font-variant-numeric: tabular-nums;
   color: var(--ink);
 }
+/* Rang 39 (D333, DB-10) — la référence du devis, juste sous l'intitulé du total. Le libellé reste discret (`--ink-2`), la référence se lit (`--ink`). */
+.wk-reference {
+  margin: -8px 0 14px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.wk-reference bdi {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
 .wk-lines {
   list-style: none;
   margin: 0 0 6px;

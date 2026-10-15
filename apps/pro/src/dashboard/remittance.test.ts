@@ -5,14 +5,16 @@ import { messages } from "@zwadj/i18n";
 import { QUOTE_SENT_VIA, QUOTE_SENT_VIA_ORDER, quoteSentViaNeedsEmail, quoteSentViaNeedsPhone, type QuoteDTO, type QuoteSentVia } from "@zwadj/types";
 import { describe, expect, it } from "vitest";
 import { onQuoteRemitted } from "./remittance-hook";
-import { CHANNELS_WITH_FUTURE_SENDING, channelBlockers, describeRemittance, wantsRealSending, type RemitOutcome } from "./remittance";
+import { CHANNELS_WITH_FUTURE_SENDING, channelBlockers, describeRemittance, isolateLtr, wantsRealSending, type RemitOutcome } from "./remittance";
 
 // Rang 33 (D326) — les décisions 8, 9 et 10 du relecteur, module PUR : aucun DOM, aucun réseau. Les attendus viennent du CONTRAT (`@zwadj/types`) et des
 // CATALOGUES, jamais d'une liste de canaux recopiée ici.
 const ECHEC = new ApiError(503, "QUOTE_DOCUMENT_UNAVAILABLE", "quote.errors.documentUnavailable", []);
 const OK = { ok: true } as const;
 const KO = { ok: false, failure: ECHEC } as const;
-const sortie = (channel: QuoteSentVia, recorded: RemitOutcome["recorded"], pdf: RemitOutcome["pdf"]): RemitOutcome => ({ channel, recorded, pdf });
+// Rang 39 (D333, DB-10) : la fenêtre de remise porte la référence du devis. Une valeur DISTINCTE de toute fixture voisine (salle 3, devis 14, version 2).
+const REFERENCE = "DEVIS-2026-0003-0014 v2";
+const sortie = (channel: QuoteSentVia, recorded: RemitOutcome["recorded"], pdf: RemitOutcome["pdf"]): RemitOutcome => ({ channel, recorded, pdf, reference: REFERENCE });
 
 describe("channelBlockers — ce qui retient un canal vient du CONTRAT (décision 8)", () => {
   it("chaque canal est retenu par exactement ce que les prédicats du contrat disent, pour chacun des quatre états de contact", () => {
@@ -52,21 +54,21 @@ describe("describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (d
   it("les QUATRE issues rendent quatre titres différents, dans l'ordre enregistrement puis PDF", () => {
     const tout = describeRemittance(sortie(QUOTE_SENT_VIA.PRINT, OK, OK));
     expect(tout.titleKey).toBe("remitTitleDone");
-    expect(tout.lines.map((l) => l.key)).toEqual(["remitRecorded", "remitPdfDone"]);
+    expect(tout.lines.map((l) => l.key)).toEqual(["remitReference", "remitRecorded", "remitPdfDone"]);
 
     const enregistreSeul = describeRemittance(sortie(QUOTE_SENT_VIA.PRINT, OK, KO));
     expect(enregistreSeul.titleKey).toBe("remitTitleRecordedOnly");
-    expect(enregistreSeul.lines.map((l) => l.key)).toEqual(["remitRecorded", "remitPdfFailed"]);
-    expect(enregistreSeul.lines[1]!.failure).toBe(ECHEC);
+    expect(enregistreSeul.lines.map((l) => l.key)).toEqual(["remitReference", "remitRecorded", "remitPdfFailed"]);
+    expect(enregistreSeul.lines[2]!.failure).toBe(ECHEC);
 
     const pdfSeul = describeRemittance(sortie(QUOTE_SENT_VIA.PRINT, KO, OK));
     expect(pdfSeul.titleKey).toBe("remitTitlePdfOnly");
-    expect(pdfSeul.lines.map((l) => l.key)).toEqual(["remitRecordFailed", "remitPdfDone"]);
-    expect(pdfSeul.lines[0]!.failure).toBe(ECHEC);
+    expect(pdfSeul.lines.map((l) => l.key)).toEqual(["remitReference", "remitRecordFailed", "remitPdfDone"]);
+    expect(pdfSeul.lines[1]!.failure).toBe(ECHEC);
 
     const rien = describeRemittance(sortie(QUOTE_SENT_VIA.PRINT, KO, KO));
     expect(rien.titleKey).toBe("remitTitleNone");
-    expect(rien.lines.map((l) => l.key)).toEqual(["remitRecordFailed", "remitPdfFailed"]);
+    expect(rien.lines.map((l) => l.key)).toEqual(["remitReference", "remitRecordFailed", "remitPdfFailed"]);
     expect(new Set([tout.titleKey, enregistreSeul.titleKey, pdfSeul.titleKey, rien.titleKey]).size).toBe(4);
   });
 
@@ -90,8 +92,25 @@ describe("describeRemittance — la fenêtre dit ce qui a RÉELLEMENT eu lieu (d
 
   it("la ligne d'enregistrement NOMME le canal que le serveur a écrit (jamais un autre)", () => {
     for (const canal of QUOTE_SENT_VIA_ORDER) {
-      expect(describeRemittance(sortie(canal, OK, OK)).lines[0]).toEqual({ key: "remitRecorded", channel: canal });
+      expect(describeRemittance(sortie(canal, OK, OK)).lines[1]).toEqual({ key: "remitRecorded", channel: canal });
     }
+  });
+
+  it("⛔ rang 39 (F-15) : la référence du devis est la PREMIÈRE ligne, pour les cinq canaux × les quatre issues — et c'est celle du devis passé, pas une autre", () => {
+    for (const canal of QUOTE_SENT_VIA_ORDER) {
+      for (const [recorded, pdf] of [[OK, OK], [OK, KO], [KO, OK], [KO, KO]] as const) {
+        const vue = describeRemittance(sortie(canal, recorded, pdf));
+        expect(vue.lines[0], `${canal}`).toEqual({ key: "remitReference", reference: REFERENCE });
+      }
+    }
+    // une AUTRE référence en entrée ressort telle quelle : rien n'est mémorisé ni recalculé
+    const autre = describeRemittance({ ...sortie(QUOTE_SENT_VIA.PRINT, OK, OK), reference: "DEVIS-2027-0011-0102 v5" });
+    expect(autre.lines[0]).toEqual({ key: "remitReference", reference: "DEVIS-2027-0011-0102 v5" });
+  });
+
+  it("⚠ la référence reste lisible de GAUCHE À DROITE dans une phrase arabe : isolat Unicode autour d'elle (U+2066 … U+2069), rien d'autre ajouté", () => {
+    expect(isolateLtr(REFERENCE)).toBe(`\u2066${REFERENCE}\u2069`);
+    expect(isolateLtr(REFERENCE).replace(/[\u2066\u2069]/gu, "")).toBe(REFERENCE);
   });
 });
 
@@ -118,6 +137,8 @@ describe("⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT (Ko, 04/10
         describeRemittance(sortie(QUOTE_SENT_VIA.PRINT, KO, OK)),
         describeRemittance(sortie(QUOTE_SENT_VIA.PHONE, KO, KO))
       ];
+      // rang 39 : le gabarit de la ligne de référence porte son emplacement, dans les DEUX langues
+      expect(walkin.remitReference, `${langue} remitReference`).toContain("{reference}");
       for (const vue of vues) {
         expect(walkin[vue.titleKey], `${langue} ${vue.titleKey}`).toMatch(/\S/);
         for (const ligne of vue.lines) expect(walkin[ligne.key], `${langue} ${ligne.key}`).toMatch(/\S/);

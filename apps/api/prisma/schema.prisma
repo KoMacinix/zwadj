@@ -481,6 +481,11 @@ model Venue {
   ownerId           String                 @map("owner_id") @db.Uuid
   cityId            String                 @map("city_id") @db.Uuid
   slug              String                 @unique // SEO : /salle/{slug} — FIGÉ à la création (arbitrage Flux A : jamais modifié, pas de 301)
+  /// D333 (rang 39, L35-3) — le NUMÉRO de la salle : une séquence PostgreSQL sur toute la plateforme, attribuée à la création par le DÉFAUT de la base (aucun code ne
+  /// l'écrit). Il peut SAUTER une valeur (transaction annulée), ne se répète JAMAIS (`@unique`), et NE CHANGE JAMAIS (un déclencheur refuse toute modification : une
+  /// référence de devis déjà imprimée doit rester vraie). `Int` et non `BigInt` : un `BigInt` Prisma ne se sérialise pas en JSON (S-20). Les garanties — séquence,
+  /// `NOT NULL`, `CHECK (number >= 1)`, déclencheur — sont dans la MIGRATION `20261015100000_venue_number` (D186), pas ici.
+  number            Int                    @unique @default(dbgenerated("nextval('venue_number_seq'::regclass)"))
   nameFr            String                 @map("name_fr")
   nameAr            String                 @map("name_ar")
   taglineFr         String?                @map("tagline_fr")
@@ -543,6 +548,8 @@ model Venue {
   availabilityBlocks AvailabilityBlock[]
   bookings           Booking[]
   quotes             Quote[]
+  /// D333 — un compteur par (salle, année) : le numéro du prochain devis (table à part : jamais de compteur sur cette ligne).
+  quoteCounters      QuoteNumberCounter[]
   commissions        Commission[]
   visitAvailability  VisitAvailability[]
   visitBookings      VisitBooking[]
@@ -978,6 +985,12 @@ model Quote {
   status         QuoteStatus @default(DRAFT)
   version        Int         @default(1)
   chainId        String      @map("chain_id") @db.Uuid
+  /// D333 (rang 39, L35-3, K-6) — LA RÉFÉRENCE du devis : l'ANNÉE d'Alger de la création de la version 1 et le NUMÉRO du devis dans (salle, année). Posés UNE fois, à la création de la
+  /// version 1, par la transaction qui incrémente le compteur ; une révision les RECOPIE de sa tête (clé étrangère composite, en base). Le numéro de la SALLE est `venue.number`.
+  /// ⚠ Déclarées ici ; les garanties — `NOT NULL`, `CHECK`, index unique PARTIEL `WHERE version = 1`, clé étrangère COMPOSITE vers la tête — sont dans la MIGRATION
+  /// `20261015100100_quote_reference` (D186) : Prisma ne les exprime pas, et un `@@index` nu pour l'index partiel créerait une dérive.
+  referenceYear   Int        @map("reference_year") @db.SmallInt
+  referenceNumber Int        @map("reference_number")
   parentQuoteId  String?     @map("parent_quote_id") @db.Uuid
   sentAt         DateTime?   @map("sent_at") @db.Timestamptz(6)
   // C1b — PAR QUOI le devis est parti, quand `sentAt` ne dit que QUAND.
@@ -1005,10 +1018,26 @@ model Quote {
   revisions    Quote[]       @relation("QuoteVersions")
 
   @@unique([chainId, version], map: "quotes_chain_version_unique")
+  /// D333 — la cible de la clé étrangère composite des versions vers leur tête (déclarée en SQL seulement).
+  @@unique([id, venueId, referenceYear, referenceNumber], map: "quotes_head_reference_key")
   @@index([venueId])
   @@index([clientId])
   @@index([venueId, status, createdAt], map: "quotes_venue_status_created_idx")
   @@map("quotes")
+}
+
+/// D333 (rang 39, L35-3) — le COMPTEUR des numéros de devis : une ligne par (salle, année). Le service l'incrémente par `INSERT … ON CONFLICT DO UPDATE … + 1 … RETURNING`
+/// DANS la transaction qui crée la version 1 (jamais « lire le plus grand puis ajouter 1 ») ; un échec ultérieur de la transaction le rend. Table à part : un compteur sur `venues`
+/// toucherait le verrou de l'acceptation d'une réservation et la clé de tri de la liste (D327). Migration `20261015100100_quote_reference`.
+model QuoteNumberCounter {
+  venueId    String @map("venue_id") @db.Uuid
+  year       Int    @db.SmallInt
+  lastNumber Int    @map("last_number")
+
+  venue Venue @relation(fields: [venueId], references: [id], onDelete: Restrict)
+
+  @@id([venueId, year])
+  @@map("quote_number_counters")
 }
 
 // backlog 3.4 "BookingRequest" + 3.6 "Booking" — UN SEUL modèle (Décision 3,

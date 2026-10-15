@@ -91,6 +91,9 @@ describe("Création et chaîne de versions", () => {
     expect(q.chainId).toBe(q.id);
     expect(q.parentQuoteId).toBeNull();
     expect(q.totalCents).toBe(SLOT_PRICE);
+    // Rang 39 (D333, K-6) — la référence naît avec le devis : `DEVIS-<année>-<salle>-<devis> v1`, quatre chiffres au moins ; le détail (valeurs, concurrence, année)
+    // est mesuré par `quote-numbering.int-spec.ts`.
+    expect(q.reference).toMatch(/^DEVIS-\d{4}-\d{4,}-0001 v1$/u);
     // Q2 — ni remis, ni horodaté : les deux vont ensemble.
     expect(q.sentVia).toBeNull();
     expect(q.sentAt).toBeNull();
@@ -245,7 +248,11 @@ describe("Statuts hérités — lisibles, jamais réécrits", () => {
     const f = await setup();
     const v1 = (await makeQuote(f).expect(201)).body as QuoteDTO;
     // Écriture DIRECTE, en contournant le service : c'est la BASE qu'on teste.
+    // Rang 39 (D333) : une version de la chaîne porte l'année et le numéro de sa TÊTE (clé étrangère composite) — lus en base, jamais recopiés d'une valeur écrite ici.
+    const tete = await ctx.prisma.quote.findUniqueOrThrow({ where: { id: v1.id } });
     const legacy = {
+      referenceYear: tete.referenceYear,
+      referenceNumber: tete.referenceNumber,
       venueId: f.venue.id,
       chainId: v1.chainId,
       status: "SENT" as const,

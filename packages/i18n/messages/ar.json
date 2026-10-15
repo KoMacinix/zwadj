@@ -1221,6 +1221,8 @@
         "remitTitlePdfOnly": "نُزِّل ملف PDF ولم يُسجَّل التسليم",
         "remitTitleNone": "تعذّر إنجاز أي شيء",
         "remitRecorded": "سُجِّل التسليم: {channel}.",
+        "reference": "المرجع",
+        "remitReference": "مرجع العرض: {reference}.",
         "remitPdfDone": "نُزِّل ملف PDF الخاص بالعرض.",
         "remitPdfFailed": "تعذّر تنزيل ملف PDF: {reason}",
         "remitRecordFailed": "تعذّر تسجيل التسليم: {reason}",

@@ -96,7 +96,7 @@ import {
   type Blocker,
   type Contact
 } from "./walkin-contact";
-import { channelBlockers, describeRemittance, wantsRealSending, type RemitOutcome, type RemitView } from "./remittance";
+import { channelBlockers, describeRemittance, isolateLtr, wantsRealSending, type RemitOutcome, type RemitView } from "./remittance";
 import { onQuoteRemitted } from "./remittance-hook";
 import { saveBlob } from "./save-file";
 
@@ -501,7 +501,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         let pdf: RemitOutcome["pdf"] = { ok: false, failure: fichier.status === "rejected" ? fichier.reason : undefined };
         if (fichier.status === "fulfilled") {
           try {
-            saveBlob(fichier.value, quoteDocumentFilename(courant));
+            // Rang 39 (K-7) : le nom du fichier se dérive de la référence du devis (celle du SERVEUR) et de la langue CHOISIE dans la boîte — pas de celle de l'interface.
+            saveBlob(fichier.value, quoteDocumentFilename(courant, documentLocale));
             pdf = { ok: true };
           } catch (cause) {
             pdf = { ok: false, failure: cause };
@@ -512,7 +513,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
           describeRemittance({
             channel: canal,
             recorded: enregistre.status === "fulfilled" ? { ok: true } : { ok: false, failure: enregistre.reason },
-            pdf
+            pdf,
+            reference: courant.reference
           })
         );
       } finally {
@@ -877,6 +879,10 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
             {quote === null ? null : (
               <div className="wk-total">
                 <h3 className="wk-total-head">{t("venue.ui.walkin.totalTitle")}</h3>
+                {/* Rang 39 (D333, DB-10) : la référence rendue par le SERVEUR, jamais bâtie ici ; isolée de gauche à droite (en arabe, l'algorithme bidirectionnel en inverserait les groupes). */}
+                <p className="wk-reference">
+                  <span>{t("venue.ui.walkin.reference")}</span> <bdi dir="ltr">{quote.reference}</bdi>
+                </p>
 
                 <dl className="wk-amounts">
                   <dt>{t("venue.ui.walkin.basePrice")}</dt>
@@ -1022,6 +1028,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
             : remit.lines
                 .map((ligne) =>
                   t(`venue.ui.walkin.${ligne.key}`, {
+                    reference: ligne.reference === undefined ? undefined : isolateLtr(ligne.reference),
                     channel: ligne.channel === undefined ? undefined : t(`venue.ui.quotes.sv_${ligne.channel}`),
                     reason: ligne.failure === undefined ? undefined : toMessage(ligne.failure)
                   })

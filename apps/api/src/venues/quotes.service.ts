@@ -56,6 +56,7 @@ import { ConflictException, Inject, Injectable, NotFoundException } from "@nestj
 import {
   QuoteErrorCode,
   QuoteStatus,
+  formatQuoteReference,
   isQuoteLost,
   type QuoteConvertInput,
   type QuoteConversionDTO,
@@ -70,6 +71,7 @@ import { civilUtcMs, holidayKey, parseCivilDate, toCalendarDay, type CivilDate }
 import { computeBookingWindow } from "./booking-window";
 import { resolveCharge } from "./booking-charge";
 import { resolveSlotPrice } from "./pricing-engine";
+import { algiersYear } from "./quote-reference";
 import { RULE_SELECT } from "./pricing-rules.service";
 import {
   QuoteCommand,
@@ -170,9 +172,11 @@ export class QuotesService {
     await this.ownedVenue(userId, venueId);
     const priced = await this.price(venueId, input);
 
-    // ⚠ Les deux écritures — créer, puis se désigner tête de chaîne — sont
-    // atomiques dans l'adaptateur. Le service dit CE QU'IL VEUT, pas comment.
-    const row = await this.devis.creerTeteDeChaine(venueId, priced);
+    // ⚠ La création — le numéro du devis, l'identifiant, la tête de chaîne — est atomique
+    // dans l'adaptateur. Le service dit CE QU'IL VEUT, pas comment.
+    // ⛔ Rang 39 (D48, S-21) : le service est SEUL à lire l'horloge, UNE fois — l'année d'Alger de la référence et l'instant de création viennent du même appel.
+    const maintenant = new Date();
+    const row = await this.devis.creerTeteDeChaine(venueId, priced, { annee: algiersYear(maintenant), creeLe: maintenant });
 
     return this.toDTO(row);
   }
@@ -527,6 +531,13 @@ export class QuotesService {
       clientId: row.clientId,
       status: row.status,
       version: row.version,
+      // K-6 (rang 39) : la référence est bâtie ICI, sur la ligne STOCKÉE, par la formule partagée — jamais depuis l'identifiant.
+      reference: formatQuoteReference({
+        year: row.referenceYear,
+        venueNumber: row.venue.number,
+        quoteNumber: row.referenceNumber,
+        version: row.version
+      }),
       chainId: row.chainId,
       parentQuoteId: row.parentQuoteId,
       eventDate: row.eventDate.toISOString().slice(0, 10),

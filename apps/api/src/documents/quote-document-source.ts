@@ -32,6 +32,9 @@ export interface QuoteDocumentLine {
 
 export interface QuoteDocumentRecord {
   readonly id: string;
+  /** Rang 39 (D333, K-6) — la RÉFÉRENCE du devis, `DEVIS-2026-0001-0089 v1`, bâtie par l'adaptateur de lecture sur la ligne STOCKÉE (année, numéro du devis, numéro de la salle, version). Le modèle
+   *  l'imprime telle quelle, le service en DÉRIVE le nom du fichier : ni l'un ni l'autre n'en bâtit une, et l'ancienne (les huit premiers caractères de l'identifiant) a disparu. */
+  readonly reference: string;
   readonly version: number;
   /** La plus haute `version` de la CHAÎNE du devis — ce qui dit si CETTE version est encore la dernière. */
   readonly latestVersion: number;
