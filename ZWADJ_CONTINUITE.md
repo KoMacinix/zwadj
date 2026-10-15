@@ -1918,6 +1918,16 @@ Lot D332. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 
 ⇒ **RANG 39 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la **CLÔTURE** du rang 38, mot pour mot de la consigne. Candidat désigné par la séquence de D-10 : **L35-3** (la numérotation ; méthode **RENFORCÉE**, donc **certification immédiate** par la première condition de Ko) — **pas arbitré** : la session ne choisit pas le rang suivant, elle écrit qu'il est attendu.
 
+⛔ **ARBITRÉ LE 15/10/2026 PAR KO — LE RANG 39, mot pour mot (première écriture d'autorité du lot D333 ; la table d'ouverture et la sortie de la lecture adverse l'ont précédée dans `git`) :**
+
+**Texte proposé par le relecteur, adopté par Ko tel quel :**
+
+« 1. J'ai regardé les six pages du PDF (trois devis, en français et en arabe) : elles sont bonnes. La case vide de la ligne « fixe » me convient. La condition de clôture du rang 38 est levée.
+2. Je ratifie les décisions S-12 à S-19 de la session D332.
+3. Rang 39 : L35-3, la numérotation. Lot de code, méthode renforcée, suivi d'une certification immédiate. »
+
+Lot D333. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est de Ko** (patron de D295, D327, D328, D329, D330, D331, D332) : la session a reçu ce texte, elle ne s'est rien attribué. ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que ce texte. Les décisions du relecteur, les annotations des sites que ces trois points rendent périmés, la chaîne du compteur dans `AGENTS.md` et la table recopiée suivent dans des commits postérieurs.
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
