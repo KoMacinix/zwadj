@@ -1,0 +1,49 @@
+# D334 — motifs de la passe D277 du rang 40 (la session ADVERSE de L35-3, puis la certification qui couvre D331, D332 et D333 ; lot DOCUMENTAIRE ; lecture adverse de D333 ; arbitrages de Ko du 15/10/2026 : condition de clôture du rang 39 LEVÉE, S-20 à S-33 RATIFIÉES, F-12 reste une erreur 500 en v1, rang 40 ; quatre décisions du relecteur : la session adverse, les rouges avant le code, les trois règles neuves dans l'outil, les planchers).
+# Lus par balayage.py (copie du balayage de D333, mêmes mécanique et calibration ; seuls le nom du lot et ce fichier changent), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que le lot INVALIDE : « RANG 40 : EN ATTENTE D'ARBITRAGE DE KO » (le rang est arbitré) ; « candidat désigné » (la session adverse puis la certification deviennent le rang 40) ; « compteur TROIS » (ZÉRO si la marque est posée) ;
+#          « aucun lot de code ne s'ouvre avant elle » (levé SI la marque est posée) ; « condition de clôture du rang 39 » (levée par Ko) ; « À RATIFIER PAR KO » (S-20 à S-33 ratifiées) ; « session ADVERSE » (faite) ;
+#          « les rouges » / « un seul commit » (règle neuve : les rouges avant le code) ; « headless_shell » (porte dure, règle permanente de D331 : l'outil la tient) ; « la prochaine certification » (c'est celle-ci).
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « peut s'ouvrir » ; « PEUT s'ouvrir » ; « tenable » ; « avant une certification » ; « RANG 41 » ; « L35-4 » ; « ADM-1 » ; « ADM-2 » ; « lot correctif » ;
+#          « certification immédiate » ; « méthode RENFORCÉE » ; « chemin d'identité » ; « pause du chemin de l'argent » ; « à ordonner par Ko » ; « condition de clôture du rang 33 » ; « nom du client » ; « F-12 » ; « numérotation ».
+1|RANG 40 : EN ATTENTE D'ARBITRAGE DE KO
+1|RANG 40 : EN ATTENTE
+1|candidat désigné
+1|candidat DÉSIGNÉ
+1|compteur TROIS
+1|compteur **TROIS**
+1|DEUX → TROIS
+1|TROIS → ZÉRO
+1|aucun lot de code ne s'ouvre avant elle
+1|aucun lot de code ne s'ouvre avant une certification
+1|condition de clôture du rang 39
+1|CONDITION DE CLÔTURE
+1|À RATIFIER PAR KO
+1|RATIFIER PAR KO
+1|session ADVERSE
+1|session adverse
+1|la prochaine certification
+1|à l'étape 0 de la prochaine certification
+1|headless_shell
+1|règle permanente
+1|trois conditions
+1|RANG 39 : EN ATTENTE
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|tenable
+2|avant une certification
+2|RANG 41
+2|L35-4
+2|ADM-1
+2|ADM-2
+2|lot correctif
+2|certification immédiate
+2|méthode RENFORCÉE
+2|chemin d'identité
+2|pause du chemin de l'argent
+2|à ordonner par Ko
+2|condition de clôture du rang 33
+2|nom du client
+2|F-12
+2|numérotation
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D334
