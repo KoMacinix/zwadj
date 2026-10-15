@@ -1,0 +1,7 @@
+TRI AU CONTEXTE (humain, D334) — de l'audit scellé « a » de ce lot (`docs/preuves/D334/audit-secrets-d334a.txt`, sceau écrit par l'instrument `neutralisation/audit-secrets.py --sortie`), contre la dernière sortie scellée précédente (`docs/preuves/D333/audit-secrets-d333b.txt`, 228 contextes).
+Procédure : `docs/preuves/D299/outils/alertes-nouvelles.py <précédente> <nouvelle>` (calibrée à deux bras avant de lire : négatif 0, positif 2) ; AUCUN contexte n'est recopié ici.
+
+Corpus : l'audit « a » est joué APRÈS la sortie de la lecture adverse (instrument, sortie, première passe, défauts) et AVANT toute écriture d'autorité ; il a donc lu les pièces de la lecture adverse présentes à cet instant (l'instrument, la sortie, la première passe de l'instrument, la première version de la liste de ses défauts) mais NI la passe D277 (écrite ensuite), NI la version finale de la liste des défauts, NI les trois `.md` tels qu'ils seront écrits.
+
+alertes ABSENTES de la précédente : 0 (228 contextes lus dans chacune des deux sorties). BILAN DU TRI : 0 sur 0 — rien à trier ; AUCUNE valeur réelle.
+Limite écrite : « a » ne couvre PAS les octets des trois `.md` d'autorité tels qu'ils seront écrits, ni ceux de ce fichier, ni les pièces de la session adverse et de la certification. Le dernier audit (« b ») s'écrit en DERNIÈRE écriture ; ce qui fait foi sur l'absence de VALEURS est le contrôle dédié « aucune valeur réelle » (`docs/preuves/D299/outils/aucune-valeur-reelle.py`), qui ne se joue que sur un journal à valeurs réelles produit par la session.
