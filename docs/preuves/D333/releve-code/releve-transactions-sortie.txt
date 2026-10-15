@@ -1,0 +1,100 @@
+== CALIBRATION (deux bras par extracteur, abandon si un seul manque)
+   ✓ calibration FOR UPDATE de l'acceptation à la ligne 76 (positif)
+   ✓ calibration aucun FOR UPDATE dans la création d'une tête de chaîne (négatif)
+   ✓ calibration la clé étrangère quotes.venue_id → venues est trouvée (positif)
+   ✓ calibration aucune clé étrangère quotes.chain_id → quotes n'est trouvée (négatif)
+   ✓ calibration les motifs `number` et `reference_*` se reconnaissent dans une déclaration (positif)
+   ✓ calibration …et ne se confondent pas avec `references: [id]` ni `numberOfThings` (négatif)
+   calibration : 6 bras, 0 manqué(s)
+
+== 1. LES TRANSACTIONS DU DEVIS — apps/api/src/venues/quote-store.prisma.ts (état commité)
+
+[verrouillerChaine] lignes 36–38
+   quote-store.prisma.ts:36   verrouillerChaine(     private async verrouillerChaine(tx: Prisma.TransactionClient, chainId: string): Promise<void> {
+   quote-store.prisma.ts:37   $queryRaw + FOR UPDATE await tx.$queryRaw`SELECT id FROM quotes WHERE id = ${chainId}::uuid FOR UPDATE`;
+
+[checkAndSet] lignes 44–63
+   quote-store.prisma.ts:44   checkAndSet(           private async checkAndSet(
+   quote-store.prisma.ts:49   $transaction           return this.prisma.$transaction(async (tx) => {
+   quote-store.prisma.ts:50   .updateMany(           const consumed = await tx.quote.updateMany({
+   quote-store.prisma.ts:57   .findUniqueOrThrow(    const fresh = await tx.quote.findUniqueOrThrow({ where: { id: quoteId }, select: { status: true } });
+   quote-store.prisma.ts:60   .findUniqueOrThrow(    const devis = await tx.quote.findUniqueOrThrow({ where: { id: quoteId }, select: QUOTE_SELECT });
+
+[creerTeteDeChaine] lignes 65–78
+   quote-store.prisma.ts:66   $transaction           return this.prisma.$transaction(async (tx) => {
+   quote-store.prisma.ts:67   .create(               const created = await tx.quote.create({
+   quote-store.prisma.ts:75   .update(               await tx.quote.update({ where: { id: created.id }, data: { chainId: created.id } });
+   quote-store.prisma.ts:76   .findUniqueOrThrow(    return tx.quote.findUniqueOrThrow({ where: { id: created.id }, select: QUOTE_SELECT });
+
+[creerRevision] lignes 80–100
+   quote-store.prisma.ts:86   $transaction           return this.prisma.$transaction(async (tx) => {
+   quote-store.prisma.ts:87   verrouillerChaine(     await this.verrouillerChaine(tx, args.chainId);
+   quote-store.prisma.ts:88   .aggregate(            const max = await tx.quote.aggregate({ where: { chainId: args.chainId }, _max: { version: true } });
+   quote-store.prisma.ts:89   .create(               return tx.quote.create({
+
+[convertirEnDemande] lignes 128–205
+   quote-store.prisma.ts:130  .create(               await this.prisma.booking.create({
+   quote-store.prisma.ts:196  .findFirst(            const existante = await this.prisma.booking.findFirst({
+
+   ⇒ appelants de production de `creerTeteDeChaine` / `creerRevision` (apps/api/src, hors specs) :
+      apps/api/src/venues/quotes.service.ts:175:    const row = await this.devis.creerTeteDeChaine(venueId, priced);
+      → creerTeteDeChaine : 1 appelant(s) de production (attendu 1)
+      apps/api/src/venues/quotes.service.ts:251:    const row = await this.devis.creerRevision({
+      → creerRevision : 1 appelant(s) de production (attendu 1)
+
+== 2. LES VERROUS QUE LE LOT NE DOIT PAS CROISER
+
+[booking-locks.prisma.ts · acceptUnderVenueLock] lignes 62–152
+   booking-locks.prisma.ts:72   $transaction           return this.prisma.$transaction(async (tx): Promise<AcceptOutcome> => {
+   booking-locks.prisma.ts:76   $queryRaw + FOR UPDATE await tx.$queryRaw`SELECT id FROM venues WHERE id = ${input.venueId}::uuid FOR UPDATE`;
+   booking-locks.prisma.ts:94   .findUniqueOrThrow(    const fresh = await tx.booking.findUniqueOrThrow({
+   booking-locks.prisma.ts:105  .findFirst(            const block = await tx.availabilityBlock.findFirst({
+   booking-locks.prisma.ts:125  .updateMany(           const ecrit = await tx.booking.updateMany({
+   booking-locks.prisma.ts:133  .findUniqueOrThrow(    const relu = await tx.booking.findUniqueOrThrow({
+   booking-locks.prisma.ts:146  .findUniqueOrThrow(    const row = await tx.booking.findUniqueOrThrow({
+
+[availability-blocks.service.ts · create] lignes 100–142
+   availability-blocks.service.ts:105  $transaction           return this.prisma.$transaction(async (tx) => {
+   availability-blocks.service.ts:116  $queryRaw + FOR UPDATE await tx.$queryRaw`SELECT id FROM venues WHERE id = ${venueId} FOR UPDATE`;
+   availability-blocks.service.ts:118  .findFirst(            const clash = await tx.booking.findFirst({
+   availability-blocks.service.ts:136  .create(               const row = await tx.availabilityBlock.create({
+
+   ⇒ toutes les lignes de `apps/api/src` (hors specs) qui prennent un verrou de ligne (`FOR UPDATE`, `FOR SHARE`) :
+      apps/api/src/venues/availability-blocks.service.ts:116 await tx.$queryRaw`SELECT id FROM venues WHERE id = ${venueId} FOR UPDATE`;
+      apps/api/src/venues/booking-locks.prisma.ts:76 await tx.$queryRaw`SELECT id FROM venues WHERE id = ${input.venueId}::uuid FOR UPDATE`;
+      apps/api/src/venues/quote-store.prisma.ts:37 await tx.$queryRaw`SELECT id FROM quotes WHERE id = ${chainId}::uuid FOR UPDATE`;
+
+== 3. LES CONTRAINTES DE BASE (migrations, état commité — la migration est l'autorité, D186)
+   27 migrations parcourues ; la dernière : 20260909120000_booking_quote_total_coherent
+   clé étrangère quotes.venue_id → venues : OUI, posée par 20260707000000_init
+   clé étrangère quotes.chain_id → quotes : AUCUNE
+   clé étrangère quotes.parent_quote_id → quotes : OUI, posée par 20260802140000_quote_lifecycle
+   clé étrangère bookings.quote_id → quotes : OUI, posée par 20260707000000_init
+   clé étrangère bookings.venue_id → venues : OUI, posée par 20260707000000_init
+   20260802140000_quote_lifecycle: CREATE UNIQUE INDEX "quotes_chain_version_unique" ON "quotes"("chain_id", "version")
+   20260802140000_quote_lifecycle: CREATE UNIQUE INDEX "quotes_one_accepted_per_chain" ON "quotes"("chain_id") WHERE "status" = 'ACCEPTED'
+   20260802140000_quote_lifecycle: CREATE UNIQUE INDEX "quotes_one_sent_per_chain" ON "quotes"("chain_id") WHERE "status" = 'SENT'
+   20260707000000_init: ALTER TABLE "quotes" ADD CONSTRAINT "quotes_venue_id_fkey" FOREIGN KEY ("venue_id") REFERENCES "venues"("id") ON DELETE RESTRICT ON UPDATE CASCADE
+   20260707000000_init: ALTER TABLE "quotes" ADD CONSTRAINT "quotes_client_id_fkey" FOREIGN KEY ("client_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE
+   20260707000000_init: ALTER TABLE "quotes" ADD CONSTRAINT "quotes_slot_template_id_fkey" FOREIGN KEY ("slot_template_id") REFERENCES "slot_templates"("id") ON DELETE SET NU
+   colonne `number` dans le modèle Venue : NON ; colonnes `reference_*` dans le modèle Quote : NON
+   `created_at` dans le modèle Venue (l'ordre de la numérotation des salles existantes) : OUI
+   modèle de compteurs dans schema.prisma : NON
+
+== 4. LES SITES À CHANGER
+   création d'une salle en production (apps/api/src, hors specs) :
+      apps/api/src/venues/venue-store.prisma.ts:43:      const salle = await this.prisma.venue.create({
+   la référence imprimée et le nom de fichier du PDF (production, tous paquets) :
+      [quoteReference\(] apps/api/src/documents/quote-document.ts:71 export function quoteReference(record: Pick<QuoteDocumentRecord, "id" | "version">): string {
+      [quoteReference\(] apps/api/src/documents/quote-document.ts:133 <html lang="${locale}" dir="${rtl ? "rtl" : "ltr"}"><head><meta charset="utf-8"><title>${L.title} ${
+      [quoteReference\(] apps/api/src/documents/quote-document.ts:140 <p class="sous">${L.title} · ${L.reference} ${quoteReference(record)} · ${L.issuedOn} ${longDate(iss
+      → quoteReference\( : 3 site(s) de production
+      [quoteDocumentFilename\(] apps/api/src/documents/quote-document.service.ts:60 return { pdf: await this.renderer.render(document), locale, filename: quoteDocumentFilename(record) 
+      [quoteDocumentFilename\(] apps/pro/src/dashboard/walkin-journey.tsx:504 saveBlob(fichier.value, quoteDocumentFilename(courant));
+      [quoteDocumentFilename\(] packages/types/src/quote.ts:287 export function quoteDocumentFilename(quote: { readonly id: string; readonly version: number; readon
+      → quoteDocumentFilename\( : 3 site(s) de production
+      [slice\(0, ?8\)] apps/api/src/documents/quote-document.ts:72 return `${record.id.slice(0, 8)}-v${record.version}`;
+      [slice\(0, ?8\)] packages/types/src/quote.ts:288 return `devis-${quote.eventDate}-v${quote.version}-${quote.id.slice(0, 8)}.pdf`;
+      → slice\(0, ?8\) : 2 site(s) de production
+
+== FIN DU RELEVÉ (aucune base ouverte, aucune porte rejouée)
