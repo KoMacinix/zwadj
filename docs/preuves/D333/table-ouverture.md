@@ -120,3 +120,18 @@ Les chemins de code ci-dessous sont ceux que la lecture du code, faite AVANT le 
 |---|---|
 | `docs/preuves/D333/releve-code/premisses-postgres.py` | le script : une base jetable, des tables qui imitent `venues` et `quotes`, chaque prémisse en paire acceptée / refusée, abandon si un bras manque |
 | `docs/preuves/D333/releve-code/premisses-postgres-sortie.txt` | sa sortie : 0 prémisse manquée |
+
+#### Extension 3 — la feuille de style de la référence, et les rouges LUS contre l'état d'avant (déclarés AVANT leur versement)
+
+*Motif* : (1) la table de base ne nommait pas `apps/pro/src/theme.css` : la référence affichée après « Calculer le devis » a besoin d'un style (`.wk-reference`), seul fichier de style de l'application Pro. (2) Les rouges ont été joués AVANT tout fichier de production du lot (HEAD `01b0240`, tests du lot seuls dans l'arbre) ; leurs journaux bruts restent hors dépôt, l'EXTRAIT calibré est versé avec son hachage. L'extracteur est une **copie** de celui de D332 (seules les mentions « D332 » de l'usage et de l'en-tête de sortie deviennent « D333 »).
+
+| fichier | pour |
+|---|---|
+| `apps/pro/src/theme.css` | la règle `.wk-reference` (la référence du devis, sous l'intitulé du total) |
+| `docs/preuves/D333/rouge/extraire-rouge.py` | l'extracteur des rouges et des verts d'un journal vitest, calibré à deux bras |
+| `docs/preuves/D333/rouge/rouge-api-pur.txt` | rouge : la référence, le nom du fichier (`@zwadj/types`) et l'année d'Alger — composants neufs |
+| `docs/preuves/D333/rouge/rouge-api-ecriture.txt` | rouge : l'adaptateur de création et de révision |
+| `docs/preuves/D333/rouge/rouge-api-service.txt` | rouge : la référence du DTO rendue par le service |
+| `docs/preuves/D333/rouge/rouge-api-documents.txt` | rouge : le document imprime la référence stockée, le nom du fichier |
+| `docs/preuves/D333/rouge/rouge-api-int.txt` | rouge : la numérotation sur PostgreSQL réel (concurrence, année, séquence, gardes de base, migrations sur base non vide) |
+| `docs/preuves/D333/rouge/rouge-pro.txt` | rouge : la référence à l'écran, dans la fenêtre de remise, le nom du fichier avec la langue choisie |
