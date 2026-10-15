@@ -51,3 +51,24 @@ Lot : **la session ADVERSE de L35-3, puis la certification qui couvre D331, D332
 ### Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+#### Extension 1 — les pièces de la SESSION ADVERSE de L35-3 (décision 1 du relecteur), déclarées AVANT leur versement
+
+**Motif** : la famille « la session adverse » de la table d'ouverture ne nomme aucun fichier ; la règle exige des chemins complets. Ces quatorze fichiers existent, non suivis, au moment où cette extension s'écrit ; ils sont versés par le commit qui suit. Aucun fichier du dépôt (hors `docs/preuves/`) n'a été modifié par la session adverse.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D334/session-adverse/RAPPORT.txt` | le rapport de la session adverse : chaque mode de défaillance (fait · attendu · mesuré), les constats non bloquants NB-1 à NB-9 |
+| `docs/preuves/D334/session-adverse/adverse-numerotation.int-spec.ts` | sonde 4 : le VRAI code (deux instances Nest/Prisma), quinze tests ; copiée dans `apps/api/test/int/` le temps de la mesure puis RETIRÉE (pièce, jamais suite) |
+| `docs/preuves/D334/session-adverse/adverse_base.py` | sonde 2 : les gardes de base attaquées en SQL brut |
+| `docs/preuves/D334/session-adverse/adverse_concurrence.py` | sonde 3 : la concurrence, un processus psql par session, étalonnage d'un interblocage |
+| `docs/preuves/D334/session-adverse/adverse_derive.py` | sonde 6 : la dérive entre schema.prisma et la base migrée |
+| `docs/preuves/D334/session-adverse/adverse_migration.py` | sonde 1 : les migrations A et B rejouées (copie de la base de développement, cas durs, chaîne cassée) |
+| `docs/preuves/D334/session-adverse/adverse_mutations.py` | sonde 5 : 54 mutations propres, deux étalons, restauration vérifiée à l'octet |
+| `docs/preuves/D334/session-adverse/adverse_outils.py` | outillage commun des sondes SQL |
+| `docs/preuves/D334/session-adverse/sortie-1-migrations.txt` | sortie de la sonde 1 |
+| `docs/preuves/D334/session-adverse/sortie-2-gardes-de-base.txt` | sortie de la sonde 2 |
+| `docs/preuves/D334/session-adverse/sortie-3-concurrence.txt` | sortie de la sonde 3 |
+| `docs/preuves/D334/session-adverse/sortie-4-api.txt` | sortie de la sonde 4 sous six fuseaux d'hôte |
+| `docs/preuves/D334/session-adverse/sortie-5-mutations.txt` | sortie de la sonde 5 |
+| `docs/preuves/D334/session-adverse/sortie-6-derive.txt` | sortie de la sonde 6 |
