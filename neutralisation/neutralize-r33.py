@@ -175,7 +175,8 @@ cible("M-8. le nom de la salle est toujours le nom FRANÇAIS", MODELE, "const sa
 cible("M-9. le CSS des polices n'est plus inséré dans le document (une police absente retombe sur le système)", MODELE, "${raw(fontCss)}", '${raw("")}', {"api-modele": "le CSS des polices est inséré tel quel"})
 cible("M-10. le créneau n'est plus mis en forme par `formatSlotRange` (24 h) : des minutes brutes", MODELE,
       "formatSlotRange(record.slot.startMinutes, record.slot.endMinutes)", "String(record.slot.startMinutes)", {"api-modele": "le créneau s'imprime par `formatSlotRange`"})
-cible("M-11. la référence imprimée ne dit plus QUELLE version est imprimée", MODELE, "return `${record.id.slice(0, 8)}-v${record.version}`;", "return `${record.id.slice(0, 8)}`;", {"api-modele": "le client s'imprime quand le devis y est lié"})
+# ⛔ M-11 RÉORIENTÉE (rang 39, D333) — la référence n'est plus `id.slice(0, 8)` + version : elle est STOCKÉE (`record.reference`). La faute possible est devenue « le document imprime la référence sans sa version » (cible d'avant : « return `${record.id.slice(0, 8)}`; »).
+cible("M-11. la référence imprimée ne dit plus QUELLE version est imprimée", MODELE, '<bdi dir="ltr">${record.reference}</bdi>', '<bdi dir="ltr">${record.reference.split(" ")[0]}</bdi>', {"api-modele": "la référence imprimée est la référence STOCKÉE du devis"})
 cible("M-12. la date d'un événement dérive du fuseau du serveur (la date civile n'est pas un instant)", MODELE,
       '{ dateStyle: "long", timeZone: "UTC" }', '{ dateStyle: "long" }', {"api-modele": "la date de l'événement est en toutes lettres"})
 cible("M-13. ⛔ une garde de SOURCE : le modèle importe le moteur de prix", MODELE, "const MESSAGES = { fr: frMessages, ar: arMessages } as const;",
@@ -226,7 +227,8 @@ cible("SV-4. le refus d'une ancienne version porte le code d'un devis CLOS", SER
 cible("SV-5. une PANNE du moteur n'est plus un 503 : elle remonte comme une erreur quelconque", SERVICE, "if (erreur instanceof PdfRenderUnavailableError) {", "if (false) {", {"api-service": "le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE"})
 # ⛔ SV-6 RETIRÉE (rang 38, D332) — la branche « langue du client » n'existe plus : la langue du PDF est celle que le pro choisit à chaque téléchargement (décision A de Ko, D327) ; `chooseDocumentLocale`, `branch` et la lecture de `users.locale` sont retirés, gardés par la garde de SOURCE du modèle (cible Y-1 et S-3 de `neutralize-r38.py`) ; la langue appliquée est la langue demandée (V-1, V-2 de `neutralize-r38.py`) (cible d'avant : « la langue de l'interface du pro n'est plus le repli : toujours le français… »).
 # ⛔ SV-7 RETIRÉE (rang 38, D332) — la branche « langue du client » n'existe plus : la langue du PDF est celle que le pro choisit à chaque téléchargement (décision A de Ko, D327) ; `chooseDocumentLocale`, `branch` et la lecture de `users.locale` sont retirés, gardés par la garde de SOURCE du modèle (cible Y-1 et S-3 de `neutralize-r38.py`) (cible d'avant : « la langue du compte du client n'est jamais transmise… »).
-cible("SV-8. le nom du fichier porte une donnée PERSONNELLE (le nom de la salle)", SERVICE, "filename: quoteDocumentFilename(record)", "filename: `devis-${record.venue.nameFr}.pdf`",
+# ⛔ SV-8 RÉORIENTÉE (rang 39, D333) — l'appel a changé de forme (`const filename = quoteDocumentFilename(record, locale);`, calculé AVANT le rendu) ; la faute reste « le nom du fichier porte le nom de la salle ».
+cible("SV-8. le nom du fichier porte une donnée PERSONNELLE (le nom de la salle)", SERVICE, "const filename = quoteDocumentFilename(record, locale);", "const filename = `devis-${record.venue.nameFr}.pdf`;",
       {"api-service": "rend le PDF de la version active ; le HTML confié au moteur"})
 cible("SV-9. la date d'émission est celle du fuseau UTC du serveur, pas celle d'Alger", SERVICE, '{ timeZone: "Africa/Algiers" }', '{ timeZone: "UTC" }', {"api-service": "à 23 h 30 UTC il est déjà le lendemain à Alger"})
 
@@ -235,8 +237,9 @@ cible("T-1. le canal « e-mail » n'exige plus d'adresse : il s'active sans dest
       "export const QUOTE_SENT_VIA_NEEDS_EMAIL = [QUOTE_SENT_VIA.PRINT] as const;", {"pro-remise": "l'e-mail exige l'ADRESSE et rien d'autre", "pro-parcours": "les cinq canaux sont RENDUS une fois le devis calculé"})
 cible("T-2. ⛔ le schéma du serveur redevient une liste recopiée, sans « e-mail » : l'écran l'accepte, le serveur le refuse", TYPES_DEVIS, "z.enum(QUOTE_SENT_VIA_ORDER, {",
       "z.enum([QUOTE_SENT_VIA.PRINT, QUOTE_SENT_VIA.SMS, QUOTE_SENT_VIA.IN_PERSON, QUOTE_SENT_VIA.PHONE], {", {"int-document": "chaque canal de la liste d'autorité est accepté ET relu en base"})
-cible("T-3. le nom du fichier ne dit plus la version", TYPES_DEVIS, "return `devis-${quote.eventDate}-v${quote.version}-${quote.id.slice(0, 8)}.pdf`;",
-      "return `devis-${quote.eventDate}-${quote.id.slice(0, 8)}.pdf`;", {"api-modele": "le nom du fichier ne porte AUCUNE donnée personnelle", "api-service": "rend le PDF de la version active ; le HTML confié au moteur", "pro-parcours": "le fichier téléchargé porte le nom que le SERVEUR donne"})
+# ⛔ T-3 RÉORIENTÉE (rang 39, D333) — la formule du nom a changé (`DEVIS-…_<langue>_v<version>.pdf`, dérivée de la référence) ; la faute reste « le nom ne dit plus la version ».
+cible("T-3. le nom du fichier ne dit plus la version", TYPES_DEVIS, "return `${m[1]}_${locale}_v${m[2]}.pdf`;",
+      "return `${m[1]}_${locale}.pdf`;", {"api-modele": "le nom du fichier ne porte AUCUNE donnée personnelle", "api-service": "rend le PDF de la version active ; le HTML confié au moteur", "pro-parcours": "le fichier téléchargé porte le nom que le SERVEUR donne"})
 
 # ── Q — le client des devis et la primitive authentifiée (réponse binaire).
 cible("Q-1. `quotes.document` lit la réponse comme du JSON : le PDF planterait à la première lecture", CLIENT_DEVIS, '{ responseType: "blob" })', "{})",
@@ -284,7 +287,8 @@ cible("J-9. les boutons restent actifs pendant le travail : un double clic fait 
 cible("J-10. la fenêtre se ferme sans fermer (`onClose` ne fait rien)", WK, "onClose={() => setRemit(null)}", "onClose={() => undefined}", {"pro-parcours": "la fenêtre se ferme par son bouton"})
 cible("J-11. la fenêtre s'ouvre PENDANT le travail, avant les deux réponses", WK, "open={remit !== null}", "open={remit !== null || busy}", {"pro-parcours": "la fenêtre de remise ne s'ouvre PAS avant les réponses"})
 cible("J-12. un téléchargement qui échoue est dit « téléchargé »", WK, "pdf = { ok: false, failure: cause };", "pdf = { ok: true };", {"pro-parcours": "un échec du TÉLÉCHARGEMENT lui-même"})
-cible("J-13. le fichier téléchargé porte un nom écrit à la main, pas celui de la formule partagée", WK, "saveBlob(fichier.value, quoteDocumentFilename(courant));",
+# ⛔ J-13 RÉORIENTÉE (rang 39, D333) — l'appel porte désormais la langue choisie (`quoteDocumentFilename(courant, documentLocale)`).
+cible("J-13. le fichier téléchargé porte un nom écrit à la main, pas celui de la formule partagée", WK, "saveBlob(fichier.value, quoteDocumentFilename(courant, documentLocale));",
       'saveBlob(fichier.value, "devis.pdf");', {"pro-parcours": "le fichier téléchargé porte le nom que le SERVEUR donne"})
 cible("J-14. le canal « e-mail » est actif quelle que soit l'adresse", WK, 'const emailOk = contact.email.trim() !== "" && isValidContactEmail(contact.email);', "const emailOk = true;",
       {"pro-parcours": "les cinq canaux sont RENDUS une fois le devis calculé"})

@@ -67,9 +67,11 @@ CIBLES = [
         # simultanées lisent le même MAX(version), et l'index unique refuse la
         # seconde en 500. Aucun test unitaire ne la verrait par le comportement ;
         # seule la SÉQUENCE la révèle.
+        # ⛔ RÉORIENTÉE (rang 39, D333) : le verrou rend désormais la TÊTE (`const tete = await this.verrouillerChaine(…)`) dont la révision recopie l'année et le numéro ;
+        # « le verrou disparaît » se mute donc en lui substituant une tête inventée (cible d'avant : la suppression de la ligne `await this.verrouillerChaine(tx, args.chainId);`).
         ADAPTATEUR,
-        "      await this.verrouillerChaine(tx, args.chainId);\n",
-        "",
+        "      const tete = await this.verrouillerChaine(tx, args.chainId);\n",
+        "      const tete = { referenceYear: 2000, referenceNumber: 1 };\n",
         1,
         ["adaptateur"],
     ),
@@ -77,9 +79,10 @@ CIBLES = [
         "S10b1-2. ⛔ LE VERROU PASSE APRÈS LA LECTURE DU MAXIMUM — présent mais inutile",
         # Le pire des deux : la ligne est là, la revue la voit, elle ne protège
         # plus rien.
+        # ⛔ RÉORIENTÉE (rang 39, D333) : même raison que S10b1-1 (le verrou rend la tête que la révision recopie).
         ADAPTATEUR,
-        "      await this.verrouillerChaine(tx, args.chainId);\n      const max = await tx.quote.aggregate(",
-        "      const max = await tx.quote.aggregate(",
+        "      const tete = await this.verrouillerChaine(tx, args.chainId);\n      const max = await tx.quote.aggregate(",
+        "      const tete = { referenceYear: 2000, referenceNumber: 1 };\n      const max = await tx.quote.aggregate(",
         1,
         ["adaptateur"],
     ),
@@ -104,11 +107,12 @@ CIBLES = [
         ["adaptateur"],
     ),
     (
-        "S10b1-5. ⛔ LES DEUX ÉCRITURES DE LA TÊTE DE CHAÎNE SORTENT DE LA TRANSACTION",
-        # Le `chainId` provisoire deviendrait visible entre les deux requêtes.
+        "S10b1-5. ⛔ L'ÉCRITURE DE LA TÊTE DE CHAÎNE SORT DE LA TRANSACTION",
+        # ⛔ RÉORIENTÉE (rang 39, D333) : la tête naît en UNE écriture (`chain_id = id`, S-22) ; il n'y a plus de `UPDATE` du `chainId` provisoire. La faute possible est que l'INSERTION sorte de la
+        # transaction du compteur (le numéro serait alloué, la tête écrite ailleurs). Cible d'avant : la sortie du `tx.quote.update` de `chainId`.
         ADAPTATEUR,
-        "      await tx.quote.update({ where: { id: created.id }, data: { chainId: created.id } });",
-        "      await this.prisma.quote.update({ where: { id: created.id }, data: { chainId: created.id } });",
+        "      await tx.quote.create({",
+        "      await this.prisma.quote.create({",
         1,
         ["adaptateur"],
     ),

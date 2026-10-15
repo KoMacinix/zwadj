@@ -91,9 +91,10 @@ function build() {
   const prisma = {
     $transaction: vi.fn(async (cb: (t: unknown) => unknown) => cb(tx)),
     // ⛔ Tout SQL brut lancé HORS transaction s'inscrit ici : le compteur y serait avancé sans que le devis le soit (F-7).
+    // Il rend une ligne VALIDE : sinon la faute « compteur hors transaction » échouerait sur la validation du numéro (une `Error`), pas sur l'assertion de séquence ci-dessous (D304).
     $queryRaw: vi.fn(async (..._args: unknown[]): Promise<unknown[]> => {
       journal.push("HORS-TX");
-      return [];
+      return [{ last_number: COMPTEUR, id: NOUVEL_ID }];
     }),
     quote: { findMany: vi.fn().mockResolvedValue([]), findFirst: vi.fn().mockResolvedValue(null) },
     venue: { findFirst: vi.fn().mockResolvedValue(null) },
