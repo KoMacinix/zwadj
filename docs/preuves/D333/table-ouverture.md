@@ -111,3 +111,12 @@ Les chemins de code ci-dessous sont ceux que la lecture du code, faite AVANT le 
 | fichier | pour |
 |---|---|
 | `docs/preuves/D333/scenarios-ko.md` | les scénarios de Ko, en langage simple : la référence après « Calculer le devis », dans la fenêtre de remise, le nom du fichier téléchargé, le deuxième devis de la salle, la révision |
+
+#### Extension 2 — les prémisses de PostgreSQL mesurées avant le code, déclarées AVANT leur versement
+
+*Motif* : le cadrage (D231, « vérifier la prémisse avant de coder la demande ») pose six affirmations sur le moteur (clé étrangère composite immédiate qui se référence elle-même, index unique partiel, compteur `ON CONFLICT`, année d'Alger, séquence annulée, déclencheur d'immuabilité). Elles sont **mesurées** sur une base jetable du conteneur de développement avant d'être écrites dans le cadrage. Diagnostic NON certifiant ; la base jetable est supprimée par le script (sa sortie le dit).
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D333/releve-code/premisses-postgres.py` | le script : une base jetable, des tables qui imitent `venues` et `quotes`, chaque prémisse en paire acceptée / refusée, abandon si un bras manque |
+| `docs/preuves/D333/releve-code/premisses-postgres-sortie.txt` | sa sortie : 0 prémisse manquée |
