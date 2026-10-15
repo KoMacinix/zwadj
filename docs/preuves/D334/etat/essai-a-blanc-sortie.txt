@@ -1,0 +1,25 @@
+# D334 — ESSAI À BLANC de `outils/passe.py` (copie dont `lancer()` ne lance rien : `outils/fabrication/essai-a-blanc.py`), joué le 15/10/2026 à 12:50 — DIAGNOSTIC NON CERTIFIANT. Il exerce la calibration des règles, l'état des .env, les inventaires, les sondes RÉELLES et la porte dure.
+# RÉSULTAT : la porte dure d'ouverture est ROUGE sur la RAM (médiane 3 572,5 / 3 597,5 Mo contre la barre 4 579) — RIEN ne se lance, sortie 3. Les gestes de la porte dure rouge sont donc éprouvés ; les gestes de la fenêtre et de la clôture ne l'ont pas été par cet essai.
+15/10/2026 12:50:47 PASSE fumee-d334 — HEAD attendu ce1a5f1cf4b68405bfbd0e6b357ec8673518d043
+15/10/2026 12:50:47    ✓ calibration RAM, positif — deux ouvertures au-dessus de la barre : (True, []) (attendu (True, []))
+15/10/2026 12:50:47    ✓ calibration RAM, positif — la clôture au-dessus de la barre : (True, []) (attendu (True, []))
+15/10/2026 12:50:47    ✓ calibration RAM, positif — l'ÉGALITÉ exacte à la barre passe (≥) : (True, []) (attendu (True, []))
+15/10/2026 12:50:47    ✓ calibration RAM, négatif — une ouverture dont la BANDE BASSE passe sous la barre est refusée (la médiane seule ne suffit pas) : False (attendu False)
+15/10/2026 12:50:47    ✓ calibration RAM, négatif — une clôture dont la MÉDIANE passe sous la barre est refusée : False (attendu False)
+15/10/2026 12:50:47    ✓ calibration RAM, négatif — une liste d'ouvertures VIDE n'est pas une ouverture verte : False (attendu False)
+15/10/2026 12:50:47    ✓ calibration RAM, intermédiaires — un relevé sous la barre est NOTÉ (un seul sur trois) et ne dit rien d'autre : [('avant-int-r33', 'avant-int-r33 : médiane 4700 / bas de bande 4551 contre la barre 4579')] (attendu [('avant-int-r33', 'avant-int-r33 : médiane 4700 / bas de bande 4551 contre la barre 4579')])
+15/10/2026 12:50:47    ✓ calibration navigateurs — `chrome` et `headless_shell` à 0 : acceptés : (True, []) (attendu (True, []))
+15/10/2026 12:50:47    ✓ calibration navigateurs — `chrome` = 1 : refusé : (False, ['chrome = 1']) (attendu (False, ['chrome = 1']))
+15/10/2026 12:50:47    ✓ calibration navigateurs — un nom absent du relevé est un défaut d'instrument, pas un zéro : False (attendu False)
+15/10/2026 12:50:49    ✓ calibration navigateurs, comptage RÉEL — avec un processus `headless_shell.exe` vivant : compté 1 et refusé : (1, False) (attendu (1, False))
+15/10/2026 12:50:51    ✓ calibration navigateurs, comptage RÉEL — un processus `headless_shell_x.exe` vivant n'est PAS compté (le nom est exact) ; le premier, tué, est compté 0 : (0, 0) (attendu (0, 0))
+15/10/2026 12:50:52    calibration des règles : 12 bras, 0 manqué(s)
+15/10/2026 12:50:52    harnais VERROUILLÉS (--int), dérivés de l'AST : ['e3d1-s8', 'r25', 'r33', 'r39', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s6']
+15/10/2026 12:50:52    harnais E2E-VERROUILLÉS (--e2e), dérivés par recherche littérale : ['r25', 'r26']
+15/10/2026 12:50:52    pg_isready (ouverture) : code 0
+15/10/2026 12:50:52    ports 3100/3101/5273 à l'écoute : 0 (attendu 0)
+15/10/2026 12:50:52    état des .env (ouverture) : code 0 · RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : [] · PORTE : VERTE
+15/10/2026 12:50:52    inventaire ouverture : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 5 · code 0
+15/10/2026 12:51:54    sonde ouverture-1 : RAM 3572.5 (bande 3561-3581, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · calibration ✓ · ⚠ SOUS LA BARRE
+15/10/2026 12:52:29    sonde ouverture-2 : RAM 3597.5 (bande 3573-3603, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 12:52:29 ⛔ PORTE DURE ROUGE — RIEN N'EST LANCÉ : ouverture-1 : médiane 3572.5 / bas de bande 3561 contre la barre 4579 ; ouverture-2 : médiane 3597.5 / bas de bande 3573 contre la barre 4579

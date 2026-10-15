@@ -1,0 +1,36 @@
+# D334 — plancher de durée par campagne, P = 3 × T. 26 REPRIS (objet du harnais identique à celui de sa dernière mesure — `257471d` ou `4202dd4` — et à HEAD : preuve `deriver-plancher-sortie.txt`), 7 MESURÉS à D334 (act-plafonds, horloge, r33, r37, r38, r39, s10b ;
+# `simuler-non-demarrage.py`, non-démarrage simulé sous deux niveaux de cale, calibration à trois bras). Commité AVANT toute mesure de la passe.
+# Format : P <harnais> <passe qui certifie> <plancher en secondes>. Écrit par deriver-plancher.py ; lu par docs/preuves/D334/outils/lire-campagnes.py.
+P 404 tout 46.44
+P act-plafonds tout 4.23
+P argon2 tout 4.83
+P available-on tout 38.73
+P b7 tout 5.01
+P booking-status tout 4.89
+P budgets tout 0.84
+P e3d1-s8 --int 8.7
+P horizon tout 22.92
+P horloge tout 4.17
+P journey tout 38.55
+P maxprice tout 38.13
+P r29 tout 4.65
+P r30 tout 4.62
+P r32 tout 4.56
+P r33 --int 4.32
+P r37 tout 4.02
+P r38 tout 4.08
+P r39 --int 4.35
+P r4 tout 4.5
+P s10a tout 4.41
+P s10b tout 4.2
+P s11a tout 4.47
+P s11b --int 4.44
+P s9 tout 4.44
+P solid-s1 --int 4.47
+P solid-s2 --int 4.77
+P solid-s3 --int 4.47
+P solid-s4 tout 4.56
+P solid-s5a tout 5.13
+P solid-s5b tout 4.5
+P solid-s6 --int 4.44
+P solid-s7 tout 4.23

@@ -1,0 +1,43 @@
+--- CALIBRATION : separation des regimes, ici et maintenant ---
+  coeurs charges         : 12   bridage retire : True
+  charge REELLEMENT produite : 119.7 s de CPU sur un plafond de 123.6 s  (rendement 0.97)
+  CPU   repos -> charge  : 16 % -> 100 %   (ecart 84 pts, marge exigee 20)
+  PERF  repos -> charge  : 87.6 % -> 146.8 %   (ecart 59.2 pts)
+  ✓ les deux instruments separent repos et charge, sur une charge REELLE.
+
+CALIBRATION_REJOUEE=OUI, le 2026-10-15 13:11, marge exigee 20 pts
+HORODATAGE=2026-10-15 13:12:07
+ECHANTILLONS=6 x 5 s
+RAM_MEDIANE_MO=3672.5
+RAM_BANDE_MO=3656-3708
+CPU_MEDIANE_PCT=8.5
+CPU_BANDE_PCT=1-22
+PERF_MEDIANE_PCT=78.5   (>100 = turbo, donc non bride)
+ALIM_SOURCE=SECTEUR
+ALIM_CHARGE_PCT=100
+ALIM_OVERLAY_AC_DC=IDENTIQUES (961cc777-2547-4f9d-8174-7d86181b8a7a)
+NODE=0
+CHROME=0
+TOTAL_MO=16000
+NB_PROCESSUS=321
+BARRE_D273_MO=4579
+ECART_A_LA_BARRE_MO=-906.5
+--- INVENTAIRE > 150 Mo (nom / nb / Mo) ---
+Code 19 3110
+svchost 91 2000
+vmmemWSL 1 1100
+oracle 1 915
+msedgewebview2 6 354
+claude 1 339
+NVIDIA Overlay 5 325
+powershell 3 304
+msedge 5 300
+explorer 1 300
+Memory Compression 1 263
+Docker Desktop 4 263
+RuntimeBroker 7 230
+PSExpressCore 1 227
+com.docker.backend 2 213
+nvcontainer 4 200
+NVDisplay.Container 2 194
+WhatsApp.Root 1 170

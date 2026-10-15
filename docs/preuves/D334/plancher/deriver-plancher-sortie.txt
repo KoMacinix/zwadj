@@ -1,0 +1,47 @@
+D334 — dérivation du plancher · HEAD ce1a5f1 · D324 257471d · D329 4202dd4
+  ✓ calibration : positif — act-plafonds (objet 47f6e42 à D329, 24276f6 à HEAD) serait REFUSÉ comme « repris »
+  ✓ calibration : négatif — argon2 (inchangé depuis D324) est ACCEPTÉ
+planchers de D329 : 30 (attendu 30) · ceux de D330 identiques ligne pour ligne : True · origine connue pour 30 (attendu 30)
+harnais à HEAD : 37 (attendu 37) · REPRIS : 26 (attendu 26) · à MESURER : 7 → ['act-plafonds', 'horloge', 'r33', 'r37', 'r38', 'r39', 's10b'] (attendu 7 : act-plafonds, horloge, r33, r37, r38, r39, s10b) · neufs : ['r37', 'r38', 'r39']
+liste MESURER de la simulation : ['act-plafonds', 'horloge', 'r33', 'r37', 'r38', 'r39', 's10b'] · égale à la liste à mesurer : True
+pièces de `neutralisation/` AUTRES que les harnais, changées depuis D324 : 0 (attendu 0) [] · harnais LUS changés depuis D324 : 0 (attendu 0) []
+harnais changés ou neufs depuis la dernière passe (D329/D330, `4202dd4`) : 7 → ['act-plafonds', 'horloge', 'r33', 'r37', 'r38', 'r39', 's10b']
+INFORMATION (pas un contrôle — voir les limites) : diff 4202dd4..HEAD : 731 fichier(s), dont 59 hors `docs/preuves/` et hors les trois `.md`
+lignes T de la simulation : 7 (attendu 7) · harnais : ['act-plafonds', 'horloge', 'r33', 'r37', 'r38', 'r39', 's10b']
+bras et défauts manqués de la simulation : 0 (attendu 0)
+plancher.txt écrit : 33 lignes P (attendu 33) · les 26 repris identiques à leur ligne d'origine : True
+  404                REPRIS  P 404 tout 46.44
+  act-plafonds       MESURÉ  P act-plafonds tout 4.23
+  argon2             REPRIS  P argon2 tout 4.83
+  available-on       REPRIS  P available-on tout 38.73
+  b7                 REPRIS  P b7 tout 5.01
+  booking-status     REPRIS  P booking-status tout 4.89
+  budgets            REPRIS  P budgets tout 0.84
+  e3d1-s8            REPRIS  P e3d1-s8 --int 8.7
+  horizon            REPRIS  P horizon tout 22.92
+  horloge            MESURÉ  P horloge tout 4.17
+  journey            REPRIS  P journey tout 38.55
+  maxprice           REPRIS  P maxprice tout 38.13
+  r29                REPRIS  P r29 tout 4.65
+  r30                REPRIS  P r30 tout 4.62
+  r32                REPRIS  P r32 tout 4.56
+  r33                MESURÉ  P r33 --int 4.32
+  r37                MESURÉ  P r37 tout 4.02
+  r38                MESURÉ  P r38 tout 4.08
+  r39                MESURÉ  P r39 --int 4.35
+  r4                 REPRIS  P r4 tout 4.5
+  s10a               REPRIS  P s10a tout 4.41
+  s10b               MESURÉ  P s10b tout 4.2
+  s11a               REPRIS  P s11a tout 4.47
+  s11b               REPRIS  P s11b --int 4.44
+  s9                 REPRIS  P s9 tout 4.44
+  solid-s1           REPRIS  P solid-s1 --int 4.47
+  solid-s2           REPRIS  P solid-s2 --int 4.77
+  solid-s3           REPRIS  P solid-s3 --int 4.47
+  solid-s4           REPRIS  P solid-s4 tout 4.56
+  solid-s5a          REPRIS  P solid-s5a tout 5.13
+  solid-s5b          REPRIS  P solid-s5b tout 4.5
+  solid-s6           REPRIS  P solid-s6 --int 4.44
+  solid-s7           REPRIS  P solid-s7 tout 4.23
+
+TOUT TIENT : 26 planchers repris (prouvés par les objets git), 7 mesurés (3 × T).

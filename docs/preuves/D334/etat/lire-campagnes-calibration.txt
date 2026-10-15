@@ -1,0 +1,21 @@
+== CALIBRATION (abandon si un seul bras manque)
+  ✓ positif D299 : lignes ✓ 186 (attendu 186) · non mesurées {'e3d1-s8': 5, 's11b': 4, 'solid-s6': 4}
+  ✓ négatif D308 solid-s1 : crochets SANS --int 0 (attendu 0) · AVEC --int 2 (attendu 2)
+  ✓ négatif D310 : available-on-api 0 s, sans lecture ⇒ REFUSÉ (attendu REFUSÉ) — lecture ABSENTE ou en défaut
+  ✓ négatif ÉTAPE 0 : chacun des 33 harnais (attendu 33), à SA durée de non-démarrage la plus longue (arrondie comme la table de --tout), REFUSÉ : 33 (attendu 33)
+  ✓ positif D310 : argon2 ⇒ ACCEPTÉ (attendu ACCEPTÉ) — 16 s ≥ plancher 4.83 s
+  ✓ positif D319 : journal réel r25 ⇒ ACCEPTÉ (attendu ACCEPTÉ) — calibration 10 bras 0 manqué · collecte > 0 sur 11 cible(s)
+  ✓ négatif D319 : même journal, R25-1 sans collecte ⇒ REFUSÉ (attendu REFUSÉ) — collecte absente ou nulle sur ['✓ R25-1']
+  ✓ positif D333 : journal réel de `neutralize-r33.py --int` ⇒ ACCEPTÉ (attendu ACCEPTÉ) — lignes ✓ 95 (attendu 95), ✗ 0, non mesurées 0
+  ✓ négatif D333 : même journal sans sa première ligne « ✓ » ⇒ REFUSÉ (attendu REFUSÉ) — lignes ✓ 94 (attendu 94)
+  ✓ positif D325 : journal réel de `neutralize-r32.py` ⇒ ACCEPTÉ (attendu ACCEPTÉ) — lignes ✓ 65 (attendu 65), ✗ 0, non mesurées 0
+  ✓ négatif D325 : même journal sans sa première ligne « ✓ » ⇒ REFUSÉ (attendu REFUSÉ) — lignes ✓ 64 (attendu 64)
+  ✓ déclaré : r32 65 cibles (attendu 65), non verrouillé ; r33 95 cibles (attendu 95), verrouillé par --int
+  ✓ positif D332 : journal réel de `neutralize-r37.py` ⇒ ACCEPTÉ (attendu ACCEPTÉ) — lignes ✓ 21 (attendu 21), cibles déclarées 21, ✗ 0, non mesurées 0
+  ✓ négatif D332 : même journal sans sa première ligne « ✓ » ⇒ REFUSÉ (attendu REFUSÉ) — lignes ✓ 20 (attendu 20)
+  ✓ positif D333 : journal réel de `neutralize-r38.py` ⇒ ACCEPTÉ (attendu ACCEPTÉ) — lignes ✓ 46 (attendu 46), cibles déclarées 46, ✗ 0, non mesurées 0
+  ✓ négatif D333 : même journal sans sa première ligne « ✓ » ⇒ REFUSÉ (attendu REFUSÉ) — lignes ✓ 45 (attendu 45)
+  ✓ positif D333 : journal réel de `neutralize-r39.py` ⇒ ACCEPTÉ (attendu ACCEPTÉ) — lignes ✓ 51 (attendu 51), cibles déclarées 51, ✗ 0, non mesurées 0
+  ✓ négatif D333 : même journal sans sa première ligne « ✓ » ⇒ REFUSÉ (attendu REFUSÉ) — lignes ✓ 50 (attendu 50)
+  ✓ déclaré : r37 21 (attendu 21), r38 46 (attendu 46), r39 51 (attendu 51, verrouillé par --int)
+(calibration seule : aucun dossier de passe donné)

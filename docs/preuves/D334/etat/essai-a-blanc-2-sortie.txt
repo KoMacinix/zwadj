@@ -1,0 +1,102 @@
+# D334 — SECOND ESSAI À BLANC de `outils/passe.py` (copie dont `lancer()` ne lance rien ET dont la barre de RAM de l'OUVERTURE est abaissée à 3 000 Mo POUR L'ESSAI SEUL : `outils/fabrication/essai-a-blanc.py --barre-ouverture-basse`), joué le 15/10/2026 de 12:5x à 13:10 — DIAGNOSTIC NON CERTIFIANT.
+# Il exerce la fenêtre (regime(), `headless_shell` compté à chaque relevé), les inventaires, l'arbre (qui ne peut pas être conforme : l'essai tourne avec les pièces non suivies de l'étape 0), l'état des .env à l'ouverture et à la clôture, le jugement de la RAM de CLÔTURE contre la VRAIE barre (4 579 : 3 695 Mo, SOUS la barre ⇒ « LA MARQUE EST REFUSÉE ») et le CODE DE SORTIE (6 = RAM de clôture sous la barre, mesuré ci-dessous). Les portes, les campagnes et les rejeux ne sont PAS lancés.
+15/10/2026 12:56:43 PASSE fumee2-d334 — HEAD attendu ce1a5f1cf4b68405bfbd0e6b357ec8673518d043
+15/10/2026 12:56:43    ✓ calibration RAM, positif — deux ouvertures au-dessus de la barre : (True, []) (attendu (True, []))
+15/10/2026 12:56:43    ✓ calibration RAM, positif — la clôture au-dessus de la barre : (True, []) (attendu (True, []))
+15/10/2026 12:56:43    ✓ calibration RAM, positif — l'ÉGALITÉ exacte à la barre passe (≥) : (True, []) (attendu (True, []))
+15/10/2026 12:56:43    ✓ calibration RAM, négatif — une ouverture dont la BANDE BASSE passe sous la barre est refusée (la médiane seule ne suffit pas) : False (attendu False)
+15/10/2026 12:56:43    ✓ calibration RAM, négatif — une clôture dont la MÉDIANE passe sous la barre est refusée : False (attendu False)
+15/10/2026 12:56:43    ✓ calibration RAM, négatif — une liste d'ouvertures VIDE n'est pas une ouverture verte : False (attendu False)
+15/10/2026 12:56:43    ✓ calibration RAM, intermédiaires — un relevé sous la barre est NOTÉ (un seul sur trois) et ne dit rien d'autre : [('avant-int-r33', 'avant-int-r33 : médiane 4700 / bas de bande 4551 contre la barre 4579')] (attendu [('avant-int-r33', 'avant-int-r33 : médiane 4700 / bas de bande 4551 contre la barre 4579')])
+15/10/2026 12:56:43    ✓ calibration navigateurs — `chrome` et `headless_shell` à 0 : acceptés : (True, []) (attendu (True, []))
+15/10/2026 12:56:43    ✓ calibration navigateurs — `chrome` = 1 : refusé : (False, ['chrome = 1']) (attendu (False, ['chrome = 1']))
+15/10/2026 12:56:43    ✓ calibration navigateurs — un nom absent du relevé est un défaut d'instrument, pas un zéro : False (attendu False)
+15/10/2026 12:56:45    ✓ calibration navigateurs, comptage RÉEL — avec un processus `headless_shell.exe` vivant : compté 1 et refusé : (1, False) (attendu (1, False))
+15/10/2026 12:56:47    ✓ calibration navigateurs, comptage RÉEL — un processus `headless_shell_x.exe` vivant n'est PAS compté (le nom est exact) ; le premier, tué, est compté 0 : (0, 0) (attendu (0, 0))
+15/10/2026 12:56:48    calibration des règles : 12 bras, 0 manqué(s)
+15/10/2026 12:56:48    harnais VERROUILLÉS (--int), dérivés de l'AST : ['e3d1-s8', 'r25', 'r33', 'r39', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s6']
+15/10/2026 12:56:48    harnais E2E-VERROUILLÉS (--e2e), dérivés par recherche littérale : ['r25', 'r26']
+15/10/2026 12:56:48    pg_isready (ouverture) : code 0
+15/10/2026 12:56:48    ports 3100/3101/5273 à l'écoute : 0 (attendu 0)
+15/10/2026 12:56:48    état des .env (ouverture) : code 0 · RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : [] · PORTE : VERTE
+15/10/2026 12:56:48    inventaire ouverture : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 5 · code 0
+15/10/2026 12:57:45    sonde ouverture-1 : RAM 3637.5 (bande 3601-3643, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · calibration ✓ · ⚠ SOUS LA BARRE
+15/10/2026 12:58:20    sonde ouverture-2 : RAM 3638 (bande 3623-3646, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 12:58:20 ✓ PORTE DURE VERTE sur les deux relevés
+15/10/2026 12:58:20    échantillonneur lancé (PID 11284), -Intervalle 30 — AUCUN lecteur pendant la fenêtre
+15/10/2026 12:58:20    arbre-1 : HEAD ce1a5f1 (attendu ce1a5f1) · 15 ligne(s) de statut (attendu 0)
+15/10/2026 12:58:20 ⛔ ARBRE NON CONFORME — la passe continue d'être écrite, la marque sera REFUSÉE
+15/10/2026 12:58:55    sonde avant-typecheck : RAM 3583 (bande 3574-3605, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 12:58:55    [FUMÉE] typecheck NON LANCÉ
+15/10/2026 12:59:31    sonde avant-lint : RAM 3608 (bande 3581-3624, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 12:59:31    [FUMÉE] lint NON LANCÉ
+15/10/2026 13:00:06    sonde avant-test : RAM 3622.5 (bande 3613-3694, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:00:06    [FUMÉE] test NON LANCÉ
+15/10/2026 13:00:41    sonde avant-build : RAM 3652.5 (bande 3648-3687, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:00:42    [FUMÉE] build NON LANCÉ
+15/10/2026 13:01:17    sonde avant-testint : RAM 3665.5 (bande 3653-3679, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:01:17    pg_isready (avant-testint) : code 0
+15/10/2026 13:01:17    [FUMÉE] testint NON LANCÉ
+15/10/2026 13:01:52    sonde avant-e2e : RAM 3670 (bande 3666-3695, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:01:53    avant e2e : node 0 (attendu 0) · ports à l'écoute 0 (attendu 0)
+15/10/2026 13:01:53    pg_isready (avant-e2e) : code 0
+15/10/2026 13:01:53    [FUMÉE] e2e NON LANCÉ
+15/10/2026 13:02:28    sonde apres-e2e : RAM 3676.5 (bande 3663-3680, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:02:28    inventaire apres-e2e : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 5 · code 0
+15/10/2026 13:02:28    après e2e : node 0 · ports à l'écoute 0
+15/10/2026 13:02:28    arbre-2 : HEAD ce1a5f1 (attendu ce1a5f1) · 15 ligne(s) de statut (attendu 0)
+15/10/2026 13:02:28 ⛔ ARBRE NON CONFORME — la passe continue d'être écrite, la marque sera REFUSÉE
+15/10/2026 13:03:04    sonde avant-campagnes : RAM 3672 (bande 3600-3842, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:03:04    [FUMÉE] campagnes-tout NON LANCÉ
+15/10/2026 13:03:04    journaux de campagne copiés à l'identique : 35 sur 35 · antérieurs au début de --tout : 35 (attendu 0)
+15/10/2026 13:03:04    arbre-3 : HEAD ce1a5f1 (attendu ce1a5f1) · 15 ligne(s) de statut (attendu 0)
+15/10/2026 13:03:04 ⛔ ARBRE NON CONFORME — la passe continue d'être écrite, la marque sera REFUSÉE
+15/10/2026 13:03:39    sonde avant-int-e3d1-s8 : RAM 3781.5 (bande 3762-3847, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:03:40    pg_isready (int-e3d1-s8) : code 0
+15/10/2026 13:03:40    [FUMÉE] int-e3d1-s8 NON LANCÉ
+15/10/2026 13:04:15    sonde avant-int-r25 : RAM 3741 (bande 3730-3756, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:04:15    pg_isready (int-r25) : code 0
+15/10/2026 13:04:15    [FUMÉE] int-r25 NON LANCÉ
+15/10/2026 13:04:50    sonde avant-int-r33 : RAM 3712 (bande 3693-3741, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:04:51    pg_isready (int-r33) : code 0
+15/10/2026 13:04:51    [FUMÉE] int-r33 NON LANCÉ
+15/10/2026 13:05:26    sonde avant-int-r39 : RAM 3709 (bande 3696-3738, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:05:26    pg_isready (int-r39) : code 0
+15/10/2026 13:05:26    [FUMÉE] int-r39 NON LANCÉ
+15/10/2026 13:06:02    sonde avant-int-s11b : RAM 3643.5 (bande 3629-3718, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:06:02    pg_isready (int-s11b) : code 0
+15/10/2026 13:06:02    [FUMÉE] int-s11b NON LANCÉ
+15/10/2026 13:06:37    sonde avant-int-solid-s1 : RAM 3713 (bande 3708-3718, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:06:37    pg_isready (int-solid-s1) : code 0
+15/10/2026 13:06:37    [FUMÉE] int-solid-s1 NON LANCÉ
+15/10/2026 13:07:14    sonde avant-int-solid-s2 : RAM 3708.5 (bande 3662-3724, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:07:15    pg_isready (int-solid-s2) : code 0
+15/10/2026 13:07:15    [FUMÉE] int-solid-s2 NON LANCÉ
+15/10/2026 13:07:50    sonde avant-int-solid-s3 : RAM 3663.5 (bande 3644-3673, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:07:51    pg_isready (int-solid-s3) : code 0
+15/10/2026 13:07:51    [FUMÉE] int-solid-s3 NON LANCÉ
+15/10/2026 13:08:26    sonde avant-int-solid-s6 : RAM 3674.5 (bande 3661-3679, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:08:26    pg_isready (int-solid-s6) : code 0
+15/10/2026 13:08:26    [FUMÉE] int-solid-s6 NON LANCÉ
+15/10/2026 13:08:26    arbre-4 : HEAD ce1a5f1 (attendu ce1a5f1) · 15 ligne(s) de statut (attendu 0)
+15/10/2026 13:08:26 ⛔ ARBRE NON CONFORME — la passe continue d'être écrite, la marque sera REFUSÉE
+15/10/2026 13:09:01    sonde avant-e2e-r26 : RAM 3666.5 (bande 3657-3695, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:09:02    pg_isready (e2e-r26) : code 0
+15/10/2026 13:09:02    [FUMÉE] e2e-r26 NON LANCÉ
+15/10/2026 13:09:37    sonde apres-e2e-r26 : RAM 3661.5 (bande 3645-3682, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:09:37    arbre-5 : HEAD ce1a5f1 (attendu ce1a5f1) · 15 ligne(s) de statut (attendu 0)
+15/10/2026 13:09:37 ⛔ ARBRE NON CONFORME — la passe continue d'être écrite, la marque sera REFUSÉE
+15/10/2026 13:09:37    [FUMÉE] contre-epreuve NON LANCÉ
+15/10/2026 13:09:37    arbre-6 : HEAD ce1a5f1 (attendu ce1a5f1) · 15 ligne(s) de statut (attendu 0)
+15/10/2026 13:09:37 ⛔ ARBRE NON CONFORME — la passe continue d'être écrite, la marque sera REFUSÉE
+15/10/2026 13:10:12    sonde cloture : RAM 3695 (bande 3690-3701, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · ⚠ SOUS LA BARRE
+15/10/2026 13:10:13    inventaire cloture : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 5 · code 0
+15/10/2026 13:10:13    RAM de clôture : médiane 3695 / bande 3690-3701 contre la barre 4579 · ⛔ SOUS LA BARRE : LA MARQUE EST REFUSÉE (règle de Ko, D331)
+15/10/2026 13:10:13    relevés intermédiaires sous la barre : 19 sur 19 (notés, non disqualifiants)
+15/10/2026 13:10:13    état des .env (cloture) : code 0 · RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : [] · PORTE : VERTE
+15/10/2026 13:10:13    état des .env, ouverture contre clôture : code 0 · COMPARAISON : IDENTIQUE — mêmes fichiers, mêmes empreintes, hôtes locaux (attendu)
+15/10/2026 13:10:13    échantillonneur arrêté
+15/10/2026 13:10:13    -Resume : code 0
+15/10/2026 13:10:13 CLÔTURE ATTEINTE — la lecture se fait APRÈS, sur les journaux de ce dossier
+
+code de sortie de la passe de fumée : 6 (attendu 6)
