@@ -1,0 +1,177 @@
+# D333 — le document : la référence stockée imprimée, le nom du fichier (API, tests unitaires de apps/api/src/documents)
+# état du code : CODE DE PRODUCTION, MIGRATIONS ET CLIENT PRISMA = CEUX D'AVANT (HEAD 01b0240 : le cadrage ; aucun fichier de production du lot n'existait encore dans l'arbre — vérifié par git status avant la passe : seuls des fichiers de TEST modifiés ou neufs) ; TESTS = versions du lot, écrites AVANT le code
+# journal brut (hors dépôt) : SHA-256 aaf0fd8edac8d112f9acdb99ca1bf37e5d12b85d92ae662951552a7db46ea71a · 101711 octets · 1160 lignes · EXTRAIT versé : verdicts du point (filtre « src/documents/ ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 78 vert(s) · 9 rouge(s) · 9 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > escapeHtml remplace les cinq caractères actifs, et RIEN d'autre
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > escapeHtml échappe « & » EN PREMIER : « &lt; » saisi ne devient pas « < »
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > une valeur interpolée est ÉCHAPPÉE sans que l'appelant l'ait demandé
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un nombre est inséré ; un tableau est rendu élément par élément, chacun échappé
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > raw() est le SEUL moyen d'insérer du balisage, et il est exempt d'échappement
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un fragment déjà sûr n'est PAS échappé une seconde fois
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > un objet qui N'est PAS un fragment sûr ne passe pas pour tel — même s'il en a la forme
+VERT   src/documents/html.spec.ts > html — l'échappement est le COMPORTEMENT PAR DÉFAUT > une valeur non insérable LÈVE au lieu d'imprimer « [object Object] » ou « null »
+VERT   src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > la dernière version d'une chaîne ouverte est servie
+VERT   src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > une version plus ancienne est REFUSÉE et la réponse dit quelle est la version active
+VERT   src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > un statut hérité encore OUVERT (SENT) se sert comme un brouillon : la liste vient de QUOTE_OPEN_STATUSES, pas d'une seconde liste
+VERT   src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > un devis ACCEPTÉ — la version dont l'acompte est réglé — s'imprime : le refuser serait refuser le document qui compte le plus
+VERT   src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > la dernière version d'une affaire PERDUE, ou d'un statut hérité remplacé, rend le statut RÉEL
+VERT   src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > l'ensemble des statuts est PARTAGÉ sans reste : chaque statut du contrat est soit servi, soit refusé — aucun n'est oublié
+VERT   src/documents/quote-document-policy.spec.ts > decideQuoteDocument — le PDF d'une version qui n'est plus active est REFUSÉ (décision 1) > ⛔ UN CAS DOUBLEMENT FAUTIF : une ancienne version ANNULÉE est refusée comme « pas la version active », pas comme « clos »
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > rend les octets du PDF, JavaScript COUPÉ et TOUTE requête avortée, navigateur fermé
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand la PAGE est refusée
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le RENDU échoue
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — le navigateur est fermé quand le rendu DÉPASSE son délai
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 3 — un délai qui tombe PENDANT le lancement ne laisse PAS le navigateur orphelin
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — la propriété et le 404 indistinct (décision 4) > un AUTRE pro est refusé en 404, sans rien rendre : un identifiant de devis deviné ne livre pas les données d'un client
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — la propriété et le 404 indistinct (décision 4) > un devis inexistant et un identifiant mal formé rendent la MÊME réponse — ce dernier sans même lire la base
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > une version qui n'est plus la dernière : 409 QUOTE_VERSION_NOT_ACTIVE, `latestVersion` dans la réponse, RIEN n'est rendu
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > une affaire perdue : 409 QUOTE_STATUS_CONFLICT avec le statut RÉEL, rien n'est rendu
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version active »
+ROUGE  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeur STOCKÉE (et pas 30 % du total) ; le nom du fichier est sans donnée personnelle
+ROUGE  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 (K-7, F-15) : le nom du fichier porte la langue DEMANDÉE — `_fr_` pour le français, `_ar_` pour l'arabe — et la version de la référence stockée
+ROUGE  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 : une référence stockée qui n'en est pas une LÈVE — le moteur de rendu n'est pas appelé, aucun fichier ne porte un nom faux
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le pro la choisit à chaque téléchargement, dans les deux sens
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 38 (P-15) : un devis LIÉ À UN COMPTE ne change pas la langue — le compte du client n'a plus de langue dans le port de lecture, et le résultat n'a plus de `branch`
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE — et JAMAIS un 409
+VERT   src/documents/quote-document.service.spec.ts > QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > toute AUTRE erreur du moteur remonte telle quelle : le service ne la déguise pas en panne attendue
+VERT   src/documents/quote-document.service.spec.ts > algiersToday — la date d'émission est celle d'Alger (UTC+1, D48) > à 23 h 30 UTC il est déjà le lendemain à Alger : le fuseau n'est pas celui du serveur
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > un lancement qui ÉCHOUE est une panne du moteur (PdfRenderUnavailableError), sans rien à fermer
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > une fermeture qui échoue à son tour ne MASQUE pas l'erreur d'origine
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — jamais plus de N rendus simultanés, et N est ATTEINT (une borne à 1 passerait le premier contrôle seul)
+VERT   src/documents/playwright-pdf.renderer.spec.ts > PlaywrightPdfRenderer — les gardes de la décision 3 > garde 4 — la borne se règle : à 1, les rendus passent un par un
+VERT   src/documents/playwright-pdf.renderer.spec.ts > Gate > ⛔ la place rendue est TRANSMISE à celui qui attend : le second travail démarre quand le premier se termine — mesuré par une course bornée, jamais par un délai de test
+VERT   src/documents/playwright-pdf.renderer.spec.ts > Gate > refuse une borne qui n'est pas un entier ≥ 1
+VERT   src/documents/playwright-pdf.renderer.spec.ts > Gate > libère la place même quand le travail ÉCHOUE (sinon un échec bloquerait la file à jamais)
+VERT   src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `formatDZD` — l'attendu vient du formateur, pas d'un texte tapé à la main
+VERT   src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ l'acompte imprimé est la valeur stockée, et PAS 30 % du total : un recalcul serait rougi ici
+VERT   src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > modifier la valeur STOCKÉE change le montant imprimé — le seul moyen légitime de le faire changer (précision de Ko)
+VERT   src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le total imprimé est la valeur STOCKÉE, et PAS base + prestations : une remise ou un arrondi stockés ne se recomposent pas (la fixture d'origine valait pile base + prestations)
+VERT   src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le montant d'une LIGNE est la valeur stockée, et PAS prix unitaire × quantité : le total de ligne de la fixture n'est pas le produit (P-4)
+VERT   src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > en arabe les montants sont ceux de l'ÉCRAN du Pro (`formatDZD(cents)` sans locale) — pas une seconde mise en forme
+VERT   src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > sans prestation : AUCUN tableau, et une phrase dit qu'aucune prestation n'est choisie — dans les deux langues
+VERT   src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > des prestations TOUTES « fixe » : un tableau à DEUX colonnes (prestation, montant) — pas de colonne de détail, ni vide ni autre
+VERT   src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une prestation qui a un détail : un tableau à TROIS colonnes, l'en-tête « Détail » en français comme en arabe
+VERT   src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une ligne de tableau par prestation choisie — ni plus, ni moins
+VERT   src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « par invité » imprime la quantité stockée (le nombre d'invités)
+VERT   src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à l'unité » imprime la quantité — y compris 1 : la règle suit le TYPE, pas la valeur
+VERT   src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « fixe » n'imprime RIEN, même quand sa quantité stockée n'est pas 1 (la règle suit le type)
+VERT   src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à paliers » imprime le NOM du palier, pas une quantité (la quantité stockée d'un palier est 1)
+VERT   src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > les quatre types ensemble : une colonne de détail, chaque ligne dit ce que DB-9 veut
+VERT   src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > français : le nom FRANÇAIS du palier ; arabe : le nom ARABE — l'autre langue ne s'imprime pas
+VERT   src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > ⛔ une ligne « à paliers » SANS nom de palier stocké LÈVE : elle ne s'imprime pas à moitié
+VERT   src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du balisage
+VERT   src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > une section titrée « Récapitulatif », APRÈS le tableau, qui porte les quatre lignes dans l'ordre location, prestations, total, acompte
+VERT   src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les libellés du récapitulatif ne sont PAS dans le tableau des prestations (deux blocs, pas un seul mélangé)
+VERT   src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > sans prestation, le récapitulatif est là quand même — la location, un total de prestations à zéro, le total, l'acompte (les valeurs stockées)
+VERT   src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les montants et les libellés s'alignent par des propriétés LOGIQUES : aucune propriété physique (left, right, margin-left…) dans la feuille du document
+VERT   src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > français : `lang=fr`, `dir=ltr`, noms et libellés français
+VERT   src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > arabe : `lang=ar`, `dir=rtl`, noms et libellés arabes — tirés des catalogues, jamais écrits dans le modèle
+VERT   src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > le créneau s'imprime par `formatSlotRange` (24 h), et un devis sans créneau ou sans client imprime « — » sans casser
+VERT   src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > le client s'imprime quand le devis y est lié
+ROUGE  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée est la référence STOCKÉE du devis (année, salle, devis, version) — dans le titre du document ET dans l'en-tête, dans les deux langues
+ROUGE  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée change AVEC la ligne stockée — rien n'est recalculé depuis l'identifiant
+ROUGE  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 (F-16) : la référence est isolée de GAUCHE À DROITE dans l'en-tête, même dans une page arabe — sinon l'algorithme bidirectionnel inverse ses groupes de chiffres
+VERT   src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : une référence hostile devient du TEXTE (le champ vient d'une ligne de base, pas d'une saisie, mais l'échappement ne dépend pas de la confiance)
+VERT   src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > la date de l'événement est en toutes lettres, dans la langue du document ; elle ne dérive pas d'un fuseau (date civile)
+VERT   src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestations deviennent du TEXTE, jamais du balisage
+VERT   src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le document ne contient QU'UN `<style>` et AUCUN `<script>` de son propre fait
+ROUGE  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom du fichier ne porte AUCUNE donnée personnelle, même quand les noms sont hostiles
+VERT   src/documents/quote-document.spec.ts > rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > les quatre types de tarification sont lus avec leur type, leur quantité et le nom du palier (FR et AR) tels que stockés
+VERT   src/documents/quote-document.spec.ts > rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > un type de tarification INCONNU ou ABSENT lève
+VERT   src/documents/quote-document.spec.ts > rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > ⛔ une ligne « à paliers » dont le nom du palier n'est pas stocké (FR ou AR) lève
+VERT   src/documents/quote-document.spec.ts > rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > tout le reste de la forme garde sa garde (un non-tableau, une quantité non entière, un total absent)
+VERT   src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles et deux graisses — en `data:`, chacune avec sa plage `unicode-range`
+VERT   src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > le CSS des polices est inséré tel quel dans le `<style>` du document (une police absente retomberait sur le système)
+VERT   src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > aucun n'importe le moteur de prix, l'acompte, le chiffrage des prestations, ni le port d'ÉCRITURE des devis
+VERT   src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > l'adaptateur Prisma ne fait QUE lire : ni create, ni update, ni delete, ni upsert, ni transaction, ni SQL brut
+VERT   src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > le modèle ne contient aucune multiplication ni division : il met en forme, il ne calcule pas
+VERT   src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-3) : le nom du palier est lu sur la LIGNE — le modèle, la politique, le service et le port n'importent ni Prisma ni un catalogue (seul l'adaptateur de lecture parle à la base)
+ROUGE  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 (F-10) : l'ancienne référence (les huit premiers caractères de l'identifiant) a disparu du document, de son service, de sa source ET du contrat partagé
+ROUGE  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 : le modèle IMPRIME la référence lue (`record.reference`) — il n'en bâtit pas une, il n'importe pas la formule
+VERT   src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-15) : la branche « langue du client » est RETIRÉE sans code mort — plus de `chooseDocumentLocale`, de `DocumentLocaleBranch`, de `branch`, ni de `users.locale` lue
+
+ÉCHEC  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeur STOCKÉE (et pas 30 % du total) ; le nom du fichier est sans donnée personnelle
+  1ʳᵉ ligne : AssertionError: expected 'devis-2026-12-05-v2-01a10f0a.pdf' to be 'DEVIS-2026-0003-0014_fr_v2.pdf' // Object.is equality
+   ❯ src/documents/quote-document.service.spec.ts:100:29
+       98|     const sortie = await m.service.render(OWNER, ID, "fr", new Date("2…
+       99|     expect(sortie.pdf).toBe(PDF);
+      100|     expect(sortie.filename).toBe("DEVIS-2026-0003-0014_fr_v2.pdf");
+         |                             ^
+      101|     const html = m.render.mock.calls[0]![0];
+
+ÉCHEC  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 (K-7, F-15) : le nom du fichier porte la langue DEMANDÉE — `_fr_` pour le français, `_ar_` pour l'arabe — et la version de la référence stockée
+  1ʳᵉ ligne : AssertionError: expected 'devis-2026-12-05-v2-01a10f0a.pdf' to be 'DEVIS-2027-0011-0102_fr_v5.pdf' // Object.is equality
+   ❯ src/documents/quote-document.service.spec.ts:109:31
+      107|     for (const demandee of ["fr", "ar"] as const) {
+      108|       const sortie = await monde(record({ reference: "DEVIS-2027-0011-…
+      109|       expect(sortie.filename).toBe(`DEVIS-2027-0011-0102_${demandee}_v…
+         |                               ^
+      110|     }
+
+ÉCHEC  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 : une référence stockée qui n'en est pas une LÈVE — le moteur de rendu n'est pas appelé, aucun fichier ne porte un nom faux
+  1ʳᵉ ligne : AssertionError: expected null to be an instance of TypeError
+   ❯ src/documents/quote-document.service.spec.ts:115:60
+      113|   it("⛔ rang 39 : une référence stockée qui n'en est pas une LÈVE — le…
+      114|     const m = monde(record({ reference: "01a10f0a-v2" }));
+      115|     expect(await refus(m.service.render(OWNER, ID, "fr"))).toBeInstanc…
+         |                                                            ^
+      116|     expect(m.render).not.toHaveBeenCalled();
+
+ÉCHEC  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée est la référence STOCKÉE du devis (année, salle, devis, version) — dans le titre du document ET dans l'en-tête, dans les deux langues
+  1ʳᵉ ligne : AssertionError: expected '<title>Devis 01a10f0a-v2' to contain 'DEVIS-2026-0003-0014 v2'
+   ❯ src/documents/quote-document.spec.ts:309:77
+      307|       const page = rendre(devis(), locale);
+      308|       expect(page).toContain("<title>");
+      309|       expect(page.slice(page.indexOf("<title>"), page.indexOf("</title…
+         |                                                                             ^
+      310|       expect(page.slice(page.indexOf('<p class="sous">'), page.indexOf…
+
+ÉCHEC  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée change AVEC la ligne stockée — rien n'est recalculé depuis l'identifiant
+  1ʳᵉ ligne : AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain 'DEVIS-2027-0011-0102 v5'
+   ❯ src/documents/quote-document.spec.ts:316:18
+      314|   it("⛔ rang 39 : la référence imprimée change AVEC la ligne stockée —…
+      315|     const page = rendre(devis({ reference: "DEVIS-2027-0011-0102 v5" }…
+      316|     expect(page).toContain("DEVIS-2027-0011-0102 v5");
+         |                  ^
+      317|     expect(page).not.toContain("DEVIS-2026-0003-0014");
+
+ÉCHEC  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 (F-16) : la référence est isolée de GAUCHE À DROITE dans l'en-tête, même dans une page arabe — sinon l'algorithme bidirectionnel inverse ses groupes de chiffres
+  1ʳᵉ ligne : AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '<bdi dir="ltr">DEVIS-2026-0003-0014 v…'
+   ❯ src/documents/quote-document.spec.ts:325:20
+      323|     for (const locale of ["fr", "ar"] as const) {
+      324|       const page = rendre(devis(), locale);
+      325|       expect(page).toContain('<bdi dir="ltr">DEVIS-2026-0003-0014 v2</…
+         |                    ^
+      326|     }
+
+ÉCHEC  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom du fichier ne porte AUCUNE donnée personnelle, même quand les noms sont hostiles
+  1ʳᵉ ligne : AssertionError: expected 'devis-2026-12-05-v2-01a10f0a.pdf' to match /^DEVIS-\d{4}-\d{4,}-\d{4,}_(fr|ar)_v\…/
+   ❯ src/documents/quote-document.spec.ts:374:15
+      372|   it("le nom du fichier ne porte AUCUNE donnée personnelle, même quand…
+      373|     const f = quoteDocumentFilename(devis({ venue: { nameFr: HOSTILE, …
+      374|     expect(f).toMatch(/^DEVIS-\d{4}-\d{4,}-\d{4,}_(fr|ar)_v\d+\.pdf$/);
+         |               ^
+      375|     expect(f).toBe("DEVIS-2026-0003-0014_fr_v2.pdf");
+
+ÉCHEC  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 (F-10) : l'ancienne référence (les huit premiers caractères de l'identifiant) a disparu du document, de son service, de sa source ET du contrat partagé
+  1ʳᵉ ligne : AssertionError: expected { f: 'quote-document.ts', …(1) } to deeply equal { f: 'quote-document.ts', motif: null }
+   ❯ src/documents/quote-document.spec.ts:480:101
+      478|     for (const f of [...FICHIERS, "../../../../packages/types/src/quot…
+      479|       const code = lire(f);
+      480|       expect({ f, motif: /\.slice\(\s*0\s*,\s*8\s*\)|\bquoteReference\…
+         |                                                                                                     ^
+      481|     }
+
+ÉCHEC  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 : le modèle IMPRIME la référence lue (`record.reference`) — il n'en bâtit pas une, il n'importe pas la formule
+  1ʳᵉ ligne : AssertionError: expected '\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\…' to contain 'record.reference'
+   ❯ src/documents/quote-document.spec.ts:486:18
+      484|   it("⛔ rang 39 : le modèle IMPRIME la référence lue (`record.referenc…
+      485|     const code = lire("quote-document.ts");
+      486|     expect(code).toContain("record.reference");
+         |                  ^
+      487|     expect(/formatQuoteReference/.exec(code)?.[0] ?? null).toBeNull();
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  6 failed | 3 passed (9) | Tests  41 failed | 114 passed (155)

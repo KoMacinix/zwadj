@@ -1,0 +1,218 @@
+# D333 — la référence et son nom de fichier (@zwadj/types), l'année d'Alger — composants NEUFS (API, tests unitaires)
+# état du code : CODE DE PRODUCTION, MIGRATIONS ET CLIENT PRISMA = CEUX D'AVANT (HEAD 01b0240 : le cadrage ; aucun fichier de production du lot n'existait encore dans l'arbre — vérifié par git status avant la passe : seuls des fichiers de TEST modifiés ou neufs) ; TESTS = versions du lot, écrites AVANT le code
+# journal brut (hors dépôt) : SHA-256 aaf0fd8edac8d112f9acdb99ca1bf37e5d12b85d92ae662951552a7db46ea71a · 101711 octets · 1160 lignes · EXTRAIT versé : verdicts du point (filtre « quote-reference.spec.ts ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 5 vert(s) · 21 rouge(s) · 6 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ l'exemple de R3 : année 2026, salle 1, devis 89, version 1 ⇒ `DEVIS-2026-0001-0089 v1`
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ la salle et le devis ne se confondent pas : deux valeurs DIFFÉRENTES (une fixture symétrique cacherait une interversion)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 1 ⇒ 0001 (pour la salle ET pour le devis)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9 ⇒ 0009 (pour la salle ET pour le devis)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10 ⇒ 0010 (pour la salle ET pour le devis)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 999 ⇒ 0999 (pour la salle ET pour le devis)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9999 ⇒ 9999 (pour la salle ET pour le devis)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10000 ⇒ 10000 (pour la salle ET pour le devis)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 123456 ⇒ 123456 (pour la salle ET pour le devis)
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⚠ la version s'écrit telle quelle, sans remplissage : `v1`, `v2`, `v12`
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une révision garde l'année et les deux numéros : SEULE la version change
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : NaN LÈVE, pour chacune des quatre parties
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : zéro LÈVE, pour chacune des quatre parties
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : négatif LÈVE, pour chacune des quatre parties
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : décimal LÈVE, pour chacune des quatre parties
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : infini LÈVE, pour chacune des quatre parties
+ROUGE  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une année hors de la plage de la base (2000 à 9999) LÈVE aussi — la base la refuserait par son `CHECK`
+ROUGE  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ l'exemple de R3 : `DEVIS-2026-0001-0089_fr_v1.pdf`, et `_ar_` pour l'arabe
+ROUGE  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ pour CHAQUE langue de l'autorité (`QUOTE_DOCUMENT_LOCALES`) et chaque version : base de la référence + langue + version, construits SANS la fonction testée
+ROUGE  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ la langue et la version ne se confondent pas dans le nom : `_fr_v2` ≠ `_ar_v2` ≠ `_fr_v1`
+ROUGE  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ aucun caractère à risque dans un nom de fichier : lettres latines, chiffres, `-`, `_` et le point de l'extension
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : l'ancienne forme (huit caractères de l'identifiant)
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : une chaîne vide
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : sans version
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : moins de quatre chiffres
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : un nom de fichier injecté
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ l'exemple de R3 : année 2026, salle 1, devis 89, version 1 ⇒ `DEVIS-2026-0001-0089 v1`
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:12:12
+       10| describe("formatQuoteReference — la forme de R3", () => {
+       11|   it("⛔ l'exemple de R3 : année 2026, salle 1, devis 89, version 1 ⇒ `…
+       12|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+         |            ^
+       13|   });
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ la salle et le devis ne se confondent pas : deux valeurs DIFFÉRENTES (une fixture symétrique cacherait une interversion)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:16:12
+       14|
+       15|   it("⛔ la salle et le devis ne se confondent pas : deux valeurs DIFFÉ…
+       16|     expect(formatQuoteReference({ year: 2027, venueNumber: 7, quoteNum…
+         |            ^
+       17|     expect(formatQuoteReference({ year: 2027, venueNumber: 12, quoteNu…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 1 ⇒ 0001 (pour la salle ET pour le devis)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:29:12
+       27|     [123_456, "123456"]
+       28|   ])("⛔ quatre chiffres AU MOINS, jamais de troncature : %i ⇒ %s (pour…
+       29|     expect(formatQuoteReference({ year: 2026, venueNumber: n, quoteNum…
+         |            ^
+       30|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9 ⇒ 0009 (pour la salle ET pour le devis)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:29:12
+       27|     [123_456, "123456"]
+       28|   ])("⛔ quatre chiffres AU MOINS, jamais de troncature : %i ⇒ %s (pour…
+       29|     expect(formatQuoteReference({ year: 2026, venueNumber: n, quoteNum…
+         |            ^
+       30|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10 ⇒ 0010 (pour la salle ET pour le devis)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:29:12
+       27|     [123_456, "123456"]
+       28|   ])("⛔ quatre chiffres AU MOINS, jamais de troncature : %i ⇒ %s (pour…
+       29|     expect(formatQuoteReference({ year: 2026, venueNumber: n, quoteNum…
+         |            ^
+       30|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 999 ⇒ 0999 (pour la salle ET pour le devis)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:29:12
+       27|     [123_456, "123456"]
+       28|   ])("⛔ quatre chiffres AU MOINS, jamais de troncature : %i ⇒ %s (pour…
+       29|     expect(formatQuoteReference({ year: 2026, venueNumber: n, quoteNum…
+         |            ^
+       30|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9999 ⇒ 9999 (pour la salle ET pour le devis)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:29:12
+       27|     [123_456, "123456"]
+       28|   ])("⛔ quatre chiffres AU MOINS, jamais de troncature : %i ⇒ %s (pour…
+       29|     expect(formatQuoteReference({ year: 2026, venueNumber: n, quoteNum…
+         |            ^
+       30|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10000 ⇒ 10000 (pour la salle ET pour le devis)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:29:12
+       27|     [123_456, "123456"]
+       28|   ])("⛔ quatre chiffres AU MOINS, jamais de troncature : %i ⇒ %s (pour…
+       29|     expect(formatQuoteReference({ year: 2026, venueNumber: n, quoteNum…
+         |            ^
+       30|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 123456 ⇒ 123456 (pour la salle ET pour le devis)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:29:12
+       27|     [123_456, "123456"]
+       28|   ])("⛔ quatre chiffres AU MOINS, jamais de troncature : %i ⇒ %s (pour…
+       29|     expect(formatQuoteReference({ year: 2026, venueNumber: n, quoteNum…
+         |            ^
+       30|     expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteNum…
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⚠ la version s'écrit telle quelle, sans remplissage : `v1`, `v2`, `v12`
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:35:14
+       33|   it("⚠ la version s'écrit telle quelle, sans remplissage : `v1`, `v2`…
+       34|     for (const version of [1, 2, 12]) {
+       35|       expect(formatQuoteReference({ year: 2026, venueNumber: 1, quoteN…
+         |              ^
+       36|     }
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une révision garde l'année et les deux numéros : SEULE la version change
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:41:29
+  ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/42]⎯
+   FAIL  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : NaN LÈVE, pour chacune des quatre parties
+   FAIL  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : zéro LÈVE, pour chacune des quatre parties
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : NaN LÈVE, pour chacune des quatre parties
+  1ʳᵉ ligne : AssertionError: venueNumber: expected error to be instance of RangeError
+   ❯ src/common/quote-reference.spec.ts:55:83
+       53|     const bonnes = { year: 2026, venueNumber: 1, quoteNumber: 89, vers…
+       54|     for (const partie of ["venueNumber", "quoteNumber", "version"] as …
+       55|       expect(() => formatQuoteReference({ ...bonnes, [partie]: valeur …
+         |                                                                                   ^
+       56|     }
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : zéro LÈVE, pour chacune des quatre parties
+  1ʳᵉ ligne : AssertionError: venueNumber: expected error to be instance of RangeError
+   ❯ src/common/quote-reference.spec.ts:55:83
+       53|     const bonnes = { year: 2026, venueNumber: 1, quoteNumber: 89, vers…
+       54|     for (const partie of ["venueNumber", "quoteNumber", "version"] as …
+       55|       expect(() => formatQuoteReference({ ...bonnes, [partie]: valeur …
+         |                                                                                   ^
+       56|     }
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : négatif LÈVE, pour chacune des quatre parties
+  1ʳᵉ ligne : AssertionError: venueNumber: expected error to be instance of RangeError
+   ❯ src/common/quote-reference.spec.ts:55:83
+       53|     const bonnes = { year: 2026, venueNumber: 1, quoteNumber: 89, vers…
+       54|     for (const partie of ["venueNumber", "quoteNumber", "version"] as …
+       55|       expect(() => formatQuoteReference({ ...bonnes, [partie]: valeur …
+         |                                                                                   ^
+       56|     }
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : décimal LÈVE, pour chacune des quatre parties
+  1ʳᵉ ligne : AssertionError: venueNumber: expected error to be instance of RangeError
+   ❯ src/common/quote-reference.spec.ts:55:83
+       53|     const bonnes = { year: 2026, venueNumber: 1, quoteNumber: 89, vers…
+       54|     for (const partie of ["venueNumber", "quoteNumber", "version"] as …
+       55|       expect(() => formatQuoteReference({ ...bonnes, [partie]: valeur …
+         |                                                                                   ^
+       56|     }
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : infini LÈVE, pour chacune des quatre parties
+  1ʳᵉ ligne : AssertionError: venueNumber: expected error to be instance of RangeError
+   ❯ src/common/quote-reference.spec.ts:55:83
+       53|     const bonnes = { year: 2026, venueNumber: 1, quoteNumber: 89, vers…
+       54|     for (const partie of ["venueNumber", "quoteNumber", "version"] as …
+       55|       expect(() => formatQuoteReference({ ...bonnes, [partie]: valeur …
+         |                                                                                   ^
+       56|     }
+
+ÉCHEC  src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une année hors de la plage de la base (2000 à 9999) LÈVE aussi — la base la refuserait par son `CHECK`
+  1ʳᵉ ligne : AssertionError: expected error to be instance of RangeError
+   ❯ src/common/quote-reference.spec.ts:62:67
+       60|   it("⛔ une année hors de la plage de la base (2000 à 9999) LÈVE aussi…
+       61|     const bonnes = { venueNumber: 1, quoteNumber: 89, version: 1 };
+       62|     expect(() => formatQuoteReference({ ...bonnes, year: 1999 })).toTh…
+         |                                                                   ^
+       63|     expect(() => formatQuoteReference({ ...bonnes, year: 10_000 })).to…
+
+ÉCHEC  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ l'exemple de R3 : `DEVIS-2026-0001-0089_fr_v1.pdf`, et `_ar_` pour l'arabe
+  1ʳᵉ ligne : TypeError: Cannot read properties of undefined (reading 'slice')
+   ❯ src/common/quote-reference.spec.ts:72:12
+  ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/42]⎯
+   FAIL  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ pour CHAQUE langue de l'autorité (`QUOTE_DOCUMENT_LOCALES`) et chaque version : base de la référence + langue + version, construits SANS la fonction testée
+  TypeError: (0 , formatQuoteReference) is not a function
+
+ÉCHEC  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ pour CHAQUE langue de l'autorité (`QUOTE_DOCUMENT_LOCALES`) et chaque version : base de la référence + langue + version, construits SANS la fonction testée
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:79:27
+       77|     for (const locale of QUOTE_DOCUMENT_LOCALES) {
+       78|       for (const version of [1, 2, 12]) {
+       79|         const reference = formatQuoteReference({ year: 2026, venueNumb…
+         |                           ^
+       80|         const [base, v] = reference.split(" ");
+
+ÉCHEC  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ la langue et la version ne se confondent pas dans le nom : `_fr_v2` ≠ `_ar_v2` ≠ `_fr_v1`
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/common/quote-reference.spec.ts:89:81
+       87|     const noms = new Set<string>();
+       88|     for (const locale of QUOTE_DOCUMENT_LOCALES) {
+       89|       for (const version of [1, 2]) noms.add(quoteDocumentFilename({ r…
+         |                                                                                 ^
+       90|     }
+
+ÉCHEC  src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ aucun caractère à risque dans un nom de fichier : lettres latines, chiffres, `-`, `_` et le point de l'extension
+  1ʳᵉ ligne : TypeError: Cannot read properties of undefined (reading 'slice')
+   ❯ src/common/quote-reference.spec.ts:96:14
+  ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/42]⎯
+   FAIL  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui
+  AssertionError: expected [ 'create', 'update', …(1) ] to deeply equal [ 'compteur', 'uuid', 'create', …(1) ]
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  6 failed | 3 passed (9) | Tests  41 failed | 114 passed (155)

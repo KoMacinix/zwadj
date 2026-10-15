@@ -1,0 +1,61 @@
+# D333 — la référence du DTO rendue par le service (API, tests unitaires de apps/api/src/venues)
+# état du code : CODE DE PRODUCTION, MIGRATIONS ET CLIENT PRISMA = CEUX D'AVANT (HEAD 01b0240 : le cadrage ; aucun fichier de production du lot n'existait encore dans l'arbre — vérifié par git status avant la passe : seuls des fichiers de TEST modifiés ou neufs) ; TESTS = versions du lot, écrites AVANT le code
+# journal brut (hors dépôt) : SHA-256 aaf0fd8edac8d112f9acdb99ca1bf37e5d12b85d92ae662951552a7db46ea71a · 101711 octets · 1160 lignes · EXTRAIT versé : verdicts du point (filtre « src/venues/quotes.service.spec.ts ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 12 vert(s) · 4 rouge(s) · 3 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+VERT   src/venues/quotes.service.spec.ts > QuotesService — 404 indistincts > id hors motif UUID : 404 SANS toucher le port
+VERT   src/venues/quotes.service.spec.ts > QuotesService — 404 indistincts > le port rend `null` (inexistant / salle supprimée / autre pro) : même 404
+VERT   src/venues/quotes.service.spec.ts > QuotesService — 404 indistincts > salle d'un autre pro : `listForVenue` s'arrête AVANT de lire les devis
+VERT   src/venues/quotes.service.spec.ts > QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `cancel` refusé : 409 avec le statut RELU, pas un booléen
+VERT   src/venues/quotes.service.spec.ts > QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `deliver` refusé : même 409, même statut porté
+VERT   src/venues/quotes.service.spec.ts > QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⚠ le statut ADMIS vient de la machine à états, pas du port
+VERT   src/venues/quotes.service.spec.ts > QuotesService.deliver — une remise est RÉPÉTABLE (D160) > ⚠ le devis ne change PAS de statut : seuls le canal et la date sont écrits
+ROUGE  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro de la salle, numéro du devis, version — une seule formule (`formatQuoteReference`)
+ROUGE  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ une révision garde l'année et les deux numéros de sa tête ; SEULE la version change
+ROUGE  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ l'ancienne référence (les huit premiers caractères de l'identifiant) a DISPARU
+ROUGE  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ la référence rendue par une transition (remise, annulation) est celle du devis, pas une autre
+VERT   src/venues/quotes.service.spec.ts > ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ les QUATRE MONTANTS partent VERBATIM du devis — aucun recalcul
+VERT   src/venues/quotes.service.spec.ts > ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ `source` est une lecture MÉTIER de la provenance, faite ICI
+VERT   src/venues/quotes.service.spec.ts > ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ le refus du port devient un 409 `QUOTE_ALREADY_CONVERTED`, jamais un 500
+VERT   src/venues/quotes.service.spec.ts > ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ la garde applicative évite d'écrire pour rien — et rend LE MÊME code
+VERT   src/venues/quotes.service.spec.ts > ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ LE DEVIS NE BOUGE PAS — il attend l'acompte
+
+ÉCHEC  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro de la salle, numéro du devis, version — une seule formule (`formatQuoteReference`)
+  1ʳᵉ ligne : TypeError: (0 , formatQuoteReference) is not a function
+   ❯ src/venues/quotes.service.spec.ts:178:33
+      176|     devis.listerDeLaSalle.mockResolvedValue([devisRow()]);
+      177|     const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+      178|     expect(dto!.reference).toBe(formatQuoteReference({ year: 2026, ven…
+         |                                 ^
+      179|     expect(dto!.reference).toBe("DEVIS-2026-0007-0089 v1");
+
+ÉCHEC  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ une révision garde l'année et les deux numéros de sa tête ; SEULE la version change
+  1ʳᵉ ligne : AssertionError: expected [ undefined, undefined, undefined ] to deeply equal [ 'DEVIS-2026-0007-0089 v1', …(2) ]
+   ❯ src/venues/quotes.service.spec.ts:186:42
+      184|     devis.listerDeLaSalle.mockResolvedValue([devisRow(), devisRow({ id…
+      185|     const dtos = await service.listForVenue(USER_ID, VENUE_ID);
+      186|     expect(dtos.map((d) => d.reference)).toEqual(["DEVIS-2026-0007-008…
+         |                                          ^
+      187|   });
+
+ÉCHEC  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ l'ancienne référence (les huit premiers caractères de l'identifiant) a DISPARU
+  1ʳᵉ ligne : AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+   ❯ src/venues/quotes.service.spec.ts:193:32
+      191|     devis.listerDeLaSalle.mockResolvedValue([devisRow()]);
+      192|     const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+      193|     expect(dto!.reference).not.toContain(QUOTE_ID.slice(0, 8));
+         |                                ^
+      194|   });
+
+ÉCHEC  src/venues/quotes.service.spec.ts > ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ la référence rendue par une transition (remise, annulation) est celle du devis, pas une autre
+  1ʳᵉ ligne : AssertionError: expected undefined to be 'DEVIS-2026-0007-0090 v1' // Object.is equality
+   ❯ src/venues/quotes.service.spec.ts:201:27
+      199|     devis.marquerRemis.mockResolvedValue({ ok: true, devis: devisRow({…
+      200|     const dto = await service.deliver(USER_ID, QUOTE_ID, { sentVia: "S…
+      201|     expect(dto.reference).toBe("DEVIS-2026-0007-0090 v1");
+         |                           ^
+      202|   });
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  6 failed | 3 passed (9) | Tests  41 failed | 114 passed (155)

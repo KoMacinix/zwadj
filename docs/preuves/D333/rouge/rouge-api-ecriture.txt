@@ -1,0 +1,98 @@
+# D333 — l'adaptateur de création et de révision, le service, la référence du DTO (API, tests unitaires de apps/api/src/venues)
+# état du code : CODE DE PRODUCTION, MIGRATIONS ET CLIENT PRISMA = CEUX D'AVANT (HEAD 01b0240 : le cadrage ; aucun fichier de production du lot n'existait encore dans l'arbre — vérifié par git status avant la passe : seuls des fichiers de TEST modifiés ou neufs) ; TESTS = versions du lot, écrites AVANT le code
+# journal brut (hors dépôt) : SHA-256 aaf0fd8edac8d112f9acdb99ca1bf37e5d12b85d92ae662951552a7db46ea71a · 101711 octets · 1160 lignes · EXTRAIT versé : verdicts du point (filtre « src/venues/quote-store.prisma.spec.ts ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 19 vert(s) · 7 rouge(s) · 6 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+ROUGE  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui
+ROUGE  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 … RETURNING` — JAMAIS « lire le plus grand puis ajouter 1 » (R3)
+ROUGE  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, l'année PASSÉE, le numéro RENDU par le compteur, et la date de création PASSÉE
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⚠ les montants passent TELS QUELS
+ROUGE  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un échec de l'insertion APRÈS le compteur : la création échoue, et le compteur n'a été touché que DANS la transaction (qui l'annule)
+ROUGE  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un compteur qui ne rend PAS exactement une ligne entière positive : la création LÈVE, aucun numéro n'est inventé
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ `FOR UPDATE` puis `aggregate` puis `create` — dans cet ordre, ou la garde ne sert à rien
+ROUGE  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà
+ROUGE  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ la tête introuvable (le verrou ne rend aucune ligne) : la révision LÈVE, rien n'est créé
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⚠ la version suivante est MAX + 1, et le parent est désigné
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le statut admis est dans le WHERE de l'UPDATE, pas lu avant
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ refus : le statut est RELU DANS la transaction et remonte dans le résultat
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le port NE LÈVE PAS sur un refus — il rend
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore — le check-and-set, écrit une seule fois > ⚠ `marquerRemis` écrit le canal et la date, JAMAIS un statut
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore — les lectures > ⚠ l'entonnoir ne compte QUE les devis portant un canal (D162)
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore — les lectures > ⛔ `trouverDuPro` : le devis, sa salle VIVANTE, et à MOI — en un seul WHERE
+VERT   src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore — les lectures > `salleAppartientAu` rend un booléen, jamais la ligne
+VERT   src/venues/quote-store.prisma.spec.ts > ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ UNE SEULE REQUÊTE : la demande ET ses lignes, imbriquées
+VERT   src/venues/quote-store.prisma.spec.ts > ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ les montants sont ÉCRITS TELS QUELS — l'adaptateur ne calcule rien
+VERT   src/venues/quote-store.prisma.spec.ts > ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ AUCUNE ÉCRITURE SUR LE DEVIS — il attend l'acompte
+VERT   src/venues/quote-store.prisma.spec.ts > ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 + une demande EXISTE pour ce devis → `dejaConverti`
+VERT   src/venues/quote-store.prisma.spec.ts > ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 SANS demande pour ce devis → L'ERREUR REPART
+VERT   src/venues/quote-store.prisma.spec.ts > ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ toute AUTRE erreur remonte sans relecture
+VERT   src/venues/quote-store.prisma.spec.ts > Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus`
+VERT   src/venues/quote-store.prisma.spec.ts > Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ le TÉMOIN INDÉPENDANT survit dans `quotes.int-spec.ts` — littéral EXIGÉ
+VERT   src/venues/quote-store.prisma.spec.ts > Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⚠ et l'EXPLICATION est restée dans les deux fichiers
+
+ÉCHEC  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui
+  1ʳᵉ ligne : AssertionError: expected [ 'create', 'update', …(1) ] to deeply equal [ 'compteur', 'uuid', 'create', …(1) ]
+   ❯ src/venues/quote-store.prisma.spec.ts:115:21
+      113|     await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE);
+      114|     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+      115|     expect(journal).toEqual(["compteur", "uuid", "create", "findUnique…
+         |                     ^
+      116|     expect(prisma.$queryRaw).not.toHaveBeenCalled();
+
+ÉCHEC  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 … RETURNING` — JAMAIS « lire le plus grand puis ajouter 1 » (R3)
+  1ʳᵉ ligne : TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   ❯ src/venues/quote-store.prisma.spec.ts:122:35
+      120|     const { store, tx } = build();
+      121|     await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE);
+      122|     const [strings, ...valeurs] = tx.$queryRaw.mock.calls[0]! as unkno…
+         |                                   ^
+      123|     const sql = strings.join("?").replace(/\s+/gu, " ");
+
+ÉCHEC  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, l'année PASSÉE, le numéro RENDU par le compteur, et la date de création PASSÉE
+  1ʳᵉ ligne : AssertionError: expected undefined to be '018f0000-0000-7000-8000-00000000bbbb' // Object.is equality
+   ❯ src/venues/quote-store.prisma.spec.ts:136:21
+      134|     await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE);
+      135|     const data = (tx.quote.create.mock.calls[0]![0] as { data: Record<…
+      136|     expect(data.id).toBe(NOUVEL_ID);
+         |                     ^
+      137|     expect(data.chainId).toBe(NOUVEL_ID);
+
+ÉCHEC  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un échec de l'insertion APRÈS le compteur : la création échoue, et le compteur n'a été touché que DANS la transaction (qui l'annule)
+  1ʳᵉ ligne : AssertionError: expected [] to deeply equal [ 'compteur', 'uuid' ]
+   ❯ src/venues/quote-store.prisma.spec.ts:159:21
+      157|     tx.quote.create.mockRejectedValueOnce(new Error("clé étrangère"));
+      158|     await expect(store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENCE)…
+      159|     expect(journal).toEqual(["compteur", "uuid"]);
+         |                     ^
+      160|     expect(prisma.$queryRaw).not.toHaveBeenCalled();
+
+ÉCHEC  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un compteur qui ne rend PAS exactement une ligne entière positive : la création LÈVE, aucun numéro n'est inventé
+  1ʳᵉ ligne : AssertionError: promise resolved "{ …(2) }" instead of rejecting
+   ❯ src/venues/quote-store.prisma.spec.ts:167:63
+      165|       const { store, tx } = build();
+      166|       tx.$queryRaw.mockResolvedValueOnce(rendu);
+      167|       await expect(store.creerTeteDeChaine(VENUE_ID, CHIFFRE, REFERENC…
+         |                                                               ^
+      168|       expect(tx.quote.create).not.toHaveBeenCalled();
+
+ÉCHEC  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà
+  1ʳᵉ ligne : AssertionError: expected undefined to be 2026 // Object.is equality
+   ❯ src/venues/quote-store.prisma.spec.ts:188:32
+      186|     expect(journal).not.toContain("compteur");
+      187|     const data = (tx.quote.create.mock.calls[0]![0] as { data: Record<…
+      188|     expect(data.referenceYear).toBe(TETE_ANNEE);
+         |                                ^
+      189|     expect(data.referenceNumber).toBe(TETE_NUMERO);
+
+ÉCHEC  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ la tête introuvable (le verrou ne rend aucune ligne) : la révision LÈVE, rien n'est créé
+  1ʳᵉ ligne : AssertionError: promise resolved "{ id: '018f0000-0000-7000-8000-00000…' }" instead of rejecting
+   ❯ src/venues/quote-store.prisma.spec.ts:197:118
+      195|     const { store, tx } = build();
+      196|     tx.$queryRaw.mockResolvedValueOnce([]);
+      197|     await expect(store.creerRevision({ venueId: VENUE_ID, chainId: CHA…
+         |                                                                                                                      ^
+      198|     expect(tx.quote.create).not.toHaveBeenCalled();
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  6 failed | 3 passed (9) | Tests  41 failed | 114 passed (155)
