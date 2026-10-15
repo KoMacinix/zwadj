@@ -72,3 +72,32 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D334/session-adverse/sortie-4-api.txt` | sortie de la sonde 4 sous six fuseaux d'hôte |
 | `docs/preuves/D334/session-adverse/sortie-5-mutations.txt` | sortie de la sonde 5 |
 | `docs/preuves/D334/session-adverse/sortie-6-derive.txt` | sortie de la sonde 6 |
+
+#### Extension 2 — les pièces de l'ÉTAPE 0 de la certification (outils, planchers, état de la machine), déclarées AVANT leur versement
+
+**Motif** : les familles « étape 0 » de la table d'ouverture ne nomment aucun fichier ; la règle exige des chemins complets. Ces fichiers existent, non suivis, au moment où cette extension s'écrit ; ils sont versés par le commit qui suit, qui précède le protocole.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D334/etat/declarees-sortie.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/etat/essai-a-blanc-2-sortie.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/etat/essai-a-blanc-sortie.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/etat/etat-env-avant-protocole.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/etat/inventaire-avant-protocole.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/etat/lire-campagnes-calibration.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/etat/regles-calibration.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/etat/sonde-avant-protocole.txt` | pièce de l'étape 0 : état de la machine, calibrations ou essai à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/outils/fabrication/essai-a-blanc.py` | fabrique la copie de `passe.py` des deux essais à blanc (diagnostic non certifiant) |
+| `docs/preuves/D334/outils/fabrication/fab-lire.py` | fabrique `outils/lire-campagnes.py` (modifications comptées) |
+| `docs/preuves/D334/outils/fabrication/fab-passe.py` | fabrique `outils/passe.py` : assertions avant et après de chaque modification |
+| `docs/preuves/D334/outils/fabrication/fab-simul.py` | fabrique `plancher/simuler-non-demarrage.py` |
+| `docs/preuves/D334/outils/fabrication/fab-verser.py` | fabrique `outils/verser.py` |
+| `docs/preuves/D334/outils/lire-campagnes.py` | la lecture des campagnes : copie de D330 + modifications déclarées (37 harnais, planchers de D334, bras de calibration refaits) |
+| `docs/preuves/D334/outils/passe.py` | l'outil de la passe : copie de D330 + cinq modifications déclarées et comptées (les trois règles neuves) |
+| `docs/preuves/D334/outils/regles.py` | les trois règles permanentes de D331 dans un module pur, calibré à deux bras (12 bras) |
+| `docs/preuves/D334/outils/verser.py` | le versement de la passe : copie de D330, destination D334 |
+| `docs/preuves/D334/plancher/deriver-plancher-sortie.txt` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
+| `docs/preuves/D334/plancher/deriver-plancher.py` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
+| `docs/preuves/D334/plancher/plancher.txt` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
+| `docs/preuves/D334/plancher/simulation-sortie.txt` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
+| `docs/preuves/D334/plancher/simuler-non-demarrage.py` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
