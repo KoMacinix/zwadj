@@ -1,0 +1,3 @@
+ROUGE
+ouverture-1 : médiane 3662 / bas de bande 3649 contre la barre 4579
+ouverture-2 : médiane 3756.5 / bas de bande 3660 contre la barre 4579

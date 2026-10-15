@@ -1,0 +1,12 @@
+HORODATAGE 15/10/2026 13:16:49
+COMPTE chrome=0
+COMPTE headless_shell=0
+COMPTE chromium=0
+COMPTE chrome_crashpad_handler=0
+COMPTE node=0
+COMPTE msedge=5
+  msedge PID 6088 début 2026-10-15 12:21:47 mémoire_Mo 42.1
+  msedge PID 15328 début 2026-10-15 12:21:47 mémoire_Mo 20.4
+  msedge PID 15452 début 2026-10-15 12:21:47 mémoire_Mo 68.9
+  msedge PID 24972 début 2026-10-15 12:21:46 mémoire_Mo 13.6
+  msedge PID 26808 début 2026-10-15 12:21:46 mémoire_Mo 154.3
