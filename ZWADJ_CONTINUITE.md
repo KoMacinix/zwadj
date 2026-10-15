@@ -1959,6 +1959,17 @@ Lot D333. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 
 ⇒ **RANG 40 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la **CLÔTURE** du rang 39, mot pour mot de la consigne. Candidat désigné par la décision 2 du relecteur de D333 et par la première condition de Ko : **la session ADVERSE de L35-3** (ouverte à froid, elle ne corrige rien, elle rapporte), **puis la certification qui couvre D331, D332 et D333** — **pas arbitré** : la session ne choisit pas le rang suivant, elle écrit qu'il est attendu. L35-4 (la base de données client, le nom du client sur le PDF) reste à placer par Ko, **après** la certification (D-10, cinquième révision).
 
+⛔ **ARBITRÉ LE 15/10/2026 PAR KO — LE RANG 40, mot pour mot (première écriture d'autorité du lot D334 ; la table d'ouverture, la sortie de la lecture adverse et la première passe D277 l'ont précédée dans `git`) :**
+
+**Texte proposé par le relecteur, adopté par Ko tel quel :**
+
+« 1. J'ai joué les six scénarios de la numérotation : ils sont bons. La condition de clôture du rang 39 est levée.
+2. Je ratifie les décisions S-20 à S-33 des sessions D333.
+3. F-12 : un compteur désaccordé reste une erreur 500 en v1 ; l'entrée du backlog reste ouverte.
+4. Rang 40 : la session adverse de L35-3, puis la certification qui couvre D331, D332 et D333. »
+
+Lot D334. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est de Ko** (patron de D295, D327, D328, D329, D330, D331, D332, D333) : la session a reçu ce texte, elle ne s'est rien attribué. ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que ce texte. Les décisions du relecteur, les annotations des sites que ces quatre points rendent périmés (dont « RANG 40 : EN ATTENTE D'ARBITRAGE DE KO » et « condition de clôture du rang 39 »), la table recopiée et les ratifications suivent dans des commits postérieurs.
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
