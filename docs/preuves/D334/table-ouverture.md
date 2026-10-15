@@ -101,3 +101,19 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D334/plancher/plancher.txt` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
 | `docs/preuves/D334/plancher/simulation-sortie.txt` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
 | `docs/preuves/D334/plancher/simuler-non-demarrage.py` | pièce de l'étape 0 : le plancher de durée du point 12 (simulation de non-démarrage, dérivation, sortie) |
+
+#### Extension 3 — les pièces de la TENTATIVE DE PASSE `r40-20261015-1316` (porte dure d'ouverture ROUGE, rien lancé), déclarées AVANT leur versement
+
+**Motif** : la passe a été tentée à 13:16:44 sur `6e78b23` (protocole commité et poussé à 13:16:33) ; elle s'est arrêtée à la porte dure de la RAM (sortie 3). Ces neuf fichiers sont la preuve brute de ce non-démarrage ; aucune mesure de porte ni de campagne n'a eu lieu.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/etat-env-ouverture.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/inventaire-ouverture.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/pg-ouverture.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/porte-dure.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/ports-ouverture.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/progression.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/sonde-ouverture-1.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/sonde-ouverture-2.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
+| `docs/preuves/D334/passe-NON-DEMARREE-r40-20261015-1316/sortie-standard.txt` | pièce de la tentative de passe : non-démarrage par la porte dure d'ouverture (copie octet pour octet du journal de la passe) |
