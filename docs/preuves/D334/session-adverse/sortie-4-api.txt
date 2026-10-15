@@ -1,0 +1,130 @@
+######## hôte ADV_TZ=(non défini : le fuseau natif du poste)
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+stdout | test/int/adverse-numerotation.int-spec.ts
+HOTE|TZ=(non défini)|Intl=America/Toronto|décalage(1 janv 2026)=300 min
+stdout | test/int/adverse-numerotation.int-spec.ts > Cinq chiffres, nom de fichier, isolement et échecs > A-13 (OBSERVATION, hors L35-3) : un devis pour une date d'événement PASSÉE (1999) est accepté par le service — comportement d'avant le lot, relevé ici et non jugé
+OBSERVATION|date passée 1999-01-01|statut=201|référence=DEVIS-2026-0001-0001 v1
+ ✓ test/int/adverse-numerotation.int-spec.ts (15 tests) 6774ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instances : les numéros 1 à 30, distincts, tous v1, la base et le compteur d'accord  1182ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + CONVERSIONS + blocages, ensemble : tout répond 2xx, numéros et versions distincts, aucun interblocage  736ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alger) ⇒ 2027 repart de 1 ; la révision écrite en 2027 d'un devis de 2026 garde 2026 et son numéro, et ne touche AUCUN compteur  488ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-5 : exactement à la milliseconde — 22:59:59.999 UTC ⇒ 2026, 23:00:00.000 UTC ⇒ 2027 (le même hôte, deux instants distants d'une milliseconde)  364ms
+   ✓ La révision d'une révision, et la révision d'une version qui n'est pas la dernière > A-6 : v1 → v2 (de v1) → v3 (de v2) → v4 (de v1, qui n'est plus la dernière) : mêmes année, salle et numéro ; versions 2, 3, 4 ; le parent de chacune est celui qu'on a désigné  365ms
+   ✓ La suppression d'une salle qui a des devis > A-8 : la salle est supprimée (204) ; ses devis, ses compteurs et son numéro restent ; ni création, ni lecture du document, ni révision ne passent ; la salle suivante reçoit un numéro PLUS GRAND  348ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-10 : un autre pro ne révise, ne convertit ni ne lit le document d'un devis qui n'est pas le sien (404), et AUCUN compteur ne bouge  485ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-11 : une création REFUSÉE (0 invité, créneau d'une autre salle) ne consomme AUCUN numéro : la suivante prend le numéro 2, pas 4  481ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-12 : la liste du pro rend, pour chaque devis, la MÊME référence que sa création et que sa révision  307ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-15 (F-7, par le PORT lui-même) : une création qui échoue APRÈS l'incrément du compteur (créneau inexistant ⇒ clé étrangère) rend le numéro : le compteur n'a pas bougé, la création suivante prend le numéro qui aurait été le sien  320ms
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  12:37:34
+   Duration  12.09s (transform 1.24s, setup 34ms, collect 4.46s, tests 6.77s, environment 0ms, prepare 169ms)
+######## hôte ADV_TZ=UTC
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+stdout | test/int/adverse-numerotation.int-spec.ts
+HOTE|TZ=UTC|Intl=UTC|décalage(1 janv 2026)=0 min
+stdout | test/int/adverse-numerotation.int-spec.ts > Cinq chiffres, nom de fichier, isolement et échecs > A-13 (OBSERVATION, hors L35-3) : un devis pour une date d'événement PASSÉE (1999) est accepté par le service — comportement d'avant le lot, relevé ici et non jugé
+OBSERVATION|date passée 1999-01-01|statut=201|référence=DEVIS-2026-0001-0001 v1
+ ✓ test/int/adverse-numerotation.int-spec.ts (15 tests) 6764ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instances : les numéros 1 à 30, distincts, tous v1, la base et le compteur d'accord  1101ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + CONVERSIONS + blocages, ensemble : tout répond 2xx, numéros et versions distincts, aucun interblocage  786ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-3 : HUIT salles créées EN MÊME TEMPS (deux instances) : huit numéros de salle distincts  323ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alger) ⇒ 2027 repart de 1 ; la révision écrite en 2027 d'un devis de 2026 garde 2026 et son numéro, et ne touche AUCUN compteur  514ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-5 : exactement à la milliseconde — 22:59:59.999 UTC ⇒ 2026, 23:00:00.000 UTC ⇒ 2027 (le même hôte, deux instants distants d'une milliseconde)  357ms
+   ✓ La révision d'une révision, et la révision d'une version qui n'est pas la dernière > A-6 : v1 → v2 (de v1) → v3 (de v2) → v4 (de v1, qui n'est plus la dernière) : mêmes année, salle et numéro ; versions 2, 3, 4 ; le parent de chacune est celui qu'on a désigné  344ms
+   ✓ La suppression d'une salle qui a des devis > A-8 : la salle est supprimée (204) ; ses devis, ses compteurs et son numéro restent ; ni création, ni lecture du document, ni révision ne passent ; la salle suivante reçoit un numéro PLUS GRAND  352ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-10 : un autre pro ne révise, ne convertit ni ne lit le document d'un devis qui n'est pas le sien (404), et AUCUN compteur ne bouge  493ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-11 : une création REFUSÉE (0 invité, créneau d'une autre salle) ne consomme AUCUN numéro : la suivante prend le numéro 2, pas 4  486ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-15 (F-7, par le PORT lui-même) : une création qui échoue APRÈS l'incrément du compteur (créneau inexistant ⇒ clé étrangère) rend le numéro : le compteur n'a pas bougé, la création suivante prend le numéro qui aurait été le sien  303ms
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  12:37:48
+   Duration  11.73s (transform 1.12s, setup 35ms, collect 4.12s, tests 6.76s, environment 0ms, prepare 163ms)
+######## hôte ADV_TZ=Pacific/Kiritimati
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+stdout | test/int/adverse-numerotation.int-spec.ts
+HOTE|TZ=Pacific/Kiritimati|Intl=Pacific/Kiritimati|décalage(1 janv 2026)=-840 min
+stdout | test/int/adverse-numerotation.int-spec.ts > Cinq chiffres, nom de fichier, isolement et échecs > A-13 (OBSERVATION, hors L35-3) : un devis pour une date d'événement PASSÉE (1999) est accepté par le service — comportement d'avant le lot, relevé ici et non jugé
+OBSERVATION|date passée 1999-01-01|statut=201|référence=DEVIS-2026-0001-0001 v1
+ ✓ test/int/adverse-numerotation.int-spec.ts (15 tests) 6575ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instances : les numéros 1 à 30, distincts, tous v1, la base et le compteur d'accord  1067ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + CONVERSIONS + blocages, ensemble : tout répond 2xx, numéros et versions distincts, aucun interblocage  719ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alger) ⇒ 2027 repart de 1 ; la révision écrite en 2027 d'un devis de 2026 garde 2026 et son numéro, et ne touche AUCUN compteur  485ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-5 : exactement à la milliseconde — 22:59:59.999 UTC ⇒ 2026, 23:00:00.000 UTC ⇒ 2027 (le même hôte, deux instants distants d'une milliseconde)  367ms
+   ✓ La révision d'une révision, et la révision d'une version qui n'est pas la dernière > A-6 : v1 → v2 (de v1) → v3 (de v2) → v4 (de v1, qui n'est plus la dernière) : mêmes année, salle et numéro ; versions 2, 3, 4 ; le parent de chacune est celui qu'on a désigné  345ms
+   ✓ La suppression d'une salle qui a des devis > A-8 : la salle est supprimée (204) ; ses devis, ses compteurs et son numéro restent ; ni création, ni lecture du document, ni révision ne passent ; la salle suivante reçoit un numéro PLUS GRAND  342ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-10 : un autre pro ne révise, ne convertit ni ne lit le document d'un devis qui n'est pas le sien (404), et AUCUN compteur ne bouge  481ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-11 : une création REFUSÉE (0 invité, créneau d'une autre salle) ne consomme AUCUN numéro : la suivante prend le numéro 2, pas 4  491ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-12 : la liste du pro rend, pour chaque devis, la MÊME référence que sa création et que sa révision  309ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-15 (F-7, par le PORT lui-même) : une création qui échoue APRÈS l'incrément du compteur (créneau inexistant ⇒ clé étrangère) rend le numéro : le compteur n'a pas bougé, la création suivante prend le numéro qui aurait été le sien  305ms
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  12:38:02
+   Duration  11.54s (transform 1.15s, setup 36ms, collect 4.12s, tests 6.57s, environment 0ms, prepare 162ms)
+######## hôte ADV_TZ=America/New_York
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+stdout | test/int/adverse-numerotation.int-spec.ts
+HOTE|TZ=America/New_York|Intl=America/New_York|décalage(1 janv 2026)=300 min
+stdout | test/int/adverse-numerotation.int-spec.ts > Cinq chiffres, nom de fichier, isolement et échecs > A-13 (OBSERVATION, hors L35-3) : un devis pour une date d'événement PASSÉE (1999) est accepté par le service — comportement d'avant le lot, relevé ici et non jugé
+OBSERVATION|date passée 1999-01-01|statut=201|référence=DEVIS-2026-0001-0001 v1
+ ✓ test/int/adverse-numerotation.int-spec.ts (15 tests) 6525ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instances : les numéros 1 à 30, distincts, tous v1, la base et le compteur d'accord  1037ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + CONVERSIONS + blocages, ensemble : tout répond 2xx, numéros et versions distincts, aucun interblocage  719ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alger) ⇒ 2027 repart de 1 ; la révision écrite en 2027 d'un devis de 2026 garde 2026 et son numéro, et ne touche AUCUN compteur  506ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-5 : exactement à la milliseconde — 22:59:59.999 UTC ⇒ 2026, 23:00:00.000 UTC ⇒ 2027 (le même hôte, deux instants distants d'une milliseconde)  350ms
+   ✓ La révision d'une révision, et la révision d'une version qui n'est pas la dernière > A-6 : v1 → v2 (de v1) → v3 (de v2) → v4 (de v1, qui n'est plus la dernière) : mêmes année, salle et numéro ; versions 2, 3, 4 ; le parent de chacune est celui qu'on a désigné  342ms
+   ✓ La suppression d'une salle qui a des devis > A-8 : la salle est supprimée (204) ; ses devis, ses compteurs et son numéro restent ; ni création, ni lecture du document, ni révision ne passent ; la salle suivante reçoit un numéro PLUS GRAND  337ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-10 : un autre pro ne révise, ne convertit ni ne lit le document d'un devis qui n'est pas le sien (404), et AUCUN compteur ne bouge  480ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-11 : une création REFUSÉE (0 invité, créneau d'une autre salle) ne consomme AUCUN numéro : la suivante prend le numéro 2, pas 4  482ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-12 : la liste du pro rend, pour chaque devis, la MÊME référence que sa création et que sa révision  300ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-15 (F-7, par le PORT lui-même) : une création qui échoue APRÈS l'incrément du compteur (créneau inexistant ⇒ clé étrangère) rend le numéro : le compteur n'a pas bougé, la création suivante prend le numéro qui aurait été le sien  311ms
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  12:38:15
+   Duration  11.51s (transform 1.19s, setup 33ms, collect 4.18s, tests 6.53s, environment 0ms, prepare 166ms)
+######## hôte ADV_TZ=Africa/Algiers
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+stdout | test/int/adverse-numerotation.int-spec.ts
+HOTE|TZ=Africa/Algiers|Intl=Africa/Algiers|décalage(1 janv 2026)=-60 min
+stdout | test/int/adverse-numerotation.int-spec.ts > Cinq chiffres, nom de fichier, isolement et échecs > A-13 (OBSERVATION, hors L35-3) : un devis pour une date d'événement PASSÉE (1999) est accepté par le service — comportement d'avant le lot, relevé ici et non jugé
+OBSERVATION|date passée 1999-01-01|statut=201|référence=DEVIS-2026-0001-0001 v1
+ ✓ test/int/adverse-numerotation.int-spec.ts (15 tests) 7278ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instances : les numéros 1 à 30, distincts, tous v1, la base et le compteur d'accord  1067ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + CONVERSIONS + blocages, ensemble : tout répond 2xx, numéros et versions distincts, aucun interblocage  712ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alger) ⇒ 2027 repart de 1 ; la révision écrite en 2027 d'un devis de 2026 garde 2026 et son numéro, et ne touche AUCUN compteur  479ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-5 : exactement à la milliseconde — 22:59:59.999 UTC ⇒ 2026, 23:00:00.000 UTC ⇒ 2027 (le même hôte, deux instants distants d'une milliseconde)  366ms
+   ✓ La révision d'une révision, et la révision d'une version qui n'est pas la dernière > A-6 : v1 → v2 (de v1) → v3 (de v2) → v4 (de v1, qui n'est plus la dernière) : mêmes année, salle et numéro ; versions 2, 3, 4 ; le parent de chacune est celui qu'on a désigné  360ms
+   ✓ La suppression d'une salle qui a des devis > A-8 : la salle est supprimée (204) ; ses devis, ses compteurs et son numéro restent ; ni création, ni lecture du document, ni révision ne passent ; la salle suivante reçoit un numéro PLUS GRAND  350ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-10 : un autre pro ne révise, ne convertit ni ne lit le document d'un devis qui n'est pas le sien (404), et AUCUN compteur ne bouge  473ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-11 : une création REFUSÉE (0 invité, créneau d'une autre salle) ne consomme AUCUN numéro : la suivante prend le numéro 2, pas 4  627ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-12 : la liste du pro rend, pour chaque devis, la MÊME référence que sa création et que sa révision  333ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-14 : le document d'une VERSION 2 (la dernière) porte la référence v2 — dans l'en-tête, dans le HTML confié au moteur — et son nom de fichier finit par _v2.pdf ; le document de la v1 (plus la dernière) est refusé  489ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-15 (F-7, par le PORT lui-même) : une création qui échoue APRÈS l'incrément du compteur (créneau inexistant ⇒ clé étrangère) rend le numéro : le compteur n'a pas bougé, la création suivante prend le numéro qui aurait été le sien  593ms
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  12:38:29
+   Duration  12.35s (transform 1.18s, setup 36ms, collect 4.22s, tests 7.28s, environment 0ms, prepare 167ms)
+######## hôte ADV_TZ=Pacific/Pago_Pago
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+stdout | test/int/adverse-numerotation.int-spec.ts
+HOTE|TZ=Pacific/Pago_Pago|Intl=Pacific/Pago_Pago|décalage(1 janv 2026)=660 min
+stdout | test/int/adverse-numerotation.int-spec.ts > Cinq chiffres, nom de fichier, isolement et échecs > A-13 (OBSERVATION, hors L35-3) : un devis pour une date d'événement PASSÉE (1999) est accepté par le service — comportement d'avant le lot, relevé ici et non jugé
+OBSERVATION|date passée 1999-01-01|statut=201|référence=DEVIS-2026-0001-0001 v1
+ ✓ test/int/adverse-numerotation.int-spec.ts (15 tests) 7793ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instances : les numéros 1 à 30, distincts, tous v1, la base et le compteur d'accord  1323ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + CONVERSIONS + blocages, ensemble : tout répond 2xx, numéros et versions distincts, aucun interblocage  864ms
+   ✓ F-1 / F-2 — le VRAI code, DEUX instances, simultanément > A-3 : HUIT salles créées EN MÊME TEMPS (deux instances) : huit numéros de salle distincts  331ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alger) ⇒ 2027 repart de 1 ; la révision écrite en 2027 d'un devis de 2026 garde 2026 et son numéro, et ne touche AUCUN compteur  588ms
+   ✓ F-3 / F-4 — l'horloge : 23 h 59 à Alger le 31 décembre, minuit, la révision de l'année d'après > A-5 : exactement à la milliseconde — 22:59:59.999 UTC ⇒ 2026, 23:00:00.000 UTC ⇒ 2027 (le même hôte, deux instants distants d'une milliseconde)  438ms
+   ✓ La révision d'une révision, et la révision d'une version qui n'est pas la dernière > A-6 : v1 → v2 (de v1) → v3 (de v2) → v4 (de v1, qui n'est plus la dernière) : mêmes année, salle et numéro ; versions 2, 3, 4 ; le parent de chacune est celui qu'on a désigné  408ms
+   ✓ La révision d'une révision, et la révision d'une version qui n'est pas la dernière > A-7 : DEUX révisions simultanées de la même version, par deux instances : deux versions distinctes (2 et 3), pas de 500  346ms
+   ✓ La suppression d'une salle qui a des devis > A-8 : la salle est supprimée (204) ; ses devis, ses compteurs et son numéro restent ; ni création, ni lecture du document, ni révision ne passent ; la salle suivante reçoit un numéro PLUS GRAND  433ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-10 : un autre pro ne révise, ne convertit ni ne lit le document d'un devis qui n'est pas le sien (404), et AUCUN compteur ne bouge  593ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-11 : une création REFUSÉE (0 invité, créneau d'une autre salle) ne consomme AUCUN numéro : la suivante prend le numéro 2, pas 4  558ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-12 : la liste du pro rend, pour chaque devis, la MÊME référence que sa création et que sa révision  309ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-14 : le document d'une VERSION 2 (la dernière) porte la référence v2 — dans l'en-tête, dans le HTML confié au moteur — et son nom de fichier finit par _v2.pdf ; le document de la v1 (plus la dernière) est refusé  366ms
+   ✓ Cinq chiffres, nom de fichier, isolement et échecs > A-15 (F-7, par le PORT lui-même) : une création qui échoue APRÈS l'incrément du compteur (créneau inexistant ⇒ clé étrangère) rend le numéro : le compteur n'a pas bougé, la création suivante prend le numéro qui aurait été le sien  357ms
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  12:38:44
+   Duration  13.28s (transform 1.19s, setup 36ms, collect 4.29s, tests 7.79s, environment 0ms, prepare 182ms)

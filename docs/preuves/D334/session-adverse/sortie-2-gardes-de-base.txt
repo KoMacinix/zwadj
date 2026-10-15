@@ -1,0 +1,59 @@
+
+== SONDE 2 — mise en place : copie de la base de développement migrée par `prisma migrate deploy`
+✓ B-0        la base de travail est migrée (`migrate deploy` sort en 0) — attendu 0 · mesuré 0
+
+== F-8 — le numéro d'une salle est immuable (déclencheur `venues_number_immutable`)
+✓ F8-1       UPDATE du numéro d'une salle : refusé par le déclencheur (P0001) et le message dit « immuable » — attendu ('P0001', True) · mesuré ('P0001', True)
+✓ F8-2       UPDATE vers la MÊME valeur : accepté (ce n'est pas une modification) — attendu None · mesuré None
+✓ F8-3       UPDATE d'une AUTRE colonne : accepté, le numéro ne bouge pas — attendu (None, '1') · mesuré (None, '1')
+✓ F8-4       mise en place : un INSERT … ON CONFLICT (slug) DO UPDATE SET number = … SANS conflit s'exécute comme un INSERT (la salle neuve prend son numéro de la séquence) — attendu None · mesuré None
+✓ F8-4b      …et au SECOND passage (le slug existe : le chemin UPDATE s'exécute) l'upsert qui change le numéro est refusé (P0001) — attendu 'P0001' · mesuré 'P0001'
+✓ F8-5       UPDATE du numéro vers NULL : refusé (déclencheur ou NOT NULL) — attendu True · mesuré True
+✓ F8-6       UPDATE vers 0 : refusé — attendu True · mesuré True
+· F8-C1      CONSTAT : le déclencheur refuse la modification, il ne refuse pas la SUPPRESSION puis la ré-insertion de la même salle sous un autre numéro (`DELETE` d'une salle sans devis, puis `INSERT … number = …`) — chemin qu'aucune route n'emprunte (les salles se suppriment en douceur, `deleted_at`), à noter comme limite, pas comme défaut
+
+== F-6 — la séquence des salles : un saut est admis, une répétition jamais (restauration d'une sauvegarde plus ancienne)
+✓ F6-0       à l'entrée, la séquence est AU MOINS au maximum et déjà appelée (jamais en dessous : la prochaine salle ne peut pas reprendre un numéro) — l'upsert F8-4b a consommé un numéro sans créer de salle (PostgreSQL appelle `nextval` avant de voir le conflit) : un trou, admis — attendu (True, 'true') · mesuré (True, 'true')
+✓ F6-1       une salle créée SANS numéro prend le numéro qui SUIT la séquence (dernière valeur + 1) et dépasse le maximum d'avant — attendu (11, True) · mesuré (11, True)
+✓ F6-2       une création ANNULÉE après `nextval` laisse un TROU (admis par Ko) : la suivante saute un numéro — attendu 13 · mesuré 13
+✓ F6-3       séquence RESTAURÉE en arrière (retour à 1) : la création d'une salle ÉCHOUE sur l'unicité (23505), elle ne duplique PAS un numéro — attendu ('23505', True) · mesuré ('23505', True)
+· F6-C1      CONSTAT : après une restauration qui ramène la séquence à 1, 9 tentatives de création de salle échouent (23505) avant que la séquence ait dépassé le maximum (13) : chaque échec consomme un numéro, la séquence se répare seule mais PAR ÉCHECS visibles de l'utilisateur (500) — c'est la limite 'procédure de restauration' du backlog, mesurée ; non bloquant, aucune répétition n'est jamais écrite
+✓ F6-4       après tout cela, AUCUN numéro de salle en double — attendu '0' · mesuré '0'
+✓ F6-5       INSERT d'une salle avec un numéro EXPLICITE déjà pris : 23505 — attendu '23505' · mesuré '23505'
+✓ F6-6       INSERT d'une salle avec le numéro 0 : 23514 (`venues_number_positive`) — attendu '23514' · mesuré '23514'
+✓ F6-7       séquence `integer` à sa limite : la création ÉCHOUE (« reached maximum value »), elle ne boucle pas — attendu True · mesuré True
+
+== F-9 / F-4 — l'unicité des têtes, la clé composite vers la tête de chaîne, les bornes (INSERT directs, sans passer par le service)
+✓ F9-0       un INSERT d'une tête dont le `chain_id` n'est pas son propre id est REFUSÉ par la clé composite (23503) — il n'y a plus d'écriture « chain_id provisoire » — attendu '23503' · mesuré '23503'
+✓ F9-1       DEUX têtes de même (salle, année, numéro) : 23505 sur `quotes_reference_head_unique` — attendu ('23505', True) · mesuré ('23505', True)
+✓ F9-2       une tête de numéro neuf passe (témoin de calibration : la garde ne refuse pas tout) — attendu None · mesuré None
+✓ F9-3       une VERSION 2 qui reprend le numéro de sa tête : acceptée (c'est le filtre `WHERE version = 1` qui le permet) — attendu None · mesuré None
+✓ F9-4       une version dont le NUMÉRO diffère de sa tête : 23503 (`quotes_chain_head_fkey`) — attendu ('23503', True) · mesuré ('23503', True)
+✓ F9-5       une version dont l'ANNÉE diffère de sa tête : 23503 — attendu '23503' · mesuré '23503'
+✓ F9-6       une version rattachée à la chaîne d'une AUTRE salle : 23503 — attendu '23503' · mesuré '23503'
+✓ F9-7       une version dont la chaîne n'existe pas : 23503 — attendu '23503' · mesuré '23503'
+✓ F9-8       bornes : année 1999 / numéro 1 → 23514 — attendu '23514' · mesuré '23514'
+✓ F9-9       bornes : année 10000 / numéro 1 → 23514 — attendu '23514' · mesuré '23514'
+✓ F9-10      bornes : année 2026 / numéro 0 → 23514 — attendu '23514' · mesuré '23514'
+✓ F9-11      bornes : année 2026 / numéro -4 → 23514 — attendu '23514' · mesuré '23514'
+✓ F9-12      année NULL : 23502 — attendu '23502' · mesuré '23502'
+
+== La référence d'un devis déjà imprimée peut-elle changer ? (UPDATE directs — aucun chemin de l'API ne les émet)
+✓ R-1        UPDATE du numéro d'une TÊTE QUI A DES RÉVISIONS : refusé (23001 « restrict_violation », `ON UPDATE RESTRICT` de la clé composite — le SQLSTATE d'un RESTRICT n'est pas 23503, qui est celui de NO ACTION) — attendu '23001' · mesuré '23001'
+· R-C1       CONSTAT : UPDATE du numéro d'une tête SANS révision : ACCEPTÉ par la base (la clé composite ne protège que les têtes qui ont des révisions). La référence imprimée sur un PDF déjà remis peut donc être changée par un UPDATE direct tant que le devis n'a pas été révisé ; aucun chemin de l'API n'émet un tel UPDATE (aucun `quote.update` ne touche ces colonnes), mais la garde que L35-3 donne à `venues.number` (déclencheur d'immuabilité, F-8) n'existe PAS pour `quotes.reference_year` / `quotes.reference_number` — un trou de la doctrine « une référence imprimée doit rester vraie », pas listé dans F-1 à F-19 (non bloquant : ni doublon, ni montant, ni perte)
+· R-C2       CONSTAT : UPDATE du `venue_id` d'une tête sans révision : ACCEPTÉ — même famille que R-C1 : le devis change de salle sans changer de compteur ; un numéro neuf de la salle d'arrivée pourrait ensuite entrer en collision (23505) avec lui
+
+== F-12 — un compteur désaccordé : échec BRUYANT, aucune écriture, aucun doublon — et combien de temps dure-t-il ?
+✓ F12-1      compteur à 1 alors que 3 devis existent : CINQ créations de suite échouent toutes en 23505, le compteur reste à 1 (chaque incrément est annulé avec la transaction), 3 devis seulement — attendu (['23505', '23505', '23505', '23505', '23505'], '1', '3') · mesuré (['23505', '23505', '23505', '23505', '23505'], '1', '3')
+· F12-C1     CONSTAT : un compteur en retard n'est PAS un incident passager : chaque création échoue, son incrément est annulé, le compteur ne rattrape donc JAMAIS le maximum tout seul — la création de devis de cette salle et de cette année est en panne PERMANENTE (500 à chaque tentative) jusqu'à une réparation à la main du compteur. La base protège (aucun doublon, rien d'écrit) ; l'entrée F-12 du backlog dit 'erreur 500' sans dire 'permanente' — Ko l'a ratifiée telle quelle (« reste une erreur 500 en v1 »), le caractère permanent est une précision à y ajouter ; non bloquant
+✓ F12-2      le compteur réparé à la main (= max des numéros) : la création suivante réussit, avec le numéro max + 1 — attendu ('0', '4') · mesuré ('0', '4')
+✓ F12-3      ligne de compteur SUPPRIMÉE alors que 4 devis existent : la création repart de 1 et échoue (23505) — même panne permanente, aucun doublon — attendu '23505' · mesuré '23505'
+
+== Suppression d'une salle qui a des devis (au niveau de la base : `DELETE` direct)
+✓ S-1        supprimer physiquement une salle qui a des devis : refusé (23001 restrict_violation) — attendu '23001' · mesuré '23001'
+✓ S-2        supprimer physiquement une TÊTE qui a des révisions : refusé (23001 restrict_violation) — attendu '23001' · mesuré '23001'
+✓ S-3        …et le compteur de la salle est toujours là (les numéros ne se réutilisent pas) — attendu True · mesuré True
+✓ S-4        supprimer TOUTE une chaîne en un seul ordre `DELETE` : accepté (RESTRICT vérifié en fin d'ordre, les révisions partent avec leur tête) ; le compteur, lui, ne redescend pas — attendu (None, True) · mesuré (None, True)
+   (chaîne supprimée : 2 version(s) ; le numéro 1… de la salle n'est pas rendu au compteur)
+
+== BILAN : 37 ✓ · 0 ✗ [] · 5 constat(s) ['F8-C1', 'F6-C1', 'R-C1', 'R-C2', 'F12-C1']

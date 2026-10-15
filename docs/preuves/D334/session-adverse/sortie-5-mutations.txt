@@ -1,0 +1,264 @@
+ancres : 54 mutations, 0 ancre(s) fausse(s) []
+
+[MORD] CAL+ — étalonnage positif — DOIT mordre
+   apps/api/src/venues/quote-reference.ts  (restauré : empreinte identique)
+   · unit-api    MORD                      5s  172 passés · 12 en échec · 2 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ 2026-12-31T23:00:00.000Z ⇒ 2027 → AssertionError: expected 2026 to be 2027 // Object.is equality
+   · int         MORD                     41s  75 passés · 4 en échec · 4 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alg → AssertionError: expected { annee: 2026, salle: 1, …(2) } to match object { annee: 2027, devis: 1, version: 1 }
+
+[MUETTE] CAL- — étalonnage négatif — DOIT rester muette (un mot de commentaire)
+   apps/api/src/venues/quote-reference.ts  (restauré : empreinte identique)
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+   · int         MUETTE                   41s  79 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] R-1 — F-3 année d'Alger — année de l'HÔTE (Toronto sur ce poste)
+   apps/api/src/venues/quote-reference.ts  (restauré : empreinte identique)
+   · unit-api    MORD                      5s  176 passés · 8 en échec · 4 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ 2026-12-31T23:00:00.000Z ⇒ 2027 → AssertionError: expected 2026 to be 2027 // Object.is equality
+   · int         MORD                     41s  75 passés · 4 en échec · 4 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alg → AssertionError: expected { annee: 2026, salle: 1, …(2) } to match object { annee: 2027, devis: 1, version: 1 }
+
+[MORD] R-2 — F-3 année d'Alger — UTC + 2 : une heure trop tôt
+   apps/api/src/venues/quote-reference.ts  (restauré : empreinte identique)
+   · unit-api    MORD                      5s  176 passés · 8 en échec · 2 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ 2026-12-31T22:59:59.999Z ⇒ 2026 → AssertionError: expected 2027 to be 2026 // Object.is equality
+   · int         MORD                     41s  75 passés · 4 en échec · 4 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alg → AssertionError: expected { annee: 2027, salle: 1, …(2) } to match object { annee: 2026, devis: 1, version: 1 }
+
+[MORD] R-3 — F-3 année d'Alger — UTC − 1
+   apps/api/src/venues/quote-reference.ts  (restauré : empreinte identique)
+   · unit-api    MORD                      5s  168 passés · 16 en échec · 2 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ 2026-12-31T23:00:00.000Z ⇒ 2027 → AssertionError: expected 2026 to be 2027 // Object.is equality
+   · int         MORD                     41s  75 passés · 4 en échec · 4 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alg → AssertionError: expected { annee: 2026, salle: 1, …(2) } to match object { annee: 2027, devis: 1, version: 1 }
+
+[MORD] S-1 — F-3 l'horloge du service — l'année UTC au lieu de l'année d'Alger
+   apps/api/src/venues/quotes.service.ts  (restauré : empreinte identique)
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+   · int         MORD                     41s  75 passés · 4 en échec · 4 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alg → AssertionError: expected { annee: 2026, salle: 1, …(2) } to match object { annee: 2027, devis: 1, version: 1 }
+
+[MUETTE] S-2 — S-21 un seul instant — deuxième lecture de l'horloge
+   apps/api/src/venues/quotes.service.ts  (restauré : empreinte identique)
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+   · int         MUETTE                   41s  79 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] Q-1 — F-1 compteur atomique — le compteur n'avance plus
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     40s  63 passés · 16 en échec · 16 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: expected [ 201, 500, 500, 500, 500, 500, …(24) ] to deeply equal [ 201, 201, 201, 201, 201, 20
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-store.prisma.spec.ts > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 → AssertionError: expected ' INSERT INTO quote_number_counters (v…' to contain 'ON CONFLICT (venue_id, year) DO 
+
+[MORD] Q-2 — F-7 compteur DANS la transaction — l'incrément hors transaction
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                    101s  74 passés · 5 en échec · 5 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-15 (F-7, par le PORT lui-même) : une création qui échoue APRÈS l'inc → AssertionError: expected [ { last_number: 2 } ] to deeply equal [ { last_number: 1 } ]
+   · unit-api    MORD                      5s  181 passés · 3 en échec · 3 groupe(s) d'échec · 1er : quote-store.prisma.spec.ts > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre,  → AssertionError: expected [ 'HORS-TX', 'uuid', 'create', …(1) ] to deeply equal [ 'compteur', 'uuid', 'create',
+
+[MORD] Q-3 — F-1 jamais « le plus grand + 1 » — « lire le plus grand puis ajouter 1 », sans verrou
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  66 passés · 13 en échec · 13 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: expected [ 201, 500, 500, 500, 500, 500, …(24) ] to deeply equal [ 201, 201, 201, 201, 201, 20
+
+[MORD] Q-4 — F-1 l'upsert — plus de DO UPDATE (la 2ᵉ création ne rend rien)
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     38s  20 passés · 59 en échec · 59 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: expected [ 500, 500, 500, 500, 500, 500, …(24) ] to deeply equal [ 201, 201, 201, 201, 201, 20
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-store.prisma.spec.ts > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 → AssertionError: expected ' INSERT INTO quote_number_counters (v…' to contain 'ON CONFLICT (venue_id, year) DO 
+
+[MORD] Q-5 — S-21 l'instant de création — created_at = l'horloge de la base, pas celle du service
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MUETTE                   41s  79 passés · 0 en échec · 0 groupe(s) d'échec
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-store.prisma.spec.ts > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, → AssertionError: expected undefined to deeply equal 2027-01-01T00:30:00.000Z
+
+[MORD] Q-6 — F-4 la révision garde l'année — la révision écrit l'année de l'horloge
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     40s  77 passés · 2 en échec · 2 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alg → AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a1404a-9411-7d48-
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] Q-7 — F-4 la révision garde le numéro — la révision écrit toujours 1
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  76 passés · 3 en échec · 3 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-6 : v1 → v2 (de v1) → v3 (de v2) → v4 (de v1, qui n'est plus la dern → AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a1404b-162d-7a33-
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-store.prisma.spec.ts > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie anné → AssertionError: expected 1 to be 42 // Object.is equality
+
+[MORD] Q-8 — F-2 le verrou de chaîne — la tête n'est plus verrouillée (course sur max(version))
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  75 passés · 4 en échec · 4 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + C → AssertionError: [{"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a1404b-bf01-7723
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] Q-9 — S-22 la tête naît avec chain_id = id — l'ancienne écriture « chain_id provisoire »
+   apps/api/src/venues/quote-store.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     38s  20 passés · 59 en échec · 59 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: expected [ 500, 500, 500, 500, 500, 500, …(24) ] to deeply equal [ 201, 201, 201, 201, 201, 20
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-store.prisma.spec.ts > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, → AssertionError: expected '00000000-0000-0000-0000-000000000000' to be '018f0000-0000-7000-8000-00000000bbbb' /
+
+[MORD] T-1 — F-11 quatre chiffres — 
+   packages/types/src/quote.ts  (restauré : empreinte identique)
+   · unit-api    MORD                      5s  168 passés · 16 en échec · 16 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ l'exemple de R3 : année 2026, salle 1, devis 89, version 1 ⇒ `DEVIS- → AssertionError: expected 'DEVIS-2026-001-089 v1' to be 'DEVIS-2026-0001-0089 v1' // Object.is equality
+   · int         MORD                     41s  61 passés · 18 en échec · 18 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: pas une référence : DEVIS-2026-001-001 v1: expected null not to be null
+
+[MORD] T-2 — F-11 refuser ≤ 0 — 0 devient un numéro
+   packages/types/src/quote.ts  (restauré : empreinte identique)
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ une référence FAUSSE ne s'imprime pas : zéro LÈVE, pour chacune des  → AssertionError: venueNumber
+   · int         MUETTE                   41s  79 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] T-3 — F-11 l'année hors plage — plus de refus d'une année hors 2000-9999
+   packages/types/src/quote.ts  (restauré : empreinte identique)
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ une année hors de la plage de la base (2000 à 9999) LÈVE aussi — la  → AssertionError: expected function to throw an error, but it didn't
+   · int         MUETTE                   41s  79 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] T-4 — F-11 cinq chiffres — le nom du fichier ne supporte plus 10 000
+   packages/types/src/quote.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-9 : une salle numérotée 10 000 et un devis numéroté 10 000 : la réfé → AssertionError: expected 500 to be 200 // Object.is equality
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] T-5 — K-7 la langue du fichier — la langue est ignorée
+   packages/types/src/quote.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-9 : une salle numérotée 10 000 et un devis numéroté 10 000 : la réfé → AssertionError: expected 'attachment; filename="DEVIS-2026-1000…' to be 'attachment; filename="DEVIS-2026-1000
+   · unit-api    MORD                      5s  180 passés · 4 en échec · 4 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ l'exemple de R3 : `DEVIS-2026-0001-0089_fr_v1.pdf`, et `_ar_` pour l → AssertionError: expected 'DEVIS-2026-0001-0089_fr_v1.pdf' to be 'DEVIS-2026-0001-0089_ar_v1.pdf' // Object.is 
+   · pro         MORD                     27s  140 passés · 1 en échec · 1 groupe(s) d'échec · 1er : walkin-journey.test.tsx > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la b → AssertionError: expected 'DEVIS-2026-0003-0014_fr_v1.pdf' to be 'DEVIS-2026-0003-0014_ar_v1.pdf' // Object.is 
+
+[MORD] T-6 — F-10 la version dans la référence — la version écrite 1 pour toujours
+   packages/types/src/quote.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  73 passés · 6 en échec · 6 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-4 : 22 h 59 UTC (23 h 59 à Alger) ⇒ 2026 ; 23 h 00 UTC (minuit à Alg → AssertionError: expected { annee: 2026, salle: 1, …(2) } to match object { annee: 2026, devis: 1, version: 2 }
+   · unit-api    MORD                      5s  174 passés · 10 en échec · 6 groupe(s) d'échec · 1er : quote-reference.spec.ts > ⛔ la salle et le devis ne se confondent pas : deux valeurs DIFFÉRENTES → AssertionError: expected 'DEVIS-2027-0007-0012 v1' to be 'DEVIS-2027-0007-0012 v3' // Object.is equality
+
+[MORD] D-1 — F-10 la langue demandée — 
+   apps/api/src/documents/quote-document.service.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-9 : une salle numérotée 10 000 et un devis numéroté 10 000 : la réfé → AssertionError: expected 'attachment; filename="DEVIS-2026-1000…' to be 'attachment; filename="DEVIS-2026-1000
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-document.service.spec.ts > ⛔ rang 39 (K-7, F-15) : le nom du fichier porte la langue DEMANDÉE — ` → AssertionError: expected 'DEVIS-2027-0011-0102_fr_v5.pdf' to be 'DEVIS-2027-0011-0102_ar_v5.pdf' // Object.is 
+
+[MORD] D-2 — F-16 isolat du document — plus de <bdi dir=ltr>
+   apps/api/src/documents/quote-document.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  77 passés · 2 en échec · 2 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-9 : une salle numérotée 10 000 et un devis numéroté 10 000 : la réfé → AssertionError: expected '<!doctype html>\n<html lang="ar" dir=…' to contain '<bdi dir="ltr">DEVIS-2026-10000-
+   · unit-api    MORD                      5s  183 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-document.spec.ts > ⛔ rang 39 (F-16) : la référence est isolée de GAUCHE À DROITE dans l'e → AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '<bdi dir="ltr">DEVIS-2026-0003-0
+
+[MORD] D-3 — F-10 la version imprimée — le document d'une v2 s'imprime v1
+   apps/api/src/documents/quote-document-source.prisma.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-14 : le document d'une VERSION 2 (la dernière) porte la référence v2 → AssertionError: expected 'attachment; filename="DEVIS-2026-0001…' to be 'attachment; filename="DEVIS-2026-0001
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] V-1 — K-6 les deux numéros — numéro du devis = version
+   apps/api/src/venues/quotes.service.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  66 passés · 13 en échec · 13 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: expected 1 to be 30 // Object.is equality
+   · unit-api    MORD                      5s  181 passés · 3 en échec · 3 groupe(s) d'échec · 1er : quotes.service.spec.ts > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro → AssertionError: expected 'DEVIS-2026-0007-0001 v1' to be 'DEVIS-2026-0007-0089 v1' // Object.is equality
+
+[MORD] V-2 — K-6 le numéro de salle — numéro de salle = numéro du devis
+   apps/api/src/venues/quotes.service.ts  (restauré : empreinte identique)
+   · int         MORD                     41s  76 passés · 3 en échec · 3 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: expected 30 to be 1 // Object.is equality
+   · unit-api    MORD                      5s  181 passés · 3 en échec · 3 groupe(s) d'échec · 1er : quotes.service.spec.ts > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro → AssertionError: expected 'DEVIS-2026-0089-0089 v1' to be 'DEVIS-2026-0007-0089 v1' // Object.is equality
+
+[MORD] P-1 — F-14 la référence affichée est celle du serveur — l'identifiant à la place
+   apps/pro/src/dashboard/walkin-journey.tsx  (restauré : empreinte identique)
+   · pro         MORD                     32s  137 passés · 4 en échec · 2 groupe(s) d'échec · 1er : walkin-journey.test.tsx > ⛔ la référence rendue par le serveur s'affiche juste après le calcul,  → AssertionError: expected null not to be null
+
+[MORD] P-2 — F-16 l'isolat à l'écran — plus de dir=ltr
+   apps/pro/src/dashboard/walkin-journey.tsx  (restauré : empreinte identique)
+   · pro         MORD                     27s  139 passés · 2 en échec · 2 groupe(s) d'échec · 1er : walkin-journey.test.tsx > ⛔ la référence rendue par le serveur s'affiche juste après le calcul,  → AssertionError: expected null to be 'ltr' // Object.is equality
+
+[MORD] P-3 — F-15 la langue du fichier enregistré — 
+   apps/pro/src/dashboard/walkin-journey.tsx  (restauré : empreinte identique)
+   · pro         MORD                     27s  140 passés · 1 en échec · 1 groupe(s) d'échec · 1er : walkin-journey.test.tsx > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la b → AssertionError: expected 'DEVIS-2026-0003-0014_fr_v1.pdf' to be 'DEVIS-2026-0003-0014_ar_v1.pdf' // Object.is 
+
+[MORD] P-4 — F-15 la référence de la fenêtre — 
+   apps/pro/src/dashboard/walkin-journey.tsx  (restauré : empreinte identique)
+   · pro         MORD                     27s  140 passés · 1 en échec · 1 groupe(s) d'échec · 1er : walkin-journey.test.tsx > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du d → AssertionError: expected 'Remise enregistréeRéférence du devis …' to contain 'Référence du devis : \u2066DEVIS
+
+[MORD] P-5 — F-14 la référence de la dernière réponse — après une révision, l'écran ne prend plus la réponse
+   apps/pro/src/dashboard/walkin-journey.tsx  (restauré : empreinte identique)
+   · pro         MORD                     29s  140 passés · 1 en échec · 1 groupe(s) d'échec · 1er : walkin-journey.test.tsx > ⛔ la révision remplace la référence par CELLE du serveur : même numéro → AssertionError: expected null not to be null
+
+[MORD] P-6 — F-15 la fenêtre commence par la référence — la référence n'est plus la première ligne
+   apps/pro/src/dashboard/remittance.ts  (restauré : empreinte identique)
+   · pro         MORD                     27s  136 passés · 5 en échec · 5 groupe(s) d'échec · 1er : remittance.test.ts > les QUATRE issues rendent quatre titres différents, dans l'ordre enreg → AssertionError: expected [ 'remitRecorded', …(3) ] to deeply equal [ 'remitReference', …(2) ]
+
+[MORD] P-7 — F-16 l'isolat de la fenêtre — plus d'isolat Unicode
+   apps/pro/src/dashboard/remittance.ts  (restauré : empreinte identique)
+   · pro         MORD                     27s  139 passés · 2 en échec · 2 groupe(s) d'échec · 1er : remittance.test.ts > ⚠ la référence reste lisible de GAUCHE À DROITE dans une phrase arabe  → AssertionError: expected 'DEVIS-2026-0003-0014 v2' to be '\u2066DEVIS-2026-0003-0014 v2\u2069' // Object.is eq
+
+[MORD] P-8 — parité arabe — la clé arabe de la fenêtre disparaît
+   packages/i18n/messages/ar.json  (restauré : empreinte identique)
+   · pro         MORD                     27s  140 passés · 1 en échec · 1 groupe(s) d'échec · 1er : remittance.test.ts > chaque ligne que la fenêtre peut afficher existe dans les deux catalog → AssertionError: ar remitReference: the given combination of arguments (undefined and string) is invalid for th
+   · unit-api    MUETTE                    5s  184 passés · 0 en échec · 0 groupe(s) d'échec
+
+[MORD] MA-1 — F-5/F-6 setval au maximum — séquence en retard
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     41s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans  → AssertionError: promise rejected "error: duplicate key value violates uniqu… { …(15) }" instead of resolving
+   · sondes      MORD                     24s  ✗ ['M-3-sequence', 'D-1-sequence'] (2 ✗ / 27 ✓)
+
+[MORD] MA-2 — F-5 l'ordre de la numérotation — ordre inversé
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     39s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans  → AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) } ]
+   · sondes      MORD                     26s  ✗ ['M-3-salles', 'D-1-salles'] (2 ✗ / 27 ✓)
+
+[MORD] MA-3 — F-5 les salles supprimées — les supprimées ne sont plus numérotées
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · int         ÉCHEC SANS ASSERTION     39s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et → error: column "number" of relation "venues" contains null values
+   · sondes      MORD                      5s  ✗ ['M-2'] (1 ✗ / 2 ✓)
+
+[MORD] MA-4 — F-8 le déclencheur — plus de déclencheur
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     39s  77 passés · 2 en échec · 2 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans  → AssertionError: promise resolved "[]" instead of rejecting
+   · sondes-base MORD                     26s  ✗ ['F8-1', 'F8-3', 'F8-4b', 'F6-0', 'F6-1', 'F6-3'] (6 ✗ / 31 ✓)
+
+[MORD] MA-5 — F-8 la clause WHEN — le déclencheur refuse aussi la même valeur
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · int         MUETTE                   39s  79 passés · 0 en échec · 0 groupe(s) d'échec
+   · sondes-base MORD                     26s  ✗ ['F8-2'] (1 ✗ / 36 ✓)
+
+[MORD] MA-6 — F-6 l'unicité du numéro de salle — 
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     40s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : quote-numbering.int-spec.ts > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même → AssertionError: promise resolved "1" instead of rejecting
+   · sondes-base MORD                     22s  ✗ ['F6-3', 'F6-4', 'F6-5'] (3 ✗ / 34 ✓)
+
+[MORD] MA-7 — F-6 numéro de salle ≥ 1 — 0 permis
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · sondes-base MORD                     23s  ✗ ['F6-6'] (1 ✗ / 36 ✓)
+
+[MORD] MA-8 — F-6 le défaut nextval — la salle neuve n'a plus de numéro
+   apps/api/prisma/migrations/20261015100000_venue_number/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     34s  12 passés · 67 en échec · 67 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-1 : 30 créations lancées ENSEMBLE, alternées entre les deux instance → AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/venues","timestamp":"2026-
+   · sondes      MUETTE                   25s  ✗ [] (0 ✗ / 29 ✓)
+
+[MORD] MB-1 — F-3/F-5 l'année d'Alger en base — deux occurrences : l'année UTC
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     40s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER)  → AssertionError: expected { …(8) } to deeply equal { …(8) }
+   · sondes      MORD                     26s  ✗ ['D-1-devis', 'D-1-compteurs', 'D-2'] (3 ✗ / 26 ✓)
+
+[MORD] MB-2 — F-5 numérotation par (salle, année) — plus de remise à 1 par année
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     38s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER)  → AssertionError: expected { …(8) } to deeply equal { …(8) }
+   · sondes      MORD                     27s  ✗ ['D-1-devis', 'D-1-compteurs'] (2 ✗ / 27 ✓)
+
+[MORD] MB-3 — F-5 ordre de création — ordre de l'identifiant
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     38s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER)  → AssertionError: expected { …(8) } to deeply equal { …(8) }
+   · sondes      MORD                     27s  ✗ ['D-1-devis'] (1 ✗ / 28 ✓)
+
+[MORD] MB-4 — F-5 les compteurs amorcés — MIN au lieu de MAX
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     38s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER)  → AssertionError: expected [ …(4) ] to deeply equal [ …(4) ]
+   · sondes      MORD                     27s  ✗ ['M-3-compteurs', 'D-1-compteurs'] (2 ✗ / 27 ✓)
+
+[MORD] MB-5 — F-9 l'unicité PARTIELLE — plus de WHERE version = 1
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     39s  62 passés · 17 en échec · 17 groupe(s) d'échec · 1er : adverse-numerotation.int-spec.ts > A-2 : créations (instance A) + révisions d'une chaîne (instance B) + C → AssertionError: [{"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a14063-c016-7492
+   · sondes-base MORD                      4s  ✗ ['B-0'] (1 ✗ / 0 ✓)
+
+[MORD] MB-6 — F-4 la clé composite — plus de clé composite
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         MORD                     40s  77 passés · 2 en échec · 2 groupe(s) d'échec · 1er : migration-non-empty.int-spec.ts > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER)  → AssertionError: expected [ 'quotes_head_reference_key' ] to deeply equal [ 'quotes_chain_head_fkey', …(1) ]
+   · sondes-base MORD                     24s  ✗ ['F9-0', 'F9-4', 'F9-5', 'F9-6', 'F9-7', 'R-1']… (8 ✗ / 30 ✓)
+
+[MORD] MB-7 — F-13 l'année 2000-9999 du devis — années hors plage permises
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · sondes-base MORD                     23s  ✗ ['F9-8', 'F9-9'] (2 ✗ / 35 ✓)
+
+[MORD] MB-8 — F-13 numéro de devis ≥ 1 — 
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · sondes-base MORD                     23s  ✗ ['F9-10'] (1 ✗ / 36 ✓)
+
+[MORD] MB-9 — F-5 la vérification qui LÈVE — la vérification est désarmée (SET NOT NULL échouera quand même, autrement)
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · sondes      MORD                     24s  ✗ ['C-1', 'C-4'] (2 ✗ / 27 ✓)
+
+[MORD] MB-10 — F-5 les révisions recopient leur tête — les révisions ne recopient plus
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         ÉCHEC SANS ASSERTION     40s  78 passés · 1 en échec · 1 groupe(s) d'échec · 1er : test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et → error: quotes : 2 ligne(s) sans numéro de référence (une révision sans tête de chaîne ?) — migration annulée
+   · sondes      MORD                      5s  ✗ ['M-2'] (1 ✗ / 2 ✓)
+
+[MORD] MB-11 — F-4 le RESTRICT du numéro de la tête — la tête change de numéro et les révisions la suivent
+   apps/api/prisma/migrations/20261015100100_quote_reference/migration.sql  (restauré : empreinte identique)
+   · int         MUETTE                   40s  79 passés · 0 en échec · 0 groupe(s) d'échec
+   · sondes-base MORD                     26s  ✗ ['R-1'] (1 ✗ / 37 ✓)
+
+== BILAN : 54 mutations jouées : CAL+=MORD · CAL-=MUETTE · R-1=MORD · R-2=MORD · R-3=MORD · S-1=MORD · S-2=MUETTE · Q-1=MORD · Q-2=MORD · Q-3=MORD · Q-4=MORD · Q-5=MORD · Q-6=MORD · Q-7=MORD · Q-8=MORD · Q-9=MORD · T-1=MORD · T-2=MORD · T-3=MORD · T-4=MORD · T-5=MORD · T-6=MORD · D-1=MORD · D-2=MORD · D-3=MORD · V-1=MORD · V-2=MORD · P-1=MORD · P-2=MORD · P-3=MORD · P-4=MORD · P-5=MORD · P-6=MORD · P-7=MORD · P-8=MORD · MA-1=MORD · MA-2=MORD · MA-3=MORD · MA-4=MORD · MA-5=MORD · MA-6=MORD · MA-7=MORD · MA-8=MORD · MB-1=MORD · MB-2=MORD · MB-3=MORD · MB-4=MORD · MB-5=MORD · MB-6=MORD · MB-7=MORD · MB-8=MORD · MB-9=MORD · MB-10=MORD · MB-11=MORD
+   répartition : {'MORD': 52, 'MUETTE': 2}
+   arbre à la fin : fichiers suivis modifiés = [] (attendu [])

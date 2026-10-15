@@ -1,0 +1,18 @@
+
+== SONDE 6 — dérive entre schema.prisma et la base migrée (objets de L35-3)
+✓ DR-0       base migrée — attendu 0 · mesuré 0
+   code 0 ; 13 ligne(s) de sortie
+   le diff COMPLET (de la base migrée vers schema.prisma) :
+     | -- DropForeignKey
+     | ALTER TABLE "pricing_rules" DROP CONSTRAINT "pricing_rules_slot_belongs_to_venue";
+     | -- DropForeignKey
+     | ALTER TABLE "quotes" DROP CONSTRAINT "quotes_chain_head_fkey";
+     | -- AlterTable
+     | ALTER TABLE "venues" ALTER COLUMN "number" SET DEFAULT nextval('venue_number_seq'::regclass),
+     | ALTER COLUMN "number" DROP DEFAULT;
+     | DROP SEQUENCE "venue_number_seq";
+     | Loaded Prisma config from prisma.config.ts.
+✓ DR-1       le diff s'exécute et ne propose, pour les objets de L35-3, que ce que la doctrine range HORS de Prisma : la clé composite des versions, la séquence des salles et son défaut (+ la clé B2 d'avant) — attendu {'quotes_chain_head_fkey', '"number" DROP DEFAULT', 'venue_number_seq', 'pricing_rules_slot_belongs_to_venue'} · mesuré {'venue_number_seq', 'quotes_chain_head_fkey', 'pricing_rules_slot_belongs_to_venue', '"number" DROP DEFAULT'}
+· DR-C1      CONSTAT : si `prisma migrate dev` tournait (il est interdit, AGENTS.md), il proposerait de SUPPRIMER `quotes_chain_head_fkey` et la séquence `venue_number_seq` avec le défaut de `venues.number` : deux objets de plus que la liste « Migrations — `prisma migrate dev` est INTERDIT » d'AGENTS.md ne nomme pas (elle nomme l'EXCLUDE, les index partiels, `pricing_rules_slot_belongs_to_venue`, les CHECK). Documentaire, non bloquant : la doctrine tient (la migration est l'autorité), la liste est à compléter
+
+== BILAN : 2 ✓ · 0 ✗ [] · 1 constat(s) ['DR-C1']

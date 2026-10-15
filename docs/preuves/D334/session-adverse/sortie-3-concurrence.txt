@@ -1,0 +1,36 @@
+
+== SONDE 3 — mise en place : copie de la base de développement migrée par `prisma migrate deploy`, trois salles neuves
+✓ K-setup    base de travail migrée — attendu 0 · mesuré 0
+
+== K-0 — étalonnage : le détecteur voit-il un interblocage fabriqué à la main ?
+✓ K0-1       ÉTALONNAGE POSITIF : l'ordre INVERSE (compteur puis salle contre salle puis compteur) produit EXACTEMENT un interblocage 40P01 — le détecteur voit ce qu'il cherche — attendu 1 · mesuré 1
+
+== K-1 — 40 sessions séparées créent un devis EN MÊME TEMPS dans la même salle et la même année
+✓ K1-1       40 numéros obtenus, DISTINCTS et CONSÉCUTIFS (1 à 40), aucune erreur — attendu (list[1..40] (40 entiers consécutifs), {}) · mesuré (list[1..40] (40 entiers consécutifs), {})
+✓ K1-2       la base dit la même chose : 40 têtes numérotées 1..40 sans trou, compteur à 40 — attendu (list[1..40] (40 entiers consécutifs), '40') · mesuré (list[1..40] (40 entiers consécutifs), '40')
+
+== K-2 — deux salles, vingt sessions chacune, toutes ensemble : deux suites indépendantes
+✓ K2-1       chaque salle a 1..20 sans trou ni doublon ; aucune erreur — attendu (list[1..20] (20 entiers consécutifs), list[1..20] (20 entiers consécutifs), {}) · mesuré (list[1..20] (20 entiers consécutifs), list[1..20] (20 entiers consécutifs), {})
+
+== K-3 — première création de l'année : douze sessions se disputent l'INSERT d'une ligne de compteur qui n'existe pas
+✓ K3-1       douze numéros 1..12, distincts, aucune erreur (l'INSERT … ON CONFLICT ne se perd pas dans la course d'insertion) — attendu (list[1..12] (12 entiers consécutifs), {}) · mesuré (list[1..12] (12 entiers consécutifs), {})
+
+== K-4 — une création ANNULÉE après l'incrément : la création concurrente attend, puis reçoit LE MÊME numéro (pas de trou)
+✓ K4-1       A prend le numéro qui suit le compteur, ANNULE ; B (qui a attendu la ligne verrouillée) reçoit le MÊME numéro (le compteur lu avant la sonde + 1) — attendu (21, 21) · mesuré (21, 21)
+✓ K4-2       B n'a fini qu'APRÈS le rollback de A (il a bien attendu, il n'a pas lu une valeur périmée) — attendu True · mesuré True
+✓ K4-3       la salle compte avant_k4 + 1 devis 2026 numérotés 1..N sans trou (l'annulation n'a pas laissé de trou) — attendu list[1..21] (21 entiers consécutifs) · mesuré list[1..21] (21 entiers consécutifs)
+
+== K-5 — douze révisions simultanées de la même chaîne
+✓ K5-1       versions 1..13 distinctes, TOUTES au numéro 7 de leur tête, aucune erreur — attendu (list[1..13] (13 entiers consécutifs), [7], {}) · mesuré (list[1..13] (13 entiers consécutifs), [7], {})
+✓ K5-2       aucun compteur touché par les révisions (le compteur de S1/2026 dit toujours 40) — attendu '40' · mesuré '40'
+
+== K-6 — charge MÊLÉE : créateurs (2 salles, 2 années), réviseurs, blocages/acceptations, verrou de salle exclusif
+✓ K6-1       AUCUN interblocage (40P01), AUCUN délai de verrou (55P03), AUCUNE violation d'unicité (23505), AUCUNE autre erreur sur 12 sessions et ~400 transactions — attendu {} · mesuré {}
+✓ K6-S2/2026 S2/2026 : les numéros sont 1..N SANS trou ni doublon et le compteur vaut N — attendu (list[1..101] (101 entiers consécutifs), 101) · mesuré (list[1..101] (101 entiers consécutifs), 101)
+✓ K6-S3/2026 S3/2026 : les numéros sont 1..N SANS trou ni doublon et le compteur vaut N — attendu (list[1..100] (100 entiers consécutifs), 100) · mesuré (list[1..100] (100 entiers consécutifs), 100)
+✓ K6-S2/2027 S2/2027 : les numéros sont 1..N SANS trou ni doublon et le compteur vaut N — attendu (list[1..40] (40 entiers consécutifs), 40) · mesuré (list[1..40] (40 entiers consécutifs), 40)
+✓ K6-S3/2027 S3/2027 : les numéros sont 1..N SANS trou ni doublon et le compteur vaut N — attendu (list[1..40] (40 entiers consécutifs), 40) · mesuré (list[1..40] (40 entiers consécutifs), 40)
+✓ K6-chaine  la chaîne révisée sous charge a des versions 1..N sans trou, toutes au numéro 7 — attendu (list[1..73] (73 entiers consécutifs), [7]) · mesuré (list[1..73] (73 entiers consécutifs), [7])
+✓ K6-global  dans TOUTE la base : aucune tête en double sur (salle, année, numéro) — attendu '0' · mesuré '0'
+
+== BILAN : 18 ✓ · 0 ✗ [] · 0 constat(s) []
