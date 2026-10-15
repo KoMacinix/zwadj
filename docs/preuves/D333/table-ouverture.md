@@ -135,3 +135,28 @@ Les chemins de code ci-dessous sont ceux que la lecture du code, faite AVANT le 
 | `docs/preuves/D333/rouge/rouge-api-documents.txt` | rouge : le document imprime la référence stockée, le nom du fichier |
 | `docs/preuves/D333/rouge/rouge-api-int.txt` | rouge : la numérotation sur PostgreSQL réel (concurrence, année, séquence, gardes de base, migrations sur base non vide) |
 | `docs/preuves/D333/rouge/rouge-pro.txt` | rouge : la référence à l'écran, dans la fenêtre de remise, le nom du fichier avec la langue choisie |
+
+#### Extension 4 — l'union des campagnes à rejouer (décision 3 du relecteur) : le script calibré et sa sortie, VERSÉS AVANT de jouer ; le lanceur ; les sorties des quatorze campagnes retenues
+
+*Motif* : la décision 3 reprend la décision 1 de D332 — l'union du tri et des campagnes qui citent un fichier du diff, calculée par un script calibré, versée avec sa sortie AVANT de jouer. Les deux scripts sont des COPIES de ceux de D332 (« D332 » devient « D333 », le SHA de départ devient `2782be9`) ; le lanceur ne joue `r33` et `r39` qu'UNE fois, avec `--int` (N-C1 de la lecture adverse : sans et avec `--int` comptaient deux fois les mêmes gardes). La liste est fixée par la sortie versée : **14 campagnes sur 37**, dont 5 que le tri seul ne retient pas (`b7`, `e3d1-s8`, `r4`, `s11b`, `solid-s3` : elles citent `theme.css`, `migration.sql` ou `quotes.int-spec.ts`).
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D333/neutralisation/union-campagnes.py` | le script calibré qui calcule l'union |
+| `docs/preuves/D333/neutralisation/union-sortie.txt` | sa sortie, versée avant de jouer |
+| `docs/preuves/D333/neutralisation/jouer-union.py` | le lanceur : joue chaque campagne de la liste versée, en série |
+| `docs/preuves/D333/neutralisation/union-jeu.txt` | son rapport : ce qui a été parcouru, mordu, muet, non mesuré |
+| `docs/preuves/D333/neutralisation/act-plafonds.txt` | sortie de `neutralize-act-plafonds.py` |
+| `docs/preuves/D333/neutralisation/b7.txt` | sortie de `neutralize-b7.py` |
+| `docs/preuves/D333/neutralisation/booking-status.txt` | sortie de `neutralize-booking-status.py` |
+| `docs/preuves/D333/neutralisation/e3d1-s8.txt` | sortie de `neutralize-e3d1-s8.py` |
+| `docs/preuves/D333/neutralisation/horloge.txt` | sortie de `neutralize-horloge.py` |
+| `docs/preuves/D333/neutralisation/journey.txt` | sortie de `neutralize-journey.py` |
+| `docs/preuves/D333/neutralisation/r32.txt` | sortie de `neutralize-r32.py` |
+| `docs/preuves/D333/neutralisation/r33.txt` | sortie de `neutralize-r33.py` (jouée avec `--int`) |
+| `docs/preuves/D333/neutralisation/r38.txt` | sortie de `neutralize-r38.py` |
+| `docs/preuves/D333/neutralisation/r39.txt` | sortie de `neutralize-r39.py` (jouée avec `--int`) |
+| `docs/preuves/D333/neutralisation/r4.txt` | sortie de `neutralize-r4.py` |
+| `docs/preuves/D333/neutralisation/s10b.txt` | sortie de `neutralize-s10b.py` |
+| `docs/preuves/D333/neutralisation/s11b.txt` | sortie de `neutralize-s11b.py` |
+| `docs/preuves/D333/neutralisation/solid-s3.txt` | sortie de `neutralize-solid-s3.py` |
