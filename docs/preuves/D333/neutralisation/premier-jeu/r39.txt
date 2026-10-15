@@ -1,0 +1,193 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 51 déclarées · 51 jouées · 0 non jouée(s) (sans --int) · 11 mesure(s) distincte(s) · 12 fichier(s) muté(s)
+  pré-vol annee : code 0 · passés 29 · en échec 0
+  pré-vol doc : code 0 · passés 47 · en échec 0
+  pré-vol doc-service : code 0 · passés 13 · en échec 0
+  pré-vol int-document : code 0 · passés 16 · en échec 0
+  pré-vol int-migration : code 0 · passés 11 · en échec 0
+  pré-vol int-numerotation : code 0 · passés 18 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 108 · en échec 0
+  pré-vol pro-remise : code 0 · passés 13 · en échec 0
+  pré-vol service : code 0 · passés 16 · en échec 0
+  pré-vol store : code 0 · passés 26 · en échec 0
+  pré-vol types : code 0 · passés 26 · en échec 0
+✓ U-1. ⛔ les numéros n'ont plus que TROIS chiffres : `padStart(3)` au lieu de `padStart(4)` (R3 : quatre au moins)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 13 · en échec 13 · AssertionError: expected 'DEVIS-2026-001-089 v1' to be 'DEVIS-2026-0001-0089 v1' // Object.is equality
+✓ U-2. ⛔ un numéro de plus de quatre chiffres est TRONQUÉ (`10000` devient `0000`)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [types] code 1 · passés 24 · en échec 2 · AssertionError: expected 'DEVIS-2026-0000-0001 v1' to be 'DEVIS-2026-10000-0001 v1' // Object.is equality
+✓ U-3. ⛔ le numéro de la salle et celui du devis sont INTERVERTIS
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 16 · en échec 10 · AssertionError: expected 'DEVIS-2027-0012-0007 v3' to be 'DEVIS-2027-0007-0012 v3' // Object.is equality
+✓ U-4. ⛔ la version n'est plus validée : `v${NaN}` s'imprime
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 21 · en échec 5 · AssertionError: version
+✓ U-5. ⛔ l'année n'est plus bornée : 1999 et 10000 s'impriment
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 25 · en échec 1 · AssertionError: expected function to throw an error, but it didn't
+✓ U-6. ⛔ le nom du fichier ignore la langue : toujours `_fr_` (K-7)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 23 · en échec 3 · AssertionError: expected 'DEVIS-2026-0001-0089_fr_v1.pdf' to be 'DEVIS-2026-0001-0089_ar_v1.pdf' // Object.is equality
+✓ U-7. ⛔ le nom du fichier ignore la version de la référence : toujours `_v1`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 24 · en échec 2 · AssertionError: expected 'DEVIS-2026-0003-0014_fr_v1.pdf' to be 'DEVIS-2026-0003-0014_fr_v2.pdf' // Object.is equality
+✓ U-8. ⛔ la forme d'une référence n'est plus vérifiée : « DEVIS-2026-1-89 v1 » devient un nom de fichier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 25 · en échec 1 · AssertionError: expected function to throw an error, but it didn't
+✓ Y-1. ⛔ l'année est calculée en UTC : le 31/12 à 23 h 00 UTC, il est déjà l'année suivante à Alger
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [annee] code 1 · passés 17 · en échec 12 · AssertionError: expected 2026 to be 2027 // Object.is equality
+✓ Y-2. ⛔ l'année est lue dans le fuseau de l'HÔTE (`getFullYear`) : le résultat dépend de la machine
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [annee] code 1 · passés 21 · en échec 8 · AssertionError: expected 2026 to be 2027 // Object.is equality
+✓ Y-3. ⛔ une date invalide ne lève plus : l'année `NaN` devient une référence
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [annee] code 1 · passés 28 · en échec 1 · AssertionError: expected function to throw an error, but it didn't
+✗ S-1. ⛔ le compteur est incrémenté HORS de la transaction du devis (F-7 : un échec ultérieur le laisserait avancé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · PAS-ASSERTION — première ligne du bloc : Error: le compteur de devis de la salle 018f0000-0000-7000-8000-00000000eeee (2027) n'a pas rendu un numéro valide
+✓ S-2. ⛔ le numéro se calcule « le plus grand + 1 » (le défaut que R3 interdit) au lieu du compteur atomique
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: expected ' INSERT INTO quote_number_counters (v…' to contain 'ON CONFLICT (venue_id, year) DO UPDAT…'
+✓ S-3. ⛔ la tête naît avec un `chain_id` provisoire au lieu de son propre identifiant (S-22)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: expected '00000000-0000-7000-8000-000000000000' to be '018f0000-0000-7000-8000-00000000bbbb' // Object.is equality
+✓ S-4. ⛔ l'année de la référence est celle de l'horloge du magasin, pas celle que le service a passée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: expected 1926 to be 2027 // Object.is equality
+✓ S-5. ⛔ le numéro écrit n'est pas celui que le compteur a rendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: expected 1 to be 89 // Object.is equality
+✓ S-6. ⛔ la date de création n'est pas l'instant que le service a lu (S-21)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: expected 2027-01-01T02:30:00.000Z to deeply equal 2027-01-01T00:30:00.000Z
+✓ S-7. ⛔ la révision n'écrit pas l'année de sa tête
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: expected 2000 to be 2026 // Object.is equality
+✓ S-8. ⛔ la révision n'écrit pas le numéro de sa tête
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: expected 1 to be 42 // Object.is equality
+✓ S-9. ⛔ la révision INCRÉMENTE un compteur (elle ne doit en toucher aucun, F-2/F-4)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [store] code 1 · passés 24 · en échec 2 · AssertionError: expected [ 'FOR UPDATE', 'compteur', …(2) ] to not include 'compteur'
+   [store#2] code 1 · passés 24 · en échec 2 · AssertionError: expected [ 'FOR UPDATE', 'compteur', …(2) ] to deeply equal [ 'FOR UPDATE', 'aggregate', 'create' ]
+✓ S-10. ⛔ la réponse du compteur n'est plus vérifiée : un numéro invalide s'écrit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store] code 1 · passés 25 · en échec 1 · AssertionError: promise resolved "{ …(2) }" instead of rejecting
+✓ V-1. ⛔ la version de la référence est figée à 1 : une révision garde `v1`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 15 · en échec 1 · AssertionError: expected [ 'DEVIS-2026-0007-0089 v1', …(2) ] to deeply equal [ 'DEVIS-2026-0007-0089 v1', …(2) ]
+✓ V-2. ⛔ le numéro de la SALLE est remplacé par le numéro du devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 13 · en échec 3 · AssertionError: expected 'DEVIS-2026-0089-0089 v1' to be 'DEVIS-2026-0007-0089 v1' // Object.is equality
+   [service#2] code 1 · passés 13 · en échec 3 · AssertionError: expected [ 'DEVIS-2026-0089-0089 v1', …(2) ] to deeply equal [ 'DEVIS-2026-0007-0089 v1', …(2) ]
+✓ V-3. ⛔ l'année de la référence est figée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 13 · en échec 3 · AssertionError: expected 'DEVIS-2000-0007-0089 v1' to be 'DEVIS-2026-0007-0089 v1' // Object.is equality
+   [service#2] code 1 · passés 13 · en échec 3 · AssertionError: expected [ 'DEVIS-2000-0007-0089 v1', …(2) ] to deeply equal [ 'DEVIS-2026-0007-0089 v1', …(2) ]
+✓ D-1. ⛔ le titre du document porte l'ancienne référence (huit caractères de l'identifiant)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · passés 44 · en échec 3 · AssertionError: expected '<title>Devis 01a10f0a' to contain 'DEVIS-2026-0003-0014 v2'
+✓ D-2. ⛔ l'en-tête du document porte l'ancienne référence
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · passés 43 · en échec 4 · AssertionError: expected '<p class="sous">Devis · Référence <bd…' to contain 'DEVIS-2026-0003-0014 v2'
+✓ D-3. ⛔ la référence n'est plus isolée de gauche à droite : en arabe, ses groupes de chiffres s'inversent
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · passés 46 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '<bdi dir="ltr">DEVIS-2026-0003-0014 v…'
+✓ D-4. ⛔ le service nomme le fichier dans une langue FIXE (la langue demandée est ignorée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc-service] code 1 · passés 12 · en échec 1 · AssertionError: expected 'DEVIS-2027-0011-0102_fr_v5.pdf' to be 'DEVIS-2027-0011-0102_ar_v5.pdf' // Object.is equality
+✓ P-1. ⛔ la référence affichée n'est pas celle du serveur (l'identifiant du devis est affiché à sa place)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 104 · en échec 4 · AssertionError: expected null not to be null
+✓ P-2. ⛔ la référence n'est plus isolée de gauche à droite à l'écran (`<span>` au lieu de `<bdi>`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 107 · en échec 1 · AssertionError: expected 'span' to be 'bdi' // Object.is equality
+✓ P-3. ⛔ le fichier téléchargé porte la langue de l'INTERFACE, pas celle choisie dans la boîte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 107 · en échec 1 · AssertionError: expected 'DEVIS-2026-0003-0014_fr_v1.pdf' to be 'DEVIS-2026-0003-0014_ar_v1.pdf' // Object.is equality
+✓ P-4. ⛔ la fenêtre de remise n'a plus la ligne de référence (clé renommée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 10 · en échec 3 · AssertionError: expected [ 'remitNeutralisee', …(2) ] to deeply equal [ 'remitReference', …(2) ]
+   [pro-remise#2] code 1 · passés 10 · en échec 3 · AssertionError: PRINT: expected { key: 'remitNeutralisee', …(1) } to deeply equal { key: 'remitReference', …(1) }
+   [pro-parcours] code 1 · passés 107 · en échec 1 · AssertionError: expected 'Remise enregistréevenue.ui.walkin.rem…' to contain 'Référence du devis : \u2066DEVIS-2026…'
+✓ P-5. ⛔ la référence n'est plus isolée dans la phrase de la fenêtre (aucun isolat Unicode)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 12 · en échec 1 · AssertionError: expected 'DEVIS-2026-0003-0014 v2' to be '\u2066DEVIS-2026-0003-0014 v2\u2069' // Object.is equality
+   [pro-parcours] code 1 · passés 107 · en échec 1 · AssertionError: expected 'Remise enregistréeRéférence du devis …' to contain 'Référence du devis : \u2066DEVIS-2026…'
+✓ P-6. ⛔ la fenêtre ne transmet pas la référence au gabarit : la phrase garde son emplacement vide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 107 · en échec 1 · AssertionError: expected 'Remise enregistréeRéférence du devis …' to contain 'Référence du devis : \u2066DEVIS-2026…'
+✓ P-7. la clé de la phrase de référence est absente du catalogue ARABE (parité rompue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 12 · en échec 1 · AssertionError: ar remitReference: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an a
+✓ I-1. ⛔ migration des salles : l'égalité de dates est départagée par l'identifiant DÉCROISSANT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 10 · en échec 1 · AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) } ]
+✓ I-2. ⛔ migration des salles : le déclencheur d'immuabilité vise une AUTRE colonne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 10 · en échec 1 · AssertionError: promise resolved "[]" instead of rejecting
+   [int-numerotation] code 1 · passés 17 · en échec 1 · AssertionError: promise resolved "1" instead of rejecting
+✓ I-3. ⛔ migration des salles : le numéro n'est plus UNIQUE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-numerotation] code 1 · passés 17 · en échec 1 · AssertionError: promise resolved "1" instead of rejecting
+✓ I-4. ⛔ migration des salles : la séquence repart de 1 (le `setval` ne suit pas le maximum)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 10 · en échec 1 · AssertionError: promise rejected "error: duplicate key value violates uniqu… { …(15) }" instead of resolving
+✓ I-5. ⛔ migration des devis : l'année est celle d'UTC, pour le numéro comme pour la partition (le 31/12 à 23 h 00 UTC reste l'année courante)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 10 · en échec 1 · AssertionError: expected { …(8) } to deeply equal { …(8) }
+✓ I-6. ⛔ migration des devis : l'ordre de numérotation est celui de l'IDENTIFIANT, pas celui de la création
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 10 · en échec 1 · AssertionError: expected { …(8) } to deeply equal { …(8) }
+✓ I-7. ⛔ migration des devis : les compteurs sont amorcés à maximum + 1 (un numéro serait sauté)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [int-migration] code 1 · passés 10 · en échec 1 · AssertionError: expected [ …(4) ] to deeply equal [ …(4) ]
+✓ I-8. ⛔ migration des devis : l'unicité n'est plus PARTIELLE — une révision ne peut plus reprendre le numéro de sa tête
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [int-numerotation] code 1 · passés 13 · en échec 5 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a13e37-e378-7972-9f86-d8e1829ce891/revise","tim
+   [int-numerotation#2] code 1 · passés 13 · en échec 5 · AssertionError: expected [ { status: 500, …(1) }, …(7) ] to deeply equal []
+✓ I-9. ⛔ migration des devis : la clé étrangère composite vers la tête n'est jamais posée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 10 · en échec 1 · AssertionError: expected [ 'quotes_head_reference_key' ] to deeply equal [ 'quotes_chain_head_fkey', …(1) ]
+   [int-numerotation] code 1 · passés 17 · en échec 1 · AssertionError: promise resolved "1" instead of rejecting
+✓ I-10. ⛔ magasin : le numéro se calcule « le plus grand + 1 » au lieu du compteur atomique (deux créations simultanées portent le même)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-numerotation] code 1 · passés 13 · en échec 5 · AssertionError: expected [ 201, 500, 500, 500, 500, 500, …(14) ] to deeply equal [ 201, 201, 201, 201, 201, 201, …(14) ]
+   [int-numerotation#2] code 1 · passés 13 · en échec 5 · AssertionError: expected [] to deeply equal [ 1 ]
+✓ I-11. ⛔ magasin : le compteur est incrémenté hors de la transaction (un échec ultérieur le laisse avancé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-numerotation] code 1 · passés 15 · en échec 3 · AssertionError: expected [ 2 ] to deeply equal [ 1 ]
+   [int-numerotation#2] code 1 · passés 15 · en échec 3 · AssertionError: expected [ 2 ] to deeply equal [ 1 ]
+✓ I-12. ⛔ magasin : la révision écrit le numéro 1 au lieu de celui de sa tête
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-numerotation] code 1 · passés 17 · en échec 1 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a13e39-5781-7520-adf9-4ffeb97d0fb1/revise","tim
+✓ I-13. ⛔ magasin : la date de création n'est pas l'instant que le service a lu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-numerotation] code 1 · passés 17 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ I-14. ⛔ service : l'année passée au magasin est celle d'UTC
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-numerotation] code 1 · passés 16 · en échec 2 · AssertionError: expected [ 2026, 2026 ] to deeply equal [ 2026, 2027 ]
+   [int-numerotation#2] code 1 · passés 16 · en échec 2 · AssertionError: expected [ 2026, 1, 2026, 2, 2026, 3 ] to deeply equal [ 2026, 1, 2026, 2, 2027, 1 ]
+✓ I-15. ⛔ service : l'instant de création passé n'est pas celui de l'horloge
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-numerotation] code 1 · passés 17 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ I-16. ⛔ lecture du document : la référence imprimée est celle d'un AUTRE devis (le numéro du devis + 1)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 15 · en échec 1 · AssertionError: expected 'attachment; filename="DEVIS-2026-0001…' to be 'attachment; filename="DEVIS-2026-0001…' // Object.is equality
+  empreintes : 12 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+50 garde(s) mordue(s) sur 51 cible(s) jouée(s) · 1 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 51 sur 51, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.
+

@@ -1,0 +1,161 @@
+# D333 — rang 39 : la concurrence de la numérotation, REJOUÉE CINQ FOIS sur PostgreSQL 18.4 réel (conteneur `zwadj-db`)
+# Commande (depuis apps/api) : npx vitest run -c vitest.config.int.ts quote-numbering --reporter=verbose   — cinq passes de suite, sortie brute ci-dessous (codes ANSI retirés).
+# Ce qui est mesuré : F-1 (20 créations lancées ENSEMBLE ⇒ numéros 1 à 20 distincts et consécutifs, compteur à 20), F-2 (8 créations + 8 révisions + 3 blocages ⇒ aucun interblocage),
+# F-6, F-7, F-12 ; les attentes sont celles du fichier de test, dérivées du SQL brut relu en base. Les durées ne sont PAS certifiantes (aucune fenêtre, aucun échantillonneur, D290).
+# Chaque passe : 18 tests passés sur 18, code de sortie 0.
+
+=== passe 1 03:29:41
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:3884) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié 517ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références 400ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence 280ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20 535ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent 296ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1 368ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts 457ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant 346ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année 433ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro consommé par une transaction ANNULÉE laisse un TROU ; les numéros restent strictement croissants dans l'ordre de création 266ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même inséré en direct 243ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ le prochain numéro de salle SUIT le plus grand existant (le `setval` de la migration n'est pas en retard) 256ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-7 — un échec au milieu de la transaction ne fait pas avancer le compteur > ⛔ une insertion refusée APRÈS l'incrément (créneau inexistant ⇒ clé étrangère) : le compteur et le numéro suivant n'ont pas bougé — pas de trou dans les devis 270ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-8 — le numéro d'une salle ne se modifie pas > ⛔ `UPDATE venues SET number` est REFUSÉ par la base ; une autre colonne reste modifiable 236ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`) 285ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ deux TÊTES de même (salle, année, numéro) : REFUSÉES (`quotes_reference_head_unique`) ; une VERSION 2 qui reprend le numéro de sa tête est ACCEPTÉE (le filtre `version = 1`) 264ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ les bornes de la base : un numéro de devis ≤ 0 et une année hors de 2000-9999 sont REFUSÉS (`CHECK`) 259ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe 297ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  03:29:43
+   Duration  11.07s (transform 1.08s, setup 33ms, collect 3.86s, tests 6.24s, environment 0ms, prepare 162ms)
+
+code=0
+=== passe 2 03:29:54
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:26260) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié 516ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références 380ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence 282ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20 523ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent 282ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1 371ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts 459ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant 358ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année 441ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro consommé par une transaction ANNULÉE laisse un TROU ; les numéros restent strictement croissants dans l'ordre de création 270ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même inséré en direct 240ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ le prochain numéro de salle SUIT le plus grand existant (le `setval` de la migration n'est pas en retard) 255ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-7 — un échec au milieu de la transaction ne fait pas avancer le compteur > ⛔ une insertion refusée APRÈS l'incrément (créneau inexistant ⇒ clé étrangère) : le compteur et le numéro suivant n'ont pas bougé — pas de trou dans les devis 266ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-8 — le numéro d'une salle ne se modifie pas > ⛔ `UPDATE venues SET number` est REFUSÉ par la base ; une autre colonne reste modifiable 230ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`) 279ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ deux TÊTES de même (salle, année, numéro) : REFUSÉES (`quotes_reference_head_unique`) ; une VERSION 2 qui reprend le numéro de sa tête est ACCEPTÉE (le filtre `version = 1`) 255ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ les bornes de la base : un numéro de devis ≤ 0 et une année hors de 2000-9999 sont REFUSÉS (`CHECK`) 254ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe 292ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  03:29:56
+   Duration  10.79s (transform 1.05s, setup 32ms, collect 3.80s, tests 6.18s, environment 0ms, prepare 153ms)
+
+code=0
+=== passe 3 03:30:07
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:3676) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié 523ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références 363ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence 274ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20 515ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent 297ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1 367ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts 463ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant 347ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année 428ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro consommé par une transaction ANNULÉE laisse un TROU ; les numéros restent strictement croissants dans l'ordre de création 256ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même inséré en direct 237ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ le prochain numéro de salle SUIT le plus grand existant (le `setval` de la migration n'est pas en retard) 253ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-7 — un échec au milieu de la transaction ne fait pas avancer le compteur > ⛔ une insertion refusée APRÈS l'incrément (créneau inexistant ⇒ clé étrangère) : le compteur et le numéro suivant n'ont pas bougé — pas de trou dans les devis 271ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-8 — le numéro d'une salle ne se modifie pas > ⛔ `UPDATE venues SET number` est REFUSÉ par la base ; une autre colonne reste modifiable 229ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`) 307ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ deux TÊTES de même (salle, année, numéro) : REFUSÉES (`quotes_reference_head_unique`) ; une VERSION 2 qui reprend le numéro de sa tête est ACCEPTÉE (le filtre `version = 1`) 252ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ les bornes de la base : un numéro de devis ≤ 0 et une année hors de 2000-9999 sont REFUSÉS (`CHECK`) 259ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe 284ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  03:30:09
+   Duration  10.67s (transform 990ms, setup 33ms, collect 3.70s, tests 6.14s, environment 0ms, prepare 158ms)
+
+code=0
+=== passe 4 03:30:20
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:15564) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié 530ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références 355ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence 276ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20 598ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent 321ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1 391ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts 468ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant 349ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année 440ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro consommé par une transaction ANNULÉE laisse un TROU ; les numéros restent strictement croissants dans l'ordre de création 269ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même inséré en direct 240ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ le prochain numéro de salle SUIT le plus grand existant (le `setval` de la migration n'est pas en retard) 254ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-7 — un échec au milieu de la transaction ne fait pas avancer le compteur > ⛔ une insertion refusée APRÈS l'incrément (créneau inexistant ⇒ clé étrangère) : le compteur et le numéro suivant n'ont pas bougé — pas de trou dans les devis 272ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-8 — le numéro d'une salle ne se modifie pas > ⛔ `UPDATE venues SET number` est REFUSÉ par la base ; une autre colonne reste modifiable 234ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`) 287ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ deux TÊTES de même (salle, année, numéro) : REFUSÉES (`quotes_reference_head_unique`) ; une VERSION 2 qui reprend le numéro de sa tête est ACCEPTÉE (le filtre `version = 1`) 255ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ les bornes de la base : un numéro de devis ≤ 0 et une année hors de 2000-9999 sont REFUSÉS (`CHECK`) 252ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe 281ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  03:30:21
+   Duration  10.85s (transform 1.02s, setup 32ms, collect 3.75s, tests 6.30s, environment 0ms, prepare 148ms)
+
+code=0
+=== passe 5 03:30:32
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:25348) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié 511ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références 356ms
+ ✓ test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence 276ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20 533ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent 300ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1 379ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts 480ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant 382ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année 470ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro consommé par une transaction ANNULÉE laisse un TROU ; les numéros restent strictement croissants dans l'ordre de création 260ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même inséré en direct 256ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ le prochain numéro de salle SUIT le plus grand existant (le `setval` de la migration n'est pas en retard) 268ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-7 — un échec au milieu de la transaction ne fait pas avancer le compteur > ⛔ une insertion refusée APRÈS l'incrément (créneau inexistant ⇒ clé étrangère) : le compteur et le numéro suivant n'ont pas bougé — pas de trou dans les devis 288ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-8 — le numéro d'une salle ne se modifie pas > ⛔ `UPDATE venues SET number` est REFUSÉ par la base ; une autre colonne reste modifiable 248ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`) 316ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ deux TÊTES de même (salle, année, numéro) : REFUSÉES (`quotes_reference_head_unique`) ; une VERSION 2 qui reprend le numéro de sa tête est ACCEPTÉE (le filtre `version = 1`) 264ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ les bornes de la base : un numéro de devis ≤ 0 et une année hors de 2000-9999 sont REFUSÉS (`CHECK`) 272ms
+ ✓ test/int/quote-numbering.int-spec.ts > F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe 298ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  03:30:34
+   Duration  11.04s (transform 1.05s, setup 31ms, collect 3.85s, tests 6.38s, environment 0ms, prepare 162ms)
+
+code=0

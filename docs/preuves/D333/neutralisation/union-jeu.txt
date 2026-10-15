@@ -1,0 +1,71 @@
+liste versée : 14 campagne(s) · jouées dans ce lancement : 14
+
+[1] neutralize-act-plafonds.py …
+    sortie=1 · 0 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[2] neutralize-b7.py …
+    sortie=0 · 3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 3 garde(s) mordue(s) sur 3 cible
+
+[3] neutralize-booking-status.py …
+    sortie=0 · 3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 3 garde(s) mordue(s) sur 3 cible
+
+[4] neutralize-e3d1-s8.py …
+    sortie=3 · 3 mordue(s), 0 muette(s)/erreur(s), 5 non mesurée(s) · 3 garde(s) mordue(s) sur 3 cible
+
+[5] neutralize-horloge.py …
+    sortie=1 · 0 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[6] neutralize-journey.py …
+    sortie=0 · 7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[7] neutralize-r32.py …
+    sortie=0 · 65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 65 garde(s) mordue(s) sur 65 cible
+
+[8] neutralize-r33.py --int …
+    sortie=2 · 0 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[9] neutralize-r38.py …
+    sortie=0 · 46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 46 garde(s) mordue(s) sur 46 cible
+
+[10] neutralize-r39.py --int …
+    sortie=1 · 50 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s) · 50 garde(s) mordue(s) sur 51 cible
+
+[11] neutralize-r4.py …
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[12] neutralize-s10b.py …
+    sortie=2 · 0 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[13] neutralize-s11b.py …
+    sortie=3 · 9 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s) · 9 garde(s) mordue(s) sur 9 cible
+
+[14] neutralize-solid-s3.py …
+    sortie=0 · 6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 6 garde(s) mordue(s) sur 6 cible
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-act-plafonds.py              1     0     0     0    26  — (aucun résumé écrit)
+neutralize-b7.py                        0     3     0     0   229  3 garde(s) mordue(s) sur 3 cible
+neutralize-booking-status.py            0     3     0     0    15  3 garde(s) mordue(s) sur 3 cible
+neutralize-e3d1-s8.py                   3     3     0     5    29  3 garde(s) mordue(s) sur 3 cible
+neutralize-horloge.py                   1     0     0     0    26  — (aucun résumé écrit)
+neutralize-journey.py                   0     7     0     0   311  — (aucun résumé écrit)
+neutralize-r32.py                       0    65     0     0   640  65 garde(s) mordue(s) sur 65 cible
+neutralize-r33.py --int                 2     0     1     0     0  — (aucun résumé écrit)
+neutralize-r38.py                       0    46     0     0   481  46 garde(s) mordue(s) sur 46 cible
+neutralize-r39.py --int                 1    50     1     0   564  50 garde(s) mordue(s) sur 51 cible
+neutralize-r4.py                        0     2     0     0    67  — (aucun résumé écrit)
+neutralize-s10b.py                      2     0     1     0    15  — (aucun résumé écrit)
+neutralize-s11b.py                      3     9     0     4    30  9 garde(s) mordue(s) sur 9 cible
+neutralize-solid-s3.py                  0     6     0     0    23  6 garde(s) mordue(s) sur 6 cible
+========================================================================================================================
+PARCOURU : 14 passage(s) pour 14 campagne(s) (attendu : autant que de campagnes ; `r33` et `r39` sont jouées UNE fois, avec --int) · 2455s
+MESURÉ : 194 garde(s) mordue(s) · 3 muette(s)/erreur(s) · 9 non mesurée(s) · 7 sortie(s) non nulle(s) (attendu : 0, 0, 0)
+  ⚠ neutralize-act-plafonds.py → sortie 1
+  ⚠ neutralize-e3d1-s8.py → sortie 3
+  ⚠ neutralize-horloge.py → sortie 1
+  ⚠ neutralize-r33.py --int → sortie 2
+  ⚠ neutralize-r39.py --int → sortie 1
+  ⚠ neutralize-s10b.py → sortie 2
+  ⚠ neutralize-s11b.py → sortie 3
+exit=1

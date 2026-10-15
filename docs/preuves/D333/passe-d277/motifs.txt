@@ -1,0 +1,45 @@
+# D333 — motifs de la passe D277 du rang 39 (L35-3, la numérotation des devis : lot de CODE, compteur DEUX → TROIS, méthode RENFORCÉE ; lecture adverse de D332 ; arbitrages de Ko du 15/10/2026 : condition de clôture du rang 38 LEVÉE, S-12 à S-19 ratifiées, rang 39 = L35-3).
+# Lus par balayage.py (copie du balayage de D332, mêmes mécanique et calibration ; seuls le nom du lot et ce fichier changent), jamais passés en ligne de commande (D289). Texte APLATI.
+# sens 1 — ce que le lot INVALIDE : « RANG 39 : EN ATTENTE D'ARBITRAGE DE KO » (le rang est arbitré et clos sur le code) ; « candidat désigné » (L35-3 devient le rang 39) ; « compteur DEUX » / « DEUX → TROIS » (TROIS à la clôture) ;
+#          « trois lots de code de plus sont tenables » (il en reste DEUX avant la limite de cinq) ; « condition de clôture du rang 38 » (levée) ; « À RATIFIER PAR KO » (S-12 à S-19 ratifiées) ;
+#          la séquence de D-10 « L35-2 → L35-3 → certification » (L35-3 est fait ; la certification est IMMÉDIATE, première condition de Ko).
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « peut s'ouvrir » ; « tenable » ; « avant une certification » ; « RANG 40 » ; « L35-4 » ; « ADM-1 » ; « ADM-2 » ; « lot correctif » ;
+#          « certification immédiate » ; « méthode RENFORCÉE » ; « chemin d'identité » ; « pause du chemin de l'argent » ; « à ordonner par Ko » ; « condition de clôture du rang 33 » ; « nom du client » ; « numérotation ».
+1|RANG 39 : EN ATTENTE D'ARBITRAGE DE KO
+1|RANG 39 : EN ATTENTE
+1|candidat désigné
+1|candidat DÉSIGNÉ
+1|compteur DEUX
+1|compteur **DEUX**
+1|DEUX → TROIS
+1|trois lots de code de plus
+1|trois lots de code de plus sont tenables
+1|aucun lot de code ne s'ouvre avant une certification
+1|condition de clôture du rang 38
+1|CONDITION DE CLÔTURE
+1|À RATIFIER PAR KO
+1|RATIFIER PAR KO
+1|L35-2 → L35-3
+1|la certification suit
+1|cinquième révision
+1|sixième révision
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|tenable
+2|avant une certification
+2|RANG 40
+2|L35-3
+2|L35-4
+2|ADM-1
+2|ADM-2
+2|lot correctif
+2|certification immédiate
+2|méthode RENFORCÉE
+2|chemin d'identité
+2|pause du chemin de l'argent
+2|à ordonner par Ko
+2|condition de clôture du rang 33
+2|nom du client
+2|numérotation
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D333

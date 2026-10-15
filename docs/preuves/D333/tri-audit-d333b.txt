@@ -1,0 +1,7 @@
+TRI AU CONTEXTE (humain, D333) — de l'audit scellé « b » de ce lot (`docs/preuves/D333/audit-secrets-d333b.txt`, sceau écrit par l'instrument), contre l'audit scellé « a » du même lot (`docs/preuves/D333/audit-secrets-d333a.txt`, 228 contextes ; le « b » en compte 228).
+Procédure : `docs/preuves/D299/outils/alertes-nouvelles.py <précédente> <nouvelle>` (calibrée à deux bras avant de lire : négatif 0, positif 2) ; AUCUN contexte n'est recopié ici ; et ce texte évite d'écrire le mot-clé que les alertes nomment.
+
+Corpus de « b » : 3 965 fichiers parcourus, 3 861 audités, 104 exclus par l'identité de leurs octets (1 de plus que « a » : la sortie scellée de « a » elle-même). Il a été joué AVANT le commit des pièces de clôture (vert, portes, neutralisation, concurrence, captures, passe D277) et APRÈS leur création dans l'arbre de travail.
+
+alertes ABSENTES de la précédente : 0. BILAN DU TRI : 0 sur 0 — rien à trier ; AUCUNE valeur réelle.
+Limite écrite : « b » ne couvre PAS les octets des trois `.md` d'autorité tels qu'ils seront écrits À LA CLÔTURE, ni ceux de ce fichier. Ce qui fait foi sur l'absence de VALEURS est le contrôle dédié (`docs/preuves/D333/aucune-valeur-reelle.txt`), joué sur l'arbre final.

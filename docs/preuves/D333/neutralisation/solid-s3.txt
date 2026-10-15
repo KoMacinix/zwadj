@@ -1,0 +1,14 @@
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, on prouve que les TABLEAUX sont justes, pas qu'ils sont BRANCHÉS.
+
+✓ Pré-vol : 2 mesure(s) verte(s) — politique-reservations, politique-devis
+
+✓ S3-1. ⚠ `accept` DEVIENT PERMISSIF — une demande déjà close se ré-accepte  [politique-reservations]
+✓ S3-2. Le motif cesse d'être exigé : une ACCEPTED s'annule sans un mot (D83)  [politique-reservations]
+✓ S3-3. `decline` écrit la MAUVAISE cible — le refus verrouille au lieu de libérer  [politique-reservations]
+✓ S3-4. `cancelAsPro` s'ouvre à PENDING — deux chemins pour refuser, aux effets différents  [politique-reservations]
+✓ S3-5. ⚠ `cancel` DEVIENT PERMISSIF côté devis — un devis clos se re-clôt (D121)  [politique-devis]
+✓ S3-6. `convert` s'ouvre aux chaînes CLOSES — une affaire perdue se convertit  [politique-devis]
+
+6 garde(s) mordue(s) sur 6 cible(s) RÉELLEMENT MESURÉE(S).
+

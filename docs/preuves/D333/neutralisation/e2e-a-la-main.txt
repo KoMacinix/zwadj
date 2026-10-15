@@ -1,0 +1,67 @@
+
+départ : apps/pro/src/dashboard/walkin-journey.tsx · 51266 octets · sha256 738881b0d2cdd234…
+■ E-1. la référence affichée après « Calculer le devis » n'est pas celle du serveur (l'identifiant à sa place) — la spec doit rougir sur la référence à l'écran
+   fichier apps/pro/src/dashboard/walkin-journey.tsx · ancre 1→0 · marqueur 0→1 · filtre « « PRINT », page fr, PDF ar » · code 1
+   tests en échec : 1 · résumé Playwright : ['1 failed', '1 passed (1.0m)'] · empreinte restaurée : identique
+   x  2 [chromium] › specs\r33-remise-devis.e2e.ts:88:7 › « PRINT », page fr, PDF ar : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (10.9s)
+   bloc d'échec lu (les lignes qui suivent l'en-tête « 1) ») :
+          Error: la référence du devis est à l'écran
+          Timed out 7000ms waiting for expect(locator).toBeVisible()
+          Locator: locator('bdi[dir="ltr"]').filter({ hasText: 'DEVIS-2026-0001-0001 v1' })
+          Expected: visible
+          Received: <element(s) not found>
+          Call log:
+            - la référence du devis est à l'écran with timeout 7000ms
+            - waiting for locator('bdi[dir="ltr"]').filter({ hasText: 'DEVIS-2026-0001-0001 v1' })
+            69 |   const devis = (await (await reponse).json()) as { id: string; reference: string };
+
+départ : apps/pro/src/dashboard/walkin-journey.tsx · 51266 octets · sha256 738881b0d2cdd234…
+■ E-2. le fichier téléchargé porte toujours `_fr_` — la spec « PRINT, page fr, PDF ar » doit rougir sur le nom du fichier
+   fichier apps/pro/src/dashboard/walkin-journey.tsx · ancre 1→0 · marqueur 0→1 · filtre « « PRINT », page fr, PDF ar » · code 1
+   tests en échec : 1 · résumé Playwright : ['1 failed', '1 passed (54.4s)'] · empreinte restaurée : identique
+   x  2 [chromium] › specs\r33-remise-devis.e2e.ts:88:7 › « PRINT », page fr, PDF ar : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (5.2s)
+   bloc d'échec lu (les lignes qui suivent l'en-tête « 1) ») :
+          Error: expect(received).toBe(expected) // Object.is equality
+          Expected: "DEVIS-2026-0001-0001_ar_v1.pdf"
+          Received: "DEVIS-2026-0001-0001_fr_v1.pdf"
+            118 |     expect(fichier.suggestedFilename()).toMatch(NOM_DE_FICHIER);
+            119 |     // Rang 39 (K-7) : le nom est la référence du devis (celle de la réponse de l'API), la langue CHOISIE et la version — construit par de simples chaînes.
+          > 120 |     expect(fichier.suggestedFilename()).toBe(`${reference.replace(" v1", `_${langueDuPdf}_v1`)}.pdf`);
+                |                                         ^
+            121 |     const octets = readFileSync((await fichier.path()) as string);
+            122 |     expect(octets.subarray(0, 5).toString("latin1")).toBe("%PDF-");
+
+départ : apps/pro/src/dashboard/remittance.ts · 5974 octets · sha256 99870078d87492b8…
+■ E-3. la fenêtre de remise n'a plus la ligne de référence — la spec doit rougir sur le texte de la fenêtre
+   fichier apps/pro/src/dashboard/remittance.ts · ancre 1→0 · marqueur 0→1 · filtre « « PRINT », page fr, PDF ar » · code 1
+   tests en échec : 1 · résumé Playwright : ['1 failed', '1 passed (1.0m)'] · empreinte restaurée : identique
+   x  2 [chromium] › specs\r33-remise-devis.e2e.ts:88:7 › « PRINT », page fr, PDF ar : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (12.8s)
+   bloc d'échec lu (les lignes qui suivent l'en-tête « 1) ») :
+          Error: Timed out 7000ms waiting for expect(locator).toContainText(expected)
+          Locator: getByRole('dialog', { name: 'Remise enregistrée' })
+          Expected string: "DEVIS-2026-0001-0001 v1"
+          Received string: "Remise enregistréevenue.ui.walkin.remitNeutralisee Remise enregistrée : Imprimé et remis. Le PDF du devis est téléchargé.Fermer"
+          Call log:
+            - expect.toContainText with timeout 7000ms
+            - waiting for getByRole('dialog', { name: 'Remise enregistrée' })
+              11 × locator resolved to <div role="dialog" aria-modal="true" class="dialog-panel" aria-labelledby="_r_7_-title" aria-describedby="_r_7_-desc">…</div>
+                 - unexpected value "Remise enregistréevenue.ui.walkin.remitNeutralisee Remise enregistrée : Imprimé et remis. Le PDF du devis est téléchargé.Fermer"
+
+départ : apps/api/src/venues/quote-store.prisma.ts · 14159 octets · sha256 b47a03153abfc449…
+■ E-4. le numéro du devis écrit est toujours 1 (l'API) — la spec « DEUXIÈME devis » doit rougir sur le statut de la seconde création
+   fichier apps/api/src/venues/quote-store.prisma.ts · ancre 1→0 · marqueur 0→1 · filtre « DEUXIÈME devis » · code 1
+   tests en échec : 1 · résumé Playwright : ['1 failed', '1 passed (52.6s)'] · empreinte restaurée : identique
+   x  2 [chromium] › specs\r33-remise-devis.e2e.ts:226:5 › ⛔ rang 39 — un DEUXIÈME devis de la même salle prend le numéro SUIVANT, avec le même numéro de salle et la version 1 ; la référence de la liste est celle de la création (4.0s
+   bloc d'échec lu (les lignes qui suivent l'en-tête « 1) ») :
+          Error: expect(received).toBe(expected) // Object.is equality
+          Expected: 201
+          Received: 500
+            232 |   expect(lue.reference, "la liste du pro rend la référence de la création").toBe(referencePremier);
+            233 |   const second = await apiCall("POST", `/venues/${salle.id}/quotes`, token, { eventDate: lue.eventDate, slotTemplateId: lue.slotTemplateId, guests: 90 });
+          > 234 |   expect(second.status).toBe(201);
+                |                         ^
+            235 |   const a = lire(referencePremier);
+            236 |   const b = lire((second.json as { reference: string }).reference);
+
+BILAN : E-1. : 1 échec(s), code 1, restauré oui, assertion lue oui · E-2. : 1 échec(s), code 1, restauré oui, assertion lue oui · E-3. : 1 échec(s), code 1, restauré oui, assertion lue oui · E-4. : 1 échec(s), code 1, restauré oui, assertion lue oui (attendu : ≥ 1 échec chacun, code ≠ 0, restauré oui, assertion lue oui)
+exit=0

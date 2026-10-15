@@ -1,0 +1,64 @@
+# D333 — vert — la référence, le nom du fichier, l'année d'Alger
+# état du code : CODE DE PRODUCTION = CELUI DU LOT, commité (HEAD 0342e94, arbre propre) ; MIGRATIONS = celles du lot ; TESTS = versions FINALES du lot (le double du magasin rend une ligne valide hors transaction : retouche APRÈS les rouges, déclarée)
+# journal brut (hors dépôt) : SHA-256 aa03b43a4a78138df2dee83161e55deae2a066e9c3d2c48e726b595650f7840f · 46925 octets · 193 lignes · EXTRAIT versé : verdicts du point (filtre « quote-reference.spec.ts ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 55 vert(s) · 0 rouge(s) · 0 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur UTC > ⛔ 2026-12-31T22:59:59.999Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur UTC > ⛔ 2026-12-31T23:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur UTC > ⛔ 2026-12-31T23:30:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur UTC > ⛔ 2027-01-01T00:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur UTC > ⛔ 2027-12-31T22:59:59.999Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur UTC > ⛔ 2027-12-31T23:00:00.000Z ⇒ 2028
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur UTC > ⛔ 2026-06-15T12:00:00.000Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur America/New_York > ⛔ 2026-12-31T22:59:59.999Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur America/New_York > ⛔ 2026-12-31T23:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur America/New_York > ⛔ 2026-12-31T23:30:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur America/New_York > ⛔ 2027-01-01T00:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur America/New_York > ⛔ 2027-12-31T22:59:59.999Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur America/New_York > ⛔ 2027-12-31T23:00:00.000Z ⇒ 2028
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur America/New_York > ⛔ 2026-06-15T12:00:00.000Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Pacific/Kiritimati > ⛔ 2026-12-31T22:59:59.999Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Pacific/Kiritimati > ⛔ 2026-12-31T23:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Pacific/Kiritimati > ⛔ 2026-12-31T23:30:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Pacific/Kiritimati > ⛔ 2027-01-01T00:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Pacific/Kiritimati > ⛔ 2027-12-31T22:59:59.999Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Pacific/Kiritimati > ⛔ 2027-12-31T23:00:00.000Z ⇒ 2028
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Pacific/Kiritimati > ⛔ 2026-06-15T12:00:00.000Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Asia/Tokyo > ⛔ 2026-12-31T22:59:59.999Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Asia/Tokyo > ⛔ 2026-12-31T23:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Asia/Tokyo > ⛔ 2026-12-31T23:30:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Asia/Tokyo > ⛔ 2027-01-01T00:00:00.000Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Asia/Tokyo > ⛔ 2027-12-31T22:59:59.999Z ⇒ 2027
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Asia/Tokyo > ⛔ 2027-12-31T23:00:00.000Z ⇒ 2028
+VERT   src/venues/quote-reference.spec.ts > algiersYear — hôte réglé sur Asia/Tokyo > ⛔ 2026-06-15T12:00:00.000Z ⇒ 2026
+VERT   src/venues/quote-reference.spec.ts > algiersYear — l'entrée > ⛔ une date invalide LÈVE : une année `NaN` ne devient pas une référence
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ l'exemple de R3 : année 2026, salle 1, devis 89, version 1 ⇒ `DEVIS-2026-0001-0089 v1`
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ la salle et le devis ne se confondent pas : deux valeurs DIFFÉRENTES (une fixture symétrique cacherait une interversion)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 1 ⇒ 0001 (pour la salle ET pour le devis)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9 ⇒ 0009 (pour la salle ET pour le devis)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10 ⇒ 0010 (pour la salle ET pour le devis)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 999 ⇒ 0999 (pour la salle ET pour le devis)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9999 ⇒ 9999 (pour la salle ET pour le devis)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10000 ⇒ 10000 (pour la salle ET pour le devis)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 123456 ⇒ 123456 (pour la salle ET pour le devis)
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⚠ la version s'écrit telle quelle, sans remplissage : `v1`, `v2`, `v12`
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une révision garde l'année et les deux numéros : SEULE la version change
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : NaN LÈVE, pour chacune des quatre parties
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : zéro LÈVE, pour chacune des quatre parties
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : négatif LÈVE, pour chacune des quatre parties
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : décimal LÈVE, pour chacune des quatre parties
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : infini LÈVE, pour chacune des quatre parties
+VERT   src/common/quote-reference.spec.ts > formatQuoteReference — la forme de R3 > ⛔ une année hors de la plage de la base (2000 à 9999) LÈVE aussi — la base la refuserait par son `CHECK`
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ l'exemple de R3 : `DEVIS-2026-0001-0089_fr_v1.pdf`, et `_ar_` pour l'arabe
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ pour CHAQUE langue de l'autorité (`QUOTE_DOCUMENT_LOCALES`) et chaque version : base de la référence + langue + version, construits SANS la fonction testée
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ la langue et la version ne se confondent pas dans le nom : `_fr_v2` ≠ `_ar_v2` ≠ `_fr_v1`
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ aucun caractère à risque dans un nom de fichier : lettres latines, chiffres, `-`, `_` et le point de l'extension
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : l'ancienne forme (huit caractères de l'identifiant)
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : une chaîne vide
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : sans version
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : moins de quatre chiffres
+VERT   src/common/quote-reference.spec.ts > quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : un nom de fichier injecté
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  9 passed (9) | Tests  184 passed (184)

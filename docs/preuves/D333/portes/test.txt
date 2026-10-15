@@ -1,0 +1,14 @@
+# D333 — porte `test`
+# HEAD au lancement : 0342e94 (arbre de travail propre : `git status` vide avant la passe)
+# code de sortie RÉEL de la commande : 0 · durée : 82 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 0f2a647090120d58ec1561b9ede0b4e872d37ec51f3a92ac83ade57bc5c2e491 · 88962 octets · 1555 lignes
+
+parcouru : 1555 ligne(s)
+résumés vitest lus : 4 (attendu : 4)
+  résumé 1 : fichiers passés 5 · en échec 0 · total 5 ; tests passés 48 · en échec 0 · total 48
+  résumé 2 : fichiers passés 67 · en échec 0 · total 67 ; tests passés 881 · en échec 0 · total 881
+  résumé 3 : fichiers passés 29 · en échec 0 · total 29 ; tests passés 372 · en échec 0 · total 372
+  résumé 4 : fichiers passés 40 · en échec 0 · total 40 ; tests passés 570 · en échec 0 · total 570
+base de D332 (LUE dans docs/preuves/D332/portes/test.txt) : [(5, 48), (65, 808), (29, 372), (40, 562)]
+mesuré : [(5, 48), (67, 881), (29, 372), (40, 570)]
+somme : 1871 tests / 141 fichiers ; en échec : 0 · base 1790 tests / 139 fichiers · écart +81 tests, +2 fichiers

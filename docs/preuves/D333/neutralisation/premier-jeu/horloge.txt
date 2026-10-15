@@ -1,0 +1,21 @@
+sauvegarde trouvee au demarrage : arbre restaure avant de commencer
+temoin (aucune mutation)
+
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-horloge.py", line 94, in <module>
+    assert joue() == 0, "le temoin doit etre VERT avant toute mutation"
+           ~~~~^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-horloge.py", line 67, in joue
+    assert total and int(total.group(1)) == NB_TESTS_ATTENDU, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ERREUR DE SCRIPT : 102 tests attendus dans src/dashboard/walkin-journey.test.tsx. Un filtre qui ne correspond plus rend 0 et se lit comme « la garde est inutile » (D144).
+ur le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  1115ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  1048ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  642ms
+
+ Test Files  1 passed (1)
+      Tests  108 passed (108)
+   Start at  01:49:08
+   Duration  23.54s (transform 855ms, setup 204ms, collect 1.61s, tests 20.31s, environment 972ms, prepare 151ms)
+
+

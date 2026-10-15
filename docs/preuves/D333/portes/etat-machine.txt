@@ -1,0 +1,10 @@
+# D333 — état de la machine à la fin du paquet de portes (relevé le 15/10/2026 à 03:19:43, par PowerShell, juste après `test:e2e`)
+# ⚠ CE PAQUET N'EST PAS UNE FENÊTRE CERTIFIANTE : ce lot de code PRÉCÈDE sa certification (méthode RENFORCÉE : la certification suit, première condition de Ko du 14/10/2026) ; aucune durée de `portes/*.txt` n'est comparée à une autre, et aucune ne se lit comme une mesure du code (D290).
+
+alimentation : PowerOnline=True · Charging=False · Discharging=False   → SECTEUR, pas batterie
+RAM libre : 4 703 Mo sur 16 095 Mo   (relevée AVANT la passe : 4 586 Mo)  → inférieure à la barre d'une fenêtre certifiante : c'est une raison de plus de ne rien certifier ici
+% Processor Performance : 80,5 (une lecture au repos après la passe ; « > 100 sous charge ⇒ non bridé », la réciproque n'est pas démontrée — D290)
+processus : msedge=5 (le navigateur du poste de Ko, ouvert avant la session) · aucun `chrome`, aucun `headless_shell`, aucun `node` à la fin de la passe ; avant la passe : aucun serveur sur les ports 3100 et 3101
+
+# Ce que ce relevé ne dit PAS : l'état au début de chaque porte (deux relevés, avant et après) ; la RAM pendant `test:int` et `test:e2e` (aucun échantillonneur n'a tourné) ; l'état des fichiers `.env` (le contrôle de D330 est celui d'une CERTIFICATION, pas d'un paquet de portes).
+# Docker Desktop tournait déjà (conteneur `zwadj-db` démarré depuis des heures, PostgreSQL 18.4) ; la session ne l'a pas démarré.

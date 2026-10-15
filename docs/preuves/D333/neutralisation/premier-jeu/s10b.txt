@@ -1,0 +1,5 @@
+✓ Pré-vol : 3 mesure(s) verte(s) — service, adaptateur, types
+
+✗ S10b1-1. ⛔ LE VERROU DE CHAÎNE DISPARAÎT — deux révisions perdent une version
+   ERREUR DE SCRIPT : 0 occurrence(s), 1 attendue(s) dans apps/api/src/venues/quote-store.prisma.ts
+

@@ -1,0 +1,89 @@
+# D333 — vert — la numérotation sur PostgreSQL réel
+# état du code : CODE DE PRODUCTION = CELUI DU LOT, commité (HEAD 0342e94, arbre propre) ; MIGRATIONS = celles du lot ; TESTS = versions FINALES du lot (le double du magasin rend une ligne valide hors transaction : retouche APRÈS les rouges, déclarée)
+# journal brut (hors dépôt) : SHA-256 bd211e7483546136d95ec37415a9f92045eb16f6083abaec523ca1ae06d0438c · 21703 octets · 95 lignes · EXTRAIT versé : verdicts du point (filtre « test/int/ ») et, pour chaque échec, la 1ʳᵉ ligne de son bloc et le cadre de code
+# lecture (D304, D316) : une MORSURE est un échec dont la 1ʳᵉ ligne du bloc est une `AssertionError` ; `TestingLibraryElementError`, `TypeError`, `Error: Test timed out` n'en sont pas
+# comptes du point : 80 vert(s) · 0 rouge(s) · 0 morsure(s) par assertion native · 0 échec(s) qui ne sont QUE la garde de console (le test a passé ses assertions ; le bruit vient d'un test interrompu avant lui) (attendu : toutes les rouges, sauf un composant NEUF dont l'import n'existe pas encore)
+# blocs FAIL supplémentaires d'un même titre dans le journal entier : 0 (la garde de console de `test-setup.ts`, conséquence d'un test interrompu — pas une cause)
+
+VERT   test/int/quotes.int-spec.ts > Création et chaîne de versions > un devis naît en DRAFT, v1, sa propre racine de chaîne
+VERT   test/int/quotes.int-spec.ts > Création et chaîne de versions > ⚠ `validUntil` n'est PLUS accepté : le schéma est strict (D160)
+VERT   test/int/quotes.int-spec.ts > Création et chaîne de versions > le devis existe SANS client : le pro le tape pour quelqu'un qui hésite
+VERT   test/int/quotes.int-spec.ts > Création et chaîne de versions > une révision crée la v2 de la MÊME chaîne, en DRAFT, sans rien remplacer
+VERT   test/int/quotes.int-spec.ts > Remise du devis (D160) > enregistre le canal et l'horodatage SANS changer le statut
+VERT   test/int/quotes.int-spec.ts > Remise du devis (D160) > est RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises
+VERT   test/int/quotes.int-spec.ts > Remise du devis (D160) > refuse un canal HORS LISTE — le jeu de valeurs a une seule autorité
+VERT   test/int/quotes.int-spec.ts > Remise du devis (D160) > ⚠ un devis REFUSÉ ne se remet plus au client
+VERT   test/int/quotes.int-spec.ts > Remise du devis (D160) > deux remises SIMULTANÉES ne rendent jamais 500
+VERT   test/int/quotes.int-spec.ts > Q2 — les statuts LEGACY ne sont plus écrits > le parcours complet ne laisse aucun SENT ni SUPERSEDED en base
+VERT   test/int/quotes.int-spec.ts > Statuts hérités — lisibles, jamais réécrits > l'index partiel des SENT est TOUJOURS EN BASE, et mord encore
+VERT   test/int/quotes.int-spec.ts > Statuts hérités — lisibles, jamais réécrits > un devis LEGACY en SENT reste LISIBLE et manipulable
+VERT   test/int/quotes.int-spec.ts > Statuts hérités — lisibles, jamais réécrits > SUPERSEDED reste distinct de CANCELLED, et le versionnement est CONSERVÉ
+VERT   test/int/quotes.int-spec.ts > Concurrence (D121) > D121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500
+VERT   test/int/quotes.int-spec.ts > Concurrence (D121) > D121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500
+VERT   test/int/quotes.int-spec.ts > Concurrence (D121) > deux RÉVISIONS simultanées de la même chaîne : aucun doublon de version
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > ⚠ un BROUILLON SE CONVERTIT, sans remise préalable (D160)
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > ⚠ D135 — un client SANS e-mail se convertit : la borne Zod était plus stricte que la base
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > ⚠ D135 — mais le téléphone reste EXIGÉ : l'assouplir ne l'a pas emporté
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > convertir crée une demande PENDING, et le devis NE BOUGE PAS
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > une PENDING ne verrouille rien : deux devis peuvent viser la MÊME date
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > un devis ne se convertit qu'UNE fois : réviser, pas reconvertir
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > les LIGNES du devis deviennent les lignes de la demande
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > une CLÔTURE n'est pas une supersession
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > ⚠ l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité DECLINED
+VERT   test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > une chaîne CLOSE ne se révise plus
+VERT   test/int/quotes.int-spec.ts > Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ `valid_until` n'existe plus dans la table
+VERT   test/int/quotes.int-spec.ts > Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ les DEUX index partiels, eux, sont TOUJOURS là
+VERT   test/int/quotes.int-spec.ts > Expiration — la colonne a été SUPPRIMÉE (Q4) > le DTO ne porte ni `isExpired` ni `validUntil`
+VERT   test/int/quotes.int-spec.ts > Expiration — la colonne a été SUPPRIMÉE (Q4) > une conversion aboutit, sans qu'aucune date de validité n'intervienne
+VERT   test/int/quotes.int-spec.ts > Taux de transformation — la raison d'être de la table > compte des CHAÎNES, pas des versions : trois révisions sont UNE affaire
+VERT   test/int/quotes.int-spec.ts > Taux de transformation — la raison d'être de la table > un devis qui n'aboutit PAS existe quand même — c'était impossible avant
+VERT   test/int/quotes.int-spec.ts > Taux de transformation — la raison d'être de la table > un devis jamais REMIS ne compte pas
+VERT   test/int/quotes.int-spec.ts > Taux de transformation — la raison d'être de la table > ⚠ un devis converti SANS remise n'entre PAS dans l'entonnoir
+VERT   test/int/quotes.int-spec.ts > Taux de transformation — la raison d'être de la table > ⚠ une ligne HÉRITÉE (sentAt posé, sentVia nul) sort du dénominateur
+VERT   test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > le propriétaire télécharge : application/pdf, pièce jointe, non mise en cache, langue appliquée — et la ligne du devis est INCHANGÉE (la route n'écrit rien)
+VERT   test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > le VRAI moteur : un PDF valide, la police du dépôt embarquée et seule
+VERT   test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > ⛔ un AUTRE pro est refusé en 404 indistinct — rien n'est rendu : un identifiant deviné ne livre pas les données d'un client
+VERT   test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404
+VERT   test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > la langue de repli est OBLIGATOIRE et se limite à fr / ar : absente ou autre, 400
+VERT   test/int/quote-document.int-spec.ts > ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > après une révision, le PDF de la v1 est REFUSÉ (409, `latestVersion` 2) et celui de la v2 est servi
+VERT   test/int/quote-document.int-spec.ts > ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > une chaîne dont la dernière version est ANNULÉE rend le 409 de statut ; une ANCIENNE version annulée reste « pas la version active » (ordre des refus)
+VERT   test/int/quote-document.int-spec.ts > ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 1 — l'acompte stocké, qui n'est PAS 30 % du total, s'imprime tel quel
+VERT   test/int/quote-document.int-spec.ts > ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 2 — un changement des RÈGLES DE PRIX APRÈS le devis ne change PAS le montant imprimé (et un NOUVEAU devis, lui, suit les nouvelles règles)
+VERT   test/int/quote-document.int-spec.ts > La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client > ⛔ un devis lié à un client `ar`, demandé en `fr` : PDF FRANÇAIS (l'ancienne règle de D326 rendait l'arabe) — et le HTML porte le nom du client
+VERT   test/int/quote-document.int-spec.ts > La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client > dans les deux sens, avec ou sans client lié : `Content-Language` et la langue du HTML sont la langue DEMANDÉE
+VERT   test/int/quote-document.int-spec.ts > rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le détail suit le TYPE : « par invité » et « à l'unité » la quantité stockée, « à paliers » le nom du palier choisi (FR et AR), « fixe » rien — et chaque montant est celui du devis
+VERT   test/int/quote-document.int-spec.ts > rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > ⛔ le nom du palier est celui de la LIGNE stockée : renommer le palier dans le catalogue APRÈS le devis ne change PAS le PDF (P-3)
+VERT   test/int/quote-document.int-spec.ts > rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le VRAI moteur rend ce devis dans les deux langues : un PDF valide, la police du dépôt embarquée et seule
+VERT   test/int/quote-document.int-spec.ts > Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > chaque canal de la liste d'autorité est accepté ET relu en base : un canal accepté par le type mais refusé par la base casserait ici
+VERT   test/int/quote-document.int-spec.ts > Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > l'entonnoir COMPTE le canal e-mail : un devis remis par e-mail entre dans `delivered`
+VERT   test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié
+VERT   test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références
+VERT   test/int/quote-numbering.int-spec.ts > K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence
+VERT   test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20
+VERT   test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent
+VERT   test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1
+VERT   test/int/quote-numbering.int-spec.ts > F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts
+VERT   test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant
+VERT   test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année
+VERT   test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro consommé par une transaction ANNULÉE laisse un TROU ; les numéros restent strictement croissants dans l'ordre de création
+VERT   test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même inséré en direct
+VERT   test/int/quote-numbering.int-spec.ts > F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ le prochain numéro de salle SUIT le plus grand existant (le `setval` de la migration n'est pas en retard)
+VERT   test/int/quote-numbering.int-spec.ts > F-7 — un échec au milieu de la transaction ne fait pas avancer le compteur > ⛔ une insertion refusée APRÈS l'incrément (créneau inexistant ⇒ clé étrangère) : le compteur et le numéro suivant n'ont pas bougé — pas de trou dans les devis
+VERT   test/int/quote-numbering.int-spec.ts > F-8 — le numéro d'une salle ne se modifie pas > ⛔ `UPDATE venues SET number` est REFUSÉ par la base ; une autre colonne reste modifiable
+VERT   test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`)
+VERT   test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ deux TÊTES de même (salle, année, numéro) : REFUSÉES (`quotes_reference_head_unique`) ; une VERSION 2 qui reprend le numéro de sa tête est ACCEPTÉE (le filtre `version = 1`)
+VERT   test/int/quote-numbering.int-spec.ts > F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ les bornes de la base : un numéro de devis ≤ 0 et une année hors de 2000-9999 sont REFUSÉS (`CHECK`)
+VERT   test/int/quote-numbering.int-spec.ts > F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe
+VERT   test/int/migration-non-empty.int-spec.ts > B9 — la dernière migration sur une base NON VIDE (D123) > prépare une base à l'avant-dernière migration, puis la sème
+VERT   test/int/migration-non-empty.int-spec.ts > B9 — la dernière migration sur une base NON VIDE (D123) > ⛔ D282 — la dernière migration REFUSE une base incohérente, et ne laisse RIEN
+VERT   test/int/migration-non-empty.int-spec.ts > B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ E3d-1 — l'index EXISTE ; son départage n'est plus mesurable ici (D282)
+VERT   test/int/migration-non-empty.int-spec.ts > B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ Q4 — la colonne a disparu, et RIEN d'autre
+VERT   test/int/migration-non-empty.int-spec.ts > B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ R4 — un BROUILLON JAMAIS REMIS peut être clos : les DEUX défauts sont fermés
+VERT   test/int/migration-non-empty.int-spec.ts > B9 — la dernière migration sur une base NON VIDE (D123) > les objets du lot PRÉCÉDENT n'ont pas bougé, et aucun canal n'a été inventé
+VERT   test/int/migration-non-empty.int-spec.ts > B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ l'index partiel des SENT tient encore — la migration ne l'a pas emporté
+VERT   test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot
+VERT   test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans l'ordre de création, départage par identifiant ; la séquence repart du maximum
+VERT   test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER) dans l'ordre de création ; les révisions recopient leur tête ; les compteurs valent le maximum
+VERT   test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle
+
+RÉSUMÉ DU JOURNAL ENTIER (tous les points du journal) : Test Files  4 passed (4) | Tests  80 passed (80)

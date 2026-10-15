@@ -1,0 +1,13 @@
+MESURE référence fr 1280px : serveur « DEVIS-2026-0001-0001 v1 » · à l'écran « Référence DEVIS-2026-0001-0001 v1 » · boîte 654px · déborde false · direction ltr · page déborde false
+MESURE fichier fr 1280px : « DEVIS-2026-0001-0001_fr_v1.pdf »
+MESURE remise fr 1280px : déborde false · texte « Remise enregistréeRéférence du devis : ⁦DEVIS-2026-0001-0001 v1⁩. Remise enregistrée : Imprimé et remis. Le PDF du devis est téléchargé.Fermer »
+MESURE référence fr 360px : serveur « DEVIS-2026-0001-0002 v1 » · à l'écran « Référence DEVIS-2026-0001-0002 v1 » · boîte 272px · déborde false · direction ltr · page déborde false
+MESURE fichier fr 360px : « DEVIS-2026-0001-0002_fr_v1.pdf »
+MESURE remise fr 360px : déborde false · texte « Remise enregistréeRéférence du devis : ⁦DEVIS-2026-0001-0002 v1⁩. Remise enregistrée : Imprimé et remis. Le PDF du devis est téléchargé.Fermer »
+MESURE référence ar 1280px : serveur « DEVIS-2026-0001-0003 v1 » · à l'écran « المرجع DEVIS-2026-0001-0003 v1 » · boîte 654px · déborde false · direction rtl · page déborde false
+MESURE fichier ar 1280px : « DEVIS-2026-0001-0003_ar_v1.pdf »
+MESURE remise ar 1280px : déborde false · texte « سُجِّل التسليممرجع العرض: ⁦DEVIS-2026-0001-0003 v1⁩. سُجِّل التسليم: مطبوع ومُسلَّم. نُزِّل ملف PDF الخاص بالعرض.إغلاق »
+MESURE référence ar 360px : serveur « DEVIS-2026-0001-0004 v1 » · à l'écran « المرجع DEVIS-2026-0001-0004 v1 » · boîte 272px · déborde false · direction rtl · page déborde false
+MESURE fichier ar 360px : « DEVIS-2026-0001-0004_ar_v1.pdf »
+MESURE remise ar 360px : déborde false · texte « سُجِّل التسليممرجع العرض: ⁦DEVIS-2026-0001-0004 v1⁩. سُجِّل التسليم: مطبوع ومُسلَّم. نُزِّل ملف PDF الخاص بالعرض.إغلاق »
+  1 passed (51.5s)
