@@ -1996,6 +1996,18 @@ Lot D334. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 
 ⇒ ~~**RANG 40 : EN ATTENTE D'ARBITRAGE DE KO**~~ *(périmé le 15/10/2026 — voir l'annotation à la ligne ci-dessus)* ⇒ **RANG 40 : OUVERT (D334) — ARBITRÉ PAR KO LE 15/10/2026 : la session adverse de L35-3, puis la certification qui couvre D331, D332 et D333** — lot **DOCUMENTAIRE** ; compteur **TROIS** à l'entrée, **ZÉRO** si la marque est posée. Point d'entrée : « PROCHAIN LOT — rang 40 », plus bas. ⛔ *(D334, fin de session, 15/10/2026 : la session adverse de L35-3 est **FAITE — aucun défaut bloquant** ; le protocole de la certification est commité et poussé ; **la passe a été tentée et n'a pas démarré** (RAM sous la barre) ⇒ **RANG 40 : TOUJOURS OUVERT, compteur TROIS, aucune marque ; « RANG 41 : EN ATTENTE D'ARBITRAGE DE KO » n'est PAS écrit** — il ne s'écrit qu'à la clôture. Ce que Ko doit faire : libérer environ 1 Go de RAM puis ouvrir une nouvelle session de reprise. « ÉTAT DE FIN DE SESSION DU 15/10/2026 », plus bas.)*
 
+⛔ **ARBITRÉ LE 17/10/2026 PAR KO — LA REPRISE DU RANG 40, mot pour mot (première écriture d'autorité du lot D335 ; la table d'ouverture, la sortie de la lecture adverse de D334 et la première passe D277 l'ont précédée dans `git`) :**
+
+**Texte proposé par le relecteur, adopté par Ko tel quel :**
+
+« 1. Le 15/10, le texte du rang 40 dit que j'ai joué les six scénarios de la numérotation ; la session adverse a relevé que ma base de développement n'avait pas les deux migrations de L35-3 (NB-5). Le 17/10, j'ai appliqué les migrations (`prisma migrate deploy`) et rejoué les six scénarios : ils sont bons.
+2. Je ratifie les décisions S-34 à S-39 de la session D334.
+3. NB-1 : la remise à niveau des compteurs de devis entre dans la procédure de restauration d'une sauvegarde (NB-3), piste du déploiement ; l'entrée de code reste ouverte, à ordonner par moi.
+4. NB-6 : un devis pour une date d'événement antérieure à aujourd'hui (heure d'Alger) sera refusé ; petit lot de code, à placer par moi.
+5. J'ai libéré la mémoire de mon poste ; la passe se rejoue sous le protocole de D334. »
+
+Lot D335. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est de Ko** (patron de D295, D327, D328 à D334) : la session a reçu ce texte, elle ne s'est rien attribué. ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que ce texte. Les décisions du relecteur, les annotations des sites que ces cinq points rendent périmés (dont « la condition de clôture du rang 39 est LEVÉE » et NB-5), la table recopiée et les ratifications suivent dans des commits postérieurs.
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
