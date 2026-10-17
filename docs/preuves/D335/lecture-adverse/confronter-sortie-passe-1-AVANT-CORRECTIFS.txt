@@ -1,0 +1,148 @@
+D335 — LECTURE ADVERSE DE D334 · instrument : docs/preuves/D335/lecture-adverse/confronter-d334.py
+SHA fixés : départ 83929a6 · clôture de D334 b92dc7a · table d'ouverture de ce lot a9695c3 · protocole 6e78b23 · harnais D324 257471d / D329 4202dd4
+
+CALIBRATION DES EXTRACTEURS (deux bras chacun ; abandon si un bras manque)
+   ✓ calibration chemins_declares, vrai — 4 chemins dont deux dans un même jeton (« , »), `git` écarté : {'ZWADJ_CONTINUITE.md', 'docs/preuves/D1/c.txt', 'docs/preuves/D1/d.txt', 'a/b.py'} (attendu {'ZWADJ_CONTINUITE.md', 'docs/preuves/D1/c.txt', 'docs/preuves/D1/d.txt', 'a/b.py'})
+   ✓ calibration chemins_declares, faux — aucun chemin entre accents graves : set() (attendu set())
+   ✓ calibration section, vrai — le titre A et ses deux lignes, B exclu : ['### A', 'l1', 'l2'] (attendu ['### A', 'l1', 'l2'])
+   ✓ calibration section, faux — un titre absent rend [] : [] (attendu [])
+   ✓ calibration ajout_en_fin_seulement, vrai — « b » devient « b suite » : [True] (attendu [True])
+   ✓ calibration ajout_en_fin_seulement, faux — un nombre changé n'est PAS un ajout en fin de ligne : [False] (attendu [False])
+   ✓ calibration ecarts_de_lignes, vrai — deux listes identiques : aucun écart : [] (attendu [])
+   ✓ calibration blocs_mutations, vrai — deux blocs (CAL+ MORD, S-2 MUETTE) ; la mention au milieu d'une ligne ne compte pas : [('CAL+', 'MORD'), ('S-2', 'MUETTE')] (attendu [('CAL+', 'MORD'), ('S-2', 'MUETTE')])
+   ✓ calibration blocs_mutations, faux — une sortie sans bloc rend [] : [] (attendu [])
+   ✓ calibration canaux, vrai — trois lignes de canal dans CAL+ et S-2, dont « ÉCHEC SANS ASSERTION » : [('int', 'MORD'), ('sondes', 'MUETTE')] (attendu [('int', 'MORD'), ('sondes', 'MUETTE')])
+   ✓ calibration canaux, vrai — le statut ÉCHEC SANS ASSERTION est lu : [('unit-api', 'MUETTE'), ('int', 'ÉCHEC SANS ASSERTION')] (attendu [('unit-api', 'MUETTE'), ('int', 'ÉCHEC SANS ASSERTION')])
+   ✓ calibration canaux, faux — un bloc sans ligne de canal rend [] : [] (attendu [])
+   ✓ calibration mord_par_assertion, vrai — « → AssertionError » lu : True (attendu True)
+   ✓ calibration mord_par_assertion, faux — « → error: boom » n'est pas une assertion : False (attendu False)
+   ✓ calibration points_ok, vrai — deux ✓ et un ✗ en début de ligne : (2, 1) (attendu (2, 1))
+   ✓ calibration points_ok, faux — des ✓ au milieu d'une ligne ne comptent pas : (0, 0) (attendu (0, 0))
+   ✓ calibration bilan, vrai — « == BILAN : 29 ✓ · 0 ✗ [] · 0 constat(s) [] » : (29, 0, 0) (attendu (29, 0, 0))
+   ✓ calibration bilan, faux — une sortie sans bilan rend None : None (attendu None)
+   ✓ calibration lignes_P, vrai — une ligne P bien formée : {'argon2': ('tout', '4.83')} (attendu {'argon2': ('tout', '4.83')})
+   ✓ calibration lignes_P, faux — un commentaire seul rend {} : {} (attendu {})
+   ✓ calibration epoch_local, vrai — 13:16:44 (UTC−4) est 17:16:44 UTC : 1792084604 (attendu 1792084604)
+   ✓ calibration epoch_local, faux — 13:16:44 n'est PAS 13:16:44 UTC : False (attendu False)
+   ✓ calibration push_epochs, vrai — la ligne « update by push » est lue : {'6e78b23': 1792084593} (attendu {'6e78b23': 1792084593})
+   ✓ calibration push_epochs, faux — une ligne « fetch » n'est PAS une poussée : {} (attendu {})
+   ✓ calibration numstat_blobs, vrai — une ligne ajoutée, une retirée : (1, 1) (attendu (1, 1))
+   ✓ calibration numstat_blobs, faux — deux contenus identiques : (0, 0) : (0, 0) (attendu (0, 0))
+   ✓ calibration est_code, vrai — un fichier de l'application est du code : True (attendu True)
+   ✓ calibration est_code, faux — une pièce et un fichier d'autorité n'en sont pas : (False, False) (attendu (False, False))
+   ✓ calibration noms_diff, vrai — une plage qui change du code en rend : True (attendu True)
+   ✓ calibration noms_diff, faux — une plage vide (un SHA contre lui-même) rend [] : [] (attendu [])
+   ✓ calibration migrations_du_depot, faux — `migration_lock.toml` n'est PAS une migration : False (attendu False)
+   ✓ calibration migrations_du_depot, vrai — la migration A de L35-3 en est une : True (attendu True)
+   calibration des extracteurs : 32 bras joués, 0 manqué(s)
+
+FAMILLE G — git : l'ordre des commits, la provenance du code, la déclaration des fichiers
+✗ G1        les commits de D334 (rev-list 83929a6..b92dc7a) = les 12 SHA de la table « ordre des commits » du point d'entrée + le 13ᵉ « (celui-ci) » = b92dc7a — 13 commits parcourus, 114 lignes de table lues — attendu ['91528f5', '11b3879', '245cf70', 'ca882e8', 'c8222d4', 'ed5a87e', 'ce1a5f1', 'fc797f7', 'd6d376a', '6e78b23', 'a642123', '2385da7', 'a5475fd', 'c05950f', '9740d40', 'a7760e3', '53119ee', 'f3ae95d', 'c24272d', '01b0240', 'e644a98', '83b2892', '78e541b', 'fd451fc', 'edfe644', '21c9366', '52c0a2b', '0b8d8ea', '1640dbe', '63ced15', '7d908cf', 'e375a41', '691a6a8', 'd19935c', '1b11e41', 'ea213c0', '89a0fff', 'f1e6443', '8245d58', 'a5475fd', 'c05950f', '9740d40', 'a7760e3', '53119ee', 'f3ae95d', 'c24272d', '01b0240', 'ae02132', 'f61fa44', '330762f', 'a10e800', '14eb34b', '62b9309', 'e81d115', '0342e94', '34b0f48', 'c6a3f99', 'bd13bb0', 'e644a98', '83b2892', '78e541b', 'fd451fc', '2c90808', '6ca5287', '35d6efe', '9d54357', '4ca7b9f', '1f7b85f', '3eb9278', '70c361e', '68ed478', '9057754', '970b7fa', 'b13cc5c', '58ad55f', '6e95e1c', 'e58b373', '386ce97', '5e007fc', 'edfe644', '21c9366', '52c0a2b', '0b8d8ea', '1640dbe', '63ced15', '7d908cf', 'e375a41', '691a6a8', 'd19935c', '1b11e41', 'ea213c0', '89a0fff', 'f1e6443', '8245d58', '12de7c2', 'e5b4311', '17e0935', 'bad4187', '739c941', '18852d6', 'ab2c079', '77de612', 'b355733', '97a5402', '152419b', '7e8f948', 'f13f751', 'f257f5f', '36be635', '3a7d0ae', '360b739', '220557e', '630a6c5', 'd96cbe0', 'b92dc7a'] · mesuré ['91528f5', '11b3879', '245cf70', 'ca882e8', 'c8222d4', 'ed5a87e', 'ce1a5f1', 'fc797f7', 'd6d376a', '6e78b23', 'a642123', '2385da7', 'b92dc7a']
+✓ G2        le PREMIER commit de D334 ne contient que `docs/preuves/D334/table-ouverture.md` — attendu ['docs/preuves/D334/table-ouverture.md'] · mesuré ['docs/preuves/D334/table-ouverture.md']
+✓ G3        avant la première écriture d'autorité (ca882e8), aucun des 3 commits (91528f5, 11b3879, 245cf70) ne touche un `.md` d'autorité ; la lecture adverse (11b3879) et la première passe D277 (245cf70) y sont — attendu ([], True, True) · mesuré ([], True, True)
+✓ G4        la première écriture d'autorité (ca882e8) ne contient que `ZWADJ_CONTINUITE.md` — attendu ['ZWADJ_CONTINUITE.md'] · mesuré ['ZWADJ_CONTINUITE.md']
+✓ G5        ca882e8 n'efface RIEN (0 ligne retirée) : c'est un ajout seul — attendu '0' · mesuré '0'
+✗ G6        le texte de Ko (quatre points) écrit par ca882e8 est présent, MOT POUR MOT, à la clôture (b92dc7a) — texte comparé aplati — attendu (True, True) · mesuré (False, False)
+✓ G7a       l'extension ed5a87e précède le commit ce1a5f1 (la session adverse) et déclare ses 14 fichiers en chemins complets — attendu (True, []) · mesuré (True, [])
+✓ G7b       l'extension fc797f7 précède le commit d6d376a (l'étape 0) et déclare ses 22 fichiers en chemins complets — attendu (True, []) · mesuré (True, [])
+✓ G7c       l'extension a642123 précède le commit 2385da7 (la tentative de passe) et déclare ses 9 fichiers en chemins complets — attendu (True, []) · mesuré (True, [])
+✓ G8a       les 6 fichiers du commit 11b3879 sont déclarés par la table d'ouverture (premier commit) — attendu [] · mesuré []
+✓ G8b       les 3 fichiers du commit 245cf70 sont déclarés par la table d'ouverture (premier commit) — attendu [] · mesuré []
+✓ G9        TOUT le diff 83929a6..b92dc7a (61 fichiers parcourus) = les trois `.md` d'autorité + des chemins déclarés par la table finale (extensions comprises) — attendu [] · mesuré []
+✓ G10       le code mesuré est celui de 83929a6 : le diff 83929a6..b92dc7a (61 fichiers parcourus) ne contient, hors `docs/preuves/`, que les trois `.md` d'autorité — attendu [] · mesuré []
+✓ G11       …et celui de 0342e94 (dernier commit de D333 qui touche du code) : le diff 0342e94..b92dc7a (119 fichiers parcourus) ne contient aucun fichier de code — attendu [] · mesuré []
+✓ G12       « HEAD aura avancé de commits de documentation seulement » : le diff 6e78b23..a9695c3 (17 fichiers parcourus) ne contient aucun fichier de code ni de harnais — attendu [] · mesuré []
+✓ G13       le protocole (6e78b23) est commité avant la tentative (heure du commit < première ligne de la progression de la passe) — attendu True · mesuré True
+✓ G14       …et POUSSÉ avant la tentative (reflog de `origin/main` : « update by push » de 6e78b23 antérieur à la première ligne de la progression) — attendu True · mesuré True
+             (commit -15 s, poussée -11 s par rapport à la première ligne de la progression ; heures locales du poste, UTC−4)
+✓ G15       les pièces de la tentative (2385da7) ne sont pas antérieures à la poussée du protocole — attendu True · mesuré True
+
+FAMILLE P — le protocole de la certification, comparé LIGNE À LIGNE entre le commit qui l'a posé et la clôture
+✓ P1        la section du protocole existe aux deux SHA — lignes parcourues : 43 (à 6e78b23) et 43 (à b92dc7a) — attendu (True, True) · mesuré (True, True)
+✓ P2        TOUT écart de la section entre 6e78b23 et b92dc7a est un AJOUT EN FIN DE LIGNE (une annotation) — 1 écart(s) trouvé(s) sur 43 lignes comparées — attendu [True] · mesuré [True]
+             écart 1 : replace, ligne ancienne '⇒ **SI ELLE PASSE** (Ko) : le rang 40 se clôt, le compteur revient à *'… ; texte ajouté : "⛔ *(D334, fin de session, 15/10/2026 : **C'EST CE CAS QUI S'EST PRODUIT** — passe `r40-20261015-1316`, 13:16:44, sortie 3, motif : la RAM libre (média"…
+✓ P3        les prédictions chiffrées (482 mordues, 527 mordues, 1 871 / 141, 493/39, 55 passés, 197, 37 campagnes) ont le MÊME nombre d'occurrences aux deux SHA — attendu [] · mesuré []
+✗ P4        …et chacun existe bien dans la section (un chiffre absent des deux rendrait P3 vrai pour rien) — attendu [] · mesuré ['4579']
+
+FAMILLE S — la session adverse de L35-3 (rapport, six sorties, 54 mutations)
+✓ S1        sortie 1-migrations : le BILAN dit 29 ✓ · 0 ✗ · 0 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 29 ✓ et 0 ✗ parcourus — attendu ((29, 0, 0), 29, 0) · mesuré ((29, 0, 0), 29, 0)
+✓ S2        sortie 2-gardes-de-base : le BILAN dit 37 ✓ · 0 ✗ · 5 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 37 ✓ et 0 ✗ parcourus — attendu ((37, 0, 5), 37, 0) · mesuré ((37, 0, 5), 37, 0)
+✓ S3        sortie 3-concurrence : le BILAN dit 18 ✓ · 0 ✗ · 0 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 18 ✓ et 0 ✗ parcourus — attendu ((18, 0, 0), 18, 0) · mesuré ((18, 0, 0), 18, 0)
+✓ S4        sortie 6-derive : le BILAN dit 2 ✓ · 0 ✗ · 1 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 2 ✓ et 0 ✗ parcourus — attendu ((2, 0, 1), 2, 0) · mesuré ((2, 0, 1), 2, 0)
+✓ S5        sortie 4-api : six fuseaux d'hôte, quinze tests chacun, tous passés — 6 hôtes et 6 résumés « Tests … passed » parcourus — attendu (6, [('15', '15'), ('15', '15'), ('15', '15'), ('15', '15'), ('15', '15'), ('15', '15')], 6, 0) · mesuré (6, [('15', '15'), ('15', '15'), ('15', '15'), ('15', '15'), ('15', '15'), ('15', '15')], 6, 0)
+✓ S5b       sortie 4-api : les six fuseaux sont six fuseaux DISTINCTS (le natif Toronto compris) — attendu 6 · mesuré 6
+✓ S6        sortie 5 : 54 blocs de mutation, 0 ancre fausse ; la répartition imprimée = le recompte des blocs — 54 blocs parcourus — attendu (54, 0, (52, 2), (52, 2)) · mesuré (54, 0, (52, 2), (52, 2))
+✓ S7        les deux muettes sont l'étalon négatif CAL- (DOIT rester muet) et S-2 (équivalente, NB-7) — attendu ['CAL-', 'S-2'] · mesuré ['CAL-', 'S-2']
+✓ S8        mutations PROPRES = 54 − 2 étalons = 52 ; mordues parmi elles = 51 (CAL+ est l'étalon POSITIF) — 52 propres parcourues — attendu (52, 51) · mesuré (52, 51)
+· S8-C1     CONSTAT : D334 écrit « 52 mutations propres mordues sur 54 (2 muettes : 1 étalon, 1 équivalente) » (RAPPORT, section D334, point d'entrée) : les 52 mordues INCLUENT l'étalon positif CAL+. Le recompte exact est 51 mutations PROPRES mordues sur 52, plus 2 étalons (CAL+ mord, CAL− reste muet comme exigé) ; S-2 est la seule propre muette. Imprécision de formulation, pas de fond.
+✓ S9        chaque mutation qui touche un fichier le dit « restauré : empreinte identique » — 54 blocs avec fichier restauré sur 54 — attendu [] · mesuré []
+✓ S10       sortie 5 : l'arbre à la fin n'a aucun fichier suivi modifié — attendu '' · mesuré ''
+✗ S11       toute mutation propre MORDUE l'est, au moins, par un canal vitest (unit-api, int, pro) lu en `AssertionError` — 51 mordues parcourues — attendu ([], []) · mesuré (['MA-3', 'MA-5', 'MA-7', 'MB-7', 'MB-8', 'MB-9', 'MB-10', 'MB-11'], [])
+· S11-C1    CONSTAT : 8 mutations propres ne sont mordues QUE par un canal qui n'est pas une suite du dépôt (les sondes SQL et Python de la session adverse, ou un échec sans assertion) : MA-3, MA-5, MA-7, MB-7, MB-8, MB-9, MB-10, MB-11. Elles prouvent que la garde mord quand on la sonde ; elles ne prouvent pas qu'une suite du dépôt rougirait (la suite du dépôt, elle, relève de `neutralize-r39.py`, joué par la passe).
+· S11-C2    CONSTAT : le canal `int` a rendu « ÉCHEC SANS ASSERTION » (un échec dont la 1ʳᵉ ligne n'est pas une `AssertionError`, D304) pour : MA-3, MB-10 ; la sortie les classe tout de même MORD (par un autre canal). Lecture à D304 : seul le canal assertion fait foi.
+✓ S12       le RAPPORT annonce les mêmes totaux que les sorties (29 ✓, 37 ✓, 18 ✓, 15/15 six fois, 52 mordues · 2 muettes, 2 ✓ · 1 constat, 120 sessions, 54 mutations) — attendu True · mesuré True
+✓ S13       les six cas demandés par le relecteur (23 h 59 à Alger le 31/12, deux salles simultanées, restauration, révision d'une révision, suppression avec devis, migration B sur copie) ont chacun leur mode (F-3, A-3, F-6, F-4, A-8, F-5) dans le rapport — attendu [] · mesuré []
+✓ S14       sortie 4 : les tests A-3 (deux salles) et A-4 (23 h 59) et A-8 (suppression d'une salle avec devis) sont nommés dans la sortie vitest — attendu (True, True, True) · mesuré (True, True, True)
+✓ S15       le dépôt à b92dc7a ne porte AUCUNE pièce « adverse » hors `docs/preuves/` (la sonde TypeScript a été retirée) — 4663 fichiers suivis parcourus — attendu [] · mesuré []
+✓ S16       le backlog à la clôture porte NB-1 à NB-9 sous « Reports du 15/10/2026 — rang 40 » — attendu [] · mesuré []
+? S17       NON VÉRIFIABLE : « 120 sessions PostgreSQL séparées » : somme de processus psql lancés par la session adverse ; les sorties 2 et 3 en montrent une partie, le total n'est pas recomptable depuis elles
+? S18       NON VÉRIFIABLE : « la base de développement `zwadj` est intacte (27 migrations, 8 salles, 20 devis, avant comme après) » : ce fait vivait dans la base de Ko ; ni sa copie avant, ni sa copie après ne sont versées, et Ko a appliqué les migrations depuis (arbitrage du 17/10) — l'état d'alors ne se relit plus
+? S19       NON VÉRIFIABLE : « les bases jetables sont supprimées » : l'état du serveur PostgreSQL après la session adverse n'est pas une pièce versée (voir X5 pour l'état vivant)
+
+FAMILLE K — l'étape 0 : les trois règles dans l'outil de passe, les planchers, les essais à blanc
+✓ K1        les trois règles : la calibration versée compte 12 bras tous ✓, 0 manqué ; le code de `regles.py` appelle `bras(` 12 fois — 12 ✓ et 0 ✗ parcourus — attendu (12, 0, (12, 0), 12) · mesuré (12, 0, (12, 0), 12)
+✓ K2        `passe.py` porte les cinq modifications déclarées, chacune marquée [D334 (n)] dans son code — attendu ['1', '2', '3', '4', '5'] · mesuré ['1', '2', '3', '4', '5']
+✓ K3        `passe.py` de D334 contre celui de D330 : 52 lignes ajoutées et 10 retirées (le comptage de D334, recompté ici par `git diff --no-index --numstat`) — attendu (52, 10) · mesuré (52, 10)
+✓ K4        `passe.py` applique la RAM d'ouverture par `regles.juger_ram_ouverture` et la clôture par `regles.juger_ram_cloture` ; `headless_shell` est compté par `regles` (porte dure) — attendu (True, True, True) · mesuré (True, True, True)
+✓ K5        plancher.txt : 33 lignes P, dont 26 REPRIS et 7 MESURÉS selon la sortie de dérivation — 33 lignes P lues, 26 REPRIS et 7 MESURÉS lus — attendu (33, 26, 7) · mesuré (33, 26, 7)
+✓ K6        RECALCUL indépendant : les harnais neufs ou dont le blob a changé entre 4202dd4 (D329) et b92dc7a = les 7 à MESURER — 37 harnais à b92dc7a, 34 à 4202dd4 — attendu ['act-plafonds', 'horloge', 'r33', 'r37', 'r38', 'r39', 's10b'] · mesuré ['act-plafonds', 'horloge', 'r33', 'r37', 'r38', 'r39', 's10b']
+✓ K7        …et les 26 REPRIS sont exactement les autres harnais qui ont un plancher (ni mesurés, ni sans plancher) — attendu ['404', 'argon2', 'available-on', 'b7', 'booking-status', 'budgets', 'e3d1-s8', 'horizon', 'journey', 'maxprice', 'r29', 'r30', 'r32', 'r4', 's10a', 's11a', 's11b', 's9', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s4', 'solid-s5a', 'solid-s5b', 'solid-s6', 'solid-s7'] · mesuré ['404', 'argon2', 'available-on', 'b7', 'booking-status', 'budgets', 'e3d1-s8', 'horizon', 'journey', 'maxprice', 'r29', 'r30', 'r32', 'r4', 's10a', 's11a', 's11b', 's9', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s4', 'solid-s5a', 'solid-s5b', 'solid-s6', 'solid-s7']
+✓ K8        les harnais SANS plancher sont ceux dont le point 12 est une preuve LUE (rang23, available-on-api, r25, r26) — ni plus, ni moins — attendu ['available-on-api', 'r25', 'r26', 'rang23'] · mesuré ['available-on-api', 'r25', 'r26', 'rang23']
+✓ K9        chaque plancher REPRIS porte la valeur et la passe du plancher de D329 — 26 repris comparés à 30 lignes de D329 — attendu ([], []) · mesuré ([], [])
+✓ K10       les pièces de `neutralisation/` qui ne sont pas des harnais n'ont pas changé depuis D324 (257471d) — l'argument « les outils que les harnais lisent n'ont pas bougé » des planchers repris — attendu [] · mesuré []
+✓ K11       le premier essai à blanc : arrêté sur la porte dure RAM (3 572,5 puis 3 597,5 Mo contre 4 579), rien lancé — attendu (True, True, True) · mesuré (True, True, True)
+✓ K12       le second essai à blanc se déclare « barre d'ouverture abaissée à 3 000 Mo POUR L'ESSAI SEUL » et diagnostic non certifiant ; il juge la clôture « SOUS LA BARRE : LA MARQUE EST REFUSÉE », sortie 6 — attendu (True, True, True) · mesuré (True, True, True)
+✓ K13       le second essai à blanc porte l'identifiant `fumee2-d334`, jamais un identifiant de passe `r40-…` ; il ne contient ni « MARQUE POSÉE » ni « Portes vertes AU REPOS » — attendu (True, False, False) · mesuré (True, False, False)
+✓ K14       à la clôture de D334, aucun dossier `passe-<ID>/` ne se donne pour une passe JOUÉE : seul `passe-NON-DEMARREE-…` (et `passe-d277`, la passe D277 des textes) existe — attendu ['passe-NON-DEMARREE-r40-20261015-1316', 'passe-d277'] · mesuré ['passe-NON-DEMARREE-r40-20261015-1316', 'passe-d277']
+✓ K15       les deux essais à blanc vivent sous `etat/` (diagnostics), jamais sous un dossier de passe — attendu (True, True) · mesuré (True, True)
+✗ K16       chaque mention d'un « essai à blanc » dans `ZWADJ_CONTINUITE.md` (à b92dc7a) est dans un voisinage (400 car. avant, 600 après) qui le qualifie de diagnostic / non certifiant — 16 mentions parcourues — attendu [] · mesuré [268666, 290121, 292311, 304215]
+
+FAMILLE T — la tentative de passe r40-20261015-1316 (porte dure rouge, rien lancé)
+✓ T1        le dossier de la tentative contient exactement les NEUF pièces brutes de l'extension 3 — 9 fichiers parcourus — attendu ['etat-env-ouverture.txt', 'inventaire-ouverture.txt', 'pg-ouverture.txt', 'porte-dure.txt', 'ports-ouverture.txt', 'progression.txt', 'sonde-ouverture-1.txt', 'sonde-ouverture-2.txt', 'sortie-standard.txt'] · mesuré ['etat-env-ouverture.txt', 'inventaire-ouverture.txt', 'pg-ouverture.txt', 'porte-dure.txt', 'ports-ouverture.txt', 'progression.txt', 'sonde-ouverture-1.txt', 'sonde-ouverture-2.txt', 'sortie-standard.txt']
+✓ T2        les deux sondes d'ouverture brutes portent 3 662 (3 649-3 667) puis 3 756,5 (3 660-3 862) Mo — les chiffres du texte de D334 — attendu ('3662', '3649-3667', '3756.5', '3660-3862') · mesuré ('3662', '3649-3667', '3756.5', '3660-3862')
+✓ T3        porte-dure.txt : ROUGE, la barre est 4 579 Mo aux deux ouvertures, et chaque médiane ET chaque bas de bande est sous elle — attendu (True, ['4579', '4579'], True) · mesuré (True, ['4579', '4579'], True)
+✗ T4        le « déficit de 823 à 930 Mo » du texte = 4 579 − 3 756,5 (arrondi) et 4 579 − 3 649 — attendu (823, 930) · mesuré (822, 930)
+✓ T5        la progression ne montre AUCUNE porte, AUCUNE campagne, AUCUN arbre lancés — 23 lignes parcourues — attendu [] · mesuré []
+✓ T6        …et se termine par « PORTE DURE ROUGE — RIEN N'EST LANCÉ » — attendu True · mesuré True
+✓ T7        les 12 bras de calibration des règles ont été joués par la tentative elle-même (« 12 bras, 0 manqué(s) ») — attendu True · mesuré True
+✓ T8        à l'ouverture de la tentative : `.env` VERT (3 fichiers, 8 variables, 0 hôte non local) et `chrome` = 0, `headless_shell` = 0, `node` = 0 — attendu (True, True, True, True, True) · mesuré (True, True, True, True, True)
+✓ T9        sortie standard : la passe ne rapporte aucune marque ni aucun résultat de porte — attendu (False, False) · mesuré (False, False)
+✓ T10       le dossier s'appelle `passe-NON-DEMARREE-…` et NON `passe-r40-…` (S-39) : aucun outil de lecture (`verser.py`, `lire-*.py`) ne cible ce dossier par son nom — attendu True · mesuré True
+? T11       NON VÉRIFIABLE : « les consommateurs de mémoire sont des processus de la machine de Ko, aucun n'est de cette session » : l'inventaire de la tentative ne nomme que `chrome`, `headless_shell`, `node`, `msedge` ; ce qui occupait ~1 Go en plus ne s'y lit pas (le texte le dit, comme limite)
+
+FAMILLE L — textes d'autorité
+✓ L1        la dernière ligne du registre de `ZWADJ_CONTINUITE.md` à b92dc7a est D334, et D335 n'y figure pas — 288 lignes de registre parcourues — attendu ('D334', False) · mesuré ('D334', False)
+✓ L2        le point d'entrée du rang 40 dit « compteur TROIS » inchangé, « RANG 41 » non écrit, et n'a aucune marque — attendu (True, True, False) · mesuré (True, True, False)
+✓ L3        `AGENTS.md` porte la fin de session de D334 : la passe NON démarrée, rien certifié, compteur TROIS — attendu (True, True) · mesuré (True, True)
+✗ L4        la table recopiée dans le point d'entrée = la table d'ouverture finale, comme ENSEMBLE de chemins complets (extensions comprises) — 70 chemins recopiés, 71 dans la table — attendu ([], []) · mesuré (['neutralize-r39.py'], [])
+✓ L5        la table d'ouverture initiale (91528f5) est un SOUS-ENSEMBLE de la table finale : rien de ce qu'elle déclarait n'a été retiré — 21 chemins initiaux — attendu [] · mesuré []
+? L6        NON VÉRIFIABLE : les arbitrages de Ko du 15/10 (mot pour mot) : le texte du chat n'est pas dans le dépôt ; G6 prouve seulement que le texte écrit par ca882e8 est resté inchangé
+
+FAMILLE X — état LIVE (ce que dit le poste maintenant ; ne se rejoue pas)
+✓ X1        arbre : seuls des fichiers NON SUIVIS sous `docs/preuves/D335/` (cette lecture) — 1 lignes de `git status` parcourues — attendu [] · mesuré []
+✓ X2        aucun stash — attendu '' · mesuré ''
+✓ X3        HEAD = origin/main (après le `git fetch` du début de session) — attendu 'a9695c3793d504210632034c17446dba090124de' · mesuré 'a9695c3793d504210632034c17446dba090124de'
+             HEAD = a9695c3793d504210632034c17446dba090124de
+✓ X4        les `.env` : porte VERTE (code 0, 0 hôte non local), et les trois empreintes SHA-256 sont IDENTIQUES à celles de l'étape 0 de D334 — 3 fichiers relevés, aucune valeur lue — attendu (0, 3, [('apps/api/.env', '813afbfcf834b9a4392316ff043d7aef7931281556a9fcac6606eb90db4680e1'), ('apps/client/.env', '479b06e808c6218b31e9fc3d858a62858ac45cd77fc35c83f0373681e20d7311'), ('apps/pro/.env', 'd2d5e00c083ed3ef08d023add33d1e74106432427a9e8ae226a84f6a96f515a8')], True) · mesuré (0, 3, [('apps/api/.env', '813afbfcf834b9a4392316ff043d7aef7931281556a9fcac6606eb90db4680e1'), ('apps/client/.env', '479b06e808c6218b31e9fc3d858a62858ac45cd77fc35c83f0373681e20d7311'), ('apps/pro/.env', 'd2d5e00c083ed3ef08d023add33d1e74106432427a9e8ae226a84f6a96f515a8')], True)
+✓ X5        base de développement `zwadj` : les 29 migrations du dépôt (calculées depuis `git`) sont appliquées ET terminées (arbitrage de Ko, point 1 : « j'ai appliqué les migrations ») — SELECT de lecture seule — attendu '29|29' · mesuré '29|29'
+· X5-C1     CONSTAT : base de développement, état d'aujourd'hui (salles | devis) : 8|24 — D334 relevait 8 salles et 20 devis ; Ko a rejoué des scénarios depuis (arbitrage du 17/10), l'écart n'est donc pas un défaut
+✓ X6        aucun `node`, `chrome`, `headless_shell`, `chromium` vivant (relevé, pas une porte : la porte est celle de la passe) — attendu {'node': '0', 'chrome': '0', 'headless_shell': '0', 'chromium': '0'} · mesuré {'node': '0', 'chrome': '0', 'headless_shell': '0', 'chromium': '0'}
+· X6-C1     CONSTAT : RAM libre du poste à cet instant : 6094 Mo (la barre de la passe est celle que la sonde imprime — 4 579 Mo le 15/10 ; la porte dure est jugée par la passe, pas ici)
+
+====================================================================================================
+BILAN : 76 contrôles · 69 ✓ · écarts de D334 : 7 ['G1', 'G6', 'P4', 'S11', 'K16', 'T4', 'L4'] · écarts de l'état vivant : 0 []
+        ventilation par famille : {'G': 18, 'K': 16, 'L': 5, 'P': 4, 'S': 17, 'T': 10, 'X': 6}
+        constats : 5 ['S8-C1', 'S11-C1', 'S11-C2', 'X5-C1', 'X6-C1']
+        non vérifiables : 5 ['S17', 'S18', 'S19', 'T11', 'L6']
+        calibration : 32 bras joués, 0 manqué(s) (attendu 0)
+        familles à zéro contrôle : [] (attendu [])
