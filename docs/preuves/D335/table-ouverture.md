@@ -48,3 +48,219 @@ Lot : **la REPRISE du rang 40 — la PASSE de la certification qui couvre D331, 
 |---|---|
 | la passe | les pièces de **SA** passe (point 11), versées par `docs/preuves/D334/outils/verser.py` dans `docs/preuves/D334/passe-<IDENTIFIANT>/` (destination du protocole, outil non retouché) : journaux des six portes, de `--tout`, de `--int`, de `--e2e`, relevés d'arbre, de l'état des `.env` à l'ouverture et à la clôture, de l'inventaire, de la RAM, échantillonneur, lectures, extrait e2e |
 | la troisième condition | si une porte est rouge : les sorties du rejeu du test fautif sur le commit de chaque lot (D331, D332, D333) |
+
+### Extensions de la table
+
+Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre.
+
+#### Extension 1 — les pièces de la PASSE `r40-20261017-reprise` (portes, campagnes, lectures, extrait e2e) et les deux inventaires du rejeu des specs, déclarées AVANT leur versement
+
+**Motif** : la famille « la passe » de la table d'ouverture ne nomme aucun fichier ; la règle exige des chemins complets. La passe a eu lieu (17/10/2026 14:27:46 → 17:39:10, code de sortie 0) sur le commit `f2aca6e` ; ses 203 pièces existent dans `.neutralisation-journaux/r40-20261017-reprise/` (ignoré par git) et sont versées par `docs/preuves/D334/outils/verser.py` (destination du protocole, outil non retouché) dans `docs/preuves/D334/passe-r40-20261017-reprise/` ; le journal e2e brut (`e2e.log`) est REFUSÉ par l'outil (point 9) et remplacé par `e2e-EXTRAIT.txt`. Les lectures (`lecture-*.txt`, `lecture-r26/`) et l'extrait sont ceux que le protocole écrit APRÈS la clôture, dans le dossier de la passe, avant le versement.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-4.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-5.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A10.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A13.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A4.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A5.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A7.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A9.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/B1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/B2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-1-defaut-d310.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-2-commande-introuvable.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-3-filtre-sans-titre.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-4-mutation-connue.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-5-mutation-neutre.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-10.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-11.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-12.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-4.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-5.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-7.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-9.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/build.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/build.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/build.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes-tout.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes-tout.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes-tout.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-404.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-act-plafonds.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-argon2.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-available-on-api.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-available-on.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-b7.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-booking-status.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-budgets.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-e3d1-s8.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-horizon.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-horloge.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-journey.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-maxprice.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r25.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r26.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r29.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r30.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r32.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r33.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r37.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r38.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r39.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r4.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-rang23.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s10a.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s10b.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s11a.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s11b.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s9.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s1.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s2.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s3.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s4.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s5a.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s5b.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s6.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s7.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/contre-epreuve.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/contre-epreuve.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/contre-epreuve.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-EXTRAIT.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-r26.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-r26.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-r26.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/echantillonneur-sortie.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-env-cloture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-env-comparaison.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-env-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-resume.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat.csv` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-e3d1-s8.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-e3d1-s8.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-e3d1-s8.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r25.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r25.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r25.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r33.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r33.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r33.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r39.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r39.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r39.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-s11b.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-s11b.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-s11b.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s1.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s1.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s1.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s2.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s2.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s2.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s3.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s3.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s3.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s6.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s6.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s6.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/inventaire-apres-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/inventaire-cloture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/inventaire-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-available-on-api.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-campagnes.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-etat.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-main-r26.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-portes.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-1.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-2.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-3.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-4.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-rang23.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lint.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lint.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lint.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-avant-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-avant-testint.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-e3d1-s8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-r25.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-r33.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-r39.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-s11b.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/porte-dure.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-apres-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-avant-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-avant-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/progression.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ram-intermediaires.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C1-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C1-t-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C1-t-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C2-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C3-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C4-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C5-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C6-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F1-a-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F1-b-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F5-a-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F5-b-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F5-c-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/pre-vol-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/pre-vol-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-apres-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-apres-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-build.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-campagnes.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-e3d1-s8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-r25.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-r33.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-r39.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-s11b.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-lint.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-test.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-testint.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-typecheck.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-cloture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-ouverture-1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-ouverture-2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/test.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/test.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/test.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/testint.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/testint.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/testint.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/typecheck.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/typecheck.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/typecheck.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D335/rejeu-specs/inventaire-avant-rejeu.txt` | inventaire des navigateurs et de `node` avant / après le rejeu SEUL des deux specs sorties de la suite (pièce, pas porte) |
+| `docs/preuves/D335/rejeu-specs/inventaire-apres-rejeu.txt` | inventaire des navigateurs et de `node` avant / après le rejeu SEUL des deux specs sorties de la suite (pièce, pas porte) |
