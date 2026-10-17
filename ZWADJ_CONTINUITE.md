@@ -2128,6 +2128,16 @@ concerné, et corriger le seul cas connu laisserait les autres armés.
 
 ⇒ **La première passe D277** (les deux sens ; `docs/preuves/D335/passe-d277/balayage-1-AVANT-ECRITURE.txt`, commit `2cd42a5`) : **1 094 occurrences**, 48 motifs examinés, **4 motifs à zéro** (hypothèses de formulation, pas des absences constatées). La dernière passe est jouée **après toutes les écritures** (fin de lot).
 
+#### NOTE D'OUVERTURE DE LA REPRISE (S-38, ratifiée par Ko le 17/10/2026 ; décision 1 du relecteur) — commitée ET POUSSÉE AVANT TOUTE MESURE DE LA PASSE
+
+⛔ Cette note ne change **RIEN** au protocole de D334 (`6e78b23`, section « ⛔ LA CERTIFICATION QUI COUVRE D331, D332 ET D333 (D334) », plus bas) : même outil, mêmes planchers, mêmes prédictions chiffrées, mêmes écarts nommés. *Motif (le relecteur)* : un protocole écrit avant la mesure ne se réécrit pas parce qu'une première tentative n'a pas démarré. La lecture adverse a comparé cette section LIGNE À LIGNE entre `6e78b23` et `b92dc7a` (contrôles P1 à P4) : un seul écart, une annotation posée en fin de ligne.
+
+1. **Identifiant de la nouvelle passe** : `r40-20261017-reprise`. Commande, depuis la racine : `python3 docs/preuves/D334/outils/passe.py r40-20261017-reprise <SHA>`, où `<SHA>` est celui du commit de CETTE note, lu par `git rev-parse HEAD` juste avant le lancement et rapporté en fin de lot (D288). Pièces de SA passe (point 11) : `docs/preuves/D334/passe-r40-20261017-reprise/` (destination de `verser.py`, outil non retouché), **déclarées une à une par une extension de la table de D335 AVANT leur versement**.
+2. **Le code mesuré est celui de `83929a6`** (dernier commit de D333), **prouvé par `git`** : le diff `83929a6..b92dc7a` ne contient, hors `docs/preuves/`, que `AGENTS.md`, `ZWADJ_BACKLOG.md` et `ZWADJ_CONTINUITE.md` (61 fichiers parcourus, lecture adverse G10) — ni code, ni test, ni harnais, ni migration ; de même `0342e94..b92dc7a` (G11) et `6e78b23..a9695c3` (G12). Les commits de D335 jusqu'à cette note ne touchent, eux aussi, que ces trois `.md` et `docs/preuves/` ; le contrôle de fin de lot le re-prouve sur le diff complet.
+3. **État machine relevé avant la passe** (17/10/2026 14:22-14:24 ; pièces `docs/preuves/D335/etat/sonde-avant-passe.txt`, `inventaire-avant-passe.txt`, `etat-env-avant-passe.txt` ; un relevé, **pas la porte** : la porte dure est celle de l'outil, jouée à l'ouverture de la passe) : alimentation **SECTEUR** ; RAM libre **5 556 Mo** (bande 5 537-5 568) contre la barre **4 579 Mo** que la sonde imprime, soit **+977 Mo** (le 15/10 : 3 662 / 3 756,5 Mo, déficit de 823 à 930) ; inventaire : `chrome` **0**, `headless_shell` **0**, `node` **0**, `msedge` **0** (5 le 15/10) ; état des `.env` : **3 fichiers, 8 variables d'URL, 0 hôte non local**, empreintes SHA-256 **identiques** à celles de l'étape 0 de D334 (`813afbfc…`, `479b06e8…`, `d2d5e00c…`). Les plus gros consommateurs restants (relevé de la sonde ; hors `claude`, ce sont ceux de Ko) : `Code` (16 processus, ~3,2 Go), `svchost` (92, ~1,8 Go), `Memory Compression` (~0,7 Go), `vmmemWSL`, `msedgewebview2`, `claude` (cette session, ~0,3 Go). La session **n'ouvre rien de lourd** pendant la fenêtre et **n'édite aucun fichier suivi** entre le premier relevé et la clôture (D270).
+4. **Règle d'arrêt, inchangée (décision 2 du relecteur)** : si la porte dure d'ouverture est de nouveau rouge — RAM, `.env`, `chrome`, `headless_shell`, `node`, secteur —, **la passe ne démarre pas**, les pièces sont versées comme à D334 (dossier `passe-NON-DEMARREE-…`) et le blocage revient à Ko ; **la session ne baisse pas la barre, même pour un essai**.
+5. **Ce que cette note ne fait pas** : elle ne mesure rien, ne certifie rien, ne compare aucune prédiction. À cette écriture **rien n'est certifié** : compteur **TROIS**, rang 40 **OUVERT**, « RANG 41 » non écrit.
+
 #### Ordre des commits de ce lot, prouvé par `git` (règle de `AGENTS.md`, D328) — état à cette écriture
 
 | ordre | commit | contenu |
@@ -2136,9 +2146,10 @@ concerné, et corriger le seul cas connu laisserait les autres armés.
 | 2 | `a26e1b5` | la lecture adverse de D334 : instrument, sortie, première sortie, défauts, l'audit de secrets scellé « a » et son tri — **avant toute écriture d'autorité** |
 | 3 | `2cd42a5` | la première passe D277 — avant toute écriture d'autorité |
 | 4 | `2af356b` | **première écriture d'autorité** : l'arbitrage de Ko du 17/10/2026 (cinq points), mot pour mot, **seul** dans son commit (`ZWADJ_CONTINUITE.md`) |
-| 5 | (celui-ci) | les décisions du relecteur, ce point d'entrée avec la table recopiée **à l'identique**, les ratifications (S-34 à S-39), les sites périmés annotés (condition de clôture du rang 39, NB-5), `AGENTS.md` (NB-4), le backlog (NB-1, NB-3, NB-5, NB-6, reports de la reprise) |
+| 5 | `735fb1f` | les décisions du relecteur, ce point d'entrée avec la table recopiée **à l'identique**, les ratifications (S-34 à S-39), les sites périmés annotés (condition de clôture du rang 39, NB-5), `AGENTS.md` (NB-4), le backlog (NB-1, NB-3, NB-5, NB-6, reports de la reprise) |
+| 6 | (celui-ci) | la **NOTE D'OUVERTURE** de la reprise (ci-dessus) et les trois pièces de l'état machine relevé avant la passe (`docs/preuves/D335/etat/`) — commitée ET POUSSÉE **avant toute mesure** |
 
-*(Les commits suivants s'ajouteront ici : la note d'ouverture de la reprise, commitée ET POUSSÉE avant toute mesure ; puis la passe et sa clôture.)*
+*(Les commits suivants s'ajouteront ici : la passe et sa clôture. L'extension qui déclare les pièces de la passe précède leur versement.)*
 
 #### Fichiers attendus — table recopiée de `docs/preuves/D335/table-ouverture.md`
 
