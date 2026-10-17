@@ -1,0 +1,10 @@
+✓ H1. Le refus hors horizon disparaît : une date de 2099 est annotée comme les autres
+✓ H2. ⛔ LA BORNE GLISSE D'UN JOUR : le jour de l'horizon lui-même est refusé
+✓ H3. ⛔ LES DEUX REFUS RETOMBENT SOUS LE MÊME CODE — la décision D227 annulée
+✓ H4. Le client range le nouveau refus avec l'ancien
+✓ H5. L'écran affiche « cette date est déjà passée » pour une date de 2099
+✓ H6. Une PANNE emprunte le message de date : `unreachable` tombe du mauvais côté
+
+6 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+

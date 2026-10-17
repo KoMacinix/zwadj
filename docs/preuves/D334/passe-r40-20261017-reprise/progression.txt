@@ -1,0 +1,92 @@
+17/10/2026 14:27:46 PASSE r40-20261017-reprise — HEAD attendu f2aca6e68ada59b290cb31a4da5f5142181d778d
+17/10/2026 14:27:46    ✓ calibration RAM, positif — deux ouvertures au-dessus de la barre : (True, []) (attendu (True, []))
+17/10/2026 14:27:46    ✓ calibration RAM, positif — la clôture au-dessus de la barre : (True, []) (attendu (True, []))
+17/10/2026 14:27:46    ✓ calibration RAM, positif — l'ÉGALITÉ exacte à la barre passe (≥) : (True, []) (attendu (True, []))
+17/10/2026 14:27:46    ✓ calibration RAM, négatif — une ouverture dont la BANDE BASSE passe sous la barre est refusée (la médiane seule ne suffit pas) : False (attendu False)
+17/10/2026 14:27:46    ✓ calibration RAM, négatif — une clôture dont la MÉDIANE passe sous la barre est refusée : False (attendu False)
+17/10/2026 14:27:46    ✓ calibration RAM, négatif — une liste d'ouvertures VIDE n'est pas une ouverture verte : False (attendu False)
+17/10/2026 14:27:46    ✓ calibration RAM, intermédiaires — un relevé sous la barre est NOTÉ (un seul sur trois) et ne dit rien d'autre : [('avant-int-r33', 'avant-int-r33 : médiane 4700 / bas de bande 4551 contre la barre 4579')] (attendu [('avant-int-r33', 'avant-int-r33 : médiane 4700 / bas de bande 4551 contre la barre 4579')])
+17/10/2026 14:27:46    ✓ calibration navigateurs — `chrome` et `headless_shell` à 0 : acceptés : (True, []) (attendu (True, []))
+17/10/2026 14:27:46    ✓ calibration navigateurs — `chrome` = 1 : refusé : (False, ['chrome = 1']) (attendu (False, ['chrome = 1']))
+17/10/2026 14:27:46    ✓ calibration navigateurs — un nom absent du relevé est un défaut d'instrument, pas un zéro : False (attendu False)
+17/10/2026 14:27:48    ✓ calibration navigateurs, comptage RÉEL — avec un processus `headless_shell.exe` vivant : compté 1 et refusé : (1, False) (attendu (1, False))
+17/10/2026 14:27:50    ✓ calibration navigateurs, comptage RÉEL — un processus `headless_shell_x.exe` vivant n'est PAS compté (le nom est exact) ; le premier, tué, est compté 0 : (0, 0) (attendu (0, 0))
+17/10/2026 14:27:50    calibration des règles : 12 bras, 0 manqué(s)
+17/10/2026 14:27:50    harnais VERROUILLÉS (--int), dérivés de l'AST : ['e3d1-s8', 'r25', 'r33', 'r39', 's11b', 'solid-s1', 'solid-s2', 'solid-s3', 'solid-s6']
+17/10/2026 14:27:50    harnais E2E-VERROUILLÉS (--e2e), dérivés par recherche littérale : ['r25', 'r26']
+17/10/2026 14:27:51    pg_isready (ouverture) : code 0
+17/10/2026 14:27:51    ports 3100/3101/5273 à l'écoute : 0 (attendu 0)
+17/10/2026 14:27:51    état des .env (ouverture) : code 0 · RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : [] · PORTE : VERTE
+17/10/2026 14:27:51    inventaire ouverture : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 0 · code 0
+17/10/2026 14:28:47    sonde ouverture-1 : RAM 5632.5 (bande 5621-5639, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0 · calibration ✓
+17/10/2026 14:29:22    sonde ouverture-2 : RAM 5650 (bande 5625-5751, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:29:22 ✓ PORTE DURE VERTE sur les deux relevés
+17/10/2026 14:29:22    échantillonneur lancé (PID 21844), -Intervalle 30 — AUCUN lecteur pendant la fenêtre
+17/10/2026 14:29:22    arbre-1 : HEAD f2aca6e (attendu f2aca6e) · 0 ligne(s) de statut (attendu 0)
+17/10/2026 14:29:57    sonde avant-typecheck : RAM 5726 (bande 5682-5735, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:30:16    typecheck : code 0, 19 s
+17/10/2026 14:30:52    sonde avant-lint : RAM 5710.5 (bande 5694-5729, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:31:05    lint : code 0, 13 s
+17/10/2026 14:31:40    sonde avant-test : RAM 5698.5 (bande 5683-5706, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:33:07    test : code 0, 87 s
+17/10/2026 14:33:42    sonde avant-build : RAM 5666 (bande 5659-5692, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:34:14    build : code 0, 32 s
+17/10/2026 14:34:50    sonde avant-testint : RAM 5632.5 (bande 5584-5646, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:34:50    pg_isready (avant-testint) : code 0
+17/10/2026 14:40:17    testint : code 0, 327 s
+17/10/2026 14:40:52    sonde avant-e2e : RAM 5280 (bande 5265-5288, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:40:52    avant e2e : node 0 (attendu 0) · ports à l'écoute 0 (attendu 0)
+17/10/2026 14:40:53    pg_isready (avant-e2e) : code 0
+17/10/2026 14:43:40    e2e : code 0, 167 s
+17/10/2026 14:44:15    sonde apres-e2e : RAM 5264.5 (bande 5228-5283, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 14:44:16    inventaire apres-e2e : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 0 · code 0
+17/10/2026 14:44:16    après e2e : node 0 · ports à l'écoute 0
+17/10/2026 14:44:16    arbre-2 : HEAD f2aca6e (attendu f2aca6e) · 0 ligne(s) de statut (attendu 0)
+17/10/2026 14:44:51    sonde avant-campagnes : RAM 5291.5 (bande 5277-5300, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 16:26:58    campagnes-tout : code 1, 6127 s
+17/10/2026 16:26:58    journaux de campagne copiés à l'identique : 82 sur 82 · antérieurs au début de --tout : 0 (attendu 0)
+17/10/2026 16:26:58    arbre-3 : HEAD f2aca6e (attendu f2aca6e) · 0 ligne(s) de statut (attendu 0)
+17/10/2026 16:27:34    sonde avant-int-e3d1-s8 : RAM 5057 (bande 5051-5060, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 16:27:34    pg_isready (int-e3d1-s8) : code 0
+17/10/2026 16:28:56    int-e3d1-s8 : code 0, 82 s
+17/10/2026 16:29:32    sonde avant-int-r25 : RAM 4969 (bande 4958-4977, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 16:29:32    pg_isready (int-r25) : code 0
+17/10/2026 16:37:56    int-r25 : code 0, 504 s
+17/10/2026 16:38:31    sonde avant-int-r33 : RAM 4793 (bande 4763-4798, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 16:38:31    pg_isready (int-r33) : code 0
+17/10/2026 16:56:25    int-r33 : code 0, 1074 s
+17/10/2026 16:57:00    sonde avant-int-r39 : RAM 4906.5 (bande 4804-4913, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 16:57:01    pg_isready (int-r39) : code 0
+17/10/2026 17:06:28    int-r39 : code 0, 567 s
+17/10/2026 17:07:03    sonde avant-int-s11b : RAM 4762.5 (bande 4730-4768, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:07:04    pg_isready (int-s11b) : code 0
+17/10/2026 17:11:19    int-s11b : code 0, 255 s
+17/10/2026 17:11:54    sonde avant-int-solid-s1 : RAM 4837 (bande 4814-4840, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:11:54    pg_isready (int-solid-s1) : code 0
+17/10/2026 17:15:40    int-solid-s1 : code 0, 226 s
+17/10/2026 17:16:15    sonde avant-int-solid-s2 : RAM 4834 (bande 4825-4849, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:16:16    pg_isready (int-solid-s2) : code 0
+17/10/2026 17:20:04    int-solid-s2 : code 0, 228 s
+17/10/2026 17:20:39    sonde avant-int-solid-s3 : RAM 4750 (bande 4742-4753, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:20:40    pg_isready (int-solid-s3) : code 0
+17/10/2026 17:25:43    int-solid-s3 : code 0, 303 s
+17/10/2026 17:26:18    sonde avant-int-solid-s6 : RAM 4769.5 (bande 4742-4777, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:26:18    pg_isready (int-solid-s6) : code 0
+17/10/2026 17:30:15    int-solid-s6 : code 0, 237 s
+17/10/2026 17:30:15    arbre-4 : HEAD f2aca6e (attendu f2aca6e) · 0 ligne(s) de statut (attendu 0)
+17/10/2026 17:30:50    sonde avant-e2e-r26 : RAM 4757 (bande 4743-4765, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:30:51    pg_isready (e2e-r26) : code 0
+17/10/2026 17:37:54    e2e-r26 : code 0, 423 s
+17/10/2026 17:38:29    sonde apres-e2e-r26 : RAM 4776.5 (bande 4740-4781, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:38:30    arbre-5 : HEAD f2aca6e (attendu f2aca6e) · 0 ligne(s) de statut (attendu 0)
+17/10/2026 17:38:32    contre-epreuve : code 0, 3 s
+17/10/2026 17:38:32    arbre-6 : HEAD f2aca6e (attendu f2aca6e) · 0 ligne(s) de statut (attendu 0)
+17/10/2026 17:39:09    sonde cloture : RAM 4780.5 (bande 4764-4813, barre 4579) · SECTEUR · node 0 · chrome 0 · code 0
+17/10/2026 17:39:10    inventaire cloture : chrome 0 · headless_shell 0 · chromium 0 · node 0 · msedge 0 · code 0
+17/10/2026 17:39:10    RAM de clôture : médiane 4780.5 / bande 4764-4813 contre la barre 4579 · AU-DESSUS
+17/10/2026 17:39:10    relevés intermédiaires sous la barre : 0 sur 19 (notés, non disqualifiants)
+17/10/2026 17:39:10    état des .env (cloture) : code 0 · RÉSUMÉ fichiers 3 · variables d'URL 8 · hôtes non locaux 0 (attendu 0) : [] · PORTE : VERTE
+17/10/2026 17:39:10    état des .env, ouverture contre clôture : code 0 · COMPARAISON : IDENTIQUE — mêmes fichiers, mêmes empreintes, hôtes locaux (attendu)
+17/10/2026 17:39:10    échantillonneur arrêté
+17/10/2026 17:39:10    -Resume : code 0
+17/10/2026 17:39:10 CLÔTURE ATTEINTE — la lecture se fait APRÈS, sur les journaux de ce dossier

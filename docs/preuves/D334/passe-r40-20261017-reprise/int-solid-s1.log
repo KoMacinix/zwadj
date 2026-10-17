@@ -1,0 +1,6 @@
+✓ Pré-vol : 4 mesure(s) verte(s) avant mutation — pro, api, int-bookings, int-availability
+
+✓ S1-1. ⚠ L'AUTORITÉ PARTAGÉE PERD `CONFIRMED` — les trois sites doivent le sentir  [pro, api, int-bookings, int-availability]
+✓ S1-2. L'autorité perd `ACCEPTED` — la ligne verrouillée bascule du mauvais côté  [pro, api, int-bookings, int-availability]
+
+2 garde(s) mordue(s) sur 2 cible(s) RÉELLEMENT MESURÉE(S).

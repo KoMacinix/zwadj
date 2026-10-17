@@ -1,0 +1,72 @@
+EXTRAIT DÉRIVÉ de .neutralisation-journaux/r40-20261017-reprise/e2e.log — PAS la pièce brute (critère du rang 9, point 9 ; D294, D299).
+Le journal brut reste HORS DÉPÔT : il porte des jetons de vérification d'e-mail imprimés par le
+serveur de développement. Une preuve ne se caviarde pas (D291) : ceci est une LISTE BLANCHE — Running,
+chaque ligne de résultat, le résumé, les blocs d'échec, et 3 lignes autour de toute ligne « fail ».
+Codes ANSI retirés. En tête de chaque ligne gardée : son numéro dans le journal.
+lignes parcourues : 1858 (attendu 1858, par les octets de saut de ligne) · gardées : 59
+Running : [56] · résumé : {'skipped': 1, 'passed': 55}
+recompte : `ok` 55 ⇔ passed 55 → ✓
+recompte : `x` 0 ⇔ failed + interrupted 0 → ✓
+recompte : `-` 1 ⇔ skipped 1 → ✓
+recompte : lignes de résultat 56 ⇔ Running − did not run 56 → ✓
+lignes « fail » du journal : 0 · gardées avec leur fenêtre : 0 (attendu 0)
+--- lignes gardées ---
+00253 | Running 56 tests using 2 workers
+00274 |   ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (17.0s)
+00305 |   ok 3 [chromium] › specs\a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token) (2.7s)
+00306 |   ok 2 [chromium] › specs\a1-session-bootstrap.e2e.ts:27:7 › A1 — bootstrap de session › Pro : rechargement direct d'une route protégée = UN SEUL POST /auth/refresh (2.8s)
+00345 |   ok 5 [chromium] › specs\a1-session-bootstrap.e2e.ts:43:7 › A1 — bootstrap de session › Client : rechargement d'une page publique déclenche aussi UN SEUL refresh (3.3s)
+00346 |   ok 4 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas (3.4s)
+00395 |   ok 7 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities (3.6s)
+00396 |   ok 6 [chromium] › specs\a1-session-bootstrap.e2e.ts:60:7 › A1 — bootstrap de session › deux onglets rechargés quasi simultanément : AUCUN ne perd la session (4.0s)
+00434 |   ok 8 [chromium] › specs\a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles (3.2s)
+00448 |   ok 9 [chromium] › specs\a1-session-bootstrap.e2e.ts:96:7 › A1 — bootstrap de session › cookie refresh invalide : redirection propre vers la connexion, SANS boucle (3.6s)
+00473 |   ok 10 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings (2.3s)
+00496 |   ok 12 [chromium] › specs\a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings (2.1s)
+00510 |   ok 11 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › tableau de bord : même empreinte d'appels par les deux chemins (4.2s)
+00550 |   ok 13 [chromium] › specs\a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session (2.9s)
+00574 |   ok 14 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mes salles : même empreinte d'appels par les deux chemins (3.9s)
+00634 |   ok 16 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mon compte : même empreinte d'appels par les deux chemins (3.9s)
+00635 |   ok 15 [chromium] › specs\a2-mount-effects.e2e.ts:166:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée (5.8s)
+00660 |   ok 18 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-light : les tokens résolus n'ont pas bougé (2.1s)
+00671 |   ok 17 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › nouvelle salle : même empreinte d'appels par les deux chemins (4.0s)
+00686 |   ok 19 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-dark : les tokens résolus n'ont pas bougé (2.2s)
+00696 |   -  20 [chromium] › specs\a5-cold-reload-vs-spa.e2e.ts:175:7 › A5 — parité navigation interne / rechargement › le calendrier d'une salle survit au rechargement (deux effets enchaînés)
+00697 |   ok 21 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-light : les tokens résolus n'ont pas bougé (1.3s)
+00701 |   ok 23 [chromium] › specs\b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-dark : les tokens résolus n'ont pas bougé (1.3s)
+00702 |   ok 24 [chromium] › specs\b7-token-contract.e2e.ts:250:7 › B7 — contrat des tokens résolus (D124) › un token partagé a la MÊME valeur dans les deux apps, au même thème (5ms)
+00704 |   ok 22 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (clair) : aucune NOUVELLE violation (3.3s)
+00739 |   ok 26 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (sombre) : aucune NOUVELLE violation (3.3s)
+00767 |   ok 27 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (arabe, RTL) : aucune NOUVELLE violation (3.5s)
+00785 |   ok 25 [chromium] › specs\r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation (5.2s)
+00787 |   ok 28 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation (2.7s)
+00808 |   ok 30 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client compte : aucune NOUVELLE violation (2.7s)
+00840 |   ok 31 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (clair) : aucune NOUVELLE violation (2.5s)
+00847 |   ok 32 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (sombre) : aucune NOUVELLE violation (2.4s)
+00848 |   ok 29 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › fr — « Se connecter pour demander » mène à la page de connexion réelle (3.7s)
+00876 |   ok 33 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro liste des salles : aucune NOUVELLE violation (2.9s)
+00893 |   ok 34 [chromium] › specs\r25-lien-connexion.e2e.ts:30:7 › ar — « سجّل الدخول لإرسال طلب » mène à la page de connexion réelle (4.0s)
+00907 |   ok 35 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro tableau de bord : aucune NOUVELLE violation (2.7s)
+00908 |   ok 36 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur (2.1s)
+00952 |   ok 38 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › client — avec une demande : la section l'affiche en attente (2.3s)
+00953 |   ok 37 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro nouvelle salle : aucune NOUVELLE violation (2.8s)
+00995 |   ok 39 [chromium] › specs\r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur (1.1s)
+01015 |   ok 41 [chromium] › specs\r25-suppression-compte.e2e.ts:47:7 › pro — avec une demande : la section l'affiche en attente (1.2s)
+01016 |   ok 40 [chromium] › specs\b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro compte : aucune NOUVELLE violation (2.7s)
+01017 |   ok 43 [chromium] › specs\b8-accessibility.e2e.ts:204:7 › B8 — accessibilité automatisée (D125) › écrit la référence si demandé, et refuse de la deviner sinon (2ms)
+01172 |   ok 44 [chromium] › specs\r33-remise-devis.e2e.ts:88:7 › « PRINT », page fr, PDF ar : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (7.8s)
+01204 |   ok 42 [chromium] › specs\r26-parcours-reservation.e2e.ts:108:5 › le pro ACCEPTE : la demande quitte ses demandes pour ses réservations, et le client la voit acceptée (8.8s)
+01330 |   ok 45 [chromium] › specs\r33-remise-devis.e2e.ts:88:7 › « EMAIL », page fr, PDF fr : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (7.5s)
+01368 |   ok 46 [chromium] › specs\r26-parcours-reservation.e2e.ts:129:5 › le pro REFUSE : la demande reste dans ses demandes, refusée, et le client voit le refus (8.4s)
+01391 |   ok 47 [chromium] › specs\r33-remise-devis.e2e.ts:88:7 › « SMS », page ar, PDF fr : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (6.0s)
+01472 |   ok 48 [chromium] › specs\r37-ma-salle.e2e.ts:100:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER : la salle créée est dans la liste quand on revient à « Ma salle » (menu du haut), sans rechargement (2.1s)
+01531 |   ok 50 [chromium] › specs\r37-ma-salle.e2e.ts:113:7 › R37 — « Ma salle » est relue sans rechargement › MODIFIER : le nouveau nom est dans la liste quand on revient par « Retour à mes salles », sans rechargement (et le nom de l'assistant est celui du SERVEUR) (2.1s)
+01574 |   ok 49 [chromium] › specs\r33-remise-devis.e2e.ts:149:5 › ⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise : aucune requête ne part, le serveur n'a aucun canal (6.3s)
+01575 |   ok 51 [chromium] › specs\r37-ma-salle.e2e.ts:131:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER puis CORRIGER dans la même session (S8 de D327) : la liste porte le nom corrigé, pas celui de la création (1.9s)
+01675 |   ok 53 [chromium] › specs\r37-ma-salle.e2e.ts:148:7 › R37 — « Ma salle » est relue sans rechargement › SUPPRIMER depuis l'assistant : la salle supprimée n'est plus dans la liste, et le libellé du menu repasse au singulier, sans rechargement (2.3s)
+01742 |   ok 52 [chromium] › specs\r33-remise-devis.e2e.ts:185:5 › le canal « e-mail » est INACTIF sans adresse, ACTIF avec — et rien n'est téléchargé tant qu'il est grisé (4.3s)
+01743 |   ok 54 [chromium] › specs\r37-ma-salle.e2e.ts:168:7 › R37 — « Ma salle » est relue sans rechargement › PUBLIER (par un autre compte, pendant que le pro est dans l'application) : l'entrée dans « Ma salle » montre « Publiée », sans rechargement (2.1s)
+01794 |   ok 55 [chromium] › specs\r33-remise-devis.e2e.ts:205:5 › ⛔ une révision rend le PDF de l'ancienne version REFUSÉ (409) et celui de la nouvelle servi — la décision 1, de bout en bout (6.2s)
+01840 |   ok 56 [chromium] › specs\r33-remise-devis.e2e.ts:226:5 › ⛔ rang 39 — un DEUXIÈME devis de la même salle prend le numéro SUIVANT, avec le même numéro de salle et la version 1 ; la référence de la liste est celle de la création (3.7s)
+01852 |   1 skipped
+01853 |   55 passed (2.7m)

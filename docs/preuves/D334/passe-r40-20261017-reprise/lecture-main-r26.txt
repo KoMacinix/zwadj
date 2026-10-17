@@ -1,0 +1,51 @@
+D335 — LECTURE À LA MAIN DE R26-2 ET R26-4 (ET, EN PLUS, R26-1 ET R26-3), sous la règle du relecteur (chat) déléguée par Ko le 04/10/2026 (bloc D323 de la méthode renforcée)
+=============================================================================================================================================
+
+LA RÈGLE (bloc D323 ; `AGENTS.md`, point E3), mot pour mot :
+  1. « Une assertion Playwright web-first (`expect(...)`) qui expire après ses réessais EST un échec d'assertion, donc une morsure, si l'échec lu
+     montre l'appel `expect` avec l'attendu et le reçu. »
+  2. « Le délai global d'un test, ou le délai d'une action (`click`, `goto`…), N'EST PAS une morsure. »
+  4. « Dans cette certification, R26-2 et R26-4 se vérifient À LA MAIN sous cette règle, sur leur sortie lue. »
+
+SUR QUOI LA LECTURE PORTE — la sortie de CETTE passe, pas celle d'une passe antérieure
+  Passe `r40-20261017-reprise`, étape 6b : `neutralize-r26.py --e2e`, du 17:30:51 (sonde avant-e2e-r26) au 17:37:54 (`e2e-r26.heures` : 423 s, code 0). Les journaux par cible que le harnais écrit lui-même
+  (`.neutralisation-journaux/r26/R26-n.log`, hors dépôt : ils portent des cookies et des jetons) ont pour dates de modification 17:33:32 (R26-1), 17:34:58 (R26-2), 17:36:29 (R26-3)
+  et 17:37:54 (R26-4) — **tous dans la fenêtre** de l'étape 6b. Ils sont lus dans leur EXTRAIT (`docs/preuves/D322/outils/extraire.py`, réutilisé tel quel : retire les lignes `[WebServer]` et les codes
+  ANSI, garde le reste ; valeurs sensibles : 14, 15, 17 et 10 `zwadj_rt=` et 6 `?token=` dans chaque journal, **0 dans chaque extrait**, imprimé par l'outil) : `lecture-r26/R26-1.txt` à `R26-4.txt`, versés avec ce fichier.
+
+CE QUE CHAQUE BLOC D'ÉCHEC MONTRE (numéros de ligne = ceux de l'extrait ; chaque cible joue deux tests, ACCEPTE et REFUSE, qui échouent TOUS LES DEUX ; le préchauffage passe : « 2 failed », « 1 passed (1.4m) » pour R26-1, R26-2 et R26-4, « (1.5m) » pour R26-3)
+
+  R26-2 — le pro lit « En attente » quel que soit le statut — extrait `lecture-r26/R26-2.txt`
+    test ACCEPTE (l. 113-125) : « Error: Timed out 7000ms waiting for expect(locator).toBeVisible() » (l. 113) · « Expected: visible » (l. 116) · « Received: <element(s) not found> » (l. 117) · journal d'appel
+      « waiting for getByRole('listitem').filter({ hasText: 'Amina Bensalem' }).getByText('Statut : Acceptée', { exact: true }) » (l. 120) · ligne source
+      « > 118 | await expect(reservee.getByText(statutPro(DEMANDES.st_ACCEPTED), { exact: true })).toBeVisible(); » (l. 125).
+    test REFUSE (l. 150-164) : « Error: le pro ne voit pas son refus » (l. 150) puis « Timed out 7000ms waiting for expect(locator).toBeVisible() » (l. 152) · « Expected: visible » (l. 155) ·
+      « Received: <element(s) not found> » (l. 156) · journal d'appel « waiting for getByRole('listitem').filter({ hasText: 'Amina Bensalem' }).getByText('Statut : Refusée', { exact: true }) » (l. 159) · ligne source
+      « > 134 | await expect(d.lignePro.getByText(statutPro(DEMANDES.st_DECLINED), { exact: true }), "le pro ne voit pas son refus").toBeVisible(); » (l. 164).
+    ⇒ **Règle 1 : SATISFAITE aux deux tests** — l'appel `expect` est nommé (`expect(locator).toBeVisible()`), l'attendu (« visible ») et le reçu (« élément introuvable ») sont imprimés, et la ligne source
+      est une assertion `expect(...)`. **Règle 2 : sans objet** — voir le contrôle des signatures, ci-dessous.
+
+  R26-4 — le client ne voit plus AUCUNE de ses demandes — extrait `lecture-r26/R26-4.txt`
+    test ACCEPTE (l. 113-127) : « Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected) » (l. 113) · « Expected: 1 » (l. 116) · « Received: 0 » (l. 117) · journal d'appel « waiting for
+      getByRole('region', { name: 'Mes réservations' }).getByRole('listitem').filter({ hasText: 'Salle e2e 949342ea' }) » (l. 120) · ligne source « > 88 | await expect(avant).toHaveCount(1); » (l. 127).
+    test REFUSE (l. 149-163) : « Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected) » (l. 149) · « Expected: 1 » (l. 152) · « Received: 0 » (l. 153) · même journal d'appel avec la salle
+      « Salle e2e 12c0f046 » (l. 156) · ligne source « > 88 | await expect(avant).toHaveCount(1); » (l. 163).
+    ⇒ **Règle 1 : SATISFAITE aux deux tests.** Règle 2 : sans objet.
+
+  Pour mémoire — lues aussi, ce que la décision n'exige pas :
+  R26-1 (extrait `R26-1.txt`) : test ACCEPTE « Error: le pro ne voit pas la demande du client dans ses demandes » (l. 113) puis « Timed out 7000ms waiting for expect(locator).toHaveCount(expected) » (l. 115) · « Expected: 1 »
+    (l. 118) · « Received: 0 » (l. 119), ligne source « > 100 | await expect(lignePro, "…").toHaveCount(1); » (l. 129) ; test REFUSE : même message (l. 155), mêmes valeurs (l. 160-161), même ligne source (l. 171).
+  R26-3 (extrait `R26-3.txt`) : test ACCEPTE « Error: le client ne voit pas l'acceptation » (l. 113) puis « Timed out … toBeVisible() » (l. 115) · « Expected: visible » (l. 118) · « Received: <element(s) not found> » (l. 119), ligne source
+    « > 122 | await expect(apres.getByText(SUIVI.st_ACCEPTED, { exact: true }), "le client ne voit pas l'acceptation").toBeVisible(); » (l. 127) ; test REFUSE : « Error: le client ne voit pas le refus » (l. 152),
+    « Timed out … toBeVisible() » (l. 154), valeurs l. 157-158, ligne source « > 140 | … st_DECLINED … » (l. 166).
+  ⚠ **R26-1 et R26-3 s'ouvrent sur un message MAISON** (`expect(locator, "message")`), pas sur « Timed out » ; le **même appel** `expect(locator)…` avec son attendu et son reçu est imprimé sous le message.
+    La règle 1 est satisfaite pour eux aussi (même constat qu'à D324, D329 et D330).
+
+CONTRÔLE DES SIGNATURES DE LA RÈGLE 2 — compté sur les quatre extraits, attendu 0 partout ; calibré (un texte construit qui porte chaque motif une fois rend 1 partout, un texte neutre 0 partout : mesuré à cette lecture, 6 motifs × 2 textes)
+  motifs : « Test timeout of », « Test ended », `locator.click|fill|press`, `page.goto|waitFor`, « Timeout Nms exceeded », « exceeded while » (sans casse) → **0, 0, 0, 0, 0, 0** pour chacun des quatre extraits
+  (R26-1 à R26-4 : 212, 204, 206 et 200 lignes parcourues). Le seul délai présent est « Timed out 7000ms waiting for expect(locator)… » : le délai d'une **assertion web-first**, pas d'un test ni d'une action.
+
+CE QUE CETTE LECTURE NE FAIT PAS
+  - Elle ne modifie **aucun lecteur** : le lecteur de `r26` range toujours l'expiration parmi les assertions *par construction* ; la lecture à la main **tient lieu** de ce lecteur pour cette passe, sur ces quatre cibles.
+  - Elle porte sur **une** exécution. Une autre exécution du même harnais peut échouer autrement (délai de test, d'action).
+  - Elle n'établit pas que R26-2 et R26-4 sont « du chemin de l'argent » : leur classement est celui du protocole (R26-3 seule, branche 6, écart n° 4).

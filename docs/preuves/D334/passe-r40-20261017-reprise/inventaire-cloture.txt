@@ -1,0 +1,7 @@
+HORODATAGE 17/10/2026 17:39:10
+COMPTE chrome=0
+COMPTE headless_shell=0
+COMPTE chromium=0
+COMPTE chrome_crashpad_handler=0
+COMPTE node=0
+COMPTE msedge=0

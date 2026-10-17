@@ -1,0 +1,13 @@
+✓ Pré-vol inversé : un run de relevé ROUGIT — releve
+✓ Pré-vol : 2 mesure(s) verte(s) — course, plafond
+
+✓ E1. ⛔ L'INDEX PARTIEL DISPARAÎT — la base réaccepte deux intentions en attente  [course]
+✓ E2. ⛔ LE NETTOYAGE PRÉALABLE SAUTE — la migration tomberait sur une base ayant couru  [course]
+✓ E3. Le prédicat ne reconnaît plus la violation — le perdant relance P2002 au visiteur  [course]
+✓ E4. ⛔ LE PERDANT NE RELIT PLUS — il propage P2002 au lieu de rendre l'intention gagnante  [course]
+✓ E5. Le `await` saute : la promesse rejetée sort du `try` et le `catch` ne sert plus à rien  [course]
+✓ S8-1. ⛔ LE PLAFOND EST DÉPASSÉ ET RIEN NE TOMBE — le nombre redevient décoratif  [plafond]
+✓ S8-2. ⛔ L'EXEMPTION CESSE D'ÊTRE CIBLÉE — plus rien ne sépare un fichier bruyant d'un échec  [plafond]
+✓ S8-3. La sentinelle `A_RELEVER` cesse de mordre — un plafond deviné passerait  [plafond]
+
+8 garde(s) mordue(s) sur 8 cible(s) RÉELLEMENT MESURÉE(S).

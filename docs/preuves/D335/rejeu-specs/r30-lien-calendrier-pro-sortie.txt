@@ -1,0 +1,17 @@
+EXTRAIT DÉRIVÉ de .neutralisation-journaux/r40-20261017-reprise-rejeu/r30-lien-calendrier-pro.log — PAS la pièce brute (critère du rang 9, point 9 ; D294, D299).
+Le journal brut reste HORS DÉPÔT : il porte des jetons de vérification d'e-mail imprimés par le
+serveur de développement. Une preuve ne se caviarde pas (D291) : ceci est une LISTE BLANCHE — Running,
+chaque ligne de résultat, le résumé, les blocs d'échec, et 3 lignes autour de toute ligne « fail ».
+Codes ANSI retirés. En tête de chaque ligne gardée : son numéro dans le journal.
+lignes parcourues : 306 (attendu 306, par les octets de saut de ligne) · gardées : 4
+Running : [2] · résumé : {'passed': 2}
+recompte : `ok` 2 ⇔ passed 2 → ✓
+recompte : `x` 0 ⇔ failed + interrupted 0 → ✓
+recompte : `-` 0 ⇔ skipped 0 → ✓
+recompte : lignes de résultat 2 ⇔ Running − did not run 2 → ✓
+lignes « fail » du journal : 0 · gardées avec leur fenêtre : 0 (attendu 0)
+--- lignes gardées ---
+00234 | Running 2 tests using 1 worker
+00252 |   ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (17.5s)
+00297 |   ok 2 [chromium] › specs\r30-lien-calendrier-pro.e2e.ts:21:5 › le lien « Calendrier de la salle » de l'assistant mène au calendrier — pas au tableau de bord (1.9s)
+00301 |   2 passed (53.6s)
