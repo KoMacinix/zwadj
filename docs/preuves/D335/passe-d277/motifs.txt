@@ -1,0 +1,58 @@
+# D335 — motifs de la passe D277 de la REPRISE du rang 40 (la passe de la certification qui couvre D331, D332 et D333 ; lot DOCUMENTAIRE ; arbitrages de Ko du 17/10/2026).
+# Lus par balayage.py (copie à l'octet de celui de D334, mêmes mécanique et calibration ; seuls le nom du lot et ce fichier changent), jamais passés en ligne de commande (D289).
+# sens 1 — ce que le lot INVALIDE : « la passe n'a pas démarré » (si elle démarre) ; « rang 40 OUVERT » ; « compteur TROIS » ; « aucun lot de code ne s'ouvre avant elle / une certification » (levé SI la marque est posée) ;
+#          « RANG 41 : EN ATTENTE » (n'est écrit qu'à la clôture) ; « condition de clôture du rang 39 » (annotée par le point 1 de Ko : NB-5 et le rejeu du 17/10) ; « base de développement n'a pas les deux migrations » (NB-5 : appliquées par Ko) ;
+#          « 27 appliquées » / « 27 migrations » (devenues 29) ; NB-1, NB-3, NB-4, NB-5, NB-6 (entrées du backlog que les points 1, 3, 4 et la décision 3 du relecteur ferment, étendent ou transforment) ; « migrate dev » (liste annotée par NB-4) ;
+#          « la reprise » / « S-38 » (ratifiée) ; « date d'événement passée » (NB-6 devient une décision de Ko).
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « peut s'ouvrir » ; « PEUT s'ouvrir » ; « tenable » ; « avant une certification » ; « certification immédiate » ; « L35-4 » ; « lot correctif » ; « ADM-1 » ; « ADM-2 » ;
+#          « à ordonner par Ko » ; « méthode RENFORCÉE » ; « la prochaine certification » ; « prisma:migrate » ; « procédure de restauration » ; « compteurs de devis » ; « refus d'une date passée ».
+1|la passe n'a pas démarré
+1|N'A PAS DÉMARRÉ
+1|NON démarrée
+1|rang 40 OUVERT
+1|rang 40 reste OUVERT
+1|compteur TROIS
+1|compteur **TROIS**
+1|TROIS INCHANGÉ
+1|TROIS → ZÉRO
+1|aucun lot de code ne s'ouvre avant elle
+1|aucun lot de code ne s'ouvre avant une certification
+1|RANG 41 : EN ATTENTE
+1|RANG 41
+1|condition de clôture du rang 39
+1|base de développement n'a pas les deux migrations
+1|27 appliquées
+1|27 migrations
+1|NB-1
+1|NB-3
+1|NB-4
+1|NB-5
+1|NB-6
+1|migrate dev
+1|S-38
+1|date d'événement passée
+1|date d'événement antérieure
+1|À RATIFIER PAR KO
+1|RATIFIER PAR KO
+1|Libérer environ 1 Go
+1|libérer environ 1 Go
+1|RAM sous la barre
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|tenable
+2|avant une certification
+2|certification immédiate
+2|L35-4
+2|lot correctif
+2|ADM-1
+2|ADM-2
+2|à ordonner par Ko
+2|méthode RENFORCÉE
+2|la prochaine certification
+2|prisma:migrate
+2|procédure de restauration
+2|compteurs de devis
+2|refus d'une date passée
+2|doctrine des bornes
+T+|ZWADJ
+T-|ZZZ-MOTIF-INEXISTANT-D335
