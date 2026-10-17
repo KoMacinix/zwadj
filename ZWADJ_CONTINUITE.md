@@ -1996,6 +1996,8 @@ Lot D334. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 
 ⇒ ~~**RANG 40 : EN ATTENTE D'ARBITRAGE DE KO**~~ *(périmé le 15/10/2026 — voir l'annotation à la ligne ci-dessus)* ⇒ **RANG 40 : OUVERT (D334) — ARBITRÉ PAR KO LE 15/10/2026 : la session adverse de L35-3, puis la certification qui couvre D331, D332 et D333** — lot **DOCUMENTAIRE** ; compteur **TROIS** à l'entrée, **ZÉRO** si la marque est posée. Point d'entrée : « PROCHAIN LOT — rang 40 », plus bas. ⛔ *(D334, fin de session, 15/10/2026 : la session adverse de L35-3 est **FAITE — aucun défaut bloquant** ; le protocole de la certification est commité et poussé ; **la passe a été tentée et n'a pas démarré** (RAM sous la barre) ⇒ **RANG 40 : TOUJOURS OUVERT, compteur TROIS, aucune marque ; « RANG 41 : EN ATTENTE D'ARBITRAGE DE KO » n'est PAS écrit** — il ne s'écrit qu'à la clôture. Ce que Ko doit faire : libérer environ 1 Go de RAM puis ouvrir une nouvelle session de reprise. « ÉTAT DE FIN DE SESSION DU 15/10/2026 », plus bas.)* ⛔ *(D335, 17/10/2026 : **REPRISE ORDONNÉE PAR KO** — Ko a libéré la mémoire de son poste (arbitrage du 17/10, point 5) et ordonné que la passe se rejoue sous le protocole de D334, sans retouche. **Le rang 40 reste OUVERT, le compteur TROIS, « RANG 41 » n'est PAS écrit** tant que la passe n'a pas rendu son verdict ; l'issue (marque posée, marque refusée, ou passe non démarrée de nouveau) s'écrit à la clôture de la reprise. Point d'entrée : « ÉTAT COURANT — REPRISE DU 17/10/2026 (D335) », en tête du point d'entrée du rang 40. Annoté, pas réécrit.)*
 
+⇒ **RANG 40 : CLOS (D335, 17/10/2026) — LA PASSE `r40-20261017-reprise` PASSE, LA MARQUE EST POSÉE** (« Portes vertes AU REPOS le 17/10/2026, et D331, D332 et D333 en font partie ») ; lot DOCUMENTAIRE ; **compteur TROIS → ZÉRO** ; « aucun lot de code ne s'ouvre avant une certification » est **LEVÉ**. ⇒ **RANG 41 : EN ATTENTE D'ARBITRAGE DE KO** (D284) — écrit à la **CLÔTURE** du rang 40, mot pour mot de la consigne. Candidat désigné par D-10 (cinquième révision) : **L35-4** (la fiche client et le nom sur le devis) — **pas arbitré** : la session ne choisit pas le rang suivant, elle écrit qu'il est attendu. À placer par Ko, **sans rang** : **NB-6** (refus d'une date d'événement antérieure à aujourd'hui, heure d'Alger — décidé par Ko le 17/10, petit lot de code) et l'entrée de code de **NB-1** ; ADM-1 et ADM-2 restent derrière L35-4. **La pause du chemin de l'argent (E3 et R1) est inchangée** ; la condition de clôture du rang 33 reste ouverte. Point d'entrée : « ÉTAT À LA CLÔTURE DU RANG 40 (D335) » ; section D335.
+
 ⛔ **ARBITRÉ LE 17/10/2026 PAR KO — LA REPRISE DU RANG 40, mot pour mot (première écriture d'autorité du lot D335 ; la table d'ouverture, la sortie de la lecture adverse de D334 et la première passe D277 l'ont précédée dans `git`) :**
 
 **Texte proposé par le relecteur, adopté par Ko tel quel :**
@@ -2107,9 +2109,26 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 40 · `[DOC]` **la session ADVERSE de L35-3, puis la certification qui couvre D331, D332 et D333** ⛔ **OUVERT LE 15/10/2026 (D334) — TABLE, LECTURE ADVERSE (142 contrôles, 0 écart), PREMIÈRE PASSE D277 ET ARBITRAGES DE KO ÉCRITS ; ~~LA SESSION ADVERSE PUIS LE PROTOCOLE SUIVENT~~ *(fait le 15/10/2026)* ; LA SESSION ADVERSE EST FAITE (AUCUN DÉFAUT BLOQUANT), LE PROTOCOLE EST COMMITÉ ET POUSSÉ ; LA PASSE A ÉTÉ TENTÉE ET N'A PAS DÉMARRÉ (PORTE DURE DE LA RAM ROUGE) — RIEN N'EST CERTIFIÉ, COMPTEUR TROIS, RANG OUVERT. ÉTAT COURANT : « ÉTAT DE FIN DE SESSION DU 15/10/2026 », PLUS BAS**
+## PROCHAIN LOT — rang 40 · `[DOC]` **la session ADVERSE de L35-3, puis la certification qui couvre D331, D332 et D333** ⛔ **OUVERT LE 15/10/2026 (D334) — TABLE, LECTURE ADVERSE (142 contrôles, 0 écart), PREMIÈRE PASSE D277 ET ARBITRAGES DE KO ÉCRITS ; ~~LA SESSION ADVERSE PUIS LE PROTOCOLE SUIVENT~~ *(fait le 15/10/2026)* ; LA SESSION ADVERSE EST FAITE (AUCUN DÉFAUT BLOQUANT), LE PROTOCOLE EST COMMITÉ ET POUSSÉ ; LA PASSE A ÉTÉ TENTÉE ET N'A PAS DÉMARRÉ (PORTE DURE DE LA RAM ROUGE) — RIEN N'EST CERTIFIÉ, COMPTEUR TROIS, RANG OUVERT. ÉTAT COURANT : « ÉTAT DE FIN DE SESSION DU 15/10/2026 », PLUS BAS** ⛔ *(D335, 17/10/2026 : **PÉRIMÉ — LE RANG 40 EST CLOS, LA MARQUE EST POSÉE, COMPTEUR ZÉRO** ; l'état courant est « ÉTAT À LA CLÔTURE DU RANG 40 (D335) », juste en dessous, première rubrique de ce point d'entrée. Annoté, pas réécrit.)*
 
-### ⛔ ÉTAT COURANT — REPRISE DU 17/10/2026 (D335) — À LIRE TOUT EN HAUT
+### ⛔ ÉTAT À LA CLÔTURE DU RANG 40 (D335) — À LIRE EN PREMIER
+
+⛔ **Écrit à la CLÔTURE (D294 : le seul rafraîchissement qui puisse être oublié, parce que plus rien ne suit).** **RANG 40 CLOS le 17/10/2026 — la passe `r40-20261017-reprise` PASSE : LA MARQUE EST POSÉE.** Lot **DOCUMENTAIRE** (il ne compte pas) ; **compteur TROIS → ZÉRO**.
+
+✅ **« Portes vertes AU REPOS le 17/10/2026, et D331, D332 et D333 en font partie. »** (texte complet, avec « ce que la certification ne garantit pas » mot pour mot : section « Session du 17/10/2026 — D335 »). **Trois lots, rien d'autre** ; le code mesuré est celui de `83929a6`.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **40 CLOS.** Dernière ligne « ⇒ RANG N » de l'ordre : **« RANG 41 : EN ATTENTE D'ARBITRAGE DE KO »** (D284) — la session ne choisit pas le rang suivant. Candidat désigné par D-10 (cinquième révision) : **L35-4** (la fiche client et le nom sur le devis) — **pas arbitré** | ordre des rangs |
+| numéro | dernière ligne du registre : **D335** ⇒ le prochain lot prend **D336** (en lisant le registre) | registre |
+| compteur | **ZÉRO** (rangs 37, 38 et 39 certifiés). **« Aucun lot de code ne s'ouvre avant une certification » est LEVÉ.** Un lot de code PEUT s'ouvrir dès que Ko arbitre le rang 41 ; **cinq lots de code non certifiés sont tenables**, sous les trois conditions de Ko du 14/10/2026 (un lot à méthode renforcée ou d'un chemin d'identité est suivi d'une certification immédiate ; six portes vertes avant chaque clôture ; si une certification rougit, on trouve d'abord quel lot a introduit le rouge) | `AGENTS.md`, règle de D270 annotée par D332 |
+| ce qui reste OUVERT | la **condition de clôture du rang 33** (le nom du client vient avec L35-4) ; **NB-6** (décision de Ko : refus d'une date d'événement antérieure à aujourd'hui, heure d'Alger — petit lot de code, **à placer par Ko**) ; **NB-1** (l'entrée de code, **à ordonner par Ko** ; la remise à niveau des compteurs est dans la procédure de restauration de NB-3, piste du déploiement) ; NB-2, NB-7 à NB-9, S11-C1 et S8-C1 ; **la pause du chemin de l'argent (E3 et R1) est INCHANGÉE** | backlog, « Reports du 17/10/2026 » et « Reports du 15/10/2026 » |
+| ce qui est fermé | **NB-5** (migrations de la base de développement appliquées par Ko le 17/10, vérifié : 29 sur 29) ; **S-34 à S-39 ratifiées** ; l'entrée « LA RAM LIBRE EST SOUS LA BARRE » (la mémoire est libérée, la passe a démarré et passé) | backlog ; arbitrage du 17/10 |
+| prochain lot | **aucun n'est ouvert.** Ko arbitre le rang 41 ; la reprise d'une session se fait par ce fichier **seul** | — |
+
+⛔ **Les pièces** : celles de la passe sont dans `docs/preuves/D334/passe-r40-20261017-reprise/` (203 fichiers relus identiques par SHA-256) ; celles de ce lot dans `docs/preuves/D335/`.
+
+### ~~ÉTAT COURANT — REPRISE DU 17/10/2026 (D335) — À LIRE TOUT EN HAUT~~ *(daté, NON COURANT depuis la clôture du 17/10/2026 : l'état courant est « ÉTAT À LA CLÔTURE DU RANG 40 (D335) », juste au-dessus ; ce bloc dit ce qui était vrai à l'ouverture de la reprise)*
 
 ⛔ **Écrit à l'ouverture de la reprise, avant la mesure de la passe ; il se rafraîchit à chaque avancement ET à la clôture (D294).** **SHA de départ : `b92dc7a`** (dernier commit de D334) ; `HEAD` = `origin/main` après `git fetch` (les deux = `b92dc7af5111f40291a7b544fb183b9d6edda022`), **arbre propre**, **aucun stash**, branche `main`. **Numéro D335**, pris en lisant le registre (dernière ligne : D334 ; `git grep -c D335` avant le lot : aucun fichier de texte). **Lot DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement) ; il ne compte pas dans le compteur de lots de code non certifiés. **Ce fichier ne peut pas porter le SHA du commit qui le contient** : le SHA de la passe sera celui du commit de la note d'ouverture, imprimé par `git rev-parse HEAD` juste avant le lancement et rapporté en fin de lot (D288).
 
@@ -2147,9 +2166,12 @@ concerné, et corriger le seul cas connu laisserait les autres armés.
 | 3 | `2cd42a5` | la première passe D277 — avant toute écriture d'autorité |
 | 4 | `2af356b` | **première écriture d'autorité** : l'arbitrage de Ko du 17/10/2026 (cinq points), mot pour mot, **seul** dans son commit (`ZWADJ_CONTINUITE.md`) |
 | 5 | `735fb1f` | les décisions du relecteur, ce point d'entrée avec la table recopiée **à l'identique**, les ratifications (S-34 à S-39), les sites périmés annotés (condition de clôture du rang 39, NB-5), `AGENTS.md` (NB-4), le backlog (NB-1, NB-3, NB-5, NB-6, reports de la reprise) |
-| 6 | (celui-ci) | la **NOTE D'OUVERTURE** de la reprise (ci-dessus) et les trois pièces de l'état machine relevé avant la passe (`docs/preuves/D335/etat/`) — commitée ET POUSSÉE **avant toute mesure** |
+| 6 | `f2aca6e` | la **NOTE D'OUVERTURE** de la reprise (ci-dessus) et les trois pièces de l'état machine relevé avant la passe (`docs/preuves/D335/etat/`) — commitée ET POUSSÉE **avant toute mesure** ; **la passe est lancée sur ce SHA** (14:27:46) |
+| 7 | `e17e0a6` | **extension 1** de la table : les 203 pièces de la passe et les 2 inventaires du rejeu, chemins complets, **avant** leur versement |
+| 8 | `a71288e` | **les pièces de la passe** `r40-20261017-reprise` (203 fichiers relus identiques par SHA-256, extrait e2e, lectures, lecture à la main de R26) et le rejeu des deux specs |
+| 9 | (celui-ci) | **la clôture** : marque posée, état à la clôture, section D335, registre, ordre des rangs, `AGENTS.md`, backlog, table recopiée avec son extension, dernière passe D277, contrôles « 0 valeur réelle », dernier audit scellé « b » et son tri |
 
-*(Les commits suivants s'ajouteront ici : la passe et sa clôture. L'extension qui déclare les pièces de la passe précède leur versement.)*
+*(Table complète à la clôture. Le SHA du dernier commit ne s'écrit pas ici : un fichier ne peut pas porter le SHA du commit qui le contient — il est rapporté en fin de lot, D288.)*
 
 #### Fichiers attendus — table recopiée de `docs/preuves/D335/table-ouverture.md`
 
@@ -2193,7 +2215,222 @@ concerné, et corriger le seul cas connu laisserait les autres armés.
 
 ##### Extensions de la table
 
-Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Une à la clôture, recopiée à l'identique de `docs/preuves/D335/table-ouverture.md` : `e17e0a6`. Seul le niveau des titres change.)*
+
+Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre.
+
+###### Extension 1 — les pièces de la PASSE `r40-20261017-reprise` (portes, campagnes, lectures, extrait e2e) et les deux inventaires du rejeu des specs, déclarées AVANT leur versement
+
+**Motif** : la famille « la passe » de la table d'ouverture ne nomme aucun fichier ; la règle exige des chemins complets. La passe a eu lieu (17/10/2026 14:27:46 → 17:39:10, code de sortie 0) sur le commit `f2aca6e` ; ses 203 pièces existent dans `.neutralisation-journaux/r40-20261017-reprise/` (ignoré par git) et sont versées par `docs/preuves/D334/outils/verser.py` (destination du protocole, outil non retouché) dans `docs/preuves/D334/passe-r40-20261017-reprise/` ; le journal e2e brut (`e2e.log`) est REFUSÉ par l'outil (point 9) et remplacé par `e2e-EXTRAIT.txt`. Les lectures (`lecture-*.txt`, `lecture-r26/`) et l'extrait sont ceux que le protocole écrit APRÈS la clôture, dans le dossier de la passe, avant le versement.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-4.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-5.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/arbre-6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A10.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A13.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A4.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A5.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A7.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/A9.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/B1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/B2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-1-defaut-d310.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-2-commande-introuvable.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-3-filtre-sans-titre.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-4-mutation-connue.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/calibration-5-mutation-neutre.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-10.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-11.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-12.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-4.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-5.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-7.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/available-on-api/pre-vol-9.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/build.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/build.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/build.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes-tout.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes-tout.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes-tout.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-404.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-act-plafonds.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-argon2.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-available-on-api.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-available-on.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-b7.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-booking-status.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-budgets.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-e3d1-s8.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-horizon.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-horloge.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-journey.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-maxprice.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r25.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r26.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r29.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r30.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r32.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r33.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r37.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r38.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r39.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-r4.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-rang23.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s10a.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s10b.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s11a.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s11b.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-s9.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s1.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s2.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s3.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s4.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s5a.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s5b.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s6.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/campagnes/neutralize-solid-s7.py.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/contre-epreuve.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/contre-epreuve.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/contre-epreuve.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-EXTRAIT.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-r26.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-r26.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e-r26.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/e2e.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/echantillonneur-sortie.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-env-cloture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-env-comparaison.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-env-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat-resume.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/etat.csv` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-e3d1-s8.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-e3d1-s8.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-e3d1-s8.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r25.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r25.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r25.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r33.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r33.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r33.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r39.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r39.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-r39.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-s11b.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-s11b.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-s11b.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s1.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s1.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s1.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s2.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s2.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s2.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s3.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s3.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s3.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s6.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s6.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/int-solid-s6.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/inventaire-apres-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/inventaire-cloture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/inventaire-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-available-on-api.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-campagnes.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-etat.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-main-r26.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-portes.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-1.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-2.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-3.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-r26/R26-4.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lecture-rang23.txt` | lecture ou extrait écrit APRÈS la clôture de la passe, dans le dossier de la passe, versé avec lui (le journal e2e brut n'entre pas, point 9) |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lint.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lint.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/lint.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-avant-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-avant-testint.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-e3d1-s8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-r25.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-r33.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-r39.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-s11b.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-int-solid-s6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/pg-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/porte-dure.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-apres-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-avant-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-avant-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ports-ouverture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/progression.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/ram-intermediaires.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C1-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C1-t-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C1-t-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C2-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C3-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C4-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C5-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-C6-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F1-a-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F1-b-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F5-a-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F5-b-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/R23-F5-c-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/pre-vol-int-reservations.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/rang23/pre-vol-unit-transitions.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-apres-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-apres-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-build.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-campagnes.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-e2e-r26.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-e2e.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-e3d1-s8.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-r25.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-r33.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-r39.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-s11b.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s3.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-int-solid-s6.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-lint.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-test.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-testint.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-avant-typecheck.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-cloture.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-ouverture-1.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/sonde-ouverture-2.txt` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/test.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/test.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/test.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/testint.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/testint.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/testint.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/typecheck.code` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/typecheck.heures` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D334/passe-r40-20261017-reprise/typecheck.log` | pièce de SA passe (point 11) : copie octet pour octet du dossier de la passe, relue par SHA-256 |
+| `docs/preuves/D335/rejeu-specs/inventaire-avant-rejeu.txt` | inventaire des navigateurs et de `node` avant / après le rejeu SEUL des deux specs sorties de la suite (pièce, pas porte) |
+| `docs/preuves/D335/rejeu-specs/inventaire-apres-rejeu.txt` | inventaire des navigateurs et de `node` avant / après le rejeu SEUL des deux specs sorties de la suite (pièce, pas porte) |
+
 
 ### ÉTAT À L'OUVERTURE DU RANG 40 (D334) — ~~À LIRE EN PREMIER~~ *(daté, NON COURANT depuis le 17/10/2026 : la reprise est ouverte ; l'état courant est « ÉTAT COURANT — REPRISE DU 17/10/2026 (D335) », juste au-dessus)*
 
@@ -2385,7 +2622,7 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 ⇒ **SI ELLE PASSE** (Ko) : le rang 40 se clôt, le compteur revient à **ZÉRO**, et « **RANG 41 : EN ATTENTE D'ARBITRAGE DE KO** » s'écrit (candidat désigné : L35-4). ⇒ **SI ELLE ÉCHOUE** : rien ne se clôt ; l'échec est décrit ; **rien n'est corrigé** ; la troisième condition s'applique ; le blocage revient à Ko. ⇒ **SI ELLE NE DÉMARRE PAS** (porte dure rouge) : rien n'est mesuré, rien n'est certifié, le compteur reste **TROIS**, le rang 40 reste ouvert, et le motif est écrit (RAM, `.env`, ou `headless_shell`). ⛔ *(D334, fin de session, 15/10/2026 : **C'EST CE CAS QUI S'EST PRODUIT** — passe `r40-20261015-1316`, 13:16:44, sortie 3, motif : la RAM libre (médiane 3 662 puis 3 756,5 Mo) sous la barre de 4 579 Mo ; `.env` verts, `chrome` et `headless_shell` à 0 ; rien lancé, rien certifié, compteur TROIS, rang 40 OUVERT. « ÉTAT DE FIN DE SESSION DU 15/10/2026 », plus bas. Annoté, pas réécrit.)*
 **Limites écrites d'avance** : celles de D310/D314/D319/D324/D329/D330 (base de dev non re-mesurée — et non migrée, écart n° 12 ; réserve « zéro `node` pendant la mesure » reconduite ; processus étrangers autres que `chrome` et `headless_shell` — l'IDE de Ko compris — non mesurés pendant la fenêtre ; **aucune durée ne se compare** — sauf au plancher, qui est un **seuil de démarrage** ; contre-épreuve sans relevé propre) ; celles du plancher (une mutation qui empêche la spec de se charger dure autant qu'un démarrage ; un plancher par campagne ne voit pas un non-démarrage partiel) ; le plancher **repris** sur des harnais dont le code qu'ils mutent a changé (écart n° 1) ; les **sept** harnais qui lisent une partie de leur sortie (D303), étiquetés « code de sortie seul » ; la profondeur moindre de la preuve lue de `r25`/`r26` ; **la marque vaut pour un poste sans serveurs de dev** ; la lecture à la main de `R26-2`/`R26-4` porte sur **une** exécution ; les deux specs rejouées après la passe ne sont **pas une porte** ; l'état des `.env` ne couvre que les fichiers `.env` et `.env.*` (hors `.example`) ; **l'échantillonneur ne voit pas `headless_shell`** (écart n° 9) ; la RAM libre du poste est celle que la sonde lit (`FreePhysicalMemory`, cache de veille compris) : **elle ne dit rien de ce qui la consomme**.
 
-### ⛔ ÉTAT DE FIN DE SESSION DU 15/10/2026 (D334) — LA SESSION ADVERSE EST FAITE ET SANS DÉFAUT BLOQUANT ; LA PASSE N'A PAS DÉMARRÉ (PORTE DURE DE LA RAM ROUGE) ; RIEN N'EST CERTIFIÉ
+### ⛔ ÉTAT DE FIN DE SESSION DU 15/10/2026 (D334) — LA SESSION ADVERSE EST FAITE ET SANS DÉFAUT BLOQUANT ; LA PASSE N'A PAS DÉMARRÉ (PORTE DURE DE LA RAM ROUGE) ; RIEN N'EST CERTIFIÉ ⛔ *(daté, NON COURANT depuis le 17/10/2026 : la passe a eu lieu à la reprise et elle passe — « ÉTAT À LA CLÔTURE DU RANG 40 (D335) », plus haut)*
 
 ⛔ **Écrit à la fin de la session (D294 : le seul rafraîchissement qui puisse être oublié).** **Le rang 40 reste OUVERT. Le compteur reste TROIS. Aucune marque n'est posée. « RANG 41 » n'est PAS écrit.** Ce qui est acquis, ce qui ne l'est pas :
 
@@ -4017,6 +4254,230 @@ reflété en arabe. V-b · il efface les réponses. **Nouveau devis (Q)** — Q-
 vide pas tout. **Fenêtre (F)** — F-a · elle s'ouvre **avant** la réponse du serveur. F-b · elle s'ouvre sur un échec. F-c · elle ne
 nomme pas la date, l'action, ou le client. **Assistant de salle (U)** — U-a · « Enregistrer » à l'étape 7 : ni requête ni message. U-b ·
 le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c · la valeur enregistrée n'est pas celle saisie.
+
+## Session du 17/10/2026 — D335 · rang 40 REPRIS et CLOS, lot DOCUMENTAIRE : LA PASSE DE LA CERTIFICATION QUI COUVRE D331, D332 ET D333 PASSE — LA MARQUE EST POSÉE (« Portes vertes AU REPOS le 17/10/2026, et D331, D332 et D333 en font partie ») ; compteur TROIS → ZÉRO ; lecture adverse de D334 (76 contrôles ✓, 0 écart, 6 constats, 5 non vérifiables) ; arbitrages de Ko du 17/10 (cinq points) ; RANG 41 : EN ATTENTE D'ARBITRAGE DE KO
+
+⛔ **NUMÉRO PRIS EN LISANT LE REGISTRE** : sa dernière ligne portait **D334** ⇒ **D335** (`git grep -c D335` avant le lot : aucun fichier de texte — une seule occurrence, dans les octets d'une image JPEG). **SHA de départ : `b92dc7a`** — `HEAD` = `origin/main` après `git fetch`, **arbre propre**, **aucun stash**, branche `main`. ⇒ **RANG 40, REPRIS** (ordre de Ko, consigne du 17/10/2026) : la reprise n'ouvre aucun rang neuf. **Lot DOCUMENTAIRE** (`.md` d'autorité et `docs/preuves/` seulement) : il ne compte pas ; il ramène le compteur de **TROIS** à **ZÉRO** parce que la marque est posée.
+
+### D335 — la reprise (première partie, courte)
+
+L'état d'ouverture est écrit une fois, dans le point d'entrée du rang 40 (« ÉTAT COURANT — REPRISE DU 17/10/2026 (D335) », table de reprise et note d'ouverture) : rang 40 ouvert ; numéro D335 pris au registre ; compteur **TROIS**, limite de CINQ, première condition de Ko (méthode renforcée ⇒ certification immédiate) ; aucune condition préalable qui bloque. Rien n'est répété ici.
+
+### D335 — l'ordre des commits, prouvé par `git` (règle de `AGENTS.md`, D328)
+
+Voir la table « Ordre des commits de ce lot » du point d'entrée (mise à jour à la clôture). **Contrôle de fin de lot** : voir « D335 — le contrôle de fin de lot ».
+
+### D335 — la lecture adverse depuis la clôture de D334, EN ENTIER
+
+**Instrument** : `docs/preuves/D335/lecture-adverse/confronter-d334.py` (objets `git` lus à des SHA FIXÉS : départ `83929a6`, clôture de D334 `b92dc7a`, table d'ouverture de ce lot `a9695c3`, protocole `6e78b23`, harnais `257471d` et `4202dd4` ; **aucun rejeu de porte ni de campagne** ; la famille X lit l'état vivant). **Sortie, versée AVANT toute écriture d'autorité** (commit `a26e1b5`) : `confronter-sortie.txt`. **Calibration : 33 bras (vrai et faux pour chaque extracteur), 0 manqué.** **Résultat : 76 contrôles — 76 ✓ · 0 ✗ · 0 écart de D334 · 0 écart de l'état vivant · 6 constats · 5 non vérifiables.** Ventilation : G 18 · P 4 · S 17 · K 16 · T 10 · L 5 · X 6 (aucune famille à zéro).
+
+**Défauts de l'instrument** (`defauts-instrument.txt`, première sortie versée à côté : `confronter-sortie-passe-1-AVANT-CORRECTIFS.txt`) : la **première passe** a rendu **7 ✗** (69 ✓) — **aucun n'était un écart de D334** : G1 (la table d'ordre cherchée dans tout le fichier : 114 lignes au lieu de 12), G6 (une expression qui attendait un « « » devant le point 4), P4 (« 4579 » écrit de mémoire, le texte dit « 4 579 »), T4 (`round(822.5)` de Python rend 822), L4 (un chemin cité dans la prose pris pour un fichier déclaré), K16 (un contrôle trop strict), S11 (**un constat réel sur D334**, pas un défaut d'instrument). Une **deuxième passe** : 1 ✗ (P3, la liste de chiffres contenait la barre de RAM que l'annotation de clôture cite). **Troisième passe, qui fait foi : 76 ✓.** L'instrument a été **rejoué en entier** à chaque réparation.
+
+**Les 76 contrôles, un par ligne (générés depuis `confronter-sortie.txt`, libellés tels qu'imprimés ; l'attendu et le mesuré sont dans la sortie versée)** :
+
+| id | ce qui est contrôlé | résultat |
+|---|---|---|
+| G1 | les commits de D334 (rev-list 83929a6..b92dc7a) = les 12 SHA de la table « ordre des commits » du point d'entrée + le 13ᵉ « (celui-ci) » = b92dc7a — 13 commits parcourus, 12 lignes de table lues | ✓ |
+| G2 | le PREMIER commit de D334 ne contient que `docs/preuves/D334/table-ouverture.md` | ✓ |
+| G3 | avant la première écriture d'autorité (ca882e8), aucun des 3 commits (91528f5, 11b3879, 245cf70) ne touche un `.md` d'autorité ; la lecture adverse (11b3879) et la première passe D277 (245cf70) y sont | ✓ |
+| G4 | la première écriture d'autorité (ca882e8) ne contient que `ZWADJ_CONTINUITE.md` | ✓ |
+| G5 | ca882e8 n'efface RIEN (0 ligne retirée) : c'est un ajout seul | ✓ |
+| G6 | le texte de Ko (quatre points) écrit par ca882e8 est présent, MOT POUR MOT, à la clôture (b92dc7a) — texte comparé aplati | ✓ |
+| G7a | l'extension ed5a87e précède le commit ce1a5f1 (la session adverse) et déclare ses 14 fichiers en chemins complets | ✓ |
+| G7b | l'extension fc797f7 précède le commit d6d376a (l'étape 0) et déclare ses 22 fichiers en chemins complets | ✓ |
+| G7c | l'extension a642123 précède le commit 2385da7 (la tentative de passe) et déclare ses 9 fichiers en chemins complets | ✓ |
+| G8a | les 6 fichiers du commit 11b3879 sont déclarés par la table d'ouverture (premier commit) | ✓ |
+| G8b | les 3 fichiers du commit 245cf70 sont déclarés par la table d'ouverture (premier commit) | ✓ |
+| G9 | TOUT le diff 83929a6..b92dc7a (61 fichiers parcourus) = les trois `.md` d'autorité + des chemins déclarés par la table finale (extensions comprises) | ✓ |
+| G10 | le code mesuré est celui de 83929a6 : le diff 83929a6..b92dc7a (61 fichiers parcourus) ne contient, hors `docs/preuves/`, que les trois `.md` d'autorité | ✓ |
+| G11 | …et celui de 0342e94 (dernier commit de D333 qui touche du code) : le diff 0342e94..b92dc7a (119 fichiers parcourus) ne contient aucun fichier de code | ✓ |
+| G12 | « HEAD aura avancé de commits de documentation seulement » : le diff 6e78b23..a9695c3 (17 fichiers parcourus) ne contient aucun fichier de code ni de harnais | ✓ |
+| G13 | le protocole (6e78b23) est commité avant la tentative (heure du commit < première ligne de la progression de la passe) | ✓ |
+| G14 | …et POUSSÉ avant la tentative (reflog de `origin/main` : « update by push » de 6e78b23 antérieur à la première ligne de la progression) | ✓ |
+| G15 | les pièces de la tentative (2385da7) ne sont pas antérieures à la poussée du protocole | ✓ |
+| P1 | la section du protocole existe aux deux SHA — lignes parcourues : 43 (à 6e78b23) et 43 (à b92dc7a) | ✓ |
+| P2 | TOUT écart de la section entre 6e78b23 et b92dc7a est un AJOUT EN FIN DE LIGNE (une annotation) — 1 écart(s) trouvé(s) sur 43 lignes comparées | ✓ |
+| P3 | les prédictions chiffrées (482 mordues, 527 mordues, 1 871 / 141, 493/39, 55 passés, 197, 37 campagnes) ont le MÊME nombre d'occurrences aux deux SHA | ✓ |
+| P4 | …et chacun existe bien dans la section (un chiffre absent des deux rendrait P3 vrai pour rien) ; « 4 579 » (la barre) aussi | ✓ |
+| S1 | sortie 1-migrations : le BILAN dit 29 ✓ · 0 ✗ · 0 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 29 ✓ et 0 ✗ parcourus | ✓ |
+| S2 | sortie 2-gardes-de-base : le BILAN dit 37 ✓ · 0 ✗ · 5 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 37 ✓ et 0 ✗ parcourus | ✓ |
+| S3 | sortie 3-concurrence : le BILAN dit 18 ✓ · 0 ✗ · 0 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 18 ✓ et 0 ✗ parcourus | ✓ |
+| S4 | sortie 6-derive : le BILAN dit 2 ✓ · 0 ✗ · 1 constat(s) ; les lignes « ✓ » recomptées dans la sortie = le bilan — 2 ✓ et 0 ✗ parcourus | ✓ |
+| S5 | sortie 4-api : six fuseaux d'hôte, quinze tests chacun, tous passés — 6 hôtes et 6 résumés « Tests … passed » parcourus | ✓ |
+| S5b | sortie 4-api : les six fuseaux sont six fuseaux DISTINCTS (le natif Toronto compris) | ✓ |
+| S6 | sortie 5 : 54 blocs de mutation, 0 ancre fausse ; la répartition imprimée = le recompte des blocs — 54 blocs parcourus | ✓ |
+| S7 | les deux muettes sont l'étalon négatif CAL- (DOIT rester muet) et S-2 (équivalente, NB-7) | ✓ |
+| S8 | mutations PROPRES = 54 − 2 étalons = 52 ; mordues parmi elles = 51 (CAL+ est l'étalon POSITIF) — 52 propres parcourues | ✓ |
+| S9 | chaque mutation qui touche un fichier le dit « restauré : empreinte identique » — 54 blocs avec fichier restauré sur 54 | ✓ |
+| S10 | sortie 5 : l'arbre à la fin n'a aucun fichier suivi modifié | ✓ |
+| S11 | toute mutation propre mordue PAR UN CANAL VITEST (unit-api, int, pro) l'est en `AssertionError` lue — 51 mordues parcourues | ✓ |
+| S12 | le RAPPORT annonce les mêmes totaux que les sorties (29 ✓, 37 ✓, 18 ✓, 15/15 six fois, 52 mordues · 2 muettes, 2 ✓ · 1 constat, 120 sessions, 54 mutations) | ✓ |
+| S13 | les six cas demandés par le relecteur (23 h 59 à Alger le 31/12, deux salles simultanées, restauration, révision d'une révision, suppression avec devis, migration B sur copie) ont chacun leur mode (F-3, A-3, F-6, F-4, A-8, F-5) dans le rapport | ✓ |
+| S14 | sortie 4 : les tests A-3 (deux salles) et A-4 (23 h 59) et A-8 (suppression d'une salle avec devis) sont nommés dans la sortie vitest | ✓ |
+| S15 | le dépôt à b92dc7a ne porte AUCUNE pièce « adverse » hors `docs/preuves/` (la sonde TypeScript a été retirée) — 4663 fichiers suivis parcourus | ✓ |
+| S16 | le backlog à la clôture porte NB-1 à NB-9 sous « Reports du 15/10/2026 — rang 40 » | ✓ |
+| K1 | les trois règles : la calibration versée compte 12 bras tous ✓, 0 manqué ; le code de `regles.py` appelle `bras(` 12 fois — 12 ✓ et 0 ✗ parcourus | ✓ |
+| K2 | `passe.py` porte les cinq modifications déclarées, chacune marquée [D334 (n)] dans son code | ✓ |
+| K3 | `passe.py` de D334 contre celui de D330 : 52 lignes ajoutées et 10 retirées (le comptage de D334, recompté ici par `git diff --no-index --numstat`) | ✓ |
+| K4 | `passe.py` applique la RAM d'ouverture par `regles.juger_ram_ouverture` et la clôture par `regles.juger_ram_cloture` ; `headless_shell` est compté par `regles` (porte dure) | ✓ |
+| K5 | plancher.txt : 33 lignes P, dont 26 REPRIS et 7 MESURÉS selon la sortie de dérivation — 33 lignes P lues, 26 REPRIS et 7 MESURÉS lus | ✓ |
+| K6 | RECALCUL indépendant : les harnais neufs ou dont le blob a changé entre 4202dd4 (D329) et b92dc7a = les 7 à MESURER — 37 harnais à b92dc7a, 34 à 4202dd4 | ✓ |
+| K7 | …et les 26 REPRIS sont exactement les autres harnais qui ont un plancher (ni mesurés, ni sans plancher) | ✓ |
+| K8 | les harnais SANS plancher sont ceux dont le point 12 est une preuve LUE (rang23, available-on-api, r25, r26) — ni plus, ni moins | ✓ |
+| K9 | chaque plancher REPRIS porte la valeur et la passe du plancher de D329 — 26 repris comparés à 30 lignes de D329 | ✓ |
+| K10 | les pièces de `neutralisation/` qui ne sont pas des harnais n'ont pas changé depuis D324 (257471d) — l'argument « les outils que les harnais lisent n'ont pas bougé » des planchers repris | ✓ |
+| K11 | le premier essai à blanc : arrêté sur la porte dure RAM (3 572,5 puis 3 597,5 Mo contre 4 579), rien lancé | ✓ |
+| K12 | le second essai à blanc se déclare « barre d'ouverture abaissée à 3 000 Mo POUR L'ESSAI SEUL » et diagnostic non certifiant ; il juge la clôture « SOUS LA BARRE : LA MARQUE EST REFUSÉE », sortie 6 | ✓ |
+| K13 | le second essai à blanc porte l'identifiant `fumee2-d334`, jamais un identifiant de passe `r40-…` ; il ne contient ni « MARQUE POSÉE » ni « Portes vertes AU REPOS » | ✓ |
+| K14 | à la clôture de D334, aucun dossier `passe-<ID>/` ne se donne pour une passe JOUÉE : seul `passe-NON-DEMARREE-…` (et `passe-d277`, la passe D277 des textes) existe | ✓ |
+| K15 | les deux essais à blanc vivent sous `etat/` (diagnostics), jamais sous un dossier de passe | ✓ |
+| K16 | AUCUNE des 16 mentions d'un « essai à blanc » dans `ZWADJ_CONTINUITE.md` (à b92dc7a) n'est à moins de 200 caractères avant / 300 après d'une « marque posée » (aucun essai n'est lu comme une mesure certifiante) | ✓ |
+| T1 | le dossier de la tentative contient exactement les NEUF pièces brutes de l'extension 3 — 9 fichiers parcourus | ✓ |
+| T2 | les deux sondes d'ouverture brutes portent 3 662 (3 649-3 667) puis 3 756,5 (3 660-3 862) Mo — les chiffres du texte de D334 | ✓ |
+| T3 | porte-dure.txt : ROUGE, la barre est 4 579 Mo aux deux ouvertures, et chaque médiane ET chaque bas de bande est sous elle | ✓ |
+| T4 | le « déficit de 823 à 930 Mo » du texte = 4 579 − 3 756,5 (arrondi) et 4 579 − 3 649 | ✓ |
+| T5 | la progression ne montre AUCUNE porte, AUCUNE campagne, AUCUN arbre lancés — 23 lignes parcourues | ✓ |
+| T6 | …et se termine par « PORTE DURE ROUGE — RIEN N'EST LANCÉ » | ✓ |
+| T7 | les 12 bras de calibration des règles ont été joués par la tentative elle-même (« 12 bras, 0 manqué(s) ») | ✓ |
+| T8 | à l'ouverture de la tentative : `.env` VERT (3 fichiers, 8 variables, 0 hôte non local) et `chrome` = 0, `headless_shell` = 0, `node` = 0 | ✓ |
+| T9 | sortie standard : la passe ne rapporte aucune marque ni aucun résultat de porte | ✓ |
+| T10 | le dossier s'appelle `passe-NON-DEMARREE-…` et NON `passe-r40-…` (S-39) : aucun outil de lecture (`verser.py`, `lire-*.py`) ne cible ce dossier par son nom | ✓ |
+| L1 | la dernière ligne du registre de `ZWADJ_CONTINUITE.md` à b92dc7a est D334, et D335 n'y figure pas — 288 lignes de registre parcourues | ✓ |
+| L2 | le point d'entrée du rang 40 dit « compteur TROIS » inchangé, « RANG 41 » non écrit, et n'a aucune marque | ✓ |
+| L3 | `AGENTS.md` porte la fin de session de D334 : la passe NON démarrée, rien certifié, compteur TROIS | ✓ |
+| L4 | la table recopiée dans le point d'entrée = la table d'ouverture finale, comme ENSEMBLE de chemins complets (extensions comprises) — 70 chemins recopiés, 70 dans la table | ✓ |
+| L5 | la table d'ouverture initiale (91528f5) est un SOUS-ENSEMBLE de la table finale : rien de ce qu'elle déclarait n'a été retiré — 20 chemins initiaux | ✓ |
+| X1 | arbre : seuls des fichiers NON SUIVIS sous `docs/preuves/D335/` (cette lecture) — 1 lignes de `git status` parcourues | ✓ |
+| X2 | aucun stash | ✓ |
+| X3 | HEAD = origin/main (après le `git fetch` du début de session) | ✓ |
+| X4 | les `.env` : porte VERTE (code 0, 0 hôte non local), et les trois empreintes SHA-256 sont IDENTIQUES à celles de l'étape 0 de D334 — 3 fichiers relevés, aucune valeur lue | ✓ |
+| X5 | base de développement `zwadj` : les 29 migrations du dépôt (calculées depuis `git`) sont appliquées ET terminées (arbitrage de Ko, point 1 : « j'ai appliqué les migrations ») — SELECT de lecture seule | ✓ |
+| X6 | aucun `node`, `chrome`, `headless_shell`, `chromium` vivant (relevé, pas une porte : la porte est celle de la passe) | ✓ |
+
+
+**Constats (6)** :
+- **S8-C1** — D334 écrit « 52 mutations propres mordues sur 54 (2 muettes : 1 étalon, 1 équivalente) » : les 52 mordues **incluent l'étalon positif CAL+**. Le recompte exact est **51 mutations PROPRES mordues sur 52, plus deux étalons** (CAL+ mord, CAL− reste muet, comme exigé) ; **S-2** est la seule propre muette. Imprécision de formulation, pas de fond. **Rectifiée ICI, à côté** : la pièce `RAPPORT.txt` ne se retouche pas (un instrument et sa pièce se corrigent ensemble ou pas du tout, D295). Backlog : « Reports du 17/10/2026 ».
+- **S11-C1** — **HUIT mutations propres ne sont mordues que par les sondes de la session adverse** (SQL et Python), pas par une suite du dépôt : MA-3, MA-5, MA-7, MB-7, MB-8, MB-9, MB-10, MB-11. D334 n'en nomme qu'une (MB-9, dans NB-7) ; la décision 1 du relecteur demandait « lis chaque échec (assertion native) ». Non bloquant : la garde mord quand on la sonde, et la suite du dépôt (`neutralize-r39.py`, 51 cibles) est jouée par la passe. Backlog : entrée ouverte, à ordonner par Ko.
+- **S11-C2** — le canal `int` rend « ÉCHEC SANS ASSERTION » (une première ligne qui n'est pas une `AssertionError`, D304) pour **MA-3 et MB-10** ; la sortie les classe MORD par un autre canal.
+- **K16-C1** — quatre des seize mentions d'un « essai à blanc » ne portent pas le mot « diagnostic » ou « non certifiant » dans leur voisinage : lues à la main, ce sont des **descriptions** (une ligne de la table d'ordre des commits ; « mesuré par l'essai à blanc » pour le nombre de relevés intermédiaires) ; **aucune n'est à moins de 200 caractères d'une marque posée** (K16 ✓).
+- **X5-C1** — la base de développement `zwadj` compte aujourd'hui **8 salles et 24 devis** (D334 : 8 et 20) : Ko a rejoué ses scénarios depuis le 15/10 — ce n'est pas un défaut.
+- **X6-C1** — RAM libre du poste à l'instant de la lecture : 5 814,1 Mo (la barre est 4 579 ; la porte dure est jugée par la passe, pas ici).
+
+**Non vérifiables (5)** : S17 (« 120 sessions PostgreSQL séparées » : somme non recomptable depuis les sorties) · S18 (la base de développement « intacte avant comme après » : l'état d'alors ne se relit plus, Ko a migré depuis) · S19 (« les bases jetables sont supprimées » : l'état du serveur n'est pas une pièce) · T11 (ce qui occupait ~1 Go de plus le 15/10 : l'inventaire ne nomme que quatre noms) · L6 (les arbitrages de Ko du 15/10 mot pour mot : le texte du chat n'est pas dans le dépôt ; G6 prouve seulement que le texte écrit par `ca882e8` n'a pas bougé).
+
+**Ce que la lecture a tenu pour acquis, dit plus haut en contrôles** : le code mesuré est celui de `83929a6` (G10 à G12) ; le protocole n'a changé que d'une annotation en fin de ligne (P2) ; il a été commité et poussé 15 s et 11 s **avant** la tentative (G13, G14) ; la session adverse n'a laissé aucune pièce « adverse » dans les sources (S15) ; les 26 planchers repris le sont bien, les 7 mesurés sont exactement les harnais neufs ou changés (K5 à K10) ; les deux essais à blanc sont nommés diagnostics, jamais lus comme une mesure (K11 à K16) ; la tentative s'est arrêtée à la porte dure avec ses neuf pièces brutes (T1 à T10). **Aucun défaut bloquant : la passe est partie.**
+
+### D335 — la passe `r40-20261017-reprise`
+
+**Identifiant** `r40-20261017-reprise` ; **HEAD = `f2aca6e68ada59b290cb31a4da5f5142181d778d`** (le commit de la note d'ouverture, poussé : local et `origin/main` identiques) ; **commande** `python3 -u docs/preuves/D334/outils/passe.py r40-20261017-reprise f2aca6e68ada59b290cb31a4da5f5142181d778d` ; **17/10/2026 14:27:46 → 17:39:10**, **code de sortie 0** (5, 6 ou 7 auraient refusé la marque ; 3 = rien lancé). **Protocole de D334, sans retouche** (`6e78b23`). Pièces : `docs/preuves/D334/passe-r40-20261017-reprise/` (203 fichiers relus identiques par SHA-256 ; le journal e2e brut n'entre pas, son extrait y est) — que `P` désigne ce dossier dans la table.
+
+**Porte dure d'ouverture : VERTE sur les deux relevés** (calibration des règles : 12 bras, 0 manqué ; `pg_isready` 0 ; ports 3100/3101/5273 libres ; `.env` VERTS, 3 fichiers, 8 variables d'URL, 0 hôte non local ; `chrome` 0, `headless_shell` 0, `node` 0, `msedge` 0 ; RAM : voir la table).
+
+| point | code | prédit | mesuré | ✓ | pièce |
+|---|---|---|---|---|---|
+| `typecheck` | 0 | 0, « Done » 8, 0 `error TS` | 0, 8, 0 (19 s) | ✓ | `P/typecheck.log`, `P/lecture-portes.txt` |
+| `lint` | 0 | 0, « Done » 8 | 0, 8 (13 s) | ✓ | `P/lint.log` |
+| `test` | 0 | 48/5 · 881/67 · 372/29 · 570/40 = 1 871 / 141 | **48/5 · 881/67 · 372/29 · 570/40 = 1 871 / 141** (87 s) | ✓ **exact** | `P/test.log` |
+| `build` | 0 | 0, « Done » 4 | 0, 4 (32 s) | ✓ | `P/build.log` |
+| `test:int` | 0 | **493/39** | **493 passés sur 493, 39 fichiers** (327 s) | ✓ **exact** | `P/testint.log` |
+| `test:e2e` | 0 | 55 passés · 1 ignoré | **55 passés · 1 ignoré** (167 s ; extrait : recompte cohérent, 0 « fail », 61 jetons dans la source, 0 dans l'extrait) | ✓ **exact** | `P/e2e-EXTRAIT.txt` |
+| `--tout` (37 campagnes) | 1 attendu | 482 mordues · 0 muette · 21 non mesurées | **482 · 0 · 21, 37 campagnes** (6 127 s) | ✓ **exact** | `P/campagnes-tout.log`, `P/campagnes/` |
+| `--int` ×9 | 0 | `e3d1-s8` 8 · `r25` 11 · `r33` 95 · `r39` 51 · `s11b` 13 · `solid-s1` 2 · `solid-s2` 5 · `solid-s3` 6 · `solid-s6` 6 = 197 | **les neuf à 0, mêmes nombres, 197** | ✓ **exact** | `P/int-*.log` |
+| `--e2e` ×1 (`r26` seul) | 0 | 4 | **4** (423 s) | ✓ | `P/e2e-r26.log` |
+| contre-épreuve de `audit-secrets.py` | 0 | 5 sur 5 | **5 gardes mordues sur 5** | ✓ | `P/contre-epreuve.log` |
+| lecture de `rang23` | — | 13 mesures lues et démarrées | **13 · 13 · 13** | ✓ | `P/lecture-rang23.txt` |
+| lecture d'`available-on-api` | — | 30 journaux · 12 pré-vols · 0 écart | **30 · 12 · 0** | ✓ | `P/lecture-available-on-api.txt` |
+| **CERTIFIANT** | — | 527 mordues · 0 muette · 0 non mesurée · 37 sur 37 qui comptent · point 12 tenu partout | **527 · 0 · 0 · 37 sur 37** ; 33 harnais au-dessus de leur plancher, `rang23`/`available-on-api`/`r25`/`r26` LUES | ✓ **exact** | `P/lecture-campagnes.txt` |
+| étiquettes | — | lue chemin 13 · lue hors chemin 27 · non prouvée (R1) 81 · non classée 406 ; somme 527 | **13 · 27 · 81 · 406 ; 527** | ✓ **exact** | `P/lecture-campagnes.txt` |
+| lecture à la main de R26-2 et R26-4 (bloc D323) | — | règle 1 satisfaite aux deux tests de chacune ; 0 signature de la règle 2 | **satisfaite aux deux tests de chacune ; 0 signature sur les quatre extraits (212, 204, 206, 200 lignes ; comptage calibré)** ; R26-1 et R26-3 lues en plus | ✓ | `P/lecture-main-r26.txt`, `P/lecture-r26/` |
+| état des `.env` | 0 | ouverture VERTE ; clôture IDENTIQUE | **VERTE (0 hôte non local) ; IDENTIQUE — mêmes fichiers, mêmes empreintes** | ✓ | `P/etat-env-*.txt` |
+| `chrome` / `headless_shell` / `node` | — | 0 partout | **0 à l'ouverture, après l'e2e, à la clôture, avant et après le rejeu** ; `chrome` max 0 aux 361 échantillons | ✓ | `P/inventaire-*.txt`, `P/lecture-etat.txt` |
+| **RAM — ouverture ET clôture (règle 2 de Ko)** | 0 | au-dessus de la barre | **ouverture** : voir ci-dessous ; **clôture : médiane 4 780,5 / bande 4 764-4 813 contre 4 579 — AU-DESSUS** ; 19 relevés de sonde intermédiaires, **0 sous la barre** | ✓ | `P/progression.txt`, `P/ram-intermediaires.txt` |
+| arbre | — | immobile sur `f2aca6e` aux SIX contrôles | **`HEAD f2aca6e`, 0 ligne de statut, à `arbre-1` à `arbre-6`** | ✓ | `P/arbre-*.txt` |
+| code de sortie de `passe.py` | 0 | 0 | **0** | ✓ | — |
+| rejeu des deux specs sorties de la suite (**hors passe, pas une porte**) | 0 ×2 | « 5 et 2 passés » | `r32-nouvelle-reservation` : **6 passés** = le préchauffage + les **5** tests (1,2 min) ; spec du lien : **2 passés** = le préchauffage + la spec (53,6 s), copiée octet pour octet dans `e2e/specs/` (`cmp` et `sha256sum` identiques), **retirée ensuite, arbre propre** | ✓ (voir S-42) | `docs/preuves/D335/rejeu-specs/` |
+
+⇒ **LES PRÉDICTIONS DU PROTOCOLE TIENNENT, CHIFFRE POUR CHIFFRE — TOUTES.** Aucune porte rouge ; **aucune cible muette** ; aucun compte qui s'écarte. Les lignes « fail » des journaux (`lire-portes.py`) : 2 lignes `ERROR [ChargilyGateway] Chargily injoignable à la création de session` dans `test` (un test de l'API qui simule une passerelle injoignable) et 1 nom de test « …la ligne passe FAILED (D63) » dans `test:int` — **lues au contexte (D275), aucune n'est un échec**.
+
+**RAM à l'ouverture** : relevé n° 1 médiane **5 632,5** / bande 5 621-5 639 ; relevé n° 2 médiane **5 650** / bande 5 625-5 751 (`P/sonde-ouverture-1.txt`, `P/sonde-ouverture-2.txt`) — médiane ET bas de bande de chacun au-dessus de la barre **4 579** (porte dure VERTE à 14:29:22). Le relevé d'avant la passe (note d'ouverture, 14:23) donnait 5 556 (bande 5 537-5 568) ; le 15/10 : 3 662 et 3 756,5.
+
+#### ⛔ CE QUE LA MARQUE DIT DE L'AMBIANT — ÉCART N° 9 DU PROTOCOLE, LU TEL QU'ÉCRIT (règle de Ko, D331, point 2)
+
+- **Aucun des 22 relevés de sonde (2 d'ouverture, 19 intermédiaires, 1 de clôture) n'est sous la barre** : médiane minimale **4 750** Mo (avant `int-solid-s3`), bas de bande minimal **4 730** (avant `int-s11b`) — à D330 un relevé sur 21 l'était.
+- **251 échantillons de l'échantillonneur sur 361 sont sous la barre** (min **2 447** Mo, 17:34:17), **249 pendant que des `node` de la mesure tournaient** (jusqu'à 18) et **2 à `node` = 0** (16:37:57 : 4 297 — entre `int-r25` et `int-r33` ; 17:24:18 : 4 553 — entre deux rejeux `--int`) ; **`chrome` est à 0 aux 361**, `SECTEUR` seul, écarts de 31 à 34 s, 0 échec-instrument ; `PERF` au-dessus de 100 sur 335 échantillons sur 361. À D330 : 248 sur 312. **Un creux avec les seuls `node` de la mesure est « la charge qu'on certifie »** ; la règle de Ko (« un relevé intermédiaire sous la barre est noté, il ne disqualifie pas ») est tenue : ils sont **notés ici**, ils ne disqualifient pas. Les processus étrangers autres que `chrome` et `headless_shell` — l'IDE de Ko compris — **ne sont pas mesurés pendant la fenêtre : limite déclarée**.
+- **L'échantillonneur ne compte que `chrome`** : un `headless_shell` apparu et disparu entre deux relevés n'est pas vu (écart n° 9, limite déclarée) ; les relevés de sonde (19), l'ouverture, l'après-e2e et la clôture le comptent : **0 partout**.
+
+#### ⛔ CE QUE LA MARQUE EST, MOT POUR MOT
+
+✅ **« Portes vertes AU REPOS le 17/10/2026, et D331, D332 et D333 en font partie. »** **Trois lots, rien d'autre** ; **aucun en-tête antérieur n'est réécrit en « certifié »** (point 4 du critère). **Le code mesuré est celui de `83929a6`** (prouvé par `git`). **Ce qui se clôt** : le **rang 40** ; le compteur de lots de code non certifiés **revient à ZÉRO** (rangs 37, 38 et 39 certifiés) ; **« RANG 41 : EN ATTENTE D'ARBITRAGE DE KO »** (D284), candidat désigné par D-10 (cinquième révision) : **L35-4** (la fiche client et le nom sur le devis) — **pas arbitré** : la session ne choisit pas le rang suivant. **« Aucun lot de code ne s'ouvre avant une certification » est LEVÉ** ; un lot de code PEUT s'ouvrir dès que Ko arbitre le rang 41 — **cinq lots de code non certifiés sont tenables**, sous les trois conditions de Ko du 14/10/2026 (D332) ; **la pause du chemin de l'argent (E3 et R1) est INCHANGÉE** ; la condition de clôture du rang 33 reste OUVERTE (le nom du client vient avec L35-4).
+
+#### ⛔ CE QUE LA CERTIFICATION NE GARANTIT PAS — le paragraphe du critère du rang 9 (« LE CRITÈRE DU RANG 9 », point 5), REPRIS MOT POUR MOT
+
+>    ⛔ **CE QUE LA CERTIFICATION NE GARANTIT PAS — CE PARAGRAPHE S'ÉCRIT AVEC ELLE, MOT
+>    POUR MOT.** Sans lui, « certifié » se lira comme « sûr », et c'est plus que ce qui
+>    aura été mesuré :
+>    - **elle ne dit rien de la porte SOUS CHARGE.** Elle est prise au repos ; sous
+>  contention, la garde console tombe encore, sur un fichier variable ;
+>    - **elle ne dit pas que `venue-list.test.tsx` va bien.** 0 sur 30 **borne un taux, il
+>  ne prouve pas un zéro** (D274), et le défaut n'a jamais été attribué ;
+>    - **elle ne dit pas que `sharp` est réglé** : il est **déchargé** parce qu'argon2 a
+>  quitté l'unitaire, et son rang **se rouvre** si du travail coûteux y revient (D272) ;
+>    - **elle ne couvre pas ce qu'aucune porte ne regarde** : le navigateur réel, une
+>  migration sur base NON VIDE, la clause `WHERE` d'une réutilisation d'endpoint, un
+>  composant jamais monté. Inchangé — rappelé ici parce qu'un mot comme « certifié »
+>  invite précisément à l'oublier ;
+>    - **elle porte une DATE et une LISTE, pas un état permanent** : « portes vertes au
+>  repos à cette date, tels lots en font partie ». Elle ne se reconduit pas au lot
+>  suivant, et **ne réécrit aucun en-tête** en « certifié ».
+
+⚠ **Ce que CETTE marque ne couvre pas, en plus** (limites de D310/D314/D319/D324/D329/D330 reconduites, celles du protocole, et celles de cette reprise) : **la base de dev `zwadj`** — elle porte désormais les 29 migrations (X5), mais la passe ne l'utilise pas (`test:int` recrée `zwadj_test`, l'e2e joue sur `zwadj_e2e`) ; **aucune durée certifiée** — le plancher est un seuil de démarrage, **repris** pour 26 harnais (écart n° 1), vérifié par `git` (K5 à K10) mais non re-mesuré ; du CODE de production a changé depuis D329 (L35-1 à L35-3) et le plancher repris suppose que `pnpm` et `vitest` démarrent comme alors ; les processus étrangers autres que `chrome` et `headless_shell` pendant la fenêtre ; la contre-épreuve sans relevé propre ; **les 81 « non prouvées (R1) » et les 406 « non classées »** — leur poids attend R1 (en pause) ; `r32`, `r33`, `r37`, `r38` et `r39` sont « non classées » (écart n° 6) ; la branche (6) de D311 pour `r38` et `r39` n'est pas tranchée ; la profondeur MOINDRE de la preuve lue de `r25`/`r26` ; **la lecture à la main de R26-2 et R26-4 porte sur UNE exécution** ; **la marque vaut pour un poste sans serveurs de dev** ; les deux specs rejouées après la passe ne sont **pas une porte** ; **l'état des `.env` ne couvre que les fichiers `.env` et `.env.*` (hors `.example`)** ; l'échantillonneur ne compte que `chrome` ; la RAM libre est celle que la sonde lit (`FreePhysicalMemory`, cache de veille compris) ; **la session adverse de L35-3 n'a pas rejoué F-18** (effets de bord sur d'autres tests : ce sont les six portes ci-dessus) **ni le rendu réel du PDF à cinq chiffres** ni l'aspect à 360 px (regard de Ko) ; **8 gardes de L35-3 ne sont mordues que par des sondes** (S11-C1) ; aucun défaut du chemin de l'argent n'a été cherché au-delà de ce que les lots précédents avaient exercé — cette certification confirme les PORTES, elle ne reprend pas le chemin de l'argent, toujours en pause.
+
+#### Au-delà de la prédiction — ce que la passe a appris
+
+- **La RAM n'est plus le blocage** : libérer la mémoire de Ko (≈ 1 Go) a suffi, **et rien d'autre n'a changé** (le protocole, l'outil, les prédictions) ; la porte dure s'est ouverte à 14:29:22 avec +977 Mo de marge au relevé d'avant (5 556 Mo).
+- **`--tout` : 6 127 s** (5 099 s à D330) ; **aucune durée ne se compare** (D290).
+- **Les gardes de L35-3 sont mordues par les harnais du dépôt** (`neutralize-r39.py`, `--int`) et pas seulement par les sondes de la session adverse : `r39` **51 mordues, 0 muette, 0 non mesurée** (567 s), `r33` **95** (1 074 s). Le recouvrement exact entre les huit mutations de S11-C1 et les 51 cibles de `r39` n'est PAS établi ici (il demanderait de rapprocher les deux listes une à une).
+- **R26-1 et R26-3 s'ouvrent encore sur un message maison**, R26-2 et R26-4 sur « Timed out » : même constat qu'à D324, D329 et D330 pour le futur lecteur Playwright.
+- **La spec du lien (rang 30) exige toujours une copie dans `e2e/specs/`** : ses imports sont relatifs à ce dossier (le premier essai de rejeu par un fichier de configuration, hors `e2e/specs/`, a échoué sur `../../packages/i18n/messages/fr.json`).
+
+### D335 — passe D277, les deux sens
+
+**Instrument** : `docs/preuves/D335/passe-d277/balayage.py` — **copie à l'octet** de celui de D334 (`cmp` identique) ; motifs **lus dans `motifs.txt`** (50 lignes de motifs dont 2 de calibration), jamais en ligne de commande (D289). Texte **aplati** ; calibration T+ et T− tenue. **Première passe, AVANT toute écriture d'autorité** (`2cd42a5`) : `balayage-1-AVANT-ECRITURE.txt` — **1 094 occurrences**, 48 motifs examinés, **4 motifs à zéro** (« date d'événement antérieure », « Libérer environ 1 Go », « compteurs de devis », « refus d'une date passée » — **hypothèses de formulation, pas des absences constatées**). **Dernière passe, après toutes les écritures** : `balayage-final.txt` (chiffres au contrôle de fin de lot).
+- **Sens 1 — ce que le lot INVALIDE, annoté aux sites courants** : « la passe n'a pas démarré » / « rang 40 OUVERT » / « RANG 41 non écrit » → l'issue est écrite (ordre des rangs, point d'entrée, `AGENTS.md`, registre) ; le compteur **TROIS** et « aucun lot de code ne s'ouvre avant elle / avant une certification » dans leurs sites **courants** (ordre des rangs, `AGENTS.md`, intro du backlog et entrée « LA RAM LIBRE EST SOUS LA BARRE ») ; NB-5 (fermée), NB-1 / NB-3 / NB-6 (annotées) ; « À RATIFIER PAR KO » de S-34 à S-39 (ratifiées). **Les occurrences datées des sections de D326 à D334 sont LAISSÉES** (elles disent ce qui était vrai à leur date).
+- **Sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change** : **« aucun lot de code ne s'ouvre avant une certification » est LEVÉ** (compteur ZÉRO) ; **un lot de code PEUT s'ouvrir dès que Ko arbitre le rang 41** (candidat L35-4) ; **cinq lots non certifiés sont tenables** sous les trois conditions de Ko (D332) ; ADM-1 et ADM-2 restent derrière L35-4 (D-10, cinquième révision) ; **NB-6 est un petit lot de code décidé, à placer par Ko** ; la pause du chemin de l'argent est INCHANGÉE. ⚠ **La permission est écrite UNE fois, ici, dans l'ordre des rangs et dans la chaîne d'`AGENTS.md`** : elle se consomme à l'arbitrage du rang 41, elle ne se relit pas en « cinq, oui si… ».
+- ⚠ **Limite** : « une passe partielle se lit comme une passe faite » — les occurrences sont triées **par motif sensible**, pas ligne à ligne ; une permission formulée **autrement que par ces 48 motifs** n'est pas vue ; les occurrences **historiques** ne sont pas relues, et elles ne sont pas réécrites.
+
+### D335 — audit de secrets
+
+1. **« 0 valeur réelle »** : ce lot A OUVERT des journaux à valeurs réelles (hors dépôt) : le journal e2e brut, les journaux par cible de `r25` (E1 à E3) et de `r26` (R26-1 à R26-4 et le pré-vol), les journaux bruts du rejeu des deux specs. Contrôle dédié de D299 (`docs/preuves/D335/aucune-valeur-reelle.txt`) : **11 journaux avec jetons, 114 valeurs, 0 porteur** ; contrôle cookie de D315 (`aucun-cookie-reel.txt`) : **12 journaux, 260 valeurs, 0 porteur** — chiffres de la dernière exécution, au contrôle de fin de lot. ⚠ Le contrôle de D299 **abandonne** sur un journal qui ne porte aucune valeur (calibration impossible) : le journal du premier essai de rejeu de la spec du lien (échec d'import, 0 valeur) en a été **retiré** pour ce contrôle-là, et gardé pour le contrôle cookie.
+2. **Audits scellés** (`neutralisation/audit-secrets.py --sortie`) : `docs/preuves/D335/audit-secrets-d335a.txt` (avant la passe : **2 alertes absentes de la précédente, toutes deux triées au contexte** — du texte qui NOMME un motif de recherche et une famille de clés dans le tri de D334 ; **aucune valeur** ; `tri-audit-d335a.txt`) ; **un dernier audit (`d335b`) s'écrit en DERNIÈRE écriture**, avant le commit — son résultat et son tri sont au rapport de fin de lot et dans `docs/preuves/D335/audit-secrets-d335b.txt`, `tri-audit-d335b.txt`.
+
+### D335 — fautes de la session, limites, et ce que la session a décidé SEULE — à ratifier ou à renverser par Ko
+
+**Fautes relevées, jamais enfouies** :
+1. **Le heredoc de la table d'ouverture a été cassé par l'enveloppe `bash -c`** (D289, récidive : « un heredoc à délimiteur quoté peut être cassé par l'enveloppe »). *Détecté* : `unexpected EOF`, aucun fichier écrit (vérifié). *Traitement* : le fichier est écrit par l'outil d'écriture ; tout texte destiné à un fichier d'autorité passe par un fichier, jamais par une couche qui interpole.
+2. **Un script de remplacement a échoué à ses assertions** (les `\n` d'un littéral Python non brut) avant d'écrire quoi que ce soit — le garde-fou « compter avant de remplacer » a fait son travail ; les sept corrections de l'instrument ont été faites par l'outil d'édition, une occurrence chacune.
+3. **Sept ✗ à la première passe de l'instrument** : voir la lecture adverse ; quatre étaient des attendus ou des expressions écrits de mémoire avant d'avoir regardé le texte.
+4. **Un script d'insertion a échoué à son assertion sur une ancre non unique** (« | 5 | (celui-ci) » existe aussi dans un tableau plus ancien) ; ancre bornée par la ligne 4, relancé.
+5. **Le premier rejeu de la spec du lien a échoué** (`Cannot find module '../../packages/i18n/messages/fr.json'`) : j'ai tenté un fichier de configuration temporaire (`e2e/playwright.rejeu.config.ts`) qui change le dossier du projet, alors que la spec importe relativement à `e2e/specs/`. *Traitement* : copie octet pour octet dans `e2e/specs/` (comme à D330), rejouée, retirée ; la configuration temporaire a été **supprimée** ; `git status` propre vérifié. Le journal de ce premier essai n'est **pas versé** (il porte 0 valeur, mais il n'est pas une preuve) ; son existence est écrite ici.
+6. **Le contrôle « 0 valeur réelle » de D299 a abandonné** sur ce journal à 0 valeur (calibration impossible) ; relancé sans lui, voir « audit de secrets ».
+7. **La note « 52 mutations propres mordues sur 54 » de D334** est imprécise (S8-C1) : rectifiée à côté, pas dans la pièce.
+
+**Décisions de la session, À RATIFIER PAR KO** *(rien de ce qui suit n'a été décidé par Ko ni par le relecteur ; chaque point peut être retiré)* :
+- **S-40** — Les pièces de la passe sont versées par `docs/preuves/D334/outils/verser.py` **dans `docs/preuves/D334/passe-r40-20261017-reprise/`** (la destination du protocole, outil non retouché) et **déclarées une à une par l'extension 1 de la table de D335** (203 fichiers + 2 inventaires), commitée **avant** leur versement.
+- **S-41** — L'identifiant est **`r40-20261017-reprise`**, sans heure, pour ne pas en afficher une fausse.
+- **S-42** — Le rejeu des deux specs : `r32` à son emplacement (`docs/preuves/D325/navigateur/`) par une configuration temporaire qui reprend `e2e/playwright.config.ts` avec son préchauffage (**6 passés = 1 + 5**, là où D330 avait compté 5 sans préchauffage) ; `r30` par copie octet pour octet dans `e2e/specs/` (**2 passés = 1 + 1**). La prédiction « 5 et 2 passés » comptait donc **5 tests et 2 lignes** ; l'écart de comptage est **expliqué par le préchauffage, pas par un test de plus ou de moins**.
+- **S-43** — **La note d'ouverture de la reprise est un commit propre**, postérieur au commit des décisions et des annotations et antérieur à la passe (`f2aca6e`), avec les trois pièces de l'état machine relevé avant la passe.
+- **S-44** — Les quatre mentions d'un « essai à blanc » sans le mot « diagnostic » sont **lues comme des descriptions** (K16-C1), pas corrigées dans les sections de D334 : elles disent ce qui était vrai à leur date.
+- **S-45** — **La marque est posée sur la règle 2 de Ko lue comme à D330** : l'ouverture ET la clôture au-dessus de la barre ; `chrome` et `headless_shell` à 0 ; un relevé intermédiaire sous la barre noté sans disqualifier (ici 0 relevé de sonde sous la barre, 251 échantillons sur 361 de l'échantillonneur, notés).
+- **S-46** — Le contrôle « 0 valeur réelle » de D299 est joué **sans** le journal à 0 valeur ; le contrôle cookie de D315 le garde.
+- **S-47** — Le **rang 41** s'écrit « EN ATTENTE D'ARBITRAGE DE KO », candidat désigné **L35-4** (D-10, cinquième révision) ; les petits lots **NB-6** (décidé par Ko) et **NB-1** (code) restent à placer par Ko.
+
+**Ce que la session a remarqué sans le corriger** : backlog, « Reports du 17/10/2026 — rang 40 REPRIS » (S11-C1, S8-C1) et les entrées de la section du 15/10 annotées sur place (NB-1, NB-3, NB-5 fermée, NB-6).
+
+### D335 — le contrôle de fin de lot
+
+Le contrôle de fin de lot (D288, règle de l'ordre des commits de D328) est **exécuté avant le dernier commit et rapporté avec ses résultats dans le rapport de fin de lot** ; ce fichier ne peut pas porter le SHA de son propre commit. Ce qui se prouve par `git` : `git show --name-only` du PREMIER commit du lot (`a9695c3`) = `docs/preuves/D335/table-ouverture.md` seul ; la sortie de la lecture adverse (`a26e1b5`) précède tout `.md` d'autorité (le premier est `2af356b`) ; la note d'ouverture (`f2aca6e`, 14:27 locale) précède la passe (démarrée 14:27:46, le SHA attendu de la passe est le sien) ; l'extension 1 de la table précède le versement des pièces de la passe ; `git diff 83929a6..HEAD --name-only` ⊆ la table (chemins complets, extensions comprises) + les trois `.md` ; local et `origin/main` sur le même SHA après push puis fetch.
 
 ## Session du 15/10/2026 — D334 · rang 40, lot DOCUMENTAIRE : la session ADVERSE de L35-3, puis la certification qui couvre D331, D332 et D333 — lecture adverse de D333 (142 contrôles, 0 écart, 8 constats, 9 non vérifiables) ; arbitrages de Ko du 15/10 ; **la session adverse et la passe : voir « RÉSULTAT » plus bas (écrit après elles)**
 
@@ -22784,4 +23245,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D332 | A | D332 — rang 38 ARBITRÉ PAR KO le 14/10/2026 (« 3. Rang 38 : L35-2, le PDF. Lot de code. ») et CLOS SUR LE CODE le 14/10/2026, lot de CODE : compteur UN → DEUX (limite de CINQ, trois conditions) ; L35-2, le PDF — le tableau des prestations sans colonne vide (détail selon le TYPE de tarification stocké, DB-9 ; le nom du palier est lu sur la LIGNE), le récapitulatif en bloc séparé aligné par des propriétés logiques, la boîte de langue aux cinq boutons de remise (`ChoiceDialog` partagé ; annuler n'enregistre rien ; la langue envoyée est la langue choisie), la branche « langue du client » retirée sans code mort, le titre « Ma salle / Mes salles » aligné sur le menu (S-11) ; méthode NORMALE avec la règle des montants, aucune migration, aucun contrat neuf ; deux textes de Ko du 14/10 mot pour mot en première écriture d'autorité (la limite de CINQ lots de code non certifiés et ses trois conditions ; le rang 38 et la séquence de D-10, cinquième révision) et quatre décisions du relecteur (l'union des campagnes, annuler n'enregistre rien, DB-9 sur la valeur stockée, la condition de clôture) ; relevé des lignes stockées (le nom du palier EST stocké en FR et AR, le nom de l'unité non : la condition d'arrêt ne s'est pas produite) ; lecture adverse de D331 : instrument (23 bras, treize défauts réparés), 144 contrôles dont 140 ✓, 4 écarts de D331 (R14, N24, N25b, T3), 6 constats, 8 non vérifiables, aucun défaut bloquant ; rouges LUS contre l'état d'avant : 48 morsures par assertion native et 9 rouges d'import absent pour les composants neufs ; portes : `typecheck` 0, `lint` 0, `test` 1 790/139 (+42/+2), `build` 0, `test:int` 471/38 (+3), `test:e2e` 54 passés · 1 ignoré ; campagnes : `neutralize-r38.py` 46 sur 46 (première passe 43, trois mesures de trop corrigées par écrit), l'UNION calculée par un script calibré et versée AVANT (7 campagnes sur 36 ; le tri tel que lancé : 0 une fois le code commité) jouée : 321 gardes mordues, 0 muette, 0 non mesurée, plus act-plafonds 4 et horloge 2 après une constante (95 → 102) ; neutralisation à la main de l'e2e, procédure versée (annuler remet quand même : une spec réécrite, parce qu'elle échouait sur un délai d'action) ; six pages rastérisées de trois devis réels, FR et AR ; décisions S-12 à S-19 à ratifier ; condition de clôture : le regard de Ko, OUVERTE ; RANG 39 : EN ATTENTE D'ARBITRAGE DE KO (candidat L35-3, méthode RENFORCÉE, certification immédiate) ; section D332 et point d'entrée du rang 38. ⛔ *(D333, 15/10/2026 : condition **LEVÉE** par Ko, S-12 à S-19 **ratifiées**, rang 39 **arbitré** : L35-3.)* |
 | D333 | A | D333 — rang 39 ARBITRÉ PAR KO le 15/10/2026 (« 3. Rang 39 : L35-3, la numérotation. Lot de code, méthode renforcée, suivi d'une certification immédiate. ») et CLOS SUR LE CODE le 15/10/2026, lot de CODE : compteur DEUX → TROIS (limite de CINQ ; méthode RENFORCÉE ⇒ certification immédiate, aucun lot de code avant elle) ; L35-3, la numérotation des devis — `venues.number` par séquence (unique, immuable), compteur `(salle, année)` incrémenté dans la transaction de création (jamais « le plus grand + 1 »), tête de chaîne née avec `chain_id = id`, clé étrangère composite des versions vers leur tête, unicité des têtes, année d'Alger, devis existants numérotés par la migration sur base non vide ; référence `DEVIS-2026-0001-0089 v1` (`QuoteDTO.reference`, K-6) affichée, remise et imprimée, nom de fichier dérivé (K-7) ; deux migrations, deux contrats, aucun autre ; trois arbitrages de Ko du 15/10 mot pour mot en première écriture d'autorité (la condition de clôture du rang 38 levée ; S-12 à S-19 ratifiées ; le rang 39) et quatre décisions du relecteur (cadrage et code dans la même session avec règle d'arrêt, NON déclenchée ; la session adverse en tête de la certification ; l'union des campagnes ; les scénarios pour Ko avant le code) ; lecture adverse de D332 : instrument (19 bras), 114 contrôles dont 112 ✓, 2 écarts de D332 (C10, N6), 4 constats, 8 non vérifiables, aucun défaut bloquant ; relevé du code et prémisses de PostgreSQL mesurées sur base jetable (six paires, 0 manquée) avant le code ; rouges LUS contre l'état d'avant : 76 rouges dont 36 morsures par assertion native ; portes : `typecheck` 0, `lint` 0, `test` 1 871/141 (+81/+2), `build` 0, `test:int` 493/39 (+22/+1), `test:e2e` 55 passés · 1 ignoré ; concurrence rejouée cinq fois sur PostgreSQL réel (20 créations ⇒ 1 à 20, aucun interblocage) ; campagnes : `neutralize-r39.py` 51 sur 51, l'UNION (14 sur 37) 325 gardes distinctes, 0 muette, 0 non mesurée après réparation de sept campagnes (ancres périmées, une constante, un double de test) ; e2e neutralisée à la main (quatre mutations) ; captures FR/AR à 1 280 et 360 px ; CONDITION DE CLÔTURE OUVERTE : Ko joue les six scénarios ; RANG 40 : EN ATTENTE D'ARBITRAGE DE KO (candidat : la session adverse de L35-3, puis la certification qui couvre D331, D332 et D333) ; décisions S-27 à S-33 à ratifier (S-20 à S-26 du cadrage aussi) ; section D333, `docs/preuves/D333/` |
 | D334 | A | D334 — rang 40 ARBITRÉ PAR KO le 15/10/2026 (« 4. Rang 40 : la session adverse de L35-3, puis la certification qui couvre D331, D332 et D333. »), lot DOCUMENTAIRE ; la lecture adverse de D333 (142 contrôles ✓, 0 écart, 8 constats, 9 non vérifiables) et la session adverse de L35-3 (**aucun défaut bloquant** : 120 sessions PostgreSQL séparées, deux instances, six fuseaux, 4 bases jetables, 52 mutations propres mordues sur 54 ; neuf constats NB-1 à NB-9 au backlog) FAITES et versées avant toute écriture d'autorité de la certification ; l'étape 0 (les trois règles de Ko du 13/10 dans l'outil, 12 bras ; planchers 26 repris / 7 mesurés) et le protocole COMMITÉS ET POUSSÉS avant toute mesure ; **la passe `r40-20261015-1316` a été TENTÉE et N'A PAS DÉMARRÉ — porte dure de la RAM rouge (3 662 / 3 756,5 Mo contre la barre 4 579), sortie 3, rien lancé** ⇒ rien n'est certifié, **compteur TROIS inchangé, rang 40 OUVERT, aucune marque, « RANG 41 » non écrit** ; ratifications de Ko : S-20 à S-33 de D333 (F-12 : « 500 en v1 », entrée ouverte) ; décisions de la session à ratifier : S-34 à S-39 ; règle nouvelle dans AGENTS.md : les rouges commités avant le code (décision 2 du relecteur). Localisateur : « ÉTAT DE FIN DE SESSION DU 15/10/2026 » du point d'entrée du rang 40 et section « Session du 15/10/2026 — D334 » de ZWADJ_CONTINUITE.md ; pièces : `docs/preuves/D334/`. |
-| D335 | A | D335 — rang 40 REPRIS le 17/10/2026 (consigne de Ko ; arbitrage du 17/10 en cinq points : migrations de la base de développement appliquées et six scénarios rejoués, NB-5 fermée ; S-34 à S-39 ratifiées ; NB-1 dans la procédure de restauration, NB-3 ; NB-6 décision de Ko, petit lot à placer ; mémoire libérée), lot DOCUMENTAIRE ; la lecture adverse de D334 (76 contrôles ✓, 0 écart, 6 constats, 5 non vérifiables ; 33 bras de calibration) versée avant toute écriture d'autorité ; la passe `r40-20261017-reprise` sous le protocole de D334 SANS RETOUCHE — **l'issue de la passe est écrite à la clôture de la session : cette ligne est la ligne d'OUVERTURE**. Localisateur : « ÉTAT COURANT — REPRISE DU 17/10/2026 (D335) » du point d'entrée du rang 40 et section « Session du 17/10/2026 — D335 » de ZWADJ_CONTINUITE.md ; pièces : `docs/preuves/D335/`. |
+| D335 | A | D335 — rang 40 REPRIS et CLOS le 17/10/2026, lot DOCUMENTAIRE : **LA PASSE `r40-20261017-reprise` PASSE, LA MARQUE EST POSÉE** (« Portes vertes AU REPOS le 17/10/2026, et D331, D332 et D333 en font partie ») — six portes à 0 (`test` 1 871 / 141, `test:int` 493/39, `test:e2e` 55 · 1 ignoré), `--tout` 482 mordues / 0 muette / 21 non mesurées (37 campagnes), `--int` ×9 = 197, `--e2e` `r26` 4, CERTIFIANT 527 mordues · 0 muette · 0 non mesurée (37 sur 37), `.env` identiques, `chrome` et `headless_shell` à 0, RAM d'ouverture ET de clôture au-dessus de la barre, code de sortie 0, **toutes les prédictions du protocole tiennent chiffre pour chiffre** ; **compteur TROIS → ZÉRO** ; « aucun lot de code ne s'ouvre avant une certification » LEVÉ ; **RANG 41 : EN ATTENTE D'ARBITRAGE DE KO** (candidat L35-4) ; arbitrage de Ko du 17/10 (cinq points : migrations de la base de développement appliquées et six scénarios rejoués, NB-5 fermée ; S-34 à S-39 ratifiées ; NB-1 dans la procédure de restauration NB-3 ; NB-6 décision de Ko, petit lot à placer ; mémoire libérée) ; la lecture adverse de D334 (76 contrôles ✓, 0 écart, 6 constats, 5 non vérifiables ; 33 bras) versée avant toute écriture d'autorité ; sept défauts de l'instrument à sa première passe, tous réparés, instrument rejoué en entier. Localisateur : « ÉTAT À LA CLÔTURE DU RANG 40 (D335) » du point d'entrée du rang 40 et section « Session du 17/10/2026 — D335 » de ZWADJ_CONTINUITE.md ; pièces : `docs/preuves/D335/` et `docs/preuves/D334/passe-r40-20261017-reprise/`. |
