@@ -1,0 +1,12 @@
+TRI AU CONTEXTE (humain, D336, reprise sous la consigne v2) — de l'audit scellé « b » de ce lot (`docs/preuves/D336/audit-secrets-d336b.txt`, sceau écrit par `neutralisation/audit-secrets.py --sortie`, relu identique et sceau vérifié à la relecture), contre la sortie scellée précédente, « a » de ce lot (`docs/preuves/D336/audit-secrets-d336a.txt`).
+Procédure : `docs/preuves/D299/outils/alertes-nouvelles.py <précédente> <nouvelle>` (calibrée à deux bras avant de lire : négatif 0, positif 2 — tous deux tenus) ; AUCUN contexte n'est recopié ici (règle de D299).
+
+Corpus : « b » est joué AVANT le commit de la seconde lecture ; il parcourt `docs/preuves/` sur le disque (4 260 fichiers, dont les fichiers non suivis de la reprise : `docs/preuves/D336/lecture-adverse-v2/confronter-consigne-v2.py` et `confronter-sortie-v2.txt`) ; 4 150 audités, 110 exclus par l'identité de leurs octets. L'audit rend 253 contextes, « a » en rendait 251.
+
+alertes ABSENTES de la précédente : 2 (jeton=1 · chargily=1), toutes deux dans UN fichier : `docs/preuves/D336/tri-audit-d336a.txt` (lignes 1589 et 1591 de la sortie « b ») :
+1. ligne 8 du fichier (motif « jeton ») : le tri « a » de ce lot, qui NOMME les paramètres `zwadj_rt=` et `?token=` pour dire qu'un extrait n'en porte aucun ; « valeur trop courte pour une recherche ». Aucune valeur.
+2. ligne 10 du fichier (motif « chargily ») : la ligne « BILAN DU TRI » de « a », qui nomme les familles de clés pour dire qu'il n'y en a aucune ; « valeur déjà présente dans 0 fichier suivi hors preuves ». Aucune valeur.
+BILAN DU TRI : 2 sur 2 = l'écho du tri « a », annoncé par lui (« ce tri-ci sera lu par l'audit du lot suivant, qui le trouvera comme alerte nouvelle du même ordre ») ; AUCUNE valeur réelle (aucune clé Chargily, aucun secret Google, aucun mot de passe de compte réel). Les fichiers de la seconde lecture (l'instrument et sa sortie) ne rendent AUCUNE alerte.
+
+Le contrôle dédié « 0 valeur réelle » de D299 n'a rien à chercher : la reprise n'a produit ni ouvert aucun journal à valeurs réelles (aucune porte, aucune campagne, aucun e2e, aucune base lue) — c'est un contrôle SANS OBJET, pas un « 0 porteur » constaté.
+Limite écrite : ce tri-ci sera lu par l'audit suivant, qui le trouvera comme alerte nouvelle du même ordre (écho de tri), non comme une fuite.
