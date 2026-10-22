@@ -1,0 +1,148 @@
+D336 — lecture adverse de D335 et de la consigne du 22/10/2026 · SHA fixés : départ b8ba85a, D335 b92dc7a..b8ba85a, code mesuré 83929a6, table 77728a5
+CALIBRATION (deux bras par extracteur)
+  ✓ calibration · lire · cas vrai : rendu True (attendu True)
+  ✓ calibration · lire · cas faux : rendu False (attendu False)
+  ✓ calibration · present (texte aplati) · cas vrai : rendu True (attendu True)
+  ✓ calibration · present (texte aplati) · cas faux : rendu False (attendu False)
+  ✓ calibration · present (enjambe un retour à la ligne) · cas vrai : rendu True (attendu True)
+  ✓ calibration · present (enjambe un retour à la ligne) · cas faux : rendu False (attendu False)
+  ✓ calibration · compter · cas vrai : rendu True (attendu True)
+  ✓ calibration · compter · cas faux : rendu False (attendu False)
+  ✓ calibration · fichiers_du_commit · cas vrai : rendu True (attendu True)
+  ✓ calibration · fichiers_du_commit · cas faux : rendu False (attendu False)
+  ✓ calibration · numstat · cas vrai : rendu True (attendu True)
+  ✓ calibration · numstat · cas faux : rendu False (attendu False)
+  ✓ calibration · noms_diff · cas vrai : rendu True (attendu True)
+  ✓ calibration · noms_diff · cas faux : rendu False (attendu False)
+  ✓ calibration · rev_list · cas vrai : rendu True (attendu True)
+  ✓ calibration · rev_list · cas faux : rendu False (attendu False)
+  ✓ calibration · heure_commit · cas vrai : rendu True (attendu True)
+  ✓ calibration · heure_commit · cas faux : rendu False (attendu False)
+  ✓ calibration · chemins_de_table · cas vrai : rendu True (attendu True)
+  ✓ calibration · chemins_de_table · cas faux : rendu False (attendu False)
+  ✓ calibration · chemins_de_table (deux chemins dans une cellule) · cas vrai : rendu True (attendu True)
+  ✓ calibration · chemins_de_table (deux chemins dans une cellule) · cas faux : rendu False (attendu False)
+  ✓ calibration · section · cas vrai : rendu True (attendu True)
+  ✓ calibration · section · cas faux : rendu False (attendu False)
+  ✓ calibration · bloc (ancre unique, refus d'une ancre répétée) · cas vrai : rendu True (attendu True)
+  ✓ calibration · bloc (ancre unique, refus d'une ancre répétée) · cas faux : rendu False (attendu False)
+  ✓ calibration · ligne_qui_commence · cas vrai : rendu True (attendu True)
+  ✓ calibration · ligne_qui_commence · cas faux : rendu False (attendu False)
+  ✓ calibration · modele · cas vrai : rendu True (attendu True)
+  ✓ calibration · modele · cas faux : rendu False (attendu False)
+  ✓ calibration · est_production · cas vrai : rendu True (attendu True)
+  ✓ calibration · est_production · cas faux : rendu False (attendu False)
+  ✓ calibration · git_grep_fichiers · cas vrai : rendu True (attendu True)
+  ✓ calibration · git_grep_fichiers · cas faux : rendu False (attendu False)
+  ✓ calibration · fichiers_suivis · cas vrai : rendu True (attendu True)
+  ✓ calibration · fichiers_suivis · cas faux : rendu False (attendu False)
+  ✓ calibration · normaliser_telephones (exécution réelle de phone.ts) · cas vrai : rendu True (attendu True)
+  ✓ calibration · normaliser_telephones (exécution réelle de phone.ts) · cas faux : rendu False (attendu False)
+  calibration : 38 bras joués, 0 manqué(s) (attendu 0)
+
+CONTRÔLES
+| id | ce qui est contrôlé | attendu (lu) · mesuré | résultat |
+|---|---|---|---|
+| A1 | les commits de D335 (rev-list b92dc7a..b8ba85a) = les 8 SHA de sa table « ordre des commits » + « (celui-ci) » = b8ba85a | attendu : 8 + 1 = 9 · mesuré : 9 commits ; table : 8 SHA + 1 « (celui-ci) » — parcouru : 9 lignes de table | ✓ |
+| A2 | le PREMIER commit de D335 ne contient que `docs/preuves/D335/table-ouverture.md` | attendu : 1 fichier, la table · mesuré : ['docs/preuves/D335/table-ouverture.md'] | ✓ |
+| A3 | avant la première écriture d'autorité (2af356b), ni la lecture adverse (a26e1b5) ni la passe D277 (2cd42a5) ne touchent un `.md` d'autorité ; la sortie de la lecture y est | attendu : 0 commit qui touche un `.md` · sortie présente · mesuré : 0 · True | ✓ |
+| A4 | la première écriture d'autorité (2af356b) ne touche que `ZWADJ_CONTINUITE.md` et n'efface rien | attendu : [(12, 0, ZWADJ_CONTINUITE.md)] · mesuré : [(12, 0, 'ZWADJ_CONTINUITE.md')] | ✓ |
+| A5 | le texte de Ko du 17/10 (cinq points) écrit par 2af356b est présent, MOT POUR MOT, à la clôture (b8ba85a), texte aplati | attendu : 5 points, 0 absent · mesuré : 5 points, 0 absent(s) | ✓ |
+| A6 | la note d'ouverture (f2aca6e) est commitée AVANT le démarrage de la passe (première ligne de `progression.txt`) | attendu : heure du commit < début de la passe · mesuré : 14:27:33 < 14:27:46 | ✓ |
+| A7 | l'extension 1 (e17e0a6) ne contient que la table, précède le versement (a71288e), et déclare chacun des fichiers versés en chemin complet | attendu : table seule · 0 non déclaré · mesuré : ['docs/preuves/D335/table-ouverture.md'] · 0 non déclaré(s) — parcouru : 207 fichiers versés | ✓ |
+| A8 | le code de `b8ba85a` est celui que la marque a mesuré (83929a6) : le diff 83929a6..b8ba85a ne contient, hors `docs/preuves/`, que les trois `.md` d'autorité | attendu : ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] · mesuré : ['AGENTS.md', 'ZWADJ_BACKLOG.md', 'ZWADJ_CONTINUITE.md'] — parcouru : 286 fichiers | ✓ |
+| A9 | tout le diff de D335 (b92dc7a..b8ba85a) = des chemins de sa table finale (extensions comprises) + les trois `.md` | attendu : 0 hors table · mesuré : 0 hors table — parcouru : 228 fichiers, 229 chemins de table | ✓ |
+| A10 | la dernière ligne du registre à b8ba85a est D335 (le prochain numéro est donc D336) | attendu : D335 · mesuré : D335 — parcouru : 288 lignes de registre | ✓ |
+| A11 | la marque de D335 est écrite dans `ZWADJ_CONTINUITE.md` ET dans `AGENTS.md` | attendu : ≥ 1 et ≥ 1 · mesuré : 5 et 1 | ✓ |
+| A12 | la dernière ligne « ⇒ RANG N » de l'ordre des rangs écrit « RANG 41 : EN ATTENTE D'ARBITRAGE DE KO » | attendu : présent · mesuré : présent — parcouru : 17 lignes « ⇒ RANG » | ✓ |
+| A13 | les pièces de la passe `r40-20261017-reprise` versées : 203 fichiers (texte de D335) | attendu : 203 · mesuré : 203 | ✓ |
+| A14 | `test:int` et `test`, relus dans les journaux bruts : 493 / 39 et 1 871 / 141, aucun « failed » | attendu : (39, 493, 0) · (141, 1871, 0) · mesuré : (39, 493, 0) · (141, 1871, 0) | ✓ |
+| A15 | e2e 55 passés · 1 ignoré ; `--tout` 482 · 0 · 21 sur 37 ; CERTIFIANT 527 · 0 · 0, 37 sur 37 ; la passe atteint sa clôture | attendu : 4 × vrai · mesuré : True, True, True, True | ✓ |
+| A16 | S-40 à S-47 sont les décisions de la session D335, écrites « À RATIFIER PAR KO » | attendu : [40, 41, 42, 43, 44, 45, 46, 47] · mesuré : [40, 41, 42, 43, 44, 45, 46, 47] | ✓ |
+| X1 | HEAD = la table de ce lot, posée sur b8ba85a ; `origin/main` = b8ba85a (fetch du début de session) | attendu : 77728a5 ← b8ba85a · origin b8ba85a · mesuré : 77728a5 ← b8ba85a · origin b8ba85a | ✓ |
+| X2 | arbre : aucun fichier suivi modifié ; seuls des fichiers NON SUIVIS sous `docs/preuves/D336/` (cette lecture) | attendu : 0 · 0 · mesuré : 0 · 0 — parcouru : 1 lignes de `git status` | ✓ |
+| X3 | aucun stash | attendu : 0 · mesuré : 0 | ✓ |
+| B0-1 | § 0 « règle de Ko, D328 » : la règle de l'ordre des commits est dans `AGENTS.md`, datée D328 | attendu : présente · mesuré : True | ✓ |
+| B0-2 | § 0 « contrôle de fin de lot D288 » : local et `origin` sur le même SHA (D288) est dans `AGENTS.md` | attendu : présent · mesuré : True | ✓ |
+| B0-3 | § 0 « <numéro de décision du lot> » : le registre finit à D335, et D336 n'est attribué nulle part (un seul fichier le cite : le pointeur « le prochain lot prend D336 ») | attendu : D335 · 1 fichier, 1 pointeur · mesuré : D335 · 1 fichier(s), 1 pointeur | ✓ |
+| B2a-1 | § 2 a) « D270 / D332 (plafond de cinq lots non certifiés, AGENTS.md) » : l'arbitrage de Ko de la limite de 5 y est, mot pour mot | attendu : présent · mesuré : True | ✓ |
+| B2a-2 | § 2 a) « Compteur … ZÉRO à l'entrée du rang 41 » : l'état à la clôture du rang 40 dit ZÉRO | attendu : ZÉRO · mesuré : ZÉRO | ✓ |
+| B2b-1 | § 2 b) « D-10, sixième révision » : la cinquième révision de D-10 est écrite, aucune sixième | attendu : 5ᵉ ≥ 1 · 6ᵉ = 0 · mesuré : 12 · 0 — parcouru : « sixième révision » seul : 1 occurrence (un motif de passe D277 de D333, « hypothèse, il n'existe pas ») | ✓ |
+| B2b-2 | § 2 b) « « RANG 41 : EN ATTENTE D'ARBITRAGE DE KO » » est écrit (ordre des rangs et état à la clôture) | attendu : ≥ 1 · mesuré : 8 | ✓ |
+| B2c-1 | § 2 c) « D330, forme de revue des chemins d'identité (B, C, D) » : les trois formes sont écrites (D330) | attendu : 3 présentes · mesuré : 3 | ✓ |
+| B2c-2 | § 2 c) « C (liste de scénarios de Ko, écrite AVANT le code) » et « D … MISE EN SERVICE RÉELLE » : décision 4 du relecteur de D330 et l'entrée D du backlog | attendu : 2 présentes · mesuré : True, True | ✓ |
+| B2d-1 | § 2 d) « R1 (3ᵉ point) » : le troisième point de R1 est celui du numéro « accessible à tous les pros » | attendu : le 3ᵉ point en parle · mesuré : - le numéro d'un client qui a un compte n'est PAS « accessible à tous les pros » : l'écran… — parcouru : 5 puces de R1 | ✓ |
+| B2d-2 | § 2 d) « R4, M-4, K-1 » : R4 (l'exception), M-4 (l'égalité stricte), K-1 (forme identique) existent | attendu : 3 présents · mesuré : R4 True, M-4 True, K-1 True | ✓ |
+| B2e-1 | § 2 e) « DB-8 » : l'entrée existe et porte la règle de Ko du 12/10 que l'annotation remplacerait (« numéro obligatoire pour toute fiche ») | attendu : présente · mesuré : True | ✓ |
+| B2e-2 | § 2 e) « son second numéro (pro_profiles.phone2) » et « son e-mail de compte » : `ProProfile.phone2` (nullable) et `User.email` (unique) existent | attendu : 2 présents · mesuré : phone2 True, email True | ✓ |
+| B2f-1 | § 2 f) « C-C1 (erratum du 13/10) » : l'erratum du relecteur sur C-C1 est écrit par D330, annoté au 13/10/2026 | attendu : 2 présents · mesuré : True, True | ✓ |
+| B2f-2 | § 2 f) « D61, entrée L35-4 précision (5) » : D61 est la demande de VISITE ; l'entrée L35-4 du backlog porte sa précision (5) | attendu : 2 présents · mesuré : True, True | ✓ |
+| B2f-3 | § 2 f) « bookingCreateSchema, bookings.contact_phone NOT NULL » : le schéma exige `contactPhone` ; la colonne est NOT NULL (Prisma ET migration) | attendu : 3 × vrai · mesuré : True, True, True | ✓ |
+| B2g-1 | § 2 g) « Entrée « UIP-E — Fiche client » » existe au backlog | attendu : ≥ 1 · mesuré : 1 | ✓ |
+| B2h-1 | § 2 h) « R8, C-C3, DB-17 » existent | attendu : 3 présents · mesuré : 3 | ✓ |
+| B2i-1 | § 2 i) « J-8 à J-13 : liste de CONTRÔLE de la mise en service … Ils ne bloquent plus le développement » : des questions J-8 à J-13 existent dans les fichiers d'autorité | attendu : J-8 à J-13 définies · mesuré : questions définies au § 7 du cadrage : J-1 à J-7 ; « **J-8** » à « **J-13** » : 0 définition ; titre du backlog « LES SEPT QUESTIONS POUR LE JURISTE (J-1 à J-7) » : True — parcouru : 7 questions, 9 lignes portant un jeton J-8…J-13 | ✗ |
+|   ↳ | `J-13` à `ZWADJ_BACKLOG.md:2627` — « …erveur / écran) + les gardes de `neutralize-r33.py` (M-11, SV-8, T-3, J-13) ; **méthode à décider par le relecteur… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-13` à `ZWADJ_CONTINUITE.md:4494` — « …par colonne**) ; **les réparations écrites** : `r33` M-11, SV-8, T-3, J-13 (pré-vol « ancre ×0 », toujours déclaré… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-13` à `ZWADJ_CONTINUITE.md:4626` — « … ; `r33` (quatre cibles dont l'ancre était périmée : M-11, SV-8, T-3, J-13) ; `s10b` (trois cibles : S10b1-1, S10b… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-10` à `ZWADJ_CONTINUITE.md:4778` — « …, politique Y-1, fenêtre de choix C-1 à C-9, parcours de remise J-1 à J-10, catalogue K-1, libellé T-1 à T-5). **P… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-11` à `ZWADJ_CONTINUITE.md:4778` — « …la même chose), **M-1 et M-2 ré-ancrées** (le récapitulatif réécrit), J-11 retitrée. **L'union** (`union-campagnes… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-13` à `ZWADJ_CONTINUITE.md:5274` — « …s (111, 98, 113, 1313), les cibles M-11 (177), SV-8 (231), T-3 (240), J-13 (290), les catalogues (520), `creerTete… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-13` à `ZWADJ_CONTINUITE.md:5407` — « …DE_FICHIER`) ; **mutée** : `neutralize-r33.py` SV-8 (231), T-3 (240), J-13 (290). Le libellé « Référence » : `quot… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-9` à `ZWADJ_CONTINUITE.md:5563` — « …journey.tsx`, `remittance.ts`, `save-file.ts` | R-1 à R-6, J-1 à J-4, J-9 à J-13, K-1 à K-4 ; e2e : **un vrai PDF… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-13` à `ZWADJ_CONTINUITE.md:5563` — « …y.tsx`, `remittance.ts`, `save-file.ts` | R-1 à R-6, J-1 à J-4, J-9 à J-13, K-1 à K-4 ; e2e : **un vrai PDF téléch… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-8` à `ZWADJ_CONTINUITE.md:5564` — « … aucun appel d'API, aucun contrat | `remittance-hook.ts` | R-9, J-5 à J-8 |… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-9` à `ZWADJ_CONTINUITE.md:5577` — « … lecture JSON avant toute assertion), `J-4` (`getByRole("status")`), `J-9` (`toBeDisabled`), `J-12` (le nom acces… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+|   ↳ | `J-12` à `ZWADJ_CONTINUITE.md:5577` — « …e assertion), `J-4` (`getByRole("status")`), `J-9` (`toBeDisabled`), `J-12` (le nom accessible d'une fenêtre), `J-… » | contexte de harnais (marqueur dans ±200 car.) : True | · |
+| B2i-2 | § 2 i) …et aucune des occurrences de J-8…J-13 dans les trois fichiers d'autorité n'est une question pour le juriste : toutes sont des cibles de harnais (r33 et voisins) | attendu : 12 sur 12 en contexte de harnais · mesuré : 12 classées, 0 non classée(s) — parcouru : 9 lignes, 12 occurrences ; marqueurs : r33, neutralize, cible, garde, harnais, mordu, muette, ancre, retitrée, toBeDisabled, getByRole, J-1 à J-10, J-9 à J-13, J-5 à J-8, SV-8, T-3, M-11 | ✓ |
+| B2j-1 | § 2 j) « S-40 à S-47 (D335) » sont bien les décisions de D335 à ratifier | attendu : [40, 41, 42, 43, 44, 45, 46, 47] · mesuré : [40, 41, 42, 43, 44, 45, 46, 47] | ✓ |
+| B3-1 | § 3 D1 « aucun client réel au 12/10, confirmé par Ko » : le texte de Ko du 12/10 le dit | attendu : présent · mesuré : True | ✓ |
+| B3-2 | § 3 D2 « publicationStatus = PUBLISHED », « audit_logs » : la valeur et la table existent | attendu : 2 présents · mesuré : True, True | ✓ |
+| B3-3 | § 3 D3 « le champ apparaît dans 15 fichiers de production — 10 API/types, 5 apps » (fichiers TypeScript suivis, hors tests, specs, doubles et code généré ; `contactPhone` ou `contact_phone`) | attendu : 15 = 10 + 5 · mesuré : 15 = 10 + 5 (+ 0 ailleurs) — parcouru : les fichiers : apps/api/src/venues/booking-locks.types.ts, apps/api/src/venues/booking-notification-input.ts, apps/api/src/venues/bookings.service.ts, apps/api/src/venues/quote-store.prisma.ts, apps/api/src/venues/quote-store.types.ts, apps/api/src/venues/quotes.service.ts, apps/api/src/venues/visit-bookings.service.ts, apps/client/src/components/venue/booking-request-panel.tsx, apps/pro/src/dashboard/walkin-contact.ts, apps/pro/src/venues/booking-requests-section.tsx, apps/pro/src/venues/quotes-section.tsx, apps/pro/src/venues/visits-section.tsx, packages/types/src/booking.ts, packages/types/src/quote.ts, packages/types/src/venue.ts | ✓ |
+| B3-4 | § 3 D4 « deliver() dans apps/api/src/venues/quotes.service.ts » ; « le dépôt numérote déjà tout devis dès la v1, brouillon compris » | attendu : 3 × vrai · mesuré : deliver True, numéro NOT NULL + statut DRAFT par défaut True, compteur dans la création True | ✓ |
+| B3-5 | § 3 D5 « { sub, role } (D4) », « PROD_REQUIRED_EXPLICIT », « passwordSchema actuel », « ADM-2 » existent | attendu : claims [sub, role] · 4 × vrai · mesuré : claims ['sub', 'role'] · « (D4) » True, PROD_REQUIRED_EXPLICIT True, passwordSchema True, ADM-2 True | ✓ |
+| B3-6 | § 3 D7 « notifications », « J-6 » : la table existe (user_id NOT NULL aujourd'hui) ; J-6 est la question du transport WhatsApp | attendu : 2 × vrai · mesuré : True, True | ✓ |
+| B4-1 | § 4 : les objets du schéma cible n'existent pas encore (`pro_client_records`, `client_record_id`, `client_name_*`, `actor_member_id`, `staff_layer_enabled_at`, `directory_visible`, `is_official`) | attendu : 0 fichier de `apps/api/prisma` · mesuré : 0 fichier(s) | ✓ |
+| B4-2 | § 4 [41] « Le CHECK de forme du numéro (décision 7 de D328) » : la décision 7 de D328 est bien ce `CHECK`, ratifiée comme proposition « à trancher dans L35-4 » | attendu : 2 présents · mesuré : True, True | ✓ |
+| B4-3 | § 4 [L36-2] « statuts écrits aujourd'hui : DRAFT, ACCEPTED, CANCELLED » : ces trois statuts sont ÉCRITS par le code aujourd'hui | attendu : DRAFT, ACCEPTED, CANCELLED écrits · mesuré : cibles des commandes : ['QuoteStatus.CANCELLED', 'null'] ; `QuoteStatus.ACCEPTED` en production : 3 occurrence(s), 0 écriture ; quote.ts « ACCEPTED ne l'a JAMAIS été » : True ; R2 « ne sera écrit que par le paiement en ligne (E3) » : True ⇒ écrits : DRAFT (défaut de la création) et CANCELLED (`cancel`) ; ACCEPTED : aucun écrivain | ✗ |
+| B4-4 | § 4 [L36-2] « SENT, SUPERSEDED et DECLINED sont LEGACY » ; et la liste « DRAFT, ACCEPTED, CANCELLED » = la constante des statuts que le code a le DROIT d'écrire | attendu : legacy [SENT, SUPERSEDED, DECLINED] · inscriptibles [DRAFT, ACCEPTED, CANCELLED] · mesuré : legacy ['SENT', 'SUPERSEDED', 'DECLINED'] · inscriptibles ['DRAFT', 'ACCEPTED', 'CANCELLED'] | ✓ |
+| B4-5 | § 4 [L35-5] « phone_verified_at (M-D, déjà cadré) », [L35-7] « origin_booking_id et origin_visit_id », [L36-9] « notifications : user_id » NOT NULL aujourd'hui | attendu : 3 × vrai · mesuré : M-D True, origine True, user_id NOT NULL True | ✓ |
+| B5-1 | § 5 « le compte fournisseur e-mail (tâche de Ko, déjà au backlog) » | attendu : présent · mesuré : True | ✓ |
+| B5-2 | § 5 « NB-1 · ADM-1 · ADM-2 · L35-5 · L35-6 · L35-7 » existent au backlog | attendu : 6 présents · mesuré : 6 | ✓ |
+| B6-1 | § 6 a) b) c) « M-C », « K-1 … l'exception R4 reste à L35-5 », « K-2 » | attendu : 3 × vrai · mesuré : True, True, True | ✓ |
+| B6-2 | § 6 d) « K-3 inchangé », « DB-11 », « K-3b NEUF » : K-3 et DB-11 existent, K-3b n'existe pas (il est neuf) | attendu : K-3 ✓ · DB-11 ✓ · K-3b 0 · mesuré : True · True · 0 | ✓ |
+| B6-3 | § 6 e) « K-4 amendé : quoteCreateSchema + clientRecordId, clientId retiré (DB-15). K-5 inchangé. » : `clientId` est dans le schéma de création ; DB-15 et K-5 existent | attendu : 3 × vrai · mesuré : True, True, True | ✓ |
+| B6-4 | § 6 e) « K-12 : la conversion lit la copie du nom du devis et le numéro/e-mail de la fiche » : un contrat K-12 existe dans le dépôt (la consigne ne le dit pas neuf, contrairement à K-3b et K-13) | attendu : K-12 défini · mesuré : table des contrats du cadrage : K-1 à K-11 ; « K-12 » dans tout l'arbre à b8ba85a : 0 ligne — parcouru : 11 contrats | ✗ |
+| B6-5 | § 6 h) « numéro fixe, étranger ou en chiffres arabo-indiens refusé (packages/types/src/phone.ts) » : MESURÉ en exécutant `normalizePhone("DZ", …)` lu à b8ba85a | attendu : fixe null · étranger null · arabo-indien null · mesuré : fixe None · étranger None · arabo-indien None | ✓ |
+| B6-6 | § 6 i) « e2e du parcours de réservation », « parité FR = AR » : la spec et le test existent | attendu : 2 × vrai · mesuré : True, True | ✓ |
+| B7-1 | § 7 « AGENTS.md, lignes 26 et 30 à 32 » : SOLID et patrons | attendu : 26 couches · 30 titre · 31 SOLID · 32 pas de sur-abstraction · mesuré : - Couches : Controller… · ## SOLID & patterns · - Respecter SOLID. Uti… · - NE PAS sur-abstraire… | ✓ |
+| B8-1 | § 8 « Condition de clôture du rang 33 (nom du client sur le PDF) » : elle est OUVERTE à l'entrée du rang 41 | attendu : ouverte · mesuré : ouverte | ✓ |
+
+VENTILATION PAR FAMILLE : A 16 (0 ✗) · B0 3 (0 ✗) · B2 18 (1 ✗) · B3 6 (0 ✗) · B4 5 (1 ✗) · B5 2 (0 ✗) · B6 6 (1 ✗) · B7 1 (0 ✗) · B8 1 (0 ✗) · X 3 (0 ✗) — aucune famille à zéro : True
+
+ÉCARTS DE D335 : 0 []
+ÉCARTS DE L'ÉTAT VIVANT : 0 []
+ÉCARTS DE LA CONSIGNE (affirmations fausses contre le dépôt) : 3 ['B2i-1', 'B4-3', 'B6-4']
+
+CONSTATS (12)
+- **C-1** — § 1c : le bloc porte encore les signes « ⟦ ⟧ » — les questions Q1 à Q8 n'y sont pas collées. Par la consigne elle-même : **rien de Q3, Q4 et Q5 ne s'écrit** dans un fichier d'autorité (et, par la règle d'arrêt, aucun fichier d'autorité n'est écrit par ce lot).
+- **C-2** — § 2 b) « Annoter … le point d'entrée du rang 41 » : **il n'existe pas encore** (0 titre « ## … rang 41 » à `b8ba85a`) — il se CRÉE au rang 41, il ne s'annote pas ; « les deux lignes de l'ordre des rangs » ne sont pas nommées par la consigne (lecture probable : la ligne « ⇒ RANG 41 » et la ligne de la cinquième révision de D-10).
+- **C-3** — § 2 f) « erratum du 13/10 » : l'erratum est une décision du relecteur **déléguée par Ko le 12/10/2026** (« DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO LE 12/10/2026 (D330) »), **écrite le 13/10/2026** par D330 — la date de la consigne est celle de l'écriture. Sans incidence.
+- **C-4** — § 2 i) : la loi 25-11 n'est citée nulle part au dépôt (0 occurrence dans les trois fichiers d'autorité) ; le « registre » a déjà une entrée (`ZWADJ_BACKLOG.md`, 23.11 : « Maintain data-processing register (Law 18-07) » — 1 occurrence).
+- **C-5** — § 1c contre § 2 j) : 1c range « S-40 à S-47 » parmi Q9 à Q12, « **sans réponse de Ko**, défauts du relecteur » ; 2 j) écrit « **ratifiées par Ko** le 22/10/2026 » (l'en-tête du § 2 : « adopté par Ko tel quel »). Une ratification par adoption du message, pas une réponse de Ko : à écrire ainsi, sinon la ligne se lit comme une parole de Ko.
+- **C-6** — § 3 D3 : le compte « 15 » tient pour les fichiers **TypeScript** ; `apps/api/prisma/schema.prisma` porte aussi le champ (il serait le 16ᵉ), et deux captures de `docs/preuves/D327/` aussi (pièces, pas du code). `visit-bookings.service.ts` y est pour `visit_bookings.contact_phone`, une autre table.
+- **C-7** — § 3 : les décisions du relecteur sont numérotées « D1 » à « D8 » — **homonymes** des décisions D1 à D8 du registre (« D4 » y est même cité au sens des claims du jeton, D5). Précédent : D328 a écrit « **D1. CE CADRAGE COUVRE TOUT… » et « **D2. MÉTHODE… » (1 occurrence). À l'écriture, les préfixer (« décision 1 du relecteur (D336) ») éviterait qu'une reprise lise « D4 » comme le devis brouillon.
+- **C-8** — § 4 [L36-2] : la liste citée est **`QUOTE_WRITABLE_STATUSES`** (« Statuts que le code a encore le DROIT d'ÉCRIRE », `packages/types/src/quote.ts`), pas les statuts écrits ; le `CHECK` « un devis non officiel n'est jamais accepté » garde son sens (ACCEPTED reste inscriptible, par E3) — c'est la parenthèse qui est fausse, pas la règle.
+- **C-9** — § 8 « Entrées OUVERTES … compte fournisseur e-mail ; compte WhatsApp Business » : **les deux existent déjà** (« Create the transactional email provider account », « LE COMPTE FOURNISSEUR WHATSAPP — TÂCHE DE KO » : 1 occurrence) — à annoter, pas à recréer.
+- **C-10** — § 6 e) : aujourd'hui `POST /quotes/:id/convert` reçoit le contact dans son CORPS (`quoteConvertSchema` : contactFirstName, contactLastName, contactPhone, contactEmail, paymentMethod) — « la conversion lit … le numéro/e-mail de la fiche » MODIFIE donc ce contrat (« s'arrêter et demander », `CLAUDE.md`), et ne dit pas ce que devient la conversion d'un devis **sans fiche** : tous les devis existants le seront après la migration (la base de développement en compte 24 d'après D335, constat X5-C1).
+- **C-11** — § 6 h) : un numéro écrit **tout** en chiffres arabo-indiens est refusé (`\D` les retire, il ne reste rien) ; **un mélange passe** — « ٠555123456 » rend +213555123456 (le chiffre arabo-indien est lu comme de la mise en forme). `phone.ts` ne documente pas ce cas (0 mention).
+- **C-12** — § 2 d) écrit « K-1 reste inchangé (écran identique pour tout identifiant) », § 6 b) « K-1 amendé : … { phone } OU { email } » — compatible si « inchangé » vise la propriété (réponse identique), pas l'entrée ; à écrire ainsi.
+
+NON VÉRIFIABLES (5)
+- **NV-1** — § 1a et § 1b : les deux textes de Ko (21/10/2026, 01:25 ; 22/10/2026, 09:53) — ils vivent dans le chat ; le dépôt ne porte aucun texte de Ko daté du 21 ou du 22/10/2026 (« 21/10/2026 » dans les trois fichiers d'autorité : 0 ; « 22/10/2026 » : 0).
+- **NV-2** — § 1c : « la liste de décisions du relecteur du 21/10/2026 » (Q1 à Q12) — elle vit dans le chat ; le dépôt ne la porte pas.
+- **NV-3** — § 2 i) et § 3 : la loi 18-07 (art. 7, 12 à 21, 44), la loi 25-11 (art. 41 bis, JO n° 48 du 24/07/2025), le décret 05-468, les résumés (Gide, UpGrowth) — hors dépôt.
+- **NV-4** — § 3 D5 : NIST SP 800-63B-4, § 3.2.10 — hors dépôt.
+- **NV-5** — § 3 D6 et § 8 : « les ~50 noms de Ko », « les rôles de la salle pilote » — hors dépôt.
+
+BILAN : 61 contrôles — 58 ✓ · 3 ✗ (D335 0 · état vivant 0 · consigne 3) · 12 constats · 5 non vérifiables · calibration 38 bras, 0 manqué
+RÈGLE D'ARRÊT DÉCLENCHÉE (consigne, section 0) : « Si une affirmation de ce message est fausse contre le dépôt, tu t'arrêtes et tu le dis ; tu ne l'adaptes pas seul. »
