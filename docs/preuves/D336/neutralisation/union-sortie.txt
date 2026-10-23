@@ -1,0 +1,95 @@
+   ✓ calibration — positif R : un chemin depuis la racine retient le fichier du diff
+   ✓ calibration — positif P : un chemin relatif au paquet retient le fichier du diff
+   ✓ calibration — positif N : le seul nom du fichier retient le fichier du diff
+   ✓ calibration — positif, cas CONNU : `neutralize-r37.py` cite `src/venues/ma-salle-relecture.test.tsx` — (b) le retient pour ce fichier modifié
+   ✓ calibration — positif, cas CONNU : le tri (a) ne retient AUCUNE campagne pour ce même fichier (l'angle mort que l'union couvre)
+   ✓ calibration — négatif : un chemin qui ne désigne aucun fichier du diff ne retient rien, ni par R ni par P ni par N
+   ✓ calibration — négatif : un nom absent du diff ne retient rien, ni par R ni par P ni par N
+   calibration : 7 bras, 0 manqué
+départ : b8ba85a (b8ba85a0f235) · HEAD 0117f38dc4b7
+parcouru : 38 campagne(s) (attendu : autant que de `neutralisation/neutralize-*.py`, soit 38) ; 60 fichier(s) dans le diff du lot (hors `docs/preuves/`)
+   diff · AGENTS.md
+   diff · ZWADJ_BACKLOG.md
+   diff · ZWADJ_CONTINUITE.md
+   diff · apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql
+   diff · apps/api/prisma/schema.prisma
+   diff · apps/api/src/app.module.ts
+   diff · apps/api/src/clients/pro-client-policy.spec.ts
+   diff · apps/api/src/clients/pro-client-policy.ts
+   diff · apps/api/src/clients/pro-client-store.prisma.ts
+   diff · apps/api/src/clients/pro-client-store.types.ts
+   diff · apps/api/src/clients/pro-clients.controller.ts
+   diff · apps/api/src/clients/pro-clients.module.ts
+   diff · apps/api/src/clients/pro-clients.service.spec.ts
+   diff · apps/api/src/clients/pro-clients.service.ts
+   diff · apps/api/src/common/client-record.spec.ts
+   diff · apps/api/src/documents/quote-document-source.prisma.ts
+   diff · apps/api/src/documents/quote-document-source.ts
+   diff · apps/api/src/documents/quote-document.service.spec.ts
+   diff · apps/api/src/documents/quote-document.spec.ts
+   diff · apps/api/src/documents/quote-document.ts
+   diff · apps/api/src/venues/quote-store.prisma.spec.ts
+   diff · apps/api/src/venues/quote-store.prisma.ts
+   diff · apps/api/src/venues/quote-store.types.ts
+   diff · apps/api/src/venues/quotes.controller.ts
+   diff · apps/api/src/venues/quotes.service.spec.ts
+   diff · apps/api/src/venues/quotes.service.ts
+   diff · apps/api/test/int/migration-non-empty.int-spec.ts
+   diff · apps/api/test/int/pdf-renderer.int-spec.ts
+   diff · apps/api/test/int/pro-clients.int-spec.ts
+   diff · apps/api/test/int/quote-document.int-spec.ts
+   diff · apps/api/test/int/quote-numbering.int-spec.ts
+   diff · apps/api/test/int/quotes.int-spec.ts
+   diff · apps/pro/src/App.tsx
+   diff · apps/pro/src/dashboard/walkin-client.test.ts
+   diff · apps/pro/src/dashboard/walkin-client.ts
+   diff · apps/pro/src/dashboard/walkin-contact.test.ts
+   diff · apps/pro/src/dashboard/walkin-contact.ts
+   diff · apps/pro/src/dashboard/walkin-journey.test.tsx
+   diff · apps/pro/src/dashboard/walkin-journey.tsx
+   diff · apps/pro/src/test-support/client-doubles.ts
+   diff · apps/pro/src/venues/quotes-section.test.tsx
+   diff · apps/pro/src/venues/venue-client-context.tsx
+   diff · e2e/specs/r33-remise-devis.e2e.ts
+   diff · e2e/specs/r41-fiche-client.e2e.ts
+   diff · neutralisation/neutralize-act-plafonds.py
+   diff · neutralisation/neutralize-horloge.py
+   diff · neutralisation/neutralize-r32.py
+   diff · neutralisation/neutralize-r38.py
+   diff · neutralisation/neutralize-r41.py
+   diff · packages/api-client/src/clients-client.test.ts
+   diff · packages/api-client/src/clients-client.ts
+   diff · packages/api-client/src/index.ts
+   diff · packages/api-client/src/quotes-client.test.ts
+   diff · packages/api-client/src/quotes-client.ts
+   diff · packages/i18n/messages/ar.json
+   diff · packages/i18n/messages/fr.json
+   diff · packages/types/src/client-record.ts
+   diff · packages/types/src/contact.ts
+   diff · packages/types/src/index.ts
+   diff · packages/types/src/quote.ts
+(a) retenues par les fonctions du tri sur le diff DU LOT : 13 · le tri tel que lancé (contre HEAD, 53 fichier(s) modifié(s) depuis HEAD) : 12
+(b) campagnes qui citent un fichier du diff : 17 — R 13 · P 12 · N 17
+
+campagne                              (a)   R   P   N  fichiers du diff cités
+neutralize-act-plafonds.py            oui   1   1   1  apps/pro/src/dashboard/walkin-journey.test.tsx
+neutralize-booking-status.py          oui   2   1   3  apps/api/src/venues/quote-store.prisma.spec.ts, apps/api/src/venues/quote-store.prisma.ts, apps/api/test/int/quotes.int-spec.ts
+neutralize-e3d1-s8.py                   —   0   0   1  apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql
+neutralize-horloge.py                 oui   1   0   1  apps/pro/src/dashboard/walkin-journey.test.tsx
+neutralize-journey.py                 oui   1   1   2  apps/pro/src/dashboard/walkin-journey.test.tsx, apps/pro/src/dashboard/walkin-journey.tsx
+neutralize-r29.py                     oui   1   0   1  apps/pro/src/App.tsx
+neutralize-r32.py                     oui   4   2   6  apps/pro/src/dashboard/walkin-contact.test.ts, apps/pro/src/dashboard/walkin-contact.ts, apps/pro/src/dashboard/walkin-journey.test.tsx, app
+neutralize-r33.py                     oui   5   8  13  apps/api/src/documents/quote-document-source.prisma.ts, apps/api/src/documents/quote-document.service.spec.ts, apps/api/src/documents/quote-
+neutralize-r37.py                     oui   1   0   1  apps/pro/src/test-support/client-doubles.ts
+neutralize-r38.py                     oui   4   3   7  apps/api/src/documents/quote-document-source.prisma.ts, apps/api/src/documents/quote-document.service.spec.ts, apps/api/src/documents/quote-
+neutralize-r39.py                     oui   7   8  16  apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql, apps/api/src/documents/quote-document-source.prisma.ts, apps/api
+neutralize-r4.py                        —   0   2   3  apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql, apps/api/test/int/migration-non-empty.int-spec.ts, apps/api/test
+neutralize-r41.py                     oui  15  15  30  apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql, apps/api/src/clients/pro-client-policy.spec.ts, apps/api/src/cli
+neutralize-s10b.py                    oui   4   2   5  apps/api/src/venues/quote-store.prisma.spec.ts, apps/api/src/venues/quote-store.prisma.ts, apps/api/src/venues/quote-store.types.ts, apps/ap
+neutralize-s11b.py                      —   0   2   3  apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql, apps/api/test/int/migration-non-empty.int-spec.ts, apps/api/test
+neutralize-s9.py                      oui   1   0   1  apps/pro/src/venues/venue-client-context.tsx
+neutralize-solid-s3.py                  —   0   1   1  apps/api/test/int/quotes.int-spec.ts
+
+UNION : 17 campagne(s) sur 38 ; (a) seul en aurait retenu 13 ; le tri tel que lancé en retient 12 ; (b) ajoute 4
+non retenues : neutralize-404.py, neutralize-argon2.py, neutralize-available-on-api.py, neutralize-available-on.py, neutralize-b7.py, neutralize-budgets.py, neutralize-horizon.py, neutralize-maxprice.py, neutralize-r25.py, neutralize-r26.py, neutralize-r30.py, neutralize-rang23.py, neutralize-s10a.py, neutralize-s11a.py, neutralize-solid-s1.py, neutralize-solid-s2.py, neutralize-solid-s4.py, neutralize-solid-s5a.py, neutralize-solid-s5b.py, neutralize-solid-s6.py, neutralize-solid-s7.py
+UNION: neutralize-act-plafonds.py,neutralize-booking-status.py,neutralize-e3d1-s8.py,neutralize-horloge.py,neutralize-journey.py,neutralize-r29.py,neutralize-r32.py,neutralize-r33.py,neutralize-r37.py,neutralize-r38.py,neutralize-r39.py,neutralize-r4.py,neutralize-r41.py,neutralize-s10b.py,neutralize-s11b.py,neutralize-s9.py,neutralize-solid-s3.py
