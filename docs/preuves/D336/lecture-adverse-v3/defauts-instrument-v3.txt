@@ -1,0 +1,29 @@
+DÉFAUTS DE L'INSTRUMENT DE LA TROISIÈME LECTURE (D336, reprise sous la consigne v3) — écrits AVANT la réparation, avec la sortie brute qui les a montrés.
+Règle appliquée : un défaut d'instrument découvert à un point d'arrêt arrête la MESURE, pas le lot (Ko, D298) — recalibration de l'instrument réparé sur ses bras, y compris ceux qu'il n'avait pas ;
+REJEU INTÉGRAL de l'étape, calibration comprise ; écriture du défaut avec la sortie brute. Le lot ne s'arrête que si le COMPORTEMENT dément, l'instrument réparé et recalibré.
+Première passe, versée telle quelle : `docs/preuves/D336/lecture-adverse-v3/confronter-sortie-v3-passe-1-AVANT-CORRECTIFS.txt` (code de sortie 3 ; 20 contrôles, 18 ✓, 2 ✗ ; calibration 46 bras, 0 manqué).
+
+DÉFAUT 1 — W0-1 cherchait « D337 » dans TOUT l'arbre, y compris les pièces de lecture de CE lot, qui CITENT la consigne.
+  Sortie brute (première passe, ligne 71) : « W0-1 | … « D337 » n'est nulle part | attendu : D335 · 0 · mesuré : D335 · 2 … | ✗ ».
+  Les deux fichiers (`git grep -l D337 9f85228`) : `docs/preuves/D336/lecture-adverse-v2/confronter-consigne-v2.py` (lignes 162-163 : la recherche elle-même et le libellé qui cite « Tu ne prends PAS D337 »)
+  et `docs/preuves/D336/lecture-adverse-v2/confronter-sortie-v2.txt` (ligne 65 : le même libellé, imprimé). Ce sont des CITATIONS de la consigne, pas une attribution du numéro.
+  Pourquoi la seconde lecture ne l'a pas vu : à `feea423`, ses propres pièces n'existaient pas encore ; à `9f85228`, elles existent et citent la phrase. La sortie brute porte donc la réponse cherchée
+  (D337 n'est attribué nulle part), et l'instrument la cherchait au mauvais endroit : c'est un défaut d'INSTRUMENT (D275), pas un démenti.
+  Réparation : la recherche exclut les pièces de lecture de D336 (`docs/preuves/D336/`), et l'exclusion est un extracteur neuf calibré à deux bras (un jeton attribué ailleurs ; un jeton qui ne vit
+  que dans les pièces de D336).
+
+DÉFAUT 2 — W9-3 cherchait le littéral « homonymes des décisions D1 à D8 du registre » dans C-7, qui l'écrit « **homonymes** des décisions D1 à D8 du registre » (gras Markdown).
+  Sortie brute (première passe, ligne 85) : « W9-3 | … | attendu : présente · mesuré : True · False | ✗ » — le premier jeton (« « D4 » y est même cité au sens des claims du jeton ») est trouvé,
+  le second ne l'est pas à cause des deux astérisques. Relevé dans la sortie de la première lecture : « — **homonymes** des décisions D1 à D8 du registre (« D4 » y est même cité au sens des claims du jeton ».
+  Même classe que le défaut G6 de D335 et que la ligne 1912 de cette lecture (une marque de mise en forme dans le texte cherché). Défaut d'INSTRUMENT.
+  Réparation : la comparaison se fait sur le texte SANS les marques de gras, par un extracteur neuf calibré à deux bras.
+
+Ni l'un ni l'autre ne touche une affirmation de la consigne v3 : après réparation, l'étape est rejouée EN ENTIER (préfixes compris).
+
+DÉFAUT 3 — trouvé à la LECTURE de la deuxième passe (20 ✓, code 0), pas par un ✗ : une DESCRIPTION fausse dans l'instrument.
+  Sortie brute (deuxième passe, ligne 2) : « marque « # ── CONTRÔLES » EN DÉBUT DE LIGNE : 1 (attendu 1) ; dans tout le texte : 3 (2 connues : la constante MARQUE et le titre de section) ».
+  Le nombre mesuré (3) est juste ; la parenthèse qui l'explique ne l'est pas : `grep -n` sur le fichier de la seconde lecture rend les lignes 14 (son en-tête, qui décrit le découpage), 42 (la
+  constante MARQUE) et 95 (le titre de section). L'en-tête de l'instrument disait de même « DEUX fois ». La garde qui compte (une seule marque EN DÉBUT DE LIGNE) n'est pas touchée.
+  Réparation : l'en-tête et la ligne imprimée disent TROIS, avec les trois emplacements, et l'attendu (3) s'imprime à côté du mesuré (D290).
+  Un instrument et sa pièce se corrigent ensemble (D295) : l'étape est rejouée EN ENTIER une troisième fois ; la sortie de la deuxième passe n'est pas versée (elle ne diffère de la troisième
+  que par cette parenthèse), et c'est la TROISIÈME passe, versée sous `docs/preuves/D336/lecture-adverse-v3/confronter-sortie-v3.txt`, qui fait foi.

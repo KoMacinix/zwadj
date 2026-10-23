@@ -1,0 +1,12 @@
+TRI AU CONTEXTE (humain, D336, reprise sous la consigne v3) — de l'audit scellé « c » de ce lot (`docs/preuves/D336/audit-secrets-d336c.txt`, sceau écrit par `neutralisation/audit-secrets.py --sortie`, relu identique et sceau vérifié à la relecture), contre la sortie scellée précédente, « b » de ce lot (`docs/preuves/D336/audit-secrets-d336b.txt`).
+Procédure : `docs/preuves/D299/outils/alertes-nouvelles.py <précédente> <nouvelle>` (calibrée à deux bras avant de lire : négatif 0, positif 2 — tous deux tenus) ; AUCUN contexte n'est recopié ici (règle de D299).
+
+Corpus : « c » est joué AVANT le commit de la troisième lecture ; il parcourt `docs/preuves/` sur le disque (4 266 fichiers, dont les fichiers non suivis de cette reprise : `docs/preuves/D336/lecture-adverse-v3/confronter-consigne-v3.py`, `confronter-sortie-v3.txt`, `confronter-sortie-v3-passe-1-AVANT-CORRECTIFS.txt` et `defauts-instrument-v3.txt`) ; 4 155 audités, 111 exclus par l'identité de leurs octets. L'audit rend 255 contextes, « b » en rendait 253.
+
+alertes ABSENTES de la précédente : 2 (jeton=1 · chargily=1), toutes deux dans UN fichier : `docs/preuves/D336/tri-audit-d336b.txt` (lignes 1595 et 1597 de la sortie « c ») :
+1. ligne 7 du fichier (motif « jeton ») : le tri « b » de ce lot, qui DÉCRIT l'alerte qu'il a triée — le tri « a » NOMME les paramètres `zwadj_rt=` et `?token=` pour dire qu'un extrait n'en porte aucun ; « valeur trop courte pour une recherche ». Aucune valeur.
+2. ligne 9 du fichier (motif « chargily ») : la ligne « BILAN DU TRI » de « b », qui nomme les familles de clés pour dire qu'il n'y en a aucune ; « valeur déjà présente dans 0 fichier suivi hors preuves ». Aucune valeur.
+BILAN DU TRI : 2 sur 2 = l'écho du tri « b », annoncé par lui ; AUCUNE valeur réelle (aucune clé Chargily, aucun secret Google, aucun mot de passe de compte réel). Les quatre fichiers de la troisième lecture ne rendent AUCUNE alerte.
+
+Le contrôle dédié « 0 valeur réelle » de D299 n'a rien à chercher : cette reprise n'a produit ni ouvert aucun journal à valeurs réelles jusqu'ici (aucune porte, aucune campagne, aucun e2e, aucune base lue) — contrôle SANS OBJET à ce stade, pas un « 0 porteur » constaté.
+Limite écrite : ce tri-ci sera lu par l'audit suivant, qui le trouvera comme alerte nouvelle du même ordre (écho de tri), non comme une fuite.

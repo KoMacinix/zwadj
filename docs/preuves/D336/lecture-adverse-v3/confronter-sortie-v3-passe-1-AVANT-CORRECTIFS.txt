@@ -1,0 +1,100 @@
+D336 (reprise) — TROISIÈME lecture adverse : la consigne VERSION 3 du 22/10/2026 · SHA fixés : reprise 9f85228, extension 2 18d10b5, état décrit b8ba85a
+PRÉFIXE REPRIS : `docs/preuves/D336/lecture-adverse-v2/confronter-consigne-v2.py` lu à 9f85228 — 32917 octets, sha256 6ce70f505aa935203d9349040d7a974331e022bac857b676d82a9ede044b0485 ; le fichier sur disque est identique : True (attendu True) ; marque « # ── CONTRÔLES » EN DÉBUT DE LIGNE : 1 (attendu 1) ; dans tout le texte : 3 (2 connues : la constante MARQUE et le titre de section)
+  préfixe exécuté : 7241 octets, 94 lignes, sha256 7b4234fed9fc705c70eb0c252f80a41aa425599cf45b12c416275a71a2154359
+── sortie du préfixe de la seconde lecture (qui exécute celui de la première) ──
+D336 (reprise) — SECONDE lecture adverse : la consigne VERSION 2 du 22/10/2026 · SHA fixés : reprise feea423, extension 1 eacd079, état décrit b8ba85a
+PRÉFIXE REPRIS : `docs/preuves/D336/lecture-adverse/confronter-d335-et-consigne.py` lu à feea423 — 58198 octets, sha256 f8c77988053d0ea59d72120d2c7642c891f4e4fd4d9209c3e7ba2276aaccdea5 ; le fichier sur disque est identique : True (attendu True) ; marque « # ── CONTRÔLES » : 1 occurrence (attendu 1)
+  préfixe exécuté : 15760 octets, 262 lignes, sha256 b5378f25dc3529255847730246df1be148aa97cb1930b0be4cc4c8ea5808b2bf
+── sortie du préfixe (en-tête et calibration de la première lecture, rejoués) ──
+D336 — lecture adverse de D335 et de la consigne du 22/10/2026 · SHA fixés : départ b8ba85a, D335 b92dc7a..b8ba85a, code mesuré 83929a6, table 77728a5
+CALIBRATION (deux bras par extracteur)
+  ✓ calibration · lire · cas vrai : rendu True (attendu True)
+  ✓ calibration · lire · cas faux : rendu False (attendu False)
+  ✓ calibration · present (texte aplati) · cas vrai : rendu True (attendu True)
+  ✓ calibration · present (texte aplati) · cas faux : rendu False (attendu False)
+  ✓ calibration · present (enjambe un retour à la ligne) · cas vrai : rendu True (attendu True)
+  ✓ calibration · present (enjambe un retour à la ligne) · cas faux : rendu False (attendu False)
+  ✓ calibration · compter · cas vrai : rendu True (attendu True)
+  ✓ calibration · compter · cas faux : rendu False (attendu False)
+  ✓ calibration · fichiers_du_commit · cas vrai : rendu True (attendu True)
+  ✓ calibration · fichiers_du_commit · cas faux : rendu False (attendu False)
+  ✓ calibration · numstat · cas vrai : rendu True (attendu True)
+  ✓ calibration · numstat · cas faux : rendu False (attendu False)
+  ✓ calibration · noms_diff · cas vrai : rendu True (attendu True)
+  ✓ calibration · noms_diff · cas faux : rendu False (attendu False)
+  ✓ calibration · rev_list · cas vrai : rendu True (attendu True)
+  ✓ calibration · rev_list · cas faux : rendu False (attendu False)
+  ✓ calibration · heure_commit · cas vrai : rendu True (attendu True)
+  ✓ calibration · heure_commit · cas faux : rendu False (attendu False)
+  ✓ calibration · chemins_de_table · cas vrai : rendu True (attendu True)
+  ✓ calibration · chemins_de_table · cas faux : rendu False (attendu False)
+  ✓ calibration · chemins_de_table (deux chemins dans une cellule) · cas vrai : rendu True (attendu True)
+  ✓ calibration · chemins_de_table (deux chemins dans une cellule) · cas faux : rendu False (attendu False)
+  ✓ calibration · section · cas vrai : rendu True (attendu True)
+  ✓ calibration · section · cas faux : rendu False (attendu False)
+  ✓ calibration · bloc (ancre unique, refus d'une ancre répétée) · cas vrai : rendu True (attendu True)
+  ✓ calibration · bloc (ancre unique, refus d'une ancre répétée) · cas faux : rendu False (attendu False)
+  ✓ calibration · ligne_qui_commence · cas vrai : rendu True (attendu True)
+  ✓ calibration · ligne_qui_commence · cas faux : rendu False (attendu False)
+  ✓ calibration · modele · cas vrai : rendu True (attendu True)
+  ✓ calibration · modele · cas faux : rendu False (attendu False)
+  ✓ calibration · est_production · cas vrai : rendu True (attendu True)
+  ✓ calibration · est_production · cas faux : rendu False (attendu False)
+  ✓ calibration · git_grep_fichiers · cas vrai : rendu True (attendu True)
+  ✓ calibration · git_grep_fichiers · cas faux : rendu False (attendu False)
+  ✓ calibration · fichiers_suivis · cas vrai : rendu True (attendu True)
+  ✓ calibration · fichiers_suivis · cas faux : rendu False (attendu False)
+  ✓ calibration · normaliser_telephones (exécution réelle de phone.ts) · cas vrai : rendu True (attendu True)
+  ✓ calibration · normaliser_telephones (exécution réelle de phone.ts) · cas faux : rendu False (attendu False)
+  calibration : 38 bras joués, 0 manqué(s) (attendu 0)
+── fin du préfixe ──
+  ✓ calibration · lignes_numerotees · cas vrai : rendu True (attendu True)
+  ✓ calibration · lignes_numerotees · cas faux : rendu False (attendu False)
+  ✓ calibration · hors_prefixe · cas vrai : rendu True (attendu True)
+  ✓ calibration · hors_prefixe · cas faux : rendu False (attendu False)
+  ✓ calibration · parle_du_jeton (une ligne connue du jeton ; la ligne D3 du registre) · cas vrai : rendu True (attendu True)
+  ✓ calibration · parle_du_jeton (une ligne connue du jeton ; la ligne D3 du registre) · cas faux : rendu False (attendu False)
+  calibration totale (préfixe + neuve) : 44 bras joués, 0 manqué(s) (attendu 0)
+── fin du préfixe de la seconde lecture ──
+  ✓ calibration · chemins_extension (borne une extension : la 1 ne voit pas les chemins de la 2) · cas vrai : rendu True (attendu True)
+  ✓ calibration · chemins_extension (borne une extension : la 1 ne voit pas les chemins de la 2) · cas faux : rendu False (attendu False)
+  calibration totale (préfixes repris + neuve) : 46 bras joués, 0 manqué(s) (attendu 0)
+
+CONTRÔLES
+| id | ce qui est contrôlé | attendu (lu) · mesuré | résultat |
+|---|---|---|---|
+| S1 | D336 depuis b8ba85a = quatre commits — table seule (77728a5), première lecture (feea423), extension 1 (eacd079), seconde lecture (9f85228) — et rien hors `docs/preuves/D336/` | attendu : [77728a5, feea423, eacd079, 9f85228] · 0 hors D336 · mesuré : ['77728a5', 'feea423', 'eacd079', '9f85228'] · 0 hors D336 — parcouru : 9 fichiers | ✓ |
+| S2 | la sortie de la seconde lecture (9f85228) porte UN écart (V3-DR5), cinq constats C2-1 à C2-5, deux non vérifiables, et l'arrêt | attendu : 1 · C2-1…C2-5 · NV2-1, NV2-2 · arrêt · mesuré : True · ['C2-1', 'C2-2', 'C2-3', 'C2-4', 'C2-5'] · ['NV2-1', 'NV2-2'] · True | ✓ |
+| S3 | l'extension 2 (18d10b5) est SEULE dans son commit, n'efface rien, posée sur 9f85228, et déclare la troisième lecture, l'audit « c » et son tri | attendu : table seule, 0 retirée, déclarés · mesuré : [(22, 0, 'docs/preuves/D336/table-ouverture.md')] · parent 9f85228 · déclarés True | ✓ |
+| X1 | « origin/main = 9f85228 » (relu après `git fetch`) ; HEAD = l'extension 2, non encore poussée | attendu : origin 9f85228 · HEAD 18d10b5 · mesuré : origin 9f85228 · HEAD 18d10b5 | ✓ |
+| X2 | arbre : rien de suivi modifié ; seuls des fichiers NON SUIVIS sous `docs/preuves/D336/lecture-adverse-v3/` ; aucun stash | attendu : 0 · 0 · mesuré : 0 · 0 — parcouru : 1 ligne(s) de `git status` | ✓ |
+| W0-1 | § 0 « LE LOT RESTE D336. Tu ne prends PAS D337 » : le registre finit toujours à D335, « D337 » n'est nulle part | attendu : D335 · 0 · mesuré : D335 · 2 — parcouru : 288 lignes de registre | ✗ |
+| W0-2 | § 0 « origin/main = 9f85228 (table 77728a5 ; première lecture adverse feea423 ; extension 1 eacd079 ; seconde lecture 9f85228 ; tout sous docs/preuves/D336/) » et « rien d'autorité ni de code n'a été écrit » | attendu : S1 et X1 vrais · mesuré : S1 True, X1 True | ✓ |
+| W0-3 | § 0 « la seule affirmation fausse que ta seconde lecture a relevée (V3-DR5, section 3 DR5) … ses cinq constats » | attendu : S2 vrai · mesuré : S2 True | ✓ |
+| W0-4 | § 0, 1) « à vérifier contre ses 54 chemins » : l'extension 1 compte 54 chemins sous la définition de la seconde réponse (« la seconde lecture et son audit, et le code de L35-4 ») | attendu : 4 + 50 = 54 · mesuré : 4 + 50 = 54 (cités en tout : 59 ; conditionnels de défaut d'instrument : 2 ; `.md` déjà déclarés à l'ouverture : 3) | ✓ |
+| W2b-1 | § 2 b) « la ligne qui ÉCRIT la cinquième révision de D-10 : la ligne 1912 (numéro relevé par ta seconde lecture, avant tes annotations ; C2-2) » | attendu : la seconde lecture l'a relevée · la ligne 1912 à b8ba85a l'écrit · mesuré : True · True | ✓ |
+| W3-0 | § 3, en-tête « « DR-1 », avec un tiret, est déjà un identifiant de contrôle dans les pièces de D334 (C2-3) » | attendu : pièces de D334 seulement (hors les lectures de D336 qui le citent) · mesuré : 2 ligne(s), toutes sous docs/preuves/D334/ : True | ✓ |
+| W3-DR5 | § 3 DR5 « Le jeton d'accès reste { sub, role } (D4 de la tranche Auth — les claims du jeton, `auth.types.ts:4` ; homonyme de D4 du registre, « Passes UI ») » | attendu : ligne 4 = les claims (D4) · registre D4 = « Passes UI… » · « tranche Auth » écrit au dépôt · mesuré : ligne 4 : « * Claims du JWT d'accès (D4) : le strict minimum… » · registre : « Passes UI (D1 → D4) — thème so… » · « tranche Auth » : True | ✓ |
+| W3-DR5b | § 3 DR5 et § 9 « dans la forme que tu as proposée » : le texte de DR5 = la forme proposée par le constat C2-4 de la seconde lecture (extraite de la sortie versée) | attendu : identiques · mesuré : forme extraite : True · égale au texte de la v3 : True | ✓ |
+| W6e-1 | § 6 e) « Découpage du nom (C2-5 ; proposé par ta seconde lecture …) : … celle de la langue de l'interface … la coupe au PREMIER espace ; les deux champs restent modifiables » : c'est la proposition de C2-5 | attendu : C2-5 propose la langue de l'interface, le premier espace, modifiable · mesuré : True · True · True | ✓ |
+| W6e-2 | § 6 e) « le contrat POST /quotes/:id/convert (quoteConvertSchema : contactFirstName, contactLastName, contactPhone, contactEmail, paymentMethod) est INCHANGÉ » ; « sans espace … le prénom reste vide, à saisir » : la route existe, la liste est exacte, le prénom est EXIGÉ par le contrat | attendu : route · 5 champs · prénom requis · mesuré : True · ['contactFirstName', 'contactLastName', 'contactPhone', 'contactEmail', 'paymentMethod'] · True | ✓ |
+| W6e-3 | § 6 e) « 24 en base de développement d'après D335 » | attendu : présent · mesuré : True | ✓ |
+| W6h-1 | § 6 h) « numéro fixe ou étranger refusé, et numéro écrit TOUT en chiffres arabo-indiens refusé … ; un MÉLANGE … accepté aujourd'hui (« ٠555123456 » rend +213555123456) » — mesuré | attendu : null · null · null · +213555123456 · mesuré : None · None · None · +213555123456 | ✓ |
+| W9-1 | § 9, première lecture (feea423) : les écarts B2i-1, B4-3, B6-4 et la correspondance des douze constats aux sections — inchangée depuis la v2 | attendu : 3 écarts · 12 sur 12 · mesuré : True · 12 sur 12 | ✓ |
+| W9-2 | § 9, seconde lecture (9f85228) : « C2-1 : rien à faire. C2-2 : section 2 b. C2-3 : en-tête de la section 3. C2-4 : couvert par V3-DR5. C2-5 : sections 6 e et 6 h. NV2-1 et NV2-2 : inchangés » — chaque constat vise bien la section citée | attendu : 5 sur 5 · NV2-1, NV2-2 · mesuré : 5 sur 5 · ['NV2-1', 'NV2-2'] | ✓ |
+| W9-3 | § 9 « il a écrit « décision D4 du registre » d'après la formulation de C-7 » : C-7 porte bien la formulation ambiguë (« D4 » cité au sens des claims, à côté de « du registre ») | attendu : présente · mesuré : True · False | ✗ |
+
+VENTILATION PAR FAMILLE : S 3 (0 ✗) · W0 4 (1 ✗) · W2 1 (0 ✗) · W3 3 (0 ✗) · W6 4 (0 ✗) · W9 3 (1 ✗) · X 2 (0 ✗) — aucune famille à zéro : True
+
+ÉCARTS DE L'ÉTAT DÉCRIT OU VIVANT : 0 []
+ÉCARTS DE LA CONSIGNE V3 (affirmations fausses contre le dépôt) : 2 ['W0-1', 'W9-3']
+
+CONSTATS (2)
+- **C3-1** — § 0, 1) « ses 54 chemins » : le chiffre vient de la réponse de la seconde session, qui ne disait pas sa définition. Mesuré : l'extension 1 CITE 59 chemins ; 54 = les 4 de la seconde lecture et de son audit + les 50 du code et des pièces du lot ; restent hors du compte les 2 fichiers conditionnels d'un défaut d'instrument et les 3 `.md` déjà déclarés à l'ouverture. Faute de la session (un chiffre sans sa définition, D290), sans incidence : la vérification de 6 e porte sur les chemins, pas sur leur nombre.
+- **C3-2** — § 6 h) le mode de défaillance neuf (« prénom composé — « Abd El Kader », « عبد القادر » — ou nom écrit avant le prénom : corrigé à la main ») ne porte AUCUNE affirmation sur le dépôt : c'est une exigence de test (les deux champs modifiables, l'envoi porte la valeur de l'écran), écrite avant le code.
+
+NON VÉRIFIABLES (1)
+- **NV3-1** — § 0, 2) « rien d'autre n'a changé depuis la version 2 (comparaison au mot, espaces normalisés) » : NI la version 2 NI la version 3 ne sont au dépôt (les deux vivent dans le chat) ; les deux premières lectures n'en ont versé que de COURTS EXTRAITS, dans les libellés de leurs contrôles. Comparer au mot exigerait de lire le chat, c'est-à-dire la « mémoire » que la consigne exclut. Non vérifiable, et — par la consigne — pas un motif d'arrêt.
+
+BILAN : 20 contrôles — 18 ✓ · 2 ✗ (état 0 · consigne v3 2) · 2 constats · 1 non vérifiable(s) · calibration 46 bras (préfixes repris + neuf), 0 manqué
+RÈGLE D'ARRÊT DÉCLENCHÉE (consigne v3, section 0) : « Si une affirmation de cette version 3 est fausse contre le dépôt, tu t'arrêtes et tu le dis ; tu ne l'adaptes pas seul. »
