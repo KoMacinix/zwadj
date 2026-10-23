@@ -227,3 +227,11 @@ Vérifié contre les chemins de l'extension 1 (59 cités ; « 54 » = les 4 de l
 |---|---|
 | `neutralisation/neutralize-e3d1-s8.py` | une de ses ancres, un de ses titres de test ou un de ses comptes ne se retrouve plus après le code du lot |
 | `docs/preuves/D336/neutralisation/premier-jeu/e3d1-s8.txt` | le premier jeu de l'union n'est pas vert pour cette campagne |
+
+#### Extension 8 — la PREMIÈRE passe de la porte `test`, rouge, déclarée AVANT le commit qui la contient
+
+**Motif** : la porte `test`, jouée après la dernière modification, a d'abord rendu **1 échec sur 2 000** — `apps/pro/src/account/account-settings-page.test.tsx`, un fichier que ce lot ne touche pas, tombé sur `Error: 2 avertissement(s) de console dans un fichier NON exempté` (`DeletionSection`, `ProVenuesProvider`), le message d'une entrée OUVERTE du backlog (« LA GARDE DES SORTIES CONSOLE TOMBE SOUS CHARGE », vue depuis le 02/09/2026) ; le fichier seul, trois fois : 31 sur 31 ; la porte rejouée en entier : 0 échec. Une porte ne se déclare pas verte en taisant sa première passe (D270 : « aucun lot ne part dans `main` sous une porte rouge, même quand le rouge vient d'ailleurs ») : son extrait se verse à côté de celui de la passe verte.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D336/portes/test-passe-1-rouge.txt` | l'extrait de la première passe de la porte `test` (rouge : 1 échec, un fichier hors du lot), par le même extracteur |
