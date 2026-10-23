@@ -212,3 +212,18 @@ Vérifié contre les chemins de l'extension 1 (59 cités ; « 54 » = les 4 de l
 |---|---|
 | `docs/preuves/D336/neutralisation/premier-jeu/act-plafonds.txt`, `docs/preuves/D336/neutralisation/premier-jeu/booking-status.txt`, `docs/preuves/D336/neutralisation/premier-jeu/horloge.txt`, `docs/preuves/D336/neutralisation/premier-jeu/journey.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r29.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r32.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r33.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r37.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r38.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r39.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r4.txt`, `docs/preuves/D336/neutralisation/premier-jeu/s10b.txt`, `docs/preuves/D336/neutralisation/premier-jeu/s11b.txt`, `docs/preuves/D336/neutralisation/premier-jeu/s9.txt`, `docs/preuves/D336/neutralisation/premier-jeu/solid-s3.txt`, `docs/preuves/D336/neutralisation/premier-jeu/solid-s7.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r41.txt` | le premier jeu de l'union n'est pas entièrement vert : la sortie de chaque campagne de ce premier jeu se verse AVANT sa réparation (patron de D333) |
 | `docs/preuves/D336/neutralisation/r41-premier-jeu.txt` | le premier jeu du harnais du lot, titres écrits, n'est pas entièrement vert |
+
+#### Extension 7 — une campagne de l'UNION que les extensions 4 et 6 ne déclaraient pas, déclarée AVANT le commit qui la contient
+
+**Motif** : l'union, CALCULÉE et VERSÉE (`docs/preuves/D336/neutralisation/union-sortie.txt`, calibration à sept bras, 0 manqué), retient **17 campagnes sur 38** : les seize de l'extension 4 MOINS `neutralisation/neutralize-solid-s7.py` (elle ne nomme `walkin-journey.test.tsx` que dans un COMMENTAIRE, hors guillemets : aucun des trois critères ne la retient — ses fichiers conditionnels restent absents), PLUS `neutralisation/neutralize-e3d1-s8.py`, retenue par le critère N (le NOM du fichier : elle cite un `migration.sql`, nom que porte la migration de ce lot — « on rejoue plus, jamais moins »). Comme à D333, elle a des cibles d'intégration : elle est jouée UNE fois, avec `--int` — six campagnes au lieu des cinq que dit l'extension 6. Sa sortie, son harnais s'il faut le réparer, et son premier jeu s'il n'est pas vert, se déclarent ici.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D336/neutralisation/e3d1-s8.txt` | la copie du journal de la campagne `neutralize-e3d1-s8.py --int` jouée par l'union (D291) |
+
+##### Fichiers CONDITIONNELS de l'extension 7
+
+| fichier | condition |
+|---|---|
+| `neutralisation/neutralize-e3d1-s8.py` | une de ses ancres, un de ses titres de test ou un de ses comptes ne se retrouve plus après le code du lot |
+| `docs/preuves/D336/neutralisation/premier-jeu/e3d1-s8.txt` | le premier jeu de l'union n'est pas vert pour cette campagne |
