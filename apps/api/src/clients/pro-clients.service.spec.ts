@@ -1,6 +1,8 @@
 // Le SERVICE de la fiche client — la TRADUCTION des résultats du port en réponses HTTP, et l'ordre des décisions. Rang 41 (D336, L35-4 amendé).
 // ⚠ Ce n'est pas le filet : `test/int/pro-clients.int-spec.ts`, contre PostgreSQL, prouve la concurrence, l'unicité et l'égalité stricte de M-4.
 // ⚠ Double typé par `satisfies` (jamais `as unknown as`) : un port qui change fait tomber le typecheck ici.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { BadRequestException, ConflictException, NotFoundException } from "@nestjs/common";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ProClientsService } from "./pro-clients.service";
@@ -47,6 +49,21 @@ function build() {
 
 const code = (e: unknown) => (e as { getResponse: () => { code?: string } }).getResponse().code;
 
+/** Le REFUS, lu en assertions NATIVES (D304, D316) : `rejects.toSatisfy` échoue par une `Error`, que la lecture fermée des harnais ne compte pas comme une
+ *  morsure. La promesse doit être REJETÉE (sinon `expect.unreachable`, une `AssertionError`) ; la classe et le code du refus se jugent ensuite par `toBe`. */
+async function refus(promesse: Promise<unknown>): Promise<unknown> {
+  try {
+    await promesse;
+  } catch (e) {
+    return e;
+  }
+  return expect.unreachable("la promesse devait être REFUSÉE");
+}
+function estRefus(e: unknown, classe: abstract new (...args: never[]) => unknown, attendu: string): void {
+  expect(e instanceof classe, `classe du refus : ${String(e)}`).toBe(true);
+  expect(code(e)).toBe(attendu);
+}
+
 describe("K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu", () => {
   let ctx: ReturnType<typeof build>;
   beforeEach(() => {
@@ -72,7 +89,8 @@ describe("K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et R
     ctx.store.rechercher.mockResolvedValue(ligne({ linkedUserId: "018f0000-0000-7000-8000-0000000000ff", linkedAt: new Date() }));
     const r = await ctx.service.lookup(USER_ID, { phone: "+213555123456" });
     expect(r.found).toBe(true);
-    const record = (r as { record: Record<string, unknown> }).record;
+    if (!r.found) throw new Error("la fiche trouvée n'est pas rendue");
+    const record = r.record as unknown as Record<string, unknown>;
     expect(Object.keys(record).sort()).toEqual(["createdAt", "email", "id", "linked", "nameAr", "nameLatin", "phone", "updatedAt"]);
     expect(record.linked).toBe(true);
     expect(JSON.stringify(r)).not.toContain("018f0000-0000-7000-8000-0000000000ff");
@@ -88,9 +106,7 @@ describe("K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écri
 
   it("⛔ MD-4 — le numéro, le second numéro ou l'e-mail du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN", async () => {
     for (const contact of [{ phone: "+213550000009" }, { phone: "+213770000009" }, { email: "pro@example.dz" }]) {
-      await expect(ctx.service.create(USER_ID, { ...contact, nameLatin: "Amina" })).rejects.toSatisfy(
-        (e: unknown) => e instanceof BadRequestException && code(e) === "CLIENT_IS_PRO_CONTACT"
-      );
+      estRefus(await refus(ctx.service.create(USER_ID, { ...contact, nameLatin: "Amina" })), BadRequestException, "CLIENT_IS_PRO_CONTACT");
     }
     expect(ctx.store.creerSiAbsente).not.toHaveBeenCalled();
   });
@@ -111,16 +127,12 @@ describe("K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écri
 
   it("⛔ MD-2 — le numéro et l'e-mail sur DEUX fiches : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT", async () => {
     ctx.store.creerSiAbsente.mockResolvedValue({ cree: false, parTelephone: ligne({ id: "a" }), parEmail: ligne({ id: "b" }) });
-    await expect(ctx.service.create(USER_ID, { phone: "+213555123456", email: "karim@example.dz", nameLatin: "X" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && code(e) === "CLIENT_RECORD_IDENTIFIERS_CONFLICT"
-    );
+    estRefus(await refus(ctx.service.create(USER_ID, { phone: "+213555123456", email: "karim@example.dz", nameLatin: "X" })), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
   });
 
   it("rien inséré ET rien relu (une modification simultanée a déplacé l'identifiant) : 409 plutôt qu'une fiche inventée", async () => {
     ctx.store.creerSiAbsente.mockResolvedValue({ cree: false, parTelephone: null, parEmail: null });
-    await expect(ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "X" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && code(e) === "CLIENT_RECORD_IDENTIFIERS_CONFLICT"
-    );
+    estRefus(await refus(ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "X" })), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
   });
 });
 
@@ -131,31 +143,23 @@ describe("K-3 — compléter un nom : le refus du port devient le BON code", () 
   });
 
   it("un identifiant hors motif UUID : 404 SANS toucher le port", async () => {
-    await expect(ctx.service.completeNames(USER_ID, "pas-un-uuid", { nameAr: "آمنة" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && code(e) === "CLIENT_RECORD_NOT_FOUND"
-    );
+    estRefus(await refus(ctx.service.completeNames(USER_ID, "pas-un-uuid", { nameAr: "آمنة" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
     expect(ctx.store.completerNoms).not.toHaveBeenCalled();
   });
 
   it("refus, fiche introuvable (absente, ou d'un autre pro) : 404 CLIENT_RECORD_NOT_FOUND", async () => {
     ctx.store.completerNoms.mockResolvedValue({ ok: false, actuelle: null });
-    await expect(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && code(e) === "CLIENT_RECORD_NOT_FOUND"
-    );
+    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
   });
 
   it("⛔ MD-6 — refus, fiche LIÉE : 409 CLIENT_RECORD_LINKED", async () => {
     ctx.store.completerNoms.mockResolvedValue({ ok: false, actuelle: ligne({ linkedUserId: "u1", linkedAt: new Date() }) });
-    await expect(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && code(e) === "CLIENT_RECORD_LINKED"
-    );
+    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" })), ConflictException, "CLIENT_RECORD_LINKED");
   });
 
   it("⛔ MD-7 — refus, le nom est déjà là : 409 CLIENT_RECORD_NAME_ALREADY_SET", async () => {
     ctx.store.completerNoms.mockResolvedValue({ ok: false, actuelle: ligne({ nameAr: "آمنة" }) });
-    await expect(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "أمينة" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && code(e) === "CLIENT_RECORD_NAME_ALREADY_SET"
-    );
+    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "أمينة" })), ConflictException, "CLIENT_RECORD_NAME_ALREADY_SET");
   });
 });
 
@@ -166,28 +170,20 @@ describe("K-3b — modifier une fiche : contact du pro, unicité, fiche liée", 
   });
 
   it("⛔ MD-4 — le contact du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN", async () => {
-    await expect(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213770000009" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof BadRequestException && code(e) === "CLIENT_IS_PRO_CONTACT"
-    );
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213770000009" })), BadRequestException, "CLIENT_IS_PRO_CONTACT");
     expect(ctx.store.modifier).not.toHaveBeenCalled();
   });
 
   it("⛔ MD-2 — l'unicité refusée par la base : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT", async () => {
     ctx.store.modifier.mockResolvedValue({ ok: false, raison: "unicite" });
-    await expect(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213661234567" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && code(e) === "CLIENT_RECORD_IDENTIFIERS_CONFLICT"
-    );
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213661234567" })), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
   });
 
   it("⛔ MD-6 — la fiche LIÉE : 409 CLIENT_RECORD_LINKED ; introuvable : 404", async () => {
     ctx.store.modifier.mockResolvedValue({ ok: false, raison: "absenteOuLiee", actuelle: ligne({ linkedUserId: "u1", linkedAt: new Date() }) });
-    await expect(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && code(e) === "CLIENT_RECORD_LINKED"
-    );
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" })), ConflictException, "CLIENT_RECORD_LINKED");
     ctx.store.modifier.mockResolvedValue({ ok: false, raison: "absenteOuLiee", actuelle: null });
-    await expect(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && code(e) === "CLIENT_RECORD_NOT_FOUND"
-    );
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
   });
 
   it("la fiche modifiée est rendue en DTO", async () => {
@@ -195,5 +191,50 @@ describe("K-3b — modifier une fiche : contact du pro, unicité, fiche liée", 
     const r = await ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "Nouveau Nom" });
     expect(r.nameLatin).toBe("Nouveau Nom");
     expect(r.linked).toBe(false);
+  });
+});
+
+// ── ⛔ MD-10 (M-4) — GARDE DE SOURCE ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+// Les tests ci-dessus prouvent que `lookup` n'appelle pas `contactDuPro` ; ils ne voient pas l'ADAPTATEUR, que le double remplace. Celui-ci pourrait
+// sélectionner la relation du compte dans sa recherche, ou joindre la table `users` en SQL brut, et aucun double ne le dirait. La garde lit donc la SOURCE :
+// le corps de `rechercher`, la sélection qu'il rend (`FICHE_SELECT`) et le corps de `lookup` — commentaires RETIRÉS, puisqu'ils nomment justement ce qui
+// est interdit. L'intégration (`test/int/pro-clients.int-spec.ts`) mesure l'égalité stricte des réponses ; cette garde, la cause qui la tiendrait.
+describe("⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser`", () => {
+  const sansCommentaires = (code: string) => code.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+  /** Le texte entre deux repères, repères EXIGÉS : un repère introuvable fait échouer la garde au lieu de la laisser verte sur une chaîne vide (D290). */
+  function entre(code: string, debut: string, fin: string): string {
+    const i = code.indexOf(debut);
+    expect(i, `repère « ${debut} »`).toBeGreaterThanOrEqual(0);
+    const j = code.indexOf(fin, i + debut.length);
+    expect(j, `repère « ${fin} »`).toBeGreaterThan(i);
+    return code.slice(i, j);
+  }
+  /** Ce que le chemin de la recherche ne nomme jamais : le compte (modèle, table, relation), le contact du pro (qui lit le compte), et le SQL brut. */
+  const INTERDIT = /\busers?\b|\bUser\b|\blinkedUser\b|\bcontactDuPro\b|\$queryRaw|\$executeRaw/;
+  const lire = (fichier: string) => sansCommentaires(readFileSync(join(__dirname, fichier), "utf8"));
+
+  it("l'adaptateur : `rechercher` lit `proClientRecord` SEUL — la propriété par `proProfile`, sans relation au compte, sans SQL brut", () => {
+    const recherche = entre(lire("pro-client-store.prisma.ts"), "async rechercher(", "async creerSiAbsente(");
+    expect(INTERDIT.exec(recherche)?.[0] ?? null).toBeNull();
+    expect(recherche.match(/this\.prisma\.\w+/g)).toEqual(["this.prisma.proClientRecord"]);
+    expect(recherche).toContain("select: FICHE_SELECT");
+  });
+
+  it("la sélection que la recherche rend (`FICHE_SELECT`) : des colonnes de la fiche, aucune relation", () => {
+    const selection = entre(lire("pro-client-store.types.ts"), "export const FICHE_SELECT = {", "} satisfies Prisma.ProClientRecordSelect;");
+    expect(INTERDIT.exec(selection)?.[0] ?? null).toBeNull();
+    // Chaque entrée est `colonne: true` : une relation s'écrirait `relation: { select: … }`.
+    const entrees = selection
+      .replace("export const FICHE_SELECT = {", "")
+      .split(",")
+      .map((entree) => entree.trim())
+      .filter((entree) => entree !== "");
+    expect(entrees.length).toBeGreaterThan(0);
+    for (const entree of entrees) expect(entree, entree).toMatch(/^\w+: true$/);
+  });
+
+  it("le service : `lookup` ne touche le port que par `rechercher`", () => {
+    const recherche = entre(lire("pro-clients.service.ts"), "async lookup(", "async create(");
+    expect(recherche.match(/this\.fiches\.\w+/g)).toEqual(["this.fiches.rechercher"]);
   });
 });

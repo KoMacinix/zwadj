@@ -5,6 +5,7 @@ import { DEFAULT_THROTTLE } from "./auth/auth.throttle";
 import { LoggerModule } from "nestjs-pino";
 import { AccountModule } from "./account/account.module";
 import { AuthModule } from "./auth/auth.module";
+import { ProClientsModule } from "./clients/pro-clients.module";
 import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { RolesGuard } from "./auth/roles.guard";
 import { EmailModule } from "./common/email/email.module";
@@ -57,7 +58,9 @@ import { VenuesModule } from "./venues/venues.module";
     ReferentialsModule,
     VenuesModule,
     // Rang 33 (D326) — le PDF du devis. Enregistré dans le même geste que son contrôleur (leçon R1).
-    DocumentsModule
+    DocumentsModule,
+    // Rang 41 (D336) — la FICHE CLIENT d'un pro (K-1 à K-3b). Enregistré dans le même geste que son contrôleur (leçon R1).
+    ProClientsModule
   ],
   providers: [
     // Guards GLOBAUX — l'ordre d'enregistrement EST l'ordre d'exécution (D6) :

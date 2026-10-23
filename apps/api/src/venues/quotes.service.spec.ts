@@ -305,17 +305,28 @@ describe("⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2)", () => {
 // ⚠ Même doctrine que le bloc « ce qui n'est pas mesuré ici » ci-dessus : la création RÉUSSIE passe par `price()` (Prisma), elle est mesurée par
 // `quotes.int-spec.ts`. Ce bloc mesure ce qui se décide AVANT `price()` — la fiche du pro, la copie d'une fiche liée — et la traduction du port de K-5.
 // ─────────────────────────────────────────────────────────────────────────────
+/** Le REFUS, lu en assertions NATIVES (D304, D316) : `rejects.toSatisfy` échoue par une `Error`, que la lecture fermée des harnais ne compte pas comme une
+ *  morsure. La promesse doit être REJETÉE (sinon `expect.unreachable`, une `AssertionError`) ; la classe et le code du refus se jugent ensuite par `toBe`. */
+async function refus(promesse: Promise<unknown>): Promise<unknown> {
+  try {
+    await promesse;
+  } catch (e) {
+    return e;
+  }
+  return expect.unreachable("la promesse devait être REFUSÉE");
+}
+function estRefus(e: unknown, classe: abstract new (...args: never[]) => unknown, attendu: string): void {
+  expect(e instanceof classe, `classe du refus : ${String(e)}`).toBe(true);
+  expect((e as { getResponse: () => { code?: string } }).getResponse().code).toBe(attendu);
+}
 describe("⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche", () => {
   const FICHE_ID = "018f0000-0000-7000-8000-0000000000f1";
   const CORPS = { eventDate: "2027-05-12", slotTemplateId: "018f0000-0000-7000-8000-000000000051", guests: 200 };
-  const codeDe = (e: unknown) => (e as { getResponse: () => { code?: string } }).getResponse().code;
 
   it("⛔ MD-11 — la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND, et RIEN n'est chiffré ni écrit", async () => {
     const { service, devis, prisma } = build();
     devis.ficheDuPro.mockResolvedValue(null);
-    await expect(service.create(USER_ID, VENUE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "CLIENT_RECORD_NOT_FOUND"
-    );
+    estRefus(await refus(service.create(USER_ID, VENUE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
     expect(devis.ficheDuPro).toHaveBeenCalledWith(USER_ID, FICHE_ID);
     expect(prisma.venue.findUniqueOrThrow).not.toHaveBeenCalled();
     expect(devis.creerTeteDeChaine).not.toHaveBeenCalled();
@@ -324,9 +335,7 @@ describe("⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la co
   it("⛔ MD-6 — une fiche LIÉE et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est chiffré ni écrit", async () => {
     const { service, devis, prisma } = build();
     devis.ficheDuPro.mockResolvedValue({ id: FICHE_ID, nameAr: null, nameLatin: "Amina Bensalem", linkedUserId: "018f0000-0000-7000-8000-0000000000ee" });
-    await expect(service.create(USER_ID, VENUE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Autre Nom" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && codeDe(e) === "CLIENT_RECORD_LINKED"
-    );
+    estRefus(await refus(service.create(USER_ID, VENUE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Autre Nom" })), ConflictException, "CLIENT_RECORD_LINKED");
     expect(prisma.venue.findUniqueOrThrow).not.toHaveBeenCalled();
     expect(devis.creerTeteDeChaine).not.toHaveBeenCalled();
   });
@@ -335,9 +344,7 @@ describe("⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la co
     const { service, devis } = build();
     devis.trouverDuPro.mockResolvedValue(devisRow());
     devis.ficheDuPro.mockResolvedValue(null);
-    await expect(service.revise(USER_ID, QUOTE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "CLIENT_RECORD_NOT_FOUND"
-    );
+    estRefus(await refus(service.revise(USER_ID, QUOTE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
     expect(devis.creerRevision).not.toHaveBeenCalled();
   });
 
@@ -356,7 +363,6 @@ describe("⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la co
 });
 
 describe("⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3", () => {
-  const codeDe = (e: unknown) => (e as { getResponse: () => { code?: string } }).getResponse().code;
 
   it("la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin`", async () => {
     const { service, devis } = build();
@@ -383,22 +389,16 @@ describe("⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NUL
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: false });
     devis.trouverDuPro.mockResolvedValue(devisRow({ clientNameLatin: "Amina Bensalem" }));
-    await expect(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && codeDe(e) === "QUOTE_CLIENT_NAME_ALREADY_SET"
-    );
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })), ConflictException, "QUOTE_CLIENT_NAME_ALREADY_SET");
   });
 
   it("le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port", async () => {
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: false });
     devis.trouverDuPro.mockResolvedValue(null);
-    await expect(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "QUOTE_NOT_FOUND"
-    );
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" })), NotFoundException, "QUOTE_NOT_FOUND");
     devis.completerNomDuClient.mockClear();
-    await expect(service.completeClientName(USER_ID, "pas-un-uuid", { locale: "fr", name: "Amina" })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "QUOTE_NOT_FOUND"
-    );
+    estRefus(await refus(service.completeClientName(USER_ID, "pas-un-uuid", { locale: "fr", name: "Amina" })), NotFoundException, "QUOTE_NOT_FOUND");
     expect(devis.completerNomDuClient).not.toHaveBeenCalled();
   });
 });

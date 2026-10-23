@@ -26,6 +26,7 @@ let ctx: TestContext;
 const PRO = { role: "PRO", email: "pro@example.dz", password: "Motdepasse1", businessName: "Salles Pro", phone: "+213550000009" };
 const AUTRE_PRO = { role: "PRO", email: "autre-pro@example.dz", password: "Motdepasse1", businessName: "Autre Salle", phone: "+213550000008" };
 const CLIENT_AR = { role: "CLIENT", email: "amina@example.dz", password: "Motdepasse1", firstName: "آمنة", lastName: "بن سالم", locale: "ar" };
+const CLIENT_FR = { role: "CLIENT", email: "yacine@example.dz", password: "Motdepasse1", firstName: "Yacine", lastName: "Benali", locale: "fr" };
 const api = () => request(ctx.app.getHttpServer());
 const authH = (t: string) => ({ Authorization: `Bearer ${t}` });
 /** `.expect(<statut>)` de supertest lève une `Error`, PAS une `AssertionError` (D305, mesuré par `neutralize-r33.py`) : un verdict s'écrit par `expect` de vitest. Une assertion-fonction de

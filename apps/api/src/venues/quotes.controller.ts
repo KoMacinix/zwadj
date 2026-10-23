@@ -13,11 +13,13 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
+  quoteClientNameSchema,
   quoteConvertSchema,
   quoteCreateSchema,
   quoteDeliverSchema,
   quoteReviseSchema,
   UserRole,
+  type QuoteClientNameInput,
   type QuoteConvertInput,
   type QuoteConversionDTO,
   type QuoteCreateInput,
@@ -68,8 +70,9 @@ export class QuotesController {
   @ApiOperation({
     summary: "Crée un devis (v1, en DRAFT)",
     description:
-      "`clientId` est FACULTATIF : le pro tape un devis pour quelqu'un qui hésite encore et n'a peut-être pas de " +
-      "compte. Les prix sont résolus par le serveur — salle via le moteur B3, prestations via le catalogue."
+      "⛔ Rang 41 (D336, K-4) : `clientId` est RETIRÉ (DB-15 — le schéma strict le refuse) ; le devis se rattache à une FICHE du pro " +
+      "(`clientRecordId`) et porte la COPIE du nom POUR CE devis (`clientNameAr`, `clientNameLatin`, au moins une écriture). Sans fiche, il se crée " +
+      "comme avant. Les prix sont résolus par le serveur — salle via le moteur B3, prestations via le catalogue."
   })
   @ApiCreatedResponse({ description: "QuoteDTO en DRAFT." })
   @ApiNotFoundResponse({ description: "404 indistinct, ou créneau inconnu." })
@@ -160,5 +163,24 @@ export class QuotesController {
   @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT." })
   cancel(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<QuoteDTO> {
     return this.quotes.cancel(user.userId, id);
+  }
+
+  @Post("quotes/:id/client-name")
+  @ApiOperation({
+    summary: "K-5 — complète la COPIE du nom du client dans la langue du document",
+    description:
+      "La boîte de langue du PDF demande le nom qui MANQUE dans la langue choisie (le PDF en français imprime le nom en lettres latines, en arabe le nom " +
+      "arabe) ; la route le COMPLÈTE sur le devis, jamais ne le remplace (compare-and-set sur NULL). La fiche du devis se complète aussi, seulement si le nom " +
+      "de l'autre écriture y est le même que sur le devis (C-C3) et si elle n'est pas liée à un compte. Aucun statut ni montant n'est touché (rang 41, D336)."
+  })
+  @ApiCreatedResponse({ description: "QuoteDTO, la copie complétée." })
+  @ApiNotFoundResponse({ description: "QUOTE_NOT_FOUND — 404 indistinct." })
+  @ApiConflictResponse({ description: "QUOTE_CLIENT_NAME_ALREADY_SET — la copie de cette langue est déjà là." })
+  completeClientName(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param("id") id: string,
+    @Body(new ZodValidationPipe(quoteClientNameSchema)) body: QuoteClientNameInput
+  ): Promise<QuoteDTO> {
+    return this.quotes.completeClientName(user.userId, id, body);
   }
 }

@@ -24,7 +24,7 @@
 //     le nom du palier, lu SUR LA LIGNE (jamais dans le catalogue actuel de la salle) ; « fixe » : rien. Une ligne « à paliers » sans nom de palier LÈVE, elle ne s'imprime pas à moitié ;
 //   · le récapitulatif (location, prestations, total, acompte) est un bloc SÉPARÉ, de toute la largeur : libellés alignés au début, montants à la fin — des propriétés LOGIQUES,
 //     donc le même rendu, inversé, en arabe. Le DOM l'énumère dans l'ordre de lecture ; la feuille de style ne fait que le placer.
-import { formatDZD, formatSlotRange, ServicePricingType, type QuoteDocumentLocale } from "@zwadj/types";
+import { formatDZD, formatSlotRange, QUOTE_CLIENT_NAME_FIELD, ServicePricingType, type QuoteDocumentLocale } from "@zwadj/types";
 import arMessages from "@zwadj/i18n/messages/ar.json";
 import frMessages from "@zwadj/i18n/messages/fr.json";
 import { DOCUMENT_FONT_FAMILY } from "./quote-document-fonts";
@@ -105,9 +105,10 @@ export function buildQuoteDocumentHtml(input: {
     record.slot === null
       ? "—"
       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSlotRange(record.slot.startMinutes, record.slot.endMinutes)}`;
-  // `users.first_name` / `last_name` sont NULLABLES (un compte peut n'avoir ni l'un ni l'autre) : un nom absent s'imprime « — », jamais « null ».
-  const nom = record.client === null ? [] : [record.client.firstName, record.client.lastName].filter((p): p is string => p !== null && p.trim() !== "");
-  const client = nom.length === 0 ? "—" : nom.join(" ");
+  // ⛔ Rang 41 (D336, S-52, M-7) : la COPIE du nom du devis dans la langue DU DOCUMENT — l'écriture que la correspondance d'autorité désigne
+  // (`QUOTE_CLIENT_NAME_FIELD`, jamais une seconde règle ici) — et seulement elle : absente ou blanche, « — », jamais l'autre écriture en repli, jamais le compte.
+  const copie = record[QUOTE_CLIENT_NAME_FIELD[locale]];
+  const client = copie === null || copie.trim() === "" ? "—" : copie;
 
   // Le détail de CHAQUE ligne est calculé une fois ; la colonne de détail n'existe que si l'une d'elles en a un (aucune colonne vide).
   const details = record.lines.map((l) => lineDetail(l, locale));

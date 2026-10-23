@@ -25,7 +25,7 @@
 import { Navigate, Route, Routes, BrowserRouter } from "react-router";
 import { AuthProvider } from "./auth/auth-context";
 import type { AuthClient } from "./lib/auth-client";
-import type { BookingsProClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
+import type { BookingsProClient, ProClientsClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
 import { LoginPage } from "./auth/login-page";
 import { RegisterPage } from "./auth/register-page";
 import { ForgotPage, ResetPage, VerifyEmailPage } from "./auth/recovery-pages";
@@ -49,7 +49,8 @@ export function AppProviders({
   referentials,
   bookingsPro,
   servicesClient,
-  quotesClient
+  quotesClient,
+  clientsClient
 }: {
   children: React.ReactNode;
   client?: AuthClient;
@@ -59,12 +60,21 @@ export function AppProviders({
   bookingsPro?: BookingsProClient;
   servicesClient?: ServicesClient;
   quotesClient?: QuotesClient;
+  /** Rang 41 (D336) — le client des fiches client (`/pro/clients`). */
+  clientsClient?: ProClientsClient;
 }) {
   return (
     <AuthProvider client={client}>
       {/* Sous AuthProvider : le client venue se construit sur
           `api.authedRequest` et partage donc le mutex de refresh (§8). */}
-      <VenueProvider venues={venues} referentials={referentials} bookingsPro={bookingsPro} servicesClient={servicesClient} quotesClient={quotesClient}>
+      <VenueProvider
+        venues={venues}
+        referentials={referentials}
+        bookingsPro={bookingsPro}
+        servicesClient={servicesClient}
+        quotesClient={quotesClient}
+        clientsClient={clientsClient}
+      >
         {/* UIP-A — la liste des salles est lue UNE FOIS pour toute la coquille :
             libellé adaptatif de la nav, sélecteur de portée et panneau gauche
             posent la même question. Trois `listMine()` au montage d'une page

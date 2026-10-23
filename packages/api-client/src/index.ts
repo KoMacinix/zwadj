@@ -26,6 +26,7 @@ export {
 } from "./visit-bookings-client";
 export { createServicesClient, type ServicesClient } from "./services-client";
 export { createQuotesClient, type QuotesClient } from "./quotes-client";
+export { createProClientsClient, type ProClientsClient } from "./clients-client";
 export {
   createBookingsClient,
   createBookingsProClient,

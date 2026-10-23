@@ -11,7 +11,8 @@
 // ⛔ LES PORTS NE LÈVENT PAS (doctrine S5b). Les deux check-and-set rendent un
 // résultat discriminé PORTANT LE STATUT RELU — c'est cette valeur, et pas un
 // booléen, qui dit au client ce qu'il peut faire ensuite.
-import type { BookingSource, PaymentMethod, QuoteStatus } from "@zwadj/types";
+import type { BookingSource, PaymentMethod, QuoteClientNameField, QuoteStatus } from "@zwadj/types";
+import type { CopieDuNom } from "../clients/pro-client-policy";
 import type { ResolvedLine } from "./service-pricing";
 import type { Prisma } from "../generated/prisma/client";
 
@@ -40,7 +41,11 @@ export const QUOTE_SELECT = {
   referenceYear: true,
   referenceNumber: true,
   venue: { select: { number: true } },
-  booking: { select: { id: true } }
+  booking: { select: { id: true } },
+  // Rang 41 (D336, K-6) — la fiche du devis et la COPIE du nom, telles que stockées (R8).
+  clientRecordId: true,
+  clientNameAr: true,
+  clientNameLatin: true
 } satisfies Prisma.QuoteSelect;
 
 export type QuoteRow = Prisma.QuoteGetPayload<{ select: typeof QUOTE_SELECT }>;
@@ -50,7 +55,11 @@ export type QuoteRow = Prisma.QuoteGetPayload<{ select: typeof QUOTE_SELECT }>;
  *  les écrit tels quels. Un port qui recalculerait serait une seconde autorité
  *  sur le prix. */
 export interface DevisChiffre {
-  readonly clientId: string | null;
+  /** Rang 41 (D336, K-4) — la fiche du devis et la COPIE du nom pour CE devis, décidées par le service (la fiche du pro ; la copie d'une fiche liée est
+   *  celle de la fiche, S-49). ⚠ `clientId` n'est plus écrit (DB-15) : la colonne reste, lue pour les devis hérités. */
+  readonly clientRecordId: string | null;
+  readonly clientNameAr: string | null;
+  readonly clientNameLatin: string | null;
   readonly slotTemplateId: string | null;
   readonly eventDate: Date;
   readonly guests: number;
@@ -195,4 +204,28 @@ export interface QuoteStore {
   trouverDuPro(userId: string, quoteId: string): Promise<QuoteRow | null>;
 
   salleAppartientAu(userId: string, venueId: string): Promise<boolean>;
+
+  /** ⛔ Rang 41 (D336, K-4, MD-11) — la fiche `recordId` si elle appartient au pro `userId` (par la relation au profil, D149), sinon `null` — une fiche d'un autre
+   *  pro et une fiche absente rendent la même chose. Ce qu'en lit le devis : ses noms et son lien, rien du compte. */
+  ficheDuPro(userId: string, recordId: string): Promise<FicheDuDevis | null>;
+
+  /** ⛔ Rang 41 (D336, K-5, S-51) — UNE transaction : (1) la COPIE du nom du devis dans l'écriture `champ`, par compare-and-set sur `NULL` (le devis du pro, salle
+   *  vivante — une copie présente n'est jamais remplacée, M-6) ; (2) si le devis a une fiche, la fiche VERROUILLÉE (`FOR UPDATE`), puis la décision C-C3 de
+   *  L'APPELANT (`completerLaFiche`, la politique pure : le port ne la réécrit pas) ; (3) si elle dit oui, la fiche complétée par un `UPDATE` qui RE-POSE ses
+   *  conditions (nom absent, fiche non liée). ⚠ Refus de (1) : `{ ok: false }`, rien d'autre n'est lu ni écrit — le service relit pour choisir le code. */
+  completerNomDuClient(args: {
+    readonly userId: string;
+    readonly quoteId: string;
+    readonly champ: QuoteClientNameField;
+    readonly nom: string;
+    readonly completerLaFiche: (fiche: FicheDuDevis, copie: CopieDuNom) => boolean;
+  }): Promise<{ readonly ok: true; readonly devis: QuoteRow } | { readonly ok: false }>;
+}
+
+/** Rang 41 (D336) — ce qu'un devis lit d'une fiche : ses deux noms et son lien. Rien du compte lié (S-53). */
+export interface FicheDuDevis {
+  readonly id: string;
+  readonly nameAr: string | null;
+  readonly nameLatin: string | null;
+  readonly linkedUserId: string | null;
 }

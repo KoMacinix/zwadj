@@ -49,8 +49,11 @@ export interface QuoteDocumentRecord {
   readonly lines: readonly QuoteDocumentLine[];
   readonly venue: { readonly nameFr: string; readonly nameAr: string };
   readonly slot: { readonly nameFr: string; readonly nameAr: string; readonly startMinutes: number; readonly endMinutes: number } | null;
-  /** Le compte client QUAND le devis y est lié (`clientId`), sinon `null` — le devis du parcours sur place n'en a pas. ⛔ Rang 38 (D332) : la langue du compte n'est PLUS lue — la langue du PDF est celle que le pro choisit (décision A de Ko). */
-  readonly client: { readonly firstName: string | null; readonly lastName: string | null } | null;
+  /** ⛔ Rang 41 (D336, S-52, M-7) — la COPIE du nom du devis, une par écriture, TELLE QUE STOCKÉE (`quotes.client_name_ar`, `client_name_latin`). Le document imprime
+   *  celle de SA langue, et seulement elle (« — » si elle manque) : ni repli sur l'autre écriture, ni la fiche vivante, ni le COMPTE du client (`quotes.client_id`
+   *  n'est plus lu — le nom d'un compte n'est pas celui que le pro a remis). ⛔ Rang 38 (D332) : la langue du PDF est celle que le pro choisit (décision A de Ko). */
+  readonly clientNameAr: string | null;
+  readonly clientNameLatin: string | null;
 }
 
 export const QUOTE_DOCUMENT_SOURCE = Symbol("QUOTE_DOCUMENT_SOURCE");

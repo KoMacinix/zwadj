@@ -334,6 +334,26 @@
       "contactInvalid": "Lettres, espaces, tirets et apostrophes uniquement."
     }
   },
+  "clientRecord": {
+    "errors": {
+      "notFound": "Cette fiche client est introuvable.",
+      "identifiersConflict": "Ce numéro et cette adresse e-mail appartiennent à deux fiches différentes : aucune n'a été modifiée.",
+      "isProContact": "C'est votre propre numéro ou votre propre adresse : saisissez ceux du client.",
+      "nameAlreadySet": "Ce nom est déjà renseigné sur la fiche : il n'est jamais remplacé.",
+      "linked": "Cette fiche est liée à un compte Zwadj : elle ne se modifie plus."
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire.",
+      "tooLong": "Ce champ est trop long.",
+      "nameInvalid": "Lettres, espaces, tirets et apostrophes uniquement.",
+      "emailInvalid": "Adresse e-mail invalide.",
+      "identifierRequired": "Un numéro de mobile ou une adresse e-mail est obligatoire.",
+      "nameRequired": "Un nom est obligatoire, en arabe ou en lettres latines.",
+      "lookupExactlyOne": "Cherchez par le numéro OU par l'adresse e-mail, pas par les deux.",
+      "unknownKey": "Champ inconnu.",
+      "fieldRequired": "Aucun champ à modifier."
+    }
+  },
   "common": {
     "brand": {
       "tagline": "ALGÉRIE"
@@ -500,7 +520,8 @@
       "expired": "Ce devis a dépassé sa date de validité. Créez-en une nouvelle version.",
       "alreadyConverted": "Ce devis a déjà donné lieu à une demande de réservation. Créez une nouvelle version pour repartir sur d'autres bases.",
       "versionNotActive": "Une version plus récente de ce devis existe : le PDF ne se télécharge que pour la dernière version.",
-      "documentUnavailable": "Le PDF n'a pas pu être généré pour le moment. Réessayez dans un instant."
+      "documentUnavailable": "Le PDF n'a pas pu être généré pour le moment. Réessayez dans un instant.",
+      "clientNameAlreadySet": "Le nom du client est déjà renseigné sur ce devis dans cette langue : il n'est jamais remplacé."
     },
     "validation": {
       "required": "Ce champ est obligatoire.",
@@ -513,7 +534,9 @@
       "paymentMethodInvalid": "Mode de paiement invalide.",
       "unknownKey": "Champ inconnu.",
       "nameInvalid": "Lettres, espaces, tirets et apostrophes uniquement.",
-      "documentLocaleInvalid": "Langue du document invalide."
+      "documentLocaleInvalid": "Langue du document invalide.",
+      "clientRecordRequired": "Le nom du client se rattache à une fiche client.",
+      "clientNameRequired": "Une fiche client demande au moins un nom pour ce devis."
     },
     "document": {
       "title": "Devis",
@@ -1232,7 +1255,32 @@
         "langDialogCancel": "Annuler",
         "langFrench": "Français",
         "langArabic": "العربية",
-        "remitNotSentEMAIL": "Zwadj n'envoie pas encore d'e-mail : envoyez-le vous-même au client, avec le PDF en pièce jointe."
+        "remitNotSentEMAIL": "Zwadj n'envoie pas encore d'e-mail : envoyez-le vous-même au client, avec le PDF en pièce jointe.",
+        "stepContact": "Contact",
+        "qContact": "Comment joindre le client ?",
+        "qContactHint": "Son numéro de mobile ou son adresse e-mail — au moins l'un des deux.",
+        "contactEmail": "E-mail",
+        "needIdentifier": "un numéro de mobile ou une adresse e-mail est obligatoire",
+        "searching": "Recherche de la fiche du client…",
+        "nameAr": "Nom en arabe",
+        "nameLatin": "Nom en lettres latines",
+        "nameArPlaceholder": "Ex. : أمينة بن علي",
+        "nameLatinPlaceholder": "Ex. : Amina Benali",
+        "nameArInvalid": "Le nom ne peut contenir que des lettres, des espaces, des tirets et des apostrophes.",
+        "nameLatinInvalid": "Le nom ne peut contenir que des lettres, des espaces, des tirets et des apostrophes.",
+        "needName": "un nom est obligatoire, en arabe ou en lettres latines",
+        "needNameArValid": "le nom en arabe contient un caractère non admis",
+        "needNameLatinValid": "le nom en lettres latines contient un caractère non admis",
+        "ficheFound": "Fiche retrouvée : les noms sont préremplis pour ce devis — vous pouvez les corriger.",
+        "ficheLinked": "Cette fiche est liée à un compte Zwadj : ses noms ne se modifient pas.",
+        "ficheNew": "Nouveau client : saisissez son nom en arabe, en lettres latines, ou les deux. Sa fiche sera créée à « Continuer ».",
+        "conversionTitle": "Coordonnées du client",
+        "conversionHint": "Préremplies depuis la fiche et le devis : vérifiez-les avant de remettre le devis ou de conclure. Rien n'est réécrit dans la fiche.",
+        "nameDialogTitleAr": "Nom du client en arabe",
+        "nameDialogTitleLatin": "Nom du client en lettres latines",
+        "nameDialogDescriptionAr": "Le PDF en arabe imprime le nom en arabe, et ce devis ne l'a pas encore : saisissez-le tel qu'il doit apparaître.",
+        "nameDialogDescriptionLatin": "Le PDF en français imprime le nom en lettres latines, et ce devis ne l'a pas encore : saisissez-le tel qu'il doit apparaître.",
+        "nameDialogConfirm": "Valider le nom"
       },
       "wizard": {
         "stepsLabel": "Étapes de configuration de la salle",

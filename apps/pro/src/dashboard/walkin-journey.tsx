@@ -11,6 +11,13 @@
 //   4. `POST /quotes/:id/convert`   → demande PENDING, avec le contact
 //   5. `POST /pro/bookings/:id/accept` → ACCEPTED : la date est VERROUILLÉE
 //
+// ⛔ Rang 41 (D336, L35-4 amendé) — LA FICHE CLIENT PRÉCÈDE LE DEVIS, et trois routes s'ajoutent :
+//   0a. `POST /pro/clients/lookup`     → la fiche du pro qui porte ce numéro, PUIS cet e-mail (K-1, S-57)
+//   0b. `POST /pro/clients`            → la fiche CRÉÉE au « Continuer » de l'étape Client, si aucune n'a été trouvée (K-2)
+//   3b. `POST /quotes/:id/client-name` → la copie du nom qui MANQUE à la langue choisie, demandée par la boîte de langue (K-5)
+// ⛔ AUCUNE autre écriture de fiche (MD-17) : ni au calcul, ni à la conversion, ni à la remise. Le devis porte la fiche et la COPIE des
+// noms de l'écran (K-4) ; la conversion se PRÉREMPLIT depuis cette copie et la fiche (K-12), et elle envoie ce que l'écran affiche.
+//
 // ── ⚠ CE QUE LA REFONTE CHANGE, ET CE QU'ELLE NE CHANGE PAS ─────────────────
 // Elle change la PRÉSENTATION : une seule question à l'écran, les réponses
 // validées se figent dans un récapitulatif qui grandit au-dessus. Elle ne
@@ -60,6 +67,7 @@
 // moteur (B2/B3) et les créneaux avec leur prix. Une date déjà vendue ne peut
 // pas être saisie à la main.
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 // ⚠ `lucide-react` N'EST PLUS IMPORTÉ ICI. La coche du rail vivait dans ce
 // fichier ET, sous forme de glyphe texte `✓`, dans l'assistant client — deux
@@ -74,28 +82,46 @@ import {
   QUOTE_SENT_VIA_ORDER,
   isPhoneComplete,
   isValidContactEmail,
+  isValidPersonName,
   quoteDocumentFilename,
   toE164,
+  type ClientRecordDTO,
   type QuoteDocumentLocale,
   type QuoteDTO,
   type QuoteSentVia,
   type ServiceDTO,
   type VenueProDTO
 } from "@zwadj/types";
-import { ChoiceDialog, JourneyCard, JourneyConnector, JourneyRail, JourneyRecap, NoticeDialog, PhoneField } from "@zwadj/ui";
+import { ChoiceDialog, JourneyCard, JourneyConnector, JourneyRail, JourneyRecap, NoticeDialog, PhoneField, useDismissLayer } from "@zwadj/ui";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { revealAndFocus } from "../lib/reveal";
-import { useBookingsPro, useQuotes, useServices } from "../venues/venue-client-context";
+import { useBookingsPro, useProClients, useQuotes, useServices } from "../venues/venue-client-context";
 import { VenueCalendar } from "../venues/venue-calendar";
 import {
-  NO_CONTACT,
+  NO_IDENTIFIANT,
+  NO_NOMS,
   clientBlockers,
   contactBlockers,
   contactPayload,
   fieldErrors,
+  identifierBlockers,
+  identifierFieldErrors,
+  identifierPayload,
+  nameFieldErrors,
   type Blocker,
-  type Contact
+  type Contact,
+  type Identifiant,
+  type Noms
 } from "./walkin-contact";
+import {
+  copiePourDevis,
+  nomManquant,
+  nomsDeLaFiche,
+  nomsPourFiche,
+  ordreDeRecherche,
+  prefillConversion,
+  type CopieDuDevis
+} from "./walkin-client";
 import { channelBlockers, describeRemittance, isolateLtr, wantsRealSending, type RemitOutcome, type RemitView } from "./remittance";
 import { onQuoteRemitted } from "./remittance-hook";
 import { saveBlob } from "./save-file";
@@ -122,14 +148,20 @@ function longDate(civil: string, language: string): string {
 }
 type Catalogue = { kind: "loading" } | { kind: "error" } | { kind: "ready"; rows: ServiceDTO[] };
 
-/** Les cinq étapes, dans l'ordre. ⚠ L'ordre n'est pas cosmétique : le nombre
+/** Rang 41 — un devis encore sans copie du nom : la conversion n'a rien à découper (`prefillConversion`). */
+const SANS_COPIE: CopieDuDevis = { clientNameAr: null, clientNameLatin: null };
+
+/** Les SIX étapes, dans l'ordre. ⛔ Rang 41 (D336, MD-17) : le CONTACT d'abord —
+ *  un numéro OU un e-mail, qui retrouve la fiche du client (K-1) —, puis les
+ *  NOMS. ⚠ L'ordre n'est pas cosmétique : le nombre
  *  d'invités est répondu à l'étape CLIENT, donc AVANT les prestations, parce
  *  qu'une prestation par personne se chiffre `unitPrice × guests`
  *  (`service-pricing.ts`). Cocher des prestations sans avoir dit combien de
  *  personnes ferait naître des montants dont le pro n'a pas vu la base. */
-const STEPS = ["client", "date", "slot", "services", "quote"] as const;
+const STEPS = ["contact", "client", "date", "slot", "services", "quote"] as const;
 type Step = (typeof STEPS)[number];
 const STEP_LABEL: Record<Step, string> = {
+  contact: "venue.ui.walkin.stepContact",
   client: "venue.ui.walkin.stepClient",
   date: "venue.ui.walkin.stepDate",
   slot: "venue.ui.walkin.stepSlot",
@@ -155,6 +187,8 @@ function Champ({
   mode,
   placeholder,
   error,
+  disabled,
+  dir,
   children
 }: {
   label: string;
@@ -164,6 +198,10 @@ function Champ({
   mode?: "tel" | "email" | "numeric";
   placeholder?: string;
   error?: string;
+  /** Rang 41 (D336, MD-6) — un champ GRISÉ : les noms d'une fiche liée à un compte ne se modifient pas. */
+  disabled?: boolean;
+  /** Rang 41 (D336) — une saisie dont l'écriture varie (un nom en arabe sur une page française) : `auto` lit la direction sur son premier caractère. */
+  dir?: "auto";
   /** Un autre contrôle à la place de la saisie texte (le champ de téléphone) : il reçoit l'`id` et les descriptions. */
   children?: (aria: { id: string; describedBy: string | undefined; invalid: boolean }) => ReactNode;
 }) {
@@ -192,6 +230,8 @@ function Champ({
           aria-describedby={describedBy}
           aria-invalid={error !== undefined ? true : undefined}
           inputMode={mode}
+          disabled={disabled}
+          dir={dir}
         />
       )}
       {hint ? (
@@ -208,18 +248,86 @@ function Champ({
   );
 }
 
+/**
+ * ⛔ Rang 41 (D336, K-5) — la question du NOM qui manque à la langue choisie : la boîte de langue la pose quand le devis n'a pas encore de copie du
+ * nom dans la langue du document. Même patron que les fenêtres partagées (portail, `useDismissLayer`, classes `dialog-*`) ; elle vit ICI parce qu'elle
+ * porte un champ et sa règle — le nom du CONTRAT (`isValidPersonName`) —, ce qu'aucune fenêtre partagée n'a. Le champ est `Champ`, celui du parcours.
+ * ⛔ « Annuler » — le bouton, Échap, le clic sur le fond — ne complète RIEN, ne remet RIEN, ne télécharge RIEN.
+ * ⚠ Elle n'est MONTÉE que le temps de la question : sa saisie repart vide à chaque ouverture, sans effet de remise à zéro. Le focus initial va au
+ * premier focalisable du panneau, le CHAMP : on y vient pour écrire.
+ */
+function NomDialog({ locale, onConfirm, onCancel }: { locale: QuoteDocumentLocale; onConfirm: (nom: string) => void; onCancel: () => void }) {
+  const { t } = useTranslation();
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const baseId = useId();
+  const titleId = `${baseId}-title`;
+  const descriptionId = `${baseId}-desc`;
+  const [valeur, setValeur] = useState("");
+  useDismissLayer({ open: true, panelRef, onDismiss: onCancel, lockScroll: true });
+  const ecriture = locale === "ar" ? "nameAr" : "nameLatin";
+  const saisi = valeur.trim();
+  const valide = saisi !== "" && isValidPersonName(saisi);
+
+  return createPortal(
+    <div
+      className="dialog-overlay"
+      // mousedown (et pas click) : une sélection de texte commencée DANS le panneau et relâchée dehors ne ferme pas la fenêtre.
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onCancel();
+      }}
+    >
+      <div ref={panelRef} className="dialog-panel" role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descriptionId}>
+        <h2 className="dialog-title" id={titleId}>
+          {t(locale === "ar" ? "venue.ui.walkin.nameDialogTitleAr" : "venue.ui.walkin.nameDialogTitleLatin")}
+        </h2>
+        <p className="dialog-desc" id={descriptionId}>
+          {t(locale === "ar" ? "venue.ui.walkin.nameDialogDescriptionAr" : "venue.ui.walkin.nameDialogDescriptionLatin")}
+        </p>
+        <Champ
+          label={t(`venue.ui.walkin.${ecriture}`)}
+          value={valeur}
+          onChange={setValeur}
+          placeholder={t(`venue.ui.walkin.${ecriture}Placeholder`)}
+          error={saisi !== "" && !valide ? t(`venue.ui.walkin.${ecriture}Invalid`) : undefined}
+          dir="auto"
+        />
+        <div className="dialog-actions">
+          <button type="button" className="btn btn-ghost" onClick={onCancel}>
+            {t("venue.ui.walkin.langDialogCancel")}
+          </button>
+          <button type="button" className="btn btn-accent" disabled={!valide} onClick={() => onConfirm(saisi)}>
+            {t("venue.ui.walkin.nameDialogConfirm")}
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const { t, i18n } = useTranslation();
   const quotes = useQuotes();
   const services = useServices();
   const bookings = useBookingsPro();
+  const clients = useProClients();
   const toMessage = useApiErrorMessage();
   const toMessageRef = useRef(toMessage);
   toMessageRef.current = toMessage;
   const isAr = i18n.language === "ar";
 
   const [catalogue, setCatalogue] = useState<Catalogue>({ kind: "loading" });
-  const [contact, setContact] = useState<Contact>(NO_CONTACT);
+  /** ⛔ Rang 41 (D336) — l'étape CONTACT : ce que le pro a tapé, un numéro (chiffres nationaux) et/ou un e-mail. */
+  const [identifiant, setIdentifiant] = useState<Identifiant>(NO_IDENTIFIANT);
+  /** L'identifiant pour lequel la fiche a été CHERCHÉE (K-1) — `null` = jamais. Une saisie qui s'en écarte se cherche de nouveau à « Continuer ». */
+  const [cherche, setCherche] = useState<Identifiant | null>(null);
+  /** La fiche du client : TROUVÉE par la recherche (K-1) ou CRÉÉE au « Continuer » de l'étape Client (K-2) ; `null` = aucune encore. */
+  const [fiche, setFiche] = useState<ClientRecordDTO | null>(null);
+  const [ficheTrouvee, setFicheTrouvee] = useState(false);
+  /** L'étape CLIENT : les noms de CE devis (K-4) — préremplis par une fiche trouvée, modifiables ; ceux d'une fiche LIÉE s'imposent (MD-6). */
+  const [noms, setNoms] = useState<Noms>(NO_NOMS);
+  /** K-12 — ce que le pro a RETOUCHÉ au contact de la conversion. Le reste se PRÉREMPLIT depuis la copie du devis et la fiche (`prefillConversion`). */
+  const [retouches, setRetouches] = useState<Partial<Contact>>({});
   const [eventDate, setEventDate] = useState<string | null>(null);
   const [slotId, setSlotId] = useState<string | null>(null);
   const [guests, setGuests] = useState("");
@@ -235,10 +343,12 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [remit, setRemit] = useState<RemitView | null>(null);
   /** Rang 38 (D332) — le canal dont la boîte de LANGUE est ouverte. `null` = aucune boîte. Un clic sur un canal ne remet RIEN : il ouvre la boîte, et c'est le CHOIX de la langue qui lance la remise. */
   const [langueDe, setLangueDe] = useState<QuoteSentVia | null>(null);
+  /** ⛔ Rang 41 (D336, K-5) — la question du NOM ouverte par la boîte de langue : le canal et la langue choisis, en attente du nom qui manque. */
+  const [nomDe, setNomDe] = useState<{ canal: QuoteSentVia; locale: QuoteDocumentLocale } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const [step, setStep] = useState<Step>("client");
+  const [step, setStep] = useState<Step>("contact");
   /** ⚠ LE SEUL DRAPEAU D'ÉTAPE, et il est justifié : « aucune prestation » est
    *  une réponse valable, indiscernable de « pas encore répondu » si on se
    *  contentait de regarder `picks`. Les quatre autres étapes se déduisent de
@@ -275,27 +385,45 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setOutcome(null);
   }, []);
 
+  // ⛔ Rang 41 (D336) — l'étape CONTACT : un numéro OU un e-mail, valides (`identifierBlockers`). Elle est RÉPONDUE quand la fiche a été
+  // cherchée pour CET identifiant : une saisie modifiée depuis se cherche de nouveau à « Continuer ».
+  const raisonsContact = identifierBlockers(identifiant);
+  const identifiantPret = raisonsContact.length === 0;
+  const identifiantCherche = cherche !== null && cherche.phone === identifiant.phone && cherche.email.trim() === identifiant.email.trim();
+  const contactAnswered = identifiantPret && identifiantCherche;
+  const invalidIdentifiant = identifierFieldErrors(identifiant);
+  // ⛔ MD-6 — une fiche LIÉE à un compte impose SES noms : les champs sont grisés, et le devis porte ceux de la fiche.
+  const nomsVerrouilles = fiche !== null && fiche.linked;
+  const nomsEffectifs: Noms = fiche !== null && fiche.linked ? nomsDeLaFiche(fiche) : noms;
+  const langue: QuoteDocumentLocale = isAr ? "ar" : "fr";
+  // ⛔ K-12 — le contact de la CONVERSION : PRÉREMPLI depuis la copie du devis que le serveur a rendu et depuis la fiche, puis les RETOUCHES du
+  // pro par-dessus. Ce que `convert` envoie est ce que les champs affichent.
+  const contact: Contact = { ...prefillConversion({ quote: quote ?? SANS_COPIE, fiche, saisie: identifiant, langue }), ...retouches };
+
   // D135 — nom, prénom et TÉLÉPHONE. Pas l'e-mail : `contact_email` est nullable
   // en base, et le client au comptoir n'en a souvent pas. ⚠ Rang 32 (D325) : « prêt » ne veut plus dire « non vide » — le nom,
   // le téléphone et l'e-mail passent les règles du CONTRAT (`walkin-contact.ts`), les mêmes que celles du serveur.
   const contactReady = contactBlockers(contact).length === 0;
-  const blockers = clientBlockers(contact, guests);
+  const blockers = clientBlockers(nomsEffectifs, guests);
   const guestsReady = Number(guests) > 0;
   const clientAnswered = blockers.length === 0;
+  const invalidNames = nameFieldErrors(nomsEffectifs);
   const invalidFields = fieldErrors(contact);
-  const termsReady = eventDate !== null && slotId !== null && guestsReady;
+  const termsReady = eventDate !== null && slotId !== null && guestsReady && fiche !== null;
 
   /** ⚠ RÉPONDU SE LIT DANS LES DONNÉES. Aucun compteur ne peut diverger de
    *  l'état réel, donc revenir en arrière ne replie jamais le récapitulatif. */
   const answered: Record<Step, boolean> = useMemo(
     () => ({
-      client: clientAnswered,
+      contact: contactAnswered,
+      // ⛔ Rang 41 : l'étape Client n'est répondue qu'une fois la fiche LÀ (trouvée ou créée) — sans elle, le devis n'aurait aucune fiche à porter.
+      client: clientAnswered && fiche !== null,
       date: eventDate !== null,
       slot: slotId !== null,
       services: servicesAnswered,
       quote: quote !== null
     }),
-    [clientAnswered, eventDate, slotId, servicesAnswered, quote]
+    [contactAnswered, clientAnswered, fiche, eventDate, slotId, servicesAnswered, quote]
     // ⚠ `step` n'y figure PAS, et c'est voulu : ce que ce memo calcule ne dépend
     // que des DONNÉES. Le jour où quelqu'un y fera entrer l'étape courante, il
     // réintroduira la logique de la maquette — un récapitulatif qui se replie.
@@ -332,7 +460,13 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * donc, et l'écran garde son résultat.
    */
   const reset = () => {
-    setContact(NO_CONTACT);
+    setIdentifiant(NO_IDENTIFIANT);
+    setCherche(null);
+    setFiche(null);
+    setFicheTrouvee(false);
+    setNoms(NO_NOMS);
+    setRetouches({});
+    setNomDe(null);
     setEventDate(null);
     setSlotId(null);
     setGuests("");
@@ -347,7 +481,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setError(null);
     setServicesAnswered(false);
     setSlotCleared(false);
-    goTo("client");
+    goTo("contact");
   };
 
   const goTo = (next: Step) => {
@@ -389,6 +523,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     invalidate();
   };
 
+  /** Rang 41 — les noms font partie du DEVIS (sa copie, K-4) : les changer jette le total, comme toute condition. */
+  const setNomsSafe = (next: Noms) => {
+    setNoms(next);
+    invalidate();
+  };
+
+  /** K-12 — une retouche du pro au contact de la conversion : elle l'emporte sur le préremplissage, champ par champ. */
+  const retoucher = (champ: Partial<Contact>) => setRetouches((avant) => ({ ...avant, ...champ }));
+
   /** Valider l'étape courante. On repart vers la première étape sans réponse —
    *  donc directement au devis quand tout est déjà répondu. */
   const confirmStep = () => {
@@ -397,8 +540,64 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       setServicesAnswered(true);
       etat.services = true;
     }
-    if (step === "client") etat.client = clientAnswered;
     goTo(firstUnanswered(etat));
+  };
+
+  /**
+   * ⛔ Rang 41 (D336, K-1, S-57) — « Continuer » de l'étape CONTACT : la fiche du pro est cherchée par le NUMÉRO, PUIS par l'E-MAIL ; la première
+   * trouvée arrête la recherche. Trouvée, elle PRÉREMPLIT les noms de ce devis ; absente, elle se créera au « Continuer » de l'étape Client (K-2).
+   * ⚠ Un identifiant INCHANGÉ ne se cherche pas deux fois : revenir au contact sans rien modifier garde la fiche, et les noms qu'on y a corrigés.
+   * ⚠ Un identifiant CHANGÉ désigne peut-être un autre client : le total est jeté (le devis affiché porterait la fiche et les noms d'un autre), les
+   * retouches de la conversion aussi, et des noms venus de l'ANCIENNE fiche ne passent pas à la nouvelle.
+   */
+  const confirmContact = () => {
+    // ⚠ Sans recherche à faire, AUCUN appel : la navigation reste synchrone, comme « Continuer » des autres étapes.
+    if (identifiantCherche) {
+      goTo(firstUnanswered(answered));
+      return;
+    }
+    const saisi = identifiant;
+    void run(async () => {
+      let trouvee: ClientRecordDTO | null = null;
+      for (const critere of ordreDeRecherche(saisi)) {
+        const reponse = await clients.lookup(critere);
+        if (reponse.found) {
+          trouvee = reponse.record;
+          break;
+        }
+      }
+      if (trouvee !== null) setNoms(nomsDeLaFiche(trouvee));
+      else if (ficheTrouvee) setNoms(NO_NOMS);
+      setCherche(saisi);
+      setFiche(trouvee);
+      setFicheTrouvee(trouvee !== null);
+      setRetouches({});
+      invalidate();
+      goTo("client");
+    });
+  };
+
+  /**
+   * ⛔ Rang 41 (D336, K-2, MD-17) — « Continuer » de l'étape CLIENT : sans fiche, la fiche se CRÉE ici, avec le contact et les noms TAPÉS — et c'est
+   * la SEULE écriture de fiche du parcours. Une fiche déjà là n'est pas réécrite : les noms corrigés vont au devis (sa copie), pas à la fiche.
+   * ⚠ Un identifiant modifié et pas encore cherché ne crée rien : on retourne au contact plutôt que de créer une fiche sur une saisie non cherchée.
+   */
+  const confirmClient = () => {
+    // ⚠ Une fiche déjà là : AUCUN appel, la navigation reste synchrone.
+    if (fiche !== null) {
+      goTo(firstUnanswered({ ...answered, client: true }));
+      return;
+    }
+    if (!contactAnswered) {
+      goTo("contact");
+      return;
+    }
+    void run(async () => {
+      const { created, record } = await clients.create({ ...identifierPayload(identifiant), ...nomsPourFiche(noms) });
+      setFiche(record);
+      setFicheTrouvee(!created);
+      goTo(firstUnanswered({ ...answered, client: true }));
+    });
   };
 
   async function run(action: () => Promise<void>): Promise<void> {
@@ -417,7 +616,9 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     eventDate: eventDate as string,
     slotTemplateId: slotId as string,
     guests: Number(guests),
-    ...(picks.length === 0 ? {} : { services: picks.map((serviceId) => ({ serviceId })) })
+    ...(picks.length === 0 ? {} : { services: picks.map((serviceId) => ({ serviceId })) }),
+    // ⛔ Rang 41 (D336, K-4) : la fiche et la COPIE des noms de l'écran — ceux de la fiche quand elle est liée (MD-6).
+    ...(fiche === null ? {} : copiePourDevis(nomsEffectifs, fiche.id))
   });
 
   const compute = () => {
@@ -485,11 +686,11 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * ⚠ `busy` verrouille les boutons pendant le travail : un double clic ne fait ni deux remises ni deux téléchargements.
    * ⛔ Rang 38 (D332, décision A de Ko) : la langue du PDF est celle que le pro CHOISIT, dans la boîte que chaque bouton ouvre, à CHAQUE téléchargement — ni celle de
    * l'interface, ni celle du compte du client. Annuler la boîte n'enregistre rien et ne télécharge rien : `remettre` n'est appelée qu'au choix.
+   * ⛔ Rang 41 (D336, K-5) : quand le devis n'a pas de copie du nom dans la langue choisie, `remettre` POSE LA QUESTION du nom d'abord ; la remise
+   * part sur le devis que le serveur rend une fois la copie complétée (`completerLeNom`).
    */
-  const remettre = (canal: QuoteSentVia, documentLocale: QuoteDocumentLocale) =>
+  const remettreLeDevis = (canal: QuoteSentVia, documentLocale: QuoteDocumentLocale, courant: QuoteDTO) =>
     void (async () => {
-      if (quote === null) return;
-      const courant = quote;
       setBusy(true);
       setError(null);
       try {
@@ -522,6 +723,44 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       }
     })();
 
+  /** Le CHOIX de la langue (rang 38). ⛔ Rang 41 (D336, K-5) : la copie du nom MANQUE à cette langue — la question du nom s'ouvre, et RIEN ne part
+   *  avant sa réponse ; sinon la remise part tout de suite. */
+  const remettre = (canal: QuoteSentVia, documentLocale: QuoteDocumentLocale) => {
+    if (quote === null) return;
+    if (nomManquant(quote, documentLocale)) {
+      setNomDe({ canal, locale: documentLocale });
+      return;
+    }
+    remettreLeDevis(canal, documentLocale, quote);
+  };
+
+  /**
+   * ⛔ Rang 41 (D336, K-5) — la question du nom a reçu sa réponse : la copie se COMPLÈTE sur le devis (`POST /quotes/:id/client-name` ; c'est le
+   * SERVEUR qui complète aussi la fiche, quand C-C3 le permet), PUIS la remise part dans cette langue, sur le devis que le serveur a rendu.
+   * Un refus (409 : la copie a été complétée entre-temps) est DIT, et rien n'est remis ni téléchargé.
+   */
+  const completerLeNom = (nom: string) => {
+    const attente = nomDe;
+    setNomDe(null);
+    if (attente === null || quote === null) return;
+    const devis = quote;
+    void (async () => {
+      setBusy(true);
+      setError(null);
+      let complete: QuoteDTO;
+      try {
+        complete = await quotes.completeClientName(devis.id, { locale: attente.locale, name: nom });
+      } catch (cause) {
+        setError(toMessageRef.current(cause));
+        setBusy(false);
+        return;
+      }
+      setQuote(complete);
+      // La remise reprend `busy` à son compte : il reste vrai jusqu'à ses deux réponses.
+      remettreLeDevis(attente.canal, attente.locale, complete);
+    })();
+  };
+
   const conclu = outcome !== null;
 
   /** ⚠ CE QUE DIT UNE LIGNE DE RÉCAPITULATIF : DES RÉPONSES, JAMAIS DES
@@ -529,10 +768,11 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    *  services ; c'est l'écart assumé du lot. */
   const resume = (s: Step): string => {
     switch (s) {
+      case "contact":
+        return [toE164(DEFAULT_PHONE_COUNTRY, identifiant.phone), identifiant.email.trim()].filter((part) => part !== "").join(" · ");
       case "client": {
-        const nom = `${contact.firstName.trim()} ${contact.lastName.trim()}`.trim();
-        const tel = toE164(DEFAULT_PHONE_COUNTRY, contact.phone);
-        return [nom, tel, t("venue.ui.walkin.guestsSummary", { count: Number(guests) })]
+        const ecritures = isAr ? [nomsEffectifs.ar, nomsEffectifs.latin] : [nomsEffectifs.latin, nomsEffectifs.ar];
+        return [...ecritures.map((nom) => nom.trim()), t("venue.ui.walkin.guestsSummary", { count: Number(guests) })]
           .filter((part) => part !== "")
           .join(" · ");
       }
@@ -557,6 +797,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
 
   const stepIndex = STEPS.indexOf(step);
   const question: Record<Step, { q: string; hint: string }> = {
+    contact: { q: "venue.ui.walkin.qContact", hint: "venue.ui.walkin.qContactHint" },
     client: { q: "venue.ui.walkin.qClient", hint: "venue.ui.walkin.qClientHint" },
     date: { q: "venue.ui.walkin.qDate", hint: "venue.ui.walkin.qDateHint" },
     slot: { q: "venue.ui.walkin.qSlot", hint: "venue.ui.walkin.qSlotHint" },
@@ -578,6 +819,49 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const phoneText = (kind: "country" | "placeholder" | "leadingDigit") => t(`common.phone.${kind}.${DEFAULT_PHONE_COUNTRY}`);
   const reasonText = (blocker: Blocker) =>
     t(`venue.ui.walkin.${blocker}`, { length: PHONE_COUNTRIES[DEFAULT_PHONE_COUNTRY].nationalLength });
+  /** ⚠ UN SEUL CHAMP DE TÉLÉPHONE ÉCRIT, rendu à deux étapes — le contact (qui cherche la fiche) et la conversion (qui part avec la demande).
+   *  Le champ PARTAGÉ (`@zwadj/ui`) : indicatif et drapeau devant, chiffres seuls, au plus neuf, premier chiffre 5, 6 ou 7. La valeur est la suite
+   *  de chiffres NATIONAUX ; `identifierPayload` et `contactPayload` la convertissent. Deux copies de ce bloc avaient de quoi diverger. */
+  const champTelephone = (value: string, onChange: (digits: string) => void) => (
+    <Champ label={t("venue.ui.walkin.phone")} value={value} onChange={onChange} hint={t("venue.ui.walkin.phoneHint")}>
+      {({ id, describedBy, invalid }) => (
+        <PhoneField
+          id={id}
+          value={value}
+          onChange={onChange}
+          country={DEFAULT_PHONE_COUNTRY}
+          countryName={phoneText("country")}
+          placeholder={phoneText("placeholder")}
+          leadingDigitMessage={phoneText("leadingDigit")}
+          describedBy={describedBy}
+          invalid={invalid}
+        />
+      )}
+    </Champ>
+  );
+  /** Les deux noms, l'écriture de l'INTERFACE d'abord (comme le récapitulatif). Grisés quand la fiche est liée (MD-6). */
+  const champsDesNoms = [
+    <Champ
+      key="ar"
+      label={t("venue.ui.walkin.nameAr")}
+      value={nomsEffectifs.ar}
+      onChange={(v) => setNomsSafe({ ...noms, ar: v })}
+      placeholder={t("venue.ui.walkin.nameArPlaceholder")}
+      error={invalidNames.ar ? t("venue.ui.walkin.nameArInvalid") : undefined}
+      disabled={nomsVerrouilles}
+      dir="auto"
+    />,
+    <Champ
+      key="latin"
+      label={t("venue.ui.walkin.nameLatin")}
+      value={nomsEffectifs.latin}
+      onChange={(v) => setNomsSafe({ ...noms, latin: v })}
+      placeholder={t("venue.ui.walkin.nameLatinPlaceholder")}
+      error={invalidNames.latin ? t("venue.ui.walkin.nameLatinInvalid") : undefined}
+      disabled={nomsVerrouilles}
+      dir="auto"
+    />
+  ];
 
   return (
     <>
@@ -660,57 +944,64 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         </h2>
         <p className="wk-hint">{t(question[step].hint)}</p>
 
-        {step === "client" ? (
+        {step === "contact" ? (
           <>
+            {/* ⛔ Rang 41 (D336, MD-17) : le CONTACT est la première étape — un numéro OU un e-mail. C'est lui qui retrouve la fiche du client
+                (K-1), d'abord par le numéro, puis par l'e-mail (S-57) ; la recherche ne montre rien d'un compte Zwadj (M-4). */}
             <div className="wk-pair">
+              {champTelephone(identifiant.phone, (digits) => setIdentifiant({ ...identifiant, phone: digits }))}
               <Champ
-                label={t("venue.ui.walkin.firstName")}
-                value={contact.firstName}
-                onChange={(v) => setContact({ ...contact, firstName: v })}
-                placeholder={t("venue.ui.walkin.firstNamePlaceholder")}
-                error={invalidFields.firstName ? t("venue.ui.walkin.firstNameInvalid") : undefined}
-              />
-              <Champ
-                label={t("venue.ui.walkin.lastName")}
-                value={contact.lastName}
-                onChange={(v) => setContact({ ...contact, lastName: v })}
-                placeholder={t("venue.ui.walkin.lastNamePlaceholder")}
-                error={invalidFields.lastName ? t("venue.ui.walkin.lastNameInvalid") : undefined}
-              />
-            </div>
-            <div className="wk-pair">
-              {/* ⚠ Le téléphone est le champ PARTAGÉ (`@zwadj/ui`) : indicatif et drapeau devant, chiffres seuls, au plus neuf,
-                  premier chiffre 5, 6 ou 7. La valeur du formulaire est la suite de chiffres NATIONAUX ; `contactPayload` la convertit. */}
-              <Champ
-                label={t("venue.ui.walkin.phone")}
-                value={contact.phone}
-                onChange={(v) => setContact({ ...contact, phone: v })}
-                hint={t("venue.ui.walkin.phoneHint")}
-              >
-                {({ id, describedBy, invalid }) => (
-                  <PhoneField
-                    id={id}
-                    value={contact.phone}
-                    onChange={(digits) => setContact({ ...contact, phone: digits })}
-                    country={DEFAULT_PHONE_COUNTRY}
-                    countryName={phoneText("country")}
-                    placeholder={phoneText("placeholder")}
-                    leadingDigitMessage={phoneText("leadingDigit")}
-                    describedBy={describedBy}
-                    invalid={invalid}
-                  />
-                )}
-              </Champ>
-              <Champ
-                label={t("venue.ui.walkin.email")}
-                value={contact.email}
-                onChange={(v) => setContact({ ...contact, email: v })}
-                hint={t("venue.ui.walkin.emailHint")}
+                label={t("venue.ui.walkin.contactEmail")}
+                value={identifiant.email}
+                onChange={(v) => setIdentifiant({ ...identifiant, email: v })}
                 mode="email"
                 placeholder={t("venue.ui.walkin.emailPlaceholder")}
-                error={invalidFields.email ? t("venue.ui.walkin.emailInvalid") : undefined}
+                error={invalidIdentifiant.email ? t("venue.ui.walkin.emailInvalid") : undefined}
               />
             </div>
+            <div className="wk-actions">
+              {previousButton}
+              {/* Même règle que l'étape Client (rang 32) : « Continuer » grisé DIT POURQUOI, et la liste est liée au bouton. */}
+              <button
+                type="button"
+                className="wk-btn wk-btn-primary wk-btn-next"
+                disabled={!identifiantPret || busy}
+                aria-describedby={identifiantPret ? undefined : "wk-continue-reason"}
+                onClick={confirmContact}
+              >
+                {t("venue.ui.walkin.continue")}
+              </button>
+            </div>
+            {busy ? (
+              <p className="wk-hint" role="status">
+                {t("venue.ui.walkin.searching")}
+              </p>
+            ) : null}
+            {identifiantPret ? null : (
+              <div id="wk-continue-reason" className="wk-blockers">
+                <p className="wk-hint">{t("venue.ui.walkin.continueBlockedLead")}</p>
+                <ul>
+                  {raisonsContact.map((blocker) => (
+                    <li key={blocker}>{reasonText(blocker)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
+        ) : null}
+
+        {step === "client" ? (
+          <>
+            {/* ⛔ Rang 41 (D336) : ce que la recherche a dit — une fiche RETROUVÉE (ses noms préremplissent CE devis, modifiables), une fiche LIÉE
+                (ses noms s'imposent, MD-6), ou AUCUNE (la fiche se créera à « Continuer », K-2). Une fiche créée à ce « Continuer » ne dit plus rien. */}
+            {fiche === null ? (
+              <p className="wk-hint">{t("venue.ui.walkin.ficheNew")}</p>
+            ) : nomsVerrouilles ? (
+              <p className="wk-hint">{t("venue.ui.walkin.ficheLinked")}</p>
+            ) : ficheTrouvee ? (
+              <p className="wk-hint">{t("venue.ui.walkin.ficheFound")}</p>
+            ) : null}
+            <div className="wk-pair">{isAr ? champsDesNoms : [...champsDesNoms].reverse()}</div>
 
             <div className="wk-guests">
               <label className="wk-label" htmlFor="wk-guests">
@@ -757,9 +1048,9 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
               <button
                 type="button"
                 className="wk-btn wk-btn-primary wk-btn-next"
-                disabled={!clientAnswered}
+                disabled={!clientAnswered || busy}
                 aria-describedby={clientAnswered ? undefined : "wk-continue-reason"}
-                onClick={confirmStep}
+                onClick={confirmClient}
               >
                 {t("venue.ui.walkin.continue")}
               </button>
@@ -915,6 +1206,42 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                   <strong>{formatDZD(quote.depositCents)}</strong>
                 </div>
 
+                {/* ⛔ Rang 41 (D336, K-12) — les COORDONNÉES de la conclusion, et de la remise (le SMS et l'appel lisent ce numéro, l'e-mail cette
+                    adresse) : PRÉREMPLIES depuis la copie du nom que le serveur vient de rendre — coupée au PREMIER espace (MD-9) — et depuis la
+                    fiche. Les quatre champs restent MODIFIABLES : `convert` envoie ce qu'ils affichent. Rien n'est réécrit dans la fiche. */}
+                <div>
+                  <h3 className="wk-total-head">{t("venue.ui.walkin.conversionTitle")}</h3>
+                  <p className="wk-hint">{t("venue.ui.walkin.conversionHint")}</p>
+                  <div className="wk-pair">
+                    <Champ
+                      label={t("venue.ui.walkin.firstName")}
+                      value={contact.firstName}
+                      onChange={(v) => retoucher({ firstName: v })}
+                      placeholder={t("venue.ui.walkin.firstNamePlaceholder")}
+                      error={invalidFields.firstName ? t("venue.ui.walkin.firstNameInvalid") : undefined}
+                    />
+                    <Champ
+                      label={t("venue.ui.walkin.lastName")}
+                      value={contact.lastName}
+                      onChange={(v) => retoucher({ lastName: v })}
+                      placeholder={t("venue.ui.walkin.lastNamePlaceholder")}
+                      error={invalidFields.lastName ? t("venue.ui.walkin.lastNameInvalid") : undefined}
+                    />
+                  </div>
+                  <div className="wk-pair">
+                    {champTelephone(contact.phone, (digits) => retoucher({ phone: digits }))}
+                    <Champ
+                      label={t("venue.ui.walkin.email")}
+                      value={contact.email}
+                      onChange={(v) => retoucher({ email: v })}
+                      hint={t("venue.ui.walkin.emailHint")}
+                      mode="email"
+                      placeholder={t("venue.ui.walkin.emailPlaceholder")}
+                      error={invalidFields.email ? t("venue.ui.walkin.emailInvalid") : undefined}
+                    />
+                  </div>
+                </div>
+
                 {/* ── ⚠ LES CINQ CANAUX SONT DÉCLARATIFS, ET LE TEXTE LE DIT.
                        Rang 33 (D326) : chaque bouton ENREGISTRE comment le pro a remis le devis ET télécharge son PDF récapitulatif (généré côté
                        serveur, valeurs stockées). Zwadj n'envoie RIEN : aucun transport SMS ni e-mail n'existe encore, et aucun écran ne dit que Zwadj
@@ -1016,6 +1343,10 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         }}
         onCancel={() => setLangueDe(null)}
       />
+
+      {/* ⛔ Rang 41 (D336, K-5) : la question du NOM qui manque à la langue choisie — montée le temps de la question seulement. Valider complète la
+          copie sur le devis, PUIS remet et télécharge dans cette langue ; « Annuler » ne fait RIEN. */}
+      {nomDe === null ? null : <NomDialog locale={nomDe.locale} onConfirm={completerLeNom} onCancel={() => setNomDe(null)} />}
 
       {/* ⚠ Rang 33 (D326) : la fenêtre de REMISE. Elle ne s'ouvre qu'APRÈS les deux réponses (l'enregistrement du canal ET le PDF) et dit ce qui a RÉELLEMENT eu lieu,
           issue par issue — jamais « tout est fait » quand l'un des deux a échoué. Aucune ligne ne dit que Zwadj a envoyé quoi que ce soit. */}

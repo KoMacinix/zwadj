@@ -271,6 +271,8 @@ model User {
   /// L'admin qui tranche est un User : Prisma exige les DEUX côtés de la
   /// relation, même quand un seul sens est interrogé.
   deletionDecisions       AccountDeletionRequest[] @relation("DeletionDecider")
+  /// D336 (rang 41) — les fiches de pros que ce compte a rejointes (la fusion, L35-6 : aucun code de ce lot ne l'écrit).
+  linkedClientRecords     ProClientRecord[]        @relation("ClientRecordLink")
 
   @@map("users")
 }
@@ -424,6 +426,8 @@ model ProProfile {
 
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   venues Venue[]
+  /// D336 (rang 41) — les FICHES CLIENT du pro, communes à toutes ses salles.
+  clientRecords ProClientRecord[]
 
   @@map("pro_profiles")
 }
@@ -1010,8 +1014,16 @@ model Quote {
   sentVia        String?     @map("sent_via")
   acceptedAt     DateTime?   @map("accepted_at") @db.Timestamptz(6)
 
+  // D336 (rang 41, K-4) — la FICHE du devis, et la COPIE du nom POUR CE devis (R8 : modifier la fiche ne touche aucune copie déjà faite ; DB-17 : le nom est
+  // prérempli depuis la fiche et modifiable pour ce devis). `clientRecordId` tombe à NULL si la fiche disparaît (`ON DELETE SET NULL`), la copie reste. ⚠ `clientId`
+  // n'est plus écrit (DB-15) : il reste LU pour les devis hérités.
+  clientRecordId  String?    @map("client_record_id") @db.Uuid
+  clientNameAr    String?    @map("client_name_ar")
+  clientNameLatin String?    @map("client_name_latin")
+
   venue        Venue         @relation(fields: [venueId], references: [id], onDelete: Restrict)
   client       User?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientRecord ProClientRecord? @relation(fields: [clientRecordId], references: [id], onDelete: SetNull)
   slotTemplate SlotTemplate? @relation(fields: [slotTemplateId], references: [id], onDelete: SetNull)
   booking      Booking?
   parentQuote  Quote?        @relation("QuoteVersions", fields: [parentQuoteId], references: [id], onDelete: SetNull)
@@ -1023,7 +1035,39 @@ model Quote {
   @@index([venueId])
   @@index([clientId])
   @@index([venueId, status, createdAt], map: "quotes_venue_status_created_idx")
+  /// D336 (rang 41) — la fiche du devis : un index simple, que la clé étrangère `ON DELETE SET NULL` et la lecture des devis d'une fiche servent.
+  @@index([clientRecordId])
   @@map("quotes")
+}
+
+/// D336 (rang 41, L35-4 amendé) — LA FICHE CLIENT d'un pro : ce que le PRO sait de son client — un numéro de mobile OU une adresse e-mail, un nom en arabe OU en
+/// lettres latines. Elle appartient au PRO (pas à une salle) et sert toutes ses salles ; elle n'est PAS un compte. `linkedUserId` dit qu'un compte Zwadj l'a rejointe
+/// (la FUSION, L35-6 — aucun code de ce lot ne l'écrit) : la fiche liée ne se modifie plus (champs grisés), et rien du compte n'apparaît dans ce que la route rend.
+/// ⚠ Les garanties — un identifiant au moins, un nom au moins, un lien cohérent, le numéro CANONIQUE (`~ '^\+213[567][0-9]{8}$'`, S-50), l'unicité `(pro, numéro)` et
+/// `(pro, e-mail)` en index uniques PARTIELS (`WHERE … IS NOT NULL`) — sont dans la MIGRATION `20261022120000_pro_client_records` (D186) : Prisma ne les exprime pas, et
+/// un `@@unique` nu pour un index partiel créerait un SECOND index, complet, que rien ne crée en base (doctrine de ce dépôt). La création passe donc par
+/// `INSERT … ON CONFLICT DO NOTHING` puis une relecture (`pro-client-store.prisma.ts`), jamais par un `upsert` sur une clé que Prisma ne connaît pas.
+model ProClientRecord {
+  id           String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  proProfileId String    @map("pro_profile_id") @db.Uuid
+  /// Canonique (`+213…`, `dzPhoneSchema`) ; `null` = fiche par e-mail seul.
+  phone        String?
+  /// Normalisé par `normalizeContactEmail` (rogné, NFKC, minuscules) — jamais vérifié.
+  email        String?
+  nameAr       String?   @map("name_ar")
+  nameLatin    String?   @map("name_latin")
+  linkedUserId String?   @map("linked_user_id") @db.Uuid
+  linkedAt     DateTime? @map("linked_at") @db.Timestamptz(6)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  proProfile ProProfile @relation(fields: [proProfileId], references: [id], onDelete: Restrict)
+  /// S-56 — RESTRICT : un compte qui porte des fiches liées ne se supprime pas en dur (la suppression de compte est une DEMANDE, D37 ; J-1 reste ouverte).
+  linkedUser User?      @relation("ClientRecordLink", fields: [linkedUserId], references: [id], onDelete: Restrict)
+  quotes     Quote[]
+
+  @@index([proProfileId])
+  @@map("pro_client_records")
 }
 
 /// D333 (rang 39, L35-3) — le COMPTEUR des numéros de devis : une ligne par (salle, année). Le service l'incrémente par `INSERT … ON CONFLICT DO UPDATE … + 1 … RETURNING`

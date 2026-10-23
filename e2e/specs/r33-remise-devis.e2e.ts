@@ -18,7 +18,10 @@ import { accessTokenOf, apiCall, createPublishedVenue, loginContext, seedReferen
  */
 const W = fr.venue.ui.walkin;
 const WA = ar.venue.ui.walkin;
-const CLIENT = { prenom: "Amina", nom: "Bensalem", chiffres: "550000001", invites: "150", email: "amina@example.com" };
+// ⛔ Rang 41 (D336) : le contact d'abord (le numéro et l'adresse), puis les NOMS — les DEUX écritures, pour que le PDF parte dans l'une ou l'autre langue sans la
+// question du nom (K-5 : mesurée par `r41-fiche-client.e2e.ts`). ⚠ Le numéro n'est plus « 550000001 » : c'est celui du PRO de `createVerifiedAccount`, et la fiche
+// d'un client refuse désormais le contact du pro (MD-4, consigne v3 § 6 f).
+const CLIENT = { nomLatin: "Amina Bensalem", nomArabe: "أمينة بن سالم", chiffres: "661234567", invites: "150", email: "amina@example.com" };
 
 // `createPublishedVenue` exige les référentiels (une salle exige une commune) : le semis de PRODUCTION, idempotent — comme les autres specs qui créent une salle.
 test.beforeAll(() => {
@@ -49,12 +52,13 @@ function lire(reference: string) {
   return { annee: Number(m[1]), salle: Number(m[2]), devis: Number(m[3]), version: Number(m[4]) };
 }
 
-/** Du formulaire client — AVEC une adresse, pour que le canal « e-mail » soit actif — jusqu'au devis CALCULÉ ; rend l'identifiant ET la référence du devis créé par le serveur (la référence est celle de la RÉPONSE de l'API, jamais une valeur écrite ici ; elle doit être à l'écran). */
+/** Du contact — AVEC une adresse, pour que le canal « e-mail » soit actif — et des noms jusqu'au devis CALCULÉ ; rend l'identifiant ET la référence du devis créé par le serveur (la référence est celle de la RÉPONSE de l'API, jamais une valeur écrite ici ; elle doit être à l'écran). */
 async function jusquAuDevis(page: Page, libelles: typeof W = W): Promise<{ id: string; reference: string }> {
-  await page.getByLabel(libelles.firstName, { exact: true }).fill(CLIENT.prenom);
-  await page.getByLabel(libelles.lastName, { exact: true }).fill(CLIENT.nom);
   await page.getByLabel(libelles.phone, { exact: true }).pressSequentially(CLIENT.chiffres);
-  await page.getByLabel(libelles.email, { exact: true }).fill(CLIENT.email);
+  await page.getByLabel(libelles.contactEmail, { exact: true }).fill(CLIENT.email);
+  await page.getByRole("button", { name: libelles.continue, exact: true }).click();
+  await page.getByLabel(libelles.nameLatin, { exact: true }).fill(CLIENT.nomLatin);
+  await page.getByLabel(libelles.nameAr, { exact: true }).fill(CLIENT.nomArabe);
   await page.getByLabel(libelles.guests, { exact: true }).fill(CLIENT.invites);
   await page.getByRole("button", { name: libelles.continue, exact: true }).click();
   const jour = page.locator("td.cal-cell button.cal-day.is-available:not([disabled])").first();
@@ -184,9 +188,9 @@ test("⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistr
 
 test("le canal « e-mail » est INACTIF sans adresse, ACTIF avec — et rien n'est téléchargé tant qu'il est grisé", async ({ browser }) => {
   const { contexte, page } = await ouvrir(browser);
-  await page.getByLabel(W.firstName, { exact: true }).fill(CLIENT.prenom);
-  await page.getByLabel(W.lastName, { exact: true }).fill(CLIENT.nom);
   await page.getByLabel(W.phone, { exact: true }).pressSequentially(CLIENT.chiffres);
+  await page.getByRole("button", { name: W.continue, exact: true }).click();
+  await page.getByLabel(W.nameLatin, { exact: true }).fill(CLIENT.nomLatin);
   await page.getByLabel(W.guests, { exact: true }).fill(CLIENT.invites);
   await page.getByRole("button", { name: W.continue, exact: true }).click();
   const jour = page.locator("td.cal-cell button.cal-day.is-available:not([disabled])").first();

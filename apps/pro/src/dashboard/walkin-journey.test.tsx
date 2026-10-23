@@ -867,8 +867,10 @@ describe("Point D — chrome partagée", () => {
   it("le bouton « Modifier » est le composant partagé, identique au client", async () => {
     await setup();
     await repondreClient();
-    const bouton = within(recap()).getByRole("button", { name: /Modifier/ });
-    expect(bouton).toHaveClass("zj-recap-edit");
+    // Rang 41 (D336) : après l'étape Client, le récapitulatif a DEUX lignes (le contact, le client) — la règle vaut pour CHAQUE bouton, pas pour un exemple.
+    const boutons = within(recap()).getAllByRole("button", { name: /Modifier/ });
+    expect(boutons.length).toBeGreaterThanOrEqual(2);
+    for (const bouton of boutons) expect(bouton).toHaveClass("zj-recap-edit");
   });
 
   it("⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite", async () => {
@@ -1411,6 +1413,9 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
   }
   const echec = (code: string, cle: string, status = 409) => new ApiError(status, code, cle, []);
   const fichier = () => new Blob(["%PDF-1.4"], { type: "application/pdf" });
+  /** Rang 41 (D336, K-5) — un devis qui porte les DEUX copies du nom : le PDF part dans l'une ou l'autre langue SANS question. Sans la copie arabe,
+   *  choisir « العربية » pose d'abord la question du nom (mesuré par le bloc D336, en fin de fichier) — d'où ce devis pour les tests qui choisissent l'arabe. */
+  const deuxCopies = () => draft({ clientNameAr: "أمين بلقاسم" });
 
   beforeEach(() => {
     vi.mocked(saveBlob).mockClear();
@@ -1480,7 +1485,7 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
   });
 
   it("⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`", async () => {
-    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(deuxCopies()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document: vi.fn().mockResolvedValue(fichier()) } });
     await cliquer(QUOTE_SENT_VIA.PRINT, "ar", "fr");
     expect(vi.mocked(saveBlob).mock.calls[0]![1]).toBe(`${draft().reference.replace(" v1", "_ar_v1")}.pdf`);
     cleanup();
@@ -1681,7 +1686,7 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
 
   it("en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte", async () => {
     const document = vi.fn().mockResolvedValue(fichier());
-    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
+    await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(deuxCopies()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
     await act(async () => void (await i18next.changeLanguage("ar")));
     expect(bouton(QUOTE_SENT_VIA.EMAIL, "ar").textContent).toBe(messages.ar.venue.ui.quotes.sv_EMAIL);
     await act(async () => {
@@ -1759,7 +1764,7 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
 
     it("⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`", async () => {
       const document = vi.fn().mockResolvedValue(fichier());
-      await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
+      await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(deuxCopies()), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })), document } });
       await cliquer(QUOTE_SENT_VIA.PRINT, "ar", "fr");
       expect(document).toHaveBeenLastCalledWith("q1", "ar");
       fireEvent.click(screen.getByRole("button", { name: FR.doneDialogClose }));
@@ -1936,6 +1941,34 @@ describe("⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la convers
     expect(vi.mocked(quotes.create).mock.calls[0]?.[1]).toEqual(
       expect.objectContaining({ clientRecordId: "fiche-9", clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" })
     );
+  });
+
+  it("⛔ MD-6 — une fiche LIÉE RENDUE par la création (K-2, `created: false`) : ses noms s'IMPOSENT au devis, quels que soient les noms tapés", async () => {
+    // La recherche n'a rien trouvé, la création rend une fiche existante (une création concurrente l'a précédée) — et elle est liée : le devis porte SES noms.
+    const liee = fiche({ nameAr: "آمنة بن سالم", nameLatin: "Amina Bensalem", linked: true });
+    const { quotes } = await setup({ clients: { create: vi.fn().mockResolvedValue({ created: false, record: liee }) } });
+    await repondreContact();
+    await repondreNoms();
+    await calculer();
+    expect(vi.mocked(quotes.create).mock.calls[0]?.[1]).toEqual(
+      expect.objectContaining({ clientRecordId: "fiche-9", clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" })
+    );
+  });
+
+  it("un AUTRE numéro après une fiche trouvée, et pas de fiche pour lui : les noms de l'ANCIENNE fiche ne passent pas au nouveau client", async () => {
+    const lookup = vi.fn().mockResolvedValueOnce({ found: true, record: fiche() }).mockResolvedValue({ found: false });
+    await setup({ clients: { lookup } });
+    await repondreContact();
+    expect(nomLatin().value).toBe("Amina Bensalem");
+    fireEvent.click(screen.getByRole("button", { name: FR.previous }));
+    fireEvent.change(telephone(), { target: { value: "+213661234567" } });
+    continuer();
+    await laisserRetomber();
+    await laisserRetomber();
+    expect(vi.mocked(lookup).mock.calls.map((c) => c[0])).toEqual([{ phone: "+213550000002" }, { phone: "+213661234567" }]);
+    expect(question()).toBe(FR.qClient);
+    expect(nomLatin().value).toBe("");
+    expect(screen.queryByText(FR.ficheNew)).not.toBeNull();
   });
 
   it("une fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE", async () => {

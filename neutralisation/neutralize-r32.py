@@ -213,8 +213,10 @@ cible("R-1. le rail ne réagit plus au clic : le bouton existe, il ne fait rien"
       {"pro-journey": "le LIBELLÉ d'une étape répondue ramène à elle", "client-wizard": "cliquer le LIBELLÉ d'une étape répondue vaut « Modifier »"})
 
 # ── N — le parcours « Nouvelle réservation ».
+# ⚠ N-1 RÉORIENTÉE PAR ÉCRIT (rang 41, D336) : l'étape Client ne juge plus le CONTACT (devenu l'étape d'avant) mais les NOMS — l'ancre passe de
+# `clientBlockers(contact, guests)` à `clientBlockers(nomsEffectifs, guests)` ; la faute neutralisée (la liste des raisons vidée) et sa mesure ne changent pas.
 cible("N-1. « Continuer » ne dit plus POURQUOI il est grisé : la liste des raisons est vide", WK,
-      "const blockers = clientBlockers(contact, guests);", "const blockers: Blocker[] = [];", {"pro-journey": 'UN SEUL manque'})
+      "const blockers = clientBlockers(nomsEffectifs, guests);", "const blockers: Blocker[] = [];", {"pro-journey": 'UN SEUL manque'})
 cible("N-2. la liste des raisons n'est plus LIÉE au bouton (`aria-describedby`)", WK,
       'aria-describedby={clientAnswered ? undefined : "wk-continue-reason"}', "aria-describedby={undefined}", {"pro-journey": 'UN SEUL manque'})
 cible("N-3. ⚠ RÈGLE DES MONTANTS — la conversion du devis envoie le téléphone SANS indicatif", WK,

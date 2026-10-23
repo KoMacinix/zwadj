@@ -8,11 +8,13 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
   createBookingsProClient,
+  createProClientsClient,
   createQuotesClient,
   createServicesClient,
   createReferentialsClient,
   createVenueProClient,
   type BookingsProClient,
+  type ProClientsClient,
   type QuotesClient,
   type ServicesClient,
   type ReferentialsClient,
@@ -38,6 +40,8 @@ interface VenueClients {
   services: ServicesClient;
   /** E2e — les devis vivent sur `/quotes`, hors de `/pro/venues`. */
   quotes: QuotesClient;
+  /** Rang 41 (D336) — les FICHES CLIENT du pro vivent sur `/pro/clients`, hors de `/pro/venues` : une fiche est au pro, commune à toutes ses salles. */
+  clients: ProClientsClient;
 }
 
 const VenueClientsContext = createContext<VenueClients | null>(null);
@@ -48,7 +52,8 @@ export function VenueProvider({
   referentials,
   bookingsPro,
   servicesClient,
-  quotesClient
+  quotesClient,
+  clientsClient
 }: {
   children: React.ReactNode;
   /** Injectables pour les tests de composants. */
@@ -57,6 +62,7 @@ export function VenueProvider({
   bookingsPro?: BookingsProClient;
   servicesClient?: ServicesClient;
   quotesClient?: QuotesClient;
+  clientsClient?: ProClientsClient;
 }) {
   const { api } = useAuth();
 
@@ -67,9 +73,10 @@ export function VenueProvider({
         referentials ?? createReferentialsClient(import.meta.env.VITE_API_URL ?? "http://localhost:3001"),
       bookingsPro: bookingsPro ?? createBookingsProClient(api.authedRequest),
       services: servicesClient ?? createServicesClient(api.authedRequest),
-      quotes: quotesClient ?? createQuotesClient(api.authedRequest)
+      quotes: quotesClient ?? createQuotesClient(api.authedRequest),
+      clients: clientsClient ?? createProClientsClient(api.authedRequest)
     }),
-    [api, venues, referentials, bookingsPro, servicesClient, quotesClient]
+    [api, venues, referentials, bookingsPro, servicesClient, quotesClient, clientsClient]
   );
 
   return <VenueClientsContext.Provider value={value}>{children}</VenueClientsContext.Provider>;
@@ -140,6 +147,10 @@ export function useServices(): ServicesClient {
 
 export function useBookingsPro(): BookingsProClient {
   return useVenueClients().bookingsPro;
+}
+
+export function useProClients(): ProClientsClient {
+  return useVenueClients().clients;
 }
 
 export function useReferentials(): ReferentialsClient {

@@ -9,6 +9,7 @@ export * from "./auth";
 export * from "./phone";
 export * from "./money";
 export * from "./contact";
+export * from "./client-record";
 export * from "./account";
 export * from "./media";
 export * from "./referentials";

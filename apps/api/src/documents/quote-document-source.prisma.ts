@@ -68,7 +68,9 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
         referenceNumber: true,
         venue: { select: { nameFr: true, nameAr: true, number: true } },
         slotTemplate: { select: { nameFr: true, nameAr: true, startMinutes: true, endMinutes: true } },
-        client: { select: { firstName: true, lastName: true } }
+        // Rang 41 (D336, S-52) : la COPIE du nom du devis, telle que stockée — jamais le compte du client (M-7).
+        clientNameAr: true,
+        clientNameLatin: true
       }
     });
     if (row === null) return null;
@@ -89,7 +91,8 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
       lines: parseStoredLines(row.lines),
       venue: { nameFr: row.venue.nameFr, nameAr: row.venue.nameAr },
       slot: row.slotTemplate,
-      client: row.client
+      clientNameAr: row.clientNameAr,
+      clientNameLatin: row.clientNameLatin
     };
   }
 }

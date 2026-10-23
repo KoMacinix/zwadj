@@ -54,10 +54,13 @@ import { ConflictException, Inject, Injectable, NotFoundException } from "@nestj
 //   `convertirEnDemande`. Le supprimer ferme la porte lint ; il ne ferme pas le
 //   défaut, et cette phrase existe pour qu'on ne l'oublie pas.
 import {
+  ClientRecordErrorCode,
+  QUOTE_CLIENT_NAME_FIELD,
   QuoteErrorCode,
   QuoteStatus,
   formatQuoteReference,
   isQuoteLost,
+  type QuoteClientNameInput,
   type QuoteConvertInput,
   type QuoteConversionDTO,
   type QuoteCreateInput,
@@ -65,6 +68,7 @@ import {
   type QuoteDeliverInput,
   type QuoteSentVia
 } from "@zwadj/types";
+import { completeAussiLaFiche, copieDuNomPourDevis } from "../clients/pro-client-policy";
 import { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { civilUtcMs, holidayKey, parseCivilDate, toCalendarDay, type CivilDate } from "./availability-time";
@@ -170,7 +174,10 @@ export class QuotesService {
    *  ferme : depuis Q2, remettre le devis au client ne change plus son statut. */
   async create(userId: string, venueId: string, input: QuoteCreateInput): Promise<QuoteDTO> {
     await this.ownedVenue(userId, venueId);
-    const priced = await this.price(venueId, input);
+    // ⛔ Rang 41 (D336, K-4) — la fiche et la copie du nom se décident AVANT tout chiffrage : une fiche d'un autre pro, ou un nom changé sur une fiche liée,
+    // ne coûtent ni une lecture de tarif ni une écriture.
+    const copie = await this.copieDuClient(userId, input);
+    const priced = await this.price(venueId, input, copie);
 
     // ⚠ La création — le numéro du devis, l'identifiant, la tête de chaîne — est atomique
     // dans l'adaptateur. Le service dit CE QU'IL VEUT, pas comment.
@@ -249,7 +256,10 @@ export class QuotesService {
     // rouvrent par une version de plus.
     this.assertStatus(current, quoteAllowedFrom(QuoteCommand.REVISE));
 
-    const priced = await this.price(current.venueId, input);
+    // ⛔ Rang 41 (D336, MD-16) — une révision porte le corps ENTIER, la copie du nom comprise (celle que l'écran a préremplie du devis précédent, DB-17) :
+    // le serveur n'y substitue PAS la fiche vivante.
+    const copie = await this.copieDuClient(userId, input);
+    const priced = await this.price(current.venueId, input, copie);
     // ⚠ LE VERROU DE CHAÎNE EST DANS L'ADAPTATEUR, avec le `MAX(version)` qu'il
     // protège. Les séparer aurait rendu la garde invisible à la relecture.
     const row = await this.devis.creerRevision({
@@ -396,8 +406,48 @@ export class QuotesService {
     return this.toDTO(resultat.devis);
   }
 
+  /** ⛔ Rang 41 (D336, K-5, S-51) — la boîte de langue COMPLÈTE la copie du nom dans la langue du document ; elle ne la remplace JAMAIS (M-6).
+   *
+   *  La copie se complète par compare-and-set sur `NULL` dans le port ; la FICHE, dans la même transaction, seulement si c'est la même personne (C-C3 :
+   *  `completeAussiLaFiche`, la politique pure, passée au port qui ne la réécrit pas). ⚠ Aucun statut n'est lu ni écrit : la copie du nom n'est pas une
+   *  transition, et elle ne touche aucun montant. */
+  async completeClientName(userId: string, quoteId: string, input: QuoteClientNameInput): Promise<QuoteDTO> {
+    if (!UUID_PATTERN.test(quoteId)) this.throwNotFound();
+    const champ = QUOTE_CLIENT_NAME_FIELD[input.locale];
+    const champDeLaFiche = champ === "clientNameAr" ? "nameAr" : "nameLatin";
+    const resultat = await this.devis.completerNomDuClient({
+      userId,
+      quoteId,
+      champ,
+      nom: input.name,
+      completerLaFiche: (fiche, copie) => completeAussiLaFiche({ fiche, copie, champ: champDeLaFiche })
+    });
+    if (resultat.ok) return this.toDTO(resultat.devis);
+    // Refusé : le devis n'est pas au pro (404 indistinct), ou la copie est déjà là (409) — la relecture le dit.
+    if ((await this.devis.trouverDuPro(userId, quoteId)) === null) this.throwNotFound();
+    throw new ConflictException({ code: QuoteErrorCode.QUOTE_CLIENT_NAME_ALREADY_SET, message: "quote.errors.clientNameAlreadySet" });
+  }
+
   // ───────────────────────────────────────────────────────────────────────────
 
+  /** ⛔ Rang 41 (D336, K-4 ; S-49, MD-6, MD-11) — la fiche du devis et sa COPIE du nom. Sans fiche : rien (le devis du parcours se crée comme avant ce lot).
+   *  Avec : la fiche doit être au pro (sinon 404 indistinct, `CLIENT_RECORD_NOT_FOUND`) ; la copie est celle que le pro a saisie, sauf pour une fiche LIÉE,
+   *  dont la copie est celle de la fiche et dont un nom différent est refusé (409 `CLIENT_RECORD_LINKED`). La décision vit dans la politique pure. */
+  private async copieDuClient(
+    userId: string,
+    input: QuoteCreateInput
+  ): Promise<{ readonly clientRecordId: string | null; readonly clientNameAr: string | null; readonly clientNameLatin: string | null }> {
+    if (input.clientRecordId === undefined) return { clientRecordId: null, clientNameAr: null, clientNameLatin: null };
+    const fiche = await this.devis.ficheDuPro(userId, input.clientRecordId);
+    if (fiche === null) {
+      throw new NotFoundException({ code: ClientRecordErrorCode.CLIENT_RECORD_NOT_FOUND, message: "clientRecord.errors.notFound" });
+    }
+    const decision = copieDuNomPourDevis(fiche, { ar: input.clientNameAr, latin: input.clientNameLatin });
+    if (!decision.ok) {
+      throw new ConflictException({ code: ClientRecordErrorCode.CLIENT_RECORD_LINKED, message: "clientRecord.errors.linked" });
+    }
+    return { clientRecordId: fiche.id, clientNameAr: decision.copie.ar, clientNameLatin: decision.copie.latin };
+  }
 
 
   /** ⚠ LE 409 DE CONFLIT DE STATUT, ÉCRIT UNE SEULE FOIS. `deliver` et
@@ -412,7 +462,11 @@ export class QuotesService {
     });
   }
 
-  private async price(venueId: string, input: QuoteCreateInput) {
+  private async price(
+    venueId: string,
+    input: QuoteCreateInput,
+    copie: { readonly clientRecordId: string | null; readonly clientNameAr: string | null; readonly clientNameLatin: string | null }
+  ) {
     const date = parseCivilDate(input.eventDate) as CivilDate;
     const venue = await this.prisma.venue.findUniqueOrThrow({
       where: { id: venueId },
@@ -472,7 +526,8 @@ export class QuotesService {
     // condamnait au même lot ; la décision A les en a retirées — le versionnement
     // est conservé, donc ces trois colonnes sont ACTIVES.
     return {
-      clientId: input.clientId ?? null,
+      // Rang 41 (D336) — la fiche et la copie du nom, décidées par `copieDuClient` ; `clientId` n'est plus écrit (DB-15).
+      ...copie,
       slotTemplateId: slot.id,
       eventDate: new Date(civilUtcMs(date)),
       guests: input.guests,
@@ -557,7 +612,11 @@ export class QuotesService {
       sentVia: (row.sentVia as QuoteSentVia | null) ?? null,
       acceptedAt: row.acceptedAt?.toISOString() ?? null,
       createdAt: row.createdAt.toISOString(),
-      bookingId: row.booking?.id ?? null
+      bookingId: row.booking?.id ?? null,
+      // K-6 (rang 41, D336) — la fiche et la COPIE du nom, telles que STOCKÉES.
+      clientRecordId: row.clientRecordId,
+      clientNameAr: row.clientNameAr,
+      clientNameLatin: row.clientNameLatin
     };
   }
 

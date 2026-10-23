@@ -76,3 +76,15 @@ const contactEmailProbe = contactEmailSchema({ invalid: "invalid", tooLong: "too
 export function isValidContactEmail(raw: string): boolean {
   return contactEmailProbe.safeParse(raw).success;
 }
+
+/**
+ * L'e-mail d'une FICHE CLIENT, normalisé — rang 41 (D336, S-55) : rogné, NFKC, minuscules. UNE fonction, que le contrat de la fiche applique à la recherche (K-1),
+ * à la création (K-2) et à la modification (K-3b) : « Amina@Mail.DZ », « amina@mail.dz » et la même adresse en caractères pleine chasse désignent UNE fiche, et
+ * l'unicité `(pro, e-mail)` de la base ne voit qu'une forme (MD-3).
+ *
+ * ⚠ NFKC AVANT les minuscules : la pleine chasse (« ＡＭＩＮＡ ») et les lettres décomposées se ramènent d'abord à leurs caractères ordinaires, puis la casse se
+ * replie. ⚠ Aucun `CHECK` de forme n'est posé en base (S-55, non ratifié) : la forme vient du contrat, qui est le seul chemin d'écriture.
+ */
+export function normalizeContactEmail(raw: string): string {
+  return raw.trim().normalize("NFKC").toLowerCase();
+}

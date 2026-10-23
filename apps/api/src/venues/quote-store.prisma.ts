@@ -4,12 +4,14 @@
 // BLOC, pas l'appel : couper une transaction en deux méthodes casserait
 // l'abstraction au premier besoin d'atomicité croisée (MD5 du cadrage S10).
 import { Injectable } from "@nestjs/common";
-import { BookingStatus, type QuoteStatus } from "@zwadj/types";
+import { BookingStatus, type QuoteClientNameField, type QuoteStatus } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import type { CopieDuNom } from "../clients/pro-client-policy";
 import {
   type DevisChiffre,
   type DonneesConversion,
+  type FicheDuDevis,
   type ResultatConversion,
   QUOTE_SELECT,
   type QuoteRow,
@@ -291,5 +293,50 @@ export class PrismaQuoteStore implements QuoteStore {
       select: { id: true }
     });
     return owned !== null;
+  }
+
+  /** ⛔ Rang 41 (D336, MD-11) — la fiche par la RELATION au pro (D149) : `proProfile: { userId }`, jamais un identifiant qui « ressemble ». Rien du compte lié. */
+  async ficheDuPro(userId: string, recordId: string): Promise<FicheDuDevis | null> {
+    return this.prisma.proClientRecord.findFirst({
+      where: { id: recordId, proProfile: { userId } },
+      select: { id: true, nameAr: true, nameLatin: true, linkedUserId: true }
+    });
+  }
+
+  /** ⛔ Rang 41 (D336, K-5) — UNE transaction (voir le port) : la copie par compare-and-set, PUIS la fiche sous verrou et sous la décision de l'appelant. */
+  async completerNomDuClient(args: {
+    readonly userId: string;
+    readonly quoteId: string;
+    readonly champ: QuoteClientNameField;
+    readonly nom: string;
+    readonly completerLaFiche: (fiche: FicheDuDevis, copie: CopieDuNom) => boolean;
+  }): Promise<{ readonly ok: true; readonly devis: QuoteRow } | { readonly ok: false }> {
+    const enArabe = args.champ === "clientNameAr";
+    return this.prisma.$transaction(async (tx) => {
+      // ⛔ MD-7 — le compare-and-set est dans le WHERE : la copie de cette écriture NULLE, le devis du pro, sa salle vivante. Jamais lire puis écrire.
+      const ecrit = await tx.quote.updateMany({
+        where: { id: args.quoteId, ...(enArabe ? { clientNameAr: null } : { clientNameLatin: null }), venue: { deletedAt: null, owner: { userId: args.userId } } },
+        data: enArabe ? { clientNameAr: args.nom } : { clientNameLatin: args.nom }
+      });
+      if (ecrit.count === 0) return { ok: false } as const;
+      const devis = await tx.quote.findUniqueOrThrow({ where: { id: args.quoteId }, select: QUOTE_SELECT });
+      if (devis.clientRecordId !== null) {
+        // ⛔ MD-8 — la fiche est VERROUILLÉE avant d'être lue : la décision C-C3 porte sur l'état que l'écriture va trouver.
+        const lignes = await tx.$queryRaw<{ id: string; name_ar: string | null; name_latin: string | null; linked_user_id: string | null }[]>`
+          SELECT id::text AS id, name_ar, name_latin, linked_user_id::text AS linked_user_id FROM pro_client_records WHERE id = ${devis.clientRecordId}::uuid FOR UPDATE`;
+        const ligne = lignes[0];
+        if (ligne !== undefined) {
+          const fiche: FicheDuDevis = { id: ligne.id, nameAr: ligne.name_ar, nameLatin: ligne.name_latin, linkedUserId: ligne.linked_user_id };
+          if (args.completerLaFiche(fiche, { ar: devis.clientNameAr, latin: devis.clientNameLatin })) {
+            // L'écriture RE-POSE ses conditions : jamais remplacer un nom de la fiche, jamais une fiche liée — même si la décision se trompait.
+            await tx.proClientRecord.updateMany({
+              where: { id: fiche.id, ...(enArabe ? { nameAr: null } : { nameLatin: null }), linkedUserId: null },
+              data: enArabe ? { nameAr: args.nom } : { nameLatin: args.nom }
+            });
+          }
+        }
+      }
+      return { ok: true, devis } as const;
+    });
   }
 }

@@ -6,6 +6,7 @@
 // recalculer — un devis en DRAFT est, à lui seul, l'estimation à blanc dont on
 // aurait autrement eu besoin.
 import type {
+  QuoteClientNameInput,
   QuoteConversionDTO,
   QuoteConvertInput,
   QuoteCreateInput,
@@ -45,6 +46,9 @@ export interface QuotesClient {
    *  REPLI ; le serveur imprime dans la langue du CLIENT quand le devis est lié à un compte. Erreurs (JSON, `ApiError`) : 409 `QUOTE_VERSION_NOT_ACTIVE` (une version plus
    *  récente existe — porte `latestVersion`), 409 `QUOTE_STATUS_CONFLICT`, 503 `QUOTE_DOCUMENT_UNAVAILABLE` (une PANNE : réessayer a un sens, pas pour les 409). */
   document(quoteId: string, locale: QuoteDocumentLocale): Promise<Blob>;
+  /** K-5 (rang 41, D336) — la boîte de langue COMPLÈTE la copie du nom dans la langue du document (`POST /quotes/:id/client-name`) ; elle ne la remplace jamais :
+   *  une copie déjà là rend 409 `QUOTE_CLIENT_NAME_ALREADY_SET`. Rend le devis, la copie complétée. */
+  completeClientName(quoteId: string, input: QuoteClientNameInput): Promise<QuoteDTO>;
 }
 
 export function createQuotesClient(request: AuthedRequest): QuotesClient {
@@ -76,6 +80,8 @@ export function createQuotesClient(request: AuthedRequest): QuotesClient {
     cancel: (quoteId) =>
       request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/cancel`, { method: "POST", body: {} }),
     document: (quoteId, locale) =>
-      request<Blob>(`/quotes/${encodeURIComponent(quoteId)}/document?locale=${locale}`, { responseType: "blob" })
+      request<Blob>(`/quotes/${encodeURIComponent(quoteId)}/document?locale=${locale}`, { responseType: "blob" }),
+    completeClientName: (quoteId, input) =>
+      request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/client-name`, { method: "POST", body: input })
   };
 }

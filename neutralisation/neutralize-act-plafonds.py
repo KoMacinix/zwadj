@@ -57,7 +57,7 @@ SAUV = {f: f.with_suffix(f.suffix + ".sauvegarde") for f in (SRC, PREP)}
 PNPM = shutil.which("pnpm")
 assert PNPM, "ERREUR DE SCRIPT : pnpm introuvable"
 
-NB_TESTS_ATTENDU = 108  # 108 au rang 39 (D333 : +6 tests de la référence — 4 de l'écran, 2 du nom de fichier et de la fenêtre, relevés : 108 déclarations `it(`, « Tests 108 passed (108) » ; la constante SEULE change) ; 102 au rang 38 ; 41 jusqu'au rang 32 (D325, 76 après : +35), 95 au rang 33 (D326 : +19), 102 au rang 38 (D332 : +8 tests de la boîte de langue, −1 test de la langue de repli) — relevés : 102 déclarations `it(`, « Tests 102 passed (102) » ; la constante SEULE a changé
+NB_TESTS_ATTENDU = 127  # 127 au rang 41 (D336 : +19 tests de la fiche et du nom — 17 écrits avec les rouges, 2 après, relevés : 127 déclarations `it(`, « Tests 127 passed (127) » ; la constante SEULE change) ; 108 au rang 39 (D333 : +6 tests de la référence — 4 de l'écran, 2 du nom de fichier et de la fenêtre, relevés : 108 déclarations `it(`, « Tests 108 passed (108) » ; la constante SEULE change) ; 102 au rang 38 ; 41 jusqu'au rang 32 (D325, 76 après : +35), 95 au rang 33 (D326 : +19), 102 au rang 38 (D332 : +8 tests de la boîte de langue, −1 test de la langue de repli) — relevés : 102 déclarations `it(`, « Tests 102 passed (102) » ; la constante SEULE a changé
 
 # ⚠ L'ancre de chaque fenetre est son COMMENTAIRE, pas le seul appel : les trois
 # appels a `laisserRetomber()` sont identiques, et une ancre qui en designe
@@ -69,9 +69,12 @@ FENETRE_SOCLE = """  // ⚠ Le bootstrap d'`AppProviders` est encore en vol quan
   await laisserRetomber();
 """
 
-FENETRE_MONTAGE_CALENDRIER = """  // ⚠ Valider le client fait apparaître l'étape date, donc MONTE
+# ⚠ RÉORIENTÉE PAR ÉCRIT (rang 41, D336) : valider l'étape Client CRÉE d'abord la fiche (K-2, asynchrone), PUIS fait apparaître l'étape date —
+# le commentaire de la fenêtre a changé et elle compte DEUX `laisserRetomber()` ; la fenêtre ENTIÈRE est l'ancre, et la retirer reste la faute mesurée.
+FENETRE_MONTAGE_CALENDRIER = """  // ⚠ La création de la fiche retombe, PUIS l'étape date apparaît et MONTE
   // `VenueCalendar`, qui part aussitôt chercher sa disponibilité. Ses trois
   // `setState` (`setData`, `setError`, `setLoading`) retombent ici.
+  await laisserRetomber();
   await laisserRetomber();
 """
 

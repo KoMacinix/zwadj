@@ -176,8 +176,12 @@ cible("S-1. ⛔ un type de tarification INCONNU ne lève plus : la ligne s'impri
       "if (pricingType === undefined) throw new TypeError(", "if (false) throw new TypeError(", {"api-modele": T_TYPE_INCONNU})
 cible("S-2. ⛔ le nom ARABE du palier n'est plus exigé : le document arabe imprimerait un palier sans nom", LECTURE,
       ' || tierLabelAr === null || tierLabelAr.trim() === ""', " || false", {"api-modele": T_PALIER_FR_AR})
+# ⚠ S-3 RÉORIENTÉE PAR ÉCRIT (rang 41, D336) : la source du document ne lit PLUS le compte du client (M-7, S-52 : elle lit la COPIE du nom du devis) —
+# l'ancre `client: { select: { firstName: true, lastName: true } }` n'existe plus. La faute neutralisée ne change pas (la langue du compte LUE de nouveau),
+# elle s'insère dans la sélection d'aujourd'hui ; la mesure (la branche retirée sans code mort, `locale: true`) non plus.
 cible("S-3. ⛔ la langue du compte du client est LUE de nouveau (`locale: true`) : la branche retirée revient", LECTURE,
-      "client: { select: { firstName: true, lastName: true } }", "client: { select: { firstName: true, lastName: true, locale: true } }", {"api-modele": T_CODE_MORT})
+      "        clientNameAr: true,\n        clientNameLatin: true\n      }",
+      "        client: { select: { locale: true } },\n        clientNameAr: true,\n        clientNameLatin: true\n      }", {"api-modele": T_CODE_MORT}, genre="insertion")
 
 # ── V — le SERVICE et la POLITIQUE : la langue appliquée est la langue DEMANDÉE.
 cible("V-1. ⛔ le document est construit dans une langue FIXE, quelle que soit la langue demandée", SERVICE,

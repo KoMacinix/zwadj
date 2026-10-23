@@ -485,10 +485,18 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
   const FICHE = "018f0000-0000-7000-8000-0000000000f1";
   const toujours = () => true;
   const jamais = () => false;
+  /** Impose la ligne RELUE sans perdre le journal : `mockResolvedValue` remplacerait l'implémentation du double, qui l'écrit. */
+  function relire(ctx: ReturnType<typeof build>, ligne: Record<string, unknown>) {
+    ctx.tx.quote.findUniqueOrThrow.mockImplementation(async () => {
+      ctx.journal.push("findUniqueOrThrow");
+      return ligne;
+    });
+  }
 
   it("⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture", async () => {
-    const { store, prisma, tx } = build();
-    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: null, clientNameAr: "آمنة", clientNameLatin: "Amina" });
+    const ctx = build();
+    const { store, prisma, tx } = ctx;
+    relire(ctx, { id: QUOTE_ID, clientRecordId: null, clientNameAr: "آمنة", clientNameLatin: "Amina" });
     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة", completerLaFiche: toujours });
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
     expect(tx.quote.updateMany).toHaveBeenCalledWith({
@@ -499,7 +507,10 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
 
   it("⛔ refus (rien n'a été écrit) : le port REND `{ ok: false }`, sans lire ni écrire la fiche", async () => {
     const { store, tx, journal } = build();
-    tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    tx.quote.updateMany.mockImplementation(async () => {
+      journal.push("updateMany");
+      return { count: 0 };
+    });
     await expect(
       store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours })
     ).resolves.toEqual({ ok: false });
@@ -508,8 +519,9 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
   });
 
   it("⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée", async () => {
-    const { store, tx, journal } = build();
-    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
+    const ctx = build();
+    const { store, tx, journal } = ctx;
+    relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
     const decide = vi.fn(() => true);
     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة بن سالم", completerLaFiche: decide });
     expect(journal).toEqual(["updateMany", "findUniqueOrThrow", "fiche FOR UPDATE", "fiche updateMany"]);
@@ -525,24 +537,27 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
   });
 
   it("⛔ MD-8 — la politique dit NON (l'autre écriture diffère) : la fiche n'est PAS écrite, la copie l'est", async () => {
-    const { store, tx } = build();
-    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "ياسين", clientNameLatin: "Yacine" });
+    const ctx = build();
+    const { store, tx } = ctx;
+    relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "ياسين", clientNameLatin: "Yacine" });
     const r = await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "ياسين", completerLaFiche: jamais });
     expect(r.ok).toBe(true);
     expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
   });
 
   it("un devis SANS fiche : aucune lecture ni écriture de fiche", async () => {
-    const { store, tx, journal } = build();
-    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: null, clientNameAr: null, clientNameLatin: "Amina" });
+    const ctx = build();
+    const { store, tx, journal } = ctx;
+    relire(ctx, { id: QUOTE_ID, clientRecordId: null, clientNameAr: null, clientNameLatin: "Amina" });
     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
     expect(journal).toEqual(["updateMany", "findUniqueOrThrow"]);
     expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
   });
 
   it("le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche", async () => {
-    const { store, tx } = build();
-    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة", clientNameLatin: "Amina" });
+    const ctx = build();
+    const { store, tx } = ctx;
+    relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة", clientNameLatin: "Amina" });
     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
     expect(tx.quote.updateMany.mock.calls[0]![0]).toMatchObject({ where: { clientNameLatin: null }, data: { clientNameLatin: "Amina" } });
     expect(tx.proClientRecord.updateMany).toHaveBeenCalledWith({ where: { id: FICHE, nameLatin: null, linkedUserId: null }, data: { nameLatin: "Amina" } });

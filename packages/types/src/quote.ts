@@ -258,7 +258,9 @@ export const QuoteErrorCode = {
   QUOTE_VERSION_NOT_ACTIVE: "QUOTE_VERSION_NOT_ACTIVE",
   /** 503 — le MOTEUR de rendu du PDF a échoué (navigateur absent, délai). Une PANNE, jamais un refus : « un refus métier ne se replie pas
    *  sur une panne », et l'inverse — l'écran doit pouvoir inviter à réessayer l'une et pas l'autre (rang 33, D326). */
-  QUOTE_DOCUMENT_UNAVAILABLE: "QUOTE_DOCUMENT_UNAVAILABLE"
+  QUOTE_DOCUMENT_UNAVAILABLE: "QUOTE_DOCUMENT_UNAVAILABLE",
+  /** 409 — `POST /quotes/:id/client-name` (K-5, rang 41) : la copie du nom dans cette langue est DÉJÀ là ; elle n'est jamais remplacée (M-6). */
+  QUOTE_CLIENT_NAME_ALREADY_SET: "QUOTE_CLIENT_NAME_ALREADY_SET"
 } as const;
 export type QuoteErrorCode = (typeof QuoteErrorCode)[keyof typeof QuoteErrorCode];
 
@@ -278,6 +280,14 @@ export const quoteDocumentQuerySchema = z
   })
   .strict("quote.validation.unknownKey");
 export type QuoteDocumentQuery = z.infer<typeof quoteDocumentQuerySchema>;
+
+/**
+ * LA COPIE DU NOM QUE LE DOCUMENT IMPRIME, PAR LANGUE (rang 41, D336 ; S-52) — UNE correspondance, écrite une fois : le PDF en français imprime le nom en lettres
+ * LATINES, le PDF en arabe le nom ARABE, et seulement lui (« — » s'il manque : ni repli sur l'autre écriture, ni lecture du compte). La boîte de langue (K-5) complète
+ * le champ de la langue choisie, l'écran le demande quand il manque. Un `Record` sur `QuoteDocumentLocale` : une langue ajoutée au contrat sans son champ ne COMPILE pas.
+ */
+export const QUOTE_CLIENT_NAME_FIELD = { fr: "clientNameLatin", ar: "clientNameAr" } as const satisfies Record<QuoteDocumentLocale, "clientNameLatin" | "clientNameAr">;
+export type QuoteClientNameField = (typeof QUOTE_CLIENT_NAME_FIELD)[QuoteDocumentLocale];
 
 /**
  * LA RÉFÉRENCE D'UN DEVIS (rang 39, D333, L35-3 ; K-6) — `DEVIS-2026-0001-0089 v1` : l'ANNÉE d'Alger de la création de la version 1, le NUMÉRO DE LA SALLE (une séquence sur toute la
@@ -346,18 +356,45 @@ const contactName = personNameSchema({
 
 /** Création d'un devis — la v1 d'une chaîne.
  *
- *  `clientId` est FACULTATIF, et c'est le cas d'usage n°1 : le pro tape un devis
- *  pour quelqu'un qui hésite encore et n'a peut-être pas de compte. */
+ *  ⛔ RANG 41 (D336, K-4 amendé, S-49) — LA FICHE ET LA COPIE DU NOM ; `clientId` RETIRÉ (DB-15). Un devis peut naître SANS fiche — c'est le cas des devis
+ *  d'avant ce lot, et le schéma strict ne le refuse pas. Avec une fiche (`clientRecordId`), il porte la COPIE du nom POUR CE DEVIS (`clientNameAr`,
+ *  `clientNameLatin`, au moins une écriture) : DB-17 — « le nom prérempli et modifiable pour ce devis » — ne se tient pas autrement, et la fiche, elle, garde
+ *  son nom (R8). Des noms SANS fiche sont refusés : une copie se rattache à une fiche. ⚠ `clientId` est désormais une clé INCONNUE : le lien à un compte ne
+ *  passe plus que par la fiche et la fusion (L35-6) — un pro ne rattache plus n'importe quel identifiant de compte à un devis. La propriété de la fiche (le pro
+ *  du devis) et la copie d'une fiche LIÉE (celle de la fiche) se vérifient au SERVICE, qui seul lit la base. */
 export const quoteCreateSchema = z
   .object({
     eventDate: z.string().refine(isRealCivilDate, "quote.validation.dateFormat"),
     slotTemplateId: z.string().uuid("quote.validation.idInvalid"),
     guests: z.number().int().min(1, "quote.validation.guestsRange").max(100000, "quote.validation.guestsRange"),
     services: z.array(bookingServiceChoiceSchema).max(20, "quote.validation.tooManyServices").optional(),
-    clientId: z.string().uuid("quote.validation.idInvalid").optional()
+    clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),
+    clientNameAr: contactName.optional(),
+    clientNameLatin: contactName.optional()
+  })
+  .strict("quote.validation.unknownKey")
+  .superRefine((corps, ctx) => {
+    const avecNom = corps.clientNameAr !== undefined || corps.clientNameLatin !== undefined;
+    if (corps.clientRecordId === undefined && avecNom) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientRecordId"], message: "quote.validation.clientRecordRequired" });
+    }
+    if (corps.clientRecordId !== undefined && !avecNom) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientNameLatin"], message: "quote.validation.clientNameRequired" });
+    }
+  });
+export type QuoteCreateInput = z.infer<typeof quoteCreateSchema>;
+
+/**
+ * K-5 (rang 41, D336, S-51) — `POST /quotes/:id/client-name` : la boîte de langue COMPLÈTE la copie du nom dans la langue du document. Compare-and-set sur `NULL` : une
+ * copie présente n'est jamais remplacée (409 `QUOTE_CLIENT_NAME_ALREADY_SET`). La fiche se complète aussi, seulement sous C-C3 (le service en décide). `.strict()`.
+ */
+export const quoteClientNameSchema = z
+  .object({
+    locale: z.enum(QUOTE_DOCUMENT_LOCALES, { errorMap: () => ({ message: "quote.validation.documentLocaleInvalid" }) }),
+    name: contactName
   })
   .strict("quote.validation.unknownKey");
-export type QuoteCreateInput = z.infer<typeof quoteCreateSchema>;
+export type QuoteClientNameInput = z.infer<typeof quoteClientNameSchema>;
 
 /** Révision — crée la version N+1 de la MÊME chaîne. Le corps est celui d'une
  *  création : une version est un devis entier, jamais un diff. Un diff
@@ -405,7 +442,13 @@ export type QuoteConvertInput = z.infer<typeof quoteConvertSchema>;
 export interface QuoteDTO {
   id: string;
   venueId: string;
+  /** Le compte lié à un devis HÉRITÉ (avant le rang 41, `clientId` s'acceptait à la création) — lu, plus jamais écrit (DB-15). */
   clientId: string | null;
+  /** K-6 (rang 41, D336) — la FICHE du pro à laquelle le devis se rattache ; `null` pour un devis sans fiche (tous ceux d'avant ce lot). */
+  clientRecordId: string | null;
+  /** La COPIE du nom POUR CE DEVIS, en arabe et en lettres latines (R8, C-C3) — ce que le PDF imprime, chacune dans sa langue (S-52). */
+  clientNameAr: string | null;
+  clientNameLatin: string | null;
   status: QuoteStatus;
   version: number;
   /** K-6 (rang 39) — la référence du devis, rendue par le serveur : `DEVIS-2026-0001-0089 v1`. L'application ne la bâtit jamais ; une révision garde le numéro, SEULE la version change. */

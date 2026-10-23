@@ -280,7 +280,7 @@ describe("F-7 — un échec au milieu de la transaction ne fait pas avancer le c
     await expect(
       store.creerTeteDeChaine(
         f.venue.id,
-        { clientId: null, slotTemplateId: fantome, eventDate: new Date("2027-09-18T00:00:00.000Z"), guests: 100, basePriceCents: 100, servicesTotalCents: 0, totalCents: 100, depositCents: 30, lines: [] },
+        { clientRecordId: null, clientNameAr: null, clientNameLatin: null, slotTemplateId: fantome, eventDate: new Date("2027-09-18T00:00:00.000Z"), guests: 100, basePriceCents: 100, servicesTotalCents: 0, totalCents: 100, depositCents: 30, lines: [] },
         { annee: 2026, creeLe: new Date() }
       )
     ).rejects.toThrow();
