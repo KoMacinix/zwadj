@@ -111,3 +111,75 @@ Vérifié contre les chemins de l'extension 1 (59 cités ; « 54 » = les 4 de l
 | `docs/preuves/D336/rouges/rouge-pro.txt` | la sortie de vitest (`@zwadj/pro`) contre l'état d'avant |
 | `docs/preuves/D336/rouges/rouge-integration.txt` | la sortie de vitest (intégration, PostgreSQL réel) contre l'état d'avant |
 | `docs/preuves/D336/rouges/lecture-rouges.txt` | la lecture des rouges : chaque test, sa première ligne d'échec, et s'il échoue par une assertion ou à la collecte |
+
+#### Extension 4 — la procédure des rouges, les audits « d » et « e », les pièces de la fin du lot ; les harnais que le code peut périmer, déclarés CONDITIONNELS
+
+**Motif** : les rouges sont joués contre l'état d'avant (`18e1113`, aucun fichier de code du lot n'existe) et lus — 268 tests en échec lus, 268 annoncés par vitest, écart 0 ; quatre échecs de collecte. Avant leur commit, trois choses manquent à la table : (1) la PROCÉDURE qui les a produits et le LECTEUR qui les classe (« les journaux cités ET la procédure qui les a produits », D291 ; le lecteur porte sa calibration à deux bras, D286) ; (2) l'audit de secrets scellé qui précède tout versement de preuves (D291, D298), et celui de la clôture ; (3) ce que la fin du lot versera — les verts des mêmes suites, les portes, le harnais du lot, les campagnes touchées, la passe D277. ⚠ **Seize harnais** lisent des fichiers que ce lot modifie (relevé par recherche des chemins dans `neutralisation/neutralize-*.py` à `18e1113`) : une ancre, un titre de test ou un compte peut s'y périmer ; chacun est déclaré CONDITIONNEL, et sa réparation, s'il en faut une, est consignée cible par cible au rapport. Tout ce qui suit est déclaré AVANT le commit qui le contient.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D336/rouges/jouer-rouges.py` | la procédure qui a joué les rouges (les empreintes et les quatre sorties), archivée comme preuve (D291), jamais promue en instrument |
+| `docs/preuves/D336/rouges/lire-rouges.py` | le lecteur qui écrit `lecture-rouges.txt` (calibration à deux bras rejouée à chaque lancement, abandon si un bras manque) |
+| `docs/preuves/D336/audit-secrets-d336d.txt` | audit de secrets scellé « d », avant le commit des rouges |
+| `docs/preuves/D336/tri-audit-d336d.txt` | son tri au contexte contre « c » (`docs/preuves/D336/audit-secrets-d336c.txt`) |
+| `docs/preuves/D336/audit-secrets-d336e.txt` | audit de secrets scellé « e », avant le commit de clôture |
+| `docs/preuves/D336/tri-audit-d336e.txt` | son tri au contexte contre « d » |
+| `docs/preuves/D336/verts/empreintes-tests.txt` | l'empreinte SHA-256 des fichiers de test rejoués APRÈS le code (un écart avec celle des rouges est dit, fichier par fichier) |
+| `docs/preuves/D336/verts/vert-api-unitaire.txt` | la même suite que `rouge-api-unitaire.txt`, rejouée après le code |
+| `docs/preuves/D336/verts/vert-api-client.txt` | la même suite que `rouge-api-client.txt`, rejouée après le code |
+| `docs/preuves/D336/verts/vert-pro.txt` | la même suite que `rouge-pro.txt`, rejouée après le code |
+| `docs/preuves/D336/verts/vert-integration.txt` | la même suite que `rouge-integration.txt`, rejouée après le code |
+| `docs/preuves/D336/portes/extraire-portes.py` | l'extracteur des portes (le brut d'une porte porte des liens à jeton et des chemins de poste : le dépôt garde un EXTRAIT, avec l'empreinte du brut et le code de sortie réel), calibré à deux bras |
+| `docs/preuves/D336/portes/typecheck.txt` | porte `typecheck`, extrait |
+| `docs/preuves/D336/portes/lint.txt` | porte `lint`, extrait |
+| `docs/preuves/D336/portes/test.txt` | porte `test`, extrait |
+| `docs/preuves/D336/portes/build.txt` | porte `build`, extrait |
+| `docs/preuves/D336/portes/test-int.txt` | porte `test:int`, extrait |
+| `docs/preuves/D336/portes/e2e.txt` | `test:e2e` (exigée par la consigne v3, § 6 i), extrait |
+| `docs/preuves/D336/portes/etat-machine.txt` | l'état de la machine à la passe des portes (D270 : aucune durée ne se lit sans lui ; ce paquet n'est PAS une fenêtre certifiante) |
+| `docs/preuves/D336/neutralisation/r41.txt` | la sortie du harnais du lot (`neutralisation/neutralize-r41.py`) |
+| `docs/preuves/D336/neutralisation/campagnes.txt` | la sortie de `neutralisation/lancer-campagnes.py` : les campagnes que le lot TOUCHE |
+| `docs/preuves/D336/passe-d277/balayage.py` | l'instrument de la passe D277 des deux sens (copie octet pour octet de `docs/preuves/D335/passe-d277/balayage.py`) |
+| `docs/preuves/D336/passe-d277/motifs.txt` | ses motifs, pour ce lot |
+| `docs/preuves/D336/passe-d277/balayage-final.txt` | sa sortie, sur les fichiers d'autorité à la clôture |
+
+##### Fichiers CONDITIONNELS de l'extension 4
+
+| fichier | condition |
+|---|---|
+| `neutralisation/neutralize-act-plafonds.py` | une de ses ancres, un de ses titres de test ou un de ses comptes ne se retrouve plus après le code du lot (vaut pour chacune des seize lignes ci-dessous) |
+| `neutralisation/neutralize-booking-status.py` | même condition |
+| `neutralisation/neutralize-horloge.py` | même condition |
+| `neutralisation/neutralize-journey.py` | même condition |
+| `neutralisation/neutralize-r29.py` | même condition |
+| `neutralisation/neutralize-r32.py` | même condition |
+| `neutralisation/neutralize-r33.py` | même condition |
+| `neutralisation/neutralize-r37.py` | même condition |
+| `neutralisation/neutralize-r38.py` | même condition |
+| `neutralisation/neutralize-r39.py` | même condition |
+| `neutralisation/neutralize-r4.py` | même condition |
+| `neutralisation/neutralize-s10b.py` | même condition |
+| `neutralisation/neutralize-s11b.py` | même condition |
+| `neutralisation/neutralize-s9.py` | même condition |
+| `neutralisation/neutralize-solid-s3.py` | même condition |
+| `neutralisation/neutralize-solid-s7.py` | même condition |
+| `docs/preuves/D336/neutralisation/act-plafonds.txt` | la copie du journal de la campagne (D291), si `campagnes.txt` la joue (vaut pour chacune des seize lignes ci-dessous) |
+| `docs/preuves/D336/neutralisation/booking-status.txt` | même condition |
+| `docs/preuves/D336/neutralisation/horloge.txt` | même condition |
+| `docs/preuves/D336/neutralisation/journey.txt` | même condition |
+| `docs/preuves/D336/neutralisation/r29.txt` | même condition |
+| `docs/preuves/D336/neutralisation/r32.txt` | même condition |
+| `docs/preuves/D336/neutralisation/r33.txt` | même condition |
+| `docs/preuves/D336/neutralisation/r37.txt` | même condition |
+| `docs/preuves/D336/neutralisation/r38.txt` | même condition |
+| `docs/preuves/D336/neutralisation/r39.txt` | même condition |
+| `docs/preuves/D336/neutralisation/r4.txt` | même condition |
+| `docs/preuves/D336/neutralisation/s10b.txt` | même condition |
+| `docs/preuves/D336/neutralisation/s11b.txt` | même condition |
+| `docs/preuves/D336/neutralisation/s9.txt` | même condition |
+| `docs/preuves/D336/neutralisation/solid-s3.txt` | même condition |
+| `docs/preuves/D336/neutralisation/solid-s7.txt` | même condition |
+| `docs/preuves/D336/passe-d277/balayage-1-AVANT-ECRITURE.txt` | la première passe D277 trouve une occurrence à traiter (patron de D333) |
+| `docs/preuves/D336/aucune-valeur-reelle.txt` | un journal à valeurs réelles est ouvert pendant la session (le brut de l'e2e porte des liens à jeton) : le contrôle dédié de D299 sur les pièces versées |
+| `apps/api/test/int/contract-api-client.int-spec.ts` | une de ses listes ou un de ses comptes exige les chemins neufs du client d'API |
+| `apps/api/test/int/rbac-all-routes.int-spec.ts` | une de ses listes ou un de ses comptes exige les routes neuves (`@Roles(PRO)`) |
