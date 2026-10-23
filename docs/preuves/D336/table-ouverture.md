@@ -94,3 +94,20 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 ##### La section 6 e (le découpage du nom à la conversion) : AUCUN chemin neuf
 
 Vérifié contre les chemins de l'extension 1 (59 cités ; « 54 » = les 4 de la seconde lecture et de son audit + les 50 du code et des pièces du lot, hors les 2 fichiers conditionnels d'un défaut d'instrument et les 3 `.md` déjà déclarés à l'ouverture). Le découpage est une règle d'ÉCRAN, jamais stockée : elle vit dans le module pur `apps/pro/src/dashboard/walkin-client.ts` (testé par `apps/pro/src/dashboard/walkin-client.test.ts`), elle est appelée par `apps/pro/src/dashboard/walkin-journey.tsx` (testé par `apps/pro/src/dashboard/walkin-journey.test.tsx`), jouée de bout en bout par `e2e/specs/r41-fiche-client.e2e.ts` et neutralisée par `neutralisation/neutralize-r41.py` — **les six sont déjà déclarés par l'extension 1**. Rien ne manque pour 6 e.
+
+#### Extension 3 — ce que le code touche hors de l'extension 1, et les pièces des ROUGES, déclarés AVANT le premier commit qui les contient
+
+**Motif** : relevé du code avant d'écrire la première ligne (la troisième lecture est passée, `68bd32b` ; les arbitrages sont écrits, `aa42f4a` et `39ec96d` ; les modes de défaillance, `1a8e8f2`) : le contrat `QuoteDTO` gagne trois champs OBLIGATOIRES, la source du PDF change de forme (`client` → la copie du nom), et le client des fiches doit s'injecter dans l'application comme les autres. Quatre fichiers non déclarés en dépendent. Les **rouges** (D334, item 5) se versent dans un commit ANTÉRIEUR au premier commit de code, avec l'empreinte de chaque fichier de test qu'ils ont joué.
+
+| fichier | pour |
+|---|---|
+| `apps/pro/src/App.tsx` | `AppProviders` reçoit le double du client des fiches, comme ceux des devis et du catalogue |
+| `apps/pro/src/venues/quotes-section.test.tsx` | sa fabrique de `QuoteDTO` porte les trois champs neufs (le typage l'exige) |
+| `apps/api/src/documents/quote-document.service.spec.ts` | la source du PDF rend la COPIE du nom, plus le compte (M-7) |
+| `apps/api/test/int/pdf-renderer.int-spec.ts` | même raison : son enregistrement de devis porte la copie |
+| `docs/preuves/D336/rouges/empreintes-tests.txt` | l'empreinte SHA-256 de chaque fichier de test joué rouge, à l'octet |
+| `docs/preuves/D336/rouges/rouge-api-unitaire.txt` | la sortie de vitest (API, unitaire) contre l'état d'avant le code |
+| `docs/preuves/D336/rouges/rouge-api-client.txt` | la sortie de vitest (`@zwadj/api-client`) contre l'état d'avant |
+| `docs/preuves/D336/rouges/rouge-pro.txt` | la sortie de vitest (`@zwadj/pro`) contre l'état d'avant |
+| `docs/preuves/D336/rouges/rouge-integration.txt` | la sortie de vitest (intégration, PostgreSQL réel) contre l'état d'avant |
+| `docs/preuves/D336/rouges/lecture-rouges.txt` | la lecture des rouges : chaque test, sa première ligne d'échec, et s'il échoue par une assertion ou à la collecte |
