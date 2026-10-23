@@ -72,3 +72,25 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D336/modes-de-defaillance.md`, `docs/preuves/D336/scenarios-ko.md` | même condition : les modes de défaillance écrits AVANT le code ; les gestes de Ko (rang 33) |
 
 ⚠ Les pièces du code dont le nom dépend de la mesure (rouges lus contre l'état d'avant avec l'empreinte des tests joués, journaux des portes et du harnais, captures) se déclarent par une extension suivante, en chemins complets, **avant** leur versement ; tout chemin de code qui manquerait ci-dessus aussi.
+
+#### Extension 2 — la reprise sous la consigne VERSION 3 (22/10/2026) : la troisième lecture adverse, son audit, et les chemins de la section 6 e
+
+**Motif** : la seconde lecture a relevé une affirmation fausse de la version 2 (V3-DR5 ; `9f85228`) ; la consigne **version 3**, adoptée par Ko, remplace la version 2 en entier, garde le lot D336, et exige, en premier geste, une extension commitée SEULE qui déclare la troisième lecture, l'audit « c » et son tri, et tout chemin qu'écrirait la section 6 e que l'extension 1 ne déclare pas déjà. **SHA de départ de cette reprise** : `9f85228` (`HEAD` = `origin/main` après `git fetch`, arbre propre, aucun stash). **La règle d'arrêt est reconduite** (consigne v3, section 0) : tout ce qui suit la troisième lecture reste **CONDITIONNEL** à elle.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D336/lecture-adverse-v3/confronter-consigne-v3.py` | l'instrument de la TROISIÈME lecture : il reprend l'instrument de la seconde (`confronter-consigne-v2.py`, lu à `9f85228` et vérifié par empreinte, son préfixe EXÉCUTÉ tel quel — lequel exécute à son tour celui de la première) et ne rejoue que ce qui change (consigne v3 : sections 0, 2 b, 3 en-tête et DR5, 6 e h, 9) |
+| `docs/preuves/D336/lecture-adverse-v3/confronter-sortie-v3.txt` | sa sortie, versée avant toute écriture d'autorité |
+| `docs/preuves/D336/audit-secrets-d336c.txt` | audit de secrets scellé « c », avant le commit de la troisième lecture |
+| `docs/preuves/D336/tri-audit-d336c.txt` | son tri différentiel contre « b » (`docs/preuves/D336/audit-secrets-d336b.txt`) |
+
+##### Fichiers CONDITIONNELS de l'extension 2
+
+| fichier | condition |
+|---|---|
+| `docs/preuves/D336/lecture-adverse-v3/confronter-sortie-v3-passe-1-AVANT-CORRECTIFS.txt` | la première passe de l'instrument v3 porte un ✗ qui est un défaut de l'instrument |
+| `docs/preuves/D336/lecture-adverse-v3/defauts-instrument-v3.txt` | un tel défaut est trouvé |
+
+##### La section 6 e (le découpage du nom à la conversion) : AUCUN chemin neuf
+
+Vérifié contre les chemins de l'extension 1 (59 cités ; « 54 » = les 4 de la seconde lecture et de son audit + les 50 du code et des pièces du lot, hors les 2 fichiers conditionnels d'un défaut d'instrument et les 3 `.md` déjà déclarés à l'ouverture). Le découpage est une règle d'ÉCRAN, jamais stockée : elle vit dans le module pur `apps/pro/src/dashboard/walkin-client.ts` (testé par `apps/pro/src/dashboard/walkin-client.test.ts`), elle est appelée par `apps/pro/src/dashboard/walkin-journey.tsx` (testé par `apps/pro/src/dashboard/walkin-journey.test.tsx`), jouée de bout en bout par `e2e/specs/r41-fiche-client.e2e.ts` et neutralisée par `neutralisation/neutralize-r41.py` — **les six sont déjà déclarés par l'extension 1**. Rien ne manque pour 6 e.
