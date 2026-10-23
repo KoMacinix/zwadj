@@ -191,3 +191,24 @@ Vérifié contre les chemins de l'extension 1 (59 cités ; « 54 » = les 4 de l
 | fichier | pour |
 |---|---|
 | `apps/api/test/int/quote-numbering.int-spec.ts` | son `DevisChiffre` construit à la main (F-7) porte la fiche et les deux copies du nom, à `null`, au lieu de `clientId` |
+
+#### Extension 6 — les procédures des VERTS et de l'UNION des campagnes, et les sorties de découverte du harnais, déclarées AVANT le commit qui les contient
+
+**Motif** : trois relevés, faits avant d'écrire la moindre de ces pièces. (1) **Les verts** : l'extension 4 déclare leurs sorties (`docs/preuves/D336/verts/*.txt`) mais pas la procédure qui les produit — or « les journaux cités ET la procédure qui les a produits » entrent ensemble (D291) ; la procédure est une COPIE de `docs/preuves/D336/rouges/jouer-rouges.py` (mêmes groupes, mêmes fichiers, mêmes commandes), dont seuls le dossier, l'en-tête et la comparaison des empreintes aux rouges changent. (2) **Les campagnes** : l'extension 4 prévoyait la sortie de `neutralisation/lancer-campagnes.py`, mais ce tri compare à `HEAD` — **mesuré à `edb9387`** : il retient 12 campagnes, alors que le lot, de `b8ba85a` à l'arbre de travail, en touche **13** par le même tri (`neutralize-r37.py` lit `apps/pro/src/test-support/client-doubles.ts`, modifié par le commit des rouges seulement), et **17** par une recherche des chemins relative au paquet — les seize harnais conditionnels de l'extension 4 et `neutralize-r41.py`. Le patron de D333 est repris : l'UNION est CALCULÉE par une copie de `docs/preuves/D333/neutralisation/union-campagnes.py` (seuls le SHA de départ et les noms changent), VERSÉE avec sa sortie AVANT de jouer, puis JOUÉE par une copie de `docs/preuves/D333/neutralisation/jouer-union.py` ; les campagnes qui ont des cibles d'intégration sur des fichiers du lot (`neutralize-r33.py`, `neutralize-r39.py`, `neutralize-r41.py`, `neutralize-s11b.py`, `neutralize-solid-s3.py`) sont jouées UNE fois, avec `--int`. `docs/preuves/D336/neutralisation/campagnes.txt` (extension 4) reçoit la sortie de `lancer-campagnes.py --liste`, le tri tel qu'il est, pour que l'écart se lise. (3) **Le harnais du lot** : ses titres attendus se relèvent par le mode DÉCOUVERTE (« ils ne s'écrivent pas de mémoire ») ; sa sortie est la preuve d'où viennent les titres.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D336/verts/jouer-verts.py` | la procédure des verts : copie de `docs/preuves/D336/rouges/jouer-rouges.py` ; empreintes comparées aux rouges, fichier par fichier |
+| `docs/preuves/D336/neutralisation/union-campagnes.py` | le calcul de l'UNION des campagnes à rejouer (copie de celui de D333, calibré ; SHA de départ `b8ba85a`) |
+| `docs/preuves/D336/neutralisation/union-sortie.txt` | sa sortie, versée AVANT de jouer les campagnes |
+| `docs/preuves/D336/neutralisation/jouer-union.py` | le jeu de l'union, en série (copie de celui de D333 ; les cinq campagnes à cibles d'intégration jouées une fois, avec `--int`) |
+| `docs/preuves/D336/neutralisation/union-jeu.txt` | son rapport : par campagne, ce qu'elle a parcouru, mordu, tu, et sa sortie |
+| `docs/preuves/D336/neutralisation/r41-decouverte.txt` | la sortie de `neutralisation/neutralize-r41.py` en mode DÉCOUVERTE, sans `--int` : ce qui rougit, cible par cible |
+| `docs/preuves/D336/neutralisation/r41-decouverte-int.txt` | la même, avec `--int` (cibles d'intégration seules) |
+
+##### Fichiers CONDITIONNELS de l'extension 6
+
+| fichier | condition |
+|---|---|
+| `docs/preuves/D336/neutralisation/premier-jeu/act-plafonds.txt`, `docs/preuves/D336/neutralisation/premier-jeu/booking-status.txt`, `docs/preuves/D336/neutralisation/premier-jeu/horloge.txt`, `docs/preuves/D336/neutralisation/premier-jeu/journey.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r29.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r32.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r33.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r37.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r38.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r39.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r4.txt`, `docs/preuves/D336/neutralisation/premier-jeu/s10b.txt`, `docs/preuves/D336/neutralisation/premier-jeu/s11b.txt`, `docs/preuves/D336/neutralisation/premier-jeu/s9.txt`, `docs/preuves/D336/neutralisation/premier-jeu/solid-s3.txt`, `docs/preuves/D336/neutralisation/premier-jeu/solid-s7.txt`, `docs/preuves/D336/neutralisation/premier-jeu/r41.txt` | le premier jeu de l'union n'est pas entièrement vert : la sortie de chaque campagne de ce premier jeu se verse AVANT sa réparation (patron de D333) |
+| `docs/preuves/D336/neutralisation/r41-premier-jeu.txt` | le premier jeu du harnais du lot, titres écrits, n'est pas entièrement vert |
