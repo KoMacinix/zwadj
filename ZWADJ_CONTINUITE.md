@@ -2022,6 +2022,62 @@ Lot D335. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est 
 ⇒ **Ce que ces arbitrages et ces décisions font dans les fichiers** (liste de Ko et du relecteur, point par point) : **(a)** la ligne « la condition de clôture du rang 39 est LEVÉE » est **ANNOTÉE** avec le point 1 (NB-5 et le rejeu du 17/10), pas réécrite ; **(b)** l'entrée **NB-5** du backlog est **fermée avec renvoi** ; **(c)** **NB-3** (la procédure de restauration d'une sauvegarde) porte maintenant **les compteurs de devis (NB-1)** en plus de la séquence des salles ; l'entrée de code NB-1 reste **ouverte, à ordonner par Ko** ; **(d)** **NB-6** devient une **décision de Ko** (refus d'une date d'événement antérieure à aujourd'hui, heure d'Alger) : petit lot de code **à placer par Ko** ; la frontière avec la doctrine des bornes (D55) s'écrira **à son cadrage** ; **(e)** **S-34 à S-39 de la session D334 sont RATIFIÉES** — annotées à leur site ; **(f)** `AGENTS.md` : la liste « `prisma migrate dev` est INTERDIT » est annotée de **NB-4** ; **(g)** la passe se rejoue **sous le protocole de D334, sans retouche** (`6e78b23`).
 ⚠ *Dérivé par la session, pas une parole de Ko ni du relecteur — à confirmer* : (i) le lot D335 est **documentaire** (`.md` d'autorité et `docs/preuves/` seulement) : il ne compte pas ; le compteur reste **TROIS** à l'entrée et ne repasse à **ZÉRO** que si la marque est posée ; (ii) **les pièces de la passe sont versées par `docs/preuves/D334/outils/verser.py` dans `docs/preuves/D334/passe-<IDENTIFIANT>/`** (la destination du protocole, outil **non retouché**), et **déclarées une à une par une extension de la table de D335** : aucun préfixe ; (iii) l'identifiant de la passe est **`r40-20261017-reprise`** (une chaîne libre pour `passe.py` ; elle ne porte pas d'heure pour ne pas en afficher une fausse) ; (iv) « heure d'Alger » (point 4) n'est pas encore une règle écrite : le fuseau ne se dérive jamais de la locale (D48) — c'est au cadrage de NB-6 de l'écrire ; (v) le numéro **D335** est pris en lisant le registre (dernière ligne : D334).
 
+⛔ **ARBITRÉ LES 21 ET 22/10/2026 PAR KO — LE RANG 41, mot pour mot : la SECTION 1 de la consigne du relecteur, version 3 (première écriture d'autorité du lot D336 ; la table d'ouverture, ses deux extensions et les trois lectures adverses l'ont précédée dans `git`) :**
+
+(1a) 21/10/2026, 01:25 — les demandes adressées au relecteur et la question sur Figma sont retirées (ce ne sont pas des décisions) :
+Voici mes décisions après ton examen. Elles remplacent plusieurs de tes propositions.
+DOSSIER CLIENT
+- Il faut une fiche client. Si le client vient d'un compte Zwadj, le pro accède à son dossier en lecture seule. Recherche : nom et numéro ; ou nom et prénom (s'il y en a plusieurs, le pro confirme lequel avec le numéro) ; ou le numéro (confirmé avec le nom et prénom).
+- Le pro ne peut modifier que les fiches de son propre portefeuille, celles qu'il a créées. Si un client créé par le pro fusionne ensuite son propre compte Zwadj avec la fiche, le pro ne peut plus la modifier (champs grisés).
+- Le client a accès à ses différents devis, et il est notifié de tout changement de devis.
+- Le pro a un onglet « Clients » : recherche, dossier, devis du client.
+- Le pro ne peut pas changer un nom prérempli, sauf si la fiche vient de son propre catalogue.
+- Case « pour lui-même » / « pour quelqu'un d'autre ». Si « pour quelqu'un d'autre » : nom, prénom, lien (fils, fille, ami…).
+- Le numéro du pro est refusé.
+NOMS
+- Quand un nom est saisi en arabe, par le pro ou par le client, on demande de confirmer que le nom en lettres latines est correct, avant de passer à la suite. Quand le pro imprime en arabe un nom saisi en latin, on confirme aussi le nom traduit en arabe. Dans tous les cas, on lui donne la main pour corriger.
+NUMÉROS ET BROUILLONS
+- Pour l'instant, seulement les mobiles algériens, pas de fixes. Les numéros étrangers sont prévus plus tard.
+- Un client qui refuse de donner son numéro ET son adresse e-mail reçoit un devis brouillon non officiel. Pour un vrai devis, il faut le numéro ou l'adresse e-mail.
+PERSONNEL
+- Tout le monde peut se connecter au compte de la salle. Ensuite, la personne s'authentifie avec un code PIN à 4 chiffres, puis un nom de compte et un mot de passe. Une fois authentifiée, elle peut se déconnecter et se reconnecter avec le PIN seul, dans une fenêtre de temps limitée ; au-delà, on redemande nom de compte et mot de passe.
+- Seul l'admin pro crée des sous-comptes, avec un rôle attribué à la création. Les limites par compte (cases à cocher) viendront après.
+
+(1b) 22/10/2026, 09:53 — en entier :
+1. Priorité absolue : Mettre en pause tout le travail lié à la certification jusqu'à nouvel ordre. À partir de maintenant, l'accent est mis exclusivement sur la production de code.
+2. Méthode de livraison : Coder et livrer un seul lot (module cohérent) par session comme d'habitude.
+3. Exigences techniques : Appliquer rigoureusement les principes SOLID et les patrons de conception (design patterns) adaptés, normalement deja dit.
+4. Validation : demander la ratification du schéma de base de données pour s'assurer que la modélisation est correcte.
+Gestion des accès, des comptes et sécurité (Logique du PIN et des mots de passe)
+• Structure des comptes : Création d'un compte commun "Pro". À l'intérieur de ce compte, le Manager crée des profils pour lui-même et pour les employés. Chaque profil possède un nom de compte et un mot de passe initial attribué par le Manager.
+• Première connexion : Lors de sa première utilisation, le Travailleur doit obligatoirement modifier son mot de passe.
+• Cycle de vie du mot de passe : Le mot de passe expire automatiquement tous les 3 mois tous comme le pin.
+• Verrouillage et session :
+• Déconnexion automatique après 10 minutes d'inactivité.
+• Pour éviter de ressaisir le mot de passe long à chaque reconnexion, l'utilisateur configure un code PIN à 4 chiffres.
+• Le code PIN généré ne s'affiche qu'une seule fois à l'écran dans une fenêtre dédiée pour que le Travailleur le mémorise.
+• En cas de saisie du PIN, l'utilisateur a droit à 3 tentatives maximum. Si le PIN est erroné 3 fois, le compte est verrouillé.
+• Pour déverrouiller le compte, le Travailleur doit ressaisir son nom de compte et son mot de passe complet, ce qui lui permettra de générer un nouveau code PIN.
+• Assistance et réinitialisation : En cas d'oubli de mot de passe par un Travailleur, le Manager peut accéder à la liste de tous ses employés et réinitialiser le mot de passe de l'employé concerné. Comme lors de la première connexion, le Travailleur devra obligatoirement changer ce mot de passe temporaire dès sa première utilisation pour garantir la confidentialité vis-à-vis des clients.
+2. Accès à l'annuaire Zwadj et règles de recherche
+• Conditions d'accès : Le Professionnel peut accéder à l'annuaire Zwadj, uniquement s'il a créé une salle et que cette salle a été préalablement vérifiée et validée par l'administrateur (il pourra normalement acceder a son portefeuille).
+• Critères de recherche : ok pour la logique de recherche requérant au minimum 2 champs remplis simultanément (ou toute autre condition de restriction précédemment établie).
+• Visibilité des données client : Lorsque le Professionnel effectue une recherche sur un client, la visibilité est restreinte : l'information maximale affichée est la confirmation que le client possède un compte Zwadj. Si le client possède des réservations avec ce Professionnel, ce dernier les verra de toute façon directement depuis son interface de gestion des réservations.
+3. Réponses aux questions spécifiques (Q1 à Q8) et fonctionnalités annexes
+* Q1 (Partie A & B) : Validé pour la logique de visibilité des réservations. Pour la partie B de cette question, ne pas attendre les retours du juriste : effectuer des recherches indépendantes sur le sujet et baser le développement sur ces résultats.
+* Q2 : Une réservation est tout à fait possible avec une adresse e-mail uniquement. Le numéro de téléphone reste optionnel, bien qu'il soit préférable pour le Professionnel afin d'assurer une communication plus rapide en cas de besoin.
+* Q3 : Validé.
+* Q4 : Validé.
+* Q5 : Validé.
+* Q6 : Effectuer les recherches nécessaires sur ce point précis et baser le développement sur les résultats trouvés.
+* Q7 : Se fier  aux instructions verbales et écrites fournies par le client sur ce point.
+* Q8 (Notifications) : Préparer l'architecture technique (le terrain) pour l'envoi des e-mails et des messages WhatsApp, car ce bloc sera développé à la fin.
+* Concernant la traduction, elle doit s'exécuter automatiquement, mais le client final aura la possibilité de la confirmer pour garantir que le système fonctionne à tous les coups.
+
+(1c) Q1 à Q8 renvoient à la liste de décisions du relecteur du 21/10/2026, qui vit dans le chat et non au dépôt. Le texte des questions Q3, Q4 et Q5 n'est PAS versé à ce lot : tu écris au dépôt la seule ligne « Q3, Q4, Q5 : Validé (Ko, 22/10/2026) — texte des questions non versé à ce lot », et tu n'en tires AUCUNE règle. Ce n'est pas un motif d'arrêt. Si Ko colle plus tard le texte des questions, il fait l'objet d'une entrée à part, sans refaire ce lot. Q9 à Q12 (ordre des lots, ADM, actions de Ko, S-40 à S-47) : sans réponse de Ko, défauts du relecteur aux sections 2, 3 et 5.
+
+Lot D336. ⛔ **C'est la PREMIÈRE écriture d'autorité du lot, et l'ordre est de Ko** (patron de D295, D327, D328 à D335) : la session a reçu ce texte, elle ne s'est rien attribué. ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que ce texte. Les annotations (section 2 de la consigne), les décisions du relecteur DR1 à DR9 (section 3), le schéma ratifié (section 4), l'ordre des lots (section 5) et le lot (section 6) suivent dans des commits postérieurs.
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
