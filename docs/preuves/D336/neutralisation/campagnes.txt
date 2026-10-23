@@ -1,0 +1,37 @@
+71 fichier(s) modifié(s) depuis HEAD → 12 campagne(s) concernée(s) sur 38.
+  · neutralize-act-plafonds.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.test.tsx
+  · neutralize-booking-status.py  (1 fichier(s) en commun)
+      apps/api/src/venues/quote-store.prisma.ts
+  · neutralize-horloge.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.test.tsx
+  · neutralize-journey.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r29.py  (1 fichier(s) en commun)
+      apps/pro/src/App.tsx
+  · neutralize-r32.py  (4 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-contact.ts
+      apps/pro/src/dashboard/walkin-journey.tsx
+      packages/types/src/contact.ts
+  · neutralize-r33.py  (5 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+      packages/api-client/src/quotes-client.ts
+      packages/i18n/messages/ar.json
+  · neutralize-r38.py  (4 fichier(s) en commun)
+      apps/api/src/documents/quote-document-source.prisma.ts
+      apps/api/src/documents/quote-document.ts
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r39.py  (7 fichier(s) en commun)
+      apps/api/src/documents/quote-document-source.prisma.ts
+      apps/api/src/documents/quote-document.ts
+      apps/api/src/venues/quote-store.prisma.ts
+  · neutralize-r41.py  (15 fichier(s) en commun)
+      apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql
+      apps/api/src/clients/pro-client-policy.ts
+      apps/api/src/clients/pro-client-store.prisma.ts
+  · neutralize-s10b.py  (4 fichier(s) en commun)
+      apps/api/src/venues/quote-store.prisma.ts
+      apps/api/src/venues/quote-store.types.ts
+      apps/api/src/venues/quotes.service.spec.ts
+  · neutralize-s9.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/venue-client-context.tsx

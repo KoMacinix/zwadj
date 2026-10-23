@@ -1,0 +1,9 @@
+# D336 — porte `typecheck`
+# HEAD au lancement : 2f064bc — ⚠ D336 : le code du lot est mesuré dans l'ARBRE DE TRAVAIL, NON commité (la passe précède le commit de code ; la liste exacte des fichiers est le diff du commit de code qui suit)
+# code de sortie RÉEL de la commande : 0 · durée : 16 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 da39e501e2d9b75f1171e303c661446182910d78a601b263c6c349c12b0ee4fa · 627 octets · 21 lignes
+
+parcouru : 21 ligne(s)
+paquets « Done » : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) ; « Failed » : 0 (attendu : 0)
+paquets dont le package.json déclare le script `typecheck` : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) (attendu : les mêmes que les « Done » : égaux)
+code de sortie lu : 0 (attendu : 0)

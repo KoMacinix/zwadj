@@ -1,0 +1,166 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 46 déclarées · 46 jouées · 7 mesure(s) distincte(s) · 10 fichier(s) muté(s)
+  pré-vol api-modele : code 0 · passés 51 · en échec 0
+  pré-vol api-service : code 0 · passés 13 · en échec 0
+  pré-vol pro-app : code 0 · passés 18 · en échec 0
+  pré-vol pro-choix : code 0 · passés 9 · en échec 0
+  pré-vol pro-libelle : code 0 · passés 3 · en échec 0
+  pré-vol pro-liste : code 0 · passés 13 · en échec 0
+  pré-vol pro-remise : code 0 · passés 127 · en échec 0
+✓ M-1. ⛔ le détail suit la VALEUR de la quantité : une prestation « à l'unité » de quantité 1 n'imprime plus rien (DB-9 : la règle suit le TYPE)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected '><td>Chaises</td><td class="num">10\u…' to contain '× 1'
+✓ M-2. ⛔ une prestation « fixe » de quantité stockée 7 imprime « × 7 » : le détail suit la valeur, pas le type
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected '><td>Forfait</td><td class="det">× 7<…' not to contain '×'
+✓ M-3. une prestation « à paliers » imprime une QUANTITÉ au lieu du nom de son palier
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-modele] code 1 · passés 47 · en échec 4 · AssertionError: expected '><td>Gâteau</td><td class="det">× 1</…' to contain 'Formule Prestige'
+✓ M-4. ⛔ le nom du palier est pris dans l'AUTRE langue : le document arabe imprime le nom français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 46 · en échec 5 · AssertionError: expected '><td>Gâteau</td><td class="det">الصيغ…' to contain 'Formule Prestige'
+✓ M-5. ⛔ une ligne « à paliers » SANS nom de palier ne lève plus : elle s'imprime à moitié
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected function to throw an error, but it didn't
+✓ M-6. ⛔ la colonne de détail s'imprime TOUJOURS : une colonne vide quand toutes les prestations sont « fixe » (le défaut du constat 1 de Ko)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected 3 to be 2 // Object.is equality
+✓ M-7. la colonne de détail ne s'imprime JAMAIS : la quantité et le palier disparaissent du tableau
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 44 · en échec 7 · AssertionError: expected 2 to be 3 // Object.is equality
+✓ M-8. sans prestation, le tableau s'imprime quand même (vide) au lieu de n'imprimer aucun tableau
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' not to contain '<table'
+✓ M-9. ⛔ le montant d'une ligne est RECALCULÉ (total × quantité) au lieu d'être la valeur stockée (la règle des montants)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 48 · en échec 3 · AssertionError: expected '><td>Menu</td><td class="det">× 150</…' to contain '333\u202f333 DA'
+✓ M-10. le récapitulatif perd son titre « Récapitulatif » (il porte celui d'une autre ligne)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected '<section class="recap">\n  <h2>Total …' to contain '<h2>Récapitulatif</h2>'
+✓ M-11. ⛔ le récapitulatif répète la ligne des prestations à la place de la location : l'ordre location, prestations, total, acompte est rompu
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [api-modele] code 1 · passés 49 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ M-12. ⛔ une propriété PHYSIQUE (`margin-left`) dans l'alignement du récapitulatif : en arabe il serait du mauvais côté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected 'margin-left' to be null
+✓ M-13. ⛔ le nom du palier est inséré SANS échappement (`raw`) : un nom hostile devient du balisage
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected '<body>\n<h1>Salle des Jasmins</h1>\n<…' not to contain '<script>'
+✓ M-14. l'en-tête de la colonne de détail porte un autre libellé que « Détail »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '>Détail<'
+✓ M-17. la phrase « aucune prestation choisie » dit autre chose
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain 'Aucune prestation choisie.'
+✓ S-1. ⛔ un type de tarification INCONNU ne lève plus : la ligne s'imprime avec un détail deviné
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected function to throw an error, but it didn't
+✓ S-2. ⛔ le nom ARABE du palier n'est plus exigé : le document arabe imprimerait un palier sans nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected function to throw an error, but it didn't
+✓ S-3. ⛔ la langue du compte du client est LUE de nouveau (`locale: true`) : la branche retirée revient
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [api-modele] code 1 · passés 49 · en échec 2 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ V-1. ⛔ le document est construit dans une langue FIXE, quelle que soit la langue demandée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 12 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '<html lang="ar" dir="rtl">'
+✓ V-2. ⛔ la langue APPLIQUÉE que la réponse annonce (`Content-Language`) n'est plus la langue demandée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-service] code 1 · passés 12 · en échec 1 · AssertionError: expected 'fr' to be 'ar' // Object.is equality
+✓ Y-1. ⛔ `chooseDocumentLocale` REVIENT dans la politique : la règle remplacée laisse du code mort
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [api-modele] code 1 · passés 50 · en échec 1 · AssertionError: expected { f: 'quote-document-policy.ts', …(1) } to deeply equal { f: 'quote-document-policy.ts', …(1) }
+✓ C-1. la fenêtre fermée se rend quand même
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ C-2. elle n'est plus modale pour la technologie d'assistance (`aria-modal`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected 'false' to be 'true' // Object.is equality
+✓ C-3. ⛔ « Annuler » n'est plus le premier bouton : les options passent devant lui (et le focus d'entrée ne serait plus « Annuler »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected [ 'Annuler', 'العربية', 'Français' ] to deeply equal [ 'Annuler', 'Français', 'العربية' ]
+✓ C-4. ⛔ choisir une option ANNULE aussi : l'appelant recevrait le choix puis l'annulation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ C-5. choisir une option rend l'identifiant de la PREMIÈRE, quelle que soit celle cliquée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'ar' ]
+✓ C-6. ⛔ Échap n'annule plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: echap: expected "spy" to be called 1 times, but got 0 times
+✓ C-7. ⛔ un clic DANS la fenêtre annule (le fond n'est plus distingué du panneau)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 2 times
+✓ C-8. ⛔ la direction de l'option n'est plus déclarée : l'arabe est lu sans sa direction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected [ 'fr', null ] to deeply equal [ 'fr', 'ltr' ]
+✓ C-9. ⛔ une langue est DEVINÉE quand l'appelant n'en donne pas (`lang` « fr » et `dir` « ltr » par défaut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-choix] code 1 · passés 8 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ J-1. ⛔ le bouton de remise ne passe plus par la boîte : il enregistre et télécharge tout de suite, en français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 98 · en échec 29 · AssertionError: PRINT: expected null not to be null
+✓ J-2. ⛔ ANNULER la boîte remet quand même (le canal est enregistré, le PDF téléchargé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 125 · en échec 2 · AssertionError: bouton : aucune boîte, aucune fenêtre: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ J-3. ⛔ ANNULER ne ferme plus la boîte : elle reste ouverte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 126 · en échec 1 · AssertionError: bouton : aucune boîte, aucune fenêtre: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ J-4. ⛔ la langue envoyée est celle de l'INTERFACE : choisir « العربية » sur une page française envoie `fr`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 121 · en échec 6 · AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+✓ J-5. ⛔ la langue envoyée est toujours le français : le choix « العربية » est ignoré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 120 · en échec 7 · AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+   [pro-remise#2] code 1 · passés 120 · en échec 7 · AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+✓ J-6. ⛔ choisir une langue ne ferme pas la boîte avant le travail : elle reste ouverte pendant l'enregistrement et le téléchargement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 120 · en échec 7 · AssertionError: la boîte est fermée pendant le travail: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ J-7. ⛔ le libellé arabe déclare la direction `ltr` : l'arabe est présenté de gauche à droite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 126 · en échec 1 · AssertionError: expected [ 'ar', 'ltr' ] to deeply equal [ 'ar', 'rtl' ]
+✓ J-8. ⛔ le bouton arabe déclare la langue `fr`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 126 · en échec 1 · AssertionError: expected [ 'fr', 'rtl' ] to deeply equal [ 'ar', 'rtl' ]
+✓ J-9. la boîte ne propose que le français
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 118 · en échec 9 · AssertionError: PRINT — العربية: expected null not to be null
+✓ J-10. ⛔ le PDF est demandé au serveur dans une langue FIXE (le paramètre de `remettre` est ignoré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 124 · en échec 3 · AssertionError: expected last "spy" call to have been called with [ 'q1', 'ar' ]
+✓ K-1. « Français » est traduit dans le catalogue arabe : le libellé n'est plus écrit dans sa propre langue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-remise] code 1 · passés 126 · en échec 1 · AssertionError: expected 'الفرنسية' to be 'Français' // Object.is equality
+✓ T-1. le seuil du pluriel passe à TROIS salles : deux salles disent encore « Ma salle »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-libelle] code 1 · passés 2 · en échec 1 · AssertionError: 2: expected 'venue.ui.nav.myVenue' to be 'venue.ui.nav.myVenues' // Object.is equality
+✓ T-2. le seuil tombe à zéro : pendant le chargement le libellé dit « Mes salles » puis se rétracte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-libelle] code 1 · passés 2 · en échec 1 · AssertionError: expected 'venue.ui.nav.myVenues' to be 'venue.ui.nav.myVenue' // Object.is equality
+✓ T-3. ⛔ le menu écrit son propre libellé (la règle existe deux fois)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-liste] code 1 · passés 11 · en échec 2 · AssertionError: le menu dit le même mot que le titre: expected null not to be null
+   [pro-liste#2] code 1 · passés 11 · en échec 2 · AssertionError: src/shell/pro-nav.tsx: expected '\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\…' not to match /venue\.ui\.nav\.myVenue/
+✓ T-4. ⛔ le titre de la page dit toujours « Mes salles » (le défaut observé par D331)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-liste] code 1 · passés 8 · en échec 5 · AssertionError: expected 'Mes salles' to be 'Ma salle' // Object.is equality
+   [pro-app] code 1 · passés 17 · en échec 1 · AssertionError: expected null not to be null
+✓ T-5. le titre de la page dit toujours « Ma salle » : deux salles disent le singulier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-liste] code 1 · passés 9 · en échec 4 · AssertionError: expected 'Ma salle' to be 'Mes salles' // Object.is equality
+   [pro-liste#2] code 1 · passés 9 · en échec 4 · AssertionError: src/venues/venue-list-page.tsx: expected '\r\r\r\r\r\r\r\r\r\r\r\r\nimport { us…' not to match /venue\.ui\.nav\.myVenue/
+  empreintes : 10 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+46 garde(s) mordue(s) sur 46 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 46 sur 46, 0, 0)
+arbre rendu à son état de départ : vérifié.
+

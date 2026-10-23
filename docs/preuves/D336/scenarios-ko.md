@@ -1,0 +1,14 @@
+# D336 — rang 41 — les scénarios de Ko (condition de clôture du rang 33, et le constat de ce lot)
+
+En langage simple. Le lot est clos **sur le code** ; la condition de clôture du **rang 33** (« le nom du client », constat 2 de D327) reste **ouverte jusqu'au constat de Ko** — elle se lève aux scénarios 2 et 3. À jouer dans l'application Pro, sur une de tes salles, **en français puis en arabe** (scénario 8). Les numéros et les noms ci-dessous sont des exemples : prends un numéro de mobile qui n'est **pas** le tien.
+
+1. **Un nouveau client, par son numéro.** « Nouvelle réservation » : la première question est « Comment joindre le client ? ». Taper un numéro de mobile, « Continuer ». La page dit « Nouveau client… ». Taper le nom en lettres latines (« Amina Bensalem ») et le nombre d'invités, « Continuer ». À constater : on passe à la date ; la fiche du client est créée à ce moment-là.
+2. **Le PDF en français porte le nom.** Aller jusqu'à « Calculer le devis », choisir un canal, puis « Français ». À constater : le PDF imprime **« Amina Bensalem »** comme client (rang 33).
+3. **Le PDF en arabe : le nom est DEMANDÉ.** Sur le même devis, un canal, puis « العربية ». Une fenêtre demande le « Nom du client en arabe » : le taper, « Valider le nom ». À constater : le PDF arabe imprime **ce** nom ; refaire « العربية » : la question ne revient pas. « Annuler » dans cette fenêtre ne télécharge rien.
+4. **Le même client revient.** « Nouveau devis », taper le **même** numéro, « Continuer ». À constater : « Fiche retrouvée… » ; les deux noms sont déjà remplis (l'arabe a rejoint la fiche au scénario 3, parce que le nom latin du devis était celui de la fiche) et restent modifiables pour ce devis.
+5. **La conversion préremplie.** Après « Calculer le devis », la rubrique « Coordonnées du client » est remplie : prénom « Amina », nom « Bensalem », le numéro. Un prénom composé (« Abd El Kader ») tombe mal : le corriger à la main. « Enregistrer sans bloquer » : la demande porte ce que l'écran affiche.
+6. **Par l'e-mail seul.** « Nouveau devis », ne taper qu'une adresse e-mail : un nouveau client. À la conversion, le numéro est vide et « Enregistrer » reste grisé tant qu'il n'est pas saisi.
+7. **Ton propre numéro est refusé.** « Nouveau devis », taper **ton** numéro de mobile (ou ton e-mail de connexion) : au « Continuer » de l'étape Client, un message dit « C'est votre propre numéro ou votre propre adresse… », et aucun devis n'est créé.
+8. **En arabe.** Refaire 1 à 3 l'interface en arabe : les noms se présentent l'arabe d'abord, et la conversion découpe le nom **arabe**.
+
+Ce que ces scénarios **ne regardent pas** : une fiche **liée** à un compte (le lien naît de la fusion, L35-6, pas encore construite — aucun geste ne peut en créer une) ; la vérification du numéro par WhatsApp ; un numéro tapé en chiffres arabes et latins mélangés (hors lot, au backlog).

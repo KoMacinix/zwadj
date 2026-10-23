@@ -1,0 +1,22 @@
+# D336 — VERT « api » : la suite du rouge, rejouée APRÈS le code
+# commande : pnpm --filter @zwadj/api exec vitest run src/clients/pro-client-policy.spec.ts src/clients/pro-clients.service.spec.ts src/common/client-record.spec.ts src/venues/quotes.service.spec.ts src/venues/quote-store.prisma.spec.ts src/documents/quote-document.spec.ts src/documents/quote-document.service.spec.ts
+# HEAD : 3f8af90450771c3afbefd30618d4fbc241867f7b (le code du lot est dans l'arbre de travail)
+# environnement : NO_COLOR=1 FORCE_COLOR=0 CI=1 DEBUG_PRINT_LIMIT=200
+# début 2026-10-23T11:03:05 — fin 2026-10-23T11:03:10 — code de sortie 0
+# ── sortie brute (stdout puis stderr) ──
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/clients/pro-client-policy.spec.ts (17 tests) 7ms
+ ✓ src/common/client-record.spec.ts (27 tests) 29ms
+ ✓ src/clients/pro-clients.service.spec.ts (19 tests) 22ms
+ ✓ src/documents/quote-document.service.spec.ts (13 tests) 35ms
+ ✓ src/venues/quote-store.prisma.spec.ts (33 tests) 34ms
+ ✓ src/documents/quote-document.spec.ts (51 tests) 62ms
+ ✓ src/venues/quotes.service.spec.ts (25 tests) 23ms
+
+ Test Files  7 passed (7)
+      Tests  185 passed (185)
+   Start at  11:03:07
+   Duration  2.90s (transform 1.64s, setup 0ms, collect 9.79s, tests 213ms, environment 2ms, prepare 2.54s)
+

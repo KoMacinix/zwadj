@@ -1,0 +1,24 @@
+# D336 — empreintes SHA-256 des fichiers de test rejoués VERTS après le code (et de leur support), à l'octet — HEAD 3f8af90450771c3afbefd30618d4fbc241867f7b
+# relevées le 2026-10-23T11:03:05 ; comparées, fichier par fichier, à docs/preuves/D336/rouges/empreintes-tests.txt
+
+2dfff5a3ba96cf4f63f500a3aba9c5ee2731cdd523523a8ae95b118b13d6ec04  apps/api/src/clients/pro-client-policy.spec.ts  — identique au rouge
+8b472e49eefd9b1e930d484bd4e96aa67a30953db75060d8f0f3b092ec71596e  apps/api/src/clients/pro-clients.service.spec.ts  — DIFFÉRENT du rouge
+df4cd78f561812902ce80b28e38683c6fb689d61b296b71bf259018502b1ccc5  apps/api/src/common/client-record.spec.ts  — identique au rouge
+eb74323608ac01d1350b28fd6a4ffa5ae733784bad198d7d4844ad4223ba57ec  apps/api/src/venues/quotes.service.spec.ts  — DIFFÉRENT du rouge
+908650afb014ee837c9c03f74650a2351b255bdc0a3f9fd815d5e24e6247516c  apps/api/src/venues/quote-store.prisma.spec.ts  — DIFFÉRENT du rouge
+387d9866fddae068e4e7734afa54938e6c21b0ef3d0c6ca6556a50f0407de888  apps/api/src/documents/quote-document.spec.ts  — identique au rouge
+5eb5099c3f64898d4843a01228befeb27a7ee8511a816c6555bab588a7262b4c  apps/api/src/documents/quote-document.service.spec.ts  — identique au rouge
+7292a2c86a94d6ccdbbf77e6c528f5de34d8afb6852be44c9b7afcbb08833dcc  packages/api-client/src/clients-client.test.ts  — identique au rouge
+f7e4c847c170c961d8eb88c4fa600ac224ac6863c3a59287fca36571397900e1  packages/api-client/src/quotes-client.test.ts  — identique au rouge
+e6411c44cede0dbf4680bff1cd1bca6b60f9c8fc78c1f4b0f1be43e38ece96f4  apps/pro/src/dashboard/walkin-journey.test.tsx  — DIFFÉRENT du rouge
+56fed2d6e41b68f15f897d9bab09761cb59a713fef12654e98b3f01df580ef85  apps/pro/src/dashboard/walkin-contact.test.ts  — identique au rouge
+344c56ce230698e467cf3aaa4358c4b61996b4da92e9c6861df3cdecd342d678  apps/pro/src/dashboard/walkin-client.test.ts  — identique au rouge
+29a2daf8870f015a93fd8b4eab2c5adb0bff1dafc22c241a0ca8e6928f7e970c  apps/pro/src/venues/quotes-section.test.tsx  — identique au rouge
+a35ceb3d523475125ea7a30bb183360634c7ee794116ac2769de340b69b00909  apps/api/test/int/pro-clients.int-spec.ts  — identique au rouge
+54082aa0e48b047d1f0c717de2d3c6dc76ff88a33be0f91caddea836e3decd4a  apps/api/test/int/quotes.int-spec.ts  — identique au rouge
+8ad5276e9226e1fcfed9d79670face85bd86e5f3550d7092ea1560d805e58906  apps/api/test/int/quote-document.int-spec.ts  — DIFFÉRENT du rouge
+f6575c1fa66d8853b7908bd0764cdbc4815688a869de65fb96a115bf01e8175f  apps/api/test/int/migration-non-empty.int-spec.ts  — identique au rouge
+7b9a5b514797b87e2ca16a51acd16f75b78cc3d6b2c07e922f9d0c8daf629d17  apps/api/test/int/pdf-renderer.int-spec.ts  — identique au rouge
+87ca33930b8e623744638d9c6be74ce946e8f1b24318e8aa63c34bdcc2e1eeb4  apps/pro/src/test-support/client-doubles.ts  (support de test)  — identique au rouge
+
+# 19 fichiers examinés ; 19 empreintes de rouges lues ; 5 différent(s) du rouge (chacun est dit, avec son motif, dans la section D336)

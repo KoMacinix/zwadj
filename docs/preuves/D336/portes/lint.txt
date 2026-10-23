@@ -1,0 +1,9 @@
+# D336 — porte `lint`
+# HEAD au lancement : 2f064bc — ⚠ D336 : le code du lot est mesuré dans l'ARBRE DE TRAVAIL, NON commité (la passe précède le commit de code ; la liste exacte des fichiers est le diff du commit de code qui suit)
+# code de sortie RÉEL de la commande : 0 · durée : 13 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 019af86ce4510730dbfece717ed7d0963f50279a6b8e98b5963528388721c716 · 526 octets · 21 lignes
+
+parcouru : 21 ligne(s)
+paquets « Done » : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) ; « Failed » : 0 (attendu : 0)
+paquets dont le package.json déclare le script `lint` : 8 (apps/api, apps/client, apps/pro, e2e, packages/api-client, packages/i18n, packages/types, packages/ui) (attendu : les mêmes que les « Done » : égaux)
+code de sortie lu : 0 (attendu : 0)

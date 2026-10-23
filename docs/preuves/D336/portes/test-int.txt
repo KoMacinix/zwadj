@@ -1,0 +1,10 @@
+# D336 — porte `test-int`
+# HEAD au lancement : 2f064bc — ⚠ D336 : le code du lot est mesuré dans l'ARBRE DE TRAVAIL, NON commité (la passe précède le commit de code ; la liste exacte des fichiers est le diff du commit de code qui suit)
+# code de sortie RÉEL de la commande : 0 · durée : 338 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 8d4396dd6c92f59422b96f36c14e8980cecbf299b411defd35a39cfbc5398fda · 49398 octets · 363 lignes
+
+parcouru : 363 ligne(s)
+résumés vitest lus : 1 (attendu : 1)
+  résumé 1 : fichiers passés 40 · en échec 0 · total 40 ; tests passés 549 · en échec 0 · total 549
+base de D333 : fichiers 39, tests 493
+mesuré : fichiers 40, tests 549 · écart +56 tests, +1 fichiers

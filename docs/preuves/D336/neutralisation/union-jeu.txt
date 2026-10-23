@@ -1,0 +1,76 @@
+liste versée : 17 campagne(s) · jouées dans ce lancement : 17
+
+[1] neutralize-act-plafonds.py …
+    sortie=0 · 4 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 4 garde(s) mordue(s) sur 4 cible
+
+[2] neutralize-booking-status.py …
+    sortie=0 · 3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 3 garde(s) mordue(s) sur 3 cible
+
+[3] neutralize-e3d1-s8.py --int …
+    sortie=0 · 8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 8 garde(s) mordue(s) sur 8 cible
+
+[4] neutralize-horloge.py …
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 2 garde(s) mordue(s) sur 2 cible
+
+[5] neutralize-journey.py …
+    sortie=0 · 7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[6] neutralize-r29.py …
+    sortie=0 · 15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 15 garde(s) mordue(s) sur 15 cible
+
+[7] neutralize-r32.py …
+    sortie=0 · 65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 65 garde(s) mordue(s) sur 65 cible
+
+[8] neutralize-r33.py --int …
+    sortie=0 · 95 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 95 garde(s) mordue(s) sur 95 cible
+
+[9] neutralize-r37.py …
+    sortie=0 · 21 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 21 garde(s) mordue(s) sur 21 cible
+
+[10] neutralize-r38.py …
+    sortie=0 · 46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 46 garde(s) mordue(s) sur 46 cible
+
+[11] neutralize-r39.py --int …
+    sortie=0 · 51 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 51 garde(s) mordue(s) sur 51 cible
+
+[12] neutralize-r4.py …
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[13] neutralize-r41.py --int …
+    sortie=0 · 69 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 69 garde(s) mordue(s) sur 69 cible
+
+[14] neutralize-s10b.py …
+    sortie=0 · 20 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 20 garde(s) mordue(s) sur 20 cible
+
+[15] neutralize-s11b.py --int …
+    sortie=0 · 13 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 13 garde(s) mordue(s) sur 13 cible
+
+[16] neutralize-s9.py …
+    sortie=0 · 6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 6 garde(s) mordue(s) sur 6 cible
+
+[17] neutralize-solid-s3.py --int …
+    sortie=0 · 6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 6 garde(s) mordue(s) sur 6 cible
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-act-plafonds.py              0     4     0     0   167  4 garde(s) mordue(s) sur 4 cible
+neutralize-booking-status.py            0     3     0     0    16  3 garde(s) mordue(s) sur 3 cible
+neutralize-e3d1-s8.py --int             0     8     0     0    85  8 garde(s) mordue(s) sur 8 cible
+neutralize-horloge.py                   0     2     0     0   166  2 garde(s) mordue(s) sur 2 cible
+neutralize-journey.py                   0     7     0     0   329  — (aucun résumé écrit)
+neutralize-r29.py                       0    15     0     0   136  15 garde(s) mordue(s) sur 15 cible
+neutralize-r32.py                       0    65     0     0   734  65 garde(s) mordue(s) sur 65 cible
+neutralize-r33.py --int                 0    95     0     0  1207  95 garde(s) mordue(s) sur 95 cible
+neutralize-r37.py                       0    21     0     0   225  21 garde(s) mordue(s) sur 21 cible
+neutralize-r38.py                       0    46     0     0   564  46 garde(s) mordue(s) sur 46 cible
+neutralize-r39.py --int                 0    51     0     0   628  51 garde(s) mordue(s) sur 51 cible
+neutralize-r4.py                        0     2     0     0    79  — (aucun résumé écrit)
+neutralize-r41.py --int                 0    69     0     0  1037  69 garde(s) mordue(s) sur 69 cible
+neutralize-s10b.py                      0    20     0     0    90  20 garde(s) mordue(s) sur 20 cible
+neutralize-s11b.py --int                0    13     0     0   269  13 garde(s) mordue(s) sur 13 cible
+neutralize-s9.py                        0     6     0     0    46  6 garde(s) mordue(s) sur 6 cible
+neutralize-solid-s3.py --int            0     6     0     0   321  6 garde(s) mordue(s) sur 6 cible
+========================================================================================================================
+PARCOURU : 17 passage(s) pour 17 campagne(s) (attendu : autant que de campagnes ; `r33` et `r39` sont jouées UNE fois, avec --int) · 6099s
+MESURÉ : 433 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 0 sortie(s) non nulle(s) (attendu : 0, 0, 0)
+EXIT=0

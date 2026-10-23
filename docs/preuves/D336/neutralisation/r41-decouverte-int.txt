@@ -1,0 +1,146 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 69 déclarées · 15 jouées · 0 non jouée(s) (sans --int) · 4 mesure(s) distincte(s) · 4 fichier(s) muté(s)
+  pré-vol int-devis : code 0 · passés 51 · en échec 0
+  pré-vol int-fiches : code 0 · passés 32 · en échec 0
+  pré-vol int-migration : code 0 · passés 15 · en échec 0
+  pré-vol store-devis : code 0 · passés 33 · en échec 0
+■ A-2. ⛔ la recherche ne filtre plus par le PRO : la fiche d'un autre pro est trouvée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-11 — la fiche d'un AUTRE pro n'est pas trouvée : la rép
+         ↳ AssertionError: expected '{"found":true,"record":{"id":"01a168c…' to be '{"found":false}' // Object.is equality
+■ A-3. ⛔ MD-1 — l'insertion ne fait plus « rien sur conflit » : un doublon lève
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 27 · en échec 5
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⚠ IDEMPOTENT : la même fiche est RENDUE, et une fiche rendue n'est PAS modifié
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — DIX créations SIMULTANÉES du même numéro : UNE ligne, dix réponses qu
+         ↳ AssertionError: expected [ 200, 500, 500, 500, 500, 500, …(4) ] to deeply equal [ 200, 200, 200, 200, 200, 200, …(4) ]
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — dix créations SIMULTANÉES du même e-mail, sous des casses différentes
+         ↳ AssertionError: expected [ 200, 500, 500, 500, 500, 500, …(4) ] to deeply equal [ 200, 200, 200, 200, 200, 200, …(4) ]
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-2 — le numéro et l'e-mail désignent DEUX fiches différentes : 409 CLIENT_
+         ↳ AssertionError: expected 500 to be 409 // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-3 — l'e-mail est normalisé par UNE fonction (rogné, NFKC, minuscules) : l
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+■ A-4. ⛔ MD-6 — le complément d'un nom écrit sur une fiche LIÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  test/int/pro-clients.int-spec.ts > K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-6 — une fiche LIÉE ne se complète pas : 409 CLIENT_RECORD_LINKED
+         ↳ AssertionError: expected 200 to be 409 // Object.is equality
+■ A-5. ⛔ MD-7 — le complément REMPLACE un nom présent (le compare-and-set sur NULL saute)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  test/int/pro-clients.int-spec.ts > K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-7 — un nom PRÉSENT n'est jamais remplacé : 409 CLIENT_RECORD_NAME_ALREADY_SET, la fiche intacte (même
+         ↳ AssertionError: {"nameLatin":"Autre Nom"}: expected 200 to be 409 // Object.is equality
+■ A-6. ⛔ MD-6 — la modification écrit une fiche LIÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-6 — une fiche LIÉE n'est pas modifiable (champs grisés) : 409 CLIENT_R
+         ↳ AssertionError: expected 200 to be 409 // Object.is equality
+■ M-1. ⛔ l'unicité (pro, numéro) n'est plus UNIQUE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⚠ IDEMPOTENT : la même fiche est RENDUE, et une fiche rendue n'est PAS modifié
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — DIX créations SIMULTANÉES du même numéro : UNE ligne, dix réponses qu
+         ↳ AssertionError: expected 10 to be 1 // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-2 — le numéro ou l'e-mail d'une AUTRE fiche du pro : 409 CLIENT_RECORD
+         ↳ AssertionError: {"phone":"0555123456"}: expected 200 to be 409 // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les unicités sont PARTIELLES et PAR PRO : un même numéro chez deux pros, deux f
+         ↳ AssertionError: promise resolved "1" instead of rejecting
+■ M-2. ⛔ l'unicité (pro, e-mail) n'est plus UNIQUE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — dix créations SIMULTANÉES du même e-mail, sous des casses différentes
+         ↳ AssertionError: expected 10 to be 1 // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-3 — l'e-mail est normalisé par UNE fonction (rogné, NFKC, minuscules) : l
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-2 — le numéro ou l'e-mail d'une AUTRE fiche du pro : 409 CLIENT_RECORD
+         ↳ AssertionError: {"email":"AMINA@example.dz"}: expected 200 to be 409 // Object.is equality
+      FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les unicités sont PARTIELLES et PAR PRO : un même numéro chez deux pros, deux f
+         ↳ AssertionError: expected 'CREATE INDEX pro_client_records_pro_e…' to match /UNIQUE INDEX .* WHERE \(email IS NOT…/u
+■ M-3. ⛔ une fiche SANS identifiant passe la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les CHECK : un identifiant au moins, un nom au moins, un lien cohérent (compte 
+         ↳ AssertionError: promise resolved "1" instead of rejecting
+■ M-4. ⛔ une fiche SANS nom passe la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les CHECK : un identifiant au moins, un nom au moins, un lien cohérent (compte 
+         ↳ AssertionError: promise resolved "1" instead of rejecting
+■ M-5. ⛔ S-50 — un numéro qui n'est pas un mobile algérien canonique passe la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 (S-50) — l'expression du CHECK de forme accepte et refuse EXACTEMENT ce
+         ↳ AssertionError: expected { valeur: '+213455123456', base: true } to deeply equal { Object (valeur, base) }
+      FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 — la base REFUSE une écriture non canonique, même hors de l'API
+         ↳ AssertionError: promise resolved "1" instead of rejecting
+■ M-6. ⛔ R8 — supprimer une fiche SUPPRIME ses devis (au lieu de laisser tomber le lien)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · ROUGE — passés 13 · en échec 2
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ les garanties que la migration pose (D186) : quatre CHECK, deux un
+         ↳ AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) } ]
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > après la migration : une fiche s'écrit, un devis EXISTANT s'y rattac
+         ↳ error: new row for relation "quotes" violates check constraint "quotes_version_parent_coherent"
+■ V-2. ⛔ K-4 — le devis ne porte plus la fiche ni la copie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · ROUGE — passés 43 · en échec 8
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > le devis porte la fiche et la copie du nom TELLE QUE SAISIE pour ce devis (DB-17), ro
+         ↳ AssertionError: expected { clientRecordId: null, …(2) } to deeply equal { …(3) }
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_
+         ↳ AssertionError: expected null to be 'Amina Bensalem' // Object.is equality
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-16 — une RÉVISION porte la copie FOURNIE (celle du devis précédent), jamais la f
+         ↳ AssertionError: expected null to be 'Amina Bensalem' // Object.is equality
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-7 (R8) — MODIFIER la fiche (K-3b) ne touche AUCUNE copie déjà faite : le devis g
+         ↳ AssertionError: expected { latin: null, ar: null } to deeply equal { latin: 'Amina Bensalem', ar: null }
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > complète la copie MANQUANTE de la langue demandée
+         ↳ AssertionError: expected { Object (client_name_ar, client_name_latin) } to deeply equal { Object (client_name_ar, client_name_latin) }
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS re
+         ↳ AssertionError: expected 201 to be 409 // Object.is equality
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 1 — le nom de l'AUTRE écri
+         ↳ AssertionError: expected { name_ar: null, …(1) } to deeply equal { name_ar: 'آمنة بن سالم', …(1) }
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 2 — il DIFFÈRE (deux perso
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ K-1. ⛔ MD-7 — K-5 REMPLACE une copie présente (le compare-and-set sur NULL saute)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store-devis] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-7 — l
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(1) } } ]
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > le champ L
+         ↳ AssertionError: expected { where: { …(2) }, data: { …(1) } } to match object { …(2) }
+   [int-devis] code 1 · ROUGE — passés 49 · en échec 2
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS re
+         ↳ AssertionError: expected 201 to be 409 // Object.is equality
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 — deux compléments SIMULTANÉS de la même l
+         ↳ AssertionError: expected [ 201, 201 ] to deeply equal [ 201, 409 ]
+■ K-2. ⛔ MD-8 — la décision C-C3 est ignorée : la fiche se complète toujours
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store-devis] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — u
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { …(4) }, …(1) ]
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — l
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+   [int-devis] code 1 · ROUGE — passés 50 · en échec 1
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 2 — il DIFFÈRE (deux perso
+         ↳ AssertionError: expected { name_ar: 'ياسين بن سالم', …(1) } to deeply equal { name_ar: null, …(1) }
+■ K-4. ⛔ K-4 — la fiche du devis se lit sans la PROPRIÉTÉ du pro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · ROUGE — passés 50 · en échec 1
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fic
+         ↳ AssertionError: 01a168d3-d9ec-7aa0-b4bb-dcb944facb9d: expected 201 to be 404 // Object.is equality
+  empreintes : 15 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 15 cible(s) jouée(s) sur 69, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+EXIT=0

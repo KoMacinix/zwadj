@@ -1,0 +1,69 @@
+# D336 — VERT « int » : la suite du rouge, rejouée APRÈS le code
+# commande : pnpm --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/pro-clients.int-spec.ts test/int/quotes.int-spec.ts test/int/quote-document.int-spec.ts test/int/migration-non-empty.int-spec.ts test/int/pdf-renderer.int-spec.ts
+# HEAD : 3f8af90450771c3afbefd30618d4fbc241867f7b (le code du lot est dans l'arbre de travail)
+# environnement : NO_COLOR=1 FORCE_COLOR=0 CI=1 DEBUG_PRINT_LIMIT=200
+# début 2026-10-23T11:03:47 — fin 2026-10-23T11:04:50 — code de sortie 0
+# ── sortie brute (stdout puis stderr) ──
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/quotes.int-spec.ts (51 tests) 14801ms
+   ✓ Création et chaîne de versions > un devis naît en DRAFT, v1, sa propre racine de chaîne  513ms
+   ✓ Création et chaîne de versions > une révision crée la v2 de la MÊME chaîne, en DRAFT, sans rien remplacer  326ms
+   ✓ Q2 — les statuts LEGACY ne sont plus écrits > le parcours complet ne laisse aucun SENT ni SUPERSEDED en base  348ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une PENDING ne verrouille rien : deux devis peuvent viser la MÊME date  324ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > les LIGNES du devis deviennent les lignes de la demande  331ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité DECLINED  320ms
+   ✓ Taux de transformation — la raison d'être de la table > compte des CHAÎNES, pas des versions : trois révisions sont UNE affaire  315ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis qui n'aboutit PAS existe quand même — c'était impossible avant  301ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fiche inexistante, et aucun devis écrit  420ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_LINKED) ; les noms de la fiche passent  338ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > complète la copie MANQUANTE de la langue demandée : « ar » écrit le nom arabe, « fr » le nom latin — 201 et le devis rendu la porte  317ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-6 — une fiche LIÉE n'est jamais complétée par la boîte : seule la copie du devis l'est  343ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > le devis d'un AUTRE pro, ou inexistant : 404 QUOTE_NOT_FOUND ; un corps invalide : 400  444ms
+ ✓ test/int/quote-document.int-spec.ts (20 tests) 12342ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > le propriétaire télécharge : application/pdf, pièce jointe, non mise en cache, langue appliquée — et la ligne du devis est INCHANGÉE (la route n'écrit rien)  604ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > le VRAI moteur : un PDF valide, la police du dépôt embarquée et seule  2451ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > ⛔ un AUTRE pro est refusé en 404 indistinct — rien n'est rendu : un identifiant deviné ne livre pas les données d'un client  498ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404  454ms
+   ✓ ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > après une révision, le PDF de la v1 est REFUSÉ (409, `latestVersion` 2) et celui de la v2 est servi  313ms
+   ✓ ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > une chaîne dont la dernière version est ANNULÉE rend le 409 de statut ; une ANCIENNE version annulée reste « pas la version active » (ordre des refus)  334ms
+   ✓ ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 2 — un changement des RÈGLES DE PRIX APRÈS le devis ne change PAS le montant imprimé (et un NOUVEAU devis, lui, suit les nouvelles règles)  326ms
+   ✓ La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client > dans les deux sens, avec ou sans fiche : `Content-Language` et la langue du HTML sont la langue DEMANDÉE  325ms
+   ✓ ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ M-7 — le COMPTE n'est plus lu : un devis hérité lié à un compte (`client_id` posé en base) et SANS copie imprime « — », jamais le nom du compte  360ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le détail suit le TYPE : « par invité » et « à l'unité » la quantité stockée, « à paliers » le nom du palier choisi (FR et AR), « fixe » rien — et chaque montant est celui du devis  353ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > ⛔ le nom du palier est celui de la LIGNE stockée : renommer le palier dans le catalogue APRÈS le devis ne change PAS le PDF (P-3)  349ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le VRAI moteur rend ce devis dans les deux langues : un PDF valide, la police du dépôt embarquée et seule  3215ms
+   ✓ Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > chaque canal de la liste d'autorité est accepté ET relu en base : un canal accepté par le type mais refusé par la base casserait ici  510ms
+   ✓ Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > l'entonnoir COMPTE le canal e-mail : un devis remis par e-mail entre dans `delivered`  371ms
+ ✓ test/int/pro-clients.int-spec.ts (32 tests) 8828ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche absente : 200 et `{ found: false }`, sans aucune autre clé  388ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE : le numéro d'un COMPTE Zwadj et un numéro inconnu rendent la même réponse (statut, type, corps à l'octet)  323ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-11 — la fiche d'un AUTRE pro n'est pas trouvée : la réponse est celle d'un numéro inconnu  404ms
+   ✓ K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-6 — une fiche LIÉE n'est pas modifiable (champs grisés) : 409 CLIENT_RECORD_LINKED, la fiche intacte  305ms
+   ✓ ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > K-3 et K-3b sur la fiche d'un autre pro rendent le MÊME 404 qu'un identifiant inexistant, et la fiche reste intacte  419ms
+   ✓ ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > un CLIENT connecté n'atteint aucune route des fiches (403)  358ms
+   ✓ Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les unicités sont PARTIELLES et PAR PRO : un même numéro chez deux pros, deux fiches sans e-mail ; jamais deux fois le même numéro chez un pro  389ms
+ ✓ test/int/migration-non-empty.int-spec.ts (15 tests) 5584ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > prépare une base à l'avant-dernière migration, puis la sème  409ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle  436ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)  430ms
+ ✓ test/int/pdf-renderer.int-spec.ts (11 tests) 7038ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > rend un PDF d'UNE page — et un document QUELCONQUE passe par le même port (décision 6 : le moteur n'est pas écrit pour le seul acompte)  1953ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 1 — JavaScript est COUPÉ : le script qui change le titre ne le change pas  389ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 2 — le RÉSEAU est muet : ni l'image ni la feuille de style n'atteignent le serveur local  914ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > la police du DÉPÔT est embarquée, et SEULE : aucun caractère arabe ou latin ne retombe sur une police système  1870ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > le TÉMOIN sans la police ne porte pas Readex Pro : le test précédent discrimine donc quelque chose  1276ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 3 — le navigateur est FERMÉ après un rendu réussi, et après un rendu qui dépasse son délai  621ms
+
+ Test Files  5 passed (5)
+      Tests  129 passed (129)
+   Start at  11:03:49
+   Duration  61.60s (transform 1.39s, setup 105ms, collect 10.37s, tests 48.59s, environment 1ms, prepare 828ms)
+
+
+# ── stderr ──
+(node:12332) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:4864) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

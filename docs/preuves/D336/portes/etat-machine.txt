@@ -1,0 +1,9 @@
+# D336 — état de la machine autour du paquet de portes (relevé par PowerShell, avant `typecheck` et après `test:e2e`, le 23/10/2026)
+# ⚠ CE PAQUET N'EST PAS UNE FENÊTRE CERTIFIANTE : les certifications sont en PAUSE (Ko, 22/10/2026 ; périmètre DR1 (D336)) ; aucune durée de `portes/*.txt` n'est comparée à une autre, et aucune ne se lit comme une mesure du code (D290).
+
+avant (10:47:07) : alimentation PowerOnline=True · Charging=False · Discharging=False → SECTEUR · RAM libre 3 280 Mo sur 16 095 Mo · % Processor Performance 91,8 (une lecture au repos) · processus : chrome=8 · headless_shell=0 · node=0 · msedge=0 · aucun serveur à l'écoute sur 3100 et 3101
+après (11:02:33) : alimentation PowerOnline=True · Charging=False · Discharging=False → SECTEUR · RAM libre 3 542 Mo · % Processor Performance 82,0 · processus : chrome=8 · headless_shell=0 · node=0 · msedge=0 · aucun serveur à l'écoute sur 3100 et 3101
+
+# Ce que ce relevé dit : la RAM libre est sous la barre d'une fenêtre certifiante, et huit processus `chrome` tournaient — deux raisons de plus de ne rien certifier ici ; la porte `test` a d'abord rendu UN échec (`account-settings-page.test.tsx`, la garde console sous charge, entrée ouverte du backlog), puis 0 en la rejouant — `portes/test-passe-1-rouge.txt` et `portes/test.txt`.
+# Ce qu'il ne dit PAS : l'état PENDANT chaque porte (deux relevés, avant et après ; aucun échantillonneur n'a tourné) ; l'état des fichiers `.env` (le contrôle de D330 est celui d'une CERTIFICATION, pas d'un paquet de portes).
+# Docker Desktop s'était ARRÊTÉ plus tôt dans la session (la découverte d'intégration du harnais l'a vu : ECONNREFUSED) ; il a été relancé par la session avant la découverte rejouée, l'union et ce paquet (conteneur `zwadj-db`, PostgreSQL 18).

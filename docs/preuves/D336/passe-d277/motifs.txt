@@ -1,0 +1,40 @@
+# D336 — motifs de la passe D277 de la CLÔTURE du rang 41 (L35-4 amendé : la fiche client d'un pro, numéro OU e-mail, et le nom sur le devis ; lot de CODE).
+# Lus par balayage.py (copie à l'octet de celui de D335, mêmes mécanique et calibration ; seul ce fichier change), jamais passés en ligne de commande (D289).
+# sens 1 — ce que le lot INVALIDE : « aucune recherche par téléphone » et « aucun téléphone n'est unique » (K-1 existe, l'unicité (pro, numéro) des fiches existe) ; « RIEN N'EST CODÉ » (la fiche
+#          est codée) ; « le PDF lit « — » » et « aucune colonne de contact » (la copie du nom est sur le devis) ; « clientId » (retiré de la création, DB-15) ; « RANG 41 : OUVERT » ; « UN à la clôture » ;
+#          « le nom du client vient avec L35-4 » ; « se ferme à la clôture du rang » ; « à nommer » (K-3b, K-12 sont nommés) ; « PROCHAIN LOT — rang 41 » ; « unique par `(pro, numéro)` » (et par e-mail).
+# sens 2 — ce que le lot REND PERMIS, ou dont la CONDITION change : « peut s'ouvrir » ; « PEUT s'ouvrir » ; « RANG 42 » ; « L36-1 » ; « L35-5 » ; « L35-6 » ; « L35-7 » ; « derrière L35-4 » ; « après L35-4 » ;
+#          « BLOQUE : L35-6 » ; « premier lot qui ouvre » (`phone.ts`) ; « NB-1 » ; « NB-6 » ; « à ordonner par Ko » ; « le constat visuel de Ko ».
+T+|RANG 41 : OUVERT
+T-|zz-motif-absent-de-tout-fichier-d336
+1|aucune recherche par téléphone
+1|aucun téléphone n'est unique
+1|RIEN N'EST CODÉ
+1|rien n'est codé
+1|le PDF lit « — »
+1|LE PDF LIT « — »
+1|aucune colonne de contact
+1|clientId
+1|RANG 41 : OUVERT
+1|UN à la clôture
+1|le nom du client vient avec L35-4
+1|se ferme à la clôture du rang
+1|à nommer
+1|À NOMMER
+1|PROCHAIN LOT — rang 41
+1|unique par `(pro, numéro)`
+1|écrit le numéro sans code
+2|peut s'ouvrir
+2|PEUT s'ouvrir
+2|RANG 42
+2|L36-1
+2|L35-5
+2|L35-6
+2|L35-7
+2|derrière L35-4
+2|après L35-4
+2|BLOQUE** : le constat 2
+2|premier lot qui ouvre
+2|NB-1
+2|NB-6
+2|le constat visuel de Ko

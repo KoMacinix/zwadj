@@ -1,0 +1,7 @@
+# D336 — contrôle DÉDIÉ « aucune valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py), joué le 23/10/2026 sur l'arbre de travail de la clôture (HEAD 3f8af90 + le code du lot, non commité) ;
+# cherchées dans docs/preuves/D336, les trois .md d'autorité, CLAUDE.md, neutralisation, e2e, apps/pro/src, apps/api/src, packages. N'imprime JAMAIS une valeur : des comptes seulement.
+# Le seul journal de la session qui en porte est le brut de test:e2e ; ceux de test, test:int et de la première passe rouge de test n'en portent aucune (grep -c 0 chacun).
+
+✓ <scratchpad>/portes/e2e.log : occurrences stricte 67 · large 67 (doivent s'accorder) · valeurs distinctes 67 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, <scratchpad>/portes/e2e.log porte 67 valeur(s) (attendu ≥ 67)
+== valeurs cherchées : 67 (1 journal/journaux) · parcourus : 16954 fichiers, 326221741 octets · porteurs : 0 (attendu 0)

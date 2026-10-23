@@ -1,0 +1,17 @@
+# D336 — VERT « client » : la suite du rouge, rejouée APRÈS le code
+# commande : pnpm --filter @zwadj/api-client exec vitest run src/clients-client.test.ts src/quotes-client.test.ts
+# HEAD : 3f8af90450771c3afbefd30618d4fbc241867f7b (le code du lot est dans l'arbre de travail)
+# environnement : NO_COLOR=1 FORCE_COLOR=0 CI=1 DEBUG_PRINT_LIMIT=200
+# début 2026-10-23T11:03:10 — fin 2026-10-23T11:03:13 — code de sortie 0
+# ── sortie brute (stdout puis stderr) ──
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ✓ src/quotes-client.test.ts (7 tests) 6ms
+ ✓ src/clients-client.test.ts (5 tests) 5ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  11:03:12
+   Duration  834ms (transform 90ms, setup 0ms, collect 130ms, tests 12ms, environment 0ms, prepare 651ms)
+

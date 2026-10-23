@@ -1,0 +1,407 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 69 déclarées · 55 jouées · 14 non jouée(s) (sans --int) · 11 mesure(s) distincte(s) · 14 fichier(s) muté(s)
+  pré-vol client-devis : code 0 · passés 7 · en échec 0
+  pré-vol client-fiches : code 0 · passés 5 · en échec 0
+  pré-vol devis : code 0 · passés 25 · en échec 0
+  pré-vol doc : code 0 · passés 51 · en échec 0
+  pré-vol fiches : code 0 · passés 19 · en échec 0
+  pré-vol politique : code 0 · passés 17 · en échec 0
+  pré-vol pro-contact : code 0 · passés 21 · en échec 0
+  pré-vol pro-fiche : code 0 · passés 13 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 127 · en échec 0
+  pré-vol store-devis : code 0 · passés 33 · en échec 0
+  pré-vol types : code 0 · passés 27 · en échec 0
+■ T-1. ⛔ la recherche accepte un numéro ET un e-mail ensemble (« exactement l'un » saute)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · ROUGE — passés 26 · en échec 1
+      FAIL  src/common/client-record.spec.ts > K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > les deux, aucun, une clé inconnue : REFUSÉS
+         ↳ AssertionError: {"phone":"0555123456","email":"a@example.dz"}: expected true to be false // Object.is equality
+■ T-2. ⛔ la création accepte une fiche SANS identifiant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · ROUGE — passés 26 · en échec 1
+      FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > sans identifiant : refusé, et le ref
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ T-3. ⛔ la création accepte une fiche SANS nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · ROUGE — passés 26 · en échec 1
+      FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > sans aucun nom : refusé, et le refus
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ T-4. ⛔ l'e-mail d'une fiche n'est plus NORMALISÉ avant d'être validé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · ROUGE — passés 24 · en échec 3
+      FAIL  src/common/client-record.spec.ts > K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > un e-mail : rendu NORMALISÉ par `normalizeContactEmail`
+         ↳ AssertionError: expected { email: 'Amina@Mail.DZ' } to deeply equal { email: 'amina@mail.dz' }
+      FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > le corps complet : numéro canonique,
+         ↳ AssertionError: expected { phone: '+213555123456', …(3) } to deeply equal { phone: '+213555123456', …(3) }
+      FAIL  src/common/client-record.spec.ts > K-3 et K-3b — compléter un nom, modifier une fiche > K-3b : au moins un champ ; chaque valeur passe la règle de la création (numéro canonique, e-mail normalisé
+         ↳ AssertionError: expected { phone: '+213661234567', …(1) } to deeply equal { phone: '+213661234567', …(1) }
+■ T-5. ⛔ la modification accepte un corps VIDE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · ROUGE — passés 26 · en échec 1
+      FAIL  src/common/client-record.spec.ts > K-3 et K-3b — compléter un nom, modifier une fiche > K-3b : au moins un champ ; chaque valeur passe la règle de la création (numéro canonique, e-mail normalisé
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ T-6. ⛔ la normalisation de l'e-mail oublie NFKC (la pleine chasse reste une AUTRE adresse)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · ROUGE — passés 25 · en échec 2
+      FAIL  src/common/client-record.spec.ts > ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > ramène la PLEINE CHASSE aux caractères ordi
+         ↳ AssertionError: expected 'ａｍｉｎａ＠ｍａｉｌ．ｄｚ' to be 'amina@mail.dz' // Object.is equality
+      FAIL  src/common/client-record.spec.ts > ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > ramène une lettre accentuée DÉCOMPOSÉE à sa
+         ↳ AssertionError: expected 'éloïse@example.dz' to be 'éloïse@example.dz' // Object.is equality
+■ T-7. ⛔ la correspondance langue ↔ copie du nom est INVERSÉE (le PDF français lirait la copie arabe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · ROUGE — passés 48 · en échec 3
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT — latine en françai
+         ↳ AssertionError: expected 'آمنة بن سالم' to be 'Amina Bensalem' // Object.is equality
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli
+         ↳ AssertionError: expected 'Amina Bensalem' to be '—' // Object.is equality
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 : une copie faite d'espaces s'imprime « — », jamais une cellule blanche
+         ↳ AssertionError: expected 'آمنة بن سالم' to be '—' // Object.is equality
+   [pro-fiche] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/dashboard/walkin-client.test.ts > `nomPourConversion` — la copie de la LANGUE DE L'INTERFACE, à défaut l'autre (consigne v3, § 6 e) > interface française : la copie latine ; interface arabe 
+         ↳ AssertionError: expected 'آمنة بن سالم' to be 'Amina Bensalem' // Object.is equality
+      FAIL  src/dashboard/walkin-client.test.ts > le reste de l'écran, en règles pures > `nomManquant` — la copie de la langue DU DOCUMENT manque-t-elle ? La correspondance vient de l'AUTORITÉ (`QUOTE_CLIEN
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ T-8. ⛔ un devis accepte des noms SANS fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · ROUGE — passés 26 · en échec 1
+      FAIL  src/common/client-record.spec.ts > ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ MD-15 — des noms SANS fiche : refusé, et le refus nomme la fich
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ P-1. ⛔ le SECOND numéro du pro n'est plus reconnu comme le sien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-4 — `estContactDuPro` : le numéro du pro, son SECOND numéro, son e-mail de compte (DB-8 étendue) > reconnaît chacun des trois, sous toute forme norma
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ P-2. ⛔ l'e-mail du compte du pro n'est plus reconnu comme le sien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 15 · en échec 2
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-4 — `estContactDuPro` : le numéro du pro, son SECOND numéro, son e-mail de compte (DB-8 étendue) > reconnaît chacun des trois, sous toute forme norma
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-4 — `estContactDuPro` : le numéro du pro, son SECOND numéro, son e-mail de compte (DB-8 étendue) > un seul des deux identifiants suffit à refuser : l
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ P-3. ⛔ deux fiches DIFFÉRENTES (le numéro, l'e-mail) ne sont plus un conflit : la première est rendue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-2 — `decisionCreation` : créer, RENDRE la fiche existante, ou REFUSER — jamais fusionner > ⛔ ils désignent DEUX fiches différentes : conflit, rien n'
+         ↳ AssertionError: expected { kind: 'rendre', …(1) } to deeply equal { kind: 'conflit' }
+■ P-4. ⛔ une fiche LIÉE accepte un AUTRE nom sur le devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-6 (S-49) — `copieDuNomPourDevis` : la copie du nom pour CE devis > ⛔ fiche LIÉE : un nom DIFFÉRENT — ou ajouté là où la fiche n'en a pas — est refusé
+         ↳ AssertionError: expected { ok: true, copie: { ar: null, …(1) } } to deeply equal { ok: false, raison: 'ficheLiee' }
+■ P-5. ⛔ C-C3 saute : la boîte de langue complète la fiche même quand le nom de l'autre écriture DIFFÈRE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 15 · en échec 2
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-8 (C-C3, S-51) — `completeAussiLaFiche` : la boîte de langue complète la FICHE seulement si c'est la même personne > branche 2 — l'autre écriture DIF
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-8 (C-C3, S-51) — `completeAussiLaFiche` : la boîte de langue complète la FICHE seulement si c'est la même personne > dans l'autre sens aussi : complé
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ P-6. ⛔ C-C3 complète une fiche LIÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-8 (C-C3, S-51) — `completeAussiLaFiche` : la boîte de langue complète la FICHE seulement si c'est la même personne > une fiche LIÉE : jamais complété
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ P-7. ⛔ C-C3 remplace un nom DÉJÀ sur la fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-8 (C-C3, S-51) — `completeAussiLaFiche` : la boîte de langue complète la FICHE seulement si c'est la même personne > la fiche a DÉJÀ un nom dans cett
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ P-8. ⛔ une fiche liée redevient modifiable (`peutModifier` toujours vrai)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 13 · en échec 4
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-6 — `peutModifier` : une fiche LIÉE à un compte n'est plus modifiable par le pro (champs grisés) > non liée : modifiable ; liée : non
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-6 (S-49) — `copieDuNomPourDevis` : la copie du nom pour CE devis > fiche LIÉE : la copie est CELLE DE LA FICHE, quand ce que le pro envoie est identi
+         ↳ AssertionError: expected { ok: true, copie: { ar: null, …(1) } } to deeply equal { ok: true, copie: { …(2) } }
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-6 (S-49) — `copieDuNomPourDevis` : la copie du nom pour CE devis > ⛔ fiche LIÉE : un nom DIFFÉRENT — ou ajouté là où la fiche n'en a pas — est refusé
+         ↳ AssertionError: expected { ok: true, copie: { ar: null, …(1) } } to deeply equal { ok: false, raison: 'ficheLiee' }
+      FAIL  src/clients/pro-client-policy.spec.ts > ⛔ MD-8 (C-C3, S-51) — `completeAussiLaFiche` : la boîte de langue complète la FICHE seulement si c'est la même personne > une fiche LIÉE : jamais complété
+         ↳ AssertionError: expected true to be false // Object.is equality
+   [fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  src/clients/pro-clients.service.spec.ts > K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > une fiche trouvée : `{ found: true, record }` ; la fiche expose
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/clients/pro-clients.service.spec.ts > K-3 — compléter un nom : le refus du port devient le BON code > ⛔ MD-6 — refus, fiche LIÉE : 409 CLIENT_RECORD_LINKED
+         ↳ Error: expect(received).toSatisfy()
+■ S-1. ⛔ M-4 — la recherche lit le CONTACT du pro (donc le compte) avant de chercher
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  src/clients/pro-clients.service.spec.ts > K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > ⛔ M-4 — la recherche n'appelle QUE `rechercher` : jamais le con
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+      FAIL  src/clients/pro-clients.service.spec.ts > ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > le service : `look
+         ↳ AssertionError: expected [ 'this.fiches.contactDuPro', …(1) ] to deeply equal [ 'this.fiches.rechercher' ]
+■ S-2. ⛔ la création ne refuse plus le contact du pro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > ⛔ MD-4 — le numéro, le second numéro ou l'e-mail du pro : 400 CLIENT_IS_PRO_CONT
+         ↳ AssertionError: promise resolved "{ created: true, record: { …(8) } }" instead of rejecting
+■ S-3. ⛔ la modification ne refuse plus le contact du pro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > K-3b — modifier une fiche : contact du pro, unicité, fiche liée > ⛔ MD-4 — le contact du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN
+         ↳ AssertionError: promise resolved "{ …(8) }" instead of rejecting
+■ S-4. ⛔ un conflit (deux fiches) se résout en rendant celle du NUMÉRO — une fusion silencieuse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > ⛔ MD-2 — le numéro et l'e-mail sur DEUX fiches : 409 CLIENT_RECORD_IDENTIFIERS_C
+         ↳ AssertionError: promise resolved "{ created: false, …(1) }" instead of rejecting
+■ S-5. ⛔ S-53 — la fiche rendue expose l'identifiant du COMPTE lié
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > une fiche trouvée : `{ found: true, record }` ; la fiche expose
+         ↳ AssertionError: expected [ 'createdAt', 'email', 'id', …(6) ] to deeply equal [ 'createdAt', 'email', 'id', …(5) ]
+■ S-6. ⛔ le complément d'une fiche LIÉE se dit « nom déjà là » au lieu de « fiche liée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > K-3 — compléter un nom : le refus du port devient le BON code > ⛔ MD-6 — refus, fiche LIÉE : 409 CLIENT_RECORD_LINKED
+         ↳ Error: expect(received).toSatisfy()
+■ A-1. ⛔ MD-10 — la recherche TRAVERSE le compte (`user`) : même réponse, mais le compte est lu — seule la garde de source le voit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > l'adaptateur : `re
+         ↳ AssertionError: expected 'user' to be null
+■ V-1. ⛔ K-4 — la fiche d'un AUTRE pro est ignorée en silence au lieu d'un 404
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [devis] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-11 — la fiche d'un AUTRE pro (le port rend 
+         ↳ Error: expect(received).toSatisfy()
+      FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > la RÉVISION applique la même règle : la fiche d'
+         ↳ Error: expect(received).toSatisfy()
+■ V-2. ⛔ K-4 — le devis ne porte plus la fiche ni la copie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [devis] code 0 · VERT — passés 25 · en échec 0
+■ V-3. ⛔ K-5 — la boîte de langue complète la copie de l'AUTRE langue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [devis] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`
+         ↳ AssertionError: expected [ 'clientNameLatin', 'clientNameAr' ] to deeply equal [ 'clientNameAr', 'clientNameLatin' ]
+      FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ V-4. ⛔ C-C3 — la fiche est complétée dans l'AUTRE écriture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [devis] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ K-3. ⛔ l'écriture de la fiche ne re-pose plus ses conditions (nom absent, fiche non liée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store-devis] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — u
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(1) } ]
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > le champ L
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(1) } } ]
+■ D-1. ⛔ S-52 — le PDF arabe imprime la copie LATINE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · ROUGE — passés 49 · en échec 2
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT — latine en françai
+         ↳ AssertionError: expected 'Amina Bensalem' to be 'آمنة بن سالم' // Object.is equality
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli
+         ↳ AssertionError: expected 'Amina Bensalem' to be '—' // Object.is equality
+■ D-2. ⛔ S-52 — la copie absente se remplace par l'AUTRE écriture (le repli interdit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · ROUGE — passés 49 · en échec 2
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli
+         ↳ AssertionError: expected 'Amina Bensalem' to be '—' // Object.is equality
+      FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 : une copie faite d'espaces s'imprime « — », jamais une cellule blanche
+         ↳ AssertionError: expected '   ' to be '—' // Object.is equality
+■ C-1. la recherche part sur un AUTRE chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-fiches] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/clients-client.test.ts > le client des fiches — méthode, adresse et corps de chaque contrat > K-1 : `lookup` POSTE l'identifiant tel quel sur `/pro/clients/lookup` — un numéro, ou un e-mail
+         ↳ AssertionError: expected [ { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+■ C-2. le complément du nom part sur un AUTRE chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-devis] code 1 · ROUGE — passés 5 · en échec 2
+      FAIL  src/quotes-client.test.ts > quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > POSTE la langue et le nom sur `/quotes/:id/client-name`
+         ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+      FAIL  src/quotes-client.test.ts > quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > l'identifiant est ENCODÉ
+         ↳ AssertionError: expected '/quotes/a%2Fb%3Fc%3Dd/clientname' to be '/quotes/a%2Fb%3Fc%3Dd/client-name' // Object.is equality
+■ W-8. ⛔ l'étape Contact passe SANS identifiant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · ROUGE — passés 20 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > rien de tapé : « un numéro ou un e-mail est obli
+         ↳ AssertionError: expected [] to deeply equal [ 'needIdentifier' ]
+   [pro-parcours] code 1 · ROUGE — passés 125 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte
+         ↳ Error: expect(element).toBeDisabled()
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `
+         ↳ Error: expect(element).toBeDisabled()
+■ W-9. ⛔ un e-mail SAISI et refusé ne retient plus l'étape Contact
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · ROUGE — passés 20 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > ⚠ un identifiant SAISI et invalide retient, même
+         ↳ AssertionError: expected [] to deeply equal [ 'needEmailValid' ]
+■ W-10. ⛔ l'étape Client passe SANS nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · ROUGE — passés 19 · en échec 2
+      FAIL  src/dashboard/walkin-contact.test.ts > clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités > tout manque : les raisons s'énumèrent TOUTE
+         ↳ AssertionError: expected [ 'needGuests' ] to deeply equal [ 'needName', 'needGuests' ]
+      FAIL  src/dashboard/walkin-contact.test.ts > clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités > UN nom suffit, dans l'une OU l'autre écritu
+         ↳ AssertionError: expected [] to deeply equal [ 'needName' ]
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `
+         ↳ AssertionError: expected [ Array(1) ] to deeply equal [ …(2) ]
+■ W-11. ⛔ un nom arabe SAISI et refusé ne retient plus l'étape Client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · ROUGE — passés 20 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités > un nom SAISI et refusé par la règle du cont
+         ↳ AssertionError: expected [] to deeply equal [ 'needNameArValid' ]
+■ W-12. ⛔ un e-mail VIDE part à la création de la fiche (la clé n'est plus omise)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-contact] code 1 · ROUGE — passés 20 · en échec 1
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > `identifierPayload` : le numéro au format du con
+         ↳ AssertionError: expected { phone: '+213533333333', email: '' } to deeply equal { phone: '+213533333333' }
+■ E-1. ⛔ MD-9 — le nom se coupe au DERNIER espace
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 10 · en échec 3
+      FAIL  src/dashboard/walkin-client.test.ts > ⛔ MD-9 (C-2 / C2-5) — `decouperNom` : au PREMIER espace — ce qui précède est le prénom, le reste le nom ; sans espace, tout au nom > ⚠ un prénom COMPOSÉ tom
+         ↳ AssertionError: expected { firstName: 'Abd El Kader', …(1) } to deeply equal { firstName: 'Abd', …(1) }
+      FAIL  src/dashboard/walkin-client.test.ts > ⛔ MD-9 (C-2 / C2-5) — `decouperNom` : au PREMIER espace — ce qui précède est le prénom, le reste le nom ; sans espace, tout au nom > l'arabe se coupe pareil
+         ↳ AssertionError: expected { firstName: 'عبد القادر بن', …(1) } to deeply equal { firstName: 'عبد', …(1) }
+      FAIL  src/dashboard/walkin-client.test.ts > ⛔ MD-9 (C-2 / C2-5) — `decouperNom` : au PREMIER espace — ce qui précède est le prénom, le reste le nom ; sans espace, tout au nom > les espaces de bord ne 
+         ↳ AssertionError: expected { firstName: 'Amina  ', …(1) } to deeply equal { firstName: 'Amina', …(1) }
+   [pro-parcours] code 1 · ROUGE — passés 125 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMP
+         ↳ AssertionError: expected [ 'Abd El Kader', 'Benali' ] to deeply equal [ 'Abd', 'El Kader Benali' ]
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la cop
+         ↳ AssertionError: expected 'عبد القادر بن' to be 'عبد' // Object.is equality
+■ E-2. ⛔ MD-9 — sans espace, tout va au PRÉNOM (un prénom inventé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/dashboard/walkin-client.test.ts > ⛔ MD-9 (C-2 / C2-5) — `decouperNom` : au PREMIER espace — ce qui précède est le prénom, le reste le nom ; sans espace, tout au nom > SANS espace : tout va d
+         ↳ AssertionError: expected { firstName: 'Bensalem', lastName: '' } to deeply equal { firstName: '', lastName: 'Bensalem' }
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — une copie SANS espace : tou
+         ↳ AssertionError: expected 'Bensalem' to be '' // Object.is equality
+■ E-3. ⛔ la conversion prend toujours la copie LATINE, quelle que soit la langue de l'interface
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/dashboard/walkin-client.test.ts > `nomPourConversion` — la copie de la LANGUE DE L'INTERFACE, à défaut l'autre (consigne v3, § 6 e) > interface française : la copie latine ; interface arabe 
+         ↳ AssertionError: expected 'Amina Bensalem' to be 'آمنة بن سالم' // Object.is equality
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la cop
+         ↳ AssertionError: expected 'Abdelkader' to be 'عبد' // Object.is equality
+■ E-4. ⛔ K-12 — le numéro de la conversion ignore la FICHE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/dashboard/walkin-client.test.ts > K-12 — `prefillConversion` : le contact de la conversion PRÉREMPLI depuis la copie et la fiche ; rien n'est réécrit > prénom et nom découpés de la copie ; n
+         ↳ AssertionError: expected { firstName: 'Amina', …(3) } to deeply equal { firstName: 'Amina', …(3) }
+■ E-5. ⛔ K-12 — l'e-mail de la conversion ignore la FICHE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/dashboard/walkin-client.test.ts > K-12 — `prefillConversion` : le contact de la conversion PRÉREMPLI depuis la copie et la fiche ; rien n'est réécrit > prénom et nom découpés de la copie ; n
+         ↳ AssertionError: expected { firstName: 'Amina', …(3) } to deeply equal { firstName: 'Amina', …(3) }
+   [pro-parcours] code 0 · VERT — passés 127 · en échec 0
+■ E-6. ⛔ S-57 — la recherche commence par l'E-MAIL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/dashboard/walkin-client.test.ts > le reste de l'écran, en règles pures > ⛔ S-57 — `ordreDeRecherche` : d'abord le NUMÉRO, puis l'E-MAIL ; un identifiant incomplet ou invalide n'est pas cherc
+         ↳ AssertionError: expected [ { email: 'Amina@Example.DZ' }, …(1) ] to deeply equal [ { phone: '+213533333333' }, …(1) ]
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ S-57 — la recherche porte d'abor
+         ↳ AssertionError: expected [ Array(2) ] to deeply equal [ { phone: '+213550000002' }, …(1) ]
+■ E-7. ⛔ K-5 — la copie manquante n'est plus vue : la boîte ne demande jamais le nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/dashboard/walkin-client.test.ts > le reste de l'écran, en règles pures > `nomManquant` — la copie de la langue DU DOCUMENT manque-t-elle ? La correspondance vient de l'AUTORITÉ (`QUOTE_CLIEN
+         ↳ AssertionError: expected false to be true // Object.is equality
+   [pro-parcours] code 1 · ROUGE — passés 123 · en échec 4
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE
+         ↳ AssertionError: la question du nom en arabe est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom :
+         ↳ TypeError: Cannot read properties of undefined (reading 'reference')
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle 
+         ↳ TypeError: Cannot read properties of undefined (reading 'reference')
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complém
+         ↳ TypeError: Cannot read properties of undefined (reading 'reference')
+■ E-8. les noms du devis ne sont plus rognés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/dashboard/walkin-client.test.ts > le reste de l'écran, en règles pures > `copiePourDevis` — la fiche et les noms NON VIDES, rognés ; un nom vide n'est pas envoyé (le contrat refuserait la ch
+         ↳ AssertionError: expected { clientRecordId: 'fiche-1', …(1) } to deeply equal { clientRecordId: 'fiche-1', …(1) }
+■ E-9. ⛔ K-2 — un nom VIDE part à la création de la fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche ABSENTE se CRÉE (K-2) au
+         ↳ AssertionError: expected [ { phone: '+213550000002', …(2) } ] to deeply equal [ { phone: '+213550000002', …(1) } ]
+■ J-1. ⛔ MD-6 — les noms d'une fiche LIÉE ne sont plus grisés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ J-2. ⛔ MD-6 — le devis d'une fiche LIÉE porte les noms TAPÉS au lieu des siens
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE RENDUE par
+         ↳ AssertionError: expected { eventDate: '2026-08-15', …(4) } to deeply equal ObjectContaining{…}
+■ J-3. ⛔ MD-17 — une fiche TROUVÉE est créée de nouveau au « Continuer » de l'étape Client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 124 · en échec 3
+      FAIL  src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse
+         ↳ AssertionError: expected 'Qui est le client ?' to be 'Devis' // Object.is equality
+      FAIL  src/dashboard/walkin-journey.test.tsx > Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse
+         ↳ Error: 4 avertissement(s) de console dans un fichier NON exempté.
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche TROUVÉE PRÉREMPLIT les n
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux
+         ↳ AssertionError: expected { eventDate: '2026-08-15', …(5) } to deeply equal ObjectContaining{…}
+■ J-4. ⛔ S-57 — la recherche continue après la première fiche trouvée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ S-57 — la recherche porte d'abor
+         ↳ AssertionError: expected [ { phone: '+213550000002' }, …(1) ] to deeply equal [ { phone: '+213550000002' } ]
+■ J-5. ⛔ K-12 — les retouches du pro à la conversion sont ignorées (l'envoi porte le préremplissage)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 124 · en échec 3
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMP
+         ↳ AssertionError: expected { contactFirstName: 'Abd', …(3) } to deeply equal { …(4) }
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — une copie SANS espace : tou
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-12 — une fiche SANS numéro (tr
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+■ J-6. ⛔ K-4 — le devis part sans la fiche ni la copie des noms
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 123 · en échec 4
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche TROUVÉE PRÉREMPLIT les n
+         ↳ AssertionError: expected { eventDate: '2026-08-15', …(2) } to deeply equal ObjectContaining{…}
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux
+         ↳ AssertionError: expected { eventDate: '2026-08-15', …(2) } to deeply equal ObjectContaining{…}
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE RENDUE par
+         ↳ AssertionError: expected { eventDate: '2026-08-15', …(2) } to deeply equal ObjectContaining{…}
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche ABSENTE se CRÉE (K-2) au
+         ↳ AssertionError: expected { eventDate: '2026-08-15', …(2) } to deeply equal ObjectContaining{…}
+■ J-7. ⛔ K-5 — le choix de la langue remet tout de suite, même sans la copie du nom de cette langue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 123 · en échec 4
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE
+         ↳ AssertionError: la question du nom en arabe est ouverte: expected null not to be null
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom :
+         ↳ TypeError: Cannot read properties of undefined (reading 'reference')
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle 
+         ↳ TypeError: Cannot read properties of undefined (reading 'reference')
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complém
+         ↳ TypeError: Cannot read properties of undefined (reading 'reference')
+■ J-8. ⛔ K-5 — la réponse à la question du nom ne complète RIEN sur le devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 125 · en échec 2
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE
+         ↳ AssertionError: expected "spy" to be called with arguments: [ 'q1', { locale: 'ar', …(1) } ]
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complém
+         ↳ TypeError: Cannot read properties of undefined (reading 'reference')
+■ J-9. un AUTRE numéro garde les noms de l'ancienne fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 126 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > un AUTRE numéro après une fiche tr
+         ↳ AssertionError: expected 'Amina Bensalem' to be '' // Object.is equality
+  empreintes : 15 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 55 cible(s) jouée(s) sur 69, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+EXIT=0

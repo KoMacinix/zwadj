@@ -1,0 +1,9 @@
+# D336 — porte `build`
+# HEAD au lancement : 2f064bc — ⚠ D336 : le code du lot est mesuré dans l'ARBRE DE TRAVAIL, NON commité (la passe précède le commit de code ; la liste exacte des fichiers est le diff du commit de code qui suit)
+# code de sortie RÉEL de la commande : 0 · durée : 33 s (DONNÉE NON CERTIFIANTE : aucune durée ne se compare, D290 ; état de la machine : `etat-machine.txt`)
+# journal brut (hors dépôt) : SHA-256 895f8a0883187553537ce7b1ec6d0a6756bb5d7a84404ee162a4df864876416e · 8817 octets · 127 lignes
+
+parcouru : 127 ligne(s)
+paquets « Done » : 4 (apps/api, apps/client, apps/pro, packages/types) ; « Failed » : 0 (attendu : 0)
+paquets dont le package.json déclare le script `build` : 4 (apps/api, apps/client, apps/pro, packages/types) (attendu : les mêmes que les « Done » : égaux)
+code de sortie lu : 0 (attendu : 0)
