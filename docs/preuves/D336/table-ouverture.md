@@ -183,3 +183,11 @@ Vérifié contre les chemins de l'extension 1 (59 cités ; « 54 » = les 4 de l
 | `docs/preuves/D336/aucune-valeur-reelle.txt` | un journal à valeurs réelles est ouvert pendant la session (le brut de l'e2e porte des liens à jeton) : le contrôle dédié de D299 sur les pièces versées |
 | `apps/api/test/int/contract-api-client.int-spec.ts` | une de ses listes ou un de ses comptes exige les chemins neufs du client d'API |
 | `apps/api/test/int/rbac-all-routes.int-spec.ts` | une de ses listes ou un de ses comptes exige les routes neuves (`@Roles(PRO)`) |
+
+#### Extension 5 — un fichier de test que le code touche hors des extensions 1 à 4, déclaré AVANT le commit qui le contient
+
+**Motif** : le devis chiffré que le service passe au magasin (`DevisChiffre`, `apps/api/src/venues/quote-store.types.ts`) a perdu `clientId` au profit de la fiche et des deux copies du nom (K-4). `apps/api/test/int/quote-numbering.int-spec.ts` construit un `DevisChiffre` à la main pour appeler le magasin directement (F-7) : sans les trois champs, il ne compile plus — mesuré par `tsc` de l'API. Relevé en confrontant l'arbre de travail aux chemins déclarés ci-dessus : 38 fichiers parcourus (26 modifiés, 12 nouveaux), 142 chemins déclarés, **1 hors table** — celui-ci. Le changement est d'une ligne : `clientId: null` devient `clientRecordId: null, clientNameAr: null, clientNameLatin: null` ; le test ne change pas d'objet.
+
+| fichier | pour |
+|---|---|
+| `apps/api/test/int/quote-numbering.int-spec.ts` | son `DevisChiffre` construit à la main (F-7) porte la fiche et les deux copies du nom, à `null`, au lieu de `clientId` |
