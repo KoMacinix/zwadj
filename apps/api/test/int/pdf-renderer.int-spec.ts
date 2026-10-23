@@ -37,7 +37,9 @@ const devisArabe: QuoteDocumentRecord = {
   lines: [{ nameFr: "Buffet ouvert", nameAr: "بوفيه مفتوح للضيوف", pricingType: ServicePricingType.PER_GUEST, quantity: 150, tierLabelFr: null, tierLabelAr: null, lineTotalCents: 37_500_000 }],
   venue: { nameFr: "Salle des Jasmins", nameAr: "قاعة الياسمين للأفراح والمناسبات" },
   slot: { nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560 },
-  client: { firstName: "آمنة", lastName: "بن سالم" }
+  // Rang 41 (D336, S-52) : la COPIE du nom du devis, une par écriture — le PDF arabe imprime la copie arabe.
+  clientNameAr: "آمنة بن سالم",
+  clientNameLatin: null
 };
 
 describe("pdf-inspect — le lecteur de PDF est calibré à deux bras (un lecteur qui répondrait « embarquée » à tout passerait le cas positif seul)", () => {

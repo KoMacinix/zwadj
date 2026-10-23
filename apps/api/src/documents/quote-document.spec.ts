@@ -51,7 +51,9 @@ function devis(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
     ],
     venue: { nameFr: "Salle des Jasmins", nameAr: "قاعة الياسمين للأفراح" },
     slot: { nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560 },
-    client: { firstName: "Amina", lastName: "Bensalem" },
+    // Rang 41 (D336, S-52) : la COPIE du nom du devis, une par écriture — jamais le compte du client.
+    clientNameAr: "آمنة بن سالم",
+    clientNameLatin: "Amina Bensalem",
     ...over
   };
 }
@@ -290,16 +292,33 @@ describe("le modèle — langue, sens, contenu", () => {
     expect(page).not.toContain("Salle des Jasmins");
   });
 
-  it("le créneau s'imprime par `formatSlotRange` (24 h), et un devis sans créneau ou sans client imprime « — » sans casser", () => {
+  it("le créneau s'imprime par `formatSlotRange` (24 h), et un devis sans créneau ou sans copie du nom imprime « — » sans casser", () => {
     expect(rendre(devis())).toContain("20:00");
     expect(rendre(devis())).toContain("02:00");
-    const nu = rendre(devis({ slot: null, client: null }));
+    const nu = rendre(devis({ slot: null, clientNameAr: null, clientNameLatin: null }));
     expect(nu).toContain("—");
     expect(nu).not.toContain("Amina");
   });
 
-  it("le client s'imprime quand le devis y est lié", () => {
-    expect(rendre(devis())).toContain("Amina Bensalem");
+  /** Le contenu du champ « Client », lu par SON libellé dans la langue du document. */
+  const champClient = (page: string, locale: "fr" | "ar") => new RegExp(`<div class="champ"><small>${LIBELLES[locale].client}</small>([^<]*)</div>`, "u").exec(page)?.[1];
+
+  it("⛔ rang 41 (S-52) : le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT — latine en français, arabe en arabe", () => {
+    expect(champClient(rendre(devis(), "fr"), "fr")).toBe("Amina Bensalem");
+    expect(champClient(rendre(devis(), "ar"), "ar")).toBe("آمنة بن سالم");
+  });
+
+  it("⛔ rang 41 (S-52) : une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli", () => {
+    const latinSeul = devis({ clientNameAr: null });
+    expect(champClient(rendre(latinSeul, "ar"), "ar")).toBe("—");
+    expect(rendre(latinSeul, "ar")).not.toContain("Amina Bensalem");
+    const arabeSeul = devis({ clientNameLatin: null });
+    expect(champClient(rendre(arabeSeul, "fr"), "fr")).toBe("—");
+    expect(rendre(arabeSeul, "fr")).not.toContain("آمنة بن سالم");
+  });
+
+  it("⛔ rang 41 : une copie faite d'espaces s'imprime « — », jamais une cellule blanche", () => {
+    expect(champClient(rendre(devis({ clientNameLatin: "   " }), "fr"), "fr")).toBe("—");
   });
 
   it("⛔ rang 39 : la référence imprimée est la référence STOCKÉE du devis (année, salle, devis, version) — dans le titre du document ET dans l'en-tête, dans les deux langues", () => {
@@ -348,7 +367,8 @@ describe("⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré d
     const page = rendre(
       devis({
         venue: { nameFr: HOSTILE, nameAr: HOSTILE },
-        client: { firstName: HOSTILE, lastName: HOSTILE },
+        clientNameAr: HOSTILE,
+        clientNameLatin: HOSTILE,
         slot: { nameFr: HOSTILE, nameAr: HOSTILE, startMinutes: 1200, endMinutes: 1560 },
         lines: [ligne({ nameFr: HOSTILE, nameAr: HOSTILE, lineTotalCents: 100 })]
       })
@@ -370,7 +390,7 @@ describe("⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré d
   });
 
   it("le nom du fichier ne porte AUCUNE donnée personnelle, même quand les noms sont hostiles", () => {
-    const f = quoteDocumentFilename(devis({ venue: { nameFr: HOSTILE, nameAr: HOSTILE }, client: { firstName: HOSTILE, lastName: HOSTILE } }), "fr");
+    const f = quoteDocumentFilename(devis({ venue: { nameFr: HOSTILE, nameAr: HOSTILE }, clientNameAr: HOSTILE, clientNameLatin: HOSTILE }), "fr");
     expect(f).toMatch(/^DEVIS-\d{4}-\d{4,}-\d{4,}_(fr|ar)_v\d+\.pdf$/);
     expect(f).toBe("DEVIS-2026-0003-0014_fr_v2.pdf");
   });
@@ -492,5 +512,18 @@ describe("⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du documen
       const code = lire(f);
       expect({ f, motif: /chooseDocumentLocale|DocumentLocaleBranch|clientLocale|\bbranch\b|locale:\s*true|client\??\.locale/.exec(code)?.[0] ?? null }).toEqual({ f, motif: null });
     }
+  });
+
+  it("⛔ rang 41 (D336, M-7, S-52) : la source ne lit plus le COMPTE du client — ni relation `client`, ni `firstName`/`lastName` ; elle lit la COPIE du devis", () => {
+    const code = lire("quote-document-source.prisma.ts");
+    expect(/\bclient\s*:|firstName|lastName|\buser\b/.exec(code)?.[0] ?? null).toBeNull();
+    expect(code).toContain("clientNameAr: true");
+    expect(code).toContain("clientNameLatin: true");
+  });
+
+  it("⛔ rang 41 : le modèle choisit la copie par l'AUTORITÉ de la correspondance langue → copie (`QUOTE_CLIENT_NAME_FIELD`), jamais par une seconde règle", () => {
+    const code = lire("quote-document.ts");
+    expect(code).toContain("QUOTE_CLIENT_NAME_FIELD");
+    expect(/record\.client\b|firstName|lastName/.exec(code)?.[0] ?? null).toBeNull();
   });
 });

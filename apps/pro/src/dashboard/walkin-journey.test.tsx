@@ -30,6 +30,7 @@ import {
   QUOTE_SENT_VIA_ORDER,
   isValidContactEmail,
   quoteDocumentFilename,
+  type ClientRecordDTO,
   type QuoteDTO,
   type QuoteSentVia,
   type VenueProDTO
@@ -39,6 +40,7 @@ import { initI18n } from "../i18n";
 import {
   makeAuthDouble,
   makeBookingsProDouble,
+  makeProClientsDouble,
   makeQuotesDouble,
   makeServicesDouble,
   makeVenueClientDouble
@@ -167,6 +169,11 @@ function draft(over: Partial<QuoteDTO> = {}): QuoteDTO {
     // Q2 — un devis neuf n'a pas de canal de remise. C'est ce champ, et non
     // `sentAt`, qui décide de l'entrée dans l'entonnoir (D162).
     sentVia: null,
+    // Rang 41 (D336, K-6) — la fiche et la COPIE du nom que le SERVEUR rend : la fiche créée à l'étape Client (« fiche-1 », le double du client des fiches),
+    // le nom latin tapé par `repondreClient`. La conversion se PRÉREMPLIT depuis elles (K-12) — d'où les « Amine » et « Belkacem » qu'elle envoie.
+    clientRecordId: "fiche-1",
+    clientNameAr: null,
+    clientNameLatin: "Amine Belkacem",
     ...over
   } as QuoteDTO;
 }
@@ -208,10 +215,13 @@ async function setup(
     quotes?: Parameters<typeof makeQuotesDouble>[0];
     bookings?: Parameters<typeof makeBookingsProDouble>[0];
     services?: Parameters<typeof makeServicesDouble>[0];
+    clients?: Parameters<typeof makeProClientsDouble>[0];
   } = {}
 ) {
   const quotes = makeQuotesDouble({ create: vi.fn().mockResolvedValue(draft()), ...over.quotes });
   const bookings = makeBookingsProDouble(over.bookings);
+  // Rang 41 (D336) : le client des FICHES. Par défaut, aucune fiche n'est trouvée (K-1) et la création (K-2) rend la fiche des valeurs reçues, « fiche-1 ».
+  const clients = makeProClientsDouble(over.clients);
   render(
     <MemoryRouter initialEntries={["/"]}>
       <AppProviders
@@ -220,6 +230,7 @@ async function setup(
         quotesClient={quotes}
         servicesClient={makeServicesDouble(over.services)}
         bookingsPro={bookings}
+        clientsClient={clients}
       >
         <WalkinJourney venue={VENUE} />
       </AppProviders>
@@ -229,22 +240,36 @@ async function setup(
   // main : c'est lui qui produisait 2 avertissements `AuthProvider` et 1
   // `WalkinJourney` dans CHACUN des 41 tests, soit 122 des 293.
   await laisserRetomber();
-  return { quotes, bookings };
+  return { quotes, bookings, clients };
 }
 
-/** Répond à l'étape CLIENT et valide. ⚠ Le nombre d'invités est ICI, pas à
+/** ⛔ Rang 41 (D336) — répond à l'étape CONTACT, la PREMIÈRE (le numéro OU l'e-mail), et valide : la recherche de la fiche (K-1) part et retombe ici. */
+async function repondreContact(saisie = "+213550000002") {
+  fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: saisie } });
+  fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+  await laisserRetomber();
+  await laisserRetomber();
+}
+
+/** Répond à l'étape CLIENT — les NOMS et le nombre d'invités — et valide. ⚠ Le nombre d'invités est ICI, pas à
  *  l'étape des prestations : une prestation par personne se chiffre
- *  `unitPrice × guests`, donc la question précède forcément le catalogue. */
-async function repondreClient(invites = "200") {
-  fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
-  fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
-  fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
+ *  `unitPrice × guests`, donc la question précède forcément le catalogue.
+ *  ⛔ Rang 41 : un nom dans UNE écriture suffit ; la fiche se CRÉE à ce « Continuer » (K-2), puis l'étape date apparaît. */
+async function repondreNoms(invites = "200") {
+  fireEvent.change(screen.getByLabelText("Nom en lettres latines"), { target: { value: "Amine Belkacem" } });
   fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: invites } });
   fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
-  // ⚠ Valider le client fait apparaître l'étape date, donc MONTE
+  // ⚠ La création de la fiche retombe, PUIS l'étape date apparaît et MONTE
   // `VenueCalendar`, qui part aussitôt chercher sa disponibilité. Ses trois
   // `setState` (`setData`, `setError`, `setLoading`) retombent ici.
   await laisserRetomber();
+  await laisserRetomber();
+}
+
+/** Les étapes CONTACT puis CLIENT. */
+async function repondreClient(invites = "200") {
+  await repondreContact();
+  await repondreNoms(invites);
 }
 
 /** ⚠ On attend que la case soit ACTIVE, pas seulement présente. La grille du
@@ -295,9 +320,9 @@ const modifierDepuisRecap = (etape: RegExp) =>
 const question = () => document.getElementById("wk-question")?.textContent;
 
 describe("Flux par étapes — une seule question à l'écran", () => {
-  it("s'ouvre sur la question du client, et sur elle seule", async () => {
+  it("s'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule", async () => {
     await setup();
-    expect(question()).toBe("Qui est le client ?");
+    expect(question()).toBe("Comment joindre le client ?");
     // ⚠ La mesure qui compte n'est pas « la question 1 est là » mais « les
     // autres n'y sont PAS » : c'est tout le sujet du lot.
     expect(screen.queryByRole("button", { name: /Soirée/ })).toBeNull();
@@ -310,14 +335,18 @@ describe("Flux par étapes — une seule question à l'écran", () => {
     // parce qu'il ne regardait que les étapes SUIVANTES. Ce qui distingue un
     // flux exclusif d'un formulaire complet, c'est ce qui n'est PLUS là.
     await setup();
-    await repondreClient();
-    expect(screen.queryByLabelText("Prénom")).toBeNull();
+    await repondreContact();
+    expect(screen.queryByLabelText("Téléphone")).toBeNull();
+    await repondreNoms();
+    expect(screen.queryByLabelText("Nom en lettres latines")).toBeNull();
     expect(screen.queryByLabelText("Nombre d'invités")).toBeNull();
   });
 
   it("chaque réponse fait apparaître la suivante, dans l'ordre arbitré", async () => {
     await setup();
-    await repondreClient();
+    await repondreContact();
+    expect(question()).toBe("Qui est le client ?");
+    await repondreNoms();
     expect(question()).toBe("Quelle date ?");
     await repondreDate();
     expect(question()).toBe("Quel créneau ?");
@@ -329,24 +358,29 @@ describe("Flux par étapes — une seule question à l'écran", () => {
 
   it("⚠ ne laisse pas passer un client incomplet — le bouton reste inerte", async () => {
     await setup();
-    fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
+    // Rien de tapé, puis un numéro INCOMPLET : l'étape Contact retient.
     expect(screen.getByRole("button", { name: "Continuer" })).toBeDisabled();
-    expect(question()).toBe("Qui est le client ?");
+    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "5500" } });
+    expect(screen.getByRole("button", { name: "Continuer" })).toBeDisabled();
+    expect(question()).toBe("Comment joindre le client ?");
   });
 
   it("⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations", async () => {
     await setup();
-    fireEvent.change(screen.getByLabelText("Prénom"), { target: { value: "Amine" } });
-    fireEvent.change(screen.getByLabelText("Nom"), { target: { value: "Belkacem" } });
-    fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000002" } });
+    await repondreContact();
+    fireEvent.change(screen.getByLabelText("Nom en lettres latines"), { target: { value: "Amine Belkacem" } });
     expect(screen.getByRole("button", { name: "Continuer" })).toBeDisabled();
   });
 
-  it("chaque champ client porte un LABEL visible — quatre cases nues ne se distinguent pas", async () => {
+  it("chaque champ client porte un LABEL visible — des cases nues ne se distinguent pas", async () => {
     await setup();
     // ⚠ Libellés EXACTS, pas des expressions régulières : /Nom/ attrapait aussi
     // « Nombre d'invités », et le test échouait sur son propre sélecteur.
-    for (const nom of ["Prénom", "Nom", "Téléphone", "E-mail (facultatif)"]) {
+    for (const nom of ["Téléphone", "E-mail"]) {
+      expect(screen.getByLabelText(nom)).toBeInstanceOf(HTMLInputElement);
+    }
+    await repondreContact();
+    for (const nom of ["Nom en arabe", "Nom en lettres latines", "Nombre d'invités"]) {
       expect(screen.getByLabelText(nom)).toBeInstanceOf(HTMLInputElement);
     }
   });
@@ -354,8 +388,10 @@ describe("Flux par étapes — une seule question à l'écran", () => {
   it("le fil de progression NOMME l'étape courante pour un lecteur d'écran", async () => {
     await setup();
     const courant = () => screen.getByRole("navigation").querySelector('[aria-current="step"]');
+    expect(courant()?.textContent).toContain("Contact");
+    await repondreContact();
     expect(courant()?.textContent).toContain("Client");
-    await repondreClient();
+    await repondreNoms();
     expect(courant()?.textContent).toContain("Date");
   });
 });
@@ -399,7 +435,7 @@ describe("Récapitulatif — des réponses, JAMAIS des montants", () => {
     modifierDepuisRecap(/Modifier.*Client/);
     const recapEl = recap();
     expect(recapEl.textContent).not.toContain("Amine Belkacem");
-    expect(screen.getByLabelText("Prénom")).toHaveValue("Amine");
+    expect(screen.getByLabelText("Nom en lettres latines")).toHaveValue("Amine Belkacem");
   });
 });
 
@@ -410,7 +446,7 @@ describe("Retour en arrière — les réponses survivent, les montants non", () 
     await repondreDate();
     modifierDepuisRecap(/Modifier.*Client/);
     expect(question()).toBe("Qui est le client ?");
-    expect(screen.getByLabelText("Prénom")).toHaveValue("Amine");
+    expect(screen.getByLabelText("Nom en lettres latines")).toHaveValue("Amine Belkacem");
   });
 
   it("⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette", async () => {
@@ -444,7 +480,7 @@ describe("Rail latéral, numéros cliquables et remise à zéro", () => {
     await repondreDate();
     fireEvent.click(within(rail()).getByRole("button", { name: /Modifier.*Client/ }));
     expect(question()).toBe("Qui est le client ?");
-    expect(screen.getByLabelText("Prénom")).toHaveValue("Amine");
+    expect(screen.getByLabelText("Nom en lettres latines")).toHaveValue("Amine Belkacem");
   });
 
   it("⚠ une étape SANS réponse n'est pas cliquable dans le rail", async () => {
@@ -459,8 +495,9 @@ describe("Rail latéral, numéros cliquables et remise à zéro", () => {
     await repondreClient();
     await repondreDate();
     fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
-    expect(question()).toBe("Qui est le client ?");
-    expect(screen.getByLabelText("Prénom")).toHaveValue("");
+    expect(question()).toBe("Comment joindre le client ?");
+    expect((screen.getByLabelText("Téléphone") as HTMLInputElement).value).toBe("");
+    expect(screen.getByLabelText("E-mail")).toHaveValue("");
     expect(recap().textContent).toBe("");
   });
 
@@ -656,7 +693,8 @@ describe("Le focus suit la question (R2d, désormais structurel)", () => {
     const scroll = vi.fn();
     Element.prototype.scrollIntoView = scroll;
     await setup();
-    await repondreClient();
+    // Une transition (Contact → Client) : un défilement, pas deux.
+    await repondreContact();
     await waitFor(() => expect(scroll).toHaveBeenCalledTimes(1));
   });
 });
@@ -929,24 +967,29 @@ describe("Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT",
 describe("Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' »", () => {
   it("⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit", async () => {
     await setup();
-    fireEvent.change(screen.getByLabelText(FR.firstName), { target: { value: "Amine1" } });
-    const champ = screen.getByLabelText(FR.firstName);
+    // Rang 41 (D336) : les noms sont à l'étape CLIENT, après le contact — un nom par écriture.
+    await repondreContact();
+    fireEvent.change(screen.getByLabelText(FR.nameLatin), { target: { value: "Amine1" } });
+    const champ = screen.getByLabelText(FR.nameLatin);
     expect(champ).toHaveAttribute("aria-invalid", "true");
-    expect(document.getElementById(champ.getAttribute("aria-describedby") as string)).toHaveTextContent(FR.firstNameInvalid);
+    expect(document.getElementById(champ.getAttribute("aria-describedby") as string)).toHaveTextContent(FR.nameLatinInvalid);
     // L'erreur d'un champ est une ALERTE : un lecteur d'écran l'annonce à son apparition. Verdict en assertion NATIVE (D304, D316) — c'est ce que mesure la cible N-11
     // de `neutralisation/neutralize-r32.py` ; sans cette ligne, perdre le rôle `alert` laissait les 75 tests verts.
-    expect(screen.queryAllByRole("alert").map((e) => e.textContent)).toEqual([FR.firstNameInvalid]);
-    fireEvent.change(screen.getByLabelText(FR.lastName), { target: { value: "B@lkacem" } });
-    expect(screen.getByLabelText(FR.lastName)).toHaveAttribute("aria-invalid", "true");
-    expect(raisonsDuBouton()).toEqual(expect.arrayContaining([FR.needFirstNameValid, FR.needLastNameValid]));
+    expect(screen.queryAllByRole("alert").map((e) => e.textContent)).toEqual([FR.nameLatinInvalid]);
+    fireEvent.change(screen.getByLabelText(FR.nameAr), { target: { value: "أمين@" } });
+    expect(screen.getByLabelText(FR.nameAr)).toHaveAttribute("aria-invalid", "true");
+    expect(raisonsDuBouton()).toEqual(expect.arrayContaining([FR.needNameArValid, FR.needNameLatinValid]));
   });
 
   it("le français accentué, les noms composés, l'apostrophe et L'ARABE passent — le champ n'est pas en erreur", async () => {
     await setup();
+    await repondreContact();
     for (const nom of ["Éloïse", "Jean-Pierre", "O'Brien", "أمينة"]) {
-      fireEvent.change(screen.getByLabelText(FR.firstName), { target: { value: nom } });
-      expect(screen.getByLabelText(FR.firstName), nom).not.toHaveAttribute("aria-invalid");
+      fireEvent.change(screen.getByLabelText(FR.nameLatin), { target: { value: nom } });
+      expect(screen.getByLabelText(FR.nameLatin), nom).not.toHaveAttribute("aria-invalid");
     }
+    fireEvent.change(screen.getByLabelText(FR.nameAr), { target: { value: "أَمِينَة بن علي" } });
+    expect(screen.getByLabelText(FR.nameAr)).not.toHaveAttribute("aria-invalid");
   });
 });
 
@@ -954,9 +997,10 @@ describe("Point 3 — l'e-mail : la règle du contrat, importée", () => {
   it("le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction", async () => {
     await setup();
     let verdictsFaux = 0;
+    // Rang 41 (D336) : l'e-mail de l'étape CONTACT ; celui de la conversion suit la même règle (`fieldErrors`, mesuré par `walkin-contact.test.ts`).
     for (const adresse of ["amine@example.com", "amine@", "pas une adresse", "a@b.co", "@example.com"]) {
-      fireEvent.change(screen.getByLabelText(FR.email), { target: { value: adresse } });
-      const refuse = screen.getByLabelText(FR.email).getAttribute("aria-invalid") === "true";
+      fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: adresse } });
+      const refuse = screen.getByLabelText(FR.contactEmail).getAttribute("aria-invalid") === "true";
       expect(refuse, adresse).toBe(!isValidContactEmail(adresse));
       if (refuse) verdictsFaux += 1;
     }
@@ -967,31 +1011,54 @@ describe("Point 3 — l'e-mail : la règle du contrat, importée", () => {
 
   it("vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison", async () => {
     await setup();
-    fireEvent.change(screen.getByLabelText(FR.email), { target: { value: "amine@" } });
+    // Le numéro est là : l'e-mail est alors facultatif ; saisi, il doit passer la règle du contrat.
+    fireEvent.change(telephone(), { target: { value: "+213550000002" } });
+    fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "amine@" } });
     expect(raisonsDuBouton()).toContain(FR.needEmailValid);
-    fireEvent.change(screen.getByLabelText(FR.email), { target: { value: "" } });
+    fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "" } });
     expect(raisonsDuBouton()).not.toContain(FR.needEmailValid);
   });
 });
 
 describe("Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé", () => {
-  const CHAMPS: [string, string, string][] = [
-    [FR.firstName, FR.firstNamePlaceholder, "prénom"],
-    [FR.lastName, FR.lastNamePlaceholder, "nom"],
+  /** Rang 41 (D336) : les champs vivent sur TROIS écrans — le contact, le client, la conversion (K-12). Chacun est vérifié là où il s'affiche. */
+  const CONTACT_CHAMPS: [string, string, string][] = [
     [FR.phone, FR_PHONE.placeholder[DEFAULT_PHONE_COUNTRY], "téléphone"],
-    [FR.email, FR.emailPlaceholder, "e-mail"],
+    [FR.contactEmail, FR.emailPlaceholder, "e-mail du contact"]
+  ];
+  const CLIENT_CHAMPS: [string, string, string][] = [
+    [FR.nameAr, FR.nameArPlaceholder, "nom en arabe"],
+    [FR.nameLatin, FR.nameLatinPlaceholder, "nom en lettres latines"],
     [FR.guests, FR.guestsPlaceholder, "invités"]
   ];
-
-  it("chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143)", async () => {
-    await setup();
-    for (const [libelle, exemple, nom] of CHAMPS) {
+  const CONVERSION_CHAMPS: [string, string, string][] = [
+    [FR.firstName, FR.firstNamePlaceholder, "prénom"],
+    [FR.lastName, FR.lastNamePlaceholder, "nom"],
+    [FR.phone, FR_PHONE.placeholder[DEFAULT_PHONE_COUNTRY], "téléphone de la conversion"],
+    [FR.email, FR.emailPlaceholder, "e-mail"]
+  ];
+  function verifier(champs: [string, string, string][]) {
+    for (const [libelle, exemple, nom] of champs) {
       const champ = screen.getByLabelText(libelle) as HTMLInputElement;
       expect(champ.placeholder, nom).toBe(exemple);
       expect(champ.placeholder, nom).not.toBe("");
       expect(champ.placeholder, nom).not.toBe(libelle);
       expect(screen.getByText(libelle, { selector: "label" }), nom).toBeVisible();
     }
+  }
+
+  it("chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143)", async () => {
+    await setup();
+    verifier(CONTACT_CHAMPS);
+    await repondreContact();
+    verifier(CLIENT_CHAMPS);
+    await repondreNoms();
+    await repondreDate();
+    await repondreCreneau();
+    await repondrePrestations();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    verifier(CONVERSION_CHAMPS);
   });
 
   it("⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne", async () => {
@@ -999,15 +1066,17 @@ describe("Point 4 — un exemple du format dans chaque champ, qui ne remplace JA
     const gabarit = (screen.getByLabelText(FR.phone) as HTMLInputElement).placeholder;
     expect(gabarit).toMatch(/X/);
     expect(gabarit.replace(/\D/g, "").length).toBeLessThan(PAYS.nationalLength);
-    expect((screen.getByLabelText(FR.email) as HTMLInputElement).placeholder).toMatch(/@example\.com$/);
+    expect((screen.getByLabelText(FR.contactEmail) as HTMLInputElement).placeholder).toMatch(/@example\.com$/);
     expect(AR.emailPlaceholder).toMatch(/@example\.com$/);
     // Les exemples de nom sont introduits comme tels (« Ex. : », « مثال: ») — pas présentés comme la saisie d'une personne.
-    expect(FR.firstNamePlaceholder).toMatch(/^Ex\. :/);
-    expect(AR.firstNamePlaceholder).toMatch(/^مثال:/);
+    for (const cle of ["firstNamePlaceholder", "nameArPlaceholder", "nameLatinPlaceholder"] as const) {
+      expect(FR[cle], cle).toMatch(/^Ex\. :/);
+      expect(AR[cle], cle).toMatch(/^مثال:/);
+    }
   });
 
-  it("le même exemple existe en ARABE, pour chacun des cinq champs", () => {
-    for (const cle of ["firstNamePlaceholder", "lastNamePlaceholder", "emailPlaceholder", "guestsPlaceholder"] as const) {
+  it("le même exemple existe en ARABE, pour chacun des champs", () => {
+    for (const cle of ["firstNamePlaceholder", "lastNamePlaceholder", "nameArPlaceholder", "nameLatinPlaceholder", "emailPlaceholder", "guestsPlaceholder"] as const) {
       expect(AR[cle], cle).toBeTruthy();
       expect(AR[cle], cle).not.toBe(FR[cle]);
     }
@@ -1016,19 +1085,21 @@ describe("Point 4 — un exemple du format dans chaque champ, qui ne remplace JA
 });
 
 describe("Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton", () => {
-  it("tout est vide : la liste nomme les quatre manques, et le bouton la désigne par `aria-describedby`", async () => {
+  it("tout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `aria-describedby`", async () => {
     await setup();
     const bouton = screen.getByRole("button", { name: FR.continue });
     expect(bouton).toBeDisabled();
     expect(bouton).toHaveAccessibleDescription(new RegExp(FR.continueBlockedLead.replace(/[«»]/g, ".")));
-    expect(raisonsDuBouton()).toEqual([FR.needFirstName, FR.needLastName, FR.needPhone, FR.needGuests]);
+    // Rang 41 (D336) : l'étape Contact ne retient que l'ABSENCE d'identifiant ; l'étape Client, l'absence de nom puis d'invités.
+    expect(raisonsDuBouton()).toEqual([FR.needIdentifier]);
+    await repondreContact();
+    expect(raisonsDuBouton()).toEqual([FR.needName, FR.needGuests]);
   });
 
   it("⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre", async () => {
     await setup();
-    fireEvent.change(screen.getByLabelText(FR.firstName), { target: { value: "Amine" } });
-    fireEvent.change(screen.getByLabelText(FR.lastName), { target: { value: "Belkacem" } });
-    fireEvent.change(telephone(), { target: { value: "+213550000002" } });
+    await repondreContact();
+    fireEvent.change(screen.getByLabelText(FR.nameLatin), { target: { value: "Amine Belkacem" } });
     expect(raisonsDuBouton()).toEqual([FR.needGuests]);
     expect(FR.needGuests).toBe("le nombre d'invités est obligatoire");
   });
@@ -1041,9 +1112,8 @@ describe("Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bout
 
   it("tout répondu : plus de liste, plus de description, le bouton s'active", async () => {
     await setup();
-    fireEvent.change(screen.getByLabelText(FR.firstName), { target: { value: "Amine" } });
-    fireEvent.change(screen.getByLabelText(FR.lastName), { target: { value: "Belkacem" } });
-    fireEvent.change(telephone(), { target: { value: "+213550000002" } });
+    await repondreContact();
+    fireEvent.change(screen.getByLabelText(FR.nameLatin), { target: { value: "Amine Belkacem" } });
     fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "200" } });
     const bouton = screen.getByRole("button", { name: FR.continue });
     expect(bouton).toBeEnabled();
@@ -1055,28 +1125,43 @@ describe("Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bout
 describe("Libellés liés aux champs — en arabe aussi", () => {
   it("⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé)", async () => {
     await setup();
+    // Rang 41 (D336) : deux écrans, deux contrôles — le contact, puis les noms (le champ des invités a un identifiant fixe, `wk-guests`).
+    const propres = (noms: string[]) => {
+      const champs = noms.map((nom) => screen.getByLabelText(nom));
+      expect(new Set(champs).size).toBe(noms.length);
+      for (const champ of champs) expect(champ).toBeInstanceOf(HTMLInputElement);
+      expect(new Set(champs.map((c) => c.id)).size).toBe(noms.length);
+    };
     await act(async () => void (await i18next.changeLanguage("ar")));
-    const noms = [AR.firstName, AR.lastName, AR.phone, AR.email];
-    const champs = noms.map((nom) => screen.getByLabelText(nom));
-    expect(new Set(champs).size).toBe(noms.length);
-    for (const champ of champs) expect(champ).toBeInstanceOf(HTMLInputElement);
-    expect(new Set(champs.map((c) => c.id)).size).toBe(noms.length);
+    propres([AR.phone, AR.contactEmail]);
+    fireEvent.change(screen.getByLabelText(AR.phone), { target: { value: "+213550000002" } });
+    fireEvent.click(screen.getByRole("button", { name: AR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    propres([AR.nameAr, AR.nameLatin]);
   });
 
   it("⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe", async () => {
     await setup();
-    for (const langue of ["fr", "ar"] as const) {
-      await act(async () => void (await i18next.changeLanguage(langue)));
-      const libelles = Array.from(document.querySelectorAll("label.wk-label"));
-      expect(libelles.length, langue).toBeGreaterThanOrEqual(4);
-      const cibles = libelles.map((l) => l.getAttribute("for"));
-      // Verdicts NATIFS (D304, D316) : `getByLabelText` lève une erreur de REQUÊTE quand le lien manque, pas une assertion — c'est ce que mesure la cible N-12.
-      for (const cible of cibles) {
-        expect(cible, langue).toBeTruthy();
-        expect(document.getElementById(cible as string), langue).not.toBeNull();
+    const controler = async (minimum: number) => {
+      for (const langue of ["fr", "ar"] as const) {
+        await act(async () => void (await i18next.changeLanguage(langue)));
+        const libelles = Array.from(document.querySelectorAll("label.wk-label"));
+        expect(libelles.length, langue).toBeGreaterThanOrEqual(minimum);
+        const cibles = libelles.map((l) => l.getAttribute("for"));
+        // Verdicts NATIFS (D304, D316) : `getByLabelText` lève une erreur de REQUÊTE quand le lien manque, pas une assertion — c'est ce que mesure la cible N-12.
+        for (const cible of cibles) {
+          expect(cible, langue).toBeTruthy();
+          expect(document.getElementById(cible as string), langue).not.toBeNull();
+        }
+        expect(new Set(cibles).size, langue).toBe(cibles.length);
       }
-      expect(new Set(cibles).size, langue).toBe(cibles.length);
-    }
+      await act(async () => void (await i18next.changeLanguage("fr")));
+    };
+    // L'étape Contact (téléphone, e-mail), puis l'étape Client (deux noms, invités).
+    await controler(2);
+    await repondreContact();
+    await controler(3);
   });
 });
 
@@ -1088,7 +1173,7 @@ describe("Point 8 — les libellés du rail sont cliquables comme leur pastille,
     expect(question()).toBe("Quel créneau ?");
     fireEvent.click(within(rail()).getByText("Client"));
     expect(question()).toBe("Qui est le client ?");
-    expect(screen.getByLabelText(FR.firstName)).toHaveValue("Amine");
+    expect(screen.getByLabelText(FR.nameLatin)).toHaveValue("Amine Belkacem");
   });
 
   it("⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation", async () => {
@@ -1120,11 +1205,16 @@ describe("Point 9 — « Précédent » à gauche, « Continuer » à droite", (
   it("absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer", async () => {
     await setup();
     expect(screen.queryByRole("button", { name: FR.previous })).toBeNull();
-    await repondreClient();
+    // Rang 41 (D336) : la première étape est le CONTACT ; « Précédent » de l'étape Client y ramène, le numéro intact.
+    await repondreContact();
+    fireEvent.click(screen.getByRole("button", { name: FR.previous }));
+    expect(question()).toBe("Comment joindre le client ?");
+    expect(telephone().value).toBe("550000002");
+    await repondreContact();
+    await repondreNoms();
     fireEvent.click(screen.getByRole("button", { name: FR.previous }));
     expect(question()).toBe("Qui est le client ?");
-    expect(screen.getByLabelText(FR.firstName)).toHaveValue("Amine");
-    expect(telephone().value).toBe("550000002");
+    expect(screen.getByLabelText(FR.nameLatin)).toHaveValue("Amine Belkacem");
   });
 
   it("de l'étape des prestations à celle du créneau, le créneau retenu SURVIT", async () => {
@@ -1195,8 +1285,9 @@ describe("Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation
     fireEvent.click(screen.getByRole("button", { name: FR.doneDialogClose }));
     expect(screen.queryByRole("button", { name: FR.reset })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: FR.newQuote }));
-    expect(question()).toBe("Qui est le client ?");
-    for (const libelle of [FR.firstName, FR.lastName, FR.email, FR.guests]) expect(screen.getByLabelText(libelle)).toHaveValue("");
+    // Rang 41 (D336) : l'étape 1 est le CONTACT, vidé ; l'étape Client l'est aussi (on y revient en répondant de nouveau).
+    expect(question()).toBe("Comment joindre le client ?");
+    expect(screen.getByLabelText(FR.contactEmail)).toHaveValue("");
     expect(telephone().value).toBe("");
     expect(recap().textContent).toBe("");
     expect(screen.queryByRole("status")).toBeNull();
@@ -1351,9 +1442,9 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     }
   });
 
-  it("avec une adresse valide à l'étape Client, le canal « e-mail » est ACTIF", async () => {
+  it("avec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF", async () => {
     await setup();
-    fireEvent.change(screen.getByLabelText(FR.email), { target: { value: "amine@example.com" } });
+    fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "amine@example.com" } });
     await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     await screen.findByText(montant(478_600_000));
@@ -1606,10 +1697,10 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
     expect(fenetre.textContent).toContain(AR.remitRecorded.replace("{channel}", messages.ar.venue.ui.quotes.sv_PRINT));
   });
 
-  /** Comme `jusquAuTotal`, avec une ADRESSE valide à l'étape Client : le canal « e-mail » est actif. */
+  /** Comme `jusquAuTotal`, avec une ADRESSE valide à l'étape Contact : la fiche la porte, la conversion la reprend, le canal « e-mail » est actif. */
   async function jusquAuTotalAvecEmail(over: Parameters<typeof setup>[0] = {}) {
     const outils = await setup(over);
-    fireEvent.change(screen.getByLabelText(FR.email), { target: { value: "amine@example.com" } });
+    fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "amine@example.com" } });
     await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     await screen.findByText(montant(478_600_000));
@@ -1740,5 +1831,328 @@ describe("Rang 33 — cinq canaux, le PDF et la fenêtre", () => {
       expect(FR.langFrench).toMatch(/^[A-Za-zÀ-ÿ]+$/u);
       expect(FR.langArabic).toMatch(/^\p{Script=Arabic}+$/u);
     });
+  });
+});
+
+// ══ RANG 41 (D336, L35-4 amendé) — LA FICHE CLIENT ET LE NOM SUR LE DEVIS ═══════════════════════════════════════════════════════════════════════════════
+// Consigne v3, § 6 e et g ; modes de défaillance `docs/preuves/D336/modes-de-defaillance.md` (MD-4, MD-6, MD-9, MD-17 ; S-57 ; K-5 ; K-12).
+// ⚠ Les verdicts sont NATIFS (`queryBy…` + `expect`) partout où une absence se mesure (D304, D316).
+describe("⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom", () => {
+  const fiche = (over: Partial<ClientRecordDTO> = {}): ClientRecordDTO => ({
+    id: "fiche-9",
+    phone: "+213550000002",
+    email: null,
+    nameAr: null,
+    nameLatin: "Amina Bensalem",
+    linked: false,
+    createdAt: "2026-10-22T10:00:00.000Z",
+    updatedAt: "2026-10-22T10:00:00.000Z",
+    ...over
+  });
+  const trouvee = (f: ClientRecordDTO) => vi.fn().mockResolvedValue({ found: true, record: f });
+  const nomLatin = () => screen.getByLabelText(FR.nameLatin) as HTMLInputElement;
+  const nomArabe = () => screen.getByLabelText(FR.nameAr) as HTMLInputElement;
+  const continuer = () => fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+  /** Les invités, puis « Continuer » de l'étape Client, sans toucher aux noms (préremplis ou tapés avant). */
+  async function validerClient(invites = "200") {
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: invites } });
+    continuer();
+    await laisserRetomber();
+    await laisserRetomber();
+  }
+  async function calculer() {
+    await repondreDate();
+    await repondreCreneau();
+    await repondrePrestations();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+  }
+  /** Le dialogue qui DEMANDE le nom manquant, par son titre — `null` s'il n'est pas ouvert (verdict natif). */
+  const questionDuNom = (locale: "fr" | "ar") => screen.queryByRole("dialog", { name: locale === "ar" ? FR.nameDialogTitleAr : FR.nameDialogTitleLatin });
+  async function cliquerCanal(canal: QuoteSentVia, langueDuPdf: "fr" | "ar") {
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: (messages.fr.venue.ui.quotes as Record<string, string>)[`sv_${canal}`] as string }));
+    });
+    const boite = screen.queryByRole("dialog", { name: FR.langDialogTitle });
+    expect(boite, "la boîte de langue est ouverte").not.toBeNull();
+    await act(async () => {
+      fireEvent.click(within(boite as HTMLElement).getByRole("button", { name: langueDuPdf === "fr" ? FR.langFrench : FR.langArabic }));
+    });
+    await laisserRetomber();
+  }
+
+  it("⛔ MD-17 — le CONTACT est la PREMIÈRE étape, les NOMS la seconde : le rail le dit dans cet ordre, et la première question est celle du contact", async () => {
+    await setup();
+    const etapes = Array.from(rail().querySelectorAll("li")).map((li) => li.textContent ?? "");
+    expect(etapes.length).toBe(6);
+    expect(etapes[0]).toContain(FR.stepContact);
+    expect(etapes[1]).toContain(FR.stepClient);
+    expect(question()).toBe(FR.qContact);
+  });
+
+  it("⛔ S-57 — la recherche porte d'abord sur le NUMÉRO, puis sur l'E-MAIL ; un numéro trouvé ne cherche pas l'e-mail", async () => {
+    const un = await setup();
+    fireEvent.change(telephone(), { target: { value: "+213550000002" } });
+    fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "amine@example.com" } });
+    continuer();
+    await laisserRetomber();
+    await laisserRetomber();
+    expect(vi.mocked(un.clients.lookup).mock.calls.map((c) => c[0])).toEqual([{ phone: "+213550000002" }, { email: "amine@example.com" }]);
+    cleanup();
+
+    const deux = await setup({ clients: { lookup: trouvee(fiche()) } });
+    fireEvent.change(telephone(), { target: { value: "+213550000002" } });
+    fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "amine@example.com" } });
+    continuer();
+    await laisserRetomber();
+    await laisserRetomber();
+    expect(vi.mocked(deux.clients.lookup).mock.calls.map((c) => c[0])).toEqual([{ phone: "+213550000002" }]);
+  });
+
+  it("une fiche TROUVÉE PRÉREMPLIT les noms de CE devis, modifiables ; aucune fiche n'est créée ; le devis porte la fiche et les noms DE L'ÉCRAN", async () => {
+    const { clients, quotes } = await setup({ clients: { lookup: trouvee(fiche({ nameAr: "آمنة بن سالم" })) } });
+    await repondreContact();
+    expect(question()).toBe(FR.qClient);
+    expect(nomLatin().value).toBe("Amina Bensalem");
+    expect(nomArabe().value).toBe("آمنة بن سالم");
+    expect(nomLatin().disabled).toBe(false);
+    fireEvent.change(nomLatin(), { target: { value: "Amina Bensalem-Haddad" } });
+    await validerClient();
+    expect(clients.create).not.toHaveBeenCalled();
+    await calculer();
+    expect(vi.mocked(quotes.create).mock.calls[0]?.[1]).toEqual(
+      expect.objectContaining({ clientRecordId: "fiche-9", clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem-Haddad" })
+    );
+  });
+
+  it("⛔ MD-6 — une fiche LIÉE : les deux champs de nom sont GRISÉS, le texte le dit, et le devis porte les noms de la FICHE", async () => {
+    const { quotes } = await setup({ clients: { lookup: trouvee(fiche({ nameAr: "آمنة بن سالم", linked: true })) } });
+    await repondreContact();
+    expect(nomLatin().disabled).toBe(true);
+    expect(nomArabe().disabled).toBe(true);
+    expect(screen.queryByText(FR.ficheLinked)).not.toBeNull();
+    await validerClient();
+    await calculer();
+    expect(vi.mocked(quotes.create).mock.calls[0]?.[1]).toEqual(
+      expect.objectContaining({ clientRecordId: "fiche-9", clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" })
+    );
+  });
+
+  it("une fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE", async () => {
+    const { clients, quotes } = await setup();
+    await repondreContact();
+    expect(screen.queryByText(FR.ficheNew)).not.toBeNull();
+    expect(clients.create).not.toHaveBeenCalled();
+    await repondreNoms();
+    expect(vi.mocked(clients.create).mock.calls.map((c) => c[0])).toEqual([{ phone: "+213550000002", nameLatin: "Amine Belkacem" }]);
+    await calculer();
+    expect(vi.mocked(quotes.create).mock.calls[0]?.[1]).toEqual(expect.objectContaining({ clientRecordId: "fiche-1", clientNameLatin: "Amine Belkacem" }));
+    expect("clientNameAr" in (vi.mocked(quotes.create).mock.calls[0]?.[1] as object)).toBe(false);
+  });
+
+  it("⛔ MD-4 — le numéro du PRO refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis", async () => {
+    const refus = new ApiError(400, "CLIENT_IS_PRO_CONTACT", "clientRecord.errors.isProContact", []);
+    const { quotes } = await setup({ clients: { create: vi.fn().mockRejectedValue(refus) } });
+    await repondreContact();
+    await repondreNoms();
+    expect(screen.queryAllByRole("alert").map((e) => e.textContent)).toContain(messages.fr.clientRecord.errors.isProContact);
+    expect(question()).toBe(FR.qClient);
+    expect(quotes.create).not.toHaveBeenCalled();
+  });
+
+  it("⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise", async () => {
+    const { clients } = await setup({
+      quotes: { create: vi.fn().mockResolvedValue(draft()), convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" })), deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" })) }
+    });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanal(QUOTE_SENT_VIA.PRINT, "fr");
+    fireEvent.click(await screen.findByRole("button", { name: FR.doneDialogClose }));
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
+    await screen.findByRole("dialog", { name: FR.doneTitleStandby });
+    expect(clients.create).toHaveBeenCalledTimes(1);
+    expect(clients.completeNames).not.toHaveBeenCalled();
+    expect(clients.update).not.toHaveBeenCalled();
+  });
+
+  it("⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN", async () => {
+    const { quotes } = await setup({
+      quotes: {
+        create: vi.fn().mockResolvedValue(draft({ clientNameLatin: "Abd El Kader Benali" })),
+        convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" }))
+      }
+    });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    const prenom = screen.getByLabelText(FR.firstName) as HTMLInputElement;
+    const nom = screen.getByLabelText(FR.lastName) as HTMLInputElement;
+    // Le découpage TOMBE MAL sur un prénom composé : c'est écrit, et le pro corrige.
+    expect([prenom.value, nom.value]).toEqual(["Abd", "El Kader Benali"]);
+    expect([prenom.disabled, nom.disabled]).toEqual([false, false]);
+    fireEvent.change(prenom, { target: { value: "Abd El Kader" } });
+    fireEvent.change(nom, { target: { value: "Benali" } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
+    await waitFor(() => expect(quotes.convert).toHaveBeenCalledTimes(1));
+    expect(vi.mocked(quotes.convert).mock.calls[0]?.[1]).toEqual({
+      contactFirstName: "Abd El Kader",
+      contactLastName: "Benali",
+      contactPhone: "+213550000002",
+      paymentMethod: "CASH"
+    });
+  });
+
+  it("MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture", async () => {
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft({ clientNameAr: "عبد القادر بن علي", clientNameLatin: "Abdelkader Benali" })) } });
+    await allerAuDevis();
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    fireEvent.click(screen.getByRole("button", { name: AR.compute }));
+    await screen.findByText(montant(478_600_000));
+    expect((screen.getByLabelText(AR.firstName) as HTMLInputElement).value).toBe("عبد");
+    expect((screen.getByLabelText(AR.lastName) as HTMLInputElement).value).toBe("القادر بن علي");
+    cleanup();
+    await act(async () => void (await i18next.changeLanguage("fr")));
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft({ clientNameAr: "عبد القادر بن علي", clientNameLatin: null })) } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    expect((screen.getByLabelText(FR.firstName) as HTMLInputElement).value).toBe("عبد");
+  });
+
+  it("MD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi", async () => {
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft({ clientNameLatin: "Bensalem" })) } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    expect((screen.getByLabelText(FR.firstName) as HTMLInputElement).value).toBe("");
+    expect((screen.getByLabelText(FR.lastName) as HTMLInputElement).value).toBe("Bensalem");
+    expect((screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.change(screen.getByLabelText(FR.firstName), { target: { value: "Amina" } });
+    expect((screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("⛔ K-12 — une fiche SANS numéro (trouvée par l'e-mail) : le numéro est DEMANDÉ à la conversion ; la fiche n'est PAS réécrite", async () => {
+    const { clients, quotes } = await setup({
+      clients: { lookup: trouvee(fiche({ phone: null, email: "amina@example.dz" })) },
+      quotes: { create: vi.fn().mockResolvedValue(draft({ clientRecordId: "fiche-9", clientNameLatin: "Amina Bensalem" })), convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" })) }
+    });
+    fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "amina@example.dz" } });
+    continuer();
+    await laisserRetomber();
+    await laisserRetomber();
+    expect(vi.mocked(clients.lookup).mock.calls.map((c) => c[0])).toEqual([{ email: "amina@example.dz" }]);
+    await validerClient();
+    await calculer();
+    expect(telephone().value).toBe("");
+    expect((screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.change(telephone(), { target: { value: "0661234567" } });
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
+    await waitFor(() => expect(quotes.convert).toHaveBeenCalledTimes(1));
+    expect(vi.mocked(quotes.convert).mock.calls[0]?.[1]).toEqual(expect.objectContaining({ contactPhone: "+213661234567", contactEmail: "amina@example.dz" }));
+    expect(clients.update).not.toHaveBeenCalled();
+    expect(clients.completeNames).not.toHaveBeenCalled();
+  });
+
+  it("⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue", async () => {
+    const complete = draft({ clientNameAr: "أمين بلقاسم" });
+    const completeClientName = vi.fn().mockResolvedValue(complete);
+    const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT", clientNameAr: "أمين بلقاسم" }));
+    const document = vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" }));
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), completeClientName, deliver, document } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanal(QUOTE_SENT_VIA.PRINT, "ar");
+    const dialogue = questionDuNom("ar");
+    expect(dialogue, "la question du nom en arabe est ouverte").not.toBeNull();
+    expect(deliver).not.toHaveBeenCalled();
+    expect(document).not.toHaveBeenCalled();
+    fireEvent.change(within(dialogue as HTMLElement).getByLabelText(FR.nameAr), { target: { value: "أمين بلقاسم" } });
+    await act(async () => {
+      fireEvent.click(within(dialogue as HTMLElement).getByRole("button", { name: FR.nameDialogConfirm }));
+    });
+    await laisserRetomber();
+    await laisserRetomber();
+    expect(completeClientName).toHaveBeenCalledWith("q1", { locale: "ar", name: "أمين بلقاسم" });
+    expect(deliver).toHaveBeenCalledWith("q1", { sentVia: QUOTE_SENT_VIA.PRINT });
+    expect(document).toHaveBeenCalledWith("q1", "ar");
+  });
+
+  it("K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine)", async () => {
+    const completeClientName = vi.fn();
+    const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT" }));
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), completeClientName, deliver } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanal(QUOTE_SENT_VIA.PRINT, "fr");
+    expect(questionDuNom("fr")).toBeNull();
+    expect(completeClientName).not.toHaveBeenCalled();
+    await waitFor(() => expect(deliver).toHaveBeenCalledTimes(1));
+  });
+
+  it("K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé", async () => {
+    const completeClientName = vi.fn();
+    const deliver = vi.fn();
+    const document = vi.fn();
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), completeClientName, deliver, document } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanal(QUOTE_SENT_VIA.PRINT, "ar");
+    const dialogue = questionDuNom("ar") as HTMLElement;
+    expect(dialogue).not.toBeNull();
+    await act(async () => {
+      fireEvent.click(within(dialogue).getByRole("button", { name: FR.langDialogCancel }));
+    });
+    await laisserRetomber();
+    expect(questionDuNom("ar")).toBeNull();
+    expect(completeClientName).not.toHaveBeenCalled();
+    expect(deliver).not.toHaveBeenCalled();
+    expect(document).not.toHaveBeenCalled();
+  });
+
+  it("K-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part", async () => {
+    const completeClientName = vi.fn();
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), completeClientName } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanal(QUOTE_SENT_VIA.PRINT, "ar");
+    const dialogue = questionDuNom("ar") as HTMLElement;
+    fireEvent.change(within(dialogue).getByLabelText(FR.nameAr), { target: { value: "أمين1" } });
+    expect((within(dialogue).getByRole("button", { name: FR.nameDialogConfirm }) as HTMLButtonElement).disabled).toBe(true);
+    expect(completeClientName).not.toHaveBeenCalled();
+  });
+
+  it("K-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé", async () => {
+    const refus = new ApiError(409, "QUOTE_CLIENT_NAME_ALREADY_SET", "quote.errors.clientNameAlreadySet", []);
+    const deliver = vi.fn();
+    const document = vi.fn();
+    await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), completeClientName: vi.fn().mockRejectedValue(refus), deliver, document } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanal(QUOTE_SENT_VIA.PRINT, "ar");
+    const dialogue = questionDuNom("ar") as HTMLElement;
+    fireEvent.change(within(dialogue).getByLabelText(FR.nameAr), { target: { value: "أمين بلقاسم" } });
+    await act(async () => {
+      fireEvent.click(within(dialogue).getByRole("button", { name: FR.nameDialogConfirm }));
+    });
+    await laisserRetomber();
+    expect(screen.queryAllByRole("alert").map((e) => e.textContent)).toContain(messages.fr.quote.errors.clientNameAlreadySet);
+    expect(deliver).not.toHaveBeenCalled();
+    expect(document).not.toHaveBeenCalled();
+  });
+
+  it("le récapitulatif : l'étape Contact dit le numéro, l'étape Client les noms et les invités — aucun montant", async () => {
+    await setup();
+    await repondreClient();
+    const texte = recap().textContent ?? "";
+    expect(texte).toContain("+213550000002");
+    expect(texte).toContain("Amine Belkacem");
+    expect(texte).toContain("Invités : 200");
+    expect(texte).not.toMatch(/DZD|\bDA\b/u);
   });
 });

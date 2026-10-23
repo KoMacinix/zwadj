@@ -16,8 +16,8 @@
 // le genre d'échec qui n'apparaît qu'en CI.
 import { vi } from "vitest";
 import { act } from "@testing-library/react";
-import type { BookingsProClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
-import type { AmenityDTO, VenueProDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
+import type { BookingsProClient, ProClientsClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
+import type { AmenityDTO, ClientRecordCreateInput, VenueProDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import { ApiError, type AuthClient } from "../lib/auth-client";
 
 export interface AuthenticatedProUser {
@@ -252,6 +252,35 @@ export function makeQuotesDouble(overrides: Partial<QuotesClient> = {}): QuotesC
     // Rang 33 (D326) : le PDF du devis. Le défaut REND un Blob (un test qui clique un bouton de remise n'a pas à connaître le transport) ;
     // un test qui veut un ÉCHEC le remplace par `vi.fn().mockRejectedValue(new ApiError(…))`.
     document: vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" })),
+    // Rang 41 (D336, K-5) : la boîte de langue complète la copie du nom. Sans défaut utile : un test qui passe par elle dit ce que le serveur rend.
+    completeClientName: vi.fn(),
+    ...overrides
+  };
+}
+
+/** Double du client des FICHES CLIENT (rang 41, D336 — K-1, K-2, K-3, K-3b).
+ *
+ *  ⚠ Par défaut, AUCUNE fiche n'est trouvée (K-1 rend `{ found: false }`) et la création (K-2) REND une fiche faite des valeurs REÇUES, « fiche-1 » : un parcours
+ *  qui crée une fiche n'a pas à connaître le transport. Un test qui veut une fiche trouvée, liée, ou un refus remplace la méthode. Les deux écritures APRÈS la
+ *  création (K-3, K-3b) n'ont aucun défaut : l'écran du parcours ne doit JAMAIS les appeler (MD-17), et un appel inattendu rendrait `undefined`, pas une fiche. */
+export function makeProClientsDouble(overrides: Partial<ProClientsClient> = {}): ProClientsClient {
+  return {
+    lookup: vi.fn().mockResolvedValue({ found: false }),
+    create: vi.fn(async (input: ClientRecordCreateInput) => ({
+      created: true,
+      record: {
+        id: "fiche-1",
+        phone: input.phone ?? null,
+        email: input.email ?? null,
+        nameAr: input.nameAr ?? null,
+        nameLatin: input.nameLatin ?? null,
+        linked: false,
+        createdAt: "2026-10-22T10:00:00.000Z",
+        updatedAt: "2026-10-22T10:00:00.000Z"
+      }
+    })),
+    completeNames: vi.fn(),
+    update: vi.fn(),
     ...overrides
   };
 }

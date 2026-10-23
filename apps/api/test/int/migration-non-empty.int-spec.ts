@@ -718,7 +718,9 @@ describe("L35-3 — la numérotation des salles et des devis sur une base NON VI
     const toutes = migrationsOrdonnees();
     const i282 = toutes.indexOf(NOM_D282);
     suite = toutes.slice(i282 + 1);
-    expect(suite.map((n) => n.replace(/^\d+_/u, "")), "les migrations qui SUIVENT D282 sont celles du lot : un lot de plus doit re-pointer ce bloc").toEqual(["venue_number", "quote_reference"]);
+    // ⛔ Rang 41 (D336) : la migration de L35-4 (`pro_client_records`) SUIT celles de L35-3 — elle est mesurée par son propre bloc, en bas de ce fichier ; ce bloc-ci n'applique que `suite[0]` et `suite[1]`.
+    // ⚠ `expect.soft` : le test ROUGIT si un lot de plus arrive, mais la préparation CONTINUE — sinon M-A et M-B, dont le comportement ne change pas, tomberaient en cascade.
+    expect.soft(suite.map((n) => n.replace(/^\d+_/u, "")), "les migrations qui SUIVENT D282 sont celles de L35-3 puis de L35-4 : un lot de plus doit re-pointer ce bloc").toEqual(["venue_number", "quote_reference", "pro_client_records"]);
 
     // D282 refusait l'agrégat faux (test précédent) : on rend les deux lignes cohérentes, puis on l'applique — le chemin FAVORABLE, que ce fichier n'avait jamais joué.
     await sql(`UPDATE bookings SET total_cents = base_price_cents + services_total_cents WHERE total_cents <> base_price_cents + services_total_cents`);
@@ -869,3 +871,109 @@ describe("L35-3 — la numérotation des salles et des devis sur une base NON VI
   });
 });
 
+
+describe("⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE", () => {
+  const NOM = "pro_client_records";
+  let derniere = "";
+  const colonnesDuDevis = `SELECT id, status, version, chain_id, parent_quote_id, total_cents, deposit_cents, reference_year, reference_number, client_id::text AS client_id FROM quotes ORDER BY id`;
+
+  it("prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)", async () => {
+    await recreerBase();
+    const toutes = migrationsOrdonnees();
+    derniere = toutes[toutes.length - 1]!;
+    expect(derniere.replace(/^\d+_/u, ""), "la DERNIÈRE migration est celle du lot : un lot de plus doit re-pointer ce bloc").toBe(NOM);
+    await appliquerMigrations(toutes.slice(0, -1));
+
+    await sql(`INSERT INTO wilayas (id, code, name_fr, name_ar) VALUES (uuidv7(), 16, 'Alger', 'الجزائر')`);
+    await sql(`INSERT INTO cities (id, wilaya_id, name_fr, name_ar, lat, lng) SELECT uuidv7(), id, 'Hydra', 'حيدرة', 36.7, 3.0 FROM wilayas`);
+    await sql(
+      `INSERT INTO users (id, email, password_hash, role, status, email_verified_at, locale, created_at, updated_at) VALUES
+         (uuidv7(), 'p@example.dz', '$argon2id$fake', 'PRO', 'ACTIVE', now(), 'fr', now(), now()),
+         (uuidv7(), 'c@example.dz', '$argon2id$fake', 'CLIENT', 'ACTIVE', now(), 'ar', now(), now())`
+    );
+    await sql(`INSERT INTO pro_profiles (id, user_id, business_name, phone, created_at, updated_at) SELECT uuidv7(), id, 'P', '+213550000001', now(), now() FROM users WHERE role = 'PRO'`);
+    await sql(
+      `INSERT INTO venues (id, owner_id, city_id, slug, name_fr, name_ar, capacity_max, base_price_cents, publication_status, created_at, updated_at)
+       SELECT uuidv7(), p.id, c.id, 's', 'S', 'ق', 100, 100, 'PUBLISHED', now(), now() FROM pro_profiles p CROSS JOIN cities c LIMIT 1`
+    );
+    // Une tête (v1), sa révision (v2), et un devis HÉRITÉ lié à un compte (`client_id`, accepté avant D336) : trois lignes que la migration doit traverser intactes.
+    await sql(
+      `INSERT INTO quotes (id, venue_id, status, version, chain_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines, reference_year, reference_number)
+       SELECT '018f0000-0000-7000-8000-000000004101'::uuid, v.id, 'DRAFT', 1, '018f0000-0000-7000-8000-000000004101'::uuid, current_date + 30, 100, 150000000, 0, 150000000, 45000000, '[]'::jsonb, 2026, 1 FROM venues v`
+    );
+    await sql(
+      `INSERT INTO quotes (id, venue_id, status, version, chain_id, parent_quote_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines, reference_year, reference_number)
+       SELECT '018f0000-0000-7000-8000-000000004102'::uuid, q.venue_id, 'DRAFT', 2, q.id, q.id, current_date + 30, 120, 150000000, 0, 150000000, 45000000, '[]'::jsonb, 2026, 1 FROM quotes q WHERE q.version = 1`
+    );
+    await sql(
+      `INSERT INTO quotes (id, venue_id, client_id, status, version, chain_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines, reference_year, reference_number)
+       SELECT '018f0000-0000-7000-8000-000000004103'::uuid, v.id, u.id, 'CANCELLED', 1, '018f0000-0000-7000-8000-000000004103'::uuid, current_date + 40, 80, 150000000, 0, 150000000, 45000000, '[]'::jsonb, 2026, 2
+         FROM venues v CROSS JOIN users u WHERE u.role = 'CLIENT'`
+    );
+    const n = await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes`);
+    expect(n[0], "sans devis semés, la migration s'appliquerait sur du vide").toEqual({ n: "3" });
+    // Garde-fou : la migration du lot n'est PAS encore appliquée, sinon le test ne prouverait rien.
+    expect(await sql(`SELECT 1 FROM information_schema.tables WHERE table_name = 'pro_client_records'`), "la table existe déjà").toHaveLength(0);
+    expect(await sql(`SELECT 1 FROM information_schema.columns WHERE table_name = 'quotes' AND column_name = 'client_record_id'`), "la colonne existe déjà").toHaveLength(0);
+  });
+
+  it("⛔ la migration passe sur la base NON VIDE : les devis existants la traversent INCHANGÉS, leurs trois colonnes neuves sont NULLES, la table neuve est VIDE", async () => {
+    const avant = await sql(colonnesDuDevis);
+    expect(avant, "le semis du test précédent a disparu").toHaveLength(3);
+    await appliquerMigrations([derniere]);
+    expect(await sql(colonnesDuDevis)).toEqual(avant);
+    const nuls = await sql<{ id: string; client_record_id: string | null; client_name_ar: string | null; client_name_latin: string | null }>(
+      `SELECT id, client_record_id::text AS client_record_id, client_name_ar, client_name_latin FROM quotes ORDER BY id`
+    );
+    expect(nuls.map((q) => [q.client_record_id, q.client_name_ar, q.client_name_latin])).toEqual([
+      [null, null, null],
+      [null, null, null],
+      [null, null, null]
+    ]);
+    expect(await sql(`SELECT count(*)::text AS n FROM pro_client_records`)).toEqual([{ n: "0" }]);
+    // Aucune colonne neuve n'est obligatoire : une base de production a des devis, et une colonne `NOT NULL` sans défaut y échouerait (D123).
+    const obligatoires = await sql<{ column_name: string; is_nullable: string }>(
+      `SELECT column_name, is_nullable FROM information_schema.columns WHERE table_name = 'quotes' AND column_name IN ('client_record_id', 'client_name_ar', 'client_name_latin') ORDER BY 1`
+    );
+    expect(obligatoires).toEqual([
+      { column_name: "client_name_ar", is_nullable: "YES" },
+      { column_name: "client_name_latin", is_nullable: "YES" },
+      { column_name: "client_record_id", is_nullable: "YES" }
+    ]);
+  });
+
+  it("⛔ les garanties que la migration pose (D186) : quatre CHECK, deux unicités PARTIELLES par pro, et l'action de chaque clé étrangère", async () => {
+    const checks = await sql<{ conname: string }>(`SELECT conname FROM pg_constraint WHERE conrelid = 'pro_client_records'::regclass AND contype = 'c' ORDER BY conname`);
+    expect(checks.map((c) => c.conname)).toEqual([
+      "pro_client_records_identifier_present",
+      "pro_client_records_link_coherent",
+      "pro_client_records_name_present",
+      "pro_client_records_phone_canonical"
+    ]);
+    // `r` = RESTRICT (S-56 pour le compte lié ; le schéma ratifié pour le pro), `n` = SET NULL (le devis garde sa copie quand la fiche part).
+    const cles = await sql<{ conname: string; confdeltype: string }>(
+      `SELECT conname, confdeltype FROM pg_constraint WHERE contype = 'f' AND conname IN ('pro_client_records_pro_profile_id_fkey', 'pro_client_records_linked_user_id_fkey', 'quotes_client_record_id_fkey') ORDER BY conname`
+    );
+    expect(cles).toEqual([
+      { conname: "pro_client_records_linked_user_id_fkey", confdeltype: "r" },
+      { conname: "pro_client_records_pro_profile_id_fkey", confdeltype: "r" },
+      { conname: "quotes_client_record_id_fkey", confdeltype: "n" }
+    ]);
+    const index = await sql<{ indexname: string; indexdef: string }>(
+      `SELECT indexname, indexdef FROM pg_indexes WHERE indexname IN ('pro_client_records_pro_phone_unique', 'pro_client_records_pro_email_unique') ORDER BY indexname`
+    );
+    expect(index.map((i) => i.indexname)).toEqual(["pro_client_records_pro_email_unique", "pro_client_records_pro_phone_unique"]);
+    expect(index[0]!.indexdef).toMatch(/^CREATE UNIQUE INDEX .*\(pro_profile_id, email\) WHERE \(email IS NOT NULL\)$/u);
+    expect(index[1]!.indexdef).toMatch(/^CREATE UNIQUE INDEX .*\(pro_profile_id, phone\) WHERE \(phone IS NOT NULL\)$/u);
+  });
+
+  it("après la migration : une fiche s'écrit, un devis EXISTANT s'y rattache ; supprimer la fiche remet son lien à NULL et le devis garde sa COPIE du nom", async () => {
+    await sql(`INSERT INTO pro_client_records (id, pro_profile_id, phone, name_latin) SELECT '018f0000-0000-7000-8000-000000004199'::uuid, id, '+213555123456', 'Amina Bensalem' FROM pro_profiles`);
+    await sql(`UPDATE quotes SET client_record_id = '018f0000-0000-7000-8000-000000004199'::uuid, client_name_latin = 'Amina Bensalem' WHERE id = '018f0000-0000-7000-8000-000000004101'::uuid`);
+    await sql(`DELETE FROM pro_client_records WHERE id = '018f0000-0000-7000-8000-000000004199'::uuid`);
+    const q = await sql<{ client_record_id: string | null; client_name_latin: string | null }>(
+      `SELECT client_record_id::text AS client_record_id, client_name_latin FROM quotes WHERE id = '018f0000-0000-7000-8000-000000004101'::uuid`
+    );
+    expect(q).toEqual([{ client_record_id: null, client_name_latin: "Amina Bensalem" }]);
+  });
+});

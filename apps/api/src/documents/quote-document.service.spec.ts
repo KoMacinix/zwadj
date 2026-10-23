@@ -29,7 +29,9 @@ function record(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
     lines: [{ nameFr: "Buffet", nameAr: "بوفيه", pricingType: ServicePricingType.PER_GUEST, quantity: 150, tierLabelFr: null, tierLabelAr: null, lineTotalCents: 37_500_000 }],
     venue: { nameFr: "Salle des Jasmins", nameAr: "قاعة الياسمين" },
     slot: { nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560 },
-    client: null,
+    // Rang 41 (D336, S-52) : la COPIE du nom du devis — nulle pour un devis du parcours sans fiche.
+    clientNameAr: null,
+    clientNameLatin: null,
     ...over
   };
 }
@@ -126,9 +128,9 @@ describe("QuoteDocumentService — la valeur stockée, la langue (décisions 1 e
     expect(m.render.mock.calls[0]![0]).toContain('<html lang="ar" dir="rtl">');
   });
 
-  it("⛔ rang 38 (P-15) : un devis LIÉ À UN COMPTE ne change pas la langue — le compte du client n'a plus de langue dans le port de lecture, et le résultat n'a plus de `branch`", async () => {
-    // La fixture du port n'a PLUS de champ `locale` pour le client (le type l'interdit) : la langue d'un compte ne peut donc plus servir.
-    const m = monde(record({ client: { firstName: "آمنة", lastName: "بن سالم" } }));
+  it("⛔ rang 38 (P-15) : un devis qui porte une copie du nom en ARABE ne change pas la langue — le port de lecture n'a aucune langue de client, et le résultat n'a plus de `branch`", async () => {
+    // Rang 41 (D336) : le port ne porte plus le COMPTE du client, seulement la copie du nom du devis ; une copie arabe ne fait pas un PDF arabe.
+    const m = monde(record({ clientNameAr: "آمنة بن سالم" }));
     const sortie = await m.service.render(OWNER, ID, "fr");
     expect(sortie.locale).toBe("fr");
     expect(sortie).not.toHaveProperty("branch");

@@ -25,7 +25,10 @@ const TETE_NUMERO = 42;
 const REFERENCE = { annee: 2027, creeLe: new Date("2027-01-01T00:30:00.000Z") };
 
 const CHIFFRE = {
-  clientId: null,
+  // Rang 41 (D336) — `clientId` n'est plus écrit à la création (DB-15) : la fiche et les deux copies du nom le remplacent.
+  clientRecordId: null,
+  clientNameAr: null,
+  clientNameLatin: null,
   slotTemplateId: null,
   eventDate: new Date("2027-05-12T00:00:00.000Z"),
   guests: 200,
@@ -83,9 +86,20 @@ function build() {
         journal.push("uuid");
         return [{ id: NOUVEL_ID }];
       }
+      // Rang 41 (D336) — le verrou de la FICHE (K-5, C-C3) : une fiche non liée qui n'a que son nom latin.
+      if (sql.includes("pro_client_records")) {
+        journal.push("fiche FOR UPDATE");
+        return [{ id: "018f0000-0000-7000-8000-0000000000f1", name_ar: null, name_latin: "Amina Bensalem", linked_user_id: null }];
+      }
       journal.push("FOR UPDATE");
       return [{ id: CHAINE, reference_year: TETE_ANNEE, reference_number: TETE_NUMERO }];
-    })
+    }),
+    proClientRecord: {
+      updateMany: vi.fn(async (_args: Charge): Promise<{ count: number }> => {
+        journal.push("fiche updateMany");
+        return { count: 1 };
+      })
+    }
   };
   type Charge2 = Record<string, unknown>;
   const prisma = {
@@ -98,6 +112,7 @@ function build() {
     }),
     quote: { findMany: vi.fn().mockResolvedValue([]), findFirst: vi.fn().mockResolvedValue(null) },
     venue: { findFirst: vi.fn().mockResolvedValue(null) },
+    proClientRecord: { findFirst: vi.fn().mockResolvedValue(null) },
     booking: {
       create: vi.fn(async (_args: Charge2): Promise<{ id: string }> => ({ id: "b-1" })),
       findFirst: vi.fn(async (_args: Charge2): Promise<{ id: string } | null> => null)
@@ -448,5 +463,88 @@ describe("Garde de SOURCE — le statut de la demande dérive de l'autorité (D2
     // retirés pour ASSERTIR ; ils sont vérifiés présents ICI, sur la brute.
     expect(lire("src", "venues", "quote-store.prisma.ts")).toContain("DÉRIVE DE L'AUTORITÉ");
     expect(lire("test", "int", "quotes.int-spec.ts")).toContain("TÉMOIN INDÉPENDANT");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ⛔ RANG 41 (D336, L35-4 amendé) — LA FICHE DU PRO (K-4) ET LE COMPLÉMENT DE LA COPIE DU NOM (K-5), mesurés là où ils s'écrivent.
+// ⚠ La SÉQUENCE, pas l'atomicité : `quotes.int-spec.ts` (deux compléments simultanés, les deux branches de C-C3) la prouve contre PostgreSQL.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("⛔ D336 — `ficheDuPro` : la fiche se lit par la RELATION au pro (D149), jamais par un identifiant qui « ressemble »", () => {
+  it("le WHERE traverse `proProfile: { userId }` et ne sélectionne que ce que la copie du nom exige — rien du compte lié", async () => {
+    const { store, prisma } = build();
+    await store.ficheDuPro("u-1", "f-1");
+    expect(prisma.proClientRecord.findFirst).toHaveBeenCalledWith({
+      where: { id: "f-1", proProfile: { userId: "u-1" } },
+      select: { id: true, nameAr: true, nameLatin: true, linkedUserId: true }
+    });
+  });
+});
+
+describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction", () => {
+  const FICHE = "018f0000-0000-7000-8000-0000000000f1";
+  const toujours = () => true;
+  const jamais = () => false;
+
+  it("⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture", async () => {
+    const { store, prisma, tx } = build();
+    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: null, clientNameAr: "آمنة", clientNameLatin: "Amina" });
+    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة", completerLaFiche: toujours });
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.quote.updateMany).toHaveBeenCalledWith({
+      where: { id: QUOTE_ID, clientNameAr: null, venue: { deletedAt: null, owner: { userId: "u-1" } } },
+      data: { clientNameAr: "آمنة" }
+    });
+  });
+
+  it("⛔ refus (rien n'a été écrit) : le port REND `{ ok: false }`, sans lire ni écrire la fiche", async () => {
+    const { store, tx, journal } = build();
+    tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    await expect(
+      store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours })
+    ).resolves.toEqual({ ok: false });
+    expect(journal).toEqual(["updateMany"]);
+    expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée", async () => {
+    const { store, tx, journal } = build();
+    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
+    const decide = vi.fn(() => true);
+    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة بن سالم", completerLaFiche: decide });
+    expect(journal).toEqual(["updateMany", "findUniqueOrThrow", "fiche FOR UPDATE", "fiche updateMany"]);
+    expect(decide).toHaveBeenCalledWith(
+      { id: FICHE, nameAr: null, nameLatin: "Amina Bensalem", linkedUserId: null },
+      { ar: "آمنة بن سالم", latin: "Amina Bensalem" }
+    );
+    // L'écriture de la fiche RE-POSE ses conditions dans le WHERE : jamais remplacer un nom, jamais une fiche liée — même si la décision se trompait.
+    expect(tx.proClientRecord.updateMany).toHaveBeenCalledWith({
+      where: { id: FICHE, nameAr: null, linkedUserId: null },
+      data: { nameAr: "آمنة بن سالم" }
+    });
+  });
+
+  it("⛔ MD-8 — la politique dit NON (l'autre écriture diffère) : la fiche n'est PAS écrite, la copie l'est", async () => {
+    const { store, tx } = build();
+    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "ياسين", clientNameLatin: "Yacine" });
+    const r = await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "ياسين", completerLaFiche: jamais });
+    expect(r.ok).toBe(true);
+    expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("un devis SANS fiche : aucune lecture ni écriture de fiche", async () => {
+    const { store, tx, journal } = build();
+    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: null, clientNameAr: null, clientNameLatin: "Amina" });
+    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
+    expect(journal).toEqual(["updateMany", "findUniqueOrThrow"]);
+    expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche", async () => {
+    const { store, tx } = build();
+    tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة", clientNameLatin: "Amina" });
+    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
+    expect(tx.quote.updateMany.mock.calls[0]![0]).toMatchObject({ where: { clientNameLatin: null }, data: { clientNameLatin: "Amina" } });
+    expect(tx.proClientRecord.updateMany).toHaveBeenCalledWith({ where: { id: FICHE, nameLatin: null, linkedUserId: null }, data: { nameLatin: "Amina" } });
   });
 });

@@ -1,0 +1,24 @@
+# D336 — empreintes SHA-256 des fichiers de test joués ROUGES (et de leur support), à l'octet — HEAD 18e11132b8276a762d7ea784df5ed9f9158171b3
+# relevées le 2026-10-22T23:42:26
+
+2dfff5a3ba96cf4f63f500a3aba9c5ee2731cdd523523a8ae95b118b13d6ec04  apps/api/src/clients/pro-client-policy.spec.ts
+9d379b1ff10b990a108ad7890c10b9383ecb64c8e7e204b463f44976cf0a0c3a  apps/api/src/clients/pro-clients.service.spec.ts
+df4cd78f561812902ce80b28e38683c6fb689d61b296b71bf259018502b1ccc5  apps/api/src/common/client-record.spec.ts
+9266066b8b9118516e10650004610924d06273b6180767fe14393988a81970cf  apps/api/src/venues/quotes.service.spec.ts
+3e283e2a428fb63c250d230676652b2ef3c66f92f00318e011f88ec56f0b1f79  apps/api/src/venues/quote-store.prisma.spec.ts
+387d9866fddae068e4e7734afa54938e6c21b0ef3d0c6ca6556a50f0407de888  apps/api/src/documents/quote-document.spec.ts
+5eb5099c3f64898d4843a01228befeb27a7ee8511a816c6555bab588a7262b4c  apps/api/src/documents/quote-document.service.spec.ts
+7292a2c86a94d6ccdbbf77e6c528f5de34d8afb6852be44c9b7afcbb08833dcc  packages/api-client/src/clients-client.test.ts
+f7e4c847c170c961d8eb88c4fa600ac224ac6863c3a59287fca36571397900e1  packages/api-client/src/quotes-client.test.ts
+820d609d5bca2a55255a448b45dc16fa6d0b498c6ff5b5f2111da02f571d4c51  apps/pro/src/dashboard/walkin-journey.test.tsx
+56fed2d6e41b68f15f897d9bab09761cb59a713fef12654e98b3f01df580ef85  apps/pro/src/dashboard/walkin-contact.test.ts
+344c56ce230698e467cf3aaa4358c4b61996b4da92e9c6861df3cdecd342d678  apps/pro/src/dashboard/walkin-client.test.ts
+29a2daf8870f015a93fd8b4eab2c5adb0bff1dafc22c241a0ca8e6928f7e970c  apps/pro/src/venues/quotes-section.test.tsx
+a35ceb3d523475125ea7a30bb183360634c7ee794116ac2769de340b69b00909  apps/api/test/int/pro-clients.int-spec.ts
+54082aa0e48b047d1f0c717de2d3c6dc76ff88a33be0f91caddea836e3decd4a  apps/api/test/int/quotes.int-spec.ts
+1436d6eae7cdb3450977ee76e12fef646ab760663379aa9034592d3745942277  apps/api/test/int/quote-document.int-spec.ts
+f6575c1fa66d8853b7908bd0764cdbc4815688a869de65fb96a115bf01e8175f  apps/api/test/int/migration-non-empty.int-spec.ts
+7b9a5b514797b87e2ca16a51acd16f75b78cc3d6b2c07e922f9d0c8daf629d17  apps/api/test/int/pdf-renderer.int-spec.ts
+87ca33930b8e623744638d9c6be74ce946e8f1b24318e8aa63c34bdcc2e1eeb4  apps/pro/src/test-support/client-doubles.ts  (support de test)
+
+# 19 fichiers examinés

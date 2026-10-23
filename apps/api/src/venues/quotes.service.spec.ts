@@ -9,7 +9,7 @@
 // dépendant plus de Prisma pour son cycle de vie, il n'y avait aucune raison de
 // naître avec le défaut que S10a vient de corriger ailleurs.
 import { ConflictException, NotFoundException } from "@nestjs/common";
-import { formatQuoteReference } from "@zwadj/types";
+import { QUOTE_CLIENT_NAME_FIELD, formatQuoteReference } from "@zwadj/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { PrismaService } from "../prisma/prisma.service";
 import { QuotesService } from "./quotes.service";
@@ -46,6 +46,10 @@ const devisRow = (overrides: Record<string, unknown> = {}) =>
     referenceYear: 2026,
     referenceNumber: 89,
     venue: { number: 7 },
+    // Rang 41 (D336, K-6) — la fiche et les deux copies du nom ; nulles pour un devis du parcours sans fiche.
+    clientRecordId: null,
+    clientNameAr: null,
+    clientNameLatin: null,
     ...overrides
   }) as unknown as QuoteRow;
 
@@ -59,7 +63,10 @@ function build() {
     listerPourEntonnoir: vi.fn(),
     trouverDuPro: vi.fn(),
     salleAppartientAu: vi.fn().mockResolvedValue(true),
-    convertirEnDemande: vi.fn()
+    convertirEnDemande: vi.fn(),
+    // Rang 41 (D336) — la fiche du pro (K-4) et le complément de la copie du nom (K-5).
+    ficheDuPro: vi.fn(),
+    completerNomDuClient: vi.fn()
   } satisfies QuoteStore;
   // ⚠ Prisma subsiste pour `price()` et `convert()` — hors de ce lot. Aucun
   // test d'ici ne l'emprunte : s'il était touché, ce serait le signe qu'une
@@ -290,5 +297,108 @@ describe("⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2)", () => {
     await service.convert(USER_ID, QUOTE_ID, { ...CONTACT, paymentMethod: "CASH" });
     expect(devis.changerStatut).not.toHaveBeenCalled();
     expect(devis.marquerRemis).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ⛔ RANG 41 (D336, L35-4 amendé) — LA FICHE ET LA COPIE DU NOM (K-4, K-5, K-6). Modes de défaillance : `docs/preuves/D336/modes-de-defaillance.md`.
+// ⚠ Même doctrine que le bloc « ce qui n'est pas mesuré ici » ci-dessus : la création RÉUSSIE passe par `price()` (Prisma), elle est mesurée par
+// `quotes.int-spec.ts`. Ce bloc mesure ce qui se décide AVANT `price()` — la fiche du pro, la copie d'une fiche liée — et la traduction du port de K-5.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche", () => {
+  const FICHE_ID = "018f0000-0000-7000-8000-0000000000f1";
+  const CORPS = { eventDate: "2027-05-12", slotTemplateId: "018f0000-0000-7000-8000-000000000051", guests: 200 };
+  const codeDe = (e: unknown) => (e as { getResponse: () => { code?: string } }).getResponse().code;
+
+  it("⛔ MD-11 — la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND, et RIEN n'est chiffré ni écrit", async () => {
+    const { service, devis, prisma } = build();
+    devis.ficheDuPro.mockResolvedValue(null);
+    await expect(service.create(USER_ID, VENUE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem" })).rejects.toSatisfy(
+      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "CLIENT_RECORD_NOT_FOUND"
+    );
+    expect(devis.ficheDuPro).toHaveBeenCalledWith(USER_ID, FICHE_ID);
+    expect(prisma.venue.findUniqueOrThrow).not.toHaveBeenCalled();
+    expect(devis.creerTeteDeChaine).not.toHaveBeenCalled();
+  });
+
+  it("⛔ MD-6 — une fiche LIÉE et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est chiffré ni écrit", async () => {
+    const { service, devis, prisma } = build();
+    devis.ficheDuPro.mockResolvedValue({ id: FICHE_ID, nameAr: null, nameLatin: "Amina Bensalem", linkedUserId: "018f0000-0000-7000-8000-0000000000ee" });
+    await expect(service.create(USER_ID, VENUE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Autre Nom" })).rejects.toSatisfy(
+      (e: unknown) => e instanceof ConflictException && codeDe(e) === "CLIENT_RECORD_LINKED"
+    );
+    expect(prisma.venue.findUniqueOrThrow).not.toHaveBeenCalled();
+    expect(devis.creerTeteDeChaine).not.toHaveBeenCalled();
+  });
+
+  it("la RÉVISION applique la même règle : la fiche d'un autre pro est refusée avant le verrou de chaîne", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow());
+    devis.ficheDuPro.mockResolvedValue(null);
+    await expect(service.revise(USER_ID, QUOTE_ID, { ...CORPS, clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem" })).rejects.toSatisfy(
+      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "CLIENT_RECORD_NOT_FOUND"
+    );
+    expect(devis.creerRevision).not.toHaveBeenCalled();
+  });
+
+  it("sans fiche, le port des fiches n'est PAS lu (un devis du parcours sans contact reste possible)", async () => {
+    const { service, devis } = build();
+    await service.create(USER_ID, VENUE_ID, CORPS).catch(() => undefined);
+    expect(devis.ficheDuPro).not.toHaveBeenCalled();
+  });
+
+  it("⛔ K-6 — le DTO porte la fiche et les DEUX copies, telles que STOCKÉES", async () => {
+    const { service, devis } = build();
+    devis.listerDeLaSalle.mockResolvedValue([devisRow({ clientRecordId: FICHE_ID, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" })]);
+    const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    expect({ id: dto!.clientRecordId, ar: dto!.clientNameAr, latin: dto!.clientNameLatin }).toEqual({ id: FICHE_ID, ar: "آمنة بن سالم", latin: "Amina Bensalem" });
+  });
+});
+
+describe("⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3", () => {
+  const codeDe = (e: unknown) => (e as { getResponse: () => { code?: string } }).getResponse().code;
+
+  it("la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin`", async () => {
+    const { service, devis } = build();
+    devis.completerNomDuClient.mockResolvedValue({ ok: true, devis: devisRow({ clientNameAr: "آمنة" }) });
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة" });
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" });
+    const champs = devis.completerNomDuClient.mock.calls.map((c) => (c[0] as { champ: string }).champ);
+    expect(champs).toEqual([QUOTE_CLIENT_NAME_FIELD.ar, QUOTE_CLIENT_NAME_FIELD.fr]);
+    expect(devis.completerNomDuClient.mock.calls[0]![0]).toMatchObject({ userId: USER_ID, quoteId: QUOTE_ID, nom: "آمنة" });
+  });
+
+  it("⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-C3, passée au port (le port ne la réécrit pas)", async () => {
+    const { service, devis } = build();
+    devis.completerNomDuClient.mockResolvedValue({ ok: true, devis: devisRow() });
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة بن سالم" });
+    const decide = (devis.completerNomDuClient.mock.calls[0]![0] as { completerLaFiche: (fiche: unknown, copie: unknown) => boolean }).completerLaFiche;
+    const fiche = { id: "f", nameAr: null, nameLatin: "Amina Bensalem", linkedUserId: null };
+    expect(decide(fiche, { ar: "آمنة بن سالم", latin: "Amina Bensalem" })).toBe(true);
+    expect(decide(fiche, { ar: "ياسين", latin: "Yacine Bensalem" })).toBe(false);
+    expect(decide({ ...fiche, linkedUserId: "u1" }, { ar: "آمنة بن سالم", latin: "Amina Bensalem" })).toBe(false);
+  });
+
+  it("⛔ MD-7 — le port refuse (la copie est déjà là) : 409 QUOTE_CLIENT_NAME_ALREADY_SET", async () => {
+    const { service, devis } = build();
+    devis.completerNomDuClient.mockResolvedValue({ ok: false });
+    devis.trouverDuPro.mockResolvedValue(devisRow({ clientNameLatin: "Amina Bensalem" }));
+    await expect(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })).rejects.toSatisfy(
+      (e: unknown) => e instanceof ConflictException && codeDe(e) === "QUOTE_CLIENT_NAME_ALREADY_SET"
+    );
+  });
+
+  it("le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port", async () => {
+    const { service, devis } = build();
+    devis.completerNomDuClient.mockResolvedValue({ ok: false });
+    devis.trouverDuPro.mockResolvedValue(null);
+    await expect(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" })).rejects.toSatisfy(
+      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "QUOTE_NOT_FOUND"
+    );
+    devis.completerNomDuClient.mockClear();
+    await expect(service.completeClientName(USER_ID, "pas-un-uuid", { locale: "fr", name: "Amina" })).rejects.toSatisfy(
+      (e: unknown) => e instanceof NotFoundException && codeDe(e) === "QUOTE_NOT_FOUND"
+    );
+    expect(devis.completerNomDuClient).not.toHaveBeenCalled();
   });
 });

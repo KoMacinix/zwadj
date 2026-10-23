@@ -1,0 +1,75 @@
+# D336 — ROUGE « client » contre l'état d'AVANT le code (D334, item 5)
+# commande : pnpm --filter @zwadj/api-client exec vitest run src/clients-client.test.ts src/quotes-client.test.ts
+# HEAD : 18e11132b8276a762d7ea784df5ed9f9158171b3 (aucun fichier de code du lot n'existe : seuls les tests et leur support sont modifiés)
+# environnement : NO_COLOR=1 FORCE_COLOR=0 CI=1 DEBUG_PRINT_LIMIT=200
+# début 2026-10-22T23:39:37 — fin 2026-10-22T23:39:39 — code de sortie 1
+# ── sortie brute (stdout puis stderr) ──
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ❯ src/quotes-client.test.ts (7 tests | 2 failed) 10ms
+   ✓ quotes.document — la route du PDF > ⛔ lit la réponse en FICHIER (`responseType: "blob"`) : un PDF lu comme du JSON planterait à la première lecture 2ms
+   ✓ quotes.document — la route du PDF > GET : ni méthode ni corps — une lecture, rien d'écrit 0ms
+   ✓ quotes.document — la route du PDF > la langue de repli voyage dans l'adresse, pour les DEUX langues : `?locale=fr` et `?locale=ar` 1ms
+   ✓ quotes.document — la route du PDF > l'identifiant est ENCODÉ : un identifiant qui porte « / » ou « ? » ne peut pas changer la route appelée 0ms
+   ✓ quotes.document — la route du PDF > rend le fichier tel que la primitive l'a lu : le MÊME Blob, sans le copier ni le retoucher 0ms
+   × quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > POSTE la langue et le nom sur `/quotes/:id/client-name` 5ms
+     → (0 , createQuotesClient)(...).completeClientName is not a function
+   × quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > l'identifiant est ENCODÉ 1ms
+     → (0 , createQuotesClient)(...).completeClientName is not a function
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 5 passed (7)
+   Start at  23:39:38
+   Duration  732ms (transform 83ms, setup 0ms, collect 107ms, tests 10ms, environment 0ms, prepare 457ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/clients-client.test.ts src/quotes-client.test.ts
+
+# ── stderr ──
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients-client.test.ts [ src/clients-client.test.ts ]
+Error: Cannot find module './clients-client' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/clients-client.test.ts'
+ ❯ src/clients-client.test.ts:6:1
+      4| // Les chemins sont aussi relevés dans les SOURCES par `contract-api-c…
+      5| import { describe, expect, it } from "vitest";
+      6| import { createProClientsClient } from "./clients-client";
+       | ^
+      7| import type { AuthedRequest } from "./venue-client";
+      8| 
+
+Caused by: Error: Failed to load url ./clients-client (resolved id: ./clients-client) in C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/clients-client.test.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/quotes-client.test.ts > quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > POSTE la langue et le nom sur `/quotes/:id/client-name`
+TypeError: (0 , createQuotesClient)(...).completeClientName is not a function
+ ❯ src/quotes-client.test.ts:70:39
+     68|   it("POSTE la langue et le nom sur `/quotes/:id/client-name`", async …
+     69|     const { request, appels } = double({ id: "q1" });
+     70|     await createQuotesClient(request).completeClientName("44444444-444…
+       |                                       ^
+     71|     expect(appels).toEqual([
+     72|       { path: "/quotes/44444444-4444-4444-8444-444444444444/client-nam…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/quotes-client.test.ts > quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > l'identifiant est ENCODÉ
+TypeError: (0 , createQuotesClient)(...).completeClientName is not a function
+ ❯ src/quotes-client.test.ts:78:39
+     76|   it("l'identifiant est ENCODÉ", async () => {
+     77|     const { request, appels } = double({ id: "q1" });
+     78|     await createQuotesClient(request).completeClientName("a/b?c=d", { …
+       |                                       ^
+     79|     expect(appels[0]?.path).toBe("/quotes/a%2Fb%3Fc%3Dd/client-name");
+     80|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

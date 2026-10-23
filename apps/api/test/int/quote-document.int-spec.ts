@@ -15,6 +15,8 @@
 // `pdf-renderer.int-spec.ts` (script inerte, réseau muet, police embarquée) et par la preuve de l'arabe (les pages rastérisées).
 import request from "supertest";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import arMessages from "@zwadj/i18n/messages/ar.json";
+import frMessages from "@zwadj/i18n/messages/fr.json";
 import { formatDZD, QUOTE_SENT_VIA_ORDER, QuoteErrorCode, type QuoteConversionDTO, type QuoteDTO, type ServiceDTO, type VenueProDTO } from "@zwadj/types";
 import { PlaywrightPdfRenderer } from "../../src/documents/playwright-pdf.renderer";
 import { createTestApp, loginAs, registerUser, truncateAll, verifyLastRegistered, type TestContext } from "./helpers";
@@ -24,7 +26,6 @@ let ctx: TestContext;
 const PRO = { role: "PRO", email: "pro@example.dz", password: "Motdepasse1", businessName: "Salles Pro", phone: "+213550000009" };
 const AUTRE_PRO = { role: "PRO", email: "autre-pro@example.dz", password: "Motdepasse1", businessName: "Autre Salle", phone: "+213550000008" };
 const CLIENT_AR = { role: "CLIENT", email: "amina@example.dz", password: "Motdepasse1", firstName: "آمنة", lastName: "بن سالم", locale: "ar" };
-const CLIENT_FR = { role: "CLIENT", email: "yacine@example.dz", password: "Motdepasse1", firstName: "Yacine", lastName: "Benali", locale: "fr" };
 const api = () => request(ctx.app.getHttpServer());
 const authH = (t: string) => ({ Authorization: `Bearer ${t}` });
 /** `.expect(<statut>)` de supertest lève une `Error`, PAS une `AssertionError` (D305, mesuré par `neutralize-r33.py`) : un verdict s'écrit par `expect` de vitest. Une assertion-fonction de
@@ -35,6 +36,15 @@ const statut = (attendu: number) => (res: request.Response) => {
 
 const EVENT_DATE = "2027-09-18";
 const SLOT_PRICE = 20_000_000;
+/** Rang 41 (D336) — les libellés du document, lus dans les catalogues : le champ « Client » se retrouve par SON libellé, jamais par une position. */
+const LIBELLES = { fr: frMessages.quote.document, ar: arMessages.quote.document } as const;
+
+/** Rang 41 (D336) — une fiche client du pro, par la VRAIE route (K-2). */
+async function ficheDe(token: string, corps: Record<string, unknown>): Promise<{ id: string }> {
+  const res = await api().post("/api/v1/pro/clients").set(authH(token)).send(corps);
+  expect(res.status, JSON.stringify(res.body)).toBe(200);
+  return res.body.record as { id: string };
+}
 
 interface Fixture {
   token: string;
@@ -279,38 +289,104 @@ describe("⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jama
 });
 
 describe("La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client", () => {
-  it("⛔ un devis lié à un client `ar`, demandé en `fr` : PDF FRANÇAIS (l'ancienne règle de D326 rendait l'arabe) — et le HTML porte le nom du client", async () => {
+  it("dans les deux sens, avec ou sans fiche : `Content-Language` et la langue du HTML sont la langue DEMANDÉE", async () => {
     const city = await seedGeographie();
     const f = await pro(PRO, city.id);
-    await registerUser(ctx, CLIENT_AR);
-    await verifyLastRegistered(ctx);
-    const client = await ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT_AR.email } });
-    const q = (await makeQuote(f, { clientId: client.id }).expect(statut(201))).body as QuoteDTO;
-    const { vus } = espionner();
-
-    const res = await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(200));
-    expect(res.headers["content-language"]).toBe("fr");
-    const html = vus()[0] as string;
-    expect(html).toContain('<html lang="fr" dir="ltr">');
-    expect(html).toContain("آمنة بن سالم");
-  });
-
-  it("dans les deux sens, avec ou sans client lié : `Content-Language` et la langue du HTML sont la langue DEMANDÉE", async () => {
-    const city = await seedGeographie();
-    const f = await pro(PRO, city.id);
-    await registerUser(ctx, CLIENT_FR);
-    await verifyLastRegistered(ctx);
-    const client = await ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT_FR.email } });
-    const avecClient = (await makeQuote(f, { clientId: client.id }).expect(statut(201))).body as QuoteDTO;
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameAr: "آمنة بن سالم", nameLatin: "Amina Bensalem" });
+    const avecFiche = (await makeQuote(f, { clientRecordId: fiche.id, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" }).expect(statut(201))).body as QuoteDTO;
     const surPlace = (await makeQuote(f).expect(statut(201))).body as QuoteDTO;
     const { vus } = espionner();
 
-    for (const devis of [avecClient, surPlace]) {
+    for (const devis of [avecFiche, surPlace]) {
       for (const demandee of ["fr", "ar"] as const) {
         expect((await documentDe(f.token, devis.id, { locale: demandee }).expect(statut(200))).headers["content-language"]).toBe(demandee);
       }
     }
     expect(vus().map((h) => /<html lang="(fr|ar)"/.exec(h as string)?.[1])).toEqual(["fr", "ar", "fr", "ar"]);
+  });
+});
+
+describe("⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre", () => {
+  /** Le contenu du champ « Client » du document confié au moteur — lu par son libellé, dans la langue du document. */
+  const champClient = (html: string, locale: "fr" | "ar") => {
+    const libelle = LIBELLES[locale].client;
+    const m = new RegExp(`<div class="champ"><small>${libelle}</small>([^<]*)</div>`, "u").exec(html);
+    expect(m, `aucun champ « ${libelle} » dans le document`).not.toBeNull();
+    return m![1];
+  };
+
+  it("la copie LATINE en français, la copie ARABE en arabe — jamais l'autre écriture", async () => {
+    const city = await seedGeographie();
+    const f = await pro(PRO, city.id);
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameAr: "آمنة بن سالم", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" }).expect(statut(201))).body as QuoteDTO;
+    const { vus } = espionner();
+    await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(200));
+    await documentDe(f.token, q.id, { locale: "ar" }).expect(statut(200));
+    const [fr, ar] = vus() as string[];
+    expect(champClient(fr!, "fr")).toBe("Amina Bensalem");
+    expect(fr).not.toContain("آمنة بن سالم");
+    expect(champClient(ar!, "ar")).toBe("آمنة بن سالم");
+    expect(ar).not.toContain("Amina Bensalem");
+  });
+
+  it("⛔ S-52 — une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli", async () => {
+    const city = await seedGeographie();
+    const f = await pro(PRO, city.id);
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" }).expect(statut(201))).body as QuoteDTO;
+    const { vus } = espionner();
+    await documentDe(f.token, q.id, { locale: "ar" }).expect(statut(200));
+    const ar = vus()[0] as string;
+    expect(champClient(ar, "ar")).toBe("—");
+    expect(ar).not.toContain("Amina Bensalem");
+  });
+
+  it("⛔ MD-12 — la fiche MODIFIÉE après la création du devis ne change pas le PDF : il imprime la copie STOCKÉE", async () => {
+    const city = await seedGeographie();
+    const f = await pro(PRO, city.id);
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" }).expect(statut(201))).body as QuoteDTO;
+    const modifiee = await api().patch(`/api/v1/pro/clients/${fiche.id}`).set(authH(f.token)).send({ nameLatin: "Nom Changé" });
+    expect(modifiee.status).toBe(200);
+    const { vus } = espionner();
+    await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(200));
+    const fr = vus()[0] as string;
+    expect(champClient(fr, "fr")).toBe("Amina Bensalem");
+    expect(fr).not.toContain("Nom Changé");
+  });
+
+  it("⛔ M-7 — le COMPTE n'est plus lu : un devis hérité lié à un compte (`client_id` posé en base) et SANS copie imprime « — », jamais le nom du compte", async () => {
+    const city = await seedGeographie();
+    const f = await pro(PRO, city.id);
+    await registerUser(ctx, CLIENT_AR);
+    await verifyLastRegistered(ctx);
+    const compte = await ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT_AR.email }, select: { id: true } });
+    const q = (await makeQuote(f).expect(statut(201))).body as QuoteDTO;
+    // L'état d'un devis HÉRITÉ (avant D336, `clientId` était accepté à la création) : posé en base, comme une ligne ancienne.
+    await ctx.prisma.$executeRaw`UPDATE quotes SET client_id = ${compte.id}::uuid WHERE id = ${q.id}::uuid`;
+    const { vus } = espionner();
+    await documentDe(f.token, q.id, { locale: "ar" }).expect(statut(200));
+    await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(200));
+    const [ar, fr] = vus() as string[];
+    expect(champClient(ar!, "ar")).toBe("—");
+    expect(champClient(fr!, "fr")).toBe("—");
+    for (const html of [ar!, fr!]) {
+      expect(html).not.toContain(CLIENT_AR.firstName);
+      expect(html).not.toContain(CLIENT_AR.lastName);
+    }
+  });
+
+  it("la copie complétée par la boîte de langue (K-5) est celle que le PDF imprime ensuite", async () => {
+    const city = await seedGeographie();
+    const f = await pro(PRO, city.id);
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" }).expect(statut(201))).body as QuoteDTO;
+    const complete = await api().post(`/api/v1/quotes/${q.id}/client-name`).set(authH(f.token)).send({ locale: "ar", name: "آمنة بن سالم" });
+    expect(complete.status).toBe(201);
+    const { vus } = espionner();
+    await documentDe(f.token, q.id, { locale: "ar" }).expect(statut(200));
+    expect(champClient(vus()[0] as string, "ar")).toBe("آمنة بن سالم");
   });
 });
 

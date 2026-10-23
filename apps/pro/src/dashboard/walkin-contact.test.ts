@@ -13,7 +13,19 @@ import {
   nationalDigitsOf,
   quoteConvertSchema
 } from "@zwadj/types";
-import { NO_CONTACT, clientBlockers, contactBlockers, contactPayload, fieldErrors, phoneLeadingRejected, type Contact } from "./walkin-contact";
+import {
+  NO_CONTACT,
+  clientBlockers,
+  contactBlockers,
+  contactPayload,
+  fieldErrors,
+  identifierBlockers,
+  identifierPayload,
+  nameFieldErrors,
+  phoneLeadingRejected,
+  type Contact,
+  type Noms
+} from "./walkin-contact";
 
 const pays = PHONE_COUNTRIES[DEFAULT_PHONE_COUNTRY];
 /** Un numéro national COMPLET et valide, construit depuis le modèle. */
@@ -75,15 +87,62 @@ describe("contactBlockers — ce qui empêche de CONCLURE", () => {
   });
 });
 
-describe("clientBlockers — ce qui empêche de CONTINUER : le contact, PUIS le nombre d'invités", () => {
+// ⛔ Rang 41 (D336) — l'étape Client porte désormais les NOMS (arabe, latin) et le nombre d'invités ; le contact (numéro OU e-mail) est l'étape d'AVANT.
+describe("clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités", () => {
+  const NOMS: Noms = { ar: "", latin: "Amine Belkacem" };
+
   it("un seul manque : « le nombre d'invités est obligatoire », et rien d'autre", () => {
-    expect(clientBlockers(COMPLET, "")).toEqual(["needGuests"]);
-    expect(clientBlockers(COMPLET, "0")).toEqual(["needGuests"]);
-    expect(clientBlockers(COMPLET, "200")).toEqual([]);
+    expect(clientBlockers(NOMS, "")).toEqual(["needGuests"]);
+    expect(clientBlockers(NOMS, "0")).toEqual(["needGuests"]);
+    expect(clientBlockers(NOMS, "200")).toEqual([]);
   });
 
   it("tout manque : les raisons s'énumèrent TOUTES, le nombre d'invités en dernier", () => {
-    expect(clientBlockers(NO_CONTACT, "")).toEqual(["needFirstName", "needLastName", "needPhone", "needGuests"]);
+    expect(clientBlockers({ ar: "", latin: "" }, "")).toEqual(["needName", "needGuests"]);
+  });
+
+  it("UN nom suffit, dans l'une OU l'autre écriture (DB-3 : au moins un des deux)", () => {
+    expect(clientBlockers({ ar: "أمين بلقاسم", latin: "" }, "200")).toEqual([]);
+    expect(clientBlockers({ ar: "", latin: "Amine Belkacem" }, "200")).toEqual([]);
+    expect(clientBlockers({ ar: "  ", latin: "  " }, "200")).toEqual(["needName"]);
+  });
+
+  it("un nom SAISI et refusé par la règle du contrat retient AUTREMENT qu'un nom absent — champ par champ", () => {
+    for (const nom of ["Amine1", "A@B"]) {
+      expect(isValidPersonName(nom)).toBe(false);
+      expect(clientBlockers({ ar: "", latin: nom }, "200")).toEqual(["needNameLatinValid"]);
+      expect(clientBlockers({ ar: nom, latin: "Amine" }, "200")).toEqual(["needNameArValid"]);
+    }
+  });
+});
+
+describe("⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail)", () => {
+  it("rien de tapé : « un numéro ou un e-mail est obligatoire », une seule raison", () => {
+    expect(identifierBlockers({ phone: "", email: "" })).toEqual(["needIdentifier"]);
+    expect(identifierBlockers({ phone: "", email: "   " })).toEqual(["needIdentifier"]);
+  });
+
+  it("un numéro COMPLET seul, ou un e-mail VALIDE seul, suffit", () => {
+    expect(identifierBlockers({ phone: NUMERO, email: "" })).toEqual([]);
+    expect(identifierBlockers({ phone: "", email: "amine@example.com" })).toEqual([]);
+    expect(identifierBlockers({ phone: NUMERO, email: "amine@example.com" })).toEqual([]);
+  });
+
+  it("⚠ un identifiant SAISI et invalide retient, même si l'autre est bon : le téléphone (premier chiffre, longueur), l'e-mail (la règle du contrat)", () => {
+    expect(identifierBlockers({ phone: MAUVAIS_PREMIER, email: "amine@example.com" })).toEqual(["needPhoneLeading"]);
+    expect(identifierBlockers({ phone: NUMERO.slice(0, pays.nationalLength - 1), email: "" })).toEqual(["needPhoneIncomplete"]);
+    expect(identifierBlockers({ phone: NUMERO, email: "amine@" })).toEqual(["needEmailValid"]);
+  });
+
+  it("`identifierPayload` : le numéro au format du contrat (indicatif + chiffres saisis), l'e-mail rogné, et la CLÉ ABSENTE d'un identifiant vide", () => {
+    expect(identifierPayload({ phone: NUMERO, email: "" })).toEqual({ phone: `${pays.dialCode}${NUMERO}` });
+    expect(identifierPayload({ phone: "", email: "  amine@example.com " })).toEqual({ email: "amine@example.com" });
+    expect(identifierPayload({ phone: NUMERO, email: "amine@example.com" })).toEqual({ phone: `${pays.dialCode}${NUMERO}`, email: "amine@example.com" });
+  });
+
+  it("`nameFieldErrors` : seuls les noms SAISIS et refusés sont en erreur", () => {
+    expect(nameFieldErrors({ ar: "", latin: "" })).toEqual({ ar: false, latin: false });
+    expect(nameFieldErrors({ ar: "أمين1", latin: "Amine" })).toEqual({ ar: true, latin: false });
   });
 });
 

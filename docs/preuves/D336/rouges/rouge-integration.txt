@@ -1,0 +1,1447 @@
+# D336 — ROUGE « int » contre l'état d'AVANT le code (D334, item 5)
+# commande : pnpm --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/pro-clients.int-spec.ts test/int/quotes.int-spec.ts test/int/quote-document.int-spec.ts test/int/migration-non-empty.int-spec.ts test/int/pdf-renderer.int-spec.ts
+# HEAD : 18e11132b8276a762d7ea784df5ed9f9158171b3 (aucun fichier de code du lot n'existe : seuls les tests et leur support sont modifiés)
+# environnement : NO_COLOR=1 FORCE_COLOR=0 CI=1 DEBUG_PRINT_LIMIT=200
+# début 2026-10-22T23:42:26 — fin 2026-10-22T23:44:06 — code de sortie 1
+# ── sortie brute (stdout puis stderr) ──
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/quotes.int-spec.ts (51 tests | 16 failed) 28759ms
+   ✓ Création et chaîne de versions > un devis naît en DRAFT, v1, sa propre racine de chaîne  1154ms
+   ✓ Création et chaîne de versions > ⚠ `validUntil` n'est PLUS accepté : le schéma est strict (D160)  460ms
+   ✓ Création et chaîne de versions > le devis existe SANS client : le pro le tape pour quelqu'un qui hésite  535ms
+   ✓ Création et chaîne de versions > une révision crée la v2 de la MÊME chaîne, en DRAFT, sans rien remplacer  633ms
+   ✓ Remise du devis (D160) > enregistre le canal et l'horodatage SANS changer le statut  522ms
+   ✓ Remise du devis (D160) > est RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises  577ms
+   ✓ Remise du devis (D160) > refuse un canal HORS LISTE — le jeu de valeurs a une seule autorité  538ms
+   ✓ Remise du devis (D160) > ⚠ un devis REFUSÉ ne se remet plus au client  642ms
+   ✓ Remise du devis (D160) > deux remises SIMULTANÉES ne rendent jamais 500  528ms
+   ✓ Q2 — les statuts LEGACY ne sont plus écrits > le parcours complet ne laisse aucun SENT ni SUPERSEDED en base  677ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > l'index partiel des SENT est TOUJOURS EN BASE, et mord encore  602ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > un devis LEGACY en SENT reste LISIBLE et manipulable  554ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > SUPERSEDED reste distinct de CANCELLED, et le versionnement est CONSERVÉ  604ms
+   ✓ Concurrence (D121) > D121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500  625ms
+   ✓ Concurrence (D121) > D121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500  560ms
+   ✓ Concurrence (D121) > deux RÉVISIONS simultanées de la même chaîne : aucun doublon de version  656ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ un BROUILLON SE CONVERTIT, sans remise préalable (D160)  651ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ D135 — un client SANS e-mail se convertit : la borne Zod était plus stricte que la base  596ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ D135 — mais le téléphone reste EXIGÉ : l'assouplir ne l'a pas emporté  467ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > convertir crée une demande PENDING, et le devis NE BOUGE PAS  527ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une PENDING ne verrouille rien : deux devis peuvent viser la MÊME date  698ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > un devis ne se convertit qu'UNE fois : réviser, pas reconvertir  523ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > les LIGNES du devis deviennent les lignes de la demande  587ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une CLÔTURE n'est pas une supersession  520ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité DECLINED  676ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une chaîne CLOSE ne se révise plus  580ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ `valid_until` n'existe plus dans la table 53ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ les DEUX index partiels, eux, sont TOUJOURS là 35ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > le DTO ne porte ni `isExpired` ni `validUntil`  483ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > une conversion aboutit, sans qu'aucune date de validité n'intervienne  563ms
+   ✓ Taux de transformation — la raison d'être de la table > compte des CHAÎNES, pas des versions : trois révisions sont UNE affaire  639ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis qui n'aboutit PAS existe quand même — c'était impossible avant  567ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis jamais REMIS ne compte pas  500ms
+   ✓ Taux de transformation — la raison d'être de la table > ⚠ un devis converti SANS remise n'entre PAS dans l'entonnoir  553ms
+   ✓ Taux de transformation — la raison d'être de la table > ⚠ une ligne HÉRITÉE (sentAt posé, sentVia nul) sort du dénominateur  533ms
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ DB-15 — `clientId` est RETIRÉ du contrat : le schéma strict le refuse (400) et n'écrit aucun devis 585ms
+     → expected 201 to be 400 // Object.is equality
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > un devis SANS fiche se crée comme aujourd'hui : la fiche et les deux copies sont nulles 499ms
+     → expected { clientRecordId: undefined, …(2) } to deeply equal { clientRecordId: null, …(2) }
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > le devis porte la fiche et la copie du nom TELLE QUE SAISIE pour ce devis (DB-17), rognée — dans la réponse ET en base 463ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:42:59.461Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-15 — des noms SANS fiche, une fiche SANS nom, un nom invalide : 400, aucun devis écrit 483ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:42:59.943Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fiche inexistante, et aucun devis écrit 812ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:00.756Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_LINKED) ; les noms de la fiche passent 578ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:01.334Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-16 — une RÉVISION porte la copie FOURNIE (celle du devis précédent), jamais la fiche vivante — et la v1 garde la sienne 458ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:01.793Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-7 (R8) — MODIFIER la fiche (K-3b) ne touche AUCUNE copie déjà faite : le devis garde son nom 444ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:02.238Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > complète la copie MANQUANTE de la langue demandée : « ar » écrit le nom arabe, « fr » le nom latin — 201 et le devis rendu la porte 446ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:02.683Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS remplacée : 409 QUOTE_CLIENT_NAME_ALREADY_SET, la copie intacte 511ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:03.194Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 — deux compléments SIMULTANÉS de la même langue : un seul gagne, l'autre est refusé, et la base porte le nom du gagnant 460ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:03.654Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 1 — le nom de l'AUTRE écriture est le MÊME sur le devis et sur la fiche : la fiche est complétée AUSSI 444ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:04.099Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 2 — il DIFFÈRE (deux personnes, un numéro : M-24) : la fiche reste INTACTE, seule la copie est complétée 439ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:04.538Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 — la fiche a DÉJÀ un nom dans cette langue : la copie se complète, la fiche n'est jamais remplacée 485ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:05.023Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-6 — une fiche LIÉE n'est jamais complétée par la boîte : seule la copie du devis l'est 536ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:05.558Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > le devis d'un AUTRE pro, ou inexistant : 404 QUOTE_NOT_FOUND ; un corps invalide : 400 806ms
+     → expected 'ROUTE_NOT_FOUND' to be 'QUOTE_NOT_FOUND' // Object.is equality
+ ❯ test/int/quote-document.int-spec.ts (20 tests | 7 failed) 20483ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > le propriétaire télécharge : application/pdf, pièce jointe, non mise en cache, langue appliquée — et la ligne du devis est INCHANGÉE (la route n'écrit rien)  1243ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > le VRAI moteur : un PDF valide, la police du dépôt embarquée et seule  3605ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > ⛔ un AUTRE pro est refusé en 404 indistinct — rien n'est rendu : un identifiant deviné ne livre pas les données d'un client  968ms
+   × La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404 491ms
+     → CLIENT_FR is not defined
+   ✓ La route — rôles, propriété, contrat (décision 4) > la langue de repli est OBLIGATOIRE et se limite à fr / ar : absente ou autre, 400  548ms
+   ✓ ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > après une révision, le PDF de la v1 est REFUSÉ (409, `latestVersion` 2) et celui de la v2 est servi  661ms
+   ✓ ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > une chaîne dont la dernière version est ANNULÉE rend le 409 de statut ; une ANCIENNE version annulée reste « pas la version active » (ordre des refus)  685ms
+   ✓ ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 1 — l'acompte stocké, qui n'est PAS 30 % du total, s'imprime tel quel  519ms
+   ✓ ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 2 — un changement des RÈGLES DE PRIX APRÈS le devis ne change PAS le montant imprimé (et un NOUVEAU devis, lui, suit les nouvelles règles)  652ms
+   × La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client > dans les deux sens, avec ou sans fiche : `Content-Language` et la langue du HTML sont la langue DEMANDÉE 438ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:20.822Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > la copie LATINE en français, la copie ARABE en arabe — jamais l'autre écriture 454ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:21.283Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ S-52 — une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli 433ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:21.712Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ MD-12 — la fiche MODIFIÉE après la création du devis ne change pas le PDF : il imprime la copie STOCKÉE 453ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:22.168Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ M-7 — le COMPTE n'est plus lu : un devis hérité lié à un compte (`client_id` posé en base) et SANS copie imprime « — », jamais le nom du compte 732ms
+     → expected 'آمنة بن سالم' to be '—' // Object.is equality
+   × ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > la copie complétée par la boîte de langue (K-5) est celle que le PDF imprime ensuite 498ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:23.395Z"}: expected 404 to be 200 // Object.is equality
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le détail suit le TYPE : « par invité » et « à l'unité » la quantité stockée, « à paliers » le nom du palier choisi (FR et AR), « fixe » rien — et chaque montant est celui du devis  807ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > ⛔ le nom du palier est celui de la LIGNE stockée : renommer le palier dans le catalogue APRÈS le devis ne change PAS le PDF (P-3)  781ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le VRAI moteur rend ce devis dans les deux langues : un PDF valide, la police du dépôt embarquée et seule  4429ms
+   ✓ Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > chaque canal de la liste d'autorité est accepté ET relu en base : un canal accepté par le type mais refusé par la base casserait ici  952ms
+   ✓ Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > l'entonnoir COMPTE le canal e-mail : un devis remis par e-mail entre dans `delivered`  607ms
+ ❯ test/int/pro-clients.int-spec.ts (32 tests | 32 failed) 15795ms
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche absente : 200 et `{ found: false }`, sans aucune autre clé 902ms
+     → expected 404 to be 200 // Object.is equality
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE : le numéro d'un COMPTE Zwadj et un numéro inconnu rendent la même réponse (statut, type, corps à l'octet) 569ms
+     → expected 404 to be 200 // Object.is equality
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE pour l'e-mail : celui d'un COMPTE et un inconnu rendent la même réponse 526ms
+     → expected 404 to be 200 // Object.is equality
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-11 — la fiche d'un AUTRE pro n'est pas trouvée : la réponse est celle d'un numéro inconnu 744ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:38.384Z"}: expected 404 to be 200 // Object.is equality
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche du pro est trouvée par son numéro (sous toute forme normalisable) et par son e-mail (sous toute casse) 379ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:38.764Z"}: expected 404 to be 200 // Object.is equality
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > EXACTEMENT un identifiant : les deux, aucun, ou une clé inconnue sont refusés (400) 366ms
+     → {"phone":"0555123456","email":"a@example.dz"}: expected 404 to be 400 // Object.is equality
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-5 — un numéro fixe, étranger, ou écrit TOUT en chiffres arabo-indiens est refusé (400), à la recherche comme à la création 355ms
+     → +21321234567: expected 404 to be 400 // Object.is equality
+   × K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche LIÉE se trouve, `linked` vaut vrai — et RIEN du compte n'apparaît dans la réponse (S-53, consigne v3 § 2 d) 498ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:39.982Z"}: expected 404 to be 200 // Object.is equality
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > crée la fiche : le numéro sous sa forme CANONIQUE, l'e-mail normalisé, les noms rognés, non liée 361ms
+     → expected 404 to be 200 // Object.is equality
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > une fiche par e-mail SEUL et une fiche par numéro SEUL sont admises (au moins l'un des deux) 353ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:40.700Z"}: expected 404 to be 200 // Object.is equality
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > refuse une fiche sans identifiant, ou sans aucun nom (400) — et n'écrit rien 387ms
+     → expected 404 to be 400 // Object.is equality
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⚠ IDEMPOTENT : la même fiche est RENDUE, et une fiche rendue n'est PAS modifiée (ni nom, ni e-mail) 358ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:41.444Z"}: expected 404 to be 200 // Object.is equality
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — DIX créations SIMULTANÉES du même numéro : UNE ligne, dix réponses qui portent le MÊME identifiant, une seule « créée » 390ms
+     → expected [ 404, 404, 404, 404, 404, 404, …(4) ] to deeply equal [ 200, 200, 200, 200, 200, 200, …(4) ]
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — dix créations SIMULTANÉES du même e-mail, sous des casses différentes : UNE ligne 391ms
+     → expected [ 404, 404, 404, 404, 404, 404, …(4) ] to deeply equal [ 200, 200, 200, 200, 200, 200, …(4) ]
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-2 — le numéro et l'e-mail désignent DEUX fiches différentes : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT, et RIEN n'est fusionné 358ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:42.584Z"}: expected 404 to be 200 // Object.is equality
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-3 — l'e-mail est normalisé par UNE fonction (rogné, NFKC, minuscules) : la casse et la pleine chasse retrouvent la même fiche 455ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:43.037Z"}: expected 404 to be 200 // Object.is equality
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-4 — le numéro du pro, son SECOND numéro et son e-mail de compte sont refusés : 400 CLIENT_IS_PRO_CONTACT, rien n'est écrit 477ms
+     → {"phone":"+213550000009"}: expected 404 to be 400 // Object.is equality
+   × K-3 — COMPLÈTE un nom manquant, ne remplace jamais > complète le nom arabe d'une fiche qui n'avait que le latin : 200, le latin intact 368ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:43.884Z"}: expected 404 to be 200 // Object.is equality
+   × K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-7 — un nom PRÉSENT n'est jamais remplacé : 409 CLIENT_RECORD_NAME_ALREADY_SET, la fiche intacte (même si l'autre nom manquait) 408ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:44.291Z"}: expected 404 to be 200 // Object.is equality
+   × K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-6 — une fiche LIÉE ne se complète pas : 409 CLIENT_RECORD_LINKED 562ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:44.851Z"}: expected 404 to be 200 // Object.is equality
+   × K-3 — COMPLÈTE un nom manquant, ne remplace jamais > un corps sans nom, ou avec une clé inconnue, est refusé (400) 390ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:45.244Z"}: expected 404 to be 200 // Object.is equality
+   × K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > modifie le numéro, l'e-mail et un nom : 200, valeurs normalisées comme à la création 347ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:45.591Z"}: expected 404 to be 200 // Object.is equality
+   × K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-6 — une fiche LIÉE n'est pas modifiable (champs grisés) : 409 CLIENT_RECORD_LINKED, la fiche intacte 568ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:46.157Z"}: expected 404 to be 200 // Object.is equality
+   × K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-2 — le numéro ou l'e-mail d'une AUTRE fiche du pro : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT, rien n'est fusionné 399ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:46.558Z"}: expected 404 to be 200 // Object.is equality
+   × K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-4 — K-3b refuse aussi le contact du pro : 400 CLIENT_IS_PRO_CONTACT 350ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:46.909Z"}: expected 404 to be 200 // Object.is equality
+   × K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > un corps vide, une valeur nulle ou une clé inconnue sont refusés (400) — K-3b change une valeur, il n'en retire aucune 415ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:47.325Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > K-3 et K-3b sur la fiche d'un autre pro rendent le MÊME 404 qu'un identifiant inexistant, et la fiche reste intacte 806ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:48.129Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > un CLIENT connecté n'atteint aucune route des fiches (403) 696ms
+     → expected 404 to be 403 // Object.is equality
+   × Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 (S-50) — l'expression du CHECK de forme accepte et refuse EXACTEMENT ce que `DZ_MOBILE_E164` accepte et refuse 376ms
+     → la contrainte pro_client_records_phone_canonical n'existe pas: expected [] to have a length of 1 but got +0
+   × Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 — la base REFUSE une écriture non canonique, même hors de l'API 462ms
+     → expected [Function] to throw error matching /pro_client_records_phone_canonical/u but got '\nInvalid `prisma.$executeRaw()` invo…'
+   × Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les CHECK : un identifiant au moins, un nom au moins, un lien cohérent (compte ET date, ou ni l'un ni l'autre) 562ms
+     → expected [Function] to throw error matching /pro_client_records_identifier_present/u but got '\nInvalid `prisma.$executeRaw()` invo…'
+   × Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les unicités sont PARTIELLES et PAR PRO : un même numéro chez deux pros, deux fiches sans e-mail ; jamais deux fois le même numéro chez un pro 710ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:50.938Z"}: expected 404 to be 200 // Object.is equality
+ ❯ test/int/pdf-renderer.int-spec.ts (11 tests | 2 failed) 5622ms
+   ✓ pdf-inspect — le lecteur de PDF est calibré à deux bras (un lecteur qui répondrait « embarquée » à tout passerait le cas positif seul) > positif : une police composite dont le descripteur référence un fichier est « embarquée » 3ms
+   ✓ pdf-inspect — le lecteur de PDF est calibré à deux bras (un lecteur qui répondrait « embarquée » à tout passerait le cas positif seul) > négatif : un descripteur SANS fichier de police se lit « non embarquée » 0ms
+   ✓ pdf-inspect — le lecteur de PDF est calibré à deux bras (un lecteur qui répondrait « embarquée » à tout passerait le cas positif seul) > négatifs : une police de base (Helvetica) n'est pas embarquée ; un PDF sans police n'en a aucune 1ms
+   ✓ pdf-inspect — le lecteur de PDF est calibré à deux bras (un lecteur qui répondrait « embarquée » à tout passerait le cas positif seul) > un flux d'objets compressé LÈVE : un lecteur qui n'en verrait que la moitié ferait passer un PDF sans police 1ms
+   ✓ pdf-inspect — le lecteur de PDF est calibré à deux bras (un lecteur qui répondrait « embarquée » à tout passerait le cas positif seul) > le titre et le nombre de pages se lisent ; absents, ils se lisent absents 1ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > rend un PDF d'UNE page — et un document QUELCONQUE passe par le même port (décision 6 : le moteur n'est pas écrit pour le seul acompte)  2032ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 1 — JavaScript est COUPÉ : le script qui change le titre ne le change pas  1141ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 2 — le RÉSEAU est muet : ni l'image ni la feuille de style n'atteignent le serveur local  1129ms
+   × PlaywrightPdfRenderer — le vrai Chromium > la police du DÉPÔT est embarquée, et SEULE : aucun caractère arabe ou latin ne retombe sur une police système 8ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × PlaywrightPdfRenderer — le vrai Chromium > le TÉMOIN sans la police ne porte pas Readex Pro : le test précédent discrimine donc quelque chose 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 3 — le navigateur est FERMÉ après un rendu réussi, et après un rendu qui dépasse son délai  1292ms
+ ❯ test/int/migration-non-empty.int-spec.ts (15 tests | 5 failed) 7403ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > prépare une base à l'avant-dernière migration, puis la sème  810ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⛔ D282 — la dernière migration REFUSE une base incohérente, et ne laisse RIEN 222ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ E3d-1 — l'index EXISTE ; son départage n'est plus mesurable ici (D282) 26ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ Q4 — la colonne a disparu, et RIEN d'autre 87ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ R4 — un BROUILLON JAMAIS REMIS peut être clos : les DEUX défauts sont fermés 112ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > les objets du lot PRÉCÉDENT n'ont pas bougé, et aucun canal n'a été inventé 108ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ l'index partiel des SENT tient encore — la migration ne l'a pas emporté 27ms
+   × L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot 511ms
+     → les migrations qui SUIVENT D282 sont celles de L35-3 puis de L35-4 : un lot de plus doit re-pointer ce bloc: expected [ 'venue_number', 'quote_reference' ] to deeply equal [ 'venue_number', …(2) ]
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans l'ordre de création, départage par identifiant ; la séquence repart du maximum 226ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER) dans l'ordre de création ; les révisions recopient leur tête ; les compteurs valent le maximum 180ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle  775ms
+   × ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte) 115ms
+     → la DERNIÈRE migration est celle du lot : un lot de plus doit re-pointer ce bloc: expected 'quote_reference' to be 'pro_client_records' // Object.is equality
+   × ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les devis existants la traversent INCHANGÉS, leurs trois colonnes neuves sont NULLES, la table neuve est VIDE 27ms
+     → relation "quotes" does not exist
+   × ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ les garanties que la migration pose (D186) : quatre CHECK, deux unicités PARTIELLES par pro, et l'action de chaque clé étrangère 28ms
+     → relation "pro_client_records" does not exist
+   × ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > après la migration : une fiche s'écrit, un devis EXISTANT s'y rattache ; supprimer la fiche remet son lien à NULL et le devis garde sa COPIE du nom 27ms
+     → relation "pro_client_records" does not exist
+
+ Test Files  5 failed (5)
+      Tests  62 failed | 67 passed (129)
+   Start at  23:42:28
+   Duration  97.11s (transform 2.88s, setup 118ms, collect 16.25s, tests 78.06s, environment 1ms, prepare 850ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/pro-clients.int-spec.ts test/int/quotes.int-spec.ts test/int/quote-document.int-spec.ts test/int/migration-non-empty.int-spec.ts test/int/pdf-renderer.int-spec.ts
+
+# ── stderr ──
+(node:14664) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:19520) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 62 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot
+AssertionError: les migrations qui SUIVENT D282 sont celles de L35-3 puis de L35-4 : un lot de plus doit re-pointer ce bloc: expected [ 'venue_number', 'quote_reference' ] to deeply equal [ 'venue_number', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "venue_number",
+    "quote_reference",
+-   "pro_client_records",
+  ]
+
+ ❯ test/int/migration-non-empty.int-spec.ts:723:171
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/62]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)
+AssertionError: la DERNIÈRE migration est celle du lot : un lot de plus doit re-pointer ce bloc: expected 'quote_reference' to be 'pro_client_records' // Object.is equality
+
+Expected: "pro_client_records"
+Received: "quote_reference"
+
+ ❯ test/int/migration-non-empty.int-spec.ts:884:127
+    882|     const toutes = migrationsOrdonnees();
+    883|     derniere = toutes[toutes.length - 1]!;
+    884|     expect(derniere.replace(/^\d+_/u, ""), "la DERNIÈRE migration est …
+       |                                                                                                                               ^
+    885|     await appliquerMigrations(toutes.slice(0, -1));
+    886| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/62]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les devis existants la traversent INCHANGÉS, leurs trois colonnes neuves sont NULLES, la table neuve est VIDE
+error: relation "quotes" does not exist
+ ❯ ../../node_modules/.pnpm/pg@8.22.0/node_modules/pg/lib/client.js:652:17
+ ❯ sql test/int/migration-non-empty.int-spec.ts:92:15
+     90|   await c.connect();
+     91|   try {
+     92|     const r = await c.query(query, params);
+       |               ^
+     93|     return r.rows as T[];
+     94|   } finally {
+ ❯ test/int/migration-non-empty.int-spec.ts:921:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/62]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ les garanties que la migration pose (D186) : quatre CHECK, deux unicités PARTIELLES par pro, et l'action de chaque clé étrangère
+error: relation "pro_client_records" does not exist
+ ❯ ../../node_modules/.pnpm/pg@8.22.0/node_modules/pg/lib/client.js:652:17
+ ❯ sql test/int/migration-non-empty.int-spec.ts:92:15
+     90|   await c.connect();
+     91|   try {
+     92|     const r = await c.query(query, params);
+       |               ^
+     93|     return r.rows as T[];
+     94|   } finally {
+ ❯ test/int/migration-non-empty.int-spec.ts:946:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/62]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > après la migration : une fiche s'écrit, un devis EXISTANT s'y rattache ; supprimer la fiche remet son lien à NULL et le devis garde sa COPIE du nom
+error: relation "pro_client_records" does not exist
+ ❯ ../../node_modules/.pnpm/pg@8.22.0/node_modules/pg/lib/client.js:652:17
+ ❯ sql test/int/migration-non-empty.int-spec.ts:92:15
+     90|   await c.connect();
+     91|   try {
+     92|     const r = await c.query(query, params);
+       |               ^
+     93|     return r.rows as T[];
+     94|   } finally {
+ ❯ test/int/migration-non-empty.int-spec.ts:971:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/62]⎯
+
+ FAIL  test/int/pdf-renderer.int-spec.ts > PlaywrightPdfRenderer — le vrai Chromium > la police du DÉPÔT est embarquée, et SEULE : aucun caractère arabe ou latin ne retombe sur une police système
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ test/int/pdf-renderer.int-spec.ts:124:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/62]⎯
+
+ FAIL  test/int/pdf-renderer.int-spec.ts > PlaywrightPdfRenderer — le vrai Chromium > le TÉMOIN sans la police ne porte pas Readex Pro : le test précédent discrimine donc quelque chose
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ test/int/pdf-renderer.int-spec.ts:133:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche absente : 200 et `{ found: false }`, sans aucune autre clé
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:89:24
+     87|     const token = await connecter(PRO);
+     88|     const res = await rechercher(token, { phone: "0555123456" });
+     89|     expect(res.status).toBe(200);
+       |                        ^
+     90|     expect(res.body).toEqual({ found: false });
+     91|     expect(Object.keys(res.body)).toEqual(["found"]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE : le numéro d'un COMPTE Zwadj et un numéro inconnu rendent la même réponse (statut, type, corps à l'octet)
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:102:26
+    100|     const connu = await rechercher(token, { phone: CLIENT.phone });
+    101|     const inconnu = await rechercher(token, { phone: "+213771112233" }…
+    102|     expect(connu.status).toBe(200);
+       |                          ^
+    103|     expect({ statut: connu.status, type: connu.headers["content-type"]…
+    104|       statut: inconnu.status,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE pour l'e-mail : celui d'un COMPTE et un inconnu rendent la même réponse
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:115:26
+    113|     const connu = await rechercher(token, { email: CLIENT.email });
+    114|     const inconnu = await rechercher(token, { email: "personne@example…
+    115|     expect(connu.status).toBe(200);
+       |                          ^
+    116|     expect({ statut: connu.status, type: connu.headers["content-type"]…
+    117|       statut: inconnu.status,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-11 — la fiche d'un AUTRE pro n'est pas trouvée : la réponse est celle d'un numéro inconnu
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:38.384Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:126:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche du pro est trouvée par son numéro (sous toute forme normalisable) et par son e-mail (sous toute casse)
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:38.764Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:135:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > EXACTEMENT un identifiant : les deux, aucun, ou une clé inconnue sont refusés (400)
+AssertionError: {"phone":"0555123456","email":"a@example.dz"}: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:147:78
+    145|     const token = await connecter(PRO);
+    146|     for (const corps of [{ phone: "0555123456", email: "a@example.dz" …
+    147|       expect((await rechercher(token, corps)).status, JSON.stringify(c…
+       |                                                                              ^
+    148|     }
+    149|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-5 — un numéro fixe, étranger, ou écrit TOUT en chiffres arabo-indiens est refusé (400), à la recherche comme à la création
+AssertionError: +21321234567: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:154:66
+    152|     const token = await connecter(PRO);
+    153|     for (const phone of ["+21321234567", "021234567", "+33612345678", …
+    154|       expect((await rechercher(token, { phone })).status, phone).toBe(…
+       |                                                                  ^
+    155|       expect((await creer(token, { phone, nameLatin: "Amina Bensalem" …
+    156|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche LIÉE se trouve, `linked` vaut vrai — et RIEN du compte n'apparaît dans la réponse (S-53, consigne v3 § 2 d)
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:39.982Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:163:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > crée la fiche : le numéro sous sa forme CANONIQUE, l'e-mail normalisé, les noms rognés, non liée
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:179:24
+    177|     const token = await connecter(PRO);
+    178|     const res = await creer(token, { phone: "0555 12 34 56", email: " …
+    179|     expect(res.status).toBe(200);
+       |                        ^
+    180|     expect(res.body.created).toBe(true);
+    181|     const f = res.body.record as Fiche;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > une fiche par e-mail SEUL et une fiche par numéro SEUL sont admises (au moins l'un des deux)
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:40.700Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:194:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > refuse une fiche sans identifiant, ou sans aucun nom (400) — et n'écrit rien
+AssertionError: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:205:74
+    203|   it("refuse une fiche sans identifiant, ou sans aucun nom (400) — et …
+    204|     const token = await connecter(PRO);
+    205|     expect((await creer(token, { nameLatin: "Amina Bensalem" })).statu…
+       |                                                                          ^
+    206|     expect((await creer(token, { phone: "0555123456" })).status).toBe(…
+    207|     expect((await creer(token, { phone: "0555123456", nameLatin: "Amin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⚠ IDEMPOTENT : la même fiche est RENDUE, et une fiche rendue n'est PAS modifiée (ni nom, ni e-mail)
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:41.444Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:214:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — DIX créations SIMULTANÉES du même numéro : UNE ligne, dix réponses qui portent le MÊME identifiant, une seule « créée »
+AssertionError: expected [ 404, 404, 404, 404, 404, 404, …(4) ] to deeply equal [ 200, 200, 200, 200, 200, 200, …(4) ]
+
+- Expected
++ Received
+
+  [
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
+  ]
+
+ ❯ test/int/pro-clients.int-spec.ts:226:43
+    224|     const token = await connecter(PRO);
+    225|     const reponses = await Promise.all(Array.from({ length: 10 }, (_, …
+    226|     expect(reponses.map((r) => r.status)).toEqual(Array.from({ length:…
+       |                                           ^
+    227|     expect(new Set(reponses.map((r) => (r.body.record as Fiche).id)).s…
+    228|     expect(reponses.filter((r) => r.body.created === true)).toHaveLeng…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — dix créations SIMULTANÉES du même e-mail, sous des casses différentes : UNE ligne
+AssertionError: expected [ 404, 404, 404, 404, 404, 404, …(4) ] to deeply equal [ 200, 200, 200, 200, 200, 200, …(4) ]
+
+- Expected
++ Received
+
+  [
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
+-   200,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
++   404,
+  ]
+
+ ❯ test/int/pro-clients.int-spec.ts:236:43
+    234|     const casses = ["amina@example.dz", "AMINA@example.dz", "Amina@Exa…
+    235|     const reponses = await Promise.all(Array.from({ length: 10 }, (_, …
+    236|     expect(reponses.map((r) => r.status)).toEqual(Array.from({ length:…
+       |                                           ^
+    237|     expect(new Set(reponses.map((r) => (r.body.record as Fiche).id)).s…
+    238|     expect(await nombreDeFiches()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-2 — le numéro et l'e-mail désignent DEUX fiches différentes : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT, et RIEN n'est fusionné
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:42.584Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:243:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-3 — l'e-mail est normalisé par UNE fonction (rogné, NFKC, minuscules) : la casse et la pleine chasse retrouvent la même fiche
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:43.037Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:255:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-4 — le numéro du pro, son SECOND numéro et son e-mail de compte sont refusés : 400 CLIENT_IS_PRO_CONTACT, rien n'est écrit
+AssertionError: {"phone":"+213550000009"}: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:279:51
+    277|     for (const contact of refus) {
+    278|       const res = await creer(token, { ...contact, nameLatin: "Amina B…
+    279|       expect(res.status, JSON.stringify(contact)).toBe(400);
+       |                                                   ^
+    280|       expect(res.body.message.code, JSON.stringify(contact)).toBe("CLI…
+    281|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3 — COMPLÈTE un nom manquant, ne remplace jamais > complète le nom arabe d'une fiche qui n'avait que le latin : 200, le latin intact
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:43.884Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:291:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-7 — un nom PRÉSENT n'est jamais remplacé : 409 CLIENT_RECORD_NAME_ALREADY_SET, la fiche intacte (même si l'autre nom manquait)
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:44.291Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:300:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-6 — une fiche LIÉE ne se complète pas : 409 CLIENT_RECORD_LINKED
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:44.851Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:312:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3 — COMPLÈTE un nom manquant, ne remplace jamais > un corps sans nom, ou avec une clé inconnue, est refusé (400)
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:45.244Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:322:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > modifie le numéro, l'e-mail et un nom : 200, valeurs normalisées comme à la création
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:45.591Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:331:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-6 — une fiche LIÉE n'est pas modifiable (champs grisés) : 409 CLIENT_RECORD_LINKED, la fiche intacte
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:46.157Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:340:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-2 — le numéro ou l'e-mail d'une AUTRE fiche du pro : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT, rien n'est fusionné
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:46.558Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:350:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-4 — K-3b refuse aussi le contact du pro : 400 CLIENT_IS_PRO_CONTACT
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:46.909Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:364:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > un corps vide, une valeur nulle ou une clé inconnue sont refusés (400) — K-3b change une valeur, il n'en retire aucune
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:47.325Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:375:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > K-3 et K-3b sur la fiche d'un autre pro rendent le MÊME 404 qu'un identifiant inexistant, et la fiche reste intacte
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:48.129Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:386:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > un CLIENT connecté n'atteint aucune route des fiches (403)
+AssertionError: expected 404 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 404
+
+ ❯ test/int/pro-clients.int-spec.ts:410:77
+    408|     await verifyLastRegistered(ctx);
+    409|     const tokenClient = await loginAs(ctx, CLIENT.email, CLIENT.passwo…
+    410|     expect((await rechercher(tokenClient, { phone: "0555123456" })).st…
+       |                                                                             ^
+    411|     expect((await creer(tokenClient, { phone: "0555123456", nameLatin:…
+    412|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 (S-50) — l'expression du CHECK de forme accepte et refuse EXACTEMENT ce que `DZ_MOBILE_E164` accepte et refuse
+AssertionError: la contrainte pro_client_records_phone_canonical n'existe pas: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ definition test/int/pro-clients.int-spec.ts:419:55
+    417|   async function definition(nom: string): Promise<string> {
+    418|     const rows = await ctx.prisma.$queryRaw<{ def: string }[]>`SELECT …
+    419|     expect(rows, `la contrainte ${nom} n'existe pas`).toHaveLength(1);
+       |                                                       ^
+    420|     return rows[0]!.def;
+    421|   }
+ ❯ test/int/pro-clients.int-spec.ts:429:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 — la base REFUSE une écriture non canonique, même hors de l'API
+AssertionError: expected [Function] to throw error matching /pro_client_records_phone_canonical/u but got '\nInvalid `prisma.$executeRaw()` invo…'
+
+- Expected: 
+/pro_client_records_phone_canonical/u
+
++ Received: 
+"
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation \"pro_client_records\" does not exist`"
+
+ ❯ test/int/pro-clients.int-spec.ts:463:5
+    461|     await connecter(PRO);
+    462|     const pp = await proProfileId();
+    463|     await expect(
+       |     ^
+    464|       ctx.prisma.$executeRaw`INSERT INTO pro_client_records (pro_profi…
+    465|     ).rejects.toThrow(/pro_client_records_phone_canonical/u);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les CHECK : un identifiant au moins, un nom au moins, un lien cohérent (compte ET date, ou ni l'un ni l'autre)
+AssertionError: expected [Function] to throw error matching /pro_client_records_identifier_present/u but got '\nInvalid `prisma.$executeRaw()` invo…'
+
+- Expected: 
+/pro_client_records_identifier_present/u
+
++ Received: 
+"
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation \"pro_client_records\" does not exist`"
+
+ ❯ test/int/pro-clients.int-spec.ts:476:5
+    474|     const pp = await proProfileId();
+    475|     const compte = await ctx.prisma.user.findUniqueOrThrow({ where: { …
+    476|     await expect(ctx.prisma.$executeRaw`INSERT INTO pro_client_records…
+       |     ^
+    477|       /pro_client_records_identifier_present/u
+    478|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/62]⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les unicités sont PARTIELLES et PAR PRO : un même numéro chez deux pros, deux fiches sans e-mail ; jamais deux fois le même numéro chez un pro
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:50.938Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ fiche test/int/pro-clients.int-spec.ts:54:48
+     52| async function fiche(token: string, corps: Record<string, unknown>): P…
+     53|   const res = await creer(token, corps);
+     54|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     55|   expect(res.body.created).toBe(true);
+     56|   return res.body.record as Fiche;
+ ❯ test/int/pro-clients.int-spec.ts:493:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/62]⎯
+
+ FAIL  test/int/quote-document.int-spec.ts > La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404
+ReferenceError: CLIENT_FR is not defined
+ ❯ test/int/quote-document.int-spec.ts:177:29
+    175|     const f = await pro(PRO, city.id);
+    176|     const q = (await makeQuote(f).expect(statut(201))).body as QuoteDT…
+    177|     await registerUser(ctx, CLIENT_FR);
+       |                             ^
+    178|     await verifyLastRegistered(ctx);
+    179|     const tClient = await loginAs(ctx, CLIENT_FR.email, CLIENT_FR.pass…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/62]⎯
+
+ FAIL  test/int/quote-document.int-spec.ts > La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client > dans les deux sens, avec ou sans fiche : `Content-Language` et la langue du HTML sont la langue DEMANDÉE
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:20.822Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quote-document.int-spec.ts:45:48
+     43| async function ficheDe(token: string, corps: Record<string, unknown>):…
+     44|   const res = await api().post("/api/v1/pro/clients").set(authH(token)…
+     45|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     46|   return res.body.record as { id: string };
+     47| }
+ ❯ test/int/quote-document.int-spec.ts:295:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/62]⎯
+
+ FAIL  test/int/quote-document.int-spec.ts > ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > la copie LATINE en français, la copie ARABE en arabe — jamais l'autre écriture
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:21.283Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quote-document.int-spec.ts:45:48
+     43| async function ficheDe(token: string, corps: Record<string, unknown>):…
+     44|   const res = await api().post("/api/v1/pro/clients").set(authH(token)…
+     45|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     46|   return res.body.record as { id: string };
+     47| }
+ ❯ test/int/quote-document.int-spec.ts:321:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/62]⎯
+
+ FAIL  test/int/quote-document.int-spec.ts > ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ S-52 — une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:21.712Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quote-document.int-spec.ts:45:48
+     43| async function ficheDe(token: string, corps: Record<string, unknown>):…
+     44|   const res = await api().post("/api/v1/pro/clients").set(authH(token)…
+     45|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     46|   return res.body.record as { id: string };
+     47| }
+ ❯ test/int/quote-document.int-spec.ts:336:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/62]⎯
+
+ FAIL  test/int/quote-document.int-spec.ts > ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ MD-12 — la fiche MODIFIÉE après la création du devis ne change pas le PDF : il imprime la copie STOCKÉE
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:22.168Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quote-document.int-spec.ts:45:48
+     43| async function ficheDe(token: string, corps: Record<string, unknown>):…
+     44|   const res = await api().post("/api/v1/pro/clients").set(authH(token)…
+     45|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     46|   return res.body.record as { id: string };
+     47| }
+ ❯ test/int/quote-document.int-spec.ts:348:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/62]⎯
+
+ FAIL  test/int/quote-document.int-spec.ts > ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ M-7 — le COMPTE n'est plus lu : un devis hérité lié à un compte (`client_id` posé en base) et SANS copie imprime « — », jamais le nom du compte
+AssertionError: expected 'آمنة بن سالم' to be '—' // Object.is equality
+
+Expected: "—"
+Received: "آمنة بن سالم"
+
+ ❯ test/int/quote-document.int-spec.ts:372:36
+    370|     await documentDe(f.token, q.id, { locale: "fr" }).expect(statut(20…
+    371|     const [ar, fr] = vus() as string[];
+    372|     expect(champClient(ar!, "ar")).toBe("—");
+       |                                    ^
+    373|     expect(champClient(fr!, "fr")).toBe("—");
+    374|     for (const html of [ar!, fr!]) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/62]⎯
+
+ FAIL  test/int/quote-document.int-spec.ts > ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > la copie complétée par la boîte de langue (K-5) est celle que le PDF imprime ensuite
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:23.395Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quote-document.int-spec.ts:45:48
+     43| async function ficheDe(token: string, corps: Record<string, unknown>):…
+     44|   const res = await api().post("/api/v1/pro/clients").set(authH(token)…
+     45|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+     46|   return res.body.record as { id: string };
+     47| }
+ ❯ test/int/quote-document.int-spec.ts:383:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ DB-15 — `clientId` est RETIRÉ du contrat : le schéma strict le refuse (400) et n'écrit aucun devis
+AssertionError: expected 201 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 201
+
+ ❯ test/int/quotes.int-spec.ts:729:24
+    727|     const pro = await ctx.prisma.user.findUniqueOrThrow({ where: { ema…
+    728|     const res = await makeQuote(f, { clientId: pro.id });
+    729|     expect(res.status).toBe(400);
+       |                        ^
+    730|     expect(await nombreDeDevis()).toBe(0);
+    731|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > un devis SANS fiche se crée comme aujourd'hui : la fiche et les deux copies sont nulles
+AssertionError: expected { clientRecordId: undefined, …(2) } to deeply equal { clientRecordId: null, …(2) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameAr": null,
+-   "clientNameLatin": null,
+-   "clientRecordId": null,
++   "clientNameAr": undefined,
++   "clientNameLatin": undefined,
++   "clientRecordId": undefined,
+  }
+
+ ❯ test/int/quotes.int-spec.ts:738:116
+    736|     expect(res.status).toBe(201);
+    737|     const q = res.body as QuoteDTO;
+    738|     expect({ clientRecordId: q.clientRecordId, clientNameAr: q.clientN…
+       |                                                                                                                    ^
+    739|       clientRecordId: null,
+    740|       clientNameAr: null,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > le devis porte la fiche et la copie du nom TELLE QUE SAISIE pour ce devis (DB-17), rognée — dans la réponse ET en base
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:42:59.461Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:717:50
+    715|   async function ficheDe(token: string, corps: Record<string, unknown>…
+    716|     const res = await api().post("/api/v1/pro/clients").set(authH(toke…
+    717|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    718|     return res.body.record as { id: string };
+    719|   }
+ ❯ test/int/quotes.int-spec.ts:747:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[49/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-15 — des noms SANS fiche, une fiche SANS nom, un nom invalide : 400, aucun devis écrit
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:42:59.943Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:717:50
+    715|   async function ficheDe(token: string, corps: Record<string, unknown>…
+    716|     const res = await api().post("/api/v1/pro/clients").set(authH(toke…
+    717|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    718|     return res.body.record as { id: string };
+    719|   }
+ ❯ test/int/quotes.int-spec.ts:761:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[50/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fiche inexistante, et aucun devis écrit
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:00.756Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:717:50
+    715|   async function ficheDe(token: string, corps: Record<string, unknown>…
+    716|     const res = await api().post("/api/v1/pro/clients").set(authH(toke…
+    717|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    718|     return res.body.record as { id: string };
+    719|   }
+ ❯ test/int/quotes.int-spec.ts:779:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[51/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_LINKED) ; les noms de la fiche passent
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:01.334Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:717:50
+    715|   async function ficheDe(token: string, corps: Record<string, unknown>…
+    716|     const res = await api().post("/api/v1/pro/clients").set(authH(toke…
+    717|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    718|     return res.body.record as { id: string };
+    719|   }
+ ❯ test/int/quotes.int-spec.ts:791:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[52/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-16 — une RÉVISION porte la copie FOURNIE (celle du devis précédent), jamais la fiche vivante — et la v1 garde la sienne
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:01.793Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:717:50
+    715|   async function ficheDe(token: string, corps: Record<string, unknown>…
+    716|     const res = await api().post("/api/v1/pro/clients").set(authH(toke…
+    717|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    718|     return res.body.record as { id: string };
+    719|   }
+ ❯ test/int/quotes.int-spec.ts:807:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[53/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-7 (R8) — MODIFIER la fiche (K-3b) ne touche AUCUNE copie déjà faite : le devis garde son nom
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:02.238Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:717:50
+    715|   async function ficheDe(token: string, corps: Record<string, unknown>…
+    716|     const res = await api().post("/api/v1/pro/clients").set(authH(toke…
+    717|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    718|     return res.body.record as { id: string };
+    719|   }
+ ❯ test/int/quotes.int-spec.ts:822:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[54/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > complète la copie MANQUANTE de la langue demandée : « ar » écrit le nom arabe, « fr » le nom latin — 201 et le devis rendu la porte
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:02.683Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:835:50
+    833|   async function ficheDe(f: Fixture, corps: Record<string, unknown>): …
+    834|     const res = await api().post("/api/v1/pro/clients").set(authH(f.to…
+    835|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    836|     return res.body.record as { id: string };
+    837|   }
+ ❯ test/int/quotes.int-spec.ts:845:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[55/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS remplacée : 409 QUOTE_CLIENT_NAME_ALREADY_SET, la copie intacte
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:03.194Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:835:50
+    833|   async function ficheDe(f: Fixture, corps: Record<string, unknown>): …
+    834|     const res = await api().post("/api/v1/pro/clients").set(authH(f.to…
+    835|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    836|     return res.body.record as { id: string };
+    837|   }
+ ❯ test/int/quotes.int-spec.ts:860:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[56/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 — deux compléments SIMULTANÉS de la même langue : un seul gagne, l'autre est refusé, et la base porte le nom du gagnant
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:03.654Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:835:50
+    833|   async function ficheDe(f: Fixture, corps: Record<string, unknown>): …
+    834|     const res = await api().post("/api/v1/pro/clients").set(authH(f.to…
+    835|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    836|     return res.body.record as { id: string };
+    837|   }
+ ❯ test/int/quotes.int-spec.ts:870:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[57/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 1 — le nom de l'AUTRE écriture est le MÊME sur le devis et sur la fiche : la fiche est complétée AUSSI
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:04.099Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:835:50
+    833|   async function ficheDe(f: Fixture, corps: Record<string, unknown>): …
+    834|     const res = await api().post("/api/v1/pro/clients").set(authH(f.to…
+    835|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    836|     return res.body.record as { id: string };
+    837|   }
+ ❯ test/int/quotes.int-spec.ts:880:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[58/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 2 — il DIFFÈRE (deux personnes, un numéro : M-24) : la fiche reste INTACTE, seule la copie est complétée
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:04.538Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:835:50
+    833|   async function ficheDe(f: Fixture, corps: Record<string, unknown>): …
+    834|     const res = await api().post("/api/v1/pro/clients").set(authH(f.to…
+    835|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    836|     return res.body.record as { id: string };
+    837|   }
+ ❯ test/int/quotes.int-spec.ts:888:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[59/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 — la fiche a DÉJÀ un nom dans cette langue : la copie se complète, la fiche n'est jamais remplacée
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:05.023Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:835:50
+    833|   async function ficheDe(f: Fixture, corps: Record<string, unknown>): …
+    834|     const res = await api().post("/api/v1/pro/clients").set(authH(f.to…
+    835|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    836|     return res.body.record as { id: string };
+    837|   }
+ ❯ test/int/quotes.int-spec.ts:897:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[60/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-6 — une fiche LIÉE n'est jamais complétée par la boîte : seule la copie du devis l'est
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/clients","timestamp":"2026-10-23T03:43:05.558Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ ficheDe test/int/quotes.int-spec.ts:835:50
+    833|   async function ficheDe(f: Fixture, corps: Record<string, unknown>): …
+    834|     const res = await api().post("/api/v1/pro/clients").set(authH(f.to…
+    835|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    836|     return res.body.record as { id: string };
+    837|   }
+ ❯ test/int/quotes.int-spec.ts:906:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[61/62]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > le devis d'un AUTRE pro, ou inexistant : 404 QUOTE_NOT_FOUND ; un corps invalide : 400
+AssertionError: expected 'ROUTE_NOT_FOUND' to be 'QUOTE_NOT_FOUND' // Object.is equality
+
+Expected: "QUOTE_NOT_FOUND"
+Received: "ROUTE_NOT_FOUND"
+
+ ❯ test/int/quotes.int-spec.ts:923:37
+    921|     const chezB = await api().post(`/api/v1/quotes/${q.id}/client-name…
+    922|     expect(chezB.status).toBe(404);
+    923|     expect(chezB.body.message.code).toBe("QUOTE_NOT_FOUND");
+       |                                     ^
+    924|     for (const corps of [{ locale: "en", name: "Amina" }, { locale: "f…
+    925|       expect((await completerNom(f, q.id, corps)).status, JSON.stringi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[62/62]⎯
+

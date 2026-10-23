@@ -1,0 +1,1586 @@
+# D336 — ROUGE « api » contre l'état d'AVANT le code (D334, item 5)
+# commande : pnpm --filter @zwadj/api exec vitest run src/clients/pro-client-policy.spec.ts src/clients/pro-clients.service.spec.ts src/common/client-record.spec.ts src/venues/quotes.service.spec.ts src/venues/quote-store.prisma.spec.ts src/documents/quote-document.spec.ts src/documents/quote-document.service.spec.ts
+# HEAD : 18e11132b8276a762d7ea784df5ed9f9158171b3 (aucun fichier de code du lot n'existe : seuls les tests et leur support sont modifiés)
+# environnement : NO_COLOR=1 FORCE_COLOR=0 CI=1 DEBUG_PRINT_LIMIT=200
+# début 2026-10-22T23:39:31 — fin 2026-10-22T23:39:37 — code de sortie 1
+# ── sortie brute (stdout puis stderr) ──
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/client-record.spec.ts (27 tests | 25 failed) 48ms
+   × ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > rogne et met en minuscules 9ms
+     → (0 , normalizeContactEmail) is not a function
+   × ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > ramène la PLEINE CHASSE aux caractères ordinaires (NFKC) : « ＡＭＩＮＡ＠ＭＡＩＬ．ＤＺ » est « amina@mail.dz » 1ms
+     → (0 , normalizeContactEmail) is not a function
+   × ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > ramène une lettre accentuée DÉCOMPOSÉE à sa forme composée : deux saisies du même texte donnent la même adresse 1ms
+     → (0 , normalizeContactEmail) is not a function
+   × ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > est IDEMPOTENTE : normaliser une adresse déjà normalisée ne la change pas 1ms
+     → (0 , normalizeContactEmail) is not a function
+   × K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > un numéro : rendu sous sa forme CANONIQUE (`dzPhoneSchema`, la règle du contrat) 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > un e-mail : rendu NORMALISÉ par `normalizeContactEmail` 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > les deux, aucun, une clé inconnue : REFUSÉS 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > ⛔ MD-5 — un numéro fixe, étranger, ou écrit TOUT en chiffres arabo-indiens : REFUSÉ, avec le message du contrat du téléphone 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > un e-mail invalide est refusé, avec SA clé de catalogue 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > le corps complet : numéro canonique, e-mail normalisé, noms rognés 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > un e-mail SEUL ou un numéro SEUL suffit ; un nom dans UNE écriture suffit 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > sans identifiant : refusé, et le refus le NOMME 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > sans aucun nom : refusé, et le refus le NOMME 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > un nom hors de la règle partagée (chiffre, symbole) ou trop long : refusé 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > strict : une clé inconnue (un identifiant de compte, un lien) est refusée 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-3 et K-3b — compléter un nom, modifier une fiche > K-3 : au moins un nom ; rien d'autre que les noms 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-3 et K-3b — compléter un nom, modifier une fiche > K-3b : au moins un champ ; chaque valeur passe la règle de la création (numéro canonique, e-mail normalisé) 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-3 et K-3b — compléter un nom, modifier une fiche > K-3b CHANGE une valeur, il n'en RETIRE aucune : `null` est refusé pour chaque champ — les CHECK de la base ne peuvent donc pas tomber par lui 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ `clientId` est une clé INCONNUE : refusée (le lien à un compte ne passe que par la fiche et la fusion) 10ms
+     → expected true to be false // Object.is equality
+   ✓ ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > sans fiche ni nom : le devis du parcours se crée comme aujourd'hui 1ms
+   × ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > une fiche ET au moins un nom : accepté, les noms rognés 2ms
+     → expected false to be true // Object.is equality
+   × ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ MD-15 — des noms SANS fiche : refusé, et le refus nomme la fiche 5ms
+     → expected [ ':quote.validation.unknownKey' ] to include 'clientRecordId:quote.validation.clien…'
+   × ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ MD-15 — une fiche SANS nom : refusé, et le refus nomme le nom 1ms
+     → expected [ ':quote.validation.unknownKey' ] to include 'clientNameLatin:quote.validation.clie…'
+   ✓ ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > un nom de la copie hors de la règle partagée : refusé 1ms
+   × K-5 — `quoteClientNameSchema` et la correspondance langue → copie, écrite UNE fois > la langue du document choisit la copie : le français imprime le nom LATIN, l'arabe le nom ARABE — pour CHAQUE langue du contrat 2ms
+     → expected undefined to deeply equal { fr: 'clientNameLatin', …(1) }
+   × K-5 — `quoteClientNameSchema` et la correspondance langue → copie, écrite UNE fois > une langue du contrat et un nom valide : accepté, rogné 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × K-5 — `quoteClientNameSchema` et la correspondance langue → copie, écrite UNE fois > une langue inconnue, un nom vide ou invalide, une clé inconnue : refusés 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/documents/quote-document.service.spec.ts (13 tests | 6 failed) 35ms
+   ✓ QuoteDocumentService — la propriété et le 404 indistinct (décision 4) > un AUTRE pro est refusé en 404, sans rien rendre : un identifiant de devis deviné ne livre pas les données d'un client 4ms
+   ✓ QuoteDocumentService — la propriété et le 404 indistinct (décision 4) > un devis inexistant et un identifiant mal formé rendent la MÊME réponse — ce dernier sans même lire la base 1ms
+   ✓ QuoteDocumentService — les refus métier (décision 1) > une version qui n'est plus la dernière : 409 QUOTE_VERSION_NOT_ACTIVE, `latestVersion` dans la réponse, RIEN n'est rendu 1ms
+   ✓ QuoteDocumentService — les refus métier (décision 1) > une affaire perdue : 409 QUOTE_STATUS_CONFLICT avec le statut RÉEL, rien n'est rendu 0ms
+   ✓ QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version active » 0ms
+   × QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeur STOCKÉE (et pas 30 % du total) ; le nom du fichier est sans donnée personnelle 9ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 (K-7, F-15) : le nom du fichier porte la langue DEMANDÉE — `_fr_` pour le français, `_ar_` pour l'arabe — et la version de la référence stockée 2ms
+     → Cannot read properties of undefined (reading 'firstName')
+   ✓ QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 : une référence stockée qui n'en est pas une LÈVE — le moteur de rendu n'est pas appelé, aucun fichier ne porte un nom faux 1ms
+   × QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le pro la choisit à chaque téléchargement, dans les deux sens 2ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 38 (P-15) : un devis qui porte une copie du nom en ARABE ne change pas la langue — le port de lecture n'a aucune langue de client, et le résultat n'a plus de `branch` 2ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE — et JAMAIS un 409 8ms
+     → expected TypeError: Cannot read properties of unde… to be an instance of ServiceUnavailableException
+   × QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > toute AUTRE erreur du moteur remonte telle quelle : le service ne la déguise pas en panne attendue 2ms
+     → expected TypeError: Cannot read properties of unde… to be an instance of RangeError
+   ✓ algiersToday — la date d'émission est celle d'Alger (UTC+1, D48) > à 23 h 30 UTC il est déjà le lendemain à Alger : le fuseau n'est pas celui du serveur 1ms
+ ❯ src/venues/quote-store.prisma.spec.ts (33 tests | 7 failed) 55ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui 8ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 … RETURNING` — JAMAIS « lire le plus grand puis ajouter 1 » (R3) 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, l'année PASSÉE, le numéro RENDU par le compteur, et la date de création PASSÉE 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⚠ les montants passent TELS QUELS 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un échec de l'insertion APRÈS le compteur : la création échoue, et le compteur n'a été touché que DANS la transaction (qui l'annule) 5ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un compteur qui ne rend PAS exactement une ligne entière positive : la création LÈVE, aucun numéro n'est inventé 4ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ `FOR UPDATE` puis `aggregate` puis `create` — dans cet ordre, ou la garde ne sert à rien 1ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà 1ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ la tête introuvable (le verrou ne rend aucune ligne) : la révision LÈVE, rien n'est créé 1ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⚠ la version suivante est MAX + 1, et le parent est désigné 1ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le statut admis est dans le WHERE de l'UPDATE, pas lu avant 2ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ refus : le statut est RELU DANS la transaction et remonte dans le résultat 1ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le port NE LÈVE PAS sur un refus — il rend 2ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⚠ `marquerRemis` écrit le canal et la date, JAMAIS un statut 1ms
+   ✓ PrismaQuoteStore — les lectures > ⚠ l'entonnoir ne compte QUE les devis portant un canal (D162) 1ms
+   ✓ PrismaQuoteStore — les lectures > ⛔ `trouverDuPro` : le devis, sa salle VIVANTE, et à MOI — en un seul WHERE 1ms
+   ✓ PrismaQuoteStore — les lectures > `salleAppartientAu` rend un booléen, jamais la ligne 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ UNE SEULE REQUÊTE : la demande ET ses lignes, imbriquées 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ les montants sont ÉCRITS TELS QUELS — l'adaptateur ne calcule rien 0ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ AUCUNE ÉCRITURE SUR LE DEVIS — il attend l'acompte 0ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 + une demande EXISTE pour ce devis → `dejaConverti` 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 SANS demande pour ce devis → L'ERREUR REPART 0ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ toute AUTRE erreur remonte sans relecture 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus` 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ le TÉMOIN INDÉPENDANT survit dans `quotes.int-spec.ts` — littéral EXIGÉ 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⚠ et l'EXPLICATION est restée dans les deux fichiers 1ms
+   × ⛔ D336 — `ficheDuPro` : la fiche se lit par la RELATION au pro (D149), jamais par un identifiant qui « ressemble » > le WHERE traverse `proProfile: { userId }` et ne sélectionne que ce que la copie du nom exige — rien du compte lié 7ms
+     → store.ficheDuPro is not a function
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture 1ms
+     → store.completerNomDuClient is not a function
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ refus (rien n'a été écrit) : le port REND `{ ok: false }`, sans lire ni écrire la fiche 1ms
+     → store.completerNomDuClient is not a function
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée 1ms
+     → store.completerNomDuClient is not a function
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — la politique dit NON (l'autre écriture diffère) : la fiche n'est PAS écrite, la copie l'est 1ms
+     → store.completerNomDuClient is not a function
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > un devis SANS fiche : aucune lecture ni écriture de fiche 1ms
+     → store.completerNomDuClient is not a function
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche 1ms
+     → store.completerNomDuClient is not a function
+ ❯ src/documents/quote-document.spec.ts (51 tests | 36 failed) 98ms
+   × le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `formatDZD` — l'attendu vient du formateur, pas d'un texte tapé à la main 22ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ l'acompte imprimé est la valeur stockée, et PAS 30 % du total : un recalcul serait rougi ici 2ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > modifier la valeur STOCKÉE change le montant imprimé — le seul moyen légitime de le faire changer (précision de Ko) 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le total imprimé est la valeur STOCKÉE, et PAS base + prestations : une remise ou un arrondi stockés ne se recomposent pas (la fixture d'origine valait pile base + prestations) 5ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le montant d'une LIGNE est la valeur stockée, et PAS prix unitaire × quantité : le total de ligne de la fixture n'est pas le produit (P-4) 2ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > en arabe les montants sont ceux de l'ÉCRAN du Pro (`formatDZD(cents)` sans locale) — pas une seconde mise en forme 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > sans prestation : AUCUN tableau, et une phrase dit qu'aucune prestation n'est choisie — dans les deux langues 5ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > des prestations TOUTES « fixe » : un tableau à DEUX colonnes (prestation, montant) — pas de colonne de détail, ni vide ni autre 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une prestation qui a un détail : un tableau à TROIS colonnes, l'en-tête « Détail » en français comme en arabe 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une ligne de tableau par prestation choisie — ni plus, ni moins 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « par invité » imprime la quantité stockée (le nombre d'invités) 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à l'unité » imprime la quantité — y compris 1 : la règle suit le TYPE, pas la valeur 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « fixe » n'imprime RIEN, même quand sa quantité stockée n'est pas 1 (la règle suit le type) 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à paliers » imprime le NOM du palier, pas une quantité (la quantité stockée d'un palier est 1) 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > les quatre types ensemble : une colonne de détail, chaque ligne dit ce que DB-9 veut 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > français : le nom FRANÇAIS du palier ; arabe : le nom ARABE — l'autre langue ne s'imprime pas 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   ✓ rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > ⛔ une ligne « à paliers » SANS nom de palier stocké LÈVE : elle ne s'imprime pas à moitié 2ms
+   × rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du balisage 2ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > une section titrée « Récapitulatif », APRÈS le tableau, qui porte les quatre lignes dans l'ordre location, prestations, total, acompte 2ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les libellés du récapitulatif ne sont PAS dans le tableau des prestations (deux blocs, pas un seul mélangé) 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > sans prestation, le récapitulatif est là quand même — la location, un total de prestations à zéro, le total, l'acompte (les valeurs stockées) 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les montants et les libellés s'alignent par des propriétés LOGIQUES : aucune propriété physique (left, right, margin-left…) dans la feuille du document 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > français : `lang=fr`, `dir=ltr`, noms et libellés français 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > arabe : `lang=ar`, `dir=rtl`, noms et libellés arabes — tirés des catalogues, jamais écrits dans le modèle 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > le créneau s'imprime par `formatSlotRange` (24 h), et un devis sans créneau ou sans copie du nom imprime « — » sans casser 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT — latine en français, arabe en arabe 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > ⛔ rang 41 : une copie faite d'espaces s'imprime « — », jamais une cellule blanche 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée est la référence STOCKÉE du devis (année, salle, devis, version) — dans le titre du document ET dans l'en-tête, dans les deux langues 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée change AVEC la ligne stockée — rien n'est recalculé depuis l'identifiant 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > ⛔ rang 39 (F-16) : la référence est isolée de GAUCHE À DROITE dans l'en-tête, même dans une page arabe — sinon l'algorithme bidirectionnel inverse ses groupes de chiffres 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × le modèle — langue, sens, contenu > ⛔ rang 39 : une référence hostile devient du TEXTE (le champ vient d'une ligne de base, pas d'une saisie, mais l'échappement ne dépend pas de la confiance) 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   ✓ le modèle — langue, sens, contenu > la date de l'événement est en toutes lettres, dans la langue du document ; elle ne dérive pas d'un fuseau (date civile) 3ms
+   × ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestations deviennent du TEXTE, jamais du balisage 1ms
+     → Cannot read properties of undefined (reading 'firstName')
+   × ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le document ne contient QU'UN `<style>` et AUCUN `<script>` de son propre fait 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   ✓ ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom du fichier ne porte AUCUNE donnée personnelle, même quand les noms sont hostiles 1ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > les quatre types de tarification sont lus avec leur type, leur quantité et le nom du palier (FR et AR) tels que stockés 3ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > un type de tarification INCONNU ou ABSENT lève 1ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > ⛔ une ligne « à paliers » dont le nom du palier n'est pas stocké (FR ou AR) lève 0ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > tout le reste de la forme garde sa garde (un non-tableau, une quantité non entière, un total absent) 0ms
+   ✓ les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles et deux graisses — en `data:`, chacune avec sa plage `unicode-range` 1ms
+   × les polices viennent du DÉPÔT (décisions 3 et 5) > le CSS des polices est inséré tel quel dans le `<style>` du document (une police absente retomberait sur le système) 0ms
+     → Cannot read properties of undefined (reading 'firstName')
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > aucun n'importe le moteur de prix, l'acompte, le chiffrage des prestations, ni le port d'ÉCRITURE des devis 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > l'adaptateur Prisma ne fait QUE lire : ni create, ni update, ni delete, ni upsert, ni transaction, ni SQL brut 0ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > le modèle ne contient aucune multiplication ni division : il met en forme, il ne calcule pas 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-3) : le nom du palier est lu sur la LIGNE — le modèle, la politique, le service et le port n'importent ni Prisma ni un catalogue (seul l'adaptateur de lecture parle à la base) 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 (F-10) : l'ancienne référence (les huit premiers caractères de l'identifiant) a disparu du document, de son service, de sa source ET du contrat partagé 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 : le modèle IMPRIME la référence lue (`record.reference`) — il n'en bâtit pas une, il n'importe pas la formule 0ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-15) : la branche « langue du client » est RETIRÉE sans code mort — plus de `chooseDocumentLocale`, de `DocumentLocaleBranch`, de `branch`, ni de `users.locale` lue 1ms
+   × ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 41 (D336, M-7, S-52) : la source ne lit plus le COMPTE du client — ni relation `client`, ni `firstName`/`lastName` ; elle lit la COPIE du devis 3ms
+     → expected 'client:' to be null
+   × ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 41 : le modèle choisit la copie par l'AUTORITÉ de la correspondance langue → copie (`QUOTE_CLIENT_NAME_FIELD`), jamais par une seconde règle 18ms
+     → expected '\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\…' to contain 'QUOTE_CLIENT_NAME_FIELD'
+ ❯ src/venues/quotes.service.spec.ts (25 tests | 8 failed) 88ms
+   ✓ QuotesService — 404 indistincts > id hors motif UUID : 404 SANS toucher le port 9ms
+   ✓ QuotesService — 404 indistincts > le port rend `null` (inexistant / salle supprimée / autre pro) : même 404 2ms
+   ✓ QuotesService — 404 indistincts > salle d'un autre pro : `listForVenue` s'arrête AVANT de lire les devis 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `cancel` refusé : 409 avec le statut RELU, pas un booléen 2ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `deliver` refusé : même 409, même statut porté 2ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⚠ le statut ADMIS vient de la machine à états, pas du port 4ms
+   ✓ QuotesService.deliver — une remise est RÉPÉTABLE (D160) > ⚠ le devis ne change PAS de statut : seuls le canal et la date sont écrits 2ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro de la salle, numéro du devis, version — une seule formule (`formatQuoteReference`) 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ une révision garde l'année et les deux numéros de sa tête ; SEULE la version change 2ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ l'ancienne référence (les huit premiers caractères de l'identifiant) a DISPARU 2ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ la référence rendue par une transition (remise, annulation) est celle du devis, pas une autre 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ les QUATRE MONTANTS partent VERBATIM du devis — aucun recalcul 3ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ `source` est une lecture MÉTIER de la provenance, faite ICI 2ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ le refus du port devient un 409 `QUOTE_ALREADY_CONVERTED`, jamais un 500 2ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ la garde applicative évite d'écrire pour rien — et rend LE MÊME code 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ LE DEVIS NE BOUGE PAS — il attend l'acompte 1ms
+   × ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-11 — la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND, et RIEN n'est chiffré ni écrit 21ms
+     → expect(received).toSatisfy()
+
+Expected value to satisfy:
+[Function anonymous]
+
+Received:
+[TypeError: Cannot read properties of undefined (reading '0')]
+   × ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-6 — une fiche LIÉE et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est chiffré ni écrit 3ms
+     → expect(received).toSatisfy()
+
+Expected value to satisfy:
+[Function anonymous]
+
+Received:
+[TypeError: Cannot read properties of undefined (reading '0')]
+   × ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > la RÉVISION applique la même règle : la fiche d'un autre pro est refusée avant le verrou de chaîne 2ms
+     → expect(received).toSatisfy()
+
+Expected value to satisfy:
+[Function anonymous]
+
+Received:
+[TypeError: Cannot read properties of undefined (reading '0')]
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > sans fiche, le port des fiches n'est PAS lu (un devis du parcours sans contact reste possible) 1ms
+   × ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ K-6 — le DTO porte la fiche et les DEUX copies, telles que STOCKÉES 10ms
+     → expected { id: undefined, ar: undefined, …(1) } to deeply equal { …(3) }
+   × ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin` 1ms
+     → service.completeClientName is not a function
+   × ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-C3, passée au port (le port ne la réécrit pas) 1ms
+     → service.completeClientName is not a function
+   × ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-7 — le port refuse (la copie est déjà là) : 409 QUOTE_CLIENT_NAME_ALREADY_SET 1ms
+     → service.completeClientName is not a function
+   × ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port 1ms
+     → service.completeClientName is not a function
+
+ Test Files  7 failed (7)
+      Tests  82 failed | 67 passed (149)
+   Start at  23:39:33
+   Duration  3.23s (transform 1.33s, setup 0ms, collect 8.16s, tests 324ms, environment 2ms, prepare 2.68s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/clients/pro-client-policy.spec.ts src/clients/pro-clients.service.spec.ts src/common/client-record.spec.ts src/venues/quotes.service.spec.ts src/venues/quote-store.prisma.spec.ts src/documents/quote-document.spec.ts src/documents/quote-document.service.spec.ts
+
+# ── stderr ──
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/pro-client-policy.spec.ts [ src/clients/pro-client-policy.spec.ts ]
+Error: Cannot find module './pro-client-policy' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/clients/pro-client-policy.spec.ts'
+ ❯ src/clients/pro-client-policy.spec.ts:4:1
+      2| // Modes de défaillance : `docs/preuves/D336/modes-de-defaillance.md` …
+      3| import { describe, expect, it } from "vitest";
+      4| import { completeAussiLaFiche, copieDuNomPourDevis, decisionCreation, …
+       | ^
+      5| 
+      6| const PRO = { phone: "+213550000009", phone2: "+213770000009", email: …
+
+Caused by: Error: Failed to load url ./pro-client-policy (resolved id: ./pro-client-policy) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/clients/pro-client-policy.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/84]⎯
+
+ FAIL  src/clients/pro-clients.service.spec.ts [ src/clients/pro-clients.service.spec.ts ]
+Error: Cannot find module './pro-clients.service' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/clients/pro-clients.service.spec.ts'
+ ❯ src/clients/pro-clients.service.spec.ts:6:1
+      4| import { BadRequestException, ConflictException, NotFoundException } f…
+      5| import { beforeEach, describe, expect, it, vi } from "vitest";
+      6| import { ProClientsService } from "./pro-clients.service";
+       | ^
+      7| import type { FicheRow, ProClientStore } from "./pro-client-store.type…
+      8| 
+
+Caused by: Error: Failed to load url ./pro-clients.service (resolved id: ./pro-clients.service) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/clients/pro-clients.service.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/84]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 82 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > rogne et met en minuscules
+TypeError: (0 , normalizeContactEmail) is not a function
+ ❯ src/common/client-record.spec.ts:25:12
+     23| describe("⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minus…
+     24|   it("rogne et met en minuscules", () => {
+     25|     expect(normalizeContactEmail("  Amina@Mail.DZ ")).toBe("amina@mail…
+       |            ^
+     26|   });
+     27| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > ramène la PLEINE CHASSE aux caractères ordinaires (NFKC) : « ＡＭＩＮＡ＠ＭＡＩＬ．ＤＺ » est « amina@mail.dz »
+TypeError: (0 , normalizeContactEmail) is not a function
+ ❯ src/common/client-record.spec.ts:29:12
+     27| 
+     28|   it("ramène la PLEINE CHASSE aux caractères ordinaires (NFKC) : « ＡＭＩ…
+     29|     expect(normalizeContactEmail("ＡＭＩＮＡ＠ＭＡＩＬ．ＤＺ")).toBe("amina@mail.dz…
+       |            ^
+     30|   });
+     31| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > ramène une lettre accentuée DÉCOMPOSÉE à sa forme composée : deux saisies du même texte donnent la même adresse
+TypeError: (0 , normalizeContactEmail) is not a function
+ ❯ src/common/client-record.spec.ts:33:12
+     31| 
+     32|   it("ramène une lettre accentuée DÉCOMPOSÉE à sa forme composée : deu…
+     33|     expect(normalizeContactEmail("éloïse@example.dz")).toBe(normalize…
+       |            ^
+     34|     expect(normalizeContactEmail("éloïse@example.dz")).toBe("éloïse@e…
+     35|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ MD-3 (S-55) — `normalizeContactEmail` : rogné, NFKC, minuscules — UNE fonction pour toute l'adresse d'une fiche > est IDEMPOTENTE : normaliser une adresse déjà normalisée ne la change pas
+TypeError: (0 , normalizeContactEmail) is not a function
+ ❯ src/common/client-record.spec.ts:39:19
+     37|   it("est IDEMPOTENTE : normaliser une adresse déjà normalisée ne la c…
+     38|     for (const brut of ["  Amina@Mail.DZ ", "Ａ@Ｂ.dz", "KARIM.Haddad@EX…
+     39|       const une = normalizeContactEmail(brut);
+       |                   ^
+     40|       expect(normalizeContactEmail(une), brut).toBe(une);
+     41|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > un numéro : rendu sous sa forme CANONIQUE (`dzPhoneSchema`, la règle du contrat)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:47:40
+     45| describe("K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant…
+     46|   it("un numéro : rendu sous sa forme CANONIQUE (`dzPhoneSchema`, la r…
+     47|     const r = clientRecordLookupSchema.safeParse({ phone: "0555 12 34 …
+       |                                        ^
+     48|     expect(r.success).toBe(true);
+     49|     expect(r.success ? r.data : null).toEqual({ phone: "+213555123456"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > un e-mail : rendu NORMALISÉ par `normalizeContactEmail`
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:53:40
+     51| 
+     52|   it("un e-mail : rendu NORMALISÉ par `normalizeContactEmail`", () => {
+     53|     const r = clientRecordLookupSchema.safeParse({ email: "  Amina@Mai…
+       |                                        ^
+     54|     expect(r.success ? r.data : null).toEqual({ email: "amina@mail.dz"…
+     55|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > les deux, aucun, une clé inconnue : REFUSÉS
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:59:39
+     57|   it("les deux, aucun, une clé inconnue : REFUSÉS", () => {
+     58|     for (const corps of [{ phone: "0555123456", email: "a@example.dz" …
+     59|       expect(clientRecordLookupSchema.safeParse(corps).success, JSON.s…
+       |                                       ^
+     60|     }
+     61|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > ⛔ MD-5 — un numéro fixe, étranger, ou écrit TOUT en chiffres arabo-indiens : REFUSÉ, avec le message du contrat du téléphone
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:65:42
+     63|   it("⛔ MD-5 — un numéro fixe, étranger, ou écrit TOUT en chiffres ara…
+     64|     for (const phone of ["+21321234567", "021234567", "+33612345678", …
+     65|       const r = clientRecordLookupSchema.safeParse({ phone });
+       |                                          ^
+     66|       expect(r.success, phone).toBe(false);
+     67|       expect(refus(r), phone).toContain("phone:auth.validation.phoneIn…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-1 — `clientRecordLookupSchema` : EXACTEMENT un identifiant, un numéro OU un e-mail > un e-mail invalide est refusé, avec SA clé de catalogue
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:72:40
+     70| 
+     71|   it("un e-mail invalide est refusé, avec SA clé de catalogue", () => {
+     72|     const r = clientRecordLookupSchema.safeParse({ email: "amina@" });
+       |                                        ^
+     73|     expect(r.success).toBe(false);
+     74|     expect(refus(r)).toContain("email:clientRecord.validation.emailInv…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > le corps complet : numéro canonique, e-mail normalisé, noms rognés
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:80:40
+     78| describe("K-2 — `clientRecordCreateSchema` : au moins un identifiant, …
+     79|   it("le corps complet : numéro canonique, e-mail normalisé, noms rogn…
+     80|     const r = clientRecordCreateSchema.safeParse({ phone: "0555123456"…
+       |                                        ^
+     81|     expect(r.success ? r.data : null).toEqual({ phone: "+213555123456"…
+     82|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > un e-mail SEUL ou un numéro SEUL suffit ; un nom dans UNE écriture suffit
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:85:37
+     83| 
+     84|   it("un e-mail SEUL ou un numéro SEUL suffit ; un nom dans UNE écritu…
+     85|     expect(clientRecordCreateSchema.safeParse({ email: "a@example.dz",…
+       |                                     ^
+     86|     expect(clientRecordCreateSchema.safeParse({ phone: "0555123456", n…
+     87|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > sans identifiant : refusé, et le refus le NOMME
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:90:40
+     88| 
+     89|   it("sans identifiant : refusé, et le refus le NOMME", () => {
+     90|     const r = clientRecordCreateSchema.safeParse({ nameLatin: "Amina" …
+       |                                        ^
+     91|     expect(r.success).toBe(false);
+     92|     expect(refus(r)).toContain("phone:clientRecord.validation.identifi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > sans aucun nom : refusé, et le refus le NOMME
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:96:40
+     94| 
+     95|   it("sans aucun nom : refusé, et le refus le NOMME", () => {
+     96|     const r = clientRecordCreateSchema.safeParse({ phone: "0555123456"…
+       |                                        ^
+     97|     expect(r.success).toBe(false);
+     98|     expect(refus(r)).toContain("nameLatin:clientRecord.validation.name…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > un nom hors de la règle partagée (chiffre, symbole) ou trop long : refusé
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:103:39
+    101|   it("un nom hors de la règle partagée (chiffre, symbole) ou trop long…
+    102|     for (const nameLatin of ["Amina123", "Amina!", "a".repeat(81)]) {
+    103|       expect(clientRecordCreateSchema.safeParse({ phone: "0555123456",…
+       |                                       ^
+    104|     }
+    105|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-2 — `clientRecordCreateSchema` : au moins un identifiant, au moins un nom ; les règles PARTAGÉES du nom et de l'e-mail > strict : une clé inconnue (un identifiant de compte, un lien) est refusée
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:109:39
+    107|   it("strict : une clé inconnue (un identifiant de compte, un lien) es…
+    108|     for (const extra of [{ clientId: "x" }, { linkedUserId: "x" }, { l…
+    109|       expect(clientRecordCreateSchema.safeParse({ phone: "0555123456",…
+       |                                       ^
+    110|     }
+    111|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-3 et K-3b — compléter un nom, modifier une fiche > K-3 : au moins un nom ; rien d'autre que les noms
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:116:36
+    114| describe("K-3 et K-3b — compléter un nom, modifier une fiche", () => {
+    115|   it("K-3 : au moins un nom ; rien d'autre que les noms", () => {
+    116|     expect(clientRecordNamesSchema.safeParse({ nameAr: "آمنة" }).succe…
+       |                                    ^
+    117|     expect(clientRecordNamesSchema.safeParse({}).success).toBe(false);
+    118|     expect(clientRecordNamesSchema.safeParse({ phone: "0555123456" }).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-3 et K-3b — compléter un nom, modifier une fiche > K-3b : au moins un champ ; chaque valeur passe la règle de la création (numéro canonique, e-mail normalisé)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:122:40
+    120| 
+    121|   it("K-3b : au moins un champ ; chaque valeur passe la règle de la cr…
+    122|     const r = clientRecordUpdateSchema.safeParse({ phone: "0661 23 45 …
+       |                                        ^
+    123|     expect(r.success ? r.data : null).toEqual({ phone: "+213661234567"…
+    124|     expect(clientRecordUpdateSchema.safeParse({}).success).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-3 et K-3b — compléter un nom, modifier une fiche > K-3b CHANGE une valeur, il n'en RETIRE aucune : `null` est refusé pour chaque champ — les CHECK de la base ne peuvent donc pas tomber par lui
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:129:39
+    127|   it("K-3b CHANGE une valeur, il n'en RETIRE aucune : `null` est refus…
+    128|     for (const champ of ["phone", "email", "nameAr", "nameLatin"]) {
+    129|       expect(clientRecordUpdateSchema.safeParse({ [champ]: null }).suc…
+       |                                       ^
+    130|     }
+    131|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ `clientId` est une clé INCONNUE : refusée (le lien à un compte ne passe que par la fiche et la fusion)
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/common/client-record.spec.ts:139:112
+    137| 
+    138|   it("⛔ `clientId` est une clé INCONNUE : refusée (le lien à un compte…
+    139|     expect(quoteCreateSchema.safeParse({ ...BASE, clientId: "018f0000-…
+       |                                                                                                                ^
+    140|   });
+    141| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > une fiche ET au moins un nom : accepté, les noms rognés
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/common/client-record.spec.ts:148:23
+    146|   it("une fiche ET au moins un nom : accepté, les noms rognés", () => {
+    147|     const r = quoteCreateSchema.safeParse({ ...BASE, clientRecordId: F…
+    148|     expect(r.success).toBe(true);
+       |                       ^
+    149|     expect(r.success ? { id: r.data.clientRecordId, latin: r.data.clie…
+    150|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ MD-15 — des noms SANS fiche : refusé, et le refus nomme la fiche
+AssertionError: expected [ ':quote.validation.unknownKey' ] to include 'clientRecordId:quote.validation.clien…'
+ ❯ src/common/client-record.spec.ts:155:22
+    153|     const r = quoteCreateSchema.safeParse({ ...BASE, clientNameLatin: …
+    154|     expect(r.success).toBe(false);
+    155|     expect(refus(r)).toContain("clientRecordId:quote.validation.client…
+       |                      ^
+    156|   });
+    157| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ MD-15 — une fiche SANS nom : refusé, et le refus nomme le nom
+AssertionError: expected [ ':quote.validation.unknownKey' ] to include 'clientNameLatin:quote.validation.clie…'
+ ❯ src/common/client-record.spec.ts:161:22
+    159|     const r = quoteCreateSchema.safeParse({ ...BASE, clientRecordId: F…
+    160|     expect(r.success).toBe(false);
+    161|     expect(refus(r)).toContain("clientNameLatin:quote.validation.clien…
+       |                      ^
+    162|   });
+    163| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-5 — `quoteClientNameSchema` et la correspondance langue → copie, écrite UNE fois > la langue du document choisit la copie : le français imprime le nom LATIN, l'arabe le nom ARABE — pour CHAQUE langue du contrat
+AssertionError: expected undefined to deeply equal { fr: 'clientNameLatin', …(1) }
+
+- Expected: 
+{
+  "ar": "clientNameAr",
+  "fr": "clientNameLatin",
+}
+
++ Received: 
+undefined
+
+ ❯ src/common/client-record.spec.ts:171:37
+    169| describe("K-5 — `quoteClientNameSchema` et la correspondance langue → …
+    170|   it("la langue du document choisit la copie : le français imprime le …
+    171|     expect(QUOTE_CLIENT_NAME_FIELD).toEqual({ fr: "clientNameLatin", a…
+       |                                     ^
+    172|     expect(Object.keys(QUOTE_CLIENT_NAME_FIELD).sort()).toEqual([...QU…
+    173|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-5 — `quoteClientNameSchema` et la correspondance langue → copie, écrite UNE fois > une langue du contrat et un nom valide : accepté, rogné
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:176:37
+    174| 
+    175|   it("une langue du contrat et un nom valide : accepté, rogné", () => {
+    176|     const r = quoteClientNameSchema.safeParse({ locale: "ar", name: " …
+       |                                     ^
+    177|     expect(r.success ? r.data : null).toEqual({ locale: "ar", name: "آ…
+    178|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/84]⎯
+
+ FAIL  src/common/client-record.spec.ts > K-5 — `quoteClientNameSchema` et la correspondance langue → copie, écrite UNE fois > une langue inconnue, un nom vide ou invalide, une clé inconnue : refusés
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/client-record.spec.ts:182:36
+    180|   it("une langue inconnue, un nom vide ou invalide, une clé inconnue :…
+    181|     for (const corps of [{ locale: "en", name: "Amina" }, { locale: "f…
+    182|       expect(quoteClientNameSchema.safeParse(corps).success, JSON.stri…
+       |                                    ^
+    183|     }
+    184|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/84]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeur STOCKÉE (et pas 30 % du total) ; le nom du fichier est sans donnée personnelle
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ QuoteDocumentService.render src/documents/quote-document.service.ts:57:22
+ ❯ src/documents/quote-document.service.spec.ts:100:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/84]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 (K-7, F-15) : le nom du fichier porte la langue DEMANDÉE — `_fr_` pour le français, `_ar_` pour l'arabe — et la version de la référence stockée
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ QuoteDocumentService.render src/documents/quote-document.service.ts:57:22
+ ❯ src/documents/quote-document.service.spec.ts:110:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/84]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le pro la choisit à chaque téléchargement, dans les deux sens
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ QuoteDocumentService.render src/documents/quote-document.service.ts:57:22
+ ❯ src/documents/quote-document.service.spec.ts:123:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/84]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 38 (P-15) : un devis qui porte une copie du nom en ARABE ne change pas la langue — le port de lecture n'a aucune langue de client, et le résultat n'a plus de `branch`
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ QuoteDocumentService.render src/documents/quote-document.service.ts:57:22
+ ❯ src/documents/quote-document.service.spec.ts:134:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/84]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE — et JAMAIS un 409
+AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of ServiceUnavailableException
+ ❯ src/documents/quote-document.service.spec.ts:145:20
+    143|     const m = monde(record(), async () => Promise.reject(new PdfRender…
+    144|     const erreur = await refus(m.service.render(OWNER, ID, "fr"));
+    145|     expect(erreur).toBeInstanceOf(ServiceUnavailableException);
+       |                    ^
+    146|     expect(erreur).not.toBeInstanceOf(ConflictException);
+    147|     expect((erreur as ServiceUnavailableException).getResponse()).toMa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/84]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > toute AUTRE erreur du moteur remonte telle quelle : le service ne la déguise pas en panne attendue
+AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of RangeError
+ ❯ src/documents/quote-document.service.spec.ts:155:60
+    153|   it("toute AUTRE erreur du moteur remonte telle quelle : le service n…
+    154|     const m = monde(record(), async () => Promise.reject(new RangeErro…
+    155|     expect(await refus(m.service.render(OWNER, ID, "fr"))).toBeInstanc…
+       |                                                            ^
+    156|   });
+    157| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `formatDZD` — l'attendu vient du formateur, pas d'un texte tapé à la main
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:77:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ l'acompte imprimé est la valeur stockée, et PAS 30 % du total : un recalcul serait rougi ici
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:85:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > modifier la valeur STOCKÉE change le montant imprimé — le seul moyen légitime de le faire changer (précision de Ko)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:93:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le total imprimé est la valeur STOCKÉE, et PAS base + prestations : une remise ou un arrondi stockés ne se recomposent pas (la fixture d'origine valait pile base + prestations)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:103:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le montant d'une LIGNE est la valeur stockée, et PAS prix unitaire × quantité : le total de ligne de la fixture n'est pas le produit (P-4)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:112:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > en arabe les montants sont ceux de l'ÉCRAN du Pro (`formatDZD(cents)` sans locale) — pas une seconde mise en forme
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:119:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > sans prestation : AUCUN tableau, et une phrase dit qu'aucune prestation n'est choisie — dans les deux langues
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:128:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > des prestations TOUTES « fixe » : un tableau à DEUX colonnes (prestation, montant) — pas de colonne de détail, ni vide ni autre
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:136:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une prestation qui a un détail : un tableau à TROIS colonnes, l'en-tête « Détail » en français comme en arabe
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:149:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une ligne de tableau par prestation choisie — ni plus, ni moins
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:160:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « par invité » imprime la quantité stockée (le nombre d'invités)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:168:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à l'unité » imprime la quantité — y compris 1 : la règle suit le TYPE, pas la valeur
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:174:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « fixe » n'imprime RIEN, même quand sa quantité stockée n'est pas 1 (la règle suit le type)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:180:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à paliers » imprime le NOM du palier, pas une quantité (la quantité stockée d'un palier est 1)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:186:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > les quatre types ensemble : une colonne de détail, chaque ligne dit ce que DB-9 veut
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:192:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > français : le nom FRANÇAIS du palier ; arabe : le nom ARABE — l'autre langue ne s'imprime pas
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:214:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[49/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du balisage
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:229:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[50/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > une section titrée « Récapitulatif », APRÈS le tableau, qui porte les quatre lignes dans l'ordre location, prestations, total, acompte
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:241:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[51/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les libellés du récapitulatif ne sont PAS dans le tableau des prestations (deux blocs, pas un seul mélangé)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:253:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[52/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > sans prestation, le récapitulatif est là quand même — la location, un total de prestations à zéro, le total, l'acompte (les valeurs stockées)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:262:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[53/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les montants et les libellés s'alignent par des propriétés LOGIQUES : aucune propriété physique (left, right, margin-left…) dans la feuille du document
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:270:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[54/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > français : `lang=fr`, `dir=ltr`, noms et libellés français
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:278:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[55/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > arabe : `lang=ar`, `dir=rtl`, noms et libellés arabes — tirés des catalogues, jamais écrits dans le modèle
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:287:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[56/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > le créneau s'imprime par `formatSlotRange` (24 h), et un devis sans créneau ou sans copie du nom imprime « — » sans casser
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:296:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[57/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT — latine en français, arabe en arabe
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:307:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[58/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:313:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[59/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 41 : une copie faite d'espaces s'imprime « — », jamais une cellule blanche
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:321:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[60/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée est la référence STOCKÉE du devis (année, salle, devis, version) — dans le titre du document ET dans l'en-tête, dans les deux langues
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:326:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[61/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée change AVEC la ligne stockée — rien n'est recalculé depuis l'identifiant
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:334:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[62/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 (F-16) : la référence est isolée de GAUCHE À DROITE dans l'en-tête, même dans une page arabe — sinon l'algorithme bidirectionnel inverse ses groupes de chiffres
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:343:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[63/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > le modèle — langue, sens, contenu > ⛔ rang 39 : une référence hostile devient du TEXTE (le champ vient d'une ligne de base, pas d'une saisie, mais l'échappement ne dépend pas de la confiance)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:349:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[64/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestations deviennent du TEXTE, jamais du balisage
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:367:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[65/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le document ne contient QU'UN `<style>` et AUCUN `<script>` de son propre fait
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ rendre src/documents/quote-document.spec.ts:62:3
+ ❯ src/documents/quote-document.spec.ts:387:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[66/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > les polices viennent du DÉPÔT (décisions 3 et 5) > le CSS des polices est inséré tel quel dans le `<style>` du document (une police absente retomberait sur le système)
+TypeError: Cannot read properties of undefined (reading 'firstName')
+ ❯ buildQuoteDocumentHtml src/documents/quote-document.ts:109:60
+    107|       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSl…
+    108|   // `users.first_name` / `last_name` sont NULLABLES (un compte peut n…
+    109|   const nom = record.client === null ? [] : [record.client.firstName, …
+       |                                                            ^
+    110|   const client = nom.length === 0 ? "—" : nom.join(" ");
+    111| 
+ ❯ src/documents/quote-document.spec.ts:458:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[67/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 41 (D336, M-7, S-52) : la source ne lit plus le COMPTE du client — ni relation `client`, ni `firstName`/`lastName` ; elle lit la COPIE du devis
+AssertionError: expected 'client:' to be null
+
+- Expected: 
+null
+
++ Received: 
+"client:"
+
+ ❯ src/documents/quote-document.spec.ts:519:80
+    517|   it("⛔ rang 41 (D336, M-7, S-52) : la source ne lit plus le COMPTE du…
+    518|     const code = lire("quote-document-source.prisma.ts");
+    519|     expect(/\bclient\s*:|firstName|lastName|\buser\b/.exec(code)?.[0] …
+       |                                                                                ^
+    520|     expect(code).toContain("clientNameAr: true");
+    521|     expect(code).toContain("clientNameLatin: true");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[68/84]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 41 : le modèle choisit la copie par l'AUTORITÉ de la correspondance langue → copie (`QUOTE_CLIENT_NAME_FIELD`), jamais par une seconde règle
+AssertionError: expected '\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\…' to contain 'QUOTE_CLIENT_NAME_FIELD'
+
+- Expected
++ Received
+
+- QUOTE_CLIENT_NAME_FIELD
++ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++ import { formatDZD, formatSlotRange, ServicePricingType, type QuoteDocumentLocale } from "@zwadj/types";
++ import arMessages from "@zwadj/i18n/messages/ar.json";
++ import frMessages from "@zwadj/i18n/messages/fr.json";
++ import { DOCUMENT_FONT_FAMILY } from "./quote-document-fonts";
++ import { html, raw, toHtmlString } from "./html";
++ import type { QuoteDocumentLine, QuoteDocumentRecord } from "./quote-document-source";
++ 
++ const MESSAGES = { fr: frMessages, ar: arMessages } as const;
++ 
++ const CSS = `
++ @page { size: A4; margin: 16mm 14mm; }
++ * { box-sizing: border-box; }
++ body { margin: 0; font-family: "${DOCUMENT_FONT_FAMILY}", sans-serif; font-size: 11pt; color: #18181b; line-height: 1.55; }
++ h1 { font-size: 22pt; font-weight: 600; margin: 0 0 2mm; }
++ h2 { font-size: 12pt; font-weight: 600; margin: 0 0 3mm; }
++ .sous { color: #52525b; margin: 0 0 8mm; }
++ .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 8mm; margin-block-end: 8mm; }
++ .champ { border-block-end: 0.3mm solid #d4d4d8; padding-block-end: 1.5mm; }
++ .champ small { display: block; color: #52525b; font-size: 9pt; }
++ .prestations { margin-block-end: 8mm; }
++ table { width: 100%; border-collapse: collapse; }
++ thead { display: table-header-group; }
++ tr { break-inside: avoid; }
++ th { text-align: start; font-weight: 600; border-block-end: 0.4mm solid #18181b; padding-block: 2mm; }
++ td { padding-block: 2mm; border-block-end: 0.2mm solid #e4e4e7; vertical-align: top; }
++ th.det, td.det { padding-inline-start: 5mm; color: #3f3f46; }
++ td.num, th.num { text-align: end; white-space: nowrap; padding-inline-start: 5mm; }
++ .aucune { color: #52525b; margin: 0 0 8mm; }
++ .recap { break-inside: avoid; border: 0.3mm solid #d4d4d8; border-radius: 1.5mm; padding: 4mm 6mm; }
++ .recap dl { margin: 0; }
++ .ligne { display: flex; justify-content: space-between; gap: 6mm; padding-block: 1.5mm; }
++ .ligne dt, .ligne dd { margin: 0; }
++ .ligne dd { white-space: nowrap; }
++ .ligne.total { border-block-start: 0.3mm solid #d4d4d8; margin-block-start: 1.5mm; padding-block-start: 3mm; font-weight: 600; }
++ .ligne.acompte { font-weight: 600; font-size: 13pt; }
++ .note { margin-block-start: 12mm; color: #52525b; font-size: 9pt; }
++ `;
++ 
++ 
++ export function longDate(isoDate: string, locale: QuoteDocumentLocale): string {
++   return new Intl.DateTimeFormat(locale === "ar" ? "ar-DZ" : "fr-DZ", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${isoDate}T00:00:00Z`));
++ }
++ 
++ 
++ export function lineDetail(line: QuoteDocumentLine, locale: QuoteDocumentLocale): string | null {
++   switch (line.pricingType) {
++     case ServicePricingType.PER_GUEST:
++     case ServicePricingType.PER_UNIT:
++       return `× ${line.quantity}`;
++     case ServicePricingType.TIERED: {
++       const nom = locale === "ar" ? line.tierLabelAr : line.tierLabelFr;
++       if (nom === null || nom.trim() === "") throw new TypeError(`la ligne « ${line.nameFr} » est « à paliers » mais ne porte pas le nom de son palier (${locale})`);
++       return nom;
++     }
++     case ServicePricingType.FIXED:
++       return null;
++   }
++ }
++ 
++ export function buildQuoteDocumentHtml(input: {
++   readonly record: QuoteDocumentRecord;
++   readonly locale: QuoteDocumentLocale;
++   
++   readonly issuedOn: string;
++   
++   readonly fontCss: string;
++ }): string {
++   const { record, locale, issuedOn, fontCss } = input;
++   const L = MESSAGES[locale].quote.document;
++   const rtl = locale === "ar";
++   const salle = rtl ? record.venue.nameAr : record.venue.nameFr;
++   const creneau =
++     record.slot === null
++       ? "—"
++       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSlotRange(record.slot.startMinutes, record.slot.endMinutes)}`;
+
++   const nom = record.client === null ? [] : [record.client.firstName, record.client.lastName].filter((p): p is string => p !== null && p.trim() !== "");
++   const client = nom.length === 0 ? "—" : nom.join(" ");
+
++   const details = record.lines.map((l) => lineDetail(l, locale));
++   const avecDetail = details.some((d) => d !== null);
++   const prestations =
++     record.lines.length === 0
++       ? html`<p class="aucune">${L.noServices}</p>`
++       : html`<section class="prestations">
++ <table>
++   <thead><tr><th>${L.service}</th>${avecDetail ? html`<th class="det">${L.detail}</th>` : ""}<th class="num">${L.amount}</th></tr></thead>
++   <tbody>
++ ${record.lines.map((l, i) => html`    <tr><td>${rtl ? l.nameAr : l.nameFr}</td>${avecDetail ? html`<td class="det">${details[i] ?? ""}</td>` : ""}<td class="num">${formatDZD(l.lineTotalCents)}</td></tr>\n`)}
++   </tbody>
++ </table>
++ </section>`;
++ 
++   const page = html`<!doctype html>
++ <html lang="${locale}" dir="${rtl ? "rtl" : "ltr"}"><head><meta charset="utf-8"><title>${L.title} ${record.reference}</title>
++ <style>
++ ${raw(fontCss)}
++ ${raw(CSS)}
++ </style></head>
++ <body>
++ <h1>${salle}</h1>
++ <p class="sous">${L.title} · ${L.reference} <bdi dir="ltr">${record.reference}</bdi> · ${L.issuedOn} ${longDate(issuedOn, locale)}</p>
++ <div class="grille">
++   <div class="champ"><small>${L.client}</small>${client}</div>
++   <div class="champ"><small>${L.eventDate}</small>${longDate(record.eventDate, locale)}</div>
++   <div class="champ"><small>${L.slot}</small>${creneau}</div>
++   <div class="champ"><small>${L.guests}</small>${record.guests}</div>
++ </div>
++ ${prestations}
++ <section class="recap">
++   <h2>${L.recap}</h2>
++   <dl>
++     <div class="ligne"><dt>${L.basePrice}</dt><dd>${formatDZD(record.basePriceCents)}</dd></div>
++     <div class="ligne"><dt>${L.servicesTotal}</dt><dd>${formatDZD(record.servicesTotalCents)}</dd></div>
++     <div class="ligne total"><dt>${L.total}</dt><dd>${formatDZD(record.totalCents)}</dd></div>
++     <div class="ligne acompte"><dt>${L.deposit}</dt><dd>${formatDZD(record.depositCents)}</dd></div>
++   </dl>
++ </section>
++ <p class="note">${L.note}</p>
++ </body></html>`;
++   return toHtmlString(page);
++ }
++
+
+ ❯ src/documents/quote-document.spec.ts:526:18
+    524|   it("⛔ rang 41 : le modèle choisit la copie par l'AUTORITÉ de la corr…
+    525|     const code = lire("quote-document.ts");
+    526|     expect(code).toContain("QUOTE_CLIENT_NAME_FIELD");
+       |                  ^
+    527|     expect(/record\.client\b|firstName|lastName/.exec(code)?.[0] ?? nu…
+    528|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[69/84]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `ficheDuPro` : la fiche se lit par la RELATION au pro (D149), jamais par un identifiant qui « ressemble » > le WHERE traverse `proProfile: { userId }` et ne sélectionne que ce que la copie du nom exige — rien du compte lié
+TypeError: store.ficheDuPro is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:476:17
+    474|   it("le WHERE traverse `proProfile: { userId }` et ne sélectionne que…
+    475|     const { store, prisma } = build();
+    476|     await store.ficheDuPro("u-1", "f-1");
+       |                 ^
+    477|     expect(prisma.proClientRecord.findFirst).toHaveBeenCalledWith({
+    478|       where: { id: "f-1", proProfile: { userId: "u-1" } },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[70/84]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture
+TypeError: store.completerNomDuClient is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:492:17
+    490|     const { store, prisma, tx } = build();
+    491|     tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clien…
+    492|     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_I…
+       |                 ^
+    493|     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    494|     expect(tx.quote.updateMany).toHaveBeenCalledWith({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[71/84]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ refus (rien n'a été écrit) : le port REND `{ ok: false }`, sans lire ni écrire la fiche
+TypeError: store.completerNomDuClient is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:504:13
+    502|     tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    503|     await expect(
+    504|       store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, c…
+       |             ^
+    505|     ).resolves.toEqual({ ok: false });
+    506|     expect(journal).toEqual(["updateMany"]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[72/84]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée
+TypeError: store.completerNomDuClient is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:514:17
+    512|     tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clien…
+    513|     const decide = vi.fn(() => true);
+    514|     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_I…
+       |                 ^
+    515|     expect(journal).toEqual(["updateMany", "findUniqueOrThrow", "fiche…
+    516|     expect(decide).toHaveBeenCalledWith(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[73/84]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — la politique dit NON (l'autre écriture diffère) : la fiche n'est PAS écrite, la copie l'est
+TypeError: store.completerNomDuClient is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:530:27
+    528|     const { store, tx } = build();
+    529|     tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clien…
+    530|     const r = await store.completerNomDuClient({ userId: "u-1", quoteI…
+       |                           ^
+    531|     expect(r.ok).toBe(true);
+    532|     expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[74/84]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > un devis SANS fiche : aucune lecture ni écriture de fiche
+TypeError: store.completerNomDuClient is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:538:17
+    536|     const { store, tx, journal } = build();
+    537|     tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clien…
+    538|     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_I…
+       |                 ^
+    539|     expect(journal).toEqual(["updateMany", "findUniqueOrThrow"]);
+    540|     expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[75/84]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche
+TypeError: store.completerNomDuClient is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:546:17
+    544|     const { store, tx } = build();
+    545|     tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clien…
+    546|     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_I…
+       |                 ^
+    547|     expect(tx.quote.updateMany.mock.calls[0]![0]).toMatchObject({ wher…
+    548|     expect(tx.proClientRecord.updateMany).toHaveBeenCalledWith({ where…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[76/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-11 — la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND, et RIEN n'est chiffré ni écrit
+Error: expect(received).toSatisfy()
+
+Expected value to satisfy:
+[Function anonymous]
+
+Received:
+[TypeError: Cannot read properties of undefined (reading '0')]
+ ❯ src/venues/quotes.service.spec.ts:316:5
+    314|     const { service, devis, prisma } = build();
+    315|     devis.ficheDuPro.mockResolvedValue(null);
+    316|     await expect(service.create(USER_ID, VENUE_ID, { ...CORPS, clientR…
+       |     ^
+    317|       (e: unknown) => e instanceof NotFoundException && codeDe(e) === …
+    318|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[77/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-6 — une fiche LIÉE et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est chiffré ni écrit
+Error: expect(received).toSatisfy()
+
+Expected value to satisfy:
+[Function anonymous]
+
+Received:
+[TypeError: Cannot read properties of undefined (reading '0')]
+ ❯ src/venues/quotes.service.spec.ts:327:5
+    325|     const { service, devis, prisma } = build();
+    326|     devis.ficheDuPro.mockResolvedValue({ id: FICHE_ID, nameAr: null, n…
+    327|     await expect(service.create(USER_ID, VENUE_ID, { ...CORPS, clientR…
+       |     ^
+    328|       (e: unknown) => e instanceof ConflictException && codeDe(e) === …
+    329|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[78/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > la RÉVISION applique la même règle : la fiche d'un autre pro est refusée avant le verrou de chaîne
+Error: expect(received).toSatisfy()
+
+Expected value to satisfy:
+[Function anonymous]
+
+Received:
+[TypeError: Cannot read properties of undefined (reading '0')]
+ ❯ src/venues/quotes.service.spec.ts:338:5
+    336|     devis.trouverDuPro.mockResolvedValue(devisRow());
+    337|     devis.ficheDuPro.mockResolvedValue(null);
+    338|     await expect(service.revise(USER_ID, QUOTE_ID, { ...CORPS, clientR…
+       |     ^
+    339|       (e: unknown) => e instanceof NotFoundException && codeDe(e) === …
+    340|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[79/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ K-6 — le DTO porte la fiche et les DEUX copies, telles que STOCKÉES
+AssertionError: expected { id: undefined, ar: undefined, …(1) } to deeply equal { …(3) }
+
+- Expected
++ Received
+
+  {
+-   "ar": "آمنة بن سالم",
+-   "id": "018f0000-0000-7000-8000-0000000000f1",
+-   "latin": "Amina Bensalem",
++   "ar": undefined,
++   "id": undefined,
++   "latin": undefined,
+  }
+
+ ❯ src/venues/quotes.service.spec.ts:354:93
+    352|     devis.listerDeLaSalle.mockResolvedValue([devisRow({ clientRecordId…
+    353|     const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    354|     expect({ id: dto!.clientRecordId, ar: dto!.clientNameAr, latin: dt…
+       |                                                                                             ^
+    355|   });
+    356| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[80/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin`
+TypeError: service.completeClientName is not a function
+ ❯ src/venues/quotes.service.spec.ts:364:19
+    362|     const { service, devis } = build();
+    363|     devis.completerNomDuClient.mockResolvedValue({ ok: true, devis: de…
+    364|     await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar"…
+       |                   ^
+    365|     await service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr"…
+    366|     const champs = devis.completerNomDuClient.mock.calls.map((c) => (c…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[81/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-C3, passée au port (le port ne la réécrit pas)
+TypeError: service.completeClientName is not a function
+ ❯ src/venues/quotes.service.spec.ts:374:19
+    372|     const { service, devis } = build();
+    373|     devis.completerNomDuClient.mockResolvedValue({ ok: true, devis: de…
+    374|     await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar"…
+       |                   ^
+    375|     const decide = (devis.completerNomDuClient.mock.calls[0]![0] as { …
+    376|     const fiche = { id: "f", nameAr: null, nameLatin: "Amina Bensalem"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[82/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-7 — le port refuse (la copie est déjà là) : 409 QUOTE_CLIENT_NAME_ALREADY_SET
+TypeError: service.completeClientName is not a function
+ ❯ src/venues/quotes.service.spec.ts:386:26
+    384|     devis.completerNomDuClient.mockResolvedValue({ ok: false });
+    385|     devis.trouverDuPro.mockResolvedValue(devisRow({ clientNameLatin: "…
+    386|     await expect(service.completeClientName(USER_ID, QUOTE_ID, { local…
+       |                          ^
+    387|       (e: unknown) => e instanceof ConflictException && codeDe(e) === …
+    388|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[83/84]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port
+TypeError: service.completeClientName is not a function
+ ❯ src/venues/quotes.service.spec.ts:395:26
+    393|     devis.completerNomDuClient.mockResolvedValue({ ok: false });
+    394|     devis.trouverDuPro.mockResolvedValue(null);
+    395|     await expect(service.completeClientName(USER_ID, QUOTE_ID, { local…
+       |                          ^
+    396|       (e: unknown) => e instanceof NotFoundException && codeDe(e) === …
+    397|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[84/84]⎯
+

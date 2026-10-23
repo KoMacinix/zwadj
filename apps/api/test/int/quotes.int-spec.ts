@@ -703,3 +703,227 @@ describe("Taux de transformation — la raison d'être de la table", () => {
     expect(res.delivered).toBe(0);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ⛔ RANG 41 (D336, L35-4 amendé) — LA FICHE ET LE NOM SUR LE DEVIS (K-4, K-5). Modes de défaillance : `docs/preuves/D336/modes-de-defaillance.md`.
+// Les verdicts de ce bloc s'écrivent par `expect` de vitest (D305) : `.expect(<statut>)` de supertest lève une `Error`, pas une `AssertionError`.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8)", () => {
+  const AUTRE_PRO = { role: "PRO", email: "autre-pro@example.dz", password: "Motdepasse1", businessName: "Autre Salle", phone: "+213550000008" };
+  const CLIENT = { role: "CLIENT", email: "yasmine@example.dz", password: "Motdepasse1", firstName: "Yasmine", lastName: "Belkacem", locale: "fr" };
+
+  async function ficheDe(token: string, corps: Record<string, unknown>): Promise<{ id: string }> {
+    const res = await api().post("/api/v1/pro/clients").set(authH(token)).send(corps);
+    expect(res.status, JSON.stringify(res.body)).toBe(200);
+    return res.body.record as { id: string };
+  }
+  const copie = async (id: string) =>
+    ctx.prisma.$queryRaw<{ client_record_id: string | null; client_name_ar: string | null; client_name_latin: string | null; client_id: string | null }[]>`
+      SELECT client_record_id::text, client_name_ar, client_name_latin, client_id::text FROM quotes WHERE id = ${id}::uuid`.then((r) => r[0] ?? null);
+  const nombreDeDevis = async () => ctx.prisma.quote.count();
+
+  it("⛔ DB-15 — `clientId` est RETIRÉ du contrat : le schéma strict le refuse (400) et n'écrit aucun devis", async () => {
+    const f = await setup();
+    const pro = await ctx.prisma.user.findUniqueOrThrow({ where: { email: PRO.email }, select: { id: true } });
+    const res = await makeQuote(f, { clientId: pro.id });
+    expect(res.status).toBe(400);
+    expect(await nombreDeDevis()).toBe(0);
+  });
+
+  it("un devis SANS fiche se crée comme aujourd'hui : la fiche et les deux copies sont nulles", async () => {
+    const f = await setup();
+    const res = await makeQuote(f);
+    expect(res.status).toBe(201);
+    const q = res.body as QuoteDTO;
+    expect({ clientRecordId: q.clientRecordId, clientNameAr: q.clientNameAr, clientNameLatin: q.clientNameLatin }).toEqual({
+      clientRecordId: null,
+      clientNameAr: null,
+      clientNameLatin: null
+    });
+  });
+
+  it("le devis porte la fiche et la copie du nom TELLE QUE SAISIE pour ce devis (DB-17), rognée — dans la réponse ET en base", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const res = await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "  Amina Bensalem-Haddad ", clientNameAr: "آمنة" });
+    expect(res.status, JSON.stringify(res.body)).toBe(201);
+    const q = res.body as QuoteDTO;
+    expect({ clientRecordId: q.clientRecordId, clientNameAr: q.clientNameAr, clientNameLatin: q.clientNameLatin }).toEqual({
+      clientRecordId: fiche.id,
+      clientNameAr: "آمنة",
+      clientNameLatin: "Amina Bensalem-Haddad"
+    });
+    expect(await copie(q.id)).toEqual({ client_record_id: fiche.id, client_name_ar: "آمنة", client_name_latin: "Amina Bensalem-Haddad", client_id: null });
+  });
+
+  it("⛔ MD-15 — des noms SANS fiche, une fiche SANS nom, un nom invalide : 400, aucun devis écrit", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    for (const corps of [
+      { clientNameLatin: "Amina Bensalem" },
+      { clientNameAr: "آمنة" },
+      { clientRecordId: fiche.id },
+      { clientRecordId: fiche.id, clientNameLatin: "Amina123" },
+      { clientRecordId: "pas-un-uuid", clientNameLatin: "Amina" }
+    ]) {
+      expect((await makeQuote(f, corps)).status, JSON.stringify(corps)).toBe(400);
+    }
+    expect(await nombreDeDevis()).toBe(0);
+  });
+
+  it("⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fiche inexistante, et aucun devis écrit", async () => {
+    const f = await setup();
+    await registerUser(ctx, AUTRE_PRO);
+    await verifyLastRegistered(ctx);
+    const tokenB = await loginAs(ctx, AUTRE_PRO.email, AUTRE_PRO.password);
+    const deB = await ficheDe(tokenB, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    for (const id of [deB.id, "018f0000-0000-7000-8000-00000000abcd"]) {
+      const res = await makeQuote(f, { clientRecordId: id, clientNameLatin: "Amina Bensalem" });
+      expect(res.status, id).toBe(404);
+      expect(res.body.message, id).toEqual({ code: "CLIENT_RECORD_NOT_FOUND", message: "clientRecord.errors.notFound" });
+    }
+    expect(await nombreDeDevis()).toBe(0);
+  });
+
+  it("⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_LINKED) ; les noms de la fiche passent", async () => {
+    const f = await setup();
+    await registerUser(ctx, CLIENT);
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameAr: "آمنة بن سالم", nameLatin: "Amina Bensalem" });
+    const compte = await ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT.email }, select: { id: true } });
+    await ctx.prisma.$executeRaw`UPDATE pro_client_records SET linked_user_id = ${compte.id}::uuid, linked_at = now() WHERE id = ${fiche.id}::uuid`;
+
+    const different = await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Autre Nom" });
+    expect(different.status).toBe(409);
+    expect(different.body.message.code).toBe("CLIENT_RECORD_LINKED");
+    expect(await nombreDeDevis()).toBe(0);
+
+    const memes = await makeQuote(f, { clientRecordId: fiche.id, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
+    expect(memes.status).toBe(201);
+    expect((memes.body as QuoteDTO).clientNameLatin).toBe("Amina Bensalem");
+  });
+
+  it("⛔ MD-16 — une RÉVISION porte la copie FOURNIE (celle du devis précédent), jamais la fiche vivante — et la v1 garde la sienne", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const v1 = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    const modifiee = await api().patch(`/api/v1/pro/clients/${fiche.id}`).set(authH(f.token)).send({ nameLatin: "Nom Changé" });
+    expect(modifiee.status).toBe(200);
+    const res = await api()
+      .post(`/api/v1/quotes/${v1.id}/revise`)
+      .set(authH(f.token))
+      .send({ eventDate: EVENT_DATE, slotTemplateId: f.slotId, guests: 300, clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" });
+    expect(res.status, JSON.stringify(res.body)).toBe(201);
+    expect((res.body as QuoteDTO).clientNameLatin).toBe("Amina Bensalem");
+    expect((await copie(v1.id))?.client_name_latin).toBe("Amina Bensalem");
+  });
+
+  it("⛔ MD-7 (R8) — MODIFIER la fiche (K-3b) ne touche AUCUNE copie déjà faite : le devis garde son nom", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    expect((await api().patch(`/api/v1/pro/clients/${fiche.id}`).set(authH(f.token)).send({ nameLatin: "Nom Changé", nameAr: "اسم" })).status).toBe(200);
+    const relu = ((await api().get(`/api/v1/pro/venues/${f.venue.id}/quotes`).set(authH(f.token))).body as QuoteDTO[]).find((d) => d.id === q.id);
+    expect({ latin: relu?.clientNameLatin, ar: relu?.clientNameAr }).toEqual({ latin: "Amina Bensalem", ar: null });
+  });
+});
+
+describe("⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3", () => {
+  const CLIENT = { role: "CLIENT", email: "yasmine@example.dz", password: "Motdepasse1", firstName: "Yasmine", lastName: "Belkacem", locale: "fr" };
+  const completerNom = (f: Fixture, id: string, corps: Record<string, unknown>) => api().post(`/api/v1/quotes/${id}/client-name`).set(authH(f.token)).send(corps);
+  async function ficheDe(f: Fixture, corps: Record<string, unknown>): Promise<{ id: string }> {
+    const res = await api().post("/api/v1/pro/clients").set(authH(f.token)).send(corps);
+    expect(res.status, JSON.stringify(res.body)).toBe(200);
+    return res.body.record as { id: string };
+  }
+  const ficheEnBase = async (id: string) =>
+    ctx.prisma.$queryRaw<{ name_ar: string | null; name_latin: string | null }[]>`SELECT name_ar, name_latin FROM pro_client_records WHERE id = ${id}::uuid`.then((r) => r[0] ?? null);
+  const copieEnBase = async (id: string) =>
+    ctx.prisma.$queryRaw<{ client_name_ar: string | null; client_name_latin: string | null }[]>`SELECT client_name_ar, client_name_latin FROM quotes WHERE id = ${id}::uuid`.then((r) => r[0] ?? null);
+
+  it("complète la copie MANQUANTE de la langue demandée : « ar » écrit le nom arabe, « fr » le nom latin — 201 et le devis rendu la porte", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    const res = await completerNom(f, q.id, { locale: "ar", name: " آمنة بن سالم " });
+    expect(res.status, JSON.stringify(res.body)).toBe(201);
+    expect((res.body as QuoteDTO).clientNameAr).toBe("آمنة بن سالم");
+    expect(await copieEnBase(q.id)).toEqual({ client_name_ar: "آمنة بن سالم", client_name_latin: "Amina Bensalem" });
+
+    const surPlace = (await makeQuote(f)).body as QuoteDTO;
+    const latin = await completerNom(f, surPlace.id, { locale: "fr", name: "Karim Haddad" });
+    expect(latin.status).toBe(201);
+    expect(await copieEnBase(surPlace.id)).toEqual({ client_name_ar: null, client_name_latin: "Karim Haddad" });
+  });
+
+  it("⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS remplacée : 409 QUOTE_CLIENT_NAME_ALREADY_SET, la copie intacte", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    const res = await completerNom(f, q.id, { locale: "fr", name: "Autre Nom" });
+    expect(res.status).toBe(409);
+    expect(res.body.message.code).toBe("QUOTE_CLIENT_NAME_ALREADY_SET");
+    expect(await copieEnBase(q.id)).toEqual({ client_name_ar: null, client_name_latin: "Amina Bensalem" });
+  });
+
+  it("⛔ MD-7 — deux compléments SIMULTANÉS de la même langue : un seul gagne, l'autre est refusé, et la base porte le nom du gagnant", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    const [a, b] = await Promise.all([completerNom(f, q.id, { locale: "ar", name: "آمنة" }), completerNom(f, q.id, { locale: "ar", name: "أمينة" })]);
+    expect([a.status, b.status].sort()).toEqual([201, 409]);
+    const gagnant = a.status === 201 ? "آمنة" : "أمينة";
+    expect((await copieEnBase(q.id))?.client_name_ar).toBe(gagnant);
+  });
+
+  it("⛔ MD-8 (C-C3), branche 1 — le nom de l'AUTRE écriture est le MÊME sur le devis et sur la fiche : la fiche est complétée AUSSI", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    expect((await completerNom(f, q.id, { locale: "ar", name: "آمنة بن سالم" })).status).toBe(201);
+    expect(await ficheEnBase(fiche.id)).toEqual({ name_ar: "آمنة بن سالم", name_latin: "Amina Bensalem" });
+  });
+
+  it("⛔ MD-8 (C-C3), branche 2 — il DIFFÈRE (deux personnes, un numéro : M-24) : la fiche reste INTACTE, seule la copie est complétée", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Yacine Bensalem" })).body as QuoteDTO;
+    expect((await completerNom(f, q.id, { locale: "ar", name: "ياسين بن سالم" })).status).toBe(201);
+    expect(await ficheEnBase(fiche.id)).toEqual({ name_ar: null, name_latin: "Amina Bensalem" });
+    expect(await copieEnBase(q.id)).toEqual({ client_name_ar: "ياسين بن سالم", client_name_latin: "Yacine Bensalem" });
+  });
+
+  it("⛔ MD-8 — la fiche a DÉJÀ un nom dans cette langue : la copie se complète, la fiche n'est jamais remplacée", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f, { phone: "0555123456", nameAr: "آمنة", nameLatin: "Amina Bensalem" });
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    expect((await completerNom(f, q.id, { locale: "ar", name: "آمنة بن سالم" })).status).toBe(201);
+    expect(await ficheEnBase(fiche.id)).toEqual({ name_ar: "آمنة", name_latin: "Amina Bensalem" });
+  });
+
+  it("⛔ MD-6 — une fiche LIÉE n'est jamais complétée par la boîte : seule la copie du devis l'est", async () => {
+    const f = await setup();
+    await registerUser(ctx, CLIENT);
+    const fiche = await ficheDe(f, { phone: "0555123456", nameLatin: "Amina Bensalem" });
+    const compte = await ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT.email }, select: { id: true } });
+    await ctx.prisma.$executeRaw`UPDATE pro_client_records SET linked_user_id = ${compte.id}::uuid, linked_at = now() WHERE id = ${fiche.id}::uuid`;
+    const q = (await makeQuote(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).body as QuoteDTO;
+    expect((await completerNom(f, q.id, { locale: "ar", name: "آمنة بن سالم" })).status).toBe(201);
+    expect(await ficheEnBase(fiche.id)).toEqual({ name_ar: null, name_latin: "Amina Bensalem" });
+    expect((await copieEnBase(q.id))?.client_name_ar).toBe("آمنة بن سالم");
+  });
+
+  it("le devis d'un AUTRE pro, ou inexistant : 404 QUOTE_NOT_FOUND ; un corps invalide : 400", async () => {
+    const f = await setup();
+    const q = (await makeQuote(f)).body as QuoteDTO;
+    await registerUser(ctx, { role: "PRO", email: "autre-pro@example.dz", password: "Motdepasse1", businessName: "Autre Salle", phone: "+213550000008" });
+    await verifyLastRegistered(ctx);
+    const tokenB = await loginAs(ctx, "autre-pro@example.dz", "Motdepasse1");
+    const chezB = await api().post(`/api/v1/quotes/${q.id}/client-name`).set(authH(tokenB)).send({ locale: "fr", name: "Amina" });
+    expect(chezB.status).toBe(404);
+    expect(chezB.body.message.code).toBe("QUOTE_NOT_FOUND");
+    for (const corps of [{ locale: "en", name: "Amina" }, { locale: "fr", name: "" }, { locale: "fr", name: "Amina123" }, { locale: "fr" }, { locale: "fr", name: "Amina", extra: 1 }]) {
+      expect((await completerNom(f, q.id, corps)).status, JSON.stringify(corps)).toBe(400);
+    }
+    expect(await copieEnBase(q.id)).toEqual({ client_name_ar: null, client_name_latin: null });
+  });
+});

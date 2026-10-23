@@ -63,3 +63,19 @@ describe("quotes.document — la route du PDF", () => {
     expect(rendu).toBe(fichier);
   });
 });
+
+describe("quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336)", () => {
+  it("POSTE la langue et le nom sur `/quotes/:id/client-name`", async () => {
+    const { request, appels } = double({ id: "q1" });
+    await createQuotesClient(request).completeClientName("44444444-4444-4444-8444-444444444444", { locale: "ar", name: "آمنة بن سالم" });
+    expect(appels).toEqual([
+      { path: "/quotes/44444444-4444-4444-8444-444444444444/client-name", init: { method: "POST", body: { locale: "ar", name: "آمنة بن سالم" } } }
+    ]);
+  });
+
+  it("l'identifiant est ENCODÉ", async () => {
+    const { request, appels } = double({ id: "q1" });
+    await createQuotesClient(request).completeClientName("a/b?c=d", { locale: "fr", name: "Amina" });
+    expect(appels[0]?.path).toBe("/quotes/a%2Fb%3Fc%3Dd/client-name");
+  });
+});
