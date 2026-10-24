@@ -1656,3 +1656,5 @@ est `apps/api/test/int/migration-non-empty.int-spec.ts`.
 Ce qui n'est pas exprimable (EXCLUDE, partiels, CHECK, FK composite) reste
 invisible à Prisma : c'est précisément pourquoi `migrate dev` ne doit jamais
 tourner.
+
+⛔ **TOUTE ÉCRITURE SUR LA BASE DE DÉVELOPPEMENT DE KO EST DÉCLARÉE AU RAPPORT DE FIN DE LOT (règle permanente, proposée par le relecteur et adoptée par Ko le 23/10/2026 — D337).** Migration, semis, nettoyage : le rapport donne **la commande, l'heure, l'effet mesuré** (avant et après, relevés sur la base elle-même). *Motif* : la migration `20261022120000_pro_client_records` a été appliquée sur cette base par le lot précédent sans que son rapport le dise ; une écriture que personne ne déclare est un état de la base que la reprise suivante ne peut pas expliquer. ⚠ Une **lecture** n'est pas une écriture, mais elle se dit aussi quand elle sert de preuve. `test:int` travaille sur sa propre base (`DROP DATABASE` puis rejeu) et n'est pas concerné ; `prisma migrate deploy` sur la base de développement, si. Le registre n'a pas de numéro pour cette règle (elle ne renverse rien) ; la première occurrence est la section D337 de `ZWADJ_CONTINUITE.md`.

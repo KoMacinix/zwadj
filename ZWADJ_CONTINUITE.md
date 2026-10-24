@@ -2199,6 +2199,16 @@ Seconde lecture (9f85228) — écart V3-DR5 : corrigé, section 3 DR5, dans la f
 
 ⇒ **RANG 42 : EN ATTENTE D'ARBITRAGE DE KO.** Candidat **proposé** par la section 5 de la consigne v3 : « 42 L36-1 — réservation par e-mail seul · NORMALE » — **pas arbitré** (section 5, mot pour mot : « SEUL le rang 41 est arbitré. Les autres entrées n'ont pas de rang et restent à ordonner par Ko, une par une (D302). ») ; les lots L36-1 à L36-9 et K-13 sont au backlog (« Reports du 23/10/2026 — rang 41 »).
 
+⛔ **ARBITRÉ LE 23/10/2026 PAR KO — LE RANG 42, mot pour mot : la SECTION 1 de la consigne du relecteur du rang 42 (première écriture d'autorité du lot D337 ; la table d'ouverture `dec5e9a` et la lecture adverse de la consigne `ce4f1f6` la précèdent, `git` le prouve).** ⚠ Le texte est celui du relecteur, **collé par Ko** : les phrases « choix de Ko », « Ko l'a collé » et les citations sont ce qu'il dit ; le reste est du relecteur, adopté par Ko par ce collage. Les numéros S-48 à S-67 sont ceux de D336 (décisions de la session), pas ceux du registre. Annotation de la ligne « RANG 42 : EN ATTENTE D'ARBITRAGE DE KO » ci-dessus : ~~en attente~~ ⇒ **arbitré, voir ce bloc**.
+
+1. CE QUE KO ARBITRE OU ADOPTE (23/10/2026)
+a) Rang 42 = L36-1 : choix de Ko, option (a) proposée par le relecteur (l'ordre de la section 5 du rang 41).
+b) S-48 à S-67 (D336) : ratifiées par ADOPTION de ce message (Ko l'a collé) — à écrire ainsi, jamais comme une parole de Ko. Précision sur S-48 : ce n'était pas un écart. Dans la consigne v3, § 6 d, « s'arrêter et demander » renvoie à la règle des routes et contrats neufs NON nommés ; K-3b y était nommé, et rangé « DANS LE LOT ». La formulation du relecteur était ambiguë.
+c) Règle permanente, proposée par le relecteur, adoptée par Ko, à écrire dans AGENTS.md (sans numéro) : toute écriture sur la base de développement de Ko (migration, semis, nettoyage) est déclarée dans le rapport de fin de lot — la commande, l'heure, l'effet mesuré.
+d) Condition de clôture du rang 33 (nom du client sur le PDF) : levée par le constat visuel de Ko le 23/10/2026, gestes 1 à 3 du rapport de D336.
+
+⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** `AGENTS.md` reçoit la règle permanente (c), annotée « D337 » en tête de la section « Migrations » ; **(b)** le rang 42 est **L36-1, lot de CODE, méthode NORMALE**, compteur POUR MÉMOIRE UN → DEUX à sa clôture, limite de cinq SUSPENDUE, aucune certification ; **(c)** la **condition de clôture du rang 33 est LEVÉE** (annotation sur place, à la clôture du lot, des occurrences qui la disent ouverte) ; **(d)** S-48 à S-67 sont **ratifiées par adoption** (annotation sur place, à la clôture du lot). ⚠ *Dérivé par la session, à ratifier* : « les `.md` d'autorité en dernier » (consigne, section 0) est lu comme **les `.md` de CLÔTURE** ; ce bloc, qui n'écrit que les mots de Ko, est la **première** écriture d'autorité (règle de `AGENTS.md`, D328 : « les arbitrages de Ko en PREMIÈRE écriture »).
+
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
 anciennes telles quelles dans ce lot — « leur sort est une décision à part ». Écrite ici parce que c'est la
