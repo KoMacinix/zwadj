@@ -1,3 +1,4 @@
+# D337 — rouges/rouge-e2e : sortie de la spec `r42-reservation-email-seul` contre l'état d'avant. ⚠ MASQUÉE : 6 valeur(s) de `token=` (liens de vérification d'e-mail imprimés par le serveur du harnais e2e, base jetable `zwadj_e2e`) remplacées par `<valeur masquée>` ; le reste est la sortie brute, non retouchée. Le brut reste hors dépôt.
 [WebServer] [01:10:33.808] INFO (10736): Starting Nest application... {"context":"NestFactory"}
 [WebServer] [01:10:33.808] INFO (10736): ConfigModule dependencies initialized {"context":"InstanceLoader"}
 [WebServer] [01:10:33.808] INFO (10736): ConfigHostModule dependencies initialized {"context":"InstanceLoader"}

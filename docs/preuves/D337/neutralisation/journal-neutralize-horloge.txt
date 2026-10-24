@@ -1,0 +1,21 @@
+sauvegarde trouvee au demarrage : arbre restaure avant de commencer
+temoin (aucune mutation)
+
+Traceback (most recent call last):
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-horloge.py", line 94, in <module>
+    assert joue() == 0, "le temoin doit etre VERT avant toute mutation"
+           ~~~~^^
+  File "C:\Users\benla\Desktop\MyProjct\Zwadj\neutralisation\neutralize-horloge.py", line 67, in joue
+    assert total and int(total.group(1)) == NB_TESTS_ATTENDU, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ERREUR DE SCRIPT : 127 tests attendus dans src/dashboard/walkin-journey.test.tsx. Un filtre qui ne correspond plus rend 0 et se lit comme « la garde est inutile » (D144).
+îte de langue complète le nom > K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé  571ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part  582ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé  630ms
+
+ Test Files  1 passed (1)
+      Tests  130 passed (130)
+   Start at  02:28:35
+   Duration  59.43s (transform 1.65s, setup 207ms, collect 2.80s, tests 54.91s, environment 956ms, prepare 154ms)
+
+

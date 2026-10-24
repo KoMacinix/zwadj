@@ -1,0 +1,9 @@
+# D337 — les signalements HORS LOT (consigne 3 b et 3 f : « tu les signales sans les aligner ni les toucher »)
+
+1. **S-55 — l'e-mail d'une réservation n'est pas normalisé comme celui d'une fiche.** Mesuré : `contactEmailSchema` (réservation en ligne, conversion) fait `.trim()` seulement ; `normalizeContactEmail` (fiche) fait rogné + NFKC + minuscules. Une réservation faite avec « `  Amina@Example.DZ  ` » garde « `Amina@Example.DZ` » (`bookings.schemas.spec.ts` ML-3 et `bookings.int-spec.ts` ML-3 l'épinglent, en le disant). **Non aligné** : l'aligner changerait un comportement existant (consigne 3 b). Entrée du backlog (24/10/2026).
+2. **Aucun consommateur lié au paiement ne LIT `contact_phone`.** Instrument `confronter-consigne.py`, contrôle 3f.1 : 15 fichiers de nom `payment` / `chargily` / `webhook` parcourus, 0 lecteur en production. Un TEST nomme le champ : `apps/api/test/int/payment-intent-race.int-spec.ts:69` SÈME `contactPhone: "+213550000001"` dans une réservation de test — il reste valide, **non touché**.
+3. **`QuotesSection` (non montée) exigerait encore un numéro** si elle était remontée (son corps de conversion envoie `contactPhone: contact.phone.trim()`, son bouton exige les quatre champs). Non touchée ; entrée du backlog.
+4. **La clé `venue.ui.walkin.needPhone` n'est plus produite** : orpheline, conservée à cause du plancher du total de clés. Entrée du backlog.
+5. **Le `CHECK bookings_contact_reachable` n'a pas de traduction en erreur métier** (inatteignable par l'API). Entrée du backlog.
+6. **`jouer-union.py` joue `r25`, `r26` et `solid-s6` sans leurs drapeaux** (`--e2e`, `--int`) : « 12 non mesurées » au premier jeu. Entrée du backlog (outil sous `docs/preuves/`, ne compte pas).
+7. **Le client Prisma est régénéré** (`prisma generate`) : l'API et les deux sites de développement de Ko doivent être REDÉMARRÉS pour voir la colonne facultative (dit dans les gestes de Ko).

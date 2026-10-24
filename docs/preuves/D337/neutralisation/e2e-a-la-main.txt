@@ -1,0 +1,27 @@
+
+■ E-1. le formulaire exige de nouveau le NUMÉRO (l'e-mail seul laisse le bouton grisé)
+   ancre 1→0 · marqueur 0→1 · fichier apps/client/src/components/venue/booking-request-panel.tsx (sha256 départ 04fd17f3aa1a)
+   code 1 · échecs listés : 1
+      [chromium] › specs\r42-reservation-email-seul.e2e.ts:25:5 › un client réserve avec son e-mail SEUL : le bouton s'ouvre, la demande part, et la base garde l'e-mail sans numéro
+      ↳ Error: Timed out 7000ms waiting for expect(locator).toBeEnabled()
+      ↳ Expected: enabled
+      ↳ Received: disabled
+   arbre restauré : sha256 identique (04fd17f3aa1a)
+
+■ E-2. la colonne `contact_phone` redevient NOT NULL (le formulaire part, la base refuse : 500)
+   ancre 1→0 · marqueur 0→1 · fichier apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql (sha256 départ e977213d2e6b)
+   code 1 · échecs listés : 1
+      [chromium] › specs\r42-reservation-email-seul.e2e.ts:25:5 › un client réserve avec son e-mail SEUL : le bouton s'ouvre, la demande part, et la base garde l'e-mail sans numéro
+      ↳ Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+      ↳ Expected: visible
+      ↳ Received: <element(s) not found>
+   arbre restauré : sha256 identique (e977213d2e6b)
+
+■ E-3. le corps du formulaire envoie la clé du numéro même vide (« +213 » seul : le serveur refuse)
+   ancre 1→0 · marqueur 0→1 · fichier apps/client/src/components/venue/booking-request-panel.tsx (sha256 départ 04fd17f3aa1a)
+   code 1 · échecs listés : 1
+      [chromium] › specs\r42-reservation-email-seul.e2e.ts:25:5 › un client réserve avec son e-mail SEUL : le bouton s'ouvre, la demande part, et la base garde l'e-mail sans numéro
+      ↳ Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+      ↳ Expected: visible
+      ↳ Received: <element(s) not found>
+   arbre restauré : sha256 identique (04fd17f3aa1a)

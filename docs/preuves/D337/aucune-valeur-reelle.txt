@@ -1,0 +1,9 @@
+# D337 — contrôle DÉDIÉ « aucune valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py), joué le 24/10/2026 sur l'arbre de travail de la clôture (HEAD d6333c4 + les pièces et les .md d'autorité, non commités) ;
+# cherchées dans docs/preuves/D337, les trois .md d'autorité, CLAUDE.md, neutralisation, e2e/specs, e2e/fixtures, apps, packages. N'imprime JAMAIS une valeur : des comptes seulement.
+# Les deux journaux de la session qui en portent sont les BRUTS de test:e2e (73 liens de vérification) et de l'e2e rouge (6) ; ceux de test, test:int, build, lint, typecheck n'en portent aucune. Les copies versées sont MASQUÉES (en-tête).
+
+✓ <scratchpad>/test-e2e.raw.log : occurrences stricte 73 · large 73 (doivent s'accorder) · valeurs distinctes 73 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ <scratchpad>/rouge-e2e.raw.log : occurrences stricte 6 · large 6 (doivent s'accorder) · valeurs distinctes 6 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, <scratchpad>/test-e2e.raw.log porte 73 valeur(s) (attendu ≥ 73)
+✓ lu comme une cible, <scratchpad>/rouge-e2e.raw.log porte 6 valeur(s) (attendu ≥ 6)
+== valeurs cherchées : 79 (2 journal/journaux) · parcourus : 74439 fichiers, 1866981564 octets · porteurs : 0 (attendu 0)

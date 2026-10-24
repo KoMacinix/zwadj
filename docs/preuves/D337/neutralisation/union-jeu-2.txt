@@ -1,0 +1,398 @@
+######## neutralize-act-plafonds.py  09:25:06 UTC
+sauvegarde trouvee au demarrage : walkin-journey.test.tsx restaure avant de commencer
+sauvegarde trouvee au demarrage : test-setup.ts restaure avant de commencer
+pre-vol : le spec n'est plus exempte dans PLAFONDS
+temoin (aucune mutation)
+✓ C1  la fenetre act du socle de montage est retiree  (attendu rouge, obtenu rouge)
+✓ C2  la fenetre act du montage du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C3  la fenetre act du second effet du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C4  meme retrait que C1, mais l'exemption PLAFONDS est remise  (attendu vert, obtenu vert)
+
+4 garde(s) mordue(s) sur 4 cible(s).
+arbre rendu a son etat de depart : verifie.
+######## sortie=0 (neutralize-act-plafonds.py)
+######## neutralize-horloge.py  09:30:08 UTC
+temoin (aucune mutation)
+✓ C1  le gel d'horloge est retire  (attendu rouge, obtenu rouge)
+✓ C2  l'ancre MAINTENANT est deplacee de dix ans  (attendu vert, obtenu vert)
+
+2 garde(s) mordue(s) sur 2 cible(s).
+arbre rendu a son etat de depart : verifie.
+######## sortie=0 (neutralize-horloge.py)
+######## neutralize-r32.py  09:34:19 UTC
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 8 bras · 0 manqué(s) (attendu 0)
+cibles : 65 déclarées · 65 jouées (unit) · 14 mesure(s) distincte(s) · 14 fichier(s) muté(s)
+  pré-vol client-account : code 0 · passés 10 · en échec 0
+  pré-vol client-booking : code 0 · passés 32 · en échec 0
+  pré-vol client-champ : code 0 · passés 4 · en échec 0
+  pré-vol client-garde : code 0 · passés 4 · en échec 0
+  pré-vol client-visit : code 0 · passés 5 · en échec 0
+  pré-vol client-wizard : code 0 · passés 27 · en échec 0
+  pré-vol pro-account : code 0 · passés 31 · en échec 0
+  pré-vol pro-champ : code 0 · passés 17 · en échec 0
+  pré-vol pro-contact : code 0 · passés 27 · en échec 0
+  pré-vol pro-css : code 0 · passés 26 · en échec 0
+  pré-vol pro-edit : code 0 · passés 6 · en échec 0
+  pré-vol pro-journey : code 0 · passés 130 · en échec 0
+  pré-vol types-contact : code 0 · passés 49 · en échec 0
+  pré-vol types-phone : code 0 · passés 55 · en échec 0
+✓ T-1. la saisie n'est reconnue en COLLAGE que si plusieurs chiffres arrivent d'un coup : ici la règle est INVERSÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 44 · en échec 11 · AssertionError: expected '0' to be '555123456' // Object.is equality
+✓ T-2. le champ accepte UN chiffre de trop (dix au lieu de neuf)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 53 · en échec 2 · AssertionError: expected '5555555555' to be '555555555' // Object.is equality
+✓ T-3. les lettres passent dans le champ (plus de « chiffres seuls »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 49 · en échec 6 · AssertionError: expected '5a5-5 5!5' to be '55555' // Object.is equality
+✓ T-4. tout premier chiffre est admis (la règle 5, 6 ou 7 disparaît de la saisie)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 51 · en échec 4 · AssertionError: premier chiffre 0: expected { digits: '0', …(1) } to deeply equal { digits: '0', …(1) }
+✓ T-5. un premier chiffre refusé n'est plus ramené à lui SEUL : le collage « 0123456789 » garde ses neuf chiffres
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 54 · en échec 1 · AssertionError: expected { digits: '123456789', …(1) } to deeply equal { digits: '1', …(1) }
+✓ T-6. la valeur ENVOYÉE n'a plus d'indicatif : les chiffres nationaux partent seuls
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 53 · en échec 2 · AssertionError: expected '555123456' to be '+213555123456' // Object.is equality
+✓ T-7. un numéro est « complet » sans que son premier chiffre soit contrôlé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 52 · en échec 3 · AssertionError: expected '+213455123456' to be null
+✓ T-8. un collage n'est JAMAIS reconnu : « +213 555… » reste tel quel
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-phone] code 1 · passés 47 · en échec 8 · AssertionError: expected '0' to be '555123456' // Object.is equality
+✓ C-1. un nom accepte les CHIFFRES
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 45 · en échec 4 · AssertionError: expected true to be false // Object.is equality
+✓ C-2. un nom peut COMMENCER par un tiret ou une apostrophe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 43 · en échec 6 · AssertionError: expected true to be false // Object.is equality
+✓ C-3. un nom perd ses marques combinantes : voyelles brèves de l'arabe, accent décomposé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 47 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ C-4. le schéma d'un nom ne regarde plus son motif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 45 · en échec 4 · AssertionError: réservation « Amina123 »: expected true to be false // Object.is equality
+✓ C-5. un nom VIDE est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 47 · en échec 2 · AssertionError: expected true to deeply equal [ Array(1) ]
+✓ C-6. le plafond du nom saute (80 → 1080)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 48 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ C-7. l'e-mail n'est plus contrôlé par `.email()`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 46 · en échec 3 · AssertionError: expected true to deeply equal [ 'i' ]
+✓ B-1. la route de réservation reprend sa règle de nom LÂCHE (« non vide » tient lieu de « valide »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 45 · en échec 4 · AssertionError: réservation « Amina123 »: expected true to be false // Object.is equality
+✓ B-2. la route du devis reprend sa règle de nom LÂCHE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 46 · en échec 3 · AssertionError: conversion « Amina123 »: expected true to be false // Object.is equality
+✓ B-3. la route du devis n'applique plus la règle d'e-mail du contrat
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types-contact] code 1 · passés 46 · en échec 3 · AssertionError: conversion « amina@ »: expected true to be false // Object.is equality
+✓ W-1. le premier chiffre refusé ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 25 · en échec 2 · AssertionError: expected [ 'needPhoneIncomplete' ] to deeply equal [ 'needPhoneLeading' ]
+✓ W-2. un numéro INCOMPLET ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 24 · en échec 3 · AssertionError: expected [] to deeply equal [ 'needPhoneIncomplete' ]
+✓ W-3. un e-mail invalide ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 24 · en échec 3 · AssertionError: expected [] to deeply equal [ 'needEmailValid' ]
+✓ W-4. le nombre d'invités ne retient plus l'étape Client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 25 · en échec 2 · AssertionError: expected [] to deeply equal [ 'needGuests' ]
+✓ W-5. ⚠ RÈGLE DES MONTANTS — le téléphone ENVOYÉ n'a plus son indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 25 · en échec 2 · AssertionError: expected { contactFirstName: 'Amine', …(2) } to deeply equal { contactFirstName: 'Amine', …(2) }
+✓ W-6. un e-mail VIDE part quand même (la clé n'est plus omise : `.email()` refuserait la chaîne vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 24 · en échec 3 · AssertionError: expected { contactFirstName: 'Amine', …(3) } to deeply equal { contactFirstName: 'Amine', …(2) }
+✓ W-7. les noms ENVOYÉS ne sont plus rognés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 26 · en échec 1 · AssertionError: expected { contactFirstName: '  Amine ', …(2) } to deeply equal { contactFirstName: 'Amine', …(2) }
+✓ P-1. le champ ne passe plus par la règle de saisie : il remonte ce que le navigateur lui donne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 14 · en échec 3 · AssertionError: expected '5a5b5-5 5!5 5 5 5 5 5' to be '555555555' // Object.is equality
+   [client-champ] code 1 · passés 2 · en échec 2 · AssertionError: expected '5a5b5-5 5!5 5 5 5 5 5' to be '555555555' // Object.is equality
+✓ P-2. la boîte n'est plus LTR : en arabe le drapeau passerait à droite des chiffres
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected null to be 'ltr' // Object.is equality
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: expected null to be 'ltr' // Object.is equality
+✓ P-3. le message du premier chiffre n'est plus une ALERTE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected [] to deeply equal [ Array(1) ]
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected [] to deeply equal [ Array(1) ]
+✓ P-4. le champ ne se déclare plus invalide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected null to be 'true' // Object.is equality
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected null to be 'true' // Object.is equality
+✓ P-5. le premier chiffre n'est plus jamais refusé par le champ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 15 · en échec 2 · AssertionError: expected null to be truthy
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected [] to deeply equal [ Array(1) ]
+✓ P-6. le nom accessible du drapeau perd l'indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-champ] code 1 · passés 16 · en échec 1 · AssertionError: expected [] to have a length of 1 but got +0
+   [client-champ] code 1 · passés 3 · en échec 1 · AssertionError: fr: expected [] to have a length of 1 but got +0
+✓ R-1. le rail ne réagit plus au clic : le bouton existe, il ne fait rien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 128 · en échec 2 · AssertionError: expected 'Quel créneau ?' to be 'Qui est le client ?' // Object.is equality
+   [client-wizard] code 1 · passés 25 · en échec 2 · AssertionError: expected 'Un style, des équipements ?' to be 'Combien d\'invités ?' // Object.is equality
+✓ N-1. « Continuer » ne dit plus POURQUOI il est grisé : la liste des raisons est vide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 126 · en échec 4 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ N-2. la liste des raisons n'est plus LIÉE au bouton (`aria-describedby`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 127 · en échec 3 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ N-3. ⚠ RÈGLE DES MONTANTS — la conversion du devis envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 126 · en échec 4 · AssertionError: expected '550000002' to be '+213550000002' // Object.is equality
+✓ N-4. la fenêtre de confirmation s'ouvre AVANT la réponse du serveur
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-journey] code 1 · passés 127 · en échec 3 · AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ N-5. « Précédent » reste proposé une fois l'affaire conclue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 129 · en échec 1 · AssertionError: expected <button type="button" …(1)></button> to be null
+✓ N-6. « Précédent » mène à l'étape SUIVANTE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 126 · en échec 4 · AssertionError: expected 'Quelle date ?' to be 'Comment joindre le client ?' // Object.is equality
+✓ N-7. la fenêtre de confirmation ne se ferme plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 129 · en échec 1 · AssertionError: expected <div class="dialog-panel" …(4)>…(3)</div> to be null
+✓ N-8. ⛔ LE DÉFAUT RESTAURÉ — l'identifiant d'un champ ne garde que les lettres LATINES du libellé : en arabe, quatre champs, un seul `id`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 127 · en échec 3 · AssertionError: expected 1 to be 2 // Object.is equality
+✓ N-9. l'exemple du prénom disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 129 · en échec 1 · AssertionError: prénom: expected '' to be 'Ex. : Amina' // Object.is equality
+✓ N-10. l'exemple du téléphone disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 128 · en échec 2 · AssertionError: téléphone: expected '' to be '5XX XX XX XX' // Object.is equality
+✓ N-11. l'erreur d'un champ n'est plus une alerte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 129 · en échec 1 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ N-12. le libellé d'un champ n'est plus LIÉ à son champ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-journey] code 1 · passés 10 · en échec 120 · AssertionError: fr: expected null to be truthy
+✓ U-1. ⛔ UN DIFF VIDE DIT « ENREGISTRÉ » alors qu'aucune requête n'est partie
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-edit] code 1 · passés 4 · en échec 2 · AssertionError: expected 'Modifications enregistrées.' not to be 'Modifications enregistrées.' // Object.is equality
+✓ U-2. un champ fautif d'une autre étape ne dit plus rien : « Enregistrer » se tait
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-edit] code 1 · passés 5 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ S-1. le week-end reprend l'ancienne teinte, plus FONCÉE (clair)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 0.8660682269472966 to be greater than 0.8660682269472966
+✓ S-2. le week-end n'est plus plus clair que l'ancien fond (sombre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 0.015070206860170158 to be greater than 0.015070206860170158
+✓ S-3. un jour RÉSERVÉ de week-end reprend la teinte du week-end
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 'background: var(--cal-weekend);' to match /background:\s*var\(--cal-booked\)/
+✓ S-4. un jour DEMANDÉ de week-end reprend la teinte du week-end
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 'background: var(--cal-weekend);' to match /background:\s*var\(--cal-requested\)/
+✓ S-5. un jour BLOQUÉ de week-end reprend la teinte du week-end
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected 'background: var(--cal-weekend);' to match /background:\s*var\(--cal-blocked\)/
+✓ S-6. le jour bloqué n'est plus HACHURÉ (plus aucun dégradé)
+   ancre 1→0 · marqueur 16→17 · genre substitution
+   [pro-css] code 1 · passés 24 · en échec 2 · AssertionError: expected undefined to be defined
+✓ S-7. le trait du hachurage devient presque OPAQUE (clair) : le chiffre du jour n'est plus lisible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 20 · en échec 6 · AssertionError: expected 1.3275184397123532 to be greater than or equal to 4.5
+✓ S-8. le trait du hachurage devient presque OPAQUE (sombre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 20 · en échec 6 · AssertionError: expected 1.214921604340251 to be greater than or equal to 4.5
+✓ S-9. le week-end perd sa bordure en TIRETS (le signe qui ne dépend pas de la couleur)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected [] to have a length of 1 but got +0
+✓ S-10. ⛔ UN JETON ABSENT D'UN THÈME : en sombre, `--cal-hatch` ne vient plus de `--dark-cal-hatch` (D129)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-css] code 1 · passés 25 · en échec 1 · AssertionError: expected '--accent: var(--dark-pro-accent);\r\n…' to match /--cal-hatch:\s*var\(--dark-cal-hatch\)/
+✓ Q-1. ⚠ RÈGLE DES MONTANTS — la demande du client part avec un téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-booking] code 1 · passés 29 · en échec 3 · AssertionError: expected '550000001' to be '+213550000001' // Object.is equality
+✓ Q-2. la demande du client s'envoie avec un numéro INCOMPLET
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-booking] code 1 · passés 29 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+✓ Q-3. le rendez-vous de visite se confirme avec un numéro INCOMPLET
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-visit] code 1 · passés 4 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ Q-4. le rendez-vous de visite envoie le téléphone SANS indicatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-visit] code 1 · passés 4 · en échec 1 · AssertionError: expected '550000001' to be '+213550000001' // Object.is equality
+✓ Q-6. le compte client n'affiche plus les chiffres NATIONAUX d'un numéro enregistré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-account] code 1 · passés 9 · en échec 1 · AssertionError: expected '+213770000001' to be '770000001' // Object.is equality
+✓ Q-9. le compte pro n'affiche plus les chiffres NATIONAUX d'un numéro enregistré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-account] code 1 · passés 26 · en échec 5 · AssertionError: expected '+213551234567' to be '551234567' // Object.is equality
+✓ L-1. un indicatif ÉCRIT EN DUR dans une chaîne de `@zwadj/ui` (le champ partagé lui-même)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-garde] code 1 · passés 3 · en échec 1 · AssertionError: expected [ Array(1) ] to deeply equal []
+✓ L-2. un indicatif ÉCRIT EN DUR dans le texte JSX du Pro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-garde] code 1 · passés 3 · en échec 1 · AssertionError: expected [ Array(1) ] to deeply equal []
+✓ L-3. un indicatif ÉCRIT EN DUR dans un attribut JSX du Client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-garde] code 1 · passés 3 · en échec 1 · AssertionError: expected [ Array(1) ] to deeply equal []
+  empreintes : 14 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+65 garde(s) mordue(s) sur 65 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 65 sur 65)
+arbre rendu à son état de départ : vérifié.
+######## sortie=0 (neutralize-r32.py)
+######## neutralize-s11a.py  09:54:09 UTC
+✓ Pré-vol : 3 mesure(s) verte(s) — recevabilite, notification, types
+
+✓ S11a-1. ⛔ LA BORNE BASSE CESSE D'ÊTRE STRICTE — on réserve pour AUJOURD'HUI  [recevabilite]
+✓ S11a-2. ⛔ L'HORIZON PERD SA BORNE HAUTE — une demande à trente ans passe  [recevabilite]
+✓ S11a-3. ⛔ LA CAPACITÉ S'INVERSE — une table PILE à la capacité est refusée  [recevabilite]
+✓ S11a-4. ⛔ LE CRÉNEAU INTROUVABLE CESSE D'ÊTRE REFUSÉ  [recevabilite]
+✓ S11a-5. ⛔⛔ L'ORDRE DES REFUS S'INVERSE — la DATE répond à la place de la CAPACITÉ  [recevabilite]
+✓ S11a-6. ⛔ SINGLE_SLOT CESSE DE BLOQUER LA JOURNÉE — le reste du jour redevient libre  [recevabilite]
+✓ S11a-7. ⛔ LE CRÉNEAU NE TRAVERSE PLUS LE VERDICT — il est rétréci à ses bornes  [recevabilite]
+✓ S11a-8. ⛔ LA DÉCISION D'HORIZON REVIENT DANS LE SERVICE — garde de SOURCE  [recevabilite]
+✓ S11a-9. ⛔ LE SERVICE N'APPELLE PLUS LE MODULE DE RECEVABILITÉ — garde de SOURCE  [recevabilite]
+✓ S11a-10. ⛔ LA DATE D'ÉVÉNEMENT SE LIT EN LOCAL — elle recule d'un jour à l'ouest  [notification]
+✓ S11a-11. ⛔⛔ CHEMIN DE L'ARGENT — le TOTAL et l'ACOMPTE s'intervertissent  [notification]
+✓ S11a-12. ⛔ LES DEUX TÉLÉPHONES S'INTERVERTISSENT — le pro reçoit son propre numéro  [notification]
+✓ S11a-13. ⛔ LA LOCALE NE RETOMBE PLUS SUR « fr » — gabarit arabe pour un pro francophone  [notification]
+✓ S11a-14. ⛔ LE WALK-IN CESSE D'ÊTRE UN « PAS DE DESTINATAIRE »  [notification]
+✓ S11a-15. ⛔ LES LIBELLÉS FR ET AR DE LA SALLE S'INTERVERTISSENT  [notification]
+✓ S11a-17. ⛔ LE VERDICT PERD SON PARAMÈTRE DE TYPE — le créneau retombe à sa CONTRAINTE  [types]
+✓ S11a-18. ⛔ LE CRÉNEAU DISPARAÎT DU TYPE DU VERDICT — invisible à l'exécution  [types]
+✓ S11a-16. ⛔ LE NOM DU CLIENT N'EST PLUS DÉBARRASSÉ DE SES ESPACES DE BORD  [notification]
+
+18 garde(s) mordue(s) sur 18 cible(s) RÉELLEMENT MESURÉE(S).
+######## sortie=0 (neutralize-s11a.py)
+######## neutralize-solid-s6.py --int  09:55:11 UTC
+✓ Pré-vol : 3 mesure(s) verte(s) — couture, int-reservations, int-visites
+
+✓ S6-1. ⚠ LA COUTURE SE MET À LEVER — un gabarit cassé dé-confirmerait un acte écrit (D63)  [couture]
+✓ S6-2. Les handlers cessent d'être ATTENDUS — l'ordre et le déterminisme tombent  [couture]
+✓ S6-3. ⚠ L'ABONNEMENT « demande reçue » EST COUPÉ — le pro n'est plus prévenu  [int-reservations]
+✓ S6-4. L'abonnement « acceptée » est coupé — le client ne sait pas que sa date est retenue  [int-reservations]
+✓ S6-5. ⚠ LE SECOND ABONNÉ DE `visit.booked` DISPARAÎT — le pro est prévenu, pas le client  [int-visites]
+✓ S6-6. L'ORDRE des deux abonnés de `visit.booked` s'inverse  [int-visites]
+
+6 garde(s) mordue(s) sur 6 cible(s) RÉELLEMENT MESURÉE(S).
+######## sortie=0 (neutralize-solid-s6.py --int)
+######## neutralize-r25.py --e2e  10:02:52 UTC
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 11 déclarées · 10 jouées (e2e, unit) · 1 hors exécution
+  pré-vol e2e-demande : code 0 · ok 1 · x 0
+  pré-vol e2e-lien : code 0 · ok 2 · x 0
+  pré-vol e2e-suppression : code 0 · ok 4 · x 0
+  pré-vol fenetres : code 0 · passés 16 · en échec 0
+  pré-vol panneau : code 0 · passés 32 · en échec 0
+  pré-vol routes : code 0 · passés 3 · en échec 0
+✓ R25-1. ⛔ « BORNES INCLUSES » MAL TRADUIT : une fenêtre de 93 jours repart (D147)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 7 · AssertionError: expected false to be true // Object.is equality
+✓ R25-2. TOUT OU RIEN levé : une fenêtre en échec est sautée, le calendrier partiel passe pour complet
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 14 · en échec 2 · AssertionError: expected { days: [ { …(3) } ], …(1) } to be null
+✓ R25-3. La fusion RECOPIE les jours au lieu de transmettre ceux du serveur (MD1-e)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected { date: '2026-09-27', …(2) } to be { date: '2026-09-27', …(2) } // Object.is equality
+✓ R25-4. ⛔ LE DÉFAUT 1 RESTAURÉ : six mois en UNE requête
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 4 · en échec 28 · AssertionError: expected 1 to be greater than or equal to 2
+✓ R25-5. ⛔ L'ÉCHEC REDEVIENT MUET : `loadFailed` jamais levé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 30 · en échec 2 · AssertionError: expected null not to be null
+✓ R25-6. La constante de connexion vise une route sans page
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 2 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ R25-7. ⛔ LE DÉFAUT 2 RESTAURÉ : le panneau réécrit `/connexion` en dur
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 31 · en échec 1 · AssertionError: expected '/connexion' to be '/auth/connexion' // Object.is equality
+✓ R25-E1. ⛔ DÉFAUT 1 RESTAURÉ, vu par le navigateur : le parcours client n'aboutit plus
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: le calendrier du panneau ne propose aucun jour libre
+✓ R25-E2. ⛔ DÉFAUT 2 RESTAURÉ, vu par le navigateur : le lien mène à la 404
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: le lien du panneau ne mène pas à la page de connexion
+✓ R25-E3. ⛔ DÉFAUT 3 RESTAURÉ, vu par le navigateur : la section redevient une erreur
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 2 · Error: la section de suppression est en ERREUR pour un compte sans demande
+  NON MESURÉE : R25-8. ⛔ LE DÉFAUT 3 RESTAURÉ : « aucune demande » repart en 200 SANS CORPS — mesure « int-compte », relancer avec --int
+
+10 garde(s) mordue(s) sur 10 cible(s) jouée(s) · 1 non mesurée(s) (attendu : 10 sur 10)
+arbre rendu à son état de départ : vérifié.
+######## sortie=3 (neutralize-r25.py --e2e)
+######## neutralize-r26.py --e2e  10:14:23 UTC
+  calibration ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+cibles : 4 déclarées · 4 jouées (e2e, unit) · 0 hors exécution
+  playwright : Version 1.50.1
+  pré-vol e2e-parcours : code 0 · ok 2 · x 0
+✓ R26-1. Le pro ne voit plus AUCUNE demande : la liste chargée est jetée
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: le pro ne voit pas la demande du client dans ses demandes | Error: le pro ne voit pas la demande du client dans ses demandes
+✓ R26-2. Le pro lit « En attente » quel que soit le statut : sa réponse ne s'affiche jamais
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible() | Error: le pro ne voit pas son refus
+✓ R26-3. ⛔ CHEMIN DE L'ARGENT (branche 6), MESURE : le client lit « En attente » quel que soit le statut — ni « Acceptée — acompte à régler », ni le refus
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: le client ne voit pas l'acceptation | Error: le client ne voit pas le refus
+✓ R26-4. Le client ne voit plus AUCUNE de ses demandes : la liste chargée est jetée
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected) | Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+4 garde(s) mordue(s) sur 4 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 4 sur 4)
+arbre rendu à son état de départ : vérifié.
+######## sortie=0 (neutralize-r26.py --e2e)
+FIN-REJEU
+######## neutralize-r25.py --int  10:24:28 UTC
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 11 déclarées · 8 jouées (int, unit) · 3 hors exécution
+  pré-vol fenetres : code 0 · passés 16 · en échec 0
+  pré-vol int-compte : code 0 · passés 19 · en échec 0
+  pré-vol panneau : code 0 · passés 32 · en échec 0
+  pré-vol routes : code 0 · passés 3 · en échec 0
+✓ R25-1. ⛔ « BORNES INCLUSES » MAL TRADUIT : une fenêtre de 93 jours repart (D147)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 7 · AssertionError: expected false to be true // Object.is equality
+✓ R25-2. TOUT OU RIEN levé : une fenêtre en échec est sautée, le calendrier partiel passe pour complet
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 14 · en échec 2 · AssertionError: expected { days: [ { …(3) } ], …(1) } to be null
+✓ R25-3. La fusion RECOPIE les jours au lieu de transmettre ceux du serveur (MD1-e)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected { date: '2026-09-27', …(2) } to be { date: '2026-09-27', …(2) } // Object.is equality
+✓ R25-4. ⛔ LE DÉFAUT 1 RESTAURÉ : six mois en UNE requête
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 4 · en échec 28 · AssertionError: expected 1 to be greater than or equal to 2
+✓ R25-5. ⛔ L'ÉCHEC REDEVIENT MUET : `loadFailed` jamais levé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 30 · en échec 2 · AssertionError: expected null not to be null
+✓ R25-6. La constante de connexion vise une route sans page
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 2 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ R25-7. ⛔ LE DÉFAUT 2 RESTAURÉ : le panneau réécrit `/connexion` en dur
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 31 · en échec 1 · AssertionError: expected '/connexion' to be '/auth/connexion' // Object.is equality
+✓ R25-8. ⛔ LE DÉFAUT 3 RESTAURÉ : « aucune demande » repart en 200 SANS CORPS
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 18 · en échec 1 · AssertionError: expected '' to be 'null' // Object.is equality
+  NON MESURÉE : R25-E1. ⛔ DÉFAUT 1 RESTAURÉ, vu par le navigateur : le parcours client n'aboutit plus — mesure « e2e-demande », relancer avec --e2e
+  NON MESURÉE : R25-E2. ⛔ DÉFAUT 2 RESTAURÉ, vu par le navigateur : le lien mène à la 404 — mesure « e2e-lien », relancer avec --e2e
+  NON MESURÉE : R25-E3. ⛔ DÉFAUT 3 RESTAURÉ, vu par le navigateur : la section redevient une erreur — mesure « e2e-suppression », relancer avec --e2e
+
+8 garde(s) mordue(s) sur 8 cible(s) jouée(s) · 3 non mesurée(s) (attendu : 8 sur 8)
+arbre rendu à son état de départ : vérifié.
+######## sortie=3 (neutralize-r25.py --int)
+FIN-REJEU-2

@@ -1,0 +1,20 @@
+D337 — tri différentiel de l'audit de secrets « b » (clôture : AVANT le commit des pièces de clôture et des .md d'autorité)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D337/audit-secrets-d337a.txt docs/preuves/D337/audit-secrets-d337b.txt
+(calibration à deux bras tenue). Précédente : 297 contextes ; nouvelle : 381 contextes. Alertes ABSENTES de la précédente : 84.
+
+⚠ HISTOIRE : un premier audit « b » (avant masquage) a trouvé 80 alertes « jeton » dont 79 étaient de VRAIS jetons — 73 dans portes/test-e2e.txt (pas encore commité) et 6 dans
+rouges/rouge-e2e.txt (DÉJÀ commité avec les rouges, jamais poussé) : des liens `…/verification-email?token=<43 caractères>` imprimés par le serveur du harnais e2e (comptes de test,
+base jetable `zwadj_e2e` recréée à chaque passe). Réparé AVANT toute poussée : les deux fichiers sont masqués (`token=<valeur masquée>`, en-tête qui le dit), l'historique local a été
+réécrit (git filter-branch 299582c..HEAD, un seul remplacement dans rouges/rouge-e2e.txt ; aucun jeton dans aucun commit de la plage : `git grep` rend 0). Le contrôle dédié « 0 valeur
+réelle » (aucune-valeur-reelle.txt) rend 0 porteur sur les 79 valeurs des deux bruts.
+
+Les 84 alertes de l'audit « b » rejoué après masquage, triées au contexte :
+  · 74 [jeton] portes/test-e2e.txt = 73 lignes `…/verification-email?token=<valeur masquée>` (le motif s'accroche au NOM du paramètre ; la « valeur » vue est le marqueur « <valeur », 7 caractères) + la ligne d'en-tête qui NOMME le paramètre.
+  · 7  [jeton] rouges/rouge-e2e.txt = 6 lignes de même nature + l'en-tête.
+  · 1  [jeton] portes/test-int.txt:519 = un TITRE de test (« …compte supprimé après émission du token… »).
+  · 1  [mot-de-passe] portes/test-int.txt:125 = un TITRE de test (« …forgot-password… CONSTANTE… »).
+  · 1  [chargily] tri-audit-d337a.txt = l'écho du tri « a » (« aucune clé Chargily »), comme D336.
+
+BILAN : 84 sur 84 = des marqueurs de masquage (81), des titres de test (2) et l'écho d'un tri (1) ; AUCUNE valeur réelle (aucune clé Chargily, aucun secret Google, aucun jeton d'accès,
+aucun mot de passe de compte réel). Sceau de la sortie « b » : relue identique, vérifié.
