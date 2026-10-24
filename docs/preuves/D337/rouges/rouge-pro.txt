@@ -1,0 +1,1121 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+ ❯ src/dashboard/walkin-contact.test.ts (27 tests | 8 failed) 50ms
+   ✓ contactBlockers — ce qui empêche de CONCLURE > un contact complet ne retient rien — l'e-mail est FACULTATIF (D135) 6ms
+   × contactBlockers — ce qui empêche de CONCLURE > ⛔ L36-1 (D337) — un contact vide retient le prénom, le nom et « un numéro OU un e-mail » — dans l'ordre de l'écran 20ms
+     → expected [ 'needFirstName', …(2) ] to deeply equal [ 'needFirstName', …(2) ]
+   × contactBlockers — ce qui empêche de CONCLURE > ⚠ chaque raison est PRÉCISE : le prénom manque ≠ le nom manque ≠ aucun moyen de joindre le client 3ms
+     → expected [ 'needPhone' ] to deeply equal [ 'needIdentifier' ]
+   ✓ contactBlockers — ce qui empêche de CONCLURE > un nom écrit avec un caractère que le contrat refuse retient AUTREMENT qu'un nom absent 3ms
+   ✓ contactBlockers — ce qui empêche de CONCLURE > les noms que le contrat ACCEPTE ne retiennent rien : accentué, composé, apostrophe, arabe 1ms
+   × contactBlockers — ce qui empêche de CONCLURE > ⚠ le téléphone : vide (sans e-mail) ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états 1ms
+     → expected [ 'needPhone' ] to deeply equal [ 'needIdentifier' ]
+   ✓ contactBlockers — ce qui empêche de CONCLURE > l'e-mail SAISI doit passer la règle du contrat ; vide, il ne retient rien 2ms
+   ✓ clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités > un seul manque : « le nombre d'invités est obligatoire », et rien d'autre 0ms
+   ✓ clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités > tout manque : les raisons s'énumèrent TOUTES, le nombre d'invités en dernier 0ms
+   ✓ clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités > UN nom suffit, dans l'une OU l'autre écriture (DB-3 : au moins un des deux) 0ms
+   ✓ clientBlockers — ce qui empêche de CONTINUER après l'étape Client : un nom au moins, PUIS le nombre d'invités > un nom SAISI et refusé par la règle du contrat retient AUTREMENT qu'un nom absent — champ par champ 0ms
+   ✓ ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > rien de tapé : « un numéro ou un e-mail est obligatoire », une seule raison 0ms
+   ✓ ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > un numéro COMPLET seul, ou un e-mail VALIDE seul, suffit 0ms
+   ✓ ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > ⚠ un identifiant SAISI et invalide retient, même si l'autre est bon : le téléphone (premier chiffre, longueur), l'e-mail (la règle du contrat) 0ms
+   ✓ ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > `identifierPayload` : le numéro au format du contrat (indicatif + chiffres saisis), l'e-mail rogné, et la CLÉ ABSENTE d'un identifiant vide 0ms
+   ✓ ⛔ D336 — identifierBlockers : ce qui empêche de CONTINUER après l'étape Contact (un numéro OU un e-mail) > `nameFieldErrors` : seuls les noms SAISIS et refusés sont en erreur 0ms
+   ✓ fieldErrors — ce que l'écran AFFICHE sous un champ > un champ resté vide n'est pas fautif : c'est « obligatoire », ce que la liste des raisons dit 0ms
+   ✓ fieldErrors — ce que l'écran AFFICHE sous un champ > un champ saisi et refusé l'est, champ par champ 0ms
+   × ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-2 — un e-mail VALIDE seul suffit : rien ne retient 1ms
+     → expected [ 'needPhone' ] to deeply equal []
+   × ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-1 — ni numéro ni e-mail (même des blancs) : une seule raison, « un numéro ou un e-mail » 1ms
+     → expected [ 'needPhone' ] to deeply equal [ 'needIdentifier' ]
+   × ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, numéro absent : « adresse invalide », pas « manque un moyen de joindre » 1ms
+     → expected [ 'needPhone', 'needEmailValid' ] to deeply equal [ 'needEmailValid' ]
+   ✓ ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-8 — un numéro SAISI et invalide retient même avec un e-mail valide (l'e-mail ne « rachète » pas un numéro faux) 0ms
+   × ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > l'écran et le serveur rendent le MÊME verdict sur les neuf paires (numéro, e-mail) : absent / valide / invalide 3ms
+     → la comparaison discrimine: expected 2 to be 3 // Object.is equality
+   × contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > ⛔ L36-1 — sans numéro, la clé `contactPhone` est ABSENTE du corps (ni "", ni null, ni « +213 » seul) ; l'e-mail part rogné 1ms
+     → expected true to be false // Object.is equality
+   ✓ contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis, e-mail omis s'il est vide 0ms
+   ✓ contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > l'e-mail saisi part rogné 0ms
+   ✓ contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > le corps passe le schéma du SERVEUR tel quel, et son téléphone se relit à l'identique (aller-retour) 0ms
+stdout | src/venues/booking-requests-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/venues/booking-requests-section.test.tsx (11 tests | 2 failed) 2634ms
+   ✓ Demandes pro — ce que l'écran doit rendre évident > le CONFLIT est annoncé AVANT le clic, pas découvert après 212ms
+   ✓ Demandes pro — ce que l'écran doit rendre évident > aucun badge de conflit quand il n'y en a pas — le silence est une information 28ms
+   ✓ Demandes pro — ce que l'écran doit rendre évident > une demande ACCEPTÉE dit que la date restera prise jusqu'à annulation (D80) 126ms
+   ✓ Demandes pro — ce que l'écran doit rendre évident > le CONTACT est affiché — c'est la raison d'être de la liste 27ms
+   ✓ Demandes pro — ce que l'écran doit rendre évident > accepter RECHARGE la liste : accepter l'une peut rendre les autres impossibles 80ms
+   ✓ Demandes pro — ce que l'écran doit rendre évident > un 409 recharge AUSSI : l'échec signifie précisément que l'affichage est périmé 48ms
+   ✓ Demandes pro — ce que l'écran doit rendre évident > liste vide : dit explicitement, jamais une section muette 13ms
+   × ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > ML-5 — sans numéro, l'E-MAIL est affiché à la place — jamais le mot « null », jamais un trou 1041ms
+     → Unable to find an element with the text: amina@example.dz. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+   × ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > ML-18 — le contact s'écrit de gauche à droite (`dir="ltr"`) : un e-mail dans une page arabe ne se retourne pas 1015ms
+     → Unable to find an element with the text: amina@example.dz. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+   ✓ ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > avec les deux, le NUMÉRO est affiché (le pro rappelle d'abord) et l'e-mail n'est pas répété 21ms
+   ✓ ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > aucun des deux (impossible en base, mais l'écran ne s'écroule pas) : la ligne se rend, sans contact 18ms
+ ❯ src/dashboard/walkin-journey.test.tsx (130 tests | 2 failed) 51535ms
+   ✓ Flux par étapes — une seule question à l'écran > s'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule  303ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité  368ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré  525ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte 65ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations 126ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque champ client porte un LABEL visible — des cases nues ne se distinguent pas 93ms
+   ✓ Flux par étapes — une seule question à l'écran > le fil de progression NOMME l'étape courante pour un lecteur d'écran 242ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > fige la réponse validée en ligne de récapitulatif 201ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > ⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis  431ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran  393ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > « Modifier » ramène à l'étape, sans rien effacer  349ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette  366ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse  418ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »  351ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ une étape SANS réponse n'est pas cliquable dans le rail 37ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > « Annuler » remet tout à zéro et ramène à la première question  301ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien  468ms
+   ✓ Date et créneau sont DEUX écrans > l'étape date montre la grille du mois, jamais les créneaux 230ms
+   ✓ Date et créneau sont DEUX écrans > ⚠ l'étape créneau montre les créneaux, PAS la grille du mois  324ms
+   ✓ La date vient du calendrier réel > une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide  315ms
+   ✓ La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question  470ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite  423ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse  510ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite  437ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ GARDE DE SOURCE — l'application Pro ne bâtit AUCUNE référence : ni `DEVIS-` ni `padStart` dans le parcours (la référence vient du serveur) 2ms
+   ✓ Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus  415ms
+   ✓ Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré  361ms
+   ✓ Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près  417ms
+   ✓ Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge  533ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > ⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé 31ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > emmène le focus sur la carte de l'étape à chaque transition 143ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > fait aussi défiler, en une seule fois 87ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille  461ms
+   ✓ Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien  490ms
+   ✓ Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »  479ms
+   ✓ Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)  452ms
+   ✓ La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33)  426ms
+   ✓ La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours  454ms
+   ✓ La remise par canal (Q2) et le catalogue > le catalogue affiché est celui de la SALLE — aucune prestation inventée 298ms
+   ✓ La remise par canal (Q2) et le catalogue > ⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133) 299ms
+   ✓ Point D — chrome partagée > ⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation 140ms
+   ✓ Point D — chrome partagée > le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro 25ms
+   ✓ Point D — chrome partagée > le bouton « Modifier » est le composant partagé, identique au client 143ms
+   ✓ Point D — chrome partagée > ⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite 160ms
+   ✓ Point D — chrome partagée > la coche du rail est une icône, la même que côté client 139ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > l'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape ne les contient pas 26ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > seuls les chiffres passent, au plus la longueur du modèle 138ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloquée ; « Continuer » dit pourquoi 51ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > le texte d'aide dit la longueur du modèle (plus de « 8 à 9 ») 26ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion  463ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit 104ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > le français accentué, les noms composés, l'apostrophe et L'ARABE passent — le champ n'est pas en erreur 115ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction 73ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison 56ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143)  487ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > ⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne 31ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > le même exemple existe en ARABE, pour chacun des champs 2ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `aria-describedby` 84ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre 77ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle 88ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout répondu : plus de liste, plus de description, le bouton s'active 88ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé) 63ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe 103ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer 272ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation 106ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ on ne saute PAS une étape incomplète : le libellé d'une étape sans réponse n'est dans aucun bouton 140ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > l'étape COURANTE n'est pas cliquable non plus : « Modifier » n'existerait pas 133ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer 291ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT  348ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique) 297ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit  501ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est 28ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé  557ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`  464ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise  491ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation  454ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre  450ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et le client  430ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue  473ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran  549ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS  353ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone  501ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > avec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF  384ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  2296ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle  444ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  904ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF  474ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)  452ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)  542ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé  468ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise  476ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)  487ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »  533ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  2528ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons  391ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  2225ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré  473ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements  485ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran  559ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte  503ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  2174ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  1418ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`  569ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois  538ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule  421ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu  452ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir`  412ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et IDENTIQUES dans les deux catalogues (« Français » ne se traduit pas en arabe) 1ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — le CONTACT est la PREMIÈRE étape, les NOMS la seconde : le rail le dit dans cet ordre, et la première question est celle du contact 22ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ S-57 — la recherche porte d'abord sur le NUMÉRO, puis sur l'E-MAIL ; un numéro trouvé ne cherche pas l'e-mail 122ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche TROUVÉE PRÉREMPLIT les noms de CE devis, modifiables ; aucune fiche n'est créée ; le devis porte la fiche et les noms DE L'ÉCRAN  361ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux champs de nom sont GRISÉS, le texte le dit, et le devis porte les noms de la FICHE  351ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE RENDUE par la création (K-2, `created: false`) : ses noms s'IMPOSENT au devis, quels que soient les noms tapés  369ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > un AUTRE numéro après une fiche trouvée, et pas de fiche pour lui : les noms de l'ANCIENNE fiche ne passent pas au nouveau client 127ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE  394ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-4 — le numéro du PRO refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis 102ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise  598ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN  455ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  774ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi  437ms
+   × ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite 384ms
+     → expected true to be false // Object.is equality
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > L36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite  435ms
+   × ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail » 420ms
+     → expected 'Client présent sur placeNouvelle rése…' to contain 'un numéro de mobile ou une adresse e-…'
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont  451ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue  483ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine)  493ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé  447ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part  447ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé  486ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > le récapitulatif : l'étape Contact dit le numéro, l'étape Client les noms et les invités — aucun montant 139ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > contactBlockers — ce qui empêche de CONCLURE > ⛔ L36-1 (D337) — un contact vide retient le prénom, le nom et « un numéro OU un e-mail » — dans l'ordre de l'écran
+AssertionError: expected [ 'needFirstName', …(2) ] to deeply equal [ 'needFirstName', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "needFirstName",
+    "needLastName",
+-   "needIdentifier",
++   "needPhone",
+  ]
+
+ ❯ src/dashboard/walkin-contact.test.ts:45:41
+     43| 
+     44|   it("⛔ L36-1 (D337) — un contact vide retient le prénom, le nom et « …
+     45|     expect(contactBlockers(NO_CONTACT)).toEqual(["needFirstName", "nee…
+       |                                         ^
+     46|   });
+     47| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > contactBlockers — ce qui empêche de CONCLURE > ⚠ chaque raison est PRÉCISE : le prénom manque ≠ le nom manque ≠ aucun moyen de joindre le client
+AssertionError: expected [ 'needPhone' ] to deeply equal [ 'needIdentifier' ]
+
+- Expected
++ Received
+
+  [
+-   "needIdentifier",
++   "needPhone",
+  ]
+
+ ❯ src/dashboard/walkin-contact.test.ts:51:56
+     49|     expect(contactBlockers({ ...COMPLET, firstName: "  " })).toEqual([…
+     50|     expect(contactBlockers({ ...COMPLET, lastName: "" })).toEqual(["ne…
+     51|     expect(contactBlockers({ ...COMPLET, phone: "" })).toEqual(["needI…
+       |                                                        ^
+     52|   });
+     53| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > contactBlockers — ce qui empêche de CONCLURE > ⚠ le téléphone : vide (sans e-mail) ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états
+AssertionError: expected [ 'needPhone' ] to deeply equal [ 'needIdentifier' ]
+
+- Expected
++ Received
+
+  [
+-   "needIdentifier",
++   "needPhone",
+  ]
+
+ ❯ src/dashboard/walkin-contact.test.ts:70:56
+     68| 
+     69|   it("⚠ le téléphone : vide (sans e-mail) ≠ premier chiffre refusé ≠ i…
+     70|     expect(contactBlockers({ ...COMPLET, phone: "" })).toEqual(["needI…
+       |                                                        ^
+     71|     expect(phoneLeadingRejected(MAUVAIS_PREMIER)).toBe(true);
+     72|     expect(contactBlockers({ ...COMPLET, phone: MAUVAIS_PREMIER })).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-2 — un e-mail VALIDE seul suffit : rien ne retient
+AssertionError: expected [ 'needPhone' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "needPhone",
++ ]
+
+ ❯ src/dashboard/walkin-contact.test.ts:168:42
+    166| 
+    167|   it("ML-2 — un e-mail VALIDE seul suffit : rien ne retient", () => {
+    168|     expect(contactBlockers(SANS_NUMERO)).toEqual([]);
+       |                                          ^
+    169|   });
+    170| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-1 — ni numéro ni e-mail (même des blancs) : une seule raison, « un numéro ou un e-mail »
+AssertionError: expected [ 'needPhone' ] to deeply equal [ 'needIdentifier' ]
+
+- Expected
++ Received
+
+  [
+-   "needIdentifier",
++   "needPhone",
+  ]
+
+ ❯ src/dashboard/walkin-contact.test.ts:172:67
+    170| 
+    171|   it("ML-1 — ni numéro ni e-mail (même des blancs) : une seule raison,…
+    172|     expect(contactBlockers({ ...COMPLET, phone: "", email: "" })).toEq…
+       |                                                                   ^
+    173|     expect(contactBlockers({ ...COMPLET, phone: "", email: "   " })).t…
+    174|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, numéro absent : « adresse invalide », pas « manque un moyen de joindre »
+AssertionError: expected [ 'needPhone', 'needEmailValid' ] to deeply equal [ 'needEmailValid' ]
+
+- Expected
++ Received
+
+  [
++   "needPhone",
+    "needEmailValid",
+  ]
+
+ ❯ src/dashboard/walkin-contact.test.ts:177:73
+    175| 
+    176|   it("ML-8 — un e-mail SAISI et invalide retient, numéro absent : « ad…
+    177|     expect(contactBlockers({ ...COMPLET, phone: "", email: "amine@" })…
+       |                                                                         ^
+    178|   });
+    179| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > l'écran et le serveur rendent le MÊME verdict sur les neuf paires (numéro, e-mail) : absent / valide / invalide
+AssertionError: la comparaison discrimine: expected 2 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 2
+
+ ❯ src/dashboard/walkin-contact.test.ts:201:52
+    199|     }
+    200|     expect(examinees).toBe(9);
+    201|     expect(acceptees, "la comparaison discrimine").toBe(3);
+       |                                                    ^
+    202|   });
+    203| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  src/dashboard/walkin-contact.test.ts > contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > ⛔ L36-1 — sans numéro, la clé `contactPhone` est ABSENTE du corps (ni "", ni null, ni « +213 » seul) ; l'e-mail part rogné
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/dashboard/walkin-contact.test.ts:208:73
+    206|   it("⛔ L36-1 — sans numéro, la clé `contactPhone` est ABSENTE du corp…
+    207|     const corps = contactPayload({ firstName: "Amine", lastName: "Belk…
+    208|     expect(Object.prototype.hasOwnProperty.call(corps, "contactPhone")…
+       |                                                                         ^
+    209|     expect(corps).toEqual({ contactFirstName: "Amine", contactLastName…
+    210|     const verdict = quoteConvertSchema.safeParse({ ...corps, paymentMe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2091:110
+    2089|     const { clients, quotes } = await jusquALaConversionParEmail();
+    2090|     expect(telephone().value).toBe("");
+    2091|     expect((screen.getByRole("button", { name: "Enregistrer sans bloqu…
+       |                                                                                                              ^
+    2092|     fireEvent.click(screen.getByRole("button", { name: "Enregistrer sa…
+    2093|     await waitFor(() => expect(quotes.convert).toHaveBeenCalledTimes(1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail »
+AssertionError: expected 'Client présent sur placeNouvelle rése…' to contain 'un numéro de mobile ou une adresse e-…'
+
+Expected: "un numéro de mobile ou une adresse e-mail est obligatoire"
+Received: "Client présent sur placeNouvelle réservationCréez une réservation pour un client venu sur place. Le calendrier est synchronisé en temps réel.AnnulerContactClientDateCréneauPrestations6DevisContactamina@example.dzModifierClientAmina Bensalem · Invités : 200ModifierDate2026-08-15ModifierCréneauSoiréeModifierPrestationsAucune prestationModifierÉtape 6 sur 6DevisLes montants sont calculés par le serveur.Modifier le devisTotal à facturerRéférence DEVIS-2026-0003-0014 v1Location de la salle1 581 000 DAPrestations3 205 000 DATotal à payer4 786 000 DAAcompte1 500 000 DACoordonnées du clientPréremplies depuis la fiche et le devis : vérifiez-les avant de remettre le devis ou de conclure. Rien n'est réécrit dans la fiche.PrénomNomTéléphone+213Format international : +213 suivi de 9 chiffres.E-mail (facultatif)Laissez vide si le client n'en a pas — le téléphone suffit.Remise du devis au clientImprimé et remisEnvoyé par SMSEnvoyé par e-mailAnnoncé de vive voixConvenu par téléphoneChaque bouton enregistre comment vous avez remis le devis et télécharge son PDF récapitulatif.SMS et téléphone demandent un numéro de mobile valide dans les informations client. L'e-mail demande une adresse valide dans les informations client.Bloquer la dateEnregistrer sans bloquerNom, prénom et téléphone du client sont nécessaires pour conclure.« Bloquer la date » la rend indisponible immédiatement. « Enregistrer sans bloquer » la laisse libre : un autre client peut la prendre d'ici au paiement.Précédent"
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2117:45
+    2115|     expect(enregistrer.disabled).toBe(true);
+    2116|     expect(quotes.convert).not.toHaveBeenCalled();
+    2117|     expect(document.body.textContent ?? "").toContain(FR.needIdentifie…
+       |                                             ^
+    2118|   });
+    2119| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  src/venues/booking-requests-section.test.tsx > ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > ML-5 — sans numéro, l'E-MAIL est affiché à la place — jamais le mot « null », jamais un trou
+TestingLibraryElementError: Unable to find an element with the text: amina@example.dz. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/venues/booking-requests-section.test.tsx:121:31
+    119|   it("ML-5 — sans numéro, l'E-MAIL est affiché à la place — jamais le …
+    120|     setup([SANS_NUMERO]);
+    121|     const mail = await screen.findByText("amina@example.dz");
+       |                               ^
+    122|     expect(mail).toBeInTheDocument();
+    123|     expect(document.body.textContent ?? "").not.toMatch(/\bnull\b|unde…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  src/venues/booking-requests-section.test.tsx > ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > ML-18 — le contact s'écrit de gauche à droite (`dir="ltr"`) : un e-mail dans une page arabe ne se retourne pas
+TestingLibraryElementError: Unable to find an element with the text: amina@example.dz. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card"
+    >
+      <h2>
+        Demandes de réservation
+      </h2>
+      <p
+        class="field-hint"
+      >
+        Rien n'est bloqué tant que vous n'avez pas accepté. Plusieurs demandes peuvent porter sur la même date — c'est vous qui tranchez.
+      </p>
+      <ul
+        style="list-style: none; padding: 0px; margin: 0px; display: grid; gap: 10px;"
+      >
+        <li
+          style="display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); opacity: 1;"
+        >
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;"
+          >
+            <strong
+              style="text-decoration: none;"
+            >
+              2027-08-15
+               · Soirée
+            </strong>
+            <span
+              class="field-hint"
+            >
+              Statut : En attente
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              Amina
+               
+              Bensalem
+            </span>
+            <span
+              class="field-hint"
+            />
+            <span
+              class="field-hint"
+            >
+              250 invités
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 12px; flex-wrap: wrap;"
+          >
+            <span>
+              200 000 DA
+            </span>
+            <span
+              class="field-hint"
+            >
+              acompte 60 000 DA
+            </span>
+          </div>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap;"
+          >
+            <button
+              class="btn btn-accent"
+              type="button"
+            >
+              Accepter
+            </button>
+            <button
+              class="btn btn-ghost"
+              type="button"
+            >
+              Refuser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/venues/booking-requests-section.test.tsx:128:31
+    126|   it("ML-18 — le contact s'écrit de gauche à droite (`dir=\"ltr\"`) : …
+    127|     setup([SANS_NUMERO]);
+    128|     const mail = await screen.findByText("amina@example.dz");
+       |                               ^
+    129|     expect(mail.getAttribute("dir")).toBe("ltr");
+    130|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  12 failed | 156 passed (168)
+   Start at  01:12:48
+   Duration  56.87s (transform 2.34s, setup 776ms, collect 6.83s, tests 54.22s, environment 3.95s, prepare 731ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/dashboard/walkin-contact.test.ts src/dashboard/walkin-journey.test.tsx src/venues/booking-requests-section.test.tsx

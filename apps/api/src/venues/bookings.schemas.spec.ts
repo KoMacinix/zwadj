@@ -63,14 +63,11 @@ describe("bookingCreateSchema — ce qu'il doit REFUSER", () => {
     expect(bookingCreateSchema.safeParse(without).success).toBe(false);
   });
 
-  /** TROIS, pas quatre : l'e-mail est sorti de cette liste avec D135, et il est
-   *  prouvé du côté ACCEPTER. Nom, prénom et téléphone restent obligatoires
-   *  parce que `User.firstName`, `lastName` et `phone` sont tous nullable — le
-   *  compte ne peut pas les fournir de façon fiable — et parce que
-   *  `contact_phone` est NOT NULL en base : le téléphone est le canal par lequel
-   *  le pro rappelle. */
-  it("les trois champs de contact obligatoires — le profil ne les garantit pas (D135)", () => {
-    for (const key of ["contactFirstName", "contactLastName", "contactPhone"]) {
+  /** DEUX, désormais : le prénom et le nom. ⛔ L36-1 (D337) : le TÉLÉPHONE est sorti de cette liste, comme l'e-mail l'était depuis D135 —
+   *  `contact_phone` est facultatif en base, et c'est « un numéro OU un e-mail » (au moins l'un des deux) qui est exigé, prouvé plus bas.
+   *  Ils restent obligatoires parce que `User.firstName` et `lastName` sont nullable : le compte ne peut pas les fournir de façon fiable. */
+  it("le prénom et le nom restent obligatoires — le profil ne les garantit pas (D135)", () => {
+    for (const key of ["contactFirstName", "contactLastName"]) {
       const body: Record<string, unknown> = { ...VALID };
       delete body[key];
       expect(bookingCreateSchema.safeParse(body).success, key).toBe(false);
@@ -113,6 +110,67 @@ describe("bookingCreateSchema — ce qu'il doit REFUSER", () => {
 
   it("une clé inconnue : `.strict()` ferme la porte", () => {
     expect(bookingCreateSchema.safeParse({ ...VALID, totalCents: 1 }).success).toBe(false);
+  });
+});
+
+// ══ L36-1 (D337) — LA RÉSERVATION PAR E-MAIL SEUL ═══════════════════════════════════════════════════════════════════
+// Q2 de Ko (22/10/2026) : « Une réservation est tout à fait possible avec une adresse e-mail uniquement. » Le numéro devient facultatif ; UN des deux
+// est exigé. Les cas ci-dessous viennent des modes de défaillance ML-1, ML-2, ML-3, ML-8, ML-9, ML-10 et ML-17 (`docs/preuves/D337/modes-de-defaillance.md`).
+describe("⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1)", () => {
+  const sans = (...cles: string[]): Record<string, unknown> => {
+    const corps: Record<string, unknown> = { ...VALID };
+    for (const cle of cles) delete corps[cle];
+    return corps;
+  };
+  const CLE_NEUVE = "booking.validation.contactChannelRequired";
+
+  it("ML-2 — un e-mail SEUL : accepté, et le numéro reste ABSENT de la donnée (pas une chaîne vide)", () => {
+    const r = bookingCreateSchema.safeParse(sans("contactPhone"));
+    expect(r.success).toBe(true);
+    if (r.success) {
+      expect("contactPhone" in r.data).toBe(false);
+      expect(r.data.contactEmail).toBe("amina@example.dz");
+    }
+  });
+
+  it("un numéro SEUL : accepté (le parcours d'avant, D135)", () => {
+    expect(bookingCreateSchema.safeParse(sans("contactEmail")).success).toBe(true);
+  });
+
+  it("ML-1 — NI numéro NI e-mail : refusé, avec la clé du message neuf, portée par le champ du numéro", () => {
+    const r = bookingCreateSchema.safeParse(sans("contactPhone", "contactEmail"));
+    expect(r.success).toBe(false);
+    if (!r.success) {
+      const ciblee = r.error.issues.filter((i) => i.message === CLE_NEUVE);
+      expect(ciblee).toHaveLength(1);
+      expect(ciblee[0]?.path).toEqual(["contactPhone"]);
+    }
+  });
+
+  it("ML-8 — un numéro SAISI et invalide est refusé même avec un e-mail valide (et l'inverse)", () => {
+    expect(bookingCreateSchema.safeParse({ ...VALID, contactPhone: "021234567" }).success).toBe(false);
+    expect(bookingCreateSchema.safeParse({ ...sans("contactPhone"), contactEmail: "amina@" }).success).toBe(false);
+    expect(bookingCreateSchema.safeParse({ ...VALID, contactEmail: "amina@" }).success).toBe(false);
+  });
+
+  it("ML-9 — « facultatif » veut dire CLÉ OMISE : un numéro VIDE n'est pas un numéro absent, même avec un e-mail", () => {
+    expect(bookingCreateSchema.safeParse({ ...VALID, contactPhone: "" }).success).toBe(false);
+    expect(bookingCreateSchema.safeParse({ ...sans("contactEmail"), contactPhone: "" }).success).toBe(false);
+  });
+
+  it("ML-10 — `contactPhone: null` n'est pas une absence : refusé", () => {
+    expect(bookingCreateSchema.safeParse({ ...VALID, contactPhone: null }).success).toBe(false);
+    expect(bookingCreateSchema.safeParse({ ...sans("contactEmail"), contactPhone: null }).success).toBe(false);
+  });
+
+  it("ML-3 (S-55, SIGNALEMENT SANS ALIGNEMENT) — l'e-mail de la réservation est ROGNÉ seulement : « Amina@Example.DZ » reste tel que saisi, alors que la fiche le met en minuscules", () => {
+    const r = bookingCreateSchema.safeParse({ ...sans("contactPhone"), contactEmail: "  Amina@Example.DZ  " });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.contactEmail).toBe("Amina@Example.DZ");
+  });
+
+  it("ML-17 — la règle s'ajoute SANS retirer `.strict()` : une clé inconnue reste refusée, e-mail seul compris", () => {
+    expect(bookingCreateSchema.safeParse({ ...sans("contactPhone"), totalCents: 1 }).success).toBe(false);
   });
 });
 

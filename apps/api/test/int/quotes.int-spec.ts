@@ -425,15 +425,46 @@ describe("Conversion — la chaîne complète, dans l'ordre", () => {
     expect(booking.contactPhone).toBe("+213550000001");
   });
 
-  it("⚠ D135 — mais le téléphone reste EXIGÉ : l'assouplir ne l'a pas emporté", async () => {
+  // ⛔ L36-1 (D337) — « le téléphone reste EXIGÉ » (D135) ne tient plus : Q2 de Ko (22/10/2026), une réservation est possible avec une adresse e-mail uniquement.
+  // L'exigence devient « un numéro OU un e-mail » ; ce qu'il faut encore prouver, c'est que l'assouplissement n'a pas emporté LES DEUX (ML-1) et que le numéro, quand il
+  // est donné, reste exigé VALIDE (ML-8). ML-2 : la ligne née porte `contact_phone` NULL.
+  const lireContact = async (bookingId: string) =>
+    (await ctx.prisma.$queryRaw<{ contact_phone: string | null; contact_email: string | null }[]>`SELECT contact_phone, contact_email FROM bookings WHERE id = ${bookingId}::uuid`)[0];
+
+  it("⛔ L36-1, ML-2 — un client avec un E-MAIL SEUL se convertit : la réservation née a `contact_phone` NULL et garde l'e-mail", async () => {
     const f = await setup();
     const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
-
     const { contactPhone: _sansTel, ...sansPhone } = CONTACT;
-    // 400 et non 201 : c'est l'écart qui prouve que la borne n'a bougé que d'un
-    // champ. Sans cette assertion, un `.optional()` posé par erreur sur le
-    // téléphone passerait inaperçu.
-    await act(f, q.id, "convert", sansPhone).expect(400);
+    const after = (await act(f, q.id, "convert", sansPhone).expect(201)).body as QuoteDTO;
+    expect(await lireContact(after.bookingId as string)).toEqual({ contact_phone: null, contact_email: "amina@example.dz" });
+  });
+
+  it("⛔ L36-1, ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, aucune réservation n'est créée, le devis reste convertible", async () => {
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    const { contactPhone: _sansTel, contactEmail: _sansMail, ...ni } = CONTACT;
+    const res = await act(f, q.id, "convert", ni);
+    expect(res.status).toBe(400);
+    expect(JSON.stringify(res.body)).toContain("quote.validation.contactChannelRequired");
+    expect(await ctx.prisma.booking.count()).toBe(0);
+    await act(f, q.id, "convert", CONTACT).expect(201);
+  });
+
+  it("⛔ L36-1, ML-8 et ML-9 — un numéro SAISI reste exigé valide, même avec un e-mail valide : invalide, vide ou null ⇒ 400, aucune réservation", async () => {
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    for (const contactPhone of ["021234567", "", null]) {
+      const res = await act(f, q.id, "convert", { ...CONTACT, contactPhone });
+      expect(res.status, JSON.stringify(contactPhone)).toBe(400);
+    }
+    expect(await ctx.prisma.booking.count()).toBe(0);
+  });
+
+  it("ML-16 — un devis SANS fiche (tous ceux d'avant le rang 41) se convertit avec un numéro comme avant : les deux colonnes sont écrites", async () => {
+    const f = await setup();
+    const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    const after = (await act(f, q.id, "convert", CONTACT).expect(201)).body as QuoteDTO;
+    expect(await lireContact(after.bookingId as string)).toEqual({ contact_phone: "+213550000001", contact_email: "amina@example.dz" });
   });
 
   it("convertir crée une demande PENDING, et le devis NE BOUGE PAS", async () => {

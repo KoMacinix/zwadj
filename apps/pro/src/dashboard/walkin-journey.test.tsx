@@ -2065,26 +2065,71 @@ describe("⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la convers
     expect((screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement).disabled).toBe(false);
   });
 
-  it("⛔ K-12 — une fiche SANS numéro (trouvée par l'e-mail) : le numéro est DEMANDÉ à la conversion ; la fiche n'est PAS réécrite", async () => {
-    const { clients, quotes } = await setup({
-      clients: { lookup: trouvee(fiche({ phone: null, email: "amina@example.dz" })) },
-      quotes: { create: vi.fn().mockResolvedValue(draft({ clientRecordId: "fiche-9", clientNameLatin: "Amina Bensalem" })), convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" })) }
-    });
+  // ⛔ L36-1 (D337) — la conversion par E-MAIL SEUL : « le numéro est DEMANDÉ » (rang 41, K-12) ne tient plus. Q2 de Ko : une réservation est possible avec une adresse e-mail
+  // uniquement. ML-1, ML-2, ML-6, ML-9.
+  const fichePourEmailSeul = () => ({
+    clients: { lookup: trouvee(fiche({ phone: null, email: "amina@example.dz" })) },
+    quotes: {
+      create: vi.fn().mockResolvedValue(draft({ clientRecordId: "fiche-9", clientNameLatin: "Amina Bensalem" })),
+      convert: vi.fn().mockResolvedValue(draft({ status: "SENT", bookingId: "b1" }))
+    }
+  });
+  async function jusquALaConversionParEmail() {
+    const outils = await setup(fichePourEmailSeul());
     fireEvent.change(screen.getByLabelText(FR.contactEmail), { target: { value: "amina@example.dz" } });
     continuer();
     await laisserRetomber();
     await laisserRetomber();
-    expect(vi.mocked(clients.lookup).mock.calls.map((c) => c[0])).toEqual([{ email: "amina@example.dz" }]);
     await validerClient();
     await calculer();
+    return outils;
+  }
+
+  it("⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite", async () => {
+    const { clients, quotes } = await jusquALaConversionParEmail();
     expect(telephone().value).toBe("");
-    expect((screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement).disabled).toBe(true);
+    expect((screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement).disabled).toBe(false);
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
+    await waitFor(() => expect(quotes.convert).toHaveBeenCalledTimes(1));
+    const corps = vi.mocked(quotes.convert).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+    expect(Object.prototype.hasOwnProperty.call(corps, "contactPhone"), "la clé du numéro doit être ABSENTE").toBe(false);
+    expect(corps).toEqual(expect.objectContaining({ contactEmail: "amina@example.dz", paymentMethod: "CASH" }));
+    expect(clients.update).not.toHaveBeenCalled();
+    expect(clients.completeNames).not.toHaveBeenCalled();
+  });
+
+  it("L36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite", async () => {
+    const { clients, quotes } = await jusquALaConversionParEmail();
     fireEvent.change(telephone(), { target: { value: "0661234567" } });
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
     await waitFor(() => expect(quotes.convert).toHaveBeenCalledTimes(1));
     expect(vi.mocked(quotes.convert).mock.calls[0]?.[1]).toEqual(expect.objectContaining({ contactPhone: "+213661234567", contactEmail: "amina@example.dz" }));
     expect(clients.update).not.toHaveBeenCalled();
-    expect(clients.completeNames).not.toHaveBeenCalled();
+  });
+
+  it("ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail »", async () => {
+    const { quotes } = await jusquALaConversionParEmail();
+    // À la conversion, l'e-mail porte le libellé de la RUBRIQUE (« FR.email »), pas celui de l'étape Contact (« FR.contactEmail »).
+    fireEvent.change(screen.getByLabelText(FR.email), { target: { value: "" } });
+    const enregistrer = screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement;
+    expect(enregistrer.disabled).toBe(true);
+    expect(quotes.convert).not.toHaveBeenCalled();
+    expect(document.body.textContent ?? "").toContain(FR.needIdentifier);
+  });
+
+  it("ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont", async () => {
+    await jusquALaConversionParEmail();
+    const sv = messages.fr.venue.ui.quotes as Record<string, string>;
+    const canal = (c: QuoteSentVia) => screen.getByRole("button", { name: sv[`sv_${c}`] as string }) as HTMLButtonElement;
+    expect(canal(QUOTE_SENT_VIA.SMS).disabled).toBe(true);
+    expect(canal(QUOTE_SENT_VIA.PHONE).disabled).toBe(true);
+    expect(canal(QUOTE_SENT_VIA.EMAIL).disabled).toBe(false);
+    expect(canal(QUOTE_SENT_VIA.PRINT).disabled).toBe(false);
+    expect(canal(QUOTE_SENT_VIA.IN_PERSON).disabled).toBe(false);
+    // …et dès qu'un numéro valide est ajouté, SMS et appel s'ouvrent.
+    fireEvent.change(telephone(), { target: { value: "0661234567" } });
+    expect(canal(QUOTE_SENT_VIA.SMS).disabled).toBe(false);
+    expect(canal(QUOTE_SENT_VIA.PHONE).disabled).toBe(false);
   });
 
   it("⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue", async () => {

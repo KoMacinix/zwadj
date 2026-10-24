@@ -179,6 +179,27 @@ describe("⛔ Les deux téléphones ne se croisent pas non plus", () => {
   });
 });
 
+// ══ L36-1 (D337) — une réservation PAR E-MAIL SEUL : `bookings.contact_phone` est NULL ══════════════════════════════════
+// ML-5. La charge utile reste une CHAÎNE (aucun gabarit ne change, L36-9 est hors lot) : le texte « contact » est le numéro, à défaut l'e-mail — le patron que la
+// VISITE applique déjà (`contact: contactPhone ?? client.email`).
+describe("⛔ `contact` : le numéro, à défaut l'e-mail (ML-5)", () => {
+  it("e-mail seul : `contact` est l'e-mail — jamais « null », jamais « undefined », jamais une chaîne vide", () => {
+    const charge = buildBookingNotification(ligne({ contactPhone: null, contactEmail: "yasmine@example.dz" }), SALLE, CLIENT, null);
+    expect(charge.contact).toBe("yasmine@example.dz");
+    expect(typeof charge.contact).toBe("string");
+  });
+
+  it("les deux : le NUMÉRO l'emporte (le pro rappelle d'abord) — l'e-mail ne passe pas devant", () => {
+    const charge = buildBookingNotification(ligne({ contactPhone: "+213555000111", contactEmail: "yasmine@example.dz" }), SALLE, CLIENT, null);
+    expect(charge.contact).toBe("+213555000111");
+  });
+
+  it("le numéro du PRO ne devient jamais le contact du client, même sans numéro de client", () => {
+    const charge = buildBookingNotification(ligne({ contactPhone: null, contactEmail: "yasmine@example.dz" }), SALLE, CLIENT, null);
+    expect(charge.contact).not.toBe(charge.pro.phone);
+  });
+});
+
 describe("Les libellés bilingues ne se croisent pas", () => {
   it("FR et AR restent chacun de leur côté, salle comme créneau", () => {
     const charge = buildBookingNotification(ligne(), SALLE, CLIENT, null);

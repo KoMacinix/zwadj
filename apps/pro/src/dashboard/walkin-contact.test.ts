@@ -41,14 +41,14 @@ describe("contactBlockers — ce qui empêche de CONCLURE", () => {
     expect(contactBlockers(COMPLET)).toEqual([]);
   });
 
-  it("un contact vide retient le prénom, le nom et le téléphone — dans l'ordre de l'écran, jamais l'e-mail", () => {
-    expect(contactBlockers(NO_CONTACT)).toEqual(["needFirstName", "needLastName", "needPhone"]);
+  it("⛔ L36-1 (D337) — un contact vide retient le prénom, le nom et « un numéro OU un e-mail » — dans l'ordre de l'écran", () => {
+    expect(contactBlockers(NO_CONTACT)).toEqual(["needFirstName", "needLastName", "needIdentifier"]);
   });
 
-  it("⚠ chaque raison est PRÉCISE : le prénom manque ≠ le nom manque ≠ le téléphone manque", () => {
+  it("⚠ chaque raison est PRÉCISE : le prénom manque ≠ le nom manque ≠ aucun moyen de joindre le client", () => {
     expect(contactBlockers({ ...COMPLET, firstName: "  " })).toEqual(["needFirstName"]);
     expect(contactBlockers({ ...COMPLET, lastName: "" })).toEqual(["needLastName"]);
-    expect(contactBlockers({ ...COMPLET, phone: "" })).toEqual(["needPhone"]);
+    expect(contactBlockers({ ...COMPLET, phone: "" })).toEqual(["needIdentifier"]);
   });
 
   it("un nom écrit avec un caractère que le contrat refuse retient AUTREMENT qu'un nom absent", () => {
@@ -66,8 +66,8 @@ describe("contactBlockers — ce qui empêche de CONCLURE", () => {
     }
   });
 
-  it("⚠ le téléphone : vide ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états", () => {
-    expect(contactBlockers({ ...COMPLET, phone: "" })).toEqual(["needPhone"]);
+  it("⚠ le téléphone : vide (sans e-mail) ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états", () => {
+    expect(contactBlockers({ ...COMPLET, phone: "" })).toEqual(["needIdentifier"]);
     expect(phoneLeadingRejected(MAUVAIS_PREMIER)).toBe(true);
     expect(contactBlockers({ ...COMPLET, phone: MAUVAIS_PREMIER })).toEqual(["needPhoneLeading"]);
     const incomplet = NUMERO.slice(0, pays.nationalLength - 1);
@@ -158,7 +158,60 @@ describe("fieldErrors — ce que l'écran AFFICHE sous un champ", () => {
   });
 });
 
+// ══ L36-1 (D337) — la CONVERSION par e-mail seul : le numéro n'est plus exigé quand un e-mail valide est donné ═══════════
+// ML-1, ML-2, ML-8, ML-9. Une seule règle — `hasContactChannel` — que le serveur applique aussi (`quoteConvertSchema`) : l'écran refuse ce que le serveur refuse.
+describe("⛔ contactBlockers — un numéro OU un e-mail (L36-1)", () => {
+  const MAIL = "amine@example.com";
+  const SANS_NUMERO: Contact = { ...COMPLET, phone: "", email: MAIL };
+
+  it("ML-2 — un e-mail VALIDE seul suffit : rien ne retient", () => {
+    expect(contactBlockers(SANS_NUMERO)).toEqual([]);
+  });
+
+  it("ML-1 — ni numéro ni e-mail (même des blancs) : une seule raison, « un numéro ou un e-mail »", () => {
+    expect(contactBlockers({ ...COMPLET, phone: "", email: "" })).toEqual(["needIdentifier"]);
+    expect(contactBlockers({ ...COMPLET, phone: "", email: "   " })).toEqual(["needIdentifier"]);
+  });
+
+  it("ML-8 — un e-mail SAISI et invalide retient, numéro absent : « adresse invalide », pas « manque un moyen de joindre »", () => {
+    expect(contactBlockers({ ...COMPLET, phone: "", email: "amine@" })).toEqual(["needEmailValid"]);
+  });
+
+  it("ML-8 — un numéro SAISI et invalide retient même avec un e-mail valide (l'e-mail ne « rachète » pas un numéro faux)", () => {
+    expect(contactBlockers({ ...COMPLET, phone: MAUVAIS_PREMIER, email: MAIL })).toEqual(["needPhoneLeading"]);
+    expect(contactBlockers({ ...COMPLET, phone: NUMERO.slice(0, pays.nationalLength - 1), email: MAIL })).toEqual(["needPhoneIncomplete"]);
+  });
+
+  it("l'écran et le serveur rendent le MÊME verdict sur les neuf paires (numéro, e-mail) : absent / valide / invalide", () => {
+    const NUMEROS: [string, string][] = [["absent", ""], ["valide", NUMERO], ["invalide", NUMERO.slice(0, pays.nationalLength - 1)]];
+    const MAILS: [string, string][] = [["absent", ""], ["valide", MAIL], ["invalide", "amine@"]];
+    let examinees = 0;
+    let acceptees = 0;
+    for (const [nomN, phone] of NUMEROS) {
+      for (const [nomM, email] of MAILS) {
+        examinees += 1;
+        const contact: Contact = { ...COMPLET, phone, email };
+        const ecran = contactBlockers(contact).length === 0;
+        const serveur = quoteConvertSchema.safeParse({ ...contactPayload(contact), paymentMethod: "CASH" }).success;
+        if (ecran) acceptees += 1;
+        expect(serveur, `numéro ${nomN}, e-mail ${nomM}`).toBe(ecran);
+      }
+    }
+    expect(examinees).toBe(9);
+    expect(acceptees, "la comparaison discrimine").toBe(3);
+  });
+});
+
 describe("contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend", () => {
+  it("⛔ L36-1 — sans numéro, la clé `contactPhone` est ABSENTE du corps (ni \"\", ni null, ni « +213 » seul) ; l'e-mail part rogné", () => {
+    const corps = contactPayload({ firstName: "Amine", lastName: "Belkacem", phone: "", email: " amine@example.com " });
+    expect(Object.prototype.hasOwnProperty.call(corps, "contactPhone")).toBe(false);
+    expect(corps).toEqual({ contactFirstName: "Amine", contactLastName: "Belkacem", contactEmail: "amine@example.com" });
+    const verdict = quoteConvertSchema.safeParse({ ...corps, paymentMethod: "CASH" });
+    expect(verdict.success).toBe(true);
+    if (verdict.success) expect(Object.prototype.hasOwnProperty.call(verdict.data, "contactPhone")).toBe(false);
+  });
+
   it("noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis, e-mail omis s'il est vide", () => {
     const corps = contactPayload({ firstName: "  Amine ", lastName: "Belkacem  ", phone: NUMERO, email: "" });
     expect(corps).toEqual({ contactFirstName: "Amine", contactLastName: "Belkacem", contactPhone: `${pays.dialCode}${NUMERO}` });

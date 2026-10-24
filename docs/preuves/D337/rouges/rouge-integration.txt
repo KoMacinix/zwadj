@@ -1,0 +1,395 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:20400) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ test/int/quotes.int-spec.ts (54 tests | 2 failed) 28281ms
+   ✓ Création et chaîne de versions > un devis naît en DRAFT, v1, sa propre racine de chaîne  1281ms
+   ✓ Création et chaîne de versions > ⚠ `validUntil` n'est PLUS accepté : le schéma est strict (D160)  486ms
+   ✓ Création et chaîne de versions > le devis existe SANS client : le pro le tape pour quelqu'un qui hésite  500ms
+   ✓ Création et chaîne de versions > une révision crée la v2 de la MÊME chaîne, en DRAFT, sans rien remplacer  549ms
+   ✓ Remise du devis (D160) > enregistre le canal et l'horodatage SANS changer le statut  500ms
+   ✓ Remise du devis (D160) > est RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises  514ms
+   ✓ Remise du devis (D160) > refuse un canal HORS LISTE — le jeu de valeurs a une seule autorité  493ms
+   ✓ Remise du devis (D160) > ⚠ un devis REFUSÉ ne se remet plus au client  515ms
+   ✓ Remise du devis (D160) > deux remises SIMULTANÉES ne rendent jamais 500  494ms
+   ✓ Q2 — les statuts LEGACY ne sont plus écrits > le parcours complet ne laisse aucun SENT ni SUPERSEDED en base  654ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > l'index partiel des SENT est TOUJOURS EN BASE, et mord encore  516ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > un devis LEGACY en SENT reste LISIBLE et manipulable  494ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > SUPERSEDED reste distinct de CANCELLED, et le versionnement est CONSERVÉ  494ms
+   ✓ Concurrence (D121) > D121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500  491ms
+   ✓ Concurrence (D121) > D121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500  521ms
+   ✓ Concurrence (D121) > deux RÉVISIONS simultanées de la même chaîne : aucun doublon de version  523ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ un BROUILLON SE CONVERTIT, sans remise préalable (D160)  462ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ D135 — un client SANS e-mail se convertit : la borne Zod était plus stricte que la base  483ms
+   × Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-2 — un client avec un E-MAIL SEUL se convertit : la réservation née a `contact_phone` NULL et garde l'e-mail 421ms
+     → expected 201 "Created", got 400 "Bad Request"
+   × Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, aucune réservation n'est créée, le devis reste convertible 476ms
+     → expected '{"statusCode":400,"message":{"message…' to contain 'quote.validation.contactChannelRequir…'
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-8 et ML-9 — un numéro SAISI reste exigé valide, même avec un e-mail valide : invalide, vide ou null ⇒ 400, aucune réservation  490ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ML-16 — un devis SANS fiche (tous ceux d'avant le rang 41) se convertit avec un numéro comme avant : les deux colonnes sont écrites  466ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > convertir crée une demande PENDING, et le devis NE BOUGE PAS  517ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une PENDING ne verrouille rien : deux devis peuvent viser la MÊME date  586ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > un devis ne se convertit qu'UNE fois : réviser, pas reconvertir  521ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > les LIGNES du devis deviennent les lignes de la demande  548ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une CLÔTURE n'est pas une supersession  473ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité DECLINED  567ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une chaîne CLOSE ne se révise plus  488ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ `valid_until` n'existe plus dans la table 40ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ les DEUX index partiels, eux, sont TOUJOURS là 36ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > le DTO ne porte ni `isExpired` ni `validUntil`  455ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > une conversion aboutit, sans qu'aucune date de validité n'intervienne  463ms
+   ✓ Taux de transformation — la raison d'être de la table > compte des CHAÎNES, pas des versions : trois révisions sont UNE affaire  571ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis qui n'aboutit PAS existe quand même — c'était impossible avant  503ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis jamais REMIS ne compte pas  479ms
+   ✓ Taux de transformation — la raison d'être de la table > ⚠ un devis converti SANS remise n'entre PAS dans l'entonnoir  490ms
+   ✓ Taux de transformation — la raison d'être de la table > ⚠ une ligne HÉRITÉE (sentAt posé, sentVia nul) sort du dénominateur  447ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ DB-15 — `clientId` est RETIRÉ du contrat : le schéma strict le refuse (400) et n'écrit aucun devis  388ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > un devis SANS fiche se crée comme aujourd'hui : la fiche et les deux copies sont nulles  428ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > le devis porte la fiche et la copie du nom TELLE QUE SAISIE pour ce devis (DB-17), rognée — dans la réponse ET en base  479ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-15 — des noms SANS fiche, une fiche SANS nom, un nom invalide : 400, aucun devis écrit  452ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fiche inexistante, et aucun devis écrit  769ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_LINKED) ; les noms de la fiche passent  641ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-16 — une RÉVISION porte la copie FOURNIE (celle du devis précédent), jamais la fiche vivante — et la v1 garde la sienne  542ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-7 (R8) — MODIFIER la fiche (K-3b) ne touche AUCUNE copie déjà faite : le devis garde son nom  513ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > complète la copie MANQUANTE de la langue demandée : « ar » écrit le nom arabe, « fr » le nom latin — 201 et le devis rendu la porte  544ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS remplacée : 409 QUOTE_CLIENT_NAME_ALREADY_SET, la copie intacte  493ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 — deux compléments SIMULTANÉS de la même langue : un seul gagne, l'autre est refusé, et la base porte le nom du gagnant  517ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 1 — le nom de l'AUTRE écriture est le MÊME sur le devis et sur la fiche : la fiche est complétée AUSSI  480ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 2 — il DIFFÈRE (deux personnes, un numéro : M-24) : la fiche reste INTACTE, seule la copie est complétée  477ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 — la fiche a DÉJÀ un nom dans cette langue : la copie se complète, la fiche n'est jamais remplacée  459ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-6 — une fiche LIÉE n'est jamais complétée par la boîte : seule la copie du devis l'est  634ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > le devis d'un AUTRE pro, ou inexistant : 404 QUOTE_NOT_FOUND ; un corps invalide : 400  823ms
+ ❯ test/int/migration-non-empty.int-spec.ts (20 tests | 5 failed) 5410ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > prépare une base à l'avant-dernière migration, puis la sème  483ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⛔ D282 — la dernière migration REFUSE une base incohérente, et ne laisse RIEN 140ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ E3d-1 — l'index EXISTE ; son départage n'est plus mesurable ici (D282) 19ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ Q4 — la colonne a disparu, et RIEN d'autre 61ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ R4 — un BROUILLON JAMAIS REMIS peut être clos : les DEUX défauts sont fermés 81ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > les objets du lot PRÉCÉDENT n'ont pas bougé, et aucun canal n'a été inventé 83ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ l'index partiel des SENT tient encore — la migration ne l'a pas emporté 20ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot  413ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans l'ordre de création, départage par identifiant ; la séquence repart du maximum 179ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER) dans l'ordre de création ; les révisions recopient leur tête ; les compteurs valent le maximum 162ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle  584ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)  584ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les devis existants la traversent INCHANGÉS, leurs trois colonnes neuves sont NULLES, la table neuve est VIDE 141ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ les garanties que la migration pose (D186) : quatre CHECK, deux unicités PARTIELLES par pro, et l'action de chaque clé étrangère 56ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > après la migration : une fiche s'écrit, un devis EXISTANT s'y rattache ; supprimer la fiche remet son lien à NULL et le devis garde sa COPIE du nom 82ms
+   × ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux réservations (numéro + e-mail ; numéro seul) — où `contact_phone` est encore NOT NULL 102ms
+     → la migration du lot L36-1 existe: expected -1 to be greater than or equal to 0
+   × ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-4 — la migration passe sur la base NON VIDE : les deux réservations la traversent INTACTES, ligne à ligne, les trois colonnes de contact comprises 24ms
+     → relation "bookings" does not exist
+   × ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) : le CHECK porte les DEUX colonnes, sous son nom 40ms
+     → expected [] to deeply equal [ { is_nullable: 'YES' } ]
+   × ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-11 — après la migration : un e-mail SEUL s'écrit ; ni numéro ni e-mail est REFUSÉ (23514) ; retirer le dernier canal d'une ligne existante aussi, sans rien écrire 21ms
+     → relation "bookings" does not exist
+   × ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ML-15 — `visit_bookings.contact_phone` n'a pas bougé (nullable depuis D61, hors lot) et ne porte aucun CHECK de ce lot 27ms
+     → expected [] to deeply equal [ { is_nullable: 'YES' } ]
+(node:22444) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ test/int/bookings.int-spec.ts (60 tests | 6 failed) 86464ms
+   ✓ Reprise des salles existantes (migration D81) > une salle créée sans rien dire reçoit 30 % — les 30 % implicites d'avant  1875ms
+   ✓ Reprise des salles existantes (migration D81) > l'acompte est exposé sur la fiche PUBLIQUE, avant la demande  1449ms
+   ✓ POST /venues/:slug/bookings — création > crée une demande PENDING et NE VERROUILLE RIEN  1557ms
+   ✓ POST /venues/:slug/bookings — création > expiresAt vaut la fenêtre de réponse PRO, encadrée par deux instants mesurés ici  1351ms
+   ✓ POST /venues/:slug/bookings — création > le créneau 20h→02h produit une plage qui finit LE LENDEMAIN (D55/D77)  1341ms
+   ✓ POST /venues/:slug/bookings — création > DEUX demandes concurrentes sur la même date coexistent en PENDING  1405ms
+   ✓ POST /venues/:slug/bookings — création > le pro est notifié — sans notification, la demande expirerait toute seule  1383ms
+   ✓ POST /venues/:slug/bookings — création > ⚠ la ligne Notification est RÉSOLUE, pas laissée en QUEUED (S2-bis)  1367ms
+   ✓ POST /venues/:slug/bookings — création > un envoi qui TOMBE laisse la demande enregistrée (D63)  1378ms
+   ✓ POST /venues/:slug/bookings — création > des montants PÉRIMÉS rendent 409 avec les montants RÉELS (D75)  1364ms
+   ✓ POST /venues/:slug/bookings — création > un ACOMPTE périmé suffit à refuser, même si le total est bon  1430ms
+   ✓ POST /venues/:slug/bookings — création > plus d'invités que la capacité : refusé AVANT l'écriture  1358ms
+   ✓ POST /venues/:slug/bookings — création > une date au-delà de l'horizon de 18 mois se REFUSE, elle ne se déplace pas (D49)  1365ms
+   ✓ POST /venues/:slug/bookings — création > un créneau d'une AUTRE salle : « n'existe pas », pas « est pris »  1472ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > un acompte fixe SUPÉRIEUR au total est écrêté, la demande passe  1418ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > le PATCH refuse un pourcentage ET un montant à la fois  1407ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > le PATCH refuse la paire incomplète  1367ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > un taux de 4 % est sous le plancher  1320ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > la SECONDE acceptation reçoit 409 via le 23P01, et la première survit  1519ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > annuler la première LIBÈRE le créneau : la seconde passe alors  1543ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > ⚠ le pro NE PEUT PAS annuler une demande encore PENDING — il la REFUSE (S3)  1372ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > un BLOCAGE recouvrant refuse l'acceptation — contrôle applicatif sous verrou  1459ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > accepter deux fois : BOOKING_STATUS_CONFLICT, avec le statut réel  1441ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > l'acceptation pose paymentDueAt et prévient le client  1416ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > paymentDueAt − acceptedAt vaut EXACTEMENT la fenêtre d'acompte  1436ms
+   ✓ Acceptation CONCURRENTE (D117) > deux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500  1488ms
+   ✓ Acceptation CONCURRENTE (D117) > deux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN  1503ms
+   ✓ Acceptation CONCURRENTE (D117) > D121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client  1466ms
+   ✓ Acceptation CONCURRENTE (D117) > D121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit  1505ms
+   ✓ Acceptation CONCURRENTE (D117) > D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500  1369ms
+   ✓ Acceptation CONCURRENTE (D117) > trois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409  1447ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte  1536ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte  1519ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte  1507ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage  1478ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente  1490ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte  1437ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant  1466ms
+   ✓ SINGLE_SLOT — la journée entière (D77) > la plage couvre les 24 heures locales, sans règle applicative en plus  1430ms
+   ✓ SINGLE_SLOT — la journée entière (D77) > le créneau reste la source du PRIX, même si ses heures sont ignorées  1371ms
+   ✓ Refus et annulations (D83) > le pro refuse SANS motif — c'est permis  1459ms
+   ✓ Refus et annulations (D83) > le client annule une demande PENDING sans motif  1419ms
+   ✓ Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE  1509ms
+   ✓ Refus et annulations (D83) > 404 INDISTINCT sur la demande d'un autre client (D47)  1465ms
+   ✓ Lectures > GET /me/bookings ne rend QUE mes demandes, refusées comprises  1492ms
+   ✓ Lectures > le pro voit les CONFLITS, calculés à la lecture  1486ms
+   ✓ Lectures > ⚠ une réservation ACCEPTÉE dispute ENCORE — `locks()` n'était exercé QUE par des PENDING (S2-bis)  1453ms
+   ✓ Lectures > ⚠ une réservation CONFIRMED dispute ENCORE — le paiement ne la sort pas de la vue (S2-bis)  1375ms
+   ✓ Lectures > une demande REFUSÉE ne dispute plus rien : elle sort des conflits  1505ms
+   ✓ Lectures > le pro voit le CONTACT — il doit pouvoir rappeler  1350ms
+   × ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en base et l'e-mail est gardé 1348ms
+     → expected 201 "Created", got 400 "Bad Request"
+   × ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone` est null (jamais une chaîne vide) 1332ms
+     → expected 201 "Created", got 400 "Bad Request"
+   × ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », ni un trou 1364ms
+     → expected 201 "Created", got 400 "Bad Request"
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-4 — avec un numéro ET un e-mail, les DEUX sont gardés : la réservation d'avant n'a pas bougé  1405ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-4 — avec un numéro seul (le parcours d'avant), `contact_email` reste NULL  1372ms
+   × ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-3 (S-55, SIGNALEMENT) — l'e-mail est gardé tel que saisi, rogné seulement : « Amina@Example.DZ » 1426ms
+     → expected 201 "Created", got 400 "Bad Request"
+   × ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, et AUCUNE ligne n'est écrite 1382ms
+     → expected '{"statusCode":400,"message":{"message…' to contain 'booking.validation.contactChannelRequ…'
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-8 — un numéro SAISI et invalide est refusé même avec un e-mail valide : 400, aucune ligne  1347ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-9 et ML-10 — un numéro VIDE ou `null` n'est pas un numéro absent : 400, aucune ligne  1365ms
+   × ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé par la contrainte 1301ms
+     → expected 201 "Created", got 400 "Bad Request"
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en base et l'e-mail est gardé
+Error: expected 201 "Created", got 400 "Bad Request"
+ ❯ test/int/bookings.int-spec.ts:1174:72
+    1172|   it("ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en b…
+    1173|     const f = await setup();
+    1174|     const res = await post(f.clientToken, f.venue.slug, sansNumero(f))…
+       |                                                                        ^
+    1175|     const dto = res.body as BookingDTO;
+    1176|     expect(dto.status).toBe("PENDING");
+ ❯ Test._assertStatus ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:309:14
+ ❯ ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:365:13
+ ❯ Test._assertFunction ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:342:13
+ ❯ Test.assert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:195:23
+ ❯ localAssert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:138:14
+ ❯ Server.<anonymous> ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:152:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone` est null (jamais une chaîne vide)
+Error: expected 201 "Created", got 400 "Bad Request"
+ ❯ test/int/bookings.int-spec.ts:1182:60
+    1180|   it("ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone…
+    1181|     const f = await setup();
+    1182|     await post(f.clientToken, f.venue.slug, sansNumero(f)).expect(201);
+       |                                                            ^
+    1183|     const res = await api().get(`/api/v1/pro/venues/${f.venue.id}/book…
+    1184|     const ligne = (res.body as ProBookingDTO[])[0];
+ ❯ Test._assertStatus ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:309:14
+ ❯ ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:365:13
+ ❯ Test._assertFunction ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:342:13
+ ❯ Test.assert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:195:23
+ ❯ localAssert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:138:14
+ ❯ Server.<anonymous> ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:152:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », ni un trou
+Error: expected 201 "Created", got 400 "Bad Request"
+ ❯ test/int/bookings.int-spec.ts:1191:60
+    1189|   it("ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pou…
+    1190|     const f = await setup();
+    1191|     await post(f.clientToken, f.venue.slug, sansNumero(f)).expect(201);
+       |                                                            ^
+    1192|     const courrier = ctx.emails.find((m) => m.to === PRO.email);
+    1193|     expect(courrier, "aucun courrier au pro").toBeDefined();
+ ❯ Test._assertStatus ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:309:14
+ ❯ ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:365:13
+ ❯ Test._assertFunction ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:342:13
+ ❯ Test.assert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:195:23
+ ❯ localAssert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:138:14
+ ❯ Server.<anonymous> ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:152:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-3 (S-55, SIGNALEMENT) — l'e-mail est gardé tel que saisi, rogné seulement : « Amina@Example.DZ »
+Error: expected 201 "Created", got 400 "Bad Request"
+ ❯ test/int/bookings.int-spec.ts:1214:114
+    1212|   it("ML-3 (S-55, SIGNALEMENT) — l'e-mail est gardé tel que saisi, rog…
+    1213|     const f = await setup();
+    1214|     const res = await post(f.clientToken, f.venue.slug, sansNumero(f, …
+       |                                                                                                                  ^
+    1215|     expect((await contactDe((res.body as BookingDTO).id)).contact_emai…
+    1216|   });
+ ❯ Test._assertStatus ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:309:14
+ ❯ ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:365:13
+ ❯ Test._assertFunction ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:342:13
+ ❯ Test.assert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:195:23
+ ❯ localAssert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:138:14
+ ❯ Server.<anonymous> ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:152:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, et AUCUNE ligne n'est écrite
+AssertionError: expected '{"statusCode":400,"message":{"message…' to contain 'booking.validation.contactChannelRequ…'
+
+Expected: "booking.validation.contactChannelRequired"
+Received: "{"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"contactPhone","message":"auth.validation.phoneRequired"}]},"path":"/api/v1/venues/salle-el-ryad/bookings","timestamp":"2026-10-24T05:09:15.147Z"}"
+
+ ❯ test/int/bookings.int-spec.ts:1224:38
+    1222|     const res = await post(f.clientToken, f.venue.slug, corps);
+    1223|     expect(res.status).toBe(400);
+    1224|     expect(JSON.stringify(res.body)).toContain("booking.validation.con…
+       |                                      ^
+    1225|     expect(await nombre()).toBe(0);
+    1226|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé par la contrainte
+Error: expected 201 "Created", got 400 "Bad Request"
+ ❯ test/int/bookings.int-spec.ts:1244:73
+    1242|   it("ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le …
+    1243|     const f = await setup();
+    1244|     const seul = await post(f.clientToken, f.venue.slug, sansNumero(f)…
+       |                                                                         ^
+    1245|     const idSeul = (seul.body as BookingDTO).id;
+    1246|     // e-mail seul → on lui retire l'e-mail : plus aucun canal.
+ ❯ Test._assertStatus ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:309:14
+ ❯ ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:365:13
+ ❯ Test._assertFunction ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:342:13
+ ❯ Test.assert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:195:23
+ ❯ localAssert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:138:14
+ ❯ Server.<anonymous> ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:152:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux réservations (numéro + e-mail ; numéro seul) — où `contact_phone` est encore NOT NULL
+AssertionError: la migration du lot L36-1 existe: expected -1 to be greater than or equal to 0
+ ❯ test/int/migration-non-empty.int-spec.ts:1006:54
+    1004|     const toutes = migrationsOrdonnees();
+    1005|     const rang = toutes.findIndex((m) => m.replace(/^\d+_/u, "") === N…
+    1006|     expect(rang, "la migration du lot L36-1 existe").toBeGreaterThanOr…
+       |                                                      ^
+    1007|     derniere = toutes[rang]!;
+    1008|     await appliquerMigrations(toutes.slice(0, rang));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-4 — la migration passe sur la base NON VIDE : les deux réservations la traversent INTACTES, ligne à ligne, les trois colonnes de contact comprises
+error: relation "bookings" does not exist
+ ❯ ../../node_modules/.pnpm/pg@8.22.0/node_modules/pg/lib/client.js:652:17
+ ❯ sql test/int/migration-non-empty.int-spec.ts:92:15
+     90|   await c.connect();
+     91|   try {
+     92|     const r = await c.query(query, params);
+       |               ^
+     93|     return r.rows as T[];
+     94|   } finally {
+ ❯ test/int/migration-non-empty.int-spec.ts:1031:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) : le CHECK porte les DEUX colonnes, sous son nom
+AssertionError: expected [] to deeply equal [ { is_nullable: 'YES' } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "is_nullable": "YES",
+-   },
+- ]
++ []
+
+ ❯ test/int/migration-non-empty.int-spec.ts:1039:17
+    1037|   it("⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) :…
+    1038|     const col = await sql<{ is_nullable: string }>(`SELECT is_nullable…
+    1039|     expect(col).toEqual([{ is_nullable: "YES" }]);
+       |                 ^
+    1040|     const mail = await sql<{ is_nullable: string }>(`SELECT is_nullabl…
+    1041|     expect(mail, "`contact_email` n'a pas bougé").toEqual([{ is_nullab…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-11 — après la migration : un e-mail SEUL s'écrit ; ni numéro ni e-mail est REFUSÉ (23514) ; retirer le dernier canal d'une ligne existante aussi, sans rien écrire
+error: relation "bookings" does not exist
+ ❯ ../../node_modules/.pnpm/pg@8.22.0/node_modules/pg/lib/client.js:652:17
+ ❯ sql test/int/migration-non-empty.int-spec.ts:92:15
+     90|   await c.connect();
+     91|   try {
+     92|     const r = await c.query(query, params);
+       |               ^
+     93|     return r.rows as T[];
+     94|   } finally {
+ ❯ test/int/migration-non-empty.int-spec.ts:1049:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ML-15 — `visit_bookings.contact_phone` n'a pas bougé (nullable depuis D61, hors lot) et ne porte aucun CHECK de ce lot
+AssertionError: expected [] to deeply equal [ { is_nullable: 'YES' } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "is_nullable": "YES",
+-   },
+- ]
++ []
+
+ ❯ test/int/migration-non-empty.int-spec.ts:1067:17
+    1065|   it("ML-15 — `visit_bookings.contact_phone` n'a pas bougé (nullable d…
+    1066|     const col = await sql<{ is_nullable: string }>(`SELECT is_nullable…
+    1067|     expect(col).toEqual([{ is_nullable: "YES" }]);
+       |                 ^
+    1068|     expect(await sql(`SELECT 1 FROM pg_constraint WHERE conname = 'boo…
+    1069|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/13]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-2 — un client avec un E-MAIL SEUL se convertit : la réservation née a `contact_phone` NULL et garde l'e-mail
+Error: expected 201 "Created", got 400 "Bad Request"
+ ❯ test/int/quotes.int-spec.ts:438:61
+    436|     const q = (await makeQuote(f).expect(201)).body as QuoteDTO;
+    437|     const { contactPhone: _sansTel, ...sansPhone } = CONTACT;
+    438|     const after = (await act(f, q.id, "convert", sansPhone).expect(201…
+       |                                                             ^
+    439|     expect(await lireContact(after.bookingId as string)).toEqual({ con…
+    440|   });
+ ❯ Test._assertStatus ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:309:14
+ ❯ ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:365:13
+ ❯ Test._assertFunction ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:342:13
+ ❯ Test.assert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:195:23
+ ❯ localAssert ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:138:14
+ ❯ Server.<anonymous> ../../node_modules/.pnpm/supertest@7.2.2/node_modules/supertest/lib/test.js:152:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/13]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, aucune réservation n'est créée, le devis reste convertible
+AssertionError: expected '{"statusCode":400,"message":{"message…' to contain 'quote.validation.contactChannelRequir…'
+
+Expected: "quote.validation.contactChannelRequired"
+Received: "{"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"contactPhone","message":"auth.validation.phoneRequired"}]},"path":"/api/v1/quotes/01a16c4e-81b3-7865-aa7e-558352b5ce12/convert","timestamp":"2026-10-24T05:07:26.790Z"}"
+
+ ❯ test/int/quotes.int-spec.ts:448:38
+    446|     const res = await act(f, q.id, "convert", ni);
+    447|     expect(res.status).toBe(400);
+    448|     expect(JSON.stringify(res.body)).toContain("quote.validation.conta…
+       |                                      ^
+    449|     expect(await ctx.prisma.booking.count()).toBe(0);
+    450|     await act(f, q.id, "convert", CONTACT).expect(201);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  13 failed | 121 passed (134)
+   Start at  01:07:06
+   Duration  132.54s (transform 2.49s, setup 89ms, collect 10.75s, tests 120.15s, environment 0ms, prepare 451ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/bookings.int-spec.ts test/int/quotes.int-spec.ts test/int/migration-non-empty.int-spec.ts

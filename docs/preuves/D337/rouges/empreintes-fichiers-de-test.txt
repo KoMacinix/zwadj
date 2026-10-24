@@ -1,0 +1,12 @@
+fb81a31b65cda251a837198854b640a77337b6bd2b06c314d9d60b75bd8c9607  apps/api/src/common/contact.spec.ts
+be306dd9e8c7a7dbbb982e78390451604186549f91da817e0d1afea84c4a2eea  apps/api/src/venues/booking-notification-input.spec.ts
+c80d8569110363b49fe59b2be8e7f4cd880058450ceeb3aa27ff50c959b824a3  apps/api/src/venues/bookings.schemas.spec.ts
+82aa92b279c0399afe59f3433f703cb81a10306e0918f9912ff6828d72939cf2  apps/api/test/int/bookings.int-spec.ts
+968ca995609c46300986cb411d879d02717c5c2336f404075d3ececda754272a  apps/api/test/int/migration-non-empty.int-spec.ts
+2b054baa2f17b78de75a8f25b0862b071dad0c2f4455a7f9768653a0ee5773bd  apps/api/test/int/quotes.int-spec.ts
+2d2326277f7f74e628a4178d77506e2157c070080009953153512b1067895a3f  apps/client/src/components/venue/booking-request-panel.test.tsx
+127e18d6fefcc6985411cb0416e2bc364764f64d101e70f472df8eb675289aea  apps/client/src/lib/contact-channel-guard.test.ts
+a2c2921cc9ac5c9946848bbad60e84376b90b1582b92664c7f0a31614cc91fc7  apps/pro/src/dashboard/walkin-contact.test.ts
+2c09dc1a016ebd24e8a4a2d994248bc2b3ccb7306e7f45639b96496024d1b7e8  apps/pro/src/dashboard/walkin-journey.test.tsx
+64d829f893f64cf05a1400df6898dc07c761a5a50222211e674108864bb33dce  apps/pro/src/venues/booking-requests-section.test.tsx
+87d44aff1428bc80732045c9a0c2669e6d678fd9ca7d5fd606bcdb141d44a10d  e2e/specs/r42-reservation-email-seul.e2e.ts

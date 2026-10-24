@@ -110,3 +110,34 @@ describe("Demandes pro — ce que l'écran doit rendre évident", () => {
     expect(await screen.findByText(/Aucune demande/)).toBeInTheDocument();
   });
 });
+
+// ══ L36-1 (D337) — une réservation PAR E-MAIL SEUL, vue par le pro ═══════════════════════════════════════════════════
+// ML-5 et ML-18 (`docs/preuves/D337/modes-de-defaillance.md`). Le pro rappelle : à défaut de numéro, c'est l'e-mail qu'il lit, de gauche à droite même dans une page arabe.
+describe("⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1)", () => {
+  const SANS_NUMERO: ProBookingDTO = { ...base, contactPhone: null, contactEmail: "amina@example.dz" };
+
+  it("ML-5 — sans numéro, l'E-MAIL est affiché à la place — jamais le mot « null », jamais un trou", async () => {
+    setup([SANS_NUMERO]);
+    const mail = await screen.findByText("amina@example.dz");
+    expect(mail).toBeInTheDocument();
+    expect(document.body.textContent ?? "").not.toMatch(/\bnull\b|undefined/);
+  });
+
+  it("ML-18 — le contact s'écrit de gauche à droite (`dir=\"ltr\"`) : un e-mail dans une page arabe ne se retourne pas", async () => {
+    setup([SANS_NUMERO]);
+    const mail = await screen.findByText("amina@example.dz");
+    expect(mail.getAttribute("dir")).toBe("ltr");
+  });
+
+  it("avec les deux, le NUMÉRO est affiché (le pro rappelle d'abord) et l'e-mail n'est pas répété", async () => {
+    setup([base]);
+    expect(await screen.findByText("+213550000001")).toBeInTheDocument();
+    expect(screen.queryByText("amina@example.dz")).toBeNull();
+  });
+
+  it("aucun des deux (impossible en base, mais l'écran ne s'écroule pas) : la ligne se rend, sans contact", async () => {
+    setup([{ ...base, contactPhone: null, contactEmail: null }]);
+    expect(await screen.findByText("Amina Bensalem")).toBeInTheDocument();
+    expect(document.body.textContent ?? "").not.toMatch(/\bnull\b|undefined/);
+  });
+});

@@ -1,0 +1,315 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/venues/booking-notification-input.spec.ts (24 tests | 1 failed) 17ms
+   ✓ La fixture décrit la ligne que la base produit VRAIMENT > porte exactement les clés de `BOOKING_SELECT`, ni plus ni moins 2ms
+   ✓ La charge utile est COMPLÈTE > porte les quinze champs du contrat, sans en inventer un seizième 1ms
+   ✓ ⛔ La date de l'événement — lue en UTC, rendue en date CIVILE > rend `YYYY-MM-DD`, jamais un instant 0ms
+   ✓ ⛔ La date de l'événement — lue en UTC, rendue en date CIVILE > ne recule PAS d'un jour sous un fuseau à l'ouest de Greenwich 0ms
+   ✓ ⛔ Chemin de l'argent — les deux montants ne se croisent pas > le total reste le total et l'acompte reste l'acompte 1ms
+   ✓ ⛔ Les deux téléphones ne se croisent pas non plus > `contact` est celui SNAPSHOTÉ sur la réservation, `pro.phone` celui du pro 0ms
+   × ⛔ `contact` : le numéro, à défaut l'e-mail (ML-5) > e-mail seul : `contact` est l'e-mail — jamais « null », jamais « undefined », jamais une chaîne vide 8ms
+     → expected null to be 'yasmine@example.dz' // Object.is equality
+   ✓ ⛔ `contact` : le numéro, à défaut l'e-mail (ML-5) > les deux : le NUMÉRO l'emporte (le pro rappelle d'abord) — l'e-mail ne passe pas devant 0ms
+   ✓ ⛔ `contact` : le numéro, à défaut l'e-mail (ML-5) > le numéro du PRO ne devient jamais le contact du client, même sans numéro de client 0ms
+   ✓ Les libellés bilingues ne se croisent pas > FR et AR restent chacun de leur côté, salle comme créneau 0ms
+   ✓ Les libellés bilingues ne se croisent pas > SINGLE_SLOT : les deux libellés de créneau restent `null`, ils ne se replient pas ici 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale pro « AR » ⇒ « ar » 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale pro « FR » ⇒ « fr » 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale pro « EN » ⇒ « fr » 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale pro «  » ⇒ « fr » 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale pro « ar » ⇒ « fr » 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale client « AR » ⇒ « ar » 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale client « FR » ⇒ « fr » 0ms
+   ✓ Locales — « AR » bascule, tout le reste retombe sur « fr » > locale client « EN » ⇒ « fr » 0ms
+   ✓ Walk-in — l'absence de destinataire n'est pas un échec > `client: null` traverse tel quel, et le pro reste servi 0ms
+   ✓ Walk-in — l'absence de destinataire n'est pas un échec > un client fourni ressort avec son identifiant de COMPTE, pas celui de la ligne 0ms
+   ✓ Nom du client et motif > le nom est recollé et débarrassé de ses espaces DE BORD — pas de ceux du milieu 0ms
+   ✓ Nom du client et motif > le motif traverse tel quel, `null` compris (D83 — motif facultatif) 0ms
+   ✓ Canaux du pro — recopiés, jamais décidés ici > les deux drapeaux traversent, y compris quand ils diffèrent 0ms
+ ❯ src/venues/bookings.schemas.spec.ts (26 tests | 3 failed) 30ms
+   ✓ bookingCreateSchema — ce qu'il doit ACCEPTER > le corps complet, message compris 4ms
+   ✓ bookingCreateSchema — ce qu'il doit ACCEPTER > sans message : il est facultatif (D79) 1ms
+   ✓ bookingCreateSchema — ce qu'il doit ACCEPTER > un message de 1000 caractères EXACTEMENT — la borne est incluse 0ms
+   ✓ bookingCreateSchema — ce qu'il doit ACCEPTER > un téléphone tapé à la locale : il est normalisé, pas rejeté (R3) 0ms
+   ✓ bookingCreateSchema — ce qu'il doit ACCEPTER > paiement en espèces : l'Algérie paie surtout comme ça 0ms
+   ✓ bookingCreateSchema — ce qu'il doit ACCEPTER > sans e-mail : le client au comptoir n'en a pas (D135) 0ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > le créneau manquant : il porte le PRIX, dans les deux modes 1ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > le prénom et le nom restent obligatoires — le profil ne les garantit pas (D135) 1ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > un e-mail VIDE n'est pas un e-mail absent 0ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > un fixe : la réservation exige un mobile joignable (R3) 0ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > les DEUX montants attendus sont obligatoires (D75) 0ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > 1001 caractères de message : un de trop suffit 0ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > zéro invité 0ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > une date irréelle — le 31 février a une FORME valide 0ms
+   ✓ bookingCreateSchema — ce qu'il doit REFUSER > une clé inconnue : `.strict()` ferme la porte 0ms
+   × ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-2 — un e-mail SEUL : accepté, et le numéro reste ABSENT de la donnée (pas une chaîne vide) 11ms
+     → expected false to be true // Object.is equality
+   ✓ ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > un numéro SEUL : accepté (le parcours d'avant, D135) 1ms
+   × ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-1 — NI numéro NI e-mail : refusé, avec la clé du message neuf, portée par le champ du numéro 5ms
+     → expected [] to have a length of 1 but got +0
+   ✓ ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-8 — un numéro SAISI et invalide est refusé même avec un e-mail valide (et l'inverse) 0ms
+   ✓ ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-9 — « facultatif » veut dire CLÉ OMISE : un numéro VIDE n'est pas un numéro absent, même avec un e-mail 0ms
+   ✓ ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-10 — `contactPhone: null` n'est pas une absence : refusé 0ms
+   × ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-3 (S-55, SIGNALEMENT SANS ALIGNEMENT) — l'e-mail de la réservation est ROGNÉ seulement : « Amina@Example.DZ » reste tel que saisi, alors que la fiche le met en minuscules 1ms
+     → expected false to be true // Object.is equality
+   ✓ ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-17 — la règle s'ajoute SANS retirer `.strict()` : une clé inconnue reste refusée, e-mail seul compris 0ms
+   ✓ bookingCancelSchema > sans motif : valide au SCHÉMA — l'obligation dépend du statut, donc du service (D83) 0ms
+   ✓ bookingCancelSchema > un motif vide est refusé : ce n'est pas la même chose que l'absence de motif 0ms
+   ✓ bookingCancelSchema > 501 caractères de motif 0ms
+ ❯ src/common/contact.spec.ts (49 tests | 8 failed) 46ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « Amine » — un prénom simple 4ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « Belkacem » — un nom simple 1ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « Éloïse » — français accentué 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « Éloïse » — les mêmes accents, DÉCOMPOSÉS (lettre + marque combinante) 2ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « Jean-Pierre » — composé, avec un tiret 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « O'Brien » — apostrophe droite 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « N’Diaye » — apostrophe typographique 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « Marie Claire » — deux mots séparés par une espace 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « أمينة » — arabe 1ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « بن علي » — arabe, deux mots 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « أَمِينَة » — arabe avec voyelles brèves (marques combinantes) 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > « Ben Aïssa-El Hadj » — français, composé, accentué 0ms
+   ✓ isValidPersonName — ce qu'elle doit ACCEPTER > les espaces autour sont ignorés : le schéma rogne avant de juger 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine1 » — un chiffre à la fin 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « 4mine » — un chiffre au début 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « 12 » — des chiffres seuls 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « ٣٤٥ » — des chiffres ARABES-INDIENS : ce sont des chiffres 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « A@B » — un arobase 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Ben_Ali » — un tiret bas 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Jean.Pierre » — un point 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine! » — un point d'exclamation 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine<script> » — une balise 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « -Jean » — commence par un tiret 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « 'Jean » — commence par une apostrophe 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «  - » — un tiret seul 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «  » — chaîne vide 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > «     » — des espaces seulement 0ms
+   ✓ isValidPersonName — ce qu'elle doit REFUSER : aucun chiffre, aucun autre symbole > « Amine 😀 » — un émoji 0ms
+   ✓ le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > la demande de réservation et la conversion du devis jugent TOUS les noms comme l'écran (`isValidPersonName`) 9ms
+   ✓ le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le NOM de famille suit la même règle que le PRÉNOM, sur les deux routes 0ms
+   ✓ le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le refus porte une CLÉ de catalogue propre à sa route — `booking.validation.contactInvalid`, `quote.validation.nameInvalid` 1ms
+   ✓ le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > un champ simplement VIDE dit « obligatoire » seul — pas aussi « invalide » 0ms
+   ✓ le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > le plafond reste celui des deux routes d'avant : 80 caractères, bornes incluses 0ms
+   ✓ le NOM — « le serveur refuse ce que l'écran refuse » : la même fonction > `personNameSchema` : la fabrique rend la règle avec LES messages de l'appelant 0ms
+   ✓ l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > l'écran (`isValidContactEmail`), la réservation et la conversion rendent le MÊME verdict, sur douze adresses 2ms
+   ✓ l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > le verdict n'est pas toujours « oui » ni toujours « non » : la comparaison ci-dessus discrimine 1ms
+   ✓ l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > l'adresse est FACULTATIVE (D135) : absente, les deux routes l'acceptent — la règle ne juge que ce qui est saisi 0ms
+   ✓ l'E-MAIL — le MÊME schéma sur l'écran, la réservation et la conversion > `contactEmailSchema` : la fabrique rend la règle avec LES messages de l'appelant, 180 caractères au plus 0ms
+   × ⛔ hasContactChannel — la table de vérité : ABSENT, vide, blanc, valeur > dix cas, dont quatre « faux » et six « vrai » — la fonction discrimine 6ms
+     → (0 , hasContactChannel) is not a function
+   × ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > les deux : le NUMÉRO — le pro rappelle d'abord 0ms
+     → (0 , reachableContact) is not a function
+   × ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > e-mail seul (numéro null, absent, vide, blanc) : l'e-mail 0ms
+     → (0 , reachableContact) is not a function
+   × ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > numéro seul : le numéro 0ms
+     → (0 , reachableContact) is not a function
+   × ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > aucun des deux : null — l'écran n'affiche rien plutôt que le mot « null » 0ms
+     → (0 , reachableContact) is not a function
+   × ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-2 — e-mail seul : accepté, le numéro reste ABSENT de la donnée 5ms
+     → expected false to be true // Object.is equality
+   ✓ ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > numéro seul : accepté (la conversion d'avant) 0ms
+   × ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-1 — NI l'un NI l'autre : refusé, avec la clé du message neuf, portée par le champ du numéro 3ms
+     → expected [] to have a length of 1 but got +0
+   ✓ ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-8, ML-9, ML-10 — un numéro saisi invalide, vide ou null est refusé, e-mail valide ou non 0ms
+   ✓ ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-17 — la clé inconnue reste refusée (`.strict()`), e-mail seul compris 0ms
+   × ⛔ le MÊME verdict : `hasContactChannel` (écran), la réservation et la conversion, sur les neuf paires (numéro, e-mail) > neuf paires : le verdict est « joignable ET tout ce qui est saisi est valide » 0ms
+     → (0 , hasContactChannel) is not a function
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ hasContactChannel — la table de vérité : ABSENT, vide, blanc, valeur > dix cas, dont quatre « faux » et six « vrai » — la fonction discrimine
+TypeError: (0 , hasContactChannel) is not a function
+ ❯ src/common/contact.spec.ts:217:14
+    215|     for (const [titre, phone, email, attendu] of CAS) {
+    216|       examinees += 1;
+    217|       expect(hasContactChannel(phone, email), titre).toBe(attendu);
+       |              ^
+    218|     }
+    219|     expect(examinees).toBe(10);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > les deux : le NUMÉRO — le pro rappelle d'abord
+TypeError: (0 , reachableContact) is not a function
+ ❯ src/common/contact.spec.ts:230:12
+    228| 
+    229|   it("les deux : le NUMÉRO — le pro rappelle d'abord", () => {
+    230|     expect(reachableContact(NUMERO, MAIL)).toBe(NUMERO);
+       |            ^
+    231|   });
+    232|   it("e-mail seul (numéro null, absent, vide, blanc) : l'e-mail", () =…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > e-mail seul (numéro null, absent, vide, blanc) : l'e-mail
+TypeError: (0 , reachableContact) is not a function
+ ❯ src/common/contact.spec.ts:233:61
+    231|   });
+    232|   it("e-mail seul (numéro null, absent, vide, blanc) : l'e-mail", () =…
+    233|     for (const phone of [null, undefined, "", "  "]) expect(reachableC…
+       |                                                             ^
+    234|   });
+    235|   it("numéro seul : le numéro", () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > numéro seul : le numéro
+TypeError: (0 , reachableContact) is not a function
+ ❯ src/common/contact.spec.ts:236:61
+    234|   });
+    235|   it("numéro seul : le numéro", () => {
+    236|     for (const email of [null, undefined, "", "  "]) expect(reachableC…
+       |                                                             ^
+    237|   });
+    238|   it("aucun des deux : null — l'écran n'affiche rien plutôt que le mot…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > aucun des deux : null — l'écran n'affiche rien plutôt que le mot « null »
+TypeError: (0 , reachableContact) is not a function
+ ❯ src/common/contact.spec.ts:239:12
+    237|   });
+    238|   it("aucun des deux : null — l'écran n'affiche rien plutôt que le mot…
+    239|     expect(reachableContact(null, null)).toBeNull();
+       |            ^
+    240|     expect(reachableContact("", "  ")).toBeNull();
+    241|     expect(reachableContact(undefined, undefined)).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-2 — e-mail seul : accepté, le numéro reste ABSENT de la donnée
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/common/contact.spec.ts:253:23
+    251|   it("ML-2 — e-mail seul : accepté, le numéro reste ABSENT de la donné…
+    252|     const r = quoteConvertSchema.safeParse({ ...BASE, contactEmail: MA…
+    253|     expect(r.success).toBe(true);
+       |                       ^
+    254|     if (r.success) expect("contactPhone" in r.data).toBe(false);
+    255|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-1 — NI l'un NI l'autre : refusé, avec la clé du message neuf, portée par le champ du numéro
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/common/contact.spec.ts:264:22
+    262|     if (!r.success) {
+    263|       const ciblee = r.error.issues.filter((i) => i.message === CLE_NE…
+    264|       expect(ciblee).toHaveLength(1);
+       |                      ^
+    265|       expect(ciblee[0]?.path).toEqual(["contactPhone"]);
+    266|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  src/common/contact.spec.ts > ⛔ le MÊME verdict : `hasContactChannel` (écran), la réservation et la conversion, sur les neuf paires (numéro, e-mail) > neuf paires : le verdict est « joignable ET tout ce qui est saisi est valide »
+TypeError: (0 , hasContactChannel) is not a function
+ ❯ src/common/contact.spec.ts:301:25
+    299|         examinees += 1;
+    300|         const corps = { ...(numero === undefined ? {} : { contactPhone…
+    301|         const attendu = hasContactChannel(numero, mail) && numero !== …
+       |                         ^
+    302|         if (attendu) acceptees += 1;
+    303|         expect(bookingCreateSchema.safeParse({ ...RESERVATION, ...corp…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  src/venues/booking-notification-input.spec.ts > ⛔ `contact` : le numéro, à défaut l'e-mail (ML-5) > e-mail seul : `contact` est l'e-mail — jamais « null », jamais « undefined », jamais une chaîne vide
+AssertionError: expected null to be 'yasmine@example.dz' // Object.is equality
+
+- Expected: 
+"yasmine@example.dz"
+
++ Received: 
+null
+
+ ❯ src/venues/booking-notification-input.spec.ts:188:28
+    186|   it("e-mail seul : `contact` est l'e-mail — jamais « null », jamais «…
+    187|     const charge = buildBookingNotification(ligne({ contactPhone: null…
+    188|     expect(charge.contact).toBe("yasmine@example.dz");
+       |                            ^
+    189|     expect(typeof charge.contact).toBe("string");
+    190|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-2 — un e-mail SEUL : accepté, et le numéro reste ABSENT de la donnée (pas une chaîne vide)
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/venues/bookings.schemas.spec.ts:129:23
+    127|   it("ML-2 — un e-mail SEUL : accepté, et le numéro reste ABSENT de la…
+    128|     const r = bookingCreateSchema.safeParse(sans("contactPhone"));
+    129|     expect(r.success).toBe(true);
+       |                       ^
+    130|     if (r.success) {
+    131|       expect("contactPhone" in r.data).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-1 — NI numéro NI e-mail : refusé, avec la clé du message neuf, portée par le champ du numéro
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/venues/bookings.schemas.spec.ts:145:22
+    143|     if (!r.success) {
+    144|       const ciblee = r.error.issues.filter((i) => i.message === CLE_NE…
+    145|       expect(ciblee).toHaveLength(1);
+       |                      ^
+    146|       expect(ciblee[0]?.path).toEqual(["contactPhone"]);
+    147|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-3 (S-55, SIGNALEMENT SANS ALIGNEMENT) — l'e-mail de la réservation est ROGNÉ seulement : « Amina@Example.DZ » reste tel que saisi, alors que la fiche le met en minuscules
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/venues/bookings.schemas.spec.ts:168:23
+    166|   it("ML-3 (S-55, SIGNALEMENT SANS ALIGNEMENT) — l'e-mail de la réserv…
+    167|     const r = bookingCreateSchema.safeParse({ ...sans("contactPhone"),…
+    168|     expect(r.success).toBe(true);
+       |                       ^
+    169|     if (r.success) expect(r.data.contactEmail).toBe("Amina@Example.DZ"…
+    170|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  12 failed | 87 passed (99)
+   Start at  01:05:25
+   Duration  1.06s (transform 294ms, setup 0ms, collect 921ms, tests 93ms, environment 1ms, prepare 856ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/contact.spec.ts src/venues/bookings.schemas.spec.ts src/venues/booking-notification-input.spec.ts

@@ -1,0 +1,474 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/contact-channel-guard.test.ts (7 tests | 3 failed) 1270ms
+   ✓ ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro > CALIBRATION, bras positif : une chaîne, un gabarit et un texte JSX qui portent un lien d'appel, de SMS ou de conversation sont VUS 38ms
+   ✓ ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro > CALIBRATION, bras négatif : un commentaire qui cite le lien, et un fichier qui n'en porte pas, ne sont PAS vus 7ms
+   ✓ ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un lien d'appel, de SMS ou de conversation (et la garde a PARCOURU de vrais fichiers)  1127ms
+   × ML-7 — les messages NEUFS de L36-1 existent, en français ET en arabe, non vides et différents > quatre clés, chacune présente dans les deux langues, non vide, et l'arabe n'est pas une copie du français 21ms
+     → fr.booking.validation.contactChannelRequired: expected 'undefined' to be 'string' // Object.is equality
+   × ML-7 — les messages NEUFS de L36-1 existent, en français ET en arabe, non vides et différents > la clé que les DEUX schémas rendent existe dans le catalogue sous le NOM exact que le schéma emploie (pas une clé orpheline) 26ms
+     → expected '// Demande de réservation de salle — …' to contain '"booking.validation.contactChannelReq…'
+   ✓ « UNE règle, UNE fonction » — les deux schémas et les deux écrans importent `hasContactChannel` > CALIBRATION : l'identifiant utilisé dans le code est VU, celui qui n'est cité que dans un commentaire ne l'est PAS 2ms
+   × « UNE règle, UNE fonction » — les deux schémas et les deux écrans importent `hasContactChannel` > quatre consommateurs, chacun l'utilise (une copie de la règle dans un écran divergerait) 46ms
+     → expected [ …(4) ] to deeply equal []
+stdout | src/components/venue/booking-request-panel.test.tsx
+PLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ❯ src/components/venue/booking-request-panel.test.tsx (32 tests | 7 failed) 11408ms
+   ✓ Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre  503ms
+   ✓ Demande de réservation — les dates > une date libre est cliquable 144ms
+   ✓ Demande de réservation — les dates > GARDE DE FORME : une réponse sans `days` n'emporte pas la fiche salle (C5b) — et elle se dit ÉCHEC 40ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-j : UN mois à la fois — jamais les 182 jours d'un coup 69ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas  433ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-f et C-h : une grille nommée par le mois, la semaine commence DIMANCHE (D56) 71ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : UN arrêt de tabulation dans la grille, et la flèche droite avance d'un jour 153ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : EN ARABE, la flèche GAUCHE avance d'un jour — la grille se lit de droite à gauche 110ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif  686ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > D147 : chaque requête passe le contrat, et les fenêtres couvrent les six mois sans trou 117ms
+   ✓ Demande de réservation — la fenêtre de six mois, découpée pour le contrat (rang 25, D316) > une ERREUR d'API n'est JAMAIS « aucune date » — et une fenêtre en échec suffit (tout ou rien) 20ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA 252ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur 237ms
+   ✓ Demande de réservation — sans compte > les dates et les PRIX s'affichent sans session ; seul l'envoi demande de se connecter 211ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps  698ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > avec un e-mail, il est transmis tel quel  625ms
+   × Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32) 333ms
+     → expected true to be false // Object.is equality
+   ✓ Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide 210ms
+   ✓ Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie  323ms
+   ✓ Prestations — E2d > l'ACOMPTE suit le total prestations comprises  304ms
+   ✓ Prestations — E2d > décocher retire la prestation du total  379ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro  420ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part en forme canonique  502ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suffit plus  847ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message  595ms
+   × ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORTE PAS `contactPhone` (clé absente, ni "" ni null) 599ms
+     → expected true to be false // Object.is equality
+   × ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-1 — NI numéro NI e-mail : « Envoyer » reste inerte, et un texte VISIBLE dit « l'un des deux » 454ms
+     → It looks like undefined was passed instead of a matcher. Did you do something like getByText(undefined)?
+   × ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et les DEUX champs sont reliés au texte par `aria-describedby` 390ms
+     → It looks like undefined was passed instead of a matcher. Did you do something like getByText(undefined)?
+   × ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, même avec un numéro valide : message d'erreur visible, bouton inerte 589ms
+     → expected false to be true // Object.is equality
+   × ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide 483ms
+     → expected true to be false // Object.is equality
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > le numéro seul part toujours (le parcours d'avant), et la clé de l'e-mail est absente  513ms
+   × ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-7 — EN ARABE : le texte « l'un des deux » et le message d'e-mail invalide existent, sont différents du français, et s'affichent 86ms
+     → expected undefined not to be undefined // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/contact-channel-guard.test.ts > ML-7 — les messages NEUFS de L36-1 existent, en français ET en arabe, non vides et différents > quatre clés, chacune présente dans les deux langues, non vide, et l'arabe n'est pas une copie du français
+AssertionError: fr.booking.validation.contactChannelRequired: expected 'undefined' to be 'string' // Object.is equality
+
+Expected: "string"
+Received: "undefined"
+
+ ❯ src/lib/contact-channel-guard.test.ts:117:41
+    115|       const fr = lire(messages.fr);
+    116|       const ar = lire(messages.ar);
+    117|       expect(typeof fr, `fr.${chemin}`).toBe("string");
+       |                                         ^
+    118|       expect(typeof ar, `ar.${chemin}`).toBe("string");
+    119|       expect((fr as string).trim(), `fr.${chemin} vide`).not.toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  src/lib/contact-channel-guard.test.ts > ML-7 — les messages NEUFS de L36-1 existent, en français ET en arabe, non vides et différents > la clé que les DEUX schémas rendent existe dans le catalogue sous le NOM exact que le schéma emploie (pas une clé orpheline)
+AssertionError: expected '// Demande de réservation de salle — …' to contain '"booking.validation.contactChannelReq…'
+
+- Expected
++ Received
+
+- "booking.validation.contactChannelRequired"
++ // Demande de réservation de salle — Flux E, Lot E1a (D74 → D83).
++ //
++ // UN SEUL modèle porte la demande ET la réservation (Décision 3, actée) : la
++ // même ligne traverse PENDING → ACCEPTED → … La contrainte d'exclusion l'exige
++ // de toute façon — elle ne peut pas comparer deux tables.
++ //
++ // ⚠ D74 : aucune ligne `Quote` à ce lot. Sans catalogue de prestations, un
++ // devis ne porterait rien que `Booking` ne snapshote déjà.
++ import { z } from "zod";
++ import { dzPhoneSchema } from "./auth";
++ import { contactEmailSchema, personNameSchema } from "./contact";
++ import { BookingStatus, PaymentMethod } from "./enums";
++ import type { BookingServiceDTO } from "./service";
++ import { bookingServiceChoiceSchema } from "./service";
++ import { isRealCivilDate } from "./venue";
++ 
++ 
++ /**
++  * Statuts qui VERROUILLENT réellement un créneau — le verrou DUR, doublé en
++  * base par l'`EXCLUDE` gist `bookings_no_overlap_accepted_confirmed`.
++  *
++  * ⚠ `PENDING` N'EN FAIT PAS PARTIE, et c'est D101 : une demande en attente ne
++  * verrouille rien — deux couples peuvent demander la même date, le pro tranche.
++  * Elle est SIGNALÉE au calendrier d'une salle (`REQUESTED`) parce que la
++  * surprise du concurrent découvert au moment du devis est la pire de toutes ;
++  * elle ne grise RIEN dans la liste publique, où l'annotation dit « pris », pas
++  * « demandé ».
++  *
++  * ⚠ REMONTÉ ICI au lot `availableOn`. Le dépôt en portait DEUX copies —
++  * `availability-blocks.service.ts` (tableau) et `availability.service.ts`
++  * (`Set`) — et la liste publique allait en écrire une troisième. Trois listes
++  * de statuts identiques à écrire une fois, à faire diverger toujours : le jour
++  * où un statut s'ajoute, deux d'entre elles l'auront et la troisième non, sans
++  * qu'aucun test ne rougisse.
++  */
++ export const HARD_BOOKING_STATUSES = [BookingStatus.ACCEPTED, BookingStatus.CONFIRMED] as const;
++ 
++ // ─────────────────────────────────────────────────────────────────────────────
++ // Codes d'erreur (stables, consommés par les deux fronts).
++ // ─────────────────────────────────────────────────────────────────────────────
++ 
++ export const BookingErrorCode = {
++   /** 404 INDISTINCT « parmi MES réservations » / « dans MA salle » : id
++    *  malformé, inexistant, ou appartenant à autrui. Même doctrine que D47/D62 —
++    *  distinguer les trois cas apprend à un curieux ce qui existe. */
++   BOOKING_NOT_FOUND: "BOOKING_NOT_FOUND",
++   /** 409 — le créneau demandé n'EXISTE pas : hors des `SlotTemplate` actifs,
++    *  date passée, ou au-delà de l'horizon D49. Distinct de `SLOT_TAKEN` :
++    *  « il n'y a rien à cette heure-là » et « quelqu'un vient de le prendre »
++    *  demandent deux phrases différentes au client. */
++   BOOKING_SLOT_UNAVAILABLE: "BOOKING_SLOT_UNAVAILABLE",
++   /** 409 — le créneau est DÉJÀ PRIS par une réservation ACCEPTED/CONFIRMED.
++    *
++    *  ⚠ Ce code ne peut sortir QUE de la traduction du `23P01` PostgreSQL levé
++    *  par `bookings_no_overlap_accepted_confirmed`. Le redoubler par un `SELECT`
++    *  préalable laisserait une fenêtre entre le test et l'écriture, et deux pros
++    *  qui acceptent deux demandes concurrentes sur la même date sont le cas
++    *  PROBABLE, pas l'exception (famille D59). */
++   BOOKING_SLOT_TAKEN: "BOOKING_SLOT_TAKEN",
++   /** 409 — la plage recouvre un `AvailabilityBlock` du pro. Une `EXCLUDE` ne
++    *  traverse pas deux tables : ce conflit-là se vérifie applicativement, DANS
++    *  la transaction, sous le verrou de la ligne `venues` (D51/D78). */
++   BOOKING_BLOCKED_PERIOD: "BOOKING_BLOCKED_PERIOD",
++   /** 409 — le prix ou l'acompte ont changé entre l'affichage et l'envoi (D75).
++    *  La réponse porte les montants RÉELS : le client rejoue en connaissance de
++    *  cause, il n'est jamais engagé sur un montant qu'il n'a pas vu. */
++   BOOKING_PRICE_CHANGED: "BOOKING_PRICE_CHANGED",
++   /** 409 — transition interdite par la machine à états : accepter une demande
++    *  déjà refusée, annuler une demande déjà annulée… Le statut réel est dans la
++    *  réponse, pour que l'écran se remette d'aplomb sans recharger à l'aveugle. */
++   BOOKING_STATUS_CONFLICT: "BOOKING_STATUS_CONFLICT",
++   /** 400 — plus d'invités que la capacité déclarée. Refusé AVANT l'écriture
++    *  plutôt que laissé à un pro qui découvrirait le problème le jour même. */
++   BOOKING_GUESTS_EXCEED_CAPACITY: "BOOKING_GUESTS_EXCEED_CAPACITY"
++ } as const;
++ export type BookingErrorCode = (typeof BookingErrorCode)[keyof typeof BookingErrorCode];
++ 
++ // ─────────────────────────────────────────────────────────────────────────────
++ // Création — POST /venues/:slug/bookings
++ // ─────────────────────────────────────────────────────────────────────────────
++ 
++ /** ⚠ Le nom et le prénom suivent la règle PARTAGÉE du contrat (`./contact`, rang 32) : des lettres de toute écriture,
++  *  des espaces, « - » et « ' » — c'est la même fonction que celle de l'écran, donc le serveur refuse ce que l'écran refuse. */
++ const contactNameSchema = personNameSchema({
++   required: "booking.validation.contactRequired",
++   tooLong: "booking.validation.contactTooLong",
++   invalid: "booking.validation.contactInvalid"
++ });
++ 
++ /** D75 — le client ANNONCE les montants qu'il a vus ; le serveur recalcule et
++  *  compare. Les deux sont obligatoires : un pro peut changer sa politique
++  *  d'acompte sans toucher au prix, le total resterait identique et le client se
++  *  retrouverait engagé sur un acompte jamais affiché. */
++ export const bookingCreateSchema = z
++   .object({
++     eventDate: z.string().refine(isRealCivilDate, "booking.validation.dateFormat"),
++     /** TOUJOURS requis, dans les DEUX modes : le créneau est la source du PRIX
++      *  (D-B3, `slot_templates.base_price_cents`) et le libellé snapshoté sur la
++      *  réservation. En SINGLE_SLOT il ne change pas la plage bloquante — la
++      *  journée entière est prise — mais il dit toujours COMBIEN. */
++     slotTemplateId: z.string().uuid("booking.validation.slotInvalid"),
++     guests: z
++       .number({ invalid_type_error: "booking.validation.guestsInteger" })
++       .int("booking.validation.guestsInteger")
++       .min(1, "booking.validation.guestsRange")
++       .max(100000, "booking.validation.guestsRange"),
++     paymentMethod: z.enum([PaymentMethod.ONLINE, PaymentMethod.CASH], {
++       errorMap: () => ({ message: "booking.validation.paymentMethodInvalid" })
++     }),
++     /** Nom, prénom et TÉLÉPHONE sont obligatoires : `User.firstName`,
++      *  `lastName` et `phone` sont tous nullable, le compte ne peut pas les
++      *  fournir de façon fiable. On les demande, on les fige.
++      *
++      *  ⚠ L'E-MAIL, LUI, EST FACULTATIF (D135). `bookings.contact_email` est
++      *  `String?` en base ; cette borne-ci était plus stricte que le schéma, et le
++      *  cas qu'elle rejetait n'est pas un cas limite — c'est le client algérien
++      *  sans adresse e-mail. Le téléphone reste le canal sûr : `contact_phone` est
++      *  NOT NULL, et c'est par là que le pro rappelle. */
++     contactFirstName: contactNameSchema,
++     contactLastName: contactNameSchema,
++     contactPhone: dzPhoneSchema,
++     contactEmail: contactEmailSchema({
++       invalid: "booking.validation.emailInvalid",
++       tooLong: "booking.validation.emailTooLong"
++     }).optional(),
++     /** D79 — facultatif, plafonné par Zod SEULEMENT : pas de `CHECK` SQL, D55
++      *  interdit de valider deux fois la même borne. */
++     clientMessage: z.string().trim().max(1000, "booking.validation.messageTooLong").optional(),
++     /** E2a — prestations choisies. Vide par défaut : une demande sans service
++      *  reste parfaitement valable, c'est même le cas le plus courant.
++      *
++      *  ⚠ Aucun PRIX ici (D91) : le serveur les résout depuis le catalogue de la
++      *  salle. Un prix venu du navigateur est un prix que le visiteur peut
++      *  éditer — et `expectedTotalCents` ci-dessous suffit à garantir qu'il n'est
++      *  jamais engagé sur un montant qu'il n'a pas vu. */
++     services: z.array(bookingServiceChoiceSchema).max(20, "booking.validation.tooManyServices").optional(),
++     expectedTotalCents: z.number().int().nonnegative("booking.validation.expectedAmount"),
++     expectedDepositCents: z.number().int().nonnegative("booking.validation.expectedAmount")
++   })
++   .strict("booking.validation.unknownKey");
++ export type BookingCreateInput = z.infer<typeof bookingCreateSchema>;
++ 
++ /** D83 — annulation par le CLIENT. Motif libre tant que la demande est PENDING
++  *  (rien n'est verrouillé, il ne doit d'explication à personne) ; OBLIGATOIRE
++  *  sur une demande ACCEPTED — le pro a peut-être refusé d'autres dates
++  *  entre-temps. L'obligation se juge au service, contre le statut réel. */
++ export const bookingCancelSchema = z
++   .object({
++     reason: z.string().trim().min(1, "booking.validation.reasonRequired").max(500, "booking.validation.reasonTooLong").optional()
++   })
++   .strict("booking.validation.unknownKey");
++ export type BookingCancelInput = z.infer<typeof bookingCancelSchema>;
++ 
++ /** D83 — refus par le PRO, motif FACULTATIF. Contraindre un pro à justifier au
++  *  téléphone, dans une seconde langue, produit « ... » comme motif. */
++ export const bookingDeclineSchema = bookingCancelSchema;
++ export type BookingDeclineInput = z.infer<typeof bookingDeclineSchema>;
++ 
++ // ─────────────────────────────────────────────────────────────────────────────
++ // Lectures
++ // ─────────────────────────────────────────────────────────────────────────────
++ 
++ /** Ligne telle que le CLIENT la relit (`GET /me/bookings`).
++  *
++  *  Les montants sont ceux SNAPSHOTÉS à la demande, jamais recalculés à la
++  *  lecture : le client relit ce qu'il a accepté, même si le pro a changé son
++  *  tarif depuis. */
++ export interface BookingDTO {
++   id: string;
++   venueId: string;
++   venueSlug: string;
++   venueNameFr: string;
++   venueNameAr: string;
++   status: BookingStatus;
++   paymentMethod: PaymentMethod;
++   /** Date civile locale `YYYY-MM-DD`. */
++   eventDate: string;
++   /** ISO 8601 UTC — la plage bloquante réelle (D77). */
++   startsAt: string;
++   endsAt: string;
++   /** Snapshots du créneau : survivent au renommage ou au retrait du template. */
++   slotNameFr: string | null;
++   slotNameAr: string | null;
++   guests: number;
++   basePriceCents: number;
++   servicesTotalCents: number;
++   totalCents: number;
++   depositCents: number;
++   /** E2a — détail des prestations, snapshoté. Vide si la demande n'en porte pas. */
++   services: BookingServiceDTO[];
++   clientMessage: string | null;
++   declineReason: string | null;
++   cancellationReason: string | null;
++   expiresAt: string | null;
++   paymentDueAt: string | null;
++   createdAt: string;
++ }
++ 
++ /** Ligne telle que le PRO la relit. Ajoute le contact — il doit pouvoir
++  *  rappeler — et la liste des demandes EN CONFLIT.
++  *
++  *  ⚠ `conflictIds` est CALCULÉ à la lecture via `bookings_venue_timerange_gist`,
++  *  jamais persisté : une réservation acceptée peut s'annuler ensuite, et un
++  *  drapeau stocké deviendrait faux en silence. */
++ export interface ProBookingDTO extends BookingDTO {
++   contactFirstName: string;
++   contactLastName: string;
++   contactPhone: string;
++   contactEmail: string | null;
++   /** Ids des AUTRES demandes dont la plage recouvre celle-ci. Vide dans
++    *  l'immense majorité des cas ; non vide, c'est le pro qui tranche. */
++   conflictIds: string[];
++ }
++ 
++ /** Corps du 409 `BOOKING_PRICE_CHANGED` (D75) : les montants réels, pour que
++  *  l'écran réaffiche la vérité au lieu d'inviter à rejouer l'échec. */
++ export interface BookingPriceChangedPayload {
++   totalCents: number;
++   depositCents: number;
++ }
++
+
+ ❯ src/lib/contact-channel-guard.test.ts:128:53
+    126|   it("la clé que les DEUX schémas rendent existe dans le catalogue sou…
+    127|     const source = (fichier: string) => readFileSync(join(RACINE, fich…
+    128|     expect(source("packages/types/src/booking.ts")).toContain('"bookin…
+       |                                                     ^
+    129|     expect(source("packages/types/src/quote.ts")).toContain('"quote.va…
+    130|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  src/lib/contact-channel-guard.test.ts > « UNE règle, UNE fonction » — les deux schémas et les deux écrans importent `hasContactChannel` > quatre consommateurs, chacun l'utilise (une copie de la règle dans un écran divergerait)
+AssertionError: expected [ …(4) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "packages/types/src/booking.ts",
++   "packages/types/src/quote.ts",
++   "apps/client/src/components/venue/booking-request-panel.tsx",
++   "apps/pro/src/dashboard/walkin-contact.ts",
++ ]
+
+ ❯ src/lib/contact-channel-guard.test.ts:148:18
+    146|     const sans = CONSOMMATEURS.filter((f) => !utiliseIdentifiant(f, re…
+    147|     expect(CONSOMMATEURS).toHaveLength(4);
+    148|     expect(sans).toEqual([]);
+       |                  ^
+    149|   });
+    150| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32)
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/components/venue/booking-request-panel.test.tsx:452:114
+    450|     for (const nom of [B.guests, B.firstName, B.lastName]) expect(scre…
+    451|     // ⛔ L36-1 (D337, ML-19) : NI le numéro NI l'e-mail n'est obligato…
+    452|     for (const nom of [B.phone, B.email, B.message]) expect(screen.get…
+       |                                                                                                                  ^
+    453|   });
+    454| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORTE PAS `contactPhone` (clé absente, ni "" ni null)
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/components/venue/booking-request-panel.test.tsx:582:32
+    580|     expect(envoyer().disabled).toBe(true);
+    581|     fireEvent.change(screen.getByLabelText(FR.email, { exact: true }),…
+    582|     expect(envoyer().disabled).toBe(false);
+       |                                ^
+    583|     fireEvent.click(envoyer());
+    584|     await waitFor(() => expect(client.create).toHaveBeenCalled());
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-1 — NI numéro NI e-mail : « Envoyer » reste inerte, et un texte VISIBLE dit « l'un des deux »
+Error: It looks like undefined was passed instead of a matcher. Did you do something like getByText(undefined)?
+ ❯ assertNotNullOrUndefined ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/matches.js:12:11
+ ❯ matches ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/matches.js:35:3
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/queries/text.js:31:68
+ ❯ queryAllByText ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/queries/text.js:31:53
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:74:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/venue/booking-request-panel.test.tsx:595:19
+    593|     await remplirSansContact();
+    594|     expect(envoyer().disabled).toBe(true);
+    595|     expect(screen.getByText(FR.contactHint)).toBeInTheDocument();
+       |                   ^
+    596|   });
+    597| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et les DEUX champs sont reliés au texte par `aria-describedby`
+Error: It looks like undefined was passed instead of a matcher. Did you do something like getByText(undefined)?
+ ❯ assertNotNullOrUndefined ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/matches.js:12:11
+ ❯ matches ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/matches.js:35:3
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/queries/text.js:31:68
+ ❯ queryAllByText ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/queries/text.js:31:53
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:74:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/venue/booking-request-panel.test.tsx:602:25
+    600|     renderPanel({}, CLIENT_CONNECTE);
+    601|     await remplirSansContact();
+    602|     const aide = screen.getByText(FR.contactHint);
+       |                         ^
+    603|     expect(aide.id).not.toBe("");
+    604|     for (const nom of [FR.phone, FR.email]) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, même avec un numéro valide : message d'erreur visible, bouton inerte
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/booking-request-panel.test.tsx:620:32
+    618|     expect(envoyer().disabled).toBe(false);
+    619|     fireEvent.change(screen.getByLabelText(FR.email, { exact: true }),…
+    620|     expect(envoyer().disabled).toBe(true);
+       |                                ^
+    621|     expect(screen.getByText(FR.emailInvalid)).toBeInTheDocument();
+    622|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/components/venue/booking-request-panel.test.tsx:629:32
+    627|     await remplirSansContact();
+    628|     fireEvent.change(screen.getByLabelText(FR.email, { exact: true }),…
+    629|     expect(envoyer().disabled).toBe(false);
+       |                                ^
+    630|     fireEvent.change(screen.getByLabelText(FR.phone, { exact: true }),…
+    631|     expect(envoyer().disabled).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-7 — EN ARABE : le texte « l'un des deux » et le message d'e-mail invalide existent, sont différents du français, et s'affichent
+AssertionError: expected undefined not to be undefined // Object.is equality
+ ❯ src/components/venue/booking-request-panel.test.tsx:651:32
+    649|     await screen.findByLabelText(AR.email, { exact: true });
+    650|     expect(AR.contactHint).not.toBe("");
+    651|     expect(AR.contactHint).not.toBe(FR.contactHint);
+       |                                ^
+    652|     expect(AR.emailInvalid).not.toBe("");
+    653|     expect(screen.getByText(AR.contactHint)).toBeInTheDocument();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  10 failed | 29 passed (39)
+   Start at  01:05:41
+   Duration  16.08s (transform 1.32s, setup 600ms, collect 3.74s, tests 12.68s, environment 2.47s, prepare 419ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/components/venue/booking-request-panel.test.tsx src/lib/contact-channel-guard.test.ts

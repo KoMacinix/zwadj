@@ -367,7 +367,7 @@ const TRAITEUR = {
   tiers: []
 };
 
-describe("Demande de réservation — D135 : l'e-mail est facultatif, le téléphone non", () => {
+describe("Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre)", () => {
   async function remplir() {
     await choisir("2027-08-15");
     fireEvent.change(screen.getByLabelText("Nombre d'invités"), { target: { value: "200" } });
@@ -380,8 +380,8 @@ describe("Demande de réservation — D135 : l'e-mail est facultatif, le télép
     const client = renderPanel({}, CLIENT_CONNECTE);
     await remplir();
 
-    // Le bouton est encore inerte : il manque le TÉLÉPHONE, pas l'e-mail.
-    expect(screen.getByRole("button", { name: "Envoyer ma demande" })).toBeDisabled();
+    // Le bouton est encore inerte : il manque un moyen de JOINDRE le client (ni numéro ni e-mail).
+    expect((screen.getByRole("button", { name: "Envoyer ma demande" }) as HTMLButtonElement).disabled).toBe(true);
     fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000001" } });
     expect(screen.getByRole("button", { name: "Envoyer ma demande" })).toBeEnabled();
 
@@ -400,7 +400,7 @@ describe("Demande de réservation — D135 : l'e-mail est facultatif, le télép
     const client = renderPanel({}, CLIENT_CONNECTE);
     await remplir();
     fireEvent.change(screen.getByLabelText("Téléphone"), { target: { value: "+213550000001" } });
-    fireEvent.change(screen.getByLabelText("E-mail (facultatif)"), { target: { value: "amina@example.dz" } });
+    fireEvent.change(screen.getByLabelText(MSG.email), { target: { value: "amina@example.dz" } });
 
     fireEvent.click(screen.getByRole("button", { name: "Envoyer ma demande" }));
     await waitFor(() => expect(client.create).toHaveBeenCalled());
@@ -447,8 +447,9 @@ describe("Demande de réservation — un <label> VISIBLE par champ (rang 29, D32
     expect(sansLabelVisible).toEqual([]);
     const B = messages.fr.venueDetail.booking;
     // Le nom accessible est le libellé EXACT : l'astérisque vit hors du <label> (D32).
-    for (const nom of [B.guests, B.firstName, B.lastName, B.phone]) expect(screen.getByLabelText(nom).hasAttribute("required")).toBe(true);
-    for (const nom of [B.email, B.message]) expect(screen.getByLabelText(nom).hasAttribute("required")).toBe(false);
+    for (const nom of [B.guests, B.firstName, B.lastName]) expect(screen.getByLabelText(nom).hasAttribute("required")).toBe(true);
+    // ⛔ L36-1 (D337, ML-19) : NI le numéro NI l'e-mail n'est obligatoire SEUL — « l'un des deux » est dit par un texte visible, pas par un `required`.
+    for (const nom of [B.phone, B.email, B.message]) expect(screen.getByLabelText(nom).hasAttribute("required")).toBe(false);
   });
 });
 
@@ -555,5 +556,102 @@ describe("Demande de réservation — le téléphone est le champ partagé (rang
     expect(champ.value).toBe("0");
     expect(screen.getByText(FR_PHONE.leadingDigit[DEFAULT_PHONE_COUNTRY])).toBeInTheDocument();
     expect((screen.getByRole("button", { name: "Envoyer ma demande" }) as HTMLButtonElement).disabled).toBe(true);
+  });
+});
+
+// ══ L36-1 (D337) — la réservation PAR E-MAIL SEUL : le formulaire en ligne du client ══════════════════════════════════
+// Q2 de Ko (22/10/2026). ML-1, ML-2, ML-8, ML-9, ML-18, ML-19 (`docs/preuves/D337/modes-de-defaillance.md`). Les libellés viennent du CATALOGUE (jamais tapés).
+describe("⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1)", () => {
+  const FR = messages.fr.venueDetail.booking;
+  const AR = messages.ar.venueDetail.booking;
+  const envoyer = () => screen.getByRole("button", { name: FR.submit }) as HTMLButtonElement;
+
+  async function remplirSansContact() {
+    await choisir("2027-08-15");
+    fireEvent.change(screen.getByLabelText(FR.guests, { exact: true }), { target: { value: "200" } });
+    fireEvent.change(screen.getByLabelText(FR.firstName, { exact: true }), { target: { value: "Amina" } });
+    fireEvent.change(screen.getByLabelText(FR.lastName, { exact: true }), { target: { value: "Bensalem" } });
+  }
+
+  it("ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORTE PAS `contactPhone` (clé absente, ni \"\" ni null)", async () => {
+    stubFetch();
+    const client = renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansContact();
+    expect(envoyer().disabled).toBe(true);
+    fireEvent.change(screen.getByLabelText(FR.email, { exact: true }), { target: { value: "amina@example.dz" } });
+    expect(envoyer().disabled).toBe(false);
+    fireEvent.click(envoyer());
+    await waitFor(() => expect(client.create).toHaveBeenCalled());
+    const corps = vi.mocked(client.create).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+    expect(Object.prototype.hasOwnProperty.call(corps, "contactPhone")).toBe(false);
+    expect(corps.contactEmail).toBe("amina@example.dz");
+  });
+
+  it("ML-1 — NI numéro NI e-mail : « Envoyer » reste inerte, et un texte VISIBLE dit « l'un des deux »", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansContact();
+    expect(envoyer().disabled).toBe(true);
+    expect(screen.getByText(FR.contactHint)).toBeInTheDocument();
+  });
+
+  it("ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et les DEUX champs sont reliés au texte par `aria-describedby`", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansContact();
+    const aide = screen.getByText(FR.contactHint);
+    expect(aide.id).not.toBe("");
+    for (const nom of [FR.phone, FR.email]) {
+      const champ = screen.getByLabelText(nom, { exact: true });
+      expect(champ.hasAttribute("required"), nom).toBe(false);
+      expect((champ.getAttribute("aria-describedby") ?? "").split(" "), nom).toContain(aide.id);
+    }
+    const etiquettes = [FR.phone, FR.email].map((nom) => screen.getByLabelText(nom, { exact: true }).closest(".field"));
+    for (const bloc of etiquettes) expect(bloc?.querySelector(".req"), "astérisque").toBeNull();
+  });
+
+  it("ML-8 — un e-mail SAISI et invalide retient, même avec un numéro valide : message d'erreur visible, bouton inerte", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansContact();
+    fireEvent.change(screen.getByLabelText(FR.phone, { exact: true }), { target: { value: "+213550000001" } });
+    expect(envoyer().disabled).toBe(false);
+    fireEvent.change(screen.getByLabelText(FR.email, { exact: true }), { target: { value: "amina@" } });
+    expect(envoyer().disabled).toBe(true);
+    expect(screen.getByText(FR.emailInvalid)).toBeInTheDocument();
+  });
+
+  it("ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansContact();
+    fireEvent.change(screen.getByLabelText(FR.email, { exact: true }), { target: { value: "amina@example.dz" } });
+    expect(envoyer().disabled).toBe(false);
+    fireEvent.change(screen.getByLabelText(FR.phone, { exact: true }), { target: { value: "55" } });
+    expect(envoyer().disabled).toBe(true);
+  });
+
+  it("le numéro seul part toujours (le parcours d'avant), et la clé de l'e-mail est absente", async () => {
+    stubFetch();
+    const client = renderPanel({}, CLIENT_CONNECTE);
+    await remplirSansContact();
+    fireEvent.change(screen.getByLabelText(FR.phone, { exact: true }), { target: { value: "+213550000001" } });
+    fireEvent.click(envoyer());
+    await waitFor(() => expect(client.create).toHaveBeenCalled());
+    const corps = vi.mocked(client.create).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+    expect(corps.contactPhone).toBe("+213550000001");
+    expect(Object.prototype.hasOwnProperty.call(corps, "contactEmail")).toBe(false);
+  });
+
+  it("ML-7 — EN ARABE : le texte « l'un des deux » et le message d'e-mail invalide existent, sont différents du français, et s'affichent", async () => {
+    stubFetch();
+    renderPanel({}, CLIENT_CONNECTE, "ar");
+    await screen.findByLabelText(AR.email, { exact: true });
+    expect(AR.contactHint).not.toBe("");
+    expect(AR.contactHint).not.toBe(FR.contactHint);
+    expect(AR.emailInvalid).not.toBe("");
+    expect(screen.getByText(AR.contactHint)).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText(AR.email, { exact: true }), { target: { value: "amina@" } });
+    expect(screen.getByText(AR.emailInvalid)).toBeInTheDocument();
   });
 });

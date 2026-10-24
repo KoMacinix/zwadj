@@ -879,10 +879,13 @@ describe("⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une
 
   it("prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)", async () => {
     await recreerBase();
+    // ⛔ Rang 42 (D337) — CE BLOC EST POINTÉ SUR SA MIGRATION PAR SON NOM, plus sur « la dernière » : `booking_contact_phone_optional` la suit désormais (précédent de D333,
+    // qui a épinglé D282). Tout ce qui précède s'applique en préparation ; la sienne reste à appliquer.
     const toutes = migrationsOrdonnees();
-    derniere = toutes[toutes.length - 1]!;
-    expect(derniere.replace(/^\d+_/u, ""), "la DERNIÈRE migration est celle du lot : un lot de plus doit re-pointer ce bloc").toBe(NOM);
-    await appliquerMigrations(toutes.slice(0, -1));
+    const rang = toutes.findIndex((m) => m.replace(/^\d+_/u, "") === NOM);
+    expect(rang, "la migration du lot L35-4 existe").toBeGreaterThanOrEqual(0);
+    derniere = toutes[rang]!;
+    await appliquerMigrations(toutes.slice(0, rang));
 
     await sql(`INSERT INTO wilayas (id, code, name_fr, name_ar) VALUES (uuidv7(), 16, 'Alger', 'الجزائر')`);
     await sql(`INSERT INTO cities (id, wilaya_id, name_fr, name_ar, lat, lng) SELECT uuidv7(), id, 'Hydra', 'حيدرة', 36.7, 3.0 FROM wilayas`);
@@ -975,5 +978,93 @@ describe("⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une
       `SELECT client_record_id::text AS client_record_id, client_name_latin FROM quotes WHERE id = '018f0000-0000-7000-8000-000000004101'::uuid`
     );
     expect(q).toEqual([{ client_record_id: null, client_name_latin: "Amina Bensalem" }]);
+  });
+});
+
+// ══ L36-1 (D337) — `bookings.contact_phone` FACULTATIF et le CHECK « un numéro OU un e-mail », sur une base NON VIDE (D123) ═══════════════════════════════════════
+// Tranche [L36-1] du schéma ratifié (DR3). ML-4 (les réservations existantes passent INTACTES, ligne à ligne), ML-11 (la base refuse ce que l'API ne verrait pas), ML-12.
+describe("⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE", () => {
+  const NOM_L36 = "booking_contact_phone_optional";
+  let derniere = "";
+  const lignes = `SELECT id, venue_id, status, guests, total_cents, deposit_cents, contact_first_name, contact_last_name, contact_phone, contact_email FROM bookings ORDER BY id`;
+  const inserer = (id: string, jour: number, phone: string | null, email: string | null) =>
+    sql(
+      `INSERT INTO bookings (id, venue_id, source, status, payment_method, event_date, starts_at, ends_at, guests,
+                             base_price_cents, services_total_cents, total_cents, deposit_cents,
+                             contact_first_name, contact_last_name, contact_phone, contact_email, created_at, updated_at)
+       SELECT $1::uuid, v.id, 'CLIENT', 'PENDING', 'CASH', current_date + $2::int, (current_date + $2::int)::timestamptz,
+              (current_date + $2::int)::timestamptz + interval '6 hours', 100, 150000000, 0, 150000000, 45000000,
+              'Amina', 'Bensalem', $3, $4, now(), now()
+         FROM venues v LIMIT 1`,
+      [id, jour, phone, email]
+    );
+
+  it("prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux réservations (numéro + e-mail ; numéro seul) — où `contact_phone` est encore NOT NULL", async () => {
+    await recreerBase();
+    const toutes = migrationsOrdonnees();
+    const rang = toutes.findIndex((m) => m.replace(/^\d+_/u, "") === NOM_L36);
+    expect(rang, "la migration du lot L36-1 existe").toBeGreaterThanOrEqual(0);
+    derniere = toutes[rang]!;
+    await appliquerMigrations(toutes.slice(0, rang));
+
+    await sql(`INSERT INTO wilayas (id, code, name_fr, name_ar) VALUES (uuidv7(), 16, 'Alger', 'الجزائر')`);
+    await sql(`INSERT INTO cities (id, wilaya_id, name_fr, name_ar, lat, lng) SELECT uuidv7(), id, 'Hydra', 'حيدرة', 36.7, 3.0 FROM wilayas`);
+    await sql(
+      `INSERT INTO users (id, email, password_hash, role, status, email_verified_at, locale, created_at, updated_at)
+       VALUES (uuidv7(), 'p@example.dz', '$argon2id$fake', 'PRO', 'ACTIVE', now(), 'fr', now(), now())`
+    );
+    await sql(`INSERT INTO pro_profiles (id, user_id, business_name, phone, created_at, updated_at) SELECT uuidv7(), id, 'P', '+213550000001', now(), now() FROM users`);
+    await sql(
+      `INSERT INTO venues (id, owner_id, city_id, slug, name_fr, name_ar, capacity_max, base_price_cents, publication_status, created_at, updated_at)
+       SELECT uuidv7(), p.id, c.id, 's', 'S', 'ق', 200, 100, 'PUBLISHED', now(), now() FROM pro_profiles p CROSS JOIN cities c LIMIT 1`
+    );
+    await inserer("018f0000-0000-7000-8000-000000004201", 30, "+213550000011", "amina@example.dz");
+    await inserer("018f0000-0000-7000-8000-000000004202", 31, "+213550000012", null);
+    expect(await sql(lignes), "sans réservations semées, la migration s'appliquerait sur du vide").toHaveLength(2);
+    // Garde-fou : la migration du lot N'EST PAS encore appliquée — la colonne est obligatoire, le CHECK n'existe pas.
+    const col = await sql<{ is_nullable: string }>(`SELECT is_nullable FROM information_schema.columns WHERE table_name = 'bookings' AND column_name = 'contact_phone'`);
+    expect(col, "la colonne est déjà facultative").toEqual([{ is_nullable: "NO" }]);
+    expect(await sql(`SELECT 1 FROM pg_constraint WHERE conname = 'bookings_contact_reachable'`), "le CHECK existe déjà").toHaveLength(0);
+  });
+
+  it("⛔ ML-4 — la migration passe sur la base NON VIDE : les deux réservations la traversent INTACTES, ligne à ligne, les trois colonnes de contact comprises", async () => {
+    const avant = await sql(lignes);
+    expect(avant, "le semis du test précédent a disparu").toHaveLength(2);
+    await appliquerMigrations([derniere]);
+    expect(await sql(lignes)).toEqual(avant);
+  });
+
+  it("⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) : le CHECK porte les DEUX colonnes, sous son nom", async () => {
+    const col = await sql<{ is_nullable: string }>(`SELECT is_nullable FROM information_schema.columns WHERE table_name = 'bookings' AND column_name = 'contact_phone'`);
+    expect(col).toEqual([{ is_nullable: "YES" }]);
+    const mail = await sql<{ is_nullable: string }>(`SELECT is_nullable FROM information_schema.columns WHERE table_name = 'bookings' AND column_name = 'contact_email'`);
+    expect(mail, "`contact_email` n'a pas bougé").toEqual([{ is_nullable: "YES" }]);
+    const ck = await sql<{ def: string }>(`SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint WHERE conname = 'bookings_contact_reachable' AND conrelid = 'bookings'::regclass`);
+    expect(ck).toHaveLength(1);
+    expect(ck[0]?.def).toContain("contact_phone IS NOT NULL");
+    expect(ck[0]?.def).toContain("contact_email IS NOT NULL");
+  });
+
+  it("⛔ ML-11 — après la migration : un e-mail SEUL s'écrit ; ni numéro ni e-mail est REFUSÉ (23514) ; retirer le dernier canal d'une ligne existante aussi, sans rien écrire", async () => {
+    await inserer("018f0000-0000-7000-8000-000000004203", 32, null, "seul@example.dz");
+    const seul = await sql<{ contact_phone: string | null; contact_email: string | null }>(`SELECT contact_phone, contact_email FROM bookings WHERE id = '018f0000-0000-7000-8000-000000004203'`);
+    expect(seul).toEqual([{ contact_phone: null, contact_email: "seul@example.dz" }]);
+
+    await expect(inserer("018f0000-0000-7000-8000-000000004204", 33, null, null)).rejects.toThrow(/bookings_contact_reachable/);
+    await expect(sql(`UPDATE bookings SET contact_email = NULL WHERE id = '018f0000-0000-7000-8000-000000004203'`)).rejects.toThrow(/bookings_contact_reachable/);
+    await expect(sql(`UPDATE bookings SET contact_phone = NULL, contact_email = NULL WHERE id = '018f0000-0000-7000-8000-000000004201'`)).rejects.toThrow(/bookings_contact_reachable/);
+
+    expect(await sql(`SELECT count(*)::text AS n FROM bookings`), "le refus n'a rien écrit").toEqual([{ n: "3" }]);
+    const intacte = await sql<{ contact_phone: string | null; contact_email: string | null }>(`SELECT contact_phone, contact_email FROM bookings WHERE id = '018f0000-0000-7000-8000-000000004201'`);
+    expect(intacte).toEqual([{ contact_phone: "+213550000011", contact_email: "amina@example.dz" }]);
+    // Retirer le NUMÉRO d'une ligne qui a un e-mail est permis : c'est la règle, pas une interdiction.
+    await sql(`UPDATE bookings SET contact_phone = NULL WHERE id = '018f0000-0000-7000-8000-000000004201'`);
+    expect(await sql(`SELECT contact_phone FROM bookings WHERE id = '018f0000-0000-7000-8000-000000004201'`)).toEqual([{ contact_phone: null }]);
+  });
+
+  it("ML-15 — `visit_bookings.contact_phone` n'a pas bougé (nullable depuis D61, hors lot) et ne porte aucun CHECK de ce lot", async () => {
+    const col = await sql<{ is_nullable: string }>(`SELECT is_nullable FROM information_schema.columns WHERE table_name = 'visit_bookings' AND column_name = 'contact_phone'`);
+    expect(col).toEqual([{ is_nullable: "YES" }]);
+    expect(await sql(`SELECT 1 FROM pg_constraint WHERE conname = 'bookings_contact_reachable' AND conrelid = 'visit_bookings'::regclass`)).toHaveLength(0);
   });
 });

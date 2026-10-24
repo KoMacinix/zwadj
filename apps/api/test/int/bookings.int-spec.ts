@@ -1152,3 +1152,108 @@ describe("Lectures", () => {
     expect((res.body as ProBookingDTO[])[0]?.contactPhone).toBe("+213550000001");
   });
 });
+
+// ══ L36-1 (D337) — LA RÉSERVATION PAR E-MAIL SEUL, sur PostgreSQL réel ═══════════════════════════════════════════════
+// Q2 de Ko (22/10/2026). Modes de défaillance ML-1, ML-2, ML-3, ML-4, ML-8, ML-11 (`docs/preuves/D337/modes-de-defaillance.md`). La ligne se RELIT en SQL brut : le
+// DTO du pro est une AUTRE lecture, et ce que la base a gardé est ce qui compte.
+describe("⛔ L36-1 (D337) — une réservation par e-mail seul", () => {
+  type Contact = { contact_phone: string | null; contact_email: string | null };
+  const sansNumero = (f: Fixture, over: Record<string, unknown> = {}) => {
+    const corps = body(f, over);
+    delete (corps as Record<string, unknown>).contactPhone;
+    return corps;
+  };
+  const contactDe = async (id: string): Promise<Contact> => {
+    const lignes = await ctx.prisma.$queryRaw<Contact[]>`SELECT contact_phone, contact_email FROM bookings WHERE id = ${id}::uuid`;
+    return lignes[0] as Contact;
+  };
+  const nombre = async () => ctx.prisma.booking.count();
+
+  it("ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en base et l'e-mail est gardé", async () => {
+    const f = await setup();
+    const res = await post(f.clientToken, f.venue.slug, sansNumero(f)).expect(201);
+    const dto = res.body as BookingDTO;
+    expect(dto.status).toBe("PENDING");
+    expect(await contactDe(dto.id)).toEqual({ contact_phone: null, contact_email: "amina@example.dz" });
+  });
+
+  it("ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone` est null (jamais une chaîne vide)", async () => {
+    const f = await setup();
+    await post(f.clientToken, f.venue.slug, sansNumero(f)).expect(201);
+    const res = await api().get(`/api/v1/pro/venues/${f.venue.id}/bookings`).set(authH(f.proToken)).expect(200);
+    const ligne = (res.body as ProBookingDTO[])[0];
+    expect(ligne?.contactPhone).toBeNull();
+    expect(ligne?.contactEmail).toBe("amina@example.dz");
+  });
+
+  it("ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », ni un trou", async () => {
+    const f = await setup();
+    await post(f.clientToken, f.venue.slug, sansNumero(f)).expect(201);
+    const courrier = ctx.emails.find((m) => m.to === PRO.email);
+    expect(courrier, "aucun courrier au pro").toBeDefined();
+    expect(courrier?.text).toContain("amina@example.dz");
+    expect(courrier?.text).not.toMatch(/null|undefined/);
+  });
+
+  it("ML-4 — avec un numéro ET un e-mail, les DEUX sont gardés : la réservation d'avant n'a pas bougé", async () => {
+    const f = await setup();
+    const res = await post(f.clientToken, f.venue.slug, body(f)).expect(201);
+    expect(await contactDe((res.body as BookingDTO).id)).toEqual({ contact_phone: "+213550000001", contact_email: "amina@example.dz" });
+  });
+
+  it("ML-4 — avec un numéro seul (le parcours d'avant), `contact_email` reste NULL", async () => {
+    const f = await setup();
+    const corps = body(f);
+    delete (corps as Record<string, unknown>).contactEmail;
+    const res = await post(f.clientToken, f.venue.slug, corps).expect(201);
+    expect(await contactDe((res.body as BookingDTO).id)).toEqual({ contact_phone: "+213550000001", contact_email: null });
+  });
+
+  it("ML-3 (S-55, SIGNALEMENT) — l'e-mail est gardé tel que saisi, rogné seulement : « Amina@Example.DZ »", async () => {
+    const f = await setup();
+    const res = await post(f.clientToken, f.venue.slug, sansNumero(f, { contactEmail: "  Amina@Example.DZ  " })).expect(201);
+    expect((await contactDe((res.body as BookingDTO).id)).contact_email).toBe("Amina@Example.DZ");
+  });
+
+  it("ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, et AUCUNE ligne n'est écrite", async () => {
+    const f = await setup();
+    const corps = sansNumero(f);
+    delete (corps as Record<string, unknown>).contactEmail;
+    const res = await post(f.clientToken, f.venue.slug, corps);
+    expect(res.status).toBe(400);
+    expect(JSON.stringify(res.body)).toContain("booking.validation.contactChannelRequired");
+    expect(await nombre()).toBe(0);
+  });
+
+  it("ML-8 — un numéro SAISI et invalide est refusé même avec un e-mail valide : 400, aucune ligne", async () => {
+    const f = await setup();
+    const res = await post(f.clientToken, f.venue.slug, body(f, { contactPhone: "021234567" }));
+    expect(res.status).toBe(400);
+    expect(await nombre()).toBe(0);
+  });
+
+  it("ML-9 et ML-10 — un numéro VIDE ou `null` n'est pas un numéro absent : 400, aucune ligne", async () => {
+    const f = await setup();
+    expect((await post(f.clientToken, f.venue.slug, body(f, { contactPhone: "" }))).status).toBe(400);
+    expect((await post(f.clientToken, f.venue.slug, body(f, { contactPhone: null }))).status).toBe(400);
+    expect(await nombre()).toBe(0);
+  });
+
+  it("ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé par la contrainte", async () => {
+    const f = await setup();
+    const seul = await post(f.clientToken, f.venue.slug, sansNumero(f)).expect(201);
+    const idSeul = (seul.body as BookingDTO).id;
+    // e-mail seul → on lui retire l'e-mail : plus aucun canal.
+    await expect(ctx.prisma.$executeRaw`UPDATE bookings SET contact_email = NULL WHERE id = ${idSeul}::uuid`).rejects.toThrow(/bookings_contact_reachable/);
+    // les deux → on retire les deux d'un coup : refusé aussi.
+    const deux = await post(f.clientToken, f.venue.slug, body(f, { eventDate: "2027-08-16" })).expect(201);
+    const idDeux = (deux.body as BookingDTO).id;
+    await expect(ctx.prisma.$executeRaw`UPDATE bookings SET contact_phone = NULL, contact_email = NULL WHERE id = ${idDeux}::uuid`).rejects.toThrow(/bookings_contact_reachable/);
+    // Les deux lignes sont intactes : le refus n'a rien écrit.
+    expect(await contactDe(idSeul)).toEqual({ contact_phone: null, contact_email: "amina@example.dz" });
+    expect(await contactDe(idDeux)).toEqual({ contact_phone: "+213550000001", contact_email: "amina@example.dz" });
+    // Et retirer le NUMÉRO d'une ligne qui a un e-mail est permis : c'est la règle, pas une interdiction.
+    await ctx.prisma.$executeRaw`UPDATE bookings SET contact_phone = NULL WHERE id = ${idDeux}::uuid`;
+    expect(await contactDe(idDeux)).toEqual({ contact_phone: null, contact_email: "amina@example.dz" });
+  });
+});
