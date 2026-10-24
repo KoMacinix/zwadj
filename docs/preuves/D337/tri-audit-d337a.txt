@@ -1,0 +1,12 @@
+D337 — tri différentiel de l'audit de secrets « a » (avant le commit de la lecture adverse)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D336/audit-secrets-d336e.txt docs/preuves/D337/audit-secrets-d337a.txt
+(calibration à deux bras tenue : négatif 0 attendu 0, positif 2 attendu 2). Précédente : 296 contextes ; nouvelle : 297 contextes.
+
+Alertes ABSENTES de la précédente : 1 (motif « chargily »). Contexte lu, ligne 1696 de la sortie « a » :
+  docs/preuves/D336/tri-audit-d336e.txt:8 — la ligne « BILAN DU TRI » du tri « e » de D336, qui DIT en prose « aucune clé Chargily ».
+  Le motif s'accroche au MOT « Chargily » d'une phrase qui NIE la présence d'une clé ; l'audit indique lui-même « valeur déjà présente
+  dans 0 fichier(s) suivi(s) hors preuves ». C'est l'écho d'un tri versé, pas une valeur.
+
+BILAN : 1 sur 1 = l'écho du tri « e » de D336 ; AUCUNE valeur réelle (aucune clé Chargily, aucun secret Google, aucun jeton d'accès,
+aucun mot de passe de compte réel). Fichiers parcourus et sceau : voir la sortie « a » (relue identique, sceau vérifié).

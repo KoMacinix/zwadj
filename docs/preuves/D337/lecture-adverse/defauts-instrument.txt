@@ -1,0 +1,16 @@
+D337 — défauts de l'instrument confronter-consigne.py à sa première passe (pièce : confronter-sortie-passe-1-AVANT-CORRECTIFS.txt)
+
+Passe 1 : 39 contrôles parcourus, 37 ✓, 2 ✗. Les deux ✗ étaient des défauts de l'INSTRUMENT, non de la consigne.
+
+1. [3a.2] FAUX POSITIF D'ACCUSATION. Le motif cherchait « bookings … contact_phone/contact_email » sur le texte BRUT de chaque
+   migration. Il a accroché 20260730000000_visit_booking_contact_phone, dont les COMMENTAIRES SQL citent « bookings.contact_phone »
+   (« même patron de snapshot que `bookings.contact_phone` ») alors que sa seule instruction est ALTER TABLE "visit_bookings".
+   Réparation : les commentaires (`--`) sont retirés avant la recherche, et seules comptent les instructions qui visent la table
+   "bookings" (ALTER/CREATE TABLE "bookings", ON "bookings"). Après : la seule migration qui nomme ces colonnes de `bookings` est
+   l'init (le cas positif attendu, donc le motif VOIT bien un vrai porteur).
+2. [3f.1] MESURE CONFONDUE (D209, n° 1). Le contrôle visait « aucun fichier de paiement » sans séparer production et test : il
+   accusait apps/api/test/int/payment-intent-race.int-spec.ts, qui NE LIT PAS le champ — il le SÈME (`contactPhone: "+213550000001"`,
+   ligne 69, dans la création d'une réservation de test). Réparation : le contrôle sépare production et tests, et imprime les tests
+   à côté. Après : production = [] ; le test de paiement est RAPPORTÉ au recensement, non touché.
+
+Aucun des deux ne contredit la consigne. La passe 2 (confronter-sortie.txt) : 39 ✓, 0 ✗, 0 ?, calibration à deux bras tenue.

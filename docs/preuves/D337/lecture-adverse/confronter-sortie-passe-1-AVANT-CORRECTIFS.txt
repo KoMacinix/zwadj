@@ -1,0 +1,87 @@
+LECTURE ADVERSE DE LA CONSIGNE DU RANG 42 (D337) — instrument confronter-consigne.py, SHA de base 299582c
+calibration : cas vrai (ligne D336 du registre) → ✓ ; cas faux (ligne D999) → ✗ — les deux bras tiennent.
+
+══ PREMIÈRE PARTIE — COURTE ══
+39 contrôles parcourus : 37 ✓ · 2 ✗ · 0 ? (attendu : tous ✓, ou chaque ✗ expliqué en seconde partie)
+  ✗ 3a.2 — aucune migration ultérieure ne modifie bookings.contact_phone / contact_email, ni n'y pose de CHECK
+  ✗ 3f.1 — aucun fichier de paiement (nom contenant payment/chargily/webhook) ne lit contact_phone
+
+══ SECONDE PARTIE — EN ENTIER ══
+✓ [0.1] origin/main = 299582c au départ (arbre propre, la table d'ouverture est le seul commit local)
+     ↳ 299582c → 299582cf8be6 ; origin/main = 299582cf8be6 ; HEAD~1 = 299582cf8be6 ; commits locaux non poussés : dec5e9a docs(rang-42): D337 — table d'ouverture, SEULE : L36-1 (réservation par e-mail seul) et la dette de preuve de r41, chemins complets, extensions et conditionnels déclarés
+✓ [0.2] aucun stash
+     ↳ `git stash list` = vide
+✓ [0.3] le dernier numéro du registre est D336 (attendu D337 pour ce lot)
+     ↳ 290 lignes de registre parcourues ; dernière = D336
+✓ [2a.1] l'entrée ouverte de la dette de preuve est à ZWADJ_BACKLOG.md:2525
+     ↳ 5612 lignes parcourues ; l'entrée est à la ligne [2525] (la consigne dit « :2525 ») — ouverte
+✓ [2a.2] la ligne clientRecordId de quoteCreateSchema est packages/types/src/quote.ts:371
+     ↳ 501 lignes parcourues ; lignes trouvées = [371]
+✓ [2a.3] quoteCreateSchema est .strict() (`clientId` est donc une clé inconnue)
+     ↳ motif `.strict("quote.validation.unknownKey")` cherché sur le texte aplati
+✓ [2a.4] client-record.spec.ts:138 est le test du refus de `clientId`
+     ↳ 185 lignes ; ligne 138 = « it("⛔ `clientId` est une clé INCONNUE : refusée (le lien à un compte ne passe que par la fiche et la fusion)", »
+✓ [2a.5] quotes.int-spec.ts:725 est le test du refus de `clientId`
+     ↳ 929 lignes ; ligne 725 = « it("⛔ DB-15 — `clientId` est RETIRÉ du contrat : le schéma strict le refuse (400) et n'écrit aucun devis", asy »
+✓ [2a.6] neutralize-r41.py ne contient ni `clientId` ni `DB-15`
+     ↳ 597 lignes parcourues ; occurrences clientId = 0, DB-15 = 0 (attendu 0 et 0)
+✓ [3a.1] bookings.contact_phone est NOT NULL et bookings.contact_email est nullable (migration d'origine)
+     ↳ table `bookings` trouvée : True ; 36 colonnes parcourues
+✗ [3a.2] aucune migration ultérieure ne modifie bookings.contact_phone / contact_email, ni n'y pose de CHECK
+     ↳ 30 migrations parcourues ; celles qui nomment ces colonnes de `bookings` = ['20260730000000_visit_booking_contact_phone']
+✓ [3a.3] aucun CHECK existant ne porte sur contact_*
+     ↳ 30 migrations parcourues ; CHECK nommant contact_ = []
+✓ [3a.4] schema.prisma : Booking.contactPhone est `String` (obligatoire)
+     ↳ motif cherché sur le texte aplati
+✓ [3a.5] VisitBooking.contactPhone est déjà `String?` (hors lot)
+     ↳ motif cherché sur le texte aplati
+✓ [3a.6] la dernière migration est 20261022120000_pro_client_records
+     ↳ dernière migration = 20261022120000_pro_client_records
+✓ [3d.1] contact_phone apparaît dans 15 fichiers TypeScript de production (DR3)
+     ↳ 512 fichiers TS parcourus ; 39 portent le champ ; 15 de production
+✓ [3d.2] dont visit-bookings.service.ts, qui vise visit_bookings (hors lot)
+     ↳ présent : True
+✓ [3d.3] le patron « numéro, à défaut e-mail » existe déjà pour la visite (visit-bookings.service.ts)
+     ↳ 517 lignes parcourues
+✓ [3d.4] aucun geste d'appel ni de SMS (tel:, sms:, wa.me) n'existe dans les deux applications
+     ↳ 187 fichiers parcourus ; porteurs = []
+✓ [3d.5] les canaux de remise qui exigent un numéro sont déjà bloqués sans numéro (channelBlockers)
+     ↳ motif cherché dans walkin-journey.tsx
+✓ [3b.1] bookingCreateSchema exige aujourd'hui contactPhone
+     ↳ motif cherché sur le texte aplati
+✓ [3c.1] quoteConvertSchema exige aujourd'hui contactPhone
+     ↳ motif cherché sur le texte aplati
+✓ [3b.2] la fiche normalise l'e-mail (rogné, NFKC, minuscules) par normalizeContactEmail
+     ↳ motif cherché dans contact.ts
+✓ [3b.3] S-55 : contactEmailSchema (réservation, conversion) ROGNE seulement — il ne met ni en minuscules ni NFKC : signalement, sans alignement
+     ↳ corps de contactEmailSchema lu
+✓ [3b.4] le formulaire en ligne exige le numéro (required natif + condition `complete`)
+     ↳ 535 lignes parcourues
+✓ [3b.5] bookings.service.ts lit/écrit le numéro à deux endroits (création, DTO du pro)
+     ↳ input.contactPhone ×1 ; row.contactPhone ×1
+✗ [3f.1] aucun fichier de paiement (nom contenant payment/chargily/webhook) ne lit contact_phone
+     ↳ 15 fichiers de paiement parcourus ; lecteurs de contact_phone = ['apps/api/test/int/payment-intent-race.int-spec.ts']
+✓ [1.1] Q2 de Ko est écrite mot pour mot dans ZWADJ_CONTINUITE.md
+     ↳ motif cherché sur le texte aplati
+✓ [1.2] S-48 à S-57 sont écrites dans la section D336, à ratifier
+     ↳ S-48 … S-57 cherchées
+✓ [1.3] S-58 à S-67 existent aussi (la consigne ratifie S-48 à S-67)
+     ↳ S-58 … S-67 trouvées dans le fichier : [58, 59, 60, 61, 62, 63, 64, 65, 66, 67]
+✓ [1.4] le registre porte « S-48 à S-67 à ratifier »
+     ↳ motif cherché
+✓ [1.5] AGENTS.md ne porte pas encore la règle des écritures sur la base de développement
+     ↳ cherché « base de développement de Ko »
+✓ [1.6] l'entrée L35-6 existe au backlog et S-56 existe dans D336
+     ↳ L35-6 ×13 au backlog ; S-56 présente
+✓ [1.7] la preuve D123 de D336 est le bloc « L35-4 (D336, MD-13) » de migration-non-empty.int-spec.ts
+     ↳ motif cherché
+✓ [1.8] l'annotation C-C1 / D61 existe
+     ↳ motif cherché
+✓ [1.9] (information) la section D336 ne mentionne pas l'application de la migration sur la base de développement de Ko — c'est l'omission que la consigne demande d'annoter
+     ↳ « 04:06 » dans ZWADJ_CONTINUITE.md : absent
+✓ [2b.1] la migration 20261022120000 a été appliquée sur la base de développement le 23/10/2026 à 04:06 UTC (LECTURE SEULE de la base)
+     ↳ `_prisma_migrations` lu : « 20261022120000_pro_client_records|2026-10-23 04:06:41.651575 » ; ce que la consigne dit avoir vu APRÈS (0 fiche, 24 devis) ne se relit plus : Ko a joué ses scénarios depuis
+✓ [3a.7] aucune ligne existante de la base de développement ne violerait le CHECK (contact_phone est NOT NULL partout)
+     ↳ bookings (total|sans numéro) = 10|0
+✓ [1.10] les gestes 1 à 3 existent dans le rapport de D336 (condition de clôture du rang 33)
+     ↳ 14 lignes parcourues ; D336 écrit « la condition se lève aux scénarios 2 et 3 » — les gestes 1 à 3 la couvrent
