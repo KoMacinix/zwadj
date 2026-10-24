@@ -1,0 +1,74 @@
+   ✓ calibration — positif R : un chemin depuis la racine retient le fichier du diff
+   ✓ calibration — positif P : un chemin relatif au paquet retient le fichier du diff
+   ✓ calibration — positif N : le seul nom du fichier retient le fichier du diff
+   ✓ calibration — positif, cas CONNU : `neutralize-r37.py` cite `src/venues/ma-salle-relecture.test.tsx` — (b) le retient pour ce fichier modifié
+   ✓ calibration — positif, cas CONNU : le tri (a) ne retient AUCUNE campagne pour ce même fichier (l'angle mort que l'union couvre)
+   ✓ calibration — négatif : un chemin qui ne désigne aucun fichier du diff ne retient rien, ni par R ni par P ni par N
+   ✓ calibration — négatif : un nom absent du diff ne retient rien, ni par R ni par P ni par N
+   calibration : 7 bras, 0 manqué
+départ : 299582c (299582cf8be6) · HEAD 581b569d1f64
+parcouru : 39 campagne(s) (attendu : autant que de `neutralisation/neutralize-*.py`, soit 39) ; 32 fichier(s) dans le diff du lot (hors `docs/preuves/`)
+   diff · AGENTS.md
+   diff · ZWADJ_CONTINUITE.md
+   diff · apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql
+   diff · apps/api/prisma/schema.prisma
+   diff · apps/api/src/common/contact.spec.ts
+   diff · apps/api/src/venues/booking-notification-input.spec.ts
+   diff · apps/api/src/venues/booking-notification-input.ts
+   diff · apps/api/src/venues/bookings.controller.ts
+   diff · apps/api/src/venues/bookings.schemas.spec.ts
+   diff · apps/api/src/venues/bookings.service.ts
+   diff · apps/api/src/venues/quote-store.types.ts
+   diff · apps/api/src/venues/quotes.controller.ts
+   diff · apps/api/src/venues/quotes.service.ts
+   diff · apps/api/test/int/bookings.int-spec.ts
+   diff · apps/api/test/int/migration-non-empty.int-spec.ts
+   diff · apps/api/test/int/quotes.int-spec.ts
+   diff · apps/client/src/components/venue/booking-request-panel.test.tsx
+   diff · apps/client/src/components/venue/booking-request-panel.tsx
+   diff · apps/client/src/lib/contact-channel-guard.test.ts
+   diff · apps/pro/src/dashboard/walkin-contact.test.ts
+   diff · apps/pro/src/dashboard/walkin-contact.ts
+   diff · apps/pro/src/dashboard/walkin-journey.test.tsx
+   diff · apps/pro/src/venues/booking-requests-section.test.tsx
+   diff · apps/pro/src/venues/booking-requests-section.tsx
+   diff · e2e/specs/r42-reservation-email-seul.e2e.ts
+   diff · neutralisation/neutralize-r41.py
+   diff · neutralisation/neutralize-r42.py
+   diff · packages/i18n/messages/ar.json
+   diff · packages/i18n/messages/fr.json
+   diff · packages/types/src/booking.ts
+   diff · packages/types/src/contact.ts
+   diff · packages/types/src/quote.ts
+(a) retenues par les fonctions du tri sur le diff DU LOT : 17 · le tri tel que lancé (contre HEAD, 34 fichier(s) modifié(s) depuis HEAD) : 16
+(b) campagnes qui citent un fichier du diff : 24 — R 17 · P 19 · N 24
+
+campagne                              (a)   R   P   N  fichiers du diff cités
+neutralize-act-plafonds.py            oui   1   1   1  apps/pro/src/dashboard/walkin-journey.test.tsx
+neutralize-booking-status.py          oui   1   0   1  apps/api/test/int/quotes.int-spec.ts
+neutralize-e3d1-s8.py                   —   0   0   1  apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql
+neutralize-horloge.py                 oui   1   0   1  apps/pro/src/dashboard/walkin-journey.test.tsx
+neutralize-journey.py                   —   0   1   1  apps/pro/src/dashboard/walkin-journey.test.tsx
+neutralize-r25.py                     oui   1   1   2  apps/client/src/components/venue/booking-request-panel.test.tsx, apps/client/src/components/venue/booking-request-panel.tsx
+neutralize-r26.py                     oui   1   0   1  apps/pro/src/venues/booking-requests-section.tsx
+neutralize-r29.py                     oui   1   1   2  apps/client/src/components/venue/booking-request-panel.test.tsx, apps/client/src/components/venue/booking-request-panel.tsx
+neutralize-r32.py                     oui   5   5  10  apps/api/src/common/contact.spec.ts, apps/api/src/venues/bookings.schemas.spec.ts, apps/client/src/components/venue/booking-request-panel.te
+neutralize-r33.py                     oui   3   1   4  apps/pro/src/dashboard/walkin-journey.test.tsx, packages/i18n/messages/ar.json, packages/i18n/messages/fr.json, packages/types/src/quote.ts
+neutralize-r38.py                     oui   1   1   2  apps/pro/src/dashboard/walkin-journey.test.tsx, packages/i18n/messages/ar.json
+neutralize-r39.py                     oui   3   2   6  apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql, apps/api/src/venues/quotes.service.ts, apps/api/test
+neutralize-r4.py                        —   0   2   3  apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql, apps/api/test/int/migration-non-empty.int-spec.ts, a
+neutralize-r41.py                     oui   4   4   9  apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql, apps/api/src/venues/quotes.service.ts, apps/api/test
+neutralize-r42.py                     oui  10  11  21  apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql, apps/api/src/common/contact.spec.ts, apps/api/src/ve
+neutralize-rang23.py                  oui   1   1   2  apps/api/src/venues/bookings.service.ts, apps/api/test/int/bookings.int-spec.ts
+neutralize-s10b.py                    oui   2   0   2  apps/api/src/venues/quote-store.types.ts, apps/api/src/venues/quotes.service.ts
+neutralize-s11a.py                    oui   2   1   3  apps/api/src/venues/booking-notification-input.spec.ts, apps/api/src/venues/booking-notification-input.ts, apps/api/src/venues/bookings.serv
+neutralize-s11b.py                    oui   1   3   5  apps/api/prisma/migrations/20261024100000_booking_contact_phone_optional/migration.sql, apps/api/src/venues/bookings.service.ts, apps/api/te
+neutralize-solid-s1.py                oui   1   1   2  apps/api/test/int/bookings.int-spec.ts, packages/types/src/booking.ts
+neutralize-solid-s2.py                  —   0   1   1  apps/api/test/int/bookings.int-spec.ts
+neutralize-solid-s3.py                  —   0   2   2  apps/api/test/int/bookings.int-spec.ts, apps/api/test/int/quotes.int-spec.ts
+neutralize-solid-s5b.py                 —   0   1   1  apps/api/test/int/bookings.int-spec.ts
+neutralize-solid-s6.py                  —   0   1   1  apps/api/test/int/bookings.int-spec.ts
+
+UNION : 24 campagne(s) sur 39 ; (a) seul en aurait retenu 17 ; le tri tel que lancé en retient 16 ; (b) ajoute 7
+non retenues : neutralize-404.py, neutralize-argon2.py, neutralize-available-on-api.py, neutralize-available-on.py, neutralize-b7.py, neutralize-budgets.py, neutralize-horizon.py, neutralize-maxprice.py, neutralize-r30.py, neutralize-r37.py, neutralize-s10a.py, neutralize-s9.py, neutralize-solid-s4.py, neutralize-solid-s5a.py, neutralize-solid-s7.py
+UNION: neutralize-act-plafonds.py,neutralize-booking-status.py,neutralize-e3d1-s8.py,neutralize-horloge.py,neutralize-journey.py,neutralize-r25.py,neutralize-r26.py,neutralize-r29.py,neutralize-r32.py,neutralize-r33.py,neutralize-r38.py,neutralize-r39.py,neutralize-r4.py,neutralize-r41.py,neutralize-r42.py,neutralize-rang23.py,neutralize-s10b.py,neutralize-s11a.py,neutralize-s11b.py,neutralize-solid-s1.py,neutralize-solid-s2.py,neutralize-solid-s3.py,neutralize-solid-s5b.py,neutralize-solid-s6.py

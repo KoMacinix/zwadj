@@ -1,0 +1,82 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 28 déclarées · 9 jouées · 6 non jouée(s) (sans --int) · 4 mesure(s) distincte(s) · 4 fichier(s) muté(s)
+  pré-vol client : code 0 · passés 32 · en échec 0
+  pré-vol pro-contact : code 0 · passés 27 · en échec 0
+  pré-vol pro-demandes : code 0 · passés 11 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 130 · en échec 0
+■ C-5. ⛔ D32 — le champ du numéro porte de nouveau `required` (obligatoire SEUL)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et 
+         ↳ AssertionError: Téléphone: expected true to be false // Object.is equality
+■ C-6. ⛔ l'e-mail n'est plus relié au texte « l'un des deux » par `aria-describedby`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et 
+         ↳ AssertionError: E-mail: expected [ '' ] to include '_r_4t_'
+■ C-7. ⛔ le champ du numéro n'est plus relié au texte « l'un des deux »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et 
+         ↳ AssertionError: Téléphone: expected [ '' ] to include '_r_4t_'
+■ P-1. ⛔ la conversion exige de nouveau le NUMÉRO (l'e-mail seul retient)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · ROUGE — passés 24 · en échec 3
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-2 — un e-mail VALIDE seul suffit : rien ne retient
+         ↳ AssertionError: expected [ 'needIdentifier' ] to deeply equal []
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, numéro absent : « adresse invalide », pas « manque un moye
+         ↳ AssertionError: expected [ 'needIdentifier', 'needEmailValid' ] to deeply equal [ 'needEmailValid' ]
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > l'écran et le serveur rendent le MÊME verdict sur les neuf paires (numéro, e-mail) : absent / valide /
+         ↳ AssertionError: numéro absent, e-mail valide: expected true to be false // Object.is equality
+■ P-2. ⛔ un numéro SAISI et invalide ne retient plus la conversion quand l'e-mail est bon
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · ROUGE — passés 24 · en échec 3
+      FAIL  src/dashboard/walkin-contact.test.ts > contactBlockers — ce qui empêche de CONCLURE > ⚠ le téléphone : vide (sans e-mail) ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états
+         ↳ AssertionError: expected [] to deeply equal [ 'needPhoneLeading' ]
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > ML-8 — un numéro SAISI et invalide retient même avec un e-mail valide (l'e-mail ne « rachète » pas un 
+         ↳ AssertionError: expected [] to deeply equal [ 'needPhoneLeading' ]
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > l'écran et le serveur rendent le MÊME verdict sur les neuf paires (numéro, e-mail) : absent / valide /
+         ↳ AssertionError: numéro invalide, e-mail absent: expected false to be true // Object.is equality
+■ P-3. ⛔ le corps de la conversion envoie TOUJOURS la clé du numéro (« +213 » seul quand il est vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 129 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ L36-1 — une fiche SANS numéro (t
+         ↳ AssertionError: la clé du numéro doit être ABSENTE: expected true to be false // Object.is equality
+   [pro-contact] code 1 · ROUGE — passés 25 · en échec 2
+      FAIL  src/dashboard/walkin-contact.test.ts > ⛔ contactBlockers — un numéro OU un e-mail (L36-1) > l'écran et le serveur rendent le MÊME verdict sur les neuf paires (numéro, e-mail) : absent / valide /
+         ↳ AssertionError: numéro absent, e-mail valide: expected false to be true // Object.is equality
+      FAIL  src/dashboard/walkin-contact.test.ts > contactPayload — la valeur ENVOYÉE est celle saisie, au format que le contrat attend > ⛔ L36-1 — sans numéro, la clé `contactPhone` est ABSENTE du corps (n
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ P-4. ⛔ la liste des demandes n'affiche que le NUMÉRO : une réservation par e-mail seul n'a plus de contact visible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-demandes] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/venues/booking-requests-section.test.tsx > ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > ML-5 — sans numéro, l'E-MAIL est affiché à la place — jamais le mot « null », j
+         ↳ TestingLibraryElementError: Unable to find an element with the text: amina@example.dz. This could be because the text is broken up by multiple element
+      FAIL  src/venues/booking-requests-section.test.tsx > ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > ML-18 — le contact s'écrit de gauche à droite (`dir="ltr"`) : un e-mail dans un
+         ↳ TestingLibraryElementError: Unable to find an element with the text: amina@example.dz. This could be because the text is broken up by multiple element
+■ P-5. ⛔ ML-18 — le contact de la liste n'est plus écrit de gauche à droite (un e-mail se retourne dans une page arabe)
+   ancre 1→0 · marqueur 4→5 · genre substitution
+   [pro-demandes] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/venues/booking-requests-section.test.tsx > ⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1) > ML-18 — le contact s'écrit de gauche à droite (`dir="ltr"`) : un e-mail dans un
+         ↳ AssertionError: expected null to be 'ltr' // Object.is equality
+■ P-6. ⛔ ML-6 — les canaux SMS et appel ne sont plus bloqués sans numéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · ROUGE — passés 129 · en échec 1
+      FAIL  src/dashboard/walkin-journey.test.tsx > ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-6 — SANS numéro, les canaux qui
+         ↳ AssertionError: expected false to be true // Object.is equality
+  empreintes : 11 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 9 cible(s) jouée(s) sur 28, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

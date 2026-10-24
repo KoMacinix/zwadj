@@ -1,0 +1,179 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 28 déclarées · 28 jouées · 0 non jouée(s) (sans --int) · 10 mesure(s) distincte(s) · 11 fichier(s) muté(s)
+  pré-vol client : code 0 · passés 32 · en échec 0
+  pré-vol contrat : code 0 · passés 49 · en échec 0
+  pré-vol int-devis : code 0 · passés 54 · en échec 0
+  pré-vol int-migration : code 0 · passés 20 · en échec 0
+  pré-vol int-reservations : code 0 · passés 60 · en échec 0
+  pré-vol notification : code 0 · passés 24 · en échec 0
+  pré-vol pro-contact : code 0 · passés 27 · en échec 0
+  pré-vol pro-demandes : code 0 · passés 11 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 130 · en échec 0
+  pré-vol schemas : code 0 · passés 26 · en échec 0
+■ T-1. ⛔ `hasContactChannel` rend toujours VRAI : « ni numéro ni e-mail » n'est plus refusé nulle part
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 46 · en échec 3
+      FAIL  src/common/contact.spec.ts > ⛔ hasContactChannel — la table de vérité : ABSENT, vide, blanc, valeur > dix cas, dont quatre « faux » et six « vrai » — la fonction discrimine
+         ↳ AssertionError: rien, deux clés absentes: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-1 — NI l'un NI l'autre : refusé, avec la clé du message neuf, portée par le 
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > ⛔ le MÊME verdict : `hasContactChannel` (écran), la réservation et la conversion, sur les neuf paires (numéro, e-mail) > neuf paires : le verdict est « joignable ET 
+         ↳ AssertionError: la comparaison discrimine : ni toujours oui, ni toujours non: expected 4 to be 3 // Object.is equality
+■ T-2. ⛔ `hasContactChannel` ne regarde que le NUMÉRO : l'e-mail seul n'est plus un moyen de joindre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 46 · en échec 3
+      FAIL  src/common/contact.spec.ts > ⛔ hasContactChannel — la table de vérité : ABSENT, vide, blanc, valeur > dix cas, dont quatre « faux » et six « vrai » — la fonction discrimine
+         ↳ AssertionError: un e-mail seul: expected false to be true // Object.is equality
+      FAIL  src/common/contact.spec.ts > ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-2 — e-mail seul : accepté, le numéro reste ABSENT de la donnée
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/common/contact.spec.ts > ⛔ le MÊME verdict : `hasContactChannel` (écran), la réservation et la conversion, sur les neuf paires (numéro, e-mail) > neuf paires : le verdict est « joignable ET 
+         ↳ AssertionError: la comparaison discrimine : ni toujours oui, ni toujours non: expected 2 to be 3 // Object.is equality
+■ T-3. ⛔ une chaîne BLANCHE vaut « renseigné » (un formulaire vide passerait pour un contact)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 48 · en échec 1
+      FAIL  src/common/contact.spec.ts > ⛔ hasContactChannel — la table de vérité : ABSENT, vide, blanc, valeur > dix cas, dont quatre « faux » et six « vrai » — la fonction discrimine
+         ↳ AssertionError: deux chaînes blanches: expected true to be false // Object.is equality
+■ T-4. ⛔ `reachableContact` donne l'E-MAIL avant le numéro (le pro rappelle d'abord)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 48 · en échec 1
+      FAIL  src/common/contact.spec.ts > ⛔ reachableContact — le numéro d'abord, à défaut l'e-mail, sinon rien (jamais « null », jamais « undefined ») > les deux : le NUMÉRO — le pro rappelle d'abord
+         ↳ AssertionError: expected 'amina@example.dz' to be '+213550000001' // Object.is equality
+■ T-5. ⛔ la réservation en ligne accepte « ni numéro ni e-mail »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · ROUGE — passés 25 · en échec 1
+      FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-1 — NI numéro NI e-mail : refusé, avec la clé du message neuf, portée par le champ du numéro
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ T-6. ⛔ la conversion d'un devis accepte « ni numéro ni e-mail »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 47 · en échec 2
+      FAIL  src/common/contact.spec.ts > ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-1 — NI l'un NI l'autre : refusé, avec la clé du message neuf, portée par le 
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/contact.spec.ts > ⛔ le MÊME verdict : `hasContactChannel` (écran), la réservation et la conversion, sur les neuf paires (numéro, e-mail) > neuf paires : le verdict est « joignable ET 
+         ↳ AssertionError: conversion, numéro absent, e-mail absent: expected true to be false // Object.is equality
+■ T-7. ⛔ le numéro redevient OBLIGATOIRE à la réservation en ligne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · ROUGE — passés 23 · en échec 3
+      FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-2 — un e-mail SEUL : accepté, et le numéro reste ABSENT de la donnée (pas une chaîne vide)
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-1 — NI numéro NI e-mail : refusé, avec la clé du message neuf, portée par le champ du numéro
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-3 (S-55, SIGNALEMENT SANS ALIGNEMENT) — l'e-mail de la réservation est ROGNÉ seulement : « Amina
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ T-8. ⛔ le numéro redevient OBLIGATOIRE à la conversion d'un devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 46 · en échec 3
+      FAIL  src/common/contact.spec.ts > ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-2 — e-mail seul : accepté, le numéro reste ABSENT de la donnée
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/common/contact.spec.ts > ⛔ quoteConvertSchema — la conversion d'un devis : un numéro OU un e-mail (L36-1, c) > ML-1 — NI l'un NI l'autre : refusé, avec la clé du message neuf, portée par le 
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  src/common/contact.spec.ts > ⛔ le MÊME verdict : `hasContactChannel` (écran), la réservation et la conversion, sur les neuf paires (numéro, e-mail) > neuf paires : le verdict est « joignable ET 
+         ↳ AssertionError: conversion, numéro absent, e-mail valide: expected false to be true // Object.is equality
+■ T-9. ⛔ un numéro VIDE devient une absence à la réservation en ligne (« facultatif » ne veut plus dire clé omise)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · ROUGE — passés 25 · en échec 1
+      FAIL  src/venues/bookings.schemas.spec.ts > ⛔ bookingCreateSchema — un numéro OU un e-mail (L36-1) > ML-9 — « facultatif » veut dire CLÉ OMISE : un numéro VIDE n'est pas un numéro absent, même avec un
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ S-1. ⛔ la réservation par e-mail seul écrit une chaîne VIDE au lieu de NULL dans `contact_phone` (le CHECK passe, la donnée ment)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-reservations] code 1 · ROUGE — passés 57 · en échec 3
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en base et l'e-mail est gardé
+         ↳ AssertionError: expected { contact_phone: '', …(1) } to deeply equal { contact_phone: null, …(1) }
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone` est null (jamais une chaîne vide)
+         ↳ AssertionError: expected '' to be null
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé p
+         ↳ AssertionError: promise resolved "1" instead of rejecting
+■ S-2. ⛔ la conversion par e-mail seul écrit une chaîne VIDE au lieu de NULL dans `contact_phone`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · ROUGE — passés 53 · en échec 1
+      FAIL  test/int/quotes.int-spec.ts > Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-2 — un client avec un E-MAIL SEUL se convertit : la réservation née a `contact_phone` NULL et garde l'e-
+         ↳ AssertionError: expected { contact_phone: '', …(1) } to deeply equal { contact_phone: null, …(1) }
+■ S-3. ⛔ la notification au pro ne cite que le NUMÉRO : une réservation par e-mail seul n'a aucun contact
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [notification] code 1 · ROUGE — passés 23 · en échec 1
+      FAIL  src/venues/booking-notification-input.spec.ts > ⛔ `contact` : le numéro, à défaut l'e-mail (ML-5) > e-mail seul : `contact` est l'e-mail — jamais « null », jamais « undefined », jamais une chaîn
+         ↳ AssertionError: expected '' to be 'yasmine@example.dz' // Object.is equality
+   [int-reservations] code 1 · ROUGE — passés 59 · en échec 1
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », n
+         ↳ AssertionError: aucun courrier au pro ne porte l'e-mail du client « pour rappeler »: expected undefined to be defined
+■ M-1. ⛔ la colonne `contact_phone` redevient NOT NULL : l'e-mail seul est refusé par la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · ROUGE — passés 18 · en échec 2
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) : le C
+         ↳ AssertionError: expected [ { is_nullable: 'NO' } ] to deeply equal [ { is_nullable: 'YES' } ]
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-11 — après la migration : un e-mail SEUL s'écrit ; ni numéro ni 
+         ↳ error: null value in column "contact_phone" of relation "bookings" violates not-null constraint
+   [int-reservations] code 1 · ROUGE — passés 55 · en échec 5
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en base et l'e-mail est gardé
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone` est null (jamais une chaîne vide)
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », n
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-3 (S-55, SIGNALEMENT) — l'e-mail est gardé tel que saisi, rogné seulement : « Amina@Example.DZ »
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé p
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+■ M-2. ⛔ le CHECK ne garde plus rien (`true`) : ni numéro ni e-mail passe en base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · ROUGE — passés 18 · en échec 2
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) : le C
+         ↳ AssertionError: expected 'CHECK (true)' to contain 'contact_phone IS NOT NULL'
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-11 — après la migration : un e-mail SEUL s'écrit ; ni numéro ni 
+         ↳ AssertionError: promise resolved "[]" instead of rejecting
+   [int-reservations] code 1 · ROUGE — passés 59 · en échec 1
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé p
+         ↳ AssertionError: promise resolved "1" instead of rejecting
+■ M-3. ⛔ le CHECK exige les DEUX (ET au lieu de OU) : l'e-mail seul est refusé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · ROUGE — passés 17 · en échec 3
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-4 — la migration passe sur la base NON VIDE : les deux réservati
+         ↳ error: check constraint "bookings_contact_reachable" of relation "bookings" is violated by some row
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) : le C
+         ↳ AssertionError: expected [ { is_nullable: 'NO' } ] to deeply equal [ { is_nullable: 'YES' } ]
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-11 — après la migration : un e-mail SEUL s'écrit ; ni numéro ni 
+         ↳ error: null value in column "contact_phone" of relation "bookings" violates not-null constraint
+   [int-reservations] code 1 · ROUGE — passés 54 · en échec 6
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en base et l'e-mail est gardé
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone` est null (jamais une chaîne vide)
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », n
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-4 — avec un numéro seul (le parcours d'avant), `contact_email` reste NULL
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-3 (S-55, SIGNALEMENT) — l'e-mail est gardé tel que saisi, rogné seulement : « Amina@Example.DZ »
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+      FAIL  test/int/bookings.int-spec.ts > ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé p
+         ↳ Error: expected 201 "Created", got 500 "Internal Server Error"
+■ C-1. ⛔ le numéro redevient obligatoire pour ENVOYER (l'e-mail seul laisse le bouton inerte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORT
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-2. ⛔ un numéro SAISI et incomplet ne retient plus l'envoi quand l'e-mail est bon
+   ancre 1→0 · marqueur 2→3 · genre substitution
+   [client] code 1 · ROUGE — passés 29 · en échec 3
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suf
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide
+         ↳ AssertionError: expected false to be true // Object.is equality
+✗ C-3. ⛔ un e-mail SAISI et invalide ne retient plus l'envoi
+   MUTATION NON POSÉE : ancre 1→0, marqueur 110→110 (attendu 1→0 et 110→111, genre substitution)
+  empreintes : 11 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 28 cible(s) jouée(s) sur 28, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

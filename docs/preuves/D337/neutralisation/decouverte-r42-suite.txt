@@ -1,0 +1,48 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 28 déclarées · 13 jouées · 6 non jouée(s) (sans --int) · 4 mesure(s) distincte(s) · 4 fichier(s) muté(s)
+  pré-vol client : code 0 · passés 32 · en échec 0
+  pré-vol pro-contact : code 0 · passés 27 · en échec 0
+  pré-vol pro-demandes : code 0 · passés 11 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 130 · en échec 0
+■ C-1. ⛔ le numéro redevient obligatoire pour ENVOYER (l'e-mail seul laisse le bouton inerte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORT
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-2. ⛔ un numéro SAISI et incomplet ne retient plus l'envoi quand l'e-mail est bon
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 29 · en échec 3
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suf
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ C-3. ⛔ un e-mail SAISI et invalide ne retient plus l'envoi
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, même avec un numéro valide 
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ C-4. ⛔ le corps envoie TOUJOURS la clé du numéro (« +213 » seul quand il est vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/components/venue/booking-request-panel.test.tsx > ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORT
+         ↳ AssertionError: expected true to be false // Object.is equality
+✗ C-5. ⛔ D32 — le champ du numéro porte de nouveau `required` (obligatoire SEUL)
+   MUTATION NON POSÉE : ancre 1→0, marqueur 0→1 (attendu 1→1 et 0→1, genre insertion)
+  empreintes : 11 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 13 cible(s) jouée(s) sur 28, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
