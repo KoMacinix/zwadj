@@ -178,3 +178,13 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `docs/preuves/D337/passe-d277.md` | la passe D277 des DEUX sens (ce que le lot invalide, ce qu'il rend permis) |
 | `docs/preuves/D337/controle-fin-de-lot.txt` | le contrôle de fin de lot : ordre des commits, diff ⊆ table, local = origin/main |
 | `docs/preuves/D337/signalements.md` | les signalements hors lot (S-55 et ce que le lot découvre) |
+
+**Extension 3** (24/10/2026, déclarée AVANT le commit des harnais qu'elle couvre — le jeu de l'union a révélé quatre campagnes que le lot a PÉRIMÉES, comme le conditionnel de la table l'annonçait ; les sorties du premier jeu sont versées telles quelles dans `union-jeu.txt`) :
+
+| fichier | motif |
+|---|---|
+| `neutralisation/neutralize-act-plafonds.py` | la constante du nombre de tests de `walkin-journey.test.tsx` : 127 → 130 (+3 tests du lot) — « la constante SEULE change », comme aux rangs 33, 38, 39 et 41 |
+| `neutralisation/neutralize-horloge.py` | même constante, même valeur |
+| `neutralisation/neutralize-r32.py` | quatre ancres que les lignes du lot ont déplacées (W-1, W-5, Q-1, Q-2) : le contact du pro (`contactBlockers`, `contactPayload`) et le formulaire en ligne (`contactPhone`, `isPhoneComplete`) |
+| `neutralisation/neutralize-s11a.py` | une ancre (S11a-12, « les deux téléphones s'intervertissent ») : `contact:` de la charge de notification est désormais `reachableContact(…)` |
+| `docs/preuves/D337/neutralisation/union-jeu-2.txt` | le REJEU de ces quatre campagnes et des trois qui exigent un autre drapeau (`r25 --e2e`, `r26 --e2e`, `solid-s6 --int`), après les réparations |
