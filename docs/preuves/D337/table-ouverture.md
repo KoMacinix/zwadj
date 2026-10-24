@@ -188,3 +188,9 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | `neutralisation/neutralize-r32.py` | quatre ancres que les lignes du lot ont déplacées (W-1, W-5, Q-1, Q-2) : le contact du pro (`contactBlockers`, `contactPayload`) et le formulaire en ligne (`contactPhone`, `isPhoneComplete`) |
 | `neutralisation/neutralize-s11a.py` | une ancre (S11a-12, « les deux téléphones s'intervertissent ») : `contact:` de la charge de notification est désormais `reachableContact(…)` |
 | `docs/preuves/D337/neutralisation/union-jeu-2.txt` | le REJEU de ces quatre campagnes et des trois qui exigent un autre drapeau (`r25 --e2e`, `r26 --e2e`, `solid-s6 --int`), après les réparations |
+
+**Extension 4** (24/10/2026, déclarée AVANT le commit qui contient le fichier) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D337/neutralisation/e2e-a-la-main.txt` | la neutralisation À LA MAIN de l'e2e du lot (trois mutations posées avec preuve, la spec jouée, le rouge lu, l'arbre restauré à l'octet) : `neutralize-r42.py` ne joue pas Playwright |
