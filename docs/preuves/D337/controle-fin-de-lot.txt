@@ -1,0 +1,10 @@
+CONTRÔLE DE FIN DE LOT — D337 (AGENTS.md, D288 et D328) — SHA de départ 299582c
+commits du lot parcourus : 15 (attendu : 15 avant le commit de ce fichier)
+✓ 1. le PREMIER commit (dec5e9a) ne contient que la table : ['docs/preuves/D337/table-ouverture.md']
+✓ 2. la lecture adverse (commit n°2) précède le premier commit qui touche un .md d'autorité (n°3)
+✓ 3. D334 item 5 — le commit des rouges (n°7, 0b1107a) précède le premier commit de code (n°12, aa48fa4)
+✓ 4. 6 commits ne contiennent QUE la table (la table et ses extensions, chacune seule) : n°[1, 5, 8, 10, 11, 13]
+✓ 5. `git diff 299582c..HEAD --name-only` (106 fichiers) ⊆ la table (chemins COMPLETS, extensions comprises) : non déclarés = []
+   · fichiers déclarés et NON touchés (14) : ['apps/api/src/venues/booking-locks.types.ts', 'apps/api/src/venues/quote-store.prisma.spec.ts', 'apps/api/src/venues/quote-store.prisma.ts', 'apps/api/src/venues/quotes.service.spec.ts', 'apps/api/src/venues/visit-bookings.service.ts', 'apps/client/src/components/account/visit-bookings-section.tsx', 'apps/client/src/lib/phone-literal-guard.test.ts', 'apps/pro/src/dashboard/walkin-journey.tsx', 'apps/pro/src/venues/quotes-section.test.tsx', 'apps/pro/src/venues/quotes-section.tsx', 'apps/pro/src/venues/visits-section.tsx', 'docs/preuves/D336/audit-secrets-d336e.txt', 'docs/preuves/D337/controle-fin-de-lot.txt', 'packages/types/src/venue.ts']
+✗ 6. arbre propre : « ?? docs/preuves/D337/controle-fin-de-lot.txt » ; stash : vide
+✓ 7. local = origin/main après push puis fetch : HEAD 8af684d39b4be29c1e3f696d0bb1def833e595b1 · origin/main 8af684d39b4be29c1e3f696d0bb1def833e595b1
