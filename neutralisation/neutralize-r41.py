@@ -148,6 +148,10 @@ cible("T-7. ⛔ la correspondance langue ↔ copie du nom est INVERSÉE (le PDF 
       {"doc": "le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT", "pro-fiche": "interface française : la copie latine ; interface arabe"})
 cible("T-8. ⛔ un devis accepte des noms SANS fiche", TYPES_DEVIS,
       "if (corps.clientRecordId === undefined && avecNom) {", "if (false && avecNom) {", {"types": "MD-15 — des noms SANS fiche : refusé"})
+cible("T-9. ⛔ DB-15 (dette de preuve de r41, D337) — `clientId` redevient une clé CONNUE de la création d'un devis (un pro rattacherait n'importe quel identifiant de compte)", TYPES_DEVIS,
+      '    clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),',
+      '    clientId: z.string().uuid().optional(),\n    clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),',
+      {"types": "`clientId` est une clé INCONNUE : refusée", "int-devis": "DB-15 — `clientId` est RETIRÉ du contrat"}, genre="insertion")
 
 # ── P — la POLITIQUE (module pur).
 cible("P-1. ⛔ le SECOND numéro du pro n'est plus reconnu comme le sien", POLITIQUE,

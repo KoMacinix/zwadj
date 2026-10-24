@@ -1,0 +1,26 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 70 déclarées · 1 jouées · 0 non jouée(s) (sans --int) · 2 mesure(s) distincte(s) · 1 fichier(s) muté(s)
+  pré-vol int-devis : code 0 · passés 51 · en échec 0
+  pré-vol types : code 0 · passés 27 · en échec 0
+■ T-9. ⛔ DB-15 (dette de preuve de r41, D337) — `clientId` redevient une clé CONNUE de la création d'un devis (un pro rattacherait n'importe quel identifiant de compte)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [types] code 1 · ROUGE — passés 26 · en échec 1
+      FAIL  src/common/client-record.spec.ts > ⛔ K-4 (DB-15, S-49) — `quoteCreateSchema` : la fiche et la COPIE du nom ; `clientId` RETIRÉ > ⛔ `clientId` est une clé INCONNUE : refusée (le lien à un compte 
+         ↳ AssertionError: expected true to be false // Object.is equality
+   [int-devis] code 1 · ROUGE — passés 50 · en échec 1
+      FAIL  test/int/quotes.int-spec.ts > ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ DB-15 — `clientId` est RETIRÉ du contrat : le schéma strict le refuse (400) et n'éc
+         ↳ AssertionError: expected 201 to be 400 // Object.is equality
+  empreintes : 15 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 1 cible(s) jouée(s) sur 70, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

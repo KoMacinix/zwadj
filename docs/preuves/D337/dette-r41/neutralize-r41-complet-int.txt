@@ -1,0 +1,257 @@
+D337 — 2 a : la campagne COMPLÈTE de neutralisation/neutralize-r41.py --int, avec la cible neuve T-9 (DB-15, `clientId`), jouée sur l'arbre de 299582c (aucun code de production modifié ; seul neutralize-r41.py l'est). Sortie brute, non retouchée.
+Résultat : 70 gardes mordues sur 70 cibles jouées, 0 muette, 0 non mesurée. T-9 : ancre 1→1, marqueur 0→1 (insertion) ; [types] client-record.spec.ts AssertionError ; [int-devis] quotes.int-spec.ts AssertionError (201 au lieu de 400).
+----
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 70 déclarées · 70 jouées · 0 non jouée(s) (sans --int) · 14 mesure(s) distincte(s) · 15 fichier(s) muté(s)
+  pré-vol client-devis : code 0 · passés 7 · en échec 0
+  pré-vol client-fiches : code 0 · passés 5 · en échec 0
+  pré-vol devis : code 0 · passés 25 · en échec 0
+  pré-vol doc : code 0 · passés 51 · en échec 0
+  pré-vol fiches : code 0 · passés 19 · en échec 0
+  pré-vol int-devis : code 0 · passés 51 · en échec 0
+  pré-vol int-fiches : code 0 · passés 32 · en échec 0
+  pré-vol int-migration : code 0 · passés 15 · en échec 0
+  pré-vol politique : code 0 · passés 17 · en échec 0
+  pré-vol pro-contact : code 0 · passés 21 · en échec 0
+  pré-vol pro-fiche : code 0 · passés 13 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 127 · en échec 0
+  pré-vol store-devis : code 0 · passés 33 · en échec 0
+  pré-vol types : code 0 · passés 27 · en échec 0
+✓ T-1. ⛔ la recherche accepte un numéro ET un e-mail ensemble (« exactement l'un » saute)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 26 · en échec 1 · AssertionError: {"phone":"0555123456","email":"a@example.dz"}: expected true to be false // Object.is equality
+✓ T-2. ⛔ la création accepte une fiche SANS identifiant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 26 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-3. ⛔ la création accepte une fiche SANS nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 26 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-4. ⛔ l'e-mail d'une fiche n'est plus NORMALISÉ avant d'être validé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 24 · en échec 3 · AssertionError: expected { email: 'Amina@Mail.DZ' } to deeply equal { email: 'amina@mail.dz' }
+✓ T-5. ⛔ la modification accepte un corps VIDE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 26 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-6. ⛔ la normalisation de l'e-mail oublie NFKC (la pleine chasse reste une AUTRE adresse)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 25 · en échec 2 · AssertionError: expected 'ａｍｉｎａ＠ｍａｉｌ．ｄｚ' to be 'amina@mail.dz' // Object.is equality
+✓ T-7. ⛔ la correspondance langue ↔ copie du nom est INVERSÉE (le PDF français lirait la copie arabe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · passés 48 · en échec 3 · AssertionError: expected 'آمنة بن سالم' to be 'Amina Bensalem' // Object.is equality
+   [pro-fiche] code 1 · passés 11 · en échec 2 · AssertionError: expected 'آمنة بن سالم' to be 'Amina Bensalem' // Object.is equality
+✓ T-8. ⛔ un devis accepte des noms SANS fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [types] code 1 · passés 26 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-9. ⛔ DB-15 (dette de preuve de r41, D337) — `clientId` redevient une clé CONNUE de la création d'un devis (un pro rattacherait n'importe quel identifiant de compte)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [types] code 1 · passés 26 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+   [int-devis] code 1 · passés 50 · en échec 1 · AssertionError: expected 201 to be 400 // Object.is equality
+✓ P-1. ⛔ le SECOND numéro du pro n'est plus reconnu comme le sien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 16 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ P-2. ⛔ l'e-mail du compte du pro n'est plus reconnu comme le sien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 15 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ P-3. ⛔ deux fiches DIFFÉRENTES (le numéro, l'e-mail) ne sont plus un conflit : la première est rendue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 16 · en échec 1 · AssertionError: expected { kind: 'rendre', …(1) } to deeply equal { kind: 'conflit' }
+✓ P-4. ⛔ une fiche LIÉE accepte un AUTRE nom sur le devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 16 · en échec 1 · AssertionError: expected { ok: true, copie: { ar: null, …(1) } } to deeply equal { ok: false, raison: 'ficheLiee' }
+✓ P-5. ⛔ C-C3 saute : la boîte de langue complète la fiche même quand le nom de l'autre écriture DIFFÈRE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 15 · en échec 2 · AssertionError: expected true to be false // Object.is equality
+✓ P-6. ⛔ C-C3 complète une fiche LIÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 16 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ P-7. ⛔ C-C3 remplace un nom DÉJÀ sur la fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 16 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ P-8. ⛔ une fiche liée redevient modifiable (`peutModifier` toujours vrai)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 13 · en échec 4 · AssertionError: expected true to be false // Object.is equality
+   [fiches] code 1 · passés 17 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ S-1. ⛔ M-4 — la recherche lit le CONTACT du pro (donc le compte) avant de chercher
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [fiches] code 1 · passés 17 · en échec 2 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+   [fiches#2] code 1 · passés 17 · en échec 2 · AssertionError: expected [ 'this.fiches.contactDuPro', …(1) ] to deeply equal [ 'this.fiches.rechercher' ]
+✓ S-2. ⛔ la création ne refuse plus le contact du pro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · passés 18 · en échec 1 · AssertionError: expected "la promesse devait être REFUSÉE" not to be reached
+✓ S-3. ⛔ la modification ne refuse plus le contact du pro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · passés 18 · en échec 1 · AssertionError: expected "la promesse devait être REFUSÉE" not to be reached
+✓ S-4. ⛔ un conflit (deux fiches) se résout en rendant celle du NUMÉRO — une fusion silencieuse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · passés 18 · en échec 1 · AssertionError: expected "la promesse devait être REFUSÉE" not to be reached
+✓ S-5. ⛔ S-53 — la fiche rendue expose l'identifiant du COMPTE lié
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [fiches] code 1 · passés 18 · en échec 1 · AssertionError: expected [ 'createdAt', 'email', 'id', …(6) ] to deeply equal [ 'createdAt', 'email', 'id', …(5) ]
+✓ S-6. ⛔ le complément d'une fiche LIÉE se dit « nom déjà là » au lieu de « fiche liée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · passés 18 · en échec 1 · AssertionError: expected 'CLIENT_RECORD_NAME_ALREADY_SET' to be 'CLIENT_RECORD_LINKED' // Object.is equality
+✓ A-1. ⛔ MD-10 — la recherche TRAVERSE le compte (`user`) : même réponse, mais le compte est lu — seule la garde de source le voit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiches] code 1 · passés 18 · en échec 1 · AssertionError: expected 'user' to be null
+✓ A-2. ⛔ la recherche ne filtre plus par le PRO : la fiche d'un autre pro est trouvée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 31 · en échec 1 · AssertionError: expected '{"found":true,"record":{"id":"01a16c3…' to be '{"found":false}' // Object.is equality
+✓ A-3. ⛔ MD-1 — l'insertion ne fait plus « rien sur conflit » : un doublon lève
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 27 · en échec 5 · AssertionError: expected [ 200, 500, 500, 500, 500, 500, …(4) ] to deeply equal [ 200, 200, 200, 200, 200, 200, …(4) ]
+✓ A-4. ⛔ MD-6 — le complément d'un nom écrit sur une fiche LIÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 31 · en échec 1 · AssertionError: expected 200 to be 409 // Object.is equality
+✓ A-5. ⛔ MD-7 — le complément REMPLACE un nom présent (le compare-and-set sur NULL saute)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 31 · en échec 1 · AssertionError: {"nameLatin":"Autre Nom"}: expected 200 to be 409 // Object.is equality
+✓ A-6. ⛔ MD-6 — la modification écrit une fiche LIÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 31 · en échec 1 · AssertionError: expected 200 to be 409 // Object.is equality
+✓ M-1. ⛔ l'unicité (pro, numéro) n'est plus UNIQUE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 28 · en échec 4 · AssertionError: expected 10 to be 1 // Object.is equality
+✓ M-2. ⛔ l'unicité (pro, e-mail) n'est plus UNIQUE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 28 · en échec 4 · AssertionError: expected 10 to be 1 // Object.is equality
+✓ M-3. ⛔ une fiche SANS identifiant passe la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 31 · en échec 1 · AssertionError: promise resolved "1" instead of rejecting
+✓ M-4. ⛔ une fiche SANS nom passe la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 31 · en échec 1 · AssertionError: promise resolved "1" instead of rejecting
+✓ M-5. ⛔ S-50 — un numéro qui n'est pas un mobile algérien canonique passe la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · passés 30 · en échec 2 · AssertionError: promise resolved "1" instead of rejecting
+✓ M-6. ⛔ R8 — supprimer une fiche SUPPRIME ses devis (au lieu de laisser tomber le lien)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 13 · en échec 2 · AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) } ]
+✓ V-1. ⛔ K-4 — la fiche d'un AUTRE pro est ignorée en silence au lieu d'un 404
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [devis] code 1 · passés 23 · en échec 2 · AssertionError: classe du refus : TypeError: Cannot read properties of undefined (reading '0'): expected false to be true // Object.is equal
+   [devis#2] code 1 · passés 23 · en échec 2 · AssertionError: classe du refus : TypeError: Cannot read properties of undefined (reading '0'): expected false to be true // Object.is equal
+✓ V-2. ⛔ K-4 — le devis ne porte plus la fiche ni la copie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 43 · en échec 8 · AssertionError: expected { clientRecordId: null, …(2) } to deeply equal { …(3) }
+✓ V-3. ⛔ K-5 — la boîte de langue complète la copie de l'AUTRE langue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [devis] code 1 · passés 23 · en échec 2 · AssertionError: expected [ 'clientNameLatin', 'clientNameAr' ] to deeply equal [ 'clientNameAr', 'clientNameLatin' ]
+✓ V-4. ⛔ C-C3 — la fiche est complétée dans l'AUTRE écriture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [devis] code 1 · passés 24 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ K-1. ⛔ MD-7 — K-5 REMPLACE une copie présente (le compare-and-set sur NULL saute)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store-devis] code 1 · passés 31 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(1) } } ]
+   [int-devis] code 1 · passés 49 · en échec 2 · AssertionError: expected [ 201, 201 ] to deeply equal [ 201, 409 ]
+✓ K-2. ⛔ MD-8 — la décision C-C3 est ignorée : la fiche se complète toujours
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store-devis] code 1 · passés 31 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { …(4) }, …(1) ]
+   [int-devis] code 1 · passés 50 · en échec 1 · AssertionError: expected { name_ar: 'ياسين بن سالم', …(1) } to deeply equal { name_ar: null, …(1) }
+✓ K-3. ⛔ l'écriture de la fiche ne re-pose plus ses conditions (nom absent, fiche non liée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [store-devis] code 1 · passés 31 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(1) } ]
+   [store-devis#2] code 1 · passés 31 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(1) } } ]
+✓ K-4. ⛔ K-4 — la fiche du devis se lit sans la PROPRIÉTÉ du pro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 50 · en échec 1 · AssertionError: 01a16c38-c1b3-72ac-a050-c3542e4e07ae: expected 201 to be 404 // Object.is equality
+✓ D-1. ⛔ S-52 — le PDF arabe imprime la copie LATINE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · passés 49 · en échec 2 · AssertionError: expected 'Amina Bensalem' to be 'آمنة بن سالم' // Object.is equality
+✓ D-2. ⛔ S-52 — la copie absente se remplace par l'AUTRE écriture (le repli interdit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [doc] code 1 · passés 49 · en échec 2 · AssertionError: expected 'Amina Bensalem' to be '—' // Object.is equality
+✓ C-1. la recherche part sur un AUTRE chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-fiches] code 1 · passés 4 · en échec 1 · AssertionError: expected [ { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+✓ C-2. le complément du nom part sur un AUTRE chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-devis] code 1 · passés 5 · en échec 2 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+✓ W-8. ⛔ l'étape Contact passe SANS identifiant
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 20 · en échec 1 · AssertionError: expected [] to deeply equal [ 'needIdentifier' ]
+✓ W-9. ⛔ un e-mail SAISI et refusé ne retient plus l'étape Contact
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 20 · en échec 1 · AssertionError: expected [] to deeply equal [ 'needEmailValid' ]
+✓ W-10. ⛔ l'étape Client passe SANS nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 19 · en échec 2 · AssertionError: expected [ 'needGuests' ] to deeply equal [ 'needName', 'needGuests' ]
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected [ Array(1) ] to deeply equal [ …(2) ]
+✓ W-11. ⛔ un nom arabe SAISI et refusé ne retient plus l'étape Client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 20 · en échec 1 · AssertionError: expected [] to deeply equal [ 'needNameArValid' ]
+✓ W-12. ⛔ un e-mail VIDE part à la création de la fiche (la clé n'est plus omise)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [pro-contact] code 1 · passés 20 · en échec 1 · AssertionError: expected { phone: '+213533333333', email: '' } to deeply equal { phone: '+213533333333' }
+✓ E-1. ⛔ MD-9 — le nom se coupe au DERNIER espace
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 10 · en échec 3 · AssertionError: expected { firstName: 'Abd El Kader', …(1) } to deeply equal { firstName: 'Abd', …(1) }
+   [pro-parcours] code 1 · passés 125 · en échec 2 · AssertionError: expected [ 'Abd El Kader', 'Benali' ] to deeply equal [ 'Abd', 'El Kader Benali' ]
+✓ E-2. ⛔ MD-9 — sans espace, tout va au PRÉNOM (un prénom inventé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 12 · en échec 1 · AssertionError: expected { firstName: 'Bensalem', lastName: '' } to deeply equal { firstName: '', lastName: 'Bensalem' }
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected 'Bensalem' to be '' // Object.is equality
+✓ E-3. ⛔ la conversion prend toujours la copie LATINE, quelle que soit la langue de l'interface
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 12 · en échec 1 · AssertionError: expected 'Amina Bensalem' to be 'آمنة بن سالم' // Object.is equality
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected 'Abdelkader' to be 'عبد' // Object.is equality
+✓ E-4. ⛔ K-12 — le numéro de la conversion ignore la FICHE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 12 · en échec 1 · AssertionError: expected { firstName: 'Amina', …(3) } to deeply equal { firstName: 'Amina', …(3) }
+✓ E-5. ⛔ K-12 — l'e-mail de la conversion ignore la FICHE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 12 · en échec 1 · AssertionError: expected { firstName: 'Amina', …(3) } to deeply equal { firstName: 'Amina', …(3) }
+✓ E-6. ⛔ S-57 — la recherche commence par l'E-MAIL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 12 · en échec 1 · AssertionError: expected [ { email: 'Amina@Example.DZ' }, …(1) ] to deeply equal [ { phone: '+213533333333' }, …(1) ]
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected [ Array(2) ] to deeply equal [ { phone: '+213550000002' }, …(1) ]
+✓ E-7. ⛔ K-5 — la copie manquante n'est plus vue : la boîte ne demande jamais le nom
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 12 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+   [pro-parcours] code 1 · passés 123 · en échec 4 · AssertionError: la question du nom en arabe est ouverte: expected null not to be null
+✓ E-8. les noms du devis ne sont plus rognés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fiche] code 1 · passés 12 · en échec 1 · AssertionError: expected { clientRecordId: 'fiche-1', …(1) } to deeply equal { clientRecordId: 'fiche-1', …(1) }
+✓ E-9. ⛔ K-2 — un nom VIDE part à la création de la fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected [ { phone: '+213550000002', …(2) } ] to deeply equal [ { phone: '+213550000002', …(1) } ]
+✓ J-1. ⛔ MD-6 — les noms d'une fiche LIÉE ne sont plus grisés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ J-2. ⛔ MD-6 — le devis d'une fiche LIÉE porte les noms TAPÉS au lieu des siens
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected { eventDate: '2026-08-15', …(4) } to deeply equal ObjectContaining{…}
+✓ J-3. ⛔ MD-17 — une fiche TROUVÉE est créée de nouveau au « Continuer » de l'étape Client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 124 · en échec 3 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ J-4. ⛔ S-57 — la recherche continue après la première fiche trouvée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected [ { phone: '+213550000002' }, …(1) ] to deeply equal [ { phone: '+213550000002' } ]
+✓ J-5. ⛔ K-12 — les retouches du pro à la conversion sont ignorées (l'envoi porte le préremplissage)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 124 · en échec 3 · AssertionError: expected { contactFirstName: 'Abd', …(3) } to deeply equal { …(4) }
+✓ J-6. ⛔ K-4 — le devis part sans la fiche ni la copie des noms
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 123 · en échec 4 · AssertionError: expected { eventDate: '2026-08-15', …(2) } to deeply equal ObjectContaining{…}
+✓ J-7. ⛔ K-5 — le choix de la langue remet tout de suite, même sans la copie du nom de cette langue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 123 · en échec 4 · AssertionError: la question du nom en arabe est ouverte: expected null not to be null
+✓ J-8. ⛔ K-5 — la réponse à la question du nom ne complète RIEN sur le devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 125 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ 'q1', { locale: 'ar', …(1) } ]
+✓ J-9. un AUTRE numéro garde les noms de l'ancienne fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 126 · en échec 1 · AssertionError: expected 'Amina Bensalem' to be '' // Object.is equality
+  empreintes : 15 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+70 garde(s) mordue(s) sur 70 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 70 sur 70, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.
