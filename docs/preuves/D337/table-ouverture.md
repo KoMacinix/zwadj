@@ -113,3 +113,9 @@ Tout fichier que cette table n'énumère pas : `git diff 299582c..HEAD --name-on
 ### Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (24/10/2026, déclarée AVANT le commit des rouges qui contiennent le fichier) :
+
+| fichier | motif |
+|---|---|
+| `apps/client/src/lib/contact-channel-guard.test.ts` | ML-6 (aucun `tel:` / `sms:` / `wa.me` dans les deux applications), ML-7 (les clés neuves existent, sont non vides et différentes en FR et en AR) et la garde de SOURCE de « UNE règle, UNE fonction » (les deux schémas et les deux écrans importent `hasContactChannel`). Patron de `apps/client/src/lib/phone-literal-guard.test.ts` ; un fichier neuf, ni dans la table ni couvert par un conditionnel. |
