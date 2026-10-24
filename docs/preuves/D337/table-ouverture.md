@@ -119,3 +119,62 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, AVANT le c
 | fichier | motif |
 |---|---|
 | `apps/client/src/lib/contact-channel-guard.test.ts` | ML-6 (aucun `tel:` / `sms:` / `wa.me` dans les deux applications), ML-7 (les clés neuves existent, sont non vides et différentes en FR et en AR) et la garde de SOURCE de « UNE règle, UNE fonction » (les deux schémas et les deux écrans importent `hasContactChannel`). Patron de `apps/client/src/lib/phone-literal-guard.test.ts` ; un fichier neuf, ni dans la table ni couvert par un conditionnel. |
+
+**Extension 2** (24/10/2026, déclarée AVANT le commit des pièces qu'elle couvre — elle remplace, en CHEMINS COMPLETS, les lignes de dossier de la table d'ouverture, qui valaient par préfixe : règle de D328) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D337/rouges/rouge-api-unitaire.txt` | les rouges, lus contre l'état d'avant (DÉJÀ commités, `581b569`) — chemin complet de la ligne « rouges/ » |
+| `docs/preuves/D337/rouges/rouge-client.txt` | les rouges, lus contre l'état d'avant (DÉJÀ commités, `581b569`) — chemin complet de la ligne « rouges/ » |
+| `docs/preuves/D337/rouges/rouge-pro.txt` | les rouges, lus contre l'état d'avant (DÉJÀ commités, `581b569`) — chemin complet de la ligne « rouges/ » |
+| `docs/preuves/D337/rouges/rouge-integration.txt` | les rouges, lus contre l'état d'avant (DÉJÀ commités, `581b569`) — chemin complet de la ligne « rouges/ » |
+| `docs/preuves/D337/rouges/rouge-e2e.txt` | les rouges, lus contre l'état d'avant (DÉJÀ commités, `581b569`) — chemin complet de la ligne « rouges/ » |
+| `docs/preuves/D337/rouges/empreintes-fichiers-de-test.txt` | les rouges, lus contre l'état d'avant (DÉJÀ commités, `581b569`) — chemin complet de la ligne « rouges/ » |
+| `docs/preuves/D337/rouges/LISEZ-MOI.md` | les rouges, lus contre l'état d'avant (DÉJÀ commités, `581b569`) — chemin complet de la ligne « rouges/ » |
+| `docs/preuves/D337/dette-r41/decouverte-T-9.txt` | la dette de preuve de r41 (DÉJÀ commités, `2c48afb`) |
+| `docs/preuves/D337/dette-r41/neutralize-r41-complet-int.txt` | la dette de preuve de r41 (DÉJÀ commités, `2c48afb`) |
+| `docs/preuves/D337/neutralisation/decouverte-r42.txt` | la découverte des titres de `neutralize-r42.py` (trois lancements : le premier s'est arrêté sur deux mutations mal posées, réparées) et la campagne `--int` entière |
+| `docs/preuves/D337/neutralisation/decouverte-r42-suite.txt` | la découverte des titres de `neutralize-r42.py` (trois lancements : le premier s'est arrêté sur deux mutations mal posées, réparées) et la campagne `--int` entière |
+| `docs/preuves/D337/neutralisation/decouverte-r42-suite2.txt` | la découverte des titres de `neutralize-r42.py` (trois lancements : le premier s'est arrêté sur deux mutations mal posées, réparées) et la campagne `--int` entière |
+| `docs/preuves/D337/neutralisation/r42-int.txt` | la découverte des titres de `neutralize-r42.py` (trois lancements : le premier s'est arrêté sur deux mutations mal posées, réparées) et la campagne `--int` entière |
+| `docs/preuves/D337/neutralisation/union-campagnes.py` | l'UNION des campagnes (copie de celle de D336 : SHA de départ, noms, et `r42` ajoutée à la liste des `--int`) et son jeu |
+| `docs/preuves/D337/neutralisation/union-sortie.txt` | l'UNION des campagnes (copie de celle de D336 : SHA de départ, noms, et `r42` ajoutée à la liste des `--int`) et son jeu |
+| `docs/preuves/D337/neutralisation/jouer-union.py` | l'UNION des campagnes (copie de celle de D336 : SHA de départ, noms, et `r42` ajoutée à la liste des `--int`) et son jeu |
+| `docs/preuves/D337/neutralisation/union-jeu.txt` | l'UNION des campagnes (copie de celle de D336 : SHA de départ, noms, et `r42` ajoutée à la liste des `--int`) et son jeu |
+| `docs/preuves/D337/neutralisation/journal-neutralize-act-plafonds.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-booking-status.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-e3d1-s8.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-horloge.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-journey.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r25.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r26.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r29.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r32.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r33.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r38.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r39.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r4.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r41.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-r42.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-rang23.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-s10b.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-s11a.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-s11b.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-solid-s1.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-solid-s2.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-solid-s3.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-solid-s5b.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/neutralisation/journal-neutralize-solid-s6.txt` | la sortie ENTIÈRE de cette campagne de l'union |
+| `docs/preuves/D337/portes/typecheck.txt` | la porte, rejouée après la dernière modification |
+| `docs/preuves/D337/portes/lint.txt` | la porte, rejouée après la dernière modification |
+| `docs/preuves/D337/portes/test.txt` | la porte, rejouée après la dernière modification |
+| `docs/preuves/D337/portes/build.txt` | la porte, rejouée après la dernière modification |
+| `docs/preuves/D337/portes/test-int.txt` | la porte, rejouée après la dernière modification |
+| `docs/preuves/D337/portes/test-e2e.txt` | la porte, rejouée après la dernière modification |
+| `docs/preuves/D337/verts/vert-api-unitaire.txt` | les tests du lot, au vert |
+| `docs/preuves/D337/verts/vert-client.txt` | les tests du lot, au vert |
+| `docs/preuves/D337/verts/vert-pro.txt` | les tests du lot, au vert |
+| `docs/preuves/D337/verts/vert-integration.txt` | les tests du lot, au vert |
+| `docs/preuves/D337/passe-d277.md` | la passe D277 des DEUX sens (ce que le lot invalide, ce qu'il rend permis) |
+| `docs/preuves/D337/controle-fin-de-lot.txt` | le contrôle de fin de lot : ordre des commits, diff ⊆ table, local = origin/main |
+| `docs/preuves/D337/signalements.md` | les signalements hors lot (S-55 et ce que le lot découvre) |
