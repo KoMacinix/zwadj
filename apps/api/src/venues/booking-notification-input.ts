@@ -15,6 +15,7 @@
 // DE DESTINATAIRE : un walk-in n'a aucun compte derrière lui.
 import { formatCivilDate, civilOfUtcDate } from "./availability-time";
 import type { BookingNotificationInput } from "./booking-notifications.service";
+import { reachableContact } from "@zwadj/types";
 import type { BookingRow } from "./booking-locks.types";
 
 /** Ce que la notification a besoin de savoir de la SALLE, et rien de plus.
@@ -72,7 +73,9 @@ export function buildBookingNotification(
     totalCents: row.totalCents,
     depositCents: row.depositCents,
     clientName: `${row.contactFirstName} ${row.contactLastName}`.trim(),
-    contact: row.contactPhone,
+    // ⛔ L36-1 (D337) — le numéro, à défaut l'e-mail (une réservation par e-mail seul n'a pas de numéro) : la charge reste une CHAÎNE, aucun gabarit ne change. Le
+    // `?? ""` ne se produit jamais (le CHECK `bookings_contact_reachable` garantit l'un des deux) ; il évite qu'une notification post-commit LÈVE.
+    contact: reachableContact(row.contactPhone, row.contactEmail) ?? "",
     reason,
     pro: {
       userId: venue.owner.user.id,

@@ -28,7 +28,9 @@ import { formatDZD } from "@zwadj/i18n";
 import {
   DEFAULT_PHONE_COUNTRY,
   ServicePricingType,
+  hasContactChannel,
   isPhoneComplete,
+  isValidContactEmail,
   toE164,
   type ServiceDTO,
   type VenueAvailabilityResponse
@@ -138,6 +140,8 @@ export function BookingRequestPanel({
   const tError = useTranslations("booking.errors");
   const locale = useLocale();
   const champId = useId();
+  /** ⛔ L36-1 (D337) — le texte « un numéro OU une adresse e-mail » est relié aux DEUX champs par `aria-describedby` (D32 : ni l'un ni l'autre n'est obligatoire SEUL). */
+  const contactAideId = useId();
   const { status, api } = useAuth();
   const bookings = useMemo(() => client ?? createBookingsClient(api.authedRequest), [client, api]);
 
@@ -216,7 +220,8 @@ export function BookingRequestPanel({
         paymentMethod: "CASH",
         contactFirstName: firstName.trim(),
         contactLastName: lastName.trim(),
-        contactPhone: toE164(DEFAULT_PHONE_COUNTRY, phone),
+        // ⛔ L36-1 (D337) — CLÉ OMISE si le numéro est vide (`dzPhoneSchema` refuse `""`) : une réservation par e-mail seul n'envoie pas de numéro.
+        ...(phone === "" ? {} : { contactPhone: toE164(DEFAULT_PHONE_COUNTRY, phone) }),
         // Clé OMISE si vide : `.email()` refuse la chaîne vide, et il n'y a rien
         // à déclarer quand le client n'a pas d'adresse.
         ...(email.trim() === "" ? {} : { contactEmail: email.trim() }),
@@ -254,15 +259,15 @@ export function BookingRequestPanel({
     );
   }
 
-  // D135 — l'e-mail n'entre PAS dans la condition : `bookings.contact_email` est
-  // nullable, et beaucoup de clients en Algérie n'en ont pas. Le téléphone reste
-  // exigé, c'est le canal de rappel du pro et il est NOT NULL en base.
-  const complete =
-    chosen !== null &&
-    guests.trim() !== "" &&
-    firstName.trim() !== "" &&
-    lastName.trim() !== "" &&
-    isPhoneComplete(DEFAULT_PHONE_COUNTRY, phone);
+  // ⛔ L36-1 (D337) — UN NUMÉRO OU UNE ADRESSE E-MAIL, au moins l'un des deux (Q2 de Ko) : `hasContactChannel`, la MÊME fonction que le serveur applique. Ce qui est SAISI
+  // doit encore être valide, même si l'autre champ l'est (règle de l'étape Contact du pro, rang 41) : un numéro incomplet ou un e-mail à moitié tapé retient l'envoi.
+  // D135 reste vrai : beaucoup de clients en Algérie n'ont pas d'e-mail ; le numéro seul part toujours.
+  const numeroSaisi = phone !== "";
+  const emailSaisi = email.trim() !== "";
+  const emailRefuse = emailSaisi && !isValidContactEmail(email);
+  const contactPret =
+    hasContactChannel(phone, email) && (!numeroSaisi || isPhoneComplete(DEFAULT_PHONE_COUNTRY, phone)) && !emailRefuse;
+  const complete = chosen !== null && guests.trim() !== "" && firstName.trim() !== "" && lastName.trim() !== "" && contactPret;
 
   return (
     <section className="card" aria-labelledby="booking-request-heading">
@@ -452,8 +457,8 @@ export function BookingRequestPanel({
 
       {status === "authenticated" ? (
         <div style={{ display: "grid", gap: 8 }}>
-          {/* Les quatre champs de contact sont OBLIGATOIRES : le profil ne les
-              garantit pas (`firstName`, `lastName` et `phone` sont nullable). */}
+          {/* Le prénom et le nom sont OBLIGATOIRES : le profil ne les garantit pas
+              (`firstName` et `lastName` sont nullable). Le numéro et l'e-mail : UN DES DEUX (L36-1). */}
           <Field label={t("firstName")} required>
             {({ id, required }) => (
               <input
@@ -476,8 +481,13 @@ export function BookingRequestPanel({
               />
             )}
           </Field>
-          <Field label={t("phone")} required>
-            {({ id, required }) => (
+          {/* ⛔ L36-1 (D337) — NI le numéro NI l'e-mail n'est obligatoire SEUL : aucun `required`, aucun astérisque (D32 : l'attribut natif dit « obligatoire »). Une
+              phrase VISIBLE dit « l'un des deux au moins », reliée aux deux champs par `aria-describedby`. */}
+          <p className="field-hint" id={contactAideId}>
+            {t("contactHint")}
+          </p>
+          <Field label={t("phone")}>
+            {({ id }) => (
               <PhoneField
                 id={id}
                 value={phone}
@@ -485,19 +495,21 @@ export function BookingRequestPanel({
                 countryName={tPhone(`country.${DEFAULT_PHONE_COUNTRY}`)}
                 placeholder={tPhone(`placeholder.${DEFAULT_PHONE_COUNTRY}`)}
                 leadingDigitMessage={tPhone(`leadingDigit.${DEFAULT_PHONE_COUNTRY}`)}
-                required={required}
+                describedBy={contactAideId}
               />
             )}
           </Field>
-          {/* D135 — l'e-mail est FACULTATIF : ni astérisque, ni `required`. Son libellé le dit déjà. */}
-          <Field label={t("email")}>
-            {({ id }) => (
+          <Field label={t("email")} error={emailRefuse ? t("emailInvalid") : undefined}>
+            {({ id, describedBy, invalid }) => (
               <input
                 id={id}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 inputMode="email"
                 autoComplete="email"
+                dir="ltr"
+                aria-invalid={invalid || undefined}
+                aria-describedby={describedBy === undefined ? contactAideId : `${contactAideId} ${describedBy}`}
               />
             )}
           </Field>

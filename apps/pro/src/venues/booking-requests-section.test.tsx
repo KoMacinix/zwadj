@@ -118,15 +118,16 @@ describe("⛔ Demandes pro — le contact d'une réservation sans numéro (L36-1
 
   it("ML-5 — sans numéro, l'E-MAIL est affiché à la place — jamais le mot « null », jamais un trou", async () => {
     setup([SANS_NUMERO]);
-    const mail = await screen.findByText("amina@example.dz");
-    expect(mail).toBeInTheDocument();
+    await screen.findByText("Amina Bensalem");
+    // Verdict NATIF (`queryByText` + `expect`) : une requête qui ne trouve rien lève une erreur de requête, pas une assertion.
+    expect(screen.queryByText("amina@example.dz")).not.toBeNull();
     expect(document.body.textContent ?? "").not.toMatch(/\bnull\b|undefined/);
   });
 
   it("ML-18 — le contact s'écrit de gauche à droite (`dir=\"ltr\"`) : un e-mail dans une page arabe ne se retourne pas", async () => {
     setup([SANS_NUMERO]);
-    const mail = await screen.findByText("amina@example.dz");
-    expect(mail.getAttribute("dir")).toBe("ltr");
+    await screen.findByText("Amina Bensalem");
+    expect(screen.queryByText("amina@example.dz")?.getAttribute("dir")).toBe("ltr");
   });
 
   it("avec les deux, le NUMÉRO est affiché (le pro rappelle d'abord) et l'e-mail n'est pas répété", async () => {

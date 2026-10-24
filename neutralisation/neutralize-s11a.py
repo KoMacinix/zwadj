@@ -231,7 +231,7 @@ CIBLES = [
     (
         "S11a-12. ⛔ LES DEUX TÉLÉPHONES S'INTERVERTISSENT — le pro reçoit son propre numéro",
         CHARGE,
-        "    contact: row.contactPhone,",
+        '    contact: reachableContact(row.contactPhone, row.contactEmail) ?? "",',
         "    contact: venue.owner.phone,",
         1,
         ["notification"],

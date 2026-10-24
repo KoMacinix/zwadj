@@ -66,7 +66,7 @@ describe("contactBlockers — ce qui empêche de CONCLURE", () => {
     }
   });
 
-  it("⚠ le téléphone : vide (sans e-mail) ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états", () => {
+  it("⚠ le téléphone : vide ≠ premier chiffre refusé ≠ incomplet — trois raisons, trois états", () => {
     expect(contactBlockers({ ...COMPLET, phone: "" })).toEqual(["needIdentifier"]);
     expect(phoneLeadingRejected(MAUVAIS_PREMIER)).toBe(true);
     expect(contactBlockers({ ...COMPLET, phone: MAUVAIS_PREMIER })).toEqual(["needPhoneLeading"]);

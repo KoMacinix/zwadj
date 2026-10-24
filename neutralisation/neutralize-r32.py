@@ -173,7 +173,7 @@ cible("B-3. la route du devis n'applique plus la règle d'e-mail du contrat",
 
 # ── W — les blocages du parcours, en fonctions PURES.
 cible("W-1. le premier chiffre refusé ne retient plus « Continuer »", WK_CONTACT,
-      'else if (phoneLeadingRejected(contact.phone, country)) out.push("needPhoneLeading");', 'else if (false) out.push("needPhoneLeading");',
+      'if (phoneLeadingRejected(contact.phone, country)) out.push("needPhoneLeading");', 'if (false) out.push("needPhoneLeading");',
       {"pro-contact": 'le téléphone : vide ≠ premier chiffre refusé ≠ incomplet'})
 cible("W-2. un numéro INCOMPLET ne retient plus « Continuer »", WK_CONTACT,
       'else if (!isPhoneComplete(country, contact.phone)) out.push("needPhoneIncomplete");', 'else if (false) out.push("needPhoneIncomplete");',
@@ -184,7 +184,7 @@ cible("W-3. un e-mail invalide ne retient plus « Continuer »", WK_CONTACT,
 cible("W-4. le nombre d'invités ne retient plus l'étape Client", WK_CONTACT,
       'if (!(Number(guests) > 0)) out.push("needGuests");', 'if (false) out.push("needGuests");', {"pro-contact": 'un seul manque'})
 cible("W-5. ⚠ RÈGLE DES MONTANTS — le téléphone ENVOYÉ n'a plus son indicatif", WK_CONTACT,
-      "contactPhone: toE164(country, contact.phone),", "contactPhone: contact.phone,", {"pro-contact": "noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis"})
+      "{ contactPhone: toE164(country, contact.phone) }", "{ contactPhone: contact.phone }", {"pro-contact": "noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis"})
 # ⚠ W-6 — le remplacement ne doit PAS être une sous-chaîne de l'ancre : sa première version (`contactEmail: contact.email.trim()`) l'était, et la
 # preuve « marqueur n → n + 1 » (D286) ne pouvait pas se poser (« marqueur 1→1 » à la découverte).
 cible("W-6. un e-mail VIDE part quand même (la clé n'est plus omise : `.email()` refuserait la chaîne vide)", WK_CONTACT,
@@ -274,9 +274,9 @@ cible("S-10. ⛔ UN JETON ABSENT D'UN THÈME : en sombre, `--cal-hatch` ne vient
 
 # ── Q — les écrans qui ENVOIENT un téléphone : la valeur est convertie UNE fois, par `toE164`.
 cible("Q-1. ⚠ RÈGLE DES MONTANTS — la demande du client part avec un téléphone SANS indicatif", CL_BOOKING,
-      "contactPhone: toE164(DEFAULT_PHONE_COUNTRY, phone),", "contactPhone: phone,", {"client-booking": "LE FORMAT ENVOYÉ N'A PAS CHANGÉ"})
-cible("Q-2. la demande du client s'envoie avec un numéro INCOMPLET", CL_BOOKING, "isPhoneComplete(DEFAULT_PHONE_COUNTRY, phone);",
-      'phone !== "";', {"client-booking": 'un numéro INCOMPLET laisse « Envoyer » inerte'})
+      "{ contactPhone: toE164(DEFAULT_PHONE_COUNTRY, phone) }", "{ contactPhone: phone }", {"client-booking": "LE FORMAT ENVOYÉ N'A PAS CHANGÉ"})
+cible("Q-2. la demande du client s'envoie avec un numéro INCOMPLET", CL_BOOKING, "isPhoneComplete(DEFAULT_PHONE_COUNTRY, phone))",
+      'phone !== "")', {"client-booking": 'un numéro INCOMPLET laisse « Envoyer » inerte'})
 cible("Q-3. le rendez-vous de visite se confirme avec un numéro INCOMPLET", CL_VISIT,
       'const phoneIncomplete = phone !== "" && !isPhoneComplete(DEFAULT_PHONE_COUNTRY, phone);', "const phoneIncomplete = false;", {"client-visit": 'un numéro COMMENCÉ doit être complet'})
 cible("Q-4. le rendez-vous de visite envoie le téléphone SANS indicatif", CL_VISIT,

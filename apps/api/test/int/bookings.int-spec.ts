@@ -1189,10 +1189,11 @@ describe("⛔ L36-1 (D337) — une réservation par e-mail seul", () => {
   it("ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », ni un trou", async () => {
     const f = await setup();
     await post(f.clientToken, f.venue.slug, sansNumero(f)).expect(201);
-    const courrier = ctx.emails.find((m) => m.to === PRO.email);
-    expect(courrier, "aucun courrier au pro").toBeDefined();
-    expect(courrier?.text).toContain("amina@example.dz");
-    expect(courrier?.text).not.toMatch(/null|undefined/);
+    // Le pro a reçu plusieurs courriers (bienvenue, vérification…) : on cherche CELUI de la demande, par son contenu.
+    const courrier = ctx.emails.find((m) => m.to === PRO.email && m.text.includes("amina@example.dz"));
+    expect(courrier, "aucun courrier au pro ne porte l'e-mail du client « pour rappeler »").toBeDefined();
+    expect(courrier?.text).toContain("Bensalem");
+    expect(courrier?.text).not.toMatch(/null|undefined/);
   });
 
   it("ML-4 — avec un numéro ET un e-mail, les DEUX sont gardés : la réservation d'avant n'a pas bougé", async () => {

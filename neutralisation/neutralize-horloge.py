@@ -44,7 +44,7 @@ assert SRC.exists(), "ERREUR DE SCRIPT : " + SPEC_DEPUIS_RACINE + " introuvable"
 PNPM = shutil.which("pnpm")
 assert PNPM, "ERREUR DE SCRIPT : pnpm introuvable"
 
-NB_TESTS_ATTENDU = 127  # 127 au rang 41 (D336 : +19 tests de la fiche et du nom — 17 écrits avec les rouges, 2 après, relevés : 127 déclarations `it(`, « Tests 127 passed (127) » ; la constante SEULE change) ; 108 au rang 39 (D333 : +6 tests de la référence — 4 de l'écran, 2 du nom de fichier et de la fenêtre, relevés : 108 déclarations `it(`, « Tests 108 passed (108) » ; la constante SEULE change) ; 102 au rang 38 ; 41 jusqu'au rang 32 (D325, 76 après : +35), 95 au rang 33 (D326 : +19), 102 au rang 38 (D332 : +8 tests de la boîte de langue, −1 test de la langue de repli) — relevés : 102 déclarations `it(`, « Tests 102 passed (102) » ; la constante SEULE a changé
+NB_TESTS_ATTENDU = 130  # 130 au rang 42 (D337 : +3 tests de la conversion par e-mail seul — relevés : 130 déclarations `it(`, « Tests 130 passed (130) » ; la constante SEULE change) ; 127 au rang 41 (D336 : +19 tests de la fiche et du nom — 17 écrits avec les rouges, 2 après, relevés : 127 déclarations `it(`, « Tests 127 passed (127) » ; la constante SEULE change) ; 108 au rang 39 (D333 : +6 tests de la référence — 4 de l'écran, 2 du nom de fichier et de la fenêtre, relevés : 108 déclarations `it(`, « Tests 108 passed (108) » ; la constante SEULE change) ; 102 au rang 38 ; 41 jusqu'au rang 32 (D325, 76 après : +35), 95 au rang 33 (D326 : +19), 102 au rang 38 (D332 : +8 tests de la boîte de langue, −1 test de la langue de repli) — relevés : 102 déclarations `it(`, « Tests 102 passed (102) » ; la constante SEULE a changé
 
 CIBLES = [
     ("C1  le gel d'horloge est retire",

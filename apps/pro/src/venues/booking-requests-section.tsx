@@ -18,7 +18,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDZD } from "@zwadj/i18n";
-import { HARD_BOOKING_STATUSES, type ProBookingDTO } from "@zwadj/types";
+import { HARD_BOOKING_STATUSES, reachableContact, type ProBookingDTO } from "@zwadj/types";
 import { useApiErrorMessage } from "../auth/auth-ui";
 import { useBookingsPro } from "./venue-client-context";
 
@@ -33,6 +33,9 @@ import { useBookingsPro } from "./venue-client-context";
  *  depuis deux écrans. `Set<string>` explicite, car `row.status` est un
  *  `string` : sans l'annotation, `has()` refuserait de compiler. */
 const LOCKING = new Set<string>(HARD_BOOKING_STATUSES);
+
+/** ⛔ L36-1 (D337) — le moyen de joindre le client à afficher : le numéro, à défaut l'e-mail (`reachableContact`, la fonction que la notification emploie aussi). */
+const contactADonner = (row: ProBookingDTO): string | null => reachableContact(row.contactPhone, row.contactEmail);
 
 /** UIP-A — la même section sert DEUX entrées du top panel, et la partition est
  *  stricte :
@@ -154,8 +157,13 @@ export function BookingRequestsSection({ venueId, show = "all" }: { venueId: str
                   <span>
                     {row.contactFirstName} {row.contactLastName}
                   </span>
-                  {/* Le contact est la raison d'être de la liste : le pro rappelle. */}
-                  <span className="field-hint">{row.contactPhone}</span>
+                  {/* Le contact est la raison d'être de la liste : le pro rappelle. ⛔ L36-1 (D337) : le numéro, à défaut l'e-mail (une réservation par e-mail seul n'a pas de
+                      numéro) — de gauche à droite même dans une page arabe — et RIEN, jamais le mot « null », si aucun des deux (impossible en base : `bookings_contact_reachable`). */}
+                  {contactADonner(row) === null ? null : (
+                    <span className="field-hint" dir="ltr">
+                      {contactADonner(row)}
+                    </span>
+                  )}
                   <span className="field-hint">{t("venue.ui.requests.guests", { count: row.guests })}</span>
                 </div>
 

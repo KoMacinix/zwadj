@@ -22,7 +22,7 @@
 import { z } from "zod";
 import { bookingServiceChoiceSchema, type BookingServiceDTO } from "./service";
 import { dzPhoneSchema } from "./auth";
-import { contactEmailSchema, personNameSchema } from "./contact";
+import { contactEmailSchema, hasContactChannel, personNameSchema } from "./contact";
 import { isRealCivilDate } from "./venue";
 
 export const QuoteStatus = {
@@ -410,8 +410,10 @@ export type QuoteReviseInput = QuoteCreateInput;
 
 /** Conversion du devis en DEMANDE de réservation.
  *
- *  Elle exige le contact : `bookings.contact_*` est NOT NULL et le devis ne le
- *  porte pas. Il est connu au moment où le client s'engage.
+ *  Elle exige le contact : le devis ne le porte pas, il est connu au moment où
+ *  le client s'engage. ⛔ L36-1 (D337) : le nom et le prénom, PLUS un numéro OU
+ *  une adresse e-mail (Q2 de Ko) — `CHECK (contact_phone IS NOT NULL OR
+ *  contact_email IS NOT NULL)` en base, `hasContactChannel` ici.
  *
  *  ⚠ Elle ne fait PAS passer le devis en ACCEPTED. Ce statut est la conséquence
  *  d'une chaîne complète — acceptation de la date par le pro, PUIS encaissement
@@ -420,7 +422,8 @@ export const quoteConvertSchema = z
   .object({
     contactFirstName: contactName,
     contactLastName: contactName,
-    contactPhone: dzPhoneSchema,
+    /** ⛔ L36-1 (D337) — FACULTATIF : CLÉ OMISE (`""` et `null` sont refusés), mais UN DES DEUX, numéro ou e-mail, est exigé (`superRefine` plus bas). */
+    contactPhone: dzPhoneSchema.optional(),
     /** ⚠ FACULTATIF — et c'est le SCHÉMA qui le dit, pas une préférence d'écran.
      *  `bookings.contact_email` est `String?` depuis toujours ; seule cette borne
      *  était plus stricte que la base. Le cas réel qu'elle rejetait est le cas
@@ -431,12 +434,18 @@ export const quoteConvertSchema = z
      *  validation de borne, écrire le cas réel qu'elle doit accepter — si elle le
      *  rejette, c'est elle qui a tort. Le schéma a autorité sur l'intuition.
      *
-     *  Le TÉLÉPHONE reste obligatoire, et c'est cohérent : `contact_phone` est
-     *  NOT NULL, et c'est par là que le pro rappelle. */
+     *  ⛔ L36-1 (D337) : « le téléphone reste obligatoire » ne tient plus — c'est
+     *  UN DES DEUX, numéro ou e-mail (Q2 de Ko). */
     contactEmail: contactEmailSchema({ invalid: "quote.validation.emailInvalid" }).optional(),
     paymentMethod: z.enum(["ONLINE", "CASH"], { errorMap: () => ({ message: "quote.validation.paymentMethodInvalid" }) })
   })
-  .strict("quote.validation.unknownKey");
+  .strict("quote.validation.unknownKey")
+  .superRefine((corps, ctx) => {
+    // ⛔ L36-1 (D337) — la MÊME fonction que l'écran et que la réservation en ligne (`hasContactChannel`).
+    if (!hasContactChannel(corps.contactPhone, corps.contactEmail)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["contactPhone"], message: "quote.validation.contactChannelRequired" });
+    }
+  });
 export type QuoteConvertInput = z.infer<typeof quoteConvertSchema>;
 
 export interface QuoteDTO {

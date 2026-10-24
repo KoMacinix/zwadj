@@ -2114,7 +2114,8 @@ describe("⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la convers
     const enregistrer = screen.getByRole("button", { name: "Enregistrer sans bloquer" }) as HTMLButtonElement;
     expect(enregistrer.disabled).toBe(true);
     expect(quotes.convert).not.toHaveBeenCalled();
-    expect(document.body.textContent ?? "").toContain(FR.needIdentifier);
+    // Le message sous les boutons de conclusion DIT la règle : prénom, nom, et « un numéro OU une adresse e-mail ».
+    expect(document.body.textContent ?? "").toContain(FR.contactRequired);
   });
 
   it("ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont", async () => {

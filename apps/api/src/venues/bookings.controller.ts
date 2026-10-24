@@ -38,7 +38,7 @@ export class BookingsController {
     summary: "Envoie une demande de réservation — PENDING, ne verrouille rien",
     description:
       "Le corps porte la date civile, le créneau (source du PRIX dans les DEUX modes), le nombre d'invités, " +
-      "les quatre champs de contact — obligatoires : le profil ne peut pas les fournir de façon fiable — et " +
+      "le prénom et le nom (obligatoires : le profil ne peut pas les fournir de façon fiable), UN NUMÉRO OU UNE ADRESSE E-MAIL au moins (L36-1 : clé omise, jamais vide) et " +
       "les montants VUS par le client (D75). Le serveur recalcule et refuse en 409 s'ils ont bougé."
   })
   @ApiCreatedResponse({ description: "BookingDTO en statut PENDING." })

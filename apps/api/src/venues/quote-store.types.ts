@@ -116,7 +116,8 @@ export interface DonneesConversion {
   readonly depositCents: number;
   readonly contactFirstName: string;
   readonly contactLastName: string;
-  readonly contactPhone: string;
+  /** ⛔ L36-1 (D337) — `null` pour une conversion par e-mail seul (alors `contactEmail` est renseigné : `CHECK bookings_contact_reachable`). */
+  readonly contactPhone: string | null;
   /** D135 — absent ⇒ NULL explicite, jamais une chaîne vide. */
   readonly contactEmail: string | null;
   /** ⛔ LE DÉTAIL DU TOTAL. Il s'écrit dans la MÊME requête que la demande :

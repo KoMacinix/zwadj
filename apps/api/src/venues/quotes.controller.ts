@@ -133,7 +133,7 @@ export class QuotesController {
       "⚠ La réservation naît en PENDING, et le devis ne bouge pas. L'acceptation du devis n'est pas une " +
       "action : elle est la conséquence de la chaîne complète — le pro accepte la date, PUIS l'acompte est " +
       "encaissé. La bascule appartient au lot Paiement, dans la même transaction que le passage en CONFIRMED. " +
-      "Le contact est exigé parce que `bookings.contact_*` est NOT NULL. " +
+      "Le contact est exigé : prénom, nom, et UN NUMÉRO OU UNE ADRESSE E-MAIL au moins (`CHECK bookings_contact_reachable`, L36-1). " +
       "`bookings.quote_id` étant UNIQUE, un devis ne se convertit qu'une fois : une nouvelle négociation passe " +
       "par une nouvelle VERSION."
   })

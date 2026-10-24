@@ -1131,7 +1131,9 @@ model Booking {
   // Contact figé à la demande (formulaire 9.6) / saisi par le pro (walk-in)
   contactFirstName String  @map("contact_first_name")
   contactLastName  String  @map("contact_last_name")
-  contactPhone     String  @map("contact_phone") // +213 normalisé
+  // ⛔ L36-1 (D337) — NULLABLE : une réservation par e-mail seul est possible (Q2 de Ko). La garde est `CHECK (contact_phone IS NOT NULL OR contact_email IS NOT NULL)`
+  // (`bookings_contact_reachable`, migration `20261024100000`) : Prisma n'exprime pas un CHECK, elle n'a donc aucune déclaration ici (D186).
+  contactPhone     String? @map("contact_phone") // +213 normalisé
   contactEmail     String? @map("contact_email")
 
   idempotencyKey String? @unique @map("idempotency_key") // invariant : POST /bookings idempotent

@@ -285,7 +285,9 @@ export class BookingsService {
         depositCents,
         contactFirstName: input.contactFirstName,
         contactLastName: input.contactLastName,
-        contactPhone: input.contactPhone,
+        // ⛔ L36-1 (D337) — clé absente ⇒ NULL explicite, comme l'e-mail juste dessous : une réservation par e-mail seul n'a pas de numéro, et `undefined` dirait
+        // « je n'ai pas d'avis » au lieu de « ce client n'a pas donné de numéro ». Le CHECK `bookings_contact_reachable` est la dernière garde.
+        contactPhone: input.contactPhone ?? null,
         // D135 — clé absente ⇒ NULL explicite, comme `clientMessage` juste en
         // dessous. Laisser passer `undefined` marcherait ici (Prisma l'ignore sur
         // une colonne nullable) mais dirait « je n'ai pas d'avis » au lieu de

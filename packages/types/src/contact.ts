@@ -88,3 +88,39 @@ export function isValidContactEmail(raw: string): boolean {
 export function normalizeContactEmail(raw: string): string {
   return raw.trim().normalize("NFKC").toLowerCase();
 }
+
+/**
+ * ⛔ L36-1 (D337) — « UN NUMÉRO OU UNE ADRESSE E-MAIL » : l'UNIQUE définition de « on peut joindre ce client ».
+ *
+ * Q2 de Ko (22/10/2026) : « Une réservation est tout à fait possible avec une adresse e-mail uniquement. Le numéro de téléphone reste optionnel. » `bookings.contact_phone`
+ * est facultatif en base, gardé par `CHECK (contact_phone IS NOT NULL OR contact_email IS NOT NULL)` ; la règle d'ici est la MÊME, côté contrat : les deux schémas de route
+ * (`bookingCreateSchema`, `quoteConvertSchema`), le formulaire en ligne du client et l'écran de conversion du pro l'IMPORTENT (D147) — l'écran refuse ce que le serveur
+ * refuse, parce que c'est la même fonction.
+ *
+ * ⚠ Elle juge la PRÉSENCE, jamais la validité : un numéro saisi doit encore passer `dzPhoneSchema`, un e-mail saisi `contactEmailSchema` — l'un ne « rachète » pas l'autre.
+ * ⚠ Une chaîne vide ou blanche vaut « absent » ICI (c'est ce que tape un formulaire), mais le CONTRAT refuse `""` à l'API : « facultatif » y veut dire CLÉ OMISE.
+ */
+export function hasContactChannel(phone: string | null | undefined, email: string | null | undefined): boolean {
+  return estRenseigne(phone) || estRenseigne(email);
+}
+
+/**
+ * Une valeur est-elle RENSEIGNÉE ? `null`, `undefined`, une chaîne vide ou blanche : non. ⚠ Toute AUTRE valeur : oui — y compris celle qu'un schéma a déjà refusée
+ * (`z.NEVER`, que `dzPhoneSchema` rend d'un numéro invalide et sur laquelle Zod exécute quand même le `superRefine` de l'objet) : un numéro SAISI et invalide a déjà son
+ * message, il n'y a pas lieu d'y ajouter « indiquez un numéro ou un e-mail ».
+ */
+function estRenseigne(valeur: unknown): boolean {
+  if (valeur === null || valeur === undefined) return false;
+  return typeof valeur === "string" ? valeur.trim() !== "" : true;
+}
+
+/**
+ * Le moyen de joindre le client À AFFICHER ou à citer : le numéro d'abord (le pro rappelle), à défaut l'e-mail, sinon `null` — jamais le mot « null », jamais un trou
+ * (le patron que la VISITE applique déjà : `contactPhone ?? client.email`). Une seule fonction pour la liste du pro et la notification.
+ */
+export function reachableContact(phone: string | null | undefined, email: string | null | undefined): string | null {
+  const numero = (phone ?? "").trim();
+  if (numero !== "") return numero;
+  const adresse = (email ?? "").trim();
+  return adresse !== "" ? adresse : null;
+}

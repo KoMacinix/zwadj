@@ -8,7 +8,7 @@
 // devis ne porterait rien que `Booking` ne snapshote déjà.
 import { z } from "zod";
 import { dzPhoneSchema } from "./auth";
-import { contactEmailSchema, personNameSchema } from "./contact";
+import { contactEmailSchema, hasContactChannel, personNameSchema } from "./contact";
 import { BookingStatus, PaymentMethod } from "./enums";
 import type { BookingServiceDTO } from "./service";
 import { bookingServiceChoiceSchema } from "./service";
@@ -107,18 +107,24 @@ export const bookingCreateSchema = z
     paymentMethod: z.enum([PaymentMethod.ONLINE, PaymentMethod.CASH], {
       errorMap: () => ({ message: "booking.validation.paymentMethodInvalid" })
     }),
-    /** Nom, prénom et TÉLÉPHONE sont obligatoires : `User.firstName`,
-     *  `lastName` et `phone` sont tous nullable, le compte ne peut pas les
-     *  fournir de façon fiable. On les demande, on les fige.
+    /** Nom et prénom sont obligatoires : `User.firstName` et `lastName` sont
+     *  nullable, le compte ne peut pas les fournir de façon fiable. On les
+     *  demande, on les fige.
      *
-     *  ⚠ L'E-MAIL, LUI, EST FACULTATIF (D135). `bookings.contact_email` est
-     *  `String?` en base ; cette borne-ci était plus stricte que le schéma, et le
-     *  cas qu'elle rejetait n'est pas un cas limite — c'est le client algérien
-     *  sans adresse e-mail. Le téléphone reste le canal sûr : `contact_phone` est
-     *  NOT NULL, et c'est par là que le pro rappelle. */
+     *  ⚠ L'E-MAIL EST FACULTATIF (D135). `bookings.contact_email` est `String?`
+     *  en base ; cette borne-ci était plus stricte que le schéma, et le cas
+     *  qu'elle rejetait n'est pas un cas limite — c'est le client algérien sans
+     *  adresse e-mail.
+     *
+     *  ⛔ L36-1 (D337) — LE TÉLÉPHONE L'EST AUSSI, mais UN DES DEUX est exigé
+     *  (Q2 de Ko : « une réservation est tout à fait possible avec une adresse
+     *  e-mail uniquement »). `bookings.contact_phone` est facultatif en base,
+     *  gardé par `CHECK (contact_phone IS NOT NULL OR contact_email IS NOT NULL)`.
+     *  « Facultatif » veut dire CLÉ OMISE : `""` et `null` sont refusés. Un
+     *  numéro SAISI doit être valide même si l'e-mail l'est. */
     contactFirstName: contactNameSchema,
     contactLastName: contactNameSchema,
-    contactPhone: dzPhoneSchema,
+    contactPhone: dzPhoneSchema.optional(),
     contactEmail: contactEmailSchema({
       invalid: "booking.validation.emailInvalid",
       tooLong: "booking.validation.emailTooLong"
@@ -137,7 +143,13 @@ export const bookingCreateSchema = z
     expectedTotalCents: z.number().int().nonnegative("booking.validation.expectedAmount"),
     expectedDepositCents: z.number().int().nonnegative("booking.validation.expectedAmount")
   })
-  .strict("booking.validation.unknownKey");
+  .strict("booking.validation.unknownKey")
+  .superRefine((corps, ctx) => {
+    // ⛔ L36-1 (D337) — la MÊME fonction que l'écran (`hasContactChannel`) ; le message est porté par le champ du numéro.
+    if (!hasContactChannel(corps.contactPhone, corps.contactEmail)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["contactPhone"], message: "booking.validation.contactChannelRequired" });
+    }
+  });
 export type BookingCreateInput = z.infer<typeof bookingCreateSchema>;
 
 /** D83 — annulation par le CLIENT. Motif libre tant que la demande est PENDING
@@ -205,7 +217,8 @@ export interface BookingDTO {
 export interface ProBookingDTO extends BookingDTO {
   contactFirstName: string;
   contactLastName: string;
-  contactPhone: string;
+  /** ⛔ L36-1 (D337) — `null` pour une réservation faite par e-mail seul ; l'écran affiche alors l'e-mail (`reachableContact`). */
+  contactPhone: string | null;
   contactEmail: string | null;
   /** Ids des AUTRES demandes dont la plage recouvre celle-ci. Vide dans
    *  l'immense majorité des cas ; non vide, c'est le pro qui tranche. */

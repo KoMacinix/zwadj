@@ -718,9 +718,10 @@ describe("L35-3 — la numérotation des salles et des devis sur une base NON VI
     const toutes = migrationsOrdonnees();
     const i282 = toutes.indexOf(NOM_D282);
     suite = toutes.slice(i282 + 1);
+    // ⛔ Rang 42 (D337) : la migration de L36-1 (`booking_contact_phone_optional`) SUIT celle de L35-4 ; elle est mesurée par son propre bloc, en bas de ce fichier — et ce bloc-ci n'en applique aucune.
     // ⛔ Rang 41 (D336) : la migration de L35-4 (`pro_client_records`) SUIT celles de L35-3 — elle est mesurée par son propre bloc, en bas de ce fichier ; ce bloc-ci n'applique que `suite[0]` et `suite[1]`.
     // ⚠ `expect.soft` : le test ROUGIT si un lot de plus arrive, mais la préparation CONTINUE — sinon M-A et M-B, dont le comportement ne change pas, tomberaient en cascade.
-    expect.soft(suite.map((n) => n.replace(/^\d+_/u, "")), "les migrations qui SUIVENT D282 sont celles de L35-3 puis de L35-4 : un lot de plus doit re-pointer ce bloc").toEqual(["venue_number", "quote_reference", "pro_client_records"]);
+    expect.soft(suite.map((n) => n.replace(/^\d+_/u, "")), "les migrations qui SUIVENT D282 sont celles de L35-3, de L35-4 puis de L36-1 : un lot de plus doit re-pointer ce bloc").toEqual(["venue_number", "quote_reference", "pro_client_records", "booking_contact_phone_optional"]);
 
     // D282 refusait l'agrégat faux (test précédent) : on rend les deux lignes cohérentes, puis on l'applique — le chemin FAVORABLE, que ce fichier n'avait jamais joué.
     await sql(`UPDATE bookings SET total_cents = base_price_cents + services_total_cents WHERE total_cents <> base_price_cents + services_total_cents`);

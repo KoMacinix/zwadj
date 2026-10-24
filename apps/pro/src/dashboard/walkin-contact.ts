@@ -19,6 +19,7 @@
 import {
   DEFAULT_PHONE_COUNTRY,
   PHONE_COUNTRIES,
+  hasContactChannel,
   isPhoneComplete,
   isValidContactEmail,
   isValidPersonName,
@@ -43,7 +44,6 @@ export type Blocker =
   | "needFirstNameValid"
   | "needLastName"
   | "needLastNameValid"
-  | "needPhone"
   | "needPhoneLeading"
   | "needPhoneIncomplete"
   | "needGuests"
@@ -59,8 +59,9 @@ export function phoneLeadingRejected(digits: string, country: PhoneCountryId = D
 }
 
 /**
- * Ce qui empêche de CONCLURE : le contact seul (D135 — le nombre d'invités n'est pas du contact). L'e-mail reste
- * FACULTATIF : vide, il ne retient rien ; saisi, il doit passer la règle du contrat.
+ * Ce qui empêche de CONCLURE : le contact seul (D135 — le nombre d'invités n'est pas du contact). ⛔ L36-1 (D337) : UN NUMÉRO OU UN E-MAIL, au moins l'un des deux (Q2 de
+ * Ko) — `hasContactChannel`, la MÊME fonction que `quoteConvertSchema` applique ; l'écran refuse donc ce que le serveur refuse. Ce qui est SAISI doit rester valide, même
+ * quand l'autre champ l'est : un numéro incomplet ou un e-mail à moitié tapé retient (règle de l'étape Contact, `identifierBlockers`). Vide, l'autre ne retient rien.
  */
 export function contactBlockers(contact: Contact, country: PhoneCountryId = DEFAULT_PHONE_COUNTRY): Blocker[] {
   const out: Blocker[] = [];
@@ -70,9 +71,11 @@ export function contactBlockers(contact: Contact, country: PhoneCountryId = DEFA
   else if (!isValidPersonName(firstName)) out.push("needFirstNameValid");
   if (lastName === "") out.push("needLastName");
   else if (!isValidPersonName(lastName)) out.push("needLastNameValid");
-  if (contact.phone === "") out.push("needPhone");
-  else if (phoneLeadingRejected(contact.phone, country)) out.push("needPhoneLeading");
-  else if (!isPhoneComplete(country, contact.phone)) out.push("needPhoneIncomplete");
+  if (!hasContactChannel(contact.phone, contact.email)) out.push("needIdentifier");
+  else if (contact.phone !== "") {
+    if (phoneLeadingRejected(contact.phone, country)) out.push("needPhoneLeading");
+    else if (!isPhoneComplete(country, contact.phone)) out.push("needPhoneIncomplete");
+  }
   if (contact.email.trim() !== "" && !isValidContactEmail(contact.email)) out.push("needEmailValid");
   return out;
 }
@@ -146,13 +149,14 @@ export function fieldErrors(contact: Contact): { firstName: boolean; lastName: b
 /**
  * Le corps envoyé à la conversion du devis. ⚠ LA VALEUR ENVOYÉE EST CELLE SAISIE : noms rognés seulement ; téléphone = l'indicatif du
  * pays PLUS les chiffres saisis (la forme canonique que le contrat attend aujourd'hui — aucun changement de format) ; e-mail rogné, et la
- * CLÉ ABSENTE s'il est vide (D135 : `.email()` refuserait la chaîne vide).
+ * CLÉ ABSENTE s'il est vide (D135 : `.email()` refuserait la chaîne vide). ⛔ L36-1 (D337) : la clé du NUMÉRO est absente, elle aussi, quand le numéro est vide
+ * (`dzPhoneSchema` refuse `""`, et « +213 » seul n'est pas un numéro) — une conversion par e-mail seul n'envoie pas de numéro.
  */
 export function contactPayload(contact: Contact, country: PhoneCountryId = DEFAULT_PHONE_COUNTRY) {
   return {
     contactFirstName: contact.firstName.trim(),
     contactLastName: contact.lastName.trim(),
-    contactPhone: toE164(country, contact.phone),
+    ...(contact.phone === "" ? {} : { contactPhone: toE164(country, contact.phone) }),
     ...(contact.email.trim() === "" ? {} : { contactEmail: contact.email.trim() })
   };
 }

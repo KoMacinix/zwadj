@@ -290,8 +290,9 @@ export class QuotesService {
    *  409 `BOOKING_SLOT_TAKEN` arrive plus tard, à l'acceptation du pro — un seul
    *  endroit du dépôt le produit, et c'est celui qui verrouille.
    *
-   *  Le contact est exigé parce que `bookings.contact_*` est NOT NULL et que le
-   *  devis ne le porte pas : il est connu au moment où le client s'engage.
+   *  Le contact est exigé parce que le devis ne le porte pas : il est connu au
+   *  moment où le client s'engage. ⛔ L36-1 (D337) : le nom, le prénom et UN DES
+   *  DEUX, numéro ou e-mail (`CHECK bookings_contact_reachable`).
    *
    *  ⚠ `bookings.quote_id` est UNIQUE : un devis ne se convertit qu'une fois. Si
    *  la demande née d'ici est annulée, il faut RÉVISER le devis, pas le
@@ -356,7 +357,8 @@ export class QuotesService {
       depositCents: current.depositCents,
       contactFirstName: input.contactFirstName,
       contactLastName: input.contactLastName,
-      contactPhone: input.contactPhone,
+      // ⛔ L36-1 (D337) — absent ⇒ NULL explicite (même règle que l'e-mail) : la conversion par e-mail seul écrit `contact_phone` NULL.
+      contactPhone: input.contactPhone ?? null,
       // D135 — absent ⇒ NULL explicite (même règle que côté demande client).
       contactEmail: input.contactEmail ?? null,
       lignes: lines
