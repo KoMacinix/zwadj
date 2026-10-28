@@ -2492,6 +2492,12 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 27/10/2026 — rang 43, L36-2 : le devis brouillon non officiel (D338)
+
+Détail : section D338 et point d'entrée du rang 43 de `ZWADJ_CONTINUITE.md` ; pièces : `docs/preuves/D338/`. Forme de Ko (D302) : **ce que l'entrée bloque** (ou « à ordonner par Ko ») et **son coût**, en termes qui se relèvent, sans durée. **Compteur de lots de code non certifiés : DEUX, POUR MÉMOIRE** (la limite de cinq est SUSPENDUE par Ko ; aucune certification) — il passe à TROIS seulement si du code part. Aucune de ces entrées n'a de rang.
+
+- [ ] **[API][DB]** **LE `CHECK bookings_contact_reachable` TESTE NULL SEULEMENT : UNE CHAÎNE VIDE PASSE** — lu dans la migration `20261024100000` ; non mesuré sur une base. Seul le contrat refuse `""` ; c'était déjà vrai de `contact_phone` avant D337. (Texte proposé par le relecteur, adopté par Ko tel quel — consigne du rang 43, R-3 et 3 b ; motif : la garde de la base teste « vide » au sens de NULL seulement.) ⇒ **BLOQUE** : rien ; **à ordonner par Ko**. ⇒ **COÛT** : **code (compte)**, **migration**, mesure sur base d'abord.
+
 ## Reports du 24/10/2026 — rang 42, L36-1 : la réservation par e-mail seul (D337)
 
 Détail : section D337 et point d'entrée du rang 42 de `ZWADJ_CONTINUITE.md` ; pièces : `docs/preuves/D337/`. Forme de Ko (D302) : **ce que l'entrée bloque** (ou « à ordonner par Ko ») et **son coût**, en termes qui se relèvent, sans durée. **Compteur de lots de code non certifiés : DEUX, POUR MÉMOIRE** (la limite de cinq est SUSPENDUE par Ko ; aucune certification). **« RANG 43 : EN ATTENTE D'ARBITRAGE DE KO »** (candidat proposé : L36-2, pas arbitré).
