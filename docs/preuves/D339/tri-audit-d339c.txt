@@ -1,0 +1,15 @@
+D339 — tri différentiel de l'audit de secrets « c » (AVANT le commit du complément du cadrage, 3 b)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D339/audit-secrets-d339a.txt docs/preuves/D339/audit-secrets-d339c.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente (« a ») : 463 contextes lus ; nouvelle (« c ») : 464. Alertes ABSENTES de la précédente : 1 (ventilation par motif : mot-de-passe = 1 — aucun autre motif ne rend d'alerte
+NOUVELLE : hypothèse vérifiée par le compte 464 − 463 = 1, une alerte et pas une de plus).
+
+Tri au contexte (ligne 2066 de la sortie scellée « c » ; l'instrument renvoie à la ligne et ne recopie aucun contexte, D299) :
+  · 1 [mot-de-passe] = docs/preuves/D339/tri-audit-d339a.txt:10 — la PROSE du tri « a » de cette session, écrite APRÈS la sortie scellée « a » : elle explique une alerte de D338 en
+                       citant le titre d'un test. Un mot et un titre de test, aucune valeur — l'ÉCHO d'un tri, comme D337, D338 et le tri « a » l'avaient déjà noté.
+
+BILAN : 1 sur 1 = l'écho du tri « a » (prose qui NOMME ce qu'elle cherche) ; AUCUNE valeur réelle. Le complément du cadrage (docs/preuves/D339/cadrage-complement.md, 30 458 octets, lu par
+cet audit après sa dernière modification) ne rend AUCUNE alerte.
+
+Sceau de la sortie « c » : sha256:1a09150ad3191c3e365c1fb78515a0388d63e3f87a1132aa34b8edefc2a93b66 — relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).
