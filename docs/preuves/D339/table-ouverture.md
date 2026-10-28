@@ -160,3 +160,9 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 |---|---|
 | `docs/preuves/D339/audit-secrets-d339c.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), AVANT le commit du complément du cadrage |
 | `docs/preuves/D339/tri-audit-d339c.txt` | son tri différentiel contre `docs/preuves/D339/audit-secrets-d339a.txt` |
+
+**Extension 2** (28/10/2026, commitée SEULE, AVANT le commit des rouges qui contiennent le fichier — relevé en comparant les fichiers touchés aux chemins complets de cette table, `git status` contre les backticks de ce fichier : un seul fichier de test hors table) :
+
+| fichier | motif |
+|---|---|
+| `apps/api/test/int/pdf-renderer.int-spec.ts` | son devis-témoin (`devisArabe`) est un `QuoteDocumentRecord` écrit à la main : le type du port exige désormais `isOfficial`, il compile et passe avec `isOfficial: true` (aucune autre ligne ne change) |
