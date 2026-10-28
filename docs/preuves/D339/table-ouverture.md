@@ -153,3 +153,10 @@ Lot : **le rang 43 continue — L36-2, « le devis brouillon non officiel », LE
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (28/10/2026, commitée SEULE, AVANT le commit des pièces qu'elle déclare — le complément du cadrage, 3 b, passe par un audit de secrets avant son commit, D298 ; l'audit « c » vient entre l'audit « a » de l'ouverture et l'audit « b » de la clôture, comme à D338) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/audit-secrets-d339c.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), AVANT le commit du complément du cadrage |
+| `docs/preuves/D339/tri-audit-d339c.txt` | son tri différentiel contre `docs/preuves/D339/audit-secrets-d339a.txt` |
