@@ -1,0 +1,16 @@
+D339 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la lecture adverse et de toute écriture d'autorité)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D338/audit-secrets-d338b.txt docs/preuves/D339/audit-secrets-d339a.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente : 461 contextes lus ; nouvelle : 463. Alertes ABSENTES de la précédente : 2 (ventilation par motif : mot-de-passe = 2 — aucun autre motif ne rend d'alerte NOUVELLE :
+hypothèse vérifiée par le compte 463 − 461 = 2, deux alertes et pas une de plus).
+
+Tri au contexte (lignes 1908 et 2062 de la sortie scellée « a » ; l'instrument renvoie aux lignes et ne recopie aucun contexte, D299) :
+  · 1 [mot-de-passe] = docs/preuves/D338/controle-fin-de-lot.txt:48 — la PROSE du contrôle de fin de lot de D338, écrite APRÈS la sortie scellée « b » de D338 : elle explique
+                       une alerte en citant le titre d'un test (« hasPassword=… »). Un mot et un titre de test, aucune valeur.
+  · 1 [mot-de-passe] = docs/preuves/D338/tri-audit-d338b.txt:15 — la prose du tri « b » de D338, qui NOMME ce qu'elle a trié (un titre de test de test-int.txt et deux de test.txt) :
+                       l'ÉCHO d'un tri, comme D337 et D338 l'avaient déjà noté.
+
+BILAN : 2 sur 2 = l'écho du tri et du contrôle de fin de lot de D338 (prose qui NOMME ce qu'elle cherche) ; AUCUNE valeur réelle. Aucun motif à zéro n'est caché.
+
+Sceau de la sortie « a » : sha256:af325b37a6e48afe0c782b64886088f7439b11f9babacbb44c8378cb0fe8772f — relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).

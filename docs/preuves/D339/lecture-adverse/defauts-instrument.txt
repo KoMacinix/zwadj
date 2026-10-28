@@ -1,0 +1,27 @@
+Défauts de l'instrument de lecture adverse de D339 (confronter-consigne.py) — première passe, 28/10/2026
+
+La première passe (confronter-sortie-passe-1-AVANT-CORRECTIFS.txt) a rendu 35 contrôles : 30 ✓, 2 ✗, 3 non vérifiables.
+Les deux ✗ sont des DÉFAUTS D'INSTRUMENT (la sortie brute porte ce que l'instrument cherchait, ou montre qu'il le cherchait au
+mauvais endroit — règle de D298), pas des écarts de la consigne. Ils ont été réparés, puis l'instrument a été REJOUÉ EN ENTIER,
+calibration comprise (confronter-sortie.txt : 37 contrôles, 34 ✓, 0 ✗, 3 non vérifiables).
+
+1) Contrôle 4.5 — la règle permanente des écritures sur la base de développement est dans AGENTS.md.
+   Défaut : le contrôle comparait un texte en MAJUSCULES (« TOUTE ÉCRITURE SUR LA BASE DE DÉVELOPPEMENT DE KO EST DÉCLARÉE AU RAPPORT
+   DE FIN DE LOT », tel qu'écrit dans AGENTS.md) à un motif en minuscules, par une expression `.lower().replace(...)` qui ne ramenait
+   PAS le texte à la casse du motif. La sortie brute de AGENTS.md (repr de la ligne, relevée à part) porte bien la règle en toutes lettres.
+   Réparation : le motif est cherché dans le texte aplati, en majuscules, tel qu'il est écrit.
+
+2) Contrôle 1.5 — « S-49 (rang 41) : l'API garde le devis officiel sans fiche ».
+   Défaut : le contrôle exigeait que la PUCE S-49 de ZWADJ_CONTINUITE.md dise « sans fiche ». La sortie brute de la puce (relevée à part)
+   dit autre chose : « K-4 porte, avec clientRecordId, la copie du nom pour CE devis … les noms n'existent qu'avec une fiche, et une fiche
+   exige au moins un nom ; une révision porte le même corps (quoteReviseSchema = quoteCreateSchema, inchangé) ». La clause « un devis peut
+   naître SANS fiche » n'est pas dans la puce : elle est dans le CODE, qui l'étiquette S-49 (packages/types/src/quote.ts:359,
+   apps/api/src/venues/quotes.service.ts:435).
+   Réparation : le contrôle est coupé en trois — 1.5 (ce que la puce dit vraiment, dont la phrase « quoteReviseSchema = quoteCreateSchema,
+   inchangé » que la décision R-1 de la consigne CHANGE), 1.5b (le code étiquette S-49 sur « sans fiche »), 1.5c (le comportement :
+   `clientRecordId` facultatif, packages/types/src/quote.ts:371).
+
+CE QUE LA RÉPARATION NE FAIT PAS DISPARAÎTRE, ET QUI EST DIT AU RAPPORT : la puce S-49 écrit « quoteReviseSchema = quoteCreateSchema,
+inchangé » ; la décision R-1 de la consigne sépare les deux schémas (la révision n'accepte pas `isOfficial`). La consigne le sait — R-1
+cite elle-même quote.ts:408 comme motif —, donc ce n'est pas une affirmation fausse de la consigne : c'est une phrase d'autorité que le
+lot rend périmée pour `isOfficial` et que la passe D277 annote (barrée avec son motif, jamais effacée).

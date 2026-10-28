@@ -1,0 +1,79 @@
+Lecture adverse de la consigne du rang 43 (SUITE, L36-2 : le CODE) — SHA de base d703117, table fb386f1
+calibration : ligne D338 du registre → ✓ ; ligne D999 → ✗ ; `quoteReviseSchema = quoteCreateSchema` présent → ✓ ; `quotePromoteSchema` absent → ✗ ; ce littéral à la ligne 408 → ✓, à la ligne 409 → ✗ — les six bras tiennent.
+
+BILAN : 37 contrôles — 34 ✓, 0 ✗, 3 non vérifiables (attendu ✗ : 0 ; chaque ✗ arrête la session).
+
+[✓] 0.1 — le premier commit du lot (la table) a pour parent d703117 et ne contient que table-ouverture.md
+      d703117 → d703117037be ; parent de fb386f1 = d703117037be ; fichiers du commit = ['docs/preuves/D339/table-ouverture.md']
+[✓] 0.2 — aucun stash
+      `git stash list` = vide
+[✓] 0.3 — branche main
+      branche = main
+[✓] 0.4 — origin/main = d703117 (l'état de départ que la consigne annonce) au moment de la lecture, après `git fetch`
+      origin/main = d703117037be ; d703117 = d703117037be
+[✓] 0.5 — le dernier numéro du registre est D338 (attendu D339 pour ce lot)
+      292 lignes de registre parcourues ; dernière = D338
+[✓] 1.1 — ZWADJ_CONTINUITE.md:2041 porte « Pour un vrai devis, il faut le numéro ou l'adresse e-mail »
+      24178 lignes parcourues ; ligne 2041 = « - Un client qui refuse de donner son numéro ET son adresse e-mail reçoit un devis brouillon non officiel. Pour un vrai devis, il faut le numéro ou l'a »
+[✓] 1.2 — la tranche [L36-2] (ZWADJ_CONTINUITE.md:2128) pose is_official DEFAULT true et « jamais accepté ni marqué remis »
+      ligne 2128 = « [L36-2] quotes : + is_official boolean NOT NULL DEFAULT true ; CHECK : un devis non officiel n'est jamais accepté ni marqué remis (statuts q … »
+[✓] 1.3 — la tranche [L36-2] ne parle NI de la fiche NI du nom : l'exigence Q2 (NULL pour un devis non officiel) est donc bien une EXTENSION, comme la consigne l'écrit
+      `client_record_id` et `client_name` cherchés dans la ligne 2128 (453 caractères parcourus) : absents
+[✓] 1.4 — DR4 (ZWADJ_CONTINUITE.md:2104) : ligne d'audit ; garde serveur + CHECK en base ; colonnes à fixer par la lecture de deliver()
+      ligne 2104 parcourue (1144 caractères)
+[✓] 1.5 — S-49 (rang 41) existe dans le .md : les noms n'existent qu'avec une fiche, et « une révision porte le même corps (quoteReviseSchema = quoteCreateSchema, inchangé) » — la phrase que R-1 CHANGE pour `isOfficial` (à annoter, D277)
+      1 occurrence(s) de **S-49** ; texte de la puce = « - **S-49** — **K-4** porte, avec `clientRecordId`, la copie du nom pour CE devis (`clientNameAr`, `clientNameLatin`) : DB-17 (« le nom est prérempli depuis la fiche et modifiable pour ce devis ») ne se tient pas autrement ; les noms n'existent qu'avec une fiche, et une fiche exige au moins un nom ; une révision porte le même cor »
+[✓] 1.5b — le CODE étiquette S-49 sur « un devis peut naître SANS fiche » (de quoi lire la consigne : « L'API garde le devis officiel sans fiche (S-49) »)
+      `git grep -n S-49` à d703117 sur apps et packages ; lignes qui portent aussi « sans fiche » : ['apps/api/src/venues/quotes.service.ts:435:  /** ⛔ Rang 41 (D336, K-4 ; S-49, MD-6, MD-11) — la fiche du devis et sa COPIE du nom. Sans fiche : rien (le devis du parcours se crée comme avant ce lot).', "packages/types/src/quote.ts:359: *  ⛔ RANG 41 (D336, K-4 amendé, S-49) — LA FICHE ET LA COPIE DU NOM ; `clientId` RETIRÉ (DB-15). Un devis peut naître SANS fiche — c'est le cas des devis"]
+[✓] 1.5c — le comportement : `clientRecordId` est FACULTATIF dans quoteCreateSchema (packages/types/src/quote.ts:371) — l'API crée donc un devis officiel sans fiche
+      ligne 371 = « clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(), »
+[✓] 1.6 — S-76 à S-82 (D338) existent, une fois chacune, en tête de puce
+      puces comptées = {'S-76': 1, 'S-77': 1, 'S-78': 1, 'S-79': 1, 'S-80': 1, 'S-81': 1, 'S-82': 1}
+[✓] 1.7 — S-80 : la promotion est `POST /quotes/:id/promote` et le champ de création n'accepte que `isOfficial: false` (les précisions R-1 et R-2 la complètent)
+      S-80 = «  — La promotion est `POST /quotes/:id/promote` avec la fiche et le nom dans la même forme qu'à la création d'un devis avec fiche ; le champ de création n'accepte que `isOfficial: false`. *Pour Ko :* une seule façon de créer un brouillon, une seule de le rendre officiel. »
+[✓] 1.8 — le précédent du déclencheur existe : `venues_number_immutable`, migration 20261015100000
+      72 lignes de migration parcourues ; `venues_number_immutable` présent ; CREATE TRIGGER présent
+[✓] 2.1 — packages/types/src/quote.ts:408 : quoteReviseSchema = quoteCreateSchema
+      ligne 408 = « export const quoteReviseSchema = quoteCreateSchema; »
+[✓] 2.2 — quotes.controller.ts:168-185 = la route K-5 (`POST /quotes/:id/client-name`), de son décorateur à son accolade fermante
+      186 lignes parcourues ; ligne 168 = « @Post("quotes/:id/client-name") » ; ligne 185 = « } »
+[✓] 2.3 — quote-store.prisma.ts:316-323 : la copie du nom s'écrit d'abord (compare-and-set), la fiche n'est lue que si `clientRecordId` n'est pas NULL
+      342 lignes parcourues ; ligne 316 = « // ⛔ MD-7 — le compare-and-set est dans le WHERE : la copie de cette écriture NU » ; ligne 323 = « if (devis.clientRecordId !== null) { »
+[✓] 2.4 — R-3 (motif) : K-5 écrit la copie du nom AVANT de regarder la fiche — donc sur un devis SANS fiche aussi
+      lignes 315-340 parcourues ; `tx.quote.updateMany` à l'offset 229, `clientRecordId !== null` à l'offset 693
+[✓] 2.5 — « D-7 du cadrage » existe et traite la révision d'un brouillon (drapeau hérité de la dernière version)
+      178 lignes du cadrage parcourues ; `D-7` et « révision d'un brouillon » présents
+[✓] 2.6 — R-5 (motif) : dans le spike de D338, la mutation `absolute` fait passer le document de 4 à 3 pages
+      ligne `fixed` = ('4', '4') (pages, couleurs) ; ligne `absolute` = ('3', '1')
+[✓] 2.7 — R-4 (motif) : `bookings.quote_id` existe et est UNIQUE (une réservation peut y être rattachée après coup par un UPDATE)
+      1453 lignes de schéma parcourues ; `quoteId String? @unique @map("quote_id")` présent
+[✓] 3.1 — 3 a : « au moins 3 fichiers d'intégration, 9 appels HTTP : relevé partiel de D338, M10 »
+      M10 parcourue : 3 fichiers [('quote-document.int-spec.ts', 1), ('quote-numbering.int-spec.ts', 2), ('quotes.int-spec.ts', 6)] ; total = 9
+[✓] 3.2 — 3 b : les modes de défaillance du cadrage de D338 vont de D-1 à D-14 ; D-15 à D-19 sont donc NEUFS
+      `D-14` présent, `D-15` absent du cadrage
+[✓] 3.3 — 3 b : le cadrage compte exactement 14 lignes de modes de défaillance
+      14 lignes `| D-n |` parcourues
+[✓] 3.4 — 3 c : la section D338 existe dans ZWADJ_CONTINUITE.md (de quoi lui ajouter une annotation)
+      un titre ou une ligne « D338 — rang 43 » est présent
+[✓] 3.5 — 3 a : le backlog existe et porte déjà l'entrée L36-2 (celle de 3 a est une entrée DE PLUS, sans rang)
+      5633 lignes de backlog parcourues ; `L36-2` présent
+[✓] 4.1 — 4 : la promotion serait la PREMIÈRE écriture de audit_logs (M3 : le modèle existe, zéro écrivain)
+      M3 parcourue : `model AuditLog` trouvé ; la recherche d'un écrivain rend 0 ligne
+[✓] 4.2 — idem, mesuré directement à d703117 : aucune référence à auditLog / audit_log dans apps/api/src (hors client généré et specs)
+      `git grep` à d703117 : 0 ligne(s) brutes, 0 après retrait du client généré et des specs
+[✓] 4.3 — 5 : l'ordre des rangs existe et nomme le rang 43 (de quoi écrire « RANG 43 : CLOS SUR LE CODE » puis « RANG 44 : EN ATTENTE D'ARBITRAGE DE KO »)
+      un titre « ORDRE DES RANGS » et « RANG 43 » sont présents
+[✓] 4.4 — 5 : le compteur pour mémoire est DEUX au départ (D338) — il passe donc à TROIS à la clôture de ce lot de code
+      la chaîne du compteur de AGENTS.md porte « compteur POUR MÉMOIRE DEUX, inchangé » (D338)
+[✓] 4.5 — 5 : la règle permanente « toute écriture sur la base de développement de Ko est déclarée au rapport de fin de lot » est dans AGENTS.md
+      AGENTS.md parcouru (1662 lignes) : la règle de D337 est présente, en majuscules
+[✓] 4.6 — 0 : la règle « les rouges avant le code » (D334, item 5) est écrite dans AGENTS.md
+      AGENTS.md parcouru : `D334, item 5` présent
+[✓] 4.7 — 4 : aucun lecteur de PDF n'est une dépendance du dépôt (le test du filigrane lira les flux des pages sans dépendance neuve)
+      M13 parcourue : la recherche d'un lecteur de PDF dans les package.json rend 0 ligne
+[?] N.1 — R-5 : « le relecteur a rejoué le spike de D338 avec un autre Chromium (headless_shell 1243) et retrouvé les six lignes à l'identique »
+      NON VÉRIFIABLE contre le dépôt : le rejeu du relecteur n'y est pas versé. Le dépôt porte la sortie de D338 (4 et 3 pages, vérifiée en 2.6) ; la session REJOUE sa propre mesure (code compilé du dépôt) avant de s'appuyer sur R-5
+[?] N.2 — Q1 à Q5, S-76 à S-82 : « par adoption de ce message (Ko l'a collé) »
+      NON VÉRIFIABLE : le chat n'est pas au dépôt. Écrit comme ADOPTION, jamais comme une parole de Ko (consigne, section 1)
+[?] N.3 — R-1 à R-5 : « décisions du relecteur (chat), déléguées par Ko »
+      NON VÉRIFIABLE : même raison. Écrit « décision du relecteur (chat), déléguée par Ko »
