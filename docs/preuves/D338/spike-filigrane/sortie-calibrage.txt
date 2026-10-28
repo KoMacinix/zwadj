@@ -1,0 +1,6 @@
+sans octets 21440 pages 4 flux 10
+  couleurs posées (opérande → occurrences): {".0941 .0941 .1059 RG":12,".0941 .0941 .1059 rg":12,".8941 .8941 .9059 RG":4,".8941 .8941 .9059 rg":4,".3216 .3216 .3569 RG":6,".3216 .3216 .3569 rg":6,".8314 .8314 .8471 RG":5,".8314 .8314 .8471 rg":5}
+  opérateurs d'état graphique (gs): 6 ; formes XObject (Do): 0
+avec octets 26191 pages 4 flux 16
+  couleurs posées (opérande → occurrences): {".1216 .498 .7882 RG":4,".1216 .498 .7882 rg":4,".0941 .0941 .1059 RG":12,".0941 .0941 .1059 rg":12,".8941 .8941 .9059 RG":4,".8941 .8941 .9059 rg":4,".3216 .3216 .3569 RG":6,".3216 .3216 .3569 rg":6,".8314 .8314 .8471 RG":5,".8314 .8314 .8471 rg":5,"0 0 0 RG":4,"0 0 0 rg":4}
+  opérateurs d'état graphique (gs): 14 ; formes XObject (Do): 4

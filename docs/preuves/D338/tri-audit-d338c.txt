@@ -1,0 +1,15 @@
+D338 — tri différentiel de l'audit de secrets « c » (AVANT le commit du cadrage, des mesures et du spike du filigrane — extension 1 de la table)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D338/audit-secrets-d338a.txt docs/preuves/D338/audit-secrets-d338c.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente (« a ») : 385 contextes lus ; nouvelle (« c ») : 385 contextes lus. Alertes ABSENTES de la précédente : 0 (ventilation par motif : aucune).
+
+Ce que l'audit a PARCOURU (le total ne se lit pas sans son dénominateur, D290) : « a » = 4 402 fichiers parcourus, 4 285 audités, 117 exclus ; « c » = 4 412 fichiers parcourus,
+4 295 audités, 117 exclus. Les DIX fichiers de plus sont exactement ce que ce versement ajoute : cadrage.md (1), mesures-cadrage.sh et mesures-cadrage.txt (2), les six pièces du
+spike (spike-filigrane-passe-1.js, sortie-passe-1.txt, calibrage-couleurs.js, sortie-calibrage.txt, spike-filigrane.js, sortie.txt) (6), et tri-audit-d338a.txt (1), commité
+après la sortie « a ». Les dix sont audités, aucun n'est exclu : zéro alerte nouvelle n'est donc pas « rien parcouru ».
+
+BILAN : 0 alerte nouvelle sur 10 fichiers neufs ; aucune valeur réelle. Aucun journal à valeurs réelles n'existe dans cette session : le contrôle dédié « 0 valeur réelle » (D299) n'a
+rien à chercher et le dit dans aucune-valeur-reelle.txt à la clôture.
+
+Sceau de la sortie « c » : relu identique et vérifié à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).

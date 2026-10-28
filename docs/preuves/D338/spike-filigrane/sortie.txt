@@ -1,0 +1,6 @@
+{"locale":"fr","lignes":70,"position":"fixed","pages":4,"couleurFiligrane":4,"couleur==pages":true}
+{"locale":"ar","lignes":70,"position":"fixed","pages":4,"couleurFiligrane":4,"couleur==pages":true}
+{"locale":"fr","lignes":3,"position":"fixed","pages":1,"couleurFiligrane":1,"couleur==pages":true}
+{"locale":"fr","lignes":150,"position":"fixed","pages":7,"couleurFiligrane":7,"couleur==pages":true}
+{"locale":"fr","lignes":70,"position":"absolute","pages":3,"couleurFiligrane":1,"couleur==pages":false}
+{"locale":"fr","lignes":70,"position":"(aucun filigrane)","pages":4,"couleurFiligrane":0,"couleur==pages":false}

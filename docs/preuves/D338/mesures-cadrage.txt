@@ -1,0 +1,188 @@
+
+══ M1 — qui ÉCRIT le statut d'un devis (code de production) : la table des transitions et ses seules cibles
+$ grep -n -E 'to: ' apps/api/src/venues/quote-transitions.ts
+38:  readonly to: QuoteStatus | null;
+42:  [QuoteCommand.DELIVER]: { from: QUOTE_OPEN_STATUSES, to: null },
+43:  [QuoteCommand.REVISE]: { from: QUOTE_OPEN_STATUSES, to: null },
+44:  [QuoteCommand.CONVERT]: { from: QUOTE_OPEN_STATUSES, to: null },
+45:  [QuoteCommand.CANCEL]: { from: QUOTE_OPEN_STATUSES, to: QuoteStatus.CANCELLED }
+75:  | { readonly outcome: "ALLOWED"; readonly to: QuoteStatus | null }
+90:  return { outcome: "ALLOWED", to: transition.to };
+[sortie : 7 ligne(s)]
+$ grep -rn -E 'nouveauStatut|quoteWrittenStatus|changerStatut' apps/api/src --include=*.ts | grep -v -E '\.spec\.ts|generated'
+apps/api/src/venues/quote-store.prisma.ts:84:   *  `changerStatut` ne diffèrent que par ce qu'elles écrivent ; deux copies de
+apps/api/src/venues/quote-store.prisma.ts:167:  async changerStatut(args: {
+apps/api/src/venues/quote-store.prisma.ts:170:    nouveauStatut: QuoteStatus;
+apps/api/src/venues/quote-store.prisma.ts:172:    return this.checkAndSet(args.quoteId, args.statutsAdmis, { status: args.nouveauStatut });
+apps/api/src/venues/quote-store.types.ts:182:  changerStatut(args: {
+apps/api/src/venues/quote-store.types.ts:185:    readonly nouveauStatut: QuoteStatus;
+apps/api/src/venues/quote-transitions.ts:66:export function quoteWrittenStatus(command: QuoteCommand): QuoteStatus {
+apps/api/src/venues/quotes.service.ts:83:  quoteWrittenStatus
+apps/api/src/venues/quotes.service.ts:400:    const resultat = await this.devis.changerStatut({
+apps/api/src/venues/quotes.service.ts:405:      nouveauStatut: quoteWrittenStatus(QuoteCommand.CANCEL)
+[sortie : 10 ligne(s)]
+
+══ M2 — qui écrit ACCEPTED sur un DEVIS (écriture de production ; les lectures et les réservations sont à part)
+$ grep -rn -E 'QuoteStatus\.ACCEPTED|status: *"ACCEPTED"' apps/api/src --include=*.ts | grep -v -E '\.spec\.ts|generated'
+apps/api/src/documents/quote-document-policy.ts:45: * ⚠ Jamais une troisième liste de statuts : `isQuoteOpen` et `QuoteStatus.ACCEPTED` sont les autorités, ce prédicat ne fait que les composer.
+apps/api/src/documents/quote-document-policy.ts:48:  return isQuoteOpen(status) || status === QuoteStatus.ACCEPTED;
+apps/api/src/venues/quotes.service.ts:162:      if (row.status === QuoteStatus.ACCEPTED) result.accepted += 1;
+[sortie : 3 ligne(s)]
+
+══ M3 — audit_logs : le modèle existe-t-il, et qui y ÉCRIT (code de production)
+$ grep -n -A4 '^model AuditLog' apps/api/prisma/schema.prisma
+1432:model AuditLog {
+1433-  id         String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+1434-  actorId    String?  @map("actor_id") @db.Uuid
+1435-  actorRole  String?  @map("actor_role")
+1436-  action     String // ex: "venue.publish", "commission_rate.update"
+[sortie : 5 ligne(s)]
+$ grep -rn -i -E 'auditLog|audit_log' apps/api/src --include=*.ts | grep -v -E 'generated'
+[sortie : 0 ligne(s)]
+
+══ M4 — les déclencheurs SQL déjà présents dans les migrations (précédent pour une garde inter-tables)
+$ grep -l -i -E 'CREATE( OR REPLACE)? (TRIGGER|FUNCTION)' apps/api/prisma/migrations/*/migration.sql
+apps/api/prisma/migrations/20261015100000_venue_number/migration.sql
+[sortie : 1 ligne(s)]
+$ ls apps/api/prisma/migrations | grep -c .
+32
+[sortie : 1 ligne(s)]
+
+══ M5 — qui écrit bookings.quote_id (la conversion d'un devis)
+$ grep -rn -E 'quoteId: ' apps/api/src --include=*.ts | grep -v -E '\.spec\.ts|generated|where|select'
+apps/api/src/documents/quote-document-source.prisma.ts:51:  async findForOwner(userId: string, quoteId: string): Promise<QuoteDocumentRecord | null> {
+apps/api/src/documents/quote-document-source.ts:63:  findForOwner(userId: string, quoteId: string): Promise<QuoteDocumentRecord | null>;
+apps/api/src/documents/quote-document.service.ts:38:  async render(userId: string, quoteId: string, locale: QuoteDocumentLocale, now: Date = new Date()): Promise<RenderedQuoteDocument> {
+apps/api/src/venues/quote-store.prisma.ts:88:    quoteId: string,
+apps/api/src/venues/quote-store.prisma.ts:159:    quoteId: string;
+apps/api/src/venues/quote-store.prisma.ts:168:    quoteId: string;
+apps/api/src/venues/quote-store.prisma.ts:190:          quoteId: donnees.quoteId,
+apps/api/src/venues/quote-store.prisma.ts:283:  async trouverDuPro(userId: string, quoteId: string): Promise<QuoteRow | null> {
+apps/api/src/venues/quote-store.prisma.ts:309:    readonly quoteId: string;
+apps/api/src/venues/quote-store.types.ts:100:  readonly quoteId: string;
+apps/api/src/venues/quote-store.types.ts:170:    readonly quoteId: string;
+apps/api/src/venues/quote-store.types.ts:183:    readonly quoteId: string;
+apps/api/src/venues/quote-store.types.ts:205:  trouverDuPro(userId: string, quoteId: string): Promise<QuoteRow | null>;
+apps/api/src/venues/quote-store.types.ts:219:    readonly quoteId: string;
+apps/api/src/venues/quotes.service.ts:216:  async deliver(userId: string, quoteId: string, input: QuoteDeliverInput): Promise<QuoteDTO> {
+apps/api/src/venues/quotes.service.ts:220:      quoteId: current.id,
+apps/api/src/venues/quotes.service.ts:253:  async revise(userId: string, quoteId: string, input: QuoteCreateInput): Promise<QuoteDTO> {
+apps/api/src/venues/quotes.service.ts:302:  async convert(userId: string, quoteId: string, input: QuoteConvertInput): Promise<QuoteDTO> {
+apps/api/src/venues/quotes.service.ts:343:      quoteId: current.id,
+apps/api/src/venues/quotes.service.ts:394:  async cancel(userId: string, quoteId: string): Promise<QuoteDTO> {
+apps/api/src/venues/quotes.service.ts:401:      quoteId: current.id,
+apps/api/src/venues/quotes.service.ts:416:  async completeClientName(userId: string, quoteId: string, input: QuoteClientNameInput): Promise<QuoteDTO> {
+apps/api/src/venues/quotes.service.ts:549:  private async ownedQuote(userId: string, quoteId: string): Promise<QuoteRow> {
+[sortie : 23 ligne(s)]
+$ grep -n -E 'quote_id|quoteId' apps/api/prisma/schema.prisma
+974:  // ⚠ `chain_id` / `version` / `parent_quote_id` NE L'ONT PAS SUIVIE. D165 les
+998:  parentQuoteId  String?     @map("parent_quote_id") @db.Uuid
+1113:  quoteId        String?       @unique @map("quote_id") @db.Uuid
+1162:  quote          Quote?           @relation(fields: [quoteId], references: [id], onDelete: SetNull)
+[sortie : 4 ligne(s)]
+
+══ M6 — l'écran du pro : l'ordre des étapes et ce qu'exige 'termsReady' (donc ce qu'il faut pour calculer un devis)
+$ grep -n -E 'const STEPS|const termsReady|quotes\.create\(|quotes\.revise\(|copiePourDevis' apps/pro/src/dashboard/walkin-journey.tsx
+117:  copiePourDevis,
+161:const STEPS = ["contact", "client", "date", "slot", "services", "quote"] as const;
+412:  const termsReady = eventDate !== null && slotId !== null && guestsReady && fiche !== null;
+621:    ...(fiche === null ? {} : copiePourDevis(nomsEffectifs, fiche.id))
+628:          ? await quotes.create(venue.id, body())
+629:          : await quotes.revise(chainQuoteId, body());
+[sortie : 6 ligne(s)]
+
+══ M7 — la règle de rang 41 : des noms SANS fiche sont refusés (contrat) ; aucune CHECK ne les lie en base
+$ sed -n '376,384p' packages/types/src/quote.ts
+  .superRefine((corps, ctx) => {
+    const avecNom = corps.clientNameAr !== undefined || corps.clientNameLatin !== undefined;
+    if (corps.clientRecordId === undefined && avecNom) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientRecordId"], message: "quote.validation.clientRecordRequired" });
+    }
+    if (corps.clientRecordId !== undefined && !avecNom) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientNameLatin"], message: "quote.validation.clientNameRequired" });
+    }
+  });
+[sortie : 9 ligne(s)]
+$ grep -n -i -E 'CHECK|client_name' apps/api/prisma/migrations/20261022120000_pro_client_records/migration.sql | grep -v '^[0-9]*:--'
+55:  CONSTRAINT "pro_client_records_identifier_present" CHECK ("phone" IS NOT NULL OR "email" IS NOT NULL),
+56:  CONSTRAINT "pro_client_records_name_present" CHECK ("name_ar" IS NOT NULL OR "name_latin" IS NOT NULL),
+57:  CONSTRAINT "pro_client_records_link_coherent" CHECK (("linked_user_id" IS NULL) = ("linked_at" IS NULL)),
+58:  CONSTRAINT "pro_client_records_phone_canonical" CHECK ("phone" IS NULL OR "phone" ~ '^\+213[567][0-9]{8}$'),
+72:  ADD COLUMN "client_name_ar"    text,
+73:  ADD COLUMN "client_name_latin" text;
+[sortie : 6 ligne(s)]
+
+══ M8 — les contraintes qui portent sur sent_at, sent_via, accepted_at, status (migrations, commentaires retirés par le motif)
+$ grep -n -E 'quotes_sent_at_coherent|quotes_accepted_at_coherent|quotes_sent_via_not_blank|quotes_one_accepted_per_chain|quotes_one_sent_per_chain' apps/api/prisma/migrations/*/migration.sql | grep -v -E ':[0-9]+:--'
+apps/api/prisma/migrations/20260802140000_quote_lifecycle/migration.sql:91:CREATE UNIQUE INDEX "quotes_one_accepted_per_chain" ON "quotes"("chain_id") WHERE "status" = 'ACCEPTED';
+apps/api/prisma/migrations/20260802140000_quote_lifecycle/migration.sql:92:CREATE UNIQUE INDEX "quotes_one_sent_per_chain" ON "quotes"("chain_id") WHERE "status" = 'SENT';
+apps/api/prisma/migrations/20260802140000_quote_lifecycle/migration.sql:100:  ADD CONSTRAINT "quotes_sent_at_coherent"
+apps/api/prisma/migrations/20260802140000_quote_lifecycle/migration.sql:106:  ADD CONSTRAINT "quotes_accepted_at_coherent"
+apps/api/prisma/migrations/20260814120000_quote_sent_via/migration.sql:43:  ADD CONSTRAINT "quotes_sent_via_not_blank"
+apps/api/prisma/migrations/20260821000100_quote_cancel_without_delivery/migration.sql:41:ALTER TABLE "quotes" DROP CONSTRAINT "quotes_sent_at_coherent";
+apps/api/prisma/migrations/20260821000100_quote_cancel_without_delivery/migration.sql:44:  ADD CONSTRAINT "quotes_sent_at_coherent"
+apps/api/prisma/migrations/20260821000100_quote_cancel_without_delivery/migration.sql:47:COMMENT ON CONSTRAINT "quotes_sent_at_coherent" ON "quotes" IS
+[sortie : 8 ligne(s)]
+
+══ M9 — la forme de la référence : la formule, le motif du nom de fichier, et TOUS les appelants de production
+$ grep -n -E 'QUOTE_REFERENCE_PATTERN|export function (formatQuoteReference|quoteDocumentFilename)' packages/types/src/quote.ts
+319:export function formatQuoteReference(parts: QuoteReferenceParts): string {
+330:const QUOTE_REFERENCE_PATTERN = /^(DEVIS-\d{4}-\d{4,}-\d{4,}) v(\d+)$/u;
+337:export function quoteDocumentFilename(quote: { readonly reference: string }, locale: QuoteDocumentLocale): string {
+338:  const m = QUOTE_REFERENCE_PATTERN.exec(quote.reference);
+[sortie : 4 ligne(s)]
+$ grep -rn -E 'formatQuoteReference|quoteDocumentFilename' apps packages --include=*.ts --include=*.tsx | grep -v -E '\.spec\.ts|\.test\.ts|node_modules|/dist/|generated'
+apps/api/src/documents/quote-document-source.prisma.ts:4:import { ServicePricingType, formatQuoteReference, type QuoteStatus } from "@zwadj/types";
+apps/api/src/documents/quote-document-source.prisma.ts:80:      reference: formatQuoteReference({ year: row.referenceYear, venueNumber: row.venue.number, quoteNumber: row.referenceNumber, version: row.version }),
+apps/api/src/documents/quote-document.service.ts:10:import { QuoteErrorCode, quoteDocumentFilename, type QuoteDocumentLocale } from "@zwadj/types";
+apps/api/src/documents/quote-document.service.ts:60:    const filename = quoteDocumentFilename(record, locale);
+apps/api/src/venues/quote-store.types.ts:40:  // `formatQuoteReference` ; ni le port ni l'adaptateur n'en bâtissent une.
+apps/api/src/venues/quotes.service.ts:61:  formatQuoteReference,
+apps/api/src/venues/quotes.service.ts:592:      reference: formatQuoteReference({
+apps/api/test/int/quote-numbering.int-spec.ts:17:import { formatQuoteReference, type QuoteDTO, type VenueProDTO } from "@zwadj/types";
+apps/api/test/int/quote-numbering.int-spec.ts:107:    expect(q.reference).toBe(formatQuoteReference({ year: stocke.reference_year, venueNumber: await numeroDeSalle(f.venue.id), quoteNumber: stocke.reference_number, version: 1 }));
+apps/pro/src/dashboard/save-file.ts:7:// ⚠ `filename` vient de `quoteDocumentFilename` (`@zwadj/types`, UNE formule partagée avec le serveur) : aucune donnée personnelle. Il n'est pas
+apps/pro/src/dashboard/walkin-journey.tsx:86:  quoteDocumentFilename,
+apps/pro/src/dashboard/walkin-journey.tsx:706:            saveBlob(fichier.value, quoteDocumentFilename(courant, documentLocale));
+packages/types/src/quote.ts:319:export function formatQuoteReference(parts: QuoteReferenceParts): string {
+packages/types/src/quote.ts:337:export function quoteDocumentFilename(quote: { readonly reference: string }, locale: QuoteDocumentLocale): string {
+[sortie : 14 ligne(s)]
+
+══ M10 — les créations de devis par la route HTTP dans les suites d'intégration (relevé partiel : hors créations par le service ou par SQL)
+$ grep -rn -E 'venues/.*quotes[`"]' apps/api/test/int --include=*.ts | cut -d: -f1 | sort | uniq -c
+      1 apps/api/test/int/quote-document.int-spec.ts
+      2 apps/api/test/int/quote-numbering.int-spec.ts
+      6 apps/api/test/int/quotes.int-spec.ts
+[sortie : 3 ligne(s)]
+
+══ M11 — la pause des numéros : aucune suppression de devis dans le code de production, et la clé étrangère de la salle
+$ grep -rn -E 'quote\.(delete|deleteMany)|DELETE FROM quotes' apps/api/src --include=*.ts | grep -v -E '\.spec\.ts|generated'
+[sortie : 0 ligne(s)]
+$ grep -n 'quotes_venue_id_fkey' apps/api/prisma/migrations/20260707000000_init/migration.sql
+772:ALTER TABLE "quotes" ADD CONSTRAINT "quotes_venue_id_fkey" FOREIGN KEY ("venue_id") REFERENCES "venues"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+[sortie : 1 ligne(s)]
+
+══ M12 — le moteur de rendu : les options du PDF (le filigrane se pose dans le HTML ; le moteur n'est pas modifié)
+$ grep -n -E 'page\.pdf|javaScriptEnabled|route\(' apps/api/src/documents/playwright-pdf.renderer.ts
+4://   1. JAVASCRIPT COUPÉ dans la page de rendu (`javaScriptEnabled: false`) : le modèle est une page remplie de saisies ; si une saisie
+6://   2. RÉSEAU BLOQUÉ : toute requête de la page est AVORTÉE (`route("**/*", abort)`). Un `<img src="http://hôte-interne/…">` ferait sinon
+86:        const context = await lance.newContext({ javaScriptEnabled: false });
+88:        await context.route("**/*", (route) => route.abort());
+91:        return Buffer.from(await page.pdf({ format: "A4", printBackground: true, preferCSSPageSize: true }));
+[sortie : 5 ligne(s)]
+
+══ M13 — un lecteur de PDF existe-t-il dans le dépôt (pour mesurer 'chaque page') ?
+$ grep -n -i -E 'pdfjs|pdf-parse|pdf-lib|pdfkit|pdf2json|unpdf' package.json apps/*/package.json packages/*/package.json
+[sortie : 0 ligne(s)]
+$ grep -n -E 'pdfPageCount|pdfFonts|function fabriquePdf' apps/api/test/int/pdf-renderer.int-spec.ts
+20:import { fabriquePdf, pdfFonts, pdfPageCount, pdfTitle } from "./pdf-inspect";
+54:    expect(pdfFonts(fabriquePdf(...COMPOSITE))).toEqual([
+62:    expect(pdfFonts(fabriquePdf(...sansFichier)).map((f) => f.embedded)).toEqual([false, false]);
+66:    expect(pdfFonts(fabriquePdf("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"))).toEqual([{ name: "Helvetica", subtype: "Type1", embedded: false }]);
+67:    expect(pdfFonts(fabriquePdf("<< /Type /Catalog /Pages 2 0 R >>"))).toEqual([]);
+71:    expect(() => pdfFonts(fabriquePdf("<< /Type /ObjStm /N 1 /First 4 >>"))).toThrow(/flux d'objets/);
+77:    expect(pdfPageCount(fabriquePdf("<< /Type /Pages /Count 2 >>", "<< /Type /Page >>", "<< /Type /Page >>"))).toBe(2);
+104:    expect(pdfPageCount(pdf)).toBe(1);
+125:    const polices = pdfFonts(await rendu.render(html));
+134:    const polices = pdfFonts(await rendu.render(html));
+[sortie : 10 ligne(s)]

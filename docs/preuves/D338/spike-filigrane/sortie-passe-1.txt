@@ -1,0 +1,4 @@
+{"locale":"fr","lignes":70,"filigrane":true,"ms":2205,"octets":26986,"pages":4,"fluxDecompresses":16,"fluxAvecLaCouleurDuFiligrane":0,"occurrencesParFlux":[]}
+{"locale":"ar","lignes":70,"filigrane":true,"ms":695,"octets":40722,"pages":4,"fluxDecompresses":22,"fluxAvecLaCouleurDuFiligrane":0,"occurrencesParFlux":[]}
+{"locale":"fr","lignes":70,"filigrane":false,"ms":632,"octets":22233,"pages":4,"fluxDecompresses":10,"fluxAvecLaCouleurDuFiligrane":0,"occurrencesParFlux":[]}
+{"locale":"fr","lignes":3,"filigrane":true,"ms":637,"octets":20998,"pages":1,"fluxDecompresses":10,"fluxAvecLaCouleurDuFiligrane":0,"occurrencesParFlux":[]}
