@@ -103,3 +103,22 @@ Motif : le cadrage (`cadrage.md`) cite des mesures — des commandes et un spike
 | `docs/preuves/D338/spike-filigrane/sortie.txt` | sa sortie |
 | `docs/preuves/D338/audit-secrets-d338c.txt` | audit de secrets scellé, AVANT le commit du cadrage et de ces pièces (l'audit « a » est celui de l'ouverture, l'audit « b » celui de la clôture ; celui-ci est entre les deux) |
 | `docs/preuves/D338/tri-audit-d338c.txt` | son tri différentiel contre `audit-secrets-d338a.txt` |
+
+## Extension 2 — 28/10/2026 — commitée SEULE, AVANT le versement qu'elle couvre : les pièces de CLÔTURE d'un lot où la règle d'arrêt a joué
+
+Motif : la table d'ouverture rangeait les portes et la passe D277 sous « n'existent que si le code part ». La règle d'arrêt a joué ; ces pièces existent quand même (la consigne demande les six portes rejouées après la dernière modification, et la passe D277 des deux sens sur tout lot qui change l'état d'un fichier d'autorité). Les voici, en chemins complets. ⚠ **Numérotation** : l'extension qui donnerait la liste exacte du CODE (si Ko répond et que le code part) s'appellera **extension 3**.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D338/portes/_index.txt` | l'index de la chaîne des portes : l'heure de départ, le SHA, l'état de l'arbre, le code de sortie et la durée de chaque porte, le rejeu |
+| `docs/preuves/D338/portes/typecheck.txt` | `pnpm typecheck` (sortie 0) |
+| `docs/preuves/D338/portes/lint.txt` | `pnpm lint` (sortie 0) |
+| `docs/preuves/D338/portes/test.txt` | `pnpm test`, PREMIÈRE passe (sortie 1 : 1 échec de la classe « act tardif ») |
+| `docs/preuves/D338/portes/test-rejeu-1.txt` | `pnpm test`, rejeu seul (sortie 0 : 2 049 tests / 147 fichiers) |
+| `docs/preuves/D338/portes/build.txt` | `pnpm build` (sortie 0) |
+| `docs/preuves/D338/portes/test-int.txt` | `pnpm test:int` (sortie 0 : 567 / 40) |
+| `docs/preuves/D338/portes/test-e2e.txt` | `pnpm test:e2e` (sortie 0 : 60 passés · 1 ignoré) — PIÈCE MASQUÉE : 73 jetons de liens de vérification d'e-mail d'une base jetable sont remplacés par « <valeur masquée> » avant le commit |
+| `docs/preuves/D338/passe-d277/passe-d277.py` | l'instrument de la passe D277 des deux sens (texte APLATI, calibré sur deux bras) |
+| `docs/preuves/D338/passe-d277/sortie-avant.txt` | sa sortie AVANT les écritures de clôture |
+| `docs/preuves/D338/passe-d277/sortie-apres.txt` | sa sortie APRÈS les écritures de clôture |
+| `docs/preuves/D338/passe-d277.md` | la passe écrite : chaque occurrence trouvée, traitée ou laissée, avec son motif |
