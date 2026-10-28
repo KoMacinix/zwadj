@@ -1,0 +1,3 @@
+✓ C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/f1ce062a-98a5-4aaa-9fec-092ef66c0485/scratchpad/portes/test-e2e.log : occurrences stricte 73 · large 73 (doivent s'accorder) · valeurs distinctes 73 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/c--Users-benla-Desktop-MyProjct-Zwadj/f1ce062a-98a5-4aaa-9fec-092ef66c0485/scratchpad/portes/test-e2e.log porte 73 valeur(s) (attendu ≥ 73)
+== valeurs cherchées : 73 (1 journal/journaux) · parcourus : 35 fichiers, 6129566 octets · porteurs : 0 (attendu 0)

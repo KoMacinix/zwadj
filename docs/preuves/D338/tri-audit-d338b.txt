@@ -1,0 +1,22 @@
+D338 — tri différentiel de l'audit de secrets « b » (clôture : AVANT le commit des pièces de clôture et des .md d'autorité)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D338/audit-secrets-d338c.txt docs/preuves/D338/audit-secrets-d338b.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente (« c ») : 385 contextes ; nouvelle (« b ») : 461 contextes. Alertes ABSENTES de la précédente : 76 (ventilation par motif : jeton = 73 · mot-de-passe = 3 ; aucun autre motif n'en rend une
+nouvelle, ce que le compte 461 − 385 = 76 confirme).
+
+Parcouru (D290) : « c » = 4 412 fichiers parcourus, 4 295 audités, 117 exclus ; « b » = 4 426 parcourus, 4 308 audités, 118 exclus. Les QUATORZE fichiers de plus : 13 pièces neuves, toutes auditées (les huit de
+docs/preuves/D338/portes/, les trois de passe-d277/, passe-d277.md, tri-audit-d338c.txt) et la sortie « c » elle-même, désormais scellée donc exclue (+1 exclu).
+
+Tri au contexte (lignes 1904 à 1976 et 2050 à 2054 de la sortie scellée « b ») :
+  · 73 [jeton]        = lignes de docs/preuves/D338/portes/test-e2e.txt de la forme « …/verification-email?<paramètre de jeton>=<valeur masquée> » : le motif s'accroche au NOM du paramètre ; la « valeur » que
+                        l'audit voit est le MARQUEUR de masquage, 7 caractères. Lu : 73 marqueurs dans la pièce, 0 jeton de 20 caractères ou plus. Ce sont les liens de vérification d'e-mail que le serveur
+                        du harnais e2e imprime (comptes de test, base jetable recréée à chaque passe) ; la pièce a été masquée AVANT son commit (en-tête de la pièce).
+  · 3  [mot-de-passe] = un TITRE de test dans test-int.txt (« …forgot-password… réponse CONSTANTE… ») et deux dans test.txt (« …hasPassword=true / false… ») : des mots, aucune valeur.
+
+BILAN : 76 sur 76 = des marqueurs de masquage (73) et des titres de test (3) ; AUCUNE valeur réelle (aucune clé de paiement, aucun secret Google, aucun jeton d'accès, aucun mot de passe de compte réel).
+
+Le contrôle dédié « 0 valeur réelle » (aucune-valeur-reelle.txt) fait foi sur l'absence de VALEURS : il a pris pour source le journal BRUT de l'e2e (hors dépôt, 73 valeurs distinctes, stricte et large d'accord) et
+cherché ces 73 valeurs dans docs/preuves/D338 et dans les trois fichiers d'autorité : 35 fichiers parcourus, 6 129 566 octets, **0 porteur** (attendu 0), calibré sur ses deux bras.
+
+Sceau de la sortie « b » : relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).
