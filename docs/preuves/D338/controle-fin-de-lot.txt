@@ -1,0 +1,49 @@
+D338 — contrôle de fin de lot (écrit APRÈS la poussée ; il rapporte les deux SHA)
+
+1. LOCAL ET DISTANT SUR LE MÊME SHA (D288)
+   HEAD         = a5c7d8875c4605e9c086b24d1270aa53e5df2df4
+   origin/main  = a5c7d8875c4605e9c086b24d1270aa53e5df2df4
+   égaux : True (attendu True) · commits du lot parcourus : 9
+
+2. LE PREMIER COMMIT DU LOT EST LA TABLE SEULE (D328, point 1)
+   636f830 → fichiers = ['docs/preuves/D338/table-ouverture.md'] · égal à [docs/preuves/D338/table-ouverture.md] : True (attendu True)
+
+3. DIFF ⊆ TABLE, CHEMINS COMPLETS, EXTENSIONS COMPRISES (D328)
+   fichiers du diff 985fd20..HEAD examinés : 36 · chemins complets déclarés dans la table et ses 2 extensions : 62
+   non déclarés : [] · compte 0 (attendu 0)
+   (une table écrite par PRÉFIXE rendrait ce 0 vrai par construction : celle-ci ne contient aucun préfixe — le motif n'accepte que des fichiers avec extension)
+
+4. AUCUN FICHIER DE CODE NI DE TEST (la règle d'arrêt a joué : lot DOCUMENTAIRE)
+   fichiers du diff examinés : 36 · hors docs/preuves/D338/ et hors les trois .md d'autorité : [] · fichiers de code/test/schéma/migration : [] (attendu [] et [])
+   `.gitattributes` non touché : True (attendu True)
+   ⇒ « les rouges précèdent le premier commit de code » (D334, item 5) est VIDE DE FORCE : il n'y a ni rouge ni commit de code.
+
+5. L'ORDRE DES COMMITS (D328, points 2 à 4)
+   lecture adverse 2ab6f9a (position 1) avant la première écriture d'autorité 37152c9 (position 2) : True (attendu True)
+   première écriture d'autorité 37152c9 = les arbitrages de Ko : docs(rang-43): D338 — PREMIÈRE écriture d'autorité : les arbitrages de Ko du 27/10/2026 mot pour mot (rang 43 
+   le cadrage 6ae062e (position 5) précède tout .md de clôture : le dernier commit des .md est a5c7d88 (position 8) : True (attendu True)
+   extension 1 (6c05651, position 4) avant le premier commit de mesures-cadrage.txt (6ae062e, position 5) : True (attendu True) ; l'extension est-elle SEULE ? fichiers = ['docs/preuves/D338/table-ouverture.md']
+   extension 2 (90ed3f0, position 6) avant le premier commit de _index.txt (9c9561c, position 7) : True (attendu True) ; l'extension est-elle SEULE ? fichiers = ['docs/preuves/D338/table-ouverture.md']
+
+   les commits du lot, dans l'ordre :
+     636f830 docs(rang-43): D338 — table d'ouverture, SEULE : L36-2 (le devis brouillon non officiel), cadrage d'abord, règle d'arrêt, code conditionnel, c
+     2ab6f9a test(rang-43): D338 — la lecture adverse de la consigne (33 contrôles ✓ après réparation d'un défaut d'instrument, passe 1 versée à côté), l'a
+     37152c9 docs(rang-43): D338 — PREMIÈRE écriture d'autorité : les arbitrages de Ko du 27/10/2026 mot pour mot (rang 43 = L36-2, NB-6 hors lot, S-68 à S
+     8ae6dd0 docs(rang-43): D338 — « avant le lot » (consigne 3 a et 3 b) : trois annotations de la section D337 (1 d, 1 e, R-2 — ajout seul) et l'entrée d
+     6c05651 docs(rang-43): D338 — extension 1 de la table, SEULE : les mesures du cadrage (script et sortie brute), le spike du filigrane (passe 1 défectu
+     6ae062e docs(rang-43): D338 — LE CADRAGE de L36-2, avant tout code : état des lieux mesuré (treize mesures, sortie brute), la forme (is_official et sa
+     90ed3f0 docs(rang-43): D338 — extension 2 de la table, SEULE : les pièces de clôture (six portes et leur rejeu, passe D277 des deux sens), déclarées a
+     9c9561c docs(rang-43): D338 — les pièces de clôture : les six portes sur un arbre sans code modifié (test : 1 échec de la classe « act tardif » à la p
+     a5c7d88 docs(rang-43): D338 — les .md d'autorité de clôture EN DERNIER : la section D338, le point d'entrée du rang 43 (OUVERT, EN ATTENTE DES RÉPONSE
+
+6. LE REGISTRE
+   lignes de registre parcourues : 292 · dernière = D338 (attendu D338) · occurrences de « | D338 | A | » : 1 (attendu 1)
+
+7. L'ARBRE
+   `git status --short` (hors ce fichier) : vide (attendu vide)
+   aucun stash : vide
+
+8. CE QUE CE CONTRÔLE NE DIT PAS
+   · le sceau du dernier audit a été relu à la production de la sortie « b » ; un audit REJOUÉ après les deux dernières éditions des .md (non versé, comparé à « b ») rend 462 alertes au lieu de 461 :
+     l'alerte de plus est l'écho de tri-audit-d338b.txt:15 (la prose du tri cite un titre de test « hasPassword=… »), le motif d'écho que D337 avait déjà noté — aucune valeur.
+   · les gestes de Ko de D337 sont déclarés joués par Ko : ce contrôle ne les rejoue pas (hors dépôt).
