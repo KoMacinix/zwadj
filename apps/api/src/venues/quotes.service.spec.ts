@@ -9,7 +9,7 @@
 // dépendant plus de Prisma pour son cycle de vie, il n'y avait aucune raison de
 // naître avec le défaut que S10a vient de corriger ailleurs.
 import { ConflictException, NotFoundException } from "@nestjs/common";
-import { QUOTE_CLIENT_NAME_FIELD, formatQuoteReference } from "@zwadj/types";
+import { QUOTE_CLIENT_NAME_FIELD, UserRole, formatQuoteReference } from "@zwadj/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { PrismaService } from "../prisma/prisma.service";
 import { QuotesService } from "./quotes.service";
@@ -42,6 +42,8 @@ const devisRow = (overrides: Record<string, unknown> = {}) =>
     acceptedAt: null,
     createdAt: new Date("2027-01-01T00:00:00.000Z"),
     booking: null,
+    // L36-2 (D339) — le devis est OFFICIEL par défaut (`is_official DEFAULT true`) ; un test de brouillon le surcharge.
+    isOfficial: true,
     // Rang 39 (D333, L35-3) — la référence est bâtie sur la ligne STOCKÉE : l'année, le numéro du devis, et le numéro de la SALLE (une relation). Trois valeurs distinctes.
     referenceYear: 2026,
     referenceNumber: 89,
@@ -66,7 +68,9 @@ function build() {
     convertirEnDemande: vi.fn(),
     // Rang 41 (D336) — la fiche du pro (K-4) et le complément de la copie du nom (K-5).
     ficheDuPro: vi.fn(),
-    completerNomDuClient: vi.fn()
+    completerNomDuClient: vi.fn(),
+    // L36-2 (D339) — la promotion d'un brouillon : UNE transaction du port, qui écrit aussi la ligne d'audit.
+    promouvoir: vi.fn()
   } satisfies QuoteStore;
   // ⚠ Prisma subsiste pour `price()` et `convert()` — hors de ce lot. Aucun
   // test d'ici ne l'emprunte : s'il était touché, ce serait le signe qu'une
@@ -400,5 +404,227 @@ describe("⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NUL
     devis.completerNomDuClient.mockClear();
     estRefus(await refus(service.completeClientName(USER_ID, "pas-un-uuid", { locale: "fr", name: "Amina" })), NotFoundException, "QUOTE_NOT_FOUND");
     expect(devis.completerNomDuClient).not.toHaveBeenCalled();
+  });
+});
+
+// ══ L36-2 (D339) — LE DEVIS BROUILLON NON OFFICIEL : ce que le SERVICE décide et traduit. Modes de défaillance : `docs/preuves/D339/cadrage-complement.md` (D-1, D-2, D-4 à D-6, D-17).
+// ⚠ Même doctrine que ci-dessus : la création et la révision RÉUSSIES passent par `price()` (Prisma) et sont mesurées par `quotes.int-spec.ts` ; ce bloc mesure la TRADUCTION d'un résultat
+// de port en réponse HTTP, l'ORDRE des refus sur des cas doublement fautifs, et ce que le service passe au port. En assertions NATIVES (`estRefus`, D304/D316).
+
+describe("⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état", () => {
+  it("⛔ un devis officiel : `isOfficial: true` et `DEVIS-…` (inchangé d'un octet)", async () => {
+    const { service, devis } = build();
+    devis.listerDeLaSalle.mockResolvedValue([devisRow()]);
+    const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    expect(dto!.isOfficial).toBe(true);
+    expect(dto!.reference).toBe("DEVIS-2026-0007-0089 v1");
+  });
+
+  it("⛔ un brouillon : `isOfficial: false` et `BROUILLON-…`, même année, mêmes numéros, même version — bâtie par la MÊME formule", async () => {
+    const { service, devis } = build();
+    devis.listerDeLaSalle.mockResolvedValue([devisRow({ isOfficial: false })]);
+    const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    expect(dto!.isOfficial).toBe(false);
+    expect(dto!.reference).toBe(formatQuoteReference({ year: 2026, venueNumber: 7, quoteNumber: 89, version: 1, official: false }));
+    expect(dto!.reference).toBe("BROUILLON-2026-0007-0089 v1");
+  });
+
+  it("⛔ dans une même chaîne, la v1 brouillon et la v2 promue portent chacune le préfixe de SA ligne — le numéro est le même", async () => {
+    const { service, devis } = build();
+    devis.listerDeLaSalle.mockResolvedValue([devisRow({ isOfficial: false }), devisRow({ id: "v2", version: 2, isOfficial: true })]);
+    const dtos = await service.listForVenue(USER_ID, VENUE_ID);
+    expect(dtos.map((d) => d.reference)).toEqual(["BROUILLON-2026-0007-0089 v1", "DEVIS-2026-0007-0089 v2"]);
+  });
+});
+
+describe("⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel", () => {
+  it("⛔ le port refuse `nonOfficiel` : 409 QUOTE_NOT_OFFICIAL, le message du catalogue, et aucun statut dans la réponse", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false }));
+    devis.marquerRemis.mockResolvedValue({ ok: false, raison: "nonOfficiel" });
+    const e = await refus(service.deliver(USER_ID, QUOTE_ID, { sentVia: "PRINT" }));
+    estRefus(e, ConflictException, "QUOTE_NOT_OFFICIAL");
+    const corps = (e as ConflictException).getResponse() as { message?: string; status?: string };
+    expect(corps.message).toBe("quote.errors.notOfficial");
+    expect(corps.status, "un refus « pas officiel » ne porte pas de statut").toBeUndefined();
+  });
+
+  it("⛔ le port refuse `statutConflit` : 409 QUOTE_STATUS_CONFLICT avec le statut RELU — deux refus, deux codes, jamais confondus", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false, status: "CANCELLED" }));
+    devis.marquerRemis.mockResolvedValue({ ok: false, raison: "statutConflit", statutActuel: "CANCELLED" });
+    await expect(service.deliver(USER_ID, QUOTE_ID, { sentVia: "PRINT" })).rejects.toSatisfy((e) => estConflitStatut(e, "CANCELLED"));
+  });
+});
+
+describe("⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture", () => {
+  const CONTACT = { contactFirstName: "Amina", contactLastName: "Bensalem", contactPhone: "+213550000001", paymentMethod: "CASH" as const };
+
+  it("⛔ un brouillon DRAFT : 409 QUOTE_NOT_OFFICIAL ; ni la salle, ni le créneau ne sont lus, aucune demande n'est écrite", async () => {
+    const { service, devis, prisma } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false }));
+    const e = await refus(service.convert(USER_ID, QUOTE_ID, CONTACT));
+    estRefus(e, ConflictException, "QUOTE_NOT_OFFICIAL");
+    expect(devis.convertirEnDemande).not.toHaveBeenCalled();
+    expect(prisma.venue.findUniqueOrThrow).not.toHaveBeenCalled();
+    expect(prisma.slotTemplate.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond « statut » (le devis est clos — l'information utile), pas « pas officiel »", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false, status: "CANCELLED" }));
+    const e = await refus(service.convert(USER_ID, QUOTE_ID, CONTACT));
+    estRefus(e, ConflictException, "QUOTE_STATUS_CONFLICT");
+    expect(devis.convertirEnDemande).not.toHaveBeenCalled();
+  });
+
+  it("⚠ un devis OFFICIEL se convertit comme avant (la garde ne gêne pas ce qu'elle ne vise pas)", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow());
+    devis.convertirEnDemande.mockResolvedValue({ ok: true });
+    await service.convert(USER_ID, QUOTE_ID, CONTACT);
+    expect(devis.convertirEnDemande).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là »", () => {
+  it("⛔ le port refuse ET le devis est un brouillon : 409 QUOTE_DRAFT_HAS_NO_CLIENT (pas « déjà renseigné » — il n'y a rien à compléter sur un brouillon)", async () => {
+    const { service, devis } = build();
+    devis.completerNomDuClient.mockResolvedValue({ ok: false });
+    devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false }));
+    const e = await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina Bensalem" }));
+    estRefus(e, ConflictException, "QUOTE_DRAFT_HAS_NO_CLIENT");
+    expect(((e as ConflictException).getResponse() as { message?: string }).message).toBe("quote.errors.draftHasNoClient");
+  });
+
+  it("⚠ le port refuse, le devis est OFFICIEL : le refus d'avant (copie déjà là) est inchangé ; introuvable : 404 d'abord", async () => {
+    const { service, devis } = build();
+    devis.completerNomDuClient.mockResolvedValue({ ok: false });
+    devis.trouverDuPro.mockResolvedValue(devisRow({ clientNameLatin: "Amina Bensalem" }));
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })), ConflictException, "QUOTE_CLIENT_NAME_ALREADY_SET");
+    devis.trouverDuPro.mockResolvedValue(null);
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })), NotFoundException, "QUOTE_NOT_FOUND");
+  });
+});
+
+describe("⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI", () => {
+  const FICHE_ID = "018f0000-0000-7000-8000-0000000000f1";
+  const ACTEUR = { userId: USER_ID, role: UserRole.PRO };
+  const CORPS = { clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem" };
+  const FICHE = { id: FICHE_ID, nameAr: null, nameLatin: null, linkedUserId: null };
+  const preparer = () => {
+    const ctx = build();
+    ctx.devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false }));
+    ctx.devis.ficheDuPro.mockResolvedValue(FICHE);
+    return ctx;
+  };
+
+  it("⛔ le succès rend le DTO de la LIGNE que le port renvoie (officielle, `DEVIS-…`, même numéro) — pas un objet bâti avec ce que l'appelant a envoyé", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true, clientRecordId: FICHE_ID, clientNameLatin: "Nom Du Serveur" }) });
+    const dto = await service.promote(ACTEUR, QUOTE_ID, CORPS);
+    expect(dto.isOfficial).toBe(true);
+    expect(dto.reference).toBe("DEVIS-2026-0007-0089 v1");
+    expect(dto.clientNameLatin, "le nom rendu est celui de la ligne").toBe("Nom Du Serveur");
+  });
+
+  it("⛔ le port reçoit l'ACTEUR (identifiant ET rôle — ils vont dans la ligne d'audit), le devis, les statuts source de la MACHINE À ÉTATS, et la copie décidée par la politique", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true }) });
+    await service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem", clientNameAr: "آمنة بن سالم" });
+    expect(devis.promouvoir).toHaveBeenCalledTimes(1);
+    const args = devis.promouvoir.mock.calls[0]![0] as { acteur: unknown; quoteId: string; statutsAdmis: readonly string[]; copie: unknown };
+    expect(args.acteur).toEqual({ userId: USER_ID, role: UserRole.PRO });
+    expect(args.quoteId).toBe(QUOTE_ID);
+    // ⚠ Égalité avec l'AUTORITÉ, jamais une liste écrite ici (leçon de S10b).
+    expect(args.statutsAdmis).toEqual([...quoteAllowedFrom(QuoteCommand.PROMOTE)]);
+    expect(args.copie).toEqual({ clientRecordId: FICHE_ID, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
+  });
+
+  it("⛔ un nom absent de la saisie est NULL dans la copie (jamais une chaîne vide, jamais le nom de la fiche en repli sur une fiche non liée)", async () => {
+    const { service, devis } = preparer();
+    devis.ficheDuPro.mockResolvedValue({ ...FICHE, nameAr: "اسم الفيشة" });
+    devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true }) });
+    await service.promote(ACTEUR, QUOTE_ID, CORPS);
+    expect((devis.promouvoir.mock.calls[0]![0] as { copie: unknown }).copie).toEqual({ clientRecordId: FICHE_ID, clientNameAr: null, clientNameLatin: "Amina Bensalem" });
+  });
+
+  it("⛔ le devis n'est pas au pro (le port le rend `null`) : 404 QUOTE_NOT_FOUND AVANT la fiche, et rien n'est écrit ; un identifiant hors motif : 404 sans toucher le port", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(null);
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), NotFoundException, "QUOTE_NOT_FOUND");
+    expect(devis.ficheDuPro).not.toHaveBeenCalled();
+    expect(devis.promouvoir).not.toHaveBeenCalled();
+    devis.trouverDuPro.mockClear();
+    estRefus(await refus(service.promote(ACTEUR, "pas-un-uuid", CORPS)), NotFoundException, "QUOTE_NOT_FOUND");
+    expect(devis.trouverDuPro).not.toHaveBeenCalled();
+  });
+
+  it("⛔ la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND indistinct, et rien n'est écrit", async () => {
+    const { service, devis } = preparer();
+    devis.ficheDuPro.mockResolvedValue(null);
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
+    expect(devis.ficheDuPro).toHaveBeenCalledWith(USER_ID, FICHE_ID);
+    expect(devis.promouvoir).not.toHaveBeenCalled();
+  });
+
+  it("⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est écrit", async () => {
+    const { service, devis } = preparer();
+    devis.ficheDuPro.mockResolvedValue({ ...FICHE, nameLatin: "Amina Bensalem", linkedUserId: "018f0000-0000-7000-8000-0000000000ee" });
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID, clientNameLatin: "Autre Nom" })), ConflictException, "CLIENT_RECORD_LINKED");
+    expect(devis.promouvoir).not.toHaveBeenCalled();
+  });
+
+  it("⛔ le port refuse « introuvable » : 404 QUOTE_NOT_FOUND", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: false, raison: "introuvable" });
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), NotFoundException, "QUOTE_NOT_FOUND");
+  });
+
+  it("⛔ D-5 — le port refuse « déjà officiel » : 409 QUOTE_ALREADY_OFFICIAL, le message du catalogue", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: false, raison: "dejaOfficiel" });
+    const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS));
+    estRefus(e, ConflictException, "QUOTE_ALREADY_OFFICIAL");
+    expect(((e as ConflictException).getResponse() as { message?: string }).message).toBe("quote.errors.alreadyOfficial");
+  });
+
+  it("⛔ D-6 — le port refuse « version non active » : 409 QUOTE_VERSION_NOT_ACTIVE PORTANT `latestVersion` (l'écran sait laquelle est active)", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: false, raison: "versionNonActive", versionActive: 3 });
+    const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS));
+    estRefus(e, ConflictException, "QUOTE_VERSION_NOT_ACTIVE");
+    expect(((e as ConflictException).getResponse() as { latestVersion?: number }).latestVersion).toBe(3);
+  });
+
+  it("⛔ le port refuse « statut » : 409 QUOTE_STATUS_CONFLICT avec le statut RELU (un brouillon annulé est CLOS)", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: false, raison: "statutConflit", statutActuel: "CANCELLED" });
+    await expect(service.promote(ACTEUR, QUOTE_ID, CORPS)).rejects.toSatisfy((e) => estConflitStatut(e, "CANCELLED"));
+  });
+
+  it("⚠ la promotion ne touche ni la remise, ni le statut, ni la conversion : elle ne change aucun montant", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true }) });
+    await service.promote(ACTEUR, QUOTE_ID, CORPS);
+    expect(devis.marquerRemis).not.toHaveBeenCalled();
+    expect(devis.changerStatut).not.toHaveBeenCalled();
+    expect(devis.convertirEnDemande).not.toHaveBeenCalled();
+    expect(devis.creerRevision).not.toHaveBeenCalled();
+    expect(devis.creerTeteDeChaine).not.toHaveBeenCalled();
+  });
+});
+
+describe("⛔ D-15 — `revise` : la fiche d'un autre pro sur une chaîne brouillon reste un 404, décidé AVANT le verrou", () => {
+  it("⛔ l'ordre : la fiche (404) est décidée avant l'écriture ; le refus « un brouillon ne porte pas de client » vient du PORT, sous le verrou de la chaîne", async () => {
+    const { service, devis } = build();
+    devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false }));
+    devis.ficheDuPro.mockResolvedValue(null);
+    estRefus(
+      await refus(service.revise(USER_ID, QUOTE_ID, { eventDate: "2027-05-12", slotTemplateId: "018f0000-0000-7000-8000-000000000051", guests: 200, clientRecordId: "018f0000-0000-7000-8000-0000000000f1", clientNameLatin: "Amina Bensalem" })),
+      NotFoundException,
+      "CLIENT_RECORD_NOT_FOUND"
+    );
+    expect(devis.creerRevision).not.toHaveBeenCalled();
   });
 });

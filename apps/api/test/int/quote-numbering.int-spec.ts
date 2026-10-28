@@ -70,9 +70,9 @@ async function rendu(requete: PromiseLike<request.Response>, statut: number): Pr
   return res;
 }
 
-/** Lit une référence `DEVIS-AAAA-SSSS-QQQQ vN` en nombres — l'expression est celle de la FORME de R3, pas une valeur attendue. */
+/** Lit une référence `DEVIS-AAAA-SSSS-QQQQ vN` (ou `BROUILLON-…`, L36-2) en nombres — l'expression est celle de la FORME de R3, pas une valeur attendue. */
 function lire(reference: string) {
-  const m = /^DEVIS-(\d{4})-(\d{4,})-(\d{4,}) v(\d+)$/u.exec(reference);
+  const m = /^(?:DEVIS|BROUILLON)-(\d{4})-(\d{4,})-(\d{4,}) v(\d+)$/u.exec(reference);
   if (!m) throw new Error(`pas une référence : ${reference}`);
   return { annee: Number(m[1]), salle: Number(m[2]), devis: Number(m[3]), version: Number(m[4]) };
 }
@@ -281,7 +281,7 @@ describe("F-7 — un échec au milieu de la transaction ne fait pas avancer le c
       store.creerTeteDeChaine(
         f.venue.id,
         { clientRecordId: null, clientNameAr: null, clientNameLatin: null, slotTemplateId: fantome, eventDate: new Date("2027-09-18T00:00:00.000Z"), guests: 100, basePriceCents: 100, servicesTotalCents: 0, totalCents: 100, depositCents: 30, lines: [] },
-        { annee: 2026, creeLe: new Date() }
+        { annee: 2026, creeLe: new Date(), officiel: true }
       )
     ).rejects.toThrow();
     const compteur = await sql<{ last_number: number }>(`SELECT last_number FROM quote_number_counters WHERE venue_id = '${f.venue.id}'`);
@@ -362,5 +362,32 @@ describe("F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique p
     expect(doublons).toEqual([]);
     const compteur = await sql<{ last_number: number }>(`SELECT last_number FROM quote_number_counters WHERE venue_id = '${f.venue.id}'`);
     expect(compteur.map((c) => c.last_number)).toEqual([1]); // l'incrément raté a été ANNULÉ avec la transaction
+  });
+});
+
+describe("⛔ L36-2 (D339, D-8) — un BROUILLON passe par le MÊME compteur, dans la MÊME transaction : un échec rend son numéro", () => {
+  it("⛔ une création de brouillon refusée APRÈS l'incrément (créneau fantôme) : le compteur n'a pas bougé, le brouillon suivant prend le numéro suivant — aucun trou", async () => {
+    const f = await setup();
+    const premier = lire(((await rendu(makeQuote(f, f.token, f.venue.id, f.slotId, { isOfficial: false }), 201)).body as QuoteDTO).reference);
+    const store = ctx.app.get<QuoteStore>(QUOTE_STORE);
+    await expect(
+      store.creerTeteDeChaine(
+        f.venue.id,
+        { clientRecordId: null, clientNameAr: null, clientNameLatin: null, slotTemplateId: "018f0000-0000-7000-8000-0000000000aa", eventDate: new Date("2027-09-18T00:00:00.000Z"), guests: 100, basePriceCents: 100, servicesTotalCents: 0, totalCents: 100, depositCents: 30, lines: [] },
+        { annee: 2026, creeLe: new Date(), officiel: false }
+      )
+    ).rejects.toThrow();
+    const compteur = await sql<{ last_number: number }>(`SELECT last_number FROM quote_number_counters WHERE venue_id = '${f.venue.id}'`);
+    expect(compteur.map((c) => c.last_number)).toEqual([premier.devis]);
+    const suivant = lire(((await rendu(makeQuote(f, f.token, f.venue.id, f.slotId, { isOfficial: false }), 201)).body as QuoteDTO).reference);
+    expect(suivant.devis).toBe(premier.devis + 1);
+  });
+
+  it("⚠ la référence d'un brouillon porte le MÊME numéro de salle et la même année qu'un devis officiel de la même salle", async () => {
+    const f = await setup();
+    const brouillon = lire(((await rendu(makeQuote(f, f.token, f.venue.id, f.slotId, { isOfficial: false }), 201)).body as QuoteDTO).reference);
+    const officiel = lire(((await rendu(makeQuote(f), 201)).body as QuoteDTO).reference);
+    expect({ annee: officiel.annee, salle: officiel.salle }).toEqual({ annee: brouillon.annee, salle: brouillon.salle });
+    expect(officiel.devis).toBe(brouillon.devis + 1);
   });
 });

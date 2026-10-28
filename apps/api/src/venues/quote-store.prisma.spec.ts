@@ -22,7 +22,8 @@ const NOUVEL_ID = "018f0000-0000-7000-8000-00000000bbbb";
 const COMPTEUR = 89;
 const TETE_ANNEE = 2026;
 const TETE_NUMERO = 42;
-const REFERENCE = { annee: 2027, creeLe: new Date("2027-01-01T00:30:00.000Z") };
+// L36-2 (D339) — `officiel` : le service décide si la tête naît officielle ; ce défaut est celui du parcours existant.
+const REFERENCE = { annee: 2027, creeLe: new Date("2027-01-01T00:30:00.000Z"), officiel: true };
 
 const CHIFFRE = {
   // Rang 41 (D336) — `clientId` n'est plus écrit à la création (DB-15) : la fiche et les deux copies du nom le remplacent.
@@ -51,6 +52,11 @@ function build() {
   // approximatif est exactement ce que ce lot combat — y compris ici.
   type Charge = Record<string, unknown>;
   type Ligne = Record<string, unknown>;
+  // L36-2 (D339) — ce que les lectures du double RENDENT, modifiable par chaque test : la ligne du pro (propriété) et la plus haute version de la chaîne (numéro ET drapeau).
+  const etat: { propriete: Ligne | null; derniere: Ligne } = {
+    propriete: { id: QUOTE_ID, chainId: CHAINE, version: 3 },
+    derniere: { version: 3, isOfficial: true }
+  };
   const tx = {
     quote: {
       create: vi.fn(async (_args: Charge): Promise<Ligne> => {
@@ -69,9 +75,20 @@ function build() {
         journal.push("findUniqueOrThrow");
         return { id: QUOTE_ID, status: "DRAFT" };
       }),
-      aggregate: vi.fn(async (_args: Charge): Promise<{ _max: { version: number | null } }> => {
-        journal.push("aggregate");
-        return { _max: { version: 3 } };
+      // L36-2 (D339) — le double RECONNAÎT la requête qu'il reçoit : la lecture de PROPRIÉTÉ (elle traverse `venue`) et la lecture de la PLUS HAUTE VERSION d'une chaîne n'ont pas la même réponse.
+      findFirst: vi.fn(async (args: Charge): Promise<Ligne | null> => {
+        if ((args.where as { venue?: unknown }).venue !== undefined) {
+          journal.push("propriété");
+          return etat.propriete;
+        }
+        journal.push("dernière version");
+        return etat.derniere;
+      })
+    },
+    auditLog: {
+      create: vi.fn(async (_args: Charge): Promise<Ligne> => {
+        journal.push("audit");
+        return { id: "a-1" };
       })
     },
     // ⚠ Le double reconnaît la REQUÊTE qu'il reçoit (le gabarit SQL), il ne répond pas « vide » à tout : le compteur rend son numéro, `uuidv7()` un identifiant, le verrou de
@@ -118,7 +135,7 @@ function build() {
       findFirst: vi.fn(async (_args: Charge2): Promise<{ id: string } | null> => null)
     }
   };
-  return { store: new PrismaQuoteStore(prisma as unknown as PrismaService), prisma, tx, journal };
+  return { store: new PrismaQuoteStore(prisma as unknown as PrismaService), prisma, tx, journal, etat };
 }
 
 describe("PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction", () => {
@@ -187,13 +204,13 @@ describe("PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et l
 });
 
 describe("PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum", () => {
-  it("⛔ `FOR UPDATE` puis `aggregate` puis `create` — dans cet ordre, ou la garde ne sert à rien", async () => {
+  it("⛔ `FOR UPDATE` puis la plus haute version (L36-2 : son numéro ET son drapeau, en une lecture) puis `create` — dans cet ordre, ou la garde ne sert à rien", async () => {
     // Lire MAX(version) avant de verrouiller, c'est deux révisions simultanées
     // qui lisent le même maximum : perte de mise à jour, et
     // `quotes_chain_version_unique` refuse la seconde.
     const { store, journal } = build();
     await store.creerRevision({ venueId: VENUE_ID, chainId: CHAINE, parentQuoteId: QUOTE_ID, chiffre: CHIFFRE });
-    expect(journal).toEqual(["FOR UPDATE", "aggregate", "create"]);
+    expect(journal).toEqual(["FOR UPDATE", "dernière version", "create"]);
   });
 
   it("⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà", async () => {
@@ -500,7 +517,7 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة", completerLaFiche: toujours });
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
     expect(tx.quote.updateMany).toHaveBeenCalledWith({
-      where: { id: QUOTE_ID, clientNameAr: null, venue: { deletedAt: null, owner: { userId: "u-1" } } },
+      where: { id: QUOTE_ID, isOfficial: true, clientNameAr: null, venue: { deletedAt: null, owner: { userId: "u-1" } } },
       data: { clientNameAr: "آمنة" }
     });
   });
@@ -561,5 +578,240 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
     expect(tx.quote.updateMany.mock.calls[0]![0]).toMatchObject({ where: { clientNameLatin: null }, data: { clientNameLatin: "Amina" } });
     expect(tx.proClientRecord.updateMany).toHaveBeenCalledWith({ where: { id: FICHE, nameLatin: null, linkedUserId: null }, data: { nameLatin: "Amina" } });
+  });
+});
+
+// ══ L36-2 (D339) — LE DEVIS BROUILLON NON OFFICIEL, mesuré là où il s'écrit. Modes de défaillance : `docs/preuves/D339/cadrage-complement.md` (D-1, D-5, D-6, D-11, D-12, D-15, D-17).
+// ⚠ La SÉQUENCE et les CONDITIONS des écritures, pas l'atomicité ni la base : `quotes.int-spec.ts` (PostgreSQL réel) prouve la concurrence, la `CHECK` et le déclencheur.
+
+describe("⛔ D339 — `creerTeteDeChaine` : la tête naît avec le drapeau que le SERVICE décide", () => {
+  it("⛔ `officiel: false` ⇒ la ligne écrite porte `isOfficial: false` ; `officiel: true` ⇒ `true` — le même compteur, la même transaction", async () => {
+    for (const officiel of [false, true]) {
+      const { store, tx, journal } = build();
+      await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, { ...REFERENCE, officiel });
+      const data = (tx.quote.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+      expect(data.isOfficial, `officiel = ${String(officiel)}`).toBe(officiel);
+      expect(journal, "un brouillon passe par le MÊME compteur (D-8)").toEqual(["compteur", "uuid", "create", "findUniqueOrThrow"]);
+    }
+  });
+});
+
+describe("⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom", () => {
+  const AVEC_FICHE = { ...CHIFFRE, clientRecordId: "018f0000-0000-7000-8000-0000000000f1" };
+  const AVEC_NOM_AR = { ...CHIFFRE, clientNameAr: "آمنة بن سالم" };
+  const AVEC_NOM_LATIN = { ...CHIFFRE, clientNameLatin: "Amina Bensalem" };
+  const ARGS = { venueId: VENUE_ID, chainId: CHAINE, parentQuoteId: QUOTE_ID };
+
+  it("⛔ la séquence : le verrou, PUIS la plus haute version (son numéro ET son drapeau), PUIS l'écriture", async () => {
+    const { store, journal } = build();
+    await store.creerRevision({ ...ARGS, chiffre: CHIFFRE });
+    expect(journal).toEqual(["FOR UPDATE", "dernière version", "create"]);
+  });
+
+  it("⛔ la plus haute version est un BROUILLON : la révision en est un — la ligne écrite porte `isOfficial: false`, et le port rend `{ ok: true }`", async () => {
+    const ctx = build();
+    ctx.etat.derniere = { version: 3, isOfficial: false };
+    const r = await ctx.store.creerRevision({ ...ARGS, chiffre: CHIFFRE });
+    expect(r.ok).toBe(true);
+    const data = (ctx.tx.quote.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data.isOfficial).toBe(false);
+    expect(data.version).toBe(4);
+  });
+
+  it("⛔ la plus haute version est OFFICIELLE : la révision l'est — le drapeau de la version PARENTE n'est pas lu (la v1 brouillon d'une chaîne dont la v2 est promue)", async () => {
+    const ctx = build();
+    ctx.etat.derniere = { version: 2, isOfficial: true };
+    const r = await ctx.store.creerRevision({ ...ARGS, chiffre: AVEC_FICHE });
+    expect(r.ok).toBe(true);
+    const data = (ctx.tx.quote.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data.isOfficial).toBe(true);
+    expect(data.clientRecordId, "une chaîne officielle garde sa fiche").toBe(AVEC_FICHE.clientRecordId);
+  });
+
+  it.each([
+    ["une fiche", AVEC_FICHE],
+    ["un nom arabe", AVEC_NOM_AR],
+    ["un nom latin", AVEC_NOM_LATIN]
+  ])("⛔ un brouillon et %s : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN", async (_nom, chiffre) => {
+    const ctx = build();
+    ctx.etat.derniere = { version: 3, isOfficial: false };
+    await expect(ctx.store.creerRevision({ ...ARGS, chiffre })).resolves.toEqual({ ok: false, raison: "brouillonAvecClient" });
+    expect(ctx.tx.quote.create).not.toHaveBeenCalled();
+    expect(ctx.journal).toEqual(["FOR UPDATE", "dernière version"]);
+  });
+});
+
+describe("⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel", () => {
+  let ctx: ReturnType<typeof build>;
+  beforeEach(() => {
+    ctx = build();
+  });
+
+  it("⛔ `marquerRemis` : `isOfficial: true` est dans le WHERE du check-and-set, EN PLUS du statut — jamais lu avant", async () => {
+    const sentAt = new Date("2027-02-01T10:00:00.000Z");
+    await ctx.store.marquerRemis({ quoteId: QUOTE_ID, statutsAdmis: ["DRAFT", "SENT"], sentVia: "PRINT", sentAt });
+    expect(ctx.tx.quote.updateMany).toHaveBeenCalledWith({
+      where: { id: QUOTE_ID, status: { in: ["DRAFT", "SENT"] }, isOfficial: true },
+      data: { sentVia: "PRINT", sentAt }
+    });
+  });
+
+  it("⛔ refus : le statut ET le drapeau sont RELUS DANS la transaction", async () => {
+    ctx.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "DRAFT", isOfficial: false });
+    await ctx.store.marquerRemis({ quoteId: QUOTE_ID, statutsAdmis: ["DRAFT"], sentVia: "PRINT", sentAt: new Date() });
+    expect(ctx.tx.quote.findUniqueOrThrow).toHaveBeenCalledWith({ where: { id: QUOTE_ID }, select: { status: true, isOfficial: true } });
+  });
+
+  it("⛔ refus d'un brouillon OUVERT : `nonOfficiel`", async () => {
+    ctx.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "DRAFT", isOfficial: false });
+    await expect(ctx.store.marquerRemis({ quoteId: QUOTE_ID, statutsAdmis: ["DRAFT"], sentVia: "PRINT", sentAt: new Date() })).resolves.toEqual({ ok: false, raison: "nonOfficiel" });
+  });
+
+  it("⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond `statutConflit` (le devis est clos), pas `nonOfficiel`", async () => {
+    ctx.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "CANCELLED", isOfficial: false });
+    await expect(ctx.store.marquerRemis({ quoteId: QUOTE_ID, statutsAdmis: ["DRAFT"], sentVia: "PRINT", sentAt: new Date() })).resolves.toEqual({
+      ok: false,
+      raison: "statutConflit",
+      statutActuel: "CANCELLED"
+    });
+  });
+
+  it("⛔ D-12 — `changerStatut` (l'annulation) N'EXIGE PAS l'état officiel : le WHERE est exactement le statut — annuler un brouillon reste permis", async () => {
+    await ctx.store.changerStatut({ quoteId: QUOTE_ID, statutsAdmis: ["DRAFT"], nouveauStatut: "CANCELLED" });
+    const where = (ctx.tx.quote.updateMany.mock.calls[0]![0] as { where: Record<string, unknown> }).where;
+    expect(where).toEqual({ id: QUOTE_ID, status: { in: ["DRAFT"] } });
+    expect(where).not.toHaveProperty("isOfficial");
+  });
+});
+
+describe("⛔ D-17 — K-5 : le WHERE de la copie exige un devis OFFICIEL (un brouillon n'a pas de nom)", () => {
+  it("⛔ `isOfficial: true` est dans le compare-and-set, avec la copie NULLE et le devis du pro", async () => {
+    const ctx = build();
+    ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: null });
+    await ctx.store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: () => false });
+    expect(ctx.tx.quote.updateMany).toHaveBeenCalledWith({
+      where: { id: QUOTE_ID, isOfficial: true, clientNameLatin: null, venue: { deletedAt: null, owner: { userId: "u-1" } } },
+      data: { clientNameLatin: "Amina" }
+    });
+  });
+});
+
+describe("⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle", () => {
+  const FICHE = "018f0000-0000-7000-8000-0000000000f1";
+  const COPIE = { clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" };
+  const ACTEUR = { userId: "018f0000-0000-7000-8000-00000000aaaa", role: "PRO" } as const;
+  const ARGS = { acteur: ACTEUR, quoteId: QUOTE_ID, statutsAdmis: ["DRAFT", "SENT"] as const, copie: COPIE };
+
+  it("⛔ la séquence : la propriété, le VERROU, la plus haute version, l'écriture conditionnelle, l'AUDIT, la relecture — UNE transaction, rien hors d'elle", async () => {
+    const { store, prisma, journal } = build();
+    const r = await store.promouvoir(ARGS);
+    expect(r.ok).toBe(true);
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(journal).toEqual(["propriété", "FOR UPDATE", "dernière version", "updateMany", "audit", "findUniqueOrThrow"]);
+    expect(prisma.$queryRaw).not.toHaveBeenCalled();
+  });
+
+  it("⛔ la propriété se lit par la RELATION au pro (D149) : `venue: { deletedAt: null, owner: { userId } }`, jamais un identifiant qui « ressemble »", async () => {
+    const { store, tx } = build();
+    await store.promouvoir(ARGS);
+    const propriete = tx.quote.findFirst.mock.calls.find((c) => (c[0] as { where: { venue?: unknown } }).where.venue !== undefined)![0] as { where: unknown };
+    expect(propriete.where).toEqual({ id: QUOTE_ID, venue: { deletedAt: null, owner: { userId: ACTEUR.userId } } });
+  });
+
+  it("⛔ D-5 — l'écriture est un CHECK-AND-SET : `isOfficial: false` ET le statut admis dans le WHERE, et la fiche et les deux copies ÉCRITES AVEC le drapeau", async () => {
+    const { store, tx } = build();
+    await store.promouvoir(ARGS);
+    expect(tx.quote.updateMany).toHaveBeenCalledWith({
+      where: { id: QUOTE_ID, isOfficial: false, status: { in: ["DRAFT", "SENT"] } },
+      data: { isOfficial: true, clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" }
+    });
+  });
+
+  it("⛔ D-11 — la ligne d'audit : l'action, l'entité, l'identifiant, l'ACTEUR et son RÔLE, le drapeau et l'identifiant de fiche — et RIEN d'autre", async () => {
+    const { store, tx } = build();
+    await store.promouvoir(ARGS);
+    expect(tx.auditLog.create).toHaveBeenCalledTimes(1);
+    const data = (tx.auditLog.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data).toEqual({
+      actorId: ACTEUR.userId,
+      actorRole: "PRO",
+      action: "quote.promote",
+      entityType: "quote",
+      entityId: QUOTE_ID,
+      before: { isOfficial: false, clientRecordId: null },
+      after: { isOfficial: true, clientRecordId: FICHE }
+    });
+  });
+
+  it("⛔ D-11 (S-81) — la ligne d'audit ne porte AUCUN nom, AUCUN numéro, AUCUN e-mail : on cherche leurs valeurs dans tout ce qui est écrit", async () => {
+    const { store, tx } = build();
+    await store.promouvoir({ ...ARGS, copie: { ...COPIE, clientNameLatin: "Amina Bensalem" } });
+    const ecrit = JSON.stringify(tx.auditLog.create.mock.calls[0]![0]);
+    for (const interdit of ["Amina", "Bensalem", "آمنة", "+213", "@", "phone", "email", "name"]) {
+      expect(ecrit.includes(interdit), `« ${interdit} » dans la ligne d'audit : ${ecrit}`).toBe(false);
+    }
+  });
+
+  it("⛔ D-6 — la version n'est plus la dernière : le port REND `versionNonActive` (avec la version active), sans écrire NI le devis NI l'audit", async () => {
+    const ctx = build();
+    ctx.etat.propriete = { id: QUOTE_ID, chainId: CHAINE, version: 2 };
+    ctx.etat.derniere = { version: 3, isOfficial: false };
+    await expect(ctx.store.promouvoir(ARGS)).resolves.toEqual({ ok: false, raison: "versionNonActive", versionActive: 3 });
+    expect(ctx.tx.quote.updateMany).not.toHaveBeenCalled();
+    expect(ctx.tx.auditLog.create).not.toHaveBeenCalled();
+  });
+
+  it("⛔ le devis n'est pas au pro (la propriété ne rend rien) : `introuvable`, et la chaîne n'est ni verrouillée ni lue", async () => {
+    const ctx = build();
+    ctx.etat.propriete = null;
+    await expect(ctx.store.promouvoir(ARGS)).resolves.toEqual({ ok: false, raison: "introuvable" });
+    expect(ctx.journal).toEqual(["propriété"]);
+  });
+
+  it("⛔ compte = 0 : le statut et le drapeau sont RELUS dans la transaction ; un devis déjà officiel ⇒ `dejaOfficiel`, SANS ligne d'audit", async () => {
+    const ctx = build();
+    ctx.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "DRAFT", isOfficial: true });
+    await expect(ctx.store.promouvoir(ARGS)).resolves.toEqual({ ok: false, raison: "dejaOfficiel" });
+    expect(ctx.tx.quote.findUniqueOrThrow).toHaveBeenCalledWith({ where: { id: QUOTE_ID }, select: { status: true, isOfficial: true } });
+    expect(ctx.tx.auditLog.create).not.toHaveBeenCalled();
+  });
+
+  it("⛔ L'ORDRE, sur des cas doublement fautifs : un brouillon ANNULÉ répond `statutConflit` ; un devis OFFICIEL annulé répond `dejaOfficiel` (vrai quel que soit son statut)", async () => {
+    const brouillonAnnule = build();
+    brouillonAnnule.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    brouillonAnnule.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "CANCELLED", isOfficial: false });
+    await expect(brouillonAnnule.store.promouvoir(ARGS)).resolves.toEqual({ ok: false, raison: "statutConflit", statutActuel: "CANCELLED" });
+
+    const officielAnnule = build();
+    officielAnnule.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    officielAnnule.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "CANCELLED", isOfficial: true });
+    await expect(officielAnnule.store.promouvoir(ARGS)).resolves.toEqual({ ok: false, raison: "dejaOfficiel" });
+    expect(brouillonAnnule.tx.auditLog.create).not.toHaveBeenCalled();
+    expect(officielAnnule.tx.auditLog.create).not.toHaveBeenCalled();
+  });
+
+  it("⛔ un échec de l'écriture d'audit LÈVE : la promotion ne survit pas à sa propre trace (la transaction l'annule)", async () => {
+    const ctx = build();
+    ctx.tx.auditLog.create.mockRejectedValue(new Error("audit_logs indisponible"));
+    await expect(ctx.store.promouvoir(ARGS)).rejects.toThrow("audit_logs indisponible");
+  });
+
+  it("⚠ `promouvoir` ne touche NI le compteur, NI le statut, NI la remise, NI aucun montant : le WHERE et le SET ne nomment que le drapeau, la fiche et les deux copies", async () => {
+    const { store, tx, journal } = build();
+    await store.promouvoir(ARGS);
+    expect(journal).not.toContain("compteur");
+    const { where, data } = tx.quote.updateMany.mock.calls[0]![0] as { where: Record<string, unknown>; data: Record<string, unknown> };
+    expect(Object.keys(data).sort()).toEqual(["clientNameAr", "clientNameLatin", "clientRecordId", "isOfficial"]);
+    expect(Object.keys(where).sort()).toEqual(["id", "isOfficial", "status"]);
+  });
+});
+
+describe("⛔ D339 — la lecture du cycle de vie rend le drapeau", () => {
+  it("`QUOTE_SELECT` sélectionne `isOfficial` (sans lui, le DTO ne pourrait pas dire s'il est officiel ni bâtir sa référence)", () => {
+    expect(QUOTE_SELECT.isOfficial).toBe(true);
   });
 });

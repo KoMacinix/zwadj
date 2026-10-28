@@ -120,3 +120,19 @@ describe("Le tableau est l'unique autorité", () => {
     }
   });
 });
+
+describe("⛔ L36-2 (D339) — la commande `promote` : rendre officiel un brouillon, sans toucher au statut", () => {
+  it("elle EXISTE, et n'écrit AUCUN statut (le drapeau `is_official` n'est pas un statut)", () => {
+    expect(COMMANDES).toContain("promote");
+    expect(QuoteCommand.PROMOTE).toBe("promote");
+    expect(quoteTargetOf(QuoteCommand.PROMOTE)).toBeNull();
+    expect(() => quoteWrittenStatus(QuoteCommand.PROMOTE)).toThrow(/n'écrit aucun statut/);
+  });
+
+  it("⚠ sa source est LA référence de l'autorité (`QUOTE_OPEN_STATUSES`), pas une cinquième copie : un brouillon est DRAFT ou CANCELLED (la CHECK), donc la source EFFECTIVE est DRAFT", () => {
+    expect(quoteAllowedFrom(QuoteCommand.PROMOTE)).toBe(QUOTE_OPEN_STATUSES);
+    expect(decideQuoteTransition(QuoteCommand.PROMOTE, QuoteStatus.DRAFT).outcome).toBe("ALLOWED");
+    expect(decideQuoteTransition(QuoteCommand.PROMOTE, QuoteStatus.CANCELLED).outcome).toBe("STATUS_CONFLICT");
+    expect(decideQuoteTransition(QuoteCommand.PROMOTE, QuoteStatus.ACCEPTED).outcome).toBe("STATUS_CONFLICT");
+  });
+});

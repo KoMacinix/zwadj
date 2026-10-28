@@ -20,6 +20,8 @@ function record(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
     version: 2,
     latestVersion: 2,
     status: "DRAFT",
+    // L36-2 (D339) — un devis est OFFICIEL par défaut ; un test de brouillon le surcharge.
+    isOfficial: true,
     eventDate: "2026-12-05",
     guests: 150,
     basePriceCents: 18_000_000,
@@ -160,5 +162,40 @@ describe("algiersToday — la date d'émission est celle d'Alger (UTC+1, D48)", 
   it("à 23 h 30 UTC il est déjà le lendemain à Alger : le fuseau n'est pas celui du serveur", () => {
     expect(algiersToday(new Date("2026-10-05T23:30:00Z"))).toBe("2026-10-06");
     expect(algiersToday(new Date("2026-10-05T22:59:00Z"))).toBe("2026-10-05");
+  });
+});
+
+describe("⛔ L36-2 (D339) — le document d'un BROUILLON : il s'imprime, avec son filigrane et son nom de fichier ; clos, il ne s'imprime pas (D-14)", () => {
+  const BROUILLON = { isOfficial: false, reference: "BROUILLON-2026-0003-0014 v2" } as const;
+
+  it("⛔ un brouillon OUVERT s'imprime : le rendu reçoit un HTML qui porte le filigrane ; un devis officiel, aucun", async () => {
+    const brouillon = monde(record(BROUILLON));
+    await brouillon.service.render(OWNER, ID, "fr");
+    expect(brouillon.render.mock.calls[0]![0]).toContain('class="filigrane"');
+    const officiel = monde(record());
+    await officiel.service.render(OWNER, ID, "fr");
+    expect(officiel.render.mock.calls[0]![0]).not.toContain("filigrane");
+  });
+
+  it("⛔ le nom du fichier d'un brouillon SE DÉRIVE de sa référence stockée : `BROUILLON-2026-0003-0014_fr_v2.pdf` (le préfixe de la référence, jamais `DEVIS`)", async () => {
+    const m = monde(record(BROUILLON));
+    const rendu = await m.service.render(OWNER, ID, "fr");
+    expect(rendu.filename).toBe("BROUILLON-2026-0003-0014_fr_v2.pdf");
+    expect((await monde(record(BROUILLON)).service.render(OWNER, ID, "ar")).filename).toBe("BROUILLON-2026-0003-0014_ar_v2.pdf");
+  });
+
+  it("⛔ D-14 — un brouillon ANNULÉ est refusé comme tout devis clos (409 `QUOTE_STATUS_CONFLICT`, le statut RÉEL) : l'état officiel n'ouvre rien", async () => {
+    const m = monde(record({ ...BROUILLON, status: "CANCELLED" }));
+    const erreur = await refus(m.service.render(OWNER, ID, "fr"));
+    expect(erreur).toBeInstanceOf(ConflictException);
+    expect((erreur as ConflictException).getResponse()).toMatchObject({ code: QuoteErrorCode.QUOTE_STATUS_CONFLICT, status: "CANCELLED" });
+    expect(m.render).not.toHaveBeenCalled();
+  });
+
+  it("⛔ une ancienne version d'un brouillon est refusée comme toute ancienne version (`QUOTE_VERSION_NOT_ACTIVE`, `latestVersion`)", async () => {
+    const m = monde(record({ ...BROUILLON, version: 1, latestVersion: 2 }));
+    const erreur = await refus(m.service.render(OWNER, ID, "fr"));
+    expect(erreur).toBeInstanceOf(ConflictException);
+    expect((erreur as ConflictException).getResponse()).toMatchObject({ code: QuoteErrorCode.QUOTE_VERSION_NOT_ACTIVE, latestVersion: 2 });
   });
 });

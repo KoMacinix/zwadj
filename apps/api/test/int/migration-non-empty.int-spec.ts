@@ -1069,3 +1069,158 @@ describe("⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une
     expect(await sql(`SELECT 1 FROM pg_constraint WHERE conname = 'bookings_contact_reachable' AND conrelid = 'visit_bookings'::regclass`)).toHaveLength(0);
   });
 });
+
+describe("⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE", () => {
+  const NOM_L36_2 = "quote_unofficial_draft";
+  let derniere = "";
+  const DEVIS = {
+    brouillon: "018f0000-0000-7000-8000-000000004301",
+    brouillonRemis: "018f0000-0000-7000-8000-000000004302",
+    envoye: "018f0000-0000-7000-8000-000000004303",
+    accepte: "018f0000-0000-7000-8000-000000004304",
+    decline: "018f0000-0000-7000-8000-000000004305",
+    annule: "018f0000-0000-7000-8000-000000004306",
+    remplace: "018f0000-0000-7000-8000-000000004307",
+    avecFiche: "018f0000-0000-7000-8000-000000004308"
+  } as const;
+  const RESERVATION_LIEE = "018f0000-0000-7000-8000-000000004311";
+  const RESERVATION_LIBRE = "018f0000-0000-7000-8000-000000004312";
+  /** Les colonnes que la migration ne doit pas toucher — TOUTES celles que la CHECK ou le déclencheur lisent, plus l'identité du devis. */
+  const colonnesDuDevis = `SELECT id, status, version, chain_id, total_cents, deposit_cents, reference_year, reference_number, sent_via, sent_at, accepted_at,
+                                  client_record_id::text AS client_record_id, client_name_ar, client_name_latin FROM quotes ORDER BY id`;
+  const colonnesDeLaReservation = `SELECT id, venue_id, quote_id, status, guests, total_cents, deposit_cents, contact_first_name, contact_phone FROM bookings ORDER BY id`;
+  /** Un devis DRAFT sans rien d'autre (tête de sa propre chaîne) ; l'état voulu s'écrit ensuite par UN `UPDATE` — la CHECK `quotes_sent_at_coherent` juge une ligne entière, pas une colonne. */
+  const devis = (id: string, rang: number) =>
+    sql(
+      `INSERT INTO quotes (id, venue_id, status, version, chain_id, event_date, guests, base_price_cents, services_total_cents, total_cents, deposit_cents, lines, reference_year, reference_number)
+       SELECT $1::uuid, v.id, 'DRAFT', 1, $1::uuid, current_date + $2::int, 100, 150000000, 0, 150000000, 45000000, '[]'::jsonb, 2026, $2::int FROM venues v`,
+      [id, rang]
+    );
+
+  it("prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de huit devis dans CHAQUE état (hérités compris), d'une fiche, et de deux réservations (l'une rattachée à un devis)", async () => {
+    await recreerBase();
+    const toutes = migrationsOrdonnees();
+    const rang = toutes.findIndex((m) => m.replace(/^\d+_/u, "") === NOM_L36_2);
+    expect(rang, "la migration du lot L36-2 existe").toBeGreaterThanOrEqual(0);
+    derniere = toutes[rang]!;
+    await appliquerMigrations(toutes.slice(0, rang));
+
+    await sql(`INSERT INTO wilayas (id, code, name_fr, name_ar) VALUES (uuidv7(), 16, 'Alger', 'الجزائر')`);
+    await sql(`INSERT INTO cities (id, wilaya_id, name_fr, name_ar, lat, lng) SELECT uuidv7(), id, 'Hydra', 'حيدرة', 36.7, 3.0 FROM wilayas`);
+    await sql(
+      `INSERT INTO users (id, email, password_hash, role, status, email_verified_at, locale, created_at, updated_at)
+       VALUES (uuidv7(), 'p@example.dz', '$argon2id$fake', 'PRO', 'ACTIVE', now(), 'fr', now(), now())`
+    );
+    await sql(`INSERT INTO pro_profiles (id, user_id, business_name, phone, created_at, updated_at) SELECT uuidv7(), id, 'P', '+213550000001', now(), now() FROM users`);
+    await sql(
+      `INSERT INTO venues (id, owner_id, city_id, slug, name_fr, name_ar, capacity_max, base_price_cents, publication_status, created_at, updated_at)
+       SELECT uuidv7(), p.id, c.id, 's', 'S', 'ق', 200, 100, 'PUBLISHED', now(), now() FROM pro_profiles p CROSS JOIN cities c LIMIT 1`
+    );
+    await sql(
+      `INSERT INTO pro_client_records (id, pro_profile_id, phone, name_latin, created_at, updated_at)
+       SELECT '018f0000-0000-7000-8000-000000004321'::uuid, p.id, '+213550000011', 'Amina Bensalem', now(), now() FROM pro_profiles p`
+    );
+    await devis(DEVIS.brouillon, 1);
+    await devis(DEVIS.brouillonRemis, 2);
+    await sql(`UPDATE quotes SET sent_via = 'PRINT', sent_at = now() WHERE id = $1::uuid`, [DEVIS.brouillonRemis]);
+    await devis(DEVIS.envoye, 3);
+    await sql(`UPDATE quotes SET status = 'SENT', sent_via = 'IN_PERSON', sent_at = now() WHERE id = $1::uuid`, [DEVIS.envoye]);
+    await devis(DEVIS.accepte, 4);
+    await sql(`UPDATE quotes SET status = 'ACCEPTED', sent_via = 'PRINT', sent_at = now(), accepted_at = now() WHERE id = $1::uuid`, [DEVIS.accepte]);
+    await devis(DEVIS.decline, 5);
+    await sql(`UPDATE quotes SET status = 'DECLINED', sent_at = now() WHERE id = $1::uuid`, [DEVIS.decline]);
+    await devis(DEVIS.annule, 6);
+    await sql(`UPDATE quotes SET status = 'CANCELLED' WHERE id = $1::uuid`, [DEVIS.annule]);
+    await devis(DEVIS.remplace, 7);
+    await sql(`UPDATE quotes SET status = 'SUPERSEDED', sent_via = 'SMS', sent_at = now() WHERE id = $1::uuid`, [DEVIS.remplace]);
+    await devis(DEVIS.avecFiche, 8);
+    await sql(`UPDATE quotes SET client_record_id = '018f0000-0000-7000-8000-000000004321', client_name_ar = 'آمنة بن سالم', client_name_latin = 'Amina Bensalem' WHERE id = $1::uuid`, [DEVIS.avecFiche]);
+    const reservation = (id: string, jour: number, quoteId: string | null) =>
+      sql(
+        `INSERT INTO bookings (id, venue_id, quote_id, source, status, payment_method, event_date, starts_at, ends_at, guests,
+                               base_price_cents, services_total_cents, total_cents, deposit_cents,
+                               contact_first_name, contact_last_name, contact_phone, contact_email, created_at, updated_at)
+         SELECT $1::uuid, v.id, $3::uuid, 'WALK_IN', 'PENDING', 'CASH', current_date + $2::int, (current_date + $2::int)::timestamptz,
+                (current_date + $2::int)::timestamptz + interval '6 hours', 100, 150000000, 0, 150000000, 45000000,
+                'Amina', 'Bensalem', '+213550000011', NULL, now(), now() FROM venues v LIMIT 1`,
+        [id, jour, quoteId]
+      );
+    await reservation(RESERVATION_LIEE, 50, DEVIS.envoye);
+    await reservation(RESERVATION_LIBRE, 51, null);
+    expect(await sql<{ n: string }>(`SELECT count(*)::text AS n FROM quotes`), "sans devis semés, la migration s'appliquerait sur du vide").toEqual([{ n: "8" }]);
+    expect(await sql<{ n: string }>(`SELECT count(*)::text AS n FROM bookings`)).toEqual([{ n: "2" }]);
+    // Garde-fou : la migration du lot N'EST PAS encore appliquée — la colonne n'existe pas, le déclencheur non plus.
+    expect(await sql(`SELECT 1 FROM information_schema.columns WHERE table_name = 'quotes' AND column_name = 'is_official'`), "la colonne existe déjà").toHaveLength(0);
+    expect(await sql(`SELECT 1 FROM pg_trigger WHERE tgname = 'bookings_quote_must_be_official'`), "le déclencheur existe déjà").toHaveLength(0);
+  });
+
+  it("⛔ la migration passe sur la base NON VIDE : les huit devis et les deux réservations la traversent INTACTS, ligne à ligne, et CHAQUE devis existant est OFFICIEL", async () => {
+    const devisAvant = await sql(colonnesDuDevis);
+    const reservationsAvant = await sql(colonnesDeLaReservation);
+    expect(devisAvant, "le semis du test précédent a disparu").toHaveLength(8);
+    expect(reservationsAvant).toHaveLength(2);
+    await appliquerMigrations([derniere]);
+    expect(await sql(colonnesDuDevis), "les devis ont bougé").toEqual(devisAvant);
+    expect(await sql(colonnesDeLaReservation), "les réservations ont bougé").toEqual(reservationsAvant);
+    const drapeaux = await sql<{ id: string; is_official: boolean }>(`SELECT id, is_official FROM quotes ORDER BY id`);
+    expect(drapeaux.map((d) => d.is_official), "aucune donnée n'est réécrite : tout devis d'avant est officiel").toEqual(Array(8).fill(true));
+  });
+
+  it("⛔ les garanties que la migration pose (D186) : la colonne est un booléen OBLIGATOIRE de défaut `true`, la CHECK porte les sept colonnes sous son nom, le déclencheur est actif sur INSERT et UPDATE OF quote_id", async () => {
+    const col = await sql<{ data_type: string; is_nullable: string; column_default: string }>(
+      `SELECT data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'quotes' AND column_name = 'is_official'`
+    );
+    expect(col).toEqual([{ data_type: "boolean", is_nullable: "NO", column_default: "true" }]);
+    const ck = await sql<{ def: string }>(`SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint WHERE conname = 'quotes_unofficial_inert' AND conrelid = 'quotes'::regclass`);
+    expect(ck).toHaveLength(1);
+    for (const morceau of ["is_official", "sent_via IS NULL", "sent_at IS NULL", "accepted_at IS NULL", "client_record_id IS NULL", "client_name_ar IS NULL", "client_name_latin IS NULL", "DRAFT", "CANCELLED"]) {
+      expect(ck[0]!.def, morceau).toContain(morceau);
+    }
+    const dec = await sql<{ def: string; enabled: string }>(
+      `SELECT pg_get_triggerdef(oid) AS def, tgenabled AS enabled FROM pg_trigger WHERE tgname = 'bookings_quote_must_be_official' AND tgrelid = 'bookings'::regclass AND NOT tgisinternal`
+    );
+    expect(dec).toHaveLength(1);
+    expect(dec[0]!.enabled, "le déclencheur est actif").toBe("O");
+    expect(dec[0]!.def).toContain("BEFORE INSERT OR UPDATE OF quote_id ON");
+    expect(dec[0]!.def).toContain("FOR EACH ROW");
+  });
+
+  it("⛔ après la migration : un devis neuf peut être un BROUILLON ; ce qu'un brouillon ne peut pas porter est REFUSÉ (23514) — et les devis HÉRITÉS qui porteraient ces états n'ont pas été touchés", async () => {
+    // un devis hérité qui porte un canal / un statut hérité / une fiche ne peut PAS être rendu non officiel : la CHECK le refuse
+    for (const id of [DEVIS.brouillonRemis, DEVIS.envoye, DEVIS.accepte, DEVIS.decline, DEVIS.remplace, DEVIS.avecFiche]) {
+      await expect(sql(`UPDATE quotes SET is_official = false WHERE id = $1::uuid`, [id]), id).rejects.toThrow(/quotes_unofficial_inert/);
+    }
+    // un devis inerte (DRAFT ou CANCELLED, sans canal ni client) PEUT l'être
+    await sql(`UPDATE quotes SET is_official = false WHERE id = $1::uuid`, [DEVIS.brouillon]);
+    expect(await sql(`SELECT is_official FROM quotes WHERE id = $1::uuid`, [DEVIS.brouillon])).toEqual([{ is_official: false }]);
+    // et ce brouillon, désormais non officiel, ne peut plus rien porter
+    await expect(sql(`UPDATE quotes SET sent_via = 'PRINT', sent_at = now() WHERE id = $1::uuid`, [DEVIS.brouillon])).rejects.toThrow(/quotes_unofficial_inert/);
+    await expect(sql(`UPDATE quotes SET client_name_latin = 'Amina' WHERE id = $1::uuid`, [DEVIS.brouillon])).rejects.toThrow(/quotes_unofficial_inert/);
+  });
+
+  it("⚠ LIMITE ÉCRITE (cadrage D339, 2.1) : la base n'interdit PAS `true → false` d'un devis INERTE, même rattaché à une réservation — aucun code n'écrit ce sens (le fermer est une entrée de backlog)", async () => {
+    await sql(`UPDATE quotes SET is_official = false WHERE id = $1::uuid`, [DEVIS.annule]);
+    expect(await sql(`SELECT is_official FROM quotes WHERE id = $1::uuid`, [DEVIS.annule])).toEqual([{ is_official: false }]);
+    await sql(`UPDATE quotes SET is_official = true WHERE id = $1::uuid`, [DEVIS.annule]);
+  });
+
+  it("⛔ après la migration, le déclencheur : les deux réservations existantes sont intactes ; rattacher une réservation à un BROUILLON est refusé à l'INSERT et à l'UPDATE de `quote_id` (R-4), sans rien écrire", async () => {
+    await expect(sql(`UPDATE bookings SET quote_id = $1::uuid WHERE id = $2::uuid`, [DEVIS.brouillon, RESERVATION_LIBRE])).rejects.toThrow(/devis non officiel/);
+    expect(await sql(`SELECT quote_id FROM bookings WHERE id = $1::uuid`, [RESERVATION_LIBRE]), "la réservation n'a pas bougé").toEqual([{ quote_id: null }]);
+    await expect(
+      sql(
+        `INSERT INTO bookings (id, venue_id, quote_id, source, status, payment_method, event_date, starts_at, ends_at, guests,
+                               base_price_cents, services_total_cents, total_cents, deposit_cents,
+                               contact_first_name, contact_last_name, contact_phone, contact_email, created_at, updated_at)
+         SELECT uuidv7(), v.id, $1::uuid, 'WALK_IN', 'PENDING', 'CASH', current_date + 60, (current_date + 60)::timestamptz,
+                (current_date + 60)::timestamptz + interval '6 hours', 100, 150000000, 0, 150000000, 45000000,
+                'Amina', 'Bensalem', '+213550000011', NULL, now(), now() FROM venues v LIMIT 1`,
+        [DEVIS.brouillon]
+      )
+    ).rejects.toThrow(/devis non officiel/);
+    expect(await sql<{ n: string }>(`SELECT count(*)::text AS n FROM bookings`)).toEqual([{ n: "2" }]);
+    // ce que le déclencheur laisse passer : un UPDATE d'une AUTRE colonne d'une réservation déjà rattachée à un devis officiel
+    await sql(`UPDATE bookings SET guests = 120 WHERE id = $1::uuid`, [RESERVATION_LIEE]);
+    expect(await sql(`SELECT guests FROM bookings WHERE id = $1::uuid`, [RESERVATION_LIEE])).toEqual([{ guests: 120 }]);
+  });
+});

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 // ⚠ CE FICHIER VIT DANS L'API, PAS DANS `packages/types` — même raison que `phone.spec.ts` et `contact.spec.ts` : `packages/types` n'a pas de lanceur de tests,
 // et un test qui ne tourne pas est pire que pas de test.
-import { QUOTE_DOCUMENT_LOCALES, formatQuoteReference, quoteDocumentFilename } from "@zwadj/types";
+import { QUOTE_DOCUMENT_LOCALES, QUOTE_REFERENCE_PREFIX, formatQuoteReference, quoteDocumentFilename } from "@zwadj/types";
 
 // ══ Rang 39 (D333, L35-3) — LA RÉFÉRENCE D'UN DEVIS ET LE NOM DE SON FICHIER : UNE formule, que le serveur et l'écran partagent ═════════════════════════
 // R3 (ratifiée par Ko le 11/10/2026) : « Les deux numéros ont 4 chiffres au moins, plus au-delà de 9 999. — Référence (application et PDF) :
@@ -104,6 +104,75 @@ describe("quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la ré
     ["moins de quatre chiffres", "DEVIS-2026-1-89 v1"],
     ["un nom de fichier injecté", "DEVIS-2026-0001-0089 v1/../../x"]
   ])("⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : %s", (_nom, reference) => {
+    expect(() => quoteDocumentFilename({ reference }, "fr")).toThrow(TypeError);
+  });
+});
+
+// ══ L36-2 (D339) — LA RÉFÉRENCE D'UN BROUILLON : `BROUILLON-…`, MÊME numéro, MÊME formule (DR4 de D336 ; cadrage D338, § 3) ═══════════════════════════════════════════════
+// « référence BROUILLON-AAAA-SSSS-NNNN, filigrane sur chaque page et préfixe du nom de fichier ; promotion = même ligne, même numéro ». L'exemple de la consigne est l'AUTORITÉ
+// de ce bloc, comme celui de R3 l'est du précédent ; le reste se dérive des préfixes de l'autorité (`QUOTE_REFERENCE_PREFIX`).
+
+describe("formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet", () => {
+  const parties = { year: 2026, venueNumber: 1, quoteNumber: 89, version: 1 };
+
+  it("⛔ l'exemple de la consigne : `BROUILLON-2026-0001-0089 v1` ; le défaut (`official` omis) reste `DEVIS-2026-0001-0089 v1`", () => {
+    expect(formatQuoteReference({ ...parties, official: false })).toBe("BROUILLON-2026-0001-0089 v1");
+    expect(formatQuoteReference(parties)).toBe("DEVIS-2026-0001-0089 v1");
+    expect(formatQuoteReference({ ...parties, official: true })).toBe("DEVIS-2026-0001-0089 v1");
+  });
+
+  it("⛔ SEUL le préfixe change : la fin (année, numéros, version) d'un brouillon et d'un devis officiel du même numéro sont identiques — c'est ce qui fait que la promotion garde le numéro", () => {
+    for (const version of [1, 2, 12]) {
+      const brouillon = formatQuoteReference({ year: 2027, venueNumber: 7, quoteNumber: 12, version, official: false });
+      const officiel = formatQuoteReference({ year: 2027, venueNumber: 7, quoteNumber: 12, version });
+      expect(brouillon.startsWith(`${QUOTE_REFERENCE_PREFIX.DRAFT}-`)).toBe(true);
+      expect(officiel.startsWith(`${QUOTE_REFERENCE_PREFIX.OFFICIAL}-`)).toBe(true);
+      expect(brouillon.slice(QUOTE_REFERENCE_PREFIX.DRAFT.length)).toBe(officiel.slice(QUOTE_REFERENCE_PREFIX.OFFICIAL.length));
+    }
+  });
+
+  it("⚠ les deux préfixes viennent de l'AUTORITÉ et ne se confondent pas", () => {
+    expect(QUOTE_REFERENCE_PREFIX).toEqual({ OFFICIAL: "DEVIS", DRAFT: "BROUILLON" });
+    expect(QUOTE_REFERENCE_PREFIX.DRAFT).not.toBe(QUOTE_REFERENCE_PREFIX.OFFICIAL);
+  });
+
+  it("⛔ un brouillon LÈVE, lui aussi, sur une partie qui n'est pas un entier ≥ 1 (la formule est UNE)", () => {
+    expect(() => formatQuoteReference({ ...parties, official: false, quoteNumber: 0 })).toThrow(RangeError);
+    expect(() => formatQuoteReference({ ...parties, official: false, year: 1999 })).toThrow(RangeError);
+  });
+});
+
+describe("quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence", () => {
+  it("⛔ `BROUILLON-2026-0001-0089_fr_v1.pdf` et `_ar_` : le préfixe de la référence, JAMAIS `BROUILLON_DEVIS-…` ni `DEVIS-…`", () => {
+    const brouillon = { reference: formatQuoteReference({ year: 2026, venueNumber: 1, quoteNumber: 89, version: 1, official: false }) };
+    expect(quoteDocumentFilename(brouillon, "fr")).toBe("BROUILLON-2026-0001-0089_fr_v1.pdf");
+    expect(quoteDocumentFilename(brouillon, "ar")).toBe("BROUILLON-2026-0001-0089_ar_v1.pdf");
+  });
+
+  it("⛔ pour CHAQUE langue de l'autorité et chaque version : base de la référence + langue + version, construits SANS la fonction testée", () => {
+    for (const locale of QUOTE_DOCUMENT_LOCALES) {
+      for (const version of [1, 2, 12]) {
+        const reference = formatQuoteReference({ year: 2026, venueNumber: 3, quoteNumber: 14, version, official: false });
+        const [base, v] = reference.split(" ");
+        expect(quoteDocumentFilename({ reference }, locale)).toBe(`${base}_${locale}_${v}.pdf`);
+      }
+    }
+  });
+
+  it("⚠ aucun caractère à risque dans le nom d'un brouillon", () => {
+    for (const locale of QUOTE_DOCUMENT_LOCALES) {
+      expect(quoteDocumentFilename({ reference: "BROUILLON-2026-0001-0089 v1" }, locale)).toMatch(/^[A-Za-z0-9._-]+$/);
+    }
+  });
+
+  it.each([
+    ["un préfixe inconnu", "FACTURE-2026-0001-0089 v1"],
+    ["le préfixe en minuscules", "brouillon-2026-0001-0089 v1"],
+    ["les deux préfixes à la suite", "DEVIS-BROUILLON-2026-0001-0089 v1"],
+    ["un brouillon sans version", "BROUILLON-2026-0001-0089"],
+    ["un brouillon à moins de quatre chiffres", "BROUILLON-2026-1-89 v1"],
+    ["un nom de fichier injecté derrière un brouillon", "BROUILLON-2026-0001-0089 v1/../../x"]
+  ])("⛔ une chaîne qui n'est pas une référence LÈVE, brouillon compris : %s", (_nom, reference) => {
     expect(() => quoteDocumentFilename({ reference }, "fr")).toThrow(TypeError);
   });
 });

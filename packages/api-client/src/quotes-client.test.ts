@@ -79,3 +79,34 @@ describe("quotes.completeClientName — K-5, la boîte de langue complète la co
     expect(appels[0]?.path).toBe("/quotes/a%2Fb%3Fc%3Dd/client-name");
   });
 });
+
+describe("quotes.promote — L36-2 (D339) : rendre officiel un brouillon (`POST /quotes/:id/promote`)", () => {
+  it("POSTE la fiche et les noms sur `/quotes/:id/promote` — le chemin est écrit EN TOUTES LETTRES (D182), le corps est exactement celui de l'appelant", async () => {
+    const { request, appels } = double({ id: "q1" });
+    const corps = { clientRecordId: "55555555-5555-4555-8555-555555555555", clientNameLatin: "Amina Bensalem", clientNameAr: "آمنة بن سالم" };
+    await createQuotesClient(request).promote("44444444-4444-4444-8444-444444444444", corps);
+    expect(appels).toEqual([{ path: "/quotes/44444444-4444-4444-8444-444444444444/promote", init: { method: "POST", body: corps } }]);
+  });
+
+  it("l'identifiant est ENCODÉ : il ne peut pas changer la route appelée", async () => {
+    const { request, appels } = double({ id: "q1" });
+    await createQuotesClient(request).promote("a/b?c=d", { clientRecordId: "55555555-5555-4555-8555-555555555555", clientNameLatin: "Amina" });
+    expect(appels[0]?.path).toBe("/quotes/a%2Fb%3Fc%3Dd/promote");
+  });
+
+  it("rend le devis tel que la primitive l'a lu (le DTO du SERVEUR : référence `DEVIS-…`), sans le retoucher", async () => {
+    const devis = { id: "q1", isOfficial: true, reference: "DEVIS-2026-0001-0001 v1" };
+    const { request } = double(devis);
+    const rendu = await createQuotesClient(request).promote("66666666-6666-4666-8666-666666666666", { clientRecordId: "55555555-5555-4555-8555-555555555555", clientNameLatin: "Amina" });
+    expect(rendu).toBe(devis);
+  });
+});
+
+describe("quotes.create — le champ `isOfficial: false` d'un brouillon voyage dans le corps, tel quel", () => {
+  it("le corps d'une création de brouillon est celui de l'appelant (le client n'ajoute, ne retire et ne recalcule rien)", async () => {
+    const { request, appels } = double({ id: "q1" });
+    const corps = { eventDate: "2027-09-18", slotTemplateId: "77777777-7777-4777-8777-777777777777", guests: 120, isOfficial: false as const };
+    await createQuotesClient(request).create("88888888-8888-4888-8888-888888888888", corps);
+    expect(appels).toEqual([{ path: "/venues/88888888-8888-4888-8888-888888888888/quotes", init: { method: "POST", body: corps } }]);
+  });
+});

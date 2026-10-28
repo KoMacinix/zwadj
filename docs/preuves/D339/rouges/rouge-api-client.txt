@@ -1,0 +1,69 @@
+# D339 — rouge « client » : --filter @zwadj/api-client exec vitest run src/quotes-client.test.ts
+# HEAD : d5c5ab731526fcba5a4f7d2511f323d6df2dfe1a   début : 2026-10-28T09:47:13   code de sortie : 1
+# (sortie brute, couleurs coupées)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ❯ src/quotes-client.test.ts (11 tests | 3 failed) 11ms
+   ✓ quotes.document — la route du PDF > ⛔ lit la réponse en FICHIER (`responseType: "blob"`) : un PDF lu comme du JSON planterait à la première lecture 2ms
+   ✓ quotes.document — la route du PDF > GET : ni méthode ni corps — une lecture, rien d'écrit 0ms
+   ✓ quotes.document — la route du PDF > la langue de repli voyage dans l'adresse, pour les DEUX langues : `?locale=fr` et `?locale=ar` 1ms
+   ✓ quotes.document — la route du PDF > l'identifiant est ENCODÉ : un identifiant qui porte « / » ou « ? » ne peut pas changer la route appelée 0ms
+   ✓ quotes.document — la route du PDF > rend le fichier tel que la primitive l'a lu : le MÊME Blob, sans le copier ni le retoucher 0ms
+   ✓ quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > POSTE la langue et le nom sur `/quotes/:id/client-name` 0ms
+   ✓ quotes.completeClientName — K-5, la boîte de langue complète la copie du nom (rang 41, D336) > l'identifiant est ENCODÉ 0ms
+   × quotes.promote — L36-2 (D339) : rendre officiel un brouillon (`POST /quotes/:id/promote`) > POSTE la fiche et les noms sur `/quotes/:id/promote` — le chemin est écrit EN TOUTES LETTRES (D182), le corps est exactement celui de l'appelant 4ms
+     → (0 , createQuotesClient)(...).promote is not a function
+   × quotes.promote — L36-2 (D339) : rendre officiel un brouillon (`POST /quotes/:id/promote`) > l'identifiant est ENCODÉ : il ne peut pas changer la route appelée 1ms
+     → (0 , createQuotesClient)(...).promote is not a function
+   × quotes.promote — L36-2 (D339) : rendre officiel un brouillon (`POST /quotes/:id/promote`) > rend le devis tel que la primitive l'a lu (le DTO du SERVEUR : référence `DEVIS-…`), sans le retoucher 0ms
+     → (0 , createQuotesClient)(...).promote is not a function
+   ✓ quotes.create — le champ `isOfficial: false` d'un brouillon voyage dans le corps, tel quel > le corps d'une création de brouillon est celui de l'appelant (le client n'ajoute, ne retire et ne recalcule rien) 0ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 8 passed (11)
+   Start at  09:47:15
+   Duration  646ms (transform 53ms, setup 0ms, collect 58ms, tests 11ms, environment 0ms, prepare 204ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/quotes-client.test.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/quotes-client.test.ts > quotes.promote — L36-2 (D339) : rendre officiel un brouillon (`POST /quotes/:id/promote`) > POSTE la fiche et les noms sur `/quotes/:id/promote` — le chemin est écrit EN TOUTES LETTRES (D182), le corps est exactement celui de l'appelant
+TypeError: (0 , createQuotesClient)(...).promote is not a function
+ ❯ src/quotes-client.test.ts:87:39
+     85|     const { request, appels } = double({ id: "q1" });
+     86|     const corps = { clientRecordId: "55555555-5555-4555-8555-555555555…
+     87|     await createQuotesClient(request).promote("44444444-4444-4444-8444…
+       |                                       ^
+     88|     expect(appels).toEqual([{ path: "/quotes/44444444-4444-4444-8444-4…
+     89|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/quotes-client.test.ts > quotes.promote — L36-2 (D339) : rendre officiel un brouillon (`POST /quotes/:id/promote`) > l'identifiant est ENCODÉ : il ne peut pas changer la route appelée
+TypeError: (0 , createQuotesClient)(...).promote is not a function
+ ❯ src/quotes-client.test.ts:93:39
+     91|   it("l'identifiant est ENCODÉ : il ne peut pas changer la route appel…
+     92|     const { request, appels } = double({ id: "q1" });
+     93|     await createQuotesClient(request).promote("a/b?c=d", { clientRecor…
+       |                                       ^
+     94|     expect(appels[0]?.path).toBe("/quotes/a%2Fb%3Fc%3Dd/promote");
+     95|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/quotes-client.test.ts > quotes.promote — L36-2 (D339) : rendre officiel un brouillon (`POST /quotes/:id/promote`) > rend le devis tel que la primitive l'a lu (le DTO du SERVEUR : référence `DEVIS-…`), sans le retoucher
+TypeError: (0 , createQuotesClient)(...).promote is not a function
+ ❯ src/quotes-client.test.ts:100:53
+     98|     const devis = { id: "q1", isOfficial: true, reference: "DEVIS-2026…
+     99|     const { request } = double(devis);
+    100|     const rendu = await createQuotesClient(request).promote("66666666-…
+       |                                                     ^
+    101|     expect(rendu).toBe(devis);
+    102|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

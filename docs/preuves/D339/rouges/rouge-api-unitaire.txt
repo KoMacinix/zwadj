@@ -1,0 +1,2080 @@
+# D339 — rouge « api » : --filter @zwadj/api exec vitest run src/common/quote-reference.spec.ts src/common/quote-draft.spec.ts src/venues/quotes.service.spec.ts src/venues/quote-store.prisma.spec.ts src/venues/quote-transitions.spec.ts src/documents/quote-document.spec.ts src/documents/quote-document.service.spec.ts
+# HEAD : d5c5ab731526fcba5a4f7d2511f323d6df2dfe1a   début : 2026-10-28T09:49:39   code de sortie : 1
+# (sortie brute, couleurs coupées)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/quote-reference.spec.ts (39 tests | 5 failed) 44ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ l'exemple de R3 : année 2026, salle 1, devis 89, version 1 ⇒ `DEVIS-2026-0001-0089 v1` 3ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ la salle et le devis ne se confondent pas : deux valeurs DIFFÉRENTES (une fixture symétrique cacherait une interversion) 1ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 1 ⇒ 0001 (pour la salle ET pour le devis) 1ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9 ⇒ 0009 (pour la salle ET pour le devis) 0ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10 ⇒ 0010 (pour la salle ET pour le devis) 1ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 999 ⇒ 0999 (pour la salle ET pour le devis) 0ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 9999 ⇒ 9999 (pour la salle ET pour le devis) 0ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 10000 ⇒ 10000 (pour la salle ET pour le devis) 0ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ quatre chiffres AU MOINS, jamais de troncature : 123456 ⇒ 123456 (pour la salle ET pour le devis) 1ms
+   ✓ formatQuoteReference — la forme de R3 > ⚠ la version s'écrit telle quelle, sans remplissage : `v1`, `v2`, `v12` 1ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ une révision garde l'année et les deux numéros : SEULE la version change 2ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : NaN LÈVE, pour chacune des quatre parties 1ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : zéro LÈVE, pour chacune des quatre parties 0ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : négatif LÈVE, pour chacune des quatre parties 1ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : décimal LÈVE, pour chacune des quatre parties 0ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ une référence FAUSSE ne s'imprime pas : infini LÈVE, pour chacune des quatre parties 0ms
+   ✓ formatQuoteReference — la forme de R3 > ⛔ une année hors de la plage de la base (2000 à 9999) LÈVE aussi — la base la refuserait par son `CHECK` 1ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ l'exemple de R3 : `DEVIS-2026-0001-0089_fr_v1.pdf`, et `_ar_` pour l'arabe 1ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ pour CHAQUE langue de l'autorité (`QUOTE_DOCUMENT_LOCALES`) et chaque version : base de la référence + langue + version, construits SANS la fonction testée 1ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ la langue et la version ne se confondent pas dans le nom : `_fr_v2` ≠ `_ar_v2` ≠ `_fr_v1` 0ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⚠ aucun caractère à risque dans un nom de fichier : lettres latines, chiffres, `-`, `_` et le point de l'extension 2ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : l'ancienne forme (huit caractères de l'identifiant) 0ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : une chaîne vide 0ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : sans version 0ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : moins de quatre chiffres 0ms
+   ✓ quoteDocumentFilename — K-7 : le nom du fichier SE DÉRIVE de la référence > ⛔ une chaîne qui n'est pas une référence LÈVE, elle ne devient pas un nom de fichier : un nom de fichier injecté 0ms
+   × formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet > ⛔ l'exemple de la consigne : `BROUILLON-2026-0001-0089 v1` ; le défaut (`official` omis) reste `DEVIS-2026-0001-0089 v1` 14ms
+     → expected 'DEVIS-2026-0001-0089 v1' to be 'BROUILLON-2026-0001-0089 v1' // Object.is equality
+   × formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet > ⛔ SEUL le préfixe change : la fin (année, numéros, version) d'un brouillon et d'un devis officiel du même numéro sont identiques — c'est ce qui fait que la promotion garde le numéro 1ms
+     → Cannot read properties of undefined (reading 'DRAFT')
+   × formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet > ⚠ les deux préfixes viennent de l'AUTORITÉ et ne se confondent pas 4ms
+     → expected undefined to deeply equal { OFFICIAL: 'DEVIS', …(1) }
+   ✓ formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet > ⛔ un brouillon LÈVE, lui aussi, sur une partie qui n'est pas un entier ≥ 1 (la formule est UNE) 0ms
+   × quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ `BROUILLON-2026-0001-0089_fr_v1.pdf` et `_ar_` : le préfixe de la référence, JAMAIS `BROUILLON_DEVIS-…` ni `DEVIS-…` 1ms
+     → expected 'DEVIS-2026-0001-0089_fr_v1.pdf' to be 'BROUILLON-2026-0001-0089_fr_v1.pdf' // Object.is equality
+   ✓ quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ pour CHAQUE langue de l'autorité et chaque version : base de la référence + langue + version, construits SANS la fonction testée 0ms
+   × quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⚠ aucun caractère à risque dans le nom d'un brouillon 2ms
+     → « BROUILLON-2026-0001-0089 v1 » n'est pas une référence de devis
+   ✓ quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ une chaîne qui n'est pas une référence LÈVE, brouillon compris : un préfixe inconnu 0ms
+   ✓ quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ une chaîne qui n'est pas une référence LÈVE, brouillon compris : le préfixe en minuscules 0ms
+   ✓ quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ une chaîne qui n'est pas une référence LÈVE, brouillon compris : les deux préfixes à la suite 0ms
+   ✓ quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ une chaîne qui n'est pas une référence LÈVE, brouillon compris : un brouillon sans version 0ms
+   ✓ quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ une chaîne qui n'est pas une référence LÈVE, brouillon compris : un brouillon à moins de quatre chiffres 0ms
+   ✓ quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ une chaîne qui n'est pas une référence LÈVE, brouillon compris : un nom de fichier injecté derrière un brouillon 0ms
+ ❯ src/venues/quote-transitions.spec.ts (16 tests | 2 failed) 30ms
+   ✓ Tableau des transitions — la matrice COMPLÈTE > « deliver » n'accepte que ses statuts source, et les accepte tous 2ms
+   ✓ Tableau des transitions — la matrice COMPLÈTE > « revise » n'accepte que ses statuts source, et les accepte tous 1ms
+   ✓ Tableau des transitions — la matrice COMPLÈTE > « convert » n'accepte que ses statuts source, et les accepte tous 0ms
+   ✓ Tableau des transitions — la matrice COMPLÈTE > « cancel » n'accepte que ses statuts source, et les accepte tous 0ms
+   ✓ Tableau des transitions — la matrice COMPLÈTE > un statut INCONNU est refusé partout 0ms
+   ✓ Tableau des transitions — la matrice COMPLÈTE > le refus rapporte le statut RÉEL 1ms
+   ✓ Tableau des transitions — la matrice COMPLÈTE > ⚠ une chaîne CLOSE ne se rouvre pas : ni un refus, ni une acceptation 0ms
+   ✓ Statuts hérités — LUS, jamais ÉCRITS > ⚠ AUCUNE commande ne prend un statut hérité pour CIBLE 1ms
+   ✓ Statuts hérités — LUS, jamais ÉCRITS > `SENT` reste une SOURCE légale — un devis hérité se manipule encore 1ms
+   ✓ Ce qui écrit un statut, et ce qui n'en écrit pas > ⚠ SEUL `cancel` écrit un statut — les trois autres n'y touchent pas 1ms
+   ✓ Ce qui écrit un statut, et ce qui n'en écrit pas > `quoteWrittenStatus` LÈVE pour une commande qui n'écrit rien 1ms
+   ✓ Le tableau est l'unique autorité > chaque commande déclarée a une entrée 0ms
+   ✓ Le tableau est l'unique autorité > ⚠ les statuts ouverts VIENNENT de `@zwadj/types`, ils ne sont pas recopiés 0ms
+   ✓ Le tableau est l'unique autorité > tout statut source déclaré appartient à l'énumération 1ms
+   × ⛔ L36-2 (D339) — la commande `promote` : rendre officiel un brouillon, sans toucher au statut > elle EXISTE, et n'écrit AUCUN statut (le drapeau `is_official` n'est pas un statut) 15ms
+     → expected [ Array(4) ] to include 'promote'
+   × ⛔ L36-2 (D339) — la commande `promote` : rendre officiel un brouillon, sans toucher au statut > ⚠ sa source est LA référence de l'autorité (`QUOTE_OPEN_STATUSES`), pas une cinquième copie : un brouillon est DRAFT ou CANCELLED (la CHECK), donc la source EFFECTIVE est DRAFT 2ms
+     → Cannot read properties of undefined (reading 'from')
+ ❯ src/common/quote-draft.spec.ts (32 tests | 21 failed) 92ms
+   ✓ ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-13 — OMIS, le devis est officiel et se crée comme avant : sans fiche, ou avec fiche et nom 4ms
+   × ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ `isOfficial: false` SEUL : un brouillon, accepté 11ms
+     → expected false to be true // Object.is equality
+   × ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-13 — `isOfficial: true` est REFUSÉ : il n'y a qu'une façon de dire « officiel » (omettre le champ) 4ms
+     → expected [ ':quote.validation.unknownKey' ] to deeply equal [ Array(1) ]
+   ✓ ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⚠ la chaîne « false » n'est PAS le booléen `false` : refusé 0ms
+   ✓ ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⚠ null n'est PAS le booléen `false` : refusé 0ms
+   ✓ ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⚠ zéro n'est PAS le booléen `false` : refusé 0ms
+   ✓ ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⚠ la chaîne vide n'est PAS le booléen `false` : refusé 0ms
+   × ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-16 — un brouillon AVEC une fiche : UN seul refus, `draftHasNoClient`, sur `isOfficial` (pas aussi « nom exigé ») 2ms
+     → expected [ Array(2) ] to deeply equal [ Array(1) ]
+   × ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-16 — un brouillon AVEC un nom latin, ou arabe, ou les deux, mais SANS fiche : UN seul refus, `draftHasNoClient` (pas aussi « fiche exigée ») 2ms
+     → {"clientNameLatin":"Amina Bensalem"}: expected [ Array(2) ] to deeply equal [ Array(1) ]
+   × ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-16 — un brouillon avec une fiche ET un nom : le même refus (la règle de Q2 ne dépend pas de la validité du reste) 1ms
+     → expected [ ':quote.validation.unknownKey' ] to deeply equal [ Array(1) ]
+   ✓ ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⚠ `.strict()` inchangé : une clé inconnue reste refusée, brouillon ou non 0ms
+   × ⛔ D-15 (R-1) — `quoteReviseSchema` n'est PLUS `quoteCreateSchema` : la révision ne choisit pas le drapeau > ⛔ les deux schémas sont DEUX objets (sans quoi `isOfficial` passerait par la révision) 21ms
+     → expected ZodEffects{ …(26) } not to be ZodEffects{ …(26) } // Object.is equality
+   ✓ ⛔ D-15 (R-1) — `quoteReviseSchema` n'est PLUS `quoteCreateSchema` : la révision ne choisit pas le drapeau > ⛔ `isOfficial: false` est une clé INCONNUE de la révision : 400 `unknownKey` 1ms
+   ✓ ⛔ D-15 (R-1) — `quoteReviseSchema` n'est PLUS `quoteCreateSchema` : la révision ne choisit pas le drapeau > ⛔ `isOfficial: true` est une clé INCONNUE de la révision : 400 `unknownKey` 0ms
+   ✓ ⛔ D-15 (R-1) — `quoteReviseSchema` n'est PLUS `quoteCreateSchema` : la révision ne choisit pas le drapeau > le corps d'une révision reste celui d'une création (une version est un devis ENTIER) : sans fiche, ou avec fiche et nom 2ms
+   ✓ ⛔ D-15 (R-1) — `quoteReviseSchema` n'est PLUS `quoteCreateSchema` : la révision ne choisit pas le drapeau > ⛔ les DEUX règles fiche ↔ nom de rang 41 tiennent aussi pour la révision (une seule fonction pour les deux schémas) 1ms
+   × ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > la forme de K-4 : une fiche et un nom — accepté, le nom rogné 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > les deux écritures du nom ensemble : acceptées 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > ⛔ SANS fiche : refusé, et le refus nomme la fiche (la fiche est obligatoire, à la différence d'une création) 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > ⛔ SANS aucun nom : refusé, et le refus nomme le nom 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > un identifiant de fiche qui n'est pas un UUID, un nom hors de la règle partagée : refusés 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > ⛔ `.strict()` : la promotion ne reçoit NI `isOfficial`, NI date, NI invités, NI aucune autre clé — elle ne change aucun montant 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × Les codes d'erreur et le DTO > ⛔ trois codes NEUFS, chacun sous son propre nom (un code partagé empêcherait l'écran de distinguer les refus) 3ms
+     → expected undefined to be 'QUOTE_NOT_OFFICIAL' // Object.is equality
+   ✓ Les codes d'erreur et le DTO > `QuoteDTO.isOfficial` est un booléen OBLIGATOIRE (le compilateur le garde : ce `satisfies` ne compile pas sans lui) 0ms
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.errors.notOfficial 9ms
+     → FR : quote.errors.notOfficial: expected 'undefined' to be 'string' // Object.is equality
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.errors.alreadyOfficial 6ms
+     → FR : quote.errors.alreadyOfficial: expected 'undefined' to be 'string' // Object.is equality
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.errors.draftHasNoClient 4ms
+     → FR : quote.errors.draftHasNoClient: expected 'undefined' to be 'string' // Object.is equality
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.validation.isOfficialInvalid 4ms
+     → FR : quote.validation.isOfficialInvalid: expected 'undefined' to be 'string' // Object.is equality
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.validation.draftHasNoClient 3ms
+     → FR : quote.validation.draftHasNoClient: expected 'undefined' to be 'string' // Object.is equality
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.document.draft 3ms
+     → FR : quote.document.draft: expected 'undefined' to be 'string' // Object.is equality
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > ⛔ chaque message d'issue des trois schémas se résout dans les deux catalogues (un 400 sans phrase serait un 400 muet) 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > ⚠ le mot du filigrane est celui de la consigne : « BROUILLON » en français, « مسودة » en arabe 2ms
+     → expected undefined to be 'BROUILLON' // Object.is equality
+ ❯ src/documents/quote-document.service.spec.ts (17 tests | 2 failed) 43ms
+   ✓ QuoteDocumentService — la propriété et le 404 indistinct (décision 4) > un AUTRE pro est refusé en 404, sans rien rendre : un identifiant de devis deviné ne livre pas les données d'un client 8ms
+   ✓ QuoteDocumentService — la propriété et le 404 indistinct (décision 4) > un devis inexistant et un identifiant mal formé rendent la MÊME réponse — ce dernier sans même lire la base 1ms
+   ✓ QuoteDocumentService — les refus métier (décision 1) > une version qui n'est plus la dernière : 409 QUOTE_VERSION_NOT_ACTIVE, `latestVersion` dans la réponse, RIEN n'est rendu 1ms
+   ✓ QuoteDocumentService — les refus métier (décision 1) > une affaire perdue : 409 QUOTE_STATUS_CONFLICT avec le statut RÉEL, rien n'est rendu 1ms
+   ✓ QuoteDocumentService — les refus métier (décision 1) > ⛔ un cas doublement fautif — ancienne version ET annulée — se refuse comme « pas la version active » 0ms
+   ✓ QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rend le PDF de la version active ; le HTML confié au moteur porte la valeur STOCKÉE (et pas 30 % du total) ; le nom du fichier est sans donnée personnelle 8ms
+   ✓ QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 (K-7, F-15) : le nom du fichier porte la langue DEMANDÉE — `_fr_` pour le français, `_ar_` pour l'arabe — et la version de la référence stockée 3ms
+   ✓ QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 39 : une référence stockée qui n'en est pas une LÈVE — le moteur de rendu n'est pas appelé, aucun fichier ne porte un nom faux 1ms
+   ✓ QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > rang 38 (décision A de Ko) : la langue du PDF est la langue DEMANDÉE — le pro la choisit à chaque téléchargement, dans les deux sens 3ms
+   ✓ QuoteDocumentService — la valeur stockée, la langue (décisions 1 et 7) > ⛔ rang 38 (P-15) : un devis qui porte une copie du nom en ARABE ne change pas la langue — le port de lecture n'a aucune langue de client, et le résultat n'a plus de `branch` 2ms
+   ✓ QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > le moteur qui n'a pas rendu : 503 QUOTE_DOCUMENT_UNAVAILABLE — et JAMAIS un 409 1ms
+   ✓ QuoteDocumentService — une PANNE n'est pas un refus (décision 3) > toute AUTRE erreur du moteur remonte telle quelle : le service ne la déguise pas en panne attendue 1ms
+   ✓ algiersToday — la date d'émission est celle d'Alger (UTC+1, D48) > à 23 h 30 UTC il est déjà le lendemain à Alger : le fuseau n'est pas celui du serveur 0ms
+   × ⛔ L36-2 (D339) — le document d'un BROUILLON : il s'imprime, avec son filigrane et son nom de fichier ; clos, il ne s'imprime pas (D-14) > ⛔ un brouillon OUVERT s'imprime : le rendu reçoit un HTML qui porte le filigrane ; un devis officiel, aucun 9ms
+     → « BROUILLON-2026-0003-0014 v2 » n'est pas une référence de devis
+   × ⛔ L36-2 (D339) — le document d'un BROUILLON : il s'imprime, avec son filigrane et son nom de fichier ; clos, il ne s'imprime pas (D-14) > ⛔ le nom du fichier d'un brouillon SE DÉRIVE de sa référence stockée : `BROUILLON-2026-0003-0014_fr_v2.pdf` (le préfixe de la référence, jamais `DEVIS`) 2ms
+     → « BROUILLON-2026-0003-0014 v2 » n'est pas une référence de devis
+   ✓ ⛔ L36-2 (D339) — le document d'un BROUILLON : il s'imprime, avec son filigrane et son nom de fichier ; clos, il ne s'imprime pas (D-14) > ⛔ D-14 — un brouillon ANNULÉ est refusé comme tout devis clos (409 `QUOTE_STATUS_CONFLICT`, le statut RÉEL) : l'état officiel n'ouvre rien 0ms
+   ✓ ⛔ L36-2 (D339) — le document d'un BROUILLON : il s'imprime, avec son filigrane et son nom de fichier ; clos, il ne s'imprime pas (D-14) > ⛔ une ancienne version d'un brouillon est refusée comme toute ancienne version (`QUOTE_VERSION_NOT_ACTIVE`, `latestVersion`) 0ms
+ ❯ src/documents/quote-document.spec.ts (61 tests | 7 failed) 116ms
+   ✓ le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > chaque montant imprimé est celui du devis, mis en forme par `formatDZD` — l'attendu vient du formateur, pas d'un texte tapé à la main 8ms
+   ✓ le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ l'acompte imprimé est la valeur stockée, et PAS 30 % du total : un recalcul serait rougi ici 2ms
+   ✓ le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > modifier la valeur STOCKÉE change le montant imprimé — le seul moyen légitime de le faire changer (précision de Ko) 1ms
+   ✓ le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le total imprimé est la valeur STOCKÉE, et PAS base + prestations : une remise ou un arrondi stockés ne se recomposent pas (la fixture d'origine valait pile base + prestations) 1ms
+   ✓ le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > ⛔ le montant d'une LIGNE est la valeur stockée, et PAS prix unitaire × quantité : le total de ligne de la fixture n'est pas le produit (P-4) 2ms
+   ✓ le modèle imprime la valeur STOCKÉE — précision de Ko, règle des montants (décision 1) > en arabe les montants sont ceux de l'ÉCRAN du Pro (`formatDZD(cents)` sans locale) — pas une seconde mise en forme 1ms
+   ✓ rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > sans prestation : AUCUN tableau, et une phrase dit qu'aucune prestation n'est choisie — dans les deux langues 1ms
+   ✓ rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > des prestations TOUTES « fixe » : un tableau à DEUX colonnes (prestation, montant) — pas de colonne de détail, ni vide ni autre 2ms
+   ✓ rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une prestation qui a un détail : un tableau à TROIS colonnes, l'en-tête « Détail » en français comme en arabe 1ms
+   ✓ rang 38 — le tableau des prestations n'a AUCUNE colonne vide (P-1, constat 1 de Ko) > une ligne de tableau par prestation choisie — ni plus, ni moins 1ms
+   ✓ rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « par invité » imprime la quantité stockée (le nombre d'invités) 1ms
+   ✓ rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à l'unité » imprime la quantité — y compris 1 : la règle suit le TYPE, pas la valeur 1ms
+   ✓ rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « fixe » n'imprime RIEN, même quand sa quantité stockée n'est pas 1 (la règle suit le type) 1ms
+   ✓ rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > « à paliers » imprime le NOM du palier, pas une quantité (la quantité stockée d'un palier est 1) 1ms
+   ✓ rang 38 — DB-9 : le détail suit le TYPE de tarification, jamais la valeur (P-2) > les quatre types ensemble : une colonne de détail, chaque ligne dit ce que DB-9 veut 1ms
+   ✓ rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > français : le nom FRANÇAIS du palier ; arabe : le nom ARABE — l'autre langue ne s'imprime pas 1ms
+   ✓ rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > ⛔ une ligne « à paliers » SANS nom de palier stocké LÈVE : elle ne s'imprime pas à moitié 0ms
+   ✓ rang 38 — le nom du palier est celui de la LIGNE stockée, dans la langue du document (P-3, P-7) > un nom de palier HOSTILE devient du texte, jamais du balisage 1ms
+   ✓ rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > une section titrée « Récapitulatif », APRÈS le tableau, qui porte les quatre lignes dans l'ordre location, prestations, total, acompte 2ms
+   ✓ rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les libellés du récapitulatif ne sont PAS dans le tableau des prestations (deux blocs, pas un seul mélangé) 1ms
+   ✓ rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > sans prestation, le récapitulatif est là quand même — la location, un total de prestations à zéro, le total, l'acompte (les valeurs stockées) 1ms
+   ✓ rang 38 — le récapitulatif est un bloc SÉPARÉ, aligné (P-5, constat 1 de Ko) > les montants et les libellés s'alignent par des propriétés LOGIQUES : aucune propriété physique (left, right, margin-left…) dans la feuille du document 1ms
+   ✓ le modèle — langue, sens, contenu > français : `lang=fr`, `dir=ltr`, noms et libellés français 1ms
+   ✓ le modèle — langue, sens, contenu > arabe : `lang=ar`, `dir=rtl`, noms et libellés arabes — tirés des catalogues, jamais écrits dans le modèle 3ms
+   ✓ le modèle — langue, sens, contenu > le créneau s'imprime par `formatSlotRange` (24 h), et un devis sans créneau ou sans copie du nom imprime « — » sans casser 3ms
+   ✓ le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT — latine en français, arabe en arabe 1ms
+   ✓ le modèle — langue, sens, contenu > ⛔ rang 41 (S-52) : une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli 2ms
+   ✓ le modèle — langue, sens, contenu > ⛔ rang 41 : une copie faite d'espaces s'imprime « — », jamais une cellule blanche 1ms
+   ✓ le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée est la référence STOCKÉE du devis (année, salle, devis, version) — dans le titre du document ET dans l'en-tête, dans les deux langues 1ms
+   ✓ le modèle — langue, sens, contenu > ⛔ rang 39 : la référence imprimée change AVEC la ligne stockée — rien n'est recalculé depuis l'identifiant 1ms
+   ✓ le modèle — langue, sens, contenu > ⛔ rang 39 (F-16) : la référence est isolée de GAUCHE À DROITE dans l'en-tête, même dans une page arabe — sinon l'algorithme bidirectionnel inverse ses groupes de chiffres 2ms
+   ✓ le modèle — langue, sens, contenu > ⛔ rang 39 : une référence hostile devient du TEXTE (le champ vient d'une ligne de base, pas d'une saisie, mais l'échappement ne dépend pas de la confiance) 1ms
+   ✓ le modèle — langue, sens, contenu > la date de l'événement est en toutes lettres, dans la langue du document ; elle ne dérive pas d'un fuseau (date civile) 2ms
+   ✓ ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom de la salle, du client, du créneau et des prestations deviennent du TEXTE, jamais du balisage 2ms
+   ✓ ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le document ne contient QU'UN `<style>` et AUCUN `<script>` de son propre fait 1ms
+   ✓ ⛔ tout ce qui est inséré est ÉCHAPPÉ (décision 3) — mesuré de bout en bout sur des noms hostiles > le nom du fichier ne porte AUCUNE donnée personnelle, même quand les noms sont hostiles 0ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > les quatre types de tarification sont lus avec leur type, leur quantité et le nom du palier (FR et AR) tels que stockés 2ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > un type de tarification INCONNU ou ABSENT lève 0ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > ⛔ une ligne « à paliers » dont le nom du palier n'est pas stocké (FR ou AR) lève 0ms
+   ✓ rang 38 — la lecture des lignes STOCKÉES : une forme inattendue LÈVE, elle ne s'imprime pas à moitié (P-3) > tout le reste de la forme garde sa garde (un non-tableau, une quantité non entière, un total absent) 0ms
+   ✓ les polices viennent du DÉPÔT (décisions 3 et 5) > quatre faces — deux sous-ensembles et deux graisses — en `data:`, chacune avec sa plage `unicode-range` 2ms
+   ✓ les polices viennent du DÉPÔT (décisions 3 et 5) > le CSS des polices est inséré tel quel dans le `<style>` du document (une police absente retomberait sur le système) 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > aucun n'importe le moteur de prix, l'acompte, le chiffrage des prestations, ni le port d'ÉCRITURE des devis 2ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > l'adaptateur Prisma ne fait QUE lire : ni create, ni update, ni delete, ni upsert, ni transaction, ni SQL brut 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > le modèle ne contient aucune multiplication ni division : il met en forme, il ne calcule pas 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-3) : le nom du palier est lu sur la LIGNE — le modèle, la politique, le service et le port n'importent ni Prisma ni un catalogue (seul l'adaptateur de lecture parle à la base) 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 (F-10) : l'ancienne référence (les huit premiers caractères de l'identifiant) a disparu du document, de son service, de sa source ET du contrat partagé 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 39 : le modèle IMPRIME la référence lue (`record.reference`) — il n'en bâtit pas une, il n'importe pas la formule 0ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 38 (P-15) : la branche « langue du client » est RETIRÉE sans code mort — plus de `chooseDocumentLocale`, de `DocumentLocaleBranch`, de `branch`, ni de `users.locale` lue 1ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 41 (D336, M-7, S-52) : la source ne lit plus le COMPTE du client — ni relation `client`, ni `firstName`/`lastName` ; elle lit la COPIE du devis 0ms
+   ✓ ⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du document (décision 4) — garde de SOURCE > ⛔ rang 41 : le modèle choisit la copie par l'AUTORITÉ de la correspondance langue → copie (`QUOTE_CLIENT_NAME_FIELD`), jamais par une seconde règle 0ms
+   × ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ un devis OFFICIEL n'a AUCUN filigrane : ni élément, ni règle de style, ni la couleur — le mot « filigrane » n'est nulle part dans la page 7ms
+     → Cannot read properties of undefined (reading 'join')
+   × ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ un brouillon (fr) : EXACTEMENT UN élément filigrane, caché des lecteurs d'écran, qui porte le mot du CATALOGUE de sa langue 4ms
+     → expected +0 to be 1 // Object.is equality
+   × ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ un brouillon (ar) : EXACTEMENT UN élément filigrane, caché des lecteurs d'écran, qui porte le mot du CATALOGUE de sa langue 1ms
+     → expected +0 to be 1 // Object.is equality
+   × ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ le style du filigrane : `position: fixed` — la SEULE position qui se répète sur chaque page imprimée (D338, mesuré) ; `absolute` n'en pose qu'un 1ms
+     → la règle `.filigrane` est dans le document: expected null not to be null
+   × ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ la couleur du filigrane est celle de l'AUTORITÉ exportée et n'est posée QUE par lui : une seule occurrence dans la page (sans cela, le décompte par page du PDF ne mesurerait plus le filigrane) 1ms
+     → Cannot read properties of undefined (reading 'join')
+   ✓ ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ Q2 — le champ « Client » d'un brouillon affiche « — », dans les DEUX langues : un brouillon ne porte ni fiche ni nom 1ms
+   ✓ ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ la référence imprimée est celle LUE (`BROUILLON-…`), dans le sous-titre ET dans le titre du document — le modèle n'en bâtit pas une 1ms
+   ✓ ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⚠ le filigrane ne CHANGE RIEN d'autre : les montants, le tableau et le récapitulatif d'un brouillon sont ceux du même devis officiel (le papier remis au client EST le brouillon) 1ms
+   × ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ garde de SOURCE : le modèle pose le filigrane SANS importer la formule de référence, et sans aucun calcul (il met en forme) 19ms
+     → expected '\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\…' to contain 'DRAFT_WATERMARK_RGB'
+   × ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ garde de SOURCE : l'adaptateur de lecture LIT le drapeau et bâtit la référence AVEC le préfixe du devis — le modèle imprime ce qu'il reçoit 7ms
+     → expected '\r\r\nimport { Injectable } from "@ne…' to contain 'isOfficial: true'
+ ❯ src/venues/quote-store.prisma.spec.ts (58 tests | 27 failed) 98ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui 7ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 … RETURNING` — JAMAIS « lire le plus grand puis ajouter 1 » (R3) 2ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, l'année PASSÉE, le numéro RENDU par le compteur, et la date de création PASSÉE 2ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⚠ les montants passent TELS QUELS 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un échec de l'insertion APRÈS le compteur : la création échoue, et le compteur n'a été touché que DANS la transaction (qui l'annule) 3ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un compteur qui ne rend PAS exactement une ligne entière positive : la création LÈVE, aucun numéro n'est inventé 3ms
+   × PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ `FOR UPDATE` puis la plus haute version (L36-2 : son numéro ET son drapeau, en une lecture) puis `create` — dans cet ordre, ou la garde ne sert à rien 5ms
+     → tx.quote.aggregate is not a function
+   × PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà 1ms
+     → tx.quote.aggregate is not a function
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ la tête introuvable (le verrou ne rend aucune ligne) : la révision LÈVE, rien n'est créé 1ms
+   × PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⚠ la version suivante est MAX + 1, et le parent est désigné 1ms
+     → tx.quote.aggregate is not a function
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le statut admis est dans le WHERE de l'UPDATE, pas lu avant 2ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ refus : le statut est RELU DANS la transaction et remonte dans le résultat 1ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le port NE LÈVE PAS sur un refus — il rend 2ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⚠ `marquerRemis` écrit le canal et la date, JAMAIS un statut 1ms
+   ✓ PrismaQuoteStore — les lectures > ⚠ l'entonnoir ne compte QUE les devis portant un canal (D162) 1ms
+   ✓ PrismaQuoteStore — les lectures > ⛔ `trouverDuPro` : le devis, sa salle VIVANTE, et à MOI — en un seul WHERE 1ms
+   ✓ PrismaQuoteStore — les lectures > `salleAppartientAu` rend un booléen, jamais la ligne 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ UNE SEULE REQUÊTE : la demande ET ses lignes, imbriquées 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ les montants sont ÉCRITS TELS QUELS — l'adaptateur ne calcule rien 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ AUCUNE ÉCRITURE SUR LE DEVIS — il attend l'acompte 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 + une demande EXISTE pour ce devis → `dejaConverti` 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 SANS demande pour ce devis → L'ERREUR REPART 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ toute AUTRE erreur remonte sans relecture 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus` 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ le TÉMOIN INDÉPENDANT survit dans `quotes.int-spec.ts` — littéral EXIGÉ 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⚠ et l'EXPLICATION est restée dans les deux fichiers 1ms
+   ✓ ⛔ D336 — `ficheDuPro` : la fiche se lit par la RELATION au pro (D149), jamais par un identifiant qui « ressemble » > le WHERE traverse `proProfile: { userId }` et ne sélectionne que ce que la copie du nom exige — rien du compte lié 1ms
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture 25ms
+     → expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,11 +4,10 @@
+        "clientNameAr": "آمنة",
+      },
+      "where": {
+        "clientNameAr": null,
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+-       "isOfficial": true,
+        "venue": {
+          "deletedAt": null,
+          "owner": {
+            "userId": "u-1",
+          },
+
+
+Number of calls: 1
+
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ refus (rien n'a été écrit) : le port REND `{ ok: false }`, sans lire ni écrire la fiche 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée 2ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — la politique dit NON (l'autre écriture diffère) : la fiche n'est PAS écrite, la copie l'est 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > un devis SANS fiche : aucune lecture ni écriture de fiche 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche 2ms
+   × ⛔ D339 — `creerTeteDeChaine` : la tête naît avec le drapeau que le SERVICE décide > ⛔ `officiel: false` ⇒ la ligne écrite porte `isOfficial: false` ; `officiel: true` ⇒ `true` — le même compteur, la même transaction 3ms
+     → officiel = false: expected undefined to be false // Object.is equality
+   × ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la séquence : le verrou, PUIS la plus haute version (son numéro ET son drapeau), PUIS l'écriture 1ms
+     → tx.quote.aggregate is not a function
+   × ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est un BROUILLON : la révision en est un — la ligne écrite porte `isOfficial: false`, et le port rend `{ ok: true }` 1ms
+     → tx.quote.aggregate is not a function
+   × ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est OFFICIELLE : la révision l'est — le drapeau de la version PARENTE n'est pas lu (la v1 brouillon d'une chaîne dont la v2 est promue) 1ms
+     → tx.quote.aggregate is not a function
+   × ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et une fiche : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 1ms
+     → promise rejected "TypeError: tx.quote.aggregate is not a fu…" instead of resolving
+   × ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom arabe : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 1ms
+     → promise rejected "TypeError: tx.quote.aggregate is not a fu…" instead of resolving
+   × ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom latin : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 1ms
+     → promise rejected "TypeError: tx.quote.aggregate is not a fu…" instead of resolving
+   × ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ `marquerRemis` : `isOfficial: true` est dans le WHERE du check-and-set, EN PLUS du statut — jamais lu avant 2ms
+     → expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,11 +4,10 @@
+        "sentAt": 2027-02-01T10:00:00.000Z,
+        "sentVia": "PRINT",
+      },
+      "where": {
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+-       "isOfficial": true,
+        "status": {
+          "in": [
+            "DRAFT",
+            "SENT",
+          ],
+
+
+Number of calls: 1
+
+   × ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus : le statut ET le drapeau sont RELUS DANS la transaction 1ms
+     → expected "spy" to be called with arguments: [ { …(2) } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -1,9 +1,8 @@
+  [
+    {
+      "select": {
+-       "isOfficial": true,
+        "status": true,
+      },
+      "where": {
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+      },
+
+
+Number of calls: 1
+
+   × ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus d'un brouillon OUVERT : `nonOfficiel` 2ms
+     → expected { ok: false, …(2) } to deeply equal { ok: false, raison: 'nonOfficiel' }
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond `statutConflit` (le devis est clos), pas `nonOfficiel` 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ D-12 — `changerStatut` (l'annulation) N'EXIGE PAS l'état officiel : le WHERE est exactement le statut — annuler un brouillon reste permis 1ms
+   × ⛔ D-17 — K-5 : le WHERE de la copie exige un devis OFFICIEL (un brouillon n'a pas de nom) > ⛔ `isOfficial: true` est dans le compare-and-set, avec la copie NULLE et le devis du pro 1ms
+     → expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,11 +4,10 @@
+        "clientNameLatin": "Amina",
+      },
+      "where": {
+        "clientNameLatin": null,
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+-       "isOfficial": true,
+        "venue": {
+          "deletedAt": null,
+          "owner": {
+            "userId": "u-1",
+          },
+
+
+Number of calls: 1
+
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la séquence : la propriété, le VERROU, la plus haute version, l'écriture conditionnelle, l'AUDIT, la relecture — UNE transaction, rien hors d'elle 1ms
+     → store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la propriété se lit par la RELATION au pro (D149) : `venue: { deletedAt: null, owner: { userId } }`, jamais un identifiant qui « ressemble » 1ms
+     → store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-5 — l'écriture est un CHECK-AND-SET : `isOfficial: false` ET le statut admis dans le WHERE, et la fiche et les deux copies ÉCRITES AVEC le drapeau 1ms
+     → store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 — la ligne d'audit : l'action, l'entité, l'identifiant, l'ACTEUR et son RÔLE, le drapeau et l'identifiant de fiche — et RIEN d'autre 1ms
+     → store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 (S-81) — la ligne d'audit ne porte AUCUN nom, AUCUN numéro, AUCUN e-mail : on cherche leurs valeurs dans tout ce qui est écrit 1ms
+     → store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-6 — la version n'est plus la dernière : le port REND `versionNonActive` (avec la version active), sans écrire NI le devis NI l'audit 1ms
+     → ctx.store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ le devis n'est pas au pro (la propriété ne rend rien) : `introuvable`, et la chaîne n'est ni verrouillée ni lue 1ms
+     → ctx.store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ compte = 0 : le statut et le drapeau sont RELUS dans la transaction ; un devis déjà officiel ⇒ `dejaOfficiel`, SANS ligne d'audit 0ms
+     → ctx.store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ L'ORDRE, sur des cas doublement fautifs : un brouillon ANNULÉ répond `statutConflit` ; un devis OFFICIEL annulé répond `dejaOfficiel` (vrai quel que soit son statut) 1ms
+     → brouillonAnnule.store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ un échec de l'écriture d'audit LÈVE : la promotion ne survit pas à sa propre trace (la transaction l'annule) 1ms
+     → ctx.store.promouvoir is not a function
+   × ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⚠ `promouvoir` ne touche NI le compteur, NI le statut, NI la remise, NI aucun montant : le WHERE et le SET ne nomment que le drapeau, la fiche et les deux copies 0ms
+     → store.promouvoir is not a function
+   × ⛔ D339 — la lecture du cycle de vie rend le drapeau > `QUOTE_SELECT` sélectionne `isOfficial` (sans lui, le DTO ne pourrait pas dire s'il est officiel ni bâtir sa référence) 0ms
+     → expected undefined to be true // Object.is equality
+ ❯ src/venues/quotes.service.spec.ts (47 tests | 17 failed) 56ms
+   ✓ QuotesService — 404 indistincts > id hors motif UUID : 404 SANS toucher le port 5ms
+   ✓ QuotesService — 404 indistincts > le port rend `null` (inexistant / salle supprimée / autre pro) : même 404 1ms
+   ✓ QuotesService — 404 indistincts > salle d'un autre pro : `listForVenue` s'arrête AVANT de lire les devis 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `cancel` refusé : 409 avec le statut RELU, pas un booléen 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `deliver` refusé : même 409, même statut porté 0ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⚠ le statut ADMIS vient de la machine à états, pas du port 2ms
+   ✓ QuotesService.deliver — une remise est RÉPÉTABLE (D160) > ⚠ le devis ne change PAS de statut : seuls le canal et la date sont écrits 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro de la salle, numéro du devis, version — une seule formule (`formatQuoteReference`) 0ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ une révision garde l'année et les deux numéros de sa tête ; SEULE la version change 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ l'ancienne référence (les huit premiers caractères de l'identifiant) a DISPARU 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ la référence rendue par une transition (remise, annulation) est celle du devis, pas une autre 0ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ les QUATRE MONTANTS partent VERBATIM du devis — aucun recalcul 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ `source` est une lecture MÉTIER de la provenance, faite ICI 0ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ le refus du port devient un 409 `QUOTE_ALREADY_CONVERTED`, jamais un 500 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ la garde applicative évite d'écrire pour rien — et rend LE MÊME code 0ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ LE DEVIS NE BOUGE PAS — il attend l'acompte 0ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-11 — la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND, et RIEN n'est chiffré ni écrit 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-6 — une fiche LIÉE et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est chiffré ni écrit 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > la RÉVISION applique la même règle : la fiche d'un autre pro est refusée avant le verrou de chaîne 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > sans fiche, le port des fiches n'est PAS lu (un devis du parcours sans contact reste possible) 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ K-6 — le DTO porte la fiche et les DEUX copies, telles que STOCKÉES 1ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin` 1ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-C3, passée au port (le port ne la réécrit pas) 0ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-7 — le port refuse (la copie est déjà là) : 409 QUOTE_CLIENT_NAME_ALREADY_SET 0ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port 0ms
+   × ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un devis officiel : `isOfficial: true` et `DEVIS-…` (inchangé d'un octet) 9ms
+     → expected undefined to be true // Object.is equality
+   × ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un brouillon : `isOfficial: false` et `BROUILLON-…`, même année, mêmes numéros, même version — bâtie par la MÊME formule 1ms
+     → expected undefined to be false // Object.is equality
+   × ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ dans une même chaîne, la v1 brouillon et la v2 promue portent chacune le préfixe de SA ligne — le numéro est le même 5ms
+     → expected [ 'DEVIS-2026-0007-0089 v1', …(1) ] to deeply equal [ 'BROUILLON-2026-0007-0089 v1', …(1) ]
+   × ⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel > ⛔ le port refuse `nonOfficiel` : 409 QUOTE_NOT_OFFICIAL, le message du catalogue, et aucun statut dans la réponse 4ms
+     → expected 'QUOTE_STATUS_CONFLICT' to be 'QUOTE_NOT_OFFICIAL' // Object.is equality
+   ✓ ⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel > ⛔ le port refuse `statutConflit` : 409 QUOTE_STATUS_CONFLICT avec le statut RELU — deux refus, deux codes, jamais confondus 1ms
+   × ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⛔ un brouillon DRAFT : 409 QUOTE_NOT_OFFICIAL ; ni la salle, ni le créneau ne sont lus, aucune demande n'est écrite 1ms
+     → classe du refus : TypeError: Cannot read properties of undefined (reading 'ok'): expected false to be true // Object.is equality
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond « statut » (le devis est clos — l'information utile), pas « pas officiel » 0ms
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⚠ un devis OFFICIEL se convertit comme avant (la garde ne gêne pas ce qu'elle ne vise pas) 1ms
+   × ⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là » > ⛔ le port refuse ET le devis est un brouillon : 409 QUOTE_DRAFT_HAS_NO_CLIENT (pas « déjà renseigné » — il n'y a rien à compléter sur un brouillon) 1ms
+     → expected 'QUOTE_CLIENT_NAME_ALREADY_SET' to be 'QUOTE_DRAFT_HAS_NO_CLIENT' // Object.is equality
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là » > ⚠ le port refuse, le devis est OFFICIEL : le refus d'avant (copie déjà là) est inchangé ; introuvable : 404 d'abord 1ms
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le succès rend le DTO de la LIGNE que le port renvoie (officielle, `DEVIS-…`, même numéro) — pas un objet bâti avec ce que l'appelant a envoyé 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port reçoit l'ACTEUR (identifiant ET rôle — ils vont dans la ligne d'audit), le devis, les statuts source de la MACHINE À ÉTATS, et la copie décidée par la politique 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ un nom absent de la saisie est NULL dans la copie (jamais une chaîne vide, jamais le nom de la fiche en repli sur une fiche non liée) 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le devis n'est pas au pro (le port le rend `null`) : 404 QUOTE_NOT_FOUND AVANT la fiche, et rien n'est écrit ; un identifiant hors motif : 404 sans toucher le port 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND indistinct, et rien n'est écrit 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est écrit 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « introuvable » : 404 QUOTE_NOT_FOUND 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-5 — le port refuse « déjà officiel » : 409 QUOTE_ALREADY_OFFICIAL, le message du catalogue 1ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-6 — le port refuse « version non active » : 409 QUOTE_VERSION_NOT_ACTIVE PORTANT `latestVersion` (l'écran sait laquelle est active) 0ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « statut » : 409 QUOTE_STATUS_CONFLICT avec le statut RELU (un brouillon annulé est CLOS) 0ms
+     → service.promote is not a function
+   × ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⚠ la promotion ne touche ni la remise, ni le statut, ni la conversion : elle ne change aucun montant 0ms
+     → service.promote is not a function
+   ✓ ⛔ D-15 — `revise` : la fiche d'un autre pro sur une chaîne brouillon reste un 404, décidé AVANT le verrou > ⛔ l'ordre : la fiche (404) est décidée avant l'écriture ; le refus « un brouillon ne porte pas de client » vient du PORT, sous le verrou de la chaîne 0ms
+
+ Test Files  7 failed (7)
+      Tests  81 failed | 189 passed (270)
+   Start at  09:49:41
+   Duration  3.02s (transform 1.28s, setup 0ms, collect 8.53s, tests 478ms, environment 2ms, prepare 3.00s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/quote-reference.spec.ts src/common/quote-draft.spec.ts src/venues/quotes.service.spec.ts src/venues/quote-store.prisma.spec.ts src/venues/quote-transitions.spec.ts src/documents/quote-document.spec.ts src/documents/quote-document.service.spec.ts
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 81 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ `isOfficial: false` SEUL : un brouillon, accepté
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/common/quote-draft.spec.ts:26:23
+     24|   it("⛔ `isOfficial: false` SEUL : un brouillon, accepté", () => {
+     25|     const r = quoteCreateSchema.safeParse({ ...BASE, isOfficial: false…
+     26|     expect(r.success).toBe(true);
+       |                       ^
+     27|     expect(r.success ? r.data.isOfficial : "refusé").toBe(false);
+     28|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-13 — `isOfficial: true` est REFUSÉ : il n'y a qu'une façon de dire « officiel » (omettre le champ)
+AssertionError: expected [ ':quote.validation.unknownKey' ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+  [
+-   "isOfficial:quote.validation.isOfficialInvalid",
++   ":quote.validation.unknownKey",
+  ]
+
+ ❯ src/common/quote-draft.spec.ts:33:22
+     31|     const r = quoteCreateSchema.safeParse({ ...BASE, isOfficial: true …
+     32|     expect(r.success).toBe(false);
+     33|     expect(refus(r)).toEqual(["isOfficial:quote.validation.isOfficialI…
+       |                      ^
+     34|   });
+     35| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-16 — un brouillon AVEC une fiche : UN seul refus, `draftHasNoClient`, sur `isOfficial` (pas aussi « nom exigé »)
+AssertionError: expected [ Array(2) ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+  [
+-   "isOfficial:quote.validation.draftHasNoClient",
++   ":quote.validation.unknownKey",
++   "clientNameLatin:quote.validation.clientNameRequired",
+  ]
+
+ ❯ src/common/quote-draft.spec.ts:43:22
+     41|     const r = quoteCreateSchema.safeParse({ ...BASE, isOfficial: false…
+     42|     expect(r.success).toBe(false);
+     43|     expect(refus(r)).toEqual(["isOfficial:quote.validation.draftHasNoC…
+       |                      ^
+     44|   });
+     45| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-16 — un brouillon AVEC un nom latin, ou arabe, ou les deux, mais SANS fiche : UN seul refus, `draftHasNoClient` (pas aussi « fiche exigée »)
+AssertionError: {"clientNameLatin":"Amina Bensalem"}: expected [ Array(2) ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+  [
+-   "isOfficial:quote.validation.draftHasNoClient",
++   ":quote.validation.unknownKey",
++   "clientRecordId:quote.validation.clientRecordRequired",
+  ]
+
+ ❯ src/common/quote-draft.spec.ts:50:46
+     48|       const r = quoteCreateSchema.safeParse({ ...BASE, isOfficial: fal…
+     49|       expect(r.success, JSON.stringify(noms)).toBe(false);
+     50|       expect(refus(r), JSON.stringify(noms)).toEqual(["isOfficial:quot…
+       |                                              ^
+     51|     }
+     52|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-16 (R-2) — `quoteCreateSchema` : le champ `isOfficial` n'accepte que `false` > ⛔ D-16 — un brouillon avec une fiche ET un nom : le même refus (la règle de Q2 ne dépend pas de la validité du reste)
+AssertionError: expected [ ':quote.validation.unknownKey' ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+  [
+-   "isOfficial:quote.validation.draftHasNoClient",
++   ":quote.validation.unknownKey",
+  ]
+
+ ❯ src/common/quote-draft.spec.ts:56:22
+     54|   it("⛔ D-16 — un brouillon avec une fiche ET un nom : le même refus (…
+     55|     const r = quoteCreateSchema.safeParse({ ...BASE, isOfficial: false…
+     56|     expect(refus(r)).toEqual(["isOfficial:quote.validation.draftHasNoC…
+       |                      ^
+     57|   });
+     58| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-15 (R-1) — `quoteReviseSchema` n'est PLUS `quoteCreateSchema` : la révision ne choisit pas le drapeau > ⛔ les deux schémas sont DEUX objets (sans quoi `isOfficial` passerait par la révision)
+AssertionError: expected ZodEffects{ …(26) } not to be ZodEffects{ …(26) } // Object.is equality
+
+Compared values have no visual difference.
+
+ ❯ src/common/quote-draft.spec.ts:67:35
+     65| describe("⛔ D-15 (R-1) — `quoteReviseSchema` n'est PLUS `quoteCreateSc…
+     66|   it("⛔ les deux schémas sont DEUX objets (sans quoi `isOfficial` pass…
+     67|     expect(quoteReviseSchema).not.toBe(quoteCreateSchema);
+       |                                   ^
+     68|   });
+     69| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > la forme de K-4 : une fiche et un nom — accepté, le nom rogné
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/quote-draft.spec.ts:89:34
+     87| describe("⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, …
+     88|   it("la forme de K-4 : une fiche et un nom — accepté, le nom rogné", …
+     89|     const r = quotePromoteSchema.safeParse({ clientRecordId: FICHE, cl…
+       |                                  ^
+     90|     expect(r.success ? r.data : null).toEqual({ clientRecordId: FICHE,…
+     91|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > les deux écritures du nom ensemble : acceptées
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/quote-draft.spec.ts:94:31
+     92| 
+     93|   it("les deux écritures du nom ensemble : acceptées", () => {
+     94|     expect(quotePromoteSchema.safeParse({ clientRecordId: FICHE, clien…
+       |                               ^
+     95|   });
+     96| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > ⛔ SANS fiche : refusé, et le refus nomme la fiche (la fiche est obligatoire, à la différence d'une création)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/quote-draft.spec.ts:98:34
+     96| 
+     97|   it("⛔ SANS fiche : refusé, et le refus nomme la fiche (la fiche est …
+     98|     const r = quotePromoteSchema.safeParse({ clientNameLatin: "Amina B…
+       |                                  ^
+     99|     expect(r.success).toBe(false);
+    100|     expect(refus(r)).toContain("clientRecordId:quote.validation.client…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > ⛔ SANS aucun nom : refusé, et le refus nomme le nom
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/quote-draft.spec.ts:104:34
+    102| 
+    103|   it("⛔ SANS aucun nom : refusé, et le refus nomme le nom", () => {
+    104|     const r = quotePromoteSchema.safeParse({ clientRecordId: FICHE });
+       |                                  ^
+    105|     expect(r.success).toBe(false);
+    106|     expect(refus(r)).toContain("clientNameLatin:quote.validation.clien…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > un identifiant de fiche qui n'est pas un UUID, un nom hors de la règle partagée : refusés
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/quote-draft.spec.ts:110:37
+    108| 
+    109|   it("un identifiant de fiche qui n'est pas un UUID, un nom hors de la…
+    110|     expect(refus(quotePromoteSchema.safeParse({ clientRecordId: "pas-u…
+       |                                     ^
+    111|     expect(quotePromoteSchema.safeParse({ clientRecordId: FICHE, clien…
+    112|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ D-4 — `quotePromoteSchema` : la fiche et AU MOINS un nom, rien d'autre > ⛔ `.strict()` : la promotion ne reçoit NI `isOfficial`, NI date, NI invités, NI aucune autre clé — elle ne change aucun montant
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/quote-draft.spec.ts:116:36
+    114|   it("⛔ `.strict()` : la promotion ne reçoit NI `isOfficial`, NI date,…
+    115|     for (const extra of [{ isOfficial: true }, { guests: 100 }, { even…
+    116|       const r = quotePromoteSchema.safeParse({ clientRecordId: FICHE, …
+       |                                    ^
+    117|       expect(r.success, JSON.stringify(extra)).toBe(false);
+    118|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > Les codes d'erreur et le DTO > ⛔ trois codes NEUFS, chacun sous son propre nom (un code partagé empêcherait l'écran de distinguer les refus)
+AssertionError: expected undefined to be 'QUOTE_NOT_OFFICIAL' // Object.is equality
+
+- Expected: 
+"QUOTE_NOT_OFFICIAL"
+
++ Received: 
+undefined
+
+ ❯ src/common/quote-draft.spec.ts:124:47
+    122| describe("Les codes d'erreur et le DTO", () => {
+    123|   it("⛔ trois codes NEUFS, chacun sous son propre nom (un code partagé…
+    124|     expect(QuoteErrorCode.QUOTE_NOT_OFFICIAL).toBe("QUOTE_NOT_OFFICIAL…
+       |                                               ^
+    125|     expect(QuoteErrorCode.QUOTE_ALREADY_OFFICIAL).toBe("QUOTE_ALREADY_…
+    126|     expect(QuoteErrorCode.QUOTE_DRAFT_HAS_NO_CLIENT).toBe("QUOTE_DRAFT…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.errors.notOfficial
+AssertionError: FR : quote.errors.notOfficial: expected 'undefined' to be 'string' // Object.is equality
+
+Expected: "string"
+Received: "undefined"
+
+ ❯ src/common/quote-draft.spec.ts:154:38
+    152|     const fr = lire(catalogue("fr"), cle);
+    153|     const ar = lire(catalogue("ar"), cle);
+    154|     expect(typeof fr, `FR : ${cle}`).toBe("string");
+       |                                      ^
+    155|     expect(typeof ar, `AR : ${cle}`).toBe("string");
+    156|     expect((fr as string).trim(), `FR vide : ${cle}`).not.toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.errors.alreadyOfficial
+AssertionError: FR : quote.errors.alreadyOfficial: expected 'undefined' to be 'string' // Object.is equality
+
+Expected: "string"
+Received: "undefined"
+
+ ❯ src/common/quote-draft.spec.ts:154:38
+    152|     const fr = lire(catalogue("fr"), cle);
+    153|     const ar = lire(catalogue("ar"), cle);
+    154|     expect(typeof fr, `FR : ${cle}`).toBe("string");
+       |                                      ^
+    155|     expect(typeof ar, `AR : ${cle}`).toBe("string");
+    156|     expect((fr as string).trim(), `FR vide : ${cle}`).not.toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.errors.draftHasNoClient
+AssertionError: FR : quote.errors.draftHasNoClient: expected 'undefined' to be 'string' // Object.is equality
+
+Expected: "string"
+Received: "undefined"
+
+ ❯ src/common/quote-draft.spec.ts:154:38
+    152|     const fr = lire(catalogue("fr"), cle);
+    153|     const ar = lire(catalogue("ar"), cle);
+    154|     expect(typeof fr, `FR : ${cle}`).toBe("string");
+       |                                      ^
+    155|     expect(typeof ar, `AR : ${cle}`).toBe("string");
+    156|     expect((fr as string).trim(), `FR vide : ${cle}`).not.toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.validation.isOfficialInvalid
+AssertionError: FR : quote.validation.isOfficialInvalid: expected 'undefined' to be 'string' // Object.is equality
+
+Expected: "string"
+Received: "undefined"
+
+ ❯ src/common/quote-draft.spec.ts:154:38
+    152|     const fr = lire(catalogue("fr"), cle);
+    153|     const ar = lire(catalogue("ar"), cle);
+    154|     expect(typeof fr, `FR : ${cle}`).toBe("string");
+       |                                      ^
+    155|     expect(typeof ar, `AR : ${cle}`).toBe("string");
+    156|     expect((fr as string).trim(), `FR vide : ${cle}`).not.toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.validation.draftHasNoClient
+AssertionError: FR : quote.validation.draftHasNoClient: expected 'undefined' to be 'string' // Object.is equality
+
+Expected: "string"
+Received: "undefined"
+
+ ❯ src/common/quote-draft.spec.ts:154:38
+    152|     const fr = lire(catalogue("fr"), cle);
+    153|     const ar = lire(catalogue("ar"), cle);
+    154|     expect(typeof fr, `FR : ${cle}`).toBe("string");
+       |                                      ^
+    155|     expect(typeof ar, `AR : ${cle}`).toBe("string");
+    156|     expect((fr as string).trim(), `FR vide : ${cle}`).not.toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > quote.document.draft
+AssertionError: FR : quote.document.draft: expected 'undefined' to be 'string' // Object.is equality
+
+Expected: "string"
+Received: "undefined"
+
+ ❯ src/common/quote-draft.spec.ts:154:38
+    152|     const fr = lire(catalogue("fr"), cle);
+    153|     const ar = lire(catalogue("ar"), cle);
+    154|     expect(typeof fr, `FR : ${cle}`).toBe("string");
+       |                                      ^
+    155|     expect(typeof ar, `AR : ${cle}`).toBe("string");
+    156|     expect((fr as string).trim(), `FR vide : ${cle}`).not.toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > ⛔ chaque message d'issue des trois schémas se résout dans les deux catalogues (un 400 sans phrase serait un 400 muet)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/quote-draft.spec.ts:171:54
+    169|     ];
+    170|     for (const [schema, corps] of cas) {
+    171|       const r = (schema as typeof quoteCreateSchema).safeParse(corps);
+       |                                                      ^
+    172|       for (const m of refus(r)) issues.add(m.slice(m.indexOf(":") + 1)…
+    173|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/81]⎯
+
+ FAIL  src/common/quote-draft.spec.ts > ⛔ Les messages du lot existent dans les DEUX catalogues, non vides, et ne sont pas le même texte > ⚠ le mot du filigrane est celui de la consigne : « BROUILLON » en français, « مسودة » en arabe
+AssertionError: expected undefined to be 'BROUILLON' // Object.is equality
+
+- Expected: 
+"BROUILLON"
+
++ Received: 
+undefined
+
+ ❯ src/common/quote-draft.spec.ts:182:59
+    180| 
+    181|   it("⚠ le mot du filigrane est celui de la consigne : « BROUILLON » e…
+    182|     expect(lire(catalogue("fr"), "quote.document.draft")).toBe("BROUIL…
+       |                                                           ^
+    183|     expect(lire(catalogue("ar"), "quote.document.draft")).toBe("مسودة"…
+    184|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/81]⎯
+
+ FAIL  src/common/quote-reference.spec.ts > formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet > ⛔ l'exemple de la consigne : `BROUILLON-2026-0001-0089 v1` ; le défaut (`official` omis) reste `DEVIS-2026-0001-0089 v1`
+AssertionError: expected 'DEVIS-2026-0001-0089 v1' to be 'BROUILLON-2026-0001-0089 v1' // Object.is equality
+
+Expected: "BROUILLON-2026-0001-0089 v1"
+Received: "DEVIS-2026-0001-0089 v1"
+
+ ❯ src/common/quote-reference.spec.ts:119:67
+    117| 
+    118|   it("⛔ l'exemple de la consigne : `BROUILLON-2026-0001-0089 v1` ; le …
+    119|     expect(formatQuoteReference({ ...parties, official: false })).toBe…
+       |                                                                   ^
+    120|     expect(formatQuoteReference(parties)).toBe("DEVIS-2026-0001-0089 v…
+    121|     expect(formatQuoteReference({ ...parties, official: true })).toBe(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/81]⎯
+
+ FAIL  src/common/quote-reference.spec.ts > formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet > ⛔ SEUL le préfixe change : la fin (année, numéros, version) d'un brouillon et d'un devis officiel du même numéro sont identiques — c'est ce qui fait que la promotion garde le numéro
+TypeError: Cannot read properties of undefined (reading 'DRAFT')
+ ❯ src/common/quote-reference.spec.ts:128:61
+    126|       const brouillon = formatQuoteReference({ year: 2027, venueNumber…
+    127|       const officiel = formatQuoteReference({ year: 2027, venueNumber:…
+    128|       expect(brouillon.startsWith(`${QUOTE_REFERENCE_PREFIX.DRAFT}-`))…
+       |                                                             ^
+    129|       expect(officiel.startsWith(`${QUOTE_REFERENCE_PREFIX.OFFICIAL}-`…
+    130|       expect(brouillon.slice(QUOTE_REFERENCE_PREFIX.DRAFT.length)).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/81]⎯
+
+ FAIL  src/common/quote-reference.spec.ts > formatQuoteReference — un brouillon porte le préfixe BROUILLON, un devis officiel ne change pas d'un octet > ⚠ les deux préfixes viennent de l'AUTORITÉ et ne se confondent pas
+AssertionError: expected undefined to deeply equal { OFFICIAL: 'DEVIS', …(1) }
+
+- Expected: 
+{
+  "DRAFT": "BROUILLON",
+  "OFFICIAL": "DEVIS",
+}
+
++ Received: 
+undefined
+
+ ❯ src/common/quote-reference.spec.ts:135:36
+    133| 
+    134|   it("⚠ les deux préfixes viennent de l'AUTORITÉ et ne se confondent p…
+    135|     expect(QUOTE_REFERENCE_PREFIX).toEqual({ OFFICIAL: "DEVIS", DRAFT:…
+       |                                    ^
+    136|     expect(QUOTE_REFERENCE_PREFIX.DRAFT).not.toBe(QUOTE_REFERENCE_PREF…
+    137|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/81]⎯
+
+ FAIL  src/common/quote-reference.spec.ts > quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⛔ `BROUILLON-2026-0001-0089_fr_v1.pdf` et `_ar_` : le préfixe de la référence, JAMAIS `BROUILLON_DEVIS-…` ni `DEVIS-…`
+AssertionError: expected 'DEVIS-2026-0001-0089_fr_v1.pdf' to be 'BROUILLON-2026-0001-0089_fr_v1.pdf' // Object.is equality
+
+Expected: "BROUILLON-2026-0001-0089_fr_v1.pdf"
+Received: "DEVIS-2026-0001-0089_fr_v1.pdf"
+
+ ❯ src/common/quote-reference.spec.ts:148:52
+    146|   it("⛔ `BROUILLON-2026-0001-0089_fr_v1.pdf` et `_ar_` : le préfixe de…
+    147|     const brouillon = { reference: formatQuoteReference({ year: 2026, …
+    148|     expect(quoteDocumentFilename(brouillon, "fr")).toBe("BROUILLON-202…
+       |                                                    ^
+    149|     expect(quoteDocumentFilename(brouillon, "ar")).toBe("BROUILLON-202…
+    150|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/81]⎯
+
+ FAIL  src/common/quote-reference.spec.ts > quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE de sa référence > ⚠ aucun caractère à risque dans le nom d'un brouillon
+TypeError: « BROUILLON-2026-0001-0089 v1 » n'est pas une référence de devis
+ ❯ quoteDocumentFilename ../../packages/types/src/quote.ts:339:25
+    337| export function quoteDocumentFilename(quote: { readonly reference: str…
+    338|   const m = QUOTE_REFERENCE_PATTERN.exec(quote.reference);
+    339|   if (m === null) throw new TypeError(`« ${quote.reference} » n'est pa…
+       |                         ^
+    340|   return `${m[1]}_${locale}_v${m[2]}.pdf`;
+    341| }
+ ❯ src/common/quote-reference.spec.ts:164:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/81]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > ⛔ L36-2 (D339) — le document d'un BROUILLON : il s'imprime, avec son filigrane et son nom de fichier ; clos, il ne s'imprime pas (D-14) > ⛔ un brouillon OUVERT s'imprime : le rendu reçoit un HTML qui porte le filigrane ; un devis officiel, aucun
+TypeError: « BROUILLON-2026-0003-0014 v2 » n'est pas une référence de devis
+ ❯ quoteDocumentFilename ../../packages/types/src/quote.ts:339:25
+    337| export function quoteDocumentFilename(quote: { readonly reference: str…
+    338|   const m = QUOTE_REFERENCE_PATTERN.exec(quote.reference);
+    339|   if (m === null) throw new TypeError(`« ${quote.reference} » n'est pa…
+       |                         ^
+    340|   return `${m[1]}_${locale}_v${m[2]}.pdf`;
+    341| }
+ ❯ QuoteDocumentService.render src/documents/quote-document.service.ts:60:22
+ ❯ src/documents/quote-document.service.spec.ts:173:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/81]⎯
+
+ FAIL  src/documents/quote-document.service.spec.ts > ⛔ L36-2 (D339) — le document d'un BROUILLON : il s'imprime, avec son filigrane et son nom de fichier ; clos, il ne s'imprime pas (D-14) > ⛔ le nom du fichier d'un brouillon SE DÉRIVE de sa référence stockée : `BROUILLON-2026-0003-0014_fr_v2.pdf` (le préfixe de la référence, jamais `DEVIS`)
+TypeError: « BROUILLON-2026-0003-0014 v2 » n'est pas une référence de devis
+ ❯ quoteDocumentFilename ../../packages/types/src/quote.ts:339:25
+    337| export function quoteDocumentFilename(quote: { readonly reference: str…
+    338|   const m = QUOTE_REFERENCE_PATTERN.exec(quote.reference);
+    339|   if (m === null) throw new TypeError(`« ${quote.reference} » n'est pa…
+       |                         ^
+    340|   return `${m[1]}_${locale}_v${m[2]}.pdf`;
+    341| }
+ ❯ QuoteDocumentService.render src/documents/quote-document.service.ts:60:22
+ ❯ src/documents/quote-document.service.spec.ts:182:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/81]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ un devis OFFICIEL n'a AUCUN filigrane : ni élément, ni règle de style, ni la couleur — le mot « filigrane » n'est nulle part dans la page
+TypeError: Cannot read properties of undefined (reading 'join')
+ ❯ couleur src/documents/quote-document.spec.ts:540:52
+    538|     devis({ isOfficial: false, reference: "BROUILLON-2026-0003-0014 v2…
+    539|   // ⚠ paresseuse : évaluée DANS les tests, pas à la collecte — une au…
+    540|   const couleur = () => `rgb(${DRAFT_WATERMARK_RGB.join(", ")})`;
+       |                                                    ^
+    541|   const elements = (page: string) => (page.match(/class="filigrane"/g)…
+    542| 
+ ❯ src/documents/quote-document.spec.ts:548:42
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/81]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ un brouillon (fr) : EXACTEMENT UN élément filigrane, caché des lecteurs d'écran, qui porte le mot du CATALOGUE de sa langue
+ FAIL  src/documents/quote-document.spec.ts > ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ un brouillon (ar) : EXACTEMENT UN élément filigrane, caché des lecteurs d'écran, qui porte le mot du CATALOGUE de sa langue
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/documents/quote-document.spec.ts:557:28
+    555|   ] as const)("⛔ un brouillon (%s) : EXACTEMENT UN élément filigrane, …
+    556|     const page = rendre(brouillon(), locale);
+    557|     expect(elements(page)).toBe(1);
+       |                            ^
+    558|     expect(LIBELLES[locale].draft, "le mot vient du catalogue").toBe(m…
+    559|     expect(page).toContain(`<div class="filigrane" aria-hidden="true">…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/81]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ le style du filigrane : `position: fixed` — la SEULE position qui se répète sur chaque page imprimée (D338, mesuré) ; `absolute` n'en pose qu'un
+AssertionError: la règle `.filigrane` est dans le document: expected null not to be null
+ ❯ src/documents/quote-document.spec.ts:565:69
+    563|     const page = rendre(brouillon());
+    564|     const regle = /\.filigrane\s*\{([^}]*)\}/.exec(page);
+    565|     expect(regle, "la règle `.filigrane` est dans le document").not.to…
+       |                                                                     ^
+    566|     expect(regle![1]).toContain("position: fixed");
+    567|     expect(regle![1]).not.toContain("absolute");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/81]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ la couleur du filigrane est celle de l'AUTORITÉ exportée et n'est posée QUE par lui : une seule occurrence dans la page (sans cela, le décompte par page du PDF ne mesurerait plus le filigrane)
+TypeError: Cannot read properties of undefined (reading 'join')
+ ❯ couleur src/documents/quote-document.spec.ts:540:52
+    538|     devis({ isOfficial: false, reference: "BROUILLON-2026-0003-0014 v2…
+    539|   // ⚠ paresseuse : évaluée DANS les tests, pas à la collecte — une au…
+    540|   const couleur = () => `rgb(${DRAFT_WATERMARK_RGB.join(", ")})`;
+       |                                                    ^
+    541|   const elements = (page: string) => (page.match(/class="filigrane"/g)…
+    542| 
+ ❯ src/documents/quote-document.spec.ts:576:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/81]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ garde de SOURCE : le modèle pose le filigrane SANS importer la formule de référence, et sans aucun calcul (il met en forme)
+AssertionError: expected '\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\…' to contain 'DRAFT_WATERMARK_RGB'
+
+- Expected
++ Received
+
+- DRAFT_WATERMARK_RGB
++ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++ import { formatDZD, formatSlotRange, QUOTE_CLIENT_NAME_FIELD, ServicePricingType, type QuoteDocumentLocale } from "@zwadj/types";
+
++ import arMessages from "@zwadj/i18n/messages/ar.json";
+
++ import frMessages from "@zwadj/i18n/messages/fr.json";
+
++ import { DOCUMENT_FONT_FAMILY } from "./quote-document-fonts";
+
++ import { html, raw, toHtmlString } from "./html";
+
++ import type { QuoteDocumentLine, QuoteDocumentRecord } from "./quote-document-source";
+
++ 
+
++ const MESSAGES = { fr: frMessages, ar: arMessages } as const;
+
++ 
+
++ const CSS = `
+
++ @page { size: A4; margin: 16mm 14mm; }
+
++ * { box-sizing: border-box; }
+
++ body { margin: 0; font-family: "${DOCUMENT_FONT_FAMILY}", sans-serif; font-size: 11pt; color: #18181b; line-height: 1.55; }
+
++ h1 { font-size: 22pt; font-weight: 600; margin: 0 0 2mm; }
+
++ h2 { font-size: 12pt; font-weight: 600; margin: 0 0 3mm; }
+
++ .sous { color: #52525b; margin: 0 0 8mm; }
+
++ .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 8mm; margin-block-end: 8mm; }
+
++ .champ { border-block-end: 0.3mm solid #d4d4d8; padding-block-end: 1.5mm; }
+
++ .champ small { display: block; color: #52525b; font-size: 9pt; }
+
++ .prestations { margin-block-end: 8mm; }
+
++ table { width: 100%; border-collapse: collapse; }
+
++ thead { display: table-header-group; }
+
++ tr { break-inside: avoid; }
+
++ th { text-align: start; font-weight: 600; border-block-end: 0.4mm solid #18181b; padding-block: 2mm; }
+
++ td { padding-block: 2mm; border-block-end: 0.2mm solid #e4e4e7; vertical-align: top; }
+
++ th.det, td.det { padding-inline-start: 5mm; color: #3f3f46; }
+
++ td.num, th.num { text-align: end; white-space: nowrap; padding-inline-start: 5mm; }
+
++ .aucune { color: #52525b; margin: 0 0 8mm; }
+
++ .recap { break-inside: avoid; border: 0.3mm solid #d4d4d8; border-radius: 1.5mm; padding: 4mm 6mm; }
+
++ .recap dl { margin: 0; }
+
++ .ligne { display: flex; justify-content: space-between; gap: 6mm; padding-block: 1.5mm; }
+
++ .ligne dt, .ligne dd { margin: 0; }
+
++ .ligne dd { white-space: nowrap; }
+
++ .ligne.total { border-block-start: 0.3mm solid #d4d4d8; margin-block-start: 1.5mm; padding-block-start: 3mm; font-weight: 600; }
+
++ .ligne.acompte { font-weight: 600; font-size: 13pt; }
+
++ .note { margin-block-start: 12mm; color: #52525b; font-size: 9pt; }
+
++ `;
+
++ 
+
++ 
+
++ export function longDate(isoDate: string, locale: QuoteDocumentLocale): string {
+
++   return new Intl.DateTimeFormat(locale === "ar" ? "ar-DZ" : "fr-DZ", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${isoDate}T00:00:00Z`));
+
++ }
+
++ 
+
++ 
+
++ export function lineDetail(line: QuoteDocumentLine, locale: QuoteDocumentLocale): string | null {
+
++   switch (line.pricingType) {
+
++     case ServicePricingType.PER_GUEST:
+
++     case ServicePricingType.PER_UNIT:
+
++       return `× ${line.quantity}`;
+
++     case ServicePricingType.TIERED: {
+
++       const nom = locale === "ar" ? line.tierLabelAr : line.tierLabelFr;
+
++       if (nom === null || nom.trim() === "") throw new TypeError(`la ligne « ${line.nameFr} » est « à paliers » mais ne porte pas le nom de son palier (${locale})`);
+
++       return nom;
+
++     }
+
++     case ServicePricingType.FIXED:
+
++       return null;
+
++   }
+
++ }
+
++ 
+
++ export function buildQuoteDocumentHtml(input: {
+
++   readonly record: QuoteDocumentRecord;
+
++   readonly locale: QuoteDocumentLocale;
+
++   
+
++   readonly issuedOn: string;
+
++   
+
++   readonly fontCss: string;
+
++ }): string {
+
++   const { record, locale, issuedOn, fontCss } = input;
+
++   const L = MESSAGES[locale].quote.document;
+
++   const rtl = locale === "ar";
+
++   const salle = rtl ? record.venue.nameAr : record.venue.nameFr;
+
++   const creneau =
+
++     record.slot === null
+
++       ? "—"
+
++       : `${rtl ? record.slot.nameAr : record.slot.nameFr} · ${formatSlotRange(record.slot.startMinutes, record.slot.endMinutes)}`;
+
+
+
++   const copie = record[QUOTE_CLIENT_NAME_FIELD[locale]];
+
++   const client = copie === null || copie.trim() === "" ? "—" : copie;
+
+
++   const details = record.lines.map((l) => lineDetail(l, locale));
+
++   const avecDetail = details.some((d) => d !== null);
+
++   const prestations =
+
++     record.lines.length === 0
+
++       ? html`<p class="aucune">${L.noServices}</p>`
+
++       : html`<section class="prestations">
+
++ <table>
+
++   <thead><tr><th>${L.service}</th>${avecDetail ? html`<th class="det">${L.detail}</th>` : ""}<th class="num">${L.amount}</th></tr></thead>
+
++   <tbody>
+
++ ${record.lines.map((l, i) => html`    <tr><td>${rtl ? l.nameAr : l.nameFr}</td>${avecDetail ? html`<td class="det">${details[i] ?? ""}</td>` : ""}<td class="num">${formatDZD(l.lineTotalCents)}</td></tr>\n`)}
+
++   </tbody>
+
++ </table>
+
++ </section>`;
+
++ 
+
++   const page = html`<!doctype html>
+
++ <html lang="${locale}" dir="${rtl ? "rtl" : "ltr"}"><head><meta charset="utf-8"><title>${L.title} ${record.reference}</title>
+
++ <style>
+
++ ${raw(fontCss)}
+
++ ${raw(CSS)}
+
++ </style></head>
+
++ <body>
+
++ <h1>${salle}</h1>
+
++ <p class="sous">${L.title} · ${L.reference} <bdi dir="ltr">${record.reference}</bdi> · ${L.issuedOn} ${longDate(issuedOn, locale)}</p>
+
++ <div class="grille">
+
++   <div class="champ"><small>${L.client}</small>${client}</div>
+
++   <div class="champ"><small>${L.eventDate}</small>${longDate(record.eventDate, locale)}</div>
+
++   <div class="champ"><small>${L.slot}</small>${creneau}</div>
+
++   <div class="champ"><small>${L.guests}</small>${record.guests}</div>
+
++ </div>
+
++ ${prestations}
+
++ <section class="recap">
+
++   <h2>${L.recap}</h2>
+
++   <dl>
+
++     <div class="ligne"><dt>${L.basePrice}</dt><dd>${formatDZD(record.basePriceCents)}</dd></div>
+
++     <div class="ligne"><dt>${L.servicesTotal}</dt><dd>${formatDZD(record.servicesTotalCents)}</dd></div>
+
++     <div class="ligne total"><dt>${L.total}</dt><dd>${formatDZD(record.totalCents)}</dd></div>
+
++     <div class="ligne acompte"><dt>${L.deposit}</dt><dd>${formatDZD(record.depositCents)}</dd></div>
+
++   </dl>
+
++ </section>
+
++ <p class="note">${L.note}</p>
+
++ </body></html>`;
+
++   return toHtmlString(page);
+
++ }
+
++
+
+ ❯ src/documents/quote-document.spec.ts:604:18
+    602|   it("⛔ garde de SOURCE : le modèle pose le filigrane SANS importer la…
+    603|     const code = readFileSync(join(__dirname, "quote-document.ts"), "u…
+    604|     expect(code).toContain("DRAFT_WATERMARK_RGB");
+       |                  ^
+    605|     expect(code).toContain("position: fixed");
+    606|     expect(code).not.toContain("position: absolute");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/81]⎯
+
+ FAIL  src/documents/quote-document.spec.ts > ⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel > ⛔ garde de SOURCE : l'adaptateur de lecture LIT le drapeau et bâtit la référence AVEC le préfixe du devis — le modèle imprime ce qu'il reçoit
+AssertionError: expected '\r\r\nimport { Injectable } from "@ne…' to contain 'isOfficial: true'
+
+- Expected
++ Received
+
+- isOfficial: true
++ 
+
+
++ import { Injectable } from "@nestjs/common";
+
++ import { ServicePricingType, formatQuoteReference, type QuoteStatus } from "@zwadj/types";
+
++ import { PrismaService } from "../prisma/prisma.service";
+
++ import type { QuoteDocumentLine, QuoteDocumentRecord, QuoteDocumentSource } from "./quote-document-source";
+
++ 
+
++ 
+
++ export function parseStoredLines(raw: unknown): QuoteDocumentLine[] {
+
++   if (!Array.isArray(raw)) throw new TypeError("quotes.lines n'est pas un tableau");
+
++   return raw.map((ligne: unknown, i: number) => {
+
++     const l = ligne as Record<string, unknown> | null;
+
++     if (
+
++       l === null ||
+
++       typeof l !== "object" ||
+
++       typeof l.nameFr !== "string" ||
+
++       typeof l.nameAr !== "string" ||
+
++       !Number.isInteger(l.quantity) ||
+
++       !Number.isInteger(l.lineTotalCents)
+
++     ) {
+
++       throw new TypeError(`quotes.lines[${i}] n'a pas la forme d'une ligne de devis`);
+
++     }
+
+
++     const pricingType = Object.values(ServicePricingType).find((type) => type === l.pricingType);
+
++     if (pricingType === undefined) throw new TypeError(`quotes.lines[${i}].pricingType n'est pas un type de tarification connu`);
+
++     const tierLabelFr = typeof l.tierLabelFr === "string" ? l.tierLabelFr : null;
+
++     const tierLabelAr = typeof l.tierLabelAr === "string" ? l.tierLabelAr : null;
+
++     if (pricingType === ServicePricingType.TIERED && (tierLabelFr === null || tierLabelFr.trim() === "" || tierLabelAr === null || tierLabelAr.trim() === "")) {
+
++       throw new TypeError(`quotes.lines[${i}] est « à paliers » mais ne porte pas le nom de son palier en français ET en arabe`);
+
++     }
+
++     return {
+
++       nameFr: l.nameFr,
+
++       nameAr: l.nameAr,
+
++       pricingType,
+
++       quantity: l.quantity as number,
+
++       tierLabelFr,
+
++       tierLabelAr,
+
++       lineTotalCents: l.lineTotalCents as number
+
++     };
+
++   });
+
++ }
+
++ 
+
++ @Injectable()
+
++ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
+
++   constructor(private readonly prisma: PrismaService) {}
+
++ 
+
++   async findForOwner(userId: string, quoteId: string): Promise<QuoteDocumentRecord | null> {
+
++     const row = await this.prisma.quote.findFirst({
+
++       where: { id: quoteId, venue: { deletedAt: null, owner: { userId } } },
+
++       select: {
+
++         id: true,
+
++         version: true,
+
++         chainId: true,
+
++         status: true,
+
++         eventDate: true,
+
++         guests: true,
+
++         basePriceCents: true,
+
++         servicesTotalCents: true,
+
++         totalCents: true,
+
++         depositCents: true,
+
++         lines: true,
+
+
++         referenceYear: true,
+
++         referenceNumber: true,
+
++         venue: { select: { nameFr: true, nameAr: true, number: true } },
+
++         slotTemplate: { select: { nameFr: true, nameAr: true, startMinutes: true, endMinutes: true } },
+
+
++         clientNameAr: true,
+
++         clientNameLatin: true
+
++       }
+
++     });
+
++     if (row === null) return null;
+
++     const plusHaute = await this.prisma.quote.aggregate({ where: { chainId: row.chainId }, _max: { version: true } });
+
++     return {
+
++       id: row.id,
+
++       reference: formatQuoteReference({ year: row.referenceYear, venueNumber: row.venue.number, quoteNumber: row.referenceNumber, version: row.version }),
+
++       version: row.version,
+
+
++       latestVersion: plusHaute._max.version ?? row.version,
+
++       status: row.status as QuoteStatus,
+
++       eventDate: row.eventDate.toISOString().slice(0, 10),
+
++       guests: row.guests,
+
++       basePriceCents: row.basePriceCents,
+
++       servicesTotalCents: row.servicesTotalCents,
+
++       totalCents: row.totalCents,
+
++       depositCents: row.depositCents,
+
++       lines: parseStoredLines(row.lines),
+
++       venue: { nameFr: row.venue.nameFr, nameAr: row.venue.nameAr },
+
++       slot: row.slotTemplate,
+
++       clientNameAr: row.clientNameAr,
+
++       clientNameLatin: row.clientNameLatin
+
++     };
+
++   }
+
++ }
+
++
+
+ ❯ src/documents/quote-document.spec.ts:612:18
+    610|   it("⛔ garde de SOURCE : l'adaptateur de lecture LIT le drapeau et bâ…
+    611|     const code = readFileSync(join(__dirname, "quote-document-source.p…
+    612|     expect(code).toContain("isOfficial: true");
+       |                  ^
+    613|     expect(code).toContain("official: row.isOfficial");
+    614|     expect(code).toMatch(/isOfficial:\s*row\.isOfficial/u);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ `FOR UPDATE` puis la plus haute version (L36-2 : son numéro ET son drapeau, en une lecture) puis `create` — dans cet ordre, ou la garde ne sert à rien
+ FAIL  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà
+ FAIL  src/venues/quote-store.prisma.spec.ts > PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⚠ la version suivante est MAX + 1, et le parent est désigné
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la séquence : le verrou, PUIS la plus haute version (son numéro ET son drapeau), PUIS l'écriture
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est un BROUILLON : la révision en est un — la ligne écrite porte `isOfficial: false`, et le port rend `{ ok: true }`
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est OFFICIELLE : la révision l'est — le drapeau de la version PARENTE n'est pas lu (la v1 brouillon d'une chaîne dont la v2 est promue)
+TypeError: tx.quote.aggregate is not a function
+ ❯ src/venues/quote-store.prisma.ts:142:34
+    140|       // Rang 39 : le verrou de la tête rend aussi l'année et le numér…
+    141|       const tete = await this.verrouillerChaine(tx, args.chainId);
+    142|       const max = await tx.quote.aggregate({ where: { chainId: args.ch…
+       |                                  ^
+    143|       return tx.quote.create({
+    144|         data: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture
+AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,11 +4,10 @@
+        "clientNameAr": "آمنة",
+      },
+      "where": {
+        "clientNameAr": null,
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+-       "isOfficial": true,
+        "venue": {
+          "deletedAt": null,
+          "owner": {
+            "userId": "u-1",
+          },
+
+
+Number of calls: 1
+
+ ❯ src/venues/quote-store.prisma.spec.ts:519:33
+    517|     await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_I…
+    518|     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    519|     expect(tx.quote.updateMany).toHaveBeenCalledWith({
+       |                                 ^
+    520|       where: { id: QUOTE_ID, isOfficial: true, clientNameAr: null, ven…
+    521|       data: { clientNameAr: "آمنة" }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D339 — `creerTeteDeChaine` : la tête naît avec le drapeau que le SERVICE décide > ⛔ `officiel: false` ⇒ la ligne écrite porte `isOfficial: false` ; `officiel: true` ⇒ `true` — le même compteur, la même transaction
+AssertionError: officiel = false: expected undefined to be false // Object.is equality
+
+- Expected: 
+false
+
++ Received: 
+undefined
+
+ ❯ src/venues/quote-store.prisma.spec.ts:593:65
+    591|       await store.creerTeteDeChaine(VENUE_ID, CHIFFRE, { ...REFERENCE,…
+    592|       const data = (tx.quote.create.mock.calls[0]![0] as { data: Recor…
+    593|       expect(data.isOfficial, `officiel = ${String(officiel)}`).toBe(o…
+       |                                                                 ^
+    594|       expect(journal, "un brouillon passe par le MÊME compteur (D-8)")…
+    595|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et une fiche : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom arabe : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom latin : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN
+AssertionError: promise rejected "TypeError: tx.quote.aggregate is not a fu…" instead of resolving
+ ❯ src/venues/quote-store.prisma.spec.ts:638:61
+    636|     const ctx = build();
+    637|     ctx.etat.derniere = { version: 3, isOfficial: false };
+    638|     await expect(ctx.store.creerRevision({ ...ARGS, chiffre })).resolv…
+       |                                                             ^
+    639|     expect(ctx.tx.quote.create).not.toHaveBeenCalled();
+    640|     expect(ctx.journal).toEqual(["FOR UPDATE", "dernière version"]);
+
+Caused by: TypeError: tx.quote.aggregate is not a function
+ ❯ src/venues/quote-store.prisma.ts:142:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ `marquerRemis` : `isOfficial: true` est dans le WHERE du check-and-set, EN PLUS du statut — jamais lu avant
+AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,11 +4,10 @@
+        "sentAt": 2027-02-01T10:00:00.000Z,
+        "sentVia": "PRINT",
+      },
+      "where": {
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+-       "isOfficial": true,
+        "status": {
+          "in": [
+            "DRAFT",
+            "SENT",
+          ],
+
+
+Number of calls: 1
+
+ ❯ src/venues/quote-store.prisma.spec.ts:653:37
+    651|     const sentAt = new Date("2027-02-01T10:00:00.000Z");
+    652|     await ctx.store.marquerRemis({ quoteId: QUOTE_ID, statutsAdmis: ["…
+    653|     expect(ctx.tx.quote.updateMany).toHaveBeenCalledWith({
+       |                                     ^
+    654|       where: { id: QUOTE_ID, status: { in: ["DRAFT", "SENT"] }, isOffi…
+    655|       data: { sentVia: "PRINT", sentAt }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus : le statut ET le drapeau sont RELUS DANS la transaction
+AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -1,9 +1,8 @@
+  [
+    {
+      "select": {
+-       "isOfficial": true,
+        "status": true,
+      },
+      "where": {
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+      },
+
+
+Number of calls: 1
+
+ ❯ src/venues/quote-store.prisma.spec.ts:663:44
+    661|     ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "DRAFT"…
+    662|     await ctx.store.marquerRemis({ quoteId: QUOTE_ID, statutsAdmis: ["…
+    663|     expect(ctx.tx.quote.findUniqueOrThrow).toHaveBeenCalledWith({ wher…
+       |                                            ^
+    664|   });
+    665| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus d'un brouillon OUVERT : `nonOfficiel`
+AssertionError: expected { ok: false, …(2) } to deeply equal { ok: false, raison: 'nonOfficiel' }
+
+- Expected
++ Received
+
+  {
+    "ok": false,
+-   "raison": "nonOfficiel",
++   "raison": "statutConflit",
++   "statutActuel": "DRAFT",
+  }
+
+ ❯ src/venues/quote-store.prisma.spec.ts:669:5
+    667|     ctx.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    668|     ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "DRAFT"…
+    669|     await expect(ctx.store.marquerRemis({ quoteId: QUOTE_ID, statutsAd…
+       |     ^
+    670|   });
+    671| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-17 — K-5 : le WHERE de la copie exige un devis OFFICIEL (un brouillon n'a pas de nom) > ⛔ `isOfficial: true` est dans le compare-and-set, avec la copie NULLE et le devis du pro
+AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,11 +4,10 @@
+        "clientNameLatin": "Amina",
+      },
+      "where": {
+        "clientNameLatin": null,
+        "id": "018f0000-0000-7000-8000-00000000dddd",
+-       "isOfficial": true,
+        "venue": {
+          "deletedAt": null,
+          "owner": {
+            "userId": "u-1",
+          },
+
+
+Number of calls: 1
+
+ ❯ src/venues/quote-store.prisma.spec.ts:695:37
+    693|     ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, c…
+    694|     await ctx.store.completerNomDuClient({ userId: "u-1", quoteId: QUO…
+    695|     expect(ctx.tx.quote.updateMany).toHaveBeenCalledWith({
+       |                                     ^
+    696|       where: { id: QUOTE_ID, isOfficial: true, clientNameLatin: null, …
+    697|       data: { clientNameLatin: "Amina" }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la séquence : la propriété, le VERROU, la plus haute version, l'écriture conditionnelle, l'AUDIT, la relecture — UNE transaction, rien hors d'elle
+TypeError: store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:710:27
+    708|   it("⛔ la séquence : la propriété, le VERROU, la plus haute version, …
+    709|     const { store, prisma, journal } = build();
+    710|     const r = await store.promouvoir(ARGS);
+       |                           ^
+    711|     expect(r.ok).toBe(true);
+    712|     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la propriété se lit par la RELATION au pro (D149) : `venue: { deletedAt: null, owner: { userId } }`, jamais un identifiant qui « ressemble »
+TypeError: store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:719:17
+    717|   it("⛔ la propriété se lit par la RELATION au pro (D149) : `venue: { …
+    718|     const { store, tx } = build();
+    719|     await store.promouvoir(ARGS);
+       |                 ^
+    720|     const propriete = tx.quote.findFirst.mock.calls.find((c) => (c[0] …
+    721|     expect(propriete.where).toEqual({ id: QUOTE_ID, venue: { deletedAt…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-5 — l'écriture est un CHECK-AND-SET : `isOfficial: false` ET le statut admis dans le WHERE, et la fiche et les deux copies ÉCRITES AVEC le drapeau
+TypeError: store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:726:17
+    724|   it("⛔ D-5 — l'écriture est un CHECK-AND-SET : `isOfficial: false` ET…
+    725|     const { store, tx } = build();
+    726|     await store.promouvoir(ARGS);
+       |                 ^
+    727|     expect(tx.quote.updateMany).toHaveBeenCalledWith({
+    728|       where: { id: QUOTE_ID, isOfficial: false, status: { in: ["DRAFT"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 — la ligne d'audit : l'action, l'entité, l'identifiant, l'ACTEUR et son RÔLE, le drapeau et l'identifiant de fiche — et RIEN d'autre
+TypeError: store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:735:17
+    733|   it("⛔ D-11 — la ligne d'audit : l'action, l'entité, l'identifiant, l…
+    734|     const { store, tx } = build();
+    735|     await store.promouvoir(ARGS);
+       |                 ^
+    736|     expect(tx.auditLog.create).toHaveBeenCalledTimes(1);
+    737|     const data = (tx.auditLog.create.mock.calls[0]![0] as { data: Reco…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 (S-81) — la ligne d'audit ne porte AUCUN nom, AUCUN numéro, AUCUN e-mail : on cherche leurs valeurs dans tout ce qui est écrit
+TypeError: store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:751:17
+    749|   it("⛔ D-11 (S-81) — la ligne d'audit ne porte AUCUN nom, AUCUN numér…
+    750|     const { store, tx } = build();
+    751|     await store.promouvoir({ ...ARGS, copie: { ...COPIE, clientNameLat…
+       |                 ^
+    752|     const ecrit = JSON.stringify(tx.auditLog.create.mock.calls[0]![0]);
+    753|     for (const interdit of ["Amina", "Bensalem", "آمنة", "+213", "@", …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-6 — la version n'est plus la dernière : le port REND `versionNonActive` (avec la version active), sans écrire NI le devis NI l'audit
+TypeError: ctx.store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:762:28
+    760|     ctx.etat.propriete = { id: QUOTE_ID, chainId: CHAINE, version: 2 };
+    761|     ctx.etat.derniere = { version: 3, isOfficial: false };
+    762|     await expect(ctx.store.promouvoir(ARGS)).resolves.toEqual({ ok: fa…
+       |                            ^
+    763|     expect(ctx.tx.quote.updateMany).not.toHaveBeenCalled();
+    764|     expect(ctx.tx.auditLog.create).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ le devis n'est pas au pro (la propriété ne rend rien) : `introuvable`, et la chaîne n'est ni verrouillée ni lue
+TypeError: ctx.store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:770:28
+    768|     const ctx = build();
+    769|     ctx.etat.propriete = null;
+    770|     await expect(ctx.store.promouvoir(ARGS)).resolves.toEqual({ ok: fa…
+       |                            ^
+    771|     expect(ctx.journal).toEqual(["propriété"]);
+    772|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[49/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ compte = 0 : le statut et le drapeau sont RELUS dans la transaction ; un devis déjà officiel ⇒ `dejaOfficiel`, SANS ligne d'audit
+TypeError: ctx.store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:778:28
+    776|     ctx.tx.quote.updateMany.mockResolvedValue({ count: 0 });
+    777|     ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ status: "DRAFT"…
+    778|     await expect(ctx.store.promouvoir(ARGS)).resolves.toEqual({ ok: fa…
+       |                            ^
+    779|     expect(ctx.tx.quote.findUniqueOrThrow).toHaveBeenCalledWith({ wher…
+    780|     expect(ctx.tx.auditLog.create).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[50/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ L'ORDRE, sur des cas doublement fautifs : un brouillon ANNULÉ répond `statutConflit` ; un devis OFFICIEL annulé répond `dejaOfficiel` (vrai quel que soit son statut)
+TypeError: brouillonAnnule.store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:787:40
+    785|     brouillonAnnule.tx.quote.updateMany.mockResolvedValue({ count: 0 }…
+    786|     brouillonAnnule.tx.quote.findUniqueOrThrow.mockResolvedValue({ sta…
+    787|     await expect(brouillonAnnule.store.promouvoir(ARGS)).resolves.toEq…
+       |                                        ^
+    788| 
+    789|     const officielAnnule = build();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[51/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ un échec de l'écriture d'audit LÈVE : la promotion ne survit pas à sa propre trace (la transaction l'annule)
+TypeError: ctx.store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:800:28
+    798|     const ctx = build();
+    799|     ctx.tx.auditLog.create.mockRejectedValue(new Error("audit_logs ind…
+    800|     await expect(ctx.store.promouvoir(ARGS)).rejects.toThrow("audit_lo…
+       |                            ^
+    801|   });
+    802| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[52/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⚠ `promouvoir` ne touche NI le compteur, NI le statut, NI la remise, NI aucun montant : le WHERE et le SET ne nomment que le drapeau, la fiche et les deux copies
+TypeError: store.promouvoir is not a function
+ ❯ src/venues/quote-store.prisma.spec.ts:805:17
+    803|   it("⚠ `promouvoir` ne touche NI le compteur, NI le statut, NI la rem…
+    804|     const { store, tx, journal } = build();
+    805|     await store.promouvoir(ARGS);
+       |                 ^
+    806|     expect(journal).not.toContain("compteur");
+    807|     const { where, data } = tx.quote.updateMany.mock.calls[0]![0] as {…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[53/81]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D339 — la lecture du cycle de vie rend le drapeau > `QUOTE_SELECT` sélectionne `isOfficial` (sans lui, le DTO ne pourrait pas dire s'il est officiel ni bâtir sa référence)
+AssertionError: expected undefined to be true // Object.is equality
+
+- Expected: 
+true
+
++ Received: 
+undefined
+
+ ❯ src/venues/quote-store.prisma.spec.ts:815:37
+    813| describe("⛔ D339 — la lecture du cycle de vie rend le drapeau", () => {
+    814|   it("`QUOTE_SELECT` sélectionne `isOfficial` (sans lui, le DTO ne pou…
+    815|     expect(QUOTE_SELECT.isOfficial).toBe(true);
+       |                                     ^
+    816|   });
+    817| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[54/81]⎯
+
+ FAIL  src/venues/quote-transitions.spec.ts > ⛔ L36-2 (D339) — la commande `promote` : rendre officiel un brouillon, sans toucher au statut > elle EXISTE, et n'écrit AUCUN statut (le drapeau `is_official` n'est pas un statut)
+AssertionError: expected [ Array(4) ] to include 'promote'
+ ❯ src/venues/quote-transitions.spec.ts:126:23
+    124| describe("⛔ L36-2 (D339) — la commande `promote` : rendre officiel un …
+    125|   it("elle EXISTE, et n'écrit AUCUN statut (le drapeau `is_official` n…
+    126|     expect(COMMANDES).toContain("promote");
+       |                       ^
+    127|     expect(QuoteCommand.PROMOTE).toBe("promote");
+    128|     expect(quoteTargetOf(QuoteCommand.PROMOTE)).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[55/81]⎯
+
+ FAIL  src/venues/quote-transitions.spec.ts > ⛔ L36-2 (D339) — la commande `promote` : rendre officiel un brouillon, sans toucher au statut > ⚠ sa source est LA référence de l'autorité (`QUOTE_OPEN_STATUSES`), pas une cinquième copie : un brouillon est DRAFT ou CANCELLED (la CHECK), donc la source EFFECTIVE est DRAFT
+TypeError: Cannot read properties of undefined (reading 'from')
+ ❯ quoteAllowedFrom src/venues/quote-transitions.ts:51:37
+     49|  *  `assertStatus` du service. */
+     50| export function quoteAllowedFrom(command: QuoteCommand): readonly Quot…
+     51|   return QUOTE_TRANSITIONS[command].from;
+       |                                     ^
+     52| }
+     53| 
+ ❯ src/venues/quote-transitions.spec.ts:133:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[56/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un devis officiel : `isOfficial: true` et `DEVIS-…` (inchangé d'un octet)
+AssertionError: expected undefined to be true // Object.is equality
+
+- Expected: 
+true
+
++ Received: 
+undefined
+
+ ❯ src/venues/quotes.service.spec.ts:419:29
+    417|     devis.listerDeLaSalle.mockResolvedValue([devisRow()]);
+    418|     const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    419|     expect(dto!.isOfficial).toBe(true);
+       |                             ^
+    420|     expect(dto!.reference).toBe("DEVIS-2026-0007-0089 v1");
+    421|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[57/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un brouillon : `isOfficial: false` et `BROUILLON-…`, même année, mêmes numéros, même version — bâtie par la MÊME formule
+AssertionError: expected undefined to be false // Object.is equality
+
+- Expected: 
+false
+
++ Received: 
+undefined
+
+ ❯ src/venues/quotes.service.spec.ts:427:29
+    425|     devis.listerDeLaSalle.mockResolvedValue([devisRow({ isOfficial: fa…
+    426|     const [dto] = await service.listForVenue(USER_ID, VENUE_ID);
+    427|     expect(dto!.isOfficial).toBe(false);
+       |                             ^
+    428|     expect(dto!.reference).toBe(formatQuoteReference({ year: 2026, ven…
+    429|     expect(dto!.reference).toBe("BROUILLON-2026-0007-0089 v1");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[58/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ dans une même chaîne, la v1 brouillon et la v2 promue portent chacune le préfixe de SA ligne — le numéro est le même
+AssertionError: expected [ 'DEVIS-2026-0007-0089 v1', …(1) ] to deeply equal [ 'BROUILLON-2026-0007-0089 v1', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "BROUILLON-2026-0007-0089 v1",
++   "DEVIS-2026-0007-0089 v1",
+    "DEVIS-2026-0007-0089 v2",
+  ]
+
+ ❯ src/venues/quotes.service.spec.ts:436:42
+    434|     devis.listerDeLaSalle.mockResolvedValue([devisRow({ isOfficial: fa…
+    435|     const dtos = await service.listForVenue(USER_ID, VENUE_ID);
+    436|     expect(dtos.map((d) => d.reference)).toEqual(["BROUILLON-2026-0007…
+       |                                          ^
+    437|   });
+    438| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[59/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel > ⛔ le port refuse `nonOfficiel` : 409 QUOTE_NOT_OFFICIAL, le message du catalogue, et aucun statut dans la réponse
+AssertionError: expected 'QUOTE_STATUS_CONFLICT' to be 'QUOTE_NOT_OFFICIAL' // Object.is equality
+
+Expected: "QUOTE_NOT_OFFICIAL"
+Received: "QUOTE_STATUS_CONFLICT"
+
+ ❯ estRefus src/venues/quotes.service.spec.ts:324:78
+    322| function estRefus(e: unknown, classe: abstract new (...args: never[]) …
+    323|   expect(e instanceof classe, `classe du refus : ${String(e)}`).toBe(t…
+    324|   expect((e as { getResponse: () => { code?: string } }).getResponse()…
+       |                                                                              ^
+    325| }
+    326| describe("⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et …
+ ❯ src/venues/quotes.service.spec.ts:446:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[60/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⛔ un brouillon DRAFT : 409 QUOTE_NOT_OFFICIAL ; ni la salle, ni le créneau ne sont lus, aucune demande n'est écrite
+AssertionError: classe du refus : TypeError: Cannot read properties of undefined (reading 'ok'): expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ estRefus src/venues/quotes.service.spec.ts:323:65
+    321| }
+    322| function estRefus(e: unknown, classe: abstract new (...args: never[]) …
+    323|   expect(e instanceof classe, `classe du refus : ${String(e)}`).toBe(t…
+       |                                                                 ^
+    324|   expect((e as { getResponse: () => { code?: string } }).getResponse()…
+    325| }
+ ❯ src/venues/quotes.service.spec.ts:467:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[61/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là » > ⛔ le port refuse ET le devis est un brouillon : 409 QUOTE_DRAFT_HAS_NO_CLIENT (pas « déjà renseigné » — il n'y a rien à compléter sur un brouillon)
+AssertionError: expected 'QUOTE_CLIENT_NAME_ALREADY_SET' to be 'QUOTE_DRAFT_HAS_NO_CLIENT' // Object.is equality
+
+Expected: "QUOTE_DRAFT_HAS_NO_CLIENT"
+Received: "QUOTE_CLIENT_NAME_ALREADY_SET"
+
+ ❯ estRefus src/venues/quotes.service.spec.ts:324:78
+    322| function estRefus(e: unknown, classe: abstract new (...args: never[]) …
+    323|   expect(e instanceof classe, `classe du refus : ${String(e)}`).toBe(t…
+    324|   expect((e as { getResponse: () => { code?: string } }).getResponse()…
+       |                                                                              ^
+    325| }
+    326| describe("⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et …
+ ❯ src/venues/quotes.service.spec.ts:496:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[62/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le succès rend le DTO de la LIGNE que le port renvoie (officielle, `DEVIS-…`, même numéro) — pas un objet bâti avec ce que l'appelant a envoyé
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:525:31
+    523|     const { service, devis } = preparer();
+    524|     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ i…
+    525|     const dto = await service.promote(ACTEUR, QUOTE_ID, CORPS);
+       |                               ^
+    526|     expect(dto.isOfficial).toBe(true);
+    527|     expect(dto.reference).toBe("DEVIS-2026-0007-0089 v1");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[63/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port reçoit l'ACTEUR (identifiant ET rôle — ils vont dans la ligne d'audit), le devis, les statuts source de la MACHINE À ÉTATS, et la copie décidée par la politique
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:534:19
+    532|     const { service, devis } = preparer();
+    533|     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ i…
+    534|     await service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID…
+       |                   ^
+    535|     expect(devis.promouvoir).toHaveBeenCalledTimes(1);
+    536|     const args = devis.promouvoir.mock.calls[0]![0] as { acteur: unkno…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[64/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ un nom absent de la saisie est NULL dans la copie (jamais une chaîne vide, jamais le nom de la fiche en repli sur une fiche non liée)
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:548:19
+    546|     devis.ficheDuPro.mockResolvedValue({ ...FICHE, nameAr: "اسم الفيشة…
+    547|     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ i…
+    548|     await service.promote(ACTEUR, QUOTE_ID, CORPS);
+       |                   ^
+    549|     expect((devis.promouvoir.mock.calls[0]![0] as { copie: unknown }).…
+    550|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[65/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le devis n'est pas au pro (le port le rend `null`) : 404 QUOTE_NOT_FOUND AVANT la fiche, et rien n'est écrit ; un identifiant hors motif : 404 sans toucher le port
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:555:34
+    553|     const { service, devis } = build();
+    554|     devis.trouverDuPro.mockResolvedValue(null);
+    555|     estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), No…
+       |                                  ^
+    556|     expect(devis.ficheDuPro).not.toHaveBeenCalled();
+    557|     expect(devis.promouvoir).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[66/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND indistinct, et rien n'est écrit
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:566:34
+    564|     const { service, devis } = preparer();
+    565|     devis.ficheDuPro.mockResolvedValue(null);
+    566|     estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), No…
+       |                                  ^
+    567|     expect(devis.ficheDuPro).toHaveBeenCalledWith(USER_ID, FICHE_ID);
+    568|     expect(devis.promouvoir).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[67/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est écrit
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:574:34
+    572|     const { service, devis } = preparer();
+    573|     devis.ficheDuPro.mockResolvedValue({ ...FICHE, nameLatin: "Amina B…
+    574|     estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, { clientRec…
+       |                                  ^
+    575|     expect(devis.promouvoir).not.toHaveBeenCalled();
+    576|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[68/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « introuvable » : 404 QUOTE_NOT_FOUND
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:581:34
+    579|     const { service, devis } = preparer();
+    580|     devis.promouvoir.mockResolvedValue({ ok: false, raison: "introuvab…
+    581|     estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), No…
+       |                                  ^
+    582|   });
+    583| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[69/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-5 — le port refuse « déjà officiel » : 409 QUOTE_ALREADY_OFFICIAL, le message du catalogue
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:587:35
+    585|     const { service, devis } = preparer();
+    586|     devis.promouvoir.mockResolvedValue({ ok: false, raison: "dejaOffic…
+    587|     const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS));
+       |                                   ^
+    588|     estRefus(e, ConflictException, "QUOTE_ALREADY_OFFICIAL");
+    589|     expect(((e as ConflictException).getResponse() as { message?: stri…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[70/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-6 — le port refuse « version non active » : 409 QUOTE_VERSION_NOT_ACTIVE PORTANT `latestVersion` (l'écran sait laquelle est active)
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:595:35
+    593|     const { service, devis } = preparer();
+    594|     devis.promouvoir.mockResolvedValue({ ok: false, raison: "versionNo…
+    595|     const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS));
+       |                                   ^
+    596|     estRefus(e, ConflictException, "QUOTE_VERSION_NOT_ACTIVE");
+    597|     expect(((e as ConflictException).getResponse() as { latestVersion?…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[71/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « statut » : 409 QUOTE_STATUS_CONFLICT avec le statut RELU (un brouillon annulé est CLOS)
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:603:26
+    601|     const { service, devis } = preparer();
+    602|     devis.promouvoir.mockResolvedValue({ ok: false, raison: "statutCon…
+    603|     await expect(service.promote(ACTEUR, QUOTE_ID, CORPS)).rejects.toS…
+       |                          ^
+    604|   });
+    605| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[72/81]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⚠ la promotion ne touche ni la remise, ni le statut, ni la conversion : elle ne change aucun montant
+TypeError: service.promote is not a function
+ ❯ src/venues/quotes.service.spec.ts:609:19
+    607|     const { service, devis } = preparer();
+    608|     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ i…
+    609|     await service.promote(ACTEUR, QUOTE_ID, CORPS);
+       |                   ^
+    610|     expect(devis.marquerRemis).not.toHaveBeenCalled();
+    611|     expect(devis.changerStatut).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[73/81]⎯
+

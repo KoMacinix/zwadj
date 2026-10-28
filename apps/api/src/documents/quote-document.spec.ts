@@ -4,7 +4,7 @@ import arMessages from "@zwadj/i18n/messages/ar.json";
 import frMessages from "@zwadj/i18n/messages/fr.json";
 import { formatDZD, quoteDocumentFilename, ServicePricingType } from "@zwadj/types";
 import { describe, expect, it } from "vitest";
-import { buildQuoteDocumentHtml, longDate } from "./quote-document";
+import { DRAFT_WATERMARK_RGB, buildQuoteDocumentHtml, longDate } from "./quote-document";
 import { DOCUMENT_FONT_FAMILY, DOCUMENT_FONT_SUBSETS, DOCUMENT_FONT_WEIGHTS, loadDocumentFontCss } from "./quote-document-fonts";
 import type { QuoteDocumentLine, QuoteDocumentRecord } from "./quote-document-source";
 import { parseStoredLines } from "./quote-document-source.prisma";
@@ -39,6 +39,8 @@ function devis(over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord {
     version: 2,
     latestVersion: 2,
     status: "DRAFT",
+    // L36-2 (D339) — un devis est OFFICIEL par défaut ; un test de brouillon le surcharge.
+    isOfficial: true,
     eventDate: "2026-12-05",
     guests: 150,
     basePriceCents: 18_000_000,
@@ -525,5 +527,90 @@ describe("⛔ aucun chemin de CALCUL ni d'ÉCRITURE dans les fichiers du documen
     const code = lire("quote-document.ts");
     expect(code).toContain("QUOTE_CLIENT_NAME_FIELD");
     expect(/record\.client\b|firstName|lastName/.exec(code)?.[0] ?? null).toBeNull();
+  });
+});
+
+// ══ L36-2 (D339) — LE FILIGRANE D'UN BROUILLON, posé par le MODÈLE PUR. Modes de défaillance : `docs/preuves/D339/cadrage-complement.md` (D-19, Q2) ; mesure du spike : `docs/preuves/D338/spike-filigrane/`.
+// Ce que ce fichier mesure, c'est le HTML ; que le filigrane se répète sur CHAQUE page et ne change pas la mise en page se mesure contre Chromium, dans `quote-document.int-spec.ts` (R-5).
+
+describe("⛔ D-19 — le filigrane d'un brouillon : UN élément, `position: fixed`, la couleur de l'autorité — et RIEN dans un devis officiel", () => {
+  const brouillon = (over: Partial<QuoteDocumentRecord> = {}) =>
+    devis({ isOfficial: false, reference: "BROUILLON-2026-0003-0014 v2", clientNameAr: null, clientNameLatin: null, ...over });
+  // ⚠ paresseuse : évaluée DANS les tests, pas à la collecte — une autorité absente ferait tomber le fichier entier, y compris ses tests d'avant.
+  const couleur = () => `rgb(${DRAFT_WATERMARK_RGB.join(", ")})`;
+  const elements = (page: string) => (page.match(/class="filigrane"/g) ?? []).length;
+
+  it("⛔ un devis OFFICIEL n'a AUCUN filigrane : ni élément, ni règle de style, ni la couleur — le mot « filigrane » n'est nulle part dans la page", () => {
+    for (const locale of ["fr", "ar"] as const) {
+      const page = rendre(devis(), locale);
+      expect(elements(page), locale).toBe(0);
+      expect(page, locale).not.toContain("filigrane");
+      expect(page, locale).not.toContain(couleur());
+    }
+  });
+
+  it.each([
+    ["fr", "BROUILLON"],
+    ["ar", "مسودة"]
+  ] as const)("⛔ un brouillon (%s) : EXACTEMENT UN élément filigrane, caché des lecteurs d'écran, qui porte le mot du CATALOGUE de sa langue", (locale, mot) => {
+    const page = rendre(brouillon(), locale);
+    expect(elements(page)).toBe(1);
+    expect(LIBELLES[locale].draft, "le mot vient du catalogue").toBe(mot);
+    expect(page).toContain(`<div class="filigrane" aria-hidden="true">${mot}</div>`);
+  });
+
+  it("⛔ le style du filigrane : `position: fixed` — la SEULE position qui se répète sur chaque page imprimée (D338, mesuré) ; `absolute` n'en pose qu'un", () => {
+    const page = rendre(brouillon());
+    const regle = /\.filigrane\s*\{([^}]*)\}/.exec(page);
+    expect(regle, "la règle `.filigrane` est dans le document").not.toBeNull();
+    expect(regle![1]).toContain("position: fixed");
+    expect(regle![1]).not.toContain("absolute");
+    // les valeurs MESURÉES par le spike de D338 (la lisibilité, elle, ne se mesure pas : Ko regarde, S-82)
+    expect(regle![1]).toContain(`color: ${couleur()}`);
+    expect(regle![1]).toContain("opacity: 0.18");
+    expect(regle![1]).toContain("rotate(-28deg)");
+  });
+
+  it("⛔ la couleur du filigrane est celle de l'AUTORITÉ exportée et n'est posée QUE par lui : une seule occurrence dans la page (sans cela, le décompte par page du PDF ne mesurerait plus le filigrane)", () => {
+    const page = rendre(brouillon());
+    expect(page.split(couleur()).length - 1).toBe(1);
+  });
+
+  it("⛔ Q2 — le champ « Client » d'un brouillon affiche « — », dans les DEUX langues : un brouillon ne porte ni fiche ni nom", () => {
+    for (const locale of ["fr", "ar"] as const) {
+      const page = rendre(brouillon(), locale);
+      expect(page).toContain(`<div class="champ"><small>${LIBELLES[locale].client}</small>—</div>`);
+    }
+  });
+
+  it("⛔ la référence imprimée est celle LUE (`BROUILLON-…`), dans le sous-titre ET dans le titre du document — le modèle n'en bâtit pas une", () => {
+    const page = rendre(brouillon());
+    expect(page).toContain('<bdi dir="ltr">BROUILLON-2026-0003-0014 v2</bdi>');
+    expect(page).toContain("<title>Devis BROUILLON-2026-0003-0014 v2</title>");
+  });
+
+  it("⚠ le filigrane ne CHANGE RIEN d'autre : les montants, le tableau et le récapitulatif d'un brouillon sont ceux du même devis officiel (le papier remis au client EST le brouillon)", () => {
+    const officiel = rendre(devis({ clientNameAr: null, clientNameLatin: null }));
+    const filigrane = rendre(brouillon({ reference: "DEVIS-2026-0003-0014 v2" }));
+    // on retire le seul ajout du brouillon pour comparer le reste : l'élément, et la règle de style (qui précède `</style>`)
+    const sans = filigrane.replace(/<div class="filigrane"[^>]*>[^<]*<\/div>\n?/u, "").replace(/\.filigrane\s*\{[^}]*\}\n?/u, "");
+    // l'espace entre deux blocs n'est pas ce qui se mesure : le TEXTE du document l'est
+    const aplatir = (texte: string) => texte.replace(/\s+/gu, " ");
+    expect(aplatir(sans)).toBe(aplatir(officiel));
+  });
+
+  it("⛔ garde de SOURCE : le modèle pose le filigrane SANS importer la formule de référence, et sans aucun calcul (il met en forme)", () => {
+    const code = readFileSync(join(__dirname, "quote-document.ts"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+    expect(code).toContain("DRAFT_WATERMARK_RGB");
+    expect(code).toContain("position: fixed");
+    expect(code).not.toContain("position: absolute");
+    expect(/formatQuoteReference/.exec(code)?.[0] ?? null).toBeNull();
+  });
+
+  it("⛔ garde de SOURCE : l'adaptateur de lecture LIT le drapeau et bâtit la référence AVEC le préfixe du devis — le modèle imprime ce qu'il reçoit", () => {
+    const code = readFileSync(join(__dirname, "quote-document-source.prisma.ts"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+    expect(code).toContain("isOfficial: true");
+    expect(code).toContain("official: row.isOfficial");
+    expect(code).toMatch(/isOfficial:\s*row\.isOfficial/u);
   });
 });

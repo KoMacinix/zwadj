@@ -1,0 +1,15 @@
+D339 — tri différentiel de l'audit de secrets « d » (AVANT le commit des rouges : 18 fichiers de test et 7 pièces)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D339/audit-secrets-d339c.txt docs/preuves/D339/audit-secrets-d339d.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente (« c ») : 464 contextes lus ; nouvelle (« d ») : 470. Alertes ABSENTES de la précédente : 6 (ventilation par motif : jeton = 6 — aucun autre motif ne rend d'alerte NOUVELLE :
+hypothèse vérifiée par le compte 470 − 464 = 6, six alertes et pas une de plus).
+
+Tri au contexte (lignes 2072, 2074, 2076, 2078, 2080 et 2082 de la sortie scellée « d » ; l'instrument renvoie aux lignes et ne recopie aucun contexte, D299) :
+  · 6 [jeton] = docs/preuves/D339/rouges/rouge-e2e.txt, lignes 274, 286, 316, 328, 358 et 370 — les six liens de vérification d'e-mail d'une base jetable (`zwadj_e2e`, recréée à chaque passe e2e),
+                dont la valeur a été REMPLACÉE par le marqueur « <valeur masquée> » AVANT le commit (6 masquages comptés, 0 jeton restant relu dans le fichier). Le motif « jeton » reconnaît le marqueur
+                lui-même (« token=<…> masquée> ») : la valeur vue est le marqueur, comme à D337 et à D338 pour leurs e2e masquées.
+
+BILAN : 6 sur 6 = des marqueurs de masquage ; AUCUNE valeur réelle. Les 18 fichiers de test et les six autres pièces des rouges ne rendent aucune alerte NOUVELLE.
+
+Sceau de la sortie « d » : sha256:73502ee5d61716ba6236cc2e74ac957a537dfed0266428307c5cf795f59c7021 — relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).

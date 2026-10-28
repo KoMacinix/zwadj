@@ -21,6 +21,7 @@ import {
   fieldErrors,
   identifierBlockers,
   identifierPayload,
+  invitesBlockers,
   nameFieldErrors,
   phoneLeadingRejected,
   type Contact,
@@ -230,5 +231,26 @@ describe("contactPayload — la valeur ENVOYÉE est celle saisie, au format que 
       expect(verdict.data.contactPhone).toBe(corps.contactPhone);
       expect(nationalDigitsOf(DEFAULT_PHONE_COUNTRY, verdict.data.contactPhone)).toBe(NUMERO);
     }
+  });
+});
+
+describe("⛔ L36-2 (D339, D-20) — `invitesBlockers` : le brouillon ne demande QUE le nombre d'invités, et c'est la MÊME règle que l'étape Client complète", () => {
+  it("⛔ rien de tapé, zéro, ou autre chose qu'un nombre strictement positif : `needGuests` ; un nombre strictement positif : rien", () => {
+    for (const saisie of ["", "0", "00", "abc", "-5"]) expect(invitesBlockers(saisie), JSON.stringify(saisie)).toEqual(["needGuests"]);
+    for (const saisie of ["1", "200", "400"]) expect(invitesBlockers(saisie), saisie).toEqual([]);
+  });
+
+  it("⛔ UNE règle, pas deux : `clientBlockers` rend `needGuests` exactement quand `invitesBlockers` le rend, avec des noms valides comme sans nom", () => {
+    const sansNom: Noms = { ar: "", latin: "" };
+    const avecNom: Noms = { ar: "", latin: "Amina Bensalem" };
+    for (const saisie of ["", "0", "200"]) {
+      expect(clientBlockers(avecNom, saisie).includes("needGuests"), `avec nom, ${JSON.stringify(saisie)}`).toBe(invitesBlockers(saisie).length > 0);
+      expect(clientBlockers(sansNom, saisie).includes("needGuests"), `sans nom, ${JSON.stringify(saisie)}`).toBe(invitesBlockers(saisie).length > 0);
+    }
+  });
+
+  it("⛔ les noms ne comptent pour RIEN dans `invitesBlockers` : un brouillon n'en porte pas (Q2) — la fonction ne les reçoit même pas", () => {
+    expect(invitesBlockers.length).toBe(1);
+    expect(invitesBlockers("200")).toEqual([]);
   });
 });

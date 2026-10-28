@@ -144,6 +144,8 @@ function draft(over: Partial<QuoteDTO> = {}): QuoteDTO {
     venueId: "v1",
     clientId: null,
     status: "DRAFT",
+    // L36-2 (D339) — le devis que le serveur rend est OFFICIEL par défaut ; un test de brouillon le surcharge (`brouillonServeur`).
+    isOfficial: true,
     isExpired: false,
     version: 1,
     // Rang 39 (D333, K-6) — la référence que le SERVEUR rend : salle 3, devis 14, version 1. Les fixtures de ce fichier n'en calculent jamais une, elles la REÇOIVENT.
@@ -2233,5 +2235,301 @@ describe("⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la convers
     expect(texte).toContain("Amine Belkacem");
     expect(texte).toContain("Invités : 200");
     expect(texte).not.toMatch(/DZD|\bDA\b/u);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// ⛔ L36-2 (D339) — LE DEVIS BROUILLON NON OFFICIEL AU COMPTOIR. Modes de défaillance : `docs/preuves/D339/cadrage-complement.md` (D-1, D-2, D-15, D-20 à D-23).
+// Réponses de Ko : Q1 (a) — un second bouton à l'étape Contact ; Q2 (a) — ni fiche ni nom ; Q3 (a) — la révision reste un brouillon, la promotion est l'unique porte. R-1 : la révision
+// d'une chaîne brouillon ne porte ni fiche, ni nom, ni drapeau ; R-3 : le téléchargement d'un brouillon ne pose pas la question du nom.
+//
+// ⚠ Les libellés viennent du CATALOGUE (`FR`, `AR`) ; les montants, de la fixture que le SERVEUR rendrait ; jamais retapés. Les verdicts passent par `expect` de vitest, en assertions
+// natives (D304, D316) : `getByRole` lève une erreur de REQUÊTE quand l'élément manque, `queryByRole` rend `null` — c'est ce que `toBeNull` lit.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+describe("⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion", () => {
+  const REFERENCE_BROUILLON = "BROUILLON-2026-0003-0014 v1";
+  /** Ce que le SERVEUR rend pour un brouillon : non officiel, référence `BROUILLON-…`, ni fiche ni nom (la CHECK de la base l'impose). */
+  const brouillonServeur = (over: Partial<QuoteDTO> = {}): QuoteDTO =>
+    draft({ isOfficial: false, reference: REFERENCE_BROUILLON, clientRecordId: null, clientNameAr: null, clientNameLatin: null, ...over });
+  /** Ce que le serveur rend APRÈS la promotion : la même ligne, officielle, `DEVIS-…`, la fiche et la copie des noms. */
+  const promuServeur = (over: Partial<QuoteDTO> = {}): QuoteDTO =>
+    draft({ isOfficial: true, reference: "DEVIS-2026-0003-0014 v1", clientRecordId: "fiche-1", clientNameLatin: "Amine Belkacem", ...over });
+  const canaux = (langue: "fr" | "ar" = "fr") => QUOTE_SENT_VIA_ORDER.map((c) => (messages[langue].venue.ui.quotes as Record<string, string>)[`sv_${c}`] as string);
+
+  async function choisirSansCoordonnees(W = FR) {
+    fireEvent.click(screen.getByRole("button", { name: W.noContactButton }));
+    await laisserRetomber();
+  }
+  /** L'étape Client d'un brouillon : le nombre d'invités SEUL, puis « Continuer ». */
+  async function repondreInvites(invites = "200", W = FR) {
+    fireEvent.change(screen.getByLabelText(W.guests), { target: { value: invites } });
+    fireEvent.click(screen.getByRole("button", { name: W.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+  }
+  async function allerAuBrouillon(W = FR) {
+    await choisirSansCoordonnees(W);
+    await repondreInvites("200", W);
+    await repondreDate();
+    await repondreCreneau();
+    await repondrePrestations();
+  }
+  async function calculerBrouillon(over: Parameters<typeof setup>[0] = {}) {
+    const outils = await setup({ quotes: { create: vi.fn().mockResolvedValue(brouillonServeur()), promote: vi.fn().mockResolvedValue(promuServeur()), ...over.quotes }, ...over });
+    await allerAuBrouillon();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    return outils;
+  }
+  const boiteDeLangue = (W = FR) => screen.queryByRole("dialog", { name: W.langDialogTitle });
+  async function telecharger(langueDuPdf: "fr" | "ar", W = FR) {
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: W.draftDownload }));
+    });
+    const boite = boiteDeLangue(W);
+    expect(boite, "la boîte de langue est ouverte").not.toBeNull();
+    await act(async () => {
+      fireEvent.click(within(boite as HTMLElement).getByRole("button", { name: langueDuPdf === "fr" ? W.langFrench : W.langArabic }));
+    });
+    await laisserRetomber();
+    await laisserRetomber();
+  }
+
+  beforeEach(() => {
+    vi.mocked(saveBlob).mockClear();
+  });
+
+  it("⛔ Q1 — l'étape Contact porte UN SECOND bouton, à côté de « Continuer » ; il s'ouvre sans rien taper, n'appelle NI la recherche NI la création de fiche, et mène à l'étape Client", async () => {
+    const { clients } = await setup();
+    const second = screen.getByRole("button", { name: FR.noContactButton });
+    expect(second).toBeEnabled();
+    expect(screen.getByRole("button", { name: FR.continue }), "le bouton d'avant n'a pas bougé : grisé tant que rien n'est tapé").toBeDisabled();
+    expect(screen.getByText(FR.noContactHint)).toBeInTheDocument();
+    fireEvent.click(second);
+    await laisserRetomber();
+    expect(question()).toBe(FR.qClient);
+    expect(clients.lookup).not.toHaveBeenCalled();
+    expect(clients.create).not.toHaveBeenCalled();
+  });
+
+  it("⛔ D-20 (Q2) — l'étape Client d'un brouillon n'a AUCUN champ de nom et A le champ des invités ; « Continuer » reste grisé sans invités, et la fiche n'est ni cherchée ni créée", async () => {
+    const { clients } = await setup();
+    await choisirSansCoordonnees();
+    expect(screen.queryByLabelText(FR.nameAr)).toBeNull();
+    expect(screen.queryByLabelText(FR.nameLatin)).toBeNull();
+    expect(screen.getByText(FR.draftClientHint)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: FR.continue })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "200" } });
+    expect(screen.getByRole("button", { name: FR.continue })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    expect(question()).toBe(FR.qDate);
+    expect(clients.lookup).not.toHaveBeenCalled();
+    expect(clients.create).not.toHaveBeenCalled();
+  });
+
+  it("⛔ le récapitulatif DIT que le contact n'a pas été donné (`draftSummary`) — l'étape Contact est répondue, pas oubliée", async () => {
+    await setup();
+    await choisirSansCoordonnees();
+    await repondreInvites();
+    expect(within(recap()).getByText(FR.draftSummary)).toBeInTheDocument();
+  });
+
+  it("⛔ la CRÉATION du brouillon envoie `isOfficial: false` et RIEN d'autre que le devis : ni fiche, ni nom — le corps exact", async () => {
+    const { quotes } = await calculerBrouillon();
+    expect(quotes.create).toHaveBeenCalledTimes(1);
+    expect(quotes.create).toHaveBeenCalledWith("v1", { eventDate: LIBRE, slotTemplateId: SLOT_ID, guests: 200, isOfficial: false });
+  });
+
+  it("⛔ D-21 — le brouillon affiche sa référence `BROUILLON-…` (celle du SERVEUR) et son bandeau ; AUCUN canal de remise, AUCUN bouton de conclusion, AUCUN champ de conversion", async () => {
+    await calculerBrouillon();
+    expect(document.querySelector('bdi[dir="ltr"]')?.textContent).toBe(REFERENCE_BROUILLON);
+    expect(screen.getByText(FR.draftTitle)).toBeInTheDocument();
+    expect(screen.getByText(FR.draftBody)).toBeInTheDocument();
+    for (const libelle of canaux()) expect(screen.queryByRole("button", { name: libelle }), libelle).toBeNull();
+    expect(screen.queryByRole("button", { name: FR.lockDate })).toBeNull();
+    expect(screen.queryByRole("button", { name: FR.standby })).toBeNull();
+    expect(screen.queryByText(FR.conversionTitle)).toBeNull();
+    expect(screen.queryByLabelText(FR.firstName)).toBeNull();
+    // ce qui EST là : le téléchargement, et le geste qui mène à l'officiel
+    expect(screen.getByRole("button", { name: FR.draftDownload })).toBeEnabled();
+    expect(screen.getByRole("button", { name: FR.draftAddContact })).toBeEnabled();
+    expect(screen.queryByRole("button", { name: FR.draftMakeOfficial })).toBeNull();
+  });
+
+  it("⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom", async () => {
+    const { quotes } = await calculerBrouillon();
+    await telecharger("fr");
+    expect(quotes.document).toHaveBeenCalledTimes(1);
+    expect(quotes.document).toHaveBeenCalledWith("q1", "fr");
+    expect(quotes.deliver, "la remise est interdite à un brouillon").not.toHaveBeenCalled();
+    expect(quotes.completeClientName, "la question du nom (K-5) n'est pas posée sur un brouillon").not.toHaveBeenCalled();
+    expect(screen.queryByRole("dialog", { name: FR.nameDialogTitleLatin })).toBeNull();
+    expect(saveBlob).toHaveBeenCalledTimes(1);
+    expect(saveBlob).toHaveBeenCalledWith(expect.any(Blob), quoteDocumentFilename({ reference: REFERENCE_BROUILLON }, "fr"));
+    expect(vi.mocked(saveBlob).mock.calls[0]![1]).toMatch(/^BROUILLON-/u);
+    expect(screen.getByText(FR.draftDownloaded)).toBeInTheDocument();
+    expect(vi.mocked(onQuoteRemitted)).not.toHaveBeenCalled();
+  });
+
+  it("⛔ la langue ARABE du PDF : `document(id, \"ar\")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN", async () => {
+    const { quotes } = await calculerBrouillon();
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: FR.draftDownload }));
+    });
+    await act(async () => {
+      fireEvent.click(within(boiteDeLangue() as HTMLElement).getByRole("button", { name: FR.langDialogCancel }));
+    });
+    await laisserRetomber();
+    expect(quotes.document).not.toHaveBeenCalled();
+    expect(saveBlob).not.toHaveBeenCalled();
+    await telecharger("ar");
+    expect(quotes.document).toHaveBeenCalledWith("q1", "ar");
+    expect(vi.mocked(saveBlob).mock.calls[0]![1]).toBe(quoteDocumentFilename({ reference: REFERENCE_BROUILLON }, "ar"));
+  });
+
+  it("⛔ un téléchargement qui ÉCHOUE est dit (l'erreur du serveur), n'enregistre rien et n'affiche pas « téléchargé »", async () => {
+    const refus = new ApiError(503, "QUOTE_DOCUMENT_UNAVAILABLE", "quote.errors.documentUnavailable", []);
+    const { quotes } = await calculerBrouillon({ quotes: { document: vi.fn().mockRejectedValue(refus) } });
+    await telecharger("fr");
+    expect(quotes.document).toHaveBeenCalledTimes(1);
+    expect(saveBlob).not.toHaveBeenCalled();
+    expect(screen.queryByText(FR.draftDownloaded)).toBeNull();
+    expect(screen.getByRole("alert").textContent).toBe(messages.fr.quote.errors.documentUnavailable);
+  });
+
+  it("⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée", async () => {
+    const { quotes } = await calculerBrouillon({ quotes: { revise: vi.fn().mockResolvedValue(brouillonServeur({ version: 2, reference: "BROUILLON-2026-0003-0014 v2" })) } });
+    modifierDepuisRecap(/Modifier.*Client/);
+    await repondreInvites("250");
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(quotes.revise).toHaveBeenCalledTimes(1));
+    expect(quotes.revise).toHaveBeenCalledWith("q1", { eventDate: LIBRE, slotTemplateId: SLOT_ID, guests: 250 });
+    expect(quotes.create).toHaveBeenCalledTimes(1);
+  });
+
+  it("⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre", async () => {
+    const { quotes, clients } = await calculerBrouillon();
+    fireEvent.click(screen.getByRole("button", { name: FR.draftAddContact }));
+    await laisserRetomber();
+    expect(question()).toBe(FR.qContact);
+    await repondreContact();
+    expect(question()).toBe(FR.qClient);
+    expect(screen.getByLabelText(FR.nameLatin), "avec des coordonnées, les noms sont demandés").toBeInTheDocument();
+    await repondreNoms();
+    expect(clients.create).toHaveBeenCalledTimes(1);
+    expect(question()).toBe(FR.qQuote);
+    // le brouillon n'a pas été jeté : son total est là, aucune version de plus n'a été demandée
+    expect(screen.getByText(montant(478_600_000))).toBeInTheDocument();
+    expect(quotes.revise).not.toHaveBeenCalled();
+    expect(quotes.create).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole("button", { name: FR.draftAddContact })).toBeNull();
+    const rendre = screen.getByRole("button", { name: FR.draftMakeOfficial });
+    expect(rendre).toBeEnabled();
+    await act(async () => {
+      fireEvent.click(rendre);
+    });
+    await laisserRetomber();
+    expect(quotes.promote).toHaveBeenCalledTimes(1);
+    expect(quotes.promote).toHaveBeenCalledWith("q1", { clientRecordId: "fiche-1", clientNameLatin: "Amine Belkacem" });
+  });
+
+  it("⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit", async () => {
+    const { quotes } = await calculerBrouillon();
+    fireEvent.click(screen.getByRole("button", { name: FR.draftAddContact }));
+    await laisserRetomber();
+    await repondreContact();
+    await repondreNoms();
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: FR.draftMakeOfficial }));
+    });
+    await laisserRetomber();
+    expect(document.querySelector('bdi[dir="ltr"]')?.textContent).toBe("DEVIS-2026-0003-0014 v1");
+    expect(screen.queryByText(FR.draftTitle)).toBeNull();
+    expect(screen.queryByRole("button", { name: FR.draftDownload })).toBeNull();
+    for (const libelle of canaux()) expect(screen.getByRole("button", { name: libelle }), libelle).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: FR.lockDate })).toBeInTheDocument();
+    expect(screen.getByText(FR.draftOfficialDone)).toBeInTheDocument();
+    expect(quotes.promote).toHaveBeenCalledTimes(1);
+  });
+
+  it("⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît", async () => {
+    const refus = new ApiError(409, "QUOTE_ALREADY_OFFICIAL", "quote.errors.alreadyOfficial", []);
+    await calculerBrouillon({ quotes: { promote: vi.fn().mockRejectedValue(refus) } });
+    fireEvent.click(screen.getByRole("button", { name: FR.draftAddContact }));
+    await laisserRetomber();
+    await repondreContact();
+    await repondreNoms();
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: FR.draftMakeOfficial }));
+    });
+    await laisserRetomber();
+    expect(screen.getByRole("alert").textContent).toBe(messages.fr.quote.errors.alreadyOfficial);
+    expect(screen.getByText(FR.draftTitle)).toBeInTheDocument();
+    for (const libelle of canaux()) expect(screen.queryByRole("button", { name: libelle }), libelle).toBeNull();
+  });
+
+  it("⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms", async () => {
+    const { quotes } = await calculerBrouillon();
+    fireEvent.click(screen.getByRole("button", { name: FR.reset }));
+    await laisserRetomber();
+    expect(question()).toBe(FR.qContact);
+    quotes.create = vi.fn().mockResolvedValue(draft());
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await waitFor(() => expect(quotes.create).toHaveBeenCalledTimes(1));
+    const corps = vi.mocked(quotes.create).mock.calls[0]![1] as Record<string, unknown>;
+    expect(corps).not.toHaveProperty("isOfficial");
+    expect(corps.clientRecordId).toBe("fiche-1");
+    expect(corps.clientNameLatin).toBe("Amine Belkacem");
+  });
+
+  it("⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial`", async () => {
+    const { quotes } = await setup();
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await waitFor(() => expect(quotes.create).toHaveBeenCalledTimes(1));
+    expect(vi.mocked(quotes.create).mock.calls[0]![1]).not.toHaveProperty("isOfficial");
+    expect(screen.queryByText(FR.draftTitle)).toBeNull();
+    expect(screen.queryByText(FR.noContactHint)).toBeNull();
+  });
+
+  it("⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe", async () => {
+    const { quotes } = await setup({ quotes: { create: vi.fn().mockResolvedValue(brouillonServeur()) } });
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    expect(AR.noContactButton, "la chaîne arabe existe et diffère de la française").not.toBe(FR.noContactButton);
+    expect(screen.getByRole("button", { name: AR.noContactButton })).toBeEnabled();
+    expect(screen.getByText(AR.noContactHint)).toBeInTheDocument();
+    // le calendrier et les créneaux se répondent par leurs noms français ; la langue bascule au devis (l'écran se relit en arabe sans perdre ses réponses)
+    await act(async () => void (await i18next.changeLanguage("fr")));
+    await allerAuBrouillon();
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    fireEvent.click(screen.getByRole("button", { name: AR.compute }));
+    await screen.findByText(montant(478_600_000));
+    expect(screen.getByText(AR.draftTitle)).toBeInTheDocument();
+    expect(screen.getByText(AR.draftBody)).toBeInTheDocument();
+    for (const libelle of canaux("ar")) expect(screen.queryByRole("button", { name: libelle }), libelle).toBeNull();
+    expect(screen.getByRole("button", { name: AR.draftAddContact })).toBeEnabled();
+    await telecharger("ar", AR);
+    expect(quotes.document).toHaveBeenCalledWith("q1", "ar");
+    expect(saveBlob).toHaveBeenCalledTimes(1);
+    expect(screen.getByText(AR.draftDownloaded)).toBeInTheDocument();
+    await act(async () => void (await i18next.changeLanguage("fr")));
+  });
+
+  it("⛔ chaque chaîne neuve existe dans les DEUX catalogues, non vide, et l'arabe diffère du français", () => {
+    const cles = [
+      "noContactButton", "noContactHint", "draftSummary", "draftClientHint", "draftTitle", "draftBody", "draftDownload", "draftDownloaded", "draftAddContact",
+      "draftMakeOfficial", "draftMakeOfficialHint", "draftOfficialDone"
+    ] as const;
+    for (const cle of cles) {
+      const fr = (FR as Record<string, unknown>)[cle];
+      const ar = (AR as Record<string, unknown>)[cle];
+      expect(typeof fr, `FR : ${cle}`).toBe("string");
+      expect(typeof ar, `AR : ${cle}`).toBe("string");
+      expect((fr as string).trim(), `FR vide : ${cle}`).not.toBe("");
+      expect((ar as string).trim(), `AR vide : ${cle}`).not.toBe("");
+      expect(fr, `FR = AR : ${cle}`).not.toBe(ar);
+    }
   });
 });

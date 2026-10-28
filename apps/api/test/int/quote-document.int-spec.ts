@@ -17,10 +17,13 @@ import request from "supertest";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import arMessages from "@zwadj/i18n/messages/ar.json";
 import frMessages from "@zwadj/i18n/messages/fr.json";
-import { formatDZD, QUOTE_SENT_VIA_ORDER, QuoteErrorCode, type QuoteConversionDTO, type QuoteDTO, type ServiceDTO, type VenueProDTO } from "@zwadj/types";
+import { formatDZD, QUOTE_SENT_VIA_ORDER, QuoteErrorCode, ServicePricingType, type QuoteConversionDTO, type QuoteDTO, type ServiceDTO, type VenueProDTO } from "@zwadj/types";
 import { PlaywrightPdfRenderer } from "../../src/documents/playwright-pdf.renderer";
+import { DRAFT_WATERMARK_RGB, buildQuoteDocumentHtml } from "../../src/documents/quote-document";
+import { loadDocumentFontCss } from "../../src/documents/quote-document-fonts";
+import type { QuoteDocumentRecord } from "../../src/documents/quote-document-source";
 import { createTestApp, loginAs, registerUser, truncateAll, verifyLastRegistered, type TestContext } from "./helpers";
-import { pdfFonts } from "./pdf-inspect";
+import { pdfColorOperatorCount, pdfFonts, pdfPageCount } from "./pdf-inspect";
 
 let ctx: TestContext;
 const PRO = { role: "PRO", email: "pro@example.dz", password: "Motdepasse1", businessName: "Salles Pro", phone: "+213550000009" };
@@ -492,5 +495,148 @@ describe("Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, li
     await api().post(`/api/v1/quotes/${q.id}/deliver`).set(authH(f.token)).send({ sentVia: "EMAIL" }).expect(statut(201));
     const apres = (await api().get(`/api/v1/pro/venues/${f.venue.id}/quotes/conversion`).set(authH(f.token)).expect(statut(200))).body as QuoteConversionDTO;
     expect(apres.delivered).toBe(avant.delivered + 1);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// L36-2 (D339) — LE FILIGRANE D'UN BROUILLON, rendu par le VRAI Chromium. Modes de défaillance : `docs/preuves/D339/cadrage-complement.md` (D-19, R-5).
+//
+// Ce qui ne se prouve QU'ICI : que le filigrane se répète sur CHAQUE page d'un document de plusieurs pages (le spike de D338 l'a mesuré avec 1, 4 et 7 pages), et — R-5 — qu'il ne CHANGE PAS la
+// mise en page : le même devis a le même nombre de pages avec et sans filigrane, en français et en arabe (la mutation `absolute` fait passer le document de 4 à 3 pages). La LISIBILITÉ du
+// filigrane sur les montants ne se mesure pas : Ko regarde un brouillon de plusieurs pages (S-82).
+//
+// ⚠ Le décompte lit la pose de la couleur PROPRE au filigrane dans les flux décompressés (`rg`, l'opérateur de couleur de remplissage) ; le lecteur est CALIBRÉ à deux bras, sur le vrai
+// Chromium, avant toute mesure du lot : une couleur posée par un élément témoin ⇒ comptée ; le même document sans l'élément ⇒ zéro.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+describe("⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit", () => {
+  const RENDU = 120_000;
+  const moteur = new PlaywrightPdfRenderer();
+  // ⚠ paresseuse : évaluée DANS les tests, pas à la collecte — une autorité absente ferait tomber le fichier entier, y compris ses tests d'avant.
+  const couleur = () => `rgb(${DRAFT_WATERMARK_RGB.join(", ")})`;
+
+  /** Un devis de `n` prestations (d'autant de pages que de lignes l'exigent) : stocké, jamais recalculé. */
+  const enregistrement = (n: number, over: Partial<QuoteDocumentRecord> = {}): QuoteDocumentRecord => ({
+    id: "01a10f0a-5931-7a99-b800-a2cac272855a",
+    reference: "DEVIS-2026-0001-0089 v1",
+    version: 1,
+    latestVersion: 1,
+    status: "DRAFT",
+    isOfficial: true,
+    eventDate: "2026-12-04",
+    guests: 300,
+    basePriceCents: 18_900_000,
+    servicesTotalCents: n * 100_000,
+    totalCents: 18_900_000 + n * 100_000,
+    depositCents: 5_670_000,
+    lines: Array.from({ length: n }, (_, i) => ({
+      nameFr: `Prestation ${i + 1}`,
+      nameAr: `خدمة ${i + 1}`,
+      pricingType: ServicePricingType.FIXED,
+      quantity: 1,
+      tierLabelFr: null,
+      tierLabelAr: null,
+      lineTotalCents: 100_000
+    })),
+    venue: { nameFr: "Salle des Jasmins", nameAr: "قاعة الياسمين للأفراح" },
+    slot: null,
+    clientNameAr: null,
+    clientNameLatin: null,
+    ...over
+  });
+  const html = (record: QuoteDocumentRecord, locale: "fr" | "ar") => buildQuoteDocumentHtml({ record, locale, issuedOn: "2026-10-28", fontCss: loadDocumentFontCss() });
+  const brouillon = (n: number) => enregistrement(n, { isOfficial: false, reference: "BROUILLON-2026-0001-0089 v1" });
+
+  it("⛔ CALIBRATION à deux bras, sur le vrai Chromium : la couleur du filigrane posée par un élément témoin est COMPTÉE, le même document sans lui rend ZÉRO", async () => {
+    const sans = "<!doctype html><html><body><p>un devis</p></body></html>";
+    const avec = `<!doctype html><html><body><p>un devis</p><div style="color: ${couleur()}">témoin</div></body></html>`;
+    expect(pdfColorOperatorCount(await moteur.render(avec), DRAFT_WATERMARK_RGB), "bras positif").toBeGreaterThanOrEqual(1);
+    expect(pdfColorOperatorCount(await moteur.render(sans), DRAFT_WATERMARK_RGB), "bras négatif").toBe(0);
+  }, RENDU);
+
+  it("⛔ le lecteur de couleur ne se laisse pas tromper par un AUTRE bleu : une couleur voisine n'est pas comptée", async () => {
+    const voisine = `<!doctype html><html><body><div style="color: rgb(31, 127, 202)">autre bleu</div></body></html>`;
+    expect(pdfColorOperatorCount(await moteur.render(voisine), DRAFT_WATERMARK_RGB)).toBe(0);
+  }, RENDU);
+
+  it.each(["fr", "ar"] as const)("⛔ (%s) UN devis de 70 prestations, officiel puis brouillon : le MÊME nombre de pages, plusieurs pages ; le brouillon pose le filigrane sur CHAQUE page, l'officiel nulle part", async (locale) => {
+    const officiel = await moteur.render(html(enregistrement(70), locale));
+    const filigrane = await moteur.render(html(brouillon(70), locale));
+    const pages = pdfPageCount(officiel);
+    expect(pages, "un devis de 70 lignes tient sur plusieurs pages : sans cela le test ne mesurerait rien").toBeGreaterThan(1);
+    expect(pdfPageCount(filigrane), "R-5 : le filigrane ne change PAS le nombre de pages").toBe(pages);
+    expect(pdfColorOperatorCount(officiel, DRAFT_WATERMARK_RGB), "un devis officiel n'a AUCUN filigrane").toBe(0);
+    expect(pdfColorOperatorCount(filigrane, DRAFT_WATERMARK_RGB), "autant de poses du filigrane que de pages").toBe(pages);
+  }, RENDU);
+
+  it("⛔ un brouillon d'UNE page : une page, un filigrane — et le même nombre de pages que le même devis officiel", async () => {
+    const officiel = await moteur.render(html(enregistrement(3), "fr"));
+    const filigrane = await moteur.render(html(brouillon(3), "fr"));
+    expect(pdfPageCount(officiel)).toBe(1);
+    expect(pdfPageCount(filigrane)).toBe(1);
+    expect(pdfColorOperatorCount(filigrane, DRAFT_WATERMARK_RGB)).toBe(1);
+  }, RENDU);
+
+  it("⛔ la mutation `absolute` (le bras FAUX) est vue : un filigrane `absolute` ne se pose pas sur chaque page — le test ne serait pas vert pour toute position", async () => {
+    const faux = html(brouillon(70), "fr").replace("position: fixed", "position: absolute");
+    const pdf = await moteur.render(faux);
+    expect(pdfColorOperatorCount(pdf, DRAFT_WATERMARK_RGB), "le filigrane `absolute` n'est posé que sur une page").not.toBe(pdfPageCount(pdf));
+  }, RENDU);
+
+  it("⛔ le PDF d'un brouillon porte toujours la police du DÉPÔT, embarquée, comme celui d'un devis officiel (le filigrane arabe ne retombe pas sur une police système)", async () => {
+    const pdf = await moteur.render(html(brouillon(3), "ar"));
+    const polices = pdfFonts(pdf);
+    expect(polices.length).toBeGreaterThan(0);
+    expect(polices.every((p) => p.embedded)).toBe(true);
+  }, RENDU);
+});
+
+async function seed(): Promise<Fixture> {
+  const city = await seedGeographie();
+  return pro(PRO, city.id);
+}
+
+describe("⛔ L36-2 (D339) — par la VRAIE route : le PDF d'un brouillon, avec son nom de fichier ; promu, il perd son filigrane et sa référence change de préfixe", () => {
+  it("⛔ le brouillon est servi : `BROUILLON-…_fr_v1.pdf`, et le HTML confié au moteur porte le filigrane ; le même devis PROMU : `DEVIS-…`, aucun filigrane", async () => {
+    const f = await seed();
+    const b = (await makeQuote(f, { isOfficial: false }).expect(statut(201))).body as QuoteDTO;
+    const espion = espionner();
+    const res = await documentDe(f.token, b.id, { locale: "fr" });
+    expect(res.status).toBe(200);
+    expect(String(res.headers["content-disposition"])).toContain(`${b.reference.split(" ")[0]}_fr_v1.pdf`);
+    expect(String(res.headers["content-disposition"])).toContain("BROUILLON-");
+    expect(espion.vus()[0]).toContain('class="filigrane"');
+    expect(espion.vus()[0]).toContain(b.reference);
+
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const promu = (await api().post(`/api/v1/quotes/${b.id}/promote`).set(authH(f.token)).send({ clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" }).expect(statut(201))).body as QuoteDTO;
+    const apres = await documentDe(f.token, b.id, { locale: "fr" });
+    expect(apres.status).toBe(200);
+    expect(String(apres.headers["content-disposition"])).toContain("DEVIS-");
+    expect(String(apres.headers["content-disposition"])).not.toContain("BROUILLON");
+    expect(promu.reference).toBe(b.reference.replace("BROUILLON-", "DEVIS-"));
+    expect(espion.vus()[1]).not.toContain("filigrane");
+    expect(espion.vus()[1]).toContain("Amina Bensalem");
+  });
+
+  it("⛔ Q2 — le HTML d'un brouillon imprime « — » dans le champ « Client », dans les DEUX langues", async () => {
+    const f = await seed();
+    const b = (await makeQuote(f, { isOfficial: false }).expect(statut(201))).body as QuoteDTO;
+    const espion = espionner();
+    await documentDe(f.token, b.id, { locale: "fr" });
+    await documentDe(f.token, b.id, { locale: "ar" });
+    expect(espion.vus()[0]).toContain(`<small>${LIBELLES.fr.client}</small>—`);
+    expect(espion.vus()[1]).toContain(`<small>${LIBELLES.ar.client}</small>—`);
+  });
+
+  it("⛔ la route n'ÉCRIT rien pour un brouillon non plus : la ligne est identique avant et après le téléchargement, `sent_via` reste NULL", async () => {
+    const f = await seed();
+    const b = (await makeQuote(f, { isOfficial: false }).expect(statut(201))).body as QuoteDTO;
+    const avant = await ctx.prisma.quote.findUniqueOrThrow({ where: { id: b.id } });
+    espionner();
+    await documentDe(f.token, b.id, { locale: "fr" });
+    const apres = await ctx.prisma.quote.findUniqueOrThrow({ where: { id: b.id } });
+    expect(apres).toEqual(avant);
+    expect(apres.sentVia).toBeNull();
+    expect(apres.isOfficial).toBe(false);
   });
 });

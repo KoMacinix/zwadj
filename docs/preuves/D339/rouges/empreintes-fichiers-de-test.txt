@@ -1,0 +1,21 @@
+# D339 — empreintes SHA-256 des fichiers de test, calculées AVANT le jeu des rouges, sur les fichiers tels que joués (D334, item 5)
+# HEAD au jeu : d5c5ab731526fcba5a4f7d2511f323d6df2dfe1a
+
+abeb82adf17ea2f5dd28c9587636b7f382c68c2fff0983f21470fa4e90b11192  apps/api/src/common/quote-draft.spec.ts
+4e2d60482f8a3d158327fb5894b463a73d5175596c7c58f28be2c1bc0115fed3  apps/api/src/common/quote-reference.spec.ts
+6e25e07dce50e851b084ba550f44c839d7c7db53040957228fa0dbca318afd18  apps/api/src/documents/quote-document.service.spec.ts
+230ce048d55a97a33ebf6ede40ee529df79ac091975076d37b4e4f77276a308d  apps/api/src/documents/quote-document.spec.ts
+917a73c6c13effd1d8735b94138ee22bc95be70508c82ae80eb98e13f6af6cad  apps/api/src/venues/quote-store.prisma.spec.ts
+6088becda738be0eb2fd76efba1ca37d814edfcc9b6214d1acb5fbbfdfc851c2  apps/api/src/venues/quote-transitions.spec.ts
+3e2952abaaf2305dfbcc8d82f6c53a9d92af9e81a93b433cf6505bb6a640a7f0  apps/api/src/venues/quotes.service.spec.ts
+de47fc18f8c1ecfb324e57a8e9187b591dfea3c62a3a45d281bd55c99f30d035  apps/api/test/int/migration-non-empty.int-spec.ts
+de15673ddc9f16a76bd74417da29b07623937bd1483e0d6e890347d9e9804876  apps/api/test/int/pdf-inspect.ts
+1d7599fc78bdf51a76d21b52bc646e9752fa58b640af6b9bd9864f228ce5f866  apps/api/test/int/pdf-renderer.int-spec.ts
+1c3e865ed1aa849376d18f5b4f161d24009ed1b28147e9c23cdd445607ad26c0  apps/api/test/int/quote-document.int-spec.ts
+6e2d310a3ae4599fe4bf17efb6d47c837a2537fff65369bfc1a6311c2e8b82b0  apps/api/test/int/quote-numbering.int-spec.ts
+03a9f19ce0d9868e0e47b97c239c4d681bf92363de2a16267523b3bd344231bf  apps/api/test/int/quotes.int-spec.ts
+9ba6616f39f53807924022e76bdaa7d4c87184fb13b2c5693053aa7330f381fa  apps/pro/src/dashboard/walkin-contact.test.ts
+1dd560f37479667eb1fb64a5aac8c79263b8ae650cfebd743df6a72bbce8d4ee  apps/pro/src/dashboard/walkin-journey.test.tsx
+9aef949db89888a22069be9a14202c76787ae26d5301fc4036a78de6eba7cdb4  apps/pro/src/venues/quotes-section.test.tsx
+b7ed82c3d5258b4561c539fe7f4fc55ab4582a579f384ee9b293a800a7ad125e  e2e/specs/r43-devis-brouillon.e2e.ts
+57a0e7a5abc42e601359194f4872f427e6da9de4277aba0bb1019bb4ee1de0bc  packages/api-client/src/quotes-client.test.ts

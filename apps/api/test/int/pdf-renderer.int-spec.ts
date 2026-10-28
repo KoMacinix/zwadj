@@ -28,6 +28,8 @@ const devisArabe: QuoteDocumentRecord = {
   version: 1,
   latestVersion: 1,
   status: "DRAFT",
+  // L36-2 (D339) — un devis est OFFICIEL par défaut (le type du port exige le drapeau).
+  isOfficial: true,
   eventDate: "2026-12-05",
   guests: 150,
   basePriceCents: 18_000_000,

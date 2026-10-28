@@ -9,6 +9,7 @@
 //   - que l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité
 //     DECLINED — sans quoi il retomberait à zéro le jour du déploiement ;
 //   - qu'aucun chemin du service n'écrit plus `SENT`.
+import { Client } from "pg";
 import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { QuoteConversionDTO, QuoteDTO, ServiceDTO, VenueProDTO } from "@zwadj/types";
@@ -956,5 +957,503 @@ describe("⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jama
       expect((await completerNom(f, q.id, corps)).status, JSON.stringify(corps)).toBe(400);
     }
     expect(await copieEnBase(q.id)).toEqual({ client_name_ar: null, client_name_latin: null });
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// L36-2 (D339) — LE DEVIS BROUILLON NON OFFICIEL, contre PostgreSQL réel. Modes de défaillance : `docs/preuves/D339/cadrage-complement.md` (D-1 à D-12, D-15 à D-18).
+// Réponses de Ko : Q1 (a), Q2 (a), Q3 (a), Q4 (a), Q5 (b) ; décisions du relecteur R-1 à R-4.
+//
+// ⚠ Les verdicts passent par `expect` de vitest, jamais par `.expect(<statut>)` de supertest : celui-ci lève une `Error`, pas une `AssertionError` (D305, relevé par `neutralize-r33.py`) ;
+// la lecture d'un échec exigée sur le chemin de l'argent ne la compte pas comme une morsure. Les gardes de la BASE se mesurent par une connexion `pg` BRUTE : le SQLSTATE et le nom
+// de la contrainte sont lus sur l'erreur du pilote, pas devinés dans le message d'un client.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+/** Le statut d'une réponse, jugé par `expect` de vitest. */
+const statutEst = (attendu: number) => (res: request.Response) => {
+  expect(res.status, JSON.stringify(res.body)).toBe(attendu);
+};
+
+/** Une requête SQL sur une connexion `pg` BRUTE, fermée dans un `finally` (une fuite de connexion se voit dans le test SUIVANT). L'erreur du pilote porte `code` (SQLSTATE) et `constraint`. */
+async function sqlBrut<T extends Record<string, unknown> = Record<string, unknown>>(texte: string, valeurs: unknown[] = []): Promise<T[]> {
+  const c = new Client({ connectionString: process.env.DATABASE_URL });
+  await c.connect();
+  try {
+    return (await c.query(texte, valeurs)).rows as T[];
+  } finally {
+    await c.end();
+  }
+}
+
+/** Le refus d'une écriture par la base : le SQLSTATE `23514` (violation de contrainte) et le nom de la contrainte ou du déclencheur. */
+async function refuseParLaBase(promesse: Promise<unknown>, contrainte: string): Promise<void> {
+  try {
+    await promesse;
+  } catch (e) {
+    expect((e as { code?: string }).code, `SQLSTATE : ${String(e)}`).toBe("23514");
+    expect(`${(e as { constraint?: string }).constraint ?? ""} ${(e as Error).message}`, "le nom de la contrainte").toContain(contrainte);
+    return;
+  }
+  expect.unreachable(`la base devait refuser (${contrainte})`);
+}
+
+/** Une fiche client du pro, par la VRAIE route (K-2). */
+async function ficheDe(token: string, corps: Record<string, unknown>): Promise<{ id: string }> {
+  const res = await api().post("/api/v1/pro/clients").set(authH(token)).send(corps);
+  expect(res.status, JSON.stringify(res.body)).toBe(200);
+  return res.body.record as { id: string };
+}
+
+const brouillon = async (f: Fixture, over: Record<string, unknown> = {}): Promise<QuoteDTO> => {
+  const res = await makeQuote(f, { isOfficial: false, ...over });
+  expect(res.status, JSON.stringify(res.body)).toBe(201);
+  return res.body as QuoteDTO;
+};
+const promouvoir = (f: Fixture, id: string, corps: Record<string, unknown>) => act(f, id, "promote", corps);
+const NOM = { clientNameLatin: "Amina Bensalem", clientNameAr: "آمنة بن سالم" };
+const compte = async (table: "quotes" | "bookings" | "audit_logs"): Promise<number> => Number((await sqlBrut<{ n: string }>(`SELECT count(*)::text AS n FROM ${table}`))[0]!.n);
+
+describe("⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom", () => {
+  it("un brouillon naît en DRAFT, v1, `isOfficial: false`, référence `BROUILLON-…`, sans fiche ni nom, jamais remis — et la ligne en base le dit", async () => {
+    const f = await setup();
+    const q = await brouillon(f);
+    expect(q.isOfficial).toBe(false);
+    expect(q.status).toBe("DRAFT");
+    expect(q.version).toBe(1);
+    expect(q.reference).toMatch(/^BROUILLON-\d{4}-\d{4,}-0001 v1$/u);
+    expect(q.clientRecordId).toBeNull();
+    expect(q.clientNameAr).toBeNull();
+    expect(q.clientNameLatin).toBeNull();
+    expect(q.sentVia).toBeNull();
+    const ligne = (await sqlBrut<{ is_official: boolean }>(`SELECT is_official FROM quotes WHERE id = $1`, [q.id]))[0];
+    expect(ligne).toEqual({ is_official: false });
+  });
+
+  it("⛔ D-13 — SANS le champ le devis est OFFICIEL, comme avant (`isOfficial: true`, `DEVIS-…`), fiche facultative : l'API garde le devis officiel sans fiche (Q4 (a))", async () => {
+    const f = await setup();
+    const q = (await makeQuote(f).expect(statutEst(201))).body as QuoteDTO;
+    expect(q.isOfficial).toBe(true);
+    expect(q.reference).toMatch(/^DEVIS-\d{4}-\d{4,}-0001 v1$/u);
+    expect(q.clientRecordId).toBeNull();
+  });
+
+  it("⛔ D-13 — `isOfficial: true` est REFUSÉ (400) : il n'y a qu'une façon de dire « officiel », omettre le champ — et rien n'est écrit", async () => {
+    const f = await setup();
+    const res = await makeQuote(f, { isOfficial: true });
+    expect(res.status, JSON.stringify(res.body)).toBe(400);
+    expect(JSON.stringify(res.body)).toContain("quote.validation.isOfficialInvalid");
+    expect(await compte("quotes")).toBe(0);
+  });
+
+  it("⛔ D-16 (R-2) — un brouillon AVEC une fiche, ou AVEC un nom : 400 `draftHasNoClient`, et rien n'est écrit", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    for (const corps of [{ clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" }, { clientNameLatin: "Amina Bensalem" }, { clientNameAr: "آمنة بن سالم" }]) {
+      const res = await makeQuote(f, { isOfficial: false, ...corps });
+      expect(res.status, JSON.stringify(corps)).toBe(400);
+      expect(JSON.stringify(res.body)).toContain("quote.validation.draftHasNoClient");
+    }
+    expect(await compte("quotes")).toBe(0);
+  });
+
+  it("⛔ D-8 — UN SEUL compteur : brouillon, officiel, brouillon ⇒ 0001, 0002, 0003 ; annuler le premier et promouvoir le troisième ne sautent ni ne réutilisent aucun numéro", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const un = await brouillon(f);
+    const deux = (await makeQuote(f).expect(statutEst(201))).body as QuoteDTO;
+    const trois = await brouillon(f);
+    expect([un, deux, trois].map((q) => q.reference.split("-")[3]!.split(" ")[0])).toEqual(["0001", "0002", "0003"]);
+    await act(f, un.id, "cancel").expect(statutEst(201));
+    const promu = (await promouvoir(f, trois.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201))).body as QuoteDTO;
+    expect(promu.reference).toBe(trois.reference.replace("BROUILLON-", "DEVIS-"));
+    const quatre = (await makeQuote(f).expect(statutEst(201))).body as QuoteDTO;
+    expect(quatre.reference.split("-")[3]!.split(" ")[0], "le numéro du devis annulé n'est pas réutilisé").toBe("0004");
+    const numeros = await sqlBrut<{ reference_number: number }>(`SELECT reference_number FROM quotes ORDER BY reference_number`);
+    expect(numeros.map((n) => n.reference_number)).toEqual([1, 2, 3, 4]);
+  });
+});
+
+describe("⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir", () => {
+  it("⛔ D-1 — la REMISE d'un brouillon : 409 `QUOTE_NOT_OFFICIAL`, et `sent_via` et `sent_at` restent NULL", async () => {
+    const f = await setup();
+    const q = await brouillon(f);
+    const res = await remettre(f, q.id, "PRINT");
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("QUOTE_NOT_OFFICIAL");
+    const ligne = (await sqlBrut<{ sent_via: string | null; sent_at: Date | null }>(`SELECT sent_via, sent_at FROM quotes WHERE id = $1`, [q.id]))[0];
+    expect(ligne).toEqual({ sent_via: null, sent_at: null });
+  });
+
+  it("⛔ D-2 — la CONVERSION d'un brouillon : 409 `QUOTE_NOT_OFFICIAL`, et AUCUNE ligne `bookings`", async () => {
+    const f = await setup();
+    const q = await brouillon(f);
+    const res = await act(f, q.id, "convert", CONTACT);
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("QUOTE_NOT_OFFICIAL");
+    expect(await compte("bookings")).toBe(0);
+  });
+
+  it("⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond « statut » (clos), pas « pas officiel » — à la remise comme à la conversion", async () => {
+    const f = await setup();
+    const q = await brouillon(f);
+    await act(f, q.id, "cancel").expect(statutEst(201));
+    const remise = await remettre(f, q.id, "PRINT");
+    expect(remise.status).toBe(409);
+    expect(remise.body.message.code).toBe("QUOTE_STATUS_CONFLICT");
+    expect(remise.body.message.status).toBe("CANCELLED");
+    const conversion = await act(f, q.id, "convert", CONTACT);
+    expect(conversion.body.message.code).toBe("QUOTE_STATUS_CONFLICT");
+  });
+
+  it("⛔ D-12 — l'ANNULATION d'un brouillon est permise ; le brouillon n'entre JAMAIS dans l'entonnoir (`sent_via` reste NULL)", async () => {
+    const f = await setup();
+    const q = await brouillon(f);
+    const clos = (await act(f, q.id, "cancel").expect(statutEst(201))).body as QuoteDTO;
+    expect(clos.status).toBe("CANCELLED");
+    expect(clos.isOfficial).toBe(false);
+    const entonnoir = (await api().get(`/api/v1/pro/venues/${f.venue.id}/quotes/conversion`).set(authH(f.token)).expect(statutEst(200))).body as QuoteConversionDTO;
+    expect(entonnoir).toEqual({ delivered: 0, accepted: 0, cancelled: 0 });
+  });
+
+  it("D-14 — le PDF d'un brouillon annulé est refusé comme celui de tout devis clos (non-régression), celui d'un brouillon ouvert est servi", async () => {
+    const f = await setup();
+    const ouvert = await brouillon(f);
+    const clos = await brouillon(f);
+    await act(f, clos.id, "cancel").expect(statutEst(201));
+    const ok = await api().get(`/api/v1/quotes/${ouvert.id}/document`).query({ locale: "fr" }).set(authH(f.token));
+    expect(ok.status).not.toBe(409);
+    const refuse = await api().get(`/api/v1/quotes/${clos.id}/document`).query({ locale: "fr" }).set(authH(f.token));
+    expect(refuse.status).toBe(409);
+    expect(refuse.body.message.code).toBe("QUOTE_STATUS_CONFLICT");
+  });
+
+  it("la liste des devis d'une salle rend le drapeau de CHAQUE ligne", async () => {
+    const f = await setup();
+    const b = await brouillon(f);
+    const o = (await makeQuote(f).expect(statutEst(201))).body as QuoteDTO;
+    const liste = (await api().get(`/api/v1/pro/venues/${f.venue.id}/quotes`).set(authH(f.token)).expect(statutEst(200))).body as QuoteDTO[];
+    expect(Object.fromEntries(liste.map((q) => [q.id, q.isOfficial]))).toEqual({ [b.id]: false, [o.id]: true });
+  });
+});
+
+describe("⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom", () => {
+  const corps = (f: Fixture, over: Record<string, unknown> = {}) => ({ eventDate: EVENT_DATE, slotTemplateId: f.slotId, guests: 300, ...over });
+
+  it("⛔ v1 brouillon ⇒ v2 BROUILLON, même numéro, même chaîne : `BROUILLON-…-0001 v2`", async () => {
+    const f = await setup();
+    const v1 = await brouillon(f);
+    const v2 = (await act(f, v1.id, "revise", corps(f)).expect(statutEst(201))).body as QuoteDTO;
+    expect(v2.isOfficial).toBe(false);
+    expect(v2.version).toBe(2);
+    expect(v2.chainId).toBe(v1.chainId);
+    expect(v2.reference).toBe(v1.reference.replace(" v1", " v2"));
+  });
+
+  it("⛔ la révision ne choisit PAS son drapeau : `isOfficial` (vrai ou faux) est une clé inconnue — 400 — et aucune version n'est écrite", async () => {
+    const f = await setup();
+    const v1 = await brouillon(f);
+    for (const isOfficial of [true, false]) {
+      const res = await act(f, v1.id, "revise", corps(f, { isOfficial }));
+      expect(res.status, JSON.stringify({ isOfficial })).toBe(400);
+    }
+    expect(await compte("quotes")).toBe(1);
+  });
+
+  it("⛔ une révision d'un brouillon qui porte une FICHE ou un NOM : 409 `QUOTE_DRAFT_HAS_NO_CLIENT` et AUCUNE ligne écrite (le geste est la promotion)", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const v1 = await brouillon(f);
+    const res = await act(f, v1.id, "revise", corps(f, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" }));
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("QUOTE_DRAFT_HAS_NO_CLIENT");
+    expect(await compte("quotes"), "le nombre de versions n'a pas bougé").toBe(1);
+  });
+
+  it("⛔ v1 brouillon, v2 PROMUE : réviser la v1 (une ANCIENNE version) HÉRITE de la v2 — la v3 est OFFICIELLE (le drapeau est lu sur la plus haute version, pas sur la parente)", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const v1 = await brouillon(f);
+    const v2 = (await act(f, v1.id, "revise", corps(f)).expect(statutEst(201))).body as QuoteDTO;
+    await promouvoir(f, v2.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201));
+    const v3 = (await act(f, v1.id, "revise", corps(f, { guests: 320, clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" })).expect(statutEst(201))).body as QuoteDTO;
+    expect(v3.version).toBe(3);
+    expect(v3.isOfficial, "la v3 hérite de la v2 officielle").toBe(true);
+    expect(v3.reference).toMatch(/^DEVIS-/u);
+    expect(v3.clientRecordId).toBe(fiche.id);
+  });
+
+  it("D-15 en base — un brouillon qui porterait une fiche, un nom arabe ou un nom latin est refusé par la CHECK (SQLSTATE 23514), CHAQUE colonne seule", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const q = await brouillon(f);
+    await refuseParLaBase(sqlBrut(`UPDATE quotes SET client_record_id = $2::uuid WHERE id = $1`, [q.id, fiche.id]), "quotes_unofficial_inert");
+    await refuseParLaBase(sqlBrut(`UPDATE quotes SET client_name_ar = 'آمنة' WHERE id = $1`, [q.id]), "quotes_unofficial_inert");
+    await refuseParLaBase(sqlBrut(`UPDATE quotes SET client_name_latin = 'Amina' WHERE id = $1`, [q.id]), "quotes_unofficial_inert");
+    const intact = (await sqlBrut(`SELECT client_record_id, client_name_ar, client_name_latin FROM quotes WHERE id = $1`, [q.id]))[0];
+    expect(intact).toEqual({ client_record_id: null, client_name_ar: null, client_name_latin: null });
+  });
+});
+
+describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit", () => {
+  it("⛔ la promotion rend le devis OFFICIEL : même identifiant, même numéro (`DEVIS-…` à la place de `BROUILLON-…`), la fiche et les DEUX copies du nom inscrites, les montants INCHANGÉS, rien remis", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+    const res = await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM });
+    expect(res.status, JSON.stringify(res.body)).toBe(201);
+    const p = res.body as QuoteDTO;
+    expect(p.id).toBe(b.id);
+    expect(p.isOfficial).toBe(true);
+    expect(p.reference).toBe(b.reference.replace("BROUILLON-", "DEVIS-"));
+    expect(p.status).toBe("DRAFT");
+    expect(p.clientRecordId).toBe(fiche.id);
+    expect(p.clientNameLatin).toBe(NOM.clientNameLatin);
+    expect(p.clientNameAr).toBe(NOM.clientNameAr);
+    expect({ base: p.basePriceCents, services: p.servicesTotalCents, total: p.totalCents, acompte: p.depositCents }).toEqual({
+      base: b.basePriceCents,
+      services: b.servicesTotalCents,
+      total: b.totalCents,
+      acompte: b.depositCents
+    });
+    expect(p.sentVia).toBeNull();
+    expect(await compte("quotes")).toBe(1);
+  });
+
+  it("⛔ D-11 — UNE ligne d'audit : `quote.promote`, l'entité, l'identifiant, l'acteur ET son rôle, le drapeau et l'identifiant de fiche — et AUCUN nom, AUCUN numéro, AUCUN e-mail", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", email: "amina.bensalem@example.dz", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+    await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201));
+    const lignes = await ctx.prisma.auditLog.findMany();
+    expect(lignes).toHaveLength(1);
+    const a = lignes[0]!;
+    const pro = await ctx.prisma.user.findFirstOrThrow({ where: { email: PRO.email } });
+    expect({ action: a.action, entityType: a.entityType, entityId: a.entityId, actorId: a.actorId, actorRole: a.actorRole }).toEqual({
+      action: "quote.promote",
+      entityType: "quote",
+      entityId: b.id,
+      actorId: pro.id,
+      actorRole: "PRO"
+    });
+    expect(a.before).toEqual({ isOfficial: false, clientRecordId: null });
+    expect(a.after).toEqual({ isOfficial: true, clientRecordId: fiche.id });
+    const ecrit = JSON.stringify(a);
+    for (const interdit of ["Amina", "Bensalem", "آمنة", "+213", "550000011", "@", "example.dz"]) expect(ecrit.includes(interdit), `« ${interdit} » dans ${ecrit}`).toBe(false);
+  });
+
+  it("⛔ D-5 — deux promotions : la seconde est un 409 `QUOTE_ALREADY_OFFICIAL`, et il n'y a TOUJOURS qu'une ligne d'audit", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+    await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201));
+    const encore = await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM });
+    expect(encore.status).toBe(409);
+    expect(encore.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
+    expect(await compte("audit_logs")).toBe(1);
+  });
+
+  it("⛔ D-5 — CINQ promotions SIMULTANÉES de la même demande : EXACTEMENT un 201, quatre 409 `QUOTE_ALREADY_OFFICIAL`, EXACTEMENT une ligne d'audit", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+    const reponses = await Promise.all(Array.from({ length: 5 }, () => promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM })));
+    expect(reponses.map((r) => r.status).sort()).toEqual([201, 409, 409, 409, 409]);
+    for (const r of reponses.filter((x) => x.status === 409)) expect(r.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
+    expect(await compte("audit_logs")).toBe(1);
+  });
+
+  it("⛔ D-6 — v1 et v2 brouillons : promouvoir la v1 (ancienne) ⇒ 409 `QUOTE_VERSION_NOT_ACTIVE` avec `latestVersion`, et RIEN n'est écrit ; la v2 se promeut", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const v1 = await brouillon(f);
+    const v2 = (await act(f, v1.id, "revise", { eventDate: EVENT_DATE, slotTemplateId: f.slotId, guests: 300 }).expect(statutEst(201))).body as QuoteDTO;
+    const refus = await promouvoir(f, v1.id, { clientRecordId: fiche.id, ...NOM });
+    expect(refus.status).toBe(409);
+    expect(refus.body.message.code).toBe("QUOTE_VERSION_NOT_ACTIVE");
+    expect(refus.body.message.latestVersion).toBe(2);
+    expect(await compte("audit_logs")).toBe(0);
+    const ok = (await promouvoir(f, v2.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201))).body as QuoteDTO;
+    expect(ok.reference).toMatch(/^DEVIS-\d{4}-\d{4,}-0001 v2$/u);
+    const v1Apres = (await sqlBrut<{ is_official: boolean }>(`SELECT is_official FROM quotes WHERE id = $1`, [v1.id]))[0];
+    expect(v1Apres, "la v1 reste le brouillon qui a été remis au client").toEqual({ is_official: false });
+  });
+
+  it("⛔ D-6 — promotion ‖ révision SIMULTANÉES : le verrou de la chaîne les sérialise ; l'issue est toujours cohérente (la chaîne n'a jamais deux têtes de nature différente)", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const v1 = await brouillon(f);
+    const [promotion, revision] = await Promise.all([
+      promouvoir(f, v1.id, { clientRecordId: fiche.id, ...NOM }),
+      act(f, v1.id, "revise", { eventDate: EVENT_DATE, slotTemplateId: f.slotId, guests: 300 })
+    ]);
+    const lignes = await sqlBrut<{ version: number; is_official: boolean }>(`SELECT version, is_official FROM quotes ORDER BY version`);
+    if (promotion.status === 201) {
+      // La promotion a gagné : la v1 est officielle, et la révision (si elle est passée après) HÉRITE — officielle aussi.
+      expect(revision.status).toBe(201);
+      expect(lignes).toEqual([{ version: 1, is_official: true }, { version: 2, is_official: true }]);
+    } else {
+      // La révision a gagné : la v1 n'est plus la dernière ; la promotion de la v1 est refusée.
+      expect(promotion.status).toBe(409);
+      expect(promotion.body.message.code).toBe("QUOTE_VERSION_NOT_ACTIVE");
+      expect(revision.status).toBe(201);
+      expect(lignes).toEqual([{ version: 1, is_official: false }, { version: 2, is_official: false }]);
+    }
+  });
+
+  it("⛔ D-6 — promouvoir un brouillon ANNULÉ : 409 « statut » (clos) ; promouvoir un devis OFFICIEL annulé : 409 « déjà officiel » — l'ordre se mesure sur des cas doublement fautifs", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const brouillonClos = await brouillon(f);
+    await act(f, brouillonClos.id, "cancel").expect(statutEst(201));
+    const a = await promouvoir(f, brouillonClos.id, { clientRecordId: fiche.id, ...NOM });
+    expect(a.status).toBe(409);
+    expect(a.body.message.code).toBe("QUOTE_STATUS_CONFLICT");
+    expect(a.body.message.status).toBe("CANCELLED");
+    const officielClos = (await makeQuote(f).expect(statutEst(201))).body as QuoteDTO;
+    await act(f, officielClos.id, "cancel").expect(statutEst(201));
+    const b = await promouvoir(f, officielClos.id, { clientRecordId: fiche.id, ...NOM });
+    expect(b.status).toBe(409);
+    expect(b.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
+    expect(await compte("audit_logs")).toBe(0);
+  });
+
+  it("⛔ D-4 — la fiche d'un AUTRE pro : 404 `CLIENT_RECORD_NOT_FOUND` indistinct ; le devis d'un autre pro : 404 `QUOTE_NOT_FOUND` ; sans fiche ou sans nom : 400 — jamais d'écriture", async () => {
+    const f = await setup();
+    const autre = { ...PRO, email: "autre-pro@example.dz", businessName: "Autre Salle", phone: "+213550000008" };
+    await registerUser(ctx, autre);
+    await verifyLastRegistered(ctx);
+    const tokenAutre = await loginAs(ctx, autre.email, autre.password);
+    const ficheAutre = await ficheDe(tokenAutre, { phone: "+213550000099", nameLatin: "Yacine Benali" });
+    const maFiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+
+    const etrangere = await promouvoir(f, b.id, { clientRecordId: ficheAutre.id, ...NOM });
+    expect(etrangere.status).toBe(404);
+    expect(etrangere.body.message.code).toBe("CLIENT_RECORD_NOT_FOUND");
+    const pasLeMien = await api().post(`/api/v1/quotes/${b.id}/promote`).set(authH(tokenAutre)).send({ clientRecordId: ficheAutre.id, clientNameLatin: "Yacine Benali" });
+    expect(pasLeMien.status).toBe(404);
+    expect(pasLeMien.body.message.code).toBe("QUOTE_NOT_FOUND");
+    expect((await promouvoir(f, b.id, { ...NOM })).status, "sans fiche").toBe(400);
+    expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id })).status, "sans nom").toBe(400);
+    expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id, ...NOM, isOfficial: true })).status, "clé inconnue").toBe(400);
+    expect(await compte("audit_logs")).toBe(0);
+    expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_official FROM quotes WHERE id = $1`, [b.id]))[0]).toEqual({ is_official: false });
+  });
+
+  it("⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 `CLIENT_RECORD_LINKED`, et le brouillon reste un brouillon", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const compteClient = { role: "CLIENT", email: "amina.client@example.dz", password: "Motdepasse1", firstName: "Amina", lastName: "Bensalem" };
+    await registerUser(ctx, compteClient);
+    await verifyLastRegistered(ctx);
+    const client = await ctx.prisma.user.findFirstOrThrow({ where: { email: compteClient.email } });
+    await sqlBrut(`UPDATE pro_client_records SET linked_user_id = $2::uuid, linked_at = now() WHERE id = $1::uuid`, [fiche.id, client.id]);
+    const b = await brouillon(f);
+    const res = await promouvoir(f, b.id, { clientRecordId: fiche.id, clientNameLatin: "Autre Nom" });
+    expect(res.status, JSON.stringify(res.body)).toBe(409);
+    expect(res.body.message.code).toBe("CLIENT_RECORD_LINKED");
+    expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_official FROM quotes WHERE id = $1`, [b.id]))[0]).toEqual({ is_official: false });
+    expect(await compte("audit_logs")).toBe(0);
+  });
+
+  it("⛔ après la promotion, le devis est REMIS puis CONVERTI comme tout devis officiel (la chaîne complète du comptoir : brouillon, refusé à la remise, promu, puis remis)", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+    expect((await remettre(f, b.id, "PRINT")).status, "refusé à la remise tant qu'il est brouillon").toBe(409);
+    await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201));
+    const remis = (await remettre(f, b.id, "PRINT").expect(statutEst(201))).body as QuoteDTO;
+    expect(remis.sentVia).toBe("PRINT");
+    const converti = (await act(f, b.id, "convert", CONTACT).expect(statutEst(201))).body as QuoteDTO;
+    expect(converti.bookingId).not.toBeNull();
+    expect(await compte("bookings")).toBe(1);
+  });
+});
+
+describe("⛔ D-17 (R-3) — K-5 sur un brouillon : 409, AUCUNE copie écrite ; sur le devis promu il fonctionne comme avant", () => {
+  it("⛔ la boîte de langue ne pose pas de nom sur un brouillon : 409 `QUOTE_DRAFT_HAS_NO_CLIENT`, les deux colonnes restent NULL", async () => {
+    const f = await setup();
+    const b = await brouillon(f);
+    for (const locale of ["fr", "ar"]) {
+      const res = await act(f, b.id, "client-name", { locale, name: locale === "fr" ? "Amina Bensalem" : "آمنة بن سالم" });
+      expect(res.status, JSON.stringify(res.body)).toBe(409);
+      expect(res.body.message.code).toBe("QUOTE_DRAFT_HAS_NO_CLIENT");
+    }
+    const ligne = (await sqlBrut(`SELECT client_name_ar, client_name_latin FROM quotes WHERE id = $1`, [b.id]))[0];
+    expect(ligne).toEqual({ client_name_ar: null, client_name_latin: null });
+  });
+
+  it("⚠ une fois promu avec UN nom, K-5 complète l'AUTRE écriture (la copie présente n'est jamais remplacée)", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+    await promouvoir(f, b.id, { clientRecordId: fiche.id, clientNameLatin: "Amina Bensalem" }).expect(statutEst(201));
+    const ok = (await act(f, b.id, "client-name", { locale: "ar", name: "آمنة بن سالم" }).expect(statutEst(201))).body as QuoteDTO;
+    expect(ok.clientNameAr).toBe("آمنة بن سالم");
+    const encore = await act(f, b.id, "client-name", { locale: "fr", name: "Autre" });
+    expect(encore.status).toBe(409);
+    expect(encore.body.message.code).toBe("QUOTE_CLIENT_NAME_ALREADY_SET");
+  });
+});
+
+describe("⛔ D-1, D-3 en base — la CHECK `quotes_unofficial_inert` : un brouillon n'est ni remis, ni accepté ; un devis OFFICIEL n'est pas gêné", () => {
+  it("⛔ `sent_via`, `sent_at`, le statut ACCEPTED (avec `accepted_at`) et les statuts hérités sont REFUSÉS sur un brouillon (SQLSTATE 23514, `quotes_unofficial_inert`)", async () => {
+    const f = await setup();
+    const q = await brouillon(f);
+    await refuseParLaBase(sqlBrut(`UPDATE quotes SET sent_via = 'PRINT', sent_at = now() WHERE id = $1`, [q.id]), "quotes_unofficial_inert");
+    await refuseParLaBase(sqlBrut(`UPDATE quotes SET status = 'ACCEPTED', accepted_at = now(), sent_at = now() WHERE id = $1`, [q.id]), "quotes_unofficial_inert");
+    await refuseParLaBase(sqlBrut(`UPDATE quotes SET status = 'SENT', sent_at = now() WHERE id = $1`, [q.id]), "quotes_unofficial_inert");
+    const intact = (await sqlBrut(`SELECT status, sent_via, sent_at, accepted_at FROM quotes WHERE id = $1`, [q.id]))[0];
+    expect(intact).toEqual({ status: "DRAFT", sent_via: null, sent_at: null, accepted_at: null });
+  });
+
+  it("⚠ ce que la CHECK AUTORISE : annuler un brouillon (CANCELLED), et un devis OFFICIEL peut tout porter (canal, fiche, noms)", async () => {
+    const f = await setup();
+    const fiche = await ficheDe(f.token, { phone: "+213550000011", nameLatin: "Amina Bensalem" });
+    const b = await brouillon(f);
+    await sqlBrut(`UPDATE quotes SET status = 'CANCELLED' WHERE id = $1`, [b.id]);
+    const o = (await makeQuote(f).expect(statutEst(201))).body as QuoteDTO;
+    await sqlBrut(`UPDATE quotes SET sent_via = 'PRINT', sent_at = now(), client_record_id = $2::uuid, client_name_latin = 'Amina' WHERE id = $1`, [o.id, fiche.id]);
+    expect((await sqlBrut(`SELECT sent_via FROM quotes WHERE id = $1`, [o.id]))[0]).toEqual({ sent_via: "PRINT" });
+  });
+});
+
+describe("⛔ D-18 (Q5 (b), R-4) — le DÉCLENCHEUR : aucune réservation n'est rattachée à un brouillon, ni à l'INSERT ni par un UPDATE de `quote_id`", () => {
+  const inserer = (quoteId: string | null, jour: number) =>
+    sqlBrut(
+      `INSERT INTO bookings (id, venue_id, quote_id, source, status, payment_method, event_date, starts_at, ends_at, guests,
+                             base_price_cents, services_total_cents, total_cents, deposit_cents,
+                             contact_first_name, contact_last_name, contact_phone, contact_email, created_at, updated_at)
+       SELECT uuidv7(), v.id, $1::uuid, 'WALK_IN', 'PENDING', 'CASH', current_date + $2::int, (current_date + $2::int)::timestamptz,
+              (current_date + $2::int)::timestamptz + interval '6 hours', 100, 1500000, 0, 1500000, 450000,
+              'Amina', 'Bensalem', '+213550000011', NULL, now(), now()
+         FROM venues v LIMIT 1`,
+      [quoteId, jour]
+    );
+
+  it("⛔ un INSERT direct sur un brouillon est REFUSÉ (23514, `bookings_quote_must_be_official`), et aucune ligne n'est écrite", async () => {
+    const f = await setup();
+    const b = await brouillon(f);
+    await refuseParLaBase(inserer(b.id, 40), "bookings_quote_must_be_official");
+    expect(await compte("bookings")).toBe(0);
+  });
+
+  it("⛔ R-4 — un UPDATE de `quote_id` vers un brouillon est REFUSÉ aussi, et la réservation est INCHANGÉE", async () => {
+    const f = await setup();
+    const b = await brouillon(f);
+    await inserer(null, 41);
+    const avant = await sqlBrut(`SELECT id, quote_id FROM bookings`);
+    expect(avant).toHaveLength(1);
+    await refuseParLaBase(sqlBrut(`UPDATE bookings SET quote_id = $1::uuid WHERE id = $2::uuid`, [b.id, avant[0]!.id]), "bookings_quote_must_be_official");
+    expect(await sqlBrut(`SELECT id, quote_id FROM bookings`)).toEqual(avant);
+  });
+
+  it("⚠ ce que le déclencheur LAISSE PASSER : une réservation SANS devis, une réservation sur un devis OFFICIEL, et un UPDATE d'une AUTRE colonne", async () => {
+    const f = await setup();
+    const o = (await makeQuote(f).expect(statutEst(201))).body as QuoteDTO;
+    await inserer(null, 42);
+    await inserer(o.id, 43);
+    expect(await compte("bookings")).toBe(2);
+    await sqlBrut(`UPDATE bookings SET guests = 120 WHERE quote_id = $1::uuid`, [o.id]);
+    expect((await sqlBrut(`SELECT guests FROM bookings WHERE quote_id = $1::uuid`, [o.id]))[0]).toEqual({ guests: 120 });
   });
 });
