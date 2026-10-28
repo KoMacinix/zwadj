@@ -2492,6 +2492,12 @@ refactoring rapporte un défaut, il ne le corrige pas au passage. Chacun porte s
       celle des SUITES — or c'est la suite entière qui rougissait. Campagne de quinze
       exécutions demandée par Ko ; résultats consignés dans D269.
 
+## Reports du 28/10/2026 — rang 43 (suite), L36-2 : le code du devis brouillon non officiel (D339)
+
+Détail : section D339 et point d'entrée du rang 43 de `ZWADJ_CONTINUITE.md` ; pièces : `docs/preuves/D339/`. Forme de Ko (D302) : **ce que l'entrée bloque** (ou « à ordonner par Ko ») et **son coût**, en termes qui se relèvent, sans durée. Compteur de lots de code non certifiés tenu **POUR MÉMOIRE** (la limite de cinq est SUSPENDUE par Ko).
+
+- [ ] **[API][DEVIS][PRODUIT]** **L'API CRÉE ENCORE UN DEVIS OFFICIEL SANS FICHE (Q4 (b), S-49, rang 41)** — texte proposé par le relecteur, adopté par Ko tel quel (consigne du rang 43 suite, 3 a) : « L'API crée encore un devis OFFICIEL sans fiche (S-49, rang 41) : la règle de Ko du 21/10/2026 (« Pour un vrai devis, il faut le numéro ou l'adresse e-mail », ZWADJ_CONTINUITE.md:2041) n'est tenue que par l'écran et la promotion de L36-2. » ⇒ **BLOQUE** : rien ; **à ordonner par Ko**. ⇒ **COÛT** : code (compte) ; `quoteCreateSchema` et les tests qui créent des devis sans fiche (au moins 3 fichiers d'intégration, 9 appels HTTP : relevé partiel de D338, M10).
+
 ## Reports du 27/10/2026 — rang 43, L36-2 : le devis brouillon non officiel (D338)
 
 Détail : section D338 et point d'entrée du rang 43 de `ZWADJ_CONTINUITE.md` ; pièces : `docs/preuves/D338/`. Forme de Ko (D302) : **ce que l'entrée bloque** (ou « à ordonner par Ko ») et **son coût**, en termes qui se relèvent, sans durée. **Compteur de lots de code non certifiés : DEUX, POUR MÉMOIRE** (la limite de cinq est SUSPENDUE par Ko ; aucune certification) — il passe à TROIS seulement si du code part. Aucune de ces entrées n'a de rang.
