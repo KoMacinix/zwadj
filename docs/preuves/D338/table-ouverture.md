@@ -84,3 +84,22 @@ Liste **prévisible** à la lecture du code ; l'**extension 1** de cette table l
 - **Aucun fichier de l'e2e, des suites unitaires ou d'intégration n'est nommé ici** : leurs chemins complets se donnent par l'extension 1, après le cadrage, **si** le code part. Les nommer avant le cadrage serait écrire de mémoire.
 - **Aucun fichier de `visit_bookings`, de paiement (E3, R1), de notification (L36-9), ni de la fiche client (`pro-client-*`)** : hors lot (consigne 4 c).
 - **NB-6** (date d'événement passée) : hors lot — il reste un petit lot à placer par Ko (consigne 1 b).
+
+## Extension 1 — 27/10/2026 — commitée SEULE, AVANT le versement qu'elle couvre : les MESURES du cadrage et leur audit
+
+Motif : le cadrage (`cadrage.md`) cite des mesures — des commandes et un spike du filigrane — dont les sorties brutes doivent entrer au dépôt (`AGENTS.md`, D291 : « les preuves brutes qu'une décision cite entrent au dépôt »), et un versement passe par l'audit de secrets **avant** son commit (D298). Ces fichiers n'étaient pas dans la table d'ouverture : les voici, en chemins complets, avant qu'ils ne soient commités.
+
+⚠ **Numérotation** : la table d'ouverture annonçait « l'extension 1 » pour la liste exacte du CODE (si la règle d'arrêt ne joue pas). **Cette extension-ci prend le numéro 1** ; celle du code, si elle a lieu, s'appellera **extension 2** (même contenu, autre numéro). Rien n'est retiré de ce qui précède.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D338/mesures-cadrage.sh` | les mesures du cadrage (treize), chaque commande imprimée avant sa sortie brute ; rejouable depuis la racine |
+| `docs/preuves/D338/mesures-cadrage.txt` | sa sortie brute (188 lignes), versée telle quelle |
+| `docs/preuves/D338/spike-filigrane/spike-filigrane-passe-1.js` | la PASSE 1 du spike du filigrane, conservée telle que jouée — son extracteur est défectueux (il rend zéro partout) |
+| `docs/preuves/D338/spike-filigrane/sortie-passe-1.txt` | sa sortie : les zéros |
+| `docs/preuves/D338/spike-filigrane/calibrage-couleurs.js` | le calibrage de l'extracteur : toutes les couleurs posées, avec et sans filigrane |
+| `docs/preuves/D338/spike-filigrane/sortie-calibrage.txt` | sa sortie : le format réel (« .1216 .498 .7882 rg »), absent du bras faux, présent dans le bras vrai |
+| `docs/preuves/D338/spike-filigrane/spike-filigrane.js` | le spike réparé : un filigrane `position: fixed` et le nombre de pages, sur 1, 4 (fr et ar) et 7 pages, plus deux bras faux |
+| `docs/preuves/D338/spike-filigrane/sortie.txt` | sa sortie |
+| `docs/preuves/D338/audit-secrets-d338c.txt` | audit de secrets scellé, AVANT le commit du cadrage et de ces pièces (l'audit « a » est celui de l'ouverture, l'audit « b » celui de la clôture ; celui-ci est entre les deux) |
+| `docs/preuves/D338/tri-audit-d338c.txt` | son tri différentiel contre `audit-secrets-d338a.txt` |
