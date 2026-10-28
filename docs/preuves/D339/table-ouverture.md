@@ -166,3 +166,10 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | fichier | motif |
 |---|---|
 | `apps/api/test/int/pdf-renderer.int-spec.ts` | son devis-témoin (`devisArabe`) est un `QuoteDocumentRecord` écrit à la main : le type du port exige désormais `isOfficial`, il compile et passe avec `isOfficial: true` (aucune autre ligne ne change) |
+
+**Extension 3** (28/10/2026, commitée SEULE, AVANT le commit des rouges — les pièces des rouges (155 échecs lus, dont une e2e masquée) sont un versement : elles passent par un audit de secrets AVANT leur commit, D298 ; l'audit « d » vient entre l'audit « c » du complément et l'audit « b » de la clôture) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/audit-secrets-d339d.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), AVANT le commit des rouges |
+| `docs/preuves/D339/tri-audit-d339d.txt` | son tri différentiel contre `docs/preuves/D339/audit-secrets-d339c.txt` |
