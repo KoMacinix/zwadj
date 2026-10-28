@@ -1,0 +1,73 @@
+LECTURE ADVERSE DE LA CONSIGNE DU RANG 43 (D338) — instrument confronter-consigne.py, SHA de base 985fd20
+calibration : cas vrai (ligne D337 du registre) → ✓ ; cas faux (ligne D999) → ✗ ; littéral présent (`zwadj_e2e` dans e2e/playwright.config.ts) → ✓ ; littéral absent (`zwadj_base_qui_n_existe_pas`) → ✗ — les quatre bras tiennent.
+
+══ PREMIÈRE PARTIE — COURTE ══
+33 contrôles parcourus : 33 ✓ · 0 ✗ · 0 ? (attendu : tous ✓, ou chaque ✗ expliqué en seconde partie)
+
+══ SECONDE PARTIE — EN ENTIER ══
+✓ [0.1] le premier commit du lot (la table) a pour parent 985fd20 et ne contient que table-ouverture.md
+     ↳ 985fd20 → 985fd2096fb1 ; parent de 636f830 = 985fd2096fb1 ; fichiers du commit = ['docs/preuves/D338/table-ouverture.md']
+✓ [0.2] aucun stash
+     ↳ `git stash list` = vide
+✓ [0.3] le dernier numéro du registre est D337 (attendu D338 pour ce lot)
+     ↳ 291 lignes de registre parcourues ; dernière = D337
+✓ [0.4] branche main
+     ↳ branche = main
+✓ [1.1] DR4 est à ZWADJ_CONTINUITE.md:2104
+     ↳ 24018 lignes parcourues ; ligne 2104 = « DR4. DEVIS BROUILLON NON OFFICIEL (lot L36-2, RENFORCÉE). Même compteur que les devis offi »
+✓ [1.2] la tranche [L36-2] du schéma ratifié est à ZWADJ_CONTINUITE.md:2128
+     ↳ 24018 lignes parcourues ; ligne 2128 = « [L36-2] quotes : + is_official boolean NOT NULL DEFAULT true ; CHECK : un devis non offici »
+✓ [1.3] l'entrée L36-2 du backlog est à ZWADJ_BACKLOG.md:2513
+     ↳ 5623 lignes parcourues ; ligne 2513 = « - [ ] **[API][PDF][DEVIS]** **L36-2 — LE DEVIS BROUILLON NON OFFICIEL** — DR4 (D336) : même compteur »
+✓ [1.4.create] quotes.service.ts:175 est `create`
+     ↳ 628 lignes parcourues ; ligne 175 = « async create(userId: string, venueId: string, input: QuoteCreateInput): Promise<QuoteDTO> { »
+✓ [1.4.deliver] quotes.service.ts:216 est `deliver`
+     ↳ 628 lignes parcourues ; ligne 216 = « async deliver(userId: string, quoteId: string, input: QuoteDeliverInput): Promise<QuoteDTO> { »
+✓ [1.4.revise] quotes.service.ts:253 est `revise`
+     ↳ 628 lignes parcourues ; ligne 253 = « async revise(userId: string, quoteId: string, input: QuoteCreateInput): Promise<QuoteDTO> { »
+✓ [1.4.convert] quotes.service.ts:302 est `convert`
+     ↳ 628 lignes parcourues ; ligne 302 = « async convert(userId: string, quoteId: string, input: QuoteConvertInput): Promise<QuoteDTO> { »
+✓ [1.4.cancel] quotes.service.ts:394 est `cancel`
+     ↳ 628 lignes parcourues ; ligne 394 = « async cancel(userId: string, quoteId: string): Promise<QuoteDTO> { »
+✓ [1.5.a] quote.ts:371 : la fiche est FACULTATIVE à la création
+     ↳ 510 lignes parcourues ; ligne 371 = « clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(), »
+✓ [1.5.b] quote.ts:319 est formatQuoteReference
+     ↳ 510 lignes parcourues ; ligne 319 = « export function formatQuoteReference(parts: QuoteReferenceParts): string { »
+✓ [1.5.c] quote.ts:337 est quoteDocumentFilename
+     ↳ 510 lignes parcourues ; ligne 337 = « export function quoteDocumentFilename(quote: { readonly reference: string }, locale: QuoteDocumentLo »
+✓ [1.6.a] e2e/global-setup.ts:30 supprime la base de l'e2e (DROP DATABASE IF EXISTS)
+     ↳ 41 lignes parcourues ; ligne 30 = « await admin.query(`DROP DATABASE IF EXISTS "${dbName}" WITH (FORCE)`); »
+✓ [1.6.b] global-setup.ts dérive le nom de la base de DATABASE_URL (importée de playwright.config), la supprime (:30) puis la recrée
+     ↳ 41 lignes parcourues ; import de DATABASE_URL et dérivation de dbName = True ; `CREATE DATABASE` présent = True
+✓ [1.6.c] la base de l'e2e s'appelle zwadj_e2e par défaut (e2e/playwright.config.ts : E2E_DATABASE_URL ?? …/zwadj_e2e)
+     ↳ 197 lignes parcourues ; lignes portant E2E_DATABASE_URL et zwadj_e2e = [40] (⚠ une variable d'environnement E2E_DATABASE_URL peut la surcharger : le défaut est la seule valeur lue ici)
+✓ [2.1] DR4 dit : même compteur, BROUILLON-AAAA-SSSS-NNNN, filigrane sur chaque page, préfixe du nom de fichier, promotion = même ligne/même numéro, ligne d'audit, garde serveur + CHECK, colonnes à fixer par deliver()
+     ↳ 9 motifs cherchés dans la ligne DR4 aplatie ; manquants = []
+✓ [2.2] [L36-2] : is_official DEFAULT true, un devis non officiel n'est jamais accepté ni marqué remis, DRAFT/ACCEPTED/CANCELLED, aucun nouveau compteur
+     ↳ 6 motifs cherchés dans la ligne aplatie ; manquants = []
+✓ [2.3] QUOTE_WRITABLE_STATUSES = DRAFT, ACCEPTED, CANCELLED (packages/types/src/quote.ts)
+     ↳ liste lue = ['DRAFT', 'ACCEPTED', 'CANCELLED']
+✓ [2.4] DR1 : en pause, les passes de certification et les sessions B ; conservés, les tests rouges d'abord (RENFORCÉE)
+     ↳ ligne DR1 aplatie : 518 caractères parcourus
+✓ [2.5] DR8 : tout schéma est ratifié avant sa migration ; une session qui doit s'en écarter s'arrête et présente l'écart
+     ↳ ligne DR8 aplatie : 251 caractères parcourus
+✓ [2.6] docs/preuves/D337/scenarios-ko.md porte les six gestes de Ko
+     ↳ 10 lignes parcourues ; gestes numérotés = ['1', '2', '3', '4', '5', '6']
+✓ [2.7] l'extension 5 de la table de D337 existe (masquage de 6 jetons d'une base jetable)
+     ↳ table D337 : 22003 caractères aplatis ; `xtension 5` présent = True
+✓ [3.1] la dernière ligne « ⇒ RANG » de l'ordre des rangs est « RANG 43 : EN ATTENTE D'ARBITRAGE DE KO »
+     ↳ 2304 lignes de l'ordre des rangs parcourues ; 23 lignes « ⇒ RANG » ; dernière = ligne 2214 : « ⇒ **RANG 43 : EN ATTENTE D'ARBITRAGE DE KO.** Candidat **proposé** par la sectio »
+✓ [3.2] le compteur pour mémoire est à DEUX à la clôture du rang 42
+     ↳ texte aplati de 2758038 caractères ; motif `POUR MÉMOIRE UN → DEUX` présent = True
+✓ [3.3] S-68 à S-75 existent dans la section D337
+     ↳ 8 identifiants cherchés sous la forme `**S-nn**` ; manquants = []
+✓ [3.4] l'entrée « le CHECK teste NULL seulement » (R-3) n'existe pas encore au backlog (elle sera ajoutée, pas dupliquée)
+     ↳ texte du backlog : 637130 caractères aplatis
+✓ [3.5] le CHECK de la migration 20261024100000 ne teste que NULL (aucun test de chaîne vide)
+     ↳ instruction CHECK lue (commentaires retirés) = « "contact_phone" IS NOT NULL OR "contact_email" IS NOT NULL »
+✓ [3.6] contact_phone était NOT NULL (donc la chaîne vide passait déjà) dans la migration d'origine
+     ↳ 847 lignes SQL parcourues
+✓ [3.7] aucune migration AVANT 20261024100000 ne pose un CHECK sur contact_phone (la chaîne vide n'a jamais été refusée par la base)
+     ↳ 30 migrations parcourues ; porteuses d'un CHECK sur contact_phone = []
+✓ [3.8] NB-6 est une entrée ouverte du backlog « à ordonner par Ko »
+     ↳ lignes du backlog portant NB-6 et A-13 : 1

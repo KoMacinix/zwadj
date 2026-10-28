@@ -1,0 +1,22 @@
+D338 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la lecture adverse et de toute écriture d'autorité)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D337/audit-secrets-d337b.txt docs/preuves/D338/audit-secrets-d338a.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente : 381 contextes lus ; nouvelle : 385. Alertes ABSENTES de la précédente : 4 (ventilation par motif : jeton = 3, chargily = 1 — aucun motif à zéro n'est caché :
+les autres motifs ne rendent aucune alerte NOUVELLE, ce qui est une hypothèse vérifiée par le compte 385 − 381 = 4, quatre alertes et pas une de plus).
+
+Tri au contexte (lignes 1888, 1890, 1892 et 1894 de la sortie scellée « a » ; l'instrument renvoie aux lignes et ne recopie aucun contexte, D299) :
+  · 3 [jeton]    = lignes 7, 8 et 13 de docs/preuves/D337/tri-audit-d337b.txt — la PROSE du tri de D337, écrite APRÈS la sortie scellée « b » de D337 (donc absente de la
+                   précédente). Chacune décrit le masquage des liens d'un serveur de test et porte le MARQUEUR de masquage, pas une valeur : « la valeur vue est le marqueur ».
+  · 1 [chargily] = ligne 19 du même fichier — la prose « AUCUNE valeur réelle (aucune clé … Google, aucun jeton d'accès… ) » : l'ÉCHO d'un tri, comme D337 l'avait déjà noté
+                   pour son propre « a ».
+
+BILAN : 4 sur 4 = l'écho du tri de D337 (prose qui NOMME ce qu'elle cherche) ; AUCUNE valeur réelle.
+
+Histoire, dite pour que l'audit ne se lise pas comme plus propre qu'il n'a été : le premier audit « a » de la session a rendu une alerte de plus, [url-avec-identifiants] dans
+docs/preuves/D338/lecture-adverse/defauts-instrument.txt:10 — j'y avais recopié, pour citer la ligne 40 de e2e/playwright.config.ts, l'adresse de la base locale AVEC ses
+identifiants de développement (« valeur déjà présente dans 3 fichiers suivis hors preuves » : c'est le défaut documenté de l'e2e, pas un secret). Je n'ai pas gardé cette citation :
+la ligne a été réécrite (« <URL de la base locale — identifiants omis ici> ») et l'audit RELANCÉ. La sortie scellée versée est la seconde (226 493 octets) ; la première
+(226 701 octets) a été remplacée au même chemin et n'est pas versée.
+
+Sceau de la sortie « a » : sha256:aac0e23b617492932871fff262eee715a19394f9df957d99571dfe19aa474f1d — relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).

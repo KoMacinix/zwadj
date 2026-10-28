@@ -1,0 +1,18 @@
+D338 — défaut de l'instrument confronter-consigne.py à sa première passe (pièce : confronter-sortie-passe-1-AVANT-CORRECTIFS.txt)
+
+Passe 1 : 32 contrôles parcourus, 31 ✓, 1 ✗. Le ✗ était un défaut de l'INSTRUMENT, non de la consigne (règle de Ko ratifiée le 21/09/2026, D298 : un défaut d'instrument
+arrête la MESURE, pas le lot ; il impose la recalibration sur ses bras, le REJEU INTÉGRAL de l'étape, et l'écriture du défaut avec la sortie brute qui l'a montré).
+
+1. [1.6.b] MAUVAIS ENDROIT CHERCHÉ. La consigne dit : « les six jetons venaient de zwadj_e2e, supprimée et recréée à chaque passe e2e (e2e/global-setup.ts:30) ».
+   L'instrument cherchait le littéral `zwadj_e2e` DANS e2e/global-setup.ts et a rendu : « 41 lignes parcourues ; `zwadj_e2e` présent = False ; `CREATE DATABASE` présent = True ».
+   La sortie brute de ce fichier (lignes 2-3 et 17-18) montre pourquoi : `import { DATABASE_URL } from "./playwright.config"` puis
+   `const dbName = url.pathname.replace(/^\//, "").split("?")[0]!;` — le NOM de la base n'est pas écrit dans global-setup.ts, il est DÉRIVÉ de DATABASE_URL. Le littéral
+   vit dans e2e/playwright.config.ts:40 : `process.env.E2E_DATABASE_URL ?? "<URL de la base locale — identifiants omis ici>/zwadj_e2e?schema=public"`.
+   La sortie brute contient donc ce que l'instrument cherchait, ailleurs (le défaut est d'instrument, pas de comportement). Le comportement n'est pas démenti : la base est
+   bien supprimée (:30) puis recréée à chaque passe, sous le nom `zwadj_e2e` par défaut.
+   Réparation : le contrôle est scindé en deux, chacun sur le fichier qui porte son objet — 1.6.b (global-setup.ts importe DATABASE_URL, dérive dbName, supprime puis recrée) et
+   1.6.c (playwright.config.ts : la ligne qui porte E2E_DATABASE_URL et `zwadj_e2e`). Recalibration, DEUX bras qu'il n'avait pas : un littéral PRÉSENT dans un fichier nommé
+   (`zwadj_e2e` dans e2e/playwright.config.ts → vrai) et un littéral ABSENT (`zwadj_base_qui_n_existe_pas` → faux), avant toute affirmation de la consigne.
+   ⚠ Nuance gardée à voix haute : `E2E_DATABASE_URL` peut surcharger le défaut ; seul le DÉFAUT est lu ici, et le détail du contrôle 1.6.c le dit.
+
+Aucun défaut ne contredit la consigne. La passe 2 (confronter-sortie.txt) : 33 ✓, 0 ✗, 0 ?, calibration à quatre bras tenue (les deux d'origine et les deux du littéral dans un fichier).
