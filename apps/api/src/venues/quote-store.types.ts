@@ -11,7 +11,7 @@
 // ⛔ LES PORTS NE LÈVENT PAS (doctrine S5b). Les deux check-and-set rendent un
 // résultat discriminé PORTANT LE STATUT RELU — c'est cette valeur, et pas un
 // booléen, qui dit au client ce qu'il peut faire ensuite.
-import type { BookingSource, PaymentMethod, QuoteClientNameField, QuoteStatus } from "@zwadj/types";
+import type { BookingSource, PaymentMethod, QuoteClientNameField, QuoteStatus, UserRole } from "@zwadj/types";
 import type { CopieDuNom } from "../clients/pro-client-policy";
 import type { ResolvedLine } from "./service-pricing";
 import type { Prisma } from "../generated/prisma/client";
@@ -21,6 +21,8 @@ export const QUOTE_SELECT = {
   venueId: true,
   clientId: true,
   status: true,
+  // L36-2 (D339) — le devis est-il officiel ? Le DTO le rend, et la référence en tire son préfixe (`BROUILLON-` ou `DEVIS-`).
+  isOfficial: true,
   version: true,
   chainId: true,
   parentQuoteId: true,
@@ -85,6 +87,39 @@ export type ResultatTransition =
   | { readonly ok: true; readonly devis: QuoteRow }
   | { readonly ok: false; readonly raison: "statutConflit"; readonly statutActuel: QuoteStatus };
 
+/** ⛔ L36-2 (D339, D-1) — la REMISE refuse en plus un devis NON officiel. Le statut passe AVANT l'état officiel : un brouillon ANNULÉ répond `statutConflit` (le devis est clos — l'information utile),
+ *  seul un brouillon OUVERT répond `nonOfficiel`. L'annulation (`changerStatut`) reste un `ResultatTransition` : annuler un brouillon est permis (D-12). */
+export type ResultatRemise = ResultatTransition | { readonly ok: false; readonly raison: "nonOfficiel" };
+
+/** ⛔ L36-2 (D339, D-15, R-1) — une révision d'une chaîne BROUILLON qui porte une fiche ou un nom est refusée SOUS le verrou de la chaîne, sans rien écrire. */
+export type ResultatRevision =
+  | { readonly ok: true; readonly devis: QuoteRow }
+  | { readonly ok: false; readonly raison: "brouillonAvecClient" };
+
+/** ⛔ L36-2 (D339, D-11) — qui promeut : l'identifiant ET le rôle, tels que le jeton les porte ; ils vont dans la ligne d'audit. */
+export interface ActeurAuditable {
+  readonly userId: string;
+  readonly role: UserRole;
+}
+
+/** Ce que la promotion écrit sur la ligne du devis : la fiche et les DEUX copies du nom (celles que la politique `copieDuNomPourDevis` a décidées — le port ne les décide pas). */
+export interface DonneesPromotion {
+  readonly acteur: ActeurAuditable;
+  readonly quoteId: string;
+  /** Les statuts source de la commande (`quoteAllowedFrom(PROMOTE)`) : la machine à états les fournit, le port ne la connaît pas. */
+  readonly statutsAdmis: readonly QuoteStatus[];
+  readonly copie: { readonly clientRecordId: string; readonly clientNameAr: string | null; readonly clientNameLatin: string | null };
+}
+
+/** ⛔ L36-2 (D339, D-5, D-6) — les refus de la promotion, TOUS rendus (les ports ne lèvent pas). L'ordre est décidé dans la transaction : introuvable, version non active, puis — compte 0 —
+ *  « déjà officiel » (vrai quel que soit le statut) avant « statut » (un brouillon clos). */
+export type ResultatPromotion =
+  | { readonly ok: true; readonly devis: QuoteRow }
+  | { readonly ok: false; readonly raison: "introuvable" }
+  | { readonly ok: false; readonly raison: "versionNonActive"; readonly versionActive: number }
+  | { readonly ok: false; readonly raison: "dejaOfficiel" }
+  | { readonly ok: false; readonly raison: "statutConflit"; readonly statutActuel: QuoteStatus };
+
 /** ⛔ CE QUI PART DANS `bookings` — CHEMIN DE L'ARGENT (S10b-2).
  *
  *  ⚠ LES QUATRE MONTANTS SONT NOMMÉS UN PAR UN, jamais transmis par un objet
@@ -142,6 +177,8 @@ export const QUOTE_STORE = Symbol("QUOTE_STORE");
 export interface ReferenceDeCreation {
   readonly annee: number;
   readonly creeLe: Date;
+  /** L36-2 (D339) — la tête naît-elle OFFICIELLE ? Le SERVICE le décide (`isOfficial` absent de la demande ⇒ officielle) ; un brouillon passe par le MÊME compteur, dans la MÊME transaction. */
+  readonly officiel: boolean;
 }
 
 export interface QuoteStore {
@@ -162,7 +199,7 @@ export interface QuoteStore {
     readonly chainId: string;
     readonly parentQuoteId: string;
     readonly chiffre: DevisChiffre;
-  }): Promise<QuoteRow>;
+  }): Promise<ResultatRevision>;
 
   /** Remise au client — check-and-set sur le statut, écriture du canal.
    *  ⚠ Répétable par construction : le dernier canal gagne (D160). */
@@ -174,7 +211,7 @@ export interface QuoteStore {
     readonly statutsAdmis: readonly QuoteStatus[];
     readonly sentVia: string;
     readonly sentAt: Date;
-  }): Promise<ResultatTransition>;
+  }): Promise<ResultatRemise>;
 
   /** Changement de statut — check-and-set. Sert l'annulation aujourd'hui ;
    *  ⚠ le statut cible est FOURNI par le service, qui seul connaît la machine à
@@ -221,6 +258,12 @@ export interface QuoteStore {
     readonly nom: string;
     readonly completerLaFiche: (fiche: FicheDuDevis, copie: CopieDuNom) => boolean;
   }): Promise<{ readonly ok: true; readonly devis: QuoteRow } | { readonly ok: false }>;
+
+  /** ⛔ L36-2 (D339) — RENDRE OFFICIEL un brouillon, UNE transaction : la ligne du pro (par la relation, D149), le VERROU de la chaîne (celui de `creerRevision`), la plus haute version, l'écriture
+   *  CONDITIONNELLE (`WHERE NOT is_official AND status IN …` : compte = 1 exigé, D305 — à 0, une relecture ne sert qu'à choisir le code), et UNE ligne `audit_logs` dans la MÊME transaction, seulement
+   *  quand le compte vaut 1 : action `quote.promote`, l'acteur et son rôle, le drapeau et l'identifiant de fiche — AUCUN nom, AUCUN numéro, AUCUN e-mail (S-81). Un échec de l'audit annule la promotion.
+   *  La promotion ne touche NI le compteur, NI le statut, NI la remise, NI aucun montant. */
+  promouvoir(donnees: DonneesPromotion): Promise<ResultatPromotion>;
 }
 
 /** Rang 41 (D336) — ce qu'un devis lit d'une fiche : ses deux noms et son lien. Rien du compte lié (S-53). */

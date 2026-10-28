@@ -39,6 +39,8 @@ export interface QuoteDocumentRecord {
   /** La plus haute `version` de la CHAÎNE du devis — ce qui dit si CETTE version est encore la dernière. */
   readonly latestVersion: number;
   readonly status: QuoteStatus;
+  /** L36-2 (D339) — le devis est-il OFFICIEL ? `false` pour un BROUILLON : le modèle y pose le filigrane. Lu avec le devis, jamais déduit de la référence ni du statut. */
+  readonly isOfficial: boolean;
   /** Date civile `AAAA-MM-JJ` (`@db.Date`, jamais un instant). */
   readonly eventDate: string;
   readonly guests: number;

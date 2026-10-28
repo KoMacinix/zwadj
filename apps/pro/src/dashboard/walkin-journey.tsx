@@ -107,6 +107,7 @@ import {
   identifierBlockers,
   identifierFieldErrors,
   identifierPayload,
+  invitesBlockers,
   nameFieldErrors,
   type Blocker,
   type Contact,
@@ -347,6 +348,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [nomDe, setNomDe] = useState<{ canal: QuoteSentVia; locale: QuoteDocumentLocale } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  /** ⛔ L36-2 (D339, Q1) — le pro a choisi « le client ne donne ni numéro ni e-mail » et n'a pas encore donné de coordonnées : le devis sera un BROUILLON, sans fiche ni nom (Q2). */
+  const [sansCoordonnees, setSansCoordonnees] = useState(false);
+  /** La chaîne en cours EST un brouillon — posé par la réponse du SERVEUR (`quote.isOfficial === false`), levé par la promotion. Tant qu'il est vrai, aucune fiche ni aucun nom ne part dans une révision (R-1). */
+  const [chaineBrouillon, setChaineBrouillon] = useState(false);
+  /** La boîte de langue du TÉLÉCHARGEMENT d'un brouillon (aucune remise, aucune question du nom — R-3). */
+  const [langueBrouillon, setLangueBrouillon] = useState(false);
+  const [brouillonTelecharge, setBrouillonTelecharge] = useState(false);
+  /** La promotion vient d'avoir lieu : le message le DIT jusqu'à la prochaine condition modifiée. */
+  const [promu, setPromu] = useState(false);
 
   const [step, setStep] = useState<Step>("contact");
   /** ⚠ LE SEUL DRAPEAU D'ÉTAPE, et il est justifié : « aucune prestation » est
@@ -383,6 +393,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       return null;
     });
     setOutcome(null);
+    setBrouillonTelecharge(false);
+    setPromu(false);
   }, []);
 
   // ⛔ Rang 41 (D336) — l'étape CONTACT : un numéro OU un e-mail, valides (`identifierBlockers`). Elle est RÉPONDUE quand la fiche a été
@@ -390,7 +402,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const raisonsContact = identifierBlockers(identifiant);
   const identifiantPret = raisonsContact.length === 0;
   const identifiantCherche = cherche !== null && cherche.phone === identifiant.phone && cherche.email.trim() === identifiant.email.trim();
-  const contactAnswered = identifiantPret && identifiantCherche;
+  // ⛔ L36-2 (Q1) : « sans coordonnées » EST une réponse à l'étape Contact — elle n'est pas oubliée, le récapitulatif le dit.
+  const contactAnswered = sansCoordonnees || (identifiantPret && identifiantCherche);
   const invalidIdentifiant = identifierFieldErrors(identifiant);
   // ⛔ MD-6 — une fiche LIÉE à un compte impose SES noms : les champs sont grisés, et le devis porte ceux de la fiche.
   const nomsVerrouilles = fiche !== null && fiche.linked;
@@ -404,12 +417,13 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   // en base, et le client au comptoir n'en a souvent pas. ⚠ Rang 32 (D325) : « prêt » ne veut plus dire « non vide » — le nom,
   // le téléphone et l'e-mail passent les règles du CONTRAT (`walkin-contact.ts`), les mêmes que celles du serveur.
   const contactReady = contactBlockers(contact).length === 0;
-  const blockers = clientBlockers(nomsEffectifs, guests);
+  // ⛔ L36-2 (Q2) : un brouillon ne porte pas de nom — seul le nombre d'invités est demandé (la MÊME règle que l'étape Client complète : `invitesBlockers`).
+  const blockers = sansCoordonnees ? invitesBlockers(guests) : clientBlockers(nomsEffectifs, guests);
   const guestsReady = Number(guests) > 0;
   const clientAnswered = blockers.length === 0;
   const invalidNames = nameFieldErrors(nomsEffectifs);
   const invalidFields = fieldErrors(contact);
-  const termsReady = eventDate !== null && slotId !== null && guestsReady && fiche !== null;
+  const termsReady = eventDate !== null && slotId !== null && guestsReady && (sansCoordonnees || fiche !== null);
 
   /** ⚠ RÉPONDU SE LIT DANS LES DONNÉES. Aucun compteur ne peut diverger de
    *  l'état réel, donc revenir en arrière ne replie jamais le récapitulatif. */
@@ -417,13 +431,13 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     () => ({
       contact: contactAnswered,
       // ⛔ Rang 41 : l'étape Client n'est répondue qu'une fois la fiche LÀ (trouvée ou créée) — sans elle, le devis n'aurait aucune fiche à porter.
-      client: clientAnswered && fiche !== null,
+      client: clientAnswered && (sansCoordonnees || fiche !== null),
       date: eventDate !== null,
       slot: slotId !== null,
       services: servicesAnswered,
       quote: quote !== null
     }),
-    [contactAnswered, clientAnswered, fiche, eventDate, slotId, servicesAnswered, quote]
+    [contactAnswered, clientAnswered, sansCoordonnees, fiche, eventDate, slotId, servicesAnswered, quote]
     // ⚠ `step` n'y figure PAS, et c'est voulu : ce que ce memo calcule ne dépend
     // que des DONNÉES. Le jour où quelqu'un y fera entrer l'étape courante, il
     // réintroduira la logique de la maquette — un récapitulatif qui se replie.
@@ -481,6 +495,11 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setError(null);
     setServicesAnswered(false);
     setSlotCleared(false);
+    setSansCoordonnees(false);
+    setChaineBrouillon(false);
+    setLangueBrouillon(false);
+    setBrouillonTelecharge(false);
+    setPromu(false);
     goTo("contact");
   };
 
@@ -526,7 +545,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   /** Rang 41 — les noms font partie du DEVIS (sa copie, K-4) : les changer jette le total, comme toute condition. */
   const setNomsSafe = (next: Noms) => {
     setNoms(next);
-    invalidate();
+    // ⛔ L36-2 (D-23) : le total d'un brouillon ne dépend NI de la fiche NI des noms — le jeter ferait passer la promotion par une version de plus, inutile.
+    if (!chaineBrouillon) invalidate();
   };
 
   /** K-12 — une retouche du pro au contact de la conversion : elle l'emporte sur le préremplissage, champ par champ. */
@@ -551,9 +571,11 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * retouches de la conversion aussi, et des noms venus de l'ANCIENNE fiche ne passent pas à la nouvelle.
    */
   const confirmContact = () => {
+    // ⛔ L36-2 : « Continuer » DONNE des coordonnées — le mode « sans coordonnées » s'arrête ici.
+    setSansCoordonnees(false);
     // ⚠ Sans recherche à faire, AUCUN appel : la navigation reste synchrone, comme « Continuer » des autres étapes.
     if (identifiantCherche) {
-      goTo(firstUnanswered(answered));
+      goTo(firstUnanswered({ ...answered, contact: true, client: clientBlockers(nomsEffectifs, guests).length === 0 && fiche !== null }));
       return;
     }
     const saisi = identifiant;
@@ -572,7 +594,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       setFiche(trouvee);
       setFicheTrouvee(trouvee !== null);
       setRetouches({});
-      invalidate();
+      // ⛔ L36-2 (D-23) : un brouillon ne porte aucun client — changer de coordonnées ne périme pas son total.
+      if (!chaineBrouillon) invalidate();
       goTo("client");
     });
   };
@@ -583,6 +606,11 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * ⚠ Un identifiant modifié et pas encore cherché ne crée rien : on retourne au contact plutôt que de créer une fiche sur une saisie non cherchée.
    */
   const confirmClient = () => {
+    // ⛔ L36-2 (Q2) : un brouillon n'a ni fiche ni nom — rien à chercher, rien à créer.
+    if (sansCoordonnees) {
+      goTo(firstUnanswered({ ...answered, client: true }));
+      return;
+    }
     // ⚠ Une fiche déjà là : AUCUN appel, la navigation reste synchrone.
     if (fiche !== null) {
       goTo(firstUnanswered({ ...answered, client: true }));
@@ -618,17 +646,20 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     guests: Number(guests),
     ...(picks.length === 0 ? {} : { services: picks.map((serviceId) => ({ serviceId })) }),
     // ⛔ Rang 41 (D336, K-4) : la fiche et la COPIE des noms de l'écran — ceux de la fiche quand elle est liée (MD-6).
-    ...(fiche === null ? {} : copiePourDevis(nomsEffectifs, fiche.id))
+    // ⛔ L36-2 (R-1) : ni fiche ni nom pour un brouillon, ni à la création ni dans une révision (la promotion est le seul geste qui les inscrit).
+    ...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : copiePourDevis(nomsEffectifs, fiche.id))
   });
 
   const compute = () => {
     void run(async () => {
       const next =
         chainQuoteId === null
-          ? await quotes.create(venue.id, body())
+          ? await quotes.create(venue.id, sansCoordonnees ? { ...body(), isOfficial: false as const } : body())
           : await quotes.revise(chainQuoteId, body());
       setQuote(next);
       setChainQuoteId(next.id);
+      // L'état de la chaîne vient du SERVEUR, jamais d'un drapeau d'écran.
+      setChaineBrouillon(next.isOfficial === false);
       setStale(false);
     });
   };
@@ -761,6 +792,51 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     })();
   };
 
+  // ⛔ L36-2 (D339) — LES TROIS GESTES D'UN BROUILLON. Aucun ne remet, ne convertit ni ne calcule un montant.
+  /** Q1 — « le client ne donne ni numéro ni e-mail » : le devis sera un brouillon. Les coordonnées déjà tapées ne servent plus à CE devis (il n'a pas de client). */
+  const choisirSansCoordonnees = () => {
+    setSansCoordonnees(true);
+    setFiche(null);
+    setFicheTrouvee(false);
+    setCherche(null);
+    setNoms(NO_NOMS);
+    setRetouches({});
+    goTo("client");
+  };
+  /** Le brouillon veut un client : retour à l'étape Contact (le « Continuer » ordinaire, la recherche K-1, puis les noms). */
+  const ajouterLesCoordonnees = () => {
+    setSansCoordonnees(false);
+    goTo("contact");
+  };
+  /** La promotion : la fiche et les noms de l'ÉCRAN, rien d'autre — le serveur rend la même ligne, officielle, sous le même numéro. */
+  const rendreOfficiel = () =>
+    void run(async () => {
+      if (quote === null || fiche === null) return;
+      const officiel = await quotes.promote(quote.id, copiePourDevis(nomsEffectifs, fiche.id));
+      setQuote(officiel);
+      setChaineBrouillon(false);
+      setPromu(true);
+    });
+  /** R-3 — le PDF d'un brouillon : la langue choisie, le fichier sous le nom `BROUILLON-…`. NI `deliver` (la remise lui est interdite), NI la question du nom (K-5 le refuserait). */
+  const telechargerLeBrouillon = (documentLocale: QuoteDocumentLocale) => {
+    if (quote === null) return;
+    const courant = quote;
+    void (async () => {
+      setBusy(true);
+      setError(null);
+      setBrouillonTelecharge(false);
+      try {
+        const fichier = await quotes.document(courant.id, documentLocale);
+        saveBlob(fichier, quoteDocumentFilename(courant, documentLocale));
+        setBrouillonTelecharge(true);
+      } catch (cause) {
+        setError(toMessageRef.current(cause));
+      } finally {
+        setBusy(false);
+      }
+    })();
+  };
+
   const conclu = outcome !== null;
 
   /** ⚠ CE QUE DIT UNE LIGNE DE RÉCAPITULATIF : DES RÉPONSES, JAMAIS DES
@@ -769,6 +845,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const resume = (s: Step): string => {
     switch (s) {
       case "contact":
+        if (sansCoordonnees) return t("venue.ui.walkin.draftSummary");
         return [toE164(DEFAULT_PHONE_COUNTRY, identifiant.phone), identifiant.email.trim()].filter((part) => part !== "").join(" · ");
       case "client": {
         const ecritures = isAr ? [nomsEffectifs.ar, nomsEffectifs.latin] : [nomsEffectifs.latin, nomsEffectifs.ar];
@@ -815,6 +892,37 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
       <button type="button" className="wk-btn wk-btn-previous" onClick={() => goTo(previousStep)}>
         {t("venue.ui.walkin.previous")}
       </button>
+    );
+  /** ⛔ L36-2 — ce que le pro voit d'un BROUILLON à la place des coordonnées, des cinq canaux et des deux issues : le bandeau, le téléchargement, et le geste qui mène à l'officiel.
+   *  Aucun canal de remise, aucun bouton de conclusion : ils sont ABSENTS, avec leur raison écrite (`draftBody`), pas seulement grisés. */
+  const blocBrouillon =
+    quote === null || quote.isOfficial !== false ? null : (
+      <div className="wk-draft" role="group" aria-labelledby="wk-draft-title">
+        <h3 id="wk-draft-title" className="wk-draft-title">
+          {t("venue.ui.walkin.draftTitle")}
+        </h3>
+        <p className="wk-hint">{t("venue.ui.walkin.draftBody")}</p>
+        <div className="wk-total-actions">
+          <button type="button" className="wk-btn" disabled={busy} onClick={() => setLangueBrouillon(true)}>
+            {t("venue.ui.walkin.draftDownload")}
+          </button>
+          {fiche === null || sansCoordonnees ? (
+            <button type="button" className="wk-btn wk-btn-primary" disabled={busy} onClick={ajouterLesCoordonnees}>
+              {t("venue.ui.walkin.draftAddContact")}
+            </button>
+          ) : (
+            <button type="button" className="wk-btn wk-btn-primary" disabled={busy || !clientAnswered} onClick={rendreOfficiel}>
+              {t("venue.ui.walkin.draftMakeOfficial")}
+            </button>
+          )}
+        </div>
+        {fiche === null || sansCoordonnees ? null : <p className="wk-hint">{t("venue.ui.walkin.draftMakeOfficialHint")}</p>}
+        {brouillonTelecharge ? (
+          <p className="wk-hint" role="status">
+            {t("venue.ui.walkin.draftDownloaded")}
+          </p>
+        ) : null}
+      </div>
     );
   const phoneText = (kind: "country" | "placeholder" | "leadingDigit") => t(`common.phone.${kind}.${DEFAULT_PHONE_COUNTRY}`);
   const reasonText = (blocker: Blocker) =>
@@ -972,6 +1080,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                 {t("venue.ui.walkin.continue")}
               </button>
             </div>
+            {/* ⛔ L36-2 (Q1) : le SECOND bouton, sous « Continuer ». Il n'est offert que tant qu'aucune chaîne OFFICIELLE n'est commencée : un devis officiel ne redevient pas un brouillon (R-1). */}
+            {chainQuoteId === null || chaineBrouillon ? (
+              <div className="wk-no-contact">
+                <button type="button" className="wk-btn" disabled={busy} onClick={choisirSansCoordonnees}>
+                  {t("venue.ui.walkin.noContactButton")}
+                </button>
+                <p className="wk-hint">{t("venue.ui.walkin.noContactHint")}</p>
+              </div>
+            ) : null}
             {busy ? (
               <p className="wk-hint" role="status">
                 {t("venue.ui.walkin.searching")}
@@ -994,14 +1111,16 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
           <>
             {/* ⛔ Rang 41 (D336) : ce que la recherche a dit — une fiche RETROUVÉE (ses noms préremplissent CE devis, modifiables), une fiche LIÉE
                 (ses noms s'imposent, MD-6), ou AUCUNE (la fiche se créera à « Continuer », K-2). Une fiche créée à ce « Continuer » ne dit plus rien. */}
-            {fiche === null ? (
+            {sansCoordonnees ? (
+              <p className="wk-hint">{t("venue.ui.walkin.draftClientHint")}</p>
+            ) : fiche === null ? (
               <p className="wk-hint">{t("venue.ui.walkin.ficheNew")}</p>
             ) : nomsVerrouilles ? (
               <p className="wk-hint">{t("venue.ui.walkin.ficheLinked")}</p>
             ) : ficheTrouvee ? (
               <p className="wk-hint">{t("venue.ui.walkin.ficheFound")}</p>
             ) : null}
-            <div className="wk-pair">{isAr ? champsDesNoms : [...champsDesNoms].reverse()}</div>
+            {sansCoordonnees ? null : <div className="wk-pair">{isAr ? champsDesNoms : [...champsDesNoms].reverse()}</div>}
 
             <div className="wk-guests">
               <label className="wk-label" htmlFor="wk-guests">
@@ -1206,6 +1325,16 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                   <strong>{formatDZD(quote.depositCents)}</strong>
                 </div>
 
+                {/* ⛔ L36-2 : un brouillon n'a NI coordonnées, NI canaux, NI issues — le bloc du brouillon les remplace ; la promotion rend le message de succès. */}
+                {promu && quote.isOfficial !== false ? (
+                  <p className="wk-hint" role="status">
+                    {t("venue.ui.walkin.draftOfficialDone")}
+                  </p>
+                ) : null}
+                {blocBrouillon !== null ? (
+                  blocBrouillon
+                ) : (
+                  <>
                 {/* ⛔ Rang 41 (D336, K-12) — les COORDONNÉES de la conclusion, et de la remise (le SMS et l'appel lisent ce numéro, l'e-mail cette
                     adresse) : PRÉREMPLIES depuis la copie du nom que le serveur vient de rendre — coupée au PREMIER espace (MD-9) — et depuis la
                     fiche. Les quatre champs restent MODIFIABLES : `convert` envoie ce qu'ils affichent. Rien n'est réécrit dans la fiche. */}
@@ -1302,6 +1431,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                   </p>
                 )}
                 <p className="wk-hint">{t("venue.ui.walkin.outcomeHint")}</p>
+                  </>
+                )}
               </div>
             )}
             {/* « Précédent » : l'étape des prestations. Absent une fois l'affaire conclue (`previousButton` est alors nul). */}
@@ -1342,6 +1473,20 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
           if (canal !== null) remettre(canal, locale);
         }}
         onCancel={() => setLangueDe(null)}
+      />
+
+      {/* ⛔ L36-2 (R-3) : la boîte de LANGUE du téléchargement d'un brouillon — le même choix que celui des canaux, mais le choix ne lance QUE le téléchargement. « Annuler » ne lance rien. */}
+      <ChoiceDialog
+        open={langueBrouillon}
+        title={t("venue.ui.walkin.langDialogTitle")}
+        description={t("venue.ui.walkin.langDialogDescription")}
+        options={QUOTE_DOCUMENT_LOCALES.map((locale) => ({ id: locale, label: t(LANGUE_DU_PDF[locale].labelKey), lang: locale, dir: LANGUE_DU_PDF[locale].dir }))}
+        cancelLabel={t("venue.ui.walkin.langDialogCancel")}
+        onChoose={(locale) => {
+          setLangueBrouillon(false);
+          telechargerLeBrouillon(locale);
+        }}
+        onCancel={() => setLangueBrouillon(false)}
       />
 
       {/* ⛔ Rang 41 (D336, K-5) : la question du NOM qui manque à la langue choisie — montée le temps de la question seulement. Valider complète la

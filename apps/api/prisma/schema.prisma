@@ -1021,6 +1021,12 @@ model Quote {
   clientNameAr    String?    @map("client_name_ar")
   clientNameLatin String?    @map("client_name_latin")
 
+  /// D339 (rang 43, L36-2) — le devis est-il OFFICIEL ? `false` = un BROUILLON non officiel : ni remis, ni accepté, ni converti en réservation, sans fiche ni nom de client. DEFAULT `true` :
+  /// tout devis d'avant le lot est officiel, sans reprise de données. La promotion (`POST /quotes/:id/promote`) le passe à `true` sur la MÊME ligne (même numéro). Aucune route ne l'écrit à `false`.
+  /// ⚠ Déclarée ici ; les garanties — la `CHECK quotes_unofficial_inert` et le déclencheur `bookings_quote_must_be_official` (sur `bookings`) — sont dans la MIGRATION
+  /// `20261028100000_quote_unofficial_draft` (D186) : Prisma ne les exprime pas.
+  isOfficial Boolean @default(true) @map("is_official")
+
   venue        Venue         @relation(fields: [venueId], references: [id], onDelete: Restrict)
   client       User?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
   clientRecord ProClientRecord? @relation(fields: [clientRecordId], references: [id], onDelete: SetNull)

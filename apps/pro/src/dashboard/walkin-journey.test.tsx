@@ -2275,7 +2275,8 @@ describe("⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le bro
     await repondrePrestations();
   }
   async function calculerBrouillon(over: Parameters<typeof setup>[0] = {}) {
-    const outils = await setup({ quotes: { create: vi.fn().mockResolvedValue(brouillonServeur()), promote: vi.fn().mockResolvedValue(promuServeur()), ...over.quotes }, ...over });
+    // ⚠ `...over` d'ABORD, puis `quotes` : l'inverse laisserait la surcharge d'un test REMPLACER l'objet entier et perdre `create` — défaut de test relevé au vert (voir la section D339).
+    const outils = await setup({ ...over, quotes: { create: vi.fn().mockResolvedValue(brouillonServeur()), promote: vi.fn().mockResolvedValue(promuServeur()), ...over.quotes } });
     await allerAuBrouillon();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     await screen.findByText(montant(478_600_000));
@@ -2531,5 +2532,36 @@ describe("⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le bro
       expect((ar as string).trim(), `AR vide : ${cle}`).not.toBe("");
       expect(fr, `FR = AR : ${cle}`).not.toBe(ar);
     }
+  });
+
+  // ⚠ Les deux tests suivants sont ÉCRITS APRÈS les rouges, avec le code : `neutralize-r43.py` a montré que deux gardes de l'écran (P-3 et P-13) ne rougissaient aucun test. Ils rougissent
+  // contre la mutation correspondante (voir la section D339) ; ils n'ont pas de sortie « rouge d'avant », puisque la garde qu'ils mesurent n'existait pas.
+  it("⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion", async () => {
+    const { quotes } = await calculerBrouillon({ quotes: { revise: vi.fn().mockResolvedValue(brouillonServeur({ version: 2, reference: "BROUILLON-2026-0003-0014 v2" })) } });
+    fireEvent.click(screen.getByRole("button", { name: FR.draftAddContact }));
+    await laisserRetomber();
+    await repondreContact();
+    await repondreNoms();
+    expect(screen.getByRole("button", { name: FR.draftMakeOfficial })).toBeEnabled();
+    modifierDepuisRecap(/Modifier.*Client/);
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "250" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(quotes.revise).toHaveBeenCalledTimes(1));
+    expect(quotes.revise).toHaveBeenCalledWith("q1", { eventDate: LIBRE, slotTemplateId: SLOT_ID, guests: 250 });
+    expect(quotes.promote, "la révision n'est pas la promotion").not.toHaveBeenCalled();
+  });
+
+  it("⛔ le second bouton n'est plus offert quand une chaîne OFFICIELLE est en cours : un devis officiel ne redevient pas un brouillon (R-1)", async () => {
+    await setup();
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    modifierDepuisRecap(/Modifier.*Contact/);
+    await laisserRetomber();
+    expect(question()).toBe(FR.qContact);
+    expect(screen.queryByRole("button", { name: FR.noContactButton })).toBeNull();
   });
 });

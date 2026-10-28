@@ -15,8 +15,12 @@ import {
   type ResultatConversion,
   QUOTE_SELECT,
   type QuoteRow,
+  type DonneesPromotion,
   type QuoteStore,
   type ReferenceDeCreation,
+  type ResultatPromotion,
+  type ResultatRemise,
+  type ResultatRevision,
   type ResultatTransition
 } from "./quote-store.types";
 
@@ -72,6 +76,14 @@ export class PrismaQuoteStore implements QuoteStore {
     return numero;
   }
 
+  /** ⛔ L36-2 (D339) — la PLUS HAUTE version d'une chaîne ET son drapeau, en UNE lecture, à lire APRÈS le verrou de la chaîne. Le drapeau d'une révision se lit ICI — jamais sur la version parente (une
+   *  v1 brouillon dont la v2 a été promue donne une v3 OFFICIELLE) et jamais dans la demande. Une chaîne sans version LÈVE : le verrou vient de prouver qu'elle a une tête. */
+  private async plusHauteVersion(tx: Prisma.TransactionClient, chainId: string): Promise<{ readonly version: number; readonly isOfficial: boolean }> {
+    const derniere = await tx.quote.findFirst({ where: { chainId }, orderBy: { version: "desc" }, select: { version: true, isOfficial: true } });
+    if (derniere === null) throw new Error(`chaîne de devis sans aucune version : ${chainId}`);
+    return { version: derniere.version, isOfficial: derniere.isOfficial };
+  }
+
   /** L'identifiant d'une tête, généré par la base (`uuidv7()`, D-IDs) AVANT l'insertion : la tête naît avec `chain_id = id` (S-22). */
   private async genererIdentifiant(tx: Prisma.TransactionClient): Promise<string> {
     const lignes = await tx.$queryRaw<{ id: string }[]>`SELECT uuidv7() AS id`;
@@ -87,17 +99,22 @@ export class PrismaQuoteStore implements QuoteStore {
   private async checkAndSet(
     quoteId: string,
     statutsAdmis: readonly QuoteStatus[],
-    data: Prisma.QuoteUpdateManyMutationInput
-  ): Promise<ResultatTransition> {
+    data: Prisma.QuoteUpdateManyMutationInput,
+    exigeOfficiel: boolean
+  ): Promise<ResultatRemise> {
     return this.prisma.$transaction(async (tx) => {
       const consumed = await tx.quote.updateMany({
-        where: { id: quoteId, status: { in: [...statutsAdmis] } },
+        // ⛔ L36-2 (D-1) : `isOfficial: true` est DANS le WHERE, en plus du statut — la remise d'un brouillon est refusée par la condition elle-même, jamais par une lecture d'avant. L'annulation
+        // (`exigeOfficiel` faux) n'a PAS cette condition : annuler un brouillon est permis (D-12).
+        where: { id: quoteId, status: { in: [...statutsAdmis] }, ...(exigeOfficiel ? { isOfficial: true } : {}) },
         data
       });
       if (consumed.count === 0) {
         // ⚠ RELU DANS LA TRANSACTION. Hors d'elle, le statut rendu au client
         // pourrait déjà être périmé au moment où il le lit.
-        const fresh = await tx.quote.findUniqueOrThrow({ where: { id: quoteId }, select: { status: true } });
+        const fresh = await tx.quote.findUniqueOrThrow({ where: { id: quoteId }, select: { status: true, isOfficial: true } });
+        // ⛔ L'ORDRE EST UNE RÈGLE MÉTIER : le STATUT passe avant l'état officiel. Un brouillon ANNULÉ est clos — c'est l'information utile —, seul un brouillon OUVERT répond « pas officiel ».
+        if (exigeOfficiel && !fresh.isOfficial && statutsAdmis.includes(fresh.status)) return { ok: false, raison: "nonOfficiel" } as const;
         return { ok: false, raison: "statutConflit", statutActuel: fresh.status } as const;
       }
       const devis = await tx.quote.findUniqueOrThrow({ where: { id: quoteId }, select: QUOTE_SELECT });
@@ -122,7 +139,9 @@ export class PrismaQuoteStore implements QuoteStore {
           version: 1,
           referenceYear: reference.annee,
           referenceNumber: numero,
-          createdAt: reference.creeLe
+          createdAt: reference.creeLe,
+          // L36-2 (D339) : le drapeau que le SERVICE a décidé — même compteur, même transaction, qu'il soit officiel ou non.
+          isOfficial: reference.officiel
         },
         select: { id: true }
       });
@@ -135,23 +154,30 @@ export class PrismaQuoteStore implements QuoteStore {
     chainId: string;
     parentQuoteId: string;
     chiffre: DevisChiffre;
-  }): Promise<QuoteRow> {
+  }): Promise<ResultatRevision> {
     return this.prisma.$transaction(async (tx) => {
       // Rang 39 : le verrou de la tête rend aussi l'année et le numéro de sa référence, que la version RECOPIE — aucun compteur n'est touché.
       const tete = await this.verrouillerChaine(tx, args.chainId);
-      const max = await tx.quote.aggregate({ where: { chainId: args.chainId }, _max: { version: true } });
-      return tx.quote.create({
+      // ⛔ L36-2 (D-15, R-1) : la plus haute version de la chaîne — son numéro ET son drapeau — se lit SOUS LE VERROU, jamais avant. Le drapeau d'une révision est HÉRITÉ d'elle.
+      const derniere = await this.plusHauteVersion(tx, args.chainId);
+      // Un brouillon ne porte NI fiche NI nom (la CHECK `quotes_unofficial_inert`) : refusé ICI, avant toute écriture — le geste qui inscrit un client est la promotion.
+      if (!derniere.isOfficial && (args.chiffre.clientRecordId !== null || args.chiffre.clientNameAr !== null || args.chiffre.clientNameLatin !== null)) {
+        return { ok: false, raison: "brouillonAvecClient" } as const;
+      }
+      const devis = await tx.quote.create({
         data: {
           venueId: args.venueId,
           ...args.chiffre,
           chainId: args.chainId,
-          version: (max._max.version ?? 1) + 1,
+          version: derniere.version + 1,
           referenceYear: tete.referenceYear,
           referenceNumber: tete.referenceNumber,
-          parentQuoteId: args.parentQuoteId
+          parentQuoteId: args.parentQuoteId,
+          isOfficial: derniere.isOfficial
         },
         select: QUOTE_SELECT
       });
+      return { ok: true, devis } as const;
     });
   }
 
@@ -160,8 +186,8 @@ export class PrismaQuoteStore implements QuoteStore {
     statutsAdmis: readonly QuoteStatus[];
     sentVia: string;
     sentAt: Date;
-  }): Promise<ResultatTransition> {
-    return this.checkAndSet(args.quoteId, args.statutsAdmis, { sentVia: args.sentVia, sentAt: args.sentAt });
+  }): Promise<ResultatRemise> {
+    return this.checkAndSet(args.quoteId, args.statutsAdmis, { sentVia: args.sentVia, sentAt: args.sentAt }, true);
   }
 
   async changerStatut(args: {
@@ -169,7 +195,10 @@ export class PrismaQuoteStore implements QuoteStore {
     statutsAdmis: readonly QuoteStatus[];
     nouveauStatut: QuoteStatus;
   }): Promise<ResultatTransition> {
-    return this.checkAndSet(args.quoteId, args.statutsAdmis, { status: args.nouveauStatut });
+    const resultat = await this.checkAndSet(args.quoteId, args.statutsAdmis, { status: args.nouveauStatut }, false);
+    // Un changement de statut n'exige pas l'état officiel : « pas officiel » est IMPOSSIBLE ici. Une erreur de programmation, bruyante, pas un cas métier.
+    if (!resultat.ok && resultat.raison === "nonOfficiel") throw new Error("changerStatut : un changement de statut n'exige pas l'état officiel, « nonOfficiel » est impossible");
+    return resultat;
   }
 
   /** ⛔ CHEMIN DE L'ARGENT. UNE seule requête : la demande ET ses lignes.
@@ -260,6 +289,52 @@ export class PrismaQuoteStore implements QuoteStore {
     }
   }
 
+  async promouvoir(donnees: DonneesPromotion): Promise<ResultatPromotion> {
+    return this.prisma.$transaction(async (tx) => {
+      // 1. La ligne, par la RELATION au pro (D149) : un autre pro, une salle supprimée et un identifiant inexistant rendent la MÊME réponse.
+      const propre = await tx.quote.findFirst({
+        where: { id: donnees.quoteId, venue: { deletedAt: null, owner: { userId: donnees.acteur.userId } } },
+        select: { id: true, chainId: true, version: true }
+      });
+      if (propre === null) return { ok: false, raison: "introuvable" } as const;
+      // 2. Le VERROU de la chaîne — celui de `creerRevision` : promotion ‖ révision se sérialisent, et deux promotions simultanées font la queue.
+      await this.verrouillerChaine(tx, propre.chainId);
+      // 3. Seule la DERNIÈRE version se promeut (D-6) : le serveur dit laquelle est active.
+      const derniere = await this.plusHauteVersion(tx, propre.chainId);
+      if (propre.version < derniere.version) return { ok: false, raison: "versionNonActive", versionActive: derniere.version } as const;
+      // 4. Le CHECK-AND-SET, compte = 1 exigé (D305). Le drapeau, la fiche et les deux copies s'écrivent ENSEMBLE : la CHECK `quotes_unofficial_inert` juge la ligne entière.
+      const ecrit = await tx.quote.updateMany({
+        where: { id: donnees.quoteId, isOfficial: false, status: { in: [...donnees.statutsAdmis] } },
+        data: {
+          isOfficial: true,
+          clientRecordId: donnees.copie.clientRecordId,
+          clientNameAr: donnees.copie.clientNameAr,
+          clientNameLatin: donnees.copie.clientNameLatin
+        }
+      });
+      if (ecrit.count === 0) {
+        // ⚠ La relecture ne sert qu'à CHOISIR le code. « Déjà officiel » est vrai quel que soit le statut ; pour un brouillon, le statut dit « clos ».
+        const fresh = await tx.quote.findUniqueOrThrow({ where: { id: donnees.quoteId }, select: { status: true, isOfficial: true } });
+        if (fresh.isOfficial) return { ok: false, raison: "dejaOfficiel" } as const;
+        return { ok: false, raison: "statutConflit", statutActuel: fresh.status } as const;
+      }
+      // 5. UNE ligne d'audit, dans la MÊME transaction, seulement quand le compte vaut 1. ⛔ Le drapeau et l'identifiant de fiche — AUCUN nom, AUCUN numéro, AUCUN e-mail (S-81).
+      await tx.auditLog.create({
+        data: {
+          actorId: donnees.acteur.userId,
+          actorRole: donnees.acteur.role,
+          action: "quote.promote",
+          entityType: "quote",
+          entityId: donnees.quoteId,
+          before: { isOfficial: false, clientRecordId: null },
+          after: { isOfficial: true, clientRecordId: donnees.copie.clientRecordId }
+        }
+      });
+      const devis = await tx.quote.findUniqueOrThrow({ where: { id: donnees.quoteId }, select: QUOTE_SELECT });
+      return { ok: true, devis } as const;
+    });
+  }
+
   async listerDeLaSalle(venueId: string): Promise<QuoteRow[]> {
     return this.prisma.quote.findMany({
       where: { venueId },
@@ -315,7 +390,7 @@ export class PrismaQuoteStore implements QuoteStore {
     return this.prisma.$transaction(async (tx) => {
       // ⛔ MD-7 — le compare-and-set est dans le WHERE : la copie de cette écriture NULLE, le devis du pro, sa salle vivante. Jamais lire puis écrire.
       const ecrit = await tx.quote.updateMany({
-        where: { id: args.quoteId, ...(enArabe ? { clientNameAr: null } : { clientNameLatin: null }), venue: { deletedAt: null, owner: { userId: args.userId } } },
+        where: { id: args.quoteId, isOfficial: true, ...(enArabe ? { clientNameAr: null } : { clientNameLatin: null }), venue: { deletedAt: null, owner: { userId: args.userId } } },
         data: enArabe ? { clientNameAr: args.nom } : { clientNameLatin: args.nom }
       });
       if (ecrit.count === 0) return { ok: false } as const;

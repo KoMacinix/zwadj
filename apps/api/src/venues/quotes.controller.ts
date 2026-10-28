@@ -17,6 +17,7 @@ import {
   quoteConvertSchema,
   quoteCreateSchema,
   quoteDeliverSchema,
+  quotePromoteSchema,
   quoteReviseSchema,
   UserRole,
   type QuoteClientNameInput,
@@ -24,7 +25,9 @@ import {
   type QuoteConversionDTO,
   type QuoteCreateInput,
   type QuoteDTO,
-  type QuoteDeliverInput
+  type QuoteDeliverInput,
+  type QuotePromoteInput,
+  type QuoteReviseInput
 } from "@zwadj/types";
 import { CurrentUser, Roles } from "../auth/auth.decorators";
 import type { AuthenticatedUser } from "../auth/auth.types";
@@ -72,7 +75,9 @@ export class QuotesController {
     description:
       "⛔ Rang 41 (D336, K-4) : `clientId` est RETIRÉ (DB-15 — le schéma strict le refuse) ; le devis se rattache à une FICHE du pro " +
       "(`clientRecordId`) et porte la COPIE du nom POUR CE devis (`clientNameAr`, `clientNameLatin`, au moins une écriture). Sans fiche, il se crée " +
-      "comme avant. Les prix sont résolus par le serveur — salle via le moteur B3, prestations via le catalogue."
+      "comme avant. Les prix sont résolus par le serveur — salle via le moteur B3, prestations via le catalogue. " +
+      "⛔ L36-2 (D339) : `isOfficial: false` demande un BROUILLON non officiel (référence `BROUILLON-…`, même compteur) — le SEUL moyen ; `true` est refusé, omis il est officiel. " +
+      "Un brouillon ne porte NI fiche NI nom (400 `draftHasNoClient`) : ni remis, ni accepté, ni converti. Il se rend officiel par `POST /quotes/:id/promote`."
   })
   @ApiCreatedResponse({ description: "QuoteDTO en DRAFT." })
   @ApiNotFoundResponse({ description: "404 indistinct, ou créneau inconnu." })
@@ -96,7 +101,7 @@ export class QuotesController {
       "mais n'imprime rien et n'envoie rien — aucun transport SMS ni e-mail n'existe encore (rang 33, D326)."
   })
   @ApiCreatedResponse({ description: "QuoteDTO inchangé, `sentVia` et `sentAt` désormais renseignés." })
-  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT — un devis refusé ou remplacé ne se remet pas." })
+  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT — un devis refusé ou remplacé ne se remet pas. QUOTE_NOT_OFFICIAL — un brouillon non officiel ne se remet pas (L36-2)." })
   deliver(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
@@ -114,11 +119,11 @@ export class QuotesController {
       "remise — le client garde l'ancienne sous les yeux pendant que le pro prépare la nouvelle."
   })
   @ApiCreatedResponse({ description: "QuoteDTO, version N+1, en DRAFT." })
-  @ApiConflictResponse({ description: "Chaîne close (acceptée, refusée ou remplacée)." })
+  @ApiConflictResponse({ description: "Chaîne close (acceptée, refusée ou remplacée). QUOTE_DRAFT_HAS_NO_CLIENT — une chaîne brouillon ne reçoit ni fiche ni nom (L36-2)." })
   revise(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
-    @Body(new ZodValidationPipe(quoteReviseSchema)) body: QuoteCreateInput
+    @Body(new ZodValidationPipe(quoteReviseSchema)) body: QuoteReviseInput
   ): Promise<QuoteDTO> {
     return this.quotes.revise(user.userId, id, body);
   }
@@ -138,7 +143,7 @@ export class QuotesController {
       "par une nouvelle VERSION."
   })
   @ApiCreatedResponse({ description: "QuoteDTO inchangé, `bookingId` désormais renseigné." })
-  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT ou QUOTE_ALREADY_CONVERTED." })
+  @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT, QUOTE_NOT_OFFICIAL (un brouillon ne se convertit pas, L36-2) ou QUOTE_ALREADY_CONVERTED." })
   convert(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
@@ -163,6 +168,25 @@ export class QuotesController {
   @ApiConflictResponse({ description: "QUOTE_STATUS_CONFLICT." })
   cancel(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<QuoteDTO> {
     return this.quotes.cancel(user.userId, id);
+  }
+
+  @Post("quotes/:id/promote")
+  @ApiOperation({
+    summary: "L36-2 — rend OFFICIEL un brouillon non officiel",
+    description:
+      "La MÊME ligne, le MÊME numéro : `BROUILLON-…` devient `DEVIS-…`. Le corps est la forme de K-4 — la FICHE du pro (obligatoire) et au moins un nom. Une transaction : le verrou de la chaîne, la dernière " +
+      "version seule, un check-and-set sur `is_official` (compte = 1 exigé), UNE ligne d'audit (`quote.promote`) sans nom, numéro ni e-mail. Aucun montant ne change, aucun compteur n'est touché. " +
+      "L'ordre des refus : devis introuvable (404), fiche (404 indistinct, 409 fiche liée), version non active (409), déjà officiel (409), statut (409)."
+  })
+  @ApiCreatedResponse({ description: "QuoteDTO, officiel, même numéro." })
+  @ApiNotFoundResponse({ description: "QUOTE_NOT_FOUND ou CLIENT_RECORD_NOT_FOUND — 404 indistincts." })
+  @ApiConflictResponse({ description: "QUOTE_VERSION_NOT_ACTIVE (porte `latestVersion`), QUOTE_ALREADY_OFFICIAL, QUOTE_STATUS_CONFLICT, CLIENT_RECORD_LINKED." })
+  promote(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param("id") id: string,
+    @Body(new ZodValidationPipe(quotePromoteSchema)) body: QuotePromoteInput
+  ): Promise<QuoteDTO> {
+    return this.quotes.promote(user, id, body);
   }
 
   @Post("quotes/:id/client-name")

@@ -33,6 +33,17 @@ import type { QuoteDocumentLine, QuoteDocumentRecord } from "./quote-document-so
 
 const MESSAGES = { fr: frMessages, ar: arMessages } as const;
 
+/**
+ * ⛔ L36-2 (D339, D-19) — LE FILIGRANE D'UN BROUILLON. Une couleur PROPRE (qu'aucune autre règle du document n'emploie : son décompte dans le PDF EST son nombre d'apparitions) et `position: fixed`, la seule
+ * position qui se répète sur CHAQUE page imprimée — MESURÉ par le spike de D338 (1, 4 et 7 pages ⇒ 1, 4 et 7 poses ; `absolute` : une pose sur trois pages). Les valeurs sont celles du spike
+ * (`font-size: 84pt; font-weight: 700; opacity: 0.18; rotate(-28deg)`). La LISIBILITÉ du filigrane sur les montants ne se mesure pas : Ko regarde un brouillon de plusieurs pages (S-82).
+ * Un devis OFFICIEL n'en a AUCUN : ni l'élément, ni la règle de style.
+ */
+export const DRAFT_WATERMARK_RGB = [31, 127, 201] as const;
+const WATERMARK_CSS = `
+.filigrane { position: fixed; inset-inline: 0; top: 42%; text-align: center; font-size: 84pt; font-weight: 700; color: rgb(${DRAFT_WATERMARK_RGB.join(", ")}); opacity: 0.18; transform: rotate(-28deg); pointer-events: none; }
+`;
+
 const CSS = `
 @page { size: A4; margin: 16mm 14mm; }
 * { box-sizing: border-box; }
@@ -99,6 +110,8 @@ export function buildQuoteDocumentHtml(input: {
 }): string {
   const { record, locale, issuedOn, fontCss } = input;
   const L = MESSAGES[locale].quote.document;
+  // L36-2 (D339) : un devis NON officiel porte le filigrane ; son champ « Client » affiche « — » parce que la copie du nom est NULLE (la CHECK : un brouillon ne porte ni fiche ni nom — Q2).
+  const brouillon = !record.isOfficial;
   const rtl = locale === "ar";
   const salle = rtl ? record.venue.nameAr : record.venue.nameFr;
   const creneau =
@@ -130,6 +143,7 @@ ${record.lines.map((l, i) => html`    <tr><td>${rtl ? l.nameAr : l.nameFr}</td>$
 <style>
 ${raw(fontCss)}
 ${raw(CSS)}
+${brouillon ? raw(WATERMARK_CSS) : ""}
 </style></head>
 <body>
 <h1>${salle}</h1>
@@ -151,6 +165,7 @@ ${prestations}
   </dl>
 </section>
 <p class="note">${L.note}</p>
+${brouillon ? html`<div class="filigrane" aria-hidden="true">${L.draft}</div>` : ""}
 </body></html>`;
   return toHtmlString(page);
 }

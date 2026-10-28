@@ -56,6 +56,8 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
         version: true,
         chainId: true,
         status: true,
+        // L36-2 (D339) : le drapeau, avec le devis — le préfixe de la référence et le filigrane en dépendent.
+        isOfficial: true,
         eventDate: true,
         guests: true,
         basePriceCents: true,
@@ -77,11 +79,12 @@ export class PrismaQuoteDocumentSource implements QuoteDocumentSource {
     const plusHaute = await this.prisma.quote.aggregate({ where: { chainId: row.chainId }, _max: { version: true } });
     return {
       id: row.id,
-      reference: formatQuoteReference({ year: row.referenceYear, venueNumber: row.venue.number, quoteNumber: row.referenceNumber, version: row.version }),
+      reference: formatQuoteReference({ year: row.referenceYear, venueNumber: row.venue.number, quoteNumber: row.referenceNumber, version: row.version, official: row.isOfficial }),
       version: row.version,
       // `_max` d'une chaîne dont la ligne vient d'être lue n'est jamais nul ; le repli n'existe que pour le typage et vaut « cette version ».
       latestVersion: plusHaute._max.version ?? row.version,
       status: row.status as QuoteStatus,
+      isOfficial: row.isOfficial,
       eventDate: row.eventDate.toISOString().slice(0, 10),
       guests: row.guests,
       basePriceCents: row.basePriceCents,

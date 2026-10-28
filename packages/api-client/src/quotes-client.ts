@@ -12,7 +12,8 @@ import type {
   QuoteCreateInput,
   QuoteDTO,
   QuoteDeliverInput,
-  QuoteDocumentLocale
+  QuoteDocumentLocale,
+  QuotePromoteInput
 } from "@zwadj/types";
 import type { AuthedRequest } from "./venue-client";
 
@@ -49,6 +50,10 @@ export interface QuotesClient {
   /** K-5 (rang 41, D336) — la boîte de langue COMPLÈTE la copie du nom dans la langue du document (`POST /quotes/:id/client-name`) ; elle ne la remplace jamais :
    *  une copie déjà là rend 409 `QUOTE_CLIENT_NAME_ALREADY_SET`. Rend le devis, la copie complétée. */
   completeClientName(quoteId: string, input: QuoteClientNameInput): Promise<QuoteDTO>;
+  /** L36-2 (D339) — rend OFFICIEL un brouillon (`POST /quotes/:id/promote`) : la MÊME ligne, le MÊME numéro (`BROUILLON-…` devient `DEVIS-…`). Le corps est la forme de K-4 — la fiche (obligatoire) et au moins
+   *  un nom ; le serveur rend le devis, et c'est CE devis qu'il faut afficher. Erreurs : 409 `QUOTE_ALREADY_OFFICIAL`, 409 `QUOTE_VERSION_NOT_ACTIVE` (porte `latestVersion`), 409 `QUOTE_STATUS_CONFLICT`,
+   *  404 `CLIENT_RECORD_NOT_FOUND`, 409 `CLIENT_RECORD_LINKED`. */
+  promote(quoteId: string, input: QuotePromoteInput): Promise<QuoteDTO>;
 }
 
 export function createQuotesClient(request: AuthedRequest): QuotesClient {
@@ -82,6 +87,9 @@ export function createQuotesClient(request: AuthedRequest): QuotesClient {
     document: (quoteId, locale) =>
       request<Blob>(`/quotes/${encodeURIComponent(quoteId)}/document?locale=${locale}`, { responseType: "blob" }),
     completeClientName: (quoteId, input) =>
-      request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/client-name`, { method: "POST", body: input })
+      request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/client-name`, { method: "POST", body: input }),
+    // L36-2 (D339) : le chemin EN TOUTES LETTRES (D182) — `contract-api-client.int-spec.ts` le relève dans cette source.
+    promote: (quoteId, input) =>
+      request<QuoteDTO>(`/quotes/${encodeURIComponent(quoteId)}/promote`, { method: "POST", body: input })
   };
 }

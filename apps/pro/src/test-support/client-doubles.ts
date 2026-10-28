@@ -254,6 +254,8 @@ export function makeQuotesDouble(overrides: Partial<QuotesClient> = {}): QuotesC
     document: vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" })),
     // Rang 41 (D336, K-5) : la boîte de langue complète la copie du nom. Sans défaut utile : un test qui passe par elle dit ce que le serveur rend.
     completeClientName: vi.fn(),
+    // L36-2 (D339) : la promotion d'un brouillon. Sans défaut utile : un test qui passe par elle dit ce que le serveur rend (le devis OFFICIEL, même numéro).
+    promote: vi.fn(),
     ...overrides
   };
 }

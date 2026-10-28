@@ -522,7 +522,10 @@
       "alreadyConverted": "Ce devis a déjà donné lieu à une demande de réservation. Créez une nouvelle version pour repartir sur d'autres bases.",
       "versionNotActive": "Une version plus récente de ce devis existe : le PDF ne se télécharge que pour la dernière version.",
       "documentUnavailable": "Le PDF n'a pas pu être généré pour le moment. Réessayez dans un instant.",
-      "clientNameAlreadySet": "Le nom du client est déjà renseigné sur ce devis dans cette langue : il n'est jamais remplacé."
+      "clientNameAlreadySet": "Le nom du client est déjà renseigné sur ce devis dans cette langue : il n'est jamais remplacé.",
+      "notOfficial": "Ce devis est un brouillon non officiel : il ne peut être ni remis au client ni converti en réservation tant qu'il n'est pas rendu officiel.",
+      "alreadyOfficial": "Ce devis est déjà officiel.",
+      "draftHasNoClient": "Un brouillon non officiel ne porte ni fiche ni nom de client. Pour ajouter les coordonnées du client, rendez d'abord le devis officiel."
     },
     "validation": {
       "required": "Ce champ est obligatoire.",
@@ -538,7 +541,9 @@
       "nameInvalid": "Lettres, espaces, tirets et apostrophes uniquement.",
       "documentLocaleInvalid": "Langue du document invalide.",
       "clientRecordRequired": "Le nom du client se rattache à une fiche client.",
-      "clientNameRequired": "Une fiche client demande au moins un nom pour ce devis."
+      "clientNameRequired": "Une fiche client demande au moins un nom pour ce devis.",
+      "isOfficialInvalid": "Seule la valeur « false » (brouillon) peut être demandée ; un devis officiel s'obtient en omettant ce champ.",
+      "draftHasNoClient": "Un brouillon non officiel ne porte ni fiche ni nom de client."
     },
     "document": {
       "title": "Devis",
@@ -557,7 +562,8 @@
       "servicesTotal": "Prestations",
       "total": "Total à payer",
       "deposit": "Acompte",
-      "note": "Ce document récapitule les valeurs enregistrées pour ce devis au moment de son téléchargement."
+      "note": "Ce document récapitule les valeurs enregistrées pour ce devis au moment de son téléchargement.",
+      "draft": "BROUILLON"
     }
   },
   "search": {
@@ -1282,7 +1288,19 @@
         "nameDialogTitleLatin": "Nom du client en lettres latines",
         "nameDialogDescriptionAr": "Le PDF en arabe imprime le nom en arabe, et ce devis ne l'a pas encore : saisissez-le tel qu'il doit apparaître.",
         "nameDialogDescriptionLatin": "Le PDF en français imprime le nom en lettres latines, et ce devis ne l'a pas encore : saisissez-le tel qu'il doit apparaître.",
-        "nameDialogConfirm": "Valider le nom"
+        "nameDialogConfirm": "Valider le nom",
+        "noContactButton": "Le client ne donne ni numéro ni e-mail",
+        "noContactHint": "Le devis sera un brouillon non officiel : sans nom ni coordonnées, il ne pourra être ni remis au client ni converti en réservation.",
+        "draftSummary": "Sans coordonnées (brouillon)",
+        "draftClientHint": "Un brouillon ne porte pas de nom : seul le nombre d'invités est demandé.",
+        "draftTitle": "BROUILLON — non officiel",
+        "draftBody": "Ce devis n'est pas officiel : il ne peut être ni remis au client ni converti en réservation. Pour le rendre officiel, ajoutez le numéro ou l'e-mail du client.",
+        "draftDownload": "Télécharger le brouillon (PDF)",
+        "draftDownloaded": "Brouillon téléchargé. Rien n'est enregistré comme remis.",
+        "draftAddContact": "Ajouter les coordonnées du client",
+        "draftMakeOfficial": "Rendre le devis officiel",
+        "draftMakeOfficialHint": "Le devis garde le même numéro ; la fiche et le nom du client y sont inscrits.",
+        "draftOfficialDone": "Le devis est officiel : même numéro, sans le mot « brouillon »."
       },
       "wizard": {
         "stepsLabel": "Étapes de configuration de la salle",

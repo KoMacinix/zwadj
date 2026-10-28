@@ -27,7 +27,9 @@ export const QuoteCommand = {
   DELIVER: "deliver",
   REVISE: "revise",
   CONVERT: "convert",
-  CANCEL: "cancel"
+  CANCEL: "cancel",
+  /** L36-2 (D339) — rendre OFFICIEL un brouillon. N'écrit AUCUN statut : le drapeau `is_official` n'est pas un statut. */
+  PROMOTE: "promote"
 } as const;
 export type QuoteCommand = (typeof QuoteCommand)[keyof typeof QuoteCommand];
 
@@ -42,7 +44,9 @@ export const QUOTE_TRANSITIONS: Readonly<Record<QuoteCommand, QuoteTransition>> 
   [QuoteCommand.DELIVER]: { from: QUOTE_OPEN_STATUSES, to: null },
   [QuoteCommand.REVISE]: { from: QUOTE_OPEN_STATUSES, to: null },
   [QuoteCommand.CONVERT]: { from: QUOTE_OPEN_STATUSES, to: null },
-  [QuoteCommand.CANCEL]: { from: QUOTE_OPEN_STATUSES, to: QuoteStatus.CANCELLED }
+  [QuoteCommand.CANCEL]: { from: QUOTE_OPEN_STATUSES, to: QuoteStatus.CANCELLED },
+  // L36-2 : la MÊME référence que les quatre autres. Un devis non officiel est DRAFT ou CANCELLED (la CHECK), donc la source EFFECTIVE est DRAFT.
+  [QuoteCommand.PROMOTE]: { from: QUOTE_OPEN_STATUSES, to: null }
 };
 
 /** Statuts source autorisés — l'UNIQUE source des `status: { in: … }` et des

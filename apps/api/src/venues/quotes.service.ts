@@ -66,8 +66,11 @@ import {
   type QuoteCreateInput,
   type QuoteDTO,
   type QuoteDeliverInput,
+  type QuotePromoteInput,
+  type QuoteReviseInput,
   type QuoteSentVia
 } from "@zwadj/types";
+import type { AuthenticatedUser } from "../auth/auth.types";
 import { completeAussiLaFiche, copieDuNomPourDevis } from "../clients/pro-client-policy";
 import { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
@@ -183,7 +186,9 @@ export class QuotesService {
     // dans l'adaptateur. Le service dit CE QU'IL VEUT, pas comment.
     // ⛔ Rang 39 (D48, S-21) : le service est SEUL à lire l'horloge, UNE fois — l'année d'Alger de la référence et l'instant de création viennent du même appel.
     const maintenant = new Date();
-    const row = await this.devis.creerTeteDeChaine(venueId, priced, { annee: algiersYear(maintenant), creeLe: maintenant });
+    // ⛔ L36-2 (D339, Q1) : `isOfficial: false` est le SEUL moyen de demander un brouillon (le contrat refuse `true`) ; absent, le devis est OFFICIEL, comme avant.
+    const officiel = input.isOfficial !== false;
+    const row = await this.devis.creerTeteDeChaine(venueId, priced, { annee: algiersYear(maintenant), creeLe: maintenant, officiel });
 
     return this.toDTO(row);
   }
@@ -225,7 +230,11 @@ export class QuotesService {
     // ⚠ LE 409 EST LEVÉ HORS DE LA TRANSACTION DÉSORMAIS. Inoffensif : un refus
     // signifie qu'aucune ligne n'avait été écrite, donc l'annulation ne défaisait
     // rien. Mais le changement est réel et se dit (MD1 du cadrage S10b-1).
-    if (!resultat.ok) this.throwStatusConflict(resultat.statutActuel);
+    if (!resultat.ok) {
+      // ⛔ L36-2 (D-1) : un brouillon OUVERT ne se remet pas — mais le STATUT passe avant (le port a déjà tranché l'ordre).
+      if (resultat.raison === "nonOfficiel") this.throwNotOfficial();
+      this.throwStatusConflict(resultat.statutActuel);
+    }
     return this.toDTO(resultat.devis);
   }
 
@@ -250,7 +259,7 @@ export class QuotesService {
    *  ⛔ Q3 est planifié CONTRE ce commentaire : quelqu'un raisonnera dessus.
    *  Une justification périmée sur le chemin de l'argent coûte plus cher
    *  qu'une absence de justification. */
-  async revise(userId: string, quoteId: string, input: QuoteCreateInput): Promise<QuoteDTO> {
+  async revise(userId: string, quoteId: string, input: QuoteReviseInput): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
     // Une chaîne close ne se révise plus : ni un refus, ni une acceptation ne se
     // rouvrent par une version de plus.
@@ -262,13 +271,15 @@ export class QuotesService {
     const priced = await this.price(current.venueId, input, copie);
     // ⚠ LE VERROU DE CHAÎNE EST DANS L'ADAPTATEUR, avec le `MAX(version)` qu'il
     // protège. Les séparer aurait rendu la garde invisible à la relecture.
-    const row = await this.devis.creerRevision({
+    const resultat = await this.devis.creerRevision({
       venueId: current.venueId,
       chainId: current.chainId,
       parentQuoteId: current.id,
       chiffre: priced
     });
-    return this.toDTO(row);
+    // ⛔ L36-2 (D-15, R-1) : une chaîne BROUILLON ne reçoit ni fiche ni nom — refusé par le port, SOUS le verrou, sans rien écrire. Le geste qui inscrit un client est la promotion.
+    if (!resultat.ok) this.throwDraftHasNoClient();
+    return this.toDTO(resultat.devis);
   }
 
   /** Conversion — le devis devient une DEMANDE de réservation.
@@ -302,6 +313,10 @@ export class QuotesService {
   async convert(userId: string, quoteId: string, input: QuoteConvertInput): Promise<QuoteDTO> {
     const current = await this.ownedQuote(userId, quoteId);
     this.assertStatus(current, quoteAllowedFrom(QuoteCommand.CONVERT));
+
+    // ⛔ L36-2 (D-2, Q5) : un brouillon ne se convertit pas — refusé AVANT toute lecture et toute écriture, APRÈS le statut (un brouillon annulé répond « statut », le devis est clos). La base le garde aussi
+    // (le déclencheur `bookings_quote_must_be_official`) : c'est la seconde ligne, pour ce qu'aucun `convert` ne passerait.
+    if (!current.isOfficial) this.throwNotOfficial();
 
     // `bookings.quote_id` est UNIQUE : sans cette garde, une seconde conversion
     // remonterait en 500 au lieu d'un 409 lisible. La base reste l'autorité —
@@ -408,6 +423,35 @@ export class QuotesService {
     return this.toDTO(resultat.devis);
   }
 
+  /**
+   * ⛔ L36-2 (D339) — RENDRE OFFICIEL un brouillon : `POST /quotes/:id/promote`. La MÊME ligne, le MÊME numéro (`BROUILLON-…` devient `DEVIS-…`) : aucun compteur n'est touché, aucun montant ne change.
+   *
+   * L'ordre des refus est une règle métier : le devis du pro (404) ; la fiche du pro (404 indistinct) puis la copie d'une fiche LIÉE (409) ; PUIS, SOUS le verrou de la chaîne, dans le port : la version
+   * (409 `QUOTE_VERSION_NOT_ACTIVE`), « déjà officiel » (409), le statut (409). Le service décide la fiche et la copie du nom (la politique pure) ; le port écrit, et écrit la ligne d'audit.
+   * ⚠ Il prend l'ACTEUR authentifié, pas seulement son identifiant : l'identifiant ET le rôle vont dans la ligne d'audit.
+   */
+  async promote(acteur: AuthenticatedUser, quoteId: string, input: QuotePromoteInput): Promise<QuoteDTO> {
+    await this.ownedQuote(acteur.userId, quoteId);
+    const copie = await this.copieDuClient(acteur.userId, input);
+    // Une promotion exige une fiche (le contrat la rend obligatoire) : `null` ici serait une erreur de programmation, bruyante.
+    if (copie.clientRecordId === null) throw new Error("promote : le contrat exige une fiche, la copie n'en porte aucune");
+    const resultat = await this.devis.promouvoir({
+      acteur: { userId: acteur.userId, role: acteur.role },
+      quoteId,
+      statutsAdmis: quoteAllowedFrom(QuoteCommand.PROMOTE),
+      copie: { clientRecordId: copie.clientRecordId, clientNameAr: copie.clientNameAr, clientNameLatin: copie.clientNameLatin }
+    });
+    if (resultat.ok) return this.toDTO(resultat.devis);
+    if (resultat.raison === "introuvable") this.throwNotFound();
+    if (resultat.raison === "versionNonActive") {
+      throw new ConflictException({ code: QuoteErrorCode.QUOTE_VERSION_NOT_ACTIVE, message: "quote.errors.versionNotActive", latestVersion: resultat.versionActive });
+    }
+    if (resultat.raison === "dejaOfficiel") {
+      throw new ConflictException({ code: QuoteErrorCode.QUOTE_ALREADY_OFFICIAL, message: "quote.errors.alreadyOfficial" });
+    }
+    return this.throwStatusConflict(resultat.statutActuel);
+  }
+
   /** ⛔ Rang 41 (D336, K-5, S-51) — la boîte de langue COMPLÈTE la copie du nom dans la langue du document ; elle ne la remplace JAMAIS (M-6).
    *
    *  La copie se complète par compare-and-set sur `NULL` dans le port ; la FICHE, dans la même transaction, seulement si c'est la même personne (C-C3 :
@@ -425,8 +469,10 @@ export class QuotesService {
       completerLaFiche: (fiche, copie) => completeAussiLaFiche({ fiche, copie, champ: champDeLaFiche })
     });
     if (resultat.ok) return this.toDTO(resultat.devis);
-    // Refusé : le devis n'est pas au pro (404 indistinct), ou la copie est déjà là (409) — la relecture le dit.
-    if ((await this.devis.trouverDuPro(userId, quoteId)) === null) this.throwNotFound();
+    // Refusé : le devis n'est pas au pro (404 indistinct), c'est un BROUILLON (L36-2, R-3 : il n'a pas de nom à compléter), ou la copie est déjà là (409) — la relecture le dit.
+    const relu = await this.devis.trouverDuPro(userId, quoteId);
+    if (relu === null) this.throwNotFound();
+    if (!relu.isOfficial) this.throwDraftHasNoClient();
     throw new ConflictException({ code: QuoteErrorCode.QUOTE_CLIENT_NAME_ALREADY_SET, message: "quote.errors.clientNameAlreadySet" });
   }
 
@@ -437,7 +483,7 @@ export class QuotesService {
    *  dont la copie est celle de la fiche et dont un nom différent est refusé (409 `CLIENT_RECORD_LINKED`). La décision vit dans la politique pure. */
   private async copieDuClient(
     userId: string,
-    input: QuoteCreateInput
+    input: Pick<QuoteReviseInput, "clientRecordId" | "clientNameAr" | "clientNameLatin">
   ): Promise<{ readonly clientRecordId: string | null; readonly clientNameAr: string | null; readonly clientNameLatin: string | null }> {
     if (input.clientRecordId === undefined) return { clientRecordId: null, clientNameAr: null, clientNameLatin: null };
     const fiche = await this.devis.ficheDuPro(userId, input.clientRecordId);
@@ -466,7 +512,7 @@ export class QuotesService {
 
   private async price(
     venueId: string,
-    input: QuoteCreateInput,
+    input: QuoteReviseInput,
     copie: { readonly clientRecordId: string | null; readonly clientNameAr: string | null; readonly clientNameLatin: string | null }
   ) {
     const date = parseCivilDate(input.eventDate) as CivilDate;
@@ -554,6 +600,16 @@ export class QuotesService {
   }
 
 
+  /** ⛔ L36-2 (D339) — « ce devis est un brouillon non officiel », ÉCRIT UNE SEULE FOIS : la remise et la conversion le lèvent sur le même empêchement. */
+  private throwNotOfficial(): never {
+    throw new ConflictException({ code: QuoteErrorCode.QUOTE_NOT_OFFICIAL, message: "quote.errors.notOfficial" });
+  }
+
+  /** ⛔ L36-2 (D339) — « un brouillon ne porte ni fiche ni nom », ÉCRIT UNE SEULE FOIS : la révision d'une chaîne brouillon (R-1) et la boîte de langue K-5 (R-3) le lèvent. */
+  private throwDraftHasNoClient(): never {
+    throw new ConflictException({ code: QuoteErrorCode.QUOTE_DRAFT_HAS_NO_CLIENT, message: "quote.errors.draftHasNoClient" });
+  }
+
   /** ⚠ LE 409 DE DOUBLE CONVERSION, ÉCRIT UNE SEULE FOIS. La garde applicative
    *  et le refus du port doivent rendre le MÊME code : un utilisateur ne
    *  devrait pas recevoir deux erreurs différentes pour un seul empêchement. */
@@ -587,13 +643,16 @@ export class QuotesService {
       venueId: row.venueId,
       clientId: row.clientId,
       status: row.status,
+      // L36-2 (D339) : le drapeau de la ligne STOCKÉE — jamais déduit du statut ni de la référence.
+      isOfficial: row.isOfficial,
       version: row.version,
-      // K-6 (rang 39) : la référence est bâtie ICI, sur la ligne STOCKÉE, par la formule partagée — jamais depuis l'identifiant.
+      // K-6 (rang 39) : la référence est bâtie ICI, sur la ligne STOCKÉE, par la formule partagée — jamais depuis l'identifiant. L36-2 : le préfixe suit le drapeau de la ligne.
       reference: formatQuoteReference({
         year: row.referenceYear,
         venueNumber: row.venue.number,
         quoteNumber: row.referenceNumber,
-        version: row.version
+        version: row.version,
+        official: row.isOfficial
       }),
       chainId: row.chainId,
       parentQuoteId: row.parentQuoteId,

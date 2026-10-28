@@ -81,6 +81,14 @@ export function contactBlockers(contact: Contact, country: PhoneCountryId = DEFA
 }
 
 /**
+ * ⛔ L36-2 (D339, D-20) — ce qui empêche de CONTINUER après l'étape Client d'un BROUILLON : le nombre d'invités SEUL (un brouillon ne porte pas de nom, Q2). C'est la MÊME règle que celle de l'étape Client
+ * complète — `clientBlockers` l'appelle —, écrite UNE fois : le prix en dépend (une prestation par personne se chiffre `unitPrice × guests`).
+ */
+export function invitesBlockers(guests: string): Blocker[] {
+  return Number(guests) > 0 ? [] : ["needGuests"];
+}
+
+/**
  * Ce qui empêche de CONTINUER après l'étape Client : un nom au moins, dans l'une OU l'autre écriture (DB-3), chaque nom SAISI passant la règle du
  * contrat ; puis le nombre d'invités (il chiffre les prestations). ⛔ Rang 41 (D336) : le contact n'est plus ici — c'est l'étape d'AVANT
  * (`identifierBlockers`), et celui de la conclusion se juge à part (`contactBlockers`).
@@ -92,7 +100,7 @@ export function clientBlockers(noms: Noms, guests: string): Blocker[] {
   if (ar === "" && latin === "") out.push("needName");
   if (ar !== "" && !isValidPersonName(ar)) out.push("needNameArValid");
   if (latin !== "" && !isValidPersonName(latin)) out.push("needNameLatinValid");
-  if (!(Number(guests) > 0)) out.push("needGuests");
+  out.push(...invitesBlockers(guests));
   return out;
 }
 

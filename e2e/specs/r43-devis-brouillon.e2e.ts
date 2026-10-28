@@ -162,8 +162,9 @@ for (const langue of ["fr", "ar"] as const) {
     // La base : la ligne est officielle, la fiche et la copie du nom y sont ; UNE ligne d'audit, sans le nom ni le numéro du client.
     expect(await lire(`SELECT is_official, client_record_id::text AS fiche FROM quotes WHERE id = $1`, [brouillon.id])).toEqual([{ is_official: true, fiche: fiche.id }]);
     const audit = await lire<{ action: string; entity_id: string; actor_role: string; apres: string }>(
-      `SELECT action, entity_id, actor_role, after::text AS apres FROM audit_logs WHERE entity_type = 'quote'`,
-      []
+      // ⚠ Filtré sur CE devis : la base e2e est partagée par les parcours FR et AR, qui promeuvent chacun leur devis — une lecture sans filtre compterait la ligne de l'autre.
+      `SELECT action, entity_id, actor_role, after::text AS apres FROM audit_logs WHERE entity_type = 'quote' AND entity_id = $1`,
+      [brouillon.id]
     );
     expect(audit).toHaveLength(1);
     expect(audit[0]).toMatchObject({ action: "quote.promote", entity_id: brouillon.id, actor_role: "PRO" });

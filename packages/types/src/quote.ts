@@ -260,7 +260,14 @@ export const QuoteErrorCode = {
    *  sur une panne », et l'inverse — l'écran doit pouvoir inviter à réessayer l'une et pas l'autre (rang 33, D326). */
   QUOTE_DOCUMENT_UNAVAILABLE: "QUOTE_DOCUMENT_UNAVAILABLE",
   /** 409 — `POST /quotes/:id/client-name` (K-5, rang 41) : la copie du nom dans cette langue est DÉJÀ là ; elle n'est jamais remplacée (M-6). */
-  QUOTE_CLIENT_NAME_ALREADY_SET: "QUOTE_CLIENT_NAME_ALREADY_SET"
+  QUOTE_CLIENT_NAME_ALREADY_SET: "QUOTE_CLIENT_NAME_ALREADY_SET",
+  /** 409 — L36-2 (D339) : ce devis est un BROUILLON non officiel ; il ne se remet pas (`/deliver`) et ne se convertit pas (`/convert`) tant qu'il n'est pas rendu officiel (`/promote`). Distinct de `QUOTE_STATUS_CONFLICT` :
+   *  le statut est bon, c'est la NATURE du devis qui manque. */
+  QUOTE_NOT_OFFICIAL: "QUOTE_NOT_OFFICIAL",
+  /** 409 — `POST /quotes/:id/promote` sur un devis déjà officiel (deux promotions : la seconde perd, une seule ligne d'audit). */
+  QUOTE_ALREADY_OFFICIAL: "QUOTE_ALREADY_OFFICIAL",
+  /** 409 — un BROUILLON ne porte ni fiche ni nom de client (la `CHECK quotes_unofficial_inert`) : refusé à la révision d'une chaîne brouillon (R-1) et à la boîte de langue K-5 (R-3). Le geste qui inscrit un client est la promotion. */
+  QUOTE_DRAFT_HAS_NO_CLIENT: "QUOTE_DRAFT_HAS_NO_CLIENT"
 } as const;
 export type QuoteErrorCode = (typeof QuoteErrorCode)[keyof typeof QuoteErrorCode];
 
@@ -301,7 +308,12 @@ export interface QuoteReferenceParts {
   readonly venueNumber: number;
   readonly quoteNumber: number;
   readonly version: number;
+  /** L36-2 (D339) — `false` pour un BROUILLON : `BROUILLON-2026-0001-0089 v1`. Omis ou `true` : `DEVIS-…`, exactement comme avant. SEUL le préfixe change — année, numéros et version sont ceux du devis (la promotion garde le numéro). */
+  readonly official?: boolean;
 }
+
+/** L36-2 (D339) — les DEUX préfixes d'une référence, écrits UNE fois : la formule, le motif du nom de fichier et les tests les lisent ici (jamais une troisième liste). */
+export const QUOTE_REFERENCE_PREFIX = { OFFICIAL: "DEVIS", DRAFT: "BROUILLON" } as const;
 
 /** Les bornes de l'année : celles du `CHECK` de la base (`quotes_reference_year_range`). */
 export const QUOTE_REFERENCE_YEAR_MIN = 2000;
@@ -323,11 +335,12 @@ export function formatQuoteReference(parts: QuoteReferenceParts): string {
   }
   const salle = padReference(referencePart(parts.venueNumber, "venueNumber"));
   const devis = padReference(referencePart(parts.quoteNumber, "quoteNumber"));
-  return `DEVIS-${year}-${salle}-${devis} v${referencePart(parts.version, "version")}`;
+  const prefixe = parts.official === false ? QUOTE_REFERENCE_PREFIX.DRAFT : QUOTE_REFERENCE_PREFIX.OFFICIAL;
+  return `${prefixe}-${year}-${salle}-${devis} v${referencePart(parts.version, "version")}`;
 }
 
 /** La FORME d'une référence — sert à dériver le nom du fichier ; jamais à en bâtir une. */
-const QUOTE_REFERENCE_PATTERN = /^(DEVIS-\d{4}-\d{4,}-\d{4,}) v(\d+)$/u;
+const QUOTE_REFERENCE_PATTERN = new RegExp(`^((?:${Object.values(QUOTE_REFERENCE_PREFIX).join("|")})-\\d{4}-\\d{4,}-\\d{4,}) v(\\d+)$`, "u");
 
 /**
  * Le NOM du fichier du PDF d'un devis (K-7) — `DEVIS-2026-0001-0089_fr_v1.pdf` : la référence du devis, la langue du document et la version. UNE formule, pour le serveur (`Content-Disposition`) et pour
@@ -354,6 +367,30 @@ const contactName = personNameSchema({
   invalid: "quote.validation.nameInvalid"
 });
 
+/** Les champs d'un devis ENTIER — ceux d'une création ET d'une révision (une version est un devis entier, jamais un diff). Écrits une fois. */
+const corpsDuDevis = {
+  eventDate: z.string().refine(isRealCivilDate, "quote.validation.dateFormat"),
+  slotTemplateId: z.string().uuid("quote.validation.idInvalid"),
+  guests: z.number().int().min(1, "quote.validation.guestsRange").max(100000, "quote.validation.guestsRange"),
+  services: z.array(bookingServiceChoiceSchema).max(20, "quote.validation.tooManyServices").optional(),
+  clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),
+  clientNameAr: contactName.optional(),
+  clientNameLatin: contactName.optional()
+};
+
+type FicheEtNoms = { clientRecordId?: string | undefined; clientNameAr?: string | undefined; clientNameLatin?: string | undefined };
+const porteUnNom = (corps: FicheEtNoms): boolean => corps.clientNameAr !== undefined || corps.clientNameLatin !== undefined;
+
+/** ⛔ Rang 41 (D336, MD-15) — les DEUX règles fiche ↔ nom, UNE fonction pour la création et la révision : des noms SANS fiche sont refusés (une copie se rattache à une fiche), une fiche SANS nom aussi. */
+function verifierFicheEtNoms(corps: FicheEtNoms, ctx: z.RefinementCtx): void {
+  if (corps.clientRecordId === undefined && porteUnNom(corps)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientRecordId"], message: "quote.validation.clientRecordRequired" });
+  }
+  if (corps.clientRecordId !== undefined && !porteUnNom(corps)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientNameLatin"], message: "quote.validation.clientNameRequired" });
+  }
+}
+
 /** Création d'un devis — la v1 d'une chaîne.
  *
  *  ⛔ RANG 41 (D336, K-4 amendé, S-49) — LA FICHE ET LA COPIE DU NOM ; `clientId` RETIRÉ (DB-15). Un devis peut naître SANS fiche — c'est le cas des devis
@@ -361,26 +398,26 @@ const contactName = personNameSchema({
  *  `clientNameLatin`, au moins une écriture) : DB-17 — « le nom prérempli et modifiable pour ce devis » — ne se tient pas autrement, et la fiche, elle, garde
  *  son nom (R8). Des noms SANS fiche sont refusés : une copie se rattache à une fiche. ⚠ `clientId` est désormais une clé INCONNUE : le lien à un compte ne
  *  passe plus que par la fiche et la fusion (L35-6) — un pro ne rattache plus n'importe quel identifiant de compte à un devis. La propriété de la fiche (le pro
- *  du devis) et la copie d'une fiche LIÉE (celle de la fiche) se vérifient au SERVICE, qui seul lit la base. */
+ *  du devis) et la copie d'une fiche LIÉE (celle de la fiche) se vérifient au SERVICE, qui seul lit la base.
+ *
+ *  ⛔ L36-2 (D339 ; Q1, Q2, R-2) — LE BROUILLON NON OFFICIEL : `isOfficial` n'accepte QUE `false`. Omis, le devis est OFFICIEL, exactement comme avant ;
+ *  `true` est REFUSÉ — il n'y a qu'une façon de dire « officiel » (omettre le champ). Un brouillon ne porte NI fiche NI nom : `isOfficial: false` avec l'un
+ *  ou l'autre est refusé ICI, par le contrat, avant la base (la `CHECK quotes_unofficial_inert` est la seconde ligne). UN seul refus, `draftHasNoClient`
+ *  (pas aussi « nom exigé » : le pro n'a rien à corriger d'autre que cela). */
 export const quoteCreateSchema = z
   .object({
-    eventDate: z.string().refine(isRealCivilDate, "quote.validation.dateFormat"),
-    slotTemplateId: z.string().uuid("quote.validation.idInvalid"),
-    guests: z.number().int().min(1, "quote.validation.guestsRange").max(100000, "quote.validation.guestsRange"),
-    services: z.array(bookingServiceChoiceSchema).max(20, "quote.validation.tooManyServices").optional(),
-    clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),
-    clientNameAr: contactName.optional(),
-    clientNameLatin: contactName.optional()
+    ...corpsDuDevis,
+    isOfficial: z.literal(false, { errorMap: () => ({ message: "quote.validation.isOfficialInvalid" }) }).optional()
   })
   .strict("quote.validation.unknownKey")
   .superRefine((corps, ctx) => {
-    const avecNom = corps.clientNameAr !== undefined || corps.clientNameLatin !== undefined;
-    if (corps.clientRecordId === undefined && avecNom) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientRecordId"], message: "quote.validation.clientRecordRequired" });
+    if (corps.isOfficial === false) {
+      if (corps.clientRecordId !== undefined || porteUnNom(corps)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["isOfficial"], message: "quote.validation.draftHasNoClient" });
+      }
+      return;
     }
-    if (corps.clientRecordId !== undefined && !avecNom) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientNameLatin"], message: "quote.validation.clientNameRequired" });
-    }
+    verifierFicheEtNoms(corps, ctx);
   });
 export type QuoteCreateInput = z.infer<typeof quoteCreateSchema>;
 
@@ -404,9 +441,36 @@ export type QuoteClientNameInput = z.infer<typeof quoteClientNameSchema>;
  *  ⚠ Le passage de `revise()` à l'ÉCRASEMENT appartient à Q3, avec la garde
  *  d'immuabilité (D163/D167) : l'écrasement sans la garde changerait
  *  rétroactivement le montant d'une réservation acceptée, et payée une fois E3
- *  en place. Les deux arrivent ensemble ou pas du tout. */
-export const quoteReviseSchema = quoteCreateSchema;
-export type QuoteReviseInput = QuoteCreateInput;
+ *  en place. Les deux arrivent ensemble ou pas du tout.
+ *
+ *  ⛔ L36-2 (D339, R-1) — ELLE N'EST PLUS `quoteCreateSchema`, et c'est la règle : la révision ne CHOISIT PAS le drapeau. `isOfficial` est une clé INCONNUE
+ *  (400) ; le drapeau est HÉRITÉ de la plus haute version de la chaîne, lu SOUS le verrou par le serveur. Sans cela, une révision ferait d'une chaîne officielle,
+ *  déjà remise, un brouillon v2 — par une ligne neuve que la `CHECK` accepte. Une révision d'un brouillon qui porte une fiche ou un nom est refusée par le
+ *  SERVICE (409 `QUOTE_DRAFT_HAS_NO_CLIENT`) : le geste qui inscrit un client est la promotion. */
+export const quoteReviseSchema = z
+  .object({ ...corpsDuDevis })
+  .strict("quote.validation.unknownKey")
+  .superRefine((corps, ctx) => verifierFicheEtNoms(corps, ctx));
+export type QuoteReviseInput = z.infer<typeof quoteReviseSchema>;
+
+/**
+ * L36-2 (D339, S-80 ; D-4) — `POST /quotes/:id/promote` : rendre OFFICIEL un brouillon, c'est lui inscrire une FICHE et sa COPIE du nom, dans la forme de K-4. La fiche est
+ * OBLIGATOIRE (à la différence d'une création) et au moins un nom aussi : « pour un vrai devis, il faut le numéro ou l'adresse e-mail » (Ko, 21/10/2026), et c'est la fiche qui
+ * porte ce contact. `.strict()` : la promotion ne reçoit ni date, ni invités, ni drapeau — elle ne change AUCUN montant.
+ */
+export const quotePromoteSchema = z
+  .object({
+    clientRecordId: z.string({ required_error: "quote.validation.clientRecordRequired" }).uuid("quote.validation.idInvalid"),
+    clientNameAr: contactName.optional(),
+    clientNameLatin: contactName.optional()
+  })
+  .strict("quote.validation.unknownKey")
+  .superRefine((corps, ctx) => {
+    if (!porteUnNom(corps)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["clientNameLatin"], message: "quote.validation.clientNameRequired" });
+    }
+  });
+export type QuotePromoteInput = z.infer<typeof quotePromoteSchema>;
 
 /** Conversion du devis en DEMANDE de réservation.
  *
@@ -459,6 +523,8 @@ export interface QuoteDTO {
   clientNameAr: string | null;
   clientNameLatin: string | null;
   status: QuoteStatus;
+  /** L36-2 (D339) — `false` pour un BROUILLON non officiel (ni remis, ni accepté, ni converti, sans fiche ni nom) ; `true` pour tout autre devis, ceux d'avant ce lot compris. La promotion le passe à vrai, sur la MÊME ligne. */
+  isOfficial: boolean;
   version: number;
   /** K-6 (rang 39) — la référence du devis, rendue par le serveur : `DEVIS-2026-0001-0089 v1`. L'application ne la bâtit jamais ; une révision garde le numéro, SEULE la version change. */
   reference: string;

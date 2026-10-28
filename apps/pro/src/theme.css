@@ -1030,6 +1030,25 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
+/* L36-2 (D339) — le BROUILLON non officiel : un bandeau (jetons existants, aucune couleur en dur) à la place des coordonnées, des canaux et des issues, et le second bouton du contact. */
+.wk-draft {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 2px;
+  background: var(--accent-soft);
+}
+.wk-draft-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.wk-no-contact {
+  margin-block-start: 14px;
+}
 .wk-lines {
   list-style: none;
   margin: 0 0 6px;
