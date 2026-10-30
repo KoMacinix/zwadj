@@ -173,3 +173,9 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 |---|---|
 | `docs/preuves/D339/audit-secrets-d339d.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), AVANT le commit des rouges |
 | `docs/preuves/D339/tri-audit-d339d.txt` | son tri différentiel contre `docs/preuves/D339/audit-secrets-d339c.txt` |
+
+**Extension 4** (30/10/2026, REPRISE — la session qui finit D339 après l'arrêt de la précédente ; commitée SEULE, AVANT le commit de la pièce qu'elle déclare, règle de D328 point 4. Relevé en comparant le fichier que la consigne de reprise (§ 2) demande de verser aux chemins complets de cette table : il n'y est pas) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/reprise/etat.md` | l'état relevé à la reprise, en lecture seule, versé AVANT toute autre écriture : la déclaration de Ko (§ 0), les sauvegardes (branche et empreintes), les sept fichiers de l'arbre contre cette table (a), l'ordre des dix commits prouvé par `git` (b), le diff de chacun des cinq fichiers modifiés (c), la base de développement de Ko (d), ce qui reste de la consigne (e) |
