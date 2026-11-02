@@ -179,3 +179,18 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | fichier | motif |
 |---|---|
 | `docs/preuves/D339/reprise/etat.md` | l'état relevé à la reprise, en lecture seule, versé AVANT toute autre écriture : la déclaration de Ko (§ 0), les sauvegardes (branche et empreintes), les sept fichiers de l'arbre contre cette table (a), l'ordre des dix commits prouvé par `git` (b), le diff de chacun des cinq fichiers modifiés (c), la base de développement de Ko (d), ce qui reste de la consigne (e) |
+
+**Extension 5** (02/11/2026, REPRISE — après la note de Ko du 02/11/2026 (chargeur branché, Chrome fermé) ; commitée SEULE, AVANT le commit des fichiers qu'elle couvre, règle de D328 point 4. Relevé en comparant les pièces que la note de Ko et la suite de la consigne exigent aux chemins complets de cette table : aucune n'y est. Les journaux **par campagne** de l'union ne sont PAS déclarés ici — leur liste dépend du calcul de l'union, déclaré ci-dessous avant d'être joué : ils feront l'objet d'une extension à part, avant leur commit) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/consigne-sections-2-4-5.md` | note de Ko du 02/11/2026, point 3 : le texte, mot pour mot, des sections 2, 4 et 5 de la consigne du 28/10/2026, versé comme pièce ; il entre dans le commit des pièces de clôture, APRÈS l'audit de secrets qui le couvre |
+| `docs/preuves/D339/portes/etat-machine.txt` | note de Ko, point 1 : l'état machine (secteur ou batterie, RAM libre, `chrome`, `headless_shell`) relevé AVANT les six portes et l'e2e de clôture ; un poste encore sur batterie : ces portes ne sont pas lancées |
+| `docs/preuves/D339/neutralisation/sortie-r43-int.txt` | la sortie ENTIÈRE de `neutralize-r43.py --int` (87 cibles), copiée octet pour octet du fichier de travail ; ⚠ **jouée sur batterie** (relevé du 30/10 à 18:45 : secteur `False`), fait que le rapport dit (note de Ko, point 2) |
+| `docs/preuves/D339/neutralisation/union-campagnes.py` | le calcul de l'union des campagnes à rejouer (COPIE de celui de D337 ; seuls le SHA de départ par défaut et les noms changent) ; procédure archivée comme PREUVE (D291), jamais promue en instrument |
+| `docs/preuves/D339/neutralisation/union-sortie.txt` | sa sortie, versée AVANT de jouer les campagnes (la dernière ligne `UNION: …` est ce que lit le lanceur) |
+| `docs/preuves/D339/neutralisation/jouer-union.py` | le lanceur en série de l'union (COPIE de celui de D337 ; mêmes changements) |
+| `docs/preuves/D339/neutralisation/e2e-a-la-main.py` | la neutralisation À LA MAIN de la spec `e2e/specs/r43-devis-brouillon.e2e.ts` (patron : `docs/preuves/D333/neutralisation/e2e-a-la-main.py`), qui porte aussi **la mesure du filtre d'audit de l'e2e** (note de Ko, point 4 : au moins un test exécuté, D144) |
+| `docs/preuves/D339/neutralisation/e2e-a-la-main.txt` | sa sortie, LUE |
+| `docs/preuves/D339/neutralisation/mutations-equivalentes.py` | la preuve que les cibles M-2 et M-5 de `neutralize-r43.py`, retirées comme mutations équivalentes, le sont (note de Ko, point 4 ; D325) ; procédure archivée comme PREUVE, jamais promue en instrument |
+| `docs/preuves/D339/neutralisation/mutations-equivalentes.txt` | sa sortie, LUE |
