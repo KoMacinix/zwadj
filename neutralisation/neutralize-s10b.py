@@ -81,24 +81,28 @@ CIBLES = [
         # plus rien.
         # ⛔ RÉORIENTÉE (rang 39, D333) : même raison que S10b1-1 (le verrou rend la tête que la révision recopie).
         ADAPTATEUR,
-        "      const tete = await this.verrouillerChaine(tx, args.chainId);\n      const max = await tx.quote.aggregate(",
-        "      const tete = { referenceYear: 2000, referenceNumber: 1 };\n      const max = await tx.quote.aggregate(",
+        # ⛔ RÉORIENTÉE (rang 43, D339) : la plus haute version ne se lit plus par `tx.quote.aggregate(` mais par `plusHauteVersion` (elle rend aussi le drapeau), et un commentaire sépare le verrou de cette
+        # lecture ; même faute — le verrou est remplacé par une tête inventée AVANT la lecture du maximum.
+        "      const tete = await this.verrouillerChaine(tx, args.chainId);\n      // ⛔ L36-2 (D-15, R-1) : la plus haute version de la chaîne — son numéro ET son drapeau — se lit SOUS LE VERROU, jamais avant. Le drapeau d'une révision est HÉRITÉ d'elle.\n      const derniere = await this.plusHauteVersion(tx, args.chainId);",
+        "      const tete = { referenceYear: 2000, referenceNumber: 1 };\n      // ⛔ L36-2 (D-15, R-1) : la plus haute version de la chaîne — son numéro ET son drapeau — se lit SOUS LE VERROU, jamais avant. Le drapeau d'une révision est HÉRITÉ d'elle.\n      const derniere = await this.plusHauteVersion(tx, args.chainId);",
         1,
         ["adaptateur"],
     ),
     (
         "S10b1-3. ⛔ LE STATUT ADMIS SORT DU `WHERE` — le check-and-set n'en est plus un",
         ADAPTATEUR,
-        "        where: { id: quoteId, status: { in: [...statutsAdmis] } },",
-        "        where: { id: quoteId },",
+        # ⛔ RÉORIENTÉE (rang 43, D339) : le `WHERE` porte aussi `...(exigeOfficiel ? { isOfficial: true } : {})` (D-1) ; même faute — le STATUT sort du `WHERE` ; la condition officielle reste, pour ne mesurer que le statut.
+        "        where: { id: quoteId, status: { in: [...statutsAdmis] }, ...(exigeOfficiel ? { isOfficial: true } : {}) },",
+        "        where: { id: quoteId, ...(exigeOfficiel ? { isOfficial: true } : {}) },",
         1,
         ["adaptateur"],
     ),
     (
         "S10b1-4. ⛔ LE STATUT DU REFUS N'EST PLUS RELU — le 409 ne dit plus POURQUOI",
         ADAPTATEUR,
-        'return { ok: false, raison: "statutConflit", statutActuel: fresh.status } as const;',
-        'return { ok: false, raison: "statutConflit", statutActuel: "" } as const;',
+        # ⛔ RÉORIENTÉE (rang 43, D339) : `return { ok: false, raison: "statutConflit", statutActuel: fresh.status } as const;` existe aussi dans `promouvoir` (×2) ; l'ancre porte la ligne qui précède, propre à `checkAndSet`.
+        'statutsAdmis.includes(fresh.status)) return { ok: false, raison: "nonOfficiel" } as const;\n        return { ok: false, raison: "statutConflit", statutActuel: fresh.status } as const;',
+        'statutsAdmis.includes(fresh.status)) return { ok: false, raison: "nonOfficiel" } as const;\n        return { ok: false, raison: "statutConflit", statutActuel: "" } as const;',
         1,
         # ⚠ `adaptateur` SEUL. J'avais aussi déclaré `service` : impossible, le
         # spec du service bouchonne le port et ne voit RIEN de ce qui se passe
@@ -181,8 +185,9 @@ CIBLES = [
     (
         "S10b1-13. ⛔ LE RÉSULTAT CESSE D'ÊTRE DISCRIMINÉ — le refus redevient un booléen",
         PORTS,
-        '  | { readonly ok: false; readonly raison: "statutConflit"; readonly statutActuel: QuoteStatus };',
-        '  | { readonly ok: false; readonly raison: "statutConflit" };',
+        # ⛔ RÉORIENTÉE (rang 43, D339) : la ligne `statutConflit` existe aussi dans `ResultatPromotion` (×2) ; l'ancre porte la ligne `ok: true` qui précède — propre à `ResultatTransition` (celle de `ResultatPromotion` est suivie de `introuvable`).
+        '  | { readonly ok: true; readonly devis: QuoteRow }\n  | { readonly ok: false; readonly raison: "statutConflit"; readonly statutActuel: QuoteStatus };',
+        '  | { readonly ok: true; readonly devis: QuoteRow }\n  | { readonly ok: false; readonly raison: "statutConflit" };',
         1,
         ["types"],
     ),

@@ -226,10 +226,17 @@ cible("J-6. ⛔ choisir une langue ne ferme pas la boîte avant le travail : ell
       "const canal = langueDe;\n          if (canal !== null) remettre(canal, locale);", {"pro-remise": T_FERME_AU_CHOIX})
 cible("J-7. ⛔ le libellé arabe déclare la direction `ltr` : l'arabe est présenté de gauche à droite", WK,
       '  ar: { labelKey: "venue.ui.walkin.langArabic", dir: "rtl" }', '  ar: { labelKey: "venue.ui.walkin.langArabic", dir: "ltr" }', {"pro-remise": T_ACCESSIBLE})
-cible("J-8. ⛔ le bouton arabe déclare la langue `fr`", WK, "lang: locale,", 'lang: "fr",', {"pro-remise": T_ACCESSIBLE})
-cible("J-9. la boîte ne propose que le français", WK, "options={QUOTE_DOCUMENT_LOCALES.map(", 'options={(["fr"] as const).map(', {"pro-remise": T_CINQ_BOUTONS})
+# ⛔ RÉORIENTÉE (rang 43, D339) : la boîte de langue du téléchargement d'un BROUILLON (R-3) recopie les trois lignes `title`/`description`/`options` de celle des canaux — `lang: locale,` et
+# `options={QUOTE_DOCUMENT_LOCALES.map(` ne sont plus uniques (×2). L'ancre porte son voisinage (`open={langueDe !== null}`, propre à la boîte des CANAUX) : la faute mutée est la même, au même site.
+LANGUE_CANAUX = (
+    'open={langueDe !== null}\n        title={t("venue.ui.walkin.langDialogTitle")}\n        description={t("venue.ui.walkin.langDialogDescription")}\n'
+    "        options={QUOTE_DOCUMENT_LOCALES.map((locale) => ({ id: locale, label: t(LANGUE_DU_PDF[locale].labelKey), lang: locale, dir: LANGUE_DU_PDF[locale].dir }))}"
+)
+cible("J-8. ⛔ le bouton arabe déclare la langue `fr`", WK, LANGUE_CANAUX, LANGUE_CANAUX.replace("lang: locale,", 'lang: "fr",'), {"pro-remise": T_ACCESSIBLE})
+cible("J-9. la boîte ne propose que le français", WK, LANGUE_CANAUX, LANGUE_CANAUX.replace("options={QUOTE_DOCUMENT_LOCALES.map(", 'options={(["fr"] as const).map('), {"pro-remise": T_CINQ_BOUTONS})
 cible("J-10. ⛔ le PDF est demandé au serveur dans une langue FIXE (le paramètre de `remettre` est ignoré)", WK,
-      "quotes.document(courant.id, documentLocale)", 'quotes.document(courant.id, "fr")', {"pro-remise": T_LANGUE_CHOISIE})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : `quotes.document(courant.id, documentLocale)` existe aussi dans `telechargerLeBrouillon` (×2) ; l'ancre porte la ligne qui suit (`]);`, la fin du `Promise.allSettled` de la remise).
+      "quotes.document(courant.id, documentLocale)\n        ]);", 'quotes.document(courant.id, "fr")\n        ]);', {"pro-remise": T_LANGUE_CHOISIE})
 
 # ── K — les catalogues.
 cible("K-1. « Français » est traduit dans le catalogue arabe : le libellé n'est plus écrit dans sa propre langue", CAT_AR,

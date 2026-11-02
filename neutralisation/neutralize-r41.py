@@ -147,10 +147,12 @@ cible("T-7. ⛔ la correspondance langue ↔ copie du nom est INVERSÉE (le PDF 
       '{ fr: "clientNameLatin", ar: "clientNameAr" }', '{ fr: "clientNameAr", ar: "clientNameLatin" }',
       {"doc": "le client s'imprime par la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT", "pro-fiche": "interface française : la copie latine ; interface arabe"})
 cible("T-8. ⛔ un devis accepte des noms SANS fiche", TYPES_DEVIS,
-      "if (corps.clientRecordId === undefined && avecNom) {", "if (false && avecNom) {", {"types": "MD-15 — des noms SANS fiche : refusé"})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : la variable locale `avecNom` est devenue la fonction `porteUnNom(corps)` (partagée avec le test inverse) ; même faute — des noms sans fiche passent.
+      "if (corps.clientRecordId === undefined && porteUnNom(corps)) {", "if (false && porteUnNom(corps)) {", {"types": "MD-15 — des noms SANS fiche : refusé"})
 cible("T-9. ⛔ DB-15 (dette de preuve de r41, D337) — `clientId` redevient une clé CONNUE de la création d'un devis (un pro rattacherait n'importe quel identifiant de compte)", TYPES_DEVIS,
-      '    clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),',
-      '    clientId: z.string().uuid().optional(),\n    clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),',
+      # ⛔ RÉORIENTÉE (rang 43, D339) : les champs d'un devis vivent dans `corpsDuDevis` (création ET révision), indentés de DEUX espaces ; même faute — `clientId` redevient une clé connue de la création.
+      '  clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),',
+      '  clientId: z.string().uuid().optional(),\n  clientRecordId: z.string().uuid("quote.validation.idInvalid").optional(),',
       {"types": "`clientId` est une clé INCONNUE : refusée", "int-devis": "DB-15 — `clientId` est RETIRÉ du contrat"}, genre="insertion")
 
 # ── P — la POLITIQUE (module pur).
@@ -237,7 +239,8 @@ cible("V-4. ⛔ C-C3 — la fiche est complétée dans l'AUTRE écriture", SERVI
       'const champDeLaFiche = champ === "clientNameAr" ? "nameAr" : "nameLatin";', 'const champDeLaFiche = champ === "clientNameAr" ? "nameLatin" : "nameAr";',
       {"devis": "MD-8 — la décision de compléter AUSSI la fiche est la politique C-"})
 cible("K-1. ⛔ MD-7 — K-5 REMPLACE une copie présente (le compare-and-set sur NULL saute)", MAGASIN_DEVIS,
-      "where: { id: args.quoteId, ...(enArabe ? { clientNameAr: null } : { clientNameLatin: null }), venue:", "where: { id: args.quoteId, venue:",
+      # ⛔ RÉORIENTÉE (rang 43, D339) : le `WHERE` porte aussi `isOfficial: true` (un brouillon ne reçoit aucun nom) ; même faute — le compare-and-set sur NULL saute.
+      "where: { id: args.quoteId, isOfficial: true, ...(enArabe ? { clientNameAr: null } : { clientNameLatin: null }), venue:", "where: { id: args.quoteId, isOfficial: true, venue:",
       {"store-devis": "MD-7 — le compare-and-set est dans le WHERE de l'UPDATE", "int-devis": "MD-7 — deux compléments SIMULTANÉS de la même langue"})
 cible("K-2. ⛔ MD-8 — la décision C-C3 est ignorée : la fiche se complète toujours", MAGASIN_DEVIS,
       "if (args.completerLaFiche(fiche, { ar: devis.clientNameAr, latin: devis.clientNameLatin })) {", "if (fiche.id !== \"\") {",
@@ -316,7 +319,8 @@ cible("J-4. ⛔ S-57 — la recherche continue après la première fiche trouvé
 cible("J-5. ⛔ K-12 — les retouches du pro à la conversion sont ignorées (l'envoi porte le préremplissage)", PARCOURS,
       "saisie: identifiant, langue }), ...retouches };", "saisie: identifiant, langue }) };", {"pro-parcours": "MD-9 — la conversion est PRÉREMP"})
 cible("J-6. ⛔ K-4 — le devis part sans la fiche ni la copie des noms", PARCOURS,
-      "...(fiche === null ? {} : copiePourDevis(nomsEffectifs, fiche.id))", "...(fiche === null ? {} : {})", {"pro-parcours": "une fiche ABSENTE se CRÉE (K-2) au"})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : la condition porte aussi `sansCoordonnees || chaineBrouillon` (un brouillon ne porte ni fiche ni nom) ; même faute — le devis part sans la fiche ni la copie des noms.
+      "...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : copiePourDevis(nomsEffectifs, fiche.id))", "...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : {})", {"pro-parcours": "une fiche ABSENTE se CRÉE (K-2) au"})
 cible("J-7. ⛔ K-5 — le choix de la langue remet tout de suite, même sans la copie du nom de cette langue", PARCOURS,
       "    if (nomManquant(quote, documentLocale)) {\n      setNomDe({ canal, locale: documentLocale });", "    if (quote.id === \"\") {\n      setNomDe({ canal, locale: documentLocale });",
       {"pro-parcours": "K-5 — la boîte de langue DEMANDE"})

@@ -125,7 +125,8 @@ cible("U-6. ⛔ le nom du fichier ignore la langue : toujours `_fr_` (K-7)", TYP
 cible("U-7. ⛔ le nom du fichier ignore la version de la référence : toujours `_v1`", TYPES,
       "_${locale}_v${m[2]}.pdf", "_${locale}_v1.pdf", {"types": "pour CHAQUE langue de l'autorité"})
 cible("U-8. ⛔ la forme d'une référence n'est plus vérifiée : « DEVIS-2026-1-89 v1 » devient un nom de fichier", TYPES,
-      r"/^(DEVIS-\d{4}-\d{4,}-\d{4,}) v(\d+)$/u", r"/^(.*) v(\d+)$/u", {"types": "une chaîne qui n'est pas une référence LÈVE"})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : le motif n'est plus un littéral mais `new RegExp(` + gabarit ` ^((?:${préfixes})-…) v(\\d+)$ `, où les préfixes viennent de `QUOTE_REFERENCE_PREFIX` (DEVIS | BROUILLON) ; même faute — la forme n'est plus vérifiée.
+      r'^((?:${Object.values(QUOTE_REFERENCE_PREFIX).join("|")})-\\d{4}-\\d{4,}-\\d{4,}) v(\\d+)$', r'^(.*) v(\\d+)$', {"types": "une chaîne qui n'est pas une référence LÈVE"})
 
 # ── Y — l'ANNÉE d'Alger (module pur de l'API).
 cible("Y-1. ⛔ l'année est calculée en UTC : le 31/12 à 23 h 00 UTC, il est déjà l'année suivante à Alger", ANNEE,
@@ -156,7 +157,9 @@ cible("S-8. ⛔ la révision n'écrit pas le numéro de sa tête", MAGASIN,
       "referenceNumber: tete.referenceNumber,", "referenceNumber: 1,", {"store": "une révision NE TOUCHE AUCUN COMPTEUR"})
 cible("S-9. ⛔ la révision INCRÉMENTE un compteur (elle ne doit en toucher aucun, F-2/F-4)", MAGASIN,
       "const tete = await this.verrouillerChaine(tx, args.chainId);",
-      "const tete = await this.verrouillerChaine(tx, args.chainId);\n      await this.incrementerCompteur(tx, args.venueId, tete.referenceYear);", {"store": "une révision NE TOUCHE AUCUN COMPTEUR", "store#2": "`FOR UPDATE` puis `aggregate` puis `create`"}, genre="insertion")
+      # ⛔ TITRE RELEVÉ À NOUVEAU (rang 43, D339 ; défaut d'INSTRUMENT, D298) : D339 a renommé le test de l'ordre des lectures de la révision — `aggregate` est devenu « la plus haute version (son numéro ET son drapeau, en une lecture) » —,
+      # et la seconde mesure rendait `SANS-TITRE` : son titre attendu n'existait plus. La mesure `store` mordait déjà (AssertionError).
+      "const tete = await this.verrouillerChaine(tx, args.chainId);\n      await this.incrementerCompteur(tx, args.venueId, tete.referenceYear);", {"store": "une révision NE TOUCHE AUCUN COMPTEUR", "store#2": "`FOR UPDATE` puis la plus haute version (L36-2 : son numéro ET son drapeau, en une lecture) puis `create`"}, genre="insertion")
 cible("S-10. ⛔ la réponse du compteur n'est plus vérifiée : un numéro invalide s'écrit", MAGASIN,
       'if (lignes.length !== 1 || typeof numero !== "number" || !Number.isInteger(numero) || numero < 1) {', "if (false) {", {"store": "un compteur qui ne rend PAS exactement une ligne"})
 
@@ -184,7 +187,8 @@ cible("P-1. ⛔ la référence affichée n'est pas celle du serveur (l'identifia
 cible("P-2. ⛔ la référence n'est plus isolée de gauche à droite à l'écran (`<span>` au lieu de `<bdi>`)", PARCOURS,
       '<bdi dir="ltr">{quote.reference}</bdi>', '<span dir="ltr">{quote.reference}</span>', {"pro-parcours": "la référence rendue par le serveur s'affiche juste après le calcul"})
 cible("P-3. ⛔ le fichier téléchargé porte la langue de l'INTERFACE, pas celle choisie dans la boîte", PARCOURS,
-      "quoteDocumentFilename(courant, documentLocale)", 'quoteDocumentFilename(courant, isAr ? "ar" : "fr")', {"pro-parcours": "le nom du fichier porte la langue CHOISIE dans la boîte"})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : `quoteDocumentFilename(courant, documentLocale)` existe aussi dans `telechargerLeBrouillon` (×2) ; l'ancre porte `saveBlob(fichier.value, …` — le site de la REMISE.
+      "saveBlob(fichier.value, quoteDocumentFilename(courant, documentLocale))", 'saveBlob(fichier.value, quoteDocumentFilename(courant, isAr ? "ar" : "fr"))', {"pro-parcours": "le nom du fichier porte la langue CHOISIE dans la boîte"})
 cible("P-4. ⛔ la fenêtre de remise n'a plus la ligne de référence (clé renommée)", REMISE,
       '{ key: "remitReference", reference },', '{ key: "remitNeutralisee", reference },', {"pro-remise": "les QUATRE issues rendent quatre titres différents", "pro-remise#2": "la référence du devis est la PREMIÈRE ligne, pour les cinq canaux", "pro-parcours": "la fenêtre de remise COMMENCE par la référence du devis remis"})
 cible("P-5. ⛔ la référence n'est plus isolée dans la phrase de la fenêtre (aucun isolat Unicode)", REMISE,
@@ -239,9 +243,11 @@ cible("I-13. ⛔ magasin : la date de création n'est pas l'instant que le servi
 cible("I-14. ⛔ service : l'année passée au magasin est celle d'UTC", SERVICE_DEVIS,
       "annee: algiersYear(maintenant)", "annee: maintenant.getUTCFullYear()", {"int-numerotation": "31/12 à 22 h 59 UTC ⇒ 2026", "int-numerotation#2": "deux ANNÉES d'une même salle ont deux compteurs"})
 cible("I-15. ⛔ service : l'instant de création passé n'est pas celui de l'horloge", SERVICE_DEVIS,
-      "creeLe: maintenant }", "creeLe: new Date(maintenant.getTime() + 7_200_000) }", {"int-numerotation": "31/12 à 22 h 59 UTC ⇒ 2026"})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : l'appel porte désormais `officiel` après l'instant (`creeLe: maintenant, officiel }`) ; même faute — l'instant passé n'est pas celui de l'horloge.
+      "creeLe: maintenant, officiel }", "creeLe: new Date(maintenant.getTime() + 7_200_000), officiel }", {"int-numerotation": "31/12 à 22 h 59 UTC ⇒ 2026"})
 cible("I-16. ⛔ lecture du document : la référence imprimée est celle d'un AUTRE devis (le numéro du devis + 1)", LECTURE_DOC,
-      "quoteNumber: row.referenceNumber, version: row.version }),", "quoteNumber: row.referenceNumber + 1, version: row.version }),", {"int-document": "le propriétaire télécharge : application/pdf"})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : la formule reçoit aussi `official: row.isOfficial` (le préfixe) ; même faute — le numéro du devis lu + 1.
+      "quoteNumber: row.referenceNumber, version: row.version, official", "quoteNumber: row.referenceNumber + 1, version: row.version, official", {"int-document": "le propriétaire télécharge : application/pdf"})
 
 
 def _est_int(c: dict) -> bool:

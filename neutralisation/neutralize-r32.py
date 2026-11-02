@@ -182,7 +182,8 @@ cible("W-3. un e-mail invalide ne retient plus « Continuer »", WK_CONTACT,
       'if (contact.email.trim() !== "" && !isValidContactEmail(contact.email)) out.push("needEmailValid");', 'if (false) out.push("needEmailValid");',
       {"pro-contact": "l'e-mail SAISI doit passer la règle du contrat"})
 cible("W-4. le nombre d'invités ne retient plus l'étape Client", WK_CONTACT,
-      'if (!(Number(guests) > 0)) out.push("needGuests");', 'if (false) out.push("needGuests");', {"pro-contact": 'un seul manque'})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : la règle « nombre d'invités » vit désormais dans `invitesBlockers` (le brouillon ne demande QUE les invités) et `clientBlockers` l'appelle — même faute, au site de la règle.
+      'return Number(guests) > 0 ? [] : ["needGuests"];', 'return [];', {"pro-contact": 'un seul manque'})
 cible("W-5. ⚠ RÈGLE DES MONTANTS — le téléphone ENVOYÉ n'a plus son indicatif", WK_CONTACT,
       "{ contactPhone: toE164(country, contact.phone) }", "{ contactPhone: contact.phone }", {"pro-contact": "noms rognés, téléphone = l'indicatif du modèle + les chiffres saisis"})
 # ⚠ W-6 — le remplacement ne doit PAS être une sous-chaîne de l'ancre : sa première version (`contactEmail: contact.email.trim()`) l'était, et la
@@ -216,7 +217,8 @@ cible("R-1. le rail ne réagit plus au clic : le bouton existe, il ne fait rien"
 # ⚠ N-1 RÉORIENTÉE PAR ÉCRIT (rang 41, D336) : l'étape Client ne juge plus le CONTACT (devenu l'étape d'avant) mais les NOMS — l'ancre passe de
 # `clientBlockers(contact, guests)` à `clientBlockers(nomsEffectifs, guests)` ; la faute neutralisée (la liste des raisons vidée) et sa mesure ne changent pas.
 cible("N-1. « Continuer » ne dit plus POURQUOI il est grisé : la liste des raisons est vide", WK,
-      "const blockers = clientBlockers(nomsEffectifs, guests);", "const blockers: Blocker[] = [];", {"pro-journey": 'UN SEUL manque'})
+      # ⛔ RÉORIENTÉE (rang 43, D339) : la liste des raisons choisit désormais selon `sansCoordonnees` (le brouillon ne demande que les invités) ; la faute mutée est la même — la liste est vide.
+      "const blockers = sansCoordonnees ? invitesBlockers(guests) : clientBlockers(nomsEffectifs, guests);", "const blockers: Blocker[] = [];", {"pro-journey": 'UN SEUL manque'})
 cible("N-2. la liste des raisons n'est plus LIÉE au bouton (`aria-describedby`)", WK,
       'aria-describedby={clientAnswered ? undefined : "wk-continue-reason"}', "aria-describedby={undefined}", {"pro-journey": 'UN SEUL manque'})
 cible("N-3. ⚠ RÈGLE DES MONTANTS — la conversion du devis envoie le téléphone SANS indicatif", WK,
