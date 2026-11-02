@@ -2564,4 +2564,105 @@ describe("⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le bro
     expect(question()).toBe(FR.qContact);
     expect(screen.queryByRole("button", { name: FR.noContactButton })).toBeNull();
   });
+
+  // ⚠ Les deux tests suivants sont ÉCRITS APRÈS LA DÉCOUVERTE de `neutralize-r43.py` (cibles P-11 et P-18 : VERTES, donc muettes). Leurs verdicts sont en assertions NATIVES (`toBe`) : un matcher
+  // jest-dom lève une `Error`, que la lecture de R1 ne prend pas pour une morsure (D316).
+  it("⛔ « Continuer » du contact QUITTE le mode « sans coordonnées » : revenu au contact par « Précédent », un numéro tapé rend l'étape Client COMPLÈTE (les champs des noms, plus le texte du brouillon)", async () => {
+    await setup();
+    await choisirSansCoordonnees();
+    expect(question()).toBe(FR.qClient);
+    fireEvent.click(screen.getByRole("button", { name: FR.previous }));
+    await laisserRetomber();
+    expect(question()).toBe(FR.qContact);
+    await repondreContact();
+    expect(question()).toBe(FR.qClient);
+    expect(screen.queryByLabelText(FR.nameLatin) === null, "avec des coordonnées, le champ du nom est là").toBe(false);
+    expect(screen.queryByText(FR.draftClientHint) === null, "le texte du brouillon n'est plus là").toBe(true);
+  });
+
+  it("⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche)", async () => {
+    await calculerBrouillon();
+    fireEvent.click(screen.getByRole("button", { name: FR.draftAddContact }));
+    await laisserRetomber();
+    await repondreContact();
+    await repondreNoms();
+    expect((screen.getByRole("button", { name: FR.draftMakeOfficial }) as HTMLButtonElement).disabled, "avec la fiche et un nom, le geste est offert").toBe(false);
+    modifierDepuisRecap(/Modifier.*Client/);
+    fireEvent.change(screen.getByLabelText(FR.nameLatin), { target: { value: "" } });
+    fireEvent.click(within(rail()).getByRole("button", { name: /Modifier.*Devis/ }));
+    await laisserRetomber();
+    expect(question()).toBe(FR.qQuote);
+    expect((screen.getByRole("button", { name: FR.draftMakeOfficial }) as HTMLButtonElement).disabled, "sans nom, le geste est retenu").toBe(true);
+  });
+
+  // ⚠ GARDES NATIVES, ÉCRITES APRÈS LA DÉCOUVERTE de `neutralize-r43.py` (cibles P-2, P-4, P-7, P-8, P-13, P-14, P-17, P-19, P-20, P-22, P-23, P-24). Les tests d'au-dessus rougissent sous ces
+  // mutations par une ERREUR DE REQUÊTE (`getByRole`, `getByText` : l'élément manque) — ce n'est pas une assertion, donc pas une morsure sous la lecture de R1 (D304, D316). Ceux-ci posent la
+  // même question par `queryBy*` et un `expect(...).toBe(...)` de vitest, qui lève une `AssertionError`.
+  const la = (element: HTMLElement | null): boolean => element !== null;
+
+  it("⛔ garde native — le SECOND bouton est offert à l'étape Contact", async () => {
+    await setup();
+    expect(la(screen.queryByRole("button", { name: FR.noContactButton })), "le bouton « sans coordonnées »").toBe(true);
+  });
+
+  it("⛔ garde native — le bandeau du brouillon est rendu, avec le téléchargement et le geste qui AJOUTE des coordonnées ; « Rendre officiel » n'y est PAS (aucune fiche)", async () => {
+    await calculerBrouillon();
+    expect(la(screen.queryByText(FR.draftTitle)), "le titre du bandeau").toBe(true);
+    expect(la(screen.queryByRole("button", { name: FR.draftDownload })), "le téléchargement").toBe(true);
+    expect(la(screen.queryByRole("button", { name: FR.draftAddContact })), "ajouter des coordonnées").toBe(true);
+    expect(la(screen.queryByRole("button", { name: FR.draftMakeOfficial })), "« Rendre officiel » sans fiche").toBe(false);
+  });
+
+  it("⛔ garde native — le parcours d'un brouillon ATTEINT le devis : sans fiche, aucune étape n'est jugée « non répondue » en route", async () => {
+    await setup();
+    await allerAuBrouillon();
+    expect(question(), "la question affichée après les prestations").toBe(FR.qQuote);
+    expect(la(screen.queryByRole("button", { name: "Calculer le devis" })), "« Calculer le devis » est offert").toBe(true);
+    expect((screen.getByRole("button", { name: "Calculer le devis" }) as HTMLButtonElement).disabled, "et il n'est pas grisé : un brouillon n'a pas besoin de fiche pour être chiffré").toBe(false);
+  });
+
+  it("⛔ garde native — le récapitulatif DIT que le contact n'a pas été donné", async () => {
+    await setup();
+    await choisirSansCoordonnees();
+    await repondreInvites();
+    expect(la(within(recap()).queryByText(FR.draftSummary)), "la ligne du contact").toBe(true);
+  });
+
+  it("⛔ garde native — « Continuer » de l'étape Client d'un brouillon est GRISÉ sans invités et OFFERT avec, sans aucun nom", async () => {
+    await setup();
+    await choisirSansCoordonnees();
+    expect((screen.getByRole("button", { name: FR.continue }) as HTMLButtonElement).disabled, "sans invités").toBe(true);
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "200" } });
+    expect((screen.getByRole("button", { name: FR.continue }) as HTMLButtonElement).disabled, "avec 200 invités, sans nom").toBe(false);
+  });
+
+  it("⛔ garde native — le téléchargement d'un brouillon DIT qu'il a eu lieu", async () => {
+    await calculerBrouillon();
+    await telecharger("fr");
+    expect(la(screen.queryByText(FR.draftDownloaded)), "« Brouillon téléchargé »").toBe(true);
+  });
+
+  it("⛔ garde native — le TOTAL du brouillon survit à l'ajout des coordonnées (la fiche, les noms, la recherche ne le jettent pas) ; aucune version de plus n'est demandée", async () => {
+    const { quotes } = await calculerBrouillon();
+    fireEvent.click(screen.getByRole("button", { name: FR.draftAddContact }));
+    await laisserRetomber();
+    await repondreContact();
+    await repondreNoms();
+    expect(question(), "la question après les noms").toBe(FR.qQuote);
+    expect(la(screen.queryByText(montant(478_600_000))), "le total d'avant est là").toBe(true);
+    expect(vi.mocked(quotes.revise).mock.calls.length, "aucune révision").toBe(0);
+  });
+
+  it("⛔ garde native — après la promotion, le message « officiel » est rendu", async () => {
+    await calculerBrouillon();
+    fireEvent.click(screen.getByRole("button", { name: FR.draftAddContact }));
+    await laisserRetomber();
+    await repondreContact();
+    await repondreNoms();
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: FR.draftMakeOfficial }));
+    });
+    await laisserRetomber();
+    expect(la(screen.queryByText(FR.draftOfficialDone)), "le message de la promotion").toBe(true);
+  });
 });

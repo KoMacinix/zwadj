@@ -165,6 +165,14 @@ describe("quoteDocumentFilename — le nom du fichier d'un brouillon SE DÉRIVE 
     }
   });
 
+  // ⚠ ÉCRIT APRÈS LA DÉCOUVERTE de `neutralize-r43.py` (cible T-7) : les trois tests d'au-dessus rougissent par une `TypeError` (la fonction lève sur un brouillon), pas par une assertion, et une
+  // `TypeError` n'est pas une morsure sous la lecture de R1 (D304). Celui-ci dit la MÊME chose en assertion native : la référence d'un brouillon se dérive, elle ne lève pas.
+  it("⛔ la référence d'un brouillon est ACCEPTÉE : la dériver ne LÈVE pas (le motif connaît les deux préfixes)", () => {
+    for (const locale of QUOTE_DOCUMENT_LOCALES) {
+      expect(() => quoteDocumentFilename({ reference: "BROUILLON-2026-0001-0089 v1" }, locale)).not.toThrow();
+    }
+  });
+
   it.each([
     ["un préfixe inconnu", "FACTURE-2026-0001-0089 v1"],
     ["le préfixe en minuscules", "brouillon-2026-0001-0089 v1"],

@@ -1199,6 +1199,29 @@ describe("⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK
     await expect(sql(`UPDATE quotes SET client_name_latin = 'Amina' WHERE id = $1::uuid`, [DEVIS.brouillon])).rejects.toThrow(/quotes_unofficial_inert/);
   });
 
+  it("⛔ la CHECK refuse un brouillon COLONNE PAR COLONNE (M-3, M-4, M-6, M-7 de `neutralize-r43.py`) : chacune, ÉCRITE SEULE sur un brouillon qui sinon est valide — le test du dessus en écrit deux à la fois et ne sépare pas la fautive", async () => {
+    expect(await sql(`SELECT is_official FROM quotes WHERE id = $1::uuid`, [DEVIS.brouillon]), "le brouillon du test précédent").toEqual([{ is_official: false }]);
+    const seules: ReadonlyArray<readonly [string, string]> = [
+      ["sent_via", `sent_via = 'PRINT'`],
+      ["sent_at", `sent_at = now()`],
+      ["client_record_id", `client_record_id = '018f0000-0000-7000-8000-000000004321'::uuid`],
+      ["client_name_ar", `client_name_ar = 'آمنة بن سالم'`],
+      ["client_name_latin", `client_name_latin = 'Amina Bensalem'`]
+    ];
+    for (const [colonne, ecriture] of seules) {
+      await expect(sql(`UPDATE quotes SET ${ecriture} WHERE id = $1::uuid`, [DEVIS.brouillon]), colonne).rejects.toThrow(/quotes_unofficial_inert/);
+    }
+    // Rien n'a été écrit par les cinq refus.
+    expect(await sql(`SELECT sent_via, sent_at, client_record_id, client_name_ar, client_name_latin FROM quotes WHERE id = $1::uuid`, [DEVIS.brouillon])).toEqual([
+      { sent_via: null, sent_at: null, client_record_id: null, client_name_ar: null, client_name_latin: null }
+    ]);
+    // ⚠ Le statut ACCEPTED et `accepted_at` ne sont PAS isolables : `quotes_sent_at_coherent` (hors DRAFT/CANCELLED, une remise est exigée) et `quotes_accepted_at_coherent` (`accepted_at`
+    // exige ACCEPTED ou SUPERSEDED) les couvrent déjà, avec `sent_at`. Retirer l'un des deux de `quotes_unofficial_inert` ne change AUCUN état admis — mutations ÉQUIVALENTES, mesurées par
+    // `neutralize-r43.py` (M-2, M-5) puis retirées PAR ÉCRIT. Ce qui se mesure ici est le résultat : un brouillon ne devient jamais ACCEPTED.
+    await expect(sql(`UPDATE quotes SET status = 'ACCEPTED', sent_at = now(), accepted_at = now() WHERE id = $1::uuid`, [DEVIS.brouillon])).rejects.toThrow(/check constraint/);
+    expect(await sql(`SELECT status FROM quotes WHERE id = $1::uuid`, [DEVIS.brouillon])).toEqual([{ status: "DRAFT" }]);
+  });
+
   it("⚠ LIMITE ÉCRITE (cadrage D339, 2.1) : la base n'interdit PAS `true → false` d'un devis INERTE, même rattaché à une réservation — aucun code n'écrit ce sens (le fermer est une entrée de backlog)", async () => {
     await sql(`UPDATE quotes SET is_official = false WHERE id = $1::uuid`, [DEVIS.annule]);
     expect(await sql(`SELECT is_official FROM quotes WHERE id = $1::uuid`, [DEVIS.annule])).toEqual([{ is_official: false }]);
