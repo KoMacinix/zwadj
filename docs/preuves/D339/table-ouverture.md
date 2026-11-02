@@ -238,3 +238,9 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 |---|---|
 | `docs/preuves/D339/neutralisation/journal-avant-titre-neutralize-r39.txt` | le journal du passage de `neutralize-r39.py --int` qui a montré S-9 `SANS-TITRE`, gardé à côté du passage réparé (D295) |
 | `docs/preuves/D339/neutralisation/union-jeu-3.txt` | la sortie du troisième jeu : `neutralize-r39.py` seul, rejoué en entier sur secteur après la correction du titre attendu |
+
+**Extension 8** (02/11/2026, REPRISE — après la première passe de l'e2e à la main (`e2e-a-la-main.txt`) ; commitée SEULE, AVANT le commit des pièces qu'elle déclare, règle de D328 point 4. Relevé en LISANT la sortie : le témoin est vert (3 tests exécutés), E-1, E-2, E-3 et E-5 mordent par une assertion lue, **E-4 ne mord PAS** (« joué-et-rouge NON », 1 test exécuté, 0 en échec). La cause est un **défaut d'INSTRUMENT** (D298), pas une spec aveugle : la mutation de E-4 vise `packages/types/src/quote.ts`, or l'API de l'e2e charge `@zwadj/types` par son `main`, `packages/types/dist/index.js` (`vite.config.ts` de l'app Pro : « `@zwadj/types` a main → dist (runtime NestJS) », et seul l'alias de Vite lit `src`) ; la référence que la spec lit vient de l'API. La mutation est posée dans le fichier (ancre 1 → 0, marqueur 0 → 1) **et ne change rien à ce que l'API exécute** — la mutation auto-neutralisée de D209 (2). E-4 doit muter AUSSI `packages/types/dist/quote.js` (fichier compilé, ignoré par git, restauré à l'octet). Le script est corrigé puis REJOUÉ EN ENTIER, témoin et calibration compris (D298) ; la sortie de la première passe est gardée à côté de la passe réparée (D295) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/neutralisation/e2e-a-la-main-passe-1.txt` | la sortie de la première passe de l'e2e à la main, où E-4 est inerte (mutation hors du code que l'API exécute), versée telle quelle à côté de la passe réparée |
