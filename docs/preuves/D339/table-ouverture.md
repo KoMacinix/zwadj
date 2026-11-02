@@ -194,3 +194,40 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | `docs/preuves/D339/neutralisation/e2e-a-la-main.txt` | sa sortie, LUE |
 | `docs/preuves/D339/neutralisation/mutations-equivalentes.py` | la preuve que les cibles M-2 et M-5 de `neutralize-r43.py`, retirées comme mutations équivalentes, le sont (note de Ko, point 4 ; D325) ; procédure archivée comme PREUVE, jamais promue en instrument |
 | `docs/preuves/D339/neutralisation/mutations-equivalentes.txt` | sa sortie, LUE |
+
+**Extension 6** (02/11/2026, REPRISE — après le jeu de l'union des campagnes ; commitée SEULE, AVANT le commit des fichiers qu'elle couvre, règle de D328 point 4. Relevé en lisant la sortie du jeu de l'union (17 campagnes jouées, `union-jeu.txt`) : **cinq campagnes ne se sont pas jouées**, `neutralize-r32.py`, `neutralize-r38.py`, `neutralize-r39.py`, `neutralize-r41.py` (« ARBRE NON CONFORME AU DÉPART », ancres à ×0 ou ×2 : le code de D339 a déplacé ou dédoublé le site qu'elles visent) et `neutralize-s10b.py` (S10b1-2, « ERREUR DE SCRIPT : 0 occurrence(s), 1 attendue(s) »). Ce sont des cibles **NON MESURÉES** — pas des gardes muettes — : aucune n'a muté quoi que ce soit. Les ré-ancrer est une modification de code du lot (les harnais sont dans `neutralisation/`, D283 : le lot compte déjà) :
+
+| fichier | motif |
+|---|---|
+| `neutralisation/neutralize-r32.py` | cibles W-4 et N-1 ré-ancrées (la règle « nombre d'invités » vit dans `invitesBlockers`, et la liste des raisons du bouton « Continuer » choisit selon `sansCoordonnees`) |
+| `neutralisation/neutralize-r38.py` | cibles J-8, J-9, J-10 ré-ancrées : le site de la boîte de langue des CANAUX n'est plus unique (la boîte de langue du téléchargement du brouillon en est la copie) ; l'ancre porte son voisinage |
+| `neutralisation/neutralize-r39.py` | cibles U-8 (la forme de la référence accepte désormais deux préfixes), P-3 (deux sites de `quoteDocumentFilename`), I-15 (`creeLe` suivi de `officiel`) et I-16 (`official: row.isOfficial` après la version) ré-ancrées |
+| `neutralisation/neutralize-r41.py` | cibles T-8 (`porteUnNom(corps)`), T-9 (la clé est dans `corpsDuDevis`, indentée de deux espaces), K-1 (`isOfficial: true` dans le `WHERE`) et J-6 (`sansCoordonnees \|\| chaineBrouillon`) ré-ancrées |
+| `neutralisation/neutralize-s10b.py` | cible S10b1-2 ré-ancrée (la plus haute version se lit par `plusHauteVersion`, et un commentaire sépare le verrou de cette lecture) |
+| `docs/preuves/D339/neutralisation/union-jeu.txt` | la sortie ENTIÈRE du premier jeu de l'union, telle qu'imprimée (17 passages, 193 gardes mordues, 5 sorties non nulles) |
+| `docs/preuves/D339/neutralisation/union-jeu-2.txt` | la sortie du second jeu : les cinq campagnes ré-ancrées, rejouées sur secteur (note de Ko, point 2) |
+| `docs/preuves/D339/neutralisation/journal-avant-reancrage-neutralize-r32.txt` | le journal du PREMIER passage de `neutralize-r32.py` (le refus de l'arbre), gardé à côté du passage réparé (D295) |
+| `docs/preuves/D339/neutralisation/journal-avant-reancrage-neutralize-r38.txt` | idem pour `neutralize-r38.py` |
+| `docs/preuves/D339/neutralisation/journal-avant-reancrage-neutralize-r39.txt` | idem pour `neutralize-r39.py` (passage `--int`) |
+| `docs/preuves/D339/neutralisation/journal-avant-reancrage-neutralize-r41.txt` | idem pour `neutralize-r41.py` (passage `--int`) |
+| `docs/preuves/D339/neutralisation/journal-avant-reancrage-neutralize-s10b.txt` | idem pour `neutralize-s10b.py` |
+| `docs/preuves/D339/neutralisation/verification-mutations.txt` | la sortie de `neutralisation/verifier-mutations.py` sur les cinq harnais ré-ancrés : ancre 1 → 0 ET marqueur n → n + attendu, pour CHAQUE cible (D286), avant de les rejouer |
+| `docs/preuves/D339/neutralisation/journal-neutralize-act-plafonds.txt` | le journal de la campagne, copié octet pour octet de `.neutralisation-journaux/d339-union/` |
+| `docs/preuves/D339/neutralisation/journal-neutralize-b7.txt` | idem |
+| `docs/preuves/D339/neutralisation/journal-neutralize-booking-status.txt` | idem |
+| `docs/preuves/D339/neutralisation/journal-neutralize-e3d1-s8.txt` | idem (passage `--int`) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-horloge.txt` | idem |
+| `docs/preuves/D339/neutralisation/journal-neutralize-journey.txt` | idem |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r32.txt` | idem (passage réparé) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r33.txt` | idem (passage `--int`) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r37.txt` | idem |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r38.txt` | idem (passage réparé) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r39.txt` | idem (passage réparé, `--int`) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r4.txt` | idem |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r41.txt` | idem (passage réparé, `--int`) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-r42.txt` | idem (passage `--int`) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-s10b.txt` | idem (passage réparé) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-s11b.txt` | idem (passage `--int`) |
+| `docs/preuves/D339/neutralisation/journal-neutralize-solid-s3.txt` | idem (passage `--int`) |
+
+⚠ **Conditionnel, déclaré ici avec sa condition** : si le rejeu d'une des cinq campagnes révèle une garde MUETTE ou une cible non mesurée, la réparation suivante est une extension de plus, commitée seule AVANT son fichier ; ce paragraphe ne la déclare pas d'avance. Les journaux de `neutralize-r43.py` et de l'e2e à la main sont déjà déclarés par l'extension 5 (`sortie-r43-int.txt`, `e2e-a-la-main.txt`).
