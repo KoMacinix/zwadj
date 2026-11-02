@@ -231,3 +231,10 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | `docs/preuves/D339/neutralisation/journal-neutralize-solid-s3.txt` | idem (passage `--int`) |
 
 ⚠ **Conditionnel, déclaré ici avec sa condition** : si le rejeu d'une des cinq campagnes révèle une garde MUETTE ou une cible non mesurée, la réparation suivante est une extension de plus, commitée seule AVANT son fichier ; ce paragraphe ne la déclare pas d'avance. Les journaux de `neutralize-r43.py` et de l'e2e à la main sont déjà déclarés par l'extension 5 (`sortie-r43-int.txt`, `e2e-a-la-main.txt`).
+
+**Extension 7** (02/11/2026, REPRISE — après le second jeu de l'union (cinq campagnes ré-ancrées, `union-jeu-2.txt`) ; commitée SEULE, AVANT le commit des pièces qu'elle déclare, règle de D328 point 4. Relevé en lisant la sortie du second jeu : **quatre campagnes mordent sans reste** (`r32` 65/65, `r38` 46/46, `r41` 70/70, `s10b` 20/20) et `neutralize-r39.py --int` rend **50 gardes mordues sur 51**. La garde « muette » est S-9, et la sortie brute montre une **cause d'INSTRUMENT** (D298) : sa première mesure (`store`) MORD (`AssertionError: expected [ 'FOR UPDATE', 'compteur', …(2) ] to not include 'compteur'`), sa seconde (`store#2`) rend `SANS-TITRE` — le titre attendu, « `FOR UPDATE` puis `aggregate` puis `create` », n'existe plus : D339 a renommé ce test (« `FOR UPDATE` puis la plus haute version (L36-2 : son numéro ET son drapeau, en une lecture) puis `create` »). Le titre attendu se corrige dans `neutralisation/neutralize-r39.py` (déjà déclaré par l'extension 6) ; le jeu de r39 se REJOUE EN ENTIER, calibration comprise (D298) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/neutralisation/journal-avant-titre-neutralize-r39.txt` | le journal du passage de `neutralize-r39.py --int` qui a montré S-9 `SANS-TITRE`, gardé à côté du passage réparé (D295) |
+| `docs/preuves/D339/neutralisation/union-jeu-3.txt` | la sortie du troisième jeu : `neutralize-r39.py` seul, rejoué en entier sur secteur après la correction du titre attendu |
