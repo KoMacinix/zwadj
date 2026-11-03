@@ -2250,6 +2250,56 @@ f) S-76 à S-82 (D338) : ratifiées par adoption ; S-80 avec les précisions R-1
 
 ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 43 sort de « ouvert, en attente des réponses de Ko » : **les cinq questions du cadrage de D338 sont répondues** (Q1 (a), Q2 (a), Q3 (a), Q4 (a), Q5 (b)) et **la règle d'arrêt de D338 est LEVÉE** — le code de L36-2 part dans cette session, **lot de CODE, méthode RENFORCÉE (DR4 de D336) sous la pause** de certification (DR1 de D336) : ni session adverse B, ni certification immédiate ; compteur POUR MÉMOIRE **DEUX → TROIS à la clôture** ; la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque** ; **(b)** les deux extensions de la tranche [L36-2] — la `CHECK` qui exige aussi `client_record_id`, `client_name_ar` et `client_name_latin` à NULL pour un devis non officiel (Q2), et le déclencheur sur `bookings` (Q5 (b), R-4) — sont **ratifiées par adoption** : ce sont les arbitrages que DR8 demandait, **la migration peut s'écrire** sous la condition de la consigne (si la lecture contredit la tranche ou ces extensions : ne pas migrer, rapporter l'écart) ; **(c)** la règle de Ko du 21/10/2026 (« Pour un vrai devis, il faut le numéro ou l'adresse e-mail », `ZWADJ_CONTINUITE.md:2041` à `d703117`) **n'est tenue que par l'écran et la promotion** tant que Q4 (b) n'est pas placé : l'entrée de backlog correspondante (3 a) est écrite dans le commit suivant ; **(d)** l'annotation de la section D338 (3 c), le complément du cadrage (3 b), les rouges, le code, le harnais et les écritures d'autorité de clôture suivent **dans cet ordre** (table d'ouverture, « Ordre des commits de ce lot »). **Rien n'est codé par ce commit.** ⚠ *Dérivé par la session, pas une parole de Ko ni du relecteur — à ratifier* : la lecture que la table d'ouverture donne de la consigne (« la section 1 en PREMIÈRE écriture » et « les autres `.md` d'autorité en dernier », 3 a et 3 c placés avant le code).
 
+⛔ **ARBITRÉ LES 02/11/2026 ET 03/11/2026 PAR KO — LE RANG 43 (REPRISE DE D339), mot pour mot : les DEUX NOTES de Ko pour la reprise de D339 (textes proposés par le relecteur, adoptés par Ko tels quels — leurs titres le disent ; première écriture d'autorité de la CLÔTURE de la reprise : ce bloc est commité SEUL, avant la section D339, `git` le prouve).** ⚠ **Écart déclaré à la règle de D328, point 3 (« les arbitrages de Ko en PREMIÈRE écriture »)** : ces notes arrivent **pendant** la reprise (02/11 et 03/11) et n'entrent dans un fichier d'autorité qu'**à la clôture** — la consigne de reprise disait « les `.md` d'autorité de clôture en dernier » sans dire où entrent les arbitrages reçus en cours de route ; la session a appliqué la règle de D328 **à l'intérieur** de la clôture (ce bloc d'abord). Entre-temps, la règle du rejeu n'a vécu que dans la pièce `docs/preuves/D339/portes/arret-e2e-r41.md`, commitée AVANT le rejeu (`021b02e`). Les numéros R-1 à R-5 sont ceux de la consigne du 28/10 (bloc précédent) ; **R-6 à R-10 sont ceux de la note du 03/11** (décisions du relecteur, pas celles du registre D1…).
+
+**Note du 02/11/2026 — mot pour mot.** (Les sections 2, 4 et 5 de la consigne du 28/10 qu'elle recopie sont versées telles quelles dans `docs/preuves/D339/consigne-sections-2-4-5.md` ; R-1 à R-5 sont déjà écrites dans le bloc précédent — les recopier ici serait les écrire deux fois, ce que la note elle-même exclut : « Si les décisions R-1 à R-5 ne sont pas déjà écrites… ».)
+
+
+
+<pasted_content id="05ba">
+NOTE DE KO POUR LA REPRISE EN COURS DE D339 — 02/11/2026 (texte proposé par le relecteur, adopté par Ko tel quel)
+
+1. SECTEUR. Ko a branché le chargeur et fermé Chrome avant d'envoyer ce message. Avant les six portes et l'e2e de clôture, tu relèves l'état machine (secteur ou batterie, RAM libre, chrome = 0) et tu le verses en pièce. Si le poste est encore sur batterie, tu ne lances pas ces portes et tu le dis (D290 : une mesure qui entre dans une décision ne se prend pas sur batterie). La RAM libre se déclare ; aucune barre ne s'applique hors certification.
+
+2. LE HARNAIS LANCÉ SUR BATTERIE. Tu le laisses finir, sans l'interrompre. Ses morsures lues par une assertion tiennent. Toute cible muette, non mesurée ou en délai dépassé se rejoue sur secteur avant d'être jugée. Le rapport dit quelles cibles ont été jouées sur batterie.
+
+3. LES SECTIONS 2, 4 ET 5 DE LA CONSIGNE DU 28/10/2026, mot pour mot ci-dessous : tu n'as pas à les reconstruire. Si les décisions R-1 à R-5 ne sont pas déjà écrites dans ZWADJ_CONTINUITE.md, tu les y écris à la clôture, sous « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO », avec leurs motifs. Le texte des trois sections entre en pièce (docs/preuves/D339/consigne-sections-2-4-5.md), déclaré par une extension seule et versé après l'audit.
+
+4. AVANT LA CLÔTURE. Le filtre d'e2e « qui reste à mesurer » est mesuré : au moins un test exécuté (D144). Les cibles M-2 et M-5 retirées comme mutations équivalentes ont leur preuve en pièce (D325).
+
+**Note du 03/11/2026 — mot pour mot** (le point R-6 à R-10 est sous « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO », comme la note l'exige) **:**
+
+NOTE DE KO POUR LA REPRISE DE D339 — 03/11/2026 (texte proposé par le relecteur, adopté par Ko tel quel)
+
+Réponse à ta question : (a). Un seul rejeu, dont la règle est écrite AVANT de le lancer.
+
+DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO
+
+- R-6. L'e2e de clôture se rejoue EN ENTIER, UNE fois, à la main (`retries` reste à 0). Avant de lancer, tu écris cette règle dans la pièce de R-7 :
+  · rejeu vert (0 échec) : la porte est verte AU REJEU ; la passe rouge (masquée) et la passe verte se versent côte à côte, et le rapport écrit les deux résultats ;
+  · rejeu rouge sur r41-fiche-client.e2e.ts:65 avec la même signature (fetch failed ← ECONNRESET dans le fixture) : deux sur deux n'est plus un aléa (leçon du rang 32). Tu ne clôtures pas, tu ne sors pas la spec de la suite (elle est hors du lot), tu t'arrêtes et tu rapportes ;
+  · tout autre rouge : arrêt et rapport ;
+  · pas de deuxième rejeu, quel que soit le résultat.
+  Motif : c'est le précédent écrit du dépôt (ZWADJ_CONTINUITE.md:2659 et :4860 : « une porte ne se déclare pas verte en taisant sa première passe »). (b) ferait partir le lot dans main sous une porte rouge, ce que D270 interdit « même quand le rouge vient d'ailleurs ». L'arbitrage (c) de Ko sur D265 interdit les nouvelles tentatives AUTOMATIQUES ; un rejeu unique, décidé à la main, sa règle écrite avant, la passe rouge gardée, n'en est pas une.
+
+- R-7. Oui, consigne l'arrêt dans une pièce sous docs/preuves/D339/, avec son extension de table déclarée seule d'abord. La pièce porte : l'arrêt et ses chiffres, les trois passes isolées, la règle de R-6 écrite avant le rejeu, puis le résultat du rejeu. Motif : D276 ; un arrêt qui n'existe que dans le fil est le défaut que la reprise de D339 a déjà payé.
+
+- R-8. L'état machine se relève PENDANT le rejeu : juste avant, toutes les 30 s pendant (secteur ou batterie, RAM libre, nombre de chrome et de headless_shell), juste après. Le relevé ne touche aucun fichier suivi ; sa sortie entre dans la pièce de R-7. Motif : l'écart que tu as nommé toi-même ; D270 : « un intermittent sans état relevé ne veut rien dire ».
+
+- R-9. Tes deux décisions prises seul sont ratifiées : les trois passes isolées de r41 (précédent du rang 32) et « rien d'autre » (ni retrait de spec, ni délai, ni rejeu pour verdir).
+
+- R-10. À la clôture, l'entrée D265 du backlog reçoit une annotation additive : le 03/11/2026, D265 a mordu une spec DANS la suite (r41, premier appel du fixture, après 3 ms), avec le renvoi à la pièce de R-7. Ni rang, ni entrée nouvelle (D302).
+
+RAPPELS AVANT LA CLÔTURE (note du 02/11)
+- Les fichiers non suivis (consigne-sections-2-4-5.md, scenarios-ko.md, neutralisation/, portes/) sont déclarés dans la table avant d'être versés.
+- La sortie rouge passe l'audit de secrets (D298) et son masquage avant tout commit.
+- Le rapport final dit où sont : le filtre e2e mesuré (au moins un test exécuté, D144) et la preuve des cibles M-2 et M-5 retirées (D325).
+- R-6 à R-10 s'écrivent dans ZWADJ_CONTINUITE.md, sous « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO », avec leurs motifs.
+
+Ensuite, tu reprends la clôture là où tu l'as arrêtée.
+
+⇒ **Ce que ces notes font dans les fichiers, à ce commit** : **(a)** R-6 à R-10 sont **écrites ici**, avec leurs motifs, sous « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO » ; **(b)** R-6 est **exécutée** : la règle du rejeu a été écrite et commitée AVANT le lancement (`021b02e`), le rejeu a eu lieu **une seule fois**, à la main, `retries` à 0, le 03/11/2026 de 14:19:53 à 14:23:19, **code 0 — 63 passés, 0 échec, 1 ignoré** ; la passe rouge (62 passés, 1 échec sur `r41:65`, `ECONNRESET`) et le rejeu sont versés côte à côte (`a7b4e84`) ; **la porte `test:e2e` est donc « verte AU REJEU »**, jamais « verte » seul ; **(c)** R-7 : la pièce `docs/preuves/D339/portes/arret-e2e-r41.md` porte l'arrêt, les trois passes isolées, la règle écrite avant, et le résultat ; **(d)** R-8 : le relevé machine a été pris juste avant, toutes les 30 s pendant (neuf lignes) et juste après (`portes/rejeu-etat-machine.txt`) ; **(e)** R-9 : les deux décisions prises seul sont ratifiées ; **(f)** R-10 : l'annotation additive de l'entrée D265 du backlog s'écrit dans le commit des écritures de clôture suivant — ni rang ni entrée nouvelle (D302). **La section D339, le point d'entrée, l'ordre des rangs, le registre, le backlog et `AGENTS.md` suivent dans cet ordre.**
+
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
