@@ -265,3 +265,11 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | `docs/preuves/D339/portes/outils/rejeu.sh` | le lanceur du rejeu (portes dures, relevés, commande de la porte, comparaison des `.env`) ; idem |
 | `docs/preuves/D339/audit-secrets-d339e.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), AVANT le commit des pièces ci-dessus qui entrent avant le rejeu (D298) ; l'audit « b » de la clôture reste déclaré plus haut |
 | `docs/preuves/D339/tri-audit-d339e.txt` | son tri différentiel contre `docs/preuves/D339/audit-secrets-d339d.txt` |
+
+**Extension 10** (03/11/2026, REPRISE — commitée SEULE, AVANT le commit des fichiers qu'elle couvre, règle de D328 point 4. Relevé en rédigeant la pièce de l'arrêt (extension 9, `portes/arret-e2e-r41.md`) : elle compare la seconde passe de `test:e2e` (03/11, 62 passés, 1 échec) à **la première passe du 02/11/2026, sur le même `HEAD` `138a7dc`** (63 passés, 0 échec, 1 ignoré, `r41:65` vert). Cette comparaison est une affirmation de MESURE : sa sortie brute doit être versée (note de Ko du 02/11 : « une affirmation écrite comme mesurée nomme la pièce brute qui la porte »). Elle existait seulement hors dépôt. Les trois pièces ci-dessous sont les seules de cette première passe du 02/11 qui entrent ; sa sortie `test:int` (rouge, causée par un `.env` non local, corrigé par Ko) n'entre PAS) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/portes/passe-02-11-test-e2e.txt` | la sortie de `pnpm test:e2e` de la première passe des portes du 02/11/2026 (code 0, 63 passés), MASQUÉE (jetons de liens de vérification d'une base jetable) ; copiée du fichier de travail, brut gardé hors dépôt |
+| `docs/preuves/D339/portes/passe-02-11-etat-machine.txt` | l'état machine relevé avant cette passe (secteur, RAM libre 4 229 Mo, `chrome` 0, `headless_shell` 0) |
+| `docs/preuves/D339/portes/passe-02-11-index.txt` | l'index de cette passe (heures, `HEAD`, code et durée de chaque porte) |
