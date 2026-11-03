@@ -1,0 +1,77 @@
+D339 — le CONTRÔLE DE FIN DE LOT (D288, D328, D334 item 5), joué APRÈS la poussée, le 2026-11-03 14:56:03 (heure locale du poste), sur HEAD 9aca5c2bedacd310f65e666965b9e30f99bf971f = origin/main.
+Chaque contrôle imprime ce qu'il a examiné à côté de ce qu'il a trouvé (D290). Commandes : git rev-list --reverse d703117..HEAD ; git show --name-only --format= <commit> ; git diff d703117..HEAD --name-only ; git merge-base --is-ancestor ;
+git log --reverse --format=%H d703117..HEAD -- <fichier> ; git reflog show --format="%H %gs" HEAD ; git stash list ; git fetch origin puis git rev-parse HEAD origin/main ; git status --short ; lecture des octets des trois .md d'autorité. Le script n'est pas versé (procédure de contrôle, pas un instrument promu, D291) : ses commandes sont ci-dessus.
+
+⚠ PREMIÈRE PASSE DU CONTRÔLE : 2 contrôles en échec, qui étaient des DÉFAUTS D'INSTRUMENT, non du lot (D298 : l'étape se rejoue EN ENTIER, instrument réparé) — la sortie de cette première passe a été ÉCRASÉE par la seconde ; voici ce qu'elle disait, relevé à l'écran :
+  · « ✗ 5 » : « extension 2 : … ajoutés APRÈS elle 0 » et « extension 6 : … 30 déclarés, 25 ajoutés APRÈS elle » — le contrôle cherchait le commit qui AJOUTE le fichier (`--diff-filter=A`) ; les fichiers déclarés par ces deux extensions EXISTAIENT déjà (le devis-témoin de `pdf-renderer.int-spec.ts` ; les cinq harnais d'union) : ils sont MODIFIÉS par le lot. Réparé : « le premier commit du lot qui touche le fichier ».
+  · « ✗ 6 » : « 377 entrées du reflog examinées, interdites : 21 » — le contrôle lisait TOUT le reflog du clone (l'histoire d'avant le lot : `filter-branch` du 16/08 et du 24/10, `reset` du 15/10, `commit (amend)` des 12 et 13/10, bascules de branches) et le TEXTE des messages (« amendé »). Réparé : seules les entrées plus récentes que le commit d'ouverture (`fb386f1`), et seul le TYPE d'opération ; le détecteur est calibré (reset vu, amend vu, « amendé » dans un message ignoré).
+  Tous les autres contrôles de la première passe étaient verts, identiques à ceux de la seconde.
+
+Base de développement de Ko (lecture, à la clôture) : `zwadj` à 31 migrations ; colonne `quotes.is_official` : 0 (attendu 0) ; fonction `bookings_quote_must_be_official` : 0 (attendu 0) ; bases du serveur : zwadj,zwadj_e2e,zwadj_migration_test,zwadj_test. La migration `20261028100000_quote_unofficial_draft` n'est PAS appliquée à la base de Ko ; aucune écriture de données sur `zwadj` par ce lot.
+`sauvegarde/r43-260cd5c` : branche locale de sauvegarde de la reprise, **jamais poussée** (aucun distant).
+`docs/preuves/D339/signalements.md` : **n'existe pas** (condition de la table non réalisée : aucun défaut croisé à rapporter autrement que par les entrées du backlog).
+
+--- sortie du script de contrôle (seconde passe, réparée) ---
+commits du lot (git rev-list --reverse d703117..HEAD) : 26
+    fb386f1 docs(rang-43): D339 — table d'ouverture du CODE de L36-2, SEULE, premier commit : chemins complets, conditionnels déclarés, ordre des commit
+    bb732a0 docs(rang-43): D339 — la lecture adverse de la consigne (37 contrôles : 34 ✓, 0 ✗, 3 non vérifiables ; la première passe portait 2 ✗ qui éta
+    52c24e6 docs(rang-43): D339 — PREMIÈRE écriture d'autorité : les réponses de Ko Q1 à Q5 (par adoption), S-76 à S-82 ratifiées, les décisions R-1 à R
+    17207e4 docs(rang-43): D339 — « avant le code » (consigne 3 a et 3 c) : l'entrée de backlog Q4 (b) (l'API crée encore un devis officiel sans fiche, 
+    b5352e1 docs(rang-43): D339 — extension 1 de la table, SEULE : l'audit de secrets « c » et son tri, déclarés avant le commit du complément du cadrag
+    c781fe8 docs(rang-43): D339 — le COMPLÉMENT du cadrage (3 b), avant les rouges : Q1 à Q5 appliquées, la forme exacte de la CHECK étendue (quotes_uno
+    d5c5ab7 docs(rang-43): D339 — extension 2 de la table, SEULE : pdf-renderer.int-spec.ts (le devis-témoin écrit à la main suit le type du port), décl
+    001ce8d docs(rang-43): D339 — extension 3 de la table, SEULE : l'audit de secrets « d » et son tri, déclarés avant le commit des rouges
+    37f2cea test(rang-43): D339 — les ROUGES de L36-2 : 18 fichiers de test écrits AVANT le code, 155 échecs lus contre l'état d'avant (81 unitaires API
+    260cd5c feat(rang-43): D339 — L36-2, le devis brouillon non officiel : is_official et sa CHECK inerte, le déclencheur sur bookings (INSERT et UPDATE
+    450dc40 docs(rang-43): D339 — extension 4 de la table, SEULE : docs/preuves/D339/reprise/etat.md, la pièce de l'état relevé à la reprise, déclarée a
+    9aa574f docs(rang-43): D339 — la REPRISE : l'état relevé en lecture seule avant toute autre écriture (déclaration de Ko, sauvegardes, 7 fichiers con
+    88b5643 docs(rang-43): D339 — extension 5 de la table, SEULE : les pièces de la reprise (consigne sections 2-4-5, état machine, sortie du harnais, u
+    6823428 test(rang-43): D339 — neutralize-r43.py (87 gardes mordues sur 87, lues par assertion) et les 12 tests écrits APRÈS la découverte du harnais
+    76c84a0 docs(rang-43): D339 — extension 6 de la table, SEULE : les cinq harnais d'union dont les ancres sont périmées par D339 (r32, r38, r39, r41, 
+    e51aa30 docs(rang-43): D339 — extension 7 de la table, SEULE : le journal du passage de r39 qui a montré S-9 sans titre, et la sortie du troisième j
+    de3a77c docs(rang-43): D339 — extension 8 de la table, SEULE : la sortie de la première passe de l'e2e à la main, où E-4 est inerte (l'API charge @z
+    138a7dc test(neutralisation): D339 — les cinq harnais d'union dont les ancres étaient périmées par le code du lot sont ré-ancrés (r32, r38, r39, r41
+    361a864 docs(rang-43): D339 — extension 9 de la table, SEULE : les pièces de l'arrêt de l'e2e (r41:65, classe D265), du rejeu unique décidé par Ko (
+    09137e7 docs(rang-43): D339 — extension 10 de la table, SEULE : les trois pièces de la première passe de l'e2e du 02/11/2026 (même HEAD, 63 passés, 
+    021b02e docs(rang-43): D339 — pièces de l'arrêt de l'e2e (r41:65, classe D265) et RÈGLE DU REJEU écrite AVANT lui (R-6 à R-10), après audit de secre
+    a7b4e84 docs(rang-43): D339 — pièces de clôture : le REJEU UNIQUE de l'e2e (vert : 63 passés, 0 échec, 1 ignoré, à côté de la passe rouge), son rele
+    a6d9d24 docs(rang-43): D339 — PREMIÈRE écriture d'autorité de la CLÔTURE de la reprise : les deux notes de Ko (02/11 et 03/11) mot pour mot, R-6 à R
+    cc62187 docs(rang-43): D339 — extension 11 de la table, SEULE : la sortie de la sonde de dérive de D334 (migrate diff sur la base migrée) et l'audit
+    cafb139 docs(rang-43): D339 — pièces avant les .md de clôture : la passe D277 des deux sens (avant et après les écritures), la sortie de la sonde de
+    9aca5c2 docs(rang-43): D339 — les .md d'autorité de clôture EN DERNIER : la section D339, le point d'entrée du rang 43 (CLOS SUR LE CODE, deux sessi
+
+✓ 1. premier commit du lot = la table, SEULE — fb386f1 ne touche que ['docs/preuves/D339/table-ouverture.md'] (examiné : 1 commit, 1 fichier)
+✓ 2. git diff d703117..HEAD --name-only ⊆ la table (chemins COMPLETS ; les trois .md d'autorité sont déclarés par leur nom nu) — 146 fichiers examinés, 182 chemins complets déclarés, hors table : 0 []
+✓ 3. la sortie de la lecture adverse entre dans un commit ANTÉRIEUR à tout .md d'autorité — lecture adverse bb732a0 ; première écriture d'autorité 52c24e6 ; 4 commits touchent un .md d'autorité (examinés : 26 commits)
+✓ 4. [D334, item 5] le commit des pièces de rouge précède le premier commit de code — rouges 37f2cea ; premier commit de code (hors tests) 260cd5c
+✓ 4b. chaque empreinte des pièces de rouge est celle du blob commité avec elles (à la conversion CRLF près, convention du dépôt) — 18 sur 18 empreintes examinées
+   ✓ extension 1 : commit b5352e1 SEUL · fichiers déclarés 2 · ajoutés APRÈS elle 2 · jamais créés 0
+   ✓ extension 2 : commit d5c5ab7 SEUL · fichiers déclarés 1 · ajoutés APRÈS elle 1 · jamais créés 0
+   ✓ extension 3 : commit 001ce8d SEUL · fichiers déclarés 2 · ajoutés APRÈS elle 2 · jamais créés 0
+   ✓ extension 4 : commit 450dc40 SEUL · fichiers déclarés 1 · ajoutés APRÈS elle 1 · jamais créés 0
+   ✓ extension 5 : commit 88b5643 SEUL · fichiers déclarés 10 · ajoutés APRÈS elle 10 · jamais créés 0
+   ✓ extension 6 : commit 76c84a0 SEUL · fichiers déclarés 30 · ajoutés APRÈS elle 30 · jamais créés 0
+   ✓ extension 7 : commit e51aa30 SEUL · fichiers déclarés 2 · ajoutés APRÈS elle 2 · jamais créés 0
+   ✓ extension 8 : commit de3a77c SEUL · fichiers déclarés 1 · ajoutés APRÈS elle 1 · jamais créés 0
+   ✓ extension 9 : commit 361a864 SEUL · fichiers déclarés 16 · ajoutés APRÈS elle 16 · jamais créés 0
+   ✓ extension 10 : commit 09137e7 SEUL · fichiers déclarés 3 · ajoutés APRÈS elle 3 · jamais créés 0
+   ✓ extension 11 : commit cc62187 SEUL · fichiers déclarés 3 · ajoutés APRÈS elle 3 · jamais créés 0
+✓ 5. chaque extension de la table : commitée SEULE, AVANT le commit de chaque fichier qu'elle couvre — 11 extensions examinées
+✓ 6. aucune opération d'historique interdite depuis l'ouverture du lot (rebase, amend, reset, filter-branch, stash, checkout) — 377 entrées du reflog au total, dont 26 depuis l'entrée de fb386f1 (examinées) ; interdites parmi elles : 0 [] ; git stash list : 0 entrée(s)
+   calibration du détecteur de type : 3 cas, tous OK (reset vu, amend vu, « amendé » dans un message ignoré)
+   branches locales : * main                   9aca5c2 [origin/main] docs(rang-43): D339 — les .md d'autorité de | sauvegarde/r43-260cd5c 260cd5c feat(rang-43): D339 — L36-2, le devis brouillon non officie
+✓ 7. local et origin/main sur le MÊME SHA, après push puis fetch (D288) — HEAD 9aca5c2bedacd310f65e666965b9e30f99bf971f · origin/main 9aca5c2bedacd310f65e666965b9e30f99bf971f
+✓ 8. arbre propre avant ce fichier — git status --short : 0 ligne(s) []
+✓ 9. aucun LF nu dans les trois .md d'autorité (en OCTETS) — 3 fichiers examinés, LF nus : []
+✓ 10. « ⇒ **RANG 43 : CLOS SUR LE CODE (D339, 03/11/2026) — 1 occurrence(s) de la marque dans le FICHIER (attendu ≥ 1)
+✓ 10. « ⇒ **RANG 44 : EN ATTENTE D'ARBITRAGE DE KO.** » — 1 occurrence(s) de la marque dans le FICHIER (attendu ≥ 1)
+✓ 10. la ligne D339 du registre — 1 occurrence(s) de la marque dans le FICHIER (attendu ≥ 1)
+✓ 10. la déclaration de Ko, dans la section — 3 occurrence(s) de la marque dans le FICHIER (attendu ≥ 1)
+✓ 10. R-6 à R-10 sous « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO » — 1 occurrence(s) de la marque dans le FICHIER (attendu ≥ 1)
+✓ 10. le point d'entrée du rang 43 « CLOS SUR LE CODE » — 1 occurrence(s) de la marque dans le FICHIER (attendu ≥ 1)
+✓ 10b. la déclaration de Ko figure dans la section D339 ET dans le point d'entrée du rang 43 (et dans l'entrée du registre) — 3 occurrences (attendu ≥ 3)
+✓ 10c. l'annotation additive de D265 (R-10) est dans le backlog — 1 occurrence (attendu 1)
+✓ 10d. l'entrée de backlog « UNE SESSION ARRÊTÉE APRÈS SES PREMIERS COMMITS » (consigne, § 4) est écrite sans rang — 1 occurrence (attendu 1)
+✓ 11. aucun fichier hors docs/preuves et hors .md d'autorité entre `138a7dc` (code joué par les six portes) et HEAD — 83 fichiers examinés, hors périmètre : 0 []
+
+BILAN : TOUS LES CONTRÔLES TIENNENT
