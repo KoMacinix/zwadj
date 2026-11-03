@@ -244,3 +244,24 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | fichier | motif |
 |---|---|
 | `docs/preuves/D339/neutralisation/e2e-a-la-main-passe-1.txt` | la sortie de la première passe de l'e2e à la main, où E-4 est inerte (mutation hors du code que l'API exécute), versée telle quelle à côté de la passe réparée |
+
+**Extension 9** (03/11/2026, REPRISE — après la note de Ko du 03/11/2026, décisions R-6 à R-10 du relecteur, adoptées par Ko : l'e2e de clôture se rejoue UNE fois, en entier, à la main, sa règle écrite AVANT ; l'arrêt se consigne dans une pièce ; l'état machine se relève pendant le rejeu ; commitée SEULE, AVANT le commit des fichiers qu'elle couvre, règle de D328 point 4. Relevé en LISANT les sorties de la seconde passe des portes (03/11/2026 09:08-09:20, `HEAD` `138a7dc`) et en comparant les pièces que R-6, R-7 et R-8 exigent aux chemins complets de cette table : `typecheck`, `lint`, `test`, `build` et `test:int` sortent en 0 (619 sur 619) ; `test:e2e` sort en 1 — 62 passés, 1 échec, 1 ignoré — sur **`r41-fiche-client.e2e.ts:65`**, `fetch failed` ← `ECONNRESET` au PREMIER appel du fixture (`POST /auth/register`), après 3 ms : la signature de D265, dans une spec qui n'est pas celle du lot. Les trois tests de la spec du lot passent. **Deux fichiers de la liste ci-dessous existaient AVANT cette déclaration** — `portes/etat-env-ouverture.txt` (relevé des `.env` de la passe 1) et la sortie brute de la passe 1, déjà déclarée par l'ouverture (`portes/test-e2e.txt`), qui est **remplacée sur place par sa forme MASQUÉE** (77 jetons de liens de vérification d'une base jetable, le brut est gardé hors dépôt, empreinte dans la pièce). Aucun n'est commité à cette date. Le rejeu est un seul lancement : si une porte dure l'empêche de démarrer (`.env` non local, batterie, `chrome` ou `headless_shell` > 0), les fichiers `rejeu-*` et `test-e2e-rejeu.txt` n'existent pas et la pièce le dit) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D339/portes/arret-e2e-r41.md` | décision R-7 : l'arrêt et ses chiffres, les trois passes isolées, **la règle de R-6 écrite AVANT le rejeu** (commit antérieur au rejeu, `git` le prouve), puis le résultat du rejeu |
+| `docs/preuves/D339/portes/etat-env-ouverture.txt` | relevé des `.env` à l'ouverture de la passe 1 (empreintes et classe d'hôte, aucune valeur, D330) |
+| `docs/preuves/D339/portes/etat-env-cloture.txt` | idem à la clôture de la passe 1 (identique à l'ouverture, `comparer` : code 0) |
+| `docs/preuves/D339/portes/isolee-r41-1.txt` | R-7 : première passe isolée de `r41-fiche-client`, MASQUÉE (6 jetons), hors porte, `retries` inchangé |
+| `docs/preuves/D339/portes/isolee-r41-2.txt` | idem, deuxième passe |
+| `docs/preuves/D339/portes/isolee-r41-3.txt` | idem, troisième passe |
+| `docs/preuves/D339/portes/rejeu-etat-machine.txt` | R-8 : l'état machine JUSTE AVANT, toutes les 30 s PENDANT, juste APRÈS le rejeu (secteur, batterie, RAM libre, `chrome`, `headless_shell`, `node`, processeur) ; relevé hors dépôt pendant le rejeu, copié après |
+| `docs/preuves/D339/portes/rejeu-etat-env-ouverture.txt` | les `.env` à l'ouverture du rejeu (D330 : hôte non local ⇒ le rejeu ne démarre pas) |
+| `docs/preuves/D339/portes/rejeu-etat-env-cloture.txt` | les `.env` à la clôture du rejeu |
+| `docs/preuves/D339/portes/rejeu-lancement.txt` | `HEAD` et arbre au lancement, codes des relevés, heures de départ et de fin, code du rejeu, comparaison des `.env` |
+| `docs/preuves/D339/portes/test-e2e-rejeu.txt` | la sortie du rejeu, MASQUÉE si elle porte des jetons ; **versée à côté** de la passe rouge (`portes/test-e2e.txt`), jamais à sa place (« une porte ne se déclare pas verte en taisant sa première passe ») |
+| `docs/preuves/D339/portes/outils/masquer.py` | le masqueur des jetons (calibré sur deux bras à chaque lancement) ; procédure archivée comme PREUVE, jamais promue en instrument (D291) |
+| `docs/preuves/D339/portes/outils/releve-machine.ps1` | l'échantillonneur de l'état machine du rejeu (R-8) ; idem, archivé comme preuve |
+| `docs/preuves/D339/portes/outils/rejeu.sh` | le lanceur du rejeu (portes dures, relevés, commande de la porte, comparaison des `.env`) ; idem |
+| `docs/preuves/D339/audit-secrets-d339e.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), AVANT le commit des pièces ci-dessus qui entrent avant le rejeu (D298) ; l'audit « b » de la clôture reste déclaré plus haut |
+| `docs/preuves/D339/tri-audit-d339e.txt` | son tri différentiel contre `docs/preuves/D339/audit-secrets-d339d.txt` |
