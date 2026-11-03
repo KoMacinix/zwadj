@@ -1,0 +1,25 @@
+D339 — la sonde de DÉRIVE entre schema.prisma et la base migrée (D334, sonde 6), rejouée SANS MODIFICATION sur l'arbre de clôture.
+Commande (racine) : python3 docs/preuves/D334/session-adverse/adverse_derive.py
+HEAD : cc62187b49771af7e5df692f9f4b62134b049f8b · début : 2026-11-03 14:40:08 · fin : 2026-11-03 14:40:16 · code de sortie : 0
+Empreintes : adverse_derive.py sha256:ee52a750e3a619d8f89d814c151cde3cca0111d845f79217fbca63bbd66b5001 · adverse_outils.py sha256:f03fbf5300e6a6d23ad13a42c5dedd92fb2752772d556476ded7769b78b694ff
+Procédure : crée une base jetable `zwadj_adverse_derive` en prenant `zwadj` (la base de développement de Ko) comme MODÈLE — lecture seule —, y applique `migrate deploy` (donc la migration 20261028100000_quote_unofficial_draft, que `zwadj` n'a pas), lance `prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script`, supprime la base jetable. Effet vérifié après : `zwadj` à 31 migrations, la liste des bases du serveur inchangée.
+⚠ Le diff rend des différences CONNUES et PERMANENTES (les garanties que Prisma n'exprime pas : D186). Ce que cette pièce MESURE pour L36-2 : **aucune** ligne du diff ne concerne le déclencheur `bookings_quote_must_be_official`, sa fonction, `quotes.is_official` ni `quotes_unofficial_inert` — Prisma ne voit pas les déclencheurs ni les CHECK, et la colonne est déclarée à l'identique dans `schema.prisma`. Les « verdicts » DR-0, DR-1 et DR-C1 ci-dessous sont ceux de D334 (ils parlent des objets de L35-3) ; le diff COMPLET, lui, est celui d'aujourd'hui.
+--- sortie brute ---
+
+== SONDE 6 — dérive entre schema.prisma et la base migrée (objets de L35-3)
+✓ DR-0       base migrée — attendu 0 · mesuré 0
+   code 0 ; 13 ligne(s) de sortie
+   le diff COMPLET (de la base migrée vers schema.prisma) :
+     | -- DropForeignKey
+     | ALTER TABLE "pricing_rules" DROP CONSTRAINT "pricing_rules_slot_belongs_to_venue";
+     | -- DropForeignKey
+     | ALTER TABLE "quotes" DROP CONSTRAINT "quotes_chain_head_fkey";
+     | -- AlterTable
+     | ALTER TABLE "venues" ALTER COLUMN "number" SET DEFAULT nextval('venue_number_seq'::regclass),
+     | ALTER COLUMN "number" DROP DEFAULT;
+     | DROP SEQUENCE "venue_number_seq";
+     | Loaded Prisma config from prisma.config.ts.
+✓ DR-1       le diff s'exécute et ne propose, pour les objets de L35-3, que ce que la doctrine range HORS de Prisma : la clé composite des versions, la séquence des salles et son défaut (+ la clé B2 d'avant) — attendu {'pricing_rules_slot_belongs_to_venue', '"number" DROP DEFAULT', 'quotes_chain_head_fkey', 'venue_number_seq'} · mesuré {'pricing_rules_slot_belongs_to_venue', 'venue_number_seq', 'quotes_chain_head_fkey', '"number" DROP DEFAULT'}
+· DR-C1      CONSTAT : si `prisma migrate dev` tournait (il est interdit, AGENTS.md), il proposerait de SUPPRIMER `quotes_chain_head_fkey` et la séquence `venue_number_seq` avec le défaut de `venues.number` : deux objets de plus que la liste « Migrations — `prisma migrate dev` est INTERDIT » d'AGENTS.md ne nomme pas (elle nomme l'EXCLUDE, les index partiels, `pricing_rules_slot_belongs_to_venue`, les CHECK). Documentaire, non bloquant : la doctrine tient (la migration est l'autorité), la liste est à compléter
+
+== BILAN : 2 ✓ · 0 ✗ [] · 1 constat(s) ['DR-C1']

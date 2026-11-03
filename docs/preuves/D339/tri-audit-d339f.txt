@@ -1,0 +1,17 @@
+D339 — tri différentiel de l'audit de secrets « f » (AVANT le commit de la passe D277 des deux sens, de la sortie de la sonde de dérive, et des `.md` d'autorité de clôture dans leur état FINAL : `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D339/audit-secrets-d339b.txt docs/preuves/D339/audit-secrets-d339f.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente (« b ») : 730 contextes lus ; nouvelle (« f ») : 731. Alertes ABSENTES de la précédente : 1 (ventilation par motif : jeton = 1 ; 731 − 730 = 1 : aucun autre motif ne rend d'alerte NOUVELLE).
+
+Tri au contexte (ligne de la sortie scellée « f » ; l'instrument renvoie aux lignes et ne recopie aucun contexte, D299 ; le contexte a été relu par un script qui imprime ce qu'il a lu : « alertes lues dans le tri : 1 ») :
+  · 1 [jeton] = docs/preuves/D339/tri-audit-d339b.txt, ligne 9 : MON PROPRE texte de tri « b », écrit APRÈS l'audit « b » (dans le commit des pièces de clôture, `a7b4e84`), qui cite le marqueur de masquage « <valeur masquée> » — la valeur vue est le marqueur,
+    comme aux tris « d », « e » et « b ». Le texte de ce tri « b » l'annonçait (« ⚠ Ce fichier cite lui-même le marqueur : un audit rejoué APRÈS lui y compterait une alerte de plus »).
+
+Ce que cet audit couvre sans rendre AUCUNE alerte nouvelle : la passe D277 (`passe-d277.md`, `passe-d277/passe-d277.py`, `sortie-avant.txt`, `sortie-apres.txt`), la sortie de la sonde de dérive (`derive-prisma.txt`), `aucune-valeur-reelle.txt` (commité à `a7b4e84`, après l'audit « b »), et les trois `.md` d'autorité dans leur état final.
+
+BILAN : 1 sur 1 = un marqueur cité par un texte de tri ; AUCUNE valeur réelle.
+Le contrôle dédié « 0 valeur réelle » (D299), rejoué sur les mêmes six journaux bruts et sur la cible `docs/preuves/D339` + les trois `.md` d'autorité : 253 valeurs cherchées, 101 fichiers parcourus (11 508 878 octets), 0 porteur (attendu 0) — sortie complète de la première passe dans `aucune-valeur-reelle.txt` ; cette seconde passe ajoute les `.md` à la cible.
+⚠ Ce fichier-ci cite à son tour le marqueur : un audit rejoué après lui y compterait une alerte de plus, de la même nature (le texte d'un tri nomme ce qu'il trie).
+
+Sceau de la sortie « f » : sha256:99b05a5956d558195795be26a4a9f2a0146c84e9d8bf3a761007418af0b1a23c — relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).
